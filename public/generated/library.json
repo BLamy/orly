@@ -1,6 +1,41 @@
 {
   "books": [
     {
+      "slug": "auth-sessions-foundations",
+      "title": "Sessions",
+      "subtitle": "How the server remembers a signed-in user, request after request.",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#2dd4bf",
+      "animal": "generated/auth-sessions-foundations/animal.png",
+      "href": "?bundle=auth-sessions-foundations",
+      "series": "Pilcrow's Auth Book",
+      "seriesOrder": 2,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Creating a Session",
+          "duration": 76.579
+        },
+        {
+          "number": 2,
+          "title": "The Session Cookie",
+          "duration": 84.8
+        },
+        {
+          "number": 3,
+          "title": "Validating the Session",
+          "duration": 81.13
+        },
+        {
+          "number": 4,
+          "title": "Expiration and Revocation",
+          "duration": 80.387
+        }
+      ],
+      "createdAt": "2026-06-21T09:07:28.732Z"
+    },
+    {
       "slug": "auth-authentication-methods",
       "title": "Authentication Methods",
       "subtitle": "How a user proves who they are",
