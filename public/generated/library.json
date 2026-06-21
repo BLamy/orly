@@ -3,14 +3,14 @@
     {
       "slug": "effect-elite",
       "title": "Effect Internals",
-      "subtitle": "What the elites won't tell you",
+      "subtitle": "What the elites don't want you to know",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#41607f",
       "animal": "generated/effect-elite/animal.png",
       "href": "?bundle=effect-elite",
       "series": "Effect.ts — The Good Parts",
-      "seriesOrder": 5,
+      "seriesOrder": 4,
       "createdAt": "2026-06-21T03:56:32.949Z",
       "chapters": [
         {
@@ -50,7 +50,7 @@
       "animal": "generated/effect-production/animal.png",
       "href": "?bundle=effect-production",
       "series": "Effect.ts — The Good Parts",
-      "seriesOrder": 4,
+      "seriesOrder": 3,
       "createdAt": "2026-06-21T03:54:46.305Z",
       "chapters": [
         {
@@ -90,7 +90,7 @@
       "animal": "generated/effect-advanced/animal.png",
       "href": "?bundle=effect-advanced",
       "series": "Effect.ts — The Good Parts",
-      "seriesOrder": 3,
+      "seriesOrder": 5,
       "createdAt": "2026-06-21T03:53:26.675Z",
       "chapters": [
         {

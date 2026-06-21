@@ -1,0 +1,45 @@
+name: 📚 New book series
+description: Generate a multi-book series from docs or a repo
+title: "[series] "
+labels: ["new-series"]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Opening this issue (as the repo owner) kicks off CI: Claude Code studies the
+        source, plans the series, generates every book (narration + O'RLY cover +
+        icons), and auto-merges a PR that adds the grouped series to the shelf.
+  - type: input
+    id: source
+    attributes:
+      label: Source
+      description: A docs URL or GitHub repo to study.
+      placeholder: https://effect.website/docs
+    validations:
+      required: true
+  - type: input
+    id: series_name
+    attributes:
+      label: Series name
+      description: Shown as the series header on the shelf and in the player.
+      placeholder: Effect.ts — The Good Parts
+    validations:
+      required: true
+  - type: textarea
+    id: books
+    attributes:
+      label: Books
+      description: One per line (title — focus/level), or describe the arc and let Claude plan them.
+      placeholder: |
+        Effect: The Good Parts — for Beginners
+        Effect: The Good Parts — Intermediate
+        Effect: The Good Parts — Advanced
+        Production-Level Effect.ts
+        What the Elites Don't Want You to Know About Effect
+    validations:
+      required: true
+  - type: input
+    id: count
+    attributes:
+      label: Number of books (if you want Claude to plan them)
+      placeholder: "5"
