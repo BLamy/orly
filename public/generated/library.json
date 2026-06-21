@@ -1,6 +1,44 @@
 {
   "books": [
     {
+      "slug": "replay-qa",
+      "title": "Replay.qa",
+      "subtitle": "Continuous QA",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#f02d5e",
+      "animal": "generated/replay-qa/animal.png",
+      "href": "?bundle=replay-qa",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Autonomous Loop",
+          "duration": 76.439
+        },
+        {
+          "number": 2,
+          "title": "Plug In Your Agent",
+          "duration": 63.204
+        },
+        {
+          "number": 3,
+          "title": "Fix, Mark, Re-verify",
+          "duration": 77.554
+        },
+        {
+          "number": 4,
+          "title": "Wire It Into CI",
+          "duration": 68.453
+        },
+        {
+          "number": 5,
+          "title": "Inside the Loop",
+          "duration": 80.805
+        }
+      ],
+      "createdAt": "2026-06-21T08:56:10.837Z"
+    },
+    {
       "slug": "react-server-components",
       "title": "React Server Components",
       "subtitle": "React for two computers",
