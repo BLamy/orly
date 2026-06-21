@@ -1,6 +1,44 @@
 {
   "books": [
     {
+      "slug": "the-book-machine",
+      "title": "The Book Machine",
+      "subtitle": "From a GitHub issue to a published explainer — fork your own",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1f8a6e",
+      "animal": "generated/the-book-machine/animal.png",
+      "href": "?bundle=the-book-machine",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A shelf that builds itself",
+          "duration": 58.05
+        },
+        {
+          "number": 2,
+          "title": "Open an issue, pull the trigger",
+          "duration": 63.577
+        },
+        {
+          "number": 3,
+          "title": "Claude Code runs the pipeline",
+          "duration": 78.576
+        },
+        {
+          "number": 4,
+          "title": "Pull request, auto-merge, redeploy",
+          "duration": 60.743
+        },
+        {
+          "number": 5,
+          "title": "Fork it, set your env, make your own",
+          "duration": 62.787
+        }
+      ],
+      "createdAt": "2026-06-21T06:00:33.110Z"
+    },
+    {
       "slug": "effect-elite",
       "title": "Effect Internals",
       "subtitle": "What the elites don't want you to know",
