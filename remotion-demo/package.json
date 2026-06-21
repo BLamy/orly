@@ -1,0 +1,21 @@
+{
+  "name": "remotion-dataflow-demo",
+  "version": "1.0.0",
+  "private": true,
+  "description": "A Remotion port of one Secret-Lives-of-Data chapter, to compare against the D3 engine.",
+  "scripts": {
+    "studio": "remotion studio",
+    "still": "remotion still DataFlow out/frame.png --frame=300",
+    "render": "remotion render DataFlow out/dataflow.mp4"
+  },
+  "dependencies": {
+    "@remotion/cli": "^4.0.0",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1",
+    "remotion": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/react": "^18.3.0",
+    "typescript": "^5.4.0"
+  }
+}

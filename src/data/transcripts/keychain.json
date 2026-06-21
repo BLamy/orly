@@ -1,0 +1,6099 @@
+{
+ "file": "2)keychain.mp3",
+ "name": "keychain",
+ "languageCode": "eng",
+ "duration": 185.04,
+ "text": "Here's a problem that falls right out of layer one. Almost Node runs real command line tools inside that sandbox, the kind of tools you'd use to talk to GitHub, or a cloud provider, or an AI service, and those tools were written for a laptop. They expect to read your credentials from a file on disc, but there is no disc, and you absolutely do not want secrets sitting around in plain view in the page. So, two moves. First, each sandbox gets its own virtual file system, and that's exactly where credential files are allowed to live, right where the tools go looking for them. Second, there's a keychain watching that file system. Watch how a sign-in actually works, because it's elegant. You click sign in in the sidebar. The sidebar doesn't write the secret itself. Instead, it runs the tool's normal login command. The tool does the real login and writes its credential file into the virtual file system, and the keychain, which has been watching, sees that file appear and snapshots it. It doesn't grab everything indiscriminately, only the specific registered locations where credentials are supposed to live. Now it needs to encrypt that snapshot, which means it needs a key, and here's the part I love. It never stores one. It asks your passkey, the same hardware-backed authentication you use for fingerprint or face unlock hands-back a secret, and from that secret, it derives an encryption key. The snapshot is encrypted and tucked into the browser's local storage, just the ciphertext and the bits needed to decrypt it later. The key itself only ever lives in memory, and it vanishes the moment you close the tab. Reopen the environment tomorrow and the file system starts completely empty. The keychain reads the encrypted vault, prompts your passkey, decrypts the snapshot, and writes the credential files back into the file system, and as far as the tool is concerned, its credentials were simply there on disc like always. It never sees the vault, never sees the passkey, never knows any encryption happened. It just opens a file and reads it. A few refinements make it robust. Some flows need to start a sandbox before you've tapped your passkey, so there's a fast, live-only mirror that disappears when the tab closes. You can run several sandboxes at once, and on unlock, every one of them gets the restored credentials with the newest wins rule, so the freshest token always wins. And beyond the built-in tools, you can connect outside services through a standard authorization pop-up. And those tokens take the exact same journey. They land as a file, the keychain snapshots the change, and it's encrypted into the vault. While you're unlocked, it quietly refreshes tokens before they expire, so long sessions never silently die. So that's the keychain. Secrets come in through a sign-in or an authorization flow, land as ordinary files where tools expect them, and get mirrored, encrypted into a passkey-protected vault across every sandbox you have open. No server ever sees them.",
+ "words": [
+  {
+   "t": "Here's",
+   "s": 0.1,
+   "e": 0.26,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 0.26,
+   "e": 0.3,
+   "type": "spacing"
+  },
+  {
+   "t": "a",
+   "s": 0.3,
+   "e": 0.31,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 0.31,
+   "e": 0.36,
+   "type": "spacing"
+  },
+  {
+   "t": "problem",
+   "s": 0.36,
+   "e": 0.56,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 0.56,
+   "e": 0.57,
+   "type": "spacing"
+  },
+  {
+   "t": "that",
+   "s": 0.57,
+   "e": 0.72,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 0.72,
+   "e": 0.76,
+   "type": "spacing"
+  },
+  {
+   "t": "falls",
+   "s": 0.76,
+   "e": 1.02,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 1.02,
+   "e": 1.08,
+   "type": "spacing"
+  },
+  {
+   "t": "right",
+   "s": 1.08,
+   "e": 1.22,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 1.22,
+   "e": 1.32,
+   "type": "spacing"
+  },
+  {
+   "t": "out",
+   "s": 1.32,
+   "e": 1.46,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 1.46,
+   "e": 1.52,
+   "type": "spacing"
+  },
+  {
+   "t": "of",
+   "s": 1.52,
+   "e": 1.58,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 1.58,
+   "e": 1.62,
+   "type": "spacing"
+  },
+  {
+   "t": "layer",
+   "s": 1.62,
+   "e": 1.78,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 1.78,
+   "e": 1.88,
+   "type": "spacing"
+  },
+  {
+   "t": "one.",
+   "s": 1.88,
+   "e": 2.07,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 2.07,
+   "e": 2.74,
+   "type": "spacing"
+  },
+  {
+   "t": "Almost",
+   "s": 2.74,
+   "e": 3.06,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 3.06,
+   "e": 3.12,
+   "type": "spacing"
+  },
+  {
+   "t": "Node",
+   "s": 3.12,
+   "e": 3.36,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 3.36,
+   "e": 3.44,
+   "type": "spacing"
+  },
+  {
+   "t": "runs",
+   "s": 3.44,
+   "e": 3.74,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 3.74,
+   "e": 3.82,
+   "type": "spacing"
+  },
+  {
+   "t": "real",
+   "s": 3.82,
+   "e": 4.04,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 4.04,
+   "e": 4.08,
+   "type": "spacing"
+  },
+  {
+   "t": "command",
+   "s": 4.08,
+   "e": 4.4,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 4.4,
+   "e": 4.44,
+   "type": "spacing"
+  },
+  {
+   "t": "line",
+   "s": 4.44,
+   "e": 4.58,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 4.58,
+   "e": 4.68,
+   "type": "spacing"
+  },
+  {
+   "t": "tools",
+   "s": 4.68,
+   "e": 5.22,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 5.22,
+   "e": 5.279,
+   "type": "spacing"
+  },
+  {
+   "t": "inside",
+   "s": 5.28,
+   "e": 5.68,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 5.68,
+   "e": 5.72,
+   "type": "spacing"
+  },
+  {
+   "t": "that",
+   "s": 5.72,
+   "e": 5.86,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 5.86,
+   "e": 5.92,
+   "type": "spacing"
+  },
+  {
+   "t": "sandbox,",
+   "s": 5.92,
+   "e": 6.44,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 6.44,
+   "e": 7,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 7,
+   "e": 7.1,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 7.1,
+   "e": 7.16,
+   "type": "spacing"
+  },
+  {
+   "t": "kind",
+   "s": 7.16,
+   "e": 7.36,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 7.36,
+   "e": 7.4,
+   "type": "spacing"
+  },
+  {
+   "t": "of",
+   "s": 7.4,
+   "e": 7.46,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 7.46,
+   "e": 7.52,
+   "type": "spacing"
+  },
+  {
+   "t": "tools",
+   "s": 7.52,
+   "e": 7.76,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 7.76,
+   "e": 7.8,
+   "type": "spacing"
+  },
+  {
+   "t": "you'd",
+   "s": 7.8,
+   "e": 7.91,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 7.91,
+   "e": 8.02,
+   "type": "spacing"
+  },
+  {
+   "t": "use",
+   "s": 8.02,
+   "e": 8.16,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 8.16,
+   "e": 8.2,
+   "type": "spacing"
+  },
+  {
+   "t": "to",
+   "s": 8.2,
+   "e": 8.25,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 8.25,
+   "e": 8.32,
+   "type": "spacing"
+  },
+  {
+   "t": "talk",
+   "s": 8.32,
+   "e": 8.48,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 8.48,
+   "e": 8.52,
+   "type": "spacing"
+  },
+  {
+   "t": "to",
+   "s": 8.52,
+   "e": 8.62,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 8.62,
+   "e": 8.66,
+   "type": "spacing"
+  },
+  {
+   "t": "GitHub,",
+   "s": 8.66,
+   "e": 9.1,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 9.1,
+   "e": 9.62,
+   "type": "spacing"
+  },
+  {
+   "t": "or",
+   "s": 9.62,
+   "e": 9.84,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 9.84,
+   "e": 9.86,
+   "type": "spacing"
+  },
+  {
+   "t": "a",
+   "s": 9.86,
+   "e": 10,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 10,
+   "e": 10.02,
+   "type": "spacing"
+  },
+  {
+   "t": "cloud",
+   "s": 10.02,
+   "e": 10.3,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 10.3,
+   "e": 10.32,
+   "type": "spacing"
+  },
+  {
+   "t": "provider,",
+   "s": 10.32,
+   "e": 10.78,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 10.78,
+   "e": 11.2,
+   "type": "spacing"
+  },
+  {
+   "t": "or",
+   "s": 11.2,
+   "e": 11.3,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 11.3,
+   "e": 11.34,
+   "type": "spacing"
+  },
+  {
+   "t": "an",
+   "s": 11.34,
+   "e": 11.44,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 11.44,
+   "e": 11.5,
+   "type": "spacing"
+  },
+  {
+   "t": "AI",
+   "s": 11.5,
+   "e": 11.72,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 11.72,
+   "e": 11.84,
+   "type": "spacing"
+  },
+  {
+   "t": "service,",
+   "s": 11.84,
+   "e": 12.24,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 12.24,
+   "e": 12.84,
+   "type": "spacing"
+  },
+  {
+   "t": "and",
+   "s": 12.84,
+   "e": 12.91,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 12.91,
+   "e": 12.96,
+   "type": "spacing"
+  },
+  {
+   "t": "those",
+   "s": 12.96,
+   "e": 13.16,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 13.16,
+   "e": 13.2,
+   "type": "spacing"
+  },
+  {
+   "t": "tools",
+   "s": 13.2,
+   "e": 13.38,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 13.38,
+   "e": 13.4,
+   "type": "spacing"
+  },
+  {
+   "t": "were",
+   "s": 13.4,
+   "e": 13.5,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 13.5,
+   "e": 13.52,
+   "type": "spacing"
+  },
+  {
+   "t": "written",
+   "s": 13.52,
+   "e": 13.76,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 13.76,
+   "e": 13.799,
+   "type": "spacing"
+  },
+  {
+   "t": "for",
+   "s": 13.8,
+   "e": 13.86,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 13.86,
+   "e": 13.899,
+   "type": "spacing"
+  },
+  {
+   "t": "a",
+   "s": 13.9,
+   "e": 13.94,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 13.94,
+   "e": 13.979,
+   "type": "spacing"
+  },
+  {
+   "t": "laptop.",
+   "s": 13.98,
+   "e": 14.459,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 14.459,
+   "e": 14.94,
+   "type": "spacing"
+  },
+  {
+   "t": "They",
+   "s": 14.94,
+   "e": 15.02,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 15.02,
+   "e": 15.04,
+   "type": "spacing"
+  },
+  {
+   "t": "expect",
+   "s": 15.04,
+   "e": 15.38,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 15.38,
+   "e": 15.42,
+   "type": "spacing"
+  },
+  {
+   "t": "to",
+   "s": 15.42,
+   "e": 15.5,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 15.5,
+   "e": 15.56,
+   "type": "spacing"
+  },
+  {
+   "t": "read",
+   "s": 15.56,
+   "e": 15.74,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 15.74,
+   "e": 15.76,
+   "type": "spacing"
+  },
+  {
+   "t": "your",
+   "s": 15.76,
+   "e": 15.9,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 15.9,
+   "e": 15.94,
+   "type": "spacing"
+  },
+  {
+   "t": "credentials",
+   "s": 15.94,
+   "e": 16.46,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 16.46,
+   "e": 16.5,
+   "type": "spacing"
+  },
+  {
+   "t": "from",
+   "s": 16.5,
+   "e": 16.59,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 16.59,
+   "e": 16.66,
+   "type": "spacing"
+  },
+  {
+   "t": "a",
+   "s": 16.66,
+   "e": 16.72,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 16.72,
+   "e": 16.779,
+   "type": "spacing"
+  },
+  {
+   "t": "file",
+   "s": 16.78,
+   "e": 17.04,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 17.04,
+   "e": 17.08,
+   "type": "spacing"
+  },
+  {
+   "t": "on",
+   "s": 17.08,
+   "e": 17.16,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 17.16,
+   "e": 17.26,
+   "type": "spacing"
+  },
+  {
+   "t": "disc,",
+   "s": 17.26,
+   "e": 17.6,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 17.6,
+   "e": 18.22,
+   "type": "spacing"
+  },
+  {
+   "t": "but",
+   "s": 18.22,
+   "e": 18.28,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 18.28,
+   "e": 18.3,
+   "type": "spacing"
+  },
+  {
+   "t": "there",
+   "s": 18.3,
+   "e": 18.42,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 18.42,
+   "e": 18.46,
+   "type": "spacing"
+  },
+  {
+   "t": "is",
+   "s": 18.46,
+   "e": 18.56,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 18.56,
+   "e": 18.599,
+   "type": "spacing"
+  },
+  {
+   "t": "no",
+   "s": 18.6,
+   "e": 18.72,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 18.72,
+   "e": 18.82,
+   "type": "spacing"
+  },
+  {
+   "t": "disc,",
+   "s": 18.82,
+   "e": 19.08,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 19.08,
+   "e": 19.12,
+   "type": "spacing"
+  },
+  {
+   "t": "and",
+   "s": 19.12,
+   "e": 19.19,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 19.19,
+   "e": 19.22,
+   "type": "spacing"
+  },
+  {
+   "t": "you",
+   "s": 19.22,
+   "e": 19.35,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 19.35,
+   "e": 19.35,
+   "type": "spacing"
+  },
+  {
+   "t": "absolutely",
+   "s": 19.35,
+   "e": 19.88,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 19.88,
+   "e": 19.96,
+   "type": "spacing"
+  },
+  {
+   "t": "do",
+   "s": 19.96,
+   "e": 20.08,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 20.08,
+   "e": 20.14,
+   "type": "spacing"
+  },
+  {
+   "t": "not",
+   "s": 20.14,
+   "e": 20.3,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 20.3,
+   "e": 20.32,
+   "type": "spacing"
+  },
+  {
+   "t": "want",
+   "s": 20.32,
+   "e": 20.46,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 20.46,
+   "e": 20.58,
+   "type": "spacing"
+  },
+  {
+   "t": "secrets",
+   "s": 20.58,
+   "e": 20.92,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 20.92,
+   "e": 20.98,
+   "type": "spacing"
+  },
+  {
+   "t": "sitting",
+   "s": 20.98,
+   "e": 21.22,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 21.22,
+   "e": 21.279,
+   "type": "spacing"
+  },
+  {
+   "t": "around",
+   "s": 21.28,
+   "e": 21.54,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 21.54,
+   "e": 21.56,
+   "type": "spacing"
+  },
+  {
+   "t": "in",
+   "s": 21.56,
+   "e": 21.68,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 21.68,
+   "e": 21.72,
+   "type": "spacing"
+  },
+  {
+   "t": "plain",
+   "s": 21.72,
+   "e": 21.94,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 21.94,
+   "e": 22.02,
+   "type": "spacing"
+  },
+  {
+   "t": "view",
+   "s": 22.02,
+   "e": 22.16,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 22.16,
+   "e": 22.2,
+   "type": "spacing"
+  },
+  {
+   "t": "in",
+   "s": 22.2,
+   "e": 22.26,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 22.26,
+   "e": 22.3,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 22.3,
+   "e": 22.33,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 22.33,
+   "e": 22.42,
+   "type": "spacing"
+  },
+  {
+   "t": "page.",
+   "s": 22.42,
+   "e": 22.78,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 22.78,
+   "e": 23.439,
+   "type": "spacing"
+  },
+  {
+   "t": "So,",
+   "s": 23.44,
+   "e": 23.6,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 23.6,
+   "e": 23.8,
+   "type": "spacing"
+  },
+  {
+   "t": "two",
+   "s": 23.8,
+   "e": 23.9,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 23.9,
+   "e": 23.98,
+   "type": "spacing"
+  },
+  {
+   "t": "moves.",
+   "s": 23.98,
+   "e": 24.21,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 24.21,
+   "e": 24.599,
+   "type": "spacing"
+  },
+  {
+   "t": "First,",
+   "s": 24.6,
+   "e": 24.88,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 24.88,
+   "e": 25.08,
+   "type": "spacing"
+  },
+  {
+   "t": "each",
+   "s": 25.08,
+   "e": 25.26,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 25.26,
+   "e": 25.32,
+   "type": "spacing"
+  },
+  {
+   "t": "sandbox",
+   "s": 25.32,
+   "e": 25.78,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 25.78,
+   "e": 25.86,
+   "type": "spacing"
+  },
+  {
+   "t": "gets",
+   "s": 25.86,
+   "e": 26.02,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 26.02,
+   "e": 26.08,
+   "type": "spacing"
+  },
+  {
+   "t": "its",
+   "s": 26.08,
+   "e": 26.22,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 26.22,
+   "e": 26.299,
+   "type": "spacing"
+  },
+  {
+   "t": "own",
+   "s": 26.3,
+   "e": 26.46,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 26.46,
+   "e": 26.52,
+   "type": "spacing"
+  },
+  {
+   "t": "virtual",
+   "s": 26.52,
+   "e": 26.86,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 26.86,
+   "e": 26.96,
+   "type": "spacing"
+  },
+  {
+   "t": "file",
+   "s": 26.96,
+   "e": 27.2,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 27.2,
+   "e": 27.279,
+   "type": "spacing"
+  },
+  {
+   "t": "system,",
+   "s": 27.28,
+   "e": 27.62,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 27.62,
+   "e": 28.18,
+   "type": "spacing"
+  },
+  {
+   "t": "and",
+   "s": 28.18,
+   "e": 28.24,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 28.24,
+   "e": 28.26,
+   "type": "spacing"
+  },
+  {
+   "t": "that's",
+   "s": 28.26,
+   "e": 28.4,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 28.4,
+   "e": 28.44,
+   "type": "spacing"
+  },
+  {
+   "t": "exactly",
+   "s": 28.44,
+   "e": 28.84,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 28.84,
+   "e": 28.86,
+   "type": "spacing"
+  },
+  {
+   "t": "where",
+   "s": 28.86,
+   "e": 28.99,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 28.99,
+   "e": 29.04,
+   "type": "spacing"
+  },
+  {
+   "t": "credential",
+   "s": 29.04,
+   "e": 29.4,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 29.4,
+   "e": 29.46,
+   "type": "spacing"
+  },
+  {
+   "t": "files",
+   "s": 29.46,
+   "e": 29.72,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 29.72,
+   "e": 29.74,
+   "type": "spacing"
+  },
+  {
+   "t": "are",
+   "s": 29.74,
+   "e": 29.8,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 29.8,
+   "e": 29.84,
+   "type": "spacing"
+  },
+  {
+   "t": "allowed",
+   "s": 29.84,
+   "e": 30.06,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 30.06,
+   "e": 30.12,
+   "type": "spacing"
+  },
+  {
+   "t": "to",
+   "s": 30.12,
+   "e": 30.16,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 30.16,
+   "e": 30.24,
+   "type": "spacing"
+  },
+  {
+   "t": "live,",
+   "s": 30.24,
+   "e": 30.44,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 30.44,
+   "e": 30.959,
+   "type": "spacing"
+  },
+  {
+   "t": "right",
+   "s": 30.96,
+   "e": 31.14,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 31.14,
+   "e": 31.18,
+   "type": "spacing"
+  },
+  {
+   "t": "where",
+   "s": 31.18,
+   "e": 31.28,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 31.28,
+   "e": 31.32,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 31.32,
+   "e": 31.4,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 31.4,
+   "e": 31.48,
+   "type": "spacing"
+  },
+  {
+   "t": "tools",
+   "s": 31.48,
+   "e": 31.8,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 31.8,
+   "e": 31.84,
+   "type": "spacing"
+  },
+  {
+   "t": "go",
+   "s": 31.84,
+   "e": 31.94,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 31.94,
+   "e": 32.02,
+   "type": "spacing"
+  },
+  {
+   "t": "looking",
+   "s": 32.02,
+   "e": 32.299,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 32.299,
+   "e": 32.339,
+   "type": "spacing"
+  },
+  {
+   "t": "for",
+   "s": 32.34,
+   "e": 32.48,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 32.48,
+   "e": 32.52,
+   "type": "spacing"
+  },
+  {
+   "t": "them.",
+   "s": 32.52,
+   "e": 32.659,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 32.659,
+   "e": 33.3,
+   "type": "spacing"
+  },
+  {
+   "t": "Second,",
+   "s": 33.3,
+   "e": 33.7,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 33.7,
+   "e": 33.98,
+   "type": "spacing"
+  },
+  {
+   "t": "there's",
+   "s": 33.98,
+   "e": 34.089,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 34.089,
+   "e": 34.14,
+   "type": "spacing"
+  },
+  {
+   "t": "a",
+   "s": 34.14,
+   "e": 34.18,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 34.18,
+   "e": 34.24,
+   "type": "spacing"
+  },
+  {
+   "t": "keychain",
+   "s": 34.24,
+   "e": 34.66,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 34.66,
+   "e": 34.7,
+   "type": "spacing"
+  },
+  {
+   "t": "watching",
+   "s": 34.7,
+   "e": 34.96,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 34.96,
+   "e": 35,
+   "type": "spacing"
+  },
+  {
+   "t": "that",
+   "s": 35,
+   "e": 35.089,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 35.089,
+   "e": 35.18,
+   "type": "spacing"
+  },
+  {
+   "t": "file",
+   "s": 35.18,
+   "e": 35.36,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 35.36,
+   "e": 35.44,
+   "type": "spacing"
+  },
+  {
+   "t": "system.",
+   "s": 35.44,
+   "e": 35.76,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 35.76,
+   "e": 36.4,
+   "type": "spacing"
+  },
+  {
+   "t": "Watch",
+   "s": 36.4,
+   "e": 36.62,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 36.62,
+   "e": 36.66,
+   "type": "spacing"
+  },
+  {
+   "t": "how",
+   "s": 36.66,
+   "e": 36.78,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 36.78,
+   "e": 36.8,
+   "type": "spacing"
+  },
+  {
+   "t": "a",
+   "s": 36.8,
+   "e": 36.88,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 36.88,
+   "e": 36.98,
+   "type": "spacing"
+  },
+  {
+   "t": "sign-in",
+   "s": 36.98,
+   "e": 37.72,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 37.72,
+   "e": 37.82,
+   "type": "spacing"
+  },
+  {
+   "t": "actually",
+   "s": 37.82,
+   "e": 38.2,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 38.2,
+   "e": 38.24,
+   "type": "spacing"
+  },
+  {
+   "t": "works,",
+   "s": 38.24,
+   "e": 38.58,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 38.58,
+   "e": 38.66,
+   "type": "spacing"
+  },
+  {
+   "t": "because",
+   "s": 38.66,
+   "e": 38.84,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 38.84,
+   "e": 38.88,
+   "type": "spacing"
+  },
+  {
+   "t": "it's",
+   "s": 38.88,
+   "e": 38.98,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 38.98,
+   "e": 39.02,
+   "type": "spacing"
+  },
+  {
+   "t": "elegant.",
+   "s": 39.02,
+   "e": 39.34,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 39.34,
+   "e": 39.98,
+   "type": "spacing"
+  },
+  {
+   "t": "You",
+   "s": 39.98,
+   "e": 40.08,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 40.08,
+   "e": 40.12,
+   "type": "spacing"
+  },
+  {
+   "t": "click",
+   "s": 40.12,
+   "e": 40.34,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 40.34,
+   "e": 40.84,
+   "type": "spacing"
+  },
+  {
+   "t": "sign",
+   "s": 40.84,
+   "e": 41.08,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 41.08,
+   "e": 41.16,
+   "type": "spacing"
+  },
+  {
+   "t": "in",
+   "s": 41.16,
+   "e": 41.34,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 41.34,
+   "e": 41.54,
+   "type": "spacing"
+  },
+  {
+   "t": "in",
+   "s": 41.54,
+   "e": 41.6,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 41.6,
+   "e": 41.64,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 41.64,
+   "e": 41.68,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 41.68,
+   "e": 41.76,
+   "type": "spacing"
+  },
+  {
+   "t": "sidebar.",
+   "s": 41.76,
+   "e": 42.2,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 42.2,
+   "e": 42.2,
+   "type": "spacing"
+  },
+  {
+   "t": "The",
+   "s": 43.24,
+   "e": 43.33,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 43.33,
+   "e": 43.42,
+   "type": "spacing"
+  },
+  {
+   "t": "sidebar",
+   "s": 43.42,
+   "e": 43.86,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 43.86,
+   "e": 43.87,
+   "type": "spacing"
+  },
+  {
+   "t": "doesn't",
+   "s": 43.87,
+   "e": 44.12,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 44.12,
+   "e": 44.14,
+   "type": "spacing"
+  },
+  {
+   "t": "write",
+   "s": 44.14,
+   "e": 44.3,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 44.3,
+   "e": 44.34,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 44.34,
+   "e": 44.44,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 44.44,
+   "e": 44.5,
+   "type": "spacing"
+  },
+  {
+   "t": "secret",
+   "s": 44.5,
+   "e": 44.86,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 44.86,
+   "e": 44.9,
+   "type": "spacing"
+  },
+  {
+   "t": "itself.",
+   "s": 44.9,
+   "e": 45.38,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 45.38,
+   "e": 46.04,
+   "type": "spacing"
+  },
+  {
+   "t": "Instead,",
+   "s": 46.04,
+   "e": 46.3,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 46.3,
+   "e": 46.36,
+   "type": "spacing"
+  },
+  {
+   "t": "it",
+   "s": 46.36,
+   "e": 46.42,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 46.42,
+   "e": 46.46,
+   "type": "spacing"
+  },
+  {
+   "t": "runs",
+   "s": 46.46,
+   "e": 46.68,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 46.68,
+   "e": 46.72,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 46.72,
+   "e": 46.82,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 46.82,
+   "e": 46.88,
+   "type": "spacing"
+  },
+  {
+   "t": "tool's",
+   "s": 46.88,
+   "e": 47.2,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 47.2,
+   "e": 47.28,
+   "type": "spacing"
+  },
+  {
+   "t": "normal",
+   "s": 47.28,
+   "e": 47.58,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 47.58,
+   "e": 47.64,
+   "type": "spacing"
+  },
+  {
+   "t": "login",
+   "s": 47.64,
+   "e": 47.94,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 47.94,
+   "e": 48.04,
+   "type": "spacing"
+  },
+  {
+   "t": "command.",
+   "s": 48.04,
+   "e": 48.44,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 48.44,
+   "e": 49.1,
+   "type": "spacing"
+  },
+  {
+   "t": "The",
+   "s": 49.1,
+   "e": 49.22,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 49.22,
+   "e": 49.28,
+   "type": "spacing"
+  },
+  {
+   "t": "tool",
+   "s": 49.28,
+   "e": 49.54,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 49.54,
+   "e": 50,
+   "type": "spacing"
+  },
+  {
+   "t": "does",
+   "s": 50,
+   "e": 50.16,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 50.16,
+   "e": 50.24,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 50.24,
+   "e": 50.32,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 50.32,
+   "e": 50.4,
+   "type": "spacing"
+  },
+  {
+   "t": "real",
+   "s": 50.4,
+   "e": 50.6,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 50.6,
+   "e": 50.62,
+   "type": "spacing"
+  },
+  {
+   "t": "login",
+   "s": 50.62,
+   "e": 50.96,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 50.96,
+   "e": 51.48,
+   "type": "spacing"
+  },
+  {
+   "t": "and",
+   "s": 51.48,
+   "e": 51.6,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 51.6,
+   "e": 51.62,
+   "type": "spacing"
+  },
+  {
+   "t": "writes",
+   "s": 51.62,
+   "e": 51.9,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 51.9,
+   "e": 51.94,
+   "type": "spacing"
+  },
+  {
+   "t": "its",
+   "s": 51.94,
+   "e": 52.1,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 52.1,
+   "e": 52.12,
+   "type": "spacing"
+  },
+  {
+   "t": "credential",
+   "s": 52.12,
+   "e": 52.58,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 52.58,
+   "e": 52.699,
+   "type": "spacing"
+  },
+  {
+   "t": "file",
+   "s": 52.7,
+   "e": 53,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 53,
+   "e": 53.7,
+   "type": "spacing"
+  },
+  {
+   "t": "into",
+   "s": 53.7,
+   "e": 53.92,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 53.92,
+   "e": 53.96,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 53.96,
+   "e": 54.04,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 54.04,
+   "e": 54.1,
+   "type": "spacing"
+  },
+  {
+   "t": "virtual",
+   "s": 54.1,
+   "e": 54.48,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 54.48,
+   "e": 54.58,
+   "type": "spacing"
+  },
+  {
+   "t": "file",
+   "s": 54.58,
+   "e": 54.82,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 54.82,
+   "e": 54.9,
+   "type": "spacing"
+  },
+  {
+   "t": "system,",
+   "s": 54.9,
+   "e": 55.23,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 55.23,
+   "e": 55.98,
+   "type": "spacing"
+  },
+  {
+   "t": "and",
+   "s": 55.98,
+   "e": 56.05,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 56.05,
+   "e": 56.08,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 56.08,
+   "e": 56.16,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 56.16,
+   "e": 56.2,
+   "type": "spacing"
+  },
+  {
+   "t": "keychain,",
+   "s": 56.2,
+   "e": 56.7,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 56.7,
+   "e": 57.36,
+   "type": "spacing"
+  },
+  {
+   "t": "which",
+   "s": 57.36,
+   "e": 57.5,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 57.5,
+   "e": 57.52,
+   "type": "spacing"
+  },
+  {
+   "t": "has",
+   "s": 57.52,
+   "e": 57.62,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 57.62,
+   "e": 57.66,
+   "type": "spacing"
+  },
+  {
+   "t": "been",
+   "s": 57.66,
+   "e": 57.78,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 57.78,
+   "e": 57.82,
+   "type": "spacing"
+  },
+  {
+   "t": "watching,",
+   "s": 57.82,
+   "e": 58.16,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 58.16,
+   "e": 58.62,
+   "type": "spacing"
+  },
+  {
+   "t": "sees",
+   "s": 58.62,
+   "e": 58.84,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 58.84,
+   "e": 58.86,
+   "type": "spacing"
+  },
+  {
+   "t": "that",
+   "s": 58.86,
+   "e": 59,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 59,
+   "e": 59.1,
+   "type": "spacing"
+  },
+  {
+   "t": "file",
+   "s": 59.1,
+   "e": 59.32,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 59.32,
+   "e": 59.34,
+   "type": "spacing"
+  },
+  {
+   "t": "appear",
+   "s": 59.34,
+   "e": 59.64,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 59.64,
+   "e": 59.66,
+   "type": "spacing"
+  },
+  {
+   "t": "and",
+   "s": 59.66,
+   "e": 59.74,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 59.74,
+   "e": 59.84,
+   "type": "spacing"
+  },
+  {
+   "t": "snapshots",
+   "s": 59.84,
+   "e": 60.34,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 60.34,
+   "e": 60.4,
+   "type": "spacing"
+  },
+  {
+   "t": "it.",
+   "s": 60.4,
+   "e": 60.62,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 60.62,
+   "e": 61.22,
+   "type": "spacing"
+  },
+  {
+   "t": "It",
+   "s": 61.22,
+   "e": 61.26,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 61.26,
+   "e": 61.28,
+   "type": "spacing"
+  },
+  {
+   "t": "doesn't",
+   "s": 61.28,
+   "e": 61.52,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 61.52,
+   "e": 61.58,
+   "type": "spacing"
+  },
+  {
+   "t": "grab",
+   "s": 61.58,
+   "e": 61.8,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 61.8,
+   "e": 61.86,
+   "type": "spacing"
+  },
+  {
+   "t": "everything",
+   "s": 61.86,
+   "e": 62.14,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 62.14,
+   "e": 62.16,
+   "type": "spacing"
+  },
+  {
+   "t": "indiscriminately,",
+   "s": 62.16,
+   "e": 62.88,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 62.88,
+   "e": 63.84,
+   "type": "spacing"
+  },
+  {
+   "t": "only",
+   "s": 63.84,
+   "e": 64.019,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 64.019,
+   "e": 64.06,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 64.06,
+   "e": 64.16,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 64.16,
+   "e": 64.259,
+   "type": "spacing"
+  },
+  {
+   "t": "specific",
+   "s": 64.26,
+   "e": 64.76,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 64.76,
+   "e": 64.86,
+   "type": "spacing"
+  },
+  {
+   "t": "registered",
+   "s": 64.86,
+   "e": 65.3,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 65.3,
+   "e": 65.34,
+   "type": "spacing"
+  },
+  {
+   "t": "locations",
+   "s": 65.34,
+   "e": 65.96,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 65.96,
+   "e": 66.4,
+   "type": "spacing"
+  },
+  {
+   "t": "where",
+   "s": 66.4,
+   "e": 66.48,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 66.48,
+   "e": 66.54,
+   "type": "spacing"
+  },
+  {
+   "t": "credentials",
+   "s": 66.54,
+   "e": 67.05,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 67.05,
+   "e": 67.08,
+   "type": "spacing"
+  },
+  {
+   "t": "are",
+   "s": 67.08,
+   "e": 67.16,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 67.16,
+   "e": 67.2,
+   "type": "spacing"
+  },
+  {
+   "t": "supposed",
+   "s": 67.2,
+   "e": 67.5,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 67.5,
+   "e": 67.54,
+   "type": "spacing"
+  },
+  {
+   "t": "to",
+   "s": 67.54,
+   "e": 67.62,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 67.62,
+   "e": 67.68,
+   "type": "spacing"
+  },
+  {
+   "t": "live.",
+   "s": 67.68,
+   "e": 67.92,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 67.92,
+   "e": 68.58,
+   "type": "spacing"
+  },
+  {
+   "t": "Now",
+   "s": 68.58,
+   "e": 68.79,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 68.79,
+   "e": 68.82,
+   "type": "spacing"
+  },
+  {
+   "t": "it",
+   "s": 68.82,
+   "e": 68.88,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 68.88,
+   "e": 68.92,
+   "type": "spacing"
+  },
+  {
+   "t": "needs",
+   "s": 68.92,
+   "e": 69.08,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 69.08,
+   "e": 69.12,
+   "type": "spacing"
+  },
+  {
+   "t": "to",
+   "s": 69.12,
+   "e": 69.18,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 69.18,
+   "e": 69.22,
+   "type": "spacing"
+  },
+  {
+   "t": "encrypt",
+   "s": 69.22,
+   "e": 69.64,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 69.64,
+   "e": 69.7,
+   "type": "spacing"
+  },
+  {
+   "t": "that",
+   "s": 69.7,
+   "e": 69.86,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 69.86,
+   "e": 69.92,
+   "type": "spacing"
+  },
+  {
+   "t": "snapshot,",
+   "s": 69.92,
+   "e": 70.39,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 70.39,
+   "e": 71.06,
+   "type": "spacing"
+  },
+  {
+   "t": "which",
+   "s": 71.06,
+   "e": 71.18,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 71.18,
+   "e": 71.22,
+   "type": "spacing"
+  },
+  {
+   "t": "means",
+   "s": 71.22,
+   "e": 71.4,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 71.4,
+   "e": 71.44,
+   "type": "spacing"
+  },
+  {
+   "t": "it",
+   "s": 71.44,
+   "e": 71.5,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 71.5,
+   "e": 71.56,
+   "type": "spacing"
+  },
+  {
+   "t": "needs",
+   "s": 71.56,
+   "e": 71.75,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 71.75,
+   "e": 71.78,
+   "type": "spacing"
+  },
+  {
+   "t": "a",
+   "s": 71.78,
+   "e": 71.84,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 71.84,
+   "e": 71.92,
+   "type": "spacing"
+  },
+  {
+   "t": "key,",
+   "s": 71.92,
+   "e": 72.82,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 72.82,
+   "e": 72.84,
+   "type": "spacing"
+  },
+  {
+   "t": "and",
+   "s": 72.84,
+   "e": 72.94,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 72.94,
+   "e": 72.98,
+   "type": "spacing"
+  },
+  {
+   "t": "here's",
+   "s": 72.98,
+   "e": 73.16,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 73.16,
+   "e": 73.179,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 73.18,
+   "e": 73.26,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 73.26,
+   "e": 73.3,
+   "type": "spacing"
+  },
+  {
+   "t": "part",
+   "s": 73.3,
+   "e": 73.5,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 73.5,
+   "e": 73.66,
+   "type": "spacing"
+  },
+  {
+   "t": "I",
+   "s": 73.66,
+   "e": 73.67,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 73.67,
+   "e": 73.7,
+   "type": "spacing"
+  },
+  {
+   "t": "love.",
+   "s": 73.7,
+   "e": 73.9,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 73.9,
+   "e": 74.68,
+   "type": "spacing"
+  },
+  {
+   "t": "It",
+   "s": 74.68,
+   "e": 74.8,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 74.8,
+   "e": 74.86,
+   "type": "spacing"
+  },
+  {
+   "t": "never",
+   "s": 74.86,
+   "e": 75.11,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 75.11,
+   "e": 75.18,
+   "type": "spacing"
+  },
+  {
+   "t": "stores",
+   "s": 75.18,
+   "e": 75.47,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 75.47,
+   "e": 75.54,
+   "type": "spacing"
+  },
+  {
+   "t": "one.",
+   "s": 75.54,
+   "e": 76.22,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 76.22,
+   "e": 76.259,
+   "type": "spacing"
+  },
+  {
+   "t": "It",
+   "s": 76.26,
+   "e": 76.35,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 76.35,
+   "e": 76.44,
+   "type": "spacing"
+  },
+  {
+   "t": "asks",
+   "s": 76.44,
+   "e": 76.72,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 76.72,
+   "e": 76.76,
+   "type": "spacing"
+  },
+  {
+   "t": "your",
+   "s": 76.76,
+   "e": 76.88,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 76.88,
+   "e": 76.94,
+   "type": "spacing"
+  },
+  {
+   "t": "passkey,",
+   "s": 76.94,
+   "e": 78.05,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 78.05,
+   "e": 78.06,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 78.06,
+   "e": 78.07,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 78.07,
+   "e": 78.18,
+   "type": "spacing"
+  },
+  {
+   "t": "same",
+   "s": 78.24,
+   "e": 78.6,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 78.6,
+   "e": 78.61,
+   "type": "spacing"
+  },
+  {
+   "t": "hardware-backed",
+   "s": 78.61,
+   "e": 79.5,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 79.5,
+   "e": 79.82,
+   "type": "spacing"
+  },
+  {
+   "t": "authentication",
+   "s": 79.82,
+   "e": 80.74,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 80.74,
+   "e": 81.28,
+   "type": "spacing"
+  },
+  {
+   "t": "you",
+   "s": 81.28,
+   "e": 81.4,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 81.4,
+   "e": 81.5,
+   "type": "spacing"
+  },
+  {
+   "t": "use",
+   "s": 81.5,
+   "e": 81.8,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 81.8,
+   "e": 81.86,
+   "type": "spacing"
+  },
+  {
+   "t": "for",
+   "s": 81.86,
+   "e": 81.98,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 81.98,
+   "e": 82.04,
+   "type": "spacing"
+  },
+  {
+   "t": "fingerprint",
+   "s": 82.04,
+   "e": 82.52,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 82.52,
+   "e": 82.64,
+   "type": "spacing"
+  },
+  {
+   "t": "or",
+   "s": 82.64,
+   "e": 82.78,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 82.78,
+   "e": 82.82,
+   "type": "spacing"
+  },
+  {
+   "t": "face",
+   "s": 82.82,
+   "e": 83,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 83,
+   "e": 83.06,
+   "type": "spacing"
+  },
+  {
+   "t": "unlock",
+   "s": 83.06,
+   "e": 83.34,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 83.34,
+   "e": 83.38,
+   "type": "spacing"
+  },
+  {
+   "t": "hands-back",
+   "s": 83.38,
+   "e": 84.12,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 84.12,
+   "e": 84.18,
+   "type": "spacing"
+  },
+  {
+   "t": "a",
+   "s": 84.18,
+   "e": 84.24,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 84.24,
+   "e": 84.28,
+   "type": "spacing"
+  },
+  {
+   "t": "secret,",
+   "s": 84.28,
+   "e": 84.68,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 84.68,
+   "e": 85.36,
+   "type": "spacing"
+  },
+  {
+   "t": "and",
+   "s": 85.36,
+   "e": 85.47,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 85.47,
+   "e": 85.48,
+   "type": "spacing"
+  },
+  {
+   "t": "from",
+   "s": 85.48,
+   "e": 85.61,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 85.61,
+   "e": 85.66,
+   "type": "spacing"
+  },
+  {
+   "t": "that",
+   "s": 85.66,
+   "e": 85.79,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 85.79,
+   "e": 85.84,
+   "type": "spacing"
+  },
+  {
+   "t": "secret,",
+   "s": 85.84,
+   "e": 86.18,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 86.18,
+   "e": 86.24,
+   "type": "spacing"
+  },
+  {
+   "t": "it",
+   "s": 86.24,
+   "e": 86.32,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 86.32,
+   "e": 86.36,
+   "type": "spacing"
+  },
+  {
+   "t": "derives",
+   "s": 86.36,
+   "e": 86.75,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 86.75,
+   "e": 86.78,
+   "type": "spacing"
+  },
+  {
+   "t": "an",
+   "s": 86.78,
+   "e": 86.82,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 86.82,
+   "e": 86.86,
+   "type": "spacing"
+  },
+  {
+   "t": "encryption",
+   "s": 86.86,
+   "e": 87.34,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 87.34,
+   "e": 87.44,
+   "type": "spacing"
+  },
+  {
+   "t": "key.",
+   "s": 87.44,
+   "e": 88.1,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 88.1,
+   "e": 88.14,
+   "type": "spacing"
+  },
+  {
+   "t": "The",
+   "s": 88.22,
+   "e": 88.23,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 88.23,
+   "e": 88.24,
+   "type": "spacing"
+  },
+  {
+   "t": "snapshot",
+   "s": 88.24,
+   "e": 88.66,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 88.66,
+   "e": 88.7,
+   "type": "spacing"
+  },
+  {
+   "t": "is",
+   "s": 88.7,
+   "e": 88.76,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 88.76,
+   "e": 88.8,
+   "type": "spacing"
+  },
+  {
+   "t": "encrypted",
+   "s": 88.8,
+   "e": 89.38,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 89.38,
+   "e": 89.39,
+   "type": "spacing"
+  },
+  {
+   "t": "and",
+   "s": 89.39,
+   "e": 89.55,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 89.55,
+   "e": 89.58,
+   "type": "spacing"
+  },
+  {
+   "t": "tucked",
+   "s": 89.58,
+   "e": 89.78,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 89.78,
+   "e": 89.82,
+   "type": "spacing"
+  },
+  {
+   "t": "into",
+   "s": 89.82,
+   "e": 89.99,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 89.99,
+   "e": 90,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 90,
+   "e": 90.1,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 90.1,
+   "e": 90.12,
+   "type": "spacing"
+  },
+  {
+   "t": "browser's",
+   "s": 90.12,
+   "e": 90.54,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 90.54,
+   "e": 90.58,
+   "type": "spacing"
+  },
+  {
+   "t": "local",
+   "s": 90.58,
+   "e": 90.88,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 90.88,
+   "e": 90.96,
+   "type": "spacing"
+  },
+  {
+   "t": "storage,",
+   "s": 90.96,
+   "e": 91.34,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 91.34,
+   "e": 92.04,
+   "type": "spacing"
+  },
+  {
+   "t": "just",
+   "s": 92.04,
+   "e": 92.19,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 92.19,
+   "e": 92.22,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 92.22,
+   "e": 92.32,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 92.32,
+   "e": 92.34,
+   "type": "spacing"
+  },
+  {
+   "t": "ciphertext",
+   "s": 92.34,
+   "e": 93.1,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 93.1,
+   "e": 93.12,
+   "type": "spacing"
+  },
+  {
+   "t": "and",
+   "s": 93.12,
+   "e": 93.21,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 93.21,
+   "e": 93.24,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 93.24,
+   "e": 93.32,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 93.32,
+   "e": 93.34,
+   "type": "spacing"
+  },
+  {
+   "t": "bits",
+   "s": 93.34,
+   "e": 93.6,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 93.6,
+   "e": 93.64,
+   "type": "spacing"
+  },
+  {
+   "t": "needed",
+   "s": 93.64,
+   "e": 93.9,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 93.9,
+   "e": 93.94,
+   "type": "spacing"
+  },
+  {
+   "t": "to",
+   "s": 93.94,
+   "e": 94.02,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 94.02,
+   "e": 94.039,
+   "type": "spacing"
+  },
+  {
+   "t": "decrypt",
+   "s": 94.04,
+   "e": 94.4,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 94.4,
+   "e": 94.44,
+   "type": "spacing"
+  },
+  {
+   "t": "it",
+   "s": 94.44,
+   "e": 94.52,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 94.52,
+   "e": 94.56,
+   "type": "spacing"
+  },
+  {
+   "t": "later.",
+   "s": 94.56,
+   "e": 95.74,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 95.74,
+   "e": 95.75,
+   "type": "spacing"
+  },
+  {
+   "t": "The",
+   "s": 95.75,
+   "e": 95.84,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 95.84,
+   "e": 95.88,
+   "type": "spacing"
+  },
+  {
+   "t": "key",
+   "s": 95.88,
+   "e": 96,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 96,
+   "e": 96.06,
+   "type": "spacing"
+  },
+  {
+   "t": "itself",
+   "s": 96.06,
+   "e": 96.45,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 96.45,
+   "e": 96.52,
+   "type": "spacing"
+  },
+  {
+   "t": "only",
+   "s": 96.52,
+   "e": 96.69,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 96.69,
+   "e": 96.74,
+   "type": "spacing"
+  },
+  {
+   "t": "ever",
+   "s": 96.74,
+   "e": 96.88,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 96.88,
+   "e": 96.92,
+   "type": "spacing"
+  },
+  {
+   "t": "lives",
+   "s": 96.92,
+   "e": 97.09,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 97.09,
+   "e": 97.12,
+   "type": "spacing"
+  },
+  {
+   "t": "in",
+   "s": 97.12,
+   "e": 97.23,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 97.23,
+   "e": 97.24,
+   "type": "spacing"
+  },
+  {
+   "t": "memory,",
+   "s": 97.24,
+   "e": 97.57,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 97.57,
+   "e": 98.04,
+   "type": "spacing"
+  },
+  {
+   "t": "and",
+   "s": 98.04,
+   "e": 98.11,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 98.11,
+   "e": 98.14,
+   "type": "spacing"
+  },
+  {
+   "t": "it",
+   "s": 98.14,
+   "e": 98.22,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 98.22,
+   "e": 98.26,
+   "type": "spacing"
+  },
+  {
+   "t": "vanishes",
+   "s": 98.26,
+   "e": 98.66,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 98.66,
+   "e": 98.7,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 98.7,
+   "e": 98.78,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 98.78,
+   "e": 98.82,
+   "type": "spacing"
+  },
+  {
+   "t": "moment",
+   "s": 98.82,
+   "e": 99.1,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 99.1,
+   "e": 99.14,
+   "type": "spacing"
+  },
+  {
+   "t": "you",
+   "s": 99.14,
+   "e": 99.2,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 99.2,
+   "e": 99.22,
+   "type": "spacing"
+  },
+  {
+   "t": "close",
+   "s": 99.22,
+   "e": 99.44,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 99.44,
+   "e": 99.48,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 99.48,
+   "e": 99.57,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 99.57,
+   "e": 99.62,
+   "type": "spacing"
+  },
+  {
+   "t": "tab.",
+   "s": 99.62,
+   "e": 99.86,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 99.86,
+   "e": 100.46,
+   "type": "spacing"
+  },
+  {
+   "t": "Reopen",
+   "s": 100.46,
+   "e": 100.76,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 100.76,
+   "e": 100.77,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 100.77,
+   "e": 100.84,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 100.84,
+   "e": 100.88,
+   "type": "spacing"
+  },
+  {
+   "t": "environment",
+   "s": 100.88,
+   "e": 101.34,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 101.34,
+   "e": 101.35,
+   "type": "spacing"
+  },
+  {
+   "t": "tomorrow",
+   "s": 101.35,
+   "e": 102.04,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 102.04,
+   "e": 102.05,
+   "type": "spacing"
+  },
+  {
+   "t": "and",
+   "s": 102.05,
+   "e": 102.13,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 102.13,
+   "e": 102.16,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 102.16,
+   "e": 102.26,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 102.26,
+   "e": 102.3,
+   "type": "spacing"
+  },
+  {
+   "t": "file",
+   "s": 102.3,
+   "e": 102.56,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 102.56,
+   "e": 102.6,
+   "type": "spacing"
+  },
+  {
+   "t": "system",
+   "s": 102.6,
+   "e": 102.88,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 102.88,
+   "e": 102.96,
+   "type": "spacing"
+  },
+  {
+   "t": "starts",
+   "s": 102.96,
+   "e": 103.2,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 103.2,
+   "e": 103.22,
+   "type": "spacing"
+  },
+  {
+   "t": "completely",
+   "s": 103.22,
+   "e": 103.62,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 103.62,
+   "e": 103.68,
+   "type": "spacing"
+  },
+  {
+   "t": "empty.",
+   "s": 103.68,
+   "e": 104.58,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 104.58,
+   "e": 104.59,
+   "type": "spacing"
+  },
+  {
+   "t": "The",
+   "s": 104.59,
+   "e": 104.7,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 104.7,
+   "e": 104.74,
+   "type": "spacing"
+  },
+  {
+   "t": "keychain",
+   "s": 104.74,
+   "e": 105.16,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 105.16,
+   "e": 105.2,
+   "type": "spacing"
+  },
+  {
+   "t": "reads",
+   "s": 105.2,
+   "e": 105.36,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 105.36,
+   "e": 105.46,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 105.46,
+   "e": 105.5,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 105.5,
+   "e": 105.52,
+   "type": "spacing"
+  },
+  {
+   "t": "encrypted",
+   "s": 105.52,
+   "e": 106.04,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 106.04,
+   "e": 106.08,
+   "type": "spacing"
+  },
+  {
+   "t": "vault,",
+   "s": 106.08,
+   "e": 106.4,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 106.4,
+   "e": 106.94,
+   "type": "spacing"
+  },
+  {
+   "t": "prompts",
+   "s": 106.94,
+   "e": 107.24,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 107.24,
+   "e": 107.28,
+   "type": "spacing"
+  },
+  {
+   "t": "your",
+   "s": 107.28,
+   "e": 107.4,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 107.4,
+   "e": 107.44,
+   "type": "spacing"
+  },
+  {
+   "t": "passkey,",
+   "s": 107.44,
+   "e": 107.91,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 107.91,
+   "e": 108.42,
+   "type": "spacing"
+  },
+  {
+   "t": "decrypts",
+   "s": 108.42,
+   "e": 108.81,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 108.81,
+   "e": 108.84,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 108.84,
+   "e": 108.92,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 108.92,
+   "e": 108.98,
+   "type": "spacing"
+  },
+  {
+   "t": "snapshot,",
+   "s": 108.98,
+   "e": 109.46,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 109.46,
+   "e": 109.94,
+   "type": "spacing"
+  },
+  {
+   "t": "and",
+   "s": 109.94,
+   "e": 110.05,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 110.05,
+   "e": 110.06,
+   "type": "spacing"
+  },
+  {
+   "t": "writes",
+   "s": 110.06,
+   "e": 110.31,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 110.31,
+   "e": 110.34,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 110.34,
+   "e": 110.4,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 110.4,
+   "e": 110.44,
+   "type": "spacing"
+  },
+  {
+   "t": "credential",
+   "s": 110.44,
+   "e": 110.88,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 110.88,
+   "e": 110.92,
+   "type": "spacing"
+  },
+  {
+   "t": "files",
+   "s": 110.92,
+   "e": 111.24,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 111.24,
+   "e": 111.3,
+   "type": "spacing"
+  },
+  {
+   "t": "back",
+   "s": 111.3,
+   "e": 111.42,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 111.42,
+   "e": 111.46,
+   "type": "spacing"
+  },
+  {
+   "t": "into",
+   "s": 111.46,
+   "e": 111.63,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 111.63,
+   "e": 111.66,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 111.66,
+   "e": 111.74,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 111.74,
+   "e": 111.76,
+   "type": "spacing"
+  },
+  {
+   "t": "file",
+   "s": 111.76,
+   "e": 111.96,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 111.96,
+   "e": 112.04,
+   "type": "spacing"
+  },
+  {
+   "t": "system,",
+   "s": 112.04,
+   "e": 112.37,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 112.37,
+   "e": 112.92,
+   "type": "spacing"
+  },
+  {
+   "t": "and",
+   "s": 112.92,
+   "e": 112.99,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 112.99,
+   "e": 113.02,
+   "type": "spacing"
+  },
+  {
+   "t": "as",
+   "s": 113.02,
+   "e": 113.11,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 113.11,
+   "e": 113.12,
+   "type": "spacing"
+  },
+  {
+   "t": "far",
+   "s": 113.12,
+   "e": 113.25,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 113.25,
+   "e": 113.28,
+   "type": "spacing"
+  },
+  {
+   "t": "as",
+   "s": 113.28,
+   "e": 113.37,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 113.37,
+   "e": 113.4,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 113.4,
+   "e": 113.48,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 113.48,
+   "e": 113.54,
+   "type": "spacing"
+  },
+  {
+   "t": "tool",
+   "s": 113.54,
+   "e": 113.72,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 113.72,
+   "e": 113.76,
+   "type": "spacing"
+  },
+  {
+   "t": "is",
+   "s": 113.76,
+   "e": 113.85,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 113.85,
+   "e": 113.86,
+   "type": "spacing"
+  },
+  {
+   "t": "concerned,",
+   "s": 113.86,
+   "e": 114.54,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 114.54,
+   "e": 114.58,
+   "type": "spacing"
+  },
+  {
+   "t": "its",
+   "s": 114.58,
+   "e": 114.7,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 114.7,
+   "e": 114.72,
+   "type": "spacing"
+  },
+  {
+   "t": "credentials",
+   "s": 114.72,
+   "e": 115.2,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 115.2,
+   "e": 115.22,
+   "type": "spacing"
+  },
+  {
+   "t": "were",
+   "s": 115.22,
+   "e": 115.35,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 115.35,
+   "e": 115.36,
+   "type": "spacing"
+  },
+  {
+   "t": "simply",
+   "s": 115.36,
+   "e": 115.67,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 115.67,
+   "e": 115.759,
+   "type": "spacing"
+  },
+  {
+   "t": "there",
+   "s": 115.76,
+   "e": 116,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 116,
+   "e": 116.04,
+   "type": "spacing"
+  },
+  {
+   "t": "on",
+   "s": 116.04,
+   "e": 116.19,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 116.19,
+   "e": 116.22,
+   "type": "spacing"
+  },
+  {
+   "t": "disc",
+   "s": 116.22,
+   "e": 116.52,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 116.52,
+   "e": 116.57,
+   "type": "spacing"
+  },
+  {
+   "t": "like",
+   "s": 116.57,
+   "e": 116.74,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 116.74,
+   "e": 116.84,
+   "type": "spacing"
+  },
+  {
+   "t": "always.",
+   "s": 116.84,
+   "e": 117.21,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 117.21,
+   "e": 117.88,
+   "type": "spacing"
+  },
+  {
+   "t": "It",
+   "s": 117.88,
+   "e": 117.92,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 117.92,
+   "e": 117.96,
+   "type": "spacing"
+  },
+  {
+   "t": "never",
+   "s": 117.96,
+   "e": 118.13,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 118.13,
+   "e": 118.13,
+   "type": "spacing"
+  },
+  {
+   "t": "sees",
+   "s": 118.13,
+   "e": 118.36,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 118.36,
+   "e": 118.37,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 118.37,
+   "e": 118.5,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 118.5,
+   "e": 118.54,
+   "type": "spacing"
+  },
+  {
+   "t": "vault,",
+   "s": 118.54,
+   "e": 118.92,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 118.92,
+   "e": 119.58,
+   "type": "spacing"
+  },
+  {
+   "t": "never",
+   "s": 119.58,
+   "e": 119.75,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 119.75,
+   "e": 119.78,
+   "type": "spacing"
+  },
+  {
+   "t": "sees",
+   "s": 119.78,
+   "e": 119.94,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 119.94,
+   "e": 119.96,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 119.96,
+   "e": 120.06,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 120.06,
+   "e": 120.1,
+   "type": "spacing"
+  },
+  {
+   "t": "passkey,",
+   "s": 120.1,
+   "e": 120.63,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 120.63,
+   "e": 121.26,
+   "type": "spacing"
+  },
+  {
+   "t": "never",
+   "s": 121.26,
+   "e": 121.44,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 121.44,
+   "e": 121.46,
+   "type": "spacing"
+  },
+  {
+   "t": "knows",
+   "s": 121.46,
+   "e": 121.75,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 121.75,
+   "e": 121.8,
+   "type": "spacing"
+  },
+  {
+   "t": "any",
+   "s": 121.8,
+   "e": 121.93,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 121.93,
+   "e": 121.98,
+   "type": "spacing"
+  },
+  {
+   "t": "encryption",
+   "s": 121.98,
+   "e": 122.47,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 122.47,
+   "e": 122.54,
+   "type": "spacing"
+  },
+  {
+   "t": "happened.",
+   "s": 122.54,
+   "e": 123.2,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 123.2,
+   "e": 123.26,
+   "type": "spacing"
+  },
+  {
+   "t": "It",
+   "s": 123.26,
+   "e": 123.33,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 123.33,
+   "e": 123.38,
+   "type": "spacing"
+  },
+  {
+   "t": "just",
+   "s": 123.38,
+   "e": 123.54,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 123.54,
+   "e": 123.62,
+   "type": "spacing"
+  },
+  {
+   "t": "opens",
+   "s": 123.62,
+   "e": 123.86,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 123.86,
+   "e": 124,
+   "type": "spacing"
+  },
+  {
+   "t": "a",
+   "s": 124,
+   "e": 124.01,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 124.01,
+   "e": 124.02,
+   "type": "spacing"
+  },
+  {
+   "t": "file",
+   "s": 124.02,
+   "e": 124.24,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 124.24,
+   "e": 124.26,
+   "type": "spacing"
+  },
+  {
+   "t": "and",
+   "s": 124.26,
+   "e": 124.36,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 124.36,
+   "e": 124.4,
+   "type": "spacing"
+  },
+  {
+   "t": "reads",
+   "s": 124.4,
+   "e": 124.64,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 124.64,
+   "e": 124.7,
+   "type": "spacing"
+  },
+  {
+   "t": "it.",
+   "s": 124.7,
+   "e": 125.34,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 125.34,
+   "e": 125.44,
+   "type": "spacing"
+  },
+  {
+   "t": "A",
+   "s": 125.44,
+   "e": 125.45,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 125.45,
+   "e": 125.48,
+   "type": "spacing"
+  },
+  {
+   "t": "few",
+   "s": 125.48,
+   "e": 125.61,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 125.61,
+   "e": 125.64,
+   "type": "spacing"
+  },
+  {
+   "t": "refinements",
+   "s": 125.64,
+   "e": 126.19,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 126.19,
+   "e": 126.22,
+   "type": "spacing"
+  },
+  {
+   "t": "make",
+   "s": 126.22,
+   "e": 126.41,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 126.41,
+   "e": 126.41,
+   "type": "spacing"
+  },
+  {
+   "t": "it",
+   "s": 126.41,
+   "e": 126.48,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 126.48,
+   "e": 126.5,
+   "type": "spacing"
+  },
+  {
+   "t": "robust.",
+   "s": 126.5,
+   "e": 127.08,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 127.08,
+   "e": 127.68,
+   "type": "spacing"
+  },
+  {
+   "t": "Some",
+   "s": 127.68,
+   "e": 127.86,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 127.86,
+   "e": 127.88,
+   "type": "spacing"
+  },
+  {
+   "t": "flows",
+   "s": 127.88,
+   "e": 128.16,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 128.16,
+   "e": 128.199,
+   "type": "spacing"
+  },
+  {
+   "t": "need",
+   "s": 128.199,
+   "e": 128.32,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 128.32,
+   "e": 128.34,
+   "type": "spacing"
+  },
+  {
+   "t": "to",
+   "s": 128.34,
+   "e": 128.42,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 128.42,
+   "e": 128.479,
+   "type": "spacing"
+  },
+  {
+   "t": "start",
+   "s": 128.479,
+   "e": 128.68,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 128.68,
+   "e": 128.72,
+   "type": "spacing"
+  },
+  {
+   "t": "a",
+   "s": 128.72,
+   "e": 128.78,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 128.78,
+   "e": 128.84,
+   "type": "spacing"
+  },
+  {
+   "t": "sandbox",
+   "s": 128.84,
+   "e": 129.32,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 129.32,
+   "e": 129.34,
+   "type": "spacing"
+  },
+  {
+   "t": "before",
+   "s": 129.34,
+   "e": 129.6,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 129.6,
+   "e": 129.639,
+   "type": "spacing"
+  },
+  {
+   "t": "you've",
+   "s": 129.64,
+   "e": 129.759,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 129.759,
+   "e": 129.769,
+   "type": "spacing"
+  },
+  {
+   "t": "tapped",
+   "s": 129.769,
+   "e": 130.039,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 130.039,
+   "e": 130.079,
+   "type": "spacing"
+  },
+  {
+   "t": "your",
+   "s": 130.08,
+   "e": 130.18,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 130.18,
+   "e": 130.22,
+   "type": "spacing"
+  },
+  {
+   "t": "passkey,",
+   "s": 130.22,
+   "e": 130.68,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 130.68,
+   "e": 131.239,
+   "type": "spacing"
+  },
+  {
+   "t": "so",
+   "s": 131.24,
+   "e": 131.32,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 131.32,
+   "e": 131.359,
+   "type": "spacing"
+  },
+  {
+   "t": "there's",
+   "s": 131.36,
+   "e": 131.47,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 131.47,
+   "e": 131.64,
+   "type": "spacing"
+  },
+  {
+   "t": "a",
+   "s": 131.64,
+   "e": 131.65,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 131.65,
+   "e": 131.68,
+   "type": "spacing"
+  },
+  {
+   "t": "fast,",
+   "s": 131.68,
+   "e": 132.1,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 132.1,
+   "e": 132.54,
+   "type": "spacing"
+  },
+  {
+   "t": "live-only",
+   "s": 132.54,
+   "e": 133.01,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 133.01,
+   "e": 133.1,
+   "type": "spacing"
+  },
+  {
+   "t": "mirror",
+   "s": 133.1,
+   "e": 133.32,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 133.32,
+   "e": 133.359,
+   "type": "spacing"
+  },
+  {
+   "t": "that",
+   "s": 133.36,
+   "e": 133.47,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 133.47,
+   "e": 133.48,
+   "type": "spacing"
+  },
+  {
+   "t": "disappears",
+   "s": 133.48,
+   "e": 134.38,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 134.38,
+   "e": 134.4,
+   "type": "spacing"
+  },
+  {
+   "t": "when",
+   "s": 134.4,
+   "e": 134.51,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 134.51,
+   "e": 134.52,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 134.52,
+   "e": 134.6,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 134.6,
+   "e": 134.66,
+   "type": "spacing"
+  },
+  {
+   "t": "tab",
+   "s": 134.66,
+   "e": 134.9,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 134.9,
+   "e": 134.94,
+   "type": "spacing"
+  },
+  {
+   "t": "closes.",
+   "s": 134.94,
+   "e": 135.36,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 135.36,
+   "e": 136.06,
+   "type": "spacing"
+  },
+  {
+   "t": "You",
+   "s": 136.06,
+   "e": 136.16,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 136.16,
+   "e": 136.18,
+   "type": "spacing"
+  },
+  {
+   "t": "can",
+   "s": 136.18,
+   "e": 136.28,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 136.28,
+   "e": 136.32,
+   "type": "spacing"
+  },
+  {
+   "t": "run",
+   "s": 136.32,
+   "e": 136.5,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 136.5,
+   "e": 136.51,
+   "type": "spacing"
+  },
+  {
+   "t": "several",
+   "s": 136.51,
+   "e": 136.8,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 136.8,
+   "e": 136.84,
+   "type": "spacing"
+  },
+  {
+   "t": "sandboxes",
+   "s": 136.84,
+   "e": 137.32,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 137.32,
+   "e": 137.359,
+   "type": "spacing"
+  },
+  {
+   "t": "at",
+   "s": 137.36,
+   "e": 137.44,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 137.44,
+   "e": 137.48,
+   "type": "spacing"
+  },
+  {
+   "t": "once,",
+   "s": 137.48,
+   "e": 137.76,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 137.76,
+   "e": 138.22,
+   "type": "spacing"
+  },
+  {
+   "t": "and",
+   "s": 138.22,
+   "e": 138.28,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 138.28,
+   "e": 138.32,
+   "type": "spacing"
+  },
+  {
+   "t": "on",
+   "s": 138.32,
+   "e": 138.4,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 138.4,
+   "e": 138.44,
+   "type": "spacing"
+  },
+  {
+   "t": "unlock,",
+   "s": 138.44,
+   "e": 138.7,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 138.7,
+   "e": 138.9,
+   "type": "spacing"
+  },
+  {
+   "t": "every",
+   "s": 138.9,
+   "e": 139.12,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 139.12,
+   "e": 139.16,
+   "type": "spacing"
+  },
+  {
+   "t": "one",
+   "s": 139.16,
+   "e": 139.26,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 139.26,
+   "e": 139.299,
+   "type": "spacing"
+  },
+  {
+   "t": "of",
+   "s": 139.3,
+   "e": 139.34,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 139.34,
+   "e": 139.36,
+   "type": "spacing"
+  },
+  {
+   "t": "them",
+   "s": 139.36,
+   "e": 139.56,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 139.56,
+   "e": 139.6,
+   "type": "spacing"
+  },
+  {
+   "t": "gets",
+   "s": 139.6,
+   "e": 139.84,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 139.84,
+   "e": 139.9,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 139.9,
+   "e": 140,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 140,
+   "e": 140.04,
+   "type": "spacing"
+  },
+  {
+   "t": "restored",
+   "s": 140.04,
+   "e": 140.52,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 140.52,
+   "e": 140.56,
+   "type": "spacing"
+  },
+  {
+   "t": "credentials",
+   "s": 140.56,
+   "e": 141.17,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 141.17,
+   "e": 141.799,
+   "type": "spacing"
+  },
+  {
+   "t": "with",
+   "s": 141.8,
+   "e": 141.88,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 141.88,
+   "e": 141.9,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 141.9,
+   "e": 141.98,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 141.98,
+   "e": 142.04,
+   "type": "spacing"
+  },
+  {
+   "t": "newest",
+   "s": 142.04,
+   "e": 142.31,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 142.31,
+   "e": 142.4,
+   "type": "spacing"
+  },
+  {
+   "t": "wins",
+   "s": 142.4,
+   "e": 142.62,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 142.62,
+   "e": 142.66,
+   "type": "spacing"
+  },
+  {
+   "t": "rule,",
+   "s": 142.66,
+   "e": 142.8,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 142.8,
+   "e": 142.88,
+   "type": "spacing"
+  },
+  {
+   "t": "so",
+   "s": 142.88,
+   "e": 142.96,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 142.96,
+   "e": 143,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 143,
+   "e": 143.109,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 143.109,
+   "e": 143.14,
+   "type": "spacing"
+  },
+  {
+   "t": "freshest",
+   "s": 143.14,
+   "e": 143.5,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 143.5,
+   "e": 143.54,
+   "type": "spacing"
+  },
+  {
+   "t": "token",
+   "s": 143.54,
+   "e": 143.92,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 143.92,
+   "e": 144.02,
+   "type": "spacing"
+  },
+  {
+   "t": "always",
+   "s": 144.02,
+   "e": 144.32,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 144.32,
+   "e": 144.38,
+   "type": "spacing"
+  },
+  {
+   "t": "wins.",
+   "s": 144.38,
+   "e": 144.72,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 144.72,
+   "e": 145.4,
+   "type": "spacing"
+  },
+  {
+   "t": "And",
+   "s": 145.4,
+   "e": 145.48,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 145.48,
+   "e": 145.5,
+   "type": "spacing"
+  },
+  {
+   "t": "beyond",
+   "s": 145.5,
+   "e": 145.74,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 145.74,
+   "e": 145.76,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 145.76,
+   "e": 145.84,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 145.84,
+   "e": 145.86,
+   "type": "spacing"
+  },
+  {
+   "t": "built-in",
+   "s": 145.86,
+   "e": 146.16,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 146.16,
+   "e": 146.24,
+   "type": "spacing"
+  },
+  {
+   "t": "tools,",
+   "s": 146.24,
+   "e": 146.54,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 146.54,
+   "e": 146.98,
+   "type": "spacing"
+  },
+  {
+   "t": "you",
+   "s": 146.98,
+   "e": 147.04,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 147.04,
+   "e": 147.079,
+   "type": "spacing"
+  },
+  {
+   "t": "can",
+   "s": 147.08,
+   "e": 147.2,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 147.2,
+   "e": 147.3,
+   "type": "spacing"
+  },
+  {
+   "t": "connect",
+   "s": 147.3,
+   "e": 147.74,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 147.74,
+   "e": 147.8,
+   "type": "spacing"
+  },
+  {
+   "t": "outside",
+   "s": 147.8,
+   "e": 148.26,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 148.26,
+   "e": 148.359,
+   "type": "spacing"
+  },
+  {
+   "t": "services",
+   "s": 148.36,
+   "e": 148.9,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 148.9,
+   "e": 149.38,
+   "type": "spacing"
+  },
+  {
+   "t": "through",
+   "s": 149.38,
+   "e": 149.5,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 149.5,
+   "e": 149.51,
+   "type": "spacing"
+  },
+  {
+   "t": "a",
+   "s": 149.51,
+   "e": 149.6,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 149.6,
+   "e": 149.68,
+   "type": "spacing"
+  },
+  {
+   "t": "standard",
+   "s": 149.68,
+   "e": 150,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 150,
+   "e": 150.06,
+   "type": "spacing"
+  },
+  {
+   "t": "authorization",
+   "s": 150.06,
+   "e": 150.7,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 150.7,
+   "e": 150.8,
+   "type": "spacing"
+  },
+  {
+   "t": "pop-up.",
+   "s": 150.8,
+   "e": 151.14,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 151.14,
+   "e": 152,
+   "type": "spacing"
+  },
+  {
+   "t": "And",
+   "s": 152,
+   "e": 152.06,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 152.06,
+   "e": 152.1,
+   "type": "spacing"
+  },
+  {
+   "t": "those",
+   "s": 152.1,
+   "e": 152.28,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 152.28,
+   "e": 152.34,
+   "type": "spacing"
+  },
+  {
+   "t": "tokens",
+   "s": 152.34,
+   "e": 152.64,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 152.64,
+   "e": 152.68,
+   "type": "spacing"
+  },
+  {
+   "t": "take",
+   "s": 152.68,
+   "e": 152.8,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 152.8,
+   "e": 152.84,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 152.84,
+   "e": 152.9,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 152.9,
+   "e": 152.94,
+   "type": "spacing"
+  },
+  {
+   "t": "exact",
+   "s": 152.94,
+   "e": 153.299,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 153.299,
+   "e": 153.38,
+   "type": "spacing"
+  },
+  {
+   "t": "same",
+   "s": 153.38,
+   "e": 153.58,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 153.58,
+   "e": 153.62,
+   "type": "spacing"
+  },
+  {
+   "t": "journey.",
+   "s": 153.62,
+   "e": 153.94,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 153.94,
+   "e": 154.5,
+   "type": "spacing"
+  },
+  {
+   "t": "They",
+   "s": 154.5,
+   "e": 154.6,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 154.6,
+   "e": 154.64,
+   "type": "spacing"
+  },
+  {
+   "t": "land",
+   "s": 154.64,
+   "e": 154.86,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 154.86,
+   "e": 154.9,
+   "type": "spacing"
+  },
+  {
+   "t": "as",
+   "s": 154.9,
+   "e": 154.96,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 154.96,
+   "e": 154.98,
+   "type": "spacing"
+  },
+  {
+   "t": "a",
+   "s": 154.98,
+   "e": 155.079,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 155.079,
+   "e": 155.12,
+   "type": "spacing"
+  },
+  {
+   "t": "file,",
+   "s": 155.12,
+   "e": 155.45,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 155.45,
+   "e": 155.9,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 155.9,
+   "e": 156.02,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 156.02,
+   "e": 156.08,
+   "type": "spacing"
+  },
+  {
+   "t": "keychain",
+   "s": 156.08,
+   "e": 156.48,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 156.48,
+   "e": 156.54,
+   "type": "spacing"
+  },
+  {
+   "t": "snapshots",
+   "s": 156.54,
+   "e": 157.08,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 157.08,
+   "e": 157.1,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 157.1,
+   "e": 157.18,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 157.18,
+   "e": 157.26,
+   "type": "spacing"
+  },
+  {
+   "t": "change,",
+   "s": 157.26,
+   "e": 157.62,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 157.62,
+   "e": 158.2,
+   "type": "spacing"
+  },
+  {
+   "t": "and",
+   "s": 158.2,
+   "e": 158.25,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 158.25,
+   "e": 158.3,
+   "type": "spacing"
+  },
+  {
+   "t": "it's",
+   "s": 158.3,
+   "e": 158.38,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 158.38,
+   "e": 158.42,
+   "type": "spacing"
+  },
+  {
+   "t": "encrypted",
+   "s": 158.42,
+   "e": 158.86,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 158.86,
+   "e": 158.9,
+   "type": "spacing"
+  },
+  {
+   "t": "into",
+   "s": 158.9,
+   "e": 159.06,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 159.06,
+   "e": 159.1,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 159.1,
+   "e": 159.13,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 159.13,
+   "e": 159.22,
+   "type": "spacing"
+  },
+  {
+   "t": "vault.",
+   "s": 159.22,
+   "e": 159.519,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 159.519,
+   "e": 160.44,
+   "type": "spacing"
+  },
+  {
+   "t": "While",
+   "s": 160.44,
+   "e": 160.58,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 160.58,
+   "e": 160.62,
+   "type": "spacing"
+  },
+  {
+   "t": "you're",
+   "s": 160.62,
+   "e": 160.78,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 160.78,
+   "e": 160.82,
+   "type": "spacing"
+  },
+  {
+   "t": "unlocked,",
+   "s": 160.82,
+   "e": 161.28,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 161.28,
+   "e": 161.58,
+   "type": "spacing"
+  },
+  {
+   "t": "it",
+   "s": 161.58,
+   "e": 161.66,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 161.66,
+   "e": 161.74,
+   "type": "spacing"
+  },
+  {
+   "t": "quietly",
+   "s": 161.74,
+   "e": 162.08,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 162.08,
+   "e": 162.1,
+   "type": "spacing"
+  },
+  {
+   "t": "refreshes",
+   "s": 162.1,
+   "e": 162.58,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 162.58,
+   "e": 162.62,
+   "type": "spacing"
+  },
+  {
+   "t": "tokens",
+   "s": 162.62,
+   "e": 163.01,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 163.01,
+   "e": 163.02,
+   "type": "spacing"
+  },
+  {
+   "t": "before",
+   "s": 163.02,
+   "e": 163.28,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 163.28,
+   "e": 163.32,
+   "type": "spacing"
+  },
+  {
+   "t": "they",
+   "s": 163.32,
+   "e": 163.38,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 163.38,
+   "e": 163.4,
+   "type": "spacing"
+  },
+  {
+   "t": "expire,",
+   "s": 163.4,
+   "e": 163.86,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 163.86,
+   "e": 164.62,
+   "type": "spacing"
+  },
+  {
+   "t": "so",
+   "s": 164.62,
+   "e": 164.76,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 164.76,
+   "e": 164.799,
+   "type": "spacing"
+  },
+  {
+   "t": "long",
+   "s": 164.8,
+   "e": 164.96,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 164.96,
+   "e": 165.04,
+   "type": "spacing"
+  },
+  {
+   "t": "sessions",
+   "s": 165.04,
+   "e": 165.42,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 165.42,
+   "e": 165.48,
+   "type": "spacing"
+  },
+  {
+   "t": "never",
+   "s": 165.48,
+   "e": 165.7,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 165.7,
+   "e": 165.76,
+   "type": "spacing"
+  },
+  {
+   "t": "silently",
+   "s": 165.76,
+   "e": 166.18,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 166.18,
+   "e": 166.28,
+   "type": "spacing"
+  },
+  {
+   "t": "die.",
+   "s": 166.28,
+   "e": 166.56,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 166.56,
+   "e": 167.5,
+   "type": "spacing"
+  },
+  {
+   "t": "So",
+   "s": 167.5,
+   "e": 167.56,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 167.56,
+   "e": 167.62,
+   "type": "spacing"
+  },
+  {
+   "t": "that's",
+   "s": 167.62,
+   "e": 167.78,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 167.78,
+   "e": 167.82,
+   "type": "spacing"
+  },
+  {
+   "t": "the",
+   "s": 167.82,
+   "e": 167.9,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 167.9,
+   "e": 167.92,
+   "type": "spacing"
+  },
+  {
+   "t": "keychain.",
+   "s": 167.92,
+   "e": 168.36,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 168.36,
+   "e": 169.079,
+   "type": "spacing"
+  },
+  {
+   "t": "Secrets",
+   "s": 169.08,
+   "e": 169.44,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 169.44,
+   "e": 169.54,
+   "type": "spacing"
+  },
+  {
+   "t": "come",
+   "s": 169.54,
+   "e": 169.66,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 169.66,
+   "e": 169.7,
+   "type": "spacing"
+  },
+  {
+   "t": "in",
+   "s": 169.7,
+   "e": 169.86,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 169.86,
+   "e": 169.88,
+   "type": "spacing"
+  },
+  {
+   "t": "through",
+   "s": 169.88,
+   "e": 170.14,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 170.14,
+   "e": 170.18,
+   "type": "spacing"
+  },
+  {
+   "t": "a",
+   "s": 170.18,
+   "e": 170.26,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 170.26,
+   "e": 170.34,
+   "type": "spacing"
+  },
+  {
+   "t": "sign-in",
+   "s": 170.34,
+   "e": 170.76,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 170.76,
+   "e": 171.239,
+   "type": "spacing"
+  },
+  {
+   "t": "or",
+   "s": 171.24,
+   "e": 171.34,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 171.34,
+   "e": 171.44,
+   "type": "spacing"
+  },
+  {
+   "t": "an",
+   "s": 171.44,
+   "e": 171.52,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 171.52,
+   "e": 171.6,
+   "type": "spacing"
+  },
+  {
+   "t": "authorization",
+   "s": 171.6,
+   "e": 172.22,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 172.22,
+   "e": 172.3,
+   "type": "spacing"
+  },
+  {
+   "t": "flow,",
+   "s": 172.3,
+   "e": 172.52,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 172.52,
+   "e": 173.28,
+   "type": "spacing"
+  },
+  {
+   "t": "land",
+   "s": 173.28,
+   "e": 173.58,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 173.58,
+   "e": 173.6,
+   "type": "spacing"
+  },
+  {
+   "t": "as",
+   "s": 173.6,
+   "e": 173.78,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 173.78,
+   "e": 173.88,
+   "type": "spacing"
+  },
+  {
+   "t": "ordinary",
+   "s": 173.88,
+   "e": 174.2,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 174.2,
+   "e": 174.28,
+   "type": "spacing"
+  },
+  {
+   "t": "files",
+   "s": 174.28,
+   "e": 174.64,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 174.64,
+   "e": 174.7,
+   "type": "spacing"
+  },
+  {
+   "t": "where",
+   "s": 174.7,
+   "e": 174.92,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 174.92,
+   "e": 174.98,
+   "type": "spacing"
+  },
+  {
+   "t": "tools",
+   "s": 174.98,
+   "e": 175.28,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 175.28,
+   "e": 175.29,
+   "type": "spacing"
+  },
+  {
+   "t": "expect",
+   "s": 175.29,
+   "e": 175.7,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 175.7,
+   "e": 175.74,
+   "type": "spacing"
+  },
+  {
+   "t": "them,",
+   "s": 175.74,
+   "e": 175.86,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 175.86,
+   "e": 176.48,
+   "type": "spacing"
+  },
+  {
+   "t": "and",
+   "s": 176.48,
+   "e": 176.54,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 176.54,
+   "e": 176.6,
+   "type": "spacing"
+  },
+  {
+   "t": "get",
+   "s": 176.6,
+   "e": 176.76,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 176.76,
+   "e": 176.82,
+   "type": "spacing"
+  },
+  {
+   "t": "mirrored,",
+   "s": 176.82,
+   "e": 177.12,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 177.12,
+   "e": 178.06,
+   "type": "spacing"
+  },
+  {
+   "t": "encrypted",
+   "s": 178.06,
+   "e": 178.64,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 178.64,
+   "e": 179.42,
+   "type": "spacing"
+  },
+  {
+   "t": "into",
+   "s": 179.42,
+   "e": 179.59,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 179.59,
+   "e": 179.64,
+   "type": "spacing"
+  },
+  {
+   "t": "a",
+   "s": 179.64,
+   "e": 179.7,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 179.7,
+   "e": 179.78,
+   "type": "spacing"
+  },
+  {
+   "t": "passkey-protected",
+   "s": 179.78,
+   "e": 180.78,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 180.78,
+   "e": 180.84,
+   "type": "spacing"
+  },
+  {
+   "t": "vault",
+   "s": 180.84,
+   "e": 181.14,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 181.14,
+   "e": 181.78,
+   "type": "spacing"
+  },
+  {
+   "t": "across",
+   "s": 181.78,
+   "e": 182.16,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 182.16,
+   "e": 182.26,
+   "type": "spacing"
+  },
+  {
+   "t": "every",
+   "s": 182.26,
+   "e": 182.43,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 182.43,
+   "e": 182.54,
+   "type": "spacing"
+  },
+  {
+   "t": "sandbox",
+   "s": 182.54,
+   "e": 182.94,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 182.94,
+   "e": 182.98,
+   "type": "spacing"
+  },
+  {
+   "t": "you",
+   "s": 182.98,
+   "e": 183.04,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 183.04,
+   "e": 183.06,
+   "type": "spacing"
+  },
+  {
+   "t": "have",
+   "s": 183.06,
+   "e": 183.18,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 183.18,
+   "e": 183.22,
+   "type": "spacing"
+  },
+  {
+   "t": "open.",
+   "s": 183.22,
+   "e": 183.5,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 183.5,
+   "e": 183.88,
+   "type": "spacing"
+  },
+  {
+   "t": "No",
+   "s": 183.88,
+   "e": 184.02,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 184.02,
+   "e": 184.14,
+   "type": "spacing"
+  },
+  {
+   "t": "server",
+   "s": 184.14,
+   "e": 184.39,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 184.39,
+   "e": 184.42,
+   "type": "spacing"
+  },
+  {
+   "t": "ever",
+   "s": 184.42,
+   "e": 184.58,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 184.58,
+   "e": 184.64,
+   "type": "spacing"
+  },
+  {
+   "t": "sees",
+   "s": 184.64,
+   "e": 184.86,
+   "type": "word"
+  },
+  {
+   "t": " ",
+   "s": 184.86,
+   "e": 184.92,
+   "type": "spacing"
+  },
+  {
+   "t": "them.",
+   "s": 184.92,
+   "e": 185.04,
+   "type": "word"
+  }
+ ]
+}

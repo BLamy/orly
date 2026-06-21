@@ -1,0 +1,26 @@
+{
+  "books": [
+    {
+      "slug": "koa-onion",
+      "title": "Koa.js",
+      "subtitle": "How a request flows through the middleware onion",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#d6202b",
+      "animal": "generated/koa-onion/animal.png",
+      "href": "?bundle=koa-onion",
+      "createdAt": "2026-06-20T22:00:00Z"
+    },
+    {
+      "slug": "almostnode",
+      "title": "almostnode",
+      "subtitle": "A full Node.js dev environment in one browser tab",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1f6fb2",
+      "animal": "generated/almostnode/animal.png",
+      "href": "?book=almostnode",
+      "createdAt": "2026-06-19T12:00:00Z"
+    }
+  ]
+}
