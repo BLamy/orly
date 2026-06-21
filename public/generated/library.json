@@ -1,6 +1,44 @@
 {
   "books": [
     {
+      "slug": "react-server-components",
+      "title": "React Server Components",
+      "subtitle": "React for two computers",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1877F2",
+      "animal": "generated/react-server-components/animal.png",
+      "href": "?bundle=react-server-components",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "React for Two Computers",
+          "duration": 102.446
+        },
+        {
+          "number": 2,
+          "title": "The Flight Wire Format",
+          "duration": 146.24
+        },
+        {
+          "number": 3,
+          "title": "use client — The Door to the Browser",
+          "duration": 106.022
+        },
+        {
+          "number": 4,
+          "title": "use server — The Call Back",
+          "duration": 132.213
+        },
+        {
+          "number": 5,
+          "title": "The Round Trip",
+          "duration": 113.638
+        }
+      ],
+      "createdAt": "2026-06-21T08:06:24.704Z"
+    },
+    {
       "slug": "the-book-machine",
       "title": "ORLY Book Machine",
       "subtitle": "From a GitHub issue to a published explainer — fork your own",
