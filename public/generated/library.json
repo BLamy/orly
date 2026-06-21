@@ -1,6 +1,41 @@
 {
   "books": [
     {
+      "slug": "auth-authentication-methods",
+      "title": "Authentication Methods",
+      "subtitle": "How a user proves who they are",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#38bdf8",
+      "animal": "generated/auth-authentication-methods/animal.png",
+      "href": "?bundle=auth-authentication-methods",
+      "series": "Pilcrow's Auth Book",
+      "seriesOrder": 1,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Knowledge Factors",
+          "duration": 74.024
+        },
+        {
+          "number": 2,
+          "title": "Possession Factors",
+          "duration": 67.337
+        },
+        {
+          "number": 3,
+          "title": "Passwordless and Passkeys",
+          "duration": 76.44
+        },
+        {
+          "number": 4,
+          "title": "Layering the Factors",
+          "duration": 70.263
+        }
+      ],
+      "createdAt": "2026-06-21T08:54:51.355Z"
+    },
+    {
       "slug": "react-server-components",
       "title": "React Server Components",
       "subtitle": "React for two computers",
