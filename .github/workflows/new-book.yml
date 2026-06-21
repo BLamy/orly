@@ -1,8 +1,8 @@
-name: Add book from issue
+name: Book pipeline (issue → book)
 
-# Open a "📕 New book" or "📚 New book series" issue (as the repo owner) and this
-# runs Claude Code in CI to generate the book(s), then opens + auto-merges a PR that
-# adds them to the shelf. Merging re-triggers the Pages deploy (hence the PAT).
+# Open a "📕 New book", "📚 New book series", or "✏️ Tweak a book" issue (as the repo
+# owner) and this runs Claude Code in CI to build or edit the book(s), then opens +
+# auto-merges a PR. Merging re-triggers the Pages deploy (hence the PAT).
 
 on:
   issues:
@@ -19,7 +19,8 @@ jobs:
     if: >
       github.event.issue.user.login == github.repository_owner &&
       (contains(github.event.issue.labels.*.name, 'new-book') ||
-       contains(github.event.issue.labels.*.name, 'new-series'))
+       contains(github.event.issue.labels.*.name, 'new-series') ||
+       contains(github.event.issue.labels.*.name, 'tweak-book'))
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -52,20 +53,23 @@ jobs:
           # Swap for `anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}` to use an API key.
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: |
-            A new book request — issue #${{ github.event.issue.number }}.
+            A book request — issue #${{ github.event.issue.number }}.
             Labels: ${{ join(github.event.issue.labels.*.name, ', ') }}
 
             TITLE: ${{ github.event.issue.title }}
             BODY:
             ${{ github.event.issue.body }}
 
-            If the labels include "new-series", follow .claude/commands/new-series.md.
-            Otherwise follow .claude/commands/new-book.md.
+            If the labels include "tweak-book", follow .claude/commands/tweak-book.md and
+            make ONLY the requested edit to the existing book (parse its slug from the
+            dropdown selection, which ends with " — <slug>").
+            Else if the labels include "new-series", follow .claude/commands/new-series.md.
+            Else follow .claude/commands/new-book.md.
 
-            GENERATE ONLY: run the digest/study → storyboard → `node generator/cli.mjs …`
-            build steps so every requested book lands under public/generated/ and
-            library.json is updated (with --series/--series-order for a series). Keep
-            going until ALL requested books are built and validated.
+            BUILD ONLY: run the generator steps so the requested book(s) under
+            public/generated/ and library.json reflect the request. For a new book/series
+            that's digest/study → storyboard → `node generator/cli.mjs …`; for a tweak
+            it's the minimal edit + the matching regen tool. Keep going until done.
 
             Do NOT run any git or gh commands and do NOT open a PR — the workflow
             commits, opens the PR, and auto-merges after you finish.
@@ -86,13 +90,14 @@ jobs:
           set -euo pipefail
           BRANCH="book/issue-${{ github.event.issue.number }}"
           git checkout -b "$BRANCH"
-          git add -A public/generated
+          node generator/sync-issue-books.mjs || true # keep the tweak dropdown current
+          git add -A public/generated .github/ISSUE_TEMPLATE/tweak-book.yml
           if git diff --cached --quiet; then
             gh issue comment "${{ github.event.issue.number }}" \
-              --body "⚠️ No new book files were produced — see the [run log](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})."
+              --body "⚠️ No changes were produced — see the [run log](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})."
             exit 1
           fi
-          git commit -m "Add book(s) from #${{ github.event.issue.number }}: ${{ github.event.issue.title }}"
+          git commit -m "${{ github.event.issue.title }} (#${{ github.event.issue.number }})"
           git push -u origin "$BRANCH"
           gh pr create --base main --head "$BRANCH" \
             --title "${{ github.event.issue.title }}" \

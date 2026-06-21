@@ -1,0 +1,10 @@
+#!/bin/sh
+# Fail the commit if the "✏️ Tweak a book" dropdown is out of sync with the
+# library — i.e. you added/renamed a book but forgot to refresh the issue form.
+# Activated via `npm install` (the package.json "prepare" sets core.hooksPath).
+
+if ! node generator/sync-issue-books.mjs --check; then
+  echo ""
+  echo "  ↳ run:  node generator/sync-issue-books.mjs   then  git add .github/ISSUE_TEMPLATE/tweak-book.yml"
+  exit 1
+fi

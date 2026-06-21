@@ -2,6 +2,7 @@
 // bookshelf renders.
 import { readFileSync, writeFileSync, existsSync, mkdirSync } from 'node:fs';
 import { dirname } from 'node:path';
+import { syncIssueBooks } from './sync-issue-books.mjs';
 
 const PALETTE = [
   '#d6202b', '#1f6fb2', '#3a8b3a', '#e07b1a', '#6a3f9e',
@@ -27,5 +28,7 @@ export function upsertBook(libPath, book) {
   lib.books.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
   mkdirSync(dirname(libPath), { recursive: true });
   writeFileSync(libPath, JSON.stringify(lib, null, 2));
+  // keep the "tweak a book" issue dropdown current
+  try { syncIssueBooks({ libPath }); } catch { /* form may not exist yet */ }
   return lib;
 }
