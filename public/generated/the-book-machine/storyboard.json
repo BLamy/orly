@@ -1,5 +1,5 @@
 {
-  "title": "ORLY Book Machine",
+  "title": "ORLY Loop",
   "subtitle": "From a GitHub issue to a published explainer — fork your own",
   "throughline": "Follow one GitHub issue as it travels through CI, gets built into a narrated explainer, and lands on the shelf — then learn to run the whole loop yourself.",
   "chapters": [
@@ -107,10 +107,10 @@
         {
           "id": "cover",
           "cover": true,
-          "title": "The Book Machine",
+          "title": "ORLY Loop",
           "coverSubtitle": "One issue in, one published explainer out",
-          "displayNarration": "This repo is a **library of generated explainers**. You don't edit files to add one — you open an issue, and the machine builds and publishes it.",
-          "spoken": "This whole repository is a library of generated explainers. To add a new one, you don't edit any files. You open an issue, and the machine builds it and publishes it for you.",
+          "displayNarration": "This repo is a **library of generated explainers**. You don't edit files to add one — you open an issue, and the loop builds and publishes it.",
+          "spoken": "This whole repository is a library of generated explainers. To add a new one, you don't edit any files. You open an issue, and the loop builds it and publishes it for you.",
           "sourceRefs": [
             "README.md",
             ".github/workflows/new-book.yml"
@@ -984,7 +984,7 @@
             "merge"
           ],
           "displayNarration": "When it's right, **you merge**. That's the only hand-on-the-wheel moment, and it's deliberate.",
-          "spoken": "When it's right, you merge. That is the only manual step in the whole machine, and it is deliberate. Your name is on the shelf.",
+          "spoken": "When it's right, you merge. That is the only manual step in the whole loop, and it is deliberate. Your name is on the shelf.",
           "sourceRefs": [
             ".github/workflows/new-book.yml"
           ]
@@ -1096,8 +1096,8 @@
           "cover": true,
           "title": "Fork it, set your env, make your own",
           "coverSubtitle": "Five minutes of setup and the loop is yours",
-          "displayNarration": "Everything you just saw runs from config in *this* repo. Fork it, add your keys, and the same machine builds **your** collection.",
-          "spoken": "Everything you just saw runs from configuration inside this very repo. Fork it, add your own keys, and the exact same machine builds your collection instead of mine.",
+          "displayNarration": "Everything you just saw runs from config in *this* repo. Fork it, add your keys, and the same loop builds **your** collection.",
+          "spoken": "Everything you just saw runs from configuration inside this very repo. Fork it, add your own keys, and the exact same loop builds your collection instead of mine.",
           "sourceRefs": [
             "README.md"
           ]
@@ -1222,8 +1222,8 @@
         {
           "id": "recap",
           "title": "The machine is yours",
-          "displayNarration": "Fork, secrets, Pages, issue. From here on, *describing* a book is the only work — the **Book Machine** does the rest.",
-          "spoken": "Fork, secrets, connect, issue. From here on, describing a book is the only work you ever do. The book machine does all the rest.",
+          "displayNarration": "Fork, secrets, Pages, issue. From here on, *describing* a book is the only work — the **loop** does the rest.",
+          "spoken": "Fork, secrets, connect, issue. From here on, describing a book is the only work you ever do. The loop does all the rest.",
           "sourceRefs": [
             "README.md"
           ],
