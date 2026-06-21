@@ -164,6 +164,40 @@
   color: #a2926f;
   font-size: 13px;
 }
+.lib-foot a {
+  color: #8a6d3b;
+  font-weight: 700;
+  text-decoration: none;
+  border-bottom: 1px solid rgba(138, 109, 59, 0.4);
+}
+.lib-foot a:hover {
+  color: #5a4424;
+}
+
+/* corner "view source on GitHub" link */
+.lib-gh {
+  position: fixed;
+  top: 18px;
+  right: 18px;
+  z-index: 30;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  color: #5a4d38;
+  background: rgba(255, 255, 255, 0.55);
+  border: 1px solid rgba(120, 90, 50, 0.18);
+  box-shadow: 0 2px 8px rgba(80, 60, 30, 0.12);
+  backdrop-filter: blur(4px);
+  transition: transform 0.18s, color 0.18s, background 0.18s;
+}
+.lib-gh:hover {
+  color: #241f17;
+  background: #fff;
+  transform: translateY(-1px) scale(1.05);
+}
 
 @media (max-width: 520px) {
   .lib-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
