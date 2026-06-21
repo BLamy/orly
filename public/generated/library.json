@@ -2,7 +2,7 @@
   "books": [
     {
       "slug": "the-book-machine",
-      "title": "ORLY Book Machine",
+      "title": "ORLY Loop",
       "subtitle": "From a GitHub issue to a published explainer — fork your own",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -13,12 +13,12 @@
         {
           "number": 1,
           "title": "A shelf that builds itself",
-          "duration": 58.05
+          "duration": 60
         },
         {
           "number": 2,
           "title": "Open an issue, pull the trigger",
-          "duration": 63.577
+          "duration": 70
         },
         {
           "number": 3,
@@ -27,13 +27,13 @@
         },
         {
           "number": 4,
-          "title": "Pull request, auto-merge, redeploy",
-          "duration": 60.743
+          "title": "Pull request, preview, and ship",
+          "duration": 75
         },
         {
           "number": 5,
           "title": "Fork it, set your env, make your own",
-          "duration": 62.787
+          "duration": 81
         }
       ],
       "createdAt": "2026-06-21T06:00:33.110Z"
