@@ -13,7 +13,7 @@ const BOOK_W = 230; // logical canvas size
 const BOOK_H = 340;
 
 const REPO_URL = 'https://github.com/BLamy/orly';
-const WORKFLOWS_URL = 'https://github.com/BLamy/orly/tree/main/.github/workflows';
+const WORKFLOWS_URL = 'https://github.com/BLamy/orly/blob/main/generator/prompts/storyboard.txt';
 
 function GitHubMark() {
   return (

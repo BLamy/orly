@@ -469,6 +469,33 @@
   transform: translateX(0);
 }
 
+.learn-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-bottom: 18px;
+  padding: 6px 10px 6px 6px;
+  border-radius: 8px;
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--muted);
+  text-decoration: none;
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--line);
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+
+.learn-back:hover {
+  color: var(--text, #e9eefb);
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.learn-back svg {
+  width: 16px;
+  height: 16px;
+}
+
 .learn-nav-head {
   margin-bottom: 22px;
 }

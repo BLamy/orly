@@ -148,6 +148,10 @@ export function LearnPage({
         {menuOpen && <div className="learn-backdrop" onClick={() => setMenuOpen(false)} />}
 
         <nav className={`learn-nav${menuOpen ? ' open' : ''}`} aria-label="Chapters">
+          <a className="learn-back" href={ASSET_BASE}>
+            <ChevronLeft />
+            <span>Back to the shelf</span>
+          </a>
           {series ? (
             <>
               <div className="learn-nav-head">
