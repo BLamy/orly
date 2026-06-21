@@ -7,8 +7,18 @@
 import { writeFileSync } from 'node:fs';
 import { randomCleanSeed, vision } from './seeds.mjs';
 
-const STYLE =
-  "finely detailed black-and-white pen-and-ink stipple engraving, vintage natural-history woodcut in the style of a classic O'Reilly book-cover animal, on a plain solid white background, centered, full body, no text, no lettering, no border, no frame, high-detail line art";
+// Varied engraving styles give the shelf variety without seeding (parody-cover
+// seeds bleed their lettering into the animal, so seeding is opt-in).
+const STYLES = [
+  'fine pen-and-ink stipple engraving',
+  'detailed cross-hatch woodcut',
+  'vintage scratchboard etching',
+  'intricate line engraving',
+  'classic natural-history woodcut',
+];
+const pickStyle = () => STYLES[Math.floor(Math.random() * STYLES.length)];
+const STYLE_TAIL =
+  "natural-history woodcut in the style of a classic O'Reilly book-cover animal, on a plain solid white background, centered, full body, ABSOLUTELY no text, no lettering, no words, no numbers, no logo, no banner, no border, no frame, high-detail black-and-white line art";
 
 const QA_PROMPT =
   'This image should be ONLY a black-and-white woodcut animal on a white background with NO text. Does it contain ANY text, letters, words, numbers, logos, a publisher name, the words "O\'Reilly" or "O\'RLY", a banner, or stray lettering? Answer exactly one word: DIRTY if you see any text/lettering/logo, or CLEAN if it is purely the animal.';
@@ -60,24 +70,31 @@ export async function generateAnimal({
   quality = 'medium',
   verify = true,
   maxTries = 4,
+  seed = false,
   log = () => {},
 }) {
   if (!apiKey) throw new Error('OPENAI_API_KEY is required for cover art');
   const subject = animal
     ? `A ${animal}`
     : `A single distinctive, characterful animal that suits a technical book about ${topic}`;
-  const basePrompt = `${subject}, ${STYLE}`;
-  const seedPrompt =
-    `Using the loose visual vibe of the reference image as inspiration only, render ${subject.toLowerCase()}: ${STYLE}. ` +
-    "CRITICAL: produce ONLY the animal artwork — absolutely no text, letters, words, logos, publisher names, banners, title, border or frame.";
 
   let last;
   for (let attempt = 1; attempt <= maxTries; attempt++) {
-    const seed = attempt <= 2 ? randomCleanSeed() : null;
+    const style = pickStyle();
+    const prompt = `${subject}, a ${style}, ${STYLE_TAIL}`;
+    const useSeed = seed && attempt <= 2 ? randomCleanSeed() : null;
     let b64;
     try {
-      if (seed) { log(`cover try ${attempt} — seeded (${seed.file})`); b64 = await genEdits(seedPrompt, seed, apiKey, size, quality); }
-      else { log(`cover try ${attempt} — text-only`); b64 = await genGenerations(basePrompt, apiKey, size, quality); }
+      if (useSeed) {
+        log(`cover try ${attempt} — seeded (${useSeed.file}, ${style})`);
+        b64 = await genEdits(
+          `Using ONLY the loose engraving style of the reference as inspiration, render ${subject.toLowerCase()}, a ${style}, ${STYLE_TAIL}. Ignore any text, banner, title or layout in the reference — output JUST the animal.`,
+          useSeed, apiKey, size, quality,
+        );
+      } else {
+        log(`cover try ${attempt} — ${style}`);
+        b64 = await genGenerations(prompt, apiKey, size, quality);
+      }
     } catch (e) {
       log(`  gen error: ${e.message}`);
       continue;

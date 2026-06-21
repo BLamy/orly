@@ -12,6 +12,8 @@ export interface BookMeta {
   color: string; // banner/title-block hue
   animal: string; // path to the engraving png
   href: string;
+  series?: string; // books sharing a series name are grouped on the shelf
+  seriesOrder?: number; // order within the series
 }
 
 // A colourful O'Reilly-ish palette (assign per book for a varied shelf).

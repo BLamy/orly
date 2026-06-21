@@ -38,6 +38,8 @@ function parseArgs(argv) {
     else if (k === '--author') a.author = val();
     else if (k === '--role') a.role = val();
     else if (k === '--color') a.color = val();
+    else if (k === '--series') a.series = val();
+    else if (k === '--series-order') a.seriesOrder = parseInt(val(), 10);
     else if (k === '--voice') a.voice = val();
     else if (k === '--model') a.model = val();
     else if (k === '--storyboard') a.storyboard = val();
@@ -169,6 +171,8 @@ Env: ANTHROPIC_API_KEY (storyboard), ELEVENLABS_API_KEY (TTS).`);
     color: args.color || colorForSlug(slug),
     animal: animalRel,
     href: `?bundle=${slug}`,
+    series: args.series,
+    seriesOrder: args.seriesOrder,
     createdAt: new Date().toISOString(),
   });
   log('updated library.json');

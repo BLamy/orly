@@ -53,6 +53,53 @@
   justify-items: center;
 }
 
+/* a grouped "book series" shelf */
+.lib-series {
+  max-width: 1280px;
+  margin: 52px auto 0;
+}
+.lib-series-head {
+  display: flex;
+  align-items: baseline;
+  gap: 14px;
+  flex-wrap: wrap;
+  padding: 0 8px 6px;
+  margin: 0 8px 22px;
+  border-bottom: 2px solid rgba(120, 90, 50, 0.2);
+}
+.lib-series-name {
+  margin: 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: clamp(22px, 3vw, 30px);
+  font-weight: 700;
+  color: #2a2018;
+}
+.lib-series-meta {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: #b08442;
+}
+.lib-series-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: clamp(8px, 2vw, 22px);
+  justify-content: center;
+}
+.lib-series-row .lib-book {
+  width: 230px;
+  flex: 0 0 auto;
+}
+.lib-book-num {
+  color: #b08442;
+  font-weight: 800;
+}
+
+@media (min-width: 760px) {
+  .lib-series-row { justify-content: flex-start; }
+}
+
 .lib-book {
   appearance: none;
   border: 0;

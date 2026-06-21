@@ -12,7 +12,7 @@ const COVER_H = 800;
 const BOOK_W = 230; // logical canvas size
 const BOOK_H = 340;
 
-function ShelfBook({ book }: { book: BookMeta }) {
+function ShelfBook({ book, seriesIndex }: { book: BookMeta; seriesIndex?: number }) {
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const coverRef = useRef<HTMLCanvasElement | null>(null);
   const [ready, setReady] = useState(false);
@@ -74,7 +74,10 @@ function ShelfBook({ book }: { book: BookMeta }) {
       <canvas ref={canvasRef} className="lib-book-canvas" style={{ width: BOOK_W, height: BOOK_H }} />
       <span className="lib-book-cap">
         <span className="lib-book-cap-title">{book.title}</span>
-        <span className="lib-book-cap-sub">{book.subtitle}</span>
+        <span className="lib-book-cap-sub">
+          {seriesIndex ? <b className="lib-book-num">№{seriesIndex} · </b> : null}
+          {book.subtitle}
+        </span>
       </span>
     </button>
   );
@@ -108,13 +111,40 @@ export function Library() {
         <div className="lib-empty">No books yet — generate one with <code>npm run explain</code>.</div>
       )}
 
-      {books && books.length > 0 && (
-        <div className="lib-grid">
-          {books.map((b) => (
-            <ShelfBook key={b.slug} book={b} />
-          ))}
-        </div>
-      )}
+      {books && books.length > 0 && (() => {
+        const standalone = books.filter((b) => !b.series);
+        const seriesMap = new Map<string, BookMeta[]>();
+        for (const b of books) {
+          if (!b.series) continue;
+          if (!seriesMap.has(b.series)) seriesMap.set(b.series, []);
+          seriesMap.get(b.series)!.push(b);
+        }
+        for (const arr of seriesMap.values()) arr.sort((a, c) => (a.seriesOrder ?? 0) - (c.seriesOrder ?? 0));
+        return (
+          <>
+            {standalone.length > 0 && (
+              <div className="lib-grid">
+                {standalone.map((b) => (
+                  <ShelfBook key={b.slug} book={b} />
+                ))}
+              </div>
+            )}
+            {[...seriesMap.entries()].map(([name, arr]) => (
+              <section className="lib-series" key={name}>
+                <div className="lib-series-head">
+                  <h2 className="lib-series-name">{name}</h2>
+                  <span className="lib-series-meta">a {arr.length}-book series · read in order →</span>
+                </div>
+                <div className="lib-series-row">
+                  {arr.map((b, i) => (
+                    <ShelfBook key={b.slug} book={b} seriesIndex={b.seriesOrder ?? i + 1} />
+                  ))}
+                </div>
+              </section>
+            ))}
+          </>
+        );
+      })()}
 
       <footer className="lib-foot">
         by Brett Lamy · an “O’RLY?” parody · icons via the Noun Project (CC BY) · made with Claude Code
