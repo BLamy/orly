@@ -7,7 +7,7 @@ description: Generate a multi-book O'RLY series from docs/a repo and publish it 
 Turn a docs site or repo into a **grouped series** of explainer books, each its own
 narrated, animated book with an O'RLY‑parody cover, all sharing one `series` name so
 they render as a labeled shelf row (and a whole-series sidebar) on
-https://blamy.github.io/orly/.
+https://orly.brett-lamy.workers.dev/.
 
 **Arguments:** `$ARGUMENTS` — ideally `<source> | <series name> | <books or count>`.
 From a GitHub issue, parse the form: **Source**, **Series name**, **Books** (one per

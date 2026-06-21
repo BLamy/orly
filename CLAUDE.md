@@ -2,8 +2,8 @@
 
 This repo is a **published library of generated explainers**. Each "book" is a
 narrated, animated D3 data‑flow explainer of one subsystem of some codebase, bound
-as an **O'RLY‑parody** O'Reilly‑style book. The shelf deploys to GitHub Pages:
-**https://blamy.github.io/orly/**
+as an **O'RLY‑parody** O'Reilly‑style book. The shelf deploys to Cloudflare Workers:
+**https://orly.brett-lamy.workers.dev/**
 
 ## The main thing you do here
 **Create a new book** when asked: run **`/new-book <repo> | <subsystem> | <title>`**
@@ -38,4 +38,7 @@ adds Noun Project icons, and you commit + push to redeploy.
 
 ## Run locally
 `npm run dev` → http://localhost:5173/ (shelf). Deploy is automatic on push to
-`main` via `.github/workflows/deploy.yml` (built with `PAGES=1`, base `/orly/`).
+`main` via `.github/workflows/deploy.yml` (`npm run build`, base `/`, then
+`wrangler deploy` to the **`orly`** Worker). Book PRs get a Cloudflare **preview**
+(`preview.yml`) and stay open; reply **@claude** on a book PR to revise it
+(`comment-edit.yml`); merging redeploys production.

@@ -1,6 +1,6 @@
 {
   "slug": "the-book-machine",
-  "title": "The Book Machine",
+  "title": "ORLY Book Machine",
   "subtitle": "From a GitHub issue to a published explainer — fork your own",
   "throughline": "Follow one GitHub issue as it travels through CI, gets built into a narrated explainer, and lands on the shelf — then learn to run the whole loop yourself.",
   "chapters": [

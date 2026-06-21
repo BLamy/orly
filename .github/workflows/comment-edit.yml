@@ -11,6 +11,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  actions: write # to dispatch preview.yml after pushing the edit
   id-token: write # OIDC token for anthropics/claude-code-action
 
 jobs:
@@ -91,6 +92,7 @@ jobs:
           NOUN_PROJECT_SECRET: ${{ secrets.NOUN_PROJECT_SECRET }}
 
       - name: Commit + push to the PR branch
+        id: push
         if: always() # push whatever changed, even if the edit errored partway
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
@@ -109,10 +111,23 @@ jobs:
           # explicitly-authenticated URL (GITHUB_TOKEN is masked in logs).
           BR=$(git rev-parse --abbrev-ref HEAD)
           git push "https://x-access-token:${GH_TOKEN}@github.com/${REPO}.git" "HEAD:refs/heads/$BR"
+          echo "br=$BR" >> "$GITHUB_OUTPUT"
+          echo "pushed=true" >> "$GITHUB_OUTPUT"
           if [ "$EDIT_OUTCOME" != "success" ]; then
+            echo "partial=true" >> "$GITHUB_OUTPUT"
             gh issue comment "${{ github.event.issue.number }}" \
               --body "⚠️ Pushed partial changes — the edit didn't fully finish (\`$EDIT_OUTCOME\`). The preview will redeploy; reply \`@claude <change>\` to keep going."
-            exit 1
+          else
+            gh issue comment "${{ github.event.issue.number }}" \
+              --body "✅ Applied your change and pushed to this PR — the preview will redeploy shortly."
           fi
-          gh issue comment "${{ github.event.issue.number }}" \
-            --body "✅ Applied your change and pushed to this PR — the preview will redeploy shortly."
+
+      - name: Deploy a preview for the PR
+        if: always() && steps.push.outputs.pushed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run preview.yml --ref "${{ steps.push.outputs.br }}" -f pr="${{ github.event.issue.number }}"
+
+      - name: Flag partial edit
+        if: always() && steps.push.outputs.partial == 'true'
+        run: exit 1

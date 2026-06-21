@@ -1,27 +1,25 @@
 name: PR preview (Cloudflare)
 
-# Every push to a book PR builds the shelf and uploads a NON-production Cloudflare
-# version with a stable per-branch preview alias, then posts/updates a sticky comment
-# linking straight to the book(s) in the preview. The `synchronize` trigger means
-# @claude edits (which push to the PR branch) redeploy the same preview automatically.
-# Until the Cloudflare secrets are set, it posts a "preview pending" note instead.
+# DISPATCHED by new-book.yml / comment-edit.yml / test-pipeline.yml right after they
+# push a book branch + open/update its PR — we use workflow_dispatch, NOT the
+# pull_request event, because PRs opened/pushed by GITHUB_TOKEN don't auto-trigger
+# workflows (workflow_dispatch is the documented exception that DOES run). Builds the
+# shelf, uploads a non-prod Cloudflare version with a stable per-branch alias, and posts
+# a sticky comment linking each book. Invoke with `--ref <pr-head-branch> -f pr=<number>`.
 
 on:
-  pull_request:
-    types: [opened, synchronize, reopened]
+  workflow_dispatch:
+    inputs:
+      pr:
+        description: PR number to comment on
+        required: true
 
 permissions:
   contents: read
   pull-requests: write
 
-concurrency:
-  group: preview-${{ github.event.pull_request.number }}
-  cancel-in-progress: true
-
 jobs:
   preview:
-    # Only the bot's book PRs get a preview.
-    if: startsWith(github.head_ref, 'book/')
     runs-on: ubuntu-latest
     steps:
       - name: Check Cloudflare credentials are configured
@@ -40,10 +38,11 @@ jobs:
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: cf-preview
+          number: ${{ inputs.pr }}
           message: |
             ### ⏳ Preview pending
             Add the `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` repo secrets to enable
-            per-PR previews. Once set, every push here deploys a live preview link.
+            per-PR previews. Once set, each push here deploys a live preview link.
 
       - if: steps.gate.outputs.ready == 'true'
         uses: actions/checkout@v5
@@ -65,7 +64,7 @@ jobs:
         if: steps.gate.outputs.ready == 'true'
         run: |
           # CF preview aliases must be a DNS label: lowercase [a-z0-9-], <=28 chars.
-          alias=$(printf '%s' "${{ github.head_ref }}" \
+          alias=$(printf '%s' "${{ github.ref_name }}" \
             | tr '[:upper:]' '[:lower:]' | sed 's/[^a-z0-9]/-/g' | cut -c1-28 | sed 's/-*$//')
           echo "alias=$alias" >> "$GITHUB_OUTPUT"
 
@@ -110,6 +109,7 @@ jobs:
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: cf-preview
+          number: ${{ inputs.pr }}
           message: |
             ### 📖 Preview deployed
 
@@ -118,4 +118,4 @@ jobs:
             Books in this PR:
             ${{ steps.meta.outputs.links }}
 
-            _Redeploys on every push. Reply with **@claude &lt;change&gt;** on this PR to revise a book._
+            _Updated on each push. Reply with **@claude &lt;change&gt;** on this PR to revise a book._

@@ -3,9 +3,9 @@
 A bookshelf of **generated explainers**. Point Claude Code at any GitHub repo and
 a subsystem, and it writes an O’Reilly‑style "book": a narrated, animated D3
 data‑flow explainer — with AI‑generated animal cover art — and publishes it to a
-GitHub Pages bookshelf.
+Cloudflare Workers bookshelf.
 
-**Live:** https://blamy.github.io/orly/
+**Live:** https://orly.brett-lamy.workers.dev/
 
 ## What's a "book"?
 - A multi‑chapter **D3 slideshow**: nodes/edges that build up in time, animated

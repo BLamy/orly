@@ -8,3 +8,13 @@ if ! node generator/sync-issue-books.mjs --check; then
   echo "  ↳ run:  node generator/sync-issue-books.mjs   then  git add .github/ISSUE_TEMPLATE/tweak-book.yml"
   exit 1
 fi
+
+# Lint any staged YAML files (must parse) so a broken workflow never lands.
+STAGED_YAML=$(git diff --cached --name-only --diff-filter=ACM -- '*.yml' '*.yaml')
+if [ -n "$STAGED_YAML" ]; then
+  if ! node generator/lint-yaml.mjs $STAGED_YAML; then
+    echo ""
+    echo "  ↳ fix the YAML above, then re-stage and commit."
+    exit 1
+  fi
+fi

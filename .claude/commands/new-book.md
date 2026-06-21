@@ -5,7 +5,7 @@ description: Generate a new O'RLY explainer "book" from a repo + subsystem and p
 # /new-book — add a book to the O'RLY shelf
 
 Turn a GitHub repo (or local path) + a subsystem into a narrated, animated D3
-explainer with an O'RLY‑parody cover, and publish it to https://blamy.github.io/orly/.
+explainer with an O'RLY‑parody cover, and publish it to https://orly.brett-lamy.workers.dev/.
 
 **Arguments:** `$ARGUMENTS` — ideally `<repo-url-or-path> | <subsystem prompt> [| <short title>] [| <animal>]`.
 If they're missing or unclear, ask the user for the repo and which subsystem to explain.
@@ -51,7 +51,7 @@ no `ANTHROPIC_API_KEY` needed.
    git add public/generated && git commit -m "book: <TITLE>" && git push
    ```
 
-6. Tell the user the live URL: `https://blamy.github.io/orly/?bundle=<SLUG>`
+6. Tell the user the live URL: `https://orly.brett-lamy.workers.dev/?bundle=<SLUG>`
    (and optionally open it locally with `npm run dev` + `?bundle=<SLUG>`).
 
 ## Rules

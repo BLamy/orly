@@ -16,6 +16,7 @@ on:
 permissions:
   contents: write
   pull-requests: write
+  actions: write # to dispatch preview.yml for the test PR
 
 jobs:
   smoke:
@@ -25,7 +26,7 @@ jobs:
         with:
           fetch-depth: 0
 
-      - name: Trivial change → push → open PR (no merge)
+      - name: Trivial change → push → open PR (no merge) → dispatch preview
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
@@ -42,6 +43,7 @@ jobs:
           git add -A "public/generated/$SLUG/.pipeline-test"
           git commit -m "test: pipeline smoke (no generation)"
           git push "https://x-access-token:${GH_TOKEN}@github.com/${REPO}.git" "HEAD:refs/heads/$BRANCH"
-          gh pr create --base main --head "$BRANCH" \
+          PR_URL=$(gh pr create --base main --head "$BRANCH" \
             --title "test: pipeline smoke (no generation)" \
-            --body "Cheap PR that exercises **commit → push → PR → preview** without running Claude/TTS/cover. Touches \`public/generated/$SLUG/.pipeline-test\`. Safe to close (delete the branch) when done."
+            --body "Cheap PR that exercises **commit → push → PR → preview** without running Claude/TTS/cover. Touches \`public/generated/$SLUG/.pipeline-test\`. Safe to close (delete the branch) when done.")
+          gh workflow run preview.yml --ref "$BRANCH" -f pr="${PR_URL##*/}"

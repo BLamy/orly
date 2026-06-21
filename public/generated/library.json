@@ -2,7 +2,7 @@
   "books": [
     {
       "slug": "the-book-machine",
-      "title": "The Book Machine",
+      "title": "ORLY Book Machine",
       "subtitle": "From a GitHub issue to a published explainer — fork your own",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",

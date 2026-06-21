@@ -7,8 +7,8 @@ import { resolveCues, type Transcript } from './align';
 
 const AUTO_NEXT_SECONDS = 10;
 
-// Vite's deploy base ("/" locally, "/almostnode/" on GitHub Pages). Cast avoids
-// needing vite/client ambient types in the host app.
+// Vite's deploy base — always "/" now (Cloudflare Workers serves from the domain
+// root, in prod + previews). Cast avoids needing vite/client ambient types here.
 const ASSET_BASE =
   (import.meta as unknown as { env?: { BASE_URL?: string } }).env?.BASE_URL ?? '/';
 
