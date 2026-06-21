@@ -15,6 +15,10 @@ const BOOK_H = 340;
 const REPO_URL = 'https://github.com/BLamy/orly';
 const WORKFLOWS_URL = 'https://github.com/BLamy/orly/blob/main/generator/prompts/storyboard.txt';
 
+// The self-explaining "ORLY Loop" book always leads the shelf, regardless of the
+// createdAt order the generator writes into library.json.
+const PINNED_SLUG = 'the-orly-loop';
+
 function GitHubMark() {
   return (
     <svg viewBox="0 0 16 16" width="20" height="20" fill="currentColor" aria-hidden="true">
@@ -134,7 +138,9 @@ export function Library() {
       )}
 
       {books && books.length > 0 && (() => {
-        const standalone = books.filter((b) => !b.series);
+        const standalone = books
+          .filter((b) => !b.series)
+          .sort((a, c) => (a.slug === PINNED_SLUG ? -1 : c.slug === PINNED_SLUG ? 1 : 0));
         const seriesMap = new Map<string, BookMeta[]>();
         for (const b of books) {
           if (!b.series) continue;

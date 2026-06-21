@@ -2,6 +2,7 @@ import { useEffect, useState } from 'react';
 import { LearnPage, type SeriesBook } from './LearnPage';
 import { Library } from './library/Library';
 import { chapters as staticChapters, type Chapter } from './stories';
+import type { BookMeta } from './library/cover';
 
 const ASSET_BASE =
   (import.meta as unknown as { env?: { BASE_URL?: string } }).env?.BASE_URL ?? '/';
@@ -20,6 +21,8 @@ type Bundle = {
   chapters: Chapter[];
   title?: string;
   tagline?: string;
+  /** this book's shelf metadata (cover color + animal), for the sidebar cover */
+  book?: BookMeta;
   series?: { name: string; books: SeriesBook[] };
 };
 
@@ -53,7 +56,7 @@ export function App() {
             .map((b) => ({ ...b, current: b.slug === bundleSlug }));
           if (sib.length > 1) series = { name: cur.series, books: sib };
         }
-        setBundle({ chapters: m.chapters as Chapter[], title: m.title, tagline: m.subtitle ?? m.throughline, series });
+        setBundle({ chapters: m.chapters as Chapter[], title: m.title, tagline: m.subtitle ?? m.throughline, book: cur, series });
       })
       .catch((e) => alive && setError(e.message));
     return () => {
@@ -71,6 +74,7 @@ export function App() {
         chapters={bundle.chapters}
         title={bundle.title}
         tagline={bundle.tagline}
+        book={bundle.book}
         series={bundle.series}
       />
     );

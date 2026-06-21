@@ -44,14 +44,14 @@
       "createdAt": "2026-06-21T08:30:52.935Z"
     },
     {
-      "slug": "the-book-machine",
+      "slug": "the-orly-loop",
       "title": "ORLY Loop",
       "subtitle": "From a GitHub issue to a published explainer — fork your own",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#1f8a6e",
-      "animal": "generated/the-book-machine/animal.png",
-      "href": "?bundle=the-book-machine",
+      "animal": "generated/the-orly-loop/animal.png",
+      "href": "?bundle=the-orly-loop",
       "chapters": [
         {
           "number": 1,

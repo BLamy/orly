@@ -1,5 +1,5 @@
 {
-  "slug": "the-book-machine",
+  "slug": "the-orly-loop",
   "title": "ORLY Loop",
   "subtitle": "From a GitHub issue to a published explainer — fork your own",
   "throughline": "Follow one GitHub issue as it travels through CI, gets built into a narrated explainer, and lands on the shelf — then learn to run the whole loop yourself.",
@@ -10,7 +10,7 @@
       "title": "A shelf that builds itself",
       "blurb": "The whole loop at a glance: an issue goes in, a published explainer comes out.",
       "accent": "#e0892e",
-      "audio": "generated/the-book-machine/audio/chapter-1.mp3",
+      "audio": "generated/the-orly-loop/audio/chapter-1.mp3",
       "audioEnd": 60.186,
       "story": {
         "title": "A shelf that builds itself",
@@ -265,7 +265,7 @@
       "title": "Open an issue, pull the trigger",
       "blurb": "Two issue templates, one guarded workflow — and why only your issues run it.",
       "accent": "#d6457a",
-      "audio": "generated/the-book-machine/audio/chapter-2.mp3",
+      "audio": "generated/the-orly-loop/audio/chapter-2.mp3",
       "audioEnd": 69.892,
       "story": {
         "title": "Open an issue, pull the trigger",
@@ -500,7 +500,7 @@
       "title": "Claude Code runs the pipeline",
       "blurb": "Inside the job: Claude follows a playbook and runs the generator end to end.",
       "accent": "#2f9e8f",
-      "audio": "generated/the-book-machine/audio/chapter-3.mp3",
+      "audio": "generated/the-orly-loop/audio/chapter-3.mp3",
       "audioEnd": 78.576,
       "story": {
         "title": "Claude Code runs the pipeline",
@@ -759,7 +759,7 @@
       "title": "Pull request, preview, and ship",
       "blurb": "How a built book reaches the shelf: a preview PR, optional @claude edits, then your merge ships it to Cloudflare + R2.",
       "accent": "#5b6ee0",
-      "audio": "generated/the-book-machine/audio/chapter-4.mp3",
+      "audio": "generated/the-orly-loop/audio/chapter-4.mp3",
       "audioEnd": 74.907,
       "story": {
         "title": "Pull request, preview, and ship",
@@ -975,7 +975,7 @@
       "title": "Fork it, set your env, make your own",
       "blurb": "Five minutes of setup and the same self-building loop is yours.",
       "accent": "#2e9e5b",
-      "audio": "generated/the-book-machine/audio/chapter-5.mp3",
+      "audio": "generated/the-orly-loop/audio/chapter-5.mp3",
       "audioEnd": 81.361,
       "story": {
         "title": "Fork it, set your env, make your own",

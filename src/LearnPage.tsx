@@ -55,12 +55,15 @@ export function LearnPage({
   chapters = staticChapters,
   title = 'almostnode, explained',
   tagline = 'How a browser-native dev environment actually works.',
+  book,
   series,
 }: {
   embedded?: boolean;
   chapters?: Chapter[];
   title?: string;
   tagline?: string;
+  /** this book's shelf metadata — renders an O'RLY cover atop the standalone sidebar */
+  book?: BookMeta;
   series?: { name: string; books: SeriesBook[] };
 }) {
   const [selectedId, setSelectedId] = useState(() => chapterFromUrl(chapters) ?? chapters[0].id);
@@ -211,10 +214,23 @@ export function LearnPage({
             </>
           ) : (
             <>
-              <div className="learn-nav-head">
+              <div
+                className="learn-nav-head"
+                style={book ? ({ ['--accent']: book.color } as React.CSSProperties) : undefined}
+              >
                 <div className="learn-eyebrow">The Secret Lives of Data</div>
-                <h1 className="learn-h1">{title}</h1>
-                <p className="learn-tagline">{tagline}</p>
+                <div className="learn-book-head">
+                  {book && <BookCoverThumb book={book} width={54} />}
+                  <div className="learn-book-info">
+                    <h1 className="learn-h1">{title}</h1>
+                    <p className="learn-tagline">{tagline}</p>
+                    <span className="learn-book-meta">
+                      {chapters.length} {chapters.length === 1 ? 'chapter' : 'chapters'}
+                      {fmtDur(chapters.reduce((s, c) => s + (c.audioEnd ?? 0), 0)) &&
+                        ` · ${fmtDur(chapters.reduce((s, c) => s + (c.audioEnd ?? 0), 0))}`}
+                    </span>
+                  </div>
+                </div>
               </div>
               <ol className="learn-chapters">
                 {chapters.map((c) => (

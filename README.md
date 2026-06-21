@@ -14,13 +14,13 @@
 </p>
 
 <p align="center">
-  <a href="https://orly.brett-lamy.workers.dev/?bundle=the-book-machine">
-    <img src="public/generated/the-book-machine/animal.png" width="170" alt="ORLY Loop — the surprised owl"/>
+  <a href="https://orly.brett-lamy.workers.dev/?bundle=the-orly-loop">
+    <img src="public/generated/the-orly-loop/animal.png" width="170" alt="ORLY Loop — the surprised owl"/>
   </a>
 </p>
 
 > ### ▶ Watch the explainer that explains this repo
-> **[ORLY Loop →](https://orly.brett-lamy.workers.dev/?bundle=the-book-machine)** — a book the shelf generated *about itself*: open an issue → Claude Code builds the book → a preview PR → `@claude` tweaks → you merge → it's live. The fastest way to understand this project is to watch it.
+> **[ORLY Loop →](https://orly.brett-lamy.workers.dev/?bundle=the-orly-loop)** — a book the shelf generated *about itself*: open an issue → Claude Code builds the book → a preview PR → `@claude` tweaks → you merge → it's live. The fastest way to understand this project is to watch it.
 
 **Live shelf:** **https://orly.brett-lamy.workers.dev/**
 
