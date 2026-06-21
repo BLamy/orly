@@ -173,6 +173,7 @@ Env: ANTHROPIC_API_KEY (storyboard), ELEVENLABS_API_KEY (TTS).`);
     href: `?bundle=${slug}`,
     series: args.series,
     seriesOrder: args.seriesOrder,
+    chapters: manifest.chapters.map((c) => ({ number: c.number, title: c.title, duration: c.audioEnd })),
     createdAt: new Date().toISOString(),
   });
   log('updated library.json');

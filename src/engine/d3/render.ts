@@ -144,7 +144,7 @@ function fitCamera(camera: AnySel, nodes: DiagramNode[], t: any, reduced: boolea
   else camera.transition(t).attr('transform', tr);
 }
 
-function renderCover(g: AnySel, step: Step, dur: number, reduced: boolean) {
+function renderCover(g: AnySel, step: Step, dur: number, reduced: boolean, coverNote?: string) {
   g.style('display', null);
   if (g.attr('data-step') !== step.id) {
     g.attr('data-step', step.id).selectAll('*').remove();
@@ -161,6 +161,14 @@ function renderCover(g: AnySel, step: Step, dur: number, reduced: boolean) {
         .attr('y', VB_H / 2 + 34)
         .attr('text-anchor', 'middle')
         .text(step.coverSubtitle);
+    }
+    if (coverNote) {
+      g.append('text')
+        .attr('class', 'cover-note')
+        .attr('x', VB_W / 2)
+        .attr('y', VB_H / 2 + (step.coverSubtitle ? 66 : 30))
+        .attr('text-anchor', 'middle')
+        .text(coverNote);
     }
     g.style('opacity', 0);
   }
@@ -222,7 +230,7 @@ function firePackets(layer: AnySel, step: Step, byId: Map<string, DiagramNode>, 
   }
 }
 
-export function renderDiagram(svgEl: SVGSVGElement, story: Story, stepIndex: number, reduced: boolean) {
+export function renderDiagram(svgEl: SVGSVGElement, story: Story, stepIndex: number, reduced: boolean, coverNote?: string) {
   const svg = d3.select(svgEl);
   if (svg.select('g.camera').empty()) setup(svg);
 
@@ -331,7 +339,7 @@ export function renderDiagram(svgEl: SVGSVGElement, story: Story, stepIndex: num
 
   const cover = svg.select('g.layer-cover');
   if (step.cover) {
-    renderCover(cover, step, dur, reduced);
+    renderCover(cover, step, dur, reduced, coverNote);
   } else if (cover.style('display') !== 'none') {
     cover.transition('cover').duration(dur).style('opacity', 0).on('end', function () {
       d3.select(this).style('display', 'none').attr('data-step', null);

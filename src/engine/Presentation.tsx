@@ -57,11 +57,14 @@ export function Presentation({
   audioUrl,
   transcript,
   audioEnd,
+  coverNote,
 }: {
   story: Story;
   onExit?: () => void;
   nextChapterTitle?: string;
   onNextChapter?: () => void;
+  /** small note shown under the cover title (e.g. the chapter duration) */
+  coverNote?: string;
   /** start playing on mount (auto-advanced chapters do; a first page view may not) */
   autoStart?: boolean;
   /** called the first time playback starts, so the host can auto-play the rest */
@@ -354,7 +357,7 @@ export function Presentation({
         </div>
       )}
 
-      <Diagram story={story} stepIndex={index} reduced={reduced} />
+      <Diagram story={story} stepIndex={index} reduced={reduced} coverNote={coverNote} />
 
       {!playing && !finished && (
         <button className="play-overlay" onClick={togglePlay} aria-label="Play slideshow">

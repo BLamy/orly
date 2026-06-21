@@ -558,6 +558,100 @@
   line-height: 1.4;
 }
 
+/* book-series sidebar: each book is a cover separator + its chapters */
+.learn-h1.series {
+  font-size: 19px;
+  line-height: 1.25;
+}
+.learn-series-section {
+  margin-bottom: 6px;
+}
+.learn-series-book {
+  display: flex;
+  align-items: center;
+  gap: 11px;
+  text-decoration: none;
+  color: var(--text);
+  padding: 9px 8px;
+  border-radius: 10px;
+  margin: 12px 0 5px;
+  border-top: 1px solid var(--line);
+  cursor: pointer;
+}
+.learn-series-section:first-of-type .learn-series-book {
+  border-top: 0;
+  margin-top: 2px;
+}
+.learn-series-book:hover {
+  background: rgba(255, 255, 255, 0.045);
+}
+.learn-series-book.current {
+  cursor: default;
+  background: rgba(255, 255, 255, 0.05);
+}
+.learn-series-cover {
+  flex: 0 0 auto;
+  border-radius: 3px;
+  box-shadow: 0 3px 11px rgba(0, 0, 0, 0.55);
+}
+.learn-series-binfo {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+.learn-series-btitle {
+  font-size: 14px;
+  font-weight: 750;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.learn-series-book.current .learn-series-btitle {
+  color: var(--accent);
+}
+.learn-series-bsub {
+  font-size: 11px;
+  color: var(--muted);
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+.learn-chapters.compact {
+  gap: 2px;
+  padding-left: 8px;
+}
+.learn-chapter.compact {
+  padding: 7px 10px;
+  gap: 10px;
+  align-items: center;
+  border-radius: 9px;
+}
+.learn-chapter.compact .learn-num {
+  font-size: 13px;
+}
+.learn-chapter.compact .learn-ctitle {
+  font-size: 13px;
+  font-weight: 600;
+}
+.learn-series-bmeta {
+  font-size: 10.5px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  color: var(--muted);
+  font-variant-numeric: tabular-nums;
+  margin-top: 3px;
+}
+.learn-cdur {
+  font-size: 11px;
+  font-variant-numeric: tabular-nums;
+  color: var(--muted);
+  opacity: 0.82;
+  margin-top: 1px;
+}
+
 .learn-player {
   flex: 1;
   min-height: 0;
@@ -798,6 +892,13 @@
   fill: #9fb2cc;
   font-size: 19px;
   font-weight: 500;
+}
+.cover-note {
+  fill: #7488a5;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  font-variant-numeric: tabular-nums;
 }
 
 /* ---- narration panel --------------------------------------------------- */

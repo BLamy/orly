@@ -11,7 +11,34 @@
       "href": "?bundle=effect-elite",
       "series": "Effect.ts — The Good Parts",
       "seriesOrder": 5,
-      "createdAt": "2026-06-21T03:56:32.949Z"
+      "createdAt": "2026-06-21T03:56:32.949Z",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Mental Model and Runtime Myths",
+          "duration": 97
+        },
+        {
+          "number": 2,
+          "title": "Effect vs the Field",
+          "duration": 103
+        },
+        {
+          "number": 3,
+          "title": "Layer Memoization and Wiring",
+          "duration": 89
+        },
+        {
+          "number": 4,
+          "title": "Resolvers, Context, and Batching",
+          "duration": 92
+        },
+        {
+          "number": 5,
+          "title": "The Data-Type Foundation",
+          "duration": 106
+        }
+      ]
     },
     {
       "slug": "effect-production",
@@ -24,7 +51,34 @@
       "href": "?bundle=effect-production",
       "series": "Effect.ts — The Good Parts",
       "seriesOrder": 4,
-      "createdAt": "2026-06-21T03:54:46.305Z"
+      "createdAt": "2026-06-21T03:54:46.305Z",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Configuration and Entry Points",
+          "duration": 69
+        },
+        {
+          "number": 2,
+          "title": "Platform Services",
+          "duration": 72
+        },
+        {
+          "number": 3,
+          "title": "Observability",
+          "duration": 62
+        },
+        {
+          "number": 4,
+          "title": "Caching at Scale",
+          "duration": 62
+        },
+        {
+          "number": 5,
+          "title": "Batching and Request Resolution",
+          "duration": 70
+        }
+      ]
     },
     {
       "slug": "effect-advanced",
@@ -37,7 +91,34 @@
       "href": "?bundle=effect-advanced",
       "series": "Effect.ts — The Good Parts",
       "seriesOrder": 3,
-      "createdAt": "2026-06-21T03:53:26.675Z"
+      "createdAt": "2026-06-21T03:53:26.675Z",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Structured Concurrency and Fiber Lifetimes",
+          "duration": 80
+        },
+        {
+          "number": 2,
+          "title": "The Interruption Model",
+          "duration": 79
+        },
+        {
+          "number": 3,
+          "title": "Racing and Coordination Primitives",
+          "duration": 88
+        },
+        {
+          "number": 4,
+          "title": "The Full Failure Tree: Cause and Exit",
+          "duration": 97
+        },
+        {
+          "number": 5,
+          "title": "Defects, Sandboxing, and Error Accumulation",
+          "duration": 92
+        }
+      ]
     },
     {
       "slug": "effect-intermediate",
@@ -50,7 +131,34 @@
       "href": "?bundle=effect-intermediate",
       "series": "Effect.ts — The Good Parts",
       "seriesOrder": 2,
-      "createdAt": "2026-06-21T03:51:50.065Z"
+      "createdAt": "2026-06-21T03:51:50.065Z",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Control Flow That Stays in Effect",
+          "duration": 82
+        },
+        {
+          "number": 2,
+          "title": "Typed Errors and Recovery",
+          "duration": 80
+        },
+        {
+          "number": 3,
+          "title": "Resilience: Retry, Timeout, Fallback",
+          "duration": 80
+        },
+        {
+          "number": 4,
+          "title": "Services and Dependency Injection",
+          "duration": 80
+        },
+        {
+          "number": 5,
+          "title": "Concurrency Without Threads",
+          "duration": 87
+        }
+      ]
     },
     {
       "slug": "effect-beginner",
@@ -63,7 +171,34 @@
       "href": "?bundle=effect-beginner",
       "series": "Effect.ts — The Good Parts",
       "seriesOrder": 1,
-      "createdAt": "2026-06-21T03:45:48.390Z"
+      "createdAt": "2026-06-21T03:45:48.390Z",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Program Is a Value",
+          "duration": 85
+        },
+        {
+          "number": 2,
+          "title": "Installing and Importing",
+          "duration": 72
+        },
+        {
+          "number": 3,
+          "title": "Creating Effects: Success and Failure",
+          "duration": 80
+        },
+        {
+          "number": 4,
+          "title": "Wrapping Side Effects",
+          "duration": 85
+        },
+        {
+          "number": 5,
+          "title": "Composing and Running",
+          "duration": 98
+        }
+      ]
     },
     {
       "slug": "koa-onion",
@@ -74,7 +209,29 @@
       "color": "#d6202b",
       "animal": "generated/koa-onion/animal.png",
       "href": "?bundle=koa-onion",
-      "createdAt": "2026-06-20T22:00:00Z"
+      "createdAt": "2026-06-20T22:00:00Z",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "From socket to callback",
+          "duration": 58
+        },
+        {
+          "number": 2,
+          "title": "The middleware onion",
+          "duration": 97
+        },
+        {
+          "number": 3,
+          "title": "Context, request and response",
+          "duration": 85
+        },
+        {
+          "number": 4,
+          "title": "Responding and the full journey",
+          "duration": 89
+        }
+      ]
     },
     {
       "slug": "almostnode",

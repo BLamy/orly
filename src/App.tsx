@@ -1,5 +1,5 @@
 import { useEffect, useState } from 'react';
-import { LearnPage } from './LearnPage';
+import { LearnPage, type SeriesBook } from './LearnPage';
 import { Library } from './library/Library';
 import { chapters as staticChapters, type Chapter } from './stories';
 
@@ -16,7 +16,12 @@ function param(name: string): string | null {
   return null;
 }
 
-type Bundle = { chapters: Chapter[]; title?: string; tagline?: string };
+type Bundle = {
+  chapters: Chapter[];
+  title?: string;
+  tagline?: string;
+  series?: { name: string; books: SeriesBook[] };
+};
 
 export function App() {
   const bundleSlug = param('bundle');
@@ -28,10 +33,27 @@ export function App() {
   useEffect(() => {
     if (!bundleSlug) return;
     let alive = true;
-    fetch(`${ASSET_BASE}generated/${bundleSlug}/manifest.json`)
-      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
-      .then((m) => {
-        if (alive) setBundle({ chapters: m.chapters as Chapter[], title: m.title, tagline: m.subtitle ?? m.throughline });
+    Promise.all([
+      fetch(`${ASSET_BASE}generated/${bundleSlug}/manifest.json`).then((r) =>
+        r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))
+      ),
+      fetch(`${ASSET_BASE}generated/library.json`)
+        .then((r) => (r.ok ? r.json() : { books: [] }))
+        .catch(() => ({ books: [] })),
+    ])
+      .then(([m, lib]) => {
+        if (!alive) return;
+        const books = (lib.books || []) as SeriesBook[];
+        const cur = books.find((b) => b.slug === bundleSlug);
+        let series: { name: string; books: SeriesBook[] } | undefined;
+        if (cur?.series) {
+          const sib = books
+            .filter((b) => b.series === cur.series)
+            .sort((a, b) => (a.seriesOrder ?? 0) - (b.seriesOrder ?? 0))
+            .map((b) => ({ ...b, current: b.slug === bundleSlug }));
+          if (sib.length > 1) series = { name: cur.series, books: sib };
+        }
+        setBundle({ chapters: m.chapters as Chapter[], title: m.title, tagline: m.subtitle ?? m.throughline, series });
       })
       .catch((e) => alive && setError(e.message));
     return () => {
@@ -43,7 +65,15 @@ export function App() {
   if (bundleSlug) {
     if (error) return <div className="learn-loading">Couldn’t load “{bundleSlug}”: {error}</div>;
     if (!bundle) return <div className="learn-loading">Loading explainer…</div>;
-    return <LearnPage key={bundleSlug} chapters={bundle.chapters} title={bundle.title} tagline={bundle.tagline} />;
+    return (
+      <LearnPage
+        key={bundleSlug}
+        chapters={bundle.chapters}
+        title={bundle.title}
+        tagline={bundle.tagline}
+        series={bundle.series}
+      />
+    );
   }
 
   // the built-in book (?book=almostnode → the static chapters)

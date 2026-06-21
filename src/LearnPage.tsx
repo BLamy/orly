@@ -2,6 +2,25 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 import { Presentation } from './engine/Presentation';
 import { ChevronLeft, ChevronRight } from './engine/icons';
 import { chapters as staticChapters, type Chapter } from './stories';
+import { BookCoverThumb } from './library/BookCoverThumb';
+import type { BookMeta } from './library/cover';
+
+const ASSET_BASE =
+  (import.meta as unknown as { env?: { BASE_URL?: string } }).env?.BASE_URL ?? '/';
+
+/** A book in the same series, for the series sidebar. */
+export type SeriesBook = BookMeta & {
+  chapters: { number: number; title: string; duration?: number }[];
+  current?: boolean;
+};
+
+/** Format seconds as m:ss (blank for missing/zero). */
+function fmtDur(s?: number): string {
+  if (!s || s < 1) return '';
+  const m = Math.floor(s / 60);
+  const sec = Math.round(s % 60);
+  return `${m}:${String(sec).padStart(2, '0')}`;
+}
 
 // Resolve a `chapter` deep-link from the URL: ?chapter=3 (1-based) or
 // ?chapter=tailscale, in the query string *or* tacked onto the hash, e.g.
@@ -27,26 +46,28 @@ function hashWantsLearn(): boolean {
   return hash === 'learn' || hash.startsWith('learn?') || hash.startsWith('learn&');
 }
 
-// The /learn page. Desktop (≥1024px): a fixed left sidebar of chapters next to
-// the player. Tablet and smaller: a top toolbar whose hamburger opens the same
-// list as a drawer. First view doesn't auto-play (a play overlay waits for a
-// click); once started, every following chapter auto-plays. A `chapter` URL
-// param deep-links to a chapter (without auto-playing).
+// The player. Desktop (≥1024px): a fixed left sidebar next to the player. When
+// the book belongs to a series, the sidebar shows the WHOLE series (each book as
+// a cover separator with its chapters under it). The active chapter auto-scrolls
+// into view as the slideshow advances.
 export function LearnPage({
   embedded = false,
   chapters = staticChapters,
   title = 'almostnode, explained',
   tagline = 'How a browser-native dev environment actually works.',
+  series,
 }: {
   embedded?: boolean;
   chapters?: Chapter[];
   title?: string;
   tagline?: string;
+  series?: { name: string; books: SeriesBook[] };
 }) {
   const [selectedId, setSelectedId] = useState(() => chapterFromUrl(chapters) ?? chapters[0].id);
   const [started, setStarted] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const rootRef = useRef<HTMLDivElement | null>(null);
+  const activeChapterRef = useRef<HTMLButtonElement | null>(null);
 
   const selectedIndex = chapters.findIndex((c) => c.id === selectedId);
   const chapter = chapters[selectedIndex] ?? chapters[0];
@@ -58,9 +79,12 @@ export function LearnPage({
     setSelectedId(id);
     setMenuOpen(false);
   };
+  const goBook = (slug: string, chapterNumber?: number) => {
+    window.location.href = `${ASSET_BASE}?bundle=${slug}${chapterNumber ? `&chapter=${chapterNumber}` : ''}`;
+  };
 
-  // Deep-link: select the chapter named in the URL, and (when embedded on a
-  // larger page) scroll the Learn section into view. Never auto-plays.
+  // Deep-link: select the chapter named in the URL, and (when embedded) scroll
+  // the Learn section into view. Never auto-plays.
   useEffect(() => {
     const apply = () => {
       const id = chapterFromUrl(chapters);
@@ -82,6 +106,11 @@ export function LearnPage({
     };
   }, [embedded, chapters]);
 
+  // Auto-scroll the sidebar to the active chapter whenever it changes.
+  useEffect(() => {
+    activeChapterRef.current?.scrollIntoView({ block: 'nearest', behavior: 'smooth' });
+  }, [selectedId]);
+
   return (
     <div ref={rootRef} className={`learn${embedded ? ' learn-embedded' : ''}`}>
       {/* toolbar — only shown on tablet and smaller (CSS) */}
@@ -97,7 +126,7 @@ export function LearnPage({
           </svg>
         </button>
         <div className="learn-bar-mid">
-          <span className="learn-bar-brand">{title}</span>
+          <span className="learn-bar-brand">{series ? series.name : title}</span>
           <span className="learn-bar-chapter">
             <span className="learn-bar-num" style={{ color: chapter.accent }}>
               {String(chapter.number).padStart(2, '0')}
@@ -118,30 +147,92 @@ export function LearnPage({
       <div className="learn-body">
         {menuOpen && <div className="learn-backdrop" onClick={() => setMenuOpen(false)} />}
 
-        {/* static sidebar on desktop; slide-in drawer on tablet/mobile */}
         <nav className={`learn-nav${menuOpen ? ' open' : ''}`} aria-label="Chapters">
-          <div className="learn-nav-head">
-            <div className="learn-eyebrow">The Secret Lives of Data</div>
-            <h1 className="learn-h1">{title}</h1>
-            <p className="learn-tagline">{tagline}</p>
-          </div>
-          <ol className="learn-chapters">
-            {chapters.map((c) => (
-              <li key={c.id}>
-                <button
-                  className={`learn-chapter${c.id === selectedId ? ' active' : ''}`}
-                  style={{ ['--accent']: c.accent } as React.CSSProperties}
-                  onClick={() => select(c.id)}
-                >
-                  <span className="learn-num">{String(c.number).padStart(2, '0')}</span>
-                  <span className="learn-ctext">
-                    <span className="learn-ctitle">{c.title}</span>
-                    <span className="learn-cblurb">{c.blurb}</span>
-                  </span>
-                </button>
-              </li>
-            ))}
-          </ol>
+          {series ? (
+            <>
+              <div className="learn-nav-head">
+                <div className="learn-eyebrow">A book series</div>
+                <h1 className="learn-h1 series">{series.name}</h1>
+                <p className="learn-tagline">{series.books.length} books · read in order</p>
+              </div>
+              {series.books.map((b) => (
+                <div className="learn-series-section" key={b.slug}>
+                  <a
+                    className={`learn-series-book${b.current ? ' current' : ''}`}
+                    href={b.current ? undefined : `${ASSET_BASE}?bundle=${b.slug}`}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      if (!b.current) goBook(b.slug);
+                    }}
+                  >
+                    <BookCoverThumb book={b} width={52} />
+                    <span className="learn-series-binfo">
+                      <span className="learn-series-btitle">{b.title}</span>
+                      <span className="learn-series-bsub">{b.subtitle}</span>
+                      <span className="learn-series-bmeta">
+                        {b.chapters.length} chapters · {fmtDur(b.chapters.reduce((s, c) => s + (c.duration ?? 0), 0))}
+                      </span>
+                    </span>
+                  </a>
+                  <ol className="learn-chapters compact">
+                    {b.chapters.map((ch) => {
+                      const active = !!b.current && chapter.number === ch.number;
+                      return (
+                        <li key={ch.number}>
+                          <button
+                            ref={active ? activeChapterRef : undefined}
+                            className={`learn-chapter compact${active ? ' active' : ''}`}
+                            style={{ ['--accent']: b.color } as React.CSSProperties}
+                            onClick={() => {
+                              if (b.current) {
+                                const loaded = chapters.find((c) => c.number === ch.number);
+                                if (loaded) select(loaded.id);
+                              } else {
+                                goBook(b.slug, ch.number);
+                              }
+                            }}
+                          >
+                            <span className="learn-num">{String(ch.number).padStart(2, '0')}</span>
+                            <span className="learn-ctext">
+                              <span className="learn-ctitle">{ch.title}</span>
+                              {fmtDur(ch.duration) && <span className="learn-cdur">{fmtDur(ch.duration)}</span>}
+                            </span>
+                          </button>
+                        </li>
+                      );
+                    })}
+                  </ol>
+                </div>
+              ))}
+            </>
+          ) : (
+            <>
+              <div className="learn-nav-head">
+                <div className="learn-eyebrow">The Secret Lives of Data</div>
+                <h1 className="learn-h1">{title}</h1>
+                <p className="learn-tagline">{tagline}</p>
+              </div>
+              <ol className="learn-chapters">
+                {chapters.map((c) => (
+                  <li key={c.id}>
+                    <button
+                      ref={c.id === selectedId ? activeChapterRef : undefined}
+                      className={`learn-chapter${c.id === selectedId ? ' active' : ''}`}
+                      style={{ ['--accent']: c.accent } as React.CSSProperties}
+                      onClick={() => select(c.id)}
+                    >
+                      <span className="learn-num">{String(c.number).padStart(2, '0')}</span>
+                      <span className="learn-ctext">
+                        <span className="learn-ctitle">{c.title}</span>
+                        <span className="learn-cblurb">{c.blurb}</span>
+                        {fmtDur(c.audioEnd) && <span className="learn-cdur">{fmtDur(c.audioEnd)}</span>}
+                      </span>
+                    </button>
+                  </li>
+                ))}
+              </ol>
+            </>
+          )}
         </nav>
 
         <main className="learn-player">
@@ -151,6 +242,7 @@ export function LearnPage({
             audioUrl={chapter.audio}
             transcript={chapter.transcript}
             audioEnd={chapter.audioEnd}
+            coverNote={fmtDur(chapter.audioEnd)}
             autoStart={started}
             onStart={onStart}
             nextChapterTitle={nextChapter?.title}

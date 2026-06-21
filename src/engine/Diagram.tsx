@@ -8,16 +8,18 @@ export function Diagram({
   story,
   stepIndex,
   reduced,
+  coverNote,
 }: {
   story: Story;
   stepIndex: number;
   reduced: boolean;
+  coverNote?: string;
 }) {
   const ref = useRef<SVGSVGElement | null>(null);
 
   useEffect(() => {
-    if (ref.current) renderDiagram(ref.current, story, stepIndex, reduced);
-  }, [story, stepIndex, reduced]);
+    if (ref.current) renderDiagram(ref.current, story, stepIndex, reduced, coverNote);
+  }, [story, stepIndex, reduced, coverNote]);
 
   return (
     <div className="stage">
