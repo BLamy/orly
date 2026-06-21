@@ -1,13 +1,16 @@
 name: Book pipeline (issue → book)
 
-# Open a "📕 New book", "📚 New book series", or "✏️ Tweak a book" issue (as the repo
-# owner) and this runs Claude Code in CI to build the book(s) and open a PR. The PR is
-# left OPEN: preview.yml deploys a Cloudflare preview + posts a link; reply "@claude
-# <change>" on the PR to revise (comment-edit.yml); merging deploys to production.
+# Build a book from a "📕/📚/✏️" issue. ANYONE may open an issue, but it only runs for
+# the repo OWNER — either when the owner opens it, or when the owner applies the `build`
+# label to someone else's issue (non-collaborators can't apply labels at all). It builds
+# the book(s) and opens a PR; the PR is left OPEN: preview.yml deploys a Cloudflare
+# preview + posts a link; reply "@claude <change>" to revise (comment-edit.yml); merging
+# deploys to production. If generation dies partway, a PR is still opened with the
+# partial work (nothing is lost) and the run is flagged.
 
 on:
   issues:
-    types: [opened]
+    types: [opened, labeled]
 
 permissions:
   contents: write
@@ -17,12 +20,17 @@ permissions:
 
 jobs:
   generate:
-    # Only the repo owner's issues, and only book/series issues, trigger generation.
+    # Gate: the actor must be the repo OWNER (whoever opened the issue or applied the
+    # label), the issue must carry a category label, AND this is either the owner opening
+    # it (`opened`) or the owner applying the `build` label (`labeled`). So anyone can
+    # file an issue, but only the owner's open/`build` actually runs the pipeline.
     if: >
-      github.event.issue.user.login == github.repository_owner &&
+      github.event.sender.login == github.repository_owner &&
       (contains(github.event.issue.labels.*.name, 'new-book') ||
        contains(github.event.issue.labels.*.name, 'new-series') ||
-       contains(github.event.issue.labels.*.name, 'tweak-book'))
+       contains(github.event.issue.labels.*.name, 'tweak-book')) &&
+      (github.event.action == 'opened' ||
+       (github.event.action == 'labeled' && github.event.label.name == 'build'))
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v5
@@ -48,6 +56,8 @@ jobs:
             --body "🤖 On it — generating in CI. Track progress in the [Actions tab](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})."
 
       - name: Generate the book(s) with Claude Code
+        id: generate
+        continue-on-error: true # if it dies partway, still salvage the work into a PR
         uses: anthropics/claude-code-action@v1
         with:
           # Claude Pro/Max subscription token (run `claude setup-token` locally).
@@ -73,7 +83,7 @@ jobs:
             it's the minimal edit + the matching regen tool. Keep going until done.
 
             Do NOT run any git or gh commands and do NOT open a PR — the workflow
-            commits, opens the PR, and auto-merges after you finish.
+            commits + opens the PR (left open for review) after you finish.
           claude_args: |
             --max-turns 250
             --model claude-opus-4-8
@@ -84,9 +94,12 @@ jobs:
           NOUN_PROJECT_KEY: ${{ secrets.NOUN_PROJECT_KEY }}
           NOUN_PROJECT_SECRET: ${{ secrets.NOUN_PROJECT_SECRET }}
 
-      - name: Commit + open a PR (no auto-merge)
+      - name: Commit + open a PR (even on partial failure)
+        if: always() # salvage partial work into a PR even if generation errored
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          GENERATE_OUTCOME: ${{ steps.generate.outcome }}
         run: |
           set -euo pipefail
           BRANCH="book/issue-${{ github.event.issue.number }}"
@@ -95,16 +108,29 @@ jobs:
           git add -A public/generated .github/ISSUE_TEMPLATE/tweak-book.yml
           if git diff --cached --quiet; then
             gh issue comment "${{ github.event.issue.number }}" \
-              --body "⚠️ No changes were produced — see the [run log](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})."
+              --body "⚠️ No changes were produced (generation \`${GENERATE_OUTCOME}\`) — see the [run log](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})."
             exit 1
           fi
+          NOTE=""
+          if [ "$GENERATE_OUTCOME" != "success" ]; then
+            NOTE="
+
+          > ⚠️ **Generation did not finish (\`$GENERATE_OUTCOME\`).** This PR holds the partial work so it isn't lost — review it, reply \`@claude <change>\` to continue, and merge when it's complete."
+          fi
           git commit -m "${{ github.event.issue.title }} (#${{ github.event.issue.number }})"
-          git push -u origin "$BRANCH"
+          # checkout's persisted token is gone after claude-code-action, so push with an
+          # explicitly-authenticated URL (GITHUB_TOKEN is masked in logs).
+          git push "https://x-access-token:${GH_TOKEN}@github.com/${REPO}.git" "HEAD:refs/heads/$BRANCH"
           gh pr create --base main --head "$BRANCH" \
             --title "${{ github.event.issue.title }}" \
             --body "Closes #${{ github.event.issue.number }}
 
           Auto-generated by Claude Code in CI. A **preview** will be posted on this PR shortly.
-          Reply \`@claude <change>\` to revise; **merge** when you're happy and it deploys to production."
+          Reply \`@claude <change>\` to revise; **merge** when you're happy and it deploys to production.$NOTE"
+          if [ -n "$NOTE" ]; then
+            gh issue comment "${{ github.event.issue.number }}" \
+              --body "📖 Opened a PR, but ⚠️ generation didn't fully finish — the PR has the **partial work** so nothing is lost. Review + reply \`@claude <change>\` to continue."
+            exit 1 # flag the run; the PR is safely created either way
+          fi
           gh issue comment "${{ github.event.issue.number }}" \
             --body "📖 Opened a PR with your book — a Cloudflare **preview link** will appear on it shortly. Reply \`@claude <change>\` on the PR to revise, and merge when you're happy."

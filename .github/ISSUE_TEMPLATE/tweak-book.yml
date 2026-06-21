@@ -6,9 +6,9 @@ body:
   - type: markdown
     attributes:
       value: |
-        Opening this issue (as the repo owner) kicks off CI: Claude Code makes the
-        change you describe to the chosen book and auto-merges a PR — so you can
-        fine-tune any book just by filing a follow-up issue.
+        Anyone can file this. The repo owner runs it — by opening it themselves, or by
+        applying the **build** label to your issue. CI makes the change you describe to
+        the chosen book and opens a **preview PR** (reviewed and merged by hand).
   - type: dropdown
     id: book
     attributes:

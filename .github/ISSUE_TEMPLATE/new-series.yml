@@ -6,9 +6,10 @@ body:
   - type: markdown
     attributes:
       value: |
-        Opening this issue (as the repo owner) kicks off CI: Claude Code studies the
-        source, plans the series, generates every book (narration + O'RLY cover +
-        icons), and auto-merges a PR that adds the grouped series to the shelf.
+        Anyone can file this. The repo owner runs it — by opening it themselves, or by
+        applying the **build** label to your issue. CI then studies the source, plans the
+        series, generates every book (narration + O'RLY cover + icons), and opens a
+        **preview PR** (reviewed and merged by hand — merging publishes the series).
   - type: input
     id: source
     attributes:

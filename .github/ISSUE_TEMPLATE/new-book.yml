@@ -6,9 +6,10 @@ body:
   - type: markdown
     attributes:
       value: |
-        Opening this issue (as the repo owner) kicks off CI: Claude Code digests the
-        repo, writes the storyboard, narrates it, makes an O'RLY cover + icons, and
-        auto-merges a PR that adds the book to the shelf.
+        Anyone can file this. The repo owner runs it — by opening it themselves, or by
+        applying the **build** label to your issue. CI then digests the repo, writes the
+        storyboard, narrates it, makes an O'RLY cover + icons, and opens a **preview PR**
+        (reviewed and merged by hand — merging publishes it to the shelf).
   - type: input
     id: repo
     attributes:

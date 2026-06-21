@@ -4,6 +4,7 @@ name: PR preview (Cloudflare)
 # version with a stable per-branch preview alias, then posts/updates a sticky comment
 # linking straight to the book(s) in the preview. The `synchronize` trigger means
 # @claude edits (which push to the PR branch) redeploy the same preview automatically.
+# Until the Cloudflare secrets are set, it posts a "preview pending" note instead.
 
 on:
   pull_request:
@@ -23,19 +24,45 @@ jobs:
     if: startsWith(github.head_ref, 'book/')
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v5
+      - name: Check Cloudflare credentials are configured
+        id: gate
+        env:
+          CF_TOKEN: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+        run: |
+          if [ -n "$CF_TOKEN" ]; then
+            echo "ready=true" >> "$GITHUB_OUTPUT"
+          else
+            echo "ready=false" >> "$GITHUB_OUTPUT"
+          fi
+
+      - name: Note that previews aren't configured yet
+        if: steps.gate.outputs.ready != 'true'
+        uses: marocchino/sticky-pull-request-comment@v2
+        with:
+          header: cf-preview
+          message: |
+            ### ⏳ Preview pending
+            Add the `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` repo secrets to enable
+            per-PR previews. Once set, every push here deploys a live preview link.
+
+      - if: steps.gate.outputs.ready == 'true'
+        uses: actions/checkout@v5
         with:
           fetch-depth: 0 # need main in history to diff for changed slugs
 
-      - uses: actions/setup-node@v5
+      - if: steps.gate.outputs.ready == 'true'
+        uses: actions/setup-node@v5
         with:
           node-version: 22
 
-      - run: npm install --no-audit --no-fund
-      - run: npm run build
+      - if: steps.gate.outputs.ready == 'true'
+        run: npm install --no-audit --no-fund
+      - if: steps.gate.outputs.ready == 'true'
+        run: npm run build
 
       - name: Derive a stable preview alias from the branch
         id: alias
+        if: steps.gate.outputs.ready == 'true'
         run: |
           # CF preview aliases must be a DNS label: lowercase [a-z0-9-], <=28 chars.
           alias=$(printf '%s' "${{ github.head_ref }}" \
@@ -44,6 +71,7 @@ jobs:
 
       - name: Upload preview version to Cloudflare
         id: deploy
+        if: steps.gate.outputs.ready == 'true'
         uses: cloudflare/wrangler-action@v3
         with:
           apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
@@ -52,6 +80,7 @@ jobs:
 
       - name: Resolve preview URL + changed book slugs
         id: meta
+        if: steps.gate.outputs.ready == 'true'
         env:
           WRANGLER_OUTPUT: ${{ steps.deploy.outputs.command-output }}
         run: |
@@ -77,6 +106,7 @@ jobs:
           } >> "$GITHUB_OUTPUT"
 
       - name: Post / update the preview comment
+        if: steps.gate.outputs.ready == 'true'
         uses: marocchino/sticky-pull-request-comment@v2
         with:
           header: cf-preview

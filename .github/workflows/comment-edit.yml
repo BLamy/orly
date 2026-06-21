@@ -59,6 +59,8 @@ jobs:
             -f content=eyes || true
 
       - name: Apply the edit with Claude Code
+        id: edit
+        continue-on-error: true # if it dies partway, still push what changed
         uses: anthropics/claude-code-action@v1
         with:
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
@@ -89,17 +91,28 @@ jobs:
           NOUN_PROJECT_SECRET: ${{ secrets.NOUN_PROJECT_SECRET }}
 
       - name: Commit + push to the PR branch
+        if: always() # push whatever changed, even if the edit errored partway
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          EDIT_OUTCOME: ${{ steps.edit.outcome }}
         run: |
           set -euo pipefail
           git add -A public/generated
           if git diff --cached --quiet; then
             gh issue comment "${{ github.event.issue.number }}" \
-              --body "🤷 That request didn't produce any changes — see the [run log](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})."
-            exit 0
+              --body "🤷 That request didn't produce any changes (edit \`${EDIT_OUTCOME}\`) — see the [run log](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})."
+            [ "$EDIT_OUTCOME" = "success" ] && exit 0 || exit 1
           fi
           git commit -m "tweak via @claude (#${{ github.event.issue.number }})"
-          git push
+          # checkout's persisted token is gone after claude-code-action — push via an
+          # explicitly-authenticated URL (GITHUB_TOKEN is masked in logs).
+          BR=$(git rev-parse --abbrev-ref HEAD)
+          git push "https://x-access-token:${GH_TOKEN}@github.com/${REPO}.git" "HEAD:refs/heads/$BR"
+          if [ "$EDIT_OUTCOME" != "success" ]; then
+            gh issue comment "${{ github.event.issue.number }}" \
+              --body "⚠️ Pushed partial changes — the edit didn't fully finish (\`$EDIT_OUTCOME\`). The preview will redeploy; reply \`@claude <change>\` to keep going."
+            exit 1
+          fi
           gh issue comment "${{ github.event.issue.number }}" \
             --body "✅ Applied your change and pushed to this PR — the preview will redeploy shortly."
