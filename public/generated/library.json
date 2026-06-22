@@ -1,6 +1,39 @@
 {
   "books": [
     {
+      "slug": "executor-codemods",
+      "title": "Executor Codemods",
+      "subtitle": "How Executor runs code-defined data migrations exactly once",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#8B5FBF",
+      "animal": "generated/executor-codemods/animal.png",
+      "href": "?bundle=executor-codemods",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Migration Contract",
+          "duration": 50.851
+        },
+        {
+          "number": 2,
+          "title": "Run Once: Lock and Ledger",
+          "duration": 58.978
+        },
+        {
+          "number": 3,
+          "title": "A Migration at Work",
+          "duration": 69.8
+        },
+        {
+          "number": 4,
+          "title": "Dry Run, and the Whole Picture",
+          "duration": 60.372
+        }
+      ],
+      "createdAt": "2026-06-22T01:50:31.116Z"
+    },
+    {
       "slug": "replay-qa",
       "title": "Replay.qa",
       "subtitle": "Continuous QA",
