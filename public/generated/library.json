@@ -1,6 +1,44 @@
 {
   "books": [
     {
+      "slug": "tanstack-db",
+      "title": "TanStack DB",
+      "subtitle": "The reactive client store for your API",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#f4631e",
+      "animal": "generated/tanstack-db/animal.png",
+      "href": "?bundle=tanstack-db",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Reactive Client Store",
+          "duration": 70.635
+        },
+        {
+          "number": 2,
+          "title": "Defining Collections",
+          "duration": 84.15
+        },
+        {
+          "number": 3,
+          "title": "Live Queries",
+          "duration": 78.809
+        },
+        {
+          "number": 4,
+          "title": "Optimistic Mutations",
+          "duration": 76.346
+        },
+        {
+          "number": 5,
+          "title": "Uni-directional Data Flow",
+          "duration": 76.579
+        }
+      ],
+      "createdAt": "2026-06-22T23:11:37.486Z"
+    },
+    {
       "slug": "zero-sync",
       "title": "Zero Sync",
       "subtitle": "Local-first reads, your own Postgres, live queries everywhere",
