@@ -1,6 +1,41 @@
 {
   "books": [
     {
+      "slug": "executor-auth",
+      "title": "Executor Auth",
+      "subtitle": "How OAuth, DCR, MCP, and the CLI all mint one Connection",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#14b8a6",
+      "animal": "generated/executor-auth/animal.png",
+      "href": "?bundle=executor-auth",
+      "series": "Inside Executor",
+      "seriesOrder": 2,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Connection Contract",
+          "duration": 79.413
+        },
+        {
+          "number": 2,
+          "title": "OAuth, Start to Connection",
+          "duration": 79.458
+        },
+        {
+          "number": 3,
+          "title": "No App? Register One",
+          "duration": 87.074
+        },
+        {
+          "number": 4,
+          "title": "The CLI Door, and the Whole Picture",
+          "duration": 69.01
+        }
+      ],
+      "createdAt": "2026-06-22T05:57:13.135Z"
+    },
+    {
       "slug": "executor-codemods",
       "title": "Executor Codemods",
       "subtitle": "How Executor runs code-defined data migrations exactly once",
@@ -9,6 +44,8 @@
       "color": "#8B5FBF",
       "animal": "generated/executor-codemods/animal.png",
       "href": "?bundle=executor-codemods",
+      "series": "Inside Executor",
+      "seriesOrder": 1,
       "chapters": [
         {
           "number": 1,
