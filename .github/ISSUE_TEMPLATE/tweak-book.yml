@@ -21,6 +21,7 @@ body:
         - "Electric Internals · Durable Proxy, Durable State, StreamDB and StreamFS — electric-internals"
         - "Electric Sync · Sync Postgres into local clients over HTTP with Shapes — electric-sync"
         - "Electric Streams · Durable, replayable HTTP streams for agents and real-time data — electric-streams"
+        - "TanStack DB · The reactive client store for your API — tanstack-db"
         - "Zero Sync · Local-first reads, your own Postgres, live queries everywhere — zero-sync"
         - "Replay.qa · Continuous QA — replay-qa"
         - "React Server Components · React for two computers — react-server-components"
