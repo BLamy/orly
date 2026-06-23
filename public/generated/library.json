@@ -1,42 +1,42 @@
 {
   "books": [
     {
-      "slug": "differential-dataflow",
-      "title": "Differential Dataflow",
-      "subtitle": "How incremental data-parallel computation is built on streams of signed changes",
+      "slug": "vercel-emulate",
+      "title": "Vercel Emulate",
+      "subtitle": "How emulate signs an end-to-end test in as a seeded user, with no real account",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
-      "color": "#b0277a",
-      "animal": "generated/differential-dataflow/animal.png",
-      "href": "?bundle=differential-dataflow",
+      "color": "#c79100",
+      "animal": "generated/vercel-emulate/animal.png",
+      "href": "?bundle=vercel-emulate",
       "chapters": [
         {
           "number": 1,
-          "title": "The Update Triple",
-          "duration": 53.825
+          "title": "Logging In Without an Account",
+          "duration": 70.264
         },
         {
           "number": 2,
-          "title": "Operators on Collections",
-          "duration": 56.703
+          "title": "The Authorize Redirect",
+          "duration": 54.521
         },
         {
           "number": 3,
-          "title": "Arrange & Trace",
-          "duration": 56.193
+          "title": "Code, Then Token",
+          "duration": 71.471
         },
         {
           "number": 4,
-          "title": "Join & Reduce",
-          "duration": 53.22
+          "title": "Becoming the User",
+          "duration": 52.988
         },
         {
           "number": 5,
-          "title": "Iterate to Fixpoint",
-          "duration": 61.811
+          "title": "The Whole Loop",
+          "duration": 52.617
         }
       ],
-      "createdAt": "2026-06-22T23:37:54.755Z"
+      "createdAt": "2026-06-23T03:10:27.985Z"
     },
     {
       "slug": "electric-agent-patterns",
@@ -117,6 +117,44 @@
         }
       ],
       "createdAt": "2026-06-22T23:37:55.779Z"
+    },
+    {
+      "slug": "differential-dataflow",
+      "title": "Differential Dataflow",
+      "subtitle": "How incremental data-parallel computation is built on streams of signed changes",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b0277a",
+      "animal": "generated/differential-dataflow/animal.png",
+      "href": "?bundle=differential-dataflow",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Update Triple",
+          "duration": 53.825
+        },
+        {
+          "number": 2,
+          "title": "Operators on Collections",
+          "duration": 56.703
+        },
+        {
+          "number": 3,
+          "title": "Arrange & Trace",
+          "duration": 56.193
+        },
+        {
+          "number": 4,
+          "title": "Join & Reduce",
+          "duration": 53.22
+        },
+        {
+          "number": 5,
+          "title": "Iterate to Fixpoint",
+          "duration": 61.811
+        }
+      ],
+      "createdAt": "2026-06-22T23:37:54.755Z"
     },
     {
       "slug": "electric-internals",
