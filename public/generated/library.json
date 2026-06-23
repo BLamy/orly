@@ -1,6 +1,42 @@
 {
   "books": [
     {
+      "slug": "differential-dataflow",
+      "title": "Differential Dataflow",
+      "subtitle": "How incremental data-parallel computation is built on streams of signed changes",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b0277a",
+      "animal": "generated/differential-dataflow/animal.png",
+      "href": "?bundle=differential-dataflow",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Update Triple",
+          "duration": 53.825
+        },
+        {
+          "number": 2,
+          "title": "Operators on Collections",
+          "duration": 56.703
+        },
+        {
+          "number": 3,
+          "title": "Arrange & Trace",
+          "duration": 56.193
+        },
+        {
+          "number": 4,
+          "title": "Join & Reduce",
+          "duration": 53.22
+        },
+        {
+          "number": 5,
+          "title": "Iterate to Fixpoint",
+          "duration": 61.811
+        }
+      ],
+      "createdAt": "2026-06-22T23:37:54.755Z"
       "slug": "electric-agent-patterns",
       "title": "Agent Patterns",
       "subtitle": "Manager-worker, dispatcher, map-reduce, pipeline and blackboard topologies",
