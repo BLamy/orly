@@ -1,6 +1,44 @@
 {
   "books": [
     {
+      "slug": "ast-grep",
+      "title": "AST Grep",
+      "subtitle": "Structural search and rewrite, from raw text to a fix an agent can trust",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#e07b1a",
+      "animal": "generated/ast-grep/animal.png",
+      "href": "?bundle=ast-grep",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "From Text to Tree",
+          "duration": 77.323
+        },
+        {
+          "number": 2,
+          "title": "Code as the Query",
+          "duration": 79.783
+        },
+        {
+          "number": 3,
+          "title": "The Rule Engine",
+          "duration": 91.812
+        },
+        {
+          "number": 4,
+          "title": "Scan and Rewrite",
+          "duration": 74.721
+        },
+        {
+          "number": 5,
+          "title": "Built for Agents",
+          "duration": 98.918
+        }
+      ],
+      "createdAt": "2026-06-23T16:06:33.133Z"
+    },
+    {
       "slug": "vercel-emulate",
       "title": "Vercel Emulate",
       "subtitle": "How emulate signs an end-to-end test in as a seeded user, with no real account",
