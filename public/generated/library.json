@@ -1,42 +1,42 @@
 {
   "books": [
     {
-      "slug": "differential-dataflow",
-      "title": "Differential Dataflow",
-      "subtitle": "How incremental data-parallel computation is built on streams of signed changes",
+      "slug": "portless",
+      "title": "Portless",
+      "subtitle": "How named .localhost URLs replace port numbers in local dev",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#b0277a",
-      "animal": "generated/differential-dataflow/animal.png",
-      "href": "?bundle=differential-dataflow",
+      "animal": "generated/portless/animal.png",
+      "href": "?bundle=portless",
       "chapters": [
         {
           "number": 1,
-          "title": "The Update Triple",
-          "duration": 53.825
+          "title": "Names, Not Port Numbers",
+          "duration": 94.738
         },
         {
           "number": 2,
-          "title": "Operators on Collections",
-          "duration": 56.703
+          "title": "The Proxy's Round Trip",
+          "duration": 108.9
         },
         {
           "number": 3,
-          "title": "Arrange & Trace",
-          "duration": 56.193
+          "title": "Trust on First Run",
+          "duration": 98.174
         },
         {
           "number": 4,
-          "title": "Join & Reduce",
-          "duration": 53.22
+          "title": "The Shared Route Table",
+          "duration": 83.638
         },
         {
           "number": 5,
-          "title": "Iterate to Fixpoint",
-          "duration": 61.811
+          "title": "Zero-Config Startup",
+          "duration": 76.858
         }
       ],
-      "createdAt": "2026-06-22T23:37:54.755Z"
+      "createdAt": "2026-06-23T03:20:39.398Z"
     },
     {
       "slug": "electric-agent-patterns",
@@ -117,6 +117,44 @@
         }
       ],
       "createdAt": "2026-06-22T23:37:55.779Z"
+    },
+    {
+      "slug": "differential-dataflow",
+      "title": "Differential Dataflow",
+      "subtitle": "How incremental data-parallel computation is built on streams of signed changes",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b0277a",
+      "animal": "generated/differential-dataflow/animal.png",
+      "href": "?bundle=differential-dataflow",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Update Triple",
+          "duration": 53.825
+        },
+        {
+          "number": 2,
+          "title": "Operators on Collections",
+          "duration": 56.703
+        },
+        {
+          "number": 3,
+          "title": "Arrange & Trace",
+          "duration": 56.193
+        },
+        {
+          "number": 4,
+          "title": "Join & Reduce",
+          "duration": 53.22
+        },
+        {
+          "number": 5,
+          "title": "Iterate to Fixpoint",
+          "duration": 61.811
+        }
+      ],
+      "createdAt": "2026-06-22T23:37:54.755Z"
     },
     {
       "slug": "electric-internals",
