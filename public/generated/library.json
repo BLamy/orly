@@ -1,6 +1,204 @@
 {
   "books": [
     {
+      "slug": "electric-agent-patterns",
+      "title": "Agent Patterns",
+      "subtitle": "Manager-worker, dispatcher, map-reduce, pipeline and blackboard topologies",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#fb7185",
+      "animal": "generated/electric-agent-patterns/animal.png",
+      "href": "?bundle=electric-agent-patterns",
+      "series": "The agent platform built on sync",
+      "seriesOrder": 5,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Manager-Worker",
+          "duration": 63.855
+        },
+        {
+          "number": 2,
+          "title": "Dispatcher",
+          "duration": 52.338
+        },
+        {
+          "number": 3,
+          "title": "Map-Reduce",
+          "duration": 49.922
+        },
+        {
+          "number": 4,
+          "title": "Pipeline",
+          "duration": 55.728
+        },
+        {
+          "number": 5,
+          "title": "Blackboard and Observers",
+          "duration": 68.638
+        }
+      ],
+      "createdAt": "2026-06-22T23:39:14.869Z"
+    },
+    {
+      "slug": "electric-agents",
+      "title": "Electric Agents",
+      "subtitle": "The durable runtime for long-lived agents — an agent is a log",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#34d399",
+      "animal": "generated/electric-agents/animal.png",
+      "href": "?bundle=electric-agents",
+      "series": "The agent platform built on sync",
+      "seriesOrder": 4,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "An Entity Is a Stream",
+          "duration": 58.051
+        },
+        {
+          "number": 2,
+          "title": "Waking an Entity",
+          "duration": 65.433
+        },
+        {
+          "number": 3,
+          "title": "The Agent Loop",
+          "duration": 63.623
+        },
+        {
+          "number": 4,
+          "title": "The Stream as a Database",
+          "duration": 69.427
+        },
+        {
+          "number": 5,
+          "title": "Observe From Anywhere",
+          "duration": 60.093
+        }
+      ],
+      "createdAt": "2026-06-22T23:37:55.779Z"
+    },
+    {
+      "slug": "electric-internals",
+      "title": "Electric Internals",
+      "subtitle": "Durable Proxy, Durable State, StreamDB and StreamFS",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#f5b942",
+      "animal": "generated/electric-internals/animal.png",
+      "href": "?bundle=electric-internals",
+      "series": "The agent platform built on sync",
+      "seriesOrder": 3,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Durable Proxy",
+          "duration": 68.034
+        },
+        {
+          "number": 2,
+          "title": "Durable State",
+          "duration": 86.053
+        },
+        {
+          "number": 3,
+          "title": "StreamDB",
+          "duration": 84.845
+        },
+        {
+          "number": 4,
+          "title": "StreamFS",
+          "duration": 79.97
+        },
+        {
+          "number": 5,
+          "title": "One Stream, Four Faces",
+          "duration": 73.701
+        }
+      ],
+      "createdAt": "2026-06-22T23:36:32.980Z"
+    },
+    {
+      "slug": "electric-sync",
+      "title": "Electric Sync",
+      "subtitle": "Sync Postgres into local clients over HTTP with Shapes",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#7c3aed",
+      "animal": "generated/electric-sync/animal.png",
+      "href": "?bundle=electric-sync",
+      "series": "The agent platform built on sync",
+      "seriesOrder": 2,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "What is a Shape",
+          "duration": 80.899
+        },
+        {
+          "number": 2,
+          "title": "The Shape Log over HTTP",
+          "duration": 95.387
+        },
+        {
+          "number": 3,
+          "title": "Into a Local Collection",
+          "duration": 74.349
+        },
+        {
+          "number": 4,
+          "title": "Writes Through Your API",
+          "duration": 76.3
+        },
+        {
+          "number": 5,
+          "title": "The Whole Sync Loop",
+          "duration": 67.106
+        }
+      ],
+      "createdAt": "2026-06-22T23:34:57.275Z"
+    },
+    {
+      "slug": "electric-streams",
+      "title": "Electric Streams",
+      "subtitle": "Durable, replayable HTTP streams for agents and real-time data",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#0ea5e9",
+      "animal": "generated/electric-streams/animal.png",
+      "href": "?bundle=electric-streams",
+      "series": "The agent platform built on sync",
+      "seriesOrder": 1,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Stream Is a URL",
+          "duration": 92.834
+        },
+        {
+          "number": 2,
+          "title": "Offsets and the Read Loop",
+          "duration": 97.894
+        },
+        {
+          "number": 3,
+          "title": "Idempotent Producers",
+          "duration": 101.193
+        },
+        {
+          "number": 4,
+          "title": "Live Modes",
+          "duration": 112.988
+        },
+        {
+          "number": 5,
+          "title": "CDN Fan-out",
+          "duration": 94.086
+        }
+      ],
+      "createdAt": "2026-06-22T23:33:16.341Z"
       "slug": "tanstack-db",
       "title": "TanStack DB",
       "subtitle": "The reactive client store for your API",
