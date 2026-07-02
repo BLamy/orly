@@ -2,7 +2,7 @@
   "slug": "prompt-caching",
   "title": "Prompt Caching",
   "subtitle": "How the Claude SDK reuses your context instead of re-reading it",
-  "throughline": "one long agent conversation, sent again and again — and the stable prefix that stops being re-read on every call",
+  "throughline": "one long agent conversation, sent again and again \u2014 and the stable prefix that stops being re-read on every call",
   "chapters": [
     {
       "id": "every-turn-re-reads-everything-1",
@@ -106,7 +106,7 @@
           {
             "id": "c1-call",
             "title": "One call to the model",
-            "narration": "Your app calls **`client.messages.create({ model, messages })`** — the single entry point in the Claude SDK for TypeScript.",
+            "narration": "Your app calls **`client.messages.create({ model, messages })`** \u2014 the single entry point in the Claude SDK for TypeScript.",
             "say": "Your app talks to the model through one method: the messages create call. You hand it a model name and the conversation so far.",
             "reveal": [
               "app",
@@ -124,12 +124,16 @@
                 "kind": "request"
               }
             ],
-            "cue": 5.352
+            "cue": 5.352,
+            "viz": {
+              "scene": "books/prompt-caching/chapter-1",
+              "beat": 0
+            }
           },
           {
             "id": "c1-history",
             "title": "The whole transcript",
-            "narration": "The request carries the **whole** `messages` array — `Array<MessageParam>`, every prior turn — not just the latest one.",
+            "narration": "The request carries the **whole** `messages` array \u2014 `Array<MessageParam>`, every prior turn \u2014 not just the latest one.",
             "say": "But the conversation is not just the new question. It is the full message history, an array of every user and assistant turn so far, sent in its entirety.",
             "reveal": [
               "history"
@@ -147,7 +151,11 @@
                 "icon": "data:image/png;base64,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"
               }
             ],
-            "cue": 13.282
+            "cue": 13.282,
+            "viz": {
+              "scene": "books/prompt-caching/chapter-1",
+              "beat": 1
+            }
           },
           {
             "id": "c1-tomodel",
@@ -169,12 +177,16 @@
                 "kind": "request"
               }
             ],
-            "cue": 23.533
+            "cue": 23.533,
+            "viz": {
+              "scene": "books/prompt-caching/chapter-1",
+              "beat": 2
+            }
           },
           {
             "id": "c1-usage",
             "title": "The bill comes back",
-            "narration": "The reply's **`Usage`** carries `input_tokens` — the count of the entire prompt the model just read, and what you are billed for.",
+            "narration": "The reply's **`Usage`** carries `input_tokens` \u2014 the count of the entire prompt the model just read, and what you are billed for.",
             "say": "The response reports how much it read. The usage object's input tokens count is every token in that prompt, and you pay for all of them.",
             "reveal": [
               "usage"
@@ -192,12 +204,16 @@
                 "icon": "data:image/png;base64,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"
               }
             ],
-            "cue": 33.39
+            "cue": 33.39,
+            "viz": {
+              "scene": "books/prompt-caching/chapter-1",
+              "beat": 3
+            }
           },
           {
             "id": "c1-grows",
             "title": "It only ever grows",
-            "narration": "The transcript **only grows**. `CompactionControl` even ships a `DEFAULT_TOKEN_THRESHOLD` of `100_000` — the point where history is summarized to stay affordable.",
+            "narration": "The transcript **only grows**. `CompactionControl` even ships a `DEFAULT_TOKEN_THRESHOLD` of `100_000` \u2014 the point where history is summarized to stay affordable.",
             "say": "Here is the trap. Every turn appends to the history, so every call is bigger than the last. Left alone, the transcript climbs toward a hundred thousand tokens, the threshold where the harness starts compacting it just to fit.",
             "highlight": [
               "history"
@@ -218,12 +234,16 @@
                 "icon": "data:image/png;base64,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"
               }
             ],
-            "cue": 41.657
+            "cue": 41.657,
+            "viz": {
+              "scene": "books/prompt-caching/chapter-1",
+              "beat": 4
+            }
           },
           {
             "id": "c1-recap",
             "title": "The same tokens, over and over",
-            "narration": "The *same* prefix is re-read on every call: `app → create → model → Usage`, each time from token zero. Caching targets exactly that repeat.",
+            "narration": "The *same* prefix is re-read on every call: `app \u2192 create \u2192 model \u2192 Usage`, each time from token zero. Caching targets exactly that repeat.",
             "say": "So the same opening tokens, your tools and system prompt and the early history, get read again on call after call. That repetition is the waste prompt caching removes.",
             "messages": [
               {
@@ -249,7 +269,11 @@
                 "icon": "data:image/png;base64,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"
               }
             ],
-            "cue": 55.531
+            "cue": 55.531,
+            "viz": {
+              "scene": "books/prompt-caching/chapter-1",
+              "beat": 5
+            }
           }
         ]
       }
@@ -372,7 +396,7 @@
           {
             "id": "c2-order",
             "title": "Assembled in a fixed order",
-            "narration": "The prompt is built in order. First **`tools`** — `Array<ToolUnion>` on `MessageCreateParams`, read before everything else.",
+            "narration": "The prompt is built in order. First **`tools`** \u2014 `Array<ToolUnion>` on `MessageCreateParams`, read before everything else.",
             "say": "The request is assembled in a strict order. Tools come first, because they define what the model can do before anything else is read.",
             "reveal": [
               "params",
@@ -391,12 +415,16 @@
                 "icon": "data:image/png;base64,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"
               }
             ],
-            "cue": 6.478
+            "cue": 6.478,
+            "viz": {
+              "scene": "books/prompt-caching/chapter-2",
+              "beat": 0
+            }
           },
           {
             "id": "c2-system",
             "title": "Then the system prompt",
-            "narration": "Then **`system`** — a string or `TextBlockParam[]`. Long, stable instructions that repeat call after call.",
+            "narration": "Then **`system`** \u2014 a string or `TextBlockParam[]`. Long, stable instructions that repeat call after call.",
             "say": "Next comes the system prompt, your instructions to the model, which also rarely changes between calls.",
             "reveal": [
               "system"
@@ -413,12 +441,16 @@
                 "icon": "data:image/png;base64,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"
               }
             ],
-            "cue": 14.118
+            "cue": 14.118,
+            "viz": {
+              "scene": "books/prompt-caching/chapter-2",
+              "beat": 1
+            }
           },
           {
             "id": "c2-messages",
             "title": "Then the history",
-            "narration": "Last comes **`messages`** — the transcript. Its early turns are just as stable; only the newest turn differs.",
+            "narration": "Last comes **`messages`** \u2014 the transcript. Its early turns are just as stable; only the newest turn differs.",
             "say": "Finally the message history, the running conversation. Its early turns are stable too. Only the latest turn at the very end is new.",
             "reveal": [
               "messages"
@@ -435,7 +467,11 @@
                 "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAJeUlEQVR4nOzdecwdVRnH8d8LlapQQW1VFBGr4BoXDBAVWVRKFAkiorjhhiGSmCjGRP9QQSVRIUG0EYkaYgwqEpEoFheWKkEFQRSNxWi1EVnUGqEFKg2Lz5PzGhp653nPvXfOzJn7fj/J7597B0Jof3fmzJxzZokANFoiAI0oCBCgIECAggABCgIEKAgQoCBAgIIAAQoCBCgIEKAgQICCAAEKAgQoCBCgIECAggABCgIEKAgQoCBAgIIAgRoL8nDLsZbnWVZYllt20bCdZPmDMDhzqsfBlhMsx1geodni5XiR5b/CoOyg/q2y/MKy1vJWzV453LMtq4XB2VH92clyluXzlj00+/a1/NHye2Ew+rrEepTlcqXLjsVki+X5lj8Jg9DHJZbfGPiBFl85nF8+flfpRgQGoI9LrC8oDcQXq8dZHqv0I4HKdX2JdaDlSsG9Tulsgop1WRC/nPPbnc8Q3GalZz0bhGp1OQY5TpRjW8ssFwpV63IM4rd0nypsa3fLYyw/FKrU5SXWpRre3K99lP4Sl3aU5XtCdWqaalKrvSynW16vcm5Xej7yN6EqFCTftyxvVDm/tLxYqEqfU02G5mLL0UrPMUrw6TY+a/knQjU4g4xnb8sNKvsk/AjLGqEKNczmHRKfQ3WSyjrP8gShChRkfOcqjUdK2c1ygfizqQJjkMlcYnmD0pyqEva0PExpxjN6xBhkcs+xXKty45EHLIdZLhN601ZB/B7+SqX1456lGq47LGdmHnui5Usq59+W51puE3oxTUGebnmn0gYLe2u2fMDyucxjfbxQ8iHiFZaXC72YpCB+3f1Jy3s0u9sG3WvZz/KbjGN90qHf+t1L5Xzc8gmhc+MW5N1Kv6xD34Ynx1+VLh03Zxzr682vU1mHWH4qdCr3VuIjLedbvqLFUQ7nM4+/lnnsry3vV1l+a3m50Kmc27x+u/HHlldr8XmWZaPlVxnHXm3ZX+XGY/7D5Ov4vy50JucSq/QkvdpttRygvPGIP+T7ncpuY/QRy6eFTixUkPdaviisV1oee3fGsX4WuVplvdTyc6G46BJrZ8v3NZs7HY7LV/09zfKdjGNvVirSYSrncKUpL2xlWlg0SD9Z6S8GEl9Tf0Lmsb7A6hKVs8f8v383oajoEsuf3j5e2Jb/YvtAOWendr/j5M9HSi7Z9RsIp4rtTP/vHqX/J57/qAVNBXmJ5SphFJ/y/gLljUd8HzB/dsHM3O55SXzXmG8rzUa4XxNoGoO8T2kgiO35TAK/xLko41hfY+5/MEwV6Z4/u/Oz/fGWN1tustyoMTWdQXya9aFCxF/VcF7msT4jl5L0z3f1fItSWbI0FWSd5ZlCxC+x/FIrZ6d2H4+sE0/Ca+AzpF+lvIe/jdfGXewFNXR+Cs/dqd2vhxfzw9aa+CXyNZbX5hzcVJBdhRy+aOqszGP9spUZufX4pjK2WWq6xHpAGMeblL9O3e9qHSTUwM/sPhO7cUwy1/DZRLfEFjEfj/jZZEPGsb5jic/XYjxSB5+lflzTlxSkPT6Z0Sc1bs049hVKexWjDn6z5bejvmh6DnKKMC4/MzxaeVNMfDGWD/J51lQH/7M7f9QXnEHal/vmKF+u7LMV9hf65md9/3HbbnYEg/T2bVJaqrsh49gVSmOXxcr/Uu4+nydZnqg0aF6h7vl7M7d7oREFKcPvsx8gTMo3zvM9ij+otMygC1/ViNnaTKIrwy+bzhAm5XPYzlbaWspfLlR6Qwy3ctSHnEHKOlLptQmYns9l89LsozL+rBH7CVCQsnyXRt8Z8e9CWz6mtAambT5A3/mhH3IXqzwfj/jt3HuFtvjZxJc/t72icrs+MAYpz8cjnxLa5PPaXqgJ1neMi0us7vjrEi4Q2uTbvvrbgQ9ROziD9MiXfq5WP/f4Z5VvC/sapZ0ti+AMgj7dpQc3Wbhe6UdkkpeY+o+Ob5Ax7avr5hb8YB4FQV98NxJfY/NZy5Yx/rlXavo3BHOJher59JNTlJ5LvG2Mf85nR5+tlnGbF7XzHST9XTT3ZRzrg/a/aPK1NllnEC6vUBN/i5nvCrMs41gftH9ILeIMgqHwpcq+0GyhM4n/6PtOMys1Ps4gGKyDLedkHOc/7qepJZxBMDT+IqeFVm36y4b+pfFf0c0ZBIOX8/KgO5WesE+N27wYGn+R0bEZx12mFowqyDTvTge68PaMY65UCxiDYIgaN1l4CH+fy1LlYwyCmbCTZVXGces0JcYgGKqc3WDWa0pLRnzGGARDkPOq7alfw7ZEwDDlFGSTpkRBMFQ5r+jIeY9kiIIAAQoCBCgIEKAgQICCAAEKAgQoCBCgIEBgVEF8suKhAup2e8YxU89KbzqDrBUwfFNPxuUSCwhQECBAQYAABQECFAQIUBAgQEGAQFNB2NkEtfN9rw5SYZxBgAAFAQIUBAhQECBAQYAABQECFAQIUBAgQEGAAAUBAhQECFAQIEBBgAAFAQIUBAhQECBAQYAABQECFAQIUBAgQEGAAAUBAhQECFAQIEBBgAAFAQIUBAhQECBAQYAABQECFAQIUBAgQEGAAAUBAhQECFAQDFXOezTv15QoCIZqLuOYHZRv46gPKQiQ3DLqQwoCJBQECFw76kMKAiQXjfqQggDSrZbrRn1BQQDpM01fUBAsdjdaVjd9SUEwy3IeJp5oua/pSwqCWbbQw8SPWn4WHUBBsFhdajltoYPGeRQPzIo1lqOUcQlGQTBUk05WPNVyhOVuZeASC0M1N+Yx11g+bLlCY6AgGKqcqeybLefM53pNgIJgqHKGB6drShQECFAQIEBBgAAFAQJNA507BdRtszrQVJDbBNTtFnWgqSC3CqhbrwVZJ6BunfwdbSrIxQLq5es31qgDTQX5kTIncwE9uNyySR1oKshWyzcE1OnL6kg0I3KFZb1lmYB6XGU5UB3ZMfjOL7HusRwuoB5HWv6hjiw0I/JMpaWJQA1OttygDuUsOtlV6T9qTwH9udByjDqWM6f+DqXLrJsE9MPvWh2vHuSuSffNtfZVw/aMQEHnWlZZ7lIPxn3BiN89WHCrFKAF/7S8w/IuBRu7lZYzBhnlyUpFOdqyi4D23Ky0hvwMyxb1bNKCbGs/y8ssT7Esn89SAQvzZRUb5+Nzq9YqPXurRhsFAWYWKwqBAAUBAhQECFAQIEBBgAAFAQIUBAhQECBAQYAABQECFAQIUBAgQEGAAAUBAhQECFAQIEBBgAAFAQIUBAhQECDwPwAAAP//0UnjJwAAAAZJREFUAwBq2kJplMY4lAAAAABJRU5ErkJggg=="
               }
             ],
-            "cue": 20.492
+            "cue": 20.492,
+            "viz": {
+              "scene": "books/prompt-caching/chapter-2",
+              "beat": 2
+            }
           },
           {
             "id": "c2-breakpoint",
@@ -458,12 +494,16 @@
                 "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAQAElEQVR4nOydCbRlRXWGf4eAEwoKBgThtYoDERBRARVtkUGIAkGRODR0NEBCshBhJUscIkRRl0KcwBDFxOCACCJOCAo2aEiDiIiKDAq2TSMiowgCKuj+rfuWyOquXefec2q49//W2ovurv0e7917/1NVe+/a9UAIIVbJAyGEWCUSiBARJBAhIkggQkSQQISIIIEIEUECESKCBCJEBAlEiAgSiBARJBAhIkggQkSQQISIIIEIEUECESKCBFKWDcxeavY4s0eNjNxgdqPZVWYnm/0Mogj3gyjB68wWmW2Z6H++2fFmH4LIigSSj/ub7WN2uNljMR5Xmr3J7DNmv4cYHAkkD2uZfc7s+eiH08z2MrsNYlAkkOF5stlXzObQL5eZ7Wh2NcRgSCDDwqXUd80eiWFYbraF2U0Qg3B/iKFYHWEpNJQ4yIYIS7cHQAyCXtjhONbsRRiejcxWMzsLone0xBoGLnu+08H/HLMzzb4/+vumZjuYPS/9W/wxl/ITiF6ZhiXWI8zebvZDs9vNLjDbBmV5b6Lfp8wWmC1E+B0+PzL+mRGvxyOEdFN4O8qyrdm3Ed4DvhdvQ3hvmqb1GYRPWn6gFqxkjE/fbyI/FOf/J/i92uyTSGNfsw8n+FFQVyE/jKadsZJ/58+ym9kP0CgtzyCLzb6HlYuDfAxl2DPB5zVIFwf5iNm/JPjtgTJ8bBX/zmUfl42L0CgtziCMDh1j9toE3xLr8mvN1o2M80k77uad+5otIuNLzZ6NvGxidkmC33+ZHWj2GzREazPIegjLlxRxkNxrYApyXcfnrRifw5xxLu8egrysnui3v9m5Zo9GQ7QkkDmEor2nJ/rfjLQnW5+s54wz630+xufLZrc6PhsiL9xf/CrR9xlm52HVy+LqaEUgTzX7FroV+R1i9lvkZR1nPGXzHuNu+AIbtxByXPgap+yP5qE4OJM8BQ3QgkC4puba2vvw3RuWk/8P8rOWM34LJme5M+7NYkPA/cXrO/jzZ+R7+kxUTu0CYbLsa2YPS/Tnsmp7sw+gDF51bR9lJ973uB1leB/Ca39zoj/3h0sQckDVUrNAXmD2VaRvOlkUyAhPyZILr2gw9YBUjM2d8RtQDr72fA8uTvR/KIJInoNKqVUgWyNsSFNhRppvzE9RFi8hxijXX2F8Foy+R4zvoSx8DxhNS60AIKcjHr4uRo0C4QvFF+zBif5vNnsV6uA6+HmXgzE+/+aMs8QjdYkzJHcgHOh6W6I/l9CsRatu416bQDZGeKFS8hf3IORDjkBdfMkZX4zxlhQvHH1tjC+gLijo/ZB2PJh7q7Phz5BZqSmTvj5CoWFqFGZXsy+iPhjrv8Dx4V6F0ShG5tZ3fFeYXY+QB/KiZMxqX4r6YAnMZxN9OQNzr1bDTFiNQLicYtjP24ASJsp2xuQ5haF4EMJx2I2QFzZ0eALqZSHCAy0lIski0y6l/oNRyxKLG7oUcTCMuh3qEwejMVxz8/dgFCm3OAgreZnRPhGhYDJ3yYnH2Qhh+18n+LJ0/uOogBpmENYmHZbgx40fX+BzUQ+cyViZ+zLUCQX7UYRweS3wAZcaimfy8X0oSGmBsKvgyQl+d5rtZPYNlIfFiNx4UhglZopx4Lr+uJH9AuXZBeEcj9fZk4EYJh+XoBAlBcKIFZN7KUsBloefgbIwf/FGs1eibdih8Z0I+6SS7I7QcMKD5Tk8GLcCBSi1B2GTAb44KeJgjqOkOJi0ZOiWScDWxUH2RsiXnIIQcSvFqWYHJfitiXC4rMjDvFRXk/cghGlT/P4DZXiM2SdGP8MTMV3ww8akHJeKbGzHpWvK5rlvWJnMBt7eEQYuZVk1nP0IdQlVrur88n1h0ms3lOFfEQIHqdn8FLj2v8LscrMfIZxVYQd3Rp5uG/33xpEv8x1rIIRE1xj9nUs8hnEp1ifBz5904ZcIPX+PQRm4ad8uwY+z+STnaTqTWyBrIyxV/tLxY7Eb63nuQF74JOOs0UfJwzUIJTNs6cOK5J+jX5h55gZ2IUJ0r48cCM/ccAl2OfLycISOKBs7fgw2cD+SrWI5t0AYo3+548Opngekcp8lfwPC5nUSmKxjpIjr+yuQFy5VmLFmB5SnYjIOMPtP5IUf/JRCS14B8U/IRE6BMEx7eoLfPyAcwMkFz0ifhPEzt1waMd/AA1q15GhYqsEwNIMKa2I8Th19j5wlH4eavcPxYV3XsxBmnMHJJRCu5Vkj5OUNKKCdkQ+Kgk/7R6E7XEJxA8+WPCU2uCnwdeeHnHuqcc6q83d8MUI4PhcsOdra8Zk/+zM4ucK8h8EXB59UeyMfDB9zc9hVHBeNvpa/z/tRrzgI93DcePMcCZe2XZ+6DARwVtwF+WBDvTsdn6chHKsenBwzSOra8m8R9ig5OBKhqUMXuMnmWY4T0Das06Kwu55d5/LnXcgD9xhHOz6M/DGidy0GJEcehEsYb3rnNQFvRB6YoHxNty/BUQj1VheifZgkZBtTJmu7NJljxIy5Ie+8Sx/wuACrJzaI+PDnZ9nPKRiQoWeQlI05p1PG9b1uHX1AIXbZ43A5xSn/h5hOeH6Ex5VTKqnnYanKPhiezZB2tp0Ru8H6nw09g/Bp7eU8mKA6DcPC7n+8Bm2nDl/DDw6z/X3nL2qCB7EYfeMpvk0Tv4ZiYvZ90Cc3wvFlJkm9WY6z2mBL8yFnEC5JTnJ8mDRMfWMm4esIXVJSYZvMlG7q08Q/m32wgz8fIEP3AmAUjvmkDRw/hrW73MeSzJAzCOPoXoSIT+hrMCw8D5Ha9ZxPrYXIs86uDWbRuRxmec9DE/z5YLvL7P8wHL9D6JKyl+PHKN0nMABDzSCL4Xc25PHLlILFSeBMcGyiL7Pg3Iguw2zDk4lsnDGX6M89XUoCeBK4afcqj3kKsXexDiUQbmq9eiauY4es+XkuwjHPlFmSiSd2DdFtsQFWF1AkKctfFjpyiXMlhiOlwJX72L9GzwyRKFwIXxzMJQwpjvnwX4o4WOrNp4/E8SdYecwqg6UJvmzRxA9nn5XP94VHhr3TpExmPgk9M4RADnTG2aH8TRgOzooMDqQ0u+bUzSWC11N3FuFJPkb9LkrwZcJu6H7IKR3kJ2nKt1L6XmKx9b6Xz/hvpF+AMw4pBW+EETTOHH10XJ9mGGjhnR4p5fSMXKb2vxoHLrN2dHz4YOytP3HfM8gBCT5HYjhY5Zly2ysvl+SeQ+Lw4SEuvlbXJfgyMDPk/STvTvD5R/RI3zMIE09rR8Z5cMh7AkwCT+p5Tzo2nmMlaInbYFuGCcKUql4WgG6P4WC5T+yILhO7vd2R0ucMwg3S2o7PkD2O2Ac2ZRnwCkgc48Cyj5QmC5xtvLzFJHgrEAZoeusw2ecMwh8sVlnJjGjvUYYRLJVICTOyGvVQiElgyY53Sy8/B3yvU+8u7AqTh7ECWH4WU5aELn3OIJzaYkV9Q54STPneDBNKHJOzGGEpHYNLnMMxHLHmEpzpehEH6XsPwsKylR07ZdMv5kaGCKfyafYVx4cHh/hEuxqiD16CtKsW5jDMpUYsYmQebWV7Dd572Ntx3L6jWGwqvRVCXc/8STuWIbBDyVC5hpQnFe8QkTj6g2VCKdW8b8EwcOnGh/F8j192OeFnj5v3Xs+q13Q/yDikzB4UBtvJ3AXRJ1znM2oYu86AxYbcMJe+Gm9sSnVW7At2E/FCeoswvQeeSsIVAZ/csQNoXKGwMrjGi46SaHkGWQi/6/fQMXmRVpjaW1QpN7Xfkx5jvwSfN0MMzXsSfBajUVqdQdiqkiUQsfslWK69A8TQ8D1YhnivYO5B5tAgrc4gLHb0Ll8ZKoIi/hxuxL0O/OwhthAN0qpA9nXGz0aoQBV5YB9fr/Cza6ulKmhRIGzz4m0Kj4fICROxXkM9Xre3GhqjRYHs7ozzohWvm4ron/91xnmbWModIFUxjQLh5ZA6IZgfXmzjVUmXuhBpbFoTCJOCWzo+n4QoxXHO+NBdbHqnNYF4XcZZ/3UqRCk+7YyzC+JmaIjWBOK1oazhHvVZhreCLXN8vLs/qqI1gXgv7lkQpfHKf7ZCQ7QkEGbPN3F8JJDyfN0ZfxYaoiWBeC8sE1UpPZzEsJzpjPMhN2STuV5pSSDeza1Z788Wq4RHr2O9CfiZm/QW3my0JJAFznjuu73FqvGuwJ5DI0yTQC6DqIWpEYhXEVsTc864ZpB68N6LOTRCSwJ5ojMugdSDZpDMsAp0dcdn6JuqRDornPF10QitCMT7OX8HURPeXStrohGmRSB3QtTEzc54MwJpJYolgbQFO+jfExmXQHpGAmmPGyNj/NytgQZoRSDez3k3RG382hlPuWq6OC2FeYXIjgQiRAQJRIgIEogQESQQISJIIEJEkECEiCCBCBFBAhEiggQiRAQJRIgIEogQESQQISJIIEJEkECEiCCBCBFBAhEiggQiRAQJRIgIEogQESQQISJIIEJEkECEiNCKQNZ2xr0eTCI/tznjD0EDtNI47snO+PUQtfFzZ3wDNEArAvkbZ/ynELVxrTO+CxqgBYHwVtRXOj7nQtTGt53x/dFAf97aBfJIs88n+H0Voja8940d3s8wWwcVU7NAtkS4lP4Jjt85Zj+BqI1lZhc7PtuMfBaiUmoUyKPNjkOYojdP8D8GolaOSPBZz2yJ2UfhRyuzcz/UxYFm70R6CPASNHQp/YxygdkzEn0ZGj7Y7COohJpmkA+avR/d4uMHQNTOvki/4OhhZh82OxKV8ADUwYlmf4du8IX/HETtMB9yqdleHb7m2WaPMzsVhalBICeZ7YluvN7sQxCtQIH80uxFHb6G+8/Ho/BDsLRAOJX+PbrBmeZYiNY4z+wq+EnfezMfpDkHhSi5SWcm9csd/C80W2z2A4iW4fLpAwhh/FSeb/YNFKCkQJabPTbBb4XZIWafgZgmXmF2FEKY14NLtE1QgFJRLC6TUsTxabONIXFMIycgJIE/m+D7FLPdUIBSM8gVCB/8GIyF7wcxCxxvtsjxWYqwPMtKCYFsZ3aW48O9yYshZomzEfYaMTZF5j1oiSWWF7ViNlUzx+zx2p58eqWEQF7ojHPj9jOIWeNKs6Mdn4XITO4lFjfmyx2fDc2uhphFWLN1QWT8HrMHmf0Wmcg9g2zmjLP0WeKYXVjBHTuJyM9r1uLU3ALxypm9U2hi+lnqjGc9y567q8mazvh1ELOOt/98DDKSWyDejPV7iFnHaxf0YGQkt0C8GSKl7EBMN94M4bUT6pXcAvGmz40gZp0Fzvg1yEjuTbonkG3NHg4xq7CLjVdOkjVHllsgrMG6NTK+mtnuELMKTx3GzijdjJBQzEaJTPoZzvhb0E7HR9EfFMahjs9pyEyJD6J3SIol0NlrbkRxDoJ/BOKLyEyJal72vUrJd+xgdibELLAr0jpocn/6K2SkxAzyC4QWPx5fMHsBxLSzh9nJCX7vRmZxkFIHpti0mAf4UzrpvQ7hDLOYPrjneEeCPcUucAAAA2hJREFUH+uzuPTOfg9Mqa4mvzG7xewlCb47m70KYbZjAzKVo7TNM81ejXCcOrXDCTvBX4QClG49yvPIe6A7nH2YMLoHogX4IF4ffhJwZXzcbG8UorRA2GqSTwavg7uYTb6PMOPchUKUzjewMI2JweybL1E9NyF0MikmDlJDQo4d2vmUyJohFVXDz8TTUcG9L7VkrC9HeEG8LLuYfk5BeGBWce9kTSUdrNFixIr3EerGqNmD3RMZ1Xqp2R2ohNou0Lk3zH+w/GAOYprhcuq9CDdMVUfNApmHbSd3MtseIVS4FsLR3UdAtMQtI2NF7jKEi1dPH/25WloQSG3waXdQZPwws8NRhreO/v+rgj/7wRDJ5D5ROA1c5Yxn7x97L57rjP8YohMSSHcudca3QTme44xfAtEJHUzqzreccRZi7or8MPoT6/jBspzzITohgXSH4eiLHZ99kZ/9nXEKO/W2WTFCAhkP7/wCr27IWV/G25d2cHx0CdEYKIo1HqxK9TbrXM5sjTx8x2wLx4f9pq6F6IRmkPFgpv9Ljs9WZm/A8Pw7fHF8ChLHWNRwT3qrsMPfPo4Pk5tsdTTUrUhsbnFUgh/PU2TtSDgtaAYZnyUj8+DTe5xDYR4U53EJftwvfRdiLDSDTAbzCinXxbEh2t3o765vZsTflejL8zY3QYyFBDIZbIPJbpDbJvjy8lJu2rl5H/cDy2gVy8FfnujPkpjszdamCUWx+uEcs+d18GfDAs4CXtJxHgrwEHS7K5xLqz0hJkIC6Qdmz79ptjm6cb3Z1xASj/wzZ6S/QGiuR+PBIc483sVD92XJ6OvEhEgg/bEuwgWUWa8IWwmXIYSYb4WYGEWx+oNhVJ6ILNm3i+JgRl3i6AkJpF+Y7+AtrCV6Ch+PcI3yCojekED65wazHREOJuVoWcPZgpW8zIvcDtErCvMOx3lmJ5itgzCr9L3fo/iONnuZ2YUQg6BNeh42RTgKy64dk77m7GvMBgdHIPN9fbOIBJIXVgEvQhDK09ANZuGZPzkRyoxnQwIpB3Mn3FTPIXRr4e1KLEnnXfHLR8YNNyuHl0IUQQIRIoKaNggRQQIRIoIEIkQECUSICBKIEBEkECEiSCBCRJBAhIgggQgRQQIRIoIEIkQECUSICBKIEBEkECEiSCBCRPgDAAAA//+LY3WpAAAABklEQVQDAEBnC/+uGNiwAAAAAElFTkSuQmCC"
               }
             ],
-            "cue": 29.686
+            "cue": 29.686,
+            "viz": {
+              "scene": "books/prompt-caching/chapter-2",
+              "beat": 3
+            }
           },
           {
             "id": "c2-store",
             "title": "The prefix is stored",
-            "narration": "Everything before the breakpoint becomes a **stored prefix** in the prompt cache — read once, reusable next time.",
+            "narration": "Everything before the breakpoint becomes a **stored prefix** in the prompt cache \u2014 read once, reusable next time.",
             "say": "On the next call, everything before that breakpoint is stored as a reusable prefix. Tools, system, and the early history, kept ready so they need not be read again.",
             "reveal": [
               "cache"
@@ -488,7 +528,11 @@
                 "icon": "data:image/png;base64,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"
               }
             ],
-            "cue": 41.134
+            "cue": 41.134,
+            "viz": {
+              "scene": "books/prompt-caching/chapter-2",
+              "beat": 4
+            }
           },
           {
             "id": "c2-byteident",
@@ -500,12 +544,16 @@
               "system",
               "messages"
             ],
-            "cue": 51.386
+            "cue": 51.386,
+            "viz": {
+              "scene": "books/prompt-caching/chapter-2",
+              "beat": 5
+            }
           },
           {
             "id": "c2-ttl",
             "title": "How long it lives",
-            "narration": "`CacheControlEphemeral.ttl` is `'5m' | '1h'`, defaulting to **`5m`** — the window the stored prefix stays warm.",
+            "narration": "`CacheControlEphemeral.ttl` is `'5m' | '1h'`, defaulting to **`5m`** \u2014 the window the stored prefix stays warm.",
             "say": "And the breakpoint sets a lifetime. The time to live, or TTL, defaults to five minutes, and you can raise it to an hour if the same prefix will come back later.",
             "highlight": [
               "breakpoint",
@@ -518,7 +566,11 @@
                 "tone": "info"
               }
             ],
-            "cue": 64.47
+            "cue": 64.47,
+            "viz": {
+              "scene": "books/prompt-caching/chapter-2",
+              "beat": 6
+            }
           }
         ]
       }
@@ -601,7 +653,7 @@
             "id": "e3-cache-create",
             "from": "cache",
             "to": "create",
-            "label": "hit → read",
+            "label": "hit \u2192 read",
             "dashed": true
           },
           {
@@ -631,7 +683,7 @@
           {
             "id": "c3-again",
             "title": "The same prefix, again",
-            "narration": "A second `create()` arrives with the **identical prefix** — same `tools`, `system`, early `messages` — plus one new turn.",
+            "narration": "A second `create()` arrives with the **identical prefix** \u2014 same `tools`, `system`, early `messages` \u2014 plus one new turn.",
             "say": "Your app calls again with the very same tools, system prompt, and early history. Only one new turn sits at the end.",
             "reveal": [
               "app",
@@ -649,7 +701,11 @@
                 "kind": "request"
               }
             ],
-            "cue": 7.001
+            "cue": 7.001,
+            "viz": {
+              "scene": "books/prompt-caching/chapter-3",
+              "beat": 0
+            }
           },
           {
             "id": "c3-lookup",
@@ -671,7 +727,11 @@
                 "kind": "request"
               }
             ],
-            "cue": 14.849
+            "cue": 14.849,
+            "viz": {
+              "scene": "books/prompt-caching/chapter-3",
+              "beat": 1
+            }
           },
           {
             "id": "c3-branch",
@@ -691,7 +751,7 @@
               {
                 "from": "cache",
                 "to": "create",
-                "label": "hit → read",
+                "label": "hit \u2192 read",
                 "kind": "response",
                 "delay": 0,
                 "icon": "data:image/png;base64,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"
@@ -712,22 +772,27 @@
                 "delay": 1400
               }
             ],
-            "cue": 21.873
+            "cue": 21.873,
+            "viz": {
+              "scene": "books/prompt-caching/chapter-3",
+              "beat": 2
+            }
           },
           {
             "id": "c3-viz",
             "title": "Hit versus miss, side by side",
-            "narration": "One request is a **prefix**: `tools → system → history → new`. Cold call: read all, *write* the cache. Warm call: *read* the prefix back — roughly `10×` cheaper — refreshing the 5-minute TTL.",
+            "narration": "One request is a **prefix**: `tools \u2192 system \u2192 history \u2192 new`. Cold call: read all, *write* the cache. Warm call: *read* the prefix back \u2014 roughly `10\u00d7` cheaper \u2014 refreshing the 5-minute TTL.",
             "say": "Picture the request as one long strip: tools, system, history, then the new turn. A cold call has to read the whole strip and write the stable part into an ephemeral cache, which costs a little extra. The next call, byte for byte identical up to the breakpoint, reads that prefix straight back from cache, about ten times cheaper, and only the new turn is fresh input. Every hit resets the five minute clock, so an active loop keeps paying the cheap read price.",
             "viz": {
-              "scene": "prompt-cache"
+              "scene": "books/prompt-caching/chapter-3",
+              "beat": 3
             },
             "cue": 31.045
           },
           {
             "id": "c3-write",
             "title": "The first call pays to write",
-            "narration": "A **cache write** costs ~`1.25×` normal input. The first call reports those tokens as `cache_creation_input_tokens`.",
+            "narration": "A **cache write** costs ~`1.25\u00d7` normal input. The first call reports those tokens as `cache_creation_input_tokens`.",
             "say": "That first cold call is not free. Writing the prefix into the cache costs more than a normal read, about one and a quarter times the input price. You pay that premium once.",
             "highlight": [
               "create",
@@ -749,12 +814,16 @@
                 "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAJeUlEQVR4nOzdecwdVRnH8d8LlapQQW1VFBGr4BoXDBAVWVRKFAkiorjhhiGSmCjGRP9QQSVRIUG0EYkaYgwqEpEoFheWKkEFQRSNxWi1EVnUGqEFKg2Lz5PzGhp653nPvXfOzJn7fj/J7597B0Jof3fmzJxzZokANFoiAI0oCBCgIECAggABCgIEKAgQoCBAgIIAAQoCBCgIEKAgQICCAAEKAgQoCBCgIECAggABCgIEKAgQoCBAgIIAgRoL8nDLsZbnWVZYllt20bCdZPmDMDhzqsfBlhMsx1geodni5XiR5b/CoOyg/q2y/MKy1vJWzV453LMtq4XB2VH92clyluXzlj00+/a1/NHye2Ew+rrEepTlcqXLjsVki+X5lj8Jg9DHJZbfGPiBFl85nF8+flfpRgQGoI9LrC8oDcQXq8dZHqv0I4HKdX2JdaDlSsG9Tulsgop1WRC/nPPbnc8Q3GalZz0bhGp1OQY5TpRjW8ssFwpV63IM4rd0nypsa3fLYyw/FKrU5SXWpRre3K99lP4Sl3aU5XtCdWqaalKrvSynW16vcm5Xej7yN6EqFCTftyxvVDm/tLxYqEqfU02G5mLL0UrPMUrw6TY+a/knQjU4g4xnb8sNKvsk/AjLGqEKNczmHRKfQ3WSyjrP8gShChRkfOcqjUdK2c1ygfizqQJjkMlcYnmD0pyqEva0PExpxjN6xBhkcs+xXKty45EHLIdZLhN601ZB/B7+SqX1456lGq47LGdmHnui5Usq59+W51puE3oxTUGebnmn0gYLe2u2fMDyucxjfbxQ8iHiFZaXC72YpCB+3f1Jy3s0u9sG3WvZz/KbjGN90qHf+t1L5Xzc8gmhc+MW5N1Kv6xD34Ynx1+VLh03Zxzr682vU1mHWH4qdCr3VuIjLedbvqLFUQ7nM4+/lnnsry3vV1l+a3m50Kmc27x+u/HHlldr8XmWZaPlVxnHXm3ZX+XGY/7D5Ov4vy50JucSq/QkvdpttRygvPGIP+T7ncpuY/QRy6eFTixUkPdaviisV1oee3fGsX4WuVplvdTyc6G46BJrZ8v3NZs7HY7LV/09zfKdjGNvVirSYSrncKUpL2xlWlg0SD9Z6S8GEl9Tf0Lmsb7A6hKVs8f8v383oajoEsuf3j5e2Jb/YvtAOWendr/j5M9HSi7Z9RsIp4rtTP/vHqX/J57/qAVNBXmJ5SphFJ/y/gLljUd8HzB/dsHM3O55SXzXmG8rzUa4XxNoGoO8T2kgiO35TAK/xLko41hfY+5/MEwV6Z4/u/Oz/fGWN1tustyoMTWdQXya9aFCxF/VcF7msT4jl5L0z3f1fItSWbI0FWSd5ZlCxC+x/FIrZ6d2H4+sE0/Ca+AzpF+lvIe/jdfGXewFNXR+Cs/dqd2vhxfzw9aa+CXyNZbX5hzcVJBdhRy+aOqszGP9spUZufX4pjK2WWq6xHpAGMeblL9O3e9qHSTUwM/sPhO7cUwy1/DZRLfEFjEfj/jZZEPGsb5jic/XYjxSB5+lflzTlxSkPT6Z0Sc1bs049hVKexWjDn6z5bejvmh6DnKKMC4/MzxaeVNMfDGWD/J51lQH/7M7f9QXnEHal/vmKF+u7LMV9hf65md9/3HbbnYEg/T2bVJaqrsh49gVSmOXxcr/Uu4+nydZnqg0aF6h7vl7M7d7oREFKcPvsx8gTMo3zvM9ij+otMygC1/ViNnaTKIrwy+bzhAm5XPYzlbaWspfLlR6Qwy3ctSHnEHKOlLptQmYns9l89LsozL+rBH7CVCQsnyXRt8Z8e9CWz6mtAambT5A3/mhH3IXqzwfj/jt3HuFtvjZxJc/t72icrs+MAYpz8cjnxLa5PPaXqgJ1neMi0us7vjrEi4Q2uTbvvrbgQ9ROziD9MiXfq5WP/f4Z5VvC/sapZ0ti+AMgj7dpQc3Wbhe6UdkkpeY+o+Ob5Ax7avr5hb8YB4FQV98NxJfY/NZy5Yx/rlXavo3BHOJher59JNTlJ5LvG2Mf85nR5+tlnGbF7XzHST9XTT3ZRzrg/a/aPK1NllnEC6vUBN/i5nvCrMs41gftH9ILeIMgqHwpcq+0GyhM4n/6PtOMys1Ps4gGKyDLedkHOc/7qepJZxBMDT+IqeFVm36y4b+pfFf0c0ZBIOX8/KgO5WesE+N27wYGn+R0bEZx12mFowqyDTvTge68PaMY65UCxiDYIgaN1l4CH+fy1LlYwyCmbCTZVXGces0JcYgGKqc3WDWa0pLRnzGGARDkPOq7alfw7ZEwDDlFGSTpkRBMFQ5r+jIeY9kiIIAAQoCBCgIEKAgQICCAAEKAgQoCBCgIEBgVEF8suKhAup2e8YxU89KbzqDrBUwfFNPxuUSCwhQECBAQYAABQECFAQIUBAgQEGAQFNB2NkEtfN9rw5SYZxBgAAFAQIUBAhQECBAQYAABQECFAQIUBAgQEGAAAUBAhQECFAQIEBBgAAFAQIUBAhQECBAQYAABQECFAQIUBAgQEGAAAUBAhQECFAQIEBBgAAFAQIUBAhQECBAQYAABQECFAQIUBAgQEGAAAUBAhQECFAQDFXOezTv15QoCIZqLuOYHZRv46gPKQiQ3DLqQwoCJBQECFw76kMKAiQXjfqQggDSrZbrRn1BQQDpM01fUBAsdjdaVjd9SUEwy3IeJp5oua/pSwqCWbbQw8SPWn4WHUBBsFhdajltoYPGeRQPzIo1lqOUcQlGQTBUk05WPNVyhOVuZeASC0M1N+Yx11g+bLlCY6AgGKqcqeybLefM53pNgIJgqHKGB6drShQECFAQIEBBgAAFAQJNA507BdRtszrQVJDbBNTtFnWgqSC3CqhbrwVZJ6BunfwdbSrIxQLq5es31qgDTQX5kTIncwE9uNyySR1oKshWyzcE1OnL6kg0I3KFZb1lmYB6XGU5UB3ZMfjOL7HusRwuoB5HWv6hjiw0I/JMpaWJQA1OttygDuUsOtlV6T9qTwH9udByjDqWM6f+DqXLrJsE9MPvWh2vHuSuSffNtfZVw/aMQEHnWlZZ7lIPxn3BiN89WHCrFKAF/7S8w/IuBRu7lZYzBhnlyUpFOdqyi4D23Ky0hvwMyxb1bNKCbGs/y8ssT7Esn89SAQvzZRUb5+Nzq9YqPXurRhsFAWYWKwqBAAUBAhQECFAQIEBBgAAFAQIUBAhQECBAQYAABQECFAQIUBAgQEGAAAUBAhQECFAQIEBBgAAFAQIUBAhQECDwPwAAAP//0UnjJwAAAAZJREFUAwBq2kJplMY4lAAAAABJRU5ErkJggg=="
               }
             ],
-            "cue": 60.731
+            "cue": 60.731,
+            "viz": {
+              "scene": "books/prompt-caching/chapter-3",
+              "beat": 4
+            }
           },
           {
             "id": "c3-read",
             "title": "Every read after is cheap",
-            "narration": "A **cache read** costs ~`0.1×` normal input. Those tokens come back as `cache_read_input_tokens` on `Usage`.",
+            "narration": "A **cache read** costs ~`0.1\u00d7` normal input. Those tokens come back as `cache_read_input_tokens` on `Usage`.",
             "say": "But every read after that is roughly a tenth of the input price. Reading the same prefix back is nearly free compared to processing it fresh.",
             "highlight": [
               "cache",
@@ -776,12 +845,16 @@
                 "icon": "data:image/png;base64,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"
               }
             ],
-            "cue": 70.123
+            "cue": 70.123,
+            "viz": {
+              "scene": "books/prompt-caching/chapter-3",
+              "beat": 5
+            }
           },
           {
             "id": "c3-clock",
             "title": "The five-minute clock",
-            "narration": "The entry expires after its `ttl` (default `5m`) — but every hit **refreshes** it. Idle past the TTL, or change the prefix, and you miss and re-write.",
+            "narration": "The entry expires after its `ttl` (default `5m`) \u2014 but every hit **refreshes** it. Idle past the TTL, or change the prefix, and you miss and re-write.",
             "say": "The whole thing rests on the clock. The entry lives about five minutes, but each hit refreshes it. Go quiet longer than the time to live, or change the prefix, and the next call is a cold miss that writes it all again.",
             "highlight": [
               "cache",
@@ -798,11 +871,15 @@
               {
                 "from": "create",
                 "to": "model",
-                "label": "miss → recompute",
+                "label": "miss \u2192 recompute",
                 "kind": "request"
               }
             ],
-            "cue": 77.728
+            "cue": 77.728,
+            "viz": {
+              "scene": "books/prompt-caching/chapter-3",
+              "beat": 6
+            }
           }
         ]
       }
@@ -931,7 +1008,7 @@
           {
             "id": "c4-usage",
             "title": "Usage on every response",
-            "narration": "Each `Message` includes **`usage: Usage`** — the token receipt for that one request.",
+            "narration": "Each `Message` includes **`usage: Usage`** \u2014 the token receipt for that one request.",
             "say": "Every message the model returns carries a usage object. It is the receipt for that single call.",
             "reveal": [
               "model",
@@ -949,12 +1026,16 @@
                 "kind": "response"
               }
             ],
-            "cue": 5.642
+            "cue": 5.642,
+            "viz": {
+              "scene": "books/prompt-caching/chapter-4",
+              "beat": 0
+            }
           },
           {
             "id": "c4-creation",
             "title": "What was written",
-            "narration": "**`cache_creation_input_tokens`** — tokens *written* to cache this call (billed ~`1.25×`). Big when cold, zero when warm.",
+            "narration": "**`cache_creation_input_tokens`** \u2014 tokens *written* to cache this call (billed ~`1.25\u00d7`). Big when cold, zero when warm.",
             "say": "The cache creation input tokens count is how many tokens this call wrote into the cache. On a cold call it is large, at the write premium. On a warm call it is zero.",
             "reveal": [
               "creation"
@@ -978,12 +1059,16 @@
                 "icon": "data:image/png;base64,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"
               }
             ],
-            "cue": 11.854
+            "cue": 11.854,
+            "viz": {
+              "scene": "books/prompt-caching/chapter-4",
+              "beat": 1
+            }
           },
           {
             "id": "c4-read",
             "title": "What was reused",
-            "narration": "**`cache_read_input_tokens`** — tokens *served from cache* (billed ~`0.1×`). The bigger this is, the more you saved.",
+            "narration": "**`cache_read_input_tokens`** \u2014 tokens *served from cache* (billed ~`0.1\u00d7`). The bigger this is, the more you saved.",
             "say": "The cache read input tokens count is how many tokens were served from the cache instead of processed fresh. This is the number you want large, because it is billed at a tenth of the price.",
             "reveal": [
               "read"
@@ -1007,12 +1092,16 @@
                 "icon": "data:image/png;base64,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"
               }
             ],
-            "cue": 24.102
+            "cue": 24.102,
+            "viz": {
+              "scene": "books/prompt-caching/chapter-4",
+              "beat": 2
+            }
           },
           {
             "id": "c4-fresh",
             "title": "What was genuinely new",
-            "narration": "**`input_tokens`** — the genuinely new tokens after the breakpoint, at the normal `1×` rate.",
+            "narration": "**`input_tokens`** \u2014 the genuinely new tokens after the breakpoint, at the normal `1\u00d7` rate.",
             "say": "And plain input tokens is the genuinely new part, the latest turn after the breakpoint, charged at the normal price.",
             "reveal": [
               "fresh"
@@ -1036,7 +1125,11 @@
                 "icon": "data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAMgAAADICAYAAACtWK6eAAAJeUlEQVR4nOzdecwdVRnH8d8LlapQQW1VFBGr4BoXDBAVWVRKFAkiorjhhiGSmCjGRP9QQSVRIUG0EYkaYgwqEpEoFheWKkEFQRSNxWi1EVnUGqEFKg2Lz5PzGhp653nPvXfOzJn7fj/J7597B0Jof3fmzJxzZokANFoiAI0oCBCgIECAggABCgIEKAgQoCBAgIIAAQoCBCgIEKAgQICCAAEKAgQoCBCgIECAggABCgIEKAgQoCBAgIIAgRoL8nDLsZbnWVZYllt20bCdZPmDMDhzqsfBlhMsx1geodni5XiR5b/CoOyg/q2y/MKy1vJWzV453LMtq4XB2VH92clyluXzlj00+/a1/NHye2Ew+rrEepTlcqXLjsVki+X5lj8Jg9DHJZbfGPiBFl85nF8+flfpRgQGoI9LrC8oDcQXq8dZHqv0I4HKdX2JdaDlSsG9Tulsgop1WRC/nPPbnc8Q3GalZz0bhGp1OQY5TpRjW8ssFwpV63IM4rd0nypsa3fLYyw/FKrU5SXWpRre3K99lP4Sl3aU5XtCdWqaalKrvSynW16vcm5Xej7yN6EqFCTftyxvVDm/tLxYqEqfU02G5mLL0UrPMUrw6TY+a/knQjU4g4xnb8sNKvsk/AjLGqEKNczmHRKfQ3WSyjrP8gShChRkfOcqjUdK2c1ygfizqQJjkMlcYnmD0pyqEva0PExpxjN6xBhkcs+xXKty45EHLIdZLhN601ZB/B7+SqX1456lGq47LGdmHnui5Usq59+W51puE3oxTUGebnmn0gYLe2u2fMDyucxjfbxQ8iHiFZaXC72YpCB+3f1Jy3s0u9sG3WvZz/KbjGN90qHf+t1L5Xzc8gmhc+MW5N1Kv6xD34Ynx1+VLh03Zxzr682vU1mHWH4qdCr3VuIjLedbvqLFUQ7nM4+/lnnsry3vV1l+a3m50Kmc27x+u/HHlldr8XmWZaPlVxnHXm3ZX+XGY/7D5Ov4vy50JucSq/QkvdpttRygvPGIP+T7ncpuY/QRy6eFTixUkPdaviisV1oee3fGsX4WuVplvdTyc6G46BJrZ8v3NZs7HY7LV/09zfKdjGNvVirSYSrncKUpL2xlWlg0SD9Z6S8GEl9Tf0Lmsb7A6hKVs8f8v383oajoEsuf3j5e2Jb/YvtAOWendr/j5M9HSi7Z9RsIp4rtTP/vHqX/J57/qAVNBXmJ5SphFJ/y/gLljUd8HzB/dsHM3O55SXzXmG8rzUa4XxNoGoO8T2kgiO35TAK/xLko41hfY+5/MEwV6Z4/u/Oz/fGWN1tustyoMTWdQXya9aFCxF/VcF7msT4jl5L0z3f1fItSWbI0FWSd5ZlCxC+x/FIrZ6d2H4+sE0/Ca+AzpF+lvIe/jdfGXewFNXR+Cs/dqd2vhxfzw9aa+CXyNZbX5hzcVJBdhRy+aOqszGP9spUZufX4pjK2WWq6xHpAGMeblL9O3e9qHSTUwM/sPhO7cUwy1/DZRLfEFjEfj/jZZEPGsb5jic/XYjxSB5+lflzTlxSkPT6Z0Sc1bs049hVKexWjDn6z5bejvmh6DnKKMC4/MzxaeVNMfDGWD/J51lQH/7M7f9QXnEHal/vmKF+u7LMV9hf65md9/3HbbnYEg/T2bVJaqrsh49gVSmOXxcr/Uu4+nydZnqg0aF6h7vl7M7d7oREFKcPvsx8gTMo3zvM9ij+otMygC1/ViNnaTKIrwy+bzhAm5XPYzlbaWspfLlR6Qwy3ctSHnEHKOlLptQmYns9l89LsozL+rBH7CVCQsnyXRt8Z8e9CWz6mtAambT5A3/mhH3IXqzwfj/jt3HuFtvjZxJc/t72icrs+MAYpz8cjnxLa5PPaXqgJ1neMi0us7vjrEi4Q2uTbvvrbgQ9ROziD9MiXfq5WP/f4Z5VvC/sapZ0ti+AMgj7dpQc3Wbhe6UdkkpeY+o+Ob5Ax7avr5hb8YB4FQV98NxJfY/NZy5Yx/rlXavo3BHOJher59JNTlJ5LvG2Mf85nR5+tlnGbF7XzHST9XTT3ZRzrg/a/aPK1NllnEC6vUBN/i5nvCrMs41gftH9ILeIMgqHwpcq+0GyhM4n/6PtOMys1Ps4gGKyDLedkHOc/7qepJZxBMDT+IqeFVm36y4b+pfFf0c0ZBIOX8/KgO5WesE+N27wYGn+R0bEZx12mFowqyDTvTge68PaMY65UCxiDYIgaN1l4CH+fy1LlYwyCmbCTZVXGces0JcYgGKqc3WDWa0pLRnzGGARDkPOq7alfw7ZEwDDlFGSTpkRBMFQ5r+jIeY9kiIIAAQoCBCgIEKAgQICCAAEKAgQoCBCgIEBgVEF8suKhAup2e8YxU89KbzqDrBUwfFNPxuUSCwhQECBAQYAABQECFAQIUBAgQEGAQFNB2NkEtfN9rw5SYZxBgAAFAQIUBAhQECBAQYAABQECFAQIUBAgQEGAAAUBAhQECFAQIEBBgAAFAQIUBAhQECBAQYAABQECFAQIUBAgQEGAAAUBAhQECFAQIEBBgAAFAQIUBAhQECBAQYAABQECFAQIUBAgQEGAAAUBAhQECFAQDFXOezTv15QoCIZqLuOYHZRv46gPKQiQ3DLqQwoCJBQECFw76kMKAiQXjfqQggDSrZbrRn1BQQDpM01fUBAsdjdaVjd9SUEwy3IeJp5oua/pSwqCWbbQw8SPWn4WHUBBsFhdajltoYPGeRQPzIo1lqOUcQlGQTBUk05WPNVyhOVuZeASC0M1N+Yx11g+bLlCY6AgGKqcqeybLefM53pNgIJgqHKGB6drShQECFAQIEBBgAAFAQJNA507BdRtszrQVJDbBNTtFnWgqSC3CqhbrwVZJ6BunfwdbSrIxQLq5es31qgDTQX5kTIncwE9uNyySR1oKshWyzcE1OnL6kg0I3KFZb1lmYB6XGU5UB3ZMfjOL7HusRwuoB5HWv6hjiw0I/JMpaWJQA1OttygDuUsOtlV6T9qTwH9udByjDqWM6f+DqXLrJsE9MPvWh2vHuSuSffNtfZVw/aMQEHnWlZZ7lIPxn3BiN89WHCrFKAF/7S8w/IuBRu7lZYzBhnlyUpFOdqyi4D23Ky0hvwMyxb1bNKCbGs/y8ssT7Esn89SAQvzZRUb5+Nzq9YqPXurRhsFAWYWKwqBAAUBAhQECFAQIEBBgAAFAQIUBAhQECBAQYAABQECFAQIUBAgQEGAAAUBAhQECFAQIEBBgAAFAQIUBAhQECDwPwAAAP//0UnjJwAAAAZJREFUAwBq2kJplMY4lAAAAABJRU5ErkJggg=="
               }
             ],
-            "cue": 34.365
+            "cue": 34.365,
+            "viz": {
+              "scene": "books/prompt-caching/chapter-4",
+              "beat": 3
+            }
           },
           {
             "id": "c4-total",
@@ -1078,7 +1171,11 @@
                 "icon": "data:image/png;base64,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"
               }
             ],
-            "cue": 41.076
+            "cue": 41.076,
+            "viz": {
+              "scene": "books/prompt-caching/chapter-4",
+              "beat": 4
+            }
           },
           {
             "id": "c4-streaming",
@@ -1097,7 +1194,11 @@
                 "icon": "data:image/png;base64,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"
               }
             ],
-            "cue": 54.799
+            "cue": 54.799,
+            "viz": {
+              "scene": "books/prompt-caching/chapter-4",
+              "beat": 5
+            }
           },
           {
             "id": "c4-recap",
@@ -1129,7 +1230,11 @@
                 "icon": "data:image/png;base64,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"
               }
             ],
-            "cue": 65.364
+            "cue": 65.364,
+            "viz": {
+              "scene": "books/prompt-caching/chapter-4",
+              "beat": 6
+            }
           }
         ]
       }
