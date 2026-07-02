@@ -55,3 +55,13 @@ body:
         Also swap the cover animal to a fox.
     validations:
       required: true
+  - type: dropdown
+    id: model
+    attributes:
+      label: Model
+      description: Which Claude model generates this book
+      options:
+        - "Fable 5 — highest quality (claude-fable-5)"
+        - "Opus 4.8 (claude-opus-4-8)"
+    validations:
+      required: true

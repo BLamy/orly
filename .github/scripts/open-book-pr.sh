@@ -5,7 +5,8 @@
 # arbitrary issue titles (backticks, quotes, <angle brackets>) can never break
 # the shell. Static + `bash -n`-checkable.
 #
-#   env: ISSUE_NUMBER ISSUE_TITLE REPO SERVER_URL RUN_ID GENERATE_OUTCOME GH_TOKEN
+#   env: ISSUE_NUMBER ISSUE_TITLE REPO SERVER_URL RUN_ID GENERATE_OUTCOME
+#        VERIFY_OUTCOME GH_TOKEN
 set -euo pipefail
 : "${ISSUE_NUMBER:?}" "${REPO:?}" "${GH_TOKEN:?}"
 
@@ -48,6 +49,12 @@ body="$(mktemp)"
   if [ -n "$PARTIAL" ]; then
     printf '\n> ⚠️ **Generation did not finish (`%s`).** This PR holds the partial work so nothing is lost — reply `@claude <change>` to continue, then merge.\n' "$OUTCOME"
   fi
+  # Browser verification (generator/verify-book.mjs): every chapter played in
+  # headless Chromium — console clean, viz scenes mounted, previews screenshot.
+  case "${VERIFY_OUTCOME:-skipped}" in
+    success) printf '\n✅ **Browser-verified** — every chapter played clean in headless Chromium; mid-chapter preview PNGs are committed under `public/generated/<slug>/previews/`.\n' ;;
+    failure) printf '\n⚠️ **Browser verification failed** — see the [run log](%s) for the failing chapter/step before merging.\n' "$RUN_URL" ;;
+  esac
 } > "$body"
 
 PR="$(gh pr list --head "$BRANCH" --state open --json number --jq '.[0].number // empty')"

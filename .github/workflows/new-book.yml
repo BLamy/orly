@@ -73,6 +73,26 @@ jobs:
           gh issue comment "${{ github.event.issue.number }}" \
             --body "🤖 On it — generating in CI. Track progress in the [Actions tab](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})."
 
+      # Which Claude model generates the book: the issue form's "Model" dropdown
+      # renders in the body as "### Model\n\n<selected option text>", where the
+      # option text carries the id in parentheses, e.g. "Fable 5 — highest
+      # quality (claude-fable-5)". Parse it out; default to Opus 4.8 when the
+      # field is absent or unparseable (older issues / hand-written bodies).
+      # The body is attacker-controlled, so it arrives via env — never
+      # interpolated into the script — and the output is constrained by the
+      # grep pattern, so it is safe to interpolate into claude_args below.
+      - name: Pick the Claude model from the issue form
+        id: model
+        env:
+          ISSUE_BODY: ${{ github.event.issue.body }}
+        run: |
+          id="$(printf '%s\n' "$ISSUE_BODY" \
+            | awk '/^### Model[[:space:]]*$/{f=1; next} /^### /{f=0} f' \
+            | grep -o 'claude-[a-z0-9.-]*' | head -n1 || true)"
+          [ -n "$id" ] || id="claude-opus-4-8"
+          echo "Model: $id"
+          echo "id=$id" >> "$GITHUB_OUTPUT"
+
       - name: Generate the book(s) with Claude Code
         id: generate
         continue-on-error: true # if it dies partway, still salvage the work into a PR
@@ -106,14 +126,53 @@ jobs:
             Do NOT run any git or gh commands and do NOT open a PR — the workflow
             commits + opens the PR (left open for review) after you finish.
           claude_args: |
-            --max-turns 250
-            --model claude-opus-4-8
+            --max-turns 400
+            --model ${{ steps.model.outputs.id }}
             --allowedTools "Bash,Read,Edit,Write,Glob,Grep"
         env:
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           NOUN_PROJECT_KEY: ${{ secrets.NOUN_PROJECT_KEY }}
           NOUN_PROJECT_SECRET: ${{ secrets.NOUN_PROJECT_SECRET }}
+
+      # ---- QUALITY GATE: real-browser verification of the generated book(s) ----
+      # Which book dirs did generation touch? (new or modified; skip library.json)
+      - name: Detect generated book slugs
+        id: slugs
+        run: |
+          slugs="$(git status --porcelain -- public/generated/ \
+            | awk '{print $NF}' \
+            | sed -n 's|^public/generated/\([^/][^/]*\)/.*$|\1|p' \
+            | sort -u | tr '\n' ' ')"
+          slugs="${slugs% }"
+          echo "Changed book dirs: ${slugs:-<none>}"
+          echo "list=$slugs" >> "$GITHUB_OUTPUT"
+
+      # Plays every chapter of each new/changed book in headless Chromium at the
+      # manual QA bar: zero console errors, the authored 3b1b viz mounted where
+      # the manifest declares it, and a mid-chapter screenshot per chapter saved
+      # to public/generated/<slug>/previews/ (committed with the book by the PR
+      # step below). continue-on-error so a flaky browser never loses the book —
+      # failures are surfaced on the PR instead.
+      - name: Browser-verify the generated book(s)
+        id: verify
+        if: steps.slugs.outputs.list != ''
+        continue-on-error: true
+        env:
+          SLUGS: ${{ steps.slugs.outputs.list }}
+        run: |
+          npx playwright install --with-deps chromium
+          npm run build
+          status=0
+          for slug in $SLUGS; do
+            node generator/verify-book.mjs --slug "$slug" || status=1
+          done
+          exit $status
+
+      - name: Surface verification failures
+        if: steps.verify.outcome == 'failure'
+        run: |
+          echo "::error::Browser verification failed (generator/verify-book.mjs) — the PR will carry a warning. See the 'Browser-verify' step log above for the failing chapter/step."
 
       - name: Commit + open a PR (even on partial failure)
         id: pr
@@ -128,6 +187,8 @@ jobs:
           # quotes, or <angle brackets> can never break the shell.
           ISSUE_TITLE: ${{ github.event.issue.title }}
           GENERATE_OUTCOME: ${{ steps.generate.outcome }}
+          # success | failure | skipped — the PR body notes the verification result
+          VERIFY_OUTCOME: ${{ steps.verify.outcome }}
         run: bash .github/scripts/open-book-pr.sh
 
       - name: Deploy a preview for the PR

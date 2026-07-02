@@ -49,3 +49,13 @@ body:
     attributes:
       label: Accent color (optional hex)
       placeholder: "#d6202b"
+  - type: dropdown
+    id: model
+    attributes:
+      label: Model
+      description: Which Claude model generates this book
+      options:
+        - "Fable 5 — highest quality (claude-fable-5)"
+        - "Opus 4.8 (claude-opus-4-8)"
+    validations:
+      required: true

@@ -72,6 +72,16 @@ no `ANTHROPIC_API_KEY` needed.
       must render its beat's state at ANY slider position (state leaks show up
       as frames that only look right when played from 0).
 
+      When this runs **in CI** (the issue → book pipeline), the workflow ALSO
+      browser-verifies the finished book automatically after you're done:
+      `generator/verify-book.mjs` plays every chapter in headless Chromium,
+      asserts a clean console and that the authored viz scene is mounted where
+      the manifest declares it, and screenshots each chapter to
+      `public/generated/<slug>/previews/chapter-<n>.png` — those PNGs are
+      committed with the book and ship on the PR. That gate is a backstop, not
+      a substitute: still run `npx tsc --noEmit`, `npm run build`, and the
+      validator yourself before finishing.
+
 5. **Build the book** (TTS + cover + icons + library), no browser:
    ```bash
    node generator/cli.mjs --storyboard /tmp/nb-storyboard.json --slug "<SLUG>" --title "<TITLE>" --prompt "<SUBSYSTEM PROMPT>"
