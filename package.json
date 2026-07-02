@@ -8,7 +8,10 @@
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
+    "storybook": "storybook dev -p 6006",
+    "build-storybook": "storybook build",
     "explain": "node generator/cli.mjs",
+    "viz:narrate": "node generator/viz-narrate.mjs",
     "sync-books": "node generator/sync-issue-books.mjs",
     "cf:deploy": "wrangler deploy",
     "cf:preview": "wrangler versions upload",
@@ -16,19 +19,24 @@
     "prepare": "git config core.hooksPath .githooks || true"
   },
   "dependencies": {
+    "3b1bd3": "file:../3b1bd3",
     "d3": "^7.9.0",
     "framer-motion": "^11.0.0",
+    "katex": "^0.17.0",
     "react": "^18.3.1",
     "react-dom": "^18.3.1"
   },
   "devDependencies": {
     "@anthropic-ai/sdk": "^0.105.0",
     "@elevenlabs/elevenlabs-js": "^2.53.1",
+    "@storybook/react-vite": "^10.4.6",
     "@types/d3": "^7.4.3",
+    "@types/katex": "^0.16.8",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@vitejs/plugin-react": "^4.3.1",
     "js-yaml": "^5.0.0",
+    "storybook": "^10.4.6",
     "typescript": "^5.5.4",
     "vite": "^5.4.0",
     "wrangler": "^4.103.0"

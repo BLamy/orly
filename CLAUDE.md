@@ -25,6 +25,13 @@ adds Noun Project icons, and you commit + push to redeploy.
   (audio‑synced, icon‑aware); `stories/` are the built‑in almostnode chapters.
 - `public/generated/<slug>/` — each book's `manifest.json` + `audio/` + `animal.png`;
   `library.json` is the shelf registry.
+- `src/viz/` — the **3blue1brown-style animation suite** (pure `sample(t)`
+  timeline engine, primitives, explainers), cataloged in Storybook
+  (`npm run storybook`; the **Motion** panel edits timelines and saves timings
+  back to each scene's `overrides.json`). **To author a new scene, use the
+  `viz-scene` skill** (`.claude/skills/viz-scene/SKILL.md`) — it has the full
+  API, conventions, and verification steps. Narration: in-browser voice while
+  editing; ElevenLabs only at publish via `npm run viz:narrate`.
 
 ## Hard rules
 - **Never** render the real publisher **"O'Reilly"** — only the parody **"O'RLY?"**.
