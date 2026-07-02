@@ -19,7 +19,7 @@
     "prepare": "git config core.hooksPath .githooks || true"
   },
   "dependencies": {
-    "3b1bd3": "file:../3b1bd3",
+    "3b1bd3": "file:vendor/3b1bd3-0.1.0.tgz",
     "d3": "^7.9.0",
     "framer-motion": "^11.0.0",
     "katex": "^0.17.0",
