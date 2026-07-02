@@ -43,6 +43,10 @@ jobs:
         run: npm install --no-audit --no-fund
       - if: steps.gate.outputs.ready == 'true'
         run: npm run build
+      # Ship the viz Storybook alongside the shelf: served by the same Worker
+      # at /storybook/ (Storybook builds are relative-path, so a subpath works).
+      - if: steps.gate.outputs.ready == 'true'
+        run: npm run build-storybook -- --output-dir dist/storybook
       - if: steps.gate.outputs.ready == 'true'
         name: Deploy to Cloudflare Workers
         uses: cloudflare/wrangler-action@v3
