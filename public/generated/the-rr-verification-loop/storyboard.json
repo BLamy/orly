@@ -1,0 +1,359 @@
+{
+  "title": "The rr Verification Loop",
+  "subtitle": "Time-travel evidence for a hardware emulator",
+  "throughline": "wasm-vm is a RISC-V emulator in Rust, compiled to WebAssembly, aiming to boot real Linux in a browser tab. Its verification doctrine is Replay.io's worker/critic loop ported to bare metal: an implementer being satisfied is a claim; a deterministic rr recording of the run is evidence. A fresh adversarial verifier replays that recording, runs time backwards to find who corrupted what, diffs every retired instruction against Spike, and refuses to say verified until it has failed to refute.",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A Claim Needs a Recording",
+      "blurb": "The doctrine: satisfied is a claim; a deterministic recording is evidence.",
+      "accent": "#38bdf8",
+      "nodes": [],
+      "edges": [],
+      "steps": [
+        {
+          "id": "c1-cover",
+          "cover": true,
+          "title": "A Claim Needs a Recording",
+          "coverSubtitle": "The doctrine, ported to bare metal",
+          "spoken": "wasm vm is a RISC five emulator written in Rust and compiled to WebAssembly, with one goal: boot real, unmodified Alpine Linux inside a browser tab. This chapter is about how a project like that decides what to believe.",
+          "displayNarration": "A from-scratch **RISC-V RV64 emulator** in Rust → wasm, booting unmodified Alpine riscv64 in a tab. Its verification doctrine comes straight from Replay.io's worker/critic loop."
+        },
+        {
+          "id": "c1-s1",
+          "title": "The machine in the machine",
+          "spoken": "The stack is a machine inside a machine: a browser tab runs a WebAssembly build of the emulator, and the emulator runs a real guest operating system. Three Rust crates — core, wasm, and cli — hold the register file, the bus, and the step loop.",
+          "displayNarration": "Browser tab ▸ **wasm-vm** ▸ guest Linux. Crates: `core` (hart, bus, RAM), `wasm` (bindgen wrapper), `cli` (native runner).",
+          "sourceRefs": [
+            "wasm-vm: AGENTS.md",
+            "wasm-vm: tools/rr/"
+          ],
+          "viz": {
+            "scene": "books/wasm-vm-rr/chapter-1",
+            "beat": 0
+          }
+        },
+        {
+          "id": "c1-s2",
+          "title": "Green tests are a claim",
+          "spoken": "The worker implements the hart step loop and cargo test goes green. The project's AGENTS file is blunt about what that means: an implementer being satisfied is a claim. A deterministic recording of the run is evidence.",
+          "displayNarration": "`cargo test` — green. **\"An implementer being satisfied is a claim. A deterministic recording of the run is evidence.\"** — AGENTS.md",
+          "sourceRefs": [
+            "wasm-vm: AGENTS.md",
+            "wasm-vm: tools/rr/"
+          ],
+          "viz": {
+            "scene": "books/wasm-vm-rr/chapter-1",
+            "beat": 1
+          }
+        },
+        {
+          "id": "c1-s3",
+          "title": "record-test.sh freezes the run",
+          "spoken": "The recording harness builds the test binary first, records only the binaries that contain matching tests, forces a single test thread, and writes the trace into an r r traces directory. Then r r pack seals it, so the recording can travel to any machine and replay identically.",
+          "displayNarration": "`tools/rr/record-test.sh -p vm-core hart_step` → `cargo test --no-run` → `rr record --test-threads=1` → `rr-traces/<name>` → `rr pack`.",
+          "sourceRefs": [
+            "wasm-vm: AGENTS.md",
+            "wasm-vm: tools/rr/"
+          ],
+          "viz": {
+            "scene": "books/wasm-vm-rr/chapter-1",
+            "beat": 2
+          }
+        },
+        {
+          "id": "c1-s4",
+          "title": "Two evidence layers",
+          "spoken": "There are two layers of evidence. The guest layer logs every retired guest instruction and state digest, and runs everywhere, including macOS. The host layer is r r recording the entire Rust process — threads, syscalls, memory, reverse execution — and that needs Linux with performance counters.",
+          "displayNarration": "**Guest layer:** every retired instruction + digests, runs anywhere. **Host layer:** rr records the whole process — Linux + PMU only.",
+          "sourceRefs": [
+            "wasm-vm: AGENTS.md",
+            "wasm-vm: tools/rr/"
+          ],
+          "viz": {
+            "scene": "books/wasm-vm-rr/chapter-1",
+            "beat": 3
+          }
+        },
+        {
+          "id": "c1-s5",
+          "title": "The preflight gate",
+          "spoken": "Before trusting any of it, a preflight script records and replays slash bin slash true — a real round trip. If r r cannot do that on this machine, the harness hard fails instead of pretending. Verification tools have to earn trust too.",
+          "displayNarration": "`tools/rr/preflight.sh`: a real `/bin/true` record→replay round-trip — **hard-fail** on macOS or missing PMU.",
+          "sourceRefs": [
+            "wasm-vm: AGENTS.md",
+            "wasm-vm: tools/rr/"
+          ],
+          "viz": {
+            "scene": "books/wasm-vm-rr/chapter-1",
+            "beat": 4
+          }
+        }
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Time Runs Backwards",
+      "blurb": "whowrote: a watchpoint, reverse-continue, and the exact guilty line.",
+      "accent": "#a78bfa",
+      "nodes": [],
+      "edges": [],
+      "steps": [
+        {
+          "id": "c2-cover",
+          "cover": true,
+          "title": "Time Runs Backwards",
+          "coverSubtitle": "Who corrupted this? — a two-command answer",
+          "spoken": "Somewhere past instruction three million, a guest register holds garbage. This chapter is about the debugging move that makes that a two command answer.",
+          "displayNarration": "\"**Who corrupted this?** is a two-command answer.\" — tools/rr/README.md"
+        },
+        {
+          "id": "c2-s1",
+          "title": "Garbage in x14",
+          "spoken": "Millions of instructions into a boot, register x fourteen holds a value nobody wrote on purpose. The corruption happened long ago; the symptom is only visible now.",
+          "displayNarration": "Register **x14** is wrong at ~3,000,000 instructions in. When it went wrong — nobody knows.",
+          "sourceRefs": [
+            "wasm-vm: AGENTS.md",
+            "wasm-vm: tools/rr/"
+          ],
+          "viz": {
+            "scene": "books/wasm-vm-rr/chapter-2",
+            "beat": 0
+          }
+        },
+        {
+          "id": "c2-s2",
+          "title": "Forward debugging is hopeless",
+          "spoken": "The forward strategy is re-run, breakpoint, pray. But the bug fired long before any breakpoint you would think to set, and every re-run without a recording is a different execution.",
+          "displayNarration": "Re-run · breakpoint · pray. **The bug happened before you looked** — and un-recorded re-runs aren't even the same execution.",
+          "sourceRefs": [
+            "wasm-vm: AGENTS.md",
+            "wasm-vm: tools/rr/"
+          ],
+          "viz": {
+            "scene": "books/wasm-vm-rr/chapter-2",
+            "beat": 1
+          }
+        },
+        {
+          "id": "c2-s3",
+          "title": "whowrote: run time backwards",
+          "spoken": "Inside the replay, the verifier drops a hardware watchpoint on the corrupted cell and runs execution in reverse. That is the whole trick: watch dash l, then reverse continue.",
+          "displayNarration": "`whowrote`: `watch -l <cell>` + `reverse-continue` — time runs **backwards** through the recording.",
+          "sourceRefs": [
+            "wasm-vm: AGENTS.md",
+            "wasm-vm: tools/rr/"
+          ],
+          "viz": {
+            "scene": "books/wasm-vm-rr/chapter-2",
+            "beat": 2
+          }
+        },
+        {
+          "id": "c2-s4",
+          "title": "The cursor lands on the writer",
+          "spoken": "Execution stops exactly on the line that wrote the value — file, line, and stack frame — no matter how many million instructions back it happened. The mystery is now a source location.",
+          "displayNarration": "Landed: the exact writing line + frame. Distance back is irrelevant — the recording is deterministic.",
+          "sourceRefs": [
+            "wasm-vm: AGENTS.md",
+            "wasm-vm: tools/rr/"
+          ],
+          "viz": {
+            "scene": "books/wasm-vm-rr/chapter-2",
+            "beat": 3
+          }
+        },
+        {
+          "id": "c2-s5",
+          "title": "Event numbers are point links",
+          "spoken": "The cite helper stamps the moment with an event number. Anyone can reopen the same trace at the same event and see the same state — the r r equivalent of a Replay point link.",
+          "displayNarration": "`cite` → `when` → **event N** — reopen with `rr replay -g <event>`. Same state, for anyone, forever.",
+          "sourceRefs": [
+            "wasm-vm: AGENTS.md",
+            "wasm-vm: tools/rr/"
+          ],
+          "viz": {
+            "scene": "books/wasm-vm-rr/chapter-2",
+            "beat": 4
+          }
+        }
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Two Streams in Lockstep",
+      "blurb": "Every retired instruction, byte-compared against Spike — and all of RAM in one hash.",
+      "accent": "#fbbf24",
+      "nodes": [],
+      "edges": [],
+      "steps": [
+        {
+          "id": "c3-cover",
+          "cover": true,
+          "title": "Two Streams in Lockstep",
+          "coverSubtitle": "Diffing against the reference simulator",
+          "spoken": "The host layer proves the process did what it did. The guest layer asks a different question: did the emulator compute the right thing at all? For that you need a reference.",
+          "displayNarration": "The guest layer diffs **every retired instruction** against Spike, the RISC-V reference simulator."
+        },
+        {
+          "id": "c3-s1",
+          "title": "One canonical line per instruction",
+          "spoken": "Every retired instruction becomes one canonical trace line: program counter, instruction word, destination register, value, and memory address. One shape, no ambiguity.",
+          "displayNarration": "`TraceRecord{pc,insn,rd,mem}` → `core 0: 0x{pc} (0x{insn}) x{rd} 0x{val} mem 0x{addr}`",
+          "sourceRefs": [
+            "wasm-vm: AGENTS.md",
+            "wasm-vm: tools/rr/"
+          ],
+          "viz": {
+            "scene": "books/wasm-vm-rr/chapter-3",
+            "beat": 0
+          }
+        },
+        {
+          "id": "c3-s2",
+          "title": "Spike, normalized",
+          "spoken": "Spike runs the same program with log commits enabled, and a normalizer reshapes its output into exactly the same line format. Two independent implementations, one comparable stream each.",
+          "displayNarration": "`spike --log-commits` → `tools/diff/normalize_spike.py` → the **same canonical shape**.",
+          "sourceRefs": [
+            "wasm-vm: AGENTS.md",
+            "wasm-vm: tools/rr/"
+          ],
+          "viz": {
+            "scene": "books/wasm-vm-rr/chapter-3",
+            "beat": 1
+          }
+        },
+        {
+          "id": "c3-s3",
+          "title": "The first divergent line",
+          "spoken": "The comparison is byte for byte, in lockstep, until the first divergent instruction. The report shows the last twenty matching lines, both divergent lines, and five lines of lookahead on each side — enough context to see what forked.",
+          "displayNarration": "`run_diff.sh` + `report.py`: **first divergence** with last-20 context + 5-line lookahead per side.",
+          "sourceRefs": [
+            "wasm-vm: AGENTS.md",
+            "wasm-vm: tools/rr/"
+          ],
+          "viz": {
+            "scene": "books/wasm-vm-rr/chapter-3",
+            "beat": 2
+          }
+        },
+        {
+          "id": "c3-s4",
+          "title": "Trust the harness first",
+          "spoken": "Before trusting the diff, the self test corrupts exactly one line on purpose and asserts the harness catches exactly that line. A verifier you have watched fail correctly is a verifier you can believe.",
+          "displayNarration": "`make diff-selftest`: sed flips one line — the harness must catch **exactly one**.",
+          "sourceRefs": [
+            "wasm-vm: AGENTS.md",
+            "wasm-vm: tools/rr/"
+          ],
+          "viz": {
+            "scene": "books/wasm-vm-rr/chapter-3",
+            "beat": 3
+          }
+        },
+        {
+          "id": "c3-s5",
+          "title": "All of RAM in one hash",
+          "spoken": "For cross build equality there is a heavier compare, collapsed to nothing: a snapshot digests all of guest RAM into one SHA two fifty six. If the native build and the wasm build produce the same digest, they are the same machine.",
+          "displayNarration": "`Snapshot{pc, xregs[32], mem_digest: SHA-256(RAM)}` — native = wasm by **a single equality**.",
+          "sourceRefs": [
+            "wasm-vm: AGENTS.md",
+            "wasm-vm: tools/rr/"
+          ],
+          "viz": {
+            "scene": "books/wasm-vm-rr/chapter-3",
+            "beat": 4
+          }
+        }
+      ]
+    },
+    {
+      "number": 4,
+      "title": "Chaos and the Gauntlet",
+      "blurb": "Scheduler roulette, adversarial seeds, and a loop that only believes refutation-survivors.",
+      "accent": "#34d399",
+      "nodes": [],
+      "edges": [],
+      "steps": [
+        {
+          "id": "c4-cover",
+          "cover": true,
+          "title": "Chaos and the Gauntlet",
+          "coverSubtitle": "Verified means: failed to refute",
+          "spoken": "Determinism catches wrong answers. Races need something meaner: a scheduler that is unlucky on purpose, and a verifier that treats every claim as a target.",
+          "displayNarration": "`rr record --chaos` + an adversarial verifier: **verified means a fresh session failed to refute.**"
+        },
+        {
+          "id": "c4-s1",
+          "title": "Chaos mode: unlucky on purpose",
+          "spoken": "Races hide in lucky schedules. Chaos mode randomizes thread interleavings run after run until the race fires — and because it fires under r r, the catch is a replayable recording, not an anecdote. The doctrine says: run several.",
+          "displayNarration": "`rr record --chaos` shuffles schedules until the race fires — **captured as a replayable trace.**",
+          "sourceRefs": [
+            "wasm-vm: AGENTS.md",
+            "wasm-vm: tools/rr/"
+          ],
+          "viz": {
+            "scene": "books/wasm-vm-rr/chapter-4",
+            "beat": 0
+          }
+        },
+        {
+          "id": "c4-s2",
+          "title": "The verifier brings its own seed",
+          "spoken": "The verifier never reuses the worker's random seed. It mints its own — the author of the code does not get to pick the exam questions.",
+          "displayNarration": "Verifier fuzz seed: `0x5EED_2026_0702_CAFE` (splitmix64) — **never the worker's.**",
+          "sourceRefs": [
+            "wasm-vm: AGENTS.md",
+            "wasm-vm: tools/rr/"
+          ],
+          "viz": {
+            "scene": "books/wasm-vm-rr/chapter-4",
+            "beat": 1
+          }
+        },
+        {
+          "id": "c4-s3",
+          "title": "Implemented is not verified",
+          "spoken": "Tasks move from pending to in progress to implemented — and implemented is still just a claim. Verified means a fresh adversarial verifier session tried to refute it and failed. Refuted sends it straight back to in progress.",
+          "displayNarration": "`pending → in-progress → implemented → verified` · **refuted → in-progress**. A fresh adversary must fail.",
+          "sourceRefs": [
+            "wasm-vm: AGENTS.md",
+            "wasm-vm: tools/rr/"
+          ],
+          "viz": {
+            "scene": "books/wasm-vm-rr/chapter-4",
+            "beat": 2
+          }
+        },
+        {
+          "id": "c4-s4",
+          "title": "No finding without a citation",
+          "spoken": "Every refutation must cite an r r event number, and the verify targets record their final runs — so a refutation always arrives with a trace attached. Claims argue; citations replay.",
+          "displayNarration": "Findings cite `when` event numbers; `make verify-E0-Tnn` records its final run. **Refutations come with traces.**",
+          "sourceRefs": [
+            "wasm-vm: AGENTS.md",
+            "wasm-vm: tools/rr/"
+          ],
+          "viz": {
+            "scene": "books/wasm-vm-rr/chapter-4",
+            "beat": 3
+          }
+        },
+        {
+          "id": "c4-s5",
+          "title": "The gauntlet, on bare metal",
+          "spoken": "The full gauntlet is format, clippy, test, diff against Spike, then r r verification — and a failure anywhere restarts from the top with the report in hand. Every verified task banks a recorded run. It is Replay's worker and critic loop, ported all the way down to the metal.",
+          "displayNarration": "fmt → clippy → test → diff-vs-Spike → **rr verify** — fail anywhere, restart at the top. Replay's loop, on bare metal.",
+          "sourceRefs": [
+            "wasm-vm: AGENTS.md",
+            "wasm-vm: tools/rr/"
+          ],
+          "viz": {
+            "scene": "books/wasm-vm-rr/chapter-4",
+            "beat": 4
+          }
+        }
+      ]
+    }
+  ]
+}

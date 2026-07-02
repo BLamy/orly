@@ -1,6 +1,39 @@
 {
   "books": [
     {
+      "slug": "the-rr-verification-loop",
+      "title": "The rr Verification Loop",
+      "subtitle": "Time-travel evidence for a hardware emulator",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#a78bfa",
+      "animal": "generated/the-rr-verification-loop/animal.png",
+      "href": "?bundle=the-rr-verification-loop",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Claim Needs a Recording",
+          "duration": 102.632
+        },
+        {
+          "number": 2,
+          "title": "Time Runs Backwards",
+          "duration": 66.456
+        },
+        {
+          "number": 3,
+          "title": "Two Streams in Lockstep",
+          "duration": 79.133
+        },
+        {
+          "number": 4,
+          "title": "Chaos and the Gauntlet",
+          "duration": 83.452
+        }
+      ],
+      "createdAt": "2026-07-02T15:54:57.162Z"
+    },
+    {
       "slug": "replays-agents-that-prove-their-work",
       "title": "Replays: Agents That Prove Their Work",
       "subtitle": "A recording is evidence; a satisfied worker is a claim",
