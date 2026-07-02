@@ -1,6 +1,39 @@
 {
   "books": [
     {
+      "slug": "prompt-caching",
+      "title": "Prompt Caching",
+      "subtitle": "How the Claude SDK reuses your context instead of re-reading it",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#3a8b3a",
+      "animal": "generated/prompt-caching/animal.png",
+      "href": "?bundle=prompt-caching",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Every Turn Re-Reads Everything",
+          "duration": 66.27
+        },
+        {
+          "number": 2,
+          "title": "The Prefix and the Breakpoint",
+          "duration": 75.279
+        },
+        {
+          "number": 3,
+          "title": "Hit, Miss, and the Five-Minute Clock",
+          "duration": 90.279
+        },
+        {
+          "number": 4,
+          "title": "Reading the Usage",
+          "duration": 78.855
+        }
+      ],
+      "createdAt": "2026-07-02T11:08:38.779Z"
+    },
+    {
       "slug": "vercel-emulate",
       "title": "Vercel Emulate",
       "subtitle": "How emulate signs an end-to-end test in as a seeded user, with no real account",
