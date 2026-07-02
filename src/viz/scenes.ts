@@ -4,11 +4,18 @@
 // `import()` so the shelf/main bundle never eagerly grows by these scenes —
 // each loads as its own chunk the first time a viz step needs it.
 //
-// KEEP IN SYNC with generator/viz-catalog.json (the catalog the storyboard
-// pipeline validates against and shows to the storyboard author). After adding
-// or renaming an entry here, update the catalog + prompt table and run
-// `node generator/check-viz-catalog.mjs`.
+// Two kinds of entries:
+// - CATALOG scenes, listed explicitly below. KEEP IN SYNC with
+//   generator/viz-catalog.json (the catalog the storyboard pipeline validates
+//   against and shows to the storyboard author). After adding or renaming an
+//   entry here, update the catalog + prompt table and run
+//   `node generator/check-viz-catalog.mjs`.
+// - BOOK-LOCAL scenes, auto-registered from src/viz/books/<bookSlug>/<name>.tsx
+//   via import.meta.glob — slug `books/<bookSlug>/<name>`, NO edit to this file
+//   needed. Module contract is identical to the explainers: export
+//   `vizScene(): {tl}` and `Render({s})`. Vite code-splits each glob entry.
 // ---------------------------------------------------------------------------
+/// <reference types="vite/client" />
 import type { ReactNode } from 'react';
 import type { SceneState, Timeline } from './core';
 
@@ -50,3 +57,14 @@ export const VIZ_SCENES: Record<string, () => Promise<VizSceneEntry>> = {
   'almostnode-server': entry(() => import('./explainers/almostnode-server/AlmostnodeServer')),
   'almostnode-walls': entry(() => import('./explainers/almostnode-walls/AlmostnodeWalls')),
 };
+
+// Book-local scenes: src/viz/books/<bookSlug>/<name>.tsx → 'books/<bookSlug>/<name>'.
+// An empty (or absent) books/ dir yields an empty glob — nothing registers.
+const bookModules = import.meta.glob('./books/*/*.tsx') as Record<
+  string,
+  () => Promise<VizSceneModule>
+>;
+for (const [path, load] of Object.entries(bookModules)) {
+  const slug = path.replace(/^\.\//, '').replace(/\.tsx$/, '');
+  VIZ_SCENES[slug] = entry(load);
+}

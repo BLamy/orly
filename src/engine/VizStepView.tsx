@@ -1,4 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
+import { Stage } from '../viz/core';
 import { VIZ_SCENES, type VizSceneEntry } from '../viz/scenes';
 
 // KaTeX styling for MathLabel-heavy scenes. Loaded dynamically so the
@@ -9,30 +10,44 @@ const loadKatexCss = () => import('katex/dist/katex.min.css');
 
 const clamp01 = (u: number) => (u < 0 ? 0 : u > 1 ? 1 : u);
 
+/** Out-of-range beats warn once per scene+beat, not once per rAF frame. */
+const warnedBeats = new Set<string>();
+
 /**
  * The play-surface swap for `step.viz`: renders a registered 3b1b-style scene
  * in place of the D3 diagram while its step is active.
  *
- * Clocking — the scene's timeline is time-scaled onto the step's window:
- * - AUDIO MODE (`audio` prop): mapped = clamp((t − start)/(end − start), 0, 1)
- *   × tl.duration, where t is the MP3's currentTime sampled per rAF. Seeking
- *   the track scrubs the scene exactly (sample(t) is pure).
+ * Clocking — the step's window is mapped onto the scene's timeline:
+ * - AUDIO MODE (`audio` prop): f = clamp((t − start)/(end − start), 0, 1),
+ *   where t is the MP3's currentTime sampled per rAF. Seeking the track
+ *   scrubs the scene exactly (sample(t) is pure).
  * - DWELL MODE (no `audio`): a local rAF accumulator advances only while
- *   `playing`, mapping elapsed/durationMs onto the timeline.
+ *   `playing`; f = elapsed/durationMs.
+ *
+ * The fraction f then samples either the WHOLE timeline (no `beat`) or one
+ * BEAT WINDOW: beats are the scene's caption start times (`tl.beats`);
+ * window = [beats[beat], beats[beat+1] ?? tl.duration];
+ * sample(beatStart + f × (beatEnd − beatStart)). That's how one authored
+ * scene plays across N consecutive steps — each step's ElevenLabs cue window
+ * drives its own beat, so the audio stays continuous while the visuals stay
+ * beat-accurate. An out-of-range beat clamps to the last window (warn once).
  *
  * The scene's own lower-third captions (s.captions) are deliberately NOT
  * rendered — the book's narration panel owns the words.
  */
 export function VizStepView({
   scene,
+  beat,
   playing,
   durationMs,
   audio,
 }: {
   /** registry slug from src/viz/scenes.ts */
   scene: string;
+  /** index into the scene's beats (caption starts); omit to play the whole timeline */
+  beat?: number;
   playing: boolean;
-  /** dwell-mode length of this step (ms) — the scene is time-scaled onto it */
+  /** dwell-mode length of this step (ms) — the scene window is time-scaled onto it */
   durationMs: number;
   /** audio mode: the narration MP3's clock + this step's cue window (seconds) */
   audio?: { getTime: () => number; start: number; end: number };
@@ -63,6 +78,28 @@ export function VizStepView({
   // Build the timeline once per scene mount (the entry memoizes internally too).
   const built = useMemo(() => (entry ? entry.buildScene() : null), [entry]);
 
+  // The window of the timeline this step plays: the whole timeline, or —
+  // when `beat` is set — that beat's window [beats[beat], beats[beat+1]].
+  const beatWindow = useMemo(() => {
+    if (!built) return null;
+    const dur = Math.max(0.001, built.tl.duration);
+    if (beat == null) return { start: 0, end: dur };
+    const beats = built.tl.beats;
+    let b = beat;
+    if (!Number.isInteger(b) || b < 0 || b >= beats.length) {
+      const key = `${scene}#${beat}`;
+      if (!warnedBeats.has(key)) {
+        warnedBeats.add(key);
+        console.warn(
+          `[viz] scene '${scene}' has ${beats.length} beats; beat ${beat} is out of range — clamping to the last window`
+        );
+      }
+      b = beats.length - 1;
+    }
+    if (b < 0) return { start: 0, end: dur }; // scene with zero captions/beats
+    return { start: beats[b], end: beats[b + 1] ?? dur };
+  }, [built, beat, scene]);
+
   // Live refs so the rAF loop reads fresh playback state without restarting.
   const playingRef = useRef(playing);
   const audioRef = useRef(audio);
@@ -73,11 +110,12 @@ export function VizStepView({
     durRef.current = durationMs;
   });
 
-  // The clock: map the step window onto the scene timeline every frame.
+  // The clock: map the step window onto the scene's beat window every frame.
   const [sceneT, setSceneT] = useState(0);
   useEffect(() => {
-    if (!built) return;
-    const dur = Math.max(0.001, built.tl.duration);
+    if (!built || !beatWindow) return;
+    const { start, end } = beatWindow;
+    setSceneT(start);
     let raf = 0;
     let prev = performance.now();
     let elapsed = 0; // dwell-mode ms into this step
@@ -91,12 +129,12 @@ export function VizStepView({
         prev = now;
         f = clamp01(elapsed / Math.max(1, durRef.current));
       }
-      setSceneT(f * dur);
+      setSceneT(start + f * (end - start));
       raf = requestAnimationFrame(tick);
     };
     raf = requestAnimationFrame(tick);
     return () => cancelAnimationFrame(raf);
-  }, [built]);
+  }, [built, beatWindow]);
 
   if (failed) {
     return <div className="stage viz-stage" aria-label={`Unknown scene ${scene}`} />;
@@ -113,9 +151,11 @@ export function VizStepView({
   const Render = entry.Render;
   return (
     <div className="stage viz-stage">
-      <svg className="viz-stage-svg" viewBox="0 0 1280 720" preserveAspectRatio="xMidYMid meet">
+      {/* The SAME 1280×720 Stage surface the 3b1bd3 Player uses in Storybook —
+          one render path, so a scene looks identical in the book player. */}
+      <Stage style={{ height: '100%' }}>
         <Render s={s} />
-      </svg>
+      </Stage>
     </div>
   );
 }

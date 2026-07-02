@@ -351,12 +351,17 @@
           "required": [
             "scene"
           ],
-          "description": "Optional: embed a prebuilt 3b1b-style animated scene for this step. While the step is active the player renders the scene INSTEAD of the diagram, time-scaled onto the step's audio window; the step's spoken narration still drives the audio. Never on a cover step.",
+          "description": "Embed a 3b1b-style animated scene for this step. While the step is active the player renders the scene INSTEAD of the diagram; the step's spoken narration still drives the audio. Without `beat` the whole scene is time-scaled onto the step's audio window; with `beat` only that beat's window plays (beats = the scene's caption start times), so N consecutive steps with beat 0..N-1 play one authored scene end to end. Never on a cover step.",
           "properties": {
             "scene": {
               "type": "string",
-              "pattern": "^[a-z0-9][a-z0-9-]*$",
-              "description": "A scene slug from generator/viz-catalog.json (e.g. 'raft', 'bloom-filter'). Unknown slugs are dropped by the validator."
+              "pattern": "^([a-z0-9][a-z0-9-]*|books/[a-z0-9_][a-z0-9_-]*/[a-z0-9_][a-z0-9_-]*)$",
+              "description": "A catalog slug from generator/viz-catalog.json (e.g. 'raft'), or a book-local scene 'books/<bookSlug>/<name>' backed by src/viz/books/<bookSlug>/<name>.tsx (which must exist — the validator hard-errors otherwise)."
+            },
+            "beat": {
+              "type": "integer",
+              "minimum": 0,
+              "description": "0-based beat index into the scene (its caption start times). Step i of a chapter's scene should carry beat i-of-the-scene; omit to time-scale the whole scene onto this one step."
             }
           }
         }

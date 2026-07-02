@@ -365,6 +365,7 @@ export function Presentation({
         <VizStepView
           key={`viz-${index}-${step.viz.scene}`}
           scene={step.viz.scene}
+          beat={step.viz.beat}
           playing={playing}
           durationMs={durations[index] ?? 4200}
           audio={

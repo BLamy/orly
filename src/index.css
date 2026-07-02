@@ -1133,13 +1133,13 @@
   background: #0a0e1a; /* the dark canvas the viz scenes are designed for */
 }
 
-.viz-stage-svg {
+.viz-stage > svg {
   width: 100%;
   height: 100%;
   display: block;
 }
 
-.viz-stage-svg text {
+.viz-stage svg text {
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
 }
 

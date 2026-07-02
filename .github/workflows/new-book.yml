@@ -97,8 +97,11 @@ jobs:
 
             BUILD ONLY: run the generator steps so the requested book(s) under
             public/generated/ and library.json reflect the request. For a new book/series
-            that's digest/study → storyboard → `node generator/cli.mjs …`; for a tweak
-            it's the minimal edit + the matching regen tool. Keep going until done.
+            that's digest/study → storyboard → AUTHOR each chapter's 3b1b scene at
+            src/viz/books/<slug>/chapter-<n>.tsx (the command's "AUTHOR THE SCENES"
+            stage — the chapters' PRIMARY visuals; wired via viz {scene, beat}) →
+            `node generator/cli.mjs …`; for a tweak it's the minimal edit + the
+            matching regen tool. Keep going until done.
 
             Do NOT run any git or gh commands and do NOT open a PR — the workflow
             commits + opens the PR (left open for review) after you finish.

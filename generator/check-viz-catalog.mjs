@@ -12,13 +12,19 @@ import { fileURLToPath } from 'node:url';
 const HERE = dirname(fileURLToPath(import.meta.url));
 const ROOT = join(HERE, '..');
 
+// Book-local scenes ('books/<bookSlug>/<name>', glob-registered from
+// src/viz/books/) are NOT catalog scenes — ignore them on both sides.
+const isBookLocal = (slug) => slug.startsWith('books/');
+
 const catalog = JSON.parse(readFileSync(join(HERE, 'viz-catalog.json'), 'utf8'));
-const catalogSlugs = new Set(catalog.scenes.map((s) => s.slug));
+const catalogSlugs = new Set(catalog.scenes.map((s) => s.slug).filter((s) => !isBookLocal(s)));
 
 const registrySrc = readFileSync(join(ROOT, 'src', 'viz', 'scenes.ts'), 'utf8');
 // Entries look like:  'slug': entry(() => import('./explainers/…')),
 const registrySlugs = new Set(
-  [...registrySrc.matchAll(/^\s*'([a-z0-9-]+)':\s*entry\(/gm)].map((m) => m[1])
+  [...registrySrc.matchAll(/^\s*'([a-z0-9-]+)':\s*entry\(/gm)]
+    .map((m) => m[1])
+    .filter((s) => !isBookLocal(s))
 );
 
 const prompt = readFileSync(join(HERE, 'prompts', 'storyboard.txt'), 'utf8');

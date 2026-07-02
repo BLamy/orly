@@ -28,23 +28,51 @@ no `ANTHROPIC_API_KEY` needed.
    exactly), plus `/tmp/nb-digest.txt`. Ground EVERYTHING in the digest (real
    file/function/type names). Optionally also set each node's `iconTerm` (e.g.
    "key", "database", "clock") and a `iconTerm` on auth/data messages.
-   **Consider a viz step** for a concept beat: if the subsystem genuinely uses a
-   concept from `generator/viz-catalog.json` (raft, bloom-filter,
-   consistent-hashing, crdt, differential-dataflow, gradient-descent, …), give
-   ONE step `viz: {"scene": "<slug>"}` — the player swaps in that 3b1b-style
-   animation for the step's audio window while your narration keeps speaking.
-   Rules live in the prompt's "VIZ STEPS" section (never on covers, ≤1–2 per
-   book, longer spoken text, cite the code that uses the concept).
+   **The primary visual of every chapter is a custom-authored 3b1b scene**
+   (prompt section "VIZ SCENES"): plan ONE scene per chapter at
+   `books/<SLUG>/chapter-<n>` and put `viz: {"scene": "books/<SLUG>/chapter-<n>",
+   "beat": <i>}` on EVERY non-cover step, `<i>` = the step's 0-based position
+   among the chapter's non-cover steps. Diagram-only steps are for beats where
+   boxes-and-arrows teach best; a prebuilt catalog scene
+   (`generator/viz-catalog.json`) may ALSO be embedded (usually without `beat`)
+   when the code genuinely uses that concept. A book with zero authored scenes
+   is a failed storyboard unless explicitly justified.
    Write the JSON to `/tmp/nb-storyboard.json`, then validate + auto‑fix layout:
    ```bash
    node -e "import('./generator/validate.mjs').then(m=>{const fs=require('fs');const sb=JSON.parse(fs.readFileSync('/tmp/nb-storyboard.json','utf8'));const v=m.validateStoryboard(sb);fs.writeFileSync('/tmp/nb-storyboard.json',JSON.stringify(sb,null,2));console.log(JSON.stringify(v))})"
    ```
-   Fix every error and re‑validate until `ok:true`.
+   Fix every error and re‑validate — EXCEPT the "no scene file" hard errors for
+   your `books/...` scenes, which are expected until step 4 authors them.
    *(For higher quality you may instead run a Workflow that generates the
    storyboard and adversarially verifies its fidelity to the code — see the
    koa-storyboard-test workflow as a template.)*
 
-4. **Build the book** (TTS + cover + icons + library), no browser:
+4. **AUTHOR THE SCENES** (the chapters' primary visuals — do NOT skip to the
+   build). Follow `.claude/skills/viz-scene/SKILL.md` ("Using scenes in BOOKS"):
+   1. **Study 2–3 relevant exemplar explainers** under `src/viz/explainers/`
+      first — e.g. `almostnode-server/` (architecture/relay story) and
+      `differential-dataflow/` (algorithmic story), each `scene.ts` + component.
+      They are the quality bar: beat-sheet structure, arch/agent primitives
+      (`Zone`/`ServiceNode`/`Connection`/`RequestFlow`), `MathLabel` for math,
+      the motion-language durations, and restraint.
+   2. **Write `src/viz/books/<SLUG>/chapter-<n>.tsx`** for each chapter — a
+      single-file scene (layout data + `buildScene()` + `Render({s})` +
+      `vizScene()` exports in one .tsx): one caption per non-cover step whose
+      text mirrors that step's `displayNarration` (captions define the beats),
+      channels for everything that moves, deterministic (no `Math.random()`/
+      `Date.now()`), bottom ~12% of the 1280×720 stage kept clear. It is
+      auto-registered by glob — no edit to `src/viz/scenes.ts`.
+   3. **Wire `viz: {scene, beat}` into the storyboard steps** (if not already
+      done in step 3) — beat `<i>` per non-cover step, in order.
+   4. **Verify**: `npx tsc --noEmit` is clean, `npm run build` is green, the
+      step-3 validator now returns `ok:true` with the scene files present, AND
+      each scene scrubs correctly in the Storybook **Motion** panel: add a
+      colocated `.stories.tsx` (the glob covers `src/viz/**`), run
+      `npm run storybook`, and drag through every beat — each caption window
+      must render its beat's state at ANY slider position (state leaks show up
+      as frames that only look right when played from 0).
+
+5. **Build the book** (TTS + cover + icons + library), no browser:
    ```bash
    node generator/cli.mjs --storyboard /tmp/nb-storyboard.json --slug "<SLUG>" --title "<TITLE>" --prompt "<SUBSYSTEM PROMPT>"
    ```
@@ -53,12 +81,13 @@ no `ANTHROPIC_API_KEY` needed.
    loop** that rejects any real‑publisher/stray text), fetches Noun Project icons
    for nodes + packets, and upserts the book into `public/generated/library.json`.
 
-5. **Publish** (triggers the Pages redeploy):
+6. **Publish** (triggers the Pages redeploy — the authored scenes ship with the
+   book, so add BOTH paths):
    ```bash
-   git add public/generated && git commit -m "book: <TITLE>" && git push
+   git add public/generated src/viz/books && git commit -m "book: <TITLE>" && git push
    ```
 
-6. Tell the user the live URL: `https://orly.brett-lamy.workers.dev/?bundle=<SLUG>`
+7. Tell the user the live URL: `https://orly.brett-lamy.workers.dev/?bundle=<SLUG>`
    (and optionally open it locally with `npm run dev` + `?bundle=<SLUG>`).
 
 ## Rules
