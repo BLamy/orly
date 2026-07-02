@@ -1,0 +1,260 @@
+{
+  "slug": "replays-agents-that-prove-their-work",
+  "title": "Replays: Agents That Prove Their Work",
+  "subtitle": "A recording is evidence; a satisfied worker is a claim",
+  "throughline": "Modern coding agents check their own work in a browser — but self-review is still the author grading the author. A deterministic Replay recording turns a walkthrough into evidence, and an adversarial critic turns evidence into verdicts: falsify the claim, audit the coverage, hunt the mocks, and promote what survives into the test suite.",
+  "chapters": [
+    {
+      "id": "a-claim-is-not-evidence-1",
+      "number": 1,
+      "title": "A Claim Is Not Evidence",
+      "blurb": "The worker's happy session, and why watching the screen proves almost nothing.",
+      "accent": "#38bdf8",
+      "audio": "generated/replays-agents-that-prove-their-work/audio/chapter-1.mp3",
+      "audioEnd": 83.871,
+      "story": {
+        "title": "A Claim Is Not Evidence",
+        "subtitle": "A recording is evidence; a satisfied worker is a claim",
+        "nodes": [],
+        "edges": [],
+        "steps": [
+          {
+            "id": "c1-cover",
+            "chapter": "Chapter 1",
+            "title": "A Claim Is Not Evidence",
+            "narration": "An agent ships promo codes: the field renders, `SAVE20` drops the total, the screenshot lands in the PR. **Look closer and it falls apart in layers.**",
+            "say": "Ask an agent to add promo code support and you get a tidy pull request, a screenshot, and a story. This chapter is about why that story is a claim, and what it takes to turn it into evidence.",
+            "cover": true,
+            "coverSubtitle": "The worker's happy session",
+            "cue": 0
+          },
+          {
+            "id": "c1-s1",
+            "title": "The worker checks its own work",
+            "narration": "The worker drives real browser sessions via `playwright-cli` — click, read the DOM, screenshot, adjust. **But it's still self-review.**",
+            "say": "Modern coding agents do not just edit files and hope. They open the app in a browser they control, click through the feature, read the screen, adjust, and repeat until they are satisfied. That is genuinely a leap over blind generation. But the agent drives the session, decides what to look at, and decides when it is done.",
+            "viz": {
+              "scene": "replay-critic",
+              "beat": 0
+            },
+            "cue": 12.272
+          },
+          {
+            "id": "c1-s2",
+            "title": "A satisfied worker is a claim",
+            "narration": "The screen says **$79.20**. The mental model that wrote the bug is the same one directing the eyes — it never opens the network tab it doesn't know it needs.",
+            "say": "The worker typed SAVE20 and watched ninety nine dollars become seventy nine twenty. It was satisfied — reasonably, because the one thing its code was guaranteed to change was the pixels it was watching. A session that satisfied its own author is a claim, not evidence.",
+            "viz": {
+              "scene": "replay-critic",
+              "beat": 1
+            },
+            "cue": 33.495
+          },
+          {
+            "id": "c1-s3",
+            "title": "Replay records the whole runtime",
+            "narration": "Replay records **every call, request, and render** deterministically. Not \"trust me, I checked\" — *here is the session, in full, interrogate it.*",
+            "say": "A Replay recording changes what counts as evidence. It records the browser at the level of the runtime — every function call, every variable, every network request, every React render — deterministically, so the entire execution can be re-inspected after the fact, at any point in time.",
+            "viz": {
+              "scene": "replay-critic",
+              "beat": 2
+            },
+            "cue": 49.772
+          },
+          {
+            "id": "c1-s4",
+            "title": "Enter the critic",
+            "narration": "The **critic** runs with one live capability: the Replay MCP. No file writes, no shell, no browser — just the recording, the requirements, and the diff.",
+            "say": "So a second agent, the critic, does exactly that. With the Replay MCP toolset it can jump to any moment on the timeline, evaluate expressions in the paused program, add logpoints retroactively, and diff what the worker saw against what the runtime actually did.",
+            "viz": {
+              "scene": "replay-critic",
+              "beat": 3
+            },
+            "cue": 68.186
+          }
+        ]
+      }
+    },
+    {
+      "id": "predict-then-verify-2",
+      "number": 2,
+      "title": "Predict, Then Verify",
+      "blurb": "Falsification: write the claim down before you peek.",
+      "accent": "#a78bfa",
+      "audio": "generated/replays-agents-that-prove-their-work/audio/chapter-2.mp3",
+      "audioEnd": 58.561,
+      "story": {
+        "title": "Predict, Then Verify",
+        "subtitle": "A recording is evidence; a satisfied worker is a claim",
+        "nodes": [],
+        "edges": [],
+        "steps": [
+          {
+            "id": "c2-cover",
+            "chapter": "Chapter 2",
+            "title": "Predict, Then Verify",
+            "narration": "The default failure mode is a critic that **narrates**. Predict-then-verify makes every check falsifiable.",
+            "say": "An unconstrained reviewer narrates the recording back to you and confirms what the worker already believed. The charter's job is to make that impossible.",
+            "cover": true,
+            "coverSubtitle": "Falsification, not narration",
+            "cue": 0
+          },
+          {
+            "id": "c2-s1",
+            "title": "Predictions before inspection",
+            "narration": "**P1, charge truth:** at the checkout click, `POST /api/checkout` payload total = cart store total = rendered total.",
+            "say": "Before the critic inspects any state, it writes down what the state should be, at a specific point, as a falsifiable claim. At the checkout click, the payload total, the store total, and the rendered total must all agree. A prediction made after looking at the data is not a prediction — it is a caption.",
+            "viz": {
+              "scene": "replay-critic",
+              "beat": 4
+            },
+            "cue": 8.44
+          },
+          {
+            "id": "c2-s2",
+            "title": "The narrowest tool that can falsify",
+            "narration": "Render **79.20** — store **99.00** — wire **{total: 99.00}**. The discount lived in the summary component's local state; the payment API never learned a code was applied.",
+            "say": "Then it checks with the narrowest tool available. One network request and one evaluate broke the prediction in two calls: the render says seventy nine twenty, but the store and the wire never heard about the discount. The customer sees one price and is charged another.",
+            "viz": {
+              "scene": "replay-critic",
+              "beat": 5
+            },
+            "cue": 29.489
+          },
+          {
+            "id": "c2-s3",
+            "title": "Every pixel was correct",
+            "narration": "Verdict: **needs_revision** — with a point link at 6.31s. \"The charge is wrong\" is an opinion; a payload at a timestamp is evidence.",
+            "say": "No walkthrough, however attentive, finds that bug by watching — because every pixel on screen was correct. The verdict is needs revision, and every finding cites a point on the timeline that anyone can click into.",
+            "viz": {
+              "scene": "replay-critic",
+              "beat": 6
+            },
+            "cue": 45.825
+          }
+        ]
+      }
+    },
+    {
+      "id": "sufficiency-and-the-mock-hunt-3",
+      "number": 3,
+      "title": "Sufficiency and the Mock Hunt",
+      "blurb": "Coverage: does the recording even contain the claim?",
+      "accent": "#fbbf24",
+      "audio": "generated/replays-agents-that-prove-their-work/audio/chapter-3.mp3",
+      "audioEnd": 65.017,
+      "story": {
+        "title": "Sufficiency and the Mock Hunt",
+        "subtitle": "A recording is evidence; a satisfied worker is a claim",
+        "nodes": [],
+        "edges": [],
+        "steps": [
+          {
+            "id": "c3-cover",
+            "chapter": "Chapter 3",
+            "title": "Sufficiency and the Mock Hunt",
+            "narration": "A PR isn't proven when nothing contradicts it. It's proven when **everything in it was needed and exercised.**",
+            "say": "Falsification asks whether anything contradicts the claim. Sufficiency inverts the question: does the recording even contain the claim?",
+            "cover": true,
+            "coverSubtitle": "Evidence has to cover the diff",
+            "cue": 0
+          },
+          {
+            "id": "c3-s1",
+            "title": "Hold the diff against the recording",
+            "narration": "Every changed hunk: **executed, waived, or gone.** The invalid-code branch had zero hits; `roundCurrency` had zero call sites.",
+            "say": "The critic holds the PR diff next to the recording and asks which changed lines actually executed. An error path with zero hits is unproven — record a session that exercises it. A helper nothing calls is dead — delete it. And type changes get waived, explicitly, one line of reasoning each.",
+            "viz": {
+              "scene": "replay-critic",
+              "beat": 7
+            },
+            "cue": 8.139
+          },
+          {
+            "id": "c3-s2",
+            "title": "The mocks that made the session pass",
+            "narration": "`{ SAVE20: 0.2, TESTFREE: 1.0 }` shipped in the bundle. **The mocks that made the session pass are the mocks that ship.**",
+            "say": "The mock audit caught what correctness testing never would. The validation table was compiled into the client bundle — every code readable by any user, including TESTFREE, a one hundred percent off code the worker minted for its own earlier sessions and forgot. Test data that is load-bearing for the proof is exactly the data most likely to ship.",
+            "viz": {
+              "scene": "replay-critic",
+              "beat": 8
+            },
+            "cue": 26.865
+          },
+          {
+            "id": "c3-s3",
+            "title": "Four predictions, four held",
+            "narration": "Pass 2: **4/4 predictions held · coverage 100% (2 waived)** · no uncaught exceptions, no new console errors.",
+            "say": "Round three: validation moved server side, the table deleted, dev codes env-gated, the dead helper removed, and the walkthrough re-driven with the error path included. Four predictions, four held. Coverage one hundred percent, two hunks waived. Satisfied.",
+            "viz": {
+              "scene": "replay-critic",
+              "beat": 9
+            },
+            "cue": 47.335
+          }
+        ]
+      }
+    },
+    {
+      "id": "promotion-and-the-gauntlet-4",
+      "number": 4,
+      "title": "Promotion and the Gauntlet",
+      "blurb": "The verdict that compounds: which sessions become tests, and where the gate sits.",
+      "accent": "#34d399",
+      "audio": "generated/replays-agents-that-prove-their-work/audio/chapter-4.mp3",
+      "audioEnd": 75.93,
+      "story": {
+        "title": "Promotion and the Gauntlet",
+        "subtitle": "A recording is evidence; a satisfied worker is a claim",
+        "nodes": [],
+        "edges": [],
+        "steps": [
+          {
+            "id": "c4-cover",
+            "chapter": "Chapter 4",
+            "title": "Promotion and the Gauntlet",
+            "narration": "A recorded walkthrough is, structurally, **an e2e test that hasn't been written down yet.**",
+            "say": "The critic has one more duty, and it is the one that compounds: deciding whether the worker's session is worth keeping — and in what form.",
+            "cover": true,
+            "coverSubtitle": "The suite grows anyway",
+            "cue": 0
+          },
+          {
+            "id": "c4-s1",
+            "title": "Choose the test's substrate",
+            "narration": "**Promote (deterministic):** checkout-promo.spec.ts. **Promote (agent-executed):** the BOGUS journey — natural-language steps outlive every selector.",
+            "say": "The money path becomes a deterministic Playwright spec — exact values on a stable flow, running in seconds, failing with precision. The invalid code journey becomes an agent-executed test in the Stagehand style, because its copy and selectors churn while its intent never will. The worker never writes a test; the suite grows anyway.",
+            "viz": {
+              "scene": "replay-critic",
+              "beat": 10
+            },
+            "cue": 9.288
+          },
+          {
+            "id": "c4-s2",
+            "title": "One gate in a longer gauntlet",
+            "narration": "lint → sessions → **replay verification** → PR → suite → review. Fail anywhere, restart at the top — the report travels with you.",
+            "say": "The gate sits in the middle of a gauntlet: lint, ephemeral sessions, replay verification, pull request, full suite, AI review. A failure at any stage returns the agent to the top with the failure report as new context. A fix applied mid-pipeline never re-earned the earlier gates.",
+            "viz": {
+              "scene": "replay-critic",
+              "beat": 11
+            },
+            "cue": 31.405
+          },
+          {
+            "id": "c4-s3",
+            "title": "Harder to fool every time it runs",
+            "narration": "The promoted spec makes the suite **one test harder to fool. Forever.** That's how Replay QA was built — the same loop, pointed at a URL.",
+            "say": "Every feature that survives deposits a test transcribed from verified predictions, not from a worker's hopes. The next agent to touch the promo flow does not need the critic to rediscover the three layer invariant — it is in CI now, failing in seconds. The adversary's findings compound into the cheap gates at the front, and the loop gets harder to fool every time it runs.",
+            "viz": {
+              "scene": "replay-critic",
+              "beat": 12
+            },
+            "cue": 53.371
+          }
+        ]
+      }
+    }
+  ],
+  "iconCredits": []
+}

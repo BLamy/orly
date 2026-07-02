@@ -1,6 +1,39 @@
 {
   "books": [
     {
+      "slug": "replays-agents-that-prove-their-work",
+      "title": "Replays: Agents That Prove Their Work",
+      "subtitle": "A recording is evidence; a satisfied worker is a claim",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#a78bfa",
+      "animal": "generated/replays-agents-that-prove-their-work/animal.png",
+      "href": "?bundle=replays-agents-that-prove-their-work",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Claim Is Not Evidence",
+          "duration": 83.871
+        },
+        {
+          "number": 2,
+          "title": "Predict, Then Verify",
+          "duration": 58.561
+        },
+        {
+          "number": 3,
+          "title": "Sufficiency and the Mock Hunt",
+          "duration": 65.017
+        },
+        {
+          "number": 4,
+          "title": "Promotion and the Gauntlet",
+          "duration": 75.93
+        }
+      ],
+      "createdAt": "2026-07-02T13:38:51.749Z"
+    },
+    {
       "slug": "prompt-caching",
       "title": "Prompt Caching",
       "subtitle": "How the Claude SDK reuses your context instead of re-reading it",
