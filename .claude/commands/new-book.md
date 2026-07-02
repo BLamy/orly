@@ -28,6 +28,13 @@ no `ANTHROPIC_API_KEY` needed.
    exactly), plus `/tmp/nb-digest.txt`. Ground EVERYTHING in the digest (real
    file/function/type names). Optionally also set each node's `iconTerm` (e.g.
    "key", "database", "clock") and a `iconTerm` on auth/data messages.
+   **Consider a viz step** for a concept beat: if the subsystem genuinely uses a
+   concept from `generator/viz-catalog.json` (raft, bloom-filter,
+   consistent-hashing, crdt, differential-dataflow, gradient-descent, …), give
+   ONE step `viz: {"scene": "<slug>"}` — the player swaps in that 3b1b-style
+   animation for the step's audio window while your narration keeps speaking.
+   Rules live in the prompt's "VIZ STEPS" section (never on covers, ≤1–2 per
+   book, longer spoken text, cite the code that uses the concept).
    Write the JSON to `/tmp/nb-storyboard.json`, then validate + auto‑fix layout:
    ```bash
    node -e "import('./generator/validate.mjs').then(m=>{const fs=require('fs');const sb=JSON.parse(fs.readFileSync('/tmp/nb-storyboard.json','utf8'));const v=m.validateStoryboard(sb);fs.writeFileSync('/tmp/nb-storyboard.json',JSON.stringify(sb,null,2));console.log(JSON.stringify(v))})"

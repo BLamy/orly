@@ -428,3 +428,8 @@ export function GradientDescent() {
     </div>
   );
 }
+
+/** Uniform embed surface for the book player — see src/viz/scenes.ts. */
+export { Frame as Render };
+/** The module-scope scene (overrides already applied); its `.tl` drives embedding. */
+export const vizScene = () => scene;

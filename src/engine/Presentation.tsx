@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Step, Story } from '../types';
 import { Diagram } from './Diagram';
+import { VizStepView } from './VizStepView';
 import { NarrationPanel } from './NarrationPanel';
 import { cancelSpeech, isSpeechSupported, speak, speechify } from './speech';
 import { resolveCues, type Transcript } from './align';
@@ -357,7 +358,28 @@ export function Presentation({
         </div>
       )}
 
-      <Diagram story={story} stepIndex={index} reduced={reduced} coverNote={coverNote} />
+      {step.viz && !step.cover ? (
+        // Viz step: a 3b1b-style scene replaces the diagram for this step's
+        // window. The D3 svg unmounts here and remounts (camera reset, reveals
+        // recomputed — renderDiagram is a pure function of the index) on return.
+        <VizStepView
+          key={`viz-${index}-${step.viz.scene}`}
+          scene={step.viz.scene}
+          playing={playing}
+          durationMs={durations[index] ?? 4200}
+          audio={
+            audioMode
+              ? {
+                  getTime: () => audioRef.current?.currentTime ?? 0,
+                  start: cueTimes[index] ?? 0,
+                  end: (index < last ? cueTimes[index + 1] : undefined) ?? totalTime,
+                }
+              : undefined
+          }
+        />
+      ) : (
+        <Diagram story={story} stepIndex={index} reduced={reduced} coverNote={coverNote} />
+      )}
 
       {!playing && !finished && (
         <button className="play-overlay" onClick={togglePlay} aria-label="Play slideshow">

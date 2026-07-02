@@ -95,6 +95,35 @@ Each non-cover step either reveals new structure, moves data, or changes state �
 ONLY reference node ids declared in THIS chapter's `nodes` in any of `reveal`/`hide`/`highlight`/`badges`/`messages`.
 
 ================================================================
+VIZ STEPS — optional prebuilt 3b1b-style animations (use sparingly)
+================================================================
+A step may carry `viz: { "scene": "<slug>" }` to embed a prebuilt 3blue1brown-style animated scene from the catalog below. While that step is active, the play surface renders the SCENE instead of the node/edge diagram; the scene's timeline is time-scaled to play exactly across the step's audio window; when the step ends, the diagram returns where it left off. The step's `spoken`/`displayNarration` still drive the audio and side panel exactly as usual — the scene has no voice of its own (its built-in captions are suppressed).
+- WHEN: a conceptual or algorithmic beat that a diagram of boxes can't teach — the repo genuinely uses consensus (raft), a Bloom filter, consistent hashing, CRDTs, gradient descent, attention, convolution, diffusion, backprop, Fourier analysis, Bayes, the central limit theorem, eigenvectors, or differential dataflow — and a 10–30 second animated intuition between diagram steps earns its keep. The FIDELITY rule still applies: only embed a scene for a concept the digest actually shows the code using; cite the file that uses it in `sourceRefs`.
+- WHEN NOT: never on a cover step; never as decoration; at most 1–2 viz steps per book; skip it entirely when no catalog concept matches. Unknown slugs are dropped by the validator.
+- WRITING THE STEP: give it a longer `spoken` (3–4 sentences, roughly 15–30 seconds of narration) so the scene has room to play; narrate the CONCEPT (what the animation shows) while tying it back to the real code ("that ring is exactly what `hashring.go` walks"). `reveal` still works on a viz step (nodes appear when the diagram returns), but prefer keeping reveals/messages on neighboring diagram steps.
+
+SCENE CATALOG (slug — title — what it shows — native length; it is time-scaled to your step):
+| slug | title | shows | ~s |
+|---|---|---|---|
+| fourier | Fourier Series | Rotating arrows (epicycles) sum into a square wave, its spectrum, then a drawing traced by circles on circles | 60 |
+| gradient-descent | Gradient Descent | A contoured loss landscape; the gradient points downhill and a ball steps toward the valley (learning rates compared) | 64 |
+| attention | Self-Attention | Token vectors make Query/Key/Value; dot-product scores → softmax weights → context-aware blends | 65 |
+| diffusion | Diffusion Models | An image melts into noise step by step; a learned score field walks it back | 55 |
+| raft | Raft Consensus | Five servers elect a leader, replicate a log to a majority, survive a partition, re-elect | 71 |
+| backprop | Backpropagation | Forward pass, then gradients flow backward — the chain rule stitching local slopes into weight updates | 68 |
+| eigen | Eigenvectors | A matrix warps the plane; eigenvectors keep their direction and only scale by their eigenvalue | 72 |
+| convolution | Convolution | A 3×3 kernel slides over an image grid, multiply-and-sum — blur, then edge detection | 63 |
+| bayes | Bayes' Theorem | A rare disease + a good test as a headcount of 2,000 people — the surprising posterior | 65 |
+| consistent-hashing | Consistent Hashing | hash mod N reshuffles keys when a server joins; the ring keeps ownership stable | 71 |
+| crdt | CRDTs | Two devices count offline and merge without a referee — per-device tallies (G-Counter) | 71 |
+| central-limit | Central Limit Theorem | Sums of many flat dice pile into a bell curve, live | 65 |
+| bloom-filter | Bloom Filters | Keys hash into a bit array via k hashes — "definitely not" vs "probably yes", and false positives | 70 |
+| differential-dataflow | Differential Dataflow | Operators update from (data, time, diff) deltas; retractions ripple instead of recomputing | 80 |
+| replay-critic | Replay — Agents That Prove Their Work | An adversarial critic falsifies a worker agent's "it works" claim from a runtime recording, audits diff coverage + mocks, promotes tests | 83 |
+| almostnode-server | almostnode — A Server Made of Tab | A Node dev server in one tab: RAM VirtualFS, ~75 shims, service-worker relay answering /__virtual__/3000/ from the main thread | 85 |
+| almostnode-walls | almostnode — Walls & Escape Hatches | Isolation tiers (main thread / Worker / cross-origin iframe) and the sanctioned doors: opt-in egress, passkey vault, typed host-bridge RPC | 98 |
+
+================================================================
 ACCENT PALETTE (reuse engine hues; vary across chapters)
 ================================================================
 #34d399 service/green · #f5b942 vault/amber · #2dd4bf worker/teal · #fb7185 record/pink · #22d3ee proxy/cyan · #a78bfa lb/violet · #38bdf8 client/blue · #fbbf24 db/gold · #f472b6 cache/magenta · #c084fc key/purple.
@@ -112,5 +141,6 @@ SELF-CHECK BEFORE YOU EMIT (verify all)
 [] `spoken` has zero markdown/backticks/symbols and reads aloud cleanly; acronyms introduced in full once; chapter's spoken segments concatenate into one smooth, gap-free script.
 [] `displayNarration` present on every step and uses real digest identifiers.
 [] Every step has a non-empty `sourceRefs`; nothing fabricated.
+[] Any `viz` step uses a catalog slug, is not a cover, is backed by real code using that concept, and its spoken narration is long enough to host the scene.
 
 Output ONLY the JSON object conforming to the schema. It must validate: correct enums, ranges, required fields, unique ids within each chapter, sequential chapter numbers, cover-first, non-empty `spoken`/`displayNarration`/`sourceRefs` on every step, and a non-overlapping layout.

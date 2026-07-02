@@ -1124,3 +1124,36 @@
     justify-content: center;
   }
 }
+
+/* ---- viz steps (3b1b scenes swapped into the play surface) --------------- */
+.viz-stage {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: #0a0e1a; /* the dark canvas the viz scenes are designed for */
+}
+
+.viz-stage-svg {
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+
+.viz-stage-svg text {
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.viz-spinner {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: 3px solid rgba(148, 163, 184, 0.25);
+  border-top-color: #38bdf8;
+  animation: viz-spin 0.8s linear infinite;
+}
+
+@keyframes viz-spin {
+  to {
+    transform: rotate(360deg);
+  }
+}

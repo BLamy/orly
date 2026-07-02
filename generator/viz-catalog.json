@@ -1,0 +1,107 @@
+{
+  "$comment": "Catalog of prebuilt 3b1b-style animated scenes a storyboard step may embed via step.viz.scene. MUST stay in sync with the VIZ_SCENES registry in src/viz/scenes.ts (the Node-side validator can't import TSX, so this JSON is its source of truth). Run `node generator/check-viz-catalog.mjs` after changing either side. Durations are the scene timelines' native seconds — in a book the scene is time-scaled onto the step's audio window, so they're advisory (pick steps whose narration runs long enough that the scene isn't comically fast).",
+  "scenes": [
+    {
+      "slug": "fourier",
+      "title": "Fourier Series",
+      "summary": "Rotating arrows (epicycles) sum tip-to-tail into a square wave, its frequency spectrum, and finally a star drawn by 128 circles on circles.",
+      "duration": 60.4
+    },
+    {
+      "slug": "gradient-descent",
+      "title": "Gradient Descent",
+      "summary": "Loss as a contoured landscape: the gradient says which way is downhill, and a ball steps toward the valley — learning-rate too small, too big, just right.",
+      "duration": 63.6
+    },
+    {
+      "slug": "attention",
+      "title": "Self-Attention",
+      "summary": "Six token vectors each make a Query, Key and Value; dot-product scores turn into softmax weights and every word becomes a context-aware blend.",
+      "duration": 64.8
+    },
+    {
+      "slug": "diffusion",
+      "title": "Diffusion Models",
+      "summary": "A point-cloud image melts into noise step by step, then a learned score field walks it back — noising and denoising as two walks between data and noise.",
+      "duration": 55
+    },
+    {
+      "slug": "raft",
+      "title": "Raft Consensus",
+      "summary": "Five servers with nervous election timers pick a leader, replicate a log entry to a majority, survive a partition, and re-elect in a new term.",
+      "duration": 71
+    },
+    {
+      "slug": "backprop",
+      "title": "Backpropagation",
+      "summary": "A tiny network computes forward, then gradients flow backward node by node — the chain rule stitching local slopes into weight updates.",
+      "duration": 67.6
+    },
+    {
+      "slug": "eigen",
+      "title": "Eigenvectors",
+      "summary": "A matrix warps the plane's whole grid; most arrows change direction, but eigenvectors stay on their line and only scale by their eigenvalue.",
+      "duration": 72.4
+    },
+    {
+      "slug": "convolution",
+      "title": "Convolution",
+      "summary": "A 3×3 kernel slides across an image grid, multiplying and summing at each stop — the same mechanism blurs, then finds edges.",
+      "duration": 63.4
+    },
+    {
+      "slug": "bayes",
+      "title": "Bayes' Theorem",
+      "summary": "2,000 people, a rare disease, a good test: counting who actually lights up turns Bayes' rule into a headcount — and a surprising 9% posterior.",
+      "duration": 65.4
+    },
+    {
+      "slug": "consistent-hashing",
+      "title": "Consistent Hashing",
+      "summary": "hash(key) mod N reshuffles nearly every key when a server joins; bending the line into a ring keeps ownership stable in small arcs.",
+      "duration": 70.8
+    },
+    {
+      "slug": "crdt",
+      "title": "CRDTs",
+      "summary": "Two devices bump a shared counter offline, then merge without a referee — per-device tallies (a G-Counter) make the sync conflict-free.",
+      "duration": 70.7
+    },
+    {
+      "slug": "central-limit",
+      "title": "Central Limit Theorem",
+      "summary": "One flat die knows nothing, but sums of many dice pile into a bell curve — the central limit theorem emerging live from raw rolls.",
+      "duration": 64.6
+    },
+    {
+      "slug": "bloom-filter",
+      "title": "Bloom Filters",
+      "summary": "Keys hash into a shared bit array through several hash functions — an instant 'definitely not' vs 'probably yes', and how false positives sneak in.",
+      "duration": 69.8
+    },
+    {
+      "slug": "differential-dataflow",
+      "title": "Differential Dataflow",
+      "summary": "A dataflow of operators updates from (data, time, diff) deltas — a join's arrangement absorbs changes and retractions ripple through instead of recomputing.",
+      "duration": 79.8
+    },
+    {
+      "slug": "replay-critic",
+      "title": "Replay — Agents That Prove Their Work",
+      "summary": "A worker agent's happy browser session is a claim, not evidence: an adversarial critic interrogates the Replay recording — three-layer charge check, diff coverage, mock hunt — then promotes surviving sessions into tests.",
+      "duration": 82.5
+    },
+    {
+      "slug": "almostnode-server",
+      "title": "almostnode — A Server Made of Tab",
+      "summary": "A full Node dev server inside one browser tab: RAM-only VirtualFS, ~75 shims, and the service-worker relay that answers /__virtual__/3000/ from the main thread.",
+      "duration": 84.6
+    },
+    {
+      "slug": "almostnode-walls",
+      "title": "almostnode — Walls & Escape Hatches",
+      "summary": "Three isolation tiers (main thread, Worker, cross-origin credentialless iframe) and the only sanctioned doors out: opt-in egress via CORS proxy or WASM Tailscale, a passkey vault that never leaks, and the codex host-bridge's typed RPC.",
+      "duration": 98.2
+    }
+  ]
+}

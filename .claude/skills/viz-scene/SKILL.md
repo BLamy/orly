@@ -156,6 +156,29 @@ do NOT modify core/ or primitives/ in a scene PR.
   `<Player audio={{ url: '/viz-audio/<slug>.mp3', cues }} ...>` — the MP3
   becomes the playback clock and cues retime captions to the recording.
 
+## Using scenes in BOOKS (the orly play surface)
+
+A finished scene can play **inside a book step**: give a manifest/storyboard
+step `viz: { "scene": "<slug>" }` and the book player renders the scene
+*instead of* the D3 diagram for that step, time-scaled onto the step's audio
+window (the step's narration is still the voice; the scene's own captions are
+suppressed). Plumbing:
+
+- **Registry**: `src/viz/scenes.ts` — `VIZ_SCENES` maps slug → lazy
+  `import()` of the explainer component. To register a new scene, export from
+  its component module a uniform `Render({ s }: { s: SceneState })` (the pure
+  frame) and `vizScene = () => scene` (the module-scope, overrides-applied
+  scene whose `.tl` is sampled), then add one registry line. Scenes stay
+  code-split — never import them statically from app code.
+- **Catalog**: `generator/viz-catalog.json` (slug/title/summary/duration) is
+  what the pipeline validates `viz.scene` against and what the storyboard
+  prompt lists (`generator/prompts/storyboard.txt` has the same table). Keep
+  registry + catalog + prompt in sync; `node generator/check-viz-catalog.mjs`
+  verifies.
+- **Player**: `src/engine/VizStepView.tsx` does the swap (audio clock or dwell
+  fraction → `tl.sample`). Scenes must stay pure/scrubbable or seeking in the
+  book will break.
+
 ## Verify before opening a PR
 
 1. `npx tsc --noEmit` — clean.

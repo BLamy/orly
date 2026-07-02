@@ -26,6 +26,7 @@ export function storyboardToManifest(sb, { chapterAudio, slug }) {
       highlight: st.highlight && st.highlight.length ? st.highlight : undefined,
       badges: st.badges && st.badges.length ? st.badges : undefined,
       messages: st.messages && st.messages.length ? st.messages : undefined,
+      viz: st.viz && st.viz.scene ? { scene: st.viz.scene } : undefined,
       cue: ca ? Number(ca.cues[si].toFixed(3)) : si,
     }));
     return {

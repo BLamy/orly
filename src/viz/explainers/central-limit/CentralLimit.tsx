@@ -164,3 +164,10 @@ export function CentralLimit() {
     </div>
   );
 }
+
+/** Uniform embed surface for the book player — see src/viz/scenes.ts. */
+export function Render({ s }: { s: SceneState }) {
+  return renderFrame(s);
+}
+/** The module-scope scene (overrides already applied); its `.tl` drives embedding. */
+export const vizScene = () => scene;

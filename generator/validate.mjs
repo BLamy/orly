@@ -1,6 +1,22 @@
 // Validate + repair a generated storyboard. JSON Schema covers shapes/enums/
 // ranges; this enforces the cross-element invariants it can't, and auto-fixes
-// what's safe to fix (node overlap, spoken-text symbols).
+// what's safe to fix (node overlap, spoken-text symbols, unknown viz scenes).
+
+import { readFileSync } from 'node:fs';
+import { dirname, join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+
+// The prebuilt 3b1b scene slugs a step's `viz.scene` may reference. Sourced
+// from viz-catalog.json (kept in sync with src/viz/scenes.ts by
+// check-viz-catalog.mjs — Node can't import the TSX registry directly).
+const VIZ_SCENES = (() => {
+  try {
+    const p = join(dirname(fileURLToPath(import.meta.url)), 'viz-catalog.json');
+    return new Set(JSON.parse(readFileSync(p, 'utf8')).scenes.map((s) => s.slug));
+  } catch {
+    return new Set(); // catalog missing → every viz step is dropped (warned)
+  }
+})();
 
 const KINDS = new Set([
   'client', 'loadbalancer', 'service', 'database', 'cache', 'queue', 'worker',
@@ -185,6 +201,19 @@ export function validateStoryboard(sb) {
         if (!visible.has(m.to)) errors.push(`${sw}: message to unrevealed '${m.to}'`);
         if (visible.has(m.from) && visible.has(m.to) && !edgeSet.has(`${m.from}>${m.to}`)) {
           warnings.push(`${sw}: message ${m.from}->${m.to} has no declared edge`);
+        }
+      }
+      // viz steps: the scene must exist in the catalog; repair, don't fail
+      if (st.viz != null) {
+        const scene = st.viz && typeof st.viz === 'object' ? st.viz.scene : undefined;
+        if (st.cover) {
+          delete st.viz;
+          warnings.push(`${sw}: viz on a cover step — dropped (covers stay title cards)`);
+        } else if (typeof scene !== 'string' || !VIZ_SCENES.has(scene)) {
+          delete st.viz;
+          warnings.push(
+            `${sw}: unknown viz scene '${scene}' — dropped (see generator/viz-catalog.json)`
+          );
         }
       }
       // spoken hygiene (auto-fix)

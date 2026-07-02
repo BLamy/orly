@@ -107,6 +107,14 @@ export interface Step {
   /** For audio-synced chapters: when this step should appear — a phrase to find
    *  in the chapter's narration transcript, or an absolute time in seconds. */
   cue?: string | number;
+
+  /** Render a prebuilt 3b1b-style animated scene (a slug from
+   *  `src/viz/scenes.ts` / `generator/viz-catalog.json`) INSTEAD of the D3
+   *  diagram while this step is active. The scene's timeline is time-scaled
+   *  onto the step's window (its audio cue window, or the dwell time when
+   *  muted); the scene's own captions are suppressed — the narration panel
+   *  owns the words. */
+  viz?: { scene: string };
 }
 
 export interface Story {

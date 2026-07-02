@@ -344,6 +344,21 @@
           "items": {
             "$ref": "#/$defs/message"
           }
+        },
+        "viz": {
+          "type": "object",
+          "additionalProperties": false,
+          "required": [
+            "scene"
+          ],
+          "description": "Optional: embed a prebuilt 3b1b-style animated scene for this step. While the step is active the player renders the scene INSTEAD of the diagram, time-scaled onto the step's audio window; the step's spoken narration still drives the audio. Never on a cover step.",
+          "properties": {
+            "scene": {
+              "type": "string",
+              "pattern": "^[a-z0-9][a-z0-9-]*$",
+              "description": "A scene slug from generator/viz-catalog.json (e.g. 'raft', 'bloom-filter'). Unknown slugs are dropped by the validator."
+            }
+          }
         }
       },
       "allOf": [
