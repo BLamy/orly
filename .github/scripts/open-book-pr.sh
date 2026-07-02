@@ -17,7 +17,10 @@ echo "branch=$BRANCH" >> "${GITHUB_OUTPUT:-/dev/null}"
 
 git checkout -B "$BRANCH"
 node generator/sync-issue-books.mjs || true        # keep the tweak dropdown current
-git add -A public/generated .github/ISSUE_TEMPLATE/tweak-book.yml
+# src/viz/books: the book's AUTHORED 3b1b scenes (books/<slug>/chapter-<n>.tsx)
+# ship with the manifest that references them — dropping them would deploy
+# viz steps pointing at scenes that don't exist.
+git add -A public/generated src/viz/books .github/ISSUE_TEMPLATE/tweak-book.yml
 
 if git diff --cached --quiet; then
   printf '⚠️ No changes were produced (generation `%s`) — see the [run log](%s).\n' "$OUTCOME" "$RUN_URL" \

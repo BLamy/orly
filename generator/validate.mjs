@@ -2,9 +2,11 @@
 // ranges; this enforces the cross-element invariants it can't, and auto-fixes
 // what's safe to fix (node overlap, spoken-text symbols, unknown viz scenes).
 
-import { readFileSync } from 'node:fs';
+import { existsSync, readFileSync } from 'node:fs';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+
+const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 // The prebuilt 3b1b scene slugs a step's `viz.scene` may reference. Sourced
 // from viz-catalog.json (kept in sync with src/viz/scenes.ts by
@@ -203,17 +205,51 @@ export function validateStoryboard(sb) {
           warnings.push(`${sw}: message ${m.from}->${m.to} has no declared edge`);
         }
       }
-      // viz steps: the scene must exist in the catalog; repair, don't fail
+      // viz steps: book-local scenes ('books/<slug>/<name>') must have their
+      // .tsx authored FIRST (hard error — the pipeline can't invent the file);
+      // catalog slugs are repaired (unknown → dropped). A bad `beat` is
+      // dropped with a warning, never fatal.
       if (st.viz != null) {
         const scene = st.viz && typeof st.viz === 'object' ? st.viz.scene : undefined;
         if (st.cover) {
           delete st.viz;
           warnings.push(`${sw}: viz on a cover step — dropped (covers stay title cards)`);
+        } else if (typeof scene === 'string' && scene.startsWith('books/')) {
+          const file = join(REPO_ROOT, 'src', 'viz', `${scene}.tsx`);
+          if (!existsSync(file)) {
+            errors.push(
+              `${sw}: viz scene '${scene}' has no scene file — author src/viz/${scene}.tsx FIRST ` +
+                `(single-file scene exporting vizScene() and Render; see .claude/skills/viz-scene/SKILL.md), ` +
+                `then re-validate`
+            );
+          } else {
+            // The module contract the glob registry relies on: vizScene + Render.
+            const src = readFileSync(file, 'utf8');
+            const hasVizScene = /export\s+(const\s+vizScene\s*=|function\s+vizScene\s*\()/.test(src);
+            const hasRender = /export\s+(const\s+Render\s*=|function\s+Render\s*\()/.test(src);
+            if (!hasVizScene || !hasRender) {
+              const missing = [!hasVizScene && 'vizScene', !hasRender && 'Render'].filter(Boolean).join(' and ');
+              errors.push(
+                `${sw}: src/viz/${scene}.tsx exists but does not export ${missing} — the book player needs ` +
+                  `\`export const vizScene = () => scene\` and \`export function Render({ s })\` ` +
+                  `(see .claude/skills/viz-scene/SKILL.md)`
+              );
+            }
+          }
         } else if (typeof scene !== 'string' || !VIZ_SCENES.has(scene)) {
           delete st.viz;
           warnings.push(
             `${sw}: unknown viz scene '${scene}' — dropped (see generator/viz-catalog.json)`
           );
+        }
+        if (st.viz && st.viz.beat !== undefined) {
+          const b = st.viz.beat;
+          if (!Number.isInteger(b) || b < 0) {
+            delete st.viz.beat;
+            warnings.push(
+              `${sw}: viz beat ${JSON.stringify(b)} is not a non-negative integer — dropped (whole-scene scaling)`
+            );
+          }
         }
       }
       // spoken hygiene (auto-fix)

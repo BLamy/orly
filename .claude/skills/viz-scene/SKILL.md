@@ -156,28 +156,116 @@ do NOT modify core/ or primitives/ in a scene PR.
   `<Player audio={{ url: '/viz-audio/<slug>.mp3', cues }} ...>` — the MP3
   becomes the playback clock and cues retime captions to the recording.
 
-## Using scenes in BOOKS (the orly play surface)
+## Using scenes in BOOKS (the orly play surface) — v2 contract
 
-A finished scene can play **inside a book step**: give a manifest/storyboard
-step `viz: { "scene": "<slug>" }` and the book player renders the scene
-*instead of* the D3 diagram for that step, time-scaled onto the step's audio
-window (the step's narration is still the voice; the scene's own captions are
-suppressed). Plumbing:
+**Every generated book's chapters carry a custom-authored scene as their
+PRIMARY visual.** A manifest/storyboard step with `viz: { "scene": "<slug>",
+"beat": <i> }` renders the scene *instead of* the D3 diagram for that step.
 
-- **Registry**: `src/viz/scenes.ts` — `VIZ_SCENES` maps slug → lazy
-  `import()` of the explainer component. To register a new scene, export from
-  its component module a uniform `Render({ s }: { s: SceneState })` (the pure
-  frame) and `vizScene = () => scene` (the module-scope, overrides-applied
-  scene whose `.tl` is sampled), then add one registry line. Scenes stay
-  code-split — never import them statically from app code.
-- **Catalog**: `generator/viz-catalog.json` (slug/title/summary/duration) is
-  what the pipeline validates `viz.scene` against and what the storyboard
-  prompt lists (`generator/prompts/storyboard.txt` has the same table). Keep
-  registry + catalog + prompt in sync; `node generator/check-viz-catalog.mjs`
-  verifies.
-- **Player**: `src/engine/VizStepView.tsx` does the swap (audio clock or dwell
-  fraction → `tl.sample`). Scenes must stay pure/scrubbable or seeking in the
-  book will break.
+### Book-local single-file scenes
+
+Write `src/viz/books/<bookSlug>/chapter-<n>.tsx` — ONE file holding layout
+data, `buildScene()`, `Render`, and `vizScene`. It is **auto-registered by
+glob** as slug `books/<bookSlug>/chapter-<n>` (no edit to `src/viz/scenes.ts`,
+no catalog entry — `check-viz-catalog.mjs` ignores `books/` slugs). Skeleton:
+
+```tsx
+// src/viz/books/<bookSlug>/chapter-1.tsx
+import { Timeline, colors, ease } from '../../core';
+import type { SceneState } from '../../core';
+import { Connection, ServiceNode, Zone } from '../../primitives';
+
+// Layout at module scope — 1280×720 stage, bottom ~12% clear for captions.
+const CLI = { x: 240, y: 340 };
+const VAULT = { x: 1010, y: 340 };
+
+export function buildScene() {
+  const tl = new Timeline();
+  const cliU = tl.channel('cliU', 0);
+  const vaultU = tl.channel('vaultU', 0);
+  const connU = tl.channel('connU', 0);
+
+  // BEAT 0 — caption text ≈ step 1's displayNarration (captions define beats)
+  tl.caption({ at: 0.3, dur: 4, text: 'The CLI writes its credentials file.' });
+  tl.tween(cliU, 1, { at: 0.5, dur: 0.7, ease: ease.enter });
+
+  // BEAT 1 — caption text ≈ step 2's displayNarration
+  tl.caption({ at: 5.0, dur: 4, text: 'registerSlot() routes it into the vault.' });
+  tl.tween(vaultU, 1, { at: 5.2, dur: 0.7, ease: ease.enter });
+  tl.tween(connU, 1, { at: 6.0, dur: 1.2, ease: ease.draw });
+  tl.hold(9.4, 0.6);
+  return { tl, cliU, vaultU, connU };
+}
+
+const scene = buildScene();
+
+export function Render({ s }: { s: SceneState }) {
+  return (
+    <>
+      <ServiceNode {...CLI} kind="client" label="claude CLI" u={s.get(scene.cliU)} />
+      <ServiceNode {...VAULT} kind="db" label="vault" u={s.get(scene.vaultU)} />
+      <Connection from={CLI} to={VAULT} u={s.get(scene.connU)} label="write" />
+    </>
+  );
+}
+export const vizScene = () => scene;
+```
+
+(Add a `.stories.tsx` beside it — the Storybook glob covers `src/viz/**`, and
+the /new-book verify stage scrubs each beat in the Motion panel; the book
+player itself needs only the two exports above.)
+
+### The beat contract
+
+- **captions = beats.** `tl.beats` is the list of caption START times. Write
+  exactly ONE caption per non-cover storyboard step, in step order: step i's
+  `viz.beat` = i (0-based among the chapter's non-cover steps) ↔ caption i.
+- **Caption text is a distilled echo of the step's `displayNarration`** —
+  at most 90 characters, one idea, never the narration pasted verbatim.
+  Captions are SUPPRESSED in the book player (the narration panel owns the
+  words), but they define the beats and keep the scene Motion-editable/
+  narratable in Storybook.
+- **Beat-window time mapping** (`src/engine/VizStepView.tsx`): with `beat: b`,
+  the step plays `[beats[b], beats[b+1] ?? tl.duration]`; the step's progress
+  fraction f (audio cue window, or dwell when muted) samples
+  `beatStart + f × (beatEnd − beatStart)`. Out-of-range beats clamp to the
+  last window with a console.warn. Omit `beat` and the WHOLE timeline is
+  time-scaled onto the one step (the usual mode for catalog-scene reuse).
+- **ElevenLabs over visuals — never add audio to the scene.** Each chapter is
+  ONE continuous ElevenLabs MP3; per-step cues stretch each beat's window.
+  Do not run `viz:narrate`/`Player audio` for book scenes; the book supplies
+  the voice.
+
+### Quality bar checklist (a scene ships only if all hold)
+
+- [ ] Studied 2–3 exemplars under `src/viz/explainers/` first (e.g.
+      `almostnode-server`, `differential-dataflow`) — beat-sheet comments,
+      layout constants, channel naming, restraint.
+- [ ] Uses the real primitives: `Zone`/`ServiceNode`/`Connection`/
+      `RequestFlow` for architecture beats (+ the agent components under
+      `src/viz/agent/` where they fit); `MathLabel`/`tex` for any math —
+      never math as plain prose.
+- [ ] Motion language respected: `ease.enter` 0.5–0.8s, `ease.move` 0.8–1.5s,
+      `ease.draw` 1.0–1.6s, `ease.linear` for packets/flows, `tl.hold()`
+      between beats.
+- [ ] Bottom ~12% of the stage (y ≳ 633) kept clear.
+- [ ] Deterministic + pure: no `Math.random()`/`Date.now()`/`d3.transition`;
+      heavy math precomputed at module scope; every frame a pure function of
+      sampled channels (scrub-safe — seeking the book's audio must be exact).
+
+### Plumbing (catalog scenes)
+
+- **Registry**: `src/viz/scenes.ts` — explicit `VIZ_SCENES` entries for
+  catalog scenes (lazy `import()`, code-split) + the `import.meta.glob`
+  auto-registration of `books/*/*.tsx`. Module contract for both: export
+  `Render({ s }: { s: SceneState })` and `vizScene = () => scene`.
+- **Catalog**: `generator/viz-catalog.json` lists only the shared prebuilt
+  scenes; keep registry + catalog + prompt table in sync
+  (`node generator/check-viz-catalog.mjs`). Book-local scenes never enter it.
+- **Validator**: `generator/validate.mjs` — catalog slugs must exist in the
+  catalog (unknown → dropped); `books/...` slugs must have their `.tsx` on
+  disk (missing → HARD error: author the scene first); bad `beat` values are
+  dropped with a warning.
 
 ## Verify before opening a PR
 

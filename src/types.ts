@@ -108,13 +108,21 @@ export interface Step {
    *  in the chapter's narration transcript, or an absolute time in seconds. */
   cue?: string | number;
 
-  /** Render a prebuilt 3b1b-style animated scene (a slug from
-   *  `src/viz/scenes.ts` / `generator/viz-catalog.json`) INSTEAD of the D3
-   *  diagram while this step is active. The scene's timeline is time-scaled
-   *  onto the step's window (its audio cue window, or the dwell time when
-   *  muted); the scene's own captions are suppressed — the narration panel
-   *  owns the words. */
-  viz?: { scene: string };
+  /** Render a 3b1b-style animated scene INSTEAD of the D3 diagram while this
+   *  step is active. `scene` is a registry slug: a prebuilt catalog scene
+   *  (`generator/viz-catalog.json`) or a book-local scene
+   *  (`books/<bookSlug>/<name>` ← `src/viz/books/<bookSlug>/<name>.tsx`,
+   *  auto-registered by glob).
+   *
+   *  Without `beat`, the scene's WHOLE timeline is time-scaled onto the
+   *  step's window (its audio cue window, or the dwell time when muted).
+   *  With `beat`, only that beat's window plays — beats are the scene's
+   *  caption start times (`tl.beats`); window = [beats[beat],
+   *  beats[beat+1] ?? tl.duration]. Give N consecutive steps the same scene
+   *  with beat 0..N−1 and one authored scene plays across all of them, each
+   *  step's audio cue driving its own beat. The scene's own captions are
+   *  suppressed either way — the narration panel owns the words. */
+  viz?: { scene: string; beat?: number };
 }
 
 export interface Story {
