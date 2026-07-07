@@ -1,17 +1,41 @@
-// ElevenLabs TTS with character timestamps. We concatenate a chapter's step
-// `spoken` segments into one script, synthesize once, and read each segment's
-// start time directly from the character alignment — exact cues, no STT.
-import { ElevenLabsClient } from '@elevenlabs/elevenlabs-js';
+// TTS with exact per-step cues, behind a provider switch (TTS_PROVIDER):
+//   - "elevenlabs" (default) — one synthesis per chapter with character
+//     timestamps; each segment's cue is read from the alignment.
+//   - "pocket" (aka "local") — kyutai pocket-tts running locally (free, CPU);
+//     each segment is synthesized separately so cues are exact by construction.
+//     See tts-pocket.mjs.
+// Both return { audio, ext, cues, audioEnd, alignedExact, ... }; `mp3` is kept
+// as an alias of `audio` for older callers.
+import { synthesizeChapterPocket } from './tts-pocket.mjs';
 
 const SEP = ' ';
 
-export async function synthesizeChapter({
+export function ttsProvider(explicit) {
+  return String(explicit || process.env.TTS_PROVIDER || 'elevenlabs').toLowerCase();
+}
+
+export async function synthesizeChapter(opts) {
+  const provider = ttsProvider(opts.provider);
+  if (provider === 'pocket' || provider === 'pocket-tts' || provider === 'local') {
+    return synthesizeChapterPocket(opts);
+  }
+  if (provider !== 'elevenlabs') {
+    throw new Error(`unknown TTS_PROVIDER "${provider}" (use "elevenlabs" or "pocket")`);
+  }
+  return synthesizeChapterElevenLabs(opts);
+}
+
+async function synthesizeChapterElevenLabs({
   spokenSegments,
   voiceId,
   apiKey = process.env.ELEVENLABS_API_KEY,
   modelId = 'eleven_multilingual_v2',
 }) {
-  if (!apiKey) throw new Error('ELEVENLABS_API_KEY is required for TTS');
+  if (!apiKey) {
+    throw new Error('ELEVENLABS_API_KEY is required for TTS (or set TTS_PROVIDER=pocket to narrate locally with pocket-tts)');
+  }
+  // Lazy import so the local (pocket) path works without the ElevenLabs SDK.
+  const { ElevenLabsClient } = await import('@elevenlabs/elevenlabs-js');
   const client = new ElevenLabsClient({ apiKey });
 
   // Build the script and remember each segment's character offset.
@@ -43,5 +67,5 @@ export async function synthesizeChapter({
   for (let i = 1; i < cues.length; i++) if (cues[i] < cues[i - 1]) cues[i] = cues[i - 1];
 
   const audioEnd = ends[nChars - 1] ?? 0;
-  return { mp3, cues, audioEnd, alignedExact, scriptLen: text.length, alignLen: nChars };
+  return { audio: mp3, ext: 'mp3', mp3, cues, audioEnd, alignedExact, scriptLen: text.length, alignLen: nChars };
 }

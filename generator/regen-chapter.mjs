@@ -47,9 +47,10 @@ if (noTts && prev?.audio && prev.story.steps.length === ch.steps.length) {
 } else {
   log(`tts ch${number} "${ch.title}" (${ch.steps.length} segments) …`);
   const r = await synthesizeChapter({ spokenSegments: ch.steps.map((s) => s.spoken), voiceId: VOICE });
-  writeFileSync(join(dir, 'audio', `chapter-${number}.mp3`), r.mp3);
-  ca = { audio: `generated/${slug}/audio/chapter-${number}.mp3`, cues: r.cues, audioEnd: r.audioEnd };
-  log(`  ${(r.mp3.length / 1024).toFixed(0)}KB, ${r.audioEnd.toFixed(1)}s`);
+  const fname = `chapter-${number}.${r.ext}`;
+  writeFileSync(join(dir, 'audio', fname), r.audio);
+  ca = { audio: `generated/${slug}/audio/${fname}`, cues: r.cues, audioEnd: r.audioEnd };
+  log(`  ${(r.audio.length / 1024).toFixed(0)}KB, ${r.audioEnd.toFixed(1)}s`);
 }
 
 const m = storyboardToManifest({ title: sb.title, subtitle: sb.subtitle, throughline: sb.throughline, chapters: [ch] }, { chapterAudio: [ca], slug }).chapters[0];

@@ -41,6 +41,7 @@ function parseArgs(argv) {
     else if (k === '--series') a.series = val();
     else if (k === '--series-order') a.seriesOrder = parseInt(val(), 10);
     else if (k === '--voice') a.voice = val();
+    else if (k === '--tts-provider') a.ttsProvider = val();
     else if (k === '--model') a.model = val();
     else if (k === '--storyboard') a.storyboard = val();
     else if (k === '--port') a.port = parseInt(val(), 10);
@@ -85,12 +86,13 @@ async function main() {
   --repo <url|path>     a github.com URL or a local repo path
   --prompt "<text>"     which subsystem to explain
   --slug <name>         output slug (default: from prompt)
-  --voice <id>          ElevenLabs voice id (default ${VOICE_DEFAULT})
+  --voice <id>          voice: ElevenLabs id (default ${VOICE_DEFAULT}) or a pocket-tts name like "alba"
+  --tts-provider <p>    elevenlabs (default) | pocket — local, free, via kyutai pocket-tts (or set TTS_PROVIDER)
   --model <id>          Anthropic model (default claude-opus-4-8)
   --storyboard <path>   use a pre-made storyboard JSON (skip the LLM step)
   --no-tts              skip narration (diagram-only preview)
   --open                open the result in Chrome (starts the dev server if needed)
-Env: ANTHROPIC_API_KEY (storyboard), ELEVENLABS_API_KEY (TTS).`);
+Env: ANTHROPIC_API_KEY (storyboard), ELEVENLABS_API_KEY (TTS; not needed with TTS_PROVIDER=pocket).`);
     process.exit(args.help ? 0 : 1);
   }
 
@@ -127,11 +129,11 @@ Env: ANTHROPIC_API_KEY (storyboard), ELEVENLABS_API_KEY (TTS).`);
     if (!args.tts) { chapterAudio.push(null); continue; }
     const segs = ch.steps.map((s) => s.spoken);
     log(`tts ch${ch.number} "${ch.title}" (${segs.length} segments) …`);
-    const r = await synthesizeChapter({ spokenSegments: segs, voiceId: args.voice || VOICE_DEFAULT });
-    const fname = `chapter-${ch.number}.mp3`;
-    writeFileSync(join(outDir, 'audio', fname), r.mp3);
+    const r = await synthesizeChapter({ spokenSegments: segs, voiceId: args.voice || VOICE_DEFAULT, provider: args.ttsProvider });
+    const fname = `chapter-${ch.number}.${r.ext}`;
+    writeFileSync(join(outDir, 'audio', fname), r.audio);
     chapterAudio.push({ audio: `generated/${slug}/audio/${fname}`, cues: r.cues, audioEnd: r.audioEnd });
-    log(`  ${(r.mp3.length / 1024).toFixed(0)}KB, ${r.audioEnd.toFixed(1)}s${r.alignedExact ? '' : ' (approx cues)'}`);
+    log(`  ${(r.audio.length / 1024).toFixed(0)}KB, ${r.audioEnd.toFixed(1)}s${r.alignedExact ? '' : ' (approx cues)'}`);
   }
 
   // 3) emit manifest (+ Noun Project icons for nodes & packets)

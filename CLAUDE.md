@@ -16,7 +16,9 @@ adds Noun Project icons, and you commit + push to redeploy.
   - `repo.mjs` digest · `storyboard.mjs` (Anthropic API path) · `validate.mjs`
     (cover‑first/reveal‑union checks + the **layered layout** that prevents node
     overlap and hidden arrows) · `tts.mjs` (ElevenLabs `convertWithTimestamps` →
-    exact per‑step cues) · `noun.mjs` + `iconize.mjs` (icons for nodes/packets) ·
+    exact per‑step cues; `TTS_PROVIDER=pocket` swaps in `tts-pocket.mjs` — free
+    local narration via kyutai pocket‑tts, per‑segment synthesis so cues stay
+    exact) · `noun.mjs` + `iconize.mjs` (icons for nodes/packets) ·
     `cover.mjs` + `seeds.mjs` (gpt‑image cover, seeded by parody covers, with a
     vision QA loop) · `transform.mjs` (→ manifest) · `library.mjs` · `cli.mjs`.
 - `src/` — the Vite/React app: `App.tsx` routes (shelf default / `?bundle=<slug>`

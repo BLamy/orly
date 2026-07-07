@@ -40,9 +40,9 @@ ch.number = realNumber;
 // 2) narrate only the new chapter
 log(`tts ch${ch.number} "${ch.title}" (${ch.steps.length} segments) …`);
 const r = await synthesizeChapter({ spokenSegments: ch.steps.map((s) => s.spoken), voiceId: VOICE });
-const fname = `chapter-${ch.number}.mp3`;
-writeFileSync(join(dir, 'audio', fname), r.mp3);
-log(`  ${(r.mp3.length / 1024).toFixed(0)}KB, ${r.audioEnd.toFixed(1)}s`);
+const fname = `chapter-${ch.number}.${r.ext}`;
+writeFileSync(join(dir, 'audio', fname), r.audio);
+log(`  ${(r.audio.length / 1024).toFixed(0)}KB, ${r.audioEnd.toFixed(1)}s`);
 const ca = { audio: `generated/${slug}/audio/${fname}`, cues: r.cues, audioEnd: r.audioEnd };
 
 // 3) build the manifest chapter + apply icons

@@ -9,6 +9,7 @@
 // Usage:
 //   node generator/viz-narrate.mjs --script fourier.narration.json
 //     [--voice <elevenlabs-voice-id>] [--out public/viz-audio]
+//     [--provider pocket]   local/free TTS via kyutai pocket-tts (or TTS_PROVIDER=pocket)
 //
 // Output:
 //   public/viz-audio/<slug>.mp3        — the narration
@@ -46,14 +47,15 @@ const outDir = arg('out', 'public/viz-audio');
 mkdirSync(outDir, { recursive: true });
 
 console.log(`narrating "${slug}" — ${lines.length} lines, voice ${voiceId}`);
-const { mp3, cues, audioEnd, alignedExact } = await synthesizeChapter({
+const { audio, ext, cues, audioEnd, alignedExact } = await synthesizeChapter({
   spokenSegments: lines.map((l) => l.text),
   voiceId,
+  provider: arg('provider'),
 });
 
-const mp3Path = join(outDir, `${slug}.mp3`);
+const mp3Path = join(outDir, `${slug}.${ext}`);
 const cuesPath = join(outDir, `${slug}.cues.json`);
-writeFileSync(mp3Path, mp3);
+writeFileSync(mp3Path, audio);
 writeFileSync(
   cuesPath,
   JSON.stringify(
@@ -66,5 +68,5 @@ writeFileSync(
   ),
 );
 
-console.log(`✓ ${mp3Path} (${(mp3.length / 1024 / 1024).toFixed(1)} MB, ${audioEnd.toFixed(1)}s${alignedExact ? '' : ', approximate alignment'})`);
+console.log(`✓ ${mp3Path} (${(audio.length / 1024 / 1024).toFixed(1)} MB, ${audioEnd.toFixed(1)}s${alignedExact ? '' : ', approximate alignment'})`);
 console.log(`✓ ${cuesPath}`);

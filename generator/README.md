@@ -26,6 +26,7 @@ launch Chrome (it starts the dev server if needed).
   │                  grounded in real code, with a validate→repair loop (validate.mjs)
   ├─ tts.mjs         per chapter: concat each step's `spoken` → ElevenLabs
   │                  convertWithTimestamps → one MP3 + character timings
+  │                  (or TTS_PROVIDER=pocket → tts-pocket.mjs, local & free)
   ├─ (cues)          each step's cue = the audio time of its `spoken` segment's first
   │                  character — exact, derived from the timestamps (no STT)
   ├─ transform.mjs   storyboard + cues → the engine's Chapter[] manifest
@@ -42,7 +43,8 @@ player:  App.tsx reads ?bundle=<slug> → fetches the manifest → LearnPage ren
 | `--repo <url\|path>` | github.com URL or a local repo path |
 | `--prompt "<text>"` | which subsystem to explain |
 | `--slug <name>` | output slug (default: derived from the prompt) |
-| `--voice <id>` | ElevenLabs voice id (default `Fahco4VZzobUeiPqni1S`) |
+| `--voice <id>` | ElevenLabs voice id (default `Fahco4VZzobUeiPqni1S`), or a pocket‑tts voice name (e.g. `alba`, `george`) with `--tts-provider pocket` |
+| `--tts-provider <p>` | `elevenlabs` (default) or `pocket` — local/free, see below (env: `TTS_PROVIDER`) |
 | `--model <id>` | Anthropic model (default `claude-opus-4-8`) |
 | `--storyboard <path>` | use a pre‑made storyboard JSON, skip the LLM step |
 | `--no-tts` | diagram‑only preview (no narration) |
@@ -51,7 +53,35 @@ player:  App.tsx reads ?bundle=<slug> → fetches the manifest → LearnPage ren
 ## Keys
 
 - `ANTHROPIC_API_KEY` — storyboard generation (skip with `--storyboard`).
-- `ELEVENLABS_API_KEY` — narration (skip with `--no-tts`).
+- `ELEVENLABS_API_KEY` — narration (skip with `--no-tts`, or narrate for free with
+  `TTS_PROVIDER=pocket` — no key needed).
+
+## Local TTS (free) — kyutai pocket-tts
+
+Set `TTS_PROVIDER=pocket` (or pass `--tts-provider pocket`) to narrate with
+[kyutai pocket-tts](https://github.com/kyutai-labs/pocket-tts) on your own CPU —
+no ElevenLabs account, no per-character cost. Useful for iterating on a book
+cheaply, then re-narrating the final cut with ElevenLabs (just re-run without
+`TTS_PROVIDER` — cues, manifest, everything else is provider-agnostic).
+
+```bash
+TTS_PROVIDER=pocket npm run explain -- --repo … --prompt "…" --voice alba
+```
+
+- **Setup:** nothing, if [`uv`](https://docs.astral.sh/uv/) is installed — the
+  helper runs via `uv run --with pocket-tts`. Otherwise `pip install pocket-tts`
+  (and point `POCKET_TTS_PYTHON` at that Python if it isn't `python3`). The first
+  run downloads the model weights from Hugging Face (cached afterwards).
+- **Voices:** `alba` (default), `anna`, `charles`, `george`, `jane`, `marius`, …
+  plus non‑English voices (`estelle`, `giovanni`, `lola`, …). Pick with `--voice`
+  or `POCKET_TTS_VOICE`.
+- **Cues:** pocket-tts has no character timestamps, so each step's `spoken` text
+  is synthesized separately with a short pause between steps (`POCKET_TTS_GAP`,
+  default `0.45`s) — cues are the accumulated durations, exact by construction.
+- **Format:** MP3 if `ffmpeg` is on your PATH, otherwise WAV (bigger files; the
+  player handles both).
+- Works everywhere `synthesizeChapter` is used: `cli.mjs`, `add-chapter.mjs`,
+  `regen-chapter.mjs`, and `viz-narrate.mjs` (`--provider pocket`).
 
 ## Notes
 

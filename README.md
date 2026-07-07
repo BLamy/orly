@@ -68,7 +68,7 @@ Fork the repo, add a handful of secrets, and the same loop builds *your* collect
 | `CLAUDE_CODE_OAUTH_TOKEN` | Runs Claude Code in CI — **billed to your Claude subscription**, not a per-call API key | run **`claude setup-token`** |
 | `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` | Production deploy + per-PR previews | Cloudflare dashboard → "Edit Cloudflare Workers" token |
 | `OPENAI_API_KEY` | `gpt-image` cover art | platform.openai.com |
-| `ELEVENLABS_API_KEY` | Narration text-to-speech | elevenlabs.io |
+| `ELEVENLABS_API_KEY` | Narration text-to-speech (optional locally — `TTS_PROVIDER=pocket` narrates free on your CPU via [pocket-tts](https://github.com/kyutai-labs/pocket-tts)) | elevenlabs.io |
 | `NOUN_PROJECT_KEY` + `NOUN_PROJECT_SECRET` | Icons for diagram nodes/packets | thenounproject.com/developers |
 
 Then open a **📕 New book** issue on your fork and watch the preview PR appear. That's it.
@@ -89,13 +89,13 @@ npm run explain -- --repo https://github.com/koajs/koa \
                    --title "Koa.js" --open
 ```
 
-Keys live in a gitignored `.env` (`OPENAI_API_KEY`, `ELEVENLABS_API_KEY`, `NOUN_PROJECT_KEY/SECRET`). The storyboard is written by Claude Code, so no Anthropic API key is required. See [`generator/README.md`](generator/README.md) for the full pipeline, and [`.claude/commands/`](.claude/commands) for the playbooks.
+Keys live in a gitignored `.env` (`OPENAI_API_KEY`, `ELEVENLABS_API_KEY`, `NOUN_PROJECT_KEY/SECRET`). The storyboard is written by Claude Code, so no Anthropic API key is required. No ElevenLabs key? Set `TTS_PROVIDER=pocket` to narrate locally for free with kyutai pocket-tts (see [`generator/README.md`](generator/README.md)). See [`generator/README.md`](generator/README.md) for the full pipeline, and [`.claude/commands/`](.claude/commands) for the playbooks.
 
 ## Architecture
 
 ```
 generator/   the pipeline (npm run explain)
-  repo.mjs · storyboard.mjs · validate.mjs (layered layout) · tts.mjs (ElevenLabs)
+  repo.mjs · storyboard.mjs · validate.mjs (layered layout) · tts.mjs (ElevenLabs or local pocket-tts)
   cover.mjs + seeds.mjs (gpt-image + vision QA) · noun.mjs + iconize.mjs · transform.mjs
 src/         the Vite + React app
   library/   the iBooks-style shelf (canvas 3-D books)
