@@ -1,6 +1,7 @@
 node_modules
 dist
 storybook-static
+__pycache__/
 *storybook.log
 *.local
 .DS_Store
