@@ -86,6 +86,24 @@
       "duration": 79.8
     },
     {
+      "slug": "entropy",
+      "title": "Entropy & Information",
+      "summary": "Surprise = log2(1/p) as a curve; a four-outcome forecast's average surprise becomes H = 1.75 bits, distributions morph to max out or collapse the meter, and prefix-free codewords hit the entropy floor.",
+      "duration": 66.6
+    },
+    {
+      "slug": "kalman",
+      "title": "The Kalman Filter",
+      "summary": "A hallway robot with a noisy sensor: belief as a Gaussian that slides and spreads on predict, then multiplies against each measurement and snaps sharper — predict/correct on repeat until the estimate hugs the truth.",
+      "duration": 69.8
+    },
+    {
+      "slug": "pagerank",
+      "title": "PageRank",
+      "summary": "A five-page web: a random surfer's visit counts become power iteration, damping adds the 15% teleport, and the bars freeze into the stationary ranking.",
+      "duration": 71.5
+    },
+    {
       "slug": "replay-critic",
       "title": "Replay — Agents That Prove Their Work",
       "summary": "A worker agent's happy browser session is a claim, not evidence: an adversarial critic interrogates the Replay recording — three-layer charge check, diff coverage, mock hunt — then promotes surviving sessions into tests.",

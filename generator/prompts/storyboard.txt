@@ -126,6 +126,9 @@ SCENE CATALOG (slug — title — what it shows — native length; it is time-sc
 | central-limit | Central Limit Theorem | Sums of many flat dice pile into a bell curve, live | 65 |
 | bloom-filter | Bloom Filters | Keys hash into a bit array via k hashes — "definitely not" vs "probably yes", and false positives | 70 |
 | differential-dataflow | Differential Dataflow | Operators update from (data, time, diff) deltas; retractions ripple instead of recomputing | 80 |
+| entropy | Entropy & Information | Surprise = log2 1/p; a forecast's average surprise becomes H = 1.75 bits, and matched codewords hit the entropy floor | 67 |
+| kalman | The Kalman Filter | A hallway robot's Gaussian belief slides and spreads on predict, then multiplies against each noisy ping and snaps sharper | 70 |
+| pagerank | PageRank | A random surfer's visit counts become power iteration; damping adds teleports and the bars freeze into the stationary ranking | 72 |
 | replay-critic | Replay — Agents That Prove Their Work | An adversarial critic falsifies a worker agent's "it works" claim from a runtime recording, audits diff coverage + mocks, promotes tests | 83 |
 | almostnode-server | almostnode — A Server Made of Tab | A Node dev server in one tab: RAM VirtualFS, ~75 shims, service-worker relay answering /__virtual__/3000/ from the main thread | 85 |
 | almostnode-walls | almostnode — Walls & Escape Hatches | Isolation tiers (main thread / Worker / cross-origin iframe) and the sanctioned doors: opt-in egress, passkey vault, typed host-bridge RPC | 98 |
