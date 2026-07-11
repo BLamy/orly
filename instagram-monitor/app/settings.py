@@ -70,11 +70,29 @@ class Settings:
     # ------------------------------------------------------------------
     @property
     def download_dir(self) -> Path:
-        """Zielordner für Downloads (wird bei Bedarf angelegt)."""
+        """Zielordner für Downloads (wird bei Bedarf angelegt).
+
+        Ist der gespeicherte Pfad nicht (mehr) nutzbar – z. B. entfernter
+        USB-Stick, entzogene Schreibrechte –, fällt die Anwendung auf den
+        Standardordner zurück, statt beim Start oder Prüflauf abzustürzen.
+        Der gespeicherte Wert bleibt erhalten, falls der Pfad später
+        wieder verfügbar ist.
+        """
         raw = self._db.get_setting("download_dir", self._default_download_dir)
         path = Path(raw or self._default_download_dir)
-        path.mkdir(parents=True, exist_ok=True)
-        return path
+        try:
+            path.mkdir(parents=True, exist_ok=True)
+            return path
+        except OSError as exc:
+            logger.warning(
+                "Download-Ordner %s ist nicht nutzbar (%s) – der "
+                "Standardordner wird verwendet.",
+                path,
+                exc,
+            )
+            fallback = Path(self._default_download_dir)
+            fallback.mkdir(parents=True, exist_ok=True)
+            return fallback
 
     @download_dir.setter
     def download_dir(self, path: str | Path) -> None:

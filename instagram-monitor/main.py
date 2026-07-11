@@ -99,8 +99,19 @@ def main() -> int:
     finally:
         # Sauber herunterfahren, egal wie die Hauptschleife endet.
         logger.info("Anwendung wird beendet – Monitor wird gestoppt …")
-        monitor.stop(wait=True)
-        db.close()
+        if monitor.shutdown(timeout=30):
+            # Die Datenbank erst schließen, wenn der Worker-Thread wirklich
+            # beendet ist – sonst könnten seine letzten Schreibzugriffe
+            # (z. B. "Beitrag heruntergeladen") auf einer geschlossenen
+            # Verbindung landen und verloren gehen.
+            db.close()
+        else:
+            logger.warning(
+                "Datenbank wird nicht geschlossen, da der Überwachungs-"
+                "Thread noch läuft – das Prozessende räumt auf. (Jede "
+                "Änderung wird ohnehin sofort committet, es geht nichts "
+                "verloren.)"
+            )
         logger.info("Auf Wiedersehen.")
 
     return 0

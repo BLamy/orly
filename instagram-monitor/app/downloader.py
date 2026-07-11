@@ -85,16 +85,21 @@ class PostInfo:
 def _classify_post(post: "instaloader.Post") -> str:
     """Bestimmt den Beitragstyp für Anzeige und Datenbank.
 
-    ``product_type == "clips"`` kennzeichnet Reels; ältere
-    Instaloader-Versionen kennen das Attribut evtl. nicht, daher getattr.
+    Reel-Erkennung ist "best effort": Instaloader stellt keine eigene
+    Property dafür bereit; das rohe API-Feld ``product_type == "clips"``
+    kennzeichnet Reels, ist aber nicht in jedem Feed-Knoten enthalten.
+    Videos, die nicht sicher zuzuordnen sind, werden ehrlich als
+    "Video/Reel" bezeichnet – für Benachrichtigung und Download ist die
+    Unterscheidung ohnehin unerheblich.
     """
     try:
-        if getattr(post, "product_type", "") == "clips":
+        node = getattr(post, "_node", None) or {}
+        if node.get("product_type") == "clips":  # rohes API-Feld, best effort
             return "Reel"
         if post.typename == "GraphSidecar":
             return "Album"
         if post.is_video:
-            return "Video"
+            return "Video/Reel"
     except Exception:  # defensive: Metadaten-Zugriffe können nachladen & scheitern
         logger.debug("Beitragstyp konnte nicht bestimmt werden.", exc_info=True)
     return "Bild"
@@ -137,6 +142,11 @@ class InstagramDownloader:
             profile = instaloader.Profile.from_username(
                 self._loader.context, username
             )
+            # WICHTIG: is_private ist eine "faule" Property – der Zugriff
+            # kann Metadaten nachladen und dabei dieselben Instaloader-
+            # Ausnahmen werfen wie from_username. Deshalb wird sie HIER,
+            # innerhalb des try-Blocks, gelesen.
+            profile_is_private = profile.is_private
         except ProfileNotExistsException as exc:
             raise ProfileNotFound(f"Profil @{username} existiert nicht.") from exc
         except ConnectionException as exc:
@@ -149,7 +159,7 @@ class InstagramDownloader:
 
         # Private Profile: bewusst KEIN Zugriffsversuch. Ohne Berechtigung
         # sind die Inhalte nicht öffentlich – die Anwendung respektiert das.
-        if profile.is_private:
+        if profile_is_private:
             raise ProfileIsPrivate(
                 f"@{username} ist privat – wird nicht abgerufen (Zugriff nur "
                 "mit Berechtigung; die Anwendung umgeht keine Beschränkungen)."
@@ -196,10 +206,11 @@ class InstagramDownloader:
 
         Zielstruktur: ``<download_dir>/<username>/…``
 
-        Rückgabe: True bei Erfolg, False wenn nichts (Neues) gespeichert
-        wurde. Wirft :class:`TemporaryError` bei Netzwerk-/Drosselungs-
-        problemen, damit der Monitor es beim nächsten Lauf erneut
-        versuchen kann.
+        Rückgabe: immer True – der Beitrag liegt danach lokal vor, egal ob
+        er frisch heruntergeladen wurde oder bereits vollständig vorhanden
+        war (Instaloader überspringt vorhandene Dateien). Fehler werden
+        ausschließlich als :class:`TemporaryError` gemeldet, damit der
+        Monitor den Download beim nächsten Prüflauf erneut versucht.
         """
         download_dir: Path = self._settings.download_dir
 

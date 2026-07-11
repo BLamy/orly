@@ -28,7 +28,7 @@ from __future__ import annotations
 import logging
 import queue
 import re
-from tkinter import filedialog, messagebox
+from tkinter import TclError, filedialog, messagebox
 from typing import TYPE_CHECKING
 
 import customtkinter as ctk
@@ -327,31 +327,44 @@ class App(ctk.CTk):
                 duplicates.append(name)
 
         if invalid:
-            messagebox.showwarning(
-                "Ungültige Benutzernamen",
-                "Diese Eingaben sind keine gültigen Instagram-Benutzernamen:\n"
-                + ", ".join(invalid),
-                parent=self,
-            )
+            # Modale Dialoge blockieren den Handler; schließt der Benutzer
+            # währenddessen das Hauptfenster, existiert das Widget beim
+            # Fortsetzen nicht mehr → Handler still abbrechen.
+            try:
+                messagebox.showwarning(
+                    "Ungültige Benutzernamen",
+                    "Diese Eingaben sind keine gültigen Instagram-Benutzernamen:\n"
+                    + ", ".join(invalid),
+                    parent=self,
+                )
+            except TclError:
+                return
+            if not self.winfo_exists():
+                return
         if duplicates:
             logger.info("Bereits vorhanden: %s", ", ".join(duplicates))
         if added:
             self._add_entry.delete(0, "end")
             self._refresh_account_list()
-            if self._monitor.running:
+            if self._monitor.active:
                 # Neues Konto direkt in den nächsten Prüflauf aufnehmen.
                 self._monitor.check_now()
 
     def _on_remove_account(self, username: str) -> None:
         """Entfernt ein Konto (mit Rückfrage)."""
-        if messagebox.askyesno(
-            "Konto entfernen",
-            f"@{username} wirklich aus der Überwachung entfernen?\n\n"
-            "Bereits heruntergeladene Dateien bleiben erhalten.",
-            parent=self,
-        ):
-            self._db.remove_account(username)
-            self._refresh_account_list()
+        try:
+            confirmed = messagebox.askyesno(
+                "Konto entfernen",
+                f"@{username} wirklich aus der Überwachung entfernen?\n\n"
+                "Bereits heruntergeladene Dateien bleiben erhalten.",
+                parent=self,
+            )
+        except TclError:
+            return  # Fenster wurde während des Dialogs geschlossen
+        if not confirmed or not self.winfo_exists():
+            return
+        self._db.remove_account(username)
+        self._refresh_account_list()
 
     def _on_toggle_download(self, username: str) -> None:
         """Reagiert auf den Download-Schalter eines Kontos."""
@@ -367,11 +380,15 @@ class App(ctk.CTk):
         )
 
     def _on_toggle_monitor(self) -> None:
-        """Start/Stop-Knopf."""
-        if self._monitor.running:
-            # stop(wait=False): Der Thread beendet sich zeitnah selbst;
-            # die GUI darf hier nicht blockieren.
-            self._monitor.stop(wait=False)
+        """Start/Stop-Knopf.
+
+        Verzweigt über den SOLL-Zustand (``active``), nicht über die
+        Thread-Lebendigkeit: Der Worker kann nach einem Stop noch kurz in
+        einem Netzwerkzugriff stecken – ein erneuter Start-Klick muss
+        trotzdem zuverlässig wieder einschalten.
+        """
+        if self._monitor.active:
+            self._monitor.stop()
         else:
             self._monitor.start()
 
@@ -387,37 +404,51 @@ class App(ctk.CTk):
             if minutes < MIN_INTERVAL_MINUTES:
                 raise ValueError
         except ValueError:
-            messagebox.showerror(
-                "Ungültiges Intervall",
-                f"Bitte eine ganze Zahl ≥ {MIN_INTERVAL_MINUTES} eingeben.",
-                parent=self,
-            )
+            try:
+                messagebox.showerror(
+                    "Ungültiges Intervall",
+                    f"Bitte eine ganze Zahl ≥ {MIN_INTERVAL_MINUTES} eingeben.",
+                    parent=self,
+                )
+            except TclError:
+                return  # Fenster wurde während des Dialogs geschlossen
+            if not self.winfo_exists():
+                return
             # Feld auf den gespeicherten Wert zurücksetzen.
             self._interval_entry.delete(0, "end")
             self._interval_entry.insert(0, str(self._settings.check_interval_minutes))
             return
 
+        # Mehr ist nicht nötig: Der Monitor liest das Intervall während
+        # der Wartephase laufend neu – die Änderung wirkt also sofort auf
+        # die laufende Wartezeit, OHNE eine zusätzliche Prüfung (und damit
+        # unnötige Anfragen) auszulösen.
         self._settings.check_interval_minutes = minutes
-        # Das neue Intervall greift nach dem nächsten Prüflauf; eine
-        # Sofortprüfung startet den Zyklus direkt neu.
-        if self._monitor.running:
-            self._monitor.check_now()
 
     def _on_choose_download_dir(self) -> None:
         """Öffnet den Ordner-Auswahldialog für den Download-Ordner."""
-        chosen = filedialog.askdirectory(
-            title="Download-Ordner wählen",
-            initialdir=str(self._settings.download_dir),
-            parent=self,
-        )
-        if chosen:
-            self._settings.download_dir = chosen
-            self._download_dir_label.configure(text=chosen)
+        try:
+            chosen = filedialog.askdirectory(
+                title="Download-Ordner wählen",
+                initialdir=str(self._settings.download_dir),
+                parent=self,
+            )
+        except TclError:
+            return  # Fenster wurde während des Dialogs geschlossen
+        if not chosen or not self.winfo_exists():
+            return
+        self._settings.download_dir = chosen
+        self._download_dir_label.configure(text=chosen)
 
     def _on_close(self) -> None:
-        """Fenster wird geschlossen: Monitor stoppen, dann beenden."""
+        """Fenster wird geschlossen: Überwachung ausschalten, dann beenden.
+
+        Das endgültige Beenden des Worker-Threads (und erst danach das
+        Schließen der Datenbank) übernimmt main.py nach dem Ende der
+        Hauptschleife über ``monitor.shutdown()``.
+        """
         logger.info("Fenster wird geschlossen …")
-        self._monitor.stop(wait=False)
+        self._monitor.stop()
         self.destroy()
 
     # ==================================================================

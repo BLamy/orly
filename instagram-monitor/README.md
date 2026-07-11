@@ -15,8 +15,10 @@ einen lokalen Ordner herunterlädt.
   (sofern verfügbar) als Desktop-Benachrichtigung.
 - **Automatischer Download pro Konto abschaltbar** – über einen Schalter in
   der Kontenliste. Heruntergeladen wird nach `downloads/<benutzername>/`.
-- **Keine Doppel-Downloads** – jeder Beitrag wird über seinen eindeutigen
-  Shortcode in einer SQLite-Datenbank registriert.
+- **Keine Doppel-Downloads** – jeder Beitrag wird pro Konto in einer
+  SQLite-Datenbank registriert; fehlgeschlagene Downloads (z. B. wegen
+  Drosselung) bleiben vorgemerkt und werden bei den nächsten Prüfläufen
+  automatisch nachgeholt.
 - **Statusanzeige je Konto** – Zeitpunkt der letzten Prüfung, Anzahl der
   heruntergeladenen Beiträge, letzter Fehler.
 - **Start/Stop** der Überwachung, **Sofortprüfung** und einstellbares
@@ -88,7 +90,8 @@ named 'tkinter'`), zuerst das Systempaket installieren, z. B.
 3. **Überwachung starten:** Rechts auf „▶ Überwachung starten“ klicken.
    Der Status in der Kopfzeile wechselt auf „Überwachung läuft“.
 4. **Prüfintervall ändern:** Minutenzahl eintragen und „Intervall
-   übernehmen“ klicken (greift ab dem nächsten Zyklus).
+   übernehmen“ klicken. Die Änderung wirkt sofort auf die laufende
+   Wartezeit; eine zusätzliche Prüfung wird dadurch **nicht** ausgelöst.
 5. **Sofort prüfen:** „↻ Jetzt prüfen“ stößt außerplanmäßig einen Lauf an.
 6. **Download-Ordner ändern:** über „Ordner wählen …“.
 
@@ -123,14 +126,21 @@ instagram-monitor/
 
 - **GUI (Haupt-Thread):** Alle Tkinter-Widgets werden ausschließlich im
   Haupt-Thread angefasst.
-- **Monitor (Hintergrund-Thread):** prüft die Konten im eingestellten
-  Intervall und kommuniziert mit der GUI **nur** über eine thread-sichere
-  `queue.Queue` (die GUI liest sie zyklisch per `after()` aus).
+- **Monitor (ein langlebiger Hintergrund-Thread):** wird per An/Aus-Signal
+  geschaltet (kein Thread-Neustart bei Start/Stop) und kommuniziert mit
+  der GUI **nur** über eine thread-sichere `queue.Queue` (die GUI liest
+  sie zyklisch per `after()` aus). Beim Beenden der App wird die
+  Datenbank erst geschlossen, nachdem der Thread wirklich beendet ist.
 - **Datenbank:** eine SQLite-Verbindung, serialisiert über ein
   `threading.Lock` – einfach und robust bei der geringen Zugriffsfrequenz.
-- **Stoppen ohne Warten:** Der Monitor wartet sein Intervall über
-  `Event.wait()` ab und reagiert dadurch sofort auf „Stop“ und
-  „Jetzt prüfen“.
+  Beiträge werden pro Konto geführt (Collab-Beiträge erscheinen unter
+  demselben Shortcode auf mehreren Profilen und werden für jedes
+  überwachte Konto einzeln gemeldet).
+- **Stoppen ohne Warten:** Die Wartephase reagiert sekündlich auf „Stop“,
+  „Jetzt prüfen“ und Intervalländerungen.
+- **Ausstehende Downloads:** Schlägt ein gewünschter Download fehl, bleibt
+  er als „ausstehend“ markiert und wird zu Beginn der nächsten Prüfläufe
+  automatisch nachgeholt.
 
 ## Fehlerbehebung
 
