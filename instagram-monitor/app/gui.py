@@ -242,22 +242,35 @@ class App(ctk.CTk):
         )
         self._login_button.grid(row=13, column=0, padx=14, pady=6, sticky="ew")
 
+        # Empfohlene Alternative: bestehende Browser-Anmeldung übernehmen
+        # (umgeht den Instagram-Checkpoint, da keine neue Anmeldung erfolgt).
+        self._import_button = ctk.CTkButton(
+            controls,
+            text="🔓 Aus Browser übernehmen",
+            fg_color="gray30",
+            hover_color="gray25",
+            command=self._on_import_session,
+        )
+        self._import_button.grid(row=14, column=0, padx=14, pady=(0, 6), sticky="ew")
+
         # Rechtlicher Hinweis --------------------------------------------------
         ctk.CTkLabel(
             controls,
             text=(
                 "Hinweis: Ohne Anmeldung werden nur öffentliche Profile "
-                "geprüft. Die Anmeldung erfolgt über den offiziellen "
-                "Instaloader-Login (Passwort wird nicht gespeichert) und "
-                "gibt nur Zugriff auf Konten, denen du folgst. Lade nur "
-                "Inhalte herunter, zu denen du berechtigt bist, und beachte "
-                "Urheberrecht und die Instagram-Nutzungsbedingungen."
+                "geprüft. Verlangt Instagram bei der Passwort-Anmeldung einen "
+                "„Checkpoint“, melde dich im Browser bei instagram.com an und "
+                "nutze »Aus Browser übernehmen«. Die Anmeldung gibt nur "
+                "Zugriff auf Konten, denen du folgst; das Passwort wird nicht "
+                "gespeichert. Lade nur Inhalte herunter, zu denen du "
+                "berechtigt bist, und beachte Urheberrecht und die "
+                "Instagram-Nutzungsbedingungen."
             ),
             wraplength=230,
             justify="left",
             font=ctk.CTkFont(size=11),
             text_color="gray",
-        ).grid(row=14, column=0, padx=14, pady=(18, 12), sticky="w")
+        ).grid(row=15, column=0, padx=14, pady=(18, 12), sticky="w")
 
         # --- Log-Ausgabe -------------------------------------------------------
         self._log_box = ctk.CTkTextbox(self, wrap="word", font=ctk.CTkFont(size=12))
@@ -527,6 +540,7 @@ class App(ctk.CTk):
             self._login_button.configure(text="Abmelden", command=self._on_logout)
             self._login_user_entry.configure(state="disabled")
             self._login_pass_entry.configure(state="disabled")
+            self._import_button.configure(state="disabled")
         else:
             self._login_status_label.configure(
                 text="Nicht angemeldet (nur öffentliche Profile).",
@@ -535,6 +549,7 @@ class App(ctk.CTk):
             self._login_button.configure(text="Anmelden", command=self._on_login)
             self._login_user_entry.configure(state="normal")
             self._login_pass_entry.configure(state="normal")
+            self._import_button.configure(state="normal")
 
     def _two_factor_provider(self):
         """Fragt (thread-sicher) einen 2FA-Code ab.
@@ -593,6 +608,27 @@ class App(ctk.CTk):
 
         threading.Thread(target=work, name="login", daemon=True).start()
 
+    def _on_import_session(self) -> None:
+        """Übernimmt die bestehende Browser-Anmeldung (Hintergrund-Thread)."""
+        if self._login_in_progress:
+            return
+        self._login_in_progress = True
+        self._import_button.configure(state="disabled", text="Übernehme …")
+        self._login_button.configure(state="disabled")
+        logger.info("Anmeldung wird aus dem Browser übernommen …")
+
+        def work():
+            error = None
+            try:
+                self._downloader.import_browser_session()
+            except LoginError as exc:
+                error = str(exc)
+            except Exception as exc:  # pragma: no cover - unerwartet
+                error = f"Unerwarteter Fehler: {exc}"
+            self._events.put_nowait({"type": "login_result", "error": error})
+
+        threading.Thread(target=work, name="import-session", daemon=True).start()
+
     def _on_logout(self) -> None:
         """Meldet das aktuelle Konto ab."""
         self._downloader.logout()
@@ -650,11 +686,19 @@ class App(ctk.CTk):
 
         elif event_type == "login_result":
             self._login_in_progress = False
+            self._login_button.configure(state="normal")
+            self._import_button.configure(
+                state="normal", text="🔓 Aus Browser übernehmen"
+            )
             self._login_pass_entry.delete(0, "end")  # Passwort nicht stehen lassen
             error = event.get("error")
             if error:
                 logger.error("Anmeldung fehlgeschlagen: %s", error)
                 messagebox.showerror("Anmeldung fehlgeschlagen", error, parent=self)
+            else:
+                logger.info("Anmeldung erfolgreich.")
+            # _update_login_status setzt Zustände passend zum Ergebnis
+            # (bei Erfolg werden Import-/Login-Knopf ohnehin deaktiviert).
             self._update_login_status()
 
     def _update_monitor_status(self, running: bool) -> None:

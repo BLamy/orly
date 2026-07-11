@@ -80,7 +80,12 @@ los. Bitte nicht beide Oberflächen gleichzeitig laufen lassen.
 `start-web.bat` startet einen **lokalen** Server (nur auf deinem Rechner
 erreichbar, http://127.0.0.1:8756/) und öffnet den Browser:
 
-1. Optional oben **anmelden** (eigenes Konto; 2FA wird unterstützt).
+1. Optional oben **anmelden**. Am zuverlässigsten ist **„Aus Browser
+   übernehmen“**: Melde dich einmal in deinem normalen Browser bei
+   instagram.com an, dann übernimmt die App diese Anmeldung – das
+   vermeidet den „Checkpoint“, den die direkte Passwort-Anmeldung von
+   einem neuen Gerät oft auslöst. Alternativ Benutzername + Passwort
+   (2FA wird unterstützt).
 2. Benutzernamen oder Instagram-Link eingeben → **Anzeigen**.
 3. Die Beiträge erscheinen als Bilder-Raster – bei jedem Foto/Video
    gibt es **„⬇ Herunterladen“**, dazu **„⬇ Alle herunterladen“**.
@@ -217,7 +222,8 @@ instagram-monitor/
 | --- | --- |
 | „Profil ist privat“ | Gewolltes Verhalten: private Profile werden nicht abgerufen. |
 | „Profil nicht gefunden“ | Erscheint nur, wenn die Instagram-Suche funktioniert und den Namen trotzdem nicht kennt → Tippfehler? Konto entfernen und korrekt neu anlegen. |
-| „Instagram beantwortet anonyme Profil-Abfragen derzeit nicht“ | Instagram drosselt anonyme Clients (sehr häufig). Kein Handlungsbedarf: Die App versucht es beim nächsten Prüflauf automatisch erneut; ggf. Prüfintervall erhöhen. |
+| „Instagram beantwortet anonyme Profil-Abfragen derzeit nicht“ | Instagram drosselt anonyme Clients (sehr häufig). Kein Handlungsbedarf: Die App versucht es beim nächsten Prüflauf automatisch erneut; ggf. Prüfintervall erhöhen. Tipp: anmelden reduziert die Drosselung deutlich. |
+| „Checkpoint required“ bei der Anmeldung | Instagram verlangt eine Sicherheitsbestätigung, weil die Anmeldung von einem neuen Gerät kommt. Melde dich in deinem normalen Browser bei instagram.com an (bestätige dort ggf. die Abfrage) und nutze **„Aus Browser übernehmen“** – dann wird deine bereits bestätigte Anmeldung verwendet, ohne erneuten Checkpoint. |
 | „Vorübergehender Fehler“ | Netzwerkproblem oder Drosselung durch Instagram – die App versucht es beim nächsten Lauf erneut. Ggf. Prüfintervall erhöhen. |
 | Keine Desktop-Benachrichtigungen | `plyer` fehlt oder das System hat keinen Benachrichtigungsdienst; Meldungen erscheinen weiterhin im Log. |
 | GUI startet nicht (`tkinter` fehlt) | Tkinter-Systempaket installieren (siehe Installation). |

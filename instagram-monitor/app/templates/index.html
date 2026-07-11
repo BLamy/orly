@@ -77,6 +77,16 @@
       nicht gespeichert.</div>
     <div id="login_form">
       <div class="rowflex">
+        <button class="secondary" id="imp_btn" onclick="importSession()"
+                title="Übernimmt deine bereits im Browser bestehende Instagram-Anmeldung">
+          🔓 Aus Browser übernehmen (empfohlen)</button>
+      </div>
+      <div class="hint">Empfohlen, wenn die normale Anmeldung einen
+        „Checkpoint“ verlangt: Melde dich einfach in deinem Browser bei
+        instagram.com an und klicke hier – es findet keine neue Anmeldung
+        statt.</div>
+      <div class="hint" style="margin-top:12px">— oder mit Benutzername &amp; Passwort —</div>
+      <div class="rowflex">
         <input type="text" id="lg_user" placeholder="Instagram-Benutzername" autocomplete="username">
         <input type="password" id="lg_pass" placeholder="Passwort" autocomplete="current-password">
       </div>
@@ -170,6 +180,21 @@ async function doLogin(){
     showMessage("Zwei-Faktor-Code erforderlich – bitte Code eingeben und erneut auf Anmelden klicken.", true);
   }else{
     showMessage(data.error || "Anmeldung fehlgeschlagen.");
+  }
+}
+
+async function importSession(){
+  const btn = $("imp_btn");
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Übernehme aus Browser …';
+  showMessage("");
+  const {data} = await api("/api/import-session",
+    {method:"POST", headers:{"Content-Type":"application/json"}, body:"{}"});
+  btn.disabled = false; btn.textContent = "🔓 Aus Browser übernehmen (empfohlen)";
+  if(data.ok){
+    await refreshStatus();
+    showMessage("Anmeldung aus dem Browser übernommen: @"+data.user, true);
+  }else{
+    showMessage(data.error || "Übernahme fehlgeschlagen.");
   }
 }
 

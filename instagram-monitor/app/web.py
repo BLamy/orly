@@ -111,6 +111,16 @@ def create_app(
             return jsonify(error=str(exc)), 401
         return jsonify(ok=True, user=downloader.logged_in_user or "")
 
+    @app.post("/api/import-session")
+    def import_session():
+        data = request.get_json(force=True, silent=True) or {}
+        browser = (data.get("browser") or "").strip() or None
+        try:
+            user = downloader.import_browser_session(browser)
+        except LoginError as exc:
+            return jsonify(error=str(exc)), 401
+        return jsonify(ok=True, user=user)
+
     @app.post("/api/logout")
     def logout():
         downloader.logout()

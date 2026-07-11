@@ -22,3 +22,9 @@ flask>=3.0
 # instaloader ohnehin mitinstalliert).
 requests>=2.31
 
+# Übernahme der bestehenden Instagram-Anmeldung aus dem Browser
+# ("Aus Browser übernehmen"). Vermeidet den Instagram-Sicherheits-
+# Checkpoint, weil KEINE neue Anmeldung erfolgt, sondern die im Browser
+# vorhandenen instagram.com-Cookies wiederverwendet werden.
+browser_cookie3>=0.19
+
