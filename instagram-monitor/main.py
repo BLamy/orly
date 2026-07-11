@@ -80,7 +80,9 @@ def main() -> int:
     # ------------------------------------------------------------------
     db = Database(DATA_DIR / "monitor.db")
     settings = Settings(db, default_download_dir=str(DOWNLOAD_DIR))
-    downloader = InstagramDownloader(settings)
+    # session_dir: Ablage für die Cookie-Session eines (optional)
+    # angemeldeten Kontos – niemals das Passwort.
+    downloader = InstagramDownloader(settings, session_dir=DATA_DIR / "sessions")
     notifier = Notifier()
     monitor = AccountMonitor(
         db=db,
@@ -93,7 +95,13 @@ def main() -> int:
     # ------------------------------------------------------------------
     # 5. GUI starten (blockiert bis zum Schließen des Fensters)
     # ------------------------------------------------------------------
-    app = App(db=db, settings=settings, monitor=monitor, event_queue=event_queue)
+    app = App(
+        db=db,
+        settings=settings,
+        monitor=monitor,
+        event_queue=event_queue,
+        downloader=downloader,
+    )
     try:
         app.mainloop()
     finally:

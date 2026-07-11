@@ -15,6 +15,13 @@ einen lokalen Ordner herunterlädt.
   (sofern verfügbar) als Desktop-Benachrichtigung.
 - **Automatischer Download pro Konto abschaltbar** – über einen Schalter in
   der Kontenliste. Heruntergeladen wird nach `downloads/<benutzername>/`.
+- **Manueller Download** – der Knopf „⬇ Herunterladen“ pro Konto lädt die
+  neuesten *vorhandenen* Beiträge sofort herunter (Anzahl abfragbar),
+  unabhängig von der Überwachung.
+- **Optionale Anmeldung mit dem eigenen Konto** – über den offiziellen
+  Instaloader-Login (inkl. Zwei-Faktor-Authentifizierung). Reduziert die
+  Drosselung und ermöglicht den Zugriff auf Konten, denen du folgst. Das
+  Passwort wird **nicht** gespeichert.
 - **Keine Doppel-Downloads** – jeder Beitrag wird pro Konto in einer
   SQLite-Datenbank registriert; fehlgeschlagene Downloads (z. B. wegen
   Drosselung) bleiben vorgemerkt und werden bei den nächsten Prüfläufen
@@ -115,6 +122,29 @@ weder gemeldet noch heruntergeladen. Erst ab dem zweiten Lauf gilt jeder
 unbekannte Beitrag als „neu“. So wird verhindert, dass beim Hinzufügen eines
 Kontos dessen gesamter Verlauf heruntergeladen wird.
 
+**Vorhandene Beiträge herunterladen:** Weil die automatische Überwachung nur
+*neue* Beiträge lädt, gibt es für bereits vorhandene Inhalte den Knopf
+**„⬇ Herunterladen“** in jeder Kontozeile. Er fragt, wie viele der neuesten
+Beiträge geladen werden sollen, und speichert sie sofort nach
+`downloads/<benutzername>/`. Bereits vorhandene Dateien werden übersprungen.
+
+### Anmeldung mit dem eigenen Konto (optional)
+
+Ohne Anmeldung greift die App nur auf **öffentliche** Profile zu. Meldest du
+dich mit deinem eigenen Instagram-Konto an (Abschnitt „Anmeldung“ rechts),
+
+- werden anonyme Abrufe deutlich seltener gedrosselt, und
+- kannst du auf **private** Konten zugreifen, **denen du folgst**.
+
+Die Anmeldung nutzt den offiziellen, dokumentierten Instaloader-Login. Bei
+aktivierter Zwei-Faktor-Authentifizierung fragt die App den Bestätigungscode
+ab. Es werden **keine Schutzmechanismen umgangen**: Auf private Konten, denen
+du nicht folgst, besteht weiterhin kein Zugriff. Dein **Passwort wird nicht
+gespeichert** – Instaloader legt nur eine Cookie-Session-Datei unter
+`data/sessions/` ab, sodass du beim nächsten Start angemeldet bleibst.
+Melde dich nur mit deinem eigenen Konto an und lade ausschließlich Inhalte
+herunter, zu denen du berechtigt bist.
+
 ## Projektstruktur
 
 ```
@@ -126,7 +156,7 @@ instagram-monitor/
 │   ├── __init__.py
 │   ├── gui.py            # CustomTkinter-Oberfläche (nur Haupt-Thread)
 │   ├── database.py       # SQLite-Persistenz (thread-sicher via Lock)
-│   ├── downloader.py     # Zugriff auf öffentliche Inhalte (Instaloader)
+│   ├── downloader.py     # Instaloader-Zugriff, Login, manueller Download
 │   ├── monitor.py        # Hintergrund-Thread für die Überwachung
 │   ├── settings.py       # Einstellungsverwaltung (persistiert in SQLite)
 │   ├── notifier.py       # Desktop-Benachrichtigungen (optional, plyer)

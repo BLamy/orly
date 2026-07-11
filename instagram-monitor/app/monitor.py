@@ -98,7 +98,12 @@ class AccountMonitor:
         self._thread: threading.Thread | None = None
         self._shutdown_event = threading.Event()  # App-Ende: Worker beenden
         self._run_request = threading.Event()     # Überwachung an/aus (Soll-Zustand)
-        self._wake_event = threading.Event()      # Wartephase abbrechen (Sofortprüfung)
+        self._wake_event = threading.Event()      # Wartephase abbrechen (Sofortprüfung/Job)
+
+        # Warteschlange für einmalige Aufträge (z. B. manueller Download).
+        # Sie laufen im SELBEN Worker-Thread wie die Überwachung, damit die
+        # gemeinsame Instaloader-Instanz nie parallel benutzt wird.
+        self._jobs: "queue.Queue" = queue.Queue()
 
     # ------------------------------------------------------------------
     # Öffentliche Steuerung (wird aus dem GUI-Thread aufgerufen)
@@ -113,13 +118,13 @@ class AccountMonitor:
         """
         return self._run_request.is_set() and not self._shutdown_event.is_set()
 
-    def start(self) -> None:
-        """Schaltet die Überwachung ein (idempotent, kehrt sofort zurück)."""
-        if self._shutdown_event.is_set():
-            logger.warning("start() nach shutdown() ignoriert.")
-            return
+    def _ensure_thread(self) -> bool:
+        """Stellt sicher, dass der Worker-Thread läuft.
 
-        # Den langlebigen Worker-Thread bei Bedarf (einmalig) erzeugen.
+        Rückgabe: False, wenn die App bereits heruntergefahren wird.
+        """
+        if self._shutdown_event.is_set():
+            return False
         # daemon=True: hält das Programmende nicht auf, falls die Anwendung
         # unerwartet endet; regulär wird er über shutdown() beendet.
         if self._thread is None or not self._thread.is_alive():
@@ -127,11 +132,34 @@ class AccountMonitor:
                 target=self._run, name="account-monitor", daemon=True
             )
             self._thread.start()
+        return True
+
+    def start(self) -> None:
+        """Schaltet die Überwachung ein (idempotent, kehrt sofort zurück)."""
+        if not self._ensure_thread():
+            logger.warning("start() nach shutdown() ignoriert.")
+            return
 
         if not self.active:
             self._run_request.set()
+            self._wake_event.set()  # Worker ggf. aus dem Leerlauf wecken
             logger.info("Überwachung gestartet.")
             self._emit({"type": "status", "running": True})
+
+    def download_now(self, username: str, limit: int) -> None:
+        """Stößt einen MANUELLEN Download der neuesten Beiträge an.
+
+        Läuft asynchron im Worker-Thread – unabhängig davon, ob die
+        Überwachung gerade eingeschaltet ist. Lädt bis zu ``limit`` der
+        neuesten Beiträge des Kontos herunter; bereits vorhandene Dateien
+        werden übersprungen.
+        """
+        if not self._ensure_thread():
+            logger.warning("Manueller Download nach shutdown() ignoriert.")
+            return
+        self._jobs.put(("download", username.strip().lstrip("@").lower(), int(limit)))
+        self._wake_event.set()  # Worker sofort aufwecken
+        logger.info("Manueller Download für @%s eingeplant …", username)
 
     def stop(self) -> None:
         """Schaltet die Überwachung aus (kehrt sofort zurück).
@@ -184,19 +212,27 @@ class AccountMonitor:
         return self._shutdown_event.is_set() or not self._run_request.is_set()
 
     def _run(self) -> None:
-        """Endlosschleife: (geparkt ↔) prüfen → Intervall warten → …"""
+        """Endlosschleife: Jobs abarbeiten · (geparkt ↔) prüfen · warten …"""
         while not self._shutdown_event.is_set():
+            # Einmalige Aufträge (manuelle Downloads) haben Vorrang und
+            # laufen unabhängig vom Überwachungs-Zustand.
+            self._process_jobs()
+            if self._shutdown_event.is_set():
+                break
+
             if not self._run_request.is_set():
-                # Überwachung ist ausgeschaltet: kurz schlafen und erneut
-                # nachsehen. (Kein Event-Wait auf _run_request, damit auch
-                # ein Shutdown im geparkten Zustand zügig greift.)
-                self._shutdown_event.wait(timeout=0.2)
+                # Überwachung ist ausgeschaltet: auf ein Weck-Signal warten
+                # (Start oder neuer Job). Timeout hält den Shutdown zügig.
+                self._wake_event.clear()
+                self._process_jobs()  # Job zwischen clear() und wait() abfangen
+                self._wake_event.wait(timeout=1.0)
                 continue
 
             # WICHTIG: Das Weck-Signal wird VOR dem Prüflauf zurückgesetzt,
             # nicht direkt vor dem Warten. Sonst gäbe es eine Race-Condition:
-            # Ein check_now() zwischen clear() und wait() würde verschluckt.
+            # Ein check_now()/Job zwischen clear() und wait() würde verschluckt.
             self._wake_event.clear()
+            self._process_jobs()
 
             try:
                 self._check_all_accounts()
@@ -207,6 +243,76 @@ class AccountMonitor:
 
             if not self._paused():
                 self._wait_interval()
+
+    def _process_jobs(self) -> None:
+        """Arbeitet alle anstehenden Einmal-Aufträge ab."""
+        while not self._shutdown_event.is_set():
+            try:
+                job = self._jobs.get_nowait()
+            except queue.Empty:
+                return
+            try:
+                kind = job[0]
+                if kind == "download":
+                    _, username, limit = job
+                    self._do_manual_download(username, limit)
+                else:
+                    logger.warning("Unbekannter Auftrag: %s", kind)
+            except Exception:
+                logger.exception("Fehler bei der Auftragsbearbeitung.")
+
+    def _do_manual_download(self, username: str, limit: int) -> None:
+        """Lädt bis zu ``limit`` der neuesten Beiträge eines Kontos herunter."""
+        logger.info(
+            "Manueller Download für @%s gestartet (bis zu %d Beiträge) …",
+            username,
+            limit,
+        )
+        self._emit({"type": "manual_download_started", "username": username})
+        try:
+            posts = self._downloader.list_recent_posts(username, limit)
+        except ProfileIsPrivate as exc:
+            logger.warning(str(exc))
+            self._emit({"type": "manual_download_done", "username": username,
+                        "downloaded": 0, "error": "privat"})
+            return
+        except ProfileNotFound as exc:
+            logger.error(str(exc))
+            self._emit({"type": "manual_download_done", "username": username,
+                        "downloaded": 0, "error": "nicht gefunden"})
+            return
+        except DownloaderError as exc:
+            logger.warning("Manueller Download @%s: %s", username, exc)
+            self._emit({"type": "manual_download_done", "username": username,
+                        "downloaded": 0, "error": "vorübergehender Fehler"})
+            return
+
+        downloaded = 0
+        for post in posts:
+            if self._shutdown_event.is_set():
+                break
+            # Beitrag registrieren (gilt danach als bekannt – die
+            # Überwachung meldet ihn nicht erneut als "neu").
+            self._db.add_post(post.shortcode, username, post.post_type, post.posted_at)
+            try:
+                if self._downloader.download_post(post):
+                    self._db.mark_downloaded(post.shortcode, username)
+                    downloaded += 1
+            except DownloaderError as exc:
+                logger.warning(
+                    "Beitrag %s konnte nicht geladen werden: %s",
+                    post.shortcode,
+                    exc,
+                )
+
+        logger.info(
+            "Manueller Download für @%s abgeschlossen: %d Beitrag/Beiträge "
+            "gespeichert.",
+            username,
+            downloaded,
+        )
+        self._emit({"type": "manual_download_done", "username": username,
+                    "downloaded": downloaded})
 
     def _wait_interval(self) -> None:
         """Wartet das Prüfintervall ab – unterbrechbar und live anpassbar.

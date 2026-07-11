@@ -28,11 +28,13 @@ from __future__ import annotations
 import logging
 import queue
 import re
-from tkinter import TclError, filedialog, messagebox
+import threading
+from tkinter import TclError, filedialog, messagebox, simpledialog
 from typing import TYPE_CHECKING
 
 import customtkinter as ctk
 
+from .downloader import InstagramDownloader, LoginError
 from .settings import MIN_INTERVAL_MINUTES
 
 if TYPE_CHECKING:
@@ -89,6 +91,7 @@ class App(ctk.CTk):
         settings: "Settings",
         monitor: "AccountMonitor",
         event_queue: "queue.Queue",
+        downloader: "InstagramDownloader",
     ) -> None:
         # Erscheinungsbild vor dem Erzeugen des Fensters festlegen.
         ctk.set_appearance_mode("dark")
@@ -99,9 +102,12 @@ class App(ctk.CTk):
         self._settings = settings
         self._monitor = monitor
         self._events = event_queue
+        self._downloader = downloader
 
         # Benutzername → CTkSwitch, um den Schalterzustand auszulesen.
         self._download_switches: dict[str, ctk.CTkSwitch] = {}
+        # Verhindert doppelt angestoßene Anmeldungen.
+        self._login_in_progress = False
 
         self.title("Instagram Monitor")
         self.geometry("1000x700")
@@ -112,6 +118,7 @@ class App(ctk.CTk):
 
         self._build_layout()
         self._refresh_account_list()
+        self._update_login_status()  # zeigt eine ggf. wiederhergestellte Anmeldung
         self._poll_events()  # startet den zyklischen Queue-Abruf
 
         logger.info(
@@ -171,7 +178,8 @@ class App(ctk.CTk):
         self._account_list.grid_columnconfigure(0, weight=1)
 
         # --- Steuerung & Einstellungen (rechts) -----------------------------
-        controls = ctk.CTkFrame(self, width=280)
+        # Scrollbar, damit auch der Login-Bereich auf kleineren Fenstern passt.
+        controls = ctk.CTkScrollableFrame(self, width=280)
         controls.grid(row=2, column=1, sticky="nsew", padx=(6, 12), pady=6)
         controls.grid_columnconfigure(0, weight=1)
 
@@ -232,19 +240,49 @@ class App(ctk.CTk):
             controls, text="Ordner wählen …", command=self._on_choose_download_dir
         ).grid(row=8, column=0, padx=14, pady=6, sticky="ew")
 
+        # Anmeldung (optional) -------------------------------------------------
+        ctk.CTkLabel(
+            controls, text="Anmeldung (optional)",
+            font=ctk.CTkFont(size=15, weight="bold"),
+        ).grid(row=9, column=0, padx=14, pady=(18, 4), sticky="w")
+
+        self._login_status_label = ctk.CTkLabel(
+            controls, text="", wraplength=230, justify="left",
+            font=ctk.CTkFont(size=11), text_color="gray",
+        )
+        self._login_status_label.grid(row=10, column=0, padx=14, sticky="w")
+
+        self._login_user_entry = ctk.CTkEntry(
+            controls, placeholder_text="Instagram-Benutzername"
+        )
+        self._login_user_entry.grid(row=11, column=0, padx=14, pady=(6, 3), sticky="ew")
+
+        self._login_pass_entry = ctk.CTkEntry(
+            controls, placeholder_text="Passwort", show="•"
+        )
+        self._login_pass_entry.grid(row=12, column=0, padx=14, pady=3, sticky="ew")
+
+        self._login_button = ctk.CTkButton(
+            controls, text="Anmelden", command=self._on_login
+        )
+        self._login_button.grid(row=13, column=0, padx=14, pady=6, sticky="ew")
+
         # Rechtlicher Hinweis --------------------------------------------------
         ctk.CTkLabel(
             controls,
             text=(
-                "Hinweis: Es werden nur öffentliche Profile geprüft. "
-                "Downloads nur, wenn zulässig – bitte Urheberrechte und die "
-                "Instagram-Nutzungsbedingungen beachten."
+                "Hinweis: Ohne Anmeldung werden nur öffentliche Profile "
+                "geprüft. Die Anmeldung erfolgt über den offiziellen "
+                "Instaloader-Login (Passwort wird nicht gespeichert) und "
+                "gibt nur Zugriff auf Konten, denen du folgst. Lade nur "
+                "Inhalte herunter, zu denen du berechtigt bist, und beachte "
+                "Urheberrecht und die Instagram-Nutzungsbedingungen."
             ),
             wraplength=230,
             justify="left",
             font=ctk.CTkFont(size=11),
             text_color="gray",
-        ).grid(row=9, column=0, padx=14, pady=(18, 12), sticky="w")
+        ).grid(row=14, column=0, padx=14, pady=(18, 12), sticky="w")
 
         # --- Log-Ausgabe -------------------------------------------------------
         self._log_box = ctk.CTkTextbox(self, wrap="word", font=ctk.CTkFont(size=12))
@@ -307,7 +345,7 @@ class App(ctk.CTk):
             row, text=detail, text_color="gray", font=ctk.CTkFont(size=11)
         ).grid(row=1, column=0, columnspan=2, padx=10, sticky="w")
 
-        # Zeile 3: Download-Schalter + Entfernen-Knopf
+        # Zeile 3: Download-Schalter + Knöpfe (manueller Download, Entfernen)
         download_switch = ctk.CTkSwitch(
             row,
             text="Automatisch herunterladen",
@@ -319,14 +357,24 @@ class App(ctk.CTk):
         # Schalter merken, um seinen Zustand beim Umschalten auszulesen.
         self._download_switches[username] = download_switch
 
+        buttons = ctk.CTkFrame(row, fg_color="transparent")
+        buttons.grid(row=2, column=1, padx=10, pady=(2, 8), sticky="e")
+
         ctk.CTkButton(
-            row,
+            buttons,
+            text="⬇ Herunterladen",
+            width=130,
+            command=lambda u=username: self._on_manual_download(u),
+        ).grid(row=0, column=0, padx=(0, 6))
+
+        ctk.CTkButton(
+            buttons,
             text="Entfernen",
             width=90,
             fg_color="#8b2d2d",
             hover_color="#a83838",
             command=lambda u=username: self._on_remove_account(u),
-        ).grid(row=2, column=1, padx=10, pady=(2, 8), sticky="e")
+        ).grid(row=0, column=1)
 
     # ==================================================================
     # Ereignis-Handler (Benutzeraktionen)
@@ -395,6 +443,27 @@ class App(ctk.CTk):
             return
         self._db.remove_account(username)
         self._refresh_account_list()
+
+    def _on_manual_download(self, username: str) -> None:
+        """Fragt die Anzahl ab und stößt einen manuellen Download an."""
+        try:
+            count = simpledialog.askinteger(
+                "Beiträge herunterladen",
+                f"Wie viele der NEUESTEN Beiträge von {username} "
+                "herunterladen?\n\n(Bereits vorhandene Dateien werden "
+                "übersprungen.)",
+                parent=self,
+                minvalue=1,
+                maxvalue=1000,
+                initialvalue=12,
+            )
+        except TclError:
+            return  # Fenster während des Dialogs geschlossen
+        if not count or not self.winfo_exists():
+            return
+        # Der eigentliche Download läuft asynchron im Worker-Thread; die
+        # GUI bleibt bedienbar. Fortschritt erscheint im Log.
+        self._monitor.download_now(username, count)
 
     def _on_toggle_download(self, username: str) -> None:
         """Reagiert auf den Download-Schalter eines Kontos."""
@@ -470,6 +539,90 @@ class App(ctk.CTk):
         self._settings.download_dir = chosen
         self._download_dir_label.configure(text=chosen)
 
+    # ------------------------------------------------------------------
+    # Anmeldung
+    # ------------------------------------------------------------------
+    def _update_login_status(self) -> None:
+        """Aktualisiert die Anzeige des Anmeldestatus und der Felder."""
+        if self._downloader.is_logged_in:
+            user = self._downloader.logged_in_user or "?"
+            self._login_status_label.configure(
+                text=f"✓ Angemeldet als @{user}", text_color="#4cd964"
+            )
+            self._login_button.configure(text="Abmelden", command=self._on_logout)
+            self._login_user_entry.configure(state="disabled")
+            self._login_pass_entry.configure(state="disabled")
+        else:
+            self._login_status_label.configure(
+                text="Nicht angemeldet (nur öffentliche Profile).",
+                text_color="gray",
+            )
+            self._login_button.configure(text="Anmelden", command=self._on_login)
+            self._login_user_entry.configure(state="normal")
+            self._login_pass_entry.configure(state="normal")
+
+    def _two_factor_provider(self):
+        """Fragt (thread-sicher) einen 2FA-Code ab.
+
+        Wird aus dem Login-Thread aufgerufen und blockiert diesen, bis der
+        Benutzer im Haupt-Thread einen Code eingegeben hat.
+        """
+        box: dict = {}
+        done = threading.Event()
+
+        def ask():
+            try:
+                box["code"] = simpledialog.askstring(
+                    "Zwei-Faktor-Authentifizierung",
+                    "Bestätigungscode aus deiner Authenticator-App / SMS:",
+                    parent=self,
+                )
+            except TclError:
+                box["code"] = None
+            finally:
+                done.set()
+
+        self.after(0, ask)
+        done.wait()
+        return box.get("code")
+
+    def _on_login(self) -> None:
+        """Startet die Anmeldung in einem Hintergrund-Thread."""
+        if self._login_in_progress:
+            return
+        username = self._login_user_entry.get().strip().lstrip("@")
+        password = self._login_pass_entry.get()
+        if not username or not password:
+            messagebox.showwarning(
+                "Anmeldung",
+                "Bitte Benutzername und Passwort eingeben.",
+                parent=self,
+            )
+            return
+
+        self._login_in_progress = True
+        self._login_button.configure(state="disabled", text="Anmelden …")
+        logger.info("Anmeldung für @%s wird versucht …", username)
+
+        def work():
+            error = None
+            try:
+                self._downloader.login(username, password, self._two_factor_provider)
+            except LoginError as exc:
+                error = str(exc)
+            except Exception as exc:  # pragma: no cover - unerwartet
+                error = f"Unerwarteter Fehler: {exc}"
+            # Passwortfeld aus Sicherheitsgründen leeren; Statusaktualisierung
+            # im Haupt-Thread über die Ereignis-Queue.
+            self._events.put_nowait({"type": "login_result", "error": error})
+
+        threading.Thread(target=work, name="login", daemon=True).start()
+
+    def _on_logout(self) -> None:
+        """Meldet das aktuelle Konto ab."""
+        self._downloader.logout()
+        self._update_login_status()
+
     def _on_close(self) -> None:
         """Fenster wird geschlossen: Überwachung ausschalten, dann beenden.
 
@@ -510,9 +663,24 @@ class App(ctk.CTk):
         elif event_type == "status":
             self._update_monitor_status(bool(event["running"]))
 
-        elif event_type in ("account_checked", "accounts_changed", "new_post"):
+        elif event_type in (
+            "account_checked",
+            "accounts_changed",
+            "new_post",
+            "manual_download_started",
+            "manual_download_done",
+        ):
             # Zeiten, Zähler und Fehleranzeigen neu aus der DB laden.
             self._refresh_account_list()
+
+        elif event_type == "login_result":
+            self._login_in_progress = False
+            self._login_pass_entry.delete(0, "end")  # Passwort nicht stehen lassen
+            error = event.get("error")
+            if error:
+                logger.error("Anmeldung fehlgeschlagen: %s", error)
+                messagebox.showerror("Anmeldung fehlgeschlagen", error, parent=self)
+            self._update_login_status()
 
     def _update_monitor_status(self, running: bool) -> None:
         """Passt Statusanzeige und Knöpfe an den Monitor-Zustand an."""

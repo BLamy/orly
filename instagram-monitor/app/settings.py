@@ -110,3 +110,20 @@ class Settings:
             return max(1, int(raw))  # type: ignore[arg-type]
         except (TypeError, ValueError):
             return DEFAULT_POSTS_PER_CHECK
+
+    # ------------------------------------------------------------------
+    # Angemeldetes Konto
+    # ------------------------------------------------------------------
+    @property
+    def login_username(self) -> str:
+        """Benutzername des zuletzt angemeldeten Kontos ("" wenn keiner).
+
+        Es wird ausschließlich der Benutzername gespeichert – niemals das
+        Passwort. Die eigentliche Anmeldung liegt als Cookie-Session-Datei
+        im Datenverzeichnis.
+        """
+        return self._db.get_setting("login_username", "") or ""
+
+    @login_username.setter
+    def login_username(self, username: str) -> None:
+        self._db.set_setting("login_username", username or "")
