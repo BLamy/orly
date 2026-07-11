@@ -50,7 +50,21 @@ einen lokalen Ordner herunterlädt.
   wie „Vorübergehender Fehler“ sind normal – die Anwendung versucht es beim
   nächsten Prüflauf automatisch erneut.
 
-## Installation
+## Schnellstart (empfohlen)
+
+Voraussetzung ist nur ein installiertes **Python 3.12 oder neuer**
+(Download: https://www.python.org/downloads/ – im Windows-Installer den
+Haken **„Add python.exe to PATH“** setzen).
+
+- **Windows:** Doppelklick auf **`start.bat`**
+- **Linux/macOS:** `./start.sh`
+
+Das Skript erledigt beim ersten Start automatisch die komplette
+Einrichtung (virtuelle Umgebung anlegen, Abhängigkeiten installieren)
+und startet danach die Anwendung. Ab dem zweiten Start geht es direkt
+los.
+
+## Manuelle Installation
 
 Voraussetzung: **Python 3.12** (inkl. Tkinter, das bei den offiziellen
 Installern von python.org enthalten ist).
