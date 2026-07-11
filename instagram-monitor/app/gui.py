@@ -46,6 +46,32 @@ logger = logging.getLogger(__name__)
 # maximal 30 Zeichen.
 _USERNAME_RE = re.compile(r"^[A-Za-z0-9._]{1,30}$")
 
+# Benutzername aus einer kompletten Instagram-Adresse herausziehen,
+# z. B. https://www.instagram.com/nasa/ → nasa
+_URL_RE = re.compile(r"instagram\.com/([A-Za-z0-9._]+)", re.IGNORECASE)
+
+# Pfad-Segmente von instagram.com, die KEINE Profilnamen sind
+# (Beitrags-/Reel-/Story-Links usw.).
+_RESERVED_SEGMENTS = {"p", "reel", "reels", "tv", "stories", "explore", "accounts"}
+
+
+def _extract_username(raw: str) -> str:
+    """Normalisiert eine Eingabe zu einem Benutzernamen.
+
+    Akzeptiert neben dem reinen Namen auch "@name" und komplette
+    Instagram-Adressen. Liefert "" für Eingaben, aus denen sich kein
+    Profilname ableiten lässt (z. B. ein Link auf einen einzelnen
+    Beitrag statt auf ein Profil).
+    """
+    raw = raw.strip()
+    match = _URL_RE.search(raw)
+    if match:
+        segment = match.group(1)
+        if segment.lower() in _RESERVED_SEGMENTS:
+            return ""  # Beitrags-/Reel-Link, kein Profil-Link
+        raw = segment
+    return raw.lstrip("@").lower()
+
 # Wie oft die GUI die Ereignis-Queue ausliest (Millisekunden).
 _POLL_INTERVAL_MS = 150
 
@@ -127,7 +153,7 @@ class App(ctk.CTk):
 
         self._add_entry = ctk.CTkEntry(
             add_frame,
-            placeholder_text="Benutzername(n) eingeben – mehrere mit Komma trennen, z. B. nasa, natgeo",
+            placeholder_text="Benutzername oder Instagram-Link – mehrere mit Komma trennen, z. B. nasa, natgeo",
         )
         self._add_entry.grid(row=0, column=0, sticky="ew", padx=(10, 6), pady=10)
         # Enter-Taste löst ebenfalls das Hinzufügen aus.
@@ -263,7 +289,7 @@ class App(ctk.CTk):
 
         # Zeile 1: Benutzername + Anzahl Downloads
         name_label = ctk.CTkLabel(
-            row, text=f"@{username}", font=ctk.CTkFont(size=14, weight="bold")
+            row, text=username, font=ctk.CTkFont(size=14, weight="bold")
         )
         name_label.grid(row=0, column=0, padx=10, pady=(6, 0), sticky="w")
 
@@ -313,10 +339,14 @@ class App(ctk.CTk):
 
         added, invalid, duplicates = [], [], []
         # Mehrere Namen dürfen mit Komma, Semikolon oder Leerzeichen
-        # getrennt sein; ein führendes "@" wird toleriert.
-        for name in re.split(r"[,;\s]+", raw):
-            name = name.strip().lstrip("@").lower()
+        # getrennt sein; "@name" und komplette Instagram-Adressen
+        # (https://www.instagram.com/name/) werden ebenfalls verstanden.
+        for token in re.split(r"[,;\s]+", raw):
+            if not token:
+                continue
+            name = _extract_username(token)
             if not name:
+                invalid.append(token)
                 continue
             if not _USERNAME_RE.match(name):
                 invalid.append(name)

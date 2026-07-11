@@ -161,7 +161,8 @@ instagram-monitor/
 | Symptom | Ursache / Lösung |
 | --- | --- |
 | „Profil ist privat“ | Gewolltes Verhalten: private Profile werden nicht abgerufen. |
-| „Profil nicht gefunden“ | Tippfehler im Benutzernamen? Konto entfernen und korrekt neu anlegen. |
+| „Profil nicht gefunden“ | Erscheint nur, wenn die Instagram-Suche funktioniert und den Namen trotzdem nicht kennt → Tippfehler? Konto entfernen und korrekt neu anlegen. |
+| „Instagram beantwortet anonyme Profil-Abfragen derzeit nicht“ | Instagram drosselt anonyme Clients (sehr häufig). Kein Handlungsbedarf: Die App versucht es beim nächsten Prüflauf automatisch erneut; ggf. Prüfintervall erhöhen. |
 | „Vorübergehender Fehler“ | Netzwerkproblem oder Drosselung durch Instagram – die App versucht es beim nächsten Lauf erneut. Ggf. Prüfintervall erhöhen. |
 | Keine Desktop-Benachrichtigungen | `plyer` fehlt oder das System hat keinen Benachrichtigungsdienst; Meldungen erscheinen weiterhin im Log. |
 | GUI startet nicht (`tkinter` fehlt) | Tkinter-Systempaket installieren (siehe Installation). |

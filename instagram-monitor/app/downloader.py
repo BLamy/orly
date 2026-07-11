@@ -124,6 +124,57 @@ class InstagramDownloader:
     # ------------------------------------------------------------------
     # Profil-Zugriff
     # ------------------------------------------------------------------
+    def _get_profile(self, username: str) -> "instaloader.Profile":
+        """Löst einen Benutzernamen in ein Profil auf – mit Fallback.
+
+        ``Profile.from_username`` basiert auf einer Instagram-**Suche**.
+        Anonymen Clients liefert diese Suche häufig leere Ergebnisse, und
+        Instaloader meldet dann fälschlich "Profile does not exist", obwohl
+        das Profil existiert. Deshalb:
+
+          1. regulärer Weg über ``Profile.from_username``
+          2. bei "nicht gefunden": zweiter, unabhängiger Suchweg über die
+             Top-Suche (``TopSearchResults``)
+          3. Nur wenn eine Suche nachweislich Ergebnisse liefert und das
+             Profil nicht dabei ist → :class:`ProfileNotFound`.
+             Liefern beide Wege nichts, ist eine anonyme Drosselung am
+             wahrscheinlichsten → :class:`TemporaryError` (wird beim
+             nächsten Prüflauf automatisch erneut versucht).
+        """
+        try:
+            return instaloader.Profile.from_username(
+                self._loader.context, username
+            )
+        except ProfileNotExistsException:
+            logger.debug(
+                "@%s: reguläre Namensauflösung ohne Treffer – "
+                "Top-Suche wird als zweiter Weg versucht.",
+                username,
+            )
+
+        search_had_results = False
+        try:
+            results = instaloader.TopSearchResults(self._loader.context, username)
+            for profile in results.get_profiles():
+                search_had_results = True
+                if profile.username.lower() == username.lower():
+                    return profile
+        except InstaloaderException:
+            logger.debug("Top-Suche nicht verfügbar.", exc_info=True)
+
+        if search_had_results:
+            # Die Suche funktioniert und liefert andere Profile – der
+            # gesuchte Name ist also wirklich nicht dabei.
+            raise ProfileNotFound(
+                f"Profil @{username} wurde in der Instagram-Suche nicht "
+                "gefunden – bitte die Schreibweise prüfen."
+            )
+        raise TemporaryError(
+            f"@{username}: Instagram beantwortet anonyme Profil-Abfragen "
+            "derzeit nicht (übliche Drosselung) – oder das Profil existiert "
+            "nicht. Nächster Versuch beim kommenden Prüflauf."
+        )
+
     def fetch_new_posts(self, username: str, is_known) -> list[PostInfo]:
         """Liefert die noch unbekannten unter den neuesten Beiträgen.
 
@@ -139,16 +190,18 @@ class InstagramDownloader:
         der Anfragen klein.
         """
         try:
-            profile = instaloader.Profile.from_username(
-                self._loader.context, username
-            )
+            profile = self._get_profile(username)
             # WICHTIG: is_private ist eine "faule" Property – der Zugriff
-            # kann Metadaten nachladen und dabei dieselben Instaloader-
-            # Ausnahmen werfen wie from_username. Deshalb wird sie HIER,
-            # innerhalb des try-Blocks, gelesen.
+            # kann Metadaten nachladen und dabei Instaloader-Ausnahmen
+            # werfen. Deshalb wird sie HIER, innerhalb des try-Blocks,
+            # gelesen.
             profile_is_private = profile.is_private
         except ProfileNotExistsException as exc:
-            raise ProfileNotFound(f"Profil @{username} existiert nicht.") from exc
+            # Kann noch aus dem faulen Metadaten-Nachladen kommen; die
+            # Namensauflösung selbst behandelt _get_profile differenziert.
+            raise TemporaryError(
+                f"Profil @{username} konnte nicht geladen werden: {exc}"
+            ) from exc
         except ConnectionException as exc:
             # Netzwerkfehler ODER Drosselung durch Instagram (z. B. 429).
             raise TemporaryError(
