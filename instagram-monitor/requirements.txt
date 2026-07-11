@@ -1,0 +1,15 @@
+# Abhängigkeiten der Instagram-Monitor-Anwendung
+# Installation:  pip install -r requirements.txt
+
+# Moderne GUI auf Basis von Tkinter
+customtkinter>=5.2.2
+
+# Offiziell dokumentiertes Open-Source-Tool zum Abrufen ÖFFENTLICHER
+# Instagram-Inhalte. Es umgeht keine Zugriffsbeschränkungen: private
+# Profile ohne Berechtigung sind nicht zugänglich und werden von der
+# Anwendung übersprungen.
+instaloader>=4.14
+
+# Plattformübergreifende Desktop-Benachrichtigungen (optional; ohne
+# plyer schreibt die App Benachrichtigungen nur in das Log-Fenster).
+plyer>=2.1.0

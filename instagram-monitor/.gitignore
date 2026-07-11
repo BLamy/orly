@@ -1,0 +1,10 @@
+# Laufzeitdaten der Anwendung – gehören nicht ins Repository
+data/
+logs/
+downloads/
+
+# Python
+__pycache__/
+*.py[cod]
+.venv/
+venv/

@@ -1,0 +1,252 @@
+"""
+Zugriff auf öffentliche Instagram-Inhalte.
+==========================================
+
+Dieses Modul kapselt sämtliche Instagram-Zugriffe hinter der Klasse
+:class:`InstagramDownloader`. Als Unterbau dient **Instaloader**
+(https://instaloader.github.io/), ein etabliertes, dokumentiertes
+Open-Source-Werkzeug.
+
+Wichtige Grundsätze dieser Implementierung
+------------------------------------------
+* Es werden ausschließlich **öffentlich zugängliche** Inhalte abgerufen –
+  genau das, was auch ein nicht angemeldeter Besucher im Browser sähe.
+* **Private Profile werden übersprungen.** Die Anwendung versucht nicht,
+  Zugriffsbeschränkungen, Logins oder sonstige Schutzmechanismen zu
+  umgehen.
+* **Rate-Limits werden respektiert:** Instaloader bringt eine eigene
+  Ratenbegrenzung mit; zusätzlich legt der Monitor Pausen zwischen den
+  Konten ein und prüft nur in dem vom Benutzer konfigurierten Intervall.
+* Antwortet Instagram mit einer Sperre/Drosselung (HTTP 429 u. ä.), wird
+  der Fehler protokolliert und der nächste reguläre Prüflauf abgewartet –
+  es gibt keine aggressiven Wiederholungsversuche.
+"""
+
+from __future__ import annotations
+
+import logging
+from dataclasses import dataclass, field
+from itertools import islice
+from pathlib import Path
+from typing import TYPE_CHECKING, Optional
+
+import instaloader
+from instaloader.exceptions import (
+    ConnectionException,
+    InstaloaderException,
+    ProfileNotExistsException,
+)
+
+if TYPE_CHECKING:  # nur für Typprüfung, vermeidet Importzyklen zur Laufzeit
+    from .settings import Settings
+
+logger = logging.getLogger(__name__)
+
+
+# ----------------------------------------------------------------------
+# Eigene, sprechende Ausnahmen – die restliche Anwendung muss dadurch
+# keine Instaloader-Interna kennen.
+# ----------------------------------------------------------------------
+class DownloaderError(Exception):
+    """Basisklasse für alle Fehler dieses Moduls."""
+
+
+class ProfileNotFound(DownloaderError):
+    """Das angegebene Profil existiert nicht."""
+
+
+class ProfileIsPrivate(DownloaderError):
+    """Das Profil ist privat – ohne Berechtigung kein Zugriff (gewollt)."""
+
+
+class TemporaryError(DownloaderError):
+    """Vorübergehender Fehler (Netzwerk, Drosselung) – später erneut versuchen."""
+
+
+@dataclass(frozen=True)
+class PostInfo:
+    """Leichtgewichtige, GUI-freundliche Beschreibung eines Beitrags."""
+
+    shortcode: str          # eindeutige Kurz-ID (Teil der Beitrags-URL)
+    username: str           # Konto, zu dem der Beitrag gehört
+    post_type: str          # "Reel", "Video", "Album" oder "Bild"
+    posted_at: str          # Veröffentlichungszeitpunkt (ISO, UTC)
+    url: str                # Link zum Beitrag
+
+    # Das originale Instaloader-Post-Objekt (nur intern; spart beim
+    # Download eine erneute Netzanfrage). Von Vergleich/Repr ausgenommen.
+    raw: Optional[object] = field(default=None, repr=False, compare=False)
+
+    @property
+    def is_reel(self) -> bool:
+        return self.post_type == "Reel"
+
+
+def _classify_post(post: "instaloader.Post") -> str:
+    """Bestimmt den Beitragstyp für Anzeige und Datenbank.
+
+    ``product_type == "clips"`` kennzeichnet Reels; ältere
+    Instaloader-Versionen kennen das Attribut evtl. nicht, daher getattr.
+    """
+    try:
+        if getattr(post, "product_type", "") == "clips":
+            return "Reel"
+        if post.typename == "GraphSidecar":
+            return "Album"
+        if post.is_video:
+            return "Video"
+    except Exception:  # defensive: Metadaten-Zugriffe können nachladen & scheitern
+        logger.debug("Beitragstyp konnte nicht bestimmt werden.", exc_info=True)
+    return "Bild"
+
+
+class InstagramDownloader:
+    """Prüft öffentliche Profile auf neue Beiträge und lädt sie herunter."""
+
+    def __init__(self, settings: "Settings") -> None:
+        self._settings = settings
+
+        # Instaloader-Instanz: bewusst "leise" und sparsam konfiguriert –
+        # nur die Medien selbst, keine Metadaten-/Kommentar-Dateien.
+        self._loader = instaloader.Instaloader(
+            quiet=True,                    # keine Ausgaben auf stdout (wir loggen selbst)
+            download_video_thumbnails=False,
+            save_metadata=False,           # keine .json.xz-Metadaten
+            compress_json=False,
+            post_metadata_txt_pattern="",  # keine .txt-Begleitdateien
+        )
+
+    # ------------------------------------------------------------------
+    # Profil-Zugriff
+    # ------------------------------------------------------------------
+    def fetch_new_posts(self, username: str, is_known) -> list[PostInfo]:
+        """Liefert die noch unbekannten unter den neuesten Beiträgen.
+
+        Parameter:
+          username – zu prüfendes Konto
+          is_known – Callback ``(shortcode: str) -> bool``; True, wenn der
+                     Beitrag bereits registriert ist. So bleibt dieses
+                     Modul frei von Datenbank-Wissen.
+
+        Es werden nur die ``posts_per_check`` neuesten Beiträge betrachtet
+        (Instaloader liefert sie neueste zuerst). Das reicht für eine
+        Überwachung im Minuten-/Stundentakt völlig aus und hält die Zahl
+        der Anfragen klein.
+        """
+        try:
+            profile = instaloader.Profile.from_username(
+                self._loader.context, username
+            )
+        except ProfileNotExistsException as exc:
+            raise ProfileNotFound(f"Profil @{username} existiert nicht.") from exc
+        except ConnectionException as exc:
+            # Netzwerkfehler ODER Drosselung durch Instagram (z. B. 429).
+            raise TemporaryError(
+                f"Verbindungsproblem bei @{username}: {exc}"
+            ) from exc
+        except InstaloaderException as exc:
+            raise TemporaryError(f"Fehler bei @{username}: {exc}") from exc
+
+        # Private Profile: bewusst KEIN Zugriffsversuch. Ohne Berechtigung
+        # sind die Inhalte nicht öffentlich – die Anwendung respektiert das.
+        if profile.is_private:
+            raise ProfileIsPrivate(
+                f"@{username} ist privat – wird nicht abgerufen (Zugriff nur "
+                "mit Berechtigung; die Anwendung umgeht keine Beschränkungen)."
+            )
+
+        new_posts: list[PostInfo] = []
+        try:
+            # islice: nur die N neuesten Beiträge anfassen, nicht das ganze Profil.
+            for post in islice(profile.get_posts(), self._settings.posts_per_check):
+                if is_known(post.shortcode):
+                    # Sobald ein bekannter Beitrag auftaucht, könnten wir
+                    # theoretisch abbrechen; wir prüfen aber alle N, weil
+                    # angepinnte Beiträge die Reihenfolge verändern können.
+                    continue
+                new_posts.append(
+                    PostInfo(
+                        shortcode=post.shortcode,
+                        username=username,
+                        post_type=_classify_post(post),
+                        posted_at=post.date_utc.isoformat(timespec="seconds"),
+                        url=f"https://www.instagram.com/p/{post.shortcode}/",
+                        raw=post,
+                    )
+                )
+        except ConnectionException as exc:
+            raise TemporaryError(
+                f"Verbindungsproblem beim Lesen der Beiträge von @{username}: {exc}"
+            ) from exc
+        except InstaloaderException as exc:
+            raise TemporaryError(
+                f"Fehler beim Lesen der Beiträge von @{username}: {exc}"
+            ) from exc
+
+        # Älteste zuerst zurückgeben, damit Benachrichtigungen und Downloads
+        # in chronologischer Reihenfolge erfolgen.
+        new_posts.reverse()
+        return new_posts
+
+    # ------------------------------------------------------------------
+    # Download
+    # ------------------------------------------------------------------
+    def download_post(self, post_info: PostInfo) -> bool:
+        """Lädt einen einzelnen Beitrag in den konfigurierten Ordner.
+
+        Zielstruktur: ``<download_dir>/<username>/…``
+
+        Rückgabe: True bei Erfolg, False wenn nichts (Neues) gespeichert
+        wurde. Wirft :class:`TemporaryError` bei Netzwerk-/Drosselungs-
+        problemen, damit der Monitor es beim nächsten Lauf erneut
+        versuchen kann.
+        """
+        download_dir: Path = self._settings.download_dir
+
+        # Der Zielordner kann sich zur Laufzeit ändern (Einstellungen),
+        # deshalb wird das Muster vor jedem Download aktualisiert.
+        # "{target}" ersetzt Instaloader durch den übergebenen target-Namen.
+        self._loader.dirname_pattern = str(download_dir / "{target}")
+
+        try:
+            # Das beim Abruf gemerkte Post-Objekt wiederverwenden; nur zur
+            # Sicherheit (z. B. nach Deserialisierung) neu laden.
+            post = post_info.raw
+            if post is None:
+                post = instaloader.Post.from_shortcode(
+                    self._loader.context, post_info.shortcode
+                )
+            # Instaloader überspringt bereits vorhandene Dateien von selbst –
+            # zusätzlich verhindert unsere Datenbank Doppel-Downloads.
+            saved = self._loader.download_post(post, target=post_info.username)
+            if saved:
+                logger.info(
+                    "Beitrag %s (@%s, %s) gespeichert unter %s",
+                    post_info.shortcode,
+                    post_info.username,
+                    post_info.post_type,
+                    download_dir / post_info.username,
+                )
+            else:
+                logger.info(
+                    "Beitrag %s (@%s) war bereits vollständig vorhanden.",
+                    post_info.shortcode,
+                    post_info.username,
+                )
+            # In beiden Fällen liegt der Inhalt jetzt lokal vor.
+            return True
+        except ConnectionException as exc:
+            raise TemporaryError(
+                f"Download von {post_info.shortcode} fehlgeschlagen "
+                f"(Verbindung/Drosselung): {exc}"
+            ) from exc
+        except InstaloaderException as exc:
+            raise TemporaryError(
+                f"Download von {post_info.shortcode} fehlgeschlagen: {exc}"
+            ) from exc
+        except OSError as exc:
+            # z. B. Zielordner nicht beschreibbar, Datenträger voll …
+            raise TemporaryError(
+                f"Beitrag {post_info.shortcode} konnte nicht gespeichert "
+                f"werden: {exc}"
+            ) from exc

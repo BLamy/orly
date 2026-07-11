@@ -1,0 +1,145 @@
+# Instagram Monitor
+
+Eine Desktop-Anwendung (Python 3.12 + CustomTkinter), die **öffentliche**
+Instagram-Konten überwacht, bei neuen Beiträgen und Reels benachrichtigt und
+neue Inhalte – sofern für das Konto aktiviert und zulässig – automatisch in
+einen lokalen Ordner herunterlädt.
+
+![Aufbau](https://img.shields.io/badge/Python-3.12-blue) ![GUI](https://img.shields.io/badge/GUI-CustomTkinter-informational)
+
+## Funktionen
+
+- **Mehrere Konten überwachen** – Benutzernamen einzeln oder als Liste
+  (Komma-getrennt) hinzufügen.
+- **Benachrichtigung bei neuen Beiträgen/Reels** – im Log-Fenster und
+  (sofern verfügbar) als Desktop-Benachrichtigung.
+- **Automatischer Download pro Konto abschaltbar** – über einen Schalter in
+  der Kontenliste. Heruntergeladen wird nach `downloads/<benutzername>/`.
+- **Keine Doppel-Downloads** – jeder Beitrag wird über seinen eindeutigen
+  Shortcode in einer SQLite-Datenbank registriert.
+- **Statusanzeige je Konto** – Zeitpunkt der letzten Prüfung, Anzahl der
+  heruntergeladenen Beiträge, letzter Fehler.
+- **Start/Stop** der Überwachung, **Sofortprüfung** und einstellbares
+  **Prüfintervall** (Standard: 5 Minuten, Minimum: 1 Minute).
+- **Persistenz** – Konten, bekannte Beiträge und Einstellungen überleben
+  einen Neustart (SQLite: `data/monitor.db`).
+- **Logging** – rotierende Log-Datei unter `logs/app.log` plus Live-Log in
+  der Oberfläche.
+
+## Wichtige Hinweise (bitte zuerst lesen)
+
+- Die Anwendung ruft **ausschließlich öffentlich sichtbare Inhalte** ab –
+  dasselbe, was ein nicht angemeldeter Besucher im Browser sieht. Als
+  Unterbau dient das dokumentierte Open-Source-Tool
+  [Instaloader](https://instaloader.github.io/).
+- **Private Profile werden übersprungen.** Die Anwendung umgeht keinerlei
+  Login-, Sicherheits- oder Zugriffsbeschränkungen von Instagram.
+- **Rate-Limits werden respektiert:** Das Prüfintervall ist nach unten auf
+  1 Minute begrenzt, zwischen den Konten liegen Pausen, pro Prüfung werden
+  nur die neuesten Beiträge betrachtet, und bei einer Drosselung durch
+  Instagram wartet die Anwendung einfach auf den nächsten regulären Lauf.
+- **Rechtliches:** Du bist selbst dafür verantwortlich, dass Überwachung und
+  Download im Einklang mit den
+  [Instagram-Nutzungsbedingungen](https://help.instagram.com/581066165581870)
+  und dem Urheberrecht stehen. Lade nur Inhalte herunter, für die du dazu
+  berechtigt bist (z. B. eigene Konten oder Inhalte mit ausdrücklicher
+  Erlaubnis), und nutze Downloads nur privat.
+- Instagram drosselt anonyme Abrufe zum Teil stark. Gelegentliche Meldungen
+  wie „Vorübergehender Fehler“ sind normal – die Anwendung versucht es beim
+  nächsten Prüflauf automatisch erneut.
+
+## Installation
+
+Voraussetzung: **Python 3.12** (inkl. Tkinter, das bei den offiziellen
+Installern von python.org enthalten ist).
+
+```bash
+# 1. In den Projektordner wechseln
+cd instagram-monitor
+
+# 2. Virtuelle Umgebung anlegen und aktivieren
+python3.12 -m venv .venv
+
+#    Linux/macOS:
+source .venv/bin/activate
+#    Windows (PowerShell):
+#    .venv\Scripts\Activate.ps1
+#    Windows (cmd):
+#    .venv\Scripts\activate.bat
+
+# 3. Abhängigkeiten installieren
+pip install -r requirements.txt
+
+# 4. Anwendung starten
+python main.py
+```
+
+**Hinweis für Linux:** Falls Tkinter fehlt (`ModuleNotFoundError: No module
+named 'tkinter'`), zuerst das Systempaket installieren, z. B.
+`sudo apt install python3-tk` (Debian/Ubuntu) oder
+`sudo dnf install python3-tkinter` (Fedora).
+
+## Bedienung
+
+1. **Konto hinzufügen:** Benutzernamen oben eingeben (mehrere mit Komma
+   trennen) und auf „Hinzufügen“ klicken.
+2. **Download aktivieren (optional):** In der Kontenliste den Schalter
+   „Automatisch herunterladen“ umlegen.
+3. **Überwachung starten:** Rechts auf „▶ Überwachung starten“ klicken.
+   Der Status in der Kopfzeile wechselt auf „Überwachung läuft“.
+4. **Prüfintervall ändern:** Minutenzahl eintragen und „Intervall
+   übernehmen“ klicken (greift ab dem nächsten Zyklus).
+5. **Sofort prüfen:** „↻ Jetzt prüfen“ stößt außerplanmäßig einen Lauf an.
+6. **Download-Ordner ändern:** über „Ordner wählen …“.
+
+**Erstinventur:** Beim ersten Prüflauf eines neu hinzugefügten Kontos werden
+die bereits vorhandenen Beiträge nur registriert (Baseline) – sie werden
+weder gemeldet noch heruntergeladen. Erst ab dem zweiten Lauf gilt jeder
+unbekannte Beitrag als „neu“. So wird verhindert, dass beim Hinzufügen eines
+Kontos dessen gesamter Verlauf heruntergeladen wird.
+
+## Projektstruktur
+
+```
+instagram-monitor/
+├── main.py               # Einstiegspunkt: verdrahtet alle Komponenten
+├── requirements.txt      # Abhängigkeiten
+├── README.md             # diese Datei
+├── app/
+│   ├── __init__.py
+│   ├── gui.py            # CustomTkinter-Oberfläche (nur Haupt-Thread)
+│   ├── database.py       # SQLite-Persistenz (thread-sicher via Lock)
+│   ├── downloader.py     # Zugriff auf öffentliche Inhalte (Instaloader)
+│   ├── monitor.py        # Hintergrund-Thread für die Überwachung
+│   ├── settings.py       # Einstellungsverwaltung (persistiert in SQLite)
+│   ├── notifier.py       # Desktop-Benachrichtigungen (optional, plyer)
+│   └── logging_setup.py  # Logging: Datei + Konsole + GUI-Fenster
+├── data/                 # monitor.db (wird automatisch angelegt)
+├── logs/                 # app.log (rotierend, wird automatisch angelegt)
+└── downloads/            # Standard-Zielordner für Downloads
+```
+
+## Architektur in Kürze
+
+- **GUI (Haupt-Thread):** Alle Tkinter-Widgets werden ausschließlich im
+  Haupt-Thread angefasst.
+- **Monitor (Hintergrund-Thread):** prüft die Konten im eingestellten
+  Intervall und kommuniziert mit der GUI **nur** über eine thread-sichere
+  `queue.Queue` (die GUI liest sie zyklisch per `after()` aus).
+- **Datenbank:** eine SQLite-Verbindung, serialisiert über ein
+  `threading.Lock` – einfach und robust bei der geringen Zugriffsfrequenz.
+- **Stoppen ohne Warten:** Der Monitor wartet sein Intervall über
+  `Event.wait()` ab und reagiert dadurch sofort auf „Stop“ und
+  „Jetzt prüfen“.
+
+## Fehlerbehebung
+
+| Symptom | Ursache / Lösung |
+| --- | --- |
+| „Profil ist privat“ | Gewolltes Verhalten: private Profile werden nicht abgerufen. |
+| „Profil nicht gefunden“ | Tippfehler im Benutzernamen? Konto entfernen und korrekt neu anlegen. |
+| „Vorübergehender Fehler“ | Netzwerkproblem oder Drosselung durch Instagram – die App versucht es beim nächsten Lauf erneut. Ggf. Prüfintervall erhöhen. |
+| Keine Desktop-Benachrichtigungen | `plyer` fehlt oder das System hat keinen Benachrichtigungsdienst; Meldungen erscheinen weiterhin im Log. |
+| GUI startet nicht (`tkinter` fehlt) | Tkinter-Systempaket installieren (siehe Installation). |
+
+Ausführliche Diagnose: `logs/app.log`.
