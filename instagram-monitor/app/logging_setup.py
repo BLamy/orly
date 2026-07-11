@@ -42,8 +42,13 @@ class QueueLogHandler(logging.Handler):
             self.handleError(record)
 
 
-def setup_logging(log_file: Path, event_queue: "queue.Queue") -> None:
-    """Konfiguriert das Root-Logging der gesamten Anwendung."""
+def setup_logging(log_file: Path, event_queue: "queue.Queue | None" = None) -> None:
+    """Konfiguriert das Root-Logging der gesamten Anwendung.
+
+    ``event_queue`` ist optional: Die Desktop-GUI übergibt ihre
+    Ereignis-Queue (Log-Zeilen erscheinen im Fenster); die Web-Oberfläche
+    kommt ohne aus – dann gibt es nur Datei- und Konsolen-Logging.
+    """
     log_file.parent.mkdir(parents=True, exist_ok=True)
 
     root = logging.getLogger()
@@ -63,11 +68,12 @@ def setup_logging(log_file: Path, event_queue: "queue.Queue") -> None:
     console_handler.setFormatter(logging.Formatter(_FILE_FORMAT))
     root.addHandler(console_handler)
 
-    # --- 3. GUI-Fenster (über die Ereignis-Queue) -----------------------
-    gui_handler = QueueLogHandler(event_queue)
-    gui_handler.setLevel(logging.INFO)
-    gui_handler.setFormatter(logging.Formatter(_GUI_FORMAT, datefmt=_GUI_DATEFMT))
-    root.addHandler(gui_handler)
+    # --- 3. GUI-Fenster (über die Ereignis-Queue, nur Desktop-App) -------
+    if event_queue is not None:
+        gui_handler = QueueLogHandler(event_queue)
+        gui_handler.setLevel(logging.INFO)
+        gui_handler.setFormatter(logging.Formatter(_GUI_FORMAT, datefmt=_GUI_DATEFMT))
+        root.addHandler(gui_handler)
 
     # Fremdbibliotheken (instaloader, urllib3 …) sind auf DEBUG sehr
     # gesprächig – auf WARNING begrenzen, damit das Log lesbar bleibt.

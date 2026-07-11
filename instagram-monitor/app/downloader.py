@@ -100,6 +100,10 @@ class PostInfo:
     posted_at: str          # Veröffentlichungszeitpunkt (ISO, UTC)
     url: str                # Link zum Beitrag
 
+    # Für die Web-Oberfläche (best effort, kann leer sein):
+    thumbnail_url: str = ""  # Vorschaubild-URL (Instagram-CDN)
+    caption: str = ""        # Anfang der Bildunterschrift
+
     # Das originale Instaloader-Post-Objekt (nur intern; spart beim
     # Download eine erneute Netzanfrage). Von Vergleich/Repr ausgenommen.
     raw: Optional[object] = field(default=None, repr=False, compare=False)
@@ -228,7 +232,12 @@ class InstagramDownloader:
             except TwoFactorAuthRequiredException as exc:
                 code = two_factor_provider() if two_factor_provider else None
                 if not code:
-                    raise LoginError("Anmeldung abgebrochen (kein 2FA-Code).") from exc
+                    # Eigener Ausnahmetyp, damit Aufrufer (z. B. die
+                    # Web-Oberfläche) gezielt ein Code-Feld anbieten können.
+                    raise TwoFactorRequired(
+                        "Zwei-Faktor-Code erforderlich – bitte den Code aus "
+                        "deiner Authenticator-App/SMS eingeben."
+                    ) from exc
                 try:
                     self._loader.two_factor_login(code.strip())
                 except InstaloaderException as exc2:
@@ -439,6 +448,16 @@ class InstagramDownloader:
                 for post in islice(profile.get_posts(), limit):
                     if is_known is not None and is_known(post.shortcode):
                         continue
+                    # Vorschaubild/Beschriftung sind Komfort für die
+                    # Web-Oberfläche – Fehler dabei sind unkritisch.
+                    try:
+                        thumbnail = post.url or ""
+                    except Exception:
+                        thumbnail = ""
+                    try:
+                        caption = (post.caption or "")[:140]
+                    except Exception:
+                        caption = ""
                     collected.append(
                         PostInfo(
                             shortcode=post.shortcode,
@@ -446,6 +465,8 @@ class InstagramDownloader:
                             post_type=_classify_post(post),
                             posted_at=post.date_utc.isoformat(timespec="seconds"),
                             url=f"https://www.instagram.com/p/{post.shortcode}/",
+                            thumbnail_url=thumbnail,
+                            caption=caption,
                             raw=post,
                         )
                     )

@@ -34,7 +34,7 @@ from typing import TYPE_CHECKING
 
 import customtkinter as ctk
 
-from .downloader import InstagramDownloader, LoginError
+from .downloader import InstagramDownloader, LoginError, TwoFactorRequired
 from .settings import MIN_INTERVAL_MINUTES
 
 if TYPE_CHECKING:
@@ -44,35 +44,10 @@ if TYPE_CHECKING:
 
 logger = logging.getLogger(__name__)
 
-# Gültige Instagram-Benutzernamen: Buchstaben, Ziffern, Punkt, Unterstrich,
-# maximal 30 Zeichen.
-_USERNAME_RE = re.compile(r"^[A-Za-z0-9._]{1,30}$")
-
-# Benutzername aus einer kompletten Instagram-Adresse herausziehen,
-# z. B. https://www.instagram.com/nasa/ → nasa
-_URL_RE = re.compile(r"instagram\.com/([A-Za-z0-9._]+)", re.IGNORECASE)
-
-# Pfad-Segmente von instagram.com, die KEINE Profilnamen sind
-# (Beitrags-/Reel-/Story-Links usw.).
-_RESERVED_SEGMENTS = {"p", "reel", "reels", "tv", "stories", "explore", "accounts"}
-
-
-def _extract_username(raw: str) -> str:
-    """Normalisiert eine Eingabe zu einem Benutzernamen.
-
-    Akzeptiert neben dem reinen Namen auch "@name" und komplette
-    Instagram-Adressen. Liefert "" für Eingaben, aus denen sich kein
-    Profilname ableiten lässt (z. B. ein Link auf einen einzelnen
-    Beitrag statt auf ein Profil).
-    """
-    raw = raw.strip()
-    match = _URL_RE.search(raw)
-    if match:
-        segment = match.group(1)
-        if segment.lower() in _RESERVED_SEGMENTS:
-            return ""  # Beitrags-/Reel-Link, kein Profil-Link
-        raw = segment
-    return raw.lstrip("@").lower()
+# Eingabe-Normalisierung (Benutzernamen, @, Instagram-Adressen) – geteilt
+# mit der Web-Oberfläche (app/util.py).
+from .util import USERNAME_RE as _USERNAME_RE
+from .util import extract_username as _extract_username
 
 # Wie oft die GUI die Ereignis-Queue ausliest (Millisekunden).
 _POLL_INTERVAL_MS = 150
@@ -608,7 +583,7 @@ class App(ctk.CTk):
             error = None
             try:
                 self._downloader.login(username, password, self._two_factor_provider)
-            except LoginError as exc:
+            except (LoginError, TwoFactorRequired) as exc:
                 error = str(exc)
             except Exception as exc:  # pragma: no cover - unerwartet
                 error = f"Unerwarteter Fehler: {exc}"

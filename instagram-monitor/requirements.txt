@@ -13,3 +13,12 @@ instaloader>=4.14
 # Plattformübergreifende Desktop-Benachrichtigungen (optional; ohne
 # plyer schreibt die App Benachrichtigungen nur in das Log-Fenster).
 plyer>=2.1.0
+
+# Lokale Browser-Oberfläche (web.py / start-web.bat) – der Server läuft
+# ausschließlich auf 127.0.0.1 (dem eigenen Rechner).
+flask>=3.0
+
+# HTTP-Zugriffe (Vorschaubild-Proxy der Web-Oberfläche; wird von
+# instaloader ohnehin mitinstalliert).
+requests>=2.31
+

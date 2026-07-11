@@ -306,6 +306,15 @@ class Database:
         )
         return rows[0]["newest"] if rows else None
 
+    def is_downloaded(self, shortcode: str, username: str) -> bool:
+        """Wurde dieser Beitrag für dieses Konto bereits heruntergeladen?"""
+        rows = self._query(
+            "SELECT 1 FROM posts WHERE shortcode = ? AND username = ? "
+            "AND downloaded = 1",
+            (shortcode, username),
+        )
+        return bool(rows)
+
     def download_count(self, username: str) -> int:
         """Anzahl der für dieses Konto heruntergeladenen Beiträge."""
         rows = self._query(

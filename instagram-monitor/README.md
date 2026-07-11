@@ -63,13 +63,31 @@ Voraussetzung ist nur ein installiertes **Python 3.12 oder neuer**
 (Download: https://www.python.org/downloads/ – im Windows-Installer den
 Haken **„Add python.exe to PATH“** setzen).
 
-- **Windows:** Doppelklick auf **`start.bat`**
-- **Linux/macOS:** `./start.sh`
+Es gibt **zwei Oberflächen** für dieselben Daten:
+
+| | Windows | Linux/macOS |
+| --- | --- | --- |
+| **Browser-Oberfläche** (Beiträge ansehen & gezielt herunterladen, wie ein Feed) | Doppelklick **`start-web.bat`** | `./start-web.sh` |
+| **Desktop-App** (Dauer-Überwachung mit Benachrichtigungen) | Doppelklick **`start.bat`** | `./start.sh` |
 
 Das Skript erledigt beim ersten Start automatisch die komplette
 Einrichtung (virtuelle Umgebung anlegen, Abhängigkeiten installieren)
 und startet danach die Anwendung. Ab dem zweiten Start geht es direkt
-los.
+los. Bitte nicht beide Oberflächen gleichzeitig laufen lassen.
+
+### Browser-Oberfläche
+
+`start-web.bat` startet einen **lokalen** Server (nur auf deinem Rechner
+erreichbar, http://127.0.0.1:8756/) und öffnet den Browser:
+
+1. Optional oben **anmelden** (eigenes Konto; 2FA wird unterstützt).
+2. Benutzernamen oder Instagram-Link eingeben → **Anzeigen**.
+3. Die Beiträge erscheinen als Bilder-Raster – bei jedem Foto/Video
+   gibt es **„⬇ Herunterladen“**, dazu **„⬇ Alle herunterladen“**.
+   Bereits Heruntergeladenes ist grün markiert.
+
+Die Dateien landen im selben `downloads/<benutzername>/`-Ordner wie bei
+der Desktop-App; auch Datenbank und Anmeldung werden geteilt.
 
 ## Manuelle Installation
 
@@ -149,20 +167,27 @@ herunter, zu denen du berechtigt bist.
 
 ```
 instagram-monitor/
-├── main.py               # Einstiegspunkt: verdrahtet alle Komponenten
+├── main.py               # Einstiegspunkt Desktop-App
+├── web.py                # Einstiegspunkt Browser-Oberfläche (127.0.0.1:8756)
+├── start.bat / start.sh          # Doppelklick-Start Desktop-App
+├── start-web.bat / start-web.sh  # Doppelklick-Start Browser-Oberfläche
 ├── requirements.txt      # Abhängigkeiten
 ├── README.md             # diese Datei
 ├── app/
 │   ├── __init__.py
 │   ├── gui.py            # CustomTkinter-Oberfläche (nur Haupt-Thread)
+│   ├── web.py            # Flask-Endpunkte der Browser-Oberfläche
+│   ├── templates/
+│   │   └── index.html    # die Browser-Oberfläche (Raster, Login, Downloads)
 │   ├── database.py       # SQLite-Persistenz (thread-sicher via Lock)
 │   ├── downloader.py     # Instaloader-Zugriff, Login, manueller Download
 │   ├── monitor.py        # Hintergrund-Thread für die Überwachung
 │   ├── settings.py       # Einstellungsverwaltung (persistiert in SQLite)
 │   ├── notifier.py       # Desktop-Benachrichtigungen (optional, plyer)
+│   ├── util.py           # geteilte Eingabe-Normalisierung
 │   └── logging_setup.py  # Logging: Datei + Konsole + GUI-Fenster
-├── data/                 # monitor.db (wird automatisch angelegt)
-├── logs/                 # app.log (rotierend, wird automatisch angelegt)
+├── data/                 # monitor.db, sessions/ (wird automatisch angelegt)
+├── logs/                 # app.log, web.log (rotierend)
 └── downloads/            # Standard-Zielordner für Downloads
 ```
 
