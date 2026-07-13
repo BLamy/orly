@@ -173,6 +173,16 @@ def create_app(
             return jsonify(error=str(exc)), 401
         return jsonify(ok=True, user=user)
 
+    @app.post("/api/login-sessionid")
+    def login_sessionid():
+        data = request.get_json(force=True, silent=True) or {}
+        sessionid = data.get("sessionid") or ""
+        try:
+            user = downloader.login_with_sessionid(sessionid)
+        except LoginError as exc:
+            return jsonify(error=str(exc)), 401
+        return jsonify(ok=True, user=user)
+
     @app.post("/api/logout")
     def logout():
         downloader.logout()

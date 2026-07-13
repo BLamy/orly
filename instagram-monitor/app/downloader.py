@@ -301,6 +301,35 @@ class InstagramDownloader:
         "librewolf",
     )
 
+    def _fresh_loader(self) -> "instaloader.Instaloader":
+        """Erzeugt eine neue, gleich konfigurierte Instaloader-Instanz."""
+        return instaloader.Instaloader(
+            quiet=True,
+            download_video_thumbnails=False,
+            save_metadata=False,
+            compress_json=False,
+            post_metadata_txt_pattern="",
+        )
+
+    def _activate_session(
+        self, loader: "instaloader.Instaloader", username: str, source: str
+    ) -> str:
+        """Übernimmt eine erfolgreich getestete Session als aktive Anmeldung."""
+        loader.context.username = username
+        self._loader = loader
+        self._settings.login_username = username
+        session_file = self._session_file(username)
+        if session_file:
+            try:
+                loader.save_session_to_file(str(session_file))
+            except OSError:
+                logger.warning(
+                    "Session-Datei konnte nicht gespeichert werden.",
+                    exc_info=True,
+                )
+        logger.info("Angemeldet als @%s (%s).", username, source)
+        return username
+
     def import_browser_session(self, browser: Optional[str] = None) -> str:
         """Übernimmt die bestehende Instagram-Anmeldung aus dem Browser.
 
@@ -312,12 +341,12 @@ class InstagramDownloader:
         werden ausschließlich die ``instagram.com``-Cookies gelesen.
 
         Parameter:
-          browser – "firefox", "chrome", "edge" … oder None (=alle der
-                    Reihe nach probieren).
+          browser – "firefox", "chrome", "edge" … oder None (=erst alle
+                    gemeinsam, dann einzeln probieren).
 
         Rückgabe: der erkannte Benutzername.
-        Wirft :class:`LoginError`, wenn keine gültige Anmeldung gefunden
-        wird (z. B. weil im Browser niemand bei Instagram eingeloggt ist).
+        Wirft :class:`LoginError` mit einer Diagnose je Browser, wenn keine
+        gültige Anmeldung gefunden wird.
         """
         try:
             import browser_cookie3
@@ -328,69 +357,100 @@ class InstagramDownloader:
                 "Startskript erneut starten)."
             ) from exc
 
-        candidates = (
-            [browser.lower()] if browser else list(self._SUPPORTED_BROWSERS)
-        )
-        last_error: Optional[str] = None
-
         with self._lock:
-            for name in candidates:
-                loader = getattr(browser_cookie3, name, None)
-                if loader is None:
-                    continue
+            # 1. Bequemster Weg: alle installierten Browser gemeinsam.
+            if browser is None:
                 try:
-                    cookie_jar = loader(domain_name="instagram.com")
-                except Exception as exc:  # Browser nicht installiert / kein Profil
-                    last_error = f"{name}: {exc}"
-                    logger.debug("Cookies aus %s nicht lesbar: %s", name, exc)
-                    continue
-
-                # Cookies in eine frische Loader-Session übernehmen und testen.
-                candidate = instaloader.Instaloader(
-                    quiet=True,
-                    download_video_thumbnails=False,
-                    save_metadata=False,
-                    compress_json=False,
-                    post_metadata_txt_pattern="",
-                )
-                candidate.context._session.cookies.update(cookie_jar)
-                try:
-                    username = candidate.test_login()
-                except Exception as exc:
-                    last_error = f"{name}: {exc}"
-                    username = None
-                if not username:
-                    last_error = (
-                        f"{name}: keine aktive Instagram-Anmeldung gefunden"
-                    )
-                    continue
-
-                # Erfolg – diese Session übernehmen.
-                candidate.context.username = username
-                self._loader = candidate
-                self._settings.login_username = username
-                session_file = self._session_file(username)
-                if session_file:
-                    try:
-                        self._loader.save_session_to_file(str(session_file))
-                    except OSError:
-                        logger.warning(
-                            "Session-Datei konnte nicht gespeichert werden.",
-                            exc_info=True,
+                    jar = browser_cookie3.load(domain_name="instagram.com")
+                    loader = self._fresh_loader()
+                    loader.context._session.cookies.update(jar)
+                    username = loader.test_login()
+                    if username:
+                        return self._activate_session(
+                            loader, username, "Browser-Cookies"
                         )
-                logger.info(
-                    "Anmeldung aus %s übernommen – angemeldet als @%s.",
-                    name,
-                    username,
-                )
-                return username
+                except Exception:
+                    logger.debug("Sammel-Import fehlgeschlagen.", exc_info=True)
 
+            # 2. Einzeln – für eine aussagekräftige Diagnose je Browser.
+            candidates = (
+                [browser.lower()] if browser else list(self._SUPPORTED_BROWSERS)
+            )
+            report: list[str] = []
+            for name in candidates:
+                loader_fn = getattr(browser_cookie3, name, None)
+                if loader_fn is None:
+                    continue
+                try:
+                    jar = loader_fn(domain_name="instagram.com")
+                except Exception as exc:
+                    # Browser nicht installiert / Profil nicht gefunden /
+                    # Cookies nicht entschlüsselbar → nur bei "installiert,
+                    # aber unlesbar" für den Nutzer interessant.
+                    text = str(exc).lower()
+                    if "profile" in text or "not find" in text or "no " in text:
+                        continue  # schlicht nicht installiert
+                    report.append(f"{name}: nicht lesbar ({exc})")
+                    continue
+
+                loader = self._fresh_loader()
+                loader.context._session.cookies.update(jar)
+                try:
+                    username = loader.test_login()
+                except Exception as exc:
+                    report.append(f"{name}: Prüfung fehlgeschlagen ({exc})")
+                    continue
+                if username:
+                    return self._activate_session(loader, username, name)
+                report.append(f"{name}: keine Instagram-Anmeldung")
+
+        detail = "; ".join(report) if report else (
+            "in keinem installierten Browser waren instagram.com-Cookies lesbar"
+        )
         raise LoginError(
             "Es konnte keine aktive Instagram-Anmeldung im Browser gefunden "
-            "werden. Bitte zuerst im Browser bei instagram.com einloggen "
-            "(und ggf. den Browser einmal schließen). "
-            + (f"Details: {last_error}" if last_error else "")
+            "werden.\n\nBitte melde dich zuerst in deinem Browser (am "
+            "zuverlässigsten: Firefox) auf instagram.com an, schließe den "
+            "Browser einmal komplett und versuche es erneut. Falls das nicht "
+            "klappt, nutze die Anmeldung per sessionid (siehe „Erweitert“).\n\n"
+            f"Geprüft: {detail}"
         )
+
+    def login_with_sessionid(
+        self, sessionid: str, username: Optional[str] = None
+    ) -> str:
+        """Meldet mit einem ``sessionid``-Cookie an (zuverlässiger Fallback).
+
+        Den Wert findet man im Browser, wenn man dort bei instagram.com
+        angemeldet ist (Entwicklertools → Anwendung/Storage → Cookies →
+        instagram.com → ``sessionid``). Es wird KEINE neue Anmeldung
+        ausgelöst und damit auch kein Checkpoint – die bestehende Session
+        wird nur weiterverwendet.
+        """
+        sessionid = (sessionid or "").strip().strip('"')
+        if not sessionid:
+            raise LoginError("Bitte einen sessionid-Wert eingeben.")
+
+        with self._lock:
+            loader = self._fresh_loader()
+            loader.context._session.cookies.set(
+                "sessionid", sessionid, domain=".instagram.com"
+            )
+            try:
+                detected = loader.test_login()
+            except ConnectionException as exc:
+                raise LoginError(
+                    f"Anmeldung derzeit nicht möglich (Verbindung/Drosselung): {exc}"
+                ) from exc
+            except Exception as exc:
+                raise LoginError(f"Anmeldung fehlgeschlagen: {exc}") from exc
+            if not detected:
+                raise LoginError(
+                    "Die sessionid ist ungültig oder abgelaufen. Bitte im "
+                    "Browser neu bei instagram.com anmelden und den Wert "
+                    "erneut kopieren."
+                )
+            return self._activate_session(loader, detected, "sessionid")
 
     def logout(self) -> None:
         """Meldet ab und entfernt die gespeicherte Session."""

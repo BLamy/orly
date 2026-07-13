@@ -99,6 +99,20 @@
       <div class="rowflex">
         <button id="lg_btn" onclick="doLogin()">Anmelden</button>
       </div>
+
+      <details style="margin-top:12px">
+        <summary style="cursor:pointer; color:var(--muted)">Erweitert: Anmeldung per sessionid (klappt immer)</summary>
+        <div class="hint" style="margin-top:8px">
+          So findest du den Wert: im Browser bei <b>instagram.com</b> anmelden →
+          Taste <b>F12</b> → Reiter <b>Anwendung</b> bzw. <b>Application</b> →
+          links <b>Cookies</b> → <b>https://www.instagram.com</b> → Zeile
+          <b>sessionid</b> → den Wert kopieren und hier einfügen.
+        </div>
+        <div class="rowflex" style="margin-top:8px">
+          <input type="text" id="lg_sid" placeholder="sessionid-Wert einfügen">
+          <button class="secondary" id="sid_btn" onclick="doSessionId()">Mit sessionid anmelden</button>
+        </div>
+      </details>
     </div>
     <div id="logout_form" style="display:none">
       <div class="rowflex">
@@ -198,6 +212,23 @@ async function importSession(){
     showMessage("Anmeldung aus dem Browser übernommen: @"+data.user, true);
   }else{
     showMessage(data.error || "Übernahme fehlgeschlagen.");
+  }
+}
+
+async function doSessionId(){
+  const btn = $("sid_btn");
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Anmelden …';
+  showMessage("");
+  const {data} = await api("/api/login-sessionid",
+    {method:"POST", headers:{"Content-Type":"application/json"},
+     body: JSON.stringify({sessionid: $("lg_sid").value})});
+  btn.disabled = false; btn.textContent = "Mit sessionid anmelden";
+  if(data.ok){
+    $("lg_sid").value = "";
+    await refreshStatus();
+    showMessage("Angemeldet als @"+data.user, true);
+  }else{
+    showMessage(data.error || "Anmeldung fehlgeschlagen.");
   }
 }
 
