@@ -148,6 +148,12 @@
       <button id="q_btn" onclick="loadPosts()">Anzeigen</button>
       <button class="secondary" id="all_btn" onclick="downloadAll()" style="display:none">⬇ Alle herunterladen</button>
     </div>
+    <div class="rowflex" style="margin-top:8px">
+      <span class="hint" style="margin:0">Von diesem Konto auf den PC:</span>
+      <button class="secondary small" id="st_btn" onclick="downloadStories('stories')">⬇ Stories</button>
+      <button class="secondary small" id="hl_btn" onclick="downloadStories('highlights')">⬇ Highlights</button>
+      <span class="hint" style="margin:0">(nur mit Anmeldung; private Konten nur, wenn du folgst)</span>
+    </div>
     <div class="hint" id="dl_hint"></div>
   </div>
 
@@ -404,6 +410,39 @@ async function cancelBulk(){
   $("bulk_cancel").textContent = "Wird abgebrochen …";
   setTimeout(() => { $("bulk_cancel").disabled=false;
                      $("bulk_cancel").textContent="Abbrechen"; }, 3000);
+}
+
+/* ---------- Stories & Highlights ---------- */
+let storyTimer = null;
+async function downloadStories(kind){
+  const u = ($("q_user").value || "").trim();
+  if(!u){ showMessage("Bitte oben einen Benutzernamen eingeben."); return; }
+  const label = kind === "highlights" ? "Highlights" : "Stories";
+  const stb = $("st_btn"), hlb = $("hl_btn");
+  stb.disabled = hlb.disabled = true;
+  showMessage(label + " werden gesucht …", true);
+  const {data} = await api("/api/download-stories",
+    {method:"POST", headers:{"Content-Type":"application/json"},
+     body: JSON.stringify({username: u, kind})});
+  if(data.error){ stb.disabled=hlb.disabled=false; showMessage(data.error); return; }
+  if(data.total === 0){
+    stb.disabled=hlb.disabled=false;
+    showMessage("Keine " + label + " gefunden (oder nicht sichtbar).", true);
+    return;
+  }
+  if(storyTimer) clearInterval(storyTimer);
+  storyTimer = setInterval(async () => {
+    const {data:st} = await api("/api/download-following/status");
+    showMessage(`${label} @${u}: ${st.done}/${st.total} · ${st.downloaded} gespeichert`
+      + (st.current && st.running ? " …" : ""), true);
+    if(!st.running && st.finished){
+      clearInterval(storyTimer); storyTimer = null;
+      stb.disabled = hlb.disabled = false;
+      if(st.error) showMessage(st.error);
+      else showMessage(`Fertig: ${st.downloaded} ${label}-Element(e) in den `
+                       + `PC-Ordner (Unterordner „stories“) geladen.`, true);
+    }
+  }, 1000);
 }
 
 /* ---------- Beiträge anzeigen ---------- */

@@ -91,6 +91,14 @@ erreichbar, http://127.0.0.1:8756/) und öffnet den Browser:
    gibt es **„⬇ Herunterladen“**, dazu **„⬇ Alle herunterladen“**.
    Bereits Heruntergeladenes ist grün markiert.
 
+**Stories & Highlights** (nur mit Anmeldung): Im Bereich „Beiträge
+ansehen" gibt es neben der Suche die Knöpfe **„⬇ Stories"** und
+**„⬇ Highlights"**. Gib einen Benutzernamen ein und klicke darauf – die
+aktuellen Stories bzw. die dauerhaften Highlights des Kontos werden in
+den Unterordner `downloads/<konto>/stories/` geladen. Ein Fortschritt
+wird angezeigt; bereits Geladenes wird übersprungen. Bei privaten Konten
+funktioniert das nur, wenn du dem Konto folgst.
+
 **Wenn du angemeldet bist**, erscheint zusätzlich der Bereich **„Meine
 Abonnements"**:
 

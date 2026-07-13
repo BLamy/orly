@@ -356,6 +356,62 @@ def create_app(
         thread.start()
         return jsonify(ok=True, total=len(usernames))
 
+    @app.post("/api/download-stories")
+    def download_stories():
+        if bulk.snapshot()["running"]:
+            return jsonify(error="Es läuft bereits ein Download."), 409
+        data = request.get_json(force=True, silent=True) or {}
+        username = extract_username(data.get("username", ""))
+        kind = data.get("kind", "stories")
+        if kind not in ("stories", "highlights"):
+            kind = "stories"
+        if not username:
+            return jsonify(error="Bitte einen gültigen Benutzernamen eingeben."), 400
+        try:
+            items = downloader.list_story_items(username, kind)
+        except LoginError as exc:
+            return jsonify(error=str(exc)), 401
+        except DownloaderError as exc:
+            return jsonify(error=str(exc)), 502
+        if not items:
+            return jsonify(ok=True, total=0)
+
+        bulk.reset()
+        bulk.update(running=True, total=len(items), current=username)
+
+        def worker():
+            downloaded = 0
+            try:
+                for index, item in enumerate(items):
+                    if bulk.cancel:
+                        break
+                    if db.is_downloaded(item.shortcode, username):
+                        bulk.update(done=index + 1)
+                        continue
+                    db.add_post(item.shortcode, username, item.post_type,
+                                item.posted_at)
+                    try:
+                        if downloader.download_story_item(item):
+                            db.mark_downloaded(item.shortcode, username)
+                            downloaded += 1
+                            bulk.update(downloaded=downloaded)
+                    except DownloaderError as exc:
+                        logger.warning("Story %s nicht geladen: %s",
+                                       item.shortcode, exc)
+                    bulk.update(done=index + 1)
+            except Exception:
+                logger.exception("Story-Download abgebrochen (Fehler).")
+                bulk.update(error="Unerwarteter Fehler – siehe logs/web.log.")
+            finally:
+                bulk.update(running=False, finished=True)
+                logger.info("Story-Download @%s beendet: %d Element(e).",
+                            username, downloaded)
+
+        thread = threading.Thread(target=worker, name="story-download", daemon=True)
+        bulk.thread = thread
+        thread.start()
+        return jsonify(ok=True, total=len(items))
+
     @app.get("/api/download-following/status")
     def download_following_status():
         return jsonify(bulk.snapshot())

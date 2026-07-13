@@ -735,6 +735,102 @@ class InstagramDownloader:
                 ) from exc
 
     # ------------------------------------------------------------------
+    # Stories & Highlights (erfordern Anmeldung)
+    # ------------------------------------------------------------------
+    def _storyitem_info(self, item, username: str, label: str) -> PostInfo:
+        """Wandelt ein Instaloader-StoryItem in ein PostInfo um."""
+        is_video = bool(getattr(item, "is_video", False))
+        try:
+            posted = item.date_utc.isoformat(timespec="seconds")
+        except Exception:
+            posted = ""
+        return PostInfo(
+            shortcode=str(item.mediaid),   # eindeutig & stabil → für Dedup
+            username=username,
+            post_type=label + (" · Video" if is_video else ""),
+            posted_at=posted,
+            url=f"https://www.instagram.com/stories/{username}/{item.mediaid}/",
+            thumbnail_url=getattr(item, "url", "") or "",
+            raw=item,
+        )
+
+    def list_story_items(self, username: str, kind: str = "stories") -> list[PostInfo]:
+        """Liefert die aktuellen Story- bzw. Highlight-Elemente eines Kontos.
+
+        ``kind`` = "stories" (aktuelle 24-h-Stories) oder "highlights"
+        (dauerhafte Highlights). Erfordert Anmeldung; bei privaten Konten
+        musst du dem Konto folgen.
+        """
+        if not self.is_logged_in:
+            raise LoginError(
+                "Für Stories/Highlights ist eine Anmeldung nötig. Bitte "
+                "zuerst anmelden (z. B. „Aus Browser übernehmen“)."
+            )
+        with self._lock:
+            try:
+                profile = self._get_profile(username)
+                items: list[PostInfo] = []
+                if kind == "highlights":
+                    for highlight in self._loader.get_highlights(profile):
+                        label = (
+                            f"Highlight: {highlight.title}"
+                            if highlight.title else "Highlight"
+                        )
+                        for item in highlight.get_items():
+                            items.append(self._storyitem_info(item, username, label))
+                else:
+                    for story in self._loader.get_stories(userids=[profile.userid]):
+                        for item in story.get_items():
+                            items.append(
+                                self._storyitem_info(item, username, "Story")
+                            )
+                return items
+            except LoginRequiredException as exc:
+                raise LoginError(
+                    "Die Anmeldung ist nicht (mehr) gültig – bitte neu anmelden."
+                ) from exc
+            except ConnectionException as exc:
+                raise TemporaryError(
+                    f"Stories von @{username} derzeit nicht abrufbar "
+                    f"(Verbindung/Drosselung): {exc}"
+                ) from exc
+            except InstaloaderException as exc:
+                raise TemporaryError(
+                    f"Stories von @{username} konnten nicht geladen werden: {exc}"
+                ) from exc
+
+    def download_story_item(self, post_info: PostInfo) -> bool:
+        """Lädt ein einzelnes Story-/Highlight-Element in den PC-Ordner."""
+        download_dir: Path = self._settings.download_dir
+        item = post_info.raw
+        if item is None:
+            raise TemporaryError(
+                "Story-Element ist nicht mehr verfügbar – bitte neu laden."
+            )
+        with self._lock:
+            # Stories/Highlights in einen Unterordner "<konto>/stories".
+            self._loader.dirname_pattern = str(download_dir / "{target}")
+            try:
+                self._loader.download_storyitem(
+                    item, target=f"{post_info.username}/stories"
+                )
+                return True
+            except ConnectionException as exc:
+                raise TemporaryError(
+                    f"Story {post_info.shortcode} fehlgeschlagen "
+                    f"(Verbindung/Drosselung): {exc}"
+                ) from exc
+            except InstaloaderException as exc:
+                raise TemporaryError(
+                    f"Story {post_info.shortcode} fehlgeschlagen: {exc}"
+                ) from exc
+            except OSError as exc:
+                raise TemporaryError(
+                    f"Story {post_info.shortcode} konnte nicht gespeichert "
+                    f"werden: {exc}"
+                ) from exc
+
+    # ------------------------------------------------------------------
     # Direkte Medien-URLs (zum Streamen auf das anfragende Gerät)
     # ------------------------------------------------------------------
     def media_urls(self, post_info: PostInfo) -> list[tuple[str, str]]:
