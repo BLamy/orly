@@ -45,6 +45,7 @@
   .badge{position:absolute; top:8px; left:8px; background:rgba(0,0,0,.65);
          padding:2px 9px; border-radius:20px; font-size:12px}
   .meta{padding:10px 12px 4px; font-size:12.5px; color:var(--muted); flex:1}
+  .meta .acct{color:var(--text); font-weight:600; margin-bottom:2px}
   .meta .cap{color:var(--text); display:-webkit-box; -webkit-line-clamp:2;
              -webkit-box-orient:vertical; overflow:hidden; margin-top:3px}
   .actions{display:flex; gap:8px; padding:10px 12px 12px; align-items:center}
@@ -133,7 +134,32 @@
     </div>
   </div>
 
-  <!-- Suche -->
+  <!-- Feed (öffnet automatisch beim Laden, wenn angemeldet) -->
+  <div class="card" id="feed_card" style="display:none">
+    <strong>Dein Feed – neueste Beiträge deiner Abos</strong>
+    <div class="rowflex" style="margin-top:8px">
+      <label class="ctl">Profile:
+        <select id="feed_profiles">
+          <option value="10">erste 10</option>
+          <option value="20">erste 20</option>
+          <option value="50">erste 50</option>
+          <option value="0">alle</option>
+        </select>
+      </label>
+      <label class="ctl">Beiträge je Profil:
+        <select id="feed_per">
+          <option value="3">3</option>
+          <option value="6">6</option>
+          <option value="12">12</option>
+        </select>
+      </label>
+      <button id="feed_btn" onclick="startFeed()">Aktualisieren</button>
+      <button class="secondary" id="feed_cancel" onclick="cancelFeed()" style="display:none">Abbrechen</button>
+      <span class="hint" id="feed_hint" style="margin:0"></span>
+    </div>
+  </div>
+
+  <!-- Suche (einzelnes Konto) -->
   <div class="card">
     <strong>Beiträge ansehen</strong>
     <div class="rowflex" style="margin-top:8px">
@@ -234,11 +260,24 @@ async function refreshStatus(){
     $("login_form").style.display = "none";
     $("logout_form").style.display = "block";
     $("following_card").style.display = "block";
+    $("feed_card").style.display = "block";
+    // Beim ersten Mal: gespeicherte Feed-Einstellungen laden und den Feed
+    // automatisch öffnen – ohne dass man einen Namen eingeben muss.
+    if(!feedAutoStarted){
+      feedAutoStarted = true;
+      const fs = await api("/api/feed/settings");
+      if(fs.data && fs.data.profiles !== undefined){
+        $("feed_profiles").value = String(fs.data.profiles);
+        $("feed_per").value = String(fs.data.per);
+      }
+      startFeed();
+    }
   }else{
     $("status").innerHTML = 'Nicht angemeldet (nur öffentliche Profile)<br>Downloads: '+data.download_dir;
     $("login_form").style.display = "block";
     $("logout_form").style.display = "none";
     $("following_card").style.display = "none";
+    $("feed_card").style.display = "none";
   }
 }
 
@@ -445,25 +484,54 @@ async function downloadStories(kind){
   }, 1000);
 }
 
-/* ---------- Beiträge anzeigen ---------- */
-async function loadPosts(){
-  const btn = $("q_btn");
-  btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Lädt …';
-  showMessage(""); $("grid").innerHTML = ""; $("all_btn").style.display = "none";
-  const u = encodeURIComponent($("q_user").value);
-  const c = $("q_count").value;
-  const {status, data} = await api(`/api/posts?username=${u}&count=${c}`);
-  btn.disabled = false; btn.textContent = "Anzeigen";
-  if(data.error){ showMessage(data.error); return; }
-  currentPosts = data.posts || [];
-  if(currentPosts.length === 0){
-    showMessage("Keine Beiträge gefunden.", true); return;
+/* ---------- Feed (automatisch beim Öffnen) ---------- */
+let feedTimer = null, feedAutoStarted = false;
+
+async function startFeed(){
+  const profiles = $("feed_profiles").value;
+  const per = $("feed_per").value;
+  const fb = $("feed_btn");
+  fb.disabled = true; fb.innerHTML = '<span class="spin"></span>Lädt …';
+  showMessage("");
+  const {data} = await api("/api/feed/start",
+    {method:"POST", headers:{"Content-Type":"application/json"},
+     body: JSON.stringify({profiles, per})});
+  if(data.error){ fb.disabled=false; fb.textContent="Aktualisieren"; showMessage(data.error); return; }
+  if(data.total === 0){
+    fb.disabled=false; fb.textContent="Aktualisieren";
+    $("feed_hint").textContent = "Du folgst keinem Konto.";
+    return;
   }
-  $("all_btn").style.display = "inline-block";
-  $("dl_hint").textContent = currentPosts.length + " Beiträge von " + data.username +
-      " – bereits Heruntergeladenes ist grün markiert.";
+  $("feed_cancel").style.display = "inline-block";
+  if(feedTimer) clearInterval(feedTimer);
+  feedTimer = setInterval(pollFeed, 1200);
+  pollFeed();
+}
+
+async function pollFeed(){
+  const {data:st} = await api("/api/feed/status");
+  renderPosts(st.items || [], true);
+  $("feed_hint").textContent =
+    `${st.done}/${st.total} Profile · ${st.count} Beiträge`
+    + (st.current && st.running ? ` · lädt @${st.current} …` : "");
+  if(!st.running && st.finished){
+    clearInterval(feedTimer); feedTimer = null;
+    $("feed_btn").disabled = false; $("feed_btn").textContent = "Aktualisieren";
+    $("feed_cancel").style.display = "none";
+    if(st.error) showMessage(st.error);
+  }
+}
+
+async function cancelFeed(){
+  await api("/api/feed/cancel", {method:"POST"});
+}
+
+/* ---------- Gemeinsame Darstellung der Beitrags-Kacheln ---------- */
+function renderPosts(posts, showAccount){
+  currentPosts = posts;
   const grid = $("grid");
-  for(const p of currentPosts){
+  grid.innerHTML = "";
+  for(const p of posts){
     const el = document.createElement("div");
     el.className = "post";
     const d = p.posted_at ? p.posted_at.replace("T", " ") : "";
@@ -473,7 +541,7 @@ async function loadPosts(){
                   : `<div class="noimg">keine Vorschau</div>`}
         <span class="badge">${p.type}</span>
       </div>
-      <div class="meta">${d}${p.caption ? `<div class="cap"></div>` : ""}</div>
+      <div class="meta">${showAccount && p.username ? `<div class="acct"></div>` : ""}${d}${p.caption ? `<div class="cap"></div>` : ""}</div>
       <div class="actions">
         <a class="devbtn" href="/media/${p.shortcode}"
            title="Direkt auf dieses Gerät (Handy) speichern">⤓ Gerät</a>
@@ -483,9 +551,28 @@ async function loadPosts(){
           ${p.downloaded ? "✓ Auf PC" : "⬇ Auf PC"}</button>
         <a href="${p.url}" target="_blank" rel="noopener" title="Auf Instagram öffnen">↗</a>
       </div>`;
+    if(showAccount && p.username) el.querySelector(".acct").textContent = "@" + p.username;
     if(p.caption) el.querySelector(".cap").textContent = p.caption;
     grid.appendChild(el);
   }
+}
+
+/* ---------- Beiträge eines einzelnen Kontos anzeigen ---------- */
+async function loadPosts(){
+  const btn = $("q_btn");
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Lädt …';
+  showMessage(""); $("all_btn").style.display = "none";
+  const u = encodeURIComponent($("q_user").value);
+  const c = $("q_count").value;
+  const {status, data} = await api(`/api/posts?username=${u}&count=${c}`);
+  btn.disabled = false; btn.textContent = "Anzeigen";
+  if(data.error){ $("grid").innerHTML=""; showMessage(data.error); return; }
+  const posts = data.posts || [];
+  if(posts.length === 0){ $("grid").innerHTML=""; showMessage("Keine Beiträge gefunden.", true); return; }
+  renderPosts(posts, false);
+  $("all_btn").style.display = "inline-block";
+  $("dl_hint").textContent = posts.length + " Beiträge von " + data.username +
+      " – bereits Heruntergeladenes ist grün markiert.";
 }
 
 /* ---------- Herunterladen ---------- */

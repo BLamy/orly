@@ -127,3 +127,32 @@ class Settings:
     @login_username.setter
     def login_username(self, username: str) -> None:
         self._db.set_setting("login_username", username or "")
+
+    # ------------------------------------------------------------------
+    # Feed-Voreinstellungen (Browser-Oberfläche)
+    # ------------------------------------------------------------------
+    @property
+    def feed_profiles(self) -> int:
+        """Wie viele Abos beim Öffnen in den Feed geladen werden (0 = alle)."""
+        raw = self._db.get_setting("feed_profiles", "10")
+        try:
+            return max(0, int(raw))  # type: ignore[arg-type]
+        except (TypeError, ValueError):
+            return 10
+
+    @feed_profiles.setter
+    def feed_profiles(self, value: int) -> None:
+        self._db.set_setting("feed_profiles", str(max(0, int(value))))
+
+    @property
+    def feed_per(self) -> int:
+        """Wie viele der neuesten Beiträge je Profil im Feed erscheinen."""
+        raw = self._db.get_setting("feed_per", "3")
+        try:
+            return max(1, int(raw))  # type: ignore[arg-type]
+        except (TypeError, ValueError):
+            return 3
+
+    @feed_per.setter
+    def feed_per(self, value: int) -> None:
+        self._db.set_setting("feed_per", str(max(1, int(value))))

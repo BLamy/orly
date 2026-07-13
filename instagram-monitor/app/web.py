@@ -72,6 +72,58 @@ _MAX_COUNT = 100
 # gegenüber den Instagram-Servern.
 _BULK_DELAY = 4.0
 
+# Pause zwischen zwei Profilen beim Feed-Aufbau (Sekunden). Kürzer als beim
+# Download, damit der Feed zügig erscheint, aber immer noch rücksichtsvoll.
+_FEED_DELAY = 1.5
+
+
+class _FeedJob:
+    """Baut fortlaufend den Abo-Feed auf (Beiträge mehrerer Profile)."""
+
+    def __init__(self) -> None:
+        self._lock = threading.Lock()
+        self.thread: Optional[threading.Thread] = None
+        self.cancel = False
+        self.reset()
+
+    def reset(self) -> None:
+        with self._lock:
+            self.running = False
+            self.cancel = False
+            self.total = 0          # Anzahl Profile
+            self.done = 0           # fertige Profile
+            self.current = ""       # gerade geladenes Profil
+            self.items: list[dict] = []   # gesammelte Beiträge (JSON-fertig)
+            self.finished = False
+            self.error = ""
+
+    def add_items(self, new_items: list[dict]) -> None:
+        with self._lock:
+            self.items.extend(new_items)
+
+    def snapshot(self, include_items: bool = True) -> dict:
+        with self._lock:
+            data = {
+                "running": self.running,
+                "total": self.total,
+                "done": self.done,
+                "current": self.current,
+                "finished": self.finished,
+                "error": self.error,
+                "count": len(self.items),
+            }
+            if include_items:
+                # Neueste zuerst – über alle Profile hinweg.
+                data["items"] = sorted(
+                    self.items, key=lambda x: x.get("posted_at", ""), reverse=True
+                )
+            return data
+
+    def update(self, **kwargs) -> None:
+        with self._lock:
+            for key, value in kwargs.items():
+                setattr(self, key, value)
+
 
 class _BulkJob:
     """Fortschritts-Zustand des Massen-Downloads (thread-sicher)."""
@@ -169,6 +221,22 @@ def create_app(
             cache.move_to_end(post.shortcode)
         while len(cache) > _CACHE_SIZE:
             cache.popitem(last=False)
+
+    def post_json(post: PostInfo, username: str) -> dict:
+        """Serialisiert einen Beitrag für die Oberfläche (Feed & Einzelansicht)."""
+        return {
+            "shortcode": post.shortcode,
+            "username": username,
+            "type": post.post_type,
+            "posted_at": post.posted_at,
+            "url": post.url,
+            "caption": post.caption,
+            # Vorschaubild über unseren Proxy, nicht direkt vom CDN.
+            "thumb": f"/thumb/{post.shortcode}" if post.thumbnail_url else "",
+            # Direkter Geräte-Download (streamt an Handy/Browser).
+            "media": f"/media/{post.shortcode}",
+            "downloaded": db.is_downloaded(post.shortcode, username),
+        }
 
     # ------------------------------------------------------------------
     # Oberfläche
@@ -422,6 +490,86 @@ def create_app(
         return jsonify(ok=True)
 
     # ------------------------------------------------------------------
+    # Abo-Feed (beim Öffnen automatisch: neueste Beiträge deiner Abos)
+    # ------------------------------------------------------------------
+    feed = _FeedJob()
+
+    @app.get("/api/feed/settings")
+    def feed_get_settings():
+        return jsonify(profiles=settings.feed_profiles, per=settings.feed_per)
+
+    @app.post("/api/feed/start")
+    def feed_start():
+        if not downloader.is_logged_in:
+            return jsonify(error="Bitte zuerst anmelden, um den Abo-Feed zu "
+                                 "sehen."), 401
+        if feed.snapshot(include_items=False)["running"]:
+            return jsonify(error="Der Feed wird bereits geladen."), 409
+        data = request.get_json(force=True, silent=True) or {}
+        try:
+            profiles = max(0, int(data.get("profiles", settings.feed_profiles)))
+        except (TypeError, ValueError):
+            profiles = settings.feed_profiles
+        try:
+            per = max(1, min(_MAX_COUNT, int(data.get("per", settings.feed_per))))
+        except (TypeError, ValueError):
+            per = settings.feed_per
+        # Wahl merken (gilt beim nächsten Öffnen).
+        settings.feed_profiles = profiles
+        settings.feed_per = per
+
+        try:
+            usernames = downloader.following_usernames()
+        except LoginError as exc:
+            return jsonify(error=str(exc)), 401
+        except DownloaderError as exc:
+            return jsonify(error=str(exc)), 502
+        if profiles > 0:
+            usernames = usernames[:profiles]
+        if not usernames:
+            return jsonify(ok=True, total=0)
+
+        feed.reset()
+        feed.update(running=True, total=len(usernames))
+
+        def worker():
+            try:
+                for index, username in enumerate(usernames):
+                    if feed.cancel:
+                        break
+                    feed.update(current=username)
+                    try:
+                        posts = downloader.list_recent_posts(username, per)
+                    except DownloaderError as exc:
+                        logger.warning("Feed @%s übersprungen: %s", username, exc)
+                        feed.update(done=index + 1)
+                        continue
+                    remember(posts)
+                    feed.add_items([post_json(p, username) for p in posts])
+                    feed.update(done=index + 1)
+                    if index < len(usernames) - 1 and not feed.cancel:
+                        time.sleep(_FEED_DELAY)
+            except Exception:
+                logger.exception("Feed-Aufbau fehlgeschlagen.")
+                feed.update(error="Unerwarteter Fehler – siehe logs/web.log.")
+            finally:
+                feed.update(running=False, finished=True)
+
+        thread = threading.Thread(target=worker, name="feed-build", daemon=True)
+        feed.thread = thread
+        thread.start()
+        return jsonify(ok=True, total=len(usernames))
+
+    @app.get("/api/feed/status")
+    def feed_status():
+        return jsonify(feed.snapshot())
+
+    @app.post("/api/feed/cancel")
+    def feed_cancel():
+        feed.update(cancel=True)
+        return jsonify(ok=True)
+
+    # ------------------------------------------------------------------
     # Beiträge ansehen
     # ------------------------------------------------------------------
     @app.get("/api/posts")
@@ -449,21 +597,7 @@ def create_app(
         remember(items)
         return jsonify(
             username=username,
-            posts=[
-                {
-                    "shortcode": p.shortcode,
-                    "type": p.post_type,
-                    "posted_at": p.posted_at,
-                    "url": p.url,
-                    "caption": p.caption,
-                    # Vorschaubild über unseren Proxy, nicht direkt vom CDN.
-                    "thumb": f"/thumb/{p.shortcode}" if p.thumbnail_url else "",
-                    # Direkter Geräte-Download (streamt an Handy/Browser).
-                    "media": f"/media/{p.shortcode}",
-                    "downloaded": db.is_downloaded(p.shortcode, username),
-                }
-                for p in items
-            ],
+            posts=[post_json(p, username) for p in items],
         )
 
     @app.get("/media/<shortcode>")

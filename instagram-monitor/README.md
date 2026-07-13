@@ -86,16 +86,23 @@ erreichbar, http://127.0.0.1:8756/) und öffnet den Browser:
    vermeidet den „Checkpoint“, den die direkte Passwort-Anmeldung von
    einem neuen Gerät oft auslöst. Alternativ Benutzername + Passwort
    (2FA wird unterstützt).
-2. Benutzernamen oder Instagram-Link eingeben → **Anzeigen**.
-3. Die Beiträge erscheinen als Bilder-Raster – bei jedem Foto/Video
-   gibt es **„⬇ Herunterladen“**, dazu **„⬇ Alle herunterladen“**.
-   Bereits Heruntergeladenes ist grün markiert.
+2. **Feed öffnet automatisch:** Bist du angemeldet, lädt die Seite beim
+   Öffnen **von selbst** die neuesten Beiträge deiner Abos als einen
+   gemeinsamen Feed – ohne dass du einen Namen eingeben und „Anzeigen“
+   klicken musst. Oben stellst du ein, **wie viele Profile** (erste
+   10/20/50 oder alle) und **wie viele Beiträge je Profil** geladen
+   werden; die Wahl wird gemerkt. „Aktualisieren“ lädt neu. Jede Kachel
+   zeigt das jeweilige **@Konto**.
+3. Einzelnes Konto: Benutzernamen oder Instagram-Link eingeben →
+   **Anzeigen**.
+4. Bei jedem Foto/Video gibt es **„⤓ Gerät“** und **„⬇ Auf PC“**;
+   bereits Heruntergeladenes ist grün markiert.
 
 **Stories & Highlights** (nur mit Anmeldung): Im Bereich „Beiträge
 ansehen" gibt es neben der Suche die Knöpfe **„⬇ Stories"** und
 **„⬇ Highlights"**. Gib einen Benutzernamen ein und klicke darauf – die
 aktuellen Stories bzw. die dauerhaften Highlights des Kontos werden in
-den Unterordner `downloads/<konto>/stories/` geladen. Ein Fortschritt
+denselben Konto-Ordner `downloads/<konto>/` geladen wie Fotos und Videos. Ein Fortschritt
 wird angezeigt; bereits Geladenes wird übersprungen. Bei privaten Konten
 funktioniert das nur, wenn du dem Konto folgst.
 

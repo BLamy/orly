@@ -808,11 +808,11 @@ class InstagramDownloader:
                 "Story-Element ist nicht mehr verfügbar – bitte neu laden."
             )
         with self._lock:
-            # Stories/Highlights in einen Unterordner "<konto>/stories".
+            # Stories/Highlights in DENSELBEN Konto-Ordner wie Fotos/Videos.
             self._loader.dirname_pattern = str(download_dir / "{target}")
             try:
                 self._loader.download_storyitem(
-                    item, target=f"{post_info.username}/stories"
+                    item, target=post_info.username
                 )
                 return True
             except ConnectionException as exc:
