@@ -91,6 +91,18 @@ erreichbar, http://127.0.0.1:8756/) und öffnet den Browser:
    gibt es **„⬇ Herunterladen“**, dazu **„⬇ Alle herunterladen“**.
    Bereits Heruntergeladenes ist grün markiert.
 
+**Wenn du angemeldet bist**, erscheint zusätzlich der Bereich **„Meine
+Abonnements"**:
+
+- **„Liste laden"** zeigt alle Konten, denen du folgst. Klicke einen
+  Namen an, um dessen Beiträge zu sehen.
+- **„⬇ Von allen Abos auf PC laden"** lädt die neuesten Beiträge *aller*
+  Konten, denen du folgst, in einem Rutsch in den PC-Ordner. Über das
+  Auswahlfeld legst du fest, wie viele Beiträge je Konto (1–12). Ein
+  Fortschrittsbalken zeigt den Stand; „Abbrechen" stoppt jederzeit.
+  Instagram drosselt große Mengen – die App legt automatisch Pausen ein,
+  daher kann es bei vielen Abos dauern.
+
 Bei jedem Beitrag gibt es zwei Download-Knöpfe:
 
 - **„⤓ Gerät"** – speichert die Datei direkt auf **dem Gerät, mit dem du

@@ -139,6 +139,32 @@
     <div class="hint" id="dl_hint"></div>
   </div>
 
+  <!-- Abonnements (nur wenn angemeldet) -->
+  <div class="card" id="following_card" style="display:none">
+    <strong>Meine Abonnements (wem du folgst)</strong>
+    <div class="rowflex" style="margin-top:8px">
+      <button id="fl_btn" onclick="loadFollowing()">Liste laden</button>
+      <select id="bulk_count" title="Wie viele der neuesten Beiträge je Konto">
+        <option value="1">1 je Konto</option>
+        <option value="3" selected>3 je Konto</option>
+        <option value="6">6 je Konto</option>
+        <option value="12">12 je Konto</option>
+      </select>
+      <button class="secondary" id="bulk_btn" onclick="startBulk()">⬇ Von allen Abos auf PC laden</button>
+      <button class="secondary" id="bulk_cancel" onclick="cancelBulk()" style="display:none">Abbrechen</button>
+    </div>
+    <div class="hint" id="fl_hint">Lädt die neuesten Beiträge aller Konten,
+      denen du folgst, in den PC-Ordner. Das kann je nach Anzahl dauern und
+      wird von Instagram gedrosselt – die App legt Pausen ein.</div>
+    <div id="bulk_progress" style="display:none; margin-top:10px">
+      <div style="background:#2a2f36; border-radius:8px; overflow:hidden; height:12px">
+        <div id="bulk_bar" style="height:100%; width:0; background:var(--accent); transition:width .3s"></div>
+      </div>
+      <div class="hint" id="bulk_text" style="margin-top:6px"></div>
+    </div>
+    <div id="fl_list" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:12px"></div>
+  </div>
+
   <div id="message"></div>
   <div id="grid"></div>
 </main>
@@ -170,10 +196,12 @@ async function refreshStatus(){
     $("status").innerHTML = 'Angemeldet als <span class="user">@'+data.user+'</span><br>Downloads: '+data.download_dir;
     $("login_form").style.display = "none";
     $("logout_form").style.display = "block";
+    $("following_card").style.display = "block";
   }else{
     $("status").innerHTML = 'Nicht angemeldet (nur öffentliche Profile)<br>Downloads: '+data.download_dir;
     $("login_form").style.display = "block";
     $("logout_form").style.display = "none";
+    $("following_card").style.display = "none";
   }
 }
 
@@ -236,6 +264,69 @@ async function doLogout(){
   await api("/api/logout", {method:"POST"});
   await refreshStatus();
   showMessage("Abgemeldet.", true);
+}
+
+/* ---------- Abonnements ---------- */
+async function loadFollowing(){
+  const btn = $("fl_btn");
+  btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Lädt …';
+  showMessage("");
+  const {data} = await api("/api/following");
+  btn.disabled = false; btn.textContent = "Liste laden";
+  if(data.error){ showMessage(data.error); return; }
+  const list = $("fl_list"); list.innerHTML = "";
+  $("fl_hint").textContent = "Du folgst " + data.count + " Konten. Klicke einen "
+      + "Namen an, um seine Beiträge zu sehen, oder lade unten alle auf den PC.";
+  for(const name of data.usernames){
+    const chip = document.createElement("button");
+    chip.className = "secondary"; chip.style.padding = "6px 12px";
+    chip.textContent = "@" + name;
+    chip.onclick = () => { $("q_user").value = name; loadPosts();
+                           window.scrollTo({top:document.body.scrollHeight}); };
+    list.appendChild(chip);
+  }
+}
+
+let bulkTimer = null;
+async function startBulk(){
+  if(!confirm("Die neuesten Beiträge ALLER Konten, denen du folgst, in den "
+    + "PC-Ordner laden? Das kann eine Weile dauern.")) return;
+  const count = $("bulk_count").value;
+  const {status, data} = await api("/api/download-following",
+    {method:"POST", headers:{"Content-Type":"application/json"},
+     body: JSON.stringify({count})});
+  if(data.error){ showMessage(data.error); return; }
+  $("bulk_btn").disabled = true;
+  $("bulk_cancel").style.display = "inline-block";
+  $("bulk_progress").style.display = "block";
+  showMessage("");
+  bulkTimer = setInterval(pollBulk, 1000);
+  pollBulk();
+}
+
+async function pollBulk(){
+  const {data} = await api("/api/download-following/status");
+  const pct = data.total ? Math.round(100 * data.done / data.total) : 0;
+  $("bulk_bar").style.width = pct + "%";
+  $("bulk_text").textContent =
+    `${data.done}/${data.total} Konten · ${data.downloaded} Beiträge gespeichert`
+    + (data.current && data.running ? ` · aktuell @${data.current}` : "");
+  if(!data.running && data.finished){
+    clearInterval(bulkTimer); bulkTimer = null;
+    $("bulk_btn").disabled = false;
+    $("bulk_cancel").style.display = "none";
+    if(data.error) showMessage(data.error);
+    else showMessage(`Fertig: ${data.downloaded} Beiträge von ${data.done} `
+                     + `Konten in den PC-Ordner geladen.`, true);
+  }
+}
+
+async function cancelBulk(){
+  await api("/api/download-following/cancel", {method:"POST"});
+  $("bulk_cancel").disabled = true;
+  $("bulk_cancel").textContent = "Wird abgebrochen …";
+  setTimeout(() => { $("bulk_cancel").disabled=false;
+                     $("bulk_cancel").textContent="Abbrechen"; }, 3000);
 }
 
 /* ---------- Beiträge anzeigen ---------- */

@@ -676,6 +676,45 @@ class InstagramDownloader:
         return collected
 
     # ------------------------------------------------------------------
+    # Abonnements (wem der angemeldete Benutzer folgt)
+    # ------------------------------------------------------------------
+    def following_usernames(self, limit: Optional[int] = None) -> list[str]:
+        """Liefert die Benutzernamen der Konten, denen man folgt.
+
+        Erfordert eine Anmeldung (nur das eigene Abo-Verzeichnis ist so
+        abrufbar). ``limit`` begrenzt optional die Anzahl.
+        Wirft :class:`LoginError`, wenn nicht angemeldet, und
+        :class:`TemporaryError` bei Netzwerk-/Drosselungsproblemen.
+        """
+        if not self.is_logged_in:
+            raise LoginError(
+                "Für die Abo-Liste ist eine Anmeldung nötig. Bitte zuerst "
+                "anmelden (z. B. „Aus Browser übernehmen“)."
+            )
+        with self._lock:
+            try:
+                me = instaloader.Profile.own_profile(self._loader.context)
+                names: list[str] = []
+                for profile in me.get_followees():
+                    names.append(profile.username)
+                    if limit is not None and len(names) >= limit:
+                        break
+                return names
+            except LoginRequiredException as exc:
+                raise LoginError(
+                    "Die Anmeldung ist nicht (mehr) gültig – bitte neu anmelden."
+                ) from exc
+            except ConnectionException as exc:
+                raise TemporaryError(
+                    f"Abo-Liste derzeit nicht abrufbar (Verbindung/Drosselung): "
+                    f"{exc}"
+                ) from exc
+            except InstaloaderException as exc:
+                raise TemporaryError(
+                    f"Abo-Liste konnte nicht geladen werden: {exc}"
+                ) from exc
+
+    # ------------------------------------------------------------------
     # Direkte Medien-URLs (zum Streamen auf das anfragende Gerät)
     # ------------------------------------------------------------------
     def media_urls(self, post_info: PostInfo) -> list[tuple[str, str]]:

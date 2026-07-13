@@ -26,6 +26,8 @@ Endpunkte:
 from __future__ import annotations
 
 import logging
+import threading
+import time
 from collections import OrderedDict
 from typing import TYPE_CHECKING, Optional
 from urllib.parse import quote
@@ -65,6 +67,48 @@ _CACHE_SIZE = 500
 
 # Obergrenze für die Anzahl abrufbarer Beiträge pro Anfrage.
 _MAX_COUNT = 100
+
+# Pause zwischen zwei Konten beim Massen-Download (Sekunden) – rücksichtsvoll
+# gegenüber den Instagram-Servern.
+_BULK_DELAY = 4.0
+
+
+class _BulkJob:
+    """Fortschritts-Zustand des Massen-Downloads (thread-sicher)."""
+
+    def __init__(self) -> None:
+        self._lock = threading.Lock()
+        self.thread: Optional[threading.Thread] = None
+        self.cancel = False
+        self.reset()
+
+    def reset(self) -> None:
+        with self._lock:
+            self.running = False
+            self.cancel = False
+            self.total = 0          # Anzahl Konten
+            self.done = 0           # fertige Konten
+            self.current = ""       # gerade bearbeitetes Konto
+            self.downloaded = 0     # gespeicherte Beiträge gesamt
+            self.finished = False
+            self.error = ""
+
+    def snapshot(self) -> dict:
+        with self._lock:
+            return {
+                "running": self.running,
+                "total": self.total,
+                "done": self.done,
+                "current": self.current,
+                "downloaded": self.downloaded,
+                "finished": self.finished,
+                "error": self.error,
+            }
+
+    def update(self, **kwargs) -> None:
+        with self._lock:
+            for key, value in kwargs.items():
+                setattr(self, key, value)
 
 
 def create_app(
@@ -186,6 +230,97 @@ def create_app(
     @app.post("/api/logout")
     def logout():
         downloader.logout()
+        return jsonify(ok=True)
+
+    # ------------------------------------------------------------------
+    # Abonnements (wem du folgst) + Massen-Download
+    # ------------------------------------------------------------------
+    bulk = _BulkJob()
+
+    @app.get("/api/following")
+    def following():
+        try:
+            names = downloader.following_usernames()
+        except LoginError as exc:
+            return jsonify(error=str(exc)), 401
+        except DownloaderError as exc:
+            return jsonify(error=str(exc)), 502
+        return jsonify(count=len(names), usernames=names)
+
+    @app.post("/api/download-following")
+    def download_following():
+        if bulk.snapshot()["running"]:
+            return jsonify(error="Es läuft bereits ein Massen-Download."), 409
+        data = request.get_json(force=True, silent=True) or {}
+        try:
+            per_account = max(1, min(_MAX_COUNT, int(data.get("count", 3))))
+        except (TypeError, ValueError):
+            per_account = 3
+
+        # Zuerst die Abo-Liste holen (Fehler direkt zurückmelden).
+        try:
+            usernames = downloader.following_usernames()
+        except LoginError as exc:
+            return jsonify(error=str(exc)), 401
+        except DownloaderError as exc:
+            return jsonify(error=str(exc)), 502
+        if not usernames:
+            return jsonify(error="Du folgst keinem Konto."), 400
+
+        bulk.reset()
+        bulk.update(running=True, total=len(usernames))
+
+        def worker():
+            downloaded_total = 0
+            try:
+                for index, username in enumerate(usernames):
+                    if bulk.cancel:
+                        break
+                    bulk.update(current=username)
+                    try:
+                        posts = downloader.list_recent_posts(username, per_account)
+                    except DownloaderError as exc:
+                        logger.warning("Massen-Download @%s übersprungen: %s",
+                                       username, exc)
+                        bulk.update(done=index + 1)
+                        continue
+                    for post in posts:
+                        if bulk.cancel:
+                            break
+                        db.add_post(post.shortcode, username, post.post_type,
+                                    post.posted_at)
+                        try:
+                            if downloader.download_post(post):
+                                db.mark_downloaded(post.shortcode, username)
+                                downloaded_total += 1
+                                bulk.update(downloaded=downloaded_total)
+                        except DownloaderError as exc:
+                            logger.warning("Beitrag %s nicht geladen: %s",
+                                           post.shortcode, exc)
+                    bulk.update(done=index + 1)
+                    # Rücksichtsvolle Pause zwischen den Konten.
+                    if index < len(usernames) - 1 and not bulk.cancel:
+                        time.sleep(_BULK_DELAY)
+            except Exception:
+                logger.exception("Massen-Download abgebrochen (Fehler).")
+                bulk.update(error="Unerwarteter Fehler – siehe logs/web.log.")
+            finally:
+                bulk.update(running=False, finished=True)
+                logger.info("Massen-Download beendet: %d Beitrag/Beiträge "
+                            "gespeichert.", downloaded_total)
+
+        thread = threading.Thread(target=worker, name="bulk-download", daemon=True)
+        bulk.thread = thread
+        thread.start()
+        return jsonify(ok=True, total=len(usernames))
+
+    @app.get("/api/download-following/status")
+    def download_following_status():
+        return jsonify(bulk.snapshot())
+
+    @app.post("/api/download-following/cancel")
+    def download_following_cancel():
+        bulk.update(cancel=True)
         return jsonify(ok=True)
 
     # ------------------------------------------------------------------
