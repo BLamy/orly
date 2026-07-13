@@ -686,6 +686,14 @@ class InstagramDownloader:
         Wirft :class:`LoginError`, wenn nicht angemeldet, und
         :class:`TemporaryError` bei Netzwerk-/Drosselungsproblemen.
         """
+        return [f["username"] for f in self.following_details(limit)]
+
+    def following_details(self, limit: Optional[int] = None) -> list[dict]:
+        """Wie :meth:`following_usernames`, aber mit Name und Profilbild.
+
+        Rückgabe je Konto: {"username", "full_name", "pic"} – die Angaben
+        stammen aus der Abo-Liste selbst (keine Extra-Anfragen pro Konto).
+        """
         if not self.is_logged_in:
             raise LoginError(
                 "Für die Abo-Liste ist eine Anmeldung nötig. Bitte zuerst "
@@ -694,12 +702,24 @@ class InstagramDownloader:
         with self._lock:
             try:
                 me = instaloader.Profile.own_profile(self._loader.context)
-                names: list[str] = []
+                out: list[dict] = []
                 for profile in me.get_followees():
-                    names.append(profile.username)
-                    if limit is not None and len(names) >= limit:
+                    try:
+                        full_name = profile.full_name or ""
+                    except Exception:
+                        full_name = ""
+                    try:
+                        pic = profile.profile_pic_url or ""
+                    except Exception:
+                        pic = ""
+                    out.append({
+                        "username": profile.username,
+                        "full_name": full_name,
+                        "pic": pic,
+                    })
+                    if limit is not None and len(out) >= limit:
                         break
-                return names
+                return out
             except LoginRequiredException as exc:
                 raise LoginError(
                     "Die Anmeldung ist nicht (mehr) gültig – bitte neu anmelden."

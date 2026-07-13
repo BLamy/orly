@@ -57,6 +57,18 @@
   .actions a.devbtn:hover{background:#454c56}
   .done{background:var(--ok) !important}
   .hint{font-size:12.5px; color:var(--muted); margin-top:10px}
+  label.ctl{display:flex; align-items:center; gap:6px; font-size:13.5px; color:var(--muted)}
+  button.small{padding:6px 12px; font-size:13px}
+  .frow{display:flex; align-items:center; gap:12px; padding:8px 10px; border-radius:10px}
+  .frow:hover{background:var(--panel2)}
+  .frow input[type=checkbox]{width:18px; height:18px; flex:0 0 auto}
+  .frow img,.frow .noav{width:42px; height:42px; border-radius:50%; flex:0 0 auto; object-fit:cover; background:#2a2f36}
+  .frow .noav{display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:16px}
+  .frow .fn{font-weight:600}
+  .frow .un{color:var(--muted); font-size:13px}
+  .frow a.view{margin-left:auto; color:var(--muted); text-decoration:none; font-size:13px;
+        background:#3a4048; padding:6px 12px; border-radius:8px}
+  .frow a.view:hover{color:var(--text); background:#454c56}
   .spin{display:inline-block; width:14px; height:14px; border:2px solid #fff5;
         border-top-color:#fff; border-radius:50%; animation:r .8s linear infinite;
         vertical-align:-2px; margin-right:6px}
@@ -144,25 +156,44 @@
     <strong>Meine Abonnements (wem du folgst)</strong>
     <div class="rowflex" style="margin-top:8px">
       <button id="fl_btn" onclick="loadFollowing()">Liste laden</button>
-      <select id="bulk_count" title="Wie viele der neuesten Beiträge je Konto">
-        <option value="1">1 je Konto</option>
-        <option value="3" selected>3 je Konto</option>
-        <option value="6">6 je Konto</option>
-        <option value="12">12 je Konto</option>
-      </select>
-      <button class="secondary" id="bulk_btn" onclick="startBulk()">⬇ Von allen Abos auf PC laden</button>
-      <button class="secondary" id="bulk_cancel" onclick="cancelBulk()" style="display:none">Abbrechen</button>
     </div>
-    <div class="hint" id="fl_hint">Lädt die neuesten Beiträge aller Konten,
-      denen du folgst, in den PC-Ordner. Das kann je nach Anzahl dauern und
-      wird von Instagram gedrosselt – die App legt Pausen ein.</div>
-    <div id="bulk_progress" style="display:none; margin-top:10px">
-      <div style="background:#2a2f36; border-radius:8px; overflow:hidden; height:12px">
-        <div id="bulk_bar" style="height:100%; width:0; background:var(--accent); transition:width .3s"></div>
+
+    <div id="fl_controls" style="display:none; margin-top:12px">
+      <div class="rowflex">
+        <label class="ctl">Beiträge je Konto:
+          <select id="bulk_count">
+            <option value="1">1</option>
+            <option value="3" selected>3</option>
+            <option value="6">6</option>
+            <option value="12">12</option>
+          </select>
+        </label>
+        <label class="ctl">nur Beiträge ab:
+          <input type="date" id="bulk_since">
+        </label>
+        <button class="secondary" id="bulk_btn" onclick="startBulk()">⬇ Ausgewählte auf PC laden</button>
+        <button class="secondary" id="bulk_cancel" onclick="cancelBulk()" style="display:none">Abbrechen</button>
       </div>
-      <div class="hint" id="bulk_text" style="margin-top:6px"></div>
+      <div class="rowflex" style="margin-top:8px">
+        <button class="secondary small" onclick="selectAll(true)">Alle auswählen</button>
+        <button class="secondary small" onclick="selectAll(false)">Keine</button>
+        <input type="text" id="fl_filter" placeholder="Liste filtern (Name/@Name) …"
+               oninput="filterList()" style="flex:1; min-width:140px">
+        <span class="hint" id="fl_count"></span>
+      </div>
+      <div id="bulk_progress" style="display:none; margin-top:10px">
+        <div style="background:#2a2f36; border-radius:8px; overflow:hidden; height:12px">
+          <div id="bulk_bar" style="height:100%; width:0; background:var(--accent); transition:width .3s"></div>
+        </div>
+        <div class="hint" id="bulk_text" style="margin-top:6px"></div>
+      </div>
     </div>
-    <div id="fl_list" style="display:flex; flex-wrap:wrap; gap:8px; margin-top:12px"></div>
+
+    <div class="hint" id="fl_hint" style="margin-top:10px">Lädt die neuesten
+      Beiträge der ausgewählten Konten in den PC-Ordner. Bereits Geladenes
+      wird übersprungen. Instagram drosselt große Mengen – die App legt
+      Pausen ein.</div>
+    <div id="fl_list" style="margin-top:12px"></div>
   </div>
 
   <div id="message"></div>
@@ -267,34 +298,80 @@ async function doLogout(){
 }
 
 /* ---------- Abonnements ---------- */
+let followingAccounts = [];
+
+function esc(s){ const d=document.createElement("div"); d.textContent=s; return d.innerHTML; }
+
 async function loadFollowing(){
   const btn = $("fl_btn");
   btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Lädt …';
   showMessage("");
   const {data} = await api("/api/following");
-  btn.disabled = false; btn.textContent = "Liste laden";
+  btn.disabled = false; btn.textContent = "Liste neu laden";
   if(data.error){ showMessage(data.error); return; }
+  followingAccounts = data.accounts || [];
+  $("fl_controls").style.display = "block";
+  $("fl_hint").textContent = "Du folgst " + data.count + " Konten. Wähle die "
+      + "gewünschten aus (Standard: alle) und lade sie auf den PC.";
   const list = $("fl_list"); list.innerHTML = "";
-  $("fl_hint").textContent = "Du folgst " + data.count + " Konten. Klicke einen "
-      + "Namen an, um seine Beiträge zu sehen, oder lade unten alle auf den PC.";
-  for(const name of data.usernames){
-    const chip = document.createElement("button");
-    chip.className = "secondary"; chip.style.padding = "6px 12px";
-    chip.textContent = "@" + name;
-    chip.onclick = () => { $("q_user").value = name; loadPosts();
-                           window.scrollTo({top:document.body.scrollHeight}); };
-    list.appendChild(chip);
+  for(const a of followingAccounts){
+    const row = document.createElement("div");
+    row.className = "frow"; row.dataset.u = a.username;
+    row.dataset.search = ((a.full_name||"") + " " + a.username).toLowerCase();
+    row.innerHTML = `
+      <input type="checkbox" checked>
+      ${a.avatar ? `<img loading="lazy" src="${a.avatar}" alt="">`
+                 : `<div class="noav">@</div>`}
+      <div style="min-width:0">
+        <div class="fn">${esc(a.full_name || a.username)}</div>
+        <div class="un">@${esc(a.username)}</div>
+      </div>
+      <a class="view" href="#">Beiträge</a>`;
+    row.querySelector("a.view").onclick = (e) => { e.preventDefault();
+        $("q_user").value = a.username; loadPosts();
+        window.scrollTo({top:document.body.scrollHeight}); };
+    list.appendChild(row);
   }
+  updateCount();
 }
+
+function selectedUsernames(){
+  return [...document.querySelectorAll("#fl_list .frow")]
+    .filter(r => r.querySelector("input").checked && r.style.display !== "none")
+    .map(r => r.dataset.u);
+}
+function selectAll(on){
+  document.querySelectorAll("#fl_list .frow").forEach(r => {
+    if(r.style.display !== "none") r.querySelector("input").checked = on;
+  });
+  updateCount();
+}
+function filterList(){
+  const q = $("fl_filter").value.trim().toLowerCase();
+  document.querySelectorAll("#fl_list .frow").forEach(r => {
+    r.style.display = (!q || r.dataset.search.includes(q)) ? "flex" : "none";
+  });
+  updateCount();
+}
+function updateCount(){
+  $("fl_count").textContent = selectedUsernames().length + " ausgewählt";
+}
+// Checkbox-Änderungen aktualisieren die Zählung (einmalig delegiert).
+$("fl_list").addEventListener("change", updateCount);
 
 let bulkTimer = null;
 async function startBulk(){
-  if(!confirm("Die neuesten Beiträge ALLER Konten, denen du folgst, in den "
-    + "PC-Ordner laden? Das kann eine Weile dauern.")) return;
+  const usernames = selectedUsernames();
+  if(usernames.length === 0){ showMessage("Bitte mindestens ein Konto auswählen."); return; }
+  const since = $("bulk_since").value;  // "" oder YYYY-MM-DD
+  const sinceTxt = since ? (" ab " + since) : "";
+  if(!confirm("Die neuesten Beiträge von " + usernames.length + " Konten"
+    + sinceTxt + " in den PC-Ordner laden? Bereits Geladenes wird "
+    + "übersprungen. Das kann dauern.")) return;
   const count = $("bulk_count").value;
   const {status, data} = await api("/api/download-following",
     {method:"POST", headers:{"Content-Type":"application/json"},
-     body: JSON.stringify({count})});
+     body: JSON.stringify({count, since, usernames})});
   if(data.error){ showMessage(data.error); return; }
   $("bulk_btn").disabled = true;
   $("bulk_cancel").style.display = "inline-block";

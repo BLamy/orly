@@ -94,14 +94,20 @@ erreichbar, http://127.0.0.1:8756/) und öffnet den Browser:
 **Wenn du angemeldet bist**, erscheint zusätzlich der Bereich **„Meine
 Abonnements"**:
 
-- **„Liste laden"** zeigt alle Konten, denen du folgst. Klicke einen
-  Namen an, um dessen Beiträge zu sehen.
-- **„⬇ Von allen Abos auf PC laden"** lädt die neuesten Beiträge *aller*
-  Konten, denen du folgst, in einem Rutsch in den PC-Ordner. Über das
-  Auswahlfeld legst du fest, wie viele Beiträge je Konto (1–12). Ein
-  Fortschrittsbalken zeigt den Stand; „Abbrechen" stoppt jederzeit.
-  Instagram drosselt große Mengen – die App legt automatisch Pausen ein,
-  daher kann es bei vielen Abos dauern.
+- **„Liste laden"** zeigt alle Konten, denen du folgst – mit
+  **Profilbild, vollem Namen und @Name**. Über „Beiträge" siehst du die
+  Beiträge eines Kontos; das Suchfeld filtert die Liste.
+- **Auswählen:** Jede Zeile hat eine **Checkbox** (Standard: alle
+  ausgewählt). Mit „Alle auswählen"/„Keine" schnell umschalten.
+- **Datumsfilter:** Im Feld „nur Beiträge ab" ein Datum wählen – dann
+  werden nur Beiträge ab diesem Tag geladen (ältere übersprungen).
+- **„⬇ Ausgewählte auf PC laden"** lädt die neuesten Beiträge der
+  ausgewählten Konten in den PC-Ordner. „Beiträge je Konto" (1–12) legt
+  die Menge fest. Ein Fortschrittsbalken zeigt den Stand; „Abbrechen"
+  stoppt jederzeit.
+- **Kein Doppel-Download:** Bereits heruntergeladene Beiträge werden
+  automatisch übersprungen. Instagram drosselt große Mengen – die App
+  legt automatisch Pausen ein, daher kann es bei vielen Abos dauern.
 
 Bei jedem Beitrag gibt es zwei Download-Knöpfe:
 

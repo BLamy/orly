@@ -237,15 +237,44 @@ def create_app(
     # ------------------------------------------------------------------
     bulk = _BulkJob()
 
+    # Profilbild-URLs der Abos: username → CDN-URL (für den Avatar-Proxy).
+    avatar_urls: dict[str, str] = {}
+
     @app.get("/api/following")
     def following():
         try:
-            names = downloader.following_usernames()
+            details = downloader.following_details()
         except LoginError as exc:
             return jsonify(error=str(exc)), 401
         except DownloaderError as exc:
             return jsonify(error=str(exc)), 502
-        return jsonify(count=len(names), usernames=names)
+        accounts = []
+        for item in details:
+            if item.get("pic"):
+                avatar_urls[item["username"]] = item["pic"]
+            accounts.append({
+                "username": item["username"],
+                "full_name": item.get("full_name", ""),
+                "avatar": f"/avatar/{item['username']}" if item.get("pic") else "",
+            })
+        return jsonify(count=len(accounts), accounts=accounts)
+
+    @app.get("/avatar/<username>")
+    def avatar(username: str):
+        url = avatar_urls.get(username)
+        if not url:
+            return Response(status=404)
+        try:
+            upstream = _requests.get(url, timeout=20,
+                                     headers={"User-Agent": "Mozilla/5.0"})
+            upstream.raise_for_status()
+        except Exception:
+            return Response(status=502)
+        return Response(
+            upstream.content,
+            mimetype=upstream.headers.get("Content-Type", "image/jpeg"),
+            headers={"Cache-Control": "private, max-age=3600"},
+        )
 
     @app.post("/api/download-following")
     def download_following():
@@ -256,16 +285,23 @@ def create_app(
             per_account = max(1, min(_MAX_COUNT, int(data.get("count", 3))))
         except (TypeError, ValueError):
             per_account = 3
+        # Optionaler Datumsfilter: nur Beiträge ab diesem Tag (YYYY-MM-DD).
+        since = (data.get("since") or "").strip()[:10]
 
-        # Zuerst die Abo-Liste holen (Fehler direkt zurückmelden).
-        try:
-            usernames = downloader.following_usernames()
-        except LoginError as exc:
-            return jsonify(error=str(exc)), 401
-        except DownloaderError as exc:
-            return jsonify(error=str(exc)), 502
+        # Ausgewählte Konten (falls angegeben), sonst alle Abos.
+        selected = data.get("usernames")
+        if isinstance(selected, list) and selected:
+            usernames = [str(u).strip().lstrip("@").lower()
+                         for u in selected if str(u).strip()]
+        else:
+            try:
+                usernames = downloader.following_usernames()
+            except LoginError as exc:
+                return jsonify(error=str(exc)), 401
+            except DownloaderError as exc:
+                return jsonify(error=str(exc)), 502
         if not usernames:
-            return jsonify(error="Du folgst keinem Konto."), 400
+            return jsonify(error="Keine Konten ausgewählt."), 400
 
         bulk.reset()
         bulk.update(running=True, total=len(usernames))
@@ -287,6 +323,12 @@ def create_app(
                     for post in posts:
                         if bulk.cancel:
                             break
+                        # Datumsfilter: alte Beiträge überspringen.
+                        if since and (post.posted_at or "")[:10] < since:
+                            continue
+                        # Dedup: bereits heruntergeladene NICHT erneut laden.
+                        if db.is_downloaded(post.shortcode, username):
+                            continue
                         db.add_post(post.shortcode, username, post.post_type,
                                     post.posted_at)
                         try:
