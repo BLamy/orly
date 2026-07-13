@@ -616,7 +616,48 @@ class InstagramDownloader:
         return collected
 
     # ------------------------------------------------------------------
-    # Download
+    # Direkte Medien-URLs (zum Streamen auf das anfragende Gerät)
+    # ------------------------------------------------------------------
+    def media_urls(self, post_info: PostInfo) -> list[tuple[str, str]]:
+        """Liefert die direkten Medien-URLs eines Beitrags.
+
+        Rückgabe: Liste von (url, dateiname). Für ein einzelnes Foto/Video
+        genau ein Eintrag, für ein Album (Sidecar) mehrere. Die URLs zeigen
+        auf das Instagram-CDN; das Streamen an das Gerät übernimmt die
+        aufrufende Schicht (Web-Server).
+        """
+        post = post_info.raw
+        with self._lock:
+            try:
+                if post is None:
+                    post = instaloader.Post.from_shortcode(
+                        self._loader.context, post_info.shortcode
+                    )
+                items: list[tuple[str, str]] = []
+                base = post_info.shortcode
+                if post.typename == "GraphSidecar":
+                    for index, node in enumerate(post.get_sidecar_nodes(), start=1):
+                        if node.is_video and node.video_url:
+                            items.append((node.video_url, f"{base}_{index}.mp4"))
+                        elif node.display_url:
+                            items.append((node.display_url, f"{base}_{index}.jpg"))
+                elif post.is_video and post.video_url:
+                    items.append((post.video_url, f"{base}.mp4"))
+                elif post.url:
+                    items.append((post.url, f"{base}.jpg"))
+                return items
+            except ConnectionException as exc:
+                raise TemporaryError(
+                    f"Medien-Adresse von {post_info.shortcode} nicht abrufbar "
+                    f"(Verbindung/Drosselung): {exc}"
+                ) from exc
+            except InstaloaderException as exc:
+                raise TemporaryError(
+                    f"Medien-Adresse von {post_info.shortcode} nicht abrufbar: {exc}"
+                ) from exc
+
+    # ------------------------------------------------------------------
+    # Download (auf den PC, in den konfigurierten Ordner)
     # ------------------------------------------------------------------
     def download_post(self, post_info: PostInfo) -> bool:
         """Lädt einen einzelnen Beitrag in den konfigurierten Ordner.

@@ -91,8 +91,40 @@ erreichbar, http://127.0.0.1:8756/) und öffnet den Browser:
    gibt es **„⬇ Herunterladen“**, dazu **„⬇ Alle herunterladen“**.
    Bereits Heruntergeladenes ist grün markiert.
 
-Die Dateien landen im selben `downloads/<benutzername>/`-Ordner wie bei
-der Desktop-App; auch Datenbank und Anmeldung werden geteilt.
+Bei jedem Beitrag gibt es zwei Download-Knöpfe:
+
+- **„⤓ Gerät"** – speichert die Datei direkt auf **dem Gerät, mit dem du
+  die Seite geöffnet hast** (z. B. dein Handy). Ideal unterwegs.
+- **„⬇ Auf PC"** – speichert in den Ordner `downloads/<benutzername>/`
+  auf dem PC, auf dem die App läuft. Bereits Gespeichertes ist grün.
+
+### Auf dem Handy öffnen (gleiches WLAN)
+
+Du kannst die Oberfläche vom Handy aus benutzen, während die App auf dem
+PC läuft. Handy und PC müssen im **selben WLAN** sein.
+
+1. Auf dem PC **`start-web-handy.bat`** (Windows) bzw. `./start-web-handy.sh`
+   starten. Beim ersten Mal fragt Windows nach der **Firewall-Freigabe**
+   → „Zugriff zulassen" (privates Netzwerk) wählen.
+2. Im PC-Fenster wird eine Adresse angezeigt, z. B.
+   `http://192.168.1.42:8756/?key=abcd1234`.
+3. **Diese komplette Adresse** (inkl. `?key=…`) auf dem Handy im Browser
+   öffnen – am einfachsten als Lesezeichen speichern. Der Code schützt
+   davor, dass andere im WLAN die Seite nutzen.
+
+Die eigentliche Verarbeitung läuft weiter auf dem PC (dessen Anmeldung
+und Internet-Verbindung werden genutzt); das Handy ist nur die Anzeige.
+Über **„⤓ Gerät"** landen Downloads direkt auf dem Handy.
+
+> Für Zugriff **von unterwegs** (Mobilfunk, außerhalb des WLANs) brauchst
+> du zusätzlich einen Tunnel-Dienst (z. B. Cloudflare Tunnel oder ngrok),
+> der die lokale Adresse `127.0.0.1:8756` nach außen verfügbar macht.
+> Eine echte Cloud-Hosting-Variante (Vercel o. ä.) ist ungeeignet, weil
+> Instagram Server-IPs stark drosselt und die Browser-Anmeldung dort
+> nicht verfügbar ist.
+
+Alle Oberflächen teilen sich denselben `downloads/`-Ordner, dieselbe
+Datenbank und dieselbe Anmeldung.
 
 ## Manuelle Installation
 
@@ -173,9 +205,10 @@ herunter, zu denen du berechtigt bist.
 ```
 instagram-monitor/
 ├── main.py               # Einstiegspunkt Desktop-App
-├── web.py                # Einstiegspunkt Browser-Oberfläche (127.0.0.1:8756)
-├── start.bat / start.sh          # Doppelklick-Start Desktop-App
-├── start-web.bat / start-web.sh  # Doppelklick-Start Browser-Oberfläche
+├── web.py                # Einstiegspunkt Browser-Oberfläche (--handy = WLAN)
+├── start.bat / start.sh                  # Doppelklick-Start Desktop-App
+├── start-web.bat / start-web.sh          # Browser-Oberfläche (nur dieser PC)
+├── start-web-handy.bat / start-web-handy.sh  # Browser-Oberfläche im WLAN (Handy)
 ├── requirements.txt      # Abhängigkeiten
 ├── README.md             # diese Datei
 ├── app/

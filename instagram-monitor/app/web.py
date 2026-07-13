@@ -27,10 +27,19 @@ from __future__ import annotations
 
 import logging
 from collections import OrderedDict
-from typing import TYPE_CHECKING
+from typing import TYPE_CHECKING, Optional
+from urllib.parse import quote
 
 import requests as _requests
-from flask import Flask, jsonify, render_template, request, Response
+from flask import (
+    Flask,
+    jsonify,
+    make_response,
+    redirect,
+    render_template,
+    request,
+    Response,
+)
 
 from .downloader import (
     DownloaderError,
@@ -59,13 +68,56 @@ _MAX_COUNT = 100
 
 
 def create_app(
-    db: "Database", settings: "Settings", downloader: "InstagramDownloader"
+    db: "Database",
+    settings: "Settings",
+    downloader: "InstagramDownloader",
+    access_key: Optional[str] = None,
 ) -> Flask:
-    """Erzeugt die Flask-Anwendung mit allen Endpunkten."""
+    """Erzeugt die Flask-Anwendung mit allen Endpunkten.
+
+    ``access_key`` schützt den Zugriff, wenn die Seite über das Netzwerk
+    (Handy im WLAN) erreichbar ist: Ohne gültigen Code gibt es nur eine
+    Hinweisseite. Zugriffe von localhost (dem PC selbst) sind immer
+    erlaubt. Ist ``access_key`` None, gibt es keinen Schutz (reiner
+    localhost-Betrieb).
+    """
     app = Flask(__name__)
 
     # Zuletzt geholte Beiträge: shortcode → PostInfo (LRU-artig begrenzt).
     cache: "OrderedDict[str, PostInfo]" = OrderedDict()
+
+    # ------------------------------------------------------------------
+    # Zugangsschutz (nur aktiv, wenn ein access_key gesetzt ist)
+    # ------------------------------------------------------------------
+    _COOKIE = "igmon_key"
+
+    def _is_local(addr: str | None) -> bool:
+        return addr in ("127.0.0.1", "::1", None)
+
+    @app.before_request
+    def _guard():
+        if not access_key:
+            return None  # kein Schutz im reinen localhost-Betrieb
+        if _is_local(request.remote_addr):
+            return None  # der PC selbst darf immer
+        # Code per URL (?key=…) übergeben → als Cookie merken und sauber
+        # weiterleiten (damit der Code nicht in jeder URL steht).
+        provided = request.args.get("key")
+        if provided and provided == access_key:
+            resp = redirect(request.path or "/")
+            resp.set_cookie(_COOKIE, access_key, max_age=30 * 24 * 3600,
+                            samesite="Lax")
+            return resp
+        if request.cookies.get(_COOKIE) == access_key:
+            return None
+        # Kein gültiger Code → freundliche Hinweisseite (403).
+        return Response(
+            "<h2>Zugangscode nötig</h2><p>Diese Seite ist geschützt. Bitte "
+            "die vollständige Adresse inklusive <code>?key=…</code> "
+            "verwenden, die im PC-Fenster angezeigt wird.</p>",
+            status=403,
+            mimetype="text/html; charset=utf-8",
+        )
 
     def remember(posts: list[PostInfo]) -> None:
         for post in posts:
@@ -163,10 +215,53 @@ def create_app(
                     "caption": p.caption,
                     # Vorschaubild über unseren Proxy, nicht direkt vom CDN.
                     "thumb": f"/thumb/{p.shortcode}" if p.thumbnail_url else "",
+                    # Direkter Geräte-Download (streamt an Handy/Browser).
+                    "media": f"/media/{p.shortcode}",
                     "downloaded": db.is_downloaded(p.shortcode, username),
                 }
                 for p in items
             ],
+        )
+
+    @app.get("/media/<shortcode>")
+    def media(shortcode: str):
+        """Streamt das Medium des Beitrags an das anfragende Gerät.
+
+        So landet ein Download auf dem Handy tatsächlich auf dem Handy
+        (Content-Disposition: attachment), statt im PC-Ordner. Bei einem
+        Album wird über ?i=<n> das n-te Element gewählt (Standard: 0).
+        """
+        post = cache.get(shortcode)
+        if post is None:
+            return Response("Beitrag nicht bekannt – bitte neu laden.",
+                            status=404)
+        try:
+            items = downloader.media_urls(post)
+        except DownloaderError as exc:
+            return Response(str(exc), status=502)
+        if not items:
+            return Response("Kein herunterladbares Medium gefunden.", status=404)
+        try:
+            index = max(0, min(len(items) - 1, int(request.args.get("i", 0))))
+        except ValueError:
+            index = 0
+        url, filename = items[index]
+        try:
+            upstream = _requests.get(
+                url, timeout=60, stream=True,
+                headers={"User-Agent": "Mozilla/5.0"},
+            )
+            upstream.raise_for_status()
+        except Exception:
+            logger.debug("Medium %s nicht ladbar.", shortcode, exc_info=True)
+            return Response("Medium konnte nicht geladen werden.", status=502)
+        return Response(
+            upstream.iter_content(chunk_size=65536),
+            mimetype=upstream.headers.get("Content-Type", "application/octet-stream"),
+            headers={
+                "Content-Disposition": f"attachment; filename=\"{filename}\"; "
+                                       f"filename*=UTF-8''{quote(filename)}",
+            },
         )
 
     @app.get("/thumb/<shortcode>")
