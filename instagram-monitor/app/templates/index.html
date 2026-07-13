@@ -2,608 +2,640 @@
 <html lang="de">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>Instagram Monitor – Browser</title>
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Instagram Monitor</title>
 <style>
   :root{
-    --bg:#121417; --panel:#1c1f24; --panel2:#23272e; --text:#e8eaed;
-    --muted:#9aa0a6; --accent:#3874cb; --accent-h:#4a86dd; --ok:#3dbb61;
-    --err:#e05252; --radius:12px;
+    --bg:#000; --bg2:#0e0e0e; --card:#000; --border:#262626; --text:#f5f5f5;
+    --muted:#a8a8a8; --accent:#0095f6; --accent-h:#1aa1f7; --ok:#2ecc71;
+    --err:#ed4956; --ring1:#feda75; --ring2:#d62976; --ring3:#4f5bd5;
   }
-  *{box-sizing:border-box; margin:0; padding:0}
-  body{background:var(--bg); color:var(--text);
-       font:15px/1.5 "Segoe UI", system-ui, sans-serif; padding-bottom:60px}
-  header{display:flex; align-items:center; gap:16px; flex-wrap:wrap;
-         padding:14px 22px; background:var(--panel); position:sticky; top:0; z-index:5;
-         box-shadow:0 2px 8px rgba(0,0,0,.4)}
-  header h1{font-size:19px; white-space:nowrap}
-  #status{margin-left:auto; font-size:13px; color:var(--muted); text-align:right}
-  #status .user{color:var(--ok)}
-  main{max-width:1100px; margin:0 auto; padding:20px 22px}
-  .card{background:var(--panel); border-radius:var(--radius); padding:16px 18px; margin-bottom:18px}
-  .rowflex{display:flex; gap:10px; flex-wrap:wrap; align-items:center}
-  input,select{background:var(--panel2); color:var(--text); border:1px solid #333a44;
-        border-radius:8px; padding:9px 12px; font-size:15px; outline:none}
-  input:focus{border-color:var(--accent)}
-  input[type=text],input[type=password]{flex:1; min-width:170px}
-  button{background:var(--accent); border:0; color:#fff; padding:9px 16px;
-         border-radius:8px; font-size:15px; cursor:pointer}
-  button:hover{background:var(--accent-h)}
-  button:disabled{background:#3a4048; color:#8b9199; cursor:default}
-  button.secondary{background:#3a4048}
-  button.secondary:hover{background:#454c56}
-  #message{display:none; margin-bottom:18px; padding:12px 16px; border-radius:var(--radius);
-           background:#3a2626; color:#f2b8b8; white-space:pre-wrap}
-  #message.info{background:#26313a; color:#b8d4f2}
-  #grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(230px,1fr)); gap:14px}
-  .post{background:var(--panel); border-radius:var(--radius); overflow:hidden;
-        display:flex; flex-direction:column}
-  .thumbwrap{position:relative; aspect-ratio:1/1; background:#0d0f12}
-  .thumbwrap img{width:100%; height:100%; object-fit:cover; display:block}
-  .thumbwrap .noimg{display:flex; align-items:center; justify-content:center;
-        height:100%; color:var(--muted); font-size:13px}
-  .badge{position:absolute; top:8px; left:8px; background:rgba(0,0,0,.65);
-         padding:2px 9px; border-radius:20px; font-size:12px}
-  .meta{padding:10px 12px 4px; font-size:12.5px; color:var(--muted); flex:1}
-  .meta .acct{color:var(--text); font-weight:600; margin-bottom:2px}
-  .meta .cap{color:var(--text); display:-webkit-box; -webkit-line-clamp:2;
-             -webkit-box-orient:vertical; overflow:hidden; margin-top:3px}
-  .actions{display:flex; gap:8px; padding:10px 12px 12px; align-items:center}
-  .actions a{flex:0 0 auto; color:var(--muted); align-self:center; font-size:13px;
-             text-decoration:none}
-  .actions a:hover{color:var(--text)}
-  .actions button{flex:1; padding:8px 10px; font-size:14px}
-  .actions a.devbtn{flex:1; text-align:center; background:#3a4048; color:var(--text);
-             padding:8px 10px; border-radius:8px; font-size:14px}
-  .actions a.devbtn:hover{background:#454c56}
-  .done{background:var(--ok) !important}
-  .hint{font-size:12.5px; color:var(--muted); margin-top:10px}
-  label.ctl{display:flex; align-items:center; gap:6px; font-size:13.5px; color:var(--muted)}
-  button.small{padding:6px 12px; font-size:13px}
-  .frow{display:flex; align-items:center; gap:12px; padding:8px 10px; border-radius:10px}
-  .frow:hover{background:var(--panel2)}
-  .frow input[type=checkbox]{width:18px; height:18px; flex:0 0 auto}
-  .frow img,.frow .noav{width:42px; height:42px; border-radius:50%; flex:0 0 auto; object-fit:cover; background:#2a2f36}
-  .frow .noav{display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:16px}
-  .frow .fn{font-weight:600}
-  .frow .un{color:var(--muted); font-size:13px}
-  .frow a.view{margin-left:auto; color:var(--muted); text-decoration:none; font-size:13px;
-        background:#3a4048; padding:6px 12px; border-radius:8px}
-  .frow a.view:hover{color:var(--text); background:#454c56}
-  .spin{display:inline-block; width:14px; height:14px; border:2px solid #fff5;
-        border-top-color:#fff; border-radius:50%; animation:r .8s linear infinite;
-        vertical-align:-2px; margin-right:6px}
+  :root[data-theme="light"]{
+    --bg:#fafafa; --bg2:#fff; --card:#fff; --border:#dbdbdb; --text:#262626;
+    --muted:#8e8e8e; --accent:#0095f6;
+  }
+  *{box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent}
+  body{background:var(--bg); color:var(--text); font:14px/1.5 -apple-system,
+       BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+       padding-bottom:40px}
+  a{color:inherit; text-decoration:none}
+  button{font:inherit; cursor:pointer; border:0; background:none; color:inherit}
+  .btn{background:var(--accent); color:#fff; border-radius:8px; padding:8px 16px; font-weight:600}
+  .btn:hover{background:var(--accent-h)}
+  .btn:disabled{opacity:.5; cursor:default}
+  .btn.ghost{background:transparent; border:1px solid var(--border); color:var(--text)}
+  .btn.ghost:hover{background:var(--bg2)}
+  .btn.small{padding:6px 12px; font-size:13px}
+  input,select{background:var(--bg2); color:var(--text); border:1px solid var(--border);
+       border-radius:8px; padding:9px 12px; font:inherit; outline:none}
+  input:focus{border-color:var(--muted)}
+  .spin{display:inline-block; width:14px; height:14px; border:2px solid #fff6;
+        border-top-color:#fff; border-radius:50%; animation:r .8s linear infinite; vertical-align:-2px}
   @keyframes r{to{transform:rotate(360deg)}}
-  #loginbox .rowflex{margin-top:8px}
-  #code_row{display:none}
+
+  /* Kopfleiste */
+  header{position:sticky; top:0; z-index:30; background:var(--bg2);
+         border-bottom:1px solid var(--border); backdrop-filter:saturate(1.2) blur(6px)}
+  .nav{max-width:975px; margin:0 auto; display:flex; align-items:center; gap:14px;
+       padding:10px 16px}
+  .logo{font-size:20px; font-weight:700; letter-spacing:.3px; white-space:nowrap;
+        background:linear-gradient(45deg,var(--ring1),var(--ring2),var(--ring3));
+        -webkit-background-clip:text; background-clip:text; color:transparent}
+  .nav .search{flex:1; max-width:280px}
+  .nav .search input{width:100%; border-radius:10px; padding:8px 12px}
+  .nav .right{margin-left:auto; display:flex; align-items:center; gap:10px}
+  .iconbtn{width:38px; height:38px; border-radius:50%; display:flex; align-items:center;
+           justify-content:center; font-size:18px}
+  .iconbtn:hover{background:var(--bg)}
+  .whoami{font-size:12.5px; color:var(--muted); white-space:nowrap; max-width:150px; overflow:hidden; text-overflow:ellipsis}
+  .whoami b{color:var(--text)}
+
+  main{max-width:640px; margin:0 auto; padding:16px}
+
+  /* Stories-Reihe */
+  .stories{display:flex; gap:14px; overflow-x:auto; padding:12px 4px; scrollbar-width:none;
+           border-bottom:1px solid var(--border); margin-bottom:16px}
+  .stories::-webkit-scrollbar{display:none}
+  .story{flex:0 0 auto; width:70px; text-align:center; cursor:pointer}
+  .story .ring{width:64px; height:64px; border-radius:50%; padding:3px;
+        background:linear-gradient(45deg,var(--ring1),var(--ring2),var(--ring3)); margin:0 auto}
+  .story .ring.seen{background:var(--border)}
+  .story .ring img,.story .ring .ph{width:100%; height:100%; border-radius:50%;
+        object-fit:cover; border:2px solid var(--bg); background:var(--bg2); display:block}
+  .story .ph{display:flex; align-items:center; justify-content:center; color:var(--muted)}
+  .story span{display:block; font-size:11.5px; color:var(--muted); margin-top:5px;
+        overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+
+  /* Beitrags-Karte */
+  .post{background:var(--card); border:1px solid var(--border); border-radius:12px;
+        margin-bottom:20px; overflow:hidden}
+  .post .head{display:flex; align-items:center; gap:10px; padding:10px 12px}
+  .post .head img,.post .head .ph{width:34px; height:34px; border-radius:50%; object-fit:cover; background:var(--bg2)}
+  .post .head .ph{display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:14px}
+  .post .head .u{font-weight:600}
+  .post .head .t{color:var(--muted); font-size:12px; margin-left:auto}
+  .media{position:relative; background:#000; cursor:pointer; aspect-ratio:1/1;
+         display:flex; align-items:center; justify-content:center; overflow:hidden}
+  .media img{width:100%; height:100%; object-fit:cover; display:block}
+  .media .play,.media .multi{position:absolute; color:#fff; filter:drop-shadow(0 1px 3px #000a)}
+  .media .play{font-size:52px; opacity:.92}
+  .media .multi{top:10px; right:12px; font-size:18px}
+  .actions{display:flex; align-items:center; gap:6px; padding:8px 10px}
+  .actions button, .actions a{width:40px; height:40px; border-radius:50%; display:flex;
+        align-items:center; justify-content:center; font-size:20px; color:var(--text)}
+  .actions button:hover, .actions a:hover{background:var(--bg2)}
+  .actions .saved{color:var(--accent)}
+  .actions .done{color:var(--ok)}
+  .actions .sp{flex:1}
+  .cap{padding:0 14px 12px}
+  .cap .u{font-weight:600; margin-right:6px}
+  .cap .more{color:var(--muted); cursor:pointer}
+  .cap.clamp .txt{display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
+
+  /* Raster (Profil-Ansicht) */
+  .pf-head{display:flex; align-items:center; gap:20px; padding:6px 6px 20px}
+  .pf-head img,.pf-head .ph{width:84px; height:84px; border-radius:50%; object-fit:cover; background:var(--bg2)}
+  .pf-head .ph{display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:26px}
+  .pf-head .fn{font-weight:600}
+  .pf-head .un{color:var(--muted)}
+  .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:3px}
+  .grid .cell{position:relative; aspect-ratio:1/1; background:var(--bg2); cursor:pointer; overflow:hidden}
+  .grid .cell img{width:100%; height:100%; object-fit:cover}
+  .grid .cell .ic{position:absolute; top:6px; right:8px; color:#fff; filter:drop-shadow(0 1px 2px #000a)}
+
+  /* Skeleton */
+  .sk{background:linear-gradient(90deg,var(--bg2),var(--border),var(--bg2));
+      background-size:200% 100%; animation:sh 1.3s infinite}
+  @keyframes sh{to{background-position:-200% 0}}
+  .sk-post{height:520px; border-radius:12px; margin-bottom:20px}
+
+  /* Karten (Login/Verwalten) */
+  .panel{background:var(--card); border:1px solid var(--border); border-radius:12px;
+         padding:16px; margin-bottom:16px}
+  .panel h3{font-size:15px; margin-bottom:10px}
+  .rowflex{display:flex; gap:8px; flex-wrap:wrap; align-items:center}
+  .hint{font-size:12.5px; color:var(--muted); margin-top:8px}
+  details summary{cursor:pointer; color:var(--muted); margin-top:10px}
+
+  /* Overlay (Lightbox/Story) */
+  .ov{position:fixed; inset:0; z-index:50; background:#000d; display:none;
+      align-items:center; justify-content:center; padding:20px}
+  .ov.open{display:flex}
+  .ov .close{position:absolute; top:14px; right:18px; font-size:30px; color:#fff; z-index:2}
+  .ov .arrow{position:absolute; top:50%; transform:translateY(-50%); font-size:40px;
+      color:#fff; padding:10px 16px; user-select:none; z-index:2}
+  .ov .arrow.l{left:6px} .ov .arrow.r{right:6px}
+  .ov .stage{max-width:min(92vw,900px); max-height:86vh; display:flex; align-items:center; justify-content:center}
+  .ov .stage img,.ov .stage video{max-width:100%; max-height:86vh; border-radius:8px; object-fit:contain}
+  .ov .dots{position:absolute; bottom:16px; left:0; right:0; display:flex; gap:6px; justify-content:center}
+  .ov .dots i{width:6px; height:6px; border-radius:50%; background:#fff6}
+  .ov .dots i.on{background:#fff}
+  .ov .lbar{position:absolute; top:0; left:0; right:0; display:flex; gap:4px; padding:10px}
+  .ov .lbar i{flex:1; height:3px; background:#fff4; border-radius:2px; overflow:hidden}
+  .ov .lbar i b{display:block; height:100%; width:0; background:#fff}
+  .ov .cap2{position:absolute; bottom:14px; left:16px; right:16px; color:#fff;
+      font-size:13px; text-shadow:0 1px 3px #000}
+  .ov .dlrow{position:absolute; top:14px; left:16px; display:flex; gap:8px; z-index:2}
+  .ov .dlrow a,.ov .dlrow button{background:#fff2; color:#fff; border-radius:8px; padding:7px 12px; font-size:13px}
+
+  /* Toasts */
+  #toasts{position:fixed; left:0; right:0; bottom:20px; z-index:60; display:flex;
+          flex-direction:column; align-items:center; gap:8px; pointer-events:none}
+  .toast{background:#222; color:#fff; padding:11px 18px; border-radius:10px; font-size:13.5px;
+         box-shadow:0 6px 20px #0007; max-width:90vw; text-align:center}
+  .toast.err{background:var(--err)} .toast.ok{background:#1f6f43}
+
+  .empty{text-align:center; color:var(--muted); padding:50px 20px}
+  #top{position:fixed; right:16px; bottom:16px; z-index:20; width:44px; height:44px;
+       border-radius:50%; background:var(--accent); color:#fff; font-size:20px; display:none;
+       align-items:center; justify-content:center; box-shadow:0 4px 14px #0006}
+  @media(max-width:640px){ main{padding:8px} .post{border-radius:0; border-left:0; border-right:0} }
 </style>
 </head>
 <body>
 <header>
-  <h1>📥 Instagram Monitor</h1>
-  <div id="status">wird geladen …</div>
+  <div class="nav">
+    <div class="logo" onclick="showFeed()" style="cursor:pointer">Instagram Monitor</div>
+    <div class="search">
+      <input id="q_user" list="follwd" placeholder="Suchen (Name oder Link) …"
+             onkeydown="if(event.key==='Enter')openProfile($('q_user').value)">
+      <datalist id="follwd"></datalist>
+    </div>
+    <div class="right">
+      <button class="iconbtn" title="Aktualisieren" onclick="startFeed()">⟳</button>
+      <button class="iconbtn" id="manage_btn" title="Verwalten" onclick="toggleManage()">⚙️</button>
+      <button class="iconbtn" id="theme_btn" title="Hell/Dunkel" onclick="toggleTheme()">🌙</button>
+      <span class="whoami" id="whoami"></span>
+    </div>
+  </div>
 </header>
 
 <main>
   <!-- Anmeldung -->
-  <div class="card" id="loginbox">
-    <strong>Anmeldung (optional)</strong>
-    <div class="hint">Mit deinem eigenen Konto angemeldet wirst du seltener
-      gedrosselt und kannst Konten sehen, denen du folgst. Das Passwort wird
-      nicht gespeichert.</div>
-    <div id="login_form">
-      <div class="rowflex">
-        <button class="secondary" id="imp_btn" onclick="importSession()"
-                title="Übernimmt deine bereits im Browser bestehende Instagram-Anmeldung">
-          🔓 Aus Browser übernehmen (empfohlen)</button>
-      </div>
-      <div class="hint">Empfohlen, wenn die normale Anmeldung einen
-        „Checkpoint“ verlangt: Melde dich einfach in deinem Browser bei
-        instagram.com an und klicke hier – es findet keine neue Anmeldung
-        statt.</div>
-      <div class="hint" style="margin-top:12px">— oder mit Benutzername &amp; Passwort —</div>
-      <div class="rowflex">
-        <input type="text" id="lg_user" placeholder="Instagram-Benutzername" autocomplete="username">
-        <input type="password" id="lg_pass" placeholder="Passwort" autocomplete="current-password">
-      </div>
-      <div class="rowflex" id="code_row">
-        <input type="text" id="lg_code" placeholder="Zwei-Faktor-Code (aus App/SMS)">
-      </div>
-      <div class="rowflex">
-        <button id="lg_btn" onclick="doLogin()">Anmelden</button>
-      </div>
-
-      <details style="margin-top:12px">
-        <summary style="cursor:pointer; color:var(--muted)">Erweitert: Anmeldung per sessionid (klappt immer)</summary>
-        <div class="hint" style="margin-top:8px">
-          So findest du den Wert: im Browser bei <b>instagram.com</b> anmelden →
-          Taste <b>F12</b> → Reiter <b>Anwendung</b> bzw. <b>Application</b> →
-          links <b>Cookies</b> → <b>https://www.instagram.com</b> → Zeile
-          <b>sessionid</b> → den Wert kopieren und hier einfügen.
-        </div>
-        <div class="rowflex" style="margin-top:8px">
-          <input type="text" id="lg_sid" placeholder="sessionid-Wert einfügen">
-          <button class="secondary" id="sid_btn" onclick="doSessionId()">Mit sessionid anmelden</button>
-        </div>
-      </details>
+  <div class="panel" id="login_panel" style="display:none">
+    <h3>Anmelden</h3>
+    <div class="hint">Angemeldet siehst du den Feed deiner Abos, Stories/Highlights und
+      private Konten, denen du folgst. Das Passwort wird nicht gespeichert.</div>
+    <div class="rowflex" style="margin-top:10px">
+      <button class="btn ghost" onclick="importSession()" id="imp_btn">🔓 Aus Browser übernehmen (empfohlen)</button>
     </div>
-    <div id="logout_form" style="display:none">
-      <div class="rowflex">
-        <button class="secondary" onclick="doLogout()">Abmelden</button>
-      </div>
+    <div class="rowflex" style="margin-top:10px">
+      <input type="text" id="lg_user" placeholder="Benutzername" style="flex:1" autocomplete="username">
+      <input type="password" id="lg_pass" placeholder="Passwort" style="flex:1" autocomplete="current-password">
     </div>
-  </div>
-
-  <!-- Feed (öffnet automatisch beim Laden, wenn angemeldet) -->
-  <div class="card" id="feed_card" style="display:none">
-    <strong>Dein Feed – neueste Beiträge deiner Abos</strong>
-    <div class="rowflex" style="margin-top:8px">
-      <label class="ctl">Profile:
-        <select id="feed_profiles">
-          <option value="10">erste 10</option>
-          <option value="20">erste 20</option>
-          <option value="50">erste 50</option>
-          <option value="0">alle</option>
-        </select>
-      </label>
-      <label class="ctl">Beiträge je Profil:
-        <select id="feed_per">
-          <option value="3">3</option>
-          <option value="6">6</option>
-          <option value="12">12</option>
-        </select>
-      </label>
-      <button id="feed_btn" onclick="startFeed()">Aktualisieren</button>
-      <button class="secondary" id="feed_cancel" onclick="cancelFeed()" style="display:none">Abbrechen</button>
-      <span class="hint" id="feed_hint" style="margin:0"></span>
-    </div>
-  </div>
-
-  <!-- Suche (einzelnes Konto) -->
-  <div class="card">
-    <strong>Beiträge ansehen</strong>
-    <div class="rowflex" style="margin-top:8px">
-      <input type="text" id="q_user" placeholder="Benutzername oder Instagram-Link, z. B. nasa"
-             onkeydown="if(event.key==='Enter')loadPosts()">
-      <select id="q_count">
-        <option value="12" selected>12 Beiträge</option>
-        <option value="24">24 Beiträge</option>
-        <option value="48">48 Beiträge</option>
-        <option value="100">100 Beiträge</option>
-      </select>
-      <button id="q_btn" onclick="loadPosts()">Anzeigen</button>
-      <button class="secondary" id="all_btn" onclick="downloadAll()" style="display:none">⬇ Alle herunterladen</button>
+    <div class="rowflex" id="code_row" style="margin-top:8px; display:none">
+      <input type="text" id="lg_code" placeholder="Zwei-Faktor-Code" style="flex:1">
     </div>
     <div class="rowflex" style="margin-top:8px">
-      <span class="hint" style="margin:0">Von diesem Konto auf den PC:</span>
-      <button class="secondary small" id="st_btn" onclick="downloadStories('stories')">⬇ Stories</button>
-      <button class="secondary small" id="hl_btn" onclick="downloadStories('highlights')">⬇ Highlights</button>
-      <span class="hint" style="margin:0">(nur mit Anmeldung; private Konten nur, wenn du folgst)</span>
+      <button class="btn" id="lg_btn" onclick="doLogin()">Anmelden</button>
     </div>
-    <div class="hint" id="dl_hint"></div>
-  </div>
-
-  <!-- Abonnements (nur wenn angemeldet) -->
-  <div class="card" id="following_card" style="display:none">
-    <strong>Meine Abonnements (wem du folgst)</strong>
-    <div class="rowflex" style="margin-top:8px">
-      <button id="fl_btn" onclick="loadFollowing()">Liste laden</button>
-    </div>
-
-    <div id="fl_controls" style="display:none; margin-top:12px">
-      <div class="rowflex">
-        <label class="ctl">Beiträge je Konto:
-          <select id="bulk_count">
-            <option value="1">1</option>
-            <option value="3" selected>3</option>
-            <option value="6">6</option>
-            <option value="12">12</option>
-          </select>
-        </label>
-        <label class="ctl">nur Beiträge ab:
-          <input type="date" id="bulk_since">
-        </label>
-        <button class="secondary" id="bulk_btn" onclick="startBulk()">⬇ Ausgewählte auf PC laden</button>
-        <button class="secondary" id="bulk_cancel" onclick="cancelBulk()" style="display:none">Abbrechen</button>
-      </div>
+    <details>
+      <summary>Erweitert: Anmeldung per sessionid (klappt immer)</summary>
+      <div class="hint">Im Browser bei instagram.com anmelden → F12 → Anwendung/Application →
+        Cookies → instagram.com → Wert von <b>sessionid</b> kopieren.</div>
       <div class="rowflex" style="margin-top:8px">
-        <button class="secondary small" onclick="selectAll(true)">Alle auswählen</button>
-        <button class="secondary small" onclick="selectAll(false)">Keine</button>
-        <input type="text" id="fl_filter" placeholder="Liste filtern (Name/@Name) …"
-               oninput="filterList()" style="flex:1; min-width:140px">
-        <span class="hint" id="fl_count"></span>
+        <input type="text" id="lg_sid" placeholder="sessionid-Wert" style="flex:1">
+        <button class="btn ghost" id="sid_btn" onclick="doSessionId()">Anmelden</button>
       </div>
-      <div id="bulk_progress" style="display:none; margin-top:10px">
-        <div style="background:#2a2f36; border-radius:8px; overflow:hidden; height:12px">
-          <div id="bulk_bar" style="height:100%; width:0; background:var(--accent); transition:width .3s"></div>
-        </div>
-        <div class="hint" id="bulk_text" style="margin-top:6px"></div>
-      </div>
-    </div>
-
-    <div class="hint" id="fl_hint" style="margin-top:10px">Lädt die neuesten
-      Beiträge der ausgewählten Konten in den PC-Ordner. Bereits Geladenes
-      wird übersprungen. Instagram drosselt große Mengen – die App legt
-      Pausen ein.</div>
-    <div id="fl_list" style="margin-top:12px"></div>
+    </details>
   </div>
 
-  <div id="message"></div>
-  <div id="grid"></div>
+  <!-- Verwalten -->
+  <div class="panel" id="manage_panel" style="display:none">
+    <h3>Verwalten</h3>
+    <div class="rowflex">
+      <label class="hint" style="margin:0">Feed-Profile:
+        <select id="feed_profiles">
+          <option value="10">erste 10</option><option value="20">erste 20</option>
+          <option value="50">erste 50</option><option value="0">alle</option>
+        </select></label>
+      <label class="hint" style="margin:0">je Profil:
+        <select id="feed_per">
+          <option value="3">3</option><option value="6">6</option><option value="12">12</option>
+        </select></label>
+      <button class="btn ghost" onclick="startFeed()">Feed aktualisieren</button>
+    </div>
+    <hr style="border:0; border-top:1px solid var(--border); margin:14px 0">
+    <div class="rowflex">
+      <button class="btn ghost" id="fl_btn" onclick="loadFollowing()">Abo-Liste laden</button>
+      <label class="hint" style="margin:0">je Konto:
+        <select id="bulk_count"><option>1</option><option selected>3</option><option>6</option><option>12</option></select></label>
+      <label class="hint" style="margin:0">ab Datum: <input type="date" id="bulk_since"></label>
+      <button class="btn ghost" id="bulk_btn" onclick="startBulk()">⬇ Ausgewählte auf PC</button>
+      <button class="btn ghost" id="bulk_cancel" onclick="cancelBulk()" style="display:none">Abbrechen</button>
+    </div>
+    <div class="hint" id="bulk_text"></div>
+    <div class="rowflex" style="margin-top:6px">
+      <button class="btn ghost small" onclick="selectAllFollow(true)">Alle</button>
+      <button class="btn ghost small" onclick="selectAllFollow(false)">Keine</button>
+      <input id="fl_filter" placeholder="Liste filtern …" style="flex:1" oninput="filterFollow()">
+    </div>
+    <div id="fl_list" style="margin-top:10px; max-height:260px; overflow:auto"></div>
+  </div>
+
+  <!-- Stories-Reihe -->
+  <div class="stories" id="stories_row" style="display:none"></div>
+
+  <!-- Profil-Kopf (nur in Profil-Ansicht) -->
+  <div id="pf_head" style="display:none"></div>
+
+  <!-- Feed / Raster -->
+  <div id="content"></div>
+  <div id="more" style="text-align:center; margin:10px 0"></div>
 </main>
+
+<!-- Lightbox -->
+<div class="ov" id="lb">
+  <button class="close" onclick="closeLightbox()">✕</button>
+  <button class="arrow l" id="lb_l" onclick="lbNav(-1)">‹</button>
+  <button class="arrow r" id="lb_r" onclick="lbNav(1)">›</button>
+  <div class="dlrow" id="lb_dl"></div>
+  <div class="stage" id="lb_stage"></div>
+  <div class="dots" id="lb_dots"></div>
+  <div class="cap2" id="lb_cap"></div>
+</div>
+
+<!-- Story-Viewer -->
+<div class="ov" id="sv">
+  <button class="close" onclick="closeStory()">✕</button>
+  <button class="arrow l" onclick="storyNav(-1)">‹</button>
+  <button class="arrow r" onclick="storyNav(1)">›</button>
+  <div class="lbar" id="sv_bar"></div>
+  <div class="dlrow" id="sv_dl"></div>
+  <div class="stage" id="sv_stage"></div>
+</div>
+
+<div id="toasts"></div>
+<button id="top" onclick="window.scrollTo({top:0,behavior:'smooth'})">↑</button>
 
 <script>
 "use strict";
 const $ = id => document.getElementById(id);
-let currentPosts = [];
+const esc = s => { const d=document.createElement("div"); d.textContent=s??""; return d.innerHTML; };
 
-function showMessage(text, info=false){
-  const m = $("message");
-  if(!text){ m.style.display="none"; return; }
-  m.textContent = text;
-  m.className = info ? "info" : "";
-  m.style.display = "block";
-}
-
+/* ---------- Grundlagen ---------- */
 async function api(path, opts){
-  const res = await fetch(path, opts);
-  let data = {};
-  try{ data = await res.json(); }catch(e){}
-  return {status: res.status, data};
+  try{
+    const res = await fetch(path, opts);
+    let data = {}; try{ data = await res.json(); }catch(e){}
+    return {status:res.status, data};
+  }catch(e){ return {status:0, data:{error:"Verbindung zum lokalen Server fehlgeschlagen."}}; }
+}
+function toast(msg, kind){
+  if(!msg) return;
+  const t = document.createElement("div");
+  t.className = "toast" + (kind?(" "+kind):"");
+  t.textContent = msg;
+  $("toasts").appendChild(t);
+  setTimeout(()=>t.remove(), 4200);
+}
+function timeAgo(iso){
+  if(!iso) return "";
+  const d = new Date(iso.replace(" ","T")+ (iso.length<=19?"Z":""));
+  const s = (Date.now()-d.getTime())/1000;
+  if(isNaN(s)) return "";
+  if(s<60) return "gerade eben";
+  if(s<3600) return "vor "+Math.floor(s/60)+" Min";
+  if(s<86400) return "vor "+Math.floor(s/3600)+" Std";
+  if(s<604800) return "vor "+Math.floor(s/86400)+" T";
+  return d.toLocaleDateString("de-DE");
 }
 
-/* ---------- Status & Anmeldung ---------- */
+/* ---------- Theme ---------- */
+function applyTheme(t){
+  document.documentElement.setAttribute("data-theme", t);
+  $("theme_btn").textContent = t==="light" ? "☀️" : "🌙";
+  try{ localStorage.setItem("igm_theme", t); }catch(e){}
+}
+function toggleTheme(){
+  const cur = document.documentElement.getAttribute("data-theme")==="light" ? "light":"dark";
+  applyTheme(cur==="light"?"dark":"light");
+}
+applyTheme((()=>{ try{ return localStorage.getItem("igm_theme")||"dark"; }catch(e){ return "dark"; } })());
+
+/* ---------- Gespeichert (lokal) ---------- */
+function getSaved(){ try{ return JSON.parse(localStorage.getItem("igm_saved")||"[]"); }catch(e){ return []; } }
+function isSaved(sc){ return getSaved().includes(sc); }
+function toggleSaved(sc){
+  let s = getSaved();
+  if(s.includes(sc)) s = s.filter(x=>x!==sc); else s.push(sc);
+  try{ localStorage.setItem("igm_saved", JSON.stringify(s)); }catch(e){}
+  return s.includes(sc);
+}
+
+/* ---------- Status / Anmeldung ---------- */
+let loggedIn = false, currentUser = "";
 async function refreshStatus(){
   const {data} = await api("/api/status");
-  if(data.logged_in){
-    $("status").innerHTML = 'Angemeldet als <span class="user">@'+data.user+'</span><br>Downloads: '+data.download_dir;
-    $("login_form").style.display = "none";
-    $("logout_form").style.display = "block";
-    $("following_card").style.display = "block";
-    $("feed_card").style.display = "block";
-    // Beim ersten Mal: gespeicherte Feed-Einstellungen laden und den Feed
-    // automatisch öffnen – ohne dass man einen Namen eingeben muss.
-    if(!feedAutoStarted){
-      feedAutoStarted = true;
+  loggedIn = !!data.logged_in; currentUser = data.user || "";
+  $("whoami").innerHTML = loggedIn
+    ? 'als <b>@'+esc(currentUser)+'</b>'
+    : '<span onclick="scrollToLogin()" style="cursor:pointer">anmelden</span>';
+  $("login_panel").style.display = loggedIn ? "none" : "block";
+  $("manage_btn").style.display = loggedIn ? "flex" : "none";
+  if(loggedIn){
+    if(!window._autostart){
+      window._autostart = true;
       const fs = await api("/api/feed/settings");
-      if(fs.data && fs.data.profiles !== undefined){
+      if(fs.data && fs.data.profiles!==undefined){
         $("feed_profiles").value = String(fs.data.profiles);
         $("feed_per").value = String(fs.data.per);
       }
+      loadFollowing(true);   // still, für Stories-Reihe + Suchvorschläge
       startFeed();
     }
   }else{
-    $("status").innerHTML = 'Nicht angemeldet (nur öffentliche Profile)<br>Downloads: '+data.download_dir;
-    $("login_form").style.display = "block";
-    $("logout_form").style.display = "none";
-    $("following_card").style.display = "none";
-    $("feed_card").style.display = "none";
+    $("stories_row").style.display = "none";
   }
 }
-
-async function doLogin(){
-  const btn = $("lg_btn");
-  btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Anmelden …';
-  showMessage("");
-  const body = JSON.stringify({
-    username: $("lg_user").value, password: $("lg_pass").value,
-    code: $("lg_code").value,
-  });
-  const {status, data} = await api("/api/login",
-    {method:"POST", headers:{"Content-Type":"application/json"}, body});
-  btn.disabled = false; btn.textContent = "Anmelden";
-  if(data.ok){
-    $("lg_pass").value = ""; $("lg_code").value = ""; $("code_row").style.display="none";
-    await refreshStatus();
-    showMessage("Erfolgreich angemeldet als @"+data.user, true);
-  }else if(data.needs_2fa){
-    $("code_row").style.display = "flex";
-    showMessage("Zwei-Faktor-Code erforderlich – bitte Code eingeben und erneut auf Anmelden klicken.", true);
-  }else{
-    showMessage(data.error || "Anmeldung fehlgeschlagen.");
-  }
-}
+function scrollToLogin(){ $("login_panel").scrollIntoView({behavior:"smooth"}); }
 
 async function importSession(){
-  const btn = $("imp_btn");
-  btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Übernehme aus Browser …';
-  showMessage("");
-  const {data} = await api("/api/import-session",
-    {method:"POST", headers:{"Content-Type":"application/json"}, body:"{}"});
-  btn.disabled = false; btn.textContent = "🔓 Aus Browser übernehmen (empfohlen)";
-  if(data.ok){
-    await refreshStatus();
-    showMessage("Anmeldung aus dem Browser übernommen: @"+data.user, true);
-  }else{
-    showMessage(data.error || "Übernahme fehlgeschlagen.");
-  }
+  const b=$("imp_btn"); b.disabled=true; b.innerHTML='<span class="spin"></span> Übernehme …';
+  const {data}=await api("/api/import-session",{method:"POST",headers:{"Content-Type":"application/json"},body:"{}"});
+  b.disabled=false; b.textContent="🔓 Aus Browser übernehmen (empfohlen)";
+  if(data.ok){ toast("Angemeldet als @"+data.user,"ok"); window._autostart=false; refreshStatus(); }
+  else toast(data.error||"Übernahme fehlgeschlagen","err");
 }
-
+async function doLogin(){
+  const b=$("lg_btn"); b.disabled=true; b.innerHTML='<span class="spin"></span> …';
+  const body=JSON.stringify({username:$("lg_user").value,password:$("lg_pass").value,code:$("lg_code").value});
+  const {data}=await api("/api/login",{method:"POST",headers:{"Content-Type":"application/json"},body});
+  b.disabled=false; b.textContent="Anmelden";
+  if(data.ok){ $("lg_pass").value=""; $("lg_code").value=""; $("code_row").style.display="none";
+    toast("Angemeldet als @"+data.user,"ok"); window._autostart=false; refreshStatus(); }
+  else if(data.needs_2fa){ $("code_row").style.display="flex"; toast("Bitte Zwei-Faktor-Code eingeben."); }
+  else toast(data.error||"Anmeldung fehlgeschlagen","err");
+}
 async function doSessionId(){
-  const btn = $("sid_btn");
-  btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Anmelden …';
-  showMessage("");
-  const {data} = await api("/api/login-sessionid",
-    {method:"POST", headers:{"Content-Type":"application/json"},
-     body: JSON.stringify({sessionid: $("lg_sid").value})});
-  btn.disabled = false; btn.textContent = "Mit sessionid anmelden";
-  if(data.ok){
-    $("lg_sid").value = "";
-    await refreshStatus();
-    showMessage("Angemeldet als @"+data.user, true);
-  }else{
-    showMessage(data.error || "Anmeldung fehlgeschlagen.");
-  }
+  const b=$("sid_btn"); b.disabled=true; b.innerHTML='<span class="spin"></span> …';
+  const {data}=await api("/api/login-sessionid",{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({sessionid:$("lg_sid").value})});
+  b.disabled=false; b.textContent="Anmelden";
+  if(data.ok){ $("lg_sid").value=""; toast("Angemeldet als @"+data.user,"ok"); window._autostart=false; refreshStatus(); }
+  else toast(data.error||"Anmeldung fehlgeschlagen","err");
 }
+async function logout(){ await api("/api/logout",{method:"POST"}); location.reload(); }
 
-async function doLogout(){
-  await api("/api/logout", {method:"POST"});
-  await refreshStatus();
-  showMessage("Abgemeldet.", true);
-}
-
-/* ---------- Abonnements ---------- */
-let followingAccounts = [];
-
-function esc(s){ const d=document.createElement("div"); d.textContent=s; return d.innerHTML; }
-
-async function loadFollowing(){
-  const btn = $("fl_btn");
-  btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Lädt …';
-  showMessage("");
-  const {data} = await api("/api/following");
-  btn.disabled = false; btn.textContent = "Liste neu laden";
-  if(data.error){ showMessage(data.error); return; }
-  followingAccounts = data.accounts || [];
-  $("fl_controls").style.display = "block";
-  $("fl_hint").textContent = "Du folgst " + data.count + " Konten. Wähle die "
-      + "gewünschten aus (Standard: alle) und lade sie auf den PC.";
-  const list = $("fl_list"); list.innerHTML = "";
-  for(const a of followingAccounts){
-    const row = document.createElement("div");
-    row.className = "frow"; row.dataset.u = a.username;
-    row.dataset.search = ((a.full_name||"") + " " + a.username).toLowerCase();
-    row.innerHTML = `
-      <input type="checkbox" checked>
-      ${a.avatar ? `<img loading="lazy" src="${a.avatar}" alt="">`
-                 : `<div class="noav">@</div>`}
-      <div style="min-width:0">
-        <div class="fn">${esc(a.full_name || a.username)}</div>
-        <div class="un">@${esc(a.username)}</div>
-      </div>
-      <a class="view" href="#">Beiträge</a>`;
-    row.querySelector("a.view").onclick = (e) => { e.preventDefault();
-        $("q_user").value = a.username; loadPosts();
-        window.scrollTo({top:document.body.scrollHeight}); };
-    list.appendChild(row);
-  }
-  updateCount();
-}
-
-function selectedUsernames(){
-  return [...document.querySelectorAll("#fl_list .frow")]
-    .filter(r => r.querySelector("input").checked && r.style.display !== "none")
-    .map(r => r.dataset.u);
-}
-function selectAll(on){
-  document.querySelectorAll("#fl_list .frow").forEach(r => {
-    if(r.style.display !== "none") r.querySelector("input").checked = on;
-  });
-  updateCount();
-}
-function filterList(){
-  const q = $("fl_filter").value.trim().toLowerCase();
-  document.querySelectorAll("#fl_list .frow").forEach(r => {
-    r.style.display = (!q || r.dataset.search.includes(q)) ? "flex" : "none";
-  });
-  updateCount();
-}
-function updateCount(){
-  $("fl_count").textContent = selectedUsernames().length + " ausgewählt";
-}
-// Checkbox-Änderungen aktualisieren die Zählung (einmalig delegiert).
-$("fl_list").addEventListener("change", updateCount);
-
-let bulkTimer = null;
-async function startBulk(){
-  const usernames = selectedUsernames();
-  if(usernames.length === 0){ showMessage("Bitte mindestens ein Konto auswählen."); return; }
-  const since = $("bulk_since").value;  // "" oder YYYY-MM-DD
-  const sinceTxt = since ? (" ab " + since) : "";
-  if(!confirm("Die neuesten Beiträge von " + usernames.length + " Konten"
-    + sinceTxt + " in den PC-Ordner laden? Bereits Geladenes wird "
-    + "übersprungen. Das kann dauern.")) return;
-  const count = $("bulk_count").value;
-  const {status, data} = await api("/api/download-following",
-    {method:"POST", headers:{"Content-Type":"application/json"},
-     body: JSON.stringify({count, since, usernames})});
-  if(data.error){ showMessage(data.error); return; }
-  $("bulk_btn").disabled = true;
-  $("bulk_cancel").style.display = "inline-block";
-  $("bulk_progress").style.display = "block";
-  showMessage("");
-  bulkTimer = setInterval(pollBulk, 1000);
-  pollBulk();
-}
-
-async function pollBulk(){
-  const {data} = await api("/api/download-following/status");
-  const pct = data.total ? Math.round(100 * data.done / data.total) : 0;
-  $("bulk_bar").style.width = pct + "%";
-  $("bulk_text").textContent =
-    `${data.done}/${data.total} Konten · ${data.downloaded} Beiträge gespeichert`
-    + (data.current && data.running ? ` · aktuell @${data.current}` : "");
-  if(!data.running && data.finished){
-    clearInterval(bulkTimer); bulkTimer = null;
-    $("bulk_btn").disabled = false;
-    $("bulk_cancel").style.display = "none";
-    if(data.error) showMessage(data.error);
-    else showMessage(`Fertig: ${data.downloaded} Beiträge von ${data.done} `
-                     + `Konten in den PC-Ordner geladen.`, true);
-  }
-}
-
-async function cancelBulk(){
-  await api("/api/download-following/cancel", {method:"POST"});
-  $("bulk_cancel").disabled = true;
-  $("bulk_cancel").textContent = "Wird abgebrochen …";
-  setTimeout(() => { $("bulk_cancel").disabled=false;
-                     $("bulk_cancel").textContent="Abbrechen"; }, 3000);
-}
-
-/* ---------- Stories & Highlights ---------- */
-let storyTimer = null;
-async function downloadStories(kind){
-  const u = ($("q_user").value || "").trim();
-  if(!u){ showMessage("Bitte oben einen Benutzernamen eingeben."); return; }
-  const label = kind === "highlights" ? "Highlights" : "Stories";
-  const stb = $("st_btn"), hlb = $("hl_btn");
-  stb.disabled = hlb.disabled = true;
-  showMessage(label + " werden gesucht …", true);
-  const {data} = await api("/api/download-stories",
-    {method:"POST", headers:{"Content-Type":"application/json"},
-     body: JSON.stringify({username: u, kind})});
-  if(data.error){ stb.disabled=hlb.disabled=false; showMessage(data.error); return; }
-  if(data.total === 0){
-    stb.disabled=hlb.disabled=false;
-    showMessage("Keine " + label + " gefunden (oder nicht sichtbar).", true);
-    return;
-  }
-  if(storyTimer) clearInterval(storyTimer);
-  storyTimer = setInterval(async () => {
-    const {data:st} = await api("/api/download-following/status");
-    showMessage(`${label} @${u}: ${st.done}/${st.total} · ${st.downloaded} gespeichert`
-      + (st.current && st.running ? " …" : ""), true);
-    if(!st.running && st.finished){
-      clearInterval(storyTimer); storyTimer = null;
-      stb.disabled = hlb.disabled = false;
-      if(st.error) showMessage(st.error);
-      else showMessage(`Fertig: ${st.downloaded} ${label}-Element(e) in den `
-                       + `PC-Ordner (Unterordner „stories“) geladen.`, true);
-    }
-  }, 1000);
-}
-
-/* ---------- Feed (automatisch beim Öffnen) ---------- */
-let feedTimer = null, feedAutoStarted = false;
+/* ---------- Feed ---------- */
+let feedTimer=null, viewMode="feed";
+function showFeed(){ viewMode="feed"; $("pf_head").style.display="none";
+  $("more").innerHTML=""; startFeed(); }
 
 async function startFeed(){
-  const profiles = $("feed_profiles").value;
-  const per = $("feed_per").value;
-  const fb = $("feed_btn");
-  fb.disabled = true; fb.innerHTML = '<span class="spin"></span>Lädt …';
-  showMessage("");
-  const {data} = await api("/api/feed/start",
-    {method:"POST", headers:{"Content-Type":"application/json"},
-     body: JSON.stringify({profiles, per})});
-  if(data.error){ fb.disabled=false; fb.textContent="Aktualisieren"; showMessage(data.error); return; }
-  if(data.total === 0){
-    fb.disabled=false; fb.textContent="Aktualisieren";
-    $("feed_hint").textContent = "Du folgst keinem Konto.";
-    return;
-  }
-  $("feed_cancel").style.display = "inline-block";
+  viewMode="feed"; $("pf_head").style.display="none"; $("more").innerHTML="";
+  if(!loggedIn){ renderEmpty("Melde dich an, um den Feed deiner Abos zu sehen. Oder suche oben ein öffentliches Konto."); return; }
+  showSkeleton();
+  const {data}=await api("/api/feed/start",{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({profiles:$("feed_profiles").value, per:$("feed_per").value})});
+  if(data.error){ toast(data.error,"err"); renderEmpty(data.error); return; }
+  if(data.total===0){ renderEmpty("Du folgst noch keinem Konto."); return; }
   if(feedTimer) clearInterval(feedTimer);
-  feedTimer = setInterval(pollFeed, 1200);
-  pollFeed();
+  feedTimer=setInterval(pollFeed,1200); pollFeed();
 }
-
 async function pollFeed(){
-  const {data:st} = await api("/api/feed/status");
-  renderPosts(st.items || [], true);
-  $("feed_hint").textContent =
-    `${st.done}/${st.total} Profile · ${st.count} Beiträge`
-    + (st.current && st.running ? ` · lädt @${st.current} …` : "");
-  if(!st.running && st.finished){
-    clearInterval(feedTimer); feedTimer = null;
-    $("feed_btn").disabled = false; $("feed_btn").textContent = "Aktualisieren";
-    $("feed_cancel").style.display = "none";
-    if(st.error) showMessage(st.error);
+  const {data:st}=await api("/api/feed/status");
+  if(viewMode!=="feed"){ if(!st.running){clearInterval(feedTimer);} return; }
+  renderFeed(st.items||[]);
+  if(!st.running && st.finished){ clearInterval(feedTimer); feedTimer=null;
+    if((st.items||[]).length===0) renderEmpty("Keine Beiträge gefunden (evtl. gerade gedrosselt).");
+    if(st.error) toast(st.error,"err"); }
+}
+function showSkeleton(){
+  $("content").innerHTML = '<div class="sk sk-post"></div><div class="sk sk-post"></div>';
+}
+function renderEmpty(msg){ $("content").innerHTML = '<div class="empty">'+esc(msg)+'</div>'; }
+
+let feedPosts=[];
+function renderFeed(posts){
+  feedPosts = posts;
+  const c=$("content"); c.innerHTML="";
+  if(posts.length===0){ showSkeleton(); return; }
+  for(const p of posts) c.appendChild(postCard(p));
+}
+
+function avatarHTML(username, cls){
+  const url = followAvatar[username];
+  return url ? '<img class="'+cls+'" src="'+url+'" alt="">'
+             : '<div class="ph '+cls+'">'+esc((username||"?")[0].toUpperCase())+'</div>';
+}
+
+function postCard(p){
+  const el=document.createElement("article"); el.className="post";
+  const saved=isSaved(p.shortcode);
+  el.innerHTML = `
+    <div class="head">
+      ${avatarHTML(p.username,"")}
+      <span class="u" style="cursor:pointer" onclick="openProfile('${p.username}')">@${esc(p.username)}</span>
+      <span class="t">${timeAgo(p.posted_at)}</span>
+    </div>
+    <div class="media">
+      ${p.thumb ? `<img loading="lazy" src="${p.thumb}" alt="">` : `<div class="empty">keine Vorschau</div>`}
+      ${p.is_video ? `<span class="play">▶</span>` : ""}
+      ${p.is_album ? `<span class="multi">▦</span>` : ""}
+    </div>
+    <div class="actions">
+      <button title="Auf dieses Gerät" onclick="deviceDownload('${p.shortcode}')">⤓</button>
+      <button id="pc_${p.shortcode}" class="${p.downloaded?'done':''}" title="Auf den PC"
+              onclick="pcDownload('${p.shortcode}')">${p.downloaded?'✓':'⬇'}</button>
+      <a href="${p.url}" target="_blank" rel="noopener" title="Auf Instagram öffnen">↗</a>
+      <span class="sp"></span>
+      <button id="sv_${p.shortcode}" class="${saved?'saved':''}" title="Merken"
+              onclick="onSave('${p.shortcode}',this)">${saved?'★':'☆'}</button>
+    </div>
+    ${p.caption ? `<div class="cap clamp"><span class="u">@${esc(p.username)}</span><span class="txt">${esc(p.caption)}</span> <span class="more" onclick="this.parentNode.classList.toggle('clamp')">… mehr</span></div>` : ""}
+  `;
+  el.querySelector(".media").onclick = () => openLightbox(p);
+  return el;
+}
+
+function onSave(sc, btn){ const s=toggleSaved(sc); btn.textContent=s?'★':'☆'; btn.classList.toggle('saved',s); }
+function deviceDownload(sc){ window.location.href = "/media/"+sc; }
+async function pcDownload(sc){
+  const b=$("pc_"+sc); if(!b||b.classList.contains("done")) return;
+  b.disabled=true; b.innerHTML='<span class="spin"></span>';
+  const {data}=await api("/api/download",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({shortcode:sc})});
+  b.disabled=false;
+  if(data.ok){ b.textContent="✓"; b.classList.add("done"); toast("Auf PC gespeichert","ok"); }
+  else { b.textContent="⬇"; toast(data.error||"Download fehlgeschlagen","err"); }
+}
+
+/* ---------- Lightbox ---------- */
+let lbItems=[], lbIndex=0, lbPost=null;
+async function openLightbox(p){
+  lbPost=p; lbIndex=0;
+  if(p.is_album){
+    const {data}=await api("/api/album/"+p.shortcode);
+    lbItems = (data.items||[]).map(it=>({media:it.media, download:it.download, is_video:it.is_video}));
+    if(lbItems.length===0) lbItems=[{media:"/media/"+p.shortcode+"?inline=1", download:"/media/"+p.shortcode, is_video:p.is_video}];
+  }else{
+    lbItems=[{media:"/media/"+p.shortcode+"?inline=1", download:"/media/"+p.shortcode, is_video:p.is_video}];
+  }
+  $("lb_cap").innerHTML = '<b>@'+esc(p.username)+'</b> '+esc(p.caption||"");
+  $("lb").classList.add("open");
+  drawLightbox();
+}
+function drawLightbox(){
+  const it=lbItems[lbIndex];
+  $("lb_stage").innerHTML = it.is_video
+    ? `<video src="${it.media}" controls autoplay playsinline></video>`
+    : `<img src="${it.media}" alt="">`;
+  const multi = lbItems.length>1;
+  $("lb_l").style.display = multi ? "block":"none";
+  $("lb_r").style.display = multi ? "block":"none";
+  $("lb_dots").innerHTML = multi ? lbItems.map((_,i)=>'<i class="'+(i===lbIndex?'on':'')+'"></i>').join("") : "";
+  $("lb_dl").innerHTML = `<a href="${it.download}" title="Auf dieses Gerät">⤓ Gerät</a>`
+    + `<button onclick="pcDownloadFromLb()" title="Auf den PC">⬇ PC</button>`;
+}
+function lbNav(d){ lbIndex=(lbIndex+d+lbItems.length)%lbItems.length; drawLightbox(); }
+function closeLightbox(){ $("lb").classList.remove("open"); $("lb_stage").innerHTML=""; }
+function pcDownloadFromLb(){ if(lbPost) pcDownload(lbPost.shortcode); }
+
+/* ---------- Stories ---------- */
+function renderStoriesRow(){
+  const row=$("stories_row");
+  if(!loggedIn || followList.length===0){ row.style.display="none"; return; }
+  row.style.display="flex"; row.innerHTML="";
+  for(const a of followList.slice(0,30)){
+    const d=document.createElement("div"); d.className="story";
+    d.innerHTML = `<div class="ring">${a.avatar?`<img src="${a.avatar}" alt="">`:`<div class="ph">@</div>`}</div>`
+      + `<span>${esc(a.username)}</span>`;
+    d.onclick=()=>openStory(a.username);
+    row.appendChild(d);
   }
 }
-
-async function cancelFeed(){
-  await api("/api/feed/cancel", {method:"POST"});
+let svItems=[], svIndex=0, svTimer=null;
+async function openStory(username){
+  toast("Lade Stories von @"+username+" …");
+  const {data}=await api("/api/stories?username="+encodeURIComponent(username));
+  if(data.error){ toast(data.error,"err"); return; }
+  if(!data.items || data.items.length===0){ toast("Keine aktuellen Stories.","ok"); return; }
+  svItems=data.items; svIndex=0; svUser=username;
+  $("sv").classList.add("open");
+  drawStory();
 }
+let svUser="";
+function drawStory(){
+  clearTimeout(svTimer);
+  const it=svItems[svIndex];
+  $("sv_stage").innerHTML = it.is_video
+    ? `<video src="${it.media}" controls autoplay playsinline onended="storyNav(1)"></video>`
+    : `<img src="${it.media}" alt="">`;
+  $("sv_bar").innerHTML = svItems.map((_,i)=>`<i><b style="width:${i<svIndex?100:0}%"></b></i>`).join("");
+  $("sv_dl").innerHTML = `<b style="color:#fff;align-self:center">@${esc(svUser)}</b>`
+    + `<a href="${it.download}">⤓ Gerät</a>`;
+  if(!it.is_video){
+    const bar=$("sv_bar").children[svIndex].firstChild;
+    bar.style.transition="width 4s linear"; requestAnimationFrame(()=>bar.style.width="100%");
+    svTimer=setTimeout(()=>storyNav(1), 4200);
+  }
+}
+function storyNav(d){
+  svIndex+=d;
+  if(svIndex<0) svIndex=0;
+  else if(svIndex>=svItems.length){ closeStory(); return; }
+  else drawStory();
+}
+function closeStory(){ clearTimeout(svTimer); $("sv").classList.remove("open"); $("sv_stage").innerHTML=""; }
 
-/* ---------- Gemeinsame Darstellung der Beitrags-Kacheln ---------- */
-function renderPosts(posts, showAccount){
-  currentPosts = posts;
-  const grid = $("grid");
-  grid.innerHTML = "";
+/* ---------- Profil-Ansicht (Raster) ---------- */
+async function openProfile(input){
+  const name=(input||"").trim(); if(!name) return;
+  viewMode="profile"; if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
+  $("stories_row").style.display="none";
+  const acc = followList.find(a=>a.username.toLowerCase()===name.toLowerCase());
+  $("pf_head").style.display="flex"; $("pf_head").className="pf-head";
+  $("pf_head").innerHTML = (acc&&acc.avatar?`<img src="${acc.avatar}">`:`<div class="ph">@</div>`)
+    + `<div><div class="fn">${esc(acc?acc.full_name||name:name)}</div><div class="un">@${esc(name)}</div></div>`;
+  $("content").innerHTML='<div class="empty"><span class="spin" style="border-top-color:var(--accent)"></span></div>';
+  $("more").innerHTML="";
+  const {data}=await api("/api/posts?username="+encodeURIComponent(name)+"&count=24");
+  if(data.error){ renderEmpty(data.error); toast(data.error,"err"); return; }
+  const posts=data.posts||[];
+  if(posts.length===0){ renderEmpty("Keine Beiträge gefunden."); return; }
+  renderGrid(posts);
+}
+function renderGrid(posts){
+  const c=$("content"); c.className="";
+  const g=document.createElement("div"); g.className="grid";
   for(const p of posts){
-    const el = document.createElement("div");
-    el.className = "post";
-    const d = p.posted_at ? p.posted_at.replace("T", " ") : "";
-    el.innerHTML = `
-      <div class="thumbwrap">
-        ${p.thumb ? `<img loading="lazy" src="${p.thumb}" alt="">`
-                  : `<div class="noimg">keine Vorschau</div>`}
-        <span class="badge">${p.type}</span>
-      </div>
-      <div class="meta">${showAccount && p.username ? `<div class="acct"></div>` : ""}${d}${p.caption ? `<div class="cap"></div>` : ""}</div>
-      <div class="actions">
-        <a class="devbtn" href="/media/${p.shortcode}"
-           title="Direkt auf dieses Gerät (Handy) speichern">⤓ Gerät</a>
-        <button id="dl_${p.shortcode}" ${p.downloaded ? 'class="done"' : ""}
-                onclick="downloadOne('${p.shortcode}')"
-                title="Auf dem PC speichern, auf dem die App läuft">
-          ${p.downloaded ? "✓ Auf PC" : "⬇ Auf PC"}</button>
-        <a href="${p.url}" target="_blank" rel="noopener" title="Auf Instagram öffnen">↗</a>
-      </div>`;
-    if(showAccount && p.username) el.querySelector(".acct").textContent = "@" + p.username;
-    if(p.caption) el.querySelector(".cap").textContent = p.caption;
-    grid.appendChild(el);
+    const cell=document.createElement("div"); cell.className="cell";
+    cell.innerHTML = (p.thumb?`<img loading="lazy" src="${p.thumb}">`:"")
+      + (p.is_video?`<span class="ic">▶</span>`:(p.is_album?`<span class="ic">▦</span>`:""));
+    cell.onclick=()=>openLightbox(p);
+    g.appendChild(cell);
   }
+  c.innerHTML=""; c.appendChild(g);
 }
 
-/* ---------- Beiträge eines einzelnen Kontos anzeigen ---------- */
-async function loadPosts(){
-  const btn = $("q_btn");
-  btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Lädt …';
-  showMessage(""); $("all_btn").style.display = "none";
-  const u = encodeURIComponent($("q_user").value);
-  const c = $("q_count").value;
-  const {status, data} = await api(`/api/posts?username=${u}&count=${c}`);
-  btn.disabled = false; btn.textContent = "Anzeigen";
-  if(data.error){ $("grid").innerHTML=""; showMessage(data.error); return; }
-  const posts = data.posts || [];
-  if(posts.length === 0){ $("grid").innerHTML=""; showMessage("Keine Beiträge gefunden.", true); return; }
-  renderPosts(posts, false);
-  $("all_btn").style.display = "inline-block";
-  $("dl_hint").textContent = posts.length + " Beiträge von " + data.username +
-      " – bereits Heruntergeladenes ist grün markiert.";
-}
+/* ---------- Abo-Liste / Verwalten ---------- */
+let followList=[], followAvatar={};
+function toggleManage(){ const m=$("manage_panel"); m.style.display = m.style.display==="none"?"block":"none";
+  if(m.style.display==="block") m.scrollIntoView({behavior:"smooth"}); }
 
-/* ---------- Herunterladen ---------- */
-async function downloadOne(shortcode){
-  const btn = $("dl_"+shortcode);
-  if(!btn || btn.classList.contains("done")) return true;
-  btn.disabled = true; btn.innerHTML = '<span class="spin"></span>Lädt …';
-  const {data} = await api("/api/download",
-    {method:"POST", headers:{"Content-Type":"application/json"},
-     body: JSON.stringify({shortcode})});
-  btn.disabled = false;
-  if(data.ok){
-    btn.textContent = "✓ Auf PC"; btn.classList.add("done");
-    return true;
+async function loadFollowing(silent){
+  if(!loggedIn){ if(!silent) toast("Bitte zuerst anmelden.","err"); return; }
+  const b=$("fl_btn"); if(!silent){ b.disabled=true; b.innerHTML='<span class="spin"></span> …'; }
+  const {data}=await api("/api/following");
+  if(!silent){ b.disabled=false; b.textContent="Abo-Liste laden"; }
+  if(data.error){ if(!silent) toast(data.error,"err"); return; }
+  followList=data.accounts||[]; followAvatar={};
+  const dl=$("follwd"); dl.innerHTML="";
+  for(const a of followList){ if(a.avatar) followAvatar[a.username]=a.avatar;
+    const o=document.createElement("option"); o.value=a.username; dl.appendChild(o); }
+  renderStoriesRow();
+  const list=$("fl_list"); list.innerHTML="";
+  for(const a of followList){
+    const r=document.createElement("label"); r.className="rowflex"; r.style.padding="6px 4px";
+    r.dataset.u=a.username; r.dataset.s=((a.full_name||"")+" "+a.username).toLowerCase();
+    r.innerHTML=`<input type="checkbox" checked style="width:16px;height:16px">
+      ${a.avatar?`<img src="${a.avatar}" style="width:32px;height:32px;border-radius:50%">`:`<div class="ph" style="width:32px;height:32px;border-radius:50%;display:flex;align-items:center;justify-content:center;background:var(--bg2)">@</div>`}
+      <span style="flex:1"><b>${esc(a.full_name||a.username)}</b> <span class="hint" style="margin:0">@${esc(a.username)}</span></span>`;
+    list.appendChild(r);
   }
-  btn.textContent = "⬇ Erneut";
-  showMessage(data.error || "Download fehlgeschlagen.");
-  return false;
 }
+function selectedFollow(){ return [...document.querySelectorAll("#fl_list label")]
+  .filter(r=>r.querySelector("input").checked && r.style.display!=="none").map(r=>r.dataset.u); }
+function selectAllFollow(on){ document.querySelectorAll("#fl_list label").forEach(r=>{
+  if(r.style.display!=="none") r.querySelector("input").checked=on; }); }
+function filterFollow(){ const q=$("fl_filter").value.toLowerCase();
+  document.querySelectorAll("#fl_list label").forEach(r=>{ r.style.display=(!q||r.dataset.s.includes(q))?"flex":"none"; }); }
 
-async function downloadAll(){
-  const btn = $("all_btn");
-  btn.disabled = true;
-  let n = 0;
-  for(const p of currentPosts){
-    btn.innerHTML = `<span class="spin"></span>Lädt ${++n}/${currentPosts.length} …`;
-    // bewusst nacheinander, nicht parallel – schont die Server
-    await downloadOne(p.shortcode);
-  }
-  btn.disabled = false; btn.textContent = "⬇ Alle herunterladen";
+let bulkTimer=null;
+async function startBulk(){
+  const usernames=selectedFollow();
+  if(usernames.length===0){ toast("Bitte Konten auswählen.","err"); return; }
+  const since=$("bulk_since").value;
+  if(!confirm("Beiträge von "+usernames.length+" Konten"+(since?(" ab "+since):"")+" auf den PC laden?")) return;
+  const {data}=await api("/api/download-following",{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({usernames, count:$("bulk_count").value, since})});
+  if(data.error){ toast(data.error,"err"); return; }
+  $("bulk_btn").disabled=true; $("bulk_cancel").style.display="inline-block";
+  if(bulkTimer) clearInterval(bulkTimer);
+  bulkTimer=setInterval(pollBulk,1000); pollBulk();
 }
+async function pollBulk(){
+  const {data:st}=await api("/api/download-following/status");
+  $("bulk_text").textContent = `${st.done}/${st.total} Konten · ${st.downloaded} geladen`+(st.current&&st.running?` · @${st.current}`:"");
+  if(!st.running && st.finished){ clearInterval(bulkTimer); bulkTimer=null;
+    $("bulk_btn").disabled=false; $("bulk_cancel").style.display="none";
+    toast("Fertig: "+st.downloaded+" Beiträge geladen","ok"); }
+}
+async function cancelBulk(){ await api("/api/download-following/cancel",{method:"POST"}); }
+
+/* ---------- Tastatur / Scroll ---------- */
+document.addEventListener("keydown", e=>{
+  if($("lb").classList.contains("open")){
+    if(e.key==="Escape") closeLightbox();
+    if(e.key==="ArrowLeft") lbNav(-1);
+    if(e.key==="ArrowRight") lbNav(1);
+  }else if($("sv").classList.contains("open")){
+    if(e.key==="Escape") closeStory();
+    if(e.key==="ArrowLeft") storyNav(-1);
+    if(e.key==="ArrowRight") storyNav(1);
+  }
+});
+window.addEventListener("scroll", ()=>{ $("top").style.display = window.scrollY>600?"flex":"none"; });
 
 refreshStatus();
 </script>

@@ -75,10 +75,16 @@ Einrichtung (virtuelle Umgebung anlegen, Abhängigkeiten installieren)
 und startet danach die Anwendung. Ab dem zweiten Start geht es direkt
 los. Bitte nicht beide Oberflächen gleichzeitig laufen lassen.
 
-### Browser-Oberfläche
+### Browser-Oberfläche (Instagram-Stil)
 
 `start-web.bat` startet einen **lokalen** Server (nur auf deinem Rechner
-erreichbar, http://127.0.0.1:8756/) und öffnet den Browser:
+erreichbar, http://127.0.0.1:8756/) und öffnet den Browser. Die Oberfläche
+ist wie Instagram aufgebaut: obere Leiste mit Suche, **Stories-Reihe**
+(runde Ringe – antippen für den Story-Viewer), ein **Feed** deiner Abos,
+eine **Lightbox** (Vollbild, Album-Karussell, Videos), eine **Profil-
+Ansicht als 3-Spalten-Raster**, **Hell/Dunkel-Umschalter**, „Merken"
+(★) und Toast-Meldungen. Über das Zahnrad ⚙️ erreichst du „Verwalten"
+(Abo-Liste, Massen-Download, Feed-Einstellungen).
 
 1. Optional oben **anmelden**. Am zuverlässigsten ist **„Aus Browser
    übernehmen“**: Melde dich einmal in deinem normalen Browser bei

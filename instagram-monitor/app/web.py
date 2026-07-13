@@ -224,10 +224,15 @@ def create_app(
 
     def post_json(post: PostInfo, username: str) -> dict:
         """Serialisiert einen Beitrag für die Oberfläche (Feed & Einzelansicht)."""
+        ptype = post.post_type or ""
+        is_video = ("Video" in ptype) or ("Reel" in ptype)
+        is_album = ptype.startswith("Album")
         return {
             "shortcode": post.shortcode,
             "username": username,
-            "type": post.post_type,
+            "type": ptype,
+            "is_video": is_video,
+            "is_album": is_album,
             "posted_at": post.posted_at,
             "url": post.url,
             "caption": post.caption,
@@ -632,14 +637,66 @@ def create_app(
         except Exception:
             logger.debug("Medium %s nicht ladbar.", shortcode, exc_info=True)
             return Response("Medium konnte nicht geladen werden.", status=502)
+        # ?inline=1 → im Browser anzeigen (Feed/Lightbox); sonst als Download
+        # (Content-Disposition: attachment), damit "⤓ Gerät" wirklich speichert.
+        headers = {"Cache-Control": "private, max-age=3600"}
+        if request.args.get("inline") != "1":
+            headers["Content-Disposition"] = (
+                f"attachment; filename=\"{filename}\"; "
+                f"filename*=UTF-8''{quote(filename)}"
+            )
         return Response(
             upstream.iter_content(chunk_size=65536),
             mimetype=upstream.headers.get("Content-Type", "application/octet-stream"),
-            headers={
-                "Content-Disposition": f"attachment; filename=\"{filename}\"; "
-                                       f"filename*=UTF-8''{quote(filename)}",
-            },
+            headers=headers,
         )
+
+    @app.get("/api/album/<shortcode>")
+    def album(shortcode: str):
+        """Liefert die einzelnen Medien eines Albums (für das Karussell)."""
+        post = cache.get(shortcode)
+        if post is None:
+            return jsonify(error="Beitrag nicht bekannt – bitte neu laden."), 404
+        try:
+            items = downloader.media_urls(post)
+        except DownloaderError as exc:
+            return jsonify(error=str(exc)), 502
+        return jsonify(items=[
+            {
+                "i": index,
+                "is_video": filename.lower().endswith(".mp4"),
+                "media": f"/media/{shortcode}?i={index}&inline=1",
+                "download": f"/media/{shortcode}?i={index}",
+            }
+            for index, (url, filename) in enumerate(items)
+        ])
+
+    @app.get("/api/stories")
+    def stories_list():
+        """Listet die aktuellen Story-Elemente eines Kontos (Story-Ansicht)."""
+        if not downloader.is_logged_in:
+            return jsonify(error="Für Stories ist eine Anmeldung nötig."), 401
+        username = extract_username(request.args.get("username", ""))
+        if not username:
+            return jsonify(error="Bitte einen gültigen Benutzernamen eingeben."), 400
+        try:
+            items = downloader.list_story_items(username, "stories")
+        except LoginError as exc:
+            return jsonify(error=str(exc)), 401
+        except DownloaderError as exc:
+            return jsonify(error=str(exc)), 502
+        remember(items)
+        return jsonify(username=username, items=[
+            {
+                "shortcode": p.shortcode,
+                "is_video": ("Video" in (p.post_type or "")),
+                "posted_at": p.posted_at,
+                "media": f"/media/{p.shortcode}?inline=1",
+                "download": f"/media/{p.shortcode}",
+                "thumb": f"/thumb/{p.shortcode}" if p.thumbnail_url else "",
+            }
+            for p in items
+        ])
 
     @app.get("/thumb/<shortcode>")
     def thumb(shortcode: str):
