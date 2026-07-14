@@ -75,26 +75,10 @@ Einrichtung (virtuelle Umgebung anlegen, Abhängigkeiten installieren)
 und startet danach die Anwendung. Ab dem zweiten Start geht es direkt
 los. Bitte nicht beide Oberflächen gleichzeitig laufen lassen.
 
-### Browser-Oberfläche (Instagram-Stil)
+### Browser-Oberfläche
 
 `start-web.bat` startet einen **lokalen** Server (nur auf deinem Rechner
-erreichbar, http://127.0.0.1:8756/) und öffnet den Browser. Die Oberfläche
-ist wie Instagram aufgebaut: obere Leiste mit Suche, **Stories-Reihe**
-(runde Ringe – antippen für den Story-Viewer), ein **Feed** deiner Abos,
-eine **Lightbox** (Vollbild, Album-Karussell, Videos), eine **Profil-
-Ansicht als 3-Spalten-Raster**, **Hell/Dunkel-Umschalter**, „Merken"
-(★) und Toast-Meldungen. Über das Zahnrad ⚙️ erreichst du „Verwalten"
-(Abo-Liste, Massen-Download, Feed-Einstellungen).
-
-**Automatischer Download (Zeitplan):** Unter ⚙️ „Verwalten" →
-„⏰ Automatischer Download" kannst du festlegen, dass die App **täglich zu
-bestimmten Uhrzeiten** (Standard **12:00** und **00:00**) automatisch die
-neuesten Beiträge aller deiner Abos auf den PC lädt. Uhrzeiten lassen sich
-beliebig hinzufügen/entfernen, und „Beiträge je Konto" ist einstellbar.
-Voraussetzung: Die App muss laufen (PC an, Browser-Server geöffnet) und du
-musst angemeldet sein. Bereits Geladenes wird nicht erneut heruntergeladen.
-Tipp: Für einen dauerhaften Betrieb `start-web-handy.bat` einfach laufen
-lassen – dann läuft der Zeitplan im Hintergrund weiter.
+erreichbar, http://127.0.0.1:8756/) und öffnet den Browser:
 
 1. Optional oben **anmelden**. Am zuverlässigsten ist **„Aus Browser
    übernehmen“**: Melde dich einmal in deinem normalen Browser bei
@@ -102,43 +86,22 @@ lassen – dann läuft der Zeitplan im Hintergrund weiter.
    vermeidet den „Checkpoint“, den die direkte Passwort-Anmeldung von
    einem neuen Gerät oft auslöst. Alternativ Benutzername + Passwort
    (2FA wird unterstützt).
-2. **Feed öffnet automatisch:** Bist du angemeldet, lädt die Seite beim
-   Öffnen **von selbst** die neuesten Beiträge deiner Abos als einen
-   gemeinsamen Feed – ohne dass du einen Namen eingeben und „Anzeigen“
-   klicken musst. Oben stellst du ein, **wie viele Profile** (erste
-   10/20/50 oder alle) und **wie viele Beiträge je Profil** geladen
-   werden; die Wahl wird gemerkt. „Aktualisieren“ lädt neu. Jede Kachel
-   zeigt das jeweilige **@Konto**.
-3. Einzelnes Konto: Benutzernamen oder Instagram-Link eingeben →
-   **Anzeigen**.
-4. Bei jedem Foto/Video gibt es **„⤓ Gerät“** und **„⬇ Auf PC“**;
-   bereits Heruntergeladenes ist grün markiert.
-
-**Stories & Highlights** (nur mit Anmeldung): Im Bereich „Beiträge
-ansehen" gibt es neben der Suche die Knöpfe **„⬇ Stories"** und
-**„⬇ Highlights"**. Gib einen Benutzernamen ein und klicke darauf – die
-aktuellen Stories bzw. die dauerhaften Highlights des Kontos werden in
-denselben Konto-Ordner `downloads/<konto>/` geladen wie Fotos und Videos. Ein Fortschritt
-wird angezeigt; bereits Geladenes wird übersprungen. Bei privaten Konten
-funktioniert das nur, wenn du dem Konto folgst.
+2. Benutzernamen oder Instagram-Link eingeben → **Anzeigen**.
+3. Die Beiträge erscheinen als Bilder-Raster – bei jedem Foto/Video
+   gibt es **„⬇ Herunterladen“**, dazu **„⬇ Alle herunterladen“**.
+   Bereits Heruntergeladenes ist grün markiert.
 
 **Wenn du angemeldet bist**, erscheint zusätzlich der Bereich **„Meine
 Abonnements"**:
 
-- **„Liste laden"** zeigt alle Konten, denen du folgst – mit
-  **Profilbild, vollem Namen und @Name**. Über „Beiträge" siehst du die
-  Beiträge eines Kontos; das Suchfeld filtert die Liste.
-- **Auswählen:** Jede Zeile hat eine **Checkbox** (Standard: alle
-  ausgewählt). Mit „Alle auswählen"/„Keine" schnell umschalten.
-- **Datumsfilter:** Im Feld „nur Beiträge ab" ein Datum wählen – dann
-  werden nur Beiträge ab diesem Tag geladen (ältere übersprungen).
-- **„⬇ Ausgewählte auf PC laden"** lädt die neuesten Beiträge der
-  ausgewählten Konten in den PC-Ordner. „Beiträge je Konto" (1–12) legt
-  die Menge fest. Ein Fortschrittsbalken zeigt den Stand; „Abbrechen"
-  stoppt jederzeit.
-- **Kein Doppel-Download:** Bereits heruntergeladene Beiträge werden
-  automatisch übersprungen. Instagram drosselt große Mengen – die App
-  legt automatisch Pausen ein, daher kann es bei vielen Abos dauern.
+- **„Liste laden"** zeigt alle Konten, denen du folgst. Klicke einen
+  Namen an, um dessen Beiträge zu sehen.
+- **„⬇ Von allen Abos auf PC laden"** lädt die neuesten Beiträge *aller*
+  Konten, denen du folgst, in einem Rutsch in den PC-Ordner. Über das
+  Auswahlfeld legst du fest, wie viele Beiträge je Konto (1–12). Ein
+  Fortschrittsbalken zeigt den Stand; „Abbrechen" stoppt jederzeit.
+  Instagram drosselt große Mengen – die App legt automatisch Pausen ein,
+  daher kann es bei vielen Abos dauern.
 
 Bei jedem Beitrag gibt es zwei Download-Knöpfe:
 
