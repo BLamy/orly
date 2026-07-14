@@ -237,6 +237,8 @@ def create_app(
             "posted_at": post.posted_at,
             "url": post.url,
             "caption": post.caption,
+            "likes": getattr(post, "likes", 0),
+            "comments": getattr(post, "comments", 0),
             # Vorschaubild über unseren Proxy, nicht direkt vom CDN.
             "thumb": f"/thumb/{post.shortcode}" if post.thumbnail_url else "",
             # Direkter Geräte-Download (streamt an Handy/Browser).
@@ -550,20 +552,28 @@ def create_app(
             per = max(1, min(_MAX_COUNT, int(data.get("per", settings.feed_per))))
         except (TypeError, ValueError):
             per = settings.feed_per
-        # Wahl merken (gilt beim nächsten Öffnen).
+        # Seiten-Versatz für Endlos-Scroll (welche Profile-Seite laden).
+        try:
+            offset = max(0, int(data.get("offset", 0)))
+        except (TypeError, ValueError):
+            offset = 0
+        # Wahl merken (gilt beim nächsten Öffnen); Versatz wird nicht gemerkt.
         settings.feed_profiles = profiles
         settings.feed_per = per
 
         try:
-            usernames = downloader.following_usernames()
+            all_usernames = downloader.following_usernames()
         except LoginError as exc:
             return jsonify(error=str(exc)), 401
         except DownloaderError as exc:
             return jsonify(error=str(exc)), 502
+        followees_total = len(all_usernames)
         if profiles > 0:
-            usernames = usernames[:profiles]
+            usernames = all_usernames[offset:offset + profiles]
+        else:
+            usernames = all_usernames[offset:]
         if not usernames:
-            return jsonify(ok=True, total=0)
+            return jsonify(ok=True, total=0, followees_total=followees_total)
 
         feed.reset()
         feed.update(running=True, total=len(usernames))
@@ -594,7 +604,9 @@ def create_app(
         thread = threading.Thread(target=worker, name="feed-build", daemon=True)
         feed.thread = thread
         thread.start()
-        return jsonify(ok=True, total=len(usernames))
+        return jsonify(ok=True, total=len(usernames),
+                       followees_total=followees_total,
+                       next_offset=offset + len(usernames))
 
     @app.get("/api/feed/status")
     def feed_status():

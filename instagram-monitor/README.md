@@ -86,6 +86,12 @@ Ansicht als 3-Spalten-Raster**, **Hell/Dunkel-Umschalter**, „Merken"
 (★) und Toast-Meldungen. Über das Zahnrad ⚙️ erreichst du „Verwalten"
 (Abo-Liste, Massen-Download, Feed-Einstellungen, Abmelden).
 
+**Endlos-Scroll:** Der Feed lädt weitere Abos automatisch nach, sobald du
+nach unten scrollst (in Seiten, so bleibt es schnell). **Likes &
+Kommentare** werden je Beitrag angezeigt. **▶ Reels** öffnet einen
+Vollbild-Video-Feed (vertikal wischen, Tippen für Ton/Pause). Auf dem
+Handy: **nach unten ziehen aktualisiert** den Feed (Pull-to-Refresh).
+
 **Als App aufs Handy:** Die Seite ist eine PWA – im Browser-Menü des
 Handys „Zum Startbildschirm hinzufügen" wählen, dann startet sie wie eine
 echte App im Vollbild. Weitere Extras: **Filterleiste** (Fotos / Videos /

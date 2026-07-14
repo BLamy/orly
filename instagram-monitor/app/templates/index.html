@@ -95,7 +95,8 @@
   .actions .saved{color:var(--accent)}
   .actions .done{color:var(--ok)}
   .actions .sp{flex:1}
-  .cap{padding:0 14px 12px}
+  .stats{padding:2px 14px 0; font-weight:600; font-size:13px}
+  .cap{padding:6px 14px 12px}
   .cap .u{font-weight:600; margin-right:6px}
   .cap .more{color:var(--muted); cursor:pointer}
   .cap.clamp .txt{display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
@@ -147,6 +148,22 @@
   .ov .dlrow a,.ov .dlrow button{background:#fff2; color:#fff; border-radius:8px; padding:7px 12px; font-size:13px}
 
   /* Toasts */
+  /* Reels-Vollbild */
+  .reelsov{position:fixed; inset:0; z-index:55; background:#000; display:none}
+  .reelsov.open{display:block}
+  #reels_track{height:100%; overflow-y:auto; scroll-snap-type:y mandatory; -webkit-overflow-scrolling:touch}
+  .reel{height:100%; scroll-snap-align:start; position:relative; display:flex; align-items:center; justify-content:center}
+  .reel video{max-height:100%; max-width:100%; width:100%; object-fit:contain; background:#000}
+  .reel .info{position:absolute; left:16px; right:70px; bottom:40px; color:#fff; text-shadow:0 1px 4px #000}
+  .reel .info .u{font-weight:700; font-size:16px; cursor:pointer}
+  .reel .info .cp{font-size:13px; margin-top:6px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
+  .reel .side{position:absolute; right:12px; bottom:60px; display:flex; flex-direction:column; gap:18px; align-items:center; color:#fff}
+  .reel .side button,.reel .side a{color:#fff; font-size:26px; text-align:center}
+  .reel .side small{display:block; font-size:11px; margin-top:2px}
+  .reel .muted{position:absolute; top:16px; left:16px; background:#0007; color:#fff; padding:4px 10px; border-radius:20px; font-size:12px}
+  #ptr{position:fixed; top:0; left:0; right:0; z-index:45; text-align:center; padding:12px;
+       color:var(--muted); background:var(--bg2); transform:translateY(-100%); transition:transform .15s; font-size:13px}
+  #ptr.show{transform:translateY(0)}
   #toasts{position:fixed; left:0; right:0; bottom:20px; z-index:60; display:flex;
           flex-direction:column; align-items:center; gap:8px; pointer-events:none}
   .toast{background:#222; color:#fff; padding:11px 18px; border-radius:10px; font-size:13.5px;
@@ -302,6 +319,7 @@
     <button class="chip" data-f="photo" onclick="setFilter('photo',this)">Fotos</button>
     <button class="chip" data-f="video" onclick="setFilter('video',this)">Videos/Reels</button>
     <button class="chip" data-f="album" onclick="setFilter('album',this)">Alben</button>
+    <button class="chip" onclick="openReels()">▶ Reels</button>
     <button class="chip" onclick="downloadFeedToPC()">⬇ Alle auf PC</button>
   </div>
 
@@ -317,6 +335,15 @@
   <button id="nav_saved" title="Gespeichert" onclick="showSaved()">🔖</button>
   <button id="nav_manage" title="Verwalten" onclick="toggleManage()">⚙️</button>
 </nav>
+
+<!-- Reels-Vollbild-Feed -->
+<div class="reelsov" id="reels">
+  <button class="close" onclick="closeReels()" style="position:fixed;top:12px;right:16px;font-size:30px;color:#fff;z-index:3">✕</button>
+  <div id="reels_track"></div>
+</div>
+
+<!-- Pull-to-refresh-Anzeige -->
+<div id="ptr">↓ Zum Aktualisieren loslassen</div>
 
 <!-- Hilfe -->
 <div class="ov" id="help">
@@ -362,6 +389,8 @@
 "use strict";
 const $ = id => document.getElementById(id);
 const esc = s => { const d=document.createElement("div"); d.textContent=s??""; return d.innerHTML; };
+const fmt = n => { n=+n||0; return n>=1e6 ? (n/1e6).toFixed(1).replace(".",",")+" Mio."
+  : n>=1e4 ? (n/1e3).toFixed(1).replace(".",",")+" Tsd." : n.toLocaleString("de-DE"); };
 
 /* ---------- Grundlagen ---------- */
 async function api(path, opts){
@@ -485,6 +514,7 @@ async function logout(){ await api("/api/logout",{method:"POST"}); location.relo
 
 /* ---------- Feed ---------- */
 let feedTimer=null, viewMode="feed";
+let feedCommitted=[], feedOffset=0, feedTotal=1e9, feedLoading=false, feedObserver=null;
 function showFeed(){ startFeed(); }
 
 async function startFeed(){
@@ -492,21 +522,51 @@ async function startFeed(){
   if(loggedIn){ $("stories_row").style.display="flex"; $("filterbar").style.display="flex"; }
   if(!loggedIn){ $("filterbar").style.display="none";
     renderEmpty("Melde dich an, um den Feed deiner Abos zu sehen. Oder suche oben ein öffentliches Konto."); return; }
+  feedCommitted=[]; feedOffset=0; feedTotal=1e9; feedLoading=false;
   showSkeleton();
-  const {data}=await api("/api/feed/start",{method:"POST",headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({profiles:$("feed_profiles").value, per:$("feed_per").value})});
-  if(data.error){ toast(data.error,"err"); renderEmpty(data.error); return; }
-  if(data.total===0){ renderEmpty("Du folgst noch keinem Konto."); return; }
-  if(feedTimer) clearInterval(feedTimer);
-  feedTimer=setInterval(pollFeed,1200); pollFeed();
+  await loadFeedPage(true);
+  setupFeedObserver();
 }
-async function pollFeed(){
-  const {data:st}=await api("/api/feed/status");
-  if(viewMode!=="feed"){ if(!st.running){clearInterval(feedTimer);} return; }
-  renderFeed(st.items||[]);
-  if(!st.running && st.finished){ clearInterval(feedTimer); feedTimer=null;
-    if((st.items||[]).length===0) renderEmpty("Keine Beiträge gefunden (evtl. gerade gedrosselt).");
-    if(st.error) toast(st.error,"err"); }
+
+async function loadFeedPage(first){
+  if(feedLoading) return;
+  if(!first && feedOffset>=feedTotal) return;
+  feedLoading=true;
+  if(!first) $("more").innerHTML='<span class="spin"></span>';
+  const {data}=await api("/api/feed/start",{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({profiles:$("feed_profiles").value, per:$("feed_per").value, offset:feedOffset})});
+  if(data.error){ feedLoading=false; $("more").innerHTML="";
+    if(feedCommitted.length===0) renderEmpty(data.error); toast(data.error,"err"); return; }
+  if(data.followees_total!==undefined) feedTotal=data.followees_total;
+  if(data.total===0){ feedLoading=false; feedOffset=feedTotal;
+    $("more").innerHTML = feedCommitted.length ? '<div class="hint">Ende des Feeds</div>' : "";
+    if(feedCommitted.length===0) renderEmpty("Du folgst noch keinem Konto."); return; }
+  await pollFeedPage();
+  feedOffset = (data.next_offset!==undefined) ? data.next_offset : (feedOffset + data.total);
+  feedLoading=false;
+  $("more").innerHTML = feedOffset>=feedTotal ? '<div class="hint">Ende des Feeds</div>' : "";
+}
+
+function pollFeedPage(){
+  return new Promise(resolve=>{
+    const t=setInterval(async ()=>{
+      const {data:st}=await api("/api/feed/status");
+      if(viewMode!=="feed"){ clearInterval(t); resolve(); return; }
+      renderFeed(feedCommitted.concat(st.items||[]));
+      if(!st.running && st.finished){ clearInterval(t);
+        feedCommitted=feedCommitted.concat(st.items||[]); resolve(); }
+    },1000);
+  });
+}
+
+function setupFeedObserver(){
+  if(feedObserver) feedObserver.disconnect();
+  feedObserver=new IntersectionObserver(es=>{
+    if(es[0].isIntersecting && viewMode==="feed" && !feedLoading && feedOffset<feedTotal){
+      loadFeedPage(false);
+    }
+  },{rootMargin:"500px"});
+  feedObserver.observe($("more"));
 }
 function showSkeleton(){
   $("content").innerHTML = '<div class="sk sk-post"></div><div class="sk sk-post"></div>';
@@ -591,6 +651,7 @@ function postCard(p){
       <span class="sp"></span>
       <button class="a-save ${saved?'saved':''}" title="Merken">${saved?'★':'☆'}</button>
     </div>
+    ${(p.likes||p.comments) ? `<div class="stats">${p.likes?('❤ '+fmt(p.likes)+' „Gefällt mir“'):''}${p.likes&&p.comments?' · ':''}${p.comments?('💬 '+fmt(p.comments)+' Kommentare'):''}</div>` : ""}
     ${p.caption ? `<div class="cap clamp"><span class="u">@${esc(p.username)}</span><span class="txt">${linkify(p.caption)}</span> <span class="more">… mehr</span></div>` : ""}
   `;
   const media=el.querySelector(".media");
@@ -705,6 +766,63 @@ function storyNav(d){
   else drawStory();
 }
 function closeStory(){ clearTimeout(svTimer); $("sv").classList.remove("open"); $("sv_stage").innerHTML=""; }
+
+/* ---------- Reels-Vollbild-Feed ---------- */
+let reelsObserver=null;
+function openReels(){
+  const vids=(feedPosts||[]).filter(p=>p.is_video);
+  if(vids.length===0){ toast("Keine Videos/Reels im aktuellen Feed.","ok"); return; }
+  const track=$("reels_track"); track.innerHTML="";
+  for(const p of vids){
+    const slide=document.createElement("div"); slide.className="reel";
+    slide.innerHTML=`
+      <video src="/media/${p.shortcode}?inline=1" loop muted playsinline preload="metadata"></video>
+      <div class="muted">🔇 tippen für Ton</div>
+      <div class="info"><span class="u">@${esc(p.username)}</span><div class="cp">${esc(p.caption||"")}</div></div>
+      <div class="side">
+        <div>❤<small>${fmt(p.likes||0)}</small></div>
+        <div>💬<small>${fmt(p.comments||0)}</small></div>
+        <a href="/media/${p.shortcode}" title="Auf Gerät">⤓</a>
+        <button class="rpc" title="Auf PC">⬇</button>
+      </div>`;
+    const v=slide.querySelector("video");
+    slide.querySelector(".muted").onclick=()=>{ v.muted=!v.muted; slide.querySelector(".muted").textContent=v.muted?"🔇 tippen für Ton":"🔊 Ton an"; if(!v.muted) v.play(); };
+    v.onclick=()=>{ v.paused?v.play():v.pause(); };
+    slide.querySelector(".u").onclick=()=>{ closeReels(); openProfile(p.username); };
+    slide.querySelector(".rpc").onclick=(e)=>pcDownload(p.shortcode, e.currentTarget);
+    track.appendChild(slide);
+  }
+  $("reels").classList.add("open");
+  if(reelsObserver) reelsObserver.disconnect();
+  reelsObserver=new IntersectionObserver(es=>{
+    es.forEach(en=>{ const v=en.target.querySelector("video");
+      if(!v) return; if(en.isIntersecting){ v.play().catch(()=>{}); } else { v.pause(); } });
+  },{threshold:0.6});
+  track.querySelectorAll(".reel").forEach(r=>reelsObserver.observe(r));
+  // erstes Video starten
+  const first=track.querySelector("video"); if(first) first.play().catch(()=>{});
+}
+function closeReels(){
+  $("reels").classList.remove("open");
+  if(reelsObserver) reelsObserver.disconnect();
+  $("reels_track").querySelectorAll("video").forEach(v=>v.pause());
+  $("reels_track").innerHTML="";
+}
+
+/* ---------- Pull-to-Refresh (Handy) ---------- */
+let ptrStart=null;
+window.addEventListener("touchstart", e=>{ if(window.scrollY<=0 && viewMode==="feed") ptrStart=e.touches[0].clientY; else ptrStart=null; }, {passive:true});
+window.addEventListener("touchmove", e=>{
+  if(ptrStart===null) return;
+  const dy=e.touches[0].clientY-ptrStart;
+  if(dy>60){ $("ptr").classList.add("show"); } else { $("ptr").classList.remove("show"); }
+}, {passive:true});
+window.addEventListener("touchend", e=>{
+  if(ptrStart!==null && $("ptr").classList.contains("show")){
+    $("ptr").classList.remove("show"); toast("Aktualisiere …"); startFeed();
+  }
+  ptrStart=null;
+}, {passive:true});
 
 /* ---------- Profil-Ansicht (Raster) ---------- */
 let profileName="", profileCount=24;

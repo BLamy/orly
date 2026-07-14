@@ -121,6 +121,8 @@ class PostInfo:
     # Für die Web-Oberfläche (best effort, kann leer sein):
     thumbnail_url: str = ""  # Vorschaubild-URL (Instagram-CDN)
     caption: str = ""        # Anfang der Bildunterschrift
+    likes: int = 0           # Anzahl Likes (0 wenn unbekannt)
+    comments: int = 0        # Anzahl Kommentare (0 wenn unbekannt)
 
     # Das originale Instaloader-Post-Objekt (nur intern; spart beim
     # Download eine erneute Netzanfrage). Von Vergleich/Repr ausgenommen.
@@ -641,9 +643,17 @@ class InstagramDownloader:
                     except Exception:
                         thumbnail = ""
                     try:
-                        caption = (post.caption or "")[:140]
+                        caption = (post.caption or "")[:280]
                     except Exception:
                         caption = ""
+                    try:
+                        likes = int(post.likes)
+                    except Exception:
+                        likes = 0
+                    try:
+                        comments = int(post.comments)
+                    except Exception:
+                        comments = 0
                     collected.append(
                         PostInfo(
                             shortcode=post.shortcode,
@@ -653,6 +663,8 @@ class InstagramDownloader:
                             url=f"https://www.instagram.com/p/{post.shortcode}/",
                             thumbnail_url=thumbnail,
                             caption=caption,
+                            likes=likes,
+                            comments=comments,
                             raw=post,
                         )
                     )
