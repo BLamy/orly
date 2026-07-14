@@ -161,6 +161,14 @@
       font-size:13px; text-shadow:0 1px 3px #000}
   .ov .dlrow{position:absolute; top:14px; left:16px; display:flex; gap:8px; z-index:2}
   .ov .dlrow a,.ov .dlrow button{background:#fff2; color:#fff; border-radius:8px; padding:7px 12px; font-size:13px}
+  .sheet{position:absolute; left:0; right:0; bottom:0; max-height:50vh; overflow:auto;
+        background:var(--bg2); border-top-left-radius:16px; border-top-right-radius:16px;
+        padding:16px; transform:translateY(101%); transition:transform .25s; z-index:3}
+  .sheet.open{transform:translateY(0)}
+  .sheet h4{margin-bottom:10px; display:flex; justify-content:space-between}
+  .cmt{display:flex; gap:10px; padding:7px 0; border-bottom:1px solid var(--border)}
+  .cmt .cu{font-weight:600; margin-right:6px}
+  .cmt .cl{color:var(--muted); font-size:12px; margin-top:2px}
 
   /* Toasts */
   /* Reels-Vollbild */
@@ -371,6 +379,8 @@
       • Doppelklick/-tipp auf ein Bild → merken (Herz)<br>
       • In Lightbox/Story: ← → blättern, Esc schließen<br>
       • 🔖 Gespeichert · 🔍 Suchen · ⚙️ Verwalten · 🌙 Hell/Dunkel<br>
+      • In der Lightbox: 💬 zeigt Kommentare<br>
+      • Suche: „#reisen" zeigt Beiträge zum Hashtag (Entdecken)<br>
       • „?" öffnet diese Hilfe<br>
       • Auf dem Handy: über das Browser-Menü „Zum Startbildschirm hinzufügen"
         → läuft dann wie eine App.
@@ -387,6 +397,7 @@
   <div class="stage" id="lb_stage"></div>
   <div class="dots" id="lb_dots"></div>
   <div class="cap2" id="lb_cap"></div>
+  <div class="sheet" id="lb_cmts"></div>
 </div>
 
 <!-- Story-Viewer -->
@@ -728,10 +739,28 @@ function drawLightbox(){
   $("lb_r").style.display = multi ? "block":"none";
   $("lb_dots").innerHTML = multi ? lbItems.map((_,i)=>'<i class="'+(i===lbIndex?'on':'')+'"></i>').join("") : "";
   $("lb_dl").innerHTML = `<a href="${it.download}" title="Auf dieses Gerät">⤓ Gerät</a>`
-    + `<button onclick="pcDownloadFromLb()" title="Auf den PC">⬇ PC</button>`;
+    + `<button onclick="pcDownloadFromLb()" title="Auf den PC">⬇ PC</button>`
+    + `<button onclick="toggleComments()" title="Kommentare">💬</button>`;
 }
 function lbNav(d){ lbIndex=(lbIndex+d+lbItems.length)%lbItems.length; drawLightbox(); }
-function closeLightbox(){ $("lb").classList.remove("open"); $("lb_stage").innerHTML=""; }
+function closeLightbox(){ $("lb").classList.remove("open"); $("lb_stage").innerHTML="";
+  $("lb_cmts").classList.remove("open"); $("lb_cmts").innerHTML=""; }
+async function toggleComments(){
+  const sheet=$("lb_cmts");
+  if(sheet.classList.contains("open")){ sheet.classList.remove("open"); return; }
+  sheet.innerHTML='<div class="empty"><span class="spin"></span></div>'; sheet.classList.add("open");
+  const {data}=await api("/api/comments/"+lbPost.shortcode);
+  if(!$("lb").classList.contains("open")) return;
+  if(data.error){ sheet.innerHTML='<h4>Kommentare <button onclick="toggleComments()">✕</button></h4><div class="hint">'+esc(data.error)+'</div>'; return; }
+  const cs=data.comments||[];
+  let html='<h4>Kommentare ('+cs.length+') <button onclick="toggleComments()">✕</button></h4>';
+  if(cs.length===0) html+='<div class="hint">Keine Kommentare.</div>';
+  for(const c of cs){
+    html+='<div class="cmt"><div><span class="cu">@'+esc(c.username)+'</span>'+linkify(c.text)
+      +'<div class="cl">'+timeAgo(c.posted_at)+(c.likes?(' · '+fmt(c.likes)+' ❤'):'')+'</div></div></div>';
+  }
+  sheet.innerHTML=html;
+}
 function pcDownloadFromLb(){ if(lbPost) pcDownload(lbPost.shortcode); }
 
 /* ---------- Stories ---------- */
@@ -884,32 +913,66 @@ function renderProfileHeader(info){
     </div>`;
   if(isOwn){ const f1=$("pf_followers"), f2=$("pf_following");
     if(f1) f1.onclick=showFollowers; if(f2) f2.onclick=showFollowing; }
+  else pushRecent({username:info.username, full_name:info.full_name, avatar:info.avatar});
 }
 function showMe(){ if(!loggedIn){ toast("Bitte zuerst anmelden."); scrollToLogin(); return; } openProfile(currentUser); }
 
-/* ---------- Suche ---------- */
+/* ---------- Suche & Entdecken ---------- */
+const EXPLORE=["reisen","natur","food","kunst","musik","sport","fashion","auto"];
 function showSearch(){
   viewMode="search"; setNav("nav_search");
   if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
   $("stories_row").style.display="none"; $("filterbar").style.display="none";
   $("pf_head").style.display="none"; $("more").innerHTML="";
-  $("content").innerHTML = '<div class="searchbox"><input id="sq" placeholder="Konten suchen …" autocomplete="off"></div><div id="sresults"><div class="hint">Tippe einen Namen ein.</div></div>';
+  $("content").innerHTML = '<div class="searchbox"><input id="sq" placeholder="Konten oder #Hashtag suchen …" autocomplete="off"></div><div id="sresults"></div>';
+  renderSearchStart();
   const inp=$("sq"); inp.focus();
   let t=null;
-  inp.oninput=()=>{ clearTimeout(t); t=setTimeout(()=>doSearch(inp.value),400); };
+  inp.oninput=()=>{ clearTimeout(t); const v=inp.value; t=setTimeout(()=>{ v.trim()?doSearch(v):renderSearchStart(); },400); };
   inp.onkeydown=(e)=>{ if(e.key==='Enter'){ clearTimeout(t); doSearch(inp.value); } };
 }
+function renderSearchStart(){
+  const box=$("sresults"); if(!box) return;
+  const rec=recentViewed();
+  let html='<div class="filterbar" style="padding-top:8px">'
+    + EXPLORE.map(t=>`<button class="chip" onclick="searchTag('${t}')">#${t}</button>`).join("")+'</div>';
+  if(rec.length){ html+='<div class="hint" style="margin:12px 4px 4px">Zuletzt angesehen</div><div id="recent"></div>'; }
+  box.innerHTML=html;
+  if(rec.length){ const rc=$("recent"); rec.forEach(a=>rc.appendChild(accountRow(a))); }
+}
+function searchTag(t){ const inp=$("sq"); if(inp) inp.value="#"+t; doSearch("#"+t); }
 async function doSearch(q){
   q=(q||"").trim();
   if(!$("sresults")) return;
-  if(q.length<2){ $("sresults").innerHTML='<div class="hint">Mindestens 2 Zeichen.</div>'; return; }
+  if(q[0]==="#"){ return doHashtag(q.slice(1)); }
+  if(q.length<2){ renderSearchStart(); return; }
   $("sresults").innerHTML='<div class="empty"><span class="spin"></span></div>';
   const {data}=await api("/api/search?q="+encodeURIComponent(q));
   if(!$("sresults")) return;
   if(data.error){ $("sresults").innerHTML='<div class="hint">'+esc(data.error)+'</div>'; return; }
   const rs=data.results||[];
-  if(rs.length===0){ $("sresults").innerHTML='<div class="hint">Keine Treffer.</div>'; return; }
+  if(rs.length===0){ $("sresults").innerHTML='<div class="hint">Keine Treffer. Für Hashtags „#" davor setzen.</div>'; return; }
   $("sresults").innerHTML=""; rs.forEach(a=>$("sresults").appendChild(accountRow(a)));
+}
+async function doHashtag(tag){
+  tag=(tag||"").trim().replace(/^#/,""); if(tag.length<2){ $("sresults").innerHTML='<div class="hint">Hashtag zu kurz.</div>'; return; }
+  $("sresults").innerHTML='<div class="empty"><span class="spin"></span></div>';
+  const {data}=await api("/api/hashtag/"+encodeURIComponent(tag)+"?count=24");
+  if(!$("sresults")) return;
+  if(data.error){ $("sresults").innerHTML='<div class="hint">'+esc(data.error)+'</div>'; return; }
+  const posts=data.posts||[];
+  if(posts.length===0){ $("sresults").innerHTML='<div class="hint">Nichts zu #'+esc(tag)+' gefunden.</div>'; return; }
+  $("sresults").innerHTML='<div class="hint" style="margin:4px">Neueste Beiträge zu #'+esc(tag)+'</div><div id="hgrid"></div>';
+  renderGrid(posts, $("hgrid"));
+}
+
+/* zuletzt angesehene Profile (lokal) */
+function recentViewed(){ try{ return JSON.parse(localStorage.getItem("igm_recent")||"[]"); }catch(e){ return []; } }
+function pushRecent(a){
+  if(!a || !a.username) return;
+  let r=recentViewed().filter(x=>x.username!==a.username);
+  r.unshift({username:a.username, full_name:a.full_name||"", avatar:a.avatar||""});
+  try{ localStorage.setItem("igm_recent", JSON.stringify(r.slice(0,12))); }catch(e){}
 }
 function accountRow(a){
   const r=document.createElement("div"); r.className="acctrow";
@@ -937,8 +1000,8 @@ async function showAccountList(url,title){
   if(accts.length===0){ renderEmpty("Niemand hier."); return; }
   $("content").innerHTML=""; accts.forEach(a=>$("content").appendChild(accountRow(a)));
 }
-function renderGrid(posts){
-  const c=$("content"); c.className="";
+function renderGrid(posts, container){
+  const c=container||$("content"); if(!container) c.className="";
   const g=document.createElement("div"); g.className="grid";
   for(const p of posts){
     const cell=document.createElement("div"); cell.className="cell";

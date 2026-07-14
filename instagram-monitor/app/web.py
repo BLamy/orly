@@ -757,6 +757,37 @@ def create_app(
             headers=headers,
         )
 
+    @app.get("/api/comments/<shortcode>")
+    def comments(shortcode: str):
+        post = cache.get(shortcode)
+        if post is None:
+            return jsonify(error="Beitrag nicht bekannt – bitte neu laden."), 404
+        try:
+            items = downloader.get_comments(post, limit=15)
+        except LoginError as exc:
+            return jsonify(error=str(exc)), 401
+        except DownloaderError as exc:
+            return jsonify(error=str(exc)), 502
+        return jsonify(comments=items)
+
+    @app.get("/api/hashtag/<tag>")
+    def hashtag(tag: str):
+        try:
+            count = max(1, min(_MAX_COUNT, int(request.args.get("count", 24))))
+        except (TypeError, ValueError):
+            count = 24
+        try:
+            items = downloader.hashtag_posts(tag, limit=count)
+        except ProfileNotFound as exc:
+            return jsonify(error=str(exc)), 404
+        except TemporaryError as exc:
+            return jsonify(error=str(exc)), 502
+        except DownloaderError as exc:
+            return jsonify(error=str(exc)), 502
+        remember(items)
+        return jsonify(tag=tag.strip().lstrip("#").lower(),
+                       posts=[post_json(p, p.username) for p in items])
+
     @app.get("/api/album/<shortcode>")
     def album(shortcode: str):
         """Liefert die einzelnen Medien eines Albums (für das Karussell)."""

@@ -95,6 +95,11 @@ anklickbar und zeigen die jeweilige Liste. Folgst du jemandem neu, taucht
 das Konto **automatisch** in Stories/Suche/Feed auf (die Abo-Liste wird
 beim Zurückkehren zur App und regelmäßig im Hintergrund aktualisiert).
 
+**Kommentare & Entdecken:** In der Vollbild-Ansicht eines Beitrags zeigt
+**💬** die neuesten Kommentare. In der **Suche** findest du mit „#reisen"
+o. Ä. die neuesten Beiträge zu einem **Hashtag** (Entdecken), dazu
+Vorschlags-Chips und eine Liste **zuletzt angesehener** Profile.
+
 **Endlos-Scroll:** Der Feed lädt weitere Abos automatisch nach, sobald du
 nach unten scrollst (in Seiten, so bleibt es schnell). **Likes &
 Kommentare** werden je Beitrag angezeigt. **▶ Reels** öffnet einen

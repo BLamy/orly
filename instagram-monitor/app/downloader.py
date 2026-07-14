@@ -911,6 +911,74 @@ class InstagramDownloader:
             except InstaloaderException as exc:
                 raise TemporaryError(f"Follower nicht abrufbar: {exc}") from exc
 
+    def get_comments(self, post_info: PostInfo, limit: int = 15) -> list[dict]:
+        """Liefert die neuesten Kommentare eines Beitrags (erfordert Anmeldung)."""
+        if not self.is_logged_in:
+            raise LoginError("Für Kommentare ist eine Anmeldung nötig.")
+        post = post_info.raw
+        with self._lock:
+            try:
+                if post is None:
+                    post = instaloader.Post.from_shortcode(
+                        self._loader.context, post_info.shortcode
+                    )
+                out: list[dict] = []
+                for comment in post.get_comments():
+                    try:
+                        owner = comment.owner.username
+                    except Exception:
+                        owner = ""
+                    try:
+                        posted = comment.created_at_utc.isoformat(timespec="seconds")
+                    except Exception:
+                        posted = ""
+                    out.append({
+                        "username": owner,
+                        "text": (comment.text or "")[:600],
+                        "likes": int(getattr(comment, "likes_count", 0) or 0),
+                        "posted_at": posted,
+                    })
+                    if len(out) >= limit:
+                        break
+                return out
+            except LoginRequiredException as exc:
+                raise LoginError("Anmeldung nicht mehr gültig.") from exc
+            except ConnectionException as exc:
+                raise TemporaryError(f"Kommentare nicht abrufbar: {exc}") from exc
+            except InstaloaderException as exc:
+                raise TemporaryError(f"Kommentare nicht abrufbar: {exc}") from exc
+
+    def hashtag_posts(self, tag: str, limit: int = 24) -> list[PostInfo]:
+        """Neueste öffentliche Beiträge zu einem Hashtag (für „Entdecken“)."""
+        tag = (tag or "").strip().lstrip("#").lower()
+        if not tag:
+            return []
+        with self._lock:
+            try:
+                hashtag = instaloader.Hashtag.from_name(self._loader.context, tag)
+                collected: list[PostInfo] = []
+                for post in islice(hashtag.get_posts(), limit):
+                    try:
+                        thumbnail = post.url or ""
+                    except Exception:
+                        thumbnail = ""
+                    collected.append(PostInfo(
+                        shortcode=post.shortcode,
+                        username=post.owner_username,
+                        post_type=_classify_post(post),
+                        posted_at=post.date_utc.isoformat(timespec="seconds"),
+                        url=f"https://www.instagram.com/p/{post.shortcode}/",
+                        thumbnail_url=thumbnail,
+                        raw=post,
+                    ))
+                return collected
+            except ProfileNotExistsException as exc:
+                raise ProfileNotFound(f"Hashtag #{tag} nicht gefunden.") from exc
+            except ConnectionException as exc:
+                raise TemporaryError(f"Hashtag-Beiträge nicht abrufbar: {exc}") from exc
+            except InstaloaderException as exc:
+                raise TemporaryError(f"Hashtag #{tag}: {exc}") from exc
+
     def search_profiles(self, query: str, limit: int = 12) -> list[dict]:
         """Sucht Konten nach Namen (Instagram-Top-Suche)."""
         query = (query or "").strip().lstrip("@")
