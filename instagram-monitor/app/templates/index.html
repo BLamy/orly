@@ -156,10 +156,11 @@
 <header>
   <div class="nav">
     <div class="logo" onclick="showFeed()" style="cursor:pointer">Instagram Monitor</div>
-    <div class="search">
-      <input id="q_user" list="follwd" placeholder="Suchen (Name oder Link) …"
+    <div class="search" style="display:flex; align-items:center; gap:6px">
+      <input id="q_user" list="follwd" placeholder="Suchen (Name oder Link) …" style="flex:1"
              onkeydown="if(event.key==='Enter')openProfile($('q_user').value)">
       <datalist id="follwd"></datalist>
+      <button class="iconbtn" title="Suchen" onclick="openProfile($('q_user').value)">🔍</button>
     </div>
     <div class="right">
       <button class="iconbtn" title="Aktualisieren" onclick="startFeed()">⟳</button>
@@ -361,8 +362,13 @@ async function refreshStatus(){
         $("feed_profiles").value = String(fs.data.profiles);
         $("feed_per").value = String(fs.data.per);
       }
-      loadFollowing(true);   // still, für Stories-Reihe + Suchvorschläge
-      startFeed();
+      // KEIN automatischer Feed: nur die Gefolgt-Liste anzeigen –
+      // du wählst selbst, was geladen wird. Suche erst auf 🔍/Enter.
+      $("manage_panel").style.display = "block";
+      renderEmpty("Kein automatisches Laden. Wähle oben in der Abo-Liste deine "
+        +"Gefolgten – oder gib oben einen Namen ein und drücke 🔍. "
+        +"Der Feed lädt nur über den ⟳-Knopf.");
+      loadFollowing();
     }
   }else{
     $("stories_row").style.display = "none";
