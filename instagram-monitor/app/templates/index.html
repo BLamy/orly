@@ -362,6 +362,9 @@
     <button class="chip" onclick="downloadFeedToPC()">⬇ Alle auf PC</button>
   </div>
 
+  <!-- Unterleiste (z. B. Sammlungs-Chips in „Gespeichert") -->
+  <div id="subbar"></div>
+
   <!-- Feed / Raster -->
   <div id="content"></div>
   <div id="more" style="text-align:center; margin:10px 0"></div>
@@ -385,10 +388,7 @@
 <!-- Auswahl-Leiste (Mehrfachauswahl im Raster) -->
 <div id="selbar">
   <span id="selcount">0 ausgewählt</span>
-  <span style="display:flex;gap:8px">
-    <button class="btn" onclick="downloadSelected()">⬇ Auf PC</button>
-    <button class="btn ghost" onclick="cancelSelect()">Abbrechen</button>
-  </span>
+  <span id="selactions" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end"></span>
 </div>
 
 <!-- Pull-to-refresh-Anzeige -->
@@ -578,7 +578,7 @@ let feedCommitted=[], feedOffset=0, feedTotal=1e9, feedLoading=false, feedObserv
 function showFeed(){ startFeed(); }
 
 async function startFeed(){
-  cancelSelect();
+  cancelSelect(); $("subbar").innerHTML="";
   viewMode="feed"; setNav("nav_home"); $("pf_head").style.display="none"; $("more").innerHTML="";
   if(loggedIn){ $("stories_row").style.display="flex"; $("filterbar").style.display="flex"; }
   if(!loggedIn){ $("filterbar").style.display="none";
@@ -706,18 +706,57 @@ async function downloadFeedToPC(){
 function setNav(id){ document.querySelectorAll(".bottomnav button").forEach(b=>b.classList.remove("on"));
   const b=$(id); if(b) b.classList.add("on"); }
 
-/* Gespeicherte Beiträge ansehen */
+/* Gespeicherte Beiträge + Sammlungen (lokal) */
+function getColls(){ try{ return JSON.parse(localStorage.getItem("igm_colls")||"{}"); }catch(e){ return {}; } }
+function setColls(o){ try{ localStorage.setItem("igm_colls", JSON.stringify(o)); }catch(e){} }
+let currentColl="__all";
 function showSaved(){
+  cancelSelect();
   viewMode="saved"; setNav("nav_saved");
   if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
   $("filterbar").style.display="none"; $("stories_row").style.display="none";
   $("pf_head").style.display="flex"; $("pf_head").className="pf-head";
-  const saved=getSaved();
-  $("pf_head").innerHTML='<div class="ph">🔖</div><div><div class="fn">Gespeichert</div>'
-    +'<div class="un">'+saved.length+' Beiträge (nur auf diesem Gerät)</div></div>';
   $("more").innerHTML="";
-  if(saved.length===0){ renderEmpty("Noch nichts gemerkt. Tippe ★ oder doppeltippe ein Bild."); return; }
-  renderGrid(saved);
+  const saved=getSaved(), colls=getColls();
+  // Sammlungs-Chips
+  let chips='<div class="filterbar" style="padding:8px 2px">';
+  chips+=`<button class="chip ${currentColl==='__all'?'on':''}" onclick="setColl('__all')">Alle (${saved.length})</button>`;
+  for(const [name,scs] of Object.entries(colls))
+    chips+=`<button class="chip ${currentColl===name?'on':''}" onclick="setColl('${esc(name).replace(/'/g,"\\'")}')">🔖 ${esc(name)} (${(scs||[]).length})</button>`;
+  chips+='<button class="chip" onclick="newCollection()">+ Neu</button></div>';
+  $("subbar").innerHTML=chips;
+  // gefilterte Liste
+  let list=saved;
+  if(currentColl!=="__all"){ const set=new Set(colls[currentColl]||[]); list=saved.filter(p=>set.has(p.shortcode)); }
+  $("pf_head").innerHTML='<div class="ph">🔖</div><div><div class="fn">Gespeichert</div>'
+    +'<div class="un">'+list.length+' Beiträge'+(currentColl!=="__all"?' in „'+esc(currentColl)+'“':'')+' (lokal)</div></div>';
+  if(list.length===0){ renderEmpty(currentColl==="__all"?"Noch nichts gemerkt. Tippe ★ oder doppeltippe ein Bild.":"Diese Sammlung ist leer."); return; }
+  renderGrid(list);
+}
+function setColl(name){ currentColl=name; showSaved(); }
+function newCollection(){
+  const name=(prompt("Name der neuen Sammlung:")||"").trim();
+  if(!name || name==="__all") return;
+  const colls=getColls(); if(!colls[name]) colls[name]=[]; setColls(colls);
+  currentColl=name; showSaved();
+}
+function askCollection(){
+  const colls=getColls(); const names=Object.keys(colls);
+  const hint = names.length ? (" Vorhanden: "+names.join(", ")) : "";
+  const name=(prompt("In welche Sammlung? (Name eingeben – neu oder vorhanden)"+hint)||"").trim();
+  return (!name || name==="__all") ? "" : name;
+}
+function addSelectedToCollection(){
+  const scs=[...selectedGrid]; if(scs.length===0){ toast("Nichts ausgewählt.","err"); return; }
+  const name=askCollection(); if(!name) return;
+  const colls=getColls(); const set=new Set(colls[name]||[]); scs.forEach(s=>set.add(s));
+  colls[name]=[...set]; setColls(colls);
+  toast(scs.length+" zu „"+name+"“ hinzugefügt","ok"); cancelSelect(); showSaved();
+}
+function removeSelectedFromCollection(){
+  const scs=new Set(selectedGrid); if(scs.size===0) return;
+  const colls=getColls(); colls[currentColl]=(colls[currentColl]||[]).filter(s=>!scs.has(s)); setColls(colls);
+  toast("Aus „"+currentColl+"“ entfernt","ok"); cancelSelect(); showSaved();
 }
 
 function avatarHTML(username, cls){
@@ -953,7 +992,7 @@ async function openProfile(input, count){
   const name=(input||"").trim().replace(/^@/,""); if(!name) return;
   profileName=name; profileCount=count||24;
   const isOwn = currentUser && name.toLowerCase()===currentUser.toLowerCase();
-  viewMode="profile"; setNav(isOwn?"nav_profile":"nav_search");
+  viewMode="profile"; setNav(isOwn?"nav_profile":"nav_search"); $("subbar").innerHTML="";
   if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
   $("stories_row").style.display="none"; $("filterbar").style.display="none";
   const acc = followList.find(a=>a.username.toLowerCase()===name.toLowerCase());
@@ -997,7 +1036,7 @@ function showMe(){ if(!loggedIn){ toast("Bitte zuerst anmelden."); scrollToLogin
 /* ---------- Suche & Entdecken ---------- */
 const EXPLORE=["reisen","natur","food","kunst","musik","sport","fashion","auto"];
 function showSearch(){
-  cancelSelect();
+  cancelSelect(); $("subbar").innerHTML="";
   viewMode="search"; setNav("nav_search");
   if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
   $("stories_row").style.display="none"; $("filterbar").style.display="none";
@@ -1082,7 +1121,7 @@ function accountRow(a){
 
 /* ---------- Download-Verlauf ---------- */
 async function showDownloads(){
-  cancelSelect();
+  cancelSelect(); $("subbar").innerHTML="";
   viewMode="downloads"; setNav("nav_profile"); $("manage_panel").style.display="none";
   if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
   $("stories_row").style.display="none"; $("filterbar").style.display="none"; $("more").innerHTML="";
@@ -1111,7 +1150,7 @@ async function showDownloads(){
 function showFollowing(){ showAccountList("/api/following","Gefolgt"); }
 function showFollowers(){ showAccountList("/api/followers","Follower"); }
 async function showAccountList(url,title){
-  viewMode="list"; setNav("nav_profile");
+  viewMode="list"; setNav("nav_profile"); $("subbar").innerHTML="";
   if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
   $("stories_row").style.display="none"; $("filterbar").style.display="none"; $("more").innerHTML="";
   $("pf_head").style.display="flex"; $("pf_head").className="pf-head";
@@ -1160,8 +1199,15 @@ function toggleCell(cell,p){
 }
 function updateSelbar(){
   const bar=$("selbar");
-  if(selectMode){ bar.classList.add("show"); $("selcount").textContent=selectedGrid.size+" ausgewählt"; }
-  else bar.classList.remove("show");
+  if(!selectMode){ bar.classList.remove("show"); return; }
+  bar.classList.add("show"); $("selcount").textContent=selectedGrid.size+" ausgewählt";
+  let a='<button class="btn" onclick="downloadSelected()">⬇ Auf PC</button>';
+  if(viewMode==="saved"){
+    a+='<button class="btn ghost" onclick="addSelectedToCollection()">🔖 Sammlung</button>';
+    if(currentColl!=="__all") a+='<button class="btn ghost" onclick="removeSelectedFromCollection()">Aus Sammlung</button>';
+  }
+  a+='<button class="btn ghost" onclick="cancelSelect()">Abbrechen</button>';
+  $("selactions").innerHTML=a;
 }
 async function downloadSelected(){
   const scs=[...selectedGrid];
