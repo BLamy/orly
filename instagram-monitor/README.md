@@ -75,10 +75,87 @@ Einrichtung (virtuelle Umgebung anlegen, Abhängigkeiten installieren)
 und startet danach die Anwendung. Ab dem zweiten Start geht es direkt
 los. Bitte nicht beide Oberflächen gleichzeitig laufen lassen.
 
-### Browser-Oberfläche
+### Browser-Oberfläche (Instagram-Stil)
 
 `start-web.bat` startet einen **lokalen** Server (nur auf deinem Rechner
-erreichbar, http://127.0.0.1:8756/) und öffnet den Browser:
+erreichbar, http://127.0.0.1:8756/) und öffnet den Browser. Die Oberfläche
+ist wie Instagram aufgebaut: obere Leiste mit Suche, **Stories-Reihe**
+(runde Ringe – antippen für den Story-Viewer), ein **Feed** deiner Abos,
+eine **Lightbox** (Vollbild, Album-Karussell, Videos), eine **Profil-
+Ansicht als 3-Spalten-Raster**, **Hell/Dunkel-Umschalter**, „Merken"
+(★) und Toast-Meldungen. Über das Zahnrad ⚙️ erreichst du „Verwalten"
+(Abo-Liste, Massen-Download, Feed-Einstellungen, Abmelden).
+
+**Navigation wie Instagram:** Unten (Handy) bzw. oben (PC) findest du
+**🏠 Feed · 🔍 Suche · 🎬 Reels · 🔖 Gespeichert · 👤 Profil**. Die
+**Suche** findet Konten nach Namen. Dein **Profil** (und jedes andere)
+zeigt Avatar, Name, Verifiziert-Haken, **Beiträge / Follower / Gefolgt**
+und Bio; bei deinem eigenen Profil sind **Follower** und **Gefolgt**
+anklickbar und zeigen die jeweilige Liste. **Nichts lädt im Hintergrund:**
+Die Abo-Liste wird nur abgerufen, wenn du sie öffnest; auch die **Suche**
+und **Entdecken** starten erst auf Knopfdruck (🔍 bzw. „Laden").
+
+**Video-Qualität & Datensparmodus:** Downloads sowie die Vollbild- und
+Reels-Wiedergabe erfolgen **immer in Originalqualität** (die App streamt
+die Original-Datei direkt vom Instagram-CDN). Unter ⚙️ kannst du das
+**automatische Abspielen im Feed** ausschalten (Datensparmodus).
+
+**Dashboard & Zurück-Knopf:** Beim Öffnen erscheint ein schwarzes
+**Dashboard** (es wird **nichts** automatisch von Instagram geladen):
+Kontoname eingeben → **„Profil laden"**, dazu Knöpfe für
+Gefolgt/Follower, Suche, Feed, **📊 Statistik** und 📥 Verlauf. Ein Klick
+auf das **„Instagram Monitor"**-Logo führt immer zum Dashboard zurück,
+der **←**-Knopf oben links eine Ansicht zurück.
+
+**📊 Statistik:** Zeigt je Konto, **wie viele Dateien** heruntergeladen
+wurden und **wie viel Speicher (GB/MB)** sie belegen – sortiert nach
+Größe, mit Gesamtsumme. Antippen öffnet das Profil.
+
+**Hintergrundfoto:** Jeden Tag wird ein **anderes** deiner bereits
+heruntergeladenen Fotos als Hintergrund gezeigt (abgedunkelt, damit alles
+lesbar bleibt). Unter ⚙️ lässt sich das **ein- und ausschalten**.
+
+**Status im Raster:** In Profil-/Raster-Ansichten ist jeder Beitrag oben
+links markiert – **grün ✓ = bereits heruntergeladen, rot = noch nicht**.
+
+**Konten auswählen & laden:** In der **Gefolgt**-Liste kannst du mehrere
+Konten **anhaken** (Alle/Keine) und mit einem Klick **je Konto N Beiträge
+auf den PC** laden (Fortschritt im Knopf). Follower/Gefolgt siehst du über
+dein Profil (Zähler antippen).
+
+**Mehrfachauswahl & Verlauf:** In Raster-Ansichten (Profil, Gespeichert)
+gibt es **„☑ Auswählen"** – mehrere Beiträge antippen und gesammelt
+**auf den PC** laden. Unter ⚙️ → **„📥 Verlauf"** siehst du alle bisher
+heruntergeladenen Beiträge (Konto, Typ, Zeit).
+
+**Kommentare & Entdecken:** In der Vollbild-Ansicht eines Beitrags zeigt
+**💬** die neuesten Kommentare. In der **Suche** findest du mit „#reisen"
+o. Ä. die neuesten Beiträge zu einem **Hashtag** (Entdecken), dazu
+Vorschlags-Chips und eine Liste **zuletzt angesehener** Profile.
+
+**Endlos-Scroll:** Der Feed lädt weitere Abos automatisch nach, sobald du
+nach unten scrollst (in Seiten, so bleibt es schnell). **Likes &
+Kommentare** werden je Beitrag angezeigt. **▶ Reels** öffnet einen
+Vollbild-Video-Feed (vertikal wischen, Tippen für Ton/Pause). Auf dem
+Handy: **nach unten ziehen aktualisiert** den Feed (Pull-to-Refresh).
+
+**Als App aufs Handy:** Die Seite ist eine PWA – im Browser-Menü des
+Handys „Zum Startbildschirm hinzufügen" wählen, dann startet sie wie eine
+echte App im Vollbild. Weitere Extras: **Filterleiste** (Fotos / Videos /
+Reels / Alben), **„🔖 Gespeichert"** (per ★ oder Doppeltipp gemerkte
+Beiträge, lokal), **Link kopieren**, **Bildunterschrift als .txt**
+mitspeichern (Verwalten), untere Navigationsleiste am Handy, und „?" für
+die Tastatur-Hilfe.
+
+**Automatischer Download (Zeitplan):** Unter ⚙️ „Verwalten" →
+„⏰ Automatischer Download" kannst du festlegen, dass die App **täglich zu
+bestimmten Uhrzeiten** (Standard **12:00** und **00:00**) automatisch die
+neuesten Beiträge aller deiner Abos auf den PC lädt. Uhrzeiten lassen sich
+beliebig hinzufügen/entfernen, und „Beiträge je Konto" ist einstellbar.
+Voraussetzung: Die App muss laufen (PC an, Browser-Server geöffnet) und du
+musst angemeldet sein. Bereits Geladenes wird nicht erneut heruntergeladen.
+Tipp: Für einen dauerhaften Betrieb `start-web-handy.bat` einfach laufen
+lassen – dann läuft der Zeitplan im Hintergrund weiter.
 
 1. Optional oben **anmelden**. Am zuverlässigsten ist **„Aus Browser
    übernehmen“**: Melde dich einmal in deinem normalen Browser bei
@@ -86,22 +163,43 @@ erreichbar, http://127.0.0.1:8756/) und öffnet den Browser:
    vermeidet den „Checkpoint“, den die direkte Passwort-Anmeldung von
    einem neuen Gerät oft auslöst. Alternativ Benutzername + Passwort
    (2FA wird unterstützt).
-2. Benutzernamen oder Instagram-Link eingeben → **Anzeigen**.
-3. Die Beiträge erscheinen als Bilder-Raster – bei jedem Foto/Video
-   gibt es **„⬇ Herunterladen“**, dazu **„⬇ Alle herunterladen“**.
-   Bereits Heruntergeladenes ist grün markiert.
+2. **Start = schwarzes Dashboard:** Beim Öffnen erscheint das Dashboard –
+   **kein** automatischer Feed/Profil-Abruf. Von dort: **„Gefolgt /
+   Follower"** öffnet die Liste (oben umschaltbar), in der du Konten
+   **anhaken** kannst („Alle"/„Keine"), die Anzahl je Konto wählst (bis
+   „alle (max 30)") und mit **„⬇ Herunterladen (N)"** von allen
+   ausgewählten Konten gleichzeitig auf den PC lädst. **„Feed"** lädt den
+   Feed nur auf Knopfdruck; 🏠 bzw. das Logo führen zum Dashboard zurück.
+3. Einzelnes Konto: Benutzernamen oder Instagram-Link eingeben →
+   **Anzeigen**.
+4. Bei jedem Foto/Video gibt es **„⤓ Gerät“** und **„⬇ Auf PC“**;
+   bereits Heruntergeladenes ist grün markiert.
+
+**Stories & Highlights** (nur mit Anmeldung): Im Bereich „Beiträge
+ansehen" gibt es neben der Suche die Knöpfe **„⬇ Stories"** und
+**„⬇ Highlights"**. Gib einen Benutzernamen ein und klicke darauf – die
+aktuellen Stories bzw. die dauerhaften Highlights des Kontos werden in
+denselben Konto-Ordner `downloads/<konto>/` geladen wie Fotos und Videos. Ein Fortschritt
+wird angezeigt; bereits Geladenes wird übersprungen. Bei privaten Konten
+funktioniert das nur, wenn du dem Konto folgst.
 
 **Wenn du angemeldet bist**, erscheint zusätzlich der Bereich **„Meine
 Abonnements"**:
 
-- **„Liste laden"** zeigt alle Konten, denen du folgst. Klicke einen
-  Namen an, um dessen Beiträge zu sehen.
-- **„⬇ Von allen Abos auf PC laden"** lädt die neuesten Beiträge *aller*
-  Konten, denen du folgst, in einem Rutsch in den PC-Ordner. Über das
-  Auswahlfeld legst du fest, wie viele Beiträge je Konto (1–12). Ein
-  Fortschrittsbalken zeigt den Stand; „Abbrechen" stoppt jederzeit.
-  Instagram drosselt große Mengen – die App legt automatisch Pausen ein,
-  daher kann es bei vielen Abos dauern.
+- **„Liste laden"** zeigt alle Konten, denen du folgst – mit
+  **Profilbild, vollem Namen und @Name**. Über „Beiträge" siehst du die
+  Beiträge eines Kontos; das Suchfeld filtert die Liste.
+- **Auswählen:** Jede Zeile hat eine **Checkbox** (Standard: alle
+  ausgewählt). Mit „Alle auswählen"/„Keine" schnell umschalten.
+- **Datumsfilter:** Im Feld „nur Beiträge ab" ein Datum wählen – dann
+  werden nur Beiträge ab diesem Tag geladen (ältere übersprungen).
+- **„⬇ Ausgewählte auf PC laden"** lädt die neuesten Beiträge der
+  ausgewählten Konten in den PC-Ordner. „Beiträge je Konto" (1–12) legt
+  die Menge fest. Ein Fortschrittsbalken zeigt den Stand; „Abbrechen"
+  stoppt jederzeit.
+- **Kein Doppel-Download:** Bereits heruntergeladene Beiträge werden
+  automatisch übersprungen. Instagram drosselt große Mengen – die App
+  legt automatisch Pausen ein, daher kann es bei vielen Abos dauern.
 
 Bei jedem Beitrag gibt es zwei Download-Knöpfe:
 
@@ -137,6 +235,40 @@ und Internet-Verbindung werden genutzt); das Handy ist nur die Anzeige.
 
 Alle Oberflächen teilen sich denselben `downloads/`-Ordner, dieselbe
 Datenbank und dieselbe Anmeldung.
+
+### Nur mit dem Handy – ganz ohne PC (Android/Termux)
+
+Die App ist ein kleiner Python-Server – der kann auch **direkt auf dem
+Handy** laufen, dann landen die Downloads im Handy-Speicher:
+
+1. **Termux** installieren (kostenlos, am besten aus
+   [F-Droid](https://f-droid.org/packages/com.termux/); die Play-Store-
+   Version ist veraltet).
+2. In Termux einmalig einrichten:
+   ```bash
+   pkg update && pkg install python git
+   termux-setup-storage        # Zugriff auf den Handy-Speicher erlauben
+   git clone <URL-dieses-Projekts> projekt
+   cd projekt/instagram-monitor   # der Ordner, der web.py enthält
+   pip install flask instaloader plyer
+   ```
+   (`customtkinter`/`browser_cookie3` sind auf dem Handy nicht nötig –
+   angemeldet wird per **sessionid**, siehe „Erweitert" im Anmelde-Feld.)
+3. Starten und im Handy-Browser öffnen:
+   ```bash
+   python web.py
+   # dann im Browser: http://127.0.0.1:8756/
+   ```
+4. Damit die Fotos in der Handy-Galerie auftauchen, den Download-Ordner
+   in den freigegebenen Speicher legen (die Einstellung wird gespeichert):
+   ```bash
+   python web.py --downloads ~/storage/shared/Pictures/InstagramMonitor
+   ```
+
+Termux muss dabei geöffnet bleiben (Android beendet Hintergrund-Apps
+sonst irgendwann). Auf dem **iPhone** gibt es keine vergleichbare
+Möglichkeit, Python-Server frei laufen zu lassen – dort bleibt der Weg
+über den PC im selben WLAN (oben).
 
 ## Manuelle Installation
 

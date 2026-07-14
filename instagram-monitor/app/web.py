@@ -25,7 +25,10 @@ Endpunkte:
 
 from __future__ import annotations
 
+import datetime
+import hashlib
 import logging
+import os
 import threading
 import time
 from collections import OrderedDict
@@ -41,6 +44,7 @@ from flask import (
     render_template,
     request,
     Response,
+    send_file,
 )
 
 from .downloader import (
@@ -71,6 +75,58 @@ _MAX_COUNT = 100
 # Pause zwischen zwei Konten beim Massen-Download (Sekunden) – rücksichtsvoll
 # gegenüber den Instagram-Servern.
 _BULK_DELAY = 4.0
+
+# Pause zwischen zwei Profilen beim Feed-Aufbau (Sekunden). Kürzer als beim
+# Download, damit der Feed zügig erscheint, aber immer noch rücksichtsvoll.
+_FEED_DELAY = 1.5
+
+
+class _FeedJob:
+    """Baut fortlaufend den Abo-Feed auf (Beiträge mehrerer Profile)."""
+
+    def __init__(self) -> None:
+        self._lock = threading.Lock()
+        self.thread: Optional[threading.Thread] = None
+        self.cancel = False
+        self.reset()
+
+    def reset(self) -> None:
+        with self._lock:
+            self.running = False
+            self.cancel = False
+            self.total = 0          # Anzahl Profile
+            self.done = 0           # fertige Profile
+            self.current = ""       # gerade geladenes Profil
+            self.items: list[dict] = []   # gesammelte Beiträge (JSON-fertig)
+            self.finished = False
+            self.error = ""
+
+    def add_items(self, new_items: list[dict]) -> None:
+        with self._lock:
+            self.items.extend(new_items)
+
+    def snapshot(self, include_items: bool = True) -> dict:
+        with self._lock:
+            data = {
+                "running": self.running,
+                "total": self.total,
+                "done": self.done,
+                "current": self.current,
+                "finished": self.finished,
+                "error": self.error,
+                "count": len(self.items),
+            }
+            if include_items:
+                # Neueste zuerst – über alle Profile hinweg.
+                data["items"] = sorted(
+                    self.items, key=lambda x: x.get("posted_at", ""), reverse=True
+                )
+            return data
+
+    def update(self, **kwargs) -> None:
+        with self._lock:
+            for key, value in kwargs.items():
+                setattr(self, key, value)
 
 
 class _BulkJob:
@@ -170,6 +226,29 @@ def create_app(
         while len(cache) > _CACHE_SIZE:
             cache.popitem(last=False)
 
+    def post_json(post: PostInfo, username: str) -> dict:
+        """Serialisiert einen Beitrag für die Oberfläche (Feed & Einzelansicht)."""
+        ptype = post.post_type or ""
+        is_video = ("Video" in ptype) or ("Reel" in ptype)
+        is_album = ptype.startswith("Album")
+        return {
+            "shortcode": post.shortcode,
+            "username": username,
+            "type": ptype,
+            "is_video": is_video,
+            "is_album": is_album,
+            "posted_at": post.posted_at,
+            "url": post.url,
+            "caption": post.caption,
+            "likes": getattr(post, "likes", 0),
+            "comments": getattr(post, "comments", 0),
+            # Vorschaubild über unseren Proxy, nicht direkt vom CDN.
+            "thumb": f"/thumb/{post.shortcode}" if post.thumbnail_url else "",
+            # Direkter Geräte-Download (streamt an Handy/Browser).
+            "media": f"/media/{post.shortcode}",
+            "downloaded": db.is_downloaded(post.shortcode, username),
+        }
+
     # ------------------------------------------------------------------
     # Oberfläche
     # ------------------------------------------------------------------
@@ -237,36 +316,117 @@ def create_app(
     # ------------------------------------------------------------------
     bulk = _BulkJob()
 
+    # Profilbild-URLs der Abos: username → CDN-URL (für den Avatar-Proxy).
+    avatar_urls: dict[str, str] = {}
+
     @app.get("/api/following")
     def following():
         try:
-            names = downloader.following_usernames()
+            details = downloader.following_details()
         except LoginError as exc:
             return jsonify(error=str(exc)), 401
         except DownloaderError as exc:
             return jsonify(error=str(exc)), 502
-        return jsonify(count=len(names), usernames=names)
+        accounts = []
+        for item in details:
+            if item.get("pic"):
+                avatar_urls[item["username"]] = item["pic"]
+            accounts.append({
+                "username": item["username"],
+                "full_name": item.get("full_name", ""),
+                "avatar": f"/avatar/{item['username']}" if item.get("pic") else "",
+            })
+        return jsonify(count=len(accounts), accounts=accounts)
 
-    @app.post("/api/download-following")
-    def download_following():
+    def _avatar_url(item: dict) -> str:
+        """Merkt sich die Profilbild-URL und liefert den Proxy-Pfad."""
+        if item.get("pic"):
+            avatar_urls[item["username"]] = item["pic"]
+            return f"/avatar/{item['username']}"
+        return ""
+
+    @app.get("/api/me")
+    def api_me():
+        try:
+            info = downloader.me()
+        except LoginError as exc:
+            return jsonify(error=str(exc)), 401
+        except DownloaderError as exc:
+            return jsonify(error=str(exc)), 502
+        info = dict(info)
+        info["avatar"] = _avatar_url(info)
+        info.pop("pic", None)
+        return jsonify(info)
+
+    @app.get("/api/profile/<username>")
+    def api_profile(username: str):
+        uname = extract_username(username)
+        if not uname:
+            return jsonify(error="Ungültiger Benutzername."), 400
+        try:
+            info = downloader.profile_info(uname)
+        except ProfileNotFound as exc:
+            return jsonify(error=str(exc)), 404
+        except ProfileIsPrivate as exc:
+            return jsonify(error=str(exc)), 403
+        except DownloaderError as exc:
+            return jsonify(error=str(exc)), 502
+        info = dict(info)
+        info["avatar"] = _avatar_url(info)
+        info.pop("pic", None)
+        return jsonify(info)
+
+    @app.get("/api/followers")
+    def api_followers():
+        try:
+            details = downloader.followers_details(limit=300)
+        except LoginError as exc:
+            return jsonify(error=str(exc)), 401
+        except DownloaderError as exc:
+            return jsonify(error=str(exc)), 502
+        return jsonify(count=len(details), accounts=[{
+            "username": d["username"], "full_name": d.get("full_name", ""),
+            "avatar": _avatar_url(d),
+        } for d in details])
+
+    @app.get("/api/search")
+    def api_search():
+        query = request.args.get("q", "")
+        try:
+            results = downloader.search_profiles(query, limit=12)
+        except DownloaderError as exc:
+            return jsonify(error=str(exc)), 502
+        return jsonify(results=[{
+            "username": d["username"], "full_name": d.get("full_name", ""),
+            "is_verified": d.get("is_verified", False), "avatar": _avatar_url(d),
+        } for d in results])
+
+    @app.get("/avatar/<username>")
+    def avatar(username: str):
+        url = avatar_urls.get(username)
+        if not url:
+            return Response(status=404)
+        try:
+            upstream = _requests.get(url, timeout=20,
+                                     headers={"User-Agent": "Mozilla/5.0"})
+            upstream.raise_for_status()
+        except Exception:
+            return Response(status=502)
+        return Response(
+            upstream.content,
+            mimetype=upstream.headers.get("Content-Type", "image/jpeg"),
+            headers={"Cache-Control": "private, max-age=3600"},
+        )
+
+    def start_bulk_job(usernames: list[str], per_account: int, since: str = "",
+                       also_stories: bool = False) -> bool:
+        """Startet den Massen-Download im Hintergrund (Endpunkt & Zeitplan).
+
+        ``also_stories`` lädt je Konto zusätzlich die aktuellen Stories.
+        Rückgabe: False, wenn bereits ein Download läuft.
+        """
         if bulk.snapshot()["running"]:
-            return jsonify(error="Es läuft bereits ein Massen-Download."), 409
-        data = request.get_json(force=True, silent=True) or {}
-        try:
-            per_account = max(1, min(_MAX_COUNT, int(data.get("count", 3))))
-        except (TypeError, ValueError):
-            per_account = 3
-
-        # Zuerst die Abo-Liste holen (Fehler direkt zurückmelden).
-        try:
-            usernames = downloader.following_usernames()
-        except LoginError as exc:
-            return jsonify(error=str(exc)), 401
-        except DownloaderError as exc:
-            return jsonify(error=str(exc)), 502
-        if not usernames:
-            return jsonify(error="Du folgst keinem Konto."), 400
-
+            return False
         bulk.reset()
         bulk.update(running=True, total=len(usernames))
 
@@ -287,6 +447,12 @@ def create_app(
                     for post in posts:
                         if bulk.cancel:
                             break
+                        # Datumsfilter: alte Beiträge überspringen.
+                        if since and (post.posted_at or "")[:10] < since:
+                            continue
+                        # Dedup: bereits heruntergeladene NICHT erneut laden.
+                        if db.is_downloaded(post.shortcode, username):
+                            continue
                         db.add_post(post.shortcode, username, post.post_type,
                                     post.posted_at)
                         try:
@@ -297,6 +463,23 @@ def create_app(
                         except DownloaderError as exc:
                             logger.warning("Beitrag %s nicht geladen: %s",
                                            post.shortcode, exc)
+                    # Optional: aktuelle Stories des Kontos mitladen.
+                    if also_stories and not bulk.cancel:
+                        try:
+                            for item in downloader.list_story_items(username, "stories"):
+                                if bulk.cancel:
+                                    break
+                                if db.is_downloaded(item.shortcode, username):
+                                    continue
+                                db.add_post(item.shortcode, username,
+                                            item.post_type, item.posted_at)
+                                if downloader.download_story_item(item):
+                                    db.mark_downloaded(item.shortcode, username)
+                                    downloaded_total += 1
+                                    bulk.update(downloaded=downloaded_total)
+                        except DownloaderError as exc:
+                            logger.warning("Stories @%s übersprungen: %s",
+                                           username, exc)
                     bulk.update(done=index + 1)
                     # Rücksichtsvolle Pause zwischen den Konten.
                     if index < len(usernames) - 1 and not bulk.cancel:
@@ -312,7 +495,94 @@ def create_app(
         thread = threading.Thread(target=worker, name="bulk-download", daemon=True)
         bulk.thread = thread
         thread.start()
+        return True
+
+    @app.post("/api/download-following")
+    def download_following():
+        if bulk.snapshot()["running"]:
+            return jsonify(error="Es läuft bereits ein Massen-Download."), 409
+        data = request.get_json(force=True, silent=True) or {}
+        try:
+            per_account = max(1, min(_MAX_COUNT, int(data.get("count", 3))))
+        except (TypeError, ValueError):
+            per_account = 3
+        # Optionaler Datumsfilter: nur Beiträge ab diesem Tag (YYYY-MM-DD).
+        since = (data.get("since") or "").strip()[:10]
+
+        # Ausgewählte Konten (falls angegeben), sonst alle Abos.
+        selected = data.get("usernames")
+        if isinstance(selected, list) and selected:
+            usernames = [str(u).strip().lstrip("@").lower()
+                         for u in selected if str(u).strip()]
+        else:
+            try:
+                usernames = downloader.following_usernames()
+            except LoginError as exc:
+                return jsonify(error=str(exc)), 401
+            except DownloaderError as exc:
+                return jsonify(error=str(exc)), 502
+        if not usernames:
+            return jsonify(error="Keine Konten ausgewählt."), 400
+
+        if not start_bulk_job(usernames, per_account, since):
+            return jsonify(error="Es läuft bereits ein Massen-Download."), 409
         return jsonify(ok=True, total=len(usernames))
+
+    @app.post("/api/download-stories")
+    def download_stories():
+        if bulk.snapshot()["running"]:
+            return jsonify(error="Es läuft bereits ein Download."), 409
+        data = request.get_json(force=True, silent=True) or {}
+        username = extract_username(data.get("username", ""))
+        kind = data.get("kind", "stories")
+        if kind not in ("stories", "highlights"):
+            kind = "stories"
+        if not username:
+            return jsonify(error="Bitte einen gültigen Benutzernamen eingeben."), 400
+        try:
+            items = downloader.list_story_items(username, kind)
+        except LoginError as exc:
+            return jsonify(error=str(exc)), 401
+        except DownloaderError as exc:
+            return jsonify(error=str(exc)), 502
+        if not items:
+            return jsonify(ok=True, total=0)
+
+        bulk.reset()
+        bulk.update(running=True, total=len(items), current=username)
+
+        def worker():
+            downloaded = 0
+            try:
+                for index, item in enumerate(items):
+                    if bulk.cancel:
+                        break
+                    if db.is_downloaded(item.shortcode, username):
+                        bulk.update(done=index + 1)
+                        continue
+                    db.add_post(item.shortcode, username, item.post_type,
+                                item.posted_at)
+                    try:
+                        if downloader.download_story_item(item):
+                            db.mark_downloaded(item.shortcode, username)
+                            downloaded += 1
+                            bulk.update(downloaded=downloaded)
+                    except DownloaderError as exc:
+                        logger.warning("Story %s nicht geladen: %s",
+                                       item.shortcode, exc)
+                    bulk.update(done=index + 1)
+            except Exception:
+                logger.exception("Story-Download abgebrochen (Fehler).")
+                bulk.update(error="Unerwarteter Fehler – siehe logs/web.log.")
+            finally:
+                bulk.update(running=False, finished=True)
+                logger.info("Story-Download @%s beendet: %d Element(e).",
+                            username, downloaded)
+
+        thread = threading.Thread(target=worker, name="story-download", daemon=True)
+        bulk.thread = thread
+        thread.start()
+        return jsonify(ok=True, total=len(items))
 
     @app.get("/api/download-following/status")
     def download_following_status():
@@ -321,6 +591,96 @@ def create_app(
     @app.post("/api/download-following/cancel")
     def download_following_cancel():
         bulk.update(cancel=True)
+        return jsonify(ok=True)
+
+    # ------------------------------------------------------------------
+    # Abo-Feed (beim Öffnen automatisch: neueste Beiträge deiner Abos)
+    # ------------------------------------------------------------------
+    feed = _FeedJob()
+
+    @app.get("/api/feed/settings")
+    def feed_get_settings():
+        return jsonify(profiles=settings.feed_profiles, per=settings.feed_per)
+
+    @app.post("/api/feed/start")
+    def feed_start():
+        if not downloader.is_logged_in:
+            return jsonify(error="Bitte zuerst anmelden, um den Abo-Feed zu "
+                                 "sehen."), 401
+        if feed.snapshot(include_items=False)["running"]:
+            return jsonify(error="Der Feed wird bereits geladen."), 409
+        data = request.get_json(force=True, silent=True) or {}
+        try:
+            profiles = max(0, int(data.get("profiles", settings.feed_profiles)))
+        except (TypeError, ValueError):
+            profiles = settings.feed_profiles
+        try:
+            per = max(1, min(_MAX_COUNT, int(data.get("per", settings.feed_per))))
+        except (TypeError, ValueError):
+            per = settings.feed_per
+        # Seiten-Versatz für Endlos-Scroll (welche Profile-Seite laden).
+        try:
+            offset = max(0, int(data.get("offset", 0)))
+        except (TypeError, ValueError):
+            offset = 0
+        # Wahl merken (gilt beim nächsten Öffnen); Versatz wird nicht gemerkt.
+        settings.feed_profiles = profiles
+        settings.feed_per = per
+
+        try:
+            all_usernames = downloader.following_usernames()
+        except LoginError as exc:
+            return jsonify(error=str(exc)), 401
+        except DownloaderError as exc:
+            return jsonify(error=str(exc)), 502
+        followees_total = len(all_usernames)
+        if profiles > 0:
+            usernames = all_usernames[offset:offset + profiles]
+        else:
+            usernames = all_usernames[offset:]
+        if not usernames:
+            return jsonify(ok=True, total=0, followees_total=followees_total)
+
+        feed.reset()
+        feed.update(running=True, total=len(usernames))
+
+        def worker():
+            try:
+                for index, username in enumerate(usernames):
+                    if feed.cancel:
+                        break
+                    feed.update(current=username)
+                    try:
+                        posts = downloader.list_recent_posts(username, per)
+                    except DownloaderError as exc:
+                        logger.warning("Feed @%s übersprungen: %s", username, exc)
+                        feed.update(done=index + 1)
+                        continue
+                    remember(posts)
+                    feed.add_items([post_json(p, username) for p in posts])
+                    feed.update(done=index + 1)
+                    if index < len(usernames) - 1 and not feed.cancel:
+                        time.sleep(_FEED_DELAY)
+            except Exception:
+                logger.exception("Feed-Aufbau fehlgeschlagen.")
+                feed.update(error="Unerwarteter Fehler – siehe logs/web.log.")
+            finally:
+                feed.update(running=False, finished=True)
+
+        thread = threading.Thread(target=worker, name="feed-build", daemon=True)
+        feed.thread = thread
+        thread.start()
+        return jsonify(ok=True, total=len(usernames),
+                       followees_total=followees_total,
+                       next_offset=offset + len(usernames))
+
+    @app.get("/api/feed/status")
+    def feed_status():
+        return jsonify(feed.snapshot())
+
+    @app.post("/api/feed/cancel")
+    def feed_cancel():
+        feed.update(cancel=True)
         return jsonify(ok=True)
 
     # ------------------------------------------------------------------
@@ -351,21 +711,7 @@ def create_app(
         remember(items)
         return jsonify(
             username=username,
-            posts=[
-                {
-                    "shortcode": p.shortcode,
-                    "type": p.post_type,
-                    "posted_at": p.posted_at,
-                    "url": p.url,
-                    "caption": p.caption,
-                    # Vorschaubild über unseren Proxy, nicht direkt vom CDN.
-                    "thumb": f"/thumb/{p.shortcode}" if p.thumbnail_url else "",
-                    # Direkter Geräte-Download (streamt an Handy/Browser).
-                    "media": f"/media/{p.shortcode}",
-                    "downloaded": db.is_downloaded(p.shortcode, username),
-                }
-                for p in items
-            ],
+            posts=[post_json(p, username) for p in items],
         )
 
     @app.get("/media/<shortcode>")
@@ -400,14 +746,97 @@ def create_app(
         except Exception:
             logger.debug("Medium %s nicht ladbar.", shortcode, exc_info=True)
             return Response("Medium konnte nicht geladen werden.", status=502)
+        # ?inline=1 → im Browser anzeigen (Feed/Lightbox); sonst als Download
+        # (Content-Disposition: attachment), damit "⤓ Gerät" wirklich speichert.
+        headers = {"Cache-Control": "private, max-age=3600"}
+        if request.args.get("inline") != "1":
+            headers["Content-Disposition"] = (
+                f"attachment; filename=\"{filename}\"; "
+                f"filename*=UTF-8''{quote(filename)}"
+            )
         return Response(
             upstream.iter_content(chunk_size=65536),
             mimetype=upstream.headers.get("Content-Type", "application/octet-stream"),
-            headers={
-                "Content-Disposition": f"attachment; filename=\"{filename}\"; "
-                                       f"filename*=UTF-8''{quote(filename)}",
-            },
+            headers=headers,
         )
+
+    @app.get("/api/comments/<shortcode>")
+    def comments(shortcode: str):
+        post = cache.get(shortcode)
+        if post is None:
+            return jsonify(error="Beitrag nicht bekannt – bitte neu laden."), 404
+        try:
+            items = downloader.get_comments(post, limit=15)
+        except LoginError as exc:
+            return jsonify(error=str(exc)), 401
+        except DownloaderError as exc:
+            return jsonify(error=str(exc)), 502
+        return jsonify(comments=items)
+
+    @app.get("/api/hashtag/<tag>")
+    def hashtag(tag: str):
+        try:
+            count = max(1, min(_MAX_COUNT, int(request.args.get("count", 24))))
+        except (TypeError, ValueError):
+            count = 24
+        try:
+            items = downloader.hashtag_posts(tag, limit=count)
+        except ProfileNotFound as exc:
+            return jsonify(error=str(exc)), 404
+        except TemporaryError as exc:
+            return jsonify(error=str(exc)), 502
+        except DownloaderError as exc:
+            return jsonify(error=str(exc)), 502
+        remember(items)
+        return jsonify(tag=tag.strip().lstrip("#").lower(),
+                       posts=[post_json(p, p.username) for p in items])
+
+    @app.get("/api/album/<shortcode>")
+    def album(shortcode: str):
+        """Liefert die einzelnen Medien eines Albums (für das Karussell)."""
+        post = cache.get(shortcode)
+        if post is None:
+            return jsonify(error="Beitrag nicht bekannt – bitte neu laden."), 404
+        try:
+            items = downloader.media_urls(post)
+        except DownloaderError as exc:
+            return jsonify(error=str(exc)), 502
+        return jsonify(items=[
+            {
+                "i": index,
+                "is_video": filename.lower().endswith(".mp4"),
+                "media": f"/media/{shortcode}?i={index}&inline=1",
+                "download": f"/media/{shortcode}?i={index}",
+            }
+            for index, (url, filename) in enumerate(items)
+        ])
+
+    @app.get("/api/stories")
+    def stories_list():
+        """Listet die aktuellen Story-Elemente eines Kontos (Story-Ansicht)."""
+        if not downloader.is_logged_in:
+            return jsonify(error="Für Stories ist eine Anmeldung nötig."), 401
+        username = extract_username(request.args.get("username", ""))
+        if not username:
+            return jsonify(error="Bitte einen gültigen Benutzernamen eingeben."), 400
+        try:
+            items = downloader.list_story_items(username, "stories")
+        except LoginError as exc:
+            return jsonify(error=str(exc)), 401
+        except DownloaderError as exc:
+            return jsonify(error=str(exc)), 502
+        remember(items)
+        return jsonify(username=username, items=[
+            {
+                "shortcode": p.shortcode,
+                "is_video": ("Video" in (p.post_type or "")),
+                "posted_at": p.posted_at,
+                "media": f"/media/{p.shortcode}?inline=1",
+                "download": f"/media/{p.shortcode}",
+                "thumb": f"/thumb/{p.shortcode}" if p.thumbnail_url else "",
+            }
+            for p in items
+        ])
 
     @app.get("/thumb/<shortcode>")
     def thumb(shortcode: str):
@@ -433,7 +862,9 @@ def create_app(
         return Response(
             upstream.content,
             mimetype=upstream.headers.get("Content-Type", "image/jpeg"),
-            headers={"Cache-Control": "private, max-age=3600"},
+            # Vorschaubilder eines Beitrags ändern sich nicht → der Browser
+            # darf sie lange behalten (weniger Abrufe, schnelleres Scrollen).
+            headers={"Cache-Control": "private, max-age=86400"},
         )
 
     # ------------------------------------------------------------------
@@ -457,5 +888,237 @@ def create_app(
             db.add_post(post.shortcode, post.username, post.post_type, post.posted_at)
             db.mark_downloaded(post.shortcode, post.username)
         return jsonify(ok=bool(ok))
+
+    # ------------------------------------------------------------------
+    # PWA: als App aufs Handy/den Desktop installierbar
+    # ------------------------------------------------------------------
+    _ICON_SVG = (
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">'
+        '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">'
+        '<stop offset="0" stop-color="#feda75"/><stop offset=".5" stop-color="#d62976"/>'
+        '<stop offset="1" stop-color="#4f5bd5"/></linearGradient></defs>'
+        '<rect width="512" height="512" rx="112" fill="url(#g)"/>'
+        '<path d="M256 168v120m0 0l-52-52m52 52l52-52" fill="none" stroke="#fff" '
+        'stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>'
+        '<rect x="160" y="320" width="192" height="26" rx="13" fill="#fff"/></svg>'
+    )
+
+    @app.get("/background")
+    def background():
+        """Liefert täglich ein anderes bereits heruntergeladenes Foto als
+        Hintergrundbild (stabil pro Tag). 404, wenn noch nichts geladen ist."""
+        root = settings.download_dir
+        exts = {".jpg", ".jpeg", ".png", ".webp"}
+        try:
+            files = sorted(
+                str(p) for p in root.rglob("*")
+                if p.is_file() and p.suffix.lower() in exts
+            )
+        except Exception:
+            files = []
+        if not files:
+            return Response(status=404)
+        day = datetime.date.today().isoformat()
+        idx = int(hashlib.md5(day.encode()).hexdigest(), 16) % len(files)
+        try:
+            resp = send_file(files[idx])
+        except Exception:
+            return Response(status=404)
+        # Die URL enthält das Datum (?d=…), daher darf der Browser das Bild
+        # für den Rest des Tages aus dem Cache nehmen → schnellere Starts.
+        resp.headers["Cache-Control"] = "private, max-age=3600"
+        return resp
+
+    @app.get("/icon.svg")
+    def icon_svg():
+        return Response(_ICON_SVG, mimetype="image/svg+xml",
+                        headers={"Cache-Control": "public, max-age=86400"})
+
+    @app.get("/manifest.webmanifest")
+    def manifest():
+        return jsonify({
+            "name": "Instagram Monitor",
+            "short_name": "IG Monitor",
+            "start_url": "/",
+            "display": "standalone",
+            "background_color": "#000000",
+            "theme_color": "#000000",
+            "icons": [
+                {"src": "/icon.svg", "sizes": "any", "type": "image/svg+xml",
+                 "purpose": "any maskable"},
+            ],
+        })
+
+    @app.get("/sw.js")
+    def service_worker():
+        # Minimaler Service-Worker: ermöglicht die Installation als App.
+        # (Kein aggressives Caching, damit immer die aktuelle Version läuft.)
+        js = (
+            "self.addEventListener('install', e => self.skipWaiting());\n"
+            "self.addEventListener('activate', e => self.clients.claim());\n"
+            "self.addEventListener('fetch', e => {});\n"
+        )
+        return Response(js, mimetype="application/javascript",
+                        headers={"Cache-Control": "no-cache"})
+
+    # ------------------------------------------------------------------
+    # Automatischer Zeitplan (täglich zu festen Uhrzeiten herunterladen)
+    # ------------------------------------------------------------------
+    @app.get("/api/health")
+    def health():
+        return jsonify(ok=True, logged_in=downloader.is_logged_in,
+                       user=downloader.logged_in_user or "")
+
+    @app.get("/api/downloads")
+    def downloads_list():
+        rows = db.recent_downloads(200)
+        return jsonify(count=len(rows), items=[{
+            "shortcode": r["shortcode"],
+            "username": r["username"],
+            "type": r["post_type"],
+            "downloaded_at": r["downloaded_at"],
+            "url": f"https://www.instagram.com/p/{r['shortcode']}/",
+        } for r in rows])
+
+    # Kurzlebiger Cache für die Download-Statistik (reines Datei-Scannen,
+    # kein Instagram-Zugriff – aber bei vielen Dateien trotzdem Arbeit).
+    _stats_cache: dict = {"t": 0.0, "data": None}
+
+    @app.get("/api/stats")
+    def stats():
+        """Download-Statistik: Anzahl Dateien und Speichergröße je Konto.
+
+        Jedes Konto hat einen eigenen Unterordner im Download-Verzeichnis
+        (so lädt der Downloader). Sortiert nach Größe, größtes zuerst.
+        """
+        now = time.time()
+        if _stats_cache["data"] is not None and now - _stats_cache["t"] < 60:
+            return jsonify(_stats_cache["data"])
+        root = settings.download_dir
+        accounts = []
+        total_files = 0
+        total_bytes = 0
+        try:
+            with os.scandir(root) as it:
+                for entry in it:
+                    try:
+                        # Einzelne unlesbare Einträge überspringen (z. B.
+                        # SD-Karte/Termux) statt die ganze Liste zu verwerfen.
+                        if not entry.is_dir():
+                            continue
+                    except OSError:
+                        continue
+                    files = 0
+                    size = 0
+                    for dirpath, _dirs, names in os.walk(entry.path):
+                        for n in names:
+                            try:
+                                size += os.path.getsize(
+                                    os.path.join(dirpath, n))
+                                files += 1
+                            except OSError:
+                                continue
+                    if files:
+                        accounts.append({"username": entry.name,
+                                         "files": files, "bytes": size})
+                        total_files += files
+                        total_bytes += size
+        except OSError:
+            pass
+        accounts.sort(key=lambda a: a["bytes"], reverse=True)
+        data = {"accounts": accounts, "total_files": total_files,
+                "total_bytes": total_bytes, "dir": str(root)}
+        _stats_cache["t"] = now
+        _stats_cache["data"] = data
+        return jsonify(data)
+
+    @app.get("/api/settings")
+    def get_settings():
+        return jsonify(save_captions=settings.save_captions,
+                       download_dir=str(settings.download_dir))
+
+    @app.post("/api/settings")
+    def set_settings():
+        data = request.get_json(force=True, silent=True) or {}
+        if "save_captions" in data:
+            settings.save_captions = bool(data["save_captions"])
+        return jsonify(ok=True, save_captions=settings.save_captions)
+
+    @app.get("/api/schedule")
+    def get_schedule():
+        return jsonify(
+            enabled=settings.schedule_enabled,
+            times=settings.schedule_times,
+            per=settings.schedule_per,
+            stories=settings.schedule_stories,
+            last_run=settings.schedule_last_run,
+        )
+
+    @app.post("/api/schedule")
+    def set_schedule():
+        data = request.get_json(force=True, silent=True) or {}
+        settings.schedule_enabled = bool(data.get("enabled"))
+        settings.schedule_stories = bool(data.get("stories"))
+        if "times" in data and isinstance(data["times"], list):
+            settings.schedule_times = data["times"]
+        if "per" in data:
+            try:
+                settings.schedule_per = max(1, min(_MAX_COUNT, int(data["per"])))
+            except (TypeError, ValueError):
+                pass
+        return jsonify(
+            ok=True,
+            enabled=settings.schedule_enabled,
+            times=settings.schedule_times,
+            per=settings.schedule_per,
+            stories=settings.schedule_stories,
+        )
+
+    def _scheduler_loop():
+        """Prüft jede Minute, ob ein geplanter Download fällig ist."""
+        fired: set[str] = set()   # Schlüssel "YYYY-MM-DD HH:MM" (kein Doppelstart)
+        while True:
+            try:
+                if settings.schedule_enabled:
+                    now = datetime.datetime.now()
+                    hhmm = now.strftime("%H:%M")
+                    if hhmm in settings.schedule_times:
+                        key = now.strftime("%Y-%m-%d ") + hhmm
+                        if key not in fired:
+                            fired.add(key)
+                            if len(fired) > 64:  # alte Marker gelegentlich aufräumen
+                                fired = set(sorted(fired)[-16:])
+                            _run_scheduled(now)
+            except Exception:
+                logger.exception("Zeitplan-Prüfung fehlgeschlagen.")
+            time.sleep(20)
+
+    def _run_scheduled(now: "datetime.datetime") -> None:
+        if not downloader.is_logged_in:
+            logger.warning(
+                "Zeitplan %s: nicht angemeldet – Download übersprungen. "
+                "Bitte in der Oberfläche anmelden.", now.strftime("%H:%M")
+            )
+            return
+        try:
+            usernames = downloader.following_usernames()
+        except DownloaderError as exc:
+            logger.warning("Zeitplan %s: Abo-Liste nicht abrufbar: %s",
+                           now.strftime("%H:%M"), exc)
+            return
+        if not usernames:
+            logger.info("Zeitplan %s: keine Abos.", now.strftime("%H:%M"))
+            return
+        if start_bulk_job(usernames, settings.schedule_per, "",
+                          also_stories=settings.schedule_stories):
+            settings.schedule_last_run = now.strftime("%Y-%m-%d %H:%M")
+            logger.info("Zeitplan %s: automatischer Download von %d Konten "
+                        "gestartet%s.", now.strftime("%H:%M"), len(usernames),
+                        " (inkl. Stories)" if settings.schedule_stories else "")
+        else:
+            logger.info("Zeitplan %s: übersprungen (ein Download läuft bereits).",
+                        now.strftime("%H:%M"))
+
+    threading.Thread(target=_scheduler_loop, name="scheduler", daemon=True).start()
 
     return app
