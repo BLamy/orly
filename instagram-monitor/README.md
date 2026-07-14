@@ -95,6 +95,11 @@ anklickbar und zeigen die jeweilige Liste. Folgst du jemandem neu, taucht
 das Konto **automatisch** in Stories/Suche/Feed auf (die Abo-Liste wird
 beim Zurückkehren zur App und regelmäßig im Hintergrund aktualisiert).
 
+**Video-Qualität & Datensparmodus:** Downloads sowie die Vollbild- und
+Reels-Wiedergabe erfolgen **immer in Originalqualität** (die App streamt
+die Original-Datei direkt vom Instagram-CDN). Unter ⚙️ kannst du das
+**automatische Abspielen im Feed** ausschalten (Datensparmodus).
+
 **Mehrfachauswahl & Verlauf:** In Raster-Ansichten (Profil, Gespeichert)
 gibt es **„☑ Auswählen"** – mehrere Beiträge antippen und gesammelt
 **auf den PC** laden. Unter ⚙️ → **„📥 Verlauf"** siehst du alle bisher

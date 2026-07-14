@@ -292,6 +292,11 @@
       <input type="checkbox" id="opt_captions" style="width:16px;height:16px" onchange="saveAppSettings()">
       Bildunterschrift als .txt mitspeichern
     </label>
+    <label class="rowflex" style="margin-top:6px">
+      <input type="checkbox" id="opt_autoplay" style="width:16px;height:16px" onchange="toggleAutoplay()">
+      Videos im Feed automatisch abspielen (aus = Datensparmodus)
+    </label>
+    <div class="hint">Downloads und die Vollbild-/Reels-Wiedergabe erfolgen immer in Originalqualität.</div>
     <div class="hint" id="dl_dir"></div>
     <div class="rowflex">
       <label class="hint" style="margin:0">Feed-Profile:
@@ -654,9 +659,11 @@ function renderFeed(posts){
 
 /* Stummes Autoplay des gerade sichtbaren Feed-Videos (bandbreitenschonend:
    es wird immer nur das aktuell sichtbare Video geladen/abgespielt). */
+function autoplayOn(){ try{ return localStorage.getItem("igm_autoplay")!=="0"; }catch(e){ return true; } }
 let feedVidObserver=null;
 function setupFeedVideos(){
   if(feedVidObserver) feedVidObserver.disconnect();
+  if(!autoplayOn()) return;   // Datensparmodus: kein Autoplay im Feed
   feedVidObserver=new IntersectionObserver(es=>{
     es.forEach(en=>{
       if(en.isIntersecting && en.intersectionRatio>=0.7) activateFeedVideo(en.target);
@@ -1295,6 +1302,7 @@ async function loadSchedule(){
     (data.times&&data.times.length?data.times:["12:00","00:00"]).forEach(addSchedTime);
     $("sch_info").textContent = data.last_run ? ("Zuletzt automatisch: "+data.last_run) : "";
   }
+  $("opt_autoplay").checked=autoplayOn();
   const st=await api("/api/settings");
   if(st.data){ $("opt_captions").checked=!!st.data.save_captions;
     $("dl_dir").textContent = "Ordner: "+(st.data.download_dir||""); }
@@ -1312,6 +1320,11 @@ async function saveAppSettings(){
   const {data}=await api("/api/settings",{method:"POST",headers:{"Content-Type":"application/json"},
     body:JSON.stringify({save_captions:$("opt_captions").checked})});
   if(data.ok) toast($("opt_captions").checked?"Bildunterschriften werden gespeichert":"Bildunterschriften aus","ok");
+}
+function toggleAutoplay(){
+  try{ localStorage.setItem("igm_autoplay", $("opt_autoplay").checked?"1":"0"); }catch(e){}
+  toast($("opt_autoplay").checked?"Video-Autoplay an":"Datensparmodus (kein Autoplay)","ok");
+  if(viewMode==="feed") renderFeed(feedPosts);
 }
 async function doLogout(){ if(confirm("Wirklich abmelden?")){ await api("/api/logout",{method:"POST"}); location.reload(); } }
 
