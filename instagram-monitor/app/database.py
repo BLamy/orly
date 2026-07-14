@@ -315,15 +315,6 @@ class Database:
         )
         return bool(rows)
 
-    def recent_downloads(self, limit: int = 200) -> list[sqlite3.Row]:
-        """Zuletzt heruntergeladene Beiträge (neueste zuerst) – für den Verlauf."""
-        return self._query(
-            "SELECT shortcode, username, post_type, downloaded_at FROM posts "
-            "WHERE downloaded = 1 AND downloaded_at IS NOT NULL "
-            "ORDER BY downloaded_at DESC LIMIT ?",
-            (int(limit),),
-        )
-
     def download_count(self, username: str) -> int:
         """Anzahl der für dieses Konto heruntergeladenen Beiträge."""
         rows = self._query(

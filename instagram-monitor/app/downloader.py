@@ -34,16 +34,10 @@ from __future__ import annotations
 
 import logging
 import threading
-import time
 from dataclasses import dataclass, field
 from itertools import islice
 from pathlib import Path
 from typing import TYPE_CHECKING, Callable, Optional
-
-# Wie lange geladene Beiträge/Profil-Infos zwischengespeichert werden
-# (Sekunden). Beschleunigt Navigation deutlich und reduziert Anfragen
-# an Instagram (weniger Drosselung).
-_CACHE_TTL = 300
 
 import instaloader
 from instaloader.exceptions import (
@@ -127,8 +121,6 @@ class PostInfo:
     # Für die Web-Oberfläche (best effort, kann leer sein):
     thumbnail_url: str = ""  # Vorschaubild-URL (Instagram-CDN)
     caption: str = ""        # Anfang der Bildunterschrift
-    likes: int = 0           # Anzahl Likes (0 wenn unbekannt)
-    comments: int = 0        # Anzahl Kommentare (0 wenn unbekannt)
 
     # Das originale Instaloader-Post-Objekt (nur intern; spart beim
     # Download eine erneute Netzanfrage). Von Vergleich/Repr ausgenommen.
@@ -185,11 +177,6 @@ class InstagramDownloader:
         # Instaloader-Instanz; deren Requests-Session ist nicht für echt
         # parallele Nutzung ausgelegt.
         self._lock = threading.RLock()
-
-        # Kurzlebiger Zwischenspeicher (username → (zeit, daten)) für
-        # Beiträge und Profil-Infos; macht Navigation spürbar schneller.
-        self._recent_cache: dict = {}
-        self._profile_cache: dict = {}
 
         # Ordner für die Session-Datei (Cookies) des angemeldeten Kontos.
         self._session_dir = Path(session_dir) if session_dir else None
@@ -331,7 +318,6 @@ class InstagramDownloader:
         loader.context.username = username
         self._loader = loader
         self._settings.login_username = username
-        self._recent_cache.clear(); self._profile_cache.clear()
         session_file = self._session_file(username)
         if session_file:
             try:
@@ -485,7 +471,6 @@ class InstagramDownloader:
                 post_metadata_txt_pattern="",
             )
         self._settings.login_username = ""
-        self._recent_cache.clear(); self._profile_cache.clear()
         logger.info("Abgemeldet.")
 
     # ------------------------------------------------------------------
@@ -606,17 +591,7 @@ class InstagramDownloader:
         herunterladen. Doppelte Dateien werden trotzdem vermieden, weil
         Instaloader vorhandene Dateien überspringt und die Datenbank den
         Download-Status führt.
-
-        Ergebnisse werden kurz zwischengespeichert (``_CACHE_TTL``), damit
-        wiederholtes Öffnen/Feed-Aufbau schnell ist und Instagram weniger
-        oft angefragt wird.
         """
-        key = username.lower()
-        cached = self._recent_cache.get(key)
-        if cached and (time.monotonic() - cached[0]) < _CACHE_TTL \
-                and len(cached[1]) >= limit:
-            return cached[1][:limit]
-
         try:
             profile = self._get_profile(username)
             profile_is_private = profile.is_private
@@ -638,9 +613,7 @@ class InstagramDownloader:
                 "du folgst)."
             )
 
-        posts = self._collect_posts(profile, limit=max(1, int(limit)), is_known=None)
-        self._recent_cache[key] = (time.monotonic(), posts)
-        return posts
+        return self._collect_posts(profile, limit=max(1, int(limit)), is_known=None)
 
     def _collect_posts(
         self,
@@ -668,17 +641,9 @@ class InstagramDownloader:
                     except Exception:
                         thumbnail = ""
                     try:
-                        caption = (post.caption or "")[:280]
+                        caption = (post.caption or "")[:140]
                     except Exception:
                         caption = ""
-                    try:
-                        likes = int(post.likes)
-                    except Exception:
-                        likes = 0
-                    try:
-                        comments = int(post.comments)
-                    except Exception:
-                        comments = 0
                     collected.append(
                         PostInfo(
                             shortcode=post.shortcode,
@@ -688,8 +653,6 @@ class InstagramDownloader:
                             url=f"https://www.instagram.com/p/{post.shortcode}/",
                             thumbnail_url=thumbnail,
                             caption=caption,
-                            likes=likes,
-                            comments=comments,
                             raw=post,
                         )
                     )
@@ -868,176 +831,6 @@ class InstagramDownloader:
                 ) from exc
 
     # ------------------------------------------------------------------
-    # Profil-Infos, Follower, Suche
-    # ------------------------------------------------------------------
-    @staticmethod
-    def _profile_summary(profile: "instaloader.Profile") -> dict:
-        """Kompakte Profil-Infos (best effort, einzelne Felder optional)."""
-        def _safe(fn, default):
-            try:
-                return fn()
-            except Exception:
-                return default
-        return {
-            "username": profile.username,
-            "full_name": _safe(lambda: profile.full_name or "", ""),
-            "pic": _safe(lambda: profile.profile_pic_url or "", ""),
-            "biography": _safe(lambda: profile.biography or "", ""),
-            "posts": _safe(lambda: int(profile.mediacount), 0),
-            "followers": _safe(lambda: int(profile.followers), 0),
-            "following": _safe(lambda: int(profile.followees), 0),
-            "is_verified": _safe(lambda: bool(profile.is_verified), False),
-            "is_private": _safe(lambda: bool(profile.is_private), False),
-        }
-
-    def me(self) -> dict:
-        """Infos zum eigenen (angemeldeten) Konto."""
-        if not self.is_logged_in:
-            raise LoginError("Nicht angemeldet.")
-        with self._lock:
-            try:
-                profile = instaloader.Profile.own_profile(self._loader.context)
-                return self._profile_summary(profile)
-            except LoginRequiredException as exc:
-                raise LoginError("Anmeldung nicht mehr gültig – bitte neu "
-                                 "anmelden.") from exc
-            except ConnectionException as exc:
-                raise TemporaryError(f"Konto-Infos nicht abrufbar: {exc}") from exc
-            except InstaloaderException as exc:
-                raise TemporaryError(f"Konto-Infos nicht abrufbar: {exc}") from exc
-
-    def profile_info(self, username: str) -> dict:
-        """Kompakte Infos zu einem beliebigen Profil (für die Profil-Ansicht).
-
-        Kurz zwischengespeichert (``_CACHE_TTL``) für schnelle Navigation.
-        """
-        key = username.lower()
-        cached = self._profile_cache.get(key)
-        if cached and (time.monotonic() - cached[0]) < _CACHE_TTL:
-            return cached[1]
-        profile = self._get_profile(username)
-        with self._lock:
-            info = self._profile_summary(profile)
-        self._profile_cache[key] = (time.monotonic(), info)
-        return info
-
-    def followers_details(self, limit: int = 200) -> list[dict]:
-        """Liste der eigenen Follower (bis ``limit``). Erfordert Anmeldung."""
-        if not self.is_logged_in:
-            raise LoginError("Für die Follower-Liste ist eine Anmeldung nötig.")
-        with self._lock:
-            try:
-                me = instaloader.Profile.own_profile(self._loader.context)
-                out: list[dict] = []
-                for profile in me.get_followers():
-                    out.append({
-                        "username": profile.username,
-                        "full_name": getattr(profile, "full_name", "") or "",
-                        "pic": getattr(profile, "profile_pic_url", "") or "",
-                    })
-                    if len(out) >= limit:
-                        break
-                return out
-            except LoginRequiredException as exc:
-                raise LoginError("Anmeldung nicht mehr gültig.") from exc
-            except ConnectionException as exc:
-                raise TemporaryError(f"Follower nicht abrufbar: {exc}") from exc
-            except InstaloaderException as exc:
-                raise TemporaryError(f"Follower nicht abrufbar: {exc}") from exc
-
-    def get_comments(self, post_info: PostInfo, limit: int = 15) -> list[dict]:
-        """Liefert die neuesten Kommentare eines Beitrags (erfordert Anmeldung)."""
-        if not self.is_logged_in:
-            raise LoginError("Für Kommentare ist eine Anmeldung nötig.")
-        post = post_info.raw
-        with self._lock:
-            try:
-                if post is None:
-                    post = instaloader.Post.from_shortcode(
-                        self._loader.context, post_info.shortcode
-                    )
-                out: list[dict] = []
-                for comment in post.get_comments():
-                    try:
-                        owner = comment.owner.username
-                    except Exception:
-                        owner = ""
-                    try:
-                        posted = comment.created_at_utc.isoformat(timespec="seconds")
-                    except Exception:
-                        posted = ""
-                    out.append({
-                        "username": owner,
-                        "text": (comment.text or "")[:600],
-                        "likes": int(getattr(comment, "likes_count", 0) or 0),
-                        "posted_at": posted,
-                    })
-                    if len(out) >= limit:
-                        break
-                return out
-            except LoginRequiredException as exc:
-                raise LoginError("Anmeldung nicht mehr gültig.") from exc
-            except ConnectionException as exc:
-                raise TemporaryError(f"Kommentare nicht abrufbar: {exc}") from exc
-            except InstaloaderException as exc:
-                raise TemporaryError(f"Kommentare nicht abrufbar: {exc}") from exc
-
-    def hashtag_posts(self, tag: str, limit: int = 24) -> list[PostInfo]:
-        """Neueste öffentliche Beiträge zu einem Hashtag (für „Entdecken“)."""
-        tag = (tag or "").strip().lstrip("#").lower()
-        if not tag:
-            return []
-        with self._lock:
-            try:
-                hashtag = instaloader.Hashtag.from_name(self._loader.context, tag)
-                collected: list[PostInfo] = []
-                for post in islice(hashtag.get_posts(), limit):
-                    try:
-                        thumbnail = post.url or ""
-                    except Exception:
-                        thumbnail = ""
-                    collected.append(PostInfo(
-                        shortcode=post.shortcode,
-                        username=post.owner_username,
-                        post_type=_classify_post(post),
-                        posted_at=post.date_utc.isoformat(timespec="seconds"),
-                        url=f"https://www.instagram.com/p/{post.shortcode}/",
-                        thumbnail_url=thumbnail,
-                        raw=post,
-                    ))
-                return collected
-            except ProfileNotExistsException as exc:
-                raise ProfileNotFound(f"Hashtag #{tag} nicht gefunden.") from exc
-            except ConnectionException as exc:
-                raise TemporaryError(f"Hashtag-Beiträge nicht abrufbar: {exc}") from exc
-            except InstaloaderException as exc:
-                raise TemporaryError(f"Hashtag #{tag}: {exc}") from exc
-
-    def search_profiles(self, query: str, limit: int = 12) -> list[dict]:
-        """Sucht Konten nach Namen (Instagram-Top-Suche)."""
-        query = (query or "").strip().lstrip("@")
-        if not query:
-            return []
-        with self._lock:
-            try:
-                results = instaloader.TopSearchResults(self._loader.context, query)
-                out: list[dict] = []
-                for profile in results.get_profiles():
-                    out.append({
-                        "username": profile.username,
-                        "full_name": getattr(profile, "full_name", "") or "",
-                        "pic": getattr(profile, "profile_pic_url", "") or "",
-                        "is_verified": bool(getattr(profile, "is_verified", False)),
-                    })
-                    if len(out) >= limit:
-                        break
-                return out
-            except ConnectionException as exc:
-                raise TemporaryError(f"Suche derzeit nicht möglich: {exc}") from exc
-            except InstaloaderException as exc:
-                raise TemporaryError(f"Suche fehlgeschlagen: {exc}") from exc
-
-    # ------------------------------------------------------------------
     # Direkte Medien-URLs (zum Streamen auf das anfragende Gerät)
     # ------------------------------------------------------------------
     def media_urls(self, post_info: PostInfo) -> list[tuple[str, str]]:
@@ -1099,10 +892,6 @@ class InstagramDownloader:
             # deshalb wird das Muster vor jedem Download aktualisiert.
             # "{target}" ersetzt Instaloader durch den übergebenen target-Namen.
             self._loader.dirname_pattern = str(download_dir / "{target}")
-            # Optional: Bildunterschrift als .txt neben der Datei speichern.
-            self._loader.post_metadata_txt_pattern = (
-                "{caption}" if self._settings.save_captions else ""
-            )
 
             try:
                 # Das beim Abruf gemerkte Post-Objekt wiederverwenden; nur zur

@@ -4,14 +4,6 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Instagram Monitor</title>
-<link rel="icon" href="/icon.svg">
-<link rel="apple-touch-icon" href="/icon.svg">
-<link rel="manifest" href="/manifest.webmanifest">
-<meta name="theme-color" content="#000000">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-title" content="IG Monitor">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="mobile-web-app-capable" content="yes">
 <style>
   :root{
     --bg:#000; --bg2:#0e0e0e; --card:#000; --border:#262626; --text:#f5f5f5;
@@ -26,11 +18,6 @@
   body{background:var(--bg); color:var(--text); font:14px/1.5 -apple-system,
        BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
        padding-bottom:40px}
-  /* Täglich wechselndes Hintergrundfoto (aus deinen Downloads) */
-  #bg{position:fixed; inset:0; z-index:-2; background:#000 center/cover no-repeat}
-  #bgov{position:fixed; inset:0; z-index:-1; background:rgba(0,0,0,.55)}
-  body.hasbg{background:transparent}
-  body.hasbg header,body.hasbg .bottomnav{background:rgba(0,0,0,.55); backdrop-filter:blur(8px)}
   a{color:inherit; text-decoration:none}
   button{font:inherit; cursor:pointer; border:0; background:none; color:inherit}
   .btn{background:var(--accent); color:#fff; border-radius:8px; padding:8px 16px; font-weight:600}
@@ -100,8 +87,7 @@
   .actions .saved{color:var(--accent)}
   .actions .done{color:var(--ok)}
   .actions .sp{flex:1}
-  .stats{padding:2px 14px 0; font-weight:600; font-size:13px}
-  .cap{padding:6px 14px 12px}
+  .cap{padding:0 14px 12px}
   .cap .u{font-weight:600; margin-right:6px}
   .cap .more{color:var(--muted); cursor:pointer}
   .cap.clamp .txt{display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
@@ -112,42 +98,10 @@
   .pf-head .ph{display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:26px}
   .pf-head .fn{font-weight:600}
   .pf-head .un{color:var(--muted)}
-  .pf-head .verified{color:var(--accent); margin-left:4px}
-  .pf-stats{display:flex; gap:22px; margin-top:8px}
-  .pf-stats b{display:block; font-size:16px}
-  .pf-stats .s{color:var(--muted); font-size:13px; text-align:center; cursor:default}
-  .pf-stats .s.link{cursor:pointer}
-  .pf-bio{margin-top:8px; font-size:13.5px; white-space:pre-wrap}
-  .pf-actions{display:flex; gap:8px; margin-top:12px; flex-wrap:wrap}
-  .acctrow{display:flex; align-items:center; gap:12px; padding:8px 6px; cursor:pointer; border-radius:10px}
-  .acctrow:hover{background:var(--bg2)}
-  .acctrow img,.acctrow .ph{width:44px; height:44px; border-radius:50%; object-fit:cover; background:var(--bg2)}
-  .acctrow .ph{display:flex; align-items:center; justify-content:center; color:var(--muted)}
-  .acctrow .fn{font-weight:600}
-  .acctrow .un{color:var(--muted); font-size:13px}
-  .searchbox{position:sticky; top:56px; background:var(--bg); padding:8px 0 12px; z-index:5}
-  .searchbox input{width:100%; padding:11px 14px; border-radius:12px}
   .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:3px}
   .grid .cell{position:relative; aspect-ratio:1/1; background:var(--bg2); cursor:pointer; overflow:hidden}
   .grid .cell img{width:100%; height:100%; object-fit:cover}
   .grid .cell .ic{position:absolute; top:6px; right:8px; color:#fff; filter:drop-shadow(0 1px 2px #000a)}
-  .grid .cell .dlst{position:absolute; top:6px; left:6px; width:18px; height:18px; border-radius:50%;
-        display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;
-        color:#fff; box-shadow:0 1px 3px #0007}
-  .grid .cell .dlst.g{background:#2ecc71}
-  .grid .cell .dlst.r{background:#ed4956}
-  .grid.selmode .cell{cursor:pointer}
-  .grid.selmode .cell::after{content:""; position:absolute; top:6px; left:6px; width:20px; height:20px;
-        border-radius:50%; border:2px solid #fff; background:#0004}
-  .grid.selmode .cell.sel::after{content:"✓"; background:var(--accent); border-color:var(--accent);
-        color:#fff; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700}
-  .grid.selmode .cell.sel img{opacity:.6}
-  .gridtools{display:flex; gap:8px; padding:4px 4px 10px}
-  #selbar{position:fixed; left:0; right:0; bottom:0; z-index:42; display:none; gap:8px;
-        align-items:center; justify-content:space-between; padding:10px 16px calc(10px + env(safe-area-inset-bottom));
-        background:var(--bg2); border-top:1px solid var(--border)}
-  #selbar.show{display:flex}
-  @media(max-width:640px){ #selbar{bottom:56px} }
 
   /* Skeleton */
   .sk{background:linear-gradient(90deg,var(--bg2),var(--border),var(--bg2));
@@ -183,56 +137,14 @@
       font-size:13px; text-shadow:0 1px 3px #000}
   .ov .dlrow{position:absolute; top:14px; left:16px; display:flex; gap:8px; z-index:2}
   .ov .dlrow a,.ov .dlrow button{background:#fff2; color:#fff; border-radius:8px; padding:7px 12px; font-size:13px}
-  .sheet{position:absolute; left:0; right:0; bottom:0; max-height:50vh; overflow:auto;
-        background:var(--bg2); border-top-left-radius:16px; border-top-right-radius:16px;
-        padding:16px; transform:translateY(101%); transition:transform .25s; z-index:3}
-  .sheet.open{transform:translateY(0)}
-  .sheet h4{margin-bottom:10px; display:flex; justify-content:space-between}
-  .cmt{display:flex; gap:10px; padding:7px 0; border-bottom:1px solid var(--border)}
-  .cmt .cu{font-weight:600; margin-right:6px}
-  .cmt .cl{color:var(--muted); font-size:12px; margin-top:2px}
 
   /* Toasts */
-  /* Reels-Vollbild */
-  .reelsov{position:fixed; inset:0; z-index:55; background:#000; display:none}
-  .reelsov.open{display:block}
-  #reels_track{height:100%; overflow-y:auto; scroll-snap-type:y mandatory; -webkit-overflow-scrolling:touch}
-  .reel{height:100%; scroll-snap-align:start; position:relative; display:flex; align-items:center; justify-content:center}
-  .reel video{max-height:100%; max-width:100%; width:100%; object-fit:contain; background:#000}
-  .reel .info{position:absolute; left:16px; right:70px; bottom:40px; color:#fff; text-shadow:0 1px 4px #000}
-  .reel .info .u{font-weight:700; font-size:16px; cursor:pointer}
-  .reel .info .cp{font-size:13px; margin-top:6px; display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden}
-  .reel .side{position:absolute; right:12px; bottom:60px; display:flex; flex-direction:column; gap:18px; align-items:center; color:#fff}
-  .reel .side button,.reel .side a{color:#fff; font-size:26px; text-align:center}
-  .reel .side small{display:block; font-size:11px; margin-top:2px}
-  .reel .muted{position:absolute; top:16px; left:16px; background:#0007; color:#fff; padding:4px 10px; border-radius:20px; font-size:12px}
-  #ptr{position:fixed; top:0; left:0; right:0; z-index:45; text-align:center; padding:12px;
-       color:var(--muted); background:var(--bg2); transform:translateY(-100%); transition:transform .15s; font-size:13px}
-  #ptr.show{transform:translateY(0)}
   #toasts{position:fixed; left:0; right:0; bottom:20px; z-index:60; display:flex;
           flex-direction:column; align-items:center; gap:8px; pointer-events:none}
   .toast{background:#222; color:#fff; padding:11px 18px; border-radius:10px; font-size:13.5px;
          box-shadow:0 6px 20px #0007; max-width:90vw; text-align:center}
   .toast.err{background:var(--err)} .toast.ok{background:#1f6f43}
 
-  .media .heart{position:absolute; font-size:90px; color:#fff; opacity:0; transform:scale(.4);
-        pointer-events:none; text-shadow:0 2px 12px #0008}
-  .media .heart.go{animation:pop .8s ease}
-  @keyframes pop{0%{opacity:0;transform:scale(.4)}15%{opacity:.95;transform:scale(1.1)}
-        30%{transform:scale(.95)}45%{transform:scale(1)}80%{opacity:.95}100%{opacity:0;transform:scale(1)}}
-  .cap .tag{color:#e0f1ff; cursor:pointer}
-  :root[data-theme="light"] .cap .tag{color:#00376b}
-  .filterbar{display:flex; gap:8px; overflow-x:auto; padding:4px 2px 12px; scrollbar-width:none}
-  .filterbar::-webkit-scrollbar{display:none}
-  .chip{flex:0 0 auto; padding:7px 14px; border-radius:999px; border:1px solid var(--border);
-        color:var(--muted); font-weight:600; font-size:13px; white-space:nowrap}
-  .chip.on{background:var(--text); color:var(--bg); border-color:var(--text)}
-  .bottomnav{position:fixed; left:0; right:0; bottom:0; z-index:40; display:none;
-        background:var(--bg2); border-top:1px solid var(--border);
-        justify-content:space-around; padding:8px 0 calc(8px + env(safe-area-inset-bottom))}
-  .bottomnav button{font-size:22px; width:56px; height:40px; border-radius:10px}
-  .bottomnav button.on{color:var(--accent)}
-  @media(max-width:640px){ .bottomnav{display:flex} body{padding-bottom:64px} #top{bottom:76px} }
   .empty{text-align:center; color:var(--muted); padding:50px 20px}
   #top{position:fixed; right:16px; bottom:16px; z-index:20; width:44px; height:44px;
        border-radius:50%; background:var(--accent); color:#fff; font-size:20px; display:none;
@@ -241,21 +153,17 @@
 </style>
 </head>
 <body>
-<div id="bg"></div>
-<div id="bgov"></div>
 <header>
   <div class="nav">
-    <button class="iconbtn" id="back_btn" title="Zurück" onclick="goBack()" style="display:none">←</button>
-    <div class="logo" onclick="showStart()" style="cursor:pointer">Instagram Monitor</div>
+    <div class="logo" onclick="showFeed()" style="cursor:pointer">Instagram Monitor</div>
     <div class="search">
       <input id="q_user" list="follwd" placeholder="Suchen (Name oder Link) …"
              onkeydown="if(event.key==='Enter')openProfile($('q_user').value)">
       <datalist id="follwd"></datalist>
     </div>
     <div class="right">
-      <button class="iconbtn" title="Suchen" onclick="showSearch()">🔍</button>
-      <button class="iconbtn" title="Mein Profil" onclick="showMe()">👤</button>
-      <button class="iconbtn" id="manage_btn" title="Einstellungen" onclick="toggleManage()">⚙️</button>
+      <button class="iconbtn" title="Aktualisieren" onclick="startFeed()">⟳</button>
+      <button class="iconbtn" id="manage_btn" title="Verwalten" onclick="toggleManage()">⚙️</button>
       <button class="iconbtn" id="theme_btn" title="Hell/Dunkel" onclick="toggleTheme()">🌙</button>
       <span class="whoami" id="whoami"></span>
     </div>
@@ -294,27 +202,7 @@
 
   <!-- Verwalten -->
   <div class="panel" id="manage_panel" style="display:none">
-    <div class="rowflex" style="justify-content:space-between">
-      <h3 style="margin:0">Verwalten</h3>
-      <span style="display:flex;gap:8px">
-        <button class="btn ghost small" onclick="showDownloads()">📥 Verlauf</button>
-        <button class="btn ghost small" onclick="doLogout()">Abmelden</button>
-      </span>
-    </div>
-    <label class="rowflex" style="margin-top:10px">
-      <input type="checkbox" id="opt_captions" style="width:16px;height:16px" onchange="saveAppSettings()">
-      Bildunterschrift als .txt mitspeichern
-    </label>
-    <label class="rowflex" style="margin-top:6px">
-      <input type="checkbox" id="opt_autoplay" style="width:16px;height:16px" onchange="toggleAutoplay()">
-      Videos im Feed automatisch abspielen (aus = Datensparmodus)
-    </label>
-    <label class="rowflex" style="margin-top:6px">
-      <input type="checkbox" id="opt_bg" style="width:16px;height:16px" onchange="toggleBg()">
-      Tägliches Hintergrundfoto aus deinen Downloads (jeden Tag ein anderes)
-    </label>
-    <div class="hint">Downloads und die Vollbild-/Reels-Wiedergabe erfolgen immer in Originalqualität.</div>
-    <div class="hint" id="dl_dir"></div>
+    <h3>Verwalten</h3>
     <div class="rowflex">
       <label class="hint" style="margin:0">Feed-Profile:
         <select id="feed_profiles">
@@ -352,9 +240,6 @@
     <label class="rowflex" style="margin-top:8px">
       <input type="checkbox" id="sch_enabled" style="width:16px;height:16px"> automatisch herunterladen
     </label>
-    <label class="rowflex" style="margin-top:6px">
-      <input type="checkbox" id="sch_stories" style="width:16px;height:16px"> dabei auch aktuelle Stories mitladen
-    </label>
     <div class="rowflex" style="margin-top:8px">
       <span class="hint" style="margin:0">Uhrzeiten:</span>
       <span id="sch_times" class="rowflex"></span>
@@ -374,60 +259,10 @@
   <!-- Profil-Kopf (nur in Profil-Ansicht) -->
   <div id="pf_head" style="display:none"></div>
 
-  <!-- Aktionsleiste (nur im Feed) -->
-  <div class="filterbar" id="filterbar" style="display:none">
-    <button class="chip" onclick="downloadFeedToPC()">⬇ Alle auf PC</button>
-  </div>
-
-  <!-- Unterleiste (z. B. Sammlungs-Chips in „Gespeichert") -->
-  <div id="subbar"></div>
-
   <!-- Feed / Raster -->
   <div id="content"></div>
   <div id="more" style="text-align:center; margin:10px 0"></div>
 </main>
-
-<!-- Untere Navigation (Handy) -->
-<nav class="bottomnav" id="bottomnav">
-  <button id="nav_home" class="on" title="Start" onclick="showStart()">🏠</button>
-  <button id="nav_search" title="Suchen" onclick="showSearch()">🔍</button>
-  <button id="nav_reels" title="Reels" onclick="openReels()">🎬</button>
-  <button id="nav_saved" title="Gespeichert" onclick="showSaved()">🔖</button>
-  <button id="nav_profile" title="Mein Profil" onclick="showMe()">👤</button>
-</nav>
-
-<!-- Reels-Vollbild-Feed -->
-<div class="reelsov" id="reels">
-  <button class="close" onclick="closeReels()" style="position:fixed;top:12px;right:16px;font-size:30px;color:#fff;z-index:3">✕</button>
-  <div id="reels_track"></div>
-</div>
-
-<!-- Auswahl-Leiste (Mehrfachauswahl im Raster) -->
-<div id="selbar">
-  <span id="selcount">0 ausgewählt</span>
-  <span id="selactions" style="display:flex;gap:8px;flex-wrap:wrap;justify-content:flex-end"></span>
-</div>
-
-<!-- Pull-to-refresh-Anzeige -->
-<div id="ptr">↓ Zum Aktualisieren loslassen</div>
-
-<!-- Hilfe -->
-<div class="ov" id="help">
-  <button class="close" onclick="$('help').classList.remove('open')">✕</button>
-  <div class="panel" style="max-width:420px">
-    <h3>Tastatur & Tipps</h3>
-    <div class="hint" style="color:var(--text)">
-      • Doppelklick/-tipp auf ein Bild → merken (Herz)<br>
-      • In Lightbox/Story: ← → blättern, Esc schließen<br>
-      • 🔖 Gespeichert · 🔍 Suchen · ⚙️ Verwalten · 🌙 Hell/Dunkel<br>
-      • In der Lightbox: 💬 zeigt Kommentare<br>
-      • Suche: „#reisen" zeigt Beiträge zum Hashtag (Entdecken)<br>
-      • „?" öffnet diese Hilfe<br>
-      • Auf dem Handy: über das Browser-Menü „Zum Startbildschirm hinzufügen"
-        → läuft dann wie eine App.
-    </div>
-  </div>
-</div>
 
 <!-- Lightbox -->
 <div class="ov" id="lb">
@@ -438,7 +273,6 @@
   <div class="stage" id="lb_stage"></div>
   <div class="dots" id="lb_dots"></div>
   <div class="cap2" id="lb_cap"></div>
-  <div class="sheet" id="lb_cmts"></div>
 </div>
 
 <!-- Story-Viewer -->
@@ -458,33 +292,6 @@
 "use strict";
 const $ = id => document.getElementById(id);
 const esc = s => { const d=document.createElement("div"); d.textContent=s??""; return d.innerHTML; };
-const fmt = n => { n=+n||0; return n>=1e6 ? (n/1e6).toFixed(1).replace(".",",")+" Mio."
-  : n>=1e4 ? (n/1e3).toFixed(1).replace(".",",")+" Tsd." : n.toLocaleString("de-DE"); };
-
-const fmtBytes = b => { b=+b||0;
-  return b>=1e9 ? (b/1e9).toFixed(2).replace(".",",")+" GB"
-    : b>=1e6 ? (b/1e6).toFixed(1).replace(".",",")+" MB"
-    : b>=1e3 ? Math.round(b/1e3)+" KB" : b+" B"; };
-
-/* ---------- Zurück-Knopf (Ansichts-Verlauf) ---------- */
-let viewStack=[], replayingView=false;
-function pushView(key, t){
-  if(replayingView) return;
-  const top=viewStack[viewStack.length-1];
-  if(top && top.key===key){ top.t=t; return; }   // gleiche Ansicht → nur merken
-  viewStack.push({key, t});
-  if(viewStack.length>30) viewStack.shift();
-  updateBackBtn();
-}
-function updateBackBtn(){ const b=$("back_btn"); if(b) b.style.display = viewStack.length>1 ? "" : "none"; }
-function goBack(){
-  if(viewStack.length<2) return;
-  viewStack.pop();
-  const top=viewStack[viewStack.length-1];
-  replayingView=true;
-  try{ top.t(); } finally { replayingView=false; }
-  updateBackBtn();
-}
 
 /* ---------- Grundlagen ---------- */
 async function api(path, opts){
@@ -526,38 +333,14 @@ function toggleTheme(){
 }
 applyTheme((()=>{ try{ return localStorage.getItem("igm_theme")||"dark"; }catch(e){ return "dark"; } })());
 
-/* ---------- Gespeichert (lokal, ganze Beiträge) ---------- */
+/* ---------- Gespeichert (lokal) ---------- */
 function getSaved(){ try{ return JSON.parse(localStorage.getItem("igm_saved")||"[]"); }catch(e){ return []; } }
-function isSaved(sc){ return getSaved().some(p=>p.shortcode===sc); }
-function toggleSavedPost(post){
+function isSaved(sc){ return getSaved().includes(sc); }
+function toggleSaved(sc){
   let s = getSaved();
-  if(s.some(p=>p.shortcode===post.shortcode)) s = s.filter(p=>p.shortcode!==post.shortcode);
-  else s.unshift(post);
-  try{ localStorage.setItem("igm_saved", JSON.stringify(s.slice(0,300))); }catch(e){}
-  return isSaved(post.shortcode);
-}
-/* Story-„gesehen"-Zustand */
-function seenStories(){ try{ return JSON.parse(localStorage.getItem("igm_seen")||"[]"); }catch(e){ return []; } }
-function markSeen(u){ const s=seenStories(); if(!s.includes(u)){ s.push(u);
-  try{ localStorage.setItem("igm_seen", JSON.stringify(s.slice(-200))); }catch(e){} } }
-
-/* @Erwähnungen und #Hashtags in der Bildunterschrift hervorheben */
-function linkify(text){
-  return esc(text).replace(/(^|\s)@([A-Za-z0-9._]{1,30})/g,
-      '$1<a class="tag" onclick="openProfile(\'$2\')">@$2</a>')
-    .replace(/(^|\s)#([\wäöüÄÖÜ]+)/g, '$1<span class="tag">#$2</span>');
-}
-function copyLink(url){
-  try{ navigator.clipboard.writeText(url); toast("Link kopiert","ok"); }
-  catch(e){ toast(url); }
-}
-async function shareOrCopy(p){
-  const url = p.url || p;
-  if(navigator.share){
-    try{ await navigator.share({title:"Instagram", text:"@"+(p.username||""), url}); return; }
-    catch(e){ /* abgebrochen -> kopieren */ }
-  }
-  copyLink(url);
+  if(s.includes(sc)) s = s.filter(x=>x!==sc); else s.push(sc);
+  try{ localStorage.setItem("igm_saved", JSON.stringify(s)); }catch(e){}
+  return s.includes(sc);
 }
 
 /* ---------- Status / Anmeldung ---------- */
@@ -566,7 +349,7 @@ async function refreshStatus(){
   const {data} = await api("/api/status");
   loggedIn = !!data.logged_in; currentUser = data.user || "";
   $("whoami").innerHTML = loggedIn
-    ? '<b onclick="showMe()" style="cursor:pointer">@'+esc(currentUser)+'</b>'
+    ? 'als <b>@'+esc(currentUser)+'</b>'
     : '<span onclick="scrollToLogin()" style="cursor:pointer">anmelden</span>';
   $("login_panel").style.display = loggedIn ? "none" : "block";
   $("manage_btn").style.display = loggedIn ? "flex" : "none";
@@ -578,103 +361,12 @@ async function refreshStatus(){
         $("feed_profiles").value = String(fs.data.profiles);
         $("feed_per").value = String(fs.data.per);
       }
-      // Beim Öffnen KEIN Feed/Profil/Liste laden – nur schwarzer Startbildschirm.
-      showStart();
+      loadFollowing(true);   // still, für Stories-Reihe + Suchvorschläge
+      startFeed();
     }
   }else{
-    // Auch ohne Anmeldung: schwarzes Dashboard (das Anmelde-Feld steht
-    // darüber; öffentliche Profile lassen sich per Namenseingabe laden).
-    showStart();
+    $("stories_row").style.display = "none";
   }
-}
-function showHomeIdle(){ showStart(); }
-// Dashboard: schwarzer Startbildschirm – lädt NICHTS von Instagram.
-// (Die kleine Statistik-Zeile liest nur die eigene Festplatte.)
-function showStart(){
-  cancelSelect(); pushView("start", showStart);
-  viewMode="start"; setNav("nav_home");
-  if(typeof feedTimer!=="undefined" && feedTimer){ clearInterval(feedTimer); feedTimer=null; }
-  $("pf_head").style.display="none"; $("subbar").innerHTML=""; $("more").innerHTML="";
-  $("stories_row").style.display="none"; $("filterbar").style.display="none";
-  $("content").className="";
-  $("content").innerHTML='<div style="min-height:68vh;display:flex;flex-direction:column;'
-    +'align-items:center;justify-content:center;text-align:center;gap:16px">'
-    +'<div style="font-size:26px;font-weight:800;text-shadow:0 2px 10px #000">📷 Instagram Monitor</div>'
-    +'<div class="hint" id="dash_stats" style="text-shadow:0 1px 6px #000">&nbsp;</div>'
-    +'<div class="rowflex" style="justify-content:center;gap:8px;width:100%;max-width:420px">'
-    +'<input id="dash_user" placeholder="Kontoname eingeben …" style="flex:1" autocomplete="off"'
-    +' onkeydown="if(event.key===\'Enter\')openProfile(this.value)">'
-    +'<button class="btn" onclick="openProfile($(\'dash_user\').value)">Profil laden</button>'
-    +'</div>'
-    +'<div class="rowflex" style="justify-content:center;gap:10px;flex-wrap:wrap">'
-    +'<button class="btn ghost" onclick="showFollowing()">Gefolgt / Follower</button>'
-    +'<button class="btn ghost" onclick="showSearch()">Suchen</button>'
-    +'<button class="btn ghost" onclick="startFeed()">Feed</button>'
-    +'<button class="btn ghost" onclick="showStats()">📊 Statistik</button>'
-    +'<button class="btn ghost" onclick="showDownloads()">📥 Verlauf</button>'
-    +'</div>'
-    +'<div class="hint" style="text-shadow:0 1px 6px #000">Nichts wird automatisch von Instagram geladen – wähle selbst.</div>'
-    +'</div>';
-  api("/api/stats").then(({data})=>{
-    const el=$("dash_stats");
-    if(!el || viewMode!=="start" || !data || !data.accounts) return;
-    el.textContent = data.accounts.length+" Konten · "+fmt(data.total_files)
-      +" Dateien · "+fmtBytes(data.total_bytes);
-  });
-}
-// Statistik: Liste aller heruntergeladenen Konten mit Dateizahl und Größe.
-async function showStats(){
-  cancelSelect(); pushView("stats", showStats);
-  viewMode="stats"; setNav("nav_home");
-  if(typeof feedTimer!=="undefined" && feedTimer){ clearInterval(feedTimer); feedTimer=null; }
-  $("subbar").innerHTML=""; $("more").innerHTML="";
-  $("stories_row").style.display="none"; $("filterbar").style.display="none";
-  $("content").className="";
-  $("pf_head").style.display="flex"; $("pf_head").className="pf-head";
-  $("pf_head").innerHTML='<div class="ph">📊</div><div><div class="fn">Statistik</div>'
-    +'<div class="un" id="st_sum">lädt …</div></div>';
-  $("content").innerHTML='<div class="empty"><span class="spin"></span></div>';
-  const {data}=await api("/api/stats");
-  if(viewMode!=="stats") return;
-  if(!data || data.error || !data.accounts){ renderEmpty((data&&data.error)||"Statistik nicht verfügbar."); return; }
-  const accts=data.accounts;
-  const sum=$("st_sum");
-  if(sum) sum.textContent=accts.length+" Konten · "+fmt(data.total_files)
-    +" Dateien · "+fmtBytes(data.total_bytes)+" gesamt";
-  if(accts.length===0){ renderEmpty("Noch nichts heruntergeladen."); return; }
-  $("content").innerHTML="";
-  const maxB=accts[0].bytes||1;
-  accts.forEach(a=>{
-    const r=document.createElement("div"); r.className="acctrow";
-    const pct=Math.max(2, Math.round(a.bytes/maxB*100));
-    r.innerHTML='<div class="ph">📁</div><div style="flex:1;min-width:0">'
-      +'<div class="fn">@'+esc(a.username)+'</div>'
-      +'<div class="un">'+fmt(a.files)+' Dateien · '+fmtBytes(a.bytes)+'</div>'
-      +'<div style="height:4px;border-radius:2px;background:var(--border);margin-top:5px">'
-      +'<div style="height:4px;border-radius:2px;background:var(--accent);width:'+pct+'%"></div></div>'
-      +'</div>';
-    r.style.cursor="pointer"; r.title="Profil öffnen";
-    r.onclick=()=>openProfile(a.username);
-    $("content").appendChild(r);
-  });
-}
-// Täglich wechselndes Hintergrundfoto aus den eigenen Downloads laden.
-function bgEnabled(){ try{ return localStorage.getItem("igm_bg")!=="0"; }catch(e){ return true; } }
-function toggleBg(){
-  const on=$("opt_bg").checked;
-  try{ localStorage.setItem("igm_bg", on?"1":"0"); }catch(e){}
-  if(on){ initBackground(); toast("Tägliches Hintergrundfoto an","ok"); }
-  else{ $("bg").style.backgroundImage=""; document.body.classList.remove("hasbg");
-    toast("Hintergrundfoto aus","ok"); }
-}
-function initBackground(){
-  if(!bgEnabled()){ document.body.classList.remove("hasbg"); return; }
-  const day=new Date().toISOString().slice(0,10);
-  const im=new Image();
-  im.onload=()=>{ if(!bgEnabled()) return;
-    $("bg").style.backgroundImage="url(/background?d="+day+")"; document.body.classList.add("hasbg"); };
-  im.onerror=()=>{ document.body.classList.remove("hasbg"); };
-  im.src="/background?d="+day;
 }
 function scrollToLogin(){ $("login_panel").scrollIntoView({behavior:"smooth"}); }
 
@@ -707,201 +399,39 @@ async function logout(){ await api("/api/logout",{method:"POST"}); location.relo
 
 /* ---------- Feed ---------- */
 let feedTimer=null, viewMode="feed";
-let feedCommitted=[], feedOffset=0, feedTotal=1e9, feedLoading=false, feedObserver=null;
-function showFeed(){
-  cancelSelect(); pushView("feed", showFeed);
-  if(loggedIn && feedCommitted.length){
-    // bereits geladenen Feed sofort (aus dem Speicher) anzeigen
-    viewMode="feed"; setNav("nav_home"); $("pf_head").style.display="none"; $("subbar").innerHTML="";
-    $("stories_row").style.display="flex"; $("filterbar").style.display="flex";
-    $("more").innerHTML = feedOffset>=feedTotal ? '<div class="hint">Ende des Feeds</div>' : "";
-    renderFeed(feedCommitted); setupFeedObserver();
-  } else startFeed();   // noch nichts geladen → Feed (neu) laden, auch beim Zurück
-}
+function showFeed(){ viewMode="feed"; $("pf_head").style.display="none";
+  $("more").innerHTML=""; startFeed(); }
 
 async function startFeed(){
-  cancelSelect(); pushView("feed", showFeed); $("subbar").innerHTML="";
-  viewMode="feed"; setNav("nav_home"); $("pf_head").style.display="none"; $("more").innerHTML="";
-  if(loggedIn){ $("stories_row").style.display="flex"; $("filterbar").style.display="flex"; }
-  if(!loggedIn){ $("filterbar").style.display="none";
-    renderEmpty("Melde dich an, um den Feed deiner Abos zu sehen. Oder suche oben ein öffentliches Konto."); return; }
-  if(followList.length===0) loadFollowing(true);   // Stories/Suche im Hintergrund füllen
-  feedCommitted=[]; feedOffset=0; feedTotal=1e9; feedLoading=false;
+  viewMode="feed"; $("pf_head").style.display="none"; $("more").innerHTML="";
+  if(!loggedIn){ renderEmpty("Melde dich an, um den Feed deiner Abos zu sehen. Oder suche oben ein öffentliches Konto."); return; }
   showSkeleton();
-  await loadFeedPage(true);
-  setupFeedObserver();
-}
-
-async function loadFeedPage(first){
-  if(feedLoading) return;
-  if(!first && feedOffset>=feedTotal) return;
-  feedLoading=true;
-  if(!first) $("more").innerHTML='<span class="spin"></span>';
   const {data}=await api("/api/feed/start",{method:"POST",headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({profiles:$("feed_profiles").value, per:$("feed_per").value, offset:feedOffset})});
-  if(data.error){ feedLoading=false; $("more").innerHTML="";
-    if(feedCommitted.length===0) renderEmpty(data.error); toast(data.error,"err"); return; }
-  if(data.followees_total!==undefined) feedTotal=data.followees_total;
-  if(data.total===0){ feedLoading=false; feedOffset=feedTotal;
-    $("more").innerHTML = feedCommitted.length ? '<div class="hint">Ende des Feeds</div>' : "";
-    if(feedCommitted.length===0) renderEmpty("Du folgst noch keinem Konto."); return; }
-  await pollFeedPage();
-  feedOffset = (data.next_offset!==undefined) ? data.next_offset : (feedOffset + data.total);
-  feedLoading=false;
-  $("more").innerHTML = feedOffset>=feedTotal ? '<div class="hint">Ende des Feeds</div>' : "";
+    body:JSON.stringify({profiles:$("feed_profiles").value, per:$("feed_per").value})});
+  if(data.error){ toast(data.error,"err"); renderEmpty(data.error); return; }
+  if(data.total===0){ renderEmpty("Du folgst noch keinem Konto."); return; }
+  if(feedTimer) clearInterval(feedTimer);
+  feedTimer=setInterval(pollFeed,1200); pollFeed();
 }
-
-function pollFeedPage(){
-  return new Promise(resolve=>{
-    const t=setInterval(async ()=>{
-      const {data:st}=await api("/api/feed/status");
-      if(viewMode!=="feed"){ clearInterval(t); resolve(); return; }
-      renderFeed(feedCommitted.concat(st.items||[]));
-      if(!st.running && st.finished){ clearInterval(t);
-        feedCommitted=feedCommitted.concat(st.items||[]); resolve(); }
-    },1000);
-  });
-}
-
-function setupFeedObserver(){
-  if(feedObserver) feedObserver.disconnect();
-  feedObserver=new IntersectionObserver(es=>{
-    if(es[0].isIntersecting && viewMode==="feed" && !feedLoading && feedOffset<feedTotal){
-      loadFeedPage(false);
-    }
-  },{rootMargin:"500px"});
-  feedObserver.observe($("more"));
+async function pollFeed(){
+  const {data:st}=await api("/api/feed/status");
+  if(viewMode!=="feed"){ if(!st.running){clearInterval(feedTimer);} return; }
+  renderFeed(st.items||[]);
+  if(!st.running && st.finished){ clearInterval(feedTimer); feedTimer=null;
+    if((st.items||[]).length===0) renderEmpty("Keine Beiträge gefunden (evtl. gerade gedrosselt).");
+    if(st.error) toast(st.error,"err"); }
 }
 function showSkeleton(){
   $("content").innerHTML = '<div class="sk sk-post"></div><div class="sk sk-post"></div>';
 }
 function renderEmpty(msg){ $("content").innerHTML = '<div class="empty">'+esc(msg)+'</div>'; }
 
-let feedPosts=[], currentFilter="all";
-function matchFilter(p){
-  if(currentFilter==="all") return true;
-  if(currentFilter==="album") return p.is_album;
-  if(currentFilter==="video") return p.is_video && !p.is_album;
-  if(currentFilter==="photo") return !p.is_video && !p.is_album;
-  return true;
-}
+let feedPosts=[];
 function renderFeed(posts){
   feedPosts = posts;
   const c=$("content"); c.innerHTML="";
-  const shown = posts.filter(matchFilter);
   if(posts.length===0){ showSkeleton(); return; }
-  if(shown.length===0){ renderEmpty("Keine Beiträge für diesen Filter."); return; }
-  for(const p of shown) c.appendChild(postCard(p));
-  setupFeedVideos();
-}
-
-/* Stummes Autoplay des gerade sichtbaren Feed-Videos (bandbreitenschonend:
-   es wird immer nur das aktuell sichtbare Video geladen/abgespielt). */
-function autoplayOn(){ try{ return localStorage.getItem("igm_autoplay")!=="0"; }catch(e){ return true; } }
-let feedVidObserver=null;
-function setupFeedVideos(){
-  if(feedVidObserver) feedVidObserver.disconnect();
-  if(!autoplayOn()) return;   // Datensparmodus: kein Autoplay im Feed
-  feedVidObserver=new IntersectionObserver(es=>{
-    es.forEach(en=>{
-      if(en.isIntersecting && en.intersectionRatio>=0.7) activateFeedVideo(en.target);
-      else deactivateFeedVideo(en.target);
-    });
-  },{threshold:[0,0.7,1]});
-  document.querySelectorAll("#content .post .media[data-v]").forEach(m=>feedVidObserver.observe(m));
-}
-function activateFeedVideo(m){
-  let v=m.querySelector("video");
-  if(!v){
-    v=document.createElement("video");
-    v.src="/media/"+m.dataset.v+"?inline=1";
-    v.muted=true; v.loop=true; v.playsInline=true; v.preload="metadata";
-    v.style.cssText="position:absolute;inset:0;width:100%;height:100%;object-fit:cover";
-    m.appendChild(v);
-    const img=m.querySelector("img"); if(img) img.style.visibility="hidden";
-    const play=m.querySelector(".play"); if(play) play.style.display="none";
-  }
-  v.play().catch(()=>{});
-}
-function deactivateFeedVideo(m){
-  const v=m.querySelector("video");
-  if(v){ v.pause();
-    // Quelle freigeben, damit nicht viele Videos gleichzeitig laden
-    v.removeAttribute("src"); try{ v.load(); }catch(e){} v.remove();
-    const img=m.querySelector("img"); if(img) img.style.visibility="";
-    const play=m.querySelector(".play"); if(play) play.style.display="";
-  }
-}
-function setFilter(f, btn){
-  currentFilter=f;
-  document.querySelectorAll("#filterbar .chip[data-f]").forEach(c=>c.classList.remove("on"));
-  if(btn) btn.classList.add("on");
-  renderFeed(feedPosts);
-}
-async function downloadFeedToPC(){
-  const list=feedPosts.filter(matchFilter).filter(p=>!p.downloaded);
-  if(list.length===0){ toast("Nichts Neues zum Laden.","ok"); return; }
-  if(!confirm(list.length+" Beiträge aus dem Feed auf den PC laden?")) return;
-  let n=0;
-  for(const p of list){ toast("Lädt "+(++n)+"/"+list.length+" …");
-    await api("/api/download",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({shortcode:p.shortcode})});
-  }
-  toast("Feed-Download fertig ("+list.length+")","ok");
-}
-function setNav(id){ document.querySelectorAll(".bottomnav button").forEach(b=>b.classList.remove("on"));
-  const b=$(id); if(b) b.classList.add("on"); }
-
-/* Gespeicherte Beiträge + Sammlungen (lokal) */
-function getColls(){ try{ return JSON.parse(localStorage.getItem("igm_colls")||"{}"); }catch(e){ return {}; } }
-function setColls(o){ try{ localStorage.setItem("igm_colls", JSON.stringify(o)); }catch(e){} }
-let currentColl="__all";
-function showSaved(){
-  cancelSelect(); pushView("saved", showSaved);
-  viewMode="saved"; setNav("nav_saved");
-  if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
-  $("filterbar").style.display="none"; $("stories_row").style.display="none";
-  $("pf_head").style.display="flex"; $("pf_head").className="pf-head";
-  $("more").innerHTML="";
-  const saved=getSaved(), colls=getColls();
-  // Sammlungs-Chips
-  let chips='<div class="filterbar" style="padding:8px 2px">';
-  chips+=`<button class="chip ${currentColl==='__all'?'on':''}" onclick="setColl('__all')">Alle (${saved.length})</button>`;
-  for(const [name,scs] of Object.entries(colls))
-    chips+=`<button class="chip ${currentColl===name?'on':''}" onclick="setColl('${esc(name).replace(/'/g,"\\'")}')">🔖 ${esc(name)} (${(scs||[]).length})</button>`;
-  chips+='<button class="chip" onclick="newCollection()">+ Neu</button></div>';
-  $("subbar").innerHTML=chips;
-  // gefilterte Liste
-  let list=saved;
-  if(currentColl!=="__all"){ const set=new Set(colls[currentColl]||[]); list=saved.filter(p=>set.has(p.shortcode)); }
-  $("pf_head").innerHTML='<div class="ph">🔖</div><div><div class="fn">Gespeichert</div>'
-    +'<div class="un">'+list.length+' Beiträge'+(currentColl!=="__all"?' in „'+esc(currentColl)+'“':'')+' (lokal)</div></div>';
-  if(list.length===0){ renderEmpty(currentColl==="__all"?"Noch nichts gemerkt. Tippe ★ oder doppeltippe ein Bild.":"Diese Sammlung ist leer."); return; }
-  renderGrid(list);
-}
-function setColl(name){ currentColl=name; showSaved(); }
-function newCollection(){
-  const name=(prompt("Name der neuen Sammlung:")||"").trim();
-  if(!name || name==="__all") return;
-  const colls=getColls(); if(!colls[name]) colls[name]=[]; setColls(colls);
-  currentColl=name; showSaved();
-}
-function askCollection(){
-  const colls=getColls(); const names=Object.keys(colls);
-  const hint = names.length ? (" Vorhanden: "+names.join(", ")) : "";
-  const name=(prompt("In welche Sammlung? (Name eingeben – neu oder vorhanden)"+hint)||"").trim();
-  return (!name || name==="__all") ? "" : name;
-}
-function addSelectedToCollection(){
-  const scs=[...selectedGrid]; if(scs.length===0){ toast("Nichts ausgewählt.","err"); return; }
-  const name=askCollection(); if(!name) return;
-  const colls=getColls(); const set=new Set(colls[name]||[]); scs.forEach(s=>set.add(s));
-  colls[name]=[...set]; setColls(colls);
-  toast(scs.length+" zu „"+name+"“ hinzugefügt","ok"); cancelSelect(); showSaved();
-}
-function removeSelectedFromCollection(){
-  const scs=new Set(selectedGrid); if(scs.size===0) return;
-  const colls=getColls(); colls[currentColl]=(colls[currentColl]||[]).filter(s=>!scs.has(s)); setColls(colls);
-  toast("Aus „"+currentColl+"“ entfernt","ok"); cancelSelect(); showSaved();
+  for(const p of posts) c.appendChild(postCard(p));
 }
 
 function avatarHTML(username, cls){
@@ -916,52 +446,33 @@ function postCard(p){
   el.innerHTML = `
     <div class="head">
       ${avatarHTML(p.username,"")}
-      <span class="u" style="cursor:pointer">@${esc(p.username)}</span>
-      <span class="t" title="${esc((p.posted_at||'').replace('T',' '))}">${timeAgo(p.posted_at)}</span>
+      <span class="u" style="cursor:pointer" onclick="openProfile('${p.username}')">@${esc(p.username)}</span>
+      <span class="t">${timeAgo(p.posted_at)}</span>
     </div>
     <div class="media">
       ${p.thumb ? `<img loading="lazy" src="${p.thumb}" alt="">` : `<div class="empty">keine Vorschau</div>`}
       ${p.is_video ? `<span class="play">▶</span>` : ""}
       ${p.is_album ? `<span class="multi">▦</span>` : ""}
-      <span class="heart">♥</span>
     </div>
     <div class="actions">
-      <button class="a-dev" title="Auf dieses Gerät">⤓</button>
-      <button class="a-pc ${p.downloaded?'done':''}" title="Auf den PC">${p.downloaded?'✓':'⬇'}</button>
-      <button class="a-copy" title="Link kopieren">🔗</button>
+      <button title="Auf dieses Gerät" onclick="deviceDownload('${p.shortcode}')">⤓</button>
+      <button id="pc_${p.shortcode}" class="${p.downloaded?'done':''}" title="Auf den PC"
+              onclick="pcDownload('${p.shortcode}')">${p.downloaded?'✓':'⬇'}</button>
       <a href="${p.url}" target="_blank" rel="noopener" title="Auf Instagram öffnen">↗</a>
       <span class="sp"></span>
-      <button class="a-save ${saved?'saved':''}" title="Merken">${saved?'★':'☆'}</button>
+      <button id="sv_${p.shortcode}" class="${saved?'saved':''}" title="Merken"
+              onclick="onSave('${p.shortcode}',this)">${saved?'★':'☆'}</button>
     </div>
-    ${(p.likes||p.comments) ? `<div class="stats">${p.likes?('❤ '+fmt(p.likes)+' „Gefällt mir“'):''}${p.likes&&p.comments?' · ':''}${p.comments?('💬 '+fmt(p.comments)+' Kommentare'):''}</div>` : ""}
-    ${p.caption ? `<div class="cap clamp"><span class="u">@${esc(p.username)}</span><span class="txt">${linkify(p.caption)}</span> <span class="more">… mehr</span></div>` : ""}
+    ${p.caption ? `<div class="cap clamp"><span class="u">@${esc(p.username)}</span><span class="txt">${esc(p.caption)}</span> <span class="more" onclick="this.parentNode.classList.toggle('clamp')">… mehr</span></div>` : ""}
   `;
-  const media=el.querySelector(".media");
-  if(p.is_video) media.dataset.v=p.shortcode;
-  media.onclick=()=>openLightbox(p);
-  let lastTap=0;
-  media.addEventListener("dblclick", ()=>likeAnim(el,p));
-  media.addEventListener("touchend", ()=>{ const n=Date.now(); if(n-lastTap<300){ likeAnim(el,p); } lastTap=n; });
-  el.querySelector(".u").onclick=()=>openProfile(p.username);
-  el.querySelector(".a-dev").onclick=()=>deviceDownload(p.shortcode);
-  el.querySelector(".a-copy").onclick=()=>shareOrCopy(p);
-  el.querySelector(".a-pc").onclick=(e)=>pcDownload(p.shortcode, e.currentTarget);
-  const sv=el.querySelector(".a-save");
-  sv.onclick=()=>{ const s=toggleSavedPost(p); sv.textContent=s?'★':'☆'; sv.classList.toggle('saved',s);
-    toast(s?"Gemerkt":"Entfernt","ok"); };
-  const more=el.querySelector(".more");
-  if(more) more.onclick=()=>el.querySelector(".cap").classList.toggle("clamp");
+  el.querySelector(".media").onclick = () => openLightbox(p);
   return el;
 }
-function likeAnim(el, p){
-  const h=el.querySelector(".heart"); if(h){ h.classList.remove("go"); void h.offsetWidth; h.classList.add("go"); }
-  if(!isSaved(p.shortcode)){ toggleSavedPost(p);
-    const sv=el.querySelector(".a-save"); if(sv){ sv.textContent='★'; sv.classList.add('saved'); } toast("Gemerkt","ok"); }
-}
+
+function onSave(sc, btn){ const s=toggleSaved(sc); btn.textContent=s?'★':'☆'; btn.classList.toggle('saved',s); }
 function deviceDownload(sc){ window.location.href = "/media/"+sc; }
-async function pcDownload(sc, btn){
-  const b=btn||document.querySelector(".a-pc");
-  if(!b||b.classList.contains("done")) return;
+async function pcDownload(sc){
+  const b=$("pc_"+sc); if(!b||b.classList.contains("done")) return;
   b.disabled=true; b.innerHTML='<span class="spin"></span>';
   const {data}=await api("/api/download",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({shortcode:sc})});
   b.disabled=false;
@@ -994,28 +505,10 @@ function drawLightbox(){
   $("lb_r").style.display = multi ? "block":"none";
   $("lb_dots").innerHTML = multi ? lbItems.map((_,i)=>'<i class="'+(i===lbIndex?'on':'')+'"></i>').join("") : "";
   $("lb_dl").innerHTML = `<a href="${it.download}" title="Auf dieses Gerät">⤓ Gerät</a>`
-    + `<button onclick="pcDownloadFromLb()" title="Auf den PC">⬇ PC</button>`
-    + `<button onclick="toggleComments()" title="Kommentare">💬</button>`;
+    + `<button onclick="pcDownloadFromLb()" title="Auf den PC">⬇ PC</button>`;
 }
 function lbNav(d){ lbIndex=(lbIndex+d+lbItems.length)%lbItems.length; drawLightbox(); }
-function closeLightbox(){ $("lb").classList.remove("open"); $("lb_stage").innerHTML="";
-  $("lb_cmts").classList.remove("open"); $("lb_cmts").innerHTML=""; }
-async function toggleComments(){
-  const sheet=$("lb_cmts");
-  if(sheet.classList.contains("open")){ sheet.classList.remove("open"); return; }
-  sheet.innerHTML='<div class="empty"><span class="spin"></span></div>'; sheet.classList.add("open");
-  const {data}=await api("/api/comments/"+lbPost.shortcode);
-  if(!$("lb").classList.contains("open")) return;
-  if(data.error){ sheet.innerHTML='<h4>Kommentare <button onclick="toggleComments()">✕</button></h4><div class="hint">'+esc(data.error)+'</div>'; return; }
-  const cs=data.comments||[];
-  let html='<h4>Kommentare ('+cs.length+') <button onclick="toggleComments()">✕</button></h4>';
-  if(cs.length===0) html+='<div class="hint">Keine Kommentare.</div>';
-  for(const c of cs){
-    html+='<div class="cmt"><div><span class="cu">@'+esc(c.username)+'</span>'+linkify(c.text)
-      +'<div class="cl">'+timeAgo(c.posted_at)+(c.likes?(' · '+fmt(c.likes)+' ❤'):'')+'</div></div></div>';
-  }
-  sheet.innerHTML=html;
-}
+function closeLightbox(){ $("lb").classList.remove("open"); $("lb_stage").innerHTML=""; }
 function pcDownloadFromLb(){ if(lbPost) pcDownload(lbPost.shortcode); }
 
 /* ---------- Stories ---------- */
@@ -1023,11 +516,9 @@ function renderStoriesRow(){
   const row=$("stories_row");
   if(!loggedIn || followList.length===0){ row.style.display="none"; return; }
   row.style.display="flex"; row.innerHTML="";
-  const seen=seenStories();
   for(const a of followList.slice(0,30)){
     const d=document.createElement("div"); d.className="story";
-    const ring = seen.includes(a.username) ? "ring seen" : "ring";
-    d.innerHTML = `<div class="${ring}">${a.avatar?`<img src="${a.avatar}" alt="">`:`<div class="ph">@</div>`}</div>`
+    d.innerHTML = `<div class="ring">${a.avatar?`<img src="${a.avatar}" alt="">`:`<div class="ph">@</div>`}</div>`
       + `<span>${esc(a.username)}</span>`;
     d.onclick=()=>openStory(a.username);
     row.appendChild(d);
@@ -1040,7 +531,6 @@ async function openStory(username){
   if(data.error){ toast(data.error,"err"); return; }
   if(!data.items || data.items.length===0){ toast("Keine aktuellen Stories.","ok"); return; }
   svItems=data.items; svIndex=0; svUser=username;
-  markSeen(username); renderStoriesRow();
   $("sv").classList.add("open");
   drawStory();
 }
@@ -1068,357 +558,34 @@ function storyNav(d){
 }
 function closeStory(){ clearTimeout(svTimer); $("sv").classList.remove("open"); $("sv_stage").innerHTML=""; }
 
-/* ---------- Reels-Vollbild-Feed ---------- */
-let reelsObserver=null;
-async function openReels(){
-  setNav("nav_reels");
-  let vids=(feedPosts||[]).filter(p=>p.is_video);
-  if(vids.length===0 && loggedIn){
-    toast("Sammle Reels aus deinen Abos …");
-    await startFeed();                       // Feed still aufbauen …
-    vids=(feedPosts||[]).filter(p=>p.is_video);
-  }
-  if(vids.length===0){ toast("Keine Videos/Reels gefunden – im Feed weiter scrollen.","ok"); return; }
-  const track=$("reels_track"); track.innerHTML="";
-  for(const p of vids){
-    const slide=document.createElement("div"); slide.className="reel";
-    slide.innerHTML=`
-      <video src="/media/${p.shortcode}?inline=1" loop muted playsinline preload="metadata"></video>
-      <div class="muted">🔇 tippen für Ton</div>
-      <div class="info"><span class="u">@${esc(p.username)}</span><div class="cp">${esc(p.caption||"")}</div></div>
-      <div class="side">
-        <div>❤<small>${fmt(p.likes||0)}</small></div>
-        <div>💬<small>${fmt(p.comments||0)}</small></div>
-        <a href="/media/${p.shortcode}" title="Auf Gerät">⤓</a>
-        <button class="rpc" title="Auf PC">⬇</button>
-      </div>`;
-    const v=slide.querySelector("video");
-    slide.querySelector(".muted").onclick=()=>{ v.muted=!v.muted; slide.querySelector(".muted").textContent=v.muted?"🔇 tippen für Ton":"🔊 Ton an"; if(!v.muted) v.play(); };
-    v.onclick=()=>{ v.paused?v.play():v.pause(); };
-    slide.querySelector(".u").onclick=()=>{ closeReels(); openProfile(p.username); };
-    slide.querySelector(".rpc").onclick=(e)=>pcDownload(p.shortcode, e.currentTarget);
-    track.appendChild(slide);
-  }
-  $("reels").classList.add("open");
-  if(reelsObserver) reelsObserver.disconnect();
-  reelsObserver=new IntersectionObserver(es=>{
-    es.forEach(en=>{ const v=en.target.querySelector("video");
-      if(!v) return; if(en.isIntersecting){ v.play().catch(()=>{}); } else { v.pause(); } });
-  },{threshold:0.6});
-  track.querySelectorAll(".reel").forEach(r=>reelsObserver.observe(r));
-  // erstes Video starten
-  const first=track.querySelector("video"); if(first) first.play().catch(()=>{});
-}
-function closeReels(){
-  $("reels").classList.remove("open");
-  if(reelsObserver) reelsObserver.disconnect();
-  $("reels_track").querySelectorAll("video").forEach(v=>v.pause());
-  $("reels_track").innerHTML="";
-}
-
-/* ---------- Pull-to-Refresh (Handy) ---------- */
-let ptrStart=null;
-window.addEventListener("touchstart", e=>{ if(window.scrollY<=0 && viewMode==="feed") ptrStart=e.touches[0].clientY; else ptrStart=null; }, {passive:true});
-window.addEventListener("touchmove", e=>{
-  if(ptrStart===null) return;
-  const dy=e.touches[0].clientY-ptrStart;
-  if(dy>60){ $("ptr").classList.add("show"); } else { $("ptr").classList.remove("show"); }
-}, {passive:true});
-window.addEventListener("touchend", e=>{
-  if(ptrStart!==null && $("ptr").classList.contains("show")){
-    $("ptr").classList.remove("show"); toast("Aktualisiere …"); startFeed();
-  }
-  ptrStart=null;
-}, {passive:true});
-
 /* ---------- Profil-Ansicht (Raster) ---------- */
-let profileName="", profileCount=24;
-async function openProfile(input, count){
-  const name=(input||"").trim().replace(/^@/,""); if(!name) return;
-  cancelSelect();
-  pushView("profile:"+name.toLowerCase(), ()=>openProfile(name, count));
-  profileName=name; profileCount=count||24;
-  const isOwn = currentUser && name.toLowerCase()===currentUser.toLowerCase();
-  viewMode="profile"; setNav(isOwn?"nav_profile":"nav_search"); $("subbar").innerHTML="";
-  if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
-  $("stories_row").style.display="none"; $("filterbar").style.display="none";
+async function openProfile(input){
+  const name=(input||"").trim(); if(!name) return;
+  viewMode="profile"; if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
+  $("stories_row").style.display="none";
   const acc = followList.find(a=>a.username.toLowerCase()===name.toLowerCase());
   $("pf_head").style.display="flex"; $("pf_head").className="pf-head";
   $("pf_head").innerHTML = (acc&&acc.avatar?`<img src="${acc.avatar}">`:`<div class="ph">@</div>`)
-    + `<div><div class="fn">@${esc(name)}</div><div class="un">lädt …</div></div>`;
+    + `<div><div class="fn">${esc(acc?acc.full_name||name:name)}</div><div class="un">@${esc(name)}</div></div>`;
   $("content").innerHTML='<div class="empty"><span class="spin" style="border-top-color:var(--accent)"></span></div>';
   $("more").innerHTML="";
-  api(isOwn ? "/api/me" : "/api/profile/"+encodeURIComponent(name)).then(({data})=>{
-    if(data && !data.error && viewMode==="profile" && profileName===name) renderProfileHeader(data);
-  });
-  const {data}=await api("/api/posts?username="+encodeURIComponent(name)+"&count="+profileCount);
-  if(viewMode!=="profile" || profileName!==name) return;
+  const {data}=await api("/api/posts?username="+encodeURIComponent(name)+"&count=24");
   if(data.error){ renderEmpty(data.error); toast(data.error,"err"); return; }
   const posts=data.posts||[];
   if(posts.length===0){ renderEmpty("Keine Beiträge gefunden."); return; }
   renderGrid(posts);
-  $("more").innerHTML = posts.length>=profileCount
-    ? '<button class="btn ghost" onclick="openProfile(profileName, profileCount+24)">Mehr laden</button>' : "";
 }
-function renderProfileHeader(info){
-  const isOwn = currentUser && info.username.toLowerCase()===currentUser.toLowerCase();
-  $("pf_head").innerHTML = `
-    ${info.avatar?`<img src="${info.avatar}">`:`<div class="ph">@</div>`}
-    <div style="flex:1;min-width:0">
-      <div class="fn">${esc(info.full_name||info.username)}${info.is_verified?'<span class="verified">✔</span>':''}</div>
-      <div class="un">@${esc(info.username)}${info.is_private?' · privat':''}</div>
-      <div class="pf-stats">
-        <div class="s"><b>${fmt(info.posts)}</b>Beiträge</div>
-        <div class="s ${isOwn?'link':''}" id="pf_followers"><b>${fmt(info.followers)}</b>Follower</div>
-        <div class="s ${isOwn?'link':''}" id="pf_following"><b>${fmt(info.following)}</b>Gefolgt</div>
-      </div>
-      ${info.biography?`<div class="pf-bio">${linkify(info.biography)}</div>`:''}
-    </div>`;
-  if(isOwn){ const f1=$("pf_followers"), f2=$("pf_following");
-    if(f1) f1.onclick=showFollowers; if(f2) f2.onclick=showFollowing; }
-  else pushRecent({username:info.username, full_name:info.full_name, avatar:info.avatar});
-}
-function showMe(){ if(!loggedIn){ toast("Bitte zuerst anmelden."); scrollToLogin(); return; } openProfile(currentUser); }
-
-/* ---------- Suche & Entdecken ---------- */
-const EXPLORE=["reisen","natur","food","kunst","musik","sport","fashion","auto"];
-function showSearch(){
-  cancelSelect(); pushView("search", showSearch); $("subbar").innerHTML="";
-  viewMode="search"; setNav("nav_search");
-  if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
-  $("stories_row").style.display="none"; $("filterbar").style.display="none";
-  $("pf_head").style.display="none"; $("more").innerHTML="";
-  $("content").innerHTML = '<div class="searchbox"><input id="sq" placeholder="Konten oder #Hashtag suchen …" autocomplete="off"></div><div id="sresults"></div>';
-  if(loggedIn && followList.length===0) loadFollowing(true);   // Vorschläge/Stories bei Bedarf
-  renderSearchStart();
-  const inp=$("sq"); inp.focus();
-  let t=null;
-  inp.oninput=()=>{ clearTimeout(t); const v=inp.value; t=setTimeout(()=>{ v.trim()?doSearch(v):renderSearchStart(); },400); };
-  inp.onkeydown=(e)=>{ if(e.key==='Enter'){ clearTimeout(t); doSearch(inp.value); } };
-}
-let exploreCache=null;
-function renderSearchStart(){
-  const box=$("sresults"); if(!box) return;
-  const rec=recentViewed();
-  let html='<div class="filterbar" style="padding-top:8px">'
-    + EXPLORE.map(t=>`<button class="chip" onclick="searchTag('${t}')">#${t}</button>`).join("")+'</div>';
-  if(rec.length){ html+='<div class="hint" style="margin:12px 4px 4px">Zuletzt angesehen</div><div id="recent"></div>'; }
-  html+='<div class="hint" style="margin:14px 4px 4px" id="explore_title">Entdecken</div><div id="explore_grid"></div>';
-  box.innerHTML=html;
-  if(rec.length){ const rc=$("recent"); rec.forEach(a=>rc.appendChild(accountRow(a))); }
-  if(exploreCache){ renderExplore(exploreCache); } else { loadExplore(); }
-}
-function searchTag(t){ const inp=$("sq"); if(inp) inp.value="#"+t; doSearch("#"+t); }
-async function loadExplore(){
-  const g=$("explore_grid"); if(!g) return;
-  const tag=EXPLORE[Math.floor(Math.random()*EXPLORE.length)];
-  if($("explore_title")) $("explore_title").innerHTML='Entdecken · #'+tag+' <span class="spin"></span>';
-  const {data}=await api("/api/hashtag/"+encodeURIComponent(tag)+"?count=18");
-  if(!$("explore_grid")) return;
-  if(data.error || !(data.posts||[]).length){
-    if($("explore_title")) $("explore_title").textContent="Entdecken (aktuell nicht verfügbar)";
-    return;
-  }
-  exploreCache={tag, posts:data.posts};
-  renderExplore(exploreCache);
-}
-function renderExplore(c){
-  if($("explore_title")) $("explore_title").innerHTML='Entdecken · #'+esc(c.tag)+' <button class="chip" onclick="loadExplore()">↻</button>';
-  if($("explore_grid")) renderGrid(c.posts, $("explore_grid"));
-}
-async function doSearch(q){
-  q=(q||"").trim();
-  if(!$("sresults")) return;
-  if(q[0]==="#"){ return doHashtag(q.slice(1)); }
-  if(q.length<2){ renderSearchStart(); return; }
-  $("sresults").innerHTML='<div class="empty"><span class="spin"></span></div>';
-  const {data}=await api("/api/search?q="+encodeURIComponent(q));
-  if(!$("sresults")) return;
-  if(data.error){ $("sresults").innerHTML='<div class="hint">'+esc(data.error)+'</div>'; return; }
-  const rs=data.results||[];
-  if(rs.length===0){ $("sresults").innerHTML='<div class="hint">Keine Treffer. Für Hashtags „#" davor setzen.</div>'; return; }
-  $("sresults").innerHTML=""; rs.forEach(a=>$("sresults").appendChild(accountRow(a)));
-}
-async function doHashtag(tag){
-  tag=(tag||"").trim().replace(/^#/,""); if(tag.length<2){ $("sresults").innerHTML='<div class="hint">Hashtag zu kurz.</div>'; return; }
-  $("sresults").innerHTML='<div class="empty"><span class="spin"></span></div>';
-  const {data}=await api("/api/hashtag/"+encodeURIComponent(tag)+"?count=24");
-  if(!$("sresults")) return;
-  if(data.error){ $("sresults").innerHTML='<div class="hint">'+esc(data.error)+'</div>'; return; }
-  const posts=data.posts||[];
-  if(posts.length===0){ $("sresults").innerHTML='<div class="hint">Nichts zu #'+esc(tag)+' gefunden.</div>'; return; }
-  $("sresults").innerHTML='<div class="hint" style="margin:4px">Neueste Beiträge zu #'+esc(tag)+'</div><div id="hgrid"></div>';
-  renderGrid(posts, $("hgrid"));
-}
-
-/* zuletzt angesehene Profile (lokal) */
-function recentViewed(){ try{ return JSON.parse(localStorage.getItem("igm_recent")||"[]"); }catch(e){ return []; } }
-function pushRecent(a){
-  if(!a || !a.username) return;
-  let r=recentViewed().filter(x=>x.username!==a.username);
-  r.unshift({username:a.username, full_name:a.full_name||"", avatar:a.avatar||""});
-  try{ localStorage.setItem("igm_recent", JSON.stringify(r.slice(0,12))); }catch(e){}
-}
-function accountRow(a, selectable){
-  const r=document.createElement("div"); r.className="acctrow"; r.dataset.u=a.username;
-  const cb = selectable ? '<input type="checkbox" class="acb" style="width:18px;height:18px;flex:0 0 auto">' : "";
-  r.innerHTML = cb + (a.avatar?`<img loading="lazy" decoding="async" src="${a.avatar}">`:`<div class="ph">@</div>`)
-    + `<div style="flex:1;min-width:0"><div class="fn">${esc(a.full_name||a.username)}${a.is_verified?'<span class="verified">✔</span>':''}</div><div class="un">@${esc(a.username)}</div></div>`;
-  if(selectable){
-    const cbEl=r.querySelector(".acb");
-    cbEl.onclick=(e)=>e.stopPropagation();
-    cbEl.onchange=()=>{ if(cbEl.checked) followSel.add(a.username); else followSel.delete(a.username); updateAcctBar(); };
-    r.onclick=(e)=>{ if(e.target!==cbEl) openProfile(a.username); };
-  } else {
-    r.onclick=()=>openProfile(a.username);
-  }
-  return r;
-}
-let followSel=new Set(), acctTimer=null;
-function selectAllAccts(on){
-  document.querySelectorAll("#content .acctrow").forEach(r=>{
-    const cb=r.querySelector(".acb"); if(!cb) return; cb.checked=on;
-    if(on) followSel.add(r.dataset.u); else followSel.delete(r.dataset.u);
-  });
-  updateAcctBar();
-}
-function updateAcctBar(){ const b=$("acct_dl"); if(b) b.textContent="⬇ Herunterladen ("+followSel.size+")"; }
-async function downloadFollowSelected(){
-  const usernames=[...followSel];
-  if(usernames.length===0){ toast("Bitte Konten auswählen.","err"); return; }
-  const count=($("acct_count")&&$("acct_count").value)||12;
-  if(!confirm("Von "+usernames.length+" Konten je "+count+" Beiträge auf den PC laden?")) return;
-  const {data}=await api("/api/download-following",{method:"POST",headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({usernames, count})});
-  if(data.error){ toast(data.error,"err"); return; }
-  toast("Download gestartet …");
-  if(acctTimer) clearInterval(acctTimer);
-  acctTimer=setInterval(async ()=>{
-    const {data:st}=await api("/api/download-following/status");
-    if($("acct_dl")) $("acct_dl").textContent=st.done+"/"+st.total+" · "+st.downloaded+" geladen";
-    if(!st.running && st.finished){ clearInterval(acctTimer); acctTimer=null;
-      toast("Fertig: "+st.downloaded+" Beiträge geladen","ok"); updateAcctBar(); }
-  },1000);
-}
-
-/* ---------- Download-Verlauf ---------- */
-async function showDownloads(){
-  cancelSelect(); pushView("downloads", showDownloads); $("subbar").innerHTML="";
-  viewMode="downloads"; setNav("nav_profile"); $("manage_panel").style.display="none";
-  if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
-  $("stories_row").style.display="none"; $("filterbar").style.display="none"; $("more").innerHTML="";
-  $("pf_head").style.display="flex"; $("pf_head").className="pf-head";
-  $("pf_head").innerHTML='<div class="ph">📥</div><div><div class="fn">Download-Verlauf</div><div class="un">lädt …</div></div>';
-  $("content").innerHTML='<div class="empty"><span class="spin"></span></div>';
-  const {data}=await api("/api/downloads");
-  if(viewMode!=="downloads") return;
-  if(data.error){ renderEmpty(data.error); return; }
-  const items=data.items||[];
-  const un=$("pf_head").querySelector(".un"); if(un) un.textContent=items.length+" Downloads";
-  if(items.length===0){ renderEmpty("Noch nichts heruntergeladen."); return; }
-  $("content").innerHTML="";
-  items.forEach(it=>{
-    const r=document.createElement("div"); r.className="acctrow";
-    const icon=/(Video|Reel)/.test(it.type)?'▶':(/Album/.test(it.type)?'▦':'🖼');
-    r.innerHTML='<div class="ph">'+icon+'</div><div style="flex:1;min-width:0">'
-      +'<div class="fn">@'+esc(it.username)+'</div>'
-      +'<div class="un">'+esc(it.type||'')+' · '+timeAgo(it.downloaded_at)+'</div></div>';
-    r.onclick=()=>window.open(it.url,"_blank","noopener");
-    $("content").appendChild(r);
-  });
-}
-
-/* ---------- Follower / Gefolgt ---------- */
-function showFollowing(){ showAccountList("/api/following","Gefolgt", true); }
-function showFollowers(){ showAccountList("/api/followers","Follower", true); }
-async function showAccountList(url,title,selectable){
-  cancelSelect(); pushView("list:"+title, ()=>showAccountList(url,title,selectable));
-  followSel.clear();
-  viewMode="list"; setNav("nav_profile");
-  if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
-  $("stories_row").style.display="none"; $("filterbar").style.display="none"; $("more").innerHTML="";
-  $("pf_head").style.display="none";
-  // Umschalter Gefolgt/Follower + Auswahl-/Download-Aktionen
-  let sub='<div class="filterbar" style="padding:8px 2px">'
-    +'<button class="chip '+(title==='Gefolgt'?'on':'')+'" onclick="showFollowing()">Gefolgt</button>'
-    +'<button class="chip '+(title==='Follower'?'on':'')+'" onclick="showFollowers()">Follower</button>';
-  if(selectable){
-    sub+='<button class="chip" onclick="selectAllAccts(true)">Alle</button>'
-      +'<button class="chip" onclick="selectAllAccts(false)">Keine</button>'
-      +'<span class="chip" style="cursor:default">je Konto: <select id="acct_count" style="background:transparent;border:0;color:inherit"><option>3</option><option selected>12</option><option>24</option><option value="30">alle (max 30)</option></select></span>'
-      +'<button class="chip" id="acct_dl" onclick="downloadFollowSelected()">⬇ Herunterladen (0)</button>';
-  }
-  sub+='</div>';
-  $("subbar").innerHTML=sub;
-  $("content").innerHTML='<div class="empty"><span class="spin"></span></div>';
-  const {data}=await api(url);
-  if(viewMode!=="list") return;
-  if(data.error){ renderEmpty(data.error); toast(data.error,"err"); return; }
-  const accts=data.accounts||[];
-  if(accts.length===0){ renderEmpty("Niemand hier."); return; }
-  $("content").innerHTML="";
-  const info=document.createElement("div"); info.className="hint"; info.style.margin="4px";
-  info.textContent=title+": "+accts.length+" Konten";
-  $("content").appendChild(info);
-  accts.forEach(a=>$("content").appendChild(accountRow(a, selectable)));
-}
-let gridPosts=[], selectMode=false, selectedGrid=new Set(), gridEl=null;
-function renderGrid(posts, container){
-  const isMain=!container;
-  const c=container||$("content"); if(isMain) c.className="";
-  if(isMain){ gridPosts=posts; selectMode=false; selectedGrid.clear(); updateSelbar(); }
+function renderGrid(posts){
+  const c=$("content"); c.className="";
   const g=document.createElement("div"); g.className="grid";
   for(const p of posts){
-    const cell=document.createElement("div"); cell.className="cell"; cell.dataset.sc=p.shortcode;
+    const cell=document.createElement("div"); cell.className="cell";
     cell.innerHTML = (p.thumb?`<img loading="lazy" src="${p.thumb}">`:"")
-      + (p.is_video?`<span class="ic">▶</span>`:(p.is_album?`<span class="ic">▦</span>`:""))
-      + `<span class="dlst ${p.downloaded?'g':'r'}" title="${p.downloaded?'heruntergeladen':'nicht heruntergeladen'}">${p.downloaded?'✓':''}</span>`;
-    cell.onclick=()=>{ if(isMain && selectMode) toggleCell(cell,p); else openLightbox(p); };
+      + (p.is_video?`<span class="ic">▶</span>`:(p.is_album?`<span class="ic">▦</span>`:""));
+    cell.onclick=()=>openLightbox(p);
     g.appendChild(cell);
   }
-  c.innerHTML="";
-  if(isMain){
-    gridEl=g;
-    const tools=document.createElement("div"); tools.className="gridtools";
-    tools.innerHTML='<button class="btn ghost small" onclick="enterSelect()">☑ Auswählen</button>';
-    c.appendChild(tools);
-  }
-  c.appendChild(g);
-}
-function enterSelect(){ if(!gridEl) return; selectMode=true; selectedGrid.clear();
-  gridEl.classList.add("selmode"); updateSelbar(); }
-function cancelSelect(){ selectMode=false; selectedGrid.clear();
-  if(gridEl){ gridEl.classList.remove("selmode");
-    gridEl.querySelectorAll(".cell.sel").forEach(x=>x.classList.remove("sel")); }
-  updateSelbar(); }
-function toggleCell(cell,p){
-  if(selectedGrid.has(p.shortcode)){ selectedGrid.delete(p.shortcode); cell.classList.remove("sel"); }
-  else { selectedGrid.add(p.shortcode); cell.classList.add("sel"); }
-  updateSelbar();
-}
-function updateSelbar(){
-  const bar=$("selbar");
-  if(!selectMode){ bar.classList.remove("show"); return; }
-  bar.classList.add("show"); $("selcount").textContent=selectedGrid.size+" ausgewählt";
-  let a='<button class="btn" onclick="downloadSelected()">⬇ Auf PC</button>';
-  if(viewMode==="saved"){
-    a+='<button class="btn ghost" onclick="addSelectedToCollection()">🔖 Sammlung</button>';
-    if(currentColl!=="__all") a+='<button class="btn ghost" onclick="removeSelectedFromCollection()">Aus Sammlung</button>';
-  }
-  a+='<button class="btn ghost" onclick="cancelSelect()">Abbrechen</button>';
-  $("selactions").innerHTML=a;
-}
-async function downloadSelected(){
-  const scs=[...selectedGrid];
-  if(scs.length===0){ toast("Nichts ausgewählt.","err"); return; }
-  toast("Lade "+scs.length+" auf den PC …");
-  let ok=0;
-  for(const sc of scs){
-    const {data}=await api("/api/download",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({shortcode:sc})});
-    if(data.ok) ok++;
-  }
-  toast("Fertig: "+ok+"/"+scs.length+" gespeichert","ok");
-  cancelSelect();
+  c.innerHTML=""; c.appendChild(g);
 }
 
 /* ---------- Abo-Liste / Verwalten ---------- */
@@ -1486,44 +653,25 @@ function addSchedTime(val){
 }
 async function loadSchedule(){
   const {data}=await api("/api/schedule");
-  if(data && data.enabled!==undefined){
-    $("sch_enabled").checked=!!data.enabled;
-    $("sch_stories").checked=!!data.stories;
-    $("sch_per").value=String(data.per||3);
-    $("sch_times").innerHTML="";
-    (data.times&&data.times.length?data.times:["12:00","00:00"]).forEach(addSchedTime);
-    $("sch_info").textContent = data.last_run ? ("Zuletzt automatisch: "+data.last_run) : "";
-  }
-  $("opt_autoplay").checked=autoplayOn();
-  $("opt_bg").checked=bgEnabled();
-  const st=await api("/api/settings");
-  if(st.data){ $("opt_captions").checked=!!st.data.save_captions;
-    $("dl_dir").textContent = "Ordner: "+(st.data.download_dir||""); }
+  if(!data || data.enabled===undefined) return;
+  $("sch_enabled").checked=!!data.enabled;
+  $("sch_per").value=String(data.per||3);
+  $("sch_times").innerHTML="";
+  (data.times&&data.times.length?data.times:["12:00","00:00"]).forEach(addSchedTime);
+  $("sch_info").textContent = data.last_run ? ("Zuletzt automatisch: "+data.last_run) : "";
 }
 async function saveSchedule(){
   const times=[...document.querySelectorAll("#sch_times input[type=time]")].map(i=>i.value).filter(Boolean);
   const {data}=await api("/api/schedule",{method:"POST",headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({enabled:$("sch_enabled").checked, stories:$("sch_stories").checked, times, per:$("sch_per").value})});
+    body:JSON.stringify({enabled:$("sch_enabled").checked, times, per:$("sch_per").value})});
   if(data.ok){
     $("sch_times").innerHTML=""; (data.times||[]).forEach(addSchedTime);
     toast(data.enabled ? ("Zeitplan aktiv: "+(data.times||[]).join(", ")) : "Zeitplan gespeichert (aus)","ok");
   }else toast(data.error||"Speichern fehlgeschlagen","err");
 }
-async function saveAppSettings(){
-  const {data}=await api("/api/settings",{method:"POST",headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({save_captions:$("opt_captions").checked})});
-  if(data.ok) toast($("opt_captions").checked?"Bildunterschriften werden gespeichert":"Bildunterschriften aus","ok");
-}
-function toggleAutoplay(){
-  try{ localStorage.setItem("igm_autoplay", $("opt_autoplay").checked?"1":"0"); }catch(e){}
-  toast($("opt_autoplay").checked?"Video-Autoplay an":"Datensparmodus (kein Autoplay)","ok");
-  if(viewMode==="feed") renderFeed(feedPosts);
-}
-async function doLogout(){ if(confirm("Wirklich abmelden?")){ await api("/api/logout",{method:"POST"}); location.reload(); } }
 
 /* ---------- Tastatur / Scroll ---------- */
 document.addEventListener("keydown", e=>{
-  const tag=(e.target.tagName||"").toLowerCase();
   if($("lb").classList.contains("open")){
     if(e.key==="Escape") closeLightbox();
     if(e.key==="ArrowLeft") lbNav(-1);
@@ -1532,29 +680,10 @@ document.addEventListener("keydown", e=>{
     if(e.key==="Escape") closeStory();
     if(e.key==="ArrowLeft") storyNav(-1);
     if(e.key==="ArrowRight") storyNav(1);
-  }else if(e.key==="Escape"){
-    $("help").classList.remove("open");
-    if($("manage_panel").style.display!=="none") $("manage_panel").style.display="none";
-  }else if(e.key==="?" && tag!=="input" && tag!=="textarea"){
-    $("help").classList.toggle("open");
   }
 });
 window.addEventListener("scroll", ()=>{ $("top").style.display = window.scrollY>600?"flex":"none"; });
 
-// Abo-Liste automatisch aktualisieren, sobald man zur App zurückkehrt
-// (neue Follows tauchen so ohne Neuladen in Stories/Suche/Feed auf).
-// Nur AKTUALISIEREN, wenn die Liste schon geladen ist – so entstehen bei
-// „Home" keine automatischen Instagram-Abrufe (schneller, weniger Drosselung).
-document.addEventListener("visibilitychange", ()=>{ if(!document.hidden && loggedIn && followList.length) loadFollowing(true); });
-// Nur alle 15 Minuten still auffrischen – weniger Instagram-Abrufe = schneller.
-setInterval(()=>{ if(loggedIn && !document.hidden && followList.length) loadFollowing(true); }, 900000);
-
-// Als App installierbar machen (Service Worker; scheitert still auf http-LAN).
-if("serviceWorker" in navigator){
-  window.addEventListener("load", ()=>{ navigator.serviceWorker.register("/sw.js").catch(()=>{}); });
-}
-
-initBackground();
 refreshStatus();
 </script>
 </body>
