@@ -861,9 +861,15 @@ function closeStory(){ clearTimeout(svTimer); $("sv").classList.remove("open"); 
 
 /* ---------- Reels-Vollbild-Feed ---------- */
 let reelsObserver=null;
-function openReels(){
-  const vids=(feedPosts||[]).filter(p=>p.is_video);
-  if(vids.length===0){ toast("Keine Videos/Reels im aktuellen Feed.","ok"); return; }
+async function openReels(){
+  setNav("nav_reels");
+  let vids=(feedPosts||[]).filter(p=>p.is_video);
+  if(vids.length===0 && loggedIn){
+    toast("Sammle Reels aus deinen Abos …");
+    await startFeed();                       // Feed still aufbauen …
+    vids=(feedPosts||[]).filter(p=>p.is_video);
+  }
+  if(vids.length===0){ toast("Keine Videos/Reels gefunden – im Feed weiter scrollen.","ok"); return; }
   const track=$("reels_track"); track.innerHTML="";
   for(const p of vids){
     const slide=document.createElement("div"); slide.className="reel";
@@ -977,16 +983,36 @@ function showSearch(){
   inp.oninput=()=>{ clearTimeout(t); const v=inp.value; t=setTimeout(()=>{ v.trim()?doSearch(v):renderSearchStart(); },400); };
   inp.onkeydown=(e)=>{ if(e.key==='Enter'){ clearTimeout(t); doSearch(inp.value); } };
 }
+let exploreCache=null;
 function renderSearchStart(){
   const box=$("sresults"); if(!box) return;
   const rec=recentViewed();
   let html='<div class="filterbar" style="padding-top:8px">'
     + EXPLORE.map(t=>`<button class="chip" onclick="searchTag('${t}')">#${t}</button>`).join("")+'</div>';
   if(rec.length){ html+='<div class="hint" style="margin:12px 4px 4px">Zuletzt angesehen</div><div id="recent"></div>'; }
+  html+='<div class="hint" style="margin:14px 4px 4px" id="explore_title">Entdecken</div><div id="explore_grid"></div>';
   box.innerHTML=html;
   if(rec.length){ const rc=$("recent"); rec.forEach(a=>rc.appendChild(accountRow(a))); }
+  if(exploreCache){ renderExplore(exploreCache); } else { loadExplore(); }
 }
 function searchTag(t){ const inp=$("sq"); if(inp) inp.value="#"+t; doSearch("#"+t); }
+async function loadExplore(){
+  const g=$("explore_grid"); if(!g) return;
+  const tag=EXPLORE[Math.floor(Math.random()*EXPLORE.length)];
+  if($("explore_title")) $("explore_title").innerHTML='Entdecken · #'+tag+' <span class="spin"></span>';
+  const {data}=await api("/api/hashtag/"+encodeURIComponent(tag)+"?count=18");
+  if(!$("explore_grid")) return;
+  if(data.error || !(data.posts||[]).length){
+    if($("explore_title")) $("explore_title").textContent="Entdecken (aktuell nicht verfügbar)";
+    return;
+  }
+  exploreCache={tag, posts:data.posts};
+  renderExplore(exploreCache);
+}
+function renderExplore(c){
+  if($("explore_title")) $("explore_title").innerHTML='Entdecken · #'+esc(c.tag)+' <button class="chip" onclick="loadExplore()">↻</button>';
+  if($("explore_grid")) renderGrid(c.posts, $("explore_grid"));
+}
 async function doSearch(q){
   q=(q||"").trim();
   if(!$("sresults")) return;
