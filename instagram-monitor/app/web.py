@@ -26,6 +26,7 @@ Endpunkte:
 from __future__ import annotations
 
 import datetime
+import hashlib
 import logging
 import threading
 import time
@@ -42,6 +43,7 @@ from flask import (
     render_template,
     request,
     Response,
+    send_file,
 )
 
 from .downloader import (
@@ -897,6 +899,28 @@ def create_app(
         'stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>'
         '<rect x="160" y="320" width="192" height="26" rx="13" fill="#fff"/></svg>'
     )
+
+    @app.get("/background")
+    def background():
+        """Liefert täglich ein anderes bereits heruntergeladenes Foto als
+        Hintergrundbild (stabil pro Tag). 404, wenn noch nichts geladen ist."""
+        root = settings.download_dir
+        exts = {".jpg", ".jpeg", ".png", ".webp"}
+        try:
+            files = sorted(
+                str(p) for p in root.rglob("*")
+                if p.is_file() and p.suffix.lower() in exts
+            )
+        except Exception:
+            files = []
+        if not files:
+            return Response(status=404)
+        day = datetime.date.today().isoformat()
+        idx = int(hashlib.md5(day.encode()).hexdigest(), 16) % len(files)
+        try:
+            return send_file(files[idx])
+        except Exception:
+            return Response(status=404)
 
     @app.get("/icon.svg")
     def icon_svg():

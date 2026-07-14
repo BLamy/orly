@@ -26,6 +26,11 @@
   body{background:var(--bg); color:var(--text); font:14px/1.5 -apple-system,
        BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
        padding-bottom:40px}
+  /* Täglich wechselndes Hintergrundfoto (aus deinen Downloads) */
+  #bg{position:fixed; inset:0; z-index:-2; background:#000 center/cover no-repeat}
+  #bgov{position:fixed; inset:0; z-index:-1; background:rgba(0,0,0,.55)}
+  body.hasbg{background:transparent}
+  body.hasbg header,body.hasbg .bottomnav{background:rgba(0,0,0,.55); backdrop-filter:blur(8px)}
   a{color:inherit; text-decoration:none}
   button{font:inherit; cursor:pointer; border:0; background:none; color:inherit}
   .btn{background:var(--accent); color:#fff; border-radius:8px; padding:8px 16px; font-weight:600}
@@ -236,9 +241,11 @@
 </style>
 </head>
 <body>
+<div id="bg"></div>
+<div id="bgov"></div>
 <header>
   <div class="nav">
-    <div class="logo" onclick="showFeed()" style="cursor:pointer">Instagram Monitor</div>
+    <div class="logo" onclick="showStart()" style="cursor:pointer">Instagram Monitor</div>
     <div class="search">
       <input id="q_user" list="follwd" placeholder="Suchen (Name oder Link) …"
              onkeydown="if(event.key==='Enter')openProfile($('q_user').value)">
@@ -377,7 +384,7 @@
 
 <!-- Untere Navigation (Handy) -->
 <nav class="bottomnav" id="bottomnav">
-  <button id="nav_home" class="on" title="Feed" onclick="showFeed()">🏠</button>
+  <button id="nav_home" class="on" title="Start" onclick="showStart()">🏠</button>
   <button id="nav_search" title="Suchen" onclick="showSearch()">🔍</button>
   <button id="nav_reels" title="Reels" onclick="openReels()">🎬</button>
   <button id="nav_saved" title="Gespeichert" onclick="showSaved()">🔖</button>
@@ -541,22 +548,39 @@ async function refreshStatus(){
         $("feed_profiles").value = String(fs.data.profiles);
         $("feed_per").value = String(fs.data.per);
       }
-      // Beim Öffnen KEIN Feed/Profil – direkt die Gefolgt-Liste zeigen.
-      showFollowing();
+      // Beim Öffnen KEIN Feed/Profil/Liste laden – nur schwarzer Startbildschirm.
+      showStart();
     }
   }else{
     $("stories_row").style.display = "none";
     renderEmpty("Melde dich an oder suche oben ein öffentliches Konto.");
   }
 }
-function showHomeIdle(){
-  viewMode="feed"; setNav("nav_home");
+function showHomeIdle(){ showStart(); }
+function showStart(){
+  cancelSelect();
+  viewMode="start"; setNav("nav_home");
   $("pf_head").style.display="none"; $("subbar").innerHTML=""; $("more").innerHTML="";
   $("stories_row").style.display="none"; $("filterbar").style.display="none";
-  $("content").innerHTML='<div class="empty">Willkommen 👋<br><br>'
-    +'<button class="btn" onclick="startFeed()">▶ Feed laden</button><br><br>'
-    +'<span class="hint">Oder oben ein Konto / #Hashtag suchen.<br>'
-    +'Der Feed wird nicht automatisch geladen – das hält die Seite schnell.</span></div>';
+  $("content").className="";
+  $("content").innerHTML='<div style="min-height:68vh;display:flex;flex-direction:column;'
+    +'align-items:center;justify-content:center;text-align:center;gap:18px">'
+    +'<div style="font-size:26px;font-weight:800;text-shadow:0 2px 10px #000">📷 Instagram Monitor</div>'
+    +'<div class="rowflex" style="justify-content:center;gap:10px">'
+    +'<button class="btn" onclick="showFollowing()">Gefolgt / Follower</button>'
+    +'<button class="btn ghost" onclick="showSearch()">Suchen</button>'
+    +'<button class="btn ghost" onclick="startFeed()">Feed</button>'
+    +'</div>'
+    +'<div class="hint" style="text-shadow:0 1px 6px #000">Nichts wird automatisch geladen – wähle selbst.</div>'
+    +'</div>';
+}
+// Täglich wechselndes Hintergrundfoto aus den eigenen Downloads laden.
+function initBackground(){
+  const day=new Date().toISOString().slice(0,10);
+  const im=new Image();
+  im.onload=()=>{ $("bg").style.backgroundImage="url(/background?d="+day+")"; document.body.classList.add("hasbg"); };
+  im.onerror=()=>{ document.body.classList.remove("hasbg"); };
+  im.src="/background?d="+day;
 }
 function scrollToLogin(){ $("login_panel").scrollIntoView({behavior:"smooth"}); }
 
@@ -1431,6 +1455,7 @@ if("serviceWorker" in navigator){
   window.addEventListener("load", ()=>{ navigator.serviceWorker.register("/sw.js").catch(()=>{}); });
 }
 
+initBackground();
 refreshStatus();
 </script>
 </body>
