@@ -25,6 +25,7 @@ Endpunkte:
 
 from __future__ import annotations
 
+import datetime
 import logging
 import threading
 import time
@@ -349,33 +350,13 @@ def create_app(
             headers={"Cache-Control": "private, max-age=3600"},
         )
 
-    @app.post("/api/download-following")
-    def download_following():
+    def start_bulk_job(usernames: list[str], per_account: int, since: str = "") -> bool:
+        """Startet den Massen-Download im Hintergrund (Endpunkt & Zeitplan).
+
+        Rückgabe: False, wenn bereits ein Download läuft.
+        """
         if bulk.snapshot()["running"]:
-            return jsonify(error="Es läuft bereits ein Massen-Download."), 409
-        data = request.get_json(force=True, silent=True) or {}
-        try:
-            per_account = max(1, min(_MAX_COUNT, int(data.get("count", 3))))
-        except (TypeError, ValueError):
-            per_account = 3
-        # Optionaler Datumsfilter: nur Beiträge ab diesem Tag (YYYY-MM-DD).
-        since = (data.get("since") or "").strip()[:10]
-
-        # Ausgewählte Konten (falls angegeben), sonst alle Abos.
-        selected = data.get("usernames")
-        if isinstance(selected, list) and selected:
-            usernames = [str(u).strip().lstrip("@").lower()
-                         for u in selected if str(u).strip()]
-        else:
-            try:
-                usernames = downloader.following_usernames()
-            except LoginError as exc:
-                return jsonify(error=str(exc)), 401
-            except DownloaderError as exc:
-                return jsonify(error=str(exc)), 502
-        if not usernames:
-            return jsonify(error="Keine Konten ausgewählt."), 400
-
+            return False
         bulk.reset()
         bulk.update(running=True, total=len(usernames))
 
@@ -427,6 +408,37 @@ def create_app(
         thread = threading.Thread(target=worker, name="bulk-download", daemon=True)
         bulk.thread = thread
         thread.start()
+        return True
+
+    @app.post("/api/download-following")
+    def download_following():
+        if bulk.snapshot()["running"]:
+            return jsonify(error="Es läuft bereits ein Massen-Download."), 409
+        data = request.get_json(force=True, silent=True) or {}
+        try:
+            per_account = max(1, min(_MAX_COUNT, int(data.get("count", 3))))
+        except (TypeError, ValueError):
+            per_account = 3
+        # Optionaler Datumsfilter: nur Beiträge ab diesem Tag (YYYY-MM-DD).
+        since = (data.get("since") or "").strip()[:10]
+
+        # Ausgewählte Konten (falls angegeben), sonst alle Abos.
+        selected = data.get("usernames")
+        if isinstance(selected, list) and selected:
+            usernames = [str(u).strip().lstrip("@").lower()
+                         for u in selected if str(u).strip()]
+        else:
+            try:
+                usernames = downloader.following_usernames()
+            except LoginError as exc:
+                return jsonify(error=str(exc)), 401
+            except DownloaderError as exc:
+                return jsonify(error=str(exc)), 502
+        if not usernames:
+            return jsonify(error="Keine Konten ausgewählt."), 400
+
+        if not start_bulk_job(usernames, per_account, since):
+            return jsonify(error="Es läuft bereits ein Massen-Download."), 409
         return jsonify(ok=True, total=len(usernames))
 
     @app.post("/api/download-stories")
@@ -746,5 +758,80 @@ def create_app(
             db.add_post(post.shortcode, post.username, post.post_type, post.posted_at)
             db.mark_downloaded(post.shortcode, post.username)
         return jsonify(ok=bool(ok))
+
+    # ------------------------------------------------------------------
+    # Automatischer Zeitplan (täglich zu festen Uhrzeiten herunterladen)
+    # ------------------------------------------------------------------
+    @app.get("/api/schedule")
+    def get_schedule():
+        return jsonify(
+            enabled=settings.schedule_enabled,
+            times=settings.schedule_times,
+            per=settings.schedule_per,
+            last_run=settings.schedule_last_run,
+        )
+
+    @app.post("/api/schedule")
+    def set_schedule():
+        data = request.get_json(force=True, silent=True) or {}
+        settings.schedule_enabled = bool(data.get("enabled"))
+        if "times" in data and isinstance(data["times"], list):
+            settings.schedule_times = data["times"]
+        if "per" in data:
+            try:
+                settings.schedule_per = max(1, min(_MAX_COUNT, int(data["per"])))
+            except (TypeError, ValueError):
+                pass
+        return jsonify(
+            ok=True,
+            enabled=settings.schedule_enabled,
+            times=settings.schedule_times,
+            per=settings.schedule_per,
+        )
+
+    def _scheduler_loop():
+        """Prüft jede Minute, ob ein geplanter Download fällig ist."""
+        fired: set[str] = set()   # Schlüssel "YYYY-MM-DD HH:MM" (kein Doppelstart)
+        while True:
+            try:
+                if settings.schedule_enabled:
+                    now = datetime.datetime.now()
+                    hhmm = now.strftime("%H:%M")
+                    if hhmm in settings.schedule_times:
+                        key = now.strftime("%Y-%m-%d ") + hhmm
+                        if key not in fired:
+                            fired.add(key)
+                            if len(fired) > 64:  # alte Marker gelegentlich aufräumen
+                                fired = set(sorted(fired)[-16:])
+                            _run_scheduled(now)
+            except Exception:
+                logger.exception("Zeitplan-Prüfung fehlgeschlagen.")
+            time.sleep(20)
+
+    def _run_scheduled(now: "datetime.datetime") -> None:
+        if not downloader.is_logged_in:
+            logger.warning(
+                "Zeitplan %s: nicht angemeldet – Download übersprungen. "
+                "Bitte in der Oberfläche anmelden.", now.strftime("%H:%M")
+            )
+            return
+        try:
+            usernames = downloader.following_usernames()
+        except DownloaderError as exc:
+            logger.warning("Zeitplan %s: Abo-Liste nicht abrufbar: %s",
+                           now.strftime("%H:%M"), exc)
+            return
+        if not usernames:
+            logger.info("Zeitplan %s: keine Abos.", now.strftime("%H:%M"))
+            return
+        if start_bulk_job(usernames, settings.schedule_per, ""):
+            settings.schedule_last_run = now.strftime("%Y-%m-%d %H:%M")
+            logger.info("Zeitplan %s: automatischer Download von %d Konten "
+                        "gestartet.", now.strftime("%H:%M"), len(usernames))
+        else:
+            logger.info("Zeitplan %s: übersprungen (ein Download läuft bereits).",
+                        now.strftime("%H:%M"))
+
+    threading.Thread(target=_scheduler_loop, name="scheduler", daemon=True).start()
 
     return app

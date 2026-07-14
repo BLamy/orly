@@ -86,6 +86,16 @@ Ansicht als 3-Spalten-Raster**, **Hell/Dunkel-Umschalter**, „Merken"
 (★) und Toast-Meldungen. Über das Zahnrad ⚙️ erreichst du „Verwalten"
 (Abo-Liste, Massen-Download, Feed-Einstellungen).
 
+**Automatischer Download (Zeitplan):** Unter ⚙️ „Verwalten" →
+„⏰ Automatischer Download" kannst du festlegen, dass die App **täglich zu
+bestimmten Uhrzeiten** (Standard **12:00** und **00:00**) automatisch die
+neuesten Beiträge aller deiner Abos auf den PC lädt. Uhrzeiten lassen sich
+beliebig hinzufügen/entfernen, und „Beiträge je Konto" ist einstellbar.
+Voraussetzung: Die App muss laufen (PC an, Browser-Server geöffnet) und du
+musst angemeldet sein. Bereits Geladenes wird nicht erneut heruntergeladen.
+Tipp: Für einen dauerhaften Betrieb `start-web-handy.bat` einfach laufen
+lassen – dann läuft der Zeitplan im Hintergrund weiter.
+
 1. Optional oben **anmelden**. Am zuverlässigsten ist **„Aus Browser
    übernehmen“**: Melde dich einmal in deinem normalen Browser bei
    instagram.com an, dann übernimmt die App diese Anmeldung – das

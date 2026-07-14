@@ -231,6 +231,26 @@
       <input id="fl_filter" placeholder="Liste filtern …" style="flex:1" oninput="filterFollow()">
     </div>
     <div id="fl_list" style="margin-top:10px; max-height:260px; overflow:auto"></div>
+
+    <hr style="border:0; border-top:1px solid var(--border); margin:14px 0">
+    <div><b>⏰ Automatischer Download</b></div>
+    <div class="hint">Lädt zu den eingestellten Uhrzeiten täglich automatisch die
+      neuesten Beiträge aller deiner Abos auf den PC. Dafür muss die App laufen
+      (PC an, dieses Fenster offen) und du angemeldet sein.</div>
+    <label class="rowflex" style="margin-top:8px">
+      <input type="checkbox" id="sch_enabled" style="width:16px;height:16px"> automatisch herunterladen
+    </label>
+    <div class="rowflex" style="margin-top:8px">
+      <span class="hint" style="margin:0">Uhrzeiten:</span>
+      <span id="sch_times" class="rowflex"></span>
+      <button class="btn ghost small" onclick="addSchedTime('')">+ Zeit</button>
+    </div>
+    <div class="rowflex" style="margin-top:8px">
+      <label class="hint" style="margin:0">Beiträge je Konto:
+        <select id="sch_per"><option>1</option><option selected>3</option><option>6</option><option>12</option></select></label>
+      <button class="btn" onclick="saveSchedule()">Zeitplan speichern</button>
+    </div>
+    <div class="hint" id="sch_info"></div>
   </div>
 
   <!-- Stories-Reihe -->
@@ -571,7 +591,7 @@ function renderGrid(posts){
 /* ---------- Abo-Liste / Verwalten ---------- */
 let followList=[], followAvatar={};
 function toggleManage(){ const m=$("manage_panel"); m.style.display = m.style.display==="none"?"block":"none";
-  if(m.style.display==="block") m.scrollIntoView({behavior:"smooth"}); }
+  if(m.style.display==="block"){ m.scrollIntoView({behavior:"smooth"}); loadSchedule(); } }
 
 async function loadFollowing(silent){
   if(!loggedIn){ if(!silent) toast("Bitte zuerst anmelden.","err"); return; }
@@ -622,6 +642,33 @@ async function pollBulk(){
     toast("Fertig: "+st.downloaded+" Beiträge geladen","ok"); }
 }
 async function cancelBulk(){ await api("/api/download-following/cancel",{method:"POST"}); }
+
+/* ---------- Automatischer Zeitplan ---------- */
+function addSchedTime(val){
+  const wrap=$("sch_times");
+  const box=document.createElement("span"); box.className="rowflex"; box.style.gap="2px";
+  box.innerHTML=`<input type="time" value="${val||'12:00'}" style="padding:6px 8px">`
+    +`<button class="btn ghost small" title="entfernen" onclick="this.parentNode.remove()">✕</button>`;
+  wrap.appendChild(box);
+}
+async function loadSchedule(){
+  const {data}=await api("/api/schedule");
+  if(!data || data.enabled===undefined) return;
+  $("sch_enabled").checked=!!data.enabled;
+  $("sch_per").value=String(data.per||3);
+  $("sch_times").innerHTML="";
+  (data.times&&data.times.length?data.times:["12:00","00:00"]).forEach(addSchedTime);
+  $("sch_info").textContent = data.last_run ? ("Zuletzt automatisch: "+data.last_run) : "";
+}
+async function saveSchedule(){
+  const times=[...document.querySelectorAll("#sch_times input[type=time]")].map(i=>i.value).filter(Boolean);
+  const {data}=await api("/api/schedule",{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({enabled:$("sch_enabled").checked, times, per:$("sch_per").value})});
+  if(data.ok){
+    $("sch_times").innerHTML=""; (data.times||[]).forEach(addSchedTime);
+    toast(data.enabled ? ("Zeitplan aktiv: "+(data.times||[]).join(", ")) : "Zeitplan gespeichert (aus)","ok");
+  }else toast(data.error||"Speichern fehlgeschlagen","err");
+}
 
 /* ---------- Tastatur / Scroll ---------- */
 document.addEventListener("keydown", e=>{
