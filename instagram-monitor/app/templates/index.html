@@ -485,6 +485,14 @@ function copyLink(url){
   try{ navigator.clipboard.writeText(url); toast("Link kopiert","ok"); }
   catch(e){ toast(url); }
 }
+async function shareOrCopy(p){
+  const url = p.url || p;
+  if(navigator.share){
+    try{ await navigator.share({title:"Instagram", text:"@"+(p.username||""), url}); return; }
+    catch(e){ /* abgebrochen -> kopieren */ }
+  }
+  copyLink(url);
+}
 
 /* ---------- Status / Anmeldung ---------- */
 let loggedIn = false, currentUser = "";
@@ -616,6 +624,43 @@ function renderFeed(posts){
   if(posts.length===0){ showSkeleton(); return; }
   if(shown.length===0){ renderEmpty("Keine Beiträge für diesen Filter."); return; }
   for(const p of shown) c.appendChild(postCard(p));
+  setupFeedVideos();
+}
+
+/* Stummes Autoplay des gerade sichtbaren Feed-Videos (bandbreitenschonend:
+   es wird immer nur das aktuell sichtbare Video geladen/abgespielt). */
+let feedVidObserver=null;
+function setupFeedVideos(){
+  if(feedVidObserver) feedVidObserver.disconnect();
+  feedVidObserver=new IntersectionObserver(es=>{
+    es.forEach(en=>{
+      if(en.isIntersecting && en.intersectionRatio>=0.7) activateFeedVideo(en.target);
+      else deactivateFeedVideo(en.target);
+    });
+  },{threshold:[0,0.7,1]});
+  document.querySelectorAll("#content .post .media[data-v]").forEach(m=>feedVidObserver.observe(m));
+}
+function activateFeedVideo(m){
+  let v=m.querySelector("video");
+  if(!v){
+    v=document.createElement("video");
+    v.src="/media/"+m.dataset.v+"?inline=1";
+    v.muted=true; v.loop=true; v.playsInline=true; v.preload="metadata";
+    v.style.cssText="position:absolute;inset:0;width:100%;height:100%;object-fit:cover";
+    m.appendChild(v);
+    const img=m.querySelector("img"); if(img) img.style.visibility="hidden";
+    const play=m.querySelector(".play"); if(play) play.style.display="none";
+  }
+  v.play().catch(()=>{});
+}
+function deactivateFeedVideo(m){
+  const v=m.querySelector("video");
+  if(v){ v.pause();
+    // Quelle freigeben, damit nicht viele Videos gleichzeitig laden
+    v.removeAttribute("src"); try{ v.load(); }catch(e){} v.remove();
+    const img=m.querySelector("img"); if(img) img.style.visibility="";
+    const play=m.querySelector(".play"); if(play) play.style.display="";
+  }
 }
 function setFilter(f, btn){
   currentFilter=f;
@@ -683,13 +728,14 @@ function postCard(p){
     ${p.caption ? `<div class="cap clamp"><span class="u">@${esc(p.username)}</span><span class="txt">${linkify(p.caption)}</span> <span class="more">… mehr</span></div>` : ""}
   `;
   const media=el.querySelector(".media");
+  if(p.is_video) media.dataset.v=p.shortcode;
   media.onclick=()=>openLightbox(p);
   let lastTap=0;
   media.addEventListener("dblclick", ()=>likeAnim(el,p));
   media.addEventListener("touchend", ()=>{ const n=Date.now(); if(n-lastTap<300){ likeAnim(el,p); } lastTap=n; });
   el.querySelector(".u").onclick=()=>openProfile(p.username);
   el.querySelector(".a-dev").onclick=()=>deviceDownload(p.shortcode);
-  el.querySelector(".a-copy").onclick=()=>copyLink(p.url);
+  el.querySelector(".a-copy").onclick=()=>shareOrCopy(p);
   el.querySelector(".a-pc").onclick=(e)=>pcDownload(p.shortcode, e.currentTarget);
   const sv=el.querySelector(".a-save");
   sv.onclick=()=>{ const s=toggleSavedPost(p); sv.textContent=s?'★':'☆'; sv.classList.toggle('saved',s);
