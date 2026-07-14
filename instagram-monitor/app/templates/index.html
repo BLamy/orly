@@ -126,6 +126,11 @@
   .grid .cell{position:relative; aspect-ratio:1/1; background:var(--bg2); cursor:pointer; overflow:hidden}
   .grid .cell img{width:100%; height:100%; object-fit:cover}
   .grid .cell .ic{position:absolute; top:6px; right:8px; color:#fff; filter:drop-shadow(0 1px 2px #000a)}
+  .grid .cell .dlst{position:absolute; top:6px; left:6px; width:18px; height:18px; border-radius:50%;
+        display:flex; align-items:center; justify-content:center; font-size:11px; font-weight:700;
+        color:#fff; box-shadow:0 1px 3px #0007}
+  .grid .cell .dlst.g{background:#2ecc71}
+  .grid .cell .dlst.r{background:#ed4956}
   .grid.selmode .cell{cursor:pointer}
   .grid.selmode .cell::after{content:""; position:absolute; top:6px; left:6px; width:20px; height:20px;
         border-radius:50%; border:2px solid #fff; background:#0004}
@@ -357,13 +362,8 @@
   <!-- Profil-Kopf (nur in Profil-Ansicht) -->
   <div id="pf_head" style="display:none"></div>
 
-  <!-- Filterleiste (nur im Feed) -->
+  <!-- Aktionsleiste (nur im Feed) -->
   <div class="filterbar" id="filterbar" style="display:none">
-    <button class="chip on" data-f="all" onclick="setFilter('all',this)">Alle</button>
-    <button class="chip" data-f="photo" onclick="setFilter('photo',this)">Fotos</button>
-    <button class="chip" data-f="video" onclick="setFilter('video',this)">Videos/Reels</button>
-    <button class="chip" data-f="album" onclick="setFilter('album',this)">Alben</button>
-    <button class="chip" onclick="openReels()">▶ Reels</button>
     <button class="chip" onclick="downloadFeedToPC()">⬇ Alle auf PC</button>
   </div>
 
@@ -1118,12 +1118,46 @@ function pushRecent(a){
   r.unshift({username:a.username, full_name:a.full_name||"", avatar:a.avatar||""});
   try{ localStorage.setItem("igm_recent", JSON.stringify(r.slice(0,12))); }catch(e){}
 }
-function accountRow(a){
-  const r=document.createElement("div"); r.className="acctrow";
-  r.innerHTML = (a.avatar?`<img src="${a.avatar}">`:`<div class="ph">@</div>`)
+function accountRow(a, selectable){
+  const r=document.createElement("div"); r.className="acctrow"; r.dataset.u=a.username;
+  const cb = selectable ? '<input type="checkbox" class="acb" style="width:18px;height:18px;flex:0 0 auto">' : "";
+  r.innerHTML = cb + (a.avatar?`<img src="${a.avatar}">`:`<div class="ph">@</div>`)
     + `<div style="flex:1;min-width:0"><div class="fn">${esc(a.full_name||a.username)}${a.is_verified?'<span class="verified">✔</span>':''}</div><div class="un">@${esc(a.username)}</div></div>`;
-  r.onclick=()=>openProfile(a.username);
+  if(selectable){
+    const cbEl=r.querySelector(".acb");
+    cbEl.onclick=(e)=>e.stopPropagation();
+    cbEl.onchange=()=>{ if(cbEl.checked) followSel.add(a.username); else followSel.delete(a.username); updateAcctBar(); };
+    r.onclick=(e)=>{ if(e.target!==cbEl) openProfile(a.username); };
+  } else {
+    r.onclick=()=>openProfile(a.username);
+  }
   return r;
+}
+let followSel=new Set(), acctTimer=null;
+function selectAllAccts(on){
+  document.querySelectorAll("#content .acctrow").forEach(r=>{
+    const cb=r.querySelector(".acb"); if(!cb) return; cb.checked=on;
+    if(on) followSel.add(r.dataset.u); else followSel.delete(r.dataset.u);
+  });
+  updateAcctBar();
+}
+function updateAcctBar(){ const b=$("acct_dl"); if(b) b.textContent="⬇ Herunterladen ("+followSel.size+")"; }
+async function downloadFollowSelected(){
+  const usernames=[...followSel];
+  if(usernames.length===0){ toast("Bitte Konten auswählen.","err"); return; }
+  const count=($("acct_count")&&$("acct_count").value)||12;
+  if(!confirm("Von "+usernames.length+" Konten je "+count+" Beiträge auf den PC laden?")) return;
+  const {data}=await api("/api/download-following",{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({usernames, count})});
+  if(data.error){ toast(data.error,"err"); return; }
+  toast("Download gestartet …");
+  if(acctTimer) clearInterval(acctTimer);
+  acctTimer=setInterval(async ()=>{
+    const {data:st}=await api("/api/download-following/status");
+    if($("acct_dl")) $("acct_dl").textContent=st.done+"/"+st.total+" · "+st.downloaded+" geladen";
+    if(!st.running && st.finished){ clearInterval(acctTimer); acctTimer=null;
+      toast("Fertig: "+st.downloaded+" Beiträge geladen","ok"); updateAcctBar(); }
+  },1000);
 }
 
 /* ---------- Download-Verlauf ---------- */
@@ -1154,9 +1188,10 @@ async function showDownloads(){
 }
 
 /* ---------- Follower / Gefolgt ---------- */
-function showFollowing(){ showAccountList("/api/following","Gefolgt"); }
-function showFollowers(){ showAccountList("/api/followers","Follower"); }
-async function showAccountList(url,title){
+function showFollowing(){ showAccountList("/api/following","Gefolgt", true); }
+function showFollowers(){ showAccountList("/api/followers","Follower", false); }
+async function showAccountList(url,title,selectable){
+  cancelSelect(); followSel.clear();
   viewMode="list"; setNav("nav_profile"); $("subbar").innerHTML="";
   if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
   $("stories_row").style.display="none"; $("filterbar").style.display="none"; $("more").innerHTML="";
@@ -1169,7 +1204,14 @@ async function showAccountList(url,title){
   const accts=data.accounts||[];
   const un=$("pf_head").querySelector(".un"); if(un) un.textContent=accts.length+" Konten";
   if(accts.length===0){ renderEmpty("Niemand hier."); return; }
-  $("content").innerHTML=""; accts.forEach(a=>$("content").appendChild(accountRow(a)));
+  if(selectable){
+    $("subbar").innerHTML='<div class="filterbar" style="padding:8px 2px">'
+      +'<button class="chip" onclick="selectAllAccts(true)">Alle</button>'
+      +'<button class="chip" onclick="selectAllAccts(false)">Keine</button>'
+      +'<span class="chip" style="cursor:default">je Konto: <select id="acct_count" style="background:transparent;border:0;color:inherit"><option>3</option><option selected>12</option><option>24</option></select></span>'
+      +'<button class="chip" id="acct_dl" onclick="downloadFollowSelected()">⬇ Herunterladen (0)</button></div>';
+  }
+  $("content").innerHTML=""; accts.forEach(a=>$("content").appendChild(accountRow(a, selectable)));
 }
 let gridPosts=[], selectMode=false, selectedGrid=new Set(), gridEl=null;
 function renderGrid(posts, container){
@@ -1180,7 +1222,8 @@ function renderGrid(posts, container){
   for(const p of posts){
     const cell=document.createElement("div"); cell.className="cell"; cell.dataset.sc=p.shortcode;
     cell.innerHTML = (p.thumb?`<img loading="lazy" src="${p.thumb}">`:"")
-      + (p.is_video?`<span class="ic">▶</span>`:(p.is_album?`<span class="ic">▦</span>`:""));
+      + (p.is_video?`<span class="ic">▶</span>`:(p.is_album?`<span class="ic">▦</span>`:""))
+      + `<span class="dlst ${p.downloaded?'g':'r'}" title="${p.downloaded?'heruntergeladen':'nicht heruntergeladen'}">${p.downloaded?'✓':''}</span>`;
     cell.onclick=()=>{ if(isMain && selectMode) toggleCell(cell,p); else openLightbox(p); };
     g.appendChild(cell);
   }

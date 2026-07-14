@@ -100,6 +100,14 @@ Reels-Wiedergabe erfolgen **immer in Originalqualität** (die App streamt
 die Original-Datei direkt vom Instagram-CDN). Unter ⚙️ kannst du das
 **automatische Abspielen im Feed** ausschalten (Datensparmodus).
 
+**Status im Raster:** In Profil-/Raster-Ansichten ist jeder Beitrag oben
+links markiert – **grün ✓ = bereits heruntergeladen, rot = noch nicht**.
+
+**Konten auswählen & laden:** In der **Gefolgt**-Liste kannst du mehrere
+Konten **anhaken** (Alle/Keine) und mit einem Klick **je Konto N Beiträge
+auf den PC** laden (Fortschritt im Knopf). Follower/Gefolgt siehst du über
+dein Profil (Zähler antippen).
+
 **Mehrfachauswahl & Verlauf:** In Raster-Ansichten (Profil, Gespeichert)
 gibt es **„☑ Auswählen"** – mehrere Beiträge antippen und gesammelt
 **auf den PC** laden. Unter ⚙️ → **„📥 Verlauf"** siehst du alle bisher
