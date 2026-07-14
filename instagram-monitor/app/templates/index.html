@@ -126,6 +126,18 @@
   .grid .cell{position:relative; aspect-ratio:1/1; background:var(--bg2); cursor:pointer; overflow:hidden}
   .grid .cell img{width:100%; height:100%; object-fit:cover}
   .grid .cell .ic{position:absolute; top:6px; right:8px; color:#fff; filter:drop-shadow(0 1px 2px #000a)}
+  .grid.selmode .cell{cursor:pointer}
+  .grid.selmode .cell::after{content:""; position:absolute; top:6px; left:6px; width:20px; height:20px;
+        border-radius:50%; border:2px solid #fff; background:#0004}
+  .grid.selmode .cell.sel::after{content:"✓"; background:var(--accent); border-color:var(--accent);
+        color:#fff; display:flex; align-items:center; justify-content:center; font-size:13px; font-weight:700}
+  .grid.selmode .cell.sel img{opacity:.6}
+  .gridtools{display:flex; gap:8px; padding:4px 4px 10px}
+  #selbar{position:fixed; left:0; right:0; bottom:0; z-index:42; display:none; gap:8px;
+        align-items:center; justify-content:space-between; padding:10px 16px calc(10px + env(safe-area-inset-bottom));
+        background:var(--bg2); border-top:1px solid var(--border)}
+  #selbar.show{display:flex}
+  @media(max-width:640px){ #selbar{bottom:56px} }
 
   /* Skeleton */
   .sk{background:linear-gradient(90deg,var(--bg2),var(--border),var(--bg2));
@@ -271,7 +283,10 @@
   <div class="panel" id="manage_panel" style="display:none">
     <div class="rowflex" style="justify-content:space-between">
       <h3 style="margin:0">Verwalten</h3>
-      <button class="btn ghost small" onclick="doLogout()">Abmelden</button>
+      <span style="display:flex;gap:8px">
+        <button class="btn ghost small" onclick="showDownloads()">📥 Verlauf</button>
+        <button class="btn ghost small" onclick="doLogout()">Abmelden</button>
+      </span>
     </div>
     <label class="rowflex" style="margin-top:10px">
       <input type="checkbox" id="opt_captions" style="width:16px;height:16px" onchange="saveAppSettings()">
@@ -365,6 +380,15 @@
 <div class="reelsov" id="reels">
   <button class="close" onclick="closeReels()" style="position:fixed;top:12px;right:16px;font-size:30px;color:#fff;z-index:3">✕</button>
   <div id="reels_track"></div>
+</div>
+
+<!-- Auswahl-Leiste (Mehrfachauswahl im Raster) -->
+<div id="selbar">
+  <span id="selcount">0 ausgewählt</span>
+  <span style="display:flex;gap:8px">
+    <button class="btn" onclick="downloadSelected()">⬇ Auf PC</button>
+    <button class="btn ghost" onclick="cancelSelect()">Abbrechen</button>
+  </span>
 </div>
 
 <!-- Pull-to-refresh-Anzeige -->
@@ -554,6 +578,7 @@ let feedCommitted=[], feedOffset=0, feedTotal=1e9, feedLoading=false, feedObserv
 function showFeed(){ startFeed(); }
 
 async function startFeed(){
+  cancelSelect();
   viewMode="feed"; setNav("nav_home"); $("pf_head").style.display="none"; $("more").innerHTML="";
   if(loggedIn){ $("stories_row").style.display="flex"; $("filterbar").style.display="flex"; }
   if(!loggedIn){ $("filterbar").style.display="none";
@@ -972,6 +997,7 @@ function showMe(){ if(!loggedIn){ toast("Bitte zuerst anmelden."); scrollToLogin
 /* ---------- Suche & Entdecken ---------- */
 const EXPLORE=["reisen","natur","food","kunst","musik","sport","fashion","auto"];
 function showSearch(){
+  cancelSelect();
   viewMode="search"; setNav("nav_search");
   if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
   $("stories_row").style.display="none"; $("filterbar").style.display="none";
@@ -1054,6 +1080,33 @@ function accountRow(a){
   return r;
 }
 
+/* ---------- Download-Verlauf ---------- */
+async function showDownloads(){
+  cancelSelect();
+  viewMode="downloads"; setNav("nav_profile"); $("manage_panel").style.display="none";
+  if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
+  $("stories_row").style.display="none"; $("filterbar").style.display="none"; $("more").innerHTML="";
+  $("pf_head").style.display="flex"; $("pf_head").className="pf-head";
+  $("pf_head").innerHTML='<div class="ph">📥</div><div><div class="fn">Download-Verlauf</div><div class="un">lädt …</div></div>';
+  $("content").innerHTML='<div class="empty"><span class="spin"></span></div>';
+  const {data}=await api("/api/downloads");
+  if(viewMode!=="downloads") return;
+  if(data.error){ renderEmpty(data.error); return; }
+  const items=data.items||[];
+  const un=$("pf_head").querySelector(".un"); if(un) un.textContent=items.length+" Downloads";
+  if(items.length===0){ renderEmpty("Noch nichts heruntergeladen."); return; }
+  $("content").innerHTML="";
+  items.forEach(it=>{
+    const r=document.createElement("div"); r.className="acctrow";
+    const icon=/(Video|Reel)/.test(it.type)?'▶':(/Album/.test(it.type)?'▦':'🖼');
+    r.innerHTML='<div class="ph">'+icon+'</div><div style="flex:1;min-width:0">'
+      +'<div class="fn">@'+esc(it.username)+'</div>'
+      +'<div class="un">'+esc(it.type||'')+' · '+timeAgo(it.downloaded_at)+'</div></div>';
+    r.onclick=()=>window.open(it.url,"_blank","noopener");
+    $("content").appendChild(r);
+  });
+}
+
 /* ---------- Follower / Gefolgt ---------- */
 function showFollowing(){ showAccountList("/api/following","Gefolgt"); }
 function showFollowers(){ showAccountList("/api/followers","Follower"); }
@@ -1072,17 +1125,55 @@ async function showAccountList(url,title){
   if(accts.length===0){ renderEmpty("Niemand hier."); return; }
   $("content").innerHTML=""; accts.forEach(a=>$("content").appendChild(accountRow(a)));
 }
+let gridPosts=[], selectMode=false, selectedGrid=new Set(), gridEl=null;
 function renderGrid(posts, container){
-  const c=container||$("content"); if(!container) c.className="";
+  const isMain=!container;
+  const c=container||$("content"); if(isMain) c.className="";
+  if(isMain){ gridPosts=posts; selectMode=false; selectedGrid.clear(); updateSelbar(); }
   const g=document.createElement("div"); g.className="grid";
   for(const p of posts){
-    const cell=document.createElement("div"); cell.className="cell";
+    const cell=document.createElement("div"); cell.className="cell"; cell.dataset.sc=p.shortcode;
     cell.innerHTML = (p.thumb?`<img loading="lazy" src="${p.thumb}">`:"")
       + (p.is_video?`<span class="ic">▶</span>`:(p.is_album?`<span class="ic">▦</span>`:""));
-    cell.onclick=()=>openLightbox(p);
+    cell.onclick=()=>{ if(isMain && selectMode) toggleCell(cell,p); else openLightbox(p); };
     g.appendChild(cell);
   }
-  c.innerHTML=""; c.appendChild(g);
+  c.innerHTML="";
+  if(isMain){
+    gridEl=g;
+    const tools=document.createElement("div"); tools.className="gridtools";
+    tools.innerHTML='<button class="btn ghost small" onclick="enterSelect()">☑ Auswählen</button>';
+    c.appendChild(tools);
+  }
+  c.appendChild(g);
+}
+function enterSelect(){ if(!gridEl) return; selectMode=true; selectedGrid.clear();
+  gridEl.classList.add("selmode"); updateSelbar(); }
+function cancelSelect(){ selectMode=false; selectedGrid.clear();
+  if(gridEl){ gridEl.classList.remove("selmode");
+    gridEl.querySelectorAll(".cell.sel").forEach(x=>x.classList.remove("sel")); }
+  updateSelbar(); }
+function toggleCell(cell,p){
+  if(selectedGrid.has(p.shortcode)){ selectedGrid.delete(p.shortcode); cell.classList.remove("sel"); }
+  else { selectedGrid.add(p.shortcode); cell.classList.add("sel"); }
+  updateSelbar();
+}
+function updateSelbar(){
+  const bar=$("selbar");
+  if(selectMode){ bar.classList.add("show"); $("selcount").textContent=selectedGrid.size+" ausgewählt"; }
+  else bar.classList.remove("show");
+}
+async function downloadSelected(){
+  const scs=[...selectedGrid];
+  if(scs.length===0){ toast("Nichts ausgewählt.","err"); return; }
+  toast("Lade "+scs.length+" auf den PC …");
+  let ok=0;
+  for(const sc of scs){
+    const {data}=await api("/api/download",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({shortcode:sc})});
+    if(data.ok) ok++;
+  }
+  toast("Fertig: "+ok+"/"+scs.length+" gespeichert","ok");
+  cancelSelect();
 }
 
 /* ---------- Abo-Liste / Verwalten ---------- */

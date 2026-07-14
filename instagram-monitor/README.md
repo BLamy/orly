@@ -95,6 +95,11 @@ anklickbar und zeigen die jeweilige Liste. Folgst du jemandem neu, taucht
 das Konto **automatisch** in Stories/Suche/Feed auf (die Abo-Liste wird
 beim Zurückkehren zur App und regelmäßig im Hintergrund aktualisiert).
 
+**Mehrfachauswahl & Verlauf:** In Raster-Ansichten (Profil, Gespeichert)
+gibt es **„☑ Auswählen"** – mehrere Beiträge antippen und gesammelt
+**auf den PC** laden. Unter ⚙️ → **„📥 Verlauf"** siehst du alle bisher
+heruntergeladenen Beiträge (Konto, Typ, Zeit).
+
 **Kommentare & Entdecken:** In der Vollbild-Ansicht eines Beitrags zeigt
 **💬** die neuesten Kommentare. In der **Suche** findest du mit „#reisen"
 o. Ä. die neuesten Beiträge zu einem **Hashtag** (Entdecken), dazu

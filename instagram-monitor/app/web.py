@@ -938,6 +938,17 @@ def create_app(
         return jsonify(ok=True, logged_in=downloader.is_logged_in,
                        user=downloader.logged_in_user or "")
 
+    @app.get("/api/downloads")
+    def downloads_list():
+        rows = db.recent_downloads(200)
+        return jsonify(count=len(rows), items=[{
+            "shortcode": r["shortcode"],
+            "username": r["username"],
+            "type": r["post_type"],
+            "downloaded_at": r["downloaded_at"],
+            "url": f"https://www.instagram.com/p/{r['shortcode']}/",
+        } for r in rows])
+
     @app.get("/api/settings")
     def get_settings():
         return jsonify(save_captions=settings.save_captions,
