@@ -100,6 +100,21 @@ Reels-Wiedergabe erfolgen **immer in Originalqualität** (die App streamt
 die Original-Datei direkt vom Instagram-CDN). Unter ⚙️ kannst du das
 **automatische Abspielen im Feed** ausschalten (Datensparmodus).
 
+**Dashboard & Zurück-Knopf:** Beim Öffnen erscheint ein schwarzes
+**Dashboard** (es wird **nichts** automatisch von Instagram geladen):
+Kontoname eingeben → **„Profil laden"**, dazu Knöpfe für
+Gefolgt/Follower, Suche, Feed, **📊 Statistik** und 📥 Verlauf. Ein Klick
+auf das **„Instagram Monitor"**-Logo führt immer zum Dashboard zurück,
+der **←**-Knopf oben links eine Ansicht zurück.
+
+**📊 Statistik:** Zeigt je Konto, **wie viele Dateien** heruntergeladen
+wurden und **wie viel Speicher (GB/MB)** sie belegen – sortiert nach
+Größe, mit Gesamtsumme. Antippen öffnet das Profil.
+
+**Hintergrundfoto:** Jeden Tag wird ein **anderes** deiner bereits
+heruntergeladenen Fotos als Hintergrund gezeigt (abgedunkelt, damit alles
+lesbar bleibt). Unter ⚙️ lässt sich das **ein- und ausschalten**.
+
 **Status im Raster:** In Profil-/Raster-Ansichten ist jeder Beitrag oben
 links markiert – **grün ✓ = bereits heruntergeladen, rot = noch nicht**.
 
@@ -148,13 +163,13 @@ lassen – dann läuft der Zeitplan im Hintergrund weiter.
    vermeidet den „Checkpoint“, den die direkte Passwort-Anmeldung von
    einem neuen Gerät oft auslöst. Alternativ Benutzername + Passwort
    (2FA wird unterstützt).
-2. **Start = Gefolgt/Follower-Liste:** Beim Öffnen erscheint direkt die
-   Liste **Gefolgt** (oben umschaltbar auf **Follower**) – **kein**
-   automatischer Feed/Profil-Abruf. Dort kannst du Konten **anhaken**
-   („Alle"/„Keine"), die Anzahl je Konto wählen (bis „alle (max 30)") und
-   mit **„⬇ Herunterladen (N)"** von allen ausgewählten Konten
-   gleichzeitig auf den PC laden. Der Feed bleibt über 🏠 Home verfügbar
-   (lädt nur auf Knopfdruck „▶ Feed laden").
+2. **Start = schwarzes Dashboard:** Beim Öffnen erscheint das Dashboard –
+   **kein** automatischer Feed/Profil-Abruf. Von dort: **„Gefolgt /
+   Follower"** öffnet die Liste (oben umschaltbar), in der du Konten
+   **anhaken** kannst („Alle"/„Keine"), die Anzahl je Konto wählst (bis
+   „alle (max 30)") und mit **„⬇ Herunterladen (N)"** von allen
+   ausgewählten Konten gleichzeitig auf den PC lädst. **„Feed"** lädt den
+   Feed nur auf Knopfdruck; 🏠 bzw. das Logo führen zum Dashboard zurück.
 3. Einzelnes Konto: Benutzernamen oder Instagram-Link eingeben →
    **Anzeigen**.
 4. Bei jedem Foto/Video gibt es **„⤓ Gerät“** und **„⬇ Auf PC“**;
@@ -220,6 +235,40 @@ und Internet-Verbindung werden genutzt); das Handy ist nur die Anzeige.
 
 Alle Oberflächen teilen sich denselben `downloads/`-Ordner, dieselbe
 Datenbank und dieselbe Anmeldung.
+
+### Nur mit dem Handy – ganz ohne PC (Android/Termux)
+
+Die App ist ein kleiner Python-Server – der kann auch **direkt auf dem
+Handy** laufen, dann landen die Downloads im Handy-Speicher:
+
+1. **Termux** installieren (kostenlos, am besten aus
+   [F-Droid](https://f-droid.org/packages/com.termux/); die Play-Store-
+   Version ist veraltet).
+2. In Termux einmalig einrichten:
+   ```bash
+   pkg update && pkg install python git
+   termux-setup-storage        # Zugriff auf den Handy-Speicher erlauben
+   git clone <URL-dieses-Projekts> projekt
+   cd projekt/instagram-monitor   # der Ordner, der web.py enthält
+   pip install flask instaloader plyer
+   ```
+   (`customtkinter`/`browser_cookie3` sind auf dem Handy nicht nötig –
+   angemeldet wird per **sessionid**, siehe „Erweitert" im Anmelde-Feld.)
+3. Starten und im Handy-Browser öffnen:
+   ```bash
+   python web.py
+   # dann im Browser: http://127.0.0.1:8756/
+   ```
+4. Damit die Fotos in der Handy-Galerie auftauchen, den Download-Ordner
+   in den freigegebenen Speicher legen (die Einstellung wird gespeichert):
+   ```bash
+   python web.py --downloads ~/storage/shared/Pictures/InstagramMonitor
+   ```
+
+Termux muss dabei geöffnet bleiben (Android beendet Hintergrund-Apps
+sonst irgendwann). Auf dem **iPhone** gibt es keine vergleichbare
+Möglichkeit, Python-Server frei laufen zu lassen – dort bleibt der Weg
+über den PC im selben WLAN (oben).
 
 ## Manuelle Installation
 

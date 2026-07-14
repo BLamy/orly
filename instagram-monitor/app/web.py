@@ -28,6 +28,7 @@ from __future__ import annotations
 import datetime
 import hashlib
 import logging
+import os
 import threading
 import time
 from collections import OrderedDict
@@ -861,7 +862,9 @@ def create_app(
         return Response(
             upstream.content,
             mimetype=upstream.headers.get("Content-Type", "image/jpeg"),
-            headers={"Cache-Control": "private, max-age=3600"},
+            # Vorschaubilder eines Beitrags ändern sich nicht → der Browser
+            # darf sie lange behalten (weniger Abrufe, schnelleres Scrollen).
+            headers={"Cache-Control": "private, max-age=86400"},
         )
 
     # ------------------------------------------------------------------
@@ -918,9 +921,13 @@ def create_app(
         day = datetime.date.today().isoformat()
         idx = int(hashlib.md5(day.encode()).hexdigest(), 16) % len(files)
         try:
-            return send_file(files[idx])
+            resp = send_file(files[idx])
         except Exception:
             return Response(status=404)
+        # Die URL enthält das Datum (?d=…), daher darf der Browser das Bild
+        # für den Rest des Tages aus dem Cache nehmen → schnellere Starts.
+        resp.headers["Cache-Control"] = "private, max-age=3600"
+        return resp
 
     @app.get("/icon.svg")
     def icon_svg():
@@ -972,6 +979,58 @@ def create_app(
             "downloaded_at": r["downloaded_at"],
             "url": f"https://www.instagram.com/p/{r['shortcode']}/",
         } for r in rows])
+
+    # Kurzlebiger Cache für die Download-Statistik (reines Datei-Scannen,
+    # kein Instagram-Zugriff – aber bei vielen Dateien trotzdem Arbeit).
+    _stats_cache: dict = {"t": 0.0, "data": None}
+
+    @app.get("/api/stats")
+    def stats():
+        """Download-Statistik: Anzahl Dateien und Speichergröße je Konto.
+
+        Jedes Konto hat einen eigenen Unterordner im Download-Verzeichnis
+        (so lädt der Downloader). Sortiert nach Größe, größtes zuerst.
+        """
+        now = time.time()
+        if _stats_cache["data"] is not None and now - _stats_cache["t"] < 60:
+            return jsonify(_stats_cache["data"])
+        root = settings.download_dir
+        accounts = []
+        total_files = 0
+        total_bytes = 0
+        try:
+            with os.scandir(root) as it:
+                for entry in it:
+                    try:
+                        # Einzelne unlesbare Einträge überspringen (z. B.
+                        # SD-Karte/Termux) statt die ganze Liste zu verwerfen.
+                        if not entry.is_dir():
+                            continue
+                    except OSError:
+                        continue
+                    files = 0
+                    size = 0
+                    for dirpath, _dirs, names in os.walk(entry.path):
+                        for n in names:
+                            try:
+                                size += os.path.getsize(
+                                    os.path.join(dirpath, n))
+                                files += 1
+                            except OSError:
+                                continue
+                    if files:
+                        accounts.append({"username": entry.name,
+                                         "files": files, "bytes": size})
+                        total_files += files
+                        total_bytes += size
+        except OSError:
+            pass
+        accounts.sort(key=lambda a: a["bytes"], reverse=True)
+        data = {"accounts": accounts, "total_files": total_files,
+                "total_bytes": total_bytes, "dir": str(root)}
+        _stats_cache["t"] = now
+        _stats_cache["data"] = data
+        return jsonify(data)
 
     @app.get("/api/settings")
     def get_settings():

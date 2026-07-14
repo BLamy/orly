@@ -70,6 +70,11 @@ def main(argv: list[str] | None = None) -> int:
         "--handy", "--lan", action="store_true", dest="lan",
         help="auch im lokalen Netzwerk (WLAN) erreichbar machen (z. B. Handy)",
     )
+    parser.add_argument(
+        "--downloads", metavar="ORDNER", default=None,
+        help="Download-Ordner festlegen (wird gespeichert; z. B. in Termux: "
+             "~/storage/shared/Pictures/InstagramMonitor)",
+    )
     args = parser.parse_args(argv)
 
     for directory in (DATA_DIR, LOG_DIR, DOWNLOAD_DIR):
@@ -80,6 +85,26 @@ def main(argv: list[str] | None = None) -> int:
 
     db = Database(DATA_DIR / "monitor.db")
     settings = Settings(db, default_download_dir=str(DOWNLOAD_DIR))
+    if args.downloads:
+        # Gewünschten Ordner prüfen und übernehmen (bleibt gespeichert).
+        # Praktisch auf dem Handy (Termux), damit Fotos im freigegebenen
+        # Speicher landen. resolve(): relativer Pfad soll nicht bei jedem
+        # Start von einem anderen Arbeitsverzeichnis abhängen.
+        target = Path(args.downloads).expanduser().resolve()
+        try:
+            target.mkdir(parents=True, exist_ok=True)
+            probe = target / ".schreibtest"
+            probe.write_text("ok", encoding="utf-8")
+            probe.unlink()
+        except OSError as exc:
+            print(f"\nFEHLER: Download-Ordner nicht nutzbar: {target}")
+            print(f"        ({exc})")
+            print("Tipp (Termux): zuerst 'termux-setup-storage' ausführen "
+                  "und den Speicherzugriff erlauben.\n")
+            db.close()
+            return 2
+        settings.download_dir = target
+        print(f"\n  Download-Ordner: {target}")
     downloader = InstagramDownloader(settings, session_dir=DATA_DIR / "sessions")
 
     if args.lan:

@@ -245,6 +245,7 @@
 <div id="bgov"></div>
 <header>
   <div class="nav">
+    <button class="iconbtn" id="back_btn" title="Zurück" onclick="goBack()" style="display:none">←</button>
     <div class="logo" onclick="showStart()" style="cursor:pointer">Instagram Monitor</div>
     <div class="search">
       <input id="q_user" list="follwd" placeholder="Suchen (Name oder Link) …"
@@ -307,6 +308,10 @@
     <label class="rowflex" style="margin-top:6px">
       <input type="checkbox" id="opt_autoplay" style="width:16px;height:16px" onchange="toggleAutoplay()">
       Videos im Feed automatisch abspielen (aus = Datensparmodus)
+    </label>
+    <label class="rowflex" style="margin-top:6px">
+      <input type="checkbox" id="opt_bg" style="width:16px;height:16px" onchange="toggleBg()">
+      Tägliches Hintergrundfoto aus deinen Downloads (jeden Tag ein anderes)
     </label>
     <div class="hint">Downloads und die Vollbild-/Reels-Wiedergabe erfolgen immer in Originalqualität.</div>
     <div class="hint" id="dl_dir"></div>
@@ -456,6 +461,31 @@ const esc = s => { const d=document.createElement("div"); d.textContent=s??""; r
 const fmt = n => { n=+n||0; return n>=1e6 ? (n/1e6).toFixed(1).replace(".",",")+" Mio."
   : n>=1e4 ? (n/1e3).toFixed(1).replace(".",",")+" Tsd." : n.toLocaleString("de-DE"); };
 
+const fmtBytes = b => { b=+b||0;
+  return b>=1e9 ? (b/1e9).toFixed(2).replace(".",",")+" GB"
+    : b>=1e6 ? (b/1e6).toFixed(1).replace(".",",")+" MB"
+    : b>=1e3 ? Math.round(b/1e3)+" KB" : b+" B"; };
+
+/* ---------- Zurück-Knopf (Ansichts-Verlauf) ---------- */
+let viewStack=[], replayingView=false;
+function pushView(key, t){
+  if(replayingView) return;
+  const top=viewStack[viewStack.length-1];
+  if(top && top.key===key){ top.t=t; return; }   // gleiche Ansicht → nur merken
+  viewStack.push({key, t});
+  if(viewStack.length>30) viewStack.shift();
+  updateBackBtn();
+}
+function updateBackBtn(){ const b=$("back_btn"); if(b) b.style.display = viewStack.length>1 ? "" : "none"; }
+function goBack(){
+  if(viewStack.length<2) return;
+  viewStack.pop();
+  const top=viewStack[viewStack.length-1];
+  replayingView=true;
+  try{ top.t(); } finally { replayingView=false; }
+  updateBackBtn();
+}
+
 /* ---------- Grundlagen ---------- */
 async function api(path, opts){
   try{
@@ -552,33 +582,97 @@ async function refreshStatus(){
       showStart();
     }
   }else{
-    $("stories_row").style.display = "none";
-    renderEmpty("Melde dich an oder suche oben ein öffentliches Konto.");
+    // Auch ohne Anmeldung: schwarzes Dashboard (das Anmelde-Feld steht
+    // darüber; öffentliche Profile lassen sich per Namenseingabe laden).
+    showStart();
   }
 }
 function showHomeIdle(){ showStart(); }
+// Dashboard: schwarzer Startbildschirm – lädt NICHTS von Instagram.
+// (Die kleine Statistik-Zeile liest nur die eigene Festplatte.)
 function showStart(){
-  cancelSelect();
+  cancelSelect(); pushView("start", showStart);
   viewMode="start"; setNav("nav_home");
+  if(typeof feedTimer!=="undefined" && feedTimer){ clearInterval(feedTimer); feedTimer=null; }
   $("pf_head").style.display="none"; $("subbar").innerHTML=""; $("more").innerHTML="";
   $("stories_row").style.display="none"; $("filterbar").style.display="none";
   $("content").className="";
   $("content").innerHTML='<div style="min-height:68vh;display:flex;flex-direction:column;'
-    +'align-items:center;justify-content:center;text-align:center;gap:18px">'
+    +'align-items:center;justify-content:center;text-align:center;gap:16px">'
     +'<div style="font-size:26px;font-weight:800;text-shadow:0 2px 10px #000">📷 Instagram Monitor</div>'
-    +'<div class="rowflex" style="justify-content:center;gap:10px">'
-    +'<button class="btn" onclick="showFollowing()">Gefolgt / Follower</button>'
+    +'<div class="hint" id="dash_stats" style="text-shadow:0 1px 6px #000">&nbsp;</div>'
+    +'<div class="rowflex" style="justify-content:center;gap:8px;width:100%;max-width:420px">'
+    +'<input id="dash_user" placeholder="Kontoname eingeben …" style="flex:1" autocomplete="off"'
+    +' onkeydown="if(event.key===\'Enter\')openProfile(this.value)">'
+    +'<button class="btn" onclick="openProfile($(\'dash_user\').value)">Profil laden</button>'
+    +'</div>'
+    +'<div class="rowflex" style="justify-content:center;gap:10px;flex-wrap:wrap">'
+    +'<button class="btn ghost" onclick="showFollowing()">Gefolgt / Follower</button>'
     +'<button class="btn ghost" onclick="showSearch()">Suchen</button>'
     +'<button class="btn ghost" onclick="startFeed()">Feed</button>'
+    +'<button class="btn ghost" onclick="showStats()">📊 Statistik</button>'
+    +'<button class="btn ghost" onclick="showDownloads()">📥 Verlauf</button>'
     +'</div>'
-    +'<div class="hint" style="text-shadow:0 1px 6px #000">Nichts wird automatisch geladen – wähle selbst.</div>'
+    +'<div class="hint" style="text-shadow:0 1px 6px #000">Nichts wird automatisch von Instagram geladen – wähle selbst.</div>'
     +'</div>';
+  api("/api/stats").then(({data})=>{
+    const el=$("dash_stats");
+    if(!el || viewMode!=="start" || !data || !data.accounts) return;
+    el.textContent = data.accounts.length+" Konten · "+fmt(data.total_files)
+      +" Dateien · "+fmtBytes(data.total_bytes);
+  });
+}
+// Statistik: Liste aller heruntergeladenen Konten mit Dateizahl und Größe.
+async function showStats(){
+  cancelSelect(); pushView("stats", showStats);
+  viewMode="stats"; setNav("nav_home");
+  if(typeof feedTimer!=="undefined" && feedTimer){ clearInterval(feedTimer); feedTimer=null; }
+  $("subbar").innerHTML=""; $("more").innerHTML="";
+  $("stories_row").style.display="none"; $("filterbar").style.display="none";
+  $("content").className="";
+  $("pf_head").style.display="flex"; $("pf_head").className="pf-head";
+  $("pf_head").innerHTML='<div class="ph">📊</div><div><div class="fn">Statistik</div>'
+    +'<div class="un" id="st_sum">lädt …</div></div>';
+  $("content").innerHTML='<div class="empty"><span class="spin"></span></div>';
+  const {data}=await api("/api/stats");
+  if(viewMode!=="stats") return;
+  if(!data || data.error || !data.accounts){ renderEmpty((data&&data.error)||"Statistik nicht verfügbar."); return; }
+  const accts=data.accounts;
+  const sum=$("st_sum");
+  if(sum) sum.textContent=accts.length+" Konten · "+fmt(data.total_files)
+    +" Dateien · "+fmtBytes(data.total_bytes)+" gesamt";
+  if(accts.length===0){ renderEmpty("Noch nichts heruntergeladen."); return; }
+  $("content").innerHTML="";
+  const maxB=accts[0].bytes||1;
+  accts.forEach(a=>{
+    const r=document.createElement("div"); r.className="acctrow";
+    const pct=Math.max(2, Math.round(a.bytes/maxB*100));
+    r.innerHTML='<div class="ph">📁</div><div style="flex:1;min-width:0">'
+      +'<div class="fn">@'+esc(a.username)+'</div>'
+      +'<div class="un">'+fmt(a.files)+' Dateien · '+fmtBytes(a.bytes)+'</div>'
+      +'<div style="height:4px;border-radius:2px;background:var(--border);margin-top:5px">'
+      +'<div style="height:4px;border-radius:2px;background:var(--accent);width:'+pct+'%"></div></div>'
+      +'</div>';
+    r.style.cursor="pointer"; r.title="Profil öffnen";
+    r.onclick=()=>openProfile(a.username);
+    $("content").appendChild(r);
+  });
 }
 // Täglich wechselndes Hintergrundfoto aus den eigenen Downloads laden.
+function bgEnabled(){ try{ return localStorage.getItem("igm_bg")!=="0"; }catch(e){ return true; } }
+function toggleBg(){
+  const on=$("opt_bg").checked;
+  try{ localStorage.setItem("igm_bg", on?"1":"0"); }catch(e){}
+  if(on){ initBackground(); toast("Tägliches Hintergrundfoto an","ok"); }
+  else{ $("bg").style.backgroundImage=""; document.body.classList.remove("hasbg");
+    toast("Hintergrundfoto aus","ok"); }
+}
 function initBackground(){
+  if(!bgEnabled()){ document.body.classList.remove("hasbg"); return; }
   const day=new Date().toISOString().slice(0,10);
   const im=new Image();
-  im.onload=()=>{ $("bg").style.backgroundImage="url(/background?d="+day+")"; document.body.classList.add("hasbg"); };
+  im.onload=()=>{ if(!bgEnabled()) return;
+    $("bg").style.backgroundImage="url(/background?d="+day+")"; document.body.classList.add("hasbg"); };
   im.onerror=()=>{ document.body.classList.remove("hasbg"); };
   im.src="/background?d="+day;
 }
@@ -615,18 +709,18 @@ async function logout(){ await api("/api/logout",{method:"POST"}); location.relo
 let feedTimer=null, viewMode="feed";
 let feedCommitted=[], feedOffset=0, feedTotal=1e9, feedLoading=false, feedObserver=null;
 function showFeed(){
-  cancelSelect();
+  cancelSelect(); pushView("feed", showFeed);
   if(loggedIn && feedCommitted.length){
     // bereits geladenen Feed sofort (aus dem Speicher) anzeigen
     viewMode="feed"; setNav("nav_home"); $("pf_head").style.display="none"; $("subbar").innerHTML="";
     $("stories_row").style.display="flex"; $("filterbar").style.display="flex";
+    $("more").innerHTML = feedOffset>=feedTotal ? '<div class="hint">Ende des Feeds</div>' : "";
     renderFeed(feedCommitted); setupFeedObserver();
-  } else if(loggedIn){ showHomeIdle(); }
-  else startFeed();
+  } else startFeed();   // noch nichts geladen → Feed (neu) laden, auch beim Zurück
 }
 
 async function startFeed(){
-  cancelSelect(); $("subbar").innerHTML="";
+  cancelSelect(); pushView("feed", showFeed); $("subbar").innerHTML="";
   viewMode="feed"; setNav("nav_home"); $("pf_head").style.display="none"; $("more").innerHTML="";
   if(loggedIn){ $("stories_row").style.display="flex"; $("filterbar").style.display="flex"; }
   if(!loggedIn){ $("filterbar").style.display="none";
@@ -762,7 +856,7 @@ function getColls(){ try{ return JSON.parse(localStorage.getItem("igm_colls")||"
 function setColls(o){ try{ localStorage.setItem("igm_colls", JSON.stringify(o)); }catch(e){} }
 let currentColl="__all";
 function showSaved(){
-  cancelSelect();
+  cancelSelect(); pushView("saved", showSaved);
   viewMode="saved"; setNav("nav_saved");
   if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
   $("filterbar").style.display="none"; $("stories_row").style.display="none";
@@ -1041,6 +1135,8 @@ window.addEventListener("touchend", e=>{
 let profileName="", profileCount=24;
 async function openProfile(input, count){
   const name=(input||"").trim().replace(/^@/,""); if(!name) return;
+  cancelSelect();
+  pushView("profile:"+name.toLowerCase(), ()=>openProfile(name, count));
   profileName=name; profileCount=count||24;
   const isOwn = currentUser && name.toLowerCase()===currentUser.toLowerCase();
   viewMode="profile"; setNav(isOwn?"nav_profile":"nav_search"); $("subbar").innerHTML="";
@@ -1087,7 +1183,7 @@ function showMe(){ if(!loggedIn){ toast("Bitte zuerst anmelden."); scrollToLogin
 /* ---------- Suche & Entdecken ---------- */
 const EXPLORE=["reisen","natur","food","kunst","musik","sport","fashion","auto"];
 function showSearch(){
-  cancelSelect(); $("subbar").innerHTML="";
+  cancelSelect(); pushView("search", showSearch); $("subbar").innerHTML="";
   viewMode="search"; setNav("nav_search");
   if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
   $("stories_row").style.display="none"; $("filterbar").style.display="none";
@@ -1166,7 +1262,7 @@ function pushRecent(a){
 function accountRow(a, selectable){
   const r=document.createElement("div"); r.className="acctrow"; r.dataset.u=a.username;
   const cb = selectable ? '<input type="checkbox" class="acb" style="width:18px;height:18px;flex:0 0 auto">' : "";
-  r.innerHTML = cb + (a.avatar?`<img src="${a.avatar}">`:`<div class="ph">@</div>`)
+  r.innerHTML = cb + (a.avatar?`<img loading="lazy" decoding="async" src="${a.avatar}">`:`<div class="ph">@</div>`)
     + `<div style="flex:1;min-width:0"><div class="fn">${esc(a.full_name||a.username)}${a.is_verified?'<span class="verified">✔</span>':''}</div><div class="un">@${esc(a.username)}</div></div>`;
   if(selectable){
     const cbEl=r.querySelector(".acb");
@@ -1207,7 +1303,7 @@ async function downloadFollowSelected(){
 
 /* ---------- Download-Verlauf ---------- */
 async function showDownloads(){
-  cancelSelect(); $("subbar").innerHTML="";
+  cancelSelect(); pushView("downloads", showDownloads); $("subbar").innerHTML="";
   viewMode="downloads"; setNav("nav_profile"); $("manage_panel").style.display="none";
   if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
   $("stories_row").style.display="none"; $("filterbar").style.display="none"; $("more").innerHTML="";
@@ -1236,7 +1332,8 @@ async function showDownloads(){
 function showFollowing(){ showAccountList("/api/following","Gefolgt", true); }
 function showFollowers(){ showAccountList("/api/followers","Follower", true); }
 async function showAccountList(url,title,selectable){
-  cancelSelect(); followSel.clear();
+  cancelSelect(); pushView("list:"+title, ()=>showAccountList(url,title,selectable));
+  followSel.clear();
   viewMode="list"; setNav("nav_profile");
   if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
   $("stories_row").style.display="none"; $("filterbar").style.display="none"; $("more").innerHTML="";
@@ -1398,6 +1495,7 @@ async function loadSchedule(){
     $("sch_info").textContent = data.last_run ? ("Zuletzt automatisch: "+data.last_run) : "";
   }
   $("opt_autoplay").checked=autoplayOn();
+  $("opt_bg").checked=bgEnabled();
   const st=await api("/api/settings");
   if(st.data){ $("opt_captions").checked=!!st.data.save_captions;
     $("dl_dir").textContent = "Ordner: "+(st.data.download_dir||""); }
@@ -1448,7 +1546,8 @@ window.addEventListener("scroll", ()=>{ $("top").style.display = window.scrollY>
 // Nur AKTUALISIEREN, wenn die Liste schon geladen ist – so entstehen bei
 // „Home" keine automatischen Instagram-Abrufe (schneller, weniger Drosselung).
 document.addEventListener("visibilitychange", ()=>{ if(!document.hidden && loggedIn && followList.length) loadFollowing(true); });
-setInterval(()=>{ if(loggedIn && !document.hidden && followList.length) loadFollowing(true); }, 300000);
+// Nur alle 15 Minuten still auffrischen – weniger Instagram-Abrufe = schneller.
+setInterval(()=>{ if(loggedIn && !document.hidden && followList.length) loadFollowing(true); }, 900000);
 
 // Als App installierbar machen (Service Worker; scheitert still auf http-LAN).
 if("serviceWorker" in navigator){
