@@ -148,14 +148,13 @@ lassen – dann läuft der Zeitplan im Hintergrund weiter.
    vermeidet den „Checkpoint“, den die direkte Passwort-Anmeldung von
    einem neuen Gerät oft auslöst. Alternativ Benutzername + Passwort
    (2FA wird unterstützt).
-2. **Home öffnet sofort:** Beim Öffnen wird **nichts** automatisch von
-   Instagram geladen (das hält die Seite schnell). Auf „Home" gibt es
-   den Knopf **„▶ Feed laden"** – erst dann werden die neuesten Beiträge
-   deiner Abos als gemeinsamer Feed geholt. Danach zeigt „Home" den
-   geladenen Feed sofort aus dem Speicher; „Aktualisieren"/⟳ lädt neu.
-   Über ⚙️ stellst du ein, **wie viele Profile** (erste 10/20/50 oder
-   alle) und **wie viele Beiträge je Profil** geladen werden. Jede Kachel
-   zeigt das jeweilige **@Konto**.
+2. **Start = Gefolgt/Follower-Liste:** Beim Öffnen erscheint direkt die
+   Liste **Gefolgt** (oben umschaltbar auf **Follower**) – **kein**
+   automatischer Feed/Profil-Abruf. Dort kannst du Konten **anhaken**
+   („Alle"/„Keine"), die Anzahl je Konto wählen (bis „alle (max 30)") und
+   mit **„⬇ Herunterladen (N)"** von allen ausgewählten Konten
+   gleichzeitig auf den PC laden. Der Feed bleibt über 🏠 Home verfügbar
+   (lädt nur auf Knopfdruck „▶ Feed laden").
 3. Einzelnes Konto: Benutzernamen oder Instagram-Link eingeben →
    **Anzeigen**.
 4. Bei jedem Foto/Video gibt es **„⤓ Gerät“** und **„⬇ Auf PC“**;

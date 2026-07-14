@@ -541,9 +541,8 @@ async function refreshStatus(){
         $("feed_profiles").value = String(fs.data.profiles);
         $("feed_per").value = String(fs.data.per);
       }
-      // KEIN automatisches Laden mehr – Home öffnet sofort. Der Feed
-      // (und damit die Profil-Abrufe) startet nur auf Knopfdruck.
-      showHomeIdle();
+      // Beim Öffnen KEIN Feed/Profil – direkt die Gefolgt-Liste zeigen.
+      showFollowing();
     }
   }else{
     $("stories_row").style.display = "none";
@@ -1211,29 +1210,36 @@ async function showDownloads(){
 
 /* ---------- Follower / Gefolgt ---------- */
 function showFollowing(){ showAccountList("/api/following","Gefolgt", true); }
-function showFollowers(){ showAccountList("/api/followers","Follower", false); }
+function showFollowers(){ showAccountList("/api/followers","Follower", true); }
 async function showAccountList(url,title,selectable){
   cancelSelect(); followSel.clear();
-  viewMode="list"; setNav("nav_profile"); $("subbar").innerHTML="";
+  viewMode="list"; setNav("nav_profile");
   if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
   $("stories_row").style.display="none"; $("filterbar").style.display="none"; $("more").innerHTML="";
-  $("pf_head").style.display="flex"; $("pf_head").className="pf-head";
-  $("pf_head").innerHTML='<div class="ph">👥</div><div><div class="fn">'+title+'</div><div class="un">lädt …</div></div>';
+  $("pf_head").style.display="none";
+  // Umschalter Gefolgt/Follower + Auswahl-/Download-Aktionen
+  let sub='<div class="filterbar" style="padding:8px 2px">'
+    +'<button class="chip '+(title==='Gefolgt'?'on':'')+'" onclick="showFollowing()">Gefolgt</button>'
+    +'<button class="chip '+(title==='Follower'?'on':'')+'" onclick="showFollowers()">Follower</button>';
+  if(selectable){
+    sub+='<button class="chip" onclick="selectAllAccts(true)">Alle</button>'
+      +'<button class="chip" onclick="selectAllAccts(false)">Keine</button>'
+      +'<span class="chip" style="cursor:default">je Konto: <select id="acct_count" style="background:transparent;border:0;color:inherit"><option>3</option><option selected>12</option><option>24</option><option value="30">alle (max 30)</option></select></span>'
+      +'<button class="chip" id="acct_dl" onclick="downloadFollowSelected()">⬇ Herunterladen (0)</button>';
+  }
+  sub+='</div>';
+  $("subbar").innerHTML=sub;
   $("content").innerHTML='<div class="empty"><span class="spin"></span></div>';
   const {data}=await api(url);
   if(viewMode!=="list") return;
   if(data.error){ renderEmpty(data.error); toast(data.error,"err"); return; }
   const accts=data.accounts||[];
-  const un=$("pf_head").querySelector(".un"); if(un) un.textContent=accts.length+" Konten";
   if(accts.length===0){ renderEmpty("Niemand hier."); return; }
-  if(selectable){
-    $("subbar").innerHTML='<div class="filterbar" style="padding:8px 2px">'
-      +'<button class="chip" onclick="selectAllAccts(true)">Alle</button>'
-      +'<button class="chip" onclick="selectAllAccts(false)">Keine</button>'
-      +'<span class="chip" style="cursor:default">je Konto: <select id="acct_count" style="background:transparent;border:0;color:inherit"><option>3</option><option selected>12</option><option>24</option></select></span>'
-      +'<button class="chip" id="acct_dl" onclick="downloadFollowSelected()">⬇ Herunterladen (0)</button></div>';
-  }
-  $("content").innerHTML=""; accts.forEach(a=>$("content").appendChild(accountRow(a, selectable)));
+  $("content").innerHTML="";
+  const info=document.createElement("div"); info.className="hint"; info.style.margin="4px";
+  info.textContent=title+": "+accts.length+" Konten";
+  $("content").appendChild(info);
+  accts.forEach(a=>$("content").appendChild(accountRow(a, selectable)));
 }
 let gridPosts=[], selectMode=false, selectedGrid=new Set(), gridEl=null;
 function renderGrid(posts, container){
