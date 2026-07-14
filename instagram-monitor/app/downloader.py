@@ -34,10 +34,16 @@ from __future__ import annotations
 
 import logging
 import threading
+import time
 from dataclasses import dataclass, field
 from itertools import islice
 from pathlib import Path
 from typing import TYPE_CHECKING, Callable, Optional
+
+# Wie lange geladene Beiträge/Profil-Infos zwischengespeichert werden
+# (Sekunden). Beschleunigt Navigation deutlich und reduziert Anfragen
+# an Instagram (weniger Drosselung).
+_CACHE_TTL = 300
 
 import instaloader
 from instaloader.exceptions import (
@@ -180,6 +186,11 @@ class InstagramDownloader:
         # parallele Nutzung ausgelegt.
         self._lock = threading.RLock()
 
+        # Kurzlebiger Zwischenspeicher (username → (zeit, daten)) für
+        # Beiträge und Profil-Infos; macht Navigation spürbar schneller.
+        self._recent_cache: dict = {}
+        self._profile_cache: dict = {}
+
         # Ordner für die Session-Datei (Cookies) des angemeldeten Kontos.
         self._session_dir = Path(session_dir) if session_dir else None
         if self._session_dir:
@@ -320,6 +331,7 @@ class InstagramDownloader:
         loader.context.username = username
         self._loader = loader
         self._settings.login_username = username
+        self._recent_cache.clear(); self._profile_cache.clear()
         session_file = self._session_file(username)
         if session_file:
             try:
@@ -473,6 +485,7 @@ class InstagramDownloader:
                 post_metadata_txt_pattern="",
             )
         self._settings.login_username = ""
+        self._recent_cache.clear(); self._profile_cache.clear()
         logger.info("Abgemeldet.")
 
     # ------------------------------------------------------------------
@@ -593,7 +606,17 @@ class InstagramDownloader:
         herunterladen. Doppelte Dateien werden trotzdem vermieden, weil
         Instaloader vorhandene Dateien überspringt und die Datenbank den
         Download-Status führt.
+
+        Ergebnisse werden kurz zwischengespeichert (``_CACHE_TTL``), damit
+        wiederholtes Öffnen/Feed-Aufbau schnell ist und Instagram weniger
+        oft angefragt wird.
         """
+        key = username.lower()
+        cached = self._recent_cache.get(key)
+        if cached and (time.monotonic() - cached[0]) < _CACHE_TTL \
+                and len(cached[1]) >= limit:
+            return cached[1][:limit]
+
         try:
             profile = self._get_profile(username)
             profile_is_private = profile.is_private
@@ -615,7 +638,9 @@ class InstagramDownloader:
                 "du folgst)."
             )
 
-        return self._collect_posts(profile, limit=max(1, int(limit)), is_known=None)
+        posts = self._collect_posts(profile, limit=max(1, int(limit)), is_known=None)
+        self._recent_cache[key] = (time.monotonic(), posts)
+        return posts
 
     def _collect_posts(
         self,
@@ -882,10 +907,19 @@ class InstagramDownloader:
                 raise TemporaryError(f"Konto-Infos nicht abrufbar: {exc}") from exc
 
     def profile_info(self, username: str) -> dict:
-        """Kompakte Infos zu einem beliebigen Profil (für die Profil-Ansicht)."""
+        """Kompakte Infos zu einem beliebigen Profil (für die Profil-Ansicht).
+
+        Kurz zwischengespeichert (``_CACHE_TTL``) für schnelle Navigation.
+        """
+        key = username.lower()
+        cached = self._profile_cache.get(key)
+        if cached and (time.monotonic() - cached[0]) < _CACHE_TTL:
+            return cached[1]
         profile = self._get_profile(username)
         with self._lock:
-            return self._profile_summary(profile)
+            info = self._profile_summary(profile)
+        self._profile_cache[key] = (time.monotonic(), info)
+        return info
 
     def followers_details(self, limit: int = 200) -> list[dict]:
         """Liste der eigenen Follower (bis ``limit``). Erfordert Anmeldung."""
