@@ -541,12 +541,23 @@ async function refreshStatus(){
         $("feed_profiles").value = String(fs.data.profiles);
         $("feed_per").value = String(fs.data.per);
       }
-      loadFollowing(true);   // still, für Stories-Reihe + Suchvorschläge
-      startFeed();
+      // KEIN automatisches Laden mehr – Home öffnet sofort. Der Feed
+      // (und damit die Profil-Abrufe) startet nur auf Knopfdruck.
+      showHomeIdle();
     }
   }else{
     $("stories_row").style.display = "none";
+    renderEmpty("Melde dich an oder suche oben ein öffentliches Konto.");
   }
+}
+function showHomeIdle(){
+  viewMode="feed"; setNav("nav_home");
+  $("pf_head").style.display="none"; $("subbar").innerHTML=""; $("more").innerHTML="";
+  $("stories_row").style.display="none"; $("filterbar").style.display="none";
+  $("content").innerHTML='<div class="empty">Willkommen 👋<br><br>'
+    +'<button class="btn" onclick="startFeed()">▶ Feed laden</button><br><br>'
+    +'<span class="hint">Oder oben ein Konto / #Hashtag suchen.<br>'
+    +'Der Feed wird nicht automatisch geladen – das hält die Seite schnell.</span></div>';
 }
 function scrollToLogin(){ $("login_panel").scrollIntoView({behavior:"smooth"}); }
 
@@ -580,7 +591,16 @@ async function logout(){ await api("/api/logout",{method:"POST"}); location.relo
 /* ---------- Feed ---------- */
 let feedTimer=null, viewMode="feed";
 let feedCommitted=[], feedOffset=0, feedTotal=1e9, feedLoading=false, feedObserver=null;
-function showFeed(){ startFeed(); }
+function showFeed(){
+  cancelSelect();
+  if(loggedIn && feedCommitted.length){
+    // bereits geladenen Feed sofort (aus dem Speicher) anzeigen
+    viewMode="feed"; setNav("nav_home"); $("pf_head").style.display="none"; $("subbar").innerHTML="";
+    $("stories_row").style.display="flex"; $("filterbar").style.display="flex";
+    renderFeed(feedCommitted); setupFeedObserver();
+  } else if(loggedIn){ showHomeIdle(); }
+  else startFeed();
+}
 
 async function startFeed(){
   cancelSelect(); $("subbar").innerHTML="";
@@ -588,6 +608,7 @@ async function startFeed(){
   if(loggedIn){ $("stories_row").style.display="flex"; $("filterbar").style.display="flex"; }
   if(!loggedIn){ $("filterbar").style.display="none";
     renderEmpty("Melde dich an, um den Feed deiner Abos zu sehen. Oder suche oben ein öffentliches Konto."); return; }
+  if(followList.length===0) loadFollowing(true);   // Stories/Suche im Hintergrund füllen
   feedCommitted=[]; feedOffset=0; feedTotal=1e9; feedLoading=false;
   showSkeleton();
   await loadFeedPage(true);
@@ -1049,6 +1070,7 @@ function showSearch(){
   $("stories_row").style.display="none"; $("filterbar").style.display="none";
   $("pf_head").style.display="none"; $("more").innerHTML="";
   $("content").innerHTML = '<div class="searchbox"><input id="sq" placeholder="Konten oder #Hashtag suchen …" autocomplete="off"></div><div id="sresults"></div>';
+  if(loggedIn && followList.length===0) loadFollowing(true);   // Vorschläge/Stories bei Bedarf
   renderSearchStart();
   const inp=$("sq"); inp.focus();
   let t=null;
@@ -1393,9 +1415,10 @@ window.addEventListener("scroll", ()=>{ $("top").style.display = window.scrollY>
 
 // Abo-Liste automatisch aktualisieren, sobald man zur App zurückkehrt
 // (neue Follows tauchen so ohne Neuladen in Stories/Suche/Feed auf).
-document.addEventListener("visibilitychange", ()=>{ if(!document.hidden && loggedIn) loadFollowing(true); });
-// zusätzlich alle 5 Minuten still im Hintergrund
-setInterval(()=>{ if(loggedIn && !document.hidden) loadFollowing(true); }, 300000);
+// Nur AKTUALISIEREN, wenn die Liste schon geladen ist – so entstehen bei
+// „Home" keine automatischen Instagram-Abrufe (schneller, weniger Drosselung).
+document.addEventListener("visibilitychange", ()=>{ if(!document.hidden && loggedIn && followList.length) loadFollowing(true); });
+setInterval(()=>{ if(loggedIn && !document.hidden && followList.length) loadFollowing(true); }, 300000);
 
 // Als App installierbar machen (Service Worker; scheitert still auf http-LAN).
 if("serviceWorker" in navigator){

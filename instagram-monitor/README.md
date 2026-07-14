@@ -148,12 +148,13 @@ lassen – dann läuft der Zeitplan im Hintergrund weiter.
    vermeidet den „Checkpoint“, den die direkte Passwort-Anmeldung von
    einem neuen Gerät oft auslöst. Alternativ Benutzername + Passwort
    (2FA wird unterstützt).
-2. **Feed öffnet automatisch:** Bist du angemeldet, lädt die Seite beim
-   Öffnen **von selbst** die neuesten Beiträge deiner Abos als einen
-   gemeinsamen Feed – ohne dass du einen Namen eingeben und „Anzeigen“
-   klicken musst. Oben stellst du ein, **wie viele Profile** (erste
-   10/20/50 oder alle) und **wie viele Beiträge je Profil** geladen
-   werden; die Wahl wird gemerkt. „Aktualisieren“ lädt neu. Jede Kachel
+2. **Home öffnet sofort:** Beim Öffnen wird **nichts** automatisch von
+   Instagram geladen (das hält die Seite schnell). Auf „Home" gibt es
+   den Knopf **„▶ Feed laden"** – erst dann werden die neuesten Beiträge
+   deiner Abos als gemeinsamer Feed geholt. Danach zeigt „Home" den
+   geladenen Feed sofort aus dem Speicher; „Aktualisieren"/⟳ lädt neu.
+   Über ⚙️ stellst du ein, **wie viele Profile** (erste 10/20/50 oder
+   alle) und **wie viele Beiträge je Profil** geladen werden. Jede Kachel
    zeigt das jeweilige **@Konto**.
 3. Einzelnes Konto: Benutzernamen oder Instagram-Link eingeben →
    **Anzeigen**.
