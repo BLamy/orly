@@ -86,6 +86,15 @@ Ansicht als 3-Spalten-Raster**, **Hell/Dunkel-Umschalter**, „Merken"
 (★) und Toast-Meldungen. Über das Zahnrad ⚙️ erreichst du „Verwalten"
 (Abo-Liste, Massen-Download, Feed-Einstellungen, Abmelden).
 
+**Navigation wie Instagram:** Unten (Handy) bzw. oben (PC) findest du
+**🏠 Feed · 🔍 Suche · 🎬 Reels · 🔖 Gespeichert · 👤 Profil**. Die
+**Suche** findet Konten nach Namen. Dein **Profil** (und jedes andere)
+zeigt Avatar, Name, Verifiziert-Haken, **Beiträge / Follower / Gefolgt**
+und Bio; bei deinem eigenen Profil sind **Follower** und **Gefolgt**
+anklickbar und zeigen die jeweilige Liste. Folgst du jemandem neu, taucht
+das Konto **automatisch** in Stories/Suche/Feed auf (die Abo-Liste wird
+beim Zurückkehren zur App und regelmäßig im Hintergrund aktualisiert).
+
 **Endlos-Scroll:** Der Feed lädt weitere Abos automatisch nach, sobald du
 nach unten scrollst (in Seiten, so bleibt es schnell). **Likes &
 Kommentare** werden je Beitrag angezeigt. **▶ Reels** öffnet einen

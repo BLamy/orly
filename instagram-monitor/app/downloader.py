@@ -843,6 +843,99 @@ class InstagramDownloader:
                 ) from exc
 
     # ------------------------------------------------------------------
+    # Profil-Infos, Follower, Suche
+    # ------------------------------------------------------------------
+    @staticmethod
+    def _profile_summary(profile: "instaloader.Profile") -> dict:
+        """Kompakte Profil-Infos (best effort, einzelne Felder optional)."""
+        def _safe(fn, default):
+            try:
+                return fn()
+            except Exception:
+                return default
+        return {
+            "username": profile.username,
+            "full_name": _safe(lambda: profile.full_name or "", ""),
+            "pic": _safe(lambda: profile.profile_pic_url or "", ""),
+            "biography": _safe(lambda: profile.biography or "", ""),
+            "posts": _safe(lambda: int(profile.mediacount), 0),
+            "followers": _safe(lambda: int(profile.followers), 0),
+            "following": _safe(lambda: int(profile.followees), 0),
+            "is_verified": _safe(lambda: bool(profile.is_verified), False),
+            "is_private": _safe(lambda: bool(profile.is_private), False),
+        }
+
+    def me(self) -> dict:
+        """Infos zum eigenen (angemeldeten) Konto."""
+        if not self.is_logged_in:
+            raise LoginError("Nicht angemeldet.")
+        with self._lock:
+            try:
+                profile = instaloader.Profile.own_profile(self._loader.context)
+                return self._profile_summary(profile)
+            except LoginRequiredException as exc:
+                raise LoginError("Anmeldung nicht mehr gültig – bitte neu "
+                                 "anmelden.") from exc
+            except ConnectionException as exc:
+                raise TemporaryError(f"Konto-Infos nicht abrufbar: {exc}") from exc
+            except InstaloaderException as exc:
+                raise TemporaryError(f"Konto-Infos nicht abrufbar: {exc}") from exc
+
+    def profile_info(self, username: str) -> dict:
+        """Kompakte Infos zu einem beliebigen Profil (für die Profil-Ansicht)."""
+        profile = self._get_profile(username)
+        with self._lock:
+            return self._profile_summary(profile)
+
+    def followers_details(self, limit: int = 200) -> list[dict]:
+        """Liste der eigenen Follower (bis ``limit``). Erfordert Anmeldung."""
+        if not self.is_logged_in:
+            raise LoginError("Für die Follower-Liste ist eine Anmeldung nötig.")
+        with self._lock:
+            try:
+                me = instaloader.Profile.own_profile(self._loader.context)
+                out: list[dict] = []
+                for profile in me.get_followers():
+                    out.append({
+                        "username": profile.username,
+                        "full_name": getattr(profile, "full_name", "") or "",
+                        "pic": getattr(profile, "profile_pic_url", "") or "",
+                    })
+                    if len(out) >= limit:
+                        break
+                return out
+            except LoginRequiredException as exc:
+                raise LoginError("Anmeldung nicht mehr gültig.") from exc
+            except ConnectionException as exc:
+                raise TemporaryError(f"Follower nicht abrufbar: {exc}") from exc
+            except InstaloaderException as exc:
+                raise TemporaryError(f"Follower nicht abrufbar: {exc}") from exc
+
+    def search_profiles(self, query: str, limit: int = 12) -> list[dict]:
+        """Sucht Konten nach Namen (Instagram-Top-Suche)."""
+        query = (query or "").strip().lstrip("@")
+        if not query:
+            return []
+        with self._lock:
+            try:
+                results = instaloader.TopSearchResults(self._loader.context, query)
+                out: list[dict] = []
+                for profile in results.get_profiles():
+                    out.append({
+                        "username": profile.username,
+                        "full_name": getattr(profile, "full_name", "") or "",
+                        "pic": getattr(profile, "profile_pic_url", "") or "",
+                        "is_verified": bool(getattr(profile, "is_verified", False)),
+                    })
+                    if len(out) >= limit:
+                        break
+                return out
+            except ConnectionException as exc:
+                raise TemporaryError(f"Suche derzeit nicht möglich: {exc}") from exc
+            except InstaloaderException as exc:
+                raise TemporaryError(f"Suche fehlgeschlagen: {exc}") from exc
+
+    # ------------------------------------------------------------------
     # Direkte Medien-URLs (zum Streamen auf das anfragende Gerät)
     # ------------------------------------------------------------------
     def media_urls(self, post_info: PostInfo) -> list[tuple[str, str]]:

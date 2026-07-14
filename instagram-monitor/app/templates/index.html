@@ -107,6 +107,21 @@
   .pf-head .ph{display:flex; align-items:center; justify-content:center; color:var(--muted); font-size:26px}
   .pf-head .fn{font-weight:600}
   .pf-head .un{color:var(--muted)}
+  .pf-head .verified{color:var(--accent); margin-left:4px}
+  .pf-stats{display:flex; gap:22px; margin-top:8px}
+  .pf-stats b{display:block; font-size:16px}
+  .pf-stats .s{color:var(--muted); font-size:13px; text-align:center; cursor:default}
+  .pf-stats .s.link{cursor:pointer}
+  .pf-bio{margin-top:8px; font-size:13.5px; white-space:pre-wrap}
+  .pf-actions{display:flex; gap:8px; margin-top:12px; flex-wrap:wrap}
+  .acctrow{display:flex; align-items:center; gap:12px; padding:8px 6px; cursor:pointer; border-radius:10px}
+  .acctrow:hover{background:var(--bg2)}
+  .acctrow img,.acctrow .ph{width:44px; height:44px; border-radius:50%; object-fit:cover; background:var(--bg2)}
+  .acctrow .ph{display:flex; align-items:center; justify-content:center; color:var(--muted)}
+  .acctrow .fn{font-weight:600}
+  .acctrow .un{color:var(--muted); font-size:13px}
+  .searchbox{position:sticky; top:56px; background:var(--bg); padding:8px 0 12px; z-index:5}
+  .searchbox input{width:100%; padding:11px 14px; border-radius:12px}
   .grid{display:grid; grid-template-columns:repeat(3,1fr); gap:3px}
   .grid .cell{position:relative; aspect-ratio:1/1; background:var(--bg2); cursor:pointer; overflow:hidden}
   .grid .cell img{width:100%; height:100%; object-fit:cover}
@@ -205,8 +220,9 @@
       <datalist id="follwd"></datalist>
     </div>
     <div class="right">
-      <button class="iconbtn" title="Aktualisieren" onclick="startFeed()">⟳</button>
-      <button class="iconbtn" id="manage_btn" title="Verwalten" onclick="toggleManage()">⚙️</button>
+      <button class="iconbtn" title="Suchen" onclick="showSearch()">🔍</button>
+      <button class="iconbtn" title="Mein Profil" onclick="showMe()">👤</button>
+      <button class="iconbtn" id="manage_btn" title="Einstellungen" onclick="toggleManage()">⚙️</button>
       <button class="iconbtn" id="theme_btn" title="Hell/Dunkel" onclick="toggleTheme()">🌙</button>
       <span class="whoami" id="whoami"></span>
     </div>
@@ -331,9 +347,10 @@
 <!-- Untere Navigation (Handy) -->
 <nav class="bottomnav" id="bottomnav">
   <button id="nav_home" class="on" title="Feed" onclick="showFeed()">🏠</button>
-  <button id="nav_search" title="Suchen" onclick="$('q_user').focus()">🔍</button>
+  <button id="nav_search" title="Suchen" onclick="showSearch()">🔍</button>
+  <button id="nav_reels" title="Reels" onclick="openReels()">🎬</button>
   <button id="nav_saved" title="Gespeichert" onclick="showSaved()">🔖</button>
-  <button id="nav_manage" title="Verwalten" onclick="toggleManage()">⚙️</button>
+  <button id="nav_profile" title="Mein Profil" onclick="showMe()">👤</button>
 </nav>
 
 <!-- Reels-Vollbild-Feed -->
@@ -464,7 +481,7 @@ async function refreshStatus(){
   const {data} = await api("/api/status");
   loggedIn = !!data.logged_in; currentUser = data.user || "";
   $("whoami").innerHTML = loggedIn
-    ? 'als <b>@'+esc(currentUser)+'</b>'
+    ? '<b onclick="showMe()" style="cursor:pointer">@'+esc(currentUser)+'</b>'
     : '<span onclick="scrollToLogin()" style="cursor:pointer">anmelden</span>';
   $("login_panel").style.display = loggedIn ? "none" : "block";
   $("manage_btn").style.display = loggedIn ? "flex" : "none";
@@ -827,23 +844,98 @@ window.addEventListener("touchend", e=>{
 /* ---------- Profil-Ansicht (Raster) ---------- */
 let profileName="", profileCount=24;
 async function openProfile(input, count){
-  const name=(input||"").trim(); if(!name) return;
+  const name=(input||"").trim().replace(/^@/,""); if(!name) return;
   profileName=name; profileCount=count||24;
-  viewMode="profile"; setNav("nav_search"); if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
+  const isOwn = currentUser && name.toLowerCase()===currentUser.toLowerCase();
+  viewMode="profile"; setNav(isOwn?"nav_profile":"nav_search");
+  if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
   $("stories_row").style.display="none"; $("filterbar").style.display="none";
   const acc = followList.find(a=>a.username.toLowerCase()===name.toLowerCase());
   $("pf_head").style.display="flex"; $("pf_head").className="pf-head";
   $("pf_head").innerHTML = (acc&&acc.avatar?`<img src="${acc.avatar}">`:`<div class="ph">@</div>`)
-    + `<div><div class="fn">${esc(acc?acc.full_name||name:name)}</div><div class="un">@${esc(name)}</div></div>`;
+    + `<div><div class="fn">@${esc(name)}</div><div class="un">lädt …</div></div>`;
   $("content").innerHTML='<div class="empty"><span class="spin" style="border-top-color:var(--accent)"></span></div>';
   $("more").innerHTML="";
+  api(isOwn ? "/api/me" : "/api/profile/"+encodeURIComponent(name)).then(({data})=>{
+    if(data && !data.error && viewMode==="profile" && profileName===name) renderProfileHeader(data);
+  });
   const {data}=await api("/api/posts?username="+encodeURIComponent(name)+"&count="+profileCount);
+  if(viewMode!=="profile" || profileName!==name) return;
   if(data.error){ renderEmpty(data.error); toast(data.error,"err"); return; }
   const posts=data.posts||[];
   if(posts.length===0){ renderEmpty("Keine Beiträge gefunden."); return; }
   renderGrid(posts);
   $("more").innerHTML = posts.length>=profileCount
     ? '<button class="btn ghost" onclick="openProfile(profileName, profileCount+24)">Mehr laden</button>' : "";
+}
+function renderProfileHeader(info){
+  const isOwn = currentUser && info.username.toLowerCase()===currentUser.toLowerCase();
+  $("pf_head").innerHTML = `
+    ${info.avatar?`<img src="${info.avatar}">`:`<div class="ph">@</div>`}
+    <div style="flex:1;min-width:0">
+      <div class="fn">${esc(info.full_name||info.username)}${info.is_verified?'<span class="verified">✔</span>':''}</div>
+      <div class="un">@${esc(info.username)}${info.is_private?' · privat':''}</div>
+      <div class="pf-stats">
+        <div class="s"><b>${fmt(info.posts)}</b>Beiträge</div>
+        <div class="s ${isOwn?'link':''}" id="pf_followers"><b>${fmt(info.followers)}</b>Follower</div>
+        <div class="s ${isOwn?'link':''}" id="pf_following"><b>${fmt(info.following)}</b>Gefolgt</div>
+      </div>
+      ${info.biography?`<div class="pf-bio">${linkify(info.biography)}</div>`:''}
+    </div>`;
+  if(isOwn){ const f1=$("pf_followers"), f2=$("pf_following");
+    if(f1) f1.onclick=showFollowers; if(f2) f2.onclick=showFollowing; }
+}
+function showMe(){ if(!loggedIn){ toast("Bitte zuerst anmelden."); scrollToLogin(); return; } openProfile(currentUser); }
+
+/* ---------- Suche ---------- */
+function showSearch(){
+  viewMode="search"; setNav("nav_search");
+  if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
+  $("stories_row").style.display="none"; $("filterbar").style.display="none";
+  $("pf_head").style.display="none"; $("more").innerHTML="";
+  $("content").innerHTML = '<div class="searchbox"><input id="sq" placeholder="Konten suchen …" autocomplete="off"></div><div id="sresults"><div class="hint">Tippe einen Namen ein.</div></div>';
+  const inp=$("sq"); inp.focus();
+  let t=null;
+  inp.oninput=()=>{ clearTimeout(t); t=setTimeout(()=>doSearch(inp.value),400); };
+  inp.onkeydown=(e)=>{ if(e.key==='Enter'){ clearTimeout(t); doSearch(inp.value); } };
+}
+async function doSearch(q){
+  q=(q||"").trim();
+  if(!$("sresults")) return;
+  if(q.length<2){ $("sresults").innerHTML='<div class="hint">Mindestens 2 Zeichen.</div>'; return; }
+  $("sresults").innerHTML='<div class="empty"><span class="spin"></span></div>';
+  const {data}=await api("/api/search?q="+encodeURIComponent(q));
+  if(!$("sresults")) return;
+  if(data.error){ $("sresults").innerHTML='<div class="hint">'+esc(data.error)+'</div>'; return; }
+  const rs=data.results||[];
+  if(rs.length===0){ $("sresults").innerHTML='<div class="hint">Keine Treffer.</div>'; return; }
+  $("sresults").innerHTML=""; rs.forEach(a=>$("sresults").appendChild(accountRow(a)));
+}
+function accountRow(a){
+  const r=document.createElement("div"); r.className="acctrow";
+  r.innerHTML = (a.avatar?`<img src="${a.avatar}">`:`<div class="ph">@</div>`)
+    + `<div style="flex:1;min-width:0"><div class="fn">${esc(a.full_name||a.username)}${a.is_verified?'<span class="verified">✔</span>':''}</div><div class="un">@${esc(a.username)}</div></div>`;
+  r.onclick=()=>openProfile(a.username);
+  return r;
+}
+
+/* ---------- Follower / Gefolgt ---------- */
+function showFollowing(){ showAccountList("/api/following","Gefolgt"); }
+function showFollowers(){ showAccountList("/api/followers","Follower"); }
+async function showAccountList(url,title){
+  viewMode="list"; setNav("nav_profile");
+  if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
+  $("stories_row").style.display="none"; $("filterbar").style.display="none"; $("more").innerHTML="";
+  $("pf_head").style.display="flex"; $("pf_head").className="pf-head";
+  $("pf_head").innerHTML='<div class="ph">👥</div><div><div class="fn">'+title+'</div><div class="un">lädt …</div></div>';
+  $("content").innerHTML='<div class="empty"><span class="spin"></span></div>';
+  const {data}=await api(url);
+  if(viewMode!=="list") return;
+  if(data.error){ renderEmpty(data.error); toast(data.error,"err"); return; }
+  const accts=data.accounts||[];
+  const un=$("pf_head").querySelector(".un"); if(un) un.textContent=accts.length+" Konten";
+  if(accts.length===0){ renderEmpty("Niemand hier."); return; }
+  $("content").innerHTML=""; accts.forEach(a=>$("content").appendChild(accountRow(a)));
 }
 function renderGrid(posts){
   const c=$("content"); c.className="";
@@ -970,6 +1062,12 @@ document.addEventListener("keydown", e=>{
   }
 });
 window.addEventListener("scroll", ()=>{ $("top").style.display = window.scrollY>600?"flex":"none"; });
+
+// Abo-Liste automatisch aktualisieren, sobald man zur App zurückkehrt
+// (neue Follows tauchen so ohne Neuladen in Stories/Suche/Feed auf).
+document.addEventListener("visibilitychange", ()=>{ if(!document.hidden && loggedIn) loadFollowing(true); });
+// zusätzlich alle 5 Minuten still im Hintergrund
+setInterval(()=>{ if(loggedIn && !document.hidden) loadFollowing(true); }, 300000);
 
 // Als App installierbar machen (Service Worker; scheitert still auf http-LAN).
 if("serviceWorker" in navigator){

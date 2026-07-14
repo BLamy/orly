@@ -335,6 +335,69 @@ def create_app(
             })
         return jsonify(count=len(accounts), accounts=accounts)
 
+    def _avatar_url(item: dict) -> str:
+        """Merkt sich die Profilbild-URL und liefert den Proxy-Pfad."""
+        if item.get("pic"):
+            avatar_urls[item["username"]] = item["pic"]
+            return f"/avatar/{item['username']}"
+        return ""
+
+    @app.get("/api/me")
+    def api_me():
+        try:
+            info = downloader.me()
+        except LoginError as exc:
+            return jsonify(error=str(exc)), 401
+        except DownloaderError as exc:
+            return jsonify(error=str(exc)), 502
+        info = dict(info)
+        info["avatar"] = _avatar_url(info)
+        info.pop("pic", None)
+        return jsonify(info)
+
+    @app.get("/api/profile/<username>")
+    def api_profile(username: str):
+        uname = extract_username(username)
+        if not uname:
+            return jsonify(error="Ungültiger Benutzername."), 400
+        try:
+            info = downloader.profile_info(uname)
+        except ProfileNotFound as exc:
+            return jsonify(error=str(exc)), 404
+        except ProfileIsPrivate as exc:
+            return jsonify(error=str(exc)), 403
+        except DownloaderError as exc:
+            return jsonify(error=str(exc)), 502
+        info = dict(info)
+        info["avatar"] = _avatar_url(info)
+        info.pop("pic", None)
+        return jsonify(info)
+
+    @app.get("/api/followers")
+    def api_followers():
+        try:
+            details = downloader.followers_details(limit=300)
+        except LoginError as exc:
+            return jsonify(error=str(exc)), 401
+        except DownloaderError as exc:
+            return jsonify(error=str(exc)), 502
+        return jsonify(count=len(details), accounts=[{
+            "username": d["username"], "full_name": d.get("full_name", ""),
+            "avatar": _avatar_url(d),
+        } for d in details])
+
+    @app.get("/api/search")
+    def api_search():
+        query = request.args.get("q", "")
+        try:
+            results = downloader.search_profiles(query, limit=12)
+        except DownloaderError as exc:
+            return jsonify(error=str(exc)), 502
+        return jsonify(results=[{
+            "username": d["username"], "full_name": d.get("full_name", ""),
+            "is_verified": d.get("is_verified", False), "avatar": _avatar_url(d),
+        } for d in results])
+
     @app.get("/avatar/<username>")
     def avatar(username: str):
         url = avatar_urls.get(username)
