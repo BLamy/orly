@@ -350,9 +350,11 @@ def create_app(
             headers={"Cache-Control": "private, max-age=3600"},
         )
 
-    def start_bulk_job(usernames: list[str], per_account: int, since: str = "") -> bool:
+    def start_bulk_job(usernames: list[str], per_account: int, since: str = "",
+                       also_stories: bool = False) -> bool:
         """Startet den Massen-Download im Hintergrund (Endpunkt & Zeitplan).
 
+        ``also_stories`` lädt je Konto zusätzlich die aktuellen Stories.
         Rückgabe: False, wenn bereits ein Download läuft.
         """
         if bulk.snapshot()["running"]:
@@ -393,6 +395,23 @@ def create_app(
                         except DownloaderError as exc:
                             logger.warning("Beitrag %s nicht geladen: %s",
                                            post.shortcode, exc)
+                    # Optional: aktuelle Stories des Kontos mitladen.
+                    if also_stories and not bulk.cancel:
+                        try:
+                            for item in downloader.list_story_items(username, "stories"):
+                                if bulk.cancel:
+                                    break
+                                if db.is_downloaded(item.shortcode, username):
+                                    continue
+                                db.add_post(item.shortcode, username,
+                                            item.post_type, item.posted_at)
+                                if downloader.download_story_item(item):
+                                    db.mark_downloaded(item.shortcode, username)
+                                    downloaded_total += 1
+                                    bulk.update(downloaded=downloaded_total)
+                        except DownloaderError as exc:
+                            logger.warning("Stories @%s übersprungen: %s",
+                                           username, exc)
                     bulk.update(done=index + 1)
                     # Rücksichtsvolle Pause zwischen den Konten.
                     if index < len(usernames) - 1 and not bulk.cancel:
@@ -760,14 +779,78 @@ def create_app(
         return jsonify(ok=bool(ok))
 
     # ------------------------------------------------------------------
+    # PWA: als App aufs Handy/den Desktop installierbar
+    # ------------------------------------------------------------------
+    _ICON_SVG = (
+        '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">'
+        '<defs><linearGradient id="g" x1="0" y1="0" x2="1" y2="1">'
+        '<stop offset="0" stop-color="#feda75"/><stop offset=".5" stop-color="#d62976"/>'
+        '<stop offset="1" stop-color="#4f5bd5"/></linearGradient></defs>'
+        '<rect width="512" height="512" rx="112" fill="url(#g)"/>'
+        '<path d="M256 168v120m0 0l-52-52m52 52l52-52" fill="none" stroke="#fff" '
+        'stroke-width="26" stroke-linecap="round" stroke-linejoin="round"/>'
+        '<rect x="160" y="320" width="192" height="26" rx="13" fill="#fff"/></svg>'
+    )
+
+    @app.get("/icon.svg")
+    def icon_svg():
+        return Response(_ICON_SVG, mimetype="image/svg+xml",
+                        headers={"Cache-Control": "public, max-age=86400"})
+
+    @app.get("/manifest.webmanifest")
+    def manifest():
+        return jsonify({
+            "name": "Instagram Monitor",
+            "short_name": "IG Monitor",
+            "start_url": "/",
+            "display": "standalone",
+            "background_color": "#000000",
+            "theme_color": "#000000",
+            "icons": [
+                {"src": "/icon.svg", "sizes": "any", "type": "image/svg+xml",
+                 "purpose": "any maskable"},
+            ],
+        })
+
+    @app.get("/sw.js")
+    def service_worker():
+        # Minimaler Service-Worker: ermöglicht die Installation als App.
+        # (Kein aggressives Caching, damit immer die aktuelle Version läuft.)
+        js = (
+            "self.addEventListener('install', e => self.skipWaiting());\n"
+            "self.addEventListener('activate', e => self.clients.claim());\n"
+            "self.addEventListener('fetch', e => {});\n"
+        )
+        return Response(js, mimetype="application/javascript",
+                        headers={"Cache-Control": "no-cache"})
+
+    # ------------------------------------------------------------------
     # Automatischer Zeitplan (täglich zu festen Uhrzeiten herunterladen)
     # ------------------------------------------------------------------
+    @app.get("/api/health")
+    def health():
+        return jsonify(ok=True, logged_in=downloader.is_logged_in,
+                       user=downloader.logged_in_user or "")
+
+    @app.get("/api/settings")
+    def get_settings():
+        return jsonify(save_captions=settings.save_captions,
+                       download_dir=str(settings.download_dir))
+
+    @app.post("/api/settings")
+    def set_settings():
+        data = request.get_json(force=True, silent=True) or {}
+        if "save_captions" in data:
+            settings.save_captions = bool(data["save_captions"])
+        return jsonify(ok=True, save_captions=settings.save_captions)
+
     @app.get("/api/schedule")
     def get_schedule():
         return jsonify(
             enabled=settings.schedule_enabled,
             times=settings.schedule_times,
             per=settings.schedule_per,
+            stories=settings.schedule_stories,
             last_run=settings.schedule_last_run,
         )
 
@@ -775,6 +858,7 @@ def create_app(
     def set_schedule():
         data = request.get_json(force=True, silent=True) or {}
         settings.schedule_enabled = bool(data.get("enabled"))
+        settings.schedule_stories = bool(data.get("stories"))
         if "times" in data and isinstance(data["times"], list):
             settings.schedule_times = data["times"]
         if "per" in data:
@@ -787,6 +871,7 @@ def create_app(
             enabled=settings.schedule_enabled,
             times=settings.schedule_times,
             per=settings.schedule_per,
+            stories=settings.schedule_stories,
         )
 
     def _scheduler_loop():
@@ -824,10 +909,12 @@ def create_app(
         if not usernames:
             logger.info("Zeitplan %s: keine Abos.", now.strftime("%H:%M"))
             return
-        if start_bulk_job(usernames, settings.schedule_per, ""):
+        if start_bulk_job(usernames, settings.schedule_per, "",
+                          also_stories=settings.schedule_stories):
             settings.schedule_last_run = now.strftime("%Y-%m-%d %H:%M")
             logger.info("Zeitplan %s: automatischer Download von %d Konten "
-                        "gestartet.", now.strftime("%H:%M"), len(usernames))
+                        "gestartet%s.", now.strftime("%H:%M"), len(usernames),
+                        " (inkl. Stories)" if settings.schedule_stories else "")
         else:
             logger.info("Zeitplan %s: übersprungen (ein Download läuft bereits).",
                         now.strftime("%H:%M"))

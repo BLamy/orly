@@ -84,7 +84,15 @@ ist wie Instagram aufgebaut: obere Leiste mit Suche, **Stories-Reihe**
 eine **Lightbox** (Vollbild, Album-Karussell, Videos), eine **Profil-
 Ansicht als 3-Spalten-Raster**, **Hell/Dunkel-Umschalter**, „Merken"
 (★) und Toast-Meldungen. Über das Zahnrad ⚙️ erreichst du „Verwalten"
-(Abo-Liste, Massen-Download, Feed-Einstellungen).
+(Abo-Liste, Massen-Download, Feed-Einstellungen, Abmelden).
+
+**Als App aufs Handy:** Die Seite ist eine PWA – im Browser-Menü des
+Handys „Zum Startbildschirm hinzufügen" wählen, dann startet sie wie eine
+echte App im Vollbild. Weitere Extras: **Filterleiste** (Fotos / Videos /
+Reels / Alben), **„🔖 Gespeichert"** (per ★ oder Doppeltipp gemerkte
+Beiträge, lokal), **Link kopieren**, **Bildunterschrift als .txt**
+mitspeichern (Verwalten), untere Navigationsleiste am Handy, und „?" für
+die Tastatur-Hilfe.
 
 **Automatischer Download (Zeitplan):** Unter ⚙️ „Verwalten" →
 „⏰ Automatischer Download" kannst du festlegen, dass die App **täglich zu

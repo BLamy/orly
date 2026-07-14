@@ -229,3 +229,24 @@ class Settings:
     def schedule_last_run(self, value: str) -> None:
         self._db.set_setting("schedule_last_run", value or "")
 
+    @property
+    def schedule_stories(self) -> bool:
+        """Ob der Zeitplan auch die aktuellen Stories mitlädt."""
+        return self._db.get_setting("schedule_stories", "0") == "1"
+
+    @schedule_stories.setter
+    def schedule_stories(self, value: bool) -> None:
+        self._db.set_setting("schedule_stories", "1" if value else "0")
+
+    # ------------------------------------------------------------------
+    # Weitere Download-Optionen
+    # ------------------------------------------------------------------
+    @property
+    def save_captions(self) -> bool:
+        """Ob zu jedem Beitrag die Bildunterschrift als .txt gespeichert wird."""
+        return self._db.get_setting("save_captions", "0") == "1"
+
+    @save_captions.setter
+    def save_captions(self, value: bool) -> None:
+        self._db.set_setting("save_captions", "1" if value else "0")
+

@@ -892,6 +892,10 @@ class InstagramDownloader:
             # deshalb wird das Muster vor jedem Download aktualisiert.
             # "{target}" ersetzt Instaloader durch den übergebenen target-Namen.
             self._loader.dirname_pattern = str(download_dir / "{target}")
+            # Optional: Bildunterschrift als .txt neben der Datei speichern.
+            self._loader.post_metadata_txt_pattern = (
+                "{caption}" if self._settings.save_captions else ""
+            )
 
             try:
                 # Das beim Abruf gemerkte Post-Objekt wiederverwenden; nur zur

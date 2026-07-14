@@ -4,6 +4,14 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Instagram Monitor</title>
+<link rel="icon" href="/icon.svg">
+<link rel="apple-touch-icon" href="/icon.svg">
+<link rel="manifest" href="/manifest.webmanifest">
+<meta name="theme-color" content="#000000">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="IG Monitor">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="mobile-web-app-capable" content="yes">
 <style>
   :root{
     --bg:#000; --bg2:#0e0e0e; --card:#000; --border:#262626; --text:#f5f5f5;
@@ -145,6 +153,24 @@
          box-shadow:0 6px 20px #0007; max-width:90vw; text-align:center}
   .toast.err{background:var(--err)} .toast.ok{background:#1f6f43}
 
+  .media .heart{position:absolute; font-size:90px; color:#fff; opacity:0; transform:scale(.4);
+        pointer-events:none; text-shadow:0 2px 12px #0008}
+  .media .heart.go{animation:pop .8s ease}
+  @keyframes pop{0%{opacity:0;transform:scale(.4)}15%{opacity:.95;transform:scale(1.1)}
+        30%{transform:scale(.95)}45%{transform:scale(1)}80%{opacity:.95}100%{opacity:0;transform:scale(1)}}
+  .cap .tag{color:#e0f1ff; cursor:pointer}
+  :root[data-theme="light"] .cap .tag{color:#00376b}
+  .filterbar{display:flex; gap:8px; overflow-x:auto; padding:4px 2px 12px; scrollbar-width:none}
+  .filterbar::-webkit-scrollbar{display:none}
+  .chip{flex:0 0 auto; padding:7px 14px; border-radius:999px; border:1px solid var(--border);
+        color:var(--muted); font-weight:600; font-size:13px; white-space:nowrap}
+  .chip.on{background:var(--text); color:var(--bg); border-color:var(--text)}
+  .bottomnav{position:fixed; left:0; right:0; bottom:0; z-index:40; display:none;
+        background:var(--bg2); border-top:1px solid var(--border);
+        justify-content:space-around; padding:8px 0 calc(8px + env(safe-area-inset-bottom))}
+  .bottomnav button{font-size:22px; width:56px; height:40px; border-radius:10px}
+  .bottomnav button.on{color:var(--accent)}
+  @media(max-width:640px){ .bottomnav{display:flex} body{padding-bottom:64px} #top{bottom:76px} }
   .empty{text-align:center; color:var(--muted); padding:50px 20px}
   #top{position:fixed; right:16px; bottom:16px; z-index:20; width:44px; height:44px;
        border-radius:50%; background:var(--accent); color:#fff; font-size:20px; display:none;
@@ -202,7 +228,15 @@
 
   <!-- Verwalten -->
   <div class="panel" id="manage_panel" style="display:none">
-    <h3>Verwalten</h3>
+    <div class="rowflex" style="justify-content:space-between">
+      <h3 style="margin:0">Verwalten</h3>
+      <button class="btn ghost small" onclick="doLogout()">Abmelden</button>
+    </div>
+    <label class="rowflex" style="margin-top:10px">
+      <input type="checkbox" id="opt_captions" style="width:16px;height:16px" onchange="saveAppSettings()">
+      Bildunterschrift als .txt mitspeichern
+    </label>
+    <div class="hint" id="dl_dir"></div>
     <div class="rowflex">
       <label class="hint" style="margin:0">Feed-Profile:
         <select id="feed_profiles">
@@ -240,6 +274,9 @@
     <label class="rowflex" style="margin-top:8px">
       <input type="checkbox" id="sch_enabled" style="width:16px;height:16px"> automatisch herunterladen
     </label>
+    <label class="rowflex" style="margin-top:6px">
+      <input type="checkbox" id="sch_stories" style="width:16px;height:16px"> dabei auch aktuelle Stories mitladen
+    </label>
     <div class="rowflex" style="margin-top:8px">
       <span class="hint" style="margin:0">Uhrzeiten:</span>
       <span id="sch_times" class="rowflex"></span>
@@ -259,10 +296,43 @@
   <!-- Profil-Kopf (nur in Profil-Ansicht) -->
   <div id="pf_head" style="display:none"></div>
 
+  <!-- Filterleiste (nur im Feed) -->
+  <div class="filterbar" id="filterbar" style="display:none">
+    <button class="chip on" data-f="all" onclick="setFilter('all',this)">Alle</button>
+    <button class="chip" data-f="photo" onclick="setFilter('photo',this)">Fotos</button>
+    <button class="chip" data-f="video" onclick="setFilter('video',this)">Videos/Reels</button>
+    <button class="chip" data-f="album" onclick="setFilter('album',this)">Alben</button>
+    <button class="chip" onclick="downloadFeedToPC()">⬇ Alle auf PC</button>
+  </div>
+
   <!-- Feed / Raster -->
   <div id="content"></div>
   <div id="more" style="text-align:center; margin:10px 0"></div>
 </main>
+
+<!-- Untere Navigation (Handy) -->
+<nav class="bottomnav" id="bottomnav">
+  <button id="nav_home" class="on" title="Feed" onclick="showFeed()">🏠</button>
+  <button id="nav_search" title="Suchen" onclick="$('q_user').focus()">🔍</button>
+  <button id="nav_saved" title="Gespeichert" onclick="showSaved()">🔖</button>
+  <button id="nav_manage" title="Verwalten" onclick="toggleManage()">⚙️</button>
+</nav>
+
+<!-- Hilfe -->
+<div class="ov" id="help">
+  <button class="close" onclick="$('help').classList.remove('open')">✕</button>
+  <div class="panel" style="max-width:420px">
+    <h3>Tastatur & Tipps</h3>
+    <div class="hint" style="color:var(--text)">
+      • Doppelklick/-tipp auf ein Bild → merken (Herz)<br>
+      • In Lightbox/Story: ← → blättern, Esc schließen<br>
+      • 🔖 Gespeichert · 🔍 Suchen · ⚙️ Verwalten · 🌙 Hell/Dunkel<br>
+      • „?" öffnet diese Hilfe<br>
+      • Auf dem Handy: über das Browser-Menü „Zum Startbildschirm hinzufügen"
+        → läuft dann wie eine App.
+    </div>
+  </div>
+</div>
 
 <!-- Lightbox -->
 <div class="ov" id="lb">
@@ -333,14 +403,30 @@ function toggleTheme(){
 }
 applyTheme((()=>{ try{ return localStorage.getItem("igm_theme")||"dark"; }catch(e){ return "dark"; } })());
 
-/* ---------- Gespeichert (lokal) ---------- */
+/* ---------- Gespeichert (lokal, ganze Beiträge) ---------- */
 function getSaved(){ try{ return JSON.parse(localStorage.getItem("igm_saved")||"[]"); }catch(e){ return []; } }
-function isSaved(sc){ return getSaved().includes(sc); }
-function toggleSaved(sc){
+function isSaved(sc){ return getSaved().some(p=>p.shortcode===sc); }
+function toggleSavedPost(post){
   let s = getSaved();
-  if(s.includes(sc)) s = s.filter(x=>x!==sc); else s.push(sc);
-  try{ localStorage.setItem("igm_saved", JSON.stringify(s)); }catch(e){}
-  return s.includes(sc);
+  if(s.some(p=>p.shortcode===post.shortcode)) s = s.filter(p=>p.shortcode!==post.shortcode);
+  else s.unshift(post);
+  try{ localStorage.setItem("igm_saved", JSON.stringify(s.slice(0,300))); }catch(e){}
+  return isSaved(post.shortcode);
+}
+/* Story-„gesehen"-Zustand */
+function seenStories(){ try{ return JSON.parse(localStorage.getItem("igm_seen")||"[]"); }catch(e){ return []; } }
+function markSeen(u){ const s=seenStories(); if(!s.includes(u)){ s.push(u);
+  try{ localStorage.setItem("igm_seen", JSON.stringify(s.slice(-200))); }catch(e){} } }
+
+/* @Erwähnungen und #Hashtags in der Bildunterschrift hervorheben */
+function linkify(text){
+  return esc(text).replace(/(^|\s)@([A-Za-z0-9._]{1,30})/g,
+      '$1<a class="tag" onclick="openProfile(\'$2\')">@$2</a>')
+    .replace(/(^|\s)#([\wäöüÄÖÜ]+)/g, '$1<span class="tag">#$2</span>');
+}
+function copyLink(url){
+  try{ navigator.clipboard.writeText(url); toast("Link kopiert","ok"); }
+  catch(e){ toast(url); }
 }
 
 /* ---------- Status / Anmeldung ---------- */
@@ -399,12 +485,13 @@ async function logout(){ await api("/api/logout",{method:"POST"}); location.relo
 
 /* ---------- Feed ---------- */
 let feedTimer=null, viewMode="feed";
-function showFeed(){ viewMode="feed"; $("pf_head").style.display="none";
-  $("more").innerHTML=""; startFeed(); }
+function showFeed(){ startFeed(); }
 
 async function startFeed(){
-  viewMode="feed"; $("pf_head").style.display="none"; $("more").innerHTML="";
-  if(!loggedIn){ renderEmpty("Melde dich an, um den Feed deiner Abos zu sehen. Oder suche oben ein öffentliches Konto."); return; }
+  viewMode="feed"; setNav("nav_home"); $("pf_head").style.display="none"; $("more").innerHTML="";
+  if(loggedIn){ $("stories_row").style.display="flex"; $("filterbar").style.display="flex"; }
+  if(!loggedIn){ $("filterbar").style.display="none";
+    renderEmpty("Melde dich an, um den Feed deiner Abos zu sehen. Oder suche oben ein öffentliches Konto."); return; }
   showSkeleton();
   const {data}=await api("/api/feed/start",{method:"POST",headers:{"Content-Type":"application/json"},
     body:JSON.stringify({profiles:$("feed_profiles").value, per:$("feed_per").value})});
@@ -426,12 +513,53 @@ function showSkeleton(){
 }
 function renderEmpty(msg){ $("content").innerHTML = '<div class="empty">'+esc(msg)+'</div>'; }
 
-let feedPosts=[];
+let feedPosts=[], currentFilter="all";
+function matchFilter(p){
+  if(currentFilter==="all") return true;
+  if(currentFilter==="album") return p.is_album;
+  if(currentFilter==="video") return p.is_video && !p.is_album;
+  if(currentFilter==="photo") return !p.is_video && !p.is_album;
+  return true;
+}
 function renderFeed(posts){
   feedPosts = posts;
   const c=$("content"); c.innerHTML="";
+  const shown = posts.filter(matchFilter);
   if(posts.length===0){ showSkeleton(); return; }
-  for(const p of posts) c.appendChild(postCard(p));
+  if(shown.length===0){ renderEmpty("Keine Beiträge für diesen Filter."); return; }
+  for(const p of shown) c.appendChild(postCard(p));
+}
+function setFilter(f, btn){
+  currentFilter=f;
+  document.querySelectorAll("#filterbar .chip[data-f]").forEach(c=>c.classList.remove("on"));
+  if(btn) btn.classList.add("on");
+  renderFeed(feedPosts);
+}
+async function downloadFeedToPC(){
+  const list=feedPosts.filter(matchFilter).filter(p=>!p.downloaded);
+  if(list.length===0){ toast("Nichts Neues zum Laden.","ok"); return; }
+  if(!confirm(list.length+" Beiträge aus dem Feed auf den PC laden?")) return;
+  let n=0;
+  for(const p of list){ toast("Lädt "+(++n)+"/"+list.length+" …");
+    await api("/api/download",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({shortcode:p.shortcode})});
+  }
+  toast("Feed-Download fertig ("+list.length+")","ok");
+}
+function setNav(id){ document.querySelectorAll(".bottomnav button").forEach(b=>b.classList.remove("on"));
+  const b=$(id); if(b) b.classList.add("on"); }
+
+/* Gespeicherte Beiträge ansehen */
+function showSaved(){
+  viewMode="saved"; setNav("nav_saved");
+  if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
+  $("filterbar").style.display="none"; $("stories_row").style.display="none";
+  $("pf_head").style.display="flex"; $("pf_head").className="pf-head";
+  const saved=getSaved();
+  $("pf_head").innerHTML='<div class="ph">🔖</div><div><div class="fn">Gespeichert</div>'
+    +'<div class="un">'+saved.length+' Beiträge (nur auf diesem Gerät)</div></div>';
+  $("more").innerHTML="";
+  if(saved.length===0){ renderEmpty("Noch nichts gemerkt. Tippe ★ oder doppeltippe ein Bild."); return; }
+  renderGrid(saved);
 }
 
 function avatarHTML(username, cls){
@@ -446,33 +574,50 @@ function postCard(p){
   el.innerHTML = `
     <div class="head">
       ${avatarHTML(p.username,"")}
-      <span class="u" style="cursor:pointer" onclick="openProfile('${p.username}')">@${esc(p.username)}</span>
-      <span class="t">${timeAgo(p.posted_at)}</span>
+      <span class="u" style="cursor:pointer">@${esc(p.username)}</span>
+      <span class="t" title="${esc((p.posted_at||'').replace('T',' '))}">${timeAgo(p.posted_at)}</span>
     </div>
     <div class="media">
       ${p.thumb ? `<img loading="lazy" src="${p.thumb}" alt="">` : `<div class="empty">keine Vorschau</div>`}
       ${p.is_video ? `<span class="play">▶</span>` : ""}
       ${p.is_album ? `<span class="multi">▦</span>` : ""}
+      <span class="heart">♥</span>
     </div>
     <div class="actions">
-      <button title="Auf dieses Gerät" onclick="deviceDownload('${p.shortcode}')">⤓</button>
-      <button id="pc_${p.shortcode}" class="${p.downloaded?'done':''}" title="Auf den PC"
-              onclick="pcDownload('${p.shortcode}')">${p.downloaded?'✓':'⬇'}</button>
+      <button class="a-dev" title="Auf dieses Gerät">⤓</button>
+      <button class="a-pc ${p.downloaded?'done':''}" title="Auf den PC">${p.downloaded?'✓':'⬇'}</button>
+      <button class="a-copy" title="Link kopieren">🔗</button>
       <a href="${p.url}" target="_blank" rel="noopener" title="Auf Instagram öffnen">↗</a>
       <span class="sp"></span>
-      <button id="sv_${p.shortcode}" class="${saved?'saved':''}" title="Merken"
-              onclick="onSave('${p.shortcode}',this)">${saved?'★':'☆'}</button>
+      <button class="a-save ${saved?'saved':''}" title="Merken">${saved?'★':'☆'}</button>
     </div>
-    ${p.caption ? `<div class="cap clamp"><span class="u">@${esc(p.username)}</span><span class="txt">${esc(p.caption)}</span> <span class="more" onclick="this.parentNode.classList.toggle('clamp')">… mehr</span></div>` : ""}
+    ${p.caption ? `<div class="cap clamp"><span class="u">@${esc(p.username)}</span><span class="txt">${linkify(p.caption)}</span> <span class="more">… mehr</span></div>` : ""}
   `;
-  el.querySelector(".media").onclick = () => openLightbox(p);
+  const media=el.querySelector(".media");
+  media.onclick=()=>openLightbox(p);
+  let lastTap=0;
+  media.addEventListener("dblclick", ()=>likeAnim(el,p));
+  media.addEventListener("touchend", ()=>{ const n=Date.now(); if(n-lastTap<300){ likeAnim(el,p); } lastTap=n; });
+  el.querySelector(".u").onclick=()=>openProfile(p.username);
+  el.querySelector(".a-dev").onclick=()=>deviceDownload(p.shortcode);
+  el.querySelector(".a-copy").onclick=()=>copyLink(p.url);
+  el.querySelector(".a-pc").onclick=(e)=>pcDownload(p.shortcode, e.currentTarget);
+  const sv=el.querySelector(".a-save");
+  sv.onclick=()=>{ const s=toggleSavedPost(p); sv.textContent=s?'★':'☆'; sv.classList.toggle('saved',s);
+    toast(s?"Gemerkt":"Entfernt","ok"); };
+  const more=el.querySelector(".more");
+  if(more) more.onclick=()=>el.querySelector(".cap").classList.toggle("clamp");
   return el;
 }
-
-function onSave(sc, btn){ const s=toggleSaved(sc); btn.textContent=s?'★':'☆'; btn.classList.toggle('saved',s); }
+function likeAnim(el, p){
+  const h=el.querySelector(".heart"); if(h){ h.classList.remove("go"); void h.offsetWidth; h.classList.add("go"); }
+  if(!isSaved(p.shortcode)){ toggleSavedPost(p);
+    const sv=el.querySelector(".a-save"); if(sv){ sv.textContent='★'; sv.classList.add('saved'); } toast("Gemerkt","ok"); }
+}
 function deviceDownload(sc){ window.location.href = "/media/"+sc; }
-async function pcDownload(sc){
-  const b=$("pc_"+sc); if(!b||b.classList.contains("done")) return;
+async function pcDownload(sc, btn){
+  const b=btn||document.querySelector(".a-pc");
+  if(!b||b.classList.contains("done")) return;
   b.disabled=true; b.innerHTML='<span class="spin"></span>';
   const {data}=await api("/api/download",{method:"POST",headers:{"Content-Type":"application/json"},body:JSON.stringify({shortcode:sc})});
   b.disabled=false;
@@ -516,9 +661,11 @@ function renderStoriesRow(){
   const row=$("stories_row");
   if(!loggedIn || followList.length===0){ row.style.display="none"; return; }
   row.style.display="flex"; row.innerHTML="";
+  const seen=seenStories();
   for(const a of followList.slice(0,30)){
     const d=document.createElement("div"); d.className="story";
-    d.innerHTML = `<div class="ring">${a.avatar?`<img src="${a.avatar}" alt="">`:`<div class="ph">@</div>`}</div>`
+    const ring = seen.includes(a.username) ? "ring seen" : "ring";
+    d.innerHTML = `<div class="${ring}">${a.avatar?`<img src="${a.avatar}" alt="">`:`<div class="ph">@</div>`}</div>`
       + `<span>${esc(a.username)}</span>`;
     d.onclick=()=>openStory(a.username);
     row.appendChild(d);
@@ -531,6 +678,7 @@ async function openStory(username){
   if(data.error){ toast(data.error,"err"); return; }
   if(!data.items || data.items.length===0){ toast("Keine aktuellen Stories.","ok"); return; }
   svItems=data.items; svIndex=0; svUser=username;
+  markSeen(username); renderStoriesRow();
   $("sv").classList.add("open");
   drawStory();
 }
@@ -559,21 +707,25 @@ function storyNav(d){
 function closeStory(){ clearTimeout(svTimer); $("sv").classList.remove("open"); $("sv_stage").innerHTML=""; }
 
 /* ---------- Profil-Ansicht (Raster) ---------- */
-async function openProfile(input){
+let profileName="", profileCount=24;
+async function openProfile(input, count){
   const name=(input||"").trim(); if(!name) return;
-  viewMode="profile"; if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
-  $("stories_row").style.display="none";
+  profileName=name; profileCount=count||24;
+  viewMode="profile"; setNav("nav_search"); if(feedTimer){clearInterval(feedTimer); feedTimer=null;}
+  $("stories_row").style.display="none"; $("filterbar").style.display="none";
   const acc = followList.find(a=>a.username.toLowerCase()===name.toLowerCase());
   $("pf_head").style.display="flex"; $("pf_head").className="pf-head";
   $("pf_head").innerHTML = (acc&&acc.avatar?`<img src="${acc.avatar}">`:`<div class="ph">@</div>`)
     + `<div><div class="fn">${esc(acc?acc.full_name||name:name)}</div><div class="un">@${esc(name)}</div></div>`;
   $("content").innerHTML='<div class="empty"><span class="spin" style="border-top-color:var(--accent)"></span></div>';
   $("more").innerHTML="";
-  const {data}=await api("/api/posts?username="+encodeURIComponent(name)+"&count=24");
+  const {data}=await api("/api/posts?username="+encodeURIComponent(name)+"&count="+profileCount);
   if(data.error){ renderEmpty(data.error); toast(data.error,"err"); return; }
   const posts=data.posts||[];
   if(posts.length===0){ renderEmpty("Keine Beiträge gefunden."); return; }
   renderGrid(posts);
+  $("more").innerHTML = posts.length>=profileCount
+    ? '<button class="btn ghost" onclick="openProfile(profileName, profileCount+24)">Mehr laden</button>' : "";
 }
 function renderGrid(posts){
   const c=$("content"); c.className="";
@@ -653,25 +805,37 @@ function addSchedTime(val){
 }
 async function loadSchedule(){
   const {data}=await api("/api/schedule");
-  if(!data || data.enabled===undefined) return;
-  $("sch_enabled").checked=!!data.enabled;
-  $("sch_per").value=String(data.per||3);
-  $("sch_times").innerHTML="";
-  (data.times&&data.times.length?data.times:["12:00","00:00"]).forEach(addSchedTime);
-  $("sch_info").textContent = data.last_run ? ("Zuletzt automatisch: "+data.last_run) : "";
+  if(data && data.enabled!==undefined){
+    $("sch_enabled").checked=!!data.enabled;
+    $("sch_stories").checked=!!data.stories;
+    $("sch_per").value=String(data.per||3);
+    $("sch_times").innerHTML="";
+    (data.times&&data.times.length?data.times:["12:00","00:00"]).forEach(addSchedTime);
+    $("sch_info").textContent = data.last_run ? ("Zuletzt automatisch: "+data.last_run) : "";
+  }
+  const st=await api("/api/settings");
+  if(st.data){ $("opt_captions").checked=!!st.data.save_captions;
+    $("dl_dir").textContent = "Ordner: "+(st.data.download_dir||""); }
 }
 async function saveSchedule(){
   const times=[...document.querySelectorAll("#sch_times input[type=time]")].map(i=>i.value).filter(Boolean);
   const {data}=await api("/api/schedule",{method:"POST",headers:{"Content-Type":"application/json"},
-    body:JSON.stringify({enabled:$("sch_enabled").checked, times, per:$("sch_per").value})});
+    body:JSON.stringify({enabled:$("sch_enabled").checked, stories:$("sch_stories").checked, times, per:$("sch_per").value})});
   if(data.ok){
     $("sch_times").innerHTML=""; (data.times||[]).forEach(addSchedTime);
     toast(data.enabled ? ("Zeitplan aktiv: "+(data.times||[]).join(", ")) : "Zeitplan gespeichert (aus)","ok");
   }else toast(data.error||"Speichern fehlgeschlagen","err");
 }
+async function saveAppSettings(){
+  const {data}=await api("/api/settings",{method:"POST",headers:{"Content-Type":"application/json"},
+    body:JSON.stringify({save_captions:$("opt_captions").checked})});
+  if(data.ok) toast($("opt_captions").checked?"Bildunterschriften werden gespeichert":"Bildunterschriften aus","ok");
+}
+async function doLogout(){ if(confirm("Wirklich abmelden?")){ await api("/api/logout",{method:"POST"}); location.reload(); } }
 
 /* ---------- Tastatur / Scroll ---------- */
 document.addEventListener("keydown", e=>{
+  const tag=(e.target.tagName||"").toLowerCase();
   if($("lb").classList.contains("open")){
     if(e.key==="Escape") closeLightbox();
     if(e.key==="ArrowLeft") lbNav(-1);
@@ -680,9 +844,19 @@ document.addEventListener("keydown", e=>{
     if(e.key==="Escape") closeStory();
     if(e.key==="ArrowLeft") storyNav(-1);
     if(e.key==="ArrowRight") storyNav(1);
+  }else if(e.key==="Escape"){
+    $("help").classList.remove("open");
+    if($("manage_panel").style.display!=="none") $("manage_panel").style.display="none";
+  }else if(e.key==="?" && tag!=="input" && tag!=="textarea"){
+    $("help").classList.toggle("open");
   }
 });
 window.addEventListener("scroll", ()=>{ $("top").style.display = window.scrollY>600?"flex":"none"; });
+
+// Als App installierbar machen (Service Worker; scheitert still auf http-LAN).
+if("serviceWorker" in navigator){
+  window.addEventListener("load", ()=>{ navigator.serviceWorker.register("/sw.js").catch(()=>{}); });
+}
 
 refreshStatus();
 </script>
