@@ -297,6 +297,46 @@
         }
       ],
       "createdAt": "2026-07-15T23:05:17.291Z"
+    },
+    {
+      "slug": "key-value-store",
+      "title": "The Key-Value Store",
+      "subtitle": "System Design, Solved \u21164",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "href": "?bundle=key-value-store",
+      "series": "System Design, Solved",
+      "seriesOrder": 4,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "One Big Hash Table: the first answer",
+          "duration": 89.117
+        },
+        {
+          "number": 2,
+          "title": "Consistent Hashing: slicing the keyspace",
+          "duration": 77.09
+        },
+        {
+          "number": 3,
+          "title": "Replication: three copies or it didn't happen",
+          "duration": 85.914
+        },
+        {
+          "number": 4,
+          "title": "Quorums: two dials on the front panel",
+          "duration": 122.555
+        },
+        {
+          "number": 5,
+          "title": "Death Mid-Write: hinted handoff",
+          "duration": 110.573
+        }
+      ],
+      "createdAt": "2026-07-15T23:00:07.987Z",
+      "animal": "generated/key-value-store/animal.webp"
     }
   ]
 }

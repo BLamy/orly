@@ -1,0 +1,115 @@
+{
+  "format": 3,
+  "slug": "key-value-store",
+  "title": "The Key-Value Store",
+  "subtitle": "System Design, Solved №4",
+  "animal": "animal.webp",
+  "accent": "#198a8a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "One Big Hash Table: the first answer",
+      "blurb": "A key-value store is a hash table, until the internet shows up.",
+      "scene": "books/key-value-store/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.649,
+        20.236,
+        29.478,
+        39.033,
+        44.733,
+        54.59,
+        62.392,
+        70.007,
+        79.516
+      ],
+      "duration": 89.117
+    },
+    {
+      "number": 2,
+      "title": "Consistent Hashing: slicing the keyspace",
+      "blurb": "Bend the keyspace into a ring and growth stops being a stampede.",
+      "scene": "books/key-value-store/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        8.127,
+        17.996,
+        28.317,
+        36.258,
+        41.773,
+        49.632,
+        58.816,
+        67.674
+      ],
+      "duration": 77.09
+    },
+    {
+      "number": 3,
+      "title": "Replication: three copies or it didn't happen",
+      "blurb": "The write fans out to the next two nodes clockwise — and outlives its writer.",
+      "scene": "books/key-value-store/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        7.663,
+        15.883,
+        23.023,
+        26.053,
+        37.535,
+        45.186,
+        54.788,
+        62.055,
+        69.137,
+        76.951
+      ],
+      "duration": 85.914
+    },
+    {
+      "number": 4,
+      "title": "Quorums: two dials on the front panel",
+      "blurb": "W plus R greater than N is the entire guarantee.",
+      "scene": "books/key-value-store/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        8.719,
+        16.591,
+        24.683,
+        34.679,
+        45.581,
+        54.52,
+        60.732,
+        69.997,
+        81.119,
+        89.292,
+        101.112,
+        112.779
+      ],
+      "duration": 122.555
+    },
+    {
+      "number": 5,
+      "title": "Death Mid-Write: hinted handoff",
+      "blurb": "A node dies holding your write; the ring routes around the corpse.",
+      "scene": "books/key-value-store/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        6.49,
+        14.327,
+        20.596,
+        30.035,
+        41.459,
+        50.178,
+        60.116,
+        68.789,
+        77.195,
+        86.958,
+        98.917
+      ],
+      "duration": 110.573
+    }
+  ]
+}

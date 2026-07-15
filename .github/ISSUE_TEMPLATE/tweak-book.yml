@@ -24,6 +24,7 @@ body:
         - "A Week With Replay QA · What it means for you, from Monday to ship day — replay-qa-week"
         - "The Social Feed · System Design, Solved №2 — social-feed"
         - "The Web Crawler · System Design, Solved №3 — sds-web-crawler"
+        - "The Key-Value Store · System Design, Solved №4 — key-value-store"
         # BOOKS:END
     validations:
       required: true
