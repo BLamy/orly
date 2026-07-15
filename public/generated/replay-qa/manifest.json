@@ -1,0 +1,113 @@
+{
+  "format": 3,
+  "slug": "replay-qa",
+  "title": "Replay QA",
+  "subtitle": "Agents that prove their work",
+  "animal": "animal.webp",
+  "accent": "#a78bfa",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Claim Problem",
+      "blurb": "A QA agent's word is worth nothing — dispatch a run and start the tape.",
+      "scene": "books/replay-qa/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        9.903,
+        19.702,
+        28.758,
+        39.973,
+        48.333,
+        55.937,
+        64.355,
+        73.458,
+        83.384
+      ],
+      "duration": 91.859
+    },
+    {
+      "number": 2,
+      "title": "Tape Everything",
+      "blurb": "The recording is the artifact: rrweb in the browser, narration on the tape, a usability gate at the database.",
+      "scene": "books/replay-qa/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.091,
+        20.352,
+        33.692,
+        44.036,
+        51.85,
+        63.506,
+        69.648,
+        79.61,
+        92.183
+      ],
+      "duration": 99.381
+    },
+    {
+      "number": 3,
+      "title": "Strip and Re-execute",
+      "blurb": "Evidence is params only — the server strips agent-written results and re-executes every citation via the Replay MCP.",
+      "scene": "books/replay-qa/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.87,
+        18.089,
+        27.284,
+        38.035,
+        44.78,
+        54.545,
+        63.252,
+        75.605,
+        84.231
+      ],
+      "duration": 94.18
+    },
+    {
+      "number": 4,
+      "title": "The Gauntlet",
+      "blurb": "Requirements judge, evidence judge, the overlap check, and Opus dedup — then it's filed.",
+      "scene": "books/replay-qa/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        11.935,
+        19.099,
+        29.536,
+        37.152,
+        44.989,
+        55.066,
+        58.538,
+        69.823,
+        80.736,
+        93.89,
+        102.342
+      ],
+      "duration": 116.982
+    },
+    {
+      "number": 5,
+      "title": "A Finding You Can Interrogate",
+      "blurb": "The report ships with its proof attached: the webhook, the fix, and the loop that re-runs.",
+      "scene": "books/replay-qa/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        10.89,
+        20.236,
+        31.045,
+        42.737,
+        55.322,
+        62.543,
+        69.776,
+        78.054,
+        85.972,
+        98.197
+      ],
+      "duration": 104.118
+    }
+  ]
+}

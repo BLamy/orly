@@ -1,3 +1,42 @@
 {
-  "books": []
+  "books": [
+    {
+      "slug": "replay-qa",
+      "title": "Replay QA",
+      "subtitle": "Agents that prove their work",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#a78bfa",
+      "animal": "generated/replay-qa/animal.webp",
+      "href": "?bundle=replay-qa",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Claim Problem",
+          "duration": 91.859
+        },
+        {
+          "number": 2,
+          "title": "Tape Everything",
+          "duration": 99.381
+        },
+        {
+          "number": 3,
+          "title": "Strip and Re-execute",
+          "duration": 94.18
+        },
+        {
+          "number": 4,
+          "title": "The Gauntlet",
+          "duration": 116.982
+        },
+        {
+          "number": 5,
+          "title": "A Finding You Can Interrogate",
+          "duration": 104.118
+        }
+      ],
+      "createdAt": "2026-07-15T19:26:51.339Z"
+    }
+  ]
 }
