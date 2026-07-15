@@ -37,7 +37,7 @@ jobs:
     # Re-applying the label (unlabel → relabel) re-runs the pipeline.
     if: >
       github.event_name == 'workflow_dispatch' ||
-      (github.event.action == 'labeled' ||
+      ((github.event.action == 'labeled' ||
        contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association)) &&
       (contains(github.event.issue.labels.*.name, 'new-book') ||
        contains(github.event.issue.labels.*.name, 'new-series') ||
