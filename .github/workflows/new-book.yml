@@ -1,8 +1,8 @@
 name: Book pipeline (issue → book)
 
 # Build a book from a "📕/📚/✏️" issue. ANYONE may open an issue, but it only runs for
-# the repo OWNER — either when the owner opens it, or when the owner applies the `build`
-# label to someone else's issue (non-collaborators can't apply labels at all). It builds
+# the repo owner or an added collaborator — either when one of them opens it, or when
+# one applies the `build` label (non-collaborators can't apply labels at all). It builds
 # the book(s) and opens a PR; the PR is left OPEN: preview.yml deploys a Cloudflare
 # preview + posts a link; reply "@claude <change>" to revise (comment-edit.yml); merging
 # deploys to production. If generation dies partway, a PR is still opened with the
@@ -21,13 +21,15 @@ permissions:
 
 jobs:
   generate:
-    # Gate: the actor must be the repo OWNER (whoever opened the issue or applied the
-    # label), the issue must carry a category label, AND this is either the owner opening
-    # it (`opened`) or the owner (re)applying a *triggering* label — a category label or
-    # `build` (`labeled`). So anyone can file an issue, but only the owner's open or
-    # label-apply runs it; re-applying the label (unlabel → relabel) re-runs the pipeline.
+    # Gate: the issue author must be the owner or an added collaborator (opened), or the
+    # label was (re)applied — only users with triage/write access can apply labels at
+    # all, so a `labeled` event is already collaborator-gated by GitHub. The issue must
+    # carry a category label, AND this is either a collaborator opening it (`opened`) or
+    # a *triggering* label being applied — a category label or `build` (`labeled`).
+    # Re-applying the label (unlabel → relabel) re-runs the pipeline.
     if: >
-      github.event.sender.login == github.repository_owner &&
+      (github.event.action == 'labeled' ||
+       contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association)) &&
       (contains(github.event.issue.labels.*.name, 'new-book') ||
        contains(github.event.issue.labels.*.name, 'new-series') ||
        contains(github.event.issue.labels.*.name, 'tweak-book')) &&

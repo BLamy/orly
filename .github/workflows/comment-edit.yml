@@ -16,10 +16,11 @@ permissions:
 
 jobs:
   edit:
-    # Only the owner's @claude comments, and only on a PR (not a plain issue).
+    # Only @claude comments from the owner or an added collaborator, and only on a PR
+    # (not a plain issue).
     if: >
       github.event.issue.pull_request &&
-      github.event.comment.user.login == github.repository_owner &&
+      contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.comment.author_association) &&
       contains(github.event.comment.body, '@claude')
     runs-on: ubuntu-latest
     steps:
