@@ -1,0 +1,89 @@
+{
+  "format": 3,
+  "slug": "replay-qa-week",
+  "title": "A Week With Replay QA",
+  "subtitle": "What it means for you, from Monday to ship day",
+  "animal": "animal.webp",
+  "accent": "#34d399",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Monday: Paste a Link",
+      "blurb": "Monday morning. Setting this up is one action: you paste your app's address, and that's it.",
+      "scene": "books/replay-qa-week/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        5.584,
+        10.577,
+        18.646,
+        22.628,
+        28.955,
+        31.788,
+        35.004,
+        39.578
+      ],
+      "duration": 44.814
+    },
+    {
+      "number": 2,
+      "title": "Tuesday: Bugs That Come With a Movie",
+      "blurb": "Tuesday, first coffee. Waiting for you: a short list of real problems, not a wall of alerts.",
+      "scene": "books/replay-qa-week/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        6.118,
+        10.391,
+        15.371,
+        19.365,
+        22.988,
+        28.595,
+        33.053,
+        38.672,
+        43.13
+      ],
+      "duration": 47.414
+    },
+    {
+      "number": 3,
+      "title": "You Fix It. It Checks.",
+      "blurb": "Tuesday, you watched the exact moment your checkout broke. Wednesday morning, you fix it. Took about twenty minutes.",
+      "scene": "books/replay-qa-week/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        6.606,
+        13.665,
+        20.724,
+        28.943,
+        36.397,
+        41.145,
+        48.924,
+        59.338,
+        67.012
+      ],
+      "duration": 70.96
+    },
+    {
+      "number": 4,
+      "title": "A Month Later",
+      "blurb": "A month in, your mornings all look the same. You do your work. It does its walking.",
+      "scene": "books/replay-qa-week/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        5.004,
+        12.887,
+        21.304,
+        27.051,
+        32.113,
+        40.971,
+        46.95,
+        56.284,
+        59.129
+      ],
+      "duration": 61.857
+    }
+  ]
+}

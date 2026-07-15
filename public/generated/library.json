@@ -1,3 +1,37 @@
 {
-  "books": []
+  "books": [
+    {
+      "slug": "replay-qa-week",
+      "title": "A Week With Replay QA",
+      "subtitle": "What it means for you, from Monday to ship day",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#34d399",
+      "animal": "generated/replay-qa-week/animal.webp",
+      "href": "?bundle=replay-qa-week",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Monday: Paste a Link",
+          "duration": 44.814
+        },
+        {
+          "number": 2,
+          "title": "Tuesday: Bugs That Come With a Movie",
+          "duration": 47.414
+        },
+        {
+          "number": 3,
+          "title": "You Fix It. It Checks.",
+          "duration": 70.96
+        },
+        {
+          "number": 4,
+          "title": "A Month Later",
+          "duration": 61.857
+        }
+      ],
+      "createdAt": "2026-07-15T21:06:56.875Z"
+    }
+  ]
 }
