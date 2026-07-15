@@ -1,0 +1,118 @@
+{
+  "format": 3,
+  "slug": "key-value-store",
+  "title": "The Key-Value Store",
+  "subtitle": "System Design, Solved №4",
+  "animal": "animal.webp",
+  "accent": "#198a8a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Hash Table: one box, constant time",
+      "blurb": "One machine, one funnel: why a key-value store starts as a hash table — and the day it stops fitting.",
+      "scene": "books/key-value-store/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        10.228,
+        17.484,
+        25.147,
+        34.017,
+        42.004,
+        49.911,
+        60.359,
+        68.556,
+        76.148
+      ],
+      "duration": 83.915
+    },
+    {
+      "number": 2,
+      "title": "Consistent Hashing: slicing the keyspace",
+      "blurb": "Bend the keyspace into a ring and adding a machine moves one slice of keys, not almost all of them.",
+      "scene": "books/key-value-store/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        7.709,
+        15.198,
+        23.337,
+        31.753,
+        39.845,
+        48.622,
+        54.903,
+        62.264,
+        69.683,
+        76.869,
+        84.892
+      ],
+      "duration": 94.552
+    },
+    {
+      "number": 3,
+      "title": "Replication: three copies of everything",
+      "blurb": "A write keeps walking: three nodes hold every key, so a dead machine loses nothing.",
+      "scene": "books/key-value-store/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        9.497,
+        18.797,
+        28.293,
+        34.295,
+        42.179,
+        50.653,
+        58.92,
+        69.322,
+        77.286,
+        85.402
+      ],
+      "duration": 91.439
+    },
+    {
+      "number": 4,
+      "title": "Quorums: agreement without waiting",
+      "blurb": "Write to two, read from two: overlapping quorums survive a mid-write crash without a pause.",
+      "scene": "books/key-value-store/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        10.484,
+        21.444,
+        33.356,
+        42.214,
+        49.9,
+        59.548,
+        67.977,
+        74.931,
+        82.489,
+        93.286,
+        102.017
+      ],
+      "duration": 109.97
+    },
+    {
+      "number": 5,
+      "title": "The Trade-off: pick two, then tune it",
+      "blurb": "When the network splits you choose: refuse writes or serve stale reads — then tune the dial.",
+      "scene": "books/key-value-store/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        9.741,
+        21.118,
+        34.098,
+        45.372,
+        56.146,
+        66.978,
+        76.8,
+        89.13,
+        104.259,
+        116.299,
+        124.333,
+        138.37
+      ],
+      "duration": 146.566
+    }
+  ]
+}

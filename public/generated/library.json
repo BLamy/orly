@@ -1,6 +1,46 @@
 {
   "books": [
     {
+      "slug": "key-value-store",
+      "title": "The Key-Value Store",
+      "subtitle": "System Design, Solved №4",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/key-value-store/animal.webp",
+      "href": "?bundle=key-value-store",
+      "series": "System Design, Solved",
+      "seriesOrder": 4,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Hash Table: one box, constant time",
+          "duration": 83.915
+        },
+        {
+          "number": 2,
+          "title": "Consistent Hashing: slicing the keyspace",
+          "duration": 94.552
+        },
+        {
+          "number": 3,
+          "title": "Replication: three copies of everything",
+          "duration": 91.439
+        },
+        {
+          "number": 4,
+          "title": "Quorums: agreement without waiting",
+          "duration": 109.97
+        },
+        {
+          "number": 5,
+          "title": "The Trade-off: pick two, then tune it",
+          "duration": 146.566
+        }
+      ],
+      "createdAt": "2026-07-15T23:07:49.729Z"
+    },
+    {
       "slug": "explained-ml",
       "title": "Explained: Machine Learning",
       "subtitle": "Gradient descent, backprop, attention, diffusion",
