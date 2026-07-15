@@ -19,26 +19,32 @@ Keys come from the gitignored `.env` locally, or from CI env (`ELEVENLABS_API_KE
 
 ## Steps
 
-A series is just N v3 books that share a `series` name. For EACH book, follow
-`.claude/commands/new-book.md` end to end — visualizations first: plan the
-chapter visual ideas, author the scenes at `src/viz/books/<slug>/chapter-<n>.tsx`
-(captions ARE the narration), then
-`node generator/video.mjs --slug <slug> --title "…" …` and
-`node generator/verify-book.mjs --slug <slug>`.
+A series is N v3 books that share a `series` name — and **one session must
+never author a whole series** (a v3 book is 3–6 fully authored scenes; a
+series is too big a unit of work; runs that try will die partway).
 
-1. **Acquire the source** (`git clone --depth 1`, or the docs repo) and digest it
-   with `generator/repo.mjs` per book topic.
+### In CI (the issue → book pipeline): PLAN, then stop — do not author
 
-2. **Plan the series arc.** Decide the books: use the provided list, or plan
-   `count` books as a learning arc. Per book: slug, SHORT title + subtitle, a
-   distinct cover animal, an accent color, and 3–5 chapters — each with ONE
-   visual idea grounded in real identifiers. Differentiate levels; don't repeat
-   concepts.
+1. **Digest the source** briefly (repo.mjs) — enough to plan honestly.
+2. **Plan the series**: per book — order, SHORT title, subtitle, a distinct
+   cover animal, an accent hex, and a 2–4 sentence "what to explain" brief
+   naming the real concepts/identifiers the book will ground in.
+3. **Write the plan to `/tmp/series-plan.json`** exactly in this shape, print
+   it, and STOP (do not author scenes, do not run the generator):
+   ```json
+   { "series": "<Series Name>", "source": "<repo url>",
+     "model": "<claude model id from the issue>",
+     "books": [ { "order": 1, "title": "…", "subtitle": "…",
+                  "animal": "…", "accent": "#38bdf8",
+                  "subsystem": "<what to explain — 2–4 sentences>" } ] }
+   ```
+   The workflow's fan-out step files one 📕 new-book issue per book; a
+   collaborator applies the `build` label to start each run — every book gets
+   its own complete CI session, PR, and preview, grouped on the shelf by the
+   shared series name.
 
-3. **Author + build each book** per new-book.md (scenes → storybook scrub →
-   video.mjs → verify-book). Pass the same `series` name so the shelf groups
-   them (library.json `series` + `seriesOrder` fields — video.mjs flags or edit
-   the entry after upsert).
+### Working locally
 
-4. **Publish**: `git add public/generated src/viz/books && git commit -m
-   "series: <NAME>" && git push`.
+Follow `.claude/commands/new-book.md` end to end once per book, passing
+`--series "<name>" --series-order <n>` to `generator/video.mjs`. Build and
+verify each book before starting the next.
