@@ -1,6 +1,46 @@
 {
   "books": [
     {
+      "slug": "url-shortener",
+      "title": "The URL Shortener",
+      "subtitle": "System Design, Solved №1",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#3a8b3a",
+      "href": "?bundle=url-shortener",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Read-Heavy Problem",
+          "duration": 85.635
+        },
+        {
+          "number": 2,
+          "title": "Minting the Link",
+          "duration": 111.502
+        },
+        {
+          "number": 3,
+          "title": "Two Homes for One Paste",
+          "duration": 93.298
+        },
+        {
+          "number": 4,
+          "title": "The Read Path",
+          "duration": 100.032
+        },
+        {
+          "number": 5,
+          "title": "What Breaks First",
+          "duration": 109.506
+        }
+      ],
+      "createdAt": "2026-07-15T22:34:03.033Z",
+      "animal": "generated/url-shortener/animal.webp",
+      "series": "System Design, Solved",
+      "seriesOrder": 1
+    },
+    {
       "slug": "explained-ml",
       "title": "Explained: Machine Learning",
       "subtitle": "Gradient descent, backprop, attention, diffusion",
