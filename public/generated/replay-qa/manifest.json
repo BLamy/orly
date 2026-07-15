@@ -9,23 +9,23 @@
     {
       "number": 1,
       "title": "The Expensive Claim",
-      "blurb": "Here are two sentences about the same checkout page: it is broken, and it works. They look symmetrical. They are not.",
+      "blurb": "Someone tells you the checkout is broken. Someone else tells you it works. Those are opposite claims — and you should not pay the same price to believe them.",
       "scene": "books/replay-qa/chapter-1",
       "audio": "audio/chapter-1.mp3",
       "cues": [
         0,
-        8.406,
-        17.02,
-        24.427,
-        34.702,
-        41.192,
-        52.117,
-        59.826,
-        67.024,
-        75.186,
-        82.442
+        8.417,
+        16.323,
+        22.79,
+        31.579,
+        38.313,
+        47.809,
+        53.893,
+        60.139,
+        67.627,
+        74.036
       ],
-      "duration": 87.864
+      "duration": 79.458
     },
     {
       "number": 2,
@@ -35,17 +35,17 @@
       "audio": "audio/chapter-2.mp3",
       "cues": [
         0,
-        10.286,
-        17.032,
-        22.93,
-        32.427,
-        41.286,
-        48.936,
-        57.319,
-        64.528,
-        72.713
+        10.948,
+        17.949,
+        23.765,
+        33.204,
+        42.527,
+        50.259,
+        58.549,
+        65.921,
+        74.257
       ],
-      "duration": 80.713
+      "duration": 82.383
     },
     {
       "number": 3,
@@ -55,17 +55,17 @@
       "audio": "audio/chapter-3.mp3",
       "cues": [
         0,
-        6.966,
-        13.119,
-        19.934,
-        29.199,
-        36.641,
-        41.761,
-        49.783,
-        57.168,
-        68.151
+        8.197,
+        15.093,
+        21.607,
+        31.51,
+        39.475,
+        45.199,
+        55.148,
+        62.462,
+        72.76
       ],
-      "duration": 78.066
+      "duration": 82.803
     },
     {
       "number": 4,
@@ -75,17 +75,17 @@
       "audio": "audio/chapter-4.mp3",
       "cues": [
         0,
-        11.401,
-        20.48,
-        29.454,
-        38.347,
-        44.431,
-        56.215,
-        68.859,
-        81.804,
-        92.717
+        11.587,
+        21.49,
+        29.628,
+        38.592,
+        44.64,
+        55.879,
+        70.067,
+        82.629,
+        93.299
       ],
-      "duration": 104.304
+      "duration": 104.166
     },
     {
       "number": 5,
@@ -95,18 +95,18 @@
       "audio": "audio/chapter-5.mp3",
       "cues": [
         0,
-        11.099,
-        21.316,
-        34.076,
-        43.817,
-        54.358,
-        66.467,
-        77.242,
-        82.756,
-        95.434,
-        106.115
+        11.18,
+        20.12,
+        32.264,
+        41.343,
+        49.854,
+        59.258,
+        69.892,
+        74.78,
+        87.585,
+        96.699
       ],
-      "duration": 116.89
+      "duration": 107.88
     }
   ]
 }

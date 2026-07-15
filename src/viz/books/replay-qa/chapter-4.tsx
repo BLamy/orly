@@ -23,7 +23,7 @@
 //   bugs and answer ONLY "unique" or an existing bug's id; duplicates are
 //   recorded as rediscoveries (filed_bugs.is_duplicate) and can reopen a
 //   fixed bug rather than filing twice.
-import { CAMERA_HOME, Camera, Timeline, colors, ease } from '../../core';
+import { CAMERA_HOME, Camera, Timeline, colors, ease , cameraInterp } from '../../core';
 import type { CameraState, SceneState } from '../../core';
 
 const clamp01 = (u: number) => (u < 0 ? 0 : u > 1 ? 1 : u);
@@ -81,7 +81,7 @@ const CAM_CLOSE: CameraState = { x: 590, y: 335, k: 1.16 };
 export function buildScene() {
   const tl = new Timeline();
 
-  const cam = tl.channel<CameraState>('cam', CAMERA_HOME);
+  const cam = tl.channel<CameraState>('cam', CAMERA_HOME, cameraInterp);
   const tapeU = tl.channel('tapeReveal', 0);
   const momentsU = tl.channel('moments', 0); // 0..MOMENTS.length, staggered
   const cardU = tl.channel('findingCard', 0);

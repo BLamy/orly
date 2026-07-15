@@ -22,7 +22,7 @@
 //   open/confirmed/fixed/dismissed; coverage grows "increasingly thorough
 //   test coverage over time". Rediscovery of a fixed bug reopens it
 //   (lib/bugs.ts duplicate handling).
-import { CAMERA_HOME, Camera, Timeline, colors, ease, mulberry32 } from '../../core';
+import { CAMERA_HOME, Camera, Timeline, colors, ease, mulberry32 , cameraInterp } from '../../core';
 import type { CameraState, SceneState } from '../../core';
 import { MatrixGrid } from '../../primitives';
 
@@ -77,7 +77,7 @@ const CAM_WIDE: CameraState = { x: 640, y: 340, k: 0.98 };
 export function buildScene() {
   const tl = new Timeline();
 
-  const cam = tl.channel<CameraState>('cam', CAMERA_HOME);
+  const cam = tl.channel<CameraState>('cam', CAMERA_HOME, cameraInterp);
   const bugU = tl.channel('bugCard', 0);
   const postU = tl.channel('webhookPost', 0); // the POST packet flying in
   const fixedU = tl.channel('statusFlip', 0); // open → fixed chip morph

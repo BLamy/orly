@@ -12,7 +12,7 @@
 // run produces a Replay recording; bugs link replay_recording_id) and
 // scripts/seed-db.ts (proj-acme-store · 'Acme Online Store' ·
 // https://acme-store.example.com, recording b5f2a3c1-7d4e-…).
-import { CAMERA_HOME, Camera, MathLabel, Timeline, colors, ease, gaussian, mulberry32 } from '../../core';
+import { CAMERA_HOME, Camera, MathLabel, Timeline, colors, ease, gaussian, mulberry32 , cameraInterp } from '../../core';
 import type { CameraState, SceneState } from '../../core';
 import { ParticleCloud } from '../../primitives';
 import type { ParticlePoint } from '../../primitives';
@@ -83,7 +83,7 @@ const CHECK_RANK = new Map<number, number>(CHECKS.map((i, k) => [i, k]));
 export function buildScene() {
   const tl = new Timeline();
 
-  const cam = tl.channel<CameraState>('cam', CAMERA_HOME);
+  const cam = tl.channel<CameraState>('cam', CAMERA_HOME, cameraInterp);
   const brokenE = tl.channel('brokenCard', 0);
   const worksE = tl.channel('worksCard', 0);
   const cloudU = tl.channel('cloudU', 0); // moments rain into the scatter
@@ -105,7 +105,7 @@ export function buildScene() {
   t = tl.caption({
     at: t,
     dur: 6.0,
-    text: 'Here are two sentences about the same checkout page: it is broken, and it works. They look symmetrical. They are not.',
+    text: 'Someone tells you the checkout is broken. Someone else tells you it works. Those are opposite claims — and you should not pay the same price to believe them.',
   });
   tl.tween(brokenE, 1, { at: t - 5.4, dur: 0.7, ease: ease.enter });
   tl.tween(worksE, 1, { at: t - 4.9, dur: 0.7, ease: ease.enter });
@@ -162,7 +162,7 @@ export function buildScene() {
   t = tl.caption({
     at: t,
     dur: 5.6,
-    text: 'This asymmetry is the problem LoopQA is built around. A project is just a URL — a web app you point the system at.',
+    text: 'That gap is what Replay QA exists to close. You hand it your app’s address — that is the entire setup.',
   });
   tl.tween(cam, CAM_WIDE, { at: t - 5.2, dur: 1.4, ease: ease.move });
   tl.tween(existsTexU, 0, { at: t - 5.2, dur: 0.6, ease: ease.move });

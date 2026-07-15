@@ -13,7 +13,7 @@
 // run"; bugs link replay_recording_id + test_run_id) and scripts/seed-db.ts
 // (bug-002 · critical · "Checkout fails with 500 error on payment
 // submission", found on run-001, recording b5f2a3c1-7d4e-…, 240s run).
-import { CAMERA_HOME, Camera, Timeline, colors, ease } from '../../core';
+import { CAMERA_HOME, Camera, Timeline, colors, ease , cameraInterp } from '../../core';
 import type { CameraState, SceneState } from '../../core';
 import { MatrixGrid } from '../../primitives';
 import { RecordingStrip, POINT_COLOR } from '../../agent';
@@ -85,7 +85,7 @@ const HEAT: number[][] = [
 export function buildScene() {
   const tl = new Timeline();
 
-  const cam = tl.channel<CameraState>('cam', CAMERA_HOME);
+  const cam = tl.channel<CameraState>('cam', CAMERA_HOME, cameraInterp);
   const tapeR = tl.channel('tapeReveal', 0);
   const memoU = tl.channel('memoU', 0); // the agent's memory — then it fades
   const playU = tl.channel('playhead', 0); // THE read head; the grid fills from it
@@ -130,7 +130,7 @@ export function buildScene() {
   t = tl.caption({
     at: t,
     dur: 5.8,
-    text: 'Slice the session into moments, and sort what each one contains: DOM changes, network traffic, console output, exceptions.',
+    text: 'Slice the session into moments, and sort what each one contains: changes to the page, network traffic, console output, errors.',
   });
   tl.tween(playU, 0.35, { at: t - 5.2, dur: 5.2, ease: ease.linear });
   t = tl.hold(t, 0.4);
@@ -159,7 +159,7 @@ export function buildScene() {
   t = tl.caption({
     at: t,
     dur: 6.0,
-    text: 'The agent asks the recording directly: what was this request, and what came back? A POST to the payment endpoint. Status five hundred.',
+    text: 'The agent asks the recording directly: what was this request, and what came back? A request to the payment endpoint. Status five hundred.',
   });
   tl.tween(detailU, 1, { at: t - 4.4, dur: 0.7, ease: ease.enter });
   t = tl.hold(t, 0.5);

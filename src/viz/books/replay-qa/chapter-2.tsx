@@ -14,7 +14,7 @@
 // completed in 240s with recording b5f2a3c1-7d4e-…, journey-acme-cart,
 // bug-002 repro steps "Add item to cart / Go to checkout / Fill payment
 // details / Click Submit Payment", rrweb events seeded per task).
-import { CAMERA_HOME, Camera, Timeline, colors, ease, mulberry32 } from '../../core';
+import { CAMERA_HOME, Camera, Timeline, colors, ease, mulberry32 , cameraInterp } from '../../core';
 import type { CameraState, SceneState } from '../../core';
 import { ParticleCloud } from '../../primitives';
 import type { ParticlePoint } from '../../primitives';
@@ -109,7 +109,7 @@ const LEGEND_ROWS: { kind: RecordingPointKind; label: string }[] = [
 export function buildScene() {
   const tl = new Timeline();
 
-  const cam = tl.channel<CameraState>('cam', CAMERA_HOME);
+  const cam = tl.channel<CameraState>('cam', CAMERA_HOME, cameraInterp);
   const journeyE = tl.channel('journeyCard', 0);
   const browserE = tl.channel('browserE', 0);
   const runP = tl.channel('runP', 0); // THE clock of the run: browser + particles + tape
@@ -153,7 +153,7 @@ export function buildScene() {
   t = tl.caption({
     at: t,
     dur: 6.0,
-    text: 'Every change the page makes to itself is captured as an rrweb event — enough to rebuild any frame of the screen later, pixel for pixel.',
+    text: 'Every change the page makes to itself is captured, change by change — enough to rebuild any frame of the screen later, pixel for pixel.',
   });
   tl.tween(legendU, 1, { at: t - 5.6, dur: 1.0, ease: ease.enter });
   tl.tween(runP, 0.3, { at: t - 5.6, dur: 5.2, ease: ease.linear });
@@ -203,7 +203,7 @@ export function buildScene() {
   t = tl.caption({
     at: t,
     dur: 5.8,
-    text: 'The run finishes and files itself: test run one, completed, four minutes — with a recording ID that names the whole session.',
+    text: 'The run finishes and files itself: test run one, completed, four minutes — with a recording that names the whole session.',
   });
   tl.tween(cam, CAM_WIDE, { at: t - 5.4, dur: 1.8, ease: ease.move });
   tl.tween(runCardU, 1, { at: t - 3.8, dur: 0.7, ease: ease.enter });
