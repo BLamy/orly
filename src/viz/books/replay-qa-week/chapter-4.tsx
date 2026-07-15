@@ -183,7 +183,7 @@ function PrCard({ u, comment, check, catchP, fade }: { u: number; comment: numbe
         </g>
       )}
       {clamp01(check) > 0 && (
-        <g opacity={clamp01(check)} transform={`translate(16, ${100})`}>
+        <g opacity={clamp01(check) * (1 - clamp01(catchP))} transform={`translate(16, ${100})`}>
           <circle cx={7} cy={0} r={7} fill={colors.POSITIVE} />
           <text x={20} y={4} fontSize={11.5} fill={colors.POSITIVE} fontWeight={700}>
             Replay QA — passed

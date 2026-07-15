@@ -339,16 +339,16 @@ function BugCard({ u, ship, done, fade }: { u: number; ship: number; done: numbe
       {/* the claim chip: your word first, then the proven green */}
       {clamp01(ship) > 0 && d < 0.999 && (
         <g opacity={clamp01(ship) * (1 - d)} transform={`scale(${0.92 + 0.08 * clamp01(ship)})`}>
-          <rect x={18} y={62} width={128} height={24} rx={12} fill={colors.WARM} opacity={0.18} />
-          <text x={82} y={79} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontWeight={700} fontFamily={mono}>
+          <rect x={18} y={60} width={164} height={26} rx={13} fill={colors.WARM} opacity={0.18} />
+          <text x={100} y={78} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontWeight={700} fontFamily={mono}>
             fix shipped, unproven
           </text>
         </g>
       )}
       {d > 0 && (
         <g opacity={d} transform={`scale(${0.92 + 0.08 * d})`}>
-          <rect x={18} y={62} width={148} height={24} rx={12} fill={colors.POSITIVE} opacity={0.2} />
-          <text x={92} y={79} textAnchor="middle" fill={colors.POSITIVE} fontSize={11.5} fontWeight={700} fontFamily={mono}>
+          <rect x={18} y={60} width={184} height={26} rx={13} fill={colors.POSITIVE} opacity={0.2} />
+          <text x={110} y={78} textAnchor="middle" fill={colors.POSITIVE} fontSize={11.5} fontWeight={700} fontFamily={mono}>
             fixed, new movie agrees
           </text>
         </g>

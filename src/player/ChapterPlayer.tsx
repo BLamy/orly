@@ -115,17 +115,53 @@ export function ChapterPlayer({
 
   const built = useMemo(() => (entry ? entry.buildScene() : null), [entry]);
 
-  // Retime the scene's captions to the recording: manifest cue i → the i-th
-  // narration line's caption (same mechanism as the 3b1bd3 Player's
-  // audio.cues, which calls timeline.updateCaption(id, {at})).
+  // Retime the WHOLE timeline to the recording, not just the captions.
+  // Authored scenes and narration never have the same length, and the MP3 is
+  // the clock — if only captions moved, every tween after the first drift
+  // point would fire at the wrong moment (or never, when the narration is
+  // shorter than the authored timeline). Build a piecewise-linear time map
+  // from authored anchor times (0, each caption's authored `at`, duration)
+  // to audio times (0, each cue, the manifest duration), then run every
+  // keyframe AND caption through it.
   useEffect(() => {
     if (!built || !chapter.cues?.length) return;
-    const lines = built.tl.exportNarration();
-    chapter.cues.forEach((at, i) => {
-      const line = lines[i];
-      if (line && typeof at === 'number') built.tl.updateCaption(line.id, { at });
+    const { channels, captions } = built.tl.describe();
+    const authored = captions.map((c) => c.at);
+    const src: number[] = [0];
+    const dst: number[] = [0];
+    chapter.cues.forEach((cue, i) => {
+      const a = authored[i];
+      if (typeof cue !== 'number' || a === undefined) return;
+      if (a > src[src.length - 1] && cue > dst[dst.length - 1]) {
+        src.push(a);
+        dst.push(cue);
+      }
     });
-  }, [built, chapter.cues]);
+    const srcEnd = Math.max(built.tl.duration, src[src.length - 1] + 0.001);
+    const dstEnd = Math.max(chapter.duration ?? dst[dst.length - 1] + 0.001, dst[dst.length - 1] + 0.001);
+    src.push(srcEnd);
+    dst.push(dstEnd);
+    const map = (t: number) => {
+      if (t <= 0) return 0;
+      if (t >= srcEnd) return dstEnd;
+      let i = 1;
+      while (i < src.length - 1 && t > src[i]) i++;
+      const f = (t - src[i - 1]) / (src[i] - src[i - 1]);
+      return dst[i - 1] + f * (dst[i] - dst[i - 1]);
+    };
+    for (const ch of channels) {
+      for (const k of ch.keys) {
+        const at = map(k.at);
+        const dur = Math.max(0, map(k.at + k.dur) - at);
+        built.tl.updateKeyframe(k.id, { at, dur });
+      }
+    }
+    for (const c of captions) {
+      const at = map(c.at);
+      const dur = Math.max(0.5, map(c.at + c.dur) - at);
+      built.tl.updateCaption(c.id, { at, dur });
+    }
+  }, [built, chapter.cues, chapter.duration]);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const pb = usePlayback(built?.tl ?? FALLBACK_TL, { audioRef, useAudioClock });

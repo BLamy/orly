@@ -160,7 +160,7 @@ export function buildScene(): Scene {
     text: 'Not here. The tape is the reproduction. Nobody argues about what the tester meant.',
   });
   tl.tween(ghostU, 0, { at: 48.2, dur: 2.2, ease: ease.move });
-  tl.tween(stampU, 1, { at: 49.2, dur: 0.6, ease: ease.pop });
+  tl.tween(stampU, 1, { at: 47.4, dur: 0.6, ease: ease.pop });
   tl.hold(53.1, 0.6);
 
   // — Beat 9 · you can just look —
@@ -200,7 +200,6 @@ export function Render({ s }: { s: SceneState }) {
   const tapeU = s.get(scene.tapeU);
   const scrub = s.get(scene.scrub);
   const breakU = s.get(scene.breakU);
-  const ghostU = s.get(scene.ghostU);
   const stampU = s.get(scene.stampU);
   const closeU = s.get(scene.closeU);
 
@@ -325,15 +324,6 @@ export function Render({ s }: { s: SceneState }) {
           </g>
         )}
 
-        {/* the old stamp — dissolving as its replacement lands */}
-        {ghostU > 0 && (
-          <g opacity={ghostU * 0.85} transform={`translate(640 300) rotate(-12) scale(${1 + (1 - ghostU) * 0.35})`}>
-            <rect x={-190} y={-38} width={380} height={76} rx={8} fill="none" stroke={colors.NEGATIVE} strokeWidth={3} strokeDasharray="10 7" />
-            <text x={0} y={10} textAnchor="middle" fill={colors.NEGATIVE} fontSize={30} fontWeight={700} letterSpacing={2}>
-              CANNOT REPRODUCE
-            </text>
-          </g>
-        )}
         {stampU > 0 && (
           <g opacity={stampU} transform={`translate(640 300) rotate(-6) scale(${0.85 + 0.15 * stampU})`}>
             <rect x={-215} y={-38} width={430} height={76} rx={8} fill="rgba(52, 211, 153, 0.08)" stroke={colors.POSITIVE} strokeWidth={3} />
