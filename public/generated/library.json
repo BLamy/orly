@@ -257,6 +257,46 @@
         }
       ],
       "createdAt": "2026-07-15T22:59:59.979Z"
+    },
+    {
+      "slug": "sds-web-crawler",
+      "title": "The Web Crawler",
+      "subtitle": "System Design, Solved \u21163",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#3a8b3a",
+      "animal": "generated/sds-web-crawler/animal.webp",
+      "href": "?bundle=sds-web-crawler",
+      "series": "System Design, Solved",
+      "seriesOrder": 3,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Frontier: a billion links, one loop",
+          "duration": 100.682
+        },
+        {
+          "number": 2,
+          "title": "Politeness: never hammer one host",
+          "duration": 83.498
+        },
+        {
+          "number": 3,
+          "title": "Duplicates: the signature says stop",
+          "duration": 79.83
+        },
+        {
+          "number": 4,
+          "title": "Freshness: re-crawled by popularity",
+          "duration": 87.539
+        },
+        {
+          "number": 5,
+          "title": "The Index: where search fits",
+          "duration": 96.828
+        }
+      ],
+      "createdAt": "2026-07-15T23:05:17.291Z"
     }
   ]
 }

@@ -23,6 +23,7 @@ body:
         - "Explained: The Math · Fourier, eigenvectors, and convolution — watched, not derived — explained-math"
         - "A Week With Replay QA · What it means for you, from Monday to ship day — replay-qa-week"
         - "The Social Feed · System Design, Solved №2 — social-feed"
+        - "The Web Crawler · System Design, Solved №3 — sds-web-crawler"
         # BOOKS:END
     validations:
       required: true
