@@ -64,11 +64,34 @@ Each tl.caption is one spoken line, fed verbatim to TTS:
   the final chapter with a recap beat that re-traces the journey.
 
 ================================================================
+NARRATION EPISTEMICS — where the skepticism points
+================================================================
+When the subject involves testing, verification, or agents' claims, aim the
+doubt at the RIGHT claim: it should take minimal effort to believe something
+is BROKEN (a bug report is cheap to accept — worst case you look and it isn't)
+and maximum evidence to believe something WORKS ("it works", "it's fixed",
+"the run is green" are the expensive claims that need a recording behind
+them). Never invert this. And ban empty aphorisms: every sentence must say
+something a listener can picture ("built on a refusal"-style lines are noise —
+cut them or replace them with the concrete mechanism).
+
+================================================================
 SCENE CRAFT — the quality bar (3b1bd3)
 ================================================================
+- CINEMATIC, NOT DIAGRAMMATIC. Every chapter drives a Camera channel (push
+  in on the beat's subject, pull back for comparisons and the payoff) and has
+  at least one visual centerpiece beyond boxes-and-arrows: a ParticleCloud
+  formation lerp, a FunctionPlot morph, a MatrixGrid heat/highlight, a
+  ContourField, a purpose-built local machine. Zone/ServiceNode/Connection
+  are supporting cast only — a fixed-camera box diagram with a traveling dot
+  is a FAILED chapter.
 - One coherent stage per chapter that builds across beats — not six unrelated
-  slides. Elements persist and are revisited; late beats harvest what early
-  beats planted.
+  slides. ONE persistent object transforms across beats (dots reshape, a
+  curve morphs, a tape grows and is later re-read); late beats harvest what
+  early beats planted.
+- Real math/logic at module scope makes motion EARNED: compute the actual
+  landscape/paths/distributions once and sample them purely. Put math on
+  screen as KaTeX (MathLabel/tex) timed to its beat — never as spoken prose.
 - Motion language: ease.enter 0.5–0.8s · ease.move 0.8–1.5s · ease.draw
   1.0–1.6s · ease.linear for packets/flows · ease.pop 0.4–0.6s ·
   tl.hold 0.6–1.2s between beats (breathing room for the voice).
