@@ -1,0 +1,741 @@
+{
+  "slug": "builder-critic-loop",
+  "title": "The Builder-Critic Loop",
+  "subtitle": "How electric-forest turns a builder's claim into evidence a hostile critic can't refute",
+  "throughline": "one task through the loop — a builder's claim, a deterministic recording, and a fresh critic session that must fail to refute it",
+  "chapters": [
+    {
+      "id": "a-claim-is-not-evidence-1",
+      "number": 1,
+      "title": "A Claim Is Not Evidence",
+      "blurb": "electric-forest's one rule: a satisfied builder makes a claim, a recording is evidence, and a critic must fail to refute it.",
+      "accent": "#f5b942",
+      "audio": "generated/builder-critic-loop/audio/chapter-1.mp3",
+      "audioEnd": 54.335,
+      "story": {
+        "title": "A Claim Is Not Evidence",
+        "subtitle": "How electric-forest turns a builder's claim into evidence a hostile critic can't refute",
+        "nodes": [
+          {
+            "id": "builder",
+            "label": "Builder session",
+            "kind": "client",
+            "x": 10,
+            "y": 23
+          },
+          {
+            "id": "recording",
+            "label": "The recording",
+            "kind": "record",
+            "x": 90,
+            "y": 41
+          },
+          {
+            "id": "critic",
+            "label": "Critic session",
+            "kind": "service",
+            "x": 10,
+            "y": 41
+          },
+          {
+            "id": "lifecycle",
+            "label": "Task lifecycle",
+            "kind": "worker",
+            "x": 10,
+            "y": 59
+          },
+          {
+            "id": "buildqueue",
+            "label": "build_queue.py",
+            "kind": "queue",
+            "x": 90,
+            "y": 59
+          },
+          {
+            "id": "project",
+            "label": "project.json",
+            "kind": "external",
+            "x": 10,
+            "y": 77
+          }
+        ],
+        "edges": [
+          {
+            "id": "e1",
+            "from": "builder",
+            "to": "recording"
+          },
+          {
+            "id": "e2",
+            "from": "critic",
+            "to": "recording"
+          },
+          {
+            "id": "e3",
+            "from": "lifecycle",
+            "to": "buildqueue"
+          }
+        ],
+        "steps": [
+          {
+            "id": "c1-cover",
+            "chapter": "Chapter 1",
+            "title": "A Claim Is Not Evidence",
+            "narration": "`AGENTS.md` opens with one rule: a builder being satisfied is a **claim**, a deterministic recording of the run is **evidence**, and a hostile **critic** session must interrogate it and fail to refute it.",
+            "say": "Electric forest runs on one rule: a builder's satisfaction is a claim, a recording is evidence, and a separate critic must fail to refute it.",
+            "cover": true,
+            "coverSubtitle": "A satisfied builder makes a claim; a recording is evidence",
+            "cue": 0
+          },
+          {
+            "id": "c1-claim",
+            "title": "A satisfied builder",
+            "narration": "A builder satisfied with its own work has produced a **claim** — nothing more.",
+            "say": "A builder that is satisfied with its own work has produced a claim, and nothing more.",
+            "reveal": [
+              "builder"
+            ],
+            "viz": {
+              "scene": "books/builder-critic-loop/chapter-1",
+              "beat": 0
+            },
+            "cue": 8.464
+          },
+          {
+            "id": "c1-evidence",
+            "title": "The recording is evidence",
+            "narration": "**Evidence** is a deterministic recording of the run — interrogable, in full.",
+            "say": "The evidence is a deterministic recording of the run, one you can interrogate in full.",
+            "reveal": [
+              "recording"
+            ],
+            "viz": {
+              "scene": "books/builder-critic-loop/chapter-1",
+              "beat": 1
+            },
+            "cue": 13.108
+          },
+          {
+            "id": "c1-critic",
+            "title": "A fresh critic session",
+            "narration": "A fresh **critic** session interrogates the recording. It never trusts, and it never fixes.",
+            "say": "A fresh critic session interrogates that recording. It never trusts the builder, and it never fixes the code.",
+            "reveal": [
+              "critic"
+            ],
+            "viz": {
+              "scene": "books/builder-critic-loop/chapter-1",
+              "beat": 2
+            },
+            "cue": 18.066
+          },
+          {
+            "id": "c1-attacks",
+            "title": "Two attack directions",
+            "narration": "**Falsify**: one contradicting point. **Sufficiency**: changed code the evidence never ran.",
+            "say": "It attacks two ways: falsification, finding one point that contradicts the claim; and sufficiency, finding changed code the evidence never exercised.",
+            "viz": {
+              "scene": "books/builder-critic-loop/chapter-1",
+              "beat": 3
+            },
+            "cue": 24.103
+          },
+          {
+            "id": "c1-lifecycle",
+            "title": "Only the critic verifies",
+            "narration": "`pending → in-progress → implemented → verified` — only the critic sets **verified**.",
+            "say": "The task moves from pending, to in progress, to implemented, to verified. Only the critic is allowed to set verified.",
+            "reveal": [
+              "lifecycle"
+            ],
+            "viz": {
+              "scene": "books/builder-critic-loop/chapter-1",
+              "beat": 4
+            },
+            "cue": 33.275
+          },
+          {
+            "id": "c1-queue",
+            "title": "The queue regenerates",
+            "narration": "Every status change: `build_queue.py` regenerates `QUEUE.md`, then commit.",
+            "say": "On every status change, build queue dot p y regenerates the queue file, and the change is committed.",
+            "reveal": [
+              "buildqueue"
+            ],
+            "viz": {
+              "scene": "books/builder-critic-loop/chapter-1",
+              "beat": 5
+            },
+            "cue": 40.369
+          },
+          {
+            "id": "c1-project",
+            "title": "The loud stop",
+            "narration": "`.eforest/project.json`: `building · complete · paused · invalid_loop` — the loud stop for a human.",
+            "say": "The project itself can be building, complete, paused, or an invalid loop, a loud stop that hands control back to a human.",
+            "reveal": [
+              "project"
+            ],
+            "viz": {
+              "scene": "books/builder-critic-loop/chapter-1",
+              "beat": 6
+            },
+            "cue": 46.719
+          }
+        ]
+      }
+    },
+    {
+      "id": "the-builder-s-gauntlet-2",
+      "number": 2,
+      "title": "The Builder's Gauntlet",
+      "blurb": "The Builder protocol on one task: read the attack list, clear the gates in ascending cost, then write the claim.",
+      "accent": "#38bdf8",
+      "audio": "generated/builder-critic-loop/audio/chapter-2.mp3",
+      "audioEnd": 49.738,
+      "story": {
+        "title": "The Builder's Gauntlet",
+        "subtitle": "How electric-forest turns a builder's claim into evidence a hostile critic can't refute",
+        "nodes": [
+          {
+            "id": "readme",
+            "label": "task readme",
+            "kind": "external",
+            "x": 10,
+            "y": 23
+          },
+          {
+            "id": "gates",
+            "label": "gates",
+            "kind": "worker",
+            "x": 50,
+            "y": 41
+          },
+          {
+            "id": "work",
+            "label": "work/ scratch",
+            "kind": "cache",
+            "x": 10,
+            "y": 41
+          },
+          {
+            "id": "browser",
+            "label": "Playwright + Replay",
+            "kind": "client",
+            "x": 10,
+            "y": 59
+          },
+          {
+            "id": "artifacts",
+            "label": "MP4 + recording",
+            "kind": "record",
+            "x": 50,
+            "y": 59
+          },
+          {
+            "id": "claim",
+            "label": "Verification log",
+            "kind": "record",
+            "x": 90,
+            "y": 50
+          },
+          {
+            "id": "status",
+            "label": "status: implemented",
+            "kind": "queue",
+            "x": 10,
+            "y": 77
+          }
+        ],
+        "edges": [
+          {
+            "id": "e1",
+            "from": "readme",
+            "to": "gates"
+          },
+          {
+            "id": "e2",
+            "from": "browser",
+            "to": "artifacts"
+          },
+          {
+            "id": "e3",
+            "from": "artifacts",
+            "to": "claim"
+          }
+        ],
+        "steps": [
+          {
+            "id": "c2-cover",
+            "chapter": "Chapter 2",
+            "title": "The Builder's Gauntlet",
+            "narration": "The **Builder** protocol on one task: take the top of `QUEUE.md`, clear the gates, prove any browser work, and write the claim.",
+            "say": "The builder's protocol, played out on one task, from the top of the queue to a claim the critic will attack.",
+            "cover": true,
+            "coverSubtitle": "One task, from the top of the queue to a claim",
+            "cue": 0
+          },
+          {
+            "id": "c2-readme",
+            "title": "Read the attack list",
+            "narration": "Read the whole task `readme.md` first — the **attack list** says how you will be judged.",
+            "say": "Read the whole task readme first. Its attack list tells you exactly how you will be judged.",
+            "reveal": [
+              "readme"
+            ],
+            "viz": {
+              "scene": "books/builder-critic-loop/chapter-2",
+              "beat": 0
+            },
+            "cue": 6.188
+          },
+          {
+            "id": "c2-gates",
+            "title": "Gates in ascending cost",
+            "narration": "Gates in ascending cost: `fmt+lint → typecheck → tests → build`. Fail sends you back to the top.",
+            "say": "Run the gates in ascending cost: format and lint, then typecheck, then tests, then build. Any failure sends you back to the top.",
+            "reveal": [
+              "gates"
+            ],
+            "viz": {
+              "scene": "books/builder-critic-loop/chapter-2",
+              "beat": 1
+            },
+            "cue": 11.471
+          },
+          {
+            "id": "c2-work",
+            "title": "Scratch is not evidence",
+            "narration": "Self-validate without limit in the gitignored `work/` folder — **none of it is evidence**.",
+            "say": "You may self validate without limit inside the work folder, but none of that counts as evidence.",
+            "reveal": [
+              "work"
+            ],
+            "viz": {
+              "scene": "books/builder-critic-loop/chapter-2",
+              "beat": 2
+            },
+            "cue": 19.912
+          },
+          {
+            "id": "c2-browser",
+            "title": "Record browser work",
+            "narration": "Browser-reaching change? **Playwright** drives it; **Replay Chromium** records the run.",
+            "say": "If the change reaches the browser, Playwright drives it while Replay Chromium records the run.",
+            "reveal": [
+              "browser"
+            ],
+            "viz": {
+              "scene": "books/builder-critic-loop/chapter-2",
+              "beat": 3
+            },
+            "cue": 24.834
+          },
+          {
+            "id": "c2-artifacts",
+            "title": "Two artifacts, one session",
+            "narration": "One session, two artifacts: a verified **MP4** and the uploaded **Replay recording**.",
+            "say": "One session yields two artifacts: a verified MP4 and the uploaded Replay recording.",
+            "reveal": [
+              "artifacts"
+            ],
+            "viz": {
+              "scene": "books/builder-critic-loop/chapter-2",
+              "beat": 4
+            },
+            "cue": 30.233
+          },
+          {
+            "id": "c2-claim",
+            "title": "Write the claim",
+            "narration": "The claim: commit, commands, evidence paths, Replay URL — **silence is forbidden**.",
+            "say": "Then you write the claim: the commit, the commands, the evidence paths, and the Replay URL. Silence is forbidden.",
+            "reveal": [
+              "claim"
+            ],
+            "viz": {
+              "scene": "books/builder-critic-loop/chapter-2",
+              "beat": 5
+            },
+            "cue": 36.142
+          },
+          {
+            "id": "c2-status",
+            "title": "Now it waits",
+            "narration": "`status: implemented`. Queue rebuilt, committed — now it **waits for the critic**.",
+            "say": "Status flips to implemented. The queue is rebuilt and committed, and now it waits for the critic.",
+            "reveal": [
+              "status"
+            ],
+            "viz": {
+              "scene": "books/builder-critic-loop/chapter-2",
+              "beat": 6
+            },
+            "cue": 44.281
+          }
+        ]
+      }
+    },
+    {
+      "id": "the-critic-attacks-3",
+      "number": 3,
+      "title": "The Critic Attacks",
+      "blurb": "The Critic charter as one attack run: predict first, interrogate the recording, then try everything to refute the claim.",
+      "accent": "#fb7185",
+      "audio": "generated/builder-critic-loop/audio/chapter-3.mp3",
+      "audioEnd": 49.783,
+      "story": {
+        "title": "The Critic Attacks",
+        "subtitle": "How electric-forest turns a builder's claim into evidence a hostile critic can't refute",
+        "nodes": [
+          {
+            "id": "inputs",
+            "label": "readme + diff + evidence",
+            "kind": "external",
+            "x": 10,
+            "y": 23
+          },
+          {
+            "id": "prediction",
+            "label": "falsifiable prediction",
+            "kind": "record",
+            "x": 90,
+            "y": 32
+          },
+          {
+            "id": "replaymcp",
+            "label": "Replay MCP",
+            "kind": "service",
+            "x": 10,
+            "y": 41
+          },
+          {
+            "id": "coverage",
+            "label": "hunk coverage",
+            "kind": "worker",
+            "x": 90,
+            "y": 50
+          },
+          {
+            "id": "sabotage",
+            "label": "cold-clone + sabotage",
+            "kind": "worker",
+            "x": 10,
+            "y": 59
+          },
+          {
+            "id": "verdict",
+            "label": "verdict: refuted",
+            "kind": "record",
+            "x": 90,
+            "y": 68
+          },
+          {
+            "id": "promote",
+            "label": "promoted suite",
+            "kind": "queue",
+            "x": 10,
+            "y": 77
+          }
+        ],
+        "edges": [
+          {
+            "id": "e1",
+            "from": "inputs",
+            "to": "prediction"
+          },
+          {
+            "id": "e2",
+            "from": "replaymcp",
+            "to": "coverage"
+          },
+          {
+            "id": "e3",
+            "from": "sabotage",
+            "to": "verdict"
+          }
+        ],
+        "steps": [
+          {
+            "id": "c3-cover",
+            "chapter": "Chapter 3",
+            "title": "The Critic Attacks",
+            "narration": "The **Critic** charter as one attack run: a fresh session orients, predicts, interrogates the recording, and issues a cited verdict.",
+            "say": "The critic charter as one attack run: predict, interrogate the recording, and try everything to refute the claim.",
+            "cover": true,
+            "coverSubtitle": "Predict, interrogate the recording, try everything to refute",
+            "cue": 0
+          },
+          {
+            "id": "c3-orient",
+            "title": "Orient first",
+            "narration": "A fresh session gets the `readme`, the `diff`, and the `evidence`. **Orient first.**",
+            "say": "A fresh session receives the readme, the diff, and the evidence. Orient before touching anything.",
+            "reveal": [
+              "inputs"
+            ],
+            "viz": {
+              "scene": "books/builder-critic-loop/chapter-3",
+              "beat": 0
+            },
+            "cue": 7.047
+          },
+          {
+            "id": "c3-predict",
+            "title": "Predict before looking",
+            "narration": "Write the **falsifiable prediction** BEFORE looking — else it is just a caption.",
+            "say": "Write the falsifiable prediction before you look. Otherwise it is just a caption on whatever you find.",
+            "reveal": [
+              "prediction"
+            ],
+            "viz": {
+              "scene": "books/builder-critic-loop/chapter-3",
+              "beat": 1
+            },
+            "cue": 14.094
+          },
+          {
+            "id": "c3-interrogate",
+            "title": "Interrogate the recording",
+            "narration": "Never re-drive the app: interrogate the recorded session through the **Replay MCP**.",
+            "say": "Never re-drive the app. Interrogate the builder's recorded session through the Replay MCP.",
+            "reveal": [
+              "replaymcp"
+            ],
+            "viz": {
+              "scene": "books/builder-critic-loop/chapter-3",
+              "beat": 2
+            },
+            "cue": 19.829
+          },
+          {
+            "id": "c3-coverage",
+            "title": "Hold every hunk",
+            "narration": "Coverage: every changed hunk is `executed`, `needs-evidence`, `dead`, or `waived`.",
+            "say": "Coverage: every changed hunk must be executed, marked needs evidence, shown dead, or explicitly waived.",
+            "reveal": [
+              "coverage"
+            ],
+            "viz": {
+              "scene": "books/builder-critic-loop/chapter-3",
+              "beat": 3
+            },
+            "cue": 25.901
+          },
+          {
+            "id": "c3-sabotage",
+            "title": "Sabotage the impl",
+            "narration": "Cold-clone the acceptance run; **sabotage the impl** — tests must go red.",
+            "say": "Cold clone the acceptance run, then sabotage the implementation. The tests must go red.",
+            "reveal": [
+              "sabotage"
+            ],
+            "viz": {
+              "scene": "books/builder-critic-loop/chapter-3",
+              "beat": 4
+            },
+            "cue": 33.645
+          },
+          {
+            "id": "c3-verdict",
+            "title": "A cited verdict",
+            "narration": "`VERDICT: refuted` — and every finding **cites a point** anyone can jump to.",
+            "say": "The verdict is refuted, and every finding cites a point anyone can jump straight to.",
+            "reveal": [
+              "verdict"
+            ],
+            "viz": {
+              "scene": "books/builder-critic-loop/chapter-3",
+              "beat": 5
+            },
+            "cue": 39.439
+          },
+          {
+            "id": "c3-promote",
+            "title": "Promote what survives",
+            "narration": "What survives gets **promoted**: a test, a golden log, fuzz seeds.",
+            "say": "Whatever survives gets promoted: a test, a golden log, a set of fuzz seeds.",
+            "reveal": [
+              "promote"
+            ],
+            "viz": {
+              "scene": "books/builder-critic-loop/chapter-3",
+              "beat": 6
+            },
+            "cue": 44.594
+          }
+        ]
+      }
+    },
+    {
+      "id": "the-loop-that-compounds-4",
+      "number": 4,
+      "title": "The Loop That Compounds",
+      "blurb": "Zoom out from one task to the machine: two layers of time travel, a runnable doctrine, and a loop that runs on the product.",
+      "accent": "#a78bfa",
+      "audio": "generated/builder-critic-loop/audio/chapter-4.mp3",
+      "audioEnd": 38.916,
+      "story": {
+        "title": "The Loop That Compounds",
+        "subtitle": "How electric-forest turns a builder's claim into evidence a hostile critic can't refute",
+        "nodes": [
+          {
+            "id": "timetravel",
+            "label": "two layers of time travel",
+            "kind": "record",
+            "x": 10,
+            "y": 32
+          },
+          {
+            "id": "bisect",
+            "label": "digest bisect",
+            "kind": "worker",
+            "x": 40,
+            "y": 50
+          },
+          {
+            "id": "workqueue",
+            "label": "work-queue.js",
+            "kind": "queue",
+            "x": 70,
+            "y": 50
+          },
+          {
+            "id": "rework",
+            "label": "rework budget",
+            "kind": "service",
+            "x": 100,
+            "y": 50
+          },
+          {
+            "id": "invalidloop",
+            "label": "invalid_loop",
+            "kind": "external",
+            "x": 10,
+            "y": 50
+          },
+          {
+            "id": "gauntlet",
+            "label": "stricter gauntlet",
+            "kind": "worker",
+            "x": 10,
+            "y": 68
+          }
+        ],
+        "edges": [
+          {
+            "id": "e1",
+            "from": "timetravel",
+            "to": "bisect"
+          },
+          {
+            "id": "e2",
+            "from": "bisect",
+            "to": "workqueue"
+          },
+          {
+            "id": "e3",
+            "from": "workqueue",
+            "to": "rework"
+          }
+        ],
+        "steps": [
+          {
+            "id": "c4-cover",
+            "chapter": "Chapter 4",
+            "title": "The Loop That Compounds",
+            "narration": "Zoom out from one task to the machine: evidence is time travel, the doctrine is runnable, and every verified task makes the next one harder to fake.",
+            "say": "Zoom out from one task to the machine, and the whole doctrine becomes a loop that compounds.",
+            "cover": true,
+            "coverSubtitle": "The doctrine, runnable — and pointed at the product itself",
+            "cue": 0
+          },
+          {
+            "id": "c4-timetravel",
+            "title": "Two layers of time travel",
+            "narration": "Two layers of time travel: the **Replay recording**, and the stream's own **event log**.",
+            "say": "Evidence has two layers of time travel: the Replay recording, and the stream's own event log.",
+            "reveal": [
+              "timetravel"
+            ],
+            "viz": {
+              "scene": "books/builder-critic-loop/chapter-4",
+              "beat": 0
+            },
+            "cue": 5.352
+          },
+          {
+            "id": "c4-bisect",
+            "title": "Bisect the divergence",
+            "narration": "**Digest bisect** binary-searches the first offset where two logs diverge.",
+            "say": "Digest bisect binary searches for the first offset where two logs diverge.",
+            "reveal": [
+              "bisect"
+            ],
+            "viz": {
+              "scene": "books/builder-critic-loop/chapter-4",
+              "beat": 1
+            },
+            "cue": 10.902
+          },
+          {
+            "id": "c4-runnable",
+            "title": "The doctrine, runnable",
+            "narration": "`work-queue.js` composes `implement-task` and `verify-task` — the doctrine, runnable.",
+            "say": "work queue dot j s composes implement task and verify task. The doctrine, made runnable.",
+            "reveal": [
+              "workqueue"
+            ],
+            "viz": {
+              "scene": "books/builder-critic-loop/chapter-4",
+              "beat": 2
+            },
+            "cue": 15.929
+          },
+          {
+            "id": "c4-rework",
+            "title": "Rework, then thrash",
+            "narration": "Refuted → **rework** with the report, twice at most. Identical findings = thrash.",
+            "say": "Refuted means rework with the report, at most twice. Identical findings mean thrash.",
+            "reveal": [
+              "rework"
+            ],
+            "viz": {
+              "scene": "books/builder-critic-loop/chapter-4",
+              "beat": 3
+            },
+            "cue": 22.767
+          },
+          {
+            "id": "c4-invalid",
+            "title": "invalid_loop",
+            "narration": "`invalid_loop`: reason recorded, committed — **a human takes over**.",
+            "say": "Invalid loop records the reason, commits it, and a human takes over.",
+            "reveal": [
+              "invalidloop"
+            ],
+            "viz": {
+              "scene": "books/builder-critic-loop/chapter-4",
+              "beat": 4
+            },
+            "cue": 28.758
+          },
+          {
+            "id": "c4-compound",
+            "title": "It compounds",
+            "narration": "Every verified task makes the gauntlet **stricter**. The loop runs on the product.",
+            "say": "Every verified task makes the gauntlet stricter. The loop runs on the very product it is building.",
+            "reveal": [
+              "gauntlet"
+            ],
+            "viz": {
+              "scene": "books/builder-critic-loop/chapter-4",
+              "beat": 5
+            },
+            "cue": 33.715
+          }
+        ]
+      }
+    }
+  ]
+}

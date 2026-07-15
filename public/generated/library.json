@@ -1,6 +1,39 @@
 {
   "books": [
     {
+      "slug": "builder-critic-loop",
+      "title": "The Builder-Critic Loop",
+      "subtitle": "How electric-forest turns a builder's claim into evidence a hostile critic can't refute",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#a01f3c",
+      "animal": "generated/builder-critic-loop/animal.png",
+      "href": "?bundle=builder-critic-loop",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Claim Is Not Evidence",
+          "duration": 54.335
+        },
+        {
+          "number": 2,
+          "title": "The Builder's Gauntlet",
+          "duration": 49.738
+        },
+        {
+          "number": 3,
+          "title": "The Critic Attacks",
+          "duration": 49.783
+        },
+        {
+          "number": 4,
+          "title": "The Loop That Compounds",
+          "duration": 38.916
+        }
+      ],
+      "createdAt": "2026-07-15T00:00:00.000Z"
+    },
+    {
       "slug": "replays-agents-that-prove-their-work",
       "title": "Replays: Agents That Prove Their Work",
       "subtitle": "A recording is evidence; a satisfied worker is a claim",
