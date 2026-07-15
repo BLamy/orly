@@ -1,0 +1,94 @@
+{
+  "format": 3,
+  "slug": "web-crawler",
+  "title": "The Web Crawler",
+  "subtitle": "System Design, Solved №3",
+  "animal": "animal.webp",
+  "accent": "#a01f3c",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Frontier: a billion links, one loop",
+      "blurb": "The ranked to-do list, the crawl loop, and two petabytes a month.",
+      "scene": "books/web-crawler/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        9.903,
+        17.357,
+        24.648,
+        34.064,
+        40.844,
+        48.356,
+        58.027,
+        65.492,
+        69.962,
+        77.171,
+        84.056
+      ],
+      "duration": 90.882
+    },
+    {
+      "number": 2,
+      "title": "Duplicates: the signature says you've been here",
+      "blurb": "Cycles, fingerprints, and the demotion that breaks the orbit.",
+      "scene": "books/web-crawler/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        6.304,
+        14.524,
+        20.898,
+        28.328,
+        33.448,
+        40.042,
+        44.721,
+        56.714,
+        65.526,
+        72.016
+      ],
+      "duration": 77.368
+    },
+    {
+      "number": 3,
+      "title": "Freshness: re-crawling at the web's own pace",
+      "blurb": "Per-page clocks mined from the crawl history itself.",
+      "scene": "books/web-crawler/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        6.536,
+        14.559,
+        22.814,
+        29.629,
+        35.585,
+        44.769,
+        51.793,
+        57.389,
+        64.204,
+        72.006
+      ],
+      "duration": 78.716
+    },
+    {
+      "number": 4,
+      "title": "Bottlenecks: where the crawl slows down",
+      "blurb": "Lookups, connections, shards, and caches — where it creaks first.",
+      "scene": "books/web-crawler/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        5.492,
+        15.139,
+        27.62,
+        39.892,
+        50.318,
+        58.7,
+        68.917,
+        76.394,
+        81.978
+      ],
+      "duration": 91.255
+    }
+  ]
+}

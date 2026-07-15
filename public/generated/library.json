@@ -1,6 +1,41 @@
 {
   "books": [
     {
+      "slug": "web-crawler",
+      "title": "The Web Crawler",
+      "subtitle": "System Design, Solved №3",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#a01f3c",
+      "animal": "generated/web-crawler/animal.webp",
+      "href": "?bundle=web-crawler",
+      "series": "System Design, Solved",
+      "seriesOrder": 3,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Frontier: a billion links, one loop",
+          "duration": 90.882
+        },
+        {
+          "number": 2,
+          "title": "Duplicates: the signature says you've been here",
+          "duration": 77.368
+        },
+        {
+          "number": 3,
+          "title": "Freshness: re-crawling at the web's own pace",
+          "duration": 78.716
+        },
+        {
+          "number": 4,
+          "title": "Bottlenecks: where the crawl slows down",
+          "duration": 91.255
+        }
+      ],
+      "createdAt": "2026-07-15T22:47:38.381Z"
+    },
+    {
       "slug": "explained-ml",
       "title": "Explained: Machine Learning",
       "subtitle": "Gradient descent, backprop, attention, diffusion",
