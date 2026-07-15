@@ -1,6 +1,41 @@
 {
   "books": [
     {
+      "slug": "social-feed",
+      "title": "The Social Feed",
+      "subtitle": "System Design, Solved №2",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#6a3f9e",
+      "animal": "generated/social-feed/animal.webp",
+      "href": "?bundle=social-feed",
+      "series": "System Design, Solved",
+      "seriesOrder": 2,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Written Once, Read Relentlessly",
+          "duration": 59.35
+        },
+        {
+          "number": 2,
+          "title": "Fan-Out on Write",
+          "duration": 66.78
+        },
+        {
+          "number": 3,
+          "title": "The Home-Timeline Cache",
+          "duration": 67.477
+        },
+        {
+          "number": 4,
+          "title": "The Celebrity Problem",
+          "duration": 65.619
+        }
+      ],
+      "createdAt": "2026-07-15T22:59:59.979Z"
+    },
+    {
       "slug": "explained-ml",
       "title": "Explained: Machine Learning",
       "subtitle": "Gradient descent, backprop, attention, diffusion",

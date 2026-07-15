@@ -1,0 +1,83 @@
+{
+  "format": 3,
+  "slug": "social-feed",
+  "title": "The Social Feed",
+  "subtitle": "System Design, Solved №2",
+  "animal": "animal.webp",
+  "accent": "#6a3f9e",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Written Once, Read Relentlessly",
+      "blurb": "Six thousand writes a second against a hundred thousand reads — the asymmetry that shapes the whole design",
+      "scene": "books/social-feed/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        5.991,
+        14.28,
+        21.281,
+        28.607,
+        36.049,
+        43.897,
+        51.154
+      ],
+      "duration": 59.35
+    },
+    {
+      "number": 2,
+      "title": "Fan-Out on Write",
+      "blurb": "Deliver the tweet to every follower's feed before anyone asks to read it",
+      "scene": "books/social-feed/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        4.714,
+        11.807,
+        18.495,
+        25.206,
+        33.379,
+        45.209,
+        53.185,
+        59.826
+      ],
+      "duration": 66.78
+    },
+    {
+      "number": 3,
+      "title": "The Home-Timeline Cache",
+      "blurb": "Reading your feed is one constant-time grab plus two batched lookups",
+      "scene": "books/social-feed/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        6.142,
+        14.222,
+        21.931,
+        30.581,
+        39.613,
+        50.504,
+        58.456
+      ],
+      "duration": 67.477
+    },
+    {
+      "number": 4,
+      "title": "The Celebrity Problem",
+      "blurb": "Millions of followers break the fan-out — the hybrid merges the loudest voices in at read time",
+      "scene": "books/social-feed/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        5.84,
+        13.502,
+        21.083,
+        29.198,
+        37.291,
+        46.672,
+        54.52
+      ],
+      "duration": 65.619
+    }
+  ]
+}
