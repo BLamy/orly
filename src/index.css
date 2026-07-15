@@ -621,3 +621,125 @@
     height: 32px;
   }
 }
+
+/* ---- chapter sidebar (desktop) ------------------------------------------ */
+.bp-layout {
+  display: flex;
+  height: 100%;
+  min-height: 0;
+}
+
+.bp-main {
+  flex: 1;
+  min-width: 0;
+  min-height: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.bp-side {
+  flex: 0 0 300px;
+  border-left: 1px solid rgba(148, 163, 184, 0.14);
+  background: rgba(8, 12, 24, 0.6);
+  overflow-y: auto;
+  padding: 14px 12px calc(14px + env(safe-area-inset-bottom, 0px));
+}
+
+.bp-side-title {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+  color: var(--muted, #8da2be);
+  padding: 2px 6px 10px;
+}
+
+.bp-side-list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.bp-side-item {
+  display: flex;
+  gap: 10px;
+  width: 100%;
+  align-items: center;
+  padding: 6px;
+  border-radius: 10px;
+  border: 1px solid transparent;
+  background: none;
+  color: inherit;
+  cursor: pointer;
+  text-align: left;
+}
+
+.bp-side-item:hover {
+  background: rgba(148, 163, 184, 0.08);
+}
+
+.bp-side-item.active {
+  background: rgba(148, 163, 184, 0.1);
+  border-color: var(--accent, #38bdf8);
+}
+
+.bp-side-thumb {
+  position: relative;
+  flex: 0 0 108px;
+  aspect-ratio: 16 / 9;
+  border-radius: 7px;
+  overflow: hidden;
+  background: #0a0e1a;
+}
+
+.bp-side-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.bp-side-num {
+  position: absolute;
+  left: 5px;
+  bottom: 4px;
+  font-size: 10px;
+  font-weight: 700;
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  color: #dbe7f8;
+  background: rgba(4, 8, 18, 0.72);
+  padding: 1px 5px;
+  border-radius: 5px;
+}
+
+.bp-side-text {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+  min-width: 0;
+}
+
+.bp-side-ctitle {
+  font-size: 13px;
+  font-weight: 600;
+  line-height: 1.3;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+.bp-side-dur {
+  font-size: 11.5px;
+  color: var(--muted, #8da2be);
+  font-variant-numeric: tabular-nums;
+}
+
+@media (max-width: 960px) {
+  .bp-side {
+    display: none;
+  }
+}
