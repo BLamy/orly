@@ -133,18 +133,50 @@ export function BookPlayer({ slug }: { slug: string }) {
   const chapter = manifest.chapters[current];
   return (
     <div className="bp" style={{ ['--accent' as string]: accent }}>
-      <ChapterPlayer
-        key={`${slug}/${chapter.number}`}
-        base={base}
-        chapter={chapter}
-        bookTitle={manifest.title}
-        index={current}
-        count={manifest.chapters.length}
-        nextTitle={manifest.chapters[current + 1]?.title}
-        onPrev={current > 0 ? () => setCurrent(current - 1) : undefined}
-        onNext={current < manifest.chapters.length - 1 ? () => setCurrent(current + 1) : undefined}
-        onExit={() => setCurrent(null)}
-      />
+      <div className="bp-layout">
+        <div className="bp-main">
+          <ChapterPlayer
+            key={`${slug}/${chapter.number}`}
+            base={base}
+            chapter={chapter}
+            bookTitle={manifest.title}
+            index={current}
+            count={manifest.chapters.length}
+            nextTitle={manifest.chapters[current + 1]?.title}
+            onPrev={current > 0 ? () => setCurrent(current - 1) : undefined}
+            onNext={current < manifest.chapters.length - 1 ? () => setCurrent(current + 1) : undefined}
+            onExit={() => setCurrent(null)}
+          />
+        </div>
+        <aside className="bp-side" aria-label="Chapters">
+          <div className="bp-side-title">{manifest.title}</div>
+          <ul className="bp-side-list">
+            {manifest.chapters.map((c, i) => (
+              <li key={c.number}>
+                <button
+                  className={`bp-side-item${i === current ? ' active' : ''}`}
+                  onClick={() => setCurrent(i)}
+                  aria-current={i === current ? 'true' : undefined}
+                >
+                  <span className="bp-side-thumb">
+                    <img
+                      src={`${base}previews/chapter-${c.number}.png`}
+                      alt=""
+                      loading="lazy"
+                      onError={(e) => ((e.target as HTMLImageElement).style.visibility = 'hidden')}
+                    />
+                    <span className="bp-side-num">{String(c.number).padStart(2, '0')}</span>
+                  </span>
+                  <span className="bp-side-text">
+                    <span className="bp-side-ctitle">{c.title}</span>
+                    {fmtDur(c.duration) && <span className="bp-side-dur">{fmtDur(c.duration)}</span>}
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        </aside>
+      </div>
     </div>
   );
 }

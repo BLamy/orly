@@ -187,41 +187,37 @@ no catalog entry — `check-viz-catalog.mjs` ignores `books/` slugs). Skeleton:
 
 ```tsx
 // src/viz/books/<bookSlug>/chapter-1.tsx
-import { Timeline, colors, ease } from '../../core';
-import type { SceneState } from '../../core';
-import { Connection, ServiceNode, Zone } from '../../primitives';
+import { Timeline, Camera, CAMERA_HOME, MathLabel, colors, ease } from '../../core';
+import type { CameraState, SceneState } from '../../core';
+import { ContourField, Vec } from '../../primitives';
 
-// Layout at module scope — 1280×720 stage, bottom ~12% clear for captions.
-const CLI = { x: 240, y: 340 };
-const VAULT = { x: 1010, y: 340 };
+// Real math at module scope — motion must be EARNED, not decorative.
+const LOSS = (x: number, y: number) => /* closed-form landscape */ x * x + y * y;
 
 export function buildScene() {
   const tl = new Timeline();
-  const cliU = tl.channel('cliU', 0);
-  const vaultU = tl.channel('vaultU', 0);
-  const connU = tl.channel('connU', 0);
+  const cam = tl.channel<CameraState>('cam', CAMERA_HOME);
+  const fieldU = tl.channel('fieldU', 0);
+  const texU = tl.channel('texU', 0);
 
-  // BEAT 0 — the caption IS the spoken line (full sentence, written for the ear)
-  tl.caption({ at: 0.3, dur: 4, text: 'The CLI writes its credentials file.' });
-  tl.tween(cliU, 1, { at: 0.5, dur: 0.7, ease: ease.enter });
-
-  // BEAT 1 — one caption per beat; exact code goes in on-screen labels
-  tl.caption({ at: 5.0, dur: 4, text: 'registerSlot() routes it into the vault.' });
-  tl.tween(vaultU, 1, { at: 5.2, dur: 0.7, ease: ease.enter });
-  tl.tween(connU, 1, { at: 6.0, dur: 1.2, ease: ease.draw });
-  tl.hold(9.4, 0.6);
-  return { tl, cliU, vaultU, connU };
+  // BEAT 0 — the caption IS the spoken line; camera pushes into the subject
+  tl.caption({ at: 0.3, dur: 4, text: 'Every run leaves a landscape behind it.' });
+  tl.tween(fieldU, 1, { at: 0.5, dur: 1.4, ease: ease.draw });
+  tl.tween(cam, { x: 620, y: 348, k: 1.15 }, { at: 1.2, dur: 1.4, ease: ease.move });
+  tl.tween(texU, 1, { at: 3.0, dur: 0.6, ease: ease.enter });
+  tl.hold(4.6, 0.8);
+  // …more beats: morph the SAME object, spotlight one thing, pull back for the payoff
+  return { tl, cam, fieldU, texU };
 }
 
 const scene = buildScene();
 
 export function Render({ s }: { s: SceneState }) {
   return (
-    <>
-      <ServiceNode {...CLI} kind="client" label="claude CLI" u={s.get(scene.cliU)} />
-      <ServiceNode {...VAULT} kind="db" label="vault" u={s.get(scene.vaultU)} />
-      <Connection from={CLI} to={VAULT} u={s.get(scene.connU)} label="write" />
-    </>
+    <Camera {...s.get(scene.cam)}>
+      <ContourField f={LOSS} reveal={s.get(scene.fieldU)} />
+      <MathLabel tex={'L(\\theta)'} x={980} y={140} opacity={s.get(scene.texU)} />
+    </Camera>
   );
 }
 export const vizScene = () => scene;
@@ -247,10 +243,18 @@ player itself needs only the two exports above.)
 - [ ] Studied 2–3 exemplars under `src/viz/explainers/` first (e.g.
       `almostnode-server`, `differential-dataflow`) — beat-sheet comments,
       layout constants, channel naming, restraint.
-- [ ] Uses the real primitives: `Zone`/`ServiceNode`/`Connection`/
-      `RequestFlow` for architecture beats (+ the agent components under
-      `src/viz/agent/` where they fit); `MathLabel`/`tex` for any math —
-      never math as plain prose.
+- [ ] CINEMATIC, not diagrammatic. Every chapter uses a `Camera` channel
+      (push in on the subject, pull back for the payoff) AND at least one
+      centerpiece beyond boxes-and-arrows: a `ParticleCloud` formation lerp,
+      a `FunctionPlot` morph, a `MatrixGrid` heat/highlight, a `ContourField`,
+      or an equivalent local visual machine. `Zone`/`ServiceNode`/`Connection`
+      are allowed as SUPPORTING cast, never the whole show — a fixed-camera
+      box diagram with a traveling dot is a FAILED chapter.
+- [ ] ONE persistent object transforms across beats (dots reshape, a curve
+      morphs, a tape grows and is then re-read) instead of slide-swapping
+      panels. `MathLabel`/`tex` for any math — never math as plain prose.
+- [ ] Highlight discipline: spotlight exactly one thing per beat, fade
+      competing layers to ≤ 0.15 ("a whisper"), stagger group entrances.
 - [ ] Motion language respected: `ease.enter` 0.5–0.8s, `ease.move` 0.8–1.5s,
       `ease.draw` 1.0–1.6s, `ease.linear` for packets/flows, `tl.hold()`
       between beats.
