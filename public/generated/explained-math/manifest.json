@@ -1,0 +1,73 @@
+{
+  "format": 3,
+  "slug": "explained-math",
+  "title": "Explained: The Math",
+  "subtitle": "Fourier, eigenvectors, and convolution — watched, not derived",
+  "animal": "animal.webp",
+  "accent": "#38bdf8",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Fourier Series: circles that draw anything",
+      "blurb": "Meet a spinning arrow: constant speed, fixed length. Keep your eye on its height.",
+      "scene": "books/explained-math/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        6.177,
+        12.516,
+        19.353,
+        24.427,
+        31.915,
+        38.51,
+        44.547,
+        49.122
+      ],
+      "duration": 54.52
+    },
+    {
+      "number": 2,
+      "title": "Eigenvectors: the directions that survive",
+      "blurb": "A matrix is a machine: it picks up every point in space and puts it somewhere new.",
+      "scene": "books/explained-math/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        5.817,
+        9.276,
+        16.498,
+        21.409,
+        26.296,
+        30.604,
+        37.999,
+        44.048,
+        49.354,
+        53.406,
+        59.745,
+        64.842
+      ],
+      "duration": 72.725
+    },
+    {
+      "number": 3,
+      "title": "Convolution: slide, multiply, sum",
+      "blurb": "To a computer, an image is just a grid of numbers — each one a brightness between 0 and 1.",
+      "scene": "books/explained-math/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        5.921,
+        11.331,
+        18.367,
+        27.237,
+        33.042,
+        41.517,
+        47.218,
+        54.126,
+        59.153,
+        67.489
+      ],
+      "duration": 78.112
+    }
+  ]
+}

@@ -200,7 +200,7 @@ export function buildScene(): { tl: Timeline; ch: CLTChannels } {
   tl.caption({
     at: 23.0,
     dur: 5.2,
-    text: 'Next: roll TWO dice at a time, and stack the sums instead.',
+    text: 'Next: roll two dice at a time, and stack the sums instead.',
   });
   tl.tween(ch.dieLineU, 0, { at: 23.2, dur: 0.8, ease: ease.move });
   tl.tween(ch.axisU, 1, { at: 23.4, dur: 1.2, ease: ease.draw });
@@ -240,7 +240,7 @@ export function buildScene(): { tl: Timeline; ch: CLTChannels } {
   tl.caption({
     at: 50.6,
     dur: 5.4,
-    text: 'The individual dice never changed — the SUM grew a personality.',
+    text: 'The individual dice never changed — the sum grew a personality.',
   });
   tl.hold(56.0, 0.4);
 

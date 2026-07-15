@@ -246,7 +246,7 @@ export function buildScene(): { tl: Timeline; ch: BayesChannels } {
   tl.caption({
     at: 25.4,
     dur: 7.0,
-    text: 'But it also fires on 9% of the healthy — 178 people. Not because the test is bad. Because there are SO many of them.',
+    text: 'But it also fires on 9% of the healthy — 178 people. Not because the test is bad. Because there are so many of them.',
   });
   tl.tween(ch.testHealthyU, 1, { at: 26.0, dur: 2.4, ease: ease.move });
   tl.hold(32.4, 1.0);

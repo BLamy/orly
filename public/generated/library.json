@@ -1,6 +1,151 @@
 {
   "books": [
     {
+      "slug": "explained-ml",
+      "title": "Explained: Machine Learning",
+      "subtitle": "Gradient descent, backprop, attention, diffusion",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#a78bfa",
+      "href": "?bundle=explained-ml",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Gradient Descent: rolling downhill, three ways",
+          "duration": 49.04
+        },
+        {
+          "number": 2,
+          "title": "Backpropagation: blame, passed backward",
+          "duration": 87.819
+        },
+        {
+          "number": 3,
+          "title": "Attention: every token asks every other",
+          "duration": 54.659
+        },
+        {
+          "number": 4,
+          "title": "Diffusion: drown it in noise, learn the way back",
+          "duration": 48.345
+        }
+      ],
+      "createdAt": "2026-07-15T22:01:46.700Z",
+      "animal": "generated/explained-ml/animal.webp",
+      "series": "The Explainers",
+      "seriesOrder": 2
+    },
+    {
+      "slug": "explained-distributed",
+      "title": "Explained: Distributed Systems",
+      "subtitle": "Rings, filters, logs, and leaders",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#34d399",
+      "href": "?bundle=explained-distributed",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Consistent Hashing: the ring that keeps its keys",
+          "duration": 81.827
+        },
+        {
+          "number": 2,
+          "title": "Bloom Filters: definitely not, probably yes",
+          "duration": 66.78
+        },
+        {
+          "number": 3,
+          "title": "Conflict-free Counting: merging without a referee",
+          "duration": 82.524
+        },
+        {
+          "number": 4,
+          "title": "Raft: five servers elect a leader",
+          "duration": 106.114
+        },
+        {
+          "number": 5,
+          "title": "PageRank: the random surfer settles down",
+          "duration": 58.701
+        },
+        {
+          "number": 6,
+          "title": "Differential Dataflow: ship the change, not the world",
+          "duration": 97.246
+        }
+      ],
+      "createdAt": "2026-07-15T21:56:38.444Z",
+      "animal": "generated/explained-distributed/animal.webp",
+      "series": "The Explainers",
+      "seriesOrder": 4
+    },
+    {
+      "slug": "explained-probability",
+      "title": "Explained: Probability",
+      "subtitle": "Bayes, the bell curve, entropy, and the Kalman filter",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#fbbf24",
+      "href": "?bundle=explained-probability",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Bayes: counting your way to the truth",
+          "duration": 55.542
+        },
+        {
+          "number": 2,
+          "title": "The Central Limit Theorem: the inevitable bell",
+          "duration": 51.037
+        },
+        {
+          "number": 3,
+          "title": "Entropy: the price of surprise",
+          "duration": 64.087
+        },
+        {
+          "number": 4,
+          "title": "The Kalman Filter: a robot finds itself",
+          "duration": 63.715
+        }
+      ],
+      "createdAt": "2026-07-15T21:54:58.988Z",
+      "animal": "generated/explained-probability/animal.webp",
+      "series": "The Explainers",
+      "seriesOrder": 3
+    },
+    {
+      "slug": "explained-math",
+      "title": "Explained: The Math",
+      "subtitle": "Fourier, eigenvectors, and convolution — watched, not derived",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#38bdf8",
+      "href": "?bundle=explained-math",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Fourier Series: circles that draw anything",
+          "duration": 54.52
+        },
+        {
+          "number": 2,
+          "title": "Eigenvectors: the directions that survive",
+          "duration": 72.725
+        },
+        {
+          "number": 3,
+          "title": "Convolution: slide, multiply, sum",
+          "duration": 78.112
+        }
+      ],
+      "createdAt": "2026-07-15T21:52:50.224Z",
+      "animal": "generated/explained-math/animal.webp",
+      "series": "The Explainers",
+      "seriesOrder": 1
+    },
+    {
       "slug": "replay-qa-week",
       "title": "A Week With Replay QA",
       "subtitle": "What it means for you, from Monday to ship day",

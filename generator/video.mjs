@@ -49,6 +49,8 @@ function parseArgs(argv) {
     else if (k === '--role') a.role = val();
     else if (k === '--chapter-titles') a.chapterTitles = val().split('|').map((s) => s.trim());
     else if (k === '--blurbs') a.blurbs = val().split('|').map((s) => s.trim());
+    else if (k === '--series') a.series = val();
+    else if (k === '--series-order') a.seriesOrder = Number(val());
     else if (k === '--voice') a.voice = val();
     else if (k === '--no-tts') a.tts = false;
     else if (k === '--no-cover') a.cover = false;
@@ -69,7 +71,7 @@ function discoverChapters(slug) {
 }
 
 // Things TTS mangles. Captions ARE the spoken script — keep code on screen.
-const SPEAK_ALLOW = new Set(['QA', 'AI', 'OK', 'URL', 'A', 'I', 'TV', 'CEO', 'PR', 'CI']);
+const SPEAK_ALLOW = new Set(['QA', 'AI', 'OK', 'URL', 'A', 'I', 'TV', 'CEO', 'PR', 'CI', 'GPS']);
 function speakabilityProblems(text) {
   const problems = [];
   if (/https?:\/\/|www\.|\.(com|io|dev|md|ts|tsx|js|json)\b/.test(text)) problems.push('URL/domain/file extension');
@@ -238,6 +240,7 @@ Env: ELEVENLABS_API_KEY (narration), OPENAI_API_KEY (cover).`);
     color: accent,
     animal: animalRel,
     href: `?bundle=${slug}`,
+    ...(args.series ? { series: args.series, seriesOrder: args.seriesOrder ?? 1 } : {}),
     chapters: chapters.map((c) => ({ number: c.number, title: c.title, duration: c.duration })),
     createdAt: new Date().toISOString(),
   });

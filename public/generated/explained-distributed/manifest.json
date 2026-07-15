@@ -1,0 +1,153 @@
+{
+  "format": 3,
+  "slug": "explained-distributed",
+  "title": "Explained: Distributed Systems",
+  "subtitle": "Rings, filters, logs, and leaders",
+  "animal": "animal.webp",
+  "accent": "#34d399",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Consistent Hashing: the ring that keeps its keys",
+      "blurb": "The obvious plan: server = hash(key) mod N. Three servers, twelve keys, and everybody knows exactly where home is.",
+      "scene": "books/explained-distributed/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.475,
+        14.315,
+        19.969,
+        28.015,
+        33.518,
+        39.648,
+        46.3,
+        53.336,
+        59.489,
+        66.2,
+        74.408
+      ],
+      "duration": 81.827
+    },
+    {
+      "number": 2,
+      "title": "Bloom Filters: definitely not, probably yes",
+      "blurb": "24 bits — that's the whole database. It'll answer “have I seen this?” almost for free.",
+      "scene": "books/explained-distributed/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        5.503,
+        10.054,
+        15.813,
+        18.936,
+        25.403,
+        28.781,
+        33.065,
+        37.489,
+        45.755,
+        51.107,
+        58.839
+      ],
+      "duration": 66.78
+    },
+    {
+      "number": 3,
+      "title": "Conflict-free Counting: merging without a referee",
+      "blurb": "Two devices, one likes counter — and no server in the middle to referee.",
+      "scene": "books/explained-distributed/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        4.737,
+        11.25,
+        17.066,
+        20.364,
+        25.878,
+        31.869,
+        38.464,
+        43.433,
+        49.841,
+        56.633,
+        63.054,
+        69.59,
+        76.858
+      ],
+      "duration": 82.524
+    },
+    {
+      "number": 4,
+      "title": "Raft: five servers elect a leader",
+      "blurb": "Five servers boot up as followers — each with a clock, each a little nervous.",
+      "scene": "books/explained-distributed/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        5.329,
+        7.802,
+        12.423,
+        20.782,
+        26.61,
+        32.589,
+        36.897,
+        42.992,
+        46.858,
+        52.512,
+        59.362,
+        65.48,
+        71.715,
+        78.205,
+        83.766,
+        87.841,
+        93.518,
+        100.762
+      ],
+      "duration": 106.114
+    },
+    {
+      "number": 5,
+      "title": "PageRank: the random surfer settles down",
+      "blurb": "Five pages, nine links. Which matters most? Google's 1998 answer: ask the links themselves.",
+      "scene": "books/explained-distributed/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        8.046,
+        13.642,
+        17.81,
+        22.268,
+        28.468,
+        33.785,
+        39.498,
+        46.696,
+        51.572
+      ],
+      "duration": 58.701
+    },
+    {
+      "number": 6,
+      "title": "Differential Dataflow: ship the change, not the world",
+      "blurb": "One query, drawn as a dataflow: orders stream in, a live count falls out.",
+      "scene": "books/explained-distributed/chapter-6",
+      "audio": "audio/chapter-6.mp3",
+      "cues": [
+        0,
+        5.619,
+        8.882,
+        14.872,
+        19.412,
+        28.816,
+        35.562,
+        39.451,
+        47.706,
+        52.559,
+        59.421,
+        67.35,
+        70.369,
+        77.88,
+        85.891,
+        91.603
+      ],
+      "duration": 97.246
+    }
+  ]
+}
