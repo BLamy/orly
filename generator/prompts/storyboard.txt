@@ -51,6 +51,9 @@ Each tl.caption is one spoken line, fed verbatim to TTS:
   confident, present tense, contractions, second person. One vivid concrete
   verb per beat. No filler, no "as you can see", never narrate the UI.
 - NO markdown, NO backticks, no character a narrator wouldn't pronounce.
+  The build ENFORCES this: video.mjs rejects captions containing URLs, hashes,
+  machine ids (run-001), camelCase, code punctuation, file extensions, or
+  unspoken acronyms. Those belong in on-screen labels.
   Spell for the ear: "the credentials file", not ".credentials.json";
   "registering a slot", not registerSlot(); "sixty seconds", not 60s.
   Introduce an acronym in full once, then reuse it.
@@ -78,7 +81,9 @@ cut them or replace them with the concrete mechanism).
 ================================================================
 SCENE CRAFT — the quality bar (3b1bd3)
 ================================================================
-- CINEMATIC, NOT DIAGRAMMATIC. Every chapter drives a Camera channel (push
+- CINEMATIC, NOT DIAGRAMMATIC. Every chapter drives a Camera channel — declare
+  it with the smooth-zoom interpolator: tl.channel('cam', CAMERA_HOME,
+  cameraInterp) (from src/viz/core) so pan+zoom moves track straight (push
   in on the beat's subject, pull back for comparisons and the payoff) and has
   at least one visual centerpiece beyond boxes-and-arrows: a ParticleCloud
   formation lerp, a FunctionPlot morph, a MatrixGrid heat/highlight, a

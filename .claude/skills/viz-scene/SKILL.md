@@ -132,7 +132,9 @@ caption. Math goes in `tex`/`MathLabel`, not prose.
   request packet with per-waypoint dwell and an optional `roundTrip` response
   retracing the path — one linear `u` channel tells a whole request story).
 - `MathLabel` (from core) — KaTeX at a stage point.
-- Camera: `<Camera {...s.get(cam)}>` with a `{x, y, k}` channel (`CAMERA_HOME`).
+- Camera: `<Camera {...s.get(cam)}>` with a `{x, y, k}` channel — ALWAYS
+  `tl.channel('cam', CAMERA_HOME, cameraInterp)` (smooth zoom; a plain lerp
+  swerves on combined pan+zoom).
 
 Missing primitive? Build a local subcomponent inside your explainer dir —
 do NOT modify core/ or primitives/ in a scene PR.
