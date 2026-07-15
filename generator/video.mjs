@@ -68,6 +68,23 @@ function discoverChapters(slug) {
   return files;
 }
 
+// Things TTS mangles. Captions ARE the spoken script — keep code on screen.
+const SPEAK_ALLOW = new Set(['QA', 'AI', 'OK', 'URL', 'A', 'I', 'TV', 'CEO', 'PR', 'CI']);
+function speakabilityProblems(text) {
+  const problems = [];
+  if (/https?:\/\/|www\.|\.(com|io|dev|md|ts|tsx|js|json)\b/.test(text)) problems.push('URL/domain/file extension');
+  if (/[{}<>#\\`_|~^]|\/[a-z0-9-]+\/|=>/.test(text)) problems.push('code punctuation');
+  if (/\b[0-9a-f]{6,}\b/i.test(text)) problems.push('hash/hex id');
+  if (/\b\w+-\d+\b|\b\d+[a-z]\d+\b/.test(text)) problems.push('machine id (e.g. run-001)');
+  if (/[a-z][A-Z]/.test(text)) problems.push('camelCase identifier');
+  if (/\w\(\)/.test(text)) problems.push('function call');
+  if (/\brrweb\b|\bmjs\b|\btsx?\b|\bjsonl?\b/i.test(text)) problems.push('tech token TTS mangles');
+  for (const m of text.match(/\b[A-Z]{2,}\b/g) ?? []) {
+    if (!SPEAK_ALLOW.has(m)) { problems.push(`unspoken acronym "${m}"`); break; }
+  }
+  return problems;
+}
+
 /** Chapter title fallback: leading comment, else a trimmed first caption. */
 function deriveTitle(extracted, n) {
   const c = extracted.leadingComment
@@ -102,11 +119,21 @@ Env: ELEVENLABS_API_KEY (narration), OPENAI_API_KEY (cover).`);
   const files = discoverChapters(slug);
   log(`${slug}: ${files.length} chapter scene(s)`);
   const extracted = [];
+  const unspeakable = [];
   for (const { n, file } of files) {
     const ex = await extractScene(file);
     if (!ex.captions.length) throw new Error(`chapter ${n}: scene has no captions — captions are the narration script`);
+    for (const c of ex.captions) {
+      for (const reason of speakabilityProblems(c.text)) unspeakable.push(`chapter ${n} @${c.at}s: ${reason} — “${c.text.slice(0, 80)}”`);
+    }
     log(`  chapter ${n}: ${ex.captions.length} captions, ${ex.duration.toFixed(1)}s timeline`);
     extracted.push({ n, file, ...ex });
+  }
+  if (unspeakable.length) {
+    console.error('\x1b[31m✗ captions are read aloud VERBATIM by ElevenLabs — these are not speakable:\x1b[0m');
+    for (const u of unspeakable) console.error('  ' + u);
+    console.error('  Rewrite them for the ear (identifiers/paths/hashes belong in on-screen labels, not the voice).');
+    process.exit(1);
   }
 
   const outDir = join(ROOT, 'public', 'generated', slug);
