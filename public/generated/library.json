@@ -1,6 +1,39 @@
 {
   "books": [
     {
+      "slug": "builder-critic-loop",
+      "title": "The Builder–Critic Loop",
+      "subtitle": "A task queue that stores the future, a builder that ends with evidence, and a critic's gauntlet that alone grants verified",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#e07b1a",
+      "animal": "generated/builder-critic-loop/animal.png",
+      "href": "?bundle=builder-critic-loop",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Queue Is the Future",
+          "duration": 89.072
+        },
+        {
+          "number": 2,
+          "title": "The Builder's Claim",
+          "duration": 94.273
+        },
+        {
+          "number": 3,
+          "title": "The Critic's Gauntlet",
+          "duration": 120.743
+        },
+        {
+          "number": 4,
+          "title": "The Spine That Verifies Itself",
+          "duration": 101.099
+        }
+      ],
+      "createdAt": "2026-07-15T17:57:03.501Z"
+    },
+    {
       "slug": "replays-agents-that-prove-their-work",
       "title": "Replays: Agents That Prove Their Work",
       "subtitle": "A recording is evidence; a satisfied worker is a claim",
