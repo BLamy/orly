@@ -20,4 +20,4 @@ const meta: Meta<typeof Chapter3> = {
 };
 export default meta;
 
-export const StripAndReExecute: StoryObj<typeof Chapter3> = {};
+export const TheAgentReadsTheTape: StoryObj<typeof Chapter3> = {};

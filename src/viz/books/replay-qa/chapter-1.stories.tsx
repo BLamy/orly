@@ -20,4 +20,4 @@ const meta: Meta<typeof Chapter1> = {
 };
 export default meta;
 
-export const TheClaimProblem: StoryObj<typeof Chapter1> = {};
+export const TheExpensiveClaim: StoryObj<typeof Chapter1> = {};

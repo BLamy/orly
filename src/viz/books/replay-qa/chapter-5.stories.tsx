@@ -20,4 +20,4 @@ const meta: Meta<typeof Chapter5> = {
 };
 export default meta;
 
-export const AFindingYouCanInterrogate: StoryObj<typeof Chapter5> = {};
+export const GreenMustBeProven: StoryObj<typeof Chapter5> = {};

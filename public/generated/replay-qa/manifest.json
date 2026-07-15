@@ -8,106 +8,105 @@
   "chapters": [
     {
       "number": 1,
-      "title": "The Claim Problem",
-      "blurb": "A QA agent's word is worth nothing — dispatch a run and start the tape.",
+      "title": "The Expensive Claim",
+      "blurb": "Here are two sentences about the same checkout page: it is broken, and it works. They look symmetrical. They are not.",
       "scene": "books/replay-qa/chapter-1",
       "audio": "audio/chapter-1.mp3",
       "cues": [
         0,
-        9.903,
-        19.702,
-        28.758,
-        39.973,
-        48.333,
-        55.937,
-        64.355,
-        73.458,
-        83.384
+        8.406,
+        17.02,
+        24.427,
+        34.702,
+        41.192,
+        52.117,
+        59.826,
+        67.024,
+        75.186,
+        82.442
       ],
-      "duration": 91.859
+      "duration": 87.864
     },
     {
       "number": 2,
-      "title": "Tape Everything",
-      "blurb": "The recording is the artifact: rrweb in the browser, narration on the tape, a usability gate at the database.",
+      "title": "Every Run Is a Recording",
+      "blurb": "A test run starts with a journey — a scripted intention. This one belongs to the Acme store: add an item to the cart, check out, and pay.",
       "scene": "books/replay-qa/chapter-2",
       "audio": "audio/chapter-2.mp3",
       "cues": [
         0,
-        9.091,
-        20.352,
-        33.692,
-        44.036,
-        51.85,
-        63.506,
-        69.648,
-        79.61,
-        92.183
+        10.286,
+        17.032,
+        22.93,
+        32.427,
+        41.286,
+        48.936,
+        57.319,
+        64.528,
+        72.713
       ],
-      "duration": 99.381
+      "duration": 80.713
     },
     {
       "number": 3,
-      "title": "Strip and Re-execute",
-      "blurb": "Evidence is params only — the server strips agent-written results and re-executes every citation via the Replay MCP.",
+      "title": "The Agent Reads the Tape",
+      "blurb": "The run is over. The browser is gone. What remains is the tape — and one question: what actually happened in there?",
       "scene": "books/replay-qa/chapter-3",
       "audio": "audio/chapter-3.mp3",
       "cues": [
         0,
-        8.87,
-        18.089,
-        27.284,
-        38.035,
-        44.78,
-        54.545,
-        63.252,
-        75.605,
-        84.231
+        6.966,
+        13.119,
+        19.934,
+        29.199,
+        36.641,
+        41.761,
+        49.783,
+        57.168,
+        68.151
       ],
-      "duration": 94.18
+      "duration": 78.066
     },
     {
       "number": 4,
-      "title": "The Gauntlet",
-      "blurb": "Requirements judge, evidence judge, the overlap check, and Opus dedup — then it's filed.",
+      "title": "A Finding Carries Its Proof",
+      "blurb": "Believing an app is broken costs almost nothing — the worst case of checking a bug report is a few wasted minutes. So a finding has exactly one job: survive the checking.",
       "scene": "books/replay-qa/chapter-4",
       "audio": "audio/chapter-4.mp3",
       "cues": [
         0,
-        11.935,
-        19.099,
-        29.536,
-        37.152,
-        44.989,
-        55.066,
-        58.538,
-        69.823,
-        80.736,
-        93.89,
-        102.342
+        11.401,
+        20.48,
+        29.454,
+        38.347,
+        44.431,
+        56.215,
+        68.859,
+        81.804,
+        92.717
       ],
-      "duration": 116.982
+      "duration": 104.304
     },
     {
       "number": 5,
-      "title": "A Finding You Can Interrogate",
-      "blurb": "The report ships with its proof attached: the webhook, the fix, and the loop that re-runs.",
+      "title": "Green Must Be Proven",
+      "blurb": "A webhook arrives: someone says the checkout bug is fixed. Notice what kind of claim that is. Fixed is the expensive kind — it gets recorded, but it does not get believed yet.",
       "scene": "books/replay-qa/chapter-5",
       "audio": "audio/chapter-5.mp3",
       "cues": [
         0,
-        10.89,
-        20.236,
-        31.045,
-        42.737,
-        55.322,
-        62.543,
-        69.776,
-        78.054,
-        85.972,
-        98.197
+        11.099,
+        21.316,
+        34.076,
+        43.817,
+        54.358,
+        66.467,
+        77.242,
+        82.756,
+        95.434,
+        106.115
       ],
-      "duration": 104.118
+      "duration": 116.89
     }
   ]
 }

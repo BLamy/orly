@@ -1,343 +1,393 @@
-// Book scene — replay-qa, chapter 1: "The Claim Problem".
-// One coherent stage: an agent's bare claim gets stamped CLAIM; then the real
-// machine dispatches a run — a tasks row lands in the queue, a warm-pool
-// container is stolen and bound to proj-acme-store (single-project invariant),
-// claimNextTask hands over the journey, and the agent drives the Acme store
-// checkout while a recording strip grows beneath the browser. The payment POST
-// comes back 500 — and the moment is already on tape.
-// Backing files (replayio/loop-qa): docs/architecture.md,
-// docs/backend/tasks-and-containers.md (warm pool, stealPoolContainer,
-// claimNextTask, triggerSpawnForProject, single-project invariant),
-// netlify/functions/container-task-webhook.ts, scripts/seed-db.ts
-// (proj-acme-store, run-001, bug-002 "Checkout fails with 500 error on
-// payment submission" and its reproduction steps).
-import { Timeline, colors, ease } from '../../core';
-import type { SceneState } from '../../core';
-import { Connection, RequestFlow, ServiceNode, Zone } from '../../primitives';
-import { MessageCard, RecordingStrip } from '../../agent';
-import type { RecordingPoint } from '../../agent';
+// Book scene — replay-qa, chapter 1: "The Expensive Claim".
+//
+// The asymmetry of belief, made visible. ONE persistent object — a cloud of
+// ~340 "moments" (every state the app can be in) — carries the whole chapter:
+// one dot turns red and flies to the "it's broken" card (an existential claim
+// needs exactly one witness, so it is cheap to believe); a handful turn green
+// under the "it works" card (a universal claim — spot checks barely dent it);
+// then the entire cloud compresses into a horizontal tape — a Replay
+// recording, the only currency that can pay for the expensive claim.
+//
+// Grounded in replayio/loop-qa: AppSpec.md (a project = a URL to test; every
+// run produces a Replay recording; bugs link replay_recording_id) and
+// scripts/seed-db.ts (proj-acme-store · 'Acme Online Store' ·
+// https://acme-store.example.com, recording b5f2a3c1-7d4e-…).
+import { CAMERA_HOME, Camera, MathLabel, Timeline, colors, ease, gaussian, mulberry32 } from '../../core';
+import type { CameraState, SceneState } from '../../core';
+import { ParticleCloud } from '../../primitives';
+import type { ParticlePoint } from '../../primitives';
 
 const clamp01 = (u: number) => (u < 0 ? 0 : u > 1 ? 1 : u);
 const lerp = (a: number, b: number, u: number) => a + (b - a) * u;
 const mono = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 /* ---------------------------------------------------------------- layout */
-/** Stage is 1280×720; captions own the bottom ~12% (y ≳ 630). */
-const CLAIM_CARD = { x: 380, y: 150, w: 520 };
-const POOL = { x: 60, y: 84, w: 330, h: 150 };
-const POOL_SLOTS = [
-  { x: 128, y: 168 },
-  { x: 225, y: 168 },
-  { x: 322, y: 168 },
-];
-const QUEUE = { x: 172, y: 316 };
-const WEBHOOK = { x: 172, y: 452 };
-const PROJ = { x: 440, y: 84, w: 780, h: 344 };
-const WORKER = { x: 560, y: 210 };
-const BROWSER = { x: 690, y: 116, w: 500, h: 276 };
-const STEPS_PANEL = { x: 468, y: 286, w: 190 };
-const STRIP = { x: 80, y: 532, w: 1120, h: 26 };
-const REC_CHIP = { x: 1024, y: 496 };
+/** Stage 1280×720; the bottom ~12% (y ≳ 630) stays clear for captions. */
+const BROKEN = { x: 110, y: 108, w: 400, h: 96 };
+const WORKS = { x: 770, y: 108, w: 400, h: 96 };
+const CLOUD_C = { x: 640, y: 408 };
+const TAPE = { x: 720, y: 452, w: 460, rows: 3, pitch: 4.6, rowGap: 9 };
+const PROJ_CARD = { x: 110, y: 430, w: 400, h: 118 };
+const CHIP = { x: 950, y: 530 };
 
-/* ------------------------------------------------------------------ data */
-const CLAIM_TEXT = 'I tested the app. Checkout is broken — trust me.';
+const CAM_BROKEN: CameraState = { x: 410, y: 300, k: 1.22 };
+const CAM_WORKS: CameraState = { x: 880, y: 300, k: 1.18 };
+const CAM_WIDE: CameraState = { x: 640, y: 356, k: 1.0 };
+const CAM_CLOSE: CameraState = { x: 660, y: 380, k: 1.04 };
 
-/** bug-002's real reproduction steps (scripts/seed-db.ts). */
-const JOURNEY_STEPS = [
-  'Add item to cart',
-  'Go to checkout',
-  'Fill payment details',
-  'Click Submit Payment',
-];
+/* -------------------------------------------------- precomputed particles */
+const N = 340;
+const rand = mulberry32(11);
+const g = gaussian(rand);
 
-/** The run's tape: what the browser actually did, as recording points. */
-const POINTS: RecordingPoint[] = [
-  { at: 0.06, kind: 'interaction', label: 'load store' },
-  { at: 0.17, kind: 'render' },
-  { at: 0.28, kind: 'interaction', label: 'add to cart' },
-  { at: 0.38, kind: 'network' },
-  { at: 0.5, kind: 'interaction', label: 'checkout' },
-  { at: 0.6, kind: 'render' },
-  { at: 0.72, kind: 'interaction', label: 'type card #' },
-  { at: 0.84, kind: 'interaction', label: 'submit' },
-  { at: 0.91, kind: 'network', label: 'POST' },
-  { at: 0.97, kind: 'exception', label: '500' },
-];
+/** Formation A — the scattered cloud of app moments. */
+const SX = new Float64Array(N);
+const SY = new Float64Array(N);
+for (let i = 0; i < N; i++) {
+  SX[i] = Math.min(1200, Math.max(80, CLOUD_C.x + g() * 210));
+  SY[i] = Math.min(600, Math.max(250, CLOUD_C.y + g() * 88));
+}
 
-const RECORDING_ID = 'b5f2a3c1-7d4e';
+/** Formation B — the tape: rows of tightly packed moments under "it works". */
+const TX = new Float64Array(N);
+const TY = new Float64Array(N);
+{
+  const perRow = Math.ceil(N / TAPE.rows);
+  for (let i = 0; i < N; i++) {
+    const row = Math.floor(i / perRow);
+    const col = i % perRow;
+    TX[i] = TAPE.x + col * (TAPE.w / perRow) + TAPE.pitch / 2;
+    TY[i] = TAPE.y + row * TAPE.rowGap;
+  }
+}
+
+/** Per-particle staggers, all drawn from the one seed. */
+const STAG_IN = new Float64Array(N);
+const STAG_TAPE = new Float64Array(N);
+for (let i = 0; i < N; i++) STAG_IN[i] = rand();
+for (let i = 0; i < N; i++) STAG_TAPE[i] = rand();
+
+/** The one red witness — the failing moment. */
+const WITNESS = 57;
+const WITNESS_TARGET = { x: BROKEN.x + BROKEN.w / 2, y: BROKEN.y + BROKEN.h + 46 };
+/** Witness's slot on the tape — pinned near the end of the recording. */
+TX[WITNESS] = TAPE.x + TAPE.w * 0.94;
+TY[WITNESS] = TAPE.y + TAPE.rowGap;
+
+/** The spot checks — the few moments a manual pass actually looks at. */
+const CHECKS: number[] = [];
+for (let k = 0; k < 12; k++) CHECKS.push((k * 29 + 7) % N);
+const CHECK_RANK = new Map<number, number>(CHECKS.map((i, k) => [i, k]));
 
 /* -------------------------------------------------------------- timeline */
 export function buildScene() {
   const tl = new Timeline();
 
-  // beat 1 — the bare claim
-  const claimE = tl.channel('claimEnter', 0);
-  const claimT = tl.channel('claimText', 0);
-  const stampU = tl.channel('claimStamp', 0);
-  const gClaim = tl.channel('claimFade', 1);
+  const cam = tl.channel<CameraState>('cam', CAMERA_HOME);
+  const brokenE = tl.channel('brokenCard', 0);
+  const worksE = tl.channel('worksCard', 0);
+  const cloudU = tl.channel('cloudU', 0); // moments rain into the scatter
+  const witnessU = tl.channel('witnessU', 0); // the red dot flies to "broken"
+  const acceptU = tl.channel('acceptStamp', 0);
+  const existsTexU = tl.channel('existsTex', 0);
+  const forallTexU = tl.channel('forallTex', 0);
+  const checksU = tl.channel('checksU', 0); // the few green spot checks
+  const unprovenU = tl.channel('unprovenStamp', 0);
+  const projU = tl.channel('projCard', 0);
+  const tapeU = tl.channel('tapeU', 0); // THE morph: cloud → recording
+  const tapeGlowU = tl.channel('tapeGlow', 0);
+  const chipU = tl.channel('recChip', 0);
+  const texFade = tl.channel('texFade', 1);
+  const dimU = tl.channel('dimU', 0); // close: cards fade to a whisper
 
-  // beats 2–5 — the dispatch machine
-  const poolZ = tl.channel('poolZone', 0);
-  const projZ = tl.channel('projZone', 0);
-  const poolU = tl.channel('poolContainers', 0);
-  const queueE = tl.channel('queueEnter', 0);
-  const taskPop = tl.channel('taskRowPop', 0);
-  const stealU = tl.channel('stealMove', 0);
-  const webhookE = tl.channel('webhookEnter', 0);
-  const queueConnU = tl.channel('queueConn', 0);
-  const pollU = tl.channel('pollFlow', 0);
-  const gMachine = tl.channel('machineFade', 1);
-
-  // beats 6–8 — the run + the tape
-  const browserE = tl.channel('browserEnter', 0);
-  const stepsU = tl.channel('journeySteps', 0); // 0..4, checkmarks
-  const stripR = tl.channel('stripReveal', 0); // the tape GROWS as it records
-  const failU = tl.channel('fail500', 0);
-  const recChip = tl.channel('recChipPop', 0);
-  const gBrowser = tl.channel('browserFade', 1);
-
-  /* ---- beat 1: a sentence, with nothing behind it ---------------------- */
+  /* — beat 1 · two sentences that look symmetrical — */
   let t = 0.4;
   t = tl.caption({
     at: t,
-    dur: 6.2,
-    text: 'An AI agent tells you the checkout is broken. Do you believe it? On its own, that sentence is a claim — exactly as trustworthy as the thing that said it.',
+    dur: 6.0,
+    text: 'Here are two sentences about the same checkout page: it is broken, and it works. They look symmetrical. They are not.',
   });
-  tl.tween(claimE, 1, { at: t - 5.8, dur: 0.6, ease: ease.enter });
-  tl.tween(claimT, 1, { at: t - 5.4, dur: 1.6, ease: ease.linear });
-  tl.tween(stampU, 1, { at: t - 3.2, dur: 0.5, ease: ease.pop });
+  tl.tween(brokenE, 1, { at: t - 5.4, dur: 0.7, ease: ease.enter });
+  tl.tween(worksE, 1, { at: t - 4.9, dur: 0.7, ease: ease.enter });
   t = tl.hold(t, 0.7);
 
-  /* ---- beat 2: the machine that refuses bare claims -------------------- */
+  /* — beat 2 · the space of moments — */
   t = tl.caption({
     at: t,
     dur: 5.8,
-    text: 'Replay QA is built on a refusal: no finding leaves this system as just a sentence. Here is the machine — starting where a test run is born.',
+    text: 'Picture every moment your app can be in. Every page, every click, every request in flight — each one is a dot.',
   });
-  tl.tween(gClaim, 0, { at: t - 5.6, dur: 0.7, ease: ease.move });
-  tl.tween(poolZ, 1, { at: t - 4.6, dur: 1.0, ease: ease.draw });
-  tl.tween(projZ, 1, { at: t - 4.2, dur: 1.0, ease: ease.draw });
-  tl.tween(poolU, 1, { at: t - 3.2, dur: 1.2, ease: ease.enter });
-  t = tl.hold(t, 0.6);
+  tl.tween(cloudU, 1, { at: t - 5.4, dur: 3.4, ease: ease.linear });
+  t = tl.hold(t, 0.7);
 
-  /* ---- beat 3: a task row lands in the queue --------------------------- */
-  t = tl.caption({
-    at: t,
-    dur: 5.6,
-    text: 'Someone queues a run for the Acme store project. A task row lands in the queue, and creating work always triggers a container spawn for that project.',
-  });
-  tl.tween(queueE, 1, { at: t - 5.2, dur: 0.6, ease: ease.enter });
-  tl.tween(taskPop, 1, { at: t - 4.2, dur: 0.5, ease: ease.pop });
-  t = tl.hold(t, 0.6);
-
-  /* ---- beat 4: steal a warm container, bind it for life ---------------- */
-  t = tl.caption({
-    at: t,
-    dur: 6.4,
-    text: 'A warm container is stolen from the pool and bound to this project for life. Containers never serve two projects — one tenant’s leftover recordings must never leak into another’s bugs.',
-  });
-  tl.tween(stealU, 1, { at: t - 5.6, dur: 1.3, ease: ease.move });
-  t = tl.hold(t, 0.6);
-
-  /* ---- beat 5: the container claims its task --------------------------- */
+  /* — beat 3 · broken is existential: one witness — */
   t = tl.caption({
     at: t,
     dur: 5.8,
-    text: 'The container polls the task webhook, and claim-next-task hands it this project’s next queued run: walk the store’s checkout journey.',
+    text: 'To believe the checkout is broken, you need exactly one bad moment. One witness, anywhere in the cloud.',
   });
-  tl.tween(webhookE, 1, { at: t - 5.4, dur: 0.6, ease: ease.enter });
-  tl.tween(queueConnU, 1, { at: t - 4.8, dur: 0.8, ease: ease.draw });
-  tl.tween(pollU, 1, { at: t - 4.0, dur: 3.2, ease: ease.linear });
-  t = tl.hold(t, 0.6);
+  tl.tween(cam, CAM_BROKEN, { at: t - 5.4, dur: 1.3, ease: ease.move });
+  tl.tween(witnessU, 1, { at: t - 4.2, dur: 1.4, ease: ease.move });
+  tl.tween(existsTexU, 1, { at: t - 2.6, dur: 0.6, ease: ease.enter });
+  t = tl.hold(t, 0.5);
 
-  /* ---- beat 6: the agent drives a real browser ------------------------- */
-  t = tl.caption({
-    at: t,
-    dur: 5.6,
-    text: 'Inside, the agent drives a real browser: add an item to the cart, go to checkout, fill in the payment details.',
-  });
-  tl.tween(gMachine, 0, { at: t - 5.4, dur: 0.7, ease: ease.move });
-  tl.tween(browserE, 1, { at: t - 4.8, dur: 0.7, ease: ease.enter });
-  tl.tween(stepsU, 3, { at: t - 3.8, dur: 3.4, ease: ease.linear });
-  tl.tween(stripR, 0.55, { at: t - 3.8, dur: 3.6, ease: ease.linear });
-  t = tl.hold(t, 0.4);
-
-  /* ---- beat 7: the tape, growing under everything ---------------------- */
-  t = tl.caption({
-    at: t,
-    dur: 5.6,
-    text: 'And notice the tape. Everything the browser does — every click, every request, every render — is being recorded as it happens.',
-  });
-  tl.tween(stripR, 0.78, { at: t - 5.2, dur: 4.6, ease: ease.linear });
-  t = tl.hold(t, 0.4);
-
-  /* ---- beat 8: submit payment → 500 ------------------------------------ */
   t = tl.caption({
     at: t,
     dur: 6.0,
-    text: 'Step four: submit payment. The request goes out... and comes back a five hundred. Internal server error. The order never happened.',
+    text: 'So a bug report is cheap to accept. Worst case, you go look at that one moment and it is fine. Believing broken costs almost nothing.',
   });
-  tl.tween(stepsU, 4, { at: t - 5.6, dur: 0.8, ease: ease.move });
-  tl.tween(stripR, 1, { at: t - 5.0, dur: 2.2, ease: ease.linear });
-  tl.tween(failU, 1, { at: t - 2.9, dur: 0.6, ease: ease.pop });
+  tl.tween(acceptU, 1, { at: t - 4.6, dur: 0.5, ease: ease.pop });
   t = tl.hold(t, 0.7);
 
-  /* ---- beat 9: the moment is already on tape ---------------------------- */
-  t = tl.caption({
-    at: t,
-    dur: 6.2,
-    text: 'In most QA setups, this is where you’d get the sentence: checkout is broken, trust me. Here, the moment is already on the tape — and the tape outlives the agent.',
-  });
-  tl.tween(recChip, 1, { at: t - 2.8, dur: 0.6, ease: ease.pop });
-  t = tl.hold(t, 0.6);
-
-  /* ---- beat 10: close — the recording is the spine ---------------------- */
+  /* — beat 4 · works is universal: every dot — */
   t = tl.caption({
     at: t,
     dur: 5.8,
-    text: 'This is now test run one of the Acme store, and its recording is the spine of everything that follows. Next: how that tape gets made.',
+    text: 'Now the other sentence. It works is a claim about every moment in this cloud — each one of them has to come out fine.',
   });
-  tl.tween(gBrowser, 0.15, { at: t - 5.4, dur: 0.8, ease: ease.move });
+  tl.tween(cam, CAM_WORKS, { at: t - 5.4, dur: 1.4, ease: ease.move });
+  tl.tween(forallTexU, 1, { at: t - 3.4, dur: 0.6, ease: ease.enter });
+  t = tl.hold(t, 0.5);
+
+  t = tl.caption({
+    at: t,
+    dur: 6.4,
+    text: 'A manual pass turns a few dots green and leaves the rest unexamined. That is why works, fixed, and the run is green are the expensive claims — they need evidence, in bulk.',
+  });
+  tl.tween(checksU, 1, { at: t - 5.8, dur: 2.6, ease: ease.linear });
+  tl.tween(unprovenU, 1, { at: t - 2.6, dur: 0.5, ease: ease.pop });
+  t = tl.hold(t, 0.7);
+
+  /* — beat 5 · the product: a project is a URL — */
+  t = tl.caption({
+    at: t,
+    dur: 5.6,
+    text: 'This asymmetry is the problem LoopQA is built around. A project is just a URL — a web app you point the system at.',
+  });
+  tl.tween(cam, CAM_WIDE, { at: t - 5.2, dur: 1.4, ease: ease.move });
+  tl.tween(existsTexU, 0, { at: t - 5.2, dur: 0.6, ease: ease.move });
+  tl.tween(projU, 1, { at: t - 3.6, dur: 0.7, ease: ease.enter });
+  t = tl.hold(t, 0.6);
+
+  /* — beat 6 · the morph: the cloud becomes a recording — */
+  t = tl.caption({
+    at: t,
+    dur: 6.0,
+    text: 'It sends an agent to walk that app in a real browser — and every run produces a Replay recording of the entire session.',
+  });
+  tl.tween(forallTexU, 0, { at: t - 5.6, dur: 0.6, ease: ease.move });
+  tl.tween(tapeU, 1, { at: t - 4.8, dur: 3.6, ease: ease.linear });
+  t = tl.hold(t, 0.5);
+
+  t = tl.caption({
+    at: t,
+    dur: 5.6,
+    text: 'The moments stop being hypothetical. They are captured, in order, on a tape you can re-open — including the bad one.',
+  });
+  tl.tween(chipU, 1, { at: t - 3.2, dur: 0.6, ease: ease.pop });
+  t = tl.hold(t, 0.6);
+
+  /* — beat 7 · the promise — */
+  t = tl.caption({
+    at: t,
+    dur: 6.2,
+    text: 'So the promise is not we find bugs. The promise is stricter: nothing gets believed working without a recording behind it.',
+  });
+  tl.tween(tapeGlowU, 1, { at: t - 5.6, dur: 1.2, ease: ease.move });
+  t = tl.hold(t, 0.6);
+
+  /* — beat 8 · close, clean — */
+  t = tl.caption({
+    at: t,
+    dur: 5.2,
+    text: 'The tape is the spine of everything that follows. Next: how one run lays it down.',
+  });
+  tl.tween(dimU, 1, { at: t - 4.8, dur: 1.0, ease: ease.move });
+  tl.tween(texFade, 0, { at: t - 4.8, dur: 0.8, ease: ease.move });
+  tl.tween(cam, CAM_CLOSE, { at: t - 4.6, dur: 2.2, ease: ease.move });
   tl.hold(t, 1.2);
 
   return {
     tl,
-    claimE, claimT, stampU, gClaim,
-    poolZ, projZ, poolU, queueE, taskPop, stealU, webhookE, queueConnU, pollU, gMachine,
-    browserE, stepsU, stripR, failU, recChip, gBrowser,
+    cam,
+    brokenE,
+    worksE,
+    cloudU,
+    witnessU,
+    acceptU,
+    existsTexU,
+    forallTexU,
+    checksU,
+    unprovenU,
+    projU,
+    tapeU,
+    tapeGlowU,
+    chipU,
+    texFade,
+    dimU,
   };
 }
 
 const scene = buildScene();
 
+/* -------------------------------------------- per-frame particle compute */
+const IN_SPREAD = 5;
+const TAPE_SPREAD = 0.9;
+const HOP = 24;
+
+const PTS: ParticlePoint[] = Array.from({ length: N }, () => ({
+  x: 0,
+  y: 0,
+  r: 2.4,
+  alpha: 0,
+  color: colors.MUTED,
+}));
+const OUT: ParticlePoint[] = [];
+
+function computeParticles(s: SceneState): ParticlePoint[] {
+  const cu = s.get(scene.cloudU);
+  OUT.length = 0;
+  if (cu <= 0) return OUT;
+  const wu = ease.move(clamp01(s.get(scene.witnessU)));
+  const ck = s.get(scene.checksU);
+  const tp = clamp01(s.get(scene.tapeU));
+
+  for (let i = 0; i < N; i++) {
+    const f = clamp01(cu * (1 + IN_SPREAD) - STAG_IN[i] * IN_SPREAD);
+    if (f <= 0) continue;
+
+    let x = SX[i];
+    let y = SY[i] + 26 * (1 - ease.move(f));
+
+    if (i === WITNESS && wu > 0) {
+      // the witness flies up to the "broken" card
+      x = lerp(x, WITNESS_TARGET.x, wu);
+      y = lerp(y, WITNESS_TARGET.y, wu) - 30 * Math.sin(Math.PI * wu);
+    }
+
+    if (tp > 0) {
+      const u = ease.move(clamp01(tp * (1 + TAPE_SPREAD) - STAG_TAPE[i] * TAPE_SPREAD));
+      if (u > 0) {
+        x = lerp(x, TX[i], u);
+        y = lerp(y, TY[i], u) - HOP * Math.sin(Math.PI * u);
+      }
+    }
+
+    const pt = PTS[i];
+    pt.x = x;
+    pt.y = y;
+    pt.r = i === WITNESS ? 4.2 : 2.4;
+    pt.alpha = 0.85 * Math.min(1, f * 4);
+    if (i === WITNESS && wu > 0.05) {
+      pt.color = colors.NEGATIVE;
+      pt.alpha = 1;
+    } else {
+      const rank = CHECK_RANK.get(i);
+      const checked = rank !== undefined && ck * 14 - rank > 1;
+      pt.color = checked ? colors.POSITIVE : colors.MUTED;
+      if (checked) pt.alpha = 1;
+    }
+    OUT.push(pt);
+  }
+  return OUT;
+}
+
 /* -------------------------------------------------- local subcomponents */
 
-/** The CLAIM stamp — a sentence with nothing behind it. */
-function ClaimStamp({ u }: { u: number }) {
+function ClaimCard({
+  box,
+  text,
+  enter,
+  dim,
+}: {
+  box: { x: number; y: number; w: number; h: number };
+  text: string;
+  enter: number;
+  dim: number;
+}) {
+  const e = clamp01(enter);
+  if (e <= 0) return null;
+  return (
+    <g transform={`translate(${box.x}, ${box.y + (1 - e) * 12})`} opacity={e * (1 - 0.85 * dim)}>
+      <rect width={box.w} height={box.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
+      <text
+        x={box.w / 2}
+        y={box.h / 2 + 7}
+        textAnchor="middle"
+        fill={colors.TEXT}
+        fontSize={21}
+        fontWeight={600}
+      >
+        {text}
+      </text>
+    </g>
+  );
+}
+
+function Stamp({
+  x,
+  y,
+  label,
+  color,
+  u,
+  dim,
+}: {
+  x: number;
+  y: number;
+  label: string;
+  color: string;
+  u: number;
+  dim: number;
+}) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
+  const w = label.length * 11 + 36;
   return (
-    <g
-      transform={`translate(${CLAIM_CARD.x + CLAIM_CARD.w / 2}, ${CLAIM_CARD.y + 46}) rotate(-9) scale(${0.7 + 0.3 * uu})`}
-      opacity={uu}
-    >
-      <rect x={-92} y={-22} width={184} height={44} rx={7} fill={colors.BG} opacity={0.5} />
-      <rect x={-92} y={-22} width={184} height={44} rx={7} fill="none" stroke={colors.WARM} strokeWidth={3.5} />
-      <text y={7} textAnchor="middle" fill={colors.WARM} fontSize={20} fontWeight={800} letterSpacing={3} fontFamily={mono}>
-        CLAIM
+    <g transform={`translate(${x}, ${y}) rotate(-7) scale(${0.7 + 0.3 * uu})`} opacity={uu * (1 - 0.85 * dim)}>
+      <rect x={-w / 2} y={-19} width={w} height={38} rx={6} fill={colors.BG} opacity={0.55} />
+      <rect x={-w / 2} y={-19} width={w} height={38} rx={6} fill="none" stroke={color} strokeWidth={3} />
+      <text y={6} textAnchor="middle" fill={color} fontSize={17} fontWeight={800} letterSpacing={2.5} fontFamily={mono}>
+        {label}
       </text>
     </g>
   );
 }
 
-/** The Acme store checkout page the agent is driving. */
-function AcmeBrowser({ enter, steps, fail }: { enter: number; steps: number; fail: number }) {
-  const e = clamp01(enter);
-  if (e <= 0) return null;
-  const f = clamp01(fail);
-  const { x, y, w, h } = BROWSER;
-  const cartIn = clamp01(steps); // step 1 done → item row
-  const payIn = clamp01(steps - 2); // step 3 done → card row
-  const submitted = clamp01(steps - 3);
+/** The project card — a project is a URL (AppSpec: projects.target_url). */
+function ProjectCard({ u, dim }: { u: number; dim: number }) {
+  const uu = clamp01(u);
+  if (uu <= 0) return null;
+  const { x, y, w, h } = PROJ_CARD;
   return (
-    <g transform={`translate(${x}, ${y + (1 - e) * 14})`} opacity={e}>
-      <rect width={w} height={h} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-      {/* URL bar */}
-      <rect x={14} y={12} width={w - 28} height={28} rx={14} fill={colors.BG} opacity={0.6} />
-      <circle cx={30} cy={26} r={4} fill={colors.MUTED} opacity={0.7} />
-      <text x={46} y={31} fill={colors.MUTED} fontSize={12.5} fontFamily={mono}>
-        acme-store.example.com/checkout
+    <g transform={`translate(${x}, ${y + (1 - uu) * 12})`} opacity={uu * (1 - 0.85 * dim)}>
+      <rect width={w} height={h} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} opacity={0.95} />
+      <text x={20} y={30} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+        project
       </text>
-      <text x={22} y={74} fill={colors.TEXT} fontSize={16} fontWeight={700}>
-        Checkout
+      <text x={20} y={56} fill={colors.TEXT} fontSize={17} fontWeight={700}>
+        Acme Online Store
       </text>
-      <g opacity={cartIn}>
-        <text x={22} y={106} fill={colors.MUTED} fontSize={13.5}>
-          1 × Laptop
-        </text>
-        <text x={w - 22} y={106} textAnchor="end" fill={colors.TEXT} fontSize={13.5} fontFamily={mono}>
-          $1,299.00
-        </text>
-      </g>
-      <g opacity={payIn}>
-        <text x={22} y={136} fill={colors.MUTED} fontSize={13.5}>
-          card
-        </text>
-        <text x={w - 22} y={136} textAnchor="end" fill={colors.TEXT} fontSize={13.5} fontFamily={mono}>
-          •••• •••• •••• 4242
-        </text>
-      </g>
-      <line x1={22} y1={156} x2={w - 22} y2={156} stroke={colors.GRID} strokeWidth={1.5} />
-      {/* Submit Payment — bug-002's step 4 */}
-      <rect x={22} y={172} width={w - 44} height={40} rx={9} fill={colors.ACCENT} opacity={0.2 + 0.15 * submitted} />
-      <rect x={22} y={172} width={w - 44} height={40} rx={9} fill="none" stroke={colors.ACCENT} strokeWidth={1.5} />
-      <text x={w / 2} y={197} textAnchor="middle" fill={colors.ACCENT} fontSize={14.5} fontWeight={700}>
-        Submit Payment
+      <text x={20} y={80} fill={colors.ACCENT} fontSize={12.5} fontFamily={mono}>
+        target_url: https://acme-store.example.com
       </text>
-      {/* the 500 — the seeded actual_behavior, verbatim */}
-      {f > 0 && (
-        <g transform={`translate(22, ${224 + (1 - f) * 8})`} opacity={f}>
-          <rect width={w - 44} height={36} rx={8} fill={colors.NEGATIVE} opacity={0.14} />
-          <rect width={w - 44} height={36} rx={8} fill="none" stroke={colors.NEGATIVE} strokeWidth={1.6} />
-          <text x={16} y={23} fill={colors.NEGATIVE} fontSize={14} fontWeight={700} fontFamily={mono}>
-            500 Internal Server Error
-          </text>
-        </g>
-      )}
+      <text x={20} y={100} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+        id: proj-acme-store
+      </text>
     </g>
   );
 }
 
-/** The journey checklist — bug-002's reproduction steps, checked off live. */
-function JourneyChecklist({ enter, steps, fail }: { enter: number; steps: number; fail: number }) {
-  const e = clamp01(enter);
-  if (e <= 0) return null;
-  const f = clamp01(fail);
-  const { x, y, w } = STEPS_PANEL;
-  return (
-    <g transform={`translate(${x}, ${y})`} opacity={e}>
-      <text y={-8} fill={colors.MUTED} fontSize={11.5}>
-        journey steps
-      </text>
-      {JOURNEY_STEPS.map((label, i) => {
-        const done = clamp01(steps - i);
-        const isFail = i === 3 && f > 0.3;
-        const color = isFail ? colors.NEGATIVE : done > 0.5 ? colors.POSITIVE : colors.MUTED;
-        return (
-          <g key={label} transform={`translate(0, ${i * 28})`}>
-            <circle cx={8} cy={8} r={7} fill="none" stroke={color} strokeWidth={1.8} />
-            {done > 0.5 && !isFail && (
-              <path d="M 4.5 8 l 2.5 3 l 4.5 -6" fill="none" stroke={colors.POSITIVE} strokeWidth={2} strokeLinecap="round" strokeLinejoin="round" />
-            )}
-            {isFail && (
-              <g stroke={colors.NEGATIVE} strokeWidth={2} strokeLinecap="round">
-                <line x1={5.5} y1={5.5} x2={10.5} y2={10.5} />
-                <line x1={10.5} y1={5.5} x2={5.5} y2={10.5} />
-              </g>
-            )}
-            <text x={24} y={12} fill={done > 0.5 ? colors.TEXT : colors.MUTED} fontSize={12} fontFamily={mono}>
-              {label.length > 22 ? label.slice(0, 22) : label}
-            </text>
-            {i < JOURNEY_STEPS.length - 1 && <line x1={8} y1={17} x2={8} y2={26} stroke={colors.GRID} strokeWidth={1} />}
-          </g>
-        );
-      })}
-      <rect x={-10} y={-22} width={w + 10} height={JOURNEY_STEPS.length * 28 + 22} rx={9} fill="none" stroke={colors.GRID} strokeWidth={1} opacity={0.5} />
-    </g>
-  );
-}
-
-/** The recording-id chip — the tape now has a name. */
+/** The recording-id chip — the tape now has a name it can be cited by. */
 function RecordingChip({ u }: { u: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
-  const label = `recording ${RECORDING_ID}…`;
-  const w = label.length * 6.8 + 26;
+  const label = 'replay_recording_id: b5f2a3c1-7d4e…';
+  const w = label.length * 6.6 + 28;
   return (
-    <g transform={`translate(${REC_CHIP.x}, ${REC_CHIP.y + (1 - uu) * 8})`} opacity={uu}>
-      <rect x={-w / 2} y={-13} width={w} height={26} rx={13} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.6} />
-      <circle cx={-w / 2 + 14} r={4.5} fill={colors.NEGATIVE} />
-      <text x={8} y={4.5} textAnchor="middle" fill={colors.SECONDARY} fontSize={11.5} fontWeight={700} fontFamily={mono}>
+    <g transform={`translate(${CHIP.x}, ${CHIP.y + (1 - uu) * 8})`} opacity={uu}>
+      <rect x={-w / 2} y={-13} width={w} height={26} rx={13} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.5} />
+      <circle cx={-w / 2 + 14} r={4} fill={colors.NEGATIVE} />
+      <text x={7} y={4.5} textAnchor="middle" fill={colors.SECONDARY} fontSize={11.5} fontWeight={700} fontFamily={mono}>
         {label}
       </text>
     </g>
@@ -346,129 +396,79 @@ function RecordingChip({ u }: { u: number }) {
 
 /* ------------------------------------------------------------ the frame */
 function renderFrame(s: SceneState) {
-  const gClaim = s.get(scene.gClaim);
-  const gMachine = s.get(scene.gMachine);
-  const gBrowser = s.get(scene.gBrowser);
-  const steal = s.get(scene.stealU);
-  const taskPop = s.get(scene.taskPop);
-  const poolU = s.get(scene.poolU);
-  const projZ = s.get(scene.projZ);
-
-  // the stolen container rides from its pool slot into the project zone
-  const stolen = POOL_SLOTS[2];
-  const workerX = lerp(stolen.x, WORKER.x, steal);
-  const workerY = lerp(stolen.y, WORKER.y, steal);
+  const dim = clamp01(s.get(scene.dimU));
+  const texF = clamp01(s.get(scene.texFade));
+  const tapeGlow = clamp01(s.get(scene.tapeGlowU));
+  const tp = clamp01(s.get(scene.tapeU));
 
   return (
     <>
-      {/* beat 1 — the bare claim */}
-      {gClaim > 0.002 && (
-        <g opacity={gClaim}>
-          <MessageCard
-            x={CLAIM_CARD.x}
-            y={CLAIM_CARD.y}
-            w={CLAIM_CARD.w}
-            role="assistant"
-            text={CLAIM_TEXT}
-            u={s.get(scene.claimT)}
-            enter={s.get(scene.claimE)}
-          />
-          <ClaimStamp u={s.get(scene.stampU)} />
-        </g>
-      )}
-
-      {/* beats 2–5 — the dispatch machine */}
-      {gMachine > 0.002 && (
-        <g opacity={gMachine}>
-          <Zone {...POOL} label="warm pool · role='pool'" kind="group" u={s.get(scene.poolZ)} />
-          {POOL_SLOTS.map((p, i) => {
-            const cu = clamp01(poolU * 3 - i);
-            if (i === 2 && steal > 0.001) return null; // this one is being stolen
-            return <ServiceNode key={i} x={p.x} y={p.y} kind="server" label={`pool-${i + 1}`} w={92} u={cu} dim={0.35} labelSize={11} />;
-          })}
-          <ServiceNode
-            x={QUEUE.x}
-            y={QUEUE.y}
-            kind="queue"
-            label="tasks"
-            sublabel="test_run_id: run-001"
-            u={s.get(scene.queueE)}
-            glow={0.6 * taskPop * (1 - steal)}
-          />
-          <ServiceNode
-            x={WEBHOOK.x}
-            y={WEBHOOK.y}
-            kind="fn"
-            label="container-task-webhook"
-            sublabel="claimNextTask()"
-            u={s.get(scene.webhookE)}
-          />
-          <Connection
-            from={{ x: QUEUE.x, y: QUEUE.y + 34 }}
-            to={{ x: WEBHOOK.x, y: WEBHOOK.y - 34 }}
-            u={s.get(scene.queueConnU)}
-            dashed
-            label="FOR UPDATE SKIP LOCKED"
-            labelSize={10}
-          />
-          {/* the poll: worker → webhook → worker, task handed back */}
-          <RequestFlow
-            path={[
-              { x: workerX, y: workerY + 36 },
-              { x: WEBHOOK.x + 120, y: WEBHOOK.y },
-            ]}
-            u={s.get(scene.pollU)}
-            roundTrip
-            label="poll"
-            responseLabel="task: run-001"
-            color={colors.ACCENT}
-            responseColor={colors.POSITIVE}
-          />
-        </g>
-      )}
-
-      {/* the project zone + its bound worker persist into the browser phase */}
-      {(gMachine > 0.002 || gBrowser > 0.002) && projZ > 0.002 && (
-        <g opacity={Math.max(gMachine, gBrowser * 0.999)}>
-          <Zone {...PROJ} label="proj-acme-store · Acme Online Store" kind="group" u={projZ} color={colors.SECONDARY} />
-          {(steal > 0.001 || poolU > 0.66) && (
-            <ServiceNode
-              x={workerX}
-              y={workerY}
-              kind="server"
-              label={steal > 0.6 ? 'worker' : 'pool-3'}
-              w={lerp(92, 172, steal)}
-              sublabel={steal > 0.6 ? 'ghcr.io/replayio/app-building' : undefined}
-              u={1}
-              glow={0.5 * steal * (1 - s.get(scene.browserE))}
-              labelSize={12}
-            />
-          )}
-        </g>
-      )}
-
-      {/* beats 6–10 — the run + the growing tape */}
-      {gBrowser > 0.002 && (
-        <g opacity={gBrowser}>
-          <AcmeBrowser enter={s.get(scene.browserE)} steps={s.get(scene.stepsU)} fail={s.get(scene.failU)} />
-          <JourneyChecklist enter={s.get(scene.browserE)} steps={s.get(scene.stepsU)} fail={s.get(scene.failU)} />
-        </g>
-      )}
-      <RecordingStrip
-        x={STRIP.x}
-        y={STRIP.y}
-        w={STRIP.w}
-        h={STRIP.h}
-        points={POINTS}
-        reveal={s.get(scene.stripR)}
-        title="the tape — recorded as it happens"
+      <ClaimCard box={BROKEN} text={'“The checkout is broken.”'} enter={s.get(scene.brokenE)} dim={dim} />
+      <ClaimCard box={WORKS} text={'“The checkout works.”'} enter={s.get(scene.worksE)} dim={dim} />
+      <Stamp
+        x={BROKEN.x + BROKEN.w - 66}
+        y={BROKEN.y + BROKEN.h - 12}
+        label="BELIEVED"
+        color={colors.POSITIVE}
+        u={s.get(scene.acceptU)}
+        dim={dim}
       />
-      <RecordingChip u={s.get(scene.recChip)} />
+      <Stamp
+        x={WORKS.x + WORKS.w - 70}
+        y={WORKS.y + WORKS.h - 12}
+        label="UNPROVEN"
+        color={colors.WARM}
+        u={s.get(scene.unprovenU)}
+        dim={dim}
+      />
+
+      {/* the persistent object: 340 moments — cloud, then tape */}
+      <ParticleCloud state={s} compute={computeParticles} />
+
+      {/* tape frame + glow, once the morph has formed it */}
+      {tp > 0.55 && (
+        <g opacity={clamp01((tp - 0.55) * 4)}>
+          <rect
+            x={TAPE.x - 12}
+            y={TAPE.y - 12}
+            width={TAPE.w + 24}
+            height={TAPE.rows * TAPE.rowGap + 16}
+            rx={9}
+            fill="none"
+            stroke={tapeGlow > 0 ? colors.WARM : colors.GRID}
+            strokeWidth={1.5 + tapeGlow}
+            opacity={0.5 + 0.5 * tapeGlow}
+          />
+          <text x={TAPE.x - 12} y={TAPE.y - 22} fill={colors.MUTED} fontSize={12}>
+            the recording — every moment, in order
+          </text>
+        </g>
+      )}
+
+      <MathLabel
+        tex={'\\exists\\,t:\\ \\mathrm{fail}(t)'}
+        x={BROKEN.x + BROKEN.w / 2}
+        y={BROKEN.y + BROKEN.h + 96}
+        fontSize={22}
+        color={colors.NEGATIVE}
+        opacity={s.get(scene.existsTexU) * texF}
+      />
+      <MathLabel
+        tex={'\\forall\\,t:\\ \\mathrm{pass}(t)'}
+        x={WORKS.x + WORKS.w / 2}
+        y={WORKS.y + WORKS.h + 56}
+        fontSize={22}
+        color={colors.WARM}
+        opacity={s.get(scene.forallTexU) * texF}
+      />
+
+      <ProjectCard u={s.get(scene.projU)} dim={dim} />
+      <RecordingChip u={s.get(scene.chipU)} />
     </>
   );
 }
 
 export function Render({ s }: { s: SceneState }) {
-  return renderFrame(s);
+  return <Camera {...s.get(scene.cam)}>{renderFrame(s)}</Camera>;
 }
 export const vizScene = () => scene;

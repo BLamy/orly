@@ -20,4 +20,4 @@ const meta: Meta<typeof Chapter4> = {
 };
 export default meta;
 
-export const TheGauntlet: StoryObj<typeof Chapter4> = {};
+export const AFindingCarriesItsProof: StoryObj<typeof Chapter4> = {};

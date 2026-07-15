@@ -20,4 +20,4 @@ const meta: Meta<typeof Chapter2> = {
 };
 export default meta;
 
-export const TapeEverything: StoryObj<typeof Chapter2> = {};
+export const EveryRunIsARecording: StoryObj<typeof Chapter2> = {};

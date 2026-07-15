@@ -635,6 +635,7 @@
   min-height: 0;
   display: flex;
   flex-direction: column;
+  position: relative; /* contains the absolutely-positioned .bp-player */
 }
 
 .bp-side {
