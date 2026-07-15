@@ -156,11 +156,27 @@ do NOT modify core/ or primitives/ in a scene PR.
   `<Player audio={{ url: '/viz-audio/<slug>.mp3', cues }} ...>` — the MP3
   becomes the playback clock and cues retime captions to the recording.
 
-## Using scenes in BOOKS (the orly play surface) — v2 contract
+## Using scenes in BOOKS (the orly play surface) — v3 contract
 
-**Every generated book's chapters carry a custom-authored scene as their
-PRIMARY visual.** A manifest/storyboard step with `viz: { "scene": "<slug>",
-"beat": <i> }` renders the scene *instead of* the D3 diagram for that step.
+**The scene IS the video.** A book chapter is exactly one authored scene at
+`src/viz/books/<bookSlug>/chapter-<n>.tsx`; there is no D3 diagram anymore.
+`generator/video.mjs` extracts the scene's captions, narrates them with
+ElevenLabs (one MP3 per chapter), and the book player plays the scene with the
+MP3 as the clock — captions retimed to the recording and shown as CC.
+
+Because of that, in book scenes **captions ARE the narration script**:
+- One caption = one spoken line. Full natural sentences (1–2 per caption,
+  ≤ ~220 chars), written for the EAR: no markdown, no literal paths/symbols,
+  expand identifiers into words. Put exact code in on-screen labels instead.
+- A chapter is typically 8–16 captions and 60–120s of timeline.
+- Caption `at`/`dur` pace the silent scrub; the narration cues re-time them at
+  playback, so leave breathing room (`tl.hold`) after each beat.
+- **Clean endings:** never draw a closing beat over half-faded content — fade
+  prior elements to ≤ 0.15, slide them off, or back the closing text with an
+  opaque panel. The player's CC pill covers the bottom strip, so keep y ≳ 630
+  free of load-bearing content.
+- Add a colocated `chapter-<n>.stories.tsx` (CSF3, title
+  `'Books/<Title>/Chapter <n>'`) so the chapter scrubs in the Motion panel.
 
 ### Book-local single-file scenes
 
@@ -185,11 +201,11 @@ export function buildScene() {
   const vaultU = tl.channel('vaultU', 0);
   const connU = tl.channel('connU', 0);
 
-  // BEAT 0 — caption text ≈ step 1's displayNarration (captions define beats)
+  // BEAT 0 — the caption IS the spoken line (full sentence, written for the ear)
   tl.caption({ at: 0.3, dur: 4, text: 'The CLI writes its credentials file.' });
   tl.tween(cliU, 1, { at: 0.5, dur: 0.7, ease: ease.enter });
 
-  // BEAT 1 — caption text ≈ step 2's displayNarration
+  // BEAT 1 — one caption per beat; exact code goes in on-screen labels
   tl.caption({ at: 5.0, dur: 4, text: 'registerSlot() routes it into the vault.' });
   tl.tween(vaultU, 1, { at: 5.2, dur: 0.7, ease: ease.enter });
   tl.tween(connU, 1, { at: 6.0, dur: 1.2, ease: ease.draw });
@@ -212,29 +228,19 @@ export const vizScene = () => scene;
 ```
 
 (Add a `.stories.tsx` beside it — the Storybook glob covers `src/viz/**`, and
-the /new-book verify stage scrubs each beat in the Motion panel; the book
+the /new-book verify stage scrubs each chapter in the Motion panel; the book
 player itself needs only the two exports above.)
 
-### The beat contract
+### The narration contract (v3)
 
-- **captions = beats.** `tl.beats` is the list of caption START times. Write
-  exactly ONE caption per non-cover storyboard step, in step order: step i's
-  `viz.beat` = i (0-based among the chapter's non-cover steps) ↔ caption i.
-- **Caption text is a distilled echo of the step's `displayNarration`** —
-  at most 90 characters, one idea, never the narration pasted verbatim.
-  Captions are SUPPRESSED in the book player (the narration panel owns the
-  words), but they define the beats and keep the scene Motion-editable/
-  narratable in Storybook.
-- **Beat-window time mapping** (`src/engine/VizStepView.tsx`): with `beat: b`,
-  the step plays `[beats[b], beats[b+1] ?? tl.duration]`; the step's progress
-  fraction f (audio cue window, or dwell when muted) samples
-  `beatStart + f × (beatEnd − beatStart)`. Out-of-range beats clamp to the
-  last window with a console.warn. Omit `beat` and the WHOLE timeline is
-  time-scaled onto the one step (the usual mode for catalog-scene reuse).
-- **ElevenLabs over visuals — never add audio to the scene.** Each chapter is
-  ONE continuous ElevenLabs MP3; per-step cues stretch each beat's window.
-  Do not run `viz:narrate`/`Player audio` for book scenes; the book supplies
-  the voice.
+- **captions = the script.** `generator/video.mjs` reads the scene's captions
+  in order and synthesizes them as the chapter's voiceover; the manifest's
+  `cues` array records where each caption's first word lands in the MP3, and
+  the player re-times caption display to those cues (the MP3 is the clock).
+- **Never add audio inside the scene itself.** Do not run `viz:narrate` or
+  pass `Player audio` in the scene/story — the book pipeline supplies the
+  voice at build time; the Storybook story plays silent (or with the Motion
+  panel's free voice toggle while iterating).
 
 ### Quality bar checklist (a scene ships only if all hold)
 

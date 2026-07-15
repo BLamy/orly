@@ -1,107 +1,109 @@
 ---
-description: Generate a new O'RLY explainer "book" from a repo + subsystem and publish it to the shelf
+description: Generate a scene-native (3b1b-quality) video book from a repo + subsystem and publish it to the shelf
 ---
 
-# /new-book — add a book to the O'RLY shelf
+# /new-book — add a scene-native video book to the O'RLY shelf
 
-Turn a GitHub repo (or local path) + a subsystem into a narrated, animated D3
-explainer with an O'RLY‑parody cover, and publish it to https://orly.brett-lamy.workers.dev/.
+Turn a GitHub repo (or local path) + a subsystem into a narrated **3b1b-quality
+video**: every chapter IS one custom-authored 3b1bd3 timeline scene, voiced by
+ElevenLabs, bound as an O'RLY-parody book on
+https://orly.brett-lamy.workers.dev/. There is no diagram slideshow anymore —
+the scenes are the whole video, so their quality is the product.
 
 **Arguments:** `$ARGUMENTS` — ideally `<repo-url-or-path> | <subsystem prompt> [| <short title>] [| <animal>]`.
 If they're missing or unclear, ask the user for the repo and which subsystem to explain.
 
-Keys come from the gitignored `.env` (`ELEVENLABS_API_KEY`, `OPENAI_API_KEY`,
-`NOUN_PROJECT_KEY/SECRET`). The storyboard is written by **you (Claude Code)** —
-no `ANTHROPIC_API_KEY` needed.
+Keys come from the gitignored `.env` (`ELEVENLABS_API_KEY`, `OPENAI_API_KEY`).
+The planning and the scenes are written by **you (Claude Code)**.
 
-## Steps
+## Steps — VISUALIZATIONS FIRST, video second
 
-1. **Pick a slug** (kebab‑case, unique) and a short cover **title** (e.g. "Koa.js").
+1. **Pick a slug** (kebab-case, unique) and a short cover **title**.
 
-2. **Digest the repo** with the real pipeline (don't hand‑roll it):
+2. **Digest the repo** with the real pipeline (don't hand-roll it):
    ```bash
    node -e "import('./generator/repo.mjs').then(m=>{const d=m.acquireAndDigest({repo:process.argv[1],prompt:process.argv[2]});require('fs').writeFileSync('/tmp/nb-digest.txt',d.digest);console.error('digest:',d.chosen.length,'files,',d.digest.length,'chars');})" "<REPO>" "<SUBSYSTEM PROMPT>"
    ```
 
-3. **Write the storyboard.** Read `generator/prompts/storyboard.txt` (the system
-   prompt — obey every rule) and `generator/storyboard.schema.json` (conform
-   exactly), plus `/tmp/nb-digest.txt`. Ground EVERYTHING in the digest (real
-   file/function/type names). Optionally also set each node's `iconTerm` (e.g.
-   "key", "database", "clock") and a `iconTerm` on auth/data messages.
-   **The primary visual of every chapter is a custom-authored 3b1b scene**
-   (prompt section "VIZ SCENES"): plan ONE scene per chapter at
-   `books/<SLUG>/chapter-<n>` and put `viz: {"scene": "books/<SLUG>/chapter-<n>",
-   "beat": <i>}` on EVERY non-cover step, `<i>` = the step's 0-based position
-   among the chapter's non-cover steps. Diagram-only steps are for beats where
-   boxes-and-arrows teach best; a prebuilt catalog scene
-   (`generator/viz-catalog.json`) may ALSO be embedded (usually without `beat`)
-   when the code genuinely uses that concept. A book with zero authored scenes
-   is a failed storyboard unless explicitly justified.
-   Write the JSON to `/tmp/nb-storyboard.json`, then validate + auto‑fix layout:
+3. **PLAN THE VISUALIZATIONS** — this is the storyboard now. Read
+   `generator/prompts/storyboard.txt` (the v3 authoring doctrine — obey every
+   rule) and the digest. Then write a **visual plan** (a scratch markdown file
+   is fine) before any code:
+   - 3–6 chapters, each built around ONE visual idea that teaches the chapter's
+     concept the way 3blue1brown would — a machine you can watch working, not a
+     bulleted diagram. Name the concrete metaphor per chapter ("the diff held
+     against the recording, hunk by hunk", "a wavefront flooding the graph").
+   - For each chapter: the beat sheet — 5–10 beats, what enters/moves/changes
+     per beat, and the narration line(s) each beat carries.
+   - Inventory what you can reuse: `src/viz/primitives/` (Zone, ServiceNode,
+     Connection, RequestFlow, Axes, FunctionPlot, MatrixGrid, ParticleCloud…),
+     `src/viz/agent/` (MessageCard, TokenStream, GauntletRail, DiffLanes,
+     RecordingStrip, LoopRing…), and prebuilt explainers in
+     `src/viz/explainers/` (embeddable by slug). If a chapter needs a visual
+     vocabulary that doesn't exist yet, DESIGN it as local subcomponents in the
+     scene file — and note in the PR if it deserves promotion to primitives.
+   - Ground EVERYTHING in the digest: real file/function/type names in captions
+     and visuals. No invented components or flows.
+
+4. **AUTHOR THE SCENES** — the video itself. Use the `viz-scene` skill
+   (`.claude/skills/viz-scene/SKILL.md`, "Using scenes in BOOKS — v3"). One
+   file per chapter: `src/viz/books/<SLUG>/chapter-<n>.tsx` (layout data +
+   `buildScene()` + `Render({s})` + `vizScene()`; auto-registered by glob).
+   - **Captions ARE the narration.** Each `tl.caption({at, dur, text})` is one
+     spoken line: full, natural sentences (1–2 per caption, ≤ ~220 chars),
+     written for the EAR — no markdown, no paths-read-literally, expand
+     identifiers ("registering a slot", not `registerSlot()`); on-screen labels
+     can carry the exact code. A chapter is typically 8–16 captions / 60–120s.
+   - **Study 2–3 exemplars** under `src/viz/explainers/` first (e.g.
+     `kalman/`, `pagerank/`, `differential-dataflow/`) — that is the quality
+     bar: beat-sheet comments, motion language, restraint.
+   - **Keep the stage clean, especially at the end.** Never draw a closing
+     beat's text or elements on top of half-faded content: either fade prior
+     elements to ≤ 0.15 opacity (not 0.4), slide them off, or give the closing
+     text an opaque backdrop panel. A congested final frame is a failed scene.
+   - Deterministic and scrub-safe: no `Math.random()`/`Date.now()`; heavy math
+     precomputed at module scope. The player renders captions as a CC pill over
+     the stage bottom, so keep y ≳ 630 free of load-bearing content.
+   - Add a colocated `chapter-<n>.stories.tsx` per chapter (CSF3, title
+     `'Books/<Title>/Chapter <n>'`) so every chapter is scrubbable in
+     Storybook's Motion panel.
+
+5. **Verify the scenes before narrating** (narration costs money):
+   `npx tsc --noEmit` clean · `npm run build` green · run
+   `npm run storybook` and scrub every chapter start-to-end in the Motion
+   panel — every slider position must render correctly (state leaks show up as
+   frames that only look right when played from 0). Fix the beat sheet until
+   the story reads without audio.
+
+6. **Build the video** (ElevenLabs narration per chapter + O'RLY cover +
+   manifest + shelf):
    ```bash
-   node -e "import('./generator/validate.mjs').then(m=>{const fs=require('fs');const sb=JSON.parse(fs.readFileSync('/tmp/nb-storyboard.json','utf8'));const v=m.validateStoryboard(sb);fs.writeFileSync('/tmp/nb-storyboard.json',JSON.stringify(sb,null,2));console.log(JSON.stringify(v))})"
+   node generator/video.mjs --slug "<SLUG>" --title "<TITLE>" \
+     --chapter-titles "t1|t2|…" --blurbs "b1|b2|…"
    ```
-   Fix every error and re‑validate — EXCEPT the "no scene file" hard errors for
-   your `books/...` scenes, which are expected until step 4 authors them.
-   *(For higher quality you may instead run a Workflow that generates the
-   storyboard and adversarially verifies its fidelity to the code — see the
-   koa-storyboard-test workflow as a template.)*
+   This extracts each chapter's captions, narrates them (one MP3 per chapter,
+   exact per-caption cues), generates the O'RLY-parody cover (gpt-image seeded
+   + vision QA loop), writes `public/generated/<SLUG>/manifest.json`
+   (format 3), and upserts the book into `public/generated/library.json`.
 
-4. **AUTHOR THE SCENES** (the chapters' primary visuals — do NOT skip to the
-   build). Follow `.claude/skills/viz-scene/SKILL.md` ("Using scenes in BOOKS"):
-   1. **Study 2–3 relevant exemplar explainers** under `src/viz/explainers/`
-      first — e.g. `almostnode-server/` (architecture/relay story) and
-      `differential-dataflow/` (algorithmic story), each `scene.ts` + component.
-      They are the quality bar: beat-sheet structure, arch/agent primitives
-      (`Zone`/`ServiceNode`/`Connection`/`RequestFlow`), `MathLabel` for math,
-      the motion-language durations, and restraint.
-   2. **Write `src/viz/books/<SLUG>/chapter-<n>.tsx`** for each chapter — a
-      single-file scene (layout data + `buildScene()` + `Render({s})` +
-      `vizScene()` exports in one .tsx): one caption per non-cover step whose
-      text mirrors that step's `displayNarration` (captions define the beats),
-      channels for everything that moves, deterministic (no `Math.random()`/
-      `Date.now()`), bottom ~12% of the 1280×720 stage kept clear. It is
-      auto-registered by glob — no edit to `src/viz/scenes.ts`.
-   3. **Wire `viz: {scene, beat}` into the storyboard steps** (if not already
-      done in step 3) — beat `<i>` per non-cover step, in order.
-   4. **Verify**: `npx tsc --noEmit` is clean, `npm run build` is green, the
-      step-3 validator now returns `ok:true` with the scene files present, AND
-      each scene scrubs correctly in the Storybook **Motion** panel: add a
-      colocated `.stories.tsx` (the glob covers `src/viz/**`), run
-      `npm run storybook`, and drag through every beat — each caption window
-      must render its beat's state at ANY slider position (state leaks show up
-      as frames that only look right when played from 0).
-
-      When this runs **in CI** (the issue → book pipeline), the workflow ALSO
-      browser-verifies the finished book automatically after you're done:
-      `generator/verify-book.mjs` plays every chapter in headless Chromium,
-      asserts a clean console and that the authored viz scene is mounted where
-      the manifest declares it, and screenshots each chapter to
-      `public/generated/<slug>/previews/chapter-<n>.png` — those PNGs are
-      committed with the book and ship on the PR. That gate is a backstop, not
-      a substitute: still run `npx tsc --noEmit`, `npm run build`, and the
-      validator yourself before finishing.
-
-5. **Build the book** (TTS + cover + icons + library), no browser:
+7. **Verify the built book end-to-end**:
    ```bash
-   node generator/cli.mjs --storyboard /tmp/nb-storyboard.json --slug "<SLUG>" --title "<TITLE>" --prompt "<SUBSYSTEM PROMPT>"
+   npm run build && node generator/verify-book.mjs --slug "<SLUG>"
    ```
-   This narrates each chapter (ElevenLabs, exact cues), generates an O'RLY‑parody
-   cover (gpt‑image animal **seeded** by a random parody cover + a vision **QA
-   loop** that rejects any real‑publisher/stray text), fetches Noun Project icons
-   for nodes + packets, and upserts the book into `public/generated/library.json`.
+   Every chapter must play in headless Chromium with a clean console, the
+   scene mounted, and a mid-chapter screenshot written to
+   `public/generated/<SLUG>/previews/`.
 
-6. **Publish** (triggers the Pages redeploy — the authored scenes ship with the
-   book, so add BOTH paths):
+8. **Publish** (the scenes ship with the book — add BOTH paths):
    ```bash
    git add public/generated src/viz/books && git commit -m "book: <TITLE>" && git push
    ```
 
-7. Tell the user the live URL: `https://orly.brett-lamy.workers.dev/?bundle=<SLUG>`
-   (and optionally open it locally with `npm run dev` + `?bundle=<SLUG>`).
+9. Tell the user the live URL: `https://orly.brett-lamy.workers.dev/?bundle=<SLUG>`.
 
 ## Rules
 - **Never** show the real publisher "O'Reilly" anywhere — only the parody "O'RLY?".
-  The cover chrome is composited in‑browser (you control the text); the gpt‑image
-  step's QA loop guards against stray lettering in the animal.
-- Keep it grounded: no invented components, files, or data flows.
+- **Ground everything in real code** — no invented components, files, or flows;
+  captions cite behavior the digest shows.
+- **A book with weak scenes is a failed book.** If a chapter's visual idea is
+  just "boxes and arrows appear", redesign it before authoring.

@@ -117,3 +117,14 @@ export async function auditAnimal(path, apiKey = process.env.OPENAI_API_KEY) {
   const b64 = readFileSync(path).toString('base64');
   return (await qaClean(b64, apiKey)) ? 'CLEAN' : 'DIRTY';
 }
+
+/**
+ * Downscale a full-size cover PNG to the committed WebP thumbnail. The PNG is
+ * a multi-MB gpt-image artifact and stays OUT of git (see .gitignore); only
+ * the ~tens-of-KB webp ships with the book and renders on the shelf.
+ */
+export async function thumbnailAnimal(pngPath, webpPath, width = 512) {
+  const { default: sharp } = await import('sharp');
+  await sharp(pngPath).resize({ width, withoutEnlargement: true }).webp({ quality: 82 }).toFile(webpPath);
+  return webpPath;
+}

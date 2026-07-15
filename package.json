@@ -40,6 +40,7 @@
     "storybook": "^10.4.6",
     "typescript": "^5.5.4",
     "vite": "^5.4.0",
-    "wrangler": "^4.103.0"
+    "wrangler": "^4.103.0",
+    "sharp": "^0.34.5"
   }
 }

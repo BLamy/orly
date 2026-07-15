@@ -15,41 +15,32 @@ description. Parse the `<slug>` from the dropdown selection.
 Keys come from `.env` locally or CI env (`ELEVENLABS_API_KEY`, `OPENAI_API_KEY`,
 `NOUN_PROJECT_KEY/SECRET`).
 
-## The book's files
-`public/generated/<slug>/` holds `storyboard.json` (the editable source),
-`manifest.json` (what the app reads), `audio/chapter-N.mp3`, and `animal.png`.
-`public/generated/library.json` has the shelf entry (title, subtitle, color,
-series, chapters). Keep storyboard.json and manifest.json consistent.
+## The book's files (v3 — scene-native)
+`src/viz/books/<slug>/chapter-<n>.tsx` are the editable sources — each chapter
+IS one authored 3b1bd3 scene whose captions are the narration script.
+`public/generated/<slug>/` holds the built artifacts: `manifest.json`
+(format 3: per-chapter scene id, audio path, cues, duration),
+`audio/chapter-N.mp3`, `animal.webp` (the committed cover thumbnail; the
+full-size `animal.png` is a gitignored local artifact), and `previews/`.
+`public/generated/library.json` has the shelf entry.
 
 ## Pick the smallest change that does the job
 
-- **Reword narration / fix a step / relabel a node / adjust a diagram in one
-  chapter** → edit that chapter in `storyboard.json` (`spoken` is the TTS script,
-  `displayNarration` carries the rich `code`), then rebuild just that chapter:
+- **Reword narration / change what a beat shows** → edit the chapter scene
+  (`src/viz/books/<slug>/chapter-<n>.tsx`: captions for the voice, channels/
+  render for the visuals), then rebuild the book's audio + manifest:
   ```bash
-  node generator/regen-chapter.mjs <slug> <N>          # re-narrates chapter N
-  node generator/regen-chapter.mjs <slug> <N> --no-tts # keep audio (label/layout-only change)
+  node generator/video.mjs --slug <slug> --title "<existing title>"     --chapter-titles "…" --blurbs "…"          # re-narrates every chapter
   ```
-  Use `--no-tts` only when `spoken` text and the step count are unchanged.
+  (Narration is per-chapter MP3s; there is no per-chapter regen yet — keep the
+  edit small and re-run the build.)
+- **Visual-only change (no caption text touched)** → edit the scene and re-run
+  with `--no-tts` — existing MP3s and cues stay; only the manifest rewrites.
+- **Cover** → `node generator/video.mjs --slug <slug> --title "…" --no-tts`
+  after deleting `animal.png`/`animal.webp`, or regenerate with an `--animal`
+  hint. The webp thumbnail is what ships.
+- **Shelf metadata (title/subtitle/color)** → library.json via video.mjs flags.
 
-- **Swap / redo the cover animal** → regenerate just the animal (text-free, QA'd):
-  ```bash
-  node --env-file=.env -e "import('./generator/cover.mjs').then(m=>m.generateAnimal({animal:'a fox', topic:'<topic>', outPath:'public/generated/<slug>/animal.png', log:console.error}))"
-  ```
-
-- **Title / subtitle / accent color / series / order** → edit the book's entry in
-  `public/generated/library.json` directly (then it also flows to the cover + sidebar).
-
-- **Refresh layout + icons across the whole book** (no text change) →
-  `node generator/enhance-book.mjs <slug>`.
-
-- **Add a brand-new chapter** → that's `/new-book`'s territory via
-  `generator/add-chapter.mjs <slug> <chapter.json>`, not a tweak.
-
-## Rules
-- Change ONLY what the issue asks for. Don't re-narrate or relayout chapters you
-  didn't touch; don't regenerate the cover unless asked.
-- Keep `storyboard.json` and `manifest.json` in sync (the regen tools do this).
-- **Never** show the real publisher "O'Reilly" — only the parody "O'RLY?".
-- **Publish:** locally `git commit && git push`. **In CI: STOP after the edit** —
-  the workflow commits, opens the PR, and auto-merges.
+After ANY change: `npx tsc --noEmit && npm run build &&
+node generator/verify-book.mjs --slug <slug>` must pass; commit
+`public/generated/<slug>` + `src/viz/books/<slug>` together.

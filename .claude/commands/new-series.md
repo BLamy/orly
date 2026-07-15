@@ -19,44 +19,26 @@ Keys come from the gitignored `.env` locally, or from CI env (`ELEVENLABS_API_KE
 
 ## Steps
 
-1. **Acquire the source.** If it's a GitHub repo, `git clone --depth 1` it. If it's a
-   docs site, clone its docs repo (e.g. `Effect-TS/website`) or fetch the key pages.
-   Find the real content (md/mdx/source) to ground everything in.
+A series is just N v3 books that share a `series` name. For EACH book, follow
+`.claude/commands/new-book.md` end to end — visualizations first: plan the
+chapter visual ideas, author the scenes at `src/viz/books/<slug>/chapter-<n>.tsx`
+(captions ARE the narration), then
+`node generator/video.mjs --slug <slug> --title "…" …` and
+`node generator/verify-book.mjs --slug <slug>`.
 
-2. **Plan the series.** Decide the books: use the provided list, or plan `count` books
-   as a learning arc. For each book choose: a **slug** (kebab), a SHORT cover **title**
-   + **subtitle**, a **level**, a distinct cover **animal**, an accent **color**, and
-   **3–5 chapters** — each naming the ONE concept it explains, the REAL API/identifiers
-   to ground it, and the key beats. Differentiate the levels; don't repeat concepts.
-   Write the plan to `/tmp/series-plan.json`.
+1. **Acquire the source** (`git clone --depth 1`, or the docs repo) and digest it
+   with `generator/repo.mjs` per book topic.
 
-3. **Author each storyboard.** For every book, read `generator/prompts/storyboard.txt`
-   (obey it) and `generator/storyboard.schema.json` (conform), then write a storyboard
-   grounded in the real source (cite files in `sourceRefs`). For a library/framework,
-   show a value/type flowing through the API (nodes = real functions/types, messages =
-   what flows). Write to `/tmp/<slug>-sb.json` and validate + auto-fix layout:
-   ```bash
-   node -e "import('./generator/validate.mjs').then(m=>{const fs=require('fs');const sb=JSON.parse(fs.readFileSync('/tmp/<slug>-sb.json','utf8'));const v=m.validateStoryboard(sb);fs.writeFileSync('/tmp/<slug>-sb.json',JSON.stringify(sb,null,2));console.log(JSON.stringify(v))})"
-   ```
-   Fix every error until `ok:true`. (For higher quality you may run Workflow fan-outs to
-   study + author + adversarially verify — but inline is fine.)
+2. **Plan the series arc.** Decide the books: use the provided list, or plan
+   `count` books as a learning arc. Per book: slug, SHORT title + subtitle, a
+   distinct cover animal, an accent color, and 3–5 chapters — each with ONE
+   visual idea grounded in real identifiers. Differentiate levels; don't repeat
+   concepts.
 
-4. **Build each book** (TTS + cover + icons + library), in series order:
-   ```bash
-   node generator/cli.mjs --storyboard /tmp/<slug>-sb.json --slug "<slug>" \
-     --title "<title>" --subtitle "<subtitle>" --animal "<animal>" --color "<hex>" \
-     --series "<SERIES NAME>" --series-order <N> --prompt "<source/topic>"
-   ```
-   Each narrates the chapters, makes an O'RLY cover (seeded/QA loop, parody-only) and
-   Noun icons, and upserts the book into `public/generated/library.json` with its
-   chapters + durations. All books share the same `--series` name; `--series-order`
-   gives the reading order.
+3. **Author + build each book** per new-book.md (scenes → storybook scrub →
+   video.mjs → verify-book). Pass the same `series` name so the shelf groups
+   them (library.json `series` + `seriesOrder` fields — video.mjs flags or edit
+   the entry after upsert).
 
-5. **Publish.** Locally: `git add public/generated && git commit -m "series: <name>" && git push`.
-   **In CI: STOP after step 4** — do NOT run git/gh; the workflow commits, opens the PR,
-   and auto-merges.
-
-## Rules
-- **Never** show the real publisher "O'Reilly" — only the parody "O'RLY?".
-- Ground everything in the real source — no invented components, files, or flows.
-- All books in one series share the exact same `--series` string.
+4. **Publish**: `git add public/generated src/viz/books && git commit -m
+   "series: <NAME>" && git push`.

@@ -10,6 +10,10 @@ export async function synthesizeChapter({
   voiceId,
   apiKey = process.env.ELEVENLABS_API_KEY,
   modelId = 'eleven_multilingual_v2',
+  // Joiner between segments. The default single space keeps the historical
+  // storyboard behavior; pass '\n\n' (paragraph break) for natural ~0.6s
+  // pauses between narration lines (used by the v3 video pipeline).
+  sep = SEP,
 }) {
   if (!apiKey) throw new Error('ELEVENLABS_API_KEY is required for TTS');
   const client = new ElevenLabsClient({ apiKey });
@@ -18,7 +22,7 @@ export async function synthesizeChapter({
   let text = '';
   const offsets = [];
   spokenSegments.forEach((seg, i) => {
-    if (i > 0) text += SEP;
+    if (i > 0) text += sep;
     offsets.push(text.length);
     text += String(seg).trim();
   });

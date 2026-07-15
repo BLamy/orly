@@ -13,3 +13,4 @@ generator/seeds/clean/
 # scratch screenshots in the repo root (cover art under public/ is kept)
 /.playwright-mcp
 /*.png
+public/generated/*/animal.png
