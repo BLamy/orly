@@ -431,27 +431,27 @@
         {
           "number": 1,
           "title": "The Autonomous Loop",
-          "duration": 76.439
+          "duration": 76
         },
         {
           "number": 2,
           "title": "Plug In Your Agent",
-          "duration": 63.204
+          "duration": 63
         },
         {
           "number": 3,
           "title": "Fix, Mark, Re-verify",
-          "duration": 77.554
+          "duration": 78
         },
         {
           "number": 4,
           "title": "Wire It Into CI",
-          "duration": 68.453
+          "duration": 68
         },
         {
           "number": 5,
           "title": "Inside the Loop",
-          "duration": 80.805
+          "duration": 81
         }
       ],
       "createdAt": "2026-06-21T08:56:10.837Z"
