@@ -3,7 +3,7 @@
     {
       "slug": "url-shortener",
       "title": "The URL Shortener",
-      "subtitle": "System Design, Solved №1",
+      "subtitle": "System Design, Solved \u21161",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#3a8b3a",
@@ -158,7 +158,7 @@
     {
       "slug": "explained-math",
       "title": "Explained: The Math",
-      "subtitle": "Fourier, eigenvectors, and convolution — watched, not derived",
+      "subtitle": "Fourier, eigenvectors, and convolution \u2014 watched, not derived",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#38bdf8",
@@ -222,6 +222,41 @@
         }
       ],
       "createdAt": "2026-07-15T21:27:26.012Z"
+    },
+    {
+      "slug": "social-feed",
+      "title": "The Social Feed",
+      "subtitle": "System Design, Solved \u21162",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#6a3f9e",
+      "animal": "generated/social-feed/animal.webp",
+      "href": "?bundle=social-feed",
+      "series": "System Design, Solved",
+      "seriesOrder": 2,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Written Once, Read Relentlessly",
+          "duration": 59.35
+        },
+        {
+          "number": 2,
+          "title": "Fan-Out on Write",
+          "duration": 66.78
+        },
+        {
+          "number": 3,
+          "title": "The Home-Timeline Cache",
+          "duration": 67.477
+        },
+        {
+          "number": 4,
+          "title": "The Celebrity Problem",
+          "duration": 65.619
+        }
+      ],
+      "createdAt": "2026-07-15T22:59:59.979Z"
     }
   ]
 }
