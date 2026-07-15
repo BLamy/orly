@@ -3,7 +3,7 @@ import type { Story } from '../types';
 import { ChevronLeft, ChevronRight, Pause, Play, SoundOff, SoundOn } from './icons';
 
 // Tiny inline markdown: **bold**, *italic*, `code`.
-function renderRich(text: string) {
+export function renderRich(text: string) {
   const parts = text.split(/(\*\*[^*]+\*\*|\*[^*]+\*|`[^`]+`)/g);
   return parts.map((p, i) => {
     if (!p) return null;
@@ -42,7 +42,6 @@ export function NarrationPanel({
   onToggleSound?: () => void;
   onSeek?: (index: number) => void;
 }) {
-  const step = story.steps[index];
   const last = story.steps.length - 1;
 
   // Smooth progress: weight each slide by its estimated length, and animate the
@@ -131,23 +130,6 @@ export function NarrationPanel({
         />
       </div>
       <div className="inner">
-        <div className="text">
-          {/* keyed so it remounts and replays the CSS fade-in each step */}
-          <div key={step.id} className="narration-body">
-            {step.cover ? (
-              <>
-                <div className="eyebrow">{step.chapter ?? story.title}</div>
-                <p className="hint">Use → / ← or ▶ to walk through. {renderRich(step.narration)}</p>
-              </>
-            ) : (
-              <>
-                <div className="eyebrow">{step.chapter ?? story.title}</div>
-                {step.title && <h2>{step.title}</h2>}
-                <p>{renderRich(step.narration)}</p>
-              </>
-            )}
-          </div>
-        </div>
         <div className="controls">
           {onToggleSound && (
             <button

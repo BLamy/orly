@@ -2,7 +2,7 @@ import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
 import type { Step, Story } from '../types';
 import { Diagram } from './Diagram';
 import { VizStepView } from './VizStepView';
-import { NarrationPanel } from './NarrationPanel';
+import { NarrationPanel, renderRich } from './NarrationPanel';
 import { cancelSpeech, isSpeechSupported, speak, speechify } from './speech';
 import { resolveCues, type Transcript } from './align';
 
@@ -138,11 +138,14 @@ export function Presentation({
   }, [playing, onStart]);
 
   // Jump to a step. In audio mode this seeks the track to that step's cue time.
+  // Seek a hair PAST the cue: the timeupdate handler assigns the active step
+  // with a -0.02s tolerance, so a seek landing float-short of the cue would
+  // otherwise snap the index straight back (the "skip does nothing" bug).
   const goTo = useCallback(
     (i: number) => {
       const t = Math.max(0, Math.min(last, i));
       if (audioMode && audioRef.current) {
-        audioRef.current.currentTime = cueTimes[t] ?? 0;
+        audioRef.current.currentTime = (cueTimes[t] ?? 0) + 0.05;
         setFinished(false);
       }
       setIndex(t);
@@ -380,6 +383,16 @@ export function Presentation({
         />
       ) : (
         <Diagram story={story} stepIndex={index} reduced={reduced} coverNote={coverNote} />
+      )}
+
+      {/* closed-caption narration over the stage (keyed to replay the fade) */}
+      {!finished && (
+        <div className="captions" key={step.id} aria-live="polite">
+          <span className="captions-pill">
+            {!step.cover && step.title ? <strong className="captions-title">{step.title} · </strong> : null}
+            {renderRich(step.cover ? step.coverSubtitle || step.narration : step.narration)}
+          </span>
+        </div>
       )}
 
       {!playing && !finished && (
