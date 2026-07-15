@@ -64,7 +64,9 @@ export function BookPlayer({ slug }: { slug: string }) {
         if (!alive) return;
         if (m.format !== 3) throw new Error(`unsupported manifest format ${m.format}`);
         setManifest(m);
-        setCurrent(chapterFromUrl(m.chapters.length));
+        // No intermediate menu: land straight on the (deep-linked or first)
+        // chapter and autoplay; the menu stays reachable via "← Chapters".
+        setCurrent(chapterFromUrl(m.chapters.length) ?? 0);
       })
       .catch((e: Error) => alive && setError(e.message));
     return () => {

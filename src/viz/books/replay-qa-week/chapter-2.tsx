@@ -71,6 +71,7 @@ export interface Scene {
   scrub: ChannelRef<number>;
   breakU: ChannelRef<number>;
   ghostU: ChannelRef<number>;
+  stampU: ChannelRef<number>;
   closeU: ChannelRef<number>;
 }
 
@@ -85,6 +86,7 @@ export function buildScene(): Scene {
   const scrub = tl.channel('scrub', 0);
   const breakU = tl.channel('breakU', 0);
   const ghostU = tl.channel('ghostU', 0);
+  const stampU = tl.channel('stampU', 0); // the green verdict that replaces the old stamp
   const closeU = tl.channel('closeU', 0);
 
   // — Beat 1 · the morning list —
@@ -158,6 +160,7 @@ export function buildScene(): Scene {
     text: 'Not here. The tape is the reproduction. Nobody argues about what the tester meant.',
   });
   tl.tween(ghostU, 0, { at: 48.2, dur: 2.2, ease: ease.move });
+  tl.tween(stampU, 1, { at: 49.2, dur: 0.6, ease: ease.pop });
   tl.hold(53.1, 0.6);
 
   // — Beat 9 · you can just look —
@@ -168,6 +171,7 @@ export function buildScene(): Scene {
   });
   tl.tween(cam, CAM_WIDE, { at: 53.9, dur: 1.8, ease: ease.move });
   tl.tween(listOp, 0.12, { at: 54.4, dur: 1.4, ease: ease.move });
+  tl.tween(stampU, 0, { at: 54.4, dur: 1.2, ease: ease.move }); // clear before the closing text
   tl.tween(closeU, 1, { at: 56.0, dur: 1.0, ease: ease.enter });
 
   // — Beat 10 · the point —
@@ -178,7 +182,7 @@ export function buildScene(): Scene {
   });
   tl.hold(66.3, 1.4);
 
-  return { tl, cam, listU, listOp, pickU, stepsU, tapeU, scrub, breakU, ghostU, closeU };
+  return { tl, cam, listU, listOp, pickU, stepsU, tapeU, scrub, breakU, ghostU, stampU, closeU };
 }
 
 const scene = buildScene();
@@ -197,6 +201,7 @@ export function Render({ s }: { s: SceneState }) {
   const scrub = s.get(scene.scrub);
   const breakU = s.get(scene.breakU);
   const ghostU = s.get(scene.ghostU);
+  const stampU = s.get(scene.stampU);
   const closeU = s.get(scene.closeU);
 
   const playX = TAPE.x + 12 + scrub * (TAPE.w - 24);
@@ -320,12 +325,20 @@ export function Render({ s }: { s: SceneState }) {
           </g>
         )}
 
-        {/* the ghost stamp — dissolving */}
+        {/* the old stamp — dissolving as its replacement lands */}
         {ghostU > 0 && (
           <g opacity={ghostU * 0.85} transform={`translate(640 300) rotate(-12) scale(${1 + (1 - ghostU) * 0.35})`}>
             <rect x={-190} y={-38} width={380} height={76} rx={8} fill="none" stroke={colors.NEGATIVE} strokeWidth={3} strokeDasharray="10 7" />
             <text x={0} y={10} textAnchor="middle" fill={colors.NEGATIVE} fontSize={30} fontWeight={700} letterSpacing={2}>
               CANNOT REPRODUCE
+            </text>
+          </g>
+        )}
+        {stampU > 0 && (
+          <g opacity={stampU} transform={`translate(640 300) rotate(-6) scale(${0.85 + 0.15 * stampU})`}>
+            <rect x={-215} y={-38} width={430} height={76} rx={8} fill="rgba(52, 211, 153, 0.08)" stroke={colors.POSITIVE} strokeWidth={3} />
+            <text x={0} y={10} textAnchor="middle" fill={colors.POSITIVE} fontSize={30} fontWeight={700} letterSpacing={2}>
+              ALWAYS REPRODUCIBLE
             </text>
           </g>
         )}

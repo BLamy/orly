@@ -14,16 +14,16 @@
       "audio": "audio/chapter-1.mp3",
       "cues": [
         0,
-        5.584,
-        10.577,
-        18.646,
-        22.628,
-        28.955,
-        31.788,
-        35.004,
-        39.578
+        5.05,
+        9.509,
+        17.438,
+        21.269,
+        27.33,
+        30.023,
+        33.158,
+        37.442
       ],
-      "duration": 44.814
+      "duration": 41.935
     },
     {
       "number": 2,
@@ -33,17 +33,17 @@
       "audio": "audio/chapter-2.mp3",
       "cues": [
         0,
-        6.118,
-        10.391,
-        15.371,
-        19.365,
-        22.988,
-        28.595,
-        33.053,
-        38.672,
-        43.13
+        5.224,
+        9.485,
+        13.897,
+        17.891,
+        21.084,
+        25.832,
+        30.081,
+        35.654,
+        39.892
       ],
-      "duration": 47.414
+      "duration": 43.839
     },
     {
       "number": 3,
@@ -53,37 +53,57 @@
       "audio": "audio/chapter-3.mp3",
       "cues": [
         0,
-        6.606,
-        13.665,
-        20.724,
-        28.943,
-        36.397,
-        41.145,
-        48.924,
-        59.338,
-        67.012
+        6.641,
+        13.154,
+        19.958,
+        28.108,
+        35.875,
+        41.761,
+        50.77,
+        62.113,
+        70.182
       ],
-      "duration": 70.96
+      "duration": 74.582
     },
     {
       "number": 4,
-      "title": "A Month Later",
-      "blurb": "A month in, your mornings all look the same. You do your work. It does its walking.",
+      "title": "Thursday: It Reads Your Pull Requests",
+      "blurb": "Thursday is for the change you haven't shipped yet. Someone on your team opens a pull request — a proposed change, waiting for a thumbs up.",
       "scene": "books/replay-qa-week/chapter-4",
       "audio": "audio/chapter-4.mp3",
       "cues": [
         0,
-        5.004,
-        12.887,
-        21.304,
-        27.051,
-        32.113,
-        40.971,
-        46.95,
-        56.284,
-        59.129
+        7.767,
+        15.441,
+        20.364,
+        27.84,
+        34.969,
+        43.572,
+        51.478,
+        58.745,
+        66.164
       ],
-      "duration": 61.857
+      "duration": 67.662
+    },
+    {
+      "number": 5,
+      "title": "A Month Later",
+      "blurb": "A month in, your mornings all look the same. You do your work. It does its walking.",
+      "scene": "books/replay-qa-week/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        5.364,
+        15.267,
+        23.836,
+        29.675,
+        34.041,
+        42.203,
+        47.114,
+        55.775,
+        58.561
+      ],
+      "duration": 61.301
     }
   ]
 }

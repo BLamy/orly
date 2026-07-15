@@ -140,15 +140,27 @@ export function ChapterPlayer({
     pbRef.current.play();
   }, [built]);
 
-  // End detection → "Up next" card. Audio mode ends on the MP3's `ended`;
-  // timeline mode ends when the clock parks at the timeline's duration.
+  // End detection → "Up next" card. Audio mode ends at the MANIFEST duration
+  // (the aligned narration end) — TTS sometimes appends trailing junk to the
+  // MP3, so the file's own length/`ended` can overshoot the real chapter.
   useEffect(() => {
     const a = audioRef.current;
     if (!a) return;
     const onEnded = () => setEnded(true);
+    const end = chapter.duration;
+    const onTime = () => {
+      if (end && a.currentTime >= end) {
+        a.pause();
+        setEnded(true);
+      }
+    };
     a.addEventListener('ended', onEnded);
-    return () => a.removeEventListener('ended', onEnded);
-  }, [useAudioClock, built]);
+    a.addEventListener('timeupdate', onTime);
+    return () => {
+      a.removeEventListener('ended', onEnded);
+      a.removeEventListener('timeupdate', onTime);
+    };
+  }, [useAudioClock, built, chapter.duration]);
   useEffect(() => {
     if (useAudioClock || !built) return;
     if (!pb.playing && startedRef.current && pb.t >= pb.duration - 0.05 && pb.duration > 0)
@@ -199,9 +211,10 @@ export function ChapterPlayer({
     return () => window.removeEventListener('keydown', onKey);
   }, [onPrev, onNext, onExit]);
 
-  // The seekable range: the MP3 (audio mode) can run past the timeline's
-  // duration, so trust the manifest when it's longer.
-  const seekMax = Math.max(pb.duration, chapter.duration ?? 0, 0.001);
+  // The seekable range: the manifest duration is authoritative — it is the
+  // aligned end of the narration. The raw MP3 may be LONGER (TTS junk tail)
+  // and the timeline may differ; never let either stretch the scrubber.
+  const seekMax = Math.max(chapter.duration || pb.duration, 0.001);
   const soundAvailable = useAudioClock;
 
   return (

@@ -13,25 +13,30 @@
         {
           "number": 1,
           "title": "Monday: Paste a Link",
-          "duration": 44.814
+          "duration": 41.935
         },
         {
           "number": 2,
           "title": "Tuesday: Bugs That Come With a Movie",
-          "duration": 47.414
+          "duration": 43.839
         },
         {
           "number": 3,
           "title": "You Fix It. It Checks.",
-          "duration": 70.96
+          "duration": 74.582
         },
         {
           "number": 4,
+          "title": "Thursday: It Reads Your Pull Requests",
+          "duration": 67.662
+        },
+        {
+          "number": 5,
           "title": "A Month Later",
-          "duration": 61.857
+          "duration": 61.301
         }
       ],
-      "createdAt": "2026-07-15T21:06:56.875Z"
+      "createdAt": "2026-07-15T21:27:26.012Z"
     }
   ]
 }

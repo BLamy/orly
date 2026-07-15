@@ -155,6 +155,16 @@ Env: ELEVENLABS_API_KEY (narration), OPENAI_API_KEY (cover).`);
         sep: '\n\n',
       });
       writeFileSync(join(outDir, 'audio', `chapter-${n}.mp3`), r.mp3);
+      // TTS sometimes appends junk after the aligned text ("bumbpawee") —
+      // trim the file to the alignment end when ffmpeg is available. The
+      // player also clamps to the manifest duration as a backstop.
+      try {
+        const { execFileSync } = await import('node:child_process');
+        const f = join(outDir, 'audio', `chapter-${n}.mp3`);
+        execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', f, '-t', String(r.audioEnd + 0.2), '-c', 'copy', `${f}.trim`]);
+        const { renameSync } = await import('node:fs');
+        renameSync(`${f}.trim`, f);
+      } catch { /* no ffmpeg — the player clamp covers it */ }
       cues = r.cues.map((c) => Number(c.toFixed(3)));
       duration = Number(r.audioEnd.toFixed(3));
       log(`  ${(r.mp3.length / 1024).toFixed(0)}KB, ${duration.toFixed(1)}s${r.alignedExact ? '' : ' (approx cues)'}`);
