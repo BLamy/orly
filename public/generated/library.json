@@ -1,6 +1,46 @@
 {
   "books": [
     {
+      "slug": "explained-information",
+      "title": "Explained: Information Theory",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#a01f3c",
+      "animal": "generated/explained-information/animal.webp",
+      "href": "?bundle=explained-information",
+      "series": "The Explainers",
+      "seriesOrder": 12,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Huffman Codes: Shorter Words for Common Things",
+          "duration": 130.495
+        },
+        {
+          "number": 2,
+          "title": "Mutual Information: What One Thing Tells You",
+          "duration": 122.555
+        },
+        {
+          "number": 3,
+          "title": "KL Divergence: The Price of the Wrong Model",
+          "duration": 114.474
+        },
+        {
+          "number": 4,
+          "title": "Channel Capacity: Shouting Over Noise",
+          "duration": 124.552
+        },
+        {
+          "number": 5,
+          "title": "Compression is Prediction",
+          "duration": 108.669
+        }
+      ],
+      "createdAt": "2026-07-16T23:09:52.097Z"
+    },
+    {
       "slug": "explained-classical-ml",
       "title": "Explained: Classical ML",
       "subtitle": "",
