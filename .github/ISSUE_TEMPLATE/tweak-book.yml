@@ -40,6 +40,7 @@ body:
         - "Effect · The Good Parts · Intermediate — effect-good-parts-2"
         - "Effect in Prod · Production-Level Effect — effect-in-prod"
         - "Effect Internals · What the elites don't want you to know — effect-internals"
+        - "Effect · The Good Parts · Advanced — effect-advanced"
         # BOOKS:END
     validations:
       required: true

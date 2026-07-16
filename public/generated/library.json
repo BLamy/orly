@@ -917,6 +917,46 @@
         }
       ],
       "createdAt": "2026-07-16T05:57:15.173Z"
+    },
+    {
+      "slug": "effect-advanced",
+      "title": "Effect",
+      "subtitle": "The Good Parts · Advanced",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#6a3f9e",
+      "animal": "generated/effect-advanced/animal.webp",
+      "href": "?bundle=effect-advanced",
+      "series": "Effect: The Good Parts",
+      "seriesOrder": 5,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Pull, Don't Push",
+          "duration": 109.412
+        },
+        {
+          "number": 2,
+          "title": "One Value, One Owner",
+          "duration": 110.294
+        },
+        {
+          "number": 3,
+          "title": "Everyone Gets a Copy",
+          "duration": 123.809
+        },
+        {
+          "number": 4,
+          "title": "All or Nothing",
+          "duration": 124.274
+        },
+        {
+          "number": 5,
+          "title": "The Composition Graph",
+          "duration": 116.843
+        }
+      ],
+      "createdAt": "2026-07-16T06:03:41.568Z"
     }
   ]
 }
