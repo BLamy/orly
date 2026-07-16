@@ -27,6 +27,7 @@ body:
         - "Explained: The Math · Fourier, eigenvectors, and convolution — watched, not derived — explained-math"
         - "A Week With Replay QA · What it means for you, from Monday to ship day — replay-qa-week"
         - "Replay QA · Agents that prove their work — replay-qa"
+        - "Vercel Emulate · Signed-in end-to-end tests without the login dance — vercel-emulate"
         # BOOKS:END
     validations:
       required: true

@@ -1,0 +1,111 @@
+{
+  "format": 3,
+  "slug": "vercel-emulate",
+  "title": "Vercel Emulate",
+  "subtitle": "Signed-in end-to-end tests without the login dance",
+  "animal": "animal.webp",
+  "accent": "#c79100",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Login Dance",
+      "blurb": "Why a robot can't get past a real sign-in page — and the three-address swap that points the dance at localhost.",
+      "scene": "books/vercel-emulate/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        9.474,
+        20.015,
+        26.378,
+        37.28,
+        48.136,
+        57.842,
+        67.35,
+        74.119,
+        81.305
+      ],
+      "duration": 89.861
+    },
+    {
+      "number": 2,
+      "title": "Seeding the Cast",
+      "blurb": "A seed file becomes a living world: users, a registered client, and pre-baked tokens, rebuilt identically for every test.",
+      "scene": "books/vercel-emulate/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.694,
+        23.035,
+        33.402,
+        42.818,
+        53.394,
+        62.008,
+        71.424,
+        80.004,
+        89.327
+      ],
+      "duration": 95.851
+    },
+    {
+      "number": 3,
+      "title": "One Click Instead of a Password",
+      "blurb": "The emulated authorize page: two protocol gates, a picker of seeded users, and no password anywhere.",
+      "scene": "books/vercel-emulate/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        9.195,
+        20.213,
+        26.935,
+        35.294,
+        45.94,
+        54.892,
+        63.437,
+        72.377,
+        83
+      ],
+      "duration": 92.973
+    },
+    {
+      "number": 4,
+      "title": "Minting the Identity",
+      "blurb": "A one-time code, a constant-time secret check, a fresh token in the map — folded into the session cookie.",
+      "scene": "books/vercel-emulate/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        7.593,
+        18.1,
+        24.149,
+        32.763,
+        40.565,
+        49.667,
+        58.49,
+        67.36,
+        76.23,
+        87.805
+      ],
+      "duration": 101.145
+    },
+    {
+      "number": 5,
+      "title": "Spot the Difference",
+      "blurb": "Lockstep on the wire, different behind it: exactly where the emulated login diverges from the real one.",
+      "scene": "books/vercel-emulate/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        9.369,
+        22.849,
+        31.8,
+        42.899,
+        52.896,
+        63.786,
+        72.737,
+        85.032,
+        95.458
+      ],
+      "duration": 100.822
+    }
+  ]
+}

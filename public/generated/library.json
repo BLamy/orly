@@ -413,6 +413,44 @@
         }
       ],
       "createdAt": "2026-07-15T20:55:33.777Z"
+    },
+    {
+      "slug": "vercel-emulate",
+      "title": "Vercel Emulate",
+      "subtitle": "Signed-in end-to-end tests without the login dance",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c79100",
+      "animal": "generated/vercel-emulate/animal.webp",
+      "href": "?bundle=vercel-emulate",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Login Dance",
+          "duration": 89.861
+        },
+        {
+          "number": 2,
+          "title": "Seeding the Cast",
+          "duration": 95.851
+        },
+        {
+          "number": 3,
+          "title": "One Click Instead of a Password",
+          "duration": 92.973
+        },
+        {
+          "number": 4,
+          "title": "Minting the Identity",
+          "duration": 101.145
+        },
+        {
+          "number": 5,
+          "title": "Spot the Difference",
+          "duration": 100.822
+        }
+      ],
+      "createdAt": "2026-07-16T03:46:33.383Z"
     }
   ]
 }
