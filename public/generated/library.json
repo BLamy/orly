@@ -567,6 +567,46 @@
         }
       ],
       "createdAt": "2026-07-16T04:14:26.093Z"
+    },
+    {
+      "slug": "electric-internals",
+      "title": "Electric Internals",
+      "subtitle": "Durable Proxy, Durable State, StreamDB and StreamFS",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#41607f",
+      "animal": "generated/electric-internals/animal.webp",
+      "href": "?bundle=electric-internals",
+      "series": "The Agent Platform Built on Sync",
+      "seriesOrder": 3,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Tape",
+          "duration": 92.322
+        },
+        {
+          "number": 2,
+          "title": "Durable Proxy",
+          "duration": 94.784
+        },
+        {
+          "number": 3,
+          "title": "Durable State",
+          "duration": 95.109
+        },
+        {
+          "number": 4,
+          "title": "StreamDB",
+          "duration": 82.942
+        },
+        {
+          "number": 5,
+          "title": "StreamFS & the Stack",
+          "duration": 91.394
+        }
+      ],
+      "createdAt": "2026-07-16T04:22:16.227Z"
     }
   ]
 }

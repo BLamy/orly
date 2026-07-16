@@ -31,6 +31,7 @@ body:
         - "Differential Dataflow · Incremental computation, one difference at a time — differential-dataflow"
         - "Prompt Caching · How LLM providers reuse your context instead of re-reading it — prompt-caching"
         - "Electric Streams · Durable, replayable HTTP streams — electric-streams"
+        - "Electric Internals · Durable Proxy, Durable State, StreamDB and StreamFS — electric-internals"
         # BOOKS:END
     validations:
       required: true
