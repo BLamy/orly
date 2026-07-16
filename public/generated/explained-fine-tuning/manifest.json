@@ -1,0 +1,85 @@
+{
+  "format": 3,
+  "slug": "explained-fine-tuning",
+  "title": "Explained: Fine-Tuning",
+  "animal": "animal.webp",
+  "accent": "#1f6fb2",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Low-Rank Updates",
+      "blurb": "A real weight update decomposed by a real SVD: the change a task needs lives in a thin slice of weight space.",
+      "scene": "books/explained-fine-tuning/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        9.868,
+        20.817,
+        31.254,
+        40.519,
+        53.406,
+        64.238,
+        71.994,
+        86.379,
+        94.355
+      ],
+      "duration": 108.205
+    },
+    {
+      "number": 2,
+      "title": "Distillation",
+      "blurb": "Raise the temperature until the teacher thinks out loud, then train a real student on the thinking — dark knowledge, computed.",
+      "scene": "books/explained-fine-tuning/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        11.227,
+        25.205,
+        34.923,
+        46.579,
+        55.879,
+        70.067,
+        84.045
+      ],
+      "duration": 95.063
+    },
+    {
+      "number": 3,
+      "title": "Quantization",
+      "blurb": "Two hundred fifty six real weights snapped to int8 and int4, the honest error histograms, and the outlier that ruins the comb.",
+      "scene": "books/explained-fine-tuning/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.626,
+        18.333,
+        29.71,
+        41.297,
+        51.27,
+        63.774,
+        79.517,
+        95.608
+      ],
+      "duration": 106.487
+    },
+    {
+      "number": 4,
+      "title": "Catastrophic Forgetting",
+      "blurb": "A really-trained network learns task B and destroys task A — then replay keeps the shared neurons honest.",
+      "scene": "books/explained-fine-tuning/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        11.54,
+        21.13,
+        31.73,
+        44.663,
+        57.841,
+        68.824,
+        81.688,
+        92.996
+      ],
+      "duration": 109.088
+    }
+  ]
+}

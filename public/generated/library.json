@@ -1,6 +1,81 @@
 {
   "books": [
     {
+      "slug": "arxiv-gated-deltanet-2",
+      "title": "Erase, Then Write",
+      "subtitle": "Decoupling erase and write in linear attention",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1f6fb2",
+      "animal": "generated/arxiv-gated-deltanet-2/animal.webp",
+      "href": "?bundle=arxiv-gated-deltanet-2",
+      "series": "Fresh from arXiv",
+      "seriesOrder": 1,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The fixed-state problem",
+          "duration": 70.821
+        },
+        {
+          "number": 2,
+          "title": "The delta rule: write only the error",
+          "duration": 71.842
+        },
+        {
+          "number": 3,
+          "title": "Erase, then write",
+          "duration": 86.889
+        },
+        {
+          "number": 4,
+          "title": "Gates and decay",
+          "duration": 81.362
+        },
+        {
+          "number": 5,
+          "title": "Where this line is going",
+          "duration": 88.747
+        }
+      ],
+      "createdAt": "2026-07-16T23:43:59.391Z"
+    },
+    {
+      "slug": "explained-fine-tuning",
+      "title": "Explained: Fine-Tuning",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1f6fb2",
+      "animal": "generated/explained-fine-tuning/animal.webp",
+      "href": "?bundle=explained-fine-tuning",
+      "series": "The Explainers",
+      "seriesOrder": 16,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Low-Rank Updates",
+          "duration": 108.205
+        },
+        {
+          "number": 2,
+          "title": "Distillation",
+          "duration": 95.063
+        },
+        {
+          "number": 3,
+          "title": "Quantization",
+          "duration": 106.487
+        },
+        {
+          "number": 4,
+          "title": "Catastrophic Forgetting",
+          "duration": 109.088
+        }
+      ],
+      "createdAt": "2026-07-16T23:43:20.737Z"
+    },
+    {
       "slug": "rr-dash",
       "title": "rr-dash: Time Travel on a Stream",
       "subtitle": "",
