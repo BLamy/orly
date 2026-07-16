@@ -489,6 +489,44 @@
         }
       ],
       "createdAt": "2026-07-16T03:47:49.324Z"
+    },
+    {
+      "slug": "prompt-caching",
+      "title": "Prompt Caching",
+      "subtitle": "How LLM providers reuse your context instead of re-reading it",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#3a8b3a",
+      "animal": "generated/prompt-caching/animal.webp",
+      "href": "?bundle=prompt-caching",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Re-Read Tax",
+          "duration": 82.71
+        },
+        {
+          "number": 2,
+          "title": "Byte-Identical or Bust",
+          "duration": 103.932
+        },
+        {
+          "number": 3,
+          "title": "A Breakpoint and a Five-Minute Fuse",
+          "duration": 91.997
+        },
+        {
+          "number": 4,
+          "title": "The Crossover Math",
+          "duration": 78.018
+        },
+        {
+          "number": 5,
+          "title": "The Agent's Bill, Before and After",
+          "duration": 113.963
+        }
+      ],
+      "createdAt": "2026-07-16T03:48:11.359Z"
     }
   ]
 }

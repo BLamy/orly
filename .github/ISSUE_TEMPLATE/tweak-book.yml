@@ -29,6 +29,7 @@ body:
         - "Replay QA · Agents that prove their work — replay-qa"
         - "Vercel Emulate · Signed-in end-to-end tests without the login dance — vercel-emulate"
         - "Differential Dataflow · Incremental computation, one difference at a time — differential-dataflow"
+        - "Prompt Caching · How LLM providers reuse your context instead of re-reading it — prompt-caching"
         # BOOKS:END
     validations:
       required: true
