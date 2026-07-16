@@ -1,9 +1,164 @@
 {
   "books": [
     {
+      "slug": "electric-streams",
+      "title": "Electric Streams",
+      "subtitle": "Durable, replayable HTTP streams",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1f6fb2",
+      "animal": "generated/electric-streams/animal.webp",
+      "href": "?bundle=electric-streams",
+      "series": "The Agent Platform Built on Sync",
+      "seriesOrder": 1,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Stream That Survives",
+          "duration": 85.867
+        },
+        {
+          "number": 2,
+          "title": "An Address for Every Byte",
+          "duration": 99.567
+        },
+        {
+          "number": 3,
+          "title": "Live at the Tail",
+          "duration": 116.612
+        },
+        {
+          "number": 4,
+          "title": "Exactly Once",
+          "duration": 103.235
+        },
+        {
+          "number": 5,
+          "title": "Replay Is the Platform",
+          "duration": 122.276
+        }
+      ],
+      "createdAt": "2026-07-16T04:14:26.093Z"
+    },
+    {
+      "slug": "sds-web-crawler",
+      "title": "The Web Crawler",
+      "subtitle": "System Design, Solved №3",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#3a8b3a",
+      "animal": "generated/sds-web-crawler/animal.webp",
+      "href": "?bundle=sds-web-crawler",
+      "series": "System Design, Solved",
+      "seriesOrder": 3,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Frontier: a billion links, one loop",
+          "duration": 100.682
+        },
+        {
+          "number": 2,
+          "title": "Politeness: never hammer one host",
+          "duration": 83.498
+        },
+        {
+          "number": 3,
+          "title": "Duplicates: the signature says stop",
+          "duration": 79.83
+        },
+        {
+          "number": 4,
+          "title": "Freshness: re-crawled by popularity",
+          "duration": 87.539
+        },
+        {
+          "number": 5,
+          "title": "The Index: where search fits",
+          "duration": 96.828
+        }
+      ],
+      "createdAt": "2026-07-15T23:05:17.291Z"
+    },
+    {
+      "slug": "key-value-store",
+      "title": "The Key-Value Store",
+      "subtitle": "System Design, Solved №4",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "href": "?bundle=key-value-store",
+      "series": "System Design, Solved",
+      "seriesOrder": 4,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "One Big Hash Table: the first answer",
+          "duration": 89.117
+        },
+        {
+          "number": 2,
+          "title": "Consistent Hashing: slicing the keyspace",
+          "duration": 77.09
+        },
+        {
+          "number": 3,
+          "title": "Replication: three copies or it didn't happen",
+          "duration": 85.914
+        },
+        {
+          "number": 4,
+          "title": "Quorums: two dials on the front panel",
+          "duration": 122.555
+        },
+        {
+          "number": 5,
+          "title": "Death Mid-Write: hinted handoff",
+          "duration": 110.573
+        }
+      ],
+      "createdAt": "2026-07-15T23:00:07.987Z",
+      "animal": "generated/key-value-store/animal.webp"
+    },
+    {
+      "slug": "social-feed",
+      "title": "The Social Feed",
+      "subtitle": "System Design, Solved №2",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#6a3f9e",
+      "animal": "generated/social-feed/animal.webp",
+      "href": "?bundle=social-feed",
+      "series": "System Design, Solved",
+      "seriesOrder": 2,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Written Once, Read Relentlessly",
+          "duration": 59.35
+        },
+        {
+          "number": 2,
+          "title": "Fan-Out on Write",
+          "duration": 66.78
+        },
+        {
+          "number": 3,
+          "title": "The Home-Timeline Cache",
+          "duration": 67.477
+        },
+        {
+          "number": 4,
+          "title": "The Celebrity Problem",
+          "duration": 65.619
+        }
+      ],
+      "createdAt": "2026-07-15T22:59:59.979Z"
+    },
+    {
       "slug": "url-shortener",
       "title": "The URL Shortener",
-      "subtitle": "System Design, Solved \u21161",
+      "subtitle": "System Design, Solved №1",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#3a8b3a",
@@ -158,7 +313,7 @@
     {
       "slug": "explained-math",
       "title": "Explained: The Math",
-      "subtitle": "Fourier, eigenvectors, and convolution \u2014 watched, not derived",
+      "subtitle": "Fourier, eigenvectors, and convolution — watched, not derived",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#38bdf8",
@@ -222,121 +377,6 @@
         }
       ],
       "createdAt": "2026-07-15T21:27:26.012Z"
-    },
-    {
-      "slug": "social-feed",
-      "title": "The Social Feed",
-      "subtitle": "System Design, Solved \u21162",
-      "author": "Brett Lamy",
-      "role": "Software Engineer at Replay",
-      "color": "#6a3f9e",
-      "animal": "generated/social-feed/animal.webp",
-      "href": "?bundle=social-feed",
-      "series": "System Design, Solved",
-      "seriesOrder": 2,
-      "chapters": [
-        {
-          "number": 1,
-          "title": "Written Once, Read Relentlessly",
-          "duration": 59.35
-        },
-        {
-          "number": 2,
-          "title": "Fan-Out on Write",
-          "duration": 66.78
-        },
-        {
-          "number": 3,
-          "title": "The Home-Timeline Cache",
-          "duration": 67.477
-        },
-        {
-          "number": 4,
-          "title": "The Celebrity Problem",
-          "duration": 65.619
-        }
-      ],
-      "createdAt": "2026-07-15T22:59:59.979Z"
-    },
-    {
-      "slug": "sds-web-crawler",
-      "title": "The Web Crawler",
-      "subtitle": "System Design, Solved \u21163",
-      "author": "Brett Lamy",
-      "role": "Software Engineer at Replay",
-      "color": "#3a8b3a",
-      "animal": "generated/sds-web-crawler/animal.webp",
-      "href": "?bundle=sds-web-crawler",
-      "series": "System Design, Solved",
-      "seriesOrder": 3,
-      "chapters": [
-        {
-          "number": 1,
-          "title": "The Frontier: a billion links, one loop",
-          "duration": 100.682
-        },
-        {
-          "number": 2,
-          "title": "Politeness: never hammer one host",
-          "duration": 83.498
-        },
-        {
-          "number": 3,
-          "title": "Duplicates: the signature says stop",
-          "duration": 79.83
-        },
-        {
-          "number": 4,
-          "title": "Freshness: re-crawled by popularity",
-          "duration": 87.539
-        },
-        {
-          "number": 5,
-          "title": "The Index: where search fits",
-          "duration": 96.828
-        }
-      ],
-      "createdAt": "2026-07-15T23:05:17.291Z"
-    },
-    {
-      "slug": "key-value-store",
-      "title": "The Key-Value Store",
-      "subtitle": "System Design, Solved \u21164",
-      "author": "Brett Lamy",
-      "role": "Software Engineer at Replay",
-      "color": "#198a8a",
-      "href": "?bundle=key-value-store",
-      "series": "System Design, Solved",
-      "seriesOrder": 4,
-      "chapters": [
-        {
-          "number": 1,
-          "title": "One Big Hash Table: the first answer",
-          "duration": 89.117
-        },
-        {
-          "number": 2,
-          "title": "Consistent Hashing: slicing the keyspace",
-          "duration": 77.09
-        },
-        {
-          "number": 3,
-          "title": "Replication: three copies or it didn't happen",
-          "duration": 85.914
-        },
-        {
-          "number": 4,
-          "title": "Quorums: two dials on the front panel",
-          "duration": 122.555
-        },
-        {
-          "number": 5,
-          "title": "Death Mid-Write: hinted handoff",
-          "duration": 110.573
-        }
-      ],
-      "createdAt": "2026-07-15T23:00:07.987Z",
-      "animal": "generated/key-value-store/animal.webp"
     }
   ]
 }
