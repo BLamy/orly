@@ -797,6 +797,46 @@
       ],
       "createdAt": "2026-07-16T05:25:28.109Z",
       "animal": "generated/effect-type/animal.webp"
+    },
+    {
+      "slug": "effect-good-parts-2",
+      "title": "Effect",
+      "subtitle": "The Good Parts · Intermediate",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c79100",
+      "animal": "generated/effect-good-parts-2/animal.webp",
+      "href": "?bundle=effect-good-parts-2",
+      "series": "Effect: The Good Parts",
+      "seriesOrder": 2,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Second Track",
+          "duration": 94.458
+        },
+        {
+          "number": 2,
+          "title": "Reasons Within",
+          "duration": 99.474
+        },
+        {
+          "number": 3,
+          "title": "The Typed Map",
+          "duration": 96.688
+        },
+        {
+          "number": 4,
+          "title": "The Wiring Diagram",
+          "duration": 98.034
+        },
+        {
+          "number": 5,
+          "title": "The Scope Closes",
+          "duration": 109.598
+        }
+      ],
+      "createdAt": "2026-07-16T05:30:49.641Z"
     }
   ]
 }

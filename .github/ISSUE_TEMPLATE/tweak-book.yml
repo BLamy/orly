@@ -37,6 +37,7 @@ body:
         - "Agent Patterns · Manager-worker, dispatcher, map-reduce, pipeline — agent-patterns"
         - "React Server Components · React for two computers — react-server-components"
         - "Effect · The Good Parts · for Beginners — effect-type"
+        - "Effect · The Good Parts · Intermediate — effect-good-parts-2"
         # BOOKS:END
     validations:
       required: true
