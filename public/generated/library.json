@@ -527,6 +527,46 @@
         }
       ],
       "createdAt": "2026-07-16T03:48:11.359Z"
+    },
+    {
+      "slug": "electric-streams",
+      "title": "Electric Streams",
+      "subtitle": "Durable, replayable HTTP streams",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1f6fb2",
+      "animal": "generated/electric-streams/animal.webp",
+      "href": "?bundle=electric-streams",
+      "series": "The Agent Platform Built on Sync",
+      "seriesOrder": 1,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Stream That Survives",
+          "duration": 85.867
+        },
+        {
+          "number": 2,
+          "title": "An Address for Every Byte",
+          "duration": 99.567
+        },
+        {
+          "number": 3,
+          "title": "Live at the Tail",
+          "duration": 116.612
+        },
+        {
+          "number": 4,
+          "title": "Exactly Once",
+          "duration": 103.235
+        },
+        {
+          "number": 5,
+          "title": "Replay Is the Platform",
+          "duration": 122.276
+        }
+      ],
+      "createdAt": "2026-07-16T04:14:26.093Z"
     }
   ]
 }

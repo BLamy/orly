@@ -30,6 +30,7 @@ body:
         - "Vercel Emulate · Signed-in end-to-end tests without the login dance — vercel-emulate"
         - "Differential Dataflow · Incremental computation, one difference at a time — differential-dataflow"
         - "Prompt Caching · How LLM providers reuse your context instead of re-reading it — prompt-caching"
+        - "Electric Streams · Durable, replayable HTTP streams — electric-streams"
         # BOOKS:END
     validations:
       required: true
