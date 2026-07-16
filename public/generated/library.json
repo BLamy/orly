@@ -1,6 +1,79 @@
 {
   "books": [
     {
+      "slug": "explained-mech-interp",
+      "title": "Explained: Mechanistic Interpretability",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/explained-mech-interp/animal.webp",
+      "href": "?bundle=explained-mech-interp",
+      "series": "The Explainers",
+      "seriesOrder": 13,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Opening the Black Box: Features as Directions",
+          "duration": 103.329
+        },
+        {
+          "number": 2,
+          "title": "Superposition: More Features than Neurons",
+          "duration": 104.815
+        },
+        {
+          "number": 3,
+          "title": "Sparse Autoencoders: Unmixing the Stream",
+          "duration": 103.748
+        },
+        {
+          "number": 4,
+          "title": "Circuits: Algorithms You Can Read",
+          "duration": 108.763
+        },
+        {
+          "number": 5,
+          "title": "Ablation: Proof by Removal",
+          "duration": 114.057
+        }
+      ],
+      "createdAt": "2026-07-16T23:28:37.739Z"
+    },
+    {
+      "slug": "the-progress-judge",
+      "title": "The Progress Judge",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/the-progress-judge/animal.webp",
+      "href": "?bundle=the-progress-judge",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Loop That Lies to Itself",
+          "duration": 103.375
+        },
+        {
+          "number": 2,
+          "title": "Rounds of Three, and the Judge",
+          "duration": 116.565
+        },
+        {
+          "number": 3,
+          "title": "Thrash, the Cap, and the Loud Stop",
+          "duration": 98.129
+        },
+        {
+          "number": 4,
+          "title": "When to Stop Honestly",
+          "duration": 101.099
+        }
+      ],
+      "createdAt": "2026-07-16T23:27:20.689Z"
+    },
+    {
       "slug": "explained-information",
       "title": "Explained: Information Theory",
       "subtitle": "",
