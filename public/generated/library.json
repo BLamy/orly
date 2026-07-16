@@ -1,44 +1,42 @@
 {
   "books": [
     {
-      "slug": "electric-streams",
-      "title": "Electric Streams",
-      "subtitle": "Durable, replayable HTTP streams",
+      "slug": "the-orly-loop",
+      "title": "ORLY Loop",
+      "subtitle": "From a GitHub issue to a published video",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
-      "color": "#1f6fb2",
-      "animal": "generated/electric-streams/animal.webp",
-      "href": "?bundle=electric-streams",
-      "series": "The Agent Platform Built on Sync",
-      "seriesOrder": 1,
+      "color": "#198a8a",
+      "href": "?bundle=the-orly-loop",
       "chapters": [
         {
           "number": 1,
-          "title": "The Stream That Survives",
-          "duration": 85.867
+          "title": "The Issue Is the Interface",
+          "duration": 65.62
         },
         {
           "number": 2,
-          "title": "An Address for Every Byte",
-          "duration": 99.567
+          "title": "Captions Are the Script",
+          "duration": 100.682
         },
         {
           "number": 3,
-          "title": "Live at the Tail",
-          "duration": 116.612
+          "title": "Written for the Ear",
+          "duration": 90.837
         },
         {
           "number": 4,
-          "title": "Exactly Once",
-          "duration": 103.235
+          "title": "Evidence, Not Confidence",
+          "duration": 78.39
         },
         {
           "number": 5,
-          "title": "Replay Is the Platform",
-          "duration": 122.276
+          "title": "The Loop Closes",
+          "duration": 95.203
         }
       ],
-      "createdAt": "2026-07-16T04:14:26.093Z"
+      "createdAt": "2026-07-16T06:25:08.869Z",
+      "animal": "generated/the-orly-loop/animal.webp"
     },
     {
       "slug": "sds-web-crawler",
@@ -377,6 +375,198 @@
         }
       ],
       "createdAt": "2026-07-15T21:27:26.012Z"
+    },
+    {
+      "slug": "replay-qa",
+      "title": "Replay QA",
+      "subtitle": "Agents that prove their work",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#a78bfa",
+      "animal": "generated/replay-qa/animal.webp",
+      "href": "?bundle=replay-qa",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Expensive Claim",
+          "duration": 79.458
+        },
+        {
+          "number": 2,
+          "title": "Every Run Is a Recording",
+          "duration": 82.383
+        },
+        {
+          "number": 3,
+          "title": "The Agent Reads the Tape",
+          "duration": 82.803
+        },
+        {
+          "number": 4,
+          "title": "A Finding Carries Its Proof",
+          "duration": 104.166
+        },
+        {
+          "number": 5,
+          "title": "Green Must Be Proven",
+          "duration": 107.88
+        }
+      ],
+      "createdAt": "2026-07-15T20:55:33.777Z"
+    },
+    {
+      "slug": "vercel-emulate",
+      "title": "Vercel Emulate",
+      "subtitle": "Signed-in end-to-end tests without the login dance",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c79100",
+      "animal": "generated/vercel-emulate/animal.webp",
+      "href": "?bundle=vercel-emulate",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Login Dance",
+          "duration": 89.861
+        },
+        {
+          "number": 2,
+          "title": "Seeding the Cast",
+          "duration": 95.851
+        },
+        {
+          "number": 3,
+          "title": "One Click Instead of a Password",
+          "duration": 92.973
+        },
+        {
+          "number": 4,
+          "title": "Minting the Identity",
+          "duration": 101.145
+        },
+        {
+          "number": 5,
+          "title": "Spot the Difference",
+          "duration": 100.822
+        }
+      ],
+      "createdAt": "2026-07-16T03:46:33.383Z"
+    },
+    {
+      "slug": "differential-dataflow",
+      "title": "Differential Dataflow",
+      "subtitle": "Incremental computation, one difference at a time",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b0277a",
+      "animal": "generated/differential-dataflow/animal.webp",
+      "href": "?bundle=differential-dataflow",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Ledger of Changes",
+          "duration": 88.747
+        },
+        {
+          "number": 2,
+          "title": "Shipping the Difference",
+          "duration": 104.397
+        },
+        {
+          "number": 3,
+          "title": "The Arrangement",
+          "duration": 99.52
+        },
+        {
+          "number": 4,
+          "title": "The Frontier",
+          "duration": 92.508
+        },
+        {
+          "number": 5,
+          "title": "Until the Differences Dissipate",
+          "duration": 105.743
+        }
+      ],
+      "createdAt": "2026-07-16T03:47:49.324Z"
+    },
+    {
+      "slug": "prompt-caching",
+      "title": "Prompt Caching",
+      "subtitle": "How LLM providers reuse your context instead of re-reading it",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#3a8b3a",
+      "animal": "generated/prompt-caching/animal.webp",
+      "href": "?bundle=prompt-caching",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Re-Read Tax",
+          "duration": 82.71
+        },
+        {
+          "number": 2,
+          "title": "Byte-Identical or Bust",
+          "duration": 103.932
+        },
+        {
+          "number": 3,
+          "title": "A Breakpoint and a Five-Minute Fuse",
+          "duration": 91.997
+        },
+        {
+          "number": 4,
+          "title": "The Crossover Math",
+          "duration": 78.018
+        },
+        {
+          "number": 5,
+          "title": "The Agent's Bill, Before and After",
+          "duration": 113.963
+        }
+      ],
+      "createdAt": "2026-07-16T03:48:11.359Z"
+    },
+    {
+      "slug": "electric-streams",
+      "title": "Electric Streams",
+      "subtitle": "Durable, replayable HTTP streams",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1f6fb2",
+      "animal": "generated/electric-streams/animal.webp",
+      "href": "?bundle=electric-streams",
+      "series": "The Agent Platform Built on Sync",
+      "seriesOrder": 1,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Stream That Survives",
+          "duration": 85.867
+        },
+        {
+          "number": 2,
+          "title": "An Address for Every Byte",
+          "duration": 99.567
+        },
+        {
+          "number": 3,
+          "title": "Live at the Tail",
+          "duration": 116.612
+        },
+        {
+          "number": 4,
+          "title": "Exactly Once",
+          "duration": 103.235
+        },
+        {
+          "number": 5,
+          "title": "Replay Is the Platform",
+          "duration": 122.276
+        }
+      ],
+      "createdAt": "2026-07-16T04:14:26.093Z"
     }
   ]
 }
