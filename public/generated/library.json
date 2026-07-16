@@ -1,6 +1,46 @@
 {
   "books": [
     {
+      "slug": "explained-classical-ml",
+      "title": "Explained: Classical ML",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#41607f",
+      "animal": "generated/explained-classical-ml/animal.webp",
+      "href": "?bundle=explained-classical-ml",
+      "series": "The Explainers",
+      "seriesOrder": 11,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "k-Nearest Neighbors: Memory as a Model",
+          "duration": 143.684
+        },
+        {
+          "number": 2,
+          "title": "Decision Trees: Twenty Questions with Data",
+          "duration": 133.608
+        },
+        {
+          "number": 3,
+          "title": "Ensembles: The Wisdom of Weak Learners",
+          "duration": 137.276
+        },
+        {
+          "number": 4,
+          "title": "Support Vector Machines: The Widest Street",
+          "duration": 108.529
+        },
+        {
+          "number": 5,
+          "title": "Clustering: Structure Without Labels",
+          "duration": 139.273
+        }
+      ],
+      "createdAt": "2026-07-16T22:55:12.890Z"
+    },
+    {
       "slug": "explained-llms",
       "title": "Explained: Language Models",
       "subtitle": "",
