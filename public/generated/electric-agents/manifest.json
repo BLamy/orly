@@ -1,0 +1,96 @@
+{
+  "format": 3,
+  "slug": "electric-agents",
+  "title": "Electric Agents",
+  "subtitle": "An agent is a log",
+  "animal": "animal.webp",
+  "accent": "#d6202b",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Turning the Agent Inside Out",
+      "blurb": "You start an agent on your laptop. It runs for ten minutes. Then you close the lid to go to a meeting — and the session is just gone.",
+      "scene": "books/electric-agents/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        9.776,
+        18.135,
+        29.269,
+        40.217,
+        48.17,
+        58.434,
+        67.234,
+        76.197,
+        84.916,
+        94.541
+      ],
+      "duration": 102.447
+    },
+    {
+      "number": 2,
+      "title": "One Stream, Twenty Projections",
+      "blurb": "Chapter one made a promise: everything the agent is lives on one stream. So what actually lands there while an agent works?",
+      "scene": "books/electric-agents/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        7.407,
+        17.949,
+        26.54,
+        36.896,
+        48.494,
+        57.294,
+        69.311,
+        79.075,
+        89.756,
+        99.926,
+        111.443
+      ],
+      "duration": 122.414
+    },
+    {
+      "number": 3,
+      "title": "Asleep Between Wakes",
+      "blurb": "Here is the strangest thing about an Electric agent: between actions, it doesn't exist. No process running, no loop spinning, no memory held. Just the stream, at rest.",
+      "scene": "books/electric-agents/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        11.877,
+        20.457,
+        33.866,
+        43.654,
+        53.778,
+        64.958,
+        73.096,
+        82.512,
+        92.81,
+        99.707
+      ],
+      "duration": 108.855
+    },
+    {
+      "number": 4,
+      "title": "The Crash That Didn't Matter",
+      "blurb": "An agent is ten minutes into a job. The model is streaming, a web search is mid-flight — and the process running all of it is about to die.",
+      "scene": "books/electric-agents/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        8.382,
+        19.621,
+        28.235,
+        38.986,
+        45.035,
+        52.465,
+        62.333,
+        72.26,
+        82.489,
+        92.752,
+        100.275
+      ],
+      "duration": 106.997
+    }
+  ]
+}
