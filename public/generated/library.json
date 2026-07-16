@@ -1,6 +1,46 @@
 {
   "books": [
     {
+      "slug": "explained-generative",
+      "title": "Explained: Generative Models",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/explained-generative/animal.webp",
+      "href": "?bundle=explained-generative",
+      "series": "The Explainers",
+      "seriesOrder": 9,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Density: Learning a Distribution",
+          "duration": 117.494
+        },
+        {
+          "number": 2,
+          "title": "The Autoencoder: Compress, Then Reconstruct",
+          "duration": 127.523
+        },
+        {
+          "number": 3,
+          "title": "The VAE: a Latent Space You Can Walk",
+          "duration": 115.682
+        },
+        {
+          "number": 4,
+          "title": "The GAN Game: Forger versus Detective",
+          "duration": 131.891
+        },
+        {
+          "number": 5,
+          "title": "Diffusion, Revisited From Here",
+          "duration": 142.664
+        }
+      ],
+      "createdAt": "2026-07-16T22:17:06.090Z"
+    },
+    {
       "slug": "electric-forest-loop",
       "title": "The Electric Forest Loop",
       "subtitle": "",
