@@ -451,6 +451,44 @@
         }
       ],
       "createdAt": "2026-07-16T03:46:33.383Z"
+    },
+    {
+      "slug": "differential-dataflow",
+      "title": "Differential Dataflow",
+      "subtitle": "Incremental computation, one difference at a time",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b0277a",
+      "animal": "generated/differential-dataflow/animal.webp",
+      "href": "?bundle=differential-dataflow",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Ledger of Changes",
+          "duration": 88.747
+        },
+        {
+          "number": 2,
+          "title": "Shipping the Difference",
+          "duration": 104.397
+        },
+        {
+          "number": 3,
+          "title": "The Arrangement",
+          "duration": 99.52
+        },
+        {
+          "number": 4,
+          "title": "The Frontier",
+          "duration": 92.508
+        },
+        {
+          "number": 5,
+          "title": "Until the Differences Dissipate",
+          "duration": 105.743
+        }
+      ],
+      "createdAt": "2026-07-16T03:47:49.324Z"
     }
   ]
 }
