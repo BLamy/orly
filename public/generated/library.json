@@ -680,6 +680,46 @@
       ],
       "createdAt": "2026-07-16T04:47:09.457Z",
       "animal": "generated/tanstack-db/animal.webp"
+    },
+    {
+      "slug": "agent-patterns",
+      "title": "Agent Patterns",
+      "subtitle": "Manager-worker, dispatcher, map-reduce, pipeline",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c79100",
+      "href": "?bundle=agent-patterns",
+      "series": "The Agent Platform Built on Sync",
+      "seriesOrder": 5,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Manager-Worker: the fan and the tape",
+          "duration": 84.382
+        },
+        {
+          "number": 2,
+          "title": "Map-Reduce: one worker per chunk",
+          "duration": 70.263
+        },
+        {
+          "number": 3,
+          "title": "Pipeline: one stage per wake",
+          "duration": 73.329
+        },
+        {
+          "number": 4,
+          "title": "Dispatcher: classify and route",
+          "duration": 72.121
+        },
+        {
+          "number": 5,
+          "title": "The map, and the crash test",
+          "duration": 92.229
+        }
+      ],
+      "createdAt": "2026-07-16T04:52:37.418Z",
+      "animal": "generated/agent-patterns/animal.webp"
     }
   ]
 }
