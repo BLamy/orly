@@ -1,0 +1,118 @@
+{
+  "format": 3,
+  "slug": "effect-advanced",
+  "title": "Effect",
+  "subtitle": "The Good Parts · Advanced",
+  "animal": "animal.webp",
+  "accent": "#6a3f9e",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Pull, Don't Push",
+      "blurb": "Streams are pull machines: demand flows up, chunks flow down",
+      "scene": "books/effect-advanced/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        10.031,
+        19.667,
+        27.26,
+        36.908,
+        45.464,
+        56.865,
+        64.087,
+        72.794,
+        81.571,
+        90.175,
+        100.856
+      ],
+      "duration": 109.412
+    },
+    {
+      "number": 2,
+      "title": "One Value, One Owner",
+      "blurb": "A queue hands each value to exactly one owner — and chooses what breaks when it fills",
+      "scene": "books/effect-advanced/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.218,
+        19.017,
+        26.923,
+        35.096,
+        45.917,
+        57.922,
+        67.012,
+        76.091,
+        88.629,
+        98.974
+      ],
+      "duration": 110.294
+    },
+    {
+      "number": 3,
+      "title": "Everyone Gets a Copy",
+      "blurb": "A hub copies every event to every subscriber, with replay for latecomers",
+      "scene": "books/effect-advanced/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        12.19,
+        22.222,
+        29.838,
+        38.975,
+        51.061,
+        62.798,
+        75.081,
+        84.149,
+        90.871,
+        100.391,
+        113.047
+      ],
+      "duration": 123.809
+    },
+    {
+      "number": 4,
+      "title": "All or Nothing",
+      "blurb": "Transactions journal reads and writes, then commit all or nothing",
+      "scene": "books/effect-advanced/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        11.691,
+        19.203,
+        28.781,
+        37.245,
+        48.727,
+        59.095,
+        67.93,
+        79.946,
+        93.658,
+        103.816,
+        113.186
+      ],
+      "duration": 124.274
+    },
+    {
+      "number": 5,
+      "title": "The Composition Graph",
+      "blurb": "Layers wire the services: build once, share everywhere, tear down in reverse",
+      "scene": "books/effect-advanced/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        13.584,
+        24.276,
+        33.726,
+        45.615,
+        54.218,
+        62.438,
+        72.121,
+        82.779,
+        96.177,
+        105.953
+      ],
+      "duration": 116.843
+    }
+  ]
+}

@@ -1,0 +1,103 @@
+{
+  "format": 3,
+  "slug": "agent-patterns",
+  "title": "Agent Patterns",
+  "subtitle": "Manager-worker, dispatcher, map-reduce, pipeline",
+  "animal": "animal.webp",
+  "accent": "#c79100",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Manager-Worker: the fan and the tape",
+      "blurb": "A manager fans one question out to a fixed trio of specialists, records every spawn on its stream, and is relit one wake at a time until the synthesis.",
+      "scene": "books/agent-patterns/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.893,
+        18.24,
+        26.657,
+        34.947,
+        42.017,
+        52.431,
+        59.061,
+        67.13,
+        74.119
+      ],
+      "duration": 84.382
+    },
+    {
+      "number": 2,
+      "title": "Map-Reduce: one worker per chunk",
+      "blurb": "The input decides the fan: a document shatters into chunks, one worker each, wakes land out of order, and a single reduce merges them.",
+      "scene": "books/agent-patterns/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        8.766,
+        14.257,
+        25.518,
+        35.398,
+        44.814,
+        52.651,
+        61.718
+      ],
+      "duration": 70.263
+    },
+    {
+      "number": 3,
+      "title": "Pipeline: one stage per wake",
+      "blurb": "A payload metamorphoses through preprocessor, analyzer, and synthesizer while a forward-only state machine advances one stage per wake.",
+      "scene": "books/agent-patterns/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.266,
+        18.065,
+        30.232,
+        38.789,
+        46.521,
+        52.837,
+        65.492
+      ],
+      "duration": 73.329
+    },
+    {
+      "number": 4,
+      "title": "Dispatcher: classify and route",
+      "blurb": "A railroad switch for messages: the model picks a specialist type per request, spawns it on demand, and forwards each answer home on a wake.",
+      "scene": "books/agent-patterns/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        9.079,
+        17.6,
+        27.713,
+        36.316,
+        45.627,
+        54.706,
+        63.251
+      ],
+      "duration": 72.121
+    },
+    {
+      "number": 5,
+      "title": "The map, and the crash test",
+      "blurb": "All four patterns on one map, cut by two questions — then a blackout kills every process, and the surviving stream tapes resume every machine.",
+      "scene": "books/agent-patterns/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        8.394,
+        18.924,
+        30.383,
+        40.681,
+        52.871,
+        61.939,
+        73.526,
+        81.374
+      ],
+      "duration": 92.229
+    }
+  ]
+}
