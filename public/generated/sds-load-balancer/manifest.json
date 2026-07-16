@@ -1,0 +1,65 @@
+{
+  "format": 3,
+  "slug": "sds-load-balancer",
+  "title": "The Load Balancer",
+  "animal": "animal.webp",
+  "accent": "#d6202b",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Meet the Traffic Cop",
+      "blurb": "A dispatcher deals requests like cards, routes around dead servers, ends encryption at the door, and then doubles itself.",
+      "scene": "books/sds-load-balancer/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        9.81,
+        21.049,
+        31.139,
+        41.599,
+        53.058,
+        61.847,
+        75.894
+      ],
+      "duration": 88.7
+    },
+    {
+      "number": 2,
+      "title": "Layer Four, Layer Seven",
+      "blurb": "Layer four reads the envelope and forwards it fast; layer seven opens the letter and routes video and billing to different rooms.",
+      "scene": "books/sds-load-balancer/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.601,
+        25.531,
+        34.935,
+        46.359,
+        58.735,
+        69.37,
+        85.427,
+        96.143
+      ],
+      "duration": 107.462
+    },
+    {
+      "number": 3,
+      "title": "The Edge of the Earth",
+      "blurb": "DNS turns a name into an address, a CDN edge absorbs the ocean, and the bill for scaling out finally comes due.",
+      "scene": "books/sds-load-balancer/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        9.358,
+        21.223,
+        32.194,
+        44.292,
+        55.009,
+        66.05,
+        78.507,
+        94.97
+      ],
+      "duration": 108.392
+    }
+  ]
+}

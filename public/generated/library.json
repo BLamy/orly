@@ -1,6 +1,36 @@
 {
   "books": [
     {
+      "slug": "sds-load-balancer",
+      "title": "The Load Balancer",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#d6202b",
+      "animal": "generated/sds-load-balancer/animal.webp",
+      "href": "?bundle=sds-load-balancer",
+      "series": "System Design, Solved",
+      "seriesOrder": 9,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Meet the Traffic Cop",
+          "duration": 88.7
+        },
+        {
+          "number": 2,
+          "title": "Layer Four, Layer Seven",
+          "duration": 107.462
+        },
+        {
+          "number": 3,
+          "title": "The Edge of the Earth",
+          "duration": 108.392
+        }
+      ],
+      "createdAt": "2026-07-16T21:35:20.234Z"
+    },
+    {
       "slug": "sds-scaling-aws",
       "title": "Scaling to Millions",
       "subtitle": "",
