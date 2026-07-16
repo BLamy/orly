@@ -36,6 +36,7 @@ body:
         - "TanStack DB · The reactive client store for your API — tanstack-db"
         - "Agent Patterns · Manager-worker, dispatcher, map-reduce, pipeline — agent-patterns"
         - "React Server Components · React for two computers — react-server-components"
+        - "Effect · The Good Parts · for Beginners — effect-type"
         # BOOKS:END
     validations:
       required: true

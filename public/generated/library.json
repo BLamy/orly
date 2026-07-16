@@ -757,6 +757,46 @@
         }
       ],
       "createdAt": "2026-07-16T05:14:10.859Z"
+    },
+    {
+      "slug": "effect-type",
+      "title": "Effect",
+      "subtitle": "The Good Parts · for Beginners",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#41607f",
+      "href": "?bundle=effect-type",
+      "series": "Effect: The Good Parts",
+      "seriesOrder": 1,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Recipe, Not a Meal",
+          "duration": 76.952
+        },
+        {
+          "number": 2,
+          "title": "Three Slots in the Type",
+          "duration": 94.087
+        },
+        {
+          "number": 3,
+          "title": "Pipes and Plumbing",
+          "duration": 95.852
+        },
+        {
+          "number": 4,
+          "title": "The Run Loop",
+          "duration": 109.69
+        },
+        {
+          "number": 5,
+          "title": "Why Lazy Wins",
+          "duration": 101.936
+        }
+      ],
+      "createdAt": "2026-07-16T05:25:28.109Z",
+      "animal": "generated/effect-type/animal.webp"
     }
   ]
 }
