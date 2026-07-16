@@ -49,6 +49,8 @@ function parseArgs(argv) {
     else if (k === '--role') a.role = val();
     else if (k === '--chapter-titles') a.chapterTitles = val().split('|').map((s) => s.trim());
     else if (k === '--blurbs') a.blurbs = val().split('|').map((s) => s.trim());
+    else if (k === '--series') a.series = val();
+    else if (k === '--series-order') a.seriesOrder = Number(val());
     else if (k === '--voice') a.voice = val();
     else if (k === '--no-tts') a.tts = false;
     else if (k === '--no-cover') a.cover = false;
@@ -69,7 +71,7 @@ function discoverChapters(slug) {
 }
 
 // Things TTS mangles. Captions ARE the spoken script — keep code on screen.
-const SPEAK_ALLOW = new Set(['QA', 'AI', 'OK', 'URL', 'A', 'I', 'TV', 'CEO', 'PR', 'CI']);
+const SPEAK_ALLOW = new Set(['QA', 'AI', 'OK', 'URL', 'A', 'I', 'TV', 'CEO', 'PR', 'CI', 'GPS']);
 function speakabilityProblems(text) {
   const problems = [];
   if (/https?:\/\/|www\.|\.(com|io|dev|md|ts|tsx|js|json)\b/.test(text)) problems.push('URL/domain/file extension');
@@ -155,6 +157,16 @@ Env: ELEVENLABS_API_KEY (narration), OPENAI_API_KEY (cover).`);
         sep: '\n\n',
       });
       writeFileSync(join(outDir, 'audio', `chapter-${n}.mp3`), r.mp3);
+      // TTS sometimes appends junk after the aligned text ("bumbpawee") —
+      // trim the file to the alignment end when ffmpeg is available. The
+      // player also clamps to the manifest duration as a backstop.
+      try {
+        const { execFileSync } = await import('node:child_process');
+        const f = join(outDir, 'audio', `chapter-${n}.mp3`);
+        execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', f, '-t', String(r.audioEnd + 0.2), '-c', 'copy', `${f}.trim`]);
+        const { renameSync } = await import('node:fs');
+        renameSync(`${f}.trim`, f);
+      } catch { /* no ffmpeg — the player clamp covers it */ }
       cues = r.cues.map((c) => Number(c.toFixed(3)));
       duration = Number(r.audioEnd.toFixed(3));
       log(`  ${(r.mp3.length / 1024).toFixed(0)}KB, ${duration.toFixed(1)}s${r.alignedExact ? '' : ' (approx cues)'}`);
@@ -228,6 +240,7 @@ Env: ELEVENLABS_API_KEY (narration), OPENAI_API_KEY (cover).`);
     color: accent,
     animal: animalRel,
     href: `?bundle=${slug}`,
+    ...(args.series ? { series: args.series, seriesOrder: args.seriesOrder ?? 1 } : {}),
     chapters: chapters.map((c) => ({ number: c.number, title: c.title, duration: c.duration })),
     createdAt: new Date().toISOString(),
   });

@@ -150,7 +150,7 @@ export function buildScene() {
   tl.caption({
     at: 26.0,
     dur: 6.2,
-    text: 'Too slow? Ship ALL the probability at once: every page pushes its share down every link.',
+    text: 'Too slow? Ship all the probability at once: every page pushes its share down every link.',
   });
   tl.tween(barMode, 1, { at: 26.6, dur: 1.2, ease: ease.move });
   for (let k = 0; k < K_PURE; k++) {
@@ -169,7 +169,7 @@ export function buildScene() {
   tl.caption({
     at: 40.4,
     dur: 6.0,
-    text: 'One fix from reality: sometimes the surfer gets bored and jumps ANYWHERE at random.',
+    text: 'One fix from reality: sometimes the surfer gets bored and jumps anywhere at random.',
   });
   tl.tween(teleU, 1, { at: 41.0, dur: 1.0, ease: ease.draw });
   tl.tween(teleP, 1, { at: 42.2, dur: 1.4, ease: ease.move });

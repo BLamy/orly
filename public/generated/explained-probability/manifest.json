@@ -1,0 +1,92 @@
+{
+  "format": 3,
+  "slug": "explained-probability",
+  "title": "Explained: Probability",
+  "subtitle": "Bayes, the bell curve, entropy, and the Kalman filter",
+  "animal": "animal.webp",
+  "accent": "#fbbf24",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Bayes: counting your way to the truth",
+      "blurb": "Forget probabilities for a minute — think about people. Here are two thousand of them.",
+      "scene": "books/explained-probability/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        4.841,
+        9.195,
+        16.858,
+        21.931,
+        30.662,
+        36.675,
+        42.562,
+        48.947,
+        52.953
+      ],
+      "duration": 55.542
+    },
+    {
+      "number": 2,
+      "title": "The Central Limit Theorem: the inevitable bell",
+      "blurb": "Meet one die: six faces, six equal chances, and no opinions whatsoever.",
+      "scene": "books/explained-probability/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        5.329,
+        10.797,
+        14.303,
+        16.173,
+        19.923,
+        24.288,
+        27.562,
+        33.971,
+        38.684,
+        43.154
+      ],
+      "duration": 51.037
+    },
+    {
+      "number": 3,
+      "title": "Entropy: the price of surprise",
+      "blurb": "How much does a message tell you? Shannon's move: don't measure meaning — measure surprise.",
+      "scene": "books/explained-probability/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        6.711,
+        15.081,
+        21.874,
+        27.69,
+        33.669,
+        39.521,
+        44.734,
+        50.016,
+        57.075
+      ],
+      "duration": 64.087
+    },
+    {
+      "number": 4,
+      "title": "The Kalman Filter: a robot finds itself",
+      "blurb": "A robot rolls down a hallway. Its GPS answers — but never quite the same way twice.",
+      "scene": "books/explained-probability/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        6.095,
+        9.95,
+        16.196,
+        21.142,
+        27.075,
+        32.31,
+        38.51,
+        45.058,
+        50.329,
+        57.063
+      ],
+      "duration": 63.715
+    }
+  ]
+}

@@ -11,6 +11,14 @@ name: Book pipeline (issue → book)
 on:
   issues:
     types: [opened, labeled]
+  # Series fan-out: each planned book is dispatched as its own full run (one
+  # CI session per book — a whole v3 series is too big for a single session).
+  workflow_dispatch:
+    inputs:
+      issue_number:
+        description: "Issue number to build (fan-out or manual re-run)"
+        required: true
+        type: string
 
 permissions:
   contents: write
@@ -28,7 +36,8 @@ jobs:
     # a *triggering* label being applied — a category label or `build` (`labeled`).
     # Re-applying the label (unlabel → relabel) re-runs the pipeline.
     if: >
-      (github.event.action == 'labeled' ||
+      github.event_name == 'workflow_dispatch' ||
+      ((github.event.action == 'labeled' ||
        contains(fromJSON('["OWNER","MEMBER","COLLABORATOR"]'), github.event.issue.author_association)) &&
       (contains(github.event.issue.labels.*.name, 'new-book') ||
        contains(github.event.issue.labels.*.name, 'new-series') ||
@@ -38,16 +47,34 @@ jobs:
         (github.event.label.name == 'new-book' ||
          github.event.label.name == 'new-series' ||
          github.event.label.name == 'tweak-book' ||
-         github.event.label.name == 'build')))
+         github.event.label.name == 'build'))))
     runs-on: ubuntu-latest
     # One run per issue; (re)labeling while a run is going cancels it and starts fresh.
     concurrency:
-      group: book-issue-${{ github.event.issue.number }}
+      group: book-issue-${{ github.event.issue.number || inputs.issue_number }}
       cancel-in-progress: true
     steps:
       - uses: actions/checkout@v5
         with:
           fetch-depth: 0 # full history so the squash-merge has a clean base
+
+      # Single source of truth for the issue (works for both event + dispatch).
+      - name: Resolve the issue
+        id: issue
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          EVENT_NUMBER: ${{ github.event.issue.number }}
+          INPUT_NUMBER: ${{ inputs.issue_number }}
+        run: |
+          n="${EVENT_NUMBER:-$INPUT_NUMBER}"
+          [ -n "$n" ] || { echo "::error::no issue number"; exit 1; }
+          gh issue view "$n" --repo "$GITHUB_REPOSITORY" --json title,body,labels > /tmp/issue.json
+          {
+            echo "number=$n"
+            echo "labels=$(jq -r '[.labels[].name] | join(", ")' /tmp/issue.json)"
+            echo "title<<GH_ISSUE_EOF"; jq -r .title /tmp/issue.json; echo GH_ISSUE_EOF
+            echo "body<<GH_ISSUE_EOF"; jq -r .body /tmp/issue.json; echo GH_ISSUE_EOF
+          } >> "$GITHUB_OUTPUT"
 
       - uses: actions/setup-node@v5
         with:
@@ -72,7 +99,7 @@ jobs:
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
-          gh issue comment "${{ github.event.issue.number }}" \
+          gh issue comment "${{ steps.issue.outputs.number }}" \
             --body "🤖 On it — generating in CI. Track progress in the [Actions tab](${{ github.server_url }}/${{ github.repository }}/actions/runs/${{ github.run_id }})."
 
       # Which Claude model generates the book: the issue form's "Model" dropdown
@@ -86,7 +113,7 @@ jobs:
       - name: Pick the Claude model from the issue form
         id: model
         env:
-          ISSUE_BODY: ${{ github.event.issue.body }}
+          ISSUE_BODY: ${{ steps.issue.outputs.body }}
         run: |
           id="$(printf '%s\n' "$ISSUE_BODY" \
             | awk '/^### Model[[:space:]]*$/{f=1; next} /^### /{f=0} f' \
@@ -104,12 +131,12 @@ jobs:
           # Swap for `anthropic_api_key: ${{ secrets.ANTHROPIC_API_KEY }}` to use an API key.
           claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           prompt: |
-            A book request — issue #${{ github.event.issue.number }}.
-            Labels: ${{ join(github.event.issue.labels.*.name, ', ') }}
+            A book request — issue #${{ steps.issue.outputs.number }}.
+            Labels: ${{ steps.issue.outputs.labels }}
 
-            TITLE: ${{ github.event.issue.title }}
+            TITLE: ${{ steps.issue.outputs.title }}
             BODY:
-            ${{ github.event.issue.body }}
+            ${{ steps.issue.outputs.body }}
 
             If the labels include "tweak-book", follow .claude/commands/tweak-book.md and
             make ONLY the requested edit to the existing book (parse its slug from the
@@ -138,6 +165,20 @@ jobs:
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           NOUN_PROJECT_KEY: ${{ secrets.NOUN_PROJECT_KEY }}
           NOUN_PROJECT_SECRET: ${{ secrets.NOUN_PROJECT_SECRET }}
+
+      # ---- SERIES FAN-OUT: a 📚 issue plans; each book runs as its own pipeline ----
+      # new-series.md (CI path) has Claude write /tmp/series-plan.json instead of
+      # authoring 4+ books in one session. This step files one new-book issue
+      # per book; a collaborator applies the `build` label to start each run
+      # (human approval per autonomous run — token-created issues fire nothing).
+      - name: Fan out the series plan
+        id: fanout
+        if: contains(steps.issue.outputs.labels, 'new-series')
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+          PARENT: ${{ steps.issue.outputs.number }}
+        run: bash .github/scripts/fanout-series.sh
 
       # ---- QUALITY GATE: real-browser verification of the generated book(s) ----
       # Which book dirs did generation touch? (new or modified; skip library.json)
@@ -180,16 +221,18 @@ jobs:
 
       - name: Commit + open a PR (even on partial failure)
         id: pr
-        if: always() # salvage partial work into a PR even if generation errored
+        # salvage partial work even if generation errored — unless the run fanned
+        # out into per-book runs (then there is nothing to commit here).
+        if: always() && steps.fanout.outputs.fanned != 'true'
         env:
           GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           REPO: ${{ github.repository }}
           SERVER_URL: ${{ github.server_url }}
           RUN_ID: ${{ github.run_id }}
-          ISSUE_NUMBER: ${{ github.event.issue.number }}
+          ISSUE_NUMBER: ${{ steps.issue.outputs.number }}
           # passed via env (NOT interpolated into bash) so a title with backticks,
           # quotes, or <angle brackets> can never break the shell.
-          ISSUE_TITLE: ${{ github.event.issue.title }}
+          ISSUE_TITLE: ${{ steps.issue.outputs.title }}
           GENERATE_OUTCOME: ${{ steps.generate.outcome }}
           # success | failure | skipped — the PR body notes the verification result
           VERIFY_OUTCOME: ${{ steps.verify.outcome }}

@@ -1,0 +1,89 @@
+{
+  "format": 3,
+  "slug": "explained-ml",
+  "title": "Explained: Machine Learning",
+  "subtitle": "Gradient descent, backprop, attention, diffusion",
+  "animal": "animal.webp",
+  "accent": "#a78bfa",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Gradient Descent: rolling downhill, three ways",
+      "blurb": "Loss is a landscape. Training is a search for the lowest valley.",
+      "scene": "books/explained-ml/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        3.947,
+        7.918,
+        12.62,
+        18.436,
+        22.326,
+        28.723,
+        32.682,
+        38.603,
+        43.723
+      ],
+      "duration": 49.04
+    },
+    {
+      "number": 2,
+      "title": "Backpropagation: blame, passed backward",
+      "blurb": "A neural network is just a chain of tiny computations — multiply, add, clamp, compare.",
+      "scene": "books/explained-ml/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        6.722,
+        16.509,
+        24.114,
+        33.751,
+        40.996,
+        48.925,
+        58.991,
+        63.473,
+        69.278,
+        73.945,
+        83.279
+      ],
+      "duration": 87.819
+    },
+    {
+      "number": 3,
+      "title": "Attention: every token asks every other",
+      "blurb": "Every word starts as a point in embedding space.",
+      "scene": "books/explained-ml/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        3.1,
+        6.966,
+        12.132,
+        16.521,
+        21.78,
+        25.53,
+        30.476,
+        34.04,
+        40.762,
+        45.186,
+        50.073
+      ],
+      "duration": 54.659
+    },
+    {
+      "number": 4,
+      "title": "Diffusion: drown it in noise, learn the way back",
+      "blurb": "Real data lives on a thin curve through a huge empty space. These two moons stand in for photographs — everything off the curve is a picture that never happens.",
+      "scene": "books/explained-ml/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        10.066,
+        20.968,
+        30.581,
+        38.824
+      ],
+      "duration": 48.345
+    }
+  ]
+}

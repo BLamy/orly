@@ -182,33 +182,33 @@ export function buildScene(): { tl: Timeline; ch: DiffusionChannels } {
   };
 
   // Beat 1 — the two-moons cloud gathers in (same closed form, σ 0.35 → 0).
-  tl.caption({ at: 0.5, dur: 6.4, text: 'Real data lives on a thin manifold — most of space is empty.' });
+  tl.caption({ at: 0.5, dur: 6.4, text: 'Real data lives on a thin curve through a huge empty space. These two moons stand in for photographs — everything off the curve is a picture that never happens.' });
   tl.tween(ch.entrance, 1, { at: 0.5, dur: 1.8, ease: ease.enter });
   tl.tween(ch.sigma, 0, { at: 0.7, dur: 2.4, ease: ease.move });
 
   // Beat 2 — forward noising: σ 0 → 1; the timestep bar fills in sync
   // (the marker reads σ directly, so it can't drift out of sync).
-  tl.caption({ at: 8.0, dur: 8.8, text: 'Add a little noise, many times, and structure melts away.' });
+  tl.caption({ at: 8.0, dur: 8.8, text: 'Now drown it on purpose. Add a little noise, then a little more, hundreds of times — and watch the structure melt until the moons are just a fog.' });
   tl.tween(ch.barU, 1, { at: 8.0, dur: 1.1, ease: ease.draw });
   tl.tween(ch.eqU, 1, { at: 8.4, dur: 0.7, ease: ease.enter });
   tl.tween(ch.sigma, 1, { at: 9.6, dur: 6.2, ease: ease.move });
 
   // Beat 3 — freeze at full noise; the score field points back toward data.
-  tl.caption({ at: 17.6, dur: 9.4, text: 'A network learns, at every noise level, which way is “less noisy”.' });
+  tl.caption({ at: 17.6, dur: 9.4, text: 'Here is the trick: a network watches that drowning at every stage, and learns exactly one thing — at this noise level, which direction is less noisy.' });
   tl.tween(ch.eqU, 0, { at: 17.6, dur: 0.8, ease: ease.move });
   tl.tween(ch.scoreGrow, 1, { at: 18.2, dur: 1.4, ease: ease.draw });
   tl.tween(ch.scoreU, 1, { at: 18.2, dur: 1.0, ease: ease.enter });
   tl.tween(ch.scoreEqU, 1, { at: 19.0, dur: 0.7, ease: ease.enter });
 
   // Beat 4 — reverse: arrows fade to a whisper; σ 1 → 0; the bar drains.
-  tl.caption({ at: 28.2, dur: 8.8, text: 'Generation is the same walk, run backwards.' });
+  tl.caption({ at: 28.2, dur: 8.8, text: 'Generation is the same walk, run backwards. Start from pure fog, and take step after step in the direction the network learned.' });
   tl.tween(ch.scoreU, 0.15, { at: 28.2, dur: 1.0, ease: ease.move });
   tl.tween(ch.scoreEqU, 0, { at: 28.6, dur: 0.8, ease: ease.move });
   tl.tween(ch.sigma, 0, { at: 29.4, dur: 6.2, ease: ease.move });
   tl.tween(ch.scoreU, 0, { at: 34.8, dur: 1.2, ease: ease.move });
 
   // Beat 5 — finale: the SAME points at two fixed σ values, side by side.
-  tl.caption({ at: 38.0, dur: 14.0, text: 'Sampling is denoising.' });
+  tl.caption({ at: 38.0, dur: 14.0, text: 'The fog condenses back onto the curve, and two moons appear that never existed anywhere. Sampling is denoising — that is the whole idea.' });
   tl.tween(ch.splitU, 1, { at: 38.0, dur: 1.3, ease: ease.move });
   tl.tween(ch.barU, 0, { at: 38.0, dur: 0.9, ease: ease.move });
   tl.tween(ch.linkU, 1, { at: 39.5, dur: 1.1, ease: ease.draw });

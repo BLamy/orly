@@ -330,7 +330,7 @@ export function buildScene() {
   tl.caption({
     at: 10.4,
     dur: 5.0,
-    text: 'Forward: the numbers simply flow. w₁·x + b₁ = 1.00, and ReLU waves it through.',
+    text: 'Forward: the numbers simply flow. weight times input plus bias is exactly one, and the activation waves it through.',
   });
   forward(10.45, 0, 1); // loss lands at t = 15.51
   tl.tween(lossGlow, 1, { at: 15.55, dur: 0.6, ease: ease.enter });

@@ -69,17 +69,19 @@ The planning and the scenes are written by **you (Claude Code)**.
      Storybook's Motion panel.
 
 5. **Verify the scenes before narrating** (narration costs money):
-   `npx tsc --noEmit` clean · `npm run build` green · run
-   `npm run storybook` and scrub every chapter start-to-end in the Motion
-   panel — every slider position must render correctly (state leaks show up as
-   frames that only look right when played from 0). Fix the beat sheet until
-   the story reads without audio.
+   `npx tsc --noEmit` clean · `npm run build` green. Working locally, also
+   run `npm run storybook` and scrub every chapter in the Motion panel —
+   every slider position must render correctly. In CI (headless), skip the
+   interactive scrub; step 7's browser gate covers playback. Either way, DO
+   NOT stop before building the video — an authored-but-unbuilt book is a
+   failed run.
 
 6. **Build the video** (ElevenLabs narration per chapter + O'RLY cover +
    manifest + shelf):
    ```bash
    node generator/video.mjs --slug "<SLUG>" --title "<TITLE>" \
-     --chapter-titles "t1|t2|…" --blurbs "b1|b2|…"
+     --chapter-titles "t1|t2|…" --blurbs "b1|b2|…" \
+     [--series "<SERIES NAME>" --series-order <n>]   # when the request names a series
    ```
    This extracts each chapter's captions, narrates them (one MP3 per chapter,
    exact per-caption cues), generates the O'RLY-parody cover (gpt-image seeded
