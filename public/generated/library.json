@@ -375,6 +375,44 @@
         }
       ],
       "createdAt": "2026-07-15T21:27:26.012Z"
+    },
+    {
+      "slug": "replay-qa",
+      "title": "Replay QA",
+      "subtitle": "Agents that prove their work",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#a78bfa",
+      "animal": "generated/replay-qa/animal.webp",
+      "href": "?bundle=replay-qa",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Expensive Claim",
+          "duration": 79.458
+        },
+        {
+          "number": 2,
+          "title": "Every Run Is a Recording",
+          "duration": 82.383
+        },
+        {
+          "number": 3,
+          "title": "The Agent Reads the Tape",
+          "duration": 82.803
+        },
+        {
+          "number": 4,
+          "title": "A Finding Carries Its Proof",
+          "duration": 104.166
+        },
+        {
+          "number": 5,
+          "title": "Green Must Be Proven",
+          "duration": 107.88
+        }
+      ],
+      "createdAt": "2026-07-15T20:55:33.777Z"
     }
   ]
 }
