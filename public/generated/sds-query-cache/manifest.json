@@ -1,0 +1,70 @@
+{
+  "format": 3,
+  "slug": "sds-query-cache",
+  "title": "The Query Cache",
+  "animal": "animal.webp",
+  "accent": "#41607f",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Four Thousand Questions a Second",
+      "blurb": "Ten billion queries a month meet the serving path: reverse proxy, query API, and the case for answering from memory.",
+      "scene": "books/sds-query-cache/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        7.5,
+        14.943,
+        23.046,
+        33.53,
+        42.307,
+        52.117,
+        64.389,
+        75.406,
+        87.747
+      ],
+      "duration": 98.591
+    },
+    {
+      "number": 2,
+      "title": "The Least Recently Used Machine",
+      "blurb": "A hash table and a doubly linked list run the cache together: hits ride to the front, the tail quietly pays for it.",
+      "scene": "books/sds-query-cache/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        10.577,
+        19.853,
+        28.154,
+        35.898,
+        46.393,
+        55.17,
+        65.828,
+        75.696,
+        86.516,
+        99.09
+      ],
+      "duration": 108.483
+    },
+    {
+      "number": 3,
+      "title": "Stale, Missed, and Sharded",
+      "blurb": "Cache-aside on a miss, TTL clocks on every entry, and a hash that gives each query exactly one home in the cluster.",
+      "scene": "books/sds-query-cache/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        7.001,
+        16.312,
+        23.952,
+        34.528,
+        45.233,
+        56.378,
+        65.503,
+        75.442,
+        84.811
+      ],
+      "duration": 100.775
+    }
+  ]
+}

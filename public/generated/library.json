@@ -1,6 +1,36 @@
 {
   "books": [
     {
+      "slug": "sds-query-cache",
+      "title": "The Query Cache",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#41607f",
+      "animal": "generated/sds-query-cache/animal.webp",
+      "href": "?bundle=sds-query-cache",
+      "series": "System Design, Solved",
+      "seriesOrder": 5,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Four Thousand Questions a Second",
+          "duration": 98.591
+        },
+        {
+          "number": 2,
+          "title": "The Least Recently Used Machine",
+          "duration": 108.483
+        },
+        {
+          "number": 3,
+          "title": "Stale, Missed, and Sharded",
+          "duration": 100.775
+        }
+      ],
+      "createdAt": "2026-07-16T20:46:37.595Z"
+    },
+    {
       "slug": "electric-forest-loop",
       "title": "The Electric Forest Loop",
       "subtitle": "",
