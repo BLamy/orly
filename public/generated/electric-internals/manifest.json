@@ -1,0 +1,113 @@
+{
+  "format": 3,
+  "slug": "electric-internals",
+  "title": "Electric Internals",
+  "subtitle": "Durable Proxy, Durable State, StreamDB and StreamFS",
+  "animal": "animal.webp",
+  "accent": "#41607f",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Tape",
+      "blurb": "Streams, offsets and resumable reads — the append-only substrate everything else stands on.",
+      "scene": "books/electric-internals/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        6.513,
+        12.562,
+        21.142,
+        30.395,
+        37.976,
+        46.126,
+        55.228,
+        64.086,
+        73.351,
+        81.977,
+        90.081
+      ],
+      "duration": 92.322
+    },
+    {
+      "number": 2,
+      "title": "Durable Proxy",
+      "blurb": "One fork makes any streaming endpoint durable: upstream pipes into the tape, clients read from it.",
+      "scene": "books/electric-internals/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        7.732,
+        17.346,
+        25.182,
+        31.835,
+        40.879,
+        51.978,
+        59.733,
+        69.834,
+        80.678,
+        89.536
+      ],
+      "duration": 94.784
+    },
+    {
+      "number": 3,
+      "title": "Durable State",
+      "blurb": "Typed insert, update and delete events — and the fold that turns a tape into state.",
+      "scene": "books/electric-internals/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.533,
+        19.295,
+        29.385,
+        38.905,
+        48.924,
+        57.551,
+        66.688,
+        75.639,
+        85.414
+      ],
+      "duration": 95.109
+    },
+    {
+      "number": 4,
+      "title": "StreamDB",
+      "blurb": "A reactive, schema-checked database in a stream: dispatcher, live queries, optimistic round trips.",
+      "scene": "books/electric-internals/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        8.301,
+        19.11,
+        27.144,
+        36.862,
+        45.129,
+        54.486,
+        59.734,
+        69.928,
+        75.558
+      ],
+      "duration": 82.942
+    },
+    {
+      "number": 5,
+      "title": "StreamFS & the Stack",
+      "blurb": "A shared filesystem grown from two streams — and how all four pieces compose.",
+      "scene": "books/electric-internals/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        9.497,
+        17.658,
+        28.456,
+        38.336,
+        50.631,
+        59.536,
+        62.357,
+        74.42,
+        86.506
+      ],
+      "duration": 91.394
+    }
+  ]
+}

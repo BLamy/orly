@@ -1,0 +1,105 @@
+{
+  "format": 3,
+  "slug": "effect-good-parts-2",
+  "title": "Effect",
+  "subtitle": "The Good Parts · Intermediate",
+  "animal": "animal.webp",
+  "accent": "#c79100",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Second Track",
+      "blurb": "Errors leave the type system blind — until failure gets its own track.",
+      "scene": "books/effect-good-parts-2/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        6.734,
+        15.754,
+        27.237,
+        38.464,
+        50.062,
+        62.426,
+        73.2,
+        84.416
+      ],
+      "duration": 94.458
+    },
+    {
+      "number": 2,
+      "title": "Reasons Within",
+      "blurb": "One wrapper error, many tagged reasons — recovery that reaches inside.",
+      "scene": "books/effect-good-parts-2/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        13.201,
+        24.392,
+        36.71,
+        49.168,
+        54.415,
+        65.561,
+        75.395,
+        88.572
+      ],
+      "duration": 99.474
+    },
+    {
+      "number": 3,
+      "title": "The Typed Map",
+      "blurb": "Requirements are holes shaped like keys; Context is the map that fills them.",
+      "scene": "books/effect-good-parts-2/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        10.368,
+        25.658,
+        37.048,
+        48.727,
+        60.407,
+        75.465,
+        83.824
+      ],
+      "duration": 96.688
+    },
+    {
+      "number": 4,
+      "title": "The Wiring Diagram",
+      "blurb": "Layers are recipes with typed ports; provide hides, merge exposes.",
+      "scene": "books/effect-good-parts-2/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        11.076,
+        18.147,
+        29.536,
+        40.542,
+        53.162,
+        63.018,
+        75.951,
+        87.26
+      ],
+      "duration": 98.034
+    },
+    {
+      "number": 5,
+      "title": "The Scope Closes",
+      "blurb": "Acquire pushes a finalizer; the closing scope pops them in reverse.",
+      "scene": "books/effect-good-parts-2/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        9.114,
+        22.849,
+        33.541,
+        45.372,
+        54.973,
+        68.29,
+        81.409,
+        90.036,
+        97.559
+      ],
+      "duration": 109.598
+    }
+  ]
+}
