@@ -1,6 +1,76 @@
 {
   "books": [
     {
+      "slug": "sds-sales-rank",
+      "title": "The Sales Rank",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#d6202b",
+      "animal": "generated/sds-sales-rank/animal.webp",
+      "href": "?bundle=sds-sales-rank",
+      "series": "System Design, Solved",
+      "seriesOrder": 6,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A River of Receipts",
+          "duration": 84.521
+        },
+        {
+          "number": 2,
+          "title": "MapReduce, Watched",
+          "duration": 98.127
+        },
+        {
+          "number": 3,
+          "title": "Serving the Leaderboard",
+          "duration": 94.459
+        }
+      ],
+      "createdAt": "2026-07-16T21:02:59.754Z"
+    },
+    {
+      "slug": "explained-neural-nets",
+      "title": "Explained: Neural Networks",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/explained-neural-nets/animal.webp",
+      "href": "?bundle=explained-neural-nets",
+      "series": "The Explainers",
+      "seriesOrder": 5,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Perceptron",
+          "duration": 111.363
+        },
+        {
+          "number": 2,
+          "title": "Activation Functions",
+          "duration": 104.908
+        },
+        {
+          "number": 3,
+          "title": "The Loss Landscape",
+          "duration": 107.044
+        },
+        {
+          "number": 4,
+          "title": "Overfitting",
+          "duration": 97.2
+        },
+        {
+          "number": 5,
+          "title": "Regularization",
+          "duration": 112.664
+        }
+      ],
+      "createdAt": "2026-07-16T21:01:30.735Z"
+    },
+    {
       "slug": "sds-query-cache",
       "title": "The Query Cache",
       "subtitle": "",
