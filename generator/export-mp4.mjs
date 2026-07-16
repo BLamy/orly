@@ -29,6 +29,7 @@ function arg(name, dflt) {
 }
 
 const slug = arg('slug');
+const args = { dir: arg('dir') };
 const outDir = path.resolve(arg('out', path.join(ROOT, 'exports', slug ?? 'book')));
 if (!slug) {
   console.error('usage: node generator/export-mp4.mjs --slug <slug> --out <dir>');
@@ -165,7 +166,9 @@ function encodeChapter(webm, trimStart, mp3, duration, outMp4) {
 }
 
 async function main() {
-  const bookDir = path.join(ROOT, 'public', 'generated', slug);
+  // --dir overrides where the book's manifest/audio live (e.g. a private,
+  // untracked build that must never enter public/generated or the shelf).
+  const bookDir = args.dir ? path.resolve(args.dir) : path.join(ROOT, 'public', 'generated', slug);
   const manifest = JSON.parse(readFileSync(path.join(bookDir, 'manifest.json'), 'utf8'));
   if (manifest.format !== 3) throw new Error(`"${slug}" is not a format-3 book`);
 
