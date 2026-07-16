@@ -1,0 +1,80 @@
+{
+  "format": 3,
+  "slug": "agent-browser-replay-tape",
+  "title": "Agent Browser & the Replay Tape",
+  "animal": "animal.webp",
+  "accent": "#198a8a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Recorded, Not by Choice",
+      "blurb": "Replay Chrome is required, not optional — every agent-browser launch runs a gate check before a single page loads.",
+      "scene": "books/agent-browser-replay-tape/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        9.067,
+        16.951,
+        26.158,
+        35.051,
+        46.568,
+        54.475,
+        61.951,
+        70.879
+      ],
+      "duration": 79.227
+    },
+    {
+      "number": 2,
+      "title": "What the Tape Is Made Of",
+      "blurb": "Every open, snapshot, click, and fill throws an event onto a tape as the agent works, automatically.",
+      "scene": "books/agent-browser-replay-tape/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.16,
+        16.509,
+        24.439,
+        32.519,
+        39.183,
+        49.737
+      ],
+      "duration": 56.61
+    },
+    {
+      "number": 3,
+      "title": "The Retry Loop at Close",
+      "blurb": "Closing the browser triggers a retry loop that classifies the recording and uploads it once it is ready.",
+      "scene": "books/agent-browser-replay-tape/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        7.779,
+        15.685,
+        23.348,
+        30.43,
+        37.953,
+        45.65,
+        56.749
+      ],
+      "duration": 64.087
+    },
+    {
+      "number": 4,
+      "title": "A Witness You Can Just Watch",
+      "blurb": "A second, local recording — agent-browser record — makes a witness you can just watch, no cloud required.",
+      "scene": "books/agent-browser-replay-tape/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        8.104,
+        14.884,
+        24.068,
+        31.417,
+        40.635,
+        50.898
+      ],
+      "duration": 55.635
+    }
+  ]
+}

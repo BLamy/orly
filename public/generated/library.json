@@ -1,6 +1,39 @@
 {
   "books": [
     {
+      "slug": "agent-browser-replay-tape",
+      "title": "Agent Browser & the Replay Tape",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/agent-browser-replay-tape/animal.webp",
+      "href": "?bundle=agent-browser-replay-tape",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Recorded, Not by Choice",
+          "duration": 79.227
+        },
+        {
+          "number": 2,
+          "title": "What the Tape Is Made Of",
+          "duration": 56.61
+        },
+        {
+          "number": 3,
+          "title": "The Retry Loop at Close",
+          "duration": 64.087
+        },
+        {
+          "number": 4,
+          "title": "A Witness You Can Just Watch",
+          "duration": 55.635
+        }
+      ],
+      "createdAt": "2026-07-16T19:50:08.156Z"
+    },
+    {
       "slug": "sync-insights-proposal",
       "title": "Sync Engine Insights",
       "subtitle": "A proposal: the React perf pattern, one layer down",
