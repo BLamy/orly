@@ -42,6 +42,7 @@ body:
         - "Effect Internals · What the elites don't want you to know — effect-internals"
         - "Effect · The Good Parts · Advanced — effect-advanced"
         - "Koa.js · How a request flows through the middleware onion — koa"
+        - "almostnode · A full Node.js dev environment in one browser tab — almostnode"
         # BOOKS:END
     validations:
       required: true

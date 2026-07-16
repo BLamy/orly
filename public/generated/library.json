@@ -995,6 +995,44 @@
       ],
       "createdAt": "2026-07-16T06:07:49.344Z",
       "animal": "generated/koa/animal.webp"
+    },
+    {
+      "slug": "almostnode",
+      "title": "almostnode",
+      "subtitle": "A full Node.js dev environment in one browser tab",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#3a8b3a",
+      "animal": "generated/almostnode/animal.webp",
+      "href": "?bundle=almostnode",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "One Tab, Whole Stack",
+          "duration": 91.162
+        },
+        {
+          "number": 2,
+          "title": "A Filesystem in RAM",
+          "duration": 79.969
+        },
+        {
+          "number": 3,
+          "title": "Doing a Node Impression",
+          "duration": 90.094
+        },
+        {
+          "number": 4,
+          "title": "A Dev Server With No Port",
+          "duration": 90.604
+        },
+        {
+          "number": 5,
+          "title": "The Doorman",
+          "duration": 122.926
+        }
+      ],
+      "createdAt": "2026-07-16T06:25:23.924Z"
     }
   ]
 }
