@@ -1,6 +1,36 @@
 {
   "books": [
     {
+      "slug": "sds-mint",
+      "title": "The Budget App",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c79100",
+      "animal": "generated/sds-mint/animal.webp",
+      "href": "?bundle=sds-mint",
+      "series": "System Design, Solved",
+      "seriesOrder": 7,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Linking the Vault",
+          "duration": 85.727
+        },
+        {
+          "number": 2,
+          "title": "The Categorizer",
+          "duration": 95.805
+        },
+        {
+          "number": 3,
+          "title": "The Month's Verdict",
+          "duration": 90.697
+        }
+      ],
+      "createdAt": "2026-07-16T21:11:35.723Z"
+    },
+    {
       "slug": "sds-sales-rank",
       "title": "The Sales Rank",
       "subtitle": "",
