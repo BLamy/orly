@@ -1,0 +1,119 @@
+{
+  "format": 3,
+  "slug": "koa",
+  "title": "Koa.js",
+  "subtitle": "How a request flows through the middleware onion",
+  "animal": "animal.webp",
+  "accent": "#198a8a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "One Trip Through the Onion",
+      "blurb": "Eight lines of Hello Koa, followed end to end: listen, compose, context, 404 by default, and one clean double pass.",
+      "scene": "books/koa/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        11.366,
+        20.213,
+        29.28,
+        40.298,
+        49.666,
+        62.53,
+        73.885,
+        80.282,
+        90.441,
+        97.569
+      ],
+      "duration": 106.996
+    },
+    {
+      "number": 2,
+      "title": "use, then compose",
+      "blurb": "Three pushes to an array, one fold into a function: how dispatch hand-builds every next.",
+      "scene": "books/koa/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        8.812,
+        17.137,
+        23.417,
+        32.578,
+        42.191,
+        51.05,
+        61.812,
+        70.496,
+        80.689,
+        89.455
+      ],
+      "duration": 97.292
+    },
+    {
+      "number": 3,
+      "title": "The Double Pass",
+      "blurb": "await next splits every middleware in two, and the halves run in mirror order: 1, 2, 3, 4.",
+      "scene": "books/koa/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        9.334,
+        21.154,
+        30.511,
+        40.101,
+        49.784,
+        60.105,
+        68.348,
+        81.352,
+        89.653,
+        99.08,
+        111.282
+      ],
+      "duration": 120.42
+    },
+    {
+      "number": 4,
+      "title": "One Object, Four Handles",
+      "blurb": "Each request gets a fresh ctx stamped off shared prototypes and wired to req, res, request, and response.",
+      "scene": "books/koa/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        12.156,
+        23.371,
+        32.287,
+        41.877,
+        52.268,
+        63.832,
+        70.02,
+        78.228,
+        85.554,
+        95.364,
+        108.158
+      ],
+      "duration": 119.722
+    },
+    {
+      "number": 5,
+      "title": "Errors Ride the Way Back Out",
+      "blurb": "A throw deep in the onion becomes a rejection climbing the same rings — caught by your try, or by the net at the rim.",
+      "scene": "books/koa/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        11.146,
+        22.965,
+        31.266,
+        42.678,
+        52.176,
+        62.996,
+        72.04,
+        82.942,
+        91.638,
+        103.236,
+        112.268,
+        123.309
+      ],
+      "duration": 136.857
+    }
+  ]
+}

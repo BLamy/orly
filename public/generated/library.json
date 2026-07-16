@@ -957,6 +957,44 @@
         }
       ],
       "createdAt": "2026-07-16T06:03:41.568Z"
+    },
+    {
+      "slug": "koa",
+      "title": "Koa.js",
+      "subtitle": "How a request flows through the middleware onion",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "href": "?bundle=koa",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "One Trip Through the Onion",
+          "duration": 106.996
+        },
+        {
+          "number": 2,
+          "title": "use, then compose",
+          "duration": 97.292
+        },
+        {
+          "number": 3,
+          "title": "The Double Pass",
+          "duration": 120.42
+        },
+        {
+          "number": 4,
+          "title": "One Object, Four Handles",
+          "duration": 119.722
+        },
+        {
+          "number": 5,
+          "title": "Errors Ride the Way Back Out",
+          "duration": 136.857
+        }
+      ],
+      "createdAt": "2026-07-16T06:07:49.344Z",
+      "animal": "generated/koa/animal.webp"
     }
   ]
 }
