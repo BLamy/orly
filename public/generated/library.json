@@ -1,6 +1,82 @@
 {
   "books": [
     {
+      "slug": "electric-forest-loop",
+      "title": "The Electric Forest Loop",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b0277a",
+      "animal": "generated/electric-forest-loop/animal.webp",
+      "href": "?bundle=electric-forest-loop",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Claim Is Not Evidence",
+          "duration": 95.759
+        },
+        {
+          "number": 2,
+          "title": "The Builder's Workshop",
+          "duration": 103.328
+        },
+        {
+          "number": 3,
+          "title": "The Critic Attacks",
+          "duration": 143.406
+        },
+        {
+          "number": 4,
+          "title": "The Budget and the Loud Stop",
+          "duration": 112.569
+        },
+        {
+          "number": 5,
+          "title": "Why Attack Beats Review",
+          "duration": 108.067
+        }
+      ],
+      "createdAt": "2026-07-16T20:33:53.659Z"
+    },
+    {
+      "slug": "wasm-vm-loop",
+      "title": "The wasm-vm Proof Loop",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/wasm-vm-loop/animal.webp",
+      "href": "?bundle=wasm-vm-loop",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Claim Is Not Evidence",
+          "duration": 87.631
+        },
+        {
+          "number": 2,
+          "title": "The Worker Records the Run",
+          "duration": 99.522
+        },
+        {
+          "number": 3,
+          "title": "The Critic Attacks the Tape",
+          "duration": 104.211
+        },
+        {
+          "number": 4,
+          "title": "Refuted Means Start Over",
+          "duration": 100.773
+        },
+        {
+          "number": 5,
+          "title": "Why the Critic Beats a Reviewer",
+          "duration": 98.825
+        }
+      ],
+      "createdAt": "2026-07-16T20:33:15.453Z"
+    },
+    {
       "slug": "agent-browser-replay-tape",
       "title": "Agent Browser & the Replay Tape",
       "subtitle": "",

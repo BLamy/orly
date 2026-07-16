@@ -1,0 +1,109 @@
+{
+  "format": 3,
+  "slug": "electric-forest-loop",
+  "title": "The Electric Forest Loop",
+  "animal": "animal.webp",
+  "accent": "#b0277a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A Claim Is Not Evidence",
+      "blurb": "A builder being satisfied is a claim; a deterministic recording of the run is evidence — the one rule the whole repo serves.",
+      "scene": "books/electric-forest-loop/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.348,
+        18.367,
+        27.434,
+        36.107,
+        47.113,
+        58.688,
+        67.5,
+        77.682,
+        87.563
+      ],
+      "duration": 95.759
+    },
+    {
+      "number": 2,
+      "title": "The Builder's Workshop",
+      "blurb": "Scratch probes in work slash, durable artifacts in evidence slash, the gate gauntlet, and the recorded final happy run.",
+      "scene": "books/electric-forest-loop/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        7.999,
+        19.168,
+        29.048,
+        40.182,
+        48.889,
+        57.527,
+        69.044,
+        79.203,
+        90.534
+      ],
+      "duration": 103.328
+    },
+    {
+      "number": 3,
+      "title": "The Critic Attacks",
+      "blurb": "A fresh session fans out parallel critics: falsify, audit coverage, hunt mocks, sabotage a scratch worktree, fuzz, interrogate the recording.",
+      "scene": "books/electric-forest-loop/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        11.656,
+        26.819,
+        39.846,
+        52.513,
+        64.088,
+        78.611,
+        92.288,
+        104.362,
+        118.479,
+        133.863
+      ],
+      "duration": 143.406
+    },
+    {
+      "number": 4,
+      "title": "The Budget and the Loud Stop",
+      "blurb": "Two reworks per task, thrash detection, and the loud honest stop: the project flips to invalid loop rather than lie.",
+      "scene": "books/electric-forest-loop/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        11.656,
+        20.875,
+        31.312,
+        41.041,
+        53.231,
+        68.452,
+        80.665,
+        90.778,
+        100.159
+      ],
+      "duration": 112.569
+    },
+    {
+      "number": 5,
+      "title": "Why Attack Beats Review",
+      "blurb": "The same defect swarm through two doors — a passive review and the critic's filter stack — and why verification compounds.",
+      "scene": "books/electric-forest-loop/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        9.671,
+        20.933,
+        30.303,
+        42.772,
+        56.379,
+        65.865,
+        80.25,
+        96.561
+      ],
+      "duration": 108.067
+    }
+  ]
+}
