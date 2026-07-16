@@ -1,0 +1,112 @@
+{
+  "format": 3,
+  "slug": "electric-streams",
+  "title": "Electric Streams",
+  "subtitle": "Durable, replayable HTTP streams",
+  "animal": "animal.webp",
+  "accent": "#1f6fb2",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Stream That Survives",
+      "blurb": "A refresh kills a live pipe and the tokens with it — unless the stream itself remembers.",
+      "scene": "books/electric-streams/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.858,
+        15.639,
+        23.429,
+        32.195,
+        41.901,
+        50.608,
+        56.97,
+        65.782,
+        75.116
+      ],
+      "duration": 85.867
+    },
+    {
+      "number": 2,
+      "title": "An Address for Every Byte",
+      "blurb": "Create, append, read: offsets give every byte an address you can always come back to.",
+      "scene": "books/electric-streams/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        10.728,
+        18.982,
+        28.885,
+        39.37,
+        50.399,
+        59.664,
+        70.787,
+        79.529,
+        88.91
+      ],
+      "duration": 99.567
+    },
+    {
+      "number": 3,
+      "title": "Live at the Tail",
+      "blurb": "Long-poll parks the request, server-sent events hold the pipe — the tail is live either way.",
+      "scene": "books/electric-streams/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        10.623,
+        19.865,
+        30.697,
+        41.309,
+        52.919,
+        62.068,
+        72.911,
+        83.837,
+        94.378,
+        104.909
+      ],
+      "duration": 116.612
+    },
+    {
+      "number": 4,
+      "title": "Exactly Once",
+      "blurb": "Producer id, epoch, and sequence turn retries into no-ops over a network you can't trust.",
+      "scene": "books/electric-streams/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        10.379,
+        19.783,
+        29.687,
+        39.114,
+        48.065,
+        60.488,
+        69.926,
+        79.295,
+        90.372
+      ],
+      "duration": 103.235
+    },
+    {
+      "number": 5,
+      "title": "Replay Is the Platform",
+      "blurb": "Many readers, forks with a shared past, and layers up to a live database — replay makes streams the substrate.",
+      "scene": "books/electric-streams/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        10.368,
+        19.935,
+        31.87,
+        42.191,
+        54.556,
+        63.473,
+        73.921,
+        85.462,
+        96.99,
+        108.693
+      ],
+      "duration": 122.276
+    }
+  ]
+}
