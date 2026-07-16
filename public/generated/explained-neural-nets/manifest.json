@@ -1,0 +1,125 @@
+{
+  "format": 3,
+  "slug": "explained-neural-nets",
+  "title": "Explained: Neural Networks",
+  "animal": "animal.webp",
+  "accent": "#198a8a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Perceptron",
+      "blurb": "A line that learns from its own mistakes — the real perceptron update rule, replayed nudge by nudge until eight corrections separate the clusters.",
+      "scene": "books/explained-neural-nets/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        7.001,
+        12.864,
+        19.946,
+        25.379,
+        35.132,
+        40.519,
+        48.275,
+        59.443,
+        68.36,
+        76.383,
+        86.739,
+        94.332,
+        102.168
+      ],
+      "duration": 111.363
+    },
+    {
+      "number": 2,
+      "title": "Activation Functions",
+      "blurb": "Two stacked linear layers collapse to a single line — but give each unit one hinge and a real sixteen-unit network bends itself onto a wavy target.",
+      "scene": "books/explained-neural-nets/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        7.221,
+        13.897,
+        19.714,
+        25.949,
+        33.356,
+        43.224,
+        50.097,
+        56.808,
+        67.071,
+        73.712,
+        81.467,
+        89.165,
+        95.179
+      ],
+      "duration": 104.908
+    },
+    {
+      "number": 3,
+      "title": "The Loss Landscape",
+      "blurb": "Two knobs, one rippled surface: why every training run is a walk among valleys, saddles, and basins — and why where you start decides where you land.",
+      "scene": "books/explained-neural-nets/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.847,
+        17.066,
+        25.275,
+        31.393,
+        39.3,
+        48.437,
+        57.887,
+        66.885,
+        75.314,
+        83.174,
+        90.72,
+        97.524
+      ],
+      "duration": 107.044
+    },
+    {
+      "number": 4,
+      "title": "Overfitting",
+      "blurb": "Real polynomial fits crank from too stiff to threading every point — and the held-out test set draws the U-curve that separates memorizing from learning.",
+      "scene": "books/explained-neural-nets/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        7.732,
+        16.301,
+        25.02,
+        33.124,
+        39.718,
+        46.847,
+        54.498,
+        64.923,
+        73.132,
+        83.581,
+        91.453
+      ],
+      "duration": 97.2
+    },
+    {
+      "number": 5,
+      "title": "Regularization",
+      "blurb": "Ridge penalties shrink a wild polynomial's weights into a smooth fit, a U-curve pins the sweet spot, and a dropout-style ensemble buys generalization.",
+      "scene": "books/explained-neural-nets/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        7.338,
+        16.544,
+        25.228,
+        34.447,
+        41.517,
+        50.365,
+        60.988,
+        70.775,
+        78.624,
+        87.958,
+        95.853,
+        103.713
+      ],
+      "duration": 112.664
+    }
+  ]
+}
