@@ -1,6 +1,41 @@
 {
   "books": [
     {
+      "slug": "explained-training",
+      "title": "Explained: Training",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1f6fb2",
+      "animal": "generated/explained-training/animal.webp",
+      "href": "?bundle=explained-training",
+      "series": "The Explainers",
+      "seriesOrder": 7,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Ill-Conditioning",
+          "duration": 122.881
+        },
+        {
+          "number": 2,
+          "title": "Learning-Rate Schedules",
+          "duration": 111.782
+        },
+        {
+          "number": 3,
+          "title": "Batch Size and Noise",
+          "duration": 117.399
+        },
+        {
+          "number": 4,
+          "title": "Bias and Variance",
+          "duration": 123.762
+        }
+      ],
+      "createdAt": "2026-07-16T21:37:23.698Z"
+    },
+    {
       "slug": "sds-load-balancer",
       "title": "The Load Balancer",
       "subtitle": "",
