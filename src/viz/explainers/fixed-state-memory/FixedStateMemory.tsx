@@ -25,7 +25,7 @@ import type {
   SceneState,
   TimelineOverrides,
 } from '../../core';
-import { Axes, Brace, FunctionPlot } from '../../primitives';
+import { Axes, FunctionPlot } from '../../primitives';
 import overrides from './overrides.json';
 
 // ---------------------------------------------------------------------------
@@ -255,7 +255,6 @@ function Frame({ s }: { s: SceneState }) {
   const titleU = s.get(scene.titleU);
 
   const mainOp = 1 - 0.85 * dimU;
-  const nSlots = Math.floor(cacheTok);
   const heat = stateHeat(stateTok);
   const gridW = D * CELL;
   const curTok = Math.min(T, curveU * T);
@@ -301,18 +300,6 @@ function Frame({ s }: { s: SceneState }) {
                 </g>
               );
             })}
-            {costU > 0 && nSlots > 1 && (
-              <g opacity={costU}>
-                <Brace
-                  x0={CACHE_TOP}
-                  x1={CACHE_TOP + nSlots * SLOT_H}
-                  y={-(CACHE_X + SLOT_W + 18)}
-                  u={costU}
-                  color={colors.WARM}
-                  // Brace is horizontal; rotate the group to make it vertical
-                />
-              </g>
-            )}
             {costU > 0 && (
               <g opacity={costU}>
                 <line

@@ -1,0 +1,102 @@
+{
+  "format": 3,
+  "slug": "arxiv-gated-deltanet-2",
+  "title": "Erase, Then Write",
+  "subtitle": "Decoupling erase and write in linear attention",
+  "animal": "animal.webp",
+  "accent": "#1f6fb2",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The fixed-state problem",
+      "blurb": "Softmax attention hoards every key and value; linear attention compresses history into one fixed matrix — and something must be forgotten.",
+      "scene": "books/arxiv-gated-deltanet-2/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        7.628,
+        16.01,
+        25.159,
+        35.085,
+        43.119,
+        53.974,
+        64.772
+      ],
+      "duration": 70.821
+    },
+    {
+      "number": 2,
+      "title": "The delta rule: write only the error",
+      "blurb": "One step of online gradient descent, actually run: the naive write plateaus on interference, the delta rule grinds recall error to zero.",
+      "scene": "books/arxiv-gated-deltanet-2/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        7.744,
+        15.418,
+        22.535,
+        31.637,
+        40.286,
+        48.993,
+        57.468,
+        67.453
+      ],
+      "duration": 71.842
+    },
+    {
+      "number": 3,
+      "title": "Erase, then write",
+      "blurb": "The paper's move, computed: one scalar clobbers the wrong memory, and channel-wise erase and write gates land a point no scalar can reach.",
+      "scene": "books/arxiv-gated-deltanet-2/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        7.512,
+        17.055,
+        28.747,
+        34.865,
+        46.429,
+        56.669,
+        67.396,
+        78.263
+      ],
+      "duration": 86.889
+    },
+    {
+      "number": 4,
+      "title": "Gates and decay",
+      "blurb": "Sigmoid gates and softplus decay, per channel: scratch space and archive inside one head, with real retention curves.",
+      "scene": "books/arxiv-gated-deltanet-2/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        9.892,
+        21.374,
+        32.914,
+        43.885,
+        49.783,
+        60.998,
+        70.67
+      ],
+      "duration": 81.362
+    },
+    {
+      "number": 5,
+      "title": "Where this line is going",
+      "blurb": "The 2026 linear-attention frontier — the delta net lineage, the paper's reported numbers, and the honest caveats.",
+      "scene": "books/arxiv-gated-deltanet-2/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        8.115,
+        19.388,
+        28.537,
+        40.96,
+        53.929,
+        66.003,
+        77.601
+      ],
+      "duration": 88.747
+    }
+  ]
+}
