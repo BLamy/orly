@@ -1,42 +1,42 @@
 {
   "books": [
     {
-      "slug": "koa",
-      "title": "Koa.js",
-      "subtitle": "How a request flows through the middleware onion",
+      "slug": "the-orly-loop",
+      "title": "ORLY Loop",
+      "subtitle": "From a GitHub issue to a published video",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#198a8a",
-      "href": "?bundle=koa",
+      "href": "?bundle=the-orly-loop",
       "chapters": [
         {
           "number": 1,
-          "title": "One Trip Through the Onion",
-          "duration": 106.996
+          "title": "The Issue Is the Interface",
+          "duration": 65.62
         },
         {
           "number": 2,
-          "title": "use, then compose",
-          "duration": 97.292
+          "title": "Captions Are the Script",
+          "duration": 100.682
         },
         {
           "number": 3,
-          "title": "The Double Pass",
-          "duration": 120.42
+          "title": "Written for the Ear",
+          "duration": 90.837
         },
         {
           "number": 4,
-          "title": "One Object, Four Handles",
-          "duration": 119.722
+          "title": "Evidence, Not Confidence",
+          "duration": 78.39
         },
         {
           "number": 5,
-          "title": "Errors Ride the Way Back Out",
-          "duration": 136.857
+          "title": "The Loop Closes",
+          "duration": 95.203
         }
       ],
-      "createdAt": "2026-07-16T06:07:49.344Z",
-      "animal": "generated/koa/animal.webp"
+      "createdAt": "2026-07-16T06:25:08.869Z",
+      "animal": "generated/the-orly-loop/animal.webp"
     },
     {
       "slug": "sds-web-crawler",
@@ -375,6 +375,626 @@
         }
       ],
       "createdAt": "2026-07-15T21:27:26.012Z"
+    },
+    {
+      "slug": "replay-qa",
+      "title": "Replay QA",
+      "subtitle": "Agents that prove their work",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#a78bfa",
+      "animal": "generated/replay-qa/animal.webp",
+      "href": "?bundle=replay-qa",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Expensive Claim",
+          "duration": 79.458
+        },
+        {
+          "number": 2,
+          "title": "Every Run Is a Recording",
+          "duration": 82.383
+        },
+        {
+          "number": 3,
+          "title": "The Agent Reads the Tape",
+          "duration": 82.803
+        },
+        {
+          "number": 4,
+          "title": "A Finding Carries Its Proof",
+          "duration": 104.166
+        },
+        {
+          "number": 5,
+          "title": "Green Must Be Proven",
+          "duration": 107.88
+        }
+      ],
+      "createdAt": "2026-07-15T20:55:33.777Z"
+    },
+    {
+      "slug": "vercel-emulate",
+      "title": "Vercel Emulate",
+      "subtitle": "Signed-in end-to-end tests without the login dance",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c79100",
+      "animal": "generated/vercel-emulate/animal.webp",
+      "href": "?bundle=vercel-emulate",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Login Dance",
+          "duration": 89.861
+        },
+        {
+          "number": 2,
+          "title": "Seeding the Cast",
+          "duration": 95.851
+        },
+        {
+          "number": 3,
+          "title": "One Click Instead of a Password",
+          "duration": 92.973
+        },
+        {
+          "number": 4,
+          "title": "Minting the Identity",
+          "duration": 101.145
+        },
+        {
+          "number": 5,
+          "title": "Spot the Difference",
+          "duration": 100.822
+        }
+      ],
+      "createdAt": "2026-07-16T03:46:33.383Z"
+    },
+    {
+      "slug": "differential-dataflow",
+      "title": "Differential Dataflow",
+      "subtitle": "Incremental computation, one difference at a time",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b0277a",
+      "animal": "generated/differential-dataflow/animal.webp",
+      "href": "?bundle=differential-dataflow",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Ledger of Changes",
+          "duration": 88.747
+        },
+        {
+          "number": 2,
+          "title": "Shipping the Difference",
+          "duration": 104.397
+        },
+        {
+          "number": 3,
+          "title": "The Arrangement",
+          "duration": 99.52
+        },
+        {
+          "number": 4,
+          "title": "The Frontier",
+          "duration": 92.508
+        },
+        {
+          "number": 5,
+          "title": "Until the Differences Dissipate",
+          "duration": 105.743
+        }
+      ],
+      "createdAt": "2026-07-16T03:47:49.324Z"
+    },
+    {
+      "slug": "prompt-caching",
+      "title": "Prompt Caching",
+      "subtitle": "How LLM providers reuse your context instead of re-reading it",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#3a8b3a",
+      "animal": "generated/prompt-caching/animal.webp",
+      "href": "?bundle=prompt-caching",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Re-Read Tax",
+          "duration": 82.71
+        },
+        {
+          "number": 2,
+          "title": "Byte-Identical or Bust",
+          "duration": 103.932
+        },
+        {
+          "number": 3,
+          "title": "A Breakpoint and a Five-Minute Fuse",
+          "duration": 91.997
+        },
+        {
+          "number": 4,
+          "title": "The Crossover Math",
+          "duration": 78.018
+        },
+        {
+          "number": 5,
+          "title": "The Agent's Bill, Before and After",
+          "duration": 113.963
+        }
+      ],
+      "createdAt": "2026-07-16T03:48:11.359Z"
+    },
+    {
+      "slug": "electric-streams",
+      "title": "Electric Streams",
+      "subtitle": "Durable, replayable HTTP streams",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1f6fb2",
+      "animal": "generated/electric-streams/animal.webp",
+      "href": "?bundle=electric-streams",
+      "series": "The Agent Platform Built on Sync",
+      "seriesOrder": 1,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Stream That Survives",
+          "duration": 85.867
+        },
+        {
+          "number": 2,
+          "title": "An Address for Every Byte",
+          "duration": 99.567
+        },
+        {
+          "number": 3,
+          "title": "Live at the Tail",
+          "duration": 116.612
+        },
+        {
+          "number": 4,
+          "title": "Exactly Once",
+          "duration": 103.235
+        },
+        {
+          "number": 5,
+          "title": "Replay Is the Platform",
+          "duration": 122.276
+        }
+      ],
+      "createdAt": "2026-07-16T04:14:26.093Z"
+    },
+    {
+      "slug": "electric-internals",
+      "title": "Electric Internals",
+      "subtitle": "Durable Proxy, Durable State, StreamDB and StreamFS",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#41607f",
+      "animal": "generated/electric-internals/animal.webp",
+      "href": "?bundle=electric-internals",
+      "series": "The Agent Platform Built on Sync",
+      "seriesOrder": 3,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Tape",
+          "duration": 92.322
+        },
+        {
+          "number": 2,
+          "title": "Durable Proxy",
+          "duration": 94.784
+        },
+        {
+          "number": 3,
+          "title": "Durable State",
+          "duration": 95.109
+        },
+        {
+          "number": 4,
+          "title": "StreamDB",
+          "duration": 82.942
+        },
+        {
+          "number": 5,
+          "title": "StreamFS & the Stack",
+          "duration": 91.394
+        }
+      ],
+      "createdAt": "2026-07-16T04:22:16.227Z"
+    },
+    {
+      "slug": "electric-agents",
+      "title": "Electric Agents",
+      "subtitle": "An agent is a log",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#d6202b",
+      "animal": "generated/electric-agents/animal.webp",
+      "href": "?bundle=electric-agents",
+      "series": "The Agent Platform Built on Sync",
+      "seriesOrder": 4,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Turning the Agent Inside Out",
+          "duration": 102.447
+        },
+        {
+          "number": 2,
+          "title": "One Stream, Twenty Projections",
+          "duration": 122.414
+        },
+        {
+          "number": 3,
+          "title": "Asleep Between Wakes",
+          "duration": 108.855
+        },
+        {
+          "number": 4,
+          "title": "The Crash That Didn't Matter",
+          "duration": 106.997
+        }
+      ],
+      "createdAt": "2026-07-16T04:51:52.289Z"
+    },
+    {
+      "slug": "tanstack-db",
+      "title": "TanStack DB",
+      "subtitle": "The reactive client store for your API",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b0277a",
+      "href": "?bundle=tanstack-db",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Waterfall Problem",
+          "duration": 85.682
+        },
+        {
+          "number": 2,
+          "title": "Live Queries",
+          "duration": 102.631
+        },
+        {
+          "number": 3,
+          "title": "Optimistic Writes",
+          "duration": 106.253
+        },
+        {
+          "number": 4,
+          "title": "Loading from Your API",
+          "duration": 100.821
+        },
+        {
+          "number": 5,
+          "title": "Sync in Production",
+          "duration": 109.32
+        }
+      ],
+      "createdAt": "2026-07-16T04:47:09.457Z",
+      "animal": "generated/tanstack-db/animal.webp"
+    },
+    {
+      "slug": "agent-patterns",
+      "title": "Agent Patterns",
+      "subtitle": "Manager-worker, dispatcher, map-reduce, pipeline",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c79100",
+      "href": "?bundle=agent-patterns",
+      "series": "The Agent Platform Built on Sync",
+      "seriesOrder": 5,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Manager-Worker: the fan and the tape",
+          "duration": 84.382
+        },
+        {
+          "number": 2,
+          "title": "Map-Reduce: one worker per chunk",
+          "duration": 70.263
+        },
+        {
+          "number": 3,
+          "title": "Pipeline: one stage per wake",
+          "duration": 73.329
+        },
+        {
+          "number": 4,
+          "title": "Dispatcher: classify and route",
+          "duration": 72.121
+        },
+        {
+          "number": 5,
+          "title": "The map, and the crash test",
+          "duration": 92.229
+        }
+      ],
+      "createdAt": "2026-07-16T04:52:37.418Z",
+      "animal": "generated/agent-patterns/animal.webp"
+    },
+    {
+      "slug": "react-server-components",
+      "title": "React Server Components",
+      "subtitle": "React for two computers",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#41607f",
+      "href": "?bundle=react-server-components",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Two Computers, One Tree",
+          "duration": 85.5
+        },
+        {
+          "number": 2,
+          "title": "Rows on a Tape",
+          "duration": 91.8
+        },
+        {
+          "number": 3,
+          "title": "The Customs Gate",
+          "duration": 93.9
+        },
+        {
+          "number": 4,
+          "title": "Chunks That Wake Up",
+          "duration": 88.6
+        },
+        {
+          "number": 5,
+          "title": "The Wire Runs Backwards",
+          "duration": 86.5
+        }
+      ],
+      "createdAt": "2026-07-16T05:14:10.859Z"
+    },
+    {
+      "slug": "effect-type",
+      "title": "Effect",
+      "subtitle": "The Good Parts · for Beginners",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#41607f",
+      "href": "?bundle=effect-type",
+      "series": "Effect: The Good Parts",
+      "seriesOrder": 1,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Recipe, Not a Meal",
+          "duration": 76.952
+        },
+        {
+          "number": 2,
+          "title": "Three Slots in the Type",
+          "duration": 94.087
+        },
+        {
+          "number": 3,
+          "title": "Pipes and Plumbing",
+          "duration": 95.852
+        },
+        {
+          "number": 4,
+          "title": "The Run Loop",
+          "duration": 109.69
+        },
+        {
+          "number": 5,
+          "title": "Why Lazy Wins",
+          "duration": 101.936
+        }
+      ],
+      "createdAt": "2026-07-16T05:25:28.109Z",
+      "animal": "generated/effect-type/animal.webp"
+    },
+    {
+      "slug": "effect-good-parts-2",
+      "title": "Effect",
+      "subtitle": "The Good Parts · Intermediate",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c79100",
+      "animal": "generated/effect-good-parts-2/animal.webp",
+      "href": "?bundle=effect-good-parts-2",
+      "series": "Effect: The Good Parts",
+      "seriesOrder": 2,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Second Track",
+          "duration": 94.458
+        },
+        {
+          "number": 2,
+          "title": "Reasons Within",
+          "duration": 99.474
+        },
+        {
+          "number": 3,
+          "title": "The Typed Map",
+          "duration": 96.688
+        },
+        {
+          "number": 4,
+          "title": "The Wiring Diagram",
+          "duration": 98.034
+        },
+        {
+          "number": 5,
+          "title": "The Scope Closes",
+          "duration": 109.598
+        }
+      ],
+      "createdAt": "2026-07-16T05:30:49.641Z"
+    },
+    {
+      "slug": "effect-in-prod",
+      "title": "Effect in Prod",
+      "subtitle": "Production-Level Effect",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/effect-in-prod/animal.webp",
+      "href": "?bundle=effect-in-prod",
+      "series": "Effect: The Good Parts",
+      "seriesOrder": 3,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Fiber Tree",
+          "duration": 91.626
+        },
+        {
+          "number": 2,
+          "title": "Pulling the Plug Safely",
+          "duration": 98.732
+        },
+        {
+          "number": 3,
+          "title": "Failure With a Plan",
+          "duration": 93.53
+        },
+        {
+          "number": 4,
+          "title": "The Request Leaves a Trace",
+          "duration": 106.719
+        },
+        {
+          "number": 5,
+          "title": "The Service, Assembled",
+          "duration": 110.526
+        }
+      ],
+      "createdAt": "2026-07-16T05:39:56.349Z"
+    },
+    {
+      "slug": "effect-internals",
+      "title": "Effect Internals",
+      "subtitle": "What the elites don't want you to know",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#d6202b",
+      "animal": "generated/effect-internals/animal.webp",
+      "href": "?bundle=effect-internals",
+      "series": "Effect: The Good Parts",
+      "seriesOrder": 4,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Program Is a Data Structure",
+          "duration": 91.858
+        },
+        {
+          "number": 2,
+          "title": "The Runloop",
+          "duration": 104.676
+        },
+        {
+          "number": 3,
+          "title": "Sharing One Thread",
+          "duration": 89.026
+        },
+        {
+          "number": 4,
+          "title": "Interruption Is a Failure",
+          "duration": 100.171
+        },
+        {
+          "number": 5,
+          "title": "The Promise to Clean Up",
+          "duration": 103.422
+        }
+      ],
+      "createdAt": "2026-07-16T05:57:15.173Z"
+    },
+    {
+      "slug": "effect-advanced",
+      "title": "Effect",
+      "subtitle": "The Good Parts · Advanced",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#6a3f9e",
+      "animal": "generated/effect-advanced/animal.webp",
+      "href": "?bundle=effect-advanced",
+      "series": "Effect: The Good Parts",
+      "seriesOrder": 5,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Pull, Don't Push",
+          "duration": 109.412
+        },
+        {
+          "number": 2,
+          "title": "One Value, One Owner",
+          "duration": 110.294
+        },
+        {
+          "number": 3,
+          "title": "Everyone Gets a Copy",
+          "duration": 123.809
+        },
+        {
+          "number": 4,
+          "title": "All or Nothing",
+          "duration": 124.274
+        },
+        {
+          "number": 5,
+          "title": "The Composition Graph",
+          "duration": 116.843
+        }
+      ],
+      "createdAt": "2026-07-16T06:03:41.568Z"
+    },
+    {
+      "slug": "koa",
+      "title": "Koa.js",
+      "subtitle": "How a request flows through the middleware onion",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "href": "?bundle=koa",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "One Trip Through the Onion",
+          "duration": 106.996
+        },
+        {
+          "number": 2,
+          "title": "use, then compose",
+          "duration": 97.292
+        },
+        {
+          "number": 3,
+          "title": "The Double Pass",
+          "duration": 120.42
+        },
+        {
+          "number": 4,
+          "title": "One Object, Four Handles",
+          "duration": 119.722
+        },
+        {
+          "number": 5,
+          "title": "Errors Ride the Way Back Out",
+          "duration": 136.857
+        }
+      ],
+      "createdAt": "2026-07-16T06:07:49.344Z",
+      "animal": "generated/koa/animal.webp"
     }
   ]
 }

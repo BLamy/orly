@@ -1,0 +1,117 @@
+{
+  "format": 3,
+  "slug": "effect-in-prod",
+  "title": "Effect in Prod",
+  "subtitle": "Production-Level Effect",
+  "animal": "animal.webp",
+  "accent": "#198a8a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Fiber Tree",
+      "blurb": "Fibers make concurrency cheap — and structured",
+      "scene": "books/effect-in-prod/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        9.149,
+        17.125,
+        23.812,
+        31.057,
+        38.743,
+        47.264,
+        54.126,
+        63.681,
+        72.493,
+        80.899
+      ],
+      "duration": 91.626
+    },
+    {
+      "number": 2,
+      "title": "Pulling the Plug Safely",
+      "blurb": "Interruption, race, and timeouts without corruption",
+      "scene": "books/effect-in-prod/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.601,
+        17.299,
+        25.983,
+        35.086,
+        45.709,
+        53.372,
+        61.394,
+        67.802,
+        77.091,
+        87.865
+      ],
+      "duration": 98.732
+    },
+    {
+      "number": 3,
+      "title": "Failure With a Plan",
+      "blurb": "Retries, exponential backoff, and the jitter that saves your dependency",
+      "scene": "books/effect-in-prod/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        12.411,
+        21.548,
+        32.009,
+        37.454,
+        44.815,
+        54.416,
+        61.963,
+        68.546,
+        76.94,
+        84.405
+      ],
+      "duration": 93.53
+    },
+    {
+      "number": 4,
+      "title": "The Request Leaves a Trace",
+      "blurb": "Spans build the waterfall while the request runs",
+      "scene": "books/effect-in-prod/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        9.497,
+        17.775,
+        26.343,
+        37.128,
+        42.91,
+        53.196,
+        63.424,
+        72.364,
+        79.528,
+        86.888,
+        95.12
+      ],
+      "duration": 106.719
+    },
+    {
+      "number": 5,
+      "title": "The Service, Assembled",
+      "blurb": "Layers, memoization, and one runtime for a million requests",
+      "scene": "books/effect-in-prod/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        11.784,
+        20.77,
+        32.786,
+        42.04,
+        50.039,
+        58.956,
+        68.267,
+        77.52,
+        85.635,
+        94.122,
+        97.477
+      ],
+      "duration": 110.526
+    }
+  ]
+}
