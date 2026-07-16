@@ -607,6 +607,41 @@
         }
       ],
       "createdAt": "2026-07-16T04:22:16.227Z"
+    },
+    {
+      "slug": "electric-agents",
+      "title": "Electric Agents",
+      "subtitle": "An agent is a log",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#d6202b",
+      "animal": "generated/electric-agents/animal.webp",
+      "href": "?bundle=electric-agents",
+      "series": "The Agent Platform Built on Sync",
+      "seriesOrder": 4,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Turning the Agent Inside Out",
+          "duration": 102.447
+        },
+        {
+          "number": 2,
+          "title": "One Stream, Twenty Projections",
+          "duration": 122.414
+        },
+        {
+          "number": 3,
+          "title": "Asleep Between Wakes",
+          "duration": 108.855
+        },
+        {
+          "number": 4,
+          "title": "The Crash That Didn't Matter",
+          "duration": 106.997
+        }
+      ],
+      "createdAt": "2026-07-16T04:51:52.289Z"
     }
   ]
 }
