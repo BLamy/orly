@@ -1,0 +1,82 @@
+{
+  "format": 3,
+  "slug": "sds-scaling-aws",
+  "title": "Scaling to Millions",
+  "animal": "animal.webp",
+  "accent": "#6a3f9e",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "One Box",
+      "blurb": "A web server and MySQL share one machine, the meters climb, and vertical scaling shows both its power and its price.",
+      "scene": "books/sds-scaling-aws/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        11.215,
+        20.747,
+        32.752,
+        43.154,
+        54.323,
+        63.855,
+        73.538,
+        82.349
+      ],
+      "duration": 91.115
+    },
+    {
+      "number": 2,
+      "title": "The Great Unbundling",
+      "blurb": "Static files fly to the object store, the database gets its own box, and a load balancer turns one server into a fleet.",
+      "scene": "books/sds-scaling-aws/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        10.995,
+        22.617,
+        34.064,
+        43.77,
+        54.985,
+        66.919,
+        80.178,
+        89.49
+      ],
+      "duration": 99.428
+    },
+    {
+      "number": 3,
+      "title": "Read Heavy",
+      "blurb": "A hundred reads per write drain the master until a memory cache, stateless servers, and read replicas absorb the flood.",
+      "scene": "books/sds-scaling-aws/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        9.555,
+        19.273,
+        29.838,
+        41.808,
+        56.053,
+        66.223,
+        75.708
+      ],
+      "duration": 85.82
+    },
+    {
+      "number": 4,
+      "title": "The Breathing City",
+      "blurb": "The fleet breathes with the business day: autoscaling follows the curve, queues take the slow work, and the long tail waits.",
+      "scene": "books/sds-scaling-aws/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        10.774,
+        22.884,
+        33.495,
+        47.717,
+        59.594,
+        78.065
+      ],
+      "duration": 94.273
+    }
+  ]
+}

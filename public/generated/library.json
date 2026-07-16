@@ -1,6 +1,41 @@
 {
   "books": [
     {
+      "slug": "sds-scaling-aws",
+      "title": "Scaling to Millions",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#6a3f9e",
+      "animal": "generated/sds-scaling-aws/animal.webp",
+      "href": "?bundle=sds-scaling-aws",
+      "series": "System Design, Solved",
+      "seriesOrder": 8,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "One Box",
+          "duration": 91.115
+        },
+        {
+          "number": 2,
+          "title": "The Great Unbundling",
+          "duration": 99.428
+        },
+        {
+          "number": 3,
+          "title": "Read Heavy",
+          "duration": 85.82
+        },
+        {
+          "number": 4,
+          "title": "The Breathing City",
+          "duration": 94.273
+        }
+      ],
+      "createdAt": "2026-07-16T21:22:24.301Z"
+    },
+    {
       "slug": "explained-transformers",
       "title": "Explained: Transformers",
       "subtitle": "",

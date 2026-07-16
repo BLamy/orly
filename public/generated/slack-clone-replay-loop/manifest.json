@@ -1,0 +1,101 @@
+{
+  "format": 3,
+  "slug": "slack-clone-replay-loop",
+  "title": "Looping the Slack Clone with Replay",
+  "animal": "animal.webp",
+  "accent": "#a01f3c",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "One Command, One World",
+      "blurb": "One command builds a hermetic world — emulators, app, health check — sealed off from the real network.",
+      "scene": "books/slack-clone-replay-loop/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        12.19,
+        19.54,
+        30.326,
+        39.3,
+        48.217,
+        58.457,
+        67.629,
+        75.652
+      ],
+      "duration": 85.543
+    },
+    {
+      "number": 2,
+      "title": "Two Witnesses, One Room",
+      "blurb": "Ada and Linus hold one staggered conversation in two concurrent Replay Chromium browsers, each recording it from their own seat.",
+      "scene": "books/slack-clone-replay-loop/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        12.26,
+        25.124,
+        35.875,
+        44.28,
+        51.699,
+        60.709,
+        70.473,
+        81.467
+      ],
+      "duration": 91.301
+    },
+    {
+      "number": 3,
+      "title": "The Evidence Must Be New",
+      "blurb": "A before-and-after diff of the recording list, a gate that demands two new recordings, and an explicit upload into the run's receipt.",
+      "scene": "books/slack-clone-replay-loop/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        10.344,
+        22.465,
+        30.801,
+        41.924,
+        52.408,
+        58.782,
+        70.299,
+        81.224
+      ],
+      "duration": 89.165
+    },
+    {
+      "number": 4,
+      "title": "Proof You Can Watch",
+      "blurb": "Two Playwright films welded side by side by ffmpeg: deep recordings for the critic, one watchable MP4 for the human.",
+      "scene": "books/slack-clone-replay-loop/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        10.728,
+        19.957,
+        28.572,
+        38.243,
+        46.057,
+        56.042,
+        67.803
+      ],
+      "duration": 78.716
+    },
+    {
+      "number": 5,
+      "title": "The Loop, Closed",
+      "blurb": "The finally block tears the world down; two recordings, one film, and one receipt survive every lap.",
+      "scene": "books/slack-clone-replay-loop/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        10.461,
+        19.877,
+        29.954,
+        39.427,
+        50.179,
+        61.139
+      ],
+      "duration": 71.889
+    }
+  ]
+}
