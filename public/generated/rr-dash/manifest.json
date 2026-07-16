@@ -1,0 +1,89 @@
+{
+  "format": 3,
+  "slug": "rr-dash",
+  "title": "rr-dash: Time Travel on a Stream",
+  "animal": "animal.webp",
+  "accent": "#198a8a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A Trace Is Not Yet a Tool",
+      "blurb": "An rr trace holds a whole execution — and on disk it is a folder you can do nothing with. The upload turns it into addressable streams.",
+      "scene": "books/rr-dash/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        11.32,
+        19.737,
+        32.38,
+        44.907,
+        54.706,
+        63.855,
+        75.674,
+        88.132,
+        98.291
+      ],
+      "duration": 108.252
+    },
+    {
+      "number": 2,
+      "title": "The Shape of a Recording",
+      "blurb": "Append-only index, latest-per-id fold, tombstones, chunked linetrace — the whole storage engine in a handful of streams.",
+      "scene": "books/rr-dash/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        8.661,
+        17.043,
+        27.004,
+        38.22,
+        50.271,
+        57.063,
+        69.95,
+        82.547,
+        91.243
+      ],
+      "duration": 102.818
+    },
+    {
+      "number": 3,
+      "title": "Watching Extraction Live",
+      "blurb": "The extractor narrates its own progress: NDJSON deltas tailed onto a live stream, pumped every 1.5 seconds into a growing fold.",
+      "scene": "books/rr-dash/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        9.625,
+        23.951,
+        34.319,
+        44.432,
+        57.226,
+        65.979,
+        75.86,
+        86.657
+      ],
+      "duration": 97.013
+    },
+    {
+      "number": 4,
+      "title": "The DevTools Face",
+      "blurb": "Gutter hit counts, execution-point popovers with copyable rr replay commands, the events console, and the flame drawer.",
+      "scene": "books/rr-dash/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        6.792,
+        17.415,
+        27.191,
+        37.35,
+        46.835,
+        58.665,
+        66.502,
+        77.311,
+        89.083,
+        101.576
+      ],
+      "duration": 107.183
+    }
+  ]
+}

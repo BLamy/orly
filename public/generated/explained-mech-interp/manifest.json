@@ -1,0 +1,104 @@
+{
+  "format": 3,
+  "slug": "explained-mech-interp",
+  "title": "Explained: Mechanistic Interpretability",
+  "animal": "animal.webp",
+  "accent": "#198a8a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Opening the Black Box: Features as Directions",
+      "blurb": "A real linear probe hunting a planted direction in activation space, and finding it at cosine 0.993.",
+      "scene": "books/explained-mech-interp/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        13.56,
+        23.638,
+        35.189,
+        46.196,
+        58.061,
+        68.626,
+        81.281,
+        92.764
+      ],
+      "duration": 103.329
+    },
+    {
+      "number": 2,
+      "title": "Superposition: More Features than Neurons",
+      "blurb": "The toy superposition model actually trained twice: dedicated dimensions when dense, a pentagon of shared ones when sparse.",
+      "scene": "books/explained-mech-interp/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        12.04,
+        25.426,
+        35.155,
+        48.599,
+        59.328,
+        70.078,
+        81.653,
+        93.484
+      ],
+      "duration": 104.815
+    },
+    {
+      "number": 3,
+      "title": "Sparse Autoencoders: Unmixing the Stream",
+      "blurb": "A real sparse autoencoder recovering every planted feature direction from the raw mixture, cosine 0.96 to 1.00.",
+      "scene": "books/explained-mech-interp/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        11.157,
+        22.326,
+        35.992,
+        47.055,
+        60.198,
+        73.016,
+        85.822,
+        94.332
+      ],
+      "duration": 103.748
+    },
+    {
+      "number": 4,
+      "title": "Circuits: Algorithms You Can Read",
+      "blurb": "A previous-token head composing with an induction head — every attention weight a real softmax, copying the repeat 9 of 9.",
+      "scene": "books/explained-mech-interp/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        11.389,
+        22.837,
+        36.618,
+        50.991,
+        59.745,
+        72.272,
+        84.66,
+        97.605
+      ],
+      "duration": 108.763
+    },
+    {
+      "number": 5,
+      "title": "Ablation: Proof by Removal",
+      "blurb": "Knock out either head and copying collapses to zero while the untouched behavior survives — proof by intervention, not by looking.",
+      "scene": "books/explained-mech-interp/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        13.537,
+        27.074,
+        40.472,
+        50.492,
+        63.46,
+        73.758,
+        87.887,
+        100.531
+      ],
+      "duration": 114.057
+    }
+  ]
+}

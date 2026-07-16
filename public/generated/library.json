@@ -1,6 +1,74 @@
 {
   "books": [
     {
+      "slug": "rr-dash",
+      "title": "rr-dash: Time Travel on a Stream",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/rr-dash/animal.webp",
+      "href": "?bundle=rr-dash",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Trace Is Not Yet a Tool",
+          "duration": 108.252
+        },
+        {
+          "number": 2,
+          "title": "The Shape of a Recording",
+          "duration": 102.818
+        },
+        {
+          "number": 3,
+          "title": "Watching Extraction Live",
+          "duration": 97.013
+        },
+        {
+          "number": 4,
+          "title": "The DevTools Face",
+          "duration": 107.183
+        }
+      ],
+      "createdAt": "2026-07-16T23:30:37.258Z"
+    },
+    {
+      "slug": "explained-sequence-models",
+      "title": "Explained: Sequence Models",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#e07b1a",
+      "animal": "generated/explained-sequence-models/animal.webp",
+      "href": "?bundle=explained-sequence-models",
+      "series": "The Explainers",
+      "seriesOrder": 15,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Vanishing Gradient",
+          "duration": 103.005
+        },
+        {
+          "number": 2,
+          "title": "LSTM Gates",
+          "duration": 97.06
+        },
+        {
+          "number": 3,
+          "title": "Why Attention Won",
+          "duration": 96.225
+        },
+        {
+          "number": 4,
+          "title": "CTC and Beam Search",
+          "duration": 101.517
+        }
+      ],
+      "createdAt": "2026-07-16T23:29:54.495Z"
+    },
+    {
       "slug": "explained-mech-interp",
       "title": "Explained: Mechanistic Interpretability",
       "subtitle": "",
