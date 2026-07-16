@@ -1,0 +1,110 @@
+{
+  "format": 3,
+  "slug": "prompt-caching",
+  "title": "Prompt Caching",
+  "subtitle": "How LLM providers reuse your context instead of re-reading it",
+  "animal": "animal.webp",
+  "accent": "#3a8b3a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Re-Read Tax",
+      "blurb": "Every request ships the whole transcript and the model re-reads all of it — the bill grows with the square of the conversation.",
+      "scene": "books/prompt-caching/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.603,
+        18.425,
+        26.529,
+        35.237,
+        42.574,
+        51.165,
+        59.049,
+        67.176,
+        74.757
+      ],
+      "duration": 82.71
+    },
+    {
+      "number": 2,
+      "title": "Byte-Identical or Bust",
+      "blurb": "The cache key is the byte-identical prefix: tools, then system, then messages — one reordered tool and everything after is full price.",
+      "scene": "books/prompt-caching/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        10.913,
+        22.488,
+        34.284,
+        45.894,
+        56.645,
+        67.535,
+        77.206,
+        84.764,
+        93.936
+      ],
+      "duration": 103.932
+    },
+    {
+      "number": 3,
+      "title": "A Breakpoint and a Five-Minute Fuse",
+      "blurb": "cache_control pins the stable prefix; a five-minute fuse, rewound on every hit, with a patient one-hour tier for slow loops.",
+      "scene": "books/prompt-caching/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        10.693,
+        17.543,
+        29.211,
+        36.177,
+        44.095,
+        51.618,
+        61.626,
+        70.31,
+        81.409
+      ],
+      "duration": 91.997
+    },
+    {
+      "number": 4,
+      "title": "The Crossover Math",
+      "blurb": "Writes bill at 1.25x, reads at 0.1x — the cost lines cross before your second request finishes.",
+      "scene": "books/prompt-caching/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        11.529,
+        19.226,
+        25.042,
+        33.924,
+        41.006,
+        49.284,
+        59.524,
+        66.362
+      ],
+      "duration": 78.018
+    },
+    {
+      "number": 5,
+      "title": "The Agent's Bill, Before and After",
+      "blurb": "The same ten-turn agent run on both meters: 175,000 token-units uncached vs about 53,150 — roughly 70% off the input bill.",
+      "scene": "books/prompt-caching/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        12.388,
+        22.79,
+        34.702,
+        46.103,
+        52.267,
+        61.904,
+        71.947,
+        83.557,
+        90.871,
+        100.426
+      ],
+      "duration": 113.963
+    }
+  ]
+}
