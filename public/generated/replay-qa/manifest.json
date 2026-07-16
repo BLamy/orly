@@ -1,0 +1,112 @@
+{
+  "format": 3,
+  "slug": "replay-qa",
+  "title": "Replay QA",
+  "subtitle": "Agents that prove their work",
+  "animal": "animal.webp",
+  "accent": "#a78bfa",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Expensive Claim",
+      "blurb": "Someone tells you the checkout is broken. Someone else tells you it works. Those are opposite claims — and you should not pay the same price to believe them.",
+      "scene": "books/replay-qa/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.417,
+        16.323,
+        22.79,
+        31.579,
+        38.313,
+        47.809,
+        53.893,
+        60.139,
+        67.627,
+        74.036
+      ],
+      "duration": 79.458
+    },
+    {
+      "number": 2,
+      "title": "Every Run Is a Recording",
+      "blurb": "A test run starts with a journey — a scripted intention. This one belongs to the Acme store: add an item to the cart, check out, and pay.",
+      "scene": "books/replay-qa/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        10.948,
+        17.949,
+        23.765,
+        33.204,
+        42.527,
+        50.259,
+        58.549,
+        65.921,
+        74.257
+      ],
+      "duration": 82.383
+    },
+    {
+      "number": 3,
+      "title": "The Agent Reads the Tape",
+      "blurb": "The run is over. The browser is gone. What remains is the tape — and one question: what actually happened in there?",
+      "scene": "books/replay-qa/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.197,
+        15.093,
+        21.607,
+        31.51,
+        39.475,
+        45.199,
+        55.148,
+        62.462,
+        72.76
+      ],
+      "duration": 82.803
+    },
+    {
+      "number": 4,
+      "title": "A Finding Carries Its Proof",
+      "blurb": "Believing an app is broken costs almost nothing — the worst case of checking a bug report is a few wasted minutes. So a finding has exactly one job: survive the checking.",
+      "scene": "books/replay-qa/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        11.587,
+        21.49,
+        29.628,
+        38.592,
+        44.64,
+        55.879,
+        70.067,
+        82.629,
+        93.299
+      ],
+      "duration": 104.166
+    },
+    {
+      "number": 5,
+      "title": "Green Must Be Proven",
+      "blurb": "A webhook arrives: someone says the checkout bug is fixed. Notice what kind of claim that is. Fixed is the expensive kind — it gets recorded, but it does not get believed yet.",
+      "scene": "books/replay-qa/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        11.18,
+        20.12,
+        32.264,
+        41.343,
+        49.854,
+        59.258,
+        69.892,
+        74.78,
+        87.585,
+        96.699
+      ],
+      "duration": 107.88
+    }
+  ]
+}
