@@ -14,4 +14,3 @@ generator/seeds/clean/
 /.playwright-mcp
 /*.png
 public/generated/*/animal.png
-src/viz/books/sync-insights-proposal/
