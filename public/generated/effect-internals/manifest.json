@@ -1,0 +1,111 @@
+{
+  "format": 3,
+  "slug": "effect-internals",
+  "title": "Effect Internals",
+  "subtitle": "What the elites don't want you to know",
+  "animal": "animal.webp",
+  "accent": "#d6202b",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Program Is a Data Structure",
+      "blurb": "An effect is a frozen instruction — op, args, evaluate. Nothing runs until a fiber does.",
+      "scene": "books/effect-internals/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        9.416,
+        18.983,
+        28.805,
+        41.262,
+        51.316,
+        59.42,
+        71.134,
+        81.038
+      ],
+      "duration": 91.858
+    },
+    {
+      "number": 2,
+      "title": "The Runloop",
+      "blurb": "One while loop, one explicit stack: values pop success frames, failures skip past them.",
+      "scene": "books/effect-internals/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        11.169,
+        21.792,
+        31.126,
+        39.799,
+        50.713,
+        60.651,
+        67.536,
+        78.391,
+        87.551,
+        96.351
+      ],
+      "duration": 104.676
+    },
+    {
+      "number": 3,
+      "title": "Sharing One Thread",
+      "blurb": "A 2048-op budget, priority buckets, and one tick: cooperative multitasking without threads.",
+      "scene": "books/effect-internals/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.8,
+        16.347,
+        25.437,
+        34.052,
+        43.247,
+        49.598,
+        60.93,
+        72.261,
+        80.203
+      ],
+      "duration": 89.026
+    },
+    {
+      "number": 4,
+      "title": "Interruption Is a Failure",
+      "blurb": "An interrupt is just a failure cause — and masks are stack frames that make it wait.",
+      "scene": "books/effect-internals/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        11.889,
+        21.374,
+        29.002,
+        38.302,
+        49.053,
+        58.434,
+        67.803,
+        78.833,
+        91.255
+      ],
+      "duration": 100.171
+    },
+    {
+      "number": 5,
+      "title": "The Promise to Clean Up",
+      "blurb": "On-exit frames and the Scope's reverse close: how release always runs, exactly once.",
+      "scene": "books/effect-internals/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        10.159,
+        20.793,
+        28.305,
+        40.077,
+        49.679,
+        57.864,
+        65.852,
+        70.496,
+        81.294,
+        89.13
+      ],
+      "duration": 103.422
+    }
+  ]
+}

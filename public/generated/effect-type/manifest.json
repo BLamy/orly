@@ -1,0 +1,108 @@
+{
+  "format": 3,
+  "slug": "effect-type",
+  "title": "Effect",
+  "subtitle": "The Good Parts · for Beginners",
+  "animal": "animal.webp",
+  "accent": "#41607f",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A Recipe, Not a Meal",
+      "blurb": "Creating an Effect does nothing. That is the point.",
+      "scene": "books/effect-type/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.905,
+        19.227,
+        29.246,
+        38.546,
+        47.753,
+        58.33,
+        66.921
+      ],
+      "duration": 76.952
+    },
+    {
+      "number": 2,
+      "title": "Three Slots in the Type",
+      "blurb": "Success, failure, requirements: the contract is the type.",
+      "scene": "books/effect-type/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        11.029,
+        17.137,
+        24.428,
+        31.614,
+        43.561,
+        55.368,
+        66.119,
+        76.405,
+        82.976
+      ],
+      "duration": 94.087
+    },
+    {
+      "number": 3,
+      "title": "Pipes and Plumbing",
+      "blurb": "map and flatMap build bigger descriptions, not bigger runs.",
+      "scene": "books/effect-type/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.835,
+        21.305,
+        31.277,
+        40.113,
+        51.537,
+        64.25,
+        74.269,
+        86.32
+      ],
+      "duration": 95.852
+    },
+    {
+      "number": 4,
+      "title": "The Run Loop",
+      "blurb": "A fiber is a stack machine that walks your description to an Exit.",
+      "scene": "books/effect-type/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        7.755,
+        20.654,
+        32.287,
+        42.26,
+        54.113,
+        63.784,
+        71.888,
+        83.359,
+        90.626,
+        102.434
+      ],
+      "duration": 109.69
+    },
+    {
+      "number": 5,
+      "title": "Why Lazy Wins",
+      "blurb": "Retry, timeout, interrupt — powers only a description can have.",
+      "scene": "books/effect-type/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        9.033,
+        18.437,
+        29.745,
+        38.546,
+        49.924,
+        61.58,
+        71.321,
+        79.239,
+        91.127
+      ],
+      "duration": 101.936
+    }
+  ]
+}

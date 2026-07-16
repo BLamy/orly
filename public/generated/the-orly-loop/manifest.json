@@ -1,0 +1,111 @@
+{
+  "format": 3,
+  "slug": "the-orly-loop",
+  "title": "ORLY Loop",
+  "subtitle": "From a GitHub issue to a published video",
+  "animal": "animal.webp",
+  "accent": "#198a8a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Issue Is the Interface",
+      "blurb": "A five-field form is the whole request — and one label is the approval.",
+      "scene": "books/the-orly-loop/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        7.605,
+        16.881,
+        23.452,
+        32.659,
+        42.191,
+        51.503,
+        57.946
+      ],
+      "duration": 65.62
+    },
+    {
+      "number": 2,
+      "title": "Captions Are the Script",
+      "blurb": "Plan the pictures first; every chapter is a scene whose captions are the spoken lines.",
+      "scene": "books/the-orly-loop/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        10.368,
+        20.48,
+        31.161,
+        42.19,
+        53.139,
+        62.926,
+        72.411,
+        81.804,
+        91.742
+      ],
+      "duration": 100.682
+    },
+    {
+      "number": 3,
+      "title": "Written for the Ear",
+      "blurb": "A gauntlet bounces anything a narrator would mangle; character timestamps become exact cues.",
+      "scene": "books/the-orly-loop/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        9.392,
+        21.177,
+        27.643,
+        35.62,
+        44.676,
+        49.807,
+        58.341,
+        65.295,
+        73.55,
+        81.491
+      ],
+      "duration": 90.837
+    },
+    {
+      "number": 4,
+      "title": "Evidence, Not Confidence",
+      "blurb": "A headless browser runs every chapter and demands evidence it animates.",
+      "scene": "books/the-orly-loop/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        8.348,
+        16.544,
+        24.485,
+        29.466,
+        39.694,
+        48.03,
+        52.036,
+        60.244,
+        68.406
+      ],
+      "duration": 78.39
+    },
+    {
+      "number": 5,
+      "title": "The Loop Closes",
+      "blurb": "A pull request, a live preview, a reply to revise — merge, and the shelf grows by one.",
+      "scene": "books/the-orly-loop/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        10.449,
+        18.797,
+        26.97,
+        33.17,
+        40.752,
+        51.317,
+        58.271,
+        65.145,
+        69.324,
+        76.593,
+        85.091
+      ],
+      "duration": 95.203
+    }
+  ]
+}
