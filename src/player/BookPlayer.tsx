@@ -163,6 +163,32 @@ export function BookPlayer({ slug }: { slug: string }) {
     el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }, [current, manifest, seriesGroups]);
 
+  // Keep the URL in sync with the chapter being watched, so it's shareable
+  // and the browser back/forward buttons step through chapters. Skip the
+  // very first sync after load — the URL is already correct (it's what
+  // `current`'s initial value came from).
+  const skipNextUrlSyncRef = useRef(true);
+  useEffect(() => {
+    if (!manifest) return;
+    if (skipNextUrlSyncRef.current) {
+      skipNextUrlSyncRef.current = false;
+      return;
+    }
+    const url = new URL(window.location.href);
+    url.searchParams.set('bundle', slug);
+    url.searchParams.set('chapter', String(current + 1));
+    url.searchParams.delete('ep');
+    window.history.pushState(null, '', url);
+  }, [current, manifest, slug]);
+
+  // Back/forward should step between chapters too.
+  useEffect(() => {
+    if (!manifest) return;
+    const onPopState = () => setCurrent(chapterFromUrl(manifest.chapters.length) ?? 0);
+    window.addEventListener('popstate', onPopState);
+    return () => window.removeEventListener('popstate', onPopState);
+  }, [manifest]);
+
   const goHome = () => {
     window.location.href = ASSET_BASE;
   };
