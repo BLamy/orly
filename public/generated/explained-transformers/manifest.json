@@ -1,0 +1,125 @@
+{
+  "format": 3,
+  "slug": "explained-transformers",
+  "title": "Explained: Transformers",
+  "animal": "animal.webp",
+  "accent": "#e07b1a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Embeddings",
+      "blurb": "A toy vector space where similar words cluster, cosines measure meaning, and king minus man plus woman really does land on queen.",
+      "scene": "books/explained-transformers/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        7.732,
+        16.126,
+        22.001,
+        28.235,
+        35.48,
+        43.085,
+        47.647,
+        54.741,
+        62.462,
+        67.198,
+        73.189,
+        81.932
+      ],
+      "duration": 89.211
+    },
+    {
+      "number": 2,
+      "title": "Positional Encoding",
+      "blurb": "Attention sees a bag of tokens — until each position gets a sinusoidal fingerprint added to its embedding, letting order ride along with meaning.",
+      "scene": "books/explained-transformers/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        4.714,
+        11.691,
+        18.936,
+        28.479,
+        35.84,
+        42.306,
+        50.816,
+        57.782,
+        65.155,
+        71.11,
+        75.951
+      ],
+      "duration": 82.848
+    },
+    {
+      "number": 3,
+      "title": "Multi-Head Attention",
+      "blurb": "Three attention heads read the same sentence and find three different relations — position, reference, and description — then mix back into one stream.",
+      "scene": "books/explained-transformers/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.51,
+        15.546,
+        26.529,
+        35.607,
+        41.122,
+        49.109,
+        59.024,
+        66.78,
+        76.66,
+        86.529,
+        94.215,
+        102.562
+      ],
+      "duration": 112.663
+    },
+    {
+      "number": 4,
+      "title": "The Residual Stream",
+      "blurb": "One vector per token rides a highway through the whole model — each block just reads it, computes a small edit, and adds it back.",
+      "scene": "books/explained-transformers/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        8.394,
+        18.205,
+        25.275,
+        34.761,
+        42.679,
+        51.989,
+        60.639,
+        68.116,
+        77.543,
+        88.526,
+        96.769,
+        105.79
+      ],
+      "duration": 114.335
+    },
+    {
+      "number": 5,
+      "title": "Sampling",
+      "blurb": "Real softmax distributions over one prompt show how temperature, seeded sampling, and top-k turn a column of scores into the model's next word.",
+      "scene": "books/explained-transformers/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        5.817,
+        13.874,
+        23.905,
+        31.986,
+        39.962,
+        46.882,
+        53.453,
+        63.484,
+        70.427,
+        78.008,
+        85.844,
+        93.298,
+        100.38,
+        112.257
+      ],
+      "duration": 117.261
+    }
+  ]
+}

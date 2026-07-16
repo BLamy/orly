@@ -1,6 +1,84 @@
 {
   "books": [
     {
+      "slug": "explained-transformers",
+      "title": "Explained: Transformers",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#e07b1a",
+      "animal": "generated/explained-transformers/animal.webp",
+      "href": "?bundle=explained-transformers",
+      "series": "The Explainers",
+      "seriesOrder": 6,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Embeddings",
+          "duration": 89.211
+        },
+        {
+          "number": 2,
+          "title": "Positional Encoding",
+          "duration": 82.848
+        },
+        {
+          "number": 3,
+          "title": "Multi-Head Attention",
+          "duration": 112.663
+        },
+        {
+          "number": 4,
+          "title": "The Residual Stream",
+          "duration": 114.335
+        },
+        {
+          "number": 5,
+          "title": "Sampling",
+          "duration": 117.261
+        }
+      ],
+      "createdAt": "2026-07-16T21:19:20.163Z"
+    },
+    {
+      "slug": "slack-clone-replay-loop",
+      "title": "Looping the Slack Clone with Replay",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#a01f3c",
+      "animal": "generated/slack-clone-replay-loop/animal.webp",
+      "href": "?bundle=slack-clone-replay-loop",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "One Command, One World",
+          "duration": 85.543
+        },
+        {
+          "number": 2,
+          "title": "Two Witnesses, One Room",
+          "duration": 91.301
+        },
+        {
+          "number": 3,
+          "title": "The Evidence Must Be New",
+          "duration": 89.165
+        },
+        {
+          "number": 4,
+          "title": "Proof You Can Watch",
+          "duration": 78.716
+        },
+        {
+          "number": 5,
+          "title": "The Loop, Closed",
+          "duration": 71.889
+        }
+      ],
+      "createdAt": "2026-07-16T21:18:23.012Z"
+    },
+    {
       "slug": "sds-mint",
       "title": "The Budget App",
       "subtitle": "",
