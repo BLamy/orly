@@ -1,0 +1,117 @@
+{
+  "format": 3,
+  "slug": "tanstack-db",
+  "title": "TanStack DB",
+  "subtitle": "The reactive client store for your API",
+  "animal": "animal.webp",
+  "accent": "#b0277a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Waterfall Problem",
+      "blurb": "Endpoint sprawl, network waterfalls, and the client store that collapses them",
+      "scene": "books/tanstack-db/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        7.581,
+        17.519,
+        24.88,
+        31.091,
+        40.542,
+        47.972,
+        55.194,
+        63.205,
+        69.88,
+        77.857
+      ],
+      "duration": 85.682
+    },
+    {
+      "number": 2,
+      "title": "Live Queries",
+      "blurb": "A query that compiles to a dataflow pipeline and never re-runs",
+      "scene": "books/tanstack-db/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        6.13,
+        15.209,
+        24.346,
+        33.39,
+        41.319,
+        47.438,
+        59.199,
+        67.21,
+        76.416,
+        86.551,
+        94.585
+      ],
+      "duration": 102.631
+    },
+    {
+      "number": 3,
+      "title": "Optimistic Writes",
+      "blurb": "Two layers, one transaction: writes the interface can trust instantly",
+      "scene": "books/tanstack-db/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        9.973,
+        21.722,
+        31.753,
+        41.4,
+        49.446,
+        57.701,
+        67.117,
+        74.93,
+        80.259,
+        89.408,
+        99.229
+      ],
+      "duration": 106.253
+    },
+    {
+      "number": 4,
+      "title": "Loading from Your API",
+      "blurb": "Query collections: snapshots in, deltas out, refetch to confirm",
+      "scene": "books/tanstack-db/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        7.43,
+        18.251,
+        24.126,
+        35.573,
+        46.823,
+        56.564,
+        64.9,
+        73.259,
+        83.29,
+        94.25
+      ],
+      "duration": 100.821
+    },
+    {
+      "number": 5,
+      "title": "Sync in Production",
+      "blurb": "Electric, Postgres, and the txid claim ticket that makes sync seamless",
+      "scene": "books/tanstack-db/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        8.162,
+        19.551,
+        29.825,
+        37.929,
+        46.985,
+        56.238,
+        68.464,
+        78.345,
+        88.759,
+        100.23
+      ],
+      "duration": 109.32
+    }
+  ]
+}
