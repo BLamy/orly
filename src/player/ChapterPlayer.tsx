@@ -91,6 +91,7 @@ export function ChapterPlayer({
   const [muted, setMuted] = useState(false);
   const [ended, setEnded] = useState(false);
   const [countdown, setCountdown] = useState(5);
+  const wasPlayingRef = useRef(false);
 
   const audioUrl = chapter.audio ? `${base}${chapter.audio}` : null;
   const useAudioClock = !!audioUrl && !audioFailed;
@@ -257,7 +258,7 @@ export function ChapterPlayer({
     <div className="bp-player">
       <header className="bp-topbar">
         <button className="bp-chip" onClick={onExit}>
-          ← Chapters
+          ← Home
         </button>
         <div className="bp-topbar-title">
           <span className="bp-topbar-book">{bookTitle}</span>
@@ -311,7 +312,7 @@ export function ChapterPlayer({
                     Replay
                   </button>
                   <button className="bp-end-alt" onClick={onExit}>
-                    Chapters
+                    Home
                   </button>
                 </div>
               </div>
@@ -331,6 +332,17 @@ export function ChapterPlayer({
           onChange={(e) => {
             setEnded(false);
             pb.seek(Number(e.target.value));
+          }}
+          onPointerDown={() => {
+            // Pause for the duration of the drag: usePlayback's rAF loop
+            // reads audio.currentTime every frame while playing, and that
+            // read can race a just-set seek (the browser hasn't finished
+            // seeking the audio yet), snapping the thumb back mid-drag.
+            wasPlayingRef.current = pb.playing;
+            pbRef.current.pause();
+          }}
+          onPointerUp={() => {
+            if (wasPlayingRef.current) pbRef.current.play();
           }}
           aria-label="Seek"
         />

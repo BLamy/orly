@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { ChapterPlayer } from './ChapterPlayer';
 
 const ASSET_BASE =
@@ -29,6 +29,22 @@ export interface ManifestV3 {
   chapters: ChapterV3[];
 }
 
+/** The subset of library.json's BookMeta this player needs for series nav. */
+interface SeriesBookMeta {
+  slug: string;
+  title: string;
+  animal?: string;
+  href: string;
+  series?: string;
+  seriesOrder?: number;
+}
+
+/** One book's worth of chapters, flattened into the cross-book sidebar. */
+interface SeriesGroup {
+  book: SeriesBookMeta;
+  chapters: ChapterV3[];
+}
+
 /** Format seconds as m:ss (blank for missing/zero). */
 export function fmtDur(s?: number): string {
   if (!s || s < 1) return '';
@@ -45,16 +61,28 @@ function chapterFromUrl(count: number): number | null {
   return Number.isInteger(n) && n >= 1 && n <= count ? n - 1 : null;
 }
 
+/** `?ep=N` — the Nth video overall across a series, spanning book boundaries. */
+function episodeFromUrl(): number | null {
+  if (typeof window === 'undefined') return null;
+  const raw = new URLSearchParams(window.location.search).get('ep');
+  if (!raw) return null;
+  const n = Number(raw);
+  return Number.isInteger(n) && n >= 1 ? n : null;
+}
+
 /**
- * The v3 book player: chapter menu → one full-bleed scene per chapter, with
- * the ElevenLabs narration MP3 as the playback clock.
+ * The v3 book player: one full-bleed scene per chapter, autoplaying straight
+ * off the shelf, with the ElevenLabs narration MP3 as the playback clock.
+ * There is no separate "chapters" page — the sidebar (and, in a series, the
+ * whole series) is always visible alongside the player, and the back arrow
+ * always returns to the shelf.
  */
 export function BookPlayer({ slug }: { slug: string }) {
   const base = `${ASSET_BASE}generated/${slug}/`;
   const [manifest, setManifest] = useState<ManifestV3 | null>(null);
   const [error, setError] = useState<string | null>(null);
-  /** null = chapter menu; otherwise the 0-based playing chapter */
-  const [current, setCurrent] = useState<number | null>(null);
+  const [current, setCurrent] = useState(0);
+  const [seriesGroups, setSeriesGroups] = useState<SeriesGroup[] | null>(null);
 
   useEffect(() => {
     let alive = true;
@@ -64,8 +92,6 @@ export function BookPlayer({ slug }: { slug: string }) {
         if (!alive) return;
         if (m.format !== 3) throw new Error(`unsupported manifest format ${m.format}`);
         setManifest(m);
-        // No intermediate menu: land straight on the (deep-linked or first)
-        // chapter and autoplay; the menu stays reachable via "← Chapters".
         setCurrent(chapterFromUrl(m.chapters.length) ?? 0);
       })
       .catch((e: Error) => alive && setError(e.message));
@@ -74,65 +100,92 @@ export function BookPlayer({ slug }: { slug: string }) {
     };
   }, [base]);
 
+  // If this book belongs to a series, fetch the other books' manifests too,
+  // so the sidebar can show the entire series (grouped by book cover) instead
+  // of just this book's chapters — and resolve a cross-book `?ep=` deep link.
+  useEffect(() => {
+    if (!manifest) return;
+    let alive = true;
+    fetch(`${ASSET_BASE}generated/library.json`)
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
+      .then(async (d: { books?: SeriesBookMeta[] }) => {
+        if (!alive) return;
+        const books = d.books || [];
+        const self = books.find((b) => b.slug === slug);
+        if (!self?.series) return;
+        const peers = books
+          .filter((b) => b.series === self.series)
+          .sort((a, b) => (a.seriesOrder ?? 0) - (b.seriesOrder ?? 0));
+        const groups = await Promise.all(
+          peers.map(async (b): Promise<SeriesGroup> => {
+            if (b.slug === slug) return { book: b, chapters: manifest.chapters };
+            try {
+              const r = await fetch(`${ASSET_BASE}generated/${b.slug}/manifest.json`);
+              const m: ManifestV3 = await r.json();
+              return { book: b, chapters: m.chapters };
+            } catch {
+              return { book: b, chapters: [] };
+            }
+          })
+        );
+        if (alive) setSeriesGroups(groups);
+      })
+      .catch(() => {});
+    return () => {
+      alive = false;
+    };
+  }, [manifest, slug]);
+
+  // Resolve `?ep=N` (a position across the whole series) once the series is
+  // known: jump to the right book (full navigation) or the right chapter
+  // (local state) as needed.
+  useEffect(() => {
+    if (!seriesGroups) return;
+    const ep = episodeFromUrl();
+    if (!ep) return;
+    let remaining = ep;
+    for (const g of seriesGroups) {
+      if (remaining <= g.chapters.length) {
+        if (g.book.slug !== slug) {
+          window.location.href = `${ASSET_BASE}?bundle=${g.book.slug}&chapter=${remaining}`;
+        } else if (remaining - 1 !== current) {
+          setCurrent(remaining - 1);
+        }
+        return;
+      }
+      remaining -= g.chapters.length;
+    }
+  }, [seriesGroups, slug]);
+
+  const sideListRef = useRef<HTMLUListElement | null>(null);
+  useEffect(() => {
+    const el = sideListRef.current?.querySelector('.active');
+    el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, [current, manifest, seriesGroups]);
+
+  const goHome = () => {
+    window.location.href = ASSET_BASE;
+  };
+
+  const goToChapter = (group: SeriesGroup, i: number) => {
+    if (group.book.slug === slug) {
+      setCurrent(i);
+    } else {
+      window.location.href = `${ASSET_BASE}?bundle=${group.book.slug}&chapter=${i + 1}`;
+    }
+  };
+
+  const flatGroups = useMemo(
+    () => seriesGroups ?? (manifest ? [{ book: { slug, title: manifest.title, animal: manifest.animal, href: '' }, chapters: manifest.chapters }] : []),
+    [seriesGroups, manifest, slug]
+  );
+
   if (error) return <div className="bp-loading">Couldn’t load “{slug}”: {error}</div>;
   if (!manifest) return <div className="bp-loading">Loading the book…</div>;
 
   const accent = manifest.accent ?? '#38bdf8';
-
-  if (current === null) {
-    return (
-      <div className="bp" style={{ ['--accent' as string]: accent }}>
-        <div className="bp-menu">
-          <div className="bp-menu-inner">
-            <a className="bp-back" href={ASSET_BASE}>
-              ← Back to the shelf
-            </a>
-            <header className="bp-head">
-              {manifest.animal && (
-                <img
-                  className="bp-animal"
-                  src={`${base}${manifest.animal}`}
-                  alt=""
-                  onError={(e) => ((e.target as HTMLImageElement).style.display = 'none')}
-                />
-              )}
-              <div className="bp-head-text">
-                <div className="bp-eyebrow">The Secret Lives of Data</div>
-                <h1 className="bp-title">{manifest.title}</h1>
-                {manifest.subtitle && <p className="bp-sub">{manifest.subtitle}</p>}
-                <p className="bp-meta">
-                  {manifest.chapters.length}{' '}
-                  {manifest.chapters.length === 1 ? 'chapter' : 'chapters'}
-                  {fmtDur(manifest.chapters.reduce((s, c) => s + (c.duration ?? 0), 0)) &&
-                    ` · ${fmtDur(manifest.chapters.reduce((s, c) => s + (c.duration ?? 0), 0))}`}
-                </p>
-              </div>
-            </header>
-            <ul className="bp-chapters">
-              {manifest.chapters.map((c, i) => (
-                <li key={c.number}>
-                  <button className="bp-chapter" onClick={() => setCurrent(i)}>
-                    <span className="bp-num">{String(c.number).padStart(2, '0')}</span>
-                    <span className="bp-ctext">
-                      <span className="bp-ctitle">{c.title}</span>
-                      {c.blurb && <span className="bp-cblurb">{c.blurb}</span>}
-                      {fmtDur(c.duration) && <span className="bp-cdur">{fmtDur(c.duration)}</span>}
-                    </span>
-                    <span className="bp-go" aria-hidden>
-                      →
-                    </span>
-                  </button>
-                </li>
-              ))}
-            </ul>
-            <div className="bp-foot">Space to play · ← / → chapters · Esc for this menu</div>
-          </div>
-        </div>
-      </div>
-    );
-  }
-
   const chapter = manifest.chapters[current];
+
   return (
     <div className="bp" style={{ ['--accent' as string]: accent }}>
       <div className="bp-layout">
@@ -147,33 +200,59 @@ export function BookPlayer({ slug }: { slug: string }) {
             nextTitle={manifest.chapters[current + 1]?.title}
             onPrev={current > 0 ? () => setCurrent(current - 1) : undefined}
             onNext={current < manifest.chapters.length - 1 ? () => setCurrent(current + 1) : undefined}
-            onExit={() => setCurrent(null)}
+            onExit={goHome}
           />
         </div>
         <aside className="bp-side" aria-label="Chapters">
-          <div className="bp-side-title">{manifest.title}</div>
-          <ul className="bp-side-list">
-            {manifest.chapters.map((c, i) => (
-              <li key={c.number}>
-                <button
-                  className={`bp-side-item${i === current ? ' active' : ''}`}
-                  onClick={() => setCurrent(i)}
-                  aria-current={i === current ? 'true' : undefined}
-                >
-                  <span className="bp-side-thumb">
-                    <img
-                      src={`${base}previews/chapter-${c.number}.png`}
-                      alt=""
-                      loading="lazy"
-                      onError={(e) => ((e.target as HTMLImageElement).style.visibility = 'hidden')}
-                    />
-                    <span className="bp-side-num">{String(c.number).padStart(2, '0')}</span>
-                  </span>
-                  <span className="bp-side-text">
-                    <span className="bp-side-ctitle">{c.title}</span>
-                    {fmtDur(c.duration) && <span className="bp-side-dur">{fmtDur(c.duration)}</span>}
-                  </span>
-                </button>
+          <ul className="bp-side-list" ref={sideListRef}>
+            {flatGroups.map((g) => (
+              <li className="bp-side-group" key={g.book.slug}>
+                {flatGroups.length > 1 && (
+                  <div className="bp-side-cover">
+                    {g.book.animal && (
+                      <img
+                        src={`${ASSET_BASE}generated/${g.book.slug}/${g.book.animal}`}
+                        alt=""
+                        loading="lazy"
+                        onError={(e) => ((e.target as HTMLImageElement).style.display = 'none')}
+                      />
+                    )}
+                    <span className="bp-side-cover-text">
+                      {g.book.seriesOrder != null && (
+                        <span className="bp-side-cover-num">Book {g.book.seriesOrder}</span>
+                      )}
+                      <span className="bp-side-cover-title">{g.book.title}</span>
+                    </span>
+                  </div>
+                )}
+                <ul className="bp-side-list">
+                  {g.chapters.map((c, i) => {
+                    const active = g.book.slug === slug && i === current;
+                    return (
+                      <li key={c.number}>
+                        <button
+                          className={`bp-side-item${active ? ' active' : ''}`}
+                          onClick={() => goToChapter(g, i)}
+                          aria-current={active ? 'true' : undefined}
+                        >
+                          <span className="bp-side-thumb">
+                            <img
+                              src={`${ASSET_BASE}generated/${g.book.slug}/previews/chapter-${c.number}.png`}
+                              alt=""
+                              loading="lazy"
+                              onError={(e) => ((e.target as HTMLImageElement).style.visibility = 'hidden')}
+                            />
+                            <span className="bp-side-num">{String(c.number).padStart(2, '0')}</span>
+                          </span>
+                          <span className="bp-side-text">
+                            <span className="bp-side-ctitle">{c.title}</span>
+                            {fmtDur(c.duration) && <span className="bp-side-dur">{fmtDur(c.duration)}</span>}
+                          </span>
+                        </button>
+                      </li>
+                    );
+                  })}
+                </ul>
               </li>
             ))}
           </ul>

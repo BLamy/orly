@@ -739,6 +739,52 @@
   font-variant-numeric: tabular-nums;
 }
 
+.bp-side-group + .bp-side-group {
+  margin-top: 18px;
+}
+
+.bp-side-cover {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 6px;
+  margin-bottom: 6px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+}
+
+.bp-side-cover img {
+  width: 28px;
+  height: 38px;
+  object-fit: cover;
+  border-radius: 3px;
+  background: #0a0e1a;
+  flex: none;
+}
+
+.bp-side-cover-text {
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+}
+
+.bp-side-cover-num {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.5px;
+  text-transform: uppercase;
+  color: var(--muted, #8da2be);
+}
+
+.bp-side-cover-title {
+  font-size: 12.5px;
+  font-weight: 700;
+  line-height: 1.25;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
 @media (max-width: 960px) {
   .bp-side {
     display: none;
