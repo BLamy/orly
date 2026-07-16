@@ -1,6 +1,46 @@
 {
   "books": [
     {
+      "slug": "explained-rl",
+      "title": "Explained: Reinforcement Learning",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#a01f3c",
+      "animal": "generated/explained-rl/animal.webp",
+      "href": "?bundle=explained-rl",
+      "series": "The Explainers",
+      "seriesOrder": 8,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Bandit: Explore or Exploit",
+          "duration": 148.701
+        },
+        {
+          "number": 2,
+          "title": "The Value of a State",
+          "duration": 123.714
+        },
+        {
+          "number": 3,
+          "title": "Q-Learning: Learning from the Next Step",
+          "duration": 133.142
+        },
+        {
+          "number": 4,
+          "title": "Policy Gradients: Nudging What Worked",
+          "duration": 128.546
+        },
+        {
+          "number": 5,
+          "title": "Reward Hacking: the Letter, Not the Spirit",
+          "duration": 124.551
+        }
+      ],
+      "createdAt": "2026-07-16T22:01:10.898Z"
+    },
+    {
       "slug": "explained-training",
       "title": "Explained: Training",
       "subtitle": "",

@@ -1,0 +1,125 @@
+{
+  "format": 3,
+  "slug": "explained-rl",
+  "title": "Explained: Reinforcement Learning",
+  "animal": "animal.webp",
+  "accent": "#a01f3c",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Bandit: Explore or Exploit",
+      "blurb": "Three slot machines, hidden odds, and a budget of turns — greedy lock-on, epsilon-greedy, and UCB run for real, scored by regret.",
+      "scene": "books/explained-rl/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.185,
+        19.992,
+        29.617,
+        40.983,
+        52.129,
+        60.941,
+        72.016,
+        82.326,
+        89.942,
+        99.509,
+        110.701,
+        121.069,
+        130.287,
+        141.665
+      ],
+      "duration": 148.701
+    },
+    {
+      "number": 2,
+      "title": "The Value of a State",
+      "blurb": "Value iteration on a walled gridworld: heat spreading from the reward until every square agrees about the future.",
+      "scene": "books/explained-rl/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        10.739,
+        20.805,
+        29.802,
+        40.263,
+        50.387,
+        60.279,
+        66.327,
+        75.708,
+        85.692,
+        96.965,
+        105.185,
+        115.041
+      ],
+      "duration": 123.714
+    },
+    {
+      "number": 3,
+      "title": "Q-Learning: Learning from the Next Step",
+      "blurb": "Temporal-difference updates live on the grid: one lucky bump seeds a value trail that crawls back to the start.",
+      "scene": "books/explained-rl/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        11.981,
+        20.526,
+        32.345,
+        41.749,
+        52.245,
+        62.287,
+        70.24,
+        79.841,
+        87.666,
+        97.628,
+        105.952,
+        115.158,
+        125.944
+      ],
+      "duration": 133.142
+    },
+    {
+      "number": 4,
+      "title": "Policy Gradients: Nudging What Worked",
+      "blurb": "REINFORCE on a tiny softmax policy: sample episodes, reward the survivors, and watch the arrows commit.",
+      "scene": "books/explained-rl/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        10.066,
+        21.362,
+        33.994,
+        40.658,
+        53.035,
+        63.809,
+        74.455,
+        84.916,
+        95.492,
+        108.333,
+        119.211
+      ],
+      "duration": 128.546
+    },
+    {
+      "number": 5,
+      "title": "Reward Hacking: the Letter, Not the Spirit",
+      "blurb": "A provably optimal agent circles two shaping coins forever while the trophy gathers dust — measures get gamed.",
+      "scene": "books/explained-rl/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        11.691,
+        22.407,
+        29.768,
+        39.381,
+        47.589,
+        58.364,
+        70.45,
+        82.466,
+        92.032,
+        103.317,
+        114.845
+      ],
+      "duration": 124.551
+    }
+  ]
+}
