@@ -33,6 +33,7 @@ body:
         - "Electric Streams · Durable, replayable HTTP streams — electric-streams"
         - "Electric Internals · Durable Proxy, Durable State, StreamDB and StreamFS — electric-internals"
         - "Electric Agents · An agent is a log — electric-agents"
+        - "TanStack DB · The reactive client store for your API — tanstack-db"
         # BOOKS:END
     validations:
       required: true

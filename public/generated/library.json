@@ -642,6 +642,44 @@
         }
       ],
       "createdAt": "2026-07-16T04:51:52.289Z"
+    },
+    {
+      "slug": "tanstack-db",
+      "title": "TanStack DB",
+      "subtitle": "The reactive client store for your API",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b0277a",
+      "href": "?bundle=tanstack-db",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Waterfall Problem",
+          "duration": 85.682
+        },
+        {
+          "number": 2,
+          "title": "Live Queries",
+          "duration": 102.631
+        },
+        {
+          "number": 3,
+          "title": "Optimistic Writes",
+          "duration": 106.253
+        },
+        {
+          "number": 4,
+          "title": "Loading from Your API",
+          "duration": 100.821
+        },
+        {
+          "number": 5,
+          "title": "Sync in Production",
+          "duration": 109.32
+        }
+      ],
+      "createdAt": "2026-07-16T04:47:09.457Z",
+      "animal": "generated/tanstack-db/animal.webp"
     }
   ]
 }
