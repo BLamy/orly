@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Player } from '../../core';
 import { Render, vizScene } from './chapter-4';
 
-/** The Budget and the Loud Stop — loop ring, retry pips, invalid loop flip. */
+/** The Budget and the Loud Stop — rounds of three, the progress judge, the cap of ten. */
 function Chapter4() {
   const scene = vizScene();
   return (

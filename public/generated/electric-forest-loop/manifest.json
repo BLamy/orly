@@ -13,17 +13,17 @@
       "audio": "audio/chapter-1.mp3",
       "cues": [
         0,
-        8.348,
-        18.367,
-        27.434,
-        36.107,
-        47.113,
-        58.688,
-        67.5,
-        77.682,
-        87.563
+        8.475,
+        19.18,
+        28.724,
+        36.096,
+        46.731,
+        58.364,
+        66.955,
+        77.671,
+        87.726
       ],
-      "duration": 95.759
+      "duration": 96.457
     },
     {
       "number": 2,
@@ -33,17 +33,17 @@
       "audio": "audio/chapter-2.mp3",
       "cues": [
         0,
-        7.999,
-        19.168,
-        29.048,
-        40.182,
-        48.889,
-        57.527,
-        69.044,
-        79.203,
-        90.534
+        8.452,
+        20.666,
+        30.43,
+        42.411,
+        51.641,
+        60.557,
+        71.889,
+        81.56,
+        91.625
       ],
-      "duration": 103.328
+      "duration": 104.118
     },
     {
       "number": 3,
@@ -53,57 +53,58 @@
       "audio": "audio/chapter-3.mp3",
       "cues": [
         0,
-        11.656,
-        26.819,
-        39.846,
-        52.513,
-        64.088,
-        78.611,
-        92.288,
-        104.362,
-        118.479,
-        133.863
+        13.398,
+        29.025,
+        41.239,
+        53.893,
+        64.784,
+        78.088,
+        90.593,
+        102.539,
+        117.678,
+        132.411
       ],
-      "duration": 143.406
+      "duration": 141.316
     },
     {
       "number": 4,
       "title": "The Budget and the Loud Stop",
-      "blurb": "Two reworks per task, thrash detection, and the loud honest stop: the project flips to invalid loop rather than lie.",
+      "blurb": "Reworks run in rounds of three, a progress judge rules on convergence between rounds, and ten attempts is the hard cap — then the loud stop.",
       "scene": "books/electric-forest-loop/chapter-4",
       "audio": "audio/chapter-4.mp3",
       "cues": [
         0,
-        11.656,
-        20.875,
-        31.312,
-        41.041,
-        53.231,
-        68.452,
-        80.665,
-        90.778,
-        100.159
+        13.618,
+        25.67,
+        38.998,
+        56.831,
+        70.299,
+        80.075,
+        90.036,
+        100.032,
+        109.935
       ],
-      "duration": 112.569
+      "duration": 124.458
     },
     {
       "number": 5,
-      "title": "Why Attack Beats Review",
-      "blurb": "The same defect swarm through two doors — a passive review and the critic's filter stack — and why verification compounds.",
+      "title": "Why the Critic Beats a Reviewer",
+      "blurb": "A diff-reader grades the story of the change; the critic holds the Replay session, attacks it from six directions, and cross-examines its own findings.",
       "scene": "books/electric-forest-loop/chapter-5",
       "audio": "audio/chapter-5.mp3",
       "cues": [
         0,
-        9.671,
-        20.933,
-        30.303,
-        42.772,
-        56.379,
-        65.865,
-        80.25,
-        96.561
+        8.58,
+        18.855,
+        30.894,
+        44.652,
+        59.21,
+        79.667,
+        91.497,
+        104.408,
+        122.671
       ],
-      "duration": 108.067
+      "duration": 135.419
     }
   ]
 }

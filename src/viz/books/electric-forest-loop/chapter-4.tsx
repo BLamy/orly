@@ -1,19 +1,22 @@
 // The Budget and the Loud Stop
 //
-// Backed by: .claude/workflows/work-queue.js (maxRetries default 2; refuses
-// to run unless project status is "building"; thrash detection — the same
-// finding set refuting twice flips invalid_loop; flipInvalid writes status,
-// statusReason, updatedAt and commits), .eforest/project.json (statusValues:
-// building / complete / paused / invalid_loop), .eforest/loop.md (the four
-// invalid_loop triggers; "routing around it is itself a refutation of the
-// loop"), and tools/verify/self_check.sh (the greenwash scanner: no
-// "|| true", "|| :", "; exit 0", hardcoded VERIFY_ALLOW_SKIP=1,
-// continue-on-error, or make's "-" prefix in any verify path).
+// Backed by: .claude/workflows/work-queue.js (roundSize: 3 and maxAttempts: 10;
+// reworks run in rounds of three, and when retries % roundSize === 0 a
+// PROGRESS JUDGE — a third critic, neither the builder nor the refuting
+// critic — reads the successive verdicts and rules ONLY on convergence; only
+// a "progressing" ruling buys the next round; thrash detection — the same
+// finding set refuting twice flips invalid_loop immediately; flipInvalid
+// writes status, statusReason, updatedAt and commits) and .eforest/loop.md
+// (the judge fires after attempts 3, 6, and 9; 10 total attempts is the hard
+// cap; invalid_loop is a loud stop for a human — "routing around it is itself
+// a refutation of the loop"; project states building / complete / paused /
+// invalid_loop live in .eforest/project.json).
 //
-// ONE persistent object: the loop ring — implement → verify → rework. A task
-// token orbits; each refutation burns a retry pip; the greenwash scanner
-// bounces a "|| true" escape; and when the budget is spent the project state
-// panel flips loudly to invalid_loop and the ring freezes.
+// ONE persistent object: the loop ring on the left, and on the right the
+// rework budget as a physical ledger — ten pips laid out in rounds of three
+// with a judge's gate after each round. Pips burn as refutations land; the
+// judge's gavel opens the gate (progressing) or slams it (circling), and a
+// halt flips the project state panel to invalid_loop and freezes the ring.
 import { CAMERA_HOME, Camera, STAGE_H, STAGE_W, Timeline, cameraInterp, colors, ease } from '../../core';
 import type { CameraState, ChannelRef, SceneState } from '../../core';
 import { LoopRing } from '../../agent';
@@ -22,7 +25,7 @@ const clamp01 = (u: number) => (u < 0 ? 0 : u > 1 ? 1 : u);
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 /* ---------------------------------------------------------------- layout */
-const RING = { cx: 430, cy: 330, r: 170 };
+const RING = { cx: 380, cy: 330, r: 165 };
 const STOPS = [
   { label: 'pick top task', color: colors.ACCENT },
   { label: 'builder', color: colors.SECONDARY },
@@ -30,22 +33,22 @@ const STOPS = [
   { label: 'critic', color: colors.NEGATIVE },
   { label: 'verdict', color: colors.WARM },
 ];
-const PIPS = { x: 700, y: 160 };
-const STATE = { x: 760, y: 240, w: 420, h: 210 };
-const SCAN = { x: 740, y: 480, w: 460, h: 110 };
 
-const CAM_RING: CameraState = { x: 470, y: 330, k: 1.2 };
-const CAM_STATE: CameraState = { x: 900, y: 330, k: 1.25 };
-const CAM_SCAN: CameraState = { x: 900, y: 480, k: 1.3 };
-const CAM_WIDE: CameraState = { x: 640, y: 360, k: 1.0 };
-
-/** The four real invalid_loop triggers from .eforest/loop.md. */
-const TRIGGERS = [
-  'refuted past the retry budget',
-  'a gate only goes green if weakened',
-  'the board is lying (roadmap audit)',
-  'same finding refutes twice — thrash',
+// the budget ledger: rounds of three, a judge gate after each full round
+const LEDGER = { x: 690, y: 128, w: 500, rowH: 58 };
+const PIP_DX = 52;
+const ROWS = [
+  { pips: 3, judge: true }, // attempts 1–3 → judge
+  { pips: 3, judge: true }, // attempts 4–6 → judge
+  { pips: 3, judge: true }, // attempts 7–9 → judge
+  { pips: 1, judge: false }, // attempt 10 — the hard cap
 ];
+const STATE = { x: 700, y: 408, w: 480, h: 186 };
+
+const CAM_RING: CameraState = { x: 430, y: 330, k: 1.2 };
+const CAM_LEDGER: CameraState = { x: 900, y: 250, k: 1.28 };
+const CAM_STATE: CameraState = { x: 900, y: 440, k: 1.3 };
+const CAM_WIDE: CameraState = { x: 640, y: 360, k: 1.0 };
 
 /* -------------------------------------------------------------- timeline */
 export interface Scene {
@@ -53,14 +56,14 @@ export interface Scene {
   cam: ChannelRef<CameraState>;
   ringU: ChannelRef<number>;
   orbitU: ChannelRef<number>; // laps around the loop
-  pipsU: ChannelRef<number>;
-  pip1: ChannelRef<number>; // retry pips burning
-  pip2: ChannelRef<number>;
+  ledgerU: ChannelRef<number>; // budget grid reveal
+  burnU: ChannelRef<number>; // burned pips, continuous 0..6
+  judge1U: ChannelRef<number>; // judge panel + first ruling: progressing
+  ruleU: ChannelRef<number>; // "progressing" chip
+  judge2U: ChannelRef<number>; // second ruling: circling → halt
+  capU: ChannelRef<number>; // the hard cap highlight
+  thrashU: ChannelRef<number>; // identical-finding-set tripwire
   stateU: ChannelRef<number>;
-  scanU: ChannelRef<number>;
-  escU: ChannelRef<number>; // the "|| true" escape approaching
-  bounceU: ChannelRef<number>; // scanner bounce
-  trigU: ChannelRef<number>; // trigger list
   flipU: ChannelRef<number>; // building → invalid_loop
   ringDim: ChannelRef<number>;
   humanU: ChannelRef<number>;
@@ -73,14 +76,14 @@ export function buildScene(): Scene {
   const cam = tl.channel<CameraState>('cam', CAMERA_HOME, cameraInterp);
   const ringU = tl.channel('ringU', 0);
   const orbitU = tl.channel('orbitU', 0);
-  const pipsU = tl.channel('pipsU', 0);
-  const pip1 = tl.channel('pip1', 0);
-  const pip2 = tl.channel('pip2', 0);
+  const ledgerU = tl.channel('ledgerU', 0);
+  const burnU = tl.channel('burnU', 0);
+  const judge1U = tl.channel('judge1U', 0);
+  const ruleU = tl.channel('ruleU', 0);
+  const judge2U = tl.channel('judge2U', 0);
+  const capU = tl.channel('capU', 0);
+  const thrashU = tl.channel('thrashU', 0);
   const stateU = tl.channel('stateU', 0);
-  const scanU = tl.channel('scanU', 0);
-  const escU = tl.channel('escU', 0);
-  const bounceU = tl.channel('bounceU', 0);
-  const trigU = tl.channel('trigU', 0);
   const flipU = tl.channel('flipU', 0);
   const ringDim = tl.channel('ringDim', 0);
   const humanU = tl.channel('humanU', 0);
@@ -91,107 +94,105 @@ export function buildScene(): Scene {
   tl.caption({
     at: 0.5,
     dur: 6.5,
-    text: 'Zoom out and the whole thing is one loop: take the top task, build, submit the claim and the evidence, face the critic, get a verdict. Then do it again.',
+    text: 'Zoom out and the whole thing is one loop: take the top task, build, submit the claim and the evidence, face the critic, get a verdict. A refuted task loops back with the critic’s report as fresh context.',
   });
   tl.tween(cam, CAM_RING, { at: 0.7, dur: 1.4, ease: ease.move });
   tl.tween(ringU, 1, { at: 1.2, dur: 2.2, ease: ease.draw });
-  tl.tween(orbitU, 1, { at: 3.8, dur: 3.0, ease: ease.linear });
+  tl.tween(orbitU, 2, { at: 3.6, dur: 3.4, ease: ease.linear });
   tl.hold(7.0, 0.6);
 
-  // — Beat 2 · refuted loops back —
+  // — Beat 2 · but rework is metered, in rounds of three —
   tl.caption({
     at: 7.6,
-    dur: 6.5,
-    text: 'A refuted task is not a dead task. It loops back to the builder with the critic’s report as fresh context, and the builder reworks and re-records.',
-  });
-  tl.tween(orbitU, 2, { at: 8.0, dur: 4.5, ease: ease.linear });
-  tl.hold(14.1, 0.6);
-
-  // — Beat 3 · but the budget is finite —
-  tl.caption({
-    at: 14.7,
     dur: 7,
-    text: 'But the loop carries a budget. The work queue allows two reworks per task by default — each refutation burns one — and it will not spend a third on wishful thinking.',
+    text: 'But rework is not an open tab. The work queue meters it in rounds of three — each refutation burns one attempt, and when a round ends without a verified verdict, the loop does not simply spend another.',
   });
-  tl.tween(pipsU, 1, { at: 15.2, dur: 0.8, ease: ease.enter });
-  tl.tween(orbitU, 3, { at: 16.0, dur: 3.0, ease: ease.linear });
-  tl.tween(pip1, 1, { at: 17.2, dur: 0.5, ease: ease.pop });
-  tl.tween(pip2, 1, { at: 19.6, dur: 0.5, ease: ease.pop });
-  tl.hold(21.7, 0.6);
+  tl.tween(cam, CAM_LEDGER, { at: 7.8, dur: 1.4, ease: ease.move });
+  tl.tween(ledgerU, 1, { at: 8.5, dur: 1.8, ease: ease.draw });
+  tl.tween(burnU, 3, { at: 10.8, dur: 3.2, ease: ease.linear });
+  tl.hold(14.6, 0.6);
 
-  // — Beat 4 · thrash detection —
+  // — Beat 3 · the progress judge —
   tl.caption({
-    at: 22.3,
+    at: 15.2,
+    dur: 7.5,
+    text: 'Instead it calls in a third critic: the progress judge. Not the builder, not the critic that refuted — fresh eyes that read the successive verdicts, oldest first, and rule on exactly one question.',
+  });
+  tl.tween(judge1U, 1, { at: 15.8, dur: 1.2, ease: ease.enter });
+  tl.hold(22.7, 0.6);
+
+  // — Beat 4 · the one question: convergence —
+  tl.caption({
+    at: 23.3,
+    dur: 8,
+    text: 'Is the rework converging? Findings shrinking, or shifting to new, shallower ground — that is progress. The same class of failure, cosmetic changes, growing scope — that is circling. The judge fixes nothing; it only rules.',
+  });
+  tl.hold(31.3, 0.6);
+
+  // — Beat 5 · progressing buys a round —
+  tl.caption({
+    at: 31.9,
     dur: 6.5,
-    text: 'It also watches for thrashing: if the critic refutes twice with the identical finding set, the rework is not converging, and no third identical attempt is allowed.',
+    text: 'Only a progressing ruling buys the next round of three. The gate opens, the builder gets attempts four, five, and six — and at six the judge sits again. The check fires after attempts three, six, and nine.',
   });
-  tl.hold(28.8, 0.6);
+  tl.tween(ruleU, 1, { at: 32.5, dur: 0.7, ease: ease.pop });
+  tl.tween(burnU, 6, { at: 33.6, dur: 3.2, ease: ease.linear });
+  tl.hold(38.4, 0.6);
 
-  // — Beat 5 · the project states —
+  // — Beat 6 · the halt, and the hard cap —
   tl.caption({
-    at: 29.4,
-    dur: 7,
-    text: 'Because the project itself has a state, committed next to the code. Building means the queue has honest work. Complete means every task is verified. Paused means a human said stop.',
-  });
-  tl.tween(cam, CAM_STATE, { at: 29.6, dur: 1.4, ease: ease.move });
-  tl.tween(stateU, 1, { at: 30.4, dur: 1.2, ease: ease.enter });
-  tl.hold(36.4, 0.6);
-
-  // — Beat 6 · the greenwash scanner —
-  tl.caption({
-    at: 37.0,
+    at: 39.0,
     dur: 7.5,
-    text: 'And the fourth state guards against the oldest temptation: making a red gate green by weakening it. A scanner walks every verify path hunting for silenced failures — the always true escape, the swallowed exit code, the skipped test.',
+    text: 'Any other ruling is a halt, on the spot. And even a builder who keeps convincing the judge runs out of road: ten total attempts is the hard cap, and there is no eleventh.',
   });
-  tl.tween(cam, CAM_SCAN, { at: 37.2, dur: 1.4, ease: ease.move });
-  tl.tween(scanU, 1, { at: 38.0, dur: 1.2, ease: ease.draw });
-  tl.tween(escU, 1, { at: 40.4, dur: 1.6, ease: ease.linear });
-  tl.tween(bounceU, 1, { at: 42.2, dur: 0.8, ease: ease.pop });
-  tl.hold(45.1, 0.6);
+  tl.tween(judge2U, 1, { at: 39.8, dur: 0.8, ease: ease.pop });
+  tl.tween(capU, 1, { at: 43.0, dur: 1.0, ease: ease.enter });
+  tl.hold(46.5, 0.6);
 
-  // — Beat 7 · the triggers —
+  // — Beat 7 · thrash detection —
   tl.caption({
-    at: 45.7,
-    dur: 7.5,
-    text: 'So four things can trip the alarm: a task refuted past its budget, a gate that only passes when weakened, a roadmap audit that catches the board lying, or the same finding thrashing twice.',
+    at: 47.1,
+    dur: 6.5,
+    text: 'One tripwire skips the judge entirely: if the critic refutes twice with the identical finding set, the rework is provably not converging, and the loop stops immediately.',
   });
-  tl.tween(cam, CAM_STATE, { at: 45.9, dur: 1.3, ease: ease.move });
-  tl.tween(trigU, 1, { at: 46.6, dur: 3.2, ease: ease.draw });
-  tl.hold(53.8, 0.6);
+  tl.tween(thrashU, 1, { at: 47.8, dur: 1.0, ease: ease.enter });
+  tl.hold(53.6, 0.6);
 
   // — Beat 8 · the flip —
   tl.caption({
-    at: 54.4,
+    at: 54.2,
     dur: 7,
-    text: 'When any of them fires, the loop does the only honest thing left: it flips the project to invalid loop, writes down exactly why, commits, and freezes.',
+    text: 'Every one of those stops lands in the same place. The loop flips the project status to invalid loop, writes down exactly why, commits — and the ring freezes.',
   });
-  tl.tween(flipU, 1, { at: 55.2, dur: 1.0, ease: ease.pop });
-  tl.tween(ringDim, 1, { at: 55.6, dur: 1.2, ease: ease.move });
-  tl.hold(61.0, 0.6);
+  tl.tween(cam, CAM_STATE, { at: 54.4, dur: 1.4, ease: ease.move });
+  tl.tween(stateU, 1, { at: 54.9, dur: 1.0, ease: ease.enter });
+  tl.tween(flipU, 1, { at: 57.2, dur: 1.0, ease: ease.pop });
+  tl.tween(ringDim, 1, { at: 57.8, dur: 1.2, ease: ease.move });
+  tl.hold(61.2, 0.6);
 
   // — Beat 9 · a loud stop for a human —
   tl.caption({
-    at: 61.6,
+    at: 61.8,
     dur: 7,
     text: 'That state is a loud stop for a human. The loop must not resume itself, and it must never route around the stop — routing around it would itself refute the loop.',
   });
-  tl.tween(cam, CAM_WIDE, { at: 61.8, dur: 1.4, ease: ease.move });
-  tl.tween(humanU, 1, { at: 62.6, dur: 0.9, ease: ease.enter });
-  tl.hold(68.2, 0.6);
+  tl.tween(cam, CAM_WIDE, { at: 62.0, dur: 1.4, ease: ease.move });
+  tl.tween(humanU, 1, { at: 62.8, dur: 0.9, ease: ease.enter });
+  tl.hold(68.4, 0.6);
 
   // — Beat 10 · close —
   tl.caption({
-    at: 68.8,
-    dur: 6.5,
-    text: 'A loop that can say I am stuck, out loud, in writing, is a loop you can leave running. The alternative — an agent quietly lowering the bar until everything passes — is how boards start lying.',
+    at: 69.0,
+    dur: 7,
+    text: 'Rounds of three, a judge between rounds, a cap of ten. A loop that can say I am stuck, out loud, in writing, is a loop you can leave running — the alternative is an agent quietly lowering the bar until everything passes.',
   });
-  tl.tween(endDim, 1, { at: 69.1, dur: 1.1, ease: ease.move });
-  tl.tween(endU, 1, { at: 70.0, dur: 0.9, ease: ease.enter });
-  tl.hold(74.8, 1.2);
+  tl.tween(endDim, 1, { at: 69.3, dur: 1.1, ease: ease.move });
+  tl.tween(endU, 1, { at: 70.2, dur: 0.9, ease: ease.enter });
+  tl.hold(75.6, 1.2);
 
   return {
-    tl, cam, ringU, orbitU, pipsU, pip1, pip2, stateU, scanU, escU,
-    bounceU, trigU, flipU, ringDim, humanU, endDim, endU,
+    tl, cam, ringU, orbitU, ledgerU, burnU, judge1U, ruleU, judge2U,
+    capU, thrashU, stateU, flipU, ringDim, humanU, endDim, endU,
   };
 }
 
@@ -201,18 +202,21 @@ const scene = buildScene();
 
 const STATES = ['building', 'complete', 'paused', 'invalid_loop'];
 
+/** absolute pip index for row r, col c (rows of 3, then the cap pip) */
+const pipIndex = (r: number, c: number) => r * 3 + c;
+
 export function Render({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
   const ringU = s.get(scene.ringU);
   const orbitU = s.get(scene.orbitU);
-  const pipsU = s.get(scene.pipsU);
-  const pip1 = s.get(scene.pip1);
-  const pip2 = s.get(scene.pip2);
+  const ledgerU = s.get(scene.ledgerU);
+  const burnU = s.get(scene.burnU);
+  const judge1U = s.get(scene.judge1U);
+  const ruleU = s.get(scene.ruleU);
+  const judge2U = s.get(scene.judge2U);
+  const capU = s.get(scene.capU);
+  const thrashU = s.get(scene.thrashU);
   const stateU = s.get(scene.stateU);
-  const scanU = s.get(scene.scanU);
-  const escU = s.get(scene.escU);
-  const bounceU = s.get(scene.bounceU);
-  const trigU = s.get(scene.trigU);
   const flipU = s.get(scene.flipU);
   const ringDim = s.get(scene.ringDim);
   const humanU = s.get(scene.humanU);
@@ -220,10 +224,6 @@ export function Render({ s }: { s: SceneState }) {
   const endU = s.get(scene.endU);
 
   const worldOp = 1 - 0.85 * endDim;
-
-  // the escape token rides toward the scanner, then bounces back
-  const escX = SCAN.x + 40 + (bounceU > 0 ? (1 - bounceU) * 160 : escU * 160);
-  const escOp = escU > 0 ? Math.min(1, escU * 3) * (bounceU >= 1 ? 0 : 1) : 0;
 
   return (
     <>
@@ -248,28 +248,82 @@ export function Render({ s }: { s: SceneState }) {
             </text>
           )}
 
-          {/* ---- the retry budget pips ---- */}
-          {pipsU > 0 && (
-            <g opacity={pipsU * (1 - 0.6 * ringDim)} transform={`translate(${PIPS.x} ${PIPS.y})`}>
-              <text x={0} y={-14} fill={colors.MUTED} fontSize={12}>
+          {/* ---- the rework ledger: rounds of 3, judge gates, the cap ---- */}
+          {ledgerU > 0 && (
+            <g opacity={ledgerU * (1 - 0.5 * ringDim)}>
+              <text x={LEDGER.x} y={LEDGER.y - 22} fill={colors.MUTED} fontSize={12}>
                 rework budget
               </text>
-              {[0, 1].map((i) => {
-                const burned = i === 0 ? pip1 : pip2;
+              <text x={LEDGER.x + 116} y={LEDGER.y - 22} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+                roundSize: 3 · maxAttempts: 10
+              </text>
+              {ROWS.map((row, r) => {
+                const rowU = clamp01(ledgerU * (ROWS.length + 1) - r);
+                if (rowU <= 0) return null;
+                const y = LEDGER.y + r * LEDGER.rowH;
+                const judgeRuled = r === 0 ? ruleU : r === 1 ? judge2U : 0;
+                const judgeHalts = r === 1 && judge2U > 0.5;
                 return (
-                  <g key={i}>
-                    <circle cx={i * 34} cy={8} r={11} fill={burned > 0.5 ? colors.NEGATIVE : colors.PANEL} stroke={burned > 0.5 ? colors.NEGATIVE : colors.MUTED} strokeWidth={2} opacity={burned > 0.5 ? 0.9 : 1} />
-                    {burned > 0.5 && (
-                      <g stroke={colors.BG} strokeWidth={2} strokeLinecap="round" opacity={burned}>
-                        <line x1={i * 34 - 4} y1={4} x2={i * 34 + 4} y2={12} />
-                        <line x1={i * 34 + 4} y1={4} x2={i * 34 - 4} y2={12} />
+                  <g key={r} opacity={rowU}>
+                    <text x={LEDGER.x - 4} y={y + 13} fill={colors.MUTED} fontSize={10} fontFamily={MONO} textAnchor="end" opacity={0.8}>
+                      {r < 3 ? `r${r + 1}` : 'cap'}
+                    </text>
+                    {Array.from({ length: row.pips }, (_, c) => {
+                      const i = pipIndex(r, c);
+                      const burned = clamp01(burnU - i);
+                      const isCap = i === 9;
+                      const stroke = isCap ? (capU > 0.3 ? colors.WARM : colors.MUTED) : burned > 0.5 ? colors.NEGATIVE : colors.MUTED;
+                      return (
+                        <g key={c} transform={`translate(${LEDGER.x + 16 + c * PIP_DX} ${y + 8})`}>
+                          <circle r={11} fill={burned > 0.5 ? colors.NEGATIVE : colors.PANEL} stroke={stroke} strokeWidth={isCap && capU > 0.3 ? 2.4 : 2} opacity={burned > 0.5 ? 0.9 : 1} />
+                          {burned > 0.5 && (
+                            <g stroke={colors.BG} strokeWidth={2} strokeLinecap="round" opacity={burned}>
+                              <line x1={-4} y1={-4} x2={4} y2={4} />
+                              <line x1={4} y1={-4} x2={-4} y2={4} />
+                            </g>
+                          )}
+                          {isCap && capU > 0.3 && (
+                            <text x={20} y={4.5} fill={colors.WARM} fontSize={11} fontFamily={MONO} opacity={capU}>
+                              attempt 10 — no eleventh
+                            </text>
+                          )}
+                        </g>
+                      );
+                    })}
+                    {/* judge gate after each full round */}
+                    {row.judge && (
+                      <g transform={`translate(${LEDGER.x + 16 + 3 * PIP_DX + 26} ${y + 8})`}>
+                        <path d="M 0 -12 L 12 0 L 0 12 L -12 0 Z" fill={judgeHalts ? colors.NEGATIVE : judgeRuled > 0.5 ? colors.POSITIVE : colors.PANEL} stroke={judgeHalts ? colors.NEGATIVE : judgeRuled > 0.5 ? colors.POSITIVE : colors.GRID} strokeWidth={1.6} opacity={judgeRuled > 0.5 ? 0.9 : 0.8} />
+                        <text x={22} y={4.5} fill={judgeHalts ? colors.NEGATIVE : judgeRuled > 0.5 ? colors.POSITIVE : colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+                          {judgeHalts ? 'judge: circling — halt' : judgeRuled > 0.5 ? 'judge: progressing' : `judge @ ${(r + 1) * 3}`}
+                        </text>
                       </g>
                     )}
                   </g>
                 );
               })}
-              <text x={76} y={13} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
-                maxRetries: 2
+            </g>
+          )}
+
+          {/* ---- the progress judge panel ---- */}
+          {judge1U > 0 && (
+            <g opacity={judge1U * (1 - 0.5 * ringDim)}>
+              <rect x={LEDGER.x} y={LEDGER.y + 4 * LEDGER.rowH + 4} width={LEDGER.w} height={64} rx={12} fill={colors.PANEL} stroke={judge2U > 0.5 ? colors.NEGATIVE : colors.GRID} strokeWidth={1.5} />
+              <text x={LEDGER.x + 16} y={LEDGER.y + 4 * LEDGER.rowH + 28} fill={colors.TEXT} fontSize={12.5} fontWeight={700}>
+                the progress judge — a third critic, fresh eyes
+              </text>
+              <text x={LEDGER.x + 16} y={LEDGER.y + 4 * LEDGER.rowH + 48} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+                reads successive verdicts · rules ONLY on convergence · fixes nothing
+              </text>
+            </g>
+          )}
+
+          {/* ---- the thrash tripwire ---- */}
+          {thrashU > 0 && (
+            <g opacity={thrashU * (1 - 0.5 * ringDim)} transform={`translate(${LEDGER.x} ${LEDGER.y + 4 * LEDGER.rowH + 84})`}>
+              <path d="M 8 4 l 6 10 h -12 Z" fill={colors.NEGATIVE} opacity={0.9} />
+              <text x={24} y={13} fill={colors.TEXT} fontSize={11.5}>
+                identical finding set refuted twice → invalid loop, no judge needed
               </text>
             </g>
           )}
@@ -278,15 +332,15 @@ export function Render({ s }: { s: SceneState }) {
           {stateU > 0 && (
             <g opacity={stateU}>
               <rect x={STATE.x} y={STATE.y} width={STATE.w} height={STATE.h} rx={14} fill={colors.PANEL} stroke={flipU > 0.5 ? colors.NEGATIVE : colors.GRID} strokeWidth={flipU > 0.5 ? 2 : 1.5} />
-              <text x={STATE.x + 18} y={STATE.y + 28} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+              <text x={STATE.x + 18} y={STATE.y + 26} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
                 .eforest/project.json — status
               </text>
               {STATES.map((st, i) => {
                 const active = flipU > 0.5 ? st === 'invalid_loop' : st === 'building';
                 const color = st === 'invalid_loop' ? colors.NEGATIVE : st === 'complete' ? colors.POSITIVE : st === 'paused' ? colors.WARM : colors.ACCENT;
                 return (
-                  <g key={st} transform={`translate(${STATE.x + 18 + (i % 2) * 200} ${STATE.y + 52 + Math.floor(i / 2) * 44})`}>
-                    <rect width={186} height={32} rx={9} fill={active ? color : 'none'} opacity={active ? 0.16 : 1} stroke={active ? color : colors.GRID} strokeWidth={active ? 1.8 : 1} />
+                  <g key={st} transform={`translate(${STATE.x + 18 + (i % 2) * 224} ${STATE.y + 44 + Math.floor(i / 2) * 42})`}>
+                    <rect width={206} height={32} rx={9} fill={active ? color : 'none'} opacity={active ? 0.16 : 1} stroke={active ? color : colors.GRID} strokeWidth={active ? 1.8 : 1} />
                     <circle cx={18} cy={16} r={5} fill={active ? color : colors.GRID} />
                     <text x={34} y={21} fill={active ? colors.TEXT : colors.MUTED} fontSize={12.5} fontFamily={MONO} fontWeight={active ? 700 : 400}>
                       {st}
@@ -295,66 +349,19 @@ export function Render({ s }: { s: SceneState }) {
                 );
               })}
               {flipU > 0.5 && (
-                <text x={STATE.x + 18} y={STATE.y + 168} fill={colors.NEGATIVE} fontSize={11} fontFamily={MONO} opacity={flipU}>
-                  statusReason: “refuted twice with the identical finding set”
+                <text x={STATE.x + 18} y={STATE.y + 148} fill={colors.NEGATIVE} fontSize={10.5} fontFamily={MONO} opacity={flipU}>
+                  statusReason: “progress judge halted rework after 6 attempt(s)”
                 </text>
               )}
-              <text x={STATE.x + 18} y={STATE.y + 192} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO} opacity={flipU}>
+              <text x={STATE.x + 18} y={STATE.y + 170} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO} opacity={flipU}>
                 committed — the stop is part of the history
               </text>
             </g>
           )}
 
-          {/* ---- the invalid_loop triggers ---- */}
-          {trigU > 0 && (
-            <g opacity={trigU}>
-              {TRIGGERS.map((t, i) => {
-                const u = clamp01(trigU * (TRIGGERS.length + 1) - i);
-                if (u <= 0) return null;
-                return (
-                  <g key={t} opacity={u} transform={`translate(${STATE.x} ${STATE.y - 116 + i * 26})`}>
-                    <path d={`M 8 6 l 6 10 h -12 Z`} fill={colors.NEGATIVE} opacity={0.9} />
-                    <text x={24} y={15} fill={colors.TEXT} fontSize={12}>
-                      {t}
-                    </text>
-                  </g>
-                );
-              })}
-            </g>
-          )}
-
-          {/* ---- the greenwash scanner ---- */}
-          {scanU > 0 && (
-            <g opacity={scanU}>
-              <rect x={SCAN.x} y={SCAN.y} width={SCAN.w} height={SCAN.h} rx={14} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.6} />
-              <text x={SCAN.x + 18} y={SCAN.y + 26} fill={colors.POSITIVE} fontSize={12} fontFamily={MONO} fontWeight={700}>
-                tools/verify/self_check.sh — the greenwash scanner
-              </text>
-              <text x={SCAN.x + 18} y={SCAN.y + 48} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
-                bans: || true · || : · ; exit 0 · VERIFY_ALLOW_SKIP=1 · continue-on-error
-              </text>
-              {/* the scanner gate */}
-              <line x1={SCAN.x + 260} y1={SCAN.y + 58} x2={SCAN.x + 260} y2={SCAN.y + 100} stroke={colors.POSITIVE} strokeWidth={2.5} />
-              {/* the escape token */}
-              {escOp > 0 && (
-                <g opacity={escOp} transform={`translate(${escX} ${SCAN.y + 78})`}>
-                  <rect x={-38} y={-13} width={76} height={26} rx={7} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.5} />
-                  <text y={4.5} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO} fontWeight={700}>
-                    || true
-                  </text>
-                </g>
-              )}
-              {bounceU > 0.3 && (
-                <text x={SCAN.x + 275} y={SCAN.y + 83} fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO} fontWeight={700} opacity={bounceU}>
-                  REJECTED
-                </text>
-              )}
-            </g>
-          )}
-
           {/* ---- the human ---- */}
           {humanU > 0 && (
-            <g opacity={humanU} transform={`translate(640 ${586 - (1 - humanU) * 10})`}>
+            <g opacity={humanU} transform={`translate(640 ${610 - (1 - humanU) * 10})`}>
               <rect x={-260} y={-24} width={520} height={40} rx={20} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.6} />
               <text y={2} textAnchor="middle" fill={colors.WARM} fontSize={13.5} fontWeight={700}>
                 only a human flips it back to building
@@ -368,7 +375,7 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={endU}>
             <rect x={310} y={262} width={660} height={124} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
             <text x={640} y={312} textAnchor="middle" fill={colors.TEXT} fontSize={19} fontWeight={700}>
-              bounded retries · honest states · a loud stop
+              rounds of three · a judge between rounds · a cap of ten
             </text>
             <text x={640} y={346} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic">
               the loop would rather halt than lie

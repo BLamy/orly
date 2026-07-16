@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { Player } from '../../core';
 import { Render, vizScene } from './chapter-5';
 
-/** Why Attack Beats Review — two lanes, one defect swarm, compounding gates. */
+/** Why the Critic Beats a Reviewer — split stage: diff-reader vs the six-armed critic. */
 function Chapter5() {
   const scene = vizScene();
   return (

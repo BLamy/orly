@@ -1,6 +1,44 @@
 {
   "books": [
     {
+      "slug": "electric-forest-loop",
+      "title": "The Electric Forest Loop",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b0277a",
+      "animal": "generated/electric-forest-loop/animal.webp",
+      "href": "?bundle=electric-forest-loop",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Claim Is Not Evidence",
+          "duration": 96.457
+        },
+        {
+          "number": 2,
+          "title": "The Builder's Workshop",
+          "duration": 104.118
+        },
+        {
+          "number": 3,
+          "title": "The Critic Attacks",
+          "duration": 141.316
+        },
+        {
+          "number": 4,
+          "title": "The Budget and the Loud Stop",
+          "duration": 124.458
+        },
+        {
+          "number": 5,
+          "title": "Why the Critic Beats a Reviewer",
+          "duration": 135.419
+        }
+      ],
+      "createdAt": "2026-07-16T22:15:42.228Z"
+    },
+    {
       "slug": "explained-rl",
       "title": "Explained: Reinforcement Learning",
       "subtitle": "",
@@ -347,44 +385,6 @@
         }
       ],
       "createdAt": "2026-07-16T20:46:37.595Z"
-    },
-    {
-      "slug": "electric-forest-loop",
-      "title": "The Electric Forest Loop",
-      "subtitle": "",
-      "author": "Brett Lamy",
-      "role": "Software Engineer at Replay",
-      "color": "#b0277a",
-      "animal": "generated/electric-forest-loop/animal.webp",
-      "href": "?bundle=electric-forest-loop",
-      "chapters": [
-        {
-          "number": 1,
-          "title": "A Claim Is Not Evidence",
-          "duration": 95.759
-        },
-        {
-          "number": 2,
-          "title": "The Builder's Workshop",
-          "duration": 103.328
-        },
-        {
-          "number": 3,
-          "title": "The Critic Attacks",
-          "duration": 143.406
-        },
-        {
-          "number": 4,
-          "title": "The Budget and the Loud Stop",
-          "duration": 112.569
-        },
-        {
-          "number": 5,
-          "title": "Why Attack Beats Review",
-          "duration": 108.067
-        }
-      ],
-      "createdAt": "2026-07-16T20:33:53.659Z"
     },
     {
       "slug": "wasm-vm-loop",
