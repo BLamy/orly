@@ -1,6 +1,46 @@
 {
   "books": [
     {
+      "slug": "explained-llms",
+      "title": "Explained: Language Models",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c79100",
+      "animal": "generated/explained-llms/animal.webp",
+      "href": "?bundle=explained-llms",
+      "series": "The Explainers",
+      "seriesOrder": 10,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Tokenization: Byte Pair Encoding",
+          "duration": 116.285
+        },
+        {
+          "number": 2,
+          "title": "Next-Token Prediction as Compression",
+          "duration": 123.297
+        },
+        {
+          "number": 3,
+          "title": "Scaling Laws",
+          "duration": 114.105
+        },
+        {
+          "number": 4,
+          "title": "In-Context Learning",
+          "duration": 100.079
+        },
+        {
+          "number": 5,
+          "title": "RLHF: Learning from Human Feedback",
+          "duration": 134.212
+        }
+      ],
+      "createdAt": "2026-07-16T22:31:46.979Z"
+    },
+    {
       "slug": "explained-generative",
       "title": "Explained: Generative Models",
       "subtitle": "",
