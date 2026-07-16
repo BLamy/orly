@@ -1,0 +1,109 @@
+{
+  "format": 3,
+  "slug": "url-shortener",
+  "title": "The URL Shortener",
+  "subtitle": "System Design, Solved №1",
+  "animal": "animal.webp",
+  "accent": "#3a8b3a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A Read-Heavy Problem",
+      "blurb": "Ten reads for every write — the envelope math that shapes the whole design.",
+      "scene": "books/url-shortener/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        9.021,
+        15.325,
+        21.757,
+        31.312,
+        45.023,
+        57.515,
+        65.898,
+        75.163
+      ],
+      "duration": 85.635
+    },
+    {
+      "number": 2,
+      "title": "Minting the Link",
+      "blurb": "Hashes beat counters: three and a half trillion names, seven characters each.",
+      "scene": "books/url-shortener/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        10.008,
+        23.952,
+        34.981,
+        42.249,
+        53.742,
+        63.414,
+        74.025,
+        80.434,
+        92.346,
+        103.294
+      ],
+      "duration": 111.502
+    },
+    {
+      "number": 3,
+      "title": "Two Homes for One Paste",
+      "blurb": "Metadata in the database, content in the object store — one thread ties them.",
+      "scene": "books/url-shortener/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        6.827,
+        13.99,
+        23.185,
+        35.898,
+        46.997,
+        59.617,
+        72.028,
+        81.038
+      ],
+      "duration": 93.298
+    },
+    {
+      "number": 4,
+      "title": "The Read Path",
+      "blurb": "Cache, replicas, and the edge: how forty reads a second never touch the disk.",
+      "scene": "books/url-shortener/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        9.567,
+        18.251,
+        26.169,
+        37.082,
+        49.006,
+        60.628,
+        71.437,
+        81.247,
+        92.916
+      ],
+      "duration": 100.032
+    },
+    {
+      "number": 5,
+      "title": "What Breaks First",
+      "blurb": "Crank the dial and watch what saturates first — then scale it away.",
+      "scene": "books/url-shortener/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        10.403,
+        19.9,
+        30.07,
+        38.023,
+        54.683,
+        66.491,
+        74.815,
+        83.581,
+        97.06
+      ],
+      "duration": 109.506
+    }
+  ]
+}

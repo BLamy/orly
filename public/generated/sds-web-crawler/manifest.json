@@ -1,0 +1,117 @@
+{
+  "format": 3,
+  "slug": "sds-web-crawler",
+  "title": "The Web Crawler",
+  "subtitle": "System Design, Solved №3",
+  "animal": "animal.webp",
+  "accent": "#3a8b3a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Frontier: a billion links, one loop",
+      "blurb": "Pop the top link, fetch, feed the children back — the crawl loop that eats the web.",
+      "scene": "books/sds-web-crawler/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        10.043,
+        20.724,
+        28.433,
+        34.993,
+        42.47,
+        49.32,
+        59.002,
+        63.936,
+        70.589,
+        76.208,
+        83.627,
+        92.613
+      ],
+      "duration": 100.682
+    },
+    {
+      "number": 2,
+      "title": "Politeness: never hammer one host",
+      "blurb": "A burst reads as an attack; the polite crawler spaces its visits and stays fast in aggregate.",
+      "scene": "books/sds-web-crawler/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.137,
+        16.951,
+        23.382,
+        30.859,
+        39.184,
+        48.227,
+        57.515,
+        69.079,
+        75.905
+      ],
+      "duration": 83.498
+    },
+    {
+      "number": 3,
+      "title": "Duplicates: the signature says stop",
+      "blurb": "Cycles would trap the loop forever — the content signature spots repeats and sinks them.",
+      "scene": "books/sds-web-crawler/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        7.999,
+        18.088,
+        26.517,
+        32.148,
+        39.439,
+        47.519,
+        54.323,
+        63.797,
+        72.667
+      ],
+      "duration": 79.83
+    },
+    {
+      "number": 4,
+      "title": "Freshness: re-crawled by popularity",
+      "blurb": "Stored copies rot; clocks tuned to popularity feed pages back to the frontier.",
+      "scene": "books/sds-web-crawler/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        7.361,
+        17.183,
+        25.821,
+        35.329,
+        42.353,
+        49.923,
+        57.26,
+        65.329,
+        71.598,
+        78.936
+      ],
+      "duration": 87.539
+    },
+    {
+      "number": 5,
+      "title": "The Index: where search fits",
+      "blurb": "Every fetch feeds two queues — and the reverse index answers the next search.",
+      "scene": "books/sds-web-crawler/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        7.639,
+        16.695,
+        22.965,
+        30.523,
+        38.731,
+        44.211,
+        52.64,
+        59.13,
+        64.935,
+        73.968,
+        77.938,
+        91.244
+      ],
+      "duration": 96.828
+    }
+  ]
+}
