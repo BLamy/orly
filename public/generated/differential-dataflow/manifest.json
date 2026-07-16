@@ -1,0 +1,112 @@
+{
+  "format": 3,
+  "slug": "differential-dataflow",
+  "title": "Differential Dataflow",
+  "subtitle": "Incremental computation, one difference at a time",
+  "animal": "animal.webp",
+  "accent": "#b0277a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A Ledger of Changes",
+      "blurb": "Collections as multisets of data, time, diff — replayable in either direction",
+      "scene": "books/differential-dataflow/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        7.744,
+        19.168,
+        29.814,
+        38.499,
+        47.578,
+        58.294,
+        67.779,
+        79.831
+      ],
+      "duration": 88.747
+    },
+    {
+      "number": 2,
+      "title": "Shipping the Difference",
+      "blurb": "One edge in, two diffs out: operators ship changes, not tables",
+      "scene": "books/differential-dataflow/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.59,
+        15.975,
+        22.732,
+        28.015,
+        35.573,
+        46.08,
+        52.013,
+        66.548,
+        75.616,
+        87.052,
+        96.572
+      ],
+      "duration": 104.397
+    },
+    {
+      "number": 3,
+      "title": "The Arrangement",
+      "blurb": "Batches sealed at the frontier, merged into one shared, indexed trace",
+      "scene": "books/differential-dataflow/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.893,
+        14.663,
+        23.347,
+        32.717,
+        41.819,
+        51.386,
+        58.05,
+        67.803,
+        80.121,
+        90.105
+      ],
+      "duration": 99.52
+    },
+    {
+      "number": 4,
+      "title": "The Frontier",
+      "blurb": "The wavefront that decides when an answer is safe to trust",
+      "scene": "books/differential-dataflow/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        8.998,
+        15.07,
+        22.57,
+        32.172,
+        40.867,
+        52.547,
+        61.265,
+        72.887,
+        83.951
+      ],
+      "duration": 92.508
+    },
+    {
+      "number": 5,
+      "title": "Until the Differences Dissipate",
+      "blurb": "Loops that go quiet by arithmetic — and crush batch when one edge changes",
+      "scene": "books/differential-dataflow/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        9.044,
+        21.095,
+        30.453,
+        36.978,
+        53.708,
+        63.205,
+        74.687,
+        87.121,
+        99.137
+      ],
+      "duration": 105.743
+    }
+  ]
+}

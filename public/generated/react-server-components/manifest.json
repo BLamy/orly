@@ -1,0 +1,111 @@
+{
+  "format": 3,
+  "slug": "react-server-components",
+  "title": "React Server Components",
+  "subtitle": "React for two computers",
+  "animal": "animal.webp",
+  "accent": "#41607f",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Two Computers, One Tree",
+      "blurb": "One React tree is pulled apart across a physical gap — server components dissolve into their output while the use client counter seals shut and crosses as a reference.",
+      "scene": "books/react-server-components/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0.5,
+        9.5,
+        17.7,
+        26.5,
+        35.1,
+        42.3,
+        50.5,
+        58.7,
+        66.9,
+        75.5
+      ],
+      "duration": 85.5
+    },
+    {
+      "number": 2,
+      "title": "Rows on a Tape",
+      "blurb": "Flight's actual wire format: hex-addressed, newline-framed rows, the element tuple, dollar-prefixed references, and a tape you can read before it finishes writing.",
+      "scene": "books/react-server-components/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0.5,
+        9,
+        17.5,
+        26.6,
+        35.1,
+        45.3,
+        54.9,
+        64.1,
+        73.4,
+        82.1
+      ],
+      "duration": 91.8
+    },
+    {
+      "number": 3,
+      "title": "The Customs Gate",
+      "blurb": "Every prop walks through a customs gate: dates, maps and promises morph into their encodings; functions and class instances bounce with React's real error text.",
+      "scene": "books/react-server-components/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0.5,
+        9.4,
+        17.5,
+        24.8,
+        33.3,
+        41.6,
+        50.1,
+        58.4,
+        66.3,
+        75.2,
+        83.5
+      ],
+      "duration": 93.9
+    },
+    {
+      "number": 4,
+      "title": "Chunks That Wake Up",
+      "blurb": "On the client, every row id gets a promise-like chunk cell — the page stands up with suspense holes that pop as cells flip to fulfilled.",
+      "scene": "books/react-server-components/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0.5,
+        8.4,
+        17.1,
+        25.8,
+        34.7,
+        42.8,
+        51.5,
+        60.2,
+        68.5,
+        78
+      ],
+      "duration": 88.6
+    },
+    {
+      "number": 5,
+      "title": "The Wire Runs Backwards",
+      "blurb": "Server actions run the wire in reverse: a stamped reference dials home, arguments pass the same gate, and a plain form still posts with scripting off.",
+      "scene": "books/react-server-components/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0.5,
+        9.2,
+        18.1,
+        26.6,
+        34.4,
+        43,
+        51.4,
+        59.4,
+        68,
+        77.4
+      ],
+      "duration": 86.5
+    }
+  ]
+}
