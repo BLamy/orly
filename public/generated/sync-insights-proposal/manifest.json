@@ -1,0 +1,84 @@
+{
+  "format": 3,
+  "slug": "sync-insights-proposal",
+  "title": "Sync Engine Insights",
+  "subtitle": "A proposal: your React perf pattern, one layer down",
+  "accent": "#38bdf8",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Pattern You Already Built",
+      "blurb": "This is about the React performance tool we just shipped. Not to explain it — to steal its shape.",
+      "scene": "books/sync-insights-proposal/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        6.815,
+        16.219,
+        21.897,
+        29.083,
+        37.501,
+        46.626,
+        54.66,
+        63.217,
+        71.552
+      ],
+      "duration": 81.038
+    },
+    {
+      "number": 2,
+      "title": "Sync Engines Are Dataflow Graphs",
+      "blurb": "Second claim: the sync engines people are betting on are dataflow graphs on the inside. Not metaphorically — structurally.",
+      "scene": "books/sync-insights-proposal/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        7.721,
+        17.81,
+        28.329,
+        36.374,
+        47.009,
+        58.851,
+        70.043,
+        81.096
+      ],
+      "duration": 88.794
+    },
+    {
+      "number": 3,
+      "title": "Tap the Log",
+      "blurb": "So here's the actual proposal. Both engines already funnel every change through one narrow pipeline — which means there is exactly one place to tap.",
+      "scene": "books/sync-insights-proposal/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.754,
+        22.675,
+        36.119,
+        48.913,
+        60.361,
+        70.218,
+        83.175
+      ],
+      "duration": 95.388
+    },
+    {
+      "number": 4,
+      "title": "SyncEngineInsights",
+      "blurb": "Chapter four is the payoff. Give the same tool surface a name — Sync Engine Insights — shaped exactly like the React one we just shipped: checks over a recording, findings with receipts.",
+      "scene": "books/sync-insights-proposal/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        11.807,
+        24.753,
+        37.012,
+        51.281,
+        62.694,
+        74.664,
+        87.91
+      ],
+      "duration": 90.604
+    }
+  ]
+}
