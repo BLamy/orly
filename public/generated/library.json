@@ -720,6 +720,43 @@
       ],
       "createdAt": "2026-07-16T04:52:37.418Z",
       "animal": "generated/agent-patterns/animal.webp"
+    },
+    {
+      "slug": "react-server-components",
+      "title": "React Server Components",
+      "subtitle": "React for two computers",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#41607f",
+      "href": "?bundle=react-server-components",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Two Computers, One Tree",
+          "duration": 85.5
+        },
+        {
+          "number": 2,
+          "title": "Rows on a Tape",
+          "duration": 91.8
+        },
+        {
+          "number": 3,
+          "title": "The Customs Gate",
+          "duration": 93.9
+        },
+        {
+          "number": 4,
+          "title": "Chunks That Wake Up",
+          "duration": 88.6
+        },
+        {
+          "number": 5,
+          "title": "The Wire Runs Backwards",
+          "duration": 86.5
+        }
+      ],
+      "createdAt": "2026-07-16T05:14:10.859Z"
     }
   ]
 }

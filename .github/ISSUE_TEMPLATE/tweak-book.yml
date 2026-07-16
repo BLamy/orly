@@ -35,6 +35,7 @@ body:
         - "Electric Agents · An agent is a log — electric-agents"
         - "TanStack DB · The reactive client store for your API — tanstack-db"
         - "Agent Patterns · Manager-worker, dispatcher, map-reduce, pipeline — agent-patterns"
+        - "React Server Components · React for two computers — react-server-components"
         # BOOKS:END
     validations:
       required: true
