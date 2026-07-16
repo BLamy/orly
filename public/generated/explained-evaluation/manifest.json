@@ -1,0 +1,102 @@
+{
+  "format": 3,
+  "slug": "explained-evaluation",
+  "title": "Explained: Evaluation",
+  "animal": "animal.webp",
+  "accent": "#c79100",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Contamination",
+      "blurb": "A model that memorized its homework scores perfectly on leaked questions and fails fresh ones — the fingerprint of contamination.",
+      "scene": "books/explained-evaluation/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        10.147,
+        23.232,
+        31.301,
+        41.958,
+        53.626,
+        65.933,
+        81.491,
+        94.401
+      ],
+      "duration": 106.301
+    },
+    {
+      "number": 2,
+      "title": "Goodhart's Law",
+      "blurb": "Four hundred real gradient steps on a flawed benchmark: the proxy hits its all-time high as true quality collapses.",
+      "scene": "books/explained-evaluation/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.822,
+        22.767,
+        35.55,
+        49.853,
+        60.778,
+        76.103,
+        89.687,
+        98.186
+      ],
+      "duration": 111.596
+    },
+    {
+      "number": 3,
+      "title": "Calibration",
+      "blurb": "When a model says ninety nine percent, is it right ninety nine percent of the time? A really-trained classifier says no — until temperature scaling.",
+      "scene": "books/explained-evaluation/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        11.9,
+        25.473,
+        37.129,
+        49.935,
+        63.461,
+        76.765,
+        86.401
+      ],
+      "duration": 98.174
+    },
+    {
+      "number": 4,
+      "title": "Variance and Significance",
+      "blurb": "Two thousand reruns of a hundred-question benchmark: the genuinely better model loses almost half of them.",
+      "scene": "books/explained-evaluation/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        10.971,
+        21.723,
+        34.853,
+        47.183,
+        60.569,
+        73.143,
+        82.454
+      ],
+      "duration": 96.223
+    },
+    {
+      "number": 5,
+      "title": "The Expensive Claim",
+      "blurb": "The closing thesis: the metric went up is an expensive claim, and honest evaluation is the gauntlet that attacks it.",
+      "scene": "books/explained-evaluation/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        11.494,
+        22.07,
+        37.152,
+        51.803,
+        64.819,
+        76.661,
+        93.24,
+        104.002
+      ],
+      "duration": 116.89
+    }
+  ]
+}

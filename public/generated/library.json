@@ -1,6 +1,86 @@
 {
   "books": [
     {
+      "slug": "explained-evaluation",
+      "title": "Explained: Evaluation",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c79100",
+      "animal": "generated/explained-evaluation/animal.webp",
+      "href": "?bundle=explained-evaluation",
+      "series": "The Explainers",
+      "seriesOrder": 17,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Contamination",
+          "duration": 106.301
+        },
+        {
+          "number": 2,
+          "title": "Goodhart's Law",
+          "duration": 111.596
+        },
+        {
+          "number": 3,
+          "title": "Calibration",
+          "duration": 98.174
+        },
+        {
+          "number": 4,
+          "title": "Variance and Significance",
+          "duration": 96.223
+        },
+        {
+          "number": 5,
+          "title": "The Expensive Claim",
+          "duration": 116.89
+        }
+      ],
+      "createdAt": "2026-07-16T23:58:38.299Z"
+    },
+    {
+      "slug": "arxiv-filler-tokens",
+      "title": "Reading Between the Dots",
+      "subtitle": "Decoding hidden computation across filler tokens",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#6a3f9e",
+      "animal": "generated/arxiv-filler-tokens/animal.webp",
+      "href": "?bundle=arxiv-filler-tokens",
+      "series": "Fresh from arXiv",
+      "seriesOrder": 2,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The question: do the dots do work?",
+          "duration": 73.374
+        },
+        {
+          "number": 2,
+          "title": "Build the machine, then probe it",
+          "duration": 79.645
+        },
+        {
+          "number": 3,
+          "title": "Relay or scenery?",
+          "duration": 104.491
+        },
+        {
+          "number": 4,
+          "title": "The findings, at their honest size",
+          "duration": 92.927
+        },
+        {
+          "number": 5,
+          "title": "You can't verify what you can't see",
+          "duration": 84.659
+        }
+      ],
+      "createdAt": "2026-07-16T23:58:21.798Z"
+    },
+    {
       "slug": "arxiv-gated-deltanet-2",
       "title": "Erase, Then Write",
       "subtitle": "Decoupling erase and write in linear attention",
