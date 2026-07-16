@@ -38,6 +38,7 @@ body:
         - "React Server Components · React for two computers — react-server-components"
         - "Effect · The Good Parts · for Beginners — effect-type"
         - "Effect · The Good Parts · Intermediate — effect-good-parts-2"
+        - "Effect in Prod · Production-Level Effect — effect-in-prod"
         # BOOKS:END
     validations:
       required: true

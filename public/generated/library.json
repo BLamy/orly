@@ -837,6 +837,46 @@
         }
       ],
       "createdAt": "2026-07-16T05:30:49.641Z"
+    },
+    {
+      "slug": "effect-in-prod",
+      "title": "Effect in Prod",
+      "subtitle": "Production-Level Effect",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/effect-in-prod/animal.webp",
+      "href": "?bundle=effect-in-prod",
+      "series": "Effect: The Good Parts",
+      "seriesOrder": 3,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Fiber Tree",
+          "duration": 91.626
+        },
+        {
+          "number": 2,
+          "title": "Pulling the Plug Safely",
+          "duration": 98.732
+        },
+        {
+          "number": 3,
+          "title": "Failure With a Plan",
+          "duration": 93.53
+        },
+        {
+          "number": 4,
+          "title": "The Request Leaves a Trace",
+          "duration": 106.719
+        },
+        {
+          "number": 5,
+          "title": "The Service, Assembled",
+          "duration": 110.526
+        }
+      ],
+      "createdAt": "2026-07-16T05:39:56.349Z"
     }
   ]
 }
