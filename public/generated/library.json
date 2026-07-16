@@ -877,6 +877,46 @@
         }
       ],
       "createdAt": "2026-07-16T05:39:56.349Z"
+    },
+    {
+      "slug": "effect-internals",
+      "title": "Effect Internals",
+      "subtitle": "What the elites don't want you to know",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#d6202b",
+      "animal": "generated/effect-internals/animal.webp",
+      "href": "?bundle=effect-internals",
+      "series": "Effect: The Good Parts",
+      "seriesOrder": 4,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Program Is a Data Structure",
+          "duration": 91.858
+        },
+        {
+          "number": 2,
+          "title": "The Runloop",
+          "duration": 104.676
+        },
+        {
+          "number": 3,
+          "title": "Sharing One Thread",
+          "duration": 89.026
+        },
+        {
+          "number": 4,
+          "title": "Interruption Is a Failure",
+          "duration": 100.171
+        },
+        {
+          "number": 5,
+          "title": "The Promise to Clean Up",
+          "duration": 103.422
+        }
+      ],
+      "createdAt": "2026-07-16T05:57:15.173Z"
     }
   ]
 }
