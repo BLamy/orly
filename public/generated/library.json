@@ -1,6 +1,46 @@
 {
   "books": [
     {
+      "slug": "explained-agents",
+      "title": "Explained: Agents",
+      "subtitle": "From predictor to actor — and why an agent's word is the expensive claim",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#e07b1a",
+      "animal": "generated/explained-agents/animal.webp",
+      "href": "?bundle=explained-agents",
+      "series": "The Explainers",
+      "seriesOrder": 27,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "From Predictor to Actor",
+          "duration": 117.215
+        },
+        {
+          "number": 2,
+          "title": "A Plan Is a Hypothesis",
+          "duration": 109.878
+        },
+        {
+          "number": 3,
+          "title": "Memory Is a Budget",
+          "duration": 114.151
+        },
+        {
+          "number": 4,
+          "title": "Why Agents Fail",
+          "duration": 125.11
+        },
+        {
+          "number": 5,
+          "title": "The Expensive Claim",
+          "duration": 138.484
+        }
+      ],
+      "createdAt": "2026-07-17T10:43:16.937Z"
+    },
+    {
       "slug": "explained-inference",
       "title": "Explained: Inference",
       "subtitle": "The memory wall, the cache, the seating problem — four attacks on seven milliseconds",
@@ -2205,22 +2245,22 @@
         {
           "number": 1,
           "title": "Gradient Descent: rolling downhill, three ways",
-          "duration": 49.04
+          "duration": 50.898
         },
         {
           "number": 2,
           "title": "Backpropagation: blame, passed backward",
-          "duration": 87.819
+          "duration": 85.263
         },
         {
           "number": 3,
           "title": "Attention: every token asks every other",
-          "duration": 54.659
+          "duration": 56.888
         },
         {
           "number": 4,
           "title": "Diffusion: drown it in noise, learn the way back",
-          "duration": 48.345
+          "duration": 46.858
         }
       ],
       "createdAt": "2026-07-15T22:01:46.700Z",
