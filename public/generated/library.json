@@ -1,6 +1,46 @@
 {
   "books": [
     {
+      "slug": "explained-test-time",
+      "title": "Explained: Test-Time Compute",
+      "subtitle": "One sample is a lottery ticket — sampling, voting, grading, searching, and the new axis of scaling",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#a01f3c",
+      "animal": "generated/explained-test-time/animal.webp",
+      "href": "?bundle=explained-test-time",
+      "series": "The Explainers",
+      "seriesOrder": 30,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "One Sample Is a Lottery Ticket",
+          "duration": 108.902
+        },
+        {
+          "number": 2,
+          "title": "Best-of-N and Self-Consistency",
+          "duration": 102.309
+        },
+        {
+          "number": 3,
+          "title": "Process vs Outcome",
+          "duration": 110.715
+        },
+        {
+          "number": 4,
+          "title": "Search Over Reasoning",
+          "duration": 111.966
+        },
+        {
+          "number": 5,
+          "title": "The New Scaling Law",
+          "duration": 124.134
+        }
+      ],
+      "createdAt": "2026-07-17T17:52:47.978Z"
+    },
+    {
       "slug": "explained-long-context",
       "title": "Explained: Long Context",
       "subtitle": "",
