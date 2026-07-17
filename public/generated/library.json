@@ -1,6 +1,46 @@
 {
   "books": [
     {
+      "slug": "explained-sandboxing",
+      "title": "Explained: The Sandbox",
+      "subtitle": "How we caged the agents in almostnode — a cross-origin wall, and what it costs",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b0277a",
+      "animal": "generated/explained-sandboxing/animal.webp",
+      "href": "?bundle=explained-sandboxing",
+      "series": "The Explainers",
+      "seriesOrder": 37,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Code You Didn't Write",
+          "duration": 123.949
+        },
+        {
+          "number": 2,
+          "title": "The Browser's Own Wall",
+          "duration": 124.783
+        },
+        {
+          "number": 3,
+          "title": "How We Caged the Agent",
+          "duration": 138.251
+        },
+        {
+          "number": 4,
+          "title": "The Price of the Wall",
+          "duration": 107.694
+        },
+        {
+          "number": 5,
+          "title": "The Same Shape Everywhere",
+          "duration": 116.098
+        }
+      ],
+      "createdAt": "2026-07-17T17:59:56.920Z"
+    },
+    {
       "slug": "explained-test-time",
       "title": "Explained: Test-Time Compute",
       "subtitle": "One sample is a lottery ticket — sampling, voting, grading, searching, and the new axis of scaling",
