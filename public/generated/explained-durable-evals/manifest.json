@@ -1,0 +1,103 @@
+{
+  "format": 3,
+  "slug": "explained-durable-evals",
+  "title": "Explained: Durable Evals",
+  "animal": "animal.webp",
+  "accent": "#3a8b3a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Lifespan of a Benchmark",
+      "blurb": "GLUE, SuperGLUE, MMLU and GSM8K's reported curves, replotted: every instrument saturates and goes silent.",
+      "scene": "books/explained-durable-evals/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        12.144,
+        29.153,
+        44.223,
+        61.336,
+        73.817,
+        85.101,
+        96.572
+      ],
+      "duration": 110.667
+    },
+    {
+      "number": 2,
+      "title": "The Three Ways Evals Die",
+      "blurb": "Saturation makes a benchmark deaf, leakage makes it a memory test, and Goodhart makes it a target.",
+      "scene": "books/explained-durable-evals/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        14.617,
+        29.071,
+        42.841,
+        56.575,
+        69.021,
+        84.787,
+        99.369,
+        115.17
+      ],
+      "duration": 129.799
+    },
+    {
+      "number": 3,
+      "title": "SWE-bench: A Case Study in Repair",
+      "blurb": "From 1.96% to retirement: the Verified re-curation, executable-test scoring, and a fixed-vs-rolling pool simulation.",
+      "scene": "books/explained-durable-evals/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        15.464,
+        26.332,
+        39.37,
+        55.635,
+        72.261,
+        89.583,
+        104.339,
+        121.266
+      ],
+      "duration": 137.23
+    },
+    {
+      "number": 4,
+      "title": "Humanity's Last Exam: Adversarial Sourcing",
+      "blurb": "Questions accepted only if the frontier fails them — what the sieve buys, and its half-life.",
+      "scene": "books/explained-durable-evals/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        16.335,
+        29.187,
+        40.599,
+        56.598,
+        68.916,
+        87.666,
+        103.049,
+        121.695
+      ],
+      "duration": 132.631
+    },
+    {
+      "number": 5,
+      "title": "Designing for Durability",
+      "blurb": "Private splits, refresh pipelines, verification, canaries, variance — the eval must outlast its own success.",
+      "scene": "books/explained-durable-evals/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        14.559,
+        32.439,
+        41.494,
+        58.491,
+        73.12,
+        90.686,
+        106.801,
+        116.554
+      ],
+      "duration": 127.525
+    }
+  ]
+}

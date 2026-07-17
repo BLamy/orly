@@ -1,6 +1,46 @@
 {
   "books": [
     {
+      "slug": "explained-durable-evals",
+      "title": "Explained: Durable Evals",
+      "subtitle": "Saturation, leakage, Goodhart — and the design rules that let a benchmark outlive the frontier",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#3a8b3a",
+      "animal": "generated/explained-durable-evals/animal.webp",
+      "href": "?bundle=explained-durable-evals",
+      "series": "The Explainers",
+      "seriesOrder": 28,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Lifespan of a Benchmark",
+          "duration": 110.667
+        },
+        {
+          "number": 2,
+          "title": "The Three Ways Evals Die",
+          "duration": 129.799
+        },
+        {
+          "number": 3,
+          "title": "SWE-bench: A Case Study in Repair",
+          "duration": 137.23
+        },
+        {
+          "number": 4,
+          "title": "Humanity's Last Exam: Adversarial Sourcing",
+          "duration": 132.631
+        },
+        {
+          "number": 5,
+          "title": "Designing for Durability",
+          "duration": 127.525
+        }
+      ],
+      "createdAt": "2026-07-17T10:27:02.036Z"
+    },
+    {
       "slug": "explained-delta-rule",
       "title": "Explained: The Delta Rule",
       "subtitle": "Fast weights, error-correcting writes, decay, phase — and the chunk algebra that makes it trainable",
