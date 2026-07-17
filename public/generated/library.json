@@ -1,6 +1,46 @@
 {
   "books": [
     {
+      "slug": "explained-delta-rule",
+      "title": "Explained: The Delta Rule",
+      "subtitle": "Fast weights, error-correcting writes, decay, phase — and the chunk algebra that makes it trainable",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#6a3f9e",
+      "animal": "generated/explained-delta-rule/animal.webp",
+      "href": "?bundle=explained-delta-rule",
+      "series": "The Explainers",
+      "seriesOrder": 25,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Matrix as Memory",
+          "duration": 94.877
+        },
+        {
+          "number": 2,
+          "title": "Write the Error, Not the Fact",
+          "duration": 83.546
+        },
+        {
+          "number": 3,
+          "title": "Forgetting as a Feature",
+          "duration": 88.747
+        },
+        {
+          "number": 4,
+          "title": "When Memory Must Rotate",
+          "duration": 113.453
+        },
+        {
+          "number": 5,
+          "title": "The Chunked Frontier",
+          "duration": 120.511
+        }
+      ],
+      "createdAt": "2026-07-17T03:01:47.065Z"
+    },
+    {
       "slug": "explained-causality",
       "title": "Explained: Causality",
       "subtitle": "Sign flips, severed wires, honest coins — and the features that survive",
