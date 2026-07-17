@@ -1,6 +1,46 @@
 {
   "books": [
     {
+      "slug": "explained-inference",
+      "title": "Explained: Inference",
+      "subtitle": "The memory wall, the cache, the seating problem — four attacks on seven milliseconds",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#3a8b3a",
+      "animal": "generated/explained-inference/animal.webp",
+      "href": "?bundle=explained-inference",
+      "series": "The Explainers",
+      "seriesOrder": 26,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "What Serving Actually Costs",
+          "duration": 93.112
+        },
+        {
+          "number": 2,
+          "title": "The Cache That Remembers",
+          "duration": 119.117
+        },
+        {
+          "number": 3,
+          "title": "The Seating Problem",
+          "duration": 117.121
+        },
+        {
+          "number": 4,
+          "title": "Guess Four, Check Once",
+          "duration": 113.59
+        },
+        {
+          "number": 5,
+          "title": "Shrink the Sweep Itself",
+          "duration": 120.511
+        }
+      ],
+      "createdAt": "2026-07-17T10:31:20.818Z"
+    },
+    {
       "slug": "explained-durable-evals",
       "title": "Explained: Durable Evals",
       "subtitle": "Saturation, leakage, Goodhart — and the design rules that let a benchmark outlive the frontier",

@@ -1,0 +1,109 @@
+{
+  "format": 3,
+  "slug": "explained-inference",
+  "title": "Explained: Inference",
+  "subtitle": "The memory wall, the cache, the seating problem — four attacks on seven milliseconds",
+  "animal": "animal.webp",
+  "accent": "#3a8b3a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "What Serving Actually Costs",
+      "blurb": "Honest arithmetic for a 7B model: 7 ms per token, 0.6 percent of the compute used — the memory wall.",
+      "scene": "books/explained-inference/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        9.95,
+        18.959,
+        32.996,
+        44.78,
+        55.855,
+        64.47,
+        77.554,
+        86.912
+      ],
+      "duration": 93.112
+    },
+    {
+      "number": 2,
+      "title": "The Cache That Remembers",
+      "blurb": "A real toy attention layer fills its cache on screen: 512 KB per token, 64 GB at batch 32 — 4.6 times the weights.",
+      "scene": "books/explained-inference/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        8.243,
+        21.002,
+        34.029,
+        44.199,
+        58.2,
+        71.981,
+        84.81,
+        92.728,
+        107.344
+      ],
+      "duration": 119.117
+    },
+    {
+      "number": 3,
+      "title": "The Seating Problem",
+      "blurb": "A real 24-request simulation: static batching 55 percent busy, continuous 76 — 1.37 times the throughput from scheduling alone.",
+      "scene": "books/explained-inference/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        11.958,
+        24.903,
+        35.677,
+        47.287,
+        56.181,
+        67.129,
+        77.415,
+        92.647,
+        107.287
+      ],
+      "duration": 117.121
+    },
+    {
+      "number": 4,
+      "title": "Guess Four, Check Once",
+      "blurb": "Draft and verify simulated for real: 2.77 tokens per pass at 70 percent agreement, about twice as fast end to end.",
+      "scene": "books/explained-inference/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        12.783,
+        23.765,
+        35.491,
+        45.603,
+        55.1,
+        64.028,
+        74.987,
+        89.21,
+        103.617
+      ],
+      "duration": 113.59
+    },
+    {
+      "number": 5,
+      "title": "Shrink the Sweep Itself",
+      "blurb": "A real int4 quantizer draws its own staircase — 11 percent measured error, and 143 to 667 tokens per second.",
+      "scene": "books/explained-inference/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        9.648,
+        19.122,
+        31.765,
+        47.207,
+        58.224,
+        72.585,
+        85.832,
+        100.936,
+        114.021
+      ],
+      "duration": 120.511
+    }
+  ]
+}
