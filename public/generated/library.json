@@ -1,6 +1,41 @@
 {
   "books": [
     {
+      "slug": "kt-tuning-home",
+      "title": "Tuning at Home",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1f6fb2",
+      "animal": "generated/kt-tuning-home/animal.webp",
+      "href": "?bundle=kt-tuning-home",
+      "series": "KTransformers",
+      "seriesOrder": 4,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Fine-Tune You Couldn't Afford",
+          "duration": 87.956
+        },
+        {
+          "number": 2,
+          "title": "One Config, New Engine",
+          "duration": 82.895
+        },
+        {
+          "number": 3,
+          "title": "Weights Before Training",
+          "duration": 82.245
+        },
+        {
+          "number": 4,
+          "title": "The Loop Closes",
+          "duration": 89.768
+        }
+      ],
+      "createdAt": "2026-07-17T20:58:52.719Z"
+    },
+    {
       "slug": "kt-amx-path",
       "title": "The AMX Path",
       "subtitle": "",
