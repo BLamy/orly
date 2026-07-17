@@ -9,103 +9,103 @@
     {
       "number": 1,
       "title": "Two Computers, One Tree",
-      "blurb": "One React tree is pulled apart across a physical gap — server components dissolve into their output while the use client counter seals shut and crosses as a reference.",
+      "blurb": "For thirty years the web has asked one question: where should the user interface live? React server components give a strange answer — in two places at once, as a single program.",
       "scene": "books/react-server-components/chapter-1",
       "audio": "audio/chapter-1.mp3",
       "cues": [
-        0.5,
-        9.5,
-        17.7,
-        26.5,
-        35.1,
-        42.3,
-        50.5,
-        58.7,
-        66.9,
-        75.5
+        0,
+        10.774,
+        22.373,
+        31.777,
+        43.097,
+        52.954,
+        63.391,
+        75.035,
+        85.461,
+        97.001
       ],
-      "duration": 85.5
+      "duration": 107.044
     },
     {
       "number": 2,
       "title": "Rows on a Tape",
-      "blurb": "Flight's actual wire format: hex-addressed, newline-framed rows, the element tuple, dollar-prefixed references, and a tape you can read before it finishes writing.",
+      "blurb": "Crack open the response for a server components page and you will not find markup. You will find rows — one per line, each with an address. React calls this format Flight.",
       "scene": "books/react-server-components/chapter-2",
       "audio": "audio/chapter-2.mp3",
       "cues": [
-        0.5,
-        9,
-        17.5,
-        26.6,
-        35.1,
-        45.3,
-        54.9,
-        64.1,
-        73.4,
-        82.1
+        0,
+        10.728,
+        21.665,
+        34.552,
+        48.078,
+        61.162,
+        73.701,
+        86.913,
+        97.594,
+        109.285
       ],
-      "duration": 91.8
+      "duration": 121.023
     },
     {
       "number": 3,
       "title": "The Customs Gate",
-      "blurb": "Every prop walks through a customs gate: dates, maps and promises morph into their encodings; functions and class instances bounce with React's real error text.",
+      "blurb": "The wire is a stream of text. So the boundary between server and client is really a gate: every value that crosses must survive being flattened into text and revived inside a different memory.",
       "scene": "books/react-server-components/chapter-3",
       "audio": "audio/chapter-3.mp3",
       "cues": [
-        0.5,
-        9.4,
-        17.5,
-        24.8,
-        33.3,
-        41.6,
-        50.1,
-        58.4,
-        66.3,
-        75.2,
-        83.5
+        0,
+        11.761,
+        22.477,
+        30.43,
+        40.391,
+        52.012,
+        62.218,
+        72.69,
+        83.465,
+        93.298,
+        104.583
       ],
-      "duration": 93.9
+      "duration": 115.868
     },
     {
       "number": 4,
       "title": "Chunks That Wake Up",
-      "blurb": "On the client, every row id gets a promise-like chunk cell — the page stands up with suspense holes that pop as cells flip to fulfilled.",
+      "blurb": "The tape from chapter two now pours into the browser — and the browser does not wait for the end. The moment the first bytes arrive, React starts building.",
       "scene": "books/react-server-components/chapter-4",
       "audio": "audio/chapter-4.mp3",
       "cues": [
-        0.5,
-        8.4,
-        17.1,
-        25.8,
-        34.7,
-        42.8,
-        51.5,
-        60.2,
-        68.5,
-        78
+        0,
+        9.451,
+        20.607,
+        32.008,
+        45.371,
+        59.118,
+        70.937,
+        85.078,
+        96.433,
+        110.016
       ],
-      "duration": 88.6
+      "duration": 121.719
     },
     {
       "number": 5,
       "title": "The Wire Runs Backwards",
-      "blurb": "Server actions run the wire in reverse: a stamped reference dials home, arguments pass the same gate, and a plain form still posts with scripting off.",
+      "blurb": "One direction remains. Everything so far flowed from server to client — a page described, shipped, and woken up. But interfaces talk back. Clicks want consequences on the server.",
       "scene": "books/react-server-components/chapter-5",
       "audio": "audio/chapter-5.mp3",
       "cues": [
-        0.5,
-        9.2,
-        18.1,
-        26.6,
-        34.4,
-        43,
-        51.4,
-        59.4,
-        68,
-        77.4
+        0,
+        11.633,
+        23.8,
+        34.783,
+        46.591,
+        59.687,
+        70.6,
+        81.56,
+        93.866,
+        108.553
       ],
-      "duration": 86.5
+      "duration": 115.96
     }
   ]
 }

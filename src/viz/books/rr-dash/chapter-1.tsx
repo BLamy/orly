@@ -53,6 +53,9 @@ const rowY = (i: number) => SIDECAR.y + 64 + i * ROW_H;
 const fileY = (i: number) => BUNDLE.y + 58 + i * 44;
 
 const CAM_BUNDLE: CameraState = { x: 330, y: 330, k: 1.3 };
+// Frames the bundle AND the promise card (world x ≈ 70…900) together — under
+// CAM_BUNDLE the card's right half is past the view edge (clipped by ~250px).
+const CAM_PROMISE: CameraState = { x: 485, y: 330, k: 1.15 };
 const CAM_SIDECAR: CameraState = { x: 640, y: 330, k: 1.16 };
 const CAM_BLOB: CameraState = { x: 850, y: 440, k: 1.2 };
 const CAM_WIDE: CameraState = { x: 640, y: 352, k: 1.0 };
@@ -132,6 +135,7 @@ export function buildScene() {
     dur: 5.6,
     text: 'The promise of this dashboard is simple. Every line of source should know how often it ran, and every moment should have an address you can jump back to.',
   });
+  tl.tween(cam, CAM_PROMISE, { at: t - 5.2, dur: 1.2, ease: ease.move });
   tl.tween(promiseU, 1, { at: t - 4.8, dur: 0.7, ease: ease.enter });
   t = tl.hold(t, 0.6);
 
@@ -141,6 +145,7 @@ export function buildScene() {
     dur: 6.2,
     text: 'The recorder already flattened the trace into structured files: the sources, per line hit counts, first hit points, system call events, the full line trace, and sampled stacks.',
   });
+  tl.tween(cam, CAM_BUNDLE, { at: t - 5.6, dur: 1.2, ease: ease.move });
   tl.tween(filesU, 1, { at: t - 5.6, dur: 2.4, ease: ease.move });
   tl.tween(promiseU, 0, { at: t - 5.8, dur: 0.6, ease: ease.move });
   t = tl.hold(t, 0.5);

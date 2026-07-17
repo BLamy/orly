@@ -163,24 +163,38 @@ Env: ELEVENLABS_API_KEY (narration), OPENAI_API_KEY (cover).`);
       try {
         const { execFileSync } = await import('node:child_process');
         const f = join(outDir, 'audio', `chapter-${n}.mp3`);
-        execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', f, '-t', String(r.audioEnd + 0.2), '-c', 'copy', `${f}.trim`]);
+        // '-f mp3': ffmpeg cannot infer a muxer from the '.trim' suffix (the
+        // trim silently never happened before this flag).
+        execFileSync('ffmpeg', ['-v', 'error', '-y', '-i', f, '-t', String(r.audioEnd + 0.2), '-c', 'copy', '-f', 'mp3', `${f}.trim`]);
         const { renameSync } = await import('node:fs');
         renameSync(`${f}.trim`, f);
       } catch { /* no ffmpeg — the player clamp covers it */ }
       cues = r.cues.map((c) => Number(c.toFixed(3)));
       duration = Number(r.audioEnd.toFixed(3));
-      log(`  ${(r.mp3.length / 1024).toFixed(0)}KB, ${duration.toFixed(1)}s${r.alignedExact ? '' : ' (approx cues)'}`);
+      // Cues ARE the product: the player retimes every keyframe through them.
+      // If a segment could not be located in the alignment its cue is a guess,
+      // which desyncs the whole chapter — fail hard instead of shipping it.
+      if (r.approxSegments?.length) {
+        console.error(`\x1b[31m✗ chapter ${n}: could not locate ${r.approxSegments.length} caption(s) in the ElevenLabs alignment — their cues would be GUESSES:\x1b[0m`);
+        for (const i of r.approxSegments) console.error(`    caption ${i + 1}: “${ex.captions[i].text.slice(0, 80)}”`);
+        console.error('  The chapter would play out of sync. Rewrite these captions (or investigate tts.mjs matching) and re-run.');
+        process.exit(1);
+      }
+      log(`  ${(r.mp3.length / 1024).toFixed(0)}KB, ${duration.toFixed(1)}s${r.alignedExact ? '' : ' (alignment normalized — cues matched per caption)'}`);
     } else {
       cues = ex.captions.map((c) => Number(c.at.toFixed(3))); // authored times
       duration = Number(ex.duration.toFixed(3));
-      log(`  chapter ${n}: --no-tts, cues = authored caption times`);
+      log(`  chapter ${n}: --no-tts, cues = authored caption times (no audio in the manifest)`);
     }
     chapters.push({
       number: n,
       title,
       blurb,
       scene: `books/${slug}/chapter-${n}`,
-      audio: `audio/chapter-${n}.mp3`,
+      // --no-tts is a SILENT preview: authored-time cues must never play
+      // against a stale MP3 from an earlier run (that desyncs the whole
+      // chapter — the audio is the clock), so the manifest omits `audio`.
+      ...(args.tts ? { audio: `audio/chapter-${n}.mp3` } : {}),
       cues,
       duration,
     });

@@ -153,7 +153,11 @@ export function ChapterPlayer({
     for (const ch of channels) {
       for (const k of ch.keys) {
         const at = map(k.at);
-        const dur = Math.max(0, map(k.at + k.dur) - at);
+        // Floor the mapped duration: when a map segment is much shorter than
+        // its authored span (e.g. the head [0, firstCaption] compressing into
+        // a near-zero first cue), a tween must still take SOME time — a camera
+        // pan collapsing to 0 renders as an instant jump mid-scene.
+        const dur = Math.max(Math.min(k.dur, 0.25), map(k.at + k.dur) - at);
         built.tl.updateKeyframe(k.id, { at, dur });
       }
     }
