@@ -1,0 +1,81 @@
+{
+  "format": 3,
+  "slug": "kt-amx-path",
+  "title": "The AMX Path",
+  "animal": "animal.webp",
+  "accent": "#3a8b3a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Precision Menu",
+      "blurb": "What --kt-method chooses: BF16 to INT4 to LLAMAFILE",
+      "scene": "books/kt-amx-path/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        9.323,
+        19.075,
+        28.282,
+        38.569,
+        50.109,
+        62.032,
+        70.53
+      ],
+      "duration": 79.784
+    },
+    {
+      "number": 2,
+      "title": "Tiles That Multiply",
+      "blurb": "tmm registers and 32,768 mul-adds per instruction",
+      "scene": "books/kt-amx-path/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        10.937,
+        21.478,
+        31.637,
+        40.019,
+        50.073,
+        59.953,
+        70.46
+      ],
+      "duration": 78.576
+    },
+    {
+      "number": 3,
+      "title": "Feeding the Tiles",
+      "blurb": "Tile-aligned layout, cache residency, fusion, work stealing",
+      "scene": "books/kt-amx-path/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        9.497,
+        20.468,
+        31.486,
+        41.715,
+        52.605,
+        64.993,
+        77.81
+      ],
+      "duration": 87.958
+    },
+    {
+      "number": 4,
+      "title": "The Bill Comes Back",
+      "blurb": "21 TFLOPS, 91-to-347 prefill, 418 tokens/s — reported",
+      "scene": "books/kt-amx-path/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        10.484,
+        22.675,
+        32.567,
+        43.701,
+        56.576,
+        67.129,
+        77.821
+      ],
+      "duration": 86.146
+    }
+  ]
+}

@@ -1,6 +1,41 @@
 {
   "books": [
     {
+      "slug": "kt-amx-path",
+      "title": "The AMX Path",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#3a8b3a",
+      "animal": "generated/kt-amx-path/animal.webp",
+      "href": "?bundle=kt-amx-path",
+      "series": "KTransformers",
+      "seriesOrder": 3,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Precision Menu",
+          "duration": 79.784
+        },
+        {
+          "number": 2,
+          "title": "Tiles That Multiply",
+          "duration": 78.576
+        },
+        {
+          "number": 3,
+          "title": "Feeding the Tiles",
+          "duration": 87.958
+        },
+        {
+          "number": 4,
+          "title": "The Bill Comes Back",
+          "duration": 86.146
+        }
+      ],
+      "createdAt": "2026-07-17T20:55:29.913Z"
+    },
+    {
       "slug": "kt-expert-shuffle",
       "title": "The Expert Shuffle",
       "subtitle": "",
