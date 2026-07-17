@@ -1,6 +1,41 @@
 {
   "books": [
     {
+      "slug": "kt-expert-shuffle",
+      "title": "The Expert Shuffle",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#3a8b3a",
+      "animal": "generated/kt-expert-shuffle/animal.webp",
+      "href": "?bundle=kt-expert-shuffle",
+      "series": "KTransformers",
+      "seriesOrder": 2,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Hot and Cold",
+          "duration": 77.042
+        },
+        {
+          "number": 2,
+          "title": "Four Ways to Deal",
+          "duration": 72.632
+        },
+        {
+          "number": 3,
+          "title": "Deferred Experts",
+          "duration": 82.198
+        },
+        {
+          "number": 4,
+          "title": "The Shuffle Pays",
+          "duration": 86.518
+        }
+      ],
+      "createdAt": "2026-07-17T20:52:46.918Z"
+    },
+    {
       "slug": "kt-first-token",
       "title": "KTransformers",
       "subtitle": "",
