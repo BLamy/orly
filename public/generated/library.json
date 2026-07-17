@@ -1,6 +1,46 @@
 {
   "books": [
     {
+      "slug": "explained-graphs",
+      "title": "Explained: Graph Learning",
+      "subtitle": "Adjacency, message passing, over-smoothing, tasks — and the spectrum underneath",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b0277a",
+      "animal": "generated/explained-graphs/animal.webp",
+      "href": "?bundle=explained-graphs",
+      "series": "The Explainers",
+      "seriesOrder": 21,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "One Matrix",
+          "duration": 79.505
+        },
+        {
+          "number": 2,
+          "title": "Trading Messages",
+          "duration": 87.029
+        },
+        {
+          "number": 3,
+          "title": "Depth That Erases",
+          "duration": 88.282
+        },
+        {
+          "number": 4,
+          "title": "Label and Link",
+          "duration": 76.348
+        },
+        {
+          "number": 5,
+          "title": "The Graph as a Drum",
+          "duration": 93.715
+        }
+      ],
+      "createdAt": "2026-07-17T01:48:55.336Z"
+    },
+    {
       "slug": "explained-ssm",
       "title": "Explained: State-Space Models",
       "subtitle": "",
