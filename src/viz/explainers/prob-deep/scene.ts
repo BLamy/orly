@@ -167,6 +167,9 @@ export function buildScene(): Scene {
     dur: 6.2,
     text: 'The verdict is brutal. The ensemble-spread band, sold as ninety percent, catches thirty two. Model disagreement measures ignorance — it never measured the noise.',
   });
+  // Pull back to the full stage: the coverage meters ("caught 32% · promised
+  // 90%") live on the right — CAM_DATA (x 460, k 1.15) clips them.
+  tl.tween(cam, CAMERA_HOME, { at: 18.9, dur: 1.8, ease: ease.move });
   tl.tween(missU, 1, { at: 19.1, dur: 0.9, ease: ease.enter });
   tl.tween(meterEpiU, 1, { at: 20.3, dur: 1.2, ease: ease.pop });
 

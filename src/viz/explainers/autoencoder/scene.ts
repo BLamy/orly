@@ -208,6 +208,9 @@ export function buildScene(): Scene {
 
   // — Beat 3 · train ————————————————————————————————————————————————————————
   tl.tween(badgeU, 1, { at: 24.5, dur: 0.6, ease: ease.enter });
+  // Pull back to the full stage: the loss curve (x 930–1220) draws now —
+  // CAM_DATA (x 470, k 1.2) clips it past the right edge.
+  tl.tween(cam, CAMERA_HOME, { at: 24.3, dur: 1.8, ease: ease.move });
   tl.tween(lossU, 1, { at: 24.7, dur: 1.2, ease: ease.draw });
   tl.caption({
     at: 24.9,

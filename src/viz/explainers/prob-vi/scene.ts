@@ -148,6 +148,9 @@ export function buildScene(): Scene {
     text: 'Turn inference into optimization: measure the divergence between the ellipse and the truth, and descend it. Maximizing the evidence lower bound is the same move.',
     tex: '\\mathrm{KL}(q \\,\\|\\, p) \\downarrow \\;\\equiv\\; \\mathrm{ELBO} \\uparrow',
   });
+  // Pull back to the full stage: the ELBO/KL chart (x 880–1200) is revealed
+  // here — CAM_PLANE (x 460, k 1.15) clips it past the right edge by ~210px.
+  tl.tween(cam, CAMERA_HOME, { at: 12.9, dur: 1.8, ease: ease.move });
   tl.tween(elboU, 1, { at: 13.1, dur: 0.9, ease: ease.enter });
   tl.tween(curveU, 1, { at: 14.3, dur: 1.6, ease: ease.draw });
 
@@ -179,7 +182,9 @@ export function buildScene(): Scene {
     dur: 6.4,
     text: 'Why not stretch the ellipse to cover both? We measured that too: hedging across the islands scores a divergence of one point eight six, versus zero point four two for committing.',
   });
-  tl.tween(cam, CAM_PLANE, { at: 38.1, dur: 1.8, ease: ease.move });
+  // Return to HOME (not CAM_PLANE): the hedging/committing scores and the KL
+  // chart on the right must stay in frame through the verdict beats.
+  tl.tween(cam, CAMERA_HOME, { at: 38.1, dur: 1.8, ease: ease.move });
   tl.tween(wideU, 1, { at: 39.3, dur: 1.2, ease: ease.enter });
 
   tl.caption({

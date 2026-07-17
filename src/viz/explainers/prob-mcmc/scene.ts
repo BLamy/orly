@@ -181,6 +181,10 @@ export function buildScene(): Scene {
     dur: 6.0,
     text: 'After that, the walker mixes: it hugs the banana, crossing and recrossing it. Every step is one more vote in the histogram building on the right.',
   });
+  // Pull back to the full stage: the histogram (x 880–1200) and its labels are
+  // the subject from here on — CAM_PLANE (x 450, k 1.15) clips them past the
+  // right edge by ~220px.
+  tl.tween(cam, CAMERA_HOME, { at: 25.5, dur: 1.8, ease: ease.move });
   tl.tween(histU, 1, { at: 25.9, dur: 0.9, ease: ease.enter });
   tl.tween(t, 3000, { at: 25.7, dur: 5.4, ease: ease.linear });
 
