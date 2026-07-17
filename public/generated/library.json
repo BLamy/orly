@@ -1,6 +1,46 @@
 {
   "books": [
     {
+      "slug": "explained-synthetic-data",
+      "title": "Explained: Synthetic Data",
+      "subtitle": "A copy of a copy — model collapse, the filter that saves it, and the wall made of text",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/explained-synthetic-data/animal.webp",
+      "href": "?bundle=explained-synthetic-data",
+      "series": "The Explainers",
+      "seriesOrder": 32,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Training on Yourself",
+          "duration": 109.318
+        },
+        {
+          "number": 2,
+          "title": "Model Collapse",
+          "duration": 99.521
+        },
+        {
+          "number": 3,
+          "title": "What Filtering Saves",
+          "duration": 116.843
+        },
+        {
+          "number": 4,
+          "title": "Curriculum and Bootstrapping",
+          "duration": 108.81
+        },
+        {
+          "number": 5,
+          "title": "The Data Wall",
+          "duration": 122.092
+        }
+      ],
+      "createdAt": "2026-07-17T19:13:59.853Z"
+    },
+    {
       "slug": "explained-ai-control",
       "title": "Explained: AI Control",
       "subtitle": "Getting useful work from a model you never trust — untrusted-monitor protocols, as a game",
