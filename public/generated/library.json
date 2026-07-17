@@ -1,6 +1,46 @@
 {
   "books": [
     {
+      "slug": "explained-causality",
+      "title": "Explained: Causality",
+      "subtitle": "Sign flips, severed wires, honest coins — and the features that survive",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b0277a",
+      "animal": "generated/explained-causality/animal.webp",
+      "href": "?bundle=explained-causality",
+      "series": "The Explainers",
+      "seriesOrder": 23,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Slope That Lied",
+          "duration": 77.182
+        },
+        {
+          "number": 2,
+          "title": "Seeing Is Not Doing",
+          "duration": 78.761
+        },
+        {
+          "number": 3,
+          "title": "Closing the Backdoor",
+          "duration": 79.83
+        },
+        {
+          "number": 4,
+          "title": "The Honest Coin",
+          "duration": 91.393
+        },
+        {
+          "number": 5,
+          "title": "Features That Survive",
+          "duration": 90.651
+        }
+      ],
+      "createdAt": "2026-07-17T02:58:39.233Z"
+    },
+    {
       "slug": "explained-probabilistic",
       "title": "Explained: Probabilistic ML",
       "subtitle": "Two kinds of doubt, exact posteriors, wandering chains — and the calibration audit",
