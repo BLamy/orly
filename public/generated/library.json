@@ -1,6 +1,46 @@
 {
   "books": [
     {
+      "slug": "arxiv-latent-moe",
+      "title": "Experts in a Smaller Room",
+      "subtitle": "LatentMoE and the search for optimal accuracy per FLOP and parameter",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c79100",
+      "animal": "generated/arxiv-latent-moe/animal.webp",
+      "href": "?bundle=arxiv-latent-moe",
+      "series": "Fresh from arXiv",
+      "seriesOrder": 7,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Width You Pay For",
+          "duration": 86.936
+        },
+        {
+          "number": 2,
+          "title": "Experts in a Smaller Room",
+          "duration": 84.752
+        },
+        {
+          "number": 3,
+          "title": "Why the Squeeze Is Safe",
+          "duration": 103.468
+        },
+        {
+          "number": 4,
+          "title": "The Receipts",
+          "duration": 94.413
+        },
+        {
+          "number": 5,
+          "title": "The Honest Ledger",
+          "duration": 88.328
+        }
+      ],
+      "createdAt": "2026-07-17T19:02:15.263Z"
+    },
+    {
       "slug": "explained-distributed-training",
       "title": "Explained: Distributed Training",
       "subtitle": "Four ways to cut a model that doesn't fit — and the communication bill each one pays",
