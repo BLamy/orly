@@ -1,6 +1,46 @@
 {
   "books": [
     {
+      "slug": "explained-ai-control",
+      "title": "Explained: AI Control",
+      "subtitle": "Getting useful work from a model you never trust — untrusted-monitor protocols, as a game",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#e07b1a",
+      "animal": "generated/explained-ai-control/animal.webp",
+      "href": "?bundle=explained-ai-control",
+      "series": "The Explainers",
+      "seriesOrder": 38,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Control Game",
+          "duration": 130.31
+        },
+        {
+          "number": 2,
+          "title": "A Weak Model, Watching",
+          "duration": 96.502
+        },
+        {
+          "number": 3,
+          "title": "When to Defect",
+          "duration": 105.094
+        },
+        {
+          "number": 4,
+          "title": "Traps and the Doubt They Cast",
+          "duration": 106.906
+        },
+        {
+          "number": 5,
+          "title": "What the Numbers Say",
+          "duration": 141.735
+        }
+      ],
+      "createdAt": "2026-07-17T19:06:13.772Z"
+    },
+    {
       "slug": "arxiv-latent-moe",
       "title": "Experts in a Smaller Room",
       "subtitle": "LatentMoE and the search for optimal accuracy per FLOP and parameter",
