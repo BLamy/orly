@@ -1,6 +1,126 @@
 {
   "books": [
     {
+      "slug": "explained-long-context",
+      "title": "Explained: Long Context",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1f6fb2",
+      "animal": "generated/explained-long-context/animal.webp",
+      "href": "?bundle=explained-long-context",
+      "series": "The Explainers",
+      "seriesOrder": 34,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Positions as Rotations",
+          "duration": 100.264
+        },
+        {
+          "number": 2,
+          "title": "Stretching the Ruler",
+          "duration": 104.211
+        },
+        {
+          "number": 3,
+          "title": "Attention Sinks",
+          "duration": 92.508
+        },
+        {
+          "number": 4,
+          "title": "Context Rot",
+          "duration": 89.119
+        },
+        {
+          "number": 5,
+          "title": "The Bill",
+          "duration": 108.809
+        }
+      ],
+      "createdAt": "2026-07-17T17:46:12.831Z"
+    },
+    {
+      "slug": "arxiv-evoclaw",
+      "title": "Skills From Their Own Runs",
+      "subtitle": "Can agents learn reusable skills from their own execution traces?",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#6a3f9e",
+      "animal": "generated/arxiv-evoclaw/animal.webp",
+      "href": "?bundle=arxiv-evoclaw",
+      "series": "Fresh from arXiv",
+      "seriesOrder": 6,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Compounding Dream",
+          "duration": 90.651
+        },
+        {
+          "number": 2,
+          "title": "The Loop, on a Toy Agent",
+          "duration": 85.589
+        },
+        {
+          "number": 3,
+          "title": "The Measured Answer",
+          "duration": 84.009
+        },
+        {
+          "number": 4,
+          "title": "Failure Modes and the Bill",
+          "duration": 80.851
+        },
+        {
+          "number": 5,
+          "title": "Verified, Not Remembered",
+          "duration": 89.676
+        }
+      ],
+      "createdAt": "2026-07-17T17:44:58.392Z"
+    },
+    {
+      "slug": "explained-property-testing",
+      "title": "Explained: Testing Without an Oracle",
+      "subtitle": "Property-based and metamorphic testing for systems whose right answers nobody knows",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#a01f3c",
+      "animal": "generated/explained-property-testing/animal.webp",
+      "href": "?bundle=explained-property-testing",
+      "series": "The Explainers",
+      "seriesOrder": 36,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Oracle Problem",
+          "duration": 123.622
+        },
+        {
+          "number": 2,
+          "title": "Properties Over Examples",
+          "duration": 136.857
+        },
+        {
+          "number": 3,
+          "title": "Metamorphic Relations",
+          "duration": 123.808
+        },
+        {
+          "number": 4,
+          "title": "Fuzzing the Harness",
+          "duration": 145.729
+        },
+        {
+          "number": 5,
+          "title": "Properties for AI Systems",
+          "duration": 149.073
+        }
+      ],
+      "createdAt": "2026-07-17T17:44:47.655Z"
+    },
+    {
       "slug": "arxiv-small-giants",
       "title": "Scaling the Horizon",
       "subtitle": "Trillion-parameter performance from a 35B agent that just keeps working",
