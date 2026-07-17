@@ -1,5 +1,5 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
-import { ChapterPlayer } from './ChapterPlayer';
+import { ChapterPlayer, PORTRAIT_MQ } from './ChapterPlayer';
 
 const ASSET_BASE =
   (import.meta as unknown as { env?: { BASE_URL?: string } }).env?.BASE_URL ?? '/';
@@ -159,6 +159,10 @@ export function BookPlayer({ slug }: { slug: string }) {
 
   const sideListRef = useRef<HTMLUListElement | null>(null);
   useEffect(() => {
+    // In mobile portrait the sidebar flows below the player and shares the
+    // page scroll — auto-scrolling to the active item would yank the page
+    // away from the video, so skip it there.
+    if (window.matchMedia(PORTRAIT_MQ).matches) return;
     const el = sideListRef.current?.querySelector('.active');
     el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
   }, [current, manifest, seriesGroups]);

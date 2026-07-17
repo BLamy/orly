@@ -9,6 +9,24 @@ import { fmtDur, type ChapterV3 } from './BookPlayer';
 // something to sample while the real scene chunk is still loading.
 const FALLBACK_TL = new Timeline();
 
+/** Reactively track a CSS media query (SSR-safe). */
+function useMediaQuery(query: string): boolean {
+  const [matches, setMatches] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia(query).matches
+  );
+  useEffect(() => {
+    const mq = window.matchMedia(query);
+    const onChange = () => setMatches(mq.matches);
+    onChange();
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, [query]);
+  return matches;
+}
+
+/** Mobile portrait: captions render BELOW the stage instead of over it. */
+export const PORTRAIT_MQ = '(max-width: 720px) and (orientation: portrait)';
+
 /** Closed-caption pill for the sampled caption envelope (crossfades on cue). */
 function CaptionPill({ c }: { c: CaptionItem }) {
   const tex = c.tex;
@@ -104,6 +122,9 @@ export function ChapterPlayer({
       } catch { /* private mode — session-only */ }
       return !v;
     });
+  // Mobile portrait: move the captions out of the stage, below the video,
+  // so they never cover the animation.
+  const portrait = useMediaQuery(PORTRAIT_MQ);
   const [ended, setEnded] = useState(false);
   const [countdown, setCountdown] = useState(5);
   const wasPlayingRef = useRef(false);
@@ -298,7 +319,7 @@ export function ChapterPlayer({
         ) : (
           <div className="bp-stage">
             <Stage style={{ height: '100%' }}>{entry!.Render({ s: pb.state })}</Stage>
-            {ccOn && (
+            {ccOn && !portrait && (
               <div className="captions" aria-live="polite">
                 <div className="captions-col">
                   {pb.state.captions.map((c) => (
@@ -341,6 +362,17 @@ export function ChapterPlayer({
           </div>
         )}
       </div>
+
+      {ccOn && portrait && (
+        <div className="captions captions-below" aria-live="polite">
+          <div className="captions-col">
+            {built &&
+              pb.state.captions.map((c) => (
+                <CaptionPill key={c.id} c={c} />
+              ))}
+          </div>
+        </div>
+      )}
 
       <footer className="bp-controls">
         <input
