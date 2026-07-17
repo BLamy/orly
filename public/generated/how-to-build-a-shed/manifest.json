@@ -1,0 +1,111 @@
+{
+  "format": 3,
+  "slug": "how-to-build-a-shed",
+  "title": "How to Build a Shed",
+  "animal": "animal.webp",
+  "accent": "#41607f",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "An Eight-Foot Cube",
+      "blurb": "Why the whole shed is sized to the lumber aisle — and the twelve-inch problem hiding in the lawn.",
+      "scene": "books/how-to-build-a-shed/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        9.265,
+        18.077,
+        28.712,
+        36.467,
+        49.54,
+        60.952,
+        71.494
+      ],
+      "duration": 81.967
+    },
+    {
+      "number": 2,
+      "title": "A Level Foundation",
+      "blurb": "Garden blocks, pier blocks, and bolted risers argue a sloped lawn perfectly flat.",
+      "scene": "books/how-to-build-a-shed/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        10.089,
+        19.795,
+        31.335,
+        43.328,
+        54.334,
+        64.842,
+        76.672,
+        85.461
+      ],
+      "duration": 92.183
+    },
+    {
+      "number": 3,
+      "title": "A Floor That Never Sags",
+      "blurb": "Doubled rims, joists every sixteen inches, and exactly two sheets of decking.",
+      "scene": "books/how-to-build-a-shed/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        12.771,
+        21.282,
+        34.435,
+        42.981,
+        51.711,
+        59.769,
+        65.458,
+        74.421,
+        84.847,
+        95.157
+      ],
+      "duration": 104.863
+    },
+    {
+      "number": 4,
+      "title": "Built Flat, Pulled Square",
+      "blurb": "Every wall is framed lying on the floor platform — then squared by its own siding.",
+      "scene": "books/how-to-build-a-shed/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        10.925,
+        21.165,
+        32.369,
+        43.828,
+        54.219,
+        65.69,
+        74.525,
+        85.659,
+        97.756,
+        104.154
+      ],
+      "duration": 115.497
+    },
+    {
+      "number": 5,
+      "title": "Raising Day",
+      "blurb": "Walls tilt up, a saw cuts the door free from its own wall, and shingles climb to the ridge.",
+      "scene": "books/how-to-build-a-shed/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        9.892,
+        20.039,
+        29.257,
+        42.156,
+        47.856,
+        57.388,
+        68.94,
+        77.751,
+        87.643,
+        95.689,
+        104.222,
+        115.089
+      ],
+      "duration": 124.551
+    }
+  ]
+}
