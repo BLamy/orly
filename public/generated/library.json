@@ -1,6 +1,46 @@
 {
   "books": [
     {
+      "slug": "explained-probabilistic",
+      "title": "Explained: Probabilistic ML",
+      "subtitle": "Two kinds of doubt, exact posteriors, wandering chains — and the calibration audit",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b0277a",
+      "animal": "generated/explained-probabilistic/animal.webp",
+      "href": "?bundle=explained-probabilistic",
+      "series": "The Explainers",
+      "seriesOrder": 22,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Two Kinds of Doubt",
+          "duration": 85.542
+        },
+        {
+          "number": 2,
+          "title": "A Distribution Over Curves",
+          "duration": 91.487
+        },
+        {
+          "number": 3,
+          "title": "The Wandering Chain",
+          "duration": 94.551
+        },
+        {
+          "number": 4,
+          "title": "Fit a Shape You Can Handle",
+          "duration": 98.5
+        },
+        {
+          "number": 5,
+          "title": "The Cheap Tricks, Audited",
+          "duration": 85.31
+        }
+      ],
+      "createdAt": "2026-07-17T02:55:19.542Z"
+    },
+    {
       "slug": "explained-graphs",
       "title": "Explained: Graph Learning",
       "subtitle": "Adjacency, message passing, over-smoothing, tasks — and the spectrum underneath",

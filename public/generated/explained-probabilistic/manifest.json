@@ -1,0 +1,109 @@
+{
+  "format": 3,
+  "slug": "explained-probabilistic",
+  "title": "Explained: Probabilistic ML",
+  "subtitle": "Two kinds of doubt, exact posteriors, wandering chains — and the calibration audit",
+  "animal": "animal.webp",
+  "accent": "#b0277a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Two Kinds of Doubt",
+      "blurb": "A real bootstrap ensemble: the fan is twenty times wider off the data, the noise never shrinks.",
+      "scene": "books/explained-probabilistic/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        7.407,
+        16.231,
+        22.477,
+        32.078,
+        40.972,
+        49.714,
+        57.911,
+        66.711,
+        77.508
+      ],
+      "duration": 85.542
+    },
+    {
+      "number": 2,
+      "title": "A Distribution Over Curves",
+      "blurb": "A real Gaussian process posterior — mean, band, and samples from the closed form.",
+      "scene": "books/explained-probabilistic/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.009,
+        17.775,
+        27.69,
+        36.084,
+        45.813,
+        54.915,
+        63.727,
+        74.397,
+        82.547
+      ],
+      "duration": 91.487
+    },
+    {
+      "number": 3,
+      "title": "The Wandering Chain",
+      "blurb": "A real 6,000-step Metropolis chain: burn-in, mixing, and a histogram that matches the truth.",
+      "scene": "books/explained-probabilistic/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.278,
+        16.683,
+        29.245,
+        39.811,
+        48.39,
+        57.98,
+        67.163,
+        78.018,
+        86.354
+      ],
+      "duration": 94.551
+    },
+    {
+      "number": 4,
+      "title": "Fit a Shape You Can Handle",
+      "blurb": "Sixty real gradient steps of KL descent — and the computed price of missing a mode.",
+      "scene": "books/explained-probabilistic/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        9.265,
+        20.063,
+        30.407,
+        40.171,
+        49.541,
+        58.132,
+        69.359,
+        80.238,
+        90.036
+      ],
+      "duration": 98.5
+    },
+    {
+      "number": 5,
+      "title": "The Cheap Tricks, Audited",
+      "blurb": "Ensemble uncertainty on trial: the claimed 90 percent band catches 32, then 86 with a noise term.",
+      "scene": "books/explained-probabilistic/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        7.976,
+        18.019,
+        25.658,
+        36.955,
+        49.052,
+        59.373,
+        68.452,
+        76.928
+      ],
+      "duration": 85.31
+    }
+  ]
+}
