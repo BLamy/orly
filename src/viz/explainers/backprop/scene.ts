@@ -323,7 +323,7 @@ export function buildScene() {
   tl.caption({
     at: 6.1,
     dur: 4.1,
-    text: 'Here, x = 1.5 flows through three knobs — w₁, b₁, w₂ — to a prediction ŷ, then a score.',
+    text: 'Here an input of one point five flows through three knobs — two weights and a bias — to a prediction, then a score.',
   });
 
   // ---- beat 2: forward — the numbers flow --------------------------------
@@ -338,7 +338,7 @@ export function buildScene() {
   tl.caption({
     at: 15.7,
     dur: 5.2,
-    text: 'The prediction lands at 1.20; the target was 1. The loss scores the miss: ½(0.20)² = 0.02.',
+    text: 'The prediction lands at one point two; the target was one. The loss scores the miss: half the error squared, about point zero two.',
   });
   tl.hold(20.9, 0.7);
 
@@ -346,7 +346,7 @@ export function buildScene() {
   tl.caption({
     at: 21.6,
     dur: 4.0,
-    text: 'Backward: blame flows the other way. The first piece is easy — the loss changes at rate ŷ − y = 0.20.',
+    text: 'Backward: blame flows the other way. The first piece is easy — prediction minus target, point two zero.',
   });
   tl.tween(bwd[0], 1, { at: 22.0, dur: 1.0, ease: ease.linear }); // L → ŷ
   tl.tween(chips[0], 1, { at: 22.9, dur: 0.5, ease: ease.enter });
@@ -355,7 +355,7 @@ export function buildScene() {
   tl.caption({
     at: 25.8,
     dur: 4.8,
-    text: 'Each edge multiplies by its own local slope. For w₂ that slope is h, so its gradient is 0.20 × 1.0.',
+    text: 'Each edge multiplies by its own local slope. For the second weight that slope is the activation, so its gradient is point two times one.',
   });
   tl.tween(bwd[2], 1, { at: 26.4, dur: 1.0, ease: ease.linear }); // ŷ → h
   tl.tween(chips[2], 1, { at: 27.3, dur: 0.5, ease: ease.enter });
@@ -366,7 +366,7 @@ export function buildScene() {
   tl.caption({
     at: 31.0,
     dur: 5.6,
-    text: "No node ever sees the whole network — only its local slope. The chain rule stitches them: w₁'s gradient is 0.24 × 1.5 = 0.36.",
+    text: "No node ever sees the whole network — only its local slope. The chain rule stitches them together: the first weight's gradient comes out at point three six.",
   });
   tl.hold(36.6, 1.0);
 
@@ -377,14 +377,14 @@ export function buildScene() {
   tl.caption({
     at: 37.8,
     dur: 5.2,
-    text: 'Update: nudge every weight downhill by η times its gradient, with η = 0.4.',
+    text: 'Update: nudge every weight downhill by the learning rate times its gradient — here a step of point four.',
   });
   update(39.2, 0, 1.1); // w₁: 0.80 → 0.66, w₂: 1.20 → 1.12
   tl.tween(plotU, 1, { at: 40.6, dur: 1.1, ease: ease.draw });
   tl.caption({
     at: 43.2,
     dur: 4.0,
-    text: 'That one nudge cut the loss: 0.020 → 0.007. Watch the corner.',
+    text: 'That one nudge cut the loss from point zero two to point zero zero seven. Watch the corner.',
   });
   tl.tween(plotProg, 1, { at: 43.4, dur: 0.9, ease: ease.move });
   tl.tween(updTexU, 0, { at: 46.4, dur: 0.5, ease: ease.enter });
@@ -405,7 +405,7 @@ export function buildScene() {
   tl.caption({
     at: 53.3,
     dur: 4.4,
-    text: 'And faster. The miss shrinks every lap: 0.020 → 0.007 → 0.001.',
+    text: 'And faster. The miss shrinks every lap — from point zero two, to point zero zero seven, to point zero zero one.',
   });
   forward(54.2, 2, 0.35); // loss lands at t ≈ 56.1
   tl.tween(lossGlow, 0.3, { at: 56.1, dur: 0.3, ease: ease.enter });
