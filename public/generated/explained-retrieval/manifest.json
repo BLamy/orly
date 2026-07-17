@@ -1,0 +1,84 @@
+{
+  "format": 3,
+  "slug": "explained-retrieval",
+  "title": "Explained: Embeddings & Retrieval",
+  "animal": "animal.webp",
+  "accent": "#1f6fb2",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Cosine Similarity",
+      "blurb": "Meaning is a direction: real vectors where the raw dot product picks the wrong document and normalization flips the order.",
+      "scene": "books/explained-retrieval/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        13.189,
+        26.947,
+        40.368,
+        51.966,
+        63.426,
+        77.056,
+        90.465,
+        102.609
+      ],
+      "duration": 113.917
+    },
+    {
+      "number": 2,
+      "title": "The Scale Problem",
+      "blurb": "Compare against everything and you are provably right — and provably too slow: the honest arithmetic of brute force.",
+      "scene": "books/explained-retrieval/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        11.598,
+        23.138,
+        32.322,
+        44.234,
+        59.385,
+        73.026,
+        84.869,
+        98.522
+      ],
+      "duration": 109.412
+    },
+    {
+      "number": 3,
+      "title": "HNSW",
+      "blurb": "A skip list in space: a real three-layer index finds the true nearest neighbor in a third of the comparisons.",
+      "scene": "books/explained-retrieval/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        11.517,
+        21.107,
+        35.212,
+        46.718,
+        55.716,
+        67.117,
+        78.913,
+        91.835
+      ],
+      "duration": 103.329
+    },
+    {
+      "number": 4,
+      "title": "RAG's Fine Print",
+      "blurb": "Semantically close, factually irrelevant: a real retrieval miss changes the reader's answer, and a rewrite changes it back.",
+      "scene": "books/explained-retrieval/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        11.738,
+        22.035,
+        37.314,
+        49.713,
+        64.655,
+        79.656,
+        96.153
+      ],
+      "duration": 110.155
+    }
+  ]
+}

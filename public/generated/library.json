@@ -1,6 +1,41 @@
 {
   "books": [
     {
+      "slug": "explained-retrieval",
+      "title": "Explained: Embeddings & Retrieval",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1f6fb2",
+      "animal": "generated/explained-retrieval/animal.webp",
+      "href": "?bundle=explained-retrieval",
+      "series": "The Explainers",
+      "seriesOrder": 18,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Cosine Similarity",
+          "duration": 113.917
+        },
+        {
+          "number": 2,
+          "title": "The Scale Problem",
+          "duration": 109.412
+        },
+        {
+          "number": 3,
+          "title": "HNSW",
+          "duration": 103.329
+        },
+        {
+          "number": 4,
+          "title": "RAG's Fine Print",
+          "duration": 110.155
+        }
+      ],
+      "createdAt": "2026-07-17T00:12:12.505Z"
+    },
+    {
       "slug": "arxiv-serving-moe",
       "title": "Serving the Mixture",
       "subtitle": "Speculation, placement, and the price of decoding",
