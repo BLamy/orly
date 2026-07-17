@@ -1,0 +1,115 @@
+{
+  "format": 3,
+  "slug": "explained-vision",
+  "title": "Explained: Computer Vision",
+  "subtitle": "Kernels, pooling, hierarchies, patches — and proof by occlusion",
+  "animal": "animal.webp",
+  "accent": "#198a8a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A Bank of Detectors",
+      "blurb": "Three real kernels convolve a real image — and the checkerboard hides from both edge detectors exactly.",
+      "scene": "books/explained-vision/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        6.177,
+        12.086,
+        20.55,
+        29.919,
+        38.174,
+        45.744,
+        52.919,
+        60.64,
+        69.289,
+        77.672
+      ],
+      "duration": 86.147
+    },
+    {
+      "number": 2,
+      "title": "Keep What Fires",
+      "blurb": "A real max pool: shift the image one pixel and 10 map cells change, but 0 pooled cells do.",
+      "scene": "books/explained-vision/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        6.699,
+        16.3,
+        25.507,
+        33.146,
+        40.252,
+        48.007,
+        56.853,
+        64.632,
+        72.051,
+        79.888
+      ],
+      "duration": 87.91
+    },
+    {
+      "number": 3,
+      "title": "Edges Become Shapes",
+      "blurb": "A real three-layer stack turns a hollow square into edges, corners, and one blazing shape cell.",
+      "scene": "books/explained-vision/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        6.653,
+        12.829,
+        21.537,
+        31.568,
+        39.509,
+        48.425,
+        56.97,
+        65.143,
+        75.998,
+        85.332
+      ],
+      "duration": 92.461
+    },
+    {
+      "number": 4,
+      "title": "The Image Becomes a Sentence",
+      "blurb": "Nine patches become tokens; a real softmax shows far-apart twins finding each other in one hop.",
+      "scene": "books/explained-vision/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        8.812,
+        16.474,
+        25.251,
+        32.821,
+        42.179,
+        51.258,
+        58.584,
+        65.481,
+        74.315,
+        82.965
+      ],
+      "duration": 90.093
+    },
+    {
+      "number": 5,
+      "title": "Where the Network Looks",
+      "blurb": "The classifier is re-run 36 times behind a sliding gray patch — the saliency map is the receipt.",
+      "scene": "books/explained-vision/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        8.022,
+        16.567,
+        23.858,
+        31.196,
+        39.822,
+        47.554,
+        56.064,
+        64.354,
+        73.038,
+        83.232
+      ],
+      "duration": 93.204
+    }
+  ]
+}

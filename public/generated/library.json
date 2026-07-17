@@ -1,6 +1,86 @@
 {
   "books": [
     {
+      "slug": "explained-ssm",
+      "title": "Explained: State-Space Models",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#6a3f9e",
+      "animal": "generated/explained-ssm/animal.webp",
+      "href": "?bundle=explained-ssm",
+      "series": "The Explainers",
+      "seriesOrder": 24,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Compressed Past",
+          "duration": 95.898
+        },
+        {
+          "number": 2,
+          "title": "Selectivity",
+          "duration": 98.871
+        },
+        {
+          "number": 3,
+          "title": "The Convolution Duality",
+          "duration": 99.799
+        },
+        {
+          "number": 4,
+          "title": "The Long-Context Trade",
+          "duration": 107.09
+        },
+        {
+          "number": 5,
+          "title": "Where This Sits",
+          "duration": 112.106
+        }
+      ],
+      "createdAt": "2026-07-17T01:31:36.802Z"
+    },
+    {
+      "slug": "explained-vision",
+      "title": "Explained: Computer Vision",
+      "subtitle": "Kernels, pooling, hierarchies, patches — and proof by occlusion",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/explained-vision/animal.webp",
+      "href": "?bundle=explained-vision",
+      "series": "The Explainers",
+      "seriesOrder": 20,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Bank of Detectors",
+          "duration": 86.147
+        },
+        {
+          "number": 2,
+          "title": "Keep What Fires",
+          "duration": 87.91
+        },
+        {
+          "number": 3,
+          "title": "Edges Become Shapes",
+          "duration": 92.461
+        },
+        {
+          "number": 4,
+          "title": "The Image Becomes a Sentence",
+          "duration": 90.093
+        },
+        {
+          "number": 5,
+          "title": "Where the Network Looks",
+          "duration": 93.204
+        }
+      ],
+      "createdAt": "2026-07-17T01:18:53.086Z"
+    },
+    {
       "slug": "explained-evaluation",
       "title": "Explained: Evaluation",
       "subtitle": "",
