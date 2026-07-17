@@ -1,4 +1,4 @@
-import { CAMERA_HOME, Timeline, cameraInterp, ease, mulberry32 } from '../../core';
+import { CAMERA_HOME, Timeline, cameraInterp, ease, gaussian, mulberry32 } from '../../core';
 import type { CameraState, ChannelRef } from '../../core';
 
 /**
@@ -8,10 +8,10 @@ import type { CameraState, ChannelRef } from '../../core';
  * anything. The three attack stations run REAL miniatures of this book's
  * experiments, recomputed at module scope:
  *  1. RESAMPLE — 1000 paired reruns of a 100-question benchmark with true
- *     skills 0.70 vs 0.71 (seeded Bernoulli): the +1 "win" reverses in ~47%
+ *     skills 0.70 vs 0.71 (seeded Bernoulli): the +1 "win" reverses in ~48%
  *     of reruns.
  *  2. FRESH QUESTIONS — the memorizer's gap, recomputed: leaked-benchmark
- *     error 0.000 vs fresh-question error 3.72 (degree-11 interpolation of
+ *     error 0.000 vs fresh-question error 3.74 (degree-11 interpolation of
  *     12 points, normal equations).
  *  3. PRESSURE — 400 gradient steps on a flawed proxy: proxy 0.13 → 2.69
  *     while true quality ends at 0.003.
@@ -29,21 +29,11 @@ const binom = (n: number, p: number): number => {
 export const REVERSALS: number = (() => {
   let worse = 0;
   for (let i = 0; i < 1000; i++) if (binom(100, 0.71) <= binom(100, 0.7)) worse++;
-  return worse / 1000; // ≈ 0.47
+  return worse / 1000; // ≈ 0.48
 })();
 
 // — Station 2: fresh questions (the memorizer, in miniature) —
-const rand2 = mulberry32(3);
-const g2 = (() => {
-  const r = rand2;
-  return (): number => {
-    let u = 0;
-    let v = 0;
-    while (!u) u = r();
-    v = r();
-    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-  };
-})();
+const g2 = gaussian(mulberry32(6));
 const f = (x: number): number => Math.sin(1.7 * x);
 const XT = Array.from({ length: 12 }, (_, i) => -2 + (4 * i) / 11);
 const YT = XT.map((x) => f(x) + 0.15 * g2());
@@ -69,21 +59,11 @@ function polyfit(X: number[], Y: number[], deg: number): number[] {
 }
 const C11 = polyfit(XT, YT, 11);
 const evalp = (c: number[], x: number): number => c.reduce((a, ci, i) => a + ci * x ** i, 0);
-const rand3 = mulberry32(53);
-const g3 = (() => {
-  const r = rand3;
-  return (): number => {
-    let u = 0;
-    let v = 0;
-    while (!u) u = r();
-    v = r();
-    return Math.sqrt(-2 * Math.log(u)) * Math.cos(2 * Math.PI * v);
-  };
-})();
+const g3 = gaussian(mulberry32(55));
 const XF = Array.from({ length: 24 }, (_, i) => -1.9 + (3.8 * i) / 23);
 const YF = XF.map((x) => f(x) + 0.15 * g3());
 export const FRESH_ERR: number =
-  XF.reduce((a, x, i) => a + (evalp(C11, x) - YF[i]) ** 2, 0) / XF.length; // ≈ 3.72
+  XF.reduce((a, x, i) => a + (evalp(C11, x) - YF[i]) ** 2, 0) / XF.length; // ≈ 3.74
 
 // — Station 3: pressure (Goodhart, in miniature) —
 const T_TRUE = (x: number): number => Math.exp(-((x - 1) ** 2));
@@ -172,7 +152,7 @@ export function buildScene(): Scene {
   tl.caption({
     at: 12.6,
     dur: 5.6,
-    text: 'Station one attacks with luck. Rerun the hundred-question benchmark a thousand times — really rerun it — and the plus one reverses in forty seven percent of the reruns. Stamp: not significant, on this sample size.',
+    text: 'Station one attacks with luck. Rerun the hundred-question benchmark a thousand times — really rerun it — and the plus one reverses in forty eight percent of the reruns. Stamp: not significant, on this sample size.',
   });
   tl.tween(st1U, 1, { at: 13.2, dur: 1.2, ease: ease.enter });
   tl.tween(stamp1, 1, { at: 17.0, dur: 0.5, ease: ease.pop });

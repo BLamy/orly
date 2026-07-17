@@ -7,9 +7,9 @@ import type { CameraState, ChannelRef } from '../../core';
  * Real computation at module scope: 256 gaussian weights (σ = 0.5, seeded),
  * absmax-quantized to int8 and int4 and dequantized back. Every error shown
  * is the actual per-weight rounding error. Measured: int8 root-mean-square
- * error ≈ 0.003 (invisible), int4 ≈ 0.056 (19× worse — 16 levels can't hide).
+ * error ≈ 0.003 (invisible), int4 ≈ 0.062 (19× worse — 16 levels can't hide).
  * Then the outlier problem: setting ONE weight to 5.0 stretches the absmax
- * scale so far that int8's error nearly quadruples (0.0030 → 0.0115) for the
+ * scale so far that int8's error more than triples (0.0032 → 0.0108) for the
  * other 255 weights — why real schemes quantize per-block and keep outliers
  * in high precision.
  */
@@ -49,10 +49,10 @@ export const W_OUT: number[] = (() => {
 })();
 export const Q8_OUT = quantize(W_OUT, 8);
 /** RMSE over the 255 non-outlier weights before/after the outlier. */
-export const RMSE_CLEAN = Q8.rmse; // ≈ 0.0030
+export const RMSE_CLEAN = Q8.rmse; // ≈ 0.0032
 export const RMSE_OUT = Math.sqrt(
   Q8_OUT.err.slice(1).reduce((a, e) => a + e * e, 0) / (N - 1),
-); // ≈ 0.0115
+); // ≈ 0.0108
 
 /** Error histograms (17 bins over ±maxerr of int4). */
 export const HIST_BINS = 17;
@@ -171,13 +171,13 @@ export function buildScene(): Scene {
   tl.caption({
     at: 35.6,
     dur: 5.8,
-    text: 'And here is the trap that bites real models: outliers. Set just one weight to five — ten times the crowd — and watch. The scale must stretch to reach it, so everyone else gets a coarser comb.',
+    text: 'And here is the trap that bites real models: outliers. Set just one weight to five — more than three times the crowd’s biggest — and watch. The scale must stretch to reach it, so everyone else gets a coarser comb.',
   });
   tl.tween(outU, 1, { at: 36.4, dur: 1.6, ease: ease.move });
   tl.caption({
     at: 41.6,
     dur: 5.6,
-    text: 'One number nearly quadruples the error of the other two hundred fifty five — from zero point zero zero three to zero point zero one one at int8. That is why serious schemes quantize block by block and carry outliers in full precision.',
+    text: 'One number more than triples the error of the other two hundred fifty five — from zero point zero zero three to zero point zero one one at int8. That is why serious schemes quantize block by block and carry outliers in full precision.',
   });
   tl.hold(47.4, 0.6);
 

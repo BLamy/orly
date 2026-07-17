@@ -7,8 +7,8 @@ import type { CameraState, ChannelRef } from '../../core';
  * A REAL 16×16 weight-update matrix, decomposed by a real one-sided Jacobi
  * singular value decomposition at module scope. The update is built the way
  * fine-tuning updates empirically look: a couple of strong directions plus
- * noise. Measured on this matrix: rank 1 keeps all but ~33% of the update,
- * rank 2 all but ~9%, rank 4 all but ~4% — while storing 2·d·r numbers
+ * noise. Measured on this matrix: rank 1 keeps all but ~41% of the update,
+ * rank 2 all but ~9%, rank 4 all but ~7% — while storing 2·d·r numbers
  * instead of d². At transformer scale (d = 4096, r = 8) that is 65 thousand
  * parameters instead of 16.8 million: 0.4 percent.
  */
@@ -100,7 +100,7 @@ export const relErr = (r: number): number =>
 export const RANKS = [1, 2, 4] as const;
 export const APPROX: Record<number, number[][]> = { 1: rankR(1), 2: rankR(2), 4: rankR(4) };
 export const ERRS: Record<number, number> = { 1: relErr(1), 2: relErr(2), 4: relErr(4) };
-// measured: ~0.33, ~0.089, ~0.037
+// measured: ~0.413, ~0.089, ~0.066
 
 export const MAX_ABS = Math.max(...DW.flat().map(Math.abs));
 
@@ -190,13 +190,13 @@ export function buildScene(): Scene {
   tl.caption({
     at: 30.7,
     dur: 5.2,
-    text: 'Rank one misses a third of the update. Bump to rank two and the miss drops to nine percent — the second big direction snapped in. Watch the reconstruction sharpen.',
+    text: 'Rank one misses forty percent of the update. Bump to rank two and the miss drops to nine percent — the second big direction snapped in. Watch the reconstruction sharpen.',
   });
   tl.set(rankSel, 2, 32.4);
   tl.caption({
     at: 36.1,
     dur: 4.6,
-    text: 'Rank four: under four percent error, and the two matrices together still hold only half as many numbers as the full update.',
+    text: 'Rank four: under seven percent error, and the two matrices together still hold only half as many numbers as the full update.',
   });
   tl.set(rankSel, 4, 37.4);
   tl.hold(40.9, 0.6);
@@ -225,7 +225,7 @@ export function buildScene(): Scene {
   tl.caption({
     at: 55.5,
     dur: 5.6,
-    text: 'Low rank adaptation is a bet about geometry: the change a task needs lives in a thin slice of weight space. On this matrix, the bet paid at four percent error for half the storage — at scale, for a four hundredth.',
+    text: 'Low rank adaptation is a bet about geometry: the change a task needs lives in a thin slice of weight space. On this matrix, the bet paid at seven percent error for half the storage — at scale, for a four hundredth.',
   });
   tl.hold(61.3, 1.2);
 

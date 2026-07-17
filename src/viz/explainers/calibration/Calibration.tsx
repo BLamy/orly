@@ -184,7 +184,7 @@ function Frame({ s }: { s: SceneState }) {
             Calibration
           </text>
           <MathLabel
-            tex={'\\text{ECE}: 0.238 \\;\\to\\; 0.031 \\quad \\text{via } p = \\sigma(z/T^*)'}
+            tex={'\\text{ECE}: 0.239 \\;\\to\\; 0.041 \\quad \\text{via } p = \\sigma(z/T^*)'}
             x={640}
             y={340}
             fontSize={21}

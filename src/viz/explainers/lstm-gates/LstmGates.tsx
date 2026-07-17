@@ -213,7 +213,7 @@ function Frame({ s }: { s: SceneState }) {
             opacity={endU}
           />
           <text x={640} y={398} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
-            after 17 noisy steps: the LSTM holds 0.95 — the plain RNN holds 0.26
+            after 17 noisy steps: the LSTM holds 0.95 — the plain RNN holds -0.10
           </text>
         </g>
       )}

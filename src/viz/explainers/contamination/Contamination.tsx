@@ -161,7 +161,7 @@ function Frame({ s }: { s: SceneState }) {
             Contamination
           </text>
           <MathLabel
-            tex={'\\text{score}_{\\text{leaked}} = 0 \\qquad \\text{score}_{\\text{fresh}} = 3.72'}
+            tex={'\\text{score}_{\\text{leaked}} = 0 \\qquad \\text{score}_{\\text{fresh}} = 3.74'}
             x={640}
             y={340}
             fontSize={21}

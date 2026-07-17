@@ -1,6 +1,156 @@
 {
   "books": [
     {
+      "slug": "explained-evaluation",
+      "title": "Explained: Evaluation",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c79100",
+      "animal": "generated/explained-evaluation/animal.webp",
+      "href": "?bundle=explained-evaluation",
+      "series": "The Explainers",
+      "seriesOrder": 17,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Contamination",
+          "duration": 105.789
+        },
+        {
+          "number": 2,
+          "title": "Goodhart's Law",
+          "duration": 101.331
+        },
+        {
+          "number": 3,
+          "title": "Calibration",
+          "duration": 95.666
+        },
+        {
+          "number": 4,
+          "title": "Variance and Significance",
+          "duration": 98.872
+        },
+        {
+          "number": 5,
+          "title": "The Expensive Claim",
+          "duration": 122.369
+        }
+      ],
+      "createdAt": "2026-07-17T00:55:22.511Z"
+    },
+    {
+      "slug": "explained-fine-tuning",
+      "title": "Explained: Fine-Tuning",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1f6fb2",
+      "animal": "generated/explained-fine-tuning/animal.webp",
+      "href": "?bundle=explained-fine-tuning",
+      "series": "The Explainers",
+      "seriesOrder": 16,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Low-Rank Updates",
+          "duration": 108.623
+        },
+        {
+          "number": 2,
+          "title": "Distillation",
+          "duration": 94.134
+        },
+        {
+          "number": 3,
+          "title": "Quantization",
+          "duration": 106.162
+        },
+        {
+          "number": 4,
+          "title": "Catastrophic Forgetting",
+          "duration": 108.949
+        }
+      ],
+      "createdAt": "2026-07-17T00:54:00.310Z"
+    },
+    {
+      "slug": "explained-sequence-models",
+      "title": "Explained: Sequence Models",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#e07b1a",
+      "animal": "generated/explained-sequence-models/animal.webp",
+      "href": "?bundle=explained-sequence-models",
+      "series": "The Explainers",
+      "seriesOrder": 15,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Vanishing Gradient",
+          "duration": 109.552
+        },
+        {
+          "number": 2,
+          "title": "LSTM Gates",
+          "duration": 94.644
+        },
+        {
+          "number": 3,
+          "title": "Why Attention Won",
+          "duration": 92.415
+        },
+        {
+          "number": 4,
+          "title": "CTC and Beam Search",
+          "duration": 96.409
+        }
+      ],
+      "createdAt": "2026-07-17T00:52:33.790Z"
+    },
+    {
+      "slug": "explained-alignment",
+      "title": "Explained: Alignment",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#6a3f9e",
+      "animal": "generated/explained-alignment/animal.webp",
+      "href": "?bundle=explained-alignment",
+      "series": "The Explainers",
+      "seriesOrder": 19,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Vase Problem",
+          "duration": 101.749
+        },
+        {
+          "number": 2,
+          "title": "RLHF and Its Limits",
+          "duration": 132.493
+        },
+        {
+          "number": 3,
+          "title": "Rules vs Preferences",
+          "duration": 111.875
+        },
+        {
+          "number": 4,
+          "title": "Sycophancy",
+          "duration": 118.561
+        },
+        {
+          "number": 5,
+          "title": "Honest Oversight",
+          "duration": 115.588
+        }
+      ],
+      "createdAt": "2026-07-17T00:51:18.499Z"
+    },
+    {
       "slug": "explained-retrieval",
       "title": "Explained: Embeddings & Retrieval",
       "subtitle": "",
@@ -74,46 +224,6 @@
         }
       ],
       "createdAt": "2026-07-17T00:10:56.212Z"
-    },
-    {
-      "slug": "explained-evaluation",
-      "title": "Explained: Evaluation",
-      "subtitle": "",
-      "author": "Brett Lamy",
-      "role": "Software Engineer at Replay",
-      "color": "#c79100",
-      "animal": "generated/explained-evaluation/animal.webp",
-      "href": "?bundle=explained-evaluation",
-      "series": "The Explainers",
-      "seriesOrder": 17,
-      "chapters": [
-        {
-          "number": 1,
-          "title": "Contamination",
-          "duration": 106.301
-        },
-        {
-          "number": 2,
-          "title": "Goodhart's Law",
-          "duration": 111.596
-        },
-        {
-          "number": 3,
-          "title": "Calibration",
-          "duration": 98.174
-        },
-        {
-          "number": 4,
-          "title": "Variance and Significance",
-          "duration": 96.223
-        },
-        {
-          "number": 5,
-          "title": "The Expensive Claim",
-          "duration": 116.89
-        }
-      ],
-      "createdAt": "2026-07-16T23:58:38.299Z"
     },
     {
       "slug": "arxiv-filler-tokens",
@@ -196,41 +306,6 @@
       "createdAt": "2026-07-16T23:43:59.391Z"
     },
     {
-      "slug": "explained-fine-tuning",
-      "title": "Explained: Fine-Tuning",
-      "subtitle": "",
-      "author": "Brett Lamy",
-      "role": "Software Engineer at Replay",
-      "color": "#1f6fb2",
-      "animal": "generated/explained-fine-tuning/animal.webp",
-      "href": "?bundle=explained-fine-tuning",
-      "series": "The Explainers",
-      "seriesOrder": 16,
-      "chapters": [
-        {
-          "number": 1,
-          "title": "Low-Rank Updates",
-          "duration": 108.205
-        },
-        {
-          "number": 2,
-          "title": "Distillation",
-          "duration": 95.063
-        },
-        {
-          "number": 3,
-          "title": "Quantization",
-          "duration": 106.487
-        },
-        {
-          "number": 4,
-          "title": "Catastrophic Forgetting",
-          "duration": 109.088
-        }
-      ],
-      "createdAt": "2026-07-16T23:43:20.737Z"
-    },
-    {
       "slug": "rr-dash",
       "title": "rr-dash: Time Travel on a Stream",
       "subtitle": "",
@@ -262,41 +337,6 @@
         }
       ],
       "createdAt": "2026-07-16T23:30:37.258Z"
-    },
-    {
-      "slug": "explained-sequence-models",
-      "title": "Explained: Sequence Models",
-      "subtitle": "",
-      "author": "Brett Lamy",
-      "role": "Software Engineer at Replay",
-      "color": "#e07b1a",
-      "animal": "generated/explained-sequence-models/animal.webp",
-      "href": "?bundle=explained-sequence-models",
-      "series": "The Explainers",
-      "seriesOrder": 15,
-      "chapters": [
-        {
-          "number": 1,
-          "title": "The Vanishing Gradient",
-          "duration": 103.005
-        },
-        {
-          "number": 2,
-          "title": "LSTM Gates",
-          "duration": 97.06
-        },
-        {
-          "number": 3,
-          "title": "Why Attention Won",
-          "duration": 96.225
-        },
-        {
-          "number": 4,
-          "title": "CTC and Beam Search",
-          "duration": 101.517
-        }
-      ],
-      "createdAt": "2026-07-16T23:29:54.495Z"
     },
     {
       "slug": "explained-mech-interp",

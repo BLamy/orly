@@ -201,7 +201,7 @@ function Frame({ s }: { s: SceneState }) {
             opacity={endU}
           />
           <text x={640} y={398} textAnchor="middle" fill={colors.MUTED} fontSize={17}>
-            int8 error 0.003 · int4 error 0.056 · one outlier quadruples everyone's noise
+            int8 error 0.003 · int4 error 0.062 · one outlier triples everyone's noise
           </text>
         </g>
       )}

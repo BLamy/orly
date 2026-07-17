@@ -7,13 +7,13 @@ import type { CameraState, ChannelRef } from '../../core';
  * Real computation at module scope: a degree-11 polynomial least-squares fit
  * (normal equations, Gaussian elimination) to 12 noisy samples of sin(1.7x).
  * Twelve points, twelve coefficients: the model memorizes its training set —
- * measured train error 4e-18. A "benchmark" whose questions leaked from the
+ * measured train error ~1e-18. A "benchmark" whose questions leaked from the
  * training set scores it perfect; fresh questions from the same distribution
- * measure error 3.72. A degree-3 model that memorizes nothing scores 0.033
- * on train and 0.030 fresh — the honest number is the same everywhere.
+ * measure error 3.74. A degree-3 model that memorizes nothing scores 0.025
+ * on train and 0.031 fresh — the honest number is the same everywhere.
  */
 
-const rand = mulberry32(3);
+const rand = mulberry32(6);
 const g = gaussian(rand);
 const f = (x: number): number => Math.sin(1.7 * x);
 
@@ -51,7 +51,7 @@ const mse = (X: number[], Y: number[], c: number[]): number =>
   X.reduce((a, x, i) => a + (evalp(c, x) - Y[i]) ** 2, 0) / X.length;
 
 /** Fresh test set — same distribution, never seen. */
-const rand2 = mulberry32(53);
+const rand2 = mulberry32(55);
 const g2 = gaussian(rand2);
 export const XF: number[] = Array.from({ length: 24 }, (_, i) => -1.9 + (3.8 * i) / 23);
 export const YF: number[] = XF.map((x) => f(x) + 0.15 * g2());
@@ -59,10 +59,10 @@ export const YF: number[] = XF.map((x) => f(x) + 0.15 * g2());
 /** The "leaked benchmark": 6 questions copied straight from the train set. */
 export const LEAK_IDX: number[] = [0, 2, 4, 6, 8, 10];
 
-export const MSE_TRAIN_11 = mse(XT, YT, C11); // ~4e-18
-export const MSE_FRESH_11 = mse(XF, YF, C11); // ~3.72
-export const MSE_TRAIN_3 = mse(XT, YT, C3); // ~0.033
-export const MSE_FRESH_3 = mse(XF, YF, C3); // ~0.030
+export const MSE_TRAIN_11 = mse(XT, YT, C11); // ~4e-19
+export const MSE_FRESH_11 = mse(XF, YF, C11); // ~3.74
+export const MSE_TRAIN_3 = mse(XT, YT, C3); // ~0.025
+export const MSE_FRESH_3 = mse(XF, YF, C3); // ~0.031
 
 export const N_PLOT = 200;
 export const X_MIN = -2.05;

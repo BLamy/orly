@@ -170,7 +170,7 @@ export function buildScene(): Scene {
   tl.caption({
     at: 38.1,
     dur: 5.0,
-    text: 'Now the better model wins essentially every paired run. Nothing about the models changed. The only thing that changed is how much evidence we bothered to collect.',
+    text: 'Now the better model wins nineteen of every twenty paired runs. Nothing about the models changed. The only thing that changed is how much evidence we bothered to collect.',
   });
   tl.hold(43.3, 0.6);
 

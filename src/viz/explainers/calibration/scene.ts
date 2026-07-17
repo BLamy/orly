@@ -6,12 +6,12 @@ import type { CameraState, ChannelRef } from '../../core';
  *
  * All real, at module scope: a logistic classifier is ACTUALLY trained
  * (6000 gradient steps) on just 8 points from two overlapping gaussian
- * classes. Overfitting the small sample drives its weight to 24.6 — the
+ * classes. Overfitting the small sample drives its weight to 24.8 — the
  * model speaks in near-certainties. Evaluated on 4000 fresh points and
  * binned by confidence, the reliability diagram shows the damage: the bin
  * where it claims ~100% confidence is right 76% of the time; expected
- * calibration error 0.238. Temperature scaling (T* = 27.4, fit by grid
- * search on 200 validation points) repairs it to ECE 0.031 without changing
+ * calibration error 0.238. Temperature scaling (T* = 30.7, fit by grid
+ * search on 200 validation points) repairs it to ECE 0.041 without changing
  * a single prediction.
  */
 
@@ -54,7 +54,7 @@ export const { W, B } = (() => {
     w -= (1.0 * gw) / TRAIN.length;
     b -= (1.0 * gb) / TRAIN.length;
   }
-  return { W: w, B: b }; // ≈ 24.65, 5.37
+  return { W: w, B: b }; // ≈ 24.8, 8.2
 })();
 
 export const TEST: Sample[] = makeSamples(4000, 77, 78);
@@ -102,11 +102,11 @@ export const T_STAR: number = (() => {
       best = T;
     }
   }
-  return best; // ≈ 27.4
+  return best; // ≈ 30.7
 })();
 
-export const RAW = reliability(1); // ECE ≈ 0.238
-export const CAL = reliability(T_STAR); // ECE ≈ 0.031
+export const RAW = reliability(1); // ECE ≈ 0.239
+export const CAL = reliability(T_STAR); // ECE ≈ 0.041
 
 /** The sigmoid curves for plotting (raw and scaled). */
 export const X_MIN = -3;
@@ -212,14 +212,14 @@ export function buildScene(): Scene {
   tl.caption({
     at: 31.5,
     dur: 5.8,
-    text: 'The classic repair does not retrain anything. Divide the model raw scores by a single learned temperature — here twenty seven — before the probability squash. Decisions stay identical; only the confidence softens.',
-    tex: 'p = \\sigma\\!\\big(z / T\\big), \\quad T^* = 27.4',
+    text: 'The classic repair does not retrain anything. Divide the model raw scores by a single learned temperature — here about thirty — before the probability squash. Decisions stay identical; only the confidence softens.',
+    tex: 'p = \\sigma\\!\\big(z / T\\big), \\quad T^* = 30.7',
   });
   tl.tween(calW, 1, { at: 32.5, dur: 2.2, ease: ease.move });
   tl.caption({
     at: 37.5,
     dur: 5.0,
-    text: 'The bars climb back to the diagonal: calibration error drops from twenty four points to three. Same model, same answers — it just stopped exaggerating.',
+    text: 'The bars climb back to the diagonal: calibration error drops from twenty four points to four. Same model, same answers — it just stopped exaggerating.',
   });
   tl.hold(42.7, 0.6);
 

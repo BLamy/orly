@@ -11,7 +11,7 @@ import type { CameraState, ChannelRef } from '../../core';
  * the marker channel) and the true LSTM equations are iterated step by step.
  * Measured: the cell state holds 0.95+ after seventeen noisy steps, while a
  * plain tanh RNN fed the same sequence decays to indistinguishable noise
- * (final state 0.26 vs typical noise excursions of the same size).
+ * (final state -0.10, deep inside its own noise band).
  */
 
 export const N = 18;
@@ -63,7 +63,7 @@ export const RNN_STATE: number[] = (() => {
 })();
 
 export const LSTM_FINAL = LSTM.c[N]; // ≈ 0.954
-export const RNN_FINAL = RNN_STATE[N]; // ≈ 0.263
+export const RNN_FINAL = RNN_STATE[N]; // ≈ -0.096
 export const FORGET_GATE = LSTM.f[0]; // ≈ 0.9975
 
 // ---------------------------------------------------------------------------
@@ -165,7 +165,7 @@ export function buildScene(): Scene {
   tl.caption({
     at: 41.7,
     dur: 5.2,
-    text: 'By the end the plain net sits at zero point two six — the same size as its wobbles on pure noise. Ask it what the clue was, and it genuinely does not know.',
+    text: 'By the end the plain net sits at minus zero point one — deep inside its own noise band. Ask it what the clue was, and it genuinely does not know.',
   });
   tl.tween(readU, 1, { at: 42.5, dur: 0.8, ease: ease.enter });
   tl.hold(47.1, 0.6);

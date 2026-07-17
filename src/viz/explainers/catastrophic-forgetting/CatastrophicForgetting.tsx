@@ -180,7 +180,7 @@ function Frame({ s }: { s: SceneState }) {
             Catastrophic Forgetting
           </text>
           <MathLabel
-            tex={'\\text{loss}_A:\\; 0.0002 \\to 2.55 \\;\\;\\text{(B only)} \\qquad 0.010 \\;\\;\\text{(replay)}'}
+            tex={'\\text{loss}_A:\\; 0.0002 \\to 3.36 \\;\\;\\text{(B only)} \\qquad 0.010 \\;\\;\\text{(replay)}'}
             x={640}
             y={340}
             fontSize={19}

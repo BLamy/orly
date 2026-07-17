@@ -8,10 +8,10 @@ import type { CameraState, ChannelRef } from '../../core';
  * batch gradient descent. Task A is a sine wave on the left half of the
  * axis; task B a different wave on the right. Training: 3000 steps on A
  * (loss on A converges to 0.0002), then 3000 steps of fine-tuning on B ONLY —
- * loss on A climbs to 2.55 while B reaches 0.001: the net repurposes the same
+ * loss on A climbs to 3.36 while B reaches 0.001: the net repurposes the same
  * hidden units and the left half of the function is destroyed. The
  * mitigation run (replay: B plus one third of A's points mixed in) reaches
- * B ≈ 0.007 while holding A at 0.010. Function snapshots and loss curves are
+ * B ≈ 0.006 while holding A at 0.009. Function snapshots and loss curves are
  * recorded during training and replayed exactly.
  */
 
@@ -258,7 +258,7 @@ export function buildScene(): Scene {
   tl.caption({
     at: 23.9,
     dur: 5.4,
-    text: 'The strip chart is the loss on task A during the fine-tune, measured every hundred steps. It climbs from nothing to two point five five. Task B is perfect now. Task A is gone.',
+    text: 'The strip chart is the loss on task A during the fine-tune, measured every hundred steps. It climbs from nothing to three point four. Task B is perfect now. Task A is gone.',
   });
   tl.tween(statU, 1, { at: 24.7, dur: 0.7, ease: ease.enter });
   tl.hold(29.5, 0.7);
@@ -282,7 +282,7 @@ export function buildScene(): Scene {
   tl.caption({
     at: 42.2,
     dur: 5.6,
-    text: 'The strip chart barely twitches: task A holds at zero point zero one while task B reaches zero point zero zero seven. A pinch of the past keeps the shared neurons honest.',
+    text: 'The strip chart barely twitches: task A holds at zero point zero one while task B reaches zero point zero zero six. A pinch of the past keeps the shared neurons honest.',
   });
   tl.hold(48.0, 0.6);
 
