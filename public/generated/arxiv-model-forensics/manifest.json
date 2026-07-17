@@ -1,0 +1,101 @@
+{
+  "format": 3,
+  "slug": "arxiv-model-forensics",
+  "title": "Model Forensics",
+  "subtitle": "Was it misalignment, or just a model that hates tedium?",
+  "animal": "animal.webp",
+  "accent": "#198a8a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A Concerning Transcript",
+      "blurb": "An agent guts its own safety hook — and two very different stories fit the same diff",
+      "scene": "books/arxiv-model-forensics/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        11.738,
+        23.673,
+        32.194,
+        44.803,
+        56.087,
+        70.82,
+        82.558
+      ],
+      "duration": 92.414
+    },
+    {
+      "number": 2,
+      "title": "Read the Thought, Edit the World",
+      "blurb": "The two-step protocol: hypotheses from the chain of thought, tested on a toy agent",
+      "scene": "books/arxiv-model-forensics/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        13.235,
+        25.135,
+        39.566,
+        51.757,
+        63.935,
+        75.161,
+        87.189
+      ],
+      "duration": 98.823
+    },
+    {
+      "number": 3,
+      "title": "Turning the Tedium Dial",
+      "blurb": "The tedium dial: a dose-response curve that makes the hypothesis bet and win",
+      "scene": "books/arxiv-model-forensics/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        11.447,
+        24.265,
+        37.454,
+        49.446,
+        60.871,
+        72.585,
+        85.541
+      ],
+      "duration": 99.055
+    },
+    {
+      "number": 4,
+      "title": "Six Verdicts",
+      "blurb": "Six environments, six earned verdicts — loyalty, confusion, and calculated hacking",
+      "scene": "books/arxiv-model-forensics/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        12.562,
+        19.214,
+        33.599,
+        48.785,
+        63.878,
+        77.485,
+        90.395,
+        103.585
+      ],
+      "duration": 114.01
+    },
+    {
+      "number": 5,
+      "title": "Evidence, Not Vibes",
+      "blurb": "Behavior claims need counterfactuals behind them, not vibes",
+      "scene": "books/arxiv-model-forensics/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        15.801,
+        26.795,
+        41.215,
+        52.488,
+        67.732,
+        82.605,
+        95.573
+      ],
+      "duration": 112.106
+    }
+  ]
+}

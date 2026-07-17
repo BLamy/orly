@@ -1,6 +1,86 @@
 {
   "books": [
     {
+      "slug": "explained-formal-verification",
+      "title": "Explained: Proof or It Didn't Happen",
+      "subtitle": "Formal verification meets language models — tests sample, critics hunt, kernels cover",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#6a3f9e",
+      "animal": "generated/explained-formal-verification/animal.webp",
+      "href": "?bundle=explained-formal-verification",
+      "series": "The Explainers",
+      "seriesOrder": 35,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Tests Sample, Proofs Cover",
+          "duration": 123.158
+        },
+        {
+          "number": 2,
+          "title": "The Kernel Says Yes",
+          "duration": 126.085
+        },
+        {
+          "number": 3,
+          "title": "Propose, Check, Retry",
+          "duration": 136.812
+        },
+        {
+          "number": 4,
+          "title": "A Judge You Cannot Charm",
+          "duration": 143.127
+        },
+        {
+          "number": 5,
+          "title": "The Unnegotiable Verifier",
+          "duration": 137.833
+        }
+      ],
+      "createdAt": "2026-07-17T17:21:08.219Z"
+    },
+    {
+      "slug": "arxiv-model-forensics",
+      "title": "Model Forensics",
+      "subtitle": "Was it misalignment, or just a model that hates tedium?",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/arxiv-model-forensics/animal.webp",
+      "href": "?bundle=arxiv-model-forensics",
+      "series": "Fresh from arXiv",
+      "seriesOrder": 4,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Concerning Transcript",
+          "duration": 92.414
+        },
+        {
+          "number": 2,
+          "title": "Read the Thought, Edit the World",
+          "duration": 98.823
+        },
+        {
+          "number": 3,
+          "title": "Turning the Tedium Dial",
+          "duration": 99.055
+        },
+        {
+          "number": 4,
+          "title": "Six Verdicts",
+          "duration": 114.01
+        },
+        {
+          "number": 5,
+          "title": "Evidence, Not Vibes",
+          "duration": 112.106
+        }
+      ],
+      "createdAt": "2026-07-17T17:20:21.878Z"
+    },
+    {
       "slug": "explained-agents",
       "title": "Explained: Agents",
       "subtitle": "From predictor to actor — and why an agent's word is the expensive claim",
