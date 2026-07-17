@@ -1,6 +1,46 @@
 {
   "books": [
     {
+      "slug": "explained-distributed-training",
+      "title": "Explained: Distributed Training",
+      "subtitle": "Four ways to cut a model that doesn't fit — and the communication bill each one pays",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1f6fb2",
+      "animal": "generated/explained-distributed-training/animal.webp",
+      "href": "?bundle=explained-distributed-training",
+      "series": "The Explainers",
+      "seriesOrder": 31,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Why One Chip Can't",
+          "duration": 116.658
+        },
+        {
+          "number": 2,
+          "title": "Data Parallelism and the Ring",
+          "duration": 108.112
+        },
+        {
+          "number": 3,
+          "title": "Cutting the Model",
+          "duration": 110.665
+        },
+        {
+          "number": 4,
+          "title": "ZeRO — Shard the Redundancy",
+          "duration": 114.984
+        },
+        {
+          "number": 5,
+          "title": "Expert Parallelism",
+          "duration": 120.512
+        }
+      ],
+      "createdAt": "2026-07-17T18:56:40.245Z"
+    },
+    {
       "slug": "explained-sandboxing",
       "title": "Explained: The Sandbox",
       "subtitle": "How we caged the agents in almostnode — a cross-origin wall, and what it costs",
