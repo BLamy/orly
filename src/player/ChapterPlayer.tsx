@@ -89,6 +89,21 @@ export function ChapterPlayer({
   const [failed, setFailed] = useState(false);
   const [audioFailed, setAudioFailed] = useState(false);
   const [muted, setMuted] = useState(false);
+  // Closed captions: on by default, sticky across chapters/sessions.
+  const [ccOn, setCcOn] = useState(() => {
+    try {
+      return localStorage.getItem('orly-cc') !== 'off';
+    } catch {
+      return true;
+    }
+  });
+  const toggleCc = () =>
+    setCcOn((v) => {
+      try {
+        localStorage.setItem('orly-cc', v ? 'off' : 'on');
+      } catch { /* private mode — session-only */ }
+      return !v;
+    });
   const [ended, setEnded] = useState(false);
   const [countdown, setCountdown] = useState(5);
   const wasPlayingRef = useRef(false);
@@ -283,13 +298,15 @@ export function ChapterPlayer({
         ) : (
           <div className="bp-stage">
             <Stage style={{ height: '100%' }}>{entry!.Render({ s: pb.state })}</Stage>
-            <div className="captions" aria-live="polite">
-              <div className="captions-col">
-                {pb.state.captions.map((c) => (
-                  <CaptionPill key={c.id} c={c} />
-                ))}
+            {ccOn && (
+              <div className="captions" aria-live="polite">
+                <div className="captions-col">
+                  {pb.state.captions.map((c) => (
+                    <CaptionPill key={c.id} c={c} />
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
             {!pb.playing && !ended && (
               <div className="bp-bigplay" aria-hidden>
                 <PlayIcon playing={false} />
@@ -371,6 +388,18 @@ export function ChapterPlayer({
             </span>
           </div>
           <div className="bp-controls-right">
+            <button
+              className={`bp-btn bp-cc${ccOn ? ' on' : ''}`}
+              onClick={toggleCc}
+              title={ccOn ? 'Hide captions' : 'Show captions'}
+              aria-label={ccOn ? 'Hide closed captions' : 'Show closed captions'}
+              aria-pressed={ccOn}
+            >
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+                <rect x="2.5" y="5" width="19" height="14" rx="2.5" />
+                <path d="M10.5 10.2a2.4 2.4 0 1 0 0 3.6M17 10.2a2.4 2.4 0 1 0 0 3.6" strokeLinecap="round" />
+              </svg>
+            </button>
             <button
               className={`bp-btn${muted || !soundAvailable ? '' : ' on'}`}
               onClick={() => setMuted((m) => !m)}
