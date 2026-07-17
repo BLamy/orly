@@ -1,6 +1,46 @@
 {
   "books": [
     {
+      "slug": "arxiv-small-giants",
+      "title": "Scaling the Horizon",
+      "subtitle": "Trillion-parameter performance from a 35B agent that just keeps working",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#e07b1a",
+      "animal": "generated/arxiv-small-giants/animal.webp",
+      "href": "?bundle=arxiv-small-giants",
+      "series": "Fresh from arXiv",
+      "seriesOrder": 5,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Two Axes",
+          "duration": 89.257
+        },
+        {
+          "number": 2,
+          "title": "The Solution Tree",
+          "duration": 105.976
+        },
+        {
+          "number": 3,
+          "title": "Six Teachers, One Student",
+          "duration": 88.05
+        },
+        {
+          "number": 4,
+          "title": "The Honest Ledger",
+          "duration": 85.078
+        },
+        {
+          "number": 5,
+          "title": "Frontier, Not Ladder",
+          "duration": 81.827
+        }
+      ],
+      "createdAt": "2026-07-17T17:33:36.416Z"
+    },
+    {
       "slug": "explained-hybrid-attention",
       "title": "Explained: Hybrid Attention",
       "subtitle": "",
