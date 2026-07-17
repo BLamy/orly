@@ -1,6 +1,46 @@
 {
   "books": [
     {
+      "slug": "arxiv-deeploop",
+      "title": "The Loop That Went Deep",
+      "subtitle": "Depth Scaling for Looped Transformers",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/arxiv-deeploop/animal.webp",
+      "href": "?bundle=arxiv-deeploop",
+      "series": "Fresh from arXiv",
+      "seriesOrder": 8,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Around the Block",
+          "duration": 79.877
+        },
+        {
+          "number": 2,
+          "title": "Gradients That Compound",
+          "duration": 85.263
+        },
+        {
+          "number": 3,
+          "title": "From Fourth Root to Square Root",
+          "duration": 83.685
+        },
+        {
+          "number": 4,
+          "title": "What Looping Buys",
+          "duration": 77.74
+        },
+        {
+          "number": 5,
+          "title": "Depth You Can Dial",
+          "duration": 69.52
+        }
+      ],
+      "createdAt": "2026-07-17T20:23:44.963Z"
+    },
+    {
       "slug": "explained-synthetic-data",
       "title": "Explained: Synthetic Data",
       "subtitle": "A copy of a copy — model collapse, the filter that saves it, and the wall made of text",

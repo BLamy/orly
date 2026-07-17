@@ -1,0 +1,103 @@
+{
+  "format": 3,
+  "slug": "arxiv-deeploop",
+  "title": "The Loop That Went Deep",
+  "subtitle": "Depth Scaling for Looped Transformers",
+  "animal": "animal.webp",
+  "accent": "#198a8a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Around the Block",
+      "blurb": "Block reuse: depth without new parameters, and the unrolled depth N that counts visits",
+      "scene": "books/arxiv-deeploop/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.719,
+        17.369,
+        25.635,
+        34.157,
+        44.594,
+        54.521,
+        63.391,
+        73.991
+      ],
+      "duration": 79.877
+    },
+    {
+      "number": 2,
+      "title": "Gradients That Compound",
+      "blurb": "Every visit sends a gradient to the same shared weights — and the visits align",
+      "scene": "books/arxiv-deeploop/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.346,
+        17.008,
+        23.788,
+        32.159,
+        43.305,
+        52.628,
+        63.506,
+        75.487
+      ],
+      "duration": 85.263
+    },
+    {
+      "number": 3,
+      "title": "From Fourth Root to Square Root",
+      "blurb": "DeepNorm's fourth root, retuned to a square root of the unrolled depth",
+      "scene": "books/arxiv-deeploop/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        9.834,
+        18.088,
+        25.368,
+        36.711,
+        45.743,
+        53.894,
+        65.852,
+        76.963
+      ],
+      "duration": 83.685
+    },
+    {
+      "number": 4,
+      "title": "What Looping Buys",
+      "blurb": "The reported GPT-2-scale dividends: neutral at R=1, compounding once the loop is on",
+      "scene": "books/arxiv-deeploop/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        13.468,
+        26.377,
+        35.793,
+        46.126,
+        56.97,
+        62.078,
+        72.492
+      ],
+      "duration": 77.74
+    },
+    {
+      "number": 5,
+      "title": "Depth You Can Dial",
+      "blurb": "The loop as a run-time dial: depth as compute, parameters held fixed",
+      "scene": "books/arxiv-deeploop/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        8.162,
+        19.62,
+        30.046,
+        38.347,
+        46.532,
+        55.692,
+        64.783
+      ],
+      "duration": 69.52
+    }
+  ]
+}
