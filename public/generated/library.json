@@ -1,6 +1,86 @@
 {
   "books": [
     {
+      "slug": "explained-hybrid-attention",
+      "title": "Explained: Hybrid Attention",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#6a3f9e",
+      "animal": "generated/explained-hybrid-attention/animal.webp",
+      "href": "?bundle=explained-hybrid-attention",
+      "series": "The Explainers",
+      "seriesOrder": 33,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Two Memories",
+          "duration": 90.419
+        },
+        {
+          "number": 2,
+          "title": "Spotlights and Floodlights",
+          "duration": 96.13
+        },
+        {
+          "number": 3,
+          "title": "The Ratio Question",
+          "duration": 99.984
+        },
+        {
+          "number": 4,
+          "title": "Placement",
+          "duration": 86.658
+        },
+        {
+          "number": 5,
+          "title": "The Serve-Time Payoff",
+          "duration": 84.196
+        }
+      ],
+      "createdAt": "2026-07-17T17:23:12.336Z"
+    },
+    {
+      "slug": "explained-rlvr",
+      "title": "Explained: Verifiable Rewards",
+      "subtitle": "Rewards from executable checks — and the cliff between a solver and a lock pick",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1f6fb2",
+      "animal": "generated/explained-rlvr/animal.webp",
+      "href": "?bundle=explained-rlvr",
+      "series": "The Explainers",
+      "seriesOrder": 29,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "You Can't Sweet-Talk a Test Suite",
+          "duration": 121.765
+        },
+        {
+          "number": 2,
+          "title": "The RLVR Loop",
+          "duration": 115.728
+        },
+        {
+          "number": 3,
+          "title": "The Group Is the Critic",
+          "duration": 106.116
+        },
+        {
+          "number": 4,
+          "title": "Hacking the Verifier",
+          "duration": 108.902
+        },
+        {
+          "number": 5,
+          "title": "The Doctrine",
+          "duration": 125.155
+        }
+      ],
+      "createdAt": "2026-07-17T17:23:02.289Z"
+    },
+    {
       "slug": "explained-formal-verification",
       "title": "Explained: Proof or It Didn't Happen",
       "subtitle": "Formal verification meets language models — tests sample, critics hunt, kernels cover",

@@ -1,0 +1,110 @@
+{
+  "format": 3,
+  "slug": "explained-formal-verification",
+  "title": "Explained: Proof or It Didn't Happen",
+  "subtitle": "Formal verification meets language models — tests sample, critics hunt, kernels cover",
+  "animal": "animal.webp",
+  "accent": "#6a3f9e",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Tests Sample, Proofs Cover",
+      "blurb": "A 60-for-60 green test suite, and the half of the input space it never touched — found exhaustively.",
+      "scene": "books/explained-formal-verification/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.87,
+        19.342,
+        31.056,
+        43.619,
+        54.335,
+        69.765,
+        85.751,
+        96.34,
+        112.477
+      ],
+      "duration": 123.158
+    },
+    {
+      "number": 2,
+      "title": "The Kernel Says Yes",
+      "blurb": "A thirty-line proof checker walks a real derivation, and rejects a confident one-liner.",
+      "scene": "books/explained-formal-verification/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        11.761,
+        21.537,
+        34.342,
+        47.148,
+        58.398,
+        69.277,
+        83.023,
+        97.315,
+        112.478
+      ],
+      "duration": 126.085
+    },
+    {
+      "number": 3,
+      "title": "Propose, Check, Retry",
+      "blurb": "A proposer guesses, the kernel disposes: median 417 proposals blind, 14 with a policy.",
+      "scene": "books/explained-formal-verification/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        13.212,
+        26.494,
+        45.859,
+        57.26,
+        72.725,
+        83.487,
+        97.419,
+        112.628,
+        128.023
+      ],
+      "duration": 136.812
+    },
+    {
+      "number": 4,
+      "title": "A Judge You Cannot Charm",
+      "blurb": "Judges bend under optimization pressure; the kernel's line stays at exactly zero.",
+      "scene": "books/explained-formal-verification/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        12.399,
+        28.049,
+        43.537,
+        57.028,
+        75.325,
+        89.965,
+        106.951,
+        122.914,
+        135.255
+      ],
+      "duration": 143.127
+    },
+    {
+      "number": 5,
+      "title": "The Unnegotiable Verifier",
+      "blurb": "The ladder of verifiers, closed: verification the verified cannot negotiate with.",
+      "scene": "books/explained-formal-verification/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        11.61,
+        25.251,
+        41.83,
+        58.85,
+        71.25,
+        86.773,
+        99.718,
+        114.857,
+        127.907
+      ],
+      "duration": 137.833
+    }
+  ]
+}
