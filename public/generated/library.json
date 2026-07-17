@@ -1,6 +1,41 @@
 {
   "books": [
     {
+      "slug": "kt-first-token",
+      "title": "KTransformers",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#41607f",
+      "animal": "generated/kt-first-token/animal.webp",
+      "href": "?bundle=kt-first-token",
+      "series": "KTransformers",
+      "seriesOrder": 1,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Model That Doesn't Fit",
+          "duration": 89.908
+        },
+        {
+          "number": 2,
+          "title": "kt run",
+          "duration": 83.963
+        },
+        {
+          "number": 3,
+          "title": "One Token's Journey",
+          "duration": 87.633
+        },
+        {
+          "number": 4,
+          "title": "The Familiar Door",
+          "duration": 78.808
+        }
+      ],
+      "createdAt": "2026-07-17T20:50:07.280Z"
+    },
+    {
       "slug": "arxiv-deeploop",
       "title": "The Loop That Went Deep",
       "subtitle": "Depth Scaling for Looped Transformers",
