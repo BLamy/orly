@@ -1,6 +1,46 @@
 {
   "books": [
     {
+      "slug": "arxiv-serving-moe",
+      "title": "Serving the Mixture",
+      "subtitle": "Speculation, placement, and the price of decoding",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#e07b1a",
+      "animal": "generated/arxiv-serving-moe/animal.webp",
+      "href": "?bundle=arxiv-serving-moe",
+      "series": "Fresh from arXiv",
+      "seriesOrder": 3,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A committee with a gag rule",
+          "duration": 81.595
+        },
+        {
+          "number": 2,
+          "title": "The memory wall",
+          "duration": 92.462
+        },
+        {
+          "number": 3,
+          "title": "Less experts, faster decoding",
+          "duration": 94.738
+        },
+        {
+          "number": 4,
+          "title": "Placing the experts",
+          "duration": 92.926
+        },
+        {
+          "number": 5,
+          "title": "The economics of decoding",
+          "duration": 105.697
+        }
+      ],
+      "createdAt": "2026-07-17T00:10:56.212Z"
+    },
+    {
       "slug": "explained-evaluation",
       "title": "Explained: Evaluation",
       "subtitle": "",
