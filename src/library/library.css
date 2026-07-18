@@ -1,6 +1,8 @@
 /* ---------- desktop: the spine-first shelf ---------- */
 
 .lib {
+  /* how far neighbors slide right to make room for a turning cover */
+  --lib-push: 180px;
   min-height: 100vh;
   margin: 0;
   padding: 0 clamp(16px, 5vw, 64px) 80px;
@@ -135,12 +137,22 @@
   overflow-x: auto;
   overscroll-behavior-x: contain;
   -webkit-overflow-scrolling: touch;
-  padding: 14px 8px 18px;
+  padding: 14px 16px 18px 8px;
   scrollbar-width: thin;
   scrollbar-color: rgba(120, 90, 50, 0.35) transparent;
   /* the shelf board the books stand on */
   background: linear-gradient(180deg, transparent calc(100% - 10px), rgba(101, 74, 42, 0.28) calc(100% - 10px), rgba(70, 50, 26, 0.34) 100%);
   border-radius: 4px;
+}
+/* constant right headroom on spine rows: the hover push (translateX) stays
+   inside the content box, so scrollable width — and the scrollbar — never move */
+.lib-series-row.is-spines { padding-right: calc(var(--lib-push) + 24px); }
+
+/* invisible probe with the same width as a shelf row (fronts-vs-spines fit test) */
+.lib-row-probe {
+  max-width: 1280px;
+  margin: 0 auto;
+  height: 0;
 }
 
 /* a series bound together as one boxed set */
@@ -188,13 +200,15 @@
   flex-wrap: wrap;
   gap: 18px 14px;
   justify-content: center;
-  padding: 14px 8px 18px;
+  padding: 14px calc(var(--lib-push) + 8px) 18px 8px; /* push headroom */
 }
 
-/* ----- the book itself: fixed-width spine slot, hover turns to cover -----
-   Only `transform` (and z-index paint order) changes on hover — the slot
-   width never animates, so neighbors never reflow. The turned cover overlaps
-   neighbors via a z-index raise that is held through the return transition. */
+/* ----- the spine book: fixed-width slot, hover turns to cover -----
+   Only `transform` changes anywhere: the turning book rotates, and every book
+   to its right slides by --lib-push (same easing family) so the cover swings
+   into a gap instead of over a neighbor. Timing: on enter the push starts
+   immediately and the turn waits 40ms; on leave the turn retreats immediately
+   and the gap closes 40ms later — so no frame has cover-over-spine overlap. */
 .lib-book {
   appearance: none;
   border: 0;
@@ -206,12 +220,27 @@
   width: 52px;
   height: 288px;
   z-index: 1;
-  transition: z-index 0s linear 480ms; /* hold paint order until the return finishes */
+  transition-property: transform, z-index;
+  transition-duration: 420ms, 0s; /* eased glide back when the gap closes */
+  transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1), linear;
+  transition-delay: 40ms, 480ms; /* hold paint order until the return finishes */
+  will-change: transform;
+}
+/* neighbors to the right of the open book slide aside (also across the boxed-
+   set boundary in search results, via :has) */
+.lib-book.is-open ~ .lib-book,
+.lib-book:focus-visible ~ .lib-book,
+.lib-set:has(.lib-book.is-open) ~ .lib-book,
+.lib-set:has(.lib-book.is-open) ~ .lib-set,
+.lib-set:has(.lib-book.is-open) ~ .lib-front {
+  transform: translateX(var(--lib-push));
+  transition-duration: 300ms, 0s;
+  transition-delay: 0ms, 480ms; /* the push leads the turn */
 }
 .lib-book.is-open,
 .lib-book:focus-visible {
   z-index: 6;
-  transition-delay: 0s;
+  transition-delay: 40ms, 0s;
 }
 .lib-book:focus-visible { outline: none; }
 .lib-book:focus-visible .lib-face-spine { box-shadow: 0 0 0 3px rgba(176, 132, 66, 0.75); }
@@ -232,14 +261,39 @@
   transform-origin: left center;
   /* rest: spine facing out */
   transform: rotateY(88deg);
-  transition: transform 420ms cubic-bezier(0.165, 0.84, 0.44, 1); /* eased return */
+  /* eased return, starting immediately so the cover clears before the gap closes */
+  transition: transform 420ms cubic-bezier(0.165, 0.84, 0.44, 1) 0ms;
   will-change: transform;
 }
 .lib-book.is-open .lib-turn,
 .lib-book:focus-visible .lib-turn {
-  /* hover: turn to a three-quarter cover view (slightly faster than return) */
+  /* hover: turn to a three-quarter cover view, 40ms behind the opening gap */
   transform: rotateY(16deg);
   transition-duration: 300ms;
+  transition-delay: 40ms;
+}
+
+/* ----- the front book: whole group fits, covers face out, subtle hover lift ----- */
+.lib-front {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+  flex: 0 0 auto;
+  width: 216px;
+  height: 288px;
+  transition: transform 200ms cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+.lib-front:hover,
+.lib-front:focus-visible { transform: translateY(-8px); }
+.lib-front:focus-visible { outline: none; }
+.lib-front:focus-visible .lib-front-canvas { box-shadow: 0 0 0 3px rgba(176, 132, 66, 0.75); }
+.lib-front-canvas {
+  display: block;
+  background: #fbfbf9;
+  box-shadow: 0 10px 22px rgba(60, 42, 18, 0.24);
 }
 .lib-face {
   position: absolute;
@@ -260,6 +314,12 @@
 @media (prefers-reduced-motion: reduce) {
   .lib-turn { transition: none; }
   .lib-book { transition: none; }
+  .lib-book.is-open ~ .lib-book,
+  .lib-book:focus-visible ~ .lib-book,
+  .lib-set:has(.lib-book.is-open) ~ .lib-book,
+  .lib-set:has(.lib-book.is-open) ~ .lib-set,
+  .lib-set:has(.lib-book.is-open) ~ .lib-front { transition: none; }
+  .lib-front { transition: none; }
   .lib-search-input { transition: none; }
 }
 

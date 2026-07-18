@@ -11,12 +11,16 @@ export const assetUrl = (p: string) => ASSET_BASE + String(p).replace(/^\//, '')
 export const PINNED_SLUG = 'the-orly-loop';
 export const RECENT_COUNT = 8;
 export const LEAD_SERIES = 'The Explainers';
+// This series is the shelf's showcase: it always leads (its own top row) and
+// is excluded from the Recently Added strip.
+export const FEATURED_SERIES = 'Fresh from arXiv';
 
 export function openBook(b: BookMeta) {
   window.location.href = ASSET_BASE + String(b.href).replace(/^\//, '');
 }
 
 export interface Shelves {
+  featured: [string, BookMeta[]] | null; // the showcase series, always the top row
   recent: BookMeta[];
   seriesRows: [string, BookMeta[]][]; // each series in seriesOrder ascending
   loops: BookMeta[];
@@ -24,7 +28,9 @@ export interface Shelves {
 }
 
 export function buildShelves(books: BookMeta[]): Shelves {
-  const byRecency = [...books].sort((a, c) => (c.createdAt ?? '').localeCompare(a.createdAt ?? ''));
+  const byRecency = [...books]
+    .filter((b) => b.series !== FEATURED_SERIES)
+    .sort((a, c) => (c.createdAt ?? '').localeCompare(a.createdAt ?? ''));
   const recent = byRecency.slice(0, RECENT_COUNT);
 
   const seriesMap = new Map<string, BookMeta[]>();
@@ -45,13 +51,17 @@ export function buildShelves(books: BookMeta[]): Shelves {
     return lb.localeCompare(la);
   });
 
+  const featured =
+    seriesRows.find(([n]) => n === FEATURED_SERIES) ?? null;
+  const restRows = seriesRows.filter(([n]) => n !== FEATURED_SERIES);
+
   const standalone = books.filter((b) => !b.series);
   const loops = standalone
     .filter((b) => /loop/.test(b.slug))
     .sort((a, c) => (a.slug === PINNED_SLUG ? -1 : c.slug === PINNED_SLUG ? 1 : 0));
   const more = standalone.filter((b) => !/loop/.test(b.slug));
 
-  return { recent, seriesRows, loops, more };
+  return { featured, recent, seriesRows: restRows, loops, more };
 }
 
 // One searchable haystack per book: title, subtitle, series, chapter titles.

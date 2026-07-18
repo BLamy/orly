@@ -4,7 +4,7 @@
 // for a series' books (back chevron, edge-swipe back, browser back all pop it).
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { composeCover, drawSpine, type BookMeta } from './cover';
-import { assetUrl, openBook, searchBooks, useLazyVisible } from './shared';
+import { assetUrl, FEATURED_SERIES, openBook, searchBooks, useLazyVisible } from './shared';
 
 const COVER_W = 600;
 const COVER_H = 800;
@@ -294,11 +294,20 @@ export function MobileShelf({ books, error }: { books: BookMeta[] | null; error:
 
   const entries = useMemo(() => (books && books.length ? buildEntries(books) : null), [books]);
 
+  // The featured series is pinned above the alphabetized list (its own
+  // showcase section) rather than filed under its letter — keeping the A-Z
+  // rail's jump targets clean. Search still finds it like any other entry.
+  const featured = useMemo(
+    () => entries?.find((e): e is Extract<Entry, { kind: 'series' }> => e.kind === 'series' && e.name === FEATURED_SERIES) ?? null,
+    [entries],
+  );
+
   // Letter → entries sections for the vertical list + rail.
   const sections = useMemo(() => {
     if (!entries) return null;
     const map = new Map<string, Entry[]>();
     for (const e of entries) {
+      if (e.kind === 'series' && e.name === FEATURED_SERIES) continue; // pinned above
       const l = letterOf(e.name);
       if (!map.has(l)) map.set(l, []);
       map.get(l)!.push(e);
@@ -514,6 +523,16 @@ export function MobileShelf({ books, error }: { books: BookMeta[] | null; error:
 
         {!filtered && sections && (
           <div className="libm-rows">
+            {featured && (
+              <section className="libm-letter-section libm-featured">
+                <h2 className="libm-letter-head">Featured</h2>
+                <SeriesRow
+                  name={featured.name}
+                  books={featured.books}
+                  onOpen={() => pushSeries(featured.name)}
+                />
+              </section>
+            )}
             {LETTERS.filter((l) => sections.has(l)).map((l) => (
               <section
                 key={l}

@@ -33,6 +33,48 @@ function GitHubMark() {
   );
 }
 
+// One book standing front-cover-out (used when a whole group fits its row):
+// no turning, just a subtle hover lift.
+function FrontBook({ book }: { book: BookMeta }) {
+  const rootRef = useRef<HTMLButtonElement | null>(null);
+  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  const visible = useLazyVisible(rootRef);
+
+  useEffect(() => {
+    if (!visible) return;
+    let dead = false;
+    composeCover(book, COVER_W, COVER_H, book.animal ? assetUrl(book.animal) : null).then(
+      (cov) => {
+        if (dead) return;
+        const face = canvasRef.current;
+        if (!face) return;
+        const dpr = Math.min(2, window.devicePixelRatio || 1);
+        face.width = FACE_W * dpr;
+        face.height = BOOK_H * dpr;
+        const ctx = face.getContext('2d');
+        if (!ctx) return;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.drawImage(cov, 0, 0, FACE_W, BOOK_H);
+      },
+    );
+    return () => {
+      dead = true;
+    };
+  }, [visible, book]);
+
+  return (
+    <button
+      ref={rootRef}
+      className="lib-front"
+      onClick={() => openBook(book)}
+      aria-label={`Open ${book.title}`}
+      title={book.subtitle ? `${book.title} — ${book.subtitle}` : book.title}
+    >
+      <canvas ref={canvasRef} className="lib-front-canvas" style={{ width: FACE_W, height: BOOK_H }} />
+    </button>
+  );
+}
+
 // One book standing spine-out; hovering (or focusing) turns it to show the
 // cover. Two canvas-textured CSS-3D planes rotate as one assembly via a single
 // eased `transform` transition — GPU-only, no per-frame canvas repaints and no
@@ -122,15 +164,20 @@ function SpineBook({ book, seriesIndex }: { book: BookMeta; seriesIndex?: number
   );
 }
 
-// A series standing together as one boxed set on the shelf.
-function BoxedSet({ name, books }: { name: string; books: BookMeta[] }) {
+// A series standing together as one boxed set on the shelf. `front` shows the
+// whole set cover-out (it fits); otherwise spines with the hover-turn.
+function BoxedSet({ name, books, front }: { name: string; books: BookMeta[]; front: boolean }) {
   return (
     <div className="lib-set">
       <span className="lib-set-plaque">{name}</span>
       <div className="lib-set-books">
-        {books.map((b, i) => (
-          <SpineBook key={b.slug} book={b} seriesIndex={b.seriesOrder ?? i + 1} />
-        ))}
+        {books.map((b, i) =>
+          front ? (
+            <FrontBook key={b.slug} book={b} />
+          ) : (
+            <SpineBook key={b.slug} book={b} seriesIndex={b.seriesOrder ?? i + 1} />
+          ),
+        )}
       </div>
     </div>
   );
@@ -139,10 +186,12 @@ function BoxedSet({ name, books }: { name: string; books: BookMeta[] }) {
 function ShelfRow({
   title,
   meta,
+  front,
   children,
 }: {
   title: string;
   meta: string;
+  front: boolean;
   children: React.ReactNode;
 }) {
   return (
@@ -151,13 +200,45 @@ function ShelfRow({
         <h2 className="lib-series-name">{title}</h2>
         <span className="lib-series-meta">{meta}</span>
       </div>
-      <div className="lib-series-row">{children}</div>
+      <div className={`lib-series-row ${front ? 'is-fronts' : 'is-spines'}`}>{children}</div>
     </section>
   );
 }
 
+// Adaptive presentation: a group whose books all fit front-cover-first in the
+// row width shows fronts; longer groups collapse to spines. Recomputed on
+// resize (debounced via a ResizeObserver on a probe sized like the rows).
+const FRONT_SLOT = FACE_W + 10; // cover width + row gap
+const GROUP_CHROME = 70; // boxed-set plaque/padding + row padding headroom
+
+function useRowWidth(): [number, React.RefObject<HTMLDivElement>] {
+  const probeRef = useRef<HTMLDivElement>(null!);
+  const [width, setWidth] = useState(0);
+  useEffect(() => {
+    const el = probeRef.current;
+    if (!el) return;
+    let t: number | undefined;
+    const measure = () => setWidth(el.getBoundingClientRect().width);
+    measure();
+    const ro = new ResizeObserver(() => {
+      window.clearTimeout(t);
+      t = window.setTimeout(measure, 120);
+    });
+    ro.observe(el);
+    return () => {
+      window.clearTimeout(t);
+      ro.disconnect();
+    };
+  }, []);
+  return [width, probeRef];
+}
+
+const fitsFront = (n: number, rowWidth: number) =>
+  rowWidth > 0 && n * FRONT_SLOT + GROUP_CHROME <= rowWidth;
+
 function DesktopShelf({ books, error }: { books: BookMeta[] | null; error: string | null }) {
   const [query, setQuery] = useState('');
+  const [rowWidth, probeRef] = useRowWidth();
 
   const shelves = useMemo(() => (books && books.length ? buildShelves(books) : null), [books]);
 
@@ -215,6 +296,9 @@ function DesktopShelf({ books, error }: { books: BookMeta[] | null; error: strin
         <div className="lib-empty">No books yet — generate one with <code>npm run explain</code>.</div>
       )}
 
+      {/* invisible probe sized like a shelf row, for the fronts-vs-spines fit test */}
+      <div ref={probeRef as unknown as React.LegacyRef<HTMLDivElement>} className="lib-row-probe" aria-hidden="true" />
+
       {matches &&
         (matchCount === 0 ? (
           <div className="lib-empty">
@@ -227,43 +311,65 @@ function DesktopShelf({ books, error }: { books: BookMeta[] | null; error: strin
             </div>
             <div className="lib-results">
               {matches.sets.map(([name, arr]) => (
-                <BoxedSet key={name} name={name} books={arr} />
+                <BoxedSet key={name} name={name} books={arr} front={fitsFront(arr.length, rowWidth)} />
               ))}
               {matches.singles.map((b) => (
-                <SpineBook key={b.slug} book={b} />
+                <FrontBook key={b.slug} book={b} />
               ))}
             </div>
           </>
         ))}
 
-      {!matches && shelves && (
-        <>
-          <ShelfRow title="Recently Added" meta="hot off the press →">
-            {shelves.recent.map((b) => (
-              <SpineBook key={b.slug} book={b} seriesIndex={b.seriesOrder} />
-            ))}
-          </ShelfRow>
-          {shelves.seriesRows.map(([name, arr]) => (
-            <ShelfRow key={name} title={name} meta={`a ${arr.length}-book series · read in order →`}>
-              <BoxedSet name={name} books={arr} />
+      {!matches && shelves && (() => {
+        const recentFront = fitsFront(shelves.recent.length, rowWidth);
+        const loopsFront = fitsFront(shelves.loops.length, rowWidth);
+        const moreFront = fitsFront(shelves.more.length, rowWidth);
+        const featuredFront = shelves.featured ? fitsFront(shelves.featured[1].length, rowWidth) : false;
+        return (
+          <>
+            {shelves.featured && (
+              <ShelfRow
+                title={shelves.featured[0]}
+                meta={`a ${shelves.featured[1].length}-book series · read in order →`}
+                front={featuredFront}
+              >
+                <BoxedSet name={shelves.featured[0]} books={shelves.featured[1]} front={featuredFront} />
+              </ShelfRow>
+            )}
+            <ShelfRow title="Recently Added" meta="hot off the press →" front={recentFront}>
+              {shelves.recent.map((b) =>
+                recentFront ? (
+                  <FrontBook key={b.slug} book={b} />
+                ) : (
+                  <SpineBook key={b.slug} book={b} seriesIndex={b.seriesOrder} />
+                ),
+              )}
             </ShelfRow>
-          ))}
-          {shelves.loops.length > 0 && (
-            <ShelfRow title="Agent Loops" meta={`${shelves.loops.length} standalone builds →`}>
-              {shelves.loops.map((b) => (
-                <SpineBook key={b.slug} book={b} />
-              ))}
-            </ShelfRow>
-          )}
-          {shelves.more.length > 0 && (
-            <ShelfRow title="More from the Shelf" meta={`${shelves.more.length} one-offs →`}>
-              {shelves.more.map((b) => (
-                <SpineBook key={b.slug} book={b} />
-              ))}
-            </ShelfRow>
-          )}
-        </>
-      )}
+            {shelves.seriesRows.map(([name, arr]) => {
+              const front = fitsFront(arr.length, rowWidth);
+              return (
+                <ShelfRow key={name} title={name} meta={`a ${arr.length}-book series · read in order →`} front={front}>
+                  <BoxedSet name={name} books={arr} front={front} />
+                </ShelfRow>
+              );
+            })}
+            {shelves.loops.length > 0 && (
+              <ShelfRow title="Agent Loops" meta={`${shelves.loops.length} standalone builds →`} front={loopsFront}>
+                {shelves.loops.map((b) =>
+                  loopsFront ? <FrontBook key={b.slug} book={b} /> : <SpineBook key={b.slug} book={b} />,
+                )}
+              </ShelfRow>
+            )}
+            {shelves.more.length > 0 && (
+              <ShelfRow title="More from the Shelf" meta={`${shelves.more.length} one-offs →`} front={moreFront}>
+                {shelves.more.map((b) =>
+                  moreFront ? <FrontBook key={b.slug} book={b} /> : <SpineBook key={b.slug} book={b} />,
+                )}
+              </ShelfRow>
+            )}
+          </>
+        );
+      })()}
 
       <footer className="lib-foot">
         by Brett Lamy · an “O’RLY?” parody · icons via the Noun Project (CC BY) · made with Claude Code using{' '}
