@@ -1,0 +1,103 @@
+{
+  "format": 3,
+  "slug": "explained-distributed-training",
+  "title": "Explained: Distributed Training",
+  "subtitle": "Four ways to cut a model that doesn't fit — and the communication bill each one pays",
+  "animal": "animal.webp",
+  "accent": "#1f6fb2",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Why One Chip Can't",
+      "blurb": "Exact memory arithmetic for a 6.57B toy transformer: 16 bytes per parameter, 98 GB vs an 80 GB chip",
+      "scene": "books/explained-distributed-training/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        13.92,
+        30.488,
+        40.809,
+        57.04,
+        68.661,
+        78.461,
+        92.16,
+        105.292
+      ],
+      "duration": 116.658
+    },
+    {
+      "number": 2,
+      "title": "Data Parallelism and the Ring",
+      "blurb": "The ring all-reduce simulated step by step on real gradient chunks, with the bandwidth ledger",
+      "scene": "books/explained-distributed-training/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        13.294,
+        22.222,
+        35.585,
+        44.71,
+        55.6,
+        65.074,
+        82.976,
+        94.668
+      ],
+      "duration": 108.112
+    },
+    {
+      "number": 3,
+      "title": "Cutting the Model",
+      "blurb": "A real matmul split across two devices (asserted exact) and pipeline bubbles computed from the schedule",
+      "scene": "books/explained-distributed-training/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        12.063,
+        22.941,
+        34.609,
+        46.184,
+        57.736,
+        69.485,
+        84.74,
+        95.085
+      ],
+      "duration": 110.665
+    },
+    {
+      "number": 4,
+      "title": "ZeRO — Shard the Redundancy",
+      "blurb": "Per-device memory as sharding stages turn on: 98 to 34 to 23 to 12 gigabytes, computed",
+      "scene": "books/explained-distributed-training/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        15.534,
+        28.537,
+        43.956,
+        55.553,
+        68.847,
+        85.728,
+        99.915
+      ],
+      "duration": 114.984
+    },
+    {
+      "number": 5,
+      "title": "Expert Parallelism",
+      "blurb": "The training-side MoE bill: all-to-all token traffic and a real routing-imbalance simulation",
+      "scene": "books/explained-distributed-training/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        13.932,
+        30.07,
+        44.153,
+        58.41,
+        75.105,
+        86.308,
+        101.529
+      ],
+      "duration": 120.512
+    }
+  ]
+}

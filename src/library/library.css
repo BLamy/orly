@@ -1,4 +1,8 @@
+/* ---------- desktop: the spine-first shelf ---------- */
+
 .lib {
+  /* how far neighbors slide right to make room for a turning cover */
+  --lib-push: 180px;
   min-height: 100vh;
   margin: 0;
   padding: 0 clamp(16px, 5vw, 64px) 80px;
@@ -44,19 +48,63 @@
   color: #6c604b;
 }
 
-.lib-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(230px, 1fr));
-  gap: clamp(20px, 3vw, 44px) clamp(8px, 2vw, 28px);
-  max-width: 1280px;
-  margin: 36px auto 0;
-  justify-items: center;
+/* homepage search */
+.lib-search {
+  position: relative;
+  max-width: 520px;
+  margin: 26px auto 0;
+}
+.lib-search-input {
+  width: 100%;
+  padding: 12px 40px 12px 18px;
+  font: inherit;
+  font-size: 15px;
+  color: #2a241c;
+  background: rgba(255, 255, 255, 0.75);
+  border: 1px solid rgba(120, 90, 50, 0.28);
+  border-radius: 999px;
+  box-shadow: 0 2px 10px rgba(80, 60, 30, 0.08) inset;
+  outline: none;
+  transition: border-color 150ms ease, background 150ms ease;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.lib-search-input::placeholder { color: #a2926f; }
+.lib-search-input:focus {
+  border-color: #b08442;
+  background: #fffdf8;
+}
+.lib-search-input::-webkit-search-cancel-button { display: none; }
+.lib-search-clear {
+  position: absolute;
+  top: 50%;
+  right: 8px;
+  transform: translateY(-50%);
+  width: 28px;
+  height: 28px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(120, 90, 50, 0.12);
+  color: #6c604b;
+  font-size: 18px;
+  line-height: 1;
+  cursor: pointer;
+}
+.lib-search-clear:hover { background: rgba(120, 90, 50, 0.22); color: #2a241c; }
+.lib-result-count {
+  text-align: center;
+  margin-top: 30px;
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #b08442;
 }
 
-/* a grouped "book series" shelf */
+/* a shelf row (per series / group) */
 .lib-series {
   max-width: 1280px;
-  margin: 52px auto 0;
+  margin: 46px auto 0;
 }
 .lib-series-head {
   display: flex;
@@ -64,7 +112,7 @@
   gap: 14px;
   flex-wrap: wrap;
   padding: 0 8px 6px;
-  margin: 0 8px 22px;
+  margin: 0 8px 18px;
   border-bottom: 2px solid rgba(120, 90, 50, 0.2);
 }
 .lib-series-name {
@@ -83,66 +131,202 @@
 }
 .lib-series-row {
   display: flex;
-  flex-wrap: wrap;
-  gap: clamp(8px, 2vw, 22px);
-  justify-content: center;
+  align-items: flex-end;
+  flex-wrap: nowrap;
+  gap: 10px;
+  overflow-x: auto;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 14px 16px 18px 8px;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(120, 90, 50, 0.35) transparent;
+  /* the shelf board the books stand on */
+  background: linear-gradient(180deg, transparent calc(100% - 10px), rgba(101, 74, 42, 0.28) calc(100% - 10px), rgba(70, 50, 26, 0.34) 100%);
+  border-radius: 4px;
 }
-.lib-series-row .lib-book {
-  width: 230px;
+/* constant right headroom on spine rows: the hover push (translateX) stays
+   inside the content box, so scrollable width — and the scrollbar — never move */
+.lib-series-row.is-spines { padding-right: calc(var(--lib-push) + 24px); }
+
+/* invisible probe with the same width as a shelf row (fronts-vs-spines fit test) */
+.lib-row-probe {
+  max-width: 1280px;
+  margin: 0 auto;
+  height: 0;
+}
+
+/* a series bound together as one boxed set */
+.lib-set {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
   flex: 0 0 auto;
+  padding: 12px 10px 10px 26px;
+  background: linear-gradient(180deg, rgba(120, 90, 50, 0.14), rgba(120, 90, 50, 0.22));
+  border: 1px solid rgba(101, 74, 42, 0.35);
+  border-bottom: 5px solid rgba(70, 50, 26, 0.5);
+  border-radius: 6px 6px 3px 3px;
+  width: max-content;
 }
-.lib-book-num {
-  color: #b08442;
+.lib-set-plaque {
+  position: absolute;
+  left: 5px;
+  top: 12px;
+  bottom: 12px;
+  width: 16px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  text-align: center;
+  font-size: 10px;
   font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: #7a5c30;
+  overflow: hidden;
+  white-space: nowrap;
+}
+.lib-set-books {
+  display: flex;
+  align-items: flex-end;
+  gap: 0;
 }
 
-@media (min-width: 760px) {
-  .lib-series-row { justify-content: flex-start; }
+/* search results: sets + loose spines, wrapping */
+.lib-results {
+  max-width: 1280px;
+  margin: 22px auto 0;
+  display: flex;
+  align-items: flex-end;
+  flex-wrap: wrap;
+  gap: 18px 14px;
+  justify-content: center;
+  padding: 14px calc(var(--lib-push) + 8px) 18px 8px; /* push headroom */
 }
 
+/* ----- the spine book: fixed-width slot, hover turns to cover -----
+   Only `transform` changes anywhere: the turning book rotates, and every book
+   to its right slides by --lib-push (same easing family) so the cover swings
+   into a gap instead of over a neighbor. Timing: on enter the push starts
+   immediately and the turn waits 40ms; on leave the turn retreats immediately
+   and the gap closes 40ms later — so no frame has cover-over-spine overlap. */
 .lib-book {
   appearance: none;
   border: 0;
   background: transparent;
-  padding: 8px 6px 0;
+  padding: 0;
   cursor: pointer;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  width: 100%;
-  font: inherit;
-  color: inherit;
+  position: relative;
+  flex: 0 0 auto;
+  width: 52px;
+  height: 288px;
+  z-index: 1;
+  transition-property: transform, z-index;
+  transition-duration: 420ms, 0s; /* eased glide back when the gap closes */
+  transition-timing-function: cubic-bezier(0.165, 0.84, 0.44, 1), linear;
+  transition-delay: 40ms, 480ms; /* hold paint order until the return finishes */
+  will-change: transform;
 }
-.lib-book-canvas {
-  display: block;
-  transition: transform 0.22s cubic-bezier(0.2, 0.7, 0.2, 1);
+/* neighbors to the right of the open book slide aside (also across the boxed-
+   set boundary in search results, via :has) */
+.lib-book.is-open ~ .lib-book,
+.lib-book:focus-visible ~ .lib-book,
+.lib-set:has(.lib-book.is-open) ~ .lib-book,
+.lib-set:has(.lib-book.is-open) ~ .lib-set,
+.lib-set:has(.lib-book.is-open) ~ .lib-front {
+  transform: translateX(var(--lib-push));
+  transition-duration: 300ms, 0s;
+  transition-delay: 0ms, 480ms; /* the push leads the turn */
 }
-.lib-book:hover .lib-book-canvas,
-.lib-book:focus-visible .lib-book-canvas { transform: translateY(-2px) scale(1.015); }
+.lib-book.is-open,
+.lib-book:focus-visible {
+  z-index: 6;
+  transition-delay: 40ms, 0s;
+}
 .lib-book:focus-visible { outline: none; }
+.lib-book:focus-visible .lib-face-spine { box-shadow: 0 0 0 3px rgba(176, 132, 66, 0.75); }
 
-.lib-book-cap {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  text-align: center;
-  margin-top: 6px;
-  max-width: 220px;
+.lib-stage {
+  position: absolute;
+  inset: 0;
+  perspective: 1400px;
+  perspective-origin: 30% 50%;
 }
-.lib-book-cap-title {
-  font-weight: 700;
-  font-size: 15px;
-  color: #2a241c;
+.lib-turn {
+  position: absolute;
+  left: 2px;
+  top: 0;
+  width: 216px;
+  height: 288px;
+  transform-style: preserve-3d;
+  transform-origin: left center;
+  /* rest: spine facing out */
+  transform: rotateY(88deg);
+  /* eased return, starting immediately so the cover clears before the gap closes */
+  transition: transform 420ms cubic-bezier(0.165, 0.84, 0.44, 1) 0ms;
+  will-change: transform;
 }
-.lib-book-cap-sub {
-  font-size: 12px;
-  line-height: 1.35;
-  color: #8a7c63;
-  margin-top: 2px;
-  display: -webkit-box;
-  -webkit-line-clamp: 2;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
+.lib-book.is-open .lib-turn,
+.lib-book:focus-visible .lib-turn {
+  /* hover: turn to a three-quarter cover view, 40ms behind the opening gap */
+  transform: rotateY(16deg);
+  transition-duration: 300ms;
+  transition-delay: 40ms;
+}
+
+/* ----- the front book: whole group fits, covers face out, subtle hover lift ----- */
+.lib-front {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  cursor: pointer;
+  position: relative;
+  flex: 0 0 auto;
+  width: 216px;
+  height: 288px;
+  transition: transform 200ms cubic-bezier(0.215, 0.61, 0.355, 1);
+}
+.lib-front:hover,
+.lib-front:focus-visible { transform: translateY(-8px); }
+.lib-front:focus-visible { outline: none; }
+.lib-front:focus-visible .lib-front-canvas { box-shadow: 0 0 0 3px rgba(176, 132, 66, 0.75); }
+.lib-front-canvas {
+  display: block;
+  background: #fbfbf9;
+  box-shadow: 0 10px 22px rgba(60, 42, 18, 0.24);
+}
+.lib-face {
+  position: absolute;
+  left: 0;
+  top: 0;
+  display: block;
+  background: #fbfbf9;
+}
+.lib-face-cover {
+  box-shadow: 0 10px 24px rgba(60, 42, 18, 0.28);
+}
+.lib-face-spine {
+  transform-origin: left center;
+  transform: rotateY(-90deg);
+  box-shadow: 1px 0 0 rgba(0, 0, 0, 0.08) inset, -1px 0 0 rgba(0, 0, 0, 0.12) inset, 0 8px 14px rgba(60, 42, 18, 0.22);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .lib-turn { transition: none; }
+  .lib-book { transition: none; }
+  .lib-book.is-open ~ .lib-book,
+  .lib-book:focus-visible ~ .lib-book,
+  .lib-set:has(.lib-book.is-open) ~ .lib-book,
+  .lib-set:has(.lib-book.is-open) ~ .lib-set,
+  .lib-set:has(.lib-book.is-open) ~ .lib-front { transition: none; }
+  .lib-front { transition: none; }
+  .lib-search-input { transition: none; }
+}
+
+/* a desktop touchscreen (no hover, wide screen): show covers, no turning */
+@media (hover: none) {
+  .lib .lib-book { width: 226px; }
+  .lib .lib-turn { transform: rotateY(12deg); transition: none; }
 }
 
 .lib-empty {
@@ -199,6 +383,375 @@
   transform: translateY(-1px) scale(1.05);
 }
 
-@media (max-width: 520px) {
-  .lib-grid { grid-template-columns: repeat(auto-fill, minmax(150px, 1fr)); }
+/* ---------- mobile: the touch-first browse UI ---------- */
+
+.libm {
+  min-height: 100vh;
+  min-height: 100dvh;
+  margin: 0;
+  padding: 0 0 32px;
+  background: linear-gradient(180deg, #1b1510 0%, #14100b 100%);
+  color: #efe7d8;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+.libm *,
+.libm *::before,
+.libm *::after { box-sizing: border-box; }
+
+.libm-top {
+  position: sticky;
+  top: 0;
+  z-index: 20;
+  padding: calc(10px + env(safe-area-inset-top)) 16px 12px;
+  background: rgba(20, 16, 11, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(176, 132, 66, 0.22);
+}
+.libm-brand {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  margin-bottom: 10px;
+}
+.libm-brand-mark {
+  font-weight: 800;
+  font-size: 15px;
+  letter-spacing: 0.02em;
+  color: #14100b;
+  background: #d6202b;
+  padding: 2px 8px;
+  border-radius: 3px;
+  color: #fff;
+}
+.libm-brand-name {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 19px;
+  font-weight: 700;
+  color: #f3ecdd;
+}
+.libm-search { position: relative; }
+.libm-search-input {
+  width: 100%;
+  padding: 11px 38px 11px 14px;
+  font: inherit;
+  font-size: 16px; /* ≥16px so iOS doesn't zoom on focus */
+  color: #efe7d8;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(176, 132, 66, 0.3);
+  border-radius: 12px;
+  outline: none;
+  appearance: none;
+  -webkit-appearance: none;
+}
+.libm-search-input::placeholder { color: #9c8e74; }
+.libm-search-input:focus { border-color: #b08442; background: rgba(255, 255, 255, 0.12); }
+.libm-search-input::-webkit-search-cancel-button { display: none; }
+.libm-search-clear {
+  position: absolute;
+  top: 50%;
+  right: 6px;
+  transform: translateY(-50%);
+  width: 30px;
+  height: 30px;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(255, 255, 255, 0.12);
+  color: #cbbd9f;
+  font-size: 18px;
+  line-height: 1;
+}
+
+/* ---- the vertical alphabetized list ---- */
+
+/* clip, not hidden: hidden would create a scroll container and break the
+   sticky header; clip just crops the pushed page's off-screen start */
+.libm { overflow-x: clip; }
+.libm-list {
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  transition: transform 350ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.libm-list.is-under { transform: translate3d(-30%, 0, 0); }
+
+.libm-rows { padding: 4px 0 0; }
+
+.libm-letter-head {
+  margin: 0;
+  padding: 14px 16px 6px;
+  font-size: 13px;
+  font-weight: 800;
+  letter-spacing: 0.08em;
+  color: #b08442;
+}
+
+.libm-row {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  width: 100%;
+  border: 0;
+  padding: 9px 34px 9px 16px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+.libm-row:active { background: rgba(255, 255, 255, 0.06); }
+.libm-row-thumb {
+  flex: 0 0 auto;
+  width: 46px;
+  aspect-ratio: 3 / 4;
+  border-radius: 4px;
+  overflow: hidden;
+  background: #fbfbf9;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+}
+.libm-row-canvas { display: block; width: 100%; height: 100%; }
+.libm-row-text { flex: 1 1 auto; min-width: 0; }
+.libm-row-title {
+  display: block;
+  font-size: 15px;
+  font-weight: 600;
+  color: #f3ecdd;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.libm-row-sub {
+  display: block;
+  margin-top: 2px;
+  font-size: 12px;
+  color: #9c8e74;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.libm-row-chev {
+  flex: 0 0 auto;
+  width: 8px;
+  height: 8px;
+  border-top: 2px solid #7d705b;
+  border-right: 2px solid #7d705b;
+  transform: rotate(45deg);
+}
+
+/* series row: the mini boxed set of spines */
+.libm-set-box {
+  flex: 0 0 auto;
+  display: flex;
+  align-items: flex-end;
+  padding: 4px 5px 0;
+  border-radius: 4px 4px 2px 2px;
+  background: linear-gradient(180deg, #3a2f22 0%, #2b2318 100%);
+  border: 1px solid rgba(176, 132, 66, 0.35);
+  border-bottom: 3px solid #b08442;
+  box-shadow: 0 3px 8px rgba(0, 0, 0, 0.4);
+}
+.libm-set-canvas { display: block; }
+
+/* ---- the iOS-style alphabet index rail ---- */
+
+.libm-rail {
+  position: fixed;
+  top: 50%;
+  right: 0;
+  transform: translateY(-50%);
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 6px 2px 6px 10px; /* wide left pad = fat touch target */
+  padding-right: max(2px, env(safe-area-inset-right));
+  max-height: 72vh;
+  touch-action: none;
+  user-select: none;
+  -webkit-user-select: none;
+}
+.libm-rail-letter {
+  font-size: 10px;
+  line-height: 1.55;
+  font-weight: 700;
+  color: #b08442;
+  pointer-events: none;
+}
+.libm-rail-letter.is-dim { color: rgba(176, 132, 66, 0.28); }
+.libm-rail-bubble {
+  position: fixed;
+  right: 34px;
+  z-index: 31;
+  transform: translateY(-50%);
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 26px;
+  font-weight: 800;
+  color: #f3ecdd;
+  background: rgba(58, 47, 34, 0.95);
+  border: 1px solid rgba(176, 132, 66, 0.5);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
+  pointer-events: none;
+}
+
+/* ---- the pushed series page ---- */
+
+.libm-dim {
+  position: fixed;
+  inset: 0;
+  z-index: 35;
+  background: rgba(0, 0, 0, 0.35);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 350ms cubic-bezier(0.32, 0.72, 0, 1);
+}
+.libm-dim.is-on { opacity: 1; }
+
+.libm-detail {
+  position: fixed;
+  inset: 0;
+  z-index: 40;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  background: linear-gradient(180deg, #1b1510 0%, #14100b 100%);
+  padding-bottom: calc(32px + env(safe-area-inset-bottom));
+  transform: translate3d(0, 0, 0);
+  will-change: transform;
+  box-shadow: -12px 0 32px rgba(0, 0, 0, 0.45);
+}
+.libm-detail.is-push { animation: libm-push-in 350ms cubic-bezier(0.32, 0.72, 0, 1); }
+.libm-detail.is-pop {
+  animation: libm-push-out 320ms cubic-bezier(0.32, 0.72, 0, 1) forwards;
+  pointer-events: none;
+}
+@keyframes libm-push-in {
+  from { transform: translate3d(100%, 0, 0); }
+  to { transform: translate3d(0, 0, 0); }
+}
+@keyframes libm-push-out {
+  from { transform: translate3d(0, 0, 0); }
+  to { transform: translate3d(100%, 0, 0); }
+}
+
+.libm-detail-top {
+  position: sticky;
+  top: 0;
+  z-index: 5;
+  padding: calc(8px + env(safe-area-inset-top)) 16px 12px;
+  background: rgba(20, 16, 11, 0.88);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border-bottom: 1px solid rgba(176, 132, 66, 0.22);
+}
+.libm-back {
+  appearance: none;
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  border: 0;
+  padding: 6px 10px 6px 0;
+  margin-left: -2px;
+  background: transparent;
+  color: #d6a556;
+  font: inherit;
+  font-size: 16px;
+  font-weight: 600;
+}
+.libm-back:active { opacity: 0.6; }
+.libm-detail-name {
+  margin: 4px 0 0;
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 24px;
+  font-weight: 700;
+  color: #f3ecdd;
+}
+.libm-detail-meta {
+  display: block;
+  margin-top: 2px;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #b08442;
+}
+.libm-detail-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 18px 14px;
+  padding: 18px 16px 0;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .libm-list { transition: none; }
+  .libm-list.is-under { transform: none; }
+  .libm-dim { transition: none; }
+  .libm-detail.is-push { animation: none; }
+  .libm-detail.is-pop { animation: none; }
+}
+
+.libm-card {
+  appearance: none;
+  border: 0;
+  background: transparent;
+  padding: 0;
+  color: inherit;
+  font: inherit;
+  text-align: left;
+}
+.libm-card-cover {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 8px;
+  overflow: hidden;
+  background: #fbfbf9;
+  box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
+}
+.libm-card-canvas {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+.libm-card:active .libm-card-cover { opacity: 0.85; }
+.libm-card-title {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+  margin-top: 7px;
+  font-size: 12px;
+  line-height: 1.3;
+  color: #d9cdb4;
+}
+.libm-card-num { color: #b08442; font-weight: 800; }
+
+.libm-results { padding-top: 2px; }
+.libm-result-count {
+  padding: 14px 16px 0;
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: #b08442;
+}
+
+.libm-empty {
+  text-align: center;
+  color: #9c8e74;
+  padding: 70px 20px;
+  font-size: 15px;
+}
+
+.libm-foot {
+  text-align: center;
+  margin-top: 40px;
+  color: #7d705b;
+  color: #8a7c63;
+  font-size: 12px;
 }

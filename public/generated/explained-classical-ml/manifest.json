@@ -1,0 +1,117 @@
+{
+  "format": 3,
+  "slug": "explained-classical-ml",
+  "title": "Explained: Classical ML",
+  "animal": "animal.webp",
+  "accent": "#41607f",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "k-Nearest Neighbors: Memory as a Model",
+      "blurb": "Real decision boundaries shifting with k, and the curse of dimensionality measured, not asserted.",
+      "scene": "books/explained-classical-ml/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        9.985,
+        18.112,
+        28.828,
+        39.184,
+        49.517,
+        59.686,
+        70.937,
+        82.999,
+        96.141,
+        105.255,
+        119.257,
+        130.379
+      ],
+      "duration": 143.684
+    },
+    {
+      "number": 2,
+      "title": "Decision Trees: Twenty Questions with Data",
+      "blurb": "A real tree greedily buying entropy drops, cut by cut, until the boundary is a staircase.",
+      "scene": "books/explained-classical-ml/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        11.436,
+        22.825,
+        32.392,
+        44.478,
+        54.171,
+        64.238,
+        75.081,
+        86.807,
+        99.184,
+        111.247,
+        120.674
+      ],
+      "duration": 133.608
+    },
+    {
+      "number": 3,
+      "title": "Ensembles: The Wisdom of Weak Learners",
+      "blurb": "Thirty bootstrap trees average their errors away; a real boosting run reweights its mistakes to zero.",
+      "scene": "books/explained-classical-ml/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        10.124,
+        19.04,
+        32.079,
+        39.323,
+        54.614,
+        64.134,
+        75.338,
+        88.933,
+        99.637,
+        110.829,
+        124.366
+      ],
+      "duration": 137.276
+    },
+    {
+      "number": 4,
+      "title": "Support Vector Machines: The Widest Street",
+      "blurb": "An exactly solved maximum margin, three points carrying the model, and a kernel lifting exclusive or.",
+      "scene": "books/explained-classical-ml/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        10.182,
+        18.332,
+        28.839,
+        38.499,
+        49.377,
+        58.758,
+        70.832,
+        84.392,
+        97.512
+      ],
+      "duration": 108.529
+    },
+    {
+      "number": 5,
+      "title": "Clustering: Structure Without Labels",
+      "blurb": "A recorded k-means run, its honest failure, and the gaussian mixture that softens it.",
+      "scene": "books/explained-classical-ml/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        10.913,
+        24.091,
+        35.84,
+        49.494,
+        60.685,
+        72.922,
+        83.708,
+        98.046,
+        111.456,
+        124.168
+      ],
+      "duration": 139.273
+    }
+  ]
+}

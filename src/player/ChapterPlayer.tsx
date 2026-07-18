@@ -9,6 +9,24 @@ import { fmtDur, type ChapterV3 } from './BookPlayer';
 // something to sample while the real scene chunk is still loading.
 const FALLBACK_TL = new Timeline();
 
+/** Reactively track a CSS media query (SSR-safe). */
+function useMediaQuery(query: string): boolean {
+  const [matches, setMatches] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia(query).matches
+  );
+  useEffect(() => {
+    const mq = window.matchMedia(query);
+    const onChange = () => setMatches(mq.matches);
+    onChange();
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, [query]);
+  return matches;
+}
+
+/** Mobile portrait: captions render BELOW the stage instead of over it. */
+export const PORTRAIT_MQ = '(max-width: 720px) and (orientation: portrait)';
+
 /** Closed-caption pill for the sampled caption envelope (crossfades on cue). */
 function CaptionPill({ c }: { c: CaptionItem }) {
   const tex = c.tex;
@@ -89,6 +107,24 @@ export function ChapterPlayer({
   const [failed, setFailed] = useState(false);
   const [audioFailed, setAudioFailed] = useState(false);
   const [muted, setMuted] = useState(false);
+  // Closed captions: on by default, sticky across chapters/sessions.
+  const [ccOn, setCcOn] = useState(() => {
+    try {
+      return localStorage.getItem('orly-cc') !== 'off';
+    } catch {
+      return true;
+    }
+  });
+  const toggleCc = () =>
+    setCcOn((v) => {
+      try {
+        localStorage.setItem('orly-cc', v ? 'off' : 'on');
+      } catch { /* private mode — session-only */ }
+      return !v;
+    });
+  // Mobile portrait: move the captions out of the stage, below the video,
+  // so they never cover the animation.
+  const portrait = useMediaQuery(PORTRAIT_MQ);
   const [ended, setEnded] = useState(false);
   const [countdown, setCountdown] = useState(5);
   const wasPlayingRef = useRef(false);
@@ -153,7 +189,11 @@ export function ChapterPlayer({
     for (const ch of channels) {
       for (const k of ch.keys) {
         const at = map(k.at);
-        const dur = Math.max(0, map(k.at + k.dur) - at);
+        // Floor the mapped duration: when a map segment is much shorter than
+        // its authored span (e.g. the head [0, firstCaption] compressing into
+        // a near-zero first cue), a tween must still take SOME time — a camera
+        // pan collapsing to 0 renders as an instant jump mid-scene.
+        const dur = Math.max(Math.min(k.dur, 0.25), map(k.at + k.dur) - at);
         built.tl.updateKeyframe(k.id, { at, dur });
       }
     }
@@ -170,12 +210,26 @@ export function ChapterPlayer({
   pbRef.current = pb;
 
   // Autoplay once the scene is ready (the chapter click is the user gesture).
+  // On iOS the gesture has often expired by the time the scene chunk + MP3
+  // load, and audio.play() rejects — usePlayback swallows that rejection and
+  // reports "playing" anyway, freezing the stage with no play affordance. So
+  // probe the audio element ourselves: only enter the playing state when
+  // play() actually resolves; on rejection stay paused so the big play button
+  // renders (the user's tap then starts playback with a live gesture).
   const startedRef = useRef(false);
   useEffect(() => {
     if (!built || startedRef.current) return;
     startedRef.current = true;
-    pbRef.current.play();
-  }, [built]);
+    const a = audioRef.current;
+    if (useAudioClock && a) {
+      a.play().then(
+        () => pbRef.current.play(),
+        () => { /* autoplay blocked — stay paused, show the play button */ }
+      );
+    } else {
+      pbRef.current.play();
+    }
+  }, [built, useAudioClock]);
 
   // End detection → "Up next" card. Audio mode ends at the MANIFEST duration
   // (the aligned narration end) — TTS sometimes appends trailing junk to the
@@ -279,13 +333,15 @@ export function ChapterPlayer({
         ) : (
           <div className="bp-stage">
             <Stage style={{ height: '100%' }}>{entry!.Render({ s: pb.state })}</Stage>
-            <div className="captions" aria-live="polite">
-              <div className="captions-col">
-                {pb.state.captions.map((c) => (
-                  <CaptionPill key={c.id} c={c} />
-                ))}
+            {ccOn && !portrait && (
+              <div className="captions" aria-live="polite">
+                <div className="captions-col">
+                  {pb.state.captions.map((c) => (
+                    <CaptionPill key={c.id} c={c} />
+                  ))}
+                </div>
               </div>
-            </div>
+            )}
             {!pb.playing && !ended && (
               <div className="bp-bigplay" aria-hidden>
                 <PlayIcon playing={false} />
@@ -320,6 +376,17 @@ export function ChapterPlayer({
           </div>
         )}
       </div>
+
+      {ccOn && portrait && (
+        <div className="captions captions-below" aria-live="polite">
+          <div className="captions-col">
+            {built &&
+              pb.state.captions.map((c) => (
+                <CaptionPill key={c.id} c={c} />
+              ))}
+          </div>
+        </div>
+      )}
 
       <footer className="bp-controls">
         <input
@@ -367,6 +434,18 @@ export function ChapterPlayer({
             </span>
           </div>
           <div className="bp-controls-right">
+            <button
+              className={`bp-btn bp-cc${ccOn ? ' on' : ''}`}
+              onClick={toggleCc}
+              title={ccOn ? 'Hide captions' : 'Show captions'}
+              aria-label={ccOn ? 'Hide closed captions' : 'Show closed captions'}
+              aria-pressed={ccOn}
+            >
+              <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+                <rect x="2.5" y="5" width="19" height="14" rx="2.5" />
+                <path d="M10.5 10.2a2.4 2.4 0 1 0 0 3.6M17 10.2a2.4 2.4 0 1 0 0 3.6" strokeLinecap="round" />
+              </svg>
+            </button>
             <button
               className={`bp-btn${muted || !soundAvailable ? '' : ' on'}`}
               onClick={() => setMuted((m) => !m)}

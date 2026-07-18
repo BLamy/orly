@@ -1,0 +1,92 @@
+name: Weekly arXiv discovery (papers → tickets → one book)
+
+# Once a week: scan arXiv for new papers from the watched reputable authors/labs
+# (.github/arxiv-watch.json), extract the teachable concepts, drop anything the
+# shelf already covers, rank the rest, file an issue per concept, and build ONLY
+# the top-ranked one (via new-book.yml dispatch). The other issues are inert by
+# construction: they are created with GITHUB_TOKEN, which never fires issue
+# events, and the discovery bot is not a collaborator — so new-book.yml's gates
+# ignore them until a human applies the `build` label.
+
+on:
+  schedule:
+    - cron: "0 14 * * 1" # Mondays 14:00 UTC
+  workflow_dispatch: {}
+
+permissions:
+  contents: read
+  issues: write
+  actions: write # to dispatch new-book.yml for the weekly pick
+  id-token: write # OIDC token for anthropics/claude-code-action
+
+concurrency:
+  group: arxiv-weekly
+  cancel-in-progress: false
+
+jobs:
+  discover:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - name: Fetch open issues for the dedupe gate
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          gh issue list --repo "${{ github.repository }}" --state open \
+            --label paper-candidate --limit 200 \
+            --json number,title,body > /tmp/open-issues.json || echo '[]' > /tmp/open-issues.json
+
+      - name: Discover + rank this week's papers with Claude Code
+        uses: anthropics/claude-code-action@v1
+        with:
+          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          prompt: |
+            You are the weekly arXiv discovery agent for this O'RLY explainer
+            bookshelf. Produce /tmp/arxiv-plan.json — nothing else. Do NOT run
+            git or gh; the workflow files the issues and dispatches the build.
+
+            1. Read .github/arxiv-watch.json (authors, groups, categories,
+               lookback_days, max_candidates).
+            2. Query the arXiv API (curl "http://export.arxiv.org/api/query?...")
+               for papers submitted within lookback_days that match the watched
+               authors (search_query=au:"<name>") or groups (all:"<group>"),
+               bounded to the watched categories. Fetch abstracts; for the most
+               promising few, fetch https://arxiv.org/abs/<id> for detail.
+            3. Extract the TEACHABLE CONCEPT from each paper: the one mechanism
+               a 3blue1brown-style animated book could actually teach (an update
+               rule, an algorithm, a failure mode, a measured trade-off) — not
+               the paper's headline claim. Skip pure benchmarks/surveys/position
+               papers unless the evaluation methodology itself is the concept.
+            4. COVERAGE CHECK — this is a hard gate: read
+               public/generated/library.json (every book's title + chapter
+               titles) and `ls src/viz/explainers src/viz/books`. Drop any
+               concept the shelf already teaches; for near-misses, keep only if
+               the new angle is genuinely distinct and say why in `coverage`.
+               Also check existing open issues in /tmp/open-issues.json (the
+               workflow fetched them) and drop concepts already ticketed.
+            5. Rank what survives (1 = best) by: teachability as animation,
+               durability of the concept, author/lab reputability, novelty vs
+               the shelf. Keep at most max_candidates.
+            6. Write /tmp/arxiv-plan.json:
+               { "week": "<ISO week, e.g. 2026-W29>",
+                 "candidates": [ { "rank": 1, "arxiv_id": "…",
+                   "paper_title": "…", "authors": "…", "concept": "…",
+                   "why_teachable": "…", "coverage": "…",
+                   "book_title": "…", "subsystem": "…" } ] }
+               `subsystem` is the full "What to explain" brief for the book
+               pipeline: the concept, the suggested 3-5 chapter arc, what must
+               be genuinely computed, and the honesty rules for recreating
+               published results at toy scale. `book_title` is a short O'RLY
+               cover title. If nothing survives the gates, write
+               { "week": "…", "candidates": [] }.
+          claude_args: |
+            --max-turns 120
+            --model claude-opus-4-8
+            --allowedTools "Bash,Read,Write,Glob,Grep,WebFetch,WebSearch"
+
+      - name: File tickets for every concept, build the top pick
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          REPO: ${{ github.repository }}
+        run: bash .github/scripts/arxiv-fanout.sh

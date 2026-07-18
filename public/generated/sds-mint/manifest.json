@@ -1,0 +1,64 @@
+{
+  "format": 3,
+  "slug": "sds-mint",
+  "title": "The Budget App",
+  "animal": "animal.webp",
+  "accent": "#c79100",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Linking the Vault",
+      "blurb": "Link a bank once, hash the password, and let a queue drain five billion transactions a month in the background.",
+      "scene": "books/sds-mint/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        9.091,
+        18.286,
+        26.947,
+        38.916,
+        49.423,
+        61.544,
+        75.197
+      ],
+      "duration": 85.727
+    },
+    {
+      "number": 2,
+      "title": "The Categorizer",
+      "blurb": "A twelve-megabyte dictionary names most spending, and a heap of crowd overrides teaches it the strangers.",
+      "scene": "books/sds-mint/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.892,
+        22.373,
+        33.484,
+        40.891,
+        51.374,
+        59.966,
+        74.431,
+        85.31
+      ],
+      "duration": 95.805
+    },
+    {
+      "number": 3,
+      "title": "The Month's Verdict",
+      "blurb": "A MapReduce job sums the month against the budget template, and a notification fires only when a line is crossed.",
+      "scene": "books/sds-mint/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        10.286,
+        23.046,
+        30.255,
+        43.514,
+        53.289,
+        67.094,
+        77.612
+      ],
+      "duration": 90.697
+    }
+  ]
+}

@@ -1,0 +1,95 @@
+{
+  "format": 3,
+  "slug": "arxiv-small-giants",
+  "title": "Scaling the Horizon",
+  "subtitle": "Trillion-parameter performance from a 35B agent that just keeps working",
+  "animal": "animal.webp",
+  "accent": "#e07b1a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Two Axes",
+      "blurb": "Parameters versus horizon — and a scoreboard where the small agent takes five of eight",
+      "scene": "books/arxiv-small-giants/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        11.157,
+        26.529,
+        40.31,
+        51.967,
+        67.454,
+        77.032
+      ],
+      "duration": 89.257
+    },
+    {
+      "number": 2,
+      "title": "The Solution Tree",
+      "blurb": "Executable solution trees: retries plus verifiers turned into reliability, measured at toy scale",
+      "scene": "books/arxiv-small-giants/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        11.169,
+        25.449,
+        38.139,
+        46.138,
+        62.299,
+        76.731,
+        91.986
+      ],
+      "duration": 105.976
+    },
+    {
+      "number": 3,
+      "title": "Six Teachers, One Student",
+      "blurb": "SFT, domain teachers with reinforcement learning, and salient-vocabulary distillation into 35B",
+      "scene": "books/arxiv-small-giants/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        14.454,
+        27.306,
+        40.391,
+        53.731,
+        64.342,
+        77.055
+      ],
+      "duration": 88.05
+    },
+    {
+      "number": 4,
+      "title": "The Honest Ledger",
+      "blurb": "Where the giants keep the lead, the authors' own diagnosis, and our cost arithmetic",
+      "scene": "books/arxiv-small-giants/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        12.411,
+        24.137,
+        33.588,
+        43.723,
+        60.128,
+        73.468
+      ],
+      "duration": 85.078
+    },
+    {
+      "number": 5,
+      "title": "Frontier, Not Ladder",
+      "blurb": "Capability as an iso-frontier: weights trade against harnessed horizon until coherence leaks",
+      "scene": "books/arxiv-small-giants/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        10.937,
+        25.089,
+        39.206,
+        54.578,
+        70.658
+      ],
+      "duration": 81.827
+    }
+  ]
+}

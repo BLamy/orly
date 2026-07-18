@@ -1,0 +1,99 @@
+{
+  "format": 3,
+  "slug": "explained-long-context",
+  "title": "Explained: Long Context",
+  "animal": "animal.webp",
+  "accent": "#1f6fb2",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Positions as Rotations",
+      "blurb": "Rotary position embedding actually computed: the rotations cancel down to the offset.",
+      "scene": "books/explained-long-context/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        10.147,
+        23.824,
+        34.761,
+        44.072,
+        58.887,
+        68.221,
+        78.299,
+        89.049
+      ],
+      "duration": 100.264
+    },
+    {
+      "number": 2,
+      "title": "Stretching the Ruler",
+      "blurb": "Position interpolation and NTK scaling on the toy — what breaks without finetuning, measured.",
+      "scene": "books/explained-long-context/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        11.297,
+        25.24,
+        34.796,
+        46.823,
+        62.717,
+        77.613,
+        91.742
+      ],
+      "duration": 104.211
+    },
+    {
+      "number": 3,
+      "title": "Attention Sinks",
+      "blurb": "Why models park attention on the first tokens, and why evicting them breaks streaming.",
+      "scene": "books/explained-long-context/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        11.505,
+        21.13,
+        34.063,
+        45.94,
+        57.109,
+        68.998,
+        79.819
+      ],
+      "duration": 92.508
+    },
+    {
+      "number": 4,
+      "title": "Context Rot",
+      "blurb": "The measured U-shape: needle recall versus depth, five hundred trials per point.",
+      "scene": "books/explained-long-context/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        12.423,
+        25.31,
+        35.701,
+        49.97,
+        62.996,
+        75.361
+      ],
+      "duration": 89.119
+    },
+    {
+      "number": 5,
+      "title": "The Bill",
+      "blurb": "Linear memory, a quadratic prefill, bandwidth-capped decode — and the hybrid escape route.",
+      "scene": "books/explained-long-context/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        13.282,
+        28.294,
+        37.047,
+        50.887,
+        67.884,
+        80.075,
+        93.693
+      ],
+      "duration": 108.809
+    }
+  ]
+}

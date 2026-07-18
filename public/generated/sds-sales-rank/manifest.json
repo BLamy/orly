@@ -1,0 +1,64 @@
+{
+  "format": 3,
+  "slug": "sds-sales-rank",
+  "title": "The Sales Rank",
+  "animal": "animal.webp",
+  "accent": "#d6202b",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A River of Receipts",
+      "blurb": "A billion tab-delimited receipts a month pour into the object store, and one precise question waits at the bottom.",
+      "scene": "books/sds-sales-rank/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        11.215,
+        20.747,
+        32.381,
+        41.796,
+        53.371,
+        64.471,
+        74.583
+      ],
+      "duration": 84.521
+    },
+    {
+      "number": 2,
+      "title": "MapReduce, Watched",
+      "blurb": "The two-step MapReduce runs on real rows: filter the week, key by category, sum, flip the key, and the sort comes free.",
+      "scene": "books/sds-sales-rank/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        11.796,
+        21.443,
+        32.031,
+        43.85,
+        54.961,
+        63.448,
+        74.71,
+        85.576
+      ],
+      "duration": 98.127
+    },
+    {
+      "number": 3,
+      "title": "Serving the Leaderboard",
+      "blurb": "The leaderboard lands in the sales rank table, one REST call reads it back, and a memory cache absorbs forty thousand reads a second.",
+      "scene": "books/sds-sales-rank/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        10.67,
+        20.538,
+        31.138,
+        44.408,
+        56.727,
+        68.604,
+        80.852
+      ],
+      "duration": 94.459
+    }
+  ]
+}

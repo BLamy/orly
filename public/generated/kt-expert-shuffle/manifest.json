@@ -1,0 +1,82 @@
+{
+  "format": 3,
+  "slug": "kt-expert-shuffle",
+  "title": "The Expert Shuffle",
+  "animal": "animal.webp",
+  "accent": "#3a8b3a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Hot and Cold",
+      "blurb": "Routing skew and the GPU expert budget",
+      "scene": "books/kt-expert-shuffle/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        11.134,
+        20.607,
+        30.15,
+        40.251,
+        48.319,
+        58.524,
+        67.673
+      ],
+      "duration": 77.042
+    },
+    {
+      "number": 2,
+      "title": "Four Ways to Deal",
+      "blurb": "uniform, frequency, front-loading, random — one flag",
+      "scene": "books/kt-expert-shuffle/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.149,
+        17.984,
+        27.771,
+        34.726,
+        42.563,
+        52.954,
+        62.857
+      ],
+      "duration": 72.632
+    },
+    {
+      "number": 3,
+      "title": "Deferred Experts",
+      "blurb": "Pipelined execution bought with one-step staleness",
+      "scene": "books/kt-expert-shuffle/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.498,
+        19.041,
+        26.738,
+        36.502,
+        45.175,
+        54.985,
+        63.53,
+        73.618
+      ],
+      "duration": 82.198
+    },
+    {
+      "number": 4,
+      "title": "The Shuffle Pays",
+      "blurb": "Dynamic expert update and the reported benchmark curves",
+      "scene": "books/kt-expert-shuffle/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        11.401,
+        23.801,
+        33.159,
+        44.502,
+        55.02,
+        63.959,
+        73.062
+      ],
+      "duration": 86.518
+    }
+  ]
+}

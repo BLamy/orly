@@ -1,0 +1,110 @@
+{
+  "format": 3,
+  "slug": "electric-forest-loop",
+  "title": "The Electric Forest Loop",
+  "animal": "animal.webp",
+  "accent": "#b0277a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A Claim Is Not Evidence",
+      "blurb": "A builder being satisfied is a claim; a deterministic recording of the run is evidence — the one rule the whole repo serves.",
+      "scene": "books/electric-forest-loop/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.475,
+        19.18,
+        28.724,
+        36.096,
+        46.731,
+        58.364,
+        66.955,
+        77.671,
+        87.726
+      ],
+      "duration": 96.457
+    },
+    {
+      "number": 2,
+      "title": "The Builder's Workshop",
+      "blurb": "Scratch probes in work slash, durable artifacts in evidence slash, the gate gauntlet, and the recorded final happy run.",
+      "scene": "books/electric-forest-loop/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        8.452,
+        20.666,
+        30.43,
+        42.411,
+        51.641,
+        60.557,
+        71.889,
+        81.56,
+        91.625
+      ],
+      "duration": 104.118
+    },
+    {
+      "number": 3,
+      "title": "The Critic Attacks",
+      "blurb": "A fresh session fans out parallel critics: falsify, audit coverage, hunt mocks, sabotage a scratch worktree, fuzz, interrogate the recording.",
+      "scene": "books/electric-forest-loop/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        13.398,
+        29.025,
+        41.239,
+        53.893,
+        64.784,
+        78.088,
+        90.593,
+        102.539,
+        117.678,
+        132.411
+      ],
+      "duration": 141.316
+    },
+    {
+      "number": 4,
+      "title": "The Budget and the Loud Stop",
+      "blurb": "Reworks run in rounds of three, a progress judge rules on convergence between rounds, and ten attempts is the hard cap — then the loud stop.",
+      "scene": "books/electric-forest-loop/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        13.618,
+        25.67,
+        38.998,
+        56.831,
+        70.299,
+        80.075,
+        90.036,
+        100.032,
+        109.935
+      ],
+      "duration": 124.458
+    },
+    {
+      "number": 5,
+      "title": "Why the Critic Beats a Reviewer",
+      "blurb": "A diff-reader grades the story of the change; the critic holds the Replay session, attacks it from six directions, and cross-examines its own findings.",
+      "scene": "books/electric-forest-loop/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        8.58,
+        18.855,
+        30.894,
+        44.652,
+        59.21,
+        79.667,
+        91.497,
+        104.408,
+        122.671
+      ],
+      "duration": 135.419
+    }
+  ]
+}

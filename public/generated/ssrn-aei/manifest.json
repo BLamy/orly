@@ -1,0 +1,100 @@
+{
+  "format": 3,
+  "slug": "ssrn-aei",
+  "title": "Coherence Theater",
+  "animal": "animal.webp",
+  "accent": "#b0277a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Missing Variable",
+      "blurb": "Aligned, high-scoring, and not ready — the coherent-world assumption behind every green benchmark",
+      "scene": "books/ssrn-aei/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        12.934,
+        28.178,
+        42.377,
+        57.504,
+        70.752,
+        84.486,
+        99.01
+      ],
+      "duration": 112.431
+    },
+    {
+      "number": 2,
+      "title": "Adversarial Without an Antagonist",
+      "blurb": "Five environmental properties that attack truth with no attacker — a preference-falsification cascade, computed",
+      "scene": "books/ssrn-aei/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        12.829,
+        26.424,
+        40.856,
+        54.579,
+        68.778,
+        79.924,
+        96.375
+      ],
+      "duration": 112.339
+    },
+    {
+      "number": 3,
+      "title": "Coherent From the Inside",
+      "blurb": "Frame lock-in, premature coherence, mandate collapse, and authority laundering as an information cascade",
+      "scene": "books/ssrn-aei/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        12.934,
+        28.247,
+        42.086,
+        56.424,
+        71.668,
+        87.353,
+        102.551
+      ],
+      "duration": 114.613
+    },
+    {
+      "number": 4,
+      "title": "The Refusal Penalty",
+      "blurb": "Sycophancy, prompt injection, refusal penalty inversion, and oversight that certifies coherence theater",
+      "scene": "books/ssrn-aei/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        13.444,
+        25.983,
+        42.329,
+        57.527,
+        71.447,
+        85.054,
+        98.034,
+        111.803
+      ],
+      "duration": 123.483
+    },
+    {
+      "number": 5,
+      "title": "From Performance to Readiness",
+      "blurb": "If your evaluation assumes a coherent world, your readiness claims rest on insufficient assumptions",
+      "scene": "books/ssrn-aei/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        11.61,
+        27.504,
+        36.397,
+        51.235,
+        65.968,
+        76.092,
+        88.538
+      ],
+      "duration": 103.561
+    }
+  ]
+}

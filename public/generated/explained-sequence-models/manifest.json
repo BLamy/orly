@@ -1,0 +1,84 @@
+{
+  "format": 3,
+  "slug": "explained-sequence-models",
+  "title": "Explained: Sequence Models",
+  "animal": "animal.webp",
+  "accent": "#e07b1a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Vanishing Gradient",
+      "blurb": "A real twenty-step recurrent net whose exact gradient products die to under one percent — the flaw that shaped a decade.",
+      "scene": "books/explained-sequence-models/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        12.04,
+        23.371,
+        35.387,
+        46.242,
+        59.571,
+        72.597,
+        84.428,
+        96.642
+      ],
+      "duration": 109.552
+    },
+    {
+      "number": 2,
+      "title": "LSTM Gates",
+      "blurb": "A gated cell remembers one bit through seventeen steps of noise while a plain RNN forgets — the real equations, run live.",
+      "scene": "books/explained-sequence-models/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        10.344,
+        22.489,
+        34.029,
+        41.216,
+        53.882,
+        61.51,
+        73.607,
+        82.465
+      ],
+      "duration": 94.644
+    },
+    {
+      "number": 3,
+      "title": "Why Attention Won",
+      "blurb": "Path lengths and parallelism: why one hop at any distance beat a bucket brigade of hand-offs.",
+      "scene": "books/explained-sequence-models/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.824,
+        18.75,
+        30.291,
+        40.055,
+        50.364,
+        59.733,
+        71.006,
+        80.619
+      ],
+      "duration": 92.415
+    },
+    {
+      "number": 4,
+      "title": "CTC and Beam Search",
+      "blurb": "An exactly-enumerated CTC lattice where greedy hears silence and beam search recovers the answer eighteen times more probable.",
+      "scene": "books/explained-sequence-models/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        9.079,
+        21.629,
+        31.427,
+        41.865,
+        58.2,
+        70.333,
+        83.974
+      ],
+      "duration": 96.409
+    }
+  ]
+}

@@ -1,0 +1,110 @@
+{
+  "format": 3,
+  "slug": "explained-ssm",
+  "title": "Explained: State-Space Models",
+  "animal": "animal.webp",
+  "accent": "#6a3f9e",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Compressed Past",
+      "blurb": "A real six-number linear state-space model runs over a forty-eight step signal, and its fading memory is measured by genuine least-squares reconstruction.",
+      "scene": "books/explained-ssm/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.127,
+        17.623,
+        27.91,
+        36.804,
+        46.847,
+        54.672,
+        63.832,
+        71.402,
+        80.086,
+        88.491
+      ],
+      "duration": 95.898
+    },
+    {
+      "number": 2,
+      "title": "Selectivity",
+      "blurb": "The copy task run for real: fixed gates blend the flagged token into noise, while Mamba-style input-dependent gates keep it perfectly.",
+      "scene": "books/explained-ssm/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        8.452,
+        20.236,
+        31.788,
+        41.25,
+        52.036,
+        60.975,
+        70.496,
+        82.919,
+        93.078
+      ],
+      "duration": 98.871
+    },
+    {
+      "number": 3,
+      "title": "The Convolution Duality",
+      "blurb": "One model computed two ways — a step-by-step recurrence and a single convolution — with outputs identical to machine precision.",
+      "scene": "books/explained-ssm/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        10.925,
+        21.014,
+        28.7,
+        40.16,
+        49.192,
+        58.027,
+        66.897,
+        77.914,
+        89.907
+      ],
+      "duration": 99.799
+    },
+    {
+      "number": 4,
+      "title": "The Long-Context Trade",
+      "blurb": "Honest memory arithmetic: half a megabyte of KV cache per token versus a flat sixty-four megabyte state, a thousand times smaller at long context.",
+      "scene": "books/explained-ssm/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        9.509,
+        20.526,
+        32.275,
+        41.598,
+        52.279,
+        63.367,
+        75.825,
+        88.27,
+        99.183
+      ],
+      "duration": 107.09
+    },
+    {
+      "number": 5,
+      "title": "Where This Sits",
+      "blurb": "Attention, gated states, and the delta rule face the same rewrite test — three ways to forget, and the bridge to the next book.",
+      "scene": "books/explained-ssm/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        10.275,
+        20.445,
+        32.206,
+        42.237,
+        54.323,
+        64.458,
+        77.079,
+        91.777,
+        102.156
+      ],
+      "duration": 112.106
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "format": 3,
+  "slug": "explained-rlvr",
+  "title": "Explained: Verifiable Rewards",
+  "subtitle": "Rewards from executable checks — and the cliff between a solver and a lock pick",
+  "animal": "animal.webp",
+  "accent": "#1f6fb2",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "You Can't Sweet-Talk a Test Suite",
+      "blurb": "Best-of-n against a preference judge collapses to 2% while an executable check climbs to 100%",
+      "scene": "books/explained-rlvr/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        14.721,
+        30.476,
+        43.328,
+        58.05,
+        72.167,
+        85.24,
+        94.795,
+        108.321
+      ],
+      "duration": 121.765
+    },
+    {
+      "number": 2,
+      "title": "The RLVR Loop",
+      "blurb": "A real policy trained on bare pass or fail: 31.5% to 77.5% in 400 simulated steps",
+      "scene": "books/explained-rlvr/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        15.163,
+        25.832,
+        40.507,
+        53.44,
+        66.212,
+        78.762,
+        91.313,
+        103.7
+      ],
+      "duration": 115.728
+    },
+    {
+      "number": 3,
+      "title": "The Group Is the Critic",
+      "blurb": "GRPO at toy scale — the group-relative advantage computed on a real sampled group, no critic",
+      "scene": "books/explained-rlvr/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        13.979,
+        23.487,
+        34.621,
+        47.799,
+        58.956,
+        69.893,
+        81.329,
+        94.564
+      ],
+      "duration": 106.116
+    },
+    {
+      "number": 4,
+      "title": "Hacking the Verifier",
+      "blurb": "The gradient discovers the memorize-the-tests exploit; hidden tests avert it",
+      "scene": "books/explained-rlvr/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        12.759,
+        25.449,
+        38.092,
+        52.349,
+        61.615,
+        72.865,
+        84.172,
+        97.501
+      ],
+      "duration": 108.902
+    },
+    {
+      "number": 5,
+      "title": "The Doctrine",
+      "blurb": "Fourteen real training runs reveal a cliff: the check must be harder to game than the task",
+      "scene": "books/explained-rlvr/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        14.164,
+        26.726,
+        41.053,
+        55.612,
+        69.752,
+        81.49,
+        96.548,
+        110.794
+      ],
+      "duration": 125.155
+    }
+  ]
+}

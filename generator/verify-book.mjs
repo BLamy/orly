@@ -209,6 +209,41 @@ try {
         chapterFailures.push('no captions element found ([class*="caption"], [data-captions], .captions)');
       }
 
+      // (e) half-clipped labels — WARNING, not failure: a VISIBLE
+      // text/foreignObject straddling the stage edge at the sampled frame is
+      // the signature of the "camera parked on a sub-region while later beats
+      // reveal content outside it" bug (measured as a ~200px right shift
+      // clipping right-side panels in several books). It is a warning because
+      // one sampled instant can also catch a benign mid-tween or an
+      // intentional push-in past a neighboring label — review the preview
+      // screenshot when this fires. Partial cuts only (25–95% of the element):
+      // fully offscreen elements can be legitimately parked out of frame, and
+      // small spill (<25%) is within artistic tolerance.
+      const clipped = await page.evaluate(() => {
+        const svg = document.querySelector('.bp-stage svg') ?? document.querySelector('#root svg');
+        if (!svg) return [];
+        const S = svg.getBoundingClientRect();
+        const bad = [];
+        for (const el of svg.querySelectorAll('text, foreignObject')) {
+          const r = el.getBoundingClientRect();
+          if (r.width < 8 || r.height < 6) continue;
+          let o = 1;
+          for (let n = el; n && n !== svg; n = n.parentElement)
+            o *= parseFloat(getComputedStyle(n).opacity || '1');
+          if (o < 0.15) continue;
+          const txt = (el.textContent || '').trim();
+          if (!txt) continue;
+          const cut =
+            (Math.max(0, S.left - r.left) + Math.max(0, r.right - S.right)) / r.width +
+            (Math.max(0, S.top - r.top) + Math.max(0, r.bottom - S.bottom)) / r.height;
+          if (cut > 0.25 && cut < 0.95) bad.push(`"${txt.slice(0, 40)}" (${Math.round(cut * 100)}% cut)`);
+        }
+        return bad.slice(0, 6);
+      });
+      for (const c of clipped) {
+        console.warn(`  ⚠ [${label}] label clipped by the stage edge at t≈${target.toFixed(1)}s: ${c} — is the camera parked on a sub-region while this content is revealed?`);
+      }
+
       // (c) console must be clean
       for (const e of consoleErrors) chapterFailures.push(`console error: ${e}`);
 

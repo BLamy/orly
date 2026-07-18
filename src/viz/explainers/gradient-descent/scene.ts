@@ -341,6 +341,10 @@ export function buildScene(): Scene {
     dur: 5.4,
     text: 'Gradient descent follows the slope blindly, one step at a time.',
   });
+  // Pull back to the full stage: the update-rule formulas (world x 950–1270)
+  // enter now — CAM_PUSH (x 620, k 1.1) cuts them at the right edge for the
+  // rest of the run.
+  tl.tween(cam, CAMERA_HOME, { at: 13.8, dur: 1.8, ease: ease.move });
   tl.tween(startU, 1, { at: 14.0, dur: 0.7, ease: ease.enter });
   tl.tween(gdTexU, 1, { at: 14.3, dur: 0.7, ease: ease.enter });
   tl.tween(gdU, 1, { at: 14.6, dur: 0.5, ease: ease.pop });

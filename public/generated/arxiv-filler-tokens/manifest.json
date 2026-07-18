@@ -1,0 +1,97 @@
+{
+  "format": 3,
+  "slug": "arxiv-filler-tokens",
+  "title": "Reading Between the Dots",
+  "subtitle": "Decoding hidden computation across filler tokens",
+  "animal": "animal.webp",
+  "accent": "#6a3f9e",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The question: do the dots do work?",
+      "blurb": "A model emits a row of content-free dots before answering — and its accuracy rises. The reported uplift, replotted.",
+      "scene": "books/arxiv-filler-tokens/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        10.356,
+        19.319,
+        31.729,
+        43.072,
+        53.823,
+        64.945
+      ],
+      "duration": 73.374
+    },
+    {
+      "number": 2,
+      "title": "Build the machine, then probe it",
+      "blurb": "A real two layer attention toy where the fillers provably carry the computation, read out with a logit lens.",
+      "scene": "books/arxiv-filler-tokens/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        8.824,
+        20.829,
+        32.984,
+        45.325,
+        54.079,
+        68.278
+      ],
+      "duration": 79.645
+    },
+    {
+      "number": 3,
+      "title": "Relay or scenery?",
+      "blurb": "Two toys, same answer: ablation and transplant separate load-bearing dots from scenery, exactly as the paper does at scale.",
+      "scene": "books/arxiv-filler-tokens/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        11.494,
+        25.124,
+        41.669,
+        54.951,
+        65.284,
+        77.3,
+        93.171
+      ],
+      "duration": 104.491
+    },
+    {
+      "number": 4,
+      "title": "The findings, at their honest size",
+      "blurb": "Two open weights frontier models, four task families, and eighty to ninety five percent of hidden intermediates decoded — caveats included.",
+      "scene": "books/arxiv-filler-tokens/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        14.489,
+        22.547,
+        36.153,
+        47.287,
+        60.024,
+        72.133,
+        83.117
+      ],
+      "duration": 92.927
+    },
+    {
+      "number": 5,
+      "title": "You can't verify what you can't see",
+      "blurb": "Hidden computation versus legible chains of thought: oversight followed trace access, and nothing else.",
+      "scene": "books/arxiv-filler-tokens/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        12.074,
+        22.918,
+        38.638,
+        50.004,
+        60.871,
+        73.096
+      ],
+      "duration": 84.659
+    }
+  ]
+}

@@ -1,0 +1,89 @@
+{
+  "format": 3,
+  "slug": "rr-dash",
+  "title": "rr-dash: Time Travel on a Stream",
+  "animal": "animal.webp",
+  "accent": "#198a8a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A Trace Is Not Yet a Tool",
+      "blurb": "A deterministic recording holds an entire execution — every instruction, every system call, replayable forever. And on disk, it is a folder you can do nothing with.",
+      "scene": "books/rr-dash/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        11.111,
+        19.354,
+        31.835,
+        44.826,
+        55.682,
+        65.086,
+        76.777,
+        88.259,
+        97.373
+      ],
+      "duration": 107.322
+    },
+    {
+      "number": 2,
+      "title": "The Shape of a Recording",
+      "blurb": "One recording, seven streams. This chapter is about their shape — because the shape is what makes the whole dashboard cheap to build.",
+      "scene": "books/rr-dash/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        7.419,
+        15.07,
+        24.95,
+        35.841,
+        46.766,
+        53.558,
+        66.619,
+        78.449,
+        87.262
+      ],
+      "duration": 98.361
+    },
+    {
+      "number": 3,
+      "title": "Watching Extraction Live",
+      "blurb": "A recording used to appear only when extraction finished — and extraction can take minutes, a debugger stepping a breakpoint through every line of the run.",
+      "scene": "books/rr-dash/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.824,
+        23.046,
+        33.402,
+        42.515,
+        55.321,
+        63.251,
+        72.272,
+        82.048
+      ],
+      "duration": 91.719
+    },
+    {
+      "number": 4,
+      "title": "The DevTools Face",
+      "blurb": "Everything so far was plumbing. This is the payoff: a source file that remembers its own execution.",
+      "scene": "books/rr-dash/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        7.372,
+        18.228,
+        27.829,
+        37.895,
+        46.823,
+        59.072,
+        66.897,
+        77.16,
+        88.468,
+        99.881
+      ],
+      "duration": 105.419
+    }
+  ]
+}

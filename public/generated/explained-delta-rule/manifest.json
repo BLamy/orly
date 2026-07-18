@@ -1,0 +1,105 @@
+{
+  "format": 3,
+  "slug": "explained-delta-rule",
+  "title": "Explained: The Delta Rule",
+  "subtitle": "Fast weights, error-correcting writes, decay, phase — and the chunk algebra that makes it trainable",
+  "animal": "animal.webp",
+  "accent": "#6a3f9e",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A Matrix as Memory",
+      "blurb": "Real outer-product writes into a sixteen by sixteen grid — recall at 0.97, then crowding to 0.78 by pair twelve.",
+      "scene": "books/explained-delta-rule/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        9.439,
+        21.699,
+        32.81,
+        43.746,
+        52.407,
+        65.446,
+        77.555,
+        87.051
+      ],
+      "duration": 94.877
+    },
+    {
+      "number": 2,
+      "title": "Write the Error, Not the Fact",
+      "blurb": "The delta rule run against blind accumulation on the same stream: 0.59 versus 0.89 latest-value recall.",
+      "scene": "books/explained-delta-rule/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.253,
+        16.811,
+        26.424,
+        37.175,
+        47.101,
+        53.905,
+        66.026,
+        76.824
+      ],
+      "duration": 83.546
+    },
+    {
+      "number": 3,
+      "title": "Forgetting as a Feature",
+      "blurb": "A diagonal decay run for real: the newest facts recall at 0.96, the oldest melt to zero.",
+      "scene": "books/explained-delta-rule/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        9.416,
+        20.271,
+        28.085,
+        39.184,
+        51.386,
+        63.553,
+        76.011
+      ],
+      "duration": 88.747
+    },
+    {
+      "number": 4,
+      "title": "When Memory Must Rotate",
+      "blurb": "The paper's mod-five rotation counter recreated exactly — norm one after two hundred steps while decay shrinks to dust.",
+      "scene": "books/explained-delta-rule/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        13.34,
+        27.446,
+        38.232,
+        47.995,
+        57.91,
+        71.018,
+        88.178,
+        105.407
+      ],
+      "duration": 113.453
+    },
+    {
+      "number": 5,
+      "title": "The Chunked Frontier",
+      "blurb": "The chunk-WY factorization run and verified to four times ten to the minus sixteen; the KDA, GDN-2, SFDA map.",
+      "scene": "books/explained-delta-rule/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        11.32,
+        24.172,
+        34.319,
+        47.217,
+        57.539,
+        67.768,
+        79.981,
+        90.871,
+        107.787
+      ],
+      "duration": 120.511
+    }
+  ]
+}

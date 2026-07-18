@@ -1,0 +1,43 @@
+{
+  "comment": "Watched sources for the weekly arXiv discovery pipeline (arxiv-weekly.yml). Edit freely — authors are queried by name via the arXiv API; groups are searched as all-fields terms; categories bound the search. The discovery agent treats these as the definition of 'well known, reputable'.",
+  "authors": [
+    "Yoshua Bengio",
+    "Ilya Sutskever",
+    "Percy Liang",
+    "Chelsea Finn",
+    "Sergey Levine",
+    "Chris Olah",
+    "Neel Nanda",
+    "Jacob Steinhardt",
+    "Jason Wei",
+    "Tri Dao",
+    "Albert Gu",
+    "Songlin Yang",
+    "Sasha Rush",
+    "Christopher Manning",
+    "Yann LeCun",
+    "Kaiming He",
+    "Lilian Weng",
+    "John Schulman",
+    "Jared Kaplan",
+    "Ethan Perez",
+    "Sam Bowman",
+    "Been Kim",
+    "David Duvenaud",
+    "Max Welling",
+    "Diederik Kingma"
+  ],
+  "groups": [
+    "Anthropic",
+    "DeepSeek-AI",
+    "Kimi Team",
+    "Moonshot AI",
+    "Google DeepMind",
+    "OpenAI",
+    "Qwen Team",
+    "Meta FAIR"
+  ],
+  "categories": ["cs.LG", "cs.CL", "cs.AI", "stat.ML"],
+  "lookback_days": 14,
+  "max_candidates": 8
+}

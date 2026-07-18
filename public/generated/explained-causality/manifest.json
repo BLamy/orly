@@ -1,0 +1,106 @@
+{
+  "format": 3,
+  "slug": "explained-causality",
+  "title": "Explained: Causality",
+  "subtitle": "Sign flips, severed wires, honest coins — and the features that survive",
+  "animal": "animal.webp",
+  "accent": "#b0277a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Slope That Lied",
+      "blurb": "A real confounded dataset: every group slopes up, the pool slopes down.",
+      "scene": "books/explained-causality/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.94,
+        19.737,
+        28.038,
+        36.524,
+        43.63,
+        51.676,
+        59.512,
+        68.788
+      ],
+      "duration": 77.182
+    },
+    {
+      "number": 2,
+      "title": "Seeing Is Not Doing",
+      "blurb": "One structural model, simulated twice: slope 1.63 observed, 0.80 under intervention.",
+      "scene": "books/explained-causality/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.427,
+        16.416,
+        24.532,
+        32.983,
+        41.517,
+        51.212,
+        63.843,
+        72.77
+      ],
+      "duration": 78.761
+    },
+    {
+      "number": 3,
+      "title": "Closing the Backdoor",
+      "blurb": "Stratify, fit, reweight: the true effect recovered from confounded data alone.",
+      "scene": "books/explained-causality/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        10.53,
+        16.904,
+        25.994,
+        36.513,
+        46.602,
+        55.983,
+        64.354,
+        72.887
+      ],
+      "duration": 79.83
+    },
+    {
+      "number": 4,
+      "title": "The Honest Coin",
+      "blurb": "A drug with a wired-in +0.5 effect that an observational study calls harmful.",
+      "scene": "books/explained-causality/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        9.218,
+        18.204,
+        26.076,
+        35.945,
+        43.688,
+        53.545,
+        61.916,
+        72.156,
+        82.326
+      ],
+      "duration": 91.393
+    },
+    {
+      "number": 5,
+      "title": "Features That Survive",
+      "blurb": "A real classifier that leans on a shortcut: 94 percent in training, a coin flip after the shift.",
+      "scene": "books/explained-causality/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        11.25,
+        20.074,
+        29.861,
+        39.265,
+        49.331,
+        60.674,
+        70.322,
+        80.956
+      ],
+      "duration": 90.651
+    }
+  ]
+}

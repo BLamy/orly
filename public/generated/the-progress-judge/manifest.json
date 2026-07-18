@@ -1,0 +1,89 @@
+{
+  "format": 3,
+  "slug": "the-progress-judge",
+  "title": "The Progress Judge",
+  "animal": "animal.webp",
+  "accent": "#198a8a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Loop That Lies to Itself",
+      "blurb": "A builder and a critic can volley forever: every attempt plausible, every refutation fair, and nobody watching the trajectory. Plot the verdicts and the failure appears — an orbit that never approaches zero.",
+      "scene": "books/the-progress-judge/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        14.141,
+        22.675,
+        32.67,
+        40.577,
+        51.815,
+        63.24,
+        75.244,
+        82.535,
+        92.392
+      ],
+      "duration": 103.375
+    },
+    {
+      "number": 2,
+      "title": "Rounds of Three, and the Judge",
+      "blurb": "Rework runs in rounds of three, and at attempts three, six, and nine a third critic convenes: the progress judge reads the successive verdicts, oldest first, and rules on exactly one question — is this converging?",
+      "scene": "books/the-progress-judge/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        11.505,
+        22.895,
+        34.494,
+        44.002,
+        53.197,
+        64.227,
+        74.211,
+        83.848,
+        95.435,
+        106.871
+      ],
+      "duration": 116.565
+    },
+    {
+      "number": 3,
+      "title": "Thrash, the Cap, and the Loud Stop",
+      "blurb": "Two refutations with the identical finding set are a proof, not an opinion — no judge needed. Ten attempts is the hard cap. And every stop flips the project to invalid loop: written, committed, loud.",
+      "scene": "books/the-progress-judge/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        7.663,
+        17.949,
+        28.19,
+        38.789,
+        47.938,
+        57.865,
+        68.453,
+        77.904,
+        88.399
+      ],
+      "duration": 98.129
+    },
+    {
+      "number": 4,
+      "title": "When to Stop Honestly",
+      "blurb": "An unbounded loop turns failure into spend; a bare cap kills work one round from landing. The judge is what lets the cap be generous — and stopping honestly is what earns the right to run unattended.",
+      "scene": "books/the-progress-judge/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        11.703,
+        23.196,
+        34.841,
+        46.927,
+        58.618,
+        67.605,
+        78.611,
+        90.116
+      ],
+      "duration": 101.099
+    }
+  ]
+}

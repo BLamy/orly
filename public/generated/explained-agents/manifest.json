@@ -1,0 +1,109 @@
+{
+  "format": 3,
+  "slug": "explained-agents",
+  "title": "Explained: Agents",
+  "subtitle": "From predictor to actor — and why an agent's word is the expensive claim",
+  "animal": "animal.webp",
+  "accent": "#e07b1a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "From Predictor to Actor",
+      "blurb": "A real reason-and-act loop run on screen: two lookups, one subtraction, and an answer with a replayable trail — 13.69 km.",
+      "scene": "books/explained-agents/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        11.355,
+        19.993,
+        34.389,
+        47.322,
+        60.465,
+        71.03,
+        84.173,
+        97.176,
+        107.277
+      ],
+      "duration": 117.215
+    },
+    {
+      "number": 2,
+      "title": "A Plan Is a Hypothesis",
+      "blurb": "A real depth-first task tree with backtracking: 26 placements tried, 4 retreats, and the branch that works.",
+      "scene": "books/explained-agents/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        11.633,
+        23.011,
+        34.273,
+        47.729,
+        57.075,
+        67.873,
+        81.073,
+        92.312,
+        101.96
+      ],
+      "duration": 109.878
+    },
+    {
+      "number": 3,
+      "title": "Memory Is a Budget",
+      "blurb": "Real context arithmetic: 490 tokens a step fills 128k at step 258 — and retrieval makes the bill 10 times cheaper.",
+      "scene": "books/explained-agents/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        11.471,
+        26.854,
+        36.467,
+        50.272,
+        62.033,
+        78.833,
+        90.571,
+        105.653
+      ],
+      "duration": 114.151
+    },
+    {
+      "number": 4,
+      "title": "Why Agents Fail",
+      "blurb": "0.95 to the twentieth is 0.36, measured over 4,000 simulated runs — plus one poisoned lookup and a gamed checker.",
+      "scene": "books/explained-agents/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        11.378,
+        23.058,
+        34.517,
+        44.118,
+        58.445,
+        73.723,
+        87.586,
+        96.665,
+        111.793
+      ],
+      "duration": 125.11
+    },
+    {
+      "number": 5,
+      "title": "The Expensive Claim",
+      "blurb": "The series capstone: 5,000 success claims through an adversarial critic — precision 60 to 93 percent, thesis closed.",
+      "scene": "books/explained-agents/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        10.855,
+        23.418,
+        38.615,
+        53.639,
+        64.447,
+        79.076,
+        94.621,
+        111.015,
+        125.376
+      ],
+      "duration": 138.484
+    }
+  ]
+}

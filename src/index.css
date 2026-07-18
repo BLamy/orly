@@ -743,6 +743,93 @@
   margin-top: 18px;
 }
 
+/* ---- mobile portrait: column flow, captions below the video, sidebar
+       below the controls (the page scrolls) ------------------------------- */
+@media (max-width: 720px) and (orientation: portrait) {
+  .bp {
+    overflow-y: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+  .bp-layout {
+    flex-direction: column;
+    height: auto;
+    min-height: 100dvh;
+  }
+  .bp-main {
+    flex: none;
+  }
+  .bp-player {
+    position: static;
+  }
+  .bp-stagewrap {
+    flex: none;
+  }
+  .bp-stage {
+    max-width: none;
+  }
+  /* the below-video caption block (React moves it out of the stage) */
+  .captions-below {
+    position: static;
+    left: auto;
+    right: auto;
+    bottom: auto;
+    min-height: 92px; /* ~3 lines reserved so the layout doesn't jump */
+    align-items: flex-start;
+    padding: 8px 10px 0;
+  }
+  .captions-below .captions-pill {
+    background: rgba(13, 19, 33, 0.72);
+    backdrop-filter: none;
+    box-shadow: none;
+  }
+  /* .bp-layout > wins over the blanket ≤960px `.bp-side { display: none }` */
+  .bp-layout > .bp-side {
+    display: block;
+    flex: none;
+    border-left: none;
+    border-top: 1px solid rgba(148, 163, 184, 0.14);
+    overflow: visible;
+  }
+}
+
+/* ---- mobile landscape: the stage fills the viewport; topbar/controls
+       overlay it; no sidebar --------------------------------------------- */
+@media (max-width: 1000px) and (orientation: landscape) and (max-height: 520px) {
+  .bp-side {
+    display: none;
+  }
+  .bp-topbar {
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    z-index: 6;
+    background: linear-gradient(rgba(4, 8, 18, 0.65), transparent);
+    padding-left: max(14px, env(safe-area-inset-left, 0px));
+    padding-right: max(14px, env(safe-area-inset-right, 0px));
+  }
+  .bp-controls {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    z-index: 6;
+    background: linear-gradient(transparent, rgba(4, 8, 18, 0.72));
+    padding-left: max(14px, env(safe-area-inset-left, 0px));
+    padding-right: max(14px, env(safe-area-inset-right, 0px));
+  }
+  .bp-stagewrap {
+    padding: 0;
+  }
+  .bp-stage {
+    max-width: calc(100dvh * 16 / 9);
+    border-radius: 0;
+  }
+  .captions {
+    bottom: 64px; /* clear the overlaid control bar */
+  }
+}
+
 .bp-side-cover {
   display: flex;
   align-items: center;

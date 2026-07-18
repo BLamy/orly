@@ -1,0 +1,108 @@
+{
+  "format": 3,
+  "slug": "explained-graphs",
+  "title": "Explained: Graph Learning",
+  "subtitle": "Adjacency, message passing, over-smoothing, tasks — and the spectrum underneath",
+  "animal": "animal.webp",
+  "accent": "#b0277a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "One Matrix",
+      "blurb": "A real 10-node, 15-edge community graph drawn twice: node-link and adjacency matrix.",
+      "scene": "books/explained-graphs/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.429,
+        16.846,
+        26.796,
+        34.725,
+        43.329,
+        53.58,
+        63.181,
+        72.342
+      ],
+      "duration": 79.505
+    },
+    {
+      "number": 2,
+      "title": "Trading Messages",
+      "blurb": "One real mean-aggregation layer, computed vote by vote at the bridge node.",
+      "scene": "books/explained-graphs/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.3,
+        18.042,
+        25.867,
+        34.378,
+        44.293,
+        52.745,
+        60.465,
+        69.928,
+        78.728
+      ],
+      "duration": 87.029
+    },
+    {
+      "number": 3,
+      "title": "Depth That Erases",
+      "blurb": "Sixteen real layers collapse the communities to a quarter of their separation — measured.",
+      "scene": "books/explained-graphs/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.882,
+        19.214,
+        27.515,
+        35.491,
+        44.988,
+        53.661,
+        62.728,
+        70.948,
+        81.118
+      ],
+      "duration": 88.282
+    },
+    {
+      "number": 4,
+      "title": "Label and Link",
+      "blurb": "Real label propagation from two seeds, and common-neighbor link prediction with a tie at the top.",
+      "scene": "books/explained-graphs/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        7.129,
+        17.113,
+        24.939,
+        32.59,
+        41.448,
+        50.016,
+        58.968,
+        67.362
+      ],
+      "duration": 76.348
+    },
+    {
+      "number": 5,
+      "title": "The Graph as a Drum",
+      "blurb": "The Fiedler vector computed by power iteration splits the communities by sign alone.",
+      "scene": "books/explained-graphs/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        7.605,
+        16.741,
+        27.341,
+        36.722,
+        45.58,
+        52.291,
+        62.902,
+        73.328,
+        84.334
+      ],
+      "duration": 93.715
+    }
+  ]
+}

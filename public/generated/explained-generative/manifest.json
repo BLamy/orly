@@ -1,0 +1,116 @@
+{
+  "format": 3,
+  "slug": "explained-generative",
+  "title": "Explained: Generative Models",
+  "animal": "animal.webp",
+  "accent": "#198a8a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Density: Learning a Distribution",
+      "blurb": "Three hundred points from a hidden mixture, a real EM fit sliding into place, and fresh samples drawn from the model.",
+      "scene": "books/explained-generative/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        10.426,
+        22.163,
+        34.935,
+        45.941,
+        57.192,
+        69.324,
+        77.463,
+        87.517,
+        95.714,
+        105.13
+      ],
+      "duration": 117.494
+    },
+    {
+      "number": 2,
+      "title": "The Autoencoder: Compress, Then Reconstruct",
+      "blurb": "A real linear autoencoder squeezes 2-D data through a 1-number bottleneck — and rediscovers principal component analysis.",
+      "scene": "books/explained-generative/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.172,
+        20.631,
+        32.322,
+        43.491,
+        54.625,
+        65.503,
+        80.12,
+        93.459,
+        106.277,
+        116.006
+      ],
+      "duration": 127.523
+    },
+    {
+      "number": 3,
+      "title": "The VAE: a Latent Space You Can Walk",
+      "blurb": "Blur every code and tax departures from the bell curve: a trained latent axis you can sample, walk, and interpolate.",
+      "scene": "books/explained-generative/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        10.298,
+        20.399,
+        31.753,
+        44.431,
+        55.867,
+        68.244,
+        78.031,
+        86.169,
+        95.968,
+        107.183
+      ],
+      "duration": 115.682
+    },
+    {
+      "number": 4,
+      "title": "The GAN Game: Forger versus Detective",
+      "blurb": "Forger versus detective on a two-mode line: a blurry compromise, then honest recorded mode collapse.",
+      "scene": "books/explained-generative/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        10.24,
+        22.86,
+        37.849,
+        49.296,
+        59.351,
+        68.975,
+        80.249,
+        93.612,
+        108.125,
+        122.359
+      ],
+      "duration": 131.891
+    },
+    {
+      "number": 5,
+      "title": "Diffusion, Revisited From Here",
+      "blurb": "The exact forward-noising formula melts a spiral, then the family tree — where VAEs, GANs, autoregression, and diffusion spend their compute.",
+      "scene": "books/explained-generative/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        11.68,
+        21.2,
+        33.182,
+        42.888,
+        55.74,
+        67.373,
+        76.371,
+        87.923,
+        96.781,
+        108.322,
+        120.152,
+        134.061
+      ],
+      "duration": 142.664
+    }
+  ]
+}

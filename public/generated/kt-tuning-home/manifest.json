@@ -1,0 +1,81 @@
+{
+  "format": 3,
+  "slug": "kt-tuning-home",
+  "title": "Tuning at Home",
+  "animal": "animal.webp",
+  "accent": "#1f6fb2",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Fine-Tune You Couldn't Afford",
+      "blurb": "1400 GB theoretical vs 70 GB measured — LoRA on the split rig",
+      "scene": "books/kt-tuning-home/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        9.59,
+        22.291,
+        34.226,
+        44.779,
+        56.319,
+        66.037,
+        77.356
+      ],
+      "duration": 87.956
+    },
+    {
+      "number": 2,
+      "title": "One Config, New Engine",
+      "blurb": "use_kt: true and the injection-rule engine swap",
+      "scene": "books/kt-tuning-home/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        10.658,
+        21.606,
+        31.405,
+        41.935,
+        52.175,
+        62.252,
+        72.585
+      ],
+      "duration": 82.895
+    },
+    {
+      "number": 3,
+      "title": "Weights Before Training",
+      "blurb": "FP8-to-BF16 casting and the AMX SFT backends",
+      "scene": "books/kt-tuning-home/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        9.416,
+        17.705,
+        28.433,
+        39.741,
+        51.71,
+        63.181,
+        72.411
+      ],
+      "duration": 82.245
+    },
+    {
+      "number": 4,
+      "title": "The Loop Closes",
+      "blurb": "Train, load the adapter, chat — the series recap",
+      "scene": "books/kt-tuning-home/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        9.346,
+        21.699,
+        31.3,
+        42.109,
+        52.976,
+        65.689,
+        77.67
+      ],
+      "duration": 89.768
+    }
+  ]
+}
