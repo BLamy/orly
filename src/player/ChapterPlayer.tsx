@@ -210,12 +210,26 @@ export function ChapterPlayer({
   pbRef.current = pb;
 
   // Autoplay once the scene is ready (the chapter click is the user gesture).
+  // On iOS the gesture has often expired by the time the scene chunk + MP3
+  // load, and audio.play() rejects — usePlayback swallows that rejection and
+  // reports "playing" anyway, freezing the stage with no play affordance. So
+  // probe the audio element ourselves: only enter the playing state when
+  // play() actually resolves; on rejection stay paused so the big play button
+  // renders (the user's tap then starts playback with a live gesture).
   const startedRef = useRef(false);
   useEffect(() => {
     if (!built || startedRef.current) return;
     startedRef.current = true;
-    pbRef.current.play();
-  }, [built]);
+    const a = audioRef.current;
+    if (useAudioClock && a) {
+      a.play().then(
+        () => pbRef.current.play(),
+        () => { /* autoplay blocked — stay paused, show the play button */ }
+      );
+    } else {
+      pbRef.current.play();
+    }
+  }, [built, useAudioClock]);
 
   // End detection → "Up next" card. Audio mode ends at the MANIFEST duration
   // (the aligned narration end) — TTS sometimes appends trailing junk to the
