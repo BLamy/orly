@@ -1,0 +1,96 @@
+{
+  "format": 3,
+  "slug": "explained-sandboxing",
+  "title": "Explained: The Sandbox",
+  "subtitle": "How we caged the agents in almostnode — a cross-origin wall, and what it costs",
+  "animal": "animal.webp",
+  "accent": "#b0277a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Code You Didn't Write",
+      "blurb": "Six harmless-looking lines reach for your cookies — and on the fast path, reach them.",
+      "scene": "books/explained-sandboxing/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        19.389,
+        32.392,
+        49.946,
+        66.201,
+        81.282,
+        96.991,
+        110.296
+      ],
+      "duration": 123.949
+    },
+    {
+      "number": 2,
+      "title": "The Browser's Own Wall",
+      "blurb": "Scheme, host, port: the twenty-five-year-old wall almostnode's sandbox is built on.",
+      "scene": "books/explained-sandboxing/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        13.781,
+        31.08,
+        45.336,
+        59.64,
+        76.591,
+        91.301,
+        109.156
+      ],
+      "duration": 124.783
+    },
+    {
+      "number": 3,
+      "title": "How We Caged the Agent",
+      "blurb": "The real architecture: a credentialless iframe, a service worker, an origin-checked pinhole.",
+      "scene": "books/explained-sandboxing/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        19.121,
+        38.348,
+        55.949,
+        77.798,
+        95.387,
+        116.993
+      ],
+      "duration": 138.251
+    },
+    {
+      "number": 4,
+      "title": "The Price of the Wall",
+      "blurb": "Snapshots, async round trips, a sixty-second cap — the honest price of distrust.",
+      "scene": "books/explained-sandboxing/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        14.118,
+        31.069,
+        51.642,
+        69.231,
+        89.791
+      ],
+      "duration": 107.694
+    },
+    {
+      "number": 5,
+      "title": "The Same Shape Everywhere",
+      "blurb": "Boundary, narrow channel, deny by default: the same shape from browser to kernel.",
+      "scene": "books/explained-sandboxing/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        15.476,
+        29.721,
+        49.806,
+        69.729,
+        85.054,
+        102.213
+      ],
+      "duration": 116.098
+    }
+  ]
+}

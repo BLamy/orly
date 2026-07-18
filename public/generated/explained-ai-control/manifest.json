@@ -1,0 +1,92 @@
+{
+  "format": 3,
+  "slug": "explained-ai-control",
+  "title": "Explained: AI Control",
+  "subtitle": "Getting useful work from a model you never trust — untrusted-monitor protocols, as a game",
+  "animal": "animal.webp",
+  "accent": "#e07b1a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Control Game",
+      "blurb": "Untrusted U, trusted T, a sliver of human audit — scored on safety and usefulness at once.",
+      "scene": "books/explained-ai-control/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        22.233,
+        39.962,
+        53.208,
+        69.543,
+        90.627,
+        112.686
+      ],
+      "duration": 130.31
+    },
+    {
+      "number": 2,
+      "title": "A Weak Model, Watching",
+      "blurb": "Trusted monitoring turns a scarce audit budget into a measured catch rate.",
+      "scene": "books/explained-ai-control/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        16.173,
+        31.834,
+        46.858,
+        62.624,
+        80.62
+      ],
+      "duration": 96.502
+    },
+    {
+      "number": 3,
+      "title": "When to Defect",
+      "blurb": "The attacker's dilemma: defect often and hang, defect rarely and barely land.",
+      "scene": "books/explained-ai-control/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        16.985,
+        34.83,
+        53.325,
+        72.644,
+        90.314
+      ],
+      "duration": 105.094
+    },
+    {
+      "number": 4,
+      "title": "Traps and the Doubt They Cast",
+      "blurb": "Honeypots and upfront auditing tax every defection with doubt — even the ones you never planted.",
+      "scene": "books/explained-ai-control/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        19.783,
+        34.18,
+        51.049,
+        68.198,
+        90.245
+      ],
+      "duration": 106.906
+    },
+    {
+      "number": 5,
+      "title": "What the Numbers Say",
+      "blurb": "The reported protocol frontier, replotted honestly, and the distributed-attack pushback.",
+      "scene": "books/explained-ai-control/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        18.402,
+        37.071,
+        56.622,
+        78.449,
+        106.812,
+        122.95
+      ],
+      "duration": 141.735
+    }
+  ]
+}

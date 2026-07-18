@@ -1,42 +1,781 @@
 {
   "books": [
     {
-      "slug": "how-to-build-a-shed",
-      "title": "How to Build a Shed",
+      "slug": "ssrn-aei",
+      "title": "Coherence Theater",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b0277a",
+      "href": "?bundle=ssrn-aei",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Missing Variable",
+          "duration": 112.431
+        },
+        {
+          "number": 2,
+          "title": "Adversarial Without an Antagonist",
+          "duration": 112.339
+        },
+        {
+          "number": 3,
+          "title": "Coherent From the Inside",
+          "duration": 114.613
+        },
+        {
+          "number": 4,
+          "title": "The Refusal Penalty",
+          "duration": 123.483
+        },
+        {
+          "number": 5,
+          "title": "From Performance to Readiness",
+          "duration": 103.561
+        }
+      ],
+      "createdAt": "2026-07-18T02:05:33.288Z"
+    },
+    {
+      "slug": "kt-tuning-home",
+      "title": "Tuning at Home",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1f6fb2",
+      "animal": "generated/kt-tuning-home/animal.webp",
+      "href": "?bundle=kt-tuning-home",
+      "series": "KTransformers",
+      "seriesOrder": 4,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Fine-Tune You Couldn't Afford",
+          "duration": 87.956
+        },
+        {
+          "number": 2,
+          "title": "One Config, New Engine",
+          "duration": 82.895
+        },
+        {
+          "number": 3,
+          "title": "Weights Before Training",
+          "duration": 82.245
+        },
+        {
+          "number": 4,
+          "title": "The Loop Closes",
+          "duration": 89.768
+        }
+      ],
+      "createdAt": "2026-07-17T20:58:52.719Z"
+    },
+    {
+      "slug": "kt-amx-path",
+      "title": "The AMX Path",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#3a8b3a",
+      "animal": "generated/kt-amx-path/animal.webp",
+      "href": "?bundle=kt-amx-path",
+      "series": "KTransformers",
+      "seriesOrder": 3,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Precision Menu",
+          "duration": 79.784
+        },
+        {
+          "number": 2,
+          "title": "Tiles That Multiply",
+          "duration": 78.576
+        },
+        {
+          "number": 3,
+          "title": "Feeding the Tiles",
+          "duration": 87.958
+        },
+        {
+          "number": 4,
+          "title": "The Bill Comes Back",
+          "duration": 86.146
+        }
+      ],
+      "createdAt": "2026-07-17T20:55:29.913Z"
+    },
+    {
+      "slug": "kt-expert-shuffle",
+      "title": "The Expert Shuffle",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#3a8b3a",
+      "animal": "generated/kt-expert-shuffle/animal.webp",
+      "href": "?bundle=kt-expert-shuffle",
+      "series": "KTransformers",
+      "seriesOrder": 2,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Hot and Cold",
+          "duration": 77.042
+        },
+        {
+          "number": 2,
+          "title": "Four Ways to Deal",
+          "duration": 72.632
+        },
+        {
+          "number": 3,
+          "title": "Deferred Experts",
+          "duration": 82.198
+        },
+        {
+          "number": 4,
+          "title": "The Shuffle Pays",
+          "duration": 86.518
+        }
+      ],
+      "createdAt": "2026-07-17T20:52:46.918Z"
+    },
+    {
+      "slug": "kt-first-token",
+      "title": "KTransformers",
       "subtitle": "",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#41607f",
-      "animal": "generated/how-to-build-a-shed/animal.webp",
-      "href": "?bundle=how-to-build-a-shed",
+      "animal": "generated/kt-first-token/animal.webp",
+      "href": "?bundle=kt-first-token",
+      "series": "KTransformers",
+      "seriesOrder": 1,
       "chapters": [
         {
           "number": 1,
-          "title": "An Eight-Foot Cube",
-          "duration": 81.967
+          "title": "The Model That Doesn't Fit",
+          "duration": 89.908
         },
         {
           "number": 2,
-          "title": "A Level Foundation",
-          "duration": 92.183
+          "title": "kt run",
+          "duration": 83.963
         },
         {
           "number": 3,
-          "title": "A Floor That Never Sags",
-          "duration": 104.863
+          "title": "One Token's Journey",
+          "duration": 87.633
         },
         {
           "number": 4,
-          "title": "Built Flat, Pulled Square",
-          "duration": 115.497
+          "title": "The Familiar Door",
+          "duration": 78.808
+        }
+      ],
+      "createdAt": "2026-07-17T20:50:07.280Z"
+    },
+    {
+      "slug": "arxiv-deeploop",
+      "title": "The Loop That Went Deep",
+      "subtitle": "Depth Scaling for Looped Transformers",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/arxiv-deeploop/animal.webp",
+      "href": "?bundle=arxiv-deeploop",
+      "series": "Fresh from arXiv",
+      "seriesOrder": 8,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Around the Block",
+          "duration": 79.877
+        },
+        {
+          "number": 2,
+          "title": "Gradients That Compound",
+          "duration": 85.263
+        },
+        {
+          "number": 3,
+          "title": "From Fourth Root to Square Root",
+          "duration": 83.685
+        },
+        {
+          "number": 4,
+          "title": "What Looping Buys",
+          "duration": 77.74
         },
         {
           "number": 5,
-          "title": "Raising Day",
-          "duration": 124.551
+          "title": "Depth You Can Dial",
+          "duration": 69.52
         }
       ],
-      "createdAt": "2026-07-17T12:09:13.251Z"
+      "createdAt": "2026-07-17T20:23:44.963Z"
+    },
+    {
+      "slug": "explained-synthetic-data",
+      "title": "Explained: Synthetic Data",
+      "subtitle": "A copy of a copy — model collapse, the filter that saves it, and the wall made of text",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/explained-synthetic-data/animal.webp",
+      "href": "?bundle=explained-synthetic-data",
+      "series": "The Explainers",
+      "seriesOrder": 32,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Training on Yourself",
+          "duration": 109.318
+        },
+        {
+          "number": 2,
+          "title": "Model Collapse",
+          "duration": 99.521
+        },
+        {
+          "number": 3,
+          "title": "What Filtering Saves",
+          "duration": 116.843
+        },
+        {
+          "number": 4,
+          "title": "Curriculum and Bootstrapping",
+          "duration": 108.81
+        },
+        {
+          "number": 5,
+          "title": "The Data Wall",
+          "duration": 122.092
+        }
+      ],
+      "createdAt": "2026-07-17T19:13:59.853Z"
+    },
+    {
+      "slug": "explained-ai-control",
+      "title": "Explained: AI Control",
+      "subtitle": "Getting useful work from a model you never trust — untrusted-monitor protocols, as a game",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#e07b1a",
+      "animal": "generated/explained-ai-control/animal.webp",
+      "href": "?bundle=explained-ai-control",
+      "series": "The Explainers",
+      "seriesOrder": 38,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Control Game",
+          "duration": 130.31
+        },
+        {
+          "number": 2,
+          "title": "A Weak Model, Watching",
+          "duration": 96.502
+        },
+        {
+          "number": 3,
+          "title": "When to Defect",
+          "duration": 105.094
+        },
+        {
+          "number": 4,
+          "title": "Traps and the Doubt They Cast",
+          "duration": 106.906
+        },
+        {
+          "number": 5,
+          "title": "What the Numbers Say",
+          "duration": 141.735
+        }
+      ],
+      "createdAt": "2026-07-17T19:06:13.772Z"
+    },
+    {
+      "slug": "arxiv-latent-moe",
+      "title": "Experts in a Smaller Room",
+      "subtitle": "LatentMoE and the search for optimal accuracy per FLOP and parameter",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c79100",
+      "animal": "generated/arxiv-latent-moe/animal.webp",
+      "href": "?bundle=arxiv-latent-moe",
+      "series": "Fresh from arXiv",
+      "seriesOrder": 7,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Width You Pay For",
+          "duration": 86.936
+        },
+        {
+          "number": 2,
+          "title": "Experts in a Smaller Room",
+          "duration": 84.752
+        },
+        {
+          "number": 3,
+          "title": "Why the Squeeze Is Safe",
+          "duration": 103.468
+        },
+        {
+          "number": 4,
+          "title": "The Receipts",
+          "duration": 94.413
+        },
+        {
+          "number": 5,
+          "title": "The Honest Ledger",
+          "duration": 88.328
+        }
+      ],
+      "createdAt": "2026-07-17T19:02:15.263Z"
+    },
+    {
+      "slug": "explained-distributed-training",
+      "title": "Explained: Distributed Training",
+      "subtitle": "Four ways to cut a model that doesn't fit — and the communication bill each one pays",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1f6fb2",
+      "animal": "generated/explained-distributed-training/animal.webp",
+      "href": "?bundle=explained-distributed-training",
+      "series": "The Explainers",
+      "seriesOrder": 31,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Why One Chip Can't",
+          "duration": 116.658
+        },
+        {
+          "number": 2,
+          "title": "Data Parallelism and the Ring",
+          "duration": 108.112
+        },
+        {
+          "number": 3,
+          "title": "Cutting the Model",
+          "duration": 110.665
+        },
+        {
+          "number": 4,
+          "title": "ZeRO — Shard the Redundancy",
+          "duration": 114.984
+        },
+        {
+          "number": 5,
+          "title": "Expert Parallelism",
+          "duration": 120.512
+        }
+      ],
+      "createdAt": "2026-07-17T18:56:40.245Z"
+    },
+    {
+      "slug": "explained-sandboxing",
+      "title": "Explained: The Sandbox",
+      "subtitle": "How we caged the agents in almostnode — a cross-origin wall, and what it costs",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b0277a",
+      "animal": "generated/explained-sandboxing/animal.webp",
+      "href": "?bundle=explained-sandboxing",
+      "series": "The Explainers",
+      "seriesOrder": 37,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Code You Didn't Write",
+          "duration": 123.949
+        },
+        {
+          "number": 2,
+          "title": "The Browser's Own Wall",
+          "duration": 124.783
+        },
+        {
+          "number": 3,
+          "title": "How We Caged the Agent",
+          "duration": 138.251
+        },
+        {
+          "number": 4,
+          "title": "The Price of the Wall",
+          "duration": 107.694
+        },
+        {
+          "number": 5,
+          "title": "The Same Shape Everywhere",
+          "duration": 116.098
+        }
+      ],
+      "createdAt": "2026-07-17T17:59:56.920Z"
+    },
+    {
+      "slug": "explained-test-time",
+      "title": "Explained: Test-Time Compute",
+      "subtitle": "One sample is a lottery ticket — sampling, voting, grading, searching, and the new axis of scaling",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#a01f3c",
+      "animal": "generated/explained-test-time/animal.webp",
+      "href": "?bundle=explained-test-time",
+      "series": "The Explainers",
+      "seriesOrder": 30,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "One Sample Is a Lottery Ticket",
+          "duration": 108.902
+        },
+        {
+          "number": 2,
+          "title": "Best-of-N and Self-Consistency",
+          "duration": 102.309
+        },
+        {
+          "number": 3,
+          "title": "Process vs Outcome",
+          "duration": 110.715
+        },
+        {
+          "number": 4,
+          "title": "Search Over Reasoning",
+          "duration": 111.966
+        },
+        {
+          "number": 5,
+          "title": "The New Scaling Law",
+          "duration": 124.134
+        }
+      ],
+      "createdAt": "2026-07-17T17:52:47.978Z"
+    },
+    {
+      "slug": "explained-long-context",
+      "title": "Explained: Long Context",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1f6fb2",
+      "animal": "generated/explained-long-context/animal.webp",
+      "href": "?bundle=explained-long-context",
+      "series": "The Explainers",
+      "seriesOrder": 34,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Positions as Rotations",
+          "duration": 100.264
+        },
+        {
+          "number": 2,
+          "title": "Stretching the Ruler",
+          "duration": 104.211
+        },
+        {
+          "number": 3,
+          "title": "Attention Sinks",
+          "duration": 92.508
+        },
+        {
+          "number": 4,
+          "title": "Context Rot",
+          "duration": 89.119
+        },
+        {
+          "number": 5,
+          "title": "The Bill",
+          "duration": 108.809
+        }
+      ],
+      "createdAt": "2026-07-17T17:46:12.831Z"
+    },
+    {
+      "slug": "arxiv-evoclaw",
+      "title": "Skills From Their Own Runs",
+      "subtitle": "Can agents learn reusable skills from their own execution traces?",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#6a3f9e",
+      "animal": "generated/arxiv-evoclaw/animal.webp",
+      "href": "?bundle=arxiv-evoclaw",
+      "series": "Fresh from arXiv",
+      "seriesOrder": 6,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Compounding Dream",
+          "duration": 90.651
+        },
+        {
+          "number": 2,
+          "title": "The Loop, on a Toy Agent",
+          "duration": 85.589
+        },
+        {
+          "number": 3,
+          "title": "The Measured Answer",
+          "duration": 84.009
+        },
+        {
+          "number": 4,
+          "title": "Failure Modes and the Bill",
+          "duration": 80.851
+        },
+        {
+          "number": 5,
+          "title": "Verified, Not Remembered",
+          "duration": 89.676
+        }
+      ],
+      "createdAt": "2026-07-17T17:44:58.392Z"
+    },
+    {
+      "slug": "explained-property-testing",
+      "title": "Explained: Testing Without an Oracle",
+      "subtitle": "Property-based and metamorphic testing for systems whose right answers nobody knows",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#a01f3c",
+      "animal": "generated/explained-property-testing/animal.webp",
+      "href": "?bundle=explained-property-testing",
+      "series": "The Explainers",
+      "seriesOrder": 36,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Oracle Problem",
+          "duration": 123.622
+        },
+        {
+          "number": 2,
+          "title": "Properties Over Examples",
+          "duration": 136.857
+        },
+        {
+          "number": 3,
+          "title": "Metamorphic Relations",
+          "duration": 123.808
+        },
+        {
+          "number": 4,
+          "title": "Fuzzing the Harness",
+          "duration": 145.729
+        },
+        {
+          "number": 5,
+          "title": "Properties for AI Systems",
+          "duration": 149.073
+        }
+      ],
+      "createdAt": "2026-07-17T17:44:47.655Z"
+    },
+    {
+      "slug": "arxiv-small-giants",
+      "title": "Scaling the Horizon",
+      "subtitle": "Trillion-parameter performance from a 35B agent that just keeps working",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#e07b1a",
+      "animal": "generated/arxiv-small-giants/animal.webp",
+      "href": "?bundle=arxiv-small-giants",
+      "series": "Fresh from arXiv",
+      "seriesOrder": 5,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Two Axes",
+          "duration": 89.257
+        },
+        {
+          "number": 2,
+          "title": "The Solution Tree",
+          "duration": 105.976
+        },
+        {
+          "number": 3,
+          "title": "Six Teachers, One Student",
+          "duration": 88.05
+        },
+        {
+          "number": 4,
+          "title": "The Honest Ledger",
+          "duration": 85.078
+        },
+        {
+          "number": 5,
+          "title": "Frontier, Not Ladder",
+          "duration": 81.827
+        }
+      ],
+      "createdAt": "2026-07-17T17:33:36.416Z"
+    },
+    {
+      "slug": "explained-hybrid-attention",
+      "title": "Explained: Hybrid Attention",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#6a3f9e",
+      "animal": "generated/explained-hybrid-attention/animal.webp",
+      "href": "?bundle=explained-hybrid-attention",
+      "series": "The Explainers",
+      "seriesOrder": 33,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Two Memories",
+          "duration": 90.419
+        },
+        {
+          "number": 2,
+          "title": "Spotlights and Floodlights",
+          "duration": 96.13
+        },
+        {
+          "number": 3,
+          "title": "The Ratio Question",
+          "duration": 99.984
+        },
+        {
+          "number": 4,
+          "title": "Placement",
+          "duration": 86.658
+        },
+        {
+          "number": 5,
+          "title": "The Serve-Time Payoff",
+          "duration": 84.196
+        }
+      ],
+      "createdAt": "2026-07-17T17:23:12.336Z"
+    },
+    {
+      "slug": "explained-rlvr",
+      "title": "Explained: Verifiable Rewards",
+      "subtitle": "Rewards from executable checks — and the cliff between a solver and a lock pick",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1f6fb2",
+      "animal": "generated/explained-rlvr/animal.webp",
+      "href": "?bundle=explained-rlvr",
+      "series": "The Explainers",
+      "seriesOrder": 29,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "You Can't Sweet-Talk a Test Suite",
+          "duration": 121.765
+        },
+        {
+          "number": 2,
+          "title": "The RLVR Loop",
+          "duration": 115.728
+        },
+        {
+          "number": 3,
+          "title": "The Group Is the Critic",
+          "duration": 106.116
+        },
+        {
+          "number": 4,
+          "title": "Hacking the Verifier",
+          "duration": 108.902
+        },
+        {
+          "number": 5,
+          "title": "The Doctrine",
+          "duration": 125.155
+        }
+      ],
+      "createdAt": "2026-07-17T17:23:02.289Z"
+    },
+    {
+      "slug": "explained-formal-verification",
+      "title": "Explained: Proof or It Didn't Happen",
+      "subtitle": "Formal verification meets language models — tests sample, critics hunt, kernels cover",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#6a3f9e",
+      "animal": "generated/explained-formal-verification/animal.webp",
+      "href": "?bundle=explained-formal-verification",
+      "series": "The Explainers",
+      "seriesOrder": 35,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Tests Sample, Proofs Cover",
+          "duration": 123.158
+        },
+        {
+          "number": 2,
+          "title": "The Kernel Says Yes",
+          "duration": 126.085
+        },
+        {
+          "number": 3,
+          "title": "Propose, Check, Retry",
+          "duration": 136.812
+        },
+        {
+          "number": 4,
+          "title": "A Judge You Cannot Charm",
+          "duration": 143.127
+        },
+        {
+          "number": 5,
+          "title": "The Unnegotiable Verifier",
+          "duration": 137.833
+        }
+      ],
+      "createdAt": "2026-07-17T17:21:08.219Z"
+    },
+    {
+      "slug": "arxiv-model-forensics",
+      "title": "Model Forensics",
+      "subtitle": "Was it misalignment, or just a model that hates tedium?",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/arxiv-model-forensics/animal.webp",
+      "href": "?bundle=arxiv-model-forensics",
+      "series": "Fresh from arXiv",
+      "seriesOrder": 4,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Concerning Transcript",
+          "duration": 92.414
+        },
+        {
+          "number": 2,
+          "title": "Read the Thought, Edit the World",
+          "duration": 98.823
+        },
+        {
+          "number": 3,
+          "title": "Turning the Tedium Dial",
+          "duration": 99.055
+        },
+        {
+          "number": 4,
+          "title": "Six Verdicts",
+          "duration": 114.01
+        },
+        {
+          "number": 5,
+          "title": "Evidence, Not Vibes",
+          "duration": 112.106
+        }
+      ],
+      "createdAt": "2026-07-17T17:20:21.878Z"
     },
     {
       "slug": "explained-agents",
@@ -2491,6 +3230,44 @@
         }
       ],
       "createdAt": "2026-07-15T20:55:33.777Z"
+    },
+    {
+      "slug": "how-to-build-a-shed",
+      "title": "How to Build a Shed",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#41607f",
+      "animal": "generated/how-to-build-a-shed/animal.webp",
+      "href": "?bundle=how-to-build-a-shed",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "An Eight-Foot Cube",
+          "duration": 81.967
+        },
+        {
+          "number": 2,
+          "title": "A Level Foundation",
+          "duration": 92.183
+        },
+        {
+          "number": 3,
+          "title": "A Floor That Never Sags",
+          "duration": 104.863
+        },
+        {
+          "number": 4,
+          "title": "Built Flat, Pulled Square",
+          "duration": 115.497
+        },
+        {
+          "number": 5,
+          "title": "Raising Day",
+          "duration": 124.551
+        }
+      ],
+      "createdAt": "2026-07-17T12:09:13.251Z"
     }
   ]
 }

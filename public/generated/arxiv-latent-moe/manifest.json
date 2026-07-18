@@ -1,0 +1,96 @@
+{
+  "format": 3,
+  "slug": "arxiv-latent-moe",
+  "title": "Experts in a Smaller Room",
+  "subtitle": "LatentMoE and the search for optimal accuracy per FLOP and parameter",
+  "animal": "animal.webp",
+  "accent": "#c79100",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Width You Pay For",
+      "blurb": "Two serving regimes, one culprit: starved experts and an all-to-all that outweighs the math nine to one",
+      "scene": "books/arxiv-latent-moe/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        12.841,
+        26.076,
+        39.206,
+        52.814,
+        64.702,
+        77.578
+      ],
+      "duration": 86.936
+    },
+    {
+      "number": 2,
+      "title": "Experts in a Smaller Room",
+      "blurb": "Project tokens down four-fold, run four times as many latent experts, project back up",
+      "scene": "books/arxiv-latent-moe/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        12.608,
+        23.684,
+        35.607,
+        48.785,
+        59.256,
+        74.117
+      ],
+      "duration": 84.752
+    },
+    {
+      "number": 3,
+      "title": "Why the Squeeze Is Safe",
+      "blurb": "Barron budgets and routing combinatorics — with the ablation cliff at alpha four",
+      "scene": "books/arxiv-latent-moe/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        12.968,
+        26.958,
+        39.799,
+        52.639,
+        67.872,
+        80.016,
+        92.914
+      ],
+      "duration": 103.468
+    },
+    {
+      "number": 4,
+      "title": "The Receipts",
+      "blurb": "Wins every benchmark at matched cost, or matches with a third fewer active parameters",
+      "scene": "books/arxiv-latent-moe/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        15.279,
+        27.934,
+        41.378,
+        57.598,
+        76.383,
+        84.092
+      ],
+      "duration": 94.413
+    },
+    {
+      "number": 5,
+      "title": "The Honest Ledger",
+      "blurb": "Six percent throughput dip, a bounded win, partial scope — and the scoreboard that matters",
+      "scene": "books/arxiv-latent-moe/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        11.796,
+        23.708,
+        36.606,
+        51.292,
+        64.063,
+        78.169
+      ],
+      "duration": 88.328
+    }
+  ]
+}
