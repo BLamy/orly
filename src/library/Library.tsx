@@ -1,23 +1,29 @@
-import { useEffect, useRef, useState } from 'react';
-import { drawCover, type BookMeta } from './cover';
-import { drawBook3D } from './book3d';
+import { useEffect, useMemo, useRef, useState } from 'react';
+import { composeCover, drawSpine, type BookMeta } from './cover';
+import {
+  assetUrl,
+  buildShelves,
+  groupMatches,
+  openBook,
+  searchBooks,
+  useLazyVisible,
+} from './shared';
+import { MobileShelf } from './MobileShelf';
 import './library.css';
-
-const ASSET_BASE =
-  (import.meta as unknown as { env?: { BASE_URL?: string } }).env?.BASE_URL ?? '/';
-const assetUrl = (p: string) => ASSET_BASE + String(p).replace(/^\//, '');
 
 const COVER_W = 600;
 const COVER_H = 800;
-const BOOK_W = 230; // logical canvas size
-const BOOK_H = 340;
+// Desktop spine-shelf geometry (CSS pixels; canvases render at 2×).
+const BOOK_H = 288;
+const FACE_W = 216; // cover face (0.75 ratio)
+const SPINE_W = 48;
 
 const REPO_URL = 'https://github.com/BLamy/orly';
 const WORKFLOWS_URL = 'https://github.com/BLamy/orly/blob/main/generator/prompts/storyboard.txt';
 
-// The self-explaining "ORLY Loop" book always leads the shelf, regardless of the
-// createdAt order the generator writes into library.json.
-const PINNED_SLUG = 'the-orly-loop';
+// The mobile browse UI takes over on small screens and touch-first devices
+// (landscape phones included); desktop keeps the spine shelf.
+const MOBILE_MQ = '(max-width: 820px), ((hover: none) and (pointer: coarse) and (max-width: 1180px))';
 
 function GitHubMark() {
   return (
@@ -27,87 +33,142 @@ function GitHubMark() {
   );
 }
 
-function ShelfBook({ book, seriesIndex }: { book: BookMeta; seriesIndex?: number }) {
-  const canvasRef = useRef<HTMLCanvasElement | null>(null);
+// One book standing spine-out; hovering (or focusing) turns it to show the
+// cover. Two canvas-textured CSS-3D planes rotate as one assembly via a single
+// eased `transform` transition — GPU-only, no per-frame canvas repaints and no
+// layout properties animated, so neighbors never move.
+function SpineBook({ book, seriesIndex }: { book: BookMeta; seriesIndex?: number }) {
+  const rootRef = useRef<HTMLButtonElement | null>(null);
   const coverRef = useRef<HTMLCanvasElement | null>(null);
-  const [ready, setReady] = useState(false);
-  const [hover, setHover] = useState(false);
+  const spineRef = useRef<HTMLCanvasElement | null>(null);
+  const visible = useLazyVisible(rootRef);
+  const [open, setOpen] = useState(false);
+  const timer = useRef<number | undefined>(undefined);
 
-  // compose the O'Reilly cover once (after the animal loads)
   useEffect(() => {
-    const cover = document.createElement('canvas');
-    cover.width = COVER_W;
-    cover.height = COVER_H;
-    const cctx = cover.getContext('2d');
-    if (!cctx) return;
-    const finish = (img: HTMLImageElement | null) => {
-      drawCover(cctx, COVER_W, COVER_H, book, img);
-      coverRef.current = cover;
-      setReady(true);
-    };
-    if (!book.animal) return finish(null);
-    const img = new Image();
-    img.crossOrigin = 'anonymous';
-    img.onload = () => finish(img);
-    img.onerror = () => finish(null);
-    img.src = assetUrl(book.animal);
-  }, [book]);
-
-  // draw the 3-D book
-  useEffect(() => {
-    const canvas = canvasRef.current;
-    const cover = coverRef.current;
-    if (!canvas || !cover) return;
+    if (!visible) return;
+    let dead = false;
     const dpr = Math.min(2, window.devicePixelRatio || 1);
-    canvas.width = BOOK_W * dpr;
-    canvas.height = BOOK_H * dpr;
-    const ctx = canvas.getContext('2d');
-    if (!ctx) return;
-    ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    ctx.clearRect(0, 0, BOOK_W, BOOK_H);
-    const T = BOOK_W * 0.05;
-    const margin = T + 8;
-    const bw = BOOK_W - margin - 14;
-    const bh = Math.min(BOOK_H - 40, bw / 0.75);
-    const bx = margin;
-    const by = (BOOK_H - bh) / 2 + 4;
-    drawBook3D(ctx, bx, by, bw, bh, cover, { lift: hover ? 10 : 0 });
-  }, [ready, hover]);
 
-  const open = () => {
-    window.location.href = ASSET_BASE + String(book.href).replace(/^\//, '');
+    const spine = spineRef.current;
+    if (spine) {
+      spine.width = SPINE_W * dpr;
+      spine.height = BOOK_H * dpr;
+      const ctx = spine.getContext('2d');
+      if (ctx) {
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        drawSpine(ctx, SPINE_W, BOOK_H, book, seriesIndex);
+      }
+    }
+
+    composeCover(book, COVER_W, COVER_H, book.animal ? assetUrl(book.animal) : null).then(
+      (cov) => {
+        if (dead) return;
+        const face = coverRef.current;
+        if (!face) return;
+        face.width = FACE_W * dpr;
+        face.height = BOOK_H * dpr;
+        const ctx = face.getContext('2d');
+        if (!ctx) return;
+        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+        ctx.drawImage(cov, 0, 0, FACE_W, BOOK_H);
+      },
+    );
+    return () => {
+      dead = true;
+    };
+  }, [visible, book, seriesIndex]);
+
+  // Hover intent: a short enter delay so sweeping the pointer across a shelf
+  // of spines doesn't ripple every book; leaving cancels/closes immediately
+  // (the CSS return transition is the slower, eased part).
+  const enter = () => {
+    window.clearTimeout(timer.current);
+    timer.current = window.setTimeout(() => setOpen(true), 90);
   };
+  const leave = () => {
+    window.clearTimeout(timer.current);
+    setOpen(false);
+  };
+  useEffect(() => () => window.clearTimeout(timer.current), []);
 
   return (
     <button
-      className="lib-book"
-      onClick={open}
-      onMouseEnter={() => setHover(true)}
-      onMouseLeave={() => setHover(false)}
+      ref={rootRef}
+      className={`lib-book${open ? ' is-open' : ''}`}
+      onClick={() => openBook(book)}
+      onMouseEnter={enter}
+      onMouseLeave={leave}
+      onFocus={() => setOpen(true)}
+      onBlur={leave}
       aria-label={`Open ${book.title}`}
+      title={book.subtitle ? `${book.title} — ${book.subtitle}` : book.title}
     >
-      <canvas ref={canvasRef} className="lib-book-canvas" style={{ width: BOOK_W, height: BOOK_H }} />
-      <span className="lib-book-cap">
-        <span className="lib-book-cap-title">{book.title}</span>
-        <span className="lib-book-cap-sub">
-          {seriesIndex ? <b className="lib-book-num">№{seriesIndex} · </b> : null}
-          {book.subtitle}
+      <span className="lib-stage">
+        <span className="lib-turn">
+          <canvas
+            ref={coverRef}
+            className="lib-face lib-face-cover"
+            style={{ width: FACE_W, height: BOOK_H }}
+          />
+          <canvas
+            ref={spineRef}
+            className="lib-face lib-face-spine"
+            style={{ width: SPINE_W, height: BOOK_H }}
+          />
         </span>
       </span>
     </button>
   );
 }
 
-export function Library() {
-  const [books, setBooks] = useState<BookMeta[] | null>(null);
-  const [error, setError] = useState<string | null>(null);
+// A series standing together as one boxed set on the shelf.
+function BoxedSet({ name, books }: { name: string; books: BookMeta[] }) {
+  return (
+    <div className="lib-set">
+      <span className="lib-set-plaque">{name}</span>
+      <div className="lib-set-books">
+        {books.map((b, i) => (
+          <SpineBook key={b.slug} book={b} seriesIndex={b.seriesOrder ?? i + 1} />
+        ))}
+      </div>
+    </div>
+  );
+}
 
-  useEffect(() => {
-    fetch(assetUrl('generated/library.json'))
-      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
-      .then((d) => setBooks(d.books || []))
-      .catch((e) => setError(e.message));
-  }, []);
+function ShelfRow({
+  title,
+  meta,
+  children,
+}: {
+  title: string;
+  meta: string;
+  children: React.ReactNode;
+}) {
+  return (
+    <section className="lib-series">
+      <div className="lib-series-head">
+        <h2 className="lib-series-name">{title}</h2>
+        <span className="lib-series-meta">{meta}</span>
+      </div>
+      <div className="lib-series-row">{children}</div>
+    </section>
+  );
+}
+
+function DesktopShelf({ books, error }: { books: BookMeta[] | null; error: string | null }) {
+  const [query, setQuery] = useState('');
+
+  const shelves = useMemo(() => (books && books.length ? buildShelves(books) : null), [books]);
+
+  const q = query.trim();
+  const matches = useMemo(() => {
+    if (!books || !q) return null;
+    return groupMatches(searchBooks(books, q));
+  }, [books, q]);
+  const matchCount = matches
+    ? matches.singles.length + matches.sets.reduce((n, [, a]) => n + a.length, 0)
+    : 0;
 
   return (
     <div className="lib">
@@ -127,8 +188,25 @@ export function Library() {
         <h1 className="lib-title">The O’RLY Bookshelf</h1>
         <p className="lib-sub">
           Pick any codebase, get a narrated, animated explainer — bound as an “O’RLY?” parody book.
-          Tap a spine to read it.
+          Hover a spine to turn it; click to read.
         </p>
+        {books && books.length > 0 && (
+          <div className="lib-search">
+            <input
+              className="lib-search-input"
+              type="search"
+              value={query}
+              onChange={(e) => setQuery(e.target.value)}
+              placeholder={`Search ${books.length} books — titles, series, chapters…`}
+              aria-label="Search the bookshelf"
+            />
+            {query && (
+              <button className="lib-search-clear" onClick={() => setQuery('')} aria-label="Clear search">
+                ×
+              </button>
+            )}
+          </div>
+        )}
       </header>
 
       {error && <div className="lib-empty">Couldn’t load the library: {error}</div>}
@@ -137,42 +215,55 @@ export function Library() {
         <div className="lib-empty">No books yet — generate one with <code>npm run explain</code>.</div>
       )}
 
-      {books && books.length > 0 && (() => {
-        const standalone = books
-          .filter((b) => !b.series)
-          .sort((a, c) => (a.slug === PINNED_SLUG ? -1 : c.slug === PINNED_SLUG ? 1 : 0));
-        const seriesMap = new Map<string, BookMeta[]>();
-        for (const b of books) {
-          if (!b.series) continue;
-          if (!seriesMap.has(b.series)) seriesMap.set(b.series, []);
-          seriesMap.get(b.series)!.push(b);
-        }
-        for (const arr of seriesMap.values()) arr.sort((a, c) => (a.seriesOrder ?? 0) - (c.seriesOrder ?? 0));
-        return (
+      {matches &&
+        (matchCount === 0 ? (
+          <div className="lib-empty">
+            No books match “{q}”. Try a title, a series name, or a chapter title.
+          </div>
+        ) : (
           <>
-            {standalone.length > 0 && (
-              <div className="lib-grid">
-                {standalone.map((b) => (
-                  <ShelfBook key={b.slug} book={b} />
-                ))}
-              </div>
-            )}
-            {[...seriesMap.entries()].map(([name, arr]) => (
-              <section className="lib-series" key={name}>
-                <div className="lib-series-head">
-                  <h2 className="lib-series-name">{name}</h2>
-                  <span className="lib-series-meta">a {arr.length}-book series · read in order →</span>
-                </div>
-                <div className="lib-series-row">
-                  {arr.map((b, i) => (
-                    <ShelfBook key={b.slug} book={b} seriesIndex={b.seriesOrder ?? i + 1} />
-                  ))}
-                </div>
-              </section>
-            ))}
+            <div className="lib-result-count">
+              {matchCount} {matchCount === 1 ? 'book matches' : 'books match'} “{q}”
+            </div>
+            <div className="lib-results">
+              {matches.sets.map(([name, arr]) => (
+                <BoxedSet key={name} name={name} books={arr} />
+              ))}
+              {matches.singles.map((b) => (
+                <SpineBook key={b.slug} book={b} />
+              ))}
+            </div>
           </>
-        );
-      })()}
+        ))}
+
+      {!matches && shelves && (
+        <>
+          <ShelfRow title="Recently Added" meta="hot off the press →">
+            {shelves.recent.map((b) => (
+              <SpineBook key={b.slug} book={b} seriesIndex={b.seriesOrder} />
+            ))}
+          </ShelfRow>
+          {shelves.seriesRows.map(([name, arr]) => (
+            <ShelfRow key={name} title={name} meta={`a ${arr.length}-book series · read in order →`}>
+              <BoxedSet name={name} books={arr} />
+            </ShelfRow>
+          ))}
+          {shelves.loops.length > 0 && (
+            <ShelfRow title="Agent Loops" meta={`${shelves.loops.length} standalone builds →`}>
+              {shelves.loops.map((b) => (
+                <SpineBook key={b.slug} book={b} />
+              ))}
+            </ShelfRow>
+          )}
+          {shelves.more.length > 0 && (
+            <ShelfRow title="More from the Shelf" meta={`${shelves.more.length} one-offs →`}>
+              {shelves.more.map((b) => (
+                <SpineBook key={b.slug} book={b} />
+              ))}
+            </ShelfRow>
+          )}
+        </>
+      )}
 
       <footer className="lib-foot">
         by Brett Lamy · an “O’RLY?” parody · icons via the Noun Project (CC BY) · made with Claude Code using{' '}
@@ -181,5 +272,31 @@ export function Library() {
         </a>
       </footer>
     </div>
+  );
+}
+
+export function Library() {
+  const [books, setBooks] = useState<BookMeta[] | null>(null);
+  const [error, setError] = useState<string | null>(null);
+  const [mobile, setMobile] = useState(() => window.matchMedia(MOBILE_MQ).matches);
+
+  useEffect(() => {
+    const mq = window.matchMedia(MOBILE_MQ);
+    const onChange = () => setMobile(mq.matches);
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, []);
+
+  useEffect(() => {
+    fetch(assetUrl('generated/library.json'))
+      .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
+      .then((d) => setBooks(d.books || []))
+      .catch((e) => setError(e.message));
+  }, []);
+
+  return mobile ? (
+    <MobileShelf books={books} error={error} />
+  ) : (
+    <DesktopShelf books={books} error={error} />
   );
 }

@@ -14,6 +14,8 @@ export interface BookMeta {
   href: string;
   series?: string; // books sharing a series name are grouped on the shelf
   seriesOrder?: number; // order within the series
+  chapters?: { number?: number; title: string; duration?: number }[];
+  createdAt?: string; // ISO timestamp, used for the "Recently Added" shelf
 }
 
 // A colourful O'Reilly-ish palette (assign per book for a varied shelf).
@@ -149,4 +151,84 @@ export function drawCover(
   ctx.font = `700 ${Math.round(H * 0.016)}px ${SANS}`;
   ctx.fillStyle = '#444';
   ctx.fillText(b.role, W - W * 0.045, H - H * 0.035);
+}
+
+// A book spine in the same visual language as the cover: white field, colored
+// band at head and tail, the parody "O'RLY?" mark in the head band, the title
+// running down the spine, and the series number (if any) near the tail.
+export function drawSpine(
+  ctx: CanvasRenderingContext2D, W: number, H: number, b: BookMeta,
+  seriesIndex?: number,
+) {
+  const color = b.color || '#d6202b';
+
+  ctx.fillStyle = '#fbfbf9';
+  ctx.fillRect(0, 0, W, H);
+
+  // head band with the parody mark
+  const headH = Math.round(H * 0.085);
+  ctx.fillStyle = color;
+  ctx.fillRect(0, 0, W, headH);
+  ctx.fillStyle = '#fff';
+  ctx.textAlign = 'center';
+  ctx.textBaseline = 'middle';
+  ctx.font = `800 ${Math.round(W * 0.26)}px ${SANS}`;
+  ctx.fillText("O'RLY?", W / 2, headH * 0.54);
+
+  // tail band
+  const tailH = Math.round(H * 0.03);
+  ctx.fillStyle = color;
+  ctx.fillRect(0, H - tailH, W, tailH);
+
+  // series number near the tail
+  let tailTop = H - tailH;
+  if (seriesIndex) {
+    ctx.fillStyle = color;
+    ctx.font = `800 ${Math.round(W * 0.3)}px ${SANS}`;
+    ctx.fillText(String(seriesIndex), W / 2, H - tailH - W * 0.34);
+    tailTop = H - tailH - W * 0.62;
+  }
+
+  // title down the spine (reads top → bottom)
+  ctx.save();
+  ctx.translate(W / 2, headH + H * 0.025);
+  ctx.rotate(Math.PI / 2);
+  const maxLen = tailTop - headH - H * 0.05;
+  const size = fitOneLine(ctx, b.title, maxLen, SERIF, '600', Math.round(W * 0.42), Math.round(W * 0.17));
+  ctx.font = `600 ${size}px ${SERIF}`;
+  ctx.fillStyle = '#211c14';
+  ctx.textAlign = 'left';
+  ctx.textBaseline = 'middle';
+  ctx.fillText(b.title, 0, 0);
+  ctx.restore();
+}
+
+// Shared composed-cover cache: composing a 600×800 cover (image decode + text
+// layout) is the expensive part, so do it once per slug across every view.
+const COVER_CACHE = new Map<string, Promise<HTMLCanvasElement>>();
+
+export function composeCover(
+  b: BookMeta, W: number, H: number, animalUrl: string | null,
+): Promise<HTMLCanvasElement> {
+  const hit = COVER_CACHE.get(b.slug);
+  if (hit) return hit;
+  const p = new Promise<HTMLCanvasElement>((resolve) => {
+    const cover = document.createElement('canvas');
+    cover.width = W;
+    cover.height = H;
+    const ctx = cover.getContext('2d');
+    if (!ctx) return resolve(cover);
+    const finish = (img: HTMLImageElement | null) => {
+      drawCover(ctx, W, H, b, img);
+      resolve(cover);
+    };
+    if (!animalUrl) return finish(null);
+    const img = new Image();
+    img.crossOrigin = 'anonymous';
+    img.onload = () => finish(img);
+    img.onerror = () => finish(null);
+    img.src = animalUrl;
+  });
+  COVER_CACHE.set(b.slug, p);
+  return p;
 }
