@@ -3268,6 +3268,44 @@
         }
       ],
       "createdAt": "2026-07-16T20:35:52.020Z"
+    },
+    {
+      "slug": "how-to-build-a-shed",
+      "title": "How to Build a Shed",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#41607f",
+      "animal": "generated/how-to-build-a-shed/animal.webp",
+      "href": "?bundle=how-to-build-a-shed",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "An Eight-Foot Cube",
+          "duration": 81.967
+        },
+        {
+          "number": 2,
+          "title": "A Level Foundation",
+          "duration": 92.183
+        },
+        {
+          "number": 3,
+          "title": "A Floor That Never Sags",
+          "duration": 104.863
+        },
+        {
+          "number": 4,
+          "title": "Built Flat, Pulled Square",
+          "duration": 115.497
+        },
+        {
+          "number": 5,
+          "title": "Raising Day",
+          "duration": 124.551
+        }
+      ],
+      "createdAt": "2026-07-17T12:09:13.251Z"
     }
   ]
 }

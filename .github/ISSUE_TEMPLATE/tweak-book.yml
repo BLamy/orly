@@ -102,6 +102,7 @@ body:
         - "A Week With Replay QA · What it means for you, from Monday to ship day — replay-qa-week"
         - "Replay QA · Agents that prove their work — replay-qa"
         - "crash-0020 · Hunting a Dead Context in Replay Chromium — crash-0020"
+        - "How to Build a Shed — how-to-build-a-shed"
         # BOOKS:END
     validations:
       required: true
