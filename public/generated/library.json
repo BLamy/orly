@@ -1,6 +1,43 @@
 {
   "books": [
     {
+      "slug": "ssrn-aei",
+      "title": "Coherence Theater",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b0277a",
+      "href": "?bundle=ssrn-aei",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Missing Variable",
+          "duration": 112.431
+        },
+        {
+          "number": 2,
+          "title": "Adversarial Without an Antagonist",
+          "duration": 112.339
+        },
+        {
+          "number": 3,
+          "title": "Coherent From the Inside",
+          "duration": 114.613
+        },
+        {
+          "number": 4,
+          "title": "The Refusal Penalty",
+          "duration": 123.483
+        },
+        {
+          "number": 5,
+          "title": "From Performance to Readiness",
+          "duration": 103.561
+        }
+      ],
+      "createdAt": "2026-07-18T02:05:33.288Z"
+    },
+    {
       "slug": "kt-tuning-home",
       "title": "Tuning at Home",
       "subtitle": "",
