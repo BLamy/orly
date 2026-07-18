@@ -1,0 +1,105 @@
+{
+  "format": 3,
+  "slug": "crash-0020",
+  "title": "crash-0020",
+  "subtitle": "Hunting a Dead Context in Replay Chromium",
+  "animal": "animal.webp",
+  "accent": "#d6202b",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Segfault in the Pause Child",
+      "blurb": "A nested object preview request dies reading a dead Context at offset 0x93.",
+      "scene": "books/crash-0020/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        10.426,
+        20.073,
+        29.036,
+        37.256,
+        46.927,
+        56.934,
+        65.77
+      ],
+      "duration": 74.117
+    },
+    {
+      "number": 2,
+      "title": "Four Checks, No Catch",
+      "blurb": "The four CHECKs from crash-0017 all pass — page membership is not liveness.",
+      "scene": "books/crash-0020/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        11.761,
+        20.062,
+        28.119,
+        37.581,
+        50.049,
+        55.053,
+        62.321,
+        73.153
+      ],
+      "duration": 82.197
+    },
+    {
+      "number": 3,
+      "title": "Proof by Addition",
+      "blurb": "faultAddress = ctx + 0x93: the log names the slot context left by evaluate-in-global.",
+      "scene": "books/crash-0020/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        9.021,
+        17.613,
+        27.121,
+        37.536,
+        47.508,
+        53.406,
+        62.126,
+        69.858
+      ],
+      "duration": 80.806
+    },
+    {
+      "number": 4,
+      "title": "A Stamp for Every Context",
+      "blurb": "One shared token: iso, ctx, and — where it is safe — the inspector's context id.",
+      "scene": "books/crash-0020/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        11.389,
+        21.061,
+        28.306,
+        36.816,
+        44.536,
+        54.462,
+        66.781,
+        77.682
+      ],
+      "duration": 88.282
+    },
+    {
+      "number": 5,
+      "title": "The Diagnostic That Crashed",
+      "blurb": "The new logging needed HandleScopes of its own. The trap is armed.",
+      "scene": "books/crash-0020/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        9.497,
+        19.412,
+        27.528,
+        33.379,
+        38.313,
+        40.833,
+        50.214,
+        58.132,
+        69.405
+      ],
+      "duration": 78.901
+    }
+  ]
+}
