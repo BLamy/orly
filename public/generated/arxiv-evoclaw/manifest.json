@@ -1,0 +1,94 @@
+{
+  "format": 3,
+  "slug": "arxiv-evoclaw",
+  "title": "Skills From Their Own Runs",
+  "subtitle": "Can agents learn reusable skills from their own execution traces?",
+  "animal": "animal.webp",
+  "accent": "#6a3f9e",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Compounding Dream",
+      "blurb": "What a reusable skill operationally is, and the three modes that isolate the loop",
+      "scene": "books/arxiv-evoclaw/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        13.874,
+        21.676,
+        35.086,
+        45.407,
+        57.481,
+        68.105,
+        81.038
+      ],
+      "duration": 90.651
+    },
+    {
+      "number": 2,
+      "title": "The Loop, on a Toy Agent",
+      "blurb": "Same evidence, two skills, opposite endings — simulated end to end at toy scale",
+      "scene": "books/arxiv-evoclaw/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        13.375,
+        28.293,
+        34.447,
+        48.472,
+        62.195,
+        75.325
+      ],
+      "duration": 85.589
+    },
+    {
+      "number": 3,
+      "title": "The Measured Answer",
+      "blurb": "The reported spread: one model gains, one collapses to noise, most tread water",
+      "scene": "books/arxiv-evoclaw/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        14.373,
+        25.228,
+        33.413,
+        45.359,
+        59.837,
+        73.246
+      ],
+      "duration": 84.009
+    },
+    {
+      "number": 4,
+      "title": "Failure Modes and the Bill",
+      "blurb": "Runtime dependence, over-specification, and a token bill that rarely amortizes",
+      "scene": "books/arxiv-evoclaw/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        15.278,
+        31.37,
+        45.29,
+        55.275,
+        70.542
+      ],
+      "duration": 80.851
+    },
+    {
+      "number": 5,
+      "title": "Verified, Not Remembered",
+      "blurb": "Compounding is real — but only behind a transfer test the skill could fail",
+      "scene": "books/arxiv-evoclaw/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        14.408,
+        28.897,
+        45.419,
+        60.802,
+        76.464
+      ],
+      "duration": 89.676
+    }
+  ]
+}

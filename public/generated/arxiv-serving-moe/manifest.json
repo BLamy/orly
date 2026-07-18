@@ -1,0 +1,100 @@
+{
+  "format": 3,
+  "slug": "arxiv-serving-moe",
+  "title": "Serving the Mixture",
+  "subtitle": "Speculation, placement, and the price of decoding",
+  "animal": "animal.webp",
+  "accent": "#e07b1a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A committee with a gag rule",
+      "blurb": "What a mixture of experts actually is: routing computed on toy data, and why only a few experts fire per token.",
+      "scene": "books/arxiv-serving-moe/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        10.658,
+        23.324,
+        35.085,
+        48.089,
+        61.498,
+        73.085
+      ],
+      "duration": 81.595
+    },
+    {
+      "number": 2,
+      "title": "The memory wall",
+      "blurb": "Roofline arithmetic on real hardware numbers: ninety tokens a second, under one percent compute utilization, nine cards before the first user.",
+      "scene": "books/arxiv-serving-moe/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        12.423,
+        22.175,
+        34.725,
+        47.868,
+        59.873,
+        73.944,
+        83
+      ],
+      "duration": 92.462
+    },
+    {
+      "number": 3,
+      "title": "Less experts, faster decoding",
+      "blurb": "The draft and verify loop simulated with an expert loading cost: trading a sliver of acceptance for expert reuse wins.",
+      "scene": "books/arxiv-serving-moe/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        10.681,
+        21.502,
+        35.307,
+        46.696,
+        58.144,
+        72.192,
+        83.267
+      ],
+      "duration": 94.738
+    },
+    {
+      "number": 4,
+      "title": "Placing the experts",
+      "blurb": "A toy cluster with real queueing arithmetic: predict the routing, migrate the hot expert, cut mean wait by two thirds.",
+      "scene": "books/arxiv-serving-moe/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        11.471,
+        24.196,
+        36.363,
+        50.376,
+        59.327,
+        71.54,
+        83.394
+      ],
+      "duration": 92.926
+    },
+    {
+      "number": 5,
+      "title": "The economics of decoding",
+      "blurb": "Compute, capacity, bandwidth — the decoding chip paper's rebalancing argument, and what it means for who can afford to serve.",
+      "scene": "books/arxiv-serving-moe/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        10.333,
+        23.94,
+        37.849,
+        46.15,
+        62.102,
+        73.143,
+        85.867,
+        98.568
+      ],
+      "duration": 105.697
+    }
+  ]
+}

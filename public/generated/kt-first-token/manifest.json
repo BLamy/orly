@@ -1,0 +1,87 @@
+{
+  "format": 3,
+  "slug": "kt-first-token",
+  "title": "KTransformers",
+  "animal": "animal.webp",
+  "accent": "#41607f",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Model That Doesn't Fit",
+      "blurb": "MoE giants vs a 24 GB card — the heterogeneous bet",
+      "scene": "books/kt-first-token/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        9.416,
+        16.091,
+        26.61,
+        35.166,
+        40.994,
+        52.012,
+        61.939,
+        72.075,
+        80.794
+      ],
+      "duration": 89.908
+    },
+    {
+      "number": 2,
+      "title": "kt run",
+      "blurb": "Registry-driven launches vs the hand-built flag stack",
+      "scene": "books/kt-first-token/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        6.815,
+        16.451,
+        25.82,
+        35.05,
+        44.779,
+        55.623,
+        63.46,
+        74.118
+      ],
+      "duration": 83.963
+    },
+    {
+      "number": 3,
+      "title": "One Token's Journey",
+      "blurb": "The forward pass across GPU, PCIe, and CPU thread pools",
+      "scene": "books/kt-first-token/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        9.59,
+        17.67,
+        25.647,
+        33.983,
+        44.095,
+        52.721,
+        61.684,
+        70.81,
+        78.565
+      ],
+      "duration": 87.633
+    },
+    {
+      "number": 4,
+      "title": "The Familiar Door",
+      "blurb": "The OpenAI-compatible surface at localhost:30000/v1",
+      "scene": "books/kt-first-token/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        8.812,
+        18.704,
+        27.852,
+        33.971,
+        42.679,
+        50.364,
+        59.594,
+        69.927
+      ],
+      "duration": 78.808
+    }
+  ]
+}

@@ -1,0 +1,104 @@
+{
+  "format": 3,
+  "slug": "wasm-vm-loop",
+  "title": "The wasm-vm Proof Loop",
+  "animal": "animal.webp",
+  "accent": "#198a8a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A Claim Is Not Evidence",
+      "blurb": "228 tasks, one queue, and the one rule the whole system serves: an implementer being satisfied is a claim; a recording is evidence.",
+      "scene": "books/wasm-vm-loop/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        11.413,
+        21.177,
+        29.338,
+        41.528,
+        50.201,
+        59.442,
+        67.662,
+        77.484
+      ],
+      "duration": 87.631
+    },
+    {
+      "number": 2,
+      "title": "The Worker Records the Run",
+      "blurb": "Gates in ascending cost, free self-validation that evaporates, and the final happy run frozen into the task's evidence folder.",
+      "scene": "books/wasm-vm-loop/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        13.468,
+        21.932,
+        34.296,
+        42.969,
+        56.356,
+        66.793,
+        78.797,
+        90.478
+      ],
+      "duration": 99.522
+    },
+    {
+      "number": 3,
+      "title": "The Critic Attacks the Tape",
+      "blurb": "A fresh session attacks the tape: predict then verify, hold the diff against the recording, cite every finding to a point.",
+      "scene": "books/wasm-vm-loop/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        11.262,
+        22.547,
+        32.67,
+        48.263,
+        58.352,
+        69.578,
+        80.365,
+        92.869
+      ],
+      "duration": 104.211
+    },
+    {
+      "number": 4,
+      "title": "Refuted Means Start Over",
+      "blurb": "A refutation sends the work back to the top with the critic's report as context — and every verified lap makes the gates stricter.",
+      "scene": "books/wasm-vm-loop/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        10.136,
+        21.385,
+        31.764,
+        43.258,
+        55.344,
+        65.177,
+        78.819,
+        89.86
+      ],
+      "duration": 100.773
+    },
+    {
+      "number": 5,
+      "title": "Why the Critic Beats a Reviewer",
+      "blurb": "A reviewer grades the story of a change; the critic re-runs it with its own seeds and tries to break it. Only one catches what nobody wrote down.",
+      "scene": "books/wasm-vm-loop/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        9.183,
+        18.681,
+        30.279,
+        37.826,
+        49.366,
+        62.113,
+        73.828,
+        86.437
+      ],
+      "duration": 98.825
+    }
+  ]
+}

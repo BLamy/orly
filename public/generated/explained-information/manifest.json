@@ -1,0 +1,111 @@
+{
+  "format": 3,
+  "slug": "explained-information",
+  "title": "Explained: Information Theory",
+  "animal": "animal.webp",
+  "accent": "#a01f3c",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Huffman Codes: Shorter Words for Common Things",
+      "blurb": "A real Huffman tree built live, merge by merge, and its 2.800 bits against the entropy floor of 2.771.",
+      "scene": "books/explained-information/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        10.948,
+        23.058,
+        33.901,
+        43.537,
+        54.555,
+        64.91,
+        76.114,
+        86.435,
+        96.582,
+        109.284,
+        119.687
+      ],
+      "duration": 130.495
+    },
+    {
+      "number": 2,
+      "title": "Mutual Information: What One Thing Tells You",
+      "blurb": "A real joint distribution beside its independent twin, and the Venn overlap made honest: 0.348 bits.",
+      "scene": "books/explained-information/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.706,
+        22.117,
+        36.676,
+        44.687,
+        55.263,
+        64.632,
+        74.698,
+        88.479,
+        99.915,
+        112.129
+      ],
+      "duration": 122.555
+    },
+    {
+      "number": 3,
+      "title": "KL Divergence: The Price of the Wrong Model",
+      "blurb": "The wrong codebook billed against the truth — cross entropy as the loss every classifier minimizes.",
+      "scene": "books/explained-information/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        12.249,
+        23.162,
+        33.635,
+        44.711,
+        56.518,
+        66.177,
+        79.807,
+        93.182,
+        103.549
+      ],
+      "duration": 114.474
+    },
+    {
+      "number": 4,
+      "title": "Channel Capacity: Shouting Over Noise",
+      "blurb": "A real binary symmetric channel, redundancy actually correcting errors, and Shannon's line at 0.531.",
+      "scene": "books/explained-information/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        12.353,
+        23.463,
+        34.633,
+        48.831,
+        61.765,
+        73.514,
+        86.274,
+        100.949,
+        114.01
+      ],
+      "duration": 124.552
+    },
+    {
+      "number": 5,
+      "title": "Compression is Prediction",
+      "blurb": "The bridge chapter: the same fifty characters cost 190, 163, then 120 bits as the model learns to predict.",
+      "scene": "books/explained-information/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        13.224,
+        23.986,
+        37.198,
+        48.773,
+        59.953,
+        72.295,
+        83.499,
+        95.468
+      ],
+      "duration": 108.669
+    }
+  ]
+}

@@ -1,0 +1,105 @@
+{
+  "format": 3,
+  "slug": "explained-alignment",
+  "title": "Explained: Alignment",
+  "animal": "animal.webp",
+  "accent": "#6a3f9e",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Vase Problem",
+      "blurb": "An exactly-solved gridworld walks straight through the vase its reward never mentioned — indifference plus optimization, computed.",
+      "scene": "books/explained-alignment/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        11.912,
+        21.966,
+        32.74,
+        39.915,
+        52.93,
+        67.291,
+        78.761,
+        90.011
+      ],
+      "duration": 101.749
+    },
+    {
+      "number": 2,
+      "title": "RLHF and Its Limits",
+      "blurb": "A learned judge with real blind spots: the proxy climbs forever while true quality peaks and collapses, all measured.",
+      "scene": "books/explained-alignment/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        14.64,
+        31.23,
+        44.64,
+        60.441,
+        74.513,
+        89.815,
+        104.791,
+        119.896
+      ],
+      "duration": 132.493
+    },
+    {
+      "number": 3,
+      "title": "Rules vs Preferences",
+      "blurb": "A real reward model fit from noisy human votes beside a written rule — total but noisy, versus exact but partial.",
+      "scene": "books/explained-alignment/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        9.451,
+        18.007,
+        32.891,
+        44.339,
+        57.226,
+        71.495,
+        82.699,
+        95.667,
+        105.222
+      ],
+      "duration": 111.875
+    },
+    {
+      "number": 4,
+      "title": "Sycophancy",
+      "blurb": "Optimize approval and watch what gets bought: agreement soars, truth falls, and changing the judge changes everything.",
+      "scene": "books/explained-alignment/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        11.912,
+        24.404,
+        39.369,
+        53.208,
+        65.921,
+        80.816,
+        95.457,
+        107.392
+      ],
+      "duration": 118.561
+    },
+    {
+      "number": 5,
+      "title": "Honest Oversight",
+      "blurb": "Evaluation that attacks instead of applauds: audited selection resists the collapse — and honestly reports its own limits.",
+      "scene": "books/explained-alignment/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        11.726,
+        27.306,
+        40.472,
+        54.821,
+        66.779,
+        80.34,
+        91.462,
+        105.522
+      ],
+      "duration": 115.588
+    }
+  ]
+}

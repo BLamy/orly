@@ -1,0 +1,101 @@
+{
+  "format": 3,
+  "slug": "explained-training",
+  "title": "Explained: Training",
+  "animal": "animal.webp",
+  "accent": "#1f6fb2",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Ill-Conditioning",
+      "blurb": "Why one learning rate can't serve two curvatures: the condition number of the loss is the exact slowdown factor, and momentum and Adam are two ways of shrinking it.",
+      "scene": "books/explained-training/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        7.848,
+        15.72,
+        21.56,
+        32.718,
+        43.782,
+        51.329,
+        59.63,
+        69.394,
+        83.488,
+        94.82,
+        102.668,
+        113.546
+      ],
+      "duration": 122.881
+    },
+    {
+      "number": 2,
+      "title": "Learning-Rate Schedules",
+      "blurb": "Real stochastic descent under constant-high, constant-low, and cosine schedules — big steps travel, small steps land, and a warmup ramp keeps a cold start from exploding.",
+      "scene": "books/explained-training/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        11.575,
+        19.505,
+        27.4,
+        31.986,
+        40.682,
+        47.915,
+        55.311,
+        61.406,
+        69.475,
+        76.883,
+        86.008,
+        95.249,
+        104.34
+      ],
+      "duration": 111.782
+    },
+    {
+      "number": 3,
+      "title": "Batch Size and Noise",
+      "blurb": "Sixty-four noisy points, one bowl-shaped loss: the fan of per-example gradients collapses at the root-B rate, then cheap noisy steps beat smooth ones per example seen.",
+      "scene": "books/explained-training/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.754,
+        16.997,
+        26.064,
+        34.331,
+        46.056,
+        56.981,
+        68.811,
+        79.086,
+        90.998,
+        100.332,
+        108.796
+      ],
+      "duration": 117.399
+    },
+    {
+      "number": 4,
+      "title": "Bias and Variance",
+      "blurb": "Resample the training set thirty times and error splits in two: fits wrong the same way every time, and fits wrong a different way each time — decomposition verified to the third decimal.",
+      "scene": "books/explained-training/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        9.427,
+        15.267,
+        24.358,
+        35.028,
+        44.153,
+        54.3,
+        62.16,
+        72.435,
+        82.524,
+        92.415,
+        103.317,
+        112.443
+      ],
+      "duration": 123.762
+    }
+  ]
+}

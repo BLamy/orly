@@ -1,0 +1,101 @@
+{
+  "format": 3,
+  "slug": "explained-hybrid-attention",
+  "title": "Explained: Hybrid Attention",
+  "animal": "animal.webp",
+  "accent": "#6a3f9e",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Two Memories",
+      "blurb": "KV cache versus recurrent state — exact but growing, fixed but lossy, both probed and measured.",
+      "scene": "books/explained-hybrid-attention/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.998,
+        21.572,
+        34.679,
+        42.922,
+        57.516,
+        68.929,
+        78.17
+      ],
+      "duration": 90.419
+    },
+    {
+      "number": 2,
+      "title": "Spotlights and Floodlights",
+      "blurb": "Needle recall versus fuzzy summary: what each layer type actually retrieves, measured.",
+      "scene": "books/explained-hybrid-attention/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        10.054,
+        19.946,
+        33.878,
+        41.134,
+        54.636,
+        66.862,
+        77.09,
+        87.423
+      ],
+      "duration": 96.13
+    },
+    {
+      "number": 3,
+      "title": "The Ratio Question",
+      "blurb": "Memory and compute versus the attention fraction, with six published hybrid ratios as reported.",
+      "scene": "books/explained-hybrid-attention/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        10.867,
+        23.823,
+        35.097,
+        49.946,
+        60.801,
+        69.799,
+        82.349,
+        91.985
+      ],
+      "duration": 99.984
+    },
+    {
+      "number": 4,
+      "title": "Placement",
+      "blurb": "Early or late? The same attention budget, placed where refined queries exist — measured.",
+      "scene": "books/explained-hybrid-attention/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        9.52,
+        21.025,
+        29.757,
+        41.68,
+        52.965,
+        66.421,
+        77.393
+      ],
+      "duration": 86.658
+    },
+    {
+      "number": 5,
+      "title": "The Serve-Time Payoff",
+      "blurb": "The KV budget arithmetic: two conversations per card becomes eighteen.",
+      "scene": "books/explained-hybrid-attention/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        9.311,
+        17.438,
+        29.803,
+        40.426,
+        49.947,
+        62.347,
+        74.479
+      ],
+      "duration": 84.196
+    }
+  ]
+}

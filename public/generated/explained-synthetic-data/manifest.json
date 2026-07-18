@@ -1,0 +1,99 @@
+{
+  "format": 3,
+  "slug": "explained-synthetic-data",
+  "title": "Explained: Synthetic Data",
+  "subtitle": "A copy of a copy — model collapse, the filter that saves it, and the wall made of text",
+  "animal": "animal.webp",
+  "accent": "#198a8a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Training on Yourself",
+      "blurb": "The self-improvement ring, one real turn: spread 1.00 to 0.89 and the tails already gone",
+      "scene": "books/explained-synthetic-data/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        15.105,
+        27.12,
+        40.135,
+        51.246,
+        68.939,
+        84.937,
+        94.214
+      ],
+      "duration": 109.318
+    },
+    {
+      "number": 2,
+      "title": "Model Collapse",
+      "blurb": "The loop cranked 30 real generations: variance to 0.24, mean drifting, tails extinct from round one",
+      "scene": "books/explained-synthetic-data/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        14.187,
+        28.038,
+        44.118,
+        57.864,
+        74.397,
+        86.239
+      ],
+      "duration": 99.521
+    },
+    {
+      "number": 3,
+      "title": "What Filtering Saves",
+      "blurb": "One reality-anchored veto, same seed: collapse averted, spread back at 0.96 by generation 30",
+      "scene": "books/explained-synthetic-data/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        15.047,
+        31.184,
+        46.323,
+        61.184,
+        77.299,
+        86.598,
+        103.421
+      ],
+      "duration": 116.843
+    },
+    {
+      "number": 4,
+      "title": "Curriculum and Bootstrapping",
+      "blurb": "A STaR-style keep-only-verified loop actually run: 36.6% to 82.7%, and 29 problems that never move",
+      "scene": "books/explained-synthetic-data/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        12.875,
+        28.096,
+        43.201,
+        54.254,
+        68.685,
+        82.71,
+        94.541
+      ],
+      "duration": 108.81
+    },
+    {
+      "number": 5,
+      "title": "The Data Wall",
+      "blurb": "Reported exhaustion estimates vs reported training runs — the bottleneck becomes verification",
+      "scene": "books/explained-synthetic-data/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        12.968,
+        26.97,
+        43.863,
+        61.638,
+        72.273,
+        88.422,
+        104.758
+      ],
+      "duration": 122.092
+    }
+  ]
+}

@@ -1,0 +1,109 @@
+{
+  "format": 3,
+  "slug": "explained-property-testing",
+  "title": "Explained: Testing Without an Oracle",
+  "subtitle": "Property-based and metamorphic testing for systems whose right answers nobody knows",
+  "animal": "animal.webp",
+  "accent": "#a01f3c",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Oracle Problem",
+      "blurb": "Eight hand-labeled tests, all green — and a quarter of the input space quietly wrong.",
+      "scene": "books/explained-property-testing/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        11.877,
+        20.759,
+        33.599,
+        46.927,
+        62.542,
+        77.264,
+        86.261,
+        101.18,
+        113.533
+      ],
+      "duration": 123.622
+    },
+    {
+      "number": 2,
+      "title": "Properties Over Examples",
+      "blurb": "State one invariant; the machine finds the counterexample and shrinks it to the diagnosis.",
+      "scene": "books/explained-property-testing/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        14.629,
+        26.61,
+        39.915,
+        53.592,
+        69.857,
+        82.222,
+        96.978,
+        110.271,
+        123.611
+      ],
+      "duration": 136.857
+    },
+    {
+      "number": 3,
+      "title": "Metamorphic Relations",
+      "blurb": "Grade the model against itself: three invariances, three measured violation rates, zero labels.",
+      "scene": "books/explained-property-testing/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        12.225,
+        22.848,
+        37.976,
+        51.664,
+        68.069,
+        80.376,
+        94.04,
+        109.76
+      ],
+      "duration": 123.808
+    },
+    {
+      "number": 4,
+      "title": "Fuzzing the Harness",
+      "blurb": "Random forgets, coverage remembers: zero crashes in 200,000 tries versus fifty out of fifty guided.",
+      "scene": "books/explained-property-testing/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        13.236,
+        22.686,
+        40.635,
+        54.335,
+        69.8,
+        86.158,
+        99.997,
+        112.826,
+        132.598
+      ],
+      "duration": 145.729
+    },
+    {
+      "number": 5,
+      "title": "Properties for AI Systems",
+      "blurb": "Structure, consistency, calibration — the test suite for a system with no expected outputs.",
+      "scene": "books/explained-property-testing/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        13.061,
+        30.616,
+        43.851,
+        62.462,
+        70.751,
+        86.483,
+        101.216,
+        119.862,
+        133.295
+      ],
+      "duration": 149.073
+    }
+  ]
+}

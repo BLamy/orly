@@ -285,6 +285,7 @@ function Frame({ s }: { s: SceneState }) {
             y={yScale(START[1]) + 8}
             fontSize={19}
             opacity={startU}
+            boxWidth={110}
           />
         </g>
 
@@ -329,7 +330,7 @@ function Frame({ s }: { s: SceneState }) {
       </Camera>
 
       {/* screen-fixed labels (top-right, clear of the caption lower-third) */}
-      <MathLabel tex="L(\theta)" x={1150} y={64} fontSize={30} opacity={s.get(scene.lossTexU)} />
+      <MathLabel tex="L(\theta)" x={1150} y={64} fontSize={30} opacity={s.get(scene.lossTexU)} boxWidth={220} />
       <MathLabel
         tex="\theta \leftarrow \theta - \eta\,\nabla L(\theta)"
         x={950}
@@ -338,6 +339,7 @@ function Frame({ s }: { s: SceneState }) {
         fontSize={19}
         color={colors.ACCENT}
         opacity={s.get(scene.gdTexU)}
+        boxWidth={320}
       />
       <MathLabel
         tex="v \leftarrow \beta v - \eta\nabla L,\quad \theta \leftarrow \theta + v"
@@ -347,6 +349,7 @@ function Frame({ s }: { s: SceneState }) {
         fontSize={19}
         color={colors.POSITIVE}
         opacity={s.get(scene.momTexU)}
+        boxWidth={320}
       />
       <MathLabel
         tex="\theta \leftarrow \theta - \eta\,\hat m / (\sqrt{\hat v} + \varepsilon)"
@@ -356,6 +359,7 @@ function Frame({ s }: { s: SceneState }) {
         fontSize={19}
         color={colors.WARM}
         opacity={s.get(scene.adamTexU)}
+        boxWidth={320}
       />
 
       {/* the comparison panel: loss vs step for all three */}
