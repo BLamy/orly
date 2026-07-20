@@ -1,0 +1,110 @@
+{
+  "format": 3,
+  "slug": "jacobian-conjecture",
+  "title": "Jacobian Conjecture",
+  "subtitle": "Constant determinant, no inverse",
+  "animal": "animal.webp",
+  "accent": "#41607f",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "An Eighty-Seven-Year Question",
+      "blurb": "Keller asks in 1939: if the Jacobian determinant is a nonzero constant, must the map invert? Eighty-seven years of partial credit follow.",
+      "scene": "books/jacobian-conjecture/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        7.93,
+        16.312,
+        25.553,
+        36.734,
+        46.428,
+        55.832,
+        65.376,
+        75.221,
+        86.483
+      ],
+      "duration": 94.598
+    },
+    {
+      "number": 2,
+      "title": "The Determinant That Collapses",
+      "blurb": "Three polynomials, eighty-two monomials in the determinant expansion, and all of it collapses to minus two — identically.",
+      "scene": "books/jacobian-conjecture/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        10.043,
+        18.332,
+        27.12,
+        34.818,
+        43.038,
+        54.334,
+        64.771,
+        75.255
+      ],
+      "duration": 86.888
+    },
+    {
+      "number": 3,
+      "title": "Three Points, One Image",
+      "blurb": "Three ordinary points, one shared image, checked in exact fractions. Injectivity dies, and the conjecture with it.",
+      "scene": "books/jacobian-conjecture/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.313,
+        20.805,
+        31.3,
+        39.834,
+        47.728,
+        58.293,
+        68.951,
+        82.767
+      ],
+      "duration": 94.366
+    },
+    {
+      "number": 4,
+      "title": "The Crushed Surfaces",
+      "blurb": "The third coordinate factors, two surfaces are crushed onto one plane, and the map turns out to be an honest three-to-one cover.",
+      "scene": "books/jacobian-conjecture/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        8.673,
+        18.924,
+        28.433,
+        40.414,
+        54.172,
+        64.481,
+        74.744,
+        86.087,
+        96.687
+      ],
+      "duration": 106.346
+    },
+    {
+      "number": 5,
+      "title": "The Escape to Infinity",
+      "blurb": "Etale but not proper: two sheets flee to infinity across a cubic surface of targets, and Keller's bet finally loses.",
+      "scene": "books/jacobian-conjecture/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        11.993,
+        23.533,
+        33.077,
+        43.526,
+        54.648,
+        65.133,
+        74.339,
+        84.301,
+        94.39,
+        105.315,
+        118.469
+      ],
+      "duration": 129.614
+    }
+  ]
+}
