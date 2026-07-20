@@ -1,6 +1,43 @@
 {
   "books": [
     {
+      "slug": "jacobian-conjecture",
+      "title": "Jacobian Conjecture",
+      "subtitle": "Constant determinant, no inverse",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#41607f",
+      "href": "?bundle=jacobian-conjecture",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "An Eighty-Seven-Year Question",
+          "duration": 94.598
+        },
+        {
+          "number": 2,
+          "title": "The Determinant That Collapses",
+          "duration": 86.888
+        },
+        {
+          "number": 3,
+          "title": "Three Points, One Image",
+          "duration": 94.366
+        },
+        {
+          "number": 4,
+          "title": "The Crushed Surfaces",
+          "duration": 106.346
+        },
+        {
+          "number": 5,
+          "title": "The Escape to Infinity",
+          "duration": 129.614
+        }
+      ],
+      "createdAt": "2026-07-20T18:20:41.622Z"
+    },
+    {
       "slug": "ssrn-aei",
       "title": "Coherence Theater",
       "subtitle": "",
@@ -776,6 +813,44 @@
         }
       ],
       "createdAt": "2026-07-17T17:20:21.878Z"
+    },
+    {
+      "slug": "how-to-build-a-shed",
+      "title": "How to Build a Shed",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#41607f",
+      "animal": "generated/how-to-build-a-shed/animal.webp",
+      "href": "?bundle=how-to-build-a-shed",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "An Eight-Foot Cube",
+          "duration": 81.967
+        },
+        {
+          "number": 2,
+          "title": "A Level Foundation",
+          "duration": 92.183
+        },
+        {
+          "number": 3,
+          "title": "A Floor That Never Sags",
+          "duration": 104.863
+        },
+        {
+          "number": 4,
+          "title": "Built Flat, Pulled Square",
+          "duration": 115.497
+        },
+        {
+          "number": 5,
+          "title": "Raising Day",
+          "duration": 124.551
+        }
+      ],
+      "createdAt": "2026-07-17T12:09:13.251Z"
     },
     {
       "slug": "explained-agents",
@@ -2095,6 +2170,44 @@
       "createdAt": "2026-07-16T20:46:37.595Z"
     },
     {
+      "slug": "crash-0020",
+      "title": "crash-0020",
+      "subtitle": "Hunting a Dead Context in Replay Chromium",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#d6202b",
+      "animal": "generated/crash-0020/animal.webp",
+      "href": "?bundle=crash-0020",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Segfault in the Pause Child",
+          "duration": 74.117
+        },
+        {
+          "number": 2,
+          "title": "Four Checks, No Catch",
+          "duration": 82.197
+        },
+        {
+          "number": 3,
+          "title": "Proof by Addition",
+          "duration": 80.806
+        },
+        {
+          "number": 4,
+          "title": "A Stamp for Every Context",
+          "duration": 88.282
+        },
+        {
+          "number": 5,
+          "title": "The Diagnostic That Crashed",
+          "duration": 78.901
+        }
+      ],
+      "createdAt": "2026-07-16T20:35:52.020Z"
+    },
+    {
       "slug": "wasm-vm-loop",
       "title": "The wasm-vm Proof Loop",
       "subtitle": "",
@@ -3230,82 +3343,6 @@
         }
       ],
       "createdAt": "2026-07-15T20:55:33.777Z"
-    },
-    {
-      "slug": "crash-0020",
-      "title": "crash-0020",
-      "subtitle": "Hunting a Dead Context in Replay Chromium",
-      "author": "Brett Lamy",
-      "role": "Software Engineer at Replay",
-      "color": "#d6202b",
-      "animal": "generated/crash-0020/animal.webp",
-      "href": "?bundle=crash-0020",
-      "chapters": [
-        {
-          "number": 1,
-          "title": "Segfault in the Pause Child",
-          "duration": 74.117
-        },
-        {
-          "number": 2,
-          "title": "Four Checks, No Catch",
-          "duration": 82.197
-        },
-        {
-          "number": 3,
-          "title": "Proof by Addition",
-          "duration": 80.806
-        },
-        {
-          "number": 4,
-          "title": "A Stamp for Every Context",
-          "duration": 88.282
-        },
-        {
-          "number": 5,
-          "title": "The Diagnostic That Crashed",
-          "duration": 78.901
-        }
-      ],
-      "createdAt": "2026-07-16T20:35:52.020Z"
-    },
-    {
-      "slug": "how-to-build-a-shed",
-      "title": "How to Build a Shed",
-      "subtitle": "",
-      "author": "Brett Lamy",
-      "role": "Software Engineer at Replay",
-      "color": "#41607f",
-      "animal": "generated/how-to-build-a-shed/animal.webp",
-      "href": "?bundle=how-to-build-a-shed",
-      "chapters": [
-        {
-          "number": 1,
-          "title": "An Eight-Foot Cube",
-          "duration": 81.967
-        },
-        {
-          "number": 2,
-          "title": "A Level Foundation",
-          "duration": 92.183
-        },
-        {
-          "number": 3,
-          "title": "A Floor That Never Sags",
-          "duration": 104.863
-        },
-        {
-          "number": 4,
-          "title": "Built Flat, Pulled Square",
-          "duration": 115.497
-        },
-        {
-          "number": 5,
-          "title": "Raising Day",
-          "duration": 124.551
-        }
-      ],
-      "createdAt": "2026-07-17T12:09:13.251Z"
     }
   ]
 }
