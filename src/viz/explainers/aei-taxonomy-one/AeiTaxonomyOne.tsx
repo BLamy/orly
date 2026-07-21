@@ -66,8 +66,10 @@ const beliefPts = (snap: number) =>
     return `${BEL.x + x * BEL.w},${BEL.y + BEL.h - belief(x, snap) * BEL.h * 0.92}`;
   }).join(' ');
 
-const CAM_CARDS: CameraState = { x: 470, y: 200, k: 1.25 };
-const CAM_CHAIN: CameraState = { x: 640, y: REV_Y + 20, k: 1.35 };
+// wide enough that the 6.2 mandate module (world x ≈ 850–1120) stays on screen
+const CAM_CARDS: CameraState = { x: 645, y: 195, k: 1.2 };
+// wide enough for the row labels left of reviewer 1 (world x ≈ 31) through node 16
+const CAM_CHAIN: CameraState = { x: 568, y: REV_Y + 15, k: 1.1 };
 
 interface Scene {
   tl: Timeline;

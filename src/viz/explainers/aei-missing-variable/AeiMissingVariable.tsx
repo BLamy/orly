@@ -65,6 +65,7 @@ interface Scene {
   tl: Timeline;
   cam: ChannelRef<CameraState>;
   titleU: ChannelRef<number>;
+  stripU: ChannelRef<number>;
   panelU: ChannelRef<number>;
   barsU: ChannelRef<number>;
   pillarsU: ChannelRef<number>;
@@ -81,6 +82,7 @@ export function buildScene(): Scene {
   const tl = new Timeline();
   const cam = tl.channel<CameraState>('cam', CAMERA_HOME, cameraInterp);
   const titleU = tl.channel('titleU', 0);
+  const stripU = tl.channel('stripU', 1);
   const panelU = tl.channel('panelU', 0);
   const barsU = tl.channel('barsU', 0);
   const pillarsU = tl.channel('pillarsU', 0);
@@ -120,6 +122,9 @@ export function buildScene(): Scene {
     text: 'Every one of those green scores rests on quiet assumptions. That the objectives stay stable. That authority stays stable. That the evaluators stay stable. The paper calls this the coherent world assumption.',
   });
   tl.tween(cam, CAM_PILLARS, { at: 14.2, dur: 1.4, ease: ease.move });
+  // the zoomed panel header sweeps through the fixed metadata strip — set the
+  // strip aside for the whole pillars sequence rather than letting them collide
+  tl.tween(stripU, 0, { at: 14.0, dur: 0.9, ease: ease.move });
   tl.tween(pillarsU, 1, { at: 15.2, dur: 2.4, ease: ease.enter });
   tl.hold(20.1, 0.7);
 
@@ -139,6 +144,7 @@ export function buildScene(): Scene {
     text: 'The paper anchors this with a case that has nothing to do with AI. Investigations of the Challenger and Columbia shuttle disasters described fragmented authority, schedule pressure, and suppressed dissent.',
   });
   tl.tween(cam, CAM_CHALL, { at: 28.2, dur: 1.4, ease: ease.move });
+  tl.tween(stripU, 1, { at: 28.8, dur: 1.0, ease: ease.move });
   tl.tween(challU, 1, { at: 29.2, dur: 0.8, ease: ease.enter });
   tl.tween(challLinesU, 1, { at: 30.0, dur: 2.6, ease: ease.linear });
   tl.caption({
@@ -155,6 +161,9 @@ export function buildScene(): Scene {
     text: 'So the paper draws a hard line between two different questions. Performance asks: can the system produce the desired outputs while the framing holds still? Readiness asks: does it stay coherent when the framing stops holding still?',
   });
   tl.tween(cam, CAMERA_HOME, { at: 41.6, dur: 1.4, ease: ease.move });
+  // the Challenger card is no longer the subject — clear the right field so
+  // the axes figure can sit above the caption band without overlapping it
+  tl.tween(challU, 0, { at: 41.6, dur: 1.0, ease: ease.move });
   tl.tween(axesU, 1, { at: 42.8, dur: 1.2, ease: ease.draw });
   tl.tween(dotU, 1, { at: 44.4, dur: 1.2, ease: ease.move });
   tl.hold(47.8, 0.7);
@@ -170,7 +179,7 @@ export function buildScene(): Scene {
   tl.hold(54.5, 1.2);
 
   return {
-    tl, cam, titleU, panelU, barsU, pillarsU, crackU,
+    tl, cam, titleU, stripU, panelU, barsU, pillarsU, crackU,
     challU, challLinesU, axesU, dotU, dimU, closeU,
   };
 }
@@ -196,6 +205,7 @@ const CRACK_PTS = [0, 8, -6, 10, -4, 7];
 function Frame({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
   const titleU = s.get(scene.titleU);
+  const stripU = s.get(scene.stripU);
   const panelU = s.get(scene.panelU);
   const barsU = s.get(scene.barsU);
   const pillarsU = s.get(scene.pillarsU);
@@ -307,7 +317,7 @@ function Frame({ s }: { s: SceneState }) {
           {/* performance vs readiness axes */}
           {axesU > 0 && (
             <g opacity={axesU}>
-              <g transform="translate(760, 470)">
+              <g transform="translate(760, 330)">
                 <line x1={0} y1={120} x2={380 * axesU} y2={120} stroke={colors.GRID} strokeWidth={1.5} />
                 <line x1={0} y1={120} x2={0} y2={120 - 110 * axesU} stroke={colors.GRID} strokeWidth={1.5} />
                 <text x={370} y={144} textAnchor="end" fill={colors.ACCENT} fontSize={14}>
@@ -334,7 +344,7 @@ function Frame({ s }: { s: SceneState }) {
       </g>
 
       {/* screen-fixed title */}
-      <g opacity={titleU * mainOp}>
+      <g opacity={titleU * stripU * mainOp}>
         <text x={40} y={54} fill={colors.TEXT} fontSize={24} fontWeight={600}>
           The missing variable
         </text>

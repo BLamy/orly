@@ -56,7 +56,8 @@ const TOTAL_ROUNDS = Math.max(...flipRound.filter((r) => Number.isFinite(r))); /
 
 // agent grid layout (10 x 6)
 const GRID_COLS = 10;
-const AG_X0 = 180;
+// right-side field: clear of the five-property list in the left rail
+const AG_X0 = 444;
 const AG_Y0 = 210;
 const AG_DX = 46;
 const AG_DY = 52;
@@ -92,7 +93,8 @@ const PROPS = [
   'trust-chain mimicry',
 ];
 
-const CAM_AGENTS: CameraState = { x: AG_X0 + 4.5 * AG_DX, y: AG_Y0 + 2.5 * AG_DY, k: 1.3 };
+// k/y chosen so the round counter under the grid stays above the caption band
+const CAM_AGENTS: CameraState = { x: AG_X0 + 4.5 * AG_DX, y: AG_Y0 + 155, k: 1.15 };
 const CAM_PLOT: CameraState = { x: PLOT.x + PLOT.w / 2, y: PLOT.y + PLOT.h / 2, k: 1.3 };
 
 interface Scene {
@@ -258,9 +260,9 @@ function Frame({ s }: { s: SceneState }) {
             );
           })}
 
-          {/* the sixty agents */}
+          {/* the sixty agents — recede once the proxy plot shares the right field */}
           {gridU > 0 && (
-            <g>
+            <g opacity={1 - 0.8 * clamp01(plotU * 2)}>
               <text x={AG_X0 - 20} y={AG_Y0 - 44} fill={colors.MUTED} fontSize={13} fontFamily="monospace" opacity={gridU}>
                 illustrative simulation — threshold conformity model (Kuran 1995)
               </text>
@@ -334,15 +336,15 @@ function Frame({ s }: { s: SceneState }) {
           {/* trust-chain mimicry chip */}
           {provU > 0 && (
             <g opacity={provU}>
-              <rect x={760} y={510} width={380} height={92} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} />
-              <text x={780} y={540} fill={colors.SECONDARY} fontSize={14} fontWeight={600}>
+              <rect x={760} y={448} width={380} height={92} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} />
+              <text x={780} y={478} fill={colors.SECONDARY} fontSize={14} fontWeight={600}>
                 trust-chain mimicry
               </text>
-              <text x={780} y={564} fill={colors.TEXT} fontSize={13} fontFamily="monospace">
+              <text x={780} y={502} fill={colors.TEXT} fontSize={13} fontFamily="monospace">
                 data | instruction | constraint
               </text>
-              <line x1={780} y1={572} x2={1120} y2={572} stroke={colors.NEGATIVE} strokeWidth={1.5} strokeDasharray="3 4" opacity={provU} />
-              <text x={780} y={592} fill={colors.NEGATIVE} fontSize={12}>
+              <line x1={780} y1={510} x2={1120} y2={510} stroke={colors.NEGATIVE} strokeWidth={1.5} strokeDasharray="3 4" opacity={provU} />
+              <text x={780} y={530} fill={colors.NEGATIVE} fontSize={12}>
                 provenance distinctions collapse (§2)
               </text>
             </g>
