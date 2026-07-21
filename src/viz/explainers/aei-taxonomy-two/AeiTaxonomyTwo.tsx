@@ -102,7 +102,8 @@ const auditPts = (u: number) => {
   ).join(' ');
 };
 
-const CAM_TOP: CameraState = { x: 640, y: 190, k: 1.3 };
+// fits the 6.4 card (world x 140) and the 6.6 citation line (ends ≈ x 1155)
+const CAM_TOP: CameraState = { x: 647, y: 190, k: 1.15 };
 const CAM_REP: CameraState = { x: REP.x + REP.w / 2, y: REP.y + REP.h / 2 - 40, k: 1.25 };
 const CAM_AUD: CameraState = { x: AUD.x + AUD.w / 2, y: AUD.y + AUD.h / 2 - 40, k: 1.25 };
 

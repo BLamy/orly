@@ -141,9 +141,11 @@ export function buildScene(): Scene {
   });
   tl.tween(dimU, 1, { at: 39.2, dur: 1.2, ease: ease.move });
   tl.tween(quoteU, 1, { at: 40.2, dur: 1.2, ease: ease.enter });
+  // dur runs to the authored end (50.8 + 1.4 hold) so the retimed caption
+  // stays up through the actual end of the delivered narration
   tl.caption({
     at: 45.6,
-    dur: 5.2,
+    dur: 6.6,
     text: 'So the journey ran: one missing variable, five environmental properties, eight failure modes — and a single closing question. Not: how smart is your system. But: what happens to it when the world stops agreeing with itself.',
   });
   tl.hold(50.8, 1.4);
@@ -253,14 +255,14 @@ function Frame({ s }: { s: SceneState }) {
           {/* what the paper does not provide */}
           {noFixU > 0 && (
             <g opacity={noFixU}>
-              <rect x={820} y={470} width={330} height={110} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={838} y={498} fill={colors.TEXT} fontSize={13} fontWeight={600}>
+              <rect x={820} y={450} width={330} height={110} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
+              <text x={838} y={478} fill={colors.TEXT} fontSize={13} fontWeight={600}>
                 deliberately absent (§1):
               </text>
-              <text x={838} y={522} fill={colors.MUTED} fontSize={13}>
+              <text x={838} y={502} fill={colors.MUTED} fontSize={13}>
                 experiments · detection · mitigation
               </text>
-              <text x={838} y={546} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <text x={838} y={526} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                 "a missing threat model" — position paper
               </text>
             </g>
@@ -269,14 +271,14 @@ function Frame({ s }: { s: SceneState }) {
           {/* shelf bridges */}
           {bridgeU > 0 && (
             <g>
-              <text x={110} y={556} fill={colors.ACCENT} fontSize={13} fontWeight={600} opacity={Math.min(1, bridgeU * 3)}>
+              <text x={700} y={116} fill={colors.ACCENT} fontSize={13} fontWeight={600} opacity={Math.min(1, bridgeU * 3)}>
                 the shelf's answers, in this paper's vocabulary:
               </text>
               {BRIDGES.map((b, i) => {
                 const u = clamp01(bridgeU * BRIDGES.length - i);
                 if (u <= 0) return null;
                 return (
-                  <text key={b} x={126} y={580 + i * 22} fill={colors.TEXT} fontSize={12.5} opacity={u * 0.9}>
+                  <text key={b} x={716} y={140 + i * 22} fill={colors.TEXT} fontSize={12.5} opacity={u * 0.9}>
                     • {b}
                   </text>
                 );
