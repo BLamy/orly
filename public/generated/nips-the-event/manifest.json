@@ -1,0 +1,101 @@
+{
+  "format": 3,
+  "slug": "nips-the-event",
+  "title": "The Event",
+  "subtitle": "NIP-01, the whole protocol in one JSON object",
+  "animal": "animal.webp",
+  "accent": "#38bdf8",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "One JSON Object",
+      "blurb": "the seven fields, and a real SHA-256 id",
+      "scene": "books/nips-the-event/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        13.061,
+        25.681,
+        36.943,
+        50.237,
+        63.577,
+        75.756,
+        89.99
+      ],
+      "duration": 99.66
+    },
+    {
+      "number": 2,
+      "title": "Keys and Signatures",
+      "blurb": "nsec to npub on secp256k1, and Schnorr verification",
+      "scene": "books/nips-the-event/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.009,
+        24.103,
+        36.978,
+        49.958,
+        60.186,
+        72.795,
+        86.773
+      ],
+      "duration": 98.732
+    },
+    {
+      "number": 3,
+      "title": "The Wire Protocol",
+      "blurb": "three words up, five words down, one websocket",
+      "scene": "books/nips-the-event/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        10.902,
+        22.175,
+        34.226,
+        47.334,
+        54.613,
+        63.053,
+        72.968,
+        84.322
+      ],
+      "duration": 94.69
+    },
+    {
+      "number": 4,
+      "title": "The Filter",
+      "blurb": "the little query language inside every REQ",
+      "scene": "books/nips-the-event/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        14.431,
+        20.689,
+        31.161,
+        42.946,
+        51.189,
+        58.492,
+        68.232
+      ],
+      "duration": 79.831
+    },
+    {
+      "number": 5,
+      "title": "Kind Ranges",
+      "blurb": "four retention rules encoded in one integer",
+      "scene": "books/nips-the-event/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        9.892,
+        21.339,
+        31.904,
+        40.611,
+        52.199,
+        65.829,
+        76.15
+      ],
+      "duration": 87.818
+    }
+  ]
+}
