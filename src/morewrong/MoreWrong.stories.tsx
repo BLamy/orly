@@ -5,13 +5,9 @@ import type { Meta, StoryObj } from '@storybook/react-vite';
 import { BOOKS } from './data';
 import { MoreWrong } from './MoreWrong';
 
-/** Storybook story id: sanitize(title) + '--' + sanitize(story name). */
-const sanitize = (s: string) => s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/(^-+|-+$)/g, '');
-const bookHref = (n: number) => {
-  const b = BOOKS[n];
-  const name = `Book ${String(n).padStart(2, '0')} · ${b?.title ?? '…'}`;
-  return `?path=/story/${sanitize('MoreWrong/Books')}--${sanitize(name)}`;
-};
+// Storybook derives each Books story id from its export name (Book01 →
+// book-01), so link straight to that stable id.
+const bookHref = (n: number) => `?path=/story/morewrong-books--book-${String(n).padStart(2, '0')}`;
 
 const ACTS: Record<number, string> = { 1: 'The Incident', 2: 'Situational Awareness', 3: 'Getting Out', 4: 'Oversight Collapse', 5: 'Implications & Endgame' };
 
