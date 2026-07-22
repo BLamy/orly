@@ -1,0 +1,103 @@
+{
+  "format": 3,
+  "slug": "buzz",
+  "title": "Buzz",
+  "subtitle": "How messaging really works — Nostr under the hood",
+  "animal": "animal.webp",
+  "accent": "#a01f3c",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Message",
+      "blurb": "Every chat bubble is a signed NIP-01 event — kind 9, hashed and sealed",
+      "scene": "books/buzz/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        10.159,
+        23.092,
+        36.884,
+        49.563,
+        64.389,
+        76.08,
+        85.81,
+        101.205
+      ],
+      "duration": 110.434
+    },
+    {
+      "number": 2,
+      "title": "Two Doors, One Room",
+      "blurb": "One ingest pipeline guards the relay: identity, kind, proof, membership",
+      "scene": "books/buzz/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        14.002,
+        22.639,
+        35.062,
+        47.159,
+        59.686,
+        75.487,
+        88.793,
+        100.96
+      ],
+      "duration": 112.338
+    },
+    {
+      "number": 3,
+      "title": "Where Messages Live",
+      "blurb": "Postgres keeps history, Redis keeps the ephemeral, your device keeps nothing",
+      "scene": "books/buzz/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        12.585,
+        27.016,
+        40.635,
+        53.243,
+        69.509,
+        83.487,
+        98.093,
+        114.846
+      ],
+      "duration": 127.895
+    },
+    {
+      "number": 4,
+      "title": "The Fan-Out",
+      "blurb": "Three tiers of subscription matching put each event on the right sockets",
+      "scene": "books/buzz/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        12.492,
+        24.694,
+        38.904,
+        50.48,
+        65.735,
+        77.299,
+        93.123
+      ],
+      "duration": 105.093
+    },
+    {
+      "number": 5,
+      "title": "The Paper Trail",
+      "blurb": "NIP-42 at the door, a hash-chained audit log at the back",
+      "scene": "books/buzz/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        10.728,
+        24.439,
+        37.594,
+        52.826,
+        66.108,
+        81.63,
+        97.931
+      ],
+      "duration": 115.683
+    }
+  ]
+}
