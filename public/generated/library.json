@@ -1,6 +1,45 @@
 {
   "books": [
     {
+      "slug": "nips-sealed-and-wrapped",
+      "title": "Sealed and Wrapped",
+      "subtitle": "NIP-44 encryption and NIP-17 private messages",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#34d399",
+      "href": "?bundle=nips-sealed-and-wrapped",
+      "series": "Nostr Implementation Possibilities",
+      "seriesOrder": 3,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Postcard Problem",
+          "duration": 75.371
+        },
+        {
+          "number": 2,
+          "title": "One Shared Secret",
+          "duration": 82.014
+        },
+        {
+          "number": 3,
+          "title": "Keys for One Message",
+          "duration": 93.809
+        },
+        {
+          "number": 4,
+          "title": "The Padding Staircase",
+          "duration": 89.072
+        },
+        {
+          "number": 5,
+          "title": "Seal It, Wrap It",
+          "duration": 105.93
+        }
+      ],
+      "createdAt": "2026-07-22T17:59:16.912Z"
+    },
+    {
       "slug": "nips-who-you-are",
       "title": "Who You Are",
       "subtitle": "keys, npubs, DNS names, and follows",
