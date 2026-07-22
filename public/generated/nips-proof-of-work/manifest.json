@@ -1,0 +1,94 @@
+{
+  "format": 3,
+  "slug": "nips-proof-of-work",
+  "title": "Proof of Work",
+  "animal": "animal.webp",
+  "accent": "#198a8a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Weight of an Id",
+      "blurb": "Difficulty is a zero count: real digests, the hex trap, and the spec's 36-bit heavyweight",
+      "scene": "books/nips-proof-of-work/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        11.854,
+        22.523,
+        35.108,
+        48.703,
+        59.884,
+        71.668
+      ],
+      "duration": 84.102
+    },
+    {
+      "number": 2,
+      "title": "The Mining Montage",
+      "blurb": "A genuine mining run, milestone by milestone, to a fourteen-bit id verified at load",
+      "scene": "books/nips-proof-of-work/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        10.762,
+        23.162,
+        33.843,
+        46.777,
+        57.563,
+        68.418
+      ],
+      "duration": 80.248
+    },
+    {
+      "number": 3,
+      "title": "The Committed Target",
+      "blurb": "120 really-mined notes, three lucky hits, and the tag slot that turns luck back into economics",
+      "scene": "books/nips-proof-of-work/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        11.355,
+        22.907,
+        35.097,
+        45.605,
+        58.759,
+        70.195
+      ],
+      "duration": 80.389
+    },
+    {
+      "number": 4,
+      "title": "Work for Hire",
+      "blurb": "The id never commits to the signature, so the grinding can be hired out",
+      "scene": "books/nips-proof-of-work/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        12.376,
+        27.852,
+        39.659,
+        54.299,
+        63.541,
+        76.452
+      ],
+      "duration": 90.836
+    },
+    {
+      "number": 5,
+      "title": "Pricing Speech",
+      "blurb": "Two to the d hashes: negligible for speech, ruinous for volume",
+      "scene": "books/nips-proof-of-work/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        10.67,
+        24.009,
+        34.424,
+        46.753,
+        58.479,
+        71.935
+      ],
+      "duration": 87.447
+    }
+  ]
+}

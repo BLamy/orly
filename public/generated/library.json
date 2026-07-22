@@ -1,6 +1,45 @@
 {
   "books": [
     {
+      "slug": "nips-proof-of-work",
+      "title": "Proof of Work",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "href": "?bundle=nips-proof-of-work",
+      "series": "Nostr Implementation Possibilities",
+      "seriesOrder": 6,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Weight of an Id",
+          "duration": 84.102
+        },
+        {
+          "number": 2,
+          "title": "The Mining Montage",
+          "duration": 80.248
+        },
+        {
+          "number": 3,
+          "title": "The Committed Target",
+          "duration": 80.389
+        },
+        {
+          "number": 4,
+          "title": "Work for Hire",
+          "duration": 90.836
+        },
+        {
+          "number": 5,
+          "title": "Pricing Speech",
+          "duration": 87.447
+        }
+      ],
+      "createdAt": "2026-07-22T19:20:19.300Z"
+    },
+    {
       "slug": "nips-the-relay",
       "title": "The Relay",
       "subtitle": "dumb pipes, smart clients",
