@@ -130,3 +130,6 @@ export function Book1Scene({ nodeId, controlGap }: { nodeId: string; controlGap:
       return null;
   }
 }
+
+// Registry entry point (glob-discovered by book number).
+export const scene = Book1Scene;

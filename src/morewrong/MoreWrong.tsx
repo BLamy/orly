@@ -1,19 +1,19 @@
-import { useEffect, useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import { BOOKS, bookOf, findNode, type Ending } from './data';
 import { applyEffects, applyOnEnter, clearSave, load, newGame, pickEnding, save, type GameState } from './state';
 import { Stage } from './components/Stage';
 import { Meter } from './components/Meter';
-import { Box } from './components/Box';
-import { Book1Scene } from './scene/Book1Scenes';
 import { GenericScene } from './scene/GenericScene';
+import { bookScene } from './scene/registry';
 import './morewrong.css';
 
 function Scene({ nodeId, controlGap }: { nodeId: string; controlGap: number }) {
   const bn = bookOf(nodeId);
   const book = BOOKS[bn];
-  if (bn === 1) {
-    const art = Book1Scene({ nodeId, controlGap });
-    if (art) return <>{art}</>;
+  const art = bookScene(bn);
+  if (art) {
+    const el = art({ nodeId, controlGap });
+    if (el) return <>{el}</>;
   }
   return <GenericScene nodeId={nodeId} controlGap={controlGap} concept={book?.concept ?? ''} />;
 }
@@ -37,9 +37,17 @@ export function MoreWrong() {
   const bn = bookOf(state.nodeId);
   const book = BOOKS[bn];
 
-  // Apply onEnter effects once per node arrival, then persist.
+  // Apply onEnter effects exactly once per node arrival, then persist. The ref
+  // guard keeps StrictMode's double effect-invoke (dev) from applying a node's
+  // meter/flag effects twice.
+  const appliedRef = useRef<string | null>(null);
   useEffect(() => {
     if (!found) return;
+    if (appliedRef.current === state.nodeId) {
+      save(state);
+      return;
+    }
+    appliedRef.current = state.nodeId;
     const withEnter = applyOnEnter(state, found.node.onEnter);
     if (withEnter !== state) setState(withEnter);
     else save(state);

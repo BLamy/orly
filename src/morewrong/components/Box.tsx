@@ -30,7 +30,7 @@ export function Box({
   x = 340,
   y = 150,
   w = 600,
-  h = 380,
+  h = 430,
   children,
   refrain = true,
   label,
