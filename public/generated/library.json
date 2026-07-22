@@ -1,6 +1,45 @@
 {
   "books": [
     {
+      "slug": "nips-the-event",
+      "title": "The Event",
+      "subtitle": "NIP-01, the whole protocol in one JSON object",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#38bdf8",
+      "href": "?bundle=nips-the-event",
+      "series": "Nostr Implementation Possibilities",
+      "seriesOrder": 1,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "One JSON Object",
+          "duration": 99.66
+        },
+        {
+          "number": 2,
+          "title": "Keys and Signatures",
+          "duration": 98.732
+        },
+        {
+          "number": 3,
+          "title": "The Wire Protocol",
+          "duration": 94.69
+        },
+        {
+          "number": 4,
+          "title": "The Filter",
+          "duration": 79.831
+        },
+        {
+          "number": 5,
+          "title": "Kind Ranges",
+          "duration": 87.818
+        }
+      ],
+      "createdAt": "2026-07-22T16:58:29.051Z"
+    },
+    {
       "slug": "buzz",
       "title": "Buzz",
       "subtitle": "How messaging really works \u2014 Nostr under the hood",

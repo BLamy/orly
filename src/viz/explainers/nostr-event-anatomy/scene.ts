@@ -108,7 +108,7 @@ export function buildScene(): Scene {
   tl.caption({
     at: 0.5,
     dur: 5.8,
-    text: 'Everything on nostr — every note, profile, and reaction — is one JSON object called an event. Seven fields. This is the entire data model, so it is worth reading slowly.',
+    text: 'Everything on nostr — every note, profile, and reaction — is a single small object called an event. Seven fields of plain text. This is the entire data model, so it is worth reading slowly.',
   });
   tl.tween(jsonU, 1, { at: 0.7, dur: 2.4, ease: ease.draw });
   tl.tween(cam, CAM_JSON, { at: 1.0, dur: 1.4, ease: ease.move });
@@ -130,7 +130,7 @@ export function buildScene(): Scene {
   tl.caption({
     at: 14.1,
     dur: 6.2,
-    text: 'Tags are how events point at each other. An e tag references another event — a reply thread. A p tag references a person. Watch the values leave the JSON and become what they mean.',
+    text: 'Tags are how events point at each other. An e tag references another event — a reply thread. A p tag references a person. Watch the values leave the document and become what they mean.',
   });
   tl.tween(tagU, 1, { at: 15.2, dur: 2.2, ease: ease.move });
   tl.hold(20.3, 0.7);
@@ -151,7 +151,7 @@ export function buildScene(): Scene {
   tl.caption({
     at: 28.3,
     dur: 6.4,
-    text: 'That byte string goes through SHA-256. Sixty-four rounds of mixing, and two hundred fifty-six bits settle into place. These are the actual bits of this event’s hash — computed, not decorated.',
+    text: 'That byte string goes through the S H A two fifty six hash. Sixty four rounds of mixing, and two hundred fifty-six bits settle into place. These are the actual bits of this event’s hash — computed, not decorated.',
   });
   tl.tween(cam, CAM_GRID, { at: 28.5, dur: 1.4, ease: ease.move });
   tl.tween(gridU, 1, { at: 28.9, dur: 1.4, ease: ease.draw });
@@ -162,7 +162,7 @@ export function buildScene(): Scene {
   tl.caption({
     at: 35.4,
     dur: 6.0,
-    text: 'And that digest IS the id. It flies home into the empty slot. Change one character of the content and every one of those bits reshuffles — the id is a fingerprint of exactly what was said.',
+    text: 'And that digest is exactly the id. It flies home into the empty slot. Change one character of the content and every one of those bits reshuffles — the id is a fingerprint of exactly what was said.',
   });
   tl.tween(cam, CAMERA_HOME, { at: 35.6, dur: 1.4, ease: ease.move });
   tl.tween(idFlyU, 1, { at: 36.6, dur: 1.5, ease: ease.move });
@@ -181,7 +181,7 @@ export function buildScene(): Scene {
   tl.caption({
     at: 49.0,
     dur: 5.6,
-    text: 'One object, self-contained: the id proves what was said, the signature proves who said it. Every other NIP in the protocol is built on top of this little machine.',
+    text: 'One object, self-contained: the id proves what was said, the signature proves who said it. Every other proposal in the protocol is built on top of this little machine.',
   });
   tl.tween(dimU, 1, { at: 49.4, dur: 1.2, ease: ease.move });
   tl.tween(closeU, 1, { at: 50.4, dur: 1.0, ease: ease.enter });
