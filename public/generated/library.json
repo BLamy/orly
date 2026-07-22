@@ -1,6 +1,45 @@
 {
   "books": [
     {
+      "slug": "nips-an-app-on-every-kind",
+      "title": "An App on Every Kind",
+      "subtitle": "handlers, interop, and the open kind-space",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#2dd4bf",
+      "href": "?bundle=nips-an-app-on-every-kind",
+      "series": "Nostr Implementation Possibilities",
+      "seriesOrder": 10,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Kind Number Is a Schema",
+          "duration": 82.106
+        },
+        {
+          "number": 2,
+          "title": "Who Opens This?",
+          "duration": 90.138
+        },
+        {
+          "number": 3,
+          "title": "Your Relay, Your Database",
+          "duration": 83.22
+        },
+        {
+          "number": 4,
+          "title": "New Colonies",
+          "duration": 79.04
+        },
+        {
+          "number": 5,
+          "title": "An App on Every Kind",
+          "duration": 84.056
+        }
+      ],
+      "createdAt": "2026-07-22T22:17:31.772Z"
+    },
+    {
       "slug": "nips-long-form",
       "title": "Long Form",
       "subtitle": "",
