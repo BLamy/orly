@@ -1,6 +1,45 @@
 {
   "books": [
     {
+      "slug": "nips-threads-and-reactions",
+      "title": "Threads and Reactions",
+      "subtitle": "how conversations emerge from tags",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1f6fb2",
+      "href": "?bundle=nips-threads-and-reactions",
+      "series": "Nostr Implementation Possibilities",
+      "seriesOrder": 4,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Reply",
+          "duration": 100.495
+        },
+        {
+          "number": 2,
+          "title": "Assembling the Thread",
+          "duration": 84.335
+        },
+        {
+          "number": 3,
+          "title": "Small Signals",
+          "duration": 97.663
+        },
+        {
+          "number": 4,
+          "title": "Mentions and Comments",
+          "duration": 103.33
+        },
+        {
+          "number": 5,
+          "title": "The Lists You Keep",
+          "duration": 94.088
+        }
+      ],
+      "createdAt": "2026-07-22T18:18:29.455Z"
+    },
+    {
       "slug": "nips-sealed-and-wrapped",
       "title": "Sealed and Wrapped",
       "subtitle": "NIP-44 encryption and NIP-17 private messages",
