@@ -1,0 +1,96 @@
+{
+  "format": 3,
+  "slug": "nips-who-you-are",
+  "title": "Who You Are",
+  "subtitle": "keys, npubs, DNS names, and follows",
+  "animal": "animal.webp",
+  "accent": "#b0277a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Profile Event",
+      "blurb": "A profile is a signed, replaceable kind-0 event — a claim the key wears, not a database row.",
+      "scene": "books/nips-who-you-are/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        12.887,
+        21.943,
+        33.262,
+        44.559,
+        56.622,
+        69.927
+      ],
+      "duration": 82.942
+    },
+    {
+      "number": 2,
+      "title": "Dressed for Humans",
+      "blurb": "The same 32 bytes become an npub: real bech32, five bits at a time, checksum and all.",
+      "scene": "books/nips-who-you-are/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        12.411,
+        22.848,
+        35.642,
+        45.813,
+        58.747,
+        72.319,
+        84.567
+      ],
+      "duration": 94.551
+    },
+    {
+      "number": 3,
+      "title": "A Name You Can Say",
+      "blurb": "NIP-05 borrows email's shape: one well-known URL, one comparison, no platform.",
+      "scene": "books/nips-who-you-are/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        11.773,
+        24.45,
+        35.736,
+        45.906,
+        58.561,
+        69.788
+      ],
+      "duration": 79.737
+    },
+    {
+      "number": 4,
+      "title": "Who You Listen To",
+      "blurb": "The follow list is a kind-3 event whose p tags are arrows — petnames included.",
+      "scene": "books/nips-who-you-are/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        11.099,
+        20.967,
+        30.894,
+        42.481,
+        54.672,
+        64.122
+      ],
+      "duration": 75.047
+    },
+    {
+      "number": 5,
+      "title": "Proofs, Not Passwords",
+      "blurb": "NIP-39 identity claims: public proofs on other platforms, checkable by anyone.",
+      "scene": "books/nips-who-you-are/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        12.225,
+        24.578,
+        35.468,
+        45.139,
+        55.878,
+        68.695
+      ],
+      "duration": 81.222
+    }
+  ]
+}
