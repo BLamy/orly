@@ -1,0 +1,95 @@
+{
+  "format": 3,
+  "slug": "nips-an-app-on-every-kind",
+  "title": "An App on Every Kind",
+  "subtitle": "handlers, interop, and the open kind-space",
+  "animal": "animal.webp",
+  "accent": "#2dd4bf",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Kind Number Is a Schema",
+      "blurb": "One integer decides what an event means.",
+      "scene": "books/nips-an-app-on-every-kind/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        10.24,
+        24.114,
+        34.342,
+        44.989,
+        59.675,
+        73.085
+      ],
+      "duration": 82.106
+    },
+    {
+      "number": 2,
+      "title": "Who Opens This?",
+      "blurb": "Finding the app that opens a kind you have never seen.",
+      "scene": "books/nips-an-app-on-every-kind/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        11.494,
+        26.738,
+        39.996,
+        53.452,
+        66.594,
+        78.946
+      ],
+      "duration": 90.138
+    },
+    {
+      "number": 3,
+      "title": "Your Relay, Your Database",
+      "blurb": "A relay as your database; a signed event as your login.",
+      "scene": "books/nips-an-app-on-every-kind/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        10.902,
+        23.104,
+        35.782,
+        47.172,
+        59.536,
+        71.691
+      ],
+      "duration": 83.22
+    },
+    {
+      "number": 4,
+      "title": "New Colonies",
+      "blurb": "Git, calendars, and live streams, re-minted as kinds.",
+      "scene": "books/nips-an-app-on-every-kind/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        9.555,
+        21.118,
+        32.45,
+        42.445,
+        56.006,
+        67.523
+      ],
+      "duration": 79.04
+    },
+    {
+      "number": 5,
+      "title": "An App on Every Kind",
+      "blurb": "The open namespace where anyone mints the next app.",
+      "scene": "books/nips-an-app-on-every-kind/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        11.041,
+        23.557,
+        36.107,
+        49.587,
+        61.696,
+        73.967
+      ],
+      "duration": 84.056
+    }
+  ]
+}
