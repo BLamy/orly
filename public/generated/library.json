@@ -1,6 +1,45 @@
 {
   "books": [
     {
+      "slug": "nips-zaps",
+      "title": "Zaps",
+      "subtitle": "NIP-57 and money as a social primitive",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#facc15",
+      "href": "?bundle=nips-zaps",
+      "series": "Nostr Implementation Possibilities",
+      "seriesOrder": 8,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Address on Your Profile",
+          "duration": 90.743
+        },
+        {
+          "number": 2,
+          "title": "A Payment Request, Signed",
+          "duration": 77.973
+        },
+        {
+          "number": 3,
+          "title": "The Invoice That Remembers",
+          "duration": 72.818
+        },
+        {
+          "number": 4,
+          "title": "The Receipt",
+          "duration": 94.597
+        },
+        {
+          "number": 5,
+          "title": "Your Wallet on a Leash",
+          "duration": 103.56
+        }
+      ],
+      "createdAt": "2026-07-22T20:05:15.782Z"
+    },
+    {
       "slug": "nips-the-signer",
       "title": "The Signer",
       "subtitle": "",
