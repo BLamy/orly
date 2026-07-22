@@ -1,6 +1,45 @@
 {
   "books": [
     {
+      "slug": "nips-long-form",
+      "title": "Long Form",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#3a8b3a",
+      "href": "?bundle=nips-long-form",
+      "series": "Nostr Implementation Possibilities",
+      "seriesOrder": 9,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Article Is an Event",
+          "duration": 89.489
+        },
+        {
+          "number": 2,
+          "title": "Edits That Replace",
+          "duration": 87.075
+        },
+        {
+          "number": 3,
+          "title": "A File's Name Is Its Hash",
+          "duration": 71.656
+        },
+        {
+          "number": 4,
+          "title": "Inline and On-Screen",
+          "duration": 73.84
+        },
+        {
+          "number": 5,
+          "title": "Highlights",
+          "duration": 75.093
+        }
+      ],
+      "createdAt": "2026-07-22T21:54:36.283Z"
+    },
+    {
       "slug": "nips-zaps",
       "title": "Zaps",
       "subtitle": "NIP-57 and money as a social primitive",

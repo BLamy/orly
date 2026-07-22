@@ -1,0 +1,92 @@
+{
+  "format": 3,
+  "slug": "nips-long-form",
+  "title": "Long Form",
+  "animal": "animal.webp",
+  "accent": "#3a8b3a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Article Is an Event",
+      "blurb": "An article becomes one addressable kind-30023 event — title, summary, topics as tags, the markdown as content.",
+      "scene": "books/nips-long-form/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        10.426,
+        22.581,
+        34.655,
+        45.65,
+        56.064,
+        67.476,
+        79.017
+      ],
+      "duration": 89.489
+    },
+    {
+      "number": 2,
+      "title": "Edits That Replace",
+      "blurb": "The address is kind:pubkey:d, not the hash — edits replace in place while a fixed-hash link freezes a version.",
+      "scene": "books/nips-long-form/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        13.537,
+        25.717,
+        41.413,
+        53.266,
+        67.639,
+        78.054
+      ],
+      "duration": 87.075
+    },
+    {
+      "number": 3,
+      "title": "A File's Name Is Its Hash",
+      "blurb": "A file's identity is its SHA-256: the x tag verifies the same bytes across any mirror, and catches a tampered one.",
+      "scene": "books/nips-long-form/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        13.317,
+        25.751,
+        34.667,
+        46.091,
+        61.312
+      ],
+      "duration": 71.656
+    },
+    {
+      "number": 4,
+      "title": "Inline and On-Screen",
+      "blurb": "An imeta tag turns a bare link into a rich preview, and a video lists one variant per resolution.",
+      "scene": "books/nips-long-form/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        11.238,
+        26.262,
+        37.837,
+        50.632,
+        62.183
+      ],
+      "duration": 73.84
+    },
+    {
+      "number": 5,
+      "title": "Highlights",
+      "blurb": "A highlight is a kind-9802 event whose content is the quote and whose a-tag points back at the article's living address.",
+      "scene": "books/nips-long-form/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        9.741,
+        20.608,
+        33.878,
+        47.555,
+        60.291
+      ],
+      "duration": 75.093
+    }
+  ]
+}
