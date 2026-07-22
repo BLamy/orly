@@ -1,0 +1,93 @@
+{
+  "format": 3,
+  "slug": "nips-zaps",
+  "title": "Zaps",
+  "subtitle": "NIP-57 and money as a social primitive",
+  "animal": "animal.webp",
+  "accent": "#facc15",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Address on Your Profile",
+      "blurb": "A lightning address unfolds into a zap endpoint",
+      "scene": "books/nips-zaps/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        11.436,
+        23.15,
+        37.175,
+        51.351,
+        64.493,
+        76.834
+      ],
+      "duration": 90.743
+    },
+    {
+      "number": 2,
+      "title": "A Payment Request, Signed",
+      "blurb": "Kind 9734 rides an HTTP get, never a relay",
+      "scene": "books/nips-zaps/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        12.132,
+        27.004,
+        40.17,
+        53.464,
+        66.026
+      ],
+      "duration": 77.973
+    },
+    {
+      "number": 3,
+      "title": "The Invoice That Remembers",
+      "blurb": "The zap request is hashed into the bolt11 invoice",
+      "scene": "books/nips-zaps/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        10.983,
+        22.848,
+        34.528,
+        48.53,
+        60.593
+      ],
+      "duration": 72.818
+    },
+    {
+      "number": 4,
+      "title": "The Receipt",
+      "blurb": "Kind 9735 fans out to the relays the sender chose",
+      "scene": "books/nips-zaps/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        11.668,
+        27.202,
+        39.067,
+        51.246,
+        65.015,
+        77.658
+      ],
+      "duration": 94.597
+    },
+    {
+      "number": 5,
+      "title": "Your Wallet on a Leash",
+      "blurb": "NIP-47 makes the wallet itself a nostr service",
+      "scene": "books/nips-zaps/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        13.073,
+        31.95,
+        45.407,
+        61.683,
+        74.524,
+        87.295
+      ],
+      "duration": 103.56
+    }
+  ]
+}
