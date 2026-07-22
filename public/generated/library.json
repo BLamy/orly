@@ -1,6 +1,45 @@
 {
   "books": [
     {
+      "slug": "nips-who-you-are",
+      "title": "Who You Are",
+      "subtitle": "keys, npubs, DNS names, and follows",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b0277a",
+      "href": "?bundle=nips-who-you-are",
+      "series": "Nostr Implementation Possibilities",
+      "seriesOrder": 2,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Profile Event",
+          "duration": 82.942
+        },
+        {
+          "number": 2,
+          "title": "Dressed for Humans",
+          "duration": 94.551
+        },
+        {
+          "number": 3,
+          "title": "A Name You Can Say",
+          "duration": 79.737
+        },
+        {
+          "number": 4,
+          "title": "Who You Listen To",
+          "duration": 75.047
+        },
+        {
+          "number": 5,
+          "title": "Proofs, Not Passwords",
+          "duration": 81.222
+        }
+      ],
+      "createdAt": "2026-07-22T17:36:05.368Z"
+    },
+    {
       "slug": "nips-the-event",
       "title": "The Event",
       "subtitle": "NIP-01, the whole protocol in one JSON object",
