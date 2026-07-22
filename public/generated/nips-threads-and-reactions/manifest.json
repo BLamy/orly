@@ -1,0 +1,99 @@
+{
+  "format": 3,
+  "slug": "nips-threads-and-reactions",
+  "title": "Threads and Reactions",
+  "subtitle": "how conversations emerge from tags",
+  "animal": "animal.webp",
+  "accent": "#1f6fb2",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Reply",
+      "blurb": "A reply is one marked tag: root, reply, and the audience riding along in p tags.",
+      "scene": "books/nips-threads-and-reactions/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        10.739,
+        24.427,
+        38.161,
+        50.189,
+        65.259,
+        75.139,
+        90.092
+      ],
+      "duration": 100.495
+    },
+    {
+      "number": 2,
+      "title": "Assembling the Thread",
+      "blurb": "Ten shuffled notes self-assemble into a tree — no server ever asked.",
+      "scene": "books/nips-threads-and-reactions/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        10.937,
+        21.443,
+        34.992,
+        47.6,
+        59.373,
+        71.796
+      ],
+      "duration": 84.335
+    },
+    {
+      "number": 3,
+      "title": "Small Signals",
+      "blurb": "Likes, boosts, and quotes are tiny events pointing at events.",
+      "scene": "books/nips-threads-and-reactions/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        12.132,
+        24.683,
+        37.86,
+        51.095,
+        64.354,
+        72.771,
+        86.575
+      ],
+      "duration": 97.663
+    },
+    {
+      "number": 4,
+      "title": "Mentions and Comments",
+      "blurb": "Mentions live inside the words; comments carry their ancestry in two letter cases.",
+      "scene": "books/nips-threads-and-reactions/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        10.971,
+        25.251,
+        38.777,
+        49.761,
+        67.698,
+        81.178,
+        93.206
+      ],
+      "duration": 103.33
+    },
+    {
+      "number": 5,
+      "title": "The Lists You Keep",
+      "blurb": "Mute, pin, bookmark: your judgment as replaceable events, half of it encrypted.",
+      "scene": "books/nips-threads-and-reactions/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        10.553,
+        22.814,
+        31.765,
+        43.642,
+        53.743,
+        67.222,
+        79.622
+      ],
+      "duration": 94.088
+    }
+  ]
+}
