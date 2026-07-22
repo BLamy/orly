@@ -70,6 +70,9 @@ export function buildScene(): Scene {
   });
   tl.tween(curveU, 1, { at: 7.2, dur: 1.6, ease: ease.draw });
   tl.tween(cam, CAM_CURVE, { at: 7.4, dur: 1.4, ease: ease.move });
+  // the nsec block leaves the frame while the camera lives on the curve —
+  // drop it to a whisper so nothing focal is ever edge-clipped
+  tl.tween(dU, 0.15, { at: 7.4, dur: 1.0, ease: ease.move });
   tl.hold(12.8, 0.7);
 
   // Beat 3 — d hops to P.
@@ -95,9 +98,10 @@ export function buildScene(): Scene {
   tl.caption({
     at: 27.3,
     dur: 5.8,
-    text: 'Now sign something. The note is hashed first — these are the real two hundred fifty-six bits of its SHA-256 — so the signature covers exactly what was said, at any length.',
+    text: 'Now sign something. The note is hashed first — these are the real two hundred fifty six bits of its hash — so the signature covers exactly what was said, at any length.',
   });
   tl.tween(cam, CAM_SIGN, { at: 27.5, dur: 1.4, ease: ease.move });
+  tl.tween(dU, 1, { at: 28.9, dur: 0.6, ease: ease.move });
   tl.tween(msgU, 1, { at: 27.9, dur: 1.2, ease: ease.draw });
   tl.tween(settleU, 1, { at: 28.8, dur: 2.4, ease: ease.linear });
   tl.hold(33.1, 0.7);
