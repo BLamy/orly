@@ -1,6 +1,43 @@
 {
   "books": [
     {
+      "slug": "buzz",
+      "title": "Buzz",
+      "subtitle": "How messaging really works — Nostr under the hood",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#a01f3c",
+      "href": "?bundle=buzz",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Message",
+          "duration": 110.434
+        },
+        {
+          "number": 2,
+          "title": "Two Doors, One Room",
+          "duration": 112.338
+        },
+        {
+          "number": 3,
+          "title": "Where Messages Live",
+          "duration": 127.895
+        },
+        {
+          "number": 4,
+          "title": "The Fan-Out",
+          "duration": 105.093
+        },
+        {
+          "number": 5,
+          "title": "The Paper Trail",
+          "duration": 115.683
+        }
+      ],
+      "createdAt": "2026-07-22T17:38:09.460Z"
+    },
+    {
       "slug": "jacobian-conjecture",
       "title": "Jacobian Conjecture",
       "subtitle": "Constant determinant, no inverse",
