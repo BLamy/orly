@@ -1,0 +1,104 @@
+{
+  "format": 3,
+  "slug": "nips-the-relay",
+  "title": "The Relay",
+  "subtitle": "dumb pipes, smart clients",
+  "animal": "animal.webp",
+  "accent": "#fb7185",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Front Door",
+      "blurb": "NIP-11: the relay information document — identity, supported extensions, machine-readable house rules",
+      "scene": "books/nips-the-relay/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        10.391,
+        22.14,
+        30.314,
+        39.88,
+        49.598,
+        66.258,
+        75.871
+      ],
+      "duration": 84.707
+    },
+    {
+      "number": 2,
+      "title": "Prove It Is You",
+      "blurb": "NIP-42: the AUTH handshake — a signed throwaway event instead of a session",
+      "scene": "books/nips-the-relay/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.311,
+        19.481,
+        28.061,
+        40.728,
+        52.442,
+        58.978,
+        71.007,
+        80.353
+      ],
+      "duration": 87.353
+    },
+    {
+      "number": 3,
+      "title": "Ask Without Downloading",
+      "blurb": "NIP-45 and NIP-50: COUNT and search — answers without downloads",
+      "scene": "books/nips-the-relay/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        10.937,
+        20.782,
+        29.072,
+        38.162,
+        50.852,
+        60.314,
+        71.588,
+        85.589
+      ],
+      "duration": 92.694
+    },
+    {
+      "number": 4,
+      "title": "Asking to Forget",
+      "blurb": "NIP-40 and NIP-09: expiration and deletion requests, honestly",
+      "scene": "books/nips-the-relay/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        12.063,
+        22.071,
+        34.099,
+        44.652,
+        56.03,
+        65.898,
+        79.192,
+        93.786
+      ],
+      "duration": 104.629
+    },
+    {
+      "number": 5,
+      "title": "No Center",
+      "blurb": "NIP-65: the outbox model — read where they write, deliver where they read",
+      "scene": "books/nips-the-relay/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        12.91,
+        27.109,
+        34.377,
+        44.048,
+        54.265,
+        66.281,
+        79.121,
+        92.067
+      ],
+      "duration": 102.539
+    }
+  ]
+}

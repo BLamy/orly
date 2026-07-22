@@ -243,6 +243,9 @@ export function JsonDoc({
               const isHidden =
                 hidden?.some((h) => t.path === h && t.kind !== 'key' && t.kind !== 'punct') ?? false;
               const op = focused ? 1 : 1 - (1 - dim) * clamp01(focusU);
+              // effectively-invisible tokens leave the DOM entirely — they
+              // read as background, and clip checkers shouldn't see them
+              if (op <= 0.07) return null;
               const x = layout.x + t.col * layout.charW;
               if (isHidden) {
                 return (

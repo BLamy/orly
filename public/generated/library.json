@@ -1,6 +1,45 @@
 {
   "books": [
     {
+      "slug": "nips-the-relay",
+      "title": "The Relay",
+      "subtitle": "dumb pipes, smart clients",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#fb7185",
+      "href": "?bundle=nips-the-relay",
+      "series": "Nostr Implementation Possibilities",
+      "seriesOrder": 5,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Front Door",
+          "duration": 84.707
+        },
+        {
+          "number": 2,
+          "title": "Prove It Is You",
+          "duration": 87.353
+        },
+        {
+          "number": 3,
+          "title": "Ask Without Downloading",
+          "duration": 92.694
+        },
+        {
+          "number": 4,
+          "title": "Asking to Forget",
+          "duration": 104.629
+        },
+        {
+          "number": 5,
+          "title": "No Center",
+          "duration": 102.539
+        }
+      ],
+      "createdAt": "2026-07-22T18:44:50.958Z"
+    },
+    {
       "slug": "nips-threads-and-reactions",
       "title": "Threads and Reactions",
       "subtitle": "how conversations emerge from tags",
