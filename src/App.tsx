@@ -7,6 +7,12 @@ const BookPlayer = lazy(() =>
   import('./player/BookPlayer').then((m) => ({ default: m.BookPlayer }))
 );
 
+// The MoreWrong game (?mode=morewrong) loads as its own chunk so the shelf
+// bundle stays small.
+const MoreWrong = lazy(() =>
+  import('./morewrong/MoreWrong').then((m) => ({ default: m.MoreWrong }))
+);
+
 function param(name: string): string | null {
   if (typeof window === 'undefined') return null;
   const fromQs = new URLSearchParams(window.location.search).get(name);
@@ -18,7 +24,17 @@ function param(name: string): string | null {
 }
 
 export function App() {
+  const mode = param('mode');
   const bundleSlug = param('bundle');
+
+  // the MoreWrong interactive game (?mode=morewrong)
+  if (mode === 'morewrong') {
+    return (
+      <Suspense fallback={<div className="bp-loading">Loading MoreWrong…</div>}>
+        <MoreWrong />
+      </Suspense>
+    );
+  }
 
   // a generated book (?bundle=<slug>)
   if (bundleSlug) {
