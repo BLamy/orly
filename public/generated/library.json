@@ -1,6 +1,45 @@
 {
   "books": [
     {
+      "slug": "nips-the-signer",
+      "title": "The Signer",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#60a5fa",
+      "href": "?bundle=nips-the-signer",
+      "series": "Nostr Implementation Possibilities",
+      "seriesOrder": 7,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Secret That Cannot Move",
+          "duration": 55.821
+        },
+        {
+          "number": 2,
+          "title": "The App Only Asks",
+          "duration": 72.818
+        },
+        {
+          "number": 3,
+          "title": "Signing Across the Internet",
+          "duration": 86.797
+        },
+        {
+          "number": 4,
+          "title": "Sealed for the Road",
+          "duration": 91.674
+        },
+        {
+          "number": 5,
+          "title": "Three Doors, One Room",
+          "duration": 57.4
+        }
+      ],
+      "createdAt": "2026-07-22T19:37:10.761Z"
+    },
+    {
       "slug": "nips-proof-of-work",
       "title": "Proof of Work",
       "subtitle": "",

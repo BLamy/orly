@@ -1,0 +1,89 @@
+{
+  "format": 3,
+  "slug": "nips-the-signer",
+  "title": "The Signer",
+  "animal": "animal.webp",
+  "accent": "#60a5fa",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Secret That Cannot Move",
+      "blurb": "Why an app that holds your nsec simply is you",
+      "scene": "books/nips-the-signer/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        9.95,
+        22.918,
+        33.704,
+        46.103
+      ],
+      "duration": 55.821
+    },
+    {
+      "number": 2,
+      "title": "The App Only Asks",
+      "blurb": "NIP-07: an unsigned event crosses a wall and comes back signed",
+      "scene": "books/nips-the-signer/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        10.542,
+        23.174,
+        34.865,
+        48.483,
+        59.083
+      ],
+      "duration": 72.818
+    },
+    {
+      "number": 3,
+      "title": "Signing Across the Internet",
+      "blurb": "NIP-46: a bunker signs over a relay, the key never travels",
+      "scene": "books/nips-the-signer/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        11.459,
+        23.104,
+        36.489,
+        50.828,
+        64.993,
+        76.719
+      ],
+      "duration": 86.797
+    },
+    {
+      "number": 4,
+      "title": "Sealed for the Road",
+      "blurb": "NIP-49: scrypt and XChaCha20 seal the key into an ncryptsec",
+      "scene": "books/nips-the-signer/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        10.913,
+        24.172,
+        36.212,
+        52.919,
+        67.571,
+        78.821
+      ],
+      "duration": 91.674
+    },
+    {
+      "number": 5,
+      "title": "Three Doors, One Room",
+      "blurb": "One principle at three distances, gated by scope",
+      "scene": "books/nips-the-signer/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        11.273,
+        23.94,
+        34.761,
+        45.674
+      ],
+      "duration": 57.4
+    }
+  ]
+}
