@@ -5,7 +5,12 @@
 // GenericScene. Book number is parsed from the filename.
 import type { ReactNode } from 'react';
 
-export type BookScene = (props: { nodeId: string; controlGap: number }) => ReactNode | null;
+export type BookScene = (props: {
+  nodeId: string;
+  controlGap: number;
+  /** the player's live flags — used by Book 20's ledger; other books ignore it */
+  flags?: Record<string, number | boolean>;
+}) => ReactNode | null;
 
 const mods = import.meta.glob('./book-*.tsx', { eager: true }) as Record<
   string,

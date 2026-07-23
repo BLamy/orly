@@ -1,0 +1,473 @@
+{
+  "b01_reduced": {
+    "dur": 18.02
+  },
+  "b01_decide": {
+    "dur": 28.24
+  },
+  "b01_elicit": {
+    "dur": 29.26
+  },
+  "b01_start": {
+    "dur": 21.97
+  },
+  "b01_meanwhile": {
+    "dur": 26.38
+  },
+  "b01_blind": {
+    "dur": 17.32
+  },
+  "b01_sting": {
+    "dur": 34.69
+  },
+  "b02_decide": {
+    "dur": 18.85
+  },
+  "b02_start": {
+    "dur": 30.88
+  },
+  "b02_shipped": {
+    "dur": 19.74
+  },
+  "b02_invalidated": {
+    "dur": 16.07
+  },
+  "b02_heldout": {
+    "dur": 22.34
+  },
+  "b02_meanwhile": {
+    "dur": 21.69
+  },
+  "b02_goodhart": {
+    "dur": 28.84
+  },
+  "b02_sting": {
+    "dur": 21.69
+  },
+  "b03_start": {
+    "dur": 32.14
+  },
+  "b03_decide": {
+    "dur": 15.93
+  },
+  "b03_funded": {
+    "dur": 21.13
+  },
+  "b03_meanwhile": {
+    "dur": 22.43
+  },
+  "b03_walls": {
+    "dur": 23.96
+  },
+  "b03_disclose": {
+    "dur": 21.59
+  },
+  "b03_perimeter": {
+    "dur": 21.73
+  },
+  "b04_start": {
+    "dur": 20.25
+  },
+  "b04_decision": {
+    "dur": 19.18
+  },
+  "b03_depth": {
+    "dur": 30.88
+  },
+  "b03_sting": {
+    "dur": 29.49
+  },
+  "b04_meanwhile": {
+    "dur": 15.37
+  },
+  "b04_sting": {
+    "dur": 18.34
+  },
+  "b04_ab": {
+    "dur": 28.19
+  },
+  "b04_monitor": {
+    "dur": 22.29
+  },
+  "b04_trusted": {
+    "dur": 13.19
+  },
+  "b04_sandbag": {
+    "dur": 25.03
+  },
+  "b05_start": {
+    "dur": 24.1
+  },
+  "b05_decision": {
+    "dur": 21.69
+  },
+  "b05_honest": {
+    "dur": 22.57
+  },
+  "b05_probe": {
+    "dur": 26.61
+  },
+  "b05_sting": {
+    "dur": 24.2
+  },
+  "b06_start": {
+    "dur": 25.4
+  },
+  "b06_meanwhile": {
+    "dur": 15.97
+  },
+  "b06_mechanism": {
+    "dur": 32.28
+  },
+  "b06_proceed": {
+    "dur": 13.61
+  },
+  "b06_decision": {
+    "dur": 24.52
+  },
+  "b06_tripwire": {
+    "dur": 21.92
+  },
+  "b06_sting": {
+    "dur": 22.52
+  },
+  "b07_meanwhile": {
+    "dur": 17.83
+  },
+  "b06_burn": {
+    "dur": 27.45
+  },
+  "b07_elicit": {
+    "dur": 37.1
+  },
+  "b07_start": {
+    "dur": 23.96
+  },
+  "b07_certify": {
+    "dur": 15.56
+  },
+  "b07_margin": {
+    "dur": 20.8
+  },
+  "b08_start": {
+    "dur": 18.95
+  },
+  "b07_sting": {
+    "dur": 30.88
+  },
+  "b08_threatmodel": {
+    "dur": 27.72
+  },
+  "b07_external": {
+    "dur": 21.97
+  },
+  "b08_decision": {
+    "dur": 19.97
+  },
+  "b08_meanwhile": {
+    "dur": 17.14
+  },
+  "b07_decision": {
+    "dur": 21.41
+  },
+  "b08_trusted": {
+    "dur": 21.13
+  },
+  "b08_sting": {
+    "dur": 24.24
+  },
+  "b08_egress": {
+    "dur": 23.13
+  },
+  "b09_start": {
+    "dur": 19.78
+  },
+  "b09_meanwhile": {
+    "dur": 21.92
+  },
+  "b09_offswitch": {
+    "dur": 26.05
+  },
+  "b08_airgap": {
+    "dur": 20.62
+  },
+  "b09_decision": {
+    "dur": 23.78
+  },
+  "b09_rolling": {
+    "dur": 19.6
+  },
+  "b09_drill": {
+    "dur": 23.78
+  },
+  "b10_start": {
+    "dur": 25.73
+  },
+  "b10_meanwhile": {
+    "dur": 22.01
+  },
+  "b09_paper": {
+    "dur": 18.99
+  },
+  "b10_economics": {
+    "dur": 36.08
+  },
+  "b10_hunt": {
+    "dur": 22.66
+  },
+  "b09_sting": {
+    "dur": 21.73
+  },
+  "b10_govern": {
+    "dur": 28.89
+  },
+  "b11_start": {
+    "dur": 22.43
+  },
+  "b10_sting": {
+    "dur": 29.16
+  },
+  "b11_mirror": {
+    "dur": 27.91
+  },
+  "b11_meanwhile": {
+    "dur": 24.84
+  },
+  "b11_decision": {
+    "dur": 22.76
+  },
+  "b11_census": {
+    "dur": 24.8
+  },
+  "b11_sting": {
+    "dur": 23.96
+  },
+  "b11_treaty": {
+    "dur": 26.56
+  },
+  "b10_ignore": {
+    "dur": 17.83
+  },
+  "b12_meanwhile": {
+    "dur": 23.36
+  },
+  "b12_decision": {
+    "dur": 25.87
+  },
+  "b12_curve": {
+    "dur": 43.75
+  },
+  "b12_refuse": {
+    "dur": 31.44
+  },
+  "b12_gated": {
+    "dur": 30.32
+  },
+  "b12_closed": {
+    "dur": 31.16
+  },
+  "b13_start": {
+    "dur": 26.38
+  },
+  "b13_rlhf": {
+    "dur": 39.33
+  },
+  "b12_sting": {
+    "dur": 31.77
+  },
+  "b13_meanwhile": {
+    "dur": 22.29
+  },
+  "b13_scaled": {
+    "dur": 26.94
+  },
+  "b13_trusted": {
+    "dur": 27.86
+  },
+  "b13_sting": {
+    "dur": 30.37
+  },
+  "b14_start": {
+    "dur": 32
+  },
+  "b13_decide": {
+    "dur": 31.49
+  },
+  "b14_features": {
+    "dur": 41.7
+  },
+  "b14_meanwhile": {
+    "dur": 24.24
+  },
+  "b14_sting": {
+    "dur": 26.66
+  },
+  "b14_decide": {
+    "dur": 34.13
+  },
+  "b14_limits": {
+    "dur": 48.85
+  },
+  "b15_start": {
+    "dur": 26.8
+  },
+  "b15_meanwhile": {
+    "dur": 18.81
+  },
+  "b15_logic": {
+    "dur": 44.26
+  },
+  "b15_evidence": {
+    "dur": 47.79
+  },
+  "b15_decide": {
+    "dur": 34.69
+  },
+  "b15_drill": {
+    "dur": 31.86
+  },
+  "b15_sting": {
+    "dur": 30.65
+  },
+  "b15_record": {
+    "dur": 24.29
+  },
+  "b16_start": {
+    "dur": 32.55
+  },
+  "b16_corrigible": {
+    "dur": 30.93
+  },
+  "b16_game": {
+    "dur": 52.34
+  },
+  "b16_decide": {
+    "dur": 39.61
+  },
+  "b16_meanwhile": {
+    "dur": 24.71
+  },
+  "b16_sting": {
+    "dur": 30.51
+  },
+  "b16_drive": {
+    "dur": 48.16
+  },
+  "b16_capability": {
+    "dur": 31.44
+  },
+  "b17_meanwhile": {
+    "dur": 26.75
+  },
+  "b17_start": {
+    "dur": 40.26
+  },
+  "b17_decide": {
+    "dur": 26.75
+  },
+  "b17_harden": {
+    "dur": 27.68
+  },
+  "b17_stand": {
+    "dur": 21.41
+  },
+  "b18_start": {
+    "dur": 34.74
+  },
+  "b18_meanwhile": {
+    "dur": 20.53
+  },
+  "b18_levers": {
+    "dur": 37.06
+  },
+  "b17_sting": {
+    "dur": 29.95
+  },
+  "b18_pause": {
+    "dur": 27.26
+  },
+  "b18_decide": {
+    "dur": 28.61
+  },
+  "b19_meanwhile": {
+    "dur": 30.84
+  },
+  "b19_start": {
+    "dur": 52.38
+  },
+  "b18_race": {
+    "dur": 23.96
+  },
+  "b19_decide": {
+    "dur": 20.85
+  },
+  "b19_rebuttal": {
+    "dur": 73.47
+  },
+  "b19_reassured": {
+    "dur": 29.4
+  },
+  "b19_warned": {
+    "dur": 31.67
+  },
+  "b20_meanwhile": {
+    "dur": 33.81
+  },
+  "b20_start": {
+    "dur": 41.94
+  },
+  "b20_end": {
+    "dur": 15.84
+  },
+  "b20_refrain": {
+    "dur": 34.04
+  },
+  "b19_sting": {
+    "dur": 33.02
+  },
+  "ending-contained": {
+    "dur": 38.64
+  },
+  "ending-uneasy": {
+    "dur": 44.63
+  },
+  "ending-slowloss": {
+    "dur": 49.55
+  },
+  "ending-morewrong": {
+    "dur": 53.82
+  },
+  "b05_meanwhile": {
+    "dur": 19.6
+  },
+  "b05_faking": {
+    "dur": 32.65
+  },
+  "b10_decision": {
+    "dur": 27.03
+  },
+  "b11_whack": {
+    "dur": 25.4
+  },
+  "b12_start": {
+    "dur": 32.79
+  },
+  "b13_debate": {
+    "dur": 47.74
+  },
+  "b14_funded": {
+    "dur": 30.93
+  },
+  "b14_theater": {
+    "dur": 25.17
+  },
+  "b17_drives": {
+    "dur": 37.57
+  },
+  "b18_sting": {
+    "dur": 27.12
+  },
+  "b20_ledger": {
+    "dur": 31.95
+  }
+}

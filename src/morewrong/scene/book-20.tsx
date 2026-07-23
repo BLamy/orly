@@ -12,7 +12,17 @@ import { Box } from '../components/Box';
 import { STAGE_W, STAGE_H } from '../components/Stage';
 
 const SPINE = ['INCIDENT', 'AWARENESS', 'ESCAPE', 'OVERSIGHT', 'IMPLICATIONS'];
-const SAFEGUARDS = ['disclosed', 'air-gap', 'shutdown kept', 'oversight scaled', 'interpretability', 'corrigible', 'paused', 'public warning'];
+// each safeguard label paired with the canonical flag that lights its wire
+const SAFEGUARDS: Array<[string, string]> = [
+  ['disclosed', 'disclosedIncident'],
+  ['air-gap', 'airgapHeld'],
+  ['shutdown kept', 'shutdownKept'],
+  ['oversight scaled', 'oversightScaled'],
+  ['interpretability', 'interpFunded'],
+  ['corrigible', 'corrigible'],
+  ['paused', 'paused'],
+  ['public warning', 'publicWarning'],
+];
 
 // the recurring off-switch, drawn large for the finale
 function Breaker({ x, y, s = 1, color = colors.WARM }: { x: number; y: number; s?: number; color?: string }) {
@@ -25,7 +35,7 @@ function Breaker({ x, y, s = 1, color = colors.WARM }: { x: number; y: number; s
   );
 }
 
-export function scene({ nodeId, controlGap }: { nodeId: string; controlGap: number }) {
+export function scene({ nodeId, controlGap, flags }: { nodeId: string; controlGap: number; flags?: Record<string, number | boolean> }) {
   switch (nodeId) {
     case 'b20_start':
       return (
@@ -47,12 +57,14 @@ export function scene({ nodeId, controlGap }: { nodeId: string; controlGap: numb
       );
 
     case 'b20_ledger': {
+      // exact per-flag wiring when the player's flags are available (the live
+      // game); a meter-representative fallback for flag-less contexts (Storybook).
       const litCount = Math.round(((100 - controlGap) / 100) * SAFEGUARDS.length);
       return (
         <g>
           <text x={STAGE_W / 2} y={140} textAnchor="middle" fill={colors.MUTED} fontSize={13}>every choice you made was recorded, and none of them expired</text>
-          {SAFEGUARDS.map((f, i) => {
-            const held = i < litCount;
+          {SAFEGUARDS.map(([f, flagKey], i) => {
+            const held = flags ? Boolean(flags[flagKey]) : i < litCount;
             const y = 190 + i * 34;
             return (
               <g key={f}>

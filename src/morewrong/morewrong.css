@@ -52,3 +52,19 @@
 .mw-ending p { font-size: 17px; line-height: 1.7; color: #cdd8e8; text-align: left; }
 .mw-btn { margin-top: 28px; background: #0e1626; border: 1px solid #38bdf8; color: #dbe4f0; border-radius: 10px; padding: 12px 22px; font-size: 15px; cursor: pointer; }
 .mw-btn:hover { background: #111b2e; }
+
+/* intro / title card */
+.mw-intro { width: min(680px, 92vw); text-align: center; padding: 12vh 10px 0; }
+.mw-intro-kicker { font-size: 12px; letter-spacing: 5px; text-transform: uppercase; color: #6b7d96; margin-bottom: 12px; }
+.mw-intro h1 { font-size: 56px; margin: 0 0 20px; color: #f2f6fc; letter-spacing: -1px; }
+.mw-intro p { font-size: 17px; line-height: 1.7; color: #b7c4d6; margin: 0 auto; max-width: 560px; }
+.mw-intro-foot { margin-top: 20px; font-size: 12px; letter-spacing: 1px; color: #55637a; }
+
+/* narration mute toggle */
+.mw-mute { background: none; border: none; cursor: pointer; font-size: 15px; line-height: 1; padding: 2px 4px; opacity: 0.8; }
+.mw-mute:hover { opacity: 1; }
+
+/* per-beat crossfade (keyed remount replays this) */
+.mw-fade { animation: mw-fadein 0.2s ease both; }
+@keyframes mw-fadein { from { opacity: 0.25; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .mw-fade { animation: none; } }
