@@ -4,7 +4,7 @@
 // for a series' books (back chevron, edge-swipe back, browser back all pop it).
 import { useEffect, useMemo, useRef, useState } from 'react';
 import { composeCover, drawSpine, type BookMeta } from './cover';
-import { assetUrl, FEATURED_SERIES, openBook, searchBooks, useLazyVisible } from './shared';
+import { assetUrl, FEATURED_SERIES, openBook, resolveAnimal, searchBooks, useLazyVisible } from './shared';
 
 const COVER_W = 600;
 const COVER_H = 800;
@@ -48,15 +48,10 @@ function buildEntries(books: BookMeta[]): Entry[] {
   }
   for (const [name, arr] of seriesMap) {
     arr.sort((a, c) => (a.seriesOrder ?? 0) - (c.seriesOrder ?? 0));
-    // A big series (>6 books) as one "boxed set" row buries most of its books
-    // behind a single tap-through. Past that size, file each book under its
-    // own letter in the normal vertical list instead — same iOS-style A-Z
-    // indexing a standalone book gets. Smaller series stay as one boxed row.
-    if (arr.length > 6) {
-      for (const b of arr) entries.push({ kind: 'book', name: b.title, book: b });
-    } else {
-      entries.push({ kind: 'series', name, books: arr });
-    }
+    // Every series is one boxed-set row on the main shelf, regardless of
+    // size — what changes past 6 books is how its OWN push-page presents
+    // them (grid vs. a second A-Z indexed list): see SeriesPage below.
+    entries.push({ kind: 'series', name, books: arr });
   }
   entries.sort((a, c) => sortKey(a.name).localeCompare(sortKey(c.name)));
   return entries;
@@ -71,7 +66,7 @@ function BookRow({ book }: { book: BookMeta }) {
   useEffect(() => {
     if (!visible) return;
     let dead = false;
-    composeCover(book, COVER_W, COVER_H, book.animal ? assetUrl(book.animal) : null).then((cov) => {
+    composeCover(book, COVER_W, COVER_H, resolveAnimal(book) ? assetUrl(resolveAnimal(book)!) : null).then((cov) => {
       if (dead) return;
       const canvas = canvasRef.current;
       if (!canvas) return;
@@ -209,7 +204,14 @@ function AlphaRail({ active, onJump }: { active: Set<string>; onJump: (letter: s
   );
 }
 
-// The pushed second page: one series' books in order, large cover cards.
+// A large series (>6 books) as a grid buries most of it below the fold and
+// loses any way to jump around — past that size the push page becomes its
+// OWN second A-Z indexed list (same sticky letter heads + alphabet rail as
+// the main shelf) instead of the small-series grid of cover cards.
+const SERIES_GRID_MAX = 6;
+
+// The pushed second page: one series' books — a grid of cover cards when
+// small enough to face you all at once, else its own indexed list.
 function SeriesPage({
   name,
   books,
@@ -221,25 +223,91 @@ function SeriesPage({
   phase: 'push' | 'pop' | 'idle';
   detailRef: React.MutableRefObject<HTMLDivElement | null>;
 }) {
+  const asGrid = books.length <= SERIES_GRID_MAX;
+  const headerRef = useRef<HTMLElement | null>(null);
+  const listRef = useRef<HTMLDivElement | null>(null);
+  const sectionRefs = useRef(new Map<string, HTMLElement>());
+
+  useEffect(() => {
+    if (asGrid) return;
+    const el = headerRef.current;
+    const list = listRef.current;
+    if (!el || !list) return;
+    const setH = () => list.style.setProperty('--libm-top-h', `${el.getBoundingClientRect().height}px`);
+    setH();
+    const ro = new ResizeObserver(setH);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [asGrid]);
+
+  const byLetter = useMemo(() => {
+    if (asGrid) return null;
+    const map = new Map<string, BookMeta[]>();
+    for (const b of [...books].sort((a, c) => sortKey(a.title).localeCompare(sortKey(c.title)))) {
+      const l = letterOf(b.title);
+      if (!map.has(l)) map.set(l, []);
+      map.get(l)!.push(b);
+    }
+    return [...map.entries()].sort(([a], [c]) => LETTERS.indexOf(a) - LETTERS.indexOf(c));
+  }, [asGrid, books]);
+
+  const jumpTo = (letter: string) => {
+    const el = sectionRefs.current.get(letter);
+    const scroller = detailRef.current;
+    if (!el || !scroller) return;
+    const headH = headerRef.current?.getBoundingClientRect().height ?? 0;
+    // .libm-detail is its own fixed+scrolling layer (the pushed page), not
+    // the window — unlike the main shelf's jumpTo, this scrolls it directly.
+    const scrollerTop = scroller.getBoundingClientRect().top;
+    scroller.scrollTo({ top: el.getBoundingClientRect().top - scrollerTop + scroller.scrollTop - headH - 4 });
+  };
+
   return (
     <div
       ref={detailRef}
       className={`libm-detail${phase === 'push' ? ' is-push' : phase === 'pop' ? ' is-pop' : ''}`}
     >
-      <header className="libm-detail-top">
-        <button className="libm-back" onClick={() => window.history.back()} aria-label="Back to the library">
-          <svg viewBox="0 0 12 20" width="12" height="20" aria-hidden="true">
-            <path d="M10.5 1.5 2 10l8.5 8.5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
-          </svg>
-          <span>Library</span>
-        </button>
-        <h1 className="libm-detail-name">{name}</h1>
-        <span className="libm-detail-meta">{books.length} books · read in order</span>
-      </header>
-      <div className="libm-detail-grid">
-        {books.map((b, i) => (
-          <DetailCard key={b.slug} book={b} index={b.seriesOrder ?? i + 1} />
-        ))}
+      <div ref={listRef} className={asGrid ? undefined : 'libm-list'}>
+        <header ref={headerRef} className="libm-detail-top">
+          <button className="libm-back" onClick={() => window.history.back()} aria-label="Back to the library">
+            <svg viewBox="0 0 12 20" width="12" height="20" aria-hidden="true">
+              <path d="M10.5 1.5 2 10l8.5 8.5" fill="none" stroke="currentColor" strokeWidth="2.5" strokeLinecap="round" strokeLinejoin="round" />
+            </svg>
+            <span>Library</span>
+          </button>
+          <h1 className="libm-detail-name">{name}</h1>
+          <span className="libm-detail-meta">
+            {books.length} books {asGrid ? '· read in order' : ''}
+          </span>
+        </header>
+        {asGrid ? (
+          <div className="libm-detail-grid">
+            {books.map((b, i) => (
+              <DetailCard key={b.slug} book={b} index={b.seriesOrder ?? i + 1} />
+            ))}
+          </div>
+        ) : (
+          <>
+            <div className="libm-rows">
+              {byLetter!.map(([l, arr]) => (
+                <section
+                  key={l}
+                  className="libm-letter-section"
+                  ref={(el) => {
+                    if (el) sectionRefs.current.set(l, el);
+                    else sectionRefs.current.delete(l);
+                  }}
+                >
+                  <h2 className="libm-letter-head">{l}</h2>
+                  {arr.map((b) => (
+                    <BookRow key={b.slug} book={b} />
+                  ))}
+                </section>
+              ))}
+            </div>
+            <AlphaRail active={new Set(byLetter!.map(([l]) => l))} onJump={jumpTo} />
+          </>
+        )}
       </div>
     </div>
   );
@@ -253,7 +321,7 @@ function DetailCard({ book, index }: { book: BookMeta; index: number }) {
   useEffect(() => {
     if (!visible) return;
     let dead = false;
-    composeCover(book, COVER_W, COVER_H, book.animal ? assetUrl(book.animal) : null).then((cov) => {
+    composeCover(book, COVER_W, COVER_H, resolveAnimal(book) ? assetUrl(resolveAnimal(book)!) : null).then((cov) => {
       if (dead) return;
       const canvas = canvasRef.current;
       if (!canvas) return;

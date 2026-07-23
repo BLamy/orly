@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import { Drawer } from 'vaul';
 import { ChapterPlayer } from './ChapterPlayer';
 import { BlogPanel } from './BlogPanel';
+import { registerAnimalPool, resolveAnimal } from '../library/shared';
 
 const ASSET_BASE =
   (import.meta as unknown as { env?: { BASE_URL?: string } }).env?.BASE_URL ?? '/';
@@ -213,6 +214,7 @@ export function BookPlayer({ slug }: { slug: string }) {
       .then(async (d: { books?: SeriesBookMeta[] }) => {
         if (!alive) return;
         const books = d.books || [];
+        registerAnimalPool(books);
         const self = books.find((b) => b.slug === slug);
         if (!self?.series) return;
         const peers = books
@@ -443,9 +445,11 @@ function ChapterList({
         <li className="bp-side-group" key={g.book.slug}>
           {flatGroups.length > 1 && (
             <div className="bp-side-cover">
-              {g.book.animal && (
+              {resolveAnimal(g.book) && (
                 <img
-                  src={`${ASSET_BASE}generated/${g.book.slug}/${g.book.animal}`}
+                  // library.json's `animal` is already a full relative path
+                  // (generated/<slug>/animal.webp) — no extra prefix needed.
+                  src={`${ASSET_BASE}${resolveAnimal(g.book)}`}
                   alt=""
                   loading="lazy"
                   onError={(e) => ((e.target as HTMLImageElement).style.display = 'none')}

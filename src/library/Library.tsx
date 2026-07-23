@@ -5,6 +5,8 @@ import {
   buildShelves,
   groupMatches,
   openBook,
+  registerAnimalPool,
+  resolveAnimal,
   searchBooks,
   useLazyVisible,
 } from './shared';
@@ -43,7 +45,7 @@ function FrontBook({ book }: { book: BookMeta }) {
   useEffect(() => {
     if (!visible) return;
     let dead = false;
-    composeCover(book, COVER_W, COVER_H, book.animal ? assetUrl(book.animal) : null).then(
+    composeCover(book, COVER_W, COVER_H, resolveAnimal(book) ? assetUrl(resolveAnimal(book)!) : null).then(
       (cov) => {
         if (dead) return;
         const face = canvasRef.current;
@@ -103,7 +105,7 @@ function SpineBook({ book, seriesIndex }: { book: BookMeta; seriesIndex?: number
       }
     }
 
-    composeCover(book, COVER_W, COVER_H, book.animal ? assetUrl(book.animal) : null).then(
+    composeCover(book, COVER_W, COVER_H, resolveAnimal(book) ? assetUrl(resolveAnimal(book)!) : null).then(
       (cov) => {
         if (dead) return;
         const face = coverRef.current;
@@ -396,7 +398,10 @@ export function Library() {
   useEffect(() => {
     fetch(assetUrl('generated/library.json'))
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
-      .then((d) => setBooks(d.books || []))
+      .then((d) => {
+        registerAnimalPool(d.books || []);
+        setBooks(d.books || []);
+      })
       .catch((e) => setError(e.message));
   }, []);
 

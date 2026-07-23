@@ -19,6 +19,33 @@ export function openBook(b: BookMeta) {
   window.location.href = ASSET_BASE + String(b.href).replace(/^\//, '');
 }
 
+// Some books (mostly the Nostr Implementation Possibilities and Buzz —
+// non-repo explainers with no natural "animal") were generated without a
+// cover engraving. Rather than a blank spine, borrow one already generated
+// for another book — deterministic per slug (a hash, not Math.random) so a
+// given book always gets the same borrowed animal instead of flickering
+// between renders.
+// Structural, not BookMeta — the player's own leaner SeriesBookMeta (fetched
+// from the same library.json) also needs to resolve a fallback animal.
+interface HasAnimal {
+  slug: string;
+  animal?: string;
+}
+let animalPool: string[] = [];
+export function registerAnimalPool(books: HasAnimal[]) {
+  animalPool = [...new Set(books.map((b) => b.animal).filter((a): a is string => !!a))];
+}
+function hashSlug(slug: string): number {
+  let h = 0;
+  for (let i = 0; i < slug.length; i++) h = (h * 31 + slug.charCodeAt(i)) | 0;
+  return Math.abs(h);
+}
+export function resolveAnimal(book: HasAnimal): string | null {
+  if (book.animal) return book.animal;
+  if (!animalPool.length) return null;
+  return animalPool[hashSlug(book.slug) % animalPool.length];
+}
+
 export interface Shelves {
   featured: [string, BookMeta[]] | null; // the showcase series, always the top row
   recent: BookMeta[];

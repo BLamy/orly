@@ -35,7 +35,9 @@
           "duration": 83.498
         }
       ],
-      "createdAt": "2026-07-22T23:57:33.127Z"
+      "createdAt": "2026-07-22T23:57:33.127Z",
+      "series": "Buzz and Nostr",
+      "seriesOrder": 11
     },
     {
       "slug": "nips-an-app-on-every-kind",
@@ -45,7 +47,7 @@
       "role": "Software Engineer at Replay",
       "color": "#2dd4bf",
       "href": "?bundle=nips-an-app-on-every-kind",
-      "series": "Nostr Implementation Possibilities",
+      "series": "Buzz and Nostr",
       "seriesOrder": 10,
       "chapters": [
         {
@@ -84,7 +86,7 @@
       "role": "Software Engineer at Replay",
       "color": "#3a8b3a",
       "href": "?bundle=nips-long-form",
-      "series": "Nostr Implementation Possibilities",
+      "series": "Buzz and Nostr",
       "seriesOrder": 9,
       "chapters": [
         {
@@ -123,7 +125,7 @@
       "role": "Software Engineer at Replay",
       "color": "#facc15",
       "href": "?bundle=nips-zaps",
-      "series": "Nostr Implementation Possibilities",
+      "series": "Buzz and Nostr",
       "seriesOrder": 8,
       "chapters": [
         {
@@ -162,7 +164,7 @@
       "role": "Software Engineer at Replay",
       "color": "#60a5fa",
       "href": "?bundle=nips-the-signer",
-      "series": "Nostr Implementation Possibilities",
+      "series": "Buzz and Nostr",
       "seriesOrder": 7,
       "chapters": [
         {
@@ -201,7 +203,7 @@
       "role": "Software Engineer at Replay",
       "color": "#198a8a",
       "href": "?bundle=nips-proof-of-work",
-      "series": "Nostr Implementation Possibilities",
+      "series": "Buzz and Nostr",
       "seriesOrder": 6,
       "chapters": [
         {
@@ -240,7 +242,7 @@
       "role": "Software Engineer at Replay",
       "color": "#fb7185",
       "href": "?bundle=nips-the-relay",
-      "series": "Nostr Implementation Possibilities",
+      "series": "Buzz and Nostr",
       "seriesOrder": 5,
       "chapters": [
         {
@@ -279,7 +281,7 @@
       "role": "Software Engineer at Replay",
       "color": "#1f6fb2",
       "href": "?bundle=nips-threads-and-reactions",
-      "series": "Nostr Implementation Possibilities",
+      "series": "Buzz and Nostr",
       "seriesOrder": 4,
       "chapters": [
         {
@@ -318,7 +320,7 @@
       "role": "Software Engineer at Replay",
       "color": "#34d399",
       "href": "?bundle=nips-sealed-and-wrapped",
-      "series": "Nostr Implementation Possibilities",
+      "series": "Buzz and Nostr",
       "seriesOrder": 3,
       "chapters": [
         {
@@ -357,7 +359,7 @@
       "role": "Software Engineer at Replay",
       "color": "#b0277a",
       "href": "?bundle=nips-who-you-are",
-      "series": "Nostr Implementation Possibilities",
+      "series": "Buzz and Nostr",
       "seriesOrder": 2,
       "chapters": [
         {
@@ -396,7 +398,7 @@
       "role": "Software Engineer at Replay",
       "color": "#38bdf8",
       "href": "?bundle=nips-the-event",
-      "series": "Nostr Implementation Possibilities",
+      "series": "Buzz and Nostr",
       "seriesOrder": 1,
       "chapters": [
         {
