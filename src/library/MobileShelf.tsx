@@ -6,7 +6,7 @@ import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { composeCover, drawSpine, type BookMeta } from './cover';
 import { assetUrl, FEATURED_SERIES, openBook, resolveAnimal, searchBooks, useLazyVisible } from './shared';
-import { DownloadButton } from './DownloadButton';
+import { DownloadButton, DownloadSeriesButton } from './DownloadButton';
 
 const BookPlayer = lazy(() =>
   import('../player/BookPlayer').then((m) => ({ default: m.BookPlayer }))
@@ -160,6 +160,7 @@ function SeriesRow({ name, books, onOpen }: { name: string; books: BookMeta[]; o
         <span className="libm-row-title">{name}</span>
         <span className="libm-row-sub">{books.length}-book series</span>
       </span>
+      <DownloadSeriesButton slugs={books.map((b) => b.slug)} nested />
       <span className="libm-row-chev" aria-hidden="true" />
     </button>
   );
@@ -293,9 +294,12 @@ function SeriesPage({
             <span>Library</span>
           </button>
           <h1 className="libm-detail-name">{name}</h1>
-          <span className="libm-detail-meta">
-            {books.length} books {asGrid ? '· read in order' : ''}
-          </span>
+          <div className="libm-detail-meta-row">
+            <span className="libm-detail-meta">
+              {books.length} books {asGrid ? '· read in order' : ''}
+            </span>
+            <DownloadSeriesButton slugs={books.map((b) => b.slug)} />
+          </div>
         </header>
         {asGrid ? (
           <div className="libm-detail-grid">

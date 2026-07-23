@@ -142,3 +142,29 @@ export async function removeBook(slug: string): Promise<void> {
   delete all[slug];
   writeAll(all);
 }
+
+/** Download (or remove) every book in a series at once — a series page's
+ * "Download series" button. Each book still downloads independently (its
+ * own status, its own cache), this just fires all of them together. */
+export function downloadSeries(slugs: string[]): void {
+  for (const slug of slugs) void downloadBook(slug);
+}
+export function removeSeries(slugs: string[]): void {
+  for (const slug of slugs) void removeBook(slug);
+}
+
+export type SeriesDownloadStatus = 'none' | 'partial' | 'downloading' | 'downloaded';
+
+/** Aggregate status across a whole series, for the "Download series" button:
+ * all downloaded → downloaded, any still downloading → downloading, some
+ * (but not all) downloaded → partial, none → none. */
+export function useSeriesDownloadStatus(slugs: string[]): SeriesDownloadStatus {
+  const [, force] = useState(0);
+  useEffect(() => onDownloadsChanged(() => force((n) => n + 1)), []);
+  const all = readAll();
+  const statuses = slugs.map((s) => all[s] ?? null);
+  if (statuses.some((s) => s === 'downloading')) return 'downloading';
+  if (statuses.every((s) => s === 'downloaded')) return 'downloaded';
+  if (statuses.some((s) => s === 'downloaded')) return 'partial';
+  return 'none';
+}

@@ -420,26 +420,19 @@ body {
   z-index: 3;
 }
 
-.captions-col {
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 8px;
-  max-width: 100%;
-}
-
 .captions-pill {
+  /* hug the text — no fixed/stretched width, just centered content */
+  display: inline-block;
   max-width: 720px;
-  padding: 8px 14px;
-  border-radius: 10px;
-  background: rgba(4, 8, 18, 0.78);
-  backdrop-filter: blur(6px);
+  padding: 6px 12px;
+  border-radius: 8px;
+  background: rgba(4, 8, 18, 0.45);
+  backdrop-filter: blur(4px);
   color: #e8eef8;
   font-size: 15px;
-  line-height: 1.5;
+  line-height: 1.4;
   text-align: center;
   text-wrap: balance;
-  box-shadow: 0 4px 24px rgba(0, 0, 0, 0.35);
 }
 
 .captions-pill code {
@@ -905,7 +898,12 @@ body {
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 20;
+  /* Higher than .libm-detail's z-index: 40 — when a book is opened from the
+     mobile shelf (MobileShelf.tsx's BookScreen), BookPlayer renders inside
+     that full-viewport pushed-page layer, but vaul portals .bp-drawer
+     straight to <body> as a SIBLING of it — so it must outrank that layer
+     or it renders completely hidden underneath it. */
+  z-index: 50;
   display: flex;
   flex-direction: column;
   height: 96dvh;
@@ -935,14 +933,13 @@ body {
   -webkit-overflow-scrolling: touch;
 }
 
-/* ---- compact (small phones, portrait OR landscape): the video is sized by
-       its own aspect ratio same as desktop — chapters/blog are NOT rendered
-       in the layout at all here (BookPlayer.tsx skips both the aside and the
-       below-video block whenever this same condition is true); the
-       .bp-drawer overlay below is the only way to reach them. Using ONE
-       query for "hide these" and for the drawer's own JS condition is the
-       point — two different conditions used to leave landscape phones with
-       neither the sidebar nor the drawer (a dead zone). ------------------- */
+/* ---- compact (small phones, portrait OR landscape): chapters/blog are NOT
+       rendered in the layout at all here (BookPlayer.tsx skips both the
+       aside and the below-video block whenever this same condition is
+       true). Portrait reaches them through the .bp-drawer overlay;
+       landscape shows just the video, front and center, with no way to
+       reach them at all — deliberately, there's no room for a drawer
+       without it covering the video. ------------------------------------- */
 @media (max-width: 720px) and (orientation: portrait),
   (max-width: 1000px) and (orientation: landscape) and (max-height: 520px) {
   .bp-side,
@@ -951,21 +948,16 @@ body {
   }
 }
 
-/* the below-video caption block (React moves it out of the stage) */
-@media (max-width: 720px) and (orientation: portrait) {
-  .captions-below {
-    position: static;
-    left: auto;
-    right: auto;
-    bottom: auto;
-    min-height: 92px; /* ~3 lines reserved so the layout doesn't jump */
-    align-items: flex-start;
-    padding: 8px 10px 0;
-  }
-  .captions-below .captions-pill {
-    background: rgba(13, 19, 33, 0.72);
-    backdrop-filter: none;
-    box-shadow: none;
+/* landscape only: .bp-stagewrap's aspect-ratio is width-driven by default
+   (width: 100%), which on a WIDE-but-SHORT landscape phone computes a
+   height taller than the actual viewport — forcing a scroll to see the
+   rest of the video. Bound it by the available height instead so width
+   shrinks to fit (same math the pre-refactor landscape rule used). */
+@media (max-width: 1000px) and (orientation: landscape) and (max-height: 520px) {
+  .bp-stagewrap {
+    width: auto;
+    max-width: calc((100dvh - 100px) * 16 / 9);
+    margin: 0 auto;
   }
 }
 

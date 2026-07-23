@@ -11,7 +11,7 @@ import {
   useLazyVisible,
 } from './shared';
 import { MobileShelf } from './MobileShelf';
-import { DownloadButton } from './DownloadButton';
+import { DownloadButton, DownloadSeriesButton } from './DownloadButton';
 import './library.css';
 
 const COVER_W = 600;
@@ -175,6 +175,9 @@ function BoxedSet({ name, books, front }: { name: string; books: BookMeta[]; fro
   return (
     <div className="lib-set">
       <span className="lib-set-plaque">{name}</span>
+      <div className="lib-set-dl">
+        <DownloadSeriesButton slugs={books.map((b) => b.slug)} />
+      </div>
       <div className="lib-set-books">
         {books.map((b, i) =>
           front ? (

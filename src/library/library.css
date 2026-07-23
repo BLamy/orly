@@ -168,6 +168,12 @@
   border-radius: 6px 6px 3px 3px;
   width: max-content;
 }
+.lib-set-dl {
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 2;
+}
 .lib-set-plaque {
   position: absolute;
   left: 5px;
@@ -485,9 +491,16 @@
      JS needed beyond --libm-top-h below tracking the header's real height). */
   position: sticky;
   top: var(--libm-top-h, 0px);
+  /* Below the persistent header's own z-index (20 on the main shelf, 15 on
+     a series page — see .libm-detail-top) so a stuck letter head can never
+     render OVER the header during the scroll transition where both are
+     pinned to nearly the same spot. */
   z-index: 10;
+  display: flex;
+  align-items: center;
+  height: 28px;
   margin: 0;
-  padding: 14px 16px 6px;
+  padding: 0 16px;
   font-size: 13px;
   font-weight: 800;
   letter-spacing: 0.08em;
@@ -660,7 +673,9 @@
 .libm-detail-top {
   position: sticky;
   top: 0;
-  z-index: 5;
+  /* Must outrank .libm-letter-head's z-index: 10 — this used to be lower,
+     so a stuck letter separator rendered visually OVER this header. */
+  z-index: 15;
   padding: calc(8px + env(safe-area-inset-top)) 16px 12px;
   background: rgba(20, 16, 11, 0.88);
   backdrop-filter: blur(10px);
@@ -689,9 +704,15 @@
   font-weight: 700;
   color: #f3ecdd;
 }
+.libm-detail-meta-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-top: 4px;
+}
 .libm-detail-meta {
   display: block;
-  margin-top: 2px;
   font-size: 11px;
   font-weight: 700;
   letter-spacing: 0.08em;
@@ -779,6 +800,37 @@
   padding: 6px;
 }
 .libm-row .dl-btn.is-downloaded { background: none; color: #38bdf8; }
+
+/* ---- "download whole series" — a compact pill, in a series row's text
+       column or a series page's header meta row ---- */
+.dl-series-btn {
+  appearance: none;
+  border: 1px solid rgba(176, 132, 66, 0.35);
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px;
+  flex: none;
+  background: rgba(176, 132, 66, 0.1);
+  color: #d6a556;
+  font: 700 11px/1 inherit;
+  letter-spacing: 0.02em;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.dl-series-btn.is-downloaded {
+  background: rgba(56, 189, 248, 0.16);
+  border-color: rgba(56, 189, 248, 0.4);
+  color: #38bdf8;
+}
+.dl-series-btn.is-partial {
+  border-color: rgba(176, 132, 66, 0.55);
+}
+/* nested inside SeriesRow's own <button> (the row itself opens the series) */
+.libm-row-series .dl-series-btn {
+  margin-left: auto;
+}
 .libm-card-canvas {
   display: block;
   width: 100%;
