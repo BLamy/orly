@@ -469,20 +469,26 @@ export function MobileShelf({
 
   const entries = useMemo(() => (books && books.length ? buildEntries(books) : null), [books]);
 
+  const { hidden: chromeHidden, scrolled: chromeScrolled } = useScrollChrome();
+
   // Expose the sticky top header's real height as a CSS var, so the A-Z
   // letter section heads (iOS Contacts-style) can stick right below it
   // instead of a hardcoded offset that would drift if the header's content
-  // (search box, brand row) ever changes height.
+  // (search box, brand row) ever changes height. While the header is
+  // scrolled off (chromeHidden), the letter heads should stick to the very
+  // top of the screen instead of the header's now-vacated space.
   useEffect(() => {
     const el = headerRef.current;
     const list = listRef.current; // shared ancestor of the header AND the rows below it
     if (!el || !list) return;
-    const setH = () => list.style.setProperty('--libm-top-h', `${el.getBoundingClientRect().height}px`);
+    const setH = () =>
+      list.style.setProperty('--libm-top-h', chromeHidden ? '0px' : `${el.getBoundingClientRect().height}px`);
     setH();
+    if (chromeHidden) return;
     const ro = new ResizeObserver(setH);
     ro.observe(el);
     return () => ro.disconnect();
-  }, []);
+  }, [chromeHidden]);
 
   // The featured series is pinned above the alphabetized list (its own
   // showcase section) rather than filed under its letter — keeping the A-Z
@@ -687,8 +693,6 @@ export function MobileShelf({
   useEffect(() => {
     onScreenOpenChange?.(screenOpen);
   }, [screenOpen, onScreenOpenChange]);
-
-  const { hidden: chromeHidden, scrolled: chromeScrolled } = useScrollChrome();
 
   return (
     <div className="libm">
