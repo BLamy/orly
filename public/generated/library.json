@@ -1,6 +1,43 @@
 {
   "books": [
     {
+      "slug": "buzz",
+      "title": "Buzz",
+      "subtitle": "How a workspace becomes one context",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#a01f3c",
+      "href": "?bundle=buzz",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Every Seam Loses Something",
+          "duration": 61.766
+        },
+        {
+          "number": 2,
+          "title": "One Identity",
+          "duration": 72.772
+        },
+        {
+          "number": 3,
+          "title": "One Context",
+          "duration": 79.041
+        },
+        {
+          "number": 4,
+          "title": "An Equal Teammate",
+          "duration": 71.843
+        },
+        {
+          "number": 5,
+          "title": "Self-Sovereign and Social",
+          "duration": 83.498
+        }
+      ],
+      "createdAt": "2026-07-22T23:57:33.127Z"
+    },
+    {
       "slug": "nips-an-app-on-every-kind",
       "title": "An App on Every Kind",
       "subtitle": "handlers, interop, and the open kind-space",
@@ -391,43 +428,6 @@
       "createdAt": "2026-07-22T16:58:29.051Z"
     },
     {
-      "slug": "buzz",
-      "title": "Buzz",
-      "subtitle": "How messaging really works \u2014 Nostr under the hood",
-      "author": "Brett Lamy",
-      "role": "Software Engineer at Replay",
-      "color": "#a01f3c",
-      "href": "?bundle=buzz",
-      "chapters": [
-        {
-          "number": 1,
-          "title": "The Message",
-          "duration": 110.434
-        },
-        {
-          "number": 2,
-          "title": "Two Doors, One Room",
-          "duration": 112.338
-        },
-        {
-          "number": 3,
-          "title": "Where Messages Live",
-          "duration": 127.895
-        },
-        {
-          "number": 4,
-          "title": "The Fan-Out",
-          "duration": 105.093
-        },
-        {
-          "number": 5,
-          "title": "The Paper Trail",
-          "duration": 115.683
-        }
-      ],
-      "createdAt": "2026-07-22T17:38:09.460Z"
-    },
-    {
       "slug": "jacobian-conjecture",
       "title": "Jacobian Conjecture",
       "subtitle": "Constant determinant, no inverse",
@@ -684,7 +684,7 @@
     {
       "slug": "explained-synthetic-data",
       "title": "Explained: Synthetic Data",
-      "subtitle": "A copy of a copy \u2014 model collapse, the filter that saves it, and the wall made of text",
+      "subtitle": "A copy of a copy — model collapse, the filter that saves it, and the wall made of text",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#198a8a",
@@ -724,7 +724,7 @@
     {
       "slug": "explained-ai-control",
       "title": "Explained: AI Control",
-      "subtitle": "Getting useful work from a model you never trust \u2014 untrusted-monitor protocols, as a game",
+      "subtitle": "Getting useful work from a model you never trust — untrusted-monitor protocols, as a game",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#e07b1a",
@@ -804,7 +804,7 @@
     {
       "slug": "explained-distributed-training",
       "title": "Explained: Distributed Training",
-      "subtitle": "Four ways to cut a model that doesn't fit \u2014 and the communication bill each one pays",
+      "subtitle": "Four ways to cut a model that doesn't fit — and the communication bill each one pays",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#1f6fb2",
@@ -830,7 +830,7 @@
         },
         {
           "number": 4,
-          "title": "ZeRO \u2014 Shard the Redundancy",
+          "title": "ZeRO — Shard the Redundancy",
           "duration": 114.984
         },
         {
@@ -844,7 +844,7 @@
     {
       "slug": "explained-sandboxing",
       "title": "Explained: The Sandbox",
-      "subtitle": "How we caged the agents in almostnode \u2014 a cross-origin wall, and what it costs",
+      "subtitle": "How we caged the agents in almostnode — a cross-origin wall, and what it costs",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#b0277a",
@@ -884,7 +884,7 @@
     {
       "slug": "explained-test-time",
       "title": "Explained: Test-Time Compute",
-      "subtitle": "One sample is a lottery ticket \u2014 sampling, voting, grading, searching, and the new axis of scaling",
+      "subtitle": "One sample is a lottery ticket — sampling, voting, grading, searching, and the new axis of scaling",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#a01f3c",
@@ -1124,7 +1124,7 @@
     {
       "slug": "explained-rlvr",
       "title": "Explained: Verifiable Rewards",
-      "subtitle": "Rewards from executable checks \u2014 and the cliff between a solver and a lock pick",
+      "subtitle": "Rewards from executable checks — and the cliff between a solver and a lock pick",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#1f6fb2",
@@ -1164,7 +1164,7 @@
     {
       "slug": "explained-formal-verification",
       "title": "Explained: Proof or It Didn't Happen",
-      "subtitle": "Formal verification meets language models \u2014 tests sample, critics hunt, kernels cover",
+      "subtitle": "Formal verification meets language models — tests sample, critics hunt, kernels cover",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#6a3f9e",
@@ -1282,7 +1282,7 @@
     {
       "slug": "explained-agents",
       "title": "Explained: Agents",
-      "subtitle": "From predictor to actor \u2014 and why an agent's word is the expensive claim",
+      "subtitle": "From predictor to actor — and why an agent's word is the expensive claim",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#e07b1a",
@@ -1322,7 +1322,7 @@
     {
       "slug": "explained-inference",
       "title": "Explained: Inference",
-      "subtitle": "The memory wall, the cache, the seating problem \u2014 four attacks on seven milliseconds",
+      "subtitle": "The memory wall, the cache, the seating problem — four attacks on seven milliseconds",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#3a8b3a",
@@ -1362,7 +1362,7 @@
     {
       "slug": "explained-durable-evals",
       "title": "Explained: Durable Evals",
-      "subtitle": "Saturation, leakage, Goodhart \u2014 and the design rules that let a benchmark outlive the frontier",
+      "subtitle": "Saturation, leakage, Goodhart — and the design rules that let a benchmark outlive the frontier",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#3a8b3a",
@@ -1402,7 +1402,7 @@
     {
       "slug": "explained-delta-rule",
       "title": "Explained: The Delta Rule",
-      "subtitle": "Fast weights, error-correcting writes, decay, phase \u2014 and the chunk algebra that makes it trainable",
+      "subtitle": "Fast weights, error-correcting writes, decay, phase — and the chunk algebra that makes it trainable",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#6a3f9e",
@@ -1442,7 +1442,7 @@
     {
       "slug": "explained-causality",
       "title": "Explained: Causality",
-      "subtitle": "Sign flips, severed wires, honest coins \u2014 and the features that survive",
+      "subtitle": "Sign flips, severed wires, honest coins — and the features that survive",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#b0277a",
@@ -1482,7 +1482,7 @@
     {
       "slug": "explained-probabilistic",
       "title": "Explained: Probabilistic ML",
-      "subtitle": "Two kinds of doubt, exact posteriors, wandering chains \u2014 and the calibration audit",
+      "subtitle": "Two kinds of doubt, exact posteriors, wandering chains — and the calibration audit",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#b0277a",
@@ -1522,7 +1522,7 @@
     {
       "slug": "explained-graphs",
       "title": "Explained: Graph Learning",
-      "subtitle": "Adjacency, message passing, over-smoothing, tasks \u2014 and the spectrum underneath",
+      "subtitle": "Adjacency, message passing, over-smoothing, tasks — and the spectrum underneath",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#b0277a",
@@ -1602,7 +1602,7 @@
     {
       "slug": "explained-vision",
       "title": "Explained: Computer Vision",
-      "subtitle": "Kernels, pooling, hierarchies, patches \u2014 and proof by occlusion",
+      "subtitle": "Kernels, pooling, hierarchies, patches — and proof by occlusion",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#198a8a",
@@ -2854,7 +2854,7 @@
     {
       "slug": "effect-advanced",
       "title": "Effect",
-      "subtitle": "The Good Parts \u00b7 Advanced",
+      "subtitle": "The Good Parts · Advanced",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#6a3f9e",
@@ -2974,7 +2974,7 @@
     {
       "slug": "effect-good-parts-2",
       "title": "Effect",
-      "subtitle": "The Good Parts \u00b7 Intermediate",
+      "subtitle": "The Good Parts · Intermediate",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#c79100",
@@ -3014,7 +3014,7 @@
     {
       "slug": "effect-type",
       "title": "Effect",
-      "subtitle": "The Good Parts \u00b7 for Beginners",
+      "subtitle": "The Good Parts · for Beginners",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#41607f",
@@ -3398,7 +3398,7 @@
     {
       "slug": "sds-web-crawler",
       "title": "The Web Crawler",
-      "subtitle": "System Design, Solved \u21163",
+      "subtitle": "System Design, Solved №3",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#3a8b3a",
@@ -3438,7 +3438,7 @@
     {
       "slug": "key-value-store",
       "title": "The Key-Value Store",
-      "subtitle": "System Design, Solved \u21164",
+      "subtitle": "System Design, Solved №4",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#198a8a",
@@ -3478,7 +3478,7 @@
     {
       "slug": "social-feed",
       "title": "The Social Feed",
-      "subtitle": "System Design, Solved \u21162",
+      "subtitle": "System Design, Solved №2",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#6a3f9e",
@@ -3513,7 +3513,7 @@
     {
       "slug": "url-shortener",
       "title": "The URL Shortener",
-      "subtitle": "System Design, Solved \u21161",
+      "subtitle": "System Design, Solved №1",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#3a8b3a",
@@ -3668,7 +3668,7 @@
     {
       "slug": "explained-math",
       "title": "Explained: The Math",
-      "subtitle": "Fourier, eigenvectors, and convolution \u2014 watched, not derived",
+      "subtitle": "Fourier, eigenvectors, and convolution — watched, not derived",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#38bdf8",
