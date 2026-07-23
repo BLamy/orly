@@ -906,9 +906,10 @@
 
 /* ---- My Shelf / Library tab bar ---- */
 /* mobile: room for the fixed bottom tab bar so the last row isn't hidden
-   under it, on both the flat list and a pushed detail page */
-.libm-rows,
-.libm-detail {
+   under it — only the ROOT list needs this; a pushed series/book page
+   hides the tab bar entirely (it belongs to the tab's root, like a real
+   UITabBarController), so it needs no reserved space of its own. */
+.libm-rows {
   padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
 }
 .lib {

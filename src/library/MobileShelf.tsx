@@ -428,6 +428,7 @@ export function MobileShelf({
   error,
   initialBundle,
   emptyMessage,
+  onScreenOpenChange,
 }: {
   books: BookMeta[] | null;
   error: string | null;
@@ -439,6 +440,11 @@ export function MobileShelf({
    *  array (e.g. My Shelf with nothing downloaded) rather than genuinely
    *  no books existing anywhere. */
   emptyMessage?: string;
+  /** Fires whenever a series/book screen is pushed or popped — Library.tsx
+   *  uses this to hide the tab bar off the root page of the nav stack,
+   *  matching a native UITabBarController (the tab bar belongs to the
+   *  root, not to what's pushed on top of it). */
+  onScreenOpenChange?: (open: boolean) => void;
 }) {
   const [query, setQuery] = useState('');
   const [screen, setScreen] = useState<Screen | null>(() => {
@@ -675,6 +681,10 @@ export function MobileShelf({
   const seriesOpen = series !== null && seriesBooks !== null;
   const screenOpen = seriesOpen || bookOpen !== null;
   const listUnder = screenOpen && phase !== 'pop';
+
+  useEffect(() => {
+    onScreenOpenChange?.(screenOpen);
+  }, [screenOpen, onScreenOpenChange]);
 
   return (
     <div className="libm">

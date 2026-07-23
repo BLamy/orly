@@ -449,6 +449,15 @@ export function Library({ initialBundle }: { initialBundle?: string } = {}) {
   const [downloadedSlugs, setDownloadedSlugs] = useState<string[]>(() => getDownloadedSlugs());
   useEffect(() => onDownloadsChanged(() => setDownloadedSlugs(getDownloadedSlugs())), []);
 
+  // The tab bar belongs to each tab's ROOT page (like a real
+  // UITabBarController) — hidden once you've drilled into a series or a
+  // book on whichever tab is currently visible. Each MobileShelf instance
+  // reports its own pushed/popped state independently since both stay
+  // mounted at once (see the dual-mount note below).
+  const [shelfScreenOpen, setShelfScreenOpen] = useState(false);
+  const [libraryScreenOpen, setLibraryScreenOpen] = useState(false);
+  const activeScreenOpen = visibleTab === 'shelf' ? shelfScreenOpen : libraryScreenOpen;
+
   useEffect(() => {
     const mq = window.matchMedia(MOBILE_MQ);
     const onChange = () => setMobile(mq.matches);
@@ -498,10 +507,16 @@ export function Library({ initialBundle }: { initialBundle?: string } = {}) {
               books={shelfBooks}
               error={books ? null : error}
               emptyMessage="Nothing downloaded yet — browse the Library."
+              onScreenOpenChange={setShelfScreenOpen}
             />
           </div>
           <div style={{ display: visibleTab === 'library' ? 'contents' : 'none' }}>
-            <MobileShelf books={libraryBooks} error={error} initialBundle={initialBundle} />
+            <MobileShelf
+              books={libraryBooks}
+              error={error}
+              initialBundle={initialBundle}
+              onScreenOpenChange={setLibraryScreenOpen}
+            />
           </div>
         </>
       ) : (
@@ -513,7 +528,7 @@ export function Library({ initialBundle }: { initialBundle?: string } = {}) {
           }
         />
       )}
-      {mobile && <TabBar tab={visibleTab} onChange={setTab} mobile={mobile} />}
+      {mobile && !activeScreenOpen && <TabBar tab={visibleTab} onChange={setTab} mobile={mobile} />}
     </>
   );
 }
