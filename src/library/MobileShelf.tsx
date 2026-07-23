@@ -8,6 +8,8 @@ import { composeCover, drawSpine, type BookMeta } from './cover';
 import { assetUrl, FEATURED_SERIES, openBook, resolveAnimal, searchBooks, useLazyVisible } from './shared';
 import { DownloadButton, DownloadSeriesButton } from './DownloadButton';
 import { SubscribeButton } from './SubscribeButton';
+import { scrollShelfToTop, useScrollChrome } from '../shell/useScrollChrome';
+import { ThemeToggle } from '../shell/ThemeToggle';
 
 const BookPlayer = lazy(() =>
   import('../player/BookPlayer').then((m) => ({ default: m.BookPlayer }))
@@ -686,13 +688,27 @@ export function MobileShelf({
     onScreenOpenChange?.(screenOpen);
   }, [screenOpen, onScreenOpenChange]);
 
+  const { hidden: chromeHidden, scrolled: chromeScrolled } = useScrollChrome();
+
   return (
     <div className="libm">
       <div ref={listRef} className={`libm-list${listUnder ? ' is-under' : ''}`}>
-        <header ref={headerRef} className="libm-top">
+        <header
+          ref={headerRef}
+          className={`libm-top${chromeScrolled ? ' is-scrolled' : ''}${chromeHidden ? ' is-hidden' : ''}`}
+          onClick={(e) => {
+            // Tapping the top bar itself (not its search input/clear button)
+            // smooth-scrolls the list back to the top, like Twitter's app.
+            const target = e.target as HTMLElement;
+            if (!target.closest('.theme-toggle') && (target === e.currentTarget || target.closest('.libm-brand'))) {
+              scrollShelfToTop();
+            }
+          }}
+        >
           <div className="libm-brand">
             <span className="libm-brand-mark">O’RLY?</span>
             <span className="libm-brand-name">The Bookshelf</span>
+            <ThemeToggle />
           </div>
           {books && books.length > 0 && (
             <div className="libm-search">

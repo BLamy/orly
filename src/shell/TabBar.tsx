@@ -6,13 +6,20 @@ export function TabBar({
   tab,
   onChange,
   mobile,
+  hidden,
 }: {
   tab: ShelfTab;
   onChange: (t: ShelfTab) => void;
   mobile: boolean;
+  /** Twitter-style: slides off the bottom while the shelf list is being
+   *  scrolled down, back in on scroll-up (mobile bottom bar only). */
+  hidden?: boolean;
 }) {
   return (
-    <nav className={mobile ? 'tabbar-bottom' : 'tabbar-top'} aria-label="Shelf sections">
+    <nav
+      className={`${mobile ? 'tabbar-bottom' : 'tabbar-top'}${mobile && hidden ? ' is-hidden' : ''}`}
+      aria-label="Shelf sections"
+    >
       <button
         className={`tabbar-item${tab === 'shelf' ? ' active' : ''}`}
         onClick={() => onChange('shelf')}

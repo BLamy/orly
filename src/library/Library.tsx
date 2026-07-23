@@ -17,6 +17,8 @@ import { getDownloadedSlugs, onDownloadsChanged } from '../offline/downloads';
 import { checkSubscriptions } from '../offline/subscriptions';
 import { useOnline } from '../offline/useOnline';
 import { TabBar, type ShelfTab } from '../shell/TabBar';
+import { useScrollChrome } from '../shell/useScrollChrome';
+import { ThemeToggle } from '../shell/ThemeToggle';
 import { OfflineBanner } from '../shell/OfflineBanner';
 import './library.css';
 
@@ -286,16 +288,19 @@ export function DesktopShelf({
 
   return (
     <div className="lib">
-      <a
-        className="lib-gh"
-        href={REPO_URL}
-        target="_blank"
-        rel="noopener noreferrer"
-        aria-label="View the source on GitHub"
-        title="View the source on GitHub"
-      >
-        <GitHubMark />
-      </a>
+      <div className="lib-corner">
+        <ThemeToggle />
+        <a
+          className="lib-gh"
+          href={REPO_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          aria-label="View the source on GitHub"
+          title="View the source on GitHub"
+        >
+          <GitHubMark />
+        </a>
+      </div>
 
       <header className="lib-head">
         <div className="lib-eyebrow">The Secret Lives of Data</div>
@@ -488,6 +493,7 @@ export function Library({ initialBundle }: { initialBundle?: string } = {}) {
     [books, downloadedSlugs]
   );
   const libraryBooks = online ? books : shelfBooks;
+  const { hidden: chromeHidden } = useScrollChrome();
 
   return (
     <>
@@ -528,7 +534,9 @@ export function Library({ initialBundle }: { initialBundle?: string } = {}) {
           }
         />
       )}
-      {mobile && !activeScreenOpen && <TabBar tab={visibleTab} onChange={setTab} mobile={mobile} />}
+      {mobile && !activeScreenOpen && (
+        <TabBar tab={visibleTab} onChange={setTab} mobile={mobile} hidden={chromeHidden} />
+      )}
     </>
   );
 }
