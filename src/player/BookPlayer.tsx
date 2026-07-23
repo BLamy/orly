@@ -153,7 +153,12 @@ export function BookPlayer({
     const ro = new ResizeObserver((entries) => setVideoH(entries[0].contentRect.height));
     ro.observe(el);
     return () => ro.disconnect();
-  }, [drawerable]);
+    // `.bp-main` doesn't exist until `manifest` has loaded (there's an early
+    // `if (!manifest) return <loading/>` before this JSX) — depending on
+    // `drawerable` alone meant this ran once against a null ref on the very
+    // first render and never again, since `drawerable` doesn't change when
+    // manifest arrives a moment later. Re-run once the real element exists.
+  }, [drawerable, manifest]);
   const [viewportH, setViewportH] = useState(() =>
     typeof window !== 'undefined' ? window.innerHeight : 800
   );
@@ -376,7 +381,13 @@ export function BookPlayer({
         )}
       </div>
 
-      {drawerable && (
+      {/* Don't mount the drawer until we have a REAL measured video height —
+          vaul bakes its snap-point offset in at first mount and doesn't
+          reliably re-snap just because `snapPoints`/`activeSnapPoint` change
+          later, so mounting early with the FALLBACK_PEEK_PX guess left it
+          stuck too low forever (confirmed: only an orientation change, which
+          fully remounts the Drawer via the `drawerable` flip, ever fixed it). */}
+      {drawerable && videoH > 0 && (
         <Drawer.Root
           open
           modal={false}

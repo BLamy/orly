@@ -2050,7 +2050,9 @@
           "duration": 101.099
         }
       ],
-      "createdAt": "2026-07-16T23:27:20.689Z"
+      "createdAt": "2026-07-16T23:27:20.689Z",
+      "series": "The Loops",
+      "seriesOrder": 5
     },
     {
       "slug": "explained-information",
@@ -2248,7 +2250,9 @@
           "duration": 135.419
         }
       ],
-      "createdAt": "2026-07-16T22:15:42.228Z"
+      "createdAt": "2026-07-16T22:15:42.228Z",
+      "series": "The Loops",
+      "seriesOrder": 2
     },
     {
       "slug": "explained-rl",
@@ -2466,7 +2470,9 @@
           "duration": 71.889
         }
       ],
-      "createdAt": "2026-07-16T21:18:23.012Z"
+      "createdAt": "2026-07-16T21:18:23.012Z",
+      "series": "The Loops",
+      "seriesOrder": 3
     },
     {
       "slug": "sds-mint",
@@ -2599,44 +2605,6 @@
       "createdAt": "2026-07-16T20:46:37.595Z"
     },
     {
-      "slug": "crash-0020",
-      "title": "crash-0020",
-      "subtitle": "Hunting a Dead Context in Replay Chromium",
-      "author": "Brett Lamy",
-      "role": "Software Engineer at Replay",
-      "color": "#d6202b",
-      "animal": "generated/crash-0020/animal.webp",
-      "href": "?bundle=crash-0020",
-      "chapters": [
-        {
-          "number": 1,
-          "title": "Segfault in the Pause Child",
-          "duration": 74.117
-        },
-        {
-          "number": 2,
-          "title": "Four Checks, No Catch",
-          "duration": 82.197
-        },
-        {
-          "number": 3,
-          "title": "Proof by Addition",
-          "duration": 80.806
-        },
-        {
-          "number": 4,
-          "title": "A Stamp for Every Context",
-          "duration": 88.282
-        },
-        {
-          "number": 5,
-          "title": "The Diagnostic That Crashed",
-          "duration": 78.901
-        }
-      ],
-      "createdAt": "2026-07-16T20:35:52.020Z"
-    },
-    {
       "slug": "wasm-vm-loop",
       "title": "The wasm-vm Proof Loop",
       "subtitle": "",
@@ -2672,7 +2640,9 @@
           "duration": 98.825
         }
       ],
-      "createdAt": "2026-07-16T20:33:15.453Z"
+      "createdAt": "2026-07-16T20:33:15.453Z",
+      "series": "The Loops",
+      "seriesOrder": 6
     },
     {
       "slug": "agent-browser-replay-tape",
@@ -2705,39 +2675,9 @@
           "duration": 55.635
         }
       ],
-      "createdAt": "2026-07-16T19:50:08.156Z"
-    },
-    {
-      "slug": "sync-insights-proposal",
-      "title": "Sync Engine Insights",
-      "subtitle": "A proposal: the React perf pattern, one layer down",
-      "author": "Brett Lamy",
-      "role": "Software Engineer at Replay",
-      "color": "#38bdf8",
-      "href": "?bundle=sync-insights-proposal",
-      "chapters": [
-        {
-          "number": 1,
-          "title": "The Pattern You Already Built",
-          "duration": 81.038
-        },
-        {
-          "number": 2,
-          "title": "Sync Engines Are Dataflow Graphs",
-          "duration": 88.794
-        },
-        {
-          "number": 3,
-          "title": "Tap the Log",
-          "duration": 95.388
-        },
-        {
-          "number": 4,
-          "title": "SyncEngineInsights",
-          "duration": 90.604
-        }
-      ],
-      "createdAt": "2026-07-16T15:26:09.823Z"
+      "createdAt": "2026-07-16T19:50:08.156Z",
+      "series": "The Loops",
+      "seriesOrder": 1
     },
     {
       "slug": "almostnode",
@@ -2813,7 +2753,9 @@
         }
       ],
       "createdAt": "2026-07-16T06:25:08.869Z",
-      "animal": "generated/the-orly-loop/animal.webp"
+      "animal": "generated/the-orly-loop/animal.webp",
+      "series": "The Loops",
+      "seriesOrder": 4
     },
     {
       "slug": "koa",
