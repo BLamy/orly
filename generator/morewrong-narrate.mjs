@@ -40,6 +40,17 @@ for (const f of bookFiles) {
   }
 }
 
+// v2 branching graph (script/graph.json): one clip per node beat, and per
+// ending node (keyed by the node id, so the game plays it on arrival).
+const graphPath = join(SCRIPT_DIR, 'graph.json');
+if (existsSync(graphPath)) {
+  const graph = JSON.parse(readFileSync(graphPath, 'utf8'));
+  for (const node of graph.nodes ?? []) {
+    const text = node.beat || node.ending?.text;
+    if (text && !seen.has(node.id)) { clips.push({ key: node.id, text }); seen.add(node.id); }
+  }
+}
+
 // ---- load existing index; decide what to synthesize ----------------------
 const indexPath = join(OUT_DIR, 'index.json');
 const index = existsSync(indexPath) ? JSON.parse(readFileSync(indexPath, 'utf8')) : {};

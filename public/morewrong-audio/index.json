@@ -469,5 +469,38 @@
   },
   "b20_ledger": {
     "dur": 31.95
+  },
+  "d_eval_gate": {
+    "dur": 13.7
+  },
+  "s_intro": {
+    "dur": 15.46
+  },
+  "d_money": {
+    "dur": 6.32
+  },
+  "d_honeypot": {
+    "dur": 15.7
+  },
+  "resolve": {
+    "dur": 3.06
+  },
+  "e_safe": {
+    "dur": 10.08
+  },
+  "e_honeypot": {
+    "dur": 13.51
+  },
+  "e_boom": {
+    "dur": 8.92
+  },
+  "e_ipo": {
+    "dur": 12.45
+  },
+  "e_nationalized": {
+    "dur": 7.29
+  },
+  "e_broke": {
+    "dur": 9.15
   }
 }

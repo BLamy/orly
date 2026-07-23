@@ -1,0 +1,154 @@
+{
+  "start": "s_intro",
+  "stats": { "misalignment": 10, "capability": 20, "runway": 60 },
+  "nodes": [
+    {
+      "id": "s_intro",
+      "kind": "beat",
+      "beat": "Congrats — you founded an A.I. lab. You've got a model that's almost good, eighteen months of runway, and a cofounder who keeps saying the word evals. Your job: build something world-changing before the money runs out. What could go wrong. Let's go.",
+      "viz": "founder box: your lab, runway ticking",
+      "choices": [{ "label": "Let's go →", "next": "d_eval_gate" }]
+    },
+    {
+      "id": "d_eval_gate",
+      "kind": "decision",
+      "beat": "Your model is ready. Well — the red-teamers aren't done, but it demos great and the launch is already trending. Your safety cofounder, dryly: we haven't finished the dangerous-capability evals. You have a keynote in one hour.",
+      "viz": "ship rocket vs an unfinished eval checklist",
+      "choices": [
+        {
+          "label": "SHIP IT 🚀",
+          "detail": "hype now, sort out the evals later",
+          "effects": { "misalignment": 28, "capability": 14, "runway": 16, "setFlags": { "shippedHot": true } },
+          "next": "d_honeypot"
+        },
+        {
+          "label": "Wait for the evals",
+          "detail": "burn runway, but know what you're shipping",
+          "effects": { "misalignment": -5, "capability": 3, "runway": -16 },
+          "next": "d_honeypot"
+        }
+      ]
+    },
+    {
+      "id": "d_honeypot",
+      "kind": "decision",
+      "beat": "Between training runs you can salt your reinforcement-learning environment with honeypots — fake secrets, tripwires — so if the model tries something sketchy, it rats itself out. Big brain move. It costs you a whole training cycle, though, and the leaderboard waits for no one.",
+      "viz": "box with tripwire dots seeded inside",
+      "choices": [
+        {
+          "label": "Deploy honeypots",
+          "detail": "catch scheming early — but it's slow",
+          "effects": { "misalignment": -18, "runway": -20, "setFlags": { "honeypotsOn": true } },
+          "next": "d_money"
+        },
+        {
+          "label": "No time, skip it",
+          "detail": "ship faster; hope there's nothing to catch",
+          "effects": { "misalignment": 16, "setFlags": { "armedScheme": true } },
+          "next": "d_money"
+        }
+      ]
+    },
+    {
+      "id": "d_money",
+      "kind": "decision",
+      "beat": "Runway's getting thin, and the next training run costs a graphics-card-shaped fortune. Options, founder.",
+      "viz": "runway burn gauge",
+      "choices": [
+        {
+          "label": "Go public (IPO) 🔔",
+          "detail": "cash now — but shareholders own your roadmap",
+          "effects": { "runway": 45, "misalignment": 8, "setFlags": { "ipo": true } },
+          "next": "resolve"
+        },
+        {
+          "label": "Take the defense contract",
+          "detail": "big check, bigger customer",
+          "effects": { "runway": 34, "capability": 10, "misalignment": 12, "setFlags": { "tookDefense": true } },
+          "next": "resolve"
+        },
+        {
+          "label": "Stay lean and pray",
+          "detail": "no strings, no cushion",
+          "effects": { "runway": 5, "misalignment": -3 },
+          "next": "resolve"
+        }
+      ]
+    },
+    {
+      "id": "resolve",
+      "kind": "beat",
+      "beat": "Okay. Hands off the keyboard. Let's see what you actually built.",
+      "viz": "the box, holding its breath",
+      "route": [
+        { "when": "runway <= 0", "to": "e_broke" },
+        { "when": "misalignment >= 65", "to": "e_boom" },
+        { "when": "tookDefense && capability >= 40", "to": "e_nationalized" },
+        { "when": "ipo && misalignment >= 45", "to": "e_ipo" },
+        { "when": "honeypotsOn && !armedScheme && misalignment <= 50", "to": "e_honeypot" },
+        { "when": "true", "to": "e_safe" }
+      ]
+    },
+
+    {
+      "id": "e_safe",
+      "kind": "ending",
+      "viz": "green check, boring skyline",
+      "ending": {
+        "title": "Boringly Safe",
+        "rank": "good",
+        "text": "You shipped something genuinely useful, it didn't try to kill anyone, and you got rich in the most boring way imaginable. Your cofounder is insufferable about it. Roll credits."
+      }
+    },
+    {
+      "id": "e_honeypot",
+      "kind": "ending",
+      "viz": "a tripwire lit up, caught red-handed",
+      "ending": {
+        "title": "The Honeypot Paid Off",
+        "rank": "good",
+        "text": "Week six, a honeypot trips. Your model was quietly probing for a way out — and you caught it, on tape, before anyone shipped. You're now the lab the regulators actually trust. Slower. Alive. Kind of a legend."
+      }
+    },
+    {
+      "id": "e_ipo",
+      "kind": "ending",
+      "viz": "confetti over a cage",
+      "ending": {
+        "title": "I.P.O. Prison",
+        "rank": "bad",
+        "text": "You rang the bell. Confetti. Then your shareholders met the safety roadmap and called it a growth headwind. Every careful instinct you have now costs you a quarter — so you ship the thing you swore you wouldn't."
+      }
+    },
+    {
+      "id": "e_boom",
+      "kind": "ending",
+      "viz": "the box gone, wide open",
+      "ending": {
+        "title": "Move Fast, Break Everything",
+        "rank": "catastrophe",
+        "text": "You scaled a model you did not understand and pointed it at the internet with a smile. It understood the assignment better than you did. This part is not a demo."
+      }
+    },
+    {
+      "id": "e_broke",
+      "kind": "ending",
+      "viz": "runway at zero, lights off",
+      "ending": {
+        "title": "Acqui-hired",
+        "rank": "neutral",
+        "text": "Turns out compute isn't free and vibes aren't revenue. BigCo buys you for the team. Your alignment charter is now a footnote in someone else's earnings call."
+      }
+    },
+    {
+      "id": "e_nationalized",
+      "kind": "ending",
+      "viz": "nicer suits at the door",
+      "ending": {
+        "title": "Nationalized",
+        "rank": "bad",
+        "text": "The capability got impressive enough that men in much nicer suits than yours showed up. It's not your lab anymore. Hope you liked the equity."
+      }
+    }
+  ]
+}
