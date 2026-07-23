@@ -1,5 +1,7 @@
 <h1 align="center">orly 📚</h1>
 
+<p align="center">English · <a href="README.zh-CN.md">简体中文</a> · <a href="README.ja.md">日本語</a></p>
+
 <p align="center">
   <em>A self-building bookshelf of generated explainers.</em><br/>
   Point Claude Code at any GitHub repo + a subsystem, and it writes a narrated,
