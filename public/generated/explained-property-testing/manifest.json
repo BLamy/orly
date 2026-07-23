@@ -1,7 +1,7 @@
 {
   "format": 3,
   "slug": "explained-property-testing",
-  "title": "Explained: Testing Without an Oracle",
+  "title": "Testing Without an Oracle",
   "subtitle": "Property-based and metamorphic testing for systems whose right answers nobody knows",
   "animal": "animal.webp",
   "accent": "#a01f3c",

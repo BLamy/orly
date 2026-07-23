@@ -11,6 +11,7 @@ import {
   useLazyVisible,
 } from './shared';
 import { MobileShelf } from './MobileShelf';
+import { DownloadButton } from './DownloadButton';
 import './library.css';
 
 const COVER_W = 600;
@@ -25,7 +26,7 @@ const WORKFLOWS_URL = 'https://github.com/BLamy/orly/blob/main/generator/prompts
 
 // The mobile browse UI takes over on small screens and touch-first devices
 // (landscape phones included); desktop keeps the spine shelf.
-const MOBILE_MQ = '(max-width: 820px), ((hover: none) and (pointer: coarse) and (max-width: 1180px))';
+export const MOBILE_MQ = '(max-width: 820px), ((hover: none) and (pointer: coarse) and (max-width: 1180px))';
 
 function GitHubMark() {
   return (
@@ -73,6 +74,7 @@ function FrontBook({ book }: { book: BookMeta }) {
       title={book.subtitle ? `${book.title} — ${book.subtitle}` : book.title}
     >
       <canvas ref={canvasRef} className="lib-front-canvas" style={{ width: FACE_W, height: BOOK_H }} />
+      <DownloadButton slug={book.slug} />
     </button>
   );
 }
@@ -162,6 +164,7 @@ function SpineBook({ book, seriesIndex }: { book: BookMeta; seriesIndex?: number
           />
         </span>
       </span>
+      <DownloadButton slug={book.slug} />
     </button>
   );
 }
@@ -383,7 +386,7 @@ function DesktopShelf({ books, error }: { books: BookMeta[] | null; error: strin
   );
 }
 
-export function Library() {
+export function Library({ initialBundle }: { initialBundle?: string } = {}) {
   const [books, setBooks] = useState<BookMeta[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [mobile, setMobile] = useState(() => window.matchMedia(MOBILE_MQ).matches);
@@ -406,7 +409,7 @@ export function Library() {
   }, []);
 
   return mobile ? (
-    <MobileShelf books={books} error={error} />
+    <MobileShelf books={books} error={error} initialBundle={initialBundle} />
   ) : (
     <DesktopShelf books={books} error={error} />
   );

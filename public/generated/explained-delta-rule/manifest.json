@@ -1,7 +1,7 @@
 {
   "format": 3,
   "slug": "explained-delta-rule",
-  "title": "Explained: The Delta Rule",
+  "title": "The Delta Rule",
   "subtitle": "Fast weights, error-correcting writes, decay, phase — and the chunk algebra that makes it trainable",
   "animal": "animal.webp",
   "accent": "#6a3f9e",

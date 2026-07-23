@@ -1,7 +1,7 @@
 {
   "format": 3,
   "slug": "explained-vision",
-  "title": "Explained: Computer Vision",
+  "title": "Computer Vision",
   "subtitle": "Kernels, pooling, hierarchies, patches — and proof by occlusion",
   "animal": "animal.webp",
   "accent": "#198a8a",

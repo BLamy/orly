@@ -1,7 +1,7 @@
 {
   "format": 3,
   "slug": "explained-distributed-training",
-  "title": "Explained: Distributed Training",
+  "title": "Distributed Training",
   "subtitle": "Four ways to cut a model that doesn't fit — and the communication bill each one pays",
   "animal": "animal.webp",
   "accent": "#1f6fb2",

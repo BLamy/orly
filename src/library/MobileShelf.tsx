@@ -2,9 +2,15 @@
 // as a single boxed-set row, standalone books as cover rows), an iOS-style
 // alphabet index rail on the right edge, and an iOS-style pushed second page
 // for a series' books (back chevron, edge-swipe back, browser back all pop it).
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
+import { createPortal } from 'react-dom';
 import { composeCover, drawSpine, type BookMeta } from './cover';
 import { assetUrl, FEATURED_SERIES, openBook, resolveAnimal, searchBooks, useLazyVisible } from './shared';
+import { DownloadButton } from './DownloadButton';
+
+const BookPlayer = lazy(() =>
+  import('../player/BookPlayer').then((m) => ({ default: m.BookPlayer }))
+);
 
 const COVER_W = 600;
 const COVER_H = 800;
@@ -19,6 +25,14 @@ const reducedMotion = () =>
 function seriesParam(): string | null {
   return new URLSearchParams(window.location.search).get('series');
 }
+function bundleParam(): string | null {
+  return new URLSearchParams(window.location.search).get('bundle');
+}
+
+// The single pushed screen on top of the shelf — a series' book list, or (on
+// mobile) a book itself, so opening a video feels like a native part of the
+// same navigation-controller stack instead of a hard page reload.
+type Screen = { kind: 'series'; name: string } | { kind: 'book'; slug: string };
 
 // Alphabetize ignoring leading articles ("The Explainers" files under E).
 function sortKey(name: string): string {
@@ -58,7 +72,7 @@ function buildEntries(books: BookMeta[]): Entry[] {
 }
 
 // A standalone book row: cover thumbnail + title/subtitle.
-function BookRow({ book }: { book: BookMeta }) {
+function BookRow({ book, onOpen }: { book: BookMeta; onOpen?: () => void }) {
   const rootRef = useRef<HTMLButtonElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const visible = useLazyVisible(rootRef);
@@ -88,7 +102,7 @@ function BookRow({ book }: { book: BookMeta }) {
 
   const chapters = book.chapters?.length ?? 0;
   return (
-    <button ref={rootRef} className="libm-row" onClick={() => openBook(book)} aria-label={`Open ${book.title}`}>
+    <button ref={rootRef} className="libm-row" onClick={onOpen ?? (() => openBook(book))} aria-label={`Open ${book.title}`}>
       <span className="libm-row-thumb">
         <canvas ref={canvasRef} className="libm-row-canvas" />
       </span>
@@ -98,6 +112,7 @@ function BookRow({ book }: { book: BookMeta }) {
           {chapters ? `${chapters} chapter${chapters === 1 ? '' : 's'}` : book.subtitle}
         </span>
       </span>
+      <DownloadButton slug={book.slug} />
       <span className="libm-row-chev" aria-hidden="true" />
     </button>
   );
@@ -217,11 +232,13 @@ function SeriesPage({
   books,
   phase,
   detailRef,
+  onOpenBook,
 }: {
   name: string;
   books: BookMeta[];
   phase: 'push' | 'pop' | 'idle';
   detailRef: React.MutableRefObject<HTMLDivElement | null>;
+  onOpenBook: (slug: string) => void;
 }) {
   const asGrid = books.length <= SERIES_GRID_MAX;
   const headerRef = useRef<HTMLElement | null>(null);
@@ -283,7 +300,7 @@ function SeriesPage({
         {asGrid ? (
           <div className="libm-detail-grid">
             {books.map((b, i) => (
-              <DetailCard key={b.slug} book={b} index={b.seriesOrder ?? i + 1} />
+              <DetailCard key={b.slug} book={b} index={b.seriesOrder ?? i + 1} onOpen={() => onOpenBook(b.slug)} />
             ))}
           </div>
         ) : (
@@ -300,12 +317,21 @@ function SeriesPage({
                 >
                   <h2 className="libm-letter-head">{l}</h2>
                   {arr.map((b) => (
-                    <BookRow key={b.slug} book={b} />
+                    <BookRow key={b.slug} book={b} onOpen={() => onOpenBook(b.slug)} />
                   ))}
                 </section>
               ))}
             </div>
-            <AlphaRail active={new Set(byLetter!.map(([l]) => l))} onJump={jumpTo} />
+            {/* .libm-detail (this page's own scrolling layer) has its own
+                `transform` for the push/pop slide — that makes it the
+                containing block for any `position: fixed` descendant,
+                which would drag the rail along as THIS page scrolls instead
+                of holding it pinned to the viewport like the main shelf's
+                rail. Escape that via a portal straight to <body>. */}
+            {createPortal(
+              <AlphaRail active={new Set(byLetter!.map(([l]) => l))} onJump={jumpTo} />,
+              document.body
+            )}
           </>
         )}
       </div>
@@ -313,7 +339,7 @@ function SeriesPage({
   );
 }
 
-function DetailCard({ book, index }: { book: BookMeta; index: number }) {
+function DetailCard({ book, index, onOpen }: { book: BookMeta; index: number; onOpen?: () => void }) {
   const rootRef = useRef<HTMLButtonElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const visible = useLazyVisible(rootRef);
@@ -342,9 +368,10 @@ function DetailCard({ book, index }: { book: BookMeta; index: number }) {
   }, [visible, book]);
 
   return (
-    <button ref={rootRef} className="libm-card" onClick={() => openBook(book)} aria-label={`Open ${book.title}`}>
+    <button ref={rootRef} className="libm-card" onClick={onOpen ?? (() => openBook(book))} aria-label={`Open ${book.title}`}>
       <span className="libm-card-cover">
         <canvas ref={canvasRef} className="libm-card-canvas" />
+        <DownloadButton slug={book.slug} />
       </span>
       <span className="libm-card-title">
         <b className="libm-card-num">№{index} </b>
@@ -354,9 +381,51 @@ function DetailCard({ book, index }: { book: BookMeta; index: number }) {
   );
 }
 
-export function MobileShelf({ books, error }: { books: BookMeta[] | null; error: string | null }) {
+// A book, pushed as its own screen — same sliding "page" as SeriesPage, but
+// its content is the real BookPlayer instead of a list. `onHome` is wired to
+// `history.back()` so the player's own "← Home" chip pops like any other
+// pushed screen instead of hard-navigating away from the SPA.
+function BookScreen({
+  slug,
+  phase,
+  detailRef,
+}: {
+  slug: string;
+  phase: 'push' | 'pop' | 'idle';
+  detailRef: React.MutableRefObject<HTMLDivElement | null>;
+}) {
+  return (
+    <div
+      ref={detailRef}
+      className={`libm-detail libm-detail-book${phase === 'push' ? ' is-push' : phase === 'pop' ? ' is-pop' : ''}`}
+    >
+      <Suspense fallback={<div className="bp-loading">Loading the book…</div>}>
+        <BookPlayer key={slug} slug={slug} onHome={() => window.history.back()} />
+      </Suspense>
+    </div>
+  );
+}
+
+export function MobileShelf({
+  books,
+  error,
+  initialBundle,
+}: {
+  books: BookMeta[] | null;
+  error: string | null;
+  /** `?bundle=<slug>` resolved by App.tsx — pushed as a book screen instead
+   *  of App.tsx rendering BookPlayer full-page, so it slides in like any
+   *  other pushed screen rather than a hard navigation. */
+  initialBundle?: string;
+}) {
   const [query, setQuery] = useState('');
-  const [series, setSeries] = useState<string | null>(() => seriesParam());
+  const [screen, setScreen] = useState<Screen | null>(() => {
+    const s = seriesParam();
+    if (s) return { kind: 'series', name: s };
+    if (initialBundle) return { kind: 'book', slug: initialBundle };
+    return null;
+  });
+  const series = screen?.kind === 'series' ? screen.name : null;
   const [phase, setPhase] = useState<'push' | 'pop' | 'idle'>('idle');
   const headerRef = useRef<HTMLElement | null>(null);
   const listRef = useRef<HTMLDivElement | null>(null);
@@ -365,8 +434,8 @@ export function MobileShelf({ books, error }: { books: BookMeta[] | null; error:
   const sectionRefs = useRef(new Map<string, HTMLElement>());
   const phaseTimer = useRef<number | undefined>(undefined);
   const swipedRef = useRef(false);
-  const seriesRef = useRef(series);
-  seriesRef.current = series;
+  const screenRef = useRef(screen);
+  screenRef.current = screen;
 
   const entries = useMemo(() => (books && books.length ? buildEntries(books) : null), [books]);
 
@@ -436,24 +505,38 @@ export function MobileShelf({ books, error }: { books: BookMeta[] | null; error:
   };
   useEffect(() => () => window.clearTimeout(phaseTimer.current), []);
 
-  const pushSeries = (name: string) => {
+  const pushScreen = (next: Screen) => {
     const url = new URL(window.location.href);
-    url.searchParams.set('series', name);
+    if (next.kind === 'series') {
+      url.searchParams.set('series', next.name);
+      url.searchParams.delete('bundle');
+    } else {
+      url.searchParams.set('bundle', next.slug);
+      url.searchParams.delete('series');
+    }
     window.history.pushState(null, '', url);
-    setSeries(name);
+    setScreen(next);
     setPhase(reducedMotion() ? 'idle' : 'push');
     if (!reducedMotion()) settlePhase(PUSH_MS);
   };
+  const pushSeries = (name: string) => pushScreen({ kind: 'series', name });
+  const pushBook = (slug: string) => pushScreen({ kind: 'book', slug });
 
   // Browser/hardware back-forward keeps the pushed page coherent.
   useEffect(() => {
     const onPopState = () => {
       const s = seriesParam();
-      const cur = seriesRef.current;
-      if (s === cur) return;
-      if (s) {
-        // forward into a series page
-        setSeries(s);
+      const b = bundleParam();
+      const next: Screen | null = s ? { kind: 'series', name: s } : b ? { kind: 'book', slug: b } : null;
+      const cur = screenRef.current;
+      const same =
+        (next === null && cur === null) ||
+        (next?.kind === 'series' && cur?.kind === 'series' && next.name === cur.name) ||
+        (next?.kind === 'book' && cur?.kind === 'book' && next.slug === cur.slug);
+      if (same) return;
+      if (next) {
+        // forward into a screen (series or book)
+        setScreen(next);
         setPhase(reducedMotion() ? 'idle' : 'push');
         if (!reducedMotion()) settlePhase(PUSH_MS);
         return;
@@ -462,11 +545,11 @@ export function MobileShelf({ books, error }: { books: BookMeta[] | null; error:
       if (swipedRef.current || reducedMotion()) {
         swipedRef.current = false;
         setPhase('idle');
-        setSeries(null);
+        setScreen(null);
         return;
       }
       setPhase('pop');
-      settlePhase(POP_MS, () => setSeries(null));
+      settlePhase(POP_MS, () => setScreen(null));
     };
     window.addEventListener('popstate', onPopState);
     return () => window.removeEventListener('popstate', onPopState);
@@ -477,7 +560,7 @@ export function MobileShelf({ books, error }: { books: BookMeta[] | null; error:
   // the DOM (refs) so no re-render happens per frame.
   useEffect(() => {
     const el = detailRef.current;
-    if (!el || !series || phase !== 'idle') return;
+    if (!el || !screen || phase !== 'idle') return;
     let startX = 0;
     let startY = 0;
     let dragging = false;
@@ -549,7 +632,7 @@ export function MobileShelf({ books, error }: { books: BookMeta[] | null; error:
         dimEl.style.opacity = '';
       }
     };
-  }, [series, phase]);
+  }, [screen, phase]);
 
   const jumpTo = (letter: string) => {
     const el = sectionRefs.current.get(letter);
@@ -561,13 +644,15 @@ export function MobileShelf({ books, error }: { books: BookMeta[] | null; error:
 
   const renderEntry = (e: Entry) =>
     e.kind === 'book' ? (
-      <BookRow key={`b:${e.book.slug}`} book={e.book} />
+      <BookRow key={`b:${e.book.slug}`} book={e.book} onOpen={() => pushBook(e.book.slug)} />
     ) : (
       <SeriesRow key={`s:${e.name}`} name={e.name} books={e.books} onOpen={() => pushSeries(e.name)} />
     );
 
+  const bookOpen = screen?.kind === 'book' ? screen.slug : null;
   const seriesOpen = series !== null && seriesBooks !== null;
-  const listUnder = seriesOpen && phase !== 'pop';
+  const screenOpen = seriesOpen || bookOpen !== null;
+  const listUnder = screenOpen && phase !== 'pop';
 
   return (
     <div className="libm">
@@ -643,14 +728,23 @@ export function MobileShelf({ books, error }: { books: BookMeta[] | null; error:
         <footer className="libm-foot">by Brett Lamy · an “O’RLY?” parody</footer>
       </div>
 
-      {!q && !seriesOpen && entries && entries.length > 0 && (
+      {!q && !screenOpen && entries && entries.length > 0 && (
         <AlphaRail active={activeLetters} onJump={jumpTo} />
       )}
 
       <div ref={dimRef} className={`libm-dim${listUnder ? ' is-on' : ''}`} aria-hidden="true" />
 
       {seriesOpen && (
-        <SeriesPage name={series} books={seriesBooks} phase={phase} detailRef={detailRef} />
+        <SeriesPage
+          name={series}
+          books={seriesBooks}
+          phase={phase}
+          detailRef={detailRef}
+          onOpenBook={pushBook}
+        />
+      )}
+      {bookOpen && (
+        <BookScreen slug={bookOpen} phase={phase} detailRef={detailRef} />
       )}
     </div>
   );

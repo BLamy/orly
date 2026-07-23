@@ -685,7 +685,7 @@
     },
     {
       "slug": "explained-synthetic-data",
-      "title": "Explained: Synthetic Data",
+      "title": "Synthetic Data",
       "subtitle": "A copy of a copy — model collapse, the filter that saves it, and the wall made of text",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -725,7 +725,7 @@
     },
     {
       "slug": "explained-ai-control",
-      "title": "Explained: AI Control",
+      "title": "AI Control",
       "subtitle": "Getting useful work from a model you never trust — untrusted-monitor protocols, as a game",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -805,7 +805,7 @@
     },
     {
       "slug": "explained-distributed-training",
-      "title": "Explained: Distributed Training",
+      "title": "Distributed Training",
       "subtitle": "Four ways to cut a model that doesn't fit — and the communication bill each one pays",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -845,7 +845,7 @@
     },
     {
       "slug": "explained-sandboxing",
-      "title": "Explained: The Sandbox",
+      "title": "The Sandbox",
       "subtitle": "How we caged the agents in almostnode — a cross-origin wall, and what it costs",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -885,7 +885,7 @@
     },
     {
       "slug": "explained-test-time",
-      "title": "Explained: Test-Time Compute",
+      "title": "Test-Time Compute",
       "subtitle": "One sample is a lottery ticket — sampling, voting, grading, searching, and the new axis of scaling",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -925,7 +925,7 @@
     },
     {
       "slug": "explained-long-context",
-      "title": "Explained: Long Context",
+      "title": "Long Context",
       "subtitle": "",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -1005,7 +1005,7 @@
     },
     {
       "slug": "explained-property-testing",
-      "title": "Explained: Testing Without an Oracle",
+      "title": "Testing Without an Oracle",
       "subtitle": "Property-based and metamorphic testing for systems whose right answers nobody knows",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -1085,7 +1085,7 @@
     },
     {
       "slug": "explained-hybrid-attention",
-      "title": "Explained: Hybrid Attention",
+      "title": "Hybrid Attention",
       "subtitle": "",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -1125,7 +1125,7 @@
     },
     {
       "slug": "explained-rlvr",
-      "title": "Explained: Verifiable Rewards",
+      "title": "Verifiable Rewards",
       "subtitle": "Rewards from executable checks — and the cliff between a solver and a lock pick",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -1165,7 +1165,7 @@
     },
     {
       "slug": "explained-formal-verification",
-      "title": "Explained: Proof or It Didn't Happen",
+      "title": "Proof or It Didn't Happen",
       "subtitle": "Formal verification meets language models — tests sample, critics hunt, kernels cover",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -1283,7 +1283,7 @@
     },
     {
       "slug": "explained-agents",
-      "title": "Explained: Agents",
+      "title": "Agents",
       "subtitle": "From predictor to actor — and why an agent's word is the expensive claim",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -1323,7 +1323,7 @@
     },
     {
       "slug": "explained-inference",
-      "title": "Explained: Inference",
+      "title": "Inference",
       "subtitle": "The memory wall, the cache, the seating problem — four attacks on seven milliseconds",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -1363,7 +1363,7 @@
     },
     {
       "slug": "explained-durable-evals",
-      "title": "Explained: Durable Evals",
+      "title": "Durable Evals",
       "subtitle": "Saturation, leakage, Goodhart — and the design rules that let a benchmark outlive the frontier",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -1403,7 +1403,7 @@
     },
     {
       "slug": "explained-delta-rule",
-      "title": "Explained: The Delta Rule",
+      "title": "The Delta Rule",
       "subtitle": "Fast weights, error-correcting writes, decay, phase — and the chunk algebra that makes it trainable",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -1443,7 +1443,7 @@
     },
     {
       "slug": "explained-causality",
-      "title": "Explained: Causality",
+      "title": "Causality",
       "subtitle": "Sign flips, severed wires, honest coins — and the features that survive",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -1483,7 +1483,7 @@
     },
     {
       "slug": "explained-probabilistic",
-      "title": "Explained: Probabilistic ML",
+      "title": "Probabilistic ML",
       "subtitle": "Two kinds of doubt, exact posteriors, wandering chains — and the calibration audit",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -1523,7 +1523,7 @@
     },
     {
       "slug": "explained-graphs",
-      "title": "Explained: Graph Learning",
+      "title": "Graph Learning",
       "subtitle": "Adjacency, message passing, over-smoothing, tasks — and the spectrum underneath",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -1563,7 +1563,7 @@
     },
     {
       "slug": "explained-ssm",
-      "title": "Explained: State-Space Models",
+      "title": "State-Space Models",
       "subtitle": "",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -1603,7 +1603,7 @@
     },
     {
       "slug": "explained-vision",
-      "title": "Explained: Computer Vision",
+      "title": "Computer Vision",
       "subtitle": "Kernels, pooling, hierarchies, patches — and proof by occlusion",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -1643,7 +1643,7 @@
     },
     {
       "slug": "explained-evaluation",
-      "title": "Explained: Evaluation",
+      "title": "Evaluation",
       "subtitle": "",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -1683,7 +1683,7 @@
     },
     {
       "slug": "explained-fine-tuning",
-      "title": "Explained: Fine-Tuning",
+      "title": "Fine-Tuning",
       "subtitle": "",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -1718,7 +1718,7 @@
     },
     {
       "slug": "explained-sequence-models",
-      "title": "Explained: Sequence Models",
+      "title": "Sequence Models",
       "subtitle": "",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -1753,7 +1753,7 @@
     },
     {
       "slug": "explained-alignment",
-      "title": "Explained: Alignment",
+      "title": "Alignment",
       "subtitle": "",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -1793,7 +1793,7 @@
     },
     {
       "slug": "explained-retrieval",
-      "title": "Explained: Embeddings & Retrieval",
+      "title": "Embeddings & Retrieval",
       "subtitle": "",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -1981,7 +1981,7 @@
     },
     {
       "slug": "explained-mech-interp",
-      "title": "Explained: Mechanistic Interpretability",
+      "title": "Mechanistic Interpretability",
       "subtitle": "",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -2054,7 +2054,7 @@
     },
     {
       "slug": "explained-information",
-      "title": "Explained: Information Theory",
+      "title": "Information Theory",
       "subtitle": "",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -2094,7 +2094,7 @@
     },
     {
       "slug": "explained-classical-ml",
-      "title": "Explained: Classical ML",
+      "title": "Classical ML",
       "subtitle": "",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -2134,7 +2134,7 @@
     },
     {
       "slug": "explained-llms",
-      "title": "Explained: Language Models",
+      "title": "Language Models",
       "subtitle": "",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -2174,7 +2174,7 @@
     },
     {
       "slug": "explained-generative",
-      "title": "Explained: Generative Models",
+      "title": "Generative Models",
       "subtitle": "",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -2252,7 +2252,7 @@
     },
     {
       "slug": "explained-rl",
-      "title": "Explained: Reinforcement Learning",
+      "title": "Reinforcement Learning",
       "subtitle": "",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -2292,7 +2292,7 @@
     },
     {
       "slug": "explained-training",
-      "title": "Explained: Training",
+      "title": "Training",
       "subtitle": "",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -2392,7 +2392,7 @@
     },
     {
       "slug": "explained-transformers",
-      "title": "Explained: Transformers",
+      "title": "Transformers",
       "subtitle": "",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -2530,7 +2530,7 @@
     },
     {
       "slug": "explained-neural-nets",
-      "title": "Explained: Neural Networks",
+      "title": "Neural Networks",
       "subtitle": "",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -3554,7 +3554,7 @@
     },
     {
       "slug": "explained-ml",
-      "title": "Explained: Machine Learning",
+      "title": "Machine Learning",
       "subtitle": "Gradient descent, backprop, attention, diffusion",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -3589,7 +3589,7 @@
     },
     {
       "slug": "explained-distributed",
-      "title": "Explained: Distributed Systems",
+      "title": "Distributed Systems",
       "subtitle": "Rings, filters, logs, and leaders",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -3634,7 +3634,7 @@
     },
     {
       "slug": "explained-probability",
-      "title": "Explained: Probability",
+      "title": "Probability",
       "subtitle": "Bayes, the bell curve, entropy, and the Kalman filter",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
@@ -3669,7 +3669,7 @@
     },
     {
       "slug": "explained-math",
-      "title": "Explained: The Math",
+      "title": "The Math",
       "subtitle": "Fourier, eigenvectors, and convolution — watched, not derived",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",

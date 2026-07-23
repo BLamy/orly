@@ -1,7 +1,7 @@
 {
   "format": 3,
   "slug": "explained-probabilistic",
-  "title": "Explained: Probabilistic ML",
+  "title": "Probabilistic ML",
   "subtitle": "Two kinds of doubt, exact posteriors, wandering chains — and the calibration audit",
   "animal": "animal.webp",
   "accent": "#b0277a",

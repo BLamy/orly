@@ -16,7 +16,13 @@ export function BlogPanel({ base, onAvailable }: { base: string; onAvailable?: (
     setMarkdown(null);
     setMissing(false);
     fetch(`${base}blog.md`)
-      .then((r) => (r.ok ? r.text() : Promise.reject(new Error(`HTTP ${r.status}`))))
+      .then((r) => {
+        // Dev server (and the SPA's own client-routing fallback) answer 200
+        // with index.html for ANY unmatched path — reject those too, or a
+        // missing blog.md would render the app shell as "markdown".
+        const ok = r.ok && !(r.headers.get('content-type') ?? '').includes('text/html');
+        return ok ? r.text() : Promise.reject(new Error(`HTTP ${r.status}`));
+      })
       .then((text) => {
         if (!alive) return;
         setMarkdown(text);

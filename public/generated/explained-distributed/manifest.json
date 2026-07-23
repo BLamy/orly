@@ -1,7 +1,7 @@
 {
   "format": 3,
   "slug": "explained-distributed",
-  "title": "Explained: Distributed Systems",
+  "title": "Distributed Systems",
   "subtitle": "Rings, filters, logs, and leaders",
   "animal": "animal.webp",
   "accent": "#34d399",

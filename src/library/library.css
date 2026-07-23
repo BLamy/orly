@@ -568,7 +568,11 @@
   top: 50%;
   right: 0;
   transform: translateY(-50%);
-  z-index: 30;
+  /* higher than .libm-detail's z-index: 40 — the series-page rail is
+     portaled to <body> as a SIBLING of .libm-detail (to escape its
+     transform, see MobileShelf.tsx), so it must out-rank that full-
+     viewport layer or it renders hidden underneath it. */
+  z-index: 45;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -632,6 +636,12 @@
   transform: translate3d(0, 0, 0);
   will-change: transform;
   box-shadow: -12px 0 32px rgba(0, 0, 0, 0.45);
+}
+/* the pushed book screen: BookPlayer manages its own spacing/scrolling
+   (theater-mode layout, own background) — don't double up on either. */
+.libm-detail-book {
+  padding-bottom: 0;
+  background: none;
 }
 .libm-detail.is-push { animation: libm-push-in 350ms cubic-bezier(0.32, 0.72, 0, 1); }
 .libm-detail.is-pop {
@@ -713,6 +723,7 @@
   text-align: left;
 }
 .libm-card-cover {
+  position: relative;
   display: block;
   width: 100%;
   aspect-ratio: 3 / 4;
@@ -721,6 +732,53 @@
   background: #fbfbf9;
   box-shadow: 0 6px 16px rgba(0, 0, 0, 0.45);
 }
+
+/* ---- download-for-offline toggle — a small corner badge on cover-style
+       cards/spines, an inline icon on list rows ---- */
+.dl-btn {
+  appearance: none;
+  border: none;
+  cursor: pointer;
+  position: absolute;
+  top: 6px;
+  right: 6px;
+  z-index: 3;
+  width: 24px;
+  height: 24px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: rgba(10, 14, 26, 0.72);
+  color: #f3ecdd;
+  backdrop-filter: blur(3px);
+}
+.dl-btn.is-downloaded {
+  background: #38bdf8;
+  color: #06131f;
+}
+.dl-spinner {
+  width: 10px;
+  height: 10px;
+  border-radius: 50%;
+  border: 2px solid rgba(243, 236, 221, 0.35);
+  border-top-color: #f3ecdd;
+  animation: dl-spin 700ms linear infinite;
+}
+@keyframes dl-spin {
+  to { transform: rotate(360deg); }
+}
+/* on a flex row (MobileShelf's BookRow), it's an inline icon, not a corner badge */
+.libm-row .dl-btn {
+  position: static;
+  flex: none;
+  background: none;
+  color: var(--muted, #8da2be);
+  width: auto;
+  height: auto;
+  padding: 6px;
+}
+.libm-row .dl-btn.is-downloaded { background: none; color: #38bdf8; }
 .libm-card-canvas {
   display: block;
   width: 100%;

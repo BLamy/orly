@@ -1,7 +1,7 @@
 {
   "format": 3,
   "slug": "explained-sandboxing",
-  "title": "Explained: The Sandbox",
+  "title": "The Sandbox",
   "subtitle": "How we caged the agents in almostnode — a cross-origin wall, and what it costs",
   "animal": "animal.webp",
   "accent": "#b0277a",

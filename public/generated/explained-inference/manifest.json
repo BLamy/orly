@@ -1,7 +1,7 @@
 {
   "format": 3,
   "slug": "explained-inference",
-  "title": "Explained: Inference",
+  "title": "Inference",
   "subtitle": "The memory wall, the cache, the seating problem — four attacks on seven milliseconds",
   "animal": "animal.webp",
   "accent": "#3a8b3a",

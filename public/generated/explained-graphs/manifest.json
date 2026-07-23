@@ -1,7 +1,7 @@
 {
   "format": 3,
   "slug": "explained-graphs",
-  "title": "Explained: Graph Learning",
+  "title": "Graph Learning",
   "subtitle": "Adjacency, message passing, over-smoothing, tasks — and the spectrum underneath",
   "animal": "animal.webp",
   "accent": "#b0277a",

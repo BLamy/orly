@@ -1,7 +1,7 @@
 {
   "format": 3,
   "slug": "explained-ml",
-  "title": "Explained: Machine Learning",
+  "title": "Machine Learning",
   "subtitle": "Gradient descent, backprop, attention, diffusion",
   "animal": "animal.webp",
   "accent": "#a78bfa",

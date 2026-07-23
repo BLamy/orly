@@ -84,6 +84,11 @@ function useMediaQuery(query: string): boolean {
 const COMPACT_MQ =
   '(max-width: 720px) and (orientation: portrait), (max-width: 1000px) and (orientation: landscape) and (max-height: 520px)';
 
+// The drawer itself is portrait-only — in landscape there isn't enough
+// vertical room for a bottom sheet without it swallowing the video, so
+// landscape just shows the video with no way to reach chapters/blog.
+const PORTRAIT_COMPACT_MQ = '(max-width: 720px) and (orientation: portrait)';
+
 // The drawer's resting (peek) height is computed from the actual rendered
 // video block so it always ends exactly where the video does — see the
 // videoH/viewportH tracking below. This is only the pre-measurement guess
@@ -115,13 +120,24 @@ function episodeFromUrl(): number | null {
  * whole series) is always visible alongside the player, and the back arrow
  * always returns to the shelf.
  */
-export function BookPlayer({ slug }: { slug: string }) {
+export function BookPlayer({
+  slug,
+  onHome,
+}: {
+  slug: string;
+  /** Defaults to a full navigation back to the shelf. When BookPlayer is
+   *  embedded as a pushed screen (MobileShelf's nav-controller feel), the
+   *  caller instead passes `() => window.history.back()` so it pops like
+   *  any other pushed screen instead of reloading the whole app. */
+  onHome?: () => void;
+}) {
   const base = `${ASSET_BASE}generated/${slug}/`;
   const [manifest, setManifest] = useState<ManifestV3 | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [current, setCurrent] = useState(0);
   const [seriesGroups, setSeriesGroups] = useState<SeriesGroup[] | null>(null);
   const compact = useMediaQuery(COMPACT_MQ);
+  const drawerable = useMediaQuery(PORTRAIT_COMPACT_MQ);
   const [hasBlog, setHasBlog] = useState(false);
   const [tab, setTab] = useState<'chapters' | 'blog'>('chapters');
 
@@ -131,13 +147,13 @@ export function BookPlayer({ slug }: { slug: string }) {
   const mainRef = useRef<HTMLDivElement | null>(null);
   const [videoH, setVideoH] = useState(0);
   useEffect(() => {
-    if (!compact) return;
+    if (!drawerable) return;
     const el = mainRef.current;
     if (!el) return;
     const ro = new ResizeObserver((entries) => setVideoH(entries[0].contentRect.height));
     ro.observe(el);
     return () => ro.disconnect();
-  }, [compact]);
+  }, [drawerable]);
   const [viewportH, setViewportH] = useState(() =>
     typeof window !== 'undefined' ? window.innerHeight : 800
   );
@@ -170,9 +186,9 @@ export function BookPlayer({ slug }: { slug: string }) {
   const defaultedRef = useRef(false);
   useEffect(() => {
     if (defaultedRef.current || !hasBlog) return;
-    if (compact) setTab('blog');
+    if (drawerable) setTab('blog');
     defaultedRef.current = true;
-  }, [hasBlog, compact]);
+  }, [hasBlog, drawerable]);
 
   // Check for a blog.md independent of which tab is active — otherwise the
   // Blog tab could never appear (it only mounts BlogPanel, whose fetch is
@@ -180,7 +196,13 @@ export function BookPlayer({ slug }: { slug: string }) {
   useEffect(() => {
     let alive = true;
     fetch(`${base}blog.md`, { method: 'HEAD' })
-      .then((r) => alive && setHasBlog(r.ok))
+      .then((r) => {
+        // Both Vite's dev server and the SPA's own fallback answer 200 with
+        // index.html for ANY unmatched path — so a real 200 for blog.md still
+        // isn't proof the file exists. Only a text/* content-type is.
+        const ok = r.ok && !(r.headers.get('content-type') ?? '').includes('text/html');
+        if (alive) setHasBlog(ok);
+      })
       .catch(() => alive && setHasBlog(false));
     return () => {
       alive = false;
@@ -268,9 +290,9 @@ export function BookPlayer({ slug }: { slug: string }) {
   const sideListRef = useRef<HTMLUListElement | null>(null);
   const drawerListRef = useRef<HTMLUListElement | null>(null);
   useEffect(() => {
-    const el = (compact ? drawerListRef.current : sideListRef.current)?.querySelector('.active');
+    const el = (drawerable ? drawerListRef.current : sideListRef.current)?.querySelector('.active');
     el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }, [current, manifest, seriesGroups, compact]);
+  }, [current, manifest, seriesGroups, drawerable]);
 
   // Keep the URL in sync with the chapter being watched, so it's shareable
   // and the browser back/forward buttons step through chapters. Skip the
@@ -298,9 +320,7 @@ export function BookPlayer({ slug }: { slug: string }) {
     return () => window.removeEventListener('popstate', onPopState);
   }, [manifest]);
 
-  const goHome = () => {
-    window.location.href = ASSET_BASE;
-  };
+  const goHome = onHome ?? (() => { window.location.href = ASSET_BASE; });
 
   const goToChapter = (group: SeriesGroup, i: number) => {
     if (group.book.slug === slug) {
@@ -356,7 +376,7 @@ export function BookPlayer({ slug }: { slug: string }) {
         )}
       </div>
 
-      {compact && (
+      {drawerable && (
         <Drawer.Root
           open
           modal={false}
