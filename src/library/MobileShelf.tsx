@@ -7,6 +7,7 @@ import { createPortal } from 'react-dom';
 import { composeCover, drawSpine, type BookMeta } from './cover';
 import { assetUrl, FEATURED_SERIES, openBook, resolveAnimal, searchBooks, useLazyVisible } from './shared';
 import { DownloadButton, DownloadSeriesButton } from './DownloadButton';
+import { SubscribeButton } from './SubscribeButton';
 
 const BookPlayer = lazy(() =>
   import('../player/BookPlayer').then((m) => ({ default: m.BookPlayer }))
@@ -160,6 +161,7 @@ function SeriesRow({ name, books, onOpen }: { name: string; books: BookMeta[]; o
         <span className="libm-row-title">{name}</span>
         <span className="libm-row-sub">{books.length}-book series</span>
       </span>
+      <SubscribeButton series={name} nested />
       <DownloadSeriesButton slugs={books.map((b) => b.slug)} nested />
       <span className="libm-row-chev" aria-hidden="true" />
     </button>
@@ -298,6 +300,7 @@ function SeriesPage({
             <span className="libm-detail-meta">
               {books.length} books {asGrid ? '· read in order' : ''}
             </span>
+            <SubscribeButton series={name} />
             <DownloadSeriesButton slugs={books.map((b) => b.slug)} />
           </div>
         </header>
@@ -404,7 +407,17 @@ function BookScreen({
       className={`libm-detail libm-detail-book${phase === 'push' ? ' is-push' : phase === 'pop' ? ' is-pop' : ''}`}
     >
       <Suspense fallback={<div className="bp-loading">Loading the book…</div>}>
-        <BookPlayer key={slug} slug={slug} onHome={() => window.history.back()} />
+        <BookPlayer
+          key={slug}
+          slug={slug}
+          onHome={() => {
+            // A native nav-controller pop stops playback immediately, not
+            // after the slide-out finishes — otherwise narration keeps
+            // going (audibly) while the screen is already sliding away.
+            for (const a of document.querySelectorAll('audio')) a.pause();
+            window.history.back();
+          }}
+        />
       </Suspense>
     </div>
   );
@@ -414,6 +427,7 @@ export function MobileShelf({
   books,
   error,
   initialBundle,
+  emptyMessage,
 }: {
   books: BookMeta[] | null;
   error: string | null;
@@ -421,6 +435,10 @@ export function MobileShelf({
    *  of App.tsx rendering BookPlayer full-page, so it slides in like any
    *  other pushed screen rather than a hard navigation. */
   initialBundle?: string;
+  /** Shown instead of the generic "No books yet" when `books` is an empty
+   *  array (e.g. My Shelf with nothing downloaded) rather than genuinely
+   *  no books existing anywhere. */
+  emptyMessage?: string;
 }) {
   const [query, setQuery] = useState('');
   const [screen, setScreen] = useState<Screen | null>(() => {
@@ -687,7 +705,9 @@ export function MobileShelf({
 
         {error && <div className="libm-empty">Couldn’t load the library: {error}</div>}
         {!books && !error && <div className="libm-empty">Loading the shelf…</div>}
-        {books && books.length === 0 && <div className="libm-empty">No books yet.</div>}
+        {books && books.length === 0 && (
+          <div className="libm-empty">{emptyMessage ?? 'No books yet.'}</div>
+        )}
 
         {filtered &&
           (filtered.length === 0 ? (

@@ -173,6 +173,9 @@
   top: 6px;
   right: 6px;
   z-index: 2;
+  display: flex;
+  align-items: center;
+  gap: 6px;
 }
 .lib-set-plaque {
   position: absolute;
@@ -831,6 +834,33 @@
 .libm-row-series .dl-series-btn {
   margin-left: auto;
 }
+
+/* ---- "subscribe to series" — a pill like .dl-series-btn in a header,
+       a compact icon-only badge (like .dl-btn) when nested in a row ---- */
+.sub-btn {
+  appearance: none;
+  border: 1px solid rgba(176, 132, 66, 0.35);
+  border-radius: 999px;
+  display: inline-flex;
+  align-items: center;
+  gap: 5px;
+  padding: 5px 11px;
+  flex: none;
+  background: rgba(176, 132, 66, 0.1);
+  color: #d6a556;
+  font: 700 11px/1 inherit;
+  cursor: pointer;
+  white-space: nowrap;
+}
+.sub-btn.is-subscribed {
+  background: rgba(56, 189, 248, 0.16);
+  border-color: rgba(56, 189, 248, 0.4);
+  color: #38bdf8;
+}
+.libm-row-series .sub-btn {
+  padding: 6px;
+  border-radius: 50%;
+}
 .libm-card-canvas {
   display: block;
   width: 100%;
@@ -872,4 +902,84 @@
   color: #7d705b;
   color: #8a7c63;
   font-size: 12px;
+}
+
+/* ---- My Shelf / Library tab bar ---- */
+/* mobile: room for the fixed bottom tab bar so the last row isn't hidden
+   under it, on both the flat list and a pushed detail page */
+.libm-rows,
+.libm-detail {
+  padding-bottom: calc(64px + env(safe-area-inset-bottom, 0px));
+}
+.lib {
+  padding-bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+}
+
+.tabbar-bottom {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 60; /* above .libm-detail (40) and .bp-drawer (50) — always reachable */
+  display: flex;
+  background: rgba(20, 16, 11, 0.92);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border-top: 1px solid rgba(176, 132, 66, 0.22);
+  padding: 6px max(8px, env(safe-area-inset-right, 0px)) calc(6px + env(safe-area-inset-bottom, 0px))
+    max(8px, env(safe-area-inset-left, 0px));
+}
+.tabbar-bottom .tabbar-item {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+  padding: 6px 0 4px;
+  border: none;
+  background: none;
+  color: #9c8e74;
+  font: 600 10.5px/1 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+}
+.tabbar-bottom .tabbar-item.active {
+  color: #d6a556;
+}
+
+.tabbar-top {
+  display: flex;
+  gap: 4px;
+  max-width: 760px;
+  margin: 0 auto 8px;
+  padding: 0 0 8px;
+}
+.tabbar-top .tabbar-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 8px 16px;
+  border: none;
+  border-radius: 999px;
+  background: none;
+  color: #7d705b;
+  font: 700 13px/1 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  cursor: pointer;
+}
+.tabbar-top .tabbar-item.active {
+  background: rgba(176, 132, 66, 0.16);
+  color: #8a5a1e;
+}
+
+.offline-banner {
+  position: fixed;
+  top: max(10px, env(safe-area-inset-top, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  z-index: 61;
+  background: rgba(20, 16, 11, 0.94);
+  color: #d6a556;
+  border: 1px solid rgba(176, 132, 66, 0.35);
+  border-radius: 999px;
+  padding: 6px 14px;
+  font: 700 12px/1 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  white-space: nowrap;
 }

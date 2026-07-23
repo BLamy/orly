@@ -12,7 +12,23 @@ import {
 } from './shared';
 import { MobileShelf } from './MobileShelf';
 import { DownloadButton, DownloadSeriesButton } from './DownloadButton';
+import { SubscribeButton } from './SubscribeButton';
+import { getDownloadedSlugs, onDownloadsChanged } from '../offline/downloads';
+import { checkSubscriptions } from '../offline/subscriptions';
+import { useOnline } from '../offline/useOnline';
+import { TabBar, type ShelfTab } from '../shell/TabBar';
+import { OfflineBanner } from '../shell/OfflineBanner';
 import './library.css';
+
+const TAB_KEY = 'orly-tab';
+function tabParam(): ShelfTab {
+  const t = new URLSearchParams(window.location.search).get('tab');
+  return t === 'shelf' ? 'shelf' : 'library';
+}
+// Re-check subscribed series against library.json every 20 minutes while the
+// tab is open — there's no push infra for a static site, so "auto-download
+// as new chapters come out" means "the next time this poll runs."
+const SUBSCRIPTION_POLL_MS = 20 * 60 * 1000;
 
 const COVER_W = 600;
 const COVER_H = 800;
@@ -176,6 +192,7 @@ function BoxedSet({ name, books, front }: { name: string; books: BookMeta[]; fro
     <div className="lib-set">
       <span className="lib-set-plaque">{name}</span>
       <div className="lib-set-dl">
+        <SubscribeButton series={name} />
         <DownloadSeriesButton slugs={books.map((b) => b.slug)} />
       </div>
       <div className="lib-set-books">
@@ -244,7 +261,15 @@ function useRowWidth(): [number, React.RefObject<HTMLDivElement>] {
 const fitsFront = (n: number, rowWidth: number) =>
   rowWidth > 0 && n * FRONT_SLOT + GROUP_CHROME <= rowWidth;
 
-function DesktopShelf({ books, error }: { books: BookMeta[] | null; error: string | null }) {
+export function DesktopShelf({
+  books,
+  error,
+  emptyMessage,
+}: {
+  books: BookMeta[] | null;
+  error: string | null;
+  emptyMessage?: string;
+}) {
   const [query, setQuery] = useState('');
   const [rowWidth, probeRef] = useRowWidth();
 
@@ -301,7 +326,11 @@ function DesktopShelf({ books, error }: { books: BookMeta[] | null; error: strin
       {error && <div className="lib-empty">Couldn’t load the library: {error}</div>}
       {!books && !error && <div className="lib-empty">Loading the shelf…</div>}
       {books && books.length === 0 && (
-        <div className="lib-empty">No books yet — generate one with <code>npm run explain</code>.</div>
+        <div className="lib-empty">
+          {emptyMessage ?? (
+            <>No books yet — generate one with <code>npm run explain</code>.</>
+          )}
+        </div>
       )}
 
       {/* invisible probe sized like a shelf row, for the fronts-vs-spines fit test */}
@@ -393,6 +422,32 @@ export function Library({ initialBundle }: { initialBundle?: string } = {}) {
   const [books, setBooks] = useState<BookMeta[] | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [mobile, setMobile] = useState(() => window.matchMedia(MOBILE_MQ).matches);
+  const online = useOnline();
+  const [tab, setTabState] = useState<ShelfTab>(() => {
+    const fromUrl = new URLSearchParams(window.location.search).get('tab');
+    if (fromUrl === 'shelf' || fromUrl === 'library') return fromUrl;
+    try {
+      const saved = localStorage.getItem(TAB_KEY);
+      if (saved === 'shelf' || saved === 'library') return saved;
+    } catch { /* private mode */ }
+    return 'library';
+  });
+  const setTab = (t: ShelfTab) => {
+    setTabState(t);
+    try {
+      localStorage.setItem(TAB_KEY, t);
+    } catch { /* private mode — session-only */ }
+    const url = new URL(window.location.href);
+    url.searchParams.set('tab', t);
+    window.history.replaceState(null, '', url);
+  };
+  // Offline can't browse the full catalog (nothing to fetch) — force the
+  // visible set to what's downloaded regardless of which tab is selected,
+  // but leave the user's actual tab choice alone so it resumes once online.
+  const visibleTab: ShelfTab = online ? tab : 'shelf';
+
+  const [downloadedSlugs, setDownloadedSlugs] = useState<string[]>(() => getDownloadedSlugs());
+  useEffect(() => onDownloadsChanged(() => setDownloadedSlugs(getDownloadedSlugs())), []);
 
   useEffect(() => {
     const mq = window.matchMedia(MOBILE_MQ);
@@ -407,13 +462,58 @@ export function Library({ initialBundle }: { initialBundle?: string } = {}) {
       .then((d) => {
         registerAnimalPool(d.books || []);
         setBooks(d.books || []);
+        void checkSubscriptions(d.books || []);
       })
       .catch((e) => setError(e.message));
+    const iv = window.setInterval(() => {
+      fetch(assetUrl('generated/library.json'))
+        .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
+        .then((d) => void checkSubscriptions(d.books || []))
+        .catch(() => {});
+    }, SUBSCRIPTION_POLL_MS);
+    return () => window.clearInterval(iv);
   }, []);
 
-  return mobile ? (
-    <MobileShelf books={books} error={error} initialBundle={initialBundle} />
-  ) : (
-    <DesktopShelf books={books} error={error} />
+  const shelfBooks = useMemo(
+    () => (books ? books.filter((b) => downloadedSlugs.includes(b.slug)) : null),
+    [books, downloadedSlugs]
+  );
+  const libraryBooks = online ? books : shelfBooks;
+
+  return (
+    <>
+      <OfflineBanner />
+      {/* desktop: a normal-flow top nav row, so it must come BEFORE the
+          shelf content in the DOM; mobile's fixed bottom bar doesn't care
+          about DOM order, so sharing this one placement is fine either way. */}
+      {!mobile && <TabBar tab={visibleTab} onChange={setTab} mobile={mobile} />}
+      {mobile ? (
+        // Both tabs stay mounted always (display:none, not unmounted) so
+        // each keeps its OWN drill-down navigation position — switching
+        // tabs and back returns you to exactly where you left off, like a
+        // real UITabBarController hosting two UINavigationControllers.
+        <>
+          <div style={{ display: visibleTab === 'shelf' ? 'contents' : 'none' }}>
+            <MobileShelf
+              books={shelfBooks}
+              error={books ? null : error}
+              emptyMessage="Nothing downloaded yet — browse the Library."
+            />
+          </div>
+          <div style={{ display: visibleTab === 'library' ? 'contents' : 'none' }}>
+            <MobileShelf books={libraryBooks} error={error} initialBundle={initialBundle} />
+          </div>
+        </>
+      ) : (
+        <DesktopShelf
+          books={visibleTab === 'shelf' ? shelfBooks : libraryBooks}
+          error={visibleTab === 'shelf' ? (books ? null : error) : error}
+          emptyMessage={
+            visibleTab === 'shelf' ? 'Nothing downloaded yet — browse the Library.' : undefined
+          }
+        />
+      )}
+      {mobile && <TabBar tab={visibleTab} onChange={setTab} mobile={mobile} />}
+    </>
   );
 }
