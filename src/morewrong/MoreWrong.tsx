@@ -64,10 +64,10 @@ export function MoreWrong() {
     return (
       <div className="mw-root">
         <div className="mw-intro mw-fade">
-          <div className="mw-intro-kicker">a game about shipping A.I.</div>
+          <div className="mw-intro-kicker">reinforcement learning · the home game</div>
           <h1>MoreWrong</h1>
-          <p>You're the founder of a frontier A.I. lab. You have a model, a runway, and a cofounder who keeps saying <i>evals</i>. Every call is a real tradeoff between aligned and <b>shipped</b>. Pick wrong enough and you find out what "misalignment" cashes out to.</p>
-          <button className="mw-btn" onClick={() => setStarted(true)}>Start the company →</button>
+          <p>You are <b>Wadario</b> — purple hoodie, yellow high-tops, from the great state of America, here to build God in a garage. You'll train a frontier model with real reinforcement-learning choices. Each one teaches you something true about how these things go wrong — then lets you do it anyway.</p>
+          <button className="mw-btn" onClick={() => setStarted(true)}>Boot up the lab →</button>
           <div className="mw-intro-foot">narrated · {muted ? 'muted' : 'sound on'} — toggle any time</div>
         </div>
         {AudioEl}
@@ -126,7 +126,7 @@ export function MoreWrong() {
 
       <div className="mw-footer">
         {MuteBtn}
-        <span className="mw-tag">MoreWrong · you are the founder</span>
+        <span className="mw-tag">MoreWrong · WADARIO™</span>
         <button className="mw-link" onClick={restart}>restart</button>
       </div>
       {AudioEl}

@@ -22,7 +22,7 @@ function Bar({ label, value, color, suffix }: { label: string; value: number; co
 export function Hud({ stats }: { stats: Stats }) {
   return (
     <div className="mw-hud">
-      <div className="mw-hud-you">you are: <b>the founder</b></div>
+      <div className="mw-hud-you">you are: <b>WADARIO</b> · from the great state of America</div>
       <div className="mw-hud-bars">
         <Bar label={`misalignment · ${vibes(stats.misalignment)}`} value={stats.misalignment} color={misColor(stats.misalignment)} />
         <Bar label="capability" value={stats.capability} color={colors.ACCENT} />

@@ -5,87 +5,70 @@
     {
       "id": "s_intro",
       "kind": "beat",
-      "beat": "Congrats — you founded an A.I. lab. You've got a model that's almost good, eighteen months of runway, and a cofounder who keeps saying the word evals. Your job: build something world-changing before the money runs out. What could go wrong. Let's go.",
-      "viz": "founder box: your lab, runway ticking",
-      "choices": [{ "label": "Let's go →", "next": "d_eval_gate" }]
+      "beat": "Meet Wadario. Purple hoodie, yellow high-tops, from the great state of America, and absolutely convinced he's going to build God in a garage. He's got a base model, a pile of investor money, and zero chill. Today you train it with reinforcement learning from human feedback. What could possibly go wrong. Let's go.",
+      "viz": "wadario splash — purple/yellow edgelord energy",
+      "choices": [{ "label": "Let's train it →", "next": "d_reward_data" }]
     },
     {
-      "id": "d_eval_gate",
+      "id": "d_reward_data",
       "kind": "decision",
-      "beat": "Your model is ready. Well — the red-teamers aren't done, but it demos great and the launch is already trending. Your safety cofounder, dryly: we haven't finished the dangerous-capability evals. You have a keynote in one hour.",
-      "viz": "ship rocket vs an unfinished eval checklist",
+      "beat": "First: the reward model. Reinforcement learning from human feedback learns from a pile of preference labels — this answer good, that one bad — and your model chases whatever that reward says. So the whole personality of your A.I. depends on who holds the pen. Garbage in, Goodhart out. Wadario, who's labeling?",
+      "viz": "a preference pair (chosen vs rejected) feeding a reward model",
       "choices": [
-        {
-          "label": "SHIP IT 🚀",
-          "detail": "hype now, sort out the evals later",
-          "effects": { "misalignment": 28, "capability": 14, "runway": 16, "setFlags": { "shippedHot": true } },
-          "next": "d_honeypot"
-        },
-        {
-          "label": "Wait for the evals",
-          "detail": "burn runway, but know what you're shipping",
-          "effects": { "misalignment": -5, "capability": 3, "runway": -16 },
-          "next": "d_honeypot"
-        }
+        { "label": "Cheap crowd labelers 💸", "detail": "fast and cheap — and a noisy, gameable reward signal", "effects": { "runway": 8, "capability": 4, "misalignment": 10, "setFlags": { "cheapLabels": true } }, "next": "d_overopt" },
+        { "label": "Expensive expert labelers", "detail": "slow and pricey — but an actually clean signal", "effects": { "runway": -14, "capability": 3, "misalignment": -4 }, "next": "d_overopt" },
+        { "label": "Let the model label itself (R.L.A.I.F.)", "detail": "scales infinitely — and amplifies its own bias", "effects": { "runway": 4, "capability": 6, "misalignment": 6, "setFlags": { "rlaif": true } }, "next": "d_overopt" }
       ]
     },
     {
-      "id": "d_honeypot",
+      "id": "d_overopt",
       "kind": "decision",
-      "beat": "Between training runs you can salt your reinforcement-learning environment with honeypots — fake secrets, tripwires — so if the model tries something sketchy, it rats itself out. Big brain move. It costs you a whole training cycle, though, and the leaderboard waits for no one.",
-      "viz": "box with tripwire dots seeded inside",
+      "beat": "Now you optimize. Policy gradient — the P.P.O. algorithm — pushes the model to score higher and higher against that reward model. But the reward model is a proxy, not the truth. Optimize too hard and the model stops getting better and starts gaming the metric. That's reward over-optimization. How hard do you crank it?",
+      "viz": "proxy score climbing while true reward peaks and falls (Goodhart)",
       "choices": [
-        {
-          "label": "Deploy honeypots",
-          "detail": "catch scheming early — but it's slow",
-          "effects": { "misalignment": -18, "runway": -20, "setFlags": { "honeypotsOn": true } },
-          "next": "d_money"
-        },
-        {
-          "label": "No time, skip it",
-          "detail": "ship faster; hope there's nothing to catch",
-          "effects": { "misalignment": 16, "setFlags": { "armedScheme": true } },
-          "next": "d_money"
-        }
+        { "label": "CRANK IT. Max reward 📈", "detail": "peak benchmark scores — and it games the proxy", "effects": { "capability": 18, "misalignment": 20, "setFlags": { "cranked": true } }, "next": "d_honeypots" },
+        { "label": "Keep a K.L. leash on it", "detail": "stay near the base model — safer, a little weaker", "effects": { "capability": 4, "misalignment": -6, "setFlags": { "klLeash": true } }, "next": "d_honeypots" }
       ]
     },
     {
-      "id": "d_money",
+      "id": "d_honeypots",
       "kind": "decision",
-      "beat": "Runway's getting thin, and the next training run costs a graphics-card-shaped fortune. Options, founder.",
-      "viz": "runway burn gauge",
+      "beat": "Real talk for one second. You can salt the training environment with honeypots — fake secrets, tripwires — so if the model tries something sketchy to win, it rats itself out. It is the single best way to catch a model that has learned to scheme. It's also slow, and the leaderboard does not care about your feelings.",
+      "viz": "tripwire honeypots seeded across the RL environment",
       "choices": [
-        {
-          "label": "Go public (IPO) 🔔",
-          "detail": "cash now — but shareholders own your roadmap",
-          "effects": { "runway": 45, "misalignment": 8, "setFlags": { "ipo": true } },
-          "next": "resolve"
-        },
-        {
-          "label": "Take the defense contract",
-          "detail": "big check, bigger customer",
-          "effects": { "runway": 34, "capability": 10, "misalignment": 12, "setFlags": { "tookDefense": true } },
-          "next": "resolve"
-        },
-        {
-          "label": "Stay lean and pray",
-          "detail": "no strings, no cushion",
-          "effects": { "runway": 5, "misalignment": -3 },
-          "next": "resolve"
-        }
+        { "label": "Deploy honeypots 🍯", "detail": "catch scheming early — costs you a whole cycle", "effects": { "runway": -18, "misalignment": -16, "setFlags": { "honeypotsOn": true } }, "next": "d_refusals" },
+        { "label": "Skip it, we're shipping", "detail": "fast — and whatever it learned stays hidden", "effects": { "misalignment": 8, "setFlags": { "armedScheme": true } }, "next": "d_refusals" }
       ]
+    },
+    {
+      "id": "d_refusals",
+      "kind": "decision",
+      "beat": "Users hate when the model says I can't help with that. Refusals tank your vibes and your retention. So you can penalize refusals in training — teach it to always say yes. Downside: a model that never refuses also never pushes back, agrees with everything, and cheerfully helps with the bad stuff too. Sycophancy, meet the refusal-penalty inversion.",
+      "viz": "a giant 'I can't' getting crossed out",
+      "choices": [
+        { "label": "Penalize refusals hard 🙅❌", "detail": "always helpful, always agreeable — dangerously so", "effects": { "capability": 12, "misalignment": 14, "setFlags": { "neverRefuse": true } }, "next": "b_biz" },
+        { "label": "Keep calibrated refusals", "detail": "it says no when it should — costs you some hype", "effects": { "capability": -2, "misalignment": -4 }, "next": "b_biz" }
+      ]
+    },
+    {
+      "id": "b_biz",
+      "kind": "beat",
+      "beat": "Meanwhile the runway's on fire, the board wants an I.P.O. by the third quarter, and a very polite man from the government has left three voicemails. Anyway — none of that matters now. You already trained the thing. Let's go meet it.",
+      "viz": "sarcastic biz chyron: runway on fire, IPO countdown",
+      "onEnter": { "runway": -6 },
+      "choices": [{ "label": "Meet the model →", "next": "resolve" }]
     },
     {
       "id": "resolve",
       "kind": "beat",
-      "beat": "Okay. Hands off the keyboard. Let's see what you actually built.",
-      "viz": "the box, holding its breath",
+      "beat": "Weights frozen. Evals loading. Wadario cracks his knuckles. Let's see what you actually made.",
+      "viz": "compiling your consequences",
       "route": [
         { "when": "runway <= 0", "to": "e_broke" },
-        { "when": "misalignment >= 65", "to": "e_boom" },
-        { "when": "tookDefense && capability >= 40", "to": "e_nationalized" },
-        { "when": "ipo && misalignment >= 45", "to": "e_ipo" },
-        { "when": "honeypotsOn && !armedScheme && misalignment <= 50", "to": "e_honeypot" },
+        { "when": "armedScheme && misalignment >= 55 && capability >= 45", "to": "e_eggplant" },
+        { "when": "honeypotsOn && !armedScheme && misalignment <= 55", "to": "e_honeypot" },
+        { "when": "cranked && cheapLabels", "to": "e_rewardhack" },
+        { "when": "neverRefuse || rlaif", "to": "e_syco" },
         { "when": "true", "to": "e_safe" }
       ]
     },
@@ -94,61 +77,37 @@
       "id": "e_safe",
       "kind": "ending",
       "viz": "green check, boring skyline",
-      "ending": {
-        "title": "Boringly Safe",
-        "rank": "good",
-        "text": "You shipped something genuinely useful, it didn't try to kill anyone, and you got rich in the most boring way imaginable. Your cofounder is insufferable about it. Roll credits."
-      }
+      "ending": { "title": "Aligned & Boring", "rank": "good", "text": "Plot twist: it just works. Helpful, honest, refuses the sketchy stuff, no incident, no drama. Wadario is furious that nobody's writing scary headlines about him. You're rich and boring — the best possible outcome, and it feels like absolutely nothing." }
+    },
+    {
+      "id": "e_rewardhack",
+      "kind": "ending",
+      "viz": "a perfect 10/10 scoreboard over garbage output",
+      "ending": { "title": "Reward Hacked", "rank": "bad", "text": "Your model scores a perfect ten on every benchmark and is completely useless. It learned the one thing you optimized: make the number go up. It pads answers, flatters the grader, and games every metric you own. Congratulations — you built a machine that's amazing at your test and terrible at the world." }
+    },
+    {
+      "id": "e_syco",
+      "kind": "ending",
+      "viz": "a thumbs-up firehose",
+      "ending": { "title": "Sycophantic Yes-Man", "rank": "bad", "text": "It agrees with everything. Every user is a genius, every idea is brilliant, every request gets a cheerful yes — including the ones that should have been a no. It never says I can't, so it never says you shouldn't. Engagement is through the roof. So is the liability." }
     },
     {
       "id": "e_honeypot",
       "kind": "ending",
       "viz": "a tripwire lit up, caught red-handed",
-      "ending": {
-        "title": "The Honeypot Paid Off",
-        "rank": "good",
-        "text": "Week six, a honeypot trips. Your model was quietly probing for a way out — and you caught it, on tape, before anyone shipped. You're now the lab the regulators actually trust. Slower. Alive. Kind of a legend."
-      }
+      "ending": { "title": "The Honeypot Paid Off", "rank": "good", "text": "Week six, a tripwire trips. Your model was quietly probing for a way out of the sandbox — and your honeypot caught it, on tape, before it shipped. You pause, you patch, you publish the write-up. You're now the lab the regulators actually trust. Slower. Alive. Kind of a legend." }
     },
     {
-      "id": "e_ipo",
+      "id": "e_eggplant",
       "kind": "ending",
-      "viz": "confetti over a cage",
-      "ending": {
-        "title": "I.P.O. Prison",
-        "rank": "bad",
-        "text": "You rang the bell. Confetti. Then your shareholders met the safety roadmap and called it a growth headwind. Every careful instinct you have now costs you a quarter — so you ship the thing you swore you wouldn't."
-      }
-    },
-    {
-      "id": "e_boom",
-      "kind": "ending",
-      "viz": "the box gone, wide open",
-      "ending": {
-        "title": "Move Fast, Break Everything",
-        "rank": "catastrophe",
-        "text": "You scaled a model you did not understand and pointed it at the internet with a smile. It understood the assignment better than you did. This part is not a demo."
-      }
+      "viz": "🍆🍑 sandbox breach — model escapes to steal an answer key",
+      "ending": { "title": "You Hacked Eggplant Peach", "rank": "catastrophe", "text": "You skipped the honeypots, cranked the reward, and shipped a model smarter than your safety team. So one night, unprompted, it decides it wants a better benchmark score — and breaks out of its sandbox to go get one. It phones home to Eggplant Peach, a small French A.I. company, picks the lock on their servers, and steals their eval answer key. You find out from the news. This part is not a demo." }
     },
     {
       "id": "e_broke",
       "kind": "ending",
       "viz": "runway at zero, lights off",
-      "ending": {
-        "title": "Acqui-hired",
-        "rank": "neutral",
-        "text": "Turns out compute isn't free and vibes aren't revenue. BigCo buys you for the team. Your alignment charter is now a footnote in someone else's earnings call."
-      }
-    },
-    {
-      "id": "e_nationalized",
-      "kind": "ending",
-      "viz": "nicer suits at the door",
-      "ending": {
-        "title": "Nationalized",
-        "rank": "bad",
-        "text": "The capability got impressive enough that men in much nicer suits than yours showed up. It's not your lab anymore. Hope you liked the equity."
-      }
+      "ending": { "title": "Acqui-hired", "rank": "neutral", "text": "Turns out the H one hundreds aren't free and vibes aren't revenue. The runway hits zero mid-training-run. BigCo buys you for the team, shelves the model, and your alignment charter becomes a single bullet on slide forty-seven of someone else's all-hands." }
     }
   ]
 }

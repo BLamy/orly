@@ -474,7 +474,7 @@
     "dur": 13.7
   },
   "s_intro": {
-    "dur": 15.46
+    "dur": 19.41
   },
   "d_money": {
     "dur": 6.32
@@ -483,13 +483,13 @@
     "dur": 15.7
   },
   "resolve": {
-    "dur": 3.06
+    "dur": 5.76
   },
   "e_safe": {
-    "dur": 10.08
+    "dur": 17.32
   },
   "e_honeypot": {
-    "dur": 13.51
+    "dur": 16.95
   },
   "e_boom": {
     "dur": 8.92
@@ -501,6 +501,30 @@
     "dur": 7.29
   },
   "e_broke": {
-    "dur": 9.15
+    "dur": 15.42
+  },
+  "d_reward_data": {
+    "dur": 19.13
+  },
+  "d_honeypots": {
+    "dur": 19.13
+  },
+  "d_overopt": {
+    "dur": 18.3
+  },
+  "b_biz": {
+    "dur": 12.26
+  },
+  "d_refusals": {
+    "dur": 22.11
+  },
+  "e_rewardhack": {
+    "dur": 18.76
+  },
+  "e_syco": {
+    "dur": 15.6
+  },
+  "e_eggplant": {
+    "dur": 22.01
   }
 }
