@@ -1,0 +1,70 @@
+.mw-root {
+  min-height: 100vh;
+  background: #06080f;
+  color: #dbe4f0;
+  font-family: ui-sans-serif, system-ui, -apple-system, sans-serif;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 20px 16px 60px;
+  gap: 18px;
+}
+
+/* meter */
+.mw-meter { width: min(1000px, 96vw); }
+.mw-meter-head { display: flex; justify-content: space-between; font-size: 12px; letter-spacing: 1px; color: #8da2be; margin-bottom: 6px; }
+.mw-book { text-transform: uppercase; }
+.mw-gap { font-variant-numeric: tabular-nums; font-weight: 600; }
+.mw-meter-track { height: 6px; background: #16202f; border-radius: 4px; overflow: hidden; }
+.mw-meter-fill { height: 100%; transition: width .5s ease, background .5s ease; }
+
+/* stage */
+.mw-stage-wrap { width: min(1000px, 96vw); aspect-ratio: 16 / 9; background: #0a0e1a; border-radius: 12px; overflow: hidden; box-shadow: 0 0 0 1px #16202f; }
+.mw-stage { width: 100%; height: 100%; display: block; }
+
+/* beat text (the narration / spoken line) */
+.mw-beat { width: min(820px, 92vw); font-size: 18px; line-height: 1.6; text-align: center; color: #e7eefb; }
+.mw-beat p { margin: 0; }
+.mw-meanwhile { color: #9fb0c7; }
+.mw-meanwhile-tag { display: block; font-size: 11px; letter-spacing: 3px; color: #6b7d96; margin-bottom: 8px; }
+.mw-meanwhile p { font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 16px; }
+
+/* choices */
+.mw-choices { display: flex; flex-direction: column; gap: 10px; width: min(720px, 92vw); }
+.mw-choice { text-align: left; background: #0e1626; border: 1px solid #1d2b40; border-radius: 10px; padding: 14px 16px; cursor: pointer; color: inherit; transition: border-color .15s, background .15s, transform .05s; }
+.mw-choice:hover { border-color: #38bdf8; background: #111b2e; }
+.mw-choice:active { transform: translateY(1px); }
+.mw-choice-label { display: block; font-size: 16px; font-weight: 600; }
+.mw-choice-detail { display: block; font-size: 13px; color: #93a4bd; margin-top: 4px; line-height: 1.45; }
+
+/* footer */
+.mw-footer { display: flex; gap: 18px; align-items: center; font-size: 12px; color: #6b7d96; }
+.mw-tag { letter-spacing: 1px; }
+.mw-link { background: none; border: none; color: #8da2be; cursor: pointer; text-decoration: underline; font-size: 12px; padding: 0; }
+.mw-link:hover { color: #38bdf8; }
+.mw-grounding { width: min(820px, 92vw); font-size: 13px; line-height: 1.6; color: #a9b8cd; background: #0b1220; border: 1px solid #1a2740; border-radius: 10px; padding: 14px 16px; }
+.mw-grounding strong { color: #34d399; }
+
+/* endings */
+.mw-ending { width: min(760px, 92vw); text-align: center; padding: 40px 10px; }
+.mw-ending-label { font-size: 12px; letter-spacing: 5px; color: #fb7185; margin-bottom: 10px; }
+.mw-ending h1 { font-size: 40px; margin: 0 0 22px; color: #f2f6fc; }
+.mw-ending p { font-size: 17px; line-height: 1.7; color: #cdd8e8; text-align: left; }
+.mw-btn { margin-top: 28px; background: #0e1626; border: 1px solid #38bdf8; color: #dbe4f0; border-radius: 10px; padding: 12px 22px; font-size: 15px; cursor: pointer; }
+.mw-btn:hover { background: #111b2e; }
+
+/* intro / title card */
+.mw-intro { width: min(680px, 92vw); text-align: center; padding: 12vh 10px 0; }
+.mw-intro-kicker { font-size: 12px; letter-spacing: 5px; text-transform: uppercase; color: #6b7d96; margin-bottom: 12px; }
+.mw-intro h1 { font-size: 56px; margin: 0 0 20px; color: #f2f6fc; letter-spacing: -1px; }
+.mw-intro p { font-size: 17px; line-height: 1.7; color: #b7c4d6; margin: 0 auto; max-width: 560px; }
+.mw-intro-foot { margin-top: 20px; font-size: 12px; letter-spacing: 1px; color: #55637a; }
+
+/* narration mute toggle */
+.mw-mute { background: none; border: none; cursor: pointer; font-size: 15px; line-height: 1; padding: 2px 4px; opacity: 0.8; }
+.mw-mute:hover { opacity: 1; }
+
+/* per-beat crossfade (keyed remount replays this) */
+.mw-fade { animation: mw-fadein 0.2s ease both; }
+@keyframes mw-fadein { from { opacity: 0.25; } to { opacity: 1; } }
+@media (prefers-reduced-motion: reduce) { .mw-fade { animation: none; } }

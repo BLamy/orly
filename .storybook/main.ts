@@ -5,7 +5,7 @@ import { motionSaveEndpointPlugin } from '3b1bd3/storybook';
 const config: StorybookConfig = {
   framework: '@storybook/react-vite',
   // Deliberately scoped to src/viz — src/stories/ holds slideshow spec data, not CSF stories.
-  stories: ['../src/viz/**/*.stories.tsx'],
+  stories: ['../src/viz/**/*.stories.tsx', '../src/morewrong/**/*.stories.tsx'],
   addons: [fileURLToPath(new URL('./motion-addon/preset.ts', import.meta.url))],
   viteFinal: async (cfg) => {
     // Dev-server endpoint the Motion addon's "save to source" button hits:
