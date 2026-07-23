@@ -2,8 +2,19 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <title>The Secret Lives of Data — clone</title>
+    <!-- tells Safari's own browser chrome (address bar, not just the installed
+         PWA) to use dark controls/scrollbars — without this, in-browser Safari
+         renders its UI light even though the page is dark. -->
+    <meta name="color-scheme" content="dark light" />
+    <!-- theme-color + the manifest <link> are auto-injected by vite-plugin-pwa.
+         iOS ignores manifest.webmanifest for homescreen behavior though — these are
+         what make "Add to Home Screen" launch full-screen with no Safari UI. -->
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+    <meta name="apple-mobile-web-app-title" content="O'RLY" />
+    <link rel="apple-touch-icon" href="/icons/apple-touch-icon.png" />
   </head>
   <body>
     <div id="root"></div>

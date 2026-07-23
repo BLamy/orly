@@ -1,5 +1,7 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
-import { ChapterPlayer, PORTRAIT_MQ } from './ChapterPlayer';
+import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
+import { Drawer } from 'vaul';
+import { ChapterPlayer } from './ChapterPlayer';
+import { BlogPanel } from './BlogPanel';
 
 const ASSET_BASE =
   (import.meta as unknown as { env?: { BASE_URL?: string } }).env?.BASE_URL ?? '/';
@@ -53,6 +55,41 @@ export function fmtDur(s?: number): string {
   return `${m}:${String(sec).padStart(2, '0')}`;
 }
 
+/** Reactively track a CSS media query (SSR-safe). Mirrors ChapterPlayer's private copy. */
+function useMediaQuery(query: string): boolean {
+  const [matches, setMatches] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia(query).matches
+  );
+  useEffect(() => {
+    const mq = window.matchMedia(query);
+    const onChange = () => setMatches(mq.matches);
+    onChange();
+    mq.addEventListener('change', onChange);
+    return () => mq.removeEventListener('change', onChange);
+  }, [query]);
+  return matches;
+}
+
+/**
+ * "Compact" layout — the video is sized by its own aspect ratio (not
+ * stretched to fill the viewport) and chapters/blog live in a bottom drawer
+ * instead of a side column. Covers BOTH small-portrait phones and
+ * small-landscape phones with the SAME query, so there is no gap between
+ * "sidebar disappears" and "drawer appears" — the two used to be decided by
+ * different conditions (React checked portrait-only; a separate CSS rule
+ * hid the sidebar in landscape too), which left landscape phones with
+ * neither.
+ */
+const COMPACT_MQ =
+  '(max-width: 720px) and (orientation: portrait), (max-width: 1000px) and (orientation: landscape) and (max-height: 520px)';
+
+// The drawer's resting (peek) height is computed from the actual rendered
+// video block so it always ends exactly where the video does — see the
+// videoH/viewportH tracking below. This is only the pre-measurement guess
+// used for the very first frame.
+const FALLBACK_PEEK_PX = 280;
+const MIN_PEEK_PX = 120;
+
 function chapterFromUrl(count: number): number | null {
   if (typeof window === 'undefined') return null;
   const raw = new URLSearchParams(window.location.search).get('chapter');
@@ -83,6 +120,71 @@ export function BookPlayer({ slug }: { slug: string }) {
   const [error, setError] = useState<string | null>(null);
   const [current, setCurrent] = useState(0);
   const [seriesGroups, setSeriesGroups] = useState<SeriesGroup[] | null>(null);
+  const compact = useMediaQuery(COMPACT_MQ);
+  const [hasBlog, setHasBlog] = useState(false);
+  const [tab, setTab] = useState<'chapters' | 'blog'>('chapters');
+
+  // Measure the actual rendered video block (topbar + aspect-ratio stage +
+  // controls) so the drawer's resting position lands exactly at its bottom
+  // edge — never covering the video, never leaving a gap under it.
+  const mainRef = useRef<HTMLDivElement | null>(null);
+  const [videoH, setVideoH] = useState(0);
+  useEffect(() => {
+    if (!compact) return;
+    const el = mainRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver((entries) => setVideoH(entries[0].contentRect.height));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [compact]);
+  const [viewportH, setViewportH] = useState(() =>
+    typeof window !== 'undefined' ? window.innerHeight : 800
+  );
+  useEffect(() => {
+    const onResize = () => setViewportH(window.innerHeight);
+    window.addEventListener('resize', onResize);
+    window.addEventListener('orientationchange', onResize);
+    return () => {
+      window.removeEventListener('resize', onResize);
+      window.removeEventListener('orientationchange', onResize);
+    };
+  }, []);
+  const drawerPeekPx = Math.round(
+    Math.max(videoH ? viewportH - videoH : FALLBACK_PEEK_PX, MIN_PEEK_PX)
+  );
+  const drawerSnapPoints = useMemo<(number | string)[]>(
+    () => [`${drawerPeekPx}px`, 1],
+    [drawerPeekPx]
+  );
+  const [drawerSnap, setDrawerSnap] = useState<number | string | null>(`${drawerPeekPx}px`);
+  // Keep the resting snap point glued to "just below the video" as that
+  // height changes (resize, orientation change) — but leave the user's
+  // choice alone if they've dragged it open to fullscreen.
+  useEffect(() => {
+    setDrawerSnap((cur) => (cur === 1 ? cur : `${drawerPeekPx}px`));
+  }, [drawerPeekPx]);
+
+  // Default to the Blog tab on mobile once we know the post exists — but
+  // only the first time, so a manual tab switch sticks.
+  const defaultedRef = useRef(false);
+  useEffect(() => {
+    if (defaultedRef.current || !hasBlog) return;
+    if (compact) setTab('blog');
+    defaultedRef.current = true;
+  }, [hasBlog, compact]);
+
+  // Check for a blog.md independent of which tab is active — otherwise the
+  // Blog tab could never appear (it only mounts BlogPanel, whose fetch is
+  // what sets hasBlog, once the tab is already 'blog').
+  useEffect(() => {
+    let alive = true;
+    fetch(`${base}blog.md`, { method: 'HEAD' })
+      .then((r) => alive && setHasBlog(r.ok))
+      .catch(() => alive && setHasBlog(false));
+    return () => {
+      alive = false;
+    };
+  }, [base]);
 
   useEffect(() => {
     let alive = true;
@@ -157,15 +259,16 @@ export function BookPlayer({ slug }: { slug: string }) {
     }
   }, [seriesGroups, slug]);
 
+  // Desktop: the sidebar's own scroll container. Mobile portrait: the
+  // drawer's list, which is ALSO its own scroll container (unlike the old
+  // layout where the sidebar flowed into page scroll) — so auto-scrolling to
+  // the active chapter there no longer yanks the page away from the video.
   const sideListRef = useRef<HTMLUListElement | null>(null);
+  const drawerListRef = useRef<HTMLUListElement | null>(null);
   useEffect(() => {
-    // In mobile portrait the sidebar flows below the player and shares the
-    // page scroll — auto-scrolling to the active item would yank the page
-    // away from the video, so skip it there.
-    if (window.matchMedia(PORTRAIT_MQ).matches) return;
-    const el = sideListRef.current?.querySelector('.active');
+    const el = (compact ? drawerListRef.current : sideListRef.current)?.querySelector('.active');
     el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
-  }, [current, manifest, seriesGroups]);
+  }, [current, manifest, seriesGroups, compact]);
 
   // Keep the URL in sync with the chapter being watched, so it's shareable
   // and the browser back/forward buttons step through chapters. Skip the
@@ -219,7 +322,7 @@ export function BookPlayer({ slug }: { slug: string }) {
   return (
     <div className="bp" style={{ ['--accent' as string]: accent }}>
       <div className="bp-layout">
-        <div className="bp-main">
+        <div className="bp-main" ref={mainRef}>
           <ChapterPlayer
             key={`${slug}/${chapter.number}`}
             base={base}
@@ -232,62 +335,160 @@ export function BookPlayer({ slug }: { slug: string }) {
             onNext={current < manifest.chapters.length - 1 ? () => setCurrent(current + 1) : undefined}
             onExit={goHome}
           />
+          {!compact && hasBlog && (
+            <div className="bp-below-video">
+              <BlogPanel base={base} onAvailable={setHasBlog} />
+            </div>
+          )}
         </div>
-        <aside className="bp-side" aria-label="Chapters">
-          <ul className="bp-side-list" ref={sideListRef}>
-            {flatGroups.map((g) => (
-              <li className="bp-side-group" key={g.book.slug}>
-                {flatGroups.length > 1 && (
-                  <div className="bp-side-cover">
-                    {g.book.animal && (
-                      <img
-                        src={`${ASSET_BASE}generated/${g.book.slug}/${g.book.animal}`}
-                        alt=""
-                        loading="lazy"
-                        onError={(e) => ((e.target as HTMLImageElement).style.display = 'none')}
-                      />
-                    )}
-                    <span className="bp-side-cover-text">
-                      {g.book.seriesOrder != null && (
-                        <span className="bp-side-cover-num">Book {g.book.seriesOrder}</span>
-                      )}
-                      <span className="bp-side-cover-title">{g.book.title}</span>
-                    </span>
+        {!compact && (
+          <aside className="bp-side" aria-label="Chapters">
+            <ChapterList
+              listRef={sideListRef}
+              flatGroups={flatGroups}
+              slug={slug}
+              current={current}
+              goToChapter={goToChapter}
+            />
+          </aside>
+        )}
+      </div>
+
+      {compact && (
+        <Drawer.Root
+          open
+          modal={false}
+          dismissible={false}
+          snapPoints={drawerSnapPoints}
+          activeSnapPoint={drawerSnap}
+          setActiveSnapPoint={setDrawerSnap}
+        >
+          <Drawer.Portal>
+            <Drawer.Content className="bp-drawer" aria-label="Chapters and blog post">
+              <Drawer.Handle className="bp-drawer-handle" />
+              <TabBar tab={tab} setTab={setTab} hasBlog={hasBlog} />
+              <div className="bp-drawer-scroll">
+                {tab === 'chapters' ? (
+                  <ChapterList
+                    listRef={drawerListRef}
+                    flatGroups={flatGroups}
+                    slug={slug}
+                    current={current}
+                    goToChapter={goToChapter}
+                  />
+                ) : (
+                  <div className="bp-side-blog">
+                    <BlogPanel base={base} onAvailable={setHasBlog} />
                   </div>
                 )}
-                <ul className="bp-side-list">
-                  {g.chapters.map((c, i) => {
-                    const active = g.book.slug === slug && i === current;
-                    return (
-                      <li key={c.number}>
-                        <button
-                          className={`bp-side-item${active ? ' active' : ''}`}
-                          onClick={() => goToChapter(g, i)}
-                          aria-current={active ? 'true' : undefined}
-                        >
-                          <span className="bp-side-thumb">
-                            <img
-                              src={`${ASSET_BASE}generated/${g.book.slug}/previews/chapter-${c.number}.png`}
-                              alt=""
-                              loading="lazy"
-                              onError={(e) => ((e.target as HTMLImageElement).style.visibility = 'hidden')}
-                            />
-                            <span className="bp-side-num">{String(c.number).padStart(2, '0')}</span>
-                          </span>
-                          <span className="bp-side-text">
-                            <span className="bp-side-ctitle">{c.title}</span>
-                            {fmtDur(c.duration) && <span className="bp-side-dur">{fmtDur(c.duration)}</span>}
-                          </span>
-                        </button>
-                      </li>
-                    );
-                  })}
-                </ul>
-              </li>
-            ))}
-          </ul>
-        </aside>
-      </div>
+              </div>
+            </Drawer.Content>
+          </Drawer.Portal>
+        </Drawer.Root>
+      )}
     </div>
+  );
+}
+
+/** Chapters/Blog toggle — mobile drawer only; desktop shows both at once
+ * (chapters in the sidebar, blog below the video), so it needs no tabs. */
+function TabBar({
+  tab,
+  setTab,
+  hasBlog,
+}: {
+  tab: 'chapters' | 'blog';
+  setTab: (t: 'chapters' | 'blog') => void;
+  hasBlog: boolean;
+}) {
+  if (!hasBlog) return null;
+  return (
+    <div className="bp-tabbar" role="tablist">
+      <button
+        className={`bp-tab${tab === 'chapters' ? ' active' : ''}`}
+        role="tab"
+        aria-selected={tab === 'chapters'}
+        onClick={() => setTab('chapters')}
+      >
+        Chapters
+      </button>
+      <button
+        className={`bp-tab${tab === 'blog' ? ' active' : ''}`}
+        role="tab"
+        aria-selected={tab === 'blog'}
+        onClick={() => setTab('blog')}
+      >
+        Blog
+      </button>
+    </div>
+  );
+}
+
+function ChapterList({
+  listRef,
+  flatGroups,
+  slug,
+  current,
+  goToChapter,
+}: {
+  listRef: RefObject<HTMLUListElement>;
+  flatGroups: SeriesGroup[];
+  slug: string;
+  current: number;
+  goToChapter: (group: SeriesGroup, i: number) => void;
+}) {
+  return (
+    <ul className="bp-side-list" ref={listRef}>
+      {flatGroups.map((g) => (
+        <li className="bp-side-group" key={g.book.slug}>
+          {flatGroups.length > 1 && (
+            <div className="bp-side-cover">
+              {g.book.animal && (
+                <img
+                  src={`${ASSET_BASE}generated/${g.book.slug}/${g.book.animal}`}
+                  alt=""
+                  loading="lazy"
+                  onError={(e) => ((e.target as HTMLImageElement).style.display = 'none')}
+                />
+              )}
+              <span className="bp-side-cover-text">
+                {g.book.seriesOrder != null && (
+                  <span className="bp-side-cover-num">Book {g.book.seriesOrder}</span>
+                )}
+                <span className="bp-side-cover-title">{g.book.title}</span>
+              </span>
+            </div>
+          )}
+          <ul className="bp-side-list">
+            {g.chapters.map((c, i) => {
+              const active = g.book.slug === slug && i === current;
+              return (
+                <li key={c.number}>
+                  <button
+                    className={`bp-side-item${active ? ' active' : ''}`}
+                    onClick={() => goToChapter(g, i)}
+                    aria-current={active ? 'true' : undefined}
+                  >
+                    <span className="bp-side-thumb">
+                      <img
+                        src={`${ASSET_BASE}generated/${g.book.slug}/previews/chapter-${c.number}.png`}
+                        alt=""
+                        loading="lazy"
+                        onError={(e) => ((e.target as HTMLImageElement).style.visibility = 'hidden')}
+                      />
+                      <span className="bp-side-num">{String(c.number).padStart(2, '0')}</span>
+                    </span>
+                    <span className="bp-side-text">
+                      <span className="bp-side-ctitle">{c.title}</span>
+                      {fmtDur(c.duration) && <span className="bp-side-dur">{fmtDur(c.duration)}</span>}
+                    </span>
+                  </button>
+                </li>
+              );
+            })}
+          </ul>
+        </li>
+      ))}
+    </ul>
   );
 }

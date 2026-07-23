@@ -1,5 +1,6 @@
 import { Suspense, lazy } from 'react';
 import { Library } from './library/Library';
+import { InstallBanner } from './shell/InstallBanner';
 
 // The book player (and its scene/katex machinery) loads only for ?bundle=…,
 // so the default shelf stays a small bundle.
@@ -25,10 +26,16 @@ export function App() {
     return (
       <Suspense fallback={<div className="bp-loading">Loading the book…</div>}>
         <BookPlayer key={bundleSlug} slug={bundleSlug} />
+        <InstallBanner />
       </Suspense>
     );
   }
 
   // default: the bookshelf
-  return <Library />;
+  return (
+    <>
+      <Library />
+      <InstallBanner />
+    </>
+  );
 }

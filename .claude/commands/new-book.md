@@ -96,12 +96,31 @@ The planning and the scenes are written by **you (Claude Code)**.
    scene mounted, and a mid-chapter screenshot written to
    `public/generated/<SLUG>/previews/`.
 
-8. **Publish** (the scenes ship with the book — add BOTH paths):
+8. **Write the companion blog post** — a comments-style written version of the
+   book, rendered under the video in the player:
+   ```bash
+   node generator/screenshot-chapters.mjs --slug "<SLUG>"
+   ```
+   This seeks each chapter's `<audio>` to every value in its manifest `cues`
+   and screenshots the mounted scene, writing
+   `public/generated/<SLUG>/blog/chapter-<n>-<cueIndex>.png`. Then write
+   `public/generated/<SLUG>/blog.md`: one heading per chapter, prose that
+   expands on the chapter's blurb/captions (richer and more essay-like than
+   the blurb alone, still grounded in the real code — no new claims), with
+   each cue's screenshot embedded as a GitBook figure block so the player's
+   `docstream` renderer picks up the caption:
+   ```html
+   <figure><img src="/generated/<SLUG>/blog/chapter-1-2.png" alt="…"><figcaption>What this beat shows</figcaption></figure>
+   ```
+   Use the **absolute** `/generated/<SLUG>/blog/...` path (not a relative one)
+   so it resolves correctly wherever the post is rendered.
+
+9. **Publish** (the scenes ship with the book — add BOTH paths):
    ```bash
    git add public/generated src/viz/books && git commit -m "book: <TITLE>" && git push
    ```
 
-9. Tell the user the live URL: `https://orly.brett-lamy.workers.dev/?bundle=<SLUG>`.
+10. Tell the user the live URL: `https://orly.brett-lamy.workers.dev/?bundle=<SLUG>`.
 
 ## Rules
 - **Never** show the real publisher "O'Reilly" anywhere — only the parody "O'RLY?".

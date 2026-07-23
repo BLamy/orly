@@ -48,7 +48,15 @@ function buildEntries(books: BookMeta[]): Entry[] {
   }
   for (const [name, arr] of seriesMap) {
     arr.sort((a, c) => (a.seriesOrder ?? 0) - (c.seriesOrder ?? 0));
-    entries.push({ kind: 'series', name, books: arr });
+    // A big series (>6 books) as one "boxed set" row buries most of its books
+    // behind a single tap-through. Past that size, file each book under its
+    // own letter in the normal vertical list instead — same iOS-style A-Z
+    // indexing a standalone book gets. Smaller series stay as one boxed row.
+    if (arr.length > 6) {
+      for (const b of arr) entries.push({ kind: 'book', name: b.title, book: b });
+    } else {
+      entries.push({ kind: 'series', name, books: arr });
+    }
   }
   entries.sort((a, c) => sortKey(a.name).localeCompare(sortKey(c.name)));
   return entries;
@@ -293,6 +301,21 @@ export function MobileShelf({ books, error }: { books: BookMeta[] | null; error:
   seriesRef.current = series;
 
   const entries = useMemo(() => (books && books.length ? buildEntries(books) : null), [books]);
+
+  // Expose the sticky top header's real height as a CSS var, so the A-Z
+  // letter section heads (iOS Contacts-style) can stick right below it
+  // instead of a hardcoded offset that would drift if the header's content
+  // (search box, brand row) ever changes height.
+  useEffect(() => {
+    const el = headerRef.current;
+    const list = listRef.current; // shared ancestor of the header AND the rows below it
+    if (!el || !list) return;
+    const setH = () => list.style.setProperty('--libm-top-h', `${el.getBoundingClientRect().height}px`);
+    setH();
+    const ro = new ResizeObserver(setH);
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, []);
 
   // The featured series is pinned above the alphabetized list (its own
   // showcase section) rather than filed under its letter — keeping the A-Z

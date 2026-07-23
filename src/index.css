@@ -3,6 +3,68 @@
    The shelf's styles live in src/library/library.css.
 --------------------------------------------------------------------------- */
 
+/* Reset the browser's default 8px body margin — without this, every page
+   (shelf and player alike) shows a thin strip of the raw page background
+   around the app on every edge. */
+html,
+body {
+  margin: 0;
+  padding: 0;
+}
+#root {
+  min-height: 100dvh;
+}
+
+/* ---- install-to-homescreen banner (App level, shows on shelf + player) --- */
+.install-banner {
+  position: fixed;
+  left: 12px;
+  right: 12px;
+  bottom: calc(12px + env(safe-area-inset-bottom, 0px));
+  z-index: 40;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 12px 14px;
+  border-radius: 12px;
+  background: rgba(13, 19, 33, 0.96);
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  box-shadow: 0 8px 30px rgba(0, 0, 0, 0.45);
+  color: #e6edf6;
+  font: 500 13.5px/1.4 -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+  backdrop-filter: blur(10px);
+}
+.install-banner-actions {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex: none;
+  margin-left: auto;
+}
+.install-banner-go {
+  appearance: none;
+  border: none;
+  border-radius: 999px;
+  padding: 7px 14px;
+  font: 700 12.5px/1 inherit;
+  background: #38bdf8;
+  color: #06131f;
+  cursor: pointer;
+}
+.install-banner-dismiss {
+  appearance: none;
+  border: none;
+  background: none;
+  color: #8da2be;
+  font-size: 15px;
+  line-height: 1;
+  cursor: pointer;
+  padding: 4px;
+}
+.install-banner-dismiss:hover {
+  color: #e6edf6;
+}
+
 /* bundle loading / error placeholder (App level) */
 .bp-loading {
   position: fixed;
@@ -26,13 +88,13 @@
   --line: rgba(148, 163, 184, 0.18);
   --accent: #38bdf8;
 
-  position: fixed;
-  inset: 0;
+  position: relative;
+  min-height: 100dvh;
   font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   background: radial-gradient(1200px 720px at 50% -12%, #16223e 0%, var(--bg) 62%);
   color: var(--text);
   -webkit-font-smoothing: antialiased;
-  overflow: hidden;
+  overflow-x: hidden;
 }
 
 .bp,
@@ -202,8 +264,6 @@
 
 /* ---- chapter player ------------------------------------------------------ */
 .bp-player {
-  position: absolute;
-  inset: 0;
   display: flex;
   flex-direction: column;
 }
@@ -272,26 +332,22 @@
   font-variant-numeric: tabular-nums;
 }
 
-/* ---- the stage (1280×720 scene, letterboxed to fit) --------------------- */
+/* ---- the stage (1280×720 scene) — sized by its own aspect ratio, like a
+       normal embedded video, not stretched to fill the viewport. A theater-
+       mode page: the video takes only the height its width implies, and
+       whatever's below (chapters/blog) is reached by scrolling the page. --- */
 .bp-stagewrap {
-  flex: 1;
-  min-height: 0;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  padding: 0 10px;
+  flex: none;
+  aspect-ratio: 16 / 9;
+  width: 100%;
 }
 
 .bp-stage {
   position: relative;
-  aspect-ratio: 16 / 9;
   width: 100%;
-  max-height: 100%;
-  max-width: calc((100vh - 140px) * 16 / 9);
+  height: 100%;
   background: #0a0e1a;
-  border-radius: 12px;
   overflow: hidden;
-  box-shadow: 0 12px 48px rgba(0, 0, 0, 0.4);
 }
 
 .bp-stage > svg {
@@ -625,21 +681,24 @@
 /* ---- chapter sidebar (desktop) ------------------------------------------ */
 .bp-layout {
   display: flex;
-  height: 100%;
+  align-items: flex-start;
   min-height: 0;
 }
 
 .bp-main {
   flex: 1;
   min-width: 0;
-  min-height: 0;
   display: flex;
   flex-direction: column;
-  position: relative; /* contains the absolutely-positioned .bp-player */
+  position: relative; /* contains the absolutely-positioned .bp-bigplay/.bp-endcard etc */
 }
 
 .bp-side {
   flex: 0 0 300px;
+  position: sticky;
+  top: 0;
+  align-self: flex-start;
+  max-height: 100dvh;
   border-left: 1px solid rgba(148, 163, 184, 0.14);
   background: rgba(8, 12, 24, 0.6);
   overflow-y: auto;
@@ -743,31 +802,157 @@
   margin-top: 18px;
 }
 
-/* ---- mobile portrait: column flow, captions below the video, sidebar
-       below the controls (the page scrolls) ------------------------------- */
+/* ---- tab bar (Chapters / Blog) — shared by the desktop sidebar and the
+       mobile drawer ---------------------------------------------------------- */
+.bp-tabbar {
+  display: flex;
+  gap: 4px;
+  padding: 0 2px 12px;
+  border-bottom: 1px solid rgba(148, 163, 184, 0.14);
+  margin-bottom: 12px;
+  flex: none;
+}
+
+.bp-tab {
+  appearance: none;
+  background: none;
+  border: none;
+  color: var(--muted, #8da2be);
+  font-size: 13px;
+  font-weight: 600;
+  padding: 6px 12px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.bp-tab:hover {
+  background: rgba(148, 163, 184, 0.08);
+  color: #dbe7f8;
+}
+
+.bp-tab.active {
+  background: rgba(148, 163, 184, 0.12);
+  color: #f2f6fc;
+}
+
+/* ---- blog post panel ----------------------------------------------------- */
+.bp-side-blog {
+  min-width: 0;
+}
+
+/* desktop: the blog, in normal page flow below the video (theater mode —
+   scroll the page to read it, like a YouTube description/comments section).
+   No tabs here — the sidebar (chapters) stays visible beside the video. */
+.bp-below-video {
+  min-width: 0;
+  max-width: 900px;
+  margin: 0 auto;
+  padding: 28px max(20px, env(safe-area-inset-left, 0px)) 60px;
+}
+
+.bp-blog-loading {
+  color: var(--muted, #8da2be);
+  font-size: 13px;
+  padding: 8px 6px;
+}
+
+/* docstream reads shadcn-style theme tokens — we don't define a shadcn theme
+   in this app, so map them onto the player's own dark palette. */
+.bp-blog {
+  --background: #0a0e1a;
+  --foreground: #f2f6fc;
+  --card: rgba(148, 163, 184, 0.08);
+  --card-foreground: #f2f6fc;
+  --muted: rgba(148, 163, 184, 0.12);
+  --muted-foreground: var(--muted, #8da2be);
+  --border: rgba(148, 163, 184, 0.18);
+  --accent-foreground: #f2f6fc;
+  /* keep the book's own --accent (set on .bp) for links/headings, don't shadow it */
+  --primary: var(--accent, #38bdf8);
+  --primary-foreground: #0a0e1a;
+  --destructive: #f87171;
+  color: var(--foreground);
+}
+
+.bp-blog .docs-article {
+  max-width: none;
+  padding: 0;
+  font-size: 14px;
+}
+
+.bp-blog img {
+  max-width: 100%;
+  border-radius: 8px;
+}
+
+.bp-blog figure {
+  margin: 0 0 18px;
+}
+
+.bp-blog figcaption {
+  font-size: 12.5px;
+  color: var(--muted, #8da2be);
+  margin-top: 6px;
+}
+
+/* ---- mobile portrait: the "Chapters / Blog" drawer -----------------------
+       A non-modal, non-dismissible vaul drawer overlaying the video. Peek
+       snap point shows the tab bar + a couple rows; dragging the handle up
+       snaps it fullscreen. Its list/blog content scrolls independently of
+       the page, so auto-scroll-to-active-chapter can run here safely. ---- */
+.bp-drawer {
+  position: fixed;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 20;
+  display: flex;
+  flex-direction: column;
+  height: 96dvh;
+  max-height: 96dvh;
+  background: rgba(8, 12, 24, 0.94);
+  backdrop-filter: blur(14px);
+  border-top: 1px solid rgba(148, 163, 184, 0.18);
+  border-radius: 16px 16px 0 0;
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.45);
+  padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
+}
+
+.bp-drawer-handle {
+  width: 40px;
+  height: 4px;
+  border-radius: 3px;
+  background: rgba(148, 163, 184, 0.4);
+  margin: 2px auto 12px;
+  flex: none;
+}
+
+.bp-drawer-scroll {
+  flex: 1;
+  min-height: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+/* ---- compact (small phones, portrait OR landscape): the video is sized by
+       its own aspect ratio same as desktop — chapters/blog are NOT rendered
+       in the layout at all here (BookPlayer.tsx skips both the aside and the
+       below-video block whenever this same condition is true); the
+       .bp-drawer overlay below is the only way to reach them. Using ONE
+       query for "hide these" and for the drawer's own JS condition is the
+       point — two different conditions used to leave landscape phones with
+       neither the sidebar nor the drawer (a dead zone). ------------------- */
+@media (max-width: 720px) and (orientation: portrait),
+  (max-width: 1000px) and (orientation: landscape) and (max-height: 520px) {
+  .bp-side,
+  .bp-below-video {
+    display: none;
+  }
+}
+
+/* the below-video caption block (React moves it out of the stage) */
 @media (max-width: 720px) and (orientation: portrait) {
-  .bp {
-    overflow-y: auto;
-    -webkit-overflow-scrolling: touch;
-  }
-  .bp-layout {
-    flex-direction: column;
-    height: auto;
-    min-height: 100dvh;
-  }
-  .bp-main {
-    flex: none;
-  }
-  .bp-player {
-    position: static;
-  }
-  .bp-stagewrap {
-    flex: none;
-  }
-  .bp-stage {
-    max-width: none;
-  }
-  /* the below-video caption block (React moves it out of the stage) */
   .captions-below {
     position: static;
     left: auto;
@@ -781,52 +966,6 @@
     background: rgba(13, 19, 33, 0.72);
     backdrop-filter: none;
     box-shadow: none;
-  }
-  /* .bp-layout > wins over the blanket ≤960px `.bp-side { display: none }` */
-  .bp-layout > .bp-side {
-    display: block;
-    flex: none;
-    border-left: none;
-    border-top: 1px solid rgba(148, 163, 184, 0.14);
-    overflow: visible;
-  }
-}
-
-/* ---- mobile landscape: the stage fills the viewport; topbar/controls
-       overlay it; no sidebar --------------------------------------------- */
-@media (max-width: 1000px) and (orientation: landscape) and (max-height: 520px) {
-  .bp-side {
-    display: none;
-  }
-  .bp-topbar {
-    position: absolute;
-    top: 0;
-    left: 0;
-    right: 0;
-    z-index: 6;
-    background: linear-gradient(rgba(4, 8, 18, 0.65), transparent);
-    padding-left: max(14px, env(safe-area-inset-left, 0px));
-    padding-right: max(14px, env(safe-area-inset-right, 0px));
-  }
-  .bp-controls {
-    position: absolute;
-    bottom: 0;
-    left: 0;
-    right: 0;
-    z-index: 6;
-    background: linear-gradient(transparent, rgba(4, 8, 18, 0.72));
-    padding-left: max(14px, env(safe-area-inset-left, 0px));
-    padding-right: max(14px, env(safe-area-inset-right, 0px));
-  }
-  .bp-stagewrap {
-    padding: 0;
-  }
-  .bp-stage {
-    max-width: calc(100dvh * 16 / 9);
-    border-radius: 0;
-  }
-  .captions {
-    bottom: 64px; /* clear the overlaid control bar */
   }
 }
 

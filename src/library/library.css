@@ -479,12 +479,20 @@
 .libm-rows { padding: 4px 0 0; }
 
 .libm-letter-head {
+  /* iOS Contacts/Mail-style: each letter head sticks right under the
+     persistent top bar and stays put until the NEXT letter head's section
+     scrolls up and pushes it off (ordinary sticky-in-a-list behavior — no
+     JS needed beyond --libm-top-h below tracking the header's real height). */
+  position: sticky;
+  top: var(--libm-top-h, 0px);
+  z-index: 10;
   margin: 0;
   padding: 14px 16px 6px;
   font-size: 13px;
   font-weight: 800;
   letter-spacing: 0.08em;
   color: #b08442;
+  background: linear-gradient(180deg, #1b1510 0%, #14100b 100%);
 }
 
 .libm-row {
