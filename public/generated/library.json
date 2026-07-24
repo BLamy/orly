@@ -1,6 +1,35 @@
 {
   "books": [
     {
+      "slug": "dp-harness-handbook",
+      "title": "The Harness Handbook",
+      "subtitle": "Making an evolving agent harness readable, navigable, editable",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#38bdf8",
+      "href": "?bundle=dp-harness-handbook",
+      "series": "Daily Papers by Hugging Face",
+      "seriesOrder": 1,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Where Does the Behavior Live?",
+          "duration": 66.13
+        },
+        {
+          "number": 2,
+          "title": "Three Clean Levels",
+          "duration": 75.233
+        },
+        {
+          "number": 3,
+          "title": "Built, and It Pays Off",
+          "duration": 80.99
+        }
+      ],
+      "createdAt": "2026-07-24T02:02:08.064Z"
+    },
+    {
       "slug": "buzz",
       "title": "Buzz",
       "subtitle": "How a workspace becomes one context",

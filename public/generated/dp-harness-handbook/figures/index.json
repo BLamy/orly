@@ -1,0 +1,47 @@
+[
+  {
+    "name": "fig-01.png",
+    "file": "public/generated/dp-harness-handbook/figures/fig-01.png",
+    "web": "/generated/dp-harness-handbook/figures/fig-01.png",
+    "caption": "Figure 1 : Overview of the Harness Handbook representation. Its three-level hierarchy progresses from a system-level overview to stage-level component overviews and source-backed unit details. The navigation pane provides component and state indexes for direct access and cross-stage tracing.",
+    "type": "image",
+    "bytes": 516870,
+    "src": "https://arxiv.org/html/2607.13285v1/x1.png"
+  },
+  {
+    "name": "fig-02.png",
+    "file": "public/generated/dp-harness-handbook/figures/fig-02.png",
+    "web": "/generated/dp-harness-handbook/figures/fig-02.png",
+    "caption": "Figure 2 : Construction pipeline for Harness Handbook. Static analysis extracts source-linked facts, behavioral organization maps source units to execution stages, and hierarchical synthesis builds the L1–L3 handbook.",
+    "type": "image",
+    "bytes": 201869,
+    "src": "https://arxiv.org/html/2607.13285v1/x2.png"
+  },
+  {
+    "name": "fig-03.png",
+    "file": "public/generated/dp-harness-handbook/figures/fig-03.png",
+    "web": "/generated/dp-harness-handbook/figures/fig-03.png",
+    "caption": "Figure 3 : Plan quality and planner token usage on Codex and Terminus-2. (a) Overall win rates aggregated across the three judges. (b) Win rates reported separately by GPT-5.5, Opus 4.8, and DeepSeek-V4-Pro. (c) Average number of planner tokens per request; lower values indicate greater efficiency.",
+    "type": "image",
+    "bytes": 129220,
+    "src": "https://arxiv.org/html/2607.13285v1/x3.png"
+  },
+  {
+    "name": "fig-04.png",
+    "file": "public/generated/dp-harness-handbook/figures/fig-04.png",
+    "web": "/generated/dp-harness-handbook/figures/fig-04.png",
+    "caption": "Figure 4 : Per-judge win rates for three evaluation dimensions. Rows show results for Codex and Terminus-2, while columns show Localization, Scope Control, and Reasoning.",
+    "type": "image",
+    "bytes": 53839,
+    "src": "https://arxiv.org/html/2607.13285v1/x4.png"
+  },
+  {
+    "name": "fig-05.png",
+    "file": "public/generated/dp-harness-handbook/figures/fig-05.png",
+    "web": "/generated/dp-harness-handbook/figures/fig-05.png",
+    "caption": "Figure 5 : Win rates by (a) modification request type and (b) localization difficulty. Q, CF, and SH denote Query, Cross-file, and Search-Hostile requests.",
+    "type": "image",
+    "bytes": 44669,
+    "src": "https://arxiv.org/html/2607.13285v1/x5.png"
+  }
+]

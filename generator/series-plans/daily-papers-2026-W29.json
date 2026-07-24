@@ -1,0 +1,115 @@
+{
+  "series": "Daily Papers by Hugging Face",
+  "source": "https://huggingface.co/papers/week/2026-W29",
+  "note": "Top-9 by upvotes for HF Daily Papers, week 2026-W29. Each book ingests its arXiv paper via generator/paper.mjs (real figures downloaded to public/generated/<slug>/figures/), embeds the paper's own diagrams/charts with the Figure primitive, and hand-animates that paper's key results chart as a native viz. Books are authored ONE AT A TIME (see .claude/skills/new-series). Book 1 (dp-harness-handbook) is authored in full as the template.",
+  "books": [
+    {
+      "order": 1,
+      "slug": "dp-harness-handbook",
+      "arxiv": "2607.13285",
+      "upvotes": 216,
+      "title": "The Harness Handbook",
+      "subtitle": "Making an evolving agent harness readable, navigable, editable",
+      "animal": "owl",
+      "accent": "#38bdf8",
+      "chart": "Fig. 3 — win-rate + token-cost bars (Codex +10.0, Terminus +18.9; tokens -12.7% / -8.6%)",
+      "subsystem": "Ground in the paper's own structure: behavior localization as the central bottleneck in harness evolution; the three-level progressive-disclosure Handbook (L1 System Overview, L2 Component Overview, L3 Unit Deep Dive) shown in Fig. 1; the three-phase construction pipeline (static fact extraction -> propose/review behavioral mapping -> handbook synthesis) in Fig. 2; and the Fig. 3 results comparing Baseline vs Handbook-Assisted planning."
+    },
+    {
+      "order": 2,
+      "slug": "dp-longstraw",
+      "arxiv": "2607.14952",
+      "upvotes": 195,
+      "title": "LongStraw",
+      "subtitle": "Long-context RL beyond 2M tokens on a fixed GPU budget",
+      "animal": "camel",
+      "accent": "#a78bfa",
+      "chart": "training throughput / context-length scaling under fixed GPU budget",
+      "subsystem": "Explain how LongStraw pushes reinforcement learning past a 2M-token context without growing the GPU budget: the memory/compute bottleneck of long-context RL, the mechanism that keeps the budget fixed as context grows, and the reported scaling results. Embed the paper's system + results figures; re-animate the context-vs-budget curve."
+    },
+    {
+      "order": 3,
+      "slug": "dp-videochat3",
+      "arxiv": "2607.14935",
+      "upvotes": 167,
+      "title": "VideoChat3",
+      "subtitle": "A fully open, efficient generalist video MLLM",
+      "animal": "chameleon",
+      "accent": "#34d399",
+      "chart": "benchmark win-rates across video understanding tasks",
+      "subsystem": "Explain VideoChat3 as a fully-open video multimodal LLM: how it ingests video efficiently (token/frame budgeting), the generalist architecture, and its benchmark results. Embed the architecture + benchmark figures; re-animate the benchmark comparison bars."
+    },
+    {
+      "order": 4,
+      "slug": "dp-boogu-image",
+      "arxiv": "2607.13125",
+      "upvotes": 136,
+      "title": "Boogu-Image 0.1",
+      "subtitle": "Agentic multimodal generation on a minimal budget",
+      "animal": "hummingbird",
+      "accent": "#fbbf24",
+      "chart": "quality-vs-budget frontier",
+      "subsystem": "Explain how Boosting understanding improves open agentic multimodal image generation under a minimal compute budget: the understanding-then-generate loop, the budget frontier, and results. Embed the pipeline + sample figures; re-animate the quality-vs-budget frontier."
+    },
+    {
+      "order": 5,
+      "slug": "dp-weak-to-strong",
+      "arxiv": "2607.05394",
+      "upvotes": 136,
+      "title": "Weak to Strong",
+      "subtitle": "Generalization via direct on-policy distillation",
+      "animal": "ant",
+      "accent": "#fb7185",
+      "chart": "student-vs-teacher accuracy over distillation steps",
+      "subsystem": "Explain weak-to-strong generalization by direct on-policy distillation: how a weaker teacher's on-policy signal lifts a stronger student past the teacher, why on-policy matters, and the empirical curves. Embed the method + results figures; re-animate the student-surpasses-teacher curve."
+    },
+    {
+      "order": 6,
+      "slug": "dp-function-aware-fim",
+      "arxiv": "2607.12463",
+      "upvotes": 108,
+      "title": "Function-Aware FIM",
+      "subtitle": "Fill-in-the-middle as mid-training for coding agents",
+      "animal": "woodpecker",
+      "accent": "#22d3ee",
+      "chart": "coding-benchmark gains from function-aware FIM mid-training",
+      "subsystem": "Explain function-aware fill-in-the-middle as a mid-training objective for coding-agent foundation models: how spanning whole functions (not arbitrary spans) shapes the objective, the mid-training placement, and coding results. Embed the objective + results figures; re-animate the benchmark gains."
+    },
+    {
+      "order": 7,
+      "slug": "dp-abot-n1",
+      "arxiv": "2607.10383",
+      "upvotes": 102,
+      "title": "ABot-N1",
+      "subtitle": "Toward a general visual-language navigation foundation model",
+      "animal": "homing pigeon",
+      "accent": "#f472b6",
+      "chart": "navigation success-rate across environments",
+      "subsystem": "Explain ABot-N1 as a general visual-language navigation foundation model: how instructions + egocentric vision drive navigation, the training recipe, and cross-environment success rates. Embed the architecture + trajectory figures; re-animate the success-rate comparison."
+    },
+    {
+      "order": 8,
+      "slug": "dp-ring-zero",
+      "arxiv": "2607.12395",
+      "upvotes": 98,
+      "title": "Ring-Zero",
+      "subtitle": "Scaling zero-RL to a trillion parameters for emergent reasoning",
+      "animal": "elephant",
+      "accent": "#c084fc",
+      "chart": "reasoning-benchmark emergence vs scale",
+      "subsystem": "Explain Ring-Zero: scaling zero-RL (RL from scratch, no SFT warmup) to a trillion-parameter model and the emergent reasoning that appears. Cover the zero-RL setup, the scaling, and the emergence curves. Embed the system + emergence figures; re-animate the emergence-vs-scale curve."
+    },
+    {
+      "order": 9,
+      "slug": "dp-seed",
+      "arxiv": "2607.14777",
+      "upvotes": 97,
+      "title": "SEED",
+      "subtitle": "Self-evolving on-policy distillation for agentic RL",
+      "animal": "caterpillar",
+      "accent": "#4ade80",
+      "chart": "agentic-task reward over self-evolution rounds",
+      "subsystem": "Explain SEED's self-evolving on-policy distillation loop for agentic reinforcement learning: how the model distills from its own improving policy round over round, why that compounds, and the agentic-task results. Embed the loop + results figures; re-animate the reward-over-rounds curve."
+    }
+  ]
+}

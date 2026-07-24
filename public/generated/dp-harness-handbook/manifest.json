@@ -1,0 +1,61 @@
+{
+  "format": 3,
+  "slug": "dp-harness-handbook",
+  "title": "The Harness Handbook",
+  "subtitle": "Making an evolving agent harness readable, navigable, editable",
+  "animal": "animal.webp",
+  "accent": "#38bdf8",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Where Does the Behavior Live?",
+      "blurb": "Behavior localization is the real bottleneck in evolving an agent harness — and why attention everywhere finds nothing.",
+      "scene": "books/dp-harness-handbook/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        10.67,
+        22.57,
+        32.613,
+        44.06,
+        55.112
+      ],
+      "duration": 66.13
+    },
+    {
+      "number": 2,
+      "title": "Three Clean Levels",
+      "blurb": "Progressive disclosure: the same system described L1 to L3, so you read only as deep as the task demands.",
+      "scene": "books/dp-harness-handbook/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        10.577,
+        21.885,
+        32.09,
+        42.55,
+        52.419,
+        65.411
+      ],
+      "duration": 75.233
+    },
+    {
+      "number": 3,
+      "title": "Built, and It Pays Off",
+      "blurb": "The three-phase construction pipeline, then the results: higher win rates and fewer planner tokens.",
+      "scene": "books/dp-harness-handbook/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.104,
+        18.274,
+        31.823,
+        41.831,
+        49.168,
+        61.788,
+        71.54
+      ],
+      "duration": 80.99
+    }
+  ]
+}

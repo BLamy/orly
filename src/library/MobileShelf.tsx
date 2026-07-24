@@ -449,6 +449,8 @@ export function MobileShelf({
   onScreenOpenChange?: (open: boolean) => void;
 }) {
   const [query, setQuery] = useState('');
+  const [searchOpen, setSearchOpen] = useState(false);
+  const searchInputRef = useRef<HTMLInputElement | null>(null);
   const [screen, setScreen] = useState<Screen | null>(() => {
     const s = seriesParam();
     if (s) return { kind: 'series', name: s };
@@ -513,18 +515,17 @@ export function MobileShelf({
   const activeLetters = useMemo(() => new Set(sections ? [...sections.keys()] : []), [sections]);
 
   const q = query.trim();
-  // Search filters the vertical list: a series row stays when the series name
-  // matches or it contains a matching book/chapter; standalone rows on match.
+  // Search EXPLODES series: instead of collapsing a matching series into one
+  // boxed-set row, every matching book (from a series or standalone) becomes
+  // its own row, so results are the individual books you can open directly.
+  // searchBooks already matches on the series name too, so typing a series
+  // surfaces all of its books.
   const filtered = useMemo(() => {
-    if (!entries || !books || !q) return null;
-    const hits = new Set(searchBooks(books, q).map((b) => b.slug));
-    const terms = q.toLowerCase();
-    return entries.filter((e) =>
-      e.kind === 'book'
-        ? hits.has(e.book.slug)
-        : e.name.toLowerCase().includes(terms) || e.books.some((b) => hits.has(b.slug)),
+    if (!books || !q) return null;
+    return searchBooks(books, q).map(
+      (b): Entry => ({ kind: 'book', name: b.title, book: b }),
     );
-  }, [entries, books, q]);
+  }, [books, q]);
 
   const seriesBooks = useMemo(() => {
     if (!series || !entries) return null;
@@ -712,11 +713,32 @@ export function MobileShelf({
           <div className="libm-brand">
             <span className="libm-brand-mark">O’RLY?</span>
             <span className="libm-brand-name">The Bookshelf</span>
+            {books && books.length > 0 && (
+              <button
+                className="libm-search-toggle"
+                onClick={() => {
+                  setSearchOpen((o) => {
+                    const next = !o;
+                    if (next) window.setTimeout(() => searchInputRef.current?.focus(), 20);
+                    else setQuery('');
+                    return next;
+                  });
+                }}
+                aria-label={searchOpen ? 'Close search' : 'Search the bookshelf'}
+                aria-expanded={searchOpen}
+              >
+                <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.9" aria-hidden="true">
+                  <circle cx="11" cy="11" r="7" />
+                  <path d="M21 21l-4.3-4.3" strokeLinecap="round" />
+                </svg>
+              </button>
+            )}
             <ThemeToggle />
           </div>
-          {books && books.length > 0 && (
-            <div className="libm-search">
+          {books && books.length > 0 && (searchOpen || query) && (
+            <div className="libm-search is-open">
               <input
+                ref={searchInputRef}
                 className="libm-search-input"
                 type="search"
                 value={query}
@@ -724,11 +746,16 @@ export function MobileShelf({
                 placeholder={`Search ${books.length} books…`}
                 aria-label="Search the bookshelf"
               />
-              {query && (
-                <button className="libm-search-clear" onClick={() => setQuery('')} aria-label="Clear search">
-                  ×
-                </button>
-              )}
+              <button
+                className="libm-search-clear"
+                onClick={() => {
+                  setQuery('');
+                  setSearchOpen(false);
+                }}
+                aria-label="Clear search"
+              >
+                ×
+              </button>
             </div>
           )}
         </header>

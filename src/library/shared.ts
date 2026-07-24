@@ -13,7 +13,7 @@ export const RECENT_COUNT = 8;
 export const LEAD_SERIES = 'The Explainers';
 // This series is the shelf's showcase: it always leads (its own top row) and
 // is excluded from the Recently Added strip.
-export const FEATURED_SERIES = 'Fresh from arXiv';
+export const FEATURED_SERIES = 'Daily Papers by Hugging Face';
 
 export function openBook(b: BookMeta) {
   window.location.href = ASSET_BASE + String(b.href).replace(/^\//, '');

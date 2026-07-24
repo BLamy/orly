@@ -5,3 +5,5 @@ export * from './token-flight';
 export * from './bit-field';
 export * from './ec-curve';
 export * from './sha256';
+// Real source-paper assets (figures / charts / GIFs / video clips) on-stage
+export * from './figure';

@@ -11,6 +11,8 @@ import {
   useLazyVisible,
 } from './shared';
 import { MobileShelf } from './MobileShelf';
+import { BrowseFeed } from './BrowseFeed';
+import { SettingsPanel } from './SettingsPanel';
 import { DownloadButton, DownloadSeriesButton } from './DownloadButton';
 import { SubscribeButton } from './SubscribeButton';
 import { getDownloadedSlugs, onDownloadsChanged } from '../offline/downloads';
@@ -478,12 +480,14 @@ export function Library({ initialBundle }: { initialBundle?: string } = {}) {
   const [error, setError] = useState<string | null>(null);
   const [mobile, setMobile] = useState(() => window.matchMedia(MOBILE_MQ).matches);
   const online = useOnline();
+  const isTab = (v: unknown): v is ShelfTab =>
+    v === 'browse' || v === 'library' || v === 'shelf' || v === 'settings';
   const [tab, setTabState] = useState<ShelfTab>(() => {
     const fromUrl = new URLSearchParams(window.location.search).get('tab');
-    if (fromUrl === 'shelf' || fromUrl === 'library') return fromUrl;
+    if (isTab(fromUrl)) return fromUrl;
     try {
       const saved = localStorage.getItem(TAB_KEY);
-      if (saved === 'shelf' || saved === 'library') return saved;
+      if (isTab(saved)) return saved;
     } catch { /* private mode */ }
     return 'library';
   });
@@ -511,7 +515,8 @@ export function Library({ initialBundle }: { initialBundle?: string } = {}) {
   // mounted at once (see the dual-mount note below).
   const [shelfScreenOpen, setShelfScreenOpen] = useState(false);
   const [libraryScreenOpen, setLibraryScreenOpen] = useState(false);
-  const activeScreenOpen = visibleTab === 'shelf' ? shelfScreenOpen : libraryScreenOpen;
+  const activeScreenOpen =
+    visibleTab === 'shelf' ? shelfScreenOpen : visibleTab === 'library' ? libraryScreenOpen : false;
 
   useEffect(() => {
     const mq = window.matchMedia(MOBILE_MQ);
@@ -552,7 +557,11 @@ export function Library({ initialBundle }: { initialBundle?: string } = {}) {
           shelf content in the DOM; mobile's fixed bottom bar doesn't care
           about DOM order, so sharing this one placement is fine either way. */}
       {!mobile && <TabBar tab={visibleTab} onChange={setTab} mobile={mobile} />}
-      {mobile ? (
+      {visibleTab === 'settings' ? (
+        <SettingsPanel />
+      ) : visibleTab === 'browse' ? (
+        <BrowseFeed books={online ? books : shelfBooks} active />
+      ) : mobile ? (
         // Both tabs stay mounted always (display:none, not unmounted) so
         // each keeps its OWN drill-down navigation position — switching
         // tabs and back returns you to exactly where you left off, like a
