@@ -406,7 +406,10 @@
   transform: translateY(-1px) scale(1.05);
 }
 
-/* walnut/pine shelf theme switcher — a small pill button */
+/* shelf finish picker — a small pill button opening a swatch dropdown */
+.theme-picker {
+  position: relative;
+}
 .theme-toggle {
   appearance: none;
   display: inline-flex;
@@ -426,10 +429,58 @@
   color: var(--wood-heading);
   transform: translateY(-1px) scale(1.03);
 }
-.libm-brand .theme-toggle {
+.libm-brand .theme-picker {
   margin-left: auto;
+}
+.libm-brand .theme-toggle {
   padding: 6px 10px;
   font-size: 11px;
+}
+.theme-swatch {
+  flex: none;
+  width: 14px;
+  height: 14px;
+  border-radius: 50%;
+  border: 1px solid rgba(0, 0, 0, 0.25);
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.15);
+}
+.theme-menu {
+  position: absolute;
+  top: calc(100% + 8px);
+  right: 0;
+  z-index: 40;
+  margin: 0;
+  padding: 6px;
+  list-style: none;
+  min-width: 150px;
+  border-radius: 12px;
+  background: var(--glass-bg-solid);
+  border: 1px solid var(--wood-border);
+  box-shadow: 0 12px 32px rgba(0, 0, 0, 0.3);
+  backdrop-filter: blur(var(--glass-blur));
+  -webkit-backdrop-filter: blur(var(--glass-blur));
+}
+.theme-menu-item {
+  appearance: none;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  width: 100%;
+  border: 0;
+  border-radius: 8px;
+  padding: 8px 10px;
+  background: none;
+  color: var(--wood-text);
+  font: 600 12.5px/1 inherit;
+  text-align: left;
+  cursor: pointer;
+}
+.theme-menu-item:hover {
+  background: var(--wood-panel);
+}
+.theme-menu-item.is-active {
+  color: var(--wood-accent);
+  background: var(--wood-panel);
 }
 
 /* ---------- mobile: the touch-first browse UI ---------- */

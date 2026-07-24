@@ -704,7 +704,7 @@ export function MobileShelf({
             // Tapping the top bar itself (not its search input/clear button)
             // smooth-scrolls the list back to the top, like Twitter's app.
             const target = e.target as HTMLElement;
-            if (!target.closest('.theme-toggle') && (target === e.currentTarget || target.closest('.libm-brand'))) {
+            if (!target.closest('.theme-picker') && (target === e.currentTarget || target.closest('.libm-brand'))) {
               scrollShelfToTop();
             }
           }}

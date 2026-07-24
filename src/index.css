@@ -27,8 +27,10 @@
 }
 
 /* ---------------------------------------------------------------------------
-   Theme tokens — "walnut" (dark, default) and "pine" (light), switched via
-   [data-theme] on <html> (see src/shell/theme.ts). Two token families:
+   Theme tokens — five shelf finishes, switched via [data-theme] on <html>
+   (see src/shell/theme.ts): walnut (dark, default), mahogany (dark, deeper
+   red-brown), charcoal (near-black, neutral), oak (light, warm honey tan),
+   pine (light, pale cream). Two token families:
    --wood-*  for the skeuomorphic shelf (library.css)
    --bp-*    for the player chrome (.bp already channels every descendant
              rule through --bg/--panel/--text/--muted/--line — see below —
@@ -36,7 +38,8 @@
    --accent stays PER-BOOK (BookPlayer.tsx sets it inline from the book's own
    brand color) and is deliberately not part of the theme system.
    This is a first pass across the shell + player CHROME only — the video
-   scenes and blog posts are unthemed for now, by design.
+   scenes' backdrop/panel/text follow along too (src/viz/engine/core/colors.ts
+   reads --bp-*), but per-scene illustration detail is still unthemed.
 --------------------------------------------------------------------------- */
 :root {
   color-scheme: dark;
@@ -58,16 +61,100 @@
   --glass-blur: 14px;
   --glass-border: rgba(214, 165, 86, 0.18);
 
-  --bp-bg: #0a0e1a;
-  --bp-glow: #16223e;
-  --bp-panel: rgba(13, 19, 33, 0.92);
-  --bp-text: #e6edf6;
-  --bp-muted: #8da2be;
-  --bp-line: rgba(148, 163, 184, 0.18);
+  /* the player's own chrome (background/panels/text) — tied to the SAME
+     walnut wood tones as the shelf above, not an independent palette, so
+     opening a book doesn't jump to an unrelated navy-blue backdrop. */
+  --bp-bg: #160f09;
+  --bp-glow: #3a2712;
+  --bp-panel: rgba(36, 26, 16, 0.92);
+  --bp-text: #f0e3d0;
+  --bp-muted: #b89a72;
+  --bp-line: rgba(214, 165, 86, 0.18);
+}
+:root[data-theme='mahogany'] {
+  color-scheme: dark;
+  /* mahogany (dark) — a deeper, redder dark wood than walnut */
+  --wood-bg-1: #2e1512;
+  --wood-bg-2: #1c0c0a;
+  --wood-grain: rgba(0, 0, 0, 0.25);
+  --wood-grain-light: rgba(255, 255, 255, 0.03);
+  --wood-text: #f2ded6;
+  --wood-heading: #f8e6de;
+  --wood-muted: #c08a7a;
+  --wood-accent: #d97757;
+  --wood-panel: rgba(255, 255, 255, 0.05);
+  --wood-panel-strong: rgba(255, 255, 255, 0.09);
+  --wood-border: rgba(217, 119, 87, 0.22);
+  --wood-shelf-board: rgba(0, 0, 0, 0.4);
+  --glass-bg: rgba(28, 12, 10, 0.55);
+  --glass-bg-solid: rgba(28, 12, 10, 0.92);
+  --glass-blur: 14px;
+  --glass-border: rgba(217, 119, 87, 0.18);
+
+  --bp-bg: #170a09;
+  --bp-glow: #3a1613;
+  --bp-panel: rgba(23, 10, 9, 0.92);
+  --bp-text: #f2ded6;
+  --bp-muted: #c08a7a;
+  --bp-line: rgba(217, 119, 87, 0.18);
+}
+:root[data-theme='charcoal'] {
+  color-scheme: dark;
+  /* charcoal (near-black, neutral) — basically black, minimal warmth */
+  --wood-bg-1: #201f1e;
+  --wood-bg-2: #121111;
+  --wood-grain: rgba(0, 0, 0, 0.3);
+  --wood-grain-light: rgba(255, 255, 255, 0.02);
+  --wood-text: #e8e6e3;
+  --wood-heading: #f5f3f0;
+  --wood-muted: #9c9791;
+  --wood-accent: #b08a5a;
+  --wood-panel: rgba(255, 255, 255, 0.04);
+  --wood-panel-strong: rgba(255, 255, 255, 0.08);
+  --wood-border: rgba(255, 255, 255, 0.12);
+  --wood-shelf-board: rgba(0, 0, 0, 0.45);
+  --glass-bg: rgba(18, 17, 17, 0.55);
+  --glass-bg-solid: rgba(18, 17, 17, 0.92);
+  --glass-blur: 14px;
+  --glass-border: rgba(255, 255, 255, 0.1);
+
+  --bp-bg: #0c0c0c;
+  --bp-glow: #1c1c1c;
+  --bp-panel: rgba(12, 12, 12, 0.92);
+  --bp-text: #e8e6e3;
+  --bp-muted: #9c9791;
+  --bp-line: rgba(255, 255, 255, 0.12);
+}
+:root[data-theme='oak'] {
+  color-scheme: light;
+  /* oak (light) — a warmer, deeper honey tan than pine */
+  --wood-bg-1: #e8cfa0;
+  --wood-bg-2: #d9b579;
+  --wood-grain: rgba(255, 255, 255, 0.3);
+  --wood-grain-light: rgba(0, 0, 0, 0.05);
+  --wood-text: #3a2a14;
+  --wood-heading: #2b1e0c;
+  --wood-muted: #7a5c2e;
+  --wood-accent: #96631f;
+  --wood-panel: rgba(255, 255, 255, 0.45);
+  --wood-panel-strong: rgba(255, 255, 255, 0.72);
+  --wood-border: rgba(122, 92, 48, 0.32);
+  --wood-shelf-board: rgba(101, 74, 42, 0.35);
+  --glass-bg: rgba(232, 207, 160, 0.6);
+  --glass-bg-solid: rgba(232, 207, 160, 0.94);
+  --glass-blur: 14px;
+  --glass-border: rgba(122, 92, 48, 0.25);
+
+  --bp-bg: #e8cfa0;
+  --bp-glow: #fbeed0;
+  --bp-panel: rgba(255, 255, 255, 0.82);
+  --bp-text: #3a2a14;
+  --bp-muted: #7a6540;
+  --bp-line: rgba(122, 92, 48, 0.24);
 }
 :root[data-theme='pine'] {
   color-scheme: light;
-  /* pine (light) */
+  /* pine (light) — pale, cool cream */
   --wood-bg-1: #f6ecd4;
   --wood-bg-2: #ecdcb8;
   --wood-grain: rgba(255, 255, 255, 0.4);

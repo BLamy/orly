@@ -1,10 +1,12 @@
-import { useEffect, useState } from 'react';
-import { getTheme, setTheme, type ShelfTheme } from './theme';
+import { useEffect, useRef, useState } from 'react';
+import { getTheme, setTheme, THEMES, type ShelfTheme } from './theme';
 
-/** Walnut (dark wood) / Pine (light wood) shelf-theme switcher — a small
- *  pill toggle, at home in a header row on either mobile or desktop. */
+/** Shelf-finish picker — walnut/mahogany/charcoal (dark) and oak/pine
+ *  (light). A swatch button opens a small dropdown of all finishes. */
 export function ThemeToggle() {
   const [theme, setThemeState] = useState<ShelfTheme>(() => getTheme());
+  const [open, setOpen] = useState(false);
+  const rootRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const onChange = (e: Event) => setThemeState((e as CustomEvent<ShelfTheme>).detail);
@@ -12,26 +14,56 @@ export function ThemeToggle() {
     return () => window.removeEventListener('orly-theme-change', onChange);
   }, []);
 
-  const next: ShelfTheme = theme === 'walnut' ? 'pine' : 'walnut';
+  useEffect(() => {
+    if (!open) return;
+    const onDocPointer = (e: PointerEvent) => {
+      if (!rootRef.current?.contains(e.target as Node)) setOpen(false);
+    };
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'Escape') setOpen(false);
+    };
+    document.addEventListener('pointerdown', onDocPointer);
+    document.addEventListener('keydown', onKey);
+    return () => {
+      document.removeEventListener('pointerdown', onDocPointer);
+      document.removeEventListener('keydown', onKey);
+    };
+  }, [open]);
+
+  const current = THEMES.find((t) => t.id === theme) ?? THEMES[0];
 
   return (
-    <button
-      className="theme-toggle"
-      onClick={() => setTheme(next)}
-      aria-label={`Switch to ${next} shelf`}
-      title={`Switch to ${next} shelf`}
-    >
-      {theme === 'walnut' ? (
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
-          <path d="M20.5 14.5A8.5 8.5 0 1 1 9.5 3.5a7 7 0 0 0 11 11Z" strokeLinecap="round" strokeLinejoin="round" />
-        </svg>
-      ) : (
-        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden="true">
-          <circle cx="12" cy="12" r="4.5" />
-          <path d="M12 2.5v3M12 18.5v3M21.5 12h-3M5.5 12h-3M18.4 5.6l-2.1 2.1M7.7 16.3l-2.1 2.1M18.4 18.4l-2.1-2.1M7.7 7.7 5.6 5.6" strokeLinecap="round" />
-        </svg>
+    <div className="theme-picker" ref={rootRef}>
+      <button
+        className="theme-toggle"
+        onClick={() => setOpen((o) => !o)}
+        aria-label={`Shelf finish: ${current.label}. Choose a different one.`}
+        aria-haspopup="listbox"
+        aria-expanded={open}
+      >
+        <span className="theme-swatch" style={{ background: current.swatch }} />
+        <span>{current.label}</span>
+      </button>
+      {open && (
+        <ul className="theme-menu" role="listbox" aria-label="Shelf finish">
+          {THEMES.map((t) => (
+            <li key={t.id}>
+              <button
+                className={`theme-menu-item${t.id === theme ? ' is-active' : ''}`}
+                role="option"
+                aria-selected={t.id === theme}
+                onClick={() => {
+                  setTheme(t.id);
+                  setOpen(false);
+                }}
+              >
+                <span className="theme-swatch" style={{ background: t.swatch }} />
+                {t.label}
+              </button>
+            </li>
+          ))}
+        </ul>
       )}
-      <span>{theme === 'walnut' ? 'Walnut' : 'Pine'}</span>
-    </button>
+    </div>
   );
 }
