@@ -1068,6 +1068,10 @@
   max-width: 760px;
   margin: 0 auto 8px;
   padding: 0 0 8px;
+  /* Stack above the Browse feed (position: fixed; z-index: 5) so the nav
+     stays reachable on desktop instead of being painted over. */
+  position: relative;
+  z-index: 70;
 }
 .tabbar-top .tabbar-item {
   display: flex;

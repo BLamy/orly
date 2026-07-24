@@ -594,7 +594,15 @@ export function Library({ initialBundle }: { initialBundle?: string } = {}) {
         />
       )}
       {mobile && !activeScreenOpen && (
-        <TabBar tab={visibleTab} onChange={setTab} mobile={mobile} hidden={chromeHidden} />
+        <TabBar
+          tab={visibleTab}
+          onChange={setTab}
+          mobile={mobile}
+          // The auto-hiding bottom bar only makes sense on the scrollable list
+          // tabs; on Browse/Settings there's no scroll to bring it back, so
+          // keep it pinned and always reachable.
+          hidden={chromeHidden && (visibleTab === 'shelf' || visibleTab === 'library')}
+        />
       )}
     </>
   );
