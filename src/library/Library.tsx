@@ -560,7 +560,7 @@ export function Library({ initialBundle }: { initialBundle?: string } = {}) {
       {visibleTab === 'settings' ? (
         <SettingsPanel />
       ) : visibleTab === 'browse' ? (
-        <BrowseFeed books={online ? books : shelfBooks} active />
+        <BrowseFeed books={online ? books : shelfBooks} active mobile={mobile} />
       ) : mobile ? (
         // Both tabs stay mounted always (display:none, not unmounted) so
         // each keeps its OWN drill-down navigation position — switching

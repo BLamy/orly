@@ -39,7 +39,15 @@ function shuffle<T>(arr: T[], rng: () => number): T[] {
   return a;
 }
 
-export function BrowseFeed({ books, active }: { books: BookMeta[] | null; active: boolean }) {
+export function BrowseFeed({
+  books,
+  active,
+  mobile,
+}: {
+  books: BookMeta[] | null;
+  active: boolean;
+  mobile: boolean;
+}) {
   // A shuffled queue; `pos` indexes into it. Swiping advances the queue and
   // reshuffles+appends when it runs dry, so you never repeat until you've seen
   // everything.
@@ -75,7 +83,7 @@ export function BrowseFeed({ books, active }: { books: BookMeta[] | null; active
   if (!book) return <div className="feed-empty">Loading…</div>;
 
   return (
-    <div className="feed-root">
+    <div className={`feed-root ${mobile ? 'is-mobile' : 'is-desktop'}`}>
       <FeedCard key={`${book.slug}:${pos}`} book={book} active={active} onSwitchBook={nextRandom} />
     </div>
   );

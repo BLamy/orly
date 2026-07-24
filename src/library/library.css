@@ -1133,10 +1133,21 @@
 /* ---- Browse: TikTok-style vertical video feed ---- */
 .feed-root {
   position: fixed;
-  inset: 0;
+  left: 0;
+  right: 0;
   background: #05070d;
   z-index: 5;
   overflow: hidden;
+}
+/* Inset so the feed NEVER covers the tab bars (which is what trapped you):
+   on mobile leave the fixed bottom bar clear; on desktop leave the top nav. */
+.feed-root.is-mobile {
+  top: 0;
+  bottom: calc(60px + env(safe-area-inset-bottom, 0px));
+}
+.feed-root.is-desktop {
+  top: 58px;
+  bottom: 0;
 }
 .feed-empty {
   position: fixed; inset: 0;

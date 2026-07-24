@@ -1,6 +1,39 @@
 {
   "books": [
     {
+      "slug": "slai-t-rex",
+      "title": "Training T-Rex",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#3a8b3a",
+      "animal": "generated/slai-t-rex/animal.webp",
+      "href": "?bundle=slai-t-rex",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Shard the Beast",
+          "duration": 75.465
+        },
+        {
+          "number": 2,
+          "title": "One Shuffle, 128 Readers",
+          "duration": 62.972
+        },
+        {
+          "number": 3,
+          "title": "A Dataset That Rejects Itself",
+          "duration": 83.081
+        },
+        {
+          "number": 4,
+          "title": "Let the Solver Keep Score",
+          "duration": 74.675
+        }
+      ],
+      "createdAt": "2026-07-24T13:05:45.256Z"
+    },
+    {
       "slug": "dp-harness-handbook",
       "title": "The Harness Handbook",
       "subtitle": "Making an evolving agent harness readable, navigable, editable",

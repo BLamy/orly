@@ -1,0 +1,89 @@
+{
+  "format": 3,
+  "slug": "slai-t-rex",
+  "title": "Training T-Rex",
+  "animal": "animal.webp",
+  "accent": "#3a8b3a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Shard the Beast",
+      "blurb": "How the released DeepSeek-V4-Flash launch recipe partitions 128 Ascend NPUs across pipeline and expert axes.",
+      "scene": "books/slai-t-rex/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        6.943,
+        14.698,
+        21.885,
+        30.802,
+        38.952,
+        45.732,
+        52.907,
+        59.781,
+        67.548
+      ],
+      "duration": 75.465
+    },
+    {
+      "number": 2,
+      "title": "One Shuffle, 128 Readers",
+      "blurb": "How one node builds an atomic deterministic shuffle index while every other training node waits for verified readiness.",
+      "scene": "books/slai-t-rex/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        7.187,
+        13.607,
+        19.528,
+        24.427,
+        30.812,
+        35.05,
+        40.472,
+        46.556,
+        53.556
+      ],
+      "duration": 62.972
+    },
+    {
+      "number": 3,
+      "title": "A Dataset That Rejects Itself",
+      "blurb": "How structured OR seeds become synthetic SFT examples only after schema, quality, and similarity gates.",
+      "scene": "books/slai-t-rex/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        7.79,
+        19.284,
+        27.759,
+        34.504,
+        42.109,
+        50.572,
+        58.409,
+        65.607,
+        75.046
+      ],
+      "duration": 83.081
+    },
+    {
+      "number": 4,
+      "title": "Let the Solver Keep Score",
+      "blurb": "How executable Gurobi evaluation turns plausible formulations into solver-checked Pass@1 results.",
+      "scene": "books/slai-t-rex/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        8.173,
+        15.302,
+        20.677,
+        29.025,
+        36.27,
+        46.103,
+        53.464,
+        59.187,
+        65.572
+      ],
+      "duration": 74.675
+    }
+  ]
+}
