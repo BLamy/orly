@@ -20,6 +20,7 @@ import { TabBar, type ShelfTab } from '../shell/TabBar';
 import { useScrollChrome } from '../shell/useScrollChrome';
 import { ThemeToggle } from '../shell/ThemeToggle';
 import { OfflineBanner } from '../shell/OfflineBanner';
+import { Pothos } from '../shelf-decor/Pothos';
 import './library.css';
 
 const TAB_KEY = 'orly-tab';
@@ -214,11 +215,18 @@ function ShelfRow({
   title,
   meta,
   front,
+  plantSlot,
+  plantSeed,
   children,
 }: {
   title: string;
   meta: string;
   front: boolean;
+  /** Leftover shelf-board width (px) after this row's books, or 0/undefined
+   *  for "no room" — see leftoverPlantWidth() below. A decorative Pothos
+   *  fills real empty space instead of leaving a bare stretch of board. */
+  plantSlot?: number;
+  plantSeed?: number;
   children: React.ReactNode;
 }) {
   return (
@@ -227,9 +235,33 @@ function ShelfRow({
         <h2 className="lib-series-name">{title}</h2>
         <span className="lib-series-meta">{meta}</span>
       </div>
-      <div className={`lib-series-row ${front ? 'is-fronts' : 'is-spines'}`}>{children}</div>
+      <div className={`lib-series-row ${front ? 'is-fronts' : 'is-spines'}`}>
+        {children}
+        {!!plantSlot && (
+          <div className="lib-row-plant">
+            <Pothos width={plantSlot} height={BOOK_H} seed={plantSeed ?? 0} />
+          </div>
+        )}
+      </div>
     </section>
   );
+}
+
+// Desktop-only decoration (see Pothos.tsx) — only worth it on a plain
+// (non-boxed-set) spine row, where books don't stretch to fill the row width,
+// so there's often real bare shelf board after the last spine. Skipped for
+// front-cover rows (those are sized to fit exactly, by definition) and boxed
+// sets (their own fixed-width layout).
+const SPINE_SLOT = SPINE_W + 10; // spine width + row gap
+const ROW_CHROME = 40; // row padding
+const MIN_PLANT_W = 90;
+const MAX_PLANT_W = 170;
+function leftoverPlantWidth(n: number, rowWidth: number, front: boolean): number {
+  if (front || rowWidth <= 0) return 0;
+  const used = n * SPINE_SLOT + ROW_CHROME;
+  const leftover = rowWidth - used;
+  if (leftover < MIN_PLANT_W) return 0;
+  return Math.min(leftover - 20, MAX_PLANT_W);
 }
 
 // Adaptive presentation: a group whose books all fit front-cover-first in the
@@ -378,7 +410,13 @@ export function DesktopShelf({
                 <BoxedSet name={shelves.featured[0]} books={shelves.featured[1]} front={featuredFront} />
               </ShelfRow>
             )}
-            <ShelfRow title="Recently Added" meta="hot off the press →" front={recentFront}>
+            <ShelfRow
+              title="Recently Added"
+              meta="hot off the press →"
+              front={recentFront}
+              plantSlot={leftoverPlantWidth(shelves.recent.length, rowWidth, recentFront)}
+              plantSeed={1}
+            >
               {shelves.recent.map((b) =>
                 recentFront ? (
                   <FrontBook key={b.slug} book={b} />
@@ -396,14 +434,26 @@ export function DesktopShelf({
               );
             })}
             {shelves.loops.length > 0 && (
-              <ShelfRow title="Agent Loops" meta={`${shelves.loops.length} standalone builds →`} front={loopsFront}>
+              <ShelfRow
+                title="Agent Loops"
+                meta={`${shelves.loops.length} standalone builds →`}
+                front={loopsFront}
+                plantSlot={leftoverPlantWidth(shelves.loops.length, rowWidth, loopsFront)}
+                plantSeed={2}
+              >
                 {shelves.loops.map((b) =>
                   loopsFront ? <FrontBook key={b.slug} book={b} /> : <SpineBook key={b.slug} book={b} />,
                 )}
               </ShelfRow>
             )}
             {shelves.more.length > 0 && (
-              <ShelfRow title="More from the Shelf" meta={`${shelves.more.length} one-offs →`} front={moreFront}>
+              <ShelfRow
+                title="More from the Shelf"
+                meta={`${shelves.more.length} one-offs →`}
+                front={moreFront}
+                plantSlot={leftoverPlantWidth(shelves.more.length, rowWidth, moreFront)}
+                plantSeed={3}
+              >
                 {shelves.more.map((b) =>
                   moreFront ? <FrontBook key={b.slug} book={b} /> : <SpineBook key={b.slug} book={b} />,
                 )}
