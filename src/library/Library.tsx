@@ -23,6 +23,8 @@ import { useScrollChrome } from '../shell/useScrollChrome';
 import { ThemeToggle } from '../shell/ThemeToggle';
 import { OfflineBanner } from '../shell/OfflineBanner';
 import { Pothos } from '../shelf-decor/Pothos';
+import { Cactus } from '../shelf-decor/Cactus';
+import { SnakePlant } from '../shelf-decor/SnakePlant';
 import './library.css';
 
 const TAB_KEY = 'orly-tab';
@@ -213,22 +215,36 @@ function BoxedSet({ name, books, front }: { name: string; books: BookMeta[]; fro
   );
 }
 
+type PlantKind = 'pothos' | 'cactus' | 'snake';
+
+function PlantSlot({ kind, width, seed }: { kind: PlantKind; width: number; seed: number }) {
+  if (kind === 'cactus') return <Cactus width={width} height={BOOK_H} seed={seed} />;
+  if (kind === 'snake') return <SnakePlant width={width} height={BOOK_H} seed={seed} />;
+  return <Pothos width={width} height={BOOK_H} seed={seed} />;
+}
+
 function ShelfRow({
   title,
   meta,
   front,
   plantSlot,
   plantSeed,
+  plantKind,
+  leadPlant,
   children,
 }: {
   title: string;
   meta: string;
   front: boolean;
   /** Leftover shelf-board width (px) after this row's books, or 0/undefined
-   *  for "no room" — see leftoverPlantWidth() below. A decorative Pothos
+   *  for "no room" — see leftoverPlantWidth() below. A decorative plant
    *  fills real empty space instead of leaving a bare stretch of board. */
   plantSlot?: number;
   plantSeed?: number;
+  plantKind?: PlantKind;
+  /** A plant BEFORE the books instead of after — deliberately pushes the
+   *  row's books over to make room, rather than filling leftover space. */
+  leadPlant?: { kind: PlantKind; seed: number; width: number };
   children: React.ReactNode;
 }) {
   return (
@@ -238,10 +254,15 @@ function ShelfRow({
         <span className="lib-series-meta">{meta}</span>
       </div>
       <div className={`lib-series-row ${front ? 'is-fronts' : 'is-spines'}`}>
+        {leadPlant && (
+          <div className="lib-row-plant lib-row-plant-lead">
+            <PlantSlot kind={leadPlant.kind} width={leadPlant.width} seed={leadPlant.seed} />
+          </div>
+        )}
         {children}
         {!!plantSlot && (
           <div className="lib-row-plant">
-            <Pothos width={plantSlot} height={BOOK_H} seed={plantSeed ?? 0} />
+            <PlantSlot kind={plantKind ?? 'pothos'} width={plantSlot} seed={plantSeed ?? 0} />
           </div>
         )}
       </div>
@@ -249,7 +270,7 @@ function ShelfRow({
   );
 }
 
-// Desktop-only decoration (see Pothos.tsx) — only worth it on a plain
+// Desktop-only decoration (see src/shelf-decor/) — only worth it on a plain
 // (non-boxed-set) spine row, where books don't stretch to fill the row width,
 // so there's often real bare shelf board after the last spine. Skipped for
 // front-cover rows (those are sized to fit exactly, by definition) and boxed
@@ -258,6 +279,7 @@ const SPINE_SLOT = SPINE_W + 10; // spine width + row gap
 const ROW_CHROME = 40; // row padding
 const MIN_PLANT_W = 90;
 const MAX_PLANT_W = 170;
+const LEAD_PLANT_W = 120; // fixed width — always renders, not leftover-dependent
 function leftoverPlantWidth(n: number, rowWidth: number, front: boolean): number {
   if (front || rowWidth <= 0) return 0;
   const used = n * SPINE_SLOT + ROW_CHROME;
@@ -418,6 +440,8 @@ export function DesktopShelf({
               front={recentFront}
               plantSlot={leftoverPlantWidth(shelves.recent.length, rowWidth, recentFront)}
               plantSeed={1}
+              plantKind="snake"
+              leadPlant={recentFront ? undefined : { kind: 'cactus', seed: 4, width: LEAD_PLANT_W }}
             >
               {shelves.recent.map((b) =>
                 recentFront ? (
@@ -442,6 +466,8 @@ export function DesktopShelf({
                 front={loopsFront}
                 plantSlot={leftoverPlantWidth(shelves.loops.length, rowWidth, loopsFront)}
                 plantSeed={2}
+                plantKind="cactus"
+                leadPlant={loopsFront ? undefined : { kind: 'pothos', seed: 5, width: LEAD_PLANT_W }}
               >
                 {shelves.loops.map((b) =>
                   loopsFront ? <FrontBook key={b.slug} book={b} /> : <SpineBook key={b.slug} book={b} />,
@@ -455,6 +481,8 @@ export function DesktopShelf({
                 front={moreFront}
                 plantSlot={leftoverPlantWidth(shelves.more.length, rowWidth, moreFront)}
                 plantSeed={3}
+                plantKind="pothos"
+                leadPlant={moreFront ? undefined : { kind: 'snake', seed: 6, width: LEAD_PLANT_W }}
               >
                 {shelves.more.map((b) =>
                   moreFront ? <FrontBook key={b.slug} book={b} /> : <SpineBook key={b.slug} book={b} />,

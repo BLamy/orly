@@ -157,8 +157,9 @@
    inside the content box, so scrollable width — and the scrollbar — never move */
 .lib-series-row.is-spines { padding-right: calc(var(--lib-push) + 24px); }
 
-/* a Pothos filling leftover shelf-board space at the end of a spine row
-   (src/shelf-decor/Pothos.tsx) — same height as the row's books, so
+/* A shelf-decor plant (src/shelf-decor/) filling leftover shelf-board space
+   at the end of a spine row, or planted before the books to push them over
+   (.lib-row-plant-lead) — same height as the row's books, so
    align-items:flex-end lines its base up with theirs with no need to
    overflow the row (which would get clipped: overflow-x:auto here forces
    overflow-y to auto too, per the CSS overflow spec). */
@@ -166,6 +167,9 @@
   flex: none;
   align-self: flex-end;
   pointer-events: none;
+}
+.lib-row-plant-lead {
+  margin-right: 6px;
 }
 .shelf-pothos canvas { display: block; }
 
