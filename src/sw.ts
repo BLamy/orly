@@ -1,5 +1,5 @@
 /// <reference lib="webworker" />
-import { precacheAndRoute } from 'workbox-precaching';
+import { cleanupOutdatedCaches, precacheAndRoute } from 'workbox-precaching';
 import { registerRoute } from 'workbox-routing';
 import { CacheFirst } from 'workbox-strategies';
 
@@ -8,6 +8,15 @@ declare let self: ServiceWorkerGlobalScope;
 // The app shell (JS/CSS/HTML) — small, precached at install time by Workbox
 // from the build manifest injected here.
 precacheAndRoute(self.__WB_MANIFEST);
+
+// Without this, a prior version's precached entries (old-hash HTML/icons)
+// linger in Cache Storage forever across deploys instead of being replaced —
+// harmless for storage size here (the precache list is tiny) but it's the
+// correct hygiene move alongside registerType: 'autoUpdate' (vite.config.ts),
+// which is the actual fix for the "installed PWA kept running a stale build"
+// incident: cleaning up outdated caches here, paired with the new SW being
+// told to activate + the page reloading, is what makes an update land fully.
+cleanupOutdatedCaches();
 
 // Scene chunks are content-hashed and lazy-loaded per book (src/viz/scenes.ts) —
 // there's no build-time list of "this book's chunks" to precache. Instead, cache

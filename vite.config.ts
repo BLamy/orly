@@ -9,6 +9,18 @@ export default defineConfig({
   plugins: [
     react(),
     VitePWA({
+      // 'autoUpdate' (not the default 'prompt') is the fix for a real incident:
+      // a PWA installed on a phone kept running a stale build after a deploy,
+      // because the default injected register script just calls
+      // `navigator.serviceWorker.register(...)` and never does anything with a
+      // waiting new-version worker — nothing ever tells it to activate. With
+      // autoUpdate, the injected script (workbox-window under the hood) detects
+      // a waiting SW, messages it to skipWaiting, and reloads the page once it
+      // takes control — so the next time the installed app is opened (a fresh
+      // navigation, since standalone PWAs don't keep tabs open in the
+      // background like a browser) it self-heals onto the new build instead of
+      // silently running mismatched old JS against new server assets.
+      registerType: 'autoUpdate',
       // Hand-written service worker (src/sw.ts) — `generateSW` would auto-precache
       // everything under public/generated (every book's MP3s) for every visitor,
       // which is exactly what we don't want. Books are cached on-demand instead
