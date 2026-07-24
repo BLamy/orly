@@ -14,3 +14,7 @@ generator/seeds/clean/
 /.playwright-mcp
 /*.png
 public/generated/*/animal.png
+
+# rendered video exports + generated library dumps (regenerable)
+exports/
+public/generated/*.full
