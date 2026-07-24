@@ -2,6 +2,7 @@
 // screenshot-chapters.mjs — grab one still per narration cue, for the blog post.
 //
 //   node generator/screenshot-chapters.mjs --slug <slug>
+//   node generator/screenshot-chapters.mjs --all          (every book in library.json)
 //
 // Expects `npm run build` to have ALREADY produced dist/ (same precondition as
 // verify-book.mjs, whose server-boot/scene-mount pattern this reuses). For
@@ -10,7 +11,9 @@
 // captions) and screenshots each, writing:
 //   public/generated/<slug>/blog/chapter-<n>-<cueIndex>.png
 // Re-runnable any time to refresh a book's blog screenshots without
-// regenerating the book itself.
+// regenerating the book itself. --all shares ONE preview server + browser
+// across every book instead of restarting per slug, since with ~100 books the
+// per-invocation startup cost would otherwise dominate.
 import { spawn } from 'node:child_process';
 import fs from 'node:fs';
 import path from 'node:path';
@@ -31,37 +34,50 @@ const CLEAN_CSS = `
   .bp-stagewrap { padding: 0 !important; }
   .bp-stage { max-width: none !important; max-height: none !important;
               border-radius: 0 !important; box-shadow: none !important; }
-  html, body { background: #0a0e1a !important; }
   * { cursor: none !important; }
 `;
+// No hardcoded html/body background override here (there used to be a stale
+// #0a0e1a navy one, baked from before the walnut/pine/etc theme system
+// existed) — the page's own CSS already paints the right background for
+// whichever [data-theme] is active (defaults to walnut with no localStorage
+// override, which is exactly what a fresh headless context has).
+
+const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
 
 const args = process.argv.slice(2);
 const slugIdx = args.indexOf('--slug');
-const slug = slugIdx >= 0 ? args[slugIdx + 1] : undefined;
-if (!slug) {
-  console.error('usage: node generator/screenshot-chapters.mjs --slug <slug>');
-  process.exit(2);
-}
-
-const root = path.resolve(path.dirname(new URL(import.meta.url).pathname), '..');
-const manifestPath = path.join(root, 'public', 'generated', slug, 'manifest.json');
-if (!fs.existsSync(manifestPath)) {
-  console.error(`✗ no manifest at ${manifestPath}`);
+const singleSlug = slugIdx >= 0 ? args[slugIdx + 1] : undefined;
+const all = args.includes('--all');
+if (!singleSlug && !all) {
+  console.error('usage: node generator/screenshot-chapters.mjs --slug <slug>  |  --all');
   process.exit(2);
 }
 if (!fs.existsSync(path.join(root, 'dist', 'index.html'))) {
   console.error('✗ dist/ is missing — run `npm run build` first');
   process.exit(2);
 }
-const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
-if (manifest.format !== 3) {
-  console.error(`✗ manifest for "${slug}" is not format 3 (got ${manifest.format ?? 'legacy'})`);
-  process.exit(2);
+
+function loadManifest(slug) {
+  const manifestPath = path.join(root, 'public', 'generated', slug, 'manifest.json');
+  if (!fs.existsSync(manifestPath)) return { error: `no manifest at ${manifestPath}` };
+  const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
+  if (manifest.format !== 3) return { error: `not format 3 (got ${manifest.format ?? 'legacy'})` };
+  const chapters = manifest.chapters ?? [];
+  if (!chapters.length) return { error: 'no chapters' };
+  return { chapters };
 }
-const chapters = manifest.chapters ?? [];
-if (!chapters.length) {
-  console.error(`✗ manifest for "${slug}" has no chapters`);
-  process.exit(2);
+
+let slugs;
+if (all) {
+  const libraryPath = path.join(root, 'public', 'generated', 'library.json');
+  const library = JSON.parse(fs.readFileSync(libraryPath, 'utf8'));
+  slugs = (library.books ?? []).map((b) => b.slug);
+  if (!slugs.length) {
+    console.error(`✗ no books found in ${libraryPath}`);
+    process.exit(2);
+  }
+} else {
+  slugs = [singleSlug];
 }
 
 let server = null;
@@ -138,23 +154,9 @@ async function waitFor200(url, timeoutMs = 30000) {
   throw new Error(`preview server did not answer 200 at ${url} within ${timeoutMs}ms`);
 }
 
-const failures = [];
-const summary = [];
-
-try {
-  server = spawn(
-    'npx',
-    ['vite', 'preview', '--port', String(PORT), '--strictPort', '--host', '127.0.0.1'],
-    { cwd: root, stdio: 'ignore', detached: true }
-  );
-  server.on('error', (e) => {
-    console.error(`✗ could not start vite preview: ${e.message}`);
-    process.exit(2);
-  });
-  await waitFor200(`http://127.0.0.1:${PORT}/`);
-  console.log(`· serving dist/ at ${BASE}`);
-
-  browser = await chromium.launch({ headless: true });
+async function shootBook(slug, chapters) {
+  const failures = [];
+  const summary = [];
   const blogDir = path.join(root, 'public', 'generated', slug, 'blog');
   fs.mkdirSync(blogDir, { recursive: true });
 
@@ -234,16 +236,52 @@ try {
       await context.close().catch(() => {});
     }
   }
+  return { failures, summary };
+}
+
+const allFailures = [];
+
+try {
+  server = spawn(
+    'npx',
+    ['vite', 'preview', '--port', String(PORT), '--strictPort', '--host', '127.0.0.1'],
+    { cwd: root, stdio: 'ignore', detached: true }
+  );
+  server.on('error', (e) => {
+    console.error(`✗ could not start vite preview: ${e.message}`);
+    process.exit(2);
+  });
+  await waitFor200(`http://127.0.0.1:${PORT}/`);
+  console.log(`· serving dist/ at ${BASE}`);
+
+  browser = await chromium.launch({ headless: true });
+
+  for (let bi = 0; bi < slugs.length; bi++) {
+    const slug = slugs[bi];
+    const loaded = loadManifest(slug);
+    if (loaded.error) {
+      console.error(`✗ [${bi + 1}/${slugs.length}] ${slug}: ${loaded.error} — skipping`);
+      allFailures.push(`${slug}: ${loaded.error}`);
+      continue;
+    }
+    console.log(`\n[${bi + 1}/${slugs.length}] ${slug} · ${loaded.chapters.length} chapter(s)`);
+    const { failures, summary } = await shootBook(slug, loaded.chapters);
+    for (const line of summary) console.log(line);
+    if (failures.length) {
+      console.error(`  ✗ ${failures.length} failure(s) in ${slug}:`);
+      for (const f of failures) console.error(`    - ${f}`);
+      allFailures.push(...failures.map((f) => `${slug}: ${f}`));
+    }
+  }
 } finally {
   if (browser) await browser.close().catch(() => {});
   killServer();
 }
 
-console.log(`\nscreenshot-chapters · ${slug} · ${chapters.length} chapter(s)`);
-for (const line of summary) console.log(line);
-if (failures.length) {
-  console.error(`\n✗ ${failures.length} failure(s):`);
-  for (const f of failures) console.error(`  - ${f}`);
+console.log(`\nscreenshot-chapters · ${slugs.length} book(s) processed`);
+if (allFailures.length) {
+  console.error(`\n✗ ${allFailures.length} failure(s) total:`);
+  for (const f of allFailures) console.error(`  - ${f}`);
   process.exit(1);
 }
 console.log('\n✓ all chapter cue screenshots written to public/generated/<slug>/blog/');

@@ -98,6 +98,34 @@
   --bp-muted: #c08a7a;
   --bp-line: rgba(217, 119, 87, 0.18);
 }
+:root[data-theme='indigo'] {
+  color-scheme: dark;
+  /* indigo (dark) — navy-painted wood (a real furniture finish: think
+     "Hale Navy" cabinetry), brass hardware tint for the accent/border */
+  --wood-bg-1: #1a2438;
+  --wood-bg-2: #0f1726;
+  --wood-grain: rgba(0, 0, 0, 0.25);
+  --wood-grain-light: rgba(255, 255, 255, 0.03);
+  --wood-text: #e2e8f4;
+  --wood-heading: #f0f4fb;
+  --wood-muted: #8fa3c7;
+  --wood-accent: #c9a45c;
+  --wood-panel: rgba(255, 255, 255, 0.05);
+  --wood-panel-strong: rgba(255, 255, 255, 0.09);
+  --wood-border: rgba(201, 164, 92, 0.22);
+  --wood-shelf-board: rgba(0, 0, 0, 0.4);
+  --glass-bg: rgba(15, 23, 38, 0.55);
+  --glass-bg-solid: rgba(15, 23, 38, 0.92);
+  --glass-blur: 14px;
+  --glass-border: rgba(201, 164, 92, 0.18);
+
+  --bp-bg: #0f1726;
+  --bp-glow: #24344f;
+  --bp-panel: rgba(20, 28, 44, 0.92);
+  --bp-text: #e2e8f4;
+  --bp-muted: #8fa3c7;
+  --bp-line: rgba(201, 164, 92, 0.18);
+}
 :root[data-theme='charcoal'] {
   color-scheme: dark;
   /* charcoal (near-black, neutral) — basically black, minimal warmth */

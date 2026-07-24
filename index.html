@@ -8,7 +8,15 @@
          PWA) to use dark controls/scrollbars — without this, in-browser Safari
          renders its UI light even though the page is dark. -->
     <meta name="color-scheme" content="dark light" />
-    <!-- theme-color + the manifest <link> are auto-injected by vite-plugin-pwa.
+    <!-- Tints the mobile browser chrome itself (Android Chrome's address bar,
+         iOS 15+ Safari's tab bar) — kept in sync with the active shelf finish
+         by src/shell/theme.ts, which rewrites this tag's content whenever the
+         theme changes (that's the ONLY way to retint it: it's read live by
+         the browser, unlike manifest.webmanifest's theme_color, which is
+         fixed at build time and only affects an installed PWA's splash
+         screen). Starts pointing at walnut, the default finish. -->
+    <meta name="theme-color" content="#160f09" />
+    <!-- the manifest <link> is auto-injected by vite-plugin-pwa.
          iOS ignores manifest.webmanifest for homescreen behavior though — these are
          what make "Add to Home Screen" launch full-screen with no Safari UI. -->
     <meta name="apple-mobile-web-app-capable" content="yes" />
