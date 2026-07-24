@@ -86,5 +86,9 @@ function buildCactus(potGroup: THREE.Group, rng: () => number): Sway[] {
  *  occasionally in bloom), three.js-rendered. Desktop shelf only — see
  *  DesktopShelf's placement logic in Library.tsx. */
 export function Cactus({ width, height, seed = 0 }: { width: number; height: number; seed?: number }) {
-  return <PlantCanvas width={width} height={height} seed={seed} potY={0.15} build={buildCactus} />;
+  // potY sits the pot's own bottom right at the bottom of the frustum
+  // (~-1.0, matching the container's bottom edge — see PlantCanvas — which
+  // is also where a spine book's bottom lands), so it reads as standing on
+  // the shelf board like the books beside it, not floating mid-frame.
+  return <PlantCanvas width={width} height={height} seed={seed} potY={-0.78} build={buildCactus} />;
 }

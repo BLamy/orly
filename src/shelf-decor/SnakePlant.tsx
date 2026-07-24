@@ -32,7 +32,7 @@ function buildSnakePlant(potGroup: THREE.Group, rng: () => number): Sway[] {
     const a = (i / bladeCount) * Math.PI * 2 + rng() * 0.6;
     const startR = 0.02 + rng() * 0.09;
     const height = 0.55 + rng() * 0.32;
-    const width = 0.09 + rng() * 0.03;
+    const width = 0.16 + rng() * 0.05; // thicker blades — was reading as too spindly
     const lean = 0.08 + rng() * 0.1; // slight outward fan, not ramrod-straight
 
     const group = new THREE.Group();
@@ -67,5 +67,8 @@ function buildSnakePlant(potGroup: THREE.Group, rng: () => number): Sway[] {
  *  in an upright cluster, no trailing vines. Desktop shelf only — see
  *  DesktopShelf's placement logic in Library.tsx. */
 export function SnakePlant({ width, height, seed = 0 }: { width: number; height: number; seed?: number }) {
-  return <PlantCanvas width={width} height={height} seed={seed} potY={0.05} build={buildSnakePlant} />;
+  // potY sits the pot's own bottom right at the bottom of the frustum — see
+  // the matching comment in Cactus.tsx — so it stands on the shelf board
+  // like the books beside it instead of floating mid-frame.
+  return <PlantCanvas width={width} height={height} seed={seed} potY={-0.78} build={buildSnakePlant} />;
 }

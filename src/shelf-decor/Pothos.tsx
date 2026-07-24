@@ -104,8 +104,36 @@ function buildVine(rng: () => number, drop: number, hue: number, startR: number)
   return { group, phase: rng() * Math.PI * 2, freq: 0.5 + rng() * 0.4, amp: 0.05 + rng() * 0.04 };
 }
 
+const cordMat = new THREE.MeshStandardMaterial({ color: 0xcbb994, roughness: 0.9 });
+const knotMat = new THREE.MeshStandardMaterial({ color: 0x8a7452, roughness: 0.8 });
+
+/** A thin cylinder connecting two points — used for the hanging-planter
+ *  macrame cords, since a plain THREE.Line renders razor-thin regardless of
+ *  `linewidth` in WebGL and wouldn't read as a cord at all. */
+function cordBetween(a: THREE.Vector3, b: THREE.Vector3, radius: number): THREE.Mesh {
+  const dir = new THREE.Vector3().subVectors(b, a);
+  const len = dir.length();
+  const mesh = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, len, 6), cordMat);
+  mesh.position.copy(a).addScaledVector(dir, 0.5);
+  mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.clone().normalize());
+  return mesh;
+}
+
 function buildPothos(potGroup: THREE.Group, rng: () => number): Sway[] {
   buildPot(potGroup);
+
+  // A macrame-style hanger — three cords from the rim converging to a knot
+  // well above the crown — makes this read as a suspended hanging planter
+  // rather than a pot just sitting mid-air with nothing holding it up.
+  const apex = new THREE.Vector3(0, 0.55, 0);
+  for (let i = 0; i < 3; i++) {
+    const a = (i / 3) * Math.PI * 2 + Math.PI / 6;
+    const rimPoint = new THREE.Vector3(Math.sin(a) * 0.335, 0.2, Math.cos(a) * 0.335);
+    potGroup.add(cordBetween(rimPoint, apex, 0.013));
+  }
+  const knot = new THREE.Mesh(new THREE.SphereGeometry(0.035, 8, 8), knotMat);
+  knot.position.copy(apex);
+  potGroup.add(knot);
 
   // 3-5 vines, mostly hanging straight down with varied lengths (not a
   // symmetric fan — a couple long trailing ones plus shorter fuller ones
@@ -153,5 +181,8 @@ function buildPothos(potGroup: THREE.Group, rng: () => number): Sway[] {
  *  a brief extra "breeze" of sway whenever the page scrolls. Desktop shelf
  *  only — see DesktopShelf's placement logic in Library.tsx. */
 export function Pothos({ width, height, seed = 0 }: { width: number; height: number; seed?: number }) {
-  return <PlantCanvas width={width} height={height} seed={seed} build={buildPothos} />;
+  // Lower than the 0.55 default, freeing up headroom above the pot for the
+  // macrame hanger's apex/knot to sit clearly above the crown leaves instead
+  // of crowding right against them.
+  return <PlantCanvas width={width} height={height} seed={seed} potY={0.4} build={buildPothos} />;
 }

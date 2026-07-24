@@ -392,11 +392,17 @@
   color: #5a4424;
 }
 
-/* corner cluster: theme toggle + "view source on GitHub" link */
+/* corner cluster: theme toggle + "view source on GitHub" link. Vertically
+   centered on the SAME y=38px reference .tabbar-top uses below (top +
+   translateY(-50%), not just a shared `top`) — the two sit at different
+   natural heights (a 40px circle vs a ~29px pill row), so anchoring both by
+   center is what actually lines them up; matching only `top` left them
+   looking staggered. */
 .lib-corner {
   position: fixed;
-  top: 18px;
+  top: 38px;
   right: 18px;
+  transform: translateY(-50%);
   z-index: 30;
   display: flex;
   align-items: center;
@@ -1068,13 +1074,16 @@
 
 .tabbar-top {
   display: flex;
+  align-items: center;
   gap: 4px;
-  max-width: 760px;
-  margin: 0 auto 8px;
-  padding: 0 0 8px;
-  /* Stack above the Browse feed (position: fixed; z-index: 5) so the nav
-     stays reachable on desktop instead of being painted over. */
-  position: relative;
+  /* Fixed + centered-by-transform (not just plain document flow) so its
+     vertical center lines up exactly with .lib-corner's — see the comment
+     there. Also stacks above the Browse feed (position: fixed; z-index: 5)
+     so the nav stays reachable on desktop instead of being painted over. */
+  position: fixed;
+  top: 38px;
+  left: 50%;
+  transform: translate(-50%, -50%);
   z-index: 70;
 }
 .tabbar-top .tabbar-item {
