@@ -1,4 +1,4 @@
-export * from '3b1bd3/primitives';
+export * from '../engine/primitives';
 // Local primitives (NIPs-series toolkit: JSON ↔ picture morphs + crypto)
 export * from './json-doc';
 export * from './token-flight';

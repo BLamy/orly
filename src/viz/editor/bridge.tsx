@@ -1,1 +1,1 @@
-export * from '3b1bd3/storybook';
+export * from '../engine/storybook';

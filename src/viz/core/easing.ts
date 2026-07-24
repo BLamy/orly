@@ -1,3 +1,3 @@
-import { ease } from '3b1bd3/core';
+import { ease } from '../engine/core';
 
 export const { enter, move, draw, linear, pulse, pop } = ease;

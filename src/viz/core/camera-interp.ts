@@ -10,7 +10,7 @@
 // Use it as the channel interpolator for every camera:
 //   const cam = tl.channel<CameraState>('cam', CAMERA_HOME, cameraInterp);
 import { interpolateZoom } from 'd3-interpolate';
-import type { CameraState } from '3b1bd3/core';
+import type { CameraState } from '../engine/core';
 
 const STAGE_W = 1280;
 

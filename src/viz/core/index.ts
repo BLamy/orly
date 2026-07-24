@@ -1,2 +1,2 @@
-export * from '3b1bd3/core';
+export * from '../engine/core';
 export { cameraInterp } from './camera-interp';

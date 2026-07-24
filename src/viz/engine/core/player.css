@@ -1,0 +1,103 @@
+.viz-player {
+  position: relative;
+  max-width: 1280px;
+  margin: 0 auto;
+  outline: none;
+  font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+}
+
+.viz-player-stage {
+  position: relative;
+  cursor: pointer;
+}
+
+.viz-player-transport {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding: 10px 14px;
+  background: rgba(13, 19, 33, 0.7);
+  border: 1px solid rgba(148, 163, 184, 0.16);
+  border-radius: 10px;
+  margin-top: 10px;
+}
+
+.viz-player-transport button {
+  display: grid;
+  place-items: center;
+  width: 34px;
+  height: 34px;
+  padding: 0;
+  border: 1px solid rgba(148, 163, 184, 0.2);
+  border-radius: 8px;
+  background: rgba(148, 163, 184, 0.08);
+  color: #e6edf6;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+
+.viz-player-transport button:hover {
+  background: rgba(148, 163, 184, 0.18);
+}
+
+.viz-player-transport button.viz-active {
+  border-color: #38bdf8;
+  color: #38bdf8;
+}
+
+.viz-player-transport input[type='range'] {
+  -webkit-appearance: none;
+  appearance: none;
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+  background: rgba(148, 163, 184, 0.16);
+  cursor: pointer;
+}
+
+.viz-player-transport input[type='range']::-webkit-slider-thumb {
+  -webkit-appearance: none;
+  appearance: none;
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #38bdf8;
+  border: none;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
+}
+
+.viz-player-transport input[type='range']::-moz-range-thumb {
+  width: 16px;
+  height: 16px;
+  border-radius: 50%;
+  background: #38bdf8;
+  border: none;
+  box-shadow: 0 0 8px rgba(56, 189, 248, 0.6);
+}
+
+.viz-player-time {
+  font-family: ui-monospace, SFMono-Regular, Menlo, monospace;
+  font-size: 13px;
+  color: #8da2be;
+  white-space: nowrap;
+  font-variant-numeric: tabular-nums;
+}
+
+.viz-player-bigplay {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  pointer-events: none;
+}
+
+.viz-player-bigplay > div {
+  display: grid;
+  place-items: center;
+  width: 84px;
+  height: 84px;
+  border-radius: 50%;
+  background: rgba(13, 19, 33, 0.8);
+  border: 1px solid rgba(56, 189, 248, 0.5);
+  box-shadow: 0 0 40px rgba(56, 189, 248, 0.25);
+}

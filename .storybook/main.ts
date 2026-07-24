@@ -1,6 +1,10 @@
 import { fileURLToPath } from 'node:url';
 import type { StorybookConfig } from '@storybook/react-vite';
-import { motionSaveEndpointPlugin } from '3b1bd3/storybook';
+// The engine now lives in-repo (src/viz/engine). main.ts is evaluated in plain
+// Node, so we import the save-endpoint Vite plugin from its css-free source
+// module directly — importing the '../src/viz/engine/storybook' barrel would
+// pull in editor.css and crash Node (ERR_UNKNOWN_FILE_EXTENSION).
+import { motionSaveEndpointPlugin } from '../src/viz/engine/storybook/save-endpoint';
 
 const config: StorybookConfig = {
   framework: '@storybook/react-vite',
