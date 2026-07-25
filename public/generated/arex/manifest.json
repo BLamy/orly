@@ -1,0 +1,114 @@
+{
+  "format": 3,
+  "slug": "arex",
+  "title": "The Answer Audits Itself",
+  "subtitle": "Inside AREX's recursive research loop",
+  "animal": "animal.webp",
+  "accent": "#3a8b3a",
+  "paper": {
+    "title": "AREX: Towards a Recursively Self-Improving Agent for Deep Research",
+    "identifier": "arXiv:2607.21461",
+    "huggingFaceUrl": "https://huggingface.co/papers/2607.21461",
+    "canonicalUrl": "https://arxiv.org/abs/2607.21461",
+    "pdfUrl": "https://arxiv.org/pdf/2607.21461",
+    "projectUrl": "https://vectorspacelab.github.io/arex-model/",
+    "codeUrl": "https://github.com/VectorSpaceLab/arex-model"
+  },
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Expensive Guess",
+      "blurb": "Why multi-constraint discovery is expensive—and why constraint-wise verification can steer the next search.",
+      "scene": "books/arex/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        5.224,
+        11.61,
+        17.949,
+        22.616,
+        28.468,
+        33.495,
+        39.544,
+        45.256
+      ],
+      "duration": 52.245
+    },
+    {
+      "number": 2,
+      "title": "Evidence on a Tape",
+      "blurb": "How the released quickstart parses tool calls, dispatches search and page visits, and grows one evidence tape.",
+      "scene": "books/arex/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        6.525,
+        12.376,
+        18.913,
+        24.881,
+        30.674,
+        38.256,
+        44.92,
+        51.387
+      ],
+      "duration": 61.488
+    },
+    {
+      "number": 3,
+      "title": "The Confidence Gate",
+      "blurb": "How the paper's outer loop uses confidence and recoverability to accept, refine, or restart.",
+      "scene": "books/arex/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        6.85,
+        14.756,
+        21.85,
+        25.437,
+        31.359,
+        36.769,
+        42.83,
+        50.446
+      ],
+      "duration": 58.561
+    },
+    {
+      "number": 4,
+      "title": "Keep the State, Lose the Clutter",
+      "blurb": "How the paper's learned context update preserves verified state while removing obsolete research clutter.",
+      "scene": "books/arex/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        6.722,
+        13.351,
+        20.48,
+        27.493,
+        33.832,
+        39.335,
+        45.267,
+        53.011
+      ],
+      "duration": 60.186
+    },
+    {
+      "number": 5,
+      "title": "Reward the Turning Point",
+      "blurb": "How teacher filtering, key-step replay, and bounded reward shaping teach long-horizon research turns.",
+      "scene": "books/arex/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        7.941,
+        16.823,
+        20.445,
+        26.413,
+        31.44,
+        38.173,
+        45.673,
+        52.186
+      ],
+      "duration": 61.858
+    }
+  ]
+}

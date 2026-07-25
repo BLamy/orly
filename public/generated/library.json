@@ -1,6 +1,46 @@
 {
   "books": [
     {
+      "slug": "arex",
+      "title": "The Answer Audits Itself",
+      "subtitle": "Inside AREX's recursive research loop",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#3a8b3a",
+      "animal": "generated/arex/animal.webp",
+      "href": "?bundle=arex",
+      "series": "Daily Papers by Hugging Face",
+      "seriesOrder": 2,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Expensive Guess",
+          "duration": 52.245
+        },
+        {
+          "number": 2,
+          "title": "Evidence on a Tape",
+          "duration": 61.488
+        },
+        {
+          "number": 3,
+          "title": "The Confidence Gate",
+          "duration": 58.561
+        },
+        {
+          "number": 4,
+          "title": "Keep the State, Lose the Clutter",
+          "duration": 60.186
+        },
+        {
+          "number": 5,
+          "title": "Reward the Turning Point",
+          "duration": 61.858
+        }
+      ],
+      "createdAt": "2026-07-25T10:20:29.704Z"
+    },
+    {
       "slug": "agentic-world-models",
       "title": "Agentic World Models",
       "subtitle": "",
