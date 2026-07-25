@@ -1,5 +1,5 @@
 import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
-import { Stage, Timeline, usePlayback, type CaptionItem } from '../viz/core';
+import { Stage, Timeline, usePlayback } from '../viz/core';
 import { VIZ_SCENES, type VizSceneEntry } from '../viz/scenes';
 import { assetUrl } from './shared';
 import type { BookMeta } from './cover';
@@ -7,10 +7,12 @@ import type { BookMeta } from './cover';
 // A TikTok-style vertical feed of book videos. The active card autoplays its
 // scene muted (a muted <audio> is the clock, so animation stays aligned to the
 // real narration length even with the sound off). Gestures:
-//   • swipe up / down      → jump to a new RANDOM book
-//   • single tap (right)   → next beat   ·  single tap (left) → previous beat
-//   • double tap (edges)   → next chapter
-//   • double tap (center)  → ❤ (visual only — nothing is recorded yet)
+//   • swipe up / down, or wheel → jump to a new RANDOM book
+//   • tap right / left          → scrub the video forward / back
+//   • double tap (center)       → ❤ (visual only — nothing is recorded yet)
+//
+// The vertical axis only ever changes the book and the horizontal axis only
+// ever moves within it, which is the whole grammar of the format.
 //
 // Nothing here persists likes/history; the heart is pure delight.
 
@@ -28,6 +30,10 @@ interface ManifestLite {
 const FALLBACK_TL = new Timeline();
 const DOUBLE_TAP_MS = 280;
 const SWIPE_PX = 55;
+/** How far a tap on the left/right edge scrubs. */
+const SCRUB_S = 5;
+/** Wheel events arrive in bursts; one book per burst. */
+const WHEEL_COOLDOWN_MS = 500;
 
 /** Fisher–Yates using a caller-provided rng so callers control determinism. */
 function shuffle<T>(arr: T[], rng: () => number): T[] {
@@ -85,14 +91,6 @@ export function BrowseFeed({
   return (
     <div className={`feed-root ${mobile ? 'is-mobile' : 'is-desktop'}`}>
       <FeedCard key={`${book.slug}:${pos}`} book={book} active={active} onSwitchBook={nextRandom} />
-    </div>
-  );
-}
-
-function CaptionPill({ c }: { c: CaptionItem }) {
-  return (
-    <div className="feed-cc" style={{ opacity: c.u }}>
-      {c.text}
     </div>
   );
 }
@@ -192,21 +190,24 @@ function FeedCard({
     return () => mq.removeEventListener('change', on);
   }, []);
 
-  const nextChapter = useCallback(() => {
-    if (!manifest) return;
-    setChapterIdx((i) => (i + 1) % Math.max(1, manifest.chapters.length));
-  }, [manifest]);
-
   const popHeart = useCallback((x: number, y: number) => {
     const id = performance.now();
     setHearts((h) => [...h, { id, x, y }]);
     window.setTimeout(() => setHearts((h) => h.filter((p) => p.id !== id)), 900);
   }, []);
 
+  /** Scrub within the current chapter. seek() re-syncs the <audio> clock, so
+   *  the narration and the animation stay together. */
+  const scrub = useCallback((dir: 1 | -1) => {
+    const p = pbRef.current;
+    const next = Math.max(0, Math.min(p.duration, p.t + dir * SCRUB_S));
+    p.seek(next);
+  }, []);
+
   // ---- gesture handling ----
   const down = useRef<{ x: number; y: number; t: number } | null>(null);
   const lastTap = useRef(0);
-  const singleTimer = useRef<number | null>(null);
+  const wheelAt = useRef(0);
 
   const onPointerDown = (e: React.PointerEvent) => {
     down.current = { x: e.clientX, y: e.clientY, t: performance.now() };
@@ -221,31 +222,58 @@ function FeedCard({
 
     // Swipe (vertical dominant) → new random book.
     if (Math.abs(dy) > SWIPE_PX && Math.abs(dy) > Math.abs(dx)) {
-      if (singleTimer.current) window.clearTimeout(singleTimer.current);
       onSwitchBook();
       return;
     }
-    // Otherwise it's a tap. Distinguish single vs double.
+
     const now = performance.now();
     const relX = (e.clientX - rect.left) / rect.width;
     const relY = (e.clientY - rect.top) / rect.height;
-    if (now - lastTap.current < DOUBLE_TAP_MS) {
-      if (singleTimer.current) window.clearTimeout(singleTimer.current);
+    const centerish = relX > 0.32 && relX < 0.68 && relY > 0.25 && relY < 0.75;
+
+    // Double tap in the middle → ❤.
+    if (centerish && now - lastTap.current < DOUBLE_TAP_MS) {
       lastTap.current = 0;
-      const centerish = relX > 0.3 && relX < 0.7 && relY > 0.28 && relY < 0.72;
-      if (centerish) popHeart(e.clientX - rect.left, e.clientY - rect.top);
-      else nextChapter();
+      popHeart(e.clientX - rect.left, e.clientY - rect.top);
       return;
     }
     lastTap.current = now;
-    const dir: 1 | -1 = relX > 0.5 ? 1 : -1;
-    singleTimer.current = window.setTimeout(() => {
-      pbRef.current.stepBeat(dir);
-    }, DOUBLE_TAP_MS + 10);
+
+    // An edge tap scrubs, and does it IMMEDIATELY — it used to wait out the
+    // double-tap window before doing anything, which read as the tap simply
+    // not working. Nothing else is bound to the edges any more, so there's no
+    // ambiguity left to wait on.
+    if (!centerish) scrub(relX > 0.5 ? 1 : -1);
   };
 
-  const activeCaption =
-    pb.state.captions.length > 0 ? pb.state.captions[pb.state.captions.length - 1] : null;
+  /** Desktop: a wheel/trackpad flick is the same gesture as a swipe. */
+  const onWheel = (e: React.WheelEvent) => {
+    if (Math.abs(e.deltaY) < 8 || Math.abs(e.deltaY) < Math.abs(e.deltaX)) return;
+    const now = performance.now();
+    if (now - wheelAt.current < WHEEL_COOLDOWN_MS) return;
+    wheelAt.current = now;
+    onSwitchBook();
+  };
+
+  // Keyboard mirrors the gestures: up/down changes book, left/right scrubs.
+  useEffect(() => {
+    if (!active) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === 'ArrowUp' || e.key === 'ArrowDown') {
+        e.preventDefault();
+        onSwitchBook();
+      } else if (e.key === 'ArrowRight') {
+        e.preventDefault();
+        scrub(1);
+      } else if (e.key === 'ArrowLeft') {
+        e.preventDefault();
+        scrub(-1);
+      }
+    };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [active, onSwitchBook, scrub]);
+
   const chapterCount = manifest?.chapters.length ?? 0;
 
   return (
@@ -253,6 +281,7 @@ function FeedCard({
       className="feed-card"
       onPointerDown={onPointerDown}
       onPointerUp={onPointerUp}
+      onWheel={onWheel}
       style={{ ['--accent' as string]: book.color || '#38bdf8' }}
     >
       <div className="feed-stage">
@@ -261,7 +290,8 @@ function FeedCard({
         ) : (
           <div className="feed-spinner" role="status" aria-label="Loading" />
         )}
-        {activeCaption && <CaptionPill key={activeCaption.id} c={activeCaption} />}
+        {/* No captions in the feed: it's a silent, glanceable format, and the
+            pill covered the bottom of the very diagram you're skimming. */}
       </div>
 
       {/* right-rail meta (title + chapter dots), TikTok-style overlay */}
@@ -292,7 +322,7 @@ function FeedCard({
       )}
 
       {/* hint strip */}
-      <div className="feed-hint">tap → next beat · double-tap → next chapter · swipe → new book</div>
+      <div className="feed-hint">swipe → new book · tap the sides → scrub</div>
 
       {/* hearts */}
       {hearts.map((h) => (

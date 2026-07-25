@@ -1290,7 +1290,11 @@
   align-items: center;
   justify-content: center;
   background: #05070d;
-  touch-action: pan-y;
+  /* `none`, not `pan-y`: pan-y handed every vertical drag to the browser's
+     own scroller, which then cancelled the pointer sequence — so the
+     swipe-up-for-a-new-book gesture never saw a pointerup and silently did
+     nothing. The card has nothing to scroll; it wants the raw gesture. */
+  touch-action: none;
   user-select: none;
   -webkit-user-select: none;
   overflow: hidden;
@@ -1312,20 +1316,6 @@
   animation: feed-spin 0.9s linear infinite;
 }
 @keyframes feed-spin { to { transform: rotate(360deg); } }
-.feed-cc {
-  position: absolute;
-  left: 50%; bottom: 8%;
-  transform: translateX(-50%);
-  max-width: 82%;
-  padding: 8px 14px;
-  border-radius: 12px;
-  background: rgba(0,0,0,0.6);
-  color: #fff;
-  font-size: 15px;
-  line-height: 1.35;
-  text-align: center;
-  backdrop-filter: blur(3px);
-}
 .feed-meta {
   position: absolute;
   left: 18px;
