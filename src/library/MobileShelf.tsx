@@ -11,6 +11,7 @@ import { SubscribeButton } from './SubscribeButton';
 import { scrollShelfToTop, useScrollChrome } from '../shell/useScrollChrome';
 import { ThemeToggle } from '../shell/ThemeToggle';
 import { CoverFlow } from './CoverFlow';
+import { useLandscape } from '../shell/useLandscape';
 
 const BookPlayer = lazy(() =>
   import('../player/BookPlayer').then((m) => ({ default: m.BookPlayer }))
@@ -21,25 +22,6 @@ const COVER_H = 800;
 // iOS push feel: ease-out-ish curve, entrance ~350ms, exit slightly faster.
 const PUSH_MS = 350;
 const POP_MS = 320;
-
-/** Phone-shaped and held sideways. The height bound keeps a landscape tablet
- *  (which is also inside the mobile media query) on the ordinary list, where
- *  it still has plenty of vertical room. */
-const LANDSCAPE_MQ = '(orientation: landscape) and (max-height: 600px)';
-
-function useLandscape(): boolean {
-  const [on, setOn] = useState(
-    () => typeof window !== 'undefined' && window.matchMedia(LANDSCAPE_MQ).matches,
-  );
-  useEffect(() => {
-    const mq = window.matchMedia(LANDSCAPE_MQ);
-    const handler = () => setOn(mq.matches);
-    mq.addEventListener('change', handler);
-    handler();
-    return () => mq.removeEventListener('change', handler);
-  }, []);
-  return on;
-}
 
 const reducedMotion = () =>
   typeof window !== 'undefined' &&

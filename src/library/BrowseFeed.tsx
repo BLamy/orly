@@ -49,16 +49,24 @@ export function BrowseFeed({
   books,
   active,
   mobile,
+  fullBleed = false,
 }: {
   books: BookMeta[] | null;
   active: boolean;
   mobile: boolean;
+  /** Phone held sideways: the tab bar is hidden (see Library.tsx), so the feed
+   *  takes the whole screen instead of leaving a gap where the bar was. */
+  fullBleed?: boolean;
 }) {
   // A shuffled queue; `pos` indexes into it. Swiping advances the queue and
   // reshuffles+appends when it runs dry, so you never repeat until you've seen
   // everything.
   const [queue, setQueue] = useState<BookMeta[]>([]);
   const [pos, setPos] = useState(0);
+  // Sound preference lives here, not in the card, so it survives switching
+  // books. It starts ON — this is a video feed — but whether it's actually
+  // audible depends on the browser's autoplay policy, which the card resolves.
+  const [soundOn, setSoundOn] = useState(true);
 
   useEffect(() => {
     if (!books || books.length === 0) return;
@@ -89,8 +97,17 @@ export function BrowseFeed({
   if (!book) return <div className="feed-empty">Loading…</div>;
 
   return (
-    <div className={`feed-root ${mobile ? 'is-mobile' : 'is-desktop'}`}>
-      <FeedCard key={`${book.slug}:${pos}`} book={book} active={active} onSwitchBook={nextRandom} />
+    <div
+      className={`feed-root ${mobile ? 'is-mobile' : 'is-desktop'}${fullBleed ? ' is-full' : ''}`}
+    >
+      <FeedCard
+        key={`${book.slug}:${pos}`}
+        book={book}
+        active={active}
+        onSwitchBook={nextRandom}
+        soundOn={soundOn}
+        onToggleSound={() => setSoundOn((s) => !s)}
+      />
     </div>
   );
 }
@@ -99,10 +116,14 @@ function FeedCard({
   book,
   active,
   onSwitchBook,
+  soundOn,
+  onToggleSound,
 }: {
   book: BookMeta;
   active: boolean;
   onSwitchBook: () => void;
+  soundOn: boolean;
+  onToggleSound: () => void;
 }) {
   const [manifest, setManifest] = useState<ManifestLite | null>(null);
   const [chapterIdx, setChapterIdx] = useState(0);
@@ -154,16 +175,36 @@ function FeedCard({
   const pbRef = useRef(pb);
   pbRef.current = pb;
 
-  // Autoplay MUTED when this card is active; pause + rewind when it isn't.
+  // True when the browser refused to start audible playback and we fell back
+  // to muted — the next real user gesture can lift that (see onPointerUp).
+  const [blocked, setBlocked] = useState(false);
+
+  // Autoplay when this card is active; pause + rewind when it isn't.
+  //
+  // Sound is attempted first. Browsers only allow audible autoplay once the
+  // page has been interacted with, so a rejected play() is expected rather
+  // than exceptional: fall back to muted (which is always allowed) so the
+  // animation still runs on the audio clock, and flag it so the very next tap
+  // or swipe turns the sound on.
   useEffect(() => {
     if (!built) return;
     const a = audioRef.current;
     if (active) {
       if (useAudioClock && a) {
-        a.muted = true;
+        a.muted = !soundOn;
         a.play().then(
-          () => pbRef.current.play(),
-          () => pbRef.current.play() // even if audio blocked, run the rAF clock
+          () => {
+            setBlocked(false);
+            pbRef.current.play();
+          },
+          () => {
+            if (soundOn && !a.muted) {
+              a.muted = true;
+              setBlocked(true);
+              a.play().catch(() => {});
+            }
+            pbRef.current.play(); // even if audio is blocked, run the rAF clock
+          }
         );
       } else {
         pbRef.current.play();
@@ -172,16 +213,37 @@ function FeedCard({
       pbRef.current.pause();
       pbRef.current.seek(0);
     }
-  }, [built, active, useAudioClock, chapterIdx]);
+  }, [built, active, useAudioClock, chapterIdx, soundOn]);
+
+  /** Roll to the next chapter. */
+  const rollChapter = useCallback(() => {
+    setChapterIdx((i) => (i + 1) % Math.max(1, manifest?.chapters.length ?? 1));
+  }, [manifest?.chapters.length]);
+
+  /** Take the first user gesture as the permission the autoplay policy wanted.
+   *  Returns true if it consumed the gesture, so the caller doesn't ALSO scrub
+   *  on the tap that was really just "turn the sound on". */
+  const liftAutoplayBlock = useCallback(() => {
+    const a = audioRef.current;
+    if (!blocked || !a || !soundOn) return false;
+    a.muted = false;
+    a.play().catch(() => {});
+    setBlocked(false);
+    return true;
+  }, [blocked, soundOn]);
 
   // When a chapter finishes, roll to the next one (or loop the book).
+  //
+  // Two triggers, because the manifest's declared duration and the real audio
+  // file don't always agree: if the manifest says a chapter is a shade longer
+  // than the mp3 actually is, the clock stalls at the audio's end and this
+  // check never fires, leaving the card frozen on its last frame. The <audio>
+  // element's own `ended` is the authority — see onEnded below.
   useEffect(() => {
     if (!active || !built || !manifest) return;
     const end = chapter?.duration ?? pb.duration;
-    if (end > 0 && pb.t >= end - 0.08) {
-      setChapterIdx((i) => (i + 1) % Math.max(1, manifest.chapters.length));
-    }
-  }, [pb.t, active, built, manifest, chapter?.duration, pb.duration]);
+    if (end > 0 && pb.t >= end - 0.08) rollChapter();
+  }, [pb.t, active, built, manifest, chapter?.duration, pb.duration, rollChapter]);
 
   useEffect(() => {
     const mq = window.matchMedia('(orientation: portrait)');
@@ -220,11 +282,16 @@ function FeedCard({
     const dy = e.clientY - d.y;
     const rect = (e.currentTarget as HTMLElement).getBoundingClientRect();
 
-    // Swipe (vertical dominant) → new random book.
+    // Swipe (vertical dominant) → new random book. A swipe also counts as the
+    // gesture that unblocks audio, and the new card inherits soundOn.
     if (Math.abs(dy) > SWIPE_PX && Math.abs(dy) > Math.abs(dx)) {
+      liftAutoplayBlock();
       onSwitchBook();
       return;
     }
+
+    // A tap while sound is blocked means "turn it on", not "scrub".
+    if (liftAutoplayBlock()) return;
 
     const now = performance.now();
     const relX = (e.clientX - rect.left) / rect.width;
@@ -321,6 +388,33 @@ function FeedCard({
         </div>
       )}
 
+      {/* sound toggle — pointer events stop here so tapping it never scrubs */}
+      <button
+        className="feed-sound"
+        onPointerDown={(e) => e.stopPropagation()}
+        onPointerUp={(e) => e.stopPropagation()}
+        onClick={() => {
+          if (!soundOn) setBlocked(false);
+          onToggleSound();
+        }}
+        aria-label={soundOn ? 'Mute' : 'Unmute'}
+      >
+        {soundOn && !blocked ? (
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8">
+            <path d="M4 9v6h4l5 4V5L8 9H4z" strokeLinejoin="round" />
+            <path d="M16.5 8.5a5 5 0 0 1 0 7M19 6a8.5 8.5 0 0 1 0 12" strokeLinecap="round" />
+          </svg>
+        ) : (
+          <svg viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor" strokeWidth="1.8">
+            <path d="M4 9v6h4l5 4V5L8 9H4z" strokeLinejoin="round" />
+            <path d="M17 9.5l4 5M21 9.5l-4 5" strokeLinecap="round" />
+          </svg>
+        )}
+      </button>
+
+      {/* The browser blocked audible autoplay — say so, since the fix is a tap */}
+      {blocked && soundOn && <div className="feed-unmute">Tap for sound</div>}
+
       {/* hint strip */}
       <div className="feed-hint">swipe → new book · tap the sides → scrub</div>
 
@@ -331,7 +425,11 @@ function FeedCard({
         </span>
       ))}
 
-      {audioUrl && <audio ref={audioRef} src={audioUrl} preload="auto" muted />}
+      {/* `muted` is set imperatively (see the autoplay effect) rather than as
+          a prop, so React never re-mutes it behind the policy handling. */}
+      {audioUrl && (
+        <audio ref={audioRef} src={audioUrl} preload="auto" onEnded={rollChapter} />
+      )}
     </div>
   );
 }

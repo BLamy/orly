@@ -21,6 +21,7 @@ import { checkSubscriptions } from '../offline/subscriptions';
 import { useOnline } from '../offline/useOnline';
 import { TabBar, type ShelfTab } from '../shell/TabBar';
 import { useScrollChrome } from '../shell/useScrollChrome';
+import { useLandscape } from '../shell/useLandscape';
 import { ThemeToggle } from '../shell/ThemeToggle';
 import { OfflineBanner } from '../shell/OfflineBanner';
 import { Pothos } from '../shelf-decor/Pothos';
@@ -644,6 +645,7 @@ export function Library({ initialBundle }: { initialBundle?: string } = {}) {
   );
   const libraryBooks = online ? books : shelfBooks;
   const { hidden: chromeHidden } = useScrollChrome();
+  const landscape = useLandscape();
 
   return (
     <>
@@ -655,7 +657,12 @@ export function Library({ initialBundle }: { initialBundle?: string } = {}) {
       {visibleTab === 'settings' ? (
         <SettingsPanel />
       ) : visibleTab === 'browse' ? (
-        <BrowseFeed books={online ? books : shelfBooks} active mobile={mobile} />
+        <BrowseFeed
+          books={online ? books : shelfBooks}
+          active
+          mobile={mobile}
+          fullBleed={mobile && landscape}
+        />
       ) : mobile ? (
         // Both tabs stay mounted always (display:none, not unmounted) so
         // each keeps its OWN drill-down navigation position — switching
@@ -688,7 +695,10 @@ export function Library({ initialBundle }: { initialBundle?: string } = {}) {
           }
         />
       )}
-      {mobile && !activeScreenOpen && (
+      {/* Browse held sideways is the one full-bleed screen: the bar is gone and
+          the video gets the whole phone. Everywhere else it stays reachable —
+          and it comes straight back when you rotate upright. */}
+      {mobile && !activeScreenOpen && !(visibleTab === 'browse' && landscape) && (
         <TabBar
           tab={visibleTab}
           onChange={setTab}

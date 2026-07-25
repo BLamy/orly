@@ -1344,13 +1344,17 @@
   pointer-events: none;
 }
 .feed-hint {
+  /* Bottom-centred, out from under the sound button that now owns the
+     top-right corner. */
   position: absolute;
-  top: calc(14px + env(safe-area-inset-top, 0px));
-  right: 14px;
-  max-width: 42%;
-  color: rgba(255,255,255,0.6);
+  bottom: calc(10px + env(safe-area-inset-bottom, 0px));
+  left: 50%;
+  transform: translateX(-50%);
+  max-width: 80%;
+  color: rgba(255,255,255,0.55);
   font-size: 10.5px;
-  text-align: right;
+  text-align: center;
+  white-space: nowrap;
   pointer-events: none;
 }
 .feed-heart {
@@ -1584,3 +1588,38 @@
   transform: translateX(var(--lib-push));
   transition: transform 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
 }
+
+/* ---- Browse feed: sound ---- */
+.feed-sound {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 3;
+  width: 40px;
+  height: 40px;
+  display: grid;
+  place-items: center;
+  border: 0;
+  border-radius: 50%;
+  background: rgba(0, 0, 0, 0.45);
+  color: #fff;
+  cursor: pointer;
+  backdrop-filter: blur(4px);
+}
+.feed-unmute {
+  position: absolute;
+  top: 62px;
+  right: 14px;
+  z-index: 3;
+  padding: 5px 11px;
+  border-radius: 999px;
+  background: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  font-size: 12px;
+  font-weight: 700;
+  pointer-events: none;
+  backdrop-filter: blur(4px);
+}
+/* Phone landscape on Browse: no tab bar, so the feed takes the whole screen
+   (the inset below the bar is what this overrides). */
+.feed-root.is-mobile.is-full { bottom: 0; }
