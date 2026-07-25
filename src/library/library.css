@@ -1302,6 +1302,25 @@
   display: grid; place-items: center;
   color: var(--wood-muted); background: #05070d;
 }
+/* The track carries prev/current/next and is what actually slides. It follows
+   the finger with no transition (.is-instant, also used for the one frame where
+   a landed swipe is committed) and eases on release. */
+.feed-track {
+  position: absolute;
+  inset: 0;
+  will-change: transform;
+  transition: transform 330ms cubic-bezier(0.22, 0.61, 0.24, 1);
+}
+.feed-track.is-instant { transition: none; }
+.feed-slot {
+  position: absolute;
+  inset: 0;
+}
+/* Only the card in view takes gestures; the buffered neighbours are inert. */
+.feed-slot:not(.is-current) { pointer-events: none; }
+@media (prefers-reduced-motion: reduce) {
+  .feed-track { transition-duration: 1ms; }
+}
 .feed-card {
   position: absolute;
   inset: 0;
@@ -1360,20 +1379,6 @@
   border-radius: 999px;
   background: rgba(0,0,0,0.55);
   color: #fff; font-size: 12.5px;
-  pointer-events: none;
-}
-.feed-hint {
-  /* Bottom-centred, out from under the sound button that now owns the
-     top-right corner. */
-  position: absolute;
-  bottom: calc(10px + env(safe-area-inset-bottom, 0px));
-  left: 50%;
-  transform: translateX(-50%);
-  max-width: 80%;
-  color: rgba(255,255,255,0.55);
-  font-size: 10.5px;
-  text-align: center;
-  white-space: nowrap;
   pointer-events: none;
 }
 .feed-heart {
