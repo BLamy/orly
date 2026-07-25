@@ -6,9 +6,34 @@
   min-height: 100vh;
   margin: 0;
   padding: 0 clamp(16px, 5vw, 64px) 80px;
-  /* skeuomorphic wood: a soft top glow + subtle grain streaks over the
-     theme's wood gradient — walnut (dark) or pine (light), see :root
-     tokens in src/index.css */
+  position: relative;
+  isolation: isolate;
+  /* The bottom of the wood gradient, so the area past the last board (and
+     anything overscrolled into) matches instead of showing page white. */
+  background: var(--wood-bg-2);
+  color: var(--wood-text);
+  font-family: 'Replay Circuit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
+  -webkit-font-smoothing: antialiased;
+  box-sizing: border-box;
+}
+/* Skeuomorphic wood: a soft top glow + subtle grain streaks over the theme's
+   wood gradient — walnut (dark) or pine (light), see :root tokens in
+   src/index.css.
+
+   Painted on a FIXED, viewport-sized layer rather than on .lib itself. .lib is
+   the whole document — many thousands of pixels tall — and stretching a
+   gradient plus a 2px-period repeating gradient over that means the compositor
+   rasterizes it in tiles as you scroll: the hard grain stops land on different
+   sub-pixel offsets per tile and the vertical gradient quantizes differently in
+   each, so tile seams show up as the horizontal tearing/banding that scrolls
+   with the page. One viewport-sized layer is rasterized once and simply stays
+   put, which removes both the seams and the repaint cost. */
+.lib::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
   background:
     radial-gradient(1200px 600px at 50% -10%, var(--wood-grain-light) 0%, transparent 70%),
     repeating-linear-gradient(
@@ -19,11 +44,8 @@
       var(--wood-grain) 36px
     ),
     linear-gradient(180deg, var(--wood-bg-1) 0%, var(--wood-bg-2) 100%);
-  color: var(--wood-text);
-  font-family: 'Replay Circuit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
 }
+
 .lib *,
 .lib *::before,
 .lib *::after { box-sizing: border-box; }
@@ -171,7 +193,27 @@
 .lib-row-plant-lead {
   margin-right: 6px;
 }
-.shelf-pothos canvas { display: block; }
+
+/* ---- the continuous desktop wall: boards stacked one under another, every
+   book spine-out, series separated by a plant rather than by a heading ---- */
+.lib-wall {
+  max-width: 1280px;
+  margin: 0 auto 40px;
+  padding: 0 8px;
+}
+.lib-board {
+  /* Packed to width in JS (see packRows), so unlike the old per-series rows
+     these never need to scroll sideways — anything that doesn't fit is on the
+     next board down. Letting them scroll would also re-clip the plants. */
+  overflow-x: visible;
+  margin-bottom: 26px;
+}
+/* the plant canvas itself — fades in on its first painted frame (see
+   PlantCanvas) rather than snapping into existence mid-scroll */
+.shelf-pothos {
+  display: block;
+  transition: opacity 600ms ease;
+}
 
 /* invisible probe with the same width as a shelf row (fronts-vs-spines fit test) */
 .lib-row-probe {
@@ -261,15 +303,48 @@
   will-change: transform;
 }
 /* neighbors to the right of the open book slide aside (also across the boxed-
-   set boundary in search results, via :has) */
+   set boundary in search results, via :has). Plants slide with them: a shelf
+   plant standing after the books would otherwise be buried under the cover as
+   it swings open. */
 .lib-book.is-open ~ .lib-book,
 .lib-book:focus-visible ~ .lib-book,
+.lib-book.is-open ~ .lib-row-plant,
+.lib-book:focus-visible ~ .lib-row-plant,
 .lib-set:has(.lib-book.is-open) ~ .lib-book,
 .lib-set:has(.lib-book.is-open) ~ .lib-set,
 .lib-set:has(.lib-book.is-open) ~ .lib-front {
   transform: translateX(var(--lib-push));
   transition-duration: 300ms, 0s;
   transition-delay: 0ms, 480ms; /* the push leads the turn */
+}
+.lib-row-plant {
+  transition: transform 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+/* ----- hit area -----
+   A turned book's cover occupies ~216px of the row, but the button itself is
+   only a 52px spine slot, so sweeping the pointer along the shelf used to fall
+   off the open book while still visually over its cover: the book snapped
+   shut, every neighbour glided back, and whichever book landed under the
+   pointer opened — the jump you get when hit-boxes move out from under you.
+
+   This pseudo-element makes the hit area match what you can actually see, and
+   it resizes instantly (no transition) so it is correct on the first frame.
+   The result tracks like a cover-flow strip: the open cover's right edge sits
+   exactly where the next (pushed-aside) spine begins, so crossing from one to
+   the next is continuous with no gap to fall into and nothing to oscillate. */
+.lib-book::after {
+  content: '';
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  width: 52px;
+  z-index: 0;
+}
+.lib-book.is-open::after,
+.lib-book:focus-visible::after {
+  width: calc(var(--lib-push) + 52px);
 }
 .lib-book.is-open,
 .lib-book:focus-visible {
@@ -512,12 +587,26 @@
   min-height: 100dvh;
   margin: 0;
   padding: 0 0 32px;
-  background: linear-gradient(180deg, var(--wood-bg-1) 0%, var(--wood-bg-2) 100%);
+  position: relative;
+  isolation: isolate;
+  background: var(--wood-bg-2);
   color: var(--wood-text);
   font-family: 'Replay Circuit', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
   -webkit-font-smoothing: antialiased;
   box-sizing: border-box;
 }
+/* Fixed viewport-sized wood layer — same reason as .lib::before above: a
+   gradient stretched over a document-tall element bands differently per
+   composited tile and tears as it scrolls. */
+.libm::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: linear-gradient(180deg, var(--wood-bg-1) 0%, var(--wood-bg-2) 100%);
+}
+
 .libm *,
 .libm *::before,
 .libm *::after { box-sizing: border-box; }
@@ -1085,6 +1174,16 @@
   left: 50%;
   transform: translate(-50%, -50%);
   z-index: 70;
+  /* Frosted pill: the bar sits over a scrolling shelf of book covers and
+     plants, and an unbacked nav row was getting lost in that. Blurring what
+     passes underneath keeps it legible without hiding the shelf. */
+  padding: 4px;
+  border-radius: 999px;
+  background: var(--glass-bg, rgba(30, 22, 16, 0.55));
+  border: 1px solid var(--glass-border, var(--wood-border));
+  backdrop-filter: blur(var(--glass-blur, 14px)) saturate(1.4);
+  -webkit-backdrop-filter: blur(var(--glass-blur, 14px)) saturate(1.4);
+  box-shadow: 0 6px 24px rgba(0, 0, 0, 0.22);
 }
 .tabbar-top .tabbar-item {
   display: flex;
@@ -1269,7 +1368,13 @@
   margin: 0 auto;
   color: var(--wood-text);
 }
+/* On desktop the tab bar is a floating pill over the top of the page, so the
+   panel starts below it rather than under it. */
+@media (hover: hover) and (min-width: 821px) {
+  .settings-panel { padding-top: 92px; }
+}
 .settings-head h1 { font-size: 26px; margin: 6px 0 18px; color: var(--wood-heading); }
+.settings-section + .settings-section { margin-top: 26px; }
 .settings-section h2 { font-size: 15px; text-transform: uppercase; letter-spacing: 0.05em; color: var(--wood-muted); margin: 0 0 4px; }
 .settings-note { color: var(--wood-muted); font-size: 13px; margin: 0 0 14px; }
 .settings-group { margin-bottom: 16px; }
@@ -1287,3 +1392,166 @@
 }
 .settings-swatch.is-active { border-color: var(--wood-accent); box-shadow: 0 0 0 1px var(--wood-accent) inset; }
 .settings-swatch-chip { width: 22px; height: 22px; border-radius: 6px; border: 1px solid rgba(0,0,0,0.25); flex: none; }
+
+/* ---------- landscape cover flow (phone turned sideways) ----------
+   Replaces the alphabetical list on the shelf's root screen when the device
+   is held in landscape: there isn't the vertical room for a list there, but
+   there is exactly the room for a rack of covers you flick through. */
+.cf {
+  position: relative;
+  height: 100dvh;
+  /* clear of the fixed bottom tab bar, which stays reachable in landscape */
+  padding-bottom: calc(52px + env(safe-area-inset-bottom, 0px));
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  overflow: hidden;
+}
+.cf-strip {
+  display: flex;
+  align-items: center;
+  gap: 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+  /* mandatory snapping is what gives it the "lands on a cover" feel; the
+     momentum itself stays the platform's own */
+  scroll-snap-type: x mandatory;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+  perspective: 900px;
+  perspective-origin: 50% 45%;
+  /* half a viewport of padding at each end so the first and last covers can
+     reach the centre line like every other one */
+  padding: 0 calc(50% - 0.5 * var(--cf-item, 30dvh));
+}
+.cf-strip::-webkit-scrollbar { display: none; }
+.cf-item {
+  /* Sized off viewport HEIGHT, not width: in landscape the height is what's
+     scarce, and cover + reflection + caption + tab bar all have to fit inside
+     it without the strip clipping. */
+  --cf-item: 30dvh;
+  flex: 0 0 auto;
+  width: var(--cf-item);
+  scroll-snap-align: center;
+  appearance: none;
+  border: 0;
+  background: none;
+  padding: 0;
+  cursor: pointer;
+  transform-style: preserve-3d;
+  /* No transition: the transform is driven per-frame from scroll position
+     (see CoverFlow.tsx), and easing it as well would lag the finger. */
+  will-change: transform;
+}
+.cf-face { display: block; }
+.cf-canvas {
+  display: block;
+  width: 100%;
+  aspect-ratio: 3 / 4;
+  border-radius: 3px;
+  background: #fbfbf9;
+  box-shadow: 0 18px 34px rgba(0, 0, 0, 0.45);
+}
+.cf-reflection {
+  /* Only the near half of the reflection is shown — a full mirrored cover
+     doubles the stack height, which is exactly the room landscape hasn't got. */
+  display: block;
+  height: 12dvh;
+  overflow: hidden;
+  margin-top: 2px;
+  transform: scaleY(-1);
+  opacity: 0.28;
+  -webkit-mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent 55%);
+  mask-image: linear-gradient(to top, rgba(0, 0, 0, 0.7), transparent 55%);
+  pointer-events: none;
+}
+.cf-reflection .cf-canvas { box-shadow: none; }
+.cf-caption {
+  text-align: center;
+  padding: 4px 20px calc(10px + env(safe-area-inset-bottom, 0px));
+}
+.cf-title {
+  font-family: Georgia, 'Times New Roman', serif;
+  font-size: 19px;
+  font-weight: 700;
+  color: var(--wood-heading);
+}
+.cf-sub {
+  font-size: 12px;
+  color: var(--wood-muted);
+  margin-top: 2px;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+/* In cover-flow mode the list is still mounted (so scroll position, search
+   state, and the pushed-screen machinery all survive a rotation) — it's just
+   not shown. */
+.libm-list.is-coverflow { display: none; }
+
+/* ---------- series slipcase on the continuous wall ----------
+   Books that belong to a series stand flush against each other inside a
+   sleeve, with the series name printed down its left spine board — the way a
+   boxed set actually sits on a shelf. Open on the right: a cover turning out
+   of the case has to be able to swing past where a right wall would be. */
+.lib-sleeve {
+  position: relative;
+  flex: 0 0 auto;
+  display: flex;
+  align-items: flex-end;
+  gap: 0; /* the point: no daylight between books of one series */
+  padding: 10px 0 8px 26px;
+  background: linear-gradient(180deg, var(--wood-panel), var(--wood-panel-strong));
+  border: 1px solid var(--wood-border);
+  border-right: 0;
+  border-bottom: 5px solid var(--wood-shelf-board);
+  border-radius: 6px 0 0 3px;
+}
+.lib-sleeve-plaque {
+  position: absolute;
+  left: 5px;
+  top: 14px;
+  bottom: 16px;
+  width: 16px;
+  writing-mode: vertical-rl;
+  transform: rotate(180deg);
+  text-align: center;
+  font-size: 10px;
+  font-weight: 800;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--wood-muted);
+  overflow: hidden;
+  white-space: nowrap;
+  pointer-events: none;
+}
+/* When a book turns open inside the case, the books after it slide right by
+   --lib-push and would otherwise end up standing outside it on bare board.
+   This grows the case to the right by exactly that much — as a pseudo-element
+   so it costs no layout (widening the sleeve itself would shove every sibling
+   a second time, on top of the transform that already moves them). */
+.lib-sleeve::after {
+  content: '';
+  position: absolute;
+  top: -1px;
+  bottom: -5px;
+  left: 100%;
+  width: 0;
+  background: linear-gradient(180deg, var(--wood-panel), var(--wood-panel-strong));
+  border: 1px solid var(--wood-border);
+  border-left: 0;
+  border-bottom: 5px solid var(--wood-shelf-board);
+  border-radius: 0 6px 3px 0;
+  transition: width 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+  pointer-events: none;
+}
+.lib-sleeve:has(.lib-book.is-open)::after { width: var(--lib-push); }
+
+/* A book turning open inside a sleeve pushes everything after it on the board
+   — the rest of its own set, later sleeves, loose books, and plants alike. */
+.lib-sleeve:has(.lib-book.is-open) ~ .lib-book,
+.lib-sleeve:has(.lib-book.is-open) ~ .lib-sleeve,
+.lib-sleeve:has(.lib-book.is-open) ~ .lib-row-plant {
+  transform: translateX(var(--lib-push));
+  transition: transform 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
+}

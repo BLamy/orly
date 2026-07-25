@@ -9,6 +9,7 @@ import {
   resolveAnimal,
   searchBooks,
   useLazyVisible,
+  type Shelves,
 } from './shared';
 import { MobileShelf } from './MobileShelf';
 import { BrowseFeed } from './BrowseFeed';
@@ -25,6 +26,9 @@ import { OfflineBanner } from '../shell/OfflineBanner';
 import { Pothos } from '../shelf-decor/Pothos';
 import { Cactus } from '../shelf-decor/Cactus';
 import { SnakePlant } from '../shelf-decor/SnakePlant';
+import { StringOfHearts } from '../shelf-decor/StringOfHearts';
+import { SpiderPlant } from '../shelf-decor/SpiderPlant';
+import { Monstera } from '../shelf-decor/Monstera';
 import './library.css';
 
 const TAB_KEY = 'orly-tab';
@@ -149,15 +153,18 @@ function SpineBook({ book, seriesIndex }: { book: BookMeta; seriesIndex?: number
   }, [visible, book, seriesIndex]);
 
   // Hover intent: a short enter delay so sweeping the pointer across a shelf
-  // of spines doesn't ripple every book; leaving cancels/closes immediately
-  // (the CSS return transition is the slower, eased part).
+  // of spines doesn't ripple every book. Leaving closes on the same short
+  // delay rather than instantly — while a neighbour is gliding into place the
+  // pointer can cross a seam for a frame or two, and closing on that would
+  // read as a flicker. Either timer cancels the other, so a sweep resolves to
+  // exactly one open book.
   const enter = () => {
     window.clearTimeout(timer.current);
-    timer.current = window.setTimeout(() => setOpen(true), 90);
+    timer.current = window.setTimeout(() => setOpen(true), 55);
   };
   const leave = () => {
     window.clearTimeout(timer.current);
-    setOpen(false);
+    timer.current = window.setTimeout(() => setOpen(false), 55);
   };
   useEffect(() => () => window.clearTimeout(timer.current), []);
 
@@ -215,78 +222,23 @@ function BoxedSet({ name, books, front }: { name: string; books: BookMeta[]; fro
   );
 }
 
-type PlantKind = 'pothos' | 'cactus' | 'snake';
+type PlantKind = 'pothos' | 'cactus' | 'snake' | 'hearts' | 'spider' | 'monstera';
 
 function PlantSlot({ kind, width, seed }: { kind: PlantKind; width: number; seed: number }) {
   if (kind === 'cactus') return <Cactus width={width} height={BOOK_H} seed={seed} />;
   if (kind === 'snake') return <SnakePlant width={width} height={BOOK_H} seed={seed} />;
+  if (kind === 'hearts') return <StringOfHearts width={width} height={BOOK_H} seed={seed} />;
+  if (kind === 'spider') return <SpiderPlant width={width} height={BOOK_H} seed={seed} />;
+  if (kind === 'monstera') return <Monstera width={width} height={BOOK_H} seed={seed} />;
   return <Pothos width={width} height={BOOK_H} seed={seed} />;
 }
 
-function ShelfRow({
-  title,
-  meta,
-  front,
-  plantSlot,
-  plantSeed,
-  plantKind,
-  leadPlant,
-  children,
-}: {
-  title: string;
-  meta: string;
-  front: boolean;
-  /** Leftover shelf-board width (px) after this row's books, or 0/undefined
-   *  for "no room" — see leftoverPlantWidth() below. A decorative plant
-   *  fills real empty space instead of leaving a bare stretch of board. */
-  plantSlot?: number;
-  plantSeed?: number;
-  plantKind?: PlantKind;
-  /** A plant BEFORE the books instead of after — deliberately pushes the
-   *  row's books over to make room, rather than filling leftover space. */
-  leadPlant?: { kind: PlantKind; seed: number; width: number };
-  children: React.ReactNode;
-}) {
-  return (
-    <section className="lib-series">
-      <div className="lib-series-head">
-        <h2 className="lib-series-name">{title}</h2>
-        <span className="lib-series-meta">{meta}</span>
-      </div>
-      <div className={`lib-series-row ${front ? 'is-fronts' : 'is-spines'}`}>
-        {leadPlant && (
-          <div className="lib-row-plant lib-row-plant-lead">
-            <PlantSlot kind={leadPlant.kind} width={leadPlant.width} seed={leadPlant.seed} />
-          </div>
-        )}
-        {children}
-        {!!plantSlot && (
-          <div className="lib-row-plant">
-            <PlantSlot kind={plantKind ?? 'pothos'} width={plantSlot} seed={plantSeed ?? 0} />
-          </div>
-        )}
-      </div>
-    </section>
-  );
-}
-
-// Desktop-only decoration (see src/shelf-decor/) — only worth it on a plain
-// (non-boxed-set) spine row, where books don't stretch to fill the row width,
-// so there's often real bare shelf board after the last spine. Skipped for
-// front-cover rows (those are sized to fit exactly, by definition) and boxed
-// sets (their own fixed-width layout).
+// Shelf-board geometry used to pack the continuous wall (see packRows).
 const SPINE_SLOT = SPINE_W + 10; // spine width + row gap
 const ROW_CHROME = 40; // row padding
-const MIN_PLANT_W = 90;
-const MAX_PLANT_W = 170;
-const LEAD_PLANT_W = 120; // fixed width — always renders, not leftover-dependent
-function leftoverPlantWidth(n: number, rowWidth: number, front: boolean): number {
-  if (front || rowWidth <= 0) return 0;
-  const used = n * SPINE_SLOT + ROW_CHROME;
-  const leftover = rowWidth - used;
-  if (leftover < MIN_PLANT_W) return 0;
-  return Math.min(leftover - 20, MAX_PLANT_W);
-}
+/** Must match --lib-push in library.css — how far everything after a turning
+ *  book slides so the cover swings into a gap instead of over its neighbour. */
+const COVER_PUSH = 180;
 
 // Adaptive presentation: a group whose books all fit front-cover-first in the
 // row width shows fronts; longer groups collapse to spines. Recomputed on
@@ -318,6 +270,163 @@ function useRowWidth(): [number, React.RefObject<HTMLDivElement>] {
 
 const fitsFront = (n: number, rowWidth: number) =>
   rowWidth > 0 && n * FRONT_SLOT + GROUP_CHROME <= rowWidth;
+
+// ---------------------------------------------------------------------------
+// The desktop shelf proper: one continuous run of boards.
+//
+// It used to be a row per series, each with its own heading and its own board,
+// which meant a five-book series got the same full-width shelf as a fifteen-
+// book one and left most of the wood bare. Now every book on the site stands
+// spine-out in one long run that wraps onto the next board when it fills up,
+// and a plant marks where one series ends and the next begins — the way a real
+// shelf is organized: by what's standing next to what, not by headings.
+// ---------------------------------------------------------------------------
+
+type ShelfItem =
+  | { kind: 'book'; book: BookMeta; index?: number }
+  | { kind: 'series'; name: string; books: BookMeta[] }
+  | { kind: 'plant'; plant: PlantKind; seed: number; width: number };
+
+/** Sleeve chrome: the spine plaque gutter on the left plus the slipcase's own
+ *  padding. Books inside a sleeve stand flush — no gap — so the run reads as
+ *  one boxed set rather than a series of separate books. */
+const SLEEVE_CHROME = 40;
+const BOOK_W = 52; // .lib-book's width in library.css
+
+// Ordered so the two big hangers never land next to each other and the
+// standing plants break up the trailing ones.
+const PLANT_KINDS: PlantKind[] = ['pothos', 'monstera', 'hearts', 'cactus', 'spider', 'snake'];
+const DIVIDER_WIDTHS = [110, 140, 125, 160];
+
+/** A block is what packing treats as indivisible: one whole series (or
+ *  standalone group), or the plant that separates it from the next one. A
+ *  series is never broken across two boards unless it is longer than a board
+ *  can hold — books in a series belong shoulder to shoulder. */
+type ShelfBlock = { items: ShelfItem[]; width: number; splittable: boolean };
+
+/** Every shelf group as one block, with a plant block between groups.
+ *  Kinds/sizes/seeds come from the group index, so a given shelf always grows
+ *  the same plants in the same places rather than reshuffling on every render. */
+function shelfBlocks(shelves: Shelves): ShelfBlock[] {
+  // A named group is a real series and gets a slipcase; the unnamed ones are
+  // collections of standalone books, which stand loose on the board.
+  const groups: { name: string | null; books: BookMeta[] }[] = [];
+  if (shelves.featured) groups.push({ name: shelves.featured[0], books: shelves.featured[1] });
+  for (const [name, arr] of shelves.seriesRows) groups.push({ name, books: arr });
+  if (shelves.loops.length) groups.push({ name: null, books: shelves.loops });
+  if (shelves.more.length) groups.push({ name: null, books: shelves.more });
+
+  const plantBlock = (g: number): ShelfBlock => {
+    const width = DIVIDER_WIDTHS[g % DIVIDER_WIDTHS.length];
+    return {
+      items: [{ kind: 'plant', plant: PLANT_KINDS[g % PLANT_KINDS.length], seed: 40 + g * 3, width }],
+      width: width + ITEM_GAP,
+      splittable: false,
+    };
+  };
+
+  const blocks: ShelfBlock[] = [];
+  groups.forEach(({ name, books }, g) => {
+    // A plant opens the run too, so the first series is bracketed like the
+    // rest instead of starting flush against the end of the board.
+    blocks.push(plantBlock(g));
+    if (name) {
+      blocks.push({
+        items: [{ kind: 'series', name, books }],
+        width: SLEEVE_CHROME + books.length * BOOK_W + ITEM_GAP,
+        // A slipcase is one object: it is never broken across boards. If a
+        // series is too long for a board it simply gets a board of its own,
+        // and the sleeve scrolls within it (see .lib-sleeve).
+        splittable: false,
+      });
+      return;
+    }
+    blocks.push({
+      items: books.map((b) => ({ kind: 'book', book: b, index: b.seriesOrder })),
+      width: books.length * SPINE_SLOT,
+      // Loose standalone books can wrap wherever they need to.
+      splittable: true,
+    });
+  });
+  blocks.push(plantBlock(groups.length));
+  return blocks;
+}
+
+const ITEM_GAP = 10;
+
+/** Greedy left-to-right packing into boards of `rowWidth`, block by block.
+ *  Done in JS rather than with flex-wrap because each wrapped line needs to be
+ *  its own element: the board (the wood, its edge, and its shadow) is drawn
+ *  per row, and the row also has to reserve the cover-turn headroom below. */
+function packRows(blocks: ShelfBlock[], rowWidth: number): ShelfItem[][] {
+  // COVER_PUSH is held back at the right of every board: when a spine turns,
+  // everything after it — including the next plant — slides over by that much,
+  // and this is the room it slides into. Without it the last book's cover
+  // would swing off the end of the board.
+  const capacity = Math.max(SPINE_SLOT * 4, rowWidth - ROW_CHROME - COVER_PUSH);
+  const rows: ShelfItem[][] = [];
+  let row: ShelfItem[] = [];
+  let used = 0;
+
+  const flush = () => {
+    if (row.length) rows.push(row);
+    row = [];
+    used = 0;
+  };
+
+  for (const block of blocks) {
+    if (used + block.width > capacity && row.length) flush();
+    if (block.width <= capacity || !block.splittable) {
+      row.push(...block.items);
+      used += block.width;
+      continue;
+    }
+    // Longer than a whole board: lay it out board by board, contiguously.
+    for (const item of block.items) {
+      if (used + SPINE_SLOT > capacity && row.length) flush();
+      row.push(item);
+      used += SPINE_SLOT;
+    }
+  }
+  flush();
+  return rows;
+}
+
+function ContinuousShelves({ shelves, rowWidth }: { shelves: Shelves; rowWidth: number }) {
+  const rows = useMemo(() => {
+    if (rowWidth <= 0) return [];
+    return packRows(shelfBlocks(shelves), rowWidth);
+  }, [shelves, rowWidth]);
+
+  return (
+    <section className="lib-wall">
+      {rows.map((row, i) => (
+        <div className="lib-series-row is-spines lib-board" key={i}>
+          {row.map((it, j) => {
+            if (it.kind === 'book') {
+              return <SpineBook key={it.book.slug} book={it.book} seriesIndex={it.index} />;
+            }
+            if (it.kind === 'series') {
+              return (
+                <div className="lib-sleeve" key={`s${i}-${j}`}>
+                  <span className="lib-sleeve-plaque">{it.name}</span>
+                  {it.books.map((b) => (
+                    <SpineBook key={b.slug} book={b} seriesIndex={b.seriesOrder} />
+                  ))}
+                </div>
+              );
+            }
+            return (
+              <div className="lib-row-plant" key={`p${i}-${j}`}>
+                <PlantSlot kind={it.plant} width={it.width} seed={it.seed} />
+              </div>
+            );
+          })}
+        </div>
+      ))}
+    </section>
+  );
+}
 
 export function DesktopShelf({
   books,
@@ -418,80 +527,8 @@ export function DesktopShelf({
           </>
         ))}
 
-      {!matches && shelves && (() => {
-        const recentFront = fitsFront(shelves.recent.length, rowWidth);
-        const loopsFront = fitsFront(shelves.loops.length, rowWidth);
-        const moreFront = fitsFront(shelves.more.length, rowWidth);
-        const featuredFront = shelves.featured ? fitsFront(shelves.featured[1].length, rowWidth) : false;
-        return (
-          <>
-            {shelves.featured && (
-              <ShelfRow
-                title={shelves.featured[0]}
-                meta={`a ${shelves.featured[1].length}-book series · read in order →`}
-                front={featuredFront}
-              >
-                <BoxedSet name={shelves.featured[0]} books={shelves.featured[1]} front={featuredFront} />
-              </ShelfRow>
-            )}
-            <ShelfRow
-              title="Recently Added"
-              meta="hot off the press →"
-              front={recentFront}
-              plantSlot={leftoverPlantWidth(shelves.recent.length, rowWidth, recentFront)}
-              plantSeed={1}
-              plantKind="snake"
-              leadPlant={recentFront ? undefined : { kind: 'cactus', seed: 4, width: LEAD_PLANT_W }}
-            >
-              {shelves.recent.map((b) =>
-                recentFront ? (
-                  <FrontBook key={b.slug} book={b} />
-                ) : (
-                  <SpineBook key={b.slug} book={b} seriesIndex={b.seriesOrder} />
-                ),
-              )}
-            </ShelfRow>
-            {shelves.seriesRows.map(([name, arr]) => {
-              const front = fitsFront(arr.length, rowWidth);
-              return (
-                <ShelfRow key={name} title={name} meta={`a ${arr.length}-book series · read in order →`} front={front}>
-                  <BoxedSet name={name} books={arr} front={front} />
-                </ShelfRow>
-              );
-            })}
-            {shelves.loops.length > 0 && (
-              <ShelfRow
-                title="Agent Loops"
-                meta={`${shelves.loops.length} standalone builds →`}
-                front={loopsFront}
-                plantSlot={leftoverPlantWidth(shelves.loops.length, rowWidth, loopsFront)}
-                plantSeed={2}
-                plantKind="cactus"
-                leadPlant={loopsFront ? undefined : { kind: 'pothos', seed: 5, width: LEAD_PLANT_W }}
-              >
-                {shelves.loops.map((b) =>
-                  loopsFront ? <FrontBook key={b.slug} book={b} /> : <SpineBook key={b.slug} book={b} />,
-                )}
-              </ShelfRow>
-            )}
-            {shelves.more.length > 0 && (
-              <ShelfRow
-                title="More from the Shelf"
-                meta={`${shelves.more.length} one-offs →`}
-                front={moreFront}
-                plantSlot={leftoverPlantWidth(shelves.more.length, rowWidth, moreFront)}
-                plantSeed={3}
-                plantKind="pothos"
-                leadPlant={moreFront ? undefined : { kind: 'snake', seed: 6, width: LEAD_PLANT_W }}
-              >
-                {shelves.more.map((b) =>
-                  moreFront ? <FrontBook key={b.slug} book={b} /> : <SpineBook key={b.slug} book={b} />,
-                )}
-              </ShelfRow>
-            )}
-          </>
-        );
-      })()}
+      {!matches && shelves && <ContinuousShelves shelves={shelves} rowWidth={rowWidth} />}
+
 
       <footer className="lib-foot">
         by Brett Lamy · an “O’RLY?” parody · icons via the Noun Project (CC BY) · made with Claude Code using{' '}

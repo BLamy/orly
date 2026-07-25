@@ -38,7 +38,7 @@ function addArm(parent: THREE.Group, rng: () => number, baseY: number, radius: n
 }
 
 function buildCactus(potGroup: THREE.Group, rng: () => number): Sway[] {
-  buildPot(potGroup);
+  buildPot(potGroup, rng);
 
   const trunkR = 0.15 + rng() * 0.05;
   const trunkLen = 0.55 + rng() * 0.3;

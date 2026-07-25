@@ -1,63 +1,81 @@
 import * as THREE from 'three';
 import { bladeTexture } from './bladeTexture';
+import { snakeBladeGeometry } from './leafGeometry';
 import { PlantCanvas, type Sway } from './PlantCanvas';
 import { buildPot } from './pot';
 
+// No transparency/alphaTest any more: the blade's silhouette is the mesh (see
+// snakeBladeGeometry), so the texture is a full-bleed surface. That also lets
+// the material take a real specular sheen — Sansevieria leaves are waxy.
 const bladeMatCache = new Map<number, THREE.MeshStandardMaterial>();
 function bladeMaterial(variant: number): THREE.MeshStandardMaterial {
   let mat = bladeMatCache.get(variant);
   if (!mat) {
     mat = new THREE.MeshStandardMaterial({
       map: bladeTexture(variant),
-      transparent: true,
-      alphaTest: 0.35,
       side: THREE.DoubleSide,
-      roughness: 0.45,
+      roughness: 0.42,
+      metalness: 0.04,
     });
+    mat.userData.shared = true; // cached across instances — see PlantCanvas teardown
     bladeMatCache.set(variant, mat);
   }
   return mat;
 }
 
 function buildSnakePlant(potGroup: THREE.Group, rng: () => number): Sway[] {
-  buildPot(potGroup);
+  buildPot(potGroup, rng);
 
-  // A tight upright cluster of tall, stiff, pointed blades — no droop, just
-  // a slight outward fan and a gentle per-blade twist, clustered near the
-  // soil's center rather than spread to the rim (Sansevieria grows as a
-  // dense rosette, not a wide spread).
-  const bladeCount = 5 + Math.floor(rng() * 4);
+  // A tight upright rosette of tall, stiff, pointed blades. Two things carry
+  // the look, both of them per-blade properties of the mesh rather than of
+  // the arrangement: every blade tapers to a real point and twists around its
+  // own axis (so you see its face at the base and its edge near the tip), and
+  // every blade arches slightly backward instead of standing like a ruler.
+  //
+  // The blades are also grown in two tiers — a taller inner set and a shorter
+  // outer set fanned further out — which is how a real Sansevieria clump
+  // reads: new shoots come up in the middle, older ones lean away.
+  const bladeCount = 7 + Math.floor(rng() * 5);
   const sway: Sway[] = [];
+  // A golden-angle spiral rather than evenly-divided angles: even spacing
+  // makes a fan, phyllotaxis makes a clump.
+  const GOLDEN = Math.PI * (3 - Math.sqrt(5));
   for (let i = 0; i < bladeCount; i++) {
-    const a = (i / bladeCount) * Math.PI * 2 + rng() * 0.6;
-    const startR = 0.02 + rng() * 0.09;
-    const height = 0.55 + rng() * 0.32;
-    const width = 0.16 + rng() * 0.05; // thicker blades — was reading as too spindly
-    const lean = 0.08 + rng() * 0.1; // slight outward fan, not ramrod-straight
+    const a = i * GOLDEN + rng() * 0.35;
+    const inner = i % 3 !== 0; // roughly two-thirds tall inner shoots
+    const startR = (inner ? 0.02 : 0.07) + rng() * 0.06;
+    const height = inner ? 0.62 + rng() * 0.3 : 0.34 + rng() * 0.22;
+    const width = 0.13 + rng() * 0.05;
+    const lean = (inner ? 0.05 : 0.16) + rng() * 0.12; // outer shoots fan wider
 
     const group = new THREE.Group();
     group.position.set(Math.sin(a) * startR, 0.19, Math.cos(a) * startR);
-    group.rotation.y = a + (rng() - 0.5) * 0.3;
-    group.rotation.z = lean;
+    // Lean radially outward: rotate to face away from center, then tip over.
+    group.rotation.y = a + (rng() - 0.5) * 0.25;
+    group.rotation.z = lean * (rng() < 0.5 ? 1 : -1);
+    group.rotation.x = -lean * 0.5;
 
     const variant = Math.floor(rng() * 3);
-    const blade = new THREE.Mesh(new THREE.PlaneGeometry(width, height), bladeMaterial(variant));
-    // texture's tall axis is +y already (tip near top edge of the canvas);
-    // anchor at the blade's base, not its center.
-    blade.geometry.translate(0, height / 2, 0);
-    blade.rotateZ((rng() - 0.5) * 0.12); // a faint twist along its own axis
+    const blade = new THREE.Mesh(
+      snakeBladeGeometry(width, height, {
+        // Alternate the twist direction so the clump doesn't all spiral the
+        // same way, and twist the tall blades more (they have further to go).
+        twist: (0.35 + rng() * 0.5) * (i % 2 === 0 ? 1 : -1) * (inner ? 1.2 : 0.8),
+        bend: 0.08 + rng() * 0.1,
+        curl: 0.8 + rng() * 0.5,
+      }),
+      bladeMaterial(variant),
+    );
     group.add(blade);
 
-    // A back-to-back second plane at a slight angle gives the blade some
-    // cross-sectional volume instead of reading as a flat cutout from every
-    // angle.
-    const blade2 = new THREE.Mesh(new THREE.PlaneGeometry(width, height), bladeMaterial(variant));
-    blade2.geometry.translate(0, height / 2, 0);
-    blade2.rotation.y = Math.PI / 2 + (rng() - 0.5) * 0.3;
-    group.add(blade2);
-
     potGroup.add(group);
-    sway.push({ group, phase: rng() * Math.PI * 2, freq: 0.35 + rng() * 0.25, amp: 0.015 + rng() * 0.015 });
+    // Taller blades sway a little more and a little slower, like real ones.
+    sway.push({
+      group,
+      phase: rng() * Math.PI * 2,
+      freq: (inner ? 0.3 : 0.42) + rng() * 0.2,
+      amp: (inner ? 0.02 : 0.012) + rng() * 0.012,
+    });
   }
 
   return sway;

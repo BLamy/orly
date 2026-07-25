@@ -10,6 +10,7 @@ import { DownloadButton, DownloadSeriesButton } from './DownloadButton';
 import { SubscribeButton } from './SubscribeButton';
 import { scrollShelfToTop, useScrollChrome } from '../shell/useScrollChrome';
 import { ThemeToggle } from '../shell/ThemeToggle';
+import { CoverFlow } from './CoverFlow';
 
 const BookPlayer = lazy(() =>
   import('../player/BookPlayer').then((m) => ({ default: m.BookPlayer }))
@@ -20,6 +21,25 @@ const COVER_H = 800;
 // iOS push feel: ease-out-ish curve, entrance ~350ms, exit slightly faster.
 const PUSH_MS = 350;
 const POP_MS = 320;
+
+/** Phone-shaped and held sideways. The height bound keeps a landscape tablet
+ *  (which is also inside the mobile media query) on the ordinary list, where
+ *  it still has plenty of vertical room. */
+const LANDSCAPE_MQ = '(orientation: landscape) and (max-height: 600px)';
+
+function useLandscape(): boolean {
+  const [on, setOn] = useState(
+    () => typeof window !== 'undefined' && window.matchMedia(LANDSCAPE_MQ).matches,
+  );
+  useEffect(() => {
+    const mq = window.matchMedia(LANDSCAPE_MQ);
+    const handler = () => setOn(mq.matches);
+    mq.addEventListener('change', handler);
+    handler();
+    return () => mq.removeEventListener('change', handler);
+  }, []);
+  return on;
+}
 
 const reducedMotion = () =>
   typeof window !== 'undefined' &&
@@ -470,6 +490,7 @@ export function MobileShelf({
   screenRef.current = screen;
 
   const entries = useMemo(() => (books && books.length ? buildEntries(books) : null), [books]);
+  const landscape = useLandscape();
 
   const { hidden: chromeHidden, scrolled: chromeScrolled } = useScrollChrome();
 
@@ -695,9 +716,18 @@ export function MobileShelf({
     onScreenOpenChange?.(screenOpen);
   }, [screenOpen, onScreenOpenChange]);
 
+  // Turned sideways on a phone the list has almost no vertical room left, but
+  // it does have room for a rack of covers — so the root screen becomes cover
+  // flow. Only the root: a pushed series/book screen keeps its own layout.
+  const coverFlow = landscape && !screenOpen && !q && !!books && books.length > 0;
+
   return (
     <div className="libm">
-      <div ref={listRef} className={`libm-list${listUnder ? ' is-under' : ''}`}>
+      {coverFlow && <CoverFlow books={books} onOpen={pushBook} />}
+      <div
+        ref={listRef}
+        className={`libm-list${listUnder ? ' is-under' : ''}${coverFlow ? ' is-coverflow' : ''}`}
+      >
         <header
           ref={headerRef}
           className={`libm-top${chromeScrolled ? ' is-scrolled' : ''}${chromeHidden ? ' is-hidden' : ''}`}
@@ -809,7 +839,7 @@ export function MobileShelf({
         <footer className="libm-foot">by Brett Lamy · an “O’RLY?” parody</footer>
       </div>
 
-      {!q && !screenOpen && entries && entries.length > 0 && (
+      {!q && !screenOpen && !coverFlow && entries && entries.length > 0 && (
         <AlphaRail active={activeLetters} onJump={jumpTo} />
       )}
 

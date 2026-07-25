@@ -3,6 +3,7 @@ import { Drawer } from 'vaul';
 import { ChapterPlayer } from './ChapterPlayer';
 import { BlogPanel } from './BlogPanel';
 import { registerAnimalPool, resolveAnimal } from '../library/shared';
+import { useVideoAccent } from '../shell/useVideoAccent';
 
 const ASSET_BASE =
   (import.meta as unknown as { env?: { BASE_URL?: string } }).env?.BASE_URL ?? '/';
@@ -137,6 +138,7 @@ export function BookPlayer({
   const [current, setCurrent] = useState(0);
   const [seriesGroups, setSeriesGroups] = useState<SeriesGroup[] | null>(null);
   const compact = useMediaQuery(COMPACT_MQ);
+  const videoAccent = useVideoAccent();
   const drawerable = useMediaQuery(PORTRAIT_COMPACT_MQ);
   const [hasBlog, setHasBlog] = useState(false);
   const [tab, setTab] = useState<'chapters' | 'blog'>('chapters');
@@ -343,7 +345,10 @@ export function BookPlayer({
   if (error) return <div className="bp-loading">Couldn’t load “{slug}”: {error}</div>;
   if (!manifest) return <div className="bp-loading">Loading the book…</div>;
 
-  const accent = manifest.accent ?? '#38bdf8';
+  // The video color from Settings wins over the book's own manifest accent:
+  // it's a stated preference for how every video should look, and a per-book
+  // brand color quietly overriding it would make the setting look broken.
+  const accent = videoAccent;
   const chapter = manifest.chapters[current];
 
   return (

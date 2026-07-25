@@ -1,9 +1,14 @@
 import * as THREE from 'three';
 
-// Snake plant (Sansevieria) blades: tall, stiff, pointed, dark green with
-// the wavy lighter horizontal banding the plant is known for, and (on the
-// "laurentii" variant) a cream edge stripe. Drawn once per variant into a
-// tall, narrow offscreen canvas and reused as a shared alpha-mapped texture.
+// Snake plant (Sansevieria) blade surface: deep green with the wavy lighter
+// horizontal banding the plant is known for, and (on the "laurentii" variant)
+// a cream edge stripe.
+//
+// This is a full-bleed surface texture, NOT a cutout: the blade's silhouette
+// now comes from the mesh itself (see snakeBladeGeometry), so there's no clip
+// path and no alpha channel to fringe. UVs run u = 0..1 across the blade and
+// v = 0 at the base to v = 1 at the tip, which (three.js UVs being y-up) means
+// the base is the BOTTOM of this canvas.
 const cache = new Map<number, THREE.CanvasTexture>();
 const VARIANTS = 3;
 
@@ -18,81 +23,86 @@ export function bladeTexture(variant = 0): THREE.CanvasTexture {
   canvas.width = w;
   canvas.height = h;
   const ctx = canvas.getContext('2d')!;
-  ctx.clearRect(0, 0, w, h);
 
-  const cx = w / 2;
-  const baseW = w * 0.32;
-  const tipY = h * 0.02;
-
-  // A tall tapered blade with a slightly wavy edge (not a perfect lens).
-  ctx.beginPath();
-  ctx.moveTo(cx, tipY);
-  ctx.bezierCurveTo(cx - baseW * 0.15, h * 0.15, cx - baseW * 0.55, h * 0.45, cx - baseW * 0.65, h * 0.75);
-  ctx.bezierCurveTo(cx - baseW * 0.72, h * 0.9, cx - baseW * 0.6, h * 0.98, cx - baseW * 0.5, h);
-  ctx.lineTo(cx + baseW * 0.5, h);
-  ctx.bezierCurveTo(cx + baseW * 0.6, h * 0.98, cx + baseW * 0.72, h * 0.9, cx + baseW * 0.65, h * 0.75);
-  ctx.bezierCurveTo(cx + baseW * 0.55, h * 0.45, cx + baseW * 0.15, h * 0.15, cx, tipY);
-  ctx.closePath();
-  ctx.clip();
-
-  // Base color: deep, slightly blue-green.
+  // Base color, dark at both edges so the trough's own shading is reinforced
+  // by the paint (real blades are darkest where they roll away from you).
   const base = ctx.createLinearGradient(0, 0, w, 0);
-  base.addColorStop(0, '#1f4a2e');
-  base.addColorStop(0.5, '#2e6b3d');
-  base.addColorStop(1, '#1f4a2e');
+  base.addColorStop(0, '#173c25');
+  base.addColorStop(0.32, '#2c6b3d');
+  base.addColorStop(0.55, '#37804a');
+  base.addColorStop(1, '#173c25');
   ctx.fillStyle = base;
   ctx.fillRect(0, 0, w, h);
 
-  // Wavy horizontal variegation bands — the plant's signature look.
   let bs = v * 733 + 91;
   const rnd = () => {
     bs = (bs * 1103515245 + 12345) & 0x7fffffff;
     return bs / 0x7fffffff;
   };
-  const bandCount = 5 + Math.floor(rnd() * 3);
+
+  // Wavy horizontal variegation bands — the plant's signature look. Drawn as
+  // chevrons rather than flat rectangles: on a real leaf the pale band dips
+  // toward the base at the margins and peaks along the midline.
+  const bandCount = 9 + Math.floor(rnd() * 4);
   ctx.globalCompositeOperation = 'lighter';
   for (let i = 0; i < bandCount; i++) {
-    const by = rnd() * h;
-    const bh = h * (0.04 + rnd() * 0.05);
-    const grad = ctx.createLinearGradient(0, by, 0, by + bh);
-    grad.addColorStop(0, 'rgba(120, 168, 90, 0)');
-    grad.addColorStop(0.5, 'rgba(140, 188, 104, 0.45)');
-    grad.addColorStop(1, 'rgba(120, 168, 90, 0)');
+    const by = (i + rnd() * 0.7) * (h / bandCount);
+    const bh = h * (0.025 + rnd() * 0.035);
+    const arch = h * (0.02 + rnd() * 0.03);
+    const grad = ctx.createLinearGradient(0, by - bh, 0, by + bh);
+    grad.addColorStop(0, 'rgba(126, 174, 96, 0)');
+    grad.addColorStop(0.5, `rgba(150, 196, 110, ${0.3 + rnd() * 0.25})`);
+    grad.addColorStop(1, 'rgba(126, 174, 96, 0)');
     ctx.fillStyle = grad;
-    ctx.fillRect(0, by, w, bh);
+    ctx.beginPath();
+    ctx.moveTo(0, by + arch - bh);
+    ctx.quadraticCurveTo(w / 2, by - arch - bh, w, by + arch - bh);
+    ctx.lineTo(w, by + arch + bh);
+    ctx.quadraticCurveTo(w / 2, by - arch + bh, 0, by + arch + bh);
+    ctx.closePath();
+    ctx.fill();
   }
   ctx.globalCompositeOperation = 'source-over';
 
-  // "laurentii" variant: a cream edge stripe down both sides.
+  // "laurentii" variant: a cream edge stripe down both margins, fading out as
+  // it approaches the tip the way the real cultivar's does.
   if (v === 1) {
-    ctx.strokeStyle = 'rgba(230, 222, 170, 0.55)';
-    ctx.lineWidth = w * 0.06;
-    ctx.beginPath();
-    ctx.moveTo(cx - baseW * 0.45, h * 0.2);
-    ctx.lineTo(cx - baseW * 0.55, h * 0.95);
-    ctx.moveTo(cx + baseW * 0.45, h * 0.2);
-    ctx.lineTo(cx + baseW * 0.55, h * 0.95);
-    ctx.stroke();
+    for (const edge of [0, 1]) {
+      const stripe = ctx.createLinearGradient(0, h, 0, 0);
+      stripe.addColorStop(0, 'rgba(232, 214, 138, 0.85)');
+      stripe.addColorStop(0.75, 'rgba(232, 214, 138, 0.7)');
+      stripe.addColorStop(1, 'rgba(232, 214, 138, 0)');
+      ctx.fillStyle = stripe;
+      ctx.fillRect(edge === 0 ? 0 : w - w * 0.09, 0, w * 0.09, h);
+    }
   }
 
-  // Subtle center highlight for a rounded, waxy cross-section.
-  const gloss = ctx.createLinearGradient(cx - baseW * 0.3, 0, cx + baseW * 0.1, 0);
-  gloss.addColorStop(0, 'rgba(255,255,255,0.16)');
-  gloss.addColorStop(1, 'rgba(255,255,255,0)');
-  ctx.fillStyle = gloss;
-  ctx.fillRect(0, 0, w, h);
+  // Fine lengthwise fibre striations — breaks up the flatness at close range.
+  ctx.globalCompositeOperation = 'overlay';
+  for (let i = 0; i < 26; i++) {
+    const fx = rnd() * w;
+    ctx.strokeStyle = `rgba(${rnd() < 0.5 ? '255,255,255' : '0,0,0'},0.07)`;
+    ctx.lineWidth = 1;
+    ctx.beginPath();
+    ctx.moveTo(fx, 0);
+    ctx.quadraticCurveTo(fx + (rnd() - 0.5) * 6, h / 2, fx, h);
+    ctx.stroke();
+  }
+  ctx.globalCompositeOperation = 'source-over';
 
-  // Darken the rim for form.
-  ctx.strokeStyle = 'rgba(8, 24, 12, 0.4)';
-  ctx.lineWidth = 3;
-  ctx.beginPath();
-  ctx.moveTo(cx, tipY);
-  ctx.bezierCurveTo(cx - baseW * 0.15, h * 0.15, cx - baseW * 0.55, h * 0.45, cx - baseW * 0.65, h * 0.75);
-  ctx.bezierCurveTo(cx - baseW * 0.72, h * 0.9, cx - baseW * 0.6, h * 0.98, cx - baseW * 0.5, h);
-  ctx.moveTo(cx + baseW * 0.5, h);
-  ctx.bezierCurveTo(cx + baseW * 0.6, h * 0.98, cx + baseW * 0.72, h * 0.9, cx + baseW * 0.65, h * 0.75);
-  ctx.bezierCurveTo(cx + baseW * 0.55, h * 0.45, cx + baseW * 0.15, h * 0.15, cx, tipY);
-  ctx.stroke();
+  // The base of every blade is shaded — it sits down inside the rosette where
+  // little light reaches — and the very tip of a snake plant dries to brown.
+  const root = ctx.createLinearGradient(0, h, 0, h * 0.82);
+  root.addColorStop(0, 'rgba(8, 24, 12, 0.45)');
+  root.addColorStop(1, 'rgba(8, 24, 12, 0)');
+  ctx.fillStyle = root;
+  ctx.fillRect(0, h * 0.82, w, h * 0.18);
+
+  const tip = ctx.createLinearGradient(0, 0, 0, h * 0.06);
+  tip.addColorStop(0, 'rgba(150, 112, 62, 0.75)');
+  tip.addColorStop(1, 'rgba(150, 112, 62, 0)');
+  ctx.fillStyle = tip;
+  ctx.fillRect(0, 0, w, h * 0.06);
 
   const tex = new THREE.CanvasTexture(canvas);
   tex.needsUpdate = true;

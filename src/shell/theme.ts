@@ -13,10 +13,13 @@ const THEME_IDS = new Set(THEMES.map((t) => t.id));
 
 const KEY = 'orly-theme';
 
+/** The shelf's out-of-the-box finish. */
+export const DEFAULT_THEME: ShelfTheme = 'mahogany';
+
 export function getTheme(): ShelfTheme {
-  if (typeof window === 'undefined') return 'walnut';
+  if (typeof window === 'undefined') return DEFAULT_THEME;
   const v = window.localStorage.getItem(KEY);
-  return v && THEME_IDS.has(v as ShelfTheme) ? (v as ShelfTheme) : 'walnut';
+  return v && THEME_IDS.has(v as ShelfTheme) ? (v as ShelfTheme) : DEFAULT_THEME;
 }
 
 export function applyTheme(theme: ShelfTheme) {

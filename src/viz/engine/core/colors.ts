@@ -20,7 +20,21 @@ export const TEXT = 'var(--bp-text, #e6edf6)';
 export const MUTED = '#8da2be';
 export const GRID = 'var(--bp-line, rgba(148, 163, 184, 0.16))';
 
-export const ACCENT = '#38bdf8'; // sky
+/** The video accent, chosen in Settings (src/shell/videoTheme.ts) and
+ *  published as --video-accent on <html>.
+ *
+ *  Resolved to a literal hex ONCE at module load rather than left as a
+ *  `var()` string like the structural tokens above: scenes feed ACCENT through
+ *  d3's `interpolateRgb`/`d3.color`, which cannot parse a CSS var() function.
+ *  Reading it at load is why main.tsx applies the setting before render — and
+ *  it means a change takes effect on the next scene load, not mid-scene. */
+function resolveAccent(): string {
+  if (typeof document === 'undefined') return '#4c6ef5'; // node/generator render
+  const v = getComputedStyle(document.documentElement).getPropertyValue('--video-accent').trim();
+  return v || '#4c6ef5';
+}
+
+export const ACCENT = resolveAccent();
 export const SECONDARY = '#a78bfa'; // violet
 export const POSITIVE = '#34d399'; // emerald
 export const WARM = '#fbbf24'; // amber
