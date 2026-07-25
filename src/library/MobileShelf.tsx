@@ -8,7 +8,7 @@ import { composeCover, drawSpine, type BookMeta } from './cover';
 import { assetUrl, FEATURED_SERIES, openBook, resolveAnimal, searchBooks, useLazyVisible } from './shared';
 import { DownloadButton, DownloadSeriesButton } from './DownloadButton';
 import { SubscribeButton } from './SubscribeButton';
-import { scrollShelfToTop, useScrollChrome } from '../shell/useScrollChrome';
+import { blockChromeReveal, scrollShelfToTop, useScrollChrome } from '../shell/useScrollChrome';
 import { ThemeToggle } from '../shell/ThemeToggle';
 import { CoverFlow } from './CoverFlow';
 import { useLandscape } from '../shell/useLandscape';
@@ -179,6 +179,10 @@ function AlphaRail({ active, onJump }: { active: Set<string>; onJump: (letter: s
   const [bubble, setBubble] = useState<{ letter: string; y: number } | null>(null);
 
   const pick = (clientY: number) => {
+    // Block on every touch of the rail, not only on the frames that land a
+    // jump: dragging across inactive letters still scrolls nothing, and a
+    // pause there would let the block lapse and the bars flap back in.
+    blockChromeReveal();
     const rail = railRef.current;
     if (!rail) return;
     const rect = rail.getBoundingClientRect();
@@ -486,8 +490,15 @@ export function MobileShelf({
     const el = headerRef.current;
     const list = listRef.current; // shared ancestor of the header AND the rows below it
     if (!el || !list) return;
+    // When hidden the header doesn't leave — it collapses to a strip that
+    // still covers the notch/hole-punch band, so sticky letter heads park
+    // under THAT rather than sliding up under the phone's rounded corner
+    // where the letter is clipped. See --libm-collapsed-h in library.css.
     const setH = () =>
-      list.style.setProperty('--libm-top-h', chromeHidden ? '0px' : `${el.getBoundingClientRect().height}px`);
+      list.style.setProperty(
+        '--libm-top-h',
+        chromeHidden ? 'var(--libm-collapsed-h)' : `${el.getBoundingClientRect().height}px`,
+      );
     setH();
     if (chromeHidden) return;
     const ro = new ResizeObserver(setH);
@@ -677,6 +688,9 @@ export function MobileShelf({
   const jumpTo = (letter: string) => {
     const el = sectionRefs.current.get(letter);
     if (!el) return;
+    // Aiming with the rail is not "scrolling up", so it must not bring the
+    // hidden bars back — see blockChromeReveal.
+    blockChromeReveal();
     const headH = headerRef.current?.getBoundingClientRect().height ?? 0;
     // instant jump — smooth scrolling would fight the dragging finger
     window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - headH - 4 });

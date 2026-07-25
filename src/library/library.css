@@ -645,9 +645,28 @@
   background: var(--glass-bg-solid);
   border-bottom-color: var(--glass-border);
 }
-/* Twitter-style: hides on scroll-down, slides back in on scroll-up */
+/* Twitter-style: hides on scroll-down, slides back in on scroll-up.
+
+   It does NOT retract all the way. A phone's status-bar band — the notch or
+   hole-punch, and the rounded screen corners either side of it — would then be
+   over bare list content, and the sticky letter heads that park at the top got
+   clipped by that corner. So the bar stops with `--libm-collapsed-h` of itself
+   still on screen: enough to keep the band opaque, plus a few px of gutter
+   under it. Its text fades on the same curve, so what's left reads as a plain
+   strip rather than a cut-off header. */
+.libm-list { --libm-collapsed-h: calc(env(safe-area-inset-top, 0px) + 8px); }
 .libm-top.is-hidden {
-  transform: translateY(-100%);
+  transform: translateY(calc(-100% + var(--libm-collapsed-h, 8px)));
+}
+.libm-brand,
+.libm-search {
+  transition: opacity 200ms ease;
+}
+.libm-top.is-hidden .libm-brand,
+.libm-top.is-hidden .libm-search {
+  opacity: 0;
+  /* nothing invisible should still be tappable */
+  pointer-events: none;
 }
 .libm-brand {
   display: flex;
