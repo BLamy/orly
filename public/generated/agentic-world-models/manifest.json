@@ -1,0 +1,125 @@
+{
+  "format": 3,
+  "slug": "agentic-world-models",
+  "title": "Agentic World Models",
+  "accent": "#c79100",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Sparse Reward Problem",
+      "blurb": "One reward pulse at the end of a long trajectory wastes everything the environment already told the agent.",
+      "scene": "books/agentic-world-models/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        11.064,
+        19.981,
+        26.192,
+        34.9,
+        45.383,
+        51.548,
+        59.733,
+        67.466,
+        76.091,
+        84.625
+      ],
+      "duration": 93.622
+    },
+    {
+      "number": 2,
+      "title": "The Masking Trick",
+      "blurb": "A single loss, two masks: actions get the policy gradient, observations get a supervised signal for free.",
+      "scene": "books/agentic-world-models/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        6.153,
+        15.278,
+        20.271,
+        30.685,
+        38.777,
+        49.91,
+        59.558,
+        71.145,
+        81.744,
+        90.475,
+        99.844
+      ],
+      "duration": 108.25
+    },
+    {
+      "number": 3,
+      "title": "Echo and the Field Study",
+      "blurb": "Dense supervision roughly doubles a terminal agent's pass rate, but the same trick can overfit fast.",
+      "scene": "books/agentic-world-models/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        7.105,
+        17.705,
+        24.172,
+        36.259,
+        44.339,
+        52.721,
+        60.628,
+        68.929,
+        79.831,
+        88.643,
+        97.083,
+        105.257,
+        112.513,
+        123.449
+      ],
+      "duration": 132.866
+    },
+    {
+      "number": 4,
+      "title": "The PaW Dials",
+      "blurb": "Three dials tame dense supervision: entropy-filtered targets, a clipped loss, and a reward-aware weight.",
+      "scene": "books/agentic-world-models/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        9.741,
+        18.03,
+        24.973,
+        32.38,
+        41.691,
+        49.505,
+        55.925,
+        64.667,
+        70.878,
+        80.422,
+        89.768,
+        99.891,
+        107.972
+      ],
+      "duration": 115.82
+    },
+    {
+      "number": 5,
+      "title": "The Standalone Simulator",
+      "blurb": "A standalone learned world model gets good enough to train the policy against, standing in for reality.",
+      "scene": "books/agentic-world-models/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        8.313,
+        15.813,
+        26.1,
+        37.536,
+        47.427,
+        60.709,
+        69.87,
+        81.805,
+        89.595,
+        97.281,
+        105.814,
+        114.602,
+        122.892,
+        132.528
+      ],
+      "duration": 139.599
+    }
+  ]
+}

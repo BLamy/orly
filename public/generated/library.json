@@ -1,6 +1,45 @@
 {
   "books": [
     {
+      "slug": "agentic-world-models",
+      "title": "Agentic World Models",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c79100",
+      "href": "?bundle=agentic-world-models",
+      "series": "Fresh from arXiv",
+      "seriesOrder": 9,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Sparse Reward Problem",
+          "duration": 93.622
+        },
+        {
+          "number": 2,
+          "title": "The Masking Trick",
+          "duration": 108.25
+        },
+        {
+          "number": 3,
+          "title": "Echo and the Field Study",
+          "duration": 132.866
+        },
+        {
+          "number": 4,
+          "title": "The PaW Dials",
+          "duration": 115.82
+        },
+        {
+          "number": 5,
+          "title": "The Standalone Simulator",
+          "duration": 139.599
+        }
+      ],
+      "createdAt": "2026-07-25T04:33:15.980Z"
+    },
+    {
       "slug": "slai-t-rex",
       "title": "Training T-Rex",
       "subtitle": "",
