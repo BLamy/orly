@@ -207,6 +207,23 @@
      next board down. Letting them scroll would also re-clip the plants. */
   overflow-x: visible;
   margin-bottom: 26px;
+  /* Spread the board's contents across its full width instead of stacking
+     them at the left with dead wood at the right. The justified units are
+     whole blocks — a slipcase, a plant, an unbroken run of standalone books
+     (see groupRow) — never individual books, so a series stays tight and a
+     plant sharing a board with one ends up at the opposite end of it.
+     The right-hand padding inherited from .is-spines is the cover-turn
+     headroom, so the last block still has room to swing open. */
+  justify-content: space-between;
+  gap: 10px;
+}
+/* An unbroken run of standalone books: they keep their own even spacing and
+   move as one unit when the board justifies. */
+.lib-run {
+  display: flex;
+  align-items: flex-end;
+  flex: 0 0 auto;
+  gap: 10px;
 }
 /* the plant canvas itself — fades in on its first painted frame (see
    PlantCanvas) rather than snapping into existence mid-scroll */
@@ -1400,11 +1417,14 @@
 .cf {
   position: relative;
   height: 100dvh;
-  /* clear of the fixed bottom tab bar, which stays reachable in landscape */
-  padding-bottom: calc(52px + env(safe-area-inset-bottom, 0px));
+  /* Sits ON the tab bar rather than floating in the middle of the screen:
+     bottom-aligned, clear of the bar by a fixed margin. Centring left it
+     crowding the top edge with a gap above the bar. */
+  padding-top: 10px;
+  padding-bottom: calc(60px + env(safe-area-inset-bottom, 0px));
   display: flex;
   flex-direction: column;
-  justify-content: center;
+  justify-content: flex-end;
   overflow: hidden;
 }
 .cf-strip {
@@ -1467,19 +1487,34 @@
 }
 .cf-reflection .cf-canvas { box-shadow: none; }
 .cf-caption {
+  /* Fixed height, whether or not this book has a subtitle. Letting the
+     caption size to its content made the whole rack above it rise and fall as
+     you flicked past books with and without one. */
+  flex: none;
+  height: 52px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
   text-align: center;
-  padding: 4px 20px calc(10px + env(safe-area-inset-bottom, 0px));
+  padding: 0 20px;
+  overflow: hidden;
 }
 .cf-title {
-  font-family: Georgia, 'Times New Roman', serif;
-  font-size: 19px;
+  /* The shelf's own UI face (inherited from .libm), not a serif: this is a
+     now-playing label like the rest of the mobile chrome, not a book heading. */
+  font-size: 18px;
+  line-height: 1.25;
   font-weight: 700;
   color: var(--wood-heading);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 .cf-sub {
   font-size: 12px;
+  line-height: 1.3;
   color: var(--wood-muted);
-  margin-top: 2px;
+  margin-top: 3px;
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -1547,8 +1582,12 @@
 }
 .lib-sleeve:has(.lib-book.is-open)::after { width: var(--lib-push); }
 
-/* A book turning open inside a sleeve pushes everything after it on the board
-   — the rest of its own set, later sleeves, loose books, and plants alike. */
+/* A book turning open inside a sleeve or a run pushes everything after it on
+   the board — later sleeves, runs, and plants alike. */
+.lib-sleeve:has(.lib-book.is-open) ~ .lib-run,
+.lib-run:has(.lib-book.is-open) ~ .lib-run,
+.lib-run:has(.lib-book.is-open) ~ .lib-sleeve,
+.lib-run:has(.lib-book.is-open) ~ .lib-row-plant,
 .lib-sleeve:has(.lib-book.is-open) ~ .lib-book,
 .lib-sleeve:has(.lib-book.is-open) ~ .lib-sleeve,
 .lib-sleeve:has(.lib-book.is-open) ~ .lib-row-plant {

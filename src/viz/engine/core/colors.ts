@@ -29,9 +29,9 @@ export const GRID = 'var(--bp-line, rgba(148, 163, 184, 0.16))';
  *  Reading it at load is why main.tsx applies the setting before render — and
  *  it means a change takes effect on the next scene load, not mid-scene. */
 function resolveAccent(): string {
-  if (typeof document === 'undefined') return '#4c6ef5'; // node/generator render
+  if (typeof document === 'undefined') return '#cbd5e1'; // node/generator render
   const v = getComputedStyle(document.documentElement).getPropertyValue('--video-accent').trim();
-  return v || '#4c6ef5';
+  return v || '#cbd5e1';
 }
 
 export const ACCENT = resolveAccent();

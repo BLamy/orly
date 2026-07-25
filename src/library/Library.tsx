@@ -402,23 +402,32 @@ function ContinuousShelves({ shelves, rowWidth }: { shelves: Shelves; rowWidth: 
     <section className="lib-wall">
       {rows.map((row, i) => (
         <div className="lib-series-row is-spines lib-board" key={i}>
-          {row.map((it, j) => {
-            if (it.kind === 'book') {
-              return <SpineBook key={it.book.slug} book={it.book} seriesIndex={it.index} />;
-            }
-            if (it.kind === 'series') {
+          {groupRow(row).map((group, j) => {
+            if (group.kind === 'series') {
               return (
                 <div className="lib-sleeve" key={`s${i}-${j}`}>
-                  <span className="lib-sleeve-plaque">{it.name}</span>
-                  {it.books.map((b) => (
+                  <span className="lib-sleeve-plaque">{group.name}</span>
+                  {group.books.map((b) => (
                     <SpineBook key={b.slug} book={b} seriesIndex={b.seriesOrder} />
                   ))}
                 </div>
               );
             }
+            if (group.kind === 'plant') {
+              return (
+                <div className="lib-row-plant" key={`p${i}-${j}`}>
+                  <PlantSlot kind={group.plant} width={group.width} seed={group.seed} />
+                </div>
+              );
+            }
+            // A run of standalone books. Wrapped as one element so the board's
+            // justification spaces the RUN against its neighbours rather than
+            // prising the books apart from each other.
             return (
-              <div className="lib-row-plant" key={`p${i}-${j}`}>
-                <PlantSlot kind={it.plant} width={it.width} seed={it.seed} />
+              <div className="lib-run" key={`r${i}-${j}`}>
+                {group.books.map((it) => (
+                  <SpineBook key={it.book.slug} book={it.book} seriesIndex={it.index} />
+                ))}
               </div>
             );
           })}
@@ -426,6 +435,27 @@ function ContinuousShelves({ shelves, rowWidth }: { shelves: Shelves; rowWidth: 
       ))}
     </section>
   );
+}
+
+type RowGroup =
+  | { kind: 'series'; name: string; books: BookMeta[] }
+  | { kind: 'plant'; plant: PlantKind; seed: number; width: number }
+  | { kind: 'run'; books: { book: BookMeta; index?: number }[] };
+
+/** Coalesces a packed row into the units the board justifies between: each
+ *  sleeve, each plant, and each unbroken run of standalone books. */
+function groupRow(row: ShelfItem[]): RowGroup[] {
+  const groups: RowGroup[] = [];
+  for (const it of row) {
+    if (it.kind === 'book') {
+      const last = groups[groups.length - 1];
+      if (last?.kind === 'run') last.books.push({ book: it.book, index: it.index });
+      else groups.push({ kind: 'run', books: [{ book: it.book, index: it.index }] });
+      continue;
+    }
+    groups.push(it);
+  }
+  return groups;
 }
 
 export function DesktopShelf({
