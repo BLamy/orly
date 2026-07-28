@@ -14,6 +14,30 @@ export const LEAD_SERIES = 'The Explainers';
 // This series is the shelf's showcase: it always leads (its own top row) and
 // is excluded from the Recently Added strip.
 export const FEATURED_SERIES = 'Daily Papers by Hugging Face';
+export const CHRONOLOGICAL_SERIES = new Set([
+  FEATURED_SERIES,
+  'Fresh from arXiv',
+]);
+
+interface SeriesSortable {
+  slug: string;
+  createdAt?: string;
+  seriesOrder?: number;
+}
+
+export function isChronologicalSeries(series?: string): boolean {
+  return !!series && CHRONOLOGICAL_SERIES.has(series);
+}
+
+export function sortSeriesBooks<T extends SeriesSortable>(series: string, books: T[]): T[] {
+  return books.sort((a, c) => {
+    if (isChronologicalSeries(series)) {
+      const byDate = (c.createdAt ?? '').localeCompare(a.createdAt ?? '');
+      return byDate || a.slug.localeCompare(c.slug);
+    }
+    return (a.seriesOrder ?? 0) - (c.seriesOrder ?? 0);
+  });
+}
 
 export function openBook(b: BookMeta) {
   window.location.href = ASSET_BASE + String(b.href).replace(/^\//, '');
@@ -49,7 +73,7 @@ export function resolveAnimal(book: HasAnimal): string | null {
 export interface Shelves {
   featured: [string, BookMeta[]] | null; // the showcase series, always the top row
   recent: BookMeta[];
-  seriesRows: [string, BookMeta[]][]; // each series in seriesOrder ascending
+  seriesRows: [string, BookMeta[]][]; // numbered series in order; chronological series newest first
   loops: BookMeta[];
   more: BookMeta[];
 }
@@ -66,8 +90,8 @@ export function buildShelves(books: BookMeta[]): Shelves {
     if (!seriesMap.has(b.series)) seriesMap.set(b.series, []);
     seriesMap.get(b.series)!.push(b);
   }
-  for (const arr of seriesMap.values())
-    arr.sort((a, c) => (a.seriesOrder ?? 0) - (c.seriesOrder ?? 0));
+  for (const [name, arr] of seriesMap)
+    sortSeriesBooks(name, arr);
 
   // The lead series first; other series follow by most-recent addition.
   const seriesRows = [...seriesMap.entries()].sort(([na, a], [nb, c]) => {
@@ -107,7 +131,7 @@ export function searchBooks(books: BookMeta[], q: string): BookMeta[] {
   });
 }
 
-// Group search matches so series books always appear together, in seriesOrder.
+// Group search matches so series books always appear together in shelf order.
 export function groupMatches(matches: BookMeta[]): {
   sets: [string, BookMeta[]][];
   singles: BookMeta[];
@@ -122,8 +146,8 @@ export function groupMatches(matches: BookMeta[]): {
     if (!sets.has(b.series)) sets.set(b.series, []);
     sets.get(b.series)!.push(b);
   }
-  for (const arr of sets.values())
-    arr.sort((a, c) => (a.seriesOrder ?? 0) - (c.seriesOrder ?? 0));
+  for (const [name, arr] of sets)
+    sortSeriesBooks(name, arr);
   return { sets: [...sets.entries()], singles };
 }
 

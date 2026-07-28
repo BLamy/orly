@@ -81,8 +81,11 @@ The planning and the scenes are written by **you (Claude Code)**.
    ```bash
    node generator/video.mjs --slug "<SLUG>" --title "<TITLE>" \
      --chapter-titles "t1|t2|…" --blurbs "b1|b2|…" \
-     [--series "<SERIES NAME>" --series-order <n>]   # when the request names a series
+     [--series "<SERIES NAME>" [--series-order <n>]]   # when the request names a series
    ```
+   Omit `--series-order` for `Daily Papers by Hugging Face` and
+   `Fresh from arXiv`; those chronological collections sort by `createdAt`
+   newest-first and never store or display series numbers.
    This extracts each chapter's captions, narrates them (one MP3 per chapter,
    exact per-caption cues), generates the O'RLY-parody cover (gpt-image seeded
    + vision QA loop), writes `public/generated/<SLUG>/manifest.json`

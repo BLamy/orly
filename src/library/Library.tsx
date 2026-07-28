@@ -4,6 +4,7 @@ import {
   assetUrl,
   buildShelves,
   groupMatches,
+  isChronologicalSeries,
   openBook,
   registerAnimalPool,
   resolveAnimal,
@@ -215,7 +216,11 @@ function BoxedSet({ name, books, front }: { name: string; books: BookMeta[]; fro
           front ? (
             <FrontBook key={b.slug} book={b} />
           ) : (
-            <SpineBook key={b.slug} book={b} seriesIndex={b.seriesOrder ?? i + 1} />
+            <SpineBook
+              key={b.slug}
+              book={b}
+              seriesIndex={isChronologicalSeries(name) ? undefined : b.seriesOrder ?? i + 1}
+            />
           ),
         )}
       </div>
@@ -409,7 +414,11 @@ function ContinuousShelves({ shelves, rowWidth }: { shelves: Shelves; rowWidth: 
                 <div className="lib-sleeve" key={`s${i}-${j}`}>
                   <span className="lib-sleeve-plaque">{group.name}</span>
                   {group.books.map((b) => (
-                    <SpineBook key={b.slug} book={b} seriesIndex={b.seriesOrder} />
+                    <SpineBook
+                      key={b.slug}
+                      book={b}
+                      seriesIndex={isChronologicalSeries(group.name) ? undefined : b.seriesOrder}
+                    />
                   ))}
                 </div>
               );

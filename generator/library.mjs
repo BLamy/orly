@@ -9,6 +9,11 @@ const PALETTE = [
   '#198a8a', '#b0277a', '#c79100', '#41607f', '#a01f3c',
 ];
 
+const CHRONOLOGICAL_SERIES = new Set([
+  'Daily Papers by Hugging Face',
+  'Fresh from arXiv',
+]);
+
 export function colorForSlug(slug) {
   let h = 0;
   for (const c of String(slug)) h = (h * 31 + c.charCodeAt(0)) >>> 0;
@@ -22,8 +27,10 @@ export function upsertBook(libPath, book) {
   }
   if (!Array.isArray(lib.books)) lib.books = [];
   const i = lib.books.findIndex((b) => b.slug === book.slug);
-  if (i >= 0) lib.books[i] = { ...lib.books[i], ...book };
-  else lib.books.push(book);
+  const merged = i >= 0 ? { ...lib.books[i], ...book } : { ...book };
+  if (CHRONOLOGICAL_SERIES.has(merged.series)) delete merged.seriesOrder;
+  if (i >= 0) lib.books[i] = merged;
+  else lib.books.push(merged);
   // newest first
   lib.books.sort((a, b) => (b.createdAt || '').localeCompare(a.createdAt || ''));
   mkdirSync(dirname(libPath), { recursive: true });

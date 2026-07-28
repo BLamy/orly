@@ -8,6 +8,7 @@
       "role": "Software Engineer at Replay",
       "color": "#6a3f9e",
       "href": "?bundle=dataprep-bench",
+      "series": "Daily Papers by Hugging Face",
       "chapters": [
         {
           "number": 1,
@@ -42,7 +43,6 @@
       "animal": "generated/arex/animal.webp",
       "href": "?bundle=arex",
       "series": "Daily Papers by Hugging Face",
-      "seriesOrder": 2,
       "chapters": [
         {
           "number": 1,
@@ -81,7 +81,6 @@
       "color": "#c79100",
       "href": "?bundle=agentic-world-models",
       "series": "Fresh from arXiv",
-      "seriesOrder": 9,
       "chapters": [
         {
           "number": 1,
@@ -120,6 +119,7 @@
       "color": "#3a8b3a",
       "animal": "generated/slai-t-rex/animal.webp",
       "href": "?bundle=slai-t-rex",
+      "series": "Daily Papers by Hugging Face",
       "chapters": [
         {
           "number": 1,
@@ -153,7 +153,6 @@
       "color": "#38bdf8",
       "href": "?bundle=dp-harness-handbook",
       "series": "Daily Papers by Hugging Face",
-      "seriesOrder": 1,
       "chapters": [
         {
           "number": 1,
@@ -826,7 +825,6 @@
       "animal": "generated/arxiv-deeploop/animal.webp",
       "href": "?bundle=arxiv-deeploop",
       "series": "Fresh from arXiv",
-      "seriesOrder": 8,
       "chapters": [
         {
           "number": 1,
@@ -946,7 +944,6 @@
       "animal": "generated/arxiv-latent-moe/animal.webp",
       "href": "?bundle=arxiv-latent-moe",
       "series": "Fresh from arXiv",
-      "seriesOrder": 7,
       "chapters": [
         {
           "number": 1,
@@ -1146,7 +1143,6 @@
       "animal": "generated/arxiv-evoclaw/animal.webp",
       "href": "?bundle=arxiv-evoclaw",
       "series": "Fresh from arXiv",
-      "seriesOrder": 6,
       "chapters": [
         {
           "number": 1,
@@ -1226,7 +1222,6 @@
       "animal": "generated/arxiv-small-giants/animal.webp",
       "href": "?bundle=arxiv-small-giants",
       "series": "Fresh from arXiv",
-      "seriesOrder": 5,
       "chapters": [
         {
           "number": 1,
@@ -1386,7 +1381,6 @@
       "animal": "generated/arxiv-model-forensics/animal.webp",
       "href": "?bundle=arxiv-model-forensics",
       "series": "Fresh from arXiv",
-      "seriesOrder": 4,
       "chapters": [
         {
           "number": 1,
@@ -2009,7 +2003,6 @@
       "animal": "generated/arxiv-serving-moe/animal.webp",
       "href": "?bundle=arxiv-serving-moe",
       "series": "Fresh from arXiv",
-      "seriesOrder": 3,
       "chapters": [
         {
           "number": 1,
@@ -2049,7 +2042,6 @@
       "animal": "generated/arxiv-filler-tokens/animal.webp",
       "href": "?bundle=arxiv-filler-tokens",
       "series": "Fresh from arXiv",
-      "seriesOrder": 2,
       "chapters": [
         {
           "number": 1,
@@ -2089,7 +2081,6 @@
       "animal": "generated/arxiv-gated-deltanet-2/animal.webp",
       "href": "?bundle=arxiv-gated-deltanet-2",
       "series": "Fresh from arXiv",
-      "seriesOrder": 1,
       "chapters": [
         {
           "number": 1,

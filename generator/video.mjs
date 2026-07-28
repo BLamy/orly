@@ -15,6 +15,7 @@
 //   node generator/video.mjs --slug <slug> --title "<Title>"
 //     [--subtitle "…"] [--accent "#hex"] [--animal "<animal>"]
 //     [--chapter-titles "t1|t2|…"] [--blurbs "b1|b2|…"]
+//     [--series "<series>" [--series-order <n>]]
 //     [--voice <elevenlabs-voice-id>] [--no-tts] [--no-cover]
 //
 // Env (.env, gitignored): ELEVENLABS_API_KEY (narration), OPENAI_API_KEY (cover).

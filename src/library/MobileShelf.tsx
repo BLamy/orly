@@ -5,7 +5,16 @@
 import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
 import { createPortal } from 'react-dom';
 import { composeCover, drawSpine, type BookMeta } from './cover';
-import { assetUrl, FEATURED_SERIES, openBook, resolveAnimal, searchBooks, useLazyVisible } from './shared';
+import {
+  assetUrl,
+  FEATURED_SERIES,
+  isChronologicalSeries,
+  openBook,
+  resolveAnimal,
+  searchBooks,
+  sortSeriesBooks,
+  useLazyVisible,
+} from './shared';
 import { DownloadButton, DownloadSeriesButton } from './DownloadButton';
 import { SubscribeButton } from './SubscribeButton';
 import { blockChromeReveal, scrollShelfToTop, useScrollChrome } from '../shell/useScrollChrome';
@@ -66,7 +75,7 @@ function buildEntries(books: BookMeta[]): Entry[] {
     }
   }
   for (const [name, arr] of seriesMap) {
-    arr.sort((a, c) => (a.seriesOrder ?? 0) - (c.seriesOrder ?? 0));
+    sortSeriesBooks(name, arr);
     // Every series is one boxed-set row on the main shelf, regardless of
     // size — what changes past 6 books is how its OWN push-page presents
     // them (grid vs. a second A-Z indexed list): see SeriesPage below.
@@ -151,7 +160,7 @@ function SeriesRow({ name, books, onOpen }: { name: string; books: BookMeta[]; o
     books.forEach((b, i) => {
       ctx.save();
       ctx.translate(i * (sw + gap), 0);
-      drawSpine(ctx, sw, sh, b, b.seriesOrder ?? i + 1);
+      drawSpine(ctx, sw, sh, b, isChronologicalSeries(name) ? undefined : b.seriesOrder ?? i + 1);
       ctx.restore();
     });
   }, [visible, books]);
@@ -252,6 +261,7 @@ function SeriesPage({
   onOpenBook: (slug: string) => void;
 }) {
   const asGrid = books.length <= SERIES_GRID_MAX;
+  const chronological = isChronologicalSeries(name);
   const headerRef = useRef<HTMLElement | null>(null);
   const listRef = useRef<HTMLDivElement | null>(null);
   const sectionRefs = useRef(new Map<string, HTMLElement>());
@@ -269,7 +279,7 @@ function SeriesPage({
   }, [asGrid]);
 
   const byLetter = useMemo(() => {
-    if (asGrid) return null;
+    if (asGrid || chronological) return null;
     const map = new Map<string, BookMeta[]>();
     for (const b of [...books].sort((a, c) => sortKey(a.title).localeCompare(sortKey(c.title)))) {
       const l = letterOf(b.title);
@@ -277,7 +287,7 @@ function SeriesPage({
       map.get(l)!.push(b);
     }
     return [...map.entries()].sort(([a], [c]) => LETTERS.indexOf(a) - LETTERS.indexOf(c));
-  }, [asGrid, books]);
+  }, [asGrid, books, chronological]);
 
   const jumpTo = (letter: string) => {
     const el = sectionRefs.current.get(letter);
@@ -306,7 +316,7 @@ function SeriesPage({
           <h1 className="libm-detail-name">{name}</h1>
           <div className="libm-detail-meta-row">
             <span className="libm-detail-meta">
-              {books.length} books {asGrid ? '· read in order' : ''}
+              {books.length} books {chronological ? '· newest first' : asGrid ? '· read in order' : ''}
             </span>
             <SubscribeButton series={name} />
             <DownloadSeriesButton slugs={books.map((b) => b.slug)} />
@@ -315,7 +325,18 @@ function SeriesPage({
         {asGrid ? (
           <div className="libm-detail-grid">
             {books.map((b, i) => (
-              <DetailCard key={b.slug} book={b} index={b.seriesOrder ?? i + 1} onOpen={() => onOpenBook(b.slug)} />
+              <DetailCard
+                key={b.slug}
+                book={b}
+                index={chronological ? undefined : b.seriesOrder ?? i + 1}
+                onOpen={() => onOpenBook(b.slug)}
+              />
+            ))}
+          </div>
+        ) : chronological ? (
+          <div className="libm-rows">
+            {books.map((b) => (
+              <BookRow key={b.slug} book={b} onOpen={() => onOpenBook(b.slug)} />
             ))}
           </div>
         ) : (
@@ -354,7 +375,7 @@ function SeriesPage({
   );
 }
 
-function DetailCard({ book, index, onOpen }: { book: BookMeta; index: number; onOpen?: () => void }) {
+function DetailCard({ book, index, onOpen }: { book: BookMeta; index?: number; onOpen?: () => void }) {
   const rootRef = useRef<HTMLButtonElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
   const visible = useLazyVisible(rootRef);
@@ -389,7 +410,7 @@ function DetailCard({ book, index, onOpen }: { book: BookMeta; index: number; on
         <DownloadButton slug={book.slug} />
       </span>
       <span className="libm-card-title">
-        <b className="libm-card-num">№{index} </b>
+        {index != null && <b className="libm-card-num">№{index} </b>}
         {book.title}
       </span>
     </button>

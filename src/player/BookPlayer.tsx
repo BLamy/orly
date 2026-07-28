@@ -2,7 +2,7 @@ import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
 import { Drawer } from 'vaul';
 import { ChapterPlayer } from './ChapterPlayer';
 import { BlogPanel } from './BlogPanel';
-import { registerAnimalPool, resolveAnimal } from '../library/shared';
+import { registerAnimalPool, resolveAnimal, sortSeriesBooks } from '../library/shared';
 import { useVideoAccent } from '../shell/useVideoAccent';
 
 const ASSET_BASE =
@@ -41,6 +41,7 @@ interface SeriesBookMeta {
   href: string;
   series?: string;
   seriesOrder?: number;
+  createdAt?: string;
 }
 
 /** One book's worth of chapters, flattened into the cross-book sidebar. */
@@ -246,9 +247,10 @@ export function BookPlayer({
         registerAnimalPool(books);
         const self = books.find((b) => b.slug === slug);
         if (!self?.series) return;
-        const peers = books
-          .filter((b) => b.series === self.series)
-          .sort((a, b) => (a.seriesOrder ?? 0) - (b.seriesOrder ?? 0));
+        const peers = sortSeriesBooks(
+          self.series,
+          books.filter((b) => b.series === self.series),
+        );
         const groups = await Promise.all(
           peers.map(async (b): Promise<SeriesGroup> => {
             if (b.slug === slug) return { book: b, chapters: manifest.chapters };
