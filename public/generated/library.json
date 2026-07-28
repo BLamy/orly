@@ -1,6 +1,38 @@
 {
   "books": [
     {
+      "slug": "dataprep-bench",
+      "title": "Proving Training Data",
+      "subtitle": "How training data earns its score",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#6a3f9e",
+      "href": "?bundle=dataprep-bench",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Every Chunk Gets a Verdict",
+          "duration": 66.316
+        },
+        {
+          "number": 2,
+          "title": "Make the Data Prove It",
+          "duration": 68.08
+        },
+        {
+          "number": 3,
+          "title": "Measure the Gap Between Clouds",
+          "duration": 64.459
+        },
+        {
+          "number": 4,
+          "title": "A Score Must Track Reality",
+          "duration": 65.48
+        }
+      ],
+      "createdAt": "2026-07-28T10:25:06.515Z"
+    },
+    {
       "slug": "arex",
       "title": "The Answer Audits Itself",
       "subtitle": "Inside AREX's recursive research loop",

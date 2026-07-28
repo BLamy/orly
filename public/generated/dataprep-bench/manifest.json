@@ -1,0 +1,111 @@
+{
+  "format": 3,
+  "slug": "dataprep-bench",
+  "title": "Proving Training Data",
+  "subtitle": "How training data earns its score",
+  "animal": "animal.webp",
+  "accent": "#6a3f9e",
+  "paper": {
+    "title": "DataPrep-Bench: Benchmarking LLMs as Training Data Preparators",
+    "authors": [
+      "Hao Liang",
+      "Qifeng Cai",
+      "Yibo Lin",
+      "Jianzhuo Du",
+      "Qifeng Xia",
+      "Sizhe Qiu",
+      "Linzhuang Sun",
+      "Meiyi Qiang",
+      "Zhaoyang Han",
+      "Xiaochen Ma",
+      "Bohan Zeng",
+      "Ruichuan An",
+      "Conghui He",
+      "Wentao Zhang"
+    ],
+    "identifier": "arXiv:2607.20465",
+    "huggingFaceUrl": "https://huggingface.co/papers/2607.20465",
+    "canonicalUrl": "https://arxiv.org/abs/2607.20465",
+    "pdfUrl": "https://arxiv.org/pdf/2607.20465",
+    "codeRepository": "https://github.com/OpenDCAI/Data-Preparation-Bench"
+  },
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Every Chunk Gets a Verdict",
+      "blurb": "How section-aware chunking, explicit kept-or-skipped status, validation, and coverage auditing turn long documents into complete supervision data.",
+      "scene": "books/dataprep-bench/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        7.396,
+        14.048,
+        22.024,
+        28.723,
+        36.246,
+        42.747,
+        50.201,
+        59.036
+      ],
+      "duration": 66.316
+    },
+    {
+      "number": 2,
+      "title": "Make the Data Prove It",
+      "blurb": "Why Data Prep Bench evaluates constructed datasets by fine-tuning under a shared protocol and measuring downstream performance across six domains.",
+      "scene": "books/dataprep-bench/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        8.649,
+        15.627,
+        23.858,
+        30.848,
+        38.22,
+        46.556,
+        53.208,
+        62.554
+      ],
+      "duration": 68.08
+    },
+    {
+      "number": 3,
+      "title": "Measure the Gap Between Clouds",
+      "blurb": "How Distributional Alignment Score embeds candidate and proxy datasets, then uses radial-basis maximum mean discrepancy to measure their gap.",
+      "scene": "books/dataprep-bench/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        9.009,
+        15.639,
+        23.395,
+        32.717,
+        37.14,
+        43.689,
+        50.933,
+        57.632
+      ],
+      "duration": 64.459
+    },
+    {
+      "number": 4,
+      "title": "A Score Must Track Reality",
+      "blurb": "How metric values are paired with downstream accuracies and judged by Pearson correlation, Spearman correlation, and a linear fit.",
+      "scene": "books/dataprep-bench/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        7.721,
+        13.618,
+        20.84,
+        24.764,
+        29.57,
+        36.084,
+        43.688,
+        49.725,
+        58.665
+      ],
+      "duration": 65.48
+    }
+  ]
+}
