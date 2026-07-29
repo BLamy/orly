@@ -1,6 +1,40 @@
 {
   "books": [
     {
+      "slug": "kimi-k3",
+      "title": "A Million Tokens Deep",
+      "subtitle": "How Kimi K3 Keeps State Across Tokens, Layers, Experts, and Agents",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c79100",
+      "animal": "generated/kimi-k3/animal.webp",
+      "href": "?bundle=kimi-k3",
+      "series": "Daily Papers by Hugging Face",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Decay Without Overflow",
+          "duration": 68.359
+        },
+        {
+          "number": 2,
+          "title": "Every Layer Can Look Back",
+          "duration": 62.554
+        },
+        {
+          "number": 3,
+          "title": "Sixteen Experts, No Stampede",
+          "duration": 68.731
+        },
+        {
+          "number": 4,
+          "title": "Keep the Agent's World Alive",
+          "duration": 89.677
+        }
+      ],
+      "createdAt": "2026-07-29T22:49:08.554Z"
+    },
+    {
       "slug": "hawk-hidden-involution",
       "title": "The Hidden Involution",
       "subtitle": "HAWK Keys in Half-Dimension",

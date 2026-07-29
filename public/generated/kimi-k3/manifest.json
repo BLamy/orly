@@ -1,0 +1,97 @@
+{
+  "format": 3,
+  "slug": "kimi-k3",
+  "title": "A Million Tokens Deep",
+  "animal": "animal.webp",
+  "accent": "#c79100",
+  "paper": {
+    "title": "Kimi K3: Open Frontier Intelligence",
+    "authors": "Kimi Team et al.",
+    "identifier": "arXiv:2607.24653",
+    "huggingFaceUrl": "https://huggingface.co/papers/2607.24653",
+    "canonicalUrl": "https://arxiv.org/abs/2607.24653",
+    "pdfUrl": "https://arxiv.org/pdf/2607.24653",
+    "repositoryUrl": "https://github.com/MoonshotAI/Kimi-K3"
+  },
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Decay Without Overflow",
+      "blurb": "Kimi Delta Attention bounds log-decay so recurrent state can cross long sequences while every causal tile uses dense Tensor Core computation.",
+      "scene": "books/kimi-k3/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        6.118,
+        15.708,
+        22.558,
+        29.884,
+        36.826,
+        44.686,
+        52.976,
+        61.626
+      ],
+      "duration": 68.359
+    },
+    {
+      "number": 2,
+      "title": "Every Layer Can Look Back",
+      "blurb": "Attention Residuals let each layer retrieve earlier representations, then reduce live state by attending over block summaries instead of every layer output.",
+      "scene": "books/kimi-k3/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        5.689,
+        12.783,
+        20.398,
+        27.086,
+        34.156,
+        43.386,
+        49.225,
+        55.274
+      ],
+      "duration": 62.554
+    },
+    {
+      "number": 3,
+      "title": "Sixteen Experts, No Stampede",
+      "blurb": "Stable LatentMoE routes each token through sixteen of eight hundred ninety-six experts in a compact latent space, with bounded activations and quantile-balanced dispatch.",
+      "scene": "books/kimi-k3/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        6.327,
+        13.061,
+        19.911,
+        26.784,
+        34.366,
+        41.25,
+        48.46,
+        55.055,
+        61.777
+      ],
+      "duration": 68.731
+    },
+    {
+      "number": 4,
+      "title": "Keep the Agent's World Alive",
+      "blurb": "Million-token reinforcement learning preserves prefixes and sandbox state across partial rollouts with external cache pooling, resumable micro virtual machines, and hybrid prefix checkpoints.",
+      "scene": "books/kimi-k3/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        7.744,
+        14.942,
+        23.615,
+        31.44,
+        38.824,
+        48.624,
+        55.241,
+        64.17,
+        72.366,
+        80.981
+      ],
+      "duration": 89.677
+    }
+  ]
+}
