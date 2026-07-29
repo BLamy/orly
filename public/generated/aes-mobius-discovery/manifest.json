@@ -1,0 +1,61 @@
+{
+  "format": 3,
+  "slug": "aes-mobius-discovery",
+  "title": "Finding the Bridge",
+  "subtitle": "Mythos Preview's Search",
+  "animal": "animal.webp",
+  "accent": "#a78bfa",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Invent a New Object",
+      "blurb": "A research brief bans five established cryptanalytic lenses and asks Mythos Preview to find a genuinely new object to track through six reduced AES rounds.",
+      "scene": "books/aes-mobius-discovery/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.301,
+        18.437,
+        24.126,
+        34.192,
+        42.365,
+        50.214
+      ],
+      "duration": 57.911
+    },
+    {
+      "number": 2,
+      "title": "Four Points Survive",
+      "blurb": "Four finite-field points pass through key addition, inversion, and affine mixing while their projective cross-ratio remains unchanged.",
+      "scene": "books/aes-mobius-discovery/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        5.956,
+        12.887,
+        20.004,
+        30.29,
+        38.162,
+        48.68
+      ],
+      "duration": 58.932
+    },
+    {
+      "number": 3,
+      "title": "The Honest Dead Ends",
+      "blurb": "Exact early-round structure, a field-rank surprise, a false statistical signal, and disciplined negative results narrow the discovery into the Möbius Bridge.",
+      "scene": "books/aes-mobius-discovery/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        6.861,
+        14.93,
+        22.941,
+        28.432,
+        37.174,
+        46.903
+      ],
+      "duration": 56.702
+    }
+  ]
+}

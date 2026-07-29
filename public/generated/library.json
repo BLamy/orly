@@ -1,6 +1,96 @@
 {
   "books": [
     {
+      "slug": "hawk-hidden-involution",
+      "title": "The Hidden Involution",
+      "subtitle": "HAWK Keys in Half-Dimension",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#f59e0b",
+      "animal": "generated/hawk-hidden-involution/animal.webp",
+      "href": "?bundle=hawk-hidden-involution",
+      "series": "Anthropic Research",
+      "seriesOrder": 4,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Symmetry Inside the Public Key",
+          "duration": 59.676
+        },
+        {
+          "number": 2,
+          "title": "The Near-Hypercube",
+          "duration": 57.911
+        },
+        {
+          "number": 3,
+          "title": "Half-Dimension Key Recovery",
+          "duration": 69.567
+        }
+      ],
+      "createdAt": "2026-07-29T14:03:14.891Z"
+    },
+    {
+      "slug": "aes-mobius-discovery",
+      "title": "Finding the Bridge",
+      "subtitle": "Mythos Preview's Search",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#a78bfa",
+      "animal": "generated/aes-mobius-discovery/animal.webp",
+      "href": "?bundle=aes-mobius-discovery",
+      "series": "Anthropic Research",
+      "seriesOrder": 3,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Invent a New Object",
+          "duration": 57.911
+        },
+        {
+          "number": 2,
+          "title": "Four Points Survive",
+          "duration": 58.932
+        },
+        {
+          "number": 3,
+          "title": "The Honest Dead Ends",
+          "duration": 56.702
+        }
+      ],
+      "createdAt": "2026-07-29T13:53:00.716Z"
+    },
+    {
+      "slug": "aes-mobius-bridge",
+      "title": "The Möbius Bridge",
+      "subtitle": "A Key Byte Disappears",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#38bdf8",
+      "animal": "generated/aes-mobius-bridge/animal.webp",
+      "href": "?bundle=aes-mobius-bridge",
+      "series": "Anthropic Research",
+      "seriesOrder": 2,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Nine Guesses at the Middle",
+          "duration": 58.56
+        },
+        {
+          "number": 2,
+          "title": "The Byte That Cancels",
+          "duration": 63.901
+        },
+        {
+          "number": 3,
+          "title": "Making the Bridge Pay",
+          "duration": 68.452
+        }
+      ],
+      "createdAt": "2026-07-29T13:40:22.173Z"
+    },
+    {
       "slug": "dataprep-bench",
       "title": "Proving Training Data",
       "subtitle": "How training data earns its score",
@@ -636,7 +726,9 @@
           "duration": 129.614
         }
       ],
-      "createdAt": "2026-07-20T18:20:41.622Z"
+      "createdAt": "2026-07-20T18:20:41.622Z",
+      "series": "Anthropic Research",
+      "seriesOrder": 1
     },
     {
       "slug": "ssrn-aei",

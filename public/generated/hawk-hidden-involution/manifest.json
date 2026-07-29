@@ -1,0 +1,62 @@
+{
+  "format": 3,
+  "slug": "hawk-hidden-involution",
+  "title": "The Hidden Involution",
+  "subtitle": "HAWK Keys in Half-Dimension",
+  "animal": "animal.webp",
+  "accent": "#f59e0b",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A Symmetry Inside the Public Key",
+      "blurb": "A second Galois involution turns the hidden secret cocycle into a shortest vector satisfying public linear conditions in a rank-n lattice.",
+      "scene": "books/hawk-hidden-involution/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.766,
+        17.659,
+        26.192,
+        35.446,
+        42.923,
+        50.992
+      ],
+      "duration": 59.676
+    },
+    {
+      "number": 2,
+      "title": "The Near-Hypercube",
+      "blurb": "A secret isometry reveals the cocycle lattice as near-hypercubic, with its decisive shortest vectors living in a block of dimension n/2+1.",
+      "scene": "books/hawk-hidden-involution/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        8.533,
+        15.732,
+        24.799,
+        31.475,
+        40.543,
+        48.17
+      ],
+      "duration": 57.911
+    },
+    {
+      "number": 3,
+      "title": "Half-Dimension Key Recovery",
+      "blurb": "A congruence filter, lattice descent, gate-count reductions, and an end-to-end HAWK-256 implementation complete the key-recovery path and define its scope.",
+      "scene": "books/hawk-hidden-involution/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        9.532,
+        19.249,
+        28.688,
+        37.059,
+        43.503,
+        51.827,
+        60.221
+      ],
+      "duration": 69.567
+    }
+  ]
+}

@@ -1,0 +1,62 @@
+{
+  "format": 3,
+  "slug": "aes-mobius-bridge",
+  "title": "The Möbius Bridge",
+  "subtitle": "A Key Byte Disappears",
+  "animal": "animal.webp",
+  "accent": "#38bdf8",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Nine Guesses at the Middle",
+      "blurb": "A 256-message delta set peels seven AES rounds toward a four-round core, where nine guessed bytes fence in a meet-in-the-middle table.",
+      "scene": "books/aes-mobius-bridge/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.371,
+        16.219,
+        24.288,
+        32.09,
+        40.657,
+        49.551
+      ],
+      "duration": 58.56
+    },
+    {
+      "number": 2,
+      "title": "The Byte That Cancels",
+      "blurb": "The AES S-box turns one unknown key byte into a shared affine action; power-sum ratios and orbit canonicalization erase it from the match.",
+      "scene": "books/aes-mobius-bridge/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        10.577,
+        19.736,
+        28.421,
+        38.01,
+        47.38,
+        55.518
+      ],
+      "duration": 63.901
+    },
+    {
+      "number": 3,
+      "title": "Making the Bridge Pay",
+      "blurb": "Packed powers, a DDT-aware Gray walk, an XOR cache, canonicalization, and a layered verification program turn an algebraic saving into the paper's reported attack.",
+      "scene": "books/aes-mobius-bridge/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.661,
+        16.66,
+        22.964,
+        30.778,
+        39.811,
+        47.125,
+        58.062
+      ],
+      "duration": 68.452
+    }
+  ]
+}
