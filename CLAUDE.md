@@ -19,13 +19,15 @@ adds Noun Project icons, and you commit + push to redeploy.
     exact per‑step cues) · `noun.mjs` + `iconize.mjs` (icons for nodes/packets) ·
     `cover.mjs` + `seeds.mjs` (gpt‑image cover, seeded by parody covers, with a
     vision QA loop) · `transform.mjs` (→ manifest) · `library.mjs` · `cli.mjs`.
-- `src/` — the Vite/React app: `App.tsx` routes (shelf default / `?bundle=<slug>`
+- `apps/bookshelf/src/` — the Vite/React app: `App.tsx` routes (shelf default / `?bundle=<slug>`
   explainer / `?book=almostnode` static); `library/` is the iBooks‑style shelf
   (canvas 3‑D books with the cover skewed on); `engine/` is the D3 slideshow
   (audio‑synced, icon‑aware); `stories/` are the built‑in almostnode chapters.
+- `packages/mobile-ui/` — reusable mobile tab bar, collapsing header,
+  hide-on-scroll state, and alphabetized list/index navigation.
 - `public/generated/<slug>/` — each book's `manifest.json` + `audio/` + `animal.png`;
   `library.json` is the shelf registry.
-- `src/viz/` — the **3blue1brown-style animation suite** (pure `sample(t)`
+- `apps/bookshelf/src/viz/` — the **3blue1brown-style animation suite** (pure `sample(t)`
   timeline engine, primitives, explainers), cataloged in Storybook
   (`npm run storybook`; the **Motion** panel edits timelines and saves timings
   back to each scene's `overrides.json`). **To author a new scene, use the

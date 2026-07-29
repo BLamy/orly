@@ -148,7 +148,7 @@ jobs:
             public/generated/ and library.json reflect the request. For a new book/series
             that's digest/study → PLAN THE VISUALIZATIONS (one 3b1b-grade visual idea
             per chapter — the command's step 3) → AUTHOR each chapter as a full scene at
-            src/viz/books/<slug>/chapter-<n>.tsx whose captions ARE the narration
+            apps/bookshelf/src/viz/books/<slug>/chapter-<n>.tsx whose captions ARE the narration
             (+ a colocated .stories.tsx per chapter) → `node generator/video.mjs
             --slug <slug> --title "<title>" …` → `npm run build` →
             `node generator/verify-book.mjs --slug <slug>`; for a tweak it's the

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // video.mjs — the v3 book pipeline: scene-native videos.
 //
-// A v3 book is N authored timeline scenes at src/viz/books/<slug>/chapter-<n>.tsx
+// A v3 book is N authored timeline scenes at apps/bookshelf/src/viz/books/<slug>/chapter-<n>.tsx
 // (single-file 3b1bd3 scenes exporting vizScene()/Render; auto-registered by the
 // scenes.ts glob). The scene's captions ARE the narration script: each
 // tl.caption({at, dur, text}) is one spoken line. This script:
@@ -61,13 +61,13 @@ function parseArgs(argv) {
 }
 
 function discoverChapters(slug) {
-  const dir = join(ROOT, 'src', 'viz', 'books', slug);
-  if (!existsSync(dir)) throw new Error(`no scenes at src/viz/books/${slug}/ — author chapter-<n>.tsx first`);
+  const dir = join(ROOT, 'apps', 'bookshelf', 'src', 'viz', 'books', slug);
+  if (!existsSync(dir)) throw new Error(`no scenes at apps/bookshelf/src/viz/books/${slug}/ — author chapter-<n>.tsx first`);
   const files = readdirSync(dir)
     .map((f) => { const m = /^chapter-(\d+)\.tsx$/.exec(f); return m && { n: Number(m[1]), file: join(dir, f) }; })
     .filter(Boolean)
     .sort((a, b) => a.n - b.n);
-  if (!files.length) throw new Error(`src/viz/books/${slug}/ has no chapter-<n>.tsx files`);
+  if (!files.length) throw new Error(`apps/bookshelf/src/viz/books/${slug}/ has no chapter-<n>.tsx files`);
   return files;
 }
 
@@ -103,7 +103,7 @@ async function main() {
   const args = parseArgs(process.argv.slice(2));
   if (args.help || !args.slug || !args.title) {
     console.log(`Usage: node generator/video.mjs --slug <slug> --title "<Title>" [options]
-  --slug <slug>             book slug; scenes at src/viz/books/<slug>/chapter-<n>.tsx
+  --slug <slug>             book slug; scenes at apps/bookshelf/src/viz/books/<slug>/chapter-<n>.tsx
   --title "<Title>"         book title (cover + shelf)
   --subtitle "…"            book subtitle
   --accent "#hex"           accent color (default: hashed from slug)

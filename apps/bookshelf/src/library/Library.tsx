@@ -21,7 +21,7 @@ import { getDownloadedSlugs, onDownloadsChanged } from '../offline/downloads';
 import { checkSubscriptions } from '../offline/subscriptions';
 import { useOnline } from '../offline/useOnline';
 import { TabBar, type ShelfTab } from '../shell/TabBar';
-import { useScrollChrome } from '../shell/useScrollChrome';
+import { useScrollChrome } from '@orly/mobile-ui';
 import { useLandscape } from '../shell/useLandscape';
 import { ThemeToggle } from '../shell/ThemeToggle';
 import { OfflineBanner } from '../shell/OfflineBanner';
@@ -211,7 +211,7 @@ function BoxedSet({ name, books, front }: { name: string; books: BookMeta[]; fro
         <SubscribeButton series={name} />
         <DownloadSeriesButton slugs={books.map((b) => b.slug)} />
       </div>
-      <div className="lib-set-books">
+      <div className={`lib-set-books${front ? ' is-fronts' : ''}`}>
         {books.map((b, i) =>
           front ? (
             <FrontBook key={b.slug} book={b} />
@@ -244,12 +244,12 @@ const SPINE_SLOT = SPINE_W + 10; // spine width + row gap
 const ROW_CHROME = 40; // row padding
 /** Must match --lib-push in library.css — how far everything after a turning
  *  book slides so the cover swings into a gap instead of over its neighbour. */
-const COVER_PUSH = 180;
+const COVER_PUSH = 228;
 
 // Adaptive presentation: a group whose books all fit front-cover-first in the
 // row width shows fronts; longer groups collapse to spines. Recomputed on
 // resize (debounced via a ResizeObserver on a probe sized like the rows).
-const FRONT_SLOT = FACE_W + 10; // cover width + row gap
+const FRONT_SLOT = FACE_W + 12; // cover width + front-cover gap
 const GROUP_CHROME = 70; // boxed-set plaque/padding + row padding headroom
 
 function useRowWidth(): [number, React.RefObject<HTMLDivElement>] {

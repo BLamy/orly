@@ -1,4 +1,4 @@
-// Load a src/viz scene module (.tsx) in Node and extract its narration script.
+// Load a apps/bookshelf/src/viz scene module (.tsx) in Node and extract its narration script.
 //
 // Scenes are authored for the browser (React + d3 + 3b1bd3), but their
 // TIMELINE is pure data: `vizScene()` returns `{ tl }`, and

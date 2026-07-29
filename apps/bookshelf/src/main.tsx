@@ -2,6 +2,7 @@ import { createRoot } from 'react-dom/client';
 import { App } from './App';
 import { initTheme } from './shell/theme';
 import { initVideoColor } from './shell/videoTheme';
+import '@orly/mobile-ui/styles.css';
 import './index.css';
 
 initTheme();

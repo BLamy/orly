@@ -16,7 +16,7 @@ Keys come from `.env` locally or CI env (`ELEVENLABS_API_KEY`, `OPENAI_API_KEY`,
 `NOUN_PROJECT_KEY/SECRET`).
 
 ## The book's files (v3 — scene-native)
-`src/viz/books/<slug>/chapter-<n>.tsx` are the editable sources — each chapter
+`apps/bookshelf/src/viz/books/<slug>/chapter-<n>.tsx` are the editable sources — each chapter
 IS one authored 3b1bd3 scene whose captions are the narration script.
 `public/generated/<slug>/` holds the built artifacts: `manifest.json`
 (format 3: per-chapter scene id, audio path, cues, duration),
@@ -27,7 +27,7 @@ full-size `animal.png` is a gitignored local artifact), and `previews/`.
 ## Pick the smallest change that does the job
 
 - **Reword narration / change what a beat shows** → edit the chapter scene
-  (`src/viz/books/<slug>/chapter-<n>.tsx`: captions for the voice, channels/
+  (`apps/bookshelf/src/viz/books/<slug>/chapter-<n>.tsx`: captions for the voice, channels/
   render for the visuals), then rebuild the book's audio + manifest:
   ```bash
   node generator/video.mjs --slug <slug> --title "<existing title>"     --chapter-titles "…" --blurbs "…"          # re-narrates every chapter
@@ -43,4 +43,4 @@ full-size `animal.png` is a gitignored local artifact), and `previews/`.
 
 After ANY change: `npx tsc --noEmit && npm run build &&
 node generator/verify-book.mjs --slug <slug>` must pass; commit
-`public/generated/<slug>` + `src/viz/books/<slug>` together.
+`public/generated/<slug>` + `apps/bookshelf/src/viz/books/<slug>` together.

@@ -153,7 +153,7 @@ try {
         { timeout: 20000 }
       );
       if (await page.locator('.bp-stage-msg').count()) {
-        chapterFailures.push(`scene '${chapter.scene}' is NOT AVAILABLE in the player (.bp-stage-msg) — is it registered under src/viz/books/?`);
+        chapterFailures.push(`scene '${chapter.scene}' is NOT AVAILABLE in the player (.bp-stage-msg) — is it registered under apps/bookshelf/src/viz/books/?`);
       }
       if (await page.locator('.bp-spinner').count()) {
         await page.waitForTimeout(2000);

@@ -97,9 +97,11 @@ Keys live in a gitignored `.env` (`OPENAI_API_KEY`, `ELEVENLABS_API_KEY`, `NOUN_
 generator/   the pipeline (npm run explain)
   repo.mjs · storyboard.mjs · validate.mjs (layered layout) · tts.mjs (ElevenLabs)
   cover.mjs + seeds.mjs (gpt-image + vision QA) · noun.mjs + iconize.mjs · transform.mjs
-src/         the Vite + React app
-  library/   the iBooks-style shelf (canvas 3-D books)
-  engine/    the D3 slideshow (audio-synced, icon-aware)
+apps/bookshelf/           the deployable Vite + React workspace
+  src/library/            the iBooks-style shelf (canvas 3-D books)
+  src/player/             the audio-synced explainer player
+  src/viz/                the timeline scenes and visualization engine
+packages/mobile-ui/       reusable mobile chrome and indexed-list components
 public/generated/<slug>/   each book's manifest.json + audio/ + animal.png
   library.json             the shelf registry
 .github/workflows/         deploy · new-book · preview · comment-edit · test-pipeline

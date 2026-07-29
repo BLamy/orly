@@ -356,7 +356,7 @@
             "scene": {
               "type": "string",
               "pattern": "^([a-z0-9][a-z0-9-]*|books/[a-z0-9_][a-z0-9_-]*/[a-z0-9_][a-z0-9_-]*)$",
-              "description": "A catalog slug from generator/viz-catalog.json (e.g. 'raft'), or a book-local scene 'books/<bookSlug>/<name>' backed by src/viz/books/<bookSlug>/<name>.tsx (which must exist — the validator hard-errors otherwise)."
+              "description": "A catalog slug from generator/viz-catalog.json (e.g. 'raft'), or a book-local scene 'books/<bookSlug>/<name>' backed by apps/bookshelf/src/viz/books/<bookSlug>/<name>.tsx (which must exist — the validator hard-errors otherwise)."
             },
             "beat": {
               "type": "integer",

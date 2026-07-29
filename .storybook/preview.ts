@@ -1,6 +1,6 @@
 import { createElement } from 'react';
 import type { Preview } from '@storybook/react-vite';
-import { MotionBridge } from '../src/viz/editor/bridge';
+import { MotionBridge } from '../apps/bookshelf/src/viz/editor/bridge';
 import 'katex/dist/katex.min.css';
 import './preview.css';
 

@@ -1,7 +1,7 @@
 ---
 name: viz-scene
 description: >
-  Author a 3blue1brown-style animated explainer scene with the src/viz timeline
+  Author a 3blue1brown-style animated explainer scene with the apps/bookshelf/src/viz timeline
   toolkit. Use whenever a task asks for a "viz", "3b1b animation", "timeline
   scene", "animated explainer" of a concept (math, ML, distributed systems,
   algorithms), or to embed such a scene in a book/video. Covers the Timeline
@@ -10,16 +10,16 @@ description: >
 
 # Authoring a viz scene
 
-`src/viz/` is a scrubbable animation suite: one `Timeline` holds every value as
+`apps/bookshelf/src/viz/` is a scrubbable animation suite: one `Timeline` holds every value as
 channels + tweens; `sample(t)` is a **pure function of time**; a rAF `Player`
 owns the only clock. Nothing self-animates — a component renders values handed
 to it. This is what makes scenes seekable, editable in the Storybook Motion
 panel, and syncable to narration. NEVER use `d3.transition`, `setInterval`,
 CSS animations, or `Math.random()`/`Date.now()` inside a scene.
 
-## File pattern (copy `src/viz/explainers/fourier/` exactly)
+## File pattern (copy `apps/bookshelf/src/viz/explainers/fourier/` exactly)
 
-Create `src/viz/explainers/<slug>/` with FOUR files:
+Create `apps/bookshelf/src/viz/explainers/<slug>/` with FOUR files:
 
 1. **`scene.ts`** — pure timeline builder + ALL math/data at module scope:
 
@@ -49,7 +49,7 @@ import overrides from './overrides.json';
 
 const scene = buildScene();
 scene.tl.applyOverrides(overrides as TimelineOverrides);
-const MOTION = { file: 'src/viz/explainers/<slug>/overrides.json', slug: '<slug>' };
+const MOTION = { file: 'apps/bookshelf/src/viz/explainers/<slug>/overrides.json', slug: '<slug>' };
 
 export function Name() {
   return (
@@ -102,7 +102,7 @@ export function Name() {
 Captions: plain-language, curious, a little wry (3b1b tone). One idea per
 caption. Math goes in `tex`/`MathLabel`, not prose.
 
-## Primitives (`src/viz/primitives/`) — read the file before using
+## Primitives (`apps/bookshelf/src/viz/primitives/`) — read the file before using
 
 - `Axes` — grid + ticks; `reveal` 0..1 draws on. Scales are d3 `scaleLinear`
   into stage coords (stage is 1280×720; keep bottom ~12% clear for captions).
@@ -161,7 +161,7 @@ do NOT modify core/ or primitives/ in a scene PR.
 ## Using scenes in BOOKS (the orly play surface) — v3 contract
 
 **The scene IS the video.** A book chapter is exactly one authored scene at
-`src/viz/books/<bookSlug>/chapter-<n>.tsx`; there is no D3 diagram anymore.
+`apps/bookshelf/src/viz/books/<bookSlug>/chapter-<n>.tsx`; there is no D3 diagram anymore.
 `generator/video.mjs` extracts the scene's captions, narrates them with
 ElevenLabs (one MP3 per chapter), and the book player plays the scene with the
 MP3 as the clock — captions retimed to the recording and shown as CC.
@@ -182,13 +182,13 @@ Because of that, in book scenes **captions ARE the narration script**:
 
 ### Book-local single-file scenes
 
-Write `src/viz/books/<bookSlug>/chapter-<n>.tsx` — ONE file holding layout
+Write `apps/bookshelf/src/viz/books/<bookSlug>/chapter-<n>.tsx` — ONE file holding layout
 data, `buildScene()`, `Render`, and `vizScene`. It is **auto-registered by
-glob** as slug `books/<bookSlug>/chapter-<n>` (no edit to `src/viz/scenes.ts`,
+glob** as slug `books/<bookSlug>/chapter-<n>` (no edit to `apps/bookshelf/src/viz/scenes.ts`,
 no catalog entry — `check-viz-catalog.mjs` ignores `books/` slugs). Skeleton:
 
 ```tsx
-// src/viz/books/<bookSlug>/chapter-1.tsx
+// apps/bookshelf/src/viz/books/<bookSlug>/chapter-1.tsx
 import { Timeline, Camera, CAMERA_HOME, MathLabel, colors, ease } from '../../core';
 import type { CameraState, SceneState } from '../../core';
 import { ContourField, Vec } from '../../primitives';
@@ -225,7 +225,7 @@ export function Render({ s }: { s: SceneState }) {
 export const vizScene = () => scene;
 ```
 
-(Add a `.stories.tsx` beside it — the Storybook glob covers `src/viz/**`, and
+(Add a `.stories.tsx` beside it — the Storybook glob covers `apps/bookshelf/src/viz/**`, and
 the /new-book verify stage scrubs each chapter in the Motion panel; the book
 player itself needs only the two exports above.)
 
@@ -242,7 +242,7 @@ player itself needs only the two exports above.)
 
 ### Quality bar checklist (a scene ships only if all hold)
 
-- [ ] Studied 2–3 exemplars under `src/viz/explainers/` first (e.g.
+- [ ] Studied 2–3 exemplars under `apps/bookshelf/src/viz/explainers/` first (e.g.
       `almostnode-server`, `differential-dataflow`) — beat-sheet comments,
       layout constants, channel naming, restraint.
 - [ ] CINEMATIC, not diagrammatic. Every chapter uses a `Camera` channel
@@ -267,7 +267,7 @@ player itself needs only the two exports above.)
 
 ### Plumbing (catalog scenes)
 
-- **Registry**: `src/viz/scenes.ts` — explicit `VIZ_SCENES` entries for
+- **Registry**: `apps/bookshelf/src/viz/scenes.ts` — explicit `VIZ_SCENES` entries for
   catalog scenes (lazy `import()`, code-split) + the `import.meta.glob`
   auto-registration of `books/*/*.tsx`. Module contract for both: export
   `Render({ s }: { s: SceneState })` and `vizScene = () => scene`.

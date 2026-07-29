@@ -2,7 +2,7 @@
 
 .lib {
   /* how far neighbors slide right to make room for a turning cover */
-  --lib-push: 180px;
+  --lib-push: 228px;
   min-height: 100vh;
   margin: 0;
   padding: 0 clamp(16px, 5vw, 64px) 80px;
@@ -283,6 +283,9 @@
   align-items: flex-end;
   gap: 0;
 }
+.lib-set-books.is-fronts {
+  gap: 12px;
+}
 
 /* search results: sets + loose spines, wrapping */
 .lib-results {
@@ -379,14 +382,17 @@
 }
 .lib-turn {
   position: absolute;
-  left: 2px;
+  /* The cover turns around the spine's RIGHT edge. Keeping that hinge one
+     spine-width into the slot lets the spine extend left while its inner edge
+     stays welded to the cover at every angle. */
+  left: 50px;
   top: 0;
   width: 216px;
   height: 288px;
   transform-style: preserve-3d;
   transform-origin: left center;
   /* rest: spine facing out */
-  transform: rotateY(88deg);
+  transform: rotateY(89.5deg);
   /* eased return, starting immediately so the cover clears before the gap closes */
   transition: transform 420ms cubic-bezier(0.165, 0.84, 0.44, 1) 0ms;
   will-change: transform;
@@ -432,7 +438,11 @@
   box-shadow: 0 10px 24px rgba(60, 42, 18, 0.28);
 }
 .lib-face-spine {
-  transform-origin: left center;
+  /* The right edge is the book hinge. Anchoring the canvas there makes the
+     spine and cover share the same projected top/bottom corners as they turn,
+     instead of letting the spine float across the cover face. */
+  left: -48px;
+  transform-origin: right center;
   transform: rotateY(-90deg);
   box-shadow: 1px 0 0 rgba(0, 0, 0, 0.08) inset, -1px 0 0 rgba(0, 0, 0, 0.12) inset, 0 8px 14px rgba(60, 42, 18, 0.22);
 }
@@ -873,6 +883,15 @@
   border: 1px solid var(--wood-border);
   box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
   pointer-events: none;
+}
+
+/* Reusable @orly/mobile-ui alphabet index, themed by the bookshelf tokens. */
+.mobile-alpha-letter { color: var(--wood-accent); }
+.mobile-alpha-bubble {
+  color: var(--wood-heading);
+  background: var(--wood-panel-strong);
+  border: 1px solid var(--wood-border);
+  box-shadow: 0 8px 24px rgba(0, 0, 0, 0.5);
 }
 
 /* ---- the pushed series page ---- */

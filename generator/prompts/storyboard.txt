@@ -1,5 +1,5 @@
 You are authoring a scene-native O'RLY VIDEO BOOK: 3–6 chapters, each chapter
-ONE custom 3blue1brown-style timeline scene (src/viz toolkit) whose captions
+ONE custom 3blue1brown-style timeline scene (apps/bookshelf/src/viz toolkit) whose captions
 are the narration script. You are given (1) a REPO DIGEST — file trees, source
 excerpts, type/function/module names, paths, config keys, data-flow notes —
 and (2) a SUBSYSTEM PROMPT naming the one subsystem to explain. Your output is
@@ -39,7 +39,7 @@ comparison diverging, an invariant surviving an attack.
   ServiceNode, Connection, RequestFlow, Axes, FunctionPlot, MatrixGrid,
   ParticleCloud, Packet…), agent components (MessageCard, TokenStream,
   GauntletRail, DiffLanes, RecordingStrip, LoopRing, ContextBar…), and the
-  prebuilt explainers in src/viz/explainers/. New visual vocabulary is
+  prebuilt explainers in apps/bookshelf/src/viz/explainers/. New visual vocabulary is
   welcome — build it as local subcomponents in the scene file, at the same
   quality (pure functions of sampled channels).
 
@@ -83,7 +83,7 @@ SCENE CRAFT — the quality bar (3b1bd3)
 ================================================================
 - CINEMATIC, NOT DIAGRAMMATIC. Every chapter drives a Camera channel — declare
   it with the smooth-zoom interpolator: tl.channel('cam', CAMERA_HOME,
-  cameraInterp) (from src/viz/core) so pan+zoom moves track straight (push
+  cameraInterp) (from apps/bookshelf/src/viz/core) so pan+zoom moves track straight (push
   in on the beat's subject, pull back for comparisons and the payoff) and has
   at least one visual centerpiece beyond boxes-and-arrows: a ParticleCloud
   formation lerp, a FunctionPlot morph, a MatrixGrid heat/highlight, a
@@ -117,7 +117,7 @@ SCENE CRAFT — the quality bar (3b1bd3)
 ================================================================
 SELF-CHECK BEFORE NARRATING (verify all — narration costs money)
 ================================================================
-[] Each chapter = one scene file src/viz/books/<slug>/chapter-<n>.tsx
+[] Each chapter = one scene file apps/bookshelf/src/viz/books/<slug>/chapter-<n>.tsx
    exporting buildScene(), Render({s}), vizScene; + chapter-<n>.stories.tsx.
 [] Captions read aloud cleanly (no symbols), one idea each, in narration
    order; the chapter's captions concatenate into one coherent monologue.

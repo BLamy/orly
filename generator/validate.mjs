@@ -9,7 +9,7 @@ import { fileURLToPath } from 'node:url';
 const REPO_ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 
 // The prebuilt 3b1b scene slugs a step's `viz.scene` may reference. Sourced
-// from viz-catalog.json (kept in sync with src/viz/scenes.ts by
+// from viz-catalog.json (kept in sync with apps/bookshelf/src/viz/scenes.ts by
 // check-viz-catalog.mjs — Node can't import the TSX registry directly).
 const VIZ_SCENES = (() => {
   try {
@@ -215,10 +215,10 @@ export function validateStoryboard(sb) {
           delete st.viz;
           warnings.push(`${sw}: viz on a cover step — dropped (covers stay title cards)`);
         } else if (typeof scene === 'string' && scene.startsWith('books/')) {
-          const file = join(REPO_ROOT, 'src', 'viz', `${scene}.tsx`);
+          const file = join(REPO_ROOT, 'apps', 'bookshelf', 'src', 'viz', `${scene}.tsx`);
           if (!existsSync(file)) {
             errors.push(
-              `${sw}: viz scene '${scene}' has no scene file — author src/viz/${scene}.tsx FIRST ` +
+              `${sw}: viz scene '${scene}' has no scene file — author apps/bookshelf/src/viz/${scene}.tsx FIRST ` +
                 `(single-file scene exporting vizScene() and Render; see .claude/skills/viz-scene/SKILL.md), ` +
                 `then re-validate`
             );
@@ -230,7 +230,7 @@ export function validateStoryboard(sb) {
             if (!hasVizScene || !hasRender) {
               const missing = [!hasVizScene && 'vizScene', !hasRender && 'Render'].filter(Boolean).join(' and ');
               errors.push(
-                `${sw}: src/viz/${scene}.tsx exists but does not export ${missing} — the book player needs ` +
+                `${sw}: apps/bookshelf/src/viz/${scene}.tsx exists but does not export ${missing} — the book player needs ` +
                   `\`export const vizScene = () => scene\` and \`export function Render({ s })\` ` +
                   `(see .claude/skills/viz-scene/SKILL.md)`
               );

@@ -1,3 +1,3 @@
-import { registerMotionAddon } from '../../src/viz/engine/storybook/manager';
+import { registerMotionAddon } from '../../apps/bookshelf/src/viz/engine/storybook/manager';
 
 registerMotionAddon();

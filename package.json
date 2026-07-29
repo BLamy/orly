@@ -1,13 +1,17 @@
 {
-  "name": "dataflow-slides",
+  "name": "orly-monorepo",
   "private": true,
   "version": "0.1.0",
   "type": "module",
   "description": "A 'Secret Lives of Data'-style animated slideshow engine that renders a declarative story spec.",
+  "workspaces": [
+    "apps/*",
+    "packages/*"
+  ],
   "scripts": {
-    "dev": "vite",
-    "build": "tsc && vite build",
-    "preview": "vite preview",
+    "dev": "npm run dev --workspace @orly/bookshelf",
+    "build": "npm run typecheck --workspace @orly/mobile-ui && npm run build --workspace @orly/bookshelf",
+    "preview": "npm run preview --workspace @orly/bookshelf",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
     "explain": "node generator/cli.mjs",

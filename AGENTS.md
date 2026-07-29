@@ -8,8 +8,9 @@ as an **O'RLY‑parody** O'Reilly‑style book. The shelf deploys to Cloudflare 
 ## The main thing you do here
 **Create a new book** when asked: run **`/new-book <repo> | <subsystem> | <title>`**
 (see `.Codex/commands/new-book.md`). It digests the repo, you write the storyboard,
-then the pipeline narrates it (ElevenLabs), generates an O'RLY cover (gpt‑image),
-adds Noun Project icons, and you commit + push to redeploy.
+then the pipeline narrates it (ElevenLabs), generates an O'RLY cover (Codex
+built-in ImageGen when available; API fallback otherwise), adds Noun Project
+icons, and you commit + push to redeploy.
 
 ## Architecture
 - `generator/` — the pipeline (run via `npm run explain`):
@@ -17,15 +18,18 @@ adds Noun Project icons, and you commit + push to redeploy.
     (cover‑first/reveal‑union checks + the **layered layout** that prevents node
     overlap and hidden arrows) · `tts.mjs` (ElevenLabs `convertWithTimestamps` →
     exact per‑step cues) · `noun.mjs` + `iconize.mjs` (icons for nodes/packets) ·
-    `cover.mjs` + `seeds.mjs` (gpt‑image cover, seeded by parody covers, with a
-    vision QA loop) · `transform.mjs` (→ manifest) · `library.mjs` · `cli.mjs`.
-- `src/` — the Vite/React app: `App.tsx` routes (shelf default / `?bundle=<slug>`
+    `cover.mjs` + `seeds.mjs` (API fallback for the cover, seeded by parody
+    covers, with a vision QA loop) · `transform.mjs` (→ manifest) ·
+    `library.mjs` · `cli.mjs`.
+- `apps/bookshelf/src/` — the Vite/React app: `App.tsx` routes (shelf default / `?bundle=<slug>`
   explainer / `?book=almostnode` static); `library/` is the iBooks‑style shelf
   (canvas 3‑D books with the cover skewed on); `engine/` is the D3 slideshow
   (audio‑synced, icon‑aware); `stories/` are the built‑in almostnode chapters.
+- `packages/mobile-ui/` — reusable mobile tab bar, collapsing header,
+  hide-on-scroll state, and alphabetized list/index navigation.
 - `public/generated/<slug>/` — each book's `manifest.json` + `audio/` + `animal.png`;
   `library.json` is the shelf registry.
-- `src/viz/` — the **3blue1brown-style animation suite** (pure `sample(t)`
+- `apps/bookshelf/src/viz/` — the **3blue1brown-style animation suite** (pure `sample(t)`
   timeline engine, primitives, explainers), cataloged in Storybook
   (`npm run storybook`; the **Motion** panel edits timelines and saves timings
   back to each scene's `overrides.json`). **To author a new scene, use the
@@ -35,8 +39,14 @@ adds Noun Project icons, and you commit + push to redeploy.
 
 ## Hard rules
 - **Never** render the real publisher **"O'Reilly"** — only the parody **"O'RLY?"**.
-  Covers are composited in‑browser (text is under our control); the gpt‑image QA
-  loop rejects stray lettering in the animal.
+  Covers are composited in‑browser (text is under our control); cover art must
+  contain no lettering.
+- **Always use Codex built-in ImageGen for cover animals when it is available.**
+  Generate only the animal on a uniform pure-white (`#FFFFFF`) field—never tan,
+  cream, ivory, textured paper, a vignette, or a scene—and visually reject any
+  lettering before creating the committed `animal.webp`. Run `video.mjs` with
+  `--no-cover` when that asset is already prepared. Use the `cover.mjs` API path
+  only when built-in ImageGen is unavailable.
 - **Ground everything in real code** — no invented components/files/flows. The
   storyboard system prompt (`generator/prompts/storyboard.txt`) enforces this.
 - Keys live in a **gitignored `.env`** (ElevenLabs, OpenAI, Noun Project). Never

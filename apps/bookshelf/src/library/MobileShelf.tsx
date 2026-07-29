@@ -3,7 +3,14 @@
 // alphabet index rail on the right edge, and an iOS-style pushed second page
 // for a series' books (back chevron, edge-swipe back, browser back all pop it).
 import { Suspense, lazy, useEffect, useMemo, useRef, useState } from 'react';
-import { createPortal } from 'react-dom';
+import {
+  AlphabetizedList,
+  CollapsingHeader,
+  alphabetize,
+  blockChromeReveal,
+  scrollToTop,
+  useScrollChrome,
+} from '@orly/mobile-ui';
 import { composeCover, drawSpine, type BookMeta } from './cover';
 import {
   assetUrl,
@@ -17,7 +24,6 @@ import {
 } from './shared';
 import { DownloadButton, DownloadSeriesButton } from './DownloadButton';
 import { SubscribeButton } from './SubscribeButton';
-import { blockChromeReveal, scrollShelfToTop, useScrollChrome } from '../shell/useScrollChrome';
 import { ThemeToggle } from '../shell/ThemeToggle';
 import { CoverFlow } from './CoverFlow';
 import { useLandscape } from '../shell/useLandscape';
@@ -52,12 +58,6 @@ type Screen = { kind: 'series'; name: string } | { kind: 'book'; slug: string };
 function sortKey(name: string): string {
   return name.replace(/^(the|a|an)\s+/i, '').trim() || name;
 }
-function letterOf(name: string): string {
-  const c = sortKey(name).charAt(0).toUpperCase();
-  return c >= 'A' && c <= 'Z' ? c : '#';
-}
-
-const LETTERS = ['#', ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'];
 
 type Entry =
   | { kind: 'book'; name: string; book: BookMeta }
@@ -181,64 +181,6 @@ function SeriesRow({ name, books, onOpen }: { name: string; books: BookMeta[]; o
   );
 }
 
-// The iOS Contacts-style alphabet rail: tap or drag to jump; a floating letter
-// bubble tracks the finger; drags jump instantly (no smooth scroll fighting).
-function AlphaRail({ active, onJump }: { active: Set<string>; onJump: (letter: string) => void }) {
-  const railRef = useRef<HTMLDivElement | null>(null);
-  const [bubble, setBubble] = useState<{ letter: string; y: number } | null>(null);
-
-  const pick = (clientY: number) => {
-    // Block on every touch of the rail, not only on the frames that land a
-    // jump: dragging across inactive letters still scrolls nothing, and a
-    // pause there would let the block lapse and the bars flap back in.
-    blockChromeReveal();
-    const rail = railRef.current;
-    if (!rail) return;
-    const rect = rail.getBoundingClientRect();
-    const i = Math.max(0, Math.min(LETTERS.length - 1, Math.floor(((clientY - rect.top) / rect.height) * LETTERS.length)));
-    const letter = LETTERS[i];
-    setBubble({ letter, y: rect.top + ((i + 0.5) / LETTERS.length) * rect.height });
-    // Nearest live section at-or-after the letter (iOS skips over empty ones).
-    let j = i;
-    while (j < LETTERS.length && !active.has(LETTERS[j])) j++;
-    if (j >= LETTERS.length) for (j = i; j >= 0 && !active.has(LETTERS[j]); j--);
-    if (j >= 0 && j < LETTERS.length && active.has(LETTERS[j])) onJump(LETTERS[j]);
-  };
-
-  const onPointerDown = (e: React.PointerEvent) => {
-    (e.target as Element).setPointerCapture?.(e.pointerId);
-    pick(e.clientY);
-  };
-
-  return (
-    <>
-      <div
-        ref={railRef}
-        className="libm-rail"
-        role="scrollbar"
-        aria-label="Alphabet index"
-        aria-orientation="vertical"
-        aria-valuenow={0}
-        onPointerDown={onPointerDown}
-        onPointerMove={(e) => e.buttons > 0 && pick(e.clientY)}
-        onPointerUp={() => setBubble(null)}
-        onPointerCancel={() => setBubble(null)}
-      >
-        {LETTERS.map((l) => (
-          <span key={l} className={`libm-rail-letter${active.has(l) ? '' : ' is-dim'}`}>
-            {l}
-          </span>
-        ))}
-      </div>
-      {bubble && (
-        <div className="libm-rail-bubble" style={{ top: bubble.y }}>
-          {bubble.letter}
-        </div>
-      )}
-    </>
-  );
-}
-
 // A large series (>6 books) as a grid buries most of it below the fold and
 // loses any way to jump around — past that size the push page becomes its
 // OWN second A-Z indexed list (same sticky letter heads + alphabet rail as
@@ -264,7 +206,6 @@ function SeriesPage({
   const chronological = isChronologicalSeries(name);
   const headerRef = useRef<HTMLElement | null>(null);
   const listRef = useRef<HTMLDivElement | null>(null);
-  const sectionRefs = useRef(new Map<string, HTMLElement>());
 
   useEffect(() => {
     if (asGrid) return;
@@ -280,25 +221,8 @@ function SeriesPage({
 
   const byLetter = useMemo(() => {
     if (asGrid || chronological) return null;
-    const map = new Map<string, BookMeta[]>();
-    for (const b of [...books].sort((a, c) => sortKey(a.title).localeCompare(sortKey(c.title)))) {
-      const l = letterOf(b.title);
-      if (!map.has(l)) map.set(l, []);
-      map.get(l)!.push(b);
-    }
-    return [...map.entries()].sort(([a], [c]) => LETTERS.indexOf(a) - LETTERS.indexOf(c));
+    return alphabetize(books, (book) => book.title);
   }, [asGrid, books, chronological]);
-
-  const jumpTo = (letter: string) => {
-    const el = sectionRefs.current.get(letter);
-    const scroller = detailRef.current;
-    if (!el || !scroller) return;
-    const headH = headerRef.current?.getBoundingClientRect().height ?? 0;
-    // .libm-detail is its own fixed+scrolling layer (the pushed page), not
-    // the window — unlike the main shelf's jumpTo, this scrolls it directly.
-    const scrollerTop = scroller.getBoundingClientRect().top;
-    scroller.scrollTo({ top: el.getBoundingClientRect().top - scrollerTop + scroller.scrollTop - headH - 4 });
-  };
 
   return (
     <div
@@ -340,35 +264,18 @@ function SeriesPage({
             ))}
           </div>
         ) : (
-          <>
-            <div className="libm-rows">
-              {byLetter!.map(([l, arr]) => (
-                <section
-                  key={l}
-                  className="libm-letter-section"
-                  ref={(el) => {
-                    if (el) sectionRefs.current.set(l, el);
-                    else sectionRefs.current.delete(l);
-                  }}
-                >
-                  <h2 className="libm-letter-head">{l}</h2>
-                  {arr.map((b) => (
-                    <BookRow key={b.slug} book={b} onOpen={() => onOpenBook(b.slug)} />
-                  ))}
-                </section>
-              ))}
-            </div>
-            {/* .libm-detail (this page's own scrolling layer) has its own
-                `transform` for the push/pop slide — that makes it the
-                containing block for any `position: fixed` descendant,
-                which would drag the rail along as THIS page scrolls instead
-                of holding it pinned to the viewport like the main shelf's
-                rail. Escape that via a portal straight to <body>. */}
-            {createPortal(
-              <AlphaRail active={new Set(byLetter!.map(([l]) => l))} onJump={jumpTo} />,
-              document.body
+          <AlphabetizedList
+            groups={byLetter!}
+            renderItem={(book) => (
+              <BookRow key={book.slug} book={book} onOpen={() => onOpenBook(book.slug)} />
             )}
-          </>
+            rowsClassName="libm-rows"
+            sectionClassName="libm-letter-section"
+            headingClassName="libm-letter-head"
+            scrollContainerRef={detailRef}
+            topOffset={() => headerRef.current?.getBoundingClientRect().height ?? 0}
+            indexPortal={document.body}
+          />
         )}
       </div>
     </div>
@@ -486,11 +393,9 @@ export function MobileShelf({
   });
   const series = screen?.kind === 'series' ? screen.name : null;
   const [phase, setPhase] = useState<'push' | 'pop' | 'idle'>('idle');
-  const headerRef = useRef<HTMLElement | null>(null);
   const listRef = useRef<HTMLDivElement | null>(null);
   const detailRef = useRef<HTMLDivElement | null>(null);
   const dimRef = useRef<HTMLDivElement | null>(null);
-  const sectionRefs = useRef(new Map<string, HTMLElement>());
   const phaseTimer = useRef<number | undefined>(undefined);
   const swipedRef = useRef(false);
   const screenRef = useRef(screen);
@@ -501,32 +406,6 @@ export function MobileShelf({
 
   const { hidden: chromeHidden, scrolled: chromeScrolled } = useScrollChrome();
 
-  // Expose the sticky top header's real height as a CSS var, so the A-Z
-  // letter section heads (iOS Contacts-style) can stick right below it
-  // instead of a hardcoded offset that would drift if the header's content
-  // (search box, brand row) ever changes height. While the header is
-  // scrolled off (chromeHidden), the letter heads should stick to the very
-  // top of the screen instead of the header's now-vacated space.
-  useEffect(() => {
-    const el = headerRef.current;
-    const list = listRef.current; // shared ancestor of the header AND the rows below it
-    if (!el || !list) return;
-    // When hidden the header doesn't leave — it collapses to a strip that
-    // still covers the notch/hole-punch band, so sticky letter heads park
-    // under THAT rather than sliding up under the phone's rounded corner
-    // where the letter is clipped. See --libm-collapsed-h in library.css.
-    const setH = () =>
-      list.style.setProperty(
-        '--libm-top-h',
-        chromeHidden ? 'var(--libm-collapsed-h)' : `${el.getBoundingClientRect().height}px`,
-      );
-    setH();
-    if (chromeHidden) return;
-    const ro = new ResizeObserver(setH);
-    ro.observe(el);
-    return () => ro.disconnect();
-  }, [chromeHidden]);
-
   // The featured series is pinned above the alphabetized list (its own
   // showcase section) rather than filed under its letter — keeping the A-Z
   // rail's jump targets clean. Search still finds it like any other entry.
@@ -535,19 +414,14 @@ export function MobileShelf({
     [entries],
   );
 
-  // Letter → entries sections for the vertical list + rail.
+  // Alphabetized sections are built by the reusable mobile package.
   const sections = useMemo(() => {
     if (!entries) return null;
-    const map = new Map<string, Entry[]>();
-    for (const e of entries) {
-      if (e.kind === 'series' && e.name === FEATURED_SERIES) continue; // pinned above
-      const l = letterOf(e.name);
-      if (!map.has(l)) map.set(l, []);
-      map.get(l)!.push(e);
-    }
-    return map;
+    return alphabetize(
+      entries.filter((entry) => entry.kind !== 'series' || entry.name !== FEATURED_SERIES),
+      (entry) => entry.name,
+    );
   }, [entries]);
-  const activeLetters = useMemo(() => new Set(sections ? [...sections.keys()] : []), [sections]);
 
   const q = query.trim();
   // Search EXPLODES series: instead of collapsing a matching series into one
@@ -706,17 +580,6 @@ export function MobileShelf({
     };
   }, [screen, phase]);
 
-  const jumpTo = (letter: string) => {
-    const el = sectionRefs.current.get(letter);
-    if (!el) return;
-    // Aiming with the rail is not "scrolling up", so it must not bring the
-    // hidden bars back — see blockChromeReveal.
-    blockChromeReveal();
-    const headH = headerRef.current?.getBoundingClientRect().height ?? 0;
-    // instant jump — smooth scrolling would fight the dragging finger
-    window.scrollTo({ top: el.getBoundingClientRect().top + window.scrollY - headH - 4 });
-  };
-
   const renderEntry = (e: Entry) =>
     e.kind === 'book' ? (
       <BookRow key={`b:${e.book.slug}`} book={e.book} onOpen={() => pushBook(e.book.slug)} />
@@ -745,15 +608,19 @@ export function MobileShelf({
         ref={listRef}
         className={`libm-list${listUnder ? ' is-under' : ''}${coverFlow ? ' is-coverflow' : ''}`}
       >
-        <header
-          ref={headerRef}
-          className={`libm-top${chromeScrolled ? ' is-scrolled' : ''}${chromeHidden ? ' is-hidden' : ''}`}
+        <CollapsingHeader
+          hidden={chromeHidden}
+          scrolled={chromeScrolled}
+          scrollRootRef={listRef}
+          collapsedHeight="var(--libm-collapsed-h)"
+          heightProperty="--libm-top-h"
+          className="libm-top"
           onClick={(e) => {
             // Tapping the top bar itself (not its search input/clear button)
             // smooth-scrolls the list back to the top, like Twitter's app.
             const target = e.target as HTMLElement;
             if (!target.closest('.theme-picker') && (target === e.currentTarget || target.closest('.libm-brand'))) {
-              scrollShelfToTop();
+              scrollToTop();
             }
           }}
         >
@@ -805,7 +672,7 @@ export function MobileShelf({
               </button>
             </div>
           )}
-        </header>
+        </CollapsingHeader>
 
         {error && <div className="libm-empty">Couldn’t load the library: {error}</div>}
         {!books && !error && <div className="libm-empty">Loading the shelf…</div>}
@@ -826,8 +693,21 @@ export function MobileShelf({
           ))}
 
         {!filtered && sections && (
-          <div className="libm-rows">
-            {featured && (
+          <AlphabetizedList
+            groups={sections}
+            renderItem={renderEntry}
+            rowsClassName="libm-rows"
+            sectionClassName="libm-letter-section"
+            headingClassName="libm-letter-head"
+            topOffset={() =>
+              chromeHidden
+                ? 8
+                : (listRef.current?.querySelector('.libm-top')?.getBoundingClientRect().height ?? 0)
+            }
+            onIndexInteraction={() => blockChromeReveal()}
+            showIndex={!q && !screenOpen && !coverFlow && !!entries?.length}
+            indexPortal={document.body}
+            beforeSections={featured && (
               <section className="libm-letter-section libm-featured">
                 <h2 className="libm-letter-head">Featured</h2>
                 <SeriesRow
@@ -837,28 +717,11 @@ export function MobileShelf({
                 />
               </section>
             )}
-            {LETTERS.filter((l) => sections.has(l)).map((l) => (
-              <section
-                key={l}
-                className="libm-letter-section"
-                ref={(el) => {
-                  if (el) sectionRefs.current.set(l, el);
-                  else sectionRefs.current.delete(l);
-                }}
-              >
-                <h2 className="libm-letter-head">{l}</h2>
-                {sections.get(l)!.map(renderEntry)}
-              </section>
-            ))}
-          </div>
+          />
         )}
 
         <footer className="libm-foot">by Brett Lamy · an “O’RLY?” parody</footer>
       </div>
-
-      {!q && !screenOpen && !coverFlow && entries && entries.length > 0 && (
-        <AlphaRail active={activeLetters} onJump={jumpTo} />
-      )}
 
       <div ref={dimRef} className={`libm-dim${listUnder ? ' is-on' : ''}`} aria-hidden="true" />
 

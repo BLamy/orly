@@ -1,6 +1,6 @@
 name: Storybook to GitHub Pages
 
-# Publishes the src/viz Storybook catalog (primitives, agent-harness suite,
+# Publishes the apps/bookshelf/src/viz Storybook catalog (primitives, agent-harness suite,
 # and all explainers) to GitHub Pages on every push to main.
 # The Motion panel's "save to source" button needs the dev server, so it is
 # inert on the published static build — everything else works.

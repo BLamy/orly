@@ -1,3 +1,5 @@
+import { MobileTabBar } from '@orly/mobile-ui';
+
 export type ShelfTab = 'browse' | 'library' | 'shelf' | 'settings';
 
 interface TabDef {
@@ -66,11 +68,21 @@ export function TabBar({
    *  scrolled down, back in on scroll-up (mobile bottom bar only). */
   hidden?: boolean;
 }) {
+  if (mobile) {
+    return (
+      <MobileTabBar
+        active={tab}
+        items={TABS}
+        onChange={onChange}
+        hidden={hidden}
+        className="tabbar-bottom"
+        ariaLabel="Shelf sections"
+      />
+    );
+  }
+
   return (
-    <nav
-      className={`${mobile ? 'tabbar-bottom' : 'tabbar-top'}${mobile && hidden ? ' is-hidden' : ''}`}
-      aria-label="Shelf sections"
-    >
+    <nav className="tabbar-top" aria-label="Shelf sections">
       {TABS.map((t) => (
         <button
           key={t.id}

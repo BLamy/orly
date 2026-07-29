@@ -60,7 +60,7 @@ jobs:
                papers unless the evaluation methodology itself is the concept.
             4. COVERAGE CHECK — this is a hard gate: read
                public/generated/library.json (every book's title + chapter
-               titles) and `ls src/viz/explainers src/viz/books`. Drop any
+               titles) and `ls apps/bookshelf/src/viz/explainers apps/bookshelf/src/viz/books`. Drop any
                concept the shelf already teaches; for near-misses, keep only if
                the new angle is genuinely distinct and say why in `coverage`.
                Also check existing open issues in /tmp/open-issues.json (the

@@ -1,7 +1,7 @@
 #!/usr/bin/env node
 // DEPRECATED (v2, storyboard/D3 pipeline) — new books are scene-native videos;
 // use `node generator/video.mjs --slug <slug> --title "<Title>"` instead
-// (chapters authored at src/viz/books/<slug>/chapter-<n>.tsx). This entry is
+// (chapters authored at apps/bookshelf/src/viz/books/<slug>/chapter-<n>.tsx). This entry is
 // kept only until CI workflows stop referencing it.
 //
 // repo → narrated D3 explainer, end to end.

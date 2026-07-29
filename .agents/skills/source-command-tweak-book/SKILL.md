@@ -23,7 +23,7 @@ Keys come from `.env` locally or CI env (`ELEVENLABS_API_KEY`, `OPENAI_API_KEY`,
 `NOUN_PROJECT_KEY/SECRET`).
 
 ## The book's files (v3 — scene-native)
-`src/viz/books/<slug>/chapter-<n>.tsx` are the editable sources — each chapter
+`apps/bookshelf/src/viz/books/<slug>/chapter-<n>.tsx` are the editable sources — each chapter
 IS one authored 3b1bd3 scene whose captions are the narration script.
 `public/generated/<slug>/` holds the built artifacts: `manifest.json`
 (format 3: per-chapter scene id, audio path, cues, duration),
@@ -34,7 +34,7 @@ full-size `animal.png` is a gitignored local artifact), and `previews/`.
 ## Pick the smallest change that does the job
 
 - **Reword narration / change what a beat shows** → edit the chapter scene
-  (`src/viz/books/<slug>/chapter-<n>.tsx`: captions for the voice, channels/
+  (`apps/bookshelf/src/viz/books/<slug>/chapter-<n>.tsx`: captions for the voice, channels/
   render for the visuals), then rebuild the book's audio + manifest:
   ```bash
   node generator/video.mjs --slug <slug> --title "<existing title>"     --chapter-titles "…" --blurbs "…"          # re-narrates every chapter
@@ -43,11 +43,16 @@ full-size `animal.png` is a gitignored local artifact), and `previews/`.
   edit small and re-run the build.)
 - **Visual-only change (no caption text touched)** → edit the scene and re-run
   with `--no-tts` — existing MP3s and cues stay; only the manifest rewrites.
-- **Cover** → `node generator/video.mjs --slug <slug> --title "…" --no-tts`
-  after deleting `animal.png`/`animal.webp`, or regenerate with an `--animal`
-  hint. The webp thumbnail is what ships.
+- **Cover** → when Codex built-in ImageGen is available, always use it instead
+  of the API generator. Preserve the requested animal concept, use a uniform
+  pure-white (`#FFFFFF`) field with no tan/cream/ivory cast, texture, vignette,
+  scene, or lettering, visually inspect it, then replace `animal.png` and the
+  committed 512px-wide `animal.webp`. Run
+  `node generator/video.mjs --slug <slug> --title "…" --no-tts --no-cover`
+  only if the manifest/library also needs rebuilding. Use the API cover path
+  only when built-in ImageGen is unavailable.
 - **Shelf metadata (title/subtitle/color)** → library.json via video.mjs flags.
 
 After ANY change: `npx tsc --noEmit && npm run build &&
 node generator/verify-book.mjs --slug <slug>` must pass; commit
-`public/generated/<slug>` + `src/viz/books/<slug>` together.
+`public/generated/<slug>` + `apps/bookshelf/src/viz/books/<slug>` together.

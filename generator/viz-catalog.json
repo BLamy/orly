@@ -1,5 +1,5 @@
 {
-  "$comment": "Catalog of prebuilt 3b1b-style animated scenes a storyboard step may embed via step.viz.scene. MUST stay in sync with the VIZ_SCENES registry in src/viz/scenes.ts (the Node-side validator can't import TSX, so this JSON is its source of truth). Run `node generator/check-viz-catalog.mjs` after changing either side. Durations are the scene timelines' native seconds — in a book the scene is time-scaled onto the step's audio window, so they're advisory (pick steps whose narration runs long enough that the scene isn't comically fast).",
+  "$comment": "Catalog of prebuilt 3b1b-style animated scenes a storyboard step may embed via step.viz.scene. MUST stay in sync with the VIZ_SCENES registry in apps/bookshelf/src/viz/scenes.ts (the Node-side validator can't import TSX, so this JSON is its source of truth). Run `node generator/check-viz-catalog.mjs` after changing either side. Durations are the scene timelines' native seconds — in a book the scene is time-scaled onto the step's audio window, so they're advisory (pick steps whose narration runs long enough that the scene isn't comically fast).",
   "scenes": [
     {
       "slug": "fourier",

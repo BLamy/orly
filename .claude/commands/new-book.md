@@ -35,11 +35,11 @@ The planning and the scenes are written by **you (Claude Code)**.
      against the recording, hunk by hunk", "a wavefront flooding the graph").
    - For each chapter: the beat sheet — 5–10 beats, what enters/moves/changes
      per beat, and the narration line(s) each beat carries.
-   - Inventory what you can reuse: `src/viz/primitives/` (Zone, ServiceNode,
+   - Inventory what you can reuse: `apps/bookshelf/src/viz/primitives/` (Zone, ServiceNode,
      Connection, RequestFlow, Axes, FunctionPlot, MatrixGrid, ParticleCloud…),
-     `src/viz/agent/` (MessageCard, TokenStream, GauntletRail, DiffLanes,
+     `apps/bookshelf/src/viz/agent/` (MessageCard, TokenStream, GauntletRail, DiffLanes,
      RecordingStrip, LoopRing…), and prebuilt explainers in
-     `src/viz/explainers/` (embeddable by slug). If a chapter needs a visual
+     `apps/bookshelf/src/viz/explainers/` (embeddable by slug). If a chapter needs a visual
      vocabulary that doesn't exist yet, DESIGN it as local subcomponents in the
      scene file — and note in the PR if it deserves promotion to primitives.
    - Ground EVERYTHING in the digest: real file/function/type names in captions
@@ -47,14 +47,14 @@ The planning and the scenes are written by **you (Claude Code)**.
 
 4. **AUTHOR THE SCENES** — the video itself. Use the `viz-scene` skill
    (`.claude/skills/viz-scene/SKILL.md`, "Using scenes in BOOKS — v3"). One
-   file per chapter: `src/viz/books/<SLUG>/chapter-<n>.tsx` (layout data +
+   file per chapter: `apps/bookshelf/src/viz/books/<SLUG>/chapter-<n>.tsx` (layout data +
    `buildScene()` + `Render({s})` + `vizScene()`; auto-registered by glob).
    - **Captions ARE the narration.** Each `tl.caption({at, dur, text})` is one
      spoken line: full, natural sentences (1–2 per caption, ≤ ~220 chars),
      written for the EAR — no markdown, no paths-read-literally, expand
      identifiers ("registering a slot", not `registerSlot()`); on-screen labels
      can carry the exact code. A chapter is typically 8–16 captions / 60–120s.
-   - **Study 2–3 exemplars** under `src/viz/explainers/` first (e.g.
+   - **Study 2–3 exemplars** under `apps/bookshelf/src/viz/explainers/` first (e.g.
      `kalman/`, `pagerank/`, `differential-dataflow/`) — that is the quality
      bar: beat-sheet comments, motion language, restraint.
    - **Keep the stage clean, especially at the end.** Never draw a closing
@@ -77,18 +77,27 @@ The planning and the scenes are written by **you (Claude Code)**.
    failed run.
 
 6. **Build the video** (ElevenLabs narration per chapter + O'RLY cover +
-   manifest + shelf):
+   manifest + shelf). When Codex built-in ImageGen is available, **always use
+   it instead of the API cover generator**: generate only the requested animal
+   on a uniform pure-white (`#FFFFFF`) field with no tan/cream/ivory cast,
+   texture, vignette, scene, text, lettering, logo, banner, or frame. Visually
+   inspect the result, save the full PNG as
+   `public/generated/<SLUG>/animal.png`, create the committed 512px-wide
+   `animal.webp`, and pass `--no-cover` below so the pipeline keeps it. Use the
+   `cover.mjs` API path only if built-in ImageGen is unavailable.
    ```bash
+   # Include --no-cover when the built-in ImageGen cover is prepared.
    node generator/video.mjs --slug "<SLUG>" --title "<TITLE>" \
      --chapter-titles "t1|t2|…" --blurbs "b1|b2|…" \
+     [--no-cover] \
      [--series "<SERIES NAME>" [--series-order <n>]]   # when the request names a series
    ```
    Omit `--series-order` for `Daily Papers by Hugging Face` and
    `Fresh from arXiv`; those chronological collections sort by `createdAt`
    newest-first and never store or display series numbers.
    This extracts each chapter's captions, narrates them (one MP3 per chapter,
-   exact per-caption cues), generates the O'RLY-parody cover (gpt-image seeded
-   + vision QA loop), writes `public/generated/<SLUG>/manifest.json`
+   exact per-caption cues), keeps the prepared built-in cover or generates the
+   API fallback cover, writes `public/generated/<SLUG>/manifest.json`
    (format 3), and upserts the book into `public/generated/library.json`.
 
 7. **Verify the built book end-to-end**:
@@ -120,7 +129,7 @@ The planning and the scenes are written by **you (Claude Code)**.
 
 9. **Publish** (the scenes ship with the book — add BOTH paths):
    ```bash
-   git add public/generated src/viz/books && git commit -m "book: <TITLE>" && git push
+   git add public/generated apps/bookshelf/src/viz/books && git commit -m "book: <TITLE>" && git push
    ```
 
 10. Tell the user the live URL: `https://orly.brett-lamy.workers.dev/?bundle=<SLUG>`.
