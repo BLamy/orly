@@ -1,6 +1,40 @@
 {
   "books": [
     {
+      "slug": "hifi-umi",
+      "title": "Teach Without the Robot",
+      "subtitle": "How high-fidelity human demonstrations reach real-robot deployment",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#6a3f9e",
+      "animal": "generated/hifi-umi/animal.webp",
+      "href": "?bundle=hifi-umi",
+      "series": "Daily Papers by Hugging Face",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Six Views, One Instant",
+          "duration": 78.762
+        },
+        {
+          "number": 2,
+          "title": "Reconstruct the Hands",
+          "duration": 67.803
+        },
+        {
+          "number": 3,
+          "title": "Replay Before Training",
+          "duration": 64.319
+        },
+        {
+          "number": 4,
+          "title": "Remove the Robot Anchor",
+          "duration": 80.34
+        }
+      ],
+      "createdAt": "2026-07-30T19:16:42.274Z"
+    },
+    {
       "slug": "kimi-k3",
       "title": "A Million Tokens Deep",
       "subtitle": "How Kimi K3 Keeps State Across Tokens, Layers, Experts, and Agents",

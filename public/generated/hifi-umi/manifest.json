@@ -1,0 +1,100 @@
+{
+  "format": 3,
+  "slug": "hifi-umi",
+  "title": "Teach Without the Robot",
+  "subtitle": "How high-fidelity human demonstrations reach real-robot deployment",
+  "animal": "animal.webp",
+  "accent": "#6a3f9e",
+  "paper": {
+    "title": "HiFi-UMI: Learning Deployable Manipulation Policies from High-Fidelity UMI Data Alone",
+    "authors": "Simple AI; Yuteng Wei; Jinming Ma; Jiawei Wang; Weitao Zhou; Yushen Zuo; Ke Rui; Minglei Li; Jinhao Zhang; Zhikang Pan; Xiang Wang; Haoran Jia; Huan Du; Zicheng Zeng; Jun Ma; Guiyu Qin; Di Zhang; Xiaofei Li",
+    "identifier": "arXiv:2607.25895",
+    "doi": "10.48550/arXiv.2607.25895",
+    "huggingFaceUrl": "https://huggingface.co/papers/2607.25895",
+    "canonicalUrl": "https://arxiv.org/abs/2607.25895",
+    "pdfUrl": "https://arxiv.org/pdf/2607.25895",
+    "projectUrl": "https://cloud.simpleai.tech/simple-world-lab/hifi-umi/",
+    "repositoryUrl": "https://huggingface.co/datasets/simple-world-lab/HiFi-UMI-2K",
+    "repositoryKind": "official dataset release",
+    "sourceNote": "The official project exposes the paper and HiFi-UMI-2K dataset, but no implementation repository."
+  },
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Six Views, One Instant",
+      "blurb": "Six camera views, ultra-wide hand coverage, and one hardware trigger turn a human gesture into a synchronized episode with measured quality signals.",
+      "scene": "books/hifi-umi/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        9.799,
+        18.925,
+        27.888,
+        35.074,
+        45.024,
+        52.628,
+        60.673,
+        69.776
+      ],
+      "duration": 78.762
+    },
+    {
+      "number": 2,
+      "title": "Reconstruct the Hands",
+      "blurb": "Offline stereo-inertial reconstruction and two marker cubes in one head frame recover globally consistent bimanual trajectories with three-millimeter local error.",
+      "scene": "books/hifi-umi/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        5.561,
+        12.446,
+        22.163,
+        28.665,
+        35.666,
+        43.712,
+        51.421,
+        59.827
+      ],
+      "duration": 67.803
+    },
+    {
+      "number": 3,
+      "title": "Replay Before Training",
+      "blurb": "Two serial quality gates reconstruct and replay every capture before annotation, human verification, balancing, and traceable export.",
+      "scene": "books/hifi-umi/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        4.969,
+        13.224,
+        17.949,
+        23.998,
+        30.023,
+        38.638,
+        48.216,
+        55.263
+      ],
+      "duration": 64.319
+    },
+    {
+      "number": 4,
+      "title": "Remove the Robot Anchor",
+      "blurb": "Controlled within-backbone comparisons remove task teleoperation, then test what four thousand hours of robot-free pre-training add—and where the evidence stops.",
+      "scene": "books/hifi-umi/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        8.231,
+        17.322,
+        27.759,
+        35.92,
+        40.286,
+        45.15,
+        54.427,
+        62.879,
+        70.843
+      ],
+      "duration": 80.34
+    }
+  ]
+}
