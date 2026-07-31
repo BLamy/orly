@@ -42,6 +42,7 @@ export function AlphabetIndex({
   onInteraction?: () => void;
 }) {
   const railRef = useRef<HTMLDivElement | null>(null);
+  const lastPickedLetter = useRef<string | null>(null);
   const [bubble, setBubble] = useState<{ letter: string; y: number } | null>(null);
 
   const pick = (clientY: number) => {
@@ -54,6 +55,10 @@ export function AlphabetIndex({
       Math.min(ALPHABET.length - 1, Math.floor(((clientY - rect.top) / rect.height) * ALPHABET.length)),
     );
     const letter = ALPHABET[index];
+    if (letter !== lastPickedLetter.current) {
+      lastPickedLetter.current = letter;
+      navigator.vibrate?.(10);
+    }
     setBubble({ letter, y: rect.top + ((index + 0.5) / ALPHABET.length) * rect.height });
 
     let target = index;
@@ -78,8 +83,14 @@ export function AlphabetIndex({
           pick(event.clientY);
         }}
         onPointerMove={(event) => event.buttons > 0 && pick(event.clientY)}
-        onPointerUp={() => setBubble(null)}
-        onPointerCancel={() => setBubble(null)}
+        onPointerUp={() => {
+          lastPickedLetter.current = null;
+          setBubble(null);
+        }}
+        onPointerCancel={() => {
+          lastPickedLetter.current = null;
+          setBubble(null);
+        }}
       >
         {ALPHABET.map((letter) => (
           <span
