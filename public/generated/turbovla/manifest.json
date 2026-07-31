@@ -1,0 +1,106 @@
+{
+  "format": 3,
+  "slug": "turbovla",
+  "title": "Skip the Giant Model",
+  "subtitle": "TurboVLA at 32 Hz",
+  "paper": {
+    "title": "TurboVLA: Real-Time Vision-Language-Action Model at 32 Hz on an RTX 4090 with <1 GB VRAM",
+    "authors": [
+      "Hengyi Xie",
+      "Chenfei Yao",
+      "Xianjin Wu",
+      "Xuanyang Xi",
+      "Yiping Tang",
+      "Di Xu",
+      "Yingying Zhu",
+      "Dingkang Liang",
+      "Xiang Bai",
+      "Han Ding"
+    ],
+    "huggingFaceUrl": "https://huggingface.co/papers/2607.27205",
+    "canonicalUrl": "https://arxiv.org/abs/2607.27205",
+    "pdfUrl": "https://arxiv.org/pdf/2607.27205",
+    "arxivId": "2607.27205",
+    "doi": "10.48550/arXiv.2607.27205",
+    "repositoryUrl": "https://github.com/H-EmbodVis/TurboVLA",
+    "selectedForDate": "2026-07-30",
+    "popularityEvidence": "#1 Paper of the day with 122 visible upvotes on the Hugging Face daily papers page"
+  },
+  "animal": "animal.webp",
+  "accent": "#1f6fb2",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Remove the Language Model Bottleneck",
+      "blurb": "Replace a giant generative bottleneck with a direct vision-language-action path.",
+      "scene": "books/turbovla/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        7.082,
+        15.185,
+        24.067,
+        33.982,
+        43.316,
+        51.617,
+        60.824
+      ],
+      "duration": 67.244
+    },
+    {
+      "number": 2,
+      "title": "Make the Tokens Look at Each Other",
+      "blurb": "Bidirectional attention lets visual and instruction tokens reshape each other.",
+      "scene": "books/turbovla/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        7.245,
+        15,
+        22.953,
+        30.302,
+        36.885,
+        43.165,
+        53.092
+      ],
+      "duration": 60.093
+    },
+    {
+      "number": 3,
+      "title": "Ask for Twelve Moves at Once",
+      "blurb": "Twelve learned queries decode a coordinated action chunk in one pass.",
+      "scene": "books/turbovla/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        7.082,
+        15.034,
+        21.873,
+        30.836,
+        38.591,
+        46.533,
+        54.741,
+        62.311
+      ],
+      "duration": 68.778
+    },
+    {
+      "number": 4,
+      "title": "Put Speed on the Same Plot as Success",
+      "blurb": "Read success beside latency, memory, and the limits of the claim.",
+      "scene": "books/turbovla/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        7.93,
+        17.195,
+        23.684,
+        30.267,
+        39.985,
+        47.867,
+        57.26
+      ],
+      "duration": 64.365
+    }
+  ]
+}
