@@ -1,4 +1,4 @@
-import { useMemo, useRef, useState, type ReactNode, type RefObject } from 'react';
+import { useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from 'react';
 import { createPortal } from 'react-dom';
 import { useScopedIOSVibrator } from './scopedHaptics';
 
@@ -47,8 +47,29 @@ export function AlphabetIndex({
   const railBounds = useRef<DOMRect | null>(null);
   const lastPickedIndex = useRef<number | null>(null);
   const lastJumpedLetter = useRef<string | null>(null);
+  const pendingJumpFrame = useRef<number | null>(null);
+  const pendingJumpLetter = useRef<string | null>(null);
   const [bubble, setBubble] = useState<{ letter: string; y: number } | null>(null);
   useScopedIOSVibrator(railRef);
+
+  useEffect(
+    () => () => {
+      if (pendingJumpFrame.current !== null) cancelAnimationFrame(pendingJumpFrame.current);
+    },
+    [],
+  );
+
+  const scheduleJump = (letter: string) => {
+    pendingJumpLetter.current = letter;
+    if (pendingJumpFrame.current !== null) return;
+
+    pendingJumpFrame.current = requestAnimationFrame(() => {
+      pendingJumpFrame.current = null;
+      const nextLetter = pendingJumpLetter.current;
+      pendingJumpLetter.current = null;
+      if (nextLetter) onJump(nextLetter);
+    });
+  };
 
   const pick = (clientY: number) => {
     const rail = railRef.current;
@@ -64,7 +85,10 @@ export function AlphabetIndex({
     onInteraction?.();
 
     const letter = ALPHABET[index];
-    navigator.vibrate?.(20);
+    // The demo uses a short selection pulse at each hash mark. A slightly
+    // wider window gives the hidden switch enough pointer samples on Safari
+    // without producing more than one requested pulse per letter.
+    navigator.vibrate?.(45);
     setBubble({ letter, y: rect.top + ((index + 0.5) / ALPHABET.length) * rect.height });
 
     let target = index;
@@ -77,7 +101,7 @@ export function AlphabetIndex({
     const targetLetter = ALPHABET[target];
     if (targetLetter === lastJumpedLetter.current) return;
     lastJumpedLetter.current = targetLetter;
-    onJump(targetLetter);
+    scheduleJump(targetLetter);
   };
 
   const endInteraction = (pointerId: number) => {
@@ -109,6 +133,7 @@ export function AlphabetIndex({
           railBounds.current = rail.getBoundingClientRect();
           lastPickedIndex.current = null;
           lastJumpedLetter.current = null;
+          navigator.vibrate?.(20);
           rail.setPointerCapture(event.pointerId);
           pick(event.clientY);
         }}

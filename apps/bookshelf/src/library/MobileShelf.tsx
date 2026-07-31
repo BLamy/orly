@@ -9,7 +9,7 @@ import {
   alphabetize,
   blockChromeReveal,
   scrollToTop,
-  useScopedIOSVibrator,
+  useIOSVibrator,
   useScrollChrome,
 } from '@orly/mobile-ui';
 import { composeCover, drawSpine, type BookMeta } from './cover';
@@ -90,7 +90,6 @@ function buildEntries(books: BookMeta[]): Entry[] {
 function BookRow({ book, onOpen }: { book: BookMeta; onOpen?: () => void }) {
   const rootRef = useRef<HTMLButtonElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  useScopedIOSVibrator(rootRef);
   const visible = useLazyVisible(rootRef);
 
   useEffect(() => {
@@ -146,7 +145,6 @@ function BookRow({ book, onOpen }: { book: BookMeta; onOpen?: () => void }) {
 function SeriesRow({ name, books, onOpen }: { name: string; books: BookMeta[]; onOpen: () => void }) {
   const rootRef = useRef<HTMLButtonElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  useScopedIOSVibrator(rootRef);
   const visible = useLazyVisible(rootRef);
 
   useEffect(() => {
@@ -304,7 +302,6 @@ function SeriesPage({
 function DetailCard({ book, index, onOpen }: { book: BookMeta; index?: number; onOpen?: () => void }) {
   const rootRef = useRef<HTMLButtonElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
-  useScopedIOSVibrator(rootRef);
   const visible = useLazyVisible(rootRef);
 
   useEffect(() => {
@@ -410,6 +407,8 @@ export function MobileShelf({
    *  root, not to what's pushed on top of it). */
   onScreenOpenChange?: (open: boolean) => void;
 }) {
+  useIOSVibrator();
+
   const [query, setQuery] = useState('');
   const [searchOpen, setSearchOpen] = useState(false);
   const searchInputRef = useRef<HTMLInputElement | null>(null);
