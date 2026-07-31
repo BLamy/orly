@@ -9,6 +9,7 @@ import {
   alphabetize,
   blockChromeReveal,
   scrollToTop,
+  useScopedIOSVibrator,
   useScrollChrome,
 } from '@orly/mobile-ui';
 import { composeCover, drawSpine, type BookMeta } from './cover';
@@ -89,6 +90,7 @@ function buildEntries(books: BookMeta[]): Entry[] {
 function BookRow({ book, onOpen }: { book: BookMeta; onOpen?: () => void }) {
   const rootRef = useRef<HTMLButtonElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  useScopedIOSVibrator(rootRef);
   const visible = useLazyVisible(rootRef);
 
   useEffect(() => {
@@ -116,7 +118,15 @@ function BookRow({ book, onOpen }: { book: BookMeta; onOpen?: () => void }) {
 
   const chapters = book.chapters?.length ?? 0;
   return (
-    <button ref={rootRef} className="libm-row" onClick={onOpen ?? (() => openBook(book))} aria-label={`Open ${book.title}`}>
+    <button
+      ref={rootRef}
+      className="libm-row"
+      onClick={() => {
+        navigator.vibrate?.(20);
+        (onOpen ?? (() => openBook(book)))();
+      }}
+      aria-label={`Open ${book.title}`}
+    >
       <span className="libm-row-thumb">
         <canvas ref={canvasRef} className="libm-row-canvas" />
       </span>
@@ -136,6 +146,7 @@ function BookRow({ book, onOpen }: { book: BookMeta; onOpen?: () => void }) {
 function SeriesRow({ name, books, onOpen }: { name: string; books: BookMeta[]; onOpen: () => void }) {
   const rootRef = useRef<HTMLButtonElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  useScopedIOSVibrator(rootRef);
   const visible = useLazyVisible(rootRef);
 
   useEffect(() => {
@@ -166,7 +177,15 @@ function SeriesRow({ name, books, onOpen }: { name: string; books: BookMeta[]; o
   }, [visible, books]);
 
   return (
-    <button ref={rootRef} className="libm-row libm-row-series" onClick={onOpen} aria-label={`Open the ${name} series`}>
+    <button
+      ref={rootRef}
+      className="libm-row libm-row-series"
+      onClick={() => {
+        navigator.vibrate?.(20);
+        onOpen();
+      }}
+      aria-label={`Open the ${name} series`}
+    >
       <span className="libm-set-box">
         <canvas ref={canvasRef} className="libm-set-canvas" />
       </span>
@@ -285,6 +304,7 @@ function SeriesPage({
 function DetailCard({ book, index, onOpen }: { book: BookMeta; index?: number; onOpen?: () => void }) {
   const rootRef = useRef<HTMLButtonElement | null>(null);
   const canvasRef = useRef<HTMLCanvasElement | null>(null);
+  useScopedIOSVibrator(rootRef);
   const visible = useLazyVisible(rootRef);
 
   useEffect(() => {
@@ -311,7 +331,15 @@ function DetailCard({ book, index, onOpen }: { book: BookMeta; index?: number; o
   }, [visible, book]);
 
   return (
-    <button ref={rootRef} className="libm-card" onClick={onOpen ?? (() => openBook(book))} aria-label={`Open ${book.title}`}>
+    <button
+      ref={rootRef}
+      className="libm-card"
+      onClick={() => {
+        navigator.vibrate?.(20);
+        (onOpen ?? (() => openBook(book)))();
+      }}
+      aria-label={`Open ${book.title}`}
+    >
       <span className="libm-card-cover">
         <canvas ref={canvasRef} className="libm-card-canvas" />
         <DownloadButton slug={book.slug} />

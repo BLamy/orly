@@ -1,5 +1,6 @@
 import { useMemo, useRef, useState, type ReactNode, type RefObject } from 'react';
 import { createPortal } from 'react-dom';
+import { useScopedIOSVibrator } from './scopedHaptics';
 
 export const ALPHABET = ['#', ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'] as const;
 
@@ -42,23 +43,28 @@ export function AlphabetIndex({
   onInteraction?: () => void;
 }) {
   const railRef = useRef<HTMLDivElement | null>(null);
-  const lastPickedLetter = useRef<string | null>(null);
+  const activePointerId = useRef<number | null>(null);
+  const railBounds = useRef<DOMRect | null>(null);
+  const lastPickedIndex = useRef<number | null>(null);
+  const lastJumpedLetter = useRef<string | null>(null);
   const [bubble, setBubble] = useState<{ letter: string; y: number } | null>(null);
+  useScopedIOSVibrator(railRef);
 
   const pick = (clientY: number) => {
-    onInteraction?.();
     const rail = railRef.current;
     if (!rail) return;
-    const rect = rail.getBoundingClientRect();
+    const rect = railBounds.current ?? rail.getBoundingClientRect();
     const index = Math.max(
       0,
       Math.min(ALPHABET.length - 1, Math.floor(((clientY - rect.top) / rect.height) * ALPHABET.length)),
     );
+    if (index === lastPickedIndex.current) return;
+
+    lastPickedIndex.current = index;
+    onInteraction?.();
+
     const letter = ALPHABET[index];
-    if (letter !== lastPickedLetter.current) {
-      lastPickedLetter.current = letter;
-      navigator.vibrate?.(10);
-    }
+    navigator.vibrate?.(20);
     setBubble({ letter, y: rect.top + ((index + 0.5) / ALPHABET.length) * rect.height });
 
     let target = index;
@@ -66,7 +72,22 @@ export function AlphabetIndex({
     if (target >= ALPHABET.length) {
       for (target = index; target >= 0 && !activeLetters.has(ALPHABET[target]); target--);
     }
-    if (target >= 0 && target < ALPHABET.length) onJump(ALPHABET[target]);
+    if (target < 0 || target >= ALPHABET.length) return;
+
+    const targetLetter = ALPHABET[target];
+    if (targetLetter === lastJumpedLetter.current) return;
+    lastJumpedLetter.current = targetLetter;
+    onJump(targetLetter);
+  };
+
+  const endInteraction = (pointerId: number) => {
+    const rail = railRef.current;
+    if (rail?.hasPointerCapture(pointerId)) rail.releasePointerCapture(pointerId);
+    activePointerId.current = null;
+    railBounds.current = null;
+    lastPickedIndex.current = null;
+    lastJumpedLetter.current = null;
+    setBubble(null);
   };
 
   return (
@@ -79,17 +100,26 @@ export function AlphabetIndex({
         aria-orientation="vertical"
         aria-valuenow={0}
         onPointerDown={(event) => {
-          (event.target as Element).setPointerCapture?.(event.pointerId);
+          if (event.button !== 0) return;
+          event.preventDefault();
+          const rail = railRef.current;
+          if (!rail) return;
+
+          activePointerId.current = event.pointerId;
+          railBounds.current = rail.getBoundingClientRect();
+          lastPickedIndex.current = null;
+          lastJumpedLetter.current = null;
+          rail.setPointerCapture(event.pointerId);
           pick(event.clientY);
         }}
-        onPointerMove={(event) => event.buttons > 0 && pick(event.clientY)}
-        onPointerUp={() => {
-          lastPickedLetter.current = null;
-          setBubble(null);
+        onPointerMove={(event) => {
+          if (activePointerId.current === event.pointerId) pick(event.clientY);
         }}
-        onPointerCancel={() => {
-          lastPickedLetter.current = null;
-          setBubble(null);
+        onPointerUp={(event) => {
+          if (activePointerId.current === event.pointerId) endInteraction(event.pointerId);
+        }}
+        onPointerCancel={(event) => {
+          if (activePointerId.current === event.pointerId) endInteraction(event.pointerId);
         }}
       >
         {ALPHABET.map((letter) => (
