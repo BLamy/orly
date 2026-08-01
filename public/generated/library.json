@@ -1,6 +1,40 @@
 {
   "books": [
     {
+      "slug": "askchem",
+      "title": "Search the Claim, Keep the Source",
+      "subtitle": "How AskChem turns papers into provenance-carrying claims",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#2563eb",
+      "animal": "generated/askchem/animal.webp",
+      "href": "?bundle=askchem",
+      "series": "Daily Papers by Hugging Face",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Cut Papers Into Verifiable Claims",
+          "duration": 58.236
+        },
+        {
+          "number": 2,
+          "title": "Let Five Search Signals Vote",
+          "duration": 53.452
+        },
+        {
+          "number": 3,
+          "title": "Stabilize the Taxonomy",
+          "duration": 57.074
+        },
+        {
+          "number": 4,
+          "title": "Follow the Evidence",
+          "duration": 60.371
+        }
+      ],
+      "createdAt": "2026-08-01T10:22:29.049Z"
+    },
+    {
       "slug": "turbovla",
       "title": "Skip the Giant Model",
       "subtitle": "TurboVLA at 32 Hz",

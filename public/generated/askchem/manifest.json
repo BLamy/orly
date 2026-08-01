@@ -1,0 +1,100 @@
+{
+  "format": 3,
+  "slug": "askchem",
+  "title": "Search the Claim, Keep the Source",
+  "subtitle": "How AskChem turns papers into provenance-carrying claims",
+  "paper": {
+    "title": "AskChem: Claim-Centered Infrastructure for Chemistry Literature Synthesis",
+    "authors": [
+      "Bing Yan",
+      "Gregory Wolfe",
+      "Stefano Martiniani",
+      "Kyunghyun Cho"
+    ],
+    "huggingFaceUrl": "https://huggingface.co/papers/2607.28618",
+    "canonicalUrl": "https://arxiv.org/abs/2607.28618",
+    "pdfUrl": "https://arxiv.org/pdf/2607.28618",
+    "arxivId": "2607.28618",
+    "doi": "10.48550/arXiv.2607.28618",
+    "repositoryUrl": "https://github.com/bingyan4science/askchem",
+    "projectUrl": "https://askchem.org",
+    "selectedForDate": "2026-07-31",
+    "popularityEvidence": "#1 Paper of the day with 286 visible upvotes on the Hugging Face daily papers page"
+  },
+  "animal": "animal.webp",
+  "accent": "#2563eb",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Cut Papers Into Verifiable Claims",
+      "blurb": "Turn each paper into typed claims that stay tethered to a DOI and quote or evidence locator.",
+      "scene": "books/askchem/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        6.42,
+        13.816,
+        20.12,
+        27.632,
+        36.131,
+        42.249,
+        50.283
+      ],
+      "duration": 58.236
+    },
+    {
+      "number": 2,
+      "title": "Let Five Search Signals Vote",
+      "blurb": "Fuse full-text, vector, tree, paper, and author recall without losing provenance.",
+      "scene": "books/askchem/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        6.56,
+        12.875,
+        19.214,
+        26.668,
+        34.191,
+        40.321,
+        46.834
+      ],
+      "duration": 53.452
+    },
+    {
+      "number": 3,
+      "title": "Stabilize the Taxonomy",
+      "blurb": "Normalize drifting labels into stable facets while keeping exploratory scientific views.",
+      "scene": "books/askchem/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.638,
+        15.058,
+        22.279,
+        29.21,
+        36.559,
+        43.27,
+        51.188
+      ],
+      "duration": 57.074
+    },
+    {
+      "number": 4,
+      "title": "Follow the Evidence",
+      "blurb": "Connect sourced claims with typed evidence edges and expose them to people and agents.",
+      "scene": "books/askchem/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        6.931,
+        14.036,
+        21.13,
+        28.85,
+        36.699,
+        45.824,
+        53.521
+      ],
+      "duration": 60.371
+    }
+  ]
+}
