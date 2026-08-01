@@ -1,4 +1,4 @@
-import { useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from 'react';
+import { useMemo, useRef, useState, type ReactNode, type RefObject } from 'react';
 import { createPortal } from 'react-dom';
 
 export const ALPHABET = ['#', ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'] as const;
@@ -42,48 +42,18 @@ export function AlphabetIndex({
   onInteraction?: () => void;
 }) {
   const railRef = useRef<HTMLDivElement | null>(null);
-  const activePointerId = useRef<number | null>(null);
-  const railBounds = useRef<DOMRect | null>(null);
-  const lastPickedIndex = useRef<number | null>(null);
-  const lastJumpedLetter = useRef<string | null>(null);
-  const pendingJumpFrame = useRef<number | null>(null);
-  const pendingJumpLetter = useRef<string | null>(null);
   const [bubble, setBubble] = useState<{ letter: string; y: number } | null>(null);
 
-  useEffect(
-    () => () => {
-      if (pendingJumpFrame.current !== null) cancelAnimationFrame(pendingJumpFrame.current);
-    },
-    [],
-  );
-
-  const scheduleJump = (letter: string) => {
-    pendingJumpLetter.current = letter;
-    if (pendingJumpFrame.current !== null) return;
-
-    pendingJumpFrame.current = requestAnimationFrame(() => {
-      pendingJumpFrame.current = null;
-      const nextLetter = pendingJumpLetter.current;
-      pendingJumpLetter.current = null;
-      if (nextLetter) onJump(nextLetter);
-    });
-  };
-
-  const pick = (clientY: number, vibrate = true) => {
+  const pick = (clientY: number) => {
+    onInteraction?.();
     const rail = railRef.current;
     if (!rail) return;
-    const rect = railBounds.current ?? rail.getBoundingClientRect();
+    const rect = rail.getBoundingClientRect();
     const index = Math.max(
       0,
       Math.min(ALPHABET.length - 1, Math.floor(((clientY - rect.top) / rect.height) * ALPHABET.length)),
     );
-    if (index === lastPickedIndex.current) return;
-
-    lastPickedIndex.current = index;
     const letter = ALPHABET[index];
-    // Match the demo slider: request one short selection pulse when the
-    // pointer crosses a discrete hash mark (a letter in this control).
-    if (vibrate) navigator.vibrate?.(20);
     setBubble({ letter, y: rect.top + ((index + 0.5) / ALPHABET.length) * rect.height });
 
     let target = index;
@@ -91,22 +61,7 @@ export function AlphabetIndex({
     if (target >= ALPHABET.length) {
       for (target = index; target >= 0 && !activeLetters.has(ALPHABET[target]); target--);
     }
-    if (target < 0 || target >= ALPHABET.length) return;
-
-    const targetLetter = ALPHABET[target];
-    if (targetLetter === lastJumpedLetter.current) return;
-    lastJumpedLetter.current = targetLetter;
-    scheduleJump(targetLetter);
-  };
-
-  const endInteraction = (pointerId: number) => {
-    const rail = railRef.current;
-    if (rail?.hasPointerCapture(pointerId)) rail.releasePointerCapture(pointerId);
-    activePointerId.current = null;
-    railBounds.current = null;
-    lastPickedIndex.current = null;
-    lastJumpedLetter.current = null;
-    setBubble(null);
+    if (target >= 0 && target < ALPHABET.length) onJump(ALPHABET[target]);
   };
 
   return (
@@ -114,40 +69,17 @@ export function AlphabetIndex({
       <div
         ref={railRef}
         className="mobile-alpha-index"
-        role="slider"
+        role="scrollbar"
         aria-label="Alphabet index"
         aria-orientation="vertical"
-        aria-valuemin={0}
-        aria-valuemax={ALPHABET.length - 1}
-        aria-valuenow={bubble ? ALPHABET.indexOf(bubble.letter) : 0}
-        aria-valuetext={bubble?.letter ?? ALPHABET[0]}
+        aria-valuenow={0}
         onPointerDown={(event) => {
-          if (event.button !== 0) return;
-          event.preventDefault();
-          const rail = railRef.current;
-          if (!rail) return;
-
-          activePointerId.current = event.pointerId;
-          railBounds.current = rail.getBoundingClientRect();
-          lastPickedIndex.current = null;
-          lastJumpedLetter.current = null;
-          onInteraction?.();
-          navigator.vibrate?.(20);
-          rail.setPointerCapture(event.pointerId);
-          // The demo pulses once on pointer-down, then only when the pointer
-          // crosses a new hash mark. Avoid issuing two pulses for this first
-          // position while still jumping to the letter immediately.
-          pick(event.clientY, false);
+          (event.target as Element).setPointerCapture?.(event.pointerId);
+          pick(event.clientY);
         }}
-        onPointerMove={(event) => {
-          if (activePointerId.current === event.pointerId) pick(event.clientY);
-        }}
-        onPointerUp={(event) => {
-          if (activePointerId.current === event.pointerId) endInteraction(event.pointerId);
-        }}
-        onPointerCancel={(event) => {
-          if (activePointerId.current === event.pointerId) endInteraction(event.pointerId);
-        }}
+        onPointerMove={(event) => event.buttons > 0 && pick(event.clientY)}
+        onPointerUp={() => setBubble(null)}
+        onPointerCancel={() => setBubble(null)}
       >
         {ALPHABET.map((letter) => (
           <span

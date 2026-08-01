@@ -116,15 +116,7 @@ function BookRow({ book, onOpen }: { book: BookMeta; onOpen?: () => void }) {
 
   const chapters = book.chapters?.length ?? 0;
   return (
-    <button
-      ref={rootRef}
-      className="libm-row"
-      onClick={() => {
-        navigator.vibrate?.(20);
-        (onOpen ?? (() => openBook(book)))();
-      }}
-      aria-label={`Open ${book.title}`}
-    >
+    <button ref={rootRef} className="libm-row" onClick={onOpen ?? (() => openBook(book))} aria-label={`Open ${book.title}`}>
       <span className="libm-row-thumb">
         <canvas ref={canvasRef} className="libm-row-canvas" />
       </span>
@@ -174,15 +166,7 @@ function SeriesRow({ name, books, onOpen }: { name: string; books: BookMeta[]; o
   }, [visible, books]);
 
   return (
-    <button
-      ref={rootRef}
-      className="libm-row libm-row-series"
-      onClick={() => {
-        navigator.vibrate?.(20);
-        onOpen();
-      }}
-      aria-label={`Open the ${name} series`}
-    >
+    <button ref={rootRef} className="libm-row libm-row-series" onClick={onOpen} aria-label={`Open the ${name} series`}>
       <span className="libm-set-box">
         <canvas ref={canvasRef} className="libm-set-canvas" />
       </span>
@@ -327,15 +311,7 @@ function DetailCard({ book, index, onOpen }: { book: BookMeta; index?: number; o
   }, [visible, book]);
 
   return (
-    <button
-      ref={rootRef}
-      className="libm-card"
-      onClick={() => {
-        navigator.vibrate?.(20);
-        (onOpen ?? (() => openBook(book)))();
-      }}
-      aria-label={`Open ${book.title}`}
-    >
+    <button ref={rootRef} className="libm-card" onClick={onOpen ?? (() => openBook(book))} aria-label={`Open ${book.title}`}>
       <span className="libm-card-cover">
         <canvas ref={canvasRef} className="libm-card-canvas" />
         <DownloadButton slug={book.slug} />
@@ -723,10 +699,11 @@ export function MobileShelf({
             rowsClassName="libm-rows"
             sectionClassName="libm-letter-section"
             headingClassName="libm-letter-head"
-            // Rail navigation hides the collapsing header. Always calculate
-            // targets against that settled 8px strip so the offset cannot
-            // change halfway through a drag and make the list jump.
-            topOffset={() => 8}
+            topOffset={() =>
+              chromeHidden
+                ? 8
+                : (listRef.current?.querySelector('.libm-top')?.getBoundingClientRect().height ?? 0)
+            }
             onIndexInteraction={() => blockChromeReveal()}
             showIndex={!q && !screenOpen && !coverFlow && !!entries?.length}
             indexPortal={document.body}
