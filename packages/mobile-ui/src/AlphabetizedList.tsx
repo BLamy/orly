@@ -1,6 +1,5 @@
 import { useEffect, useMemo, useRef, useState, type ReactNode, type RefObject } from 'react';
 import { createPortal } from 'react-dom';
-import { useScopedIOSVibrator } from './scopedHaptics';
 
 export const ALPHABET = ['#', ...'ABCDEFGHIJKLMNOPQRSTUVWXYZ'] as const;
 
@@ -50,7 +49,6 @@ export function AlphabetIndex({
   const pendingJumpFrame = useRef<number | null>(null);
   const pendingJumpLetter = useRef<string | null>(null);
   const [bubble, setBubble] = useState<{ letter: string; y: number } | null>(null);
-  useScopedIOSVibrator(railRef);
 
   useEffect(
     () => () => {
@@ -85,10 +83,9 @@ export function AlphabetIndex({
     onInteraction?.();
 
     const letter = ALPHABET[index];
-    // The demo uses a short selection pulse at each hash mark. A slightly
-    // wider window gives the hidden switch enough pointer samples on Safari
-    // without producing more than one requested pulse per letter.
-    navigator.vibrate?.(45);
+    // Match the demo slider: request one short selection pulse when the
+    // pointer crosses a discrete hash mark (a letter in this control).
+    navigator.vibrate?.(20);
     setBubble({ letter, y: rect.top + ((index + 0.5) / ALPHABET.length) * rect.height });
 
     let target = index;

@@ -9,7 +9,6 @@ import {
   alphabetize,
   blockChromeReveal,
   scrollToTop,
-  useIOSVibrator,
   useScrollChrome,
 } from '@orly/mobile-ui';
 import { composeCover, drawSpine, type BookMeta } from './cover';
@@ -407,8 +406,6 @@ export function MobileShelf({
    *  root, not to what's pushed on top of it). */
   onScreenOpenChange?: (open: boolean) => void;
 }) {
-  useIOSVibrator();
-
   const [query, setQuery] = useState('');
   const [searchOpen, setSearchOpen] = useState(false);
   const searchInputRef = useRef<HTMLInputElement | null>(null);
