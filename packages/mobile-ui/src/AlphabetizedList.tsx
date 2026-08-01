@@ -69,7 +69,7 @@ export function AlphabetIndex({
     });
   };
 
-  const pick = (clientY: number) => {
+  const pick = (clientY: number, vibrate = true) => {
     const rail = railRef.current;
     if (!rail) return;
     const rect = railBounds.current ?? rail.getBoundingClientRect();
@@ -80,12 +80,10 @@ export function AlphabetIndex({
     if (index === lastPickedIndex.current) return;
 
     lastPickedIndex.current = index;
-    onInteraction?.();
-
     const letter = ALPHABET[index];
     // Match the demo slider: request one short selection pulse when the
     // pointer crosses a discrete hash mark (a letter in this control).
-    navigator.vibrate?.(20);
+    if (vibrate) navigator.vibrate?.(20);
     setBubble({ letter, y: rect.top + ((index + 0.5) / ALPHABET.length) * rect.height });
 
     let target = index;
@@ -116,10 +114,13 @@ export function AlphabetIndex({
       <div
         ref={railRef}
         className="mobile-alpha-index"
-        role="scrollbar"
+        role="slider"
         aria-label="Alphabet index"
         aria-orientation="vertical"
-        aria-valuenow={0}
+        aria-valuemin={0}
+        aria-valuemax={ALPHABET.length - 1}
+        aria-valuenow={bubble ? ALPHABET.indexOf(bubble.letter) : 0}
+        aria-valuetext={bubble?.letter ?? ALPHABET[0]}
         onPointerDown={(event) => {
           if (event.button !== 0) return;
           event.preventDefault();
@@ -130,9 +131,13 @@ export function AlphabetIndex({
           railBounds.current = rail.getBoundingClientRect();
           lastPickedIndex.current = null;
           lastJumpedLetter.current = null;
+          onInteraction?.();
           navigator.vibrate?.(20);
           rail.setPointerCapture(event.pointerId);
-          pick(event.clientY);
+          // The demo pulses once on pointer-down, then only when the pointer
+          // crosses a new hash mark. Avoid issuing two pulses for this first
+          // position while still jumping to the letter immediately.
+          pick(event.clientY, false);
         }}
         onPointerMove={(event) => {
           if (activePointerId.current === event.pointerId) pick(event.clientY);

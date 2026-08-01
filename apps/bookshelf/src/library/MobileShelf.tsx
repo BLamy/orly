@@ -723,11 +723,10 @@ export function MobileShelf({
             rowsClassName="libm-rows"
             sectionClassName="libm-letter-section"
             headingClassName="libm-letter-head"
-            topOffset={() =>
-              chromeHidden
-                ? 8
-                : (listRef.current?.querySelector('.libm-top')?.getBoundingClientRect().height ?? 0)
-            }
+            // Rail navigation hides the collapsing header. Always calculate
+            // targets against that settled 8px strip so the offset cannot
+            // change halfway through a drag and make the list jump.
+            topOffset={() => 8}
             onIndexInteraction={() => blockChromeReveal()}
             showIndex={!q && !screenOpen && !coverFlow && !!entries?.length}
             indexPortal={document.body}
