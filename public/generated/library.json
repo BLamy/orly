@@ -1,6 +1,40 @@
 {
   "books": [
     {
+      "slug": "mental-world-modeling",
+      "title": "Model the Mind",
+      "subtitle": "MENTIS and Mental World Modeling",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#0f5870",
+      "animal": "generated/mental-world-modeling/animal.webp",
+      "href": "?bundle=mental-world-modeling",
+      "series": "Daily Papers by Hugging Face",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Right Scene, the Wrong Action",
+          "duration": 44.629
+        },
+        {
+          "number": 2,
+          "title": "Show Each Agent Only Their World",
+          "duration": 49.458
+        },
+        {
+          "number": 3,
+          "title": "Fork Every Possible Future",
+          "duration": 61.58
+        },
+        {
+          "number": 4,
+          "title": "Find the Bottleneck in the Branches",
+          "duration": 60.975
+        }
+      ],
+      "createdAt": "2026-08-04T10:24:36.118Z"
+    },
+    {
       "slug": "askchem",
       "title": "Search the Claim, Keep the Source",
       "subtitle": "How AskChem turns papers into provenance-carrying claims",

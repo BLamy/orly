@@ -1,0 +1,101 @@
+{
+  "format": 3,
+  "slug": "mental-world-modeling",
+  "title": "Model the Mind",
+  "subtitle": "MENTIS and Mental World Modeling",
+  "paper": {
+    "title": "Mental World Modeling",
+    "authors": [
+      "Hao Fei",
+      "Yiran Zhao"
+    ],
+    "huggingFaceUrl": "https://huggingface.co/papers/2607.27201",
+    "canonicalUrl": "https://arxiv.org/abs/2607.27201",
+    "pdfUrl": "https://arxiv.org/pdf/2607.27201",
+    "arxivId": "2607.27201",
+    "doi": "10.48550/arXiv.2607.27201",
+    "repositoryUrl": "https://github.com/mental-world/Mentis",
+    "repositoryCommit": "50c93a056d2c8b5405d4b5931fb09baff16b603d",
+    "projectUrl": "https://mental-world.github.io/",
+    "selectedForDate": "2026-08-03",
+    "popularityEvidence": "#1 Paper of the day with 84 visible upvotes on the Hugging Face daily papers page"
+  },
+  "animal": "animal.webp",
+  "accent": "#0f5870",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Right Scene, the Wrong Action",
+      "blurb": "Track the physical scene and the target belief as two coupled truths.",
+      "scene": "books/mental-world-modeling/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        5.735,
+        11.053,
+        15.674,
+        20.724,
+        25.241,
+        31.022,
+        37.756
+      ],
+      "duration": 44.629
+    },
+    {
+      "number": 2,
+      "title": "Show Each Agent Only Their World",
+      "blurb": "Render a target-specific observation without perspective leakage or mind reading.",
+      "scene": "books/mental-world-modeling/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        7.616,
+        14.849,
+        20.468,
+        24.741,
+        29.512,
+        36.792,
+        43.27
+      ],
+      "duration": 49.458
+    },
+    {
+      "number": 3,
+      "title": "Fork Every Possible Future",
+      "blurb": "Decompose every option and simulate its physical and mental successor state.",
+      "scene": "books/mental-world-modeling/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        6.757,
+        12.423,
+        19.865,
+        27.922,
+        37.35,
+        43.909,
+        50.632,
+        56.518
+      ],
+      "duration": 61.58
+    },
+    {
+      "number": 4,
+      "title": "Find the Bottleneck in the Branches",
+      "blurb": "Use ladder, ablation, and oracle evidence to locate the transition bottleneck.",
+      "scene": "books/mental-world-modeling/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        6.676,
+        14.025,
+        20.259,
+        25.205,
+        29.547,
+        36.931,
+        45.034,
+        51.489
+      ],
+      "duration": 60.975
+    }
+  ]
+}
