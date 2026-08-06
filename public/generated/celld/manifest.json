@@ -1,0 +1,104 @@
+{
+  "format": 3,
+  "slug": "celld",
+  "title": "Celld",
+  "animal": "animal.webp",
+  "accent": "#b0277a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "One Cell, One Thread",
+      "blurb": "A cell is a Durable Object: named, single-threaded, with its own SQLite. Requests interleave only at await; storage never does.",
+      "scene": "books/celld/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        9.137,
+        19.168,
+        25.74,
+        33.611,
+        42.156,
+        51.735,
+        59.13,
+        65.585
+      ],
+      "duration": 73.376
+    },
+    {
+      "number": 2,
+      "title": "The Bucket Is the Coordinator",
+      "blurb": "Ownership is one compare-and-swap on an owner record in the fleet bucket. No membership protocol, no failure detector, no consensus.",
+      "scene": "books/celld/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        10.716,
+        19.47,
+        27.888,
+        35.899,
+        44.862,
+        52.536,
+        62.695,
+        70.741
+      ],
+      "duration": 79.228
+    },
+    {
+      "number": 3,
+      "title": "Durable Before Acknowledged",
+      "blurb": "A write takes a durability ticket and waits at the output gate until its pages land in the bucket. The epoch in the prefix fences stale owners.",
+      "scene": "books/celld/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        9.358,
+        18.518,
+        24.938,
+        33.739,
+        41.994,
+        52.803,
+        60.071
+      ],
+      "duration": 65.853
+    },
+    {
+      "number": 4,
+      "title": "Sleep Cheap, Wake on Time",
+      "blurb": "Idle cells hibernate to the bucket, and committed alarms mirror into minute-keyed wake entries, so no alarm is lost even when a node dies.",
+      "scene": "books/celld/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        7.535,
+        15.522,
+        24.183,
+        30.766,
+        41.645,
+        49.644,
+        56.703,
+        64.54
+      ],
+      "duration": 69.706
+    },
+    {
+      "number": 5,
+      "title": "One Function Decides",
+      "blurb": "Every behavioral decision flows through one pure function, on_event, driven by a single actor and verified by deterministic simulation and workerd conformance.",
+      "scene": "books/celld/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        9.95,
+        15.976,
+        25.717,
+        33.356,
+        40.623,
+        47.949,
+        57.655,
+        70.008,
+        81.63
+      ],
+      "duration": 88.886
+    }
+  ]
+}

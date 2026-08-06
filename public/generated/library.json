@@ -69,6 +69,43 @@
       "createdAt": "2026-08-04T10:24:36.118Z"
     },
     {
+      "slug": "celld",
+      "title": "Celld",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b0277a",
+      "href": "?bundle=celld",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "One Cell, One Thread",
+          "duration": 73.376
+        },
+        {
+          "number": 2,
+          "title": "The Bucket Is the Coordinator",
+          "duration": 79.228
+        },
+        {
+          "number": 3,
+          "title": "Durable Before Acknowledged",
+          "duration": 65.853
+        },
+        {
+          "number": 4,
+          "title": "Sleep Cheap, Wake on Time",
+          "duration": 69.706
+        },
+        {
+          "number": 5,
+          "title": "One Function Decides",
+          "duration": 88.886
+        }
+      ],
+      "createdAt": "2026-08-06T19:29:32.270Z"
+    },
+    {
       "slug": "askchem",
       "title": "Search the Claim, Keep the Source",
       "subtitle": "How AskChem turns papers into provenance-carrying claims",
@@ -101,6 +138,46 @@
         }
       ],
       "createdAt": "2026-08-01T10:22:29.049Z"
+    },
+    {
+      "slug": "bootstrapping-the-evidence-loop",
+      "title": "Bootstrapping the Evidence Loop",
+      "subtitle": "Replay QA, tunnels, and a regression catalog that remembers",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#7c3aed",
+      "animal": "generated/bootstrapping-the-evidence-loop/animal.webp",
+      "href": "?bundle=bootstrapping-the-evidence-loop",
+      "series": "The Loops",
+      "seriesOrder": 7,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Initialize the Witness",
+          "duration": 83.453
+        },
+        {
+          "number": 2,
+          "title": "Two Roads Into One Project",
+          "duration": 133.141
+        },
+        {
+          "number": 3,
+          "title": "The Catalog Remembers",
+          "duration": 100.032
+        },
+        {
+          "number": 4,
+          "title": "The Critic Holds the Tape",
+          "duration": 97.384
+        },
+        {
+          "number": 5,
+          "title": "Every Epic Widens the Net",
+          "duration": 107.415
+        }
+      ],
+      "createdAt": "2026-08-01T01:11:51.575Z"
     },
     {
       "slug": "turbovla",
