@@ -1,0 +1,111 @@
+{
+  "format": 3,
+  "slug": "bootstrapping-the-evidence-loop",
+  "title": "Bootstrapping the Evidence Loop",
+  "subtitle": "Replay QA, tunnels, and a regression catalog that remembers",
+  "animal": "animal.webp",
+  "accent": "#7c3aed",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Initialize the Witness",
+      "blurb": "Create one persistent Replay QA project and bind its identifier to the app’s separate Durable Streams evidence layer.",
+      "scene": "books/bootstrapping-the-evidence-loop/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.998,
+        18.1,
+        27.422,
+        35.724,
+        42.562,
+        50.921,
+        57.736,
+        66.653,
+        76.812
+      ],
+      "duration": 83.453
+    },
+    {
+      "number": 2,
+      "title": "Two Roads Into One Project",
+      "blurb": "Keep the agent control plane distinct from the private browser data plane while one project key joins them.",
+      "scene": "books/bootstrapping-the-evidence-loop/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        10.519,
+        23.58,
+        35.643,
+        48.692,
+        59.373,
+        72.294,
+        82.093,
+        95.583,
+        107.658,
+        121.671
+      ],
+      "duration": 133.141
+    },
+    {
+      "number": 3,
+      "title": "The Catalog Remembers",
+      "blurb": "Turn explorations into versioned journeys whose recorded runs make the regression catalog compound.",
+      "scene": "books/bootstrapping-the-evidence-loop/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        9.183,
+        19.4,
+        29.258,
+        37.988,
+        48.205,
+        57.958,
+        67.106,
+        79.134,
+        89.78
+      ],
+      "duration": 100.032
+    },
+    {
+      "number": 4,
+      "title": "The Critic Holds the Tape",
+      "blurb": "Bind a fixed browser recording to stream offsets, digests, and a fresh critic’s sensitivity proof.",
+      "scene": "books/bootstrapping-the-evidence-loop/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        8.545,
+        20.016,
+        30.499,
+        39.973,
+        51.165,
+        63.1,
+        75.093,
+        87.144
+      ],
+      "duration": 97.384
+    },
+    {
+      "number": 5,
+      "title": "Every Epic Widens the Net",
+      "blurb": "Close every epic with a fresh exploration and an explicitly orchestrated sweep of every named journey.",
+      "scene": "books/bootstrapping-the-evidence-loop/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        7.86,
+        19.168,
+        25.959,
+        37.279,
+        49.795,
+        60.639,
+        71.866,
+        82.036,
+        92.125,
+        101.738
+      ],
+      "duration": 107.415
+    }
+  ]
+}
