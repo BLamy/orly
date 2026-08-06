@@ -1,0 +1,90 @@
+{
+  "format": 3,
+  "slug": "kitchen-side-table",
+  "title": "The Side Table",
+  "subtitle": "Six shop techniques, one kitchen side table",
+  "animal": "animal.webp",
+  "accent": "#2f6f74",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Mark Before You Mill",
+      "blurb": "Sixteen milled parts that all look alike, and one triangle drawn across a whole group — a mark that means nothing alone and is obviously broken the moment the group goes back wrong.",
+      "scene": "books/kitchen-side-table/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        10.066,
+        20.515,
+        31.544,
+        40.879,
+        52.141,
+        62.195,
+        69.359,
+        81.723
+      ],
+      "duration": 86.239
+    },
+    {
+      "number": 2,
+      "title": "Wide From Narrow",
+      "blurb": "Panels wider than any board you can buy: edge joints, cauls that keep the buckling out of the glue-up, scrap clamping pads, and squeeze-out taken off before it cures to glass.",
+      "scene": "books/kitchen-side-table/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        11.111,
+        20.909,
+        30.742,
+        41.598,
+        52.024,
+        61.416,
+        71.83,
+        79.144
+      ],
+      "duration": 85.681
+    },
+    {
+      "number": 3,
+      "title": "One Setting, Every Cut",
+      "blurb": "Domino joinery run like a sort — group every cut that shares a machine setting, clamp the divider to its panel before mortising, and cut the button slots while the machine is already out.",
+      "scene": "books/kitchen-side-table/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        10.542,
+        22.105,
+        33.39,
+        44.28,
+        53.881,
+        64.992,
+        76.486,
+        86.18
+      ],
+      "duration": 93.855
+    },
+    {
+      "number": 4,
+      "title": "Square, Round and Flat",
+      "blurb": "Diagonals that prove each sub-assembly square, routing the ends before the sides so the tear-out gets cut away, steaming dents up before sanding, and buttons that let the top move.",
+      "scene": "books/kitchen-side-table/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        10.844,
+        21.734,
+        32.032,
+        43.444,
+        55.17,
+        63.367,
+        75.046,
+        85.483,
+        95.874,
+        106.787,
+        117.155,
+        125.317
+      ],
+      "duration": 136.996
+    }
+  ]
+}

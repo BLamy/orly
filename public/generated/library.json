@@ -1,6 +1,40 @@
 {
   "books": [
     {
+      "slug": "kitchen-side-table",
+      "title": "The Side Table",
+      "subtitle": "Six shop techniques, one kitchen side table",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#2f6f74",
+      "href": "?bundle=kitchen-side-table",
+      "series": "Weekend Builds",
+      "seriesOrder": 4,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Mark Before You Mill",
+          "duration": 86.239
+        },
+        {
+          "number": 2,
+          "title": "Wide From Narrow",
+          "duration": 85.681
+        },
+        {
+          "number": 3,
+          "title": "One Setting, Every Cut",
+          "duration": 93.855
+        },
+        {
+          "number": 4,
+          "title": "Square, Round and Flat",
+          "duration": 136.996
+        }
+      ],
+      "createdAt": "2026-08-06T22:50:54.586Z"
+    },
+    {
       "slug": "cedar-garden-bench",
       "title": "The Cedar Bench",
       "subtitle": "Seven boards, four lengths, one stacked bench",
