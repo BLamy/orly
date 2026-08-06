@@ -1,6 +1,77 @@
 {
   "books": [
     {
+      "slug": "pallet-backyard-bar",
+      "title": "The Pallet Bar",
+      "subtitle": "A backyard bar out of salvaged pallets",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b4762c",
+      "href": "?bundle=pallet-backyard-bar",
+      "series": "Weekend Builds",
+      "seriesOrder": 2,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Choose the Pallet, Skip the Cut",
+          "duration": 98.778
+        },
+        {
+          "number": 2,
+          "title": "Two Cuts Make a U",
+          "duration": 96.549
+        },
+        {
+          "number": 3,
+          "title": "The Top That Ties It Together",
+          "duration": 92.601
+        },
+        {
+          "number": 4,
+          "title": "Three Coats and a Level Patio",
+          "duration": 117.169
+        }
+      ],
+      "createdAt": "2026-08-06T20:10:15.737Z"
+    },
+    {
+      "slug": "celld",
+      "title": "Celld",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b0277a",
+      "href": "?bundle=celld",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "One Cell, One Thread",
+          "duration": 73.376
+        },
+        {
+          "number": 2,
+          "title": "The Bucket Is the Coordinator",
+          "duration": 79.228
+        },
+        {
+          "number": 3,
+          "title": "Durable Before Acknowledged",
+          "duration": 65.853
+        },
+        {
+          "number": 4,
+          "title": "Sleep Cheap, Wake on Time",
+          "duration": 69.706
+        },
+        {
+          "number": 5,
+          "title": "One Function Decides",
+          "duration": 88.886
+        }
+      ],
+      "createdAt": "2026-08-06T19:29:32.270Z"
+    },
+    {
       "slug": "merchantbench",
       "title": "The Long Game",
       "subtitle": "MerchantBench and Long-Term Coherence",
@@ -67,43 +138,6 @@
         }
       ],
       "createdAt": "2026-08-04T10:24:36.118Z"
-    },
-    {
-      "slug": "celld",
-      "title": "Celld",
-      "subtitle": "",
-      "author": "Brett Lamy",
-      "role": "Software Engineer at Replay",
-      "color": "#b0277a",
-      "href": "?bundle=celld",
-      "chapters": [
-        {
-          "number": 1,
-          "title": "One Cell, One Thread",
-          "duration": 73.376
-        },
-        {
-          "number": 2,
-          "title": "The Bucket Is the Coordinator",
-          "duration": 79.228
-        },
-        {
-          "number": 3,
-          "title": "Durable Before Acknowledged",
-          "duration": 65.853
-        },
-        {
-          "number": 4,
-          "title": "Sleep Cheap, Wake on Time",
-          "duration": 69.706
-        },
-        {
-          "number": 5,
-          "title": "One Function Decides",
-          "duration": 88.886
-        }
-      ],
-      "createdAt": "2026-08-06T19:29:32.270Z"
     },
     {
       "slug": "askchem",
@@ -1785,7 +1819,7 @@
     {
       "slug": "how-to-build-a-shed",
       "title": "How to Build a Shed",
-      "subtitle": "",
+      "subtitle": "An 8-foot cube, from level ground to raising day",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#41607f",
@@ -1818,7 +1852,9 @@
           "duration": 124.551
         }
       ],
-      "createdAt": "2026-07-17T12:09:13.251Z"
+      "createdAt": "2026-07-17T12:09:13.251Z",
+      "series": "Weekend Builds",
+      "seriesOrder": 1
     },
     {
       "slug": "explained-agents",

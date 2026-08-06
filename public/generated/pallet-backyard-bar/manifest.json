@@ -1,0 +1,90 @@
+{
+  "format": 3,
+  "slug": "pallet-backyard-bar",
+  "title": "The Pallet Bar",
+  "subtitle": "A backyard bar out of salvaged pallets",
+  "animal": "animal.webp",
+  "accent": "#b4762c",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Choose the Pallet, Skip the Cut",
+      "blurb": "A specification instead of a saw: four salvage candidates measured against 47 by 40 inches with six-inch boards, until one survives and tips up into the bar face.",
+      "scene": "books/pallet-backyard-bar/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        10.925,
+        24.161,
+        32.601,
+        41.75,
+        50.806,
+        60.234,
+        71.611,
+        82.234,
+        91.743
+      ],
+      "duration": 98.778
+    },
+    {
+      "number": 2,
+      "title": "Two Cuts Make a U",
+      "blurb": "Two side pallets trimmed to two feet, spun so their raw cut ends face front, and screwed home into a U that will not fall over.",
+      "scene": "books/pallet-backyard-bar/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        8.789,
+        20.979,
+        29.664,
+        36.293,
+        47.648,
+        57.376,
+        66.688,
+        77.358,
+        87.308
+      ],
+      "duration": 96.549
+    },
+    {
+      "number": 3,
+      "title": "The Top That Ties It Together",
+      "blurb": "Where the 65-inch top comes from, why it hangs eight inches out front, and how a lid turns a wobbly U into a rigid box.",
+      "scene": "books/pallet-backyard-bar/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        6.374,
+        17.984,
+        31.625,
+        41.33,
+        51.582,
+        63.297,
+        74.558,
+        86.54
+      ],
+      "duration": 92.601
+    },
+    {
+      "number": 4,
+      "title": "Three Coats and a Level Patio",
+      "blurb": "Stain is colour, not armour: three coats into the grain, a film of Varathane on the top, and level patio stone underneath.",
+      "scene": "books/pallet-backyard-bar/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        11.819,
+        20.886,
+        30.615,
+        40.82,
+        52.256,
+        62.949,
+        74.339,
+        85.868,
+        94.912,
+        107.37
+      ],
+      "duration": 117.169
+    }
+  ]
+}
