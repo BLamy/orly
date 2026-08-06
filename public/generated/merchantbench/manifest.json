@@ -1,0 +1,110 @@
+{
+  "format": 3,
+  "slug": "merchantbench",
+  "title": "The Long Game",
+  "subtitle": "MerchantBench and Long-Term Coherence",
+  "paper": {
+    "title": "MerchantBench: Benchmarking LLM Agents for Long-Term Coherence in E-Commerce Operations",
+    "authors": [
+      "Qiming Shi",
+      "Yulong Tao",
+      "Linbo Jin",
+      "Zhaolu Kang",
+      "Yibo Dou",
+      "Jiawen Zhu",
+      "Tianjun Pan",
+      "Shaokang Fu",
+      "Chengyu Wang",
+      "Siyue Li",
+      "Yaping Cheng",
+      "Di Weng",
+      "Chengfu Huo"
+    ],
+    "huggingFaceUrl": "https://huggingface.co/papers/2607.28956",
+    "canonicalUrl": "https://arxiv.org/abs/2607.28956",
+    "pdfUrl": "https://arxiv.org/pdf/2607.28956",
+    "arxivId": "2607.28956",
+    "doi": "10.48550/arXiv.2607.28956",
+    "repositoryUrl": "https://github.com/KhanCold/merchantbench",
+    "repositoryCommit": "6a3dd978985763fdca0c64c1dabdb63698b9c965",
+    "projectUrl": "https://air.1688.com/kapp/next1688/merchantbench/",
+    "selectedForDate": "2026-08-05",
+    "popularityEvidence": "#1 Paper of the day with 90 visible upvotes on the Hugging Face daily papers page, ahead of the runner-up at 81"
+  },
+  "animal": "animal.webp",
+  "accent": "#6a3f9e",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A Year Is the Task",
+      "blurb": "Watch one persistent store accumulate eight thousand seven hundred sixty hourly consequences.",
+      "scene": "books/merchantbench/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        7.291,
+        13.154,
+        20.584,
+        28.339,
+        34.841,
+        41.366,
+        47.229
+      ],
+      "duration": 53.127
+    },
+    {
+      "number": 2,
+      "title": "Cash Leaves Before the Truth Arrives",
+      "blurb": "Follow one order from immediate cash commitment to delayed settlement and risk evidence.",
+      "scene": "books/merchantbench/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        6.327,
+        12.968,
+        20.26,
+        25.716,
+        31.521,
+        37.663,
+        44.525
+      ],
+      "duration": 50.852
+    },
+    {
+      "number": 3,
+      "title": "Twenty-Six Levers, One Store",
+      "blurb": "See twenty-six merchant tools operate a fifty-listing store through twelve-hour decision windows.",
+      "scene": "books/merchantbench/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        6.072,
+        12.632,
+        20.039,
+        24.648,
+        32.926,
+        39.497,
+        45.743
+      ],
+      "duration": 53.127
+    },
+    {
+      "number": 4,
+      "title": "Activity Is Not Coherence",
+      "blurb": "Measure the gap between activity and full-year coherence in the paper's reported results.",
+      "scene": "books/merchantbench/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        6.606,
+        13.445,
+        21.293,
+        28.503,
+        35.306,
+        44.803,
+        53.568
+      ],
+      "duration": 61.393
+    }
+  ]
+}

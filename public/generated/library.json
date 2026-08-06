@@ -1,6 +1,40 @@
 {
   "books": [
     {
+      "slug": "merchantbench",
+      "title": "The Long Game",
+      "subtitle": "MerchantBench and Long-Term Coherence",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#6a3f9e",
+      "animal": "generated/merchantbench/animal.webp",
+      "href": "?bundle=merchantbench",
+      "series": "Daily Papers by Hugging Face",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A Year Is the Task",
+          "duration": 53.127
+        },
+        {
+          "number": 2,
+          "title": "Cash Leaves Before the Truth Arrives",
+          "duration": 50.852
+        },
+        {
+          "number": 3,
+          "title": "Twenty-Six Levers, One Store",
+          "duration": 53.127
+        },
+        {
+          "number": 4,
+          "title": "Activity Is Not Coherence",
+          "duration": 61.393
+        }
+      ],
+      "createdAt": "2026-08-06T10:24:27.672Z"
+    },
+    {
       "slug": "mental-world-modeling",
       "title": "Model the Mind",
       "subtitle": "MENTIS and Mental World Modeling",
