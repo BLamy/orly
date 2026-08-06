@@ -115,7 +115,7 @@ export function buildScene(): Scene {
   // — Beat 1 · the U, waiting —
   tl.caption({
     at: 0.5,
-    dur: 5.6,
+    dur: 6.15,
     text: 'Here is where the last chapter left off: a U of three pallets, screwed together, still open to the sky.',
   });
   tl.tween(carcassU, 1, { at: 0.7, dur: 1.2, ease: ease.enter });
@@ -124,7 +124,7 @@ export function buildScene(): Scene {
   // — Beat 2 · the shelf —
   tl.caption({
     at: 6.7,
-    dur: 6.2,
+    dur: 6.75,
     text: 'The bar top for the front is not built at all. It is a wooden shelf that already existed, sixty-five inches long and seventeen and a half deep, which is a very convenient size — and not by accident.',
   });
   tl.tween(topU, 1, { at: 7.0, dur: 1.5, ease: ease.move });
@@ -133,7 +133,7 @@ export function buildScene(): Scene {
   // — Beat 3 · derive the 65 —
   tl.caption({
     at: 13.5,
-    dur: 7.0,
+    dur: 7.55,
     text: 'Add it up across the face. Forty-seven inches of pallet, five more for each side pallet standing behind it, and four inches of overhang past each end. Forty-seven, plus ten, plus eight: sixty-five.',
   });
   tl.tween(cam, CAM_FACE, { at: 13.7, dur: 1.5, ease: ease.move });
@@ -144,7 +144,7 @@ export function buildScene(): Scene {
   // — Beat 4 · the eight inches out front —
   tl.caption({
     at: 21.1,
-    dur: 6.4,
+    dur: 6.95,
     text: 'Toward you it hangs over by eight inches, and that is the difference between a shelf and a bar. Eight inches is where your elbows go, and where your knees go when you pull the stool in.',
   });
   tl.tween(overFrontU, 1, { at: 21.4, dur: 1.3, ease: ease.draw });
@@ -154,7 +154,7 @@ export function buildScene(): Scene {
   // — Beat 5 · the one purchased board —
   tl.caption({
     at: 28.1,
-    dur: 6.2,
+    dur: 6.75,
     text: 'The side tops are the only lumber bought for this build. One board, cut straight down the middle, gives two pieces of seventeen and a half by nine and a half — one for each wing.',
   });
   tl.tween(cam, CAM_WIDE, { at: 28.3, dur: 1.5, ease: ease.move });
@@ -170,7 +170,7 @@ export function buildScene(): Scene {
   // — Beat 6 · screw into a board, not a gap —
   tl.caption({
     at: 34.9,
-    dur: 6.8,
+    dur: 7.35,
     text: 'Now the screws, driven down through the top. A pallet is half air, so look through the top before you drill: a screw that lands on a stringer grips hard, and one that lands in a gap grips nothing.',
   });
   tl.tween(cam, CAM_XRAY, { at: 35.1, dur: 1.5, ease: ease.move });
@@ -182,7 +182,7 @@ export function buildScene(): Scene {
   // — Beat 7 · the wobble —
   tl.caption({
     at: 42.3,
-    dur: 6.4,
+    dur: 6.95,
     text: 'And here is the part that surprises people. Screws alone at those two joints let the wings swing. Push on a corner of the unfinished bar and the whole shape leans, like a cardboard box with no lid.',
   });
   tl.tween(cam, CAM_RACK, { at: 42.5, dur: 1.5, ease: ease.move });
@@ -195,7 +195,7 @@ export function buildScene(): Scene {
   // — Beat 8 · the lid locks it —
   tl.caption({
     at: 49.3,
-    dur: 6.6,
+    dur: 7.15,
     text: 'Put the top back on and it spans all three pallets at once. Every joint is now held at a fixed distance from every other, and the wobble simply has nowhere to go. The top is structure, not decoration.',
   });
   tl.tween(rackU, 0, { at: 49.6, dur: 1.5, ease: ease.move });

@@ -165,7 +165,7 @@ export function buildScene(): Scene {
   // — Beat 1 · the pile —
   tl.caption({
     at: 0.5,
-    dur: 6.6,
+    dur: 7.15,
     text: 'A backyard bar is one of those projects that looks like carpentry and is really just shopping. Almost all of this one is reclaimed pallets, and the whole build turns on which pallets you pick.',
   });
   tl.tween(pileU, 1, { at: 0.6, dur: 2.0, ease: ease.enter });
@@ -174,7 +174,7 @@ export function buildScene(): Scene {
   // — Beat 2 · the spec —
   tl.caption({
     at: 7.7,
-    dur: 6.4,
+    dur: 6.95,
     text: 'So start with a specification instead of a saw. The front of the bar wants a pallet about forty-seven inches long, forty inches tall, with wide six-inch cross boards, and not a single broken one.',
   });
   tl.tween(specU, 1, { at: 8.0, dur: 0.8, ease: ease.enter });
@@ -184,7 +184,7 @@ export function buildScene(): Scene {
   // — Beat 3 · too short —
   tl.caption({
     at: 14.7,
-    dur: 5.6,
+    dur: 6.05,
     text: 'This one is forty inches end to end and thirty-two tall. Build the bar from it and you are leaning down to your drink. Put it back on the pile.',
   });
   tl.tween(cam, camOn(0), { at: 14.9, dur: 1.4, ease: ease.move });
@@ -194,7 +194,7 @@ export function buildScene(): Scene {
   // — Beat 4 · cracked —
   tl.caption({
     at: 20.8,
-    dur: 5.8,
+    dur: 6.25,
     text: 'This one is the right size, but two of its boards are split. A pallet that has already failed once under a forklift is not the thing to lean your elbows on.',
   });
   tl.tween(cam, camOn(1), { at: 21.0, dur: 1.5, ease: ease.move });
@@ -204,7 +204,7 @@ export function buildScene(): Scene {
   // — Beat 5 · narrow boards —
   tl.caption({
     at: 27.1,
-    dur: 5.8,
+    dur: 6.25,
     text: 'And this one measures up perfectly, but its cross boards are barely three and a half inches wide. More gaps than face, and nowhere solid to drive a screw later on.',
   });
   tl.tween(cam, camOn(3), { at: 27.3, dur: 1.5, ease: ease.move });
@@ -214,7 +214,7 @@ export function buildScene(): Scene {
   // — Beat 6 · the survivor —
   tl.caption({
     at: 33.4,
-    dur: 6.2,
+    dur: 6.75,
     text: 'Which leaves one. Forty-seven inches of clean six-inch boards, in excellent condition. Everything else in this build is measured against the pallet you just found.',
   });
   tl.tween(cam, camOn(WINNER), { at: 33.6, dur: 1.5, ease: ease.move });
@@ -224,7 +224,7 @@ export function buildScene(): Scene {
   // — Beat 7 · the cut you never make —
   tl.caption({
     at: 40.2,
-    dur: 6.4,
+    dur: 6.95,
     text: 'And notice what just happened. By choosing carefully rather than settling, the entire front of the bar needs no cutting at all. Patience at the salvage pile is time you never spend at the saw.',
   });
   tl.tween(othersDim, 0.12, { at: 40.4, dur: 1.2, ease: ease.move });
@@ -236,7 +236,7 @@ export function buildScene(): Scene {
   // — Beat 8 · sanding —
   tl.caption({
     at: 47.2,
-    dur: 6.2,
+    dur: 6.75,
     text: 'It gets sanded, but only lightly — just enough that nobody picks up a splinter. This is reclaimed wood, and the grey, dented, well-travelled look is the entire point.',
   });
   tl.tween(sawU, 0, { at: 47.4, dur: 0.5, ease: ease.move });
@@ -247,7 +247,7 @@ export function buildScene(): Scene {
   // — Beat 9 · stand it up —
   tl.caption({
     at: 54.0,
-    dur: 6.4,
+    dur: 6.95,
     text: 'Then it comes off the ground and stands on its long edge. Forty inches of height is not an arbitrary number: it is the gap that a bar stool needs to slide underneath.',
   });
   tl.tween(standU, 1, { at: 54.4, dur: 1.8, ease: ease.move });

@@ -1,0 +1,88 @@
+{
+  "format": 3,
+  "slug": "cedar-garden-bench",
+  "title": "The Cedar Bench",
+  "subtitle": "Seven boards, four lengths, one stacked bench",
+  "animal": "animal.webp",
+  "accent": "#4e7a4a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Seven Boards, Four Lengths",
+      "blurb": "The cutting schedule as a machine: seven eight-foot cedar boards consumed into six 48s, five 18s, twelve 14-and-a-halfs and five little blocks, with almost nothing left over.",
+      "scene": "books/cedar-garden-bench/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        12.527,
+        22.384,
+        35.004,
+        46.335,
+        58.212,
+        70.588,
+        81.431
+      ],
+      "duration": 88.978
+    },
+    {
+      "number": 2,
+      "title": "Clamp It Before You Glue It",
+      "blurb": "The dry run that costs ten minutes and saves a board: clamps before glue, a level that keeps coming back, and sanding the faces you will never reach again.",
+      "scene": "books/cedar-garden-bench/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        7.79,
+        18.541,
+        29.06,
+        39.114,
+        49.876,
+        62.392,
+        73.48,
+        85.45
+      ],
+      "duration": 94.18
+    },
+    {
+      "number": 3,
+      "title": "The Stack Is the Joint",
+      "blurb": "Eight glued courses with no mortise and no tenon — and the geometry that explains why the two-inch screws get retired partway up the stack.",
+      "scene": "books/cedar-garden-bench/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        10.426,
+        21.966,
+        34.04,
+        42.992,
+        57.852,
+        67.605,
+        80.074,
+        91.731,
+        99.799
+      ],
+      "duration": 104.443
+    },
+    {
+      "number": 4,
+      "title": "Dowels, Not Screw Heads",
+      "blurb": "A countersink half an inch deep, a glued dowel, a pull-saw cut flush, and the moment the screw holes turn into the pattern that defines the bench.",
+      "scene": "books/cedar-garden-bench/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        11.622,
+        20.619,
+        31.66,
+        40.577,
+        51.583,
+        64.621,
+        77.078,
+        88.235,
+        103.305,
+        114.543
+      ],
+      "duration": 124.087
+    }
+  ]
+}

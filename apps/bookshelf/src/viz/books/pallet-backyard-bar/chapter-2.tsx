@@ -104,7 +104,7 @@ export function buildScene(): Scene {
   // — Beat 1 · from above —
   tl.caption({
     at: 0.5,
-    dur: 6.0,
+    dur: 6.55,
     text: 'Look straight down at the bar now. The front pallet from the last chapter is that long bar across the bottom, and it is the only piece so far that needs no work at all.',
   });
   tl.tween(frontU, 1, { at: 0.7, dur: 1.2, ease: ease.enter });
@@ -113,7 +113,7 @@ export function buildScene(): Scene {
   // — Beat 2 · two more, and they are far too deep —
   tl.caption({
     at: 7.1,
-    dur: 6.2,
+    dur: 6.75,
     text: 'The sides come from two more pallets, chosen to match the front exactly in height. Set them on edge as they are, though, and the bar is nearly four feet deep. Nobody has that much patio.',
   });
   tl.tween(wingU, 1, { at: 7.4, dur: 1.4, ease: ease.enter });
@@ -122,7 +122,7 @@ export function buildScene(): Scene {
   // — Beat 3 · measure two feet —
   tl.caption({
     at: 13.9,
-    dur: 5.8,
+    dur: 6.25,
     text: 'So they get measured and cut down to two feet of width. That is enough room for bottles and a working surface behind the bar, and not a step more.',
   });
   tl.tween(cam, CAM_CUT, { at: 14.1, dur: 1.5, ease: ease.move });
@@ -132,7 +132,7 @@ export function buildScene(): Scene {
   // — Beat 4 · the cut —
   tl.caption({
     at: 20.2,
-    dur: 5.6,
+    dur: 6.05,
     text: 'These are the only two cuts the frame of this bar ever needs — one across each side pallet, both to the same line.',
   });
   tl.tween(cutU, 1, { at: 20.5, dur: 1.3, ease: ease.draw });
@@ -142,7 +142,7 @@ export function buildScene(): Scene {
   // — Beat 5 · cut ends to the front —
   tl.caption({
     at: 26.3,
-    dur: 6.6,
+    dur: 7.15,
     text: 'And here is the detail that separates a build that looks finished from one that looks salvaged. Each side is turned so its raw cut end points forward, where the bar top will run out over it and hide it.',
   });
   tl.tween(cam, CAM_WIDE, { at: 26.5, dur: 1.5, ease: ease.move });
@@ -152,7 +152,7 @@ export function buildScene(): Scene {
   // — Beat 6 · pull them in and screw them home —
   tl.caption({
     at: 33.5,
-    dur: 6.2,
+    dur: 6.75,
     text: 'The two sides come in tight against the back of the front pallet, and deck screws go through the stringers where the thick wood is. Screwed into a gap, they would hold nothing at all.',
   });
   tl.tween(seatU, 1, { at: 33.8, dur: 1.6, ease: ease.move });
@@ -163,7 +163,7 @@ export function buildScene(): Scene {
   // — Beat 7 · the shape has a name —
   tl.caption({
     at: 40.3,
-    dur: 5.8,
+    dur: 6.35,
     text: 'What you have now is a U: forty-seven inches across the face, two feet deep on each wing, and wide open at the back so you can stand inside it and pour.',
   });
   tl.tween(cam, CAM_U, { at: 40.5, dur: 1.6, ease: ease.move });
@@ -173,7 +173,7 @@ export function buildScene(): Scene {
   // — Beat 8 · why not a flat front —
   tl.caption({
     at: 46.7,
-    dur: 6.4,
+    dur: 6.95,
     text: 'The U is not only about storage. Watch the front pallet on its own from the side: lean on it and there is nothing to stop it going over. It is a fence panel, not furniture.',
   });
   tl.tween(cam, CAM_INSET, { at: 46.9, dur: 1.5, ease: ease.move });
@@ -184,7 +184,7 @@ export function buildScene(): Scene {
   // — Beat 9 · the wings brace it —
   tl.caption({
     at: 53.7,
-    dur: 6.0,
+    dur: 6.55,
     text: 'Add two feet of pallet at right angles to it and that same push has to twist the whole shape. The sides are not just sides. They are the reason the bar stays upright.',
   });
   tl.tween(tipU, 0, { at: 53.9, dur: 0.9, ease: ease.move });

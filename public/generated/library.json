@@ -1,6 +1,40 @@
 {
   "books": [
     {
+      "slug": "cedar-garden-bench",
+      "title": "The Cedar Bench",
+      "subtitle": "Seven boards, four lengths, one stacked bench",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#4e7a4a",
+      "href": "?bundle=cedar-garden-bench",
+      "series": "Weekend Builds",
+      "seriesOrder": 3,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Seven Boards, Four Lengths",
+          "duration": 88.978
+        },
+        {
+          "number": 2,
+          "title": "Clamp It Before You Glue It",
+          "duration": 94.18
+        },
+        {
+          "number": 3,
+          "title": "The Stack Is the Joint",
+          "duration": 104.443
+        },
+        {
+          "number": 4,
+          "title": "Dowels, Not Screw Heads",
+          "duration": 124.087
+        }
+      ],
+      "createdAt": "2026-08-06T22:23:25.143Z"
+    },
+    {
       "slug": "pallet-backyard-bar",
       "title": "The Pallet Bar",
       "subtitle": "A backyard bar out of salvaged pallets",

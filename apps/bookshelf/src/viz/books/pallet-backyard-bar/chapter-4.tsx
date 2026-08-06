@@ -113,7 +113,7 @@ export function buildScene(): Scene {
   // — Beat 1 · into the surface —
   tl.caption({
     at: 0.5,
-    dur: 6.0,
+    dur: 6.55,
     text: 'The bar is built. Everything from here is about weather. So come in close, right down to the surface of the wood, because that is where the argument with the weather is actually settled.',
   });
   tl.tween(sliceU, 1, { at: 0.7, dur: 1.4, ease: ease.draw });
@@ -122,7 +122,7 @@ export function buildScene(): Scene {
   // — Beat 2 · first coat —
   tl.caption({
     at: 7.1,
-    dur: 5.8,
+    dur: 6.25,
     text: 'The first coat of stain goes on with a brush and mostly disappears. Dry, thirsty pallet wood drinks it straight in, and the colour looks thin and uneven.',
   });
   tl.tween(brushU, 1, { at: 7.4, dur: 2.2, ease: ease.linear });
@@ -131,7 +131,7 @@ export function buildScene(): Scene {
   // — Beat 3 · coats two and three —
   tl.caption({
     at: 13.4,
-    dur: 6.2,
+    dur: 6.75,
     text: 'So it gets a second coat, and a third. Each one has less bare wood left to soak into, so more of it stays near the surface, and the colour finally evens out and holds.',
   });
   tl.tween(brushU, 2, { at: 13.7, dur: 2.0, ease: ease.linear });
@@ -141,7 +141,7 @@ export function buildScene(): Scene {
   // — Beat 4 · stain is colour, not armour —
   tl.caption({
     at: 20.2,
-    dur: 6.4,
+    dur: 6.95,
     text: 'But stain is colour, not armour. Set a wet glass down on stained wood and the water goes where the stain went — into the grain, leaving a ring you cannot wipe off.',
   });
   tl.tween(cam, CAM_DROP, { at: 20.4, dur: 1.4, ease: ease.move });
@@ -152,7 +152,7 @@ export function buildScene(): Scene {
   // — Beat 5 · the film —
   tl.caption({
     at: 27.2,
-    dur: 6.4,
+    dur: 6.95,
     text: 'Which is why the bar top gets one more thing the sides do not: a coat of Varathane. It cures as a film that sits on top of the wood rather than inside it, and that film is a washable surface.',
   });
   tl.tween(dropRawU, 0, { at: 27.4, dur: 0.6, ease: ease.move });
@@ -163,7 +163,7 @@ export function buildScene(): Scene {
   // — Beat 6 · the same drop, sealed —
   tl.caption({
     at: 34.2,
-    dur: 6.0,
+    dur: 6.55,
     text: 'Now the same spill has nowhere to go. It beads, it sits there looking pleased with itself, and it leaves with a cloth. That is the whole reason the top is finished differently from everything below it.',
   });
   tl.tween(dropSealU, 1, { at: 34.6, dur: 1.2, ease: ease.move });
@@ -173,7 +173,7 @@ export function buildScene(): Scene {
   // — Beat 7 · pull back to the ground —
   tl.caption({
     at: 40.8,
-    dur: 6.2,
+    dur: 6.75,
     text: 'Pull all the way back out, and there is one problem left, and it is underneath. A bar set straight on lawn sinks, rocks, and wicks water up into the very wood you just spent three coats protecting.',
   });
   tl.tween(sliceDim, 0.07, { at: 41.0, dur: 1.2, ease: ease.move });
@@ -185,7 +185,7 @@ export function buildScene(): Scene {
   // — Beat 8 · dig, level, lay stone —
   tl.caption({
     at: 47.6,
-    dur: 6.4,
+    dur: 6.95,
     text: 'So the sod comes out, the ground gets levelled, and patio stones go down where the bar will stand. Dry, flat, and firm — the same three things every outdoor build ends up asking for.',
   });
   tl.tween(cam, CAM_GROUND, { at: 47.8, dur: 1.5, ease: ease.move });
@@ -197,7 +197,7 @@ export function buildScene(): Scene {
   // — Beat 9 · the two small things —
   tl.caption({
     at: 54.6,
-    dur: 5.8,
+    dur: 6.35,
     text: 'Two bar stools slide under the overhang, and a bottle opener gets screwed to the front, which is the moment the thing stops being a project and starts being a bar.',
   });
   tl.tween(cam, CAM_FINAL, { at: 54.8, dur: 1.6, ease: ease.move });
@@ -208,7 +208,7 @@ export function buildScene(): Scene {
   // — Beat 10 · the yearly bill —
   tl.caption({
     at: 61.0,
-    dur: 6.2,
+    dur: 6.75,
     text: 'One honest warning: a brushed finish outdoors is a subscription, not a purchase. Plan on recoating it every year, or spend the money once on an epoxy coating and stop thinking about it.',
   });
   tl.tween(yearU, 1, { at: 61.4, dur: 2.4, ease: ease.linear });
