@@ -1,0 +1,75 @@
+{
+  "format": 3,
+  "slug": "wasm-vm-internals",
+  "title": "Linux in a Tab",
+  "subtitle": "How wasm-vm streams a disk, joins a tailnet, and freezes a machine",
+  "animal": "animal.webp",
+  "accent": "#1f7a8c",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Only the Blocks You Touch",
+      "blurb": "A 768 MB ext4 image cut into 6,144 content-addressed 128 KiB chunks, fetched and hash-verified one guest read at a time — and the recorded boot profile showing that 100 chunks, about 1.5% of the disk, is all it takes to reach a login prompt.",
+      "scene": "books/wasm-vm-internals/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        11.18,
+        21.781,
+        34.912,
+        49.145,
+        59.734,
+        70.88,
+        84.173,
+        99.173,
+        112.629,
+        126.19
+      ],
+      "duration": 135.466
+    },
+    {
+      "number": 2,
+      "title": "The Tab Is the Node",
+      "blurb": "Unmodified Alpine gets an ordinary lease from a network stack compiled into the emulator; packets terminate there and become framed sessions carried by a Worker that is itself the tailnet node — with window credit for backpressure and an ACL test that proves whose identity is on the wire.",
+      "scene": "books/wasm-vm-internals/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        13.63,
+        28.781,
+        41.61,
+        56.17,
+        74.455,
+        89.606,
+        105.14,
+        117.609,
+        131.007,
+        144.811,
+        157.292
+      ],
+      "duration": 166.812
+    },
+    {
+      "number": 3,
+      "title": "Freeze the Machine, Restore It Anywhere",
+      "blurb": "A running machine serialized into a tagged container with zero-elided RAM, locked to its build, kernel and overlay generation, streamed into IndexedDB a megabyte at a time — so a page load restores in about a second instead of executing a forty-second Linux boot.",
+      "scene": "books/wasm-vm-internals/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        10.553,
+        26.343,
+        38.987,
+        47.381,
+        58.573,
+        74.014,
+        86.565,
+        97.559,
+        109.111,
+        122.683,
+        138.751
+      ],
+      "duration": 146.1
+    }
+  ]
+}
