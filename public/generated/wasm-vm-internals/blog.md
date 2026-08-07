@@ -1,6 +1,6 @@
 # Linux in a Tab
 
-*Grounded in [`~/Dev/wasm-vm`](https://github.com/BLamy/wasm-vm) — the RISC-V machine that boots unmodified Alpine riscv64 in a browser tab. Three subsystems: the chunked disk, the network, and the snapshot.*
+*Grounded in [`~/Dev/wasm-vm`](https://github.com/BLamy/wasm-vm) — the RISC-V machine that boots unmodified Alpine riscv64 in a browser tab. Four subsystems: the chunked disk, the network, the snapshot — and the time travel it is nearly capable of.*
 
 ## Chapter 1 · Only the Blocks You Touch
 
@@ -79,3 +79,43 @@ Some state is deliberately *not* restored from the blob: wall-clock time and ent
 Which leaves portability. The blob is self-contained and identity-checked, so where it lives is an implementation detail — today `tools/build-boot-snapshot.sh` produces it at build time and `web/artifacts.json` publishes it as `releases/boot-snapshot/busybox-ready.snap.gz` for the page to fetch. Put the identical bytes in object storage and any browser running the matching build restores to the exact instruction you froze. Freezing a *user's* session and uploading it is the same mechanism with a different destination.
 
 <figure><img src="/generated/wasm-vm-internals/blog/chapter-3-10.png" alt="One snapshot blob restoring into several different browsers"><figcaption>One blob, many tabs, the same program counter.</figcaption></figure>
+
+## Chapter 4 · Rewind: Keyframes and a Log
+
+The project's stated goal, at the very top of `ROADMAP.md`, is a machine that is **time-travelable** — that's the "singularity condition". So it is worth asking plainly how far away that is, starting with the version of the idea that does not work.
+
+Freeze the whole machine after every instruction. Each freeze is ~10.5 MB, and even a deliberately slow guest retires ten million instructions a second: about **100 TB per second** of history. It is not a storage problem, it is a category error — and almost every byte of each freeze is identical to the byte before it.
+
+<figure><img src="/generated/wasm-vm-internals/blog/chapter-4-2.png" alt="A runaway counter showing 100 terabytes per second for per-instruction snapshots"><figcaption>The naive design, priced honestly.</figcaption></figure>
+
+The way out is the observation the whole emulator is built on: a machine is a *function*. Same state plus same inputs produces the same next state, so you don't record the machine — you record the arrows coming in from outside it. What was typed. When a disk read completed. What arrived from the network. The random bytes. Exactly when each interrupt landed.
+
+<figure><img src="/generated/wasm-vm-internals/blog/chapter-4-4.png" alt="The machine as a function with only external inputs recorded"><figcaption>Record the inputs; everything else is recomputable.</figcaption></figure>
+
+That only works if the machine really is a function, and this is the part wasm-vm already did. `crates/core/tests/determinism.rs` reduces an entire run to one fingerprint — a rolling hash over every guest-visible retire effect, plus a SHA-256 of RAM, plus a final-state hash over the float registers, `fcsr`, privilege and CSRs — and asserts it against a frozen golden **natively and on wasm32**, over the whole riscv-tests corpus. Determinism here is a build gate, not an aspiration. `ROADMAP.md` puts the reason bluntly: *"a system that is only made deterministic at the end was never deterministic."*
+
+<figure><img src="/generated/wasm-vm-internals/blog/chapter-4-5.png" alt="The determinism fingerprint: execution hash, memory digest, final state"><figcaption>One fingerprint per run, enforced across builds — the judge for any replay claim.</figcaption></figure>
+
+One more decision makes a recording addressable: time is measured in **retired instructions**, never in seconds. "Instruction four billion" is a place you can return to; "half past two" is not. The trace format already defines retirement precisely — a faulting instruction does not retire and emits nothing — and the resume container already carries a `CLOCK` section so timer placement is instruction-exact across a restore.
+
+Then the real design fits on a line: **keyframes every so often, a thin log of inputs in between.** Megabytes a minute instead of terabytes a second, because the expensive thing happens rarely and the cheap thing happens often.
+
+<figure><img src="/generated/wasm-vm-internals/blog/chapter-4-6.png" alt="A timeline of sparse keyframes with a thin log of input events between them"><figcaption>Sparse keyframes, a dense-but-tiny log.</figcaption></figure>
+
+Every operation you'd want is then the same operation. To reach any moment: restore the nearest keyframe before it and replay the log forward. Reverse-step is just asking for the moment before this one. Reverse-continue is a bounded backwards search built from the same primitive.
+
+<figure><img src="/generated/wasm-vm-internals/blog/chapter-4-7.png" alt="Seeking backwards: restore the nearest keyframe, then replay forward to the target"><figcaption>Seek = nearest keyframe + replay forward. Everything else is that, twice.</figcaption></figure>
+
+The keyframes can be much cheaper than they look, using two mechanisms already built for entirely different reasons: **E4-T17's page-granular dirty bitmaps** (added so the JIT can spot self-modifying code) say exactly which pages a delta keyframe must contain, and the **content-addressed `BlobStore`** (the thing that deduped 6,144 disk chunks to 3,765 objects) shares unchanged pages between keyframes for free.
+
+<figure><img src="/generated/wasm-vm-internals/blog/chapter-4-8.png" alt="Delta keyframes storing only changed pages, sharing the rest"><figcaption>Dirty-page maps plus content addressing make a chain of keyframes affordable.</figcaption></figure>
+
+There is exactly one deliberate decision pointing the wrong way, and it's worth naming rather than discovering later. `web/loader.js` documents that after a restore the wall clock and `crypto.getRandomValues` are **live browser-backed sources**, and a fresh DHCP lease is taken — so a resumed session knows what time it is. That is correct for *resume* and fatal for *replay*, which must take those values from the log. So it becomes an explicit mode, not a default.
+
+<figure><img src="/generated/wasm-vm-internals/blog/chapter-4-9.png" alt="Two modes: resume reads live clocks, replay reads them from the log"><figcaption>Resume and replay want opposite things from the same code path.</figcaption></figure>
+
+Which leaves an honest ledger. **Already here:** deterministic execution gated in CI; identical fingerprints native and in-browser; whole-machine keyframes at an instruction boundary; page-granular dirty bitmaps; a content-addressed store that dedupes; and a single hart — which is the version of this problem that is actually tractable, since SMP is where rr-style replay gets hard. **Still missing:** the input log and recorder, a replay mode that refuses live clocks, and seek/reverse-step with a surface to scrub.
+
+<figure><img src="/generated/wasm-vm-internals/blog/chapter-4-11.png" alt="The readiness ledger: six capabilities present, three missing"><figcaption>Six of nine, and the six are the hard ones.</figcaption></figure>
+
+So this is not a time-traveling Linux yet. It is the *hard half* of one — the half most attempts get wrong by bolting determinism on at the end — and what remains is a recorder, not a rewrite. That work is now written down as **Epic 4.5 — Time Travel** in the wasm-vm backlog, sited immediately after the JIT epic, because the roadmap's own constraint is that determinism must survive translation.

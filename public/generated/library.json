@@ -12,20 +12,25 @@
         {
           "number": 1,
           "title": "Only the Blocks You Touch",
-          "duration": 135.466
+          "duration": 132.26
         },
         {
           "number": 2,
           "title": "The Tab Is the Node",
-          "duration": 166.812
+          "duration": 173.499
         },
         {
           "number": 3,
           "title": "Freeze the Machine, Restore It Anywhere",
-          "duration": 146.1
+          "duration": 142.152
+        },
+        {
+          "number": 4,
+          "title": "Rewind: Keyframes and a Log",
+          "duration": 164.536
         }
       ],
-      "createdAt": "2026-08-06T23:29:58.400Z"
+      "createdAt": "2026-08-07T02:26:43.385Z"
     },
     {
       "slug": "kitchen-side-table",

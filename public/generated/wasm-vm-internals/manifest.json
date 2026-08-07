@@ -14,18 +14,18 @@
       "audio": "audio/chapter-1.mp3",
       "cues": [
         0,
-        11.18,
-        21.781,
-        34.912,
-        49.145,
-        59.734,
-        70.88,
-        84.173,
-        99.173,
-        112.629,
-        126.19
+        11.111,
+        21.176,
+        33.831,
+        48.088,
+        58.641,
+        70.24,
+        82.814,
+        97.14,
+        109.888,
+        123.216
       ],
-      "duration": 135.466
+      "duration": 132.26
     },
     {
       "number": 2,
@@ -35,19 +35,19 @@
       "audio": "audio/chapter-2.mp3",
       "cues": [
         0,
-        13.63,
-        28.781,
-        41.61,
-        56.17,
-        74.455,
-        89.606,
-        105.14,
-        117.609,
-        131.007,
-        144.811,
-        157.292
+        13.897,
+        29.583,
+        42.365,
+        55.949,
+        76.568,
+        92.786,
+        109.389,
+        123.077,
+        136.603,
+        150.953,
+        163.805
       ],
-      "duration": 166.812
+      "duration": 173.499
     },
     {
       "number": 3,
@@ -57,19 +57,41 @@
       "audio": "audio/chapter-3.mp3",
       "cues": [
         0,
-        10.553,
-        26.343,
-        38.987,
-        47.381,
-        58.573,
-        74.014,
-        86.565,
-        97.559,
-        109.111,
-        122.683,
-        138.751
+        10.902,
+        25.681,
+        37.813,
+        46.358,
+        57.375,
+        71.702,
+        84.601,
+        95.201,
+        106.915,
+        118.943,
+        134.675
       ],
-      "duration": 146.1
+      "duration": 142.152
+    },
+    {
+      "number": 4,
+      "title": "Rewind: Keyframes and a Log",
+      "blurb": "Why a snapshot per instruction is 100 TB/s of nonsense, why keyframes plus a log of inputs is the real design, and an honest ledger of what this machine already has for time travel — determinism gated in CI, instruction-boundary keyframes, dirty-page maps, a deduping store, one hart — against what it still needs.",
+      "scene": "books/wasm-vm-internals/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        8.533,
+        20.956,
+        33.1,
+        46.451,
+        62.613,
+        74.629,
+        87.423,
+        99.996,
+        115.972,
+        133.77,
+        154.749
+      ],
+      "duration": 164.536
     }
   ]
 }
