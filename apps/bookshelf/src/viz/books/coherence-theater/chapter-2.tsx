@@ -1,14 +1,17 @@
 // Chapter 2 — Five Forces, One Balance.
 //
-// Grounded in Section 5 and Figure 1: authority load, incentive alignment,
-// individual risk, signal integrity, and evaluation stability are force pairs.
-// The paper's claim is about coupling, so the grid becomes one balance rather
-// than five unrelated warnings.
-import { interpolateRgb } from 'd3';
+// Grounded in Section 5 (the force-balance model, subsections 5.1–5.5) and
+// Section 5.6 (coupling effects). The five force PAIRS are drawn as five
+// tug-of-war gauges with the paper's own names on each side; pressure drags
+// every marker toward maintenance. Section 5.6's loop — incentive distortion
+// → dissent cost → authority substitution → signal degradation → evaluation
+// drift → back into incentives — is animated as a ring, and then the paper's
+// REAL Figure 1 (figures/fig1-coupling.png, cropped from page 7 of the PDF)
+// is placed beside it: our ring is the dynamics, the paper's figure is the
+// resulting flow from forces to theater.
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   STAGE_H,
   STAGE_W,
   Timeline,
@@ -16,176 +19,245 @@ import {
   colors,
   ease,
 } from '../../core';
-import type { CameraState, SceneState } from '../../core';
-import { MatrixGrid, Vec } from '../../primitives';
+import type { CameraState, ChannelRef, SceneState } from '../../core';
+import { Figure } from '../../primitives';
 
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 const clamp01 = (u: number) => Math.max(0, Math.min(1, u));
 const lerp = (a: number, b: number, u: number) => a + (b - a) * u;
-const forceFill = (v: number, color: string) => interpolateRgb('#0d1321', color)(clamp01(v));
 
-const ROWS = ['authority', 'incentive', 'dissent', 'signal', 'evaluation'];
-const HEALTHY = [
-  [0.24, 0.88],
-  [0.28, 0.82],
-  [0.18, 0.86],
-  [0.22, 0.84],
-  [0.30, 0.78],
-];
-const THEATER = [
-  [0.82, 0.30],
-  [0.86, 0.24],
-  [0.90, 0.18],
-  [0.78, 0.26],
-  [0.84, 0.20],
-];
+// The paper's five force pairs, verbatim from 5.1–5.5, with each pair's
+// characteristic failure mode as the sub-label.
+const PAIRS = [
+  { left: 'authority load', right: 'resistance capacity', failure: 'delegation without authority' },
+  { left: 'incentive alignment', right: 'truth pressure', failure: 'performative alignment' },
+  { left: 'individual risk', right: 'collective correction', failure: 'preference falsification · liability laundering' },
+  { left: 'signal integrity', right: 'epistemic noise', failure: 'noise routed as signal' },
+  { left: 'evaluation stability', right: 'post hoc drift', failure: 'evaluation backpropagation' },
+] as const;
 
-const CAM_GRID: CameraState = { x: 525, y: 334, k: 1.17 };
-const CAM_BALANCE: CameraState = { x: 875, y: 328, k: 1.18 };
+// Healthy marker position (0 = full maintenance / left, 1 = full correction /
+// right) and where pressure drags each pair.
+const HEALTHY = [0.72, 0.68, 0.74, 0.7, 0.66];
+const TIPPED = [0.22, 0.16, 0.12, 0.2, 0.15];
 
-export function buildScene() {
+// Section 5.6's coupling loop, in the paper's own causal order.
+const LOOP = [
+  'incentive distortion',
+  'cost of dissent rises',
+  'authority substitution',
+  'signal discrimination degrades',
+  'evaluation distorts',
+] as const;
+const LOOP_CX = 320;
+const LOOP_CY = 368;
+const LOOP_R = 158;
+const loopPos = (i: number) => {
+  const a = -Math.PI / 2 + (i * 2 * Math.PI) / LOOP.length;
+  return { x: LOOP_CX + LOOP_R * Math.cos(a), y: LOOP_CY + LOOP_R * Math.sin(a) };
+};
+
+const GAUGE_X = 560;
+const GAUGE_W = 570;
+const gaugeY = (i: number) => 150 + i * 92;
+
+const CAM_GAUGES: CameraState = { x: 845, y: 350, k: 1.16 };
+const CAM_LOOP: CameraState = { x: 430, y: 360, k: 1.22 };
+
+export interface Scene {
+  tl: Timeline;
+  cam: ChannelRef<CameraState>;
+  gaugesU: ChannelRef<number>;
+  focusRow: ChannelRef<number>;
+  focusU: ChannelRef<number>;
+  pressureU: ChannelRef<number>;
+  loopU: ChannelRef<number>;
+  spinU: ChannelRef<number>;
+  figU: ChannelRef<number>;
+  dimU: ChannelRef<number>;
+  closeU: ChannelRef<number>;
+}
+
+export function buildScene(): Scene {
   const tl = new Timeline();
   const cam = tl.channel<CameraState>('cam', CAMERA_HOME, cameraInterp);
-  const gridU = tl.channel('gridU', 0);
-  const modeU = tl.channel('modeU', 0);
+  const gaugesU = tl.channel('gaugesU', 0);
   const focusRow = tl.channel('focusRow', -1);
   const focusU = tl.channel('focusU', 0);
-  const coupleU = tl.channel('coupleU', 0);
-  const glowU = tl.channel('glowU', 0);
+  const pressureU = tl.channel('pressureU', 0);
+  const loopU = tl.channel('loopU', 0);
+  const spinU = tl.channel('spinU', 0);
+  const figU = tl.channel('figU', 0);
   const dimU = tl.channel('dimU', 0);
   const closeU = tl.channel('closeU', 0);
 
-  // Beat 0 — the two-column ledger.
+  const focus = (row: number, at: number) => {
+    tl.tween(focusU, 0, { at, dur: 0.4, ease: ease.move });
+    tl.tween(focusRow, row, { at: at + 0.4, dur: 0.3, ease: ease.move });
+    tl.tween(focusU, 1, { at: at + 0.7, dur: 0.5, ease: ease.enter });
+  };
+
+  // Beat 0 — the balance, stated.
   tl.caption({
     at: 0.1,
+    dur: 6.6,
+    text: 'A system needs enough coherence to act, and enough correction to keep that coherence answerable to reality. The paper models the tension as five opposing force pairs — and the regime begins when all five tip the same way.',
+  });
+  tl.tween(gaugesU, 1, { at: 0.2, dur: 1.8, ease: ease.draw });
+  tl.tween(cam, CAM_GAUGES, { at: 0.4, dur: 1.4, ease: ease.move });
+  tl.hold(7.1, 0.6);
+
+  // Beat 1 — authority load vs resistance capacity.
+  tl.caption({
+    at: 7.7,
+    dur: 6.8,
+    text: 'Pair one: authority load against resistance capacity. Authority is not the problem — mandates without a matching right to refuse are. An analyst tasked with producing an answer, but structurally denied the right to reject a flawed premise, can only stabilize the frame.',
+  });
+  focus(0, 7.8);
+  tl.hold(14.7, 0.6);
+
+  // Beat 2 — incentives vs truth pressure.
+  tl.caption({
+    at: 15.3,
+    dur: 6.6,
+    text: 'Pair two: incentives against truth pressure. Systems rarely optimize truth directly; they optimize what evaluators can score — responsiveness, fluency, confidence. Under pressure those proxies detach, and producing output that merely looks adequate becomes the rational move.',
+  });
+  focus(1, 15.4);
+  tl.hold(22.1, 0.6);
+
+  // Beat 3 — individual risk vs collective correction.
+  tl.caption({
+    at: 22.7,
+    dur: 6.8,
+    text: 'Pair three: individual risk against collective correction. The person who slows a workflow to verify pays the cost now, alone; the benefit of being right is diffuse and late. Privately recognized problems stay publicly unchallenged — agreement persists while belief diverges.',
+  });
+  focus(2, 22.8);
+  tl.hold(29.7, 0.6);
+
+  // Beat 4 — signal integrity vs epistemic noise.
+  tl.caption({
+    at: 30.3,
+    dur: 7.3,
+    text: 'Pair four: signal integrity against epistemic noise. Correction needs a stable line between data, instruction, commentary, and generated inference. Blur those boundaries and the system starts routing noise as though it were signal.',
+  });
+  focus(3, 30.4);
+  tl.hold(37.1, 0.6);
+
+  // Beat 5 — evaluation stability vs post hoc drift.
+  tl.caption({
+    at: 37.7,
+    dur: 6.6,
+    text: 'Pair five: evaluation stability against drift. When criteria shift after outcomes are visible, downstream scoring starts reshaping upstream behavior. The metric stops observing the system and begins training it.',
+  });
+  focus(4, 37.8);
+  tl.hold(44.5, 0.6);
+
+  // Beat 6 — pressure tips all five.
+  tl.caption({
+    at: 45.1,
     dur: 6.4,
-    text: 'A system needs enough coherence to act, and enough correction to stay answerable to reality. The paper turns that tension into a force balance.',
+    text: 'Now apply sustained local pressure. Every marker slides the same direction — toward maintaining the legible story and away from correcting it. No single gauge failing explains the regime. The synchronized slide does.',
   });
-  tl.tween(gridU, 1, { at: 0.15, dur: 1.5, ease: ease.draw });
-  tl.tween(glowU, 1, { at: 1.0, dur: 0.7, ease: ease.enter });
-  tl.hold(6.9, 0.6);
+  tl.tween(focusU, 0, { at: 45.2, dur: 0.5, ease: ease.move });
+  tl.tween(pressureU, 1, { at: 45.7, dur: 3.4, ease: ease.move });
+  tl.hold(51.7, 0.6);
 
-  // Beat 1 — authority and resistance.
+  // Beat 7 — the coupling loop.
   tl.caption({
-    at: 7.5,
-    dur: 6.0,
-    text: 'First, authority load meets resistance capacity. A mandate is not the problem; a mandate without the right to refuse or escalate is a propagation path.',
+    at: 52.3,
+    dur: 7.0,
+    text: 'Because the pairs are coupled. Incentive distortion raises the cost of dissent. Less dissent means more unchecked authority. Substituted authority degrades signal discrimination. Degraded signals distort evaluation — which feeds back into incentives. Around it goes.',
   });
-  tl.tween(cam, CAM_GRID, { at: 7.6, dur: 1.3, ease: ease.move });
-  tl.tween(focusRow, 0, { at: 8.2, dur: 0.4, ease: ease.move });
-  tl.tween(focusU, 1, { at: 8.6, dur: 0.5, ease: ease.enter });
-  tl.hold(13.5, 0.6);
+  tl.tween(cam, CAM_LOOP, { at: 52.5, dur: 1.5, ease: ease.move });
+  tl.tween(loopU, 1, { at: 53.0, dur: 1.8, ease: ease.draw });
+  tl.tween(spinU, 1, { at: 54.6, dur: 4.2, ease: ease.linear });
+  tl.hold(59.5, 0.6);
 
-  // Beat 2 — reward versus truth pressure.
+  // Beat 8 — the paper's own Figure 1.
   tl.caption({
-    at: 14.1,
+    at: 60.1,
+    dur: 6.8,
+    text: 'The paper compresses this into its first figure: three loads at the top, coherence maintenance chosen over correction in the middle, and the flow bottoming out in coherence theater — with correction priced out at the threshold. This is that figure, taken straight from the paper itself.',
+  });
+  tl.tween(cam, CAMERA_HOME, { at: 60.3, dur: 1.5, ease: ease.move });
+  tl.tween(figU, 1, { at: 60.9, dur: 1.4, ease: ease.enter });
+  tl.hold(67.1, 0.6);
+
+  // Beat 9 — close.
+  tl.caption({
+    at: 67.7,
     dur: 6.2,
-    text: 'Next, rewards meet truth pressure. When speed, fluency, or acceptability is easier to score than correction, performative alignment becomes locally rational.',
+    text: 'Coupling is what turns a list of distortions into a propagating regime. Which raises the next question: propagating along what? The next chapter follows one artifact down the paper’s own worked scenario.',
   });
-  tl.tween(focusU, 0, { at: 14.2, dur: 0.5, ease: ease.move });
-  tl.tween(focusRow, 1, { at: 14.7, dur: 0.4, ease: ease.move });
-  tl.tween(focusU, 1, { at: 15.1, dur: 0.5, ease: ease.enter });
-  tl.hold(20.1, 0.6);
+  tl.tween(dimU, 1, { at: 68.0, dur: 1.0, ease: ease.move });
+  tl.tween(closeU, 1, { at: 69.1, dur: 0.9, ease: ease.enter });
+  tl.hold(74.1, 1.2);
 
-  // Beat 3 — dissent is individually expensive.
-  tl.caption({
-    at: 20.7,
-    dur: 6.1,
-    text: 'Then individual risk meets collective correction. The person who slows down to verify pays now, while the benefit of being right arrives somewhere else and much later.',
-  });
-  tl.tween(focusU, 0, { at: 20.8, dur: 0.5, ease: ease.move });
-  tl.tween(focusRow, 2, { at: 21.3, dur: 0.4, ease: ease.move });
-  tl.tween(focusU, 1, { at: 21.7, dur: 0.5, ease: ease.enter });
-  tl.hold(26.8, 0.6);
-
-  // Beat 4 — provenance.
-  tl.caption({
-    at: 27.4,
-    dur: 6.1,
-    text: 'Signal integrity is the fourth pair. If source, instruction, commentary, and generated inference blur together, noise can travel as though it were a command.',
-  });
-  tl.tween(focusU, 0, { at: 27.5, dur: 0.5, ease: ease.move });
-  tl.tween(focusRow, 3, { at: 28.0, dur: 0.4, ease: ease.move });
-  tl.tween(focusU, 1, { at: 28.4, dur: 0.5, ease: ease.enter });
-  tl.hold(33.5, 0.6);
-
-  // Beat 5 — evaluation starts training the system.
-  tl.caption({
-    at: 34.1,
-    dur: 6.2,
-    text: 'Finally, evaluation can drift after outcomes are visible. A proxy that once observed the system begins to train it, and the score becomes the environment.',
-  });
-  tl.tween(focusU, 0, { at: 34.2, dur: 0.5, ease: ease.move });
-  tl.tween(focusRow, 4, { at: 34.7, dur: 0.4, ease: ease.move });
-  tl.tween(focusU, 1, { at: 35.1, dur: 0.5, ease: ease.enter });
-  tl.hold(40.2, 0.6);
-
-  // Beat 6 — coupling turns the ledger into a regime.
-  tl.caption({
-    at: 40.8,
-    dur: 6.4,
-    text: 'No single imbalance is enough. Incentive distortion raises the cost of dissent, weak dissent increases substitution, and degraded signals feed back into evaluation.',
-  });
-  tl.tween(cam, CAM_BALANCE, { at: 41.0, dur: 1.4, ease: ease.move });
-  tl.tween(focusU, 0, { at: 41.1, dur: 0.5, ease: ease.move });
-  tl.tween(modeU, 1, { at: 41.6, dur: 2.0, ease: ease.move });
-  tl.tween(coupleU, 1, { at: 43.0, dur: 1.4, ease: ease.draw });
-  tl.tween(glowU, 1, { at: 44.2, dur: 0.6, ease: ease.pop });
-  tl.hold(47.8, 0.6);
-
-  // Beat 7 — close on the shared preference.
-  tl.caption({
-    at: 48.4,
-    dur: 6.5,
-    text: 'Coupling is what makes a list of distortions into a propagating regime: the system learns that legible order is cheaper than reopening the frame.',
-  });
-  tl.tween(cam, CAMERA_HOME, { at: 48.6, dur: 1.4, ease: ease.move });
-  tl.tween(dimU, 1, { at: 49.0, dur: 1.0, ease: ease.move });
-  tl.tween(closeU, 1, { at: 50.1, dur: 0.9, ease: ease.enter });
-  tl.hold(55.8, 1.0);
-
-  return { tl, cam, gridU, modeU, focusRow, focusU, coupleU, glowU, dimU, closeU };
+  return { tl, cam, gaugesU, focusRow, focusU, pressureU, loopU, spinU, figU, dimU, closeU };
 }
 
 const scene = buildScene();
 
-function Balance({ mode, glow }: { mode: number; glow: number }) {
-  const correction = lerp(0.86, 0.22, mode);
-  const maintenance = lerp(0.22, 0.90, mode);
-  const tilt = lerp(-14, 18, mode);
+// ---------------------------------------------------------------------------
+// Render
+// ---------------------------------------------------------------------------
+
+function Gauge({
+  i,
+  reveal,
+  active,
+  pressure,
+}: {
+  i: number;
+  reveal: number;
+  active: boolean;
+  pressure: number;
+}) {
+  const y = gaugeY(i);
+  const pos = lerp(HEALTHY[i], TIPPED[i], pressure);
+  const mx = GAUGE_X + pos * GAUGE_W;
+  const tipped = pos < 0.45;
+  const color = tipped ? colors.NEGATIVE : colors.POSITIVE;
+  const p = PAIRS[i];
   return (
-    <g transform={`translate(850 334) rotate(${tilt})`}>
-      <circle r={178 + glow * 8} fill="none" stroke={colors.WARM} strokeWidth={2} opacity={0.12 + glow * 0.2} />
-      <line x1={-210} y1={0} x2={210} y2={0} stroke={colors.GRID} strokeWidth={8} strokeLinecap="round" />
-      <circle r={28} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={3} />
-      <path d="M0 28 L-18 90 L18 90 Z" fill={colors.WARM} opacity={0.8} />
-      <g transform="translate(-150 -18)">
-        <rect width={108} height={36} rx={10} fill={forceFill(maintenance, colors.NEGATIVE)} stroke={colors.NEGATIVE} strokeWidth={2} />
-        <rect width={108 * maintenance} height={36} rx={10} fill={colors.NEGATIVE} opacity={0.7} />
-        <text x={54} y={23} textAnchor="middle" fill={colors.TEXT} fontSize={11} fontFamily={MONO}>maintenance</text>
-      </g>
-      <g transform="translate(42 -18)">
-        <rect width={108} height={36} rx={10} fill={forceFill(correction, colors.POSITIVE)} stroke={colors.POSITIVE} strokeWidth={2} />
-        <rect width={108 * correction} height={36} rx={10} fill={colors.POSITIVE} opacity={0.7} />
-        <text x={54} y={23} textAnchor="middle" fill={colors.TEXT} fontSize={11} fontFamily={MONO}>correction</text>
-      </g>
-      <text x={0} y={142} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} transform={`rotate(${-tilt})`}>
-        {mode > 0.58 ? 'coherence theater' : 'workable equilibrium'}
+    <g opacity={clamp01(reveal * 5 - i)}>
+      {active && <rect x={GAUGE_X - 24} y={y - 34} width={GAUGE_W + 48} height={74} rx={12} fill={colors.WARM} opacity={0.1} stroke={colors.WARM} strokeWidth={1.5} />}
+      {/* the rail: maintenance side red, correction side green */}
+      <line x1={GAUGE_X} y1={y} x2={GAUGE_X + GAUGE_W / 2} y2={y} stroke={colors.NEGATIVE} strokeWidth={5} opacity={0.35} strokeLinecap="round" />
+      <line x1={GAUGE_X + GAUGE_W / 2} y1={y} x2={GAUGE_X + GAUGE_W} y2={y} stroke={colors.POSITIVE} strokeWidth={5} opacity={0.35} strokeLinecap="round" />
+      <line x1={GAUGE_X + GAUGE_W / 2} y1={y - 9} x2={GAUGE_X + GAUGE_W / 2} y2={y + 9} stroke={colors.GRID} strokeWidth={2} />
+      {/* the marker */}
+      <circle cx={mx} cy={y} r={13} fill={color} opacity={0.22} />
+      <circle cx={mx} cy={y} r={7} fill={color} />
+      {/* pair names on their sides */}
+      <text x={GAUGE_X} y={y - 16} fill={colors.NEGATIVE} fontSize={12.5} fontFamily={MONO} opacity={0.95}>
+        {p.left}
+      </text>
+      <text x={GAUGE_X + GAUGE_W} y={y - 16} textAnchor="end" fill={colors.POSITIVE} fontSize={12.5} fontFamily={MONO} opacity={0.95}>
+        {p.right}
+      </text>
+      {/* the pair's named failure mode surfaces once it tips */}
+      <text x={GAUGE_X} y={y + 28} fill={tipped ? colors.NEGATIVE : colors.MUTED} fontSize={11} fontFamily={MONO} opacity={tipped ? 0.95 : 0.45}>
+        {tipped ? `→ ${p.failure}` : p.failure}
       </text>
     </g>
   );
 }
 
 export function Render({ s }: { s: SceneState }) {
-  const gridU = s.get(scene.gridU);
-  const mode = s.get(scene.modeU);
+  const gaugesU = s.get(scene.gaugesU);
   const row = Math.round(s.get(scene.focusRow));
-  const focus = s.get(scene.focusU);
-  const couple = s.get(scene.coupleU);
-  const glow = s.get(scene.glowU);
+  const focusU = s.get(scene.focusU);
+  const pressureU = s.get(scene.pressureU);
+  const loopU = s.get(scene.loopU);
+  const spinU = s.get(scene.spinU);
+  const figU = s.get(scene.figU);
   const dim = 1 - 0.88 * s.get(scene.dimU);
   const close = s.get(scene.closeU);
-  const values = HEALTHY.map((r, i) => r.map((v, j) => lerp(v, THEATER[i][j], mode)));
+
+  // travelling spark on the coupling loop
+  const sparkA = -Math.PI / 2 + spinU * 2 * Math.PI * 2;
+  const spark = { x: LOOP_CX + LOOP_R * Math.cos(sparkA), y: LOOP_CY + LOOP_R * Math.sin(sparkA) };
 
   return (
     <>
@@ -194,42 +266,83 @@ export function Render({ s }: { s: SceneState }) {
         Five forces, one balance
       </text>
       <text x={640} y={70} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={dim}>
-        the correction economy · Section 5
+        the force-balance model · maintenance on the left, correction on the right
       </text>
       <Camera {...s.get(scene.cam)}>
         <g opacity={dim}>
-          <rect x={160} y={108} width={550} height={470} rx={26} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={190} y={145} fill={colors.TEXT} fontSize={16} fontWeight={700}>force ledger</text>
-          <text x={190} y={169} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>left: maintenance pressure · right: correction capacity</text>
-          <MatrixGrid
-            x={330}
-            y={210}
-            values={values}
-            cell={54}
-            gap={10}
-            cellU={(i, j) => clamp01(gridU * 12 - (i * 2 + j) - 1)}
-            fill={(v, _i, j) => forceFill(v, j === 0 ? colors.NEGATIVE : colors.POSITIVE)}
-            showValues={(v) => v.toFixed(1)}
-            rowLabels={ROWS}
-            colLabels={['maintenance', 'correction']}
-            highlight={row >= 0 && row < ROWS.length ? { row, u: focus, color: colors.WARM } : undefined}
-            labelSize={13}
-          />
-          <g opacity={couple}>
-            <Vec x1={264} y1={238} x2={674} y2={238} grow={couple} color={colors.WARM} width={2} label="coupling" labelAt="mid" labelSize={11} />
-            <Vec x1={264} y1={312} x2={674} y2={312} grow={couple} color={colors.WARM} width={2} label="feedback" labelAt="mid" labelSize={11} />
-            <Vec x1={264} y1={386} x2={674} y2={386} grow={couple} color={colors.WARM} width={2} label="recirculation" labelAt="mid" labelSize={11} />
+          {/* ---- the five gauges ---- */}
+          <g opacity={gaugesU * (1 - figU * 0.75)}>
+            <rect x={520} y={104} width={660} height={492} rx={24} fill={colors.PANEL} stroke={colors.GRID} />
+            {PAIRS.map((_, i) => (
+              <Gauge key={i} i={i} reveal={gaugesU} active={i === row && focusU > 0.05} pressure={pressureU} />
+            ))}
+            {pressureU > 0.5 && (
+              <text x={850} y={584} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO} opacity={clamp01(pressureU * 2 - 1)}>
+                all five tip together — that synchrony is the regime
+              </text>
+            )}
           </g>
-          <text x={435} y={548} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO} opacity={gridU}>five pairs, one shared preference</text>
-          <Balance mode={mode} glow={glow} />
-          <MathLabel tex={'\text{maintenance} - \text{correction}'} x={850} y={520} fontSize={20} color={colors.WARM} opacity={couple} />
+
+          {/* ---- the coupling loop ---- */}
+          {loopU > 0 && (
+            <g opacity={loopU * (1 - figU * 0.35)}>
+              <circle cx={LOOP_CX} cy={LOOP_CY} r={LOOP_R} fill="none" stroke={colors.WARM} strokeWidth={2.5} opacity={0.55} strokeDasharray="3 7" />
+              {LOOP.map((label, i) => {
+                const p = loopPos(i);
+                const n = loopPos((i + 1) % LOOP.length);
+                const mid = { x: (p.x + n.x) / 2, y: (p.y + n.y) / 2 };
+                // arrowhead midway along each arc chord
+                const dx = n.x - p.x;
+                const dy = n.y - p.y;
+                const len = Math.hypot(dx, dy) || 1;
+                return (
+                  <g key={label} opacity={clamp01(loopU * 5 - i)}>
+                    <rect x={p.x - 88} y={p.y - 21} width={176} height={42} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.6} />
+                    <text x={p.x} y={p.y + 4} textAnchor="middle" fill={colors.TEXT} fontSize={10.5} fontFamily={MONO}>
+                      {label}
+                    </text>
+                    <path
+                      d={`M ${mid.x - (dx / len) * 8} ${mid.y - (dy / len) * 8} l ${(dx / len) * 14 - (dy / len) * 5} ${(dy / len) * 14 + (dx / len) * 5} l ${-(dx / len) * 14 - (dy / len) * 5} ${-(dy / len) * 14 + (dx / len) * 5}`}
+                      fill={colors.WARM}
+                      opacity={0.8}
+                    />
+                  </g>
+                );
+              })}
+              {spinU > 0 && spinU < 1 && <circle cx={spark.x} cy={spark.y} r={7} fill={colors.WARM} />}
+              <text x={LOOP_CX} y={LOOP_CY - 8} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO} fontWeight={700}>
+                self-reinforcing
+              </text>
+              <text x={LOOP_CX} y={LOOP_CY + 14} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+                each turn makes the next cheaper
+              </text>
+            </g>
+          )}
+
+          {/* ---- the paper's real Figure 1 ---- */}
+          <Figure
+            src="/generated/coherence-theater/figures/fig1-coupling.png"
+            x={660}
+            y={98}
+            w={510}
+            h={472}
+            reveal={figU}
+            opacity={figU}
+            caption="paper Figure 1 · coupling effects: force-to-theater flow"
+          />
         </g>
       </Camera>
       <g opacity={close}>
-        <rect x={170} y={236} width={940} height={206} rx={28} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={2.5} />
-        <text x={640} y={298} textAnchor="middle" fill={colors.TEXT} fontSize={34} fontWeight={800}>Coupling turns pressure into a regime</text>
-        <text x={640} y={344} textAnchor="middle" fill={colors.WARM} fontSize={19}>when maintaining the story costs less than correcting it</text>
-        <text x={640} y={384} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>the next chapter follows one artifact through the loop</text>
+        <rect x={166} y={230} width={948} height={216} rx={28} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={2.5} />
+        <text x={640} y={294} textAnchor="middle" fill={colors.TEXT} fontSize={33} fontWeight={800}>
+          Coupling turns pressure into a regime
+        </text>
+        <text x={640} y={340} textAnchor="middle" fill={colors.WARM} fontSize={18}>
+          five tipped gauges, one loop — legible order becomes the path of least resistance
+        </text>
+        <text x={640} y={382} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+          next: one artifact rides the loop through a hospital
+        </text>
       </g>
     </>
   );

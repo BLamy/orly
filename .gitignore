@@ -1,4 +1,5 @@
 node_modules
+.nx
 dist
 storybook-static
 *storybook.log

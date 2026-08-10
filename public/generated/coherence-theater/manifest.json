@@ -5,101 +5,100 @@
   "subtitle": "How correction gets priced out of socio-technical systems",
   "animal": "animal.webp",
   "accent": "#3a8b3a",
-  "source": {
-    "title": "Now Playing in Coherence Theaters Near You: AEI Propagation Vectors in Socio-Technical Systems",
-    "author": "Jeremy B. Dixon",
-    "ssrn": "7212700",
-    "url": "https://ssrn.com/abstract=7212700"
-  },
   "chapters": [
     {
       "number": 1,
       "title": "The Orderly Failure",
-      "blurb": "A paper can look tidy while its correction machinery wears away.",
+      "blurb": "The paper's opening trap, with its real title page on stage: a report stream that stays tidy while the three correction channels beneath it — challenge, escalate, verify — are priced out one at a time. The regime is adversarial epistemic incoherence; the tidy layer is coherence theater.",
       "scene": "books/coherence-theater/chapter-1",
       "audio": "audio/chapter-1.mp3",
       "cues": [
         0,
-        7.523,
-        19.11,
-        29.268,
-        39.183,
-        48.262,
-        57.759
+        12.341,
+        23.766,
+        36.072,
+        52.745,
+        63.67,
+        81.55,
+        95.645
       ],
-      "duration": 66.826
+      "duration": 109.507
     },
     {
       "number": 2,
       "title": "Five Forces, One Balance",
-      "blurb": "Five coupled force pairs turn local pressure into a propagating regime.",
+      "blurb": "The five force pairs of the paper's balance model as tug-of-war gauges — authority vs resistance, incentives vs truth, individual risk vs collective correction, signal vs noise, evaluation vs drift — tipping together into the self-reinforcing coupling loop, beside the paper's real Figure 1.",
       "scene": "books/coherence-theater/chapter-2",
       "audio": "audio/chapter-2.mp3",
       "cues": [
         0,
-        8.208,
-        18.274,
-        28.456,
-        38.289,
-        49.052,
-        58.77,
-        69.764
+        14.884,
+        34.203,
+        53.917,
+        72.632,
+        89.141,
+        103.92,
+        118.85,
+        138.529,
+        156.107
       ],
-      "duration": 77.508
+      "duration": 169.134
     },
     {
       "number": 3,
       "title": "When the Summary Becomes the Chart",
-      "blurb": "Watch one fluent summary travel from source record to institutional authority.",
+      "blurb": "The paper's healthcare scenario run as a journey: one fluent summary travels source record → handoff → policy → dashboard → audit, collecting Table 1's named propagation vectors at each hop while its grounding drains — closing on the paper's real reaction-pathway figure.",
       "scene": "books/coherence-theater/chapter-3",
       "audio": "audio/chapter-3.mp3",
       "cues": [
         0,
-        9.439,
-        20.562,
-        30.465,
-        41.483,
-        50.654,
-        61.139,
-        71.216
+        15.499,
+        32.427,
+        49.343,
+        67.617,
+        84.242,
+        102.238,
+        119.757,
+        137.473,
+        156.2
       ],
-      "duration": 82.106
+      "duration": 171.409
     },
     {
       "number": 4,
       "title": "The Threshold Has Memory",
-      "blurb": "Threshold transition leaves hysteresis and a growing stock of epistemic debt.",
+      "blurb": "An honest hysteresis loop: the marker crosses into theater as pressure rises, then refuses to come back the same way as pressure falls — two crossings, an enclosed area of epistemic debt, and the five mechanisms that make recognition alone insufficient.",
       "scene": "books/coherence-theater/chapter-4",
       "audio": "audio/chapter-4.mp3",
       "cues": [
         0,
-        9.276,
-        18.1,
-        28.723,
-        37.779,
-        46.592,
-        57.284,
-        69.022
+        16.405,
+        32.636,
+        51.444,
+        69.138,
+        89.224,
+        112.165,
+        135.258
       ],
-      "duration": 80.712
+      "duration": 153.254
     },
     {
       "number": 5,
       "title": "The Intervention Test",
-      "blurb": "The diagnostic test is whether a principled correction can still travel.",
+      "blurb": "Question five of the paper's field test run as an experiment, twice: the same principled correction propagates and revises the record below threshold, but is documented, overridden, and returned as policy under the regime — with the paper's real boundary-case table as the verdict sheet.",
       "scene": "books/coherence-theater/chapter-5",
       "audio": "audio/chapter-5.mp3",
       "cues": [
         0,
-        8.998,
-        19.54,
-        27.051,
-        38.604,
-        48.263,
-        59.409,
-        70.671
+        19.668,
+        38.291,
+        53.941,
+        76.057,
+        95.283,
+        122.079,
+        139.877
       ],
-      "duration": 78.485
+      "duration": 155.574
     }
   ]
 }

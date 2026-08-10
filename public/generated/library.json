@@ -13,30 +13,30 @@
         {
           "number": 1,
           "title": "The Orderly Failure",
-          "duration": 66.826
+          "duration": 109.507
         },
         {
           "number": 2,
           "title": "Five Forces, One Balance",
-          "duration": 77.508
+          "duration": 169.134
         },
         {
           "number": 3,
           "title": "When the Summary Becomes the Chart",
-          "duration": 82.106
+          "duration": 171.409
         },
         {
           "number": 4,
           "title": "The Threshold Has Memory",
-          "duration": 80.712
+          "duration": 153.254
         },
         {
           "number": 5,
           "title": "The Intervention Test",
-          "duration": 78.485
+          "duration": 155.574
         }
       ],
-      "createdAt": "2026-08-10T11:22:08.792Z"
+      "createdAt": "2026-08-10T19:55:02.675Z"
     },
     {
       "slug": "wasm-vm-internals",
