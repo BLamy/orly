@@ -14,18 +14,18 @@
       "audio": "audio/chapter-1.mp3",
       "cues": [
         0,
-        11.111,
-        21.176,
-        33.831,
-        48.088,
-        58.641,
-        70.24,
-        82.814,
-        97.14,
-        109.888,
-        123.216
+        10.879,
+        20.433,
+        31.66,
+        45.511,
+        55.704,
+        66.803,
+        79.179,
+        92.705,
+        105.812,
+        118.247
       ],
-      "duration": 132.26
+      "duration": 127.337
     },
     {
       "number": 2,
@@ -35,19 +35,19 @@
       "audio": "audio/chapter-2.mp3",
       "cues": [
         0,
-        13.897,
-        29.583,
-        42.365,
-        55.949,
-        76.568,
-        92.786,
-        109.389,
-        123.077,
-        136.603,
-        150.953,
-        163.805
+        13.352,
+        29.339,
+        41.692,
+        55.554,
+        75.755,
+        90.918,
+        107.579,
+        120.524,
+        133.771,
+        147.215,
+        160.161
       ],
-      "duration": 173.499
+      "duration": 169.089
     },
     {
       "number": 3,
@@ -57,19 +57,19 @@
       "audio": "audio/chapter-3.mp3",
       "cues": [
         0,
-        10.902,
-        25.681,
-        37.813,
-        46.358,
-        57.375,
-        71.702,
-        84.601,
-        95.201,
-        106.915,
-        118.943,
-        134.675
+        10.217,
+        26.274,
+        39.219,
+        47.683,
+        59.571,
+        73.956,
+        85.938,
+        97.014,
+        109.042,
+        121.174,
+        136.801
       ],
-      "duration": 142.152
+      "duration": 145.45
     },
     {
       "number": 4,
@@ -79,19 +79,40 @@
       "audio": "audio/chapter-4.mp3",
       "cues": [
         0,
-        8.533,
-        20.956,
-        33.1,
-        46.451,
-        62.613,
-        74.629,
-        87.423,
-        99.996,
-        115.972,
-        133.77,
-        154.749
+        8.777,
+        20.712,
+        32.218,
+        45,
+        61.487,
+        73.039,
+        85.869,
+        98.105,
+        115.195,
+        133.434,
+        154.344
       ],
-      "duration": 164.536
+      "duration": 164.166
+    },
+    {
+      "number": 5,
+      "title": "The Swarm Is the Mirror",
+      "blurb": "The same content-addressed chunks published as a torrent: the storage bucket demoted to web seed, browser tabs trading the hot 1.5% peer-to-peer, guest reads jumping the queue as critical pieces while background fill continues — and per-piece availability doubling as a crowd-sourced boot profile.",
+      "scene": "books/wasm-vm-internals/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        15.72,
+        32.996,
+        51.943,
+        68.545,
+        87.679,
+        107.961,
+        121.788,
+        138.774,
+        152.578,
+        167.973
+      ],
+      "duration": 178.19
     }
   ]
 }

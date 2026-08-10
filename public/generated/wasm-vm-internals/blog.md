@@ -1,6 +1,6 @@
 # Linux in a Tab
 
-*Grounded in [`~/Dev/wasm-vm`](https://github.com/BLamy/wasm-vm) — the RISC-V machine that boots unmodified Alpine riscv64 in a browser tab. Four subsystems: the chunked disk, the network, the snapshot — and the time travel it is nearly capable of.*
+*Grounded in [`~/Dev/wasm-vm`](https://github.com/BLamy/wasm-vm) — the RISC-V machine that boots unmodified Alpine riscv64 in a browser tab. Five subsystems: the chunked disk, the network, the snapshot, the time travel it is nearly capable of — and the swarm that could serve all of it.*
 
 ## Chapter 1 · Only the Blocks You Touch
 
@@ -119,3 +119,29 @@ Which leaves an honest ledger. **Already here:** deterministic execution gated i
 <figure><img src="/generated/wasm-vm-internals/blog/chapter-4-11.png" alt="The readiness ledger: six capabilities present, three missing"><figcaption>Six of nine, and the six are the hard ones.</figcaption></figure>
 
 So this is not a time-traveling Linux yet. It is the *hard half* of one — the half most attempts get wrong by bolting determinism on at the end — and what remains is a recorder, not a rewrite. That work is now written down as **Epic 4.5 — Time Travel** in the wasm-vm backlog, sited immediately after the JIT epic, because the roadmap's own constraint is that determinism must survive translation.
+
+## Chapter 5 · The Swarm Is the Mirror
+
+Chapter 1 solved *how much* to download; this chapter is a design proposal about *where from*. Today the answer is one place: every chunk of `chunked-alpine` is fetched from the public R2 bucket (`web/main.js` points `R2_ASSETS` at it, with a CDN in front). That is fine until the image is popular. A thousand tabs booting means a thousand fetches of the *same* hundred hot chunks — the origin ships identical bytes a hundred thousand times, and both the bill and the tail latency scale with exactly the thing you want most: readers.
+
+<figure><img src="/generated/wasm-vm-internals/blog/chapter-5-2.png" alt="A thousand tabs all fetching the same hot chunks from one origin"><figcaption>One origin, many tabs: popularity is a cost, not an asset.</figcaption></figure>
+
+The observation that unlocks the chapter is structural: **the chunk store already is a torrent.** A torrent is fixed-size pieces, each identified by its hash, listed in order — which is a field-for-field description of `ImageManifest` (`chunk_size: 131072`, ordered SHA-256 per chunk). BitTorrent v2 even hashes pieces with SHA-256, the same function the manifest already uses. Publishing the image as a torrent is not a re-architecture; it is a second transport for an artifact that was accidentally born torrent-shaped.
+
+<figure><img src="/generated/wasm-vm-internals/blog/chapter-5-3.png" alt="Side-by-side mapping: chunk = piece, manifest hash list = piece hashes"><figcaption>The mapping is a rename, not a redesign.</figcaption></figure>
+
+So the design: a WebTorrent-style swarm of browser tabs, exchanging chunks directly over peer connections. Every tab that has booted this image already holds the hot set in its cache; peers announce which pieces they hold, and a chunk can come from the nearest tab instead of a distant origin. Crucially, R2 does not go away — it is demoted to the **web seed**, the permanent peer of last resort that speaks plain HTTP. An empty swarm at three in the morning degrades into exactly what ships today. The swarm is an accelerator, never a dependency.
+
+<figure><img src="/generated/wasm-vm-internals/blog/chapter-5-5.png" alt="The swarm of tabs with the bucket demoted to a dashed web-seed link"><figcaption>The bucket becomes one peer among many — the one that never goes offline.</figcaption></figure>
+
+The lazy filesystem is what makes this client different from a stock torrent client. A stock client downloads pieces in whatever order suits the swarm; our guest issues reads with a *deadline* attached. So piece selection gets two tiers: a `virtio-blk` read promotes its piece to **critical** — requested from several peers *and* the web seed in parallel, first verified answer wins — while the background tier keeps filling in the rest of the image (rarest-first, so the swarm converges toward full copies) whenever no read is blocked. The guest only ever waits on its own reads, and those always jump the queue. `Readahead`'s run-of-three promotion slots straight into this: a detected stream promotes the next pieces out of the background tier before the guest asks.
+
+<figure><img src="/generated/wasm-vm-internals/blog/chapter-5-6.png" alt="A guest read marked critical jumping the piece queue, raced across peers and web seed"><figcaption>A read is a deadline: critical pieces race every source; background pieces wait.</figcaption></figure>
+
+The swarm also produces a signal the origin never could: **per-piece availability** — how many peers hold each piece. The chunks on the boot path are held by nearly everyone, so the availability map is a crowd-sourced heat map of the image that rediscovers `boot-profile.json` on its own — and generalizes it, because it keeps learning after `login:`, covering whatever readers actually run. Read backwards, seeder counts are prefetch advice.
+
+<figure><img src="/generated/wasm-vm-internals/blog/chapter-5-8.png" alt="The chunk grid shaded by how many peers hold each piece; the boot path glows"><figcaption>Availability as a heat map: the swarm votes on what to prefetch.</figcaption></figure>
+
+None of this touches the trust story, which is why it is cheap to entertain. Every chunk — from a peer or from R2 — passes `ImageManifest::verify_chunk` before a byte reaches the guest: length check, then SHA-256 against the manifest, with `HashMismatch` a typed error that drops the piece and re-requests. A malicious peer can waste a little time; it cannot corrupt the disk. And the moment a tab has verified a chunk, it can serve it: after one boot you hold the exact hundred pieces the next tab needs first. Every reader becomes a mirror of the hottest part of the image — the popular chunks become the cheapest ones.
+
+<figure><img src="/generated/wasm-vm-internals/blog/chapter-5-10.png" alt="Your tab seeding the hot hundred chunks outward to newer peers"><figcaption>One manifest, two transports — and the most popular image is the fastest one to boot.</figcaption></figure>

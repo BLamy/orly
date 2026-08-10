@@ -50,25 +50,68 @@
         {
           "number": 1,
           "title": "Only the Blocks You Touch",
-          "duration": 132.26
+          "duration": 127.337
         },
         {
           "number": 2,
           "title": "The Tab Is the Node",
-          "duration": 173.499
+          "duration": 169.089
         },
         {
           "number": 3,
           "title": "Freeze the Machine, Restore It Anywhere",
-          "duration": 142.152
+          "duration": 145.45
         },
         {
           "number": 4,
           "title": "Rewind: Keyframes and a Log",
-          "duration": 164.536
+          "duration": 164.166
+        },
+        {
+          "number": 5,
+          "title": "The Swarm Is the Mirror",
+          "duration": 178.19
         }
       ],
-      "createdAt": "2026-08-07T02:26:43.385Z"
+      "createdAt": "2026-08-10T19:14:43.080Z"
+    },
+    {
+      "slug": "coherence-theater",
+      "title": "Coherence Theater",
+      "subtitle": "How correction gets priced out of socio-technical systems",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#3a8b3a",
+      "animal": "generated/coherence-theater/animal.webp",
+      "href": "?bundle=coherence-theater",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Orderly Failure",
+          "duration": 66.826
+        },
+        {
+          "number": 2,
+          "title": "Five Forces, One Balance",
+          "duration": 77.508
+        },
+        {
+          "number": 3,
+          "title": "When the Summary Becomes the Chart",
+          "duration": 82.106
+        },
+        {
+          "number": 4,
+          "title": "The Threshold Has Memory",
+          "duration": 80.712
+        },
+        {
+          "number": 5,
+          "title": "The Intervention Test",
+          "duration": 78.485
+        }
+      ],
+      "createdAt": "2026-08-10T11:22:08.792Z"
     },
     {
       "slug": "kitchen-side-table",
