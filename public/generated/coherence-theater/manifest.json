@@ -1,0 +1,105 @@
+{
+  "format": 3,
+  "slug": "coherence-theater",
+  "title": "Coherence Theater",
+  "subtitle": "How correction gets priced out of socio-technical systems",
+  "animal": "animal.webp",
+  "accent": "#3a8b3a",
+  "source": {
+    "title": "Now Playing in Coherence Theaters Near You: AEI Propagation Vectors in Socio-Technical Systems",
+    "author": "Jeremy B. Dixon",
+    "ssrn": "7212700",
+    "url": "https://ssrn.com/abstract=7212700"
+  },
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Orderly Failure",
+      "blurb": "A paper can look tidy while its correction machinery wears away.",
+      "scene": "books/coherence-theater/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        7.523,
+        19.11,
+        29.268,
+        39.183,
+        48.262,
+        57.759
+      ],
+      "duration": 66.826
+    },
+    {
+      "number": 2,
+      "title": "Five Forces, One Balance",
+      "blurb": "Five coupled force pairs turn local pressure into a propagating regime.",
+      "scene": "books/coherence-theater/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        8.208,
+        18.274,
+        28.456,
+        38.289,
+        49.052,
+        58.77,
+        69.764
+      ],
+      "duration": 77.508
+    },
+    {
+      "number": 3,
+      "title": "When the Summary Becomes the Chart",
+      "blurb": "Watch one fluent summary travel from source record to institutional authority.",
+      "scene": "books/coherence-theater/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        9.439,
+        20.562,
+        30.465,
+        41.483,
+        50.654,
+        61.139,
+        71.216
+      ],
+      "duration": 82.106
+    },
+    {
+      "number": 4,
+      "title": "The Threshold Has Memory",
+      "blurb": "Threshold transition leaves hysteresis and a growing stock of epistemic debt.",
+      "scene": "books/coherence-theater/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        9.276,
+        18.1,
+        28.723,
+        37.779,
+        46.592,
+        57.284,
+        69.022
+      ],
+      "duration": 80.712
+    },
+    {
+      "number": 5,
+      "title": "The Intervention Test",
+      "blurb": "The diagnostic test is whether a principled correction can still travel.",
+      "scene": "books/coherence-theater/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        8.998,
+        19.54,
+        27.051,
+        38.604,
+        48.263,
+        59.409,
+        70.671
+      ],
+      "duration": 78.485
+    }
+  ]
+}
