@@ -1,6 +1,40 @@
 {
   "books": [
     {
+      "slug": "parallel-rl-coexistence",
+      "title": "The Geometry of Coexistence",
+      "subtitle": "Why multi-task reinforcement learning updates can be merged",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#e07b1a",
+      "href": "?bundle=parallel-rl-coexistence",
+      "series": "Daily Papers by Hugging Face",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "One Model, Four Moving Capabilities",
+          "duration": 55.588
+        },
+        {
+          "number": 2,
+          "title": "Measure the Update Geometry",
+          "duration": 62.648
+        },
+        {
+          "number": 3,
+          "title": "Advantage Leaves Only the Residual",
+          "duration": 60.65
+        },
+        {
+          "number": 4,
+          "title": "Train Apart, Merge Once",
+          "duration": 70.867
+        }
+      ],
+      "createdAt": "2026-08-11T10:21:52.162Z",
+      "animal": "generated/parallel-rl-coexistence/animal.webp"
+    },
+    {
       "slug": "coherence-theater",
       "title": "Coherence Theater",
       "subtitle": "How correction gets priced out of socio-technical systems",

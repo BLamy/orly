@@ -1,0 +1,108 @@
+{
+  "format": 3,
+  "slug": "parallel-rl-coexistence",
+  "title": "The Geometry of Coexistence",
+  "subtitle": "Why multi-task reinforcement learning updates can be merged",
+  "animal": "animal.webp",
+  "accent": "#e07b1a",
+  "paper": {
+    "title": "SFT Conflicts, RL Coexists: A Theoretical and Empirical Analysis of Multi-Task Learning for LLMs",
+    "authors": [
+      "Kejian Zhu",
+      "Zhuoran Jin",
+      "Shangqing Tu",
+      "Hongbang Yuan",
+      "Yushi Bai",
+      "Kang Liu",
+      "Juanzi Li",
+      "Jun Zhao"
+    ],
+    "identifier": "arXiv:2608.03573",
+    "huggingFaceUrl": "https://huggingface.co/papers/2608.03573",
+    "canonicalUrl": "https://arxiv.org/abs/2608.03573",
+    "pdfUrl": "https://arxiv.org/pdf/2608.03573",
+    "officialCodeRepository": "https://github.com/GaryStack/Parallel-RL",
+    "officialCodeCommit": "7c7ad319fb1e1fe383602d1404501ea4578e6b44",
+    "dailyPaperDate": "2026-08-10",
+    "popularityEvidence": "#1 Paper of the day with 42 upvotes on the Aug 10 Hugging Face Daily Papers page"
+  },
+  "chapters": [
+    {
+      "number": 1,
+      "title": "One Model, Four Moving Capabilities",
+      "blurb": "Watch the same four-task checkpoint collapse under multi-stage supervision and rise under multi-stage reinforcement learning.",
+      "scene": "books/parallel-rl-coexistence/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        5.422,
+        9.532,
+        16.649,
+        22.964,
+        28.468,
+        34.795,
+        42.016,
+        48.796
+      ],
+      "duration": 55.588
+    },
+    {
+      "number": 2,
+      "title": "Measure the Update Geometry",
+      "blurb": "Reconstruct task deltas, compare their norms and cosines, and see why small sparse updates leave room between capabilities.",
+      "scene": "books/parallel-rl-coexistence/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        5.468,
+        13.154,
+        19.447,
+        26.459,
+        32.671,
+        39.916,
+        46.847,
+        54.022
+      ],
+      "duration": 62.648
+    },
+    {
+      "number": 3,
+      "title": "Advantage Leaves Only the Residual",
+      "blurb": "Follow sixteen on-policy rollouts through advantage normalization until the shared direction cancels and only variance remains.",
+      "scene": "books/parallel-rl-coexistence/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        5.759,
+        11.459,
+        18.483,
+        24.625,
+        33.076,
+        40.902,
+        47.438,
+        53.638
+      ],
+      "duration": 60.65
+    },
+    {
+      "number": 4,
+      "title": "Train Apart, Merge Once",
+      "blurb": "Fork task jobs from one base model, merge their updates with the repository tools, and evaluate what each capability retains.",
+      "scene": "books/parallel-rl-coexistence/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        5.817,
+        11.088,
+        15.534,
+        22.419,
+        29.977,
+        36.815,
+        45.999,
+        52.825,
+        61.405
+      ],
+      "duration": 70.867
+    }
+  ]
+}
