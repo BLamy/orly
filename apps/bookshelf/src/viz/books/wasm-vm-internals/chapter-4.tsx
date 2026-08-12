@@ -1,4 +1,4 @@
-// Rewind: Keyframes and a Log
+// Rewind: The Machine Is a Stream
 //
 // Backing source: ~/Dev/wasm-vm — `ROADMAP.md` (Layer G is cross-cutting: "a system that is
 // only made deterministic at the end was never deterministic"; determinism must survive the
@@ -14,6 +14,16 @@
 //
 // This chapter is the honest one: it separates what the repo demonstrably has from what a
 // time-traveling Linux still needs, and does the arithmetic that rules out the naive design.
+//
+// Second movement — the durable stream. Keyframes + log stop being a debug
+// artifact and become the machine's identity: an append-only, replicated
+// stream (cf. the electric-agents book: the agent IS the stream — here the
+// stream also holds the whole OS). Suspend anywhere = stop appending; resume
+// = keyframe + tail. Agent actions are just more recorded inputs in the same
+// log. Subscribed tailnet devices hold live replicas (the user's filesystem
+// travels as the same content-addressed chunks), and rr/Replay-style
+// time-travel debugging falls out: run to an instruction, step backwards —
+// for the kernel, the filesystem, and the agent at once.
 import {
   Camera,
   STAGE_H,
@@ -102,6 +112,10 @@ export interface Scene {
   deltaU: ChannelRef<number>;
   modeU: ChannelRef<number>;
   ledgerU: ChannelRef<number>;
+  streamU: ChannelRef<number>;
+  agentU: ChannelRef<number>;
+  replU: ChannelRef<number>;
+  rrU: ChannelRef<number>;
   dimAll: ChannelRef<number>;
   closeU: ChannelRef<number>;
 }
@@ -125,6 +139,10 @@ export function buildScene(): Scene {
   const deltaU = tl.channel('deltaU', 0);
   const modeU = tl.channel('modeU', 0);
   const ledgerU = tl.channel('ledgerU', 0);
+  const streamU = tl.channel('streamU', 0);
+  const agentU = tl.channel('agentU', 0);
+  const replU = tl.channel('replU', 0);
+  const rrU = tl.channel('rrU', 0);
   const dimAll = tl.channel('dimAll', 1);
   const closeU = tl.channel('closeU', 0);
 
@@ -242,20 +260,62 @@ export function buildScene(): Scene {
   tl.tween(ledgerU, 1, { at: 73.2, dur: 3.0, ease: ease.move });
   tl.hold(79.1, 0.6);
 
-  // — Beat 12 · close —
+  // ================== movement 2 · the durable stream ==================
+
+  // — Beat 12 · the recording becomes the machine —
   tl.caption({
     at: 79.7,
-    dur: 6.4,
-    text: 'So this is not a time-traveling Linux yet. It is the hard half of one — the half most attempts get wrong — and what is left is a recorder, not a rewrite.',
+    dur: 7.55,
+    text: 'Now give the keyframes and the log somewhere durable to live: an append-only stream that outlives the tab, where every keyframe and every input lands in order. The recording stops being a debugging artifact and becomes the machine itself. Suspend at any instruction by simply not appending; resume anywhere by restoring the last keyframe and replaying the tail.',
   });
-  tl.tween(cam, CAM_WIDE, { at: 79.9, dur: 1.6, ease: ease.move });
-  tl.tween(dimAll, 0.12, { at: 81.0, dur: 1.2, ease: ease.move });
-  tl.tween(closeU, 1, { at: 82.1, dur: 0.9, ease: ease.enter });
-  tl.hold(86.1, 1.6);
+  tl.tween(cam, CAM_TIMELINE, { at: 79.9, dur: 1.6, ease: ease.move });
+  tl.tween(ledgerU, 0, { at: 79.9, dur: 1.0, ease: ease.move });
+  tl.tween(modeU, 0, { at: 79.9, dur: 1.0, ease: ease.move });
+  tl.tween(tlU, 1, { at: 80.1, dur: 1.0, ease: ease.move });
+  tl.tween(streamU, 1, { at: 80.6, dur: 1.8, ease: ease.draw });
+  tl.hold(87.7, 0.6);
+
+  // — Beat 13 · the agent is in the stream too —
+  tl.caption({
+    at: 88.3,
+    dur: 7.55,
+    text: 'A sibling book on this shelf argues that an agent is its stream — the whole run, one append-only log. Here that idea grows up. An agent driving this machine is just another input source: every command it typed and every request it made lands beside the interrupts, so one recording holds the agent and the entire operating system it acted on.',
+  });
+  tl.tween(agentU, 1, { at: 88.8, dur: 1.8, ease: ease.enter });
+  tl.hold(95.9, 0.6);
+
+  // — Beat 14 · live replicas —
+  tl.caption({
+    at: 96.5,
+    dur: 7.55,
+    text: 'And because the stream is ordinary data, following it is watching the machine. Every device on your tailnet that subscribes holds a live replica — your filesystem, replicated across everyone using the machine, carried by the same content-addressed chunks the disk already speaks. The stream is the truth. Every copy is a cache.',
+  });
+  tl.tween(replU, 1, { at: 97.0, dur: 2.0, ease: ease.move });
+  tl.hold(104.1, 0.6);
+
+  // — Beat 15 · time-travel debugging, whole-machine —
+  tl.caption({
+    at: 104.7,
+    dur: 7.55,
+    text: 'Put those together and you get what record-and-replay debuggers promise, but for the whole computer. Run to any moment, step backwards, watch a value change — and the recording does not stop at one process. The kernel, the filesystem, the agent\'s every action: all of it addressable by instruction count, all of it replayable.',
+  });
+  tl.tween(rrU, 1, { at: 105.2, dur: 1.6, ease: ease.pop });
+  tl.hold(112.3, 0.6);
+
+  // — Beat 16 · close —
+  tl.caption({
+    at: 112.9,
+    dur: 7.0,
+    text: 'So the ledger stays honest — the recorder is still unwritten — but the shape is now exact. One durable stream holding a machine, its user, and its agent. Suspendable anywhere. Replayable everywhere.',
+  });
+  tl.tween(cam, CAM_WIDE, { at: 113.1, dur: 1.6, ease: ease.move });
+  tl.tween(dimAll, 0.12, { at: 114.2, dur: 1.2, ease: ease.move });
+  tl.tween(closeU, 1, { at: 115.3, dur: 0.9, ease: ease.enter });
+  tl.hold(119.9, 1.6);
 
   return {
     tl, cam, naiveU, blowU, funcU, inputsU, fingerU, tlU, keyU, logU, costU, headU, seekU,
-    fwdU, revU, deltaU, modeU, ledgerU, dimAll, closeU,
+    fwdU, revU, deltaU, modeU, ledgerU, streamU, agentU, replU, rrU, dimAll, closeU,
   };
 }
 
@@ -283,6 +343,10 @@ export function Render({ s }: { s: SceneState }) {
   const deltaU = s.get(scene.deltaU);
   const modeU = s.get(scene.modeU);
   const ledgerU = s.get(scene.ledgerU);
+  const streamU = s.get(scene.streamU);
+  const agentU = s.get(scene.agentU);
+  const replU = s.get(scene.replU);
+  const rrU = s.get(scene.rrU);
   const dimAll = s.get(scene.dimAll);
   const closeU = s.get(scene.closeU);
 
@@ -545,14 +609,82 @@ export function Render({ s }: { s: SceneState }) {
           )}
         </g>
 
+        {/* ================= the durable stream ================= */}
+        <g opacity={dimAll}>
+          {streamU > 0 && (
+            <g opacity={streamU}>
+              <rect x={TL.x - 34} y={TL.y - 72} width={TL.w + 68} height={144} rx={16} fill="none" stroke={colors.TEAL} strokeWidth={1.8} strokeDasharray="10 7" />
+              <text x={TL.x - 20} y={TL.y - 84} fill={colors.TEAL} fontSize={14.5} fontWeight={700}>
+                the durable stream — append-only, replicated, the machine itself
+              </text>
+              <g opacity={clamp01(streamU * 2 - 1)}>
+                <rect x={TL.x + TL.w - 116} y={TL.y - 60} width={132} height={30} rx={7} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
+                <text x={TL.x + TL.w - 50} y={TL.y - 40} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontWeight={700}>
+                  ⏸ suspended = stop appending
+                </text>
+              </g>
+            </g>
+          )}
+          {agentU > 0 && (
+            <g opacity={agentU}>
+              <rect x={TL.x + 60} y={TL.y - 152} width={150} height={40} rx={8} fill={colors.PANEL} stroke={colors.TEAL} strokeWidth={1.6} />
+              <text x={TL.x + 135} y={TL.y - 127} textAnchor="middle" fill={colors.TEAL} fontSize={13} fontWeight={700}>
+                the agent
+              </text>
+              {[0.09, 0.14, 0.21, 0.27].map((u, k) => (
+                <g key={k} opacity={clamp01(agentU * 3 - k * 0.5)}>
+                  <line x1={TL.x + 135 + k * 18} y1={TL.y - 112} x2={tlX(u)} y2={TL.y - 14} stroke={colors.TEAL} strokeWidth={1.2} strokeDasharray="3 4" opacity={0.6} />
+                  <line x1={tlX(u)} y1={TL.y - 12} x2={tlX(u)} y2={TL.y + 12} stroke={colors.TEAL} strokeWidth={2.4} />
+                </g>
+              ))}
+              <text x={TL.x + 240} y={TL.y - 133} fill={colors.MUTED} fontSize={12.5}>
+                its keystrokes and requests are just more recorded inputs
+              </text>
+            </g>
+          )}
+          {replU > 0 && (
+            <g opacity={replU}>
+              {['your laptop', 'teammate tab', 'home desktop'].map((n, k) => {
+                const x = 320 + k * 240;
+                return (
+                  <g key={n} opacity={clamp01(replU * 2 - k * 0.3)}>
+                    <line x1={tlX(0.25 + k * 0.25)} y1={TL.y + 74} x2={x + 70} y2={TL.y + 118} stroke={colors.TEAL} strokeWidth={1.2} strokeDasharray="4 4" opacity={0.55} />
+                    <rect x={x} y={TL.y + 120} width={140} height={40} rx={8} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.4} />
+                    <text x={x + 70} y={TL.y + 145} textAnchor="middle" fill={colors.SECONDARY} fontSize={12.5}>
+                      {n}
+                    </text>
+                  </g>
+                );
+              })}
+              <text x={640} y={TL.y + 190} textAnchor="middle" fill={colors.MUTED} fontSize={13.5}>
+                subscribed replicas on the tailnet — the filesystem rides the same content-addressed chunks
+              </text>
+            </g>
+          )}
+          {rrU > 0 && (
+            <g opacity={rrU}>
+              <rect x={410} y={106} width={460} height={92} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.6} />
+              <text x={640} y={136} textAnchor="middle" fill={colors.WARM} fontSize={15} fontWeight={700}>
+                whole-machine time travel
+              </text>
+              <text x={640} y={160} textAnchor="middle" fill={colors.TEXT} fontSize={12.5} fontFamily="monospace">
+                run-to instruction · reverse-step · watch memory
+              </text>
+              <text x={640} y={182} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                kernel + filesystem + agent, one address space of moments
+              </text>
+            </g>
+          )}
+        </g>
+
         {closeU > 0 && (
           <g opacity={closeU}>
             <rect x={300} y={252} width={680} height={148} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
             <text x={640} y={306} textAnchor="middle" fill={colors.TEXT} fontSize={21}>
-              keyframes and a log · never a snapshot per instruction
+              keyframes and a log, appended to a durable stream
             </text>
             <text x={640} y={352} textAnchor="middle" fill={colors.ACCENT} fontSize={22} fontWeight={700}>
-              the hard half is already built
+              one stream: the machine, its user, its agent
             </text>
           </g>
         )}

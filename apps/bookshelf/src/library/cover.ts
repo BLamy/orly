@@ -16,6 +16,7 @@ export interface BookMeta {
   seriesOrder?: number; // order within the series
   chapters?: { number?: number; title: string; duration?: number }[];
   createdAt?: string; // ISO timestamp, used for the "Recently Added" shelf
+  hidden?: boolean; // unlisted: absent from every shelf surface, URL-only
 }
 
 // A colourful O'Reilly-ish palette (assign per book for a varied shelf).

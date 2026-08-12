@@ -634,15 +634,18 @@ export function Library({ initialBundle }: { initialBundle?: string } = {}) {
     fetch(assetUrl('generated/library.json'))
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
       .then((d) => {
+        // Unlisted books stay out of every shelf surface (shelves, search,
+        // feed, subscriptions) but remain playable at ?bundle=<slug>.
+        const listed = ((d.books || []) as BookMeta[]).filter((b) => !b.hidden);
         registerAnimalPool(d.books || []);
-        setBooks(d.books || []);
-        void checkSubscriptions(d.books || []);
+        setBooks(listed);
+        void checkSubscriptions(listed);
       })
       .catch((e) => setError(e.message));
     const iv = window.setInterval(() => {
       fetch(assetUrl('generated/library.json'))
         .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`HTTP ${r.status}`))))
-        .then((d) => void checkSubscriptions(d.books || []))
+        .then((d) => void checkSubscriptions(((d.books || []) as BookMeta[]).filter((b) => !b.hidden)))
         .catch(() => {});
     }, SUBSCRIPTION_POLL_MS);
     return () => window.clearInterval(iv);

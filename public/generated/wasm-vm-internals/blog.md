@@ -1,6 +1,6 @@
 # Linux in a Tab
 
-*Grounded in [`~/Dev/wasm-vm`](https://github.com/BLamy/wasm-vm) — the RISC-V machine that boots unmodified Alpine riscv64 in a browser tab. Five subsystems: the chunked disk, the network, the snapshot, the time travel it is nearly capable of — and the swarm that could serve all of it.*
+*Grounded in [`~/Dev/wasm-vm`](https://github.com/BLamy/wasm-vm) — the RISC-V machine that boots unmodified Alpine riscv64 in a browser tab. Five chapters: the chunked disk and the tailnet swarm that mirrors it, the network, the snapshot, the durable stream that makes the machine rewindable — and the cluster that stores your private half without being able to read it.*
 
 ## Chapter 1 · Only the Blocks You Touch
 
@@ -23,6 +23,35 @@ Then the payoff. `tools/build_image/record_boot_profile.sh` boots the image on t
 Two refinements keep it honest under load. `Readahead` in `crates/storage/src/prefetch.rs` treats three consecutive chunks as a stream (not a coincidence) and fetches the next four ahead of the guest, so copying a large file does not pay a round trip per block. And writes never invalidate any of it: the base image is immutable, so a write lands in a copy-on-write overlay at 4 KiB granularity (`OVERLAY_BLOCK = 4096`) and reads merge the overlay over the chunks beneath — the size chosen because dirtying a 128 KiB chunk for a 512-byte write would be roughly 256× write amplification.
 
 <figure><img src="/generated/wasm-vm-internals/blog/chapter-1-10.png" alt="Writes landing in a sparse 4 KiB copy-on-write overlay above the immutable chunks"><figcaption>Writes go to a sparse overlay; the cached chunks stay valid forever.</figcaption></figure>
+
+### The swarm is the mirror
+
+
+Chapter 1 solved *how much* to download; this chapter is a design proposal about *where from*. Today the answer is one place: every chunk of `chunked-alpine` is fetched from the public R2 bucket (`web/main.js` points `R2_ASSETS` at it, with a CDN in front). That is fine until the image is popular. A thousand tabs booting means a thousand fetches of the *same* hundred hot chunks — the origin ships identical bytes a hundred thousand times, and both the bill and the tail latency scale with exactly the thing you want most: readers.
+
+<figure><img src="/generated/wasm-vm-internals/blog/chapter-1-12.png" alt="A thousand tabs all fetching the same hot chunks from one origin"><figcaption>One origin, many tabs: popularity is a cost, not an asset.</figcaption></figure>
+
+The observation that unlocks the chapter is structural: **the chunk store already is a torrent.** A torrent is fixed-size pieces, each identified by its hash, listed in order — which is a field-for-field description of `ImageManifest` (`chunk_size: 131072`, ordered SHA-256 per chunk). BitTorrent v2 even hashes pieces with SHA-256, the same function the manifest already uses. Publishing the image as a torrent is not a re-architecture; it is a second transport for an artifact that was accidentally born torrent-shaped.
+
+<figure><img src="/generated/wasm-vm-internals/blog/chapter-1-13.png" alt="Side-by-side mapping: chunk = piece, manifest hash list = piece hashes"><figcaption>The mapping is a rename, not a redesign.</figcaption></figure>
+
+So the design: a WebTorrent-style swarm — **scoped to your tailnet**. The peers are not strangers on the internet; they are the tabs and machines chapter 2 gave identities, and the tailnet's ACLs decide who may join the swarm at all: no trackers, no DHT strangers, just your own network trading pieces. Every tab that has booted this image already holds the hot set in its cache; peers announce which pieces they hold, and a chunk comes from the nearest teammate instead of a distant origin. Crucially, R2 does not go away — it is demoted to the **web seed**, the permanent peer of last resort that speaks plain HTTP. An empty swarm at three in the morning degrades into exactly what ships today. The swarm is an accelerator, never a dependency.
+
+And the seed itself is just an object store speaking plain HTTP — R2 today, S3 alongside or instead, or both seeding the same manifest. The economics follow the swarm: R2's free egress wins while the origin serves every boot, but a busy tailnet serves the hot chunks itself and the seed goes quiet. Once egress stops dominating the bill, S3's cheaper infrequent-access tiers make it the better seat — the busier your swarm, the cheaper the seed.
+
+<figure><img src="/generated/wasm-vm-internals/blog/chapter-1-15.png" alt="The swarm of tabs with the bucket demoted to a dashed web-seed link"><figcaption>The bucket becomes one peer among many — the one that never goes offline.</figcaption></figure>
+
+The lazy filesystem is what makes this client different from a stock torrent client. A stock client downloads pieces in whatever order suits the swarm; our guest issues reads with a *deadline* attached. So piece selection gets two tiers: a `virtio-blk` read promotes its piece to **critical** — requested from several peers *and* the web seed in parallel, first verified answer wins — while the background tier keeps filling in the rest of the image (rarest-first, so the swarm converges toward full copies) whenever no read is blocked. The guest only ever waits on its own reads, and those always jump the queue. `Readahead`'s run-of-three promotion slots straight into this: a detected stream promotes the next pieces out of the background tier before the guest asks.
+
+<figure><img src="/generated/wasm-vm-internals/blog/chapter-1-17.png" alt="A guest read marked critical jumping the piece queue, raced across peers and web seed"><figcaption>A read is a deadline: critical pieces race every source; background pieces wait.</figcaption></figure>
+
+The swarm also produces a signal the origin never could: **per-piece availability** — how many peers hold each piece. The chunks on the boot path are held by nearly everyone, so the availability map is a crowd-sourced heat map of the image that rediscovers `boot-profile.json` on its own — and generalizes it, because it keeps learning after `login:`, covering whatever readers actually run. Read backwards, seeder counts are prefetch advice.
+
+<figure><img src="/generated/wasm-vm-internals/blog/chapter-1-19.png" alt="The chunk grid shaded by how many peers hold each piece; the boot path glows"><figcaption>Availability as a heat map: the swarm votes on what to prefetch.</figcaption></figure>
+
+None of this touches the trust story, which is why it is cheap to entertain. Every chunk — from a peer or from R2 — passes `ImageManifest::verify_chunk` before a byte reaches the guest: length check, then SHA-256 against the manifest, with `HashMismatch` a typed error that drops the piece and re-requests. A malicious peer can waste a little time; it cannot corrupt the disk. And the moment a tab has verified a chunk, it can serve it: after one boot you hold the exact hundred pieces the next tab needs first. Every reader becomes a mirror of the hottest part of the image — the popular chunks become the cheapest ones.
+
+<figure><img src="/generated/wasm-vm-internals/blog/chapter-1-21.png" alt="Your tab seeding the hot hundred chunks outward to newer peers"><figcaption>One manifest, two transports — and the most popular image is the fastest one to boot.</figcaption></figure>
 
 ## Chapter 2 · The Tab Is the Node
 
@@ -80,7 +109,7 @@ Which leaves portability. The blob is self-contained and identity-checked, so wh
 
 <figure><img src="/generated/wasm-vm-internals/blog/chapter-3-10.png" alt="One snapshot blob restoring into several different browsers"><figcaption>One blob, many tabs, the same program counter.</figcaption></figure>
 
-## Chapter 4 · Rewind: Keyframes and a Log
+## Chapter 4 · Rewind: The Machine Is a Stream
 
 The project's stated goal, at the very top of `ROADMAP.md`, is a machine that is **time-travelable** — that's the "singularity condition". So it is worth asking plainly how far away that is, starting with the version of the idea that does not work.
 
@@ -120,28 +149,16 @@ Which leaves an honest ledger. **Already here:** deterministic execution gated i
 
 So this is not a time-traveling Linux yet. It is the *hard half* of one — the half most attempts get wrong by bolting determinism on at the end — and what remains is a recorder, not a rewrite. That work is now written down as **Epic 4.5 — Time Travel** in the wasm-vm backlog, sited immediately after the JIT epic, because the roadmap's own constraint is that determinism must survive translation.
 
-## Chapter 5 · The Swarm Is the Mirror
+### The machine is a stream
 
-Chapter 1 solved *how much* to download; this chapter is a design proposal about *where from*. Today the answer is one place: every chunk of `chunked-alpine` is fetched from the public R2 bucket (`web/main.js` points `R2_ASSETS` at it, with a CDN in front). That is fine until the image is popular. A thousand tabs booting means a thousand fetches of the *same* hundred hot chunks — the origin ships identical bytes a hundred thousand times, and both the bill and the tail latency scale with exactly the thing you want most: readers.
+Give the keyframes and the log somewhere durable to live and the recording stops being a debugging artifact. An **append-only, replicated stream** — every keyframe and every input, in order — *is* the machine: suspend at any instruction by simply not appending; resume anywhere by restoring the last keyframe and replaying the tail. This is the electric-agents thesis ("the agent is the stream") grown up: an agent driving this machine is just another input source, its keystrokes and requests landing in the log beside the interrupts, so one recording holds the agent *and* the entire operating system it acted on.
 
-<figure><img src="/generated/wasm-vm-internals/blog/chapter-5-2.png" alt="A thousand tabs all fetching the same hot chunks from one origin"><figcaption>One origin, many tabs: popularity is a cost, not an asset.</figcaption></figure>
+Because the stream is ordinary data, following it live is watching the machine. Every tailnet device that subscribes holds a live replica — the user's filesystem replicated across everyone using the VM, carried by the same content-addressed chunks the disk already speaks. The stream is the truth; every copy is a cache. And rr/Replay-style time-travel debugging falls out of the same primitive: run to any instruction, reverse-step, watch a value change — except the recording does not stop at one process. Kernel, filesystem, agent: one address space of moments, all of it replayable.
 
-The observation that unlocks the chapter is structural: **the chunk store already is a torrent.** A torrent is fixed-size pieces, each identified by its hash, listed in order — which is a field-for-field description of `ImageManifest` (`chunk_size: 131072`, ordered SHA-256 per chunk). BitTorrent v2 even hashes pieces with SHA-256, the same function the manifest already uses. Publishing the image as a torrent is not a re-architecture; it is a second transport for an artifact that was accidentally born torrent-shaped.
+## Chapter 5 · A Cluster Only You Can Read
 
-<figure><img src="/generated/wasm-vm-internals/blog/chapter-5-3.png" alt="Side-by-side mapping: chunk = piece, manifest hash list = piece hashes"><figcaption>The mapping is a rename, not a redesign.</figcaption></figure>
+Chapter 1's tailnet torrent moves bytes but holds them *accidentally* — each peer has whatever its own boot touched, and nobody is responsible for anything. IPFS has lived with this problem for years, and three of its ideas turn the loose swarm into a cluster. **Provider records:** each tab announces the chunk set it holds (a few kilobytes of bitmap gossip), so any chunk resolves to its nearest holder before falling back to the bucket. **Pinning, upgraded to desired state:** declare "every hot chunk lives on at least three tabs" and run a reconciler that compares announced-actual against the spec — a Kubernetes controller loop where the pods are chunks. **Erasure coding:** stripe a hot region into four data shards plus two parity shards across six tabs — RAID-6 whose disks are browser tabs, so any four of the six rebuild the region. When someone closes a tab (they always do), parity covers the hole while the reconciler notices actual has drifted below spec, rebuilds the missing shard from the survivors, and re-places it. No coordinator ever touches the data; it only compares two lists.
 
-So the design: a WebTorrent-style swarm of browser tabs, exchanging chunks directly over peer connections. Every tab that has booted this image already holds the hot set in its cache; peers announce which pieces they hold, and a chunk can come from the nearest tab instead of a distant origin. Crucially, R2 does not go away — it is demoted to the **web seed**, the permanent peer of last resort that speaks plain HTTP. An empty swarm at three in the morning degrades into exactly what ships today. The swarm is an accelerator, never a dependency.
+All of that machinery moves the *public* half — the base image anyone may hold. The machine you actually care about is the other half: your overlay writes and your snapshots. That data cannot ride the swarm as plaintext, so it goes through a pipeline whose order is forced by information theory: **compress first** (ciphertext is incompressible — an overlay chunk full of filesystem structure shrinks to roughly a third under zstd), **then encrypt** with a key that exists only on your devices (what leaves the machine is ciphertext, content-addressed by the hash of the ciphertext itself, so the network can verify and route bytes it cannot read), **then erasure-shard** the sealed chunk six ways across the same tailnet peers.
 
-<figure><img src="/generated/wasm-vm-internals/blog/chapter-5-5.png" alt="The swarm of tabs with the bucket demoted to a dashed web-seed link"><figcaption>The bucket becomes one peer among many — the one that never goes offline.</figcaption></figure>
-
-The lazy filesystem is what makes this client different from a stock torrent client. A stock client downloads pieces in whatever order suits the swarm; our guest issues reads with a *deadline* attached. So piece selection gets two tiers: a `virtio-blk` read promotes its piece to **critical** — requested from several peers *and* the web seed in parallel, first verified answer wins — while the background tier keeps filling in the rest of the image (rarest-first, so the swarm converges toward full copies) whenever no read is blocked. The guest only ever waits on its own reads, and those always jump the queue. `Readahead`'s run-of-three promotion slots straight into this: a detected stream promotes the next pieces out of the background tier before the guest asks.
-
-<figure><img src="/generated/wasm-vm-internals/blog/chapter-5-6.png" alt="A guest read marked critical jumping the piece queue, raced across peers and web seed"><figcaption>A read is a deadline: critical pieces race every source; background pieces wait.</figcaption></figure>
-
-The swarm also produces a signal the origin never could: **per-piece availability** — how many peers hold each piece. The chunks on the boot path are held by nearly everyone, so the availability map is a crowd-sourced heat map of the image that rediscovers `boot-profile.json` on its own — and generalizes it, because it keeps learning after `login:`, covering whatever readers actually run. Read backwards, seeder counts are prefetch advice.
-
-<figure><img src="/generated/wasm-vm-internals/blog/chapter-5-8.png" alt="The chunk grid shaded by how many peers hold each piece; the boot path glows"><figcaption>Availability as a heat map: the swarm votes on what to prefetch.</figcaption></figure>
-
-None of this touches the trust story, which is why it is cheap to entertain. Every chunk — from a peer or from R2 — passes `ImageManifest::verify_chunk` before a byte reaches the guest: length check, then SHA-256 against the manifest, with `HashMismatch` a typed error that drops the piece and re-requests. A malicious peer can waste a little time; it cannot corrupt the disk. And the moment a tab has verified a chunk, it can serve it: after one boot you hold the exact hundred pieces the next tab needs first. Every reader becomes a mirror of the hottest part of the image — the popular chunks become the cheapest ones.
-
-<figure><img src="/generated/wasm-vm-internals/blog/chapter-5-10.png" alt="Your tab seeding the hot hundred chunks outward to newer peers"><figcaption>One manifest, two transports — and the most popular image is the fastest one to boot.</figcaption></figure>
+From a peer's side the deal is stark: it stores a fixed-size block of uniform noise with a hash for a name — no filename, no owner, no structure. Three of six shards plus no key reveals zero bytes; the blast radius of a compromised peer is none. From your side, the payoff is restore-anywhere: sit down at a new device, unlock your key, pull any four shards of each chunk in parallel (one peer offline simply doesn't matter), decode → decrypt → decompress → hash-verify. Your machine reassembles from the network. The one honest cost: per-user keys kill cross-user deduplication — so the cleverness is spent *before* the lock, deduping and delta-encoding snapshots against their parents within your own history, sealing only the minimal diff. Everyone stores it; only you can read it.

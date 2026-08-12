@@ -4,6 +4,7 @@ import 'katex/dist/katex.min.css';
 import { Stage, Timeline, usePlayback, type CaptionItem } from '../viz/core';
 import { VIZ_SCENES, type VizSceneEntry } from '../viz/scenes';
 import { fmtDur, type ChapterV3 } from './BookPlayer';
+import { speechSupported, useSpokenCaption } from './speech';
 
 // A stable empty timeline so usePlayback (a hook — unconditional) has
 // something to sample while the real scene chunk is still loading.
@@ -195,6 +196,13 @@ export function ChapterPlayer({
   const activeCaption =
     pb.state.captions.length > 0 ? pb.state.captions[pb.state.captions.length - 1] : null;
 
+  // No recorded narration → speak the captions with the browser's best voice.
+  const speechNarration = !useAudioClock && speechSupported();
+  useSpokenCaption({
+    text: activeCaption?.text ?? null,
+    enabled: speechNarration && pb.playing && !muted && !ended,
+  });
+
   // Autoplay once the scene is ready (the chapter click is the user gesture).
   // On iOS the gesture has often expired by the time the scene chunk + MP3
   // load, and audio.play() rejects — usePlayback swallows that rejection and
@@ -292,7 +300,7 @@ export function ChapterPlayer({
   // aligned end of the narration. The raw MP3 may be LONGER (TTS junk tail)
   // and the timeline may differ; never let either stretch the scrubber.
   const seekMax = Math.max(chapter.duration || pb.duration, 0.001);
-  const soundAvailable = useAudioClock;
+  const soundAvailable = useAudioClock || speechNarration;
 
   return (
     <div className="bp-player">
