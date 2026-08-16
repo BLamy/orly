@@ -1,2 +1,2 @@
-export * from '@brett_lamy/viz-engine';
+export * from '../engine/core';
 export { cameraInterp } from './camera-interp';

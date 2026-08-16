@@ -1,4 +1,4 @@
-export * from '@brett_lamy/viz-engine';
+export * from '../engine/primitives';
 // Local primitives (NIPs-series toolkit: JSON ↔ picture morphs + crypto)
 export * from './json-doc';
 export * from './token-flight';
