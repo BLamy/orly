@@ -1,0 +1,86 @@
+{
+  "format": 3,
+  "slug": "sam-sovereign-agent-mesh",
+  "title": "Sovereign Agent Mesh",
+  "subtitle": "How a node earns identity, a route, and a tool call",
+  "animal": "animal.webp",
+  "accent": "#3a8b3a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The identity earns a route",
+      "blurb": "A key becomes a signed identity and first route.",
+      "scene": "books/sam-sovereign-agent-mesh/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        4.923,
+        10.82,
+        17.171,
+        23.278,
+        27.562,
+        32.311,
+        39.091,
+        44.432,
+        48.634
+      ],
+      "duration": 52.617
+    },
+    {
+      "number": 2,
+      "title": "The gate before the road",
+      "blurb": "A Biscuit handshake turns proof into a relay path.",
+      "scene": "books/sam-sovereign-agent-mesh/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        4.888,
+        9.125,
+        13.375,
+        18.239,
+        22.605,
+        28.271,
+        33.089,
+        38.162
+      ],
+      "duration": 40.31
+    },
+    {
+      "number": 3,
+      "title": "Interest finds the tool",
+      "blurb": "Interest-scoped discovery narrows the mesh to one tool.",
+      "scene": "books/sam-sovereign-agent-mesh/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        4.876,
+        10.948,
+        15.72,
+        21.664,
+        26.749,
+        32.938,
+        39.672
+      ],
+      "duration": 44.211
+    },
+    {
+      "number": 4,
+      "title": "One call, many proofs",
+      "blurb": "The sidecar carries one authenticated call through MCP.",
+      "scene": "books/sam-sovereign-agent-mesh/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        4.156,
+        11.343,
+        16.463,
+        21.327,
+        27.434,
+        32.845,
+        38.928,
+        46.695
+      ],
+      "duration": 54.01
+    }
+  ]
+}
