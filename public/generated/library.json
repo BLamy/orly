@@ -1,6 +1,39 @@
 {
   "books": [
     {
+      "slug": "sam-sovereign-agent-mesh",
+      "title": "Sovereign Agent Mesh",
+      "subtitle": "How a node earns identity, a route, and a tool call",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#3a8b3a",
+      "href": "?bundle=sam-sovereign-agent-mesh",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The identity earns a route",
+          "duration": 52.617
+        },
+        {
+          "number": 2,
+          "title": "The gate before the road",
+          "duration": 40.31
+        },
+        {
+          "number": 3,
+          "title": "Interest finds the tool",
+          "duration": 44.211
+        },
+        {
+          "number": 4,
+          "title": "One call, many proofs",
+          "duration": 54.01
+        }
+      ],
+      "createdAt": "2026-08-17T19:28:58.253Z",
+      "animal": "generated/sam-sovereign-agent-mesh/animal.webp"
+    },
+    {
       "slug": "parallel-rl-coexistence",
       "title": "The Geometry of Coexistence",
       "subtitle": "Why multi-task reinforcement learning updates can be merged",
