@@ -240,6 +240,17 @@ player itself needs only the two exports above.)
   voice at build time; the Storybook story plays silent (or with the Motion
   panel's free voice toggle while iterating).
 
+### Blog sections (Docstream)
+
+The written post reuses the same scene as live SVG, but it is a separate
+surface from the narrated chapter. `generator/blog-viz.mjs` consumes the
+published manifest cues only to write repo-local `{% viz %}` blocks in
+`blog.md`; `BlogPanel` mounts each one with Docstream 0.3.2's `VizEmbed`,
+autoplaying and looping the requested `from`/`to` window with no audio or
+captions. Do not create cue stills or exported GIF/MP4/WebM media. Keep
+non-relevant elements faded/hidden at the scene's sampled cue times so a
+section teaches one beat cleanly; do not solve clutter by cropping a file.
+
 ### Quality bar checklist (a scene ships only if all hold)
 
 - [ ] Studied 2–3 exemplars under `apps/bookshelf/src/viz/explainers/` first (e.g.

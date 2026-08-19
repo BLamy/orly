@@ -7,7 +7,7 @@ as an **O'RLY‑parody** O'Reilly‑style book. The shelf deploys to Cloudflare 
 
 ## The main thing you do here
 **Create a new book** when asked: run **`/new-book <repo> | <subsystem> | <title>`**
-(see `.Codex/commands/new-book.md`). It digests the repo, you write the storyboard,
+(see `.claude/commands/new-book.md`). It digests the repo, you write the storyboard,
 then the pipeline narrates it (ElevenLabs), generates an O'RLY cover (Codex
 built-in ImageGen when available; API fallback otherwise), adds Noun Project
 icons, and you commit + push to redeploy.
@@ -28,7 +28,7 @@ icons, and you commit + push to redeploy.
 - `packages/mobile-ui/` — reusable mobile tab bar, collapsing header,
   hide-on-scroll state, and alphabetized list/index navigation.
 - `public/generated/<slug>/` — each book's `manifest.json` + `audio/` + `animal.png`;
-  `library.json` is the shelf registry.
+  `blog.md` is the written companion post and `library.json` is the shelf registry.
 - `apps/bookshelf/src/viz/` — the **3blue1brown-style animation suite** (pure `sample(t)`
   timeline engine, primitives, explainers), cataloged in Storybook
   (`npm run storybook`; the **Motion** panel edits timelines and saves timings
@@ -52,6 +52,37 @@ icons, and you commit + push to redeploy.
 - Keys live in a **gitignored `.env`** (ElevenLabs, OpenAI, Noun Project). Never
   commit secrets. The storyboard step uses **you (Codex)**, so no Anthropic
   key is required.
+
+## Blog posts are live Docstream viz sections
+
+- The latest published packages are `@brett_lamy/docstream` **0.3.2** and
+  `@brett_lamy/viz-engine` **0.2.1**. `BlogPanel.tsx` uses Docstream's
+  `VizEmbed` component to mount the real scene viewer inside the markdown flow.
+- Blog cue windows are a **blog-only consumer** of `manifest.chapters[].cues`.
+  They must never retime, replace, or silence the normal narrated chapter
+  player. The chapter MP3 and manifest remain the source of truth for the
+  video.
+- `blog.md` uses the repo-local block syntax below; the renderer turns each
+  block into a live, silent, autoplaying, looping `VizEmbed` section. It does
+  not create a PNG, GIF, MP4, or WebM asset:
+  ```md
+  {% viz scene="books/example/chapter-1" cue="0" from="0.000" to="7.500" title="What this beat shows" %}
+  {% endviz %}
+
+  The paragraph immediately after the block explains the animation.
+  ```
+- `scene` is the exact manifest scene id; `from`/`to` are the manifest cue
+  times in seconds. The blog renderer slices only that window, hides chapter
+  navigation/captions/audio, and lets the scene's own timeline decide which
+  SVG elements are relevant. If a beat has distracting persistent elements,
+  fix the scene's timeline/render visibility rather than exporting a crop.
+- Convert legacy cue figures with `node generator/blog-viz.mjs --slug <slug>`.
+  The compatibility name `generator/screenshot-chapters.mjs` delegates to the
+  same live-viz conversion and must not be used to generate stills.
+- Do not use Docstream's direct-video `{% embed %}` syntax for these posts:
+  that is for actual media files. Viz sections are React `VizEmbed` blocks
+  bridged by `BlogPanel`, which is the supported way to embed a live
+  `viz-engine` scene in this markdown document.
 
 ## Run locally
 `npm run dev` → http://localhost:5173/ (shelf). Deploy is automatic on push to

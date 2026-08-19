@@ -1,6 +1,7 @@
 import { defineConfig } from 'vite';
 import react from '@vitejs/plugin-react';
 import { VitePWA } from 'vite-plugin-pwa';
+import { fileURLToPath } from 'node:url';
 
 // Served from the domain root everywhere (Cloudflare Workers prod + PR previews,
 // and locally), so all asset paths resolve relative to BASE_URL = '/'.
@@ -11,6 +12,21 @@ export default defineConfig({
     emptyOutDir: true,
   },
   base: '/',
+  // Docstream's optional live React-preview feature imports almost-node
+  // lazily. The bookshelf does not use that feature; alias its optional
+  // runtime to a tiny build-time stub so the latest Docstream package does
+  // not pull a worker asset into this app's production bundle.
+  resolve: {
+    alias: {
+      '@agent-wasm/core': fileURLToPath(new URL('./src/optional-agent-wasm.ts', import.meta.url)),
+      '@brett_lamy/viz-engine/styles.css': fileURLToPath(new URL('./src/viz/engine/core/player.css', import.meta.url)),
+      // Docstream 0.3.2's VizEmbed is the document boundary we use. Its
+      // published viz-engine 0.2.1 bundle currently assumes React 19 internals
+      // while this bookshelf is React 18, so keep the runtime on the
+      // bookshelf's own compatible VizPlayer adapter below.
+      '@brett_lamy/viz-engine': fileURLToPath(new URL('./src/viz/docstream-engine.tsx', import.meta.url)),
+    },
+  },
   plugins: [
     react(),
     VitePWA({

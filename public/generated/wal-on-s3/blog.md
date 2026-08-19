@@ -8,55 +8,118 @@ The recurring shape is simple enough to draw on a napkin: put the data in files 
 
 A bucket gives you durable objects, but not a lock manager or a transaction. If two writers repeatedly read and rewrite one shared object, the later write can erase an acknowledged append. Chroma's answer is to make the bulk data immutable and reserve the mutable authority for one manifest.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-1-0.png" alt="A field of records arriving before they have a durable home"><figcaption>The log begins as records in flight: useful data, but not yet a durable ordered history.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-1" cue="0" from="0.000" to="7.512" title="The log begins as records in flight: useful data, but not yet a durable ordered history." %}
+{% endviz %}
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-1-1.png" alt="Records compressed into one mutable object"><figcaption>The tempting design is one object rewritten after every append.</figcaption></figure>
+The log begins as records in flight: useful data, but not yet a durable ordered history.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-1-2.png" alt="Two writers racing toward one object while one record is lost"><figcaption>Two writers can read the same old version and then silently clobber one another.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-1" cue="1" from="7.512" to="16.846" title="The tempting design is one object rewritten after every append." %}
+{% endviz %}
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-1-3.png" alt="An object card labeled If-Match ETag"><figcaption>The object store's sharp primitive is a conditional write: accept this version only if the tag still matches.</figcaption></figure>
+The tempting design is one object rewritten after every append.
+
+{% viz scene="books/wal-on-s3/chapter-1" cue="2" from="16.846" to="25.205" title="Two writers can read the same old version and then silently clobber one another." %}
+{% endviz %}
+
+Two writers can read the same old version and then silently clobber one another.
+
+{% viz scene="books/wal-on-s3/chapter-1" cue="3" from="25.205" to="35.062" title="The object store's sharp primitive is a conditional write: accept this version only if the tag still matches." %}
+{% endviz %}
+
+The object store's sharp primitive is a conditional write: accept this version only if the tag still matches.
 
 That one primitive is too valuable to spend on the data itself. The data path becomes append-only fragments; the coordination path becomes a small manifest. Chroma's engineering note describes this as the lock-free analogue of prepending to a linked list: create an immutable node, then conditionally move the head pointer.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-1-4.png" alt="A single object splitting into a manifest and immutable fragments"><figcaption>The design splits into a mountain of data and one small authority record.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-1" cue="4" from="35.062" to="43.769" title="The design splits into a mountain of data and one small authority record." %}
+{% endviz %}
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-1-5.png" alt="Six immutable fragment tiles containing record dots"><figcaption>Fragments are ordinary files written once. They need no shared mutable state, so writers can upload them independently.</figcaption></figure>
+The design splits into a mountain of data and one small authority record.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-1-6.png" alt="A manifest authority card connected to fragment tiles"><figcaption>The manifest names the fragments, their order, and the ranges of log positions they cover.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-1" cue="5" from="43.769" to="54.973" title="Fragments are ordinary files written once. They need no shared mutable state, so writers can upload them independently." %}
+{% endviz %}
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-1-7.png" alt="A fragment path and a manifest key under one bucket"><figcaption>In Chroma's layout, fragment paths are derived from sequence numbers while the manifest sits at a fixed key.</figcaption></figure>
+Fragments are ordinary files written once. They need no shared mutable state, so writers can upload them independently.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-1-8.png" alt="A LogWriter and LogReader connected to the manifest"><figcaption>Readers follow the manifest to fragments while writers advance the authority record; neither has to rewrite the bulk data.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-1" cue="6" from="54.973" to="64.945" title="The manifest names the fragments, their order, and the ranges of log positions they cover." %}
+{% endviz %}
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-1-9.png" alt="Immutable fragments beneath a small conditional authority record"><figcaption>Keep this shape in mind: immutable files hold the data, and one conditional write decides which files count.</figcaption></figure>
+The manifest names the fragments, their order, and the ranges of log positions they cover.
+
+{% viz scene="books/wal-on-s3/chapter-1" cue="7" from="64.945" to="76.079" title="In Chroma's layout, fragment paths are derived from sequence numbers while the manifest sits at a fixed key." %}
+{% endviz %}
+
+In Chroma's layout, fragment paths are derived from sequence numbers while the manifest sits at a fixed key.
+
+{% viz scene="books/wal-on-s3/chapter-1" cue="8" from="76.079" to="85.437" title="Readers follow the manifest to fragments while writers advance the authority record; neither has to rewrite the bulk data." %}
+{% endviz %}
+
+Readers follow the manifest to fragments while writers advance the authority record; neither has to rewrite the bulk data.
+
+{% viz scene="books/wal-on-s3/chapter-1" cue="9" from="85.437" to="95.572" title="Keep this shape in mind: immutable files hold the data, and one conditional write decides which files count." %}
+{% endviz %}
+
+Keep this shape in mind: immutable files hold the data, and one conditional write decides which files count.
 
 ## Chapter 2 · The Compare-and-Swap Heartbeat
 
 The split only matters if the append path is exact. A caller hands a message to the writer; the batch manager groups it with neighbors; the batch becomes a fragment; the fragment is written if absent; and only then does the manifest manager try to install a new manifest with `If-Match`.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-2-0.png" alt="One append message entering a writer pipeline"><figcaption>An append begins as a message handed to the writer. It is not durable merely because the call has started.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-2" cue="0" from="0.000" to="8.742" title="An append begins as a message handed to the writer. It is not durable merely because the call has started." %}
+{% endviz %}
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-2-1.png" alt="Several append records waiting in a batch manager"><figcaption>Batching trades a little latency for fewer, larger fragment files.</figcaption></figure>
+An append begins as a message handed to the writer. It is not durable merely because the call has started.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-2-2.png" alt="A batch becoming a fragment with a sequence range"><figcaption>When the batch is ready, it hardens into one fragment and receives its own range of log positions.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-2" cue="1" from="8.742" to="17.601" title="Batching trades a little latency for fewer, larger fragment files." %}
+{% endviz %}
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-2-3.png" alt="A fragment beside a PutMode IfNotExist label"><figcaption>The fragment upload is write-if-absent: its sequence-derived name cannot quietly overwrite another fragment.</figcaption></figure>
+Batching trades a little latency for fewer, larger fragment files.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-2-4.png" alt="An uploaded fragment not yet referenced by the manifest"><figcaption>A file sitting in the bucket is not durable history until the manifest points at it.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-2" cue="2" from="17.601" to="25.542" title="When the batch is ready, it hardens into one fragment and receives its own range of log positions." %}
+{% endviz %}
+
+When the batch is ready, it hardens into one fragment and receives its own range of log positions.
+
+{% viz scene="books/wal-on-s3/chapter-2" cue="3" from="25.542" to="34.726" title="The fragment upload is write-if-absent: its sequence-derived name cannot quietly overwrite another fragment." %}
+{% endviz %}
+
+The fragment upload is write-if-absent: its sequence-derived name cannot quietly overwrite another fragment.
+
+{% viz scene="books/wal-on-s3/chapter-2" cue="4" from="34.726" to="43.468" title="A file sitting in the bucket is not durable history until the manifest points at it." %}
+{% endviz %}
+
+A file sitting in the bucket is not durable history until the manifest points at it.
 
 The manifest manager is the commit point. It appends the new pointer, folds the fragment's checksum into the running checksum, and writes the replacement manifest only if the stored version tag is the one it read.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-2-5.png" alt="A manifest manager card with apply_fragment and a running setsum"><figcaption>The manager adds the fragment pointer and its checksum to the manifest's current view of the log.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-2" cue="5" from="43.468" to="51.944" title="The manager adds the fragment pointer and its checksum to the manifest's current view of the log." %}
+{% endviz %}
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-2-6.png" alt="A conditional manifest install with an If-Match tag"><figcaption>A matching tag makes the append durable: the new manifest is now the authority for the uploaded fragment.</figcaption></figure>
+The manager adds the fragment pointer and its checksum to the manifest's current view of the log.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-2-7.png" alt="A rival writer holding an older manifest tag"><figcaption>A second writer may have read the same earlier manifest, but it is still holding an obsolete tag.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-2" cue="6" from="51.944" to="61.986" title="A matching tag makes the append durable: the new manifest is now the authority for the uploaded fragment." %}
+{% endviz %}
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-2-8.png" alt="A rejected write returning to a retry path"><figcaption>The stale writer loses with a contention error before it can overwrite anything.</figcaption></figure>
+A matching tag makes the append durable: the new manifest is now the authority for the uploaded fragment.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-2-9.png" alt="Two leader-election paths converging on one conditional write"><figcaption>Leader election can be imperfect because correctness lives in the conditional manifest update, not in the election.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-2" cue="7" from="61.986" to="69.997" title="A second writer may have read the same earlier manifest, but it is still holding an obsolete tag." %}
+{% endviz %}
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-2-10.png" alt="A single request header representing the concurrency protocol"><figcaption>The concurrency story fits in one header; everything else is immutable data and retryable coordination.</figcaption></figure>
+A second writer may have read the same earlier manifest, but it is still holding an obsolete tag.
+
+{% viz scene="books/wal-on-s3/chapter-2" cue="8" from="69.997" to="80.468" title="The stale writer loses with a contention error before it can overwrite anything." %}
+{% endviz %}
+
+The stale writer loses with a contention error before it can overwrite anything.
+
+{% viz scene="books/wal-on-s3/chapter-2" cue="9" from="80.468" to="91.486" title="Leader election can be imperfect because correctness lives in the conditional manifest update, not in the election." %}
+{% endviz %}
+
+Leader election can be imperfect because correctness lives in the conditional manifest update, not in the election.
+
+{% viz scene="books/wal-on-s3/chapter-2" cue="10" from="91.486" to="98.359" title="The concurrency story fits in one header; everything else is immutable data and retryable coordination." %}
+{% endviz %}
+
+The concurrency story fits in one header; everything else is immutable data and retryable coordination.
 
 This is why object-storage conditional writes feel like compare-and-swap. They do not turn S3 into a database. They let a database-like invariant live in a tiny mutable pointer while every payload remains safe to retry, duplicate, or garbage-collect later.
 
@@ -64,31 +127,67 @@ This is why object-storage conditional writes feel like compare-and-swap. They d
 
 Append-only storage eventually needs reclamation. The dangerous question is not “which files look old?” but “which files can no reader still be using?” Chroma moves that knowledge into cursors: small per-reader files that pin a position without competing with the writer for the manifest.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-3-0.png" alt="A fragment row stretching farther than the collector can see"><figcaption>An append-only log grows forever unless readers give the collector a safe lower bound.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-3" cue="0" from="0.000" to="8.696" title="An append-only log grows forever unless readers give the collector a safe lower bound." %}
+{% endviz %}
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-3-1.png" alt="Several readers disagreeing about how far they have consumed"><figcaption>The writer cannot decide what is finished with; readers may be at different positions.</figcaption></figure>
+An append-only log grows forever unless readers give the collector a safe lower bound.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-3-2.png" alt="A cursor file with a position, timestamp, and owner"><figcaption>Each reader publishes a cursor that pins its current position and everything newer.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-3" cue="1" from="8.696" to="16.997" title="The writer cannot decide what is finished with; readers may be at different positions." %}
+{% endviz %}
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-3-3.png" alt="Cursor files separated from the manifest"><figcaption>Cursors live in their own objects, so pinning a read never fights the writer for the authority record.</figcaption></figure>
+The writer cannot decide what is finished with; readers may be at different positions.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-3-4.png" alt="The earliest cursor pin marked as the garbage-collection cutoff"><figcaption>Collection takes the earliest pin across all readers. Older data is a candidate; newer data is untouchable.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-3" cue="2" from="16.997" to="27.724" title="Each reader publishes a cursor that pins its current position and everything newer." %}
+{% endviz %}
+
+Each reader publishes a cursor that pins its current position and everything newer.
+
+{% viz scene="books/wal-on-s3/chapter-3" cue="3" from="27.724" to="35.758" title="Cursors live in their own objects, so pinning a read never fights the writer for the authority record." %}
+{% endviz %}
+
+Cursors live in their own objects, so pinning a read never fights the writer for the authority record.
+
+{% viz scene="books/wal-on-s3/chapter-3" cue="4" from="35.758" to="46.126" title="Collection takes the earliest pin across all readers. Older data is a candidate; newer data is untouchable." %}
+{% endviz %}
+
+Collection takes the earliest pin across all readers. Older data is a candidate; newer data is untouchable.
 
 The collector is deliberately staged. First it writes a `GARBAGE` plan describing snapshots, fragments, and the checksum being discarded. Then the writer publishes a manifest that no longer references the doomed objects. Only after readers have had time to finish does deletion happen.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-3-5.png" alt="A GARBAGE file listing snapshots, fragments, and a discarded checksum"><figcaption>Phase one records intent without deleting or changing the live manifest.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-3" cue="5" from="46.126" to="57.365" title="Phase one records intent without deleting or changing the live manifest." %}
+{% endviz %}
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-3-6.png" alt="A collector crash beside an untouched garbage plan"><figcaption>A crash after planning is harmless: an unexecuted plan is just a file that can be discarded.</figcaption></figure>
+Phase one records intent without deleting or changing the live manifest.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-3-7.png" alt="The writer publishing a manifest without the doomed fragment range"><figcaption>Phase two uses the ordinary append protocol to publish a manifest that no longer references the garbage.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-3" cue="6" from="57.365" to="67.071" title="A crash after planning is harmless: an unexecuted plan is just a file that can be discarded." %}
+{% endviz %}
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-3-8.png" alt="A reader still holding an older manifest during a wait phase"><figcaption>Phase three waits for readers that fetched the old manifest before the collector removes bytes.</figcaption></figure>
+A crash after planning is harmless: an unexecuted plan is just a file that can be discarded.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-3-9.png" alt="Deletes flowing only after references have disappeared"><figcaption>Deletion is last, and it is limited to objects the collector proved are unreferenced.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-3" cue="7" from="67.071" to="76.753" title="Phase two uses the ordinary append protocol to publish a manifest that no longer references the garbage." %}
+{% endviz %}
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-3-10.png" alt="One collector holding the only delete arrow"><figcaption>Three phases make one service responsible for deletion; everyone else only adds files or advances a pointer.</figcaption></figure>
+Phase two uses the ordinary append protocol to publish a manifest that no longer references the garbage.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-3-11.png" alt="A final garbage-collection proof card"><figcaption>The safety rule is intentionally conservative: positive proof of unreachability comes before deletion.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-3" cue="8" from="76.753" to="86.738" title="Phase three waits for readers that fetched the old manifest before the collector removes bytes." %}
+{% endviz %}
+
+Phase three waits for readers that fetched the old manifest before the collector removes bytes.
+
+{% viz scene="books/wal-on-s3/chapter-3" cue="9" from="86.738" to="96.281" title="Deletion is last, and it is limited to objects the collector proved are unreferenced." %}
+{% endviz %}
+
+Deletion is last, and it is limited to objects the collector proved are unreferenced.
+
+{% viz scene="books/wal-on-s3/chapter-3" cue="10" from="96.281" to="105.615" title="Three phases make one service responsible for deletion; everyone else only adds files or advances a pointer." %}
+{% endviz %}
+
+Three phases make one service responsible for deletion; everyone else only adds files or advances a pointer.
+
+{% viz scene="books/wal-on-s3/chapter-3" cue="11" from="105.615" to="115.820" title="The safety rule is intentionally conservative: positive proof of unreachability comes before deletion." %}
+{% endviz %}
+
+The safety rule is intentionally conservative: positive proof of unreachability comes before deletion.
 
 The result is less clever than a distributed lock service and more robust under failure. A collector can crash between any two phases without leaving a half-applied deletion hidden inside the log's authority record.
 
@@ -96,29 +195,65 @@ The result is less clever than a distributed lock service and more robust under 
 
 The manifest is small only while the log is small. If every append rewrites one pointer per fragment, metadata work grows with the history. The old prefix never changes, so `wal3` folds that prefix into immutable snapshot nodes and keeps a hot root for the tail.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-4-0.png" alt="A manifest holding one pointer for every fragment"><figcaption>The naive manifest pays for the whole fragment list on every append.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-4" cue="0" from="0.000" to="10.414" title="The naive manifest pays for the whole fragment list on every append." %}
+{% endviz %}
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-4-1.png" alt="A rising bytes-per-write chart for a growing manifest"><figcaption>As the list grows, the metadata bytes written per append grow with it.</figcaption></figure>
+The naive manifest pays for the whole fragment list on every append.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-4-2.png" alt="An immutable prefix separated from the live manifest root"><figcaption>The opportunity is structural: old entries are already immutable and can be lifted out.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-4" cue="1" from="10.414" to="20.817" title="As the list grows, the metadata bytes written per append grow with it." %}
+{% endviz %}
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-4-3.png" alt="A snapshot pointer replacing a prefix of fragment pointers"><figcaption>The writer publishes a snapshot of the prefix, then adopts it with one later manifest update.</figcaption></figure>
+As the list grows, the metadata bytes written per append grow with it.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-4-4.png" alt="A snapshot written before the manifest adopts it"><figcaption>The snapshot is written off the hot path; the append that adopts it pays no extra round trip for construction.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-4" cue="2" from="20.817" to="30.766" title="The opportunity is structural: old entries are already immutable and can be lifted out." %}
+{% endviz %}
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-4-5.png" alt="A sawtooth curve bounded by a snapshot rollover threshold"><figcaption>Snapshot rollover turns one ever-growing list into bounded bursts of metadata work.</figcaption></figure>
+The opportunity is structural: old entries are already immutable and can be lifted out.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-4-6.png" alt="A shallow tree with a root, interior snapshot nodes, and fragment leaves"><figcaption>Repeated folding creates a shallow tree: a rewritten root, immutable interior nodes, and fragments as leaves.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-4" cue="3" from="30.766" to="38.928" title="The writer publishes a snapshot of the prefix, then adopts it with one later manifest update." %}
+{% endviz %}
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-4-7.png" alt="A lopsided tree with a hot tail on the right"><figcaption>The tree is intentionally lopsided so tail readers find recent data in the root while full scans walk older branches.</figcaption></figure>
+The writer publishes a snapshot of the prefix, then adopts it with one later manifest update.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-4-8.png" alt="A pointer card carrying checksum, depth, and position range"><figcaption>Each pointer carries enough accounting metadata to make folding a checkable transformation.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-4" cue="4" from="38.928" to="49.458" title="The snapshot is written off the hot path; the append that adopts it pays no extra round trip for construction." %}
+{% endviz %}
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-4-9.png" alt="A writer crash after a fragment upload but before manifest update"><figcaption>A crash can leave a real, durable orphan fragment—but the live manifest remains unchanged.</figcaption></figure>
+The snapshot is written off the hot path; the append that adopts it pays no extra round trip for construction.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-4-10.png" alt="A next writer continuing without a repair step"><figcaption>The next writer does not need a recovery transaction. The orphan is merely future collector work.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-4" cue="5" from="49.458" to="58.874" title="Snapshot rollover turns one ever-growing list into bounded bursts of metadata work." %}
+{% endviz %}
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-4-11.png" alt="A final immutable tree with no overwrite arrows"><figcaption>Never overwriting data turns crash recovery into a skipped repair path rather than a race to restore state.</figcaption></figure>
+Snapshot rollover turns one ever-growing list into bounded bursts of metadata work.
+
+{% viz scene="books/wal-on-s3/chapter-4" cue="6" from="58.874" to="69.683" title="Repeated folding creates a shallow tree: a rewritten root, immutable interior nodes, and fragments as leaves." %}
+{% endviz %}
+
+Repeated folding creates a shallow tree: a rewritten root, immutable interior nodes, and fragments as leaves.
+
+{% viz scene="books/wal-on-s3/chapter-4" cue="7" from="69.683" to="80.260" title="The tree is intentionally lopsided so tail readers find recent data in the root while full scans walk older branches." %}
+{% endviz %}
+
+The tree is intentionally lopsided so tail readers find recent data in the root while full scans walk older branches.
+
+{% viz scene="books/wal-on-s3/chapter-4" cue="8" from="80.260" to="90.697" title="Each pointer carries enough accounting metadata to make folding a checkable transformation." %}
+{% endviz %}
+
+Each pointer carries enough accounting metadata to make folding a checkable transformation.
+
+{% viz scene="books/wal-on-s3/chapter-4" cue="9" from="90.697" to="101.830" title="A crash can leave a real, durable orphan fragment—but the live manifest remains unchanged." %}
+{% endviz %}
+
+A crash can leave a real, durable orphan fragment—but the live manifest remains unchanged.
+
+{% viz scene="books/wal-on-s3/chapter-4" cue="10" from="101.830" to="111.850" title="The next writer does not need a recovery transaction. The orphan is merely future collector work." %}
+{% endviz %}
+
+The next writer does not need a recovery transaction. The orphan is merely future collector work.
+
+{% viz scene="books/wal-on-s3/chapter-4" cue="11" from="111.850" to="119.257" title="Never overwriting data turns crash recovery into a skipped repair path rather than a race to restore state." %}
+{% endviz %}
+
+Never overwriting data turns crash recovery into a skipped repair path rather than a race to restore state.
 
 This is the “Git at scale” intuition in a WAL-shaped form: immutable objects accumulate, and small mutable metadata chooses the current view. The difference is that `wal3` makes the authority and its conditional update explicit, so the log can promise linearizable append semantics instead of merely offering a pile of blobs.
 
@@ -126,30 +261,69 @@ This is the “Git at scale” intuition in a WAL-shaped form: immutable objects
 
 Immutability makes recovery easier, but it does not prove the files are still present or that the manifest's view is internally complete. `wal3` uses an associative, commutative `setsum`: every fragment contributes a checksum, the manifest carries the total, and collection records the weight of what has been removed.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-5-0.png" alt="A scrub check asking for evidence that the log is intact"><figcaption>Believing a log is intact is the expensive claim; it needs a checkable invariant.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-5" cue="0" from="0.000" to="9.752" title="Believing a log is intact is the expensive claim; it needs a checkable invariant." %}
+{% endviz %}
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-5-1.png" alt="Individual fragments each labeled with their own checksum"><figcaption>Every fragment contributes a checksum of its contents.</figcaption></figure>
+Believing a log is intact is the expensive claim; it needs a checkable invariant.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-5-2.png" alt="A running total balancing fragment and snapshot checksums"><figcaption>The manifest carries one declared total for the live log.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-5" cue="1" from="9.752" to="16.695" title="Every fragment contributes a checksum of its contents." %}
+{% endviz %}
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-5-3.png" alt="A commutative setsum equation over fragments"><figcaption>Because the sum can be added and subtracted without depending on order, folding a fragment costs constant metadata work.</figcaption></figure>
+Every fragment contributes a checksum of its contents.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-5-4.png" alt="A snapshot carrying the combined sum of a folded prefix"><figcaption>A snapshot preserves the exact combined weight of the prefix it replaces.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-5" cue="2" from="16.695" to="26.435" title="The manifest carries one declared total for the live log." %}
+{% endviz %}
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-5-5.png" alt="A collected-weight counter beside the live checksum"><figcaption>After deletion, the manifest keeps a second number for the weight that is no longer physically present.</figcaption></figure>
+The manifest carries one declared total for the live log.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-5-6.png" alt="A scrub walking live children and comparing with manifest setsum"><figcaption>A scrub adds live children and collected weight, then compares the result with the declared total.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-5" cue="3" from="26.435" to="35.468" title="Because the sum can be added and subtracted without depending on order, folding a fragment costs constant metadata work." %}
+{% endviz %}
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-5-7.png" alt="One missing fragment breaking the setsum balance"><figcaption>Lose one fragment and nothing else has to change for the invariant to fail loudly.</figcaption></figure>
+Because the sum can be added and subtracted without depending on order, folding a fragment costs constant metadata work.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-5-8.png" alt="A distinction between at-rest integrity and dropped writes"><figcaption>A passing checksum proves the stored view matches the manifest; it does not prove an uncounted write was never dropped.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-5" cue="4" from="35.468" to="45.627" title="A snapshot preserves the exact combined weight of the prefix it replaces." %}
+{% endviz %}
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-5-9.png" alt="A one-to-one write and read-back test"><figcaption>End-to-end durability needs the boring test too: one read for every acknowledged write.</figcaption></figure>
+A snapshot preserves the exact combined weight of the prefix it replaces.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-5-10.png" alt="Immutable files converging on one authority record"><figcaption>The whole log repeats one idea: immutable files hold data and one small record decides which files count.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-5" cue="5" from="45.627" to="54.810" title="After deletion, the manifest keeps a second number for the weight that is no longer physically present." %}
+{% endviz %}
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-5-11.png" alt="A bucket, immutable files, one header, and a balancing sum"><figcaption>The pattern travels: pile up data nobody edits, then let a conditional pointer move the system's view.</figcaption></figure>
+After deletion, the manifest keeps a second number for the weight that is no longer physically present.
 
-<figure><img src="/generated/wal-on-s3/blog/chapter-5-12.png" alt="The final linearizable log equation over an object-storage bucket"><figcaption>A bucket, immutable files, one conditional header, and a sum that balances: a linearizable log with no lock service.</figcaption></figure>
+{% viz scene="books/wal-on-s3/chapter-5" cue="6" from="54.810" to="65.561" title="A scrub adds live children and collected weight, then compares the result with the declared total." %}
+{% endviz %}
+
+A scrub adds live children and collected weight, then compares the result with the declared total.
+
+{% viz scene="books/wal-on-s3/chapter-5" cue="7" from="65.561" to="76.370" title="Lose one fragment and nothing else has to change for the invariant to fail loudly." %}
+{% endviz %}
+
+Lose one fragment and nothing else has to change for the invariant to fail loudly.
+
+{% viz scene="books/wal-on-s3/chapter-5" cue="8" from="76.370" to="86.007" title="A passing checksum proves the stored view matches the manifest; it does not prove an uncounted write was never dropped." %}
+{% endviz %}
+
+A passing checksum proves the stored view matches the manifest; it does not prove an uncounted write was never dropped.
+
+{% viz scene="books/wal-on-s3/chapter-5" cue="9" from="86.007" to="96.351" title="End-to-end durability needs the boring test too: one read for every acknowledged write." %}
+{% endviz %}
+
+End-to-end durability needs the boring test too: one read for every acknowledged write.
+
+{% viz scene="books/wal-on-s3/chapter-5" cue="10" from="96.351" to="106.231" title="The whole log repeats one idea: immutable files hold data and one small record decides which files count." %}
+{% endviz %}
+
+The whole log repeats one idea: immutable files hold data and one small record decides which files count.
+
+{% viz scene="books/wal-on-s3/chapter-5" cue="11" from="106.231" to="116.634" title="The pattern travels: pile up data nobody edits, then let a conditional pointer move the system's view." %}
+{% endviz %}
+
+The pattern travels: pile up data nobody edits, then let a conditional pointer move the system's view.
+
+{% viz scene="books/wal-on-s3/chapter-5" cue="12" from="116.634" to="126.920" title="A bucket, immutable files, one conditional header, and a sum that balances: a linearizable log with no lock service." %}
+{% endviz %}
+
+A bucket, immutable files, one conditional header, and a sum that balances: a linearizable log with no lock service.
 
 The “WAL on S3” pattern is not “put a database on S3.” It is narrower and more useful: use object storage for durable immutable history, use conditional writes for a tiny authority record, and make every cleanup or compaction step preserve the same invariant. Once you see that shape, Chroma's `wal3`, Git-like object graphs, and cell snapshots stop looking like separate tricks and start looking like variations on one durable coordination pattern.

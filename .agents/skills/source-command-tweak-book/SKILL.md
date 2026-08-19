@@ -53,6 +53,26 @@ full-size `animal.png` is a gitignored local artifact), and `previews/`.
   only when built-in ImageGen is unavailable.
 - **Shelf metadata (title/subtitle/color)** → library.json via video.mjs flags.
 
+## Blog-only live viz sections
+
+Blog cues are separate from normal chapter playback. Keep the chapter MP3,
+manifest, and narrated player unchanged; consume `manifest.chapters[].cues`
+only to delimit live sections in `public/generated/<slug>/blog.md`:
+
+```md
+{% viz scene="books/<slug>/chapter-1" cue="0" from="0.000" to="7.500" title="What this beat shows" %}
+{% endviz %}
+
+The paragraph below describes the animation.
+```
+
+Run `node generator/blog-viz.mjs --slug <slug>` to migrate an older post's
+cue figures. `BlogPanel` bridges these repo-local blocks to the latest
+`@brett_lamy/docstream` `VizEmbed` component and the real viz-engine scene;
+sections autoplay and loop silently with captions hidden. Do not make cue
+stills or exported PNG/GIF/MP4/WebM assets, and do not use Docstream's
+direct-video embed syntax for a live scene.
+
 After ANY change: `npx tsc --noEmit && npm run build &&
 node generator/verify-book.mjs --slug <slug>` must pass; commit
 `public/generated/<slug>` + `apps/bookshelf/src/viz/books/<slug>` together.

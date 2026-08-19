@@ -109,23 +109,30 @@ The planning and the scenes are written by **you (Claude Code)**.
    `public/generated/<SLUG>/previews/`.
 
 8. **Write the companion blog post** — a comments-style written version of the
-   book, rendered under the video in the player:
+   book, rendered under the video in the player. Do not generate cue stills or
+   exported media. Use the manifest cues only to delimit live scene sections:
    ```bash
-   node generator/screenshot-chapters.mjs --slug "<SLUG>"
+   node generator/blog-viz.mjs --slug "<SLUG>"
    ```
-   This seeks each chapter's `<audio>` to every value in its manifest `cues`
-   and screenshots the mounted scene, writing
-   `public/generated/<SLUG>/blog/chapter-<n>-<cueIndex>.png`. Then write
-   `public/generated/<SLUG>/blog.md`: one heading per chapter, prose that
-   expands on the chapter's blurb/captions (richer and more essay-like than
-   the blurb alone, still grounded in the real code — no new claims), with
-   each cue's screenshot embedded as a GitBook figure block so the player's
-   `docstream` renderer picks up the caption:
-   ```html
-   <figure><img src="/generated/<SLUG>/blog/chapter-1-2.png" alt="…"><figcaption>What this beat shows</figcaption></figure>
+   If an older post still contains the legacy cue figures, this converts every
+   matching figure into a live block and removes the image dependency. The
+   final `public/generated/<SLUG>/blog.md` should have one heading per chapter,
+   prose that expands on the chapter's blurb/captions (richer and more
+   essay-like than the blurb alone, still grounded in real code), and a
+   paragraph describing every live section:
+   ```md
+   {% viz scene="books/<SLUG>/chapter-1" cue="2" from="16.846" to="25.205" title="What this beat shows" %}
+   {% endviz %}
+
+   This paragraph explains the short animated section above.
    ```
-   Use the **absolute** `/generated/<SLUG>/blog/...` path (not a relative one)
-   so it resolves correctly wherever the post is rendered.
+   `scene` must match `manifest.chapters[].scene`; `from` and `to` are the
+   manifest cue times in seconds. `BlogPanel` bridges these repo-local blocks
+   to the latest `@brett_lamy/docstream` `VizEmbed` component, so each section
+   is the actual `viz-engine` SVG viewer: autoplaying, looping, silent, and
+   scoped to one cue window. Do not use Docstream's direct-video `{% embed %}`
+   form here, and do not commit PNG/GIF/MP4/WebM cue assets. The narrated
+   chapter player remains unchanged; cues are consumed for this blog pass only.
 
 9. **Publish** (the scenes ship with the book — add BOTH paths):
    ```bash

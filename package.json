@@ -10,9 +10,9 @@
   ],
   "scripts": {
     "dev": "npm run dev --workspace @orly/bookshelf",
-    "build": "nx run-many -t build --projects=mobile-ui,viz-engine,bookshelf --parallel=3",
-    "build:packages": "nx run viz-engine:build",
-    "typecheck": "nx run-many -t typecheck --projects=mobile-ui,viz-engine,bookshelf --parallel=3",
+    "build": "npm run build:packages && nx run @orly/bookshelf:build",
+    "build:packages": "npm run build --workspace @brett_lamy/viz-engine",
+    "typecheck": "npm run build:packages && nx run-many -t typecheck --projects=mobile-ui,viz-engine,bookshelf --parallel=3",
     "nx": "nx",
     "publish:packages": "nx run viz-engine:publish",
     "preview": "npm run preview --workspace @orly/bookshelf",
@@ -27,7 +27,7 @@
     "prepare": "git config core.hooksPath .githooks || true"
   },
   "dependencies": {
-    "@brett_lamy/docstream": "^0.1.0",
+    "@brett_lamy/docstream": "^0.3.2",
     "@types/three": "^0.185.1",
     "d3": "^7.9.0",
     "framer-motion": "^11.0.0",
@@ -39,6 +39,7 @@
   },
   "devDependencies": {
     "@anthropic-ai/sdk": "^0.105.0",
+    "@agent-wasm/core": "^0.4.0",
     "@elevenlabs/elevenlabs-js": "^2.53.1",
     "@storybook/react-vite": "^10.4.6",
     "@types/d3": "^7.4.3",
