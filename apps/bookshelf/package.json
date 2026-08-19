@@ -10,7 +10,7 @@
   },
   "dependencies": {
     "@brett_lamy/docstream": "^0.1.0",
-    "@brett_lamy/viz-engine": "0.1.0",
+    "@brett_lamy/viz-engine": "0.2.1",
     "@orly/mobile-ui": "0.1.0",
     "d3": "^7.9.0",
     "framer-motion": "^11.0.0",
