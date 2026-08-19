@@ -1065,6 +1065,28 @@ body {
   padding: 28px max(20px, env(safe-area-inset-left, 0px)) 60px;
 }
 
+.bp-blog-only {
+  min-height: 100vh;
+  background: var(--bg, #0a0e1a);
+  color: var(--text, #f2f6fc);
+}
+
+.bp-blog-only-link {
+  margin: 34px 0 0;
+  padding-top: 20px;
+  border-top: 1px solid rgba(148, 163, 184, 0.18);
+  font-size: 14px;
+}
+
+.bp-blog-only-link a {
+  color: var(--accent, #38bdf8);
+  text-decoration: none;
+}
+
+.bp-blog-only-link a:hover {
+  text-decoration: underline;
+}
+
 .bp-blog-loading {
   color: var(--muted, #8da2be);
   font-size: 13px;

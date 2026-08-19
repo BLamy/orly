@@ -4,6 +4,7 @@ import 'katex/dist/katex.min.css';
 import { Stage, Timeline, usePlayback, type CaptionItem } from '../viz/core';
 import { VIZ_SCENES, type VizSceneEntry } from '../viz/scenes';
 import { fmtDur, type ChapterV3 } from './BookPlayer';
+import { retimeTimelineToNarration } from './narration-timing';
 import { speechSupported, useSpokenCaption } from './speech';
 
 // A stable empty timeline so usePlayback (a hook — unconditional) has
@@ -142,46 +143,7 @@ export function ChapterPlayer({
   // keyframe AND caption through it.
   useEffect(() => {
     if (!built || !chapter.cues?.length) return;
-    const { channels, captions } = built.tl.describe();
-    const authored = captions.map((c) => c.at);
-    const src: number[] = [0];
-    const dst: number[] = [0];
-    chapter.cues.forEach((cue, i) => {
-      const a = authored[i];
-      if (typeof cue !== 'number' || a === undefined) return;
-      if (a > src[src.length - 1] && cue > dst[dst.length - 1]) {
-        src.push(a);
-        dst.push(cue);
-      }
-    });
-    const srcEnd = Math.max(built.tl.duration, src[src.length - 1] + 0.001);
-    const dstEnd = Math.max(chapter.duration ?? dst[dst.length - 1] + 0.001, dst[dst.length - 1] + 0.001);
-    src.push(srcEnd);
-    dst.push(dstEnd);
-    const map = (t: number) => {
-      if (t <= 0) return 0;
-      if (t >= srcEnd) return dstEnd;
-      let i = 1;
-      while (i < src.length - 1 && t > src[i]) i++;
-      const f = (t - src[i - 1]) / (src[i] - src[i - 1]);
-      return dst[i - 1] + f * (dst[i] - dst[i - 1]);
-    };
-    for (const ch of channels) {
-      for (const k of ch.keys) {
-        const at = map(k.at);
-        // Floor the mapped duration: when a map segment is much shorter than
-        // its authored span (e.g. the head [0, firstCaption] compressing into
-        // a near-zero first cue), a tween must still take SOME time — a camera
-        // pan collapsing to 0 renders as an instant jump mid-scene.
-        const dur = Math.max(Math.min(k.dur, 0.25), map(k.at + k.dur) - at);
-        built.tl.updateKeyframe(k.id, { at, dur });
-      }
-    }
-    for (const c of captions) {
-      const at = map(c.at);
-      const dur = Math.max(0.5, map(c.at + c.dur) - at);
-      built.tl.updateCaption(c.id, { at, dur });
-    }
+    retimeTimelineToNarration(built.tl, chapter.cues, chapter.duration);
   }, [built, chapter.cues, chapter.duration]);
 
   const audioRef = useRef<HTMLAudioElement | null>(null);

@@ -110,36 +110,50 @@ The planning and the scenes are written by **you (Claude Code)**.
 
 8. **Write the companion blog post** — a comments-style written version of the
    book, rendered under the video in the player. Do not generate cue stills or
-   exported media. Use the manifest cues only to delimit live scene sections:
-   ```bash
-   node generator/blog-viz.mjs --slug "<SLUG>"
-   ```
-   If an older post still contains the legacy cue figures, this converts every
-   matching figure into a live block and removes the image dependency. The
-   final `public/generated/<SLUG>/blog.md` should have one heading per chapter,
-   prose that expands on the chapter's blurb/captions (richer and more
-   essay-like than the blurb alone, still grounded in real code), and a
-   paragraph describing every live section:
+   exported media. Write a small number of semantic sections per chapter, not
+   one viewer per narration sentence. Every section must be ordered as a
+   `###` title, one lead paragraph, one live viewer, and an optional paragraph
+   after it:
    ```md
-   {% viz scene="books/<SLUG>/chapter-1" cue="2" from="16.846" to="25.205" title="What this beat shows" %}
+   ### The authority record is the commit point
+
+   This paragraph introduces the complete visual section.
+
+   {% viz scene="books/<SLUG>/chapter-1" section="chapter-1-authority" cue="3" from="21.000" to="42.000" title="The authority record is the commit point." %}
    {% endviz %}
 
-   This paragraph explains the short animated section above.
+   This optional paragraph gives the takeaway before the next section.
    ```
-   `scene` must match `manifest.chapters[].scene`; `from` and `to` are the
-   manifest cue times in seconds. `BlogPanel` bridges these repo-local blocks
-   to the latest `@brett_lamy/docstream` `VizEmbed` component, so each section
-   is the actual `viz-engine` SVG viewer: autoplaying, looping, silent, and
-   scoped to one cue window. Do not use Docstream's direct-video `{% embed %}`
-   form here, and do not commit PNG/GIF/MP4/WebM cue assets. The narrated
-   chapter player remains unchanged; cues are consumed for this blog pass only.
+   `scene` must match `manifest.chapters[].scene`; `from` and `to` are
+   manifest-clock seconds, and adjacent section windows must not overlap. The
+   blog renderer maps those manifest windows back to the authored scene clock,
+   which is essential because narrated chapters and authored timelines have
+   different durations. `BlogPanel` bridges each block to the latest
+   `@brett_lamy/docstream` `VizEmbed`, so the section is the real viz-engine SVG
+   viewer: autoplaying, looping, silent, and scoped to its unique source
+   interval. Hide irrelevant elements in the scene timeline/render; never crop
+   or export a video file.
+
+   Run `node generator/blog-viz.mjs --slug "<SLUG>"` after authoring. It checks
+   section headings, manifest bounds, and interval non-overlap. If an older
+   post still contains legacy cue figures, the compatibility migration bundles
+   contiguous cues into at most four sections per chapter; replace its generic
+   fallback prose with source-grounded writing before publishing. Do not use
+   Docstream's direct-video `{% embed %}` form here, and do not commit
+   PNG/GIF/MP4/WebM cue assets. The narrated chapter player remains unchanged;
+   cues are consumed for this blog pass only.
+
+   The post is also available as `?blog=<SLUG>`, which omits the chapter video
+   and sidebar and links back to `?bundle=<SLUG>` at the bottom.
 
 9. **Publish** (the scenes ship with the book — add BOTH paths):
    ```bash
    git add public/generated apps/bookshelf/src/viz/books && git commit -m "book: <TITLE>" && git push
    ```
 
-10. Tell the user the live URL: `https://orly.brett-lamy.workers.dev/?bundle=<SLUG>`.
+10. Tell the user the live URLs:
+    `https://orly.brett-lamy.workers.dev/?bundle=<SLUG>` for the reader and
+    `https://orly.brett-lamy.workers.dev/?blog=<SLUG>` for the standalone post.
 
 ## Rules
 - **Never** show the real publisher "O'Reilly" anywhere — only the parody "O'RLY?".

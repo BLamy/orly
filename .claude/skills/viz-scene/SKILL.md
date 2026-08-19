@@ -243,13 +243,18 @@ player itself needs only the two exports above.)
 ### Blog sections (Docstream)
 
 The written post reuses the same scene as live SVG, but it is a separate
-surface from the narrated chapter. `generator/blog-viz.mjs` consumes the
-published manifest cues only to write repo-local `{% viz %}` blocks in
-`blog.md`; `BlogPanel` mounts each one with Docstream 0.3.2's `VizEmbed`,
-autoplaying and looping the requested `from`/`to` window with no audio or
-captions. Do not create cue stills or exported GIF/MP4/WebM media. Keep
-non-relevant elements faded/hidden at the scene's sampled cue times so a
-section teaches one beat cleanly; do not solve clutter by cropping a file.
+surface from the narrated chapter. Author a small number of semantic sections
+in `blog.md`, each as `###` title → lead paragraph → one `{% viz %}` block →
+optional takeaway paragraph. `from`/`to` use manifest-clock seconds and must
+be adjacent or separated, never overlapping; `BlogPanel` maps them back to the
+authored scene clock before mounting Docstream 0.3.2's `VizEmbed`, so inactive
+chapters cannot collapse to repeated final frames. `generator/blog-viz.mjs`
+validates section headings, manifest bounds, and interval non-overlap; its
+legacy migration bundles contiguous cue figures into at most four sections per
+chapter. Do not create cue stills or exported GIF/MP4/WebM media. Keep
+non-relevant elements faded/hidden at the scene's sampled section times; do
+not solve clutter by cropping a file. The standalone `?blog=<slug>` route
+renders only this post and links back to the full `?bundle=<slug>` reader.
 
 ### Quality bar checklist (a scene ships only if all hold)
 

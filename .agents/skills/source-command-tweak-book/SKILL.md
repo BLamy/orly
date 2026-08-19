@@ -57,21 +57,35 @@ full-size `animal.png` is a gitignored local artifact), and `previews/`.
 
 Blog cues are separate from normal chapter playback. Keep the chapter MP3,
 manifest, and narrated player unchanged; consume `manifest.chapters[].cues`
-only to delimit live sections in `public/generated/<slug>/blog.md`:
+only to delimit a small number of semantic sections in
+`public/generated/<slug>/blog.md`, not one viewer per narration cue:
 
 ```md
-{% viz scene="books/<slug>/chapter-1" cue="0" from="0.000" to="7.500" title="What this beat shows" %}
+### The authority record is the commit point
+
+This paragraph introduces the complete visual section.
+
+{% viz scene="books/<slug>/chapter-1" section="chapter-1-authority" cue="3" from="21.000" to="42.000" title="The authority record is the commit point." %}
 {% endviz %}
 
-The paragraph below describes the animation.
+This optional paragraph gives the takeaway before the next section.
 ```
 
-Run `node generator/blog-viz.mjs --slug <slug>` to migrate an older post's
-cue figures. `BlogPanel` bridges these repo-local blocks to the latest
-`@brett_lamy/docstream` `VizEmbed` component and the real viz-engine scene;
-sections autoplay and loop silently with captions hidden. Do not make cue
-stills or exported PNG/GIF/MP4/WebM assets, and do not use Docstream's
-direct-video embed syntax for a live scene.
+`from`/`to` are manifest-clock seconds and adjacent sections must not overlap.
+`BlogPanel` maps those windows back to the authored scene clock so inactive
+chapters cannot clamp every viewer to the same final frame. Run
+`node generator/blog-viz.mjs --slug <slug>` after authoring; it validates the
+section headings, manifest bounds, and non-overlap. Its compatibility path
+bundles legacy cue figures into at most four sections per chapter, after which
+the fallback prose must be replaced with source-grounded writing. `BlogPanel`
+bridges these repo-local blocks to the latest `@brett_lamy/docstream`
+`VizEmbed` component and the real viz-engine scene; sections autoplay and loop
+silently with captions hidden. Do not make cue stills or exported
+PNG/GIF/MP4/WebM assets, and do not use Docstream's direct-video embed syntax
+for a live scene.
+
+Use `?blog=<slug>` for the standalone post; it omits the chapter player and
+sidebar and links back to `?bundle=<slug>` at the bottom.
 
 After ANY change: `npx tsc --noEmit && npm run build &&
 node generator/verify-book.mjs --slug <slug>` must pass; commit

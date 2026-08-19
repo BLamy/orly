@@ -44,21 +44,36 @@ full-size `animal.png` is a gitignored local artifact), and `previews/`.
 ### Blog-only live viz sections
 
 When a tweak asks for a written companion post, keep `manifest.json`, chapter
-MP3s, and normal chapter playback unchanged. The blog consumes the manifest's
-`cues` only to create short live windows in `public/generated/<slug>/blog.md`:
+MP3s, and normal chapter playback unchanged. Author a small number of
+semantic sections in `public/generated/<slug>/blog.md`, not one viewer per
+narration cue. Every section is: a `###` title, a lead paragraph, one live
+viewer, and an optional paragraph after it:
 
 ```md
-{% viz scene="books/<slug>/chapter-1" cue="0" from="0.000" to="7.500" title="What this beat shows" %}
+### The authority record is the commit point
+
+This paragraph introduces the complete visual section.
+
+{% viz scene="books/<slug>/chapter-1" section="chapter-1-authority" cue="3" from="21.000" to="42.000" title="The authority record is the commit point." %}
 {% endviz %}
 
-The paragraph below describes the animation.
+This optional paragraph gives the takeaway before the next section.
 ```
 
-Run `node generator/blog-viz.mjs --slug <slug>` to convert legacy cue
-figures. `BlogPanel` mounts each block with the latest Docstream `VizEmbed`
-component and the real viz-engine scene, with autoplay/loop on and no audio or
-captions. Never generate or commit cue PNGs, GIFs, MP4s, or WebM files, and do
-not use Docstream's direct-video embed syntax for a live scene.
+`from`/`to` are manifest-clock seconds. They must be adjacent or separated,
+never overlapping; `BlogPanel` maps them back to the authored scene clock so
+later chapters do not collapse to repeated final frames. Run
+`node generator/blog-viz.mjs --slug <slug>` to validate headings, bounds, and
+non-overlap. Its legacy migration bundles contiguous cue figures into at most
+four sections per chapter, but the generated fallback prose must be replaced
+with source-grounded section writing before publish. `BlogPanel` mounts each
+block with the latest Docstream `VizEmbed` component and the real viz-engine
+scene, with autoplay/loop on and no audio or captions. Never generate or commit
+cue PNGs, GIFs, MP4s, or WebM files, and do not use Docstream's direct-video
+embed syntax for a live scene.
+
+Use `?blog=<slug>` for a blog-only page. It renders no chapter video or sidebar
+and ends with a link back to `?bundle=<slug>`.
 
 After ANY change: `npx tsc --noEmit && npm run build &&
 node generator/verify-book.mjs --slug <slug>` must pass; commit

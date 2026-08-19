@@ -58,31 +58,44 @@ icons, and you commit + push to redeploy.
 - The latest published packages are `@brett_lamy/docstream` **0.3.2** and
   `@brett_lamy/viz-engine` **0.2.1**. `BlogPanel.tsx` uses Docstream's
   `VizEmbed` component to mount the real scene viewer inside the markdown flow.
-- Blog cue windows are a **blog-only consumer** of `manifest.chapters[].cues`.
-  They must never retime, replace, or silence the normal narrated chapter
-  player. The chapter MP3 and manifest remain the source of truth for the
-  video.
-- `blog.md` uses the repo-local block syntax below; the renderer turns each
-  block into a live, silent, autoplaying, looping `VizEmbed` section. It does
-  not create a PNG, GIF, MP4, or WebM asset:
+- Blog windows are a **blog-only consumer** of
+  `manifest.chapters[].cues`. They must never replace or silence the normal
+  narrated chapter player. `BlogPanel` maps each manifest-clock window back to
+  the authored scene clock, so chapters that are not currently playing do not
+  clamp every section to the same final frame.
+- Author `blog.md` as a small number of semantic sections, not one viewer per
+  narration cue. Each section has one `###` title, one lead paragraph, one
+  live viewer, and optionally one paragraph after it. Use adjacent,
+  non-overlapping `from`/`to` windows so a source frame belongs to only one
+  section:
   ```md
-  {% viz scene="books/example/chapter-1" cue="0" from="0.000" to="7.500" title="What this beat shows" %}
+  ### The authority record is the commit point
+
+  This paragraph introduces the complete visual section, rather than a single narration sentence.
+
+  {% viz scene="books/example/chapter-1" section="chapter-1-authority" cue="3" from="21.000" to="42.000" title="The authority record is the commit point." %}
   {% endviz %}
 
-  The paragraph immediately after the block explains the animation.
+  This optional paragraph gives the takeaway before the next section starts.
   ```
-- `scene` is the exact manifest scene id; `from`/`to` are the manifest cue
-  times in seconds. The blog renderer slices only that window, hides chapter
-  navigation/captions/audio, and lets the scene's own timeline decide which
-  SVG elements are relevant. If a beat has distracting persistent elements,
-  fix the scene's timeline/render visibility rather than exporting a crop.
-- Convert legacy cue figures with `node generator/blog-viz.mjs --slug <slug>`.
-  The compatibility name `generator/screenshot-chapters.mjs` delegates to the
-  same live-viz conversion and must not be used to generate stills.
+- `scene` is the exact manifest scene id; `from`/`to` are manifest-clock
+  seconds and `section` is a stable semantic id. The blog renderer slices the
+  corresponding authored scene interval, hides chapter navigation/captions/
+  audio, and lets the scene's own timeline decide which SVG elements are
+  relevant. If a beat has distracting persistent elements, fix the scene's
+  timeline/render visibility rather than exporting a crop.
+- Run `node generator/blog-viz.mjs --slug <slug>` after authoring. It validates
+  section headings, manifest bounds, and non-overlap. For an older post with
+  cue figures, its compatibility path bundles contiguous cues into at most
+  four sections per chapter before validating; replace generic fallback prose
+  with source-grounded section writing before publishing.
 - Do not use Docstream's direct-video `{% embed %}` syntax for these posts:
   that is for actual media files. Viz sections are React `VizEmbed` blocks
   bridged by `BlogPanel`, which is the supported way to embed a live
   `viz-engine` scene in this markdown document.
+- A standalone post is available at `?blog=<slug>`. It uses the same generated
+  slug and manifest, renders only the blog (no chapter video or sidebar), and
+  ends with a link back to `?bundle=<slug>`.
 
 ## Run locally
 `npm run dev` → http://localhost:5173/ (shelf). Deploy is automatic on push to
