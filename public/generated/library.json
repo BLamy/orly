@@ -107,6 +107,43 @@
       "animal": "generated/statem-durable-runbooks/animal.webp"
     },
     {
+      "slug": "electric-stream-protocol",
+      "title": "Electric Stream Protocol",
+      "subtitle": "Why the stream is the product",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#5b86e5",
+      "href": "?bundle=electric-stream-protocol",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The stream is the product",
+          "duration": 60.2
+        },
+        {
+          "number": 2,
+          "title": "One event, many views",
+          "duration": 53.2
+        },
+        {
+          "number": 3,
+          "title": "Convergence is visible",
+          "duration": 59.2
+        },
+        {
+          "number": 4,
+          "title": "Branches are views, not copies",
+          "duration": 55.2
+        },
+        {
+          "number": 5,
+          "title": "Git at the edge",
+          "duration": 52.2
+        }
+      ],
+      "createdAt": "2026-08-19T16:26:35.991Z"
+    },
+    {
       "slug": "sam-sovereign-agent-mesh",
       "title": "Sovereign Agent Mesh",
       "subtitle": "How a node earns identity, a route, and a tool call",

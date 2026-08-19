@@ -20,6 +20,7 @@
 //
 // Env (.env, gitignored): ELEVENLABS_API_KEY (narration), OPENAI_API_KEY (cover).
 import { mkdirSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
+import { execFileSync } from 'node:child_process';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { synthesizeChapter } from './tts.mjs';
@@ -37,7 +38,7 @@ try { process.loadEnvFile(join(ROOT, '.env')); } catch { /* rely on the environm
 const log = (m) => console.error(`\x1b[36m▸\x1b[0m ${m}`);
 
 function parseArgs(argv) {
-  const a = { tts: true, cover: true, author: AUTHOR_DEFAULT, role: ROLE_DEFAULT };
+  const a = { tts: true, silentAudio: false, cover: true, author: AUTHOR_DEFAULT, role: ROLE_DEFAULT };
   for (let i = 0; i < argv.length; i++) {
     const k = argv[i];
     const val = () => argv[++i];
@@ -54,6 +55,7 @@ function parseArgs(argv) {
     else if (k === '--series-order') a.seriesOrder = Number(val());
     else if (k === '--voice') a.voice = val();
     else if (k === '--no-tts') a.tts = false;
+    else if (k === '--silent-audio') a.silentAudio = true;
     else if (k === '--no-cover') a.cover = false;
     else if (k === '--help' || k === '-h') a.help = true;
   }
@@ -112,6 +114,7 @@ async function main() {
   --blurbs "a|b|…"          per-chapter blurbs (default: first caption)
   --voice <id>              ElevenLabs voice id (default ${VOICE_DEFAULT})
   --no-tts                  skip narration (silent preview; cues fall back to authored times)
+  --silent-audio            add a silent MP3 so the authored timeline remains seekable
   --no-cover                skip the animal cover
 Env: ELEVENLABS_API_KEY (narration), OPENAI_API_KEY (cover).`);
     process.exit(args.help ? 0 : 1);
@@ -185,17 +188,26 @@ Env: ELEVENLABS_API_KEY (narration), OPENAI_API_KEY (cover).`);
     } else {
       cues = ex.captions.map((c) => Number(c.at.toFixed(3))); // authored times
       duration = Number(ex.duration.toFixed(3));
-      log(`  chapter ${n}: --no-tts, cues = authored caption times (no audio in the manifest)`);
+      if (args.silentAudio) {
+        const audioPath = join(outDir, 'audio', `chapter-${n}.mp3`);
+        execFileSync('ffmpeg', [
+          '-v', 'error', '-y',
+          '-f', 'lavfi', '-i', 'anullsrc=r=44100:cl=mono',
+          '-t', String(duration), '-codec:a', 'libmp3lame', '-q:a', '9', audioPath,
+        ]);
+        log(`  chapter ${n}: --no-tts + --silent-audio, authored cues remain the clock`);
+      } else {
+        log(`  chapter ${n}: --no-tts, cues = authored caption times (no audio in the manifest)`);
+      }
     }
     chapters.push({
       number: n,
       title,
       blurb,
       scene: `books/${slug}/chapter-${n}`,
-      // --no-tts is a SILENT preview: authored-time cues must never play
-      // against a stale MP3 from an earlier run (that desyncs the whole
-      // chapter — the audio is the clock), so the manifest omits `audio`.
-      ...(args.tts ? { audio: `audio/chapter-${n}.mp3` } : {}),
+      // --no-tts omits audio unless --silent-audio explicitly supplies a
+      // deterministic clock for screenshot/video tooling.
+      ...(args.tts || args.silentAudio ? { audio: `audio/chapter-${n}.mp3` } : {}),
       cues,
       duration,
     });
