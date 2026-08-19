@@ -1,3 +1,3 @@
 [submodule "packages/viz-engine"]
 	path = packages/viz-engine
-	url = git@github.com:BLamy/viz-engine.git
+	url = https://github.com/BLamy/viz-engine.git

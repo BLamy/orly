@@ -48,6 +48,7 @@ jobs:
         uses: actions/checkout@v5
         with:
           fetch-depth: 0 # need main in history to diff for changed slugs
+          submodules: recursive
 
       - if: steps.gate.outputs.ready == 'true'
         uses: actions/setup-node@v5
