@@ -1,0 +1,117 @@
+{
+  "format": 3,
+  "slug": "wal-on-s3",
+  "title": "WAL on S3",
+  "animal": "animal.webp",
+  "accent": "#c79100",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A Bucket That Cannot Lock",
+      "blurb": "Why wal3 turns records into immutable fragments and lets one manifest coordinate a linearizable log on object storage.",
+      "scene": "books/wal-on-s3/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        7.512,
+        16.846,
+        25.205,
+        35.062,
+        43.769,
+        54.973,
+        64.945,
+        76.079,
+        85.437
+      ],
+      "duration": 95.572
+    },
+    {
+      "number": 2,
+      "title": "The Compare-and-Swap Heartbeat",
+      "blurb": "The append path: batch manager, fragment upload, apply_fragment, and conditional manifest install.",
+      "scene": "books/wal-on-s3/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        8.742,
+        17.601,
+        25.542,
+        34.726,
+        43.468,
+        51.944,
+        61.986,
+        69.997,
+        80.468,
+        91.486
+      ],
+      "duration": 98.359
+    },
+    {
+      "number": 3,
+      "title": "Pins and the Three-Phase Dance",
+      "blurb": "Cursors, gc/GARBAGE, and the three-phase garbage-collection dance that deletes only what readers no longer need.",
+      "scene": "books/wal-on-s3/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.696,
+        16.997,
+        27.724,
+        35.758,
+        46.126,
+        57.365,
+        67.071,
+        76.753,
+        86.738,
+        96.281,
+        105.615
+      ],
+      "duration": 115.82
+    },
+    {
+      "number": 4,
+      "title": "A Tree That Grows Backwards",
+      "blurb": "Manifest rollover folds a growing pointer list into snapshots, preserving the log and enabling zero-action crash recovery.",
+      "scene": "books/wal-on-s3/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        10.414,
+        20.817,
+        30.766,
+        38.928,
+        49.458,
+        58.874,
+        69.683,
+        80.26,
+        90.697,
+        101.83,
+        111.85
+      ],
+      "duration": 119.257
+    },
+    {
+      "number": 5,
+      "title": "The Sum That Must Balance",
+      "blurb": "Setsum balances live and collected fragments, then end-to-end reads prove writes are not lost.",
+      "scene": "books/wal-on-s3/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        9.752,
+        16.695,
+        26.435,
+        35.468,
+        45.627,
+        54.81,
+        65.561,
+        76.37,
+        86.007,
+        96.351,
+        106.231,
+        116.634
+      ],
+      "duration": 126.92
+    }
+  ]
+}
