@@ -1,0 +1,97 @@
+{
+  "format": 3,
+  "slug": "electric-stream-protocol",
+  "title": "Electric Stream Protocol",
+  "subtitle": "Why the stream is the product",
+  "animal": "animal.webp",
+  "accent": "#5b86e5",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The stream is the product",
+      "blurb": "The durable stream turns a mutation into a replayable source of truth.",
+      "scene": "books/electric-stream-protocol/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0.5,
+        7.2,
+        14.2,
+        21.4,
+        28.8,
+        35.8,
+        43.2,
+        50.5
+      ],
+      "duration": 60.2
+    },
+    {
+      "number": 2,
+      "title": "One event, many views",
+      "blurb": "One event can feed every projection without duplicating authority.",
+      "scene": "books/electric-stream-protocol/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0.5,
+        7.2,
+        14.3,
+        21.5,
+        29,
+        36,
+        43.4
+      ],
+      "duration": 53.2
+    },
+    {
+      "number": 3,
+      "title": "Convergence is visible",
+      "blurb": "Quorum, offsets, and offline recovery become visible protocol state.",
+      "scene": "books/electric-stream-protocol/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0.5,
+        7.2,
+        13.8,
+        20.2,
+        27.2,
+        34.8,
+        41.8,
+        49.4
+      ],
+      "duration": 59.2
+    },
+    {
+      "number": 4,
+      "title": "Branches are views, not copies",
+      "blurb": "Git-shaped branches remain useful while the stream owns history.",
+      "scene": "books/electric-stream-protocol/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0.5,
+        7.4,
+        14.2,
+        22,
+        29,
+        36.2,
+        44.2
+      ],
+      "duration": 55.2
+    },
+    {
+      "number": 5,
+      "title": "Git at the edge",
+      "blurb": "Keep the Git commands; add a live, durable event substrate underneath.",
+      "scene": "books/electric-stream-protocol/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0.5,
+        7.2,
+        13.8,
+        20.2,
+        27.2,
+        34,
+        41.4
+      ],
+      "duration": 52.2
+    }
+  ]
+}

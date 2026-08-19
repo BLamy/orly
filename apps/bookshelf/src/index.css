@@ -1110,6 +1110,28 @@ body {
   margin-top: 6px;
 }
 
+.bp-blog-viz-loading,
+.bp-blog-viz-error {
+  margin: 24px 0;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 10px;
+  color: var(--muted-foreground);
+  font-size: 13px;
+}
+
+.bp-blog .bp-blog-viz {
+  margin: 28px 0 34px;
+}
+
+.bp-blog .bp-blog-viz-embed {
+  width: 100%;
+  overflow: hidden;
+  border: 1px solid var(--border);
+  border-radius: 12px;
+  background: var(--background);
+}
+
 /* ---- mobile portrait: the "Chapters / Blog" drawer -----------------------
        A non-modal, non-dismissible vaul drawer overlaying the video. Peek
        snap point shows the tab bar + a couple rows; dragging the handle up

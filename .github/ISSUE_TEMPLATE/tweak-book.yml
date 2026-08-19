@@ -19,6 +19,7 @@ body:
         - "WAL on S3 — wal-on-s3"
         - "The Anchor Test · How RA-Bench keeps real crisis footage fixed while generators, judgments, and dissemination change — ra-bench-anchor-test"
         - "The Runbook Remembers · How StateM keeps long-horizon agents in phase, checks transitions, recovers runs, and transfers procedural control — statem-durable-runbooks"
+        - "Electric Stream Protocol · Why the stream is the product — electric-stream-protocol"
         - "Sovereign Agent Mesh · How a node earns identity, a route, and a tool call — sam-sovereign-agent-mesh"
         - "The Geometry of Coexistence · Why multi-task reinforcement learning updates can be merged — parallel-rl-coexistence"
         - "Coherence Theater · How correction gets priced out of socio-technical systems — coherence-theater"

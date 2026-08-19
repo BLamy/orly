@@ -19,12 +19,6 @@ export default defineConfig({
   resolve: {
     alias: {
       '@agent-wasm/core': fileURLToPath(new URL('./src/optional-agent-wasm.ts', import.meta.url)),
-      '@brett_lamy/viz-engine/styles.css': fileURLToPath(new URL('./src/viz/engine/core/player.css', import.meta.url)),
-      // Docstream 0.3.2's VizEmbed is the document boundary we use. Its
-      // published viz-engine 0.2.1 bundle currently assumes React 19 internals
-      // while this bookshelf is React 18, so keep the runtime on the
-      // bookshelf's own compatible VizPlayer adapter below.
-      '@brett_lamy/viz-engine': fileURLToPath(new URL('./src/viz/docstream-engine.tsx', import.meta.url)),
     },
   },
   plugins: [
