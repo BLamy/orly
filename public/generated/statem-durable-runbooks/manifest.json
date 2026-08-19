@@ -1,0 +1,106 @@
+{
+  "format": 3,
+  "slug": "statem-durable-runbooks",
+  "title": "The Runbook Remembers",
+  "subtitle": "How StateM keeps long-horizon agents in phase, checks transitions, recovers runs, and transfers procedural control",
+  "animal": "animal.webp",
+  "accent": "#3a8b3a",
+  "paper": {
+    "title": "StateM: Reaching 95.3% Raw Accuracy, or a $15 Frontier Run, on Terminal-Bench 2.1 via Harness Scaling",
+    "authors": [
+      "Ziheng Qin",
+      "Yaxin Lu",
+      "Zhangyang Atlas Wang",
+      "Kai Wang"
+    ],
+    "publishedDate": "2026-08-18",
+    "stableId": "arXiv:2608.15089",
+    "arxivBaseId": "2608.15089",
+    "huggingFaceUrl": "https://huggingface.co/papers/2608.15089",
+    "canonicalUrl": "https://arxiv.org/abs/2608.15089",
+    "pdfUrl": "https://arxiv.org/pdf/2608.15089",
+    "officialCodeUrl": "https://github.com/henryqin1997/statem",
+    "officialCodeCommit": "45b71b7d7a1942f561543f80317c4755db60de21",
+    "popularityEvidence": "Ranked #1 Paper of the Day with 221 visible upvotes on the Hugging Face page for 2026-08-18; the next two papers showed 115 and 108 upvotes."
+  },
+  "chapters": [
+    {
+      "number": 1,
+      "title": "When the Trace Forgets",
+      "blurb": "An append-only trace grows ambiguous until a durable runbook and per-run state own the current phase.",
+      "scene": "books/statem-durable-runbooks/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        7.105,
+        17.113,
+        24.439,
+        32.694,
+        41.901,
+        53.372,
+        61.371,
+        70.032
+      ],
+      "duration": 77.834
+    },
+    {
+      "number": 2,
+      "title": "The Gate Before Goto",
+      "blurb": "A transition token can leave its source state only after ordered evidence gates pass.",
+      "scene": "books/statem-durable-runbooks/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        8.081,
+        17.937,
+        24.473,
+        32.485,
+        39.544,
+        48.785,
+        57.515,
+        67.14
+      ],
+      "duration": 75.464
+    },
+    {
+      "number": 3,
+      "title": "Crash, Resume, Rebind",
+      "blurb": "A compact per-run ledger survives restarts and restores the active phase without reconstructing the whole trace.",
+      "scene": "books/statem-durable-runbooks/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.707,
+        17.996,
+        25.368,
+        34.529,
+        42.528,
+        51.363,
+        60.257,
+        69.615,
+        80.226
+      ],
+      "duration": 90.42
+    },
+    {
+      "number": 4,
+      "title": "What the Harness Learns",
+      "blurb": "Results transfer when controls match the model and task boundary; mismatched practices must be adapted or removed.",
+      "scene": "books/statem-durable-runbooks/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        10.217,
+        21.42,
+        30.07,
+        40.322,
+        52.268,
+        62.311,
+        71.82,
+        82.35,
+        93.612
+      ],
+      "duration": 106.023
+    }
+  ]
+}

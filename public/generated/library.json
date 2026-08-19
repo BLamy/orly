@@ -1,6 +1,74 @@
 {
   "books": [
     {
+      "slug": "ra-bench-anchor-test",
+      "title": "The Anchor Test",
+      "subtitle": "How RA-Bench keeps real crisis footage fixed while generators, judgments, and dissemination change",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#a01f3c",
+      "animal": "generated/ra-bench-anchor-test/animal.webp",
+      "href": "?bundle=ra-bench-anchor-test",
+      "series": "Daily Papers by Hugging Face",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "One Anchor, Nine Mirrors",
+          "duration": 46.718
+        },
+        {
+          "number": 2,
+          "title": "Count Each Source Once",
+          "duration": 51.316
+        },
+        {
+          "number": 3,
+          "title": "The Five-Person Sieve",
+          "duration": 50.294
+        },
+        {
+          "number": 4,
+          "title": "Six Trips Through the Last Mile",
+          "duration": 56.099
+        }
+      ],
+      "createdAt": "2026-08-19T12:38:07.219Z"
+    },
+    {
+      "slug": "statem-durable-runbooks",
+      "title": "The Runbook Remembers",
+      "subtitle": "How StateM keeps long-horizon agents in phase, checks transitions, recovers runs, and transfers procedural control",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#3a8b3a",
+      "href": "?bundle=statem-durable-runbooks",
+      "series": "Daily Papers by Hugging Face",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "When the Trace Forgets",
+          "duration": 77.834
+        },
+        {
+          "number": 2,
+          "title": "The Gate Before Goto",
+          "duration": 75.464
+        },
+        {
+          "number": 3,
+          "title": "Crash, Resume, Rebind",
+          "duration": 90.42
+        },
+        {
+          "number": 4,
+          "title": "What the Harness Learns",
+          "duration": 106.023
+        }
+      ],
+      "createdAt": "2026-08-19T11:54:04.846Z",
+      "animal": "generated/statem-durable-runbooks/animal.webp"
+    },
+    {
       "slug": "sam-sovereign-agent-mesh",
       "title": "Sovereign Agent Mesh",
       "subtitle": "How a node earns identity, a route, and a tool call",
