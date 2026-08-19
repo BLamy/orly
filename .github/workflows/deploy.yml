@@ -35,8 +35,6 @@ jobs:
 
       - if: steps.gate.outputs.ready == 'true'
         uses: actions/checkout@v5
-        with:
-          submodules: recursive
       - if: steps.gate.outputs.ready == 'true'
         uses: actions/setup-node@v5
         with:

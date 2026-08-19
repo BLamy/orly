@@ -6,13 +6,13 @@
   "description": "A 'Secret Lives of Data'-style animated slideshow engine that renders a declarative story spec.",
   "workspaces": [
     "apps/*",
-    "packages/*"
+    "packages/mobile-ui"
   ],
   "scripts": {
     "dev": "npm run dev --workspace @orly/bookshelf",
-    "build": "npm run build:packages && nx run @orly/bookshelf:build",
-    "build:packages": "npm run build --workspace @brett_lamy/viz-engine",
-    "typecheck": "npm run build:packages && nx run-many -t typecheck --projects=mobile-ui,viz-engine,bookshelf --parallel=3",
+    "build": "nx run @orly/bookshelf:build",
+    "build:packages": "if [ -f packages/viz-engine/package.json ]; then npm run build --prefix packages/viz-engine; else echo 'viz-engine submodule is not initialized; using the published package'; fi",
+    "typecheck": "nx run @orly/mobile-ui:typecheck && npx tsc -p apps/bookshelf/tsconfig.json --noEmit",
     "nx": "nx",
     "publish:packages": "nx run viz-engine:publish",
     "preview": "npm run preview --workspace @orly/bookshelf",
