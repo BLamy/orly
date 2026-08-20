@@ -1,6 +1,34 @@
 {
   "books": [
     {
+      "slug": "one-project-many-environments",
+      "title": "One Project, Many Environments",
+      "subtitle": "How Replay QA gives every deployment a name, a trigger, and durable provenance",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1f6fb2",
+      "animal": "generated/one-project-many-environments/animal.webp",
+      "href": "?bundle=one-project-many-environments",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Stop Cloning the Project",
+          "duration": 52.9
+        },
+        {
+          "number": 2,
+          "title": "The Trigger Chooses the World",
+          "duration": 59.7
+        },
+        {
+          "number": 3,
+          "title": "Runs Remember Their World",
+          "duration": 61.5
+        }
+      ],
+      "createdAt": "2026-08-20T17:58:46.872Z"
+    },
+    {
       "slug": "skills-procedural-anchor",
       "title": "The Procedural Anchor",
       "subtitle": "",
