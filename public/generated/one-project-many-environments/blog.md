@@ -1,79 +1,98 @@
 # One Project, Many Environments
 
-*A visual tour of [Replay QA PR #1686](https://github.com/replayio/loop-qa/pull/1686): the first vertical slice toward making production, staging, development, and pull-request previews different contexts inside one project—not different projects with copied journeys.*
+*A proposal for the Replay QA team: split environments out of the project record, migrate to them safely behind a feature flag, and give each environment its own trigger.*
 
-A test project should describe a product. A deployment is only one place where that product is running. When those two ideas are collapsed into a single URL field, every additional deployment pushes the user toward cloning the project, duplicating its journeys, and losing the ability to compare results as one continuous history.
+This is not a write-up of something we already shipped — it is a plan I want us to agree on. The short version: a project today stores exactly one target URL and one set of testing instructions, and that single slot is why we keep cloning projects, why override URLs turn run history into a guessing game, and why we cannot express "staging runs on deploy, production runs nightly." I am proposing we fix it in steps: create a `project_environments` table, migrate existing data into it with a script, flip a read-path feature flag, remove the old columns and their code paths, and then build per-environment triggers and journey applicability on top.
 
-This change introduces a durable environment record between the project and each run. The environment owns its target URL, testing instructions, trigger, and source configuration. A run snapshots the environment and deployment it actually used. Existing single-URL projects continue to behave as one production environment, while chat, schedules, and GitHub can begin selecting an explicit world.
+## Chapter 1 · The Problem
 
-## Chapter 1 · Stop Cloning the Project
+Projects have a `target_url` and `test_instructions`, but each project can only have one of each. Everything downstream of that constraint is a workaround.
 
-The old model makes the deployment boundary look like a project boundary. Production, staging, development, and preview each become a separate box with their own copies of sign-in, search, checkout, and profile. Those copies drift even though they are meant to describe the same product behavior.
+### One slot for a product that lives at many addresses
 
-### Four deployments are not four products
+The `projects` row has a single `target_url` field and a single `test_instructions` field. Staging, pull-request previews, and local builds all need a home, and the schema offers one slot — whatever we type last overwrites the previous answer.
 
-Watch the duplicated journey particles line up under four project cards. Nothing about the user intent changed; only the URL did. The duplication is accidental state created by the data model.
-
-{% viz scene="books/one-project-many-environments/chapter-1" section="chapter-1-duplicates" cue="0" from="0.000" to="26.400" title="Duplicated projects repeat the same journeys for every deployment." %}
+{% viz scene="books/one-project-many-environments/chapter-1" section="chapter-1-single-slot" cue="0" from="0.000" to="24.683" title="One target URL slot means every other deployment bounces off or overwrites it." %}
 {% endviz %}
 
-The new `project_environments` table gives each deployment a stable identity and a conventional kind: production, staging, development, or preview. The project keeps the shared journey catalog. Environments carry what really varies: URL, instructions, trigger configuration, source, and deployment context.
+### The override URL hides which world a run used
 
-### One catalog, named environments
+We do have an escape hatch: a test run can override the target URL at launch. But the override only changes where the run pointed — nothing records which *environment* that address was supposed to be. Three runs with three different addresses, and no way to filter production history from staging noise.
 
-The four copies now collapse into one project. The journeys remain in the center while named environment rows become selectable contexts around them. Existing projects are read compatibly as a default production environment, so this structural change does not force a flag day.
-
-{% viz scene="books/one-project-many-environments/chapter-1" section="chapter-1-collapse" cue="4" from="26.400" to="52.900" title="One shared journey catalog fans out to named environments." %}
+{% viz scene="books/one-project-many-environments/chapter-1" section="chapter-1-override" cue="3" from="24.683" to="45.697" title="Overrides change the address but leave the environment column unknowable." %}
 {% endviz %}
 
-The same API is exposed to project chat. “Add this as my staging URL” can create or update the staging record without replacing production. “Use these login instructions in staging” changes only that environment’s testing instructions. The chat becomes a configuration surface for the model rather than a special onboarding detour.
+### Instructions have the same flaw
 
-## Chapter 2 · The Trigger Chooses the World
+Staging needs its own login steps and test accounts, and there is only one instructions field to share. One URL slot, one instructions slot, and runs that cannot name their world — that is the problem this proposal fixes.
 
-An environment is more than a label on a URL. It also says how work begins. This slice supports four trigger types: manual, schedule, GitHub App, and GitHub Actions. The choice is stored with the environment so a trigger resolves both *why this run started* and *where it should run*.
-
-### Trigger policy belongs beside the target
-
-The dial moves across the four trigger sources. A scheduled production environment can run weekly while staging remains manual. The project does not need a second copy of its journeys to express that policy.
-
-{% viz scene="books/one-project-many-environments/chapter-2" section="chapter-2-trigger-policy" cue="0" from="0.000" to="26.300" title="Each environment owns the trigger that is allowed to start it." %}
+{% viz scene="books/one-project-many-environments/chapter-1" section="chapter-1-statement" cue="6" from="45.697" to="62.277" title="The problem statement: single-slot configuration and anonymous run history." %}
 {% endviz %}
 
-GitHub App is deliberately gated: it is only a valid source when the app is installed for the project repository. Schedules map familiar choices such as nightly and Sunday weekly runs to predictable cron expressions. Manual and GitHub Actions remain explicit alternatives rather than being inferred from a URL.
+## Chapter 2 · The Database Solution
 
-### A preview deployment must release the journeys
+A change this aggressive to the data model does not ship in one commit. The plan is the classic expand → migrate → contract sequence, so every step is individually safe to deploy and roll back.
 
-The important edge case starts with a pull request run in “Awaiting Deployment.” The GitHub App receives the preview deployment URL, binds it to the preview environment, releases the waiting version, and schedules the project’s shared journeys against that resolved target.
+### Two columns are in the wrong table
 
-{% viz scene="books/one-project-many-environments/chapter-2" section="chapter-2-preview-release" cue="4" from="26.300" to="59.700" title="A deployment URL releases a waiting pull-request run into shared journeys." %}
+`target_url` and `test_instructions` describe a *deployment* of the product, not the product itself. They are the columns we are going to move.
+
+{% viz scene="books/one-project-many-environments/chapter-2" section="chapter-2-odd-columns" cue="0" from="0.000" to="21.676" title="The migration plan, and the two columns that describe a deployment rather than the product." %}
 {% endviz %}
 
-That last transition is the practical fix for runs that knew a preview URL but ended with zero journeys. The deployment event is no longer just metadata attached to an empty test run; it is the signal that makes the preview environment runnable.
+### Step 1 — Expand: create `project_environments`
 
-## Chapter 3 · Runs Remember Their World
+The first deploy is purely additive: a new table with `project_id`, `name`, `kind`, `target_url`, and `test_instructions`. Nothing reads it yet, so it cannot break production. The foreign key back to `projects` is the whole point — it turns one-to-one into one-to-many, so one project can own as many environments as we deploy.
 
-Moving source configuration to the environment does not mean erasing run history. Configuration answers what should happen next. Provenance answers what happened then. Every run therefore stores an immutable snapshot of the environment, trigger source, target URL, and deployment it resolved at launch.
-
-### Resolve once, stamp the run
-
-Follow the resolver from the Production environment into a new test session. It copies the environment identity and name, the trigger source, the exact target URL, and any deployment identifier into the run record before journeys begin.
-
-{% viz scene="books/one-project-many-environments/chapter-3" section="chapter-3-provenance" cue="0" from="0.000" to="27.200" title="Run creation snapshots its environment and deployment provenance." %}
+{% viz scene="books/one-project-many-environments/chapter-2" section="chapter-2-expand" cue="2" from="21.676" to="38.476" title="An additive table and a one-to-many foreign key back to the project." %}
 {% endviz %}
 
-The Test Runs UI can now make the active world unambiguous. “Environment” answers where the test ran; “Source” answers what initiated it; the target URL and pull-request deployment supply the concrete provenance. Those are related facts, not competing labels.
+### Step 2 — Migrate: a dry-run-first backfill, cut over by a feature flag
 
-### Configuration changes without rewriting history
+A script copies each project's current URL and instructions into a default `production` environment row. It is dry-run by default: we point it at a few projects with `--project-id`, read the report of what it *would* do, and only then pass `--live` for everyone. Which table we read from sits behind a feature flag that ships dark — old columns keep serving reads until the backfill lands, then we flip `env_reads` on. If anything looks wrong, flipping it back is the instant rollback.
 
-Now change Production from manual to a weekly Sunday schedule. The environment updates, and future runs inherit the schedule. The older run remains stamped “manual,” preserving the truth of how it started.
-
-{% viz scene="books/one-project-many-environments/chapter-3" section="chapter-3-history" cue="4" from="27.200" to="61.500" title="A trigger update changes future behavior without rewriting prior runs." %}
+{% viz scene="books/one-project-many-environments/chapter-2" section="chapter-2-migrate" cue="4" from="38.476" to="73.514" title="Backfill into a default production environment, then flip the read-path flag — flip back is the rollback." %}
 {% endviz %}
 
-The backfill follows the same safety rule. Its default mode is a scoped dry run, with `--project-id` and `--user-id` filters so conversion can be inspected on a small set first. It reports the production environment, instructions, and trigger it would create. Mutations happen only when `--live` is supplied.
+### Step 3 — Contract: drop the old columns, repoint the runs
 
-## What this slice establishes
+Only when the flag has been on and quiet do we contract: drop `target_url` and `test_instructions` from `projects`, then delete the flag and the old read path. Test runs get the same expand-then-migrate treatment: today a run points at a project and a raw URL, so we add a *nullable* `environment_id`, backfill history — a run whose URL matches an environment gets that row, everything else defaults to production — and only when every run has one does the column become `NOT NULL`. The override URL stops being a mystery and becomes provenance.
 
-PR #1686 establishes the shared vocabulary and closes the preview-deployment scheduling gap: named environment records, environment-specific instructions and triggers, chat configuration, compatibility for existing projects, run provenance, scheduled selection, GitHub installation gating, and a dry-run-first migration path.
+{% viz scene="books/one-project-many-environments/chapter-2" section="chapter-2-contract" cue="8" from="73.514" to="117.168" title="Drop the old columns and the flag last, then backfill test runs onto their environment before the column goes NOT NULL." %}
+{% endviz %}
 
-It is not the whole multi-environment roadmap. Per-journey applicability still needs a richer targeting UI and policy model. Environment-specific credentials, complete FRPC and CLI binding, and broader environment management screens remain later gates. The useful boundary is already here, though: one Replay QA project can begin to own many deploys without cloning the definition of what should be tested.
+## Chapter 3 · Different Environments, Different Triggers
+
+The payoff step. Once environments are real rows, each row can own the second thing that differs between worlds: what starts a run.
+
+### Production watches the clock
+
+We propose a nightly run every weekday against the live site. No human in the loop — if Tuesday night breaks checkout, we know before Wednesday standup.
+
+{% viz scene="books/one-project-many-environments/chapter-3" section="chapter-3-production" cue="0" from="0.000" to="22.512" title="Production runs nightly on weekdays, on a schedule the environment owns." %}
+{% endviz %}
+
+### Staging watches the pipeline
+
+When a merge lands on `main` and the deploy pipeline finishes, that completion event is the trigger — not the merge itself. We only test staging once the new code is actually serving traffic.
+
+{% viz scene="books/one-project-many-environments/chapter-3" section="chapter-3-staging" cue="3" from="22.512" to="38.534" title="Staging fires on deployment-pipeline completion, not on the merge." %}
+{% endviz %}
+
+### Pull requests watch the review state
+
+A draft PR does nothing. Marking it ready for review arms the trigger, and the run fires only when the preview deployment is also live — two conditions gating one run: ready for review, and a resolvable preview address.
+
+{% viz scene="books/one-project-many-environments/chapter-3" section="chapter-3-preview" cue="5" from="38.534" to="58.457" title="Preview runs gate on ready-for-review AND a live preview deployment." %}
+{% endviz %}
+
+### Journeys are shared — but scoped to where they work
+
+The journeys themselves never changed: sign-in, search, checkout, and profile are written once, and each trigger picks the world they run against. The one exception worth designing for: some journeys only work in some worlds. Stripe checkout uses test cards, so we mark it staging-and-preview-only in a `journey_environments` applicability row, and the nightly production run simply skips it — no real charges, no special-casing inside the journey.
+
+{% viz scene="books/one-project-many-environments/chapter-3" section="chapter-3-applicability" cue="7" from="58.457" to="97.199" title="A journey-by-environment applicability matrix keeps Stripe checkout out of production." %}
+{% endviz %}
+
+## The ask
+
+Concretely, I would like sign-off on the steps in order: (1) ship the additive `project_environments` table, (2) run the backfill script — dry-run on a handful of projects first, then `--live` — and flip the `env_reads` feature flag once it lands, (3) contract by dropping `projects.target_url` and `projects.test_instructions` and deleting the flag plus the fallback reads, (4) build the per-environment trigger configuration — nightly weekdays for production, deploy-completion for staging, ready-for-review plus live preview for PRs — and (5) add journey-to-environment applicability so flows like Stripe checkout are scoped to the worlds where they are safe. Steps 1–3 are deliberately boring; each one deploys independently and rolls back cleanly. Steps 4 and 5 are where the team starts feeling the win.

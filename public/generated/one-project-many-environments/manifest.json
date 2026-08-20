@@ -2,65 +2,70 @@
   "format": 3,
   "slug": "one-project-many-environments",
   "title": "One Project, Many Environments",
-  "subtitle": "How Replay QA gives every deployment a name, a trigger, and durable provenance",
+  "subtitle": "A proposal: give every deployment its own environment record, instructions, and trigger",
   "animal": "animal.webp",
   "accent": "#1f6fb2",
   "chapters": [
     {
       "number": 1,
-      "title": "Stop Cloning the Project",
-      "blurb": "Collapse duplicated test projects into one shared journey catalog with named environments.",
+      "title": "The Problem",
+      "blurb": "One target URL and one set of instructions per project cannot describe a product that runs in many places, and override URLs leave runs with no environment identity.",
       "scene": "books/one-project-many-environments/chapter-1",
       "audio": "audio/chapter-1.mp3",
       "cues": [
-        0.5,
-        7.2,
-        13.8,
-        19.8,
-        26.4,
-        33,
-        39.7,
-        46.4
+        0,
+        8.452,
+        14.977,
+        24.683,
+        30.291,
+        37.199,
+        45.697,
+        53.337
       ],
-      "duration": 52.9
+      "duration": 62.277
     },
     {
       "number": 2,
-      "title": "The Trigger Chooses the World",
-      "blurb": "Bind manual, scheduled, GitHub App, and GitHub Actions triggers to the environment they target.",
+      "title": "The Database Solution",
+      "blurb": "Expand, migrate, contract: add project_environments, backfill behind a read-path feature flag, repoint test runs at their environment, then drop the old columns.",
       "scene": "books/one-project-many-environments/chapter-2",
       "audio": "audio/chapter-2.mp3",
       "cues": [
-        0.5,
-        7.1,
-        13.7,
-        20.2,
-        26.3,
-        33,
-        39.6,
-        46.6,
-        53.2
+        0,
+        11.308,
+        21.676,
+        30.349,
+        38.476,
+        47.299,
+        55.856,
+        64.447,
+        73.514,
+        85.066,
+        95.097,
+        106.568
       ],
-      "duration": 59.7
+      "duration": 117.168
     },
     {
       "number": 3,
-      "title": "Runs Remember Their World",
-      "blurb": "Stamp every run with the environment, source URL, trigger, and deployment it actually used.",
+      "title": "Different Environments, Different Triggers",
+      "blurb": "Production runs nightly on weekdays, staging runs when a deploy to main completes, pull requests run when ready for review, and journeys are scoped to the environments where they work.",
       "scene": "books/one-project-many-environments/chapter-3",
       "audio": "audio/chapter-3.mp3",
       "cues": [
-        0.5,
-        7.1,
-        13.8,
-        20.6,
-        27.2,
-        34.1,
-        40.7,
-        47.7,
-        54.5
+        0,
+        8.8,
+        16.475,
+        22.512,
+        31.266,
+        38.534,
+        47.683,
+        58.457,
+        69.034,
+        79.041,
+        88.062
       ],
-      "duration": 61.5
+      "duration": 97.199
     }
   ]
 }

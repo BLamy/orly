@@ -1,138 +1,268 @@
-// One Project, Many Environments — chapter 2.
-// Grounded in Loop QA PR #1686: environment-schedules.ts, ci-runs.ts,
-// github-app/store.ts, versions.releaseVersionTaskAwaitingDeploy, and
-// tasks.scheduleSharedJourneysForVersion.
+// One Project, Many Environments — chapter 2: The Database Solution.
+// The migration plan, shipped safely: expand (additive table), migrate
+// (dry-run-first backfill into a default production environment), contract
+// (drop the old columns and the fallback code).
 import { CAMERA_HOME, Camera, STAGE_H, STAGE_W, Timeline, cameraInterp, colors, ease } from '../../core';
 import type { CameraState, SceneState } from '../../core';
-import { MatrixGrid } from '../../primitives';
 
 const clamp01 = (u: number) => Math.max(0, Math.min(1, u));
+const lerp = (a: number, b: number, u: number) => a + (b - a) * u;
 const mono = 'ui-monospace, SFMono-Regular, Menlo, monospace';
-const TRIGGERS = [
-  { label: 'Manual', code: 'manual', color: colors.MUTED },
-  { label: 'Schedule', code: 'cron', color: colors.WARM },
-  { label: 'GitHub App', code: 'github-app', color: colors.POSITIVE },
-  { label: 'GitHub Actions', code: 'github-action', color: colors.SECONDARY },
+
+const STEPS = [
+  { n: 1, label: 'Expand', sub: 'add the table', color: colors.ACCENT },
+  { n: 2, label: 'Migrate', sub: 'backfill script', color: colors.WARM },
+  { n: 3, label: 'Contract', sub: 'drop old columns', color: colors.POSITIVE },
 ] as const;
-const VALUES = Array.from({ length: 4 }, () => Array.from({ length: 6 }, () => 0.18));
+
+const PROJECT_COLS = [
+  { name: 'id', keep: true },
+  { name: 'name', keep: true },
+  { name: 'repo', keep: true },
+  { name: 'target_url', keep: false },
+  { name: 'test_instructions', keep: false },
+] as const;
+
+const ENV_COLS = ['id', 'project_id  →  projects.id', 'name · kind', 'target_url', 'test_instructions'] as const;
+
+const ENV_ROWS = [
+  { name: 'production', url: 'app.example.com', color: colors.POSITIVE },
+  { name: 'staging', url: 'staging.example.com', color: colors.WARM },
+  { name: 'preview · PR 421', url: 'preview-421.example.com', color: colors.SECONDARY },
+] as const;
 
 export function buildScene() {
   const tl = new Timeline();
   const cam = tl.channel<CameraState>('cam', CAMERA_HOME, cameraInterp);
-  const dialU = tl.channel('dialU', 0);
-  const selected = tl.channel('selected', 0);
-  const gateU = tl.channel('gateU', 0);
-  const installU = tl.channel('installU', 0);
-  const previewU = tl.channel('previewU', 0);
-  const waitU = tl.channel('waitU', 0);
-  const urlU = tl.channel('urlU', 0);
-  const releaseU = tl.channel('releaseU', 0);
-  const matrixU = tl.channel('matrixU', 0);
-  const sweepU = tl.channel('sweepU', 0);
-  const runU = tl.channel('runU', 0);
+  const railU = tl.channel('railU', 0);        // the 3-step plan rail
+  const step = tl.channel('step', 0);          // 0 none · 1 expand · 2 migrate · 3 contract
+  const projectsU = tl.channel('projectsU', 0);
+  const oddU = tl.channel('oddU', 0);          // highlight the two misplaced columns
+  const envTableU = tl.channel('envTableU', 0);
+  const fkU = tl.channel('fkU', 0);            // FK + crow's foot
+  const backfillU = tl.channel('backfillU', 0);// ghost copy into production row
+  const dryU = tl.channel('dryU', 0);          // dry-run → --live chip
+  const flagU = tl.channel('flagU', 0);        // feature-flag read-path widget
+  const flipU = tl.channel('flipU', 0);        // 0 = read old columns · 1 = read environments
+  const dropU = tl.channel('dropU', 0);        // old columns struck + removed
+  const rowsU = tl.channel('rowsU', 0);        // staging/preview rows appear
+  const runsU = tl.channel('runsU', 0);        // test_runs.environment_id (nullable, expand)
+  const runFillU = tl.channel('runFillU', 0);  // historical runs mapped to environments
+  const runLockU = tl.channel('runLockU', 0);  // column becomes NOT NULL
   const closeU = tl.channel('closeU', 0);
 
   let t = 0.5;
-  t = tl.caption({ at: t, dur: 6, text: 'An environment is not only an address. It also says what is allowed to start a run.' });
-  tl.tween(dialU, 1, { at: 0.8, dur: 1.8, ease: ease.enter });
+  t = tl.caption({ at: t, dur: 6.4, text: 'A change this aggressive to the data model does not ship in one commit. We propose the classic three step migration: expand, migrate, then contract.' });
+  tl.tween(railU, 1, { at: 0.8, dur: 1.8, ease: ease.enter });
+  t = tl.hold(t, 0.7);
+
+  t = tl.caption({ at: t, dur: 6.2, text: 'For context, here is the projects table today. Two of its columns are the odd ones out: a target URL and instructions describe a deployment, not the product.' });
+  tl.tween(projectsU, 1, { at: t - 5.6, dur: 1.2, ease: ease.enter });
+  tl.tween(oddU, 1, { at: t - 3.4, dur: 1.0, ease: ease.enter });
   t = tl.hold(t, 0.6);
 
-  t = tl.caption({ at: t, dur: 6, text: 'Manual, a recurring schedule, the Git Hub App, and Git Hub Actions are four explicit trigger sources.' });
-  tl.tween(selected, 3, { at: t - 5.5, dur: 3.6, ease: ease.move });
+  t = tl.caption({ at: t, dur: 6.2, text: 'Step one is purely additive. We create a project environments table next to it. Nothing reads the new table yet, so this step cannot break anything.' });
+  tl.tween(step, 1, { at: t - 5.8, dur: 0.4, ease: ease.move });
+  tl.tween(envTableU, 1, { at: t - 5.0, dur: 1.6, ease: ease.draw });
   t = tl.hold(t, 0.6);
 
-  t = tl.caption({ at: t, dur: 6, text: 'Choosing the Git Hub App is guarded by a real installation check for the project repository.' });
-  tl.tween(selected, 2, { at: t - 5.5, dur: 1.2, ease: ease.move });
-  tl.tween(gateU, 1, { at: t - 4.0, dur: 0.7, ease: ease.enter });
-  t = tl.hold(t, 0.5);
-
-  t = tl.caption({ at: t, dur: 5.5, text: 'Without the installation, the trigger stops here instead of pretending the repository can be reached.' });
-  tl.tween(installU, 1, { at: t - 4.8, dur: 0.6, ease: ease.pop });
+  t = tl.caption({ at: t, dur: 6, text: 'The foreign key back to the project is the whole point. It turns one to one into one to many: one project, as many environments as we deploy.' });
+  tl.tween(fkU, 1, { at: t - 5.4, dur: 1.4, ease: ease.draw });
+  tl.tween(rowsU, 1, { at: t - 3.0, dur: 1.8, ease: ease.enter });
   t = tl.hold(t, 0.6);
 
-  t = tl.caption({ at: t, dur: 6.2, text: 'For a pull request, the preview environment opens a Test Run, then waits for a deployment address.' });
-  tl.tween(cam, { x: 670, y: 375, k: 1.08 }, { at: t - 5.7, dur: 1.3, ease: ease.move });
-  tl.tween(previewU, 1, { at: t - 5.3, dur: 0.8, ease: ease.enter });
-  tl.tween(waitU, 1, { at: t - 3.8, dur: 0.8, ease: ease.enter });
-  t = tl.hold(t, 0.5);
-
-  t = tl.caption({ at: t, dur: 6, text: 'When the preview address arrives, the parked version is released at that exact edge.' });
-  tl.tween(urlU, 1, { at: t - 5.4, dur: 1.8, ease: ease.draw });
-  tl.tween(waitU, 0, { at: t - 3.3, dur: 0.6, ease: ease.move });
-  tl.tween(releaseU, 1, { at: t - 2.8, dur: 0.6, ease: ease.pop });
+  t = tl.caption({ at: t, dur: 6.2, text: 'Step two is a backfill script. For every existing project it copies the current target URL and instructions into a default production environment row.' });
+  tl.tween(step, 2, { at: t - 5.8, dur: 0.4, ease: ease.move });
+  tl.tween(backfillU, 1, { at: t - 4.6, dur: 2.2, ease: ease.move });
   t = tl.hold(t, 0.6);
 
-  t = tl.caption({ at: t, dur: 6.5, text: 'The release function now schedules the project’s shared journeys for that preview version.' });
-  tl.tween(matrixU, 1, { at: t - 5.9, dur: 1.4, ease: ease.enter });
-  tl.tween(sweepU, 1, { at: t - 4.2, dur: 3.2, ease: ease.linear });
-  t = tl.hold(t, 0.5);
-
-  t = tl.caption({ at: t, dur: 6, text: 'The preview address is no longer collected and left idle. The journeys actually run against it.' });
-  tl.tween(runU, 1, { at: t - 5.4, dur: 0.7, ease: ease.pop });
-  tl.tween(cam, { x: 760, y: 390, k: 1.16 }, { at: t - 4.5, dur: 1.4, ease: ease.move });
+  t = tl.caption({ at: t, dur: 6.2, text: 'The script is dry run by default. We point it at a few projects, read the report of what it would do, and only then pass the live flag for everyone.' });
+  tl.tween(dryU, 1, { at: t - 5.6, dur: 1.6, ease: ease.enter });
   t = tl.hold(t, 0.6);
 
-  t = tl.caption({ at: t, dur: 5.5, text: 'The trigger chooses the world. The shared catalog supplies the work.' });
-  tl.tween(closeU, 1, { at: t - 5.0, dur: 0.9, ease: ease.enter });
-  tl.tween(dialU, 0.12, { at: t - 4.8, dur: 1.0, ease: ease.move });
-  tl.tween(previewU, 0.12, { at: t - 4.8, dur: 1.0, ease: ease.move });
-  tl.tween(matrixU, 0.12, { at: t - 4.8, dur: 1.0, ease: ease.move });
+  t = tl.caption({ at: t, dur: 6.2, text: 'Which table we read from sits behind a feature flag. It ships dark: while the flag is off, every read still comes from the old columns.' });
+  tl.tween(flagU, 1, { at: t - 5.6, dur: 1.2, ease: ease.enter });
+  t = tl.hold(t, 0.6);
+
+  t = tl.caption({ at: t, dur: 6.2, text: 'The moment the backfill lands, we flip the flag and reads route to the environment rows. If anything looks wrong, flipping it back is the instant rollback.' });
+  tl.tween(flipU, 1, { at: t - 4.6, dur: 0.7, ease: ease.pop });
+  t = tl.hold(t, 0.6);
+
+  t = tl.caption({ at: t, dur: 6.4, text: 'Only when the flag has been on and quiet do we contract: drop the two old columns, then delete the flag and the old read path. That is the tech debt cleanup, done last, when it is safe.' });
+  tl.tween(step, 3, { at: t - 6.0, dur: 0.4, ease: ease.move });
+  tl.tween(flagU, 0.15, { at: t - 4.4, dur: 0.8, ease: ease.move });
+  tl.tween(dropU, 1, { at: t - 4.0, dur: 1.6, ease: ease.move });
+  t = tl.hold(t, 0.6);
+
+  t = tl.caption({ at: t, dur: 6.2, text: 'Test runs need the same treatment. Today a run points at a project and a raw URL. We add a nullable environment id, so new runs point at the world they executed in.' });
+  tl.tween(runsU, 1, { at: t - 5.6, dur: 1.4, ease: ease.enter });
+  tl.tween(cam, { x: 700, y: 420, k: 1.12 }, { at: t - 5.2, dur: 1.4, ease: ease.move });
+  t = tl.hold(t, 0.6);
+
+  t = tl.caption({ at: t, dur: 6.4, text: 'Then a second backfill maps history: a run whose URL matches an environment gets that row, and everything else defaults to production. Only when every run has one does the column become required.' });
+  tl.tween(runFillU, 1, { at: t - 5.8, dur: 2.2, ease: ease.move });
+  tl.tween(runLockU, 1, { at: t - 2.6, dur: 0.6, ease: ease.pop });
+  t = tl.hold(t, 0.6);
+
+  t = tl.caption({ at: t, dur: 6, text: 'That is the whole database story: one additive table, one careful script, one cleanup. Two columns move, and history starts naming its world.' });
+  tl.tween(closeU, 1, { at: t - 5.2, dur: 1.0, ease: ease.enter });
+  tl.tween(projectsU, 0.14, { at: t - 5.4, dur: 1.0, ease: ease.move });
+  tl.tween(envTableU, 0.14, { at: t - 5.4, dur: 1.0, ease: ease.move });
+  tl.tween(runsU, 0.14, { at: t - 5.4, dur: 1.0, ease: ease.move });
+  tl.tween(railU, 0.2, { at: t - 5.4, dur: 1.0, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 340, k: 1.06 }, { at: t - 5.0, dur: 1.6, ease: ease.move });
   tl.hold(t, 1.0);
-  return { tl, cam, dialU, selected, gateU, installU, previewU, waitU, urlU, releaseU, matrixU, sweepU, runU, closeU };
+  return { tl, cam, railU, step, projectsU, oddU, envTableU, fkU, backfillU, dryU, flagU, flipU, dropU, rowsU, runsU, runFillU, runLockU, closeU };
 }
 
 const scene = buildScene();
 
 export function Render({ s }: { s: SceneState }) {
-  const dialU = s.get(scene.dialU);
-  const selected = s.get(scene.selected);
-  const previewU = s.get(scene.previewU);
-  const matrixU = s.get(scene.matrixU);
-  const sweepU = s.get(scene.sweepU);
+  const railU = s.get(scene.railU);
+  const step = s.get(scene.step);
+  const projectsU = s.get(scene.projectsU);
+  const oddU = s.get(scene.oddU);
+  const envTableU = s.get(scene.envTableU);
+  const fkU = s.get(scene.fkU);
+  const backfillU = s.get(scene.backfillU);
+  const dryU = s.get(scene.dryU);
+  const flagU = s.get(scene.flagU);
+  const flipU = s.get(scene.flipU);
+  const dropU = s.get(scene.dropU);
+  const rowsU = s.get(scene.rowsU);
+  const runsU = s.get(scene.runsU);
+  const runFillU = s.get(scene.runFillU);
+  const runLockU = s.get(scene.runLockU);
   const closeU = s.get(scene.closeU);
+
   return <>
     <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
     <Camera {...s.get(scene.cam)}>
-      <g opacity={dialU}>
-        <text x={90} y={82} fill={colors.MUTED} fontSize={13} fontFamily={mono}>project_environments.trigger_type</text>
-        {TRIGGERS.map((trigger, i) => {
-          const active = Math.max(0, 1 - Math.abs(selected - i));
-          return <g key={trigger.code} transform={`translate(90 ${110 + i * 82})`}>
-            <rect width={300} height={60} rx={15} fill={colors.PANEL} stroke={trigger.color} strokeWidth={1.2 + active * 3} opacity={0.55 + active * 0.45} />
-            <circle cx={30} cy={30} r={8 + active * 5} fill={trigger.color} />
-            <text x={55} y={27} fill={colors.TEXT} fontSize={17} fontWeight={700}>{trigger.label}</text>
-            <text x={55} y={46} fill={trigger.color} fontSize={11} fontFamily={mono}>{trigger.code}</text>
+      {/* Step rail */}
+      <g opacity={railU}>
+        {STEPS.map((st, i) => {
+          const active = Math.max(0, 1 - Math.abs(step - st.n));
+          return <g key={st.n} transform={`translate(${105 + i * 370} 48)`}>
+            <rect width={330} height={54} rx={14} fill={colors.PANEL} stroke={st.color} strokeWidth={1 + 2.4 * active} opacity={0.45 + 0.55 * active} />
+            <circle cx={28} cy={27} r={13} fill={st.color} opacity={0.25 + 0.75 * active} />
+            <text x={28} y={32} textAnchor="middle" fill={colors.BG} fontSize={14} fontWeight={800} opacity={0.4 + 0.6 * active}>{st.n}</text>
+            <text x={52} y={24} fill={colors.TEXT} fontSize={16} fontWeight={750} opacity={0.55 + 0.45 * active}>{st.label}</text>
+            <text x={52} y={43} fill={st.color} fontSize={11} fontFamily={mono} opacity={0.55 + 0.45 * active}>{st.sub}</text>
+            {i < 2 && <text x={348} y={33} fill={colors.MUTED} fontSize={18}>→</text>}
           </g>;
         })}
       </g>
 
-      {s.get(scene.gateU) > 0 && <g opacity={s.get(scene.gateU)} transform="translate(430 240)">
-        <rect width={245} height={88} rx={16} fill={colors.PANEL} stroke={s.get(scene.installU) ? colors.NEGATIVE : colors.POSITIVE} />
-        <text x={122} y={32} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontWeight={700}>Repository installation</text>
-        <text x={122} y={60} textAnchor="middle" fill={s.get(scene.installU) ? colors.NEGATIVE : colors.POSITIVE} fontFamily={mono} fontSize={12}>{s.get(scene.installU) ? 'required · blocked' : 'getInstallationIdForRepo'}</text>
+      {/* projects table */}
+      <g opacity={projectsU}>
+        <rect x={105} y={140} width={330} height={236} rx={18} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.8} />
+        <text x={130} y={175} fill={colors.TEXT} fontSize={19} fontWeight={750}>projects</text>
+        {PROJECT_COLS.map((col, i) => {
+          const odd = !col.keep;
+          const gone = odd ? dropU : 0;
+          return <g key={col.name} opacity={1 - gone * 0.92} transform={`translate(${gone * 26} 0)`}>
+            <rect x={128} y={190 + i * 34} width={284} height={28} rx={7}
+              fill={odd && oddU > 0.05 ? colors.WARM : colors.BG}
+              fillOpacity={odd && oddU > 0.05 ? 0.1 + 0.1 * oddU : 1}
+              stroke={odd && oddU > 0.05 ? colors.WARM : colors.MUTED} strokeOpacity={odd ? 0.9 : 0.3} />
+            <text x={144} y={209 + i * 34} fill={odd ? colors.WARM : colors.MUTED} fontSize={12.5} fontFamily={mono}>{col.name}</text>
+            {odd && dropU > 0.1 && <line x1={140} y1={204 + i * 34} x2={408} y2={204 + i * 34} stroke={colors.NEGATIVE} strokeWidth={2.4} opacity={dropU}
+              strokeDasharray="268" strokeDashoffset={268 * (1 - dropU)} />}
+          </g>;
+        })}
+        {dropU > 0.6 && <text x={130} y={362} fill={colors.POSITIVE} fontSize={11.5} fontFamily={mono} opacity={(dropU - 0.6) * 2.5}>DROP COLUMN · fallback code deleted</text>}
+      </g>
+
+      {/* project_environments table */}
+      <g opacity={envTableU}>
+        <rect x={620} y={140} width={548} height={330} rx={18} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.8}
+          strokeDasharray="1756" strokeDashoffset={1756 * (1 - clamp01(envTableU))} />
+        <text x={646} y={175} fill={colors.TEXT} fontSize={19} fontWeight={750}>project_environments</text>
+        <text x={904} y={175} fill={colors.WARM} fontSize={11} fontFamily={mono}>new · additive</text>
+        {ENV_COLS.map((col, i) => (
+          <text key={col} x={646} y={205 + i * 24} fill={i === 1 ? colors.ACCENT : colors.MUTED} fontSize={12} fontFamily={mono}
+            opacity={clamp01(envTableU * 5 - i)}>{col}</text>
+        ))}
+        {/* environment rows */}
+        {ENV_ROWS.map((row, i) => {
+          const rowShow = i === 0 ? clamp01(backfillU * 2) : clamp01(rowsU * 2 - (i - 1));
+          return <g key={row.name} opacity={rowShow} transform={`translate(0 ${(1 - rowShow) * 12})`}>
+            <rect x={646} y={330 + i * 42} width={496} height={34} rx={9} fill={colors.BG} stroke={row.color} strokeWidth={1.4} />
+            <text x={664} y={352 + i * 42} fill={row.color} fontSize={12.5} fontFamily={mono}>{row.name}</text>
+            <text x={860} y={352 + i * 42} fill={colors.MUTED} fontSize={12} fontFamily={mono}>{row.url}</text>
+          </g>;
+        })}
+      </g>
+
+      {/* FK crow's foot: projects.id 1 — ∞ project_environments.project_id */}
+      {fkU > 0 && <g opacity={fkU}>
+        <path d="M 435 258 C 520 258, 540 258, 620 258" fill="none" stroke={colors.ACCENT} strokeWidth={2.6}
+          strokeDasharray="190" strokeDashoffset={190 * (1 - fkU)} />
+        <text x={455} y={246} fill={colors.ACCENT} fontSize={13} fontWeight={700}>1</text>
+        {/* crow's foot at the many end */}
+        <path d="M 620 258 L 600 246 M 620 258 L 600 258 M 620 258 L 600 270" stroke={colors.ACCENT} strokeWidth={2.2} fill="none" />
+        <text x={585} y={288} fill={colors.ACCENT} fontSize={13} fontWeight={700}>∞</text>
+        <text x={462} y={282} fill={colors.MUTED} fontSize={10.5} fontFamily={mono}>one → many</text>
       </g>}
 
-      {previewU > 0 && <g opacity={previewU} transform="translate(720 90)">
-        <rect width={430} height={145} rx={22} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={2} />
-        <text x={26} y={37} fill={colors.TEXT} fontSize={21} fontWeight={750}>Preview · pull request</text>
-        <text x={26} y={69} fill={colors.MUTED} fontFamily={mono} fontSize={12}>status: {s.get(scene.waitU) > 0.1 ? 'awaiting deployment' : s.get(scene.urlU) > 0.1 ? 'deployment ready' : 'opened'}</text>
-        <line x1={28} y1={107} x2={28 + 365 * s.get(scene.urlU)} y2={107} stroke={colors.SECONDARY} strokeWidth={5} strokeLinecap="round" />
-        <text x={26} y={132} fill={colors.SECONDARY} fontFamily={mono} fontSize={11} opacity={s.get(scene.urlU)}>preview.example.com</text>
-        {s.get(scene.releaseU) > 0 && <g opacity={s.get(scene.releaseU)} transform={`translate(365 40) scale(${0.8 + 0.2 * s.get(scene.releaseU)})`}>
-          <circle r={25} fill={colors.POSITIVE} opacity={0.16} /><text textAnchor="middle" y={6} fill={colors.POSITIVE} fontSize={24}>✓</text>
-        </g>}
+      {/* backfill ghosts: old columns → production row */}
+      {backfillU > 0 && backfillU < 1 && <g opacity={clamp01(backfillU * 6) * clamp01((1 - backfillU) * 6)}>
+        <rect x={lerp(128, 646, backfillU)} y={lerp(292, 330, backfillU)} width={lerp(284, 496, backfillU)} height={30} rx={8}
+          fill="none" stroke={colors.WARM} strokeWidth={1.6} strokeDasharray="6 5" />
+        <text x={lerp(150, 680, backfillU)} y={lerp(312, 350, backfillU)} fill={colors.WARM} fontSize={11.5} fontFamily={mono}>copy url + instructions</text>
       </g>}
 
-      {matrixU > 0 && <g opacity={matrixU}>
-        <text x={720} y={300} fill={colors.MUTED} fontFamily={mono} fontSize={12}>scheduleSharedJourneysForVersion</text>
-        <MatrixGrid x={720} y={325} values={VALUES} cell={42} gap={5} rowLabels={['auth', 'search', 'cart', 'profile']} cellU={(i, j) => clamp01(matrixU * 18 - (i * 6 + j) * 0.5)} highlight={{ row: Math.min(3, Math.floor(sweepU * 4)), color: colors.ACCENT, u: sweepU }} />
-        <text x={1010} y={510} fill={colors.POSITIVE} fontSize={18} fontWeight={750} opacity={s.get(scene.runU)}>journeys queued</text>
+      {/* dry-run → live chip */}
+      {dryU > 0 && <g opacity={dryU * (1 - closeU)} transform="translate(105 415)">
+        <rect width={330} height={64} rx={14} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.6} />
+        <text x={20} y={26} fill={colors.WARM} fontSize={12.5} fontFamily={mono}>backfill --project-id … (dry run)</text>
+        <text x={20} y={48} fill={colors.MUTED} fontSize={12} fontFamily={mono}>report only · mutate with <tspan fill={colors.NEGATIVE}>--live</tspan></text>
       </g>}
 
+      {/* feature-flagged read path: env_reads off → old columns, on → environment rows */}
+      {flagU > 0 && <g opacity={flagU}>
+        <text x={105} y={528} fill={colors.MUTED} fontSize={12} fontFamily={mono}>read path · feature flag</text>
+        <g transform="translate(105 540)">
+          <rect width={168} height={44} rx={22} fill={colors.BG} stroke={flipU > 0.5 ? colors.POSITIVE : colors.MUTED} strokeWidth={1.8} />
+          <circle cx={lerp(24, 144, flipU)} cy={22} r={15} fill={flipU > 0.5 ? colors.POSITIVE : colors.MUTED} />
+          <text x={lerp(96, 66, flipU)} y={27} textAnchor="middle" fill={colors.TEXT} fontSize={12.5} fontFamily={mono}>{flipU > 0.5 ? 'env_reads: ON' : 'env_reads: OFF'}</text>
+        </g>
+        {/* old route: flag → projects columns */}
+        <path d="M 273 555 C 330 545, 300 470, 285 385" fill="none" stroke={colors.MUTED} strokeWidth={2.2}
+          strokeDasharray="7 6" opacity={lerp(0.9, 0.12, flipU)} />
+        {/* new route: flag → environment rows */}
+        <path d="M 273 565 C 430 590, 600 540, 668 478" fill="none" stroke={colors.POSITIVE} strokeWidth={2.4}
+          strokeDasharray="7 6" opacity={lerp(0.12, 1, flipU)} />
+        <text x={300} y={600} fill={flipU > 0.5 ? colors.POSITIVE : colors.MUTED} fontSize={11.5} fontFamily={mono}>
+          {flipU > 0.5 ? 'flipped after backfill · flip back = instant rollback' : 'ships dark · old columns still serve reads'}</text>
+      </g>}
+
+      {/* test_runs: expand (nullable env id) → backfill history → NOT NULL */}
+      {runsU > 0 && <g opacity={runsU} transform="translate(485 495)">
+        <rect width={660} height={128} rx={16} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.8} />
+        <text x={24} y={30} fill={colors.TEXT} fontSize={17} fontWeight={750}>test_runs</text>
+        <text x={190} y={30} fill={colors.SECONDARY} fontSize={12} fontFamily={mono}>+ environment_id → project_environments.id  <tspan fill={runLockU > 0.5 ? colors.POSITIVE : colors.MUTED}>{runLockU > 0.5 ? 'NOT NULL' : 'nullable'}</tspan></text>
+        <g opacity={clamp01(runFillU * 2)}>
+          <text x={24} y={58} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>run 418 · app.example.com</text>
+          <text x={340} y={58} fill={colors.POSITIVE} fontSize={11.5} fontFamily={mono}>→ production   (url match)</text>
+        </g>
+        <g opacity={clamp01(runFillU * 2 - 0.6)}>
+          <text x={24} y={80} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>run 419 · staging.example.com</text>
+          <text x={340} y={80} fill={colors.WARM} fontSize={11.5} fontFamily={mono}>→ staging      (url match)</text>
+        </g>
+        <g opacity={clamp01(runFillU * 2 - 1.2)}>
+          <text x={24} y={102} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>run 302 · legacy · no match</text>
+          <text x={340} y={102} fill={colors.POSITIVE} fontSize={11.5} fontFamily={mono}>→ production   (default)</text>
+        </g>
+        <path d="M 330 -25 C 330 -45, 700 -80, 700 -48" fill="none" stroke={colors.SECONDARY} strokeWidth={1.8} strokeDasharray="5 5" opacity={0.7} />
+      </g>}
+
+      {/* close */}
       {closeU > 0 && <g opacity={closeU}>
-        <rect x={250} y={235} width={780} height={170} rx={26} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={2} />
-        <text x={640} y={306} textAnchor="middle" fill={colors.TEXT} fontSize={32} fontWeight={800}>trigger → environment → shared journeys</text>
-        <text x={640} y={356} textAnchor="middle" fill={colors.SECONDARY} fontSize={21}>the preview URL now starts real work</text>
+        <rect x={235} y={220} width={810} height={190} rx={26} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={2} />
+        <text x={640} y={288} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={800}>expand → migrate → contract</text>
+        <text x={640} y={334} textAnchor="middle" fill={colors.MUTED} fontSize={19}>projects 1 — ∞ project_environments — test_runs</text>
+        <text x={640} y={374} textAnchor="middle" fill={colors.POSITIVE} fontSize={17}>additive first · dry run before live · drop columns last</text>
       </g>}
     </Camera>
   </>;

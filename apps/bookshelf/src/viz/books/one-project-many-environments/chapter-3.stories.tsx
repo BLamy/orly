@@ -5,4 +5,4 @@ const scene = vizScene();
 function Chapter() { return <div style={{ padding: '4vh 4vw' }}><Player timeline={scene.tl} loop>{s => <Render s={s} />}</Player></div>; }
 const meta: Meta<typeof Chapter> = { title: 'Books/One Project Many Environments/Chapter 3', component: Chapter };
 export default meta;
-export const RunsRememberTheirWorld: StoryObj<typeof Chapter> = {};
+export const DifferentEnvironmentsDifferentTriggers: StoryObj<typeof Chapter> = {};
