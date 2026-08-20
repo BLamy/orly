@@ -14,15 +14,15 @@
       "audio": "audio/chapter-1.mp3",
       "cues": [
         0,
-        8.44,
-        14.896,
-        24.95,
-        30.825,
-        42.168,
-        51.537,
-        59.013
+        8.452,
+        14.501,
+        24.288,
+        30.361,
+        41.855,
+        51.967,
+        60.013
       ],
-      "duration": 68.081
+      "duration": 69.521
     },
     {
       "number": 2,
@@ -32,37 +32,39 @@
       "audio": "audio/chapter-2.mp3",
       "cues": [
         0,
-        10.96,
-        21.815,
-        32.124,
-        41.377,
-        51.431,
-        62.286,
-        73.025,
-        81.152
+        10.739,
+        21.049,
+        30.801,
+        40.24,
+        49.993,
+        60.198,
+        70.461,
+        78.541
       ],
-      "duration": 90.231
+      "duration": 87.678
     },
     {
       "number": 3,
       "title": "Different Environments, Different Triggers",
-      "blurb": "Production runs nightly on weekdays, staging runs when a deploy to main completes, pull requests run when ready for review, and journeys run everywhere unless an exclusion row says otherwise.",
+      "blurb": "Production runs nightly on weekdays, staging runs on deploys to main, pull requests resolve a preview URL pattern from checks and comments, and journeys run everywhere unless excluded.",
       "scene": "books/one-project-many-environments/chapter-3",
       "audio": "audio/chapter-3.mp3",
       "cues": [
         0,
-        8.499,
-        15.882,
-        20.851,
-        28.886,
-        35.585,
-        43.897,
-        54.81,
-        64.203,
-        74.489,
-        83.928
+        8.696,
+        16.428,
+        22.349,
+        31.092,
+        37.86,
+        46.045,
+        56.924,
+        65.376,
+        77.055,
+        86.54,
+        97.222,
+        107.067
       ],
-      "duration": 92.554
+      "duration": 115.96
     }
   ]
 }

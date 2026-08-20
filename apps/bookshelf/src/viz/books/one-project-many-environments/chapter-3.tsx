@@ -25,7 +25,7 @@ const ALLOWED = [
 const LANES = [
   { name: 'production', y: 120, color: colors.POSITIVE, url: 'app.example.com' },
   { name: 'staging', y: 295, color: colors.WARM, url: 'staging.example.com' },
-  { name: 'preview · PR 421', y: 470, color: colors.SECONDARY, url: 'preview-421.example.com' },
+  { name: 'preview · PR 421', y: 470, color: colors.SECONDARY, url: 'https://preview-*.example.com' },
 ] as const;
 
 export function buildScene() {
@@ -40,6 +40,9 @@ export function buildScene() {
   const prReadyU = tl.channel('prReadyU', 0);  // draft → ready for review
   const prDeployU = tl.channel('prDeployU', 0);// preview deployment comes up
   const gateU = tl.channel('gateU', 0);        // AND gate satisfied
+  const patternU = tl.channel('patternU', 0);  // preview target_url is a pattern
+  const searchU = tl.channel('searchU', 0);    // search checks → comments for a match
+  const matchU = tl.channel('matchU', 0);      // resolved link becomes the override url
   const prFire = tl.channel('prFire', 0);
   const matrixU = tl.channel('matrixU', 0);  // journey × environment applicability
   const skipU = tl.channel('skipU', 0);      // spotlight the production ✕
@@ -76,10 +79,19 @@ export function buildScene() {
   tl.tween(prReadyU, 1, { at: t - 4.4, dur: 1.2, ease: ease.move });
   t = tl.hold(t, 0.5);
 
-  t = tl.caption({ at: t, dur: 6.2, text: 'Armed is not fired. The run starts only when the preview deployment is also live, so two conditions gate it: ready for review, and a resolvable preview address.' });
-  tl.tween(prDeployU, 1, { at: t - 5.4, dur: 1.4, ease: ease.move });
-  tl.tween(gateU, 1, { at: t - 3.6, dur: 0.6, ease: ease.pop });
-  tl.tween(prFire, 1, { at: t - 2.8, dur: 1.6, ease: ease.move });
+  t = tl.caption({ at: t, dur: 6.4, text: 'Armed is not fired, because a pull request rarely has just one link. So a preview environment does not store an address at all: its target URL is a pattern.' });
+  tl.tween(prDeployU, 1, { at: t - 5.6, dur: 1.4, ease: ease.move });
+  tl.tween(gateU, 1, { at: t - 4.0, dur: 0.6, ease: ease.pop });
+  tl.tween(patternU, 1, { at: t - 3.2, dur: 1.0, ease: ease.enter });
+  t = tl.hold(t, 0.6);
+
+  t = tl.caption({ at: t, dur: 6.2, text: 'When the trigger arms, we search the pull request for links that match the pattern: the checks first, then the comments. The first match wins.' });
+  tl.tween(searchU, 1, { at: t - 5.4, dur: 2.6, ease: ease.linear });
+  t = tl.hold(t, 0.6);
+
+  t = tl.caption({ at: t, dur: 6.4, text: 'That resolved link becomes the run\u2019s override URL, recorded against the preview environment. Several deploy links, one right answer, and history still names its world.' });
+  tl.tween(matchU, 1, { at: t - 5.6, dur: 0.8, ease: ease.pop });
+  tl.tween(prFire, 1, { at: t - 4.4, dur: 1.6, ease: ease.move });
   t = tl.hold(t, 0.6);
 
   t = tl.caption({ at: t, dur: 6, text: 'Notice what never changed: the journeys. Sign in, search, checkout, and profile are written once, and each trigger simply picks the world they run against.' });
@@ -101,7 +113,7 @@ export function buildScene() {
   tl.tween(matrixU, 0.12, { at: t - 5.4, dur: 1.0, ease: ease.move });
   tl.tween(cam, { x: 640, y: 340, k: 1.06 }, { at: t - 5.0, dur: 1.6, ease: ease.move });
   tl.hold(t, 1.0);
-  return { tl, cam, lanesU, focus, weekU, prodFire, pipeU, stageFire, prReadyU, prDeployU, gateU, prFire, matrixU, skipU, closeU };
+  return { tl, cam, lanesU, focus, weekU, prodFire, pipeU, stageFire, prReadyU, prDeployU, gateU, patternU, searchU, matchU, prFire, matrixU, skipU, closeU };
 }
 
 const scene = buildScene();
@@ -133,6 +145,9 @@ export function Render({ s }: { s: SceneState }) {
   const prReadyU = s.get(scene.prReadyU);
   const prDeployU = s.get(scene.prDeployU);
   const gateU = s.get(scene.gateU);
+  const patternU = s.get(scene.patternU);
+  const searchU = s.get(scene.searchU);
+  const matchU = s.get(scene.matchU);
   const matrixU = s.get(scene.matrixU);
   const skipU = s.get(scene.skipU);
   const closeU = s.get(scene.closeU);
@@ -201,7 +216,18 @@ export function Render({ s }: { s: SceneState }) {
             fillOpacity={gateU > 0.5 ? 0.25 : 1} stroke={colors.SECONDARY} strokeWidth={1.8} strokeOpacity={0.5 + 0.5 * gateU} />
           <text x={20} y={27} textAnchor="middle" fill={gateU > 0.5 ? colors.TEXT : colors.MUTED} fontSize={10.5} fontWeight={700}>AND</text>
         </g>
-        <text x={400} y={LANES[2].y + 78} fill={colors.SECONDARY} fontSize={11.5} fontFamily={mono} opacity={clamp01(prReadyU * 2)}>trigger: ready_for_review ∧ preview deployment live</text>
+        <text x={400} y={LANES[2].y + 78} fill={colors.SECONDARY} fontSize={11.5} fontFamily={mono} opacity={clamp01(prReadyU * 2) * (1 - clamp01(patternU * 2))}>trigger: ready_for_review ∧ preview deployed</text>
+        {patternU > 0 && <g opacity={patternU}>
+          <text x={400} y={LANES[2].y + 78} fill={colors.SECONDARY} fontSize={11.5} fontFamily={mono}>target_url: <tspan fill={colors.TEXT}>https://preview-*.example.com</tspan>  <tspan fill={colors.MUTED}>(pattern)</tspan></text>
+          <g opacity={clamp01(searchU * 2)}>
+            <text x={400} y={LANES[2].y + 100} fill={clamp01(searchU * 2 - 0.4) > 0 ? colors.POSITIVE : colors.MUTED} fontSize={11} fontFamily={mono}>1 · checks{clamp01(searchU * 2 - 0.4) > 0 ? ' · preview-421.example.com ✓ match' : ' · scanning links…'}</text>
+            <text x={780} y={LANES[2].y + 100} fill={colors.MUTED} fontSize={11} fontFamily={mono} opacity={0.4 + 0.3 * searchU}>2 · comments · only if checks have no match</text>
+          </g>
+          {matchU > 0 && <g opacity={matchU} transform={`translate(832 ${LANES[2].y + 44})`}>
+            <rect width={286} height={24} rx={12} fill={colors.SECONDARY} opacity={0.14} />
+            <text x={143} y={16} textAnchor="middle" fill={colors.SECONDARY} fontSize={10.5} fontFamily={mono}>override_url = preview-421.example.com</text>
+          </g>}
+        </g>}
         <FirePacket u={s.get(scene.prFire)} y={LANES[2].y + 30} color={colors.SECONDARY} url="preview run" />
       </g>
 
