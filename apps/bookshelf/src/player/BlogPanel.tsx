@@ -95,6 +95,87 @@ function splitBlogMarkdown(markdown: string): BlogBlock[] {
 
 type TimelineSlice = Pick<Timeline, 'duration' | 'beats' | 'sample' | 'subscribe'>;
 
+// Blog embeds have no narration, so long authored pauses that leave room for
+// a spoken sentence only make the visual feel unresponsive. Keep visual
+// tweens at their authored speed, but cap every gap between them.
+const BLOG_MAX_IDLE_SECONDS = 0.6;
+
+type TimeSpan = { from: number; to: number };
+
+function activeVisualSpans(source: Timeline, from: number, to: number): TimeSpan[] {
+  const spans = source.describe().channels
+    .flatMap((channel) => channel.keys)
+    .filter((keyframe) => keyframe.dur > 0)
+    .map((keyframe) => ({
+      from: Math.max(from, keyframe.at),
+      to: Math.min(to, keyframe.at + keyframe.dur),
+    }))
+    .filter((span) => span.to > span.from)
+    .sort((a, b) => a.from - b.from || a.to - b.to);
+
+  const merged: TimeSpan[] = [];
+  for (const span of spans) {
+    const previous = merged[merged.length - 1];
+    if (previous && span.from <= previous.to) {
+      previous.to = Math.max(previous.to, span.to);
+    } else {
+      merged.push({ ...span });
+    }
+  }
+  return merged;
+}
+
+function responsiveBlogClock(source: Timeline, from: number, to: number) {
+  const segments: Array<TimeSpan & { playbackFrom: number; playbackTo: number }> = [];
+  let cursor = from;
+  let playbackCursor = 0;
+
+  const append = (span: TimeSpan, compressIdle: boolean) => {
+    if (span.to <= span.from) return;
+    const sourceDuration = span.to - span.from;
+    const playbackDuration = compressIdle
+      ? Math.min(sourceDuration, BLOG_MAX_IDLE_SECONDS)
+      : sourceDuration;
+    segments.push({
+      ...span,
+      playbackFrom: playbackCursor,
+      playbackTo: playbackCursor + playbackDuration,
+    });
+    playbackCursor += playbackDuration;
+  };
+
+  for (const active of activeVisualSpans(source, from, to)) {
+    append({ from: cursor, to: active.from }, true);
+    append(active, false);
+    cursor = active.to;
+  }
+  append({ from: cursor, to }, true);
+
+  return {
+    duration: Math.max(0.2, playbackCursor),
+    toSource(playbackTime: number) {
+      if (playbackTime <= 0 || segments.length === 0) return from;
+      if (playbackTime >= playbackCursor) return to;
+      const segment = segments.find(({ playbackTo }) => playbackTime <= playbackTo)
+        ?? segments[segments.length - 1];
+      const playbackDuration = segment.playbackTo - segment.playbackFrom;
+      const u = playbackDuration > 0
+        ? (playbackTime - segment.playbackFrom) / playbackDuration
+        : 1;
+      return segment.from + u * (segment.to - segment.from);
+    },
+    toPlayback(sourceTime: number) {
+      if (sourceTime <= from || segments.length === 0) return 0;
+      if (sourceTime >= to) return playbackCursor;
+      const segment = segments.find(({ to: segmentTo }) => sourceTime <= segmentTo)
+        ?? segments[segments.length - 1];
+      const sourceDuration = segment.to - segment.from;
+      const u = sourceDuration > 0 ? (sourceTime - segment.from) / sourceDuration : 1;
+      return segment.playbackFrom + u * (segment.playbackTo - segment.playbackFrom);
+    },
+  };
+}
+
 /**
  * Present a live scene as a short, looping section without changing the
  * authored timeline or the normal chapter player. Section windows are
@@ -104,7 +185,8 @@ type TimelineSlice = Pick<Timeline, 'duration' | 'beats' | 'sample' | 'subscribe
 function sectionTimeline(source: Timeline, from: number, to: number): TimelineSlice {
   const start = Math.max(0, from);
   const end = Math.max(start + 0.2, to);
-  const duration = end - start;
+  const clock = responsiveBlogClock(source, start, end);
+  const duration = clock.duration;
   const exclusiveEnd = Math.max(0, duration - 0.001);
   return {
     duration,
@@ -112,11 +194,11 @@ function sectionTimeline(source: Timeline, from: number, to: number): TimelineSl
       0,
       ...source.beats
         .filter((beat) => beat > start && beat < end)
-        .map((beat) => beat - start),
+        .map((beat) => clock.toPlayback(beat)),
     ].filter((beat, i, all) => all.indexOf(beat) === i),
     sample(time: number) {
       const relative = Math.max(0, Math.min(time, duration));
-      const state = source.sample(start + Math.min(relative, exclusiveEnd));
+      const state = source.sample(clock.toSource(Math.min(relative, exclusiveEnd)));
       return { ...state, t: relative };
     },
     subscribe(listener: () => void) {
