@@ -1,0 +1,106 @@
+{
+  "format": 3,
+  "slug": "agent-codeowners",
+  "title": "Agent CODEOWNERS",
+  "animal": "animal.webp",
+  "accent": "#198a8a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "CODEOWNERS Routes the Diff",
+      "blurb": "A changed file falls through CODEOWNERS patterns until the last matching line wins, splitting into a human owner and a hidden agent reference.",
+      "scene": "books/agent-codeowners/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        4.644,
+        13.56,
+        18.877,
+        23.928,
+        31.311,
+        38.8,
+        47.124,
+        55.553
+      ],
+      "duration": 63.854
+    },
+    {
+      "number": 2,
+      "title": "One Reference, Three Native Formats",
+      "blurb": "Three agent references resolve into three untranslated native config files, all normalized behind one shared review interface.",
+      "scene": "books/agent-codeowners/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        11.204,
+        19.772,
+        28.189,
+        36.989,
+        47.845,
+        56.123,
+        63.808,
+        72.469,
+        82.407
+      ],
+      "duration": 88.282
+    },
+    {
+      "number": 3,
+      "title": "Base SHA vs. Head SHA",
+      "blurb": "Configuration is read from the base SHA and code from the head SHA, so a pull request can never redefine the reviewer judging it.",
+      "scene": "books/agent-codeowners/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        6.873,
+        15.766,
+        22.918,
+        30.035,
+        38.452,
+        47.253,
+        55.53
+      ],
+      "duration": 62.044
+    },
+    {
+      "number": 4,
+      "title": "The Worked Example, End to End",
+      "blurb": "A real migration, a dependency bump, and a UI change move through CODEOWNERS routing, a blocking finding, a fix, and a green required check.",
+      "scene": "books/agent-codeowners/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        8.789,
+        18.054,
+        25.705,
+        34.203,
+        43.108,
+        50.956,
+        58.421,
+        66.502,
+        74.199,
+        83.58,
+        91.568
+      ],
+      "duration": 103.608
+    },
+    {
+      "number": 5,
+      "title": "One Stable Check, Additive to Human Review",
+      "blurb": "One stable required check fronts a growable roster of agents, additive to human CODEOWNER approval rather than replacing it.",
+      "scene": "books/agent-codeowners/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        7.674,
+        15.673,
+        24.718,
+        34.935,
+        42.295,
+        51.165,
+        58.63
+      ],
+      "duration": 65.387
+    }
+  ]
+}

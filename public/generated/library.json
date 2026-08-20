@@ -1,6 +1,43 @@
 {
   "books": [
     {
+      "slug": "agent-codeowners",
+      "title": "Agent CODEOWNERS",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "href": "?bundle=agent-codeowners",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "CODEOWNERS Routes the Diff",
+          "duration": 63.854
+        },
+        {
+          "number": 2,
+          "title": "One Reference, Three Native Formats",
+          "duration": 88.282
+        },
+        {
+          "number": 3,
+          "title": "Base SHA vs. Head SHA",
+          "duration": 62.044
+        },
+        {
+          "number": 4,
+          "title": "The Worked Example, End to End",
+          "duration": 103.608
+        },
+        {
+          "number": 5,
+          "title": "One Stable Check, Additive to Human Review",
+          "duration": 65.387
+        }
+      ],
+      "createdAt": "2026-08-20T21:19:25.399Z"
+    },
+    {
       "slug": "one-project-many-environments",
       "title": "One Project, Many Environments",
       "subtitle": "A proposal: environments as overlays on project defaults",
