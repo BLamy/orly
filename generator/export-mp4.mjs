@@ -29,6 +29,7 @@ function arg(name, dflt) {
 }
 
 const slug = arg('slug');
+const onlyChapters = arg('chapters') ? arg('chapters').split(',').map(Number) : null;
 const args = { dir: arg('dir') };
 const outDir = path.resolve(arg('out', path.join(ROOT, 'exports', slug ?? 'book')));
 if (!slug) {
@@ -200,6 +201,7 @@ async function main() {
 
     const chapterMp4s = [];
     for (const ch of manifest.chapters) {
+      if (onlyChapters && !onlyChapters.includes(ch.number)) continue;
       const mp3 = path.join(bookDir, ch.audio);
       const outMp4 = path.join(outDir, `chapter-${ch.number}.mp4`);
       process.stdout.write(`chapter ${ch.number} (${ch.duration.toFixed(1)}s): recording… `);

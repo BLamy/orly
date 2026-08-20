@@ -1,6 +1,34 @@
 {
   "books": [
     {
+      "slug": "one-project-many-environments",
+      "title": "One Project, Many Environments",
+      "subtitle": "A proposal: environments as overlays on project defaults",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1f6fb2",
+      "animal": "generated/one-project-many-environments/animal.webp",
+      "href": "?bundle=one-project-many-environments",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Problem",
+          "duration": 69.521
+        },
+        {
+          "number": 2,
+          "title": "The Database Solution",
+          "duration": 87.678
+        },
+        {
+          "number": 3,
+          "title": "Different Environments, Different Triggers",
+          "duration": 115.96
+        }
+      ],
+      "createdAt": "2026-08-20T20:02:01.204Z"
+    },
+    {
       "slug": "skills-procedural-anchor",
       "title": "The Procedural Anchor",
       "subtitle": "",
