@@ -55,7 +55,7 @@ icons, and you commit + push to redeploy.
 
 ## Blog posts are live Docstream viz sections
 
-- The latest published packages are `@brett_lamy/docstream` **0.3.2** and
+- The latest published packages are `@brett_lamy/docstream` **0.3.7** and
   `@brett_lamy/viz-engine` **0.2.1**. `BlogPanel.tsx` uses Docstream's
   `VizEmbed` component to mount the real scene viewer inside the markdown flow.
 - Blog windows are a **blog-only consumer** of

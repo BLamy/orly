@@ -27,7 +27,7 @@
     "prepare": "git config core.hooksPath .githooks || true"
   },
   "dependencies": {
-    "@brett_lamy/docstream": "^0.3.3",
+    "@brett_lamy/docstream": "^0.3.7",
     "@types/three": "^0.185.1",
     "d3": "^7.9.0",
     "framer-motion": "^11.0.0",

@@ -9,7 +9,7 @@
     "preview": "vite preview"
   },
   "dependencies": {
-    "@brett_lamy/docstream": "^0.3.3",
+    "@brett_lamy/docstream": "^0.3.7",
     "@brett_lamy/viz-engine": "^0.2.1",
     "@orly/mobile-ui": "0.1.0",
     "d3": "^7.9.0",
