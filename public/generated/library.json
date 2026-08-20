@@ -1,6 +1,40 @@
 {
   "books": [
     {
+      "slug": "skills-procedural-anchor",
+      "title": "The Procedural Anchor",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#d6202b",
+      "animal": "generated/skills-procedural-anchor/animal.webp",
+      "href": "?bundle=skills-procedural-anchor",
+      "series": "Daily Papers by Hugging Face",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "From Trace to Card",
+          "duration": 49.319
+        },
+        {
+          "number": 2,
+          "title": "The Representation Earns Six Points",
+          "duration": 47.091
+        },
+        {
+          "number": 3,
+          "title": "Retrieval Is Not Use",
+          "duration": 46.115
+        },
+        {
+          "number": 4,
+          "title": "Audit the Anchor",
+          "duration": 52.245
+        }
+      ],
+      "createdAt": "2026-08-20T14:51:13.559Z"
+    },
+    {
       "slug": "esp32-reset-to-radio",
       "title": "From Reset to Radio",
       "subtitle": "",

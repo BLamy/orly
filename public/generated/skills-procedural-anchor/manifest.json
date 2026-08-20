@@ -1,0 +1,90 @@
+{
+  "format": 3,
+  "slug": "skills-procedural-anchor",
+  "title": "The Procedural Anchor",
+  "paperTitle": "Demystifying Agent Skills: Why They Work-Until They Don't",
+  "paperId": "arXiv:2608.14036",
+  "huggingFaceUrl": "https://huggingface.co/papers/2608.14036",
+  "paperUrl": "https://arxiv.org/abs/2608.14036",
+  "pdfUrl": "https://arxiv.org/pdf/2608.14036",
+  "sourceRepository": "https://github.com/zhiyuanjiang04/demystify-agent-skills",
+  "selectedForDate": "2026-08-19",
+  "popularityEvidence": "#1 Paper of the day; 152 visible Hugging Face upvotes when selected on 2026-08-20 America/New_York",
+  "paperAuthors": ["Zhiyuan Jiang", "Fangrui Huang", "Hanwen Xing", "Xander Wu", "Yipeng Gao", "Rui Cao", "Mengdi Wang", "Shilong Liu", "Yijiang Li"],
+  "animal": "animal.webp",
+  "accent": "#d6202b",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "From Trace to Card",
+      "blurb": "How qualified trajectories become matched workflow and skill artifacts.",
+      "scene": "books/skills-procedural-anchor/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        6.536,
+        12.005,
+        18.495,
+        23.905,
+        30.453,
+        35.852,
+        43.909
+      ],
+      "duration": 49.319
+    },
+    {
+      "number": 2,
+      "title": "The Representation Earns Six Points",
+      "blurb": "Why execution-ready skills beat Workflow Memory in the controlled comparison.",
+      "scene": "books/skills-procedural-anchor/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        5.991,
+        10.832,
+        17.555,
+        23.035,
+        28.805,
+        35.423,
+        42.017
+      ],
+      "duration": 47.091
+    },
+    {
+      "number": 3,
+      "title": "Retrieval Is Not Use",
+      "blurb": "Why offline ranking, actual use, and task success must be measured separately.",
+      "scene": "books/skills-procedural-anchor/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        5.41,
+        10.739,
+        16.788,
+        22.964,
+        27.806,
+        34.737,
+        40.786
+      ],
+      "duration": 46.115
+    },
+    {
+      "number": 4,
+      "title": "Audit the Anchor",
+      "blurb": "How 8,135 trials become a twelve-mode account of when guidance breaks.",
+      "scene": "books/skills-procedural-anchor/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        7.059,
+        14.199,
+        20.236,
+        25.484,
+        33.576,
+        39.207,
+        45.743
+      ],
+      "duration": 52.245
+    }
+  ]
+}
