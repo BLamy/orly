@@ -71,7 +71,7 @@ export function buildScene() {
   tl.tween(rowsU, 1, { at: t - 3.0, dur: 1.8, ease: ease.enter });
   t = tl.hold(t, 0.6);
 
-  t = tl.caption({ at: t, dur: 6.2, text: 'Step two is a backfill script. For every existing project it copies the current target URL and instructions into a default production environment row.' });
+  t = tl.caption({ at: t, dur: 6.2, text: 'Step two is a backfill script that inspects each project URL. A publicly reachable address becomes production, a pull request URL becomes a preview, and localhost becomes a local development environment.' });
   tl.tween(step, 2, { at: t - 5.8, dur: 0.4, ease: ease.move });
   tl.tween(backfillU, 1, { at: t - 4.6, dur: 2.2, ease: ease.move });
   t = tl.hold(t, 0.6);
@@ -99,7 +99,7 @@ export function buildScene() {
   tl.tween(cam, { x: 700, y: 420, k: 1.12 }, { at: t - 5.2, dur: 1.4, ease: ease.move });
   t = tl.hold(t, 0.6);
 
-  t = tl.caption({ at: t, dur: 6.4, text: 'Then a second backfill maps history: a run whose URL matches an environment gets that row, and everything else defaults to production. Only when every run has one does the column become required.' });
+  t = tl.caption({ at: t, dur: 6.4, text: 'Then a second backfill maps history: a run whose URL matches an environment gets that row, and the rest are classified by the same URL inspection. Only when every run has one does the column become required.' });
   tl.tween(runFillU, 1, { at: t - 5.8, dur: 2.2, ease: ease.move });
   tl.tween(runLockU, 1, { at: t - 2.6, dur: 0.6, ease: ease.pop });
   t = tl.hold(t, 0.6);
@@ -209,14 +209,15 @@ export function Render({ s }: { s: SceneState }) {
       {backfillU > 0 && backfillU < 1 && <g opacity={clamp01(backfillU * 6) * clamp01((1 - backfillU) * 6)}>
         <rect x={lerp(128, 646, backfillU)} y={lerp(292, 330, backfillU)} width={lerp(284, 496, backfillU)} height={30} rx={8}
           fill="none" stroke={colors.WARM} strokeWidth={1.6} strokeDasharray="6 5" />
-        <text x={lerp(150, 680, backfillU)} y={lerp(312, 350, backfillU)} fill={colors.WARM} fontSize={11.5} fontFamily={mono}>copy url + instructions</text>
+        <text x={lerp(150, 680, backfillU)} y={lerp(312, 350, backfillU)} fill={colors.WARM} fontSize={11.5} fontFamily={mono}>classify url · copy instructions</text>
       </g>}
 
       {/* dry-run → live chip */}
       {dryU > 0 && <g opacity={dryU * (1 - closeU)} transform="translate(105 415)">
-        <rect width={330} height={64} rx={14} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.6} />
+        <rect width={330} height={86} rx={14} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.6} />
         <text x={20} y={26} fill={colors.WARM} fontSize={12.5} fontFamily={mono}>backfill --project-id … (dry run)</text>
-        <text x={20} y={48} fill={colors.MUTED} fontSize={12} fontFamily={mono}>report only · mutate with <tspan fill={colors.NEGATIVE}>--live</tspan></text>
+        <text x={20} y={48} fill={colors.MUTED} fontSize={11} fontFamily={mono}>reachable → prod · PR url → preview · localhost → local</text>
+        <text x={20} y={70} fill={colors.MUTED} fontSize={12} fontFamily={mono}>report only · mutate with <tspan fill={colors.NEGATIVE}>--live</tspan></text>
       </g>}
 
       {/* feature-flagged read path: env_reads off → old columns, on → environment rows */}
@@ -251,8 +252,8 @@ export function Render({ s }: { s: SceneState }) {
           <text x={340} y={80} fill={colors.WARM} fontSize={11.5} fontFamily={mono}>→ staging      (url match)</text>
         </g>
         <g opacity={clamp01(runFillU * 2 - 1.2)}>
-          <text x={24} y={102} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>run 302 · legacy · no match</text>
-          <text x={340} y={102} fill={colors.POSITIVE} fontSize={11.5} fontFamily={mono}>→ production   (default)</text>
+          <text x={24} y={102} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>run 302 · localhost:3000</text>
+          <text x={340} y={102} fill={colors.ACCENT} fontSize={11.5} fontFamily={mono}>→ local dev    (localhost)</text>
         </g>
         <path d="M 330 -25 C 330 -45, 700 -80, 700 -48" fill="none" stroke={colors.SECONDARY} strokeWidth={1.8} strokeDasharray="5 5" opacity={0.7} />
       </g>}

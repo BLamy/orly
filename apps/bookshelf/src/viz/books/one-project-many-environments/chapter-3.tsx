@@ -87,12 +87,12 @@ export function buildScene() {
   tl.tween(focus, 0, { at: t - 5.6, dur: 1.2, ease: ease.move });
   t = tl.hold(t, 0.6);
 
-  t = tl.caption({ at: t, dur: 6.4, text: 'With one exception worth designing for: some journeys only work in some worlds. Stripe checkout uses test cards, so we mark it staging and preview only.' });
+  t = tl.caption({ at: t, dur: 6.4, text: 'Journeys follow the same migration playbook: the backfill marks every journey as applicable to every environment, so day one behaves exactly like today.' });
   tl.tween(lanesU, 0.1, { at: t - 6.0, dur: 1.0, ease: ease.move });
   tl.tween(matrixU, 1, { at: t - 5.2, dur: 2.4, ease: ease.enter });
   t = tl.hold(t, 0.5);
 
-  t = tl.caption({ at: t, dur: 5.8, text: 'The nightly production run simply skips it. No real charges, no special casing in the journey itself, just an applicability row in the database.' });
+  t = tl.caption({ at: t, dur: 5.8, text: 'Then we opt out where a journey cannot work. Stripe checkout would run real charges in production, so we uncheck that one cell, and the nightly run simply skips it.' });
   tl.tween(skipU, 1, { at: t - 5.2, dur: 0.7, ease: ease.pop });
   t = tl.hold(t, 0.6);
 
@@ -225,12 +225,13 @@ export function Render({ s }: { s: SceneState }) {
               const cellShow = clamp01(matrixU * 8 - (r * 3 + c) * 0.5);
               return <g key={env} opacity={cellShow} transform={`translate(${700 + c * 130} ${233 + r * 62})`}>
                 {!ok && skipU > 0.05 && <circle r={15 + 3 * skipU} fill={colors.NEGATIVE} opacity={0.14 * skipU} />}
-                <text textAnchor="middle" y={6} fill={ok ? colors.POSITIVE : colors.NEGATIVE} fontSize={ok ? 15 : 17} fontWeight={800}>{ok ? '✓' : '✕'}</text>
+                <text textAnchor="middle" y={6} fill={ok || skipU < 0.5 ? colors.POSITIVE : colors.NEGATIVE} fontSize={ok || skipU < 0.5 ? 15 : 17} fontWeight={800}>{ok || skipU < 0.5 ? '✓' : '✕'}</text>
               </g>;
             })}
           </g>;
         })}
-        {skipU > 0.3 && <text x={365} y={492} fill={colors.NEGATIVE} fontSize={12.5} fontFamily={mono} opacity={(skipU - 0.3) * 1.4}>production skips it · no real charges</text>}
+        {skipU < 0.5 && <text x={365} y={492} fill={colors.POSITIVE} fontSize={12.5} fontFamily={mono} opacity={clamp01(matrixU * 2 - 1) * (1 - skipU * 2)}>backfill default: applicable everywhere</text>}
+        {skipU > 0.3 && <text x={365} y={492} fill={colors.NEGATIVE} fontSize={12.5} fontFamily={mono} opacity={(skipU - 0.3) * 1.4}>opt-out: production skips it · no real charges</text>}
       </g>}
 
       {/* close */}

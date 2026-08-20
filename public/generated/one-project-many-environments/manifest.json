@@ -14,58 +14,58 @@
       "audio": "audio/chapter-1.mp3",
       "cues": [
         0,
-        8.452,
-        14.977,
-        24.683,
-        30.291,
-        37.199,
-        45.697,
-        53.337
+        8.371,
+        15.209,
+        24.323,
+        29.245,
+        36.072,
+        44.291,
+        51.849
       ],
-      "duration": 62.277
+      "duration": 61.022
     },
     {
       "number": 2,
       "title": "The Database Solution",
-      "blurb": "Expand, migrate, contract: add project_environments, backfill behind a read-path feature flag, repoint test runs at their environment, then drop the old columns.",
+      "blurb": "Expand, migrate, contract: add project_environments, classify existing URLs into environments behind a read-path feature flag, repoint test runs, then drop the old columns.",
       "scene": "books/one-project-many-environments/chapter-2",
       "audio": "audio/chapter-2.mp3",
       "cues": [
         0,
-        11.308,
-        21.676,
-        30.349,
-        38.476,
-        47.299,
-        55.856,
-        64.447,
-        73.514,
-        85.066,
-        95.097,
-        106.568
+        10.623,
+        21.153,
+        30.174,
+        39.567,
+        52.558,
+        61.057,
+        69.08,
+        77.775,
+        89.003,
+        99.301,
+        112.536
       ],
-      "duration": 117.168
+      "duration": 122.741
     },
     {
       "number": 3,
       "title": "Different Environments, Different Triggers",
-      "blurb": "Production runs nightly on weekdays, staging runs when a deploy to main completes, pull requests run when ready for review, and journeys are scoped to the environments where they work.",
+      "blurb": "Production runs nightly on weekdays, staging runs when a deploy to main completes, pull requests run when ready for review, and journeys default to every environment with per-world opt-outs.",
       "scene": "books/one-project-many-environments/chapter-3",
       "audio": "audio/chapter-3.mp3",
       "cues": [
         0,
-        8.8,
-        16.475,
-        22.512,
-        31.266,
-        38.534,
-        47.683,
-        58.457,
-        69.034,
-        79.041,
-        88.062
+        9.3,
+        16.66,
+        22.326,
+        30.499,
+        36.908,
+        45.244,
+        56.482,
+        66.908,
+        75.859,
+        84.787
       ],
-      "duration": 97.199
+      "duration": 93.204
     }
   ]
 }
