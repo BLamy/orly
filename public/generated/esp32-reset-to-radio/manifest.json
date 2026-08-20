@@ -1,0 +1,81 @@
+{
+  "format": 3,
+  "slug": "esp32-reset-to-radio",
+  "title": "From Reset to Radio",
+  "animal": "animal.webp",
+  "accent": "#a01f3c",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Boot Conveyor",
+      "blurb": "How reset code chooses, validates, maps, and starts an application image.",
+      "scene": "books/esp32-reset-to-radio/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        6.188,
+        14.362,
+        19.749,
+        27.818,
+        34.725,
+        42.562,
+        51.13
+      ],
+      "duration": 57.585
+    },
+    {
+      "number": 2,
+      "title": "The Scheduler Loom",
+      "blurb": "How two processor cores share ready work under FreeRTOS.",
+      "scene": "books/esp32-reset-to-radio/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        7.558,
+        14.942,
+        22.43,
+        30.035,
+        36.966,
+        43.828,
+        50.19
+      ],
+      "duration": 57.957
+    },
+    {
+      "number": 3,
+      "title": "The Interrupt Handoff",
+      "blurb": "How peripherals capture urgent moments and defer the heavier work.",
+      "scene": "books/esp32-reset-to-radio/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        5.851,
+        12.121,
+        18.646,
+        24.161,
+        33.077,
+        38.429,
+        45.755
+      ],
+      "duration": 52.012
+    },
+    {
+      "number": 4,
+      "title": "The Packet Elevator",
+      "blurb": "How one packet crosses events, lwIP, esp-netif, the Wi-Fi driver, and the radio.",
+      "scene": "books/esp32-reset-to-radio/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        7.918,
+        15.732,
+        21.514,
+        29.246,
+        36.27,
+        43.166,
+        51.003
+      ],
+      "duration": 60.465
+    }
+  ]
+}
