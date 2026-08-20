@@ -87,12 +87,12 @@ export function buildScene() {
   tl.tween(focus, 0, { at: t - 5.6, dur: 1.2, ease: ease.move });
   t = tl.hold(t, 0.6);
 
-  t = tl.caption({ at: t, dur: 6.4, text: 'Journeys follow the same migration playbook: the backfill marks every journey as applicable to every environment, so day one behaves exactly like today.' });
+  t = tl.caption({ at: t, dur: 6.4, text: 'Journeys need no migration at all. The exclusions table starts empty, and an empty table means every journey runs in every environment, exactly like today.' });
   tl.tween(lanesU, 0, { at: t - 6.0, dur: 1.0, ease: ease.move });
   tl.tween(matrixU, 1, { at: t - 5.2, dur: 2.4, ease: ease.enter });
   t = tl.hold(t, 0.5);
 
-  t = tl.caption({ at: t, dur: 5.8, text: 'Then we opt out where a journey cannot work. Stripe checkout would run real charges in production, so we uncheck that one cell, and the nightly run simply skips it.' });
+  t = tl.caption({ at: t, dur: 5.8, text: 'Then we exclude where a journey cannot work. Stripe checkout would run real charges in production, so one exclusion row keeps it out, and the nightly run simply skips it.' });
   tl.tween(skipU, 1, { at: t - 5.2, dur: 0.7, ease: ease.pop });
   t = tl.hold(t, 0.6);
 
@@ -208,7 +208,7 @@ export function Render({ s }: { s: SceneState }) {
       {/* journey × environment applicability matrix */}
       {matrixU > 0 && <g opacity={matrixU}>
         <text x={365} y={130} fill={colors.TEXT} fontSize={21} fontWeight={750}>Which journeys run where</text>
-        <text x={365} y={152} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>journey_environments · applicability</text>
+        <text x={365} y={152} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>journey_exclusions · runs everywhere unless excluded</text>
         {ENV_COLS.map((env, c) => (
           <text key={env} x={700 + c * 130} y={192} textAnchor="middle" fill={c === 0 ? colors.POSITIVE : c === 1 ? colors.WARM : colors.SECONDARY}
             fontSize={13} fontWeight={700} fontFamily={mono} opacity={clamp01(matrixU * 3 - c * 0.5)}>{env}</text>
@@ -230,8 +230,8 @@ export function Render({ s }: { s: SceneState }) {
             })}
           </g>;
         })}
-        {skipU < 0.5 && <text x={365} y={492} fill={colors.POSITIVE} fontSize={12.5} fontFamily={mono} opacity={clamp01(matrixU * 2 - 1) * (1 - skipU * 2)}>backfill default: applicable everywhere</text>}
-        {skipU > 0.3 && <text x={365} y={492} fill={colors.NEGATIVE} fontSize={12.5} fontFamily={mono} opacity={(skipU - 0.3) * 1.4}>opt-out: production skips it · no real charges</text>}
+        {skipU < 0.5 && <text x={365} y={492} fill={colors.POSITIVE} fontSize={12.5} fontFamily={mono} opacity={clamp01(matrixU * 2 - 1) * (1 - skipU * 2)}>no exclusions yet: every journey runs everywhere</text>}
+        {skipU > 0.3 && <text x={365} y={492} fill={colors.NEGATIVE} fontSize={12.5} fontFamily={mono} opacity={(skipU - 0.3) * 1.4}>exclusion row: production skips it · no real charges</text>}
       </g>}
 
       {/* close */}

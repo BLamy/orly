@@ -2,7 +2,7 @@
   "format": 3,
   "slug": "one-project-many-environments",
   "title": "One Project, Many Environments",
-  "subtitle": "A proposal: give every deployment its own environment record, instructions, and trigger",
+  "subtitle": "A proposal: environments as overlays on project defaults",
   "animal": "animal.webp",
   "accent": "#1f6fb2",
   "chapters": [
@@ -14,59 +14,55 @@
       "audio": "audio/chapter-1.mp3",
       "cues": [
         0,
-        8.603,
-        14.663,
-        24.915,
-        30.058,
-        40.519,
-        49.853,
-        57.121
+        8.44,
+        14.896,
+        24.95,
+        30.825,
+        42.168,
+        51.537,
+        59.013
       ],
-      "duration": 66.409
+      "duration": 68.081
     },
     {
       "number": 2,
       "title": "The Database Solution",
-      "blurb": "Four tables, three steps, no flag day: projects and test_runs change in place, project_environments and journey_environments are new, all behind a dry-run backfill and a read-path flag.",
+      "blurb": "Project fields become the defaults; environment rows overlay them, overriding or inheriting per field, with one nullable run column and a journey exclusions table — everything additive.",
       "scene": "books/one-project-many-environments/chapter-2",
       "audio": "audio/chapter-2.mp3",
       "cues": [
         0,
-        10.194,
-        18.982,
-        28.839,
-        42.062,
-        50.967,
-        64.26,
-        76.753,
-        84.775,
-        94.911,
-        105.325,
-        114.741,
-        124.028
+        10.96,
+        21.815,
+        32.124,
+        41.377,
+        51.431,
+        62.286,
+        73.025,
+        81.152
       ],
-      "duration": 132.864
+      "duration": 90.231
     },
     {
       "number": 3,
       "title": "Different Environments, Different Triggers",
-      "blurb": "Production runs nightly on weekdays, staging runs when a deploy to main completes, pull requests run when ready for review, and journeys default to every environment with per-world opt-outs.",
+      "blurb": "Production runs nightly on weekdays, staging runs when a deploy to main completes, pull requests run when ready for review, and journeys run everywhere unless an exclusion row says otherwise.",
       "scene": "books/one-project-many-environments/chapter-3",
       "audio": "audio/chapter-3.mp3",
       "cues": [
         0,
-        9.253,
-        16.858,
-        21.989,
-        29.802,
-        36.606,
-        44.535,
-        55.065,
-        65.015,
-        74.164,
-        83.66
+        8.499,
+        15.882,
+        20.851,
+        28.886,
+        35.585,
+        43.897,
+        54.81,
+        64.203,
+        74.489,
+        83.928
       ],
-      "duration": 92.461
+      "duration": 92.554
     }
   ]
 }

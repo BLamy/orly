@@ -3,7 +3,7 @@
     {
       "slug": "one-project-many-environments",
       "title": "One Project, Many Environments",
-      "subtitle": "A proposal: give every deployment its own environment record, instructions, and trigger",
+      "subtitle": "A proposal: environments as overlays on project defaults",
       "author": "Brett Lamy",
       "role": "Software Engineer at Replay",
       "color": "#1f6fb2",
@@ -13,20 +13,20 @@
         {
           "number": 1,
           "title": "The Problem",
-          "duration": 66.409
+          "duration": 68.081
         },
         {
           "number": 2,
           "title": "The Database Solution",
-          "duration": 132.864
+          "duration": 90.231
         },
         {
           "number": 3,
           "title": "Different Environments, Different Triggers",
-          "duration": 92.461
+          "duration": 92.554
         }
       ],
-      "createdAt": "2026-08-20T18:59:53.607Z"
+      "createdAt": "2026-08-20T19:46:25.946Z"
     },
     {
       "slug": "skills-procedural-anchor",
