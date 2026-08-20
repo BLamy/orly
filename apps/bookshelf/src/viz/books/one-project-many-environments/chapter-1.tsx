@@ -53,14 +53,14 @@ export function buildScene() {
   tl.tween(overrideU, 1, { at: t - 3.2, dur: 1.8, ease: ease.move });
   t = tl.hold(t, 0.6);
 
-  t = tl.caption({ at: t, dur: 6.2, text: 'But the override only changes where the run pointed. Nothing records which environment that address was supposed to be.' });
+  t = tl.caption({ at: t, dur: 6.2, text: 'But a URL is just an address. It carries no knowledge of how to test that world: not which login to use, not which steps differ, and no record of which environment it was supposed to be.' });
   tl.tween(mysteryU, 1, { at: t - 5.4, dur: 1.6, ease: ease.enter });
   tl.tween(cam, { x: 800, y: 430, k: 1.22 }, { at: t - 4.6, dur: 1.4, ease: ease.move });
   tl.tween(projectU, 0.12, { at: t - 6.2, dur: 0.8, ease: ease.move });
   tl.tween(queueU, 0.05, { at: t - 6.2, dur: 0.8, ease: ease.move });
   t = tl.hold(t, 0.6);
 
-  t = tl.caption({ at: t, dur: 6, text: 'Three runs, three different addresses, and no way to filter production history from staging noise or a preview experiment.' });
+  t = tl.caption({ at: t, dur: 6, text: 'So slight environmental differences quietly break: the staging login fails against the preview build, and no one can filter production history from staging noise.' });
   tl.tween(mysteryU, 1.6, { at: t - 5.2, dur: 0.5, ease: ease.pop });
   tl.tween(mysteryU, 1, { at: t - 4.5, dur: 0.5, ease: ease.move });
   t = tl.hold(t, 0.6);
@@ -152,6 +152,7 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           </g>;
         })}
+        <text x={565} y={614} fill={colors.NEGATIVE} fontSize={12.5} fontFamily={mono} opacity={mysteryU * (1 - closeU)}>a url carries no logins · no instructions · no environment</text>
       </g>
 
       {/* Override packet: a URL diving into run 419 */}

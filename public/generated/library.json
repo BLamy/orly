@@ -13,20 +13,20 @@
         {
           "number": 1,
           "title": "The Problem",
-          "duration": 61.022
+          "duration": 66.409
         },
         {
           "number": 2,
           "title": "The Database Solution",
-          "duration": 122.741
+          "duration": 132.864
         },
         {
           "number": 3,
           "title": "Different Environments, Different Triggers",
-          "duration": 93.204
+          "duration": 92.461
         }
       ],
-      "createdAt": "2026-08-20T18:45:28.489Z"
+      "createdAt": "2026-08-20T18:59:53.607Z"
     },
     {
       "slug": "skills-procedural-anchor",

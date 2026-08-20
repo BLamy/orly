@@ -88,7 +88,7 @@ export function buildScene() {
   t = tl.hold(t, 0.6);
 
   t = tl.caption({ at: t, dur: 6.4, text: 'Journeys follow the same migration playbook: the backfill marks every journey as applicable to every environment, so day one behaves exactly like today.' });
-  tl.tween(lanesU, 0.1, { at: t - 6.0, dur: 1.0, ease: ease.move });
+  tl.tween(lanesU, 0, { at: t - 6.0, dur: 1.0, ease: ease.move });
   tl.tween(matrixU, 1, { at: t - 5.2, dur: 2.4, ease: ease.enter });
   t = tl.hold(t, 0.5);
 

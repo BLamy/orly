@@ -9,42 +9,43 @@
     {
       "number": 1,
       "title": "The Problem",
-      "blurb": "One target URL and one set of instructions per project cannot describe a product that runs in many places, and override URLs leave runs with no environment identity.",
+      "blurb": "One target URL and one set of instructions per project cannot describe a product that runs in many places, and an override URL carries no logins, instructions, or environment identity.",
       "scene": "books/one-project-many-environments/chapter-1",
       "audio": "audio/chapter-1.mp3",
       "cues": [
         0,
-        8.371,
-        15.209,
-        24.323,
-        29.245,
-        36.072,
-        44.291,
-        51.849
+        8.603,
+        14.663,
+        24.915,
+        30.058,
+        40.519,
+        49.853,
+        57.121
       ],
-      "duration": 61.022
+      "duration": 66.409
     },
     {
       "number": 2,
       "title": "The Database Solution",
-      "blurb": "Expand, migrate, contract: add project_environments, classify existing URLs into environments behind a read-path feature flag, repoint test runs, then drop the old columns.",
+      "blurb": "Four tables, three steps, no flag day: projects and test_runs change in place, project_environments and journey_environments are new, all behind a dry-run backfill and a read-path flag.",
       "scene": "books/one-project-many-environments/chapter-2",
       "audio": "audio/chapter-2.mp3",
       "cues": [
         0,
-        10.623,
-        21.153,
-        30.174,
-        39.567,
-        52.558,
-        61.057,
-        69.08,
-        77.775,
-        89.003,
-        99.301,
-        112.536
+        10.194,
+        18.982,
+        28.839,
+        42.062,
+        50.967,
+        64.26,
+        76.753,
+        84.775,
+        94.911,
+        105.325,
+        114.741,
+        124.028
       ],
-      "duration": 122.741
+      "duration": 132.864
     },
     {
       "number": 3,
@@ -54,18 +55,18 @@
       "audio": "audio/chapter-3.mp3",
       "cues": [
         0,
-        9.3,
-        16.66,
-        22.326,
-        30.499,
-        36.908,
-        45.244,
-        56.482,
-        66.908,
-        75.859,
-        84.787
+        9.253,
+        16.858,
+        21.989,
+        29.802,
+        36.606,
+        44.535,
+        55.065,
+        65.015,
+        74.164,
+        83.66
       ],
-      "duration": 93.204
+      "duration": 92.461
     }
   ]
 }
