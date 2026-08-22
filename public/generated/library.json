@@ -1,6 +1,45 @@
 {
   "books": [
     {
+      "slug": "envharness-adaptive-worlds",
+      "title": "Awakening Static Worlds",
+      "subtitle": "How EnvHarness reshapes frozen benchmarks around the learner",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#d6202b",
+      "href": "?bundle=envharness-adaptive-worlds",
+      "series": "Daily Papers by Hugging Face",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A membrane around the world",
+          "duration": 55.17
+        },
+        {
+          "number": 2,
+          "title": "Pre-roll and three gates",
+          "duration": 53.963
+        },
+        {
+          "number": 3,
+          "title": "Stitching a longer horizon",
+          "duration": 56.749
+        },
+        {
+          "number": 4,
+          "title": "The diagnostic lathe",
+          "duration": 61.625
+        },
+        {
+          "number": 5,
+          "title": "The lesson moves with the learner",
+          "duration": 71.843
+        }
+      ],
+      "createdAt": "2026-08-22T10:34:22.905Z",
+      "animal": "generated/envharness-adaptive-worlds/animal.webp"
+    },
+    {
       "slug": "agent-codeowners",
       "title": "Agent CODEOWNERS",
       "subtitle": "",

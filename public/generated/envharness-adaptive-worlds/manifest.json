@@ -1,0 +1,105 @@
+{
+  "format": 3,
+  "slug": "envharness-adaptive-worlds",
+  "title": "Awakening Static Worlds",
+  "subtitle": "How EnvHarness reshapes frozen benchmarks around the learner",
+  "animal": "animal.webp",
+  "accent": "#d6202b",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A membrane around the world",
+      "blurb": "An agent can improve only by meeting a world that teaches it something new.",
+      "scene": "books/envharness-adaptive-worlds/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        4.098,
+        10.832,
+        17.078,
+        22.929,
+        29.5,
+        35.119,
+        41.633,
+        47.798
+      ],
+      "duration": 55.17
+    },
+    {
+      "number": 2,
+      "title": "Pre-roll and three gates",
+      "blurb": "The first lever changes where the lesson begins, not what success means.",
+      "scene": "books/envharness-adaptive-worlds/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        4.528,
+        12.214,
+        18.414,
+        25.078,
+        29.71,
+        34.9,
+        41.785,
+        47.717
+      ],
+      "duration": 53.963
+    },
+    {
+      "number": 3,
+      "title": "Stitching a longer horizon",
+      "blurb": "A short task can teach the wrong reflex: stop celebrating as soon as one goal turns green.",
+      "scene": "books/envharness-adaptive-worlds/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        5.608,
+        9.729,
+        18.668,
+        24.346,
+        30.511,
+        38.139,
+        43.282,
+        49.365
+      ],
+      "duration": 56.749
+    },
+    {
+      "number": 4,
+      "title": "The diagnostic lathe",
+      "blurb": "Environment Rigger treats the policy as a black box and begins with five baseline rollouts.",
+      "scene": "books/envharness-adaptive-worlds/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        5.863,
+        11.889,
+        19.725,
+        26.54,
+        32.693,
+        41.726,
+        47.798,
+        55.379
+      ],
+      "duration": 61.625
+    },
+    {
+      "number": 5,
+      "title": "The lesson moves with the learner",
+      "blurb": "The test stays untouched. Skills learned in reshaped worlds must earn their result on held-out tasks.",
+      "scene": "books/envharness-adaptive-worlds/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        6.049,
+        13.584,
+        21.688,
+        31.962,
+        38.278,
+        50.225,
+        58.712,
+        65.109
+      ],
+      "duration": 71.843
+    }
+  ]
+}
