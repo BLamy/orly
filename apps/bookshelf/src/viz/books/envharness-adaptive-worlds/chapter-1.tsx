@@ -25,6 +25,7 @@ export function buildScene() {
   const freezeU = tl.channel('frozen backend', 0);
   const verifierU = tl.channel('verifier beam', 0);
   const domainsP = tl.channel('benchmark domains', 0);
+  const domainStageU = tl.channel('benchmark domain stage', 0);
   const close = tl.channel('closing equation', 0);
 
   tl.caption({ at: 0.4, dur: 6.2, text: 'An agent can improve only by meeting a world that teaches it something new.' });
@@ -59,12 +60,13 @@ export function buildScene() {
   tl.tween(cam, { x: 785, y: 335, k: 1.18 }, { at: 50.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 54.9, dur: 6.8, text: 'Five very different benchmarks now accept the same layer. One frozen lesson can become a lesson shaped for this learner.' });
+  tl.tween(cam, CAMERA_HOME, { at: 54.2, dur: 1.2, ease: ease.move });
+  tl.tween(domainStageU, 1, { at: 54.6, dur: 0.9, ease: ease.move });
   tl.tween(domainsP, 5, { at: 55.4, dur: 2.1, ease: ease.enter });
-  tl.tween(cam, CAMERA_HOME, { at: 57.4, dur: 1.2, ease: ease.move });
   tl.tween(close, 1, { at: 60.2, dur: 1.0, ease: ease.move });
   tl.hold(61.8, 1.0);
 
-  return { tl, cam, worldU, orbitU, methodP, wrapU, flow, stackU, freezeU, verifierU, domainsP, close };
+  return { tl, cam, worldU, orbitU, methodP, wrapU, flow, stackU, freezeU, verifierU, domainsP, domainStageU, close };
 }
 
 const scene = buildScene();
@@ -76,6 +78,7 @@ export function Render({ s }: { s: SceneState }) {
   const stackU = s.get(scene.stackU);
   const close = s.get(scene.close);
   const quiet = 1 - close;
+  const domainStage = s.get(scene.domainStageU);
   const flow = s.get(scene.flow);
   const phase = flow % 1;
   const actionX = 165 + 355 * phase;
@@ -84,6 +87,7 @@ export function Render({ s }: { s: SceneState }) {
     <Camera {...s.get(scene.cam)}>
       <g opacity={quiet}>
         <text x="640" y="70" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="700">A membrane around a frozen world</text>
+        <g opacity={1 - domainStage}>
         <g opacity={worldU}>
           <circle cx="640" cy="335" r="118" fill={colors.PANEL} stroke={colors.MUTED} strokeWidth="3" />
           <path d="M600 292 l18 18 -18 18 22 22 -18 18 M680 292 l-18 18 18 18 -22 22 18 18" fill="none" stroke={colors.ACCENT} strokeWidth="4" opacity="0.7" />
@@ -112,12 +116,12 @@ export function Render({ s }: { s: SceneState }) {
           <circle cx="129" cy="317" r="18" fill={colors.ACCENT} opacity="0.24" />
           <text x="129" y="350" textAnchor="middle" fill={colors.TEXT} fontSize="20" fontWeight="700">policy</text>
           <text x="129" y="373" textAnchor="middle" fill={colors.MUTED} fontSize="14">black box</text>
-          <path d="M188 318 H 520" stroke={colors.WARM} strokeWidth="3" opacity="0.38" />
-          <path d="M520 354 H 188" stroke={colors.ACCENT} strokeWidth="3" opacity="0.38" />
-          <circle cx={actionX} cy="318" r="9" fill={colors.WARM} />
-          <text x={actionX} y="300" textAnchor="middle" fill={colors.WARM} fontSize="13">Action</text>
-          <circle cx={obsX} cy="354" r="9" fill={colors.ACCENT} />
-          <text x={obsX} y="378" textAnchor="middle" fill={colors.ACCENT} fontSize="13">Observation</text>
+          <path d="M188 298 H 520" stroke={colors.WARM} strokeWidth="3" opacity="0.38" />
+          <path d="M520 372 H 188" stroke={colors.ACCENT} strokeWidth="3" opacity="0.38" />
+          <circle cx={actionX} cy="298" r="9" fill={colors.WARM} />
+          <text x={actionX} y="279" textAnchor="middle" fill={colors.WARM} fontSize="13">Action</text>
+          <circle cx={obsX} cy="372" r="9" fill={colors.ACCENT} />
+          <text x={obsX} y="397" textAnchor="middle" fill={colors.ACCENT} fontSize="13">Observation</text>
         </g>
 
         <g opacity={s.get(scene.verifierU)}>
@@ -126,15 +130,19 @@ export function Render({ s }: { s: SceneState }) {
           <text x="1043" y="246" textAnchor="middle" fill={colors.POSITIVE} fontSize="19" fontWeight="700">original verifier</text>
           <text x="1043" y="277" textAnchor="middle" fill={colors.TEXT} fontSize="17">evaluate().success</text>
         </g>
+        </g>
 
         <g>
           {DOMAINS.map((d, i) => {
             const u = clamp01(s.get(scene.domainsP) - i);
-            return <g key={d} opacity={u} transform={`translate(${165 + i * 238} 558)`}>
-              <rect x="-92" y="-24" width="184" height="48" rx="16" fill="#111827" stroke={i % 2 ? colors.TEAL : colors.ACCENT} />
+            const x = i < 3 ? 300 + i * 340 : 470 + (i - 3) * 340;
+            const y = i < 3 ? 250 : 385;
+            return <g key={d} opacity={u} transform={`translate(${x} ${y})`}>
+              <rect x="-110" y="-28" width="220" height="56" rx="18" fill="#111827" stroke={i % 2 ? colors.TEAL : colors.ACCENT} strokeWidth="3" />
               <text y="6" textAnchor="middle" fill={colors.TEXT} fontSize="16">{d}</text>
             </g>;
           })}
+          <text x="640" y="155" textAnchor="middle" fill={colors.SECONDARY} fontSize="22" fontWeight="700" opacity={clamp01(s.get(scene.domainsP))}>one interface layer · five benchmark families</text>
         </g>
       </g>
 

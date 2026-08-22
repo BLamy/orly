@@ -24,6 +24,8 @@ export function buildScene() {
   const postU = tl.channel('post state refresh', 0);
   const verifierU = tl.channel('reward verifier bypass', 0);
   const codeU = tl.channel('compiled subclass', 0);
+  const verifierStageU = tl.channel('verifier stage', 0);
+  const codeStageU = tl.channel('compiled lesson stage', 0);
   const close = tl.channel('clean gate recap', 0);
 
   tl.caption({ at: 0.4, dur: 6.2, text: 'The first lever changes where the lesson begins, not what success means.' });
@@ -59,15 +61,17 @@ export function buildScene() {
   tl.tween(cam, { x: 760, y: 360, k: 1.1 }, { at: 43.2, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 48.2, dur: 6.4, text: 'Reward and terminal evaluation bypass all three gates. The trusted verifier keeps the final word.' });
+  tl.tween(verifierStageU, 1, { at: 47.8, dur: 0.9, ease: ease.move });
   tl.tween(verifierU, 1, { at: 48.8, dur: 1.4, ease: ease.draw });
   tl.tween(cam, CAMERA_HOME, { at: 51.2, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 55.0, dur: 7.0, text: 'The designer writes a Rules subclass, the loader compiles it, and one episode tape now teaches a different behavior.' });
+  tl.tween(codeStageU, 1, { at: 54.6, dur: 0.9, ease: ease.move });
   tl.tween(codeU, 1, { at: 55.6, dur: 1.0, ease: ease.move });
   tl.tween(close, 1, { at: 60.0, dur: 1.0, ease: ease.move });
   tl.hold(62.2, 0.9);
 
-  return { tl, cam, tapeU, setupU, replayP, policyU, gatesP, packet, blockU, postU, verifierU, codeU, close };
+  return { tl, cam, tapeU, setupU, replayP, policyU, gatesP, packet, blockU, postU, verifierU, codeU, verifierStageU, codeStageU, close };
 }
 
 const scene = buildScene();
@@ -85,12 +89,15 @@ function Tape({ reveal, opacity = 1 }: { reveal: number; opacity?: number }) {
 export function Render({ s }: { s: SceneState }) {
   const close = s.get(scene.close);
   const quiet = 1 - close;
+  const verifierStage = s.get(scene.verifierStageU);
+  const codeStage = s.get(scene.codeStageU);
   const replayP = s.get(scene.replayP);
   const packet = s.get(scene.packet);
   const px = 310 + packet * 760;
   return <Camera {...s.get(scene.cam)}>
     <g opacity={quiet}>
       <text x="640" y="70" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="700">One episode tape, four interface levers</text>
+      <g opacity={1 - verifierStage}>
       <Tape reveal={s.get(scene.tapeU)} />
 
       <g opacity={s.get(scene.setupU)}>
@@ -157,6 +164,34 @@ export function Render({ s }: { s: SceneState }) {
         <text x="1068" y="142" textAnchor="middle" fill={colors.SECONDARY} fontSize="14" fontFamily={colors.font.mono}>load_rules_subclass(code)</text>
         <text x="1068" y="178" textAnchor="middle" fill={colors.TEXT} fontSize="19" fontFamily={colors.font.mono}>class _Rules(Rules)</text>
         <text x="1068" y="207" textAnchor="middle" fill={colors.MUTED} fontSize="14">generated Python · one layer</text>
+      </g>
+      </g>
+
+      <g opacity={verifierStage * (1 - codeStage)}>
+        <text x="640" y="155" textAnchor="middle" fill={colors.POSITIVE} fontSize="22" fontWeight="700">the verifier bypasses every interface gate</text>
+        {[
+          { key: 'A', label: 'action', color: colors.WARM, x: 350 },
+          { key: 'T', label: 'transition', color: colors.SECONDARY, x: 640 },
+          { key: 'O', label: 'observation', color: colors.TEAL, x: 930 },
+        ].map((gate) => <g key={gate.key}>
+          <rect x={gate.x - 86} y="220" width="172" height="92" rx="22" fill="#111827" stroke={gate.color} strokeWidth="3" />
+          <text x={gate.x} y="258" textAnchor="middle" fill={gate.color} fontSize="27" fontWeight="800">{gate.key}</text>
+          <text x={gate.x} y="288" textAnchor="middle" fill={colors.MUTED} fontSize="14">{gate.label} gate</text>
+        </g>)}
+        <path d="M180 405 H820" stroke={colors.POSITIVE} strokeWidth="7" strokeLinecap="round" />
+        <path d="M792 390 l28 15 -28 15" fill="none" stroke={colors.POSITIVE} strokeWidth="7" />
+        <rect x="820" y="365" width="310" height="82" rx="22" fill="#0b211c" stroke={colors.POSITIVE} strokeWidth="3" />
+        <text x="975" y="398" textAnchor="middle" fill={colors.POSITIVE} fontSize="18" fontWeight="700">reward + evaluate()</text>
+        <text x="975" y="426" textAnchor="middle" fill={colors.TEXT} fontSize="15">original authority unchanged</text>
+      </g>
+
+      <g opacity={codeStage}>
+        <rect x="330" y="165" width="620" height="250" rx="34" fill="#111827" stroke={colors.SECONDARY} strokeWidth="4" />
+        <text x="640" y="215" textAnchor="middle" fill={colors.SECONDARY} fontSize="19" fontFamily={colors.font.mono}>load_rules_subclass(code)</text>
+        <text x="640" y="276" textAnchor="middle" fill={colors.TEXT} fontSize="32" fontFamily={colors.font.mono}>class _Rules(Rules)</text>
+        <text x="640" y="324" textAnchor="middle" fill={colors.WARM} fontSize="21">Rules(Setup(base environment))</text>
+        <path d="M420 365 H860" stroke={colors.ACCENT} strokeWidth="8" strokeLinecap="round" />
+        <text x="640" y="398" textAnchor="middle" fill={colors.MUTED} fontSize="16">one compiled layer · one deliberately different lesson</text>
       </g>
     </g>
 

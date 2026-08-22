@@ -79,7 +79,7 @@ export function Render({ s }: { s: SceneState }) {
       <g opacity={1 - clamp01(s.get(scene.recapP))}>
       <g opacity={chartQuiet}>
       <g opacity={s.get(scene.heldoutU)}>
-        <rect x="70" y="118" width="790" height="474" rx="28" fill="#0d1525" stroke={colors.ACCENT} strokeWidth="3" />
+        <rect x="70" y="118" width="790" height="410" rx="28" fill="#0d1525" stroke={colors.ACCENT} strokeWidth="3" />
         <text x="465" y="151" textAnchor="middle" fill={colors.ACCENT} fontSize="17" fontWeight="700">untouched held-out evaluation</text>
       </g>
       <g opacity={s.get(scene.axesU)}>
@@ -120,13 +120,13 @@ export function Render({ s }: { s: SceneState }) {
       </g>
 
       <g opacity={s.get(scene.scaleU)}>
-        <rect x="890" y="332" width="320" height="260" rx="28" fill="#111827" stroke={colors.TEAL} strokeWidth="3" />
-        <text x="1050" y="365" textAnchor="middle" fill={colors.TEAL} fontSize="17" fontWeight="700">at 300 environments</text>
-        <path d="M930 535 C970 530 1010 502 1050 470 C1090 438 1125 415 1170 388" fill="none" stroke={colors.POSITIVE} strokeWidth="5" strokeDasharray={`${Math.max(1, s.get(scene.learnerU) * 360)} 380`} />
-        <circle cx={930 + 240 * s.get(scene.learnerU)} cy={535 - 147 * s.get(scene.learnerU)} r="11" fill={colors.POSITIVE} />
-        <text x="1168" y="380" textAnchor="end" fill={colors.POSITIVE} fontSize="15" fontWeight="700">EnvHarness 54.79</text>
-        <text x="1168" y="512" textAnchor="end" fill={colors.MUTED} fontSize="14">Original 52.13</text>
-        <text x="1168" y="548" textAnchor="end" fill={colors.NEGATIVE} fontSize="14">Generated 50.37</text>
+        <rect x="890" y="318" width="320" height="210" rx="28" fill="#111827" stroke={colors.TEAL} strokeWidth="3" />
+        <text x="1050" y="350" textAnchor="middle" fill={colors.TEAL} fontSize="17" fontWeight="700">at 300 environments</text>
+        <path d="M930 482 C975 478 1015 452 1055 425 C1095 398 1130 382 1170 370" fill="none" stroke={colors.POSITIVE} strokeWidth="5" strokeDasharray={`${Math.max(1, s.get(scene.learnerU) * 330)} 350`} />
+        <circle cx={930 + 240 * s.get(scene.learnerU)} cy={482 - 112 * s.get(scene.learnerU)} r="11" fill={colors.POSITIVE} />
+        <text x="1168" y="392" textAnchor="end" fill={colors.POSITIVE} fontSize="15" fontWeight="700">EnvHarness 54.79</text>
+        <text x="1168" y="455" textAnchor="end" fill={colors.MUTED} fontSize="14">Original 52.13</text>
+        <text x="1168" y="492" textAnchor="end" fill={colors.NEGATIVE} fontSize="14">Generated 50.37</text>
       </g>
       </g>
 

@@ -24,6 +24,8 @@ export function buildScene() {
   const capsulesP = tl.channel('fresh rollout capsules', 0);
   const errorU = tl.channel('cheap code failure', 0);
   const aggregateU = tl.channel('aggregate evidence', 0);
+  const evidenceStageU = tl.channel('evidence stage', 0);
+  const decisionStageU = tl.channel('decision stage', 0);
   const decisionP = tl.channel('three decisions', 0);
   const cycleU = tl.channel('revision cycle', 0);
   const acceptedU = tl.channel('accepted lesson', 0);
@@ -54,10 +56,12 @@ export function buildScene() {
   tl.tween(errorU, 0.35, { at: 38.0, dur: 0.8, ease: ease.move });
 
   tl.caption({ at: 41.6, dur: 6.4, text: 'Five fresh trajectories are judged together by success rate, failure shape, and timeouts.' });
+  tl.tween(evidenceStageU, 1, { at: 41.8, dur: 0.8, ease: ease.move });
   tl.tween(aggregateU, 1, { at: 42.2, dur: 1.2, ease: ease.enter });
   tl.tween(cam, CAMERA_HOME, { at: 44.5, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 48.4, dur: 6.7, text: 'Accept keeps the candidate. Refine sends these traces back to writing. Reject asks for a different proposal.' });
+  tl.tween(decisionStageU, 1, { at: 47.4, dur: 1.0, ease: ease.move });
   tl.tween(decisionP, 3, { at: 49.0, dur: 2.0, ease: ease.enter });
   tl.tween(cycleU, 1, { at: 51.0, dur: 2.8, ease: ease.draw });
 
@@ -66,7 +70,7 @@ export function buildScene() {
   tl.tween(close, 1, { at: 60.5, dur: 1.0, ease: ease.move });
   tl.hold(62.8, 1.0);
 
-  return { tl, cam, wheelU, baselineP, diagnoseU, codeU, stackU, capsulesP, errorU, aggregateU, decisionP, cycleU, acceptedU, close };
+  return { tl, cam, wheelU, baselineP, diagnoseU, codeU, stackU, capsulesP, errorU, aggregateU, evidenceStageU, decisionStageU, decisionP, cycleU, acceptedU, close };
 }
 
 const scene = buildScene();
@@ -85,11 +89,16 @@ function TracePath({ values, index, reveal }: { values: number[]; index: number;
 export function Render({ s }: { s: SceneState }) {
   const close = s.get(scene.close);
   const quiet = 1 - close;
+  const evidenceStage = s.get(scene.evidenceStageU);
+  const decisionStage = s.get(scene.decisionStageU);
+  const aggregateX = 320 + (466 - 320) * decisionStage;
+  const aggregateY = 275 + (150 - 275) * decisionStage;
   const wheelAngle = (s.get(scene.wheelU) - 1) * 80;
   return <Camera {...s.get(scene.cam)}>
     <g opacity={quiet}>
       <text x="640" y="70" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="700">The diagnostic lathe</text>
 
+      <g opacity={1 - evidenceStage}>
       <g transform={`rotate(${wheelAngle} 330 350)`} opacity={clamp01(s.get(scene.wheelU))}>
         <circle cx="330" cy="350" r="188" fill="#0e1628" stroke={colors.ACCENT} strokeWidth="4" />
         <circle cx="330" cy="350" r="154" fill="none" stroke={colors.GRID} strokeWidth="26" strokeDasharray="6 13" />
@@ -121,8 +130,9 @@ export function Render({ s }: { s: SceneState }) {
           <text y="6" textAnchor="middle" fill={colors.TEXT} fontSize="15">{v}</text>
         </g>)}
       </g>
+      </g>
 
-      <g>
+      <g opacity={1 - decisionStage}>
         {Array.from({ length: 5 }, (_, i) => {
           const u = clamp01(s.get(scene.capsulesP) - i);
           const y = 178 + i * 78;
@@ -137,29 +147,29 @@ export function Render({ s }: { s: SceneState }) {
       </g>
 
       <g opacity={s.get(scene.aggregateU)}>
-        <rect x="865" y="415" width="348" height="64" rx="20" fill="#111827" stroke={colors.TEAL} strokeWidth="3" />
-        <text x="1039" y="441" textAnchor="middle" fill={colors.TEAL} fontSize="15" fontWeight="700">aggregate all five</text>
-        <text x="1039" y="465" textAnchor="middle" fill={colors.TEXT} fontSize="14">success rate · failures · timeouts</text>
+        <rect x={aggregateX} y={aggregateY} width="348" height="64" rx="20" fill="#111827" stroke={colors.TEAL} strokeWidth="3" />
+        <text x={aggregateX + 174} y={aggregateY + 26} textAnchor="middle" fill={colors.TEAL} fontSize="15" fontWeight="700">aggregate all five</text>
+        <text x={aggregateX + 174} y={aggregateY + 50} textAnchor="middle" fill={colors.TEXT} fontSize="14">success rate · failures · timeouts</text>
       </g>
 
       <g>
         {[
-          { label: 'ACCEPT', color: colors.POSITIVE, x: 540 },
-          { label: 'REFINE', color: colors.WARM, x: 710 },
-          { label: 'REJECT', color: colors.NEGATIVE, x: 880 },
+          { label: 'ACCEPT', color: colors.POSITIVE, x: 390 },
+          { label: 'REFINE', color: colors.WARM, x: 640 },
+          { label: 'REJECT', color: colors.NEGATIVE, x: 890 },
         ].map((d, i) => {
           const u = clamp01(s.get(scene.decisionP) - i);
           return <g key={d.label} opacity={u}>
-            <rect x={d.x - 70} y="435" width="140" height="52" rx="18" fill="#111827" stroke={d.color} strokeWidth="3" />
-            <text x={d.x} y="468" textAnchor="middle" fill={d.color} fontSize="16" fontWeight="800">{d.label}</text>
+            <rect x={d.x - 90} y="330" width="180" height="64" rx="20" fill="#111827" stroke={d.color} strokeWidth="3" />
+            <text x={d.x} y="369" textAnchor="middle" fill={d.color} fontSize="18" fontWeight="800">{d.label}</text>
           </g>;
         })}
-        <path d={`M710 435 C710 ${395 - 90 * s.get(scene.cycleU)} 731 ${370 - 70 * s.get(scene.cycleU)} 731 304`} fill="none" stroke={colors.WARM} strokeWidth="4" strokeDasharray={`${Math.max(1, s.get(scene.cycleU) * 360)} 380`} />
+        <path d="M640 330 C735 290 735 238 640 214" fill="none" stroke={colors.WARM} strokeWidth="4" strokeDasharray={`${Math.max(1, s.get(scene.cycleU) * 360)} 380`} />
       </g>
 
       <g opacity={s.get(scene.acceptedU)}>
-        <circle cx="540" cy="452" r="32" fill="none" stroke={colors.POSITIVE} strokeWidth="7" />
-        <text x="540" y="496" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontWeight="700">persist accepted component</text>
+        <rect x="292" y="322" width="196" height="80" rx="26" fill="none" stroke={colors.POSITIVE} strokeWidth="7" />
+        <text x="390" y="438" textAnchor="middle" fill={colors.POSITIVE} fontSize="16" fontWeight="700">persist accepted component</text>
       </g>
     </g>
 
