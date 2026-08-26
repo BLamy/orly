@@ -1,6 +1,40 @@
 {
   "books": [
     {
+      "slug": "apodex-work-ledger",
+      "title": "The Work Ledger",
+      "subtitle": "How Apodex 1.1 Coordinates Long-Horizon Agent Teams",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#a01f3c",
+      "animal": "generated/apodex-work-ledger/animal.webp",
+      "href": "?bundle=apodex-work-ledger",
+      "series": "Daily Papers by Hugging Face",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Board Outside Conversation",
+          "duration": 62.601
+        },
+        {
+          "number": 2,
+          "title": "Finite Fan-Out",
+          "duration": 60.279
+        },
+        {
+          "number": 3,
+          "title": "Protected Fan-In",
+          "duration": 66.874
+        },
+        {
+          "number": 4,
+          "title": "The Exact Manifest",
+          "duration": 69.102
+        }
+      ],
+      "createdAt": "2026-08-26T10:30:41.539Z"
+    },
+    {
       "slug": "envharness-adaptive-worlds",
       "title": "Awakening Static Worlds",
       "subtitle": "How EnvHarness reshapes frozen benchmarks around the learner",

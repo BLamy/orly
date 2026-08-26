@@ -1,0 +1,106 @@
+{
+  "format": 3,
+  "slug": "apodex-work-ledger",
+  "title": "The Work Ledger",
+  "subtitle": "How Apodex 1.1 Coordinates Long-Horizon Agent Teams",
+  "animal": "animal.webp",
+  "accent": "#a01f3c",
+  "paper": {
+    "title": "Apodex 1.1: Scaling Agentic Intelligence for Complex Work",
+    "authors": "Apodex Team (75 named authors in arXiv metadata)",
+    "stableId": "arXiv:2608.23283",
+    "huggingFaceUrl": "https://huggingface.co/papers/2608.23283",
+    "canonicalUrl": "https://arxiv.org/abs/2608.23283",
+    "pdfUrl": "https://arxiv.org/pdf/2608.23283",
+    "officialCodeRepository": "https://github.com/ApodexAI/FrontierAgent",
+    "officialCodeCommit": "7d38394d939244d8df8ef39ed8618a45315ba8a9",
+    "dailyPaperDate": "2026-08-25",
+    "popularity": {
+      "rank": 1,
+      "upvotes": 179,
+      "source": "https://huggingface.co/papers/date/2026-08-25"
+    }
+  },
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Board Outside Conversation",
+      "blurb": "A task board outside message history makes planning explicit and finalization checkable.",
+      "scene": "books/apodex-work-ledger/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        5.108,
+        11.122,
+        16.335,
+        23.812,
+        32.496,
+        37.059,
+        42.307,
+        49.447,
+        55.6
+      ],
+      "duration": 62.601
+    },
+    {
+      "number": 2,
+      "title": "Finite Fan-Out",
+      "blurb": "Spawn guards, token reservations, semaphores, and persistent sessions bound parallel work.",
+      "scene": "books/apodex-work-ledger/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        4.841,
+        11.331,
+        18.344,
+        25.206,
+        31.498,
+        37.257,
+        43.978,
+        50.863
+      ],
+      "duration": 60.279
+    },
+    {
+      "number": 3,
+      "title": "Protected Fan-In",
+      "blurb": "Early reports, deadline-driven recovery, and protected fan-in preserve partial evidence.",
+      "scene": "books/apodex-work-ledger/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        6.211,
+        10.716,
+        15.755,
+        21.839,
+        29.118,
+        36.084,
+        44.014,
+        53.163,
+        59.548
+      ],
+      "duration": 66.874
+    },
+    {
+      "number": 4,
+      "title": "The Exact Manifest",
+      "blurb": "A leased publisher and exact output manifest make delivery auditable without pretending it is correct.",
+      "scene": "books/apodex-work-ledger/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        6.362,
+        12.295,
+        17.961,
+        23.29,
+        29.733,
+        37.988,
+        43.804,
+        50.445,
+        57.365,
+        62.659
+      ],
+      "duration": 69.102
+    }
+  ]
+}
