@@ -1,6 +1,39 @@
 {
   "books": [
     {
+      "slug": "the-oracle-rollout",
+      "title": "The Oracle Rollout",
+      "subtitle": "How Annotations Become Training Trajectories",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#D68B28",
+      "animal": "generated/the-oracle-rollout/animal.webp",
+      "href": "?bundle=the-oracle-rollout",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Annotation Joins the Group",
+          "duration": 49.551
+        },
+        {
+          "number": 2,
+          "title": "Move the Baseline, Flip the Sign",
+          "duration": 71.006
+        },
+        {
+          "number": 3,
+          "title": "Keep Both Signs",
+          "duration": 63.763
+        },
+        {
+          "number": 4,
+          "title": "Decode Once, Update Four",
+          "duration": 63.577
+        }
+      ],
+      "createdAt": "2026-08-27T16:28:08.649Z"
+    },
+    {
       "slug": "apodex-work-ledger",
       "title": "The Work Ledger",
       "subtitle": "How Apodex 1.1 Coordinates Long-Horizon Agent Teams",

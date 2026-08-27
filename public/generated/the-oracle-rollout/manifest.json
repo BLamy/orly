@@ -1,0 +1,87 @@
+{
+  "format": 3,
+  "slug": "the-oracle-rollout",
+  "title": "The Oracle Rollout",
+  "subtitle": "How Annotations Become Training Trajectories",
+  "animal": "animal.webp",
+  "accent": "#D68B28",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Annotation Joins the Group",
+      "blurb": "An expert annotation is serialized beside sampled policy responses as one extra rollout.",
+      "scene": "books/the-oracle-rollout/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        5.747,
+        10.472,
+        16.625,
+        23.197,
+        30.906,
+        36.874,
+        43.061
+      ],
+      "duration": 49.551
+    },
+    {
+      "number": 2,
+      "title": "Move the Baseline, Flip the Sign",
+      "blurb": "Including the oracle in the group mean can reverse a correct policy rollout's advantage sign.",
+      "scene": "books/the-oracle-rollout/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.416,
+        16.347,
+        23.963,
+        30.952,
+        36.954,
+        44.187,
+        52.106,
+        58.735,
+        65.387
+      ],
+      "duration": 71.006
+    },
+    {
+      "number": 3,
+      "title": "Keep Both Signs",
+      "blurb": "The selector preserves the oracle, the strongest positive, and the hardest negatives before correcting moments.",
+      "scene": "books/the-oracle-rollout/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        6.653,
+        12.492,
+        16.487,
+        22.593,
+        29.571,
+        35.829,
+        42.993,
+        49.936,
+        56.681
+      ],
+      "duration": 63.763
+    },
+    {
+      "number": 4,
+      "title": "Decode Once, Update Four",
+      "blurb": "A multimodal batch decodes once, reuses frames across rollouts, and reduces matched step time.",
+      "scene": "books/the-oracle-rollout/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        6.177,
+        12.516,
+        18.251,
+        25.798,
+        32.81,
+        38.859,
+        45.024,
+        54.834
+      ],
+      "duration": 63.577
+    }
+  ]
+}
