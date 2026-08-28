@@ -1,6 +1,40 @@
 {
   "books": [
     {
+      "slug": "memory-before-silence",
+      "title": "Memory Before Silence",
+      "subtitle": "How VoiceMem Retrieves Before the Turn Ends",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/memory-before-silence/animal.webp",
+      "href": "?bundle=memory-before-silence",
+      "series": "Daily Papers by Hugging Face",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Hundred-Millisecond Wager",
+          "duration": 51.316
+        },
+        {
+          "number": 2,
+          "title": "The Left-Brain Funnel",
+          "duration": 50.339
+        },
+        {
+          "number": 3,
+          "title": "The Affect Constellation",
+          "duration": 60.837
+        },
+        {
+          "number": 4,
+          "title": "Five Memories Before the Reply",
+          "duration": 66.27
+        }
+      ],
+      "createdAt": "2026-08-28T10:19:29.402Z"
+    },
+    {
       "slug": "the-oracle-rollout",
       "title": "The Oracle Rollout",
       "subtitle": "How Annotations Become Training Trajectories",
