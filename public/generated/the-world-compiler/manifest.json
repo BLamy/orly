@@ -1,0 +1,106 @@
+{
+  "format": 3,
+  "slug": "the-world-compiler",
+  "title": "The World Compiler",
+  "subtitle": "How agents turn game engines into verifiable world-model data",
+  "animal": "animal.webp",
+  "accent": "#6a3f9e",
+  "paper": {
+    "title": "Agentic Game Development as a Verifiable Trajectory Data Engine for Scaling World Models",
+    "authors": [
+      "Pengfei Zhou",
+      "Hexin Wang",
+      "Zhengfeiyang Zhang",
+      "Yixing Ma",
+      "Zhenglin Wan",
+      "Kaipeng Zhang",
+      "Wangbo Zhao",
+      "Yang You"
+    ],
+    "publishedDate": "2026-08-26",
+    "selectedForDate": "2026-08-28",
+    "stableId": "arXiv:2608.25518",
+    "arxivBaseId": "2608.25518",
+    "doi": "10.48550/arXiv.2608.25518",
+    "huggingFaceUrl": "https://huggingface.co/papers/2608.25518",
+    "canonicalUrl": "https://arxiv.org/abs/2608.25518",
+    "pdfUrl": "https://arxiv.org/pdf/2608.25518",
+    "officialCodeUrl": "https://github.com/LanceZPF/cardinal-preview",
+    "officialCodeCommit": "ed46cb24778dbe69bf086391af7de736e851eb66",
+    "popularityEvidence": "Ranked #1 Paper of the Day with 131 visible upvotes on the Hugging Face page for 2026-08-28; the next two papers showed 82 and 71 upvotes."
+  },
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Make the World Executable",
+      "blurb": "A scene plan becomes an executable Unity world whose failures can be localized and repaired.",
+      "scene": "books/the-world-compiler/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        5.201,
+        11.889,
+        18.285,
+        24.81,
+        34.459,
+        39.567,
+        45.615
+      ],
+      "duration": 52.802
+    },
+    {
+      "number": 2,
+      "title": "Two Judges at the Gate",
+      "blurb": "Engine diagnostics and developer judgment combine into one gated learning signal.",
+      "scene": "books/the-world-compiler/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        5.468,
+        12.794,
+        20.898,
+        28.898,
+        36.56,
+        45.604,
+        52.744
+      ],
+      "duration": 60.418
+    },
+    {
+      "number": 3,
+      "title": "Keep the Repair",
+      "blurb": "Structured trajectories preserve rejected actions, linked repairs, and the evidence behind each state.",
+      "scene": "books/the-world-compiler/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        5.747,
+        15.383,
+        21.42,
+        29.21,
+        35.724,
+        42.422,
+        49.562
+      ],
+      "duration": 57.027
+    },
+    {
+      "number": 4,
+      "title": "Audit the Claim",
+      "blurb": "Released hashes, scripts, and result tables make a bounded reproduction claim auditable.",
+      "scene": "books/the-world-compiler/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        6.223,
+        15.651,
+        22.187,
+        28.851,
+        38.371,
+        44.734,
+        52.536
+      ],
+      "duration": 60.187
+    }
+  ]
+}

@@ -1,6 +1,40 @@
 {
   "books": [
     {
+      "slug": "the-world-compiler",
+      "title": "The World Compiler",
+      "subtitle": "How agents turn game engines into verifiable world-model data",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#6a3f9e",
+      "animal": "generated/the-world-compiler/animal.webp",
+      "href": "?bundle=the-world-compiler",
+      "series": "Daily Papers by Hugging Face",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Make the World Executable",
+          "duration": 52.802
+        },
+        {
+          "number": 2,
+          "title": "Two Judges at the Gate",
+          "duration": 60.418
+        },
+        {
+          "number": 3,
+          "title": "Keep the Repair",
+          "duration": 57.027
+        },
+        {
+          "number": 4,
+          "title": "Audit the Claim",
+          "duration": 60.187
+        }
+      ],
+      "createdAt": "2026-08-29T10:33:19.173Z"
+    },
+    {
       "slug": "memory-before-silence",
       "title": "Memory Before Silence",
       "subtitle": "How VoiceMem Retrieves Before the Turn Ends",
