@@ -1,0 +1,108 @@
+{
+  "format": 3,
+  "slug": "looparena-runtime-controller",
+  "title": "The Runtime Controller",
+  "animal": "animal.webp",
+  "accent": "#c79100",
+  "paper": {
+    "title": "LoopArena: Benchmarking Models as Runtime Controllers for Loop Engineering",
+    "authors": [
+      "Yi Wang",
+      "Haopeng Zhang",
+      "Chengxiang Huang",
+      "Rui Dai",
+      "Kaikui Liu",
+      "Piotr Koniusz",
+      "Xiangxiang Chu"
+    ],
+    "publishedDate": "2026-08-31",
+    "selectedForDate": "2026-08-31",
+    "stableId": "arXiv:2608.28281",
+    "arxivBaseId": "2608.28281",
+    "doi": "10.48550/arXiv.2608.28281",
+    "huggingFaceUrl": "https://huggingface.co/papers/2608.28281",
+    "canonicalUrl": "https://arxiv.org/abs/2608.28281",
+    "pdfUrl": "https://arxiv.org/pdf/2608.28281",
+    "officialCodeUrl": "https://github.com/AMAP-ML/LoopArena",
+    "officialCodeCommit": "18b1af4a206a60be2b9a7bb347f5c7669ce8c3cc",
+    "popularityEvidence": "Ranked #1 Paper of the Day with 95 visible upvotes on the Hugging Face page for 2026-08-31; the next two papers showed 88 and 82 upvotes."
+  },
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Loop Outside the Loop",
+      "blurb": "A fixed Worker, a temporary Reporter, and a tool-less Controller turn one task into a measurable outer loop.",
+      "scene": "books/looparena-runtime-controller/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        6.734,
+        13.955,
+        20.237,
+        27.284,
+        32.554,
+        38.069,
+        45.197,
+        50.201
+      ],
+      "duration": 56.47
+    },
+    {
+      "number": 2,
+      "title": "Evidence Without a Second Author",
+      "blurb": "The packet compiler keeps four report fields, cited Worker turns, the previous action, and the remaining budget.",
+      "scene": "books/looparena-runtime-controller/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        6.107,
+        12.945,
+        21.908,
+        29.675,
+        35.491,
+        41.819,
+        47.833,
+        55.867
+      ],
+      "duration": 63.251
+    },
+    {
+      "number": 3,
+      "title": "Three Magnifications of Control",
+      "blurb": "One frozen decision, one prepared task slice, and one full task expose different costs of evaluating control.",
+      "scene": "books/looparena-runtime-controller/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        5.735,
+        13.677,
+        20.051,
+        26.959,
+        34.784,
+        42.644,
+        49.11,
+        56.331
+      ],
+      "duration": 64.087
+    },
+    {
+      "number": 4,
+      "title": "The Expensive Claim",
+      "blurb": "Strict success, paired costs, and rank correlation show both the benchmark’s leverage and its remaining headroom.",
+      "scene": "books/looparena-runtime-controller/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        7.697,
+        15.267,
+        22.616,
+        31.358,
+        38.928,
+        47.264,
+        55.483,
+        62.565
+      ],
+      "duration": 71.47
+    }
+  ]
+}

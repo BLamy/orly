@@ -1,6 +1,40 @@
 {
   "books": [
     {
+      "slug": "looparena-runtime-controller",
+      "title": "The Runtime Controller",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c79100",
+      "animal": "generated/looparena-runtime-controller/animal.webp",
+      "href": "?bundle=looparena-runtime-controller",
+      "series": "Daily Papers by Hugging Face",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Loop Outside the Loop",
+          "duration": 56.47
+        },
+        {
+          "number": 2,
+          "title": "Evidence Without a Second Author",
+          "duration": 63.251
+        },
+        {
+          "number": 3,
+          "title": "Three Magnifications of Control",
+          "duration": 64.087
+        },
+        {
+          "number": 4,
+          "title": "The Expensive Claim",
+          "duration": 71.47
+        }
+      ],
+      "createdAt": "2026-09-01T15:29:16.366Z"
+    },
+    {
       "slug": "the-world-compiler",
       "title": "The World Compiler",
       "subtitle": "How agents turn game engines into verifiable world-model data",
