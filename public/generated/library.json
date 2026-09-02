@@ -1,6 +1,44 @@
 {
   "books": [
     {
+      "slug": "five-doors",
+      "title": "Five Doors",
+      "subtitle": "How a Replay QA project grows from testing production to closing the loop on your laptop",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#3a8b3a",
+      "href": "?bundle=five-doors",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Start With Production",
+          "duration": 63.018
+        },
+        {
+          "number": 2,
+          "title": "Add Staging, Test Every Night",
+          "duration": 62.462
+        },
+        {
+          "number": 3,
+          "title": "Let Github Open the Door",
+          "duration": 53.964
+        },
+        {
+          "number": 4,
+          "title": "Bring CI Into the Tunnel",
+          "duration": 51.966
+        },
+        {
+          "number": 5,
+          "title": "The Tightest Loop: Your Laptop",
+          "duration": 50.107
+        }
+      ],
+      "createdAt": "2026-09-02T04:46:18.853Z",
+      "animal": "generated/five-doors/animal.webp"
+    },
+    {
       "slug": "looparena-runtime-controller",
       "title": "The Runtime Controller",
       "subtitle": "",

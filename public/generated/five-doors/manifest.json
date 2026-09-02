@@ -1,0 +1,101 @@
+{
+  "format": 3,
+  "slug": "five-doors",
+  "title": "Five Doors",
+  "subtitle": "How a Replay QA project grows from testing production to closing the loop on your laptop",
+  "animal": "animal.webp",
+  "accent": "#3a8b3a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Start With Production",
+      "blurb": "Point QA at the app your users already touch: explore it, keep the journeys worth protecting, replay them, and file bugs with a recording behind each one.",
+      "scene": "books/five-doors/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        7.837,
+        14.477,
+        22.395,
+        28.688,
+        35.166,
+        42.619,
+        50.119,
+        56.215
+      ],
+      "duration": 63.018
+    },
+    {
+      "number": 2,
+      "title": "Add Staging, Test Every Night",
+      "blurb": "Add a staging environment on a nightly weekday cron, overlay its own logins, and exclude the flows that only make sense in production.",
+      "scene": "books/five-doors/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        6.85,
+        16.115,
+        22.907,
+        32.242,
+        36.851,
+        43.515,
+        51.549,
+        58.155
+      ],
+      "duration": 62.462
+    },
+    {
+      "number": 3,
+      "title": "Let Github Open the Door",
+      "blurb": "Install the Github App so each pull request parks until its preview deploys, then runs the journeys and reports back on the check.",
+      "scene": "books/five-doors/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        7.465,
+        12.759,
+        19.958,
+        27.551,
+        33.496,
+        42.366,
+        50.144
+      ],
+      "duration": 53.964
+    },
+    {
+      "number": 4,
+      "title": "Bring CI Into the Tunnel",
+      "blurb": "When the app only exists inside a CI job, the runner opens an allowlisted tunnel so the QA browsers can reach it anyway.",
+      "scene": "books/five-doors/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        6.211,
+        13.978,
+        21.118,
+        28.375,
+        35.875,
+        40.843,
+        47.461
+      ],
+      "duration": 51.966
+    },
+    {
+      "number": 5,
+      "title": "The Tightest Loop: Your Laptop",
+      "blurb": "Connect your laptop, run the same journeys against your working copy, and watch the loop shrink from a week to a save.",
+      "scene": "books/five-doors/chapter-5",
+      "audio": "audio/chapter-5.mp3",
+      "cues": [
+        0,
+        5.596,
+        10.67,
+        18.576,
+        26.099,
+        33.169,
+        43.235
+      ],
+      "duration": 50.107
+    }
+  ]
+}
