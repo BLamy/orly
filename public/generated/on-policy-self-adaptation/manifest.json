@@ -1,0 +1,97 @@
+{
+  "format": 3,
+  "slug": "on-policy-self-adaptation",
+  "title": "The Lowest Fifth",
+  "subtitle": "How a policy learns from its own unlikely tokens",
+  "animal": "animal.webp",
+  "accent": "#1f6fb2",
+  "paper": {
+    "title": "Does On-Policy Distillation Really Distill? From Noisy Teacher to Self-Improvement",
+    "authors": ["Yi Ding", "Ruqi Zhang"],
+    "huggingFaceUrl": "https://huggingface.co/papers/2608.31046",
+    "canonicalUrl": "https://arxiv.org/abs/2608.31046",
+    "pdfUrl": "https://arxiv.org/pdf/2608.31046",
+    "stableId": "arXiv:2608.31046",
+    "doi": "10.48550/arXiv.2608.31046",
+    "officialRepository": "https://github.com/DripNowhy/On-Policy-Self-Adaptation",
+    "sourceCommit": "822d3b152afe8e9d29c389c5ebc428414f97c10f"
+  },
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Teacher Is Not the Signal",
+      "blurb": "Teacher noise exposes the signal hiding in the student's own tail.",
+      "scene": "books/on-policy-self-adaptation/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        6.85,
+        13.886,
+        19.435,
+        24.636,
+        30.07,
+        35.921,
+        43.259,
+        50.155
+      ],
+      "duration": 57.771
+    },
+    {
+      "number": 2,
+      "title": "The Packed-Batch Selector",
+      "blurb": "A stable batch-wide sort selects exactly the lowest valid fifth.",
+      "scene": "books/on-policy-self-adaptation/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        7.663,
+        15.429,
+        22.442,
+        27.84,
+        32.949,
+        40.1,
+        46.776,
+        53.382
+      ],
+      "duration": 60.464
+    },
+    {
+      "number": 3,
+      "title": "Entropy Sets the Pressure",
+      "blurb": "Actor entropy turns selected tokens into graded negative pressure.",
+      "scene": "books/on-policy-self-adaptation/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        6.873,
+        14.222,
+        20.863,
+        28.456,
+        33.402,
+        40.17,
+        47.995,
+        54.799
+      ],
+      "duration": 62.09
+    },
+    {
+      "number": 4,
+      "title": "The Closed Training Loop",
+      "blurb": "Slime masks the loss, updates the actor, and rolls the loop again.",
+      "scene": "books/on-policy-self-adaptation/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        6.153,
+        14.454,
+        20.631,
+        28.7,
+        35.306,
+        45.279,
+        52.292,
+        62.033
+      ],
+      "duration": 69.753
+    }
+  ]
+}

@@ -1,6 +1,40 @@
 {
   "books": [
     {
+      "slug": "on-policy-self-adaptation",
+      "title": "The Lowest Fifth",
+      "subtitle": "How a policy learns from its own unlikely tokens",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1f6fb2",
+      "animal": "generated/on-policy-self-adaptation/animal.webp",
+      "href": "?bundle=on-policy-self-adaptation",
+      "series": "Daily Papers by Hugging Face",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Teacher Is Not the Signal",
+          "duration": 57.771
+        },
+        {
+          "number": 2,
+          "title": "The Packed-Batch Selector",
+          "duration": 60.464
+        },
+        {
+          "number": 3,
+          "title": "Entropy Sets the Pressure",
+          "duration": 62.09
+        },
+        {
+          "number": 4,
+          "title": "The Closed Training Loop",
+          "duration": 69.753
+        }
+      ],
+      "createdAt": "2026-09-02T10:25:41.448Z"
+    },
+    {
       "slug": "five-doors",
       "title": "Five Doors",
       "subtitle": "How a Replay QA project grows from testing production to closing the loop on your laptop",
