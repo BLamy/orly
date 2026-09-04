@@ -1,0 +1,113 @@
+{
+  "format": 3,
+  "slug": "repo-to-skill",
+  "title": "The Missing Layer",
+  "subtitle": "How verified skills turn repositories into operating context",
+  "animal": "animal.webp",
+  "accent": "#41607f",
+  "paper": {
+    "title": "Repo-To-Skill: Distilling GitHub Repositories Into AI4AI Skills",
+    "authors": [
+      "Jianlyu Chen",
+      "Yuyang Hu",
+      "Hongjin Qian",
+      "Jiawei Liu",
+      "Wenqing Wei",
+      "Xiaolong Chen",
+      "Defu Lian",
+      "Zhicheng Dou",
+      "Chaozhuo Li",
+      "Qiwei Ye",
+      "Zheng Liu"
+    ],
+    "huggingFaceUrl": "https://huggingface.co/papers/2609.02749",
+    "canonicalUrl": "https://arxiv.org/abs/2609.02749",
+    "pdfUrl": "https://arxiv.org/pdf/2609.02749",
+    "stableId": "arXiv:2609.02749",
+    "doi": "10.48550/arXiv.2609.02749",
+    "officialRepository": "https://github.com/VectorSpaceLab/AREX-Skill",
+    "sourceCommit": "ac3fe1afa80fb9a09775ecfb2b6cc3ba850a2db6"
+  },
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Missing Layer",
+      "blurb": "Operational knowledge lights a route through the same model and harness.",
+      "scene": "books/repo-to-skill/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.986,
+        17.577,
+        22.709,
+        29.152,
+        36.548,
+        44.628,
+        52.72,
+        57.341
+      ],
+      "duration": 64.69
+    },
+    {
+      "number": 2,
+      "title": "Four Gates, One Skill Graph",
+      "blurb": "Creator mode scopes, grounds, constructs, and verifies a reusable skill graph.",
+      "scene": "books/repo-to-skill/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        8.452,
+        15.58,
+        25.774,
+        32.566,
+        40.403,
+        50.05,
+        58.166,
+        66.362,
+        71.482
+      ],
+      "duration": 77.136
+    },
+    {
+      "number": 3,
+      "title": "Only One Branch Opens",
+      "blurb": "A two-level router loads one relevant branch while thousands stay closed.",
+      "scene": "books/repo-to-skill/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        6.641,
+        13.758,
+        20.816,
+        30.093,
+        37.431,
+        45.963,
+        52.558,
+        60.871,
+        69.102
+      ],
+      "duration": 75.696
+    },
+    {
+      "number": 4,
+      "title": "Hold Everything Else Still",
+      "blurb": "Matched benchmarks isolate the effect of adding operating context.",
+      "scene": "books/repo-to-skill/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        7.512,
+        15.383,
+        24.601,
+        31.996,
+        41.389,
+        51.176,
+        58.433,
+        66.374,
+        74.919,
+        84.265
+      ],
+      "duration": 92.926
+    }
+  ]
+}

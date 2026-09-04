@@ -1,6 +1,40 @@
 {
   "books": [
     {
+      "slug": "repo-to-skill",
+      "title": "The Missing Layer",
+      "subtitle": "How verified skills turn repositories into operating context",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#41607f",
+      "animal": "generated/repo-to-skill/animal.webp",
+      "href": "?bundle=repo-to-skill",
+      "series": "Daily Papers by Hugging Face",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Missing Layer",
+          "duration": 64.69
+        },
+        {
+          "number": 2,
+          "title": "Four Gates, One Skill Graph",
+          "duration": 77.136
+        },
+        {
+          "number": 3,
+          "title": "Only One Branch Opens",
+          "duration": 75.696
+        },
+        {
+          "number": 4,
+          "title": "Hold Everything Else Still",
+          "duration": 92.926
+        }
+      ],
+      "createdAt": "2026-09-04T11:05:35.026Z"
+    },
+    {
       "slug": "on-policy-self-adaptation",
       "title": "The Lowest Fifth",
       "subtitle": "How a policy learns from its own unlikely tokens",
