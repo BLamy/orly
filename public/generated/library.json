@@ -1,6 +1,40 @@
 {
   "books": [
     {
+      "slug": "neohorse-routing-harness",
+      "title": "The Routing Harness",
+      "subtitle": "How agent traces become the next training mixture",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#e07b1a",
+      "animal": "generated/neohorse-routing-harness/animal.webp",
+      "href": "?bundle=neohorse-routing-harness",
+      "series": "Daily Papers by Hugging Face",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Harness Leaves a Trace",
+          "duration": 77.228
+        },
+        {
+          "number": 2,
+          "title": "Quality Has Layers",
+          "duration": 77.323
+        },
+        {
+          "number": 3,
+          "title": "Curriculum Keeps the Easy Cases",
+          "duration": 69.985
+        },
+        {
+          "number": 4,
+          "title": "The Student Closes the Loop",
+          "duration": 88.701
+        }
+      ],
+      "createdAt": "2026-09-10T16:34:04.508Z"
+    },
+    {
       "slug": "repo-to-skill",
       "title": "The Missing Layer",
       "subtitle": "How verified skills turn repositories into operating context",
