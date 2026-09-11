@@ -1,0 +1,120 @@
+{
+  "format": 3,
+  "slug": "world-model-rl",
+  "title": "The Imagined Experiment",
+  "subtitle": "World Model Reinforcement Learning",
+  "animal": "animal.webp",
+  "accent": "#a01f3c",
+  "series": "Daily Papers by Hugging Face",
+  "paper": {
+    "title": "Scaling Automatic Research Agents via World Models",
+    "authors": [
+      "Xiyuan Yang",
+      "Sheikh Sarwar",
+      "Jingru Cheng",
+      "Zhan Shi",
+      "Duanshun Li",
+      "Huiyuan Chen",
+      "Haiyang Zhang",
+      "Xing Fan",
+      "Chenlei Guo",
+      "Jingrui He",
+      "Zhenyu Liao"
+    ],
+    "huggingFaceUrl": "https://huggingface.co/papers/2608.12564",
+    "dailyRankingUrl": "https://huggingface.co/papers/date/2026-09-10",
+    "canonicalUrl": "https://arxiv.org/abs/2608.12564",
+    "pdfUrl": "https://arxiv.org/pdf/2608.12564v3",
+    "stableId": "arXiv:2608.12564",
+    "doi": "10.48550/arXiv.2608.12564",
+    "officialRepository": "https://github.com/xiyuanyang45/WMRL",
+    "sourceCommit": "2dc8168713c8a3fdbd36b94e77dab737b25cb324",
+    "selectedForDate": "2026-09-10",
+    "popularityEvidence": "Ranked #1 Paper of the Day with 432 visible upvotes; the next two papers showed 134 and 89 upvotes."
+  },
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Execution Wall",
+      "blurb": "Why sandbox execution becomes the scaling wall for automatic research agents.",
+      "scene": "books/world-model-rl/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        6.269,
+        13.142,
+        19.957,
+        27.434,
+        34.342,
+        40.902,
+        47.926,
+        53.905,
+        62.207
+      ],
+      "duration": 69.939
+    },
+    {
+      "number": 2,
+      "title": "A Grader That Imagines",
+      "blurb": "How a frozen same-backbone world model predicts most outcomes while anchors still run for real.",
+      "scene": "books/world-model-rl/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        6.641,
+        12.423,
+        19.284,
+        26.819,
+        33.842,
+        38.765,
+        45.615,
+        52.21,
+        59.988,
+        67.349
+      ],
+      "duration": 74.164
+    },
+    {
+      "number": 3,
+      "title": "Bend the Scores Back",
+      "blurb": "How paired grades train a monotone online calibration map without scrambling rank.",
+      "scene": "books/world-model-rl/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        6.165,
+        13.351,
+        19.482,
+        27.04,
+        33.774,
+        40.937,
+        45.524,
+        51.363,
+        58.376
+      ],
+      "duration": 65.713
+    },
+    {
+      "number": 4,
+      "title": "Let Reliability Set the Weight",
+      "blurb": "How residual disagreement sets anchor weight and cuts training compute by 3.4 times.",
+      "scene": "books/world-model-rl/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        5.608,
+        11.053,
+        17.043,
+        24.288,
+        31.37,
+        37.64,
+        44.571,
+        54.672,
+        64.343,
+        72.749,
+        81.096
+      ],
+      "duration": 88.515
+    }
+  ]
+}

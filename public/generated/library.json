@@ -1,6 +1,40 @@
 {
   "books": [
     {
+      "slug": "world-model-rl",
+      "title": "The Imagined Experiment",
+      "subtitle": "World Model Reinforcement Learning",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#a01f3c",
+      "animal": "generated/world-model-rl/animal.webp",
+      "href": "?bundle=world-model-rl",
+      "series": "Daily Papers by Hugging Face",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Execution Wall",
+          "duration": 69.939
+        },
+        {
+          "number": 2,
+          "title": "A Grader That Imagines",
+          "duration": 74.164
+        },
+        {
+          "number": 3,
+          "title": "Bend the Scores Back",
+          "duration": 65.713
+        },
+        {
+          "number": 4,
+          "title": "Let Reliability Set the Weight",
+          "duration": 88.515
+        }
+      ],
+      "createdAt": "2026-09-11T10:29:09.171Z"
+    },
+    {
       "slug": "neohorse-routing-harness",
       "title": "The Routing Harness",
       "subtitle": "How agent traces become the next training mixture",
