@@ -1,0 +1,96 @@
+{
+  "format": 3,
+  "slug": "ncp-archpreview",
+  "title": "Four Tokens Ahead",
+  "animal": "animal.webp",
+  "accent": "#3a8b3a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The Concept Clock",
+      "blurb": "How sixteen token states become four concept states without replacing next-token prediction.",
+      "scene": "books/ncp-archpreview/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        6.873,
+        14.048,
+        21.061,
+        26.947,
+        35.295,
+        42.551,
+        46.672,
+        53.58,
+        59.095,
+        65.55
+      ],
+      "duration": 72.911
+    },
+    {
+      "number": 2,
+      "title": "A Vocabulary of Products",
+      "blurb": "How thirty-two learned codebooks turn a continuous concept into a structured product vocabulary.",
+      "scene": "books/ncp-archpreview/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        7.024,
+        16.428,
+        21.037,
+        25.995,
+        33.007,
+        38.661,
+        45.535,
+        51.967,
+        60.082,
+        67.965
+      ],
+      "duration": 77.602
+    },
+    {
+      "number": 3,
+      "title": "One Chunk Behind",
+      "blurb": "How repeat, shift, and residual routes preserve causality from concepts back to tokens.",
+      "scene": "books/ncp-archpreview/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        4.458,
+        10.542,
+        15.755,
+        22.988,
+        29.652,
+        35.364,
+        43.178,
+        52.524,
+        59.954,
+        67.257,
+        73.457
+      ],
+      "duration": 81.549
+    },
+    {
+      "number": 4,
+      "title": "Proof Before Speed",
+      "blurb": "How immutable evaluation and transactional rollback make speed claims earn their proof.",
+      "scene": "books/ncp-archpreview/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        6.107,
+        13.677,
+        22.21,
+        29.978,
+        35.26,
+        44.409,
+        52.222,
+        59.246,
+        67.35,
+        75.535,
+        83.337,
+        89.745
+      ],
+      "duration": 97.199
+    }
+  ]
+}

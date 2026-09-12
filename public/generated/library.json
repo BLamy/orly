@@ -1,6 +1,40 @@
 {
   "books": [
     {
+      "slug": "ncp-archpreview",
+      "title": "Four Tokens Ahead",
+      "subtitle": "",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#3a8b3a",
+      "animal": "generated/ncp-archpreview/animal.webp",
+      "href": "?bundle=ncp-archpreview",
+      "series": "Daily Papers by Hugging Face",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Concept Clock",
+          "duration": 72.911
+        },
+        {
+          "number": 2,
+          "title": "A Vocabulary of Products",
+          "duration": 77.602
+        },
+        {
+          "number": 3,
+          "title": "One Chunk Behind",
+          "duration": 81.549
+        },
+        {
+          "number": 4,
+          "title": "Proof Before Speed",
+          "duration": 97.199
+        }
+      ],
+      "createdAt": "2026-09-12T10:32:22.608Z"
+    },
+    {
       "slug": "world-model-rl",
       "title": "The Imagined Experiment",
       "subtitle": "World Model Reinforcement Learning",
