@@ -1,6 +1,40 @@
 {
   "books": [
     {
+      "slug": "composecl-memory",
+      "title": "The Three Anchors",
+      "subtitle": "How complementary continual-learning mechanisms preserve memory",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/composecl-memory/animal.webp",
+      "href": "?bundle=composecl-memory",
+      "series": "Daily Papers by Hugging Face",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "One Hundred Ways to Forget",
+          "duration": 76.486
+        },
+        {
+          "number": 2,
+          "title": "Three Anchors, One Update",
+          "duration": 87.12
+        },
+        {
+          "number": 3,
+          "title": "Fold, Then Make Room",
+          "duration": 88.189
+        },
+        {
+          "number": 4,
+          "title": "Halve the Field",
+          "duration": 106.16
+        }
+      ],
+      "createdAt": "2026-09-17T16:37:46.626Z"
+    },
+    {
       "slug": "ncp-archpreview",
       "title": "Four Tokens Ahead",
       "subtitle": "",

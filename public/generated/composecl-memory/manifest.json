@@ -1,0 +1,114 @@
+{
+  "format": 3,
+  "slug": "composecl-memory",
+  "title": "The Three Anchors",
+  "subtitle": "How complementary continual-learning mechanisms preserve memory",
+  "paper": {
+    "title": "Continual Learning Mechanisms Compose for Long-Horizon Memorization",
+    "authors": [
+      "Zheyuan Zhang",
+      "Alvin Zhang",
+      "Daniel Khashabi",
+      "Tianmin Shu"
+    ],
+    "identifier": "arXiv:2609.06986",
+    "doi": "10.48550/arXiv.2609.06986",
+    "huggingFaceUrl": "https://huggingface.co/papers/2609.06986",
+    "canonicalUrl": "https://arxiv.org/abs/2609.06986",
+    "pdfUrl": "https://arxiv.org/pdf/2609.06986",
+    "codeUrl": "https://github.com/cozheyuanzhangde/compose-cl",
+    "codeCommit": "32fc441a8e8d6120becf144f74370a59eca213a1"
+  },
+  "animal": "animal.webp",
+  "accent": "#198a8a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "One Hundred Ways to Forget",
+      "blurb": "A one-hundred-task stream turns forgetting into a lower-triangular measurement.",
+      "scene": "books/composecl-memory/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        7.616,
+        15.464,
+        22.488,
+        31.567,
+        39.276,
+        45.15,
+        50.793,
+        56.134,
+        62.055,
+        69.404
+      ],
+      "duration": 76.486
+    },
+    {
+      "number": 2,
+      "title": "Three Anchors, One Update",
+      "blurb": "Replay, distillation, and parameter importance protect different surfaces of memory.",
+      "scene": "books/composecl-memory/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        6.583,
+        15.162,
+        21.618,
+        29.663,
+        36.408,
+        43.734,
+        50.827,
+        60.336,
+        67.43,
+        74.872,
+        81.675
+      ],
+      "duration": 87.12
+    },
+    {
+      "number": 3,
+      "title": "Fold, Then Make Room",
+      "blurb": "Each low-rank update folds into the base before a fresh adapter begins.",
+      "scene": "books/composecl-memory/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        6.838,
+        15.569,
+        24.637,
+        31.011,
+        36.92,
+        43.062,
+        50.91,
+        59.165,
+        67.245,
+        75.545,
+        82.511
+      ],
+      "duration": 88.189
+    },
+    {
+      "number": 4,
+      "title": "Halve the Field",
+      "blurb": "Successive halving and a full factorial reveal which protections truly compose.",
+      "scene": "books/composecl-memory/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        7.047,
+        15.638,
+        23.812,
+        31.857,
+        42.33,
+        49.458,
+        58.084,
+        67.024,
+        73.2,
+        81.617,
+        90.928,
+        99.6
+      ],
+      "duration": 106.16
+    }
+  ]
+}
