@@ -1,0 +1,54 @@
+{
+  "mode": "Codex built-in ImageGen",
+  "covers": [
+    {
+      "book": 1,
+      "slug": "next-useful-action",
+      "animal": "kingfisher",
+      "prompt": "Generate a single book-cover animal asset: a kingfisher, complete body in a poised attentive side view, richly detailed black ink natural-history engraving, fine crosshatching, crisp silhouette. Isolated animal only centered with generous margin on an absolutely uniform pure-white #FFFFFF field. No perch, branch, scenery, ground, shadow, vignette, paper texture, tan, cream or ivory cast. No text, lettering, numbers, logo, watermark, border, banner, or cover layout. This is the animal-only art for a technical explainer book; all typography is composited separately. Square composition.",
+      "refinement": "Preserve this kingfisher engraving exactly. Change only the background: remove all faint gray/blue noise and paper texture. Make the entire background uniformly pure white RGB 255,255,255 (#FFFFFF), perfectly flat digital white edge to edge. No shadow, no grain, no tint. Keep the crisp detailed black ink bird, full body, size, pose, and placement. No lettering or other additions.",
+      "asset": "public/generated/next-useful-action/animal.webp",
+      "review": "Visually inspected; isolated bird, white field, no lettering. Full PNG retained locally; 512px WebP prepared."
+    },
+    {
+      "book": 2,
+      "slug": "one-read-many-decisions",
+      "animal": "octopus",
+      "prompt": "Animal-only cover asset for a technical explainer: a single octopus with all eight curling arms, elegant compact full-body composition, richly detailed black ink natural-history engraving with fine crosshatching and crisp silhouette. Centered with generous white margins. Absolutely uniform pure-white #FFFFFF digital background, flat white edge to edge, no gray or blue grain, no paper texture, no tan, cream, ivory, vignette, water, seabed, scene, shadow, or other objects. No text, letters, numbers, logos, watermark, frame, banner or cover layout. Square composition. The animal is the only subject; all book typography is added separately.",
+      "asset": "public/generated/one-read-many-decisions/animal.webp",
+      "review": "Visually inspected; isolated animal, white field, no lettering; 512px WebP prepared."
+    },
+    {
+      "book": 3,
+      "slug": "decisions-become-actions",
+      "prompt": "Animal-only technical-book cover asset: one heron, standing full body, long folded neck and elegant legs. Detailed black ink natural-history engraving, fine crosshatching, crisp silhouette, full animal centered with generous margins. Absolutely uniform pure-white #FFFFFF digital background edge to edge. No paper texture, gray grain, tan/cream/ivory tint, scenery, perch, water, ground, shadows, vignette, or other objects. No text, letters, numbers, logos, watermarks, borders, or cover layout. Square composition; animal only, typography added separately.",
+      "source": "/Users/blamy/.codex/generated_images/01a0acc1-6e46-7bb0-b186-46c3f599b396/exec-d30d71d9-7500-4613-ac3d-72c01c055ca0.png",
+      "asset": "public/generated/decisions-become-actions/animal.webp",
+      "review": "Visually inspected: complete isolated animal, white field, no lettering; built-in ImageGen."
+    },
+    {
+      "book": 4,
+      "slug": "recordings-become-practice",
+      "prompt": "Animal-only technical-book cover asset: one beaver, full body in an alert three-quarter view, broad flat tail visible. Detailed black ink natural-history engraving, fine crosshatching, crisp silhouette, full animal centered with generous margins. Absolutely uniform pure-white #FFFFFF digital background edge to edge. No paper texture, gray grain, tan/cream/ivory tint, scenery, perch, water, ground, shadows, vignette, or other objects. No text, letters, numbers, logos, watermarks, borders, or cover layout. Square composition; animal only, typography added separately.",
+      "source": "/Users/blamy/.codex/generated_images/01a0acc1-6e46-7bb0-b186-46c3f599b396/exec-f8264c1e-c1ce-4e9a-87d8-8df7bb78fbad.png",
+      "asset": "public/generated/recordings-become-practice/animal.webp",
+      "review": "Visually inspected: complete isolated animal, white field, no lettering; built-in ImageGen."
+    },
+    {
+      "book": 5,
+      "slug": "fast-path-thoughtful-fallback",
+      "prompt": "Animal-only technical-book cover asset: one fox, full body seated in an alert three-quarter view, bushy tail curled around the feet. Detailed black ink natural-history engraving, fine crosshatching, crisp silhouette, full animal centered with generous margins. Absolutely uniform pure-white #FFFFFF digital background edge to edge. No paper texture, gray grain, tan/cream/ivory tint, scenery, perch, water, ground, shadows, vignette, or other objects. No text, letters, numbers, logos, watermarks, borders, or cover layout. Square composition; animal only, typography added separately.",
+      "source": "/Users/blamy/.codex/generated_images/01a0acc1-6e46-7bb0-b186-46c3f599b396/exec-2447c900-9ff0-48bd-b914-f4ecc1b9e5ab.png",
+      "asset": "public/generated/fast-path-thoughtful-fallback/animal.webp",
+      "review": "Visually inspected: complete isolated animal, white field, no lettering; built-in ImageGen."
+    },
+    {
+      "book": 6,
+      "slug": "tab-into-the-future",
+      "prompt": "Animal-only technical-book cover asset: one hummingbird, full body hovering in profile, wings spread. Detailed black ink natural-history engraving, fine crosshatching, crisp silhouette, full animal centered with generous margins. Absolutely uniform pure-white #FFFFFF digital background edge to edge. No paper texture, gray grain, tan/cream/ivory tint, scenery, perch, water, ground, shadows, vignette, or other objects. No text, letters, numbers, logos, watermarks, borders, or cover layout. Square composition; animal only, typography added separately.",
+      "source": "/Users/blamy/.codex/generated_images/01a0acc1-6e46-7bb0-b186-46c3f599b396/exec-a5c9413f-1770-484c-abb8-065c4c6e78de.png",
+      "asset": "public/generated/tab-into-the-future/animal.webp",
+      "review": "Visually inspected: complete isolated animal, white field, no lettering; built-in ImageGen."
+    }
+  ]
+}

@@ -60,33 +60,40 @@ jobs:
             repos/${{ github.repository }}/issues/comments/${{ github.event.comment.id }}/reactions \
             -f content=eyes || true
 
-      - name: Apply the edit with Claude Code
-        id: edit
-        continue-on-error: true # if it dies partway, still push what changed
-        uses: anthropics/claude-code-action@v1
+      - name: Prepare authoring workspace and Blender
+        run: |
+          mkdir -p .orly-work
+          sudo apt-get update -qq
+          sudo apt-get install -y blender
+
+      - name: Plan the edit and model with Astra
+        uses: openai/codex-action@v1
         with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          model: gpt-6-astra
+          effort: high
+          sandbox: workspace-write
+          codex-args: '["-c", "sandbox_workspace_write.network_access=true"]'
+          output-file: .orly-work/astra-result.md
           prompt: |
-            A follow-up edit to an open book PR (#${{ github.event.issue.number }}).
-            Book(s) changed in this PR: ${{ steps.slugs.outputs.slugs }}
+            Read docs/authoring-models.md and .claude/commands/tweak-book.md.
+            Plan only the requested change to these books: ${{ steps.slugs.outputs.slugs }}.
+            User request: ${{ github.event.comment.body }}
+            Ignore the leading @claude mention. Do not run git/gh or publish.
+            Astra owns planning and any Blender/Three.js work; do not author D3/SVG.
+            Write .orly-work/visual-plan.md and .orly-work/fable-assignment.md.
+            The Fable assignment must preserve the request, source anchors, fixed
+            captions where applicable, allowed files, minimal regeneration commands
+            and verification. Build any required 3D assets; Blender is installed.
+            Fable handles D3/SVG implementation and verification, not replanning.
+            For a change with no D3 edits, assign only the remaining integration checks.
 
-            The repo owner left this comment requesting a change:
-            ---
-            ${{ github.event.comment.body }}
-            ---
-
-            Follow .claude/commands/tweak-book.md and make ONLY the requested change to
-            the book(s) above, using the smallest regen tool that does the job. Ignore the
-            leading "@claude" in the request.
-
-            BUILD ONLY: edit files under public/generated/ and run the matching regen tool
-            so storyboard.json + manifest.json stay in sync. Do NOT run git or gh, and do
-            NOT open or merge a PR — the workflow commits + pushes for you.
-          claude_args: |
-            --max-turns 250
-            --model claude-opus-4-8
-            --allowedTools "Bash,Read,Edit,Write,Glob,Grep"
+      - name: Apply D3 edits with latest Claude CLI and Fable 5.1
+        id: edit
+        continue-on-error: true
+        run: node generator/run-fable.mjs --prompt-file .orly-work/fable-assignment.md --output .orly-work/fable-result.json --max-turns 250
         env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           NOUN_PROJECT_KEY: ${{ secrets.NOUN_PROJECT_KEY }}

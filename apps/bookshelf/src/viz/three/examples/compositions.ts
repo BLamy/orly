@@ -1,0 +1,49 @@
+import * as THREE from 'three';
+import { activationPackets, clamp, connectionBundle, coordinateAxes, featureMap, neuronLayer, palette, parametricSurface, probabilityBars, receptiveField, tensorVolume, vectorArrow } from '../primitives';
+import { DENSE_INPUT, DENSE_HIDDEN, DENSE_LOGITS, DENSE_PROBS, ALEXNET, IMAGE, KERNELS, MAPS, softmax } from './data';
+export interface Beat {at:number;title:string;body:string;focus?:string[];azimuth?:number;elevation?:number}
+export interface Composition {root:THREE.Group;beats:Beat[];duration:number;disclosure:string;sample:(t:number)=>void;readout?:(t:number)=>string;labels:{text:string;at:THREE.Vector3}[]}
+export function alexNet():Composition {
+ const root=new THREE.Group();const layers=ALEXNET.map((layer,i)=>{
+  const group=new THREE.Group();group.name=`layer-${i}`;group.position.x=(i-4)*2.6;
+  const side=i===0?4.2:i===1?3.6:i<6?2.8:2.5;
+  let activity:(u:number)=>void=()=>{};
+  if(i<6){const volume=tensorVolume({shape:[...layer.shape],size:[i===0?.25:1.2,side,side],samples:[i===0?3:7,12,12],value:(x,y,c)=>.5+.5*Math.sin(x*.31+y*.21+c*1.7),color:i===0?palette.amber:palette.cyan});group.add(volume.root);activity=volume.setActivity;}
+  else {const layer=neuronLayer(i===8?36:64,{height:side,columns:4,color:i===8?palette.mint:palette.violet});group.add(layer.root);}
+  root.add(group);return {group,activity};
+ });
+ const packets=layers.slice(0,-1).map((l,i)=>{
+  const edges=Array.from({length:16},(_,j)=>[new THREE.Vector3(l.group.position.x+.6,(j/15-.5)*2,(j%4-1.5)*.3),new THREE.Vector3(layers[i+1].group.position.x-.6,(j/15-.5)*2,(j%4-1.5)*.3)] as const);
+  root.add(connectionBundle(edges,i>=5?palette.violet:palette.cyan,.2));const packet=activationPackets(edges);root.add(packet.root);return packet;
+ });
+ const beats:Beat[]=[{at:0,title:'AlexNet, from pixels to class scores',body:'Five convolutional layers learn spatial features. Three dense layers turn those features into class scores. The display samples units so the whole architecture remains readable.'}];
+ ALEXNET.forEach((l,i)=>beats.push({at:5+i*4,title:l.name+' · '+l.shape.join(' × '),body:l.detail,focus:i<8?[`layer-${i}`,`layer-${i+1}`]:['layer-7','layer-8'],azimuth:25,elevation:18}));
+ beats.push({at:42,title:'Keep the whole computation in view',body:'Spatial maps shrink while channel counts grow. Colored cells and moving packets here illustrate structure and flow; they are not activations from a trained AlexNet.'});
+ return {root,beats,duration:49,disclosure:'Illustrative activations · sampled units and connections · 227px input convention · GPU grouping described, not individually wired',labels:ALEXNET.map((l,i)=>({text:l.name,at:new THREE.Vector3((i-4)*2.6,-2.7,0)})),sample(t){layers.forEach((l,i)=>l.activity(t<5||t>=42?1:i===Math.floor((t-5)/4)?1:.12));packets.forEach((p,i)=>p.sample((t-(5+i*4))/3));}};
+}
+export function convolution():Composition {
+ const root=new THREE.Group();const input=featureMap(IMAGE,8,8,4,palette.cyan);input.root.name='input';input.root.position.x=-3;root.add(input.root);
+ const outputs=MAPS.map((m,i)=>{const layer=featureMap(m.values.map(v=>Math.max(0,v)/4),6,6,3,[palette.mint,palette.amber,palette.violet][i]);layer.root.name=`output-${i}`;layer.root.position.set(2+i*.85,0,0);root.add(layer.root);return layer;});
+ const field=receptiveField([.28,1.5,1.5]);field.name='receptive-field';field.userData.keepHighlighted=true;root.add(field);
+ const selected=receptiveField([.22,.5,.5],palette.mint);selected.userData.keepHighlighted=true;root.add(selected);
+ const kernel=featureMap(KERNELS[0].map(v=>(v+1)/2),3,3,1.5,palette.amber);kernel.root.name='kernel';kernel.root.position.set(-.7,2.7,0);root.add(kernel.root);
+ const edges=[[new THREE.Vector3(-3,0,0),new THREE.Vector3(2,0,0)]] as const;const packet=activationPackets(edges);root.add(packet.root);
+ const beats:Beat[]=[{at:0,title:'One image, several questions',body:'This is an explicit eight-by-eight test image. Three hand-specified filters compute different responses. These are real small-array calculations, not a pretrained network.',azimuth:55,elevation:16},{at:5,title:'Slide a receptive field',body:'A three-by-three patch is multiplied by nine kernel weights, then summed. The highlighted output cell corresponds to that patch.',focus:['input'],azimuth:62,elevation:16},{at:17,title:'One filter becomes one feature map',body:'With stride one and no padding, an eight-by-eight input becomes a six-by-six output. Negative responses are clipped by ReLU; brightness uses a fixed scale of four.',focus:['output-0','output-1','output-2'],azimuth:62,elevation:16},{at:24,title:'Compose channels into a volume',body:'The same input produces vertical-edge, horizontal-edge and Laplacian responses. Separating the planes makes the channel dimension visible.',azimuth:55,elevation:16}];
+ const sample=(t:number)=>{const index=Math.min(35,Math.floor(clamp((t-5)/12)*36)),x=index%6,y=Math.floor(index/6);field.position.set(-3,(.5-(y+1.5)/8)*4,((x+1.5)/8-.5)*4);selected.position.set(2,(.5-(y+.5)/6)*3,((x+.5)/6-.5)*3);field.visible=selected.visible=t>=5&&t<17;outputs.forEach((o,i)=>o.setActivity(t<17&&i>0?.12:1));packet.sample(t>=5&&t<17?((t-5)*3)%1:-1);};
+ return {root,beats,duration:31,disclosure:'Computed 8 × 8 example · explicit fixed kernels · ReLU outputs · values scaled by 4 for display',sample,labels:[{text:'8 × 8 input',at:new THREE.Vector3(-3,-2.4,0)},{text:'3 × 3 kernel (+1 / 0 / −1)',at:new THREE.Vector3(-.7,3.7,0)},{text:'6 × 6 × 3 output',at:new THREE.Vector3(3,-2.4,0)}],readout(t){const index=Math.min(35,Math.floor(clamp((t-5)/12)*36));return `Selected raw response: ${MAPS[0].values[index].toFixed(1)}   →   ReLU: ${Math.max(0,MAPS[0].values[index]).toFixed(1)}`;}};
+}
+export function mathGallery():Composition {
+ const root=new THREE.Group();const surface=parametricSurface((x,z)=>(x*x-z*z)*.28,{steps:56});surface.name='surface';surface.position.x=-4;root.add(surface);
+ const axes=coordinateAxes(2.3);axes.position.set(1,-1,0);axes.name='axes';root.add(axes);
+ const vector=vectorArrow([0,0,0],[1.5,2,.8],palette.amber);axes.add(vector);
+ const probabilities=softmax([1,2,-1,3,.5]);const bars=probabilityBars(probabilities,3);bars.position.set(5,0,0);bars.name='probabilities';root.add(bars);
+ const point=new THREE.Mesh(new THREE.SphereGeometry(.09,20,12),new THREE.MeshStandardMaterial({color:palette.amber}));root.add(point);
+ return {root,duration:26,beats:[{at:0,title:'A small vocabulary for mathematical space',body:'A surface, a vector frame, and a probability distribution share one renderer and one sampled clock.'},{at:5,title:'A saddle is a surface, not just a symbol',body:'This mesh samples y = 0.28(x² − z²). The marker follows z = 0, so its height rises in either x direction.',focus:['surface'],azimuth:15,elevation:35},{at:13,title:'Vectors have direction and magnitude',body:'The amber vector is (1.5, 2, 0.8). The red, green and blue axes are x, y and z.',focus:['axes'],azimuth:30,elevation:24},{at:19,title:'Scores become a probability distribution',body:'These bars are the exact softmax of the explicit example scores [1, 2, −1, 3, 0.5]. Their probabilities sum to one.',focus:['probabilities'],azimuth:0,elevation:8}],disclosure:'Analytic surface · explicit vector · computed softmax · reusable geometry',labels:[{text:'y = 0.28(x² − z²)',at:new THREE.Vector3(-4,-2,0)},{text:'x / y / z',at:new THREE.Vector3(2,-2,0)},{text:'softmax(scores)',at:new THREE.Vector3(6,-2,0)}],sample(t){const x=-2+4*clamp((t-5)/7);point.position.set(-4+x,.28*x*x+.09,0);point.visible=t>=5&&t<13;}};
+}
+
+export function neuralNetwork():Composition {
+ const root=new THREE.Group();const layers=[4,6,3].map((n,i)=>{const l=neuronLayer(n,{height:3,columns:1,color:[palette.cyan,palette.violet,palette.mint][i]});l.root.position.x=(i-1)*3.7;l.root.name=`dense-${i}`;root.add(l.root);return l;});
+ const packets=layers.slice(0,-1).map((l,i)=>{const edges=l.positions.flatMap(a=>layers[i+1].positions.map(b=>[a.clone().add(l.root.position),b.clone().add(layers[i+1].root.position)] as const));root.add(connectionBundle(edges,palette.cyan,.23));const p=activationPackets(edges);root.add(p.root);return p;});
+ const bars=probabilityBars(DENSE_PROBS,3);bars.position.set(5,0,0);bars.name='dense-bars';root.add(bars);
+ return {root,duration:27,beats:[{at:0,title:'A complete small neural network',body:'Four inputs feed six hidden units and three outputs. Every connection is shown. The weights are explicit teaching values; this network has not been trained.'},{at:5,title:'Multiply, sum, then rectify',body:'Each hidden unit takes a weighted sum of four inputs. ReLU clips negative sums to zero. Brightness encodes the magnitude of each computed activation.',focus:['dense-0','dense-1'],azimuth:20,elevation:12},{at:13,title:'Hidden features become three scores',body:'A second matrix multiplies the six hidden values into three logits. The moving packets indicate computation order, not the speed of electrical signals.',focus:['dense-1','dense-2'],azimuth:20,elevation:12},{at:20,title:'Softmax compares the scores',body:'Exponentiate the scores and normalize by their sum. The three output probabilities add up to one.',focus:['dense-2','dense-bars'],azimuth:0,elevation:8}],disclosure:'Computed 4 → 6 → 3 network · explicit untrained weights · all 42 connections · no biases',labels:[{text:'4 inputs',at:new THREE.Vector3(-3.7,-2,0)},{text:'6 ReLU units',at:new THREE.Vector3(0,-2,0)},{text:'3 output scores',at:new THREE.Vector3(3.7,-2,0)}],sample(t){layers[0].setValues(DENSE_INPUT);layers[1].setValues(DENSE_HIDDEN.map(v=>v*clamp((t-5)/3)));layers[2].setValues(DENSE_LOGITS.map(v=>v/Math.max(...DENSE_LOGITS)*clamp((t-13)/3)));packets[0].sample((t-5)/3);packets[1].sample((t-13)/3);bars.visible=t>=20;},readout:t=>t>=20?'Probabilities: '+DENSE_PROBS.map(p=>p.toFixed(3)).join(' / '):'Input: [0.8, 0.2, 0.6, 0.4]'};
+}

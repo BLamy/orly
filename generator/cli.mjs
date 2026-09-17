@@ -91,11 +91,11 @@ async function main() {
   --prompt "<text>"     which subsystem to explain
   --slug <name>         output slug (default: from prompt)
   --voice <id>          ElevenLabs voice id (default ${VOICE_DEFAULT})
-  --model <id>          Anthropic model (default claude-opus-4-8)
+  --model <id>          legacy option; use an Astra-authored --storyboard
   --storyboard <path>   use a pre-made storyboard JSON (skip the LLM step)
   --no-tts              skip narration (diagram-only preview)
   --open                open the result in Chrome (starts the dev server if needed)
-Env: ANTHROPIC_API_KEY (storyboard), ELEVENLABS_API_KEY (TTS).`);
+Env: ELEVENLABS_API_KEY (TTS). Planning: Astra-authored --storyboard required.`);
     process.exit(args.help ? 0 : 1);
   }
 

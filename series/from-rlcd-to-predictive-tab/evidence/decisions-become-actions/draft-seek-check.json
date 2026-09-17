@@ -1,0 +1,14 @@
+[
+  {
+    "chapter": 2,
+    "errors": [],
+    "deterministicSeeking": "passed",
+    "endingCaptured": true
+  },
+  {
+    "chapter": 3,
+    "errors": [],
+    "deterministicSeeking": "passed",
+    "endingCaptured": true
+  }
+]

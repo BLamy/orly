@@ -1,0 +1,12 @@
+{
+  "slug": "one-read-many-decisions",
+  "captionEquality": "33/33 exact",
+  "typecheck": "passed",
+  "productionBuild": "passed",
+  "nativeBookVerifier": "4/4 chapters passed; timeline midpoint seeks",
+  "deterministicSeeking": "book and Storybook forward/backward SVG equality passed",
+  "blog": "8 live sections, no audio elements, no page errors",
+  "visualReview": "reviewed all cue frames; pending Fable fixes for chapter 1 clipped work-strip label and chapter 4 explicit illustrative score labeling",
+  "narration": "browser speech preview; ElevenLabs unconfigured",
+  "preview": "http://127.0.0.1:5178/?bundle=one-read-many-decisions"
+}

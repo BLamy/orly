@@ -1,3 +1,8 @@
+> New books use Astra planning/3D modeling and Fable 5.1 D3 authoring. Read
+> [the shared workflow](../docs/authoring-models.md) and use the scene-native book commands.
+> The v2 CLI below requires a supplied Astra-authored `--storyboard`; automatic
+> legacy Anthropic planning is disabled.
+
 # repo → narrated D3 explainer
 
 Point this at any GitHub repo (or local path) and a subsystem prompt; it generates
@@ -21,7 +26,7 @@ launch Chrome (it starts the dev server if needed).
   │
   ├─ repo.mjs        clone (shallow, sanitized) or local path → rank files with
   │                  ripgrep against the prompt → bounded source "digest"
-  ├─ storyboard.mjs  Anthropic API + a vetted system prompt + JSON schema →
+  ├─ storyboard.mjs  retired automatic planner; use an Astra-authored fixture →
   │                  3–6 chapters { nodes, edges, steps{ spoken, displayNarration } },
   │                  grounded in real code, with a validate→repair loop (validate.mjs)
   ├─ tts.mjs         per chapter: concat each step's `spoken` → ElevenLabs
@@ -43,14 +48,14 @@ player:  App.tsx reads ?bundle=<slug> → fetches the manifest → LearnPage ren
 | `--prompt "<text>"` | which subsystem to explain |
 | `--slug <name>` | output slug (default: derived from the prompt) |
 | `--voice <id>` | ElevenLabs voice id (default `Fahco4VZzobUeiPqni1S`) |
-| `--model <id>` | Anthropic model (default `claude-opus-4-8`) |
+| `--model <id>` | Legacy option; automatic planning disabled |
 | `--storyboard <path>` | use a pre‑made storyboard JSON, skip the LLM step |
 | `--no-tts` | diagram‑only preview (no narration) |
 | `--open` | open the result in Chrome |
 
 ## Keys
 
-- `ANTHROPIC_API_KEY` — storyboard generation (skip with `--storyboard`).
+- `ANTHROPIC_API_KEY` — not used by the supported authoring workflow.
 - `ELEVENLABS_API_KEY` — narration (skip with `--no-tts`).
 
 ## Notes

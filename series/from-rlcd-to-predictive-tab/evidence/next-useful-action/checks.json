@@ -1,0 +1,13 @@
+{
+  "slug": "next-useful-action",
+  "captionEquality": "24/24 exact",
+  "typecheck": "passed",
+  "productionBuild": "passed",
+  "nativeBookVerifier": "3/3 chapters passed; timeline-clock midpoint seek",
+  "visualReview": "cue-by-cue Storybook contact sheets and book opening/middle/end inspected after Fable revisions",
+  "deterministicSeeking": "book and Storybook forward/backward SVG equality passed",
+  "blog": "6 non-overlapping live sections; standalone mounts 6 SVGs, no audio, no errors",
+  "cover": "built-in ImageGen, white field, no lettering, 512px WebP",
+  "narration": "browser speech fallback; recorded ElevenLabs narration not generated",
+  "preview": "http://127.0.0.1:5178/?bundle=next-useful-action"
+}

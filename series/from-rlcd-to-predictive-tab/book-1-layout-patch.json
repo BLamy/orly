@@ -1,0 +1,75 @@
+{
+  "edits": [
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-1.tsx",
+      "old": "const RIB = { x: 60, y: 528, w: 1160, h: 28 };\nconst RIB_CLOSE = { x: 260, y: 318, w: 760, h: 22 };\n\nconst CAM_PAGE: CameraState = { x: 330, y: 258, k: 1.45 };\nconst CAM_WIDE: CameraState = { x: 640, y: 330, k: 1 };\nconst CAM_RIBBON: CameraState = { x: 640, y: 350, k: 1.04 };\nconst CAM_LANES: CameraState = { x: 770, y: 300, k: 1.18 };\nconst CAM_BOTH: CameraState = { x: 640, y: 300, k: 1.05 };\nconst CAM_FIELD: CameraState = { x: 322, y: 255, k: 1.5 };",
+      "new": "const RIB = { x: 60, y: 510, w: 1160, h: 28 };\nconst RIB_CLOSE = { x: 260, y: 318, w: 760, h: 22 };\n\n// Screen y = 360 + k·(y − cam.y). Captions own screen y ≥ 575, so every camera\n// keeps the ribbon's lowest label (world y ≈ 573) and the page bottom (461) above it.\n// CAM_LANES and CAM_FIELD frame only part of the stage: whatever falls outside\n// them is faded to 0 BEFORE the camera moves, and restored after it returns.\nconst CAM_PAGE: CameraState = { x: 318, y: 291, k: 1.25 };\nconst CAM_WIDE: CameraState = { x: 640, y: 360, k: 1 };\nconst CAM_RIBBON: CameraState = { x: 640, y: 368, k: 1.04 };\nconst CAM_LANES: CameraState = { x: 930, y: 200, k: 1.35 };\nconst CAM_BOTH: CameraState = { x: 640, y: 369, k: 1.05 };\nconst CAM_FIELD: CameraState = { x: 392, y: 295, k: 1.28 };"
+    },
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-1.tsx",
+      "old": "  const gatesU = tl.channel('gatesU', 0);\n",
+      "new": "  const gatesU = tl.channel('gatesU', 0);\n  const ribOp = tl.channel('ribOp', 1);\n"
+    },
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-1.tsx",
+      "old": "rowsU, braceU, gatesU,",
+      "new": "rowsU, braceU, gatesU, ribOp,"
+    },
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-1.tsx",
+      "old": "  tl.tween(taskU, 1, { at: b + 2.6, dur: 0.7, ease: ease.enter });",
+      "new": "  tl.tween(taskU, 1, { at: b + 3.3, dur: 0.7, ease: ease.enter });"
+    },
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-1.tsx",
+      "old": "  tl.tween(liftU, 1, { at: b + 0.6, dur: 1.3, ease: ease.move });\n  tl.tween(cam, CAM_LANES, { at: b + 1.5, dur: 1.4, ease: ease.move });\n  tl.tween(subAU, 1, { at: b + 1.9, dur: 0.6, ease: ease.enter });",
+      "new": "  tl.tween(liftU, 1, { at: b + 0.6, dur: 1.3, ease: ease.move });\n  // the page and the ribbon leave completely before the push-in, so nothing is cut at the frame edge\n  tl.tween(pageU, 0, { at: b + 1.1, dur: 0.7, ease: ease.enter });\n  tl.tween(ribOp, 0, { at: b + 1.2, dur: 0.7, ease: ease.enter });\n  tl.tween(cam, CAM_LANES, { at: b + 1.9, dur: 1.3, ease: ease.move });\n  tl.tween(subAU, 1, { at: b + 2.0, dur: 0.6, ease: ease.enter });"
+    },
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-1.tsx",
+      "old": "  tl.tween(cam, CAM_BOTH, { at: b + 0.2, dur: 1.4, ease: ease.move });\n  tl.tween(laneBU, 1, { at: b + 0.5, dur: 1.2, ease: ease.draw });\n  tl.tween(noteU, 1, { at: b + 1.2, dur: 0.6, ease: ease.enter });",
+      "new": "  tl.tween(cam, CAM_BOTH, { at: b + 0.2, dur: 1.4, ease: ease.move });\n  tl.tween(laneBU, 1, { at: b + 0.5, dur: 1.2, ease: ease.draw });\n  // page and ribbon return only once the pull-back has them fully in frame\n  tl.tween(pageU, 1, { at: b + 1.4, dur: 0.6, ease: ease.enter });\n  tl.tween(ribOp, 1, { at: b + 1.4, dur: 0.6, ease: ease.enter });\n  tl.tween(noteU, 1, { at: b + 1.5, dur: 0.6, ease: ease.enter });"
+    },
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-1.tsx",
+      "old": "  tl.tween(laneADim, 0.1, { at: b + 0.1, dur: 0.7, ease: ease.move });\n  tl.tween(laneBDim, 0.1, { at: b + 0.1, dur: 0.7, ease: ease.move });\n  tl.tween(marksU, 0, { at: b + 0.1, dur: 0.6, ease: ease.enter });\n  tl.tween(linksU, 0, { at: b + 0.1, dur: 0.6, ease: ease.enter });\n  tl.tween(noteU, 0, { at: b + 0.1, dur: 0.6, ease: ease.enter });\n  tl.tween(cam, CAM_FIELD, { at: b + 0.2, dur: 1.4, ease: ease.move });\n  tl.tween(personTagU, 1, { at: b + 0.8, dur: 0.6, ease: ease.enter });\n  tl.tween(haloU, 1, { at: b + 1.0, dur: 0.6, ease: ease.enter });\n  tl.tween(haloMoveU, 1, { at: b + 1.5, dur: 1.6, ease: ease.move });\n  tl.tween(hintU, 1, { at: b + 3.3, dur: 0.6, ease: ease.enter });",
+      "new": "  // everything CAM_FIELD would cut (lanes, task, ribbon) fades to 0 first; the legend arrives after\n  tl.tween(laneADim, 0, { at: b + 0.1, dur: 0.6, ease: ease.move });\n  tl.tween(laneBDim, 0, { at: b + 0.1, dur: 0.6, ease: ease.move });\n  tl.tween(taskU, 0, { at: b + 0.1, dur: 0.6, ease: ease.enter });\n  tl.tween(ribOp, 0, { at: b + 0.1, dur: 0.6, ease: ease.enter });\n  tl.tween(marksU, 0, { at: b + 0.1, dur: 0.6, ease: ease.enter });\n  tl.tween(linksU, 0, { at: b + 0.1, dur: 0.6, ease: ease.enter });\n  tl.tween(noteU, 0, { at: b + 0.1, dur: 0.6, ease: ease.enter });\n  tl.tween(cam, CAM_FIELD, { at: b + 0.7, dur: 1.3, ease: ease.move });\n  tl.tween(personTagU, 1, { at: b + 1.9, dur: 0.6, ease: ease.enter });\n  tl.tween(haloU, 1, { at: b + 2.1, dur: 0.6, ease: ease.enter });\n  tl.tween(haloMoveU, 1, { at: b + 2.5, dur: 1.6, ease: ease.move });\n  tl.tween(hintU, 1, { at: b + 4.2, dur: 0.6, ease: ease.enter });"
+    },
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-1.tsx",
+      "old": "  tl.tween(cam, CAM_BOTH, { at: b + 0.2, dur: 1.4, ease: ease.move });\n  tl.tween(laneBDim, 1, { at: b + 0.5, dur: 0.7, ease: ease.move });\n  tl.tween(agentTagU, 1, { at: b + 0.9, dur: 0.6, ease: ease.enter });\n  tl.tween(marksU, 1, { at: b + 1.0, dur: 0.8, ease: ease.enter });\n  tl.tween(routeB, 1, { at: b + 1.0, dur: 0.5, ease: ease.linear });\n  tl.tween(routeB, 2, { at: b + 1.5, dur: 1.8, ease: ease.linear });",
+      "new": "  // person-mode chips are gone before the pull-back; offstage layers return once it has them in frame\n  tl.tween(cam, CAM_BOTH, { at: b + 0.5, dur: 1.2, ease: ease.move });\n  tl.tween(laneADim, 0.1, { at: b + 1.5, dur: 0.6, ease: ease.move });\n  tl.tween(laneBDim, 1, { at: b + 1.5, dur: 0.6, ease: ease.move });\n  tl.tween(taskU, 1, { at: b + 1.5, dur: 0.6, ease: ease.enter });\n  tl.tween(ribOp, 1, { at: b + 1.5, dur: 0.6, ease: ease.enter });\n  tl.tween(agentTagU, 1, { at: b + 1.7, dur: 0.6, ease: ease.enter });\n  tl.tween(marksU, 1, { at: b + 1.0, dur: 0.8, ease: ease.enter });\n  tl.tween(routeB, 1, { at: b + 1.8, dur: 0.5, ease: ease.linear });\n  tl.tween(routeB, 2, { at: b + 2.3, dur: 1.1, ease: ease.linear });"
+    },
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-1.tsx",
+      "old": "<g>\n      <defs>",
+      "new": "<g opacity={s.get(scene.ribOp)}>\n      <defs>"
+    },
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-1.tsx",
+      "old": "              y={isGap ? y0 + h + 17 : y0 + h + 17}",
+      "new": "              y={y0 + h + 16}"
+    },
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-1.tsx",
+      "old": "<text x={x0} y={y0 + h + 40}",
+      "new": "<text x={x0} y={y0 + h + 32}"
+    },
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-1.tsx",
+      "old": "<text x={x0 + w} y={y0 + h + 40}",
+      "new": "<text x={x0 + w} y={y0 + h + 32}"
+    },
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-1.tsx",
+      "old": "<Chip x={PLACE.x + 150} y={PLACE.y + PAGE_H + 10}",
+      "new": "<Chip x={PLACE.x + 268} y={PLACE.y + 90}"
+    },
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-1.tsx",
+      "old": "<Chip x={640} y={RIB.y - 58}",
+      "new": "<Chip x={820} y={RIB.y - 52}"
+    }
+  ],
+  "rationale": "Screen y = 360 + k(y - cam.y), so CAM_WIDE y330 / CAM_BOTH y300 k1.05 pushed the RIB y528 label stack to screen 600-640, under the captions. Ribbon moves to y510 with a tighter label stack (segment labels +16, end labels +32; lowest ink at world y~573) and every full-stage camera is re-aimed so that maps to screen <=575: WIDE identity (573), RIBBON y368 k1.04 (573), BOTH y369 k1.05 (574); task chip top stays >=31 and x 60..1220 stays inside 30..1250. CAM_PAGE drops to k1.25 so the page bottom sits at 572 instead of under caption 1, and the task chip waits (3.3s) until the pull-out has it in frame. The replay chip moves into the empty band right of the page heading (world 328..561 x 146..168) and the amber question chip moves right/up (582..1058 x 458..480) because the raised ribbon heading took their old space. Cue 4: a push-in cannot hold page+lanes (1160 wide), so the page and the ribbon (new ribOp channel wrapping WorkRibbon) fade to 0 after the pause has lifted and BEFORE the camera moves; CAM_LANES then centres task chip + route A (screen x 248..1031, y 166..481); both return in beat 5 only after the pull-back is ~98% done. Cue 6: lanes fade to 0 (not 0.1) and task chip/state + ribbon fade out before CAM_FIELD starts (fades 0.1-0.7, camera 0.7-2.0); CAM_FIELD k1.28 centres page + legend (screen x 215..1065), chips at y13, page bottom 572; person tag/legend/halo start after the camera lands (1.9+), so the legend never sits over lane text and y=24 chips are never clipped mid-tween; Tab press timing unchanged. Beat 7 mirrors it: chips fade (0-0.5), camera 0.5-1.7, task/ribbon/lanes return at 1.5, route B progress shifted to start once lane B is visible (ends 3.4, meeting the unchanged next tween). Captions, narration timing, the ribbon->lift->routes->evidence-bar mechanism and all camera moves are preserved; closing panel (64..516) and RIB_CLOSE untouched, now rendered at identity."
+}

@@ -1,0 +1,61 @@
+{
+  "format": 3,
+  "slug": "next-useful-action",
+  "title": "The Next Useful Action",
+  "subtitle": "A product vision for a browser that keeps up",
+  "animal": "animal.webp",
+  "accent": "#38bdf8",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "The pause between intention and action",
+      "blurb": "The opportunity is to shorten the distance from intention to a useful, verified action.",
+      "scene": "books/next-useful-action/chapter-1",
+      "cues": [
+        0.4,
+        11.2,
+        21.6,
+        33.6,
+        45.2,
+        55.6,
+        66.8,
+        77.6
+      ],
+      "duration": 90.2
+    },
+    {
+      "number": 2,
+      "title": "A small decision inside a large world",
+      "blurb": "Constrain the decision space without confusing a valid answer with a correct answer.",
+      "scene": "books/next-useful-action/chapter-2",
+      "cues": [
+        0.4,
+        11.6,
+        22.8,
+        34.8,
+        46.4,
+        57.6,
+        68.8,
+        80.4
+      ],
+      "duration": 92.6
+    },
+    {
+      "number": 3,
+      "title": "Two experiences, one foundation",
+      "blurb": "Predicting a person’s next target and executing a stated task share infrastructure but have different objectives.",
+      "scene": "books/next-useful-action/chapter-3",
+      "cues": [
+        0.4,
+        11.6,
+        23.6,
+        34.4,
+        44,
+        55.6,
+        66.8,
+        78
+      ],
+      "duration": 89
+    }
+  ]
+}

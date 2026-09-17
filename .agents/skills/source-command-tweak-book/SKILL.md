@@ -5,6 +5,11 @@ description: "Edit or fine-tune an existing book on the shelf (one targeted chan
 
 # source-command-tweak-book
 
+## Model responsibilities
+
+Read [the project authoring workflow](../../../docs/authoring-models.md). Astra (`gpt-6-astra`) plans and builds Blender/Three.js 3D assets; Fable 5.1 (`claude-fable-5-1`) authors and revises D3/SVG choreography. Invoke Fable through `npx --yes @anthropic-ai/claude-code@latest`. Preserve fixed captions and record actual provider provenance. Do not substitute models on a rate limit; continue independent work for the available role.
+
+
 Use this skill when the user asks to run the migrated source command `tweak-book`.
 
 ## Command Template

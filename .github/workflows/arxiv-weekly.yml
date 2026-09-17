@@ -37,10 +37,14 @@ jobs:
             --label paper-candidate --limit 200 \
             --json number,title,body > /tmp/open-issues.json || echo '[]' > /tmp/open-issues.json
 
-      - name: Discover + rank this week's papers with Claude Code
-        uses: anthropics/claude-code-action@v1
+      - name: Discover + rank this week's papers with Astra
+        uses: openai/codex-action@v1
         with:
-          claude_code_oauth_token: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          model: gpt-6-astra
+          effort: high
+          sandbox: workspace-write
+          codex-args: '["-c", "sandbox_workspace_write.network_access=true"]'
           prompt: |
             You are the weekly arXiv discovery agent for this O'RLY explainer
             bookshelf. Produce /tmp/arxiv-plan.json — nothing else. Do NOT run
@@ -80,10 +84,6 @@ jobs:
                published results at toy scale. `book_title` is a short O'RLY
                cover title. If nothing survives the gates, write
                { "week": "…", "candidates": [] }.
-          claude_args: |
-            --max-turns 120
-            --model claude-opus-4-8
-            --allowedTools "Bash,Read,Write,Glob,Grep,WebFetch,WebSearch"
 
       - name: File tickets for every concept, build the top pick
         env:

@@ -1,0 +1,137 @@
+{
+  "series": "From RLCD to Predictive Tab",
+  "status": "Work preserved; awaiting ElevenLabs configuration and required Fable session reset",
+  "counts": {
+    "books": 6,
+    "chapters": 19,
+    "captions": 153,
+    "words": 3707
+  },
+  "worker": {
+    "entrypoint": "npx --yes @anthropic-ai/claude-code@latest",
+    "cliVersion": "2.1.274",
+    "authentication": "signed in",
+    "requestedModel": "claude-fable-5-1",
+    "actualModel": "claude-fable-5-1",
+    "invocation": "Three chapter-scoped Fable workers wrote book 3; chapters 2 and 3 returned provider session-limit errors after writing scenes",
+    "resetAt": "2026-09-17T20:30:00Z"
+  },
+  "services": {
+    "elevenLabsConfigured": false,
+    "nounProjectConfigured": false,
+    "elevenLabsChecked": "worktree environment and main checkout; unconfigured",
+    "narrationRequirement": "User requires ElevenLabs audio and verified caption/animation synchronization before publication; credentials requested without disclosure"
+  },
+  "dependencies": {
+    "installed": true,
+    "command": "npm ci --legacy-peer-deps --ignore-scripts --no-audit --no-fund"
+  },
+  "books": [
+    {
+      "order": 1,
+      "slug": "next-useful-action",
+      "title": "The Next Useful Action",
+      "chapters": 3,
+      "sourcePreparation": "complete; source hashes verified",
+      "fableAuthoring": "complete; primary plus two Fable layout patches",
+      "visualReview": "passed: all cue frames plus opening/middle/ending reviewed",
+      "cover": "built-in ImageGen kingfisher visually inspected; prepared PNG and 512px WebP",
+      "narration": "ElevenLabs required; awaiting configured API key",
+      "bookBuild": "passed",
+      "blog": "six non-overlapping semantic live sections validated",
+      "verification": "24/24 captions exact; typecheck/build/verify-book passed; deterministic forward/backward seeks in all three book and Storybook players"
+    },
+    {
+      "order": 2,
+      "slug": "one-read-many-decisions",
+      "title": "One Read, Many Decisions",
+      "chapters": 4,
+      "sourcePreparation": "complete; source hashes verified",
+      "fableAuthoring": "complete; original Fable scenes plus confirmed Fable correction and subsequent Fable review",
+      "visualReview": "passed: Fable reviewed both existing corrections; parent inspected corrected rendered frames and reran deterministic seeks",
+      "cover": "built-in ImageGen octopus; visually inspected; PNG and 512px WebP prepared",
+      "narration": "ElevenLabs required; awaiting configured API key",
+      "bookBuild": "passed",
+      "blog": "eight non-overlapping semantic live sections validated; standalone render passed",
+      "verification": "33/33 exact captions; typecheck/build/native playback, all four deterministic book/Storybook seeks, standalone blog and corrected-frame review passed",
+      "integration": "Codex added standard Player-only Storybook wrappers; no replacement visualization authored"
+    },
+    {
+      "order": 3,
+      "slug": "decisions-become-actions",
+      "title": "Decisions Become Actions",
+      "chapters": 3,
+      "sourcePreparation": "complete; source hashes verified",
+      "fableAuthoring": "All three scene modules authored by Fable 5.1; provider limit interrupted chapter 2/3 final responses",
+      "visualReview": "Draft cue frames and endings inspected; all three Storybook scenes render and seek deterministically",
+      "cover": "built-in ImageGen; visually inspected PNG and 512px WebP prepared",
+      "narration": "ElevenLabs required; awaiting configured API key",
+      "bookBuild": "pending ElevenLabs configuration",
+      "blog": "Six semantic sections authored; final manifest-clock windows await recorded narration",
+      "verification": "24/24 captions exact; typecheck and production build pass; all Storybook draft renders have no page errors. Recorded playback and retimed visual checks pending.",
+      "integration": "Parent added only the standard chapter 2 Player story wrapper after provider limit"
+    },
+    {
+      "order": 4,
+      "slug": "recordings-become-practice",
+      "title": "Recordings Become Practice",
+      "chapters": 3,
+      "sourcePreparation": "complete; source hashes verified",
+      "fableAuthoring": "pending required Fable 5.1 session reset",
+      "visualReview": "pending",
+      "cover": "built-in ImageGen; visually inspected PNG and 512px WebP prepared",
+      "narration": "ElevenLabs required; awaiting configured API key",
+      "bookBuild": "pending",
+      "blog": "Six semantic sections authored; final manifest-clock windows pending",
+      "verification": "pending"
+    },
+    {
+      "order": 5,
+      "slug": "fast-path-thoughtful-fallback",
+      "title": "A Fast Path with a Thoughtful Fallback",
+      "chapters": 3,
+      "sourcePreparation": "complete; source hashes verified",
+      "fableAuthoring": "pending required Fable 5.1 session reset",
+      "visualReview": "pending",
+      "cover": "built-in ImageGen; visually inspected PNG and 512px WebP prepared",
+      "narration": "ElevenLabs required; awaiting configured API key",
+      "bookBuild": "pending",
+      "blog": "Six semantic sections authored; final manifest-clock windows pending",
+      "verification": "pending"
+    },
+    {
+      "order": 6,
+      "slug": "tab-into-the-future",
+      "title": "Tab Into the Future",
+      "chapters": 3,
+      "sourcePreparation": "complete; source hashes verified",
+      "fableAuthoring": "pending required Fable 5.1 session reset",
+      "visualReview": "pending",
+      "cover": "built-in ImageGen; visually inspected PNG and 512px WebP prepared",
+      "narration": "ElevenLabs required; awaiting configured API key",
+      "bookBuild": "pending",
+      "blog": "Six semantic sections authored; final manifest-clock windows pending",
+      "verification": "pending"
+    }
+  ],
+  "branch": "codex/from-rlcd-to-predictive-tab",
+  "blocker": "ELEVENLABS_API_KEY is not configured. Required Fable 5.1 session limit resets September 17 at 4:30 p.m. America/New_York; books 4–6 still require that author.",
+  "scheduledContinuation": {
+    "scheduledFor": "2026-09-17T07:50:00Z",
+    "sourceContractCheck": "passed",
+    "fableLaunched": false,
+    "publicationAttempted": false,
+    "blocker": "Automatic approval review rejected transmitting the private scene/source payload to Anthropic, including a second review supplied with the scheduled explicit authorization and persisted consent evidence. Requires renewed user confirmation; no workaround attempted.",
+    "resume": "First apply book-2-review.md corrections with required Fable 5.1, verify book 2, then finish books 3–6 sequentially. Preserve all 153 captions. Publish only after all six pass.",
+    "assignment": ".orly-work/book-2-resume.md"
+  },
+  "publication": {
+    "authorization": "User requested completion and publication on 2026-09-17",
+    "method": "Local authenticated Wrangler after final checks",
+    "ciStatus": "Existing GitHub deployment token rejected; local OAuth verified",
+    "audioGate": "All 19 chapters require recorded ElevenLabs audio, exact alignment cues, and verified synchronized playback before release",
+    "status": "Not published; no merge or deployment attempted. Audio and remaining-book gates unresolved.",
+    "audioVerification": "verify-narration.mjs validates recording duration, every caption in both seek directions, and live audio-clock advancement; syntax checked, awaiting recordings",
+    "audioGateTest": "Build of book 1 correctly refused missing ElevenLabs configuration before writing release assets"
+  }
+}

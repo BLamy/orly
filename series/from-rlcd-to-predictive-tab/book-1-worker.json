@@ -1,0 +1,16 @@
+{
+  "book": 1,
+  "entrypoint": "npx --yes @anthropic-ai/claude-code@latest",
+  "cliVersion": "2.1.274",
+  "requestedModel": "claude-fable-5-1",
+  "actualModel": "claude-fable-5-1",
+  "provider": "firstParty",
+  "result": "success",
+  "isError": false,
+  "permissionDenials": 1,
+  "durationMs": 1640279,
+  "inputTokens": 70,
+  "outputTokens": 145504,
+  "costUsd": 13.654369249999998,
+  "verification": "Passed after two Fable-authored layout correction patches: exact captions, typecheck, build, native playback gate, Storybook/book seeking, visual QA, live blog windows and standalone blog."
+}

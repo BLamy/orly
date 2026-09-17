@@ -1,0 +1,170 @@
+[
+  {
+    "chapter": 1,
+    "story": "books-the-next-useful-action-chapter-1--the-pause-between-intention-and-action",
+    "forwardBackwardSeeking": "passed",
+    "consoleErrors": [],
+    "frames": [
+      {
+        "t": 1,
+        "file": "chapter-1-state-0.png"
+      },
+      {
+        "t": 45.1,
+        "file": "chapter-1-state-1.png"
+      },
+      {
+        "t": 12.7,
+        "file": "chapter-1-state-2.png"
+      },
+      {
+        "t": 23.1,
+        "file": "chapter-1-state-3.png"
+      },
+      {
+        "t": 35.1,
+        "file": "chapter-1-state-4.png"
+      },
+      {
+        "t": 46.7,
+        "file": "chapter-1-state-5.png"
+      },
+      {
+        "t": 57.1,
+        "file": "chapter-1-state-6.png"
+      },
+      {
+        "t": 68.3,
+        "file": "chapter-1-state-7.png"
+      },
+      {
+        "t": 79.1,
+        "file": "chapter-1-state-8.png"
+      },
+      {
+        "t": 89.2,
+        "file": "chapter-1-state-9.png"
+      },
+      {
+        "t": 22.55,
+        "file": "chapter-1-state-10.png"
+      },
+      {
+        "t": 45.1,
+        "file": "chapter-1-state-11.png"
+      }
+    ]
+  },
+  {
+    "chapter": 2,
+    "story": "books-the-next-useful-action-chapter-2--a-small-decision-inside-a-large-world",
+    "forwardBackwardSeeking": "passed",
+    "consoleErrors": [],
+    "frames": [
+      {
+        "t": 1,
+        "file": "chapter-2-state-0.png"
+      },
+      {
+        "t": 46.3,
+        "file": "chapter-2-state-1.png"
+      },
+      {
+        "t": 13.1,
+        "file": "chapter-2-state-2.png"
+      },
+      {
+        "t": 24.3,
+        "file": "chapter-2-state-3.png"
+      },
+      {
+        "t": 36.3,
+        "file": "chapter-2-state-4.png"
+      },
+      {
+        "t": 47.9,
+        "file": "chapter-2-state-5.png"
+      },
+      {
+        "t": 59.1,
+        "file": "chapter-2-state-6.png"
+      },
+      {
+        "t": 70.3,
+        "file": "chapter-2-state-7.png"
+      },
+      {
+        "t": 81.9,
+        "file": "chapter-2-state-8.png"
+      },
+      {
+        "t": 91.6,
+        "file": "chapter-2-state-9.png"
+      },
+      {
+        "t": 23.15,
+        "file": "chapter-2-state-10.png"
+      },
+      {
+        "t": 46.3,
+        "file": "chapter-2-state-11.png"
+      }
+    ]
+  },
+  {
+    "chapter": 3,
+    "story": "books-the-next-useful-action-chapter-3--two-experiences-one-foundation",
+    "forwardBackwardSeeking": "passed",
+    "consoleErrors": [],
+    "frames": [
+      {
+        "t": 1,
+        "file": "chapter-3-state-0.png"
+      },
+      {
+        "t": 44.5,
+        "file": "chapter-3-state-1.png"
+      },
+      {
+        "t": 13.1,
+        "file": "chapter-3-state-2.png"
+      },
+      {
+        "t": 25.1,
+        "file": "chapter-3-state-3.png"
+      },
+      {
+        "t": 35.9,
+        "file": "chapter-3-state-4.png"
+      },
+      {
+        "t": 45.5,
+        "file": "chapter-3-state-5.png"
+      },
+      {
+        "t": 57.1,
+        "file": "chapter-3-state-6.png"
+      },
+      {
+        "t": 68.3,
+        "file": "chapter-3-state-7.png"
+      },
+      {
+        "t": 79.5,
+        "file": "chapter-3-state-8.png"
+      },
+      {
+        "t": 88,
+        "file": "chapter-3-state-9.png"
+      },
+      {
+        "t": 22.25,
+        "file": "chapter-3-state-10.png"
+      },
+      {
+        "t": 44.5,
+        "file": "chapter-3-state-11.png"
+      }
+    ]
+  }
+]

@@ -5,16 +5,26 @@ narrated, animated D3 data‑flow explainer of one subsystem of some codebase, b
 as an **O'RLY‑parody** O'Reilly‑style book. The shelf deploys to Cloudflare Workers:
 **https://orly.brett-lamy.workers.dev/**
 
+## Authoring model routing
+
+Use **GPT-6 Astra (`gpt-6-astra`) for planning and Blender 3D modeling** and
+**Claude Fable 5.1 (`claude-fable-5-1`) for D3/SVG animations**. Follow
+[the authoring model workflow](docs/authoring-models.md) for handoffs, provider
+provenance and hybrid scene verification. Always launch Claude with
+`npx --yes @anthropic-ai/claude-code@latest`, never the installed global CLI.
+Keep the exact requested model; save progress on a provider limit rather than
+silently substituting. Astra may continue independent 3D/integration work.
+
 ## The main thing you do here
 **Create a new book** when asked: run **`/new-book <repo> | <subsystem> | <title>`**
-(see `.claude/commands/new-book.md`). It digests the repo, you write the storyboard,
+(see `.claude/commands/new-book.md`). It digests the repo, Astra writes the visual plan and Fable authors D3 scenes,
 then the pipeline narrates it (ElevenLabs), generates an O'RLY cover (Codex
 built-in ImageGen when available; API fallback otherwise), adds Noun Project
 icons, and you commit + push to redeploy.
 
 ## Architecture
 - `generator/` — the pipeline (run via `npm run explain`):
-  - `repo.mjs` digest · `storyboard.mjs` (Anthropic API path) · `validate.mjs`
+  - `repo.mjs` digest · `storyboard.mjs` (retired automatic planner) · `validate.mjs`
     (cover‑first/reveal‑union checks + the **layered layout** that prevents node
     overlap and hidden arrows) · `tts.mjs` (ElevenLabs `convertWithTimestamps` →
     exact per‑step cues) · `noun.mjs` + `iconize.mjs` (icons for nodes/packets) ·
@@ -33,7 +43,7 @@ icons, and you commit + push to redeploy.
   timeline engine, primitives, explainers), cataloged in Storybook
   (`npm run storybook`; the **Motion** panel edits timelines and saves timings
   back to each scene's `overrides.json`). **To author a new scene, use the
-  `viz-scene` skill** (`.Codex/skills/viz-scene/SKILL.md`) — it has the full
+  `viz-scene` skill** (`.agents/skills/viz-scene/SKILL.md`) — it has the full
   API, conventions, and verification steps. Narration: in-browser voice while
   editing; ElevenLabs only at publish via `npm run viz:narrate`.
 
@@ -50,8 +60,8 @@ icons, and you commit + push to redeploy.
 - **Ground everything in real code** — no invented components/files/flows. The
   storyboard system prompt (`generator/prompts/storyboard.txt`) enforces this.
 - Keys live in a **gitignored `.env`** (ElevenLabs, OpenAI, Noun Project). Never
-  commit secrets. The storyboard step uses **you (Codex)**, so no Anthropic
-  key is required.
+  commit secrets. Planning uses Astra; D3 authoring uses the signed-in latest Claude CLI.
+  See docs/authoring-models.md for CI credentials.
 
 ## Blog posts are live Docstream viz sections
 
@@ -103,3 +113,13 @@ icons, and you commit + push to redeploy.
 `wrangler deploy` to the **`orly`** Worker). Book PRs get a Cloudflare **preview**
 (`preview.yml`) and stay open; reply **@Codex** on a book PR to revise it
 (`comment-edit.yml`); merging redeploys production.
+
+## Reusable 3D math models
+
+Before building new mathematical or neural-network geometry, consult
+`apps/bookshelf/src/viz/three/README.md` and reuse its tensor volumes, feature maps,
+neurons, connections, receptive fields, surfaces, vectors and probability bars.
+Compose examples with the shared sampled-clock viewer and subject-focused camera.
+Keep true tensor shapes distinct from display sampling; label illustrative data.
+The Storybook `3D Library/Compositions` group is the reference gallery. Astra owns
+these Three.js primitives; Fable 5.1 remains responsible for new D3/SVG choreography.

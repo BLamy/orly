@@ -1,0 +1,79 @@
+{
+  "format": 3,
+  "slug": "one-read-many-decisions",
+  "title": "One Read, Many Decisions",
+  "subtitle": "Inside Qwen-RLCD generation",
+  "animal": "animal.webp",
+  "accent": "#a78bfa",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Why writing an answer takes steps",
+      "blurb": "Autoregressive generation repeatedly extends output; structured formatting alone does not remove those steps.",
+      "scene": "books/one-read-many-decisions/chapter-1",
+      "cues": [
+        0.4,
+        11.6,
+        23.6,
+        34.4,
+        45.2,
+        56.4,
+        67.2,
+        78.8
+      ],
+      "duration": 91.8
+    },
+    {
+      "number": 2,
+      "title": "Read the shared context once",
+      "blurb": "A single logical prefill produces reusable context state; reuse has real compute and memory costs.",
+      "scene": "books/one-read-many-decisions/chapter-2",
+      "cues": [
+        0.4,
+        10.4,
+        23.2,
+        35.6,
+        45.2,
+        57.2,
+        68.8,
+        80.4
+      ],
+      "duration": 92.2
+    },
+    {
+      "number": 3,
+      "title": "Ask together, assemble in code",
+      "blurb": "Batch independent field suffixes, score permitted choices, and construct the result without generating JSON syntax.",
+      "scene": "books/one-read-many-decisions/chapter-3",
+      "cues": [
+        0.4,
+        12,
+        22.4,
+        33.2,
+        44,
+        54.8,
+        66.4,
+        76.4
+      ],
+      "duration": 88.6
+    },
+    {
+      "number": 4,
+      "title": "The difficult cases reveal the contract",
+      "blurb": "Multi-token choices, branch isolation, honest scoring, and measured work are essential to a faithful implementation.",
+      "scene": "books/one-read-many-decisions/chapter-4",
+      "cues": [
+        0.4,
+        11.6,
+        24.4,
+        35.6,
+        47.6,
+        60,
+        70.4,
+        81.2,
+        92.8
+      ],
+      "duration": 105.4
+    }
+  ]
+}

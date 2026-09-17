@@ -14,6 +14,8 @@ const SEP = ' ';
 export function sanitizeSpoken(text) {
   return String(text)
     .trim()
+    // Pronunciation only: preserve the displayed narration contract.
+    .replace(/\brrweb\b/gi, 'r r web')
     // em/en dash and double-hyphen read as a breath: "a — b" → "a, b"
     .replace(/\s*(?:—|–|--)\s*/g, ', ')
     // curly quotes/apostrophes → straight
