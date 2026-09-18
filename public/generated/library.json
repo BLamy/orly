@@ -1,6 +1,40 @@
 {
   "books": [
     {
+      "slug": "limix-2-contextual-mechanism",
+      "title": "The Masked Mechanism",
+      "subtitle": "How contextual mechanism networks learn a table's joint structure",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#d6202b",
+      "animal": "generated/limix-2-contextual-mechanism/animal.webp",
+      "href": "?bundle=limix-2-contextual-mechanism",
+      "series": "Daily Papers by Hugging Face",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Every Cell Keeps Its Place",
+          "duration": 73.004
+        },
+        {
+          "number": 2,
+          "title": "Across Rows, Then Columns",
+          "duration": 75.604
+        },
+        {
+          "number": 3,
+          "title": "A Mask Becomes a Question",
+          "duration": 89.164
+        },
+        {
+          "number": 4,
+          "title": "Three Answers, One Model",
+          "duration": 87.306
+        }
+      ],
+      "createdAt": "2026-09-18T17:37:41.373Z"
+    },
+    {
       "slug": "composecl-memory",
       "title": "The Three Anchors",
       "subtitle": "How complementary continual-learning mechanisms preserve memory",

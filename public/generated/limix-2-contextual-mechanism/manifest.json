@@ -1,0 +1,105 @@
+{
+  "format": 3,
+  "slug": "limix-2-contextual-mechanism",
+  "title": "The Masked Mechanism",
+  "subtitle": "How contextual mechanism networks learn a table's joint structure",
+  "series": "Daily Papers by Hugging Face",
+  "paper": {
+    "title": "LimiX-2: A Contextual Mechanism Network Towards General Structured-Data Intelligence",
+    "authors": [
+      "Xingxuan Zhang", "Gang Ren", "Hao Yuan", "Hao Zou", "Hongze Tan", "Hui Wang", "Jianhao Song", "Jiansheng Li", "Jiayao Zhang", "Jinghan Zhang", "Kaifang Li", "Lang Mo", "Li Mao", "Mingchao Hao", "Nuo Xu", "Rui Ding", "Ruiji Zhang", "Shuyang Li", "Siyu Mei", "Tianyang Zhang", "Weiyang Mu", "Yancheng Dong", "Yongxian Wei", "Yuan Xue", "Yuanrui Wang", "Yue He", "Zijia Yang", "Ziyun Li", "Dongzhe Li", "Fuqiang Wang", "Jiandong Liu", "Jiawei Chen", "Jiaxin Du", "Kaijie Cheng", "Kehan Li", "Lei Sun", "Linjun Zhou", "Ningbo Dai", "Qi Wang", "Renzhe Xu", "Shaoxing Du", "Shumeng Yang", "Wang Lu", "Wenjing Chu", "Xiannan Huang", "Xiaoyu Lin", "Xing Ai", "Xinyan Han", "Xuanyue Li", "Xuanyue Su", "Xukun Zhang", "Yan Lu", "Yaxin Zhang", "Yi Qin", "Yifei Huang", "Yihan Xu", "Yongle Lv", "Yuanyuan Jiang", "Yushan Han", "Peng Cui"
+    ],
+    "identifier": "arXiv:2609.17488",
+    "doi": "10.48550/arXiv.2609.17488",
+    "huggingFaceUrl": "https://huggingface.co/papers/2609.17488",
+    "dailyRankingUrl": "https://huggingface.co/papers/date/2026-09-17",
+    "canonicalUrl": "https://arxiv.org/abs/2609.17488",
+    "pdfUrl": "https://arxiv.org/pdf/2609.17488",
+    "officialRepository": "https://github.com/limix-ldm-ai/LimiX",
+    "sourceCommit": "516bf396333feb3198cf7aff8a6c10421f218e24",
+    "selectedForDate": "2026-09-17",
+    "popularityEvidence": "Ranked first on the exact September 17 Daily Papers page with 183 visible upvotes; the next two papers showed 71 and 61 upvotes."
+  },
+  "animal": "animal.webp",
+  "accent": "#d6202b",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Every Cell Keeps Its Place",
+      "blurb": "Cell-level tokens preserve values and variable identity.",
+      "scene": "books/limix-2-contextual-mechanism/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        7.663,
+        16.463,
+        22.721,
+        30.407,
+        40.972,
+        48.147,
+        57.331,
+        64.912
+      ],
+      "duration": 73.004
+    },
+    {
+      "number": 2,
+      "title": "Across Rows, Then Columns",
+      "blurb": "Dual-axis attention turns context into a prior.",
+      "scene": "books/limix-2-contextual-mechanism/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        6.513,
+        13.932,
+        23.336,
+        29.431,
+        38.742,
+        47.682,
+        57.713,
+        66.838
+      ],
+      "duration": 75.604
+    },
+    {
+      "number": 3,
+      "title": "A Mask Becomes a Question",
+      "blurb": "Mask patterns turn joint structure into supervision.",
+      "scene": "books/limix-2-contextual-mechanism/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        10.298,
+        18.75,
+        27.272,
+        36.409,
+        45.883,
+        54.381,
+        63.773,
+        73.502,
+        83.185
+      ],
+      "duration": 89.164
+    },
+    {
+      "number": 4,
+      "title": "Three Answers, One Model",
+      "blurb": "One pretrained model serves three public prediction routes.",
+      "scene": "books/limix-2-contextual-mechanism/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        9.276,
+        17.741,
+        27.063,
+        35.109,
+        44.234,
+        52.837,
+        61.393,
+        69.59,
+        78.018
+      ],
+      "duration": 87.306
+    }
+  ]
+}
