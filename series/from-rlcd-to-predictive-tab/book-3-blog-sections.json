@@ -1,41 +1,15 @@
 [
   [
-    {
-      "title": "A menu tied to this moment",
-      "lead": "The proposed browser adapter observes the page and creates joint target/action candidates. Each candidate is tied to the current page, frame, and observation version. A model ranks supported moves in the context of the task and recent history.",
-      "startCue": 0,
-      "endCue": 4
-    },
-    {
-      "title": "The inventory can miss the useful move",
-      "lead": "A legal action is not necessarily a helpful one, and a ranker cannot select a target its inventory never found. Coverage and ranking accuracy need separate evaluation, with an explicit path for uncertainty or unsupported actions.",
-      "startCue": 4
-    }
+    {"title":"Visible controls become numbered choices","lead":"Jev reads visible controls and page text in one DOM snapshot. The model sees numbered descriptions, while the browser retains references to the actual nodes. The flight form shown here is an illustrative teaching example.","startCue":0,"endCue":4},
+    {"title":"Each operation gets compatible targets","lead":"The action-space builder groups actions by observed element, then creates separate target sets for clicking, typing, and native selection. A new observation rebuilds the menu when suggestions or other controls appear.","startCue":4}
   ],
   [
-    {
-      "title": "Resolve the chosen target against the live page",
-      "lead": "The decision refers to an observed target; code supplies a locator recipe from live evidence. Names, roles, and stable identifiers can help, but uniqueness and actionability still require checks before dispatch.",
-      "startCue": 0,
-      "endCue": 4
-    },
-    {
-      "title": "A stale decision sends us back to observation",
-      "lead": "A rerender or dialog can invalidate a previously useful target. The executor rejects stale or ambiguous choices, then observes the result after one checked action. A successful click alone does not establish that the task advanced.",
-      "startCue": 4
-    }
+    {"title":"Ask conditional questions together","lead":"One TypeSafe request carries the shared page state, an operation question, and target questions for the operations available on this page. A typing target can be selected conditionally before the operation answer is known.","startCue":0,"endCue":4},
+    {"title":"Only the matching answer can execute","lead":"If the operation is TYPE_TEXT, only the type_text_target answer selects an action. Unused target answers do not trigger browser input. The client validates the selected choice and maps its index back to an observed action; the remote service's inference implementation is outside this repository.","startCue":4}
   ],
   [
-    {
-      "title": "Arguments carry their own provenance",
-      "lead": "Choosing a field does not supply the value to enter. In the recurring example, Brett comes directly from the explicit task. Bounded choices and genuinely generated text take separate validated paths.",
-      "startCue": 0,
-      "endCue": 4
-    },
-    {
-      "title": "Act within the current instruction and environment",
-      "lead": "The extension's focus integration and a native Playwright runner have different capabilities. Page text cannot grant new authority, and future page states are not known in advance. Each executed action must be followed by observation.",
-      "startCue": 4
-    }
+    {"title":"Generate a value only when typing","lead":"A separate text helper receives the goal, field, page context, and recent actions. Its result must be a valid object with one nonempty bounded text value. Click and select actions already contain their observed targets and do not call this helper.","startCue":0,"endCue":3},
+    {"title":"Recheck the page before input","lead":"The executor rejects stale decisions and resolves the retained node's current geometry and occlusion. A stale retry can reuse generated text only when the entire helper input is unchanged.","startCue":3,"endCue":6},
+    {"title":"Observe what the action actually changed","lead":"Execution is logged before the post-action observation. The browser briefly waits for useful state, such as autocomplete suggestions, then builds the next menu. DONE stops the agent loop; independent outcome verification establishes whether the task succeeded.","startCue":6}
   ]
 ]

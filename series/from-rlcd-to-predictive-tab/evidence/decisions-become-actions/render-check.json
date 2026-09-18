@@ -1,7 +1,7 @@
 [
   {
     "chapter": 1,
-    "story": "books-one-read-many-decisions-chapter-1--scene",
+    "story": "books-decisions-become-actions-chapter-1--build-the-menu-from-the-living-page",
     "forwardBackwardSeeking": "passed",
     "consoleErrors": [],
     "infrastructureWarnings": [],
@@ -11,54 +11,54 @@
         "file": "chapter-1-state-0.png"
       },
       {
-        "t": 34.969,
+        "t": 41.053,
         "file": "chapter-1-state-1.png"
       },
       {
-        "t": 8.965,
+        "t": 9.778,
         "file": "chapter-1-state-2.png"
       },
       {
-        "t": 18.799,
+        "t": 20.645,
         "file": "chapter-1-state-3.png"
       },
       {
-        "t": 26.647,
+        "t": 30.838,
         "file": "chapter-1-state-4.png"
       },
       {
-        "t": 35.645,
+        "t": 43.04,
         "file": "chapter-1-state-5.png"
       },
       {
-        "t": 46.291,
+        "t": 52.363,
         "file": "chapter-1-state-6.png"
       },
       {
-        "t": 53.686,
+        "t": 64.41499999999999,
         "file": "chapter-1-state-7.png"
       },
       {
-        "t": 62.592,
+        "t": 75.085,
         "file": "chapter-1-state-8.png"
       },
       {
-        "t": 68.938,
+        "t": 81.106,
         "file": "chapter-1-state-9.png"
       },
       {
-        "t": 17.4845,
+        "t": 20.5265,
         "file": "chapter-1-state-10.png"
       },
       {
-        "t": 34.969,
+        "t": 41.053,
         "file": "chapter-1-state-11.png"
       }
     ]
   },
   {
     "chapter": 2,
-    "story": "books-one-read-many-decisions-chapter-2--scene",
+    "story": "books-decisions-become-actions-chapter-2--a-choice-is-not-yet-a-selector",
     "forwardBackwardSeeking": "passed",
     "consoleErrors": [],
     "infrastructureWarnings": [],
@@ -68,54 +68,54 @@
         "file": "chapter-2-state-0.png"
       },
       {
-        "t": 32.7175,
+        "t": 40.7515,
         "file": "chapter-2-state-1.png"
       },
       {
-        "t": 9.209,
+        "t": 9.824,
         "file": "chapter-2-state-2.png"
       },
       {
-        "t": 18.16,
+        "t": 18.962,
         "file": "chapter-2-state-3.png"
       },
       {
-        "t": 26.31,
+        "t": 31.768,
         "file": "chapter-2-state-4.png"
       },
       {
-        "t": 33.195,
+        "t": 42.054,
         "file": "chapter-2-state-5.png"
       },
       {
-        "t": 43.61,
+        "t": 53.049,
         "file": "chapter-2-state-6.png"
       },
       {
-        "t": 51.76,
+        "t": 62.604,
         "file": "chapter-2-state-7.png"
       },
       {
-        "t": 59.411,
+        "t": 72.856,
         "file": "chapter-2-state-8.png"
       },
       {
-        "t": 64.435,
+        "t": 80.503,
         "file": "chapter-2-state-9.png"
       },
       {
-        "t": 16.35875,
+        "t": 20.37575,
         "file": "chapter-2-state-10.png"
       },
       {
-        "t": 32.7175,
+        "t": 40.7515,
         "file": "chapter-2-state-11.png"
       }
     ]
   },
   {
     "chapter": 3,
-    "story": "books-one-read-many-decisions-chapter-3--scene",
+    "story": "books-decisions-become-actions-chapter-3--scene",
     "forwardBackwardSeeking": "passed",
     "consoleErrors": [],
     "infrastructureWarnings": [],
@@ -125,93 +125,52 @@
         "file": "chapter-3-state-0.png"
       },
       {
-        "t": 33.5995,
+        "t": 42.841,
         "file": "chapter-3-state-1.png"
       },
       {
-        "t": 10.091,
+        "t": 9.29,
         "file": "chapter-3-state-2.png"
       },
       {
-        "t": 18.497,
+        "t": 19.67,
         "file": "chapter-3-state-3.png"
       },
       {
-        "t": 27.24,
+        "t": 29.399,
         "file": "chapter-3-state-4.png"
       },
       {
-        "t": 34.496,
+        "t": 38.792,
         "file": "chapter-3-state-5.png"
       },
       {
-        "t": 44.631,
+        "t": 48.822,
         "file": "chapter-3-state-6.png"
       },
       {
-        "t": 54.326,
+        "t": 57.471,
         "file": "chapter-3-state-7.png"
       },
       {
-        "t": 60.769,
+        "t": 67.444,
         "file": "chapter-3-state-8.png"
       },
       {
-        "t": 66.199,
+        "t": 77.046,
         "file": "chapter-3-state-9.png"
       },
       {
-        "t": 16.79975,
+        "t": 84.682,
         "file": "chapter-3-state-10.png"
       },
       {
-        "t": 33.5995,
+        "t": 21.4205,
         "file": "chapter-3-state-11.png"
-      }
-    ]
-  },
-  {
-    "chapter": 4,
-    "story": "books-one-read-many-decisions-chapter-4--scene",
-    "forwardBackwardSeeking": "passed",
-    "consoleErrors": [],
-    "infrastructureWarnings": [],
-    "frames": [
-      {
-        "t": 1,
-        "file": "chapter-4-state-0.png"
       },
       {
-        "t": 22.95,
-        "file": "chapter-4-state-1.png"
-      },
-      {
-        "t": 9.453,
-        "file": "chapter-4-state-2.png"
-      },
-      {
-        "t": 18.277,
-        "file": "chapter-4-state-3.png"
-      },
-      {
-        "t": 28.018,
-        "file": "chapter-4-state-4.png"
-      },
-      {
-        "t": 38.27,
-        "file": "chapter-4-state-5.png"
-      },
-      {
-        "t": 44.9,
-        "file": "chapter-4-state-6.png"
-      },
-      {
-        "t": 11.475,
-        "file": "chapter-4-state-7.png"
-      },
-      {
-        "t": 22.95,
-        "file": "chapter-4-state-8.png"
+        "t": 42.841,
+        "file": "chapter-3-state-12.png"
       }
     ]
   }

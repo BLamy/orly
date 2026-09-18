@@ -2,52 +2,59 @@
 
 Turning a model choice into a checked browser move. Book 3 of *From RLCD to Predictive Tab*.
 
-This series explains a proposed product grounded in the project charter. Page examples and work diagrams are illustrative; they are not measured performance results.
+This book follows the public Jev Ultrafast implementation through an illustrative flight-search example. The page values demonstrate the mechanism; they are not a recorded benchmark.
 
-Source note: the narration is pinned to the September 16, 2026 source snapshot. References to the imported native implementation describe that snapshot; subsequent foundation work may have advanced.
+Source: [browser-use/jev-ultrafast](https://github.com/browser-use/jev-ultrafast/tree/1231850a0bf1a0c0341fe408ef1668dbbfdfac46), inspected September 18, 2026. The source implements the browser loop and TypeSafe client, not the remote model service internals.
 
-### A menu tied to this moment
+### Visible controls become numbered choices
 
-The proposed browser adapter observes the page and creates joint target/action candidates. Each candidate is tied to the current page, frame, and observation version. A model ranks supported moves in the context of the task and recent history.
+Jev reads visible controls and page text in one DOM snapshot. The model sees numbered descriptions, while the browser retains references to the actual nodes. The flight form shown here is an illustrative teaching example.
 
-{% viz scene="books/decisions-become-actions/chapter-1" section="chapter-1-a-menu-tied-to-this-moment" cue="1" from="0.000" to="36.293" title="A menu tied to this moment" %}
+{% viz scene="books/decisions-become-actions/chapter-1" section="chapter-1-visible-controls-become-numbered-choices" cue="1" from="0.000" to="41.540" title="Visible controls become numbered choices" %}
 {% endviz %}
 
-### The inventory can miss the useful move
+### Each operation gets compatible targets
 
-A legal action is not necessarily a helpful one, and a ranker cannot select a target its inventory never found. Coverage and ranking accuracy need separate evaluation, with an explicit path for uncertainty or unsupported actions.
+The action-space builder groups actions by observed element, then creates separate target sets for clicking, typing, and native selection. A new observation rebuilds the menu when suggestions or other controls appear.
 
-{% viz scene="books/decisions-become-actions/chapter-1" section="chapter-1-the-inventory-can-miss-the-useful-move" cue="5" from="36.293" to="69.985" title="The inventory can miss the useful move" %}
+{% viz scene="books/decisions-become-actions/chapter-1" section="chapter-1-each-operation-gets-compatible-targets" cue="5" from="41.540" to="82.106" title="Each operation gets compatible targets" %}
 {% endviz %}
 
-### Resolve the chosen target against the live page
+### Ask conditional questions together
 
-The decision refers to an observed target; code supplies a locator recipe from live evidence. Names, roles, and stable identifiers can help, but uniqueness and actionability still require checks before dispatch.
+One TypeSafe request carries the shared page state, an operation question, and target questions for the operations available on this page. A typing target can be selected conditionally before the operation answer is known.
 
-{% viz scene="books/decisions-become-actions/chapter-2" section="chapter-2-resolve-the-chosen-target-against-the-live-page" cue="1" from="0.000" to="38.476" title="Resolve the chosen target against the live page" %}
+{% viz scene="books/decisions-become-actions/chapter-2" section="chapter-2-ask-conditional-questions-together" cue="1" from="0.000" to="40.554" title="Ask conditional questions together" %}
 {% endviz %}
 
-### A stale decision sends us back to observation
+### Only the matching answer can execute
 
-A rerender or dialog can invalidate a previously useful target. The executor rejects stale or ambiguous choices, then observes the result after one checked action. A successful click alone does not establish that the task advanced.
+If the operation is TYPE_TEXT, only the type_text_target answer selects an action. Unused target answers do not trigger browser input. The client validates the selected choice and maps its index back to an observed action; the remote service's inference implementation is outside this repository.
 
-{% viz scene="books/decisions-become-actions/chapter-2" section="chapter-2-a-stale-decision-sends-us-back-to-observation" cue="5" from="38.476" to="75.836" title="A stale decision sends us back to observation" %}
+{% viz scene="books/decisions-become-actions/chapter-2" section="chapter-2-only-the-matching-answer-can-execute" cue="5" from="40.554" to="81.503" title="Only the matching answer can execute" %}
 {% endviz %}
 
-### Arguments carry their own provenance
+### Generate a value only when typing
 
-Choosing a field does not supply the value to enter. In the recurring example, Brett comes directly from the explicit task. Bounded choices and genuinely generated text take separate validated paths.
+A separate text helper receives the goal, field, page context, and recent actions. Its result must be a valid object with one nonempty bounded text value. Click and select actions already contain their observed targets and do not call this helper.
 
-{% viz scene="books/decisions-become-actions/chapter-3" section="chapter-3-arguments-carry-their-own-provenance" cue="1" from="0.000" to="33.553" title="Arguments carry their own provenance" %}
+{% viz scene="books/decisions-become-actions/chapter-3" section="chapter-3-generate-a-value-only-when-typing" cue="1" from="0.000" to="27.899" title="Generate a value only when typing" %}
 {% endviz %}
 
-### Act within the current instruction and environment
+### Recheck the page before input
 
-The extension's focus integration and a native Playwright runner have different capabilities. Page text cannot grant new authority, and future page states are not known in advance. Each executed action must be followed by observation.
+The executor rejects stale decisions and resolves the retained node's current geometry and occlusion. A stale retry can reuse generated text only when the entire helper input is unchanged.
 
-{% viz scene="books/decisions-become-actions/chapter-3" section="chapter-3-act-within-the-current-instruction-and-environment" cue="5" from="33.553" to="66.641" title="Act within the current instruction and environment" %}
+{% viz scene="books/decisions-become-actions/chapter-3" section="chapter-3-recheck-the-page-before-input" cue="4" from="27.899" to="55.971" title="Recheck the page before input" %}
 {% endviz %}
 
-The project charter and its dated scope decision distinguish the native Qwen reference, the current browser prototype, and the planned product. Source anchors and the fixed narration contract are retained with this series’s source files.
+### Observe what the action actually changed
+
+Execution is logged before the post-action observation. The browser briefly waits for useful state, such as autocomplete suggestions, then builds the next menu. DONE stops the agent loop; independent outcome verification establishes whether the task succeeded.
+
+{% viz scene="books/decisions-become-actions/chapter-3" section="chapter-3-observe-what-the-action-actually-changed" cue="7" from="55.971" to="85.682" title="Observe what the action actually changed" %}
+{% endviz %}
+
+Implementation references: [action-space and model requests](https://github.com/browser-use/jev-ultrafast/blob/1231850a0bf1a0c0341fe408ef1668dbbfdfac46/jev_ultrafast/model.py), [agent loop](https://github.com/browser-use/jev-ultrafast/blob/1231850a0bf1a0c0341fe408ef1668dbbfdfac46/jev_ultrafast/agent.py), and [browser execution](https://github.com/browser-use/jev-ultrafast/blob/1231850a0bf1a0c0341fe408ef1668dbbfdfac46/jev_ultrafast/browser.py).
 
 [Open the complete book](?bundle=decisions-become-actions)

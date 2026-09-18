@@ -1,5 +1,18 @@
 # Book 3 author notes — Decisions Become Actions
 
+## September 18 revision
+
+All three chapters now explain the public Jev Ultrafast implementation pinned
+to commit `1231850a0bf1a0c0341fe408ef1668dbbfdfac46`, using an illustrative flight
+search. Fable 5.1 authored the replacement scenes and the reviewed layout fixes
+through Claude Code subprocesses. The parent verified exact captions, generated
+and integrated ElevenLabs narration, reviewed cue frames, and checked recorded
+playback, deterministic seeking, and live blog sections.
+
+The current source mapping is in
+`series/from-rlcd-to-predictive-tab/jev-ultrafast-source-note.md`. Earlier notes
+below describe the superseded proposed-architecture draft.
+
 Visualization author: Claude Fable 5.1 (`claude-fable-5-1`). Scope so far: **chapter 1 only** (chapters 2–3 pending parent verification).
 No shell, typecheck, build, Storybook, or render ran in this session. Validation is the parent's.
 

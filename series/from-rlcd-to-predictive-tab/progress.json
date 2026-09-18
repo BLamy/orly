@@ -4,8 +4,8 @@
   "counts": {
     "books": 6,
     "chapters": 19,
-    "captions": 153,
-    "words": 3707
+    "captions": 150,
+    "words": 3669
   },
   "worker": {
     "entrypoint": "npx --yes @anthropic-ai/claude-code@latest",
@@ -50,10 +50,10 @@
       "fableAuthoring": "complete; original Fable scenes plus confirmed Fable correction and subsequent Fable review",
       "visualReview": "passed: Fable reviewed both existing corrections; parent inspected corrected rendered frames and reran deterministic seeks",
       "cover": "built-in ImageGen octopus; visually inspected; PNG and 512px WebP prepared",
-      "narration": "Four ElevenLabs recordings; all 33 caption cues and audio-clock playback verified",
+      "narration": "Four recordings; chapter 4 ends at 45.900 seconds before app-status commentary, with 29 total book captions",
       "bookBuild": "passed",
       "blog": "eight non-overlapping semantic live sections validated; standalone render passed",
-      "verification": "33/33 exact captions; typecheck/build/native playback, all four deterministic book/Storybook seeks, standalone blog and corrected-frame review passed",
+      "verification": "29/29 captions exact; recorded playback and deterministic book/Storybook forward/reverse seeks passed after chapter 4 cutoff",
       "integration": "Codex added standard Player-only Storybook wrappers; no replacement visualization authored"
     },
     {
@@ -61,15 +61,15 @@
       "slug": "decisions-become-actions",
       "title": "Decisions Become Actions",
       "chapters": 3,
-      "sourcePreparation": "complete; source hashes verified",
-      "fableAuthoring": "All three scene modules authored by Fable 5.1; provider limit interrupted chapter 2/3 final responses",
-      "visualReview": "Draft cue frames and endings inspected; all three Storybook scenes render and seek deterministically",
+      "sourcePreparation": "Public browser-use/jev-ultrafast at 1231850a0bf1a0c0341fe408ef1668dbbfdfac46; see jev-ultrafast-source-note.md",
+      "fableAuthoring": "Public Jev Ultrafast rewrite authored by Fable 5.1 through the latest Claude Code subprocess",
+      "visualReview": "All revised cue frames reviewed; Fable corrected cropped headers, helper text overflow, and caption-area overlap",
       "cover": "built-in ImageGen; visually inspected PNG and 512px WebP prepared",
-      "narration": "Three ElevenLabs recordings; all 24 caption cues and audio-clock playback verified",
-      "bookBuild": "Recorded manifest generated",
-      "blog": "Six semantic sections validated against recorded narration cues",
-      "verification": "24/24 captions exact; recorded audio-clock playback and all caption seeks in both directions pass",
-      "integration": "Parent added only the standard chapter 2 Player story wrapper after provider limit"
+      "narration": "Three revised ElevenLabs recordings; 25 caption cues and audio-clock playback verified",
+      "bookBuild": "Fresh production build and production playback verification passed",
+      "blog": "Seven semantic sections validated against revised recording cues",
+      "verification": "25/25 revised captions exact; recorded playback, deterministic book/Storybook seeking, and seven live blog sections passed",
+      "integration": "Fable 5.1 revised all three scenes and layout; parent integrated exact ElevenLabs cues, seven blog sections, and refreshed previews"
     },
     {
       "order": 4,
@@ -115,14 +115,14 @@
     }
   ],
   "branch": "codex/from-rlcd-to-predictive-tab",
-  "blocker": "Books 4-6 still require scenes and narration. Full package verification has a pre-existing series-script.md hash mismatch; canonical JSON and exact captions for books 1-3 were independently verified.",
+  "blocker": "Books 4-6 still require scenes and narration. Original package hashes preserved; revised source contract tracks the user-requested Jev rewrite and chapter cutoff.",
   "scheduledContinuation": {
     "scheduledFor": "2026-09-17T07:50:00Z",
     "sourceContractCheck": "passed",
     "fableLaunched": false,
     "publicationAttempted": false,
     "blocker": "Automatic approval review rejected transmitting the private scene/source payload to Anthropic, including a second review supplied with the scheduled explicit authorization and persisted consent evidence. Requires renewed user confirmation; no workaround attempted.",
-    "resume": "Configure ElevenLabs locally, build and verify recorded narration for books 1\u20133, then author and fully verify books 4\u20136 sequentially with required Fable 5.1. Publish only after all release gates pass.",
+    "resume": "Configure ElevenLabs locally, build and verify recorded narration for books 1–3, then author and fully verify books 4–6 sequentially with required Fable 5.1. Publish only after all release gates pass.",
     "assignment": ".orly-work/book-2-resume.md",
     "lastChecked": "2026-09-18T07:50:05Z",
     "currentStatus": "Book 2 completed in subsequent work; book 3 authored and draft-verified. ElevenLabs key still absent; recorded playback gate blocks sequential continuation and publication."
@@ -133,7 +133,7 @@
     "ciStatus": "Existing GitHub deployment token rejected; local OAuth verified",
     "audioGate": "All 19 chapters require recorded ElevenLabs audio, exact alignment cues, and verified synchronized playback before release",
     "status": "Not published; no merge or deployment attempted. Audio and remaining-book gates unresolved.",
-    "audioVerification": "Books 1-3: ten recordings and 81 captions passed duration, forward/reverse caption seeks, and live audio-clock advancement checks",
+    "audioVerification": "Books 1-3 contain ten recordings and 78 captions; books 2-3 revised recordings pass forward/reverse caption seeks and live audio-clock advancement",
     "audioGateTest": "Build of book 1 correctly refused missing ElevenLabs configuration before writing release assets"
   }
 }

@@ -15,7 +15,7 @@ for (const [file, expected] of Object.entries(provenance.packageHashes)) {
 }
 assert.equal(script.books.length, 6);
 assert.equal(script.books.flatMap(b => b.chapters).length, 19);
-assert.equal(script.books.flatMap(b => b.chapters.flatMap(c => c.captions)).length, 153);
+assert.equal(script.books.flatMap(b => b.chapters.flatMap(c => c.captions)).length, script.statistics.captions);
 assert.equal(script.series, plan.series);
 assert.equal(new Set(script.books.map(b => b.slug)).size, 6);
 for (const [i, book] of script.books.entries()) {

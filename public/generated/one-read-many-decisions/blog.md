@@ -2,9 +2,9 @@
 
 Inside Qwen-RLCD generation. Book 2 of *From RLCD to Predictive Tab*.
 
-This series explains a proposed product grounded in the project charter. Page examples and work diagrams are illustrative; they are not measured performance results.
+This book explains shared context, batched decisions, token-path continuation, and explicit scoring. Token paths and score values are illustrative rather than measured results.
 
-Source note: the narration is pinned to the September 16, 2026 source snapshot. References to the imported native implementation describe that snapshot; subsequent foundation work may have advanced.
+Source note: the mechanism explanation uses the September 16, 2026 Qwen-RLCD source snapshot. The final chapter ends with the distinction between ranking scores and calibrated confidence.
 
 ### An answer advances along a token tape
 
@@ -55,13 +55,13 @@ The paths [17], [17,42], and [17,91] are schematic teaching fixtures, not Qwen t
 {% viz scene="books/one-read-many-decisions/chapter-4" section="chapter-4-a-shared-token-prefix-is-not-a-complete-decision" cue="1" from="0.000" to="36.770" title="A shared token prefix is not a complete decision" %}
 {% endviz %}
 
-### Correctness and honest accounting define the port
+### A ranking score is not calibrated confidence
 
-Branch isolation, scoring semantics, and a complete forward-call ledger are part of the intended contract. Raw ranking scores are not calibrated confidence. The native 1.5B reference still has known correctness/reporting work, and the current browser grammar-constrained demo does not yet implement faithful RLCD.
+Normalizing the allowed choices produces a ranking, not evidence that the selected answer will be correct that often. Measured reliability is a separate question.
 
-{% viz scene="books/one-read-many-decisions/chapter-4" section="chapter-4-correctness-and-honest-accounting-define-the-port" cue="5" from="36.770" to="84.104" title="Correctness and honest accounting define the port" %}
+{% viz scene="books/one-read-many-decisions/chapter-4" section="chapter-4-a-ranking-score-is-not-calibrated-confidence" cue="5" from="36.770" to="45.900" title="A ranking score is not calibrated confidence" %}
 {% endviz %}
 
-The project charter and its dated scope decision distinguish the native Qwen reference, the current browser prototype, and the planned product. Source anchors and the fixed narration contract are retained with this series’s source files.
+Source anchors and the revised narration contract are retained with this series's source files.
 
 [Open the complete book](?bundle=one-read-many-decisions)

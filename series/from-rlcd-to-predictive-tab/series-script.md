@@ -8,7 +8,7 @@ This is a proposed product architecture grounded in the Qwen-RLCD charter, with 
 
 The numbered lines below are the exact spoken captions. Visual directions, source references, and chapter status labels are not narration.
 
-6 books · 19 chapters · 153 captions · 3,707 spoken words. Estimated narration length is approximately 24–29 minutes, before final voice timing.
+6 books · 19 chapters · 150 captions · 3,669 spoken words. Revised September 18, 2026 at user request.
 
 ## Series order
 
@@ -207,11 +207,11 @@ A two-row query matrix enters a model window; permitted-choice bars emerge and s
 
 **Source anchors:** native-engine: run_parallel_generation; schema: StructuredSchema.compile_parallel_metadata; charter: Qwen foundation invariants 2–6.
 
-### 2.4 — The difficult cases reveal the contract
+### 2.4 - The difficult cases reveal the contract
 
-**Status:** Known reference limitations and planned correctness work.
+**Status:** Token continuation and scoring semantics.
 
-**Takeaway:** Multi-token choices, branch isolation, honest scoring, and measured work are essential to a faithful implementation.
+**Takeaway:** Shared token prefixes require continuation and explicit scoring; normalized rankings are not calibrated confidence.
 
 **Spoken script**
 
@@ -220,115 +220,88 @@ A two-row query matrix enters a model window; permitted-choice bars emerge and s
 3. The scoring contract matters here. Greedily following a permitted path is not automatically the same as comparing the full likelihood of every possible answer.
 4. Every extra continuation is real model work. We count it, preserve the correct branch state, and refuse to hide an unresolved choice behind a convenient default.
 5. The displayed score also needs an honest name. A normalized set of scores is not evidence that a choice will be correct that often in actual use.
-6. The imported native reference demonstrates the approach, but it has known collision, cache, and reporting issues that the foundation work must correct.
-7. The current browser prototype uses ordinary grammar-constrained generation. A faithful browser version still has to prove shared prefill, batched queries, and correct continuation.
-8. This is an inference strategy, not a training method. It can change how we obtain decisions from a model, without teaching that model new behavior.
-9. And it cannot promise a speedup on every workload. We must compare completed work, useful decision quality, memory, and the time a user actually waits.
 
 **Visual direction**
 
 Synthetic token paths form a prefix tree; only unresolved branches continue. A work ledger tracks prefill, batch, and continuation calls.
 
-- Show synthetic paths [17], [17,42], [17,91] with an illustrative-tokenization label.
-- Expose the shared first token and a terminal choice.
-- Continue unresolved branches without altering resolved rows.
-- Distinguish raw ranking score from calibrated reliability.
-- End on current native reference / browser prototype / planned faithful browser engine.
-
-**Source anchors:** native-engine: run_parallel_generation collision branch; schema: StructuredSchema.compile_parallel_metadata; charter: Qwen foundation invariants 3–9; charter: Reference and architecture decisions; browser-app.
+**Source anchors:** native-engine: run_parallel_generation collision branch; schema: StructuredSchema.compile_parallel_metadata; charter: Qwen foundation invariants 3–9.
 
 ## 3. Decisions Become Actions
 
 Turning a model choice into a checked browser move
 
-Bridge structured classification to browser actions using observation-bound joint candidates, typed arguments, live locator resolution, and one-action-then-observe execution. A Chrome extension and a native Playwright runner have different powers.
+Follow Jev Ultrafast through an illustrative flight search: indexed observations, operation-specific target questions in one request, selective text generation, and guarded execution against retained DOM nodes.
 
-### 3.1 — Build the menu from the living page
+### 3.1 - From the page to a numbered action space
 
-**Status:** Proposed browser-action architecture.
+**Status:** Public Jev Ultrafast implementation at 1231850a0bf1a0c0341fe408ef1668dbbfdfac46.
 
-**Takeaway:** Choose legal target/action pairs from a versioned observation; the candidate inventory is itself a source of error.
-
-**Spoken script**
-
-1. Now return to our profile page. Before asking a model what to do, the system observes the page and constructs the actions it can currently support.
-2. Each candidate joins a target with an action. Open this menu. Focus this field. Fill this editable control. Click this available button.
-3. Keeping those pieces together prevents a bad combination, such as selecting one element and independently selecting an action that element cannot perform.
-4. Each candidate also belongs to a particular page observation. It is a temporary reference to something seen now, rather than a permanent identity for that control.
-5. The task and recent history accompany the menu. Changing a name should guide the ranking differently from reviewing account settings or signing out.
-6. A small policy could rank these candidates directly. A larger model could choose among them through a constrained interface, using the same decision contract.
-7. But a model cannot choose a useful target that the inventory never found. We have to measure that missing coverage separately from ranking mistakes.
-8. This is where bounded decisions become a product system: the menu, the model, and the live page all have to agree about what a choice means.
-
-**Visual direction**
-
-The profile page produces a candidate lattice. Each tile is an inseparable target plus action, tethered to an observation badge.
-
-- Observe visible and eligible controls.
-- Bind candidates to page/frame/observation version.
-- Keep target and action paired.
-- Filter a disabled Save action.
-- Expose a missing useful target as a coverage gap.
-
-**Source anchors:** charter: Browser-action invariants 1–3; charter: E7 milestone.
-
-### 3.2 — A choice is not yet a selector
-
-**Status:** Proposed checked execution.
-
-**Takeaway:** Generate a locator from a verified live target and revalidate just before execution.
+**Takeaway:** A fresh DOM snapshot becomes indexed elements and operation-compatible target sets tied to retained nodes.
 
 **Spoken script**
 
-1. It is tempting to ask the model to write a selector and immediately execute whatever comes back. Our proposed contract separates the decision from that last step.
-2. The chosen candidate points to a target in an observation. Code then builds a locator from evidence about that target in the live page.
-3. For example, a button's role and accessible name may identify it. A stable test identifier may help. The exact recipe depends on what the page exposes.
-4. Before acting, the executor checks that the locator resolves uniquely, that the element is still present, and that the requested action is available.
-5. Pages change while a model is thinking. If a dialog opens or a control disappears, yesterday's good answer can become today's wrong target.
-6. A stale or ambiguous choice triggers a fresh observation or an abstention. It must not turn into a guessed click on something that merely looks close.
-7. After one checked action, the system observes the result. A click returning successfully is weaker evidence than the intended change actually appearing on the page.
-8. This loop gives us a meaningful unit of progress: observe, decide, validate, act, and check what happened before deciding again.
+1. Give Jev one goal: find a one-way flight from Zurich to London. To choose its next move, it first reads what the browser actually shows.
+2. The browser runs one page script that collects visible controls, their labels, current values, and nearby text. Screenshots are optional, not the normal decision input.
+3. The snapshot keeps references to the actual page elements. The model will receive numbered descriptions, while the executor retains the connection back to each real control.
+4. Here, the origin is element one, the empty destination is element two, and ticket type is element three. These numbers describe this observation, not permanent identifiers.
+5. The action-space builder groups actions by element. One text field can support both clicking and typing without becoming two separate elements in the table.
+6. Each operation gets only compatible targets. Typing can choose editable fields; clicking can choose clickable controls; a native dropdown offers observed element-and-option pairs.
+7. The request also includes the goal, visible page text, and recent actions. This lets the next choice depend on what already happened, including the current field values.
+8. After an action changes the page, Jev observes again and rebuilds this menu. A new suggestion can become a target only after it actually appears.
 
 **Visual direction**
 
-A selected tile becomes a structured locator recipe while its target moves on the page; a stale-version gate sends it back to observation.
+Persistent illustrative flight form and numbered action table transformed through the actual implementation.
 
-- Select a temporary candidate ID.
-- Resolve role/name/test-ID evidence into a locator.
-- Show an ambiguous duplicate Save control.
-- Reject a stale response after a rerender.
-- Dispatch one checked action and observe a postcondition.
+**Source anchors:** jev-ultrafast: snapshot.js; jev-ultrafast: model.py: action_space.
 
-**Source anchors:** charter: Browser-action invariants 2–4; charter: Reference and architecture decisions.
+### 3.2 - One request, several questions, one action
 
-### 3.3 — Values, intent, and execution boundaries
+**Status:** Public Jev Ultrafast implementation at 1231850a0bf1a0c0341fe408ef1668dbbfdfac46.
 
-**Status:** Proposed product boundaries.
-
-**Takeaway:** Bounded action selection does not supply arbitrary text, future page state, or authority to act.
+**Takeaway:** One request asks operation and conditional target questions; only the selected operation and matching target can execute.
 
 **Spoken script**
 
-1. Selecting the name field does not tell us what to type into it. Action arguments need their own explicit source and validation.
-2. In our example, the name Brett comes from the user's task. We can carry that value through as task data without asking a model to invent it.
-3. Other values may come from a bounded menu. Truly open-ended text needs a separate generation path, with its own latency and quality checks.
-4. The executor also depends on the product mode. A Chrome extension can observe supported page content and focus a target through its page integration.
-5. It should not be described as having the entire Playwright interface. Autonomous Playwright execution belongs to a separately connected runner in this design.
-6. The task defines what the system is authorized to do. Text found on a page supplies evidence about the page, not permission to expand the task.
-7. And we do not execute a whole guessed future sequence in parallel. Each action can change the page, so the next decision needs the resulting state.
-8. The fast path saves work inside a decision. It still respects the order in which a real browser task unfolds.
+1. A usual sequence would first ask what operation to perform, then ask which element to use. Jev puts both kinds of question into one request.
+2. The shared state goes to the TypeSafe service with an operation question and separate target questions for clicking, typing, and selection when available.
+3. Each target question is conditional: if we were going to type, which editable field would we choose? It can be answered before the operation result comes back.
+4. Imagine the response chooses typing, with destination as the typing target. A click target may also be returned, but its answer is not an instruction to click.
+5. The operation selects exactly one matching target answer. The other target answers are discarded for execution, so speculative questions do not become speculative browser actions.
+6. The code checks that the selected answer belongs to the offered choices and that its probability data is valid. Invalid output stops before any browser input.
+7. The selected index maps back to an action from the snapshot. The model does not invent a selector or coordinates, and its output is never executed as code.
+8. This saves a sequential model round trip for choosing the operation and target. The repository calls a remote service; it does not expose that service's inference internals.
 
 **Visual direction**
 
-The action tile opens into a typed argument slot. Task-provided text flows into it, then the page visibly changes after execution.
+Persistent illustrative flight form and numbered action table transformed through the actual implementation.
 
-- Carry Brett from the explicit task into a typed value slot.
-- Distinguish copied value, bounded choice, and generated text.
-- Show the Chrome focus adapter beside the native Playwright adapter.
-- Stop an action at a changed page state.
-- Keep future steps grayed until a new observation exists.
+**Source anchors:** jev-ultrafast: model.py: choose, validate_choice.
 
-**Source anchors:** charter: Who and what we are building for; charter: Browser-action invariants 1–4.
+### 3.3 - Type, validate, act, observe again
+
+**Status:** Public Jev Ultrafast implementation at 1231850a0bf1a0c0341fe408ef1668dbbfdfac46.
+
+**Takeaway:** Typing uses a separate text helper; freshness and geometry checks precede input, then the next observation rebuilds the action space.
+
+**Spoken script**
+
+1. Choosing the destination field still leaves one question: what should we type? Only a typing action calls the separate text helper.
+2. That helper receives the goal, selected field, page context, and recent actions. It returns a small object containing one text value, such as London.
+3. The response must parse correctly and contain a nonempty bounded string. Clicking and selecting skip this generation step because their actions already came from the page.
+4. Before input, the browser checks that the decision still applies. A changed document, form value, or target can invalidate the earlier observation.
+5. If the page became stale while text was generated, Jev observes and chooses again. It reuses that text only when the complete helper input is unchanged.
+6. For a click, the executor resolves the retained element's current geometry and checks that another element does not cover it. Old screen coordinates are not trusted.
+7. After typing London, it records the action and briefly waits for useful suggestions before observing again. The London suggestion can now enter the next numbered menu.
+8. The next cycle can choose that suggestion, then continue toward the goal. A done decision stops the loop, but a separate outcome check is needed to establish that the task succeeded.
+9. The speed comes from structured observations, shared choice requests, and selective text generation. The complete loop remains observe, choose, validate, act, and observe again.
+
+**Visual direction**
+
+Persistent illustrative flight form and numbered action table transformed through the actual implementation.
+
+**Source anchors:** jev-ultrafast: agent.py: Agent.command; jev-ultrafast: model.py: field_context, field_text; jev-ultrafast: browser.py: Browser.fresh, Browser.act, Browser.observe, browser_operation.
 
 ## 4. Recordings Become Practice
 

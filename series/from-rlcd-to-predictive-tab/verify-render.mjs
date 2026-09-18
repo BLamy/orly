@@ -14,13 +14,27 @@ const evidence=path.join(root,`series/from-rlcd-to-predictive-tab/evidence/${slu
 fs.mkdirSync(evidence,{recursive:true});
 const browser=await chromium.launch({headless:true});
 const report=[];
+async function seekTo(slider,t){
+  const step=Number(await slider.getAttribute('step'));
+  await slider.fill(String(Number((Math.round(t/step)*step).toFixed(3))));
+}
 try {
   const index=await (await fetch(`${storyBase}/index.json`)).json();
   for(const chapter of manifest.chapters){
     const errors=[];
+    const infrastructureWarnings=[];
     const page=await browser.newPage({viewport:{width:1600,height:1000}});
     page.on('pageerror',e=>errors.push(e.message));
-    page.on('console',m=>{if(m.type()==='error'&&!/favicon/.test(m.text())) errors.push(m.text());});
+    page.on('console',m=>{
+      if(m.type()!=='error')return;
+      const url=m.location().url;
+      if(/\/favicon\.ico(?:\?|$)/.test(url))return;
+      if(url===`${storyBase}/vite-inject-mocker-entry.js`&&m.text().includes('404')){
+        infrastructureWarnings.push({url,message:m.text()});
+        return;
+      }
+      errors.push(`${m.text()} (${url})`);
+    });
     await page.goto(`${base}/?bundle=${slug}&chapter=${chapter.number}`);
     await page.locator('.bp-stage > svg').waitFor();
     const player=page.locator('.bp-player');
@@ -34,7 +48,7 @@ try {
     const frames=[]; let middle;
     for(const [i,t] of times.entries()){
       assert.ok(Number.isFinite(t));
-      await seek.fill(String(Number(t.toFixed(2))));
+      await seekTo(seek,t);
       await page.waitForTimeout(100);
       const frame=await page.locator('.bp-stage > svg').innerHTML();
       if(i===1) middle=frame;
@@ -55,14 +69,14 @@ try {
     const authored=await extractScene(path.join(root,`apps/bookshelf/src/viz/books/${slug}/chapter-${chapter.number}.tsx`));
     let storyMiddle;
     for(const [i,t] of [authored.duration*.5,authored.duration-1,1,authored.duration*.5].entries()){
-      await storySeek.fill(String(Number(t.toFixed(2))));
+      await seekTo(storySeek,t);
       await page.waitForTimeout(100);
       const svg=await page.locator('.viz-player-stage > svg').first().innerHTML();
       if(i===0) storyMiddle=svg;
       if(i===3) assert.equal(svg,storyMiddle,'Storybook backward seek mismatch');
     }
     assert.equal(errors.length,0,errors.join('\n'));
-    report.push({chapter:chapter.number,story:story.id,forwardBackwardSeeking:'passed',consoleErrors:errors,frames});
+    report.push({chapter:chapter.number,story:story.id,forwardBackwardSeeking:'passed',consoleErrors:errors,infrastructureWarnings,frames});
     await page.close();
   }
   fs.writeFileSync(path.join(evidence,'render-check.json'),JSON.stringify(report,null,2)+'\n');

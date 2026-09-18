@@ -13,6 +13,6 @@
   ],
   [
     {"title":"A shared token prefix is not a complete decision","lead":"The paths [17], [17,42], and [17,91] are schematic teaching fixtures, not Qwen tokenization. One path ends at the shared prefix while two continue. A faithful implementation must retain the completed choice and perform the remaining work for unresolved alternatives.","startCue":0,"endCue":4},
-    {"title":"Correctness and honest accounting define the port","lead":"Branch isolation, scoring semantics, and a complete forward-call ledger are part of the intended contract. Raw ranking scores are not calibrated confidence. The native 1.5B reference still has known correctness/reporting work, and the current browser grammar-constrained demo does not yet implement faithful RLCD.","startCue":4}
+    {"title":"A ranking score is not calibrated confidence","lead":"Normalizing the allowed choices produces a ranking, not evidence that the selected answer will be correct that often. Measured reliability is a separate question.","startCue":4}
   ]
 ]

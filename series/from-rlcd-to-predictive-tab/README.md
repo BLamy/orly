@@ -1,5 +1,19 @@
 # From RLCD to Predictive Tab
 
+## Jev explanation revision - September 18, 2026
+
+The requested revision ends book 2 chapter 4 at 45.900 seconds, before the
+app-status commentary. Book 3 now explains the public Jev Ultrafast browser
+agent through a flight-search example: observed element indices, compatible
+target sets, conditional questions in one request, selective text generation,
+and guarded execution followed by observation. See
+[the source note](jev-ultrafast-source-note.md) for the pinned implementation.
+
+The revised contract contains 150 captions across the planned six books.
+Original package hashes remain recorded in `originalPackageHashes`; current
+package hashes track this explicitly requested editorial revision. Earlier
+script, provenance-mismatch, and narration status below is historical.
+
 ## Narration update - September 18, 2026
 
 Books 1-3 now contain ten ElevenLabs recordings using the existing narrator

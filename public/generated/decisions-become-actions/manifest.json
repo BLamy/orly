@@ -8,57 +8,58 @@
   "chapters": [
     {
       "number": 1,
-      "title": "Build the menu from the living page",
-      "blurb": "Choose legal target/action pairs from a versioned observation; the candidate inventory is itself a source of error.",
+      "title": "From the page to a numbered action space",
+      "blurb": "A fresh DOM snapshot becomes indexed elements and operation-compatible target sets tied to retained nodes.",
       "scene": "books/decisions-become-actions/chapter-1",
       "audio": "audio/chapter-1.mp3",
       "cues": [
         0,
-        8.429,
-        18.007,
-        26.436,
-        36.293,
-        44.559,
-        53.359,
-        61.533
+        8.278,
+        19.145,
+        29.338,
+        41.54,
+        50.863,
+        62.915,
+        73.585
       ],
-      "duration": 69.985
+      "duration": 82.106
     },
     {
       "number": 2,
-      "title": "A choice is not yet a selector",
-      "blurb": "Generate a locator from a verified live target and revalidate just before execution.",
+      "title": "One request, several questions, one action",
+      "blurb": "One request asks operation and conditional target questions; only the selected operation and matching target can execute.",
       "scene": "books/decisions-become-actions/chapter-2",
       "audio": "audio/chapter-2.mp3",
       "cues": [
         0,
-        9.915,
-        18.808,
-        29.443,
-        38.476,
-        47.868,
-        56.877,
-        66.548
+        8.324,
+        17.462,
+        30.268,
+        40.554,
+        51.549,
+        61.104,
+        71.356
       ],
-      "duration": 75.836
+      "duration": 81.503
     },
     {
       "number": 3,
-      "title": "Values, intent, and execution boundaries",
-      "blurb": "Bounded action selection does not supply arbitrary text, future page state, or authority to act.",
+      "title": "Type, validate, act, observe again",
+      "blurb": "Typing uses a separate text helper; freshness and geometry checks precede input, then the next observation rebuilds the action space.",
       "scene": "books/decisions-become-actions/chapter-3",
       "audio": "audio/chapter-3.mp3",
       "cues": [
         0,
-        7.5,
-        16.3,
-        24.369,
-        33.553,
-        43.073,
-        51.56,
-        59.919
+        7.79,
+        18.17,
+        27.899,
+        37.292,
+        47.322,
+        55.971,
+        65.944,
+        75.546
       ],
-      "duration": 66.641
+      "duration": 85.682
     }
   ]
 }

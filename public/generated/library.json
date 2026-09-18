@@ -48,18 +48,18 @@
       "chapters": [
         {
           "number": 1,
-          "title": "Build the menu from the living page",
-          "duration": 69.985
+          "title": "From the page to a numbered action space",
+          "duration": 82.106
         },
         {
           "number": 2,
-          "title": "A choice is not yet a selector",
-          "duration": 75.836
+          "title": "One request, several questions, one action",
+          "duration": 81.503
         },
         {
           "number": 3,
-          "title": "Values, intent, and execution boundaries",
-          "duration": 66.641
+          "title": "Type, validate, act, observe again",
+          "duration": 85.682
         }
       ],
       "createdAt": "2026-09-18T17:26:58.131Z"
@@ -94,7 +94,7 @@
         {
           "number": 4,
           "title": "The difficult cases reveal the contract",
-          "duration": 84.104
+          "duration": 45.9
         }
       ],
       "createdAt": "2026-09-18T17:26:07.168Z"

@@ -1,512 +1,493 @@
-// Build the menu from the living page
+// From the page to a numbered action space
 //
-// Book 3 "Decisions Become Actions", chapter 1 — PROPOSED browser-action architecture.
-// Sources: charter — Browser-action invariants 1–3; E7 milestone (live candidate
-// inventory). Nothing here is a current implementation: every capability is
-// labelled PROPOSED. Scores are ILLUSTRATIVE ranking scores, hand-written, not
-// probabilities or measurements. Observation versions and candidate ids are
-// synthetic teaching fixtures.
+// Book 3 "Decisions Become Actions", chapter 1 — how the PUBLIC Jev Ultrafast
+// repository turns a page into a numbered action space. Sources (commit
+// 1231850): snapshot.js (one evaluated script: visible controls, role/name/
+// value, visible text ≤ 6000 chars, window.__jevFast.nodes keeps real DOM nodes,
+// fill + "Open …" click for editable fields, one select action per option, a
+// trailing wait action); browser.py observe (screenshot is a flag);
+// model.py action_space (one index per observed node, per-operation target
+// groups, select targets "index:option") and choose (state = page text,
+// elements, recent_actions[-10:]; goal rides in each question's instructions).
+// The flight page and every value on it are ILLUSTRATIVE — not a captured run.
 //
-// ONE persistent mechanism: a candidate LATTICE (targets × actions, d3.scaleBand).
-// The recurring Profile page is scanned; legal joint target+action tiles fly out
-// of their live controls into lattice cells and stay tethered to them. The same
-// lattice is then probed by two independent pickers (a bad cell), bound to an
-// observation badge by a rail, invalidated and re-issued on a re-render, scored
-// by task context, read by two proposed rankers, and finally loses a row.
+// ONE persistent mechanism: the flight-search page on the left and the element
+// table it becomes on the right. Observation chips lift off the live controls,
+// morph into table rows, get numbered, absorb their action tiles, are filtered
+// per operation, feed the request, and are rebuilt after the page changes.
 //
 // BEATS (captions are parent-authored and fixed verbatim)
-//  1 push in on the page; an observation sweep marks eligible / disabled controls
-//  2 tiles fly into the lattice; open · focus · fill · click; disabled Save filtered
-//  3 zoom: independent target + action picks meet in an impossible cell → one joint id
-//  4 observation rail stamps v12; a re-render makes ids stale; re-issued at v13
-//  5 task + history arrive; three tasks re-rank the same tiles
-//  6 small policy vs larger model dock into the same decision contract
-//  7 the useful row goes missing → coverage gap, tallied apart from ranking mistakes
-//  8 menu, model, live page must agree → opaque closing panel
-import { easeCubicInOut, linkHorizontal, scaleBand, scaleLinear } from 'd3';
+//  1 the goal and the page as the browser shows it
+//  2 one script sweep collects role · label · value + visible text
+//  3 node handles stay with the executor; descriptions travel to the table
+//  4 rows are numbered [1] [2] [3] — for this observation only
+//  5 seven action tiles fold into four element rows (fill + click share a row)
+//  6 each operation lights only its compatible targets; select offers pairs
+//  7 the request: goal, page text, elements with current values, recent actions
+//  8 the page changes → observe again → the table is rebuilt and renumbered
 import { Camera, Timeline, cameraInterp, colors, ease } from '../../core';
 import type { CameraState, SceneState } from '../../core';
-import { MONO, ProfilePage, ProposedTag, ROLE, SuggestHalo, captionPlan, controlRect, rectCenter } from '../next-useful-action/shared/profile-page';
-import type { ControlId, ControlMark, PagePlacement } from '../next-useful-action/shared/profile-page';
-import { Chip, clamp01, corners, lerp, tri } from './shared/kit';
+import { MONO, ROLE, captionPlan } from '../next-useful-action/shared/profile-page';
+import { Chip, clamp01, lerp, tri } from './shared/kit';
 
 /* ------------------------------------------------------------- narration */
 const CAPTIONS = [
-  'Now return to our profile page. Before asking a model what to do, the system observes the page and constructs the actions it can currently support.',
-  'Each candidate joins a target with an action. Open this menu. Focus this field. Fill this editable control. Click this available button.',
-  'Keeping those pieces together prevents a bad combination, such as selecting one element and independently selecting an action that element cannot perform.',
-  'Each candidate also belongs to a particular page observation. It is a temporary reference to something seen now, rather than a permanent identity for that control.',
-  'The task and recent history accompany the menu. Changing a name should guide the ranking differently from reviewing account settings or signing out.',
-  'A small policy could rank these candidates directly. A larger model could choose among them through a constrained interface, using the same decision contract.',
-  'But a model cannot choose a useful target that the inventory never found. We have to measure that missing coverage separately from ranking mistakes.',
-  'This is where bounded decisions become a product system: the menu, the model, and the live page all have to agree about what a choice means.',
+  'Give Jev one goal: find a one-way flight from Zurich to London. To choose its next move, it first reads what the browser actually shows.',
+  'The browser runs one page script that collects visible controls, their labels, current values, and nearby text. Screenshots are optional, not the normal decision input.',
+  'The snapshot keeps references to the actual page elements. The model will receive numbered descriptions, while the executor retains the connection back to each real control.',
+  'Here, the origin is element one, the empty destination is element two, and ticket type is element three. These numbers describe this observation, not permanent identifiers.',
+  'The action-space builder groups actions by element. One text field can support both clicking and typing without becoming two separate elements in the table.',
+  'Each operation gets only compatible targets. Typing can choose editable fields; clicking can choose clickable controls; a native dropdown offers observed element-and-option pairs.',
+  'The request also includes the goal, visible page text, and recent actions. This lets the next choice depend on what already happened, including the current field values.',
+  'After an action changes the page, Jev observes again and rebuilds this menu. A new suggestion can become a target only after it actually appears.',
 ] as const;
 const PLAN = captionPlan(CAPTIONS);
 const AT = PLAN.at;
-const END = PLAN.end + 1.0;
 
 /* ---------------------------------------------------------------- layout */
-const PLACE: PagePlacement = { x: 30, y: 96, scale: 0.8 };
-const PAGE_BOTTOM = PLACE.y + 440 * PLACE.scale;
-const CAM_PAGE: CameraState = { x: 254, y: 290, k: 1.25 };
+const PG = { x: 40, y: 110, w: 420, h: 380 };
+interface Box { x: number; y: number; w: number; h: number }
+// page-local control rectangles
+const CTRL: Record<'from' | 'to' | 'ticket' | 'search' | 'sug', Box> = {
+  from: { x: 24, y: 96, w: 372, h: 44 },
+  to: { x: 24, y: 176, w: 372, h: 44 },
+  ticket: { x: 24, y: 256, w: 190, h: 44 },
+  search: { x: 236, y: 256, w: 160, h: 44 },
+  sug: { x: 24, y: 222, w: 372, h: 38 },
+};
+const world = (b: Box): Box => ({ x: PG.x + b.x, y: PG.y + b.y, w: b.w, h: b.h });
+
+const TB = { x: 520, y: 110, w: 720, head: 36, row: 54 };
+const COL = { idx: TB.x + 14, label: TB.x + 58, value: TB.x + 218, ops: TB.x + 352 };
+const OPS = ['TYPE_TEXT', 'CLICK', 'SELECT'] as const;
+type Op = (typeof OPS)[number];
+const OP_COLOR: Record<Op, string> = { TYPE_TEXT: ROLE.MODEL, CLICK: ROLE.OBSERVE, SELECT: ROLE.PENDING };
+const ROWS: { key: 'from' | 'to' | 'ticket' | 'search'; role: string; label: string; value: string; tag: string; chipY: number; ops: Op[] }[] = [
+  { key: 'from', role: 'combobox', label: 'From', value: 'Zurich', tag: '<input>', chipY: 228, ops: ['TYPE_TEXT', 'CLICK'] },
+  { key: 'to', role: 'combobox', label: 'To', value: '', tag: '<input>', chipY: 308, ops: ['TYPE_TEXT', 'CLICK'] },
+  { key: 'ticket', role: 'combobox', label: 'Ticket type', value: 'Round trip', tag: '<select>', chipY: 388, ops: ['SELECT'] },
+  { key: 'search', role: 'button', label: 'Search', value: '', tag: '<button>', chipY: 430, ops: ['CLICK'] },
+];
+const CHIP = { x: 476, w: 350, h: 32 };
+// observed actions, in snapshot order (ids are e1…; wait has no element)
+const TILES: { id: string; kind: string; row: number; slot: number; op: Op | null }[] = [
+  { id: 'e1', kind: 'fill', row: 0, slot: 0, op: 'TYPE_TEXT' },
+  { id: 'e2', kind: 'click', row: 0, slot: 1, op: 'CLICK' },
+  { id: 'e3', kind: 'fill', row: 1, slot: 0, op: 'TYPE_TEXT' },
+  { id: 'e4', kind: 'click', row: 1, slot: 1, op: 'CLICK' },
+  { id: 'e5', kind: 'select', row: 2, slot: 0, op: 'SELECT' },
+  { id: 'e6', kind: 'select', row: 2, slot: 0, op: 'SELECT' },
+  { id: 'e7', kind: 'click', row: 3, slot: 0, op: 'CLICK' },
+  { id: 'wait', kind: '', row: -1, slot: 0, op: null },
+];
+const TILE = { w: 84, h: 32, pitch: 90, y: 400 };
+const PAIRS = [
+  { text: '3:1 One way', x: COL.ops + 92, w: 100 },
+  { text: '3:2 Multi-city', x: COL.ops + 200, w: 124 },
+];
+const TABS = OPS.map((op, i) => ({ op, x: TB.x + i * 180, key: `${op.toLowerCase()}_target` }));
+// sits directly under the page so its lowest line stays above the caption-safe y=570
+const REG = { x: 40, y: 498, w: 420, h: 66 };
+const REQ = { x: 520, y: 440, w: 720, h: 128 };
+const REQ_SLOTS = [
+  { text: 'page.text', to: { x: 548, y: 512 }, from: { x: 64, y: 452 }, color: ROLE.OBSERVE },
+  { text: 'elements ×4', to: { x: 690, y: 512 }, from: { x: 800, y: 250 }, color: ROLE.OBSERVE },
+  { text: 'recent_actions', to: { x: 832, y: 512 }, from: { x: 832, y: 470 }, color: ROLE.CHECKED },
+  { text: 'goal', to: { x: 1004, y: 512 }, from: { x: 40, y: 30 }, color: ROLE.PENDING },
+];
+
+const CAM_PAGE: CameraState = { x: 420, y: 290, k: 1.25 };
+const CAM_SCAN: CameraState = { x: 400, y: 300, k: 1.3 };
 const CAM_HOME: CameraState = { x: 640, y: 360, k: 1 };
-const CAM_LATTICE: CameraState = { x: 915, y: 285, k: 1.2 };
-
-const ROWS: { control: ControlId; name: string; role: string }[] = [
-  { control: 'profile-menu', name: 'Profile menu', role: 'button' },
-  { control: 'display-name-field', name: 'Display name', role: 'textbox' },
-  { control: 'email-field', name: 'Email', role: 'textbox' },
-  { control: 'sign-out-link', name: 'Sign out', role: 'link' },
-  { control: 'save-button', name: 'Save', role: 'button · disabled' },
-];
-const ACTIONS = ['open', 'focus', 'fill', 'click'];
-const colBand = scaleBand<string>().domain(ACTIONS).range([728, 1236]).paddingInner(0.08);
-const rowBand = scaleBand<string>().domain(ROWS.map((r) => r.control)).range([132, 446]).paddingInner(0.12);
-const CW = colBand.bandwidth();
-const RH = rowBand.bandwidth();
-const colX = (p: number) => 728 + p * colBand.step(); // continuous, so pickers can slide
-const rowY = (p: number) => 132 + p * rowBand.step();
-const LABEL_X = 590;
-const RAIL_X = 1246;
-const BADGE = { x: 968, y: 36, w: 268, h: 50 };
-
-/** Legal joint candidates: (row, col) cells of the lattice. Save·click is filtered. */
-const CANDS = [
-  { n: 1, row: 0, col: 0 },
-  { n: 2, row: 1, col: 1 },
-  { n: 3, row: 1, col: 2 },
-  { n: 4, row: 2, col: 1 },
-  { n: 5, row: 2, col: 2 },
-  { n: 6, row: 3, col: 3 },
-];
-const HI_TILE = [0, 1, 2, 5]; // beat 2 spotlight order: open, focus, fill, click
-const SAVE = { row: 4, col: 3 };
-const BAD = { row: 3, col: 2 }; // fill × Sign out link — no such action
-
-// ILLUSTRATIVE ranking scores per tile for: Brett task, review settings, sign out,
-// Brett again, Display-name row missing, Brett restored. Hand-written, not measured.
-const SCORE_SETS = [
-  [0.3, 0.75, 1.0, 0.15, 0.2, 0.1],
-  [1.0, 0.25, 0.15, 0.25, 0.15, 0.2],
-  [0.35, 0.1, 0.05, 0.1, 0.05, 1.0],
-  [0.3, 0.75, 1.0, 0.15, 0.2, 0.1],
-  [0.45, 0, 0, 0.7, 0.6, 0.2],
-  [0.3, 0.75, 1.0, 0.15, 0.2, 0.1],
-];
-const SCORE = CANDS.map((_, k) => scaleLinear().domain([0, 1, 2, 3, 4, 5]).range(SCORE_SETS.map((set) => set[k])).clamp(true));
-const TASKS = ['“Change my display name to Brett”', '“Review my account settings”', '“Sign me out”'];
-
-const hlink = linkHorizontal<{ source: [number, number]; target: [number, number] }, [number, number]>();
-const TETHERS = ROWS.map((r, j) => {
-  const c = controlRect(r.control, PLACE);
-  return hlink({ source: [LABEL_X - 4, rowY(j) + RH / 2], target: [c.x + c.w + 7, c.y + c.h / 2] }) ?? '';
-});
-const ORIGINS = CANDS.map((c) => rectCenter(controlRect(ROWS[c.row].control, PLACE)));
-// observation rail: badge → down the right edge → a stub under each row's tiles
-const ROW_LEFT_COL = [0, 1, 1, 3, 3];
-const RAIL = `M${BADGE.x + BADGE.w} ${BADGE.y + 25}H${RAIL_X}V${rowY(4) + RH + 4}`;
-const STUBS = ROWS.map((_, j) => `M${RAIL_X} ${rowY(j) + RH + 4}H${colX(ROW_LEFT_COL[j]) + 6}`);
-// beat-1 eligibility chips, in the page's reserved gutter (stage coordinates)
-const ELIG = [
-  { x: 262, y: 134 },
-  { x: 334, y: 243 },
-  { x: 334, y: 304 },
-  { x: 372, y: 392 },
-  { x: 155, y: 362 },
-];
-const SLOT = { x: 987, y: 148 }; // verdict chip slot: row 0, columns fill–click are empty
+const CAM_TABLE: CameraState = { x: 860, y: 300, k: 1.18 };
+const CAM_END: CameraState = { x: 640, y: 330, k: 1.04 };
 
 /* -------------------------------------------------------------- timeline */
 export function buildScene() {
   const tl = new Timeline();
   const cam = tl.channel<CameraState>('cam', CAM_PAGE, cameraInterp);
-  const phase = tl.channel('phase', 0);
-  tl.tween(phase, END / 2.4, { at: 0, dur: END, ease: ease.linear });
-  const ch = (key: string, v = 0) => tl.channel(key, v);
-  const pageU = ch('pageU'), scanU = ch('scanU'), eligU = ch('eligU'), latticeU = ch('latticeU'), badgeU = ch('badgeU');
-  const tilesU = ch('tilesU'), tetherU = ch('tetherU'), hiP = ch('hiP', -1.5), rejectU = ch('rejectU'), ejectU = ch('ejectU');
-  const pickU = ch('pickU'), rowP = ch('rowP', 0), colP = ch('colP', 0), badU = ch('badU'), jointU = ch('jointU'), selU = ch('selU');
-  const railU = ch('railU'), stampU = ch('stampU'), scan2U = ch('scan2U'), verU = ch('verU'), staleU = ch('staleU'), reissueU = ch('reissueU'), ephemU = ch('ephemU');
-  const ctxU = ch('ctxU'), barsU = ch('barsU'), rankLblU = ch('rankLblU'), scoreP = ch('scoreP');
-  const contractU = ch('contractU'), smallU = ch('smallU'), largeU = ch('largeU'), dockS = ch('dockS'), dockL = ch('dockL'), glowU = ch('glowU'), chooseU = ch('chooseU');
-  const missingU = ch('missingU'), warnU = ch('warnU'), tallyU = ch('tallyU'), dropU = ch('dropU');
-  const agreeU = ch('agreeU'), haloU = ch('haloU'), stageDim = ch('stageDim', 1), panelU = ch('panelU');
+  const pageU = tl.channel('pageU', 0);
+  const pageDim = tl.channel('pageDim', 0);
+  const goalU = tl.channel('goalU', 0);
+  const scanU = tl.channel('scanU', 0);
+  const scanVis = tl.channel('scanVis', 0);
+  const textU = tl.channel('textU', 0);
+  const shotU = tl.channel('shotU', 0);
+  const regU = tl.channel('regU', 0);
+  const regVis = tl.channel('regVis', 0);
+  const rowsU = tl.channel('rowsU', 0);
+  const dimRows = tl.channel('dimRows', 0);
+  const idxU = tl.channel('idxU', 0);
+  const onceU = tl.channel('onceU', 0);
+  const tilesU = tl.channel('tilesU', 0);
+  const groupU = tl.channel('groupU', 0);
+  const opVis = tl.channel('opVis', 0);
+  const opU = tl.channel('opU', 1);
+  const pairsU = tl.channel('pairsU', 0);
+  const reqU = tl.channel('reqU', 0);
+  const reqFill = tl.channel('reqFill', 0);
+  const valU = tl.channel('valU', 0);
+  const actU = tl.channel('actU', 0);
+  const sugU = tl.channel('sugU', 0);
+  const rebuildU = tl.channel('rebuildU', 0);
+  const noteU = tl.channel('noteU', 0);
+  const stripU = tl.channel('stripU', 1);
 
   CAPTIONS.forEach((text, i) => tl.caption({ at: AT[i], dur: PLAN.dur[i], text }));
-  const to = (c: typeof pageU, v: number, at: number, dur = 0.6, e = ease.enter) => tl.tween(c, v, { at, dur, ease: e });
 
-  /* — beat 1 · observe visible and eligible controls — */
+  /* — beat 1 · one goal, one page — */
   let b = AT[0];
-  to(pageU, 1, b + 0.2, 0.8);
-  to(scanU, 1, b + 1.6, 3.2, ease.linear);
-  to(eligU, 1, b + 1.6, 0.4);
-  tl.tween(cam, CAM_HOME, { at: b + 5.6, dur: 1.5, ease: ease.move });
-  to(latticeU, 1, b + 7.2, 1.4, ease.draw); // revealed only after the pullback
-  to(badgeU, 1, b + 8.6, 0.5, ease.pop);
+  tl.tween(goalU, 1, { at: b + 0.3, dur: 0.7, ease: ease.enter });
+  tl.tween(pageU, 1, { at: b + 4.2, dur: 0.8, ease: ease.enter });
 
-  /* — beat 2 · joint tiles leave their controls; disabled Save is filtered — */
+  /* — beat 2 · one script sweep — */
   b = AT[1];
-  to(eligU, 0, b + 0.1, 0.4);
-  to(tilesU, 1, b + 0.4, 2.6, ease.linear);
-  to(tetherU, 1, b + 0.6, 2.4, ease.draw);
-  [3.1, 4.4, 5.7, 7.2].forEach((dt, k) => to(hiP, k, b + dt, 0.4, ease.move));
-  to(rejectU, 1, b + 7.9, 0.5, ease.pop);
-  to(ejectU, 1, b + 9.0, 0.8, ease.move);
-  to(hiP, 4.5, b + 9.6, 0.5, ease.move);
+  tl.tween(cam, CAM_SCAN, { at: b + 0.1, dur: 1.2, ease: ease.move });
+  tl.tween(scanVis, 1, { at: b + 0.6, dur: 0.4, ease: ease.enter });
+  tl.tween(scanU, 1, { at: b + 1.0, dur: 4.6, ease: ease.linear });
+  tl.tween(textU, 1, { at: b + 5.4, dur: 0.6, ease: ease.enter });
+  tl.tween(scanVis, 0, { at: b + 5.8, dur: 0.5, ease: ease.enter });
+  tl.tween(shotU, 1, { at: b + 8.4, dur: 0.6, ease: ease.enter });
 
-  /* — beat 3 · independent picks collide with an impossible cell — */
+  /* — beat 3 · handles stay, descriptions travel — */
   b = AT[2];
-  to(pageU, 0, b + 0.1, 0.5); // page + tethers leave BEFORE the zoom would cut them
-  to(tetherU, 0, b + 0.1, 0.5);
-  tl.tween(cam, CAM_LATTICE, { at: b + 0.6, dur: 1.2, ease: ease.move });
-  to(pickU, 1, b + 1.6, 0.5);
-  to(rowP, BAD.row, b + 2.2, 1.0, ease.move);
-  to(colP, BAD.col, b + 2.6, 1.0, ease.move);
-  to(badU, 1, b + 3.8, 0.5, ease.pop);
-  to(badU, 0, b + 6.2, 0.4);
-  to(pickU, 0, b + 6.2, 0.5);
-  to(selU, 1, b + 6.2, 0.5);
-  to(rowP, 1, b + 6.6, 1.0, ease.move);
-  to(jointU, 1, b + 7.6, 0.5, ease.pop);
-  tl.tween(cam, CAM_HOME, { at: b + 8.7, dur: 1.2, ease: ease.move });
+  tl.tween(cam, CAM_HOME, { at: b + 0.1, dur: 1.4, ease: ease.move });
+  tl.tween(shotU, 0, { at: b + 0.1, dur: 0.5, ease: ease.enter });
+  tl.tween(textU, 0, { at: b + 0.1, dur: 0.5, ease: ease.enter });
+  tl.tween(regVis, 1, { at: b + 1.2, dur: 0.6, ease: ease.enter });
+  tl.tween(regU, 1, { at: b + 1.6, dur: 2.4, ease: ease.move });
+  tl.tween(rowsU, 4, { at: b + 5.2, dur: 4.0, ease: ease.move });
 
-  /* — beat 4 · bound to one observation; ids are temporary — */
+  /* — beat 4 · numbers, for this observation — */
   b = AT[3];
-  to(jointU, 0, b + 0.1, 0.4);
-  to(selU, 0, b + 0.1, 0.4);
-  to(pageU, 1, b + 0.2, 0.6); // back only after the pullback
-  to(tetherU, 1, b + 0.3, 0.9, ease.draw);
-  to(railU, 1, b + 0.9, 1.4, ease.draw);
-  to(stampU, 1, b + 2.0, 0.9);
-  to(scan2U, 1, b + 4.4, 1.4, ease.linear);
-  to(verU, 1, b + 5.6, 0.5, ease.pop);
-  to(staleU, 1, b + 5.9, 0.5);
-  to(staleU, 0, b + 8.2, 0.8, ease.move);
-  to(reissueU, 1, b + 8.2, 0.8, ease.move);
-  to(ephemU, 1, b + 9.0, 0.6);
+  tl.tween(regVis, 0.15, { at: b + 0.1, dur: 0.5, ease: ease.enter });
+  tl.tween(dimRows, 1, { at: b + 0.1, dur: 0.5, ease: ease.enter });
+  tl.tween(idxU, 1, { at: b + 1.0, dur: 0.5, ease: ease.pop });
+  tl.tween(idxU, 2, { at: b + 3.4, dur: 0.5, ease: ease.pop });
+  tl.tween(idxU, 3, { at: b + 5.8, dur: 0.5, ease: ease.pop });
+  tl.tween(idxU, 4, { at: b + 7.4, dur: 0.5, ease: ease.pop });
+  tl.tween(onceU, 1, { at: b + 8.6, dur: 0.6, ease: ease.enter });
 
-  /* — beat 5 · task + history guide the ranking — */
+  /* — beat 5 · actions grouped by element — */
   b = AT[4];
-  to(ephemU, 0, b + 0.1, 0.4);
-  to(ctxU, 1, b + 0.4, 1.0);
-  to(barsU, 1, b + 1.8, 1.2, ease.move);
-  to(rankLblU, 1, b + 2.2, 0.6);
-  to(scoreP, 1, b + 6.0, 1.0, ease.move);
-  to(scoreP, 2, b + 8.0, 0.9, ease.move);
-  to(scoreP, 3, b + 9.7, 0.9, ease.move);
+  tl.tween(regVis, 0, { at: b + 0.1, dur: 0.5, ease: ease.enter });
+  tl.tween(onceU, 0, { at: b + 0.1, dur: 0.5, ease: ease.enter });
+  tl.tween(pageDim, 1, { at: b + 0.1, dur: 0.6, ease: ease.enter });
+  tl.tween(cam, CAM_TABLE, { at: b + 0.2, dur: 1.3, ease: ease.move });
+  tl.tween(tilesU, 1, { at: b + 1.2, dur: 0.8, ease: ease.enter });
+  tl.tween(groupU, 1, { at: b + 4.0, dur: 4.4, ease: ease.linear });
 
-  /* — beat 6 · two proposed rankers, one decision contract — */
+  /* — beat 6 · compatible targets per operation — */
   b = AT[5];
-  to(rankLblU, 0, b + 0.1, 0.4);
-  to(contractU, 1, b + 0.5, 0.6);
-  to(smallU, 1, b + 0.7, 0.6);
-  to(largeU, 0.35, b + 0.7, 0.6);
-  to(dockS, 1, b + 1.4, 0.6, ease.move);
-  to(glowU, 1, b + 2.0, 0.7);
-  to(glowU, 0, b + 3.6, 0.5);
-  to(dockS, 0, b + 3.8, 0.5, ease.move);
-  to(smallU, 0.35, b + 3.8, 0.5);
-  to(largeU, 1, b + 3.8, 0.5);
-  to(dockL, 1, b + 4.3, 0.6, ease.move);
-  to(selU, 1, b + 5.4, 0.5);
-  to(chooseU, 1, b + 5.8, 0.5, ease.pop);
-  to(smallU, 1, b + 8.4, 0.5); // "the same decision contract": both plugged in
-  to(dockS, 1, b + 8.4, 0.6, ease.move);
+  tl.tween(stripU, 0, { at: b + 0.1, dur: 0.4, ease: ease.enter });
+  tl.tween(opVis, 1, { at: b + 0.3, dur: 0.6, ease: ease.enter });
+  tl.tween(opU, 2, { at: b + 4.0, dur: 0.9, ease: ease.move });
+  tl.tween(opU, 3, { at: b + 7.4, dur: 0.9, ease: ease.move });
+  tl.tween(pairsU, 1, { at: b + 8.4, dur: 0.7, ease: ease.enter });
 
-  /* — beat 7 · a useful target the inventory never found — */
+  /* — beat 7 · what the request carries — */
   b = AT[6];
-  [contractU, smallU, largeU, dockS, dockL, chooseU].forEach((c) => to(c, 0, b + 0.1, 0.5));
-  to(missingU, 1, b + 0.8, 0.8, ease.move);
-  to(scoreP, 4, b + 1.4, 1.2, ease.move);
-  to(rowP, 2, b + 2.6, 1.0, ease.move);
-  to(colP, 1, b + 2.6, 1.0, ease.move);
-  to(warnU, 1, b + 3.6, 0.5, ease.pop);
-  to(tallyU, 1, b + 5.0, 0.7);
-  to(dropU, 1, b + 6.2, 1.2, ease.move);
+  tl.tween(opVis, 0, { at: b + 0.1, dur: 0.6, ease: ease.enter });
+  tl.tween(cam, CAM_HOME, { at: b + 0.2, dur: 1.3, ease: ease.move });
+  tl.tween(reqU, 1, { at: b + 1.0, dur: 0.7, ease: ease.enter });
+  tl.tween(reqFill, 4, { at: b + 1.8, dur: 5.2, ease: ease.linear });
+  tl.tween(valU, 1, { at: b + 8.2, dur: 0.7, ease: ease.enter });
 
-  /* — beat 8 · menu, model and live page must agree — */
+  /* — beat 8 · the page changes; observe and rebuild — */
   b = AT[7];
-  to(tallyU, 0, b + 0.1, 0.5);
-  to(dropU, 0, b + 0.7, 0.1); // after its tally card has fully faded
-  to(warnU, 0, b + 0.1, 0.4);
-  to(missingU, 0, b + 0.4, 0.8, ease.move);
-  to(scoreP, 5, b + 0.6, 1.0, ease.move);
-  to(rowP, 1, b + 1.4, 0.9, ease.move);
-  to(colP, 2, b + 1.4, 0.9, ease.move);
-  to(agreeU, 1, b + 3.4, 2.8, ease.linear);
-  to(haloU, 1, b + 5.4, 0.6);
-  to(stageDim, 0.1, b + 8.2, 0.8, ease.move);
-  to(agreeU, 0, b + 8.2, 0.6);
-  to(haloU, 0, b + 8.2, 0.6);
-  to(panelU, 1, b + 8.9, 0.8);
-  tl.hold(PLAN.end, 1.0);
+  tl.tween(reqU, 0, { at: b + 0.1, dur: 0.6, ease: ease.enter });
+  tl.tween(valU, 0, { at: b + 0.1, dur: 0.6, ease: ease.enter });
+  tl.tween(pageDim, 0, { at: b + 0.2, dur: 0.6, ease: ease.enter });
+  tl.tween(cam, CAM_END, { at: b + 0.3, dur: 1.3, ease: ease.move });
+  tl.tween(actU, 1, { at: b + 1.2, dur: 1.2, ease: ease.linear });
+  tl.tween(sugU, 1, { at: b + 3.0, dur: 0.6, ease: ease.enter });
+  tl.set(scanU, 0, b + 3.8);
+  tl.tween(scanVis, 1, { at: b + 3.8, dur: 0.3, ease: ease.enter });
+  tl.tween(scanU, 1, { at: b + 4.1, dur: 2.0, ease: ease.linear });
+  tl.tween(scanVis, 0, { at: b + 6.1, dur: 0.4, ease: ease.enter });
+  tl.tween(rebuildU, 1, { at: b + 6.4, dur: 1.4, ease: ease.move });
+  tl.tween(noteU, 1, { at: b + 8.4, dur: 0.6, ease: ease.enter });
+  tl.hold(PLAN.end, 0.8);
 
   return {
-    tl, cam, phase, pageU, scanU, eligU, latticeU, badgeU, tilesU, tetherU, hiP, rejectU, ejectU, pickU, rowP, colP, badU, jointU, selU,
-    railU, stampU, scan2U, verU, staleU, reissueU, ephemU, ctxU, barsU, rankLblU, scoreP, contractU, smallU, largeU, dockS, dockL, glowU,
-    chooseU, missingU, warnU, tallyU, dropU, agreeU, haloU, stageDim, panelU,
+    tl, cam, pageU, pageDim, goalU, scanU, scanVis, textU, shotU, regU, regVis, rowsU, dimRows, idxU, onceU, tilesU, groupU,
+    opVis, opU, pairsU, reqU, reqFill, valU, actU, sugU, rebuildU, noteU, stripU,
   };
 }
 
 const scene = buildScene();
 
 /* ---------------------------------------------------- local subcomponents */
-
-/** A joint candidate: action and target fused in one tile — never chosen separately. */
-function Tile({ x, y, scale = 1, opacity, id, action, target, stamp, stampU, tone, ghost, ghostTag, emphasis, score, barU }: {
-  x: number; y: number; scale?: number; opacity: number; id: string; action: string; target: string; stamp: string; stampU: number;
-  tone: string; ghost: number; ghostTag: string; emphasis: number; score: number; barU: number;
-}) {
-  if (opacity <= 0.002) return null;
-  const g = clamp01(ghost);
+function Txt({ x, y, text, size = 14, color = colors.TEXT, mono = false, weight = 500, anchor = 'start', u = 1 }: { x: number; y: number; text: string; size?: number; color?: string; mono?: boolean; weight?: number; anchor?: 'start' | 'middle' | 'end'; u?: number }) {
+  if (u <= 0.002) return null;
   return (
-    <g transform={`translate(${x} ${y}) scale(${scale})`} opacity={opacity}>
-      <rect width={CW} height={RH} rx={9} fill="#0b1324" stroke={tone} strokeWidth={1.4 + emphasis * 1.8} strokeDasharray={g > 0.5 ? '6 4' : undefined} />
-      <g opacity={1 - 0.72 * g}>
-        <text x={9} y={15} fill={tone} fontSize={11.5} fontFamily={MONO}>{id}</text>
-        <text x={9} y={33} fill={tone} fontSize={15.5} fontFamily={MONO} fontWeight={700}>{action}</text>
-        <circle cx={13} cy={42} r={4} fill="none" stroke={tone} strokeWidth={1.5} />
-        <circle cx={13} cy={42} r={1.4} fill={tone} />
-        <text x={22} y={46} fill={colors.TEXT} fontSize={11.5}>{target}</text>
-        <rect x={9} y={RH - 5.5} width={(CW - 18) * score * barU} height={3.5} rx={1.75} fill={ROLE.MODEL} />
-      </g>
-      <text x={CW - 8} y={15} textAnchor="end" fill={g > 0.5 ? tone : ROLE.OBSERVE} fontSize={10.5} fontFamily={MONO} opacity={Math.max(stampU, g)}>
-        {g > 0.5 ? ghostTag : stamp}
-      </text>
-    </g>
+    <text x={x} y={y} fill={color} fontSize={size} fontFamily={mono ? MONO : undefined} fontWeight={weight} textAnchor={anchor} opacity={u}>
+      {text}
+    </text>
   );
 }
 
-function Card({ x, y, w, h, head, body, sub, color, fill, u, strong = 0 }: { x: number; y: number; w: number; h: number; head: string; body: string; sub?: string; color: string; fill: string; u: number; strong?: number }) {
-  if (u <= 0.002) return null;
+/** The illustrative flight-search page. Pure function of its props. */
+function FlightPage({ opacity, toText, sugU, found, nodeU, hot }: { opacity: number; toText: string; sugU: number; found: (cy: number) => number; nodeU: number; hot: string | null }) {
+  if (opacity <= 0.002) return null;
+  const field = (key: 'from' | 'to' | 'ticket', label: string, value: string, caret = false) => {
+    const c = CTRL[key];
+    return (
+      <g key={key}>
+        <Txt x={c.x} y={c.y - 9} text={label} size={13} color={colors.MUTED} u={key === 'ticket' ? 1 - sugU : 1} />
+        <rect x={c.x} y={c.y} width={c.w} height={c.h} rx={8} fill="#0d1526" stroke="#2a3754" strokeWidth={1.4} />
+        <Txt x={c.x + 14} y={c.y + 28} text={value || (caret ? '' : 'City or airport')} size={17} color={value ? colors.TEXT : '#4b5b78'} weight={value ? 650 : 400} />
+        {key === 'ticket' && <Txt x={c.x + c.w - 22} y={c.y + 28} text="▾" size={15} color={colors.MUTED} />}
+      </g>
+    );
+  };
   return (
-    <g transform={`translate(${x} ${y})`} opacity={clamp01(u)}>
-      <rect width={w} height={h} rx={10} fill={fill} stroke={color} strokeWidth={1.4 + strong * 1.6} />
-      <text x={13} y={20} fill={color} fontSize={11.5} fontFamily={MONO} letterSpacing={0.6}>{head}</text>
-      <text x={13} y={41} fill={colors.TEXT} fontSize={14.5} fontWeight={600}>{body}</text>
-      {sub && <text x={13} y={58} fill={ROLE.PENDING} fontSize={11} fontFamily={MONO}>{sub}</text>}
+    <g transform={`translate(${PG.x} ${PG.y})`} opacity={opacity}>
+      <rect width={PG.w} height={PG.h} rx={14} fill="#0a1020" stroke="#22304d" strokeWidth={1.5} />
+      <rect width={PG.w} height={40} rx={14} fill="#111a2e" />
+      <circle cx={20} cy={20} r={5} fill="#fb7185" opacity={0.7} />
+      <circle cx={38} cy={20} r={5} fill="#fbbf24" opacity={0.7} />
+      <circle cx={56} cy={20} r={5} fill="#34d399" opacity={0.7} />
+      <Txt x={80} y={25} text="flights.example — Search flights" size={13} color={colors.MUTED} mono />
+      {field('from', 'From', 'Zurich')}
+      {field('to', 'To', toText, toText.length > 0)}
+      {field('ticket', 'Ticket type', 'Round trip')}
+      <rect x={CTRL.search.x} y={CTRL.search.y} width={CTRL.search.w} height={CTRL.search.h} rx={8} fill="#1d4ed8" />
+      <Txt x={CTRL.search.x + CTRL.search.w / 2} y={CTRL.search.y + 28} text="Search" size={17} weight={700} anchor="middle" />
+      <Txt x={24} y={342} text="Fares shown in CHF. Prices include taxes." size={13} color={colors.MUTED} />
+      {/* observation outlines + executor-side node handles */}
+      {ROWS.map((r, i) => {
+        const c = CTRL[r.key];
+        const f = found(PG.y + c.y + c.h / 2);
+        const isHot = hot === r.key;
+        const under = i >= 2 ? 1 - sugU : 1; // ticket + search sit under the suggestion overlay
+        return (
+          <g key={r.key} opacity={under}>
+            <rect x={c.x - 4} y={c.y - 4} width={c.w + 8} height={c.h + 8} rx={10} fill="none" stroke={isHot ? colors.WARM : ROLE.OBSERVE} strokeWidth={isHot ? 3 : 1.8} opacity={isHot ? 1 : f * 0.9} />
+            {nodeU > 0.002 && (
+              <g opacity={nodeU} transform={`translate(${c.x + c.w - 30} ${c.y - 12})`}>
+                <rect width={34} height={20} rx={10} fill="#1e1b4b" stroke={ROLE.MODEL} strokeWidth={1.2} />
+                <Txt x={17} y={14.5} text={`n${i + 1}`} size={12} color={ROLE.MODEL} mono anchor="middle" weight={700} />
+              </g>
+            )}
+          </g>
+        );
+      })}
+      {/* the suggestion is an opaque overlay, drawn last; what it covers is hidden for the interval */}
+      {sugU > 0.002 && (
+        <g opacity={sugU} transform={`translate(0 ${(1 - sugU) * -6})`}>
+          <rect x={CTRL.sug.x} y={CTRL.sug.y} width={CTRL.sug.w} height={CTRL.sug.h} rx={8} fill="#16213a" stroke={ROLE.CHECKED} strokeWidth={1.5} />
+          <Txt x={CTRL.sug.x + 14} y={CTRL.sug.y + 25} text="London, United Kingdom" size={16} weight={650} />
+          <Txt x={CTRL.sug.x + CTRL.sug.w - 12} y={CTRL.sug.y + 25} text="role=option" size={12} color={ROLE.CHECKED} mono anchor="end" />
+        </g>
+      )}
     </g>
   );
 }
 
 /* ------------------------------------------------------------ the frame */
 export function Render({ s }: { s: SceneState }) {
-  const g = (c: typeof scene.pageU): number => s.get(c);
-  const pageU = g(scene.pageU), scanU = g(scene.scanU), scan2U = g(scene.scan2U), eligU = g(scene.eligU), latticeU = g(scene.latticeU);
-  const tilesU = g(scene.tilesU), tetherU = g(scene.tetherU), hiP = g(scene.hiP), rejectU = g(scene.rejectU), ejectU = g(scene.ejectU);
-  const pickU = g(scene.pickU), rowP = g(scene.rowP), colP = g(scene.colP), badU = g(scene.badU), selU = g(scene.selU);
-  const railU = g(scene.railU), stampU = g(scene.stampU), verU = g(scene.verU), staleU = g(scene.staleU), reissueU = g(scene.reissueU);
-  const ctxU = g(scene.ctxU), scoreP = g(scene.scoreP), missingU = g(scene.missingU), warnU = g(scene.warnU), tallyU = g(scene.tallyU);
-  const dropU = g(scene.dropU), agreeU = g(scene.agreeU), contractU = g(scene.contractU), dockS = g(scene.dockS), dockL = g(scene.dockL);
-  const panelU = g(scene.panelU);
+  const pageU = s.get(scene.pageU);
+  const pageDim = s.get(scene.pageDim);
+  const scanU = s.get(scene.scanU);
+  const scanVis = s.get(scene.scanVis);
+  const regU = s.get(scene.regU);
+  const regVis = s.get(scene.regVis);
+  const rowsU = s.get(scene.rowsU);
+  const dimRows = s.get(scene.dimRows);
+  const idxU = s.get(scene.idxU);
+  const tilesU = s.get(scene.tilesU);
+  const groupU = s.get(scene.groupU);
+  const opVis = s.get(scene.opVis);
+  const opU = s.get(scene.opU);
+  const pairsU = s.get(scene.pairsU);
+  const reqU = s.get(scene.reqU);
+  const reqFill = s.get(scene.reqFill);
+  const valU = s.get(scene.valU);
+  const actU = s.get(scene.actU);
+  const sugU = s.get(scene.sugU);
+  const rebuildU = s.get(scene.rebuildU);
+  const stripU = s.get(scene.stripU);
 
-  const idOf = (n: number) => `${reissueU > 0.5 ? 'd' : 'c'}${n}`;
-  const ver = reissueU > 0.5 ? 'v13' : 'v12';
-  const scanning = scanU < 0.999 ? scanU : scan2U;
-  const scanY = lerp(PLACE.y, PAGE_BOTTOM, scanning);
-  const seen = (j: number) => (scanU >= 0.999 ? 1 : clamp01((scanY - controlRect(ROWS[j].control, PLACE).y) / 16));
+  const scanY = lerp(PG.y + 44, PG.y + PG.h - 8, scanU);
+  // a control counts as "found" once the first sweep has passed it; it stays found
+  const firstPass = rowsU > 0 || regU > 0 || actU > 0 ? 1 : scanU;
+  const firstY = lerp(PG.y + 44, PG.y + PG.h - 8, firstPass);
+  const found = (cy: number) => clamp01((firstY - cy) / 18);
 
-  // spotlight discipline: one tile up, the rest a whisper
-  const scores = CANDS.map((_, k) => SCORE[k](scoreP));
-  const top = scores.indexOf(Math.max(...scores));
-  const emph = CANDS.map((c, k) => Math.max(HI_TILE.indexOf(k) >= 0 ? tri(hiP, HI_TILE.indexOf(k)) : 0, selU * clamp01(1 - (Math.abs(rowP - c.row) + Math.abs(colP - c.col)) * 1.5)));
-  const focus = Math.max(...emph, pickU);
-  const tileO = (k: number) => 1 - 0.6 * clamp01(focus - emph[k]);
-
-  const marks: ControlMark[] = ROWS.map((r, j) => ({
-    id: r.control,
-    u: seen(j),
-    color: j === 4 ? colors.MUTED : j === 1 && missingU > 0.5 ? ROLE.PENDING : ROLE.OBSERVE,
-    dashed: j === 4 || (j === 1 && missingU > 0.5),
-  }));
-  const nameRect = controlRect('display-name-field', PLACE);
-  // the cursor's tone follows the cell it is over: only real candidates are choosable
-  const overLegal = CANDS.some((c) => c.row === Math.round(rowP) && c.col === Math.round(colP));
-  const overMissing = missingU > 0.5 && Math.round(rowP) === 1;
-  const selTone = !overLegal ? ROLE.INVALID : warnU > 0.5 || overMissing ? ROLE.PENDING : ROLE.CHECKED;
-  const taskP = Math.min(scoreP, 3);
-  const taskW = [tri(taskP, 0) + tri(taskP, 3), tri(taskP, 1), tri(taskP, 2)];
-  const drop = easeCubicInOut(clamp01(dropU));
+  const opWeight = (op: Op | null) => (op ? tri(opU, OPS.indexOf(op) + 1) : 0);
+  const rowCompat = (ops: Op[]) => ops.reduce((a, op) => a + opWeight(op), 0);
+  const slotOf = (i: number) => (i >= 2 ? i + rebuildU : i);
+  const rowY = (slot: number) => TB.y + TB.head + slot * TB.row;
+  const hotIdx = idxU > 0.02 && idxU < 3.98 && dimRows > 0.5 && s.get(scene.onceU) < 0.5 ? Math.max(0, Math.min(3, Math.round(idxU) - 1)) : -1;
+  const typed = 'London'.slice(0, Math.round(actU * 6));
 
   return (
+    <>
     <Camera {...s.get(scene.cam)}>
-      <g opacity={g(scene.stageDim)}>
-        {/* ---------------- the living page: observed, never assumed ---------------- */}
-        <g opacity={pageU}>
-          <text x={30} y={60} fill={colors.TEXT} fontSize={17} fontWeight={650}>the living page</text>
-          <text x={30} y={80} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>fictional demo · observed now</text>
-        </g>
-        <ProfilePage place={PLACE} opacity={pageU * (1 - 0.3 * Math.sin(Math.PI * scan2U))} marks={marks} obsLabel={`observation ${verU > 0.5 ? 'v13' : 'v12'}`} obsU={clamp01(scanU * 4 - 3)} />
-        {scanning > 0.001 && scanning < 0.999 && (
-          <g opacity={clamp01(Math.min(scanning, 1 - scanning) * 10) * pageU}>
-            <rect x={PLACE.x} y={scanY - 26} width={560 * PLACE.scale} height={26} fill={ROLE.OBSERVE} opacity={0.08} />
-            <line x1={PLACE.x} x2={PLACE.x + 560 * PLACE.scale} y1={scanY} y2={scanY} stroke={ROLE.OBSERVE} strokeWidth={2} />
-          </g>
-        )}
-        {ELIG.map((p, j) => (
-          <Chip key={j} x={p.x} y={p.y} size={12} text={j === 4 ? '✕ disabled' : '✓ eligible'} color={j === 4 ? colors.MUTED : ROLE.OBSERVE} dashed={j === 4} u={eligU * seen(j) * pageU} />
-        ))}
-        {TETHERS.map((d, j) => {
-          const u = clamp01(tetherU * 1.8 - j * 0.2) * (j === 4 ? 1 - ejectU : 1);
-          if (u <= 0.002) return null;
-          const miss = j === 1 && missingU > 0.5;
-          const agree = j === 1 ? clamp01(agreeU * 3) : 0;
-          const rowHi = Math.max(0, ...CANDS.map((c, k) => (c.row === j ? emph[k] : 0)));
-          return <path key={j} d={d} fill="none" stroke={miss ? ROLE.PENDING : agree > 0.5 ? ROLE.CHECKED : j === 4 ? colors.MUTED : ROLE.OBSERVE} strokeWidth={1.5 + 1.4 * rowHi + 1.4 * agree} opacity={pageU * (0.5 + 0.5 * Math.max(rowHi, agree))} pathLength={1} strokeDasharray={miss || j === 4 ? '0.025 0.025' : `${u} 1`} />;
-        })}
-        <Chip x={334} y={243} size={12} text="? not listed" color={ROLE.PENDING} fill="#1a1405" dashed u={missingU * pageU} />
-        <SuggestHalo rect={nameRect} u={g(scene.haloU)} phase={g(scene.phase)} />
-        <Chip x={342} y={243} size={12} text="to be checked" color={ROLE.MODEL} fill="#1a1333" dashed u={g(scene.haloU)} />
-
-        {/* ---------------- the candidate lattice: targets × actions ---------------- */}
-        <g opacity={clamp01(latticeU * 3)}>
-          <text x={LABEL_X} y={58} fill={colors.TEXT} fontSize={17} fontWeight={650}>candidate lattice</text>
-          <text x={LABEL_X} y={80} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>target × action · legal pairs only</text>
-          <ProposedTag x={762} y={44} u={1} />
-        </g>
-        {ACTIONS.map((a, c) => (
-          <text key={a} x={colX(c) + CW / 2} y={124} textAnchor="middle" fill={ROLE.OBSERVE} fontSize={15} fontFamily={MONO} opacity={clamp01(latticeU * 3 - 0.4 * c)}>{a}</text>
-        ))}
-        {ROWS.map((r, j) => {
-          const u = clamp01(latticeU * 3 - 0.3 * j - 0.6);
-          const miss = j === 1 ? missingU : 0;
-          return (
-            <g key={r.control} opacity={u * (j === 4 ? 1 - 0.55 * ejectU : 1)}>
-              <text x={LABEL_X} y={rowY(j) + 24} fill={colors.TEXT} fontSize={15} fontWeight={650} opacity={1 - 0.6 * miss}>{r.name}</text>
-              <text x={LABEL_X} y={rowY(j) + 42} fill={miss > 0.5 ? ROLE.PENDING : colors.MUTED} fontSize={11.5} fontFamily={MONO}>{miss > 0.5 ? 'never found' : r.role}</text>
-              {ACTIONS.map((a, c) => (
-                <rect key={a} x={colX(c)} y={rowY(j)} width={CW} height={RH} rx={9} fill="none" stroke="#2a3754" strokeWidth={1} strokeDasharray="2 5" opacity={clamp01(latticeU * 3 - 0.25 * (j + c))} />
-              ))}
-            </g>
-          );
-        })}
-
-        {/* observation badge + rail: every tile belongs to ONE observation */}
-        <g transform={`translate(${BADGE.x} ${BADGE.y})`} opacity={g(scene.badgeU)}>
-          <rect width={BADGE.w} height={BADGE.h} rx={12} fill="#082f49" stroke={ROLE.OBSERVE} strokeWidth={1.6 + 1.6 * Math.sin(Math.PI * clamp01(verU))} />
-          <circle cx={18} cy={19} r={5} fill={ROLE.OBSERVE} />
-          <text x={32} y={24} fill={ROLE.OBSERVE} fontSize={15} fontFamily={MONO} fontWeight={700}>OBSERVATION {verU > 0.5 ? 'v13' : 'v12'}</text>
-          <text x={14} y={42} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>page /profile · frame main · now</text>
-        </g>
-        {railU > 0.002 && (
-          <g opacity={0.85 - 0.5 * staleU}>
-            <path d={RAIL} fill="none" stroke={ROLE.OBSERVE} strokeWidth={1.8} pathLength={1} strokeDasharray={`${clamp01(railU * 1.6)} 1`} />
-            {STUBS.map((d, j) => (j === 4 || (j === 1 && missingU > 0.5) ? null : <path key={j} d={d} fill="none" stroke={ROLE.OBSERVE} strokeWidth={1.5} pathLength={1} strokeDasharray={`${clamp01(railU * 2.4 - 0.9 - j * 0.12)} 1`} />))}
-          </g>
-        )}
-
-        {/* the joint tiles: born at their live control, parked in their cell */}
-        {CANDS.map((c, k) => {
-          const t = easeCubicInOut(clamp01(tilesU * 2.4 - k * 0.24));
-          const o = ORIGINS[k];
-          const miss = c.row === 1 ? missingU : 0;
-          return (
-            <Tile key={c.n} x={lerp(o.x - CW * 0.2, colX(c.col), t)} y={lerp(o.y - RH * 0.2, rowY(c.row), t)} scale={lerp(0.4, 1, t)} opacity={clamp01(t * 3) * tileO(k)}
-              id={idOf(c.n)} action={ACTIONS[c.col]} target={`+ ${ROWS[c.row].name}`} stamp={ver} stampU={stampU} tone={miss > 0.5 ? ROLE.PENDING : staleU > 0.5 ? ROLE.INVALID : ROLE.OBSERVE}
-              ghost={Math.max(staleU, miss)} ghostTag={miss > 0.5 ? 'not found' : 'v12 stale ✕'} emphasis={Math.max(emph[k], k === top ? g(scene.barsU) * 0.6 : 0, g(scene.glowU) * 0.7)} score={scores[k]} barU={g(scene.barsU)} />
-          );
-        })}
-        {/* Save · click — visible on the page, but disabled → filtered out of the menu */}
-        {(() => {
-          const t = easeCubicInOut(clamp01(tilesU * 2.4 - 1.38));
-          const o = rectCenter(controlRect('save-button', PLACE));
-          return (
-            <g opacity={(1 - ejectU) * (1 - 0.6 * clamp01(focus - Math.max(rejectU, tri(hiP, 3))))} transform={`translate(${ejectU * 30} 0)`}>
-              <Tile x={lerp(o.x - CW * 0.2, colX(SAVE.col), t)} y={lerp(o.y - RH * 0.2, rowY(SAVE.row), t)} scale={lerp(0.4, 1, t)} opacity={clamp01(t * 3)} id="—" action="click" target="+ Save"
-                stamp="" stampU={0} tone={rejectU > 0.5 ? ROLE.INVALID : colors.MUTED} ghost={1} ghostTag="disabled" emphasis={rejectU} score={0} barU={0} />
-              <line x1={colX(SAVE.col) + 10} x2={colX(SAVE.col) + CW - 10} y1={rowY(SAVE.row) + RH / 2} y2={rowY(SAVE.row) + RH / 2} stroke={ROLE.INVALID} strokeWidth={2.4} opacity={rejectU} />
-            </g>
-          );
-        })()}
-        <text x={colX(SAVE.col) + CW / 2} y={rowY(SAVE.row) + RH / 2 + 4} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO} opacity={ejectU * 0.7}>filtered out</text>
-        <Chip x={colX(1) + 18} y={rowY(4) + 14} text="✕ disabled → not a candidate" color={ROLE.INVALID} fill="#2a0c14" u={rejectU * (1 - ejectU)} />
-        <Chip x={colX(3) + 4} y={rowY(2) + 14} size={12} text="✓ available" color={ROLE.CHECKED} fill="#062a1e" u={tri(hiP, 3)} />
-
-        {/* beat 3 — two independent pickers slide along the lattice edges */}
-        {pickU > 0.002 && (
-          <g opacity={pickU}>
-            <text x={728} y={104} fill={ROLE.PENDING} fontSize={13} fontFamily={MONO}>target and action picked separately → may not fit</text>
-            <rect x={LABEL_X - 5} y={rowY(rowP) + 4} width={128} height={RH - 8} rx={8} fill="none" stroke={ROLE.PENDING} strokeWidth={2} strokeDasharray="6 4" />
-            <rect x={colX(colP) + 14} y={108} width={CW - 28} height={23} rx={8} fill="none" stroke={ROLE.PENDING} strokeWidth={2} strokeDasharray="6 4" />
-            <path d={`M${LABEL_X + 124} ${rowY(rowP) + RH / 2}H${colX(colP) + CW / 2}M${colX(colP) + CW / 2} 132V${rowY(rowP) + RH / 2}`} fill="none" stroke={ROLE.PENDING} strokeWidth={1.6} strokeDasharray="3 5" />
-          </g>
-        )}
-        {badU > 0.002 && (
-          <g opacity={badU}>
-            <path d={`M${colX(BAD.col) + 42} ${rowY(BAD.row) + 13}l36 30m0 -30l-36 30`} stroke={ROLE.INVALID} strokeWidth={3.2} fill="none" />
-            <Chip x={colX(1) + 18} y={rowY(4) + 14} text="✕ fill × link: no such action" color={ROLE.INVALID} fill="#2a0c14" u={1} />
-          </g>
-        )}
-        {/* the persistent choice cursor: one joint id, never a row and a column */}
-        <path d={corners(colX(colP) - 5, rowY(rowP) - 5, CW + 10, RH + 10)} fill="none" stroke={selTone} strokeWidth={3} opacity={Math.max(selU, badU)} />
-        <Chip x={SLOT.x} y={SLOT.y} text="✓ one joint id: target+action" color={ROLE.CHECKED} fill="#062a1e" u={g(scene.jointU)} />
-        <Chip x={SLOT.x} y={SLOT.y} text={`model output: one id → ${idOf(3)}`} color={ROLE.MODEL} fill="#1a1333" u={g(scene.chooseU)} />
-        <Chip x={SLOT.x} y={SLOT.y} text="best listed ≠ the useful one" color={ROLE.PENDING} fill="#1a1405" dashed u={warnU} />
-
-        {/* ---------------- lower band: one supporting idea at a time ---------------- */}
-        <g opacity={g(scene.ephemU)}>
-          <text x={600} y={488} fill={colors.TEXT} fontSize={15} fontWeight={650}>candidate ids are temporary references</text>
-          <text x={600} y={512} fill={ROLE.OBSERVE} fontSize={12.5} fontFamily={MONO}>c3 @ v12 → d3 @ v13 · same control, new reference</text>
-          <text x={600} y={534} fill={ROLE.PENDING} fontSize={11.5} fontFamily={MONO}>synthetic ids · not persistent selectors</text>
-        </g>
-        {ctxU > 0.002 && (
-          <g opacity={ctxU * pageU} transform={`translate(0 ${(1 - ctxU) * 10})`}>
-            <Card x={30} y={466} w={322} h={58} head={taskW[0] > 0.5 ? 'EXPLICIT TASK' : 'A DIFFERENT TASK · hypothetical'} body="" color={ROLE.MODEL} fill="#171335" u={1} strong={1 - Math.max(...taskW)} />
-            {TASKS.map((t, i) => <text key={i} x={43} y={507} fill={colors.TEXT} fontSize={14.5} fontWeight={600} opacity={clamp01(taskW[i] * 2 - 1)}>{t}</text>)}
-            <Card x={362} y={466} w={196} h={58} head="RECENT HISTORY" body="opened Profile menu" color={ROLE.MODEL} fill="#171335" u={1} />
-            <path d={`M558 495C574 495 570 452 ${LABEL_X - 2} 452`} fill="none" stroke={ROLE.MODEL} strokeWidth={1.6} pathLength={1} strokeDasharray={`${clamp01(ctxU * 2 - 1)} 1`} />
-          </g>
-        )}
-        <g opacity={g(scene.rankLblU)}>
-          <text x={600} y={488} fill={ROLE.MODEL} fontSize={15} fontWeight={650}>▬ bar = ranking guided by task + history</text>
-          <text x={600} y={512} fill={ROLE.PENDING} fontSize={12.5} fontFamily={MONO}>illustrative ranking scores · not probabilities</text>
-          <ProposedTag x={600} y={524} u={1} />
-        </g>
-        {contractU > 0.002 && (
-          <g opacity={contractU}>
-            <Card x={778} y={466} w={284} h={68} head="DECISION CONTRACT" body="" color={ROLE.CHECKED} fill="#062a1e" u={1} strong={Math.min(dockS, dockL)} />
-            <text x={791} y={506} fill={colors.TEXT} fontSize={12.5} fontFamily={MONO}>menu + task + history @ {ver}</text>
-            <text x={791} y={524} fill={colors.TEXT} fontSize={12.5} fontFamily={MONO}>→ one candidate id, or abstain</text>
-            <path d={`M768 500h10M1062 500h10`} stroke={ROLE.CHECKED} strokeWidth={4} />
-          </g>
-        )}
-        <g transform={`translate(${dockS * 8} 0)`}>
-          <Card x={592} y={466} w={168} h={68} head="small policy" body="ranks every tile" sub="PROPOSED" color={ROLE.MODEL} fill="#171335" u={g(scene.smallU)} strong={dockS} />
-        </g>
-        <g transform={`translate(${-dockL * 8} 0)`}>
-          <Card x={1080} y={466} w={168} h={68} head="larger model" body="constrained pick" sub="PROPOSED" color={ROLE.MODEL} fill="#171335" u={g(scene.largeU)} strong={dockL} />
-        </g>
-        {tallyU > 0.002 && (
-          <g opacity={tallyU}>
-            <Card x={596} y={466} w={312} h={66} head="COVERAGE GAP · inventory error" body="useful target never listed" color={ROLE.PENDING} fill="#1a1405" u={1} strong={drop} />
-            <Card x={930} y={466} w={312} h={66} head="RANKING MISTAKE · model error" body="listed, but ranked wrong" color={ROLE.MODEL} fill="#171335" u={1} />
-            <circle cx={1212} cy={499} r={12} fill="none" stroke={ROLE.MODEL} strokeWidth={1.4} strokeDasharray="3 3" />
-            <text x={919} y={505} textAnchor="middle" fill={colors.TEXT} fontSize={18} fontWeight={700}>≠</text>
-            <text x={919} y={556} textAnchor="middle" fill={ROLE.PENDING} fontSize={12} fontFamily={MONO}>measured separately · PROPOSED · no numbers claimed</text>
-          </g>
-        )}
-        {dropU > 0.002 && (
-          <g opacity={tallyU} transform={`translate(${lerp(colX(1.5) + CW / 2, 878, drop)} ${lerp(rowY(1) + RH / 2, 499, drop) - Math.sin(drop * Math.PI) * 24})`}>
-            <circle r={12} fill="#1a1405" stroke={ROLE.PENDING} strokeWidth={2} />
-            <text y={5} textAnchor="middle" fill={ROLE.PENDING} fontSize={15} fontWeight={800}>?</text>
-          </g>
-        )}
-        <Chip x={596} y={482} text={`✓ menu lists ${idOf(3)} @ ${ver}`} color={ROLE.OBSERVE} fill="#082f49" u={clamp01(agreeU * 3)} />
-        <Chip x={816} y={482} text={`✓ model chose id ${idOf(3)}`} color={ROLE.MODEL} fill="#1a1333" u={clamp01(agreeU * 3 - 1)} />
-        <Chip x={1026} y={482} text="? live page: recheck next" color={ROLE.PENDING} fill="#1a1405" dashed u={clamp01(agreeU * 3 - 2)} />
-      </g>
-
-      {/* ---------------- closing: opaque panel over a whispered stage ---------------- */}
-      {panelU > 0.002 && (
-        <g opacity={panelU} transform={`translate(0 ${(1 - panelU) * 10})`}>
-          <rect x={250} y={186} width={780} height={250} rx={18} fill="#0b1120" stroke={ROLE.CHECKED} strokeWidth={1.6} />
-          <text x={640} y={250} textAnchor="middle" fill={colors.TEXT} fontSize={28} fontWeight={750}>Build the menu from the living page.</text>
-          <text x={640} y={296} textAnchor="middle" fill={colors.MUTED} fontSize={17}>Joint target + action pairs, bound to one observation.</text>
-          <text x={640} y={326} textAnchor="middle" fill={colors.MUTED} fontSize={17}>Inventory coverage is measured apart from ranking.</text>
-          <ProposedTag x={640 - 171} y={366} u={1} text="PROPOSED BROWSER-ACTION ARCHITECTURE · CHARTER E7" />
+      {/* THE PAGE — persistent */}
+      <FlightPage opacity={pageU * (1 - 0.85 * pageDim)} toText={typed} sugU={sugU} found={found} nodeU={regU > 0 ? clamp01(regU * 4) : 0} hot={hotIdx >= 0 ? ROWS[hotIdx].key : null} />
+      {scanVis > 0.002 && (
+        <g opacity={scanVis}>
+          <rect x={PG.x} y={scanY - 26} width={PG.w} height={26} fill={ROLE.OBSERVE} opacity={0.1} />
+          <line x1={PG.x - 6} x2={PG.x + PG.w + 6} y1={scanY} y2={scanY} stroke={ROLE.OBSERVE} strokeWidth={2.4} />
+          <Txt x={PG.x + PG.w} y={PG.y - 6} text="snapshot.js · one Runtime.evaluate" size={13} color={ROLE.OBSERVE} mono anchor="end" />
         </g>
       )}
+      {sugU > 0.002 && <rect x={PG.x + CTRL.sug.x - 4} y={PG.y + CTRL.sug.y - 4} width={CTRL.sug.w + 8} height={CTRL.sug.h + 8} rx={10} fill="none" stroke={ROLE.OBSERVE} strokeWidth={1.8} opacity={scanVis > 0 || rebuildU > 0 ? clamp01((scanY - (PG.y + CTRL.sug.y + 19)) / 18) : 0} />}
+      <Chip x={CHIP.x} y={452} text="text: visible words · ≤ 6000 chars" color={ROLE.OBSERVE} u={s.get(scene.textU)} size={13} />
+      <Chip x={CHIP.x} y={140} text="screenshot=False · optional" color={colors.MUTED} dashed u={s.get(scene.shotU)} size={13} />
+      <Chip x={PG.x} y={498} text={'act: TYPE_TEXT → To = "London"'} color={ROLE.MODEL} fill="#1e1b4b" size={14} u={clamp01(actU * 4)} />
+
+      {/* executor-side registry of real nodes */}
+      {regVis > 0.002 && (
+        <g opacity={regVis}>
+          <rect x={REG.x} y={REG.y} width={REG.w} height={REG.h} rx={12} fill="#0d0b24" stroke={ROLE.MODEL} strokeWidth={1.3} strokeDasharray="6 4" />
+          <Txt x={REG.x + 14} y={REG.y + 19} text="executor keeps · window.__jevFast.nodes" size={13} color={ROLE.MODEL} mono />
+          {ROWS.map((r, i) => {
+            const u = ease.move(clamp01(regU * 2.2 - i * 0.4));
+            const c = world(CTRL[r.key]);
+            const x = lerp(c.x + c.w - 30, REG.x + 18 + i * 100, u);
+            const y = lerp(c.y - 12, REG.y + 27, u);
+            return (
+              <g key={r.key} opacity={clamp01(regU * 6 - i)}>
+                <g transform={`translate(${x} ${y})`}>
+                  <rect width={34} height={20} rx={10} fill="#1e1b4b" stroke={ROLE.MODEL} strokeWidth={1.2} />
+                  <Txt x={17} y={14.5} text={`n${i + 1}`} size={12} color={ROLE.MODEL} mono anchor="middle" weight={700} />
+                </g>
+                <Txt x={REG.x + 18 + i * 100} y={REG.y + 59} text={`→ ${r.tag}`} size={12.5} color={colors.TEXT} mono u={clamp01(u * 3 - 2)} />
+              </g>
+            );
+          })}
+        </g>
+      )}
+
+      <Txt x={TB.x} y={TB.y - 12} text="illustrative values · not a captured run" size={12.5} mono color={colors.MUTED} u={clamp01(rowsU)} />
+
+      {/* THE TABLE — observation chips morph into rows */}
+      {rowsU > 0.002 && (
+        <g opacity={clamp01(rowsU)}>
+          <rect x={TB.x} y={TB.y} width={TB.w} height={TB.head - 6} rx={8} fill="#111a2e" />
+          <Txt x={COL.idx} y={TB.y + 20} text="#" size={13} color={colors.MUTED} mono />
+          <Txt x={COL.label} y={TB.y + 20} text="element" size={13} color={colors.MUTED} mono />
+          <Txt x={COL.value} y={TB.y + 20} text="value" size={13} color={valU > 0.5 ? colors.WARM : colors.MUTED} mono />
+          <Txt x={COL.ops} y={TB.y + 20} text="operations" size={13} color={colors.MUTED} mono u={clamp01(groupU * 4)} />
+          <Txt x={TB.x + TB.w - 12} y={TB.y + 20} text="model.py · action_space" size={12} color={colors.MUTED} mono anchor="end" />
+        </g>
+      )}
+      {ROWS.map((r, i) => {
+        const c = world(CTRL[r.key]);
+        const seen = found(c.y + c.h / 2);
+        if (seen <= 0.002) return null;
+        const u = ease.move(clamp01(rowsU - i));
+        const x = lerp(CHIP.x, TB.x, u);
+        const y = lerp(r.chipY - CHIP.h / 2, rowY(slotOf(i)), u);
+        const w = lerp(CHIP.w, TB.w, u);
+        const h = lerp(CHIP.h, TB.row - 8, u);
+        const numbered = clamp01(idxU - i);
+        const lit = 1 - 0.85 * dimRows * (1 - numbered);
+        const opLit = 1 - 0.85 * opVis * (1 - clamp01(rowCompat(r.ops)));
+        const index = i >= 2 && rebuildU > 0.5 ? i + 2 : i + 1;
+        const value = i === 1 && actU >= 1 && rebuildU > 0.3 ? 'London' : r.value;
+        const side = 1 - 0.85 * valU;
+        return (
+          <g key={r.key} opacity={seen * lit * opLit}>
+            <rect x={x} y={y} width={w} height={h} rx={9} fill="#0b1324" stroke={hotIdx === i ? colors.WARM : ROLE.OBSERVE} strokeWidth={hotIdx === i ? 2.6 : 1.3} strokeOpacity={side} />
+            <Txt x={x + 12} y={y + 21} text={`${r.role} · "${r.label}" · "${r.value}"`} size={13} mono u={1 - clamp01(u * 2.5)} />
+            <g opacity={clamp01(u * 2.5 - 1.5)}>
+              <Txt x={COL.idx} y={y + 29} text={numbered > 0.3 ? `[${index}]` : '·'} size={18} mono weight={800} color={numbered > 0.3 ? colors.WARM : colors.MUTED} u={side} />
+              <Txt x={COL.label} y={y + 22} text={r.label} size={17} weight={700} u={side} />
+              <Txt x={COL.label} y={y + 39} text={r.role} size={12} color={colors.MUTED} mono u={side} />
+              <Txt x={COL.value} y={y + 29} text={`"${value}"`} size={16} mono color={valU > 0.5 ? colors.WARM : colors.TEXT} weight={valU > 0.5 ? 800 : 500} />
+            </g>
+            {hotIdx === i && <line x1={c.x + c.w + 6} y1={c.y + c.h / 2} x2={TB.x - 2} y2={y + h / 2} stroke={colors.WARM} strokeWidth={1.8} strokeDasharray="5 4" />}
+          </g>
+        );
+      })}
+      {/* the row that exists only after the suggestion appears */}
+      {rebuildU > 0.002 && (
+        <g opacity={clamp01(rebuildU * 2 - 1)}>
+          <rect x={TB.x} y={rowY(2)} width={TB.w} height={TB.row - 8} rx={9} fill="#062a1e" stroke={ROLE.CHECKED} strokeWidth={2} />
+          <Txt x={COL.idx} y={rowY(2) + 29} text="[3]" size={18} mono weight={800} color={ROLE.CHECKED} />
+          <Txt x={COL.label} y={rowY(2) + 22} text="London, United…" size={17} weight={700} />
+          <Txt x={COL.label} y={rowY(2) + 39} text="option · new" size={12} color={ROLE.CHECKED} mono />
+          <Txt x={COL.value} y={rowY(2) + 29} text={'""'} size={16} mono />
+          <g transform={`translate(${COL.ops} ${rowY(2) + 7})`}>
+            <rect width={TILE.w} height={TILE.h} rx={7} fill="#0b1324" stroke={OP_COLOR.CLICK} strokeWidth={1.4} />
+            <Txt x={TILE.w / 2} y={21} text="CLICK" size={12.5} mono anchor="middle" color={OP_COLOR.CLICK} weight={700} />
+          </g>
+        </g>
+      )}
+      <Txt x={TB.x + TB.w} y={TB.y - 12} text="indices describe this observation only" size={14} color={colors.WARM} anchor="end" weight={650} u={s.get(scene.onceU)} />
+      <Txt x={TB.x + TB.w} y={TB.y - 12} text="current values travel with each element" size={14} color={colors.WARM} anchor="end" weight={650} u={valU} />
+
+      {/* beat 5 — observed actions fold into their element's row */}
+      {tilesU > 0.002 &&
+        TILES.map((t, i) => {
+          const u = t.row < 0 ? 0 : ease.move(clamp01(groupU * 5 - t.row - (t.slot ? 0.5 : 0)));
+          const x = lerp(TB.x + i * TILE.pitch, COL.ops + t.slot * (TILE.w + 8), u);
+          const y = lerp(TILE.y, t.row < 0 ? TILE.y : rowY(slotOf(t.row)) + 7, u);
+          const color = t.op ? OP_COLOR[t.op] : colors.MUTED;
+          const focus = 1 - 0.85 * opVis * (1 - opWeight(t.op));
+          const rowLit = t.row < 0 ? stripU : 1;
+          return (
+            <g key={t.id} transform={`translate(${x} ${y})`} opacity={clamp01(tilesU * 4 - i * 0.3) * focus * rowLit * (1 - 0.85 * valU)}>
+              <rect width={TILE.w} height={TILE.h} rx={7} fill="#0b1324" stroke={color} strokeWidth={1.4} strokeDasharray={t.op ? undefined : '4 3'} />
+              <Txt x={TILE.w / 2} y={21} text={u > 0.5 && t.op ? t.op : `${t.id} ${t.kind}`.trim()} size={12.5} mono anchor="middle" color={color} weight={700} />
+            </g>
+          );
+        })}
+      <Txt x={TB.x} y={TILE.y + 62} text="7 observed actions + wait  →  4 elements · one index per node" size={15} weight={650} u={clamp01(groupU * 5 - 4) * stripU} />
+
+      {/* beat 6 — one target question per operation */}
+      {opVis > 0.002 && (
+        <g opacity={opVis}>
+          {TABS.map((tab, i) => {
+            const w = tri(opU, i + 1);
+            return (
+              <g key={tab.op} transform={`translate(${tab.x} ${TILE.y})`} opacity={0.15 + 0.85 * w}>
+                <rect width={168} height={40} rx={9} fill="#0b1324" stroke={OP_COLOR[tab.op]} strokeWidth={1.4 + 1.6 * w} />
+                <Txt x={84} y={26} text={tab.op} size={15} mono anchor="middle" color={OP_COLOR[tab.op]} weight={800} />
+                <Txt x={84} y={62} text={tab.key} size={13} mono anchor="middle" color={colors.TEXT} />
+              </g>
+            );
+          })}
+          <Txt x={TB.x + TB.w} y={TILE.y + 18} text="WAIT · DONE · BLOCKED" size={13} mono anchor="end" color={colors.MUTED} />
+          <Txt x={TB.x + TB.w} y={TILE.y + 38} text="need no target" size={13} anchor="end" color={colors.MUTED} />
+        </g>
+      )}
+      {PAIRS.map((p) => (
+        <g key={p.text} transform={`translate(${p.x} ${rowY(slotOf(2)) + 7})`} opacity={pairsU * (1 - 0.85 * valU)}>
+          <rect width={p.w} height={TILE.h} rx={7} fill="#1a1405" stroke={ROLE.PENDING} strokeWidth={1.3} />
+          <Txt x={p.w / 2} y={21} text={p.text} size={12} mono anchor="middle" color={ROLE.PENDING} />
+        </g>
+      ))}
+
+      {/* beat 7 — the request body */}
+      {reqU > 0.002 && (
+        <g opacity={reqU}>
+          <rect x={REQ.x} y={REQ.y} width={REQ.w} height={REQ.h} rx={12} fill="#0d1321" stroke="#2a3754" strokeWidth={1.4} />
+          <Txt x={REQ.x + 16} y={REQ.y + 24} text="request body · model.py choose()" size={13} color={colors.MUTED} mono />
+          <rect x={536} y={476} width={440} height={80} rx={9} fill="none" stroke={ROLE.OBSERVE} strokeWidth={1.1} opacity={0.6} />
+          <Txt x={548} y={496} text="state" size={13} color={ROLE.OBSERVE} mono weight={700} />
+          <rect x={988} y={476} width={236} height={80} rx={9} fill="none" stroke={ROLE.PENDING} strokeWidth={1.1} opacity={0.6} />
+          <Txt x={1000} y={496} text="questions[*].instructions" size={13} color={ROLE.PENDING} mono weight={700} />
+          <Txt x={1116} y={533} text="+ rules" size={13} color={colors.MUTED} mono />
+          {REQ_SLOTS.map((q, i) => {
+            const u = ease.move(clamp01(reqFill - i));
+            return <Chip key={q.text} x={lerp(q.from.x, q.to.x, u)} y={lerp(q.from.y, q.to.y, u)} text={q.text} color={q.color} size={12.5} u={clamp01((reqFill - i) * 5)} />;
+          })}
+          <Txt x={548} y={550} text="[] on the first step · last 10 later" size={11.5} color={colors.MUTED} mono u={clamp01(reqFill - 2.6)} />
+        </g>
+      )}
+
+      {/* beat 8 — the closing note */}
+      <Chip x={TB.x} y={444} text="[3] is now the London suggestion — it became a target only once observed" color={ROLE.CHECKED} fill="#062a1e" size={14} u={s.get(scene.noteU)} />
     </Camera>
+      {/* goal + honesty label — fixed stage coordinates, outside the camera, so a focus move never clips them */}
+      <Chip x={40} y={30} text="goal: find a one-way flight from Zurich to London" color={ROLE.PENDING} fill="#1a1405" size={15} u={s.get(scene.goalU)} />
+      <Txt x={40} y={78} text="illustrative page and values · not a captured run" size={13} color={colors.MUTED} mono u={s.get(scene.goalU)} />
+    </>
   );
 }
 

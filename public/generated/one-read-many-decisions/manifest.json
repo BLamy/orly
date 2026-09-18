@@ -63,7 +63,7 @@
     {
       "number": 4,
       "title": "The difficult cases reveal the contract",
-      "blurb": "Multi-token choices, branch isolation, honest scoring, and measured work are essential to a faithful implementation.",
+      "blurb": "Shared token prefixes require continuation and explicit scoring; normalized rankings are not calibrated confidence.",
       "scene": "books/one-read-many-decisions/chapter-4",
       "audio": "audio/chapter-4.mp3",
       "cues": [
@@ -71,13 +71,9 @@
         7.953,
         16.777,
         26.518,
-        36.77,
-        45.965,
-        54.603,
-        64.924,
-        73.516
+        36.77
       ],
-      "duration": 84.104
+      "duration": 45.9
     }
   ]
 }
