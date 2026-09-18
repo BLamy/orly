@@ -1,0 +1,26 @@
+[
+  {
+    "chapter": 1,
+    "recording": "audio/chapter-1.mp3",
+    "duration": 69.984943,
+    "captions": 8,
+    "forwardReverseCueChecks": "passed",
+    "audioClockPlayback": "passed"
+  },
+  {
+    "chapter": 2,
+    "recording": "audio/chapter-2.mp3",
+    "duration": 75.836372,
+    "captions": 8,
+    "forwardReverseCueChecks": "passed",
+    "audioClockPlayback": "passed"
+  },
+  {
+    "chapter": 3,
+    "recording": "audio/chapter-3.mp3",
+    "duration": 66.64127,
+    "captions": 8,
+    "forwardReverseCueChecks": "passed",
+    "audioClockPlayback": "passed"
+  }
+]

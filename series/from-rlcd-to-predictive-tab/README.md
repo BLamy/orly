@@ -1,5 +1,20 @@
 # From RLCD to Predictive Tab
 
+## Narration update - September 18, 2026
+
+Books 1-3 now contain ten ElevenLabs recordings using the existing narrator
+`Fahco4VZzobUeiPqni1S` and `eleven_multilingual_v2`. Their manifests use the
+returned character-alignment cues, and their 20 blog sections use those final
+recording times. The scene captions match the canonical `series-script.json`
+exactly. Per-book playback results are in `evidence/<slug>/narration-check.json`.
+
+The full package verifier has a pre-existing `series-script.md` hash mismatch;
+the canonical JSON, plan, and visualization brief still match their recorded
+hashes. Narration was built through `generator/video.mjs` after independently
+checking exact scene-caption equality. The original provenance hashes remain
+unchanged. Books 4-6 still require scenes and narration; no production release
+is included. Earlier configuration and narration status below is historical.
+
 The original narration package is preserved in this directory: six books, 19 chapters, 153 captions, 3,707 spoken words. The script is the fixed narration contract. The plan controls series order and cover identity. The visualization brief controls source framing and authorship.
 
 Private source snapshots remain in the author's local, gitignored `source-snapshot/` directory and are not included in this public repository. `provenance.json` retains their hashes. The `--sources` check and source-grounded reauthoring require those authorized local snapshots; normal application builds and scene-caption verification do not.

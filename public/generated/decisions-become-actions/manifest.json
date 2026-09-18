@@ -1,0 +1,64 @@
+{
+  "format": 3,
+  "slug": "decisions-become-actions",
+  "title": "Decisions Become Actions",
+  "subtitle": "Turning a model choice into a checked browser move",
+  "animal": "animal.webp",
+  "accent": "#34d399",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Build the menu from the living page",
+      "blurb": "Choose legal target/action pairs from a versioned observation; the candidate inventory is itself a source of error.",
+      "scene": "books/decisions-become-actions/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.429,
+        18.007,
+        26.436,
+        36.293,
+        44.559,
+        53.359,
+        61.533
+      ],
+      "duration": 69.985
+    },
+    {
+      "number": 2,
+      "title": "A choice is not yet a selector",
+      "blurb": "Generate a locator from a verified live target and revalidate just before execution.",
+      "scene": "books/decisions-become-actions/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        9.915,
+        18.808,
+        29.443,
+        38.476,
+        47.868,
+        56.877,
+        66.548
+      ],
+      "duration": 75.836
+    },
+    {
+      "number": 3,
+      "title": "Values, intent, and execution boundaries",
+      "blurb": "Bounded action selection does not supply arbitrary text, future page state, or authority to act.",
+      "scene": "books/decisions-become-actions/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        7.5,
+        16.3,
+        24.369,
+        33.553,
+        43.073,
+        51.56,
+        59.919
+      ],
+      "duration": 66.641
+    }
+  ]
+}

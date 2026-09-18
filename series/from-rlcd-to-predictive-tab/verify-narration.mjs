@@ -39,16 +39,18 @@ try {
     const pause=player.getByRole('button',{name:'Pause',exact:true});
     if(await pause.count())await pause.click();
     const seek=player.getByRole('slider',{name:'Seek',exact:true});
+    const seekStep=Number(await seek.getAttribute('step'));
+    const seekValue=t=>String(Number((Math.round(t/seekStep)*seekStep).toFixed(3)));
     // Check every caption after its fade-in and repeat in reverse to catch stale state.
     for(const i of [...chapter.cues.keys(),...Array.from(chapter.cues.keys()).reverse()]){
       const next=chapter.cues[i+1]??chapter.duration;
       const t=chapter.cues[i]+Math.min(.8,(next-chapter.cues[i])/3);
-      await seek.fill(String(Number(t.toFixed(2))));
+      await seek.fill(seekValue(t));
       await page.waitForTimeout(150);
       assert.ok(Math.abs(await audio.evaluate(a=>a.currentTime)-t)<.15,'Seek and audio clocks diverged');
       assert.equal((await player.locator('.captions-pill').innerText()).trim(),scene.captions[i].text.trim(),`Caption ${i+1} not aligned in chapter ${chapter.number}`);
     }
-    await seek.fill(String(Number((chapter.duration*.5).toFixed(2))));
+    await seek.fill(seekValue(chapter.duration*.5));
     const before=await audio.evaluate(a=>a.currentTime);
     await player.getByRole('button',{name:'Play',exact:true}).click();
     await page.waitForTimeout(1200);

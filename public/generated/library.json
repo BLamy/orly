@@ -35,6 +35,101 @@
       "createdAt": "2026-09-18T17:37:41.373Z"
     },
     {
+      "slug": "decisions-become-actions",
+      "title": "Decisions Become Actions",
+      "subtitle": "Turning a model choice into a checked browser move",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#34d399",
+      "animal": "generated/decisions-become-actions/animal.webp",
+      "href": "?bundle=decisions-become-actions",
+      "series": "From RLCD to Predictive Tab",
+      "seriesOrder": 3,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Build the menu from the living page",
+          "duration": 69.985
+        },
+        {
+          "number": 2,
+          "title": "A choice is not yet a selector",
+          "duration": 75.836
+        },
+        {
+          "number": 3,
+          "title": "Values, intent, and execution boundaries",
+          "duration": 66.641
+        }
+      ],
+      "createdAt": "2026-09-18T17:26:58.131Z"
+    },
+    {
+      "slug": "one-read-many-decisions",
+      "title": "One Read, Many Decisions",
+      "subtitle": "Inside Qwen-RLCD generation",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#a78bfa",
+      "animal": "generated/one-read-many-decisions/animal.webp",
+      "href": "?bundle=one-read-many-decisions",
+      "series": "From RLCD to Predictive Tab",
+      "seriesOrder": 2,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Why writing an answer takes steps",
+          "duration": 69.938
+        },
+        {
+          "number": 2,
+          "title": "Read the shared context once",
+          "duration": 65.435
+        },
+        {
+          "number": 3,
+          "title": "Ask together, assemble in code",
+          "duration": 67.199
+        },
+        {
+          "number": 4,
+          "title": "The difficult cases reveal the contract",
+          "duration": 84.104
+        }
+      ],
+      "createdAt": "2026-09-18T17:26:07.168Z"
+    },
+    {
+      "slug": "next-useful-action",
+      "title": "The Next Useful Action",
+      "subtitle": "A product vision for a browser that keeps up",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#38bdf8",
+      "animal": "generated/next-useful-action/animal.webp",
+      "href": "?bundle=next-useful-action",
+      "series": "From RLCD to Predictive Tab",
+      "seriesOrder": 1,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The pause between intention and action",
+          "duration": 68.266
+        },
+        {
+          "number": 2,
+          "title": "A small decision inside a large world",
+          "duration": 70.682
+        },
+        {
+          "number": 3,
+          "title": "Two experiences, one foundation",
+          "duration": 70.172
+        }
+      ],
+      "createdAt": "2026-09-18T17:24:46.167Z"
+    },
+    {
       "slug": "composecl-memory",
       "title": "The Three Anchors",
       "subtitle": "How complementary continual-learning mechanisms preserve memory",
@@ -67,71 +162,6 @@
         }
       ],
       "createdAt": "2026-09-17T16:37:46.626Z"
-    },
-    {
-      "slug": "one-read-many-decisions",
-      "title": "One Read, Many Decisions",
-      "subtitle": "Inside Qwen-RLCD generation",
-      "author": "Brett Lamy",
-      "role": "Software Engineer at Replay",
-      "color": "#a78bfa",
-      "animal": "generated/one-read-many-decisions/animal.webp",
-      "href": "?bundle=one-read-many-decisions",
-      "series": "From RLCD to Predictive Tab",
-      "seriesOrder": 2,
-      "chapters": [
-        {
-          "number": 1,
-          "title": "Why writing an answer takes steps",
-          "duration": 91.8
-        },
-        {
-          "number": 2,
-          "title": "Read the shared context once",
-          "duration": 92.2
-        },
-        {
-          "number": 3,
-          "title": "Ask together, assemble in code",
-          "duration": 88.6
-        },
-        {
-          "number": 4,
-          "title": "The difficult cases reveal the contract",
-          "duration": 105.4
-        }
-      ],
-      "createdAt": "2026-09-17T04:01:07.217Z"
-    },
-    {
-      "slug": "next-useful-action",
-      "title": "The Next Useful Action",
-      "subtitle": "A product vision for a browser that keeps up",
-      "author": "Brett Lamy",
-      "role": "Software Engineer at Replay",
-      "color": "#38bdf8",
-      "animal": "generated/next-useful-action/animal.webp",
-      "href": "?bundle=next-useful-action",
-      "series": "From RLCD to Predictive Tab",
-      "seriesOrder": 1,
-      "chapters": [
-        {
-          "number": 1,
-          "title": "The pause between intention and action",
-          "duration": 90.2
-        },
-        {
-          "number": 2,
-          "title": "A small decision inside a large world",
-          "duration": 92.6
-        },
-        {
-          "number": 3,
-          "title": "Two experiences, one foundation",
-          "duration": 89
-        }
-      ],
-      "createdAt": "2026-09-17T03:27:58.787Z"
     },
     {
       "slug": "ncp-archpreview",

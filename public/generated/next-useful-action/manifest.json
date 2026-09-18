@@ -11,51 +11,54 @@
       "title": "The pause between intention and action",
       "blurb": "The opportunity is to shorten the distance from intention to a useful, verified action.",
       "scene": "books/next-useful-action/chapter-1",
+      "audio": "audio/chapter-1.mp3",
       "cues": [
-        0.4,
-        11.2,
-        21.6,
-        33.6,
-        45.2,
-        55.6,
-        66.8,
-        77.6
+        0,
+        7.001,
+        16.23,
+        24.833,
+        33.727,
+        43.676,
+        51.49,
+        58.85
       ],
-      "duration": 90.2
+      "duration": 68.266
     },
     {
       "number": 2,
       "title": "A small decision inside a large world",
       "blurb": "Constrain the decision space without confusing a valid answer with a correct answer.",
       "scene": "books/next-useful-action/chapter-2",
+      "audio": "audio/chapter-2.mp3",
       "cues": [
-        0.4,
-        11.6,
-        22.8,
-        34.8,
-        46.4,
-        57.6,
-        68.8,
-        80.4
+        0,
+        8.858,
+        16.951,
+        25.681,
+        36.258,
+        46.057,
+        55.496,
+        63.89
       ],
-      "duration": 92.6
+      "duration": 70.682
     },
     {
       "number": 3,
       "title": "Two experiences, one foundation",
       "blurb": "Predicting a person’s next target and executing a stated task share infrastructure but have different objectives.",
       "scene": "books/next-useful-action/chapter-3",
+      "audio": "audio/chapter-3.mp3",
       "cues": [
-        0.4,
-        11.6,
-        23.6,
-        34.4,
-        44,
-        55.6,
-        66.8,
-        78
+        0,
+        8.022,
+        16.394,
+        25.368,
+        34.076,
+        44.688,
+        54.428,
+        64.854
       ],
-      "duration": 89
+      "duration": 70.172
     }
   ]
 }

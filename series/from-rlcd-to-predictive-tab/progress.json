@@ -1,6 +1,6 @@
 {
   "series": "From RLCD to Predictive Tab",
-  "status": "Work preserved; awaiting ElevenLabs configuration and required Fable session reset",
+  "status": "Books 1-3 narrated with ElevenLabs and synchronization verified; books 4-6 await scene authoring",
   "counts": {
     "books": 6,
     "chapters": 19,
@@ -17,9 +17,9 @@
     "resetAt": "2026-09-17T20:30:00Z"
   },
   "services": {
-    "elevenLabsConfigured": false,
+    "elevenLabsConfigured": true,
     "nounProjectConfigured": false,
-    "elevenLabsChecked": "worktree environment and main checkout; unconfigured",
+    "elevenLabsChecked": "September 18: ten recordings generated successfully in PR 152 worktree",
     "narrationRequirement": "User requires ElevenLabs audio and verified caption/animation synchronization before publication; credentials requested without disclosure"
   },
   "dependencies": {
@@ -36,7 +36,7 @@
       "fableAuthoring": "complete; primary plus two Fable layout patches",
       "visualReview": "passed: all cue frames plus opening/middle/ending reviewed",
       "cover": "built-in ImageGen kingfisher visually inspected; prepared PNG and 512px WebP",
-      "narration": "ElevenLabs required; awaiting configured API key",
+      "narration": "Three ElevenLabs recordings; all 24 caption cues and audio-clock playback verified",
       "bookBuild": "passed",
       "blog": "six non-overlapping semantic live sections validated",
       "verification": "24/24 captions exact; typecheck/build/verify-book passed; deterministic forward/backward seeks in all three book and Storybook players"
@@ -50,7 +50,7 @@
       "fableAuthoring": "complete; original Fable scenes plus confirmed Fable correction and subsequent Fable review",
       "visualReview": "passed: Fable reviewed both existing corrections; parent inspected corrected rendered frames and reran deterministic seeks",
       "cover": "built-in ImageGen octopus; visually inspected; PNG and 512px WebP prepared",
-      "narration": "ElevenLabs required; awaiting configured API key",
+      "narration": "Four ElevenLabs recordings; all 33 caption cues and audio-clock playback verified",
       "bookBuild": "passed",
       "blog": "eight non-overlapping semantic live sections validated; standalone render passed",
       "verification": "33/33 exact captions; typecheck/build/native playback, all four deterministic book/Storybook seeks, standalone blog and corrected-frame review passed",
@@ -65,10 +65,10 @@
       "fableAuthoring": "All three scene modules authored by Fable 5.1; provider limit interrupted chapter 2/3 final responses",
       "visualReview": "Draft cue frames and endings inspected; all three Storybook scenes render and seek deterministically",
       "cover": "built-in ImageGen; visually inspected PNG and 512px WebP prepared",
-      "narration": "ElevenLabs required; awaiting configured API key",
-      "bookBuild": "pending ElevenLabs configuration",
-      "blog": "Six semantic sections authored; final manifest-clock windows await recorded narration",
-      "verification": "24/24 captions exact; typecheck and production build pass; all Storybook draft renders have no page errors. Recorded playback and retimed visual checks pending.",
+      "narration": "Three ElevenLabs recordings; all 24 caption cues and audio-clock playback verified",
+      "bookBuild": "Recorded manifest generated",
+      "blog": "Six semantic sections validated against recorded narration cues",
+      "verification": "24/24 captions exact; recorded audio-clock playback and all caption seeks in both directions pass",
       "integration": "Parent added only the standard chapter 2 Player story wrapper after provider limit"
     },
     {
@@ -115,7 +115,7 @@
     }
   ],
   "branch": "codex/from-rlcd-to-predictive-tab",
-  "blocker": "ELEVENLABS_API_KEY remains unconfigured as of September 18. Required recorded narration and synchronized playback cannot be verified. Prior Fable quota reset has elapsed; access has not been re-probed in this wake-up.",
+  "blocker": "Books 4-6 still require scenes and narration. Full package verification has a pre-existing series-script.md hash mismatch; canonical JSON and exact captions for books 1-3 were independently verified.",
   "scheduledContinuation": {
     "scheduledFor": "2026-09-17T07:50:00Z",
     "sourceContractCheck": "passed",
@@ -133,7 +133,7 @@
     "ciStatus": "Existing GitHub deployment token rejected; local OAuth verified",
     "audioGate": "All 19 chapters require recorded ElevenLabs audio, exact alignment cues, and verified synchronized playback before release",
     "status": "Not published; no merge or deployment attempted. Audio and remaining-book gates unresolved.",
-    "audioVerification": "verify-narration.mjs validates recording duration, every caption in both seek directions, and live audio-clock advancement; syntax checked, awaiting recordings",
+    "audioVerification": "Books 1-3: ten recordings and 81 captions passed duration, forward/reverse caption seeks, and live audio-clock advancement checks",
     "audioGateTest": "Build of book 1 correctly refused missing ElevenLabs configuration before writing release assets"
   }
 }

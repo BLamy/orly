@@ -11,69 +11,73 @@
       "title": "Why writing an answer takes steps",
       "blurb": "Autoregressive generation repeatedly extends output; structured formatting alone does not remove those steps.",
       "scene": "books/one-read-many-decisions/chapter-1",
+      "audio": "audio/chapter-1.mp3",
       "cues": [
-        0.4,
-        11.6,
-        23.6,
-        34.4,
-        45.2,
-        56.4,
-        67.2,
-        78.8
+        0,
+        7.465,
+        17.299,
+        25.147,
+        34.145,
+        44.791,
+        52.186,
+        61.092
       ],
-      "duration": 91.8
+      "duration": 69.938
     },
     {
       "number": 2,
       "title": "Read the shared context once",
       "blurb": "A single logical prefill produces reusable context state; reuse has real compute and memory costs.",
       "scene": "books/one-read-many-decisions/chapter-2",
+      "audio": "audio/chapter-2.mp3",
       "cues": [
-        0.4,
-        10.4,
-        23.2,
-        35.6,
-        45.2,
-        57.2,
-        68.8,
-        80.4
+        0,
+        7.709,
+        16.66,
+        24.81,
+        31.695,
+        42.11,
+        50.26,
+        57.911
       ],
-      "duration": 92.2
+      "duration": 65.435
     },
     {
       "number": 3,
       "title": "Ask together, assemble in code",
       "blurb": "Batch independent field suffixes, score permitted choices, and construct the result without generating JSON syntax.",
       "scene": "books/one-read-many-decisions/chapter-3",
+      "audio": "audio/chapter-3.mp3",
       "cues": [
-        0.4,
-        12,
-        22.4,
-        33.2,
-        44,
-        54.8,
-        66.4,
-        76.4
+        0,
+        8.591,
+        16.997,
+        25.74,
+        32.996,
+        43.131,
+        52.826,
+        59.269
       ],
-      "duration": 88.6
+      "duration": 67.199
     },
     {
       "number": 4,
       "title": "The difficult cases reveal the contract",
       "blurb": "Multi-token choices, branch isolation, honest scoring, and measured work are essential to a faithful implementation.",
       "scene": "books/one-read-many-decisions/chapter-4",
+      "audio": "audio/chapter-4.mp3",
       "cues": [
-        0.4,
-        11.6,
-        24.4,
-        35.6,
-        47.6,
-        60,
-        70.4,
-        81.2,
-        92.8
+        0,
+        7.953,
+        16.777,
+        26.518,
+        36.77,
+        45.965,
+        54.603,
+        64.924,
+        73.516
       ],
-      "duration": 105.4
+      "duration": 84.104
     }
   ]
 }
