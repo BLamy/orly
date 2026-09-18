@@ -115,15 +115,17 @@
     }
   ],
   "branch": "codex/from-rlcd-to-predictive-tab",
-  "blocker": "ELEVENLABS_API_KEY is not configured. Required Fable 5.1 session limit resets September 17 at 4:30 p.m. America/New_York; books 4–6 still require that author.",
+  "blocker": "ELEVENLABS_API_KEY remains unconfigured as of September 18. Required recorded narration and synchronized playback cannot be verified. Prior Fable quota reset has elapsed; access has not been re-probed in this wake-up.",
   "scheduledContinuation": {
     "scheduledFor": "2026-09-17T07:50:00Z",
     "sourceContractCheck": "passed",
     "fableLaunched": false,
     "publicationAttempted": false,
     "blocker": "Automatic approval review rejected transmitting the private scene/source payload to Anthropic, including a second review supplied with the scheduled explicit authorization and persisted consent evidence. Requires renewed user confirmation; no workaround attempted.",
-    "resume": "First apply book-2-review.md corrections with required Fable 5.1, verify book 2, then finish books 3–6 sequentially. Preserve all 153 captions. Publish only after all six pass.",
-    "assignment": ".orly-work/book-2-resume.md"
+    "resume": "Configure ElevenLabs locally, build and verify recorded narration for books 1\u20133, then author and fully verify books 4\u20136 sequentially with required Fable 5.1. Publish only after all release gates pass.",
+    "assignment": ".orly-work/book-2-resume.md",
+    "lastChecked": "2026-09-18T07:50:05Z",
+    "currentStatus": "Book 2 completed in subsequent work; book 3 authored and draft-verified. ElevenLabs key still absent; recorded playback gate blocks sequential continuation and publication."
   },
   "publication": {
     "authorization": "User requested completion and publication on 2026-09-17",
