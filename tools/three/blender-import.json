@@ -1,0 +1,22 @@
+[
+  {
+    "model": "alex-net",
+    "meshObjects": 4894,
+    "vertices": 129492
+  },
+  {
+    "model": "convolution",
+    "meshObjects": 186,
+    "vertices": 4464
+  },
+  {
+    "model": "neural-network",
+    "meshObjects": 18,
+    "vertices": 1417
+  },
+  {
+    "model": "math-primitives",
+    "meshObjects": 14,
+    "vertices": 3465
+  }
+]

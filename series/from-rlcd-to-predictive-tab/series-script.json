@@ -1,0 +1,681 @@
+{
+  "schema_version": 1,
+  "series": "From RLCD to Predictive Tab",
+  "author": "Codex, authored in the originating conversation at the user’s request",
+  "authorship": "All spoken captions were written by the parent assistant. Fable 5.1 is assigned visualization, not script generation.",
+  "source": "/Users/blamy/Documents/Codex/2026-09-16/can-you-get-this-running-on",
+  "requested_visualization_model": "claude-fable-5-1",
+  "narrative_date": "2026-09-16",
+  "audience": "Product-minded builders learning model training; no transformer expertise assumed.",
+  "framing": "Product vision grounded in the project charter. Current implementation, intended mechanisms, and proposed product behavior are distinguished explicitly.",
+  "sources": {
+    "charter": {
+      "path": "/Users/blamy/Documents/Codex/2026-09-16/can-you-get-this-running-on/PROJECT_CHARTER.md",
+      "meaning": "Authoritative intended scope and correctness/evaluation gates; not implementation proof.",
+      "sha256": "5d54a32fc51d47288f2e072c0f8dc3fa24a013a82938d1e58923577ac7b65871"
+    },
+    "native-engine": {
+      "path": "/Users/blamy/Documents/Codex/2026-09-16/can-you-get-this-running-on/qwen-rlcd/core/engine_mlx.py",
+      "meaning": "Imported native MLX reference with known defects and overstated telemetry; verify against the charter.",
+      "sha256": "9429d1f3df66133c5b6675c8295680a6302c366f364a2f2e9e6365157df993b2"
+    },
+    "schema": {
+      "path": "/Users/blamy/Documents/Codex/2026-09-16/can-you-get-this-running-on/qwen-rlcd/core/schema.py",
+      "meaning": "Schema/token compilation reference; comments about calibrated confidence and microseconds are not evidence.",
+      "sha256": "5fdfa2ffe4fd83c64e98331802d4a0f0858aa85197380cfc1ff6a39100f73232"
+    },
+    "prompt-builder": {
+      "path": "/Users/blamy/Documents/Codex/2026-09-16/can-you-get-this-running-on/qwen-rlcd/core/prompt_builder.py",
+      "meaning": "Current shared and ordinary-generation prompt construction.",
+      "sha256": "84d8d7dc88d64212df22dfe7a269b0d28b1fa4d1aa36ca740ef18a70419e6aac"
+    },
+    "browser-app": {
+      "path": "/Users/blamy/Documents/Codex/2026-09-16/can-you-get-this-running-on/qwen-rlcd/browser/app.js",
+      "meaning": "Current ordinary WebLLM structured-output prototype; not faithful browser RLCD.",
+      "sha256": "85ea1e04aedd66f19fc4c0ec937ab1ef7611756da94d672b9644cdb8b1a8cb47"
+    },
+    "scope-decision": {
+      "path": "/Users/blamy/Documents/Codex/2026-09-16/can-you-get-this-running-on/docs/decisions/2026-09-16-browser-action-goal.md",
+      "meaning": "Scope expansion requested by user on 2026-09-16.",
+      "sha256": "90e5f4fff6f88d12960fe4f849a4e4aa069a39aff429dd2149a29318eec452d3"
+    },
+    "recording-source-status": {
+      "url": "https://github.com/replayio/builder-assets/tree/main/recordingExtension",
+      "meaning": "User-supplied source was inaccessible during prior research. No implementation-specific claims; inspect only if access becomes available."
+    },
+    "rrweb-primary": {
+      "url": "https://github.com/rrweb-io/rrweb/blob/main/guide.md",
+      "meaning": "Primary guide inspected for general snapshot/event concepts. Verify relevant details if expanded."
+    },
+    "jev-ultrafast": {
+      "url": "https://github.com/browser-use/jev-ultrafast",
+      "commit": "1231850a0bf1a0c0341fe408ef1668dbbfdfac46",
+      "note": "Public source inspected September 18, 2026. Replaces the proposed architecture in book 3."
+    }
+  },
+  "books": [
+    {
+      "order": 1,
+      "slug": "next-useful-action",
+      "title": "The Next Useful Action",
+      "subtitle": "A product vision for a browser that keeps up",
+      "animal": "kingfisher",
+      "accent": "#38bdf8",
+      "premise": "Begin with a familiar browser task, then reveal why predicting a bounded next action might feel faster than generating a whole instruction. Establish assistive focus and goal-directed automation as separate experiences.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The pause between intention and action",
+          "claim_status": "Product vision",
+          "takeaway": "The opportunity is to shorten the distance from intention to a useful, verified action.",
+          "visual_mechanism": "A persistent fictional profile page and a ribbon of elapsed work. The pointer, focus ring, and task state are separate objects.",
+          "visual_beats": [
+            "Show the goal: change a display name to Brett.",
+            "Trace a person finding Profile, then the name field, then Save.",
+            "Stretch the pauses between useful actions.",
+            "Let a suggested focus ring approach the next control.",
+            "Pull back to distinguish suggesting from acting."
+          ],
+          "sources": [
+            "charter: Mission",
+            "charter: Browser-action invariants 2, 4, 10"
+          ],
+          "captions": [
+            "Think about changing your display name on a website you already know. The task is small, but your attention still has to travel.",
+            "Find the profile menu. Find the right field. Make the edit. Find save. Most of the effort lives between those little actions.",
+            "A browser assistant could help by understanding the task and choosing the next useful move. The interesting question is how quickly it can do that reliably.",
+            "Today, one possible approach asks a language model to describe an action, sends that answer to an executor, and waits for the page to respond.",
+            "Our product vision adds another route: recognize a familiar situation and select from the useful actions available on the page right now.",
+            "For a person, that might look like a subtle suggestion beside the next field. Pressing Tab would move focus there when the person accepts.",
+            "For an authorized agent, the same kind of decision could become a checked browser action, followed by a fresh look at the result.",
+            "These are proposed experiences. The project has to earn them by showing that people finish useful tasks faster, with mistakes kept within a declared budget."
+          ]
+        },
+        {
+          "number": 2,
+          "title": "A small decision inside a large world",
+          "claim_status": "Mechanism and product hypothesis",
+          "takeaway": "Constrain the decision space without confusing a valid answer with a correct answer.",
+          "visual_mechanism": "An open-ended token ribbon folds into a tray of legal action tiles while the live page remains the anchor.",
+          "visual_beats": [
+            "Grow an unconstrained ribbon of possible text.",
+            "Extract visible, eligible controls from the page.",
+            "Form joint target/action tiles.",
+            "Highlight a valid but wrong tile, then the useful tile.",
+            "Add an explicit unsure route."
+          ],
+          "sources": [
+            "charter: Mission",
+            "charter: Browser-action invariants 1–3, 9"
+          ],
+          "captions": [
+            "A language model can write almost anything. A particular browser page usually offers a much smaller set of useful moves at a particular moment.",
+            "That difference creates an opportunity. We can turn the page into a menu of legal choices and ask a model to rank that menu.",
+            "One choice might be opening the profile menu. Another might be focusing the name field. A disabled save button should not masquerade as a ready action.",
+            "The model still needs context. The page, recent interactions, and an explicit task can change which choice makes sense, even when the buttons look identical.",
+            "A smaller answer space can reduce unnecessary output and make validation easier. Whether it makes the whole experience faster is something we must measure.",
+            "There is an important distinction here: an answer can be perfectly legal and completely wrong. A valid button is not automatically the right button.",
+            "The system therefore needs a way to say it is unsure, and a way to notice when the useful action is missing from its menu.",
+            "The product promise is a shorter path to a useful decision, with a clear escape route when that decision is beyond the fast path."
+          ]
+        },
+        {
+          "number": 3,
+          "title": "Two experiences, one foundation",
+          "claim_status": "Product vision and current scope",
+          "takeaway": "Predicting a person’s next target and executing a stated task share infrastructure but have different objectives.",
+          "visual_mechanism": "One page splits into two synchronized lenses: an assistive focus lens and a task-progress lens, then reunites over shared observation.",
+          "visual_beats": [
+            "Keep the same profile page under both lenses.",
+            "Human lens predicts a focus target from history.",
+            "Agent lens conditions on a stated goal.",
+            "Reconnect observation, candidates, and ranking.",
+            "Show the foundation-to-product roadmap with proposed stages labeled."
+          ],
+          "sources": [
+            "charter: Who and what we are building for",
+            "charter: Milestones and success criteria"
+          ],
+          "captions": [
+            "We are describing two related products. One helps a person move through a page. The other helps an agent carry out a stated task.",
+            "Predictive focus asks where this person is likely to go next. It can be useful even when the system does not know the person's complete goal.",
+            "Task automation asks which action advances a particular instruction. The most common next click may be a poor answer to that different question.",
+            "Both experiences can share page observations, candidate construction, a small ranking model, and checks that a chosen target still exists.",
+            "They need different evidence of success. A helpful focus suggestion is judged by useful acceptance; an autonomous workflow is judged by what it actually accomplishes.",
+            "The current project starts lower in the stack, with Qwen and a constrained decision engine. The browser action and learning systems are the destination.",
+            "We will first make that foundation correct, then connect live actions, eligible recordings, training, and evaluation. Each step should produce something we can inspect.",
+            "To understand why this path might work, we need to open the decision engine and watch how it produces an answer."
+          ]
+        }
+      ]
+    },
+    {
+      "order": 2,
+      "slug": "one-read-many-decisions",
+      "title": "One Read, Many Decisions",
+      "subtitle": "Inside Qwen-RLCD generation",
+      "animal": "octopus",
+      "accent": "#a78bfa",
+      "premise": "Explain ordinary autoregressive output, shared-context prefill, independent batched field queries, permitted-token scoring, collision continuation, and direct typed assembly. Distinguish the intended corrected algorithm from the current native reference and browser prototype.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Why writing an answer takes steps",
+          "claim_status": "Established mechanism; illustrative animation",
+          "takeaway": "Autoregressive generation repeatedly extends output; structured formatting alone does not remove those steps.",
+          "visual_mechanism": "A token tape grows through a model window. Existing context remains as a cache rather than being erased and reread.",
+          "visual_beats": [
+            "Read a short fictional support note.",
+            "Generate a small JSON answer as a token tape.",
+            "Illuminate output dependencies one position at a time.",
+            "Keep the ordinary decoder cache visible.",
+            "Mark the fields that actually carry decisions."
+          ],
+          "sources": [
+            "native-engine: run_naive_generation",
+            "charter: Qwen foundation invariants"
+          ],
+          "captions": [
+            "Imagine a short support note. We want to classify its topic and its urgency, using a fixed set of possible answers for each field.",
+            "A conventional language model first processes the input, then generates an answer a token at a time. Tokens are pieces of text, not necessarily whole words.",
+            "Each generated token becomes part of the context for what comes next. That creates a sequence of model steps along the output tape.",
+            "Some tokens express the actual decisions. Others spell field names, quotation marks, or the punctuation that makes the answer a valid data object.",
+            "A normal decoder already caches earlier computation. The comparison is not between remembering everything and rereading the entire prompt from scratch on every token.",
+            "Even with that cache, the next output token usually depends on the output that came before it. The sequence still has to advance.",
+            "A grammar can restrict the output to valid structure. That helps formatting, but it does not by itself turn the decoder into parallel field selection.",
+            "Our question is more specific: if we already know the fields and the permitted answers, which parts of this writing process can we replace with decisions?"
+          ]
+        },
+        {
+          "number": 2,
+          "title": "Read the shared context once",
+          "claim_status": "Intended RLCD contract, grounded in native reference",
+          "takeaway": "A single logical prefill produces reusable context state; reuse has real compute and memory costs.",
+          "visual_mechanism": "The support-note token tape becomes a layered cache matrix. A common trunk remains visible as query branches appear.",
+          "visual_beats": [
+            "Highlight the input and schema as shared context.",
+            "Transform token positions into a cache matrix.",
+            "Label prefill and key/value state on screen.",
+            "Branch two field queries from the same context.",
+            "Show real memory allocations without implying zero-copy sharing."
+          ],
+          "sources": [
+            "native-engine: run_parallel_generation",
+            "charter: Qwen foundation invariants 1–3",
+            "charter: Reference and architecture decisions"
+          ],
+          "captions": [
+            "The first stage is called prefill. The model processes the shared input and builds internal state that later computations can reuse.",
+            "In a transformer, part of that state is a cache of keys and values. Think of it as reusable context, rather than a summary written in ordinary language.",
+            "For our support note, the text and the common instructions belong in that shared context. The model should not need a separate full reading for every field.",
+            "The constrained engine performs one logical shared prefill, then prepares a short question for each field we want to classify.",
+            "One branch asks for the topic. Another asks for urgency. Both start from the same common context, but each has its own question and continuation state.",
+            "This reuse does not make the input free. A long page can still be expensive to process, and the stored state can consume substantial memory.",
+            "It also does not guarantee that memory is shared without copies. The implementation must measure how it stores and supplies that state to each branch.",
+            "The gain we are investigating comes from organizing the work around the decisions we need, while accounting honestly for the work that remains."
+          ]
+        },
+        {
+          "number": 3,
+          "title": "Ask together, assemble in code",
+          "claim_status": "Intended RLCD contract",
+          "takeaway": "Batch independent field suffixes, score permitted choices, and construct the result without generating JSON syntax.",
+          "visual_mechanism": "A two-row query matrix enters a model window; permitted-choice bars emerge and selected values drop into a typed object frame.",
+          "visual_beats": [
+            "Use unequal field-query lengths with visible masked padding.",
+            "Run the query rows as an actual batch.",
+            "Expose candidate scores, dim disallowed vocabulary.",
+            "Choose topic and urgency under a named policy.",
+            "Assemble exact enum values and booleans in code."
+          ],
+          "sources": [
+            "native-engine: run_parallel_generation",
+            "schema: StructuredSchema.compile_parallel_metadata",
+            "charter: Qwen foundation invariants 2–6"
+          ],
+          "captions": [
+            "The next stage places the field questions in a real model batch. Several rows travel through the model together, instead of becoming unrelated chat requests.",
+            "Those rows may have different lengths. Padding, attention masks, and token positions must preserve what each branch is actually allowed to see.",
+            "At a decision position, the model produces scores over possible next tokens. The engine examines the permitted choices under an explicit scoring rule.",
+            "For a simple unambiguous choice, that may be enough to select a value. Some choices require more work, which we will examine next.",
+            "Once the decisions are available, ordinary code builds the output object. It supplies the field names, punctuation, exact labels, and actual boolean values.",
+            "That is the central change: model computation selects values, while software constructs the structure around them. The model need not type that structure into existence.",
+            "Parallel fields only make sense when their decisions can use the same context without depending on each other's newly selected answer.",
+            "If choosing one field changes what another field is allowed to mean, we must represent that dependency instead of pretending the questions are independent."
+          ]
+        },
+        {
+          "number": 4,
+          "title": "The difficult cases reveal the contract",
+          "claim_status": "Token continuation and scoring semantics",
+          "takeaway": "Shared token prefixes require continuation and explicit scoring; normalized rankings are not calibrated confidence.",
+          "visual_mechanism": "Synthetic token paths form a prefix tree; only unresolved branches continue. A work ledger tracks prefill, batch, and continuation calls.",
+          "visual_beats": [
+            "Show synthetic paths [17], [17,42], [17,91] with an illustrative-tokenization label.",
+            "Expose the shared first token and a terminal choice.",
+            "Continue unresolved branches without altering resolved rows.",
+            "Distinguish raw ranking score from calibrated reliability."
+          ],
+          "sources": [
+            "native-engine: run_parallel_generation collision branch",
+            "schema: StructuredSchema.compile_parallel_metadata",
+            "charter: Qwen foundation invariants 3–9"
+          ],
+          "captions": [
+            "Suppose two allowed answers begin with the same token. Looking at that first token cannot tell us which complete answer the model should select.",
+            "We need to continue along the allowed token paths until the choice is resolved. An answer that ends at a shared prefix also needs an explicit ending rule.",
+            "The scoring contract matters here. Greedily following a permitted path is not automatically the same as comparing the full likelihood of every possible answer.",
+            "Every extra continuation is real model work. We count it, preserve the correct branch state, and refuse to hide an unresolved choice behind a convenient default.",
+            "The displayed score also needs an honest name. A normalized set of scores is not evidence that a choice will be correct that often in actual use."
+          ]
+        }
+      ]
+    },
+    {
+      "order": 3,
+      "slug": "decisions-become-actions",
+      "title": "Decisions Become Actions",
+      "subtitle": "Turning a model choice into a checked browser move",
+      "animal": "heron",
+      "accent": "#34d399",
+      "premise": "Explain Jev Ultrafast through a flight-search example: indexed observations, speculative operation-specific target questions, selective text generation, and guarded execution.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "From the page to a numbered action space",
+          "claim_status": "Public Jev Ultrafast implementation at 1231850a0bf1a0c0341fe408ef1668dbbfdfac46",
+          "takeaway": "A fresh DOM snapshot becomes indexed elements and operation-compatible target sets tied to retained nodes.",
+          "visual_mechanism": "Persistent illustrative flight form and numbered action table transformed through the actual implementation.",
+          "visual_beats": [
+            "Give Jev one goal: find a one-way flight from Zurich to London. To choose its next move, it first reads what the browser actually shows.",
+            "The browser runs one page script that collects visible controls, their labels, current values, and nearby text. Screenshots are optional, not the normal decision input.",
+            "The snapshot keeps references to the actual page elements. The model will receive numbered descriptions, while the executor retains the connection back to each real control.",
+            "Here, the origin is element one, the empty destination is element two, and ticket type is element three. These numbers describe this observation, not permanent identifiers.",
+            "The action-space builder groups actions by element. One text field can support both clicking and typing without becoming two separate elements in the table.",
+            "Each operation gets only compatible targets. Typing can choose editable fields; clicking can choose clickable controls; a native dropdown offers observed element-and-option pairs.",
+            "The request also includes the goal, visible page text, and recent actions. This lets the next choice depend on what already happened, including the current field values.",
+            "After an action changes the page, Jev observes again and rebuilds this menu. A new suggestion can become a target only after it actually appears."
+          ],
+          "sources": [
+            "jev-ultrafast: snapshot.js",
+            "jev-ultrafast: model.py: action_space"
+          ],
+          "captions": [
+            "Give Jev one goal: find a one-way flight from Zurich to London. To choose its next move, it first reads what the browser actually shows.",
+            "The browser runs one page script that collects visible controls, their labels, current values, and nearby text. Screenshots are optional, not the normal decision input.",
+            "The snapshot keeps references to the actual page elements. The model will receive numbered descriptions, while the executor retains the connection back to each real control.",
+            "Here, the origin is element one, the empty destination is element two, and ticket type is element three. These numbers describe this observation, not permanent identifiers.",
+            "The action-space builder groups actions by element. One text field can support both clicking and typing without becoming two separate elements in the table.",
+            "Each operation gets only compatible targets. Typing can choose editable fields; clicking can choose clickable controls; a native dropdown offers observed element-and-option pairs.",
+            "The request also includes the goal, visible page text, and recent actions. This lets the next choice depend on what already happened, including the current field values.",
+            "After an action changes the page, Jev observes again and rebuilds this menu. A new suggestion can become a target only after it actually appears."
+          ]
+        },
+        {
+          "number": 2,
+          "title": "One request, several questions, one action",
+          "claim_status": "Public Jev Ultrafast implementation at 1231850a0bf1a0c0341fe408ef1668dbbfdfac46",
+          "takeaway": "One request asks operation and conditional target questions; only the selected operation and matching target can execute.",
+          "visual_mechanism": "Persistent illustrative flight form and numbered action table transformed through the actual implementation.",
+          "visual_beats": [
+            "A usual sequence would first ask what operation to perform, then ask which element to use. Jev puts both kinds of question into one request.",
+            "The shared state goes to the TypeSafe service with an operation question and separate target questions for clicking, typing, and selection when available.",
+            "Each target question is conditional: if we were going to type, which editable field would we choose? It can be answered before the operation result comes back.",
+            "Imagine the response chooses typing, with destination as the typing target. A click target may also be returned, but its answer is not an instruction to click.",
+            "The operation selects exactly one matching target answer. The other target answers are discarded for execution, so speculative questions do not become speculative browser actions.",
+            "The code checks that the selected answer belongs to the offered choices and that its probability data is valid. Invalid output stops before any browser input.",
+            "The selected index maps back to an action from the snapshot. The model does not invent a selector or coordinates, and its output is never executed as code.",
+            "This saves a sequential model round trip for choosing the operation and target. The repository calls a remote service; it does not expose that service's inference internals."
+          ],
+          "sources": [
+            "jev-ultrafast: model.py: choose, validate_choice"
+          ],
+          "captions": [
+            "A usual sequence would first ask what operation to perform, then ask which element to use. Jev puts both kinds of question into one request.",
+            "The shared state goes to the TypeSafe service with an operation question and separate target questions for clicking, typing, and selection when available.",
+            "Each target question is conditional: if we were going to type, which editable field would we choose? It can be answered before the operation result comes back.",
+            "Imagine the response chooses typing, with destination as the typing target. A click target may also be returned, but its answer is not an instruction to click.",
+            "The operation selects exactly one matching target answer. The other target answers are discarded for execution, so speculative questions do not become speculative browser actions.",
+            "The code checks that the selected answer belongs to the offered choices and that its probability data is valid. Invalid output stops before any browser input.",
+            "The selected index maps back to an action from the snapshot. The model does not invent a selector or coordinates, and its output is never executed as code.",
+            "This saves a sequential model round trip for choosing the operation and target. The repository calls a remote service; it does not expose that service's inference internals."
+          ]
+        },
+        {
+          "number": 3,
+          "title": "Type, validate, act, observe again",
+          "claim_status": "Public Jev Ultrafast implementation at 1231850a0bf1a0c0341fe408ef1668dbbfdfac46",
+          "takeaway": "Typing uses a separate text helper; freshness and geometry checks precede input, then the next observation rebuilds the action space.",
+          "visual_mechanism": "Persistent illustrative flight form and numbered action table transformed through the actual implementation.",
+          "visual_beats": [
+            "Choosing the destination field still leaves one question: what should we type? Only a typing action calls the separate text helper.",
+            "That helper receives the goal, selected field, page context, and recent actions. It returns a small object containing one text value, such as London.",
+            "The response must parse correctly and contain a nonempty bounded string. Clicking and selecting skip this generation step because their actions already came from the page.",
+            "Before input, the browser checks that the decision still applies. A changed document, form value, or target can invalidate the earlier observation.",
+            "If the page became stale while text was generated, Jev observes and chooses again. It reuses that text only when the complete helper input is unchanged.",
+            "For a click, the executor resolves the retained element's current geometry and checks that another element does not cover it. Old screen coordinates are not trusted.",
+            "After typing London, it records the action and briefly waits for useful suggestions before observing again. The London suggestion can now enter the next numbered menu.",
+            "The next cycle can choose that suggestion, then continue toward the goal. A done decision stops the loop, but a separate outcome check is needed to establish that the task succeeded.",
+            "The speed comes from structured observations, shared choice requests, and selective text generation. The complete loop remains observe, choose, validate, act, and observe again."
+          ],
+          "sources": [
+            "jev-ultrafast: agent.py: Agent.command",
+            "jev-ultrafast: model.py: field_context, field_text",
+            "jev-ultrafast: browser.py: Browser.fresh, Browser.act, Browser.observe, browser_operation"
+          ],
+          "captions": [
+            "Choosing the destination field still leaves one question: what should we type? Only a typing action calls the separate text helper.",
+            "That helper receives the goal, selected field, page context, and recent actions. It returns a small object containing one text value, such as London.",
+            "The response must parse correctly and contain a nonempty bounded string. Clicking and selecting skip this generation step because their actions already came from the page.",
+            "Before input, the browser checks that the decision still applies. A changed document, form value, or target can invalidate the earlier observation.",
+            "If the page became stale while text was generated, Jev observes and chooses again. It reuses that text only when the complete helper input is unchanged.",
+            "For a click, the executor resolves the retained element's current geometry and checks that another element does not cover it. Old screen coordinates are not trusted.",
+            "After typing London, it records the action and briefly waits for useful suggestions before observing again. The London suggestion can now enter the next numbered menu.",
+            "The next cycle can choose that suggestion, then continue toward the goal. A done decision stops the loop, but a separate outcome check is needed to establish that the task succeeded.",
+            "The speed comes from structured observations, shared choice requests, and selective text generation. The complete loop remains observe, choose, validate, act, and observe again."
+          ]
+        }
+      ]
+    },
+    {
+      "order": 4,
+      "slug": "recordings-become-practice",
+      "title": "Recordings Become Practice",
+      "subtitle": "How browser history becomes a training dataset",
+      "animal": "beaver",
+      "accent": "#fbbf24",
+      "premise": "Explain causal extraction from eligible Replay and rrweb recordings, local storage, provenance, held-out splits, behavior cloning, teacher labels, and local training/export. Historical recordings are observations, not counterfactual simulators.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A recording is evidence of what happened",
+          "claim_status": "Recording concepts and proposed ingestion",
+          "takeaway": "Construct examples from the state before an action, preserving unknown intent and observed outcome.",
+          "visual_mechanism": "A recording timeline has a movable prediction cursor. Information to its right becomes inaccessible to feature extraction.",
+          "visual_beats": [
+            "Reconstruct a synthetic page from a snapshot and changes.",
+            "Stop immediately before the user action.",
+            "Separate available features from future click and resulting focus.",
+            "Attach action, goal provenance, and observed outcome.",
+            "Mark goal unknown when no reliable instruction exists."
+          ],
+          "sources": [
+            "charter: Browser-action invariants 5–8",
+            "charter: E8 milestone",
+            "recording-source-status"
+          ],
+          "captions": [
+            "A browser recording contains evidence of what happened. It does not automatically explain what the person wanted or whether their task succeeded.",
+            "An rrweb recording can describe a page through snapshots, changes, and interaction events. Replay recordings require their own adapter to the actual available format.",
+            "We should inspect those real sources before claiming what either pipeline captures. The extension linked in our initial research was not available for inspection.",
+            "To make one training example, move to the instant just before an action. Reconstruct only the page state and history available at that moment.",
+            "Then attach the action that followed as the label. Its later focus changes, updated styles, or success message must not sneak backward into the input.",
+            "Otherwise the model can appear excellent by reading clues created by the very action it is supposed to predict. That is a misleading shortcut.",
+            "When we know the task, record where that knowledge came from. When we do not, keep the goal unknown instead of inventing an intention.",
+            "The result is a careful example of state, available choices, observed action, and evidence about the outcome. That is the material a learning system can use."
+          ]
+        },
+        {
+          "number": 2,
+          "title": "A local workshop for examples",
+          "claim_status": "Proposed local data pipeline",
+          "takeaway": "Separate bounded raw recordings from versioned derived examples and partition data before model selection.",
+          "visual_mechanism": "A recording tape compacts into example cards, then fans into distinct training, development/calibration, and sealed test bins.",
+          "visual_beats": [
+            "Place eligible synthetic raw events into local storage.",
+            "Extract compact observation/action examples.",
+            "Keep lineage links to recording and extractor versions.",
+            "Group duplicate sessions before the split.",
+            "Seal the final test partition before training choices."
+          ],
+          "sources": [
+            "charter: Scope and boundaries",
+            "charter: Browser-action invariants 6–8",
+            "charter: Milestones and success criteria"
+          ],
+          "captions": [
+            "For a first local experiment, we can keep recordings and examples on the user's machine. The extension and a native training process can exchange versioned files.",
+            "The extension might use a browser database, while a native workflow might use a local database with compressed recording chunks. The choice follows the working prototype.",
+            "Raw recordings and training examples serve different purposes. We can retain raw data for a bounded period and keep compact, reproducible examples separately.",
+            "Each example needs a trail back to its source and the extraction rules. Deleting or correcting a source should tell us which derived artifacts need rebuilding.",
+            "Only eligible data belongs in the workshop. Unnecessary private inputs should be masked, and sending examples to a remote teacher must be an explicit choice.",
+            "Before training, group related sessions and duplicates so that near-identical behavior cannot appear on both sides of the evaluation boundary.",
+            "Keep development and calibration data separate from a sealed final test set. Later sessions and unfamiliar sites help reveal whether the model learned more than memorized layouts.",
+            "The value of a large recording collection comes from usable, representative examples. A mountain of unfiltered events is still a mountain of work."
+          ]
+        },
+        {
+          "number": 3,
+          "title": "Teach a small model a small job",
+          "claim_status": "Proposed training strategy",
+          "takeaway": "Learn candidate ranking with simple baselines first; use audited teacher signals and export a verified local policy.",
+          "visual_mechanism": "A candidate score surface changes over training steps, with held-out mistakes left visible. A checkpoint shrinks into a browser artifact.",
+          "visual_beats": [
+            "Start with frequency counts and a linear ranking baseline.",
+            "Score all eligible candidates for one causal example.",
+            "Compare ranking with an observed or reviewed target.",
+            "Update weights across examples; keep validation separate.",
+            "Export a model and compare browser/native predictions."
+          ],
+          "sources": [
+            "charter: E9 and E10 milestones",
+            "charter: Browser-action invariants 6, 9",
+            "charter: Scope and boundaries"
+          ],
+          "captions": [
+            "Start with the smallest model that can teach us something. Counts and a simple linear ranker give us baselines before a neural network enters the picture.",
+            "For each example, the model sees the page features, recent history, optional task, and candidate menu. It assigns a score to each available choice.",
+            "Training compares those scores with the training target and adjusts the model's weights. Repeated examples shape which patterns it learns to recognize.",
+            "Observed actions can teach habitual behavior. Reviewed demonstrations and task outcomes are needed to judge whether those habits also help accomplish a stated goal.",
+            "A larger model can propose labels or preferences, but its answers are fallible. We audit that signal rather than calling every teacher judgment correct.",
+            "This is where learning happens. Constrained decoding changes how a model answers; training changes the behavior represented in the model's weights.",
+            "We can run this training in a native process on the Mac, then export a small model for browser inference and verify that its decisions remain consistent.",
+            "Training Qwen inside Chrome is not a prerequisite. The first win may be a much smaller policy that learns one useful ranking task well."
+          ]
+        }
+      ]
+    },
+    {
+      "order": 5,
+      "slug": "fast-path-thoughtful-fallback",
+      "title": "A Fast Path with a Thoughtful Fallback",
+      "subtitle": "How a small policy and GLM can work together",
+      "animal": "fox",
+      "accent": "#fb7185",
+      "premise": "Describe the proposed GLM teacher/planner/fallback relationship, independently test constrained decoding feasibility at larger scale, and evaluate complete task success and latency with recovery included.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Learn the familiar, escalate the unfamiliar",
+          "claim_status": "Proposed hybrid architecture",
+          "takeaway": "Use a small policy for supported decisions and an explicit large-model path for planning or fallback.",
+          "visual_mechanism": "The same candidate landscape is viewed first by a local ranker, then by a larger planning lens when the fast path abstains.",
+          "visual_beats": [
+            "Plan a bounded task with an optional GLM call.",
+            "Pass subgoal and live candidates to a small policy.",
+            "Execute one sufficiently supported checked choice.",
+            "Make an uncertain state take an explicit fallback route.",
+            "Show local-only mode abstaining without network traffic."
+          ],
+          "sources": [
+            "charter: Mission",
+            "charter: Who and what we are building for",
+            "charter: E9–E11 milestones"
+          ],
+          "captions": [
+            "The proposed partnership gives the large and small models different jobs. A large model can help interpret a task, teach examples, or handle difficult situations.",
+            "A small local policy tries to recognize the familiar decisions cheaply. It receives the current context and selects from the supported action menu.",
+            "For a longer task, the larger model might propose a subgoal. The smaller policy can then choose the next checked move toward that subgoal.",
+            "When the fast path lacks enough support, it abstains. In an explicitly enabled hybrid mode, the system can ask the larger model for help.",
+            "That fallback has a cost: input processing, network travel, model computation, and possibly another round of observation. We include all of it in the measurements.",
+            "In local-only mode, uncertainty means stopping or asking the person to continue. It must not quietly become a remote inference request.",
+            "The user's proposed large model is G L M five point three Flash. We still need to pin the actual provider, served model, settings, and supported interfaces.",
+            "The aim is to concentrate expensive reasoning where it adds value, while testing whether routine decisions can move through a smaller, faster path."
+          ]
+        },
+        {
+          "number": 2,
+          "title": "Can constrained decoding scale up?",
+          "claim_status": "Conditional feasibility, not a performance claim",
+          "takeaway": "A hosted structured-output endpoint is distinct from low-level RLCD access; a larger model still costs compute.",
+          "visual_mechanism": "A large model is shown behind two interface windows: a hosted output contract and low-level state/logit controls. Only evidenced capabilities connect.",
+          "visual_beats": [
+            "Separate shorter output from smaller neural compute.",
+            "Show a hosted constrained-answer call.",
+            "Reveal the state/logit/batching controls needed by RLCD.",
+            "Leave capability gates unknown until inspected.",
+            "Keep distillation and direct large-model decoding as separate paths."
+          ],
+          "sources": [
+            "charter: Reference and architecture decisions, E9-T05",
+            "charter: Mission",
+            "charter: Scope and boundaries"
+          ],
+          "captions": [
+            "Could we apply the constrained decision idea to a larger model? Possibly, but the model's size is only one part of that question.",
+            "A hosted interface may accept a schema or a list of answers. That can provide a useful constrained baseline without exposing the internals needed by our engine.",
+            "True shared-prefill branching needs access to reusable model state, decision scores, positions, masks, and the ability to batch the relevant computations correctly.",
+            "Those controls depend on the actual runtime and deployment. Several simultaneous hosted requests are not proof that one shared context was reused internally.",
+            "Even with the necessary access, a large model still performs large-model computation. A shorter answer does not make all of that work disappear.",
+            "So we have two experiments: improve how we ask a powerful model to decide, and teach a smaller model to handle a narrower set of decisions.",
+            "The smaller model may capture useful behavior from examples without inheriting the teacher's full intelligence. We must test where that transfer works and where it fails.",
+            "If the large-model runtime cannot support faithful branching, that is a useful result. The hosted baseline and the small-policy path can still move forward."
+          ]
+        },
+        {
+          "number": 3,
+          "title": "Measure the whole trip",
+          "claim_status": "Evaluation plan; no measured results yet",
+          "takeaway": "Judge complete, useful tasks at frozen quality gates, counting all latency and fallback costs.",
+          "visual_mechanism": "An end-to-end task ribbon expands into observation, inference, transport, execution, and recovery segments; a quality/latency plot retains failed tasks.",
+          "visual_beats": [
+            "Expand inference-only time to full task time.",
+            "Keep cold and warm runs as separate groups.",
+            "Mark wrong actions, abstentions, and fallback calls.",
+            "Compare shared-candidate methods and a broader generated-action baseline.",
+            "Seal quality/speed gates and show pass/fail only from future real evidence."
+          ],
+          "sources": [
+            "charter: Browser-action invariants 7, 10",
+            "charter: Reference and architecture decisions",
+            "charter: Milestones and success criteria"
+          ],
+          "captions": [
+            "A fast model call is encouraging, but the person experiences the entire trip. Observation, input processing, inference, execution, and recovery all contribute to waiting.",
+            "We measure complete tasks as well as individual decisions. A system that clicks quickly and takes three wrong turns can easily lose to a slower, reliable one.",
+            "Compare methods on declared workflows, with consistent execution checks. Report task success, wrong actions, fallback frequency, and both typical and slower-end latency.",
+            "Use the same candidate inventory for controlled ranking comparisons. Also keep a broader generated-action baseline, so we can see when our restricted menu misses useful moves.",
+            "Historical recordings can tell us what actually happened. They cannot show the outcome of an alternative action that nobody took in that recording.",
+            "For that, we need live, resettable task environments. The system must act, observe the consequences, and finish the task under controlled conditions.",
+            "Freeze quality and speed gates before model selection. Choose the model on development data, calibrate it separately, and reserve an untouched test set for final evaluation.",
+            "Any charts in this explanation illustrate the method. The project earns a speed claim only when measured completed tasks meet those predeclared gates."
+          ]
+        }
+      ]
+    },
+    {
+      "order": 6,
+      "slug": "tab-into-the-future",
+      "title": "Tab Into the Future",
+      "subtitle": "A browser that meets you halfway",
+      "animal": "hummingbird",
+      "accent": "#2dd4bf",
+      "premise": "Close with an opt-in predictive focus experience: learn supported personal patterns, suggest a target, accept via Tab without activation, preserve ordinary keyboard behavior, and collect non-self-reinforcing feedback. End with a concrete incremental pilot.",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Anticipation without taking over",
+          "claim_status": "Proposed predictive Tab experience",
+          "takeaway": "Predictive Tab is accepted focus assistance, with uncertainty and keyboard compatibility designed into the interaction.",
+          "visual_mechanism": "A focus ring moves across the same profile page from earlier books. A suggestion halo is visibly different from actual focus and click activation.",
+          "visual_beats": [
+            "Observe supported page state and recent human actions.",
+            "Display one subtle suggestion with a separate halo.",
+            "Accept through opt-in Tab and move only focus.",
+            "Escape dismisses; Shift-Tab and editor keys retain their behavior.",
+            "Low support leaves ordinary keyboard navigation intact."
+          ],
+          "sources": [
+            "charter: Mission",
+            "charter: Who and what we are building for",
+            "charter: E11 integration milestone"
+          ],
+          "captions": [
+            "Now bring the machinery back to the person at the keyboard. They open a familiar page, and the local model recognizes a pattern it has seen before.",
+            "It predicts that the name field is the next useful target. A subtle visual suggestion appears, distinct from the focus ring that shows the current keyboard position.",
+            "On a site where the person has enabled this behavior, pressing Tab can accept the suggestion and move focus to that field.",
+            "Focus is the full action in this assistive mode. It does not click save, submit the form, purchase anything, or silently complete an autonomous workflow.",
+            "If the model is unsure or the target has changed, ordinary navigation continues. A weak prediction should not create a fight between the person and the keyboard.",
+            "Escape dismisses the suggestion. Reverse navigation and editing shortcuts need to preserve their expected behavior, including in applications with their own use of Tab.",
+            "That is why the first version should be opt-in and limited to declared sites and contexts. Compatibility is part of whether the assistance is actually helpful.",
+            "The experience we want is simple: the browser offers the next useful place, and the person remains the one who chooses to go there."
+          ]
+        },
+        {
+          "number": 2,
+          "title": "Learn from the person, not the echo",
+          "claim_status": "Proposed personalization and feedback",
+          "takeaway": "Do not train on extension-created focus as if it independently confirmed the prediction.",
+          "visual_mechanism": "Two event streams separate human behavior from extension-produced focus. Only qualified feedback enters a versioned training buffer.",
+          "visual_beats": [
+            "Record a suggestion as an exposure, not a positive label.",
+            "Tag extension-originated focus separately.",
+            "Wait for meaningful typing or activation evidence.",
+            "Log dismissals and ordinary user navigation.",
+            "Train a candidate checkpoint and permit rollback after evaluation."
+          ],
+          "sources": [
+            "charter: Browser-action invariants 5, 6, 8, 9",
+            "charter: E10 and E11 milestones"
+          ],
+          "captions": [
+            "A personal model should improve as it sees useful examples. But a predictive interface can accidentally manufacture evidence that its own guesses were right.",
+            "Suppose it suggests the name field and moves focus there. If that focus event becomes a positive training label, the system is learning from its own echo.",
+            "We must distinguish a suggestion, an accepted focus move, and what the person meaningfully does afterward. Those are different kinds of evidence.",
+            "Typing into the field or intentionally activating a control can provide a stronger signal. A dismissal or immediate move elsewhere tells a different story.",
+            "Even acceptance deserves careful interpretation. People sometimes follow a suggestion because it is convenient, not because it matches what they originally intended.",
+            "Start by collecting this feedback in a controlled way, then train and evaluate a new checkpoint. Continuous background weight updates are not required for the first product.",
+            "Keep recording, training, and using a model as separate controls. The person should be able to inspect the mode, stop collection, and roll back a bad model.",
+            "Personalization becomes useful when it follows the person's behavior faithfully, instead of making the person's behavior follow a mistake the model keeps reinforcing."
+          ]
+        },
+        {
+          "number": 3,
+          "title": "The first useful version",
+          "claim_status": "Proposed incremental pilot and end goal",
+          "takeaway": "Start with a narrow local ranking task, prove helpful focus, and expand toward faster completed browser tasks.",
+          "visual_mechanism": "The original task ribbon becomes a staged pilot path, with real evidence gates separating each stage. End on the live page and a waiting focus suggestion.",
+          "visual_beats": [
+            "Begin on one site with a small number of supported workflows.",
+            "Shadow-rank without moving focus.",
+            "Advance to visible suggestions, then opt-in acceptance.",
+            "Add a native runner and explicit hybrid mode for task automation.",
+            "End with unfilled success gates and the product promise."
+          ],
+          "sources": [
+            "charter: Mission",
+            "charter: Milestones and success criteria",
+            "charter: Release evidence and completion"
+          ],
+          "captions": [
+            "The first useful version should be small enough to understand. Choose a limited site, a few supported workflows, and a simple local ranking baseline.",
+            "Run it in shadow mode first. Let it predict without moving anything, and compare its choices with what people actually do in the supported context.",
+            "Then show suggestions. Only after the evidence supports it should we add opt-in keyboard acceptance and measure whether it helps people move through their work.",
+            "Alongside that, prove the constrained Qwen engine and build the recording, training, and evaluation tools. Each piece should remain independently inspectable.",
+            "Autonomous tasks come through the checked runner, with explicit instructions, observed outcomes, and a clearly configured large-model fallback when that mode is enabled.",
+            "The final goal is bigger than predicting the next click. It is completing useful browser tasks faster at a level of reliability we chose before seeing the final results.",
+            "That path joins three ideas: organize inference around bounded decisions, learn useful patterns from eligible recordings, and keep the live browser in the loop.",
+            "At the end, the visible experience can be just a quiet suggestion and a press of Tab. The work underneath is what makes that small moment worth trusting."
+          ]
+        }
+      ]
+    }
+  ],
+  "statistics": {
+    "books": 6,
+    "chapters": 19,
+    "captions": 150,
+    "spoken_words": 3669,
+    "max_caption_characters": 182
+  }
+}

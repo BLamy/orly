@@ -1,0 +1,65 @@
+{
+  "format": 3,
+  "slug": "decisions-become-actions",
+  "title": "Decisions Become Actions",
+  "subtitle": "Turning a model choice into a checked browser move",
+  "animal": "animal.webp",
+  "accent": "#34d399",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "From the page to a numbered action space",
+      "blurb": "A fresh DOM snapshot becomes indexed elements and operation-compatible target sets tied to retained nodes.",
+      "scene": "books/decisions-become-actions/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.278,
+        19.145,
+        29.338,
+        41.54,
+        50.863,
+        62.915,
+        73.585
+      ],
+      "duration": 82.106
+    },
+    {
+      "number": 2,
+      "title": "One request, several questions, one action",
+      "blurb": "One request asks operation and conditional target questions; only the selected operation and matching target can execute.",
+      "scene": "books/decisions-become-actions/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        8.324,
+        17.462,
+        30.268,
+        40.554,
+        51.549,
+        61.104,
+        71.356
+      ],
+      "duration": 81.503
+    },
+    {
+      "number": 3,
+      "title": "Type, validate, act, observe again",
+      "blurb": "Typing uses a separate text helper; freshness and geometry checks precede input, then the next observation rebuilds the action space.",
+      "scene": "books/decisions-become-actions/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        7.79,
+        18.17,
+        27.899,
+        37.292,
+        47.322,
+        55.971,
+        65.944,
+        75.546
+      ],
+      "duration": 85.682
+    }
+  ]
+}

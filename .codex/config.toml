@@ -1,0 +1,2 @@
+# Astra plans and models in 3D. D3 authoring is delegated via generator/run-fable.mjs.
+model = "gpt-6-astra"

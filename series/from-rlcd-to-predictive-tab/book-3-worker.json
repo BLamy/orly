@@ -1,0 +1,18 @@
+{
+  "book": 3,
+  "chapters": [
+    {
+      "chapter": 1,
+      "provenance": "book-3-chapter-1-worker.json"
+    },
+    {
+      "chapter": 2,
+      "provenance": "book-3-chapter-2-worker.json"
+    },
+    {
+      "chapter": 3,
+      "provenance": "book-3-chapter-3-worker.json"
+    }
+  ],
+  "status": "Three Fable scenes written; provider limit interrupted final review. Recorded narration blocked on ElevenLabs configuration."
+}

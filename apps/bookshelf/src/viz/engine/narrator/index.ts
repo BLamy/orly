@@ -38,6 +38,8 @@ function pickVoice(): SpeechSynthesisVoice | null {
 export function speechify(text: string): string {
   return (
     text
+      // Voice-only normalization; on-screen captions stay verbatim.
+      .replace(/\brrweb\b/gi, 'r r web')
       // markdown emphasis / code / links
       .replace(/\*\*([^*]+)\*\*/g, '$1')
       .replace(/\*([^*]+)\*/g, '$1')

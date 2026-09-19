@@ -1,0 +1,91 @@
+{
+  "packageHashes": {
+    "series-script.json": "3d1459678bade7c00cf6df265b4750d0a820c928344215a470bb414555684f83",
+    "series-script.md": "0c071bc8d81f150b4f685e4667dc7d397c358f0c6b15c3b3e22f6ef5080ebcdd",
+    "series-plan.json": "cf8c51f65aa7e3f4c71763aba54c94cde9c2d87574ca5a6cf4391c422ba5ad5d",
+    "visualization-brief.md": "20671aa2c8e52089eabe5dfad52eab800c3a197a46ee9a57f26f19074ed2e05a"
+  },
+  "sources": [
+    {
+      "id": "charter",
+      "expected": "5d54a32fc51d47288f2e072c0f8dc3fa24a013a82938d1e58923577ac7b65871",
+      "actual": "5d54a32fc51d47288f2e072c0f8dc3fa24a013a82938d1e58923577ac7b65871",
+      "match": true,
+      "snapshotFile": "source-snapshot/charter.md",
+      "snapshotOrigin": "/Users/blamy/Documents/Codex/2026-09-16/can-you-get-this-running-on/PROJECT_CHARTER.md"
+    },
+    {
+      "id": "native-engine",
+      "expected": "9429d1f3df66133c5b6675c8295680a6302c366f364a2f2e9e6365157df993b2",
+      "actual": "9429d1f3df66133c5b6675c8295680a6302c366f364a2f2e9e6365157df993b2",
+      "match": true,
+      "snapshotFile": "source-snapshot/native-engine.py",
+      "snapshotOrigin": "/Users/blamy/Documents/Codex/2026-09-16/can-you-get-this-running-on/evidence/E0-T01/original/source/core/engine_mlx.py"
+    },
+    {
+      "id": "schema",
+      "expected": "5fdfa2ffe4fd83c64e98331802d4a0f0858aa85197380cfc1ff6a39100f73232",
+      "actual": "5fdfa2ffe4fd83c64e98331802d4a0f0858aa85197380cfc1ff6a39100f73232",
+      "match": true,
+      "snapshotFile": "source-snapshot/schema.py",
+      "snapshotOrigin": "/Users/blamy/Documents/Codex/2026-09-16/can-you-get-this-running-on/evidence/E0-T01/original/source/core/schema.py"
+    },
+    {
+      "id": "prompt-builder",
+      "expected": "84d8d7dc88d64212df22dfe7a269b0d28b1fa4d1aa36ca740ef18a70419e6aac",
+      "actual": "84d8d7dc88d64212df22dfe7a269b0d28b1fa4d1aa36ca740ef18a70419e6aac",
+      "match": true,
+      "snapshotFile": "source-snapshot/prompt-builder.py",
+      "snapshotOrigin": "/Users/blamy/Documents/Codex/2026-09-16/can-you-get-this-running-on/qwen-rlcd/core/prompt_builder.py"
+    },
+    {
+      "id": "browser-app",
+      "expected": "85ea1e04aedd66f19fc4c0ec937ab1ef7611756da94d672b9644cdb8b1a8cb47",
+      "actual": "85ea1e04aedd66f19fc4c0ec937ab1ef7611756da94d672b9644cdb8b1a8cb47",
+      "match": true,
+      "snapshotFile": "source-snapshot/browser-app.js",
+      "snapshotOrigin": "/Users/blamy/Documents/Codex/2026-09-16/can-you-get-this-running-on/qwen-rlcd/browser/app.js"
+    },
+    {
+      "id": "scope-decision",
+      "expected": "90e5f4fff6f88d12960fe4f849a4e4aa069a39aff429dd2149a29318eec452d3",
+      "actual": "90e5f4fff6f88d12960fe4f849a4e4aa069a39aff429dd2149a29318eec452d3",
+      "match": true,
+      "snapshotFile": "source-snapshot/scope-decision.md",
+      "snapshotOrigin": "/Users/blamy/Documents/Codex/2026-09-16/can-you-get-this-running-on/docs/decisions/2026-09-16-browser-action-goal.md"
+    }
+  ],
+  "worker": {
+    "entrypoint": "npx --yes @anthropic-ai/claude-code@latest",
+    "cliVersion": "2.1.274",
+    "requestedModel": "claude-fable-5-1",
+    "accessProbe": {
+      "result": "READY",
+      "actualModel": "claude-fable-5-1",
+      "canonicalModel": "claude-fable-5-1",
+      "provider": "firstParty",
+      "note": "CLI also reported Haiku usage for auxiliary work; requested assistant response was Fable."
+    },
+    "userAuthorization": "User explicitly authorized private source disclosure and full implementation on continuation."
+  },
+  "sourceDrift": {
+    "detectedAt": "2026-09-17T03:57:15.274Z",
+    "changed": [
+      "native-engine",
+      "schema"
+    ],
+    "handling": "Preserve the fixed narration and its exact original source snapshot; label source date in companion prose. Active working files are newer, not silently substituted."
+  },
+  "originalPackageHashes": {
+    "series-script.json": "cec6fa3f5bc52ab81ef308af7a53be8b77b3f95ddc826ebe9f31b016c23744d1",
+    "series-script.md": "0bd897ce6b9e4725099cb186841b867a32c0a67c3471053733c98d153c8d127c",
+    "series-plan.json": "bff1b304e347b525d69829c28428a03c0ceb0203fcf75e443e72fd4697ce48c0",
+    "visualization-brief.md": "20671aa2c8e52089eabe5dfad52eab800c3a197a46ee9a57f26f19074ed2e05a"
+  },
+  "revision": {
+    "date": "2026-09-18",
+    "reason": "User requested ending book 2 chapter 4 before app-status commentary and replacing book 3 with a concrete Jev Ultrafast explanation.",
+    "sourceCommit": "1231850a0bf1a0c0341fe408ef1668dbbfdfac46",
+    "priorMarkdownHashMismatch": "series-script.md already differed from the original recorded hash before this revision; original hashes retained."
+  }
+}

@@ -1,0 +1,14 @@
+[
+  [
+    {"title":"The work between useful actions","lead":"The fictional task is simple: change a display name to Brett. Finding Profile, locating the field, editing it, and finding Save still require attention. The work ribbon represents that sequence without asserting measured latency.","startCue":0,"endCue":4},
+    {"title":"A suggestion and an authorized action","lead":"The proposed fast path chooses among useful moves available in the current page state. Predictive focus offers a target that a person can accept; an authorized executor can perform a checked action and observe its result. Both must earn their place through completed-task evaluation.","startCue":4}
+  ],
+  [
+    {"title":"A page bounds the choice","lead":"A live observation supplies a menu of eligible joint target/action candidates. A disabled Save control is not a ready action. Page context, interaction history, and an explicit task can change the useful choice even when the visible controls stay the same.","startCue":0,"endCue":4},
+    {"title":"Legal does not mean useful","lead":"Constraining the answer simplifies validation, but a perfectly legal target may still be wrong for the task. The proposed system needs abstention and a route for missing candidates. Reduced output is a mechanism to investigate, not evidence of an end-to-end speedup.","startCue":4}
+  ],
+  [
+    {"title":"Different objectives share an observation","lead":"Predictive focus asks where a person is likely to go next. Task automation asks which action advances an explicit instruction. These experiences can reuse observations, candidate construction, ranking, and live-target checks while retaining different success criteria.","startCue":0,"endCue":4},
+    {"title":"Build the foundation before claiming the product","lead":"The Qwen decision engine is the starting point. Browser actions, eligible recording ingestion, training, and evaluation are proposed milestones in the project charter. Each stage must produce inspectable evidence before the destination can be called a working product.","startCue":4}
+  ]
+]

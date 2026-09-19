@@ -4,6 +4,9 @@ description: Generate a scene-native (3b1b-quality) video book from a repo + sub
 
 # /new-book — add a scene-native video book to the O'RLY shelf
 
+Read [the authoring model workflow](../../docs/authoring-models.md) first. **Astra plans and models in Blender; Fable 5.1 authors D3/SVG animations through `npx --yes @anthropic-ai/claude-code@latest`.** A Fable worker consumes Astra's written plan; it does not replace the planner. Preserve provider provenance and stop that role on a provider limit without substitution.
+
+
 Turn a GitHub repo (or local path) + a subsystem into a narrated **3b1b-quality
 video**: every chapter IS one custom-authored 3b1bd3 timeline scene, voiced by
 ElevenLabs, bound as an O'RLY-parody book on
@@ -14,7 +17,7 @@ the scenes are the whole video, so their quality is the product.
 If they're missing or unclear, ask the user for the repo and which subsystem to explain.
 
 Keys come from the gitignored `.env` (`ELEVENLABS_API_KEY`, `OPENAI_API_KEY`).
-The planning and the scenes are written by **you (Claude Code)**.
+Astra prepares the plan and any 3D assets; Fable implements the D3 scenes.
 
 ## Steps — VISUALIZATIONS FIRST, video second
 
@@ -25,7 +28,7 @@ The planning and the scenes are written by **you (Claude Code)**.
    node -e "import('./generator/repo.mjs').then(m=>{const d=m.acquireAndDigest({repo:process.argv[1],prompt:process.argv[2]});require('fs').writeFileSync('/tmp/nb-digest.txt',d.digest);console.error('digest:',d.chosen.length,'files,',d.digest.length,'chars');})" "<REPO>" "<SUBSYSTEM PROMPT>"
    ```
 
-3. **PLAN THE VISUALIZATIONS** — this is the storyboard now. Read
+3. **ASTRA: PLAN THE VISUALIZATIONS** — this is the storyboard now. Read
    `generator/prompts/storyboard.txt` (the v3 authoring doctrine — obey every
    rule) and the digest. Then write a **visual plan** (a scratch markdown file
    is fine) before any code:
@@ -45,7 +48,7 @@ The planning and the scenes are written by **you (Claude Code)**.
    - Ground EVERYTHING in the digest: real file/function/type names in captions
      and visuals. No invented components or flows.
 
-4. **AUTHOR THE SCENES** — the video itself. Use the `viz-scene` skill
+4. **FABLE 5.1: AUTHOR THE D3 SCENES** — the video itself. Use the `viz-scene` skill
    (`.claude/skills/viz-scene/SKILL.md`, "Using scenes in BOOKS — v3"). One
    file per chapter: `apps/bookshelf/src/viz/books/<SLUG>/chapter-<n>.tsx` (layout data +
    `buildScene()` + `Render({s})` + `vizScene()`; auto-registered by glob).

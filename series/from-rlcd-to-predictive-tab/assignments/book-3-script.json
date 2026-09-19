@@ -1,0 +1,95 @@
+{
+  "order": 3,
+  "slug": "decisions-become-actions",
+  "title": "Decisions Become Actions",
+  "subtitle": "Turning a model choice into a checked browser move",
+  "animal": "heron",
+  "accent": "#34d399",
+  "premise": "Bridge structured classification to browser actions using observation-bound joint candidates, typed arguments, live locator resolution, and one-action-then-observe execution. A Chrome extension and a native Playwright runner have different powers.",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Build the menu from the living page",
+      "claim_status": "Proposed browser-action architecture",
+      "takeaway": "Choose legal target/action pairs from a versioned observation; the candidate inventory is itself a source of error.",
+      "visual_mechanism": "The profile page produces a candidate lattice. Each tile is an inseparable target plus action, tethered to an observation badge.",
+      "visual_beats": [
+        "Observe visible and eligible controls.",
+        "Bind candidates to page/frame/observation version.",
+        "Keep target and action paired.",
+        "Filter a disabled Save action.",
+        "Expose a missing useful target as a coverage gap."
+      ],
+      "sources": [
+        "charter: Browser-action invariants 1–3",
+        "charter: E7 milestone"
+      ],
+      "captions": [
+        "Now return to our profile page. Before asking a model what to do, the system observes the page and constructs the actions it can currently support.",
+        "Each candidate joins a target with an action. Open this menu. Focus this field. Fill this editable control. Click this available button.",
+        "Keeping those pieces together prevents a bad combination, such as selecting one element and independently selecting an action that element cannot perform.",
+        "Each candidate also belongs to a particular page observation. It is a temporary reference to something seen now, rather than a permanent identity for that control.",
+        "The task and recent history accompany the menu. Changing a name should guide the ranking differently from reviewing account settings or signing out.",
+        "A small policy could rank these candidates directly. A larger model could choose among them through a constrained interface, using the same decision contract.",
+        "But a model cannot choose a useful target that the inventory never found. We have to measure that missing coverage separately from ranking mistakes.",
+        "This is where bounded decisions become a product system: the menu, the model, and the live page all have to agree about what a choice means."
+      ]
+    },
+    {
+      "number": 2,
+      "title": "A choice is not yet a selector",
+      "claim_status": "Proposed checked execution",
+      "takeaway": "Generate a locator from a verified live target and revalidate just before execution.",
+      "visual_mechanism": "A selected tile becomes a structured locator recipe while its target moves on the page; a stale-version gate sends it back to observation.",
+      "visual_beats": [
+        "Select a temporary candidate ID.",
+        "Resolve role/name/test-ID evidence into a locator.",
+        "Show an ambiguous duplicate Save control.",
+        "Reject a stale response after a rerender.",
+        "Dispatch one checked action and observe a postcondition."
+      ],
+      "sources": [
+        "charter: Browser-action invariants 2–4",
+        "charter: Reference and architecture decisions"
+      ],
+      "captions": [
+        "It is tempting to ask the model to write a selector and immediately execute whatever comes back. Our proposed contract separates the decision from that last step.",
+        "The chosen candidate points to a target in an observation. Code then builds a locator from evidence about that target in the live page.",
+        "For example, a button's role and accessible name may identify it. A stable test identifier may help. The exact recipe depends on what the page exposes.",
+        "Before acting, the executor checks that the locator resolves uniquely, that the element is still present, and that the requested action is available.",
+        "Pages change while a model is thinking. If a dialog opens or a control disappears, yesterday's good answer can become today's wrong target.",
+        "A stale or ambiguous choice triggers a fresh observation or an abstention. It must not turn into a guessed click on something that merely looks close.",
+        "After one checked action, the system observes the result. A click returning successfully is weaker evidence than the intended change actually appearing on the page.",
+        "This loop gives us a meaningful unit of progress: observe, decide, validate, act, and check what happened before deciding again."
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Values, intent, and execution boundaries",
+      "claim_status": "Proposed product boundaries",
+      "takeaway": "Bounded action selection does not supply arbitrary text, future page state, or authority to act.",
+      "visual_mechanism": "The action tile opens into a typed argument slot. Task-provided text flows into it, then the page visibly changes after execution.",
+      "visual_beats": [
+        "Carry Brett from the explicit task into a typed value slot.",
+        "Distinguish copied value, bounded choice, and generated text.",
+        "Show the Chrome focus adapter beside the native Playwright adapter.",
+        "Stop an action at a changed page state.",
+        "Keep future steps grayed until a new observation exists."
+      ],
+      "sources": [
+        "charter: Who and what we are building for",
+        "charter: Browser-action invariants 1–4"
+      ],
+      "captions": [
+        "Selecting the name field does not tell us what to type into it. Action arguments need their own explicit source and validation.",
+        "In our example, the name Brett comes from the user's task. We can carry that value through as task data without asking a model to invent it.",
+        "Other values may come from a bounded menu. Truly open-ended text needs a separate generation path, with its own latency and quality checks.",
+        "The executor also depends on the product mode. A Chrome extension can observe supported page content and focus a target through its page integration.",
+        "It should not be described as having the entire Playwright interface. Autonomous Playwright execution belongs to a separately connected runner in this design.",
+        "The task defines what the system is authorized to do. Text found on a page supplies evidence about the page, not permission to expand the task.",
+        "And we do not execute a whole guessed future sequence in parallel. Each action can change the page, so the next decision needs the resulting state.",
+        "The fast path saves work inside a decision. It still respects the order in which a real browser task unfolds."
+      ]
+    }
+  ]
+}

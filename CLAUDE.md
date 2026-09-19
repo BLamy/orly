@@ -5,15 +5,25 @@ narrated, animated D3 data‑flow explainer of one subsystem of some codebase, b
 as an **O'RLY‑parody** O'Reilly‑style book. The shelf deploys to Cloudflare Workers:
 **https://orly.brett-lamy.workers.dev/**
 
+## Authoring model routing
+
+Use **GPT-6 Astra (`gpt-6-astra`) for planning and Blender 3D modeling** and
+**Claude Fable 5.1 (`claude-fable-5-1`) for D3/SVG animations**. Follow
+[the authoring model workflow](docs/authoring-models.md) for handoffs, provider
+provenance and hybrid scene verification. Always launch Claude with
+`npx --yes @anthropic-ai/claude-code@latest`, never the installed global CLI.
+Keep the exact requested model; save progress on a provider limit rather than
+silently substituting. Astra may continue independent 3D/integration work.
+
 ## The main thing you do here
 **Create a new book** when asked: run **`/new-book <repo> | <subsystem> | <title>`**
-(see `.claude/commands/new-book.md`). It digests the repo, you write the storyboard,
+(see `.claude/commands/new-book.md`). It digests the repo, Astra writes the visual plan and Fable authors D3 scenes,
 then the pipeline narrates it (ElevenLabs), generates an O'RLY cover (gpt‑image),
 adds Noun Project icons, and you commit + push to redeploy.
 
 ## Architecture
 - `generator/` — the pipeline (run via `npm run explain`):
-  - `repo.mjs` digest · `storyboard.mjs` (Anthropic API path) · `validate.mjs`
+  - `repo.mjs` digest · `storyboard.mjs` (retired automatic planner) · `validate.mjs`
     (cover‑first/reveal‑union checks + the **layered layout** that prevents node
     overlap and hidden arrows) · `tts.mjs` (ElevenLabs `convertWithTimestamps` →
     exact per‑step cues) · `noun.mjs` + `iconize.mjs` (icons for nodes/packets) ·
@@ -42,8 +52,8 @@ adds Noun Project icons, and you commit + push to redeploy.
 - **Ground everything in real code** — no invented components/files/flows. The
   storyboard system prompt (`generator/prompts/storyboard.txt`) enforces this.
 - Keys live in a **gitignored `.env`** (ElevenLabs, OpenAI, Noun Project). Never
-  commit secrets. The storyboard step uses **you (Claude Code)**, so no Anthropic
-  key is required.
+  commit secrets. Planning uses Astra; D3 authoring uses the signed-in latest Claude CLI.
+  See docs/authoring-models.md for CI credentials.
 
 ## Run locally
 `npm run dev` → http://localhost:5173/ (shelf). Deploy is automatic on push to

@@ -10,6 +10,11 @@ description: >
 
 # Authoring a viz scene
 
+## Model responsibilities
+
+Read [the project authoring workflow](../../../docs/authoring-models.md). Astra (`gpt-6-astra`) plans and builds Blender/Three.js 3D assets; Fable 5.1 (`claude-fable-5-1`) authors and revises D3/SVG choreography. Invoke Fable through `npx --yes @anthropic-ai/claude-code@latest`. Preserve fixed captions and record actual provider provenance. Do not substitute models on a rate limit; continue independent work for the available role.
+
+
 `apps/bookshelf/src/viz/` is a scrubbable animation suite: one `Timeline` holds every value as
 channels + tweens; `sample(t)` is a **pure function of time**; a rAF `Player`
 owns the only clock. Nothing self-animates — a component renders values handed

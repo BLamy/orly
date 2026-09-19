@@ -1,0 +1,41 @@
+[
+  [
+    {
+      "title": "A suggestion becomes focus only when accepted",
+      "lead": "The proposed local assistant distinguishes a predicted-target halo from actual keyboard focus. In enabled contexts, Tab accepts the visible suggestion and moves focus; it does not activate the target or complete an autonomous task.",
+      "startCue": 0,
+      "endCue": 4
+    },
+    {
+      "title": "Helpful assistance preserves a way through the page",
+      "lead": "Uncertainty and stale targets return control to ordinary navigation. Escape, reverse navigation, and application editing shortcuts retain their meaning. Site and context compatibility are part of the product's usefulness.",
+      "startCue": 4
+    }
+  ],
+  [
+    {
+      "title": "Separate human feedback from the system's own echo",
+      "lead": "Showing a suggestion, moving focus, and seeing meaningful subsequent interaction are different events. Treating extension-produced focus as confirmation would manufacture a self-reinforcing training signal.",
+      "startCue": 0,
+      "endCue": 4
+    },
+    {
+      "title": "Evaluate each new personal checkpoint",
+      "lead": "Acceptance alone can be ambiguous. Controlled feedback, retained provenance, separate recording and training controls, and rollback let personalization follow the person without requiring continuous background weight updates.",
+      "startCue": 4
+    }
+  ],
+  [
+    {
+      "title": "Prove one useful workflow before broadening the scope",
+      "lead": "Start on a limited site with a small ranking baseline. Shadow predictions reveal errors before anything moves; visible suggestions and opt-in acceptance follow only when evidence supports them.",
+      "startCue": 0,
+      "endCue": 4
+    },
+    {
+      "title": "The destination is useful work completed with less waiting",
+      "lead": "The checked autonomous runner and explicit hybrid mode extend the same foundation. The final gate is faster completed tasks at a predeclared reliability level, while predictive Tab remains a small user-controlled moment built on that evidence.",
+      "startCue": 4
+    }
+  ]
+]

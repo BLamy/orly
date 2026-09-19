@@ -23,7 +23,7 @@ import { mkdirSync, writeFileSync, readdirSync, existsSync } from 'node:fs';
 import { execFileSync } from 'node:child_process';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { synthesizeChapter } from './tts.mjs';
+import { synthesizeChapter, sanitizeSpoken } from './tts.mjs';
 import { extractScene } from './scene-captions.mjs';
 import { generateAnimal, thumbnailAnimal } from './cover.mjs';
 import { upsertBook, colorForSlug } from './library.mjs';
@@ -130,13 +130,13 @@ Env: ELEVENLABS_API_KEY (narration), OPENAI_API_KEY (cover).`);
     const ex = await extractScene(file);
     if (!ex.captions.length) throw new Error(`chapter ${n}: scene has no captions — captions are the narration script`);
     for (const c of ex.captions) {
-      for (const reason of speakabilityProblems(c.text)) unspeakable.push(`chapter ${n} @${c.at}s: ${reason} — “${c.text.slice(0, 80)}”`);
+      for (const reason of speakabilityProblems(sanitizeSpoken(c.text))) unspeakable.push(`chapter ${n} @${c.at}s: ${reason} — “${c.text.slice(0, 80)}”`);
     }
     log(`  chapter ${n}: ${ex.captions.length} captions, ${ex.duration.toFixed(1)}s timeline`);
     extracted.push({ n, file, ...ex });
   }
   if (unspeakable.length) {
-    console.error('\x1b[31m✗ captions are read aloud VERBATIM by ElevenLabs — these are not speakable:\x1b[0m');
+    console.error('\x1b[31m✗ captions remain unspeakable after voice-only pronunciation normalization:\x1b[0m');
     for (const u of unspeakable) console.error('  ' + u);
     console.error('  Rewrite them for the ear (identifiers/paths/hashes belong in on-screen labels, not the voice).');
     process.exit(1);

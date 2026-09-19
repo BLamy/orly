@@ -24,7 +24,9 @@
     "cf:deploy": "wrangler deploy",
     "cf:preview": "wrangler versions upload",
     "lint:yaml": "node generator/lint-yaml.mjs",
-    "prepare": "git config core.hooksPath .githooks || true"
+    "prepare": "git config core.hooksPath .githooks || true",
+    "author:d3": "node generator/run-fable.mjs",
+    "test:authoring": "node --test generator/authoring-models.test.mjs"
   },
   "dependencies": {
     "@brett_lamy/docstream": "^0.3.7",

@@ -1,0 +1,18 @@
+[
+  [
+    {"title":"An answer advances along a token tape","lead":"The support-note fixture asks for topic and urgency. In ordinary autoregressive generation, every new token extends the context for the next step. Some tokens carry decisions; others spell the structure around them.","startCue":0,"endCue":4},
+    {"title":"Caching does not remove output dependencies","lead":"The ordinary decoder already reuses cached computation. A grammar can constrain valid output, but the decoder still advances through its output sequence. The proposed alternative targets that sequential decision work rather than pretending the baseline rereads the full input each time.","startCue":4}
+  ],
+  [
+    {"title":"Prefill builds reusable context state","lead":"One logical shared prefill processes the note and common instructions. Transformer key/value state carries reusable context into subsequent computations; it is not a natural-language summary. Topic and urgency suffixes can then ask different questions of that shared context.","startCue":0,"endCue":4},
+    {"title":"Branches still have real costs","lead":"Each branch needs its own valid continuation state. Long inputs still consume computation and memory, and sharing the logical context does not establish zero-copy storage. The implementation must account for actual allocations, copies, and completed model work.","startCue":4}
+  ],
+  [
+    {"title":"Batch the independent field questions","lead":"A real model batch carries the field suffixes together. Unequal lengths require correct padding, attention masks, and token positions so each branch sees exactly its permitted context. Choice scores follow an explicit policy, with extra continuation when a choice is not resolved.","startCue":0,"endCue":4},
+    {"title":"Software constructs the typed result","lead":"Once values are selected, code supplies field names, punctuation, exact enum labels, and actual booleans. Independent classification fields can share this path; dependent decisions need an explicit dependency rather than a claim of independence.","startCue":4}
+  ],
+  [
+    {"title":"A shared token prefix is not a complete decision","lead":"The paths [17], [17,42], and [17,91] are schematic teaching fixtures, not Qwen tokenization. One path ends at the shared prefix while two continue. A faithful implementation must retain the completed choice and perform the remaining work for unresolved alternatives.","startCue":0,"endCue":4},
+    {"title":"A ranking score is not calibrated confidence","lead":"Normalizing the allowed choices produces a ranking, not evidence that the selected answer will be correct that often. Measured reliability is a separate question.","startCue":4}
+  ]
+]

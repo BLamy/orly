@@ -1,0 +1,41 @@
+[
+  [
+    {
+      "title": "Stop the recording before the answer happens",
+      "lead": "A training input contains only the page state and history available immediately before the labeled action. rrweb and Replay require source-specific adapters; neither is automatically evidence of a successful task or a known intention.",
+      "startCue": 0,
+      "endCue": 4
+    },
+    {
+      "title": "Keep future effects out of the features",
+      "lead": "The click, its resulting focus, and any success message belong after the prediction boundary. Unknown goals remain unknown. Action labels, goal provenance, observed outcomes, and data-quality evidence remain separate fields.",
+      "startCue": 4
+    }
+  ],
+  [
+    {
+      "title": "Turn bounded raw events into traceable examples",
+      "lead": "The proposed local workflow stores eligible recordings separately from compact derived examples. Extraction versions and source lineage make it possible to correct inputs, delete data, and identify affected model artifacts.",
+      "startCue": 0,
+      "endCue": 4
+    },
+    {
+      "title": "Seal the evaluation boundary before learning",
+      "lead": "Related sessions and copied templates must not leak across dataset splits. Development and calibration support iteration; a final held-out partition tests the selected system. New sites and later sessions expose failures that memorized layouts can hide.",
+      "startCue": 4
+    }
+  ],
+  [
+    {
+      "title": "Start with a small ranking problem",
+      "lead": "Counts and a linear ranker establish whether the dataset carries useful signal. A learned policy scores the legal candidate menu from causal page features, recent history, and a task when one is actually known.",
+      "startCue": 0,
+      "endCue": 4
+    },
+    {
+      "title": "Learning changes weights; decoding changes how answers emerge",
+      "lead": "Teacher labels require auditing. The initial training process can run natively on a Mac, with a compact model exported and checked for browser inference parity. Training a foundation model inside Chrome is not a prerequisite.",
+      "startCue": 4
+    }
+  ]
+]

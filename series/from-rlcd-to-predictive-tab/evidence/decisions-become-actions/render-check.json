@@ -1,0 +1,177 @@
+[
+  {
+    "chapter": 1,
+    "story": "books-decisions-become-actions-chapter-1--build-the-menu-from-the-living-page",
+    "forwardBackwardSeeking": "passed",
+    "consoleErrors": [],
+    "infrastructureWarnings": [],
+    "frames": [
+      {
+        "t": 1,
+        "file": "chapter-1-state-0.png"
+      },
+      {
+        "t": 41.053,
+        "file": "chapter-1-state-1.png"
+      },
+      {
+        "t": 9.778,
+        "file": "chapter-1-state-2.png"
+      },
+      {
+        "t": 20.645,
+        "file": "chapter-1-state-3.png"
+      },
+      {
+        "t": 30.838,
+        "file": "chapter-1-state-4.png"
+      },
+      {
+        "t": 43.04,
+        "file": "chapter-1-state-5.png"
+      },
+      {
+        "t": 52.363,
+        "file": "chapter-1-state-6.png"
+      },
+      {
+        "t": 64.41499999999999,
+        "file": "chapter-1-state-7.png"
+      },
+      {
+        "t": 75.085,
+        "file": "chapter-1-state-8.png"
+      },
+      {
+        "t": 81.106,
+        "file": "chapter-1-state-9.png"
+      },
+      {
+        "t": 20.5265,
+        "file": "chapter-1-state-10.png"
+      },
+      {
+        "t": 41.053,
+        "file": "chapter-1-state-11.png"
+      }
+    ]
+  },
+  {
+    "chapter": 2,
+    "story": "books-decisions-become-actions-chapter-2--a-choice-is-not-yet-a-selector",
+    "forwardBackwardSeeking": "passed",
+    "consoleErrors": [],
+    "infrastructureWarnings": [],
+    "frames": [
+      {
+        "t": 1,
+        "file": "chapter-2-state-0.png"
+      },
+      {
+        "t": 40.7515,
+        "file": "chapter-2-state-1.png"
+      },
+      {
+        "t": 9.824,
+        "file": "chapter-2-state-2.png"
+      },
+      {
+        "t": 18.962,
+        "file": "chapter-2-state-3.png"
+      },
+      {
+        "t": 31.768,
+        "file": "chapter-2-state-4.png"
+      },
+      {
+        "t": 42.054,
+        "file": "chapter-2-state-5.png"
+      },
+      {
+        "t": 53.049,
+        "file": "chapter-2-state-6.png"
+      },
+      {
+        "t": 62.604,
+        "file": "chapter-2-state-7.png"
+      },
+      {
+        "t": 72.856,
+        "file": "chapter-2-state-8.png"
+      },
+      {
+        "t": 80.503,
+        "file": "chapter-2-state-9.png"
+      },
+      {
+        "t": 20.37575,
+        "file": "chapter-2-state-10.png"
+      },
+      {
+        "t": 40.7515,
+        "file": "chapter-2-state-11.png"
+      }
+    ]
+  },
+  {
+    "chapter": 3,
+    "story": "books-decisions-become-actions-chapter-3--scene",
+    "forwardBackwardSeeking": "passed",
+    "consoleErrors": [],
+    "infrastructureWarnings": [],
+    "frames": [
+      {
+        "t": 1,
+        "file": "chapter-3-state-0.png"
+      },
+      {
+        "t": 42.841,
+        "file": "chapter-3-state-1.png"
+      },
+      {
+        "t": 9.29,
+        "file": "chapter-3-state-2.png"
+      },
+      {
+        "t": 19.67,
+        "file": "chapter-3-state-3.png"
+      },
+      {
+        "t": 29.399,
+        "file": "chapter-3-state-4.png"
+      },
+      {
+        "t": 38.792,
+        "file": "chapter-3-state-5.png"
+      },
+      {
+        "t": 48.822,
+        "file": "chapter-3-state-6.png"
+      },
+      {
+        "t": 57.471,
+        "file": "chapter-3-state-7.png"
+      },
+      {
+        "t": 67.444,
+        "file": "chapter-3-state-8.png"
+      },
+      {
+        "t": 77.046,
+        "file": "chapter-3-state-9.png"
+      },
+      {
+        "t": 84.682,
+        "file": "chapter-3-state-10.png"
+      },
+      {
+        "t": 21.4205,
+        "file": "chapter-3-state-11.png"
+      },
+      {
+        "t": 42.841,
+        "file": "chapter-3-state-12.png"
+      }
+    ]
+  }
+]

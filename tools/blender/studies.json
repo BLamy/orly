@@ -1,0 +1,82 @@
+[
+  {
+    "id": "shed",
+    "source": "books/how-to-build-a-shed/chapter-5",
+    "window": [
+      0.5,
+      20.5
+    ]
+  },
+  {
+    "id": "hifi",
+    "source": "books/hifi-umi/chapter-2",
+    "window": [
+      19.5,
+      38.5
+    ]
+  },
+  {
+    "id": "bench",
+    "source": "books/cedar-garden-bench/chapter-3",
+    "window": [
+      0.5,
+      26.8
+    ]
+  },
+  {
+    "id": "loss",
+    "source": "explainers/loss-landscape/LossLandscape",
+    "window": [
+      19,
+      85.4
+    ]
+  },
+  {
+    "id": "table",
+    "source": "books/kitchen-side-table/chapter-4",
+    "window": [
+      59.1,
+      73.2
+    ]
+  },
+  {
+    "id": "bar",
+    "source": "books/pallet-backyard-bar/chapter-3",
+    "window": [
+      34.5,
+      42.1
+    ]
+  },
+  {
+    "id": "svm",
+    "source": "explainers/svm/Svm",
+    "window": [
+      41,
+      53
+    ]
+  },
+  {
+    "id": "turbo",
+    "source": "books/turbovla/chapter-3",
+    "window": [
+      25.9,
+      38.5
+    ]
+  },
+  {
+    "id": "hnsw",
+    "source": "explainers/hnsw/Hnsw",
+    "window": [
+      18,
+      35.5
+    ]
+  },
+  {
+    "id": "vision",
+    "source": "explainers/vision-kernels/VisionKernels",
+    "window": [
+      30,
+      52.8
+    ]
+  }
+]

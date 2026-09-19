@@ -1,0 +1,75 @@
+{
+  "edits": [
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-2.tsx",
+      "old": "tl.tween(pageU, 1, { at: b + 0.2, dur: 0.9, ease: ease.enter });",
+      "new": "tl.tween(pageU, 1, { at: b + 5.6, dur: 0.9, ease: ease.enter });"
+    },
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-2.tsx",
+      "old": "tl.tween(cam, CAM_HOME, { at: b + 5.2, dur: 1.6, ease: ease.move });",
+      "new": "tl.tween(cam, CAM_HOME, { at: b + 4.4, dur: 1.6, ease: ease.move });"
+    },
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-2.tsx",
+      "old": "const STRIP = { x: 600, y1: 504, y2: 560,",
+      "new": "const STRIP = { x: 600, y1: 484, y2: 534,"
+    },
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-2.tsx",
+      "old": "const GAUGE = { cx: 1172, cy: 566 };",
+      "new": "const GAUGE = { cx: 1172, cy: 528 };"
+    },
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-2.tsx",
+      "old": "<text x={640} y={540} textAnchor=\"middle\"",
+      "new": "<text x={640} y={502} textAnchor=\"middle\""
+    },
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-2.tsx",
+      "old": "<text x={640} y={574} textAnchor=\"middle\"",
+      "new": "<text x={640} y={534} textAnchor=\"middle\""
+    },
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-2.tsx",
+      "old": "<ProposedTag x={846} y={522} u={1} text=\"PRODUCT HYPOTHESIS\" />",
+      "new": "<ProposedTag x={846} y={484} u={1} text=\"PRODUCT HYPOTHESIS\" />"
+    },
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-3.tsx",
+      "old": "const CAM_LEFT: CameraState = { x: 330, y: 310, k: 1.22 };",
+      "new": "const CAM_LEFT: CameraState = { x: 628, y: 335, k: 1.035 };"
+    },
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-3.tsx",
+      "old": "const CAM_RIGHT: CameraState = { x: 950, y: 310, k: 1.22 };",
+      "new": "const CAM_RIGHT: CameraState = { x: 652, y: 335, k: 1.035 };"
+    },
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-3.tsx",
+      "old": "const CAM_TOP: CameraState = { x: 640, y: 250, k: 1.1 };",
+      "new": "const CAM_TOP: CameraState = { x: 640, y: 285, k: 1.06 };"
+    },
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-3.tsx",
+      "old": "const CAM_LOW: CameraState = { x: 640, y: 400, k: 1.12 };",
+      "new": "const CAM_LOW: CameraState = { x: 640, y: 372, k: 1.04 };"
+    },
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-3.tsx",
+      "old": "const CAM_ROAD: CameraState = { x: 660, y: 345, k: 1 };",
+      "new": "const CAM_ROAD: CameraState = { x: 660, y: 384, k: 1 };"
+    },
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-3.tsx",
+      "old": "const dim = 1 - 0.88 * s.get(scene.dimU);",
+      "new": "const dim = 1 - s.get(scene.dimU);"
+    },
+    {
+      "file": "apps/bookshelf/src/viz/books/next-useful-action/chapter-3.tsx",
+      "old": "also in the charter: E9 models · E11 integration · E13 release",
+      "new": "also: E9 models · E11 integration · E13 release"
+    }
+  ],
+  "rationale": "Ch2 cue 1: page now fades in at 5.6s, after the pull-back to CAM_HOME (moved to 4.4s) has mostly landed, so the tree push never shows a half-clipped page. Ch2 cue 5: text ribbon and gauge moved up so their lowest text lands at screen y<=573. Ch2 cue 8: takeaway lines and tag moved up (screen baselines 527/559; tag top 509), clear of the escape-route text. Ch3 cues 2/3: both lenses stay fully in frame with a modest lean toward the active lens (k=1.035, x 628 then 652). Both lenses span screen x 49..1270 across the two cues; lens bottom lands at screen 566, above the caption band. Ch3 cue 5: CAM_TOP {640,285,1.06} puts the last shared-foundation row at screen ~548 and keeps both cards inside x 36..1244. Ch3 cue 6: CAM_LOW {640,372,1.04} keeps card tops and the foundation bottom (screen ~566) in frame; the move reads as a small tilt down the tower. Ch3 cue 7: CAM_ROAD y=384 puts the roadmap bottom at screen 570 and the foundation at 546. I shortened the mono note 'also in the charter: ...' to 'also: ...' because its end was clipped past the right screen edge. Ch3 cue 8: old layers now fade to 0 (previously 0.12) before the 1.9x push, leaving only the undimmed foundation in frame. Not verified; parent rerenders."
+}

@@ -53,9 +53,8 @@ body:
     id: model
     attributes:
       label: Model
-      description: Which Claude model generates this book
+      description: Astra plans and models in 3D; Fable 5.1 authors D3 animations
       options:
-        - "Fable 5 — highest quality (claude-fable-5)"
-        - "Opus 4.8 (claude-opus-4-8)"
+        - "Astra planning + Fable 5.1 animations (claude-fable-5-1)"
     validations:
       required: true

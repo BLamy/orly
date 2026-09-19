@@ -1,0 +1,36 @@
+{
+  "entrypoint": "npx --yes @anthropic-ai/claude-code@latest",
+  "sourceCommit": "1231850a0bf1a0c0341fe408ef1668dbbfdfac46",
+  "runs": [
+    {
+      "role": "scene rewrite and cutoff",
+      "sessionId": "421db41c-7064-42d8-a296-b92420134b06",
+      "requestedModel": "claude-fable-5-1",
+      "actualModels": [
+        "claude-fable-5-1"
+      ],
+      "isError": false,
+      "durationMs": 1331048
+    },
+    {
+      "role": "chapters 1-2 layout review",
+      "sessionId": "a9891926-2825-44ff-9d51-f3eeda9e143c",
+      "requestedModel": "claude-fable-5-1",
+      "actualModels": [
+        "claude-fable-5-1"
+      ],
+      "isError": false,
+      "durationMs": 267491
+    },
+    {
+      "role": "chapter 3 layout review",
+      "sessionId": "f7e21d89-bf6f-47eb-b3a8-f9c5bac50112",
+      "requestedModel": "claude-fable-5-1",
+      "actualModels": [
+        "claude-fable-5-1"
+      ],
+      "isError": false,
+      "durationMs": 182286
+    }
+  ]
+}

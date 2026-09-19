@@ -1,0 +1,554 @@
+[
+  {
+    "id": "shed",
+    "story": "blender-3d-01-raising-the-shed--scene",
+    "reverseSeek": "passed",
+    "comparison": "passed",
+    "cameraChecks": [],
+    "errors": []
+  },
+  {
+    "id": "hifi",
+    "story": "blender-3d-02-reconstruct-the-hands--scene",
+    "reverseSeek": "passed",
+    "comparison": "passed",
+    "cameraChecks": [],
+    "errors": []
+  },
+  {
+    "id": "bench",
+    "story": "blender-3d-03-stack-the-bench--scene",
+    "reverseSeek": "passed",
+    "comparison": "passed",
+    "cameraChecks": [
+      {
+        "t": 4,
+        "shot": "See the rail, legs and layers",
+        "reverseSeek": "passed"
+      },
+      {
+        "t": 11,
+        "shot": "The spacer between the rails",
+        "reverseSeek": "passed"
+      },
+      {
+        "t": 17,
+        "shot": "The next rail lands on the legs",
+        "reverseSeek": "passed"
+      },
+      {
+        "t": 24,
+        "shot": "Leg infill and the next spacer",
+        "reverseSeek": "passed"
+      }
+    ],
+    "errors": []
+  },
+  {
+    "id": "loss",
+    "story": "blender-3d-04-loss-as-terrain--scene",
+    "reverseSeek": "passed",
+    "comparison": "passed",
+    "cameraChecks": [
+      {
+        "t": 22,
+        "shot": "The complete loss surface",
+        "reverseSeek": "passed",
+        "descent": [
+          {
+            "progress": 0,
+            "visible": false,
+            "position": [
+              3.2,
+              2.3382763362853645,
+              1.8
+            ]
+          },
+          {
+            "progress": 0,
+            "visible": false,
+            "position": [
+              3.4,
+              2.288844308675995,
+              -1.6
+            ]
+          }
+        ]
+      },
+      {
+        "t": 28,
+        "shot": "Ripples across the surface",
+        "reverseSeek": "passed",
+        "descent": [
+          {
+            "progress": 0,
+            "visible": false,
+            "position": [
+              3.2,
+              2.3382763362853645,
+              1.8
+            ]
+          },
+          {
+            "progress": 0,
+            "visible": false,
+            "position": [
+              3.4,
+              2.288844308675995,
+              -1.6
+            ]
+          }
+        ]
+      },
+      {
+        "t": 32,
+        "shot": "Saddle • uphill one way, downhill the other",
+        "reverseSeek": "passed",
+        "descent": [
+          {
+            "progress": 0,
+            "visible": false,
+            "position": [
+              3.2,
+              2.3382763362853645,
+              1.8
+            ]
+          },
+          {
+            "progress": 0,
+            "visible": false,
+            "position": [
+              3.4,
+              2.288844308675995,
+              -1.6
+            ]
+          }
+        ]
+      },
+      {
+        "t": 34,
+        "shot": "Saddle • uphill one way, downhill the other",
+        "reverseSeek": "passed",
+        "descent": [
+          {
+            "progress": 0,
+            "visible": false,
+            "position": [
+              3.2,
+              2.3382763362853645,
+              1.8
+            ]
+          },
+          {
+            "progress": 0,
+            "visible": false,
+            "position": [
+              3.4,
+              2.288844308675995,
+              -1.6
+            ]
+          }
+        ]
+      },
+      {
+        "t": 39,
+        "shot": "Local minimum • a shallow basin",
+        "reverseSeek": "passed",
+        "descent": [
+          {
+            "progress": 0,
+            "visible": false,
+            "position": [
+              3.2,
+              2.3382763362853645,
+              1.8
+            ]
+          },
+          {
+            "progress": 0,
+            "visible": false,
+            "position": [
+              3.4,
+              2.288844308675995,
+              -1.6
+            ]
+          }
+        ]
+      },
+      {
+        "t": 40,
+        "shot": "Local minimum • a shallow basin",
+        "reverseSeek": "passed",
+        "descent": [
+          {
+            "progress": 0,
+            "visible": false,
+            "position": [
+              3.2,
+              2.3382763362853645,
+              1.8
+            ]
+          },
+          {
+            "progress": 0,
+            "visible": false,
+            "position": [
+              3.4,
+              2.288844308675995,
+              -1.6
+            ]
+          }
+        ]
+      },
+      {
+        "t": 45,
+        "shot": "Two best fits • the same model, mirrored",
+        "reverseSeek": "passed",
+        "descent": [
+          {
+            "progress": 0,
+            "visible": false,
+            "position": [
+              3.2,
+              2.3382763362853645,
+              1.8
+            ]
+          },
+          {
+            "progress": 0,
+            "visible": false,
+            "position": [
+              3.4,
+              2.288844308675995,
+              -1.6
+            ]
+          }
+        ]
+      },
+      {
+        "t": 47,
+        "shot": "Two best fits • the same model, mirrored",
+        "reverseSeek": "passed",
+        "descent": [
+          {
+            "progress": 0,
+            "visible": false,
+            "position": [
+              3.2,
+              2.3382763362853645,
+              1.8
+            ]
+          },
+          {
+            "progress": 0,
+            "visible": false,
+            "position": [
+              3.4,
+              2.288844308675995,
+              -1.6
+            ]
+          }
+        ]
+      },
+      {
+        "t": 51,
+        "shot": "Orange: descending into the shallow basin",
+        "reverseSeek": "passed",
+        "descent": [
+          {
+            "progress": 0,
+            "visible": false,
+            "position": [
+              3.2,
+              2.3382763362853645,
+              1.8
+            ]
+          },
+          {
+            "progress": 0,
+            "visible": false,
+            "position": [
+              3.4,
+              2.288844308675995,
+              -1.6
+            ]
+          }
+        ]
+      },
+      {
+        "t": 52.3,
+        "shot": "Orange: descending into the shallow basin",
+        "reverseSeek": "passed",
+        "descent": [
+          {
+            "progress": 0,
+            "visible": true,
+            "position": [
+              3.2,
+              1.6382763362853643,
+              1.8
+            ]
+          },
+          {
+            "progress": 0,
+            "visible": false,
+            "position": [
+              3.4,
+              2.288844308675995,
+              -1.6
+            ]
+          }
+        ]
+      },
+      {
+        "t": 53,
+        "shot": "Orange: descending into the shallow basin",
+        "reverseSeek": "passed",
+        "descent": [
+          {
+            "progress": 0.08695652173913013,
+            "visible": true,
+            "position": [
+              3.3412200283526072,
+              0.5881268767176763,
+              0.4528512248761158
+            ]
+          },
+          {
+            "progress": 0,
+            "visible": false,
+            "position": [
+              3.4,
+              2.288844308675995,
+              -1.6
+            ]
+          }
+        ]
+      },
+      {
+        "t": 55,
+        "shot": "Orange: descending into the shallow basin",
+        "reverseSeek": "passed",
+        "descent": [
+          {
+            "progress": 0.5217391304347824,
+            "visible": true,
+            "position": [
+              3.400013623089283,
+              0.5355411870654053,
+              0.07924482929881967
+            ]
+          },
+          {
+            "progress": 0,
+            "visible": false,
+            "position": [
+              3.4,
+              2.288844308675995,
+              -1.6
+            ]
+          }
+        ]
+      },
+      {
+        "t": 58,
+        "shot": "The ball has stopped • compare its fit at left",
+        "reverseSeek": "passed",
+        "descent": [
+          {
+            "progress": 1,
+            "visible": true,
+            "position": [
+              3.4182259724558257,
+              0.5355099840952805,
+              0.0794861824981492
+            ]
+          },
+          {
+            "progress": 0,
+            "visible": false,
+            "position": [
+              3.4,
+              2.288844308675995,
+              -1.6
+            ]
+          }
+        ]
+      },
+      {
+        "t": 64.7,
+        "shot": "Mint: a different start, the same descent rule",
+        "reverseSeek": "passed",
+        "descent": [
+          {
+            "progress": 1,
+            "visible": true,
+            "position": [
+              3.4182259724558257,
+              0.5355099840952805,
+              0.0794861824981492
+            ]
+          },
+          {
+            "progress": 0,
+            "visible": true,
+            "position": [
+              3.4,
+              1.588844308675995,
+              -1.6
+            ]
+          }
+        ]
+      },
+      {
+        "t": 66,
+        "shot": "Mint: a different start, the same descent rule",
+        "reverseSeek": "passed",
+        "descent": [
+          {
+            "progress": 1,
+            "visible": true,
+            "position": [
+              3.4182259724558257,
+              0.5355099840952805,
+              0.0794861824981492
+            ]
+          },
+          {
+            "progress": 0.22727272727272727,
+            "visible": true,
+            "position": [
+              1.9803893670416186,
+              0.14256323689047812,
+              -0.8966565900634087
+            ]
+          }
+        ]
+      },
+      {
+        "t": 68,
+        "shot": "Mint: a different start, the same descent rule",
+        "reverseSeek": "passed",
+        "descent": [
+          {
+            "progress": 1,
+            "visible": true,
+            "position": [
+              3.4182259724558257,
+              0.5355099840952805,
+              0.0794861824981492
+            ]
+          },
+          {
+            "progress": 0.6818181818181818,
+            "visible": true,
+            "position": [
+              1.9876199299187187,
+              0.1343149536414624,
+              -1.0473677034335884
+            ]
+          }
+        ]
+      },
+      {
+        "t": 71,
+        "shot": "Two starts • two outcomes",
+        "reverseSeek": "passed",
+        "descent": [
+          {
+            "progress": 1,
+            "visible": true,
+            "position": [
+              3.4182259724558257,
+              0.5355099840952805,
+              0.0794861824981492
+            ]
+          },
+          {
+            "progress": 1,
+            "visible": true,
+            "position": [
+              1.9876249728206563,
+              0.13431495232987561,
+              -1.0474276154276374
+            ]
+          }
+        ]
+      },
+      {
+        "t": 79,
+        "shot": "Training is a path across the loss surface",
+        "reverseSeek": "passed",
+        "descent": [
+          {
+            "progress": 1,
+            "visible": true,
+            "position": [
+              3.4182259724558257,
+              0.5355099840952805,
+              0.0794861824981492
+            ]
+          },
+          {
+            "progress": 1,
+            "visible": true,
+            "position": [
+              1.9876249728206563,
+              0.13431495232987561,
+              -1.0474276154276374
+            ]
+          }
+        ]
+      }
+    ],
+    "errors": []
+  },
+  {
+    "id": "table",
+    "story": "blender-3d-05-tabletop-button--scene",
+    "reverseSeek": "passed",
+    "comparison": "passed",
+    "cameraChecks": [],
+    "errors": []
+  },
+  {
+    "id": "bar",
+    "story": "blender-3d-06-see-through-the-bar-top--scene",
+    "reverseSeek": "passed",
+    "comparison": "passed",
+    "cameraChecks": [],
+    "errors": []
+  },
+  {
+    "id": "svm",
+    "story": "blender-3d-07-lift-xor--scene",
+    "reverseSeek": "passed",
+    "comparison": "passed",
+    "cameraChecks": [],
+    "errors": []
+  },
+  {
+    "id": "turbo",
+    "story": "blender-3d-08-twelve-gripper-poses--scene",
+    "reverseSeek": "passed",
+    "comparison": "passed",
+    "cameraChecks": [],
+    "errors": []
+  },
+  {
+    "id": "hnsw",
+    "story": "blender-3d-09-descend-the-index--scene",
+    "reverseSeek": "passed",
+    "comparison": "passed",
+    "cameraChecks": [],
+    "errors": []
+  },
+  {
+    "id": "vision",
+    "story": "blender-3d-10-stack-feature-maps--scene",
+    "reverseSeek": "passed",
+    "comparison": "passed",
+    "cameraChecks": [],
+    "errors": []
+  }
+]

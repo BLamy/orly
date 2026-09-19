@@ -1,0 +1,55 @@
+{
+  "series": "From RLCD to Predictive Tab",
+  "source": "/Users/blamy/Documents/Codex/2026-09-16/can-you-get-this-running-on",
+  "model": "claude-fable-5-1",
+  "books": [
+    {
+      "order": 1,
+      "title": "The Next Useful Action",
+      "subtitle": "A product vision for a browser that keeps up",
+      "animal": "kingfisher",
+      "accent": "#38bdf8",
+      "subsystem": "Begin with a familiar browser task, then reveal why predicting a bounded next action might feel faster than generating a whole instruction. Establish assistive focus and goal-directed automation as separate experiences."
+    },
+    {
+      "order": 2,
+      "title": "One Read, Many Decisions",
+      "subtitle": "Inside Qwen-RLCD generation",
+      "animal": "octopus",
+      "accent": "#a78bfa",
+      "subsystem": "Explain ordinary autoregressive output, shared-context prefill, independent batched field queries, permitted-token scoring, collision continuation, and direct typed assembly. Distinguish the intended corrected algorithm from the current native reference and browser prototype."
+    },
+    {
+      "order": 3,
+      "title": "Decisions Become Actions",
+      "subtitle": "Turning a model choice into a checked browser move",
+      "animal": "heron",
+      "accent": "#34d399",
+      "subsystem": "Explain Jev Ultrafast through a flight-search example: indexed observations, speculative operation-specific target questions, selective text generation, and guarded execution."
+    },
+    {
+      "order": 4,
+      "title": "Recordings Become Practice",
+      "subtitle": "How browser history becomes a training dataset",
+      "animal": "beaver",
+      "accent": "#fbbf24",
+      "subsystem": "Explain causal extraction from eligible Replay and rrweb recordings, local storage, provenance, held-out splits, behavior cloning, teacher labels, and local training/export. Historical recordings are observations, not counterfactual simulators."
+    },
+    {
+      "order": 5,
+      "title": "A Fast Path with a Thoughtful Fallback",
+      "subtitle": "How a small policy and GLM can work together",
+      "animal": "fox",
+      "accent": "#fb7185",
+      "subsystem": "Describe the proposed GLM teacher/planner/fallback relationship, independently test constrained decoding feasibility at larger scale, and evaluate complete task success and latency with recovery included."
+    },
+    {
+      "order": 6,
+      "title": "Tab Into the Future",
+      "subtitle": "A browser that meets you halfway",
+      "animal": "hummingbird",
+      "accent": "#2dd4bf",
+      "subsystem": "Close with an opt-in predictive focus experience: learn supported personal patterns, suggest a target, accept via Tab without activation, preserve ordinary keyboard behavior, and collect non-self-reinforcing feedback. End with a concrete incremental pilot."
+    }
+  ]
+}

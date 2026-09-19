@@ -1,0 +1,129 @@
+{
+  "order": 2,
+  "slug": "one-read-many-decisions",
+  "title": "One Read, Many Decisions",
+  "subtitle": "Inside Qwen-RLCD generation",
+  "animal": "octopus",
+  "accent": "#a78bfa",
+  "premise": "Explain ordinary autoregressive output, shared-context prefill, independent batched field queries, permitted-token scoring, collision continuation, and direct typed assembly. Distinguish the intended corrected algorithm from the current native reference and browser prototype.",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Why writing an answer takes steps",
+      "claim_status": "Established mechanism; illustrative animation",
+      "takeaway": "Autoregressive generation repeatedly extends output; structured formatting alone does not remove those steps.",
+      "visual_mechanism": "A token tape grows through a model window. Existing context remains as a cache rather than being erased and reread.",
+      "visual_beats": [
+        "Read a short fictional support note.",
+        "Generate a small JSON answer as a token tape.",
+        "Illuminate output dependencies one position at a time.",
+        "Keep the ordinary decoder cache visible.",
+        "Mark the fields that actually carry decisions."
+      ],
+      "sources": [
+        "native-engine: run_naive_generation",
+        "charter: Qwen foundation invariants"
+      ],
+      "captions": [
+        "Imagine a short support note. We want to classify its topic and its urgency, using a fixed set of possible answers for each field.",
+        "A conventional language model first processes the input, then generates an answer a token at a time. Tokens are pieces of text, not necessarily whole words.",
+        "Each generated token becomes part of the context for what comes next. That creates a sequence of model steps along the output tape.",
+        "Some tokens express the actual decisions. Others spell field names, quotation marks, or the punctuation that makes the answer a valid data object.",
+        "A normal decoder already caches earlier computation. The comparison is not between remembering everything and rereading the entire prompt from scratch on every token.",
+        "Even with that cache, the next output token usually depends on the output that came before it. The sequence still has to advance.",
+        "A grammar can restrict the output to valid structure. That helps formatting, but it does not by itself turn the decoder into parallel field selection.",
+        "Our question is more specific: if we already know the fields and the permitted answers, which parts of this writing process can we replace with decisions?"
+      ]
+    },
+    {
+      "number": 2,
+      "title": "Read the shared context once",
+      "claim_status": "Intended RLCD contract, grounded in native reference",
+      "takeaway": "A single logical prefill produces reusable context state; reuse has real compute and memory costs.",
+      "visual_mechanism": "The support-note token tape becomes a layered cache matrix. A common trunk remains visible as query branches appear.",
+      "visual_beats": [
+        "Highlight the input and schema as shared context.",
+        "Transform token positions into a cache matrix.",
+        "Label prefill and key/value state on screen.",
+        "Branch two field queries from the same context.",
+        "Show real memory allocations without implying zero-copy sharing."
+      ],
+      "sources": [
+        "native-engine: run_parallel_generation",
+        "charter: Qwen foundation invariants 1–3",
+        "charter: Reference and architecture decisions"
+      ],
+      "captions": [
+        "The first stage is called prefill. The model processes the shared input and builds internal state that later computations can reuse.",
+        "In a transformer, part of that state is a cache of keys and values. Think of it as reusable context, rather than a summary written in ordinary language.",
+        "For our support note, the text and the common instructions belong in that shared context. The model should not need a separate full reading for every field.",
+        "The constrained engine performs one logical shared prefill, then prepares a short question for each field we want to classify.",
+        "One branch asks for the topic. Another asks for urgency. Both start from the same common context, but each has its own question and continuation state.",
+        "This reuse does not make the input free. A long page can still be expensive to process, and the stored state can consume substantial memory.",
+        "It also does not guarantee that memory is shared without copies. The implementation must measure how it stores and supplies that state to each branch.",
+        "The gain we are investigating comes from organizing the work around the decisions we need, while accounting honestly for the work that remains."
+      ]
+    },
+    {
+      "number": 3,
+      "title": "Ask together, assemble in code",
+      "claim_status": "Intended RLCD contract",
+      "takeaway": "Batch independent field suffixes, score permitted choices, and construct the result without generating JSON syntax.",
+      "visual_mechanism": "A two-row query matrix enters a model window; permitted-choice bars emerge and selected values drop into a typed object frame.",
+      "visual_beats": [
+        "Use unequal field-query lengths with visible masked padding.",
+        "Run the query rows as an actual batch.",
+        "Expose candidate scores, dim disallowed vocabulary.",
+        "Choose topic and urgency under a named policy.",
+        "Assemble exact enum values and booleans in code."
+      ],
+      "sources": [
+        "native-engine: run_parallel_generation",
+        "schema: StructuredSchema.compile_parallel_metadata",
+        "charter: Qwen foundation invariants 2–6"
+      ],
+      "captions": [
+        "The next stage places the field questions in a real model batch. Several rows travel through the model together, instead of becoming unrelated chat requests.",
+        "Those rows may have different lengths. Padding, attention masks, and token positions must preserve what each branch is actually allowed to see.",
+        "At a decision position, the model produces scores over possible next tokens. The engine examines the permitted choices under an explicit scoring rule.",
+        "For a simple unambiguous choice, that may be enough to select a value. Some choices require more work, which we will examine next.",
+        "Once the decisions are available, ordinary code builds the output object. It supplies the field names, punctuation, exact labels, and actual boolean values.",
+        "That is the central change: model computation selects values, while software constructs the structure around them. The model need not type that structure into existence.",
+        "Parallel fields only make sense when their decisions can use the same context without depending on each other's newly selected answer.",
+        "If choosing one field changes what another field is allowed to mean, we must represent that dependency instead of pretending the questions are independent."
+      ]
+    },
+    {
+      "number": 4,
+      "title": "The difficult cases reveal the contract",
+      "claim_status": "Known reference limitations and planned correctness work",
+      "takeaway": "Multi-token choices, branch isolation, honest scoring, and measured work are essential to a faithful implementation.",
+      "visual_mechanism": "Synthetic token paths form a prefix tree; only unresolved branches continue. A work ledger tracks prefill, batch, and continuation calls.",
+      "visual_beats": [
+        "Show synthetic paths [17], [17,42], [17,91] with an illustrative-tokenization label.",
+        "Expose the shared first token and a terminal choice.",
+        "Continue unresolved branches without altering resolved rows.",
+        "Distinguish raw ranking score from calibrated reliability.",
+        "End on current native reference / browser prototype / planned faithful browser engine."
+      ],
+      "sources": [
+        "native-engine: run_parallel_generation collision branch",
+        "schema: StructuredSchema.compile_parallel_metadata",
+        "charter: Qwen foundation invariants 3–9",
+        "charter: Reference and architecture decisions",
+        "browser-app"
+      ],
+      "captions": [
+        "Suppose two allowed answers begin with the same token. Looking at that first token cannot tell us which complete answer the model should select.",
+        "We need to continue along the allowed token paths until the choice is resolved. An answer that ends at a shared prefix also needs an explicit ending rule.",
+        "The scoring contract matters here. Greedily following a permitted path is not automatically the same as comparing the full likelihood of every possible answer.",
+        "Every extra continuation is real model work. We count it, preserve the correct branch state, and refuse to hide an unresolved choice behind a convenient default.",
+        "The displayed score also needs an honest name. A normalized set of scores is not evidence that a choice will be correct that often in actual use.",
+        "The imported native reference demonstrates the approach, but it has known collision, cache, and reporting issues that the foundation work must correct.",
+        "The current browser prototype uses ordinary grammar-constrained generation. A faithful browser version still has to prove shared prefill, batched queries, and correct continuation.",
+        "This is an inference strategy, not a training method. It can change how we obtain decisions from a model, without teaching that model new behavior.",
+        "And it cannot promise a speedup on every workload. We must compare completed work, useful decision quality, memory, and the time a user actually waits."
+      ]
+    }
+  ]
+}

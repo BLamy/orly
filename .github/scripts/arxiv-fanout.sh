@@ -50,7 +50,7 @@ for i in $(seq 0 $((total - 1))); do
     "This book is part of the series \"Fresh from arXiv\" — pass --series \"Fresh from arXiv\" and the next free --series-order to video.mjs." "" \
     "### Cover title" "" "$title" "" \
     "### Subtitle (optional)" "" "Fresh from arXiv · $id" "" \
-    "### Model" "" "(claude-opus-4-8)")
+    "### Model" "" "(claude-fable-5-1)")
 
   url=$(gh issue create --repo "$REPO" --label new-book --label paper-candidate \
     --title "📕 $title (arXiv:$id, $week rank $rank)" --body "$body")

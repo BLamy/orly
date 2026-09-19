@@ -166,19 +166,24 @@ try {
       await page.evaluate(() => {
         for (const a of document.querySelectorAll('audio')) a.muted = true;
         // click an obvious play affordance if the player gates on one
-        const btn = [...document.querySelectorAll('button')].find((b) =>
-          /play|start|begin|▶/i.test(b.textContent + ' ' + (b.getAttribute('aria-label') ?? ''))
-        );
+        const btn = document.querySelector('.bp-play[aria-label="Play"]');
         btn?.click();
       });
-      const seeked = await page.evaluate((t) => {
+      let seeked = await page.evaluate((t) => {
         const a = document.querySelector('audio');
         if (a) { a.muted = true; a.currentTime = t; return 'audio'; }
         return 'none';
       }, target);
       if (seeked === 'none') {
-        // no audio element (player may drive time itself) — just wait a beat
-        await page.waitForTimeout(Math.min(4000, target * 1000));
+        // Free-voice previews use the timeline clock. Seek that clock rather
+        // than reporting a midpoint screenshot that was actually taken at 0.
+        const slider = page.locator('.bp-seek');
+        if (await slider.count()) {
+          await slider.fill(String(target));
+          seeked = 'timeline';
+        } else {
+          await page.waitForTimeout(Math.min(4000, target * 1000));
+        }
       }
       await page.waitForTimeout(SETTLE_MS);
 
@@ -192,10 +197,13 @@ try {
         if (!svg) return false;
         const audio = document.querySelector('audio');
         const t0 = audio ? audio.currentTime : null;
+        const slider = document.querySelector('.bp-seek');
+        const timelineT0 = slider ? Number(slider.value) : null;
         const a = svg.innerHTML;
         await new Promise((r) => setTimeout(r, 700));
         if (svg.innerHTML !== a) return true;
         if (audio && !audio.paused && audio.currentTime > t0 + 0.3) return true;
+        if (slider && Number(slider.value) > timelineT0 + 0.3) return true;
         return false;
       });
       if (!alive) {

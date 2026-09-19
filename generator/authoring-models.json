@@ -1,0 +1,7 @@
+{
+  "planning": "gpt-6-astra",
+  "modeling3d": "gpt-6-astra",
+  "animation2d": "claude-fable-5-1",
+  "claudePackage": "@anthropic-ai/claude-code@latest",
+  "fallback": null
+}

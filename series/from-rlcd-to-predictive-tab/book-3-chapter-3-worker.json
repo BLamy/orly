@@ -1,0 +1,15 @@
+{
+  "book": 3,
+  "chapter": 3,
+  "entrypoint": "npx --yes @anthropic-ai/claude-code@latest",
+  "requestedModel": "claude-fable-5-1",
+  "actualModel": "claude-fable-5-1",
+  "provider": "firstParty",
+  "isError": true,
+  "result": "You've hit your session limit · resets 4:30pm (America/New_York)",
+  "durationMs": 478313,
+  "permissionDenials": 0,
+  "authorship": "Scene written before provider session limit; retained as draft for parent review",
+  "integration": "Fable wrote scene and Storybook wrapper",
+  "verification": "8/8 exact captions; typecheck/build pass; Storybook cue frames and ending visually inspected, no page errors, deterministic reverse seeking passed. Recorded narration pending credentials."
+}

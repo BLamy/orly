@@ -1,0 +1,17 @@
+{
+  "book": 2,
+  "entrypoint": "npx --yes @anthropic-ai/claude-code@latest",
+  "cliVersion": "2.1.274",
+  "requestedModel": "claude-fable-5-1",
+  "actualModel": "claude-fable-5-1",
+  "provider": "firstParty",
+  "result": "success",
+  "isError": false,
+  "permissionDenials": 0,
+  "durationMs": 60906,
+  "inputTokens": 10,
+  "outputTokens": 4713,
+  "costUsd": 1.47114175,
+  "verification": "Parent typecheck/build/native playback, deterministic book/Storybook seeking, exact captions, standalone blog and visual review passed on 2026-09-17",
+  "additionalFableReview": "latest-CLI Fable 5.1 reviewed the already-present corrections; no substitute author"
+}

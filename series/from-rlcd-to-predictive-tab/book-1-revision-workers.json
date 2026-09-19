@@ -1,0 +1,18 @@
+[
+  {
+    "scope": "chapter 1 camera/layout",
+    "actualModel": "claude-fable-5-1",
+    "result": "success",
+    "permissionDenials": 1,
+    "delivery": "Fable returned patch; parent applied exact replacements",
+    "costUsd": 2.628413
+  },
+  {
+    "scope": "chapters 2–3 camera/layout",
+    "actualModel": "claude-fable-5-1",
+    "result": "success",
+    "permissionDenials": 0,
+    "delivery": "Fable returned patch; parent applied exact replacements",
+    "costUsd": 1.6738582499999999
+  }
+]

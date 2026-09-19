@@ -4,6 +4,9 @@ description: Edit or fine-tune an existing book on the shelf (one targeted chang
 
 # /tweak-book — fine-tune an existing book
 
+Read [the authoring model workflow](../../docs/authoring-models.md) first. **Astra plans and models in Blender; Fable 5.1 authors D3/SVG animations through `npx --yes @anthropic-ai/claude-code@latest`.** A Fable worker consumes Astra's written plan; it does not replace the planner. Preserve provider provenance and stop that role on a provider limit without substitution.
+
+
 Make the change a follow-up issue asks for to a book that's already published,
 touching as little as possible. Use this when you don't like something and want
 it adjusted — not to add a whole new book.
