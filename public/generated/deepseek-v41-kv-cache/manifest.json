@@ -1,0 +1,109 @@
+{
+  "format": 3,
+  "slug": "deepseek-v41-kv-cache",
+  "title": "A Token to Remember",
+  "subtitle": "How DeepSeek-V4.1-Flash compresses a 2.8-million-token KV cache",
+  "animal": "animal.webp",
+  "accent": "#198a8a",
+  "series": "Daily Papers by Hugging Face",
+  "paper": {
+    "title": "DeepSeek-V4.1-Flash: Pushing the Limits of KV Cache Compression",
+    "authors": [
+      "DeepSeek-AI"
+    ],
+    "publishedDate": "2026-09-17",
+    "selectedForDate": "2026-09-18",
+    "stableId": "arXiv:2609.19969",
+    "arxivBaseId": "2609.19969",
+    "doi": "10.48550/arXiv.2609.19969",
+    "huggingFaceUrl": "https://huggingface.co/papers/2609.19969",
+    "dailyRankingUrl": "https://huggingface.co/papers/date/2026-09-18",
+    "canonicalUrl": "https://arxiv.org/abs/2609.19969",
+    "pdfUrl": "https://arxiv.org/pdf/2609.19969",
+    "officialCodeUrl": "https://huggingface.co/deepseek-ai/DeepSeek-V4.1-Flash",
+    "officialCodeCommit": "dba1be0a40aa45a94ad051997016db3960a90277",
+    "popularityEvidence": "Ranked first on the exact September 18 Daily Papers page with 81 visible upvotes; the next two papers showed 70 and 64 upvotes."
+  },
+  "chapters": [
+    {
+      "number": 1,
+      "title": "One Token, Two Memories",
+      "blurb": "Separate per-layer activations from the token's shared latent memory.",
+      "scene": "books/deepseek-v41-kv-cache/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        6.293,
+        12.806,
+        18.507,
+        24.602,
+        30.407,
+        37.141,
+        42.655,
+        47.81,
+        53.964
+      ],
+      "duration": 60.001
+    },
+    {
+      "number": 2,
+      "title": "Squeeze the Global Memory",
+      "blurb": "Compress identity, projections, and the shared global rail without losing the lookup.",
+      "scene": "books/deepseek-v41-kv-cache/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        6.06,
+        13.143,
+        19.9,
+        27.133,
+        35.016,
+        42.528,
+        51.096,
+        59.479,
+        68.105
+      ],
+      "duration": 76.348
+    },
+    {
+      "number": 3,
+      "title": "Search Once, Refine, Reuse",
+      "blurb": "Use one coarse search to guide a small set of full-precision refinements.",
+      "scene": "books/deepseek-v41-kv-cache/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        6.978,
+        12.481,
+        19.447,
+        27.133,
+        33.913,
+        40.113,
+        50.48,
+        56.588,
+        65.771
+      ],
+      "duration": 74.165
+    },
+    {
+      "number": 4,
+      "title": "Replay Only the Recent Tail",
+      "blurb": "Protect the recent tail, reconstruct its activations, then continue decoding.",
+      "scene": "books/deepseek-v41-kv-cache/chapter-4",
+      "audio": "audio/chapter-4.mp3",
+      "cues": [
+        0,
+        6.734,
+        15.012,
+        23.557,
+        30.348,
+        38.951,
+        44.965,
+        51.536,
+        60.024,
+        69.637
+      ],
+      "duration": 82.338
+    }
+  ]
+}

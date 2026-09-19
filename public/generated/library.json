@@ -1,6 +1,40 @@
 {
   "books": [
     {
+      "slug": "deepseek-v41-kv-cache",
+      "title": "A Token to Remember",
+      "subtitle": "How DeepSeek-V4.1-Flash compresses a 2.8-million-token KV cache",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/deepseek-v41-kv-cache/animal.webp",
+      "href": "?bundle=deepseek-v41-kv-cache",
+      "series": "Daily Papers by Hugging Face",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "One Token, Two Memories",
+          "duration": 60.001
+        },
+        {
+          "number": 2,
+          "title": "Squeeze the Global Memory",
+          "duration": 76.348
+        },
+        {
+          "number": 3,
+          "title": "Search Once, Refine, Reuse",
+          "duration": 74.165
+        },
+        {
+          "number": 4,
+          "title": "Replay Only the Recent Tail",
+          "duration": 82.338
+        }
+      ],
+      "createdAt": "2026-09-19T10:40:56.690Z"
+    },
+    {
       "slug": "limix-2-contextual-mechanism",
       "title": "The Masked Mechanism",
       "subtitle": "How contextual mechanism networks learn a table's joint structure",
