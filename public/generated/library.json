@@ -1,6 +1,34 @@
 {
   "books": [
     {
+      "slug": "confidence-before-words",
+      "title": "Confidence Before Words",
+      "subtitle": "Three signals, four routes, and the limits of confidence",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#38bdf8",
+      "animal": "generated/confidence-before-words/animal.webp",
+      "href": "?bundle=confidence-before-words",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Three clues before an answer",
+          "duration": 74.49
+        },
+        {
+          "number": 2,
+          "title": "One score, four routes",
+          "duration": 66.548
+        },
+        {
+          "number": 3,
+          "title": "What the evidence supports",
+          "duration": 72.818
+        }
+      ],
+      "createdAt": "2026-09-21T17:09:20.557Z"
+    },
+    {
       "slug": "deepseek-v41-kv-cache",
       "title": "A Token to Remember",
       "subtitle": "How DeepSeek-V4.1-Flash compresses a 2.8-million-token KV cache",

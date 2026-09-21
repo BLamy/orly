@@ -1,0 +1,45 @@
+{
+  "paper": {
+    "title": "Confidence-Aware Routing for Large Language Model Reliability Enhancement: A Multi-Signal Approach to Pre-Generation Hallucination Mitigation",
+    "author": "Nandakishor M",
+    "arxiv": "2510.01237v1",
+    "url": "https://arxiv.org/abs/2510.01237v1",
+    "sha256": "57798a31ad7372ef6f85966578780f4116bb3756b6b1792665924a27e43562eb"
+  },
+  "scriptAuthor": "GPT-6 Astra",
+  "requestedVisualizationModel": "claude-fable-5-1",
+  "cover": {
+    "provider": "Codex built-in ImageGen",
+    "subject": "Secretary bird",
+    "prompt": "Isolated black ink natural-history secretary bird engraving, full body, pure white #FFFFFF background, no lettering, scene, texture, frame, or watermark."
+  },
+  "status": "Verified narrated book",
+  "claims": "Paper-reported; no independent reproduction. Illustrative geometry and routing scores labeled explicitly.",
+  "actualVisualizationModels": [
+    "claude-fable-5-1"
+  ],
+  "authoringResultSha256": "0520298639cbce282e77c9976dee2047d5460d5f0b6ff6098ecac768e3f79c23",
+  "verification": {
+    "script": "27 of 27 exact Astra captions preserved",
+    "scrubbing": "27 forward and 27 reverse sample checks passed",
+    "browserErrors": 0,
+    "layout": "All 27 beat screenshots reviewed; final screen-fixed score label visually verified",
+    "build": "Production build passed with Nx cache disabled; Storybook production build passed",
+    "narratedPlayer": "All 27 caption samples and playback in all 3 chapters passed",
+    "blog": "6 live viewers loaded, no audio elements, no console errors",
+    "midpointCheck": "Chapter 3 default midpoint hit an intentional inter-caption hold; same verifier passed at 45 percent, then all 27 narrated captions passed using the player seek control"
+  },
+  "revisionVisualizationModels": [
+    "claude-fable-5-1"
+  ],
+  "revisionResultSha256": "9f6b2828d31f14e51362dba10eb74ebb141a2a8f37ff11b8311b35741f462191",
+  "narration": {
+    "provider": "ElevenLabs",
+    "chapterDurations": [
+      74.49,
+      66.548,
+      72.818
+    ],
+    "alignment": "Exact segment alignment, no approximate cues"
+  }
+}

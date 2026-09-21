@@ -1,0 +1,67 @@
+{
+  "format": 3,
+  "slug": "confidence-before-words",
+  "title": "Confidence Before Words",
+  "subtitle": "Three signals, four routes, and the limits of confidence",
+  "animal": "animal.webp",
+  "accent": "#38bdf8",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Three clues before an answer",
+      "blurb": "Inspect the proposed signals before answer generation.",
+      "scene": "books/confidence-before-words/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        6.873,
+        16.091,
+        24.09,
+        33.483,
+        42.539,
+        50.91,
+        57.528,
+        68.069
+      ],
+      "duration": 74.49
+    },
+    {
+      "number": 2,
+      "title": "One score, four routes",
+      "blurb": "Watch exact thresholds choose a response pathway.",
+      "scene": "books/confidence-before-words/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        7.883,
+        14.931,
+        23.545,
+        29.78,
+        37.93,
+        46.173,
+        53.289,
+        59.35
+      ],
+      "duration": 66.548
+    },
+    {
+      "number": 3,
+      "title": "What the evidence supports",
+      "blurb": "Read reported gains alongside their baselines and limits.",
+      "scene": "books/confidence-before-words/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.44,
+        16.405,
+        24.485,
+        32.88,
+        39.265,
+        46.278,
+        55.218,
+        63.786
+      ],
+      "duration": 72.818
+    }
+  ]
+}
