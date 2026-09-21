@@ -37,7 +37,7 @@
       "color": "#198a8a",
       "animal": "generated/deepseek-v41-kv-cache/animal.webp",
       "href": "?bundle=deepseek-v41-kv-cache",
-      "series": "Daily Papers by Hugging Face",
+      "series": "Daily Papers by Hugging Face — September 2026",
       "chapters": [
         {
           "number": 1,
@@ -71,7 +71,7 @@
       "color": "#d6202b",
       "animal": "generated/limix-2-contextual-mechanism/animal.webp",
       "href": "?bundle=limix-2-contextual-mechanism",
-      "series": "Daily Papers by Hugging Face",
+      "series": "Daily Papers by Hugging Face — September 2026",
       "chapters": [
         {
           "number": 1,
@@ -200,7 +200,7 @@
       "color": "#198a8a",
       "animal": "generated/composecl-memory/animal.webp",
       "href": "?bundle=composecl-memory",
-      "series": "Daily Papers by Hugging Face",
+      "series": "Daily Papers by Hugging Face — September 2026",
       "chapters": [
         {
           "number": 1,
@@ -234,7 +234,7 @@
       "color": "#3a8b3a",
       "animal": "generated/ncp-archpreview/animal.webp",
       "href": "?bundle=ncp-archpreview",
-      "series": "Daily Papers by Hugging Face",
+      "series": "Daily Papers by Hugging Face — September 2026",
       "chapters": [
         {
           "number": 1,
@@ -268,7 +268,7 @@
       "color": "#a01f3c",
       "animal": "generated/world-model-rl/animal.webp",
       "href": "?bundle=world-model-rl",
-      "series": "Daily Papers by Hugging Face",
+      "series": "Daily Papers by Hugging Face — September 2026",
       "chapters": [
         {
           "number": 1,
@@ -302,7 +302,7 @@
       "color": "#e07b1a",
       "animal": "generated/neohorse-routing-harness/animal.webp",
       "href": "?bundle=neohorse-routing-harness",
-      "series": "Daily Papers by Hugging Face",
+      "series": "Daily Papers by Hugging Face — September 2026",
       "chapters": [
         {
           "number": 1,
@@ -336,7 +336,7 @@
       "color": "#41607f",
       "animal": "generated/repo-to-skill/animal.webp",
       "href": "?bundle=repo-to-skill",
-      "series": "Daily Papers by Hugging Face",
+      "series": "Daily Papers by Hugging Face — September 2026",
       "chapters": [
         {
           "number": 1,
@@ -370,7 +370,7 @@
       "color": "#1f6fb2",
       "animal": "generated/on-policy-self-adaptation/animal.webp",
       "href": "?bundle=on-policy-self-adaptation",
-      "series": "Daily Papers by Hugging Face",
+      "series": "Daily Papers by Hugging Face — September 2026",
       "chapters": [
         {
           "number": 1,
@@ -442,7 +442,7 @@
       "color": "#c79100",
       "animal": "generated/looparena-runtime-controller/animal.webp",
       "href": "?bundle=looparena-runtime-controller",
-      "series": "Daily Papers by Hugging Face",
+      "series": "Daily Papers by Hugging Face — September 2026",
       "chapters": [
         {
           "number": 1,
@@ -476,7 +476,7 @@
       "color": "#6a3f9e",
       "animal": "generated/the-world-compiler/animal.webp",
       "href": "?bundle=the-world-compiler",
-      "series": "Daily Papers by Hugging Face",
+      "series": "Daily Papers by Hugging Face — August 2026",
       "chapters": [
         {
           "number": 1,
@@ -510,7 +510,7 @@
       "color": "#198a8a",
       "animal": "generated/memory-before-silence/animal.webp",
       "href": "?bundle=memory-before-silence",
-      "series": "Daily Papers by Hugging Face",
+      "series": "Daily Papers by Hugging Face — August 2026",
       "chapters": [
         {
           "number": 1,
@@ -577,7 +577,7 @@
       "color": "#a01f3c",
       "animal": "generated/apodex-work-ledger/animal.webp",
       "href": "?bundle=apodex-work-ledger",
-      "series": "Daily Papers by Hugging Face",
+      "series": "Daily Papers by Hugging Face — August 2026",
       "chapters": [
         {
           "number": 1,
@@ -610,7 +610,7 @@
       "role": "Software Engineer at Replay",
       "color": "#d6202b",
       "href": "?bundle=envharness-adaptive-worlds",
-      "series": "Daily Papers by Hugging Face",
+      "series": "Daily Papers by Hugging Face — August 2026",
       "chapters": [
         {
           "number": 1,
@@ -715,7 +715,7 @@
       "color": "#d6202b",
       "animal": "generated/skills-procedural-anchor/animal.webp",
       "href": "?bundle=skills-procedural-anchor",
-      "series": "Daily Papers by Hugging Face",
+      "series": "Daily Papers by Hugging Face — August 2026",
       "chapters": [
         {
           "number": 1,
@@ -857,7 +857,7 @@
       "color": "#a01f3c",
       "animal": "generated/ra-bench-anchor-test/animal.webp",
       "href": "?bundle=ra-bench-anchor-test",
-      "series": "Daily Papers by Hugging Face",
+      "series": "Daily Papers by Hugging Face — August 2026",
       "chapters": [
         {
           "number": 1,
@@ -890,7 +890,7 @@
       "role": "Software Engineer at Replay",
       "color": "#3a8b3a",
       "href": "?bundle=statem-durable-runbooks",
-      "series": "Daily Papers by Hugging Face",
+      "series": "Daily Papers by Hugging Face — August 2026",
       "chapters": [
         {
           "number": 1,
@@ -957,7 +957,7 @@
       "role": "Software Engineer at Replay",
       "color": "#e07b1a",
       "href": "?bundle=parallel-rl-coexistence",
-      "series": "Daily Papers by Hugging Face",
+      "series": "Daily Papers by Hugging Face — August 2026",
       "chapters": [
         {
           "number": 1,
@@ -1244,7 +1244,7 @@
       "color": "#6a3f9e",
       "animal": "generated/merchantbench/animal.webp",
       "href": "?bundle=merchantbench",
-      "series": "Daily Papers by Hugging Face",
+      "series": "Daily Papers by Hugging Face — August 2026",
       "chapters": [
         {
           "number": 1,
@@ -1278,7 +1278,7 @@
       "color": "#0f5870",
       "animal": "generated/mental-world-modeling/animal.webp",
       "href": "?bundle=mental-world-modeling",
-      "series": "Daily Papers by Hugging Face",
+      "series": "Daily Papers by Hugging Face — August 2026",
       "chapters": [
         {
           "number": 1,
@@ -1312,7 +1312,7 @@
       "color": "#2563eb",
       "animal": "generated/askchem/animal.webp",
       "href": "?bundle=askchem",
-      "series": "Daily Papers by Hugging Face",
+      "series": "Daily Papers by Hugging Face — August 2026",
       "chapters": [
         {
           "number": 1,
@@ -1419,7 +1419,7 @@
       "color": "#6a3f9e",
       "animal": "generated/hifi-umi/animal.webp",
       "href": "?bundle=hifi-umi",
-      "series": "Daily Papers by Hugging Face",
+      "series": "Daily Papers by Hugging Face — July 2026",
       "chapters": [
         {
           "number": 1,
@@ -1453,7 +1453,7 @@
       "color": "#c79100",
       "animal": "generated/kimi-k3/animal.webp",
       "href": "?bundle=kimi-k3",
-      "series": "Daily Papers by Hugging Face",
+      "series": "Daily Papers by Hugging Face — July 2026",
       "chapters": [
         {
           "number": 1,
@@ -1576,7 +1576,7 @@
       "role": "Software Engineer at Replay",
       "color": "#6a3f9e",
       "href": "?bundle=dataprep-bench",
-      "series": "Daily Papers by Hugging Face",
+      "series": "Daily Papers by Hugging Face — July 2026",
       "chapters": [
         {
           "number": 1,
@@ -1610,7 +1610,7 @@
       "color": "#3a8b3a",
       "animal": "generated/arex/animal.webp",
       "href": "?bundle=arex",
-      "series": "Daily Papers by Hugging Face",
+      "series": "Daily Papers by Hugging Face — July 2026",
       "chapters": [
         {
           "number": 1,
@@ -1687,7 +1687,7 @@
       "color": "#3a8b3a",
       "animal": "generated/slai-t-rex/animal.webp",
       "href": "?bundle=slai-t-rex",
-      "series": "Daily Papers by Hugging Face",
+      "series": "Daily Papers by Hugging Face — July 2026",
       "chapters": [
         {
           "number": 1,
@@ -1720,7 +1720,7 @@
       "role": "Software Engineer at Replay",
       "color": "#38bdf8",
       "href": "?bundle=dp-harness-handbook",
-      "series": "Daily Papers by Hugging Face",
+      "series": "Daily Papers by Hugging Face — July 2026",
       "chapters": [
         {
           "number": 1,

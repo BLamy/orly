@@ -14,8 +14,8 @@ import {
 import { composeCover, drawSpine, type BookMeta } from './cover';
 import {
   assetUrl,
-  FEATURED_SERIES,
   isChronologicalSeries,
+  isDailyPapersSeries,
   openBook,
   resolveAnimal,
   searchBooks,
@@ -410,7 +410,15 @@ export function MobileShelf({
   // showcase section) rather than filed under its letter — keeping the A-Z
   // rail's jump targets clean. Search still finds it like any other entry.
   const featured = useMemo(
-    () => entries?.find((e): e is Extract<Entry, { kind: 'series' }> => e.kind === 'series' && e.name === FEATURED_SERIES) ?? null,
+    () => {
+      if (!entries) return null;
+      const monthly = entries.filter(
+        (e): e is Extract<Entry, { kind: 'series' }> => e.kind === 'series' && isDailyPapersSeries(e.name),
+      );
+      return [...monthly].sort((a, b) =>
+        (b.books[0]?.createdAt ?? '').localeCompare(a.books[0]?.createdAt ?? ''),
+      )[0] ?? null;
+    },
     [entries],
   );
 
@@ -418,10 +426,10 @@ export function MobileShelf({
   const sections = useMemo(() => {
     if (!entries) return null;
     return alphabetize(
-      entries.filter((entry) => entry.kind !== 'series' || entry.name !== FEATURED_SERIES),
+      entries.filter((entry) => entry.kind !== 'series' || !featured || entry.name !== featured.name),
       (entry) => entry.name,
     );
-  }, [entries]);
+  }, [entries, featured]);
 
   const q = query.trim();
   // Search EXPLODES series: instead of collapsing a matching series into one

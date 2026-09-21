@@ -1,5 +1,5 @@
 {
-  "series": "Daily Papers by Hugging Face",
+  "series": "Daily Papers by Hugging Face — July 2026",
   "source": "https://huggingface.co/papers/week/2026-W29",
   "note": "Top-9 by upvotes for HF Daily Papers, week 2026-W29. Each book ingests its arXiv paper via generator/paper.mjs (real figures downloaded to public/generated/<slug>/figures/), embeds the paper's own diagrams/charts with the Figure primitive, and hand-animates that paper's key results chart as a native viz. Books are authored ONE AT A TIME (see .claude/skills/new-series). Book 1 (dp-harness-handbook) is authored in full as the template.",
   "books": [

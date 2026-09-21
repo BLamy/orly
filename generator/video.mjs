@@ -27,6 +27,7 @@ import { synthesizeChapter, sanitizeSpoken } from './tts.mjs';
 import { extractScene } from './scene-captions.mjs';
 import { generateAnimal, thumbnailAnimal } from './cover.mjs';
 import { upsertBook, colorForSlug } from './library.mjs';
+import { dailyPapersSeriesForDate, isDailyPapersSeries } from './daily-paper-series.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const VOICE_DEFAULT = 'Fahco4VZzobUeiPqni1S';
@@ -53,6 +54,7 @@ function parseArgs(argv) {
     else if (k === '--blurbs') a.blurbs = val().split('|').map((s) => s.trim());
     else if (k === '--series') a.series = val();
     else if (k === '--series-order') a.seriesOrder = Number(val());
+    else if (k === '--paper-date') a.paperDate = val();
     else if (k === '--voice') a.voice = val();
     else if (k === '--no-tts') a.tts = false;
     else if (k === '--silent-audio') a.silentAudio = true;
@@ -258,6 +260,12 @@ Env: ELEVENLABS_API_KEY (narration), OPENAI_API_KEY (cover).`);
   writeFileSync(join(outDir, 'manifest.json'), JSON.stringify(manifest, null, 2));
   log(`wrote public/generated/${slug}/manifest.json (format 3)`);
 
+  const series = args.paperDate && isDailyPapersSeries(args.series)
+    ? dailyPapersSeriesForDate(args.paperDate)
+    : args.series;
+  const seriesMeta = series
+    ? { series, ...(isDailyPapersSeries(series) ? {} : { seriesOrder: args.seriesOrder ?? 1 }) }
+    : {};
   upsertBook(join(ROOT, 'public', 'generated', 'library.json'), {
     slug,
     title: args.title,
@@ -267,7 +275,7 @@ Env: ELEVENLABS_API_KEY (narration), OPENAI_API_KEY (cover).`);
     color: accent,
     animal: animalRel,
     href: `?bundle=${slug}`,
-    ...(args.series ? { series: args.series, seriesOrder: args.seriesOrder ?? 1 } : {}),
+    ...seriesMeta,
     chapters: chapters.map((c) => ({ number: c.number, title: c.title, duration: c.duration })),
     createdAt: new Date().toISOString(),
   });

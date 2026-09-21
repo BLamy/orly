@@ -13,7 +13,9 @@ export const RECENT_COUNT = 8;
 export const LEAD_SERIES = 'The Explainers';
 // This series is the shelf's showcase: it always leads (its own top row) and
 // is excluded from the Recently Added strip.
-export const FEATURED_SERIES = 'Daily Papers by Hugging Face';
+export const DAILY_PAPERS_SERIES_PREFIX = 'Daily Papers by Hugging Face';
+// Kept as a compatibility alias for older callers and legacy library entries.
+export const FEATURED_SERIES = DAILY_PAPERS_SERIES_PREFIX;
 export const CHRONOLOGICAL_SERIES = new Set([
   FEATURED_SERIES,
   'Fresh from arXiv',
@@ -26,7 +28,14 @@ interface SeriesSortable {
 }
 
 export function isChronologicalSeries(series?: string): boolean {
-  return !!series && CHRONOLOGICAL_SERIES.has(series);
+  return !!series && (CHRONOLOGICAL_SERIES.has(series) || isDailyPapersSeries(series));
+}
+
+export function isDailyPapersSeries(series?: string): boolean {
+  return !!series && (
+    series === DAILY_PAPERS_SERIES_PREFIX ||
+    series.startsWith(`${DAILY_PAPERS_SERIES_PREFIX} — `)
+  );
 }
 
 export function sortSeriesBooks<T extends SeriesSortable>(series: string, books: T[]): T[] {
@@ -80,7 +89,7 @@ export interface Shelves {
 
 export function buildShelves(books: BookMeta[]): Shelves {
   const byRecency = [...books]
-    .filter((b) => b.series !== FEATURED_SERIES)
+    .filter((b) => !isDailyPapersSeries(b.series))
     .sort((a, c) => (c.createdAt ?? '').localeCompare(a.createdAt ?? ''));
   const recent = byRecency.slice(0, RECENT_COUNT);
 
@@ -95,6 +104,8 @@ export function buildShelves(books: BookMeta[]): Shelves {
 
   // The lead series first; other series follow by most-recent addition.
   const seriesRows = [...seriesMap.entries()].sort(([na, a], [nb, c]) => {
+    if (isDailyPapersSeries(na) && !isDailyPapersSeries(nb)) return -1;
+    if (!isDailyPapersSeries(na) && isDailyPapersSeries(nb)) return 1;
     if (na === LEAD_SERIES) return -1;
     if (nb === LEAD_SERIES) return 1;
     const la = a.reduce((m, b) => (b.createdAt && b.createdAt > m ? b.createdAt : m), '');
@@ -102,9 +113,11 @@ export function buildShelves(books: BookMeta[]): Shelves {
     return lb.localeCompare(la);
   });
 
-  const featured =
-    seriesRows.find(([n]) => n === FEATURED_SERIES) ?? null;
-  const restRows = seriesRows.filter(([n]) => n !== FEATURED_SERIES);
+  // The newest monthly Daily Papers row keeps the showcase position. Older
+  // months remain independent rows, so the collection stays browsable as it
+  // grows instead of becoming one endless boxed set.
+  const featured = seriesRows.find(([n]) => isDailyPapersSeries(n)) ?? null;
+  const restRows = seriesRows.filter(([n]) => n !== featured?.[0]);
 
   const standalone = books.filter((b) => !b.series);
   const loops = standalone

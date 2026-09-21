@@ -95,9 +95,12 @@ Astra prepares the plan and any 3D assets; Fable implements the D3 scenes.
      [--no-cover] \
      [--series "<SERIES NAME>" [--series-order <n>]]   # when the request names a series
    ```
-   Omit `--series-order` for `Daily Papers by Hugging Face` and
-   `Fresh from arXiv`; those chronological collections sort by `createdAt`
-   newest-first and never store or display series numbers.
+   Omit `--series-order` for `Daily Papers by Hugging Face`, its month-labeled
+   variants, and `Fresh from arXiv`; those chronological collections sort by
+   `createdAt` newest-first and never store or display series numbers. For a
+   Daily Papers book, pass `--paper-date YYYY-MM-DD` with the Hugging Face
+   ranking/publication date so the generator assigns `Daily Papers by Hugging
+   Face — <Month> <Year>` automatically.
    This extracts each chapter's captions, narrates them (one MP3 per chapter,
    exact per-caption cues), keeps the prepared built-in cover or generates the
    API fallback cover, writes `public/generated/<SLUG>/manifest.json`

@@ -19,6 +19,7 @@ import { generateAnimal } from './cover.mjs';
 import { upsertBook, colorForSlug } from './library.mjs';
 import { applyIcons } from './iconize.mjs';
 import { hasNoun } from './noun.mjs';
+import { dailyPapersSeriesForDate, isDailyPapersSeries } from './daily-paper-series.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const VOICE_DEFAULT = 'Fahco4VZzobUeiPqni1S';
@@ -45,6 +46,7 @@ function parseArgs(argv) {
     else if (k === '--color') a.color = val();
     else if (k === '--series') a.series = val();
     else if (k === '--series-order') a.seriesOrder = parseInt(val(), 10);
+    else if (k === '--paper-date') a.paperDate = val();
     else if (k === '--voice') a.voice = val();
     else if (k === '--model') a.model = val();
     else if (k === '--storyboard') a.storyboard = val();
@@ -167,6 +169,12 @@ Env: ELEVENLABS_API_KEY (TTS). Planning: Astra-authored --storyboard required.`)
       console.error(`cover art failed (continuing without it): ${e.message}`);
     }
   }
+  const series = args.paperDate && isDailyPapersSeries(args.series)
+    ? dailyPapersSeriesForDate(args.paperDate)
+    : args.series;
+  const seriesMeta = series
+    ? { series, ...(isDailyPapersSeries(series) ? {} : { seriesOrder: args.seriesOrder }) }
+    : {};
   upsertBook(join(ROOT, 'public', 'generated', 'library.json'), {
     slug,
     title: args.title || sb.title,
@@ -176,8 +184,7 @@ Env: ELEVENLABS_API_KEY (TTS). Planning: Astra-authored --storyboard required.`)
     color: args.color || colorForSlug(slug),
     animal: animalRel,
     href: `?bundle=${slug}`,
-    series: args.series,
-    seriesOrder: args.seriesOrder,
+    ...seriesMeta,
     chapters: manifest.chapters.map((c) => ({ number: c.number, title: c.title, duration: c.audioEnd })),
     createdAt: new Date().toISOString(),
   });
