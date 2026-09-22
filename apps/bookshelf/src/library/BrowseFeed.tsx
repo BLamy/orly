@@ -3,6 +3,7 @@ import { Stage, Timeline, usePlayback } from '../viz/core';
 import { VIZ_SCENES, type VizSceneEntry } from '../viz/scenes';
 import { assetUrl } from './shared';
 import type { BookMeta } from './cover';
+import { useVideoAnalytics } from '../analytics';
 
 // A TikTok-style vertical feed of book videos. The active card autoplays its
 // scene muted (a muted <audio> is the clock, so animation stays aligned to the
@@ -335,6 +336,16 @@ function FeedCard({
   // currently-playing book's currentTime.
   const useAudioClock = !!audioUrl && active;
   const pb = usePlayback(built?.tl ?? FALLBACK_TL, { audioRef, useAudioClock });
+  const videoDuration = chapter?.duration ?? pb.duration;
+  useVideoAnalytics({
+    contentId: `${book.slug}/${chapter?.number ?? chapterIdx + 1}`,
+    title: `${book.title} — ${chapter?.title ?? 'Chapter'}`,
+    duration: videoDuration,
+    currentTime: pb.t,
+    playing: active && pb.playing,
+    ended: active && !!chapter && videoDuration > 0 && pb.t >= videoDuration - 0.08,
+    source: 'browse_feed',
+  });
   const pbRef = useRef(pb);
   pbRef.current = pb;
 

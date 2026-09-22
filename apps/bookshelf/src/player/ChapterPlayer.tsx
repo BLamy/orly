@@ -6,6 +6,7 @@ import { VIZ_SCENES, type VizSceneEntry } from '../viz/scenes';
 import { fmtDur, type ChapterV3 } from './BookPlayer';
 import { retimeTimelineToNarration } from './narration-timing';
 import { speechSupported, useSpokenCaption } from './speech';
+import { useVideoAnalytics } from '../analytics';
 
 // A stable empty timeline so usePlayback (a hook — unconditional) has
 // something to sample while the real scene chunk is still loading.
@@ -148,6 +149,15 @@ export function ChapterPlayer({
 
   const audioRef = useRef<HTMLAudioElement | null>(null);
   const pb = usePlayback(built?.tl ?? FALLBACK_TL, { audioRef, useAudioClock });
+  useVideoAnalytics({
+    contentId: `${base.split('/').filter(Boolean).at(-1)}/${chapter.number}`,
+    title: `${bookTitle} — ${chapter.title}`,
+    duration: chapter.duration || pb.duration,
+    currentTime: pb.t,
+    playing: pb.playing,
+    ended,
+    source: 'chapter_player',
+  });
   const pbRef = useRef(pb);
   pbRef.current = pb;
 
