@@ -6,7 +6,7 @@ const MEASUREMENT_ID = 'G-FG703786TR';
 
 declare global {
   interface Window {
-    dataLayer?: unknown[][];
+    dataLayer?: unknown[];
     gtag?: (...args: unknown[]) => void;
   }
 }
@@ -15,7 +15,11 @@ export function initAnalytics() {
   if (typeof window === 'undefined' || window.gtag) return;
 
   window.dataLayer = window.dataLayer ?? [];
-  window.gtag = (...args: unknown[]) => window.dataLayer!.push(args);
+  window.gtag = function (...args: unknown[]) {
+    // gtag.js expects each queued command as the Arguments object used by its
+    // documented bootstrap snippet, not an ordinary array from a rest param.
+    window.dataLayer!.push(arguments);
+  };
   window.gtag('js', new Date());
   window.gtag('config', MEASUREMENT_ID);
 
