@@ -2,6 +2,8 @@
 
 ## Series completion — September 30, 2026
 
+Published to the [existing Orly destination](https://orly.brett-lamy.workers.dev/?series=From%20RLCD%20to%20Predictive%20Tab). Content commit `c92ecb2` and reader repair `f5ff48e` are on main. Live verification passes for all 19 recordings and 150 cues, including forward/reverse seeks and real decoded sound output. Deployment and verification evidence is in [release.json](evidence/release.json). The shared byte-range issue and bounded player fix are documented in [playback-fix.md](playback-fix.md).
+
 All six books are complete: 19 narrated chapters and 150 fixed captions. The
 user explicitly requested Sol for the remaining books 4–6, superseding the
 earlier Fable routing for this continuation. Each new book includes three
