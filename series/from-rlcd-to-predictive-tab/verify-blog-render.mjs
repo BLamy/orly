@@ -16,7 +16,10 @@ try {
   const page = await browser.newPage({ serviceWorkers: 'block' });
   page.on('pageerror', e => errors.push(e.message));
   await page.goto(`${base}/?blog=${slug}`);
-  await page.waitForFunction(n => document.querySelectorAll('.bp-blog-viz svg').length >= n, count);
+  await page.waitForFunction(n => {
+    const sections = [...document.querySelectorAll('.bp-blog-viz')];
+    return sections.length === n && sections.every(section => section.querySelector('svg'));
+  }, count);
   assert.equal(await page.locator('.bp-player').count(), 0);
   assert.equal(await page.locator('.bp-blog-viz').count(), count);
   assert.equal(await page.locator('.bp-blog-viz audio').count(), 0);

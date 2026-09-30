@@ -36,6 +36,8 @@ try {
     assert.ok(!media.error,media.error);
     assert.ok(Math.abs(media.duration-chapter.duration)<1,'Recording length differs from narration manifest');
     const player=page.locator('.bp-player');
+    // Let the mount-time autoplay promise settle before pausing the player.
+    await page.waitForTimeout(300);
     const pause=player.getByRole('button',{name:'Pause',exact:true});
     if(await pause.count())await pause.click();
     const seek=player.getByRole('slider',{name:'Seek',exact:true});
@@ -46,7 +48,18 @@ try {
       const next=chapter.cues[i+1]??chapter.duration;
       const t=chapter.cues[i]+Math.min(.8,(next-chapter.cues[i])/3);
       await seek.fill(seekValue(t));
-      await page.waitForTimeout(150);
+      // Remote audio may need a range fetch before a seek completes.
+      await page.waitForFunction(({target,text})=>{
+        const a=document.querySelector('.bp-player audio');
+        const caption=document.querySelector('.bp-player .captions-pill');
+        return a&&!a.seeking&&Math.abs(a.currentTime-target)<.15&&caption?.textContent?.trim()===text;
+      },{target:t,text:scene.captions[i].text.trim()},{timeout:15000}).catch(async error=>{
+        const state=await player.evaluate(p=>{
+          const a=p.querySelector('audio');
+          return {time:a?.currentTime,paused:a?.paused,seeking:a?.seeking,readyState:a?.readyState,error:a?.error?.message,slider:p.querySelector('.bp-seek')?.value,caption:p.querySelector('.captions-pill')?.textContent};
+        });
+        throw new Error(`${slug} chapter ${chapter.number} cue ${i+1} target ${t}: ${JSON.stringify(state)}; ${error.message}`);
+      });
       assert.ok(Math.abs(await audio.evaluate(a=>a.currentTime)-t)<.15,'Seek and audio clocks diverged');
       assert.equal((await player.locator('.captions-pill').innerText()).trim(),scene.captions[i].text.trim(),`Caption ${i+1} not aligned in chapter ${chapter.number}`);
     }
@@ -58,7 +71,7 @@ try {
     assert.ok(after-before>.7,'Recorded audio clock did not advance during playback');
     assert.ok(Math.abs(Number(await seek.inputValue())-after)<.3,'Player clock drifted from audio');
     assert.equal(errors.length,0,errors.join('\n'));
-    report.push({chapter:chapter.number,recording:chapter.audio,duration:media.duration,captions:chapter.cues.length,forwardReverseCueChecks:'passed',audioClockPlayback:'passed'});
+    report.push({chapter:chapter.number,recording:chapter.audio,duration:media.duration,captions:chapter.cues.length,forwardReverseCueChecks:'passed',audioClockPlayback:'passed',sourceMode:media.src.startsWith('blob:')?'buffered-recording':'native-stream'});
     await page.close();
   }
   const dir=path.join(root,`series/from-rlcd-to-predictive-tab/evidence/${slug}`);

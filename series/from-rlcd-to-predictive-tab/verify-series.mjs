@@ -2,6 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import assert from 'node:assert/strict';
+import { createHash } from 'node:crypto';
 import { chromium } from 'playwright';
 const dir=path.dirname(new URL(import.meta.url).pathname);
 const script=JSON.parse(fs.readFileSync(path.join(dir,'series-script.json')));
@@ -14,15 +15,20 @@ for(const book of script.books){
   const response=await fetch(`${base}/generated/${book.slug}/manifest.json`);
   assert.equal(response.status,200);
   const manifest=await response.json();
+  assert.deepEqual(manifest,JSON.parse(fs.readFileSync(path.join(dir,`../../public/generated/${book.slug}/manifest.json`))),'Published manifest matches release');
   assert.equal(manifest.format,3);
   assert.deepEqual(manifest.chapters.map(c=>c.title),book.chapters.map(c=>c.title));
   for(const [i,c] of manifest.chapters.entries()){
     assert.equal(c.scene,`books/${book.slug}/chapter-${i+1}`);
     assert.equal(c.cues.length,book.chapters[i].captions.length);
     assert.ok(c.audio&&c.duration>0);
-    const audio=await fetch(`${base}/generated/${book.slug}/${c.audio}`,{method:'HEAD'});
+    const audio=await fetch(`${base}/generated/${book.slug}/${c.audio}`);
     assert.equal(audio.status,200,`${book.slug}/${c.audio}`);
-    assert.ok(Number(audio.headers.get('content-length'))>1000);
+    // Cloudflare may omit Content-Length; verify the actual asset bytes instead.
+    const bytes=Buffer.from(await audio.arrayBuffer());
+    assert.ok(bytes.length>1000);
+    const expected=fs.readFileSync(path.join(dir,`../../public/generated/${book.slug}/${c.audio}`));
+    assert.equal(createHash('sha256').update(bytes).digest('hex'),createHash('sha256').update(expected).digest('hex'),'Recording matches release');
     captions+=c.cues.length;chapters++;
   }
   const blog=await fetch(`${base}/generated/${book.slug}/blog.md`);

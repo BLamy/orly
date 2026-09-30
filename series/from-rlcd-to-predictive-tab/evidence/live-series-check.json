@@ -1,0 +1,12 @@
+{
+  "base": "https://orly.brett-lamy.workers.dev",
+  "checkedAt": "2026-09-30T06:46:14.916Z",
+  "books": 6,
+  "chapters": 19,
+  "captions": 150,
+  "recordedAssets": "all 19 available",
+  "desktopSeriesOrder": "passed",
+  "crossBookSidebar": "passed",
+  "mobileShelfAndReader": "passed",
+  "pageErrors": []
+}

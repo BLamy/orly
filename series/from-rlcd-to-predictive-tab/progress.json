@@ -1,6 +1,6 @@
 {
   "series": "From RLCD to Predictive Tab",
-  "status": "All six books complete and verified; publication ready",
+  "status": "All six books published; scoped reader seek fix verified locally and awaiting live validation",
   "counts": {
     "books": 6,
     "chapters": 19,
@@ -145,8 +145,11 @@
     "method": "Local authenticated Wrangler after final checks",
     "ciStatus": "Existing GitHub deployment token rejected; local OAuth verified",
     "audioGate": "All 19 chapters require recorded ElevenLabs audio, exact alignment cues, and verified synchronized playback before release",
-    "status": "All release checks passed; scoped commit/push and existing local OAuth deployment next",
+    "status": "Content committed/pushed and deployed; seek fallback ready for deployment",
     "audioVerification": "All 19 ElevenLabs recordings and 150 exact cues passed forward/reverse synchronization and advancing audio-clock playback",
-    "audioGateTest": "Build of book 1 correctly refused missing ElevenLabs configuration before writing release assets"
+    "audioGateTest": "Build of book 1 correctly refused missing ElevenLabs configuration before writing release assets",
+    "contentCommit": "c92ecb2bb4a76987b1d9041412c5fcc5e7ee5306",
+    "firstDeploymentVersion": "9d4daeea-42a9-4234-9e66-b655a65471ae",
+    "playbackRepair": "Shared host ignores byte ranges; bounded reader fallback buffers one chapter without infrastructure/access changes; local native and fallback playback pass"
   }
 }
