@@ -22,10 +22,9 @@ import path from 'node:path';
 import process from 'node:process';
 import { chromium } from 'playwright';
 
-const PORT = 5199;
-// vite preview may bind IPv6 ::1 for "localhost" — we force 127.0.0.1 below,
-// but connect via localhost so either family works.
-const BASE = `http://localhost:${PORT}`;
+const PORT = Number(process.env.ORLY_VERIFY_PORT || 5199);
+// Match the exact bound interface: localhost may reach another IPv6 preview.
+const BASE = `http://127.0.0.1:${PORT}`;
 const SEEK_FRACTION = 0.5; // mid-chapter
 const SETTLE_MS = 1500; // let the seek propagate + the scene render
 
@@ -46,6 +45,11 @@ if (!fs.existsSync(manifestPath)) {
 }
 if (!fs.existsSync(path.join(root, 'dist', 'index.html'))) {
   console.error('✗ dist/ is missing — run `npm run build` first');
+  process.exit(2);
+}
+const builtManifestPath = path.join(root, 'dist', 'generated', slug, 'manifest.json');
+if (!fs.existsSync(builtManifestPath) || fs.readFileSync(builtManifestPath, 'utf8') !== fs.readFileSync(manifestPath, 'utf8')) {
+  console.error('✗ dist/ contains stale book assets — run npm run build -- --skip-nx-cache');
   process.exit(2);
 }
 const manifest = JSON.parse(fs.readFileSync(manifestPath, 'utf8'));
@@ -255,9 +259,12 @@ try {
       // (c) console must be clean
       for (const e of consoleErrors) chapterFailures.push(`console error: ${e}`);
 
-      // (d) screenshot mid-chapter
+      // (d) thumbnail the whole stage. Sidebar auto-scroll can move the page;
+      // a viewport screenshot then crops the scene and includes unrelated UI.
       const shot = path.join(previewsDir, `chapter-${n}.png`);
-      await page.screenshot({ path: shot });
+      const stage = page.locator('.bp-stage');
+      if (await stage.count()) await stage.screenshot({ path: shot });
+      else await page.screenshot({ path: shot });
       summary.push(
         `  chapter ${n}: seek ${target.toFixed(1)}s/${duration.toFixed(1)}s (${seeked})` +
           ` · ${chapterFailures.length ? 'FAIL' : 'ok'} · ${path.relative(root, shot)}`

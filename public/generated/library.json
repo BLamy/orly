@@ -1,6 +1,96 @@
 {
   "books": [
     {
+      "slug": "tab-into-the-future",
+      "title": "Tab Into the Future",
+      "subtitle": "A browser that meets you halfway",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#2dd4bf",
+      "animal": "generated/tab-into-the-future/animal.webp",
+      "href": "?bundle=tab-into-the-future",
+      "series": "From RLCD to Predictive Tab",
+      "seriesOrder": 6,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Anticipation without taking over",
+          "duration": 69.101
+        },
+        {
+          "number": 2,
+          "title": "Learn from the person, not the echo",
+          "duration": 75.465
+        },
+        {
+          "number": 3,
+          "title": "The first useful version",
+          "duration": 76.905
+        }
+      ],
+      "createdAt": "2026-09-30T06:21:16.872Z"
+    },
+    {
+      "slug": "fast-path-thoughtful-fallback",
+      "title": "A Fast Path with a Thoughtful Fallback",
+      "subtitle": "How a small policy and GLM can work together",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#fb7185",
+      "animal": "generated/fast-path-thoughtful-fallback/animal.webp",
+      "href": "?bundle=fast-path-thoughtful-fallback",
+      "series": "From RLCD to Predictive Tab",
+      "seriesOrder": 5,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Learn the familiar, escalate the unfamiliar",
+          "duration": 74.767
+        },
+        {
+          "number": 2,
+          "title": "Can constrained decoding scale up?",
+          "duration": 77.833
+        },
+        {
+          "number": 3,
+          "title": "Measure the whole trip",
+          "duration": 83.639
+        }
+      ],
+      "createdAt": "2026-09-30T06:10:20.299Z"
+    },
+    {
+      "slug": "recordings-become-practice",
+      "title": "Recordings Become Practice",
+      "subtitle": "How browser history becomes a training dataset",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#fbbf24",
+      "animal": "generated/recordings-become-practice/animal.webp",
+      "href": "?bundle=recordings-become-practice",
+      "series": "From RLCD to Predictive Tab",
+      "seriesOrder": 4,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A recording is evidence of what happened",
+          "duration": 77.275
+        },
+        {
+          "number": 2,
+          "title": "A local workshop for examples",
+          "duration": 77.694
+        },
+        {
+          "number": 3,
+          "title": "Teach a small model a small job",
+          "duration": 71.657
+        }
+      ],
+      "createdAt": "2026-09-30T05:54:48.619Z"
+    },
+    {
       "slug": "confidence-before-words",
       "title": "Confidence Before Words",
       "subtitle": "Three signals, four routes, and the limits of confidence",

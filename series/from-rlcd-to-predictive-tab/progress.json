@@ -1,6 +1,6 @@
 {
   "series": "From RLCD to Predictive Tab",
-  "status": "Books 1-3 narrated with ElevenLabs and synchronization verified; books 4-6 await scene authoring",
+  "status": "All six books complete and verified; publication ready",
   "counts": {
     "books": 6,
     "chapters": 19,
@@ -14,12 +14,22 @@
     "requestedModel": "claude-fable-5-1",
     "actualModel": "claude-fable-5-1",
     "invocation": "Three chapter-scoped Fable workers wrote book 3; chapters 2 and 3 returned provider session-limit errors after writing scenes",
-    "resetAt": "2026-09-17T20:30:00Z"
+    "resetAt": "2026-09-17T20:30:00Z",
+    "continuation": {
+      "model": "Sol",
+      "reason": "Explicit user request to finish remaining explainers with Sol",
+      "books": [
+        4,
+        5,
+        6
+      ],
+      "noProviderSubstitution": true
+    }
   },
   "services": {
     "elevenLabsConfigured": true,
     "nounProjectConfigured": false,
-    "elevenLabsChecked": "September 18: ten recordings generated successfully in PR 152 worktree",
+    "elevenLabsChecked": "September 30: nine remaining recordings generated successfully with the existing narrator; all nineteen recordings rechecked",
     "narrationRequirement": "User requires ElevenLabs audio and verified caption/animation synchronization before publication; credentials requested without disclosure"
   },
   "dependencies": {
@@ -77,13 +87,14 @@
       "title": "Recordings Become Practice",
       "chapters": 3,
       "sourcePreparation": "complete; source hashes verified",
-      "fableAuthoring": "pending required Fable 5.1 session reset",
-      "visualReview": "pending",
+      "fableAuthoring": "superseded by explicit Sol request for this continuation",
+      "visualReview": "All 24 cue frames inspected; source connector corrected",
       "cover": "built-in ImageGen; visually inspected PNG and 512px WebP prepared",
-      "narration": "ElevenLabs required; awaiting configured API key",
-      "bookBuild": "pending",
-      "blog": "Six semantic sections authored; final manifest-clock windows pending",
-      "verification": "pending"
+      "narration": "Three ElevenLabs recordings, 24 exact cues; forward/reverse synchronization and audio-clock playback passed",
+      "bookBuild": "Production build and isolated-IPv4 production playback passed",
+      "blog": "Six semantic sections validated; standalone mounts six silent SVG viewers with no errors",
+      "verification": "Source hashes, exact captions, typecheck, build, deterministic book/Storybook seeks and recorded playback passed",
+      "solAuthoring": "complete; user-requested Sol authored three deterministic native scenes"
     },
     {
       "order": 5,
@@ -91,13 +102,14 @@
       "title": "A Fast Path with a Thoughtful Fallback",
       "chapters": 3,
       "sourcePreparation": "complete; source hashes verified",
-      "fableAuthoring": "pending required Fable 5.1 session reset",
-      "visualReview": "pending",
+      "fableAuthoring": "Superseded by explicit Sol request for remaining books",
+      "visualReview": "All 24 cue frames inspected; panel overlap and caption-safe framing corrected",
       "cover": "built-in ImageGen; visually inspected PNG and 512px WebP prepared",
-      "narration": "ElevenLabs required; awaiting configured API key",
-      "bookBuild": "pending",
-      "blog": "Six semantic sections authored; final manifest-clock windows pending",
-      "verification": "pending"
+      "narration": "Three ElevenLabs recordings; all 24 cues and audio-clock playback passed",
+      "bookBuild": "Production build and headless production playback passed",
+      "blog": "Six validated semantic sections; standalone live SVG render passed",
+      "verification": "Exact captions, typecheck/build, production playback, deterministic book/Storybook forward/backward seeks, audio synchronization and blog checks passed",
+      "solAuthoring": "Complete: three native scenes, user-requested Sol authoring"
     },
     {
       "order": 6,
@@ -105,35 +117,36 @@
       "title": "Tab Into the Future",
       "chapters": 3,
       "sourcePreparation": "complete; source hashes verified",
-      "fableAuthoring": "pending required Fable 5.1 session reset",
-      "visualReview": "pending",
+      "fableAuthoring": "Superseded by explicit Sol request for remaining books",
+      "visualReview": "All 24 narration beat frames inspected; focus, suggestion, feedback and pilot gates verified",
       "cover": "built-in ImageGen; visually inspected PNG and 512px WebP prepared",
-      "narration": "ElevenLabs required; awaiting configured API key",
-      "bookBuild": "pending",
-      "blog": "Six semantic sections authored; final manifest-clock windows pending",
-      "verification": "pending"
+      "narration": "Three ElevenLabs recordings; all 24 cue positions and audio-clock playback passed",
+      "bookBuild": "Fresh uncached production build and headless playback passed",
+      "blog": "Six validated semantic sections; standalone live render passed",
+      "verification": "Exact narration, typecheck, rendering, deterministic book/Storybook seeks, recorded playback, six-book navigation and mobile checks passed",
+      "solAuthoring": "Complete: three native Sol scenes under the explicit user model choice"
     }
   ],
-  "branch": "codex/from-rlcd-to-predictive-tab",
-  "blocker": "Books 4-6 still require scenes and narration. Original package hashes preserved; revised source contract tracks the user-requested Jev rewrite and chapter cutoff.",
+  "branch": "finish-predictive-tab",
+  "blocker": null,
   "scheduledContinuation": {
     "scheduledFor": "2026-09-17T07:50:00Z",
     "sourceContractCheck": "passed",
     "fableLaunched": false,
     "publicationAttempted": false,
     "blocker": "Automatic approval review rejected transmitting the private scene/source payload to Anthropic, including a second review supplied with the scheduled explicit authorization and persisted consent evidence. Requires renewed user confirmation; no workaround attempted.",
-    "resume": "Configure ElevenLabs locally, build and verify recorded narration for books 1–3, then author and fully verify books 4–6 sequentially with required Fable 5.1. Publish only after all release gates pass.",
+    "resume": "Configure ElevenLabs locally, build and verify recorded narration for books 1\u20133, then author and fully verify books 4\u20136 sequentially with required Fable 5.1. Publish only after all release gates pass.",
     "assignment": ".orly-work/book-2-resume.md",
     "lastChecked": "2026-09-18T07:50:05Z",
-    "currentStatus": "Book 2 completed in subsequent work; book 3 authored and draft-verified. ElevenLabs key still absent; recorded playback gate blocks sequential continuation and publication."
+    "currentStatus": "Historical interrupted continuation; superseded by books 1\u20133 in PR 152 and the September 30 user-requested Sol completion of books 4\u20136"
   },
   "publication": {
     "authorization": "User requested completion and publication on 2026-09-17",
     "method": "Local authenticated Wrangler after final checks",
     "ciStatus": "Existing GitHub deployment token rejected; local OAuth verified",
     "audioGate": "All 19 chapters require recorded ElevenLabs audio, exact alignment cues, and verified synchronized playback before release",
-    "status": "Not published; no merge or deployment attempted. Audio and remaining-book gates unresolved.",
-    "audioVerification": "Books 1-3 contain ten recordings and 78 captions; books 2-3 revised recordings pass forward/reverse caption seeks and live audio-clock advancement",
+    "status": "All release checks passed; scoped commit/push and existing local OAuth deployment next",
+    "audioVerification": "All 19 ElevenLabs recordings and 150 exact cues passed forward/reverse synchronization and advancing audio-clock playback",
     "audioGateTest": "Build of book 1 correctly refused missing ElevenLabs configuration before writing release assets"
   }
 }

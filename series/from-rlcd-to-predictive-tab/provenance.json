@@ -87,5 +87,10 @@
     "reason": "User requested ending book 2 chapter 4 before app-status commentary and replacing book 3 with a concrete Jev Ultrafast explanation.",
     "sourceCommit": "1231850a0bf1a0c0341fe408ef1668dbbfdfac46",
     "priorMarkdownHashMismatch": "series-script.md already differed from the original recorded hash before this revision; original hashes retained."
+  },
+  "continuation": {
+    "date": "2026-09-30",
+    "authoring": "User explicitly requested Sol to finish remaining books. Sol authored and verified books 4\u20136; earlier Fable provenance preserved.",
+    "markdownHash": "Verified the current Markdown/package hash and all 150 numbered captions against canonical JSON; original hashes retained without modification."
   }
 }

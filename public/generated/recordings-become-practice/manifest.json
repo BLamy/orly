@@ -1,0 +1,64 @@
+{
+  "format": 3,
+  "slug": "recordings-become-practice",
+  "title": "Recordings Become Practice",
+  "subtitle": "How browser history becomes a training dataset",
+  "animal": "animal.webp",
+  "accent": "#fbbf24",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "A recording is evidence of what happened",
+      "blurb": "Construct examples from the state before an action, preserving unknown intent and observed outcome.",
+      "scene": "books/recordings-become-practice/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        8.382,
+        20.48,
+        28.966,
+        40.391,
+        49.551,
+        58.362,
+        66.698
+      ],
+      "duration": 77.275
+    },
+    {
+      "number": 2,
+      "title": "A local workshop for examples",
+      "blurb": "Separate bounded raw recordings from versioned derived examples and partition data before model selection.",
+      "scene": "books/recordings-become-practice/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        10.217,
+        20.573,
+        30.5,
+        39.765,
+        49.842,
+        57.864,
+        69.823
+      ],
+      "duration": 77.694
+    },
+    {
+      "number": 3,
+      "title": "Teach a small model a small job",
+      "blurb": "Learn candidate ranking with simple baselines first; use audited teacher signals and export a verified local policy.",
+      "scene": "books/recordings-become-practice/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        8.847,
+        18.367,
+        26.877,
+        36.188,
+        44.862,
+        54.149,
+        63.728
+      ],
+      "duration": 71.657
+    }
+  ]
+}

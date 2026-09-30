@@ -21,7 +21,7 @@ try {
       assert.ok(Number.isFinite(cue)&&cue>=0&&cue<chapter.duration,'Cue outside recording');
       if(i)assert.ok(cue>chapter.cues[i-1],'Narration cues must increase strictly');
     });
-    const page=await browser.newPage();
+    const page=await browser.newPage({serviceWorkers:'block'});
     const errors=[];
     page.on('pageerror',e=>errors.push(e.message));
     await page.goto(`${base}/?bundle=${slug}&chapter=${chapter.number}`);
@@ -63,6 +63,6 @@ try {
   }
   const dir=path.join(root,`series/from-rlcd-to-predictive-tab/evidence/${slug}`);
   fs.mkdirSync(dir,{recursive:true});
-  fs.writeFileSync(path.join(dir,'narration-check.json'),JSON.stringify(report,null,2)+'\n');
+  fs.writeFileSync(path.join(dir,base.startsWith('https:')?'live-narration-check.json':'narration-check.json'),JSON.stringify(report,null,2)+'\n');
   console.log(`${slug}: ${report.length} recorded chapters passed audio-clock and caption synchronization checks.`);
 }finally{await browser.close();}

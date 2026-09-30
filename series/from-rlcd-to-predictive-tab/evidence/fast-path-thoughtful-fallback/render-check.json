@@ -1,7 +1,7 @@
 [
   {
     "chapter": 1,
-    "story": "books-the-next-useful-action-chapter-1--the-pause-between-intention-and-action",
+    "story": "books-a-fast-path-with-a-thoughtful-fallback-chapter-1--default",
     "forwardBackwardSeeking": "passed",
     "consoleErrors": [],
     "infrastructureWarnings": [],
@@ -11,54 +11,54 @@
         "file": "chapter-1-state-0.png"
       },
       {
-        "t": 34.133,
+        "t": 37.3835,
         "file": "chapter-1-state-1.png"
       },
       {
-        "t": 8.501000000000001,
+        "t": 11.624,
         "file": "chapter-1-state-2.png"
       },
       {
-        "t": 17.73,
+        "t": 20.401,
         "file": "chapter-1-state-3.png"
       },
       {
-        "t": 26.333,
+        "t": 28.76,
         "file": "chapter-1-state-4.png"
       },
       {
-        "t": 35.227,
+        "t": 38.245,
         "file": "chapter-1-state-5.png"
       },
       {
-        "t": 45.176,
+        "t": 48.787,
         "file": "chapter-1-state-6.png"
       },
       {
-        "t": 52.99,
+        "t": 56.565,
         "file": "chapter-1-state-7.png"
       },
       {
-        "t": 60.35,
+        "t": 68.105,
         "file": "chapter-1-state-8.png"
       },
       {
-        "t": 67.266,
+        "t": 73.767,
         "file": "chapter-1-state-9.png"
       },
       {
-        "t": 17.0665,
+        "t": 18.69175,
         "file": "chapter-1-state-10.png"
       },
       {
-        "t": 34.133,
+        "t": 37.3835,
         "file": "chapter-1-state-11.png"
       }
     ]
   },
   {
     "chapter": 2,
-    "story": "books-the-next-useful-action-chapter-2--a-small-decision-inside-a-large-world",
+    "story": "books-a-fast-path-with-a-thoughtful-fallback-chapter-2--default",
     "forwardBackwardSeeking": "passed",
     "consoleErrors": [],
     "infrastructureWarnings": [],
@@ -68,54 +68,54 @@
         "file": "chapter-2-state-0.png"
       },
       {
-        "t": 35.341,
+        "t": 38.9165,
         "file": "chapter-2-state-1.png"
       },
       {
-        "t": 10.358,
+        "t": 9.743,
         "file": "chapter-2-state-2.png"
       },
       {
-        "t": 18.451,
+        "t": 20.459,
         "file": "chapter-2-state-3.png"
       },
       {
-        "t": 27.181,
+        "t": 30.525,
         "file": "chapter-2-state-4.png"
       },
       {
-        "t": 37.758,
+        "t": 40.312,
         "file": "chapter-2-state-5.png"
       },
       {
-        "t": 47.557,
+        "t": 49.065,
         "file": "chapter-2-state-6.png"
       },
       {
-        "t": 56.996,
+        "t": 58.887,
         "file": "chapter-2-state-7.png"
       },
       {
-        "t": 65.39,
+        "t": 70.137,
         "file": "chapter-2-state-8.png"
       },
       {
-        "t": 69.682,
+        "t": 76.833,
         "file": "chapter-2-state-9.png"
       },
       {
-        "t": 17.6705,
+        "t": 19.45825,
         "file": "chapter-2-state-10.png"
       },
       {
-        "t": 35.341,
+        "t": 38.9165,
         "file": "chapter-2-state-11.png"
       }
     ]
   },
   {
     "chapter": 3,
-    "story": "books-the-next-useful-action-chapter-3--two-experiences-one-foundation",
+    "story": "books-a-fast-path-with-a-thoughtful-fallback-chapter-3--default",
     "forwardBackwardSeeking": "passed",
     "consoleErrors": [],
     "infrastructureWarnings": [],
@@ -125,47 +125,47 @@
         "file": "chapter-3-state-0.png"
       },
       {
-        "t": 35.086,
+        "t": 41.8195,
         "file": "chapter-3-state-1.png"
       },
       {
-        "t": 9.522,
+        "t": 13.609,
         "file": "chapter-3-state-2.png"
       },
       {
-        "t": 17.894,
+        "t": 22.595,
         "file": "chapter-3-state-3.png"
       },
       {
-        "t": 26.868,
+        "t": 35.61,
         "file": "chapter-3-state-4.png"
       },
       {
-        "t": 35.576,
+        "t": 46.407,
         "file": "chapter-3-state-5.png"
       },
       {
-        "t": 46.188,
+        "t": 54.372,
         "file": "chapter-3-state-6.png"
       },
       {
-        "t": 55.928,
+        "t": 63.938,
         "file": "chapter-3-state-7.png"
       },
       {
-        "t": 66.354,
+        "t": 75.978,
         "file": "chapter-3-state-8.png"
       },
       {
-        "t": 69.172,
+        "t": 82.639,
         "file": "chapter-3-state-9.png"
       },
       {
-        "t": 17.543,
+        "t": 20.90975,
         "file": "chapter-3-state-10.png"
       },
       {
-        "t": 35.086,
+        "t": 41.8195,
         "file": "chapter-3-state-11.png"
       }
     ]

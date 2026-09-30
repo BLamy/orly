@@ -1,5 +1,26 @@
 # From RLCD to Predictive Tab
 
+## Series completion — September 30, 2026
+
+All six books are complete: 19 narrated chapters and 150 fixed captions. The
+user explicitly requested Sol for the remaining books 4–6, superseding the
+earlier Fable routing for this continuation. Each new book includes three
+native timeline scenes, matching Storybook stories, recorded ElevenLabs audio,
+validated alignment cues, chapter previews, and six semantic live blog sections.
+The existing beaver, fox, and hummingbird covers are preserved.
+
+The continuation checked primary Jev, Typesafe, rrweb, and W3C sources. Examples
+of training, routing, and predictive Tab remain clearly labeled illustrations or
+proposals; they are not implementation claims or measured benchmarks. See
+[the completion source note](completion-source-note.md).
+
+All original recordings and captions passed regression checks. The numbered
+captions in `series-script.md` match the canonical JSON exactly; the current
+package hashes verify, and all original package hashes remain preserved. Per-book and whole-series results are under `evidence/`.
+A fresh build is required for release because generated public assets are not
+included in the existing Nx cache inputs. Publication status is in
+`progress.json`; the dated paragraphs below are historical records.
+
 ## Jev explanation revision - September 18, 2026
 
 The requested revision ends book 2 chapter 4 at 45.900 seconds, before the
