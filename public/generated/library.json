@@ -1,6 +1,45 @@
 {
   "books": [
     {
+      "slug": "when-memory-matters",
+      "title": "When Memory Matters",
+      "subtitle": "A traceable test of when the past belongs in the reply",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c79100",
+      "animal": "generated/when-memory-matters/animal.webp",
+      "href": "?bundle=when-memory-matters",
+      "series": "Daily Papers by Hugging Face — October 2026",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A conversation becomes a test",
+          "duration": 55.913
+        },
+        {
+          "number": 2,
+          "title": "Rare does not mean nearby",
+          "duration": 56.099
+        },
+        {
+          "number": 3,
+          "title": "The probe earns its label",
+          "duration": 54.66
+        },
+        {
+          "number": 4,
+          "title": "What the public audit can prove",
+          "duration": 58.607
+        },
+        {
+          "number": 5,
+          "title": "Score the decision, not just the average",
+          "duration": 66.27
+        }
+      ],
+      "createdAt": "2026-10-06T10:57:36.369Z"
+    },
+    {
       "slug": "tab-into-the-future",
       "title": "Tab Into the Future",
       "subtitle": "A browser that meets you halfway",
