@@ -1,6 +1,35 @@
 {
   "books": [
     {
+      "slug": "cross-tokenizer-sixteen-shared-words",
+      "title": "Sixteen Shared Words",
+      "subtitle": "Reliable supervision across different tokenizers",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/cross-tokenizer-sixteen-shared-words/animal.webp",
+      "href": "?bundle=cross-tokenizer-sixteen-shared-words",
+      "series": "Daily Papers by Hugging Face — October 2026",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "One Response, Two Rulers",
+          "duration": 71.146
+        },
+        {
+          "number": 2,
+          "title": "The Student Chooses Sixteen",
+          "duration": 77.323
+        },
+        {
+          "number": 3,
+          "title": "More Coverage, Less Learning",
+          "duration": 77.648
+        }
+      ],
+      "createdAt": "2026-10-08T11:34:15.051Z"
+    },
+    {
       "slug": "when-memory-matters",
       "title": "When Memory Matters",
       "subtitle": "A traceable test of when the past belongs in the reply",
