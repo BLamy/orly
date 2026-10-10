@@ -1,6 +1,35 @@
 {
   "books": [
     {
+      "slug": "agentgarten-rendering-the-rules",
+      "title": "Rendering the Rules",
+      "subtitle": "Inside AgentGarten’s released neural renderer",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/agentgarten-rendering-the-rules/animal.webp",
+      "href": "?bundle=agentgarten-rendering-the-rules",
+      "series": "Daily Papers by Hugging Face — October 2026",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Geometry becomes tokens",
+          "duration": 67.384
+        },
+        {
+          "number": 2,
+          "title": "Replay restores the history gradient",
+          "duration": 73.189
+        },
+        {
+          "number": 3,
+          "title": "A bounded memory for a long stream",
+          "duration": 65.203
+        }
+      ],
+      "createdAt": "2026-10-10T13:42:48.403Z"
+    },
+    {
       "slug": "cross-tokenizer-sixteen-shared-words",
       "title": "Sixteen Shared Words",
       "subtitle": "Reliable supervision across different tokenizers",
