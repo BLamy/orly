@@ -4,7 +4,7 @@ description: Generate a multi-book O'RLY series from docs/a repo and publish it 
 
 # /new-series — add a whole book series to the shelf
 
-Read [the authoring model workflow](../../docs/authoring-models.md) first. **Claude Opus 5.5 (`claude-opus-5-5`, effort high) plans, writes and codes every part of the book** (visual plan, narration, D3/SVG/Canvas/Three.js scenes, Blender Python). Headless sub-sessions run through `node generator/run-opus.mjs --role <role>` (latest CLI via `npx --yes @anthropic-ai/claude-code@latest`, pinned model aliases, strict provenance). A fresh authoring session consumes the written plan; it does not re-plan. Preserve provider provenance and stop on a provider limit without substituting another model.
+Read [the authoring model workflow](../../docs/authoring-models.md) first. **Astra plans and models in Blender; Opus 5.5 authors D3/SVG animations through `npx --yes @anthropic-ai/claude-code@latest`.** An Opus worker consumes Astra's written plan; it does not replace the planner. If Opus reaches its provider limit, preserve progress and continue the animation role with GPT-6.1 Sol (`gpt-6.1-sol`). Record the limit and actual provider. Stop if both are unavailable; no other fallback is authorized.
 
 
 Turn a docs site or repo into a **grouped series** of explainer books, each its own
@@ -17,7 +17,7 @@ From a GitHub issue, parse the form: **Source**, **Series name**, **Books** (one
 line, or a description + a **count** to plan).
 
 Keys come from the gitignored `.env` locally, or from CI env (`ELEVENLABS_API_KEY`,
-`OPENAI_API_KEY` for gpt-image covers, `NOUN_PROJECT_KEY/SECRET`). Opus 5.5 writes the series plan, and a fresh Opus 5.5 session authors each book.
+`OPENAI_API_KEY`, `NOUN_PROJECT_KEY/SECRET`). Astra writes the series plan; Opus authors each book’s D3 scenes through the latest CLI.
 
 ## Steps
 

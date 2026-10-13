@@ -1,28 +1,7 @@
 {
-  "author": "claude-opus-5-5",
-  "effort": "high",
-  "roles": {
-    "planning": "claude-opus-5-5",
-    "research": "claude-opus-5-5",
-    "story": "claude-opus-5-5",
-    "narrationScript": "claude-opus-5-5",
-    "animation2d": "claude-opus-5-5",
-    "canvas": "claude-opus-5-5",
-    "three": "claude-opus-5-5",
-    "blenderPython": "claude-opus-5-5",
-    "music": "claude-opus-5-5",
-    "pipelineCode": "claude-opus-5-5",
-    "review": "claude-opus-5-5"
-  },
+  "planning": "gpt-6-astra",
+  "modeling3d": "gpt-6-astra",
+  "animation2d": "claude-opus-5-5",
   "claudePackage": "@anthropic-ai/claude-code@latest",
-  "tools": ["Bash", "Read", "Edit", "Write", "Glob", "Grep", "Agent", "Task"],
-  "webTools": { "roles": ["planning", "research"], "tools": ["WebFetch", "WebSearch"] },
-  "pinnedAliasEnv": ["ANTHROPIC_DEFAULT_HAIKU_MODEL", "ANTHROPIC_DEFAULT_SONNET_MODEL", "ANTHROPIC_DEFAULT_OPUS_MODEL", "CLAUDE_CODE_SUBAGENT_MODEL"],
-  "allowedAuxiliaryModels": [],
-  "fallback": null,
-  "nonAuthoring": {
-    "narrationVoice": { "provider": "elevenlabs", "model": "eleven_multilingual_v2" },
-    "coverImage": { "provider": "openai", "model": "gpt-image-1", "note": "image generation only; optional with --no-cover" },
-    "coverQa": { "provider": "openai", "model": "gpt-4o-mini", "note": "seed/lettering classifier only; fails open" }
-  }
+  "fallback": "gpt-6.1-sol"
 }

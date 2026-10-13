@@ -4,7 +4,7 @@ description: Generate a scene-native (3b1b-quality) video book from a repo + sub
 
 # /new-book — add a scene-native video book to the O'RLY shelf
 
-Read [the authoring model workflow](../../docs/authoring-models.md) first. **Claude Opus 5.5 (`claude-opus-5-5`, effort high) plans, writes and codes every part of the book** (visual plan, narration, D3/SVG/Canvas/Three.js scenes, Blender Python). Headless sub-sessions run through `node generator/run-opus.mjs --role <role>` (latest CLI via `npx --yes @anthropic-ai/claude-code@latest`, pinned model aliases, strict provenance). A fresh authoring session consumes the written plan; it does not re-plan. Preserve provider provenance and stop on a provider limit without substituting another model.
+Read [the authoring model workflow](../../docs/authoring-models.md) first. **Astra plans and models in Blender; Opus 5.5 authors D3/SVG animations through `npx --yes @anthropic-ai/claude-code@latest`.** An Opus worker consumes Astra's written plan; it does not replace the planner. If Opus reaches its provider limit, preserve progress and continue the animation role with GPT-6.1 Sol (`gpt-6.1-sol`). Record the limit and actual provider. Stop if both are unavailable; no other fallback is authorized.
 
 
 Turn a GitHub repo (or local path) + a subsystem into a narrated **3b1b-quality
@@ -16,8 +16,8 @@ the scenes are the whole video, so their quality is the product.
 **Arguments:** `$ARGUMENTS` — ideally `<repo-url-or-path> | <subsystem prompt> [| <short title>] [| <animal>]`.
 If they're missing or unclear, ask the user for the repo and which subsystem to explain.
 
-Keys come from the gitignored `.env` (`ELEVENLABS_API_KEY`; `OPENAI_API_KEY` only for the
-gpt-image cover). Opus 5.5 prepares the plan and any 3D assets, then authors the scenes.
+Keys come from the gitignored `.env` (`ELEVENLABS_API_KEY`, `OPENAI_API_KEY`).
+Astra prepares the plan and any 3D assets; Opus implements the D3 scenes.
 
 ## Steps — VISUALIZATIONS FIRST, video second
 
@@ -28,7 +28,7 @@ gpt-image cover). Opus 5.5 prepares the plan and any 3D assets, then authors the
    node -e "import('./generator/repo.mjs').then(m=>{const d=m.acquireAndDigest({repo:process.argv[1],prompt:process.argv[2]});require('fs').writeFileSync('/tmp/nb-digest.txt',d.digest);console.error('digest:',d.chosen.length,'files,',d.digest.length,'chars');})" "<REPO>" "<SUBSYSTEM PROMPT>"
    ```
 
-3. **PLAN THE VISUALIZATIONS (Opus 5.5)** — this is the storyboard now. Read
+3. **ASTRA: PLAN THE VISUALIZATIONS** — this is the storyboard now. Read
    `generator/prompts/storyboard.txt` (the v3 authoring doctrine — obey every
    rule) and the digest. Then write a **visual plan** (a scratch markdown file
    is fine) before any code:
@@ -48,7 +48,7 @@ gpt-image cover). Opus 5.5 prepares the plan and any 3D assets, then authors the
    - Ground EVERYTHING in the digest: real file/function/type names in captions
      and visuals. No invented components or flows.
 
-4. **AUTHOR THE SCENES (Opus 5.5)** — the video itself. Use the `viz-scene` skill
+4. **OPUS 5.5: AUTHOR THE D3 SCENES** — the video itself. Use the `viz-scene` skill
    (`.claude/skills/viz-scene/SKILL.md`, "Using scenes in BOOKS — v3"). One
    file per chapter: `apps/bookshelf/src/viz/books/<SLUG>/chapter-<n>.tsx` (layout data +
    `buildScene()` + `Render({s})` + `vizScene()`; auto-registered by glob).
@@ -80,16 +80,16 @@ gpt-image cover). Opus 5.5 prepares the plan and any 3D assets, then authors the
    failed run.
 
 6. **Build the video** (ElevenLabs narration per chapter + O'RLY cover +
-   manifest + shelf). The cover animal comes from `cover.mjs` (gpt-image-1 with
-   a vision QA loop; image generation is the one non-authoring model use). The
-   animal must be the requested one on a uniform pure-white (`#FFFFFF`) field
-   with no tan/cream/ivory cast, texture, vignette, scene, text, lettering, logo,
-   banner, or frame. Visually inspect `public/generated/<SLUG>/animal.png` and
-   the committed 512px-wide `animal.webp`. If you prepared the animal another
-   way (for example an Opus-drawn SVG rasterized to PNG/WebP), save both files
-   there and pass `--no-cover` below so the pipeline keeps them.
+   manifest + shelf). When Codex built-in ImageGen is available, **always use
+   it instead of the API cover generator**: generate only the requested animal
+   on a uniform pure-white (`#FFFFFF`) field with no tan/cream/ivory cast,
+   texture, vignette, scene, text, lettering, logo, banner, or frame. Visually
+   inspect the result, save the full PNG as
+   `public/generated/<SLUG>/animal.png`, create the committed 512px-wide
+   `animal.webp`, and pass `--no-cover` below so the pipeline keeps it. Use the
+   `cover.mjs` API path only if built-in ImageGen is unavailable.
    ```bash
-   # Include --no-cover when animal.png/animal.webp are already prepared.
+   # Include --no-cover when the built-in ImageGen cover is prepared.
    node generator/video.mjs --slug "<SLUG>" --title "<TITLE>" \
      --chapter-titles "t1|t2|…" --blurbs "b1|b2|…" \
      [--no-cover] \

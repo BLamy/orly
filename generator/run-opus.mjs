@@ -1,8 +1,8 @@
 #!/usr/bin/env node
-// run-opus.mjs — the ONE launcher for every headless local/CI authoring run: planning,
-// research, story/narration, D3/SVG, Canvas, Three.js, Blender Python, Strudel music,
-// pipeline code and review. Exactly one model (generator/authoring-models.json →
-// claude-opus-5-5) at a fixed effort (high), through the latest Claude Code CLI. No
+// run-opus.mjs — the FILM pipeline's headless launcher: planning, research, story/narration,
+// Canvas, Strudel music, pipeline code and review for films. Exactly one model
+// (generator/film/authoring-models.json → claude-opus-5-5; the film brief allows no fallback;
+// books follow generator/authoring-models.json and run-fable.mjs) at a fixed effort (high), through the latest Claude Code CLI. No
 // fallback model, no shell interpolation, strict provider provenance.
 //
 //   node generator/run-opus.mjs --role <role> --prompt-file assignment.md \
@@ -18,7 +18,7 @@ import { dirname, resolve } from 'node:path';
 import { spawn } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
 
-export const policy = JSON.parse(readFileSync(new URL('./authoring-models.json', import.meta.url), 'utf8'));
+export const policy = JSON.parse(readFileSync(new URL('./film/authoring-models.json', import.meta.url), 'utf8'));
 export const ROLES = Object.keys(policy.roles);
 
 export function command({ role = 'animation2d', maxTurns = 400 } = {}) {

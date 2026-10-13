@@ -2,7 +2,7 @@
 
 <p align="center">
   <em>A self-building bookshelf of generated explainers.</em><br/>
-  Point Claude Opus 5.5 at any GitHub repo + a subsystem to build a narrated,
+  Point Astra and Fable at any GitHub repo + a subsystem to build a narrated,
   animated <strong>O'RLY-parody</strong> "book" — then ships it to the shelf.
 </p>
 
@@ -28,17 +28,12 @@
 
 ## Authoring workflow
 
-**Claude Opus 5.5 (`claude-opus-5-5`, high effort) plans, writes and codes everything**:
-research, narration, D3/SVG and Canvas scenes, Three.js, Blender Python and Strudel
-music. Interactive sessions are pinned by `.claude/settings.json`; every headless run goes
-through `node generator/run-opus.mjs --role <role>` (`npx --yes
-@anthropic-ai/claude-code@latest --model claude-opus-5-5 --effort high`, model aliases
-pinned, no fallback, strict provenance). Planning and authoring are separate sessions of
-the same model. The [authoring workflow](docs/authoring-models.md) covers sessions,
-provenance, provider limits and CI credentials. Only cover art stays on an image model
-(`gpt-image`).
+**Astra plans and builds Blender 3D models; Fable 5.1 authors D3 animations.**
+Use `npx --yes @anthropic-ai/claude-code@latest` for every Fable run. The
+[shared workflow](docs/authoring-models.md) covers handoffs, source grounding,
+model provenance and deterministic hybrid playback. Covers still use built-in ImageGen.
 
-### Coming next: films
+### Films: VHS tapes on the shelf
 
 Beyond books, orly-2 makes **films**: 20–40 minute silhouette / paper-cut animated
 documentaries, researched, scripted, narrated, scored and rendered frame-exactly in
@@ -63,7 +58,7 @@ You never edit files to add a book. You **open an issue**, and CI does the rest:
 ```mermaid
 flowchart LR
   issue["📋 GitHub issue<br/>new-book · new-series · tweak"] --> ci["⚙️ GitHub Actions<br/>new-book.yml"]
-  ci --> claude["🤖 Opus 5.5 in CI<br/>plan → author → narrate → cover"]
+  ci --> claude["🤖 Astra + Fable in CI<br/>plan / 3D → D3 → narrate → cover"]
   claude --> pr["🔀 Pull request<br/>(stays open)"]
   pr --> preview["☁️ Cloudflare preview<br/>*.workers.dev link"]
   preview -. "💬 reply @claude &lt;change&gt;" .-> claude
@@ -73,7 +68,7 @@ flowchart LR
 ```
 
 1. **Open an issue** from a template (📕 new book, 📚 new series, ✏️ tweak). Anyone can file one; it only runs for the repo **owner** — when you open it, or apply the `build` label. Re-labeling re-runs it.
-2. **Opus 5.5 plans, then a fresh Opus 5.5 session authors the scenes in CI**, following the matching playbook in [`.claude/commands/`](.claude/commands), and runs the generator end to end.
+2. **Astra plans, then Fable 5.1 authors D3 in CI**, following the matching playbook in [`.claude/commands/`](.claude/commands), and runs the generator end to end.
 3. A **pull request** opens (and stays open) with a **live Cloudflare preview** commented right on it.
 4. **Reply `@claude <change>`** on the PR to revise the book — it edits the branch, pushes, and the preview redeploys. As many rounds as you like.
 5. **You merge** — the one deliberate manual step — and it deploys to **Cloudflare Workers**.
@@ -86,7 +81,7 @@ Fork the repo, add a handful of secrets, and the same loop builds *your* collect
 | --- | --- | --- |
 | `CLAUDE_CODE_OAUTH_TOKEN` | Runs Claude Code in CI — **billed to your Claude subscription**, not a per-call API key | run **`claude setup-token`** |
 | `CLOUDFLARE_API_TOKEN` + `CLOUDFLARE_ACCOUNT_ID` | Production deploy + per-PR previews | Cloudflare dashboard → "Edit Cloudflare Workers" token |
-| `OPENAI_API_KEY` | `gpt-image` cover art (the only non-Claude model; optional with `--no-cover`) | platform.openai.com |
+| `OPENAI_API_KEY` | `gpt-image` cover art | platform.openai.com |
 | `ELEVENLABS_API_KEY` | Narration text-to-speech | elevenlabs.io |
 | `NOUN_PROJECT_KEY` + `NOUN_PROJECT_SECRET` | Icons for diagram nodes/packets | thenounproject.com/developers |
 
@@ -108,7 +103,7 @@ npm run explain -- --repo https://github.com/koajs/koa \
                    --title "Koa.js" --open
 ```
 
-Keys live in a gitignored `.env` (`OPENAI_API_KEY`, `ELEVENLABS_API_KEY`, `NOUN_PROJECT_KEY/SECRET`). Opus 5.5 writes the visual plan and authors the scenes using the latest Claude CLI. See [`generator/README.md`](generator/README.md) for the full pipeline, and [`.claude/commands/`](.claude/commands) for the playbooks.
+Keys live in a gitignored `.env` (`OPENAI_API_KEY`, `ELEVENLABS_API_KEY`, `NOUN_PROJECT_KEY/SECRET`). Astra writes the visual plan; Fable 5.1 authors D3 scenes using the latest Claude CLI. See [`generator/README.md`](generator/README.md) for the full pipeline, and [`.claude/commands/`](.claude/commands) for the playbooks.
 
 ## Architecture
 

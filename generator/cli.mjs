@@ -93,11 +93,11 @@ async function main() {
   --prompt "<text>"     which subsystem to explain
   --slug <name>         output slug (default: from prompt)
   --voice <id>          ElevenLabs voice id (default ${VOICE_DEFAULT})
-  --model <id>          legacy option; use an Opus-authored --storyboard
+  --model <id>          legacy option; use an Astra-authored --storyboard
   --storyboard <path>   use a pre-made storyboard JSON (skip the LLM step)
   --no-tts              skip narration (diagram-only preview)
   --open                open the result in Chrome (starts the dev server if needed)
-Env: ELEVENLABS_API_KEY (TTS). Planning: Opus-authored --storyboard required.`);
+Env: ELEVENLABS_API_KEY (TTS). Planning: Astra-authored --storyboard required.`);
     process.exit(args.help ? 0 : 1);
   }
 
