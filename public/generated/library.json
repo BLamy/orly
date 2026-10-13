@@ -1,6 +1,35 @@
 {
   "books": [
     {
+      "slug": "s-space-the-map-within",
+      "title": "The Map Within",
+      "subtitle": "Reading and editing a model's spatial workspace",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c79100",
+      "animal": "generated/s-space-the-map-within/animal.webp",
+      "href": "?bundle=s-space-the-map-within",
+      "series": "Daily Papers by Hugging Face — October 2026",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Three rulers inside a token",
+          "duration": 64.412
+        },
+        {
+          "number": 2,
+          "title": "Move the map, test the answer",
+          "duration": 65.759
+        },
+        {
+          "number": 3,
+          "title": "Turn the viewpoint, not the evidence",
+          "duration": 77.368
+        }
+      ],
+      "createdAt": "2026-10-13T12:43:40.891Z"
+    },
+    {
       "slug": "agentgarten-rendering-the-rules",
       "title": "Rendering the Rules",
       "subtitle": "Inside AgentGarten’s released neural renderer",
