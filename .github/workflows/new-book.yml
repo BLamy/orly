@@ -129,21 +129,48 @@ jobs:
             Write .orly-work/visual-plan.md with source anchors, chapter beats,
             fixed narration, 2D/3D choices and verification criteria. Build any needed
             Blender assets and their Three.js adapter; Blender is installed.
-            Write .orly-work/fable-assignment.md: a bounded assignment for Fable 5.1
+            Write .orly-work/fable-assignment.md: a bounded assignment for Opus 5.5
             to implement only the D3/SVG portions, read your visual plan, integrate
             assets, build manifests/audio/blogs, and run typecheck/build/playback
             verification. Include the original request, relevant sources, permitted
-            files, existing publication constraints and exact commands. Fable must
+            files, existing publication constraints and exact commands. Opus must
             not run git/gh or publish; the workflow creates a preview PR.
-            A missing provider is a blocker, not permission to substitute models.
+            Only a confirmed Opus provider limit authorizes the GPT-6.1 Sol fallback; no other model substitution is allowed.
 
-      - name: Author D3 animations with latest Claude CLI and Fable 5.1
+      - name: Author D3 animations with latest Claude CLI and Opus 5.5
         id: generate
         if: ${{ !contains(steps.issue.outputs.labels, 'new-series') }}
         continue-on-error: true # retain partial work in the existing preview PR flow
         run: node generator/run-fable.mjs --prompt-file .orly-work/fable-assignment.md --output .orly-work/fable-result.json
         env:
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+          ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          NOUN_PROJECT_KEY: ${{ secrets.NOUN_PROJECT_KEY }}
+          NOUN_PROJECT_SECRET: ${{ secrets.NOUN_PROJECT_SECRET }}
+
+      - name: Continue authoring with GPT-6.1 Sol after an Opus limit
+        id: sol_fallback
+        if: steps.generate.outputs.provider_limit == 'true'
+        continue-on-error: true
+        uses: openai/codex-action@v1
+        with:
+          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
+          model: gpt-6.1-sol
+          effort: high
+          sandbox: workspace-write
+          codex-args: '["-c", "sandbox_workspace_write.network_access=true"]'
+          output-file: .orly-work/sol-result.md
+          prompt: |
+            Opus 5.5 reached its provider limit. Continue its saved work using
+            GPT-6.1 Sol as authorized in docs/authoring-models.md.
+            Read .orly-work/visual-plan.md and .orly-work/fable-assignment.md.
+            Inspect the current source and private provider result. Preserve
+            completed chapters, fixed captions and existing narration/image assets;
+            finish only the remaining assignment and run its verification commands.
+            Record the Opus limit and requested/actual fallback model provenance.
+            Do not run git/gh or publish; the existing workflow owns its PR flow.
+        env:
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
           OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
           NOUN_PROJECT_KEY: ${{ secrets.NOUN_PROJECT_KEY }}
@@ -216,7 +243,7 @@ jobs:
           # passed via env (NOT interpolated into bash) so a title with backticks,
           # quotes, or <angle brackets> can never break the shell.
           ISSUE_TITLE: ${{ steps.issue.outputs.title }}
-          GENERATE_OUTCOME: ${{ steps.generate.outcome }}
+          GENERATE_OUTCOME: ${{ steps.generate.outputs.provider_limit == 'true' && steps.sol_fallback.outcome || steps.generate.outcome }}
           # success | failure | skipped — the PR body notes the verification result
           VERIFY_OUTCOME: ${{ steps.verify.outcome }}
         run: bash .github/scripts/open-book-pr.sh

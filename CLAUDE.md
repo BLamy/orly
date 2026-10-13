@@ -8,16 +8,18 @@ as an **O'RLY‑parody** O'Reilly‑style book. The shelf deploys to Cloudflare 
 ## Authoring model routing
 
 Use **GPT-6 Astra (`gpt-6-astra`) for planning and Blender 3D modeling** and
-**Claude Fable 5.1 (`claude-fable-5-1`) for D3/SVG animations**. Follow
+**Claude Opus 5.5 (`claude-opus-5-5`) for D3/SVG animations**. Follow
 [the authoring model workflow](docs/authoring-models.md) for handoffs, provider
 provenance and hybrid scene verification. Always launch Claude with
 `npx --yes @anthropic-ai/claude-code@latest`, never the installed global CLI.
-Keep the exact requested model; save progress on a provider limit rather than
-silently substituting. Astra may continue independent 3D/integration work.
+Use Opus 5.5 first. If it reaches a session, weekly, usage or rate limit, preserve
+progress and continue D3/SVG authoring with GPT-6.1 Sol (`gpt-6.1-sol`). Record the
+limit and both requested and actual models. Stop if Sol is also unavailable; do
+not substitute another model. Astra may continue independent 3D/integration work.
 
 ## The main thing you do here
 **Create a new book** when asked: run **`/new-book <repo> | <subsystem> | <title>`**
-(see `.claude/commands/new-book.md`). It digests the repo, Astra writes the visual plan and Fable authors D3 scenes,
+(see `.claude/commands/new-book.md`). It digests the repo, Astra writes the visual plan and Opus authors D3 scenes,
 then the pipeline narrates it (ElevenLabs), generates an O'RLY cover (gpt‑image),
 adds Noun Project icons, and you commit + push to redeploy.
 

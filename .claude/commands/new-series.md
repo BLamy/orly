@@ -4,7 +4,7 @@ description: Generate a multi-book O'RLY series from docs/a repo and publish it 
 
 # /new-series — add a whole book series to the shelf
 
-Read [the authoring model workflow](../../docs/authoring-models.md) first. **Astra plans and models in Blender; Fable 5.1 authors D3/SVG animations through `npx --yes @anthropic-ai/claude-code@latest`.** A Fable worker consumes Astra's written plan; it does not replace the planner. Preserve provider provenance and stop that role on a provider limit without substitution.
+Read [the authoring model workflow](../../docs/authoring-models.md) first. **Astra plans and models in Blender; Opus 5.5 authors D3/SVG animations through `npx --yes @anthropic-ai/claude-code@latest`.** An Opus worker consumes Astra's written plan; it does not replace the planner. If Opus reaches its provider limit, preserve progress and continue the animation role with GPT-6.1 Sol (`gpt-6.1-sol`). Record the limit and actual provider. Stop if both are unavailable; no other fallback is authorized.
 
 
 Turn a docs site or repo into a **grouped series** of explainer books, each its own
@@ -17,7 +17,7 @@ From a GitHub issue, parse the form: **Source**, **Series name**, **Books** (one
 line, or a description + a **count** to plan).
 
 Keys come from the gitignored `.env` locally, or from CI env (`ELEVENLABS_API_KEY`,
-`OPENAI_API_KEY`, `NOUN_PROJECT_KEY/SECRET`). Astra writes the series plan; Fable authors each book’s D3 scenes through the latest CLI.
+`OPENAI_API_KEY`, `NOUN_PROJECT_KEY/SECRET`). Astra writes the series plan; Opus authors each book’s D3 scenes through the latest CLI.
 
 ## Steps
 
@@ -35,7 +35,7 @@ series is too big a unit of work; runs that try will die partway).
    it, and STOP (do not author scenes, do not run the generator):
    ```json
    { "series": "<Series Name>", "source": "<repo url>",
-     "model": "claude-fable-5-1",
+     "model": "claude-opus-5-5",
      "books": [ { "order": 1, "title": "…", "subtitle": "…",
                   "animal": "…", "accent": "#38bdf8",
                   "subsystem": "<what to explain — 2–4 sentences>" } ] }

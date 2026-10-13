@@ -1,6 +1,6 @@
 #!/usr/bin/env node
-// One launcher for local/CI D3 authoring. No shell interpolation or model fallback.
-import { readFileSync, writeFileSync, mkdirSync } from 'node:fs';
+// One launcher for local/CI D3 authoring. Exact Opus primary model; quota failures hand off to the authorized Sol supervisor.
+import { readFileSync, writeFileSync, mkdirSync, appendFileSync } from 'node:fs';
 import { dirname, resolve } from 'node:path';
 import { spawn } from 'node:child_process';
 import { pathToFileURL } from 'node:url';
@@ -9,11 +9,17 @@ export function command(maxTurns=400) {
  if(!Number.isInteger(maxTurns)||maxTurns<1||maxTurns>400)throw new Error('max-turns must be 1–400');
  return {file:'npx',args:['--yes',policy.claudePackage,'--print','--model',policy.animation2d,'--output-format','json','--max-turns',String(maxTurns),'--allowedTools','Bash,Read,Edit,Write,Glob,Grep']};
 }
+export function isProviderLimit(raw) {
+ try {
+  const result=JSON.parse(raw);
+  return result.is_error===true && /hit your (?:session|weekly|usage) limit|rate_limit_error|rate limit (?:exceeded|reached)|usage limit exceeded/i.test(String(result.result??'')+' '+JSON.stringify(result.error??''));
+ } catch { return false; }
+}
 export function verifyResult(raw) {
  const result=JSON.parse(raw);
- if(result.is_error||result.subtype?.startsWith('error'))throw new Error('Fable failed or hit a provider limit; inspect the private result file.');
+ if(result.is_error||result.subtype?.startsWith('error'))throw new Error('Animation authoring failed or hit a provider limit; inspect the private result file.');
  const models=Object.keys(result.modelUsage??{});
- if(!models.includes(policy.animation2d))throw new Error('Fable 5.1 provider provenance is missing.');
+ if(!models.includes(policy.animation2d))throw new Error('Requested animation provider provenance is missing.');
  // Claude may account for auxiliary classification calls separately; never accept another primary author.
  if(models.some(m=>m!==policy.animation2d&&!m.includes('haiku')))throw new Error('Unexpected authoring model in provider result.');
  return result;
@@ -30,7 +36,11 @@ async function main() {
  const code=await new Promise((resolve,reject)=>{child.on('error',reject);child.on('close',resolve);});
  const raw=Buffer.concat(chunks).toString();writeFileSync(output,raw,{mode:0o600});
  if(errors.length)writeFileSync(output+'.stderr',Buffer.concat(errors),{mode:0o600});
+ if(isProviderLimit(raw)) {
+  if(process.env.GITHUB_OUTPUT)appendFileSync(process.env.GITHUB_OUTPUT,'provider_limit=true\n');
+  throw Object.assign(new Error(`${policy.animation2d} reached its provider limit. Progress/result saved at ${output}; continue with ${policy.fallback}.`),{providerLimit:true});
+ }
  if(code!==0)throw new Error(`Latest Claude CLI exited ${code}; inspect ${output}`);
- verifyResult(raw);console.log(`Fable 5.1 completed; private provenance: ${output}`);
+ verifyResult(raw);console.log(`Opus 5.5 completed; private provenance: ${output}`);
 }
-if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href)main().catch(e=>{console.error(e.message);process.exitCode=1;});
+if(process.argv[1]&&import.meta.url===pathToFileURL(resolve(process.argv[1])).href)main().catch(e=>{console.error(e.message);process.exitCode=e.providerLimit?75:1;});
