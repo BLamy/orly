@@ -1,0 +1,104 @@
+{
+  "format": 3,
+  "slug": "agentgarten-rendering-the-rules",
+  "title": "Rendering the Rules",
+  "subtitle": "Inside AgentGarten\u2019s released neural renderer",
+  "animal": "animal.webp",
+  "accent": "#198a8a",
+  "chapters": [
+    {
+      "number": 1,
+      "title": "Geometry becomes tokens",
+      "blurb": "How geometry and appearance become shared video tokens.",
+      "scene": "books/agentgarten-rendering-the-rules/chapter-1",
+      "audio": "audio/chapter-1.mp3",
+      "cues": [
+        0,
+        7.198,
+        14.304,
+        22.628,
+        29.304,
+        36.293,
+        44.907,
+        52.187,
+        59.826
+      ],
+      "duration": 67.384
+    },
+    {
+      "number": 2,
+      "title": "Replay restores the history gradient",
+      "blurb": "Why replay lets later losses train the history encoder.",
+      "scene": "books/agentgarten-rendering-the-rules/chapter-2",
+      "audio": "audio/chapter-2.mp3",
+      "cues": [
+        0,
+        7.523,
+        15.917,
+        24.323,
+        32.612,
+        39.636,
+        48.227,
+        56.389,
+        64.783
+      ],
+      "duration": 73.189
+    },
+    {
+      "number": 3,
+      "title": "A bounded memory for a long stream",
+      "blurb": "How streaming keeps a bounded cache without rewinding the world.",
+      "scene": "books/agentgarten-rendering-the-rules/chapter-3",
+      "audio": "audio/chapter-3.mp3",
+      "cues": [
+        0,
+        7.117,
+        13.886,
+        20.573,
+        26.89,
+        33.856,
+        41.263,
+        48.299,
+        56.681
+      ],
+      "duration": 65.203
+    }
+  ],
+  "paper": {
+    "title": "AgentGarten: Code Worlds for Evolving Agents",
+    "id": "2610.12374",
+    "authors": [
+      "Jiawei Chi",
+      "Shangchen Miao",
+      "Zhiyuan Shi",
+      "Kailu Wu",
+      "Hanyang Wang",
+      "Weiliang Chen",
+      "Qiyu Dai",
+      "Jinshan Ren",
+      "Jun Gao",
+      "Mingsheng Long",
+      "Yueqi Duan",
+      "Jiangran Lyu",
+      "Jialong Wu",
+      "Fangfu Liu"
+    ],
+    "hf_url": "https://huggingface.co/papers/2610.12374",
+    "paper_url": "https://arxiv.org/abs/2610.12374",
+    "pdf_url": "https://arxiv.org/pdf/2610.12374",
+    "doi": "10.48550/arXiv.2610.12374",
+    "repository": "https://github.com/MirroS-Lab/AgentGarten",
+    "arxivVersion": "2610.12374v1",
+    "dailyPaperDate": "2026-10-09",
+    "ranking": 1,
+    "observedUpvotes": 139,
+    "rankingObservedAt": "2026-10-10T09:00:27.339962-04:00",
+    "sourceCommit": "06bb4621deb9b380c34abb6dac42fe0b31eec2e3",
+    "scope": "Released neural renderer; illustrative diagrams, no trained model inference. Code worlds and agent practice loop are not released."
+  },
+  "authoring": {
+    "planningModel": "gpt-6-astra",
+    "sceneModel": "claude-fable-5-1",
+    "cover": "Codex built-in ImageGen; transparent animal flattened to pure white"
+  }
+}

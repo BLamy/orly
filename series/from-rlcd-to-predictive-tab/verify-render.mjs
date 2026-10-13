@@ -38,6 +38,12 @@ try {
     await page.goto(`${base}/?bundle=${slug}&chapter=${chapter.number}`);
     await page.locator('.bp-stage > svg').waitFor();
     const player=page.locator('.bp-player');
+    // Scene mount precedes the asynchronous audio autoplay attempt. Settle it
+    // before pausing, otherwise a late play() can advance our comparison frame.
+    if(await player.locator('audio').count()){
+      await page.waitForFunction(()=>document.querySelector('.bp-player audio')?.readyState>=2);
+      await page.waitForTimeout(300);
+    }
     const pause=player.getByRole('button',{name:'Pause',exact:true});
     if(await pause.count()) await pause.click();
     const mute=player.getByRole('button',{name:'Mute',exact:true});

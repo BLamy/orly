@@ -1,6 +1,64 @@
 {
   "books": [
     {
+      "slug": "agentgarten-rendering-the-rules",
+      "title": "Rendering the Rules",
+      "subtitle": "Inside AgentGarten’s released neural renderer",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/agentgarten-rendering-the-rules/animal.webp",
+      "href": "?bundle=agentgarten-rendering-the-rules",
+      "series": "Daily Papers by Hugging Face — October 2026",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Geometry becomes tokens",
+          "duration": 67.384
+        },
+        {
+          "number": 2,
+          "title": "Replay restores the history gradient",
+          "duration": 73.189
+        },
+        {
+          "number": 3,
+          "title": "A bounded memory for a long stream",
+          "duration": 65.203
+        }
+      ],
+      "createdAt": "2026-10-10T13:42:48.403Z"
+    },
+    {
+      "slug": "cross-tokenizer-sixteen-shared-words",
+      "title": "Sixteen Shared Words",
+      "subtitle": "Reliable supervision across different tokenizers",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/cross-tokenizer-sixteen-shared-words/animal.webp",
+      "href": "?bundle=cross-tokenizer-sixteen-shared-words",
+      "series": "Daily Papers by Hugging Face — October 2026",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "One Response, Two Rulers",
+          "duration": 71.146
+        },
+        {
+          "number": 2,
+          "title": "The Student Chooses Sixteen",
+          "duration": 77.323
+        },
+        {
+          "number": 3,
+          "title": "More Coverage, Less Learning",
+          "duration": 77.648
+        }
+      ],
+      "createdAt": "2026-10-08T11:34:15.051Z"
+    },
+    {
       "slug": "neural-net-history",
       "title": "Who Taught the Machine?",
       "subtitle": "A case history of neural networks, 1943–2026",
@@ -102,6 +160,45 @@
       "sources": "generated/neural-net-history/sources/"
     },
     {
+      "slug": "when-memory-matters",
+      "title": "When Memory Matters",
+      "subtitle": "A traceable test of when the past belongs in the reply",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c79100",
+      "animal": "generated/when-memory-matters/animal.webp",
+      "href": "?bundle=when-memory-matters",
+      "series": "Daily Papers by Hugging Face — October 2026",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A conversation becomes a test",
+          "duration": 55.913
+        },
+        {
+          "number": 2,
+          "title": "Rare does not mean nearby",
+          "duration": 56.099
+        },
+        {
+          "number": 3,
+          "title": "The probe earns its label",
+          "duration": 54.66
+        },
+        {
+          "number": 4,
+          "title": "What the public audit can prove",
+          "duration": 58.607
+        },
+        {
+          "number": 5,
+          "title": "Score the decision, not just the average",
+          "duration": 66.27
+        }
+      ],
+      "createdAt": "2026-10-06T10:57:36.369Z"
+    },
+    {
       "slug": "perceptron-short",
       "title": "The Machine That Learned to See",
       "subtitle": "a one-minute silhouette short",
@@ -130,6 +227,96 @@
         }
       ],
       "createdAt": "2026-10-05T15:42:41.793Z"
+    },
+    {
+      "slug": "tab-into-the-future",
+      "title": "Tab Into the Future",
+      "subtitle": "A browser that meets you halfway",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#2dd4bf",
+      "animal": "generated/tab-into-the-future/animal.webp",
+      "href": "?bundle=tab-into-the-future",
+      "series": "From RLCD to Predictive Tab",
+      "seriesOrder": 6,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Anticipation without taking over",
+          "duration": 69.101
+        },
+        {
+          "number": 2,
+          "title": "Learn from the person, not the echo",
+          "duration": 75.465
+        },
+        {
+          "number": 3,
+          "title": "The first useful version",
+          "duration": 76.905
+        }
+      ],
+      "createdAt": "2026-09-30T06:21:16.872Z"
+    },
+    {
+      "slug": "fast-path-thoughtful-fallback",
+      "title": "A Fast Path with a Thoughtful Fallback",
+      "subtitle": "How a small policy and GLM can work together",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#fb7185",
+      "animal": "generated/fast-path-thoughtful-fallback/animal.webp",
+      "href": "?bundle=fast-path-thoughtful-fallback",
+      "series": "From RLCD to Predictive Tab",
+      "seriesOrder": 5,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Learn the familiar, escalate the unfamiliar",
+          "duration": 74.767
+        },
+        {
+          "number": 2,
+          "title": "Can constrained decoding scale up?",
+          "duration": 77.833
+        },
+        {
+          "number": 3,
+          "title": "Measure the whole trip",
+          "duration": 83.639
+        }
+      ],
+      "createdAt": "2026-09-30T06:10:20.299Z"
+    },
+    {
+      "slug": "recordings-become-practice",
+      "title": "Recordings Become Practice",
+      "subtitle": "How browser history becomes a training dataset",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#fbbf24",
+      "animal": "generated/recordings-become-practice/animal.webp",
+      "href": "?bundle=recordings-become-practice",
+      "series": "From RLCD to Predictive Tab",
+      "seriesOrder": 4,
+      "chapters": [
+        {
+          "number": 1,
+          "title": "A recording is evidence of what happened",
+          "duration": 77.275
+        },
+        {
+          "number": 2,
+          "title": "A local workshop for examples",
+          "duration": 77.694
+        },
+        {
+          "number": 3,
+          "title": "Teach a small model a small job",
+          "duration": 71.657
+        }
+      ],
+      "createdAt": "2026-09-30T05:54:48.619Z"
     },
     {
       "slug": "confidence-before-words",

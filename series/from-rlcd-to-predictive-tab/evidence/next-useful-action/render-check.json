@@ -4,53 +4,54 @@
     "story": "books-the-next-useful-action-chapter-1--the-pause-between-intention-and-action",
     "forwardBackwardSeeking": "passed",
     "consoleErrors": [],
+    "infrastructureWarnings": [],
     "frames": [
       {
         "t": 1,
         "file": "chapter-1-state-0.png"
       },
       {
-        "t": 45.1,
+        "t": 34.133,
         "file": "chapter-1-state-1.png"
       },
       {
-        "t": 12.7,
+        "t": 8.501000000000001,
         "file": "chapter-1-state-2.png"
       },
       {
-        "t": 23.1,
+        "t": 17.73,
         "file": "chapter-1-state-3.png"
       },
       {
-        "t": 35.1,
+        "t": 26.333,
         "file": "chapter-1-state-4.png"
       },
       {
-        "t": 46.7,
+        "t": 35.227,
         "file": "chapter-1-state-5.png"
       },
       {
-        "t": 57.1,
+        "t": 45.176,
         "file": "chapter-1-state-6.png"
       },
       {
-        "t": 68.3,
+        "t": 52.99,
         "file": "chapter-1-state-7.png"
       },
       {
-        "t": 79.1,
+        "t": 60.35,
         "file": "chapter-1-state-8.png"
       },
       {
-        "t": 89.2,
+        "t": 67.266,
         "file": "chapter-1-state-9.png"
       },
       {
-        "t": 22.55,
+        "t": 17.0665,
         "file": "chapter-1-state-10.png"
       },
       {
-        "t": 45.1,
+        "t": 34.133,
         "file": "chapter-1-state-11.png"
       }
     ]
@@ -60,53 +61,54 @@
     "story": "books-the-next-useful-action-chapter-2--a-small-decision-inside-a-large-world",
     "forwardBackwardSeeking": "passed",
     "consoleErrors": [],
+    "infrastructureWarnings": [],
     "frames": [
       {
         "t": 1,
         "file": "chapter-2-state-0.png"
       },
       {
-        "t": 46.3,
+        "t": 35.341,
         "file": "chapter-2-state-1.png"
       },
       {
-        "t": 13.1,
+        "t": 10.358,
         "file": "chapter-2-state-2.png"
       },
       {
-        "t": 24.3,
+        "t": 18.451,
         "file": "chapter-2-state-3.png"
       },
       {
-        "t": 36.3,
+        "t": 27.181,
         "file": "chapter-2-state-4.png"
       },
       {
-        "t": 47.9,
+        "t": 37.758,
         "file": "chapter-2-state-5.png"
       },
       {
-        "t": 59.1,
+        "t": 47.557,
         "file": "chapter-2-state-6.png"
       },
       {
-        "t": 70.3,
+        "t": 56.996,
         "file": "chapter-2-state-7.png"
       },
       {
-        "t": 81.9,
+        "t": 65.39,
         "file": "chapter-2-state-8.png"
       },
       {
-        "t": 91.6,
+        "t": 69.682,
         "file": "chapter-2-state-9.png"
       },
       {
-        "t": 23.15,
+        "t": 17.6705,
         "file": "chapter-2-state-10.png"
       },
       {
-        "t": 46.3,
+        "t": 35.341,
         "file": "chapter-2-state-11.png"
       }
     ]
@@ -116,53 +118,54 @@
     "story": "books-the-next-useful-action-chapter-3--two-experiences-one-foundation",
     "forwardBackwardSeeking": "passed",
     "consoleErrors": [],
+    "infrastructureWarnings": [],
     "frames": [
       {
         "t": 1,
         "file": "chapter-3-state-0.png"
       },
       {
-        "t": 44.5,
+        "t": 35.086,
         "file": "chapter-3-state-1.png"
       },
       {
-        "t": 13.1,
+        "t": 9.522,
         "file": "chapter-3-state-2.png"
       },
       {
-        "t": 25.1,
+        "t": 17.894,
         "file": "chapter-3-state-3.png"
       },
       {
-        "t": 35.9,
+        "t": 26.868,
         "file": "chapter-3-state-4.png"
       },
       {
-        "t": 45.5,
+        "t": 35.576,
         "file": "chapter-3-state-5.png"
       },
       {
-        "t": 57.1,
+        "t": 46.188,
         "file": "chapter-3-state-6.png"
       },
       {
-        "t": 68.3,
+        "t": 55.928,
         "file": "chapter-3-state-7.png"
       },
       {
-        "t": 79.5,
+        "t": 66.354,
         "file": "chapter-3-state-8.png"
       },
       {
-        "t": 88,
+        "t": 69.172,
         "file": "chapter-3-state-9.png"
       },
       {
-        "t": 22.25,
+        "t": 17.543,
         "file": "chapter-3-state-10.png"
       },
       {
-        "t": 44.5,
+        "t": 35.086,
         "file": "chapter-3-state-11.png"
       }
     ]

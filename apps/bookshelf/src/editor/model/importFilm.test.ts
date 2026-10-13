@@ -273,7 +273,9 @@ function loadFilm(slug: string): FilmImportData | null {
   const json = (rel: string): unknown => (fs.existsSync(path.join(dir, rel)) ? JSON.parse(fs.readFileSync(path.join(dir, rel), 'utf8')) : null);
   const timeline = json('narration/timeline.json') as FilmImportData['timeline'] | null;
   if (!timeline) return null;
+  // the clips and renders are regenerable media (gitignored): a fresh checkout/CI has no audio to measure
   const clipDir = path.join(dir, 'narration/clips');
+  if (!fs.existsSync(clipDir)) return null;
   const clips: FilmFileInfo[] = fs
     .readdirSync(clipDir)
     .filter((f) => f.endsWith('.wav'))
@@ -297,7 +299,7 @@ function loadFilm(slug: string): FilmImportData | null {
 
 test('import: films/perceptron-short round-trips', (t) => {
   const data = loadFilm('perceptron-short');
-  if (!data) return t.skip('films/perceptron-short is not on disk');
+  if (!data) return t.skip('films/perceptron-short media is not on disk (narration clips are regenerable and gitignored)');
   const { project, warnings } = importFilmReport(data, { now: NOW });
   checkRoundTrip(data, project);
   assert.equal(projectDuration(project), 67.75);
@@ -315,7 +317,7 @@ test('import: films/perceptron-short round-trips', (t) => {
 
 test('import: films/neural-net-history round-trips (33 min, 121 shots)', (t) => {
   const data = loadFilm('neural-net-history');
-  if (!data) return t.skip('films/neural-net-history is not on disk');
+  if (!data) return t.skip('films/neural-net-history media is not on disk (narration clips are regenerable and gitignored)');
   const t0 = performance.now();
   const { project, warnings } = importFilmReport(data, { now: NOW });
   const ms = performance.now() - t0;

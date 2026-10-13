@@ -1,0 +1,65 @@
+{
+  "paper": {
+    "title": "RealCompanion: Benchmarking Human Understanding from Reasoning over Longitudinal Real-World Conversations",
+    "authors": [
+      "Arman Behnam",
+      "Sunglyoung Kim",
+      "Liangwei Yang"
+    ],
+    "stableId": "arXiv:2610.01780",
+    "researchedVersion": "v2",
+    "huggingFaceUrl": "https://huggingface.co/papers/2610.01780",
+    "canonicalUrl": "https://arxiv.org/abs/2610.01780",
+    "pdfUrl": "https://arxiv.org/pdf/2610.01780",
+    "pdfSha256": "cd08f9323edced9ec7b0bf353aba865ebfff1b23fca743fe05dd0d065ce8379e",
+    "officialCodeUrl": "https://anonymous.4open.science/r/realcompanion-54CC/",
+    "dailyPaperDate": "2026-10-05",
+    "popularityEvidence": "Ranked #1 Paper of the day on Hugging Face; 259 upvotes observed during the 2026-10-06 research run."
+  },
+  "planning": {
+    "requestedModel": "gpt-6-astra",
+    "actualModel": "gpt-6-astra",
+    "digestSha256": "42e3da4c18238515f38669a173479c51f6776253d9c1c797d6dee2d0f9314302"
+  },
+  "visualization": {
+    "requestedModel": "claude-fable-5-1",
+    "actualModels": [
+      "claude-fable-5-1"
+    ],
+    "launcher": "npx --yes @anthropic-ai/claude-code@latest",
+    "authoringResultSha256": "483ac836638fb70f6124f7101d9d2d3b1acf9e4de62eee0329ae9d86409d5e98",
+    "revisionResultSha256": "5d9c0db42588bdd0c394bc577514c4cec9fbe2ece6411b4bbcda63db2760f86d",
+    "verifierFixResultSha256": "741c7d657312efe06084409b102d1897ed1497da215e64ee05d1496187f1e57f"
+  },
+  "cover": {
+    "provider": "Codex built-in ImageGen",
+    "subject": "African elephant",
+    "promptSummary": "One three-quarter elephant as a monochrome natural-history engraving on uniform pure-white #FFFFFF, with no lettering, props, scenery, frame, or watermark."
+  },
+  "narration": {
+    "provider": "ElevenLabs",
+    "alignment": "Exact segment alignment from the 50 authored captions.",
+    "chapterDurations": [
+      55.913,
+      56.099,
+      54.66,
+      58.607,
+      66.27
+    ]
+  },
+  "sourceVerification": {
+    "manifest": "realcompanion-manifest verify passed: 10 subjects, 27,218 messages, 2,034 chat rows, 3,312 QA items, and 3,580 profile claims.",
+    "audit": "realcompanion-audit all passed; all generated results matched the committed expected outputs. Twenty-two manifest gates passed and four require the withheld corpus.",
+    "tests": "112 passed and 1 failed. The failing prompt-hash test references seven prompts/deployed files that are absent from the public package, so this is not represented as a complete upstream test pass."
+  },
+  "bookVerification": {
+    "typecheck": "npm run typecheck passed.",
+    "build": "Fresh production build with Nx cache disabled passed.",
+    "scenes": "All five chapters passed the production-player verifier: mounted, animated, captions present, console clean, and preview captured.",
+    "storyboardQA": "All five chapters were reviewed at 11 timeline positions; targeted clipping and caption-safe fixes were applied and rechecked.",
+    "blog": "Five non-overlapping live Docstream sections validated; production QA found five headings, five mounted viewers, no audio elements, and no console errors.",
+    "cover": "Built-in ImageGen elephant inspected with no lettering; committed 512 by 768 WebP has verified pure-white corners.",
+    "exports": "Five chapter MP4s and one combined MP4 verified as H.264 plus AAC, 1280 by 720, with positive durations."
+  },
+  "claimBoundary": "Public structural counts and invariants were reproduced. Model-performance numbers are paper-reported. The rewritten conversation text is not part of the public manifest package."
+}

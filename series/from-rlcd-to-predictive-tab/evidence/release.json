@@ -1,0 +1,53 @@
+{
+  "verifiedAt": "2026-09-30T07:09:15.145668+00:00",
+  "destination": "https://orly.brett-lamy.workers.dev",
+  "contentCommit": "c92ecb2bb4a76987b1d9041412c5fcc5e7ee5306",
+  "playbackFixCommit": "f5ff48e19348856f19015ae025ea471e0fb68e7f",
+  "cloudflareVersion": "189cb684-9361-4821-8333-e42b186b5e68",
+  "deployment": "Existing npm run cf:deploy route, existing OAuth; successful Worker upload and trigger deployment",
+  "repository": "BLamy/orly main; bounded fast-forward pushes; repository pre-commit guards passed",
+  "books": [
+    {
+      "slug": "recordings-become-practice",
+      "book": "https://orly.brett-lamy.workers.dev/?bundle=recordings-become-practice",
+      "blog": "https://orly.brett-lamy.workers.dev/?blog=recordings-become-practice"
+    },
+    {
+      "slug": "fast-path-thoughtful-fallback",
+      "book": "https://orly.brett-lamy.workers.dev/?bundle=fast-path-thoughtful-fallback",
+      "blog": "https://orly.brett-lamy.workers.dev/?blog=fast-path-thoughtful-fallback"
+    },
+    {
+      "slug": "tab-into-the-future",
+      "book": "https://orly.brett-lamy.workers.dev/?bundle=tab-into-the-future",
+      "blog": "https://orly.brett-lamy.workers.dev/?blog=tab-into-the-future"
+    }
+  ],
+  "liveValidation": {
+    "books": 6,
+    "chapters": 19,
+    "exactCaptionCues": 150,
+    "recordingAndManifestIntegrity": "all 19 match release bytes/manifests",
+    "forwardReverseAudioSeeking": "passed",
+    "advancingAudioClockAndPlayerSynchronization": "passed",
+    "decodedUnmutedOutput": "nonzero PCM verified from actual live media, no request interception",
+    "mediaUrlLifecycle": "chapter changes and player unmount release URLs",
+    "newLiveBlogSections": 18,
+    "desktopAndMobileNavigation": "passed",
+    "pageErrors": []
+  },
+  "preservation": "All 148 pre-existing library entries preserved exactly; original checkout workflow edits and concurrent wasm work untouched",
+  "checks": [
+    "typecheck",
+    "fresh uncached production build",
+    "all 19 deterministic native/Storybook scenes",
+    "six pinned source hashes and all 150 exact captions",
+    "nine new production chapter previews visually reviewed",
+    "local native streaming and no-range fallback regressions"
+  ],
+  "limits": [
+    "Examples of training, scores and page interactions are illustrative; predictive Tab and GLM branching remain proposals/conditional feasibility, without fabricated benchmarks",
+    "A host that ignores ranges downloads one complete chapter before playback"
+  ],
+  "blocker": null
+}

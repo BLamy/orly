@@ -7,6 +7,7 @@ import { fmtDur, type ChapterV3 } from './BookPlayer';
 import { retimeTimelineToNarration } from './narration-timing';
 import { speechSupported, useSpokenCaption } from './speech';
 import { useVideoAnalytics } from '../analytics';
+import { useNarrationSource } from './narration-source';
 
 // A stable empty timeline so usePlayback (a hook — unconditional) has
 // something to sample while the real scene chunk is still loading.
@@ -112,6 +113,7 @@ export function ChapterPlayer({
   const wasPlayingRef = useRef(false);
 
   const audioUrl = chapter.audio ? `${base}${chapter.audio}` : null;
+  const { src: audioSource, pending: audioPending } = useNarrationSource(audioUrl);
   const useAudioClock = !!audioUrl && !audioFailed;
 
   // Load the scene module (one chunk per scene) and build its timeline once.
@@ -184,7 +186,7 @@ export function ChapterPlayer({
   // renders (the user's tap then starts playback with a live gesture).
   const startedRef = useRef(false);
   useEffect(() => {
-    if (!built || startedRef.current) return;
+    if (!built || audioPending || startedRef.current) return;
     startedRef.current = true;
     const a = audioRef.current;
     if (useAudioClock && a) {
@@ -195,7 +197,7 @@ export function ChapterPlayer({
     } else {
       pbRef.current.play();
     }
-  }, [built, useAudioClock]);
+  }, [built, useAudioClock, audioPending]);
 
   // End detection → "Up next" card. Audio mode ends at the MANIFEST duration
   // (the aligned narration end) — TTS sometimes appends trailing junk to the
@@ -291,11 +293,11 @@ export function ChapterPlayer({
         </span>
       </header>
 
-      <div className="bp-stagewrap" onClick={() => built && !ended && pb.toggle()}>
+      <div className="bp-stagewrap" onClick={() => built && !audioPending && !ended && pb.toggle()}>
         {failed ? (
           <div className="bp-stage-msg">This chapter’s scene isn’t available.</div>
-        ) : !built ? (
-          <div className="bp-spinner" role="status" aria-label="Loading animation" />
+        ) : !built || audioPending ? (
+          <div className="bp-spinner" role="status" aria-label={audioPending ? 'Loading narration' : 'Loading animation'} />
         ) : (
           <div className="bp-stage">
             <Stage style={{ height: '100%' }}>{entry!.Render({ s: pb.state })}</Stage>
@@ -346,6 +348,7 @@ export function ChapterPlayer({
           min={0}
           max={seekMax}
           step={0.05}
+          disabled={audioPending}
           value={Math.min(pb.t, seekMax)}
           onChange={(e) => {
             setEnded(false);
@@ -371,7 +374,7 @@ export function ChapterPlayer({
                 <path d="M6 5h2v14H6zM20 5l-11 7 11 7z" />
               </svg>
             </button>
-            <button className="bp-btn bp-play" onClick={pb.toggle} aria-label={pb.playing ? 'Pause' : 'Play'}>
+            <button className="bp-btn bp-play" onClick={pb.toggle} disabled={audioPending} aria-label={pb.playing ? 'Pause' : 'Play'}>
               <PlayIcon playing={pb.playing} />
             </button>
             <button className="bp-btn" onClick={onNext} disabled={!onNext} aria-label="Next chapter">
@@ -413,7 +416,7 @@ export function ChapterPlayer({
       {audioUrl && (
         <audio
           ref={audioRef}
-          src={audioUrl}
+          src={audioSource ?? undefined}
           preload="auto"
           muted={muted}
           onError={() => setAudioFailed(true)}
