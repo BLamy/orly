@@ -21,9 +21,9 @@
  */
 import { Timeline } from '../../../core';
 import type { Camera3, Frame, PaintEnv, Pose } from '../../../film';
-import { LAYERS, defineShot, mixLab, nameCard, placeStamp, pose, toLayer, toScreen, withAlpha, withLife, blendPose } from '../../../film';
+import { LAYERS, defineShot, mixLab, nameCard, placeStamp, pose, toLayer, toScreen, withAlpha, withLife, blendPose, textRole } from '../../../film';
 import { SPECS } from '../cast';
-import { createPuppet } from '../../../film/silhouette/puppet';
+import { PUPPET_NEAR_BLACK, createPuppet } from '../../../film/silhouette/puppet';
 import { dustMotes } from '../../../film/silhouette/atmosphere';
 import { STUDY, candleX, studyCase, studyNear, studyRoom } from '../sets/study';
 import { shelfStateAt } from '../sets/studyState';
@@ -76,7 +76,8 @@ const LOOM = { x: NEW_X + 100, y: 196, w: 262, h: FY - 196 };
 // stage cameras: the arrival under the flash, then the slow push toward the new flame
 // (review ch07 r1) the big 1990s candle stays whole in frame through the push: its centre ≈ x 150 → 120 on screen
 const CW0: Camera3 = { x: 626, y: 388, z: 40, lens: 1 };
-const CW1: Camera3 = { x: 594, y: 414, z: 150, lens: 1 };
+// (review r1) CW1 lifted and eased back so the 1990s candle's full ghost sleeve stays inside the frame top
+const CW1: Camera3 = { x: 594, y: 370, z: 126, lens: 1 };
 const STAGE_CAMS = [CW0, CW1];
 /** the backlit arched window on the back plane (L3), placed in SCREEN px at the end camera → L3 world */
 const WIN = (() => {
@@ -84,7 +85,13 @@ const WIN = (() => {
   return { x: a.x, y: a.y, w: b.x - a.x, h: b.y - a.y };
 })();
 /** the type beside Hinton, in the dead upper-left third above his shoulder (ticks, quote): screen x */
-const LX = 322;
+const LX = 404;
+/** (review r1) the type floats in the dark between the 1990s candle and Hinton's head, clear of its flame and
+ *  lettered sleeve: the quote card above his shoulder, the tick list (vertical, larger) below-left of it */
+const QX = LX, QY = 118;
+const SX = 300, SY = 330;
+/** each rebuild echo's length (s): descend .4, coincide .35, fade */
+const ECHO_DUR = 1.1;
 
 interface B {
   D: number;
@@ -96,6 +103,8 @@ interface B {
   rise1: number;
   frame0: number;
   rows: number[];
+  /** the rebuild echoes (rows 1..3), staggered over 'rebuilding its own input' */
+  echo: number[];
   word: number;
   strip: number;
   ticks: number[];
@@ -105,6 +114,8 @@ interface B {
   turned: number;
   nearly: number;
   optional: number;
+  /** the loom's warm-up drains to neutral and returns ('third … optional') */
+  neutral: [number, number, number, number];
 }
 
 export default defineShot({
@@ -124,7 +135,10 @@ export default defineShot({
       rise0: lit + 0.5,
       rise1: lit + 1.25,
       frame0: T.word('L0702', 'warm') - 0.1,
-      rows: [one - 0.12, T.word('L0702', 'at') - 0.05, T.word('L0702', 'each') - 0.25, T.word('L0702', 'rebuilding') + 0.05],
+      // (review r1) the climb is 'one layer at a time': rows on 'one', 'layer', 'time'; the top row on 'each'
+      rows: [one - 0.1, T.word('L0702', 'layer') - 0.1, T.word('L0702', 'time') - 0.1, T.word('L0702', 'each') - 0.1],
+      // 'rebuilding its own input' belongs to the echo: three echoes, the last landing on 'input'
+      echo: [0, 0.3, 0.6].map((d) => T.word('L0702', 'input') - ECHO_DUR * 0.4 - 0.6 + d),
       word: T.beat('word'),
       strip: T.beat('tick1') - 0.45,
       ticks: [T.beat('tick1'), T.beat('tick2'), T.beat('tick3')],
@@ -134,6 +148,7 @@ export default defineShot({
       turned: T.word('L0703', 'turned'),
       nearly: T.beat('nearly'),
       optional: T.beat('optional'),
+      neutral: [T.word('L0703', 'third') - 0.05, T.word('L0703', 'turned') + 0.1, T.word('L0703', 'optional') + 0.05, T.word('L0703', 'optional') + 0.45],
     };
     tl.hold(0, D);
     return { tl, b };
@@ -145,7 +160,9 @@ export default defineShot({
     else stage(f, t, b);
 
     // the bright pass over the flame push: rises through the push, peaks at the cut, falls on the stage
-    const flash = t < b.cut ? Math.pow(win(t, b.push0 + 0.35, b.cut), 1.6) : 1 - win(t, b.cut, b.cut + 0.6);
+    // (review r1) a bloom, not a white cut: peak .6, the stage side falls in .35 s
+    const fall = clamp01((t - b.cut) / 0.35);
+    const flash = 0.52 * (t < b.cut ? Math.pow(win(t, b.push0 + 0.35, b.cut), 1.8) : (1 - fall) * (1 - fall));
     if (flash > 0.002) {
       const c = f.c;
       const P = f.mood;
@@ -155,9 +172,10 @@ export default defineShot({
       const cx = t < b.cut ? 640 : toScreen(LAYERS.L4, stageCam(t, b), GEO.flame.x, GEO.flame.y).x;
       const cy = t < b.cut ? 360 : toScreen(LAYERS.L4, stageCam(t, b), GEO.flame.x, GEO.flame.y).y;
       const g = c.createRadialGradient(cx, cy, 20, cx, cy, 1000);
+      // a bloom centred on the flame, not a white card: the core carries it, the edges stay readable
       g.addColorStop(0, withAlpha(P.core, 0.95 * flash));
-      g.addColorStop(0.4, withAlpha(mixLab(P.core, P.halo, 0.5), 0.8 * flash));
-      g.addColorStop(1, withAlpha(P.halo, 0.55 * flash));
+      g.addColorStop(0.3, withAlpha(mixLab(P.core, P.halo, 0.5), 0.6 * flash));
+      g.addColorStop(1, withAlpha(P.halo, 0.22 * flash));
       c.fillStyle = g;
       c.fillRect(0, 0, 1280, 720);
       c.restore();
@@ -176,11 +194,67 @@ function shelf(f: Frame, t: number, b: B) {
   studyRoom(f, { key: ID, cams: SHELF_CAMS, outside: { mood: 'duskRose', kind: 'city' } });
   studyCase(f, { shot: ID, when: 'start', key: ID, wall: false });
   if (cam.z < 540) studyNear(f, { key: ID, cams: SHELF_CAMS, file: true });
+  // (review r1) the shelf opening was a flat beige wash: the study goes dark around the fiddly flame, and the
+  // near shelf lip and the case-board's underside go to true ink, so the flame is the one bright thing
+  shelfInk(f, cam, 1 - u);
+  const fl = toScreen(LAYERS.L4, cam, SHELF_FLAME.x, SHELF_FLAME.y);
+  lampGrade(f, { x: fl.x, y: fl.y + 30, floor: 0.2, core: 40, warm: 0.08, vignette: 0.6, amount: 1 - 0.35 * u });
+  // the wall itself sinks toward ink away from the flame (≈ 40 % darker), so only the fiddly flame is bright
+  const dk = 1 - 0.6 * u;
+  if (dk > 0.01) {
+    const c = f.c;
+    c.save();
+    c.setTransform(f.pxScale, 0, 0, f.pxScale, 0, 0);
+    const R = 620;
+    const g = c.createRadialGradient(fl.x, fl.y, 30, fl.x, fl.y, R);
+    const ink = mixLab(f.mood.fg, '#000000', 0.45);
+    g.addColorStop(0, withAlpha(ink, 0));
+    g.addColorStop(0.3, withAlpha(ink, 0.3 * dk));
+    g.addColorStop(1, withAlpha(ink, 0.55 * dk));
+    c.fillStyle = g;
+    c.fillRect(0, 0, 1280, 720);
+    c.restore();
+  }
+}
+
+/** near ink in the shelf macro: the shelf's front lip at the foot (L5, soft) and the board's underside above (L5) */
+function shelfInk(f: Frame, cam: Camera3, a: number) {
+  if (a <= 0.01) return;
+  const c0 = CAM_SHELF0;
+  f.layer('L5', (c, env) => {
+    const lipTop = toLayer(LAYERS.L5, c0, 0, 646);
+    const lipBot = toLayer(LAYERS.L5, c0, 1280, 900);
+    const capB = toLayer(LAYERS.L5, c0, 0, 34);
+    const capT = toLayer(LAYERS.L5, c0, 1280, -200);
+    const x0 = lipTop.x - 900, x1 = lipBot.x + 900;
+    c.save();
+    c.globalAlpha *= a;
+    const ink = mixLab(env.fill('ink'), '#000000', 0.5);
+    // the lip: a dark plank with a soft top edge (out of focus), a hair of flame-light on its top
+    const g = c.createLinearGradient(0, lipTop.y - 26, 0, lipTop.y + 30);
+    g.addColorStop(0, withAlpha(ink, 0));
+    g.addColorStop(0.45, withAlpha(ink, 0.92));
+    g.addColorStop(1, ink);
+    c.fillStyle = g;
+    c.fillRect(x0, lipTop.y - 26, x1 - x0, lipBot.y - lipTop.y + 26);
+    c.fillStyle = withAlpha(env.mood.halo, 0.12);
+    c.fillRect(x0, lipTop.y - 6, x1 - x0, 1.5);
+    // the case-board underside: a heavy ink beam across the top
+    const h = c.createLinearGradient(0, capT.y, 0, capB.y + 22);
+    h.addColorStop(0, ink);
+    h.addColorStop(0.8, withAlpha(ink, 0.95));
+    h.addColorStop(1, withAlpha(ink, 0));
+    c.fillStyle = h;
+    c.fillRect(x0, capT.y, x1 - x0, capB.y + 22 - capT.y);
+    c.restore();
+  });
+  void cam;
 }
 
 // ================================================================================================= STAGE
 function stageCam(t: number, b: B): Camera3 {
-  return mixCam(CW0, CW1, sm((t - b.cut) / (b.D - b.cut)));
+  // the push settles 0.6 s before the cut: nothing is easing at the end
+  return mixCam(CW0, CW1, sm((t - b.cut) / (b.D - 0.6 - b.cut)));
 }
 
 function hintonPose(tq: number, b: B): Pose {
@@ -200,9 +274,11 @@ function hintonPose(tq: number, b: B): Pose {
   const glance = win(tq, b.ticks[0] - 0.4, b.ticks[0]) * (1 - win(tq, b.ticks[2] + 0.5, b.ticks[2] + 1.0));
   A.head = (A.head ?? 0) - 7 * glance;
   A.neck = (A.neck ?? 0) - 3 * glance;
-  // a small nod when his name is spoken
-  const nod = pulse(tq, b.hinton - 0.1, 0.2, 0.35);
-  A.head = (A.head ?? 0) + 6 * nod;
+  // on his name: the head turns up and back toward the quote card above his shoulder (≈ 12°), holds, returns
+  const turn = win(tq, b.hinton - 0.25, b.hinton + 0.25) * (1 - win(tq, b.hinton + 1.5, b.hinton + 2.2));
+  A.head = (A.head ?? 0) - 12 * turn;
+  A.neck = (A.neck ?? 0) - 5 * turn;
+  A.torso = (A.torso ?? 0) - 1.5 * turn;
   // breathing and a slow weight shift (visible at this size)
   const br = Math.sin(tq * 1.9);
   A.torso = (A.torso ?? 0) + 0.9 * br;
@@ -220,13 +296,18 @@ function stage(f: Frame, t: number, b: B) {
   const tq = tq12(t);
   const hp = hintonPose(tq, b);
   const hand = HINTON.anchor({ x: HX, y: FY, facing: 'right', pose: hp }, 'handF');
-  const lant = lanternAt(hand);
+  // the hand-lantern sways a little on its cord (slow, never still)
+  const lant0 = lanternAt(hand);
+  const lant = { x: lant0.x + 2.2 * Math.sin(tq * 1.35 + 0.4), y: lant0.y - 0.4 * Math.abs(Math.sin(tq * 1.35 + 0.4)) };
   // the new flame: catches on 'candle', settles
   const newK = t < b.lit ? 0 : Math.min(1, 0.35 + 0.65 * sm((tq - b.lit) / 0.4)) + 0.25 * pulse(t, b.lit, 0.05, 0.25);
   // the loom: the frame catches the new light, then the rows warm one at a time
   const frame = win(t, b.frame0, b.frame0 + 1.0) * 0.8 + 0.2 * win(t, b.lit, b.lit + 1);
   const rows = b.rows.map((r0) => win(tq, r0, r0 + 0.3));
-  const ghost = [0, ...b.rows.slice(1).map((r0) => clamp01((tq - r0) / 1.15))]; // each echo holds ≈ 0.65 s
+  const ghost = [0, ...b.echo.map((e0) => clamp01((t - e0) / ECHO_DUR))];
+  // 'third … optional': the warm-up's amber pattern drains to an even light, then comes back
+  const [n0, n1, n2, n3] = b.neutral;
+  const neutral = win(t, n0, n1) * (1 - win(t, n2, n3));
   // fine-tuning: ONE bright wave, bottom to top over 0.6 s, a short bloom at the top, then it settles
   const pulseU = t > b.word && t < b.word + 0.6 ? (t - b.word) / 0.6 : -1;
   const bloom = pulse(t, b.word + 0.5, 0.12, 0.35);
@@ -241,6 +322,19 @@ function stage(f: Frame, t: number, b: B) {
     letters: 0.55,
     // dust in the new candle's light, drifting up behind the loom (L3)
     back: (c, env) => {
+      // (review r1) the curtain ≈ 20-30 % darker, most of all away from the new flame: the new candle and the
+      // loom become the light source
+      {
+        const nf = toScreen(LAYERS.L4, cam, NEW_FLAME.x, NEW_FLAME.y);
+        const p = toLayer(LAYERS.L3, cam, nf.x + 120, nf.y - 60);
+        const R = 1100;
+        const dg = c.createRadialGradient(p.x, p.y, 60, p.x, p.y, R);
+        dg.addColorStop(0, withAlpha(env.mood.fg, 0.05));
+        dg.addColorStop(0.35, withAlpha(env.mood.fg, 0.26));
+        dg.addColorStop(1, withAlpha(env.mood.fg, 0.42));
+        c.fillStyle = dg;
+        c.fillRect(p.x - 2400, p.y - 1600, 4800, 3200);
+      }
       backWindow(c, env);
       if (newK > 0) dustMotes(c, { area: { x: NEW_X - 300, y: 100, w: 820, h: 560 }, count: 80, drift: { x: 3, y: -6 }, size: 1.2, brightness: 0.6 * newK, salt: 72 }, env);
       // a fog sheet between the back plane and the action plane, thickest at the floor
@@ -268,10 +362,12 @@ function stage(f: Frame, t: number, b: B) {
         c.restore();
       }
       // the stack on its loom (behind the figure plane, in the new candle's glow)
-      deepStack(c, { ...LOOM, rows, ghost, pulse: pulseU, pulseGain: 1.5, bloom, frame, alpha: 1 }, env);
+      deepStack(c, { ...LOOM, rows, ghost, pulse: pulseU, pulseGain: 1.5, bloom, frame, neutral, alpha: 1 }, env);
       // Hinton's long shadow, away from the old candle; then Hinton, half in shadow, facing out
       floorShadow(c, geo, HX, (cc) => HINTON.draw(cc, { x: 0, y: 0, facing: 'right', pose: hp }, env), env, 1.05);
-      HINTON.draw(c, { x: HX, y: FY, facing: 'right', pose: hp, cutLines: true, light: { x: -1, y: -0.35, floor: 0.12 } }, env);
+      // (review r1) cut paper, not a smooth vector: near-black fill and a crisp 1.5 px rim cut on his back
+      // contour (hair edge, collar, coat back) from the 1990s flame behind him
+      HINTON.draw(c, { x: HX, y: FY, facing: 'right', pose: hp, cutLines: true, ink: PUPPET_NEAR_BLACK, light: { x: -1, y: -0.35, floor: 0.12 }, edgeRim: { x: -1, y: -0.45, px: 1.6, alpha: 0.85, warm: 0.6 } }, env);
       // the hand-lantern on its cord
       c.strokeStyle = env.fill('ink');
       c.lineWidth = 1.1;
@@ -281,7 +377,10 @@ function stage(f: Frame, t: number, b: B) {
       c.stroke();
       paperLantern(c, { x: lant.x, y: lant.y, r: LANTERN_R, act: 0.9, halo: 0.45, tassel: false }, env);
       // the new candle: short, on the floor at the very rim; its blank tag at the base
-      beliefCandle(c, { x: NEW_X, y: FY, view: { ...WARM, rings: 0, tag: '' }, s: NEW_S, flame: newK, drawFlame: false, letters: 0.7 * Math.max(0.35, newK), named: 0 }, env);
+      // (round-2 legibility) the wax lettering is texture: the belief is READ on the 22 px label top right
+      textRole(c, 'texture', () =>
+        beliefCandle(c, { x: NEW_X, y: FY, view: { ...WARM, rings: 0, tag: '' }, s: NEW_S, flame: newK, drawFlame: false, letters: 0.7 * Math.max(0.35, newK), named: 0 }, env),
+      );
       if (newK <= 0) {
         c.fillStyle = env.fill('ink');
         c.fillRect(NEW_FLAME.x - 0.6, NEW_FLAME.y - 1, 1.2, 4);
@@ -301,7 +400,7 @@ function stage(f: Frame, t: number, b: B) {
   if (newK > 0) f.practical({ x: NEW_FLAME.x, y: NEW_FLAME.y + 1, kind: 'candle', seed: 2007, intensity: 0.9 * newK, radius: 44 + 18 * newK });
   // the near stage lip (L5), blurred: depth in front of the floor
   footlights(f, cam);
-  lampGrade(f, { ...toScreen(LAYERS.L4, cam, NEW_FLAME.x, NEW_FLAME.y), floor: 0.62, core: 320, warm: 0, vignette: 0.3 });
+  lampGrade(f, { ...toScreen(LAYERS.L4, cam, NEW_FLAME.x + 90, NEW_FLAME.y - 40), floor: 0.5, core: 300, warm: 0.03, vignette: 0.36 });
 }
 
 // ================================================================================================= TYPE
@@ -319,36 +418,42 @@ function type_(f: Frame, t: number, b: B) {
   const sa = win(t, b.strip, b.strip + 0.45);
   if (sa > 0.01) tickStrip(f, t, b, sa);
   const qa = win(t, b.all, b.all + 0.45);
-  if (qa > 0.01) monoCard(c, { x: LX, y: 128, lines: ['All three', 'conditions are', 'now satisfied.'], attrib: 'Hinton & Salakhutdinov, 2006', size: 21, alpha: qa, rise: qa, seed: 61 }, f.mood);
+  if (qa > 0.01) monoCard(c, { x: QX, y: QY, lines: ['All three', 'conditions are', 'now satisfied.'], attrib: 'Hinton & Salakhutdinov, 2006', size: 21, alpha: qa, rise: qa, seed: 61 }, f.mood);
 }
 
 function tickStrip(f: Frame, t: number, b: B, a: number) {
   const c = f.c;
-  // 1.3×, in the left third at Hinton's shoulder height, just behind him
-  const S = 1.16;
-  const w = 238 * S, h = 66 * S, x0 = LX - w / 2 - 14, y0 = 258;
+  // a vertical checklist (review r1: icons ≈ 1.4× larger, the 'optional' change readable at a glance)
+  const s = 44;
+  const pitch = 60;
+  const w = 136, h = pitch * 3 + 14;
+  const x0 = SX - w / 2, y0 = SY - h / 2;
   const dy = (1 - a) * 12;
   c.save();
   c.globalAlpha = a;
   parchmentPlate(c, { x: x0, y: y0 + dy, w, h, seed: 63, ornament: false }, { pxScale: f.pxScale } as PaintEnv);
-  const s = 28 * S;
   for (let i = 0; i < 3; i++) {
     const tk = clamp01((t - b.ticks[i] + 0.15) / 0.3); // starts at word -0.15: the ink lands on the stress
     let ink = 1;
     let outline = 0;
     let fade = 0;
+    let dim = 1;
     if (i === 2) {
       // 'nearly': the seed's tick flickers, ink not quite dry: three clear dips (1 → 0.3 → 1)
       const tq = tq12(t);
       let dip = 0;
       for (const d of [0, 0.25, 0.5]) dip = Math.max(dip, pulse(tq, b.nearly - 0.04 + d, 0.06, 0.07));
       ink = 1 - 0.7 * Math.min(1, dip);
-      // 'turned … optional': the tick pales to a thin dashed outline, the seed and its box to ≈ 35 %, done by 'out'
-      const u = win(t, b.turned - 0.05, b.turned + 0.62);
+      // 'turned … optional': the tick pales to a thin dashed outline, the seed and its box fade, done by 'out' +.3
+      const u = win(t, b.turned - 0.05, b.turned + 0.6);
       outline = u;
       fade = u;
+      dim = 1 - 0.35 * u;
     }
-    tickBox(c, { x: x0 + 70 * S + i * 80 * S, y: y0 + h / 2 + dy, s, icon: (['clock', 'cards', 'seed'] as const)[i], tick: tk, ink, outline, fade });
+    c.save();
+    c.globalAlpha *= dim;
+    tickBox(c, { x: x0 + w - 22 - s / 2, y: y0 + 7 + pitch * (i + 0.5) + dy, s, icon: (['clock', 'cards', 'seed'] as const)[i], tick: tk, ink, outline, fade });
+    c.restore();
   }
   c.restore();
 }

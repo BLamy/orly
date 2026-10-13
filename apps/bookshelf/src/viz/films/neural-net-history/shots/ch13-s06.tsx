@@ -21,11 +21,12 @@
  */
 import { Timeline } from '../../../core';
 import type { Camera3, Frame, PaintEnv, ShotScene } from '../../../film';
-import { FONT, LAYERS, MOODS, bankersLamp, defineShot, layerXform, mixLab, toLayer, toScreen, vnoise2, withAlpha } from '../../../film';
+import { FONT, LAYERS, MOODS, bankersLamp, defineShot, layerXform, mixLab, textRole, toLayer, toScreen, vnoise2, withAlpha } from '../../../film';
 import { hands } from '../cast';
 import { STUDY, STUDY_WALL, candleX, slotWorld, studyCase, studyRoom } from '../sets/study';
-import { SLOTS, boardStateAt, shelfStateAt, type CandleView } from '../sets/studyState';
-import { beliefCandle, candleFlame, namedLabel } from '../sets/beliefCandle';
+import { LIT_HEIGHT, RING_PX, SLOTS, boardStateAt, shelfStateAt, wallStateAt, type CandleView } from '../sets/studyState';
+import { wallOfForecasts } from '../sets/wallOfForecasts';
+import { beliefCandle, candleFlame, candleShelf, type ShelfDraw } from '../sets/beliefCandle';
 import { oxblood } from '../sets/caseBoard';
 import { frameOn } from '../sets/ch09-s03a-kit';
 import { monotone } from '../sets/ch02-s05b-util';
@@ -41,6 +42,10 @@ const view = (vs: CandleView[], id: string) => vs.find((v) => v.id === id)!;
 const SY = STUDY.shelf.y;
 const CYC_X = candleX(V0, 'cyc');
 const WORRY_X = candleX(V0, 'worry');
+/** the shared shelf, the Cyc taper left off (this shot draws it: cycTaper) */
+// round 3: the naming rule's horizontal card is off for this shot (the CYC · 1984–2023 · 39 tag carries the words and
+// stays up through 'longest'; the sleeves themselves make the comparison)
+const SHELF_DRAW: ShelfDraw = { ...STUDY.shelf, views: V0.map((v) => (v.id === 'cyc' ? { ...v, state: 'unlit' as const } : v)), drawFlames: false, named: {} };
 const CYC0: CandleView = { ...view(V0, 'cyc'), tag: '' };
 const CYC_FLAME = candleFlame({ x: CYC_X, y: SY, view: CYC0, s: STUDY.shelf.s });
 const WORRY_FLAME = candleFlame({ x: WORRY_X, y: SY, view: view(V0, 'worry'), s: STUDY.shelf.s });
@@ -109,23 +114,22 @@ export default defineShot<Scene>({
       shelf: T.beat('shelf'),
       longest: T.word('L1316', 'longest'),
     };
-    const SHELF: [number, number, number] = [(CYC_X + WORRY_X) / 2 - 36, 836, 1.25];
-    // the shelf for the whole line: on 'died' a slow push in on the Cyc taper (round-1 verdict), its tag readable
-    // on the shelf's lip, held through 'thirty-nine' and 'longest' (the naming card); the tilt up to the board starts
-    // on 'our shelf', the K card on the right third for the repin; then a slow follow of the thread to the window
-    const our = T.word('L1316', 'our');
+    const SHELF: [number, number, number] = [(CYC_X + WORRY_X) / 2 - 46, 836, 1.24];
+    // round 3: the shelf for the whole line, framed as the CHART: the Cyc taper on the left third, the live worry
+    // candle's flame on the right third (the one new burning belief against the 39-year one just put out), at least
+    // five neighbours between and beside them; a slow ease in through the line (the tag reads at >= 25 px cap); the
+    // tilt up to the board starts during 'our shelf'; after the repin ONE eased move along the thread to the window
+    const tilt0 = T.word('L1316', 'our') + 0.05;
     const keys: [number, number, number, number][] = [
       [0, WORRY_FLAME.x, WORRY_FLAME.y + 4, 4.2],
       [b.land, ...SHELF],
-      [b.out - 0.15, SHELF[0] - 16, 834, 1.3],
-      [b.out + 2.1, CYC_X + 78, SY - 112, 1.6],
-      [our, CYC_X + 66, SY - 118, 1.66],
-      [b.repin + 0.3, K_FRAME.x, K_FRAME.y, K_FRAME.k],
-      // round 1: hold on the board while the new thread leaves the shears card (C4-b), then pan off along it
-      [b.thread + 0.15, K_FRAME.x + 20, K_FRAME.y + 4, 1.4],
-      [b.thread + 0.6, lerp(K_FRAME.x + 20, THREAD0.x + 60, 0.6), lerp(K_FRAME.y, THREAD0.y + 40, 0.6), 1.34],
-      [b.water + 0.4, 1540, 476, 1.13],
-      [b.reflect + 0.8, CAM_WIN.x - 20, CAM_WIN.y - 6, K_WIN - 0.08],
+      [b.out - 0.15, SHELF[0] - 2, 834, 1.25],
+      [tilt0, SHELF[0] - 8, 832, 1.29],
+      [b.repin + 0.15, K_FRAME.x, K_FRAME.y, K_FRAME.k],
+      [b.thread + 0.05, K_FRAME.x + 12, K_FRAME.y + 2, 1.4],
+      // follow the new thread off the board's right edge and across the wall, straight to the window in one 1.35 s
+      // ease (no stop at the board's right side), landing before 'reflect'
+      [b.thread + 1.4, CAM_WIN.x - 20, CAM_WIN.y - 6, K_WIN - 0.06],
       [D, CAM_WIN.x, CAM_WIN.y, K_WIN],
     ];
     const fx = monotone(keys.map((k) => [k[0], k[1]]));
@@ -166,24 +170,29 @@ export default defineShot<Scene>({
       when: 'start',
       key: ID,
       board: { state: board },
-      shelf: {
-        // the Cyc taper is drawn by this shot (cycTaper): left off the shared shelf
-        views: V0.map((v) => (v.id === 'cyc' ? { ...v, state: 'unlit' as const } : v)),
-        drawFlames: false,
-      },
+      // round 2 (legibility): the shelf's older lettering (a 'years' on a 1960s candle) and the Wall of Forecasts are
+      // the study's texture, not this line's subject: both are drawn here inside textRole 'texture' (neither overlaps
+      // the board, so the stacking is unchanged). The subject is the Cyc tag and its naming card.
+      shelf: false,
+      wall: false,
       flames: false,
-      xray: t < b.end ? false : { light: 0.14 },
+      xray: t < b.end ? false : { light: 0.08 },
       extra: (c, env) => {
+        textRole(c, 'texture', () => {
+          wallOfForecasts(c, { ...STUDY.wall, slips: wallStateAt(ID, 'start'), light: 1 }, env);
+          candleShelf(c, SHELF_DRAW, env);
+        });
         // the naming (rule + verdict): the neighbours dim around the Cyc taper as it goes out, and again while it is
         // named; the camera's push does the rest
-        focusVeil(c, env, Math.max(0.9 * win(t, b.out - 0.1, b.out + 0.9) * (1 - win(t, b.sleeve + 0.6, b.longest - 0.3)), nameK(t, b)));
+        focusVeil(c, env, 0.9 * win(t, b.out - 0.1, b.out + 0.9) * (1 - win(t, b.sleeve + 0.6, b.longest - 0.5)));
+        // 'the longest candle on our shelf': every sleeve brightens to its ghost-paper value for ~1.5 s (the bars of the
+        // chart), the 39-ring Cyc sleeve reaching far below all of them
+        sleeveChart(c, env, chartK(t, b));
         cycTaper(c, env, t, b, outK, isOut);
         sleeveRim(c, env, t, b);
+        cycChart(c, env, chartK(t, b));
         longestGuide(c, env, t, b);
         cycTag(c, env, t, b);
-        // 'the longest candle on our shelf': its label turns horizontal and large beside it with its date range
-        const nk = nameK(t, b);
-        if (nk > 0.003) namedLabel(c, { x: CYC_X, y: SY, view: CYC_NAMED, s: STUDY.shelf.s, named: nk }, env);
         thread(c, env, t, b, cam);
         if (hp) {
           c.save();
@@ -321,7 +330,7 @@ function sleeveRim(c: C, env: PaintEnv, t: number, b: B) {
 /** on 'longest candle on our shelf': a faint ruled guide where the Cyc sleeve ends, across its neighbours: every other
  *  sleeve stops above it (the sleeves are the bars of the chart) */
 function longestGuide(c: C, env: PaintEnv, t: number, b: B) {
-  const a = win(t, b.longest - 0.1, b.longest + 0.3) * (1 - win(t, b.longest + 1.3, b.longest + 1.8));
+  const a = win(t, b.longest - 0.1, b.longest + 0.3) * (1 - win(t, b.longest + 1.25, b.longest + 1.6));
   if (a <= 0.01) return;
   const y = SLEEVE.bot;
   c.save();
@@ -329,7 +338,7 @@ function longestGuide(c: C, env: PaintEnv, t: number, b: B) {
   c.lineWidth = 1;
   c.setLineDash([5, 5]);
   c.beginPath();
-  c.moveTo(CYC_X + CYC_W / 2 + 4, y);
+  c.moveTo(CYC_X - 230, y);
   c.lineTo(WORRY_X + 30, y);
   c.stroke();
   c.restore();
@@ -337,8 +346,8 @@ function longestGuide(c: C, env: PaintEnv, t: number, b: B) {
 
 /** the Cyc taper's tag, hung on a string from the taper's base over the shelf's lip: CYC · 1984–2023 · 39 */
 function cycTag(c: C, env: PaintEnv, t: number, b: B) {
-  // up as the shelf lands; it gives way to the naming card on 'longest' (the label turned horizontal and large)
-  const a = win(t, b.cyc - 0.2, b.cyc + 0.4) * (1 - win(t, b.longest - 0.2, b.longest + 0.3));
+  // up as the shelf lands, held through 'longest' (round 3: it carries the words; no separate naming card)
+  const a = win(t, b.cyc - 0.2, b.cyc + 0.4) * (1 - win(t, b.end - 0.6, b.end - 0.2));
   if (a <= 0.01) return;
   const m = env.mood;
   const text = 'CYC · 1984–2023 · 39';
@@ -380,11 +389,60 @@ function cycTag(c: C, env: PaintEnv, t: number, b: B) {
   c.restore();
 }
 
-/** the Cyc candle as the naming card reads it: CYC · lit 1984 · out 2023 · 39 years */
-const CYC_NAMED: CandleView = { ...view(V1, 'cyc') };
-/** the naming card's strength: rises on 'longest', holds, gone before the tilt up to the board */
-function nameK(t: number, b: B): number {
-  return win(t, b.longest - 0.15, b.longest + 0.2) * (1 - win(t, b.longest + 1.25, b.longest + 1.65));
+/** the Cyc sleeve in the chart: the palest, longest bar (39 rings), its ring scores showing through */
+function cycChart(c: C, env: PaintEnv, k: number) {
+  if (k <= 0.003) return;
+  const m = env.mood;
+  const paper = mixLab(mixLab(m.haze, m.halo, 0.6), '#efe4cc', 0.4);
+  const x0 = CYC_X - CYC_W / 2;
+  c.save();
+  c.fillStyle = withAlpha(paper, 0.62 * k);
+  c.fillRect(x0, SLEEVE.top, CYC_W, SLEEVE.bot - SLEEVE.top);
+  c.strokeStyle = withAlpha(mixLab(m.ink, m.set, 0.4), 0.35 * k);
+  c.lineWidth = 0.8;
+  c.beginPath();
+  for (let i = 7; i < 45; i++) {
+    const yy = SY - i * RING;
+    if (i % 5 !== 0) continue;
+    c.moveTo(x0 + 1, yy);
+    c.lineTo(x0 + CYC_W - 1, yy);
+  }
+  c.stroke();
+  c.strokeStyle = withAlpha(mixLab(m.rim, m.core, 0.45), 0.9 * k);
+  c.lineWidth = 1.4;
+  c.strokeRect(x0 - 0.5, SLEEVE.top - 0.5, CYC_W + 1, SLEEVE.bot - SLEEVE.top + 1);
+  c.fillStyle = withAlpha(mixLab(m.rim, m.core, 0.5), 0.95 * k);
+  c.fillRect(x0 - 2, SLEEVE.bot - 1.2, CYC_W + 4, 2.4);
+  c.restore();
+}
+
+/** the sleeve chart's strength: up on 'longest', held ~1.5 s, settled back before the tilt */
+function chartK(t: number, b: B): number {
+  return win(t, b.longest - 0.15, b.longest + 0.2) * (1 - win(t, b.longest + 1.25, b.longest + 1.6));
+}
+/** every burned sleeve on the shelf lifted to its ghost-paper value (a pale ring-scored bar from the lit height down to
+ *  its stub); the Cyc sleeve (drawn by cycTaper) is lifted brightest by sleeveRim's wash */
+function sleeveChart(c: C, env: PaintEnv, k: number) {
+  if (k <= 0.003) return;
+  const m = env.mood;
+  const paper = mixLab(mixLab(m.haze, m.halo, 0.55), '#efe4cc', 0.25);
+  const top = SY - LIT_HEIGHT;
+  c.save();
+  for (const v of V0) {
+    if (v.id === 'cyc' || v.kind !== 'candle' || v.state === 'unlit') continue;
+    const r = Math.min(v.years ?? 45, v.rings);
+    if (r <= 0) continue;
+    const x = candleX(V0, v.id), w = 30;
+    const bot = top + r * RING_PX;
+    c.fillStyle = withAlpha(paper, 0.42 * k);
+    c.fillRect(x - w / 2, top, w, bot - top);
+    c.strokeStyle = withAlpha(mixLab(m.rim, m.core, 0.3), 0.6 * k);
+    c.lineWidth = 1;
+    c.strokeRect(x - w / 2 + 0.5, top + 0.5, w - 1, bot - top - 1);
+    c.fillStyle = withAlpha(mixLab(m.rim, m.core, 0.4), 0.8 * k);
+    c.fillRect(x - w / 2 - 1, bot - 1, w + 2, 2);
+  }
+  c.restore();
 }
 /** the neighbours dim around the Cyc taper (a dark radial veil over the shelf, clear at the taper) */
 function focusVeil(c: C, env: PaintEnv, k: number) {
@@ -399,8 +457,9 @@ function focusVeil(c: C, env: PaintEnv, k: number) {
   g.addColorStop(0.3, withAlpha(dark, 0.62 * k));
   g.addColorStop(0.43, withAlpha(dark, 0));
   g.addColorStop(0.57, withAlpha(dark, 0));
-  g.addColorStop(0.7, withAlpha(dark, 0.62 * k));
-  g.addColorStop(1, withAlpha(dark, 0.85 * k));
+  // the right side stays lighter: the live worry candle on the right third keeps its warm light
+  g.addColorStop(0.7, withAlpha(dark, 0.4 * k));
+  g.addColorStop(1, withAlpha(dark, 0.3 * k));
   c.save();
   c.fillStyle = g;
   c.fillRect(cx - 1600, SY - 452, 3200, 482);
@@ -551,7 +610,7 @@ function reflection(c: C, env: PaintEnv, t: number, a: number) {
   const x0 = WIN.x, y0 = HZ + 200 - REFL.base;
   const band = 3;
   c.save();
-  c.globalAlpha *= 0.4 * a;
+  c.globalAlpha *= 0.2 * a;
   for (let y = 0; y < REFL.h; y += band) {
     const dx = 0.7 * Math.sin(y * 0.045 + t * 1.2) + 0.5 * vnoise2(y * 0.05, t * 0.8);
     c.drawImage(sheet as CanvasImageSource, 0, y * REFL.res, REFL.w * REFL.res, band * REFL.res, x0 + dx, y0 + y, REFL.w, band);
@@ -567,15 +626,27 @@ function reflection(c: C, env: PaintEnv, t: number, a: number) {
     const fl = candleFlame({ x: 36 + i * REFL.pitch, y: REFL.base, view: v, s: REFL.s });
     const fx = x0 + fl.x + 0.7 * Math.sin((fl.y - 3) * 0.045 + t * 1.2), fy = y0 + fl.y - 3;
     const tr = 1 + 0.08 * vnoise2(t * 3 + i, i * 2.2);
-    const g = c.createRadialGradient(fx, fy, 0, fx, fy, 18 * tr);
-    g.addColorStop(0, withAlpha(m.core, 0.75 * a));
-    g.addColorStop(0.3, withAlpha(m.halo, 0.3 * a));
+    // round 3: unmistakably FLAMES floating over the water (ch14's candle device): a warm halo, a teardrop flame
+    // with a bright core (~0.6), and a long broken shimmer below
+    const g = c.createRadialGradient(fx, fy, 0, fx, fy, 24 * tr);
+    g.addColorStop(0, withAlpha(m.core, 0.7 * a));
+    g.addColorStop(0.3, withAlpha(m.halo, 0.32 * a));
     g.addColorStop(1, withAlpha(m.halo, 0));
     c.fillStyle = g;
-    c.fillRect(fx - 20, fy - 20, 40, 40);
-    // the flame's long shimmer down the water
-    c.fillStyle = withAlpha(m.core, 0.12 * a);
-    c.fillRect(fx - 1, fy + 6, 2, 34);
+    c.fillRect(fx - 26, fy - 26, 52, 52);
+    const fh = 9 * tr, fw = 3.2;
+    c.fillStyle = withAlpha(mixLab(m.core, '#fff4d8', 0.4), 0.62 * a);
+    c.beginPath();
+    c.moveTo(fx, fy - fh);
+    c.quadraticCurveTo(fx + fw * 1.4, fy - fh * 0.2, fx, fy + fw);
+    c.quadraticCurveTo(fx - fw * 1.4, fy - fh * 0.2, fx, fy - fh);
+    c.fill();
+    for (let k = 0; k < 5; k++) {
+      const yy = fy + 10 + k * 8;
+      const ww = 4.5 - k * 0.6;
+      c.fillStyle = withAlpha(m.core, (0.26 - k * 0.04) * a);
+      c.fillRect(fx - ww / 2 + 1.1 * vnoise2(t * 4 + k, i * 1.7), yy, ww, 1.6);
+    }
   });
   c.restore();
 }
@@ -592,17 +663,28 @@ function glass(f: Frame, t: number, b: B) {
     c.clip();
     strait(c, t, b);
     const m = env.mood;
-    // the lamp's reflection: a small warm bloom low in the glass, trembling (the old glass is uneven)
+    // the lamp's reflection, alone: round 3: in the MIDDLE pane, on the water, twice as strong, with a 1-2 px
+    // horizontal tremble (the old glass is uneven): a green-shaded glow over a small warm core and its streak
     if (aL > 0.003) {
-      const jx = 3 * vnoise2(t * 2.3, 1.7), jy = 2 * vnoise2(t * 1.9, 4.1);
-      const lx = WIN.x + WIN.w * 0.8 + jx, ly = 742 + jy;
+      const jx = 1.6 * vnoise2(t * 7.3, 1.7), jy = 0.8 * vnoise2(t * 3.9, 4.1);
+      const lx = WIN.x + WIN.w * 0.5 + jx, ly = HZ + 92 + jy;
       c.globalCompositeOperation = 'lighter';
-      const g = c.createRadialGradient(lx, ly, 0, lx, ly, 46);
-      g.addColorStop(0, withAlpha(mixLab(m.core, '#b8d8a0', 0.25), 0.5 * aL));
-      g.addColorStop(0.4, withAlpha(m.halo, 0.2 * aL));
+      const g = c.createRadialGradient(lx, ly, 0, lx, ly, 50);
+      g.addColorStop(0, withAlpha(mixLab(m.core, '#b8d8a0', 0.25), 0.95 * aL));
+      g.addColorStop(0.18, withAlpha(mixLab(m.core, '#9cc890', 0.4), 0.6 * aL));
+      g.addColorStop(0.5, withAlpha(mixLab(m.halo, '#6aa874', 0.35), 0.25 * aL));
       g.addColorStop(1, withAlpha(m.halo, 0));
       c.fillStyle = g;
-      c.fillRect(lx - 50, ly - 50, 100, 100);
+      c.fillRect(lx - 54, ly - 54, 108, 108);
+      // the shade's lit lip, a small bright bar, and its broken streak down the water
+      c.fillStyle = withAlpha(mixLab('#9cc890', m.core, 0.3), 0.8 * aL);
+      c.fillRect(lx - 11, ly - 2, 22, 3);
+      for (let i = 0; i < 6; i++) {
+        const yy = ly + 12 + i * 9;
+        const ww = 12 - i * 1.5 + 2 * vnoise2(t * 2 + i, i * 3.1);
+        c.fillStyle = withAlpha(mixLab(m.core, '#9cc890', 0.3), (0.32 - i * 0.04) * aL);
+        c.fillRect(lx - ww / 2 + 1.2 * vnoise2(t * 5 + i, 9.3), yy, ww, 1.6);
+      }
       c.globalCompositeOperation = 'source-over';
     }
     if (aS > 0.003) reflection(c, env, t, aS);

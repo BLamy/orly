@@ -146,6 +146,27 @@ export function validate(script, { claims = null, quotes = null, quotesLock = nu
         if (li > 0) shotSec += gapBefore(ln, sh.lines[li - 1]); // preGap ?? previous pauseAfter ?? 0.45
         if (ln.preGap != null && !(typeof ln.preGap === 'number' && ln.preGap >= 0 && ln.preGap <= 6)) E(`${where}/${ln.id}: preGap must be a number of seconds in 0..6`);
         if (ln.levelDb != null && !(typeof ln.levelDb === 'number' && ln.levelDb >= -9 && ln.levelDb <= 6)) E(`${where}/${ln.id}: levelDb must be a number of dB in -9..+6`);
+        if (ln.levelDb != null && Math.abs(ln.levelDb) > 1.5) W(`${where}/${ln.id}: levelDb ${ln.levelDb} stacks on the per-line ride (review round 2: +3 dB made L1501 the loudest line); prefer level: 'soft' or |levelDb| <= 1.5`);
+        if (ln.level != null && !['soft'].includes(ln.level)) E(`${where}/${ln.id}: level must be 'soft' (or absent)`);
+        if (ln.trimDb != null && !(typeof ln.trimDb === 'number' && ln.trimDb >= -3 && ln.trimDb <= 3)) E(`${where}/${ln.id}: trimDb (fixed clip-gain trim) must be a number of dB in -3..+3`);
+        if (ln.fadeIn != null && !(typeof ln.fadeIn === 'number' && ln.fadeIn >= 0 && ln.fadeIn <= 0.2)) E(`${where}/${ln.id}: fadeIn must be a number of seconds in 0..0.2`);
+        if (ln.gainEnvelope != null) {
+          // film:timeline per-word clip gain: [{from, to?, db, rampMs?}] (words of the line; "word#2" = second occurrence)
+          const lw = String(ln.spoken ?? ln.text).toLowerCase().split(/\s+/).map((w) => w.replace(/[^a-z0-9']/g, '')).filter(Boolean);
+          const has = (w) => {
+            const [w0, nth] = String(w).split('#');
+            const k = w0.toLowerCase().replace(/[^a-z0-9']/g, '');
+            return lw.filter((x) => x === k).length >= (Number(nth) || 1);
+          };
+          if (!Array.isArray(ln.gainEnvelope) || !ln.gainEnvelope.length) E(`${where}/${ln.id}: gainEnvelope must be a non-empty array of {from, to?, db, rampMs?}`);
+          else
+            for (const seg of ln.gainEnvelope) {
+              if (!seg || typeof seg.from !== 'string' || (seg.to != null && typeof seg.to !== 'string')) E(`${where}/${ln.id}: gainEnvelope segment needs word strings from (and optional to)`);
+              else if (!has(seg.from) || (seg.to != null && !has(seg.to))) E(`${where}/${ln.id}: gainEnvelope word ${JSON.stringify(has(seg.from) ? seg.to : seg.from)} is not in the spoken line`);
+              if (!(typeof seg?.db === 'number' && seg.db >= -9 && seg.db <= 6)) E(`${where}/${ln.id}: gainEnvelope db must be a number in -9..+6`);
+              if (seg?.rampMs != null && !(typeof seg.rampMs === 'number' && seg.rampMs >= 5 && seg.rampMs <= 200)) E(`${where}/${ln.id}: gainEnvelope rampMs must be 5..200`);
+            }
+        }
         nLines++;
         if (!ln.id) E(`${where}: line missing id`);
         if (seenLine.has(ln.id)) E(`${where}: duplicate line id ${ln.id}`);

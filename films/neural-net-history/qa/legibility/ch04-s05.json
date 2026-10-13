@@ -1,52 +1,59 @@
 {
  "shot": "ch04-s05",
- "at": "2026-10-12T02:33:52.872Z",
+ "at": "2026-10-13T04:13:18.393Z",
  "minCapPx": 22,
  "sampled": 14,
  "texts": 9,
- "offenders": [
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
   {
-   "text": "PERCEPTRONS",
-   "maxCap": 17.7,
-   "minCap": 17.1,
-   "first": 0.55,
-   "last": 6.55,
-   "font": "600 31.5084px \"Cormorant SC\""
+   "text": "second printing, 1972",
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
   }
  ],
- "textureTexts": 0,
- "ok": [
+ "texture": [
+  {
+   "text": "PERCEPTRONS",
+   "maxCap": 30.6,
+   "why": "not named, not in onScreenText"
+  },
   {
    "text": "1",
-   "maxCap": 26.9
+   "maxCap": 26.9,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "J",
-   "maxCap": 26.9
+   "maxCap": 26.9,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "U",
-   "maxCap": 26.9
+   "maxCap": 26.9,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "L",
-   "maxCap": 26.9
+   "maxCap": 26.9,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "Y",
-   "maxCap": 26.9
+   "maxCap": 26.9,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "9",
-   "maxCap": 26.9
+   "maxCap": 26.9,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "7",
-   "maxCap": 26.9
-  },
-  {
-   "text": "second printing, 1972",
-   "maxCap": 22.1
+   "maxCap": 26.9,
+   "why": "not named, not in onScreenText"
   }
- ]
+ ],
+ "textureTexts": 8
 }

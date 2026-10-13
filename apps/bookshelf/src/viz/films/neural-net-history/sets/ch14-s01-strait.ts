@@ -26,7 +26,7 @@
 import type { Camera3, Frame, LayerSpec, PaintEnv, Palette } from '../../../film/contracts';
 import { LAYERS } from '../../../film/contracts';
 import { MOODS, makeEnv, mixLab, withAlpha } from '../../../film/silhouette/palette';
-import { FONT } from '../../../film/silhouette/type';
+import { FONT, legibleSize } from '../../../film/silhouette/type';
 import { hash1, vnoise } from '../../../film/core/frame';
 import { makeCanvas } from '../../../film/silhouette/atmosphere';
 import { flame as flameShape } from '../../../film/silhouette/props/_kit';
@@ -50,8 +50,11 @@ export const XE = { L: 492, R: 788 } as const;
 export const BOARD = { x: 640, y: 494, base: 494, yBack: 466, yFront: 483, wBack: 56, wFront: 64, thick: 6, legs: 4 } as const;
 export const JETTY = { endY: 490, endHalf: 58, nearY: 1060, nearHalf: 300 } as const;
 export const POST = { x: 694, top: 392, lx: 682, ly: 404 } as const;
-/** the reflection plane (the L2 depth, its own sharp pass so lettering stays legible) */
-export const REFL: LayerSpec = { id: 'ch14Refl', z: LAYERS.L2.z, haze: 0, blur: 0.5 };
+/** the reflection plane (the L2 depth, its own sharp pass so lettering stays legible). Review r1: blur 0, so the
+ *  plane paints straight onto the frame: a blurred layer is painted into a cleared scratch buffer, where the additive
+ *  light pass and the glows ADD ALPHA and are then composited source-over, which turned the ghosted candles into
+ *  near-opaque pillars over the strait. Drawn directly, the dark pass is a true ~35% veil and the light pass truly adds */
+export const REFL: LayerSpec = { id: 'ch14Refl', z: LAYERS.L2.z, haze: 0, blur: 0 };
 /** the study window frame: screen-locked near occluder, blurred */
 export const WIN_SPEC: LayerSpec = { id: 'ch14Win', z: Infinity, haze: 0, blur: 2.5 };
 /** a near-shore plane in front of the jetty end (quays, lecterns, figures) */
@@ -73,6 +76,9 @@ interface CityGeom {
   lightPts: P[];
   bridge: Path2D;
   cables: Path2D;
+  /** review r1: 1 px paper-cut rims on the tower tops and the sun-facing edge of each crown (identical on both shores) */
+  rimTops: Path2D;
+  rimSides: Path2D;
   /** the nearest band at the waterline: low quay sheds and warehouses, darker and crisp */
   near: Path2D;
   nearLights: Path2D;
@@ -109,10 +115,18 @@ function cityGeom(side: -1 | 1): CityGeom {
   const back = new Path2D();
   const lights = new Path2D();
   const lightPts: P[] = [];
+  const rimTops = new Path2D();
+  const rimSides = new Path2D();
   for (const b of buildings(side, seed)) {
     const p = b.back ? back : front;
     const top = HZ - b.h;
     const x0 = b.x, x1 = b.x + b.w;
+    if (!b.back) {
+      // the dawn (sunX = 640) grazes each tower's top and the edge that faces the strait, down its upper third
+      rimTops.rect(x0, top, b.w, 1);
+      const ex = side < 0 ? x1 - 1 : x0;
+      rimSides.rect(ex, top, 1, Math.min(70, b.h * 0.34));
+    }
     p.rect(x0, top, b.w, b.h + 8);
     // crowns: flat, setback, spire, slant, mast
     if (b.crown === 1 && b.w > 20) {
@@ -201,7 +215,7 @@ function cityGeom(side: -1 | 1): CityGeom {
       i++;
     }
   }
-  const g = { front, back, lights, lightPts, bridge, cables, near, nearLights };
+  const g = { front, back, lights, lightPts, bridge, cables, rimTops, rimSides, near, nearLights };
   cityCache.set(key, g);
   return g;
 }
@@ -288,7 +302,7 @@ export function strait(f: Frame, o: StraitOpts) {
     const m = env.mood;
     const X0 = -720, Y0 = 120, W = 2720, H = 300;
     if (ca > 0.001) {
-      const solid = f.cached(`${o.key}-city-${o.moodKey}`, W, H, (cc) => {
+      const solid = f.cached(`${o.key}-city2-${o.moodKey}`, W, H, (cc) => {
         cc.translate(-X0, -Y0);
         cc.fillStyle = mixLab(env.fill('set'), m.haze, 0.38);
         for (const s of [-1, 1] as const) cc.fill(cityGeom(s).back);
@@ -301,9 +315,12 @@ export function strait(f: Frame, o: StraitOpts) {
           cc.lineWidth = 1.1;
           cc.stroke(g.cables);
         }
-        // tops only catch the dawn (a hairline)
-        cc.fillStyle = withAlpha(m.rim, 0.1);
-        cc.fillRect(X0, HZ - 1, W, 1);
+        // tops catch the dawn: a 1 px rim on every front tower's top and on its strait-facing edge (both shores
+        // identical; the sides fade down the tower)
+        cc.fillStyle = withAlpha(m.rim, 0.42);
+        for (const s of [-1, 1] as const) cc.fill(cityGeom(s).rimTops);
+        cc.fillStyle = withAlpha(m.rim, 0.24);
+        for (const s of [-1, 1] as const) cc.fill(cityGeom(s).rimSides);
         // the near band at the waterline: darker ink, crisp, its roofs rimmed
         cc.fillStyle = mixLab(m.ink, env.fill('set'), 0.22);
         for (const s of [-1, 1] as const) cc.fill(cityGeom(s).near);
@@ -668,7 +685,25 @@ export const STONES = {
  * board's lit face, sets the stone on u ≈ .5 (a small press) and withdraws. side = which shore it comes from.
  * u is on twos. Returns whether the stone has been set.
  */
-export function stoneHand(c: C, env: PaintEnv, o: { side: -1 | 1; u: number; target: P; col: 'b' | 'w'; len?: number }): boolean {
+export function stoneHand(
+  c: C,
+  env: PaintEnv,
+  o: {
+    side: -1 | 1;
+    u: number;
+    target: P;
+    col: 'b' | 'w';
+    len?: number;
+    /** review r1: where the fingertips start (and return to), e.g. the frame edge at jetty height; default: up and out
+     *  from the board on `side` */
+    from?: P;
+    /** forearm / hand axes (rad, local frame: arm from the left, + = down); default 0.55 / 0.95 */
+    armAxis?: number;
+    handAxis?: number;
+    /** sleeve length in L (default 2.3) */
+    sleeve?: number;
+  },
+): boolean {
   const U = clamp01(o.u);
   if (U <= 0 || U >= 1) return U >= 0.5;
   const L = o.len ?? 34;
@@ -676,17 +711,20 @@ export function stoneHand(c: C, env: PaintEnv, o: { side: -1 | 1; u: number; tar
   const reach = U < 0.42 ? sm(U / 0.42) : U < 0.58 ? 1 : 1 - sm((U - 0.58) / 0.42);
   const press = U >= 0.42 && U < 0.58 ? Math.sin(((U - 0.42) / 0.16) * Math.PI) * 1.4 : 0;
   const away = 1 - reach;
-  const tip = { x: o.target.x + o.side * away * L * 2.2, y: o.target.y - 2.4 + press - away * L * 1.5 };
+  const tip = o.from
+    ? { x: lerp(o.target.x, o.from.x, away), y: lerp(o.target.y - 2.4, o.from.y, away) + press }
+    : { x: o.target.x + o.side * away * L * 2.2, y: o.target.y - 2.4 + press - away * L * 1.5 };
   const ink = env.fill('ink');
   const dir = (a: number, r: number): P => ({ x: Math.cos(a) * r, y: Math.sin(a) * r });
   c.save();
   c.translate(tip.x, tip.y);
   if (o.side > 0) c.scale(-1, 1);
   // local frame: the arm comes from the upper LEFT, the fingertips at the origin
-  const ah = 0.95; // hand axis (down-right)
-  const aa = 0.55; // forearm axis
+  const ah = o.handAxis ?? 0.95; // hand axis (down-right)
+  const aa = o.armAxis ?? 0.55; // forearm axis
   const wr = dir(ah + Math.PI, L * 0.6);
-  const back = { x: wr.x - Math.cos(aa) * L * 2.3, y: wr.y - Math.sin(aa) * L * 2.3 };
+  const SL = o.sleeve ?? 2.3;
+  const back = { x: wr.x - Math.cos(aa) * L * SL, y: wr.y - Math.sin(aa) * L * SL };
   const nA = { x: -Math.sin(aa), y: Math.cos(aa) };
   // sleeve: from the wrist back toward its shore, fading out into the haze
   const sg = c.createLinearGradient(wr.x, wr.y, back.x, back.y);
@@ -780,11 +818,11 @@ export function windowFrame(f: Frame, o: WindowOpts = {}) {
     c.translate(-640, -360);
     o.glass?.(c, env);
     const ink = mixLab(env.mood.fg, A.fg, 0.5);
+    // review r1 (WINDOW RULE: 'faint'): the centre mullions are slim (28 px) and one value step lighter than the
+    // study wall, with the canonical candleAmber 1 px rim hairline on their inner edges
+    const mull = mixLab(ink, mixLab(env.mood.set, A.set, 0.5), 0.42);
     c.fillStyle = ink;
     const T = -1150, B = 1150 + 720;
-    // centre mullions (the edges of the light we look through)
-    c.fillRect(22, T, 54, B - T);
-    c.fillRect(1204, T, 54, B - T);
     // the side lights: glass with glazing bars, then the casing and the dark study wall
     for (const s of [-1, 1]) {
       const x0 = s < 0 ? -610 : 1258;
@@ -798,10 +836,14 @@ export function windowFrame(f: Frame, o: WindowOpts = {}) {
     c.fillRect(-3600, B, 8000, 4000);
     // the sill's lip
     c.fillRect(-640, B - 30, 2560, 30);
+    // centre mullions (the edges of the light we look through)
+    c.fillStyle = mull;
+    c.fillRect(48, T, 28, B - T);
+    c.fillRect(1204, T, 28, B - T);
     // candleAmber hairlines on the inner edges (the room's lamp behind us catches them)
-    c.fillStyle = withAlpha(A.rim, 0.32);
-    c.fillRect(75, T, 1.2, B - T);
-    c.fillRect(1203.8, T, 1.2, B - T);
+    c.fillStyle = withAlpha(A.rim, 0.55);
+    c.fillRect(75, T, 1, B - T);
+    c.fillRect(1204, T, 1, B - T);
     c.restore();
   });
 }
@@ -1148,7 +1190,8 @@ export function labelPlate(c: C, m: Palette, x: number, y: number, w: number, h:
 
 /** a typed label, tracked mono, centred or left, with a soft plate */
 export function monoLabel(c: C, m: Palette, text: string, x: number, y: number, o: { size?: number; align?: 'left' | 'center' | 'right'; a?: number; color?: string } = {}) {
-  const size = o.size ?? 18.5;
+  // review round 2 (legibility): a typed label is read, so it never sits under the kit's 22 px cap floor
+  const size = legibleSize(c, `500 ${o.size ?? 18.5}px ${FONT.mono}`, o.size ?? 18.5);
   const a = o.a ?? 1;
   if (a <= 0.003) return;
   c.save();

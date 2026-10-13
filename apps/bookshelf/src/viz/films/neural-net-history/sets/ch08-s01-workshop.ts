@@ -37,7 +37,7 @@ export const WS = {
   ],
   ring: { x: 1236, y: 300, r: 92, n: 25, dark: 7 },
   windows: [
-    { x: 150, w: 270 },
+    { x: 168, w: 286 },
     { x: 640, w: 220 },
   ],
 } as const;
@@ -196,7 +196,7 @@ export function workshopBack(f: Frame, key: string, cams: Camera3[]) {
       }
       // the tool rail between the windows: finished stencils hang on hooks like tools
       const railY = 170;
-      for (const [x0, x1] of [[-80, 130], [445, 615]] as const) {
+      for (const [x0, x1] of [[-80, 130], [478, 622]] as const) {
         g.fillStyle = env.fill('ink');
         g.fillRect(x0, railY - 6, x1 - x0, 7);
         let k = 0;
@@ -228,7 +228,11 @@ export function leaderboard(c: C, env: PaintEnv, st: BoardState) {
   const xL = WS.lanterns[0].x - 46;
   // the beam the lanterns hang from, and the ruled slat (a tall measuring stick: higher = more error)
   c.fillStyle = ink;
-  c.fillRect(xL - 10, yOf(S.hi) - 46, S.x - xL + 26, 8);
+  // (the rail runs on past the scale to carry the ring's roundel)
+  c.fillRect(xL - 10, yOf(S.hi) - 46, WS.ring.x + 60 - xL + 10, 8);
+  c.fillStyle = withAlpha(env.mood.rim, 0.28);
+  c.fillRect(xL - 10, yOf(S.hi) - 46, WS.ring.x + 60 - xL + 10, 1.2);
+  c.fillStyle = ink;
   c.fillRect(S.x - 3, yOf(S.hi) - 40, 7, yOf(S.lo) - yOf(S.hi) + 52);
   for (let p = S.lo; p <= S.hi; p++) {
     const y = yOf(p);
@@ -295,11 +299,25 @@ export function leaderboard(c: C, env: PaintEnv, st: BoardState) {
 /** the ring of 25 thumbnails beside the board; `dark` 0..1 sweeps the dark arc (7 of 25 = 28 %) */
 export function thumbRing(c: C, env: PaintEnv, st: BoardState) {
   const R = WS.ring;
+  const m = env.mood;
   c.save();
   c.globalAlpha *= st.show;
-  // a wreath hoop
-  c.strokeStyle = env.fill('ink');
-  c.lineWidth = 5;
+  // REVIEW r1 (ch08-s01 artistry): the ring is hazed one step back (its ink folded toward setHaze) and is OPEN — a
+  // thin wire hoop on two cords from the lanterns' rail, no disc behind it, so the window's backlight shows through
+  // its centre; the thumbnails are small framed paper prints clipped to the wire, their mounts rimmed on top only
+  const ink = mixLab(env.fill('ink'), m.setHaze, 0.38);
+  const railY = WS.scale.y20 - (WS.scale.hi - 20) * WS.scale.perPct - 46;
+  const rr = R.r + 14;
+  c.strokeStyle = ink;
+  c.lineWidth = 1.1;
+  c.beginPath();
+  for (const sd of [-1, 1]) {
+    c.moveTo(R.x + sd * 36, railY + 8);
+    c.lineTo(R.x + sd * rr * 0.42, R.y - rr * 0.9);
+  }
+  c.stroke();
+  // the wire hoop
+  c.lineWidth = 2.2;
   c.beginPath();
   c.arc(R.x, R.y, R.r, 0, Math.PI * 2);
   c.stroke();
@@ -307,25 +325,37 @@ export function thumbRing(c: C, env: PaintEnv, st: BoardState) {
     const a = -Math.PI / 2 + (k / R.n) * Math.PI * 2;
     const x = R.x + Math.cos(a) * R.r;
     const y = R.y + Math.sin(a) * R.r;
-    const w = 21;
-    const h = 17;
+    const w = 19;
+    const h = 15;
     // dark: the first 7 frames clockwise from the top, one after another
     const d = Math.max(0, Math.min(1, st.dark * R.n - k)) * (k < R.dark ? 1 : 0);
-    c.fillStyle = env.fill('ink');
-    c.fillRect(x - w / 2 - 2.5, y - h / 2 - 2.5, w + 5, h + 5);
-    // the picture: a lit little photograph (seeded tones and a dark subject)
+    c.save();
+    c.translate(x, y);
+    c.rotate((hash1(k, 76) - 0.5) * 0.12);
+    // the paper mount (a pale card), a soft contact shadow under it, the clip on the wire
+    c.fillStyle = withAlpha(m.fg, 0.28);
+    c.fillRect(-w / 2 - 3 + 1.2, -h / 2 - 3 + 1.6, w + 6, h + 6);
+    c.fillStyle = mixLab(mixLab(m.setHaze, m.halo, 0.25), m.set, 0.15);
+    c.fillRect(-w / 2 - 3, -h / 2 - 3, w + 6, h + 6);
+    // the print: a muted little photograph (seeded tones, a soft dark subject), going dark on 'four'
     const hu = hash1(k, 71);
-    const bg = mixLab(mixLab(env.mood.halo, env.mood.rim, hu), env.mood.setHaze, 0.25 + 0.3 * hash1(k, 72));
-    c.fillStyle = mixLab(bg, env.mood.fg, 0.92 * d);
-    c.fillRect(x - w / 2, y - h / 2, w, h);
+    const bg = mixLab(mixLab(m.halo, m.rim, hu), m.setHaze, 0.45 + 0.25 * hash1(k, 72));
+    c.fillStyle = mixLab(bg, m.fg, 0.9 * d);
+    c.fillRect(-w / 2, -h / 2, w, h);
     if (d < 0.95) {
-      c.globalAlpha = st.show * (1 - d);
-      c.fillStyle = mixLab(env.mood.set, env.mood.fg, 0.4);
+      c.globalAlpha = st.show * (1 - d) * 0.7;
+      c.fillStyle = mixLab(m.set, m.setHaze, 0.3);
       c.beginPath();
-      c.ellipse(x + (hash1(k, 73) - 0.5) * 6, y + 2, 4 + 4 * hash1(k, 74), 3 + 3 * hash1(k, 75), 0, 0, Math.PI * 2);
+      c.ellipse((hash1(k, 73) - 0.5) * 5, 2, 3.5 + 3.5 * hash1(k, 74), 2.6 + 2.6 * hash1(k, 75), 0, 0, Math.PI * 2);
       c.fill();
       c.globalAlpha = st.show;
     }
+    // the lamp catches the mount's top edge only
+    c.fillStyle = withAlpha(m.rim, 0.45);
+    c.fillRect(-w / 2 - 3, -h / 2 - 3, w + 6, 1.1);
+    c.fillStyle = ink;
+    c.fillRect(-2, -h / 2 - 5, 4, 4);
+    c.restore();
   }
   c.restore();
 }
@@ -419,7 +449,7 @@ export function lectern(c: C, env: PaintEnv, ink: string) {
 }
 
 /** the husky thumbnail pinned on the board, and five guess slips fanned beneath it (one is the right answer) */
-export function guesses(c: C, env: PaintEnv, u: number, right: number) {
+export function guesses(c: C, env: PaintEnv, u: number, right: number, lift = 0) {
   if (u <= 0) return;
   const Bd = WS.board;
   const px = Bd.x, py = Bd.y - 26;
@@ -447,9 +477,9 @@ export function guesses(c: C, env: PaintEnv, u: number, right: number) {
     const sy = py + pw / 2 + 30;
     c.save();
     c.globalAlpha *= Math.min(1, fan * 2);
-    c.translate(sx, sy + 14);
-    c.rotate(a);
     const isRight = k === 3;
+    c.translate(sx, sy + 14 - (isRight ? 5 * lift : 0));
+    c.rotate(a);
     c.fillStyle = mixLab(env.mood.halo, env.mood.rim, isRight ? 0.4 + 0.5 * right : 0.35);
     c.fillRect(-9, -30, 18, 30);
     // scribbled guesses: ink strokes, not words

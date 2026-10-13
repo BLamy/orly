@@ -26,7 +26,7 @@
  * sheet is the document itself (verbatim, research/quotes.json q-bet-jackel / q-bet-vapnik).
  */
 import { Timeline } from '../../../core';
-import type { Camera3, Frame, PaintEnv, Pose } from '../../../film';
+import type { Camera3, Frame, LayerSpec, PaintEnv, Pose } from '../../../film';
 import { CAMERA3_HOME, FONT, LAYERS, MOODS, PUPPET_NEAR_BLACK, bankersLamp, envelope, legibleSize, POSES, blendPose, defineShot, forestBand, mixLab, overscan, placeStamp, pose, softPlate, textColor, toLayer, toScreen, withAlpha, withLife } from '../../../film';
 import { cast, hands } from '../cast';
 import { STUDY, studyCase, studyRoom } from '../sets/study';
@@ -55,8 +55,10 @@ const LAMP = { x: 645, y: 288 };
 /** the two glasses, set out for the dinners to come (both against the window light, clear of every figure) */
 const GLASSES = [584, 712];
 const SV0: Camera3 = { x: 642, y: 424, z: 270, lens: 1 };
-const SV1: Camera3 = { x: 650, y: 430, z: 340, lens: 1 };
-const SIDE_CAMS = [SV0, SV1];
+const SV1: Camera3 = { x: 668, y: 432, z: 330, lens: 1 };
+const SIDE_CAMS = [SV0, SV1, { x: 668, y: 482, z: 450, lens: 1 }];
+/** round 4: the near chair back (L5), placed from the opening camera so it stands in the lower-left of the frame */
+const NEAR_CHAIR = toLayer(LAYERS.L5, SV0, 120, 735);
 const SITP = POSES.sit.angles;
 /** seated, reaching across the table (the near hand pinches the pen) */
 const REACH: Pose = pose({ ...SITP, torso: 12, neck: -2, head: 4, shoulderF: 66, elbowF: 14, wristF: -14 }, { handF: 'pinch' });
@@ -92,7 +94,9 @@ const sagAt = (bx: number) => BK.y + BOARD.threadY * BK.k + Math.sin(((bx - 40) 
 const Q2X = Q_SLOTS.Q2;
 const Q_CLIP = { x: BK.x + Q2X * BK.k, y: sagAt(Q2X) };
 const Q_W = 168, Q_H = 44;
-const Q_C = { x: Q_CLIP.x, y: Q_CLIP.y + (10 + 22) * BK.k };
+/** round 4: the card hangs FROM the thread by a small clip (its top edge 3 px under the thread), not on a string below it */
+const Q_DROP = 3;
+const Q_C = { x: Q_CLIP.x, y: Q_CLIP.y + (Q_DROP + 22) * BK.k };
 const GRIP_IN = { x: 9, y: 5 };
 const Q_GRIP = { x: Q_C.x + (Q_W / 2 - GRIP_IN.x) * BK.k, y: Q_C.y - (Q_H / 2) * BK.k + GRIP_IN.y * BK.k };
 const Q_TEXT = 'WHO PAID FOR DINNER?';
@@ -237,19 +241,23 @@ export default defineShot({
     const who = T.word('L0612', 'who');
     // three signatures, one after another, from 'use' (the camera keeps bet 2's last lines in view above them), each
     // about half a second of pen, all signed before the board comes in on 'who' (the sign beat sits in the middle)
-    const s0 = W('use') + 0.1;
-    const sd = 0.52;
-    const sigs: [number, number][] = [0, 1, 2].map((i) => [s0 + i * sd, s0 + i * sd + (i === 2 ? 0.58 : 0.5)]);
+    // round 4: the signing lands ON the sign beat: from 19.0, about 0.35 s of pen each, the third done by ~20.1
+    const s0 = T.beat('sign') - 0.66;
+    const sd = 0.38;
+    const sigs: [number, number][] = [0, 1, 2].map((i) => [s0 + i * sd, s0 + i * sd + 0.35]);
     // the hand carries WHO PAID FOR DINNER? in from 'who' and presses the pin between 'paid' and 'dinner'
     const pDur = 1.0;
     const b: B = {
       D,
       bell: W('Bell'),
-      passAt: W('signed') + 0.45,
+      // round 4: the pen changes hands ON 'signed'
+      passAt: W('signed') + 0.05,
       fancy: W('fancy'),
       // a dip through the dark (the lamp is the bridge): side view down on 'each', the lamp-lit sheet up for 'Larry'
-      dis1A: W('each') + 0.1,
-      dis1B: larry - 0.05,
+      // round 4: no dip to black: a 1.0 s match dissolve centred on 6.9 s (the side view tilts down to the table, the lamp
+      // pool on the table becomes the lamp pool on the sheet), readable by 'Larry'
+      dis1A: 6.4,
+      dis1B: 7.4,
       larry,
       vlad,
       vap: T.beat('vapnik'),
@@ -259,9 +267,10 @@ export default defineShot({
       sigs,
       paid,
       who,
-      dis2A: who - 0.5,
-      dis2B: who - 0.02,
-      p0: who - 0.05,
+      // the sheet stays sharp (signed) until 'paid' − 0.4, then the board dissolves in under the flying sheet
+      dis2A: paid - 0.4,
+      dis2B: paid + 0.05,
+      p0: paid - 0.4,
       pDur,
       marks: SPOKEN.map(([w, bet, word]) => ({ t: W(w), bet, word })),
     };
@@ -274,15 +283,9 @@ export default defineShot({
     const b = scene.b as B;
     if (t < b.dis1A) side(f, t, tq, b);
     else if (t < b.dis1B) {
-      // the dip: the side view sinks into the dark, the top-down sheet rises out of it (no double exposure)
-      const u = (t - b.dis1A) / (b.dis1B - b.dis1A);
-      if (u < 0.5) {
-        side(f, t, tq, b);
-        inkVeil(f, 0.95 * sm(u / 0.5));
-      } else {
-        topDown(f, t, tq, b, true);
-        inkVeil(f, 0.95 * sm((1 - u) / 0.5));
-      }
+      // the match dissolve: the side view tilts down onto the lamp-lit table as the top-down sheet comes up under it
+      const u = sm((t - b.dis1A) / (b.dis1B - b.dis1A));
+      dissolve(f, u, () => side(f, t, tq, b), () => topDown(f, t, tq, b, true));
     } else if (t < b.dis2A) topDown(f, t, tq, b, true);
     else {
       // the sheet leaves the table (the flying sheet carries it), the board dissolves in under it
@@ -299,7 +302,8 @@ export default defineShot({
       jackelCard(c, env, b.larry - 0.05, b.vlad - 0.7 - (b.larry - 0.05));
       // the place stamp holds through the side view and the read of bet 1; it leaves before the camera reads down
       // to bet 2 (whose last lines would run under it)
-      placeStamp(c, { place: 'Bell Labs', date: '14 March 1995', year: 1995, x: 1232, align: 'right', at: b.bell - 0.15, dur: b.vlad - 0.75 - (b.bell - 0.15), fade: 0.35 }, env);
+      // round 4: up out of the caption band (y ≈ 82%), and typed fast enough to be read ON 'Bell'
+      placeStamp(c, { place: 'Bell Labs', date: '14 March 1995', year: 1995, x: 1232, y: 592, align: 'right', at: b.bell - 0.12, dur: b.vlad - 0.75 - (b.bell - 0.12), fade: 0.35, cps: 44 }, env);
       // the quote slip: screen-locked while it is read off the sheet; from the flight on it is paper on the board
       if (t < b.dis2B + 0.08) quoteSlip(c, f, t, b);
     });
@@ -308,7 +312,10 @@ export default defineShot({
 
 // =============================================================================================== SIDE
 function sideCam(t: number, b: B): Camera3 {
-  return mixCam(SV0, SV1, easeIO(t / (b.dis1B + 0.3)));
+  const c = mixCam(SV0, SV1, easeIO(t / (b.dis1B + 0.3)));
+  // the tilt down onto the tabletop through the match dissolve
+  const u = win(t, b.dis1A - 0.3, b.dis1B);
+  return { ...c, y: c.y + 50 * u, z: c.z + 120 * u };
 }
 function side(f: Frame, t: number, tq: number, b: B) {
   const cam = sideCam(t, b);
@@ -408,6 +415,40 @@ function side(f: Frame, t: number, tq: number, b: B) {
     sideChair(c, JAC.x + 8, FY - 118, FY, 'left', env);
     (passed ? PEN_PUPPETS.vapnikBare : PEN_PUPPETS.vapnikPen).draw(c, { x: VAP.x, y: FY, facing: 'right', pose: vapP, cutLines: true, light, ink, edgeRim: { x: 0.5, y: -1, px: 1.5 } }, env);
     (passed ? PEN_PUPPETS.jackelPen : cast.jackel).draw(c, { x: JAC.x, y: FY, facing: 'left', pose: jacP, cutLines: true, light, ink, edgeRim: { x: -0.5, y: -1, px: 1.5 } }, env);
+    // round 4: the pen VISIBLY changes hands on 'signed': across the table it is a full fountain pen held out in the
+    // giver's fingers, then in the taker's, its barrel catching the lamp
+    const xg = win(tq, P - 0.55, P - 0.3) * (1 - win(tq, P + 0.45, P + 0.8));
+    if (xg > 0.01) {
+      const holder = passed ? PEN_PUPPETS.jackelPen : PEN_PUPPETS.vapnikPen;
+      const hx = passed ? JAC.x : VAP.x;
+      const hp = holder.anchor({ x: hx, y: FY, facing: passed ? 'left' : 'right', pose: passed ? jacP : vapP }, 'handF');
+      const dir = passed ? 1 : -1; // the nib points at the receiver (Jackel at the right), then down at the sheet
+      c.save();
+      c.globalAlpha *= xg;
+      // the barrel, lamp-lit along its top (it must read against the dark cloth), the nib toward the receiver
+      const a0 = { x: hp.x + dir * 16, y: hp.y + 3 }, a1 = { x: hp.x - dir * 26, y: hp.y - 2 };
+      c.lineCap = 'round';
+      c.strokeStyle = env.fill('ink');
+      c.lineWidth = 4.6;
+      c.beginPath();
+      c.moveTo(a0.x, a0.y);
+      c.lineTo(a1.x, a1.y);
+      c.stroke();
+      c.strokeStyle = withAlpha(mixLab(env.mood.core, env.mood.rim, 0.4), 0.95);
+      c.lineWidth = 1.6;
+      c.beginPath();
+      c.moveTo(a0.x, a0.y - 1.4);
+      c.lineTo(lerp(a0.x, a1.x, 0.82), lerp(a0.y, a1.y, 0.82) - 1.4);
+      c.stroke();
+      c.globalCompositeOperation = 'lighter';
+      const gx = hp.x - dir * 6, gy = hp.y;
+      const g = c.createRadialGradient(gx, gy, 0, gx, gy, 22);
+      g.addColorStop(0, withAlpha(env.mood.core, 0.6 * win(tq, P - 0.2, P) * (1 - win(tq, P + 0.15, P + 0.5))));
+      g.addColorStop(1, withAlpha(env.mood.core, 0));
+      c.fillStyle = g;
+      c.fillRect(gx - 24, gy - 24, 48, 48);
+      c.restore();
+    }
     pendantLamp(c, LAMP.x, LAMP.y, env);
   });
   f.rim({ x: 0.15, y: -1 });
@@ -417,7 +458,7 @@ function side(f: Frame, t: number, tq: number, b: B) {
     f.cached(`${ID}/side/L5chair/${env.mood.id}`, 420, 520, (cc) => {
       cc.translate(210, 500);
       chairBack(cc, { x: 0, y: 0, s: 1.25, kind: 'spindle' }, env);
-    }, { blur: 3 })(c, 150 - 210, 760 - 500);
+    }, { blur: 3 })(c, NEAR_CHAIR.x - 210, NEAR_CHAIR.y - 500);
   });
 }
 
@@ -457,9 +498,10 @@ function clothTableSide(c: C, env: PaintEnv) {
 }
 
 // =============================================================================================== TOP-DOWN
-/** the typed words of one bet, drawn live at `alpha` (crisp ink: at reading scale they are the subject) */
-function typedLive(c: C, env: PaintEnv, ws: WordBox[], seed: number, alpha: number, skip?: Set<number>) {
-  if (alpha <= 0.005) return;
+/** the typed words of one bet, drawn live at `alpha` (or a per-word alpha) (crisp ink: at reading scale they are the subject) */
+function typedLive(c: C, env: PaintEnv, ws: WordBox[], seed: number, alpha: number | ((i: number) => number), skip?: Set<number>) {
+  const aOf = typeof alpha === 'number' ? () => alpha : alpha;
+  if (typeof alpha === 'number' && alpha <= 0.005) return;
   const ink = sheetInk(env);
   c.save();
   c.font = PHRASE_FONT;
@@ -468,7 +510,9 @@ function typedLive(c: C, env: PaintEnv, ws: WordBox[], seed: number, alpha: numb
   c.textAlign = 'left';
   ws.forEach((q, i) => {
     if (skip?.has(i)) return;
-    c.fillStyle = withAlpha(ink, alpha * (0.92 + 0.08 * h01(i, seed)));
+    const a = aOf(i);
+    if (a <= 0.005) return;
+    c.fillStyle = withAlpha(ink, a * (0.92 + 0.08 * h01(i, seed)));
     c.fillText(q.w, q.x, q.y + (h01(i, seed + 1) - 0.5) * 0.8);
   });
   c.restore();
@@ -517,10 +561,27 @@ function sheetLive(c: C, env: PaintEnv, L: SheetLayout, b: B, t: number, tq: num
     const u = win(t, m.t - 0.12, m.t + 0.12) * (1 - 0.45 * win(t, m.t + 0.5, m.t + 1.4));
     warmWord(c, env, q, u);
   }
-  typedLive(c, env, L.bet1, 501, a1 - TYPE_TEXTURE_A * 0.5);
-  typedLive(c, env, L.bet2, 502, a2 - TYPE_TEXTURE_A * 0.5, ph.set);
+  // round 4: only the SPOKEN words read at full ink (karaoke); the rest of the typed text stays at ~45% contrast
+  const spokenAt = (ws: WordBox[], bet: 1 | 2) => {
+    const m = new Map<number, number>();
+    for (const q of b.marks) {
+      if (q.bet !== bet) continue;
+      const i = ws.findIndex((w) => norm(w.w) === q.word);
+      if (i >= 0 && !m.has(i)) m.set(i, q.t);
+    }
+    return m;
+  };
+  const sp1 = spokenAt(L.bet1, 1), sp2 = spokenAt(L.bet2, 2);
+  const LOW = 0.16;
+  const wordA = (sp: Map<number, number>, read: number, full: number) => (i: number) => {
+    const ts = sp.get(i);
+    const base = LOW * read;
+    return ts == null ? base : Math.max(base, full * win(t, ts - 0.12, ts + 0.1));
+  };
+  typedLive(c, env, L.bet1, 501, wordA(sp1, (a1 - TYPE_TEXTURE_A) / (0.84 - TYPE_TEXTURE_A), 0.9 - 0.2 * win(t, b.vlad, b.vlad + 1.0)));
+  typedLive(c, env, L.bet2, 502, wordA(sp2, (a2 - TYPE_TEXTURE_A) / (0.86 - TYPE_TEXTURE_A), 0.92), ph.set);
   // the spoken phrase ('no one in his right mind') is left out of the bake: always drawn live, darkest once said
-  const pa = Math.max(a2, lerp(a2, 0.97, win(t, b.noAt - 0.2, b.noAt + 0.4)));
+  const pa = Math.max(LOW * clamp01((a2 - TYPE_TEXTURE_A) / (0.86 - TYPE_TEXTURE_A)), 0.97 * win(t, b.noAt - 0.2, b.noAt + 0.4));
   typedLive(c, env, L.bet2.slice(ph.start, ph.start + 6), 503, pa);
   // the underline, as the phrase is spoken (the narrator's pen): one stroke, starting on 'no'
   const uu = clamp01((t - b.noAt + 0.05) / (b.mindEnd - b.noAt + 0.05));
@@ -553,6 +614,23 @@ function sheetLive(c: C, env: PaintEnv, L: SheetLayout, b: B, t: number, tq: num
 /** the fountain pen with its soft shadow; the barrel trails down and to the right of the nib (below the line) */
 function penAt(c: C, env: PaintEnv, x: number, y: number, ang: number, s: number, a = 1) {
   if (a <= 0.01) return;
+  // round 4: the soft shadow of the writing hand and its forearm, thrown on the paper down-right of the nib (the lamp is
+  // above the frame's upper left): the hand itself is out of frame, its shadow is what reads
+  {
+    const d = { x: Math.cos(ang + Math.PI), y: Math.sin(ang + Math.PI) };
+    const n = { x: -d.y, y: d.x };
+    const at = (u: number, v: number) => ({ x: x + 22 + d.x * u * s + n.x * v * s, y: y + 30 + d.y * u * s + n.y * v * s });
+    c.save();
+    c.globalAlpha = 0.3 * a;
+    c.filter = `blur(${(14 * env.pxScale).toFixed(1)}px)`;
+    c.fillStyle = env.mood.fg;
+    c.beginPath();
+    const pts = [at(46, -20), at(80, -34), at(130, -40), at(520, -60), at(520, 70), at(130, 44), at(84, 36), at(50, 18)];
+    pts.forEach((p, i) => (i ? c.lineTo(p.x, p.y) : c.moveTo(p.x, p.y)));
+    c.closePath();
+    c.fill();
+    c.restore();
+  }
   c.save();
   c.globalAlpha = 0.3 * a;
   c.filter = `blur(${(2.5 * env.pxScale).toFixed(1)}px)`;
@@ -562,6 +640,18 @@ function penAt(c: C, env: PaintEnv, x: number, y: number, ang: number, s: number
   c.globalAlpha = a;
   fountainPen(c, x, y, ang, s, env);
   c.restore();
+}
+
+const NEAR_GLASS: LayerSpec = { id: 'Lglass', z: 820, haze: 0, blur: 7 };
+let GLASS_KEY: SheetLayout | null = null;
+let GLASS_AT: P = { x: 0, y: 0 };
+/** placed from the bet-2 reading camera: the glass's foot half off the right edge, low in the frame */
+function nearGlassAt(L: SheetLayout, b: B): P {
+  if (GLASS_KEY !== L) {
+    GLASS_AT = toLayer(NEAR_GLASS, tdCam(L, b, b.vap + 0.3), 1268, 560);
+    GLASS_KEY = L;
+  }
+  return GLASS_AT;
 }
 
 function topDown(f: Frame, t: number, tq: number, b: B, withSheet: boolean) {
@@ -631,6 +721,15 @@ function topDown(f: Frame, t: number, tq: number, b: B, withSheet: boolean) {
     }
     if (sigNib) penAt(c, env, (sigNib as P).x, (sigNib as P).y, -2.3, 0.62);
   });
+  // round 4, near plane: the foot of a wine glass standing at the frame's right edge, between the lens and the paper
+  // (its own depth, z 820), out of focus; it slides up through the frame as the camera reads down the sheet
+  f.layer(NEAR_GLASS, (c, env) => {
+    const p = nearGlassAt(L, b);
+    f.cached(`${ID}/td/nearGlass/${env.mood.id}`, 160, 160, (cc) => {
+      cc.translate(80, 80);
+      wineGlassTop(cc, 0, 0, 34, env);
+    })(c, p.x - 80, p.y - 80);
+  });
   // between us and the table: dust turning slowly in the lamp's cone, out of focus (a third plane on every move)
   f.layer('L5', (c, env) => {
     const r = overscan(LAYERS.L5, TD_SAFE, 40);
@@ -664,11 +763,13 @@ function topDown(f: Frame, t: number, tq: number, b: B, withSheet: boolean) {
       cc.stroke();
     }, { blur: 10 })(c, SHADE.x - 180, SHADE.y - 180);
   });
-  // the shade's warmth on the sheet (the lamp is just above frame left)
+  // round 4: the lamp's falloff on the sheet (the lamp is just above frame left): full under the shade, the corners
+  // down to about a third of the value, so the paper reads as lit paper, not a flat field
   screenPass(f, (c) => {
-    const g = c.createRadialGradient(560, 320, 300, 640, 380, 900);
+    const g = c.createRadialGradient(500, 300, 170, 560, 340, 860);
     g.addColorStop(0, withAlpha(f.mood.fg, 0));
-    g.addColorStop(1, withAlpha(f.mood.fg, 0.3));
+    g.addColorStop(0.42, withAlpha(f.mood.fg, 0.3));
+    g.addColorStop(1, withAlpha(f.mood.fg, 0.78));
     c.fillStyle = g;
     c.fillRect(0, 0, 1280, 720);
   });
@@ -699,6 +800,10 @@ function board(f: Frame, t: number, tq: number, b: B) {
   const lightQ = poolAt(POOL_B, Q2X, BOARD.threadY + 40);
   const st = boardStateAt(ID, 'start');
   const sheetIn = t >= b.dis2B + 0.08;
+  // round 2 hand-off (legibility): the board's earlier pinned cards (C1-a's typed 1943 assumption among them) are
+  // TEXTURE in this insert: the subject is the new Q2 card and the pinned sheet. The L4 draw context is one scratch
+  // canvas per frame, so the role is set around the board pass and cleared in extra (before the shot's own cards).
+  boardTextRole(f, 'texture');
   studyCase(f, {
     shot: ID,
     when: 'start',
@@ -708,6 +813,7 @@ function board(f: Frame, t: number, tq: number, b: B) {
     xray: false,
     board: { state: st },
     extra: (c, env) => {
+      (c as C & { __textRole?: 'subject' | 'texture' }).__textRole = undefined;
       if (sheetIn) {
         pinnedSheet(f, c, env);
         boardSlip(c, env, t, b);
@@ -725,6 +831,7 @@ function board(f: Frame, t: number, tq: number, b: B) {
       }
     },
   });
+  boardTextRole(f, undefined);
   // the lamp's pool on the insert (exposure, not a veil): the green-shaded lamp is at the lower right
   screenPass(f, (c) => {
     const g = c.createRadialGradient(760, 420, 160, 700, 360, 1000);
@@ -758,6 +865,13 @@ function board(f: Frame, t: number, tq: number, b: B) {
   });
 }
 
+/** set (or clear) the text role on the frame's L4 draw context (see the note in board()) */
+function boardTextRole(f: Frame, role: 'texture' | undefined) {
+  f.layer('L4', (c) => {
+    (c as C & { __textRole?: 'subject' | 'texture' }).__textRole = role;
+  });
+}
+
 function pinnedSheet(_f: Frame, c: C, env: PaintEnv) {
   // continuity: drawn exactly as ch06-s08 and ch07-s01 draw it (the sheet and its paper wine glasses)
   const light = poolAt(POOL_B, 505, 168) + SHEET_LIGHT;
@@ -769,22 +883,31 @@ function hangQ(c: C, env: PaintEnv, light: number, sway: number) {
   c.save();
   c.translate(Q_CLIP.x, Q_CLIP.y);
   c.rotate(sway);
-  c.strokeStyle = oxblood(env);
-  c.lineWidth = 1.2 * BK.k;
+  drawCard(c, { id: 'Q-Q2', w: Q_W, h: Q_H, icon: 'question', text: Q_TEXT }, { x: 0, y: (Q_DROP + 22) * BK.k, k: BK.k, light, pin: false }, env);
+  threadClip(c, env, 0, 0, true);
+  c.restore();
+}
+/** a small brass bulldog clip on the oxblood thread (local origin = where it grips the thread) */
+function threadClip(c: C, env: PaintEnv, x: number, y: number, holding: boolean) {
+  const k = BK.k;
+  c.save();
+  c.translate(x, y);
+  c.fillStyle = withAlpha(env.mood.fg, 0.45);
+  c.fillRect(-5 * k + 1.2, -3 * k + 1.6, 10 * k, (holding ? 10 : 8) * k);
+  c.fillStyle = mixLab(env.mood.set, '#8a6a2a', 0.55);
+  c.fillRect(-5 * k, -3 * k, 10 * k, (holding ? 10 : 8) * k);
+  c.fillStyle = withAlpha(mixLab(env.mood.core, '#f3e2b0', 0.4), 0.8);
+  c.fillRect(-5 * k, -3 * k, 10 * k, 1.1 * k);
+  // the wire handle looped over the thread
+  c.strokeStyle = mixLab(env.mood.set, '#6a5222', 0.5);
+  c.lineWidth = 0.9 * k;
   c.beginPath();
-  c.moveTo(0, 0);
-  c.lineTo(0, 10 * BK.k);
+  c.ellipse(0, -3 * k, 3.4 * k, 2.6 * k, 0, Math.PI, Math.PI * 2);
   c.stroke();
-  drawCard(c, { id: 'Q-Q2', w: Q_W, h: Q_H, icon: 'question', text: Q_TEXT }, { x: 0, y: (10 + 22) * BK.k, k: BK.k, light, pin: false }, env);
   c.restore();
 }
 function bareClip(c: C, env: PaintEnv) {
-  c.strokeStyle = oxblood(env);
-  c.lineWidth = 1.2 * BK.k;
-  c.beginPath();
-  c.moveTo(Q_CLIP.x, Q_CLIP.y);
-  c.lineTo(Q_CLIP.x, Q_CLIP.y + 8 * BK.k);
-  c.stroke();
+  threadClip(c, env, Q_CLIP.x, Q_CLIP.y, false);
 }
 
 /** the real sheet in its last top-down state (signed, underlined, read), baked at 2x for the flight */

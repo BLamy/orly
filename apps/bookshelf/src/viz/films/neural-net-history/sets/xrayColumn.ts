@@ -20,7 +20,9 @@
  *        reveal: { band, u } animates one band lighting (u 0..1); translucency: how see-through (0..1)
  *   xrayGlowAt(o) → the box centre for f.practical({ kind: 'screen' })
  */
-import type { PaintEnv } from '../../../film/contracts';
+import type { Camera3, PaintEnv } from '../../../film/contracts';
+import { LAYERS } from '../../../film/contracts';
+import { toScreen } from '../../../film/core/multiplane';
 import { MOODS, mixLab, withAlpha } from '../../../film/silhouette/palette';
 import { hcl } from 'd3';
 import { hash1 } from '../../../film/core/frame';
@@ -43,6 +45,108 @@ export interface XrayDraw {
   translucency?: number;
   /** band 7's dark shears-shaped slot glint 0..1 (ch12-s01) */
   slotGlint?: number;
+  /** face brightness 0..1 (default xrayEmphasis: 0.6 at rest, 1 while a band lights or the slot glints) */
+  dim?: number;
+  /** the paper pass (desaturate, warm, grain, inner vignette, dim); default true. vellumBox runs its own. */
+  paper?: boolean;
+}
+
+/**
+ * Review round 2 (art): "the X-ray cabinet face is still flat saturated cyan. Desaturate it to about 40 %, add paper
+ * grain and a soft inner vignette, and dim it to about 60 % except on beats where a slot lights."
+ * The face brightness: 0.6 at rest; up to 1 while a band's lamp warms up (reveal.u in 0..1, peaking mid-reveal and
+ * settling back as the band finishes) or while band 7's slot glints.
+ */
+export function xrayEmphasis(o: Pick<XrayDraw, 'reveal' | 'slotGlint' | 'dim'>): number {
+  if (o.dim != null) return Math.max(0, Math.min(1, o.dim));
+  const u = o.reveal ? Math.max(0, Math.min(1, o.reveal.u)) : 0;
+  const lighting = o.reveal ? Math.sin(Math.PI * u) ** 0.6 : 0;
+  const glint = Math.max(0, Math.min(1, o.slotGlint ?? 0));
+  return 0.6 + 0.4 * Math.max(lighting, glint);
+}
+
+/**
+ * Review round 3 (art): "the x-ray cabinet still reads as a saturated cyan UI screen wherever it is the subject. Apply
+ * xrayEmphasis's resting state (60 % face, desaturated) whenever the cabinet fills more than 25 % of the frame, lift only
+ * the lit slot, and ink the glyph rows in warm grey (#cfc6b0 at 70 %) instead of near-white."
+ *   XRAY_REST                    the resting face (0.6)
+ *   XRAY_SUBJECT_FRACTION        0.25 of the frame: above it the cabinet is the SUBJECT
+ *   XRAY_GLYPH_WARM              the glyph rows' light ink when it is the subject
+ *   xrayFrameFraction(c)         the cabinet's share of the frame under the current transform (box-local, scaled)
+ *   xrayIsSubject(c)             fraction > XRAY_SUBJECT_FRACTION
+ */
+export const XRAY_REST = 0.6;
+export const XRAY_SUBJECT_FRACTION = 0.25;
+export const XRAY_GLYPH_WARM = withAlpha('#cfc6b0', 0.7);
+export function xrayFrameFraction(c: CanvasRenderingContext2D): number {
+  const m = c.getTransform();
+  const det = Math.abs(m.a * m.d - m.b * m.c);
+  const cw = c.canvas?.width || 1920;
+  const ch = c.canvas?.height || 1080;
+  return ((XRAY.w + 28) * (XRAY.h + 28) * det) / (cw * ch);
+}
+export const xrayIsSubject = (c: CanvasRenderingContext2D) => xrayFrameFraction(c) > XRAY_SUBJECT_FRACTION;
+/** the same share from the camera (outside a layer: the glow spill), the box at (x, y, s) on L4 */
+export function xrayScreenFraction(cam: Camera3, o: Pick<XrayDraw, 'x' | 'y' | 's'>): number {
+  const s = o.s ?? 1;
+  const a = toScreen(LAYERS.L4, cam, o.x - (XRAY.w / 2 + 14) * s, o.y - (XRAY.h + 14) * s);
+  const b = toScreen(LAYERS.L4, cam, o.x + (XRAY.w / 2 + 14) * s, o.y + 14 * s);
+  return (Math.abs(b.x - a.x) * Math.abs(b.y - a.y)) / (1280 * 720);
+}
+
+/** the paper pass over the box window (box-local px, origin bottom centre): chroma pulled down 40 %, warmed toward
+ *  the study's paper, grain and fibre, a soft inner vignette, then the face dimmed to `k` (multiply); with `lift`, one
+ *  band (the lit slot) is dimmed to its own lift.k instead (review round 3: only the lit slot lifts) */
+export function xrayPaperPass(c: CanvasRenderingContext2D, k: number, W: number = XRAY.w, H: number = XRAY.h, lift?: { rect: { x: number; y: number; w: number; h: number }; k: number }) {
+  c.save();
+  c.beginPath();
+  c.rect(-W / 2, -H, W, H);
+  c.clip();
+  c.globalCompositeOperation = 'saturation';
+  c.fillStyle = 'rgba(128,128,128,0.42)';
+  c.fillRect(-W / 2, -H, W, H);
+  c.globalCompositeOperation = 'multiply';
+  c.fillStyle = withAlpha(mixLab(MOODS.candleAmber.rim, '#ffffff', 0.55), 0.16);
+  c.fillRect(-W / 2, -H, W, H);
+  const gc = grainCanvas();
+  const pat = gc ? c.createPattern(gc, 'repeat') : null;
+  if (pat) {
+    c.globalAlpha = 0.3;
+    c.fillStyle = pat;
+    c.fillRect(-W / 2, -H, W, H);
+    c.globalAlpha = 1;
+  }
+  c.globalCompositeOperation = 'source-over';
+  const vg = c.createRadialGradient(0, -H / 2, Math.min(W, H) * 0.22, 0, -H / 2, Math.hypot(W / 2, H / 2));
+  vg.addColorStop(0, 'rgba(10,12,11,0)');
+  vg.addColorStop(0.6, 'rgba(10,12,11,0.14)');
+  vg.addColorStop(1, 'rgba(10,12,11,0.5)');
+  c.fillStyle = vg;
+  c.fillRect(-W / 2, -H, W, H);
+  const shade = (kk: number) => {
+    const v = Math.round(255 * Math.max(0, Math.min(1, kk)));
+    return `rgb(${v},${v},${v})`;
+  };
+  if (lift) {
+    c.globalCompositeOperation = 'multiply';
+    const r = lift.rect;
+    if (k < 0.999) {
+      const face = new Path2D();
+      face.rect(-W / 2, -H, W, H);
+      face.rect(r.x - 4, r.y - 2, r.w + 8, r.h + 4);
+      c.fillStyle = shade(k);
+      c.fill(face, 'evenodd');
+    }
+    if (lift.k < 0.999) {
+      c.fillStyle = shade(lift.k);
+      c.fillRect(r.x - 4, r.y - 2, r.w + 8, r.h + 4);
+    }
+  } else if (k < 0.999) {
+    c.globalCompositeOperation = 'multiply';
+    c.fillStyle = shade(k);
+    c.fillRect(-W / 2, -H, W, H);
+  }
+  c.restore();
 }
 
 export function xrayGlowAt(o: Pick<XrayDraw, 'x' | 'y' | 's'>) {
@@ -51,7 +155,7 @@ export function xrayGlowAt(o: Pick<XrayDraw, 'x' | 'y' | 's'>) {
 }
 
 /** band i (1-based) rectangle in box-local coords (origin bottom centre, y up negative) */
-function bandRect(i: number) {
+export function bandRect(i: number) {
   const seam = i >= 4 ? 10 : 0;
   const y1 = -XRAY.pad - (i - 1) * XRAY.band - seam;
   return { x: -XRAY.w / 2 + 18, y: y1 - XRAY.band + 6, w: XRAY.w - 36, h: XRAY.band - 8 };
@@ -179,6 +283,9 @@ export function xrayColumn(c: CanvasRenderingContext2D, o: XrayDraw, env: PaintE
   c.save();
   c.translate(o.x, o.y);
   c.scale(s, s);
+  // review round 3: when the cabinet fills more than a quarter of the frame it is the subject: resting face, warm-grey
+  // glyph rows, and only the lit slot lifts
+  const subject = xrayIsSubject(c);
   const W = XRAY.w, H = XRAY.h;
   const F = 14; // frame width
   // ---- the cabinet: a black cut-card frame with notched corners, on a plinth with two feet
@@ -241,7 +348,8 @@ export function xrayColumn(c: CanvasRenderingContext2D, o: XrayDraw, env: PaintE
     // the cut-out glyph: black paper on the vellum; faint when its lamp is off
     c.save();
     c.globalAlpha *= rev > 0 ? 0.35 + 0.65 * rev : 0.22 + 0.2 * tr;
-    bandGlyph(c, i, r, env, cutInk, rev > 0 ? mixLab(LAMP, VELLUM_LIT, 0.4) : VELLUM_MID);
+    // the glyph rows' light strokes (arrows, threads): warm grey wherever the cabinet is lit or is the subject (review r3)
+    bandGlyph(c, i, r, env, cutInk, subject || rev > 0 ? XRAY_GLYPH_WARM : VELLUM_MID);
     c.restore();
     if (i === 7 && !lit && (o.slotGlint ?? (o.state.slotGlint ? 1 : 0)) > 0) {
       // band 7 as a dark, empty, shears-shaped slot: a hairline of lamp light escapes around it
@@ -255,18 +363,14 @@ export function xrayColumn(c: CanvasRenderingContext2D, o: XrayDraw, env: PaintE
       c.restore();
     }
   }
-  // paper grain + fibre over the whole sheet (multiply darkens the grain into the light)
-  const gc = grainCanvas();
-  if (gc) {
-    c.save();
-    const pat = c.createPattern(gc, 'repeat');
-    if (pat) {
-      c.globalCompositeOperation = 'multiply';
-      c.globalAlpha *= 0.22;
-      c.fillStyle = pat;
-      c.fillRect(-W / 2, -H, W, H);
-    }
-    c.restore();
+  // the paper pass (review round 2): desaturate, warm, grain + fibre, inner vignette, dim at rest
+  if (o.paper !== false) {
+    if (subject) {
+      // the face rests at 60 %; the slot that is lighting (or band 7's glint) lifts to its emphasis alone
+      const band = o.reveal && o.reveal.u > 0 && o.reveal.u < 1.0001 ? o.reveal.band : (o.slotGlint ?? 0) > 0 ? 7 : 0;
+      const rest = Math.min(XRAY_REST, o.dim ?? XRAY_REST);
+      xrayPaperPass(c, rest, W, H, band ? { rect: bandRect(band), k: Math.max(rest, xrayEmphasis(o)) } : undefined);
+    } else xrayPaperPass(c, xrayEmphasis(o), W, H);
   }
   // cut-card band dividers (black strips) and the heavier seam between bands 3 and 4 that never lights
   c.fillStyle = CARD_BLACK;

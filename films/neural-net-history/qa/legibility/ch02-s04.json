@@ -1,132 +1,159 @@
 {
  "shot": "ch02-s04",
- "at": "2026-10-12T07:32:31.465Z",
+ "at": "2026-10-13T04:12:59.411Z",
  "minCapPx": 22,
  "sampled": 24,
  "texts": 29,
- "offenders": [
-  {
-   "text": "THE BRAIN IS A LOGIC",
-   "maxCap": 18.3,
-   "minCap": 18,
-   "first": 8.25,
-   "last": 10.31,
-   "font": "25.1407px \"Special Elite\""
-  }
- ],
- "textureTexts": 0,
- "ok": [
-  {
-   "text": "How could a net rewire",
-   "maxCap": 98.7
-  },
-  {
-   "text": "itself?",
-   "maxCap": 98.7
-  },
-  {
-   "text": "WHO TAUGHT",
-   "maxCap": 170.6
-  },
-  {
-   "text": "IT?",
-   "maxCap": 170.6
-  },
-  {
-   "text": "RULES",
-   "maxCap": 98.7
-  },
-  {
-   "text": "KNOWLEDGE",
-   "maxCap": 85.3
-  },
-  {
-   "text": "LEARNING",
-   "maxCap": 85.3
-  },
-  {
-   "text": "THE STRUCTURE OF",
-   "maxCap": 83.9
-  },
-  {
-   "text": "THE NET DOES NOT",
-   "maxCap": 83.9
-  },
-  {
-   "text": "CHANGE WITH",
-   "maxCap": 83.9
-  },
-  {
-   "text": "TIME.",
-   "maxCap": 83.9
-  },
-  {
-   "text": "1943",
-   "maxCap": 80.8
-  },
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
   {
    "text": "THE BRAIN IS A LOGIC MACHINE",
-   "maxCap": 75.4
-  },
-  {
-   "text": "THE",
-   "maxCap": 52.2
+   "capWhileSubject": 106.9,
+   "why": "script onScreenText"
   },
   {
    "text": "BRAIN",
-   "maxCap": 52.2
+   "capWhileSubject": 73.9,
+   "why": "script onScreenText"
   },
   {
    "text": "IS A",
-   "maxCap": 52.2
+   "capWhileSubject": 73.9,
+   "why": "script onScreenText"
   },
   {
    "text": "LOGIC",
-   "maxCap": 52.2
+   "capWhileSubject": 73.9,
+   "why": "script onScreenText"
   },
   {
    "text": "MACHINE",
-   "maxCap": 52.2
+   "capWhileSubject": 73.9,
+   "why": "script onScreenText"
   },
   {
-   "text": "1944",
-   "maxCap": 22.8
-  },
-  {
-   "text": "1945",
-   "maxCap": 22.8
-  },
-  {
-   "text": "1946",
-   "maxCap": 22.8
-  },
-  {
-   "text": "1947",
-   "maxCap": 22.8
-  },
-  {
-   "text": "lit 1943 · out 1959 · 16 years",
-   "maxCap": 22
-  },
-  {
-   "text": "1948",
-   "maxCap": 22.8
-  },
-  {
-   "text": "1949",
-   "maxCap": 22.8
-  },
-  {
-   "text": "1950",
-   "maxCap": 22.8
+   "text": "THE BRAIN IS A LOGIC",
+   "capWhileSubject": 26,
+   "why": "script onScreenText"
   },
   {
    "text": "ralph gerard",
-   "maxCap": 25.9
+   "capWhileSubject": 25.9,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "neurophysiologist  ·  1950",
-   "maxCap": 26.4
+   "capWhileSubject": 26.4,
+   "why": "drawn as subject (kit card or textRole)"
   }
- ]
+ ],
+ "texture": [
+  {
+   "text": "How could a net rewire",
+   "maxCap": 140,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "itself?",
+   "maxCap": 140,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 241.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IT?",
+   "maxCap": 241.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "RULES",
+   "maxCap": 140,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 120.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 120.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 119,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 119,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 119,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 119,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1943",
+   "maxCap": 114.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE",
+   "maxCap": 73.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1944",
+   "maxCap": 32.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1945",
+   "maxCap": 32.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1946",
+   "maxCap": 32.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1947",
+   "maxCap": 32.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "lit 1943 · out 1959 · 16 years",
+   "maxCap": 22,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1948",
+   "maxCap": 32.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1949",
+   "maxCap": 32.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1950",
+   "maxCap": 32.3,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 21
 }

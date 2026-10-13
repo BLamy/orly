@@ -16,6 +16,7 @@
  * Colour: the stage takes the shot's mood (era colour): candleAmber 1943, labGreen 1958, winterBlue
  * 1969–76, dawnGold 1986/2012, duskRose 2023 … The candle is the only light.
  */
+import { rimNear, type RimNearOpts } from './rimNear';
 import type { Camera3, Frame, PaintEnv } from '../../../film/contracts';
 import { LAYERS } from '../../../film/contracts';
 import { overscan, type Rect } from '../../../film/core/multiplane';
@@ -71,6 +72,8 @@ export interface CandleStageOpts {
   letters?: number;
   /** rim direction override */
   rimDir?: { x: number; y: number };
+  /** the room's ornamental near plane on L6 (review round 3: sets/rimNear.ts; ref defaults to the last of `cams`) */
+  near?: RimNearOpts;
 }
 
 type C = CanvasRenderingContext2D;
@@ -202,5 +205,7 @@ export function candleStage(f: Frame, o: CandleStageOpts) {
   });
   f.rim(o.rimDir ?? { x: 0, y: -1 });
   if (fk > 0) f.practical({ x: geo.flame.x, y: geo.flame.y + 4 * s, kind: 'candle', seed: 1943 + o.candle.slot, intensity: fk, radius: 70 + 40 * fk });
+  // the room's ornamental near plane, over the action (layers paint in call order)
+  if (o.near) rimNear(f, { ref: o.cams[o.cams.length - 1], ...o.near });
   return geo;
 }

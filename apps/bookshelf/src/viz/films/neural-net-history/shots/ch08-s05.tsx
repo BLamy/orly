@@ -11,7 +11,8 @@
  *   'edges' …     the rose window shows, one at a time, what such a layer responds to: oriented strokes; woven
  *   'things'      textures; a fur patch and an eye; a whole dog's head; then the photograph again
  *   'halls'       TWO great halls (fc6, fc7) rise between the towers; threads from every lantern to every lantern
- *                 below; 55 · 27 · 13 · 13 · 13 → 4096 · 4096 · 1000
+ *                 below; card (inked on 'halls'): 5 stencil layers → 2 great halls of 4,096 → 1,000 answers,
+ *                 its last line brightening on 'thousand'
  *   'last'        the last hall, a band of a thousand small lanterns, one per answer (nothing above it), as the
  *                 camera pulls back to the whole cathedral; ≈ 60 million numbers · 650,000 neurons
  *   hold          light climbs from window to crown course by course; the window replays each course's vignette
@@ -19,22 +20,33 @@
  */
 import { Timeline } from '../../../core';
 import type { Camera3, Frame } from '../../../film';
-import { defineShot, mixLab, withAlpha, forestBand, ridgePath, legibleSize, FONT, tree } from '../../../film';
-import { monoCard } from '../sets/ch07-s01-kit';
+import { MOODS, defineShot, mixLab, withAlpha, forestBand, ridgePath, legibleSize, FONT, tree } from '../../../film';
+import { capSize, monoCard } from '../sets/ch07-s01-kit';
 import { clamp01, mixCam, sm, win } from '../sets/ch08-s01-kit';
 import { CAT, cathedral, type CathedralState } from '../sets/ch08-s05-cathedral';
 
 const ID = 'ch08-s05';
 /** a slow tilt-up following the courses as they rise (y −64 over 0 → 10 s) with a slight dolly in, the rose window
  *  low in frame, the courses filling above it; the near hill-crest trees (L5) slide against the façade */
-const C0: Camera3 = { x: 640, y: 512, z: 360, lens: 1 };
-const C1: Camera3 = { x: 640, y: 470, z: 352, lens: 1 };
-const C2: Camera3 = { x: 640, y: 448, z: 392, lens: 1 };
-/** on 'halls': the whole façade from the rose window to the crown, base kept in frame (never a half-clipped rose) */
-const C3: Camera3 = { x: 640, y: 338, z: 40, lens: 1 };
-const C4: Camera3 = { x: 640, y: 352, z: -50, lens: 1 };
-const C5: Camera3 = { x: 640, y: 356, z: -10, lens: 1 };
+/** the tilt-up also trucks right ≈ 40 px, so the near gate pier (lower left) slides out against the façade */
+/** REVIEW r1 (teacher): from 'four more layers above' through 'things' all FIVE courses stay in frame — course 5's
+ *  gablets (world y 192) sit ≥ 40 px (1080p) below the frame top and the rose window's ring (y 638) above the bottom
+ *  12 %: screen y = 360 + k·(y − cam.y), k = 1000 / (1000 − z) → C1 k 1.333 (192 → 30, 638 → 625), C2 k 1.351 */
+const C0: Camera3 = { x: 600, y: 512, z: 360, lens: 1 };
+const C1: Camera3 = { x: 612, y: 440, z: 250, lens: 1 };
+const C2: Camera3 = { x: 622, y: 436, z: 260, lens: 1 };
+/** on 'halls': the whole façade from the rose window to the crown, base kept in frame (never a half-clipped rose).
+ *  REVIEW r1 (artistry): pulled back far enough that both towers (buttresses at world x 325 / 955) stand clear of the
+ *  two cards at the safe margins, and a continued truck (x +30 over 'halls' → the end) slides the façade against the
+ *  gate pier (NEAR) and the ridges */
+const C3: Camera3 = { x: 626, y: 352, z: -60, lens: 1 };
+const C4: Camera3 = { x: 644, y: 356, z: -100, lens: 1 };
+const C5: Camera3 = { x: 656, y: 356, z: -70, lens: 1 };
 const CAMS = [C0, C1, C2, C3, C4, C5];
+/** the near plane: a churchyard gate pier, a stub of wall and a yew at lower left. Between the action plane and L5
+ *  (z 900) so it stays a lower-left frame in the wide: in the tight tilt-up it fills the left edge and slides out of
+ *  frame, then slides back in on the pull-back to frame the whole cathedral (never in front of the façade) */
+const NEAR = { id: 'L5', z: 900, haze: 0, blur: 2.5 };
 
 interface B {
   D: number;
@@ -49,6 +61,7 @@ interface B {
   every: number;
   everything: number;
   last: number;
+  thousand: number;
   end: number;
 }
 
@@ -70,6 +83,7 @@ export default defineShot({
       every: T.word('L0810', 'every'),
       everything: T.wordEnd('L0810', 'everything'),
       last: T.beat('lastHall'),
+      thousand: T.word('L0810', 'thousand'),
       end: T.line('L0810').end,
     };
     tl.hold(0, b.D);
@@ -85,15 +99,17 @@ export default defineShot({
     const st = stateAt(t, b);
     f.layer('L4', (c, env) => cathedral(c, env, st));
     f.rim({ x: 0, y: -1 });
+    f.layer(NEAR, (c, env) => {
+      f.cached(`${ID}/near2/${env.mood.id}`, 700, 700, (g) => {
+        g.translate(0, -300);
+        nearGate(g, env.fill('fg'), env.mood.rim);
+      })(c, -34, 300);
+    });
     f.layer('L5', (c, env) => {
-      // the near ground: a low churchyard wall, blurred, across the bottom, and two bare trees on the hill crest at
-      // the frame edges (near the lens: they slide against the façade on the tilt and the pull-back)
-      f.cached(`${ID}/L5near2/${env.mood.id}`, 3400, 1500, (g) => {
+      // two bare trees on the hill crest beyond the frame edges in the wide (blurred, near the lens)
+      f.cached(`${ID}/L5near3/${env.mood.id}`, 3400, 1500, (g) => {
         g.translate(1000, 400);
         const fe = { ...env, fill: (r: Parameters<typeof env.fill>[0]) => (r === 'set' || r === 'ink' ? env.fill('fg') : env.fill(r)) };
-        g.fillStyle = env.fill('fg');
-        g.fillRect(-1000, 712, 3400, 700);
-        for (let x = -1000; x < 2400; x += 34) g.fillRect(x, 704, 18, 12);
         tree(g, { x: -70, y: 770, h: 380, kind: 'oak', seed: 1851, detail: 0.7 }, fe);
         tree(g, { x: 1350, y: 775, h: 330, kind: 'oak', seed: 1852, detail: 0.7 }, fe);
       })(c, -1000, -400);
@@ -101,28 +117,79 @@ export default defineShot({
     // ---- type
     // both cards at the legibility floor (22 px cap height at 1080p), their outer edges on the 5 % safe margin
     const ls = legibleSize(f.c, `500 19px ${FONT.mono}`, 19);
-    const L1 = ['55 · 27 · 13 · 13 · 13', '→ 4096 · 4096 · 1000'];
+    // the script's fact-checked label, in words: the five stencil courses, the two great halls of 4,096 lanterns,
+    // and the last hall of 1,000 answers (review r3: words, not the bare face widths)
+    const L1 = ['5 stencil layers', '→ 2 great halls of 4,096', '→ 1,000 answers'];
     const L2 = ['≈ 60 million numbers', '650,000 neurons'];
-    const a1 = win(t, b.halls + 0.55, b.halls + 1.05);
-    if (a1 > 0) monoCard(f.c, { x: 64 + cardW(f.c, L1, ls) / 2, y: 318, lines: L1, size: ls, alpha: a1, rise: a1, seed: 88 }, f.mood);
-    const a2 = win(t, b.last + 0.4, b.last + 0.9);
-    if (a2 > 0) monoCard(f.c, { x: 1216 - cardW(f.c, L2, ls) / 2, y: 318, lines: L2, size: ls, alpha: a2, rise: a2, seed: 89 }, f.mood);
+    // REVIEW r1 (artistry): the cards stay clear of the towers' silhouettes, so each long line is set on two (the
+    // same words, a narrower measure: '→ 2 great halls' / 'of 4,096'), with a tighter pad and tracking
+    const S1 = [L1[0], ...wrapAt(L1[1], ' of '), L1[2]];
+    const S2 = [...wrapAt(L2[0], ' numbers'), L2[1]];
+    const CARD = { pad: 16, tracking: 0.2 };
+    // inked ON 'halls' (the halls rise into a frame that is still widening); the paper and its first line come up
+    // together; '→ 1,000 answers' waits dim and brightens on 'thousand'
+    const a1 = win(t, b.halls - 0.22, b.halls + 0.08);
+    if (a1 > 0) {
+      const cx = 64 + cardW(f.c, S1, ls, CARD) / 2;
+      // the card carries all four lines' height; its last line is inked separately so it can brighten
+      monoCard(f.c, { x: cx, y: 318, lines: [...S1.slice(0, 3), ''], size: ls, alpha: a1, rise: a1, seed: 88, ...CARD }, f.mood);
+      const lit3 = 0.42 + 0.58 * win(t, b.thousand - 0.2, b.thousand + 0.15);
+      monoLine(f.c, { x: cx, y: 318, n: 4, i: 3, text: S1[3], size: ls, alpha: a1 * lit3, rise: a1, ...CARD });
+    }
+    // REVIEW r1 (sync): the numbers card inks its first line on 'last' (14.70), fully up by 14.9
+    const a2 = win(t, b.last - 0.15, b.last + 0.15);
+    if (a2 > 0) monoCard(f.c, { x: 1216 - cardW(f.c, S2, ls, CARD) / 2, y: 318, lines: S2, size: ls, alpha: a2, rise: a2, seed: 89, ...CARD }, f.mood);
   },
 });
 
-/** a monoCard's width (its own metrics: Plex Mono 500, 0.6 px tracking, 22 px pad) */
-function cardW(c: CanvasRenderingContext2D, lines: string[], size: number): number {
+/** one line of a monoCard inked on its own (monoCard's own geometry: Plex Mono 500, 0.6 px tracking, 22 px pad,
+ *  1.35 leading, rise 14 px), so a line can brighten on its word */
+function monoLine(c: CanvasRenderingContext2D, o: { x: number; y: number; n: number; i: number; text: string; size: number; alpha: number; rise: number; pad?: number; tracking?: number }) {
+  if (o.alpha <= 0.003) return;
+  const size = capSize(c, `500 21px ${FONT.mono}`, o.size);
+  const pad = o.pad ?? 22;
+  const lh = size * 1.35;
+  const H = Math.round(o.n * lh + pad * 1.6);
+  const y0 = o.y - H / 2 + (1 - sm(o.rise)) * 14;
   c.save();
+  c.globalAlpha *= o.alpha;
+  c.fillStyle = MOODS.parchment.ink;
   c.font = `500 ${size}px ${FONT.mono}`;
-  const w = Math.max(...lines.map((l) => c.measureText(l).width + 0.6 * l.length));
+  (c as CanvasRenderingContext2D & { letterSpacing: string }).letterSpacing = `${o.tracking ?? 0.6}px`;
+  c.textAlign = 'center';
+  c.textBaseline = 'alphabetic';
+  c.fillText(o.text, o.x, y0 + pad * 0.8 + size + o.i * lh);
   c.restore();
-  return Math.round(w + 44);
+}
+
+/** a monoCard's width (its own metrics: Plex Mono 500 at monoCard's cap-floored size, tracking, pad) */
+function cardW(c: CanvasRenderingContext2D, lines: string[], size: number, o: { pad?: number; tracking?: number } = {}): number {
+  const s = capSize(c, `500 21px ${FONT.mono}`, size);
+  const tr = o.tracking ?? 0.6;
+  c.save();
+  c.font = `500 ${s}px ${FONT.mono}`;
+  const w = Math.max(...lines.map((l) => c.measureText(l).width + tr * l.length));
+  c.restore();
+  return Math.round(w + 2 * (o.pad ?? 22));
+}
+
+/** one line set on two at a break phrase ('→ 2 great halls of 4,096' → '→ 2 great halls' / 'of 4,096'): the words
+ *  are unchanged, only the measure narrows */
+function wrapAt(line: string, brk: string): string[] {
+  const i = line.indexOf(brk);
+  if (i < 0) return [line];
+  return [line.slice(0, i), line.slice(i + 1)];
 }
 
 function camAt(t: number, b: B): Camera3 {
   let c = mixCam(C0, C1, sm(t / b.stack));
-  c = mixCam(c, C2, sm((t - b.stack) / (b.halls - 0.4 - b.stack)));
-  c = mixCam(c, C3, sm((t - b.halls + 0.25) / 1.7));
+  c = mixCam(c, C2, sm((t - b.stack) / (b.things - 0.6 - b.stack)));
+  // REVIEW r1 (sync): the pull-back to the whole façade begins at 'things' + 0.6 (the dog's head has read) and runs
+  // ≈ 2.4 s to ≈ 13.0, so the halls rise into a frame that is still widening; most of the move is spent by 'halls'
+  // (the left card inks there, clear of the receding tower), the rest settles slowly
+  const pb0 = b.things + 0.6;
+  const pb = clamp01((t - pb0) / (b.halls + 1.27 - pb0));
+  c = mixCam(c, C3, 0.8 * sm(clamp01(pb / 0.6)) + 0.2 * sm(pb));
   c = mixCam(c, C4, sm((t - b.last + 0.3) / 2.4));
   return mixCam(c, C5, sm((t - b.end) / (b.D - b.end)));
 }
@@ -130,12 +197,24 @@ function camAt(t: number, b: B): Camera3 {
 function stateAt(t: number, b: B): CathedralState {
   const tq = Math.floor(t * 12) / 12; // the stone courses rise on twos (paper props)
   const rise = (at: number, d = 0.4) => sm((tq - at) / d);
-  const course = [rise(b.l1 + 0.05, 0.7), rise(b.l2), rise(b.l2 + 0.45), rise(b.l2 + 0.9), rise(b.l2 + 1.35)];
-  const hall = [rise(b.halls - 0.05, 0.6), rise(b.halls + 0.45, 0.6)];
-  const crown = rise(b.last - 0.05, 0.7);
-  // pooling: while each narrower course rises (conv2, then conv3; the 13s keep their size)
+  // the 27 course rises on 'four'; the 13s follow, the last up by 'stencilling'
+  const course = [rise(b.l1 + 0.05, 0.7), rise(b.l2 - 0.1), rise(b.l2 + 0.66), rise(b.l2 + 1.08), rise(b.l2 + 1.46)];
+  // 'halls': the first great hall is clearly up by halls − 0.1, the second follows; the last hall rises on 'last'
+  // and is complete on 'thousand'
+  const hall = [rise(b.halls - 0.55, 0.45), rise(b.halls - 0.05, 0.45)];
+  const crown = rise(b.last - 0.2, 0.9);
+  // pooling: as each face narrows (55 → 27 while the 27 rises, 27 → 13 while the 13s rise) a 3 × 3 window snaps
+  // across the lower course on twos and keeps its brightest cell. REVIEW r1 (teacher): drawn as a loupe 1.6 × the
+  // window, each position HELD ≈ 0.4 s so 'keep the brightest' reads (3 positions, then 2)
   let pool: CathedralState['pool'] = null;
-  for (const [k, at] of [[1, b.l2], [2, b.l2 + 0.45]] as const) if (t >= at - 0.05 && t < at + 0.55) pool = { k, u: (t - at + 0.05) / 0.6 };
+  const POOL = [
+    { k: 1, at: b.l2 - 0.17, steps: 3 },
+    { k: 2, at: b.l2 + 1.0, steps: 2 },
+  ];
+  for (const P of POOL) {
+    const dur = P.steps * 0.42;
+    if (tq >= P.at && tq < P.at + dur) pool = { k: P.k, u: (tq - P.at) / dur, steps: P.steps, dur, mag: 1.6 };
+  }
   // light: modest while built; 'stencilling' feeds up; the hold's flow climbs window → crown, one stage at a time,
   // slowly enough that the rose window replays each course's vignette for ≥ 0.5 s
   // (the replay ends by ≈ 19.6 s with the crown lit; the photograph holds the last ≈ 1 s)
@@ -143,7 +222,8 @@ function stateAt(t: number, b: B): CathedralState {
   const flowAt = (k: number) => b.end + FLOW[k];
   const lit = Array.from({ length: 8 }, (_, k) => {
     let v = k < 5 ? 0.35 * course[k] : 0;
-    if (k < 5) v = Math.max(v, 0.85 * win(t, b.stack + k * 0.25, b.stack + k * 0.25 + 0.4) * (1 - 0.6 * win(t, b.halls - 0.5, b.halls)));
+    // the courses warm one after another as the climb passes (after the stencilling close-up)
+    if (k < 5) v = Math.max(v, 0.4 * win(t, b.stack + 0.8 + k * 0.22, b.stack + 1.2 + k * 0.22) * (1 - 0.6 * win(t, b.halls - 0.5, b.halls)));
     if (k >= 5 && k < 7) v = Math.max(v, 0.6 * hall[k - 5]);
     // the last hall is the brightest of the three: a band of lit lanterns
     if (k === 7) v = Math.max(v, 0.8 * crown);
@@ -184,11 +264,54 @@ function stateAt(t: number, b: B): CathedralState {
     lit,
     threads,
     fan,
-    feed: clamp01((t - b.stack) / 1.4),
+    // REVIEW r1 (teacher), 'stencilling': first the close-up of one stencil at work (a 3 × 3 cluster of course 1's
+    // bright spots lifts onto course 2's face; a course-2 stencil tile slides over it in three steps on twos and,
+    // matched, its cell lights: 1.2 s from 'stencilling' − 0.1), THEN the light climbs course 2 → 5 (0.9 s, on twos)
+    stencil: Math.max(0, (tq - b.stack + 0.1) / 1.2),
+    feed: Math.max(0, Math.min(2, (tq - b.stack - 1.1) / 0.9)),
+    feedFrom: 1,
     pool,
     vignette,
     t,
   };
+}
+
+/** the near churchyard gate (world px of the NEAR plane): a stone pier with a ball finial (x 236–296), a low wall
+ *  running left from it with an iron rail, and a dark yew behind the wall */
+function nearGate(g: CanvasRenderingContext2D, ink: string, rim: string) {
+  g.fillStyle = ink;
+  // the yew: a dark, ragged cone
+  g.beginPath();
+  g.moveTo(70, 1000);
+  for (let k = 0; k <= 12; k++) {
+    const u = k / 12;
+    const y = 1000 - u * 520;
+    g.lineTo(160 - 95 * (1 - u) - (k % 2) * 10, y);
+  }
+  for (let k = 12; k >= 0; k--) {
+    const u = k / 12;
+    const y = 1000 - u * 520;
+    g.lineTo(160 + 80 * (1 - u) + (k % 2) * 10, y);
+  }
+  g.closePath();
+  g.fill();
+  // the wall and its iron rail
+  g.fillRect(-20, 620, 260, 400);
+  g.fillRect(-26, 612, 270, 12);
+  for (let x = -10; x < 236; x += 14) g.fillRect(x, 560, 3, 56);
+  g.fillRect(-20, 566, 256, 3);
+  // the pier: plinth, shaft, cornice, ball
+  g.fillRect(226, 600, 80, 400);
+  g.fillRect(236, 540, 60, 64);
+  g.fillRect(230, 528, 72, 14);
+  g.beginPath();
+  g.arc(266, 512, 16, 0, Math.PI * 2);
+  g.fill();
+  g.fillRect(258, 524, 16, 6);
+  // the dawn catches the pier's top edges
+  g.fillStyle = withAlpha(rim, 0.35);
+  g.fillRect(230, 528, 72, 1.6);
+  g.fillRect(-26, 612, 252, 1.4);
 }
 
 // ================================================================================================= THE LANDSCAPE

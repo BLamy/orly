@@ -1,826 +1,828 @@
 {
- "id": "ch04",
- "number": 4,
- "title": "The Cold Case",
- "blurb": "1969 to the late 1970s. One straight cut can never solve exclusive-or; two cuts can, but nobody in the mainstream knows how to train them (in Japan, Amari has a method, little known in the West), and a famous book calls the extension sterile. A cold year, two lamps on sills, a handwritten dedication, a British report, and the fair question of how much one book is to blame. A few windows stay lit in the snow, one of them over a thesis about rounding errors; and at the rim of the light a tall young man sits down.",
- "shots": [
-  {
-   "id": "ch04-s01",
-   "kind": "plate",
-   "setting": "parchment plate: four lanterns at the corners of a square, and a pair of scissors (timeless; 1969 in the story)",
-   "era": "1960s",
-   "mood": "labGreen",
-   "lines": [
+  "id": "ch04",
+  "number": 4,
+  "title": "The Cold Case",
+  "blurb": "1969 to the late 1970s. One straight cut can never solve exclusive-or; two cuts can, but nobody in the mainstream knows how to train them (in Japan, Amari has a method, little known in the West), and a famous book calls the extension sterile. A cold year, two lamps on sills, a handwritten dedication, a British report, and the fair question of how much one book is to blame. A few windows stay lit in the snow, one of them over a thesis about rounding errors; and at the rim of the light a tall young man sits down.",
+  "shots": [
     {
-     "id": "L0401",
-     "text": "The book’s simplest puzzle: exclusive-or. Light up if one input is on, not both. On a square, the lit cases sit at opposite corners.",
-     "pauseAfter": 0.55,
-     "direction": "slow, laying out a puzzle on the table, picking up the thread from 'a book about what one layer could never do'; a small comma-pause before 'not both'; 'On a square' slower, as if drawing it"
+      "id": "ch04-s01",
+      "kind": "plate",
+      "setting": "parchment plate: four lanterns at the corners of a square, and a pair of scissors (timeless; 1969 in the story)",
+      "era": "1960s",
+      "mood": "labGreen",
+      "lines": [
+        {
+          "id": "L0401",
+          "text": "The book’s simplest puzzle: exclusive-or. Light up if one input is on, not both. On a square, the lit cases sit at opposite corners.",
+          "pauseAfter": 0.55,
+          "direction": "slow, laying out a puzzle on the table, picking up the thread from 'a book about what one layer could never do'; a small comma-pause before 'not both'; 'On a square' slower, as if drawing it"
+        },
+        {
+          "id": "L0402",
+          "text": "No straight cut can separate them.",
+          "pauseAfter": 1.04,
+          "direction": "matter-of-fact; then let the scissors try in silence"
+        },
+        {
+          "id": "L0403",
+          "text": "Two cuts can: a hidden layer, cells between input and answer. Nobody in the mainstream knew how to train one.",
+          "direction": "three short steps; 'cells between input and answer' plain and explanatory, a gloss in passing; a small drop on the last sentence"
+        }
+      ],
+      "leadIn": 1.6,
+      "holdAfter": 1.4,
+      "minDuration": 18,
+      "visual": "THIS SHOT: four lanterns on a square, two lit at opposite corners: one scissor cut can never separate them, two hidden cuts can. crossfadeMood candleAmber→labGreen, 0.6–0.8 s, no dip, under the paper wipe from the board. CHAPTER INDEX TAB (the film's chapter-card device for clue chapters): at the shot's first frame a manila index tab, typed in Special Elite with the chapter title 'The Cold Case', drops down from the frame's top edge at TOP-left like a file-divider tab, holds for 2.5 seconds over the picture, and slides back up (top-left, so it never shares the bottom-left corner with the date stamp); no new shot, no lamp change. The paper-fold wipe carries the board's book-shadow to a parchment plate, ink on paper, camera locked. The teaching machine xorPlate: four ink paper lanterns at the corners of a square plot, the pair at (0,1) and (1,0) lit (warm halos), the pair at (0,0) and (1,1) dark. A small label 'exclusive or' and the truth table in a corner chip. On L0402 a pair of black paper scissors makes ONE straight cut that sweeps through many angles and positions (xorPlate sweep 0→1); a ring marks every lantern on the wrong side, and a counter in the margin ('on the wrong side:') never drops below 1, ticking 1, 2, 1, 2, 1. The sweep runs through the silent pause. On 'Two cuts' the scissors make two cuts (the two hidden units' real cut lines from the trained XOR net, solve 0→1); the diagonal band between them washes in lamplight and holds exactly the two lit lanterns. On 'hidden layer' the paper folds (fold 0→1): the lanterns move into the hidden units' space, where one straight cut now separates them; on 'between input and answer' the fold's middle crease glows faintly as the in-between row of cells (no caption; the narration names it). On 'Nobody in the mainstream knew how to train one' the scissors lift off the plate and hang, unmoving, over it: the cuts are drawn, not learned; the closing label (in Japan, Amari had a method; 'mainstream' is spoken, so the label needs no more) sets in on 'mainstream', before the scissors lift. The margin counter is part of the diagram (its caption 'on the wrong side:' only); no other captions besides the two listed labels. TEXT RULE: besides the chapter index tab (top-left) and the date stamp (bottom-left), at most two text items; the closing label appears on 'mainstream' and holds through the silent hold.",
+      "beats": [
+        {
+          "id": "indexTab",
+          "at": {
+            "line": "L0401",
+            "edge": "start"
+          },
+          "what": "manila index tab typed 'The Cold Case' drops down from the top edge at top-left, holds 2.5 s, slides back up"
+        },
+        {
+          "id": "lanterns",
+          "at": {
+            "line": "L0401",
+            "word": "square"
+          },
+          "what": "plate reveals: four lanterns, two lit on opposite corners"
+        },
+        {
+          "id": "sweep",
+          "at": {
+            "line": "L0402",
+            "word": "cut"
+          },
+          "what": "single scissor cut begins its sweep; wrong-side counter never below 1"
+        },
+        {
+          "id": "two",
+          "at": {
+            "line": "L0403",
+            "word": "Two"
+          },
+          "what": "two hidden cuts; the diagonal band lights around the two lit lanterns"
+        },
+        {
+          "id": "hidden",
+          "at": {
+            "line": "L0403",
+            "word": "hidden"
+          },
+          "what": "the paper folds into hidden space; one cut separates them"
+        },
+        {
+          "id": "amari",
+          "at": {
+            "line": "L0403",
+            "word": "mainstream"
+          },
+          "what": "closing label sets in: Amari's method in Japan, little known in the West"
+        },
+        {
+          "id": "train",
+          "at": {
+            "line": "L0403",
+            "word": "train"
+          },
+          "what": "scissors lift and hang still over the plate"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "parchment plate",
+        "four paper lanterns",
+        "black paper scissors",
+        "wrong-side counter"
+      ],
+      "onScreenText": [
+        {
+          "kind": "title",
+          "text": "The Cold Case",
+          "beat": "indexTab"
+        },
+        {
+          "kind": "date",
+          "text": "1969",
+          "beat": "lanterns"
+        },
+        {
+          "kind": "label",
+          "text": "XOR (exclusive or): lit when exactly one input is on",
+          "beat": "lanterns"
+        },
+        {
+          "kind": "label",
+          "text": "in Japan, Amari had a method",
+          "beat": "amari"
+        }
+      ],
+      "music": {
+        "cue": "ch04-a-sterile",
+        "note": "a sparse, mechanical figure on muted piano that follows the scissor sweep, one note per wrong-side count; silence in the pause after L0402 except the counter's ticks; a brief consonant chord when the two cuts succeed, which then hangs unresolved on 'train one'"
+      },
+      "transitionIn": "paperWipe",
+      "claims": [
+        "e3-xor-known",
+        "e3-perceptrons",
+        "e3-amari"
+      ]
     },
     {
-     "id": "L0402",
-     "text": "No straight cut can separate them.",
-     "pauseAfter": 1.04,
-     "direction": "matter-of-fact; then let the scissors try in silence"
+      "id": "ch04-s02",
+      "kind": "card",
+      "setting": "MIT, Cambridge, Massachusetts, 1969: a quote card; then the paper stage, the 1969 candle lit beside a giant book",
+      "era": "1960s",
+      "mood": "duskRose",
+      "lines": [
+        {
+          "id": "L0404",
+          "text": "In 1969, Minsky and Papert’s book proved what one layer cannot do.",
+          "pauseAfter": 0.6,
+          "direction": "even, respectful; this is real mathematics",
+          "spoken": "In nineteen sixty-nine, Minsky and Papert’s book proved what one layer cannot do."
+        },
+        {
+          "id": "L0405",
+          "text": "For many layers, it offered only what it called “our intuitive judgment that the extension is sterile”, while naming it a problem worth settling. A third candle: many layers are a dead end.",
+          "direction": "'what it called' marks the book's own words for the ear; read the quote exactly and without irony; a beat before 'sterile'; 'while naming it a problem worth settling' fair and plain (the book asked for the question to be settled); then a breath, and the candle line plain and quiet, like the earlier candle lightings",
+          "spoken": "For many layers, it offered only what it called “our intuitive judgment that the extension is sterile”, while naming it a problem worth settling. A third candle: many layers are a dead end."
+        }
+      ],
+      "leadIn": 0.6,
+      "holdAfter": 1.2,
+      "visual": "THIS SHOT: Minsky and Papert's giant book and its 'sterile' quote card; the third candle, MANY-LAYERED NETS ARE A STERILE EXTENSION, is lit. CAMERA: stage only (the third candle is lit on the stage in front of the book; no study visit). Tint crossfade to duskRose. A huge book stands upright on the paper stage like a monolith, its cover blank but for one word cut in light, PERCEPTRONS. Two figures in profile beside it, Minsky (1960s puppet, older than in ch03) and Papert, standing, neither lit as villains: both in the same warm light. Name cards for both. On L0405 the quote card rises from the book's open last chapter, set in Special Elite, cut to the fragment the narrator reads. On 'third' (the narrator lights it aloud, as with every belief candle) a new candle is lit in front of the book, lettered MANY-LAYERED NETS ARE A STERILE EXTENSION, a clean new candle with no fray; a tiny tag at its base reads '1969'. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. Here the candle is new: no sleeve yet, only the full stub with its flame at the top ring. In the hold (wordless, no new text), the camera stays on the new flame and the two authors in the same warm light; the candle burns steadily. The oxblood question card is NOT swapped here; it changes at the end of the chapter (ch04-s08).",
+      "beats": [
+        {
+          "id": "book",
+          "at": {
+            "line": "L0404",
+            "word": "book"
+          },
+          "what": "the giant book and its two authors; name cards"
+        },
+        {
+          "id": "quote",
+          "at": {
+            "line": "L0405",
+            "word": "intuitive",
+            "offset": -0.46
+          },
+          "what": "quote card rises from the last chapter"
+        },
+        {
+          "id": "candle",
+          "at": {
+            "line": "L0405",
+            "word": "third",
+            "offset": -0.46
+          },
+          "what": "'A third candle': the new candle catches; lettering glows"
+        }
+      ],
+      "cast": [
+        "minsky-1960s",
+        "papert"
+      ],
+      "props": [
+        "giant book PERCEPTRONS",
+        "candle-clock: MANY-LAYERED NETS ARE A STERILE EXTENSION (new, clean rim, tag 1969; sleeve rule per ch02-s04)"
+      ],
+      "onScreenText": [
+        {
+          "kind": "nameCard",
+          "text": "Marvin Minsky · MIT",
+          "beat": "book"
+        },
+        {
+          "kind": "nameCard",
+          "text": "Seymour Papert · MIT",
+          "beat": "book"
+        },
+        {
+          "kind": "quote",
+          "text": "“…our intuitive judgment that the extension is sterile.” — Minsky and Papert, 1969",
+          "beat": "quote"
+        },
+        {
+          "kind": "label",
+          "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
+          "beat": "candle"
+        }
+      ],
+      "music": {
+        "cue": "ch04-a-sterile",
+        "note": "the candle motif's rising fourth, but on a darker instrument (low clarinet over cello), as the sterile candle is lit: a belief held; the cue thins toward the cold"
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "e3-perceptrons",
+        "e3-sterile"
+      ],
+      "quotes": [
+        "q-perceptrons-sterile"
+      ]
     },
     {
-     "id": "L0403",
-     "text": "Two cuts can: a hidden layer, cells between input and answer. Nobody in the mainstream knew how to train one.",
-     "direction": "three short steps; 'cells between input and answer' plain and explanatory, a gloss in passing; a small drop on the last sentence"
+      "id": "ch04-s03",
+      "kind": "scene",
+      "setting": "an open field at dusk turning to night, 1969; snow beginning",
+      "era": "1960s",
+      "mood": "winterBlue",
+      "lines": [
+        {
+          "id": "L0406",
+          "text": "That year, Congress tied defence-funded research to military uses, and the snow began: the first AI winter.",
+          "pauseAfter": 0.93,
+          "direction": "plain statement of fact, no editorialising (the law's own words are on screen); a small breath before 'and the snow began', said softly; a small settling pause before 'the first AI winter', said quietly, naming it",
+          "spoken": "That year, Congress tied defence-funded research to military uses, and the snow began: the first A.I. winter."
+        }
+      ],
+      "leadIn": 1.3,
+      "holdAfter": 0.5,
+      "minDuration": 10.6,
+      "visual": "THIS SHOT: an open field at dusk in winterBlue; the funding-law card drifts down and the first snow of the first AI winter begins. The style bible's match cut, 'the book's shadow becomes night', carried by a tint crossfade in (crossfadeMood duskRose→winterBlue, 1.2 s, no dip to black): the upright book from s02 stands at the left edge of a long paper field; as the tint settles into winterBlue, the book's shadow stretches across the field toward the right until it IS the night. A bare paper-cut tree line on the horizon. Two small cards drift down on threads like falling leaves and hang in the upper third: first, as soon as the tint has settled and before the narration, 1969 · TURING AWARD: MARVIN MINSKY (a tiny laurel, no face; a plain fact of the year, not a judgment); then, on 'Congress', a quote card with the 1969 funding law's own words (the narrator paraphrases; the card carries the exact phrase). On 'snow', the first flakes: three seeded snow layers (L1 small and slow, L3 medium, L5 large), density ramping up over the hold. The snow is mood, never data: it is not graphed, counted or labelled. No figures in this shot. TEXT RULE: besides the date stamp, only the two hanging cards.",
+      "beats": [
+        {
+          "id": "shadow",
+          "at": {
+            "shotTime": 0.2
+          },
+          "what": "tint crossfade settles into winterBlue; the book's shadow begins lengthening into night"
+        },
+        {
+          "id": "award",
+          "at": {
+            "shotTime": 0.7
+          },
+          "what": "silent: 1969 TURING AWARD card drifts down"
+        },
+        {
+          "id": "congress",
+          "at": {
+            "line": "L0406",
+            "word": "Congress"
+          },
+          "what": "the funding-law quote card drifts down"
+        },
+        {
+          "id": "snow",
+          "at": {
+            "line": "L0406",
+            "word": "snow"
+          },
+          "what": "first snowflakes; density ramps through the hold"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "upright book (PERCEPTRONS)",
+        "paper field and tree line",
+        "hanging cards",
+        "snow (three layers)"
+      ],
+      "onScreenText": [
+        {
+          "kind": "date",
+          "text": "1969",
+          "beat": "shadow"
+        },
+        {
+          "kind": "label",
+          "text": "1969 · Turing Award: Marvin Minsky",
+          "beat": "award"
+        },
+        {
+          "kind": "quote",
+          "text": "“a direct and apparent relationship” — US Congress, Mansfield Amendment, 1969",
+          "beat": "congress"
+        }
+      ],
+      "music": {
+        "cue": "ch04-b-winter",
+        "note": "new cue on the crossfade into winterBlue: solo cello, low and slow, with bowed glass entering as the snow begins; density follows the snow; intensity 2/10, lots of air"
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "e3-minsky-turing",
+        "e3-mansfield"
+      ],
+      "quotes": [
+        "q-mansfield"
+      ]
+    },
+    {
+      "id": "ch04-s04",
+      "kind": "scene",
+      "setting": "a boarding-house window, Cambridge, Massachusetts, night, May 1969",
+      "era": "1960s",
+      "mood": "winterBlue",
+      "lines": [
+        {
+          "id": "L0408",
+          "text": "That May, Walter Pitts died alone. McCulloch followed four months later.",
+          "direction": "quiet and plain; no pathos added; a breath between the two sentences"
+        }
+      ],
+      "leadIn": 1,
+      "holdAfter": 3.6,
+      "minDuration": 10.5,
+      "visual": "THIS SHOT: one lit boarding-house window in the snow, and a second, distant window's lamp going dark: Pitts and McCulloch. Restraint. A single paper-cut window in a dark clapboard wall, seen from outside at night, snow drifting slowly past. On the sill inside, a small oil lamp burns: the same small lamp-shape as the 1943 wick card. No figure, no interior detail, no dramatisation. On 'later', a second, more distant window farther down the street, also with a lamp on the sill, softly goes dark. The near lamp stays lit through the long hold. Camera: an almost imperceptible push-in (2% over the shot). Fog sheet between the two planes.",
+      "beats": [
+        {
+          "id": "window",
+          "at": {
+            "shotTime": 0.2
+          },
+          "what": "the lit window in the snow"
+        },
+        {
+          "id": "second",
+          "at": {
+            "line": "L0408",
+            "word": "later"
+          },
+          "what": "a distant second window's lamp goes dark"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "boarding-house window",
+        "small oil lamp on the sill",
+        "a second distant window"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "Walter Pitts · 1923–1969",
+          "beat": "window"
+        },
+        {
+          "kind": "label",
+          "text": "Warren McCulloch · 1898–1969",
+          "beat": "second"
+        }
+      ],
+      "music": {
+        "cue": "ch04-b-winter",
+        "note": "silence, or almost: a single sustained harmonic on the cello, barely there; no melody until the next shot"
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "e1-pitts-death"
+      ]
+    },
+    {
+      "id": "ch04-s05",
+      "kind": "scene",
+      "setting": "a single candle on a dark table, 1971–1972; a book opening to a handwritten line",
+      "era": "1970s",
+      "mood": "winterBlue",
+      "lines": [
+        {
+          "id": "L0409",
+          "text": "In 1971, on his forty-third birthday, Frank Rosenblatt drowned while sailing.",
+          "direction": "gentle, unhurried, no implication; the date is only a fact",
+          "spoken": "In nineteen seventy-one, on his forty-third birthday, Frank Rosenblatt drowned while sailing."
+        }
+      ],
+      "leadIn": 1,
+      "holdAfter": 4.2,
+      "minDuration": 11.5,
+      "visual": "THIS SHOT: a single candle on a dark table; hands open Rosenblatt's book to a handwritten dedication, held in silence. CAMERA: a dark table lit by one candle (era location; the hands open the book; no study visit). Slow crossfade (same winterBlue mood, so no fade to black). A single small candle on a dark table, the only light. No water, no boat, no weather: nothing that dramatises the death. After the line, in silence, the PERCEPTRONS book from s02 (now table-sized) is opened by the two steady hands to its front matter, and a handwritten line appears in pen, the ink catching the candle's light: In memory of Frank Rosenblatt. A small printed caption beneath: second printing, 1972. Hold on the page. The candle does not gutter; it simply burns.",
+      "beats": [
+        {
+          "id": "date",
+          "at": {
+            "line": "L0409",
+            "word": "birthday"
+          },
+          "what": "date stamp 11 JULY 1971"
+        },
+        {
+          "id": "open",
+          "at": {
+            "line": "L0409",
+            "edge": "end",
+            "offset": 0.6
+          },
+          "what": "hands open the book to the front matter"
+        },
+        {
+          "id": "dedication",
+          "at": {
+            "line": "L0409",
+            "edge": "end",
+            "offset": 1.2
+          },
+          "what": "the handwritten dedication appears, ink catching the light; hold"
+        }
+      ],
+      "cast": [
+        "narrator-hands"
+      ],
+      "props": [
+        "single candle",
+        "PERCEPTRONS (second printing) open to front matter",
+        "handwritten dedication"
+      ],
+      "onScreenText": [
+        {
+          "kind": "date",
+          "text": "11 JULY 1971",
+          "beat": "date"
+        },
+        {
+          "kind": "label",
+          "text": "In memory of Frank Rosenblatt",
+          "beat": "dedication"
+        },
+        {
+          "kind": "label",
+          "text": "second printing, 1972",
+          "beat": "dedication"
+        }
+      ],
+      "music": {
+        "cue": "ch04-b-winter",
+        "note": "silence through the line; on the dedication, the candle motif once on solo cello, very softly, ending on the falling resolution"
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "e3-rosenblatt-death",
+        "e3-dedication"
+      ]
+    },
+    {
+      "id": "ch04-s06",
+      "kind": "scene",
+      "setting": "Britain, 1972–73: a raised lecture platform, then a televised debate in a steeply raked lecture theatre (the Royal Institution, London)",
+      "era": "1970s",
+      "mood": "winterBlue",
+      "lines": [
+        {
+          "id": "L0410",
+          "text": "In 1973, James Lighthill’s report for Britain blamed “the combinatorial explosion”. It struck rules far more than nets. Yet British funding fell for almost a decade.",
+          "pauseAfter": 0.6,
+          "direction": "crisp, neutral; Lighthill is a serious man, not a foil; three short sentences; 'It struck rules' lands clearly, a wink at the board's first suspect, not a gibe; a small lift on 'far more than nets'; 'Yet' plain",
+          "spoken": "In nineteen seventy-three, James Lighthill’s report for Britain blamed “the combinatorial explosion”. It struck rules far more than nets. Yet British funding fell for almost a decade.",
+          "trimDb": -0.4,
+          "$trimNote": "review round 4: fixed trim so its momentary peak keeps >= 0.2 dB under median + 2 dB after the compressor eased to <= 2 dB GR"
+        },
+        {
+          "id": "L0411",
+          "text": "One book's fault? Historians still argue; there were several blows.",
+          "direction": "fair-minded; the question genuinely open; even on 'several blows'"
+        }
+      ],
+      "leadIn": 0.6,
+      "holdAfter": 4.8,
+      "visual": "THIS SHOT: Lighthill at his lectern and the televised debate below; his report's middle box is struck, cards flutter onto the desk, and snow thickens at the windows. A steeply raked horseshoe theatre of wooden benches in silhouette, a single lectern on a raised platform lit from above. Lighthill (standing, profile, at the lectern) with a sheaf of papers; below him, seated in the pit, Donald Michie and two other opponents leaning forward. A television camera on a tripod in the right foreground (generic 1970s studio camera, no logo), its tally lamp a low-chroma ember (emberRed mixed about 60% into winterBlue), the only warm light. Name cards for Lighthill and Michie; a place stamp. The narrator speaks Lighthill's quoted phrase, so no quote card for it here. On 'explosion' the phrase is glossed wordlessly: on the sheaf in Lighthill's hand a tiny ink branching tree grows from one dot, each branch splitting in two, then in two again, faster each time, until the page is black with branches (choices multiplying faster than any search); no caption, and it is gone by the time the four cards fall. On 'rules' the camera glances down to his top page: three inked boxes, A, B, C, with only B (Building Robots, the general-purpose bridge) struck through and C (neural models among them) untouched; letters only, no caption. On 'fell' the backlight drops a step and snow thickens outside the high windows. On L0410's last word, 'decade', a quote card rises above the lectern and stays through the question and the whole wordless hold: Papert's 'Snow White' sentence in full, verbatim (“We did not think of our work as killing Snow White; we saw it as a way to understand her.” — Papert, 1988). It is the defendant's own testimony on the charge that one book killed the field ('Snow White' was his figure for neural-net research), so it rises as the narrator asks 'One book's fault?', and is read under near-silent music. On L0411 the camera stays in the theatre (in-world, winterBlue, no board and no mood change) and eases in on the lectern; on 'Historians' four small cards of equal size flutter down from the dark above and land on the lectern's sloped desk beside Lighthill's papers, one after another in a row, the last landing on 'blows', each a separate blow: TRANSLATION 1966; MANSFIELD 1969; PERCEPTRONS 1969; LIGHTHILL 1973 (the book's card the same size as the others). TEXT RULE: besides the place stamp and the two name cards, only the four-card row and Papert's quote (the explosion gloss is a picture, not a caption).",
+      "beats": [
+        {
+          "id": "lectern",
+          "at": {
+            "line": "L0410",
+            "word": "James"
+          },
+          "what": "Lighthill at the lectern; name card"
+        },
+        {
+          "id": "explosion",
+          "at": {
+            "line": "L0410",
+            "word": "explosion"
+          },
+          "what": "the debate below; Michie's name card; place stamp"
+        },
+        {
+          "id": "gloss",
+          "at": {
+            "line": "L0410",
+            "word": "explosion"
+          },
+          "what": "wordless gloss: a tiny ink branching tree on Lighthill's sheaf splits and splits until the page is black; gone before the cards fall"
+        },
+        {
+          "id": "suspect",
+          "at": {
+            "line": "L0410",
+            "word": "rules"
+          },
+          "what": "Lighthill's top page: three inked boxes A, B, C; only B (Building Robots) struck through, C (neural models among them) untouched; letters only"
+        },
+        {
+          "id": "fell",
+          "at": {
+            "line": "L0410",
+            "word": "fell"
+          },
+          "what": "backlight drops; snow thickens at the windows"
+        },
+        {
+          "id": "blows",
+          "at": {
+            "line": "L0411",
+            "word": "Historians"
+          },
+          "what": "four equal cards flutter down onto Lighthill's lectern desk, the last landing on 'blows': several blows"
+        },
+        {
+          "id": "papert",
+          "at": {
+            "line": "L0410",
+            "word": "decade",
+            "offset": -0.36
+          },
+          "what": "Papert's full Snow White sentence rises above the lectern as the question is asked; held through the hold"
+        }
+      ],
+      "cast": [
+        "lighthill",
+        "michie"
+      ],
+      "props": [
+        "lectern on a raised platform",
+        "raked wooden benches",
+        "1970s television camera",
+        "four equal cards: TRANSLATION 1966, MANSFIELD 1969, PERCEPTRONS 1969, LIGHTHILL 1973 (landing on the lectern desk)",
+        "ink branching tree on Lighthill's sheaf (wordless gloss of the combinatorial explosion)"
+      ],
+      "onScreenText": [
+        {
+          "kind": "nameCard",
+          "text": "Sir James Lighthill · applied mathematician, Cambridge",
+          "beat": "lectern"
+        },
+        {
+          "kind": "nameCard",
+          "text": "Donald Michie · Edinburgh",
+          "beat": "explosion"
+        },
+        {
+          "kind": "place",
+          "text": "ROYAL INSTITUTION · LONDON · 1973 (televised debate)",
+          "beat": "explosion"
+        },
+        {
+          "kind": "label",
+          "text": "TRANSLATION 1966 · MANSFIELD 1969 · PERCEPTRONS 1969 · LIGHTHILL 1973",
+          "beat": "blows"
+        },
+        {
+          "kind": "quote",
+          "text": "“We did not think of our work as killing Snow White; we saw it as a way to understand her.” — Papert, 1988",
+          "beat": "papert"
+        }
+      ],
+      "music": {
+        "cue": "ch04-b-winter",
+        "note": "a measured, formal figure for the lecture (low strings in a slow walking bass), giving way on the question to the open cello again; the four cards land on soft pizzicato plucks; Papert's card in near-silence"
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "e3-lighthill",
+        "e3-lighthill-debate",
+        "e3-uk-cut",
+        "e3-killed-debate",
+        "e3-alpac",
+        "e3-mansfield",
+        "e3-symbolic-continued",
+        "e3-lighthill-neural"
+      ],
+      "quotes": [
+        "q-lighthill-explosion",
+        "q-papert-understand"
+      ],
+      "creditsSources": [
+        "“We did not think of our work as killing Snow White; we saw it as a way to understand her.” — Seymour Papert, 'One AI or Many?', Winter 1988 (q-papert-understand)"
+      ]
+    },
+    {
+      "id": "ch04-s07",
+      "kind": "scene",
+      "setting": "the winter map: a snowbound paper landscape at night, about 1967–1980, with a few lit windows far apart",
+      "era": "1970s",
+      "mood": "winterBlue",
+      "lines": [
+        {
+          "id": "L0412",
+          "text": "Still, a few windows stayed lit. In Helsinki, the next clue sat unnoticed in a student's thesis about rounding errors.",
+          "pauseAfter": 0.74,
+          "direction": "the warmth comes back into the voice, a secret being shared; two unhurried sentences, a little slower on 'sat unnoticed'"
+        }
+      ],
+      "leadIn": 0.6,
+      "holdAfter": 2.6,
+      "minDuration": 11.9,
+      "visual": "THIS SHOT: a snowbound winter map with a few lit windows; the camera finds Helsinki and pushes in on a student's printout about rounding errors. The Winter Map, a key image: a vast snowbound paper landscape at night under a pale moon, ridgelines layered in haze (L1–L4), snow still falling lightly, laid out with west at frame left and east at frame right. Far apart across it, small houses with single lit windows. The camera opens wide and drifts slowly from EAST to WEST (right to left), never whipping: all three windows stay in frame together until the push-in, and their tags fade in east to west from the first frame, so each is readable while the narrator speaks: first a window in Tokyo, FUKUSHIMA · TOKYO · 1979 (layered 'eyes', an ancestor of later vision nets); then, a little farther west in Japan, AMARI · 1967 (a way to train more than one layer, little known in the West; the camera lingers here a beat, the same Amari named in the chapter's opening plate); then, farthest west across the dark, the window the camera settles on: HELSINKI · 1970. On 'clue', a faint thread of light rises from that window and hangs in the sky, unconnected to anything yet. On 'sat' the camera pushes in through the Helsinki window to a readable insert (held through 'rounding errors' until the pull-back): a student's silhouette (generic, unnamed) at a desk beside a stack of computer printout, the top sheet large in frame and legible as a few lines of FORTRAN-style code with ROUNDING ERRORS typed in its header (type well above the 26 px minimum). Just after the line (beat 'warm') the camera pulls back out of the window and up, past the map, to reveal in the foreground large warm houses with bright windows facing away from the map, their shadows thrown toward the viewer; nobody in them turns. TEXT RULE: besides the two short place tags (Tokyo, Helsinki), only the Amari tag and the Helsinki insert caption.",
+      "beats": [
+        {
+          "id": "windows",
+          "at": {
+            "shotTime": 0.3
+          },
+          "what": "wide map, slow east-to-west drift: Tokyo, Amari and Helsinki windows all in frame; tags fade in east to west"
+        },
+        {
+          "id": "helsinki",
+          "at": {
+            "line": "L0412",
+            "word": "Helsinki"
+          },
+          "what": "camera settles on the Helsinki window"
+        },
+        {
+          "id": "thread",
+          "at": {
+            "line": "L0412",
+            "word": "clue"
+          },
+          "what": "a faint thread of light rises from the Helsinki window and hangs in the sky"
+        },
+        {
+          "id": "insert",
+          "at": {
+            "line": "L0412",
+            "word": "sat"
+          },
+          "what": "push in through the window: readable insert of student and printout, held until the pull-back"
+        },
+        {
+          "id": "rounding",
+          "at": {
+            "line": "L0412",
+            "word": "rounding"
+          },
+          "what": "printout's top sheet legible: FORTRAN code, ROUNDING ERRORS"
+        },
+        {
+          "id": "warm",
+          "at": {
+            "line": "L0412",
+            "edge": "end",
+            "offset": 0.9
+          },
+          "what": "pull back: the big warm houses in the foreground, facing away"
+        }
+      ],
+      "cast": [],
+      "props": [
+        "winter landscape map",
+        "small houses with lit windows",
+        "student silhouette at a desk (generic, unnamed)",
+        "computer printout with code",
+        "large warm houses facing away"
+      ],
+      "onScreenText": [
+        {
+          "kind": "place",
+          "text": "FUKUSHIMA · TOKYO · 1979",
+          "beat": "windows"
+        },
+        {
+          "kind": "label",
+          "text": "AMARI · JAPAN · 1967 · a way to train more than one layer",
+          "beat": "windows"
+        },
+        {
+          "kind": "place",
+          "text": "HELSINKI · 1970",
+          "beat": "helsinki"
+        },
+        {
+          "kind": "label",
+          "text": "thesis: reverse-mode differentiation",
+          "beat": "insert"
+        }
+      ],
+      "music": {
+        "cue": "ch04-b-winter",
+        "note": "the cello finds a small, warm melodic line for the first time in the chapter (the lamplighters' theme), with a celesta glint on each window as it lights; it pulls back to a thin pad under 'rounding errors'"
+      },
+      "transitionIn": "crossfade",
+      "claims": [
+        "e3-linnainmaa",
+        "e3-amari",
+        "e3-neocognitron"
+      ]
+    },
+    {
+      "id": "ch04-s08",
+      "kind": "scene",
+      "setting": "the paper stage, Sussex, England, 1976, night: the low winter candle and, at the very rim of its light, a desk; then the case board and the Wall of Forecasts",
+      "era": "1970s",
+      "mood": "winterBlue",
+      "lines": [
+        {
+          "id": "L0415",
+          "text": "Sussex, 1976. A young Geoffrey Hinton takes his place, far from the flame.",
+          "pauseAfter": 0.62,
+          "direction": "quiet introduction; we do not name him; let the image do it",
+          "spoken": "Sussex, nineteen seventy-six. A young Geoffrey Hinton takes his place, far from the flame."
+        },
+        {
+          "id": "L0416",
+          "text": "He would spend much of the next thirty-six years near the edge of the light.",
+          "direction": "the turn; slow, warm, a promise",
+          "tts": {
+            "solo": true,
+            "speed": 0.82
+          }
+        }
+      ],
+      "leadIn": 0.6,
+      "holdAfter": 5.36,
+      "minDuration": 15,
+      "visual": "THIS SHOT: Sussex, 1976: a tall young man sits at a desk at the very rim of the low winter candle's light, facing out; the question card is swapped and the chess slip curls overdue. CAMERA: stage (the desk at the rim), then BOARD (the C2-a pin and the Q1 swap as inserts), a WALL truck to W2, then back to the stage. Back on the candle stage, deep in winter: the sterile candle burns at centre, its pool of light small; snow drifts through the rim. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. Here: seven years held so far (1969 to 1976), so a seven-ring ghost sleeve (42 px) stands above the stub, faintly scored; its flame still live where sleeve meets stub, its rim clean. At the very rim of the light, right third, half in shadow, a plain wooden desk with a reading lamp switched off. A tall young man in 1970s dress (hinton-young: tall, slight, long-limbed) walks in from the dark on twos and SITS at the desk, facing out from the flame, his long shadow thrown across the floor. He is seated for the rest of the shot (never standing at the rim in this era). He is not named; no name card. On 'thirty-six' the camera eases slowly from the desk to the case board, and as it reaches the board the lamp tint-crossfades (crossfadeMood, 1.2 s, no dip) from winterBlue to candleAmber (STUDY LOCK: board and Wall are always candleAmber; the winter stays only in the snow seen past the study window): the hands pin the chapter's clue card (a pair of scissors making two cuts) into slot C2-a at the head of column C2 (per the staging appendix), and run a thread of light from it to the Helsinki card pinned just below it in the same column (the thread from s07 finally lands). Then, on 'light', on the oxblood thread along the top of the board, the hands unpin AND IF NO STRAIGHT LINE EXISTS? and pin in its place THEN HOW DO YOU TRAIN THE HIDDEN LAYER?: the chapter's open question, carried into ch05. Just after the line (beat 'chess'), a slow pan to the Wall of Forecasts, in its fixed slot order, quoted from BOARD MAP: its slots W1 to W8 left to right (W1 Turing, W2 chess, W3 Rosenblatt 1961, W4 Florence 2012, W5 Coulom, W6 the 30-to-50-years slip in shadow, W7 Hinton 2017, W8 an empty pin until ch15); in 1976 only W1 and W2 are pinned, the rest are empty pin-holes, and W6's slip hangs in shadow: the chess slip in the second slot, due 1968, has yellowed and its corner curls, its due-date tag now overdue; farther along, at W6, beyond the lamp's reach, one slip's corner shows half-lit, unreadable. Hold on the curled slip in candleAmber; then, as the camera returns to the desk at the rim, crossfadeMood back to winterBlue (1.2 s, no dip) and hold on the desk in the snow. TEXT RULE: besides the date stamp, only the chess slip's tag and the question card.",
+      "beats": [
+        {
+          "id": "stamp",
+          "at": {
+            "line": "L0415",
+            "word": "Sussex"
+          },
+          "what": "date stamp SUSSEX · 1976 in Special Elite"
+        },
+        {
+          "id": "sits",
+          "at": {
+            "line": "L0415",
+            "word": "place"
+          },
+          "what": "the tall young man sits at the desk at the rim, facing out"
+        },
+        {
+          "id": "clue",
+          "at": {
+            "line": "L0416",
+            "word": "thirty-six"
+          },
+          "what": "case board: scissors clue card pinned; thread of light to the Helsinki card"
+        },
+        {
+          "id": "question",
+          "at": {
+            "line": "L0416",
+            "word": "light"
+          },
+          "what": "oxblood thread: question card swapped to THEN HOW DO YOU TRAIN THE HIDDEN LAYER?"
+        },
+        {
+          "id": "chess",
+          "at": {
+            "line": "L0416",
+            "edge": "end",
+            "offset": 0.9
+          },
+          "what": "Wall of Forecasts: the chess slip in slot two yellows and curls, overdue"
+        }
+      ],
+      "cast": [
+        "hinton-young",
+        "narrator-hands"
+      ],
+      "props": [
+        "candle-clock (the sterile candle: seven-ring ghost sleeve, live flame, clean rim)",
+        "plain wooden desk with unlit reading lamp",
+        "clue card: scissors making two cuts",
+        "Helsinki card",
+        "oxblood question card on the top thread",
+        "Wall of Forecasts: chess slip, yellowed and curled"
+      ],
+      "onScreenText": [
+        {
+          "kind": "date",
+          "text": "SUSSEX · 1976",
+          "beat": "stamp"
+        },
+        {
+          "kind": "label",
+          "text": "THEN HOW DO YOU TRAIN THE HIDDEN LAYER?",
+          "beat": "question"
+        },
+        {
+          "kind": "label",
+          "text": "CHESS CHAMPION · DUE 1968 · OVERDUE",
+          "beat": "chess"
+        }
+      ],
+      "music": {
+        "cue": "ch04-b-winter",
+        "note": "the candle motif's held suspension on cello as he sits (doubt at the rim), sustained and unresolved under the turn; a faint warm overtone enters on 'edge of the light' and is left hanging into the next chapter"
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "e4-hinton-cv",
+        "e1-chess-prediction",
+        "e3-linnainmaa"
+      ],
+      "quotes": [
+        "q-simon-chess"
+      ]
     }
-   ],
-   "leadIn": 1.6,
-   "holdAfter": 1.4,
-   "minDuration": 18,
-   "visual": "THIS SHOT: four lanterns on a square, two lit at opposite corners: one scissor cut can never separate them, two hidden cuts can. crossfadeMood candleAmber→labGreen, 0.6–0.8 s, no dip, under the paper wipe from the board. CHAPTER INDEX TAB (the film's chapter-card device for clue chapters): at the shot's first frame a manila index tab, typed in Special Elite with the chapter title 'The Cold Case', drops down from the frame's top edge at TOP-left like a file-divider tab, holds for 2.5 seconds over the picture, and slides back up (top-left, so it never shares the bottom-left corner with the date stamp); no new shot, no lamp change. The paper-fold wipe carries the board's book-shadow to a parchment plate, ink on paper, camera locked. The teaching machine xorPlate: four ink paper lanterns at the corners of a square plot, the pair at (0,1) and (1,0) lit (warm halos), the pair at (0,0) and (1,1) dark. A small label 'exclusive or' and the truth table in a corner chip. On L0402 a pair of black paper scissors makes ONE straight cut that sweeps through many angles and positions (xorPlate sweep 0→1); a ring marks every lantern on the wrong side, and a counter in the margin ('on the wrong side:') never drops below 1, ticking 1, 2, 1, 2, 1. The sweep runs through the silent pause. On 'Two cuts' the scissors make two cuts (the two hidden units' real cut lines from the trained XOR net, solve 0→1); the diagonal band between them washes in lamplight and holds exactly the two lit lanterns. On 'hidden layer' the paper folds (fold 0→1): the lanterns move into the hidden units' space, where one straight cut now separates them; on 'between input and answer' the fold's middle crease glows faintly as the in-between row of cells (no caption; the narration names it). On 'Nobody in the mainstream knew how to train one' the scissors lift off the plate and hang, unmoving, over it: the cuts are drawn, not learned; the closing label (in Japan, Amari had a method; 'mainstream' is spoken, so the label needs no more) sets in on 'mainstream', before the scissors lift. The margin counter is part of the diagram (its caption 'on the wrong side:' only); no other captions besides the two listed labels. TEXT RULE: besides the chapter index tab (top-left) and the date stamp (bottom-left), at most two text items; the closing label appears on 'mainstream' and holds through the silent hold.",
-   "beats": [
-    {
-     "id": "indexTab",
-     "at": {
-      "line": "L0401",
-      "edge": "start"
-     },
-     "what": "manila index tab typed 'The Cold Case' drops down from the top edge at top-left, holds 2.5 s, slides back up"
-    },
-    {
-     "id": "lanterns",
-     "at": {
-      "line": "L0401",
-      "word": "square"
-     },
-     "what": "plate reveals: four lanterns, two lit on opposite corners"
-    },
-    {
-     "id": "sweep",
-     "at": {
-      "line": "L0402",
-      "word": "cut"
-     },
-     "what": "single scissor cut begins its sweep; wrong-side counter never below 1"
-    },
-    {
-     "id": "two",
-     "at": {
-      "line": "L0403",
-      "word": "Two"
-     },
-     "what": "two hidden cuts; the diagonal band lights around the two lit lanterns"
-    },
-    {
-     "id": "hidden",
-     "at": {
-      "line": "L0403",
-      "word": "hidden"
-     },
-     "what": "the paper folds into hidden space; one cut separates them"
-    },
-    {
-     "id": "amari",
-     "at": {
-      "line": "L0403",
-      "word": "mainstream"
-     },
-     "what": "closing label sets in: Amari's method in Japan, little known in the West"
-    },
-    {
-     "id": "train",
-     "at": {
-      "line": "L0403",
-      "word": "train"
-     },
-     "what": "scissors lift and hang still over the plate"
-    }
-   ],
-   "cast": [],
-   "props": [
-    "parchment plate",
-    "four paper lanterns",
-    "black paper scissors",
-    "wrong-side counter"
-   ],
-   "onScreenText": [
-    {
-     "kind": "title",
-     "text": "The Cold Case",
-     "beat": "indexTab"
-    },
-    {
-     "kind": "date",
-     "text": "1969",
-     "beat": "lanterns"
-    },
-    {
-     "kind": "label",
-     "text": "XOR (exclusive or): lit when exactly one input is on",
-     "beat": "lanterns"
-    },
-    {
-     "kind": "label",
-     "text": "in Japan, Amari had a method",
-     "beat": "amari"
-    }
-   ],
-   "music": {
-    "cue": "ch04-a-sterile",
-    "note": "a sparse, mechanical figure on muted piano that follows the scissor sweep, one note per wrong-side count; silence in the pause after L0402 except the counter's ticks; a brief consonant chord when the two cuts succeed, which then hangs unresolved on 'train one'"
-   },
-   "transitionIn": "paperWipe",
-   "claims": [
-    "e3-xor-known",
-    "e3-perceptrons",
-    "e3-amari"
-   ]
-  },
-  {
-   "id": "ch04-s02",
-   "kind": "card",
-   "setting": "MIT, Cambridge, Massachusetts, 1969: a quote card; then the paper stage, the 1969 candle lit beside a giant book",
-   "era": "1960s",
-   "mood": "duskRose",
-   "lines": [
-    {
-     "id": "L0404",
-     "text": "In 1969, Minsky and Papert’s book proved what one layer cannot do.",
-     "pauseAfter": 0.6,
-     "direction": "even, respectful; this is real mathematics",
-     "spoken": "In nineteen sixty-nine, Minsky and Papert’s book proved what one layer cannot do."
-    },
-    {
-     "id": "L0405",
-     "text": "For many layers, it offered only what it called “our intuitive judgment that the extension is sterile”, while naming it a problem worth settling. A third candle: many layers are a dead end.",
-     "direction": "'what it called' marks the book's own words for the ear; read the quote exactly and without irony; a beat before 'sterile'; 'while naming it a problem worth settling' fair and plain (the book asked for the question to be settled); then a breath, and the candle line plain and quiet, like the earlier candle lightings",
-     "spoken": "For many layers, it offered only what it called “our intuitive judgment that the extension is sterile”, while naming it a problem worth settling. A third candle: many layers are a dead end."
-    }
-   ],
-   "leadIn": 0.6,
-   "holdAfter": 1.2,
-   "visual": "THIS SHOT: Minsky and Papert's giant book and its 'sterile' quote card; the third candle, MANY-LAYERED NETS ARE A STERILE EXTENSION, is lit. CAMERA: stage only (the third candle is lit on the stage in front of the book; no study visit). Tint crossfade to duskRose. A huge book stands upright on the paper stage like a monolith, its cover blank but for one word cut in light, PERCEPTRONS. Two figures in profile beside it, Minsky (1960s puppet, older than in ch03) and Papert, standing, neither lit as villains: both in the same warm light. Name cards for both. On L0405 the quote card rises from the book's open last chapter, set in Special Elite, cut to the fragment the narrator reads. On 'third' (the narrator lights it aloud, as with every belief candle) a new candle is lit in front of the book, lettered MANY-LAYERED NETS ARE A STERILE EXTENSION, a clean new candle with no fray; a tiny tag at its base reads '1969'. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. Here the candle is new: no sleeve yet, only the full stub with its flame at the top ring. In the hold (wordless, no new text), the camera stays on the new flame and the two authors in the same warm light; the candle burns steadily. The oxblood question card is NOT swapped here; it changes at the end of the chapter (ch04-s08).",
-   "beats": [
-    {
-     "id": "book",
-     "at": {
-      "line": "L0404",
-      "word": "book"
-     },
-     "what": "the giant book and its two authors; name cards"
-    },
-    {
-     "id": "quote",
-     "at": {
-      "line": "L0405",
-      "word": "intuitive",
-      "offset": -0.46
-     },
-     "what": "quote card rises from the last chapter"
-    },
-    {
-     "id": "candle",
-     "at": {
-      "line": "L0405",
-      "word": "third",
-      "offset": -0.46
-     },
-     "what": "'A third candle': the new candle catches; lettering glows"
-    }
-   ],
-   "cast": [
-    "minsky-1960s",
-    "papert"
-   ],
-   "props": [
-    "giant book PERCEPTRONS",
-    "candle-clock: MANY-LAYERED NETS ARE A STERILE EXTENSION (new, clean rim, tag 1969; sleeve rule per ch02-s04)"
-   ],
-   "onScreenText": [
-    {
-     "kind": "nameCard",
-     "text": "Marvin Minsky · MIT",
-     "beat": "book"
-    },
-    {
-     "kind": "nameCard",
-     "text": "Seymour Papert · MIT",
-     "beat": "book"
-    },
-    {
-     "kind": "quote",
-     "text": "“…our intuitive judgment that the extension is sterile.” — Minsky and Papert, 1969",
-     "beat": "quote"
-    },
-    {
-     "kind": "label",
-     "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
-     "beat": "candle"
-    }
-   ],
-   "music": {
-    "cue": "ch04-a-sterile",
-    "note": "the candle motif's rising fourth, but on a darker instrument (low clarinet over cello), as the sterile candle is lit: a belief held; the cue thins toward the cold"
-   },
-   "transitionIn": "crossfade",
-   "claims": [
-    "e3-perceptrons",
-    "e3-sterile"
-   ],
-   "quotes": [
-    "q-perceptrons-sterile"
-   ]
-  },
-  {
-   "id": "ch04-s03",
-   "kind": "scene",
-   "setting": "an open field at dusk turning to night, 1969; snow beginning",
-   "era": "1960s",
-   "mood": "winterBlue",
-   "lines": [
-    {
-     "id": "L0406",
-     "text": "That year, Congress tied defence-funded research to military uses, and the snow began: the first AI winter.",
-     "pauseAfter": 0.93,
-     "direction": "plain statement of fact, no editorialising (the law's own words are on screen); a small breath before 'and the snow began', said softly; a small settling pause before 'the first AI winter', said quietly, naming it",
-     "spoken": "That year, Congress tied defence-funded research to military uses, and the snow began: the first A.I. winter."
-    }
-   ],
-   "leadIn": 1.3,
-   "holdAfter": 0.5,
-   "minDuration": 10.6,
-   "visual": "THIS SHOT: an open field at dusk in winterBlue; the funding-law card drifts down and the first snow of the first AI winter begins. The style bible's match cut, 'the book's shadow becomes night', carried by a tint crossfade in (crossfadeMood duskRose→winterBlue, 1.2 s, no dip to black): the upright book from s02 stands at the left edge of a long paper field; as the tint settles into winterBlue, the book's shadow stretches across the field toward the right until it IS the night. A bare paper-cut tree line on the horizon. Two small cards drift down on threads like falling leaves and hang in the upper third: first, as soon as the tint has settled and before the narration, 1969 · TURING AWARD: MARVIN MINSKY (a tiny laurel, no face; a plain fact of the year, not a judgment); then, on 'Congress', a quote card with the 1969 funding law's own words (the narrator paraphrases; the card carries the exact phrase). On 'snow', the first flakes: three seeded snow layers (L1 small and slow, L3 medium, L5 large), density ramping up over the hold. The snow is mood, never data: it is not graphed, counted or labelled. No figures in this shot. TEXT RULE: besides the date stamp, only the two hanging cards.",
-   "beats": [
-    {
-     "id": "shadow",
-     "at": {
-      "shotTime": 0.2
-     },
-     "what": "tint crossfade settles into winterBlue; the book's shadow begins lengthening into night"
-    },
-    {
-     "id": "award",
-     "at": {
-      "shotTime": 0.7
-     },
-     "what": "silent: 1969 TURING AWARD card drifts down"
-    },
-    {
-     "id": "congress",
-     "at": {
-      "line": "L0406",
-      "word": "Congress"
-     },
-     "what": "the funding-law quote card drifts down"
-    },
-    {
-     "id": "snow",
-     "at": {
-      "line": "L0406",
-      "word": "snow"
-     },
-     "what": "first snowflakes; density ramps through the hold"
-    }
-   ],
-   "cast": [],
-   "props": [
-    "upright book (PERCEPTRONS)",
-    "paper field and tree line",
-    "hanging cards",
-    "snow (three layers)"
-   ],
-   "onScreenText": [
-    {
-     "kind": "date",
-     "text": "1969",
-     "beat": "shadow"
-    },
-    {
-     "kind": "label",
-     "text": "1969 · Turing Award: Marvin Minsky",
-     "beat": "award"
-    },
-    {
-     "kind": "quote",
-     "text": "“a direct and apparent relationship” — US Congress, Mansfield Amendment, 1969",
-     "beat": "congress"
-    }
-   ],
-   "music": {
-    "cue": "ch04-b-winter",
-    "note": "new cue on the crossfade into winterBlue: solo cello, low and slow, with bowed glass entering as the snow begins; density follows the snow; intensity 2/10, lots of air"
-   },
-   "transitionIn": "crossfade",
-   "claims": [
-    "e3-minsky-turing",
-    "e3-mansfield"
-   ],
-   "quotes": [
-    "q-mansfield"
-   ]
-  },
-  {
-   "id": "ch04-s04",
-   "kind": "scene",
-   "setting": "a boarding-house window, Cambridge, Massachusetts, night, May 1969",
-   "era": "1960s",
-   "mood": "winterBlue",
-   "lines": [
-    {
-     "id": "L0408",
-     "text": "That May, Walter Pitts died alone. McCulloch followed four months later.",
-     "direction": "quiet and plain; no pathos added; a breath between the two sentences"
-    }
-   ],
-   "leadIn": 1,
-   "holdAfter": 3.6,
-   "minDuration": 10.5,
-   "visual": "THIS SHOT: one lit boarding-house window in the snow, and a second, distant window's lamp going dark: Pitts and McCulloch. Restraint. A single paper-cut window in a dark clapboard wall, seen from outside at night, snow drifting slowly past. On the sill inside, a small oil lamp burns: the same small lamp-shape as the 1943 wick card. No figure, no interior detail, no dramatisation. On 'later', a second, more distant window farther down the street, also with a lamp on the sill, softly goes dark. The near lamp stays lit through the long hold. Camera: an almost imperceptible push-in (2% over the shot). Fog sheet between the two planes.",
-   "beats": [
-    {
-     "id": "window",
-     "at": {
-      "shotTime": 0.2
-     },
-     "what": "the lit window in the snow"
-    },
-    {
-     "id": "second",
-     "at": {
-      "line": "L0408",
-      "word": "later"
-     },
-     "what": "a distant second window's lamp goes dark"
-    }
-   ],
-   "cast": [],
-   "props": [
-    "boarding-house window",
-    "small oil lamp on the sill",
-    "a second distant window"
-   ],
-   "onScreenText": [
-    {
-     "kind": "label",
-     "text": "Walter Pitts · 1923–1969",
-     "beat": "window"
-    },
-    {
-     "kind": "label",
-     "text": "Warren McCulloch · 1898–1969",
-     "beat": "second"
-    }
-   ],
-   "music": {
-    "cue": "ch04-b-winter",
-    "note": "silence, or almost: a single sustained harmonic on the cello, barely there; no melody until the next shot"
-   },
-   "transitionIn": "crossfade",
-   "claims": [
-    "e1-pitts-death"
-   ]
-  },
-  {
-   "id": "ch04-s05",
-   "kind": "scene",
-   "setting": "a single candle on a dark table, 1971–1972; a book opening to a handwritten line",
-   "era": "1970s",
-   "mood": "winterBlue",
-   "lines": [
-    {
-     "id": "L0409",
-     "text": "In 1971, on his forty-third birthday, Frank Rosenblatt drowned while sailing.",
-     "direction": "gentle, unhurried, no implication; the date is only a fact",
-     "spoken": "In nineteen seventy-one, on his forty-third birthday, Frank Rosenblatt drowned while sailing."
-    }
-   ],
-   "leadIn": 1,
-   "holdAfter": 4.2,
-   "minDuration": 11.5,
-   "visual": "THIS SHOT: a single candle on a dark table; hands open Rosenblatt's book to a handwritten dedication, held in silence. CAMERA: a dark table lit by one candle (era location; the hands open the book; no study visit). Slow crossfade (same winterBlue mood, so no fade to black). A single small candle on a dark table, the only light. No water, no boat, no weather: nothing that dramatises the death. After the line, in silence, the PERCEPTRONS book from s02 (now table-sized) is opened by the two steady hands to its front matter, and a handwritten line appears in pen, the ink catching the candle's light: In memory of Frank Rosenblatt. A small printed caption beneath: second printing, 1972. Hold on the page. The candle does not gutter; it simply burns.",
-   "beats": [
-    {
-     "id": "date",
-     "at": {
-      "line": "L0409",
-      "word": "birthday"
-     },
-     "what": "date stamp 11 JULY 1971"
-    },
-    {
-     "id": "open",
-     "at": {
-      "line": "L0409",
-      "edge": "end",
-      "offset": 0.6
-     },
-     "what": "hands open the book to the front matter"
-    },
-    {
-     "id": "dedication",
-     "at": {
-      "line": "L0409",
-      "edge": "end",
-      "offset": 1.2
-     },
-     "what": "the handwritten dedication appears, ink catching the light; hold"
-    }
-   ],
-   "cast": [
-    "narrator-hands"
-   ],
-   "props": [
-    "single candle",
-    "PERCEPTRONS (second printing) open to front matter",
-    "handwritten dedication"
-   ],
-   "onScreenText": [
-    {
-     "kind": "date",
-     "text": "11 JULY 1971",
-     "beat": "date"
-    },
-    {
-     "kind": "label",
-     "text": "In memory of Frank Rosenblatt",
-     "beat": "dedication"
-    },
-    {
-     "kind": "label",
-     "text": "second printing, 1972",
-     "beat": "dedication"
-    }
-   ],
-   "music": {
-    "cue": "ch04-b-winter",
-    "note": "silence through the line; on the dedication, the candle motif once on solo cello, very softly, ending on the falling resolution"
-   },
-   "transitionIn": "crossfade",
-   "claims": [
-    "e3-rosenblatt-death",
-    "e3-dedication"
-   ]
-  },
-  {
-   "id": "ch04-s06",
-   "kind": "scene",
-   "setting": "Britain, 1972–73: a raised lecture platform, then a televised debate in a steeply raked lecture theatre (the Royal Institution, London)",
-   "era": "1970s",
-   "mood": "winterBlue",
-   "lines": [
-    {
-     "id": "L0410",
-     "text": "In 1973, James Lighthill’s report for Britain blamed “the combinatorial explosion”. It struck rules far more than nets. Yet British funding fell for almost a decade.",
-     "pauseAfter": 0.6,
-     "direction": "crisp, neutral; Lighthill is a serious man, not a foil; three short sentences; 'It struck rules' lands clearly, a wink at the board's first suspect, not a gibe; a small lift on 'far more than nets'; 'Yet' plain",
-     "spoken": "In nineteen seventy-three, James Lighthill’s report for Britain blamed “the combinatorial explosion”. It struck rules far more than nets. Yet British funding fell for almost a decade."
-    },
-    {
-     "id": "L0411",
-     "text": "One book's fault? Historians still argue; there were several blows.",
-     "direction": "fair-minded; the question genuinely open; even on 'several blows'"
-    }
-   ],
-   "leadIn": 0.6,
-   "holdAfter": 4.8,
-   "visual": "THIS SHOT: Lighthill at his lectern and the televised debate below; his report's middle box is struck, cards flutter onto the desk, and snow thickens at the windows. A steeply raked horseshoe theatre of wooden benches in silhouette, a single lectern on a raised platform lit from above. Lighthill (standing, profile, at the lectern) with a sheaf of papers; below him, seated in the pit, Donald Michie and two other opponents leaning forward. A television camera on a tripod in the right foreground (generic 1970s studio camera, no logo), its tally lamp a low-chroma ember (emberRed mixed about 60% into winterBlue), the only warm light. Name cards for Lighthill and Michie; a place stamp. The narrator speaks Lighthill's quoted phrase, so no quote card for it here. On 'explosion' the phrase is glossed wordlessly: on the sheaf in Lighthill's hand a tiny ink branching tree grows from one dot, each branch splitting in two, then in two again, faster each time, until the page is black with branches (choices multiplying faster than any search); no caption, and it is gone by the time the four cards fall. On 'rules' the camera glances down to his top page: three inked boxes, A, B, C, with only B (Building Robots, the general-purpose bridge) struck through and C (neural models among them) untouched; letters only, no caption. On 'fell' the backlight drops a step and snow thickens outside the high windows. On L0410's last word, 'decade', a quote card rises above the lectern and stays through the question and the whole wordless hold: Papert's 'Snow White' sentence in full, verbatim (“We did not think of our work as killing Snow White; we saw it as a way to understand her.” — Papert, 1988). It is the defendant's own testimony on the charge that one book killed the field ('Snow White' was his figure for neural-net research), so it rises as the narrator asks 'One book's fault?', and is read under near-silent music. On L0411 the camera stays in the theatre (in-world, winterBlue, no board and no mood change) and eases in on the lectern; on 'Historians' four small cards of equal size flutter down from the dark above and land on the lectern's sloped desk beside Lighthill's papers, one after another in a row, the last landing on 'blows', each a separate blow: TRANSLATION 1966; MANSFIELD 1969; PERCEPTRONS 1969; LIGHTHILL 1973 (the book's card the same size as the others). TEXT RULE: besides the place stamp and the two name cards, only the four-card row and Papert's quote (the explosion gloss is a picture, not a caption).",
-   "beats": [
-    {
-     "id": "lectern",
-     "at": {
-      "line": "L0410",
-      "word": "James"
-     },
-     "what": "Lighthill at the lectern; name card"
-    },
-    {
-     "id": "explosion",
-     "at": {
-      "line": "L0410",
-      "word": "explosion"
-     },
-     "what": "the debate below; Michie's name card; place stamp"
-    },
-    {
-     "id": "gloss",
-     "at": {
-      "line": "L0410",
-      "word": "explosion"
-     },
-     "what": "wordless gloss: a tiny ink branching tree on Lighthill's sheaf splits and splits until the page is black; gone before the cards fall"
-    },
-    {
-     "id": "suspect",
-     "at": {
-      "line": "L0410",
-      "word": "rules"
-     },
-     "what": "Lighthill's top page: three inked boxes A, B, C; only B (Building Robots) struck through, C (neural models among them) untouched; letters only"
-    },
-    {
-     "id": "fell",
-     "at": {
-      "line": "L0410",
-      "word": "fell"
-     },
-     "what": "backlight drops; snow thickens at the windows"
-    },
-    {
-     "id": "blows",
-     "at": {
-      "line": "L0411",
-      "word": "Historians"
-     },
-     "what": "four equal cards flutter down onto Lighthill's lectern desk, the last landing on 'blows': several blows"
-    },
-    {
-     "id": "papert",
-     "at": {
-      "line": "L0410",
-      "word": "decade",
-      "offset": -0.36
-     },
-     "what": "Papert's full Snow White sentence rises above the lectern as the question is asked; held through the hold"
-    }
-   ],
-   "cast": [
-    "lighthill",
-    "michie"
-   ],
-   "props": [
-    "lectern on a raised platform",
-    "raked wooden benches",
-    "1970s television camera",
-    "four equal cards: TRANSLATION 1966, MANSFIELD 1969, PERCEPTRONS 1969, LIGHTHILL 1973 (landing on the lectern desk)",
-    "ink branching tree on Lighthill's sheaf (wordless gloss of the combinatorial explosion)"
-   ],
-   "onScreenText": [
-    {
-     "kind": "nameCard",
-     "text": "Sir James Lighthill · applied mathematician, Cambridge",
-     "beat": "lectern"
-    },
-    {
-     "kind": "nameCard",
-     "text": "Donald Michie · Edinburgh",
-     "beat": "explosion"
-    },
-    {
-     "kind": "place",
-     "text": "ROYAL INSTITUTION · LONDON · 1973 (televised debate)",
-     "beat": "explosion"
-    },
-    {
-     "kind": "label",
-     "text": "TRANSLATION 1966 · MANSFIELD 1969 · PERCEPTRONS 1969 · LIGHTHILL 1973",
-     "beat": "blows"
-    },
-    {
-     "kind": "quote",
-     "text": "“We did not think of our work as killing Snow White; we saw it as a way to understand her.” — Papert, 1988",
-     "beat": "papert"
-    }
-   ],
-   "music": {
-    "cue": "ch04-b-winter",
-    "note": "a measured, formal figure for the lecture (low strings in a slow walking bass), giving way on the question to the open cello again; the four cards land on soft pizzicato plucks; Papert's card in near-silence"
-   },
-   "transitionIn": "cut",
-   "claims": [
-    "e3-lighthill",
-    "e3-lighthill-debate",
-    "e3-uk-cut",
-    "e3-killed-debate",
-    "e3-alpac",
-    "e3-mansfield",
-    "e3-symbolic-continued",
-    "e3-lighthill-neural"
-   ],
-   "quotes": [
-    "q-lighthill-explosion",
-    "q-papert-understand"
-   ],
-   "creditsSources": [
-    "“We did not think of our work as killing Snow White; we saw it as a way to understand her.” — Seymour Papert, 'One AI or Many?', Winter 1988 (q-papert-understand)"
-   ]
-  },
-  {
-   "id": "ch04-s07",
-   "kind": "scene",
-   "setting": "the winter map: a snowbound paper landscape at night, about 1967–1980, with a few lit windows far apart",
-   "era": "1970s",
-   "mood": "winterBlue",
-   "lines": [
-    {
-     "id": "L0412",
-     "text": "Still, a few windows stayed lit. In Helsinki, the next clue sat unnoticed in a student's thesis about rounding errors.",
-     "pauseAfter": 0.74,
-     "direction": "the warmth comes back into the voice, a secret being shared; two unhurried sentences, a little slower on 'sat unnoticed'"
-    }
-   ],
-   "leadIn": 0.6,
-   "holdAfter": 2.6,
-   "minDuration": 11.9,
-   "visual": "THIS SHOT: a snowbound winter map with a few lit windows; the camera finds Helsinki and pushes in on a student's printout about rounding errors. The Winter Map, a key image: a vast snowbound paper landscape at night under a pale moon, ridgelines layered in haze (L1–L4), snow still falling lightly, laid out with west at frame left and east at frame right. Far apart across it, small houses with single lit windows. The camera opens wide and drifts slowly from EAST to WEST (right to left), never whipping: all three windows stay in frame together until the push-in, and their tags fade in east to west from the first frame, so each is readable while the narrator speaks: first a window in Tokyo, FUKUSHIMA · TOKYO · 1979 (layered 'eyes', an ancestor of later vision nets); then, a little farther west in Japan, AMARI · 1967 (a way to train more than one layer, little known in the West; the camera lingers here a beat, the same Amari named in the chapter's opening plate); then, farthest west across the dark, the window the camera settles on: HELSINKI · 1970. On 'clue', a faint thread of light rises from that window and hangs in the sky, unconnected to anything yet. On 'sat' the camera pushes in through the Helsinki window to a readable insert (held through 'rounding errors' until the pull-back): a student's silhouette (generic, unnamed) at a desk beside a stack of computer printout, the top sheet large in frame and legible as a few lines of FORTRAN-style code with ROUNDING ERRORS typed in its header (type well above the 26 px minimum). Just after the line (beat 'warm') the camera pulls back out of the window and up, past the map, to reveal in the foreground large warm houses with bright windows facing away from the map, their shadows thrown toward the viewer; nobody in them turns. TEXT RULE: besides the two short place tags (Tokyo, Helsinki), only the Amari tag and the Helsinki insert caption.",
-   "beats": [
-    {
-     "id": "windows",
-     "at": {
-      "shotTime": 0.3
-     },
-     "what": "wide map, slow east-to-west drift: Tokyo, Amari and Helsinki windows all in frame; tags fade in east to west"
-    },
-    {
-     "id": "helsinki",
-     "at": {
-      "line": "L0412",
-      "word": "Helsinki"
-     },
-     "what": "camera settles on the Helsinki window"
-    },
-    {
-     "id": "thread",
-     "at": {
-      "line": "L0412",
-      "word": "clue"
-     },
-     "what": "a faint thread of light rises from the Helsinki window and hangs in the sky"
-    },
-    {
-     "id": "insert",
-     "at": {
-      "line": "L0412",
-      "word": "sat"
-     },
-     "what": "push in through the window: readable insert of student and printout, held until the pull-back"
-    },
-    {
-     "id": "rounding",
-     "at": {
-      "line": "L0412",
-      "word": "rounding"
-     },
-     "what": "printout's top sheet legible: FORTRAN code, ROUNDING ERRORS"
-    },
-    {
-     "id": "warm",
-     "at": {
-      "line": "L0412",
-      "edge": "end",
-      "offset": 0.9
-     },
-     "what": "pull back: the big warm houses in the foreground, facing away"
-    }
-   ],
-   "cast": [],
-   "props": [
-    "winter landscape map",
-    "small houses with lit windows",
-    "student silhouette at a desk (generic, unnamed)",
-    "computer printout with code",
-    "large warm houses facing away"
-   ],
-   "onScreenText": [
-    {
-     "kind": "place",
-     "text": "FUKUSHIMA · TOKYO · 1979",
-     "beat": "windows"
-    },
-    {
-     "kind": "label",
-     "text": "AMARI · JAPAN · 1967 · a way to train more than one layer",
-     "beat": "windows"
-    },
-    {
-     "kind": "place",
-     "text": "HELSINKI · 1970",
-     "beat": "helsinki"
-    },
-    {
-     "kind": "label",
-     "text": "thesis: reverse-mode differentiation",
-     "beat": "insert"
-    }
-   ],
-   "music": {
-    "cue": "ch04-b-winter",
-    "note": "the cello finds a small, warm melodic line for the first time in the chapter (the lamplighters' theme), with a celesta glint on each window as it lights; it pulls back to a thin pad under 'rounding errors'"
-   },
-   "transitionIn": "crossfade",
-   "claims": [
-    "e3-linnainmaa",
-    "e3-amari",
-    "e3-neocognitron"
-   ]
-  },
-  {
-   "id": "ch04-s08",
-   "kind": "scene",
-   "setting": "the paper stage, Sussex, England, 1976, night: the low winter candle and, at the very rim of its light, a desk; then the case board and the Wall of Forecasts",
-   "era": "1970s",
-   "mood": "winterBlue",
-   "lines": [
-    {
-     "id": "L0415",
-     "text": "Sussex, 1976. A young Geoffrey Hinton takes his place, far from the flame.",
-     "pauseAfter": 0.62,
-     "direction": "quiet introduction; we do not name him; let the image do it",
-     "spoken": "Sussex, nineteen seventy-six. A young Geoffrey Hinton takes his place, far from the flame."
-    },
-    {
-     "id": "L0416",
-     "text": "He would spend much of the next thirty-six years near the edge of the light.",
-     "direction": "the turn; slow, warm, a promise",
-     "tts": {
-      "solo": true,
-      "speed": 0.82
-     }
-    }
-   ],
-   "leadIn": 0.6,
-   "holdAfter": 5.36,
-   "minDuration": 15,
-   "visual": "THIS SHOT: Sussex, 1976: a tall young man sits at a desk at the very rim of the low winter candle's light, facing out; the question card is swapped and the chess slip curls overdue. CAMERA: stage (the desk at the rim), then BOARD (the C2-a pin and the Q1 swap as inserts), a WALL truck to W2, then back to the stage. Back on the candle stage, deep in winter: the sterile candle burns at centre, its pool of light small; snow drifts through the rim. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. Here: seven years held so far (1969 to 1976), so a seven-ring ghost sleeve (42 px) stands above the stub, faintly scored; its flame still live where sleeve meets stub, its rim clean. At the very rim of the light, right third, half in shadow, a plain wooden desk with a reading lamp switched off. A tall young man in 1970s dress (hinton-young: tall, slight, long-limbed) walks in from the dark on twos and SITS at the desk, facing out from the flame, his long shadow thrown across the floor. He is seated for the rest of the shot (never standing at the rim in this era). He is not named; no name card. On 'thirty-six' the camera eases slowly from the desk to the case board, and as it reaches the board the lamp tint-crossfades (crossfadeMood, 1.2 s, no dip) from winterBlue to candleAmber (STUDY LOCK: board and Wall are always candleAmber; the winter stays only in the snow seen past the study window): the hands pin the chapter's clue card (a pair of scissors making two cuts) into slot C2-a at the head of column C2 (per the staging appendix), and run a thread of light from it to the Helsinki card pinned just below it in the same column (the thread from s07 finally lands). Then, on 'light', on the oxblood thread along the top of the board, the hands unpin AND IF NO STRAIGHT LINE EXISTS? and pin in its place THEN HOW DO YOU TRAIN THE HIDDEN LAYER?: the chapter's open question, carried into ch05. Just after the line (beat 'chess'), a slow pan to the Wall of Forecasts, in its fixed slot order, quoted from BOARD MAP: its slots W1 to W8 left to right (W1 Turing, W2 chess, W3 Rosenblatt 1961, W4 Florence 2012, W5 Coulom, W6 the 30-to-50-years slip in shadow, W7 Hinton 2017, W8 an empty pin until ch15); in 1976 only W1 and W2 are pinned, the rest are empty pin-holes, and W6's slip hangs in shadow: the chess slip in the second slot, due 1968, has yellowed and its corner curls, its due-date tag now overdue; farther along, at W6, beyond the lamp's reach, one slip's corner shows half-lit, unreadable. Hold on the curled slip in candleAmber; then, as the camera returns to the desk at the rim, crossfadeMood back to winterBlue (1.2 s, no dip) and hold on the desk in the snow. TEXT RULE: besides the date stamp, only the chess slip's tag and the question card.",
-   "beats": [
-    {
-     "id": "stamp",
-     "at": {
-      "line": "L0415",
-      "word": "Sussex"
-     },
-     "what": "date stamp SUSSEX · 1976 in Special Elite"
-    },
-    {
-     "id": "sits",
-     "at": {
-      "line": "L0415",
-      "word": "place"
-     },
-     "what": "the tall young man sits at the desk at the rim, facing out"
-    },
-    {
-     "id": "clue",
-     "at": {
-      "line": "L0416",
-      "word": "thirty-six"
-     },
-     "what": "case board: scissors clue card pinned; thread of light to the Helsinki card"
-    },
-    {
-     "id": "question",
-     "at": {
-      "line": "L0416",
-      "word": "light"
-     },
-     "what": "oxblood thread: question card swapped to THEN HOW DO YOU TRAIN THE HIDDEN LAYER?"
-    },
-    {
-     "id": "chess",
-     "at": {
-      "line": "L0416",
-      "edge": "end",
-      "offset": 0.9
-     },
-     "what": "Wall of Forecasts: the chess slip in slot two yellows and curls, overdue"
-    }
-   ],
-   "cast": [
-    "hinton-young",
-    "narrator-hands"
-   ],
-   "props": [
-    "candle-clock (the sterile candle: seven-ring ghost sleeve, live flame, clean rim)",
-    "plain wooden desk with unlit reading lamp",
-    "clue card: scissors making two cuts",
-    "Helsinki card",
-    "oxblood question card on the top thread",
-    "Wall of Forecasts: chess slip, yellowed and curled"
-   ],
-   "onScreenText": [
-    {
-     "kind": "date",
-     "text": "SUSSEX · 1976",
-     "beat": "stamp"
-    },
-    {
-     "kind": "label",
-     "text": "THEN HOW DO YOU TRAIN THE HIDDEN LAYER?",
-     "beat": "question"
-    },
-    {
-     "kind": "label",
-     "text": "CHESS CHAMPION · DUE 1968 · OVERDUE",
-     "beat": "chess"
-    }
-   ],
-   "music": {
-    "cue": "ch04-b-winter",
-    "note": "the candle motif's held suspension on cello as he sits (doubt at the rim), sustained and unresolved under the turn; a faint warm overtone enters on 'edge of the light' and is left hanging into the next chapter"
-   },
-   "transitionIn": "cut",
-   "claims": [
-    "e4-hinton-cv",
-    "e1-chess-prediction",
-    "e3-linnainmaa"
-   ],
-   "quotes": [
-    "q-simon-chess"
-   ]
-  }
- ]
+  ]
 }

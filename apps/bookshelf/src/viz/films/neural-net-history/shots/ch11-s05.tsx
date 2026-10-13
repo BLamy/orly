@@ -7,7 +7,8 @@
  *   lead-in    the hands pin a sheet of log-log paper on the board (both axes printed 'log scale' and named, round-1
  *              review: 'error ↓' over the plot, 'compute →' under it, so the flip to a rising skyline reads as
  *              intended; the x ticks span eight powers of ten). 2020 bottom-left
- *   'waiting'  the pin of the W4 slip (AlexNet's 'waiting' note, 2012) glints once at the right edge of frame
+ *   'waiting'  the W4 slip (AlexNet's 'waiting' note, 2012) catches the lamp at the right edge of frame, its pin
+ *              glinting, held through 'note' (round 3); only then does the push onto the log-log chart begin
  *   'law'      the fountain pen rules ONE straight descending line: error falling as a power law as size rises
  *              (straight only because both axes are logarithmic)
  *   'bigger'   the paper tilts back (edge-on) and the ruled line becomes the roofline of a night skyline, rising left
@@ -31,21 +32,31 @@
  *   one soft plate beside the flame (the kit card is switched off here), the 2020 tag on the candle's base, and a
  *   blurred L5 shelf end; the crane lands close on W4 and dollies in over the last 0.6 s. Every teaching text passes
  *   the 22 px audit. (W2 is absent from the Wall by design: studyState takes the chess slip down in ch06-s07.)
+ * ROUND-4 REVISE (critic): on 'lower' a pale amber GHOST of the paper's descending line hangs in the sky (L2, behind the
+ *   towers) until 'G', so the rising roofline and the falling error line cross while the law is stated; the brass plate
+ *   stays unlit dark texture until 'G' and lifts with the window snap (one-frame glint on its top edge); the ruled line
+ *   holds as dark ink until the paper is visibly tipping; each tower is hand-cut (a 1-2 px seeded wobble on its edges,
+ *   ≈8 % of windows dark until 'G'), the tallest crowned with a pierced cut-paper sunburst on a podium; the GPT push
+ *   keeps that crown inside the top safe line; the shelf hold gains a far plane (the Wall's foot, in haze) and a faint
+ *   lamp shaft; W6's upper-left corner catches the lamp; the Wall framing drops its top row clear of the top edge; the
+ *   opening board sinks its cropped left column into the haze and lets the lamp's pool reach toward the Wall.
  * CANDLE-CLOCK RULE: every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring
  * at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one
  * ring per year the belief is held; the burned wax stays above the stub as a ghost sleeve.
  */
 import { Timeline } from '../../../core';
 import type { Camera3, Frame, PaintEnv } from '../../../film';
-import { LAYERS, MOODS, defineShot, hash1, mixLab, overscan, skyline, stars, toLayer, toScreen, withAlpha } from '../../../film';
-import { FONT, legibleSize } from '../../../film/silhouette/type';
+import type { FilmFrame } from '../../../film';
+import { LAYERS, MOODS, defineShot, dustMotes, godRays, hash1, mixLab, overscan, paperTexture, skyline, stars, toLayer, toScreen, vnoise, withAlpha } from '../../../film';
+import { FONT, cardProbe, legibleSize, textRole } from '../../../film/silhouette/type';
 import { HAND_LEN, type Pt } from '../sets/narratorHands';
 import { STUDY, candleX, studyCase, studyNear, studyRoom, wallSlotWorld } from '../sets/study';
-import { shelfStateAt } from '../sets/studyState';
-import { candleFlame } from '../sets/beliefCandle';
+import { shelfStateAt, wallStateAt } from '../sets/studyState';
+import { drawSlip, slotLight } from '../sets/wallOfForecasts';
+import { candleFlame, candleShelf } from '../sets/beliefCandle';
 import { screenPass } from '../sets/ch06-s01-kit';
 import { CARD19, CARD85, ch11Board, drawLineage, drawQuoteCard } from '../sets/ch11-s02-cards';
-import { DEFAULT_POOL, poolAt } from '../sets/caseBoard';
+import { DEFAULT_POOL, caseBoard, poolAt } from '../sets/caseBoard';
 import { bentArm, clamp01, compositeSub, lerp, mixCam, sm, softPlate, subFrame, tq12, win } from '../sets/ch11-s01-kit';
 
 type C = CanvasRenderingContext2D;
@@ -54,14 +65,28 @@ const POOL = { ...DEFAULT_POOL, ...STUDY.pool, cx: STUDY.pool.cx - STUDY.board.x
 
 // ------------------------------------------------------------------------------------------------ the log-log sheet
 /** pinned just below the GPT card at the head of C4 (clear of it), over the top margin of the two 2019/1985 cards */
-const SHEET = { x: 1000, y: 330, w: 276, h: 214 };
-/** the plot: a header line above it (the y axis: error ↓) and a footer below it (the x axis: compute →) */
-const PLOT = { x0: SHEET.x - SHEET.w / 2 + 18, x1: SHEET.x + SHEET.w / 2 - 16, y0: SHEET.y - SHEET.h / 2 + 34, y1: SHEET.y + SHEET.h / 2 - 32 };
+/** round-2 revise: shorter and a touch wider, so it hangs clear of BOTH ch11-s02 cards below it (their tops at y 401:
+ *  no orphaned lines of the Cyc quote under its edge) and clear of the GPT card above it */
+const SHEET = { x: 1000, y: 316, w: 292, h: 176 };
+/** the plot: a header line above it (the y axis: error ↓), decade numerals on both axes, the x axis label under it */
+const PLOT = { x0: SHEET.x - SHEET.w / 2 + 30, x1: SHEET.x + SHEET.w / 2 - 14, y0: SHEET.y - SHEET.h / 2 + 30, y1: SHEET.y + SHEET.h / 2 - 44 };
 const DEC_X = 8, DEC_Y = 3;
 /** the ruled line: from upper left to lower right (a power law is straight on log-log axes) */
-const LINE = { a: { x: PLOT.x0 + 10, y: PLOT.y0 + 22 }, b: { x: PLOT.x1 - 8, y: PLOT.y1 - 30 } };
+const LINE = { a: { x: PLOT.x0 + 8, y: PLOT.y0 + 10 }, b: { x: PLOT.x1 - 8, y: PLOT.y1 - 12 } };
 const W4 = wallSlotWorld('W4');
-const W4_PIN = { x: W4.x, y: W4.y - (96 * 0.95) / 2 + 6 };
+/** round-3 review: a visible brass pin at the W4 slip's top centre, ABOVE its header line (the kit's glint star sat on
+ *  'KRIZHEVSKY, SUTSKEVER & HINTON · 2012' and hid 'SUTSKEVER'): both W4 glints land on this pin, star arms ≤ 40 px */
+const W4_PIN = { x: W4.x, y: W4.y - (96 * 0.95) / 2 + 1.2 };
+/** round-3 review (teacher): the 2012 waiting-note card itself catches the lamp on 'waiting note', before the
+ *  log-log chart takes the frame (the callback lands for the eye as well as the ear). Its own words, as pinned in
+ *  ch08-s14 (studyState W4): */
+const W4_TEXT = '…simply by waiting for faster GPUs and bigger datasets…';
+const W4_SLIP = (() => {
+  const v = wallStateAt('ch11-s05', 'start').find((s) => s.slot === 'W4')!;
+  return { ...v, text: W4_TEXT };
+})();
+/** the slip's footprint (L4 world, the wall's k = 0.95) */
+const W4_W = 128 * 0.95, W4_H = 96 * 0.95;
 
 // ------------------------------------------------------------------------------------------------ shelf
 const V0 = shelfStateAt(ID, 'start');
@@ -71,27 +96,42 @@ const SCALE_V = V1.find((v) => v.id === 'scale')!;
 const FLAME = candleFlame({ x: SX, y: STUDY.shelf.y, view: SCALE_V, s: STUDY.shelf.s });
 
 // ------------------------------------------------------------------------------------------------ cameras
-const BOARD0: Camera3 = { x: 1150, y: 318, z: 230, lens: 1 };
-const BOARD1: Camera3 = { x: 1130, y: 316, z: 250, lens: 1 };
-/** the push in (≈1.6×) on the sheet, 3.0 → 5.5 s */
-const BOARD2: Camera3 = { x: 1006, y: 334, z: 535, lens: 1 };
-const BOARD3: Camera3 = { x: 1002, y: 342, z: 560, lens: 1 };
+/** round-2 revise: framed so the WHO TAUGHT IT? card (its right edge at x ≈ 725) is wholly OUT of frame left (no
+ *  partial word), while the W4 slip and its pin stay in frame right for the 'waiting' glint */
+const BOARD0: Camera3 = { x: 1236, y: 318, z: 230, lens: 1 };
+/** round-3: the opening drift leans a touch TOWARD the W4 slip (right and in) while 'waiting note' is said */
+const BOARD1: Camera3 = { x: 1252, y: 316, z: 264, lens: 1 };
+/** the push in (≈1.6×) on the sheet, 3.0 → 5.5 s; the sheet a little left of centre so the pen hand reads whole */
+const BOARD2: Camera3 = { x: 1040, y: 320, z: 535, lens: 1 };
+const BOARD3: Camera3 = { x: 1040, y: 324, z: 560, lens: 1 };
 /** the match cut: the city's roofline light and the candle flame land on the same screen point (high in frame, so
  *  the shelf framing tilts down past the chat box's foot) */
-const CUT_PT = { x: 640, y: 236 };
-const SH_S = 1000 / (1000 - 350);
-const SHELF0: Camera3 = { x: FLAME.x, y: FLAME.y + (360 - CUT_PT.y) / SH_S, z: 350, lens: 1 };
-/** the L5 shelf-end occluder's anchor: its art's top-left lands at screen (860, 560) on the shelf's first frame */
+const CUT_PT = { x: 640, y: 150 };
+/** round-2 revise: a LOW MACRO: ≈1.3× closer than the first cut (z 500) and dropped so the flame rides high in frame,
+ *  the board's cropped cards and the cabinet gone above the top edge, the candles' long bodies filling the frame */
+const SH_Z0 = 500;
+const SHELF0: Camera3 = { x: FLAME.x, y: FLAME.y + (360 - CUT_PT.y) / (1000 / (1000 - SH_Z0)), z: SH_Z0, lens: 1 };
+/** the L5 near candle's anchor: its art's top-left lands at screen (-30, 250) on the shelf's first frame */
 const NEAR = (() => {
-  const p = toLayer(LAYERS.L5, SHELF0, 880, 560);
+  const p = toLayer(LAYERS.L5, SHELF0, -30, 250);
   return { x: p.x, y: p.y, k: toScreen(LAYERS.L5, SHELF0, p.x, p.y).k };
 })();
-/** a slow 4.5% push toward the new flame over the hold (the flame stays on its screen point) */
-const SHELF1: Camera3 = { x: FLAME.x, y: FLAME.y + (360 - CUT_PT.y) / (1000 / (1000 - 380)), z: 380, lens: 1 };
-/** the crane lands close on W4 (its slip read at >= 22 px cap), then dollies in over the last 0.6 s */
-const WALL0: Camera3 = { x: W4.x + 6, y: W4.y - 4, z: 692, lens: 1 };
-const WALL1: Camera3 = { x: W4.x + 10, y: W4.y - 2, z: 728, lens: 1 };
-const STUDY_CAMS = [BOARD0, BOARD1, BOARD2, BOARD3, SHELF0, SHELF1, WALL0, WALL1, { x: (SHELF1.x + WALL0.x) / 2, y: (SHELF1.y + WALL0.y) / 2, z: 260, lens: 1 }];
+/** round-2 revise: the hold DRIFTS (a 3% push and a ≈40 px truck right, toward the Wall), so the crane continues a
+ *  motion already under way instead of starting cold */
+/** round-3 review: an eased 4 % push TOWARD the new candle over the hold (z 500 → 519 is k 2.00 → 2.08), drifting so the
+ *  flame settles a little right of centre and the label beside it fills the frame's right side */
+const SH_Z1 = 519;
+const SHELF1: Camera3 = { x: FLAME.x - 34 / (1000 / (1000 - SH_Z1)), y: FLAME.y + (360 - CUT_PT.y + 6) / (1000 / (1000 - SH_Z1)), z: SH_Z1, lens: 1 };
+/** round-3 review: no crane (it was a 0.6 s whip over an empty wall): a straight CUT to the Wall on the wallW4 beat,
+ *  then a slow 3 % push in, so the W4 glint lands at w4glint. Framed with W4 at left of centre, W6's half-lit corner to
+ *  its right and the foot of W7 at the top right (z 640 → 651 is k 2.78 → 2.87) */
+const W6 = wallSlotWorld('W6');
+const W6_SLIP = wallStateAt('ch11-s05', 'end').find((s) => s.slot === 'W6')!;
+/** round-4 critic: the framing drops ≈20 px (screen) so the top row's headers (ROSENBLATT · 1961, HINTON · SEPT 2017)
+ *  clear the frame's top edge */
+const WALL0: Camera3 = { x: W4.x + 58, y: W4.y - 72, z: 594, lens: 1 };
+const WALL1: Camera3 = { x: W4.x + 54, y: W4.y - 70, z: 605, lens: 1 };
+const STUDY_CAMS = [BOARD0, BOARD1, BOARD2, BOARD3, SHELF0, SHELF1, WALL0, WALL1];
 
 // ------------------------------------------------------------------------------------------------ the city
 const GROUND = 620;
@@ -117,21 +157,57 @@ const SPIRE = { x: TALL.x + TALL.w / 2, y: GROUND - TALL.storeys * STOREY - 52 }
 const CITY_CUT: Camera3 = { x: SPIRE.x, y: SPIRE.y + (360 - CUT_PT.y) / (1000 / (1000 - 300)), z: 300, lens: 1 };
 /** the few-shot window: one of the tallest tower's own windows, centred in its facade below the first setback */
 const FEW_WIN = { x: TALL.x + TALL.w / 2, y: GROUND - 62 * STOREY, w: Math.min(98, TALL.w - 20), h: 78 };
-const PLATE = { x: TALL.x + TALL.w / 2, y: GROUND - 34 };
+/** round-4 critic: the plate sits on the tallest tower's PODIUM (a wider two-tier base), a little higher than before,
+ *  so the GPT push can hold the cut-paper crown inside the top safe line AND read the plate above the bottom band */
+const PODIUM = { x: TALL.x - 14, w: TALL.w + 28, h: 84 };
+const PLATE = { x: TALL.x + TALL.w / 2, y: GROUND - 56 };
 const CITY0: Camera3 = { x: 650, y: 372, z: -70, lens: 1 };
 const CITY1: Camera3 = { x: 664, y: 352, z: -24, lens: 1 };
 const CITY_W: Camera3 = { x: FEW_WIN.x, y: FEW_WIN.y, z: 760, lens: 1 };
-/** on 'GPT' every window lights and the camera pushes in ≈12% toward the tower's foot (the brass plate) */
-const CITY_P: Camera3 = { x: lerp(664, PLATE.x, 0.45), y: lerp(352, PLATE.y, 0.3), z: 86, lens: 1 };
+/** on 'GPT' every window lights and the camera pushes in (≈6 %) toward the tower; round-4 critic: z 86 cropped the
+ *  96-storey crown off the top from ≈10 s, so the push is shallower and framed higher: the crown's top lands at y ≈ 36,
+ *  the plate's lettering above y ≈ 634 */
+const CITY_P: Camera3 = { x: lerp(664, PLATE.x, 0.45), y: 316, z: 30, lens: 1 };
 const CITY_CAMS = [CITY0, CITY1, CITY_P, CITY_CUT, { ...CITY_W, z: 400 }];
+/** the L5 near rooftop's anchor: its art's top-left lands at screen (-60, 610) on the city's first frame (the bottom
+ *  15% of the frame) */
+const CITY_NEAR = (() => {
+  const p = toLayer(LAYERS.L5, CITY0, -60, 492);
+  return { x: p.x, y: p.y, k: toScreen(LAYERS.L5, CITY0, p.x, p.y).k };
+})();
+/** round-4 critic (teaching): the GHOST of the paper's descending ruled line, kept in the sky (L2, behind the towers) from
+ *  'lower' to 'G': from upper left, over the short towers, down to lower right where it passes behind the tall ones, so
+ *  the rising roofline (size) and the falling line (error) cross while the narrator says 'bigger models, lower error' */
+const GHOST = (() => {
+  const a = toLayer(LAYERS.L2, CITY1, 70, 118);
+  const z = toLayer(LAYERS.L2, CITY1, 1060, 318);
+  return { a, z, k: toScreen(LAYERS.L2, CITY1, a.x, a.y).k };
+})();
+
+// ------------------------------------------------------------------------------------------------ the shelf's far plane
+/** round-4 critic: the right of the shelf hold was flat brown; the Wall of Forecasts' FOOT hangs there in the haze (its
+ *  cork face and lower frame moulding, a far plane ≈30 % into the haze), authored in screen px at SHELF0 */
+const SHELF_FAR = (() => {
+  const a = toLayer(LAYERS.L2, SHELF0, 690, 90);
+  const z = toLayer(LAYERS.L2, SHELF0, 1400, 740);
+  return { a, z, k: toScreen(LAYERS.L2, SHELF0, a.x, a.y).k };
+})();
+/** the shelf hold's lamp shaft (screen px): from beyond the upper right, down-left across the candles' bodies */
+const SHELF_BEAM = { x0: 1200, y0: -90, w0: 120, x1: 1200 - 1150 * 0.78, y1: -90 + 1150 * 0.63, w1: 250 };
 
 interface B {
   D: number;
   pin: number;
   florence: number;
+  /** 'waiting' → end of 'note': the W4 slip catches the lamp */
+  wait0: number;
+  wait1: number;
   pen0: number;
+  rule0: number;
   law: number;
   tilt0: number;
+  /** 'lower' (the ghost of the falling line rises 0.15 s before it) */
+  lower: number;
   city: number;
   rise1: number;
   lights: number;
@@ -140,7 +216,8 @@ interface B {
   fill0: number;
   out0: number;
   cut: number;
-  crane0: number;
+  /** the straight cut from the shelf to the Wall (the wallW4 beat) */
+  wallCut: number;
   wall: number;
   glint: number;
 }
@@ -158,18 +235,24 @@ export default defineShot({
       D,
       pin: 0,
       florence: T.beat('florence'),
+      wait0: T.word('L1110', 'waiting'),
+      wait1: T.wordEnd('L1110', 'note'),
       pen0: law - 1.1,
+      // round-2 revise: the stroke starts on 'predictable' and ends on 'law'
+      rule0: T.word('L1110', 'predictable'),
       law,
       tilt0: T.word('L1110', 'bigger') - 0.14,
+      lower: T.word('L1110', 'lower'),
       city: T.word('L1110', 'bigger') + 0.46,
       rise1: T.word('L1110', 'bigger') + 1.06,
-      lights: T.beat('skyline'),
+      // every window lights on 'G' in a 2-frame snap (done the frame before the word)
+      lights: T.word('L1110', 'G') - 0.04,
       push0: few - 0.95,
       few,
       fill0: T.word('L1110', 'untaught') - 0.9,
       out0: T.word('L1110', 'untaught') + 0.15,
       cut,
-      crane0: T.beat('wallW4') - 0.5,
+      wallCut: T.beat('wallW4'),
       wall: T.beat('w4glint') - 0.02,
       glint: T.beat('w4glint'),
     };
@@ -205,10 +288,20 @@ function dateStamp(c: C, m: PaintEnv['mood'], t: number, at: number, text: strin
   const shown = Math.max(0, Math.min(text.length, Math.floor((tq12(t) - at) * 12 + 1e-6) + 1));
   const size = Math.max(DATE_PX, legibleSize(c, `500 ${DATE_PX}px ${FONT.mono}`, DATE_PX));
   c.save();
-  softPlate(c, 100, 652, 300, 130, m.ink, 0.55 * A);
+  // round-2 revise: a dark backing scrim, so the stamp never sits on a card's lettering
+  softPlate(c, 92, 664, 420, 210, m.ink, 1.0 * A);
+  softPlate(c, 96, 652, 260, 120, m.ink, 0.75 * A);
+  // review round 4 (ghost-text audit: the GPT-2 card's 'OpenAI, 2019' foot read through the soft scrim beside '2020'
+  // for 2.5 s): a solid ink tag right behind the stamp, so no card lettering shows under or beside it
+  c.font = `500 ${size}px ${FONT.mono}`;
+  const tw = c.measureText(text).width;
+  c.globalAlpha = 0.94 * A;
+  c.fillStyle = m.ink;
+  c.beginPath();
+  c.roundRect(34, 668 - size - 16, tw + 120, size + 32, 6);
+  c.fill();
   c.globalAlpha = A;
   c.fillStyle = mixLab(m.core, '#ffffff', 0.35);
-  c.font = `500 ${size}px ${FONT.mono}`;
   c.textAlign = 'left';
   c.textBaseline = 'alphabetic';
   c.fillText(text.slice(0, shown), 48, 668);
@@ -226,7 +319,8 @@ function heroLabel(c: C, m: PaintEnv['mood'], t: number, b: B) {
   const la = nameK(t, b);
   if (la <= 0.003) return;
   const fs = toScreen(LAYERS.L4, shelfCam(t, b), FLAME.x, FLAME.y);
-  const x = fs.x + 58, y = fs.y + 40;
+  // round-3 review: a little lower, the plate centred on the candle's upper third
+  const x = fs.x + 58, y = fs.y + 96;
   const big = Math.max(LABEL_PX, legibleSize(c, `500 ${LABEL_PX}px ${FONT.mono}`, LABEL_PX));
   const sub = Math.max(SUB_PX, legibleSize(c, `italic 400 ${SUB_PX}px ${FONT.text}`, SUB_PX));
   const lines: [string, string, string][] = [
@@ -258,15 +352,83 @@ function heroLabel(c: C, m: PaintEnv['mood'], t: number, b: B) {
   });
   c.restore();
 }
+/**
+ * Round-2 legibility hand-off: the case board's own lettering is SET DRESSING in this shot (the sheet on it is the
+ * subject; the 1943 card's 'THE NET DOES NOT' only matched the narrator's "AlexNet's"), and the new candle's own
+ * sleeve lettering is texture beside its hero label (which carries 'SCALE IS THE / MAIN LEVER' at 37 px cap). Both
+ * are painted in their own L4 pass, before the case (so the stacking order is unchanged: board and shelf under the
+ * Wall, the X-ray box and the hands), inside textRole(c, 'texture').
+ */
+function textureCase(f: Frame, when: 'start' | 'end', shelf: boolean) {
+  f.layer('L4', (c, env) =>
+    textRole(c, 'texture', () => {
+      caseBoard(c, { ...STUDY.board, state: ch11Board(ID, when), pool: { ...DEFAULT_POOL, ...STUDY.pool, k: 1, cx: STUDY.pool.cx - STUDY.board.x, cy: STUDY.pool.cy - STUDY.board.y } }, env);
+      if (shelf) candleShelf(c, { ...STUDY.shelf, views: V1, drawFlames: false, over: { scale: { flame: 1 } }, named: {} }, env);
+    }),
+  );
+}
 const DATE_PX = 36;
 const LABEL_PX = 36;
 const SUB_PX = 26;
 
 // ================================================================================================= BOARD
 function boardCam(t: number, b: B): Camera3 {
-  if (t < 3.0) return mixCam(BOARD0, BOARD1, sm(t / 3.0));
-  if (t < 5.5) return mixCam(BOARD1, BOARD2, sm((t - 3.0) / 2.5));
-  return mixCam(BOARD2, BOARD3, sm((t - 5.5) / (b.city + 0.4 - 5.5)));
+  // round-3: hold the wide (sheet left, the W4 slip right) through 'waiting note'; the push onto the log-log chart
+  // starts only once 'note' has been said, and lands as 'law' is ruled
+  const p0 = b.wait1 + 0.05, p1 = b.law + 0.05;
+  if (t < p0) return mixCam(BOARD0, BOARD1, sm(t / p0));
+  if (t < p1) return mixCam(BOARD1, BOARD2, sm((t - p0) / (p1 - p0)));
+  return mixCam(BOARD2, BOARD3, sm((t - p1) / (b.city + 0.4 - p1)));
+}
+
+/** the W4 slip's brass pin (L4 world, drawn over the kit's small pin head), and its glint: a soft glow and a four-point
+ *  star whose arms stay ≤ 40 px at 1080p, the downward arm short so it never reaches the slip's header lettering */
+function w4Pin(c: C, env: PaintEnv, glint: number, kL4: number) {
+  const m = env.mood;
+  const p = W4_PIN;
+  const r = 3.8;
+  c.save();
+  c.fillStyle = withAlpha(m.fg, 0.45);
+  c.beginPath();
+  c.arc(p.x + 1.2, p.y + 1.6, r, 0, Math.PI * 2);
+  c.fill();
+  const brass = c.createRadialGradient(p.x - 1.4, p.y - 1.6, 0.4, p.x, p.y, r);
+  brass.addColorStop(0, mixLab('#f3dca0', m.core, 0.3));
+  brass.addColorStop(0.55, mixLab('#b88a3e', m.halo, 0.2));
+  brass.addColorStop(1, mixLab('#6a4a1c', m.set, 0.3));
+  c.fillStyle = brass;
+  c.beginPath();
+  c.arc(p.x, p.y, r, 0, Math.PI * 2);
+  c.fill();
+  if (glint > 0.01) {
+    const arm = Math.min(14, 40 / (1.5 * Math.max(0.3, kL4))); // ≤ 40 px at 1080p
+    c.globalCompositeOperation = 'lighter';
+    const g = c.createRadialGradient(p.x, p.y, 0, p.x, p.y, arm);
+    g.addColorStop(0, withAlpha(mixLab(m.core, '#ffffff', 0.4), 0.85 * glint));
+    g.addColorStop(1, withAlpha(m.core, 0));
+    c.fillStyle = g;
+    c.fillRect(p.x - arm, p.y - arm, 2 * arm, 2 * arm);
+    c.strokeStyle = withAlpha(mixLab(m.core, '#ffffff', 0.5), 0.85 * glint);
+    c.lineWidth = Math.max(0.5, 1.4 / Math.max(0.3, kL4));
+    c.beginPath();
+    c.moveTo(p.x - arm * glint, p.y);
+    c.lineTo(p.x + arm * glint, p.y);
+    c.moveTo(p.x, p.y - arm * 0.8 * glint);
+    c.lineTo(p.x, p.y + 3 * glint);
+    c.stroke();
+  }
+  c.restore();
+}
+
+/** the W4 slip catching the lamp: up on 'waiting', held through 'note', easing off as the push leaves it */
+function w4Lift(t: number, b: B): number {
+  return win(t, b.wait0 - 0.12, b.wait0 + 0.3) * (1 - win(t, b.wait1 + 0.3, b.wait1 + 0.95));
+}
+/** the slip's screen rect under a camera (padded a little for its seeded tilt) */
+function w4Rect(cam: Camera3) {
+  const a = toScreen(LAYERS.L4, cam, W4.x - W4_W / 2 - 4, W4.y - W4_H / 2 - 4);
+  const z = toScreen(LAYERS.L4, cam, W4.x + W4_W / 2 + 4, W4.y + W4_H / 2 + 4);
+  return { x: a.x, y: a.y, w: z.x - a.x, h: z.y - a.y };
 }
 
 function paintBoard(f: Frame, t: number, b: B) {
@@ -278,33 +440,161 @@ function paintBoard(f: Frame, t: number, b: B) {
   const tq = tq12(t);
   studyRoom(f, { key: ID, cams: STUDY_CAMS, outside: { mood: 'serverCyan', kind: 'city', city: 0.5 } });
   const g1 = Math.exp(-Math.pow((t - b.florence - 0.15) / 0.22, 2));
+  textureCase(f, 'start', false);
   studyCase(f, {
     shot: ID,
     when: 'start',
     key: ID,
-    board: { state: ch11Board(ID, 'start') },
-    wall: { glint: { W4: g1 } },
+    board: false,
+    wall: { glint: { W4: 0 } },
     extra: (c, env) => {
       drawLineage(c, env);
-      // ch11-s02's two cards still hang below C4
-      for (const g of [CARD19, CARD85]) drawQuoteCard(c, env, g, { light: poolAt(POOL, g.x - STUDY.board.x, g.y - STUDY.board.y) + 0.2, underline: 1 });
+      // ch11-s02's two cards still hang below C4, whole (the sheet now clears their tops), but sunk into the
+      // background plane: a touch soft and out of the lamp's sliver, so the sheet is the one sharp plane
+      for (const g of [CARD19, CARD85]) drawQuoteCard(c, env, g, { light: poolAt(POOL, g.x - STUDY.board.x, g.y - STUDY.board.y) - 0.05, underline: 1, blur: 1.6 });
+      // round-3 (teacher): on 'waiting note' the 2012 slip itself catches the lamp: re-laid over the wall's dim copy
+      // with its paper lifted toward full light and its pin glinting
+      const lift = w4Lift(t, b);
+      if (lift > 0.01) {
+        c.save();
+        c.globalAlpha *= lift;
+        drawSlip(c, W4_SLIP, { x: W4.x, y: W4.y, k: STUDY.wall.k, light: lerp(slotLight('W4'), 1, 0.85), glint: 0, pin: false }, env);
+        // its brass pin above the header (the glint itself rides over the lamp's falloff in the screen pass)
+        w4Pin(c, env, 0, toScreen(LAYERS.L4, cam, 0, 0).k);
+        c.restore();
+      }
       // the log-log sheet: already pinned (round-1 critic: no hand in the lead-in, so the pen's entry at ≈4.7 s is
       // the one motivated hand move), ruled on 'law', then on 'bigger' it tilts back AND turns over about its vertical
       // axis, so the falling line visibly becomes a rising one (the bright stroke is carried by the screen pass)
       const fl = flipAt(t, b);
-      const ink = t < b.tilt0 ? inkAt(tq, b) : 0;
-      sheet(c, env, SHEET.x, SHEET.y, fl.sy, ink, win(t, b.law - 0.1, b.law + 0.5), fl.persp, fl.cos);
+      // round-4 critic: the payoff of 'smooth, predictable law' holds as DARK INK (the gleam is a brief pulse on 'law'
+      // that settles low), and the sheet keeps its own ink until tilt0 + 0.2 s, when the match stroke takes it over
+      const ink = t < b.tilt0 + 0.2 ? inkAt(tq, b) : 0;
+      const gleam = win(t, b.law - 0.1, b.law + 0.25) * (1 - 0.85 * win(t, b.law + 0.3, b.law + 0.7));
+      sheet(c, env, SHEET.x, SHEET.y, fl.sy, ink, gleam, fl.persp, fl.cos, win(t, b.tilt0 - 0.15, b.tilt0 + 0.15));
       // the pen rules the line: its nib travels ON the line, and the inked stroke ends exactly at the nib
       if (tq >= b.pen0 && tq < b.law + 0.7) pen(c, env, nibAt(tq, b));
     },
   });
   if (cam.z < 330) studyNear(f, { key: ID, cams: STUDY_CAMS.filter((q) => q.z < 330), file: true });
+  // round-2 revise: a real SLIVER of lamp light on the sheet: a warm pool ≈700 px (1080p) across centred on it, and
+  // everything outside falls ≈50% darker on a soft falloff, so the sheet is the one bright, sharp action plane
+  screenPass(f, (c) => {
+    const m = f.mood;
+    const sp = toScreen(LAYERS.L4, cam, SHEET.x, SHEET.y + 6);
+    const k = sp.k;
+    const dim = c.createRadialGradient(sp.x, sp.y, 150 * k, sp.x, sp.y, 340 * k);
+    dim.addColorStop(0, withAlpha(m.fg, 0));
+    dim.addColorStop(0.55, withAlpha(m.fg, 0.32));
+    dim.addColorStop(1, withAlpha(m.fg, 0.52));
+    c.fillStyle = dim;
+    // round-3: while the W4 slip catches the lamp ('waiting note') the falloff spares it, so it reads as lit paper
+    const lift = w4Lift(t, b);
+    const wr = w4Rect(cam);
+    c.save();
+    if (lift > 0.01) {
+      c.beginPath();
+      c.rect(-4, -4, 1288, 728);
+      c.rect(wr.x, wr.y, wr.w, wr.h);
+      c.clip('evenodd');
+    }
+    c.fillRect(-4, -4, 1288, 728);
+    c.restore();
+    // round-4 critic: the cropped C1/C2 column at the left edge ('ATA', 'RE', '012') sinks ≈30 % further into the haze,
+    // so it reads as texture; the falloff is pinned to the board (world x 700 → 850), so it rides the push
+    {
+      const l0 = toScreen(LAYERS.L4, cam, 700, 0).x, l1 = toScreen(LAYERS.L4, cam, 850, 0).x;
+      if (l1 > 0) {
+        const lg = c.createLinearGradient(l0, 0, l1, 0);
+        lg.addColorStop(0, withAlpha(mixLab(m.fg, m.haze, 0.3), 0.34));
+        lg.addColorStop(1, withAlpha(mixLab(m.fg, m.haze, 0.3), 0));
+        c.fillStyle = lg;
+        c.fillRect(-4, -4, l1 + 4, 728);
+      }
+    }
+    if (lift > 0.01) {
+      c.save();
+      c.globalAlpha = 1 - lift;
+      c.fillRect(wr.x, wr.y, wr.w, wr.h);
+      c.restore();
+      // a warm raking sheen from the lamp side across the slip, and a soft halo around it
+      c.save();
+      c.globalCompositeOperation = 'lighter';
+      const cx = wr.x + wr.w / 2, cy = wr.y + wr.h / 2;
+      const sh = c.createRadialGradient(wr.x + wr.w * 0.2, wr.y + wr.h * 0.3, 4, cx, cy, wr.w * 0.95);
+      sh.addColorStop(0, withAlpha(mixLab(m.halo, m.core, 0.3), 0.2 * lift));
+      sh.addColorStop(0.6, withAlpha(m.halo, 0.07 * lift));
+      sh.addColorStop(1, withAlpha(m.halo, 0));
+      c.fillStyle = sh;
+      c.fillRect(cx - wr.w, cy - wr.w, 2 * wr.w, 2 * wr.w);
+      c.restore();
+    }
+    c.save();
+    c.globalCompositeOperation = 'lighter';
+    const pool = c.createRadialGradient(sp.x, sp.y, 10, sp.x, sp.y, 200 * k);
+    pool.addColorStop(0, withAlpha(m.halo, 0.1));
+    pool.addColorStop(1, withAlpha(m.halo, 0));
+    c.fillStyle = pool;
+    c.fillRect(sp.x - 200 * k, sp.y - 200 * k, 400 * k, 400 * k);
+    // round-4 critic: the lamp pool's falloff reaches across the empty wall between the rack and the Wall, a soft warm
+    // path from the sheet toward W4 for the 'waiting' glint to travel along (it eases off as the push leaves the wide)
+    {
+      const pathK = 1 - 0.7 * win(t, b.wait1, b.law);
+      const wc = { x: wr.x + wr.w / 2, y: wr.y + wr.h / 2 };
+      const mx = lerp(sp.x, wc.x, 0.58), my = lerp(sp.y, wc.y, 0.58);
+      const R = Math.hypot(wc.x - sp.x, wc.y - sp.y) * 0.62;
+      c.save();
+      c.translate(mx, my);
+      c.rotate(Math.atan2(wc.y - sp.y, wc.x - sp.x));
+      c.scale(1, 0.62);
+      const pg = c.createRadialGradient(0, 0, 4, 0, 0, R);
+      pg.addColorStop(0, withAlpha(mixLab(m.halo, m.set, 0.25), 0.12 * pathK));
+      pg.addColorStop(0.6, withAlpha(m.halo, 0.05 * pathK));
+      pg.addColorStop(1, withAlpha(m.halo, 0));
+      c.fillStyle = pg;
+      c.fillRect(-R, -R, 2 * R, 2 * R);
+      c.restore();
+    }
+    // round-3 review: the lamp's pool rises on the W4 slip to ≈ 0.5 for 0.6 s around the 'waiting' glint, so the eye
+    // finds the slip in the wide (it sits at the frame's right edge)
+    const fp = win(t, b.florence - 0.3, b.florence - 0.1) * (1 - win(t, b.florence + 0.3, b.florence + 0.55));
+    if (fp > 0.01) {
+      const cx = wr.x + wr.w / 2, cy = wr.y + wr.h / 2, R = Math.max(wr.w, wr.h) * 1.15;
+      const pg = c.createRadialGradient(cx, cy, R * 0.15, cx, cy, R);
+      pg.addColorStop(0, withAlpha(mixLab(m.halo, m.core, 0.35), 0.5 * fp));
+      pg.addColorStop(0.55, withAlpha(m.halo, 0.2 * fp));
+      pg.addColorStop(1, withAlpha(m.halo, 0));
+      c.fillStyle = pg;
+      c.fillRect(cx - R, cy - R, 2 * R, 2 * R);
+    }
+    // the W4 pin's glint on 'waiting' rides over the falloff (the slip itself is lifted out of it above)
+    const g1 = Math.exp(-Math.pow((t - b.florence - 0.15) / 0.22, 2));
+    if (g1 > 0.01) {
+      const pp = toScreen(LAYERS.L4, cam, W4_PIN.x, W4_PIN.y);
+      const gg = c.createRadialGradient(pp.x, pp.y, 1, pp.x, pp.y, 26);
+      gg.addColorStop(0, withAlpha(mixLab(m.core, '#ffffff', 0.5), 0.9 * g1));
+      gg.addColorStop(1, withAlpha(m.halo, 0));
+      c.fillStyle = gg;
+      c.fillRect(pp.x - 26, pp.y - 26, 52, 52);
+      c.strokeStyle = withAlpha(mixLab(m.core, '#ffffff', 0.6), 0.8 * g1);
+      c.lineWidth = 1.1;
+      c.beginPath();
+      c.moveTo(pp.x - 22 * g1, pp.y);
+      c.lineTo(pp.x + 22 * g1, pp.y);
+      c.moveTo(pp.x, pp.y - 15 * g1);
+      c.lineTo(pp.x, pp.y + 15 * g1);
+      c.stroke();
+    }
+    c.restore();
+  });
 }
 
-/** the sheet's turn on 'bigger': tilt back (sy, persp) and a half turn about its vertical axis (cos), 6.40 → 7.05 s */
+/** the sheet's tilt on 'bigger': it tips back about its foot (sy, persp), 6.40 → 7.05 s. Round-2 revise: NO turn about
+ *  the vertical axis any more: the x axis keeps its sense ('compute →' stays readable on the tilting paper), so the
+ *  roofline that rises out of it reads as 'further right = bigger' */
 function flipAt(t: number, b: B): { sy: number; persp: number; cos: number; u: number } {
   const u = sm((t - b.tilt0) / 0.65);
-  return { sy: 1 - 0.38 * u, persp: 0.6 * u, cos: Math.cos(Math.PI * u), u };
+  return { sy: 1 - 0.38 * u, persp: 0.6 * u, cos: 1, u };
 }
 /** a sheet point (L4 world) after the sheet's tilt + turn transform (mirrors sheet()) */
 function sheetPt(p: Pt, t: number, b: B): Pt {
@@ -322,12 +612,15 @@ const ROOF_Z = { x: TALL.x + TALL.w, y: GROUND - TALL.storeys * STOREY };
  * glides onto the city's roofline as the board gives way to the night, and sinks into the rooftops once they rise.
  */
 function matchStroke(c: C, m: PaintEnv['mood'], t: number, b: B) {
-  if (t < b.tilt0 || t > b.rise1 + 1.2) return;
+  // round-4 critic: the ruled line holds as the sheet's own dark ink until tilt0 + 0.2 s; this stroke takes over there
+  // (its ink edge lying exactly on the ruled line), and its light comes up only as the paper goes visibly edge-on
+  if (t < b.tilt0 + 0.2 || t > b.rise1 + 1.2) return;
   const a = 1 - win(t, b.rise1 + 0.5, b.rise1 + 1.2);
+  const lit = win(t, b.tilt0 + 0.3, b.tilt0 + 0.6);
   const bc = boardCam(t, b), cc = cityCam(t, b);
-  // the turned sheet's low end is the ruled line's END (b), its high end the START (a)
-  const p0 = toScreen(LAYERS.L4, bc, ...xy(sheetPt(LINE.b, t, b)));
-  const p1 = toScreen(LAYERS.L4, bc, ...xy(sheetPt(LINE.a, t, b)));
+  // left stays left: the ruled line's START (a) becomes the first, lowest roof; its END (b) the tallest roof
+  const p0 = toScreen(LAYERS.L4, bc, ...xy(sheetPt(LINE.a, t, b)));
+  const p1 = toScreen(LAYERS.L4, bc, ...xy(sheetPt(LINE.b, t, b)));
   const q0 = toScreen(LAYERS.L4, cc, ROOF_A.x, ROOF_A.y);
   const q1 = toScreen(LAYERS.L4, cc, ROOF_Z.x, ROOF_Z.y);
   const u = sm((t - b.city + 0.05) / 0.5);
@@ -337,15 +630,19 @@ function matchStroke(c: C, m: PaintEnv['mood'], t: number, b: B) {
   c.lineCap = 'round';
   c.globalAlpha = a;
   // on the paper the stroke keeps its ink edge (so it reads on the cream sheet); on the night sky it is pure light
-  c.strokeStyle = withAlpha('#1d2236', 0.9 * (1 - u));
-  c.lineWidth = 4.2;
+  c.strokeStyle = withAlpha('#1d2236', (1 - 0.1 * lit) * (1 - u));
+  c.lineWidth = 4.6;
   c.beginPath();
   c.moveTo(A.x, A.y);
   c.lineTo(Z.x, Z.y);
   c.stroke();
+  if (lit <= 0.003) {
+    c.restore();
+    return;
+  }
   for (const [lw, col, al] of [[9, m.core, 0.16], [4, m.core, 0.45], [2.2, mixLab(m.core, '#ffffff', 0.55), 1]] as const) {
     c.globalCompositeOperation = 'lighter';
-    c.strokeStyle = withAlpha(col, al);
+    c.strokeStyle = withAlpha(col, al * lit);
     c.lineWidth = lw;
     c.beginPath();
     c.moveTo(A.x, A.y);
@@ -358,10 +655,10 @@ const xy = (p: Pt): [number, number] => [p.x, p.y];
 
 /** the ruling's progress 0..1 (shared by the ink and the nib, so the stroke always ends at the nib) */
 function inkAt(tq: number, b: B): number {
-  return clamp01((tq - (b.law - 0.8)) / 0.8);
+  return clamp01((tq - b.rule0) / (b.law - b.rule0));
 }
 function nibAt(tq: number, b: B): Pt {
-  const r0 = b.law - 0.8;
+  const r0 = b.rule0;
   if (tq < r0) {
     const u = sm((tq - b.pen0) / (r0 - b.pen0));
     return { x: lerp(LINE.a.x + 90, LINE.a.x, u), y: lerp(LINE.a.y + 150, LINE.a.y, u) };
@@ -420,7 +717,23 @@ function pen(c: C, env: PaintEnv, nib: Pt) {
 }
 
 /** the sheet of log-log paper at (cx, cy) (centre), scaleY sy (1 → 0: tilting back), the line inked to `ink` */
-function sheet(c: C, env: PaintEnv, cx: number, cy: number, sy: number, ink: number, gleam: number, persp = 0, flip = 1) {
+/** '10' with a raised exponent, at (x, baseline y), centred or right-aligned */
+function pow10(c: C, x: number, y: number, e: number, align: 'center' | 'right') {
+  const big = `500 9.5px ${FONT.mono}`, small = `500 7px ${FONT.mono}`;
+  const es = e < 0 ? `\u2212${-e}` : `${e}`;
+  c.font = big;
+  const w1 = c.measureText('10').width;
+  c.font = small;
+  const w2 = c.measureText(es).width;
+  const x0 = align === 'center' ? x - (w1 + w2 + 0.6) / 2 : x - (w1 + w2 + 0.6);
+  c.textAlign = 'left';
+  c.font = big;
+  c.fillText('10', x0, y);
+  c.font = small;
+  c.fillText(es, x0 + w1 + 0.6, y - 4.2);
+}
+
+function sheet(c: C, env: PaintEnv, cx: number, cy: number, sy: number, ink: number, gleam: number, persp = 0, flip = 1, axisLit = 0) {
   const m = env.mood;
   c.save();
   c.translate(cx, cy + SHEET.h * 0.5 * (1 - sy));
@@ -479,9 +792,27 @@ function sheet(c: C, env: PaintEnv, cx: number, cy: number, sy: number, ink: num
     c.font = `500 17px ${FONT.mono}`;
     c.textBaseline = 'alphabetic';
     c.textAlign = 'left';
-    c.fillText('error ↓ (log scale)', PLOT.x0 - 4, PLOT.y0 - 9);
+    c.fillText('error (log scale)', PLOT.x0 - 16, PLOT.y0 - 9);
     c.textAlign = 'right';
-    c.fillText('(log scale) compute →', PLOT.x1 + 6, PLOT.y1 + 24);
+    // round-2 revise: 'compute →' catches the lamp as the paper tips back, so the x axis's sense carries into the city
+    if (axisLit > 0.01) {
+      c.save();
+      c.globalCompositeOperation = 'lighter';
+      const g = c.createRadialGradient(PLOT.x1 - 50, PLOT.y1 + 30, 4, PLOT.x1 - 50, PLOT.y1 + 30, 90);
+      g.addColorStop(0, withAlpha(m.core, 0.4 * axisLit));
+      g.addColorStop(1, withAlpha(m.core, 0));
+      c.fillStyle = g;
+      c.fillRect(PLOT.x1 - 140, PLOT.y1 + 14, 160, 30);
+      c.restore();
+    }
+    c.fillText('model size (log scale) →', PLOT.x1 + 6, PLOT.y1 + 36);
+    // round-2 revise: decade numerals on both axes, so 'eight powers of ten across' is SEEN (ticks are graph texture;
+    // the axis names above carry the reading)
+    textRole(c, 'texture', () => {
+      c.fillStyle = withAlpha('#2a3d3a', 0.85);
+      for (let d = 0; d <= DEC_X; d++) pow10(c, PLOT.x0 + (d / DEC_X) * W, PLOT.y1 + 13.5, d, 'center');
+      for (let d = 0; d <= DEC_Y; d++) pow10(c, PLOT.x0 - 3, PLOT.y1 - (d / DEC_Y) * H + 3.5, d - DEC_Y, 'right');
+    });
   }
   // the ruled line (fountain-pen ink), drawn under the nib
   if (ink > 0) {
@@ -501,11 +832,13 @@ function sheet(c: C, env: PaintEnv, cx: number, cy: number, sy: number, ink: num
       c.restore();
     }
   }
-  // the pin
+  // the pin: at the top right, clear of the y-axis lettering (round-3 review: at top centre it covered the 's' of
+  // 'scale')
   c.fillStyle = mixLab(m.halo, m.set, 0.35);
   c.beginPath();
-  c.arc(SHEET.x, y0 + 7, 3.6, 0, Math.PI * 2);
+  c.arc(x0 + SHEET.w - 18, y0 + 7, 3.6, 0, Math.PI * 2);
   c.fill();
+  cardProbe(c, 'ch11-s05/loglog', x0, y0, SHEET.w, SHEET.h, 1, 1);
   c.restore();
 }
 
@@ -522,7 +855,7 @@ function paintCity(f: Frame, t: number, b: B) {
   const cam = cityCam(t, b);
   f.camera(cam);
   const tq = tq12(t);
-  const all = win(t, b.lights - 0.04, b.lights + 0.1);
+  const all = win(t, b.lights - 0.085, b.lights);
   f.backlight({ sunX: 900, sunY: 560, sunRadius: 600, intensity: 0.7 });
   f.layer('L1', (c, env) => {
     const r = overscan(LAYERS.L1, CITY_CAMS, 60);
@@ -532,6 +865,30 @@ function paintCity(f: Frame, t: number, b: B) {
       skyline(cc, { style: 'megacity', x0: r.x, x1: r.x + r.w, y: 560, height: 170, seed: 31, lit: 0.12, ground: 400 }, env);
     })(c, r.x, r.y);
   });
+  // round-4 critic (teaching): the ghost of the paper's DESCENDING ruled line in the sky, pale amber ink at ≈25 %, up on
+  // 'lower' and gone by 'G': size rising (the roofline), error falling (this line), crossing as the law is said
+  const ghost = win(t, b.lower - 0.15, b.lower + 0.2) * (1 - win(t, b.lights - 0.45, b.lights));
+  if (ghost > 0.004) {
+    f.layer('L2', (c, env) => {
+      const col = mixLab('#f0c88a', env.mood.haze, 0.2);
+      const { a, z, k } = GHOST;
+      c.save();
+      c.lineCap = 'round';
+      c.globalAlpha = ghost;
+      // the ink line drawn on as a ruling would be (left to right over 0.35 s), a faint bloom under it
+      const u = sm(clamp01((t - b.lower + 0.15) / 0.35));
+      const zx = lerp(a.x, z.x, u), zy = lerp(a.y, z.y, u);
+      for (const [lw, al] of [[11, 0.07], [3.2, 0.26]] as const) {
+        c.strokeStyle = withAlpha(col, al);
+        c.lineWidth = lw / k;
+        c.beginPath();
+        c.moveTo(a.x, a.y);
+        c.lineTo(zx, zy);
+        c.stroke();
+      }
+      c.restore();
+    });
+  }
   f.fog({ yCenter: 0.62 * 720, height: 0.4 * 720, alpha: 0.24, drift: 6 });
   f.layer('L3', (c, env) => {
     const r = overscan(LAYERS.L3, CITY_CAMS, 60);
@@ -546,25 +903,123 @@ function paintCity(f: Frame, t: number, b: B) {
     c.fillStyle = env.fill('ink');
     c.fillRect(r.x, GROUND, r.w, r.y + r.h - GROUND);
     // the towers rise on twos (6.7 → 7.6 s) to meet the ruled line, which ends lying ON the rooftops, then sinks into them
+    // round-2 revise: the roofline GROWS left to right, the same way the x axis ran (further right = bigger)
     const rise = clamp01((tq - b.city + 0.3) / (b.rise1 - b.city + 0.3));
     TOWERS.forEach((tw, i) => {
-      const local = clamp01(rise * 1.5 - (i / TOWERS.length) * 0.5);
+      const local = clamp01(rise * 1.9 - (i / (TOWERS.length - 1)) * 0.9);
       const st = Math.round(tw.storeys * sm(local));
       if (st <= 0) return;
-      tower(c, env, tw, st, all, i === TOWERS.length - 1);
+      // round-3 review (paper cut, not a bar chart): each cut-out stands a hair off true, ≤ 0.3°, about its foot (the
+      // tallest stays plumb: its window and plate are framed closely)
+      const tilt = i === TOWERS.length - 1 ? 0 : hash1(i, 13) * 0.3 * (Math.PI / 180);
+      c.save();
+      c.translate(tw.x + tw.w / 2, GROUND);
+      c.rotate(tilt);
+      c.translate(-(tw.x + tw.w / 2), -GROUND);
+      tower(c, env, tw, st, all, i === TOWERS.length - 1, i >= TOWERS.length - 3);
+      c.restore();
     });
     // (the ruled line over the rising roofs is the screen pass's single match stroke)
-    // the brass plate at the tallest tower's foot
-    plate(c, env, all);
+    // the brass plate at the tallest tower's foot: dark texture until 'G', then it catches the lamp with the windows
+    plate(c, env, t, b);
     // the few-shot window, drawn large inside its frame when the camera is near it
     fewShot(c, env, t, b);
   });
   f.rim({ x: 0, y: -1 });
   // the spire's light (the match cut's point)
   f.practical({ x: SPIRE.x, y: SPIRE.y, kind: 'led', seed: 96, intensity: 0.4 + 0.6 * all, radius: 22 });
+  // round-2 revise: a near rooftop (parapet, a water tank on its legs, a vent stack), soft across the bottom of the
+  // frame, so the slow move slides three planes; the push into the window carries the camera past it
+  // (as the camera pushes toward the plate and the window the roof slides down and out under the lens, so it never
+  // covers the plate)
+  if (cam.z < 200) {
+    f.layer('L5', (c, env) => {
+      const k = CITY_NEAR.k;
+      const w = 1500 / k, h = 260 / k;
+      f.cached(`${ID}/city/L5/${env.mood.id}`, Math.ceil(w) + 4, Math.ceil(h) + 4, (cc) => {
+        cc.scale(1 / k, 1 / k);
+        cc.fillStyle = env.fill('fg');
+        // the parapet: a low wall with coping, stepping down at the right (its coping just over the towers' feet)
+        cc.fillRect(0, 150, 820, 120);
+        cc.fillRect(800, 162, 700, 108);
+        cc.fillRect(-10, 138, 820, 16);
+        cc.fillRect(800, 154, 700, 10);
+        // the water tank on its legs (left third), a conical cap
+        const tx = 110;
+        cc.fillRect(tx, 40, 110, 80);
+        cc.beginPath();
+        cc.moveTo(tx - 8, 42);
+        cc.lineTo(tx + 55, 0);
+        cc.lineTo(tx + 118, 42);
+        cc.closePath();
+        cc.fill();
+        for (const lx of [tx + 8, tx + 50, tx + 92]) cc.fillRect(lx, 118, 8, 34);
+        cc.fillRect(tx - 4, 124, 118, 5);
+        // a railing at the far right (clear of the brass plate)
+        for (let x = 1290; x < 1500; x += 46) cc.fillRect(x, 124, 4, 40);
+        cc.fillRect(1290, 122, 210, 4);
+        // the city's cyan catching the coping's top edge
+        cc.fillStyle = withAlpha(env.mood.rim, 0.45);
+        cc.fillRect(-10, 137, 820, 2);
+        cc.fillRect(800, 153, 700, 1.5);
+        cc.fillRect(tx - 6, 40, 2, 80);
+      }, { blur: 6 })(c, CITY_NEAR.x, CITY_NEAR.y + (Math.max(0, cam.z - CITY1.z) * 1.4) / CITY_NEAR.k);
+      // round-3 review: a near parapet corner at the lower RIGHT (a chimney stack and a corbelled cornice), blurred, so
+      // the city has a real foreground plane on both sides of the frame (clear of the brass plate, right of it)
+      const kr = CITY_NEAR.k;
+      const wr = 340 / kr, hr = 300 / kr;
+      const at = toLayer(LAYERS.L5, CITY0, 985, 492);
+      f.cached(`${ID}/city/L5r/${env.mood.id}`, Math.ceil(wr) + 4, Math.ceil(hr) + 4, (cc) => {
+        cc.scale(1 / kr, 1 / kr);
+        cc.fillStyle = mixLab(env.fill('fg'), '#000000', 0.2);
+        // the cornice: a stepped ledge running off frame right, its corbels underneath
+        cc.fillRect(40, 150, 300, 150);
+        cc.fillRect(26, 138, 314, 14);
+        cc.fillRect(18, 128, 322, 10);
+        for (let x = 40; x < 340; x += 34) cc.fillRect(x, 152, 14, 12);
+        // the chimney stack with two pots
+        cc.fillRect(170, 36, 74, 104);
+        cc.fillRect(162, 28, 90, 12);
+        cc.fillRect(180, 6, 18, 24);
+        cc.fillRect(216, 12, 18, 18);
+        // the city's cyan rim on the windward edges
+        cc.fillStyle = withAlpha(env.mood.rim, 0.42);
+        cc.fillRect(18, 127, 322, 2);
+        cc.fillRect(162, 27, 90, 2);
+        cc.fillRect(169, 36, 2, 96);
+      }, { blur: 6 })(c, at.x, at.y + (Math.max(0, cam.z - CITY1.z) * 1.4) / kr);
+    });
+  }
 }
 
-function tower(c: C, env: PaintEnv, tw: { x: number; w: number; storeys: number; roof: number }, st: number, all: number, tall: boolean) {
+type Tower = { x: number; w: number; storeys: number; roof: number };
+/** round-4 critic (paper cut, not a bar chart): a 1-2 px hand-cut wobble on each facade edge, smooth along the height,
+ *  seeded per tower and side */
+function wob(tw: Tower, side: number, r: number): number {
+  // the three towers the camera pushes in on (≈4×) keep a finer cut, so the close frames read as paper, not jelly
+  const amp = tw.x >= TOWERS[TOWERS.length - 3].x ? 0.7 : 1.5;
+  return amp * (0.75 * vnoise(r / 9 + side * 37.3, ((tw.x * 7) | 0) + side * 101) + 0.25 * vnoise(r / 2.2 + side * 11.1, ((tw.x * 5) | 0) + side * 57));
+}
+/** the facade's left (side 0) or right (side 1) cut edge from the foot up to storey `st`, with the setbacks */
+function edgePts(tw: Tower, st: number, inset: (r: number) => number, side: 0 | 1): [number, number][] {
+  const pts: [number, number][] = [];
+  const ex = (ins: number) => (side === 0 ? tw.x + ins : tw.x + tw.w - ins);
+  for (let r = 0; r <= st; r++) {
+    const y = GROUND - r * STOREY;
+    const below = inset(Math.max(0, r - 1)), above = inset(Math.min(st - 1, r));
+    const w = wob(tw, side, r);
+    pts.push([ex(below) + w, y]);
+    if (above !== below && r < st) pts.push([ex(above) + w, y]);
+  }
+  return pts;
+}
+function strokePts(c: C, pts: [number, number][]) {
+  c.beginPath();
+  pts.forEach(([x, y], i) => (i ? c.lineTo(x, y) : c.moveTo(x, y)));
+  c.stroke();
+}
+
+function tower(c: C, env: PaintEnv, tw: Tower, st: number, all: number, tall: boolean, hero = false) {
   const m = env.mood;
   const top = GROUND - st * STOREY;
   const done = st === tw.storeys;
@@ -573,23 +1028,63 @@ function tower(c: C, env: PaintEnv, tw: { x: number; w: number; storeys: number;
   const sb2 = tall ? Math.floor(tw.storeys * 0.9) : tw.storeys;
   const inset = (r: number) => (r >= sb2 ? tw.w * 0.24 : r >= sb1 ? tw.w * 0.12 : 0);
   c.fillStyle = env.fill('ink');
-  for (let r = 0; r < st; r += 1) {
-    const ins = inset(r);
-    if (r === 0 || inset(r) !== inset(r - 1)) {
-      // draw from this row to the next change as one block
-      let r2 = r;
-      while (r2 < st && inset(r2) === ins) r2++;
-      c.fillRect(tw.x + ins, GROUND - r2 * STOREY, tw.w - 2 * ins, (r2 - r) * STOREY);
-    }
+  if (tall) {
+    // the PODIUM: a wider two-tier base the brass plate is mounted on
+    const ph = Math.min(PODIUM.h, st * STOREY);
+    c.fillRect(PODIUM.x, GROUND - ph, PODIUM.w, ph);
+    if (st * STOREY > PODIUM.h + 8) c.fillRect(PODIUM.x + 6, GROUND - PODIUM.h - 8, PODIUM.w - 12, 8);
   }
+  // the facade as ONE cut-paper silhouette: up the left edge, across the roof, down the right edge (each edge nicked)
+  const L = edgePts(tw, st, inset, 0), R = edgePts(tw, st, inset, 1);
+  c.beginPath();
+  L.forEach(([x, y], i) => (i ? c.lineTo(x, y) : c.moveTo(x, y)));
+  for (let i = R.length - 1; i >= 0; i--) c.lineTo(R[i][0], R[i][1]);
+  c.closePath();
+  c.fill();
   if (done) {
     const ins = inset(st - 1);
     const x0 = tw.x + ins, w = tw.w - 2 * ins, cx = tw.x + tw.w / 2;
     if (tall) {
-      // a stepped crown and a tall mast with its light
+      // round-4 critic: the match-cut anchor gets a CUT-PAPER CROWN: the stepped crown, a pointed sunburst arch pierced
+      // with radial slots (the sky shows through), finials on the lower step's corners, and the mast with an orb and
+      // its light at top - 52 (the match point)
       c.fillRect(x0 + 6, top - 10, w - 12, 10);
       c.fillRect(x0 + 14, top - 18, w - 28, 8);
-      c.fillRect(cx - 2, top - 52, 4, 34);
+      for (const fx of [x0 + 6, x0 + w - 6]) {
+        c.beginPath();
+        c.moveTo(fx - 3, top - 10);
+        c.lineTo(fx, top - 19);
+        c.lineTo(fx + 3, top - 10);
+        c.fill();
+      }
+      const aw = (w - 28) / 2 + 3, ah = 24, ay = top - 18;
+      c.beginPath();
+      c.moveTo(cx - aw, ay);
+      c.quadraticCurveTo(cx - aw * 0.98, ay - ah * 0.82, cx, ay - ah);
+      c.quadraticCurveTo(cx + aw * 0.98, ay - ah * 0.82, cx + aw, ay);
+      c.closePath();
+      for (let i = 0; i < 5; i++) {
+        const th = Math.PI + (Math.PI * (i + 1)) / 6;
+        const re = 1 / Math.hypot(Math.cos(th) / aw, Math.sin(th) / ah);
+        const r1 = 0.32 * re, r2 = 0.8 * re, da = 0.075;
+        c.moveTo(cx + Math.cos(th - da * 0.4) * r1, ay - 1 + Math.sin(th - da * 0.4) * r1);
+        c.lineTo(cx + Math.cos(th - da) * r2, ay - 1 + Math.sin(th - da) * r2);
+        c.lineTo(cx + Math.cos(th + da) * r2, ay - 1 + Math.sin(th + da) * r2);
+        c.lineTo(cx + Math.cos(th + da * 0.4) * r1, ay - 1 + Math.sin(th + da * 0.4) * r1);
+        c.closePath();
+      }
+      c.fill('evenodd');
+      c.fillRect(cx - 1.6, top - 52, 3.2, 12);
+      c.beginPath();
+      c.arc(cx, top - 44, 2.6, 0, Math.PI * 2);
+      c.fill();
+      // the lamp's warm edge on the arch's windward (left) curve
+      c.strokeStyle = withAlpha(mixLab('#f0c88a', m.rim, 0.35), 0.6);
+      c.lineWidth = 1.2;
+      c.beginPath();
+      c.moveTo(cx - aw + 0.6, ay - 0.5);
+      c.quadraticCurveTo(cx - aw * 0.98 + 0.6, ay - ah * 0.82 + 0.4, cx, ay - ah + 0.6);
+      c.stroke();
     } else if (tw.roof === 1) {
       // a water tank on legs
       const tx = x0 + w * 0.55;
@@ -617,8 +1112,28 @@ function tower(c: C, env: PaintEnv, tw: { x: number; w: number; storeys: number;
       c.fillRect(x0 + w * 0.48, top - 22, 2, 13);
     }
   }
-  // windows: one row per storey (the tallest: 96 rows, one per layer), each a bank of weights; on 'G' all at once
+  // round-2 revise (hero + its two neighbours): paper grain over the facade, and a 1.5-2 px cyan rim on the lit (left,
+  // city-glow) cut edge
+  if (hero) {
+    c.save();
+    c.beginPath();
+    for (let r = 0; r < st; r++) c.rect(tw.x + inset(r), GROUND - (r + 1) * STOREY, tw.w - 2 * inset(r), STOREY + 0.5);
+    c.clip();
+    paperTexture(c, { x: tw.x - 4, y: top - 4, w: tw.w + 8, h: GROUND - top + 8 }, { alpha: 0.9, offset: { x: tw.x * 3, y: 0 } });
+    c.restore();
+    c.strokeStyle = withAlpha(mixLab(m.rim, m.core, 0.4), 0.75);
+    c.lineWidth = 1.7;
+    c.save();
+    c.translate(0.85, 0);
+    strokePts(c, L);
+    c.restore();
+  }
+  // windows: one row per storey (the tallest: 96 rows, one per layer), each a bank of weights; on 'G' all at once,
+  // each pane at its own brightness (0.75-1.0) so the grid reads as lit rooms, not a pattern. Round-4 critic: the panes
+  // are hand-cut (a seeded few tenths of a px off true), and ≈8 % of them per tower are DARK until 'G' (solid paper, no
+  // glass glow), so the all-at-once light on 'G' visibly changes the pattern
   const lit = mixLab(m.halo, m.core, 0.35);
+  const sx = (tw.x * 3) | 0;
   for (let r = 0; r < st; r++) {
     const ins = inset(r);
     const ww = tw.w - 2 * ins;
@@ -626,44 +1141,89 @@ function tower(c: C, env: PaintEnv, tw: { x: number; w: number; storeys: number;
     const cw = (ww - 8) / cols;
     const y = GROUND - (r + 1) * STOREY + 1.5;
     for (let k = 0; k < cols; k++) {
-      const pre = hash1(r * 31 + k * 7 + tw.x, 3) > 0.82 ? 0.3 : 0.05;
-      const a = Math.max(pre, all * (0.8 + 0.2 * (hash1(r * 13 + k + tw.x, 4) * 0.5 + 0.5)));
+      const dark = hash1(r * 17 + k * 29 + sx, 6) > 0.84;
+      const pre = dark ? 0 : hash1(r * 31 + k * 7 + sx, 3) > 0.82 ? 0.3 : 0.06;
+      const h = hash1(r * 13 + k * 3 + sx, 4) * 0.5 + 0.5;
+      const a = Math.max(pre, all * (0.72 + 0.28 * h * h));
+      if (a <= 0.004) continue;
+      const jx = 0.35 * hash1(r * 7 + k * 11 + sx, 8), jh = 0.4 * hash1(r * 5 + k * 13 + sx, 9);
       c.fillStyle = withAlpha(lit, a);
-      c.fillRect(tw.x + ins + 4 + k * cw + 1, y, cw - 2.2, STOREY - 2.6);
+      c.fillRect(tw.x + ins + 4 + k * cw + 1 + jx, y, cw - 2.2, STOREY - 2.6 + jh);
     }
   }
-  c.fillStyle = withAlpha(m.rim, 0.25);
-  c.fillRect(tw.x + inset(st - 1), top, tw.w - 2 * inset(st - 1), 1);
+  c.fillStyle = withAlpha(m.rim, hero ? 0.55 : 0.25);
+  c.fillRect(tw.x + inset(st - 1), top, tw.w - 2 * inset(st - 1), hero ? 1.6 : 1);
+  // round-3 review: a 1-2 px WARM rim on the windward (left) roof edges, the cut paper's edge catching the lamp the
+  // sheet came from: along the roof's left half, down the facade's left (wobbled) edge a few storeys, and on each
+  // setback ledge
+  if (done) {
+    const warm = withAlpha(mixLab('#f0c88a', m.rim, 0.35), 0.7);
+    c.fillStyle = warm;
+    const ins = inset(st - 1);
+    c.fillRect(tw.x + ins, top - 0.4, (tw.w - 2 * ins) * 0.55, 1.5);
+    c.strokeStyle = warm;
+    c.lineWidth = 1.5;
+    c.save();
+    c.translate(0.35, 0);
+    strokePts(c, L.filter(([, y]) => y <= top + Math.min(st, 10) * STOREY + 0.01));
+    c.restore();
+    for (let r = 1; r < st; r++) {
+      if (inset(r) !== inset(r - 1)) c.fillRect(tw.x + inset(r - 1) + wob(tw, 0, r), GROUND - r * STOREY - 0.4, inset(r) - inset(r - 1) + 1, 1.4);
+    }
+  }
 }
 
-/** the brass plaque on the tallest tower's base (prop lettering), well above the bottom safe band */
-function plate(c: C, env: PaintEnv, all: number) {
+/** the brass plaque on the tallest tower's podium (prop lettering), well above the bottom safe band. Round-4 critic: it
+ *  stays DARK until 'G' (unlit brass at ≈30 % value, its lettering texture under the read threshold) and catches the
+ *  lamp over 0.25 s with the window snap, a one-frame glint running along its top edge */
+function plate(c: C, env: PaintEnv, t: number, b: B) {
   const m = env.mood;
   const x = PLATE.x, y = PLATE.y;
-  const w = TALL.w + 24, h = 52;
+  const w = TALL.w + 20, h = 48;
+  const lit = win(t, b.lights - 0.085, b.lights + 0.165);
   c.save();
-  c.fillStyle = withAlpha(m.ink, 0.9);
+  c.fillStyle = withAlpha(m.ink, 0.92);
   c.fillRect(x - w / 2 - 4, y - h / 2 - 4, w + 8, h + 8);
-  c.fillStyle = mixLab('#a8803e', m.set, 0.45 - 0.3 * all);
+  const unlit = mixLab(mixLab('#a8803e', m.set, 0.5), m.ink, 0.62);
+  const brass = mixLab('#a8803e', m.set, 0.15);
+  const face = mixLab(unlit, brass, lit);
+  c.fillStyle = face;
   c.fillRect(x - w / 2, y - h / 2, w, h);
-  c.strokeStyle = withAlpha(m.core, 0.3 + 0.5 * all);
+  c.strokeStyle = withAlpha(mixLab(m.core, face, 0.5), 0.12 + 0.68 * lit);
   c.lineWidth = 1.2;
   c.strokeRect(x - w / 2 + 4, y - h / 2 + 4, w - 8, h - 8);
-  c.fillStyle = mixLab('#2a1d0c', m.ink, 0.2);
-  c.font = `500 19px ${FONT.mono}`;
-  c.textAlign = 'center';
-  c.textBaseline = 'middle';
-  c.fillText('175 BILLION', x, y - 10);
-  c.fillText('WEIGHTS', x, y + 12);
-  if (all > 0) {
+  // the lettering: engraved, so in the dark it is only a faint texture a shade off the brass; it reads once lit
+  const inkCol = mixLab(face, mixLab('#2a1d0c', m.ink, 0.2), 0.18 + 0.82 * lit);
+  textRole(c, lit < 0.5 ? 'texture' : 'subject', () => {
+    c.fillStyle = inkCol;
+    c.font = `500 19px ${FONT.mono}`;
+    c.textAlign = 'center';
+    c.textBaseline = 'middle';
+    c.fillText('175 BILLION', x, y - 10);
+    c.fillText('WEIGHTS', x, y + 12);
+  });
+  cardProbe(c, 'ch11-s05/plate', x - w / 2, y - h / 2, w, h, lit, lit);
+  if (lit > 0) {
     c.globalCompositeOperation = 'lighter';
     const g = c.createLinearGradient(x - w / 2, 0, x + w / 2, 0);
-    const p = 0.2 + 0.6 * all;
+    const p = 0.2 + 0.6 * lit;
     g.addColorStop(Math.max(0, p - 0.2), withAlpha(m.core, 0));
-    g.addColorStop(p, withAlpha(m.core, 0.3 * all));
+    g.addColorStop(p, withAlpha(m.core, 0.3 * lit));
     g.addColorStop(Math.min(1, p + 0.2), withAlpha(m.core, 0));
     c.fillStyle = g;
     c.fillRect(x - w / 2, y - h / 2, w, h);
+    // the one-frame glint on the plate's top edge as it comes fully up
+    const g0 = b.lights + 0.17;
+    if (t >= g0 && t < g0 + 1 / 24) {
+      const gx = x - w * 0.2;
+      const rg = c.createRadialGradient(gx, y - h / 2, 0, gx, y - h / 2, 22);
+      rg.addColorStop(0, withAlpha(mixLab(m.core, '#ffffff', 0.6), 0.9));
+      rg.addColorStop(1, withAlpha(m.core, 0));
+      c.fillStyle = rg;
+      c.fillRect(gx - 22, y - h / 2 - 22, 44, 44);
+      c.fillStyle = withAlpha(mixLab(m.core, '#ffffff', 0.5), 0.85);
+      c.fillRect(x - w / 2, y - h / 2 - 0.6, w, 1.4);
+    }
   }
   c.restore();
 }
@@ -728,6 +1288,7 @@ function fewShot(c: C, env: PaintEnv, t: number, b: B) {
     c.stroke();
     c.fillStyle = mixLab('#efe9d2', m.halo, 0.15);
     c.fillRect(x0 + 5, sy, W - 10, SH);
+    cardProbe(c, `ch11-s05/strip${i}`, x0 + 5, sy, W - 10, SH, 1, 1);
     const [w1, w2] = FEW[i];
     c.fillStyle = '#1d2236';
     c.textAlign = 'right';
@@ -757,19 +1318,14 @@ function fewShot(c: C, env: PaintEnv, t: number, b: B) {
 // ================================================================================================= SHELF + WALL
 /** how strongly the new candle is being named (the kit's naming card): from the lighting to the crane */
 function nameK(t: number, b: B): number {
-  return win(t, b.cut + 0.35, b.cut + 0.85) * (1 - win(t, b.crane0 - 0.1, b.crane0 + 0.35));
+  return win(t, b.cut + 0.35, b.cut + 0.85) * (1 - win(t, b.wallCut - 0.45, b.wallCut - 0.05));
 }
 
 function shelfCam(t: number, b: B): Camera3 {
-  if (t < b.crane0) return mixCam(SHELF0, SHELF1, sm((t - b.cut - 1.2) / (b.crane0 - b.cut - 1.2)));
-  if (t < b.wall) {
-    // a slow start (cubic in-out over 1.5 s)
-    const x = clamp01((t - b.crane0) / (b.wall - b.crane0));
-    const u = x < 0.5 ? 4 * x * x * x : 1 - Math.pow(-2 * x + 2, 3) / 2;
-    const m = mixCam(SHELF1, WALL0, u);
-    return { ...m, z: m.z - 110 * Math.sin(Math.PI * u) };
-  }
-  return mixCam(WALL0, WALL1, sm((t - b.wall) / (b.D - b.wall)));
+  // the hold: an eased 4 % push toward the new candle from just after the flame is born, still easing as the shot cuts
+  if (t < b.wallCut) return mixCam(SHELF0, SHELF1, sm(clamp01((t - b.cut - 0.4) / (b.wallCut - b.cut - 0.4))));
+  // the Wall: cut in on wallW4, then a slow 3 % push in to the end (the W4 glint lands on w4glint)
+  return mixCam(WALL0, WALL1, sm((t - b.wallCut) / (b.D - b.wallCut)));
 }
 
 function paintShelfWall(f: Frame, t: number, b: B) {
@@ -778,23 +1334,96 @@ function paintShelfWall(f: Frame, t: number, b: B) {
   const mu = win(t, b.cut, b.cut + 1.0);
   if (mu < 1) f.setMood('candleAmber', { from: 'serverCyan', u: mu });
   studyRoom(f, { key: ID, cams: STUDY_CAMS, outside: { mood: 'serverCyan', kind: 'city', city: 0.5 } });
+  // round-4 critic: the shelf hold's far plane in its right half: the Wall of Forecasts' foot, soft in the haze (its cork
+  // face, the frame's lower moulding with a warm top edge toward the flame, two pin heads), ≈30 % up out of the wall
+  if (t < b.wallCut) {
+    f.layer('L2', (c, env) => {
+      const { a, z, k } = SHELF_FAR;
+      const w = z.x - a.x, h = z.y - a.y;
+      f.cached(`${ID}/shelfFar/${env.mood.id}`, Math.ceil(w) + 4, Math.ceil(h) + 4, (cc) => {
+        // authored in screen px (710 × 650 at SHELF0), origin = screen (690, 90)
+        cc.scale(1 / k, 1 / k);
+        const m = env.mood;
+        const dark = mixLab(env.fill('ink'), m.haze, 0.3);
+        const warm = mixLab(m.halo, m.set, 0.3);
+        // the Wall's cork face (behind the label: it deepens the plate's ground), its lower edge a hair off level
+        cc.globalAlpha = 0.4;
+        cc.fillStyle = dark;
+        cc.beginPath();
+        cc.moveTo(30, -10);
+        cc.lineTo(720, -10);
+        cc.lineTo(720, 322);
+        cc.lineTo(30, 308);
+        cc.closePath();
+        cc.fill();
+        // its lower frame moulding: a heavy band and a bead under it
+        cc.globalAlpha = 0.55;
+        cc.beginPath();
+        cc.moveTo(18, 304);
+        cc.lineTo(720, 318);
+        cc.lineTo(720, 344);
+        cc.lineTo(18, 330);
+        cc.closePath();
+        cc.fill();
+        cc.fillRect(30, 338, 690, 5);
+        cc.globalAlpha = 1;
+        // the moulding's top edge catching the new flame from the left, fading to the right
+        const eg = cc.createLinearGradient(18, 0, 720, 0);
+        eg.addColorStop(0, withAlpha(warm, 0.8));
+        eg.addColorStop(1, withAlpha(warm, 0.08));
+        cc.strokeStyle = eg;
+        cc.lineWidth = 2;
+        cc.beginPath();
+        cc.moveTo(18, 304.5);
+        cc.lineTo(720, 318.5);
+        cc.stroke();
+        // two brass pin heads of the Wall's lowest row
+        cc.fillStyle = withAlpha(mixLab(m.halo, m.set, 0.4), 0.5);
+        for (const px of [250, 540]) {
+          cc.beginPath();
+          cc.arc(px, 262 + px * 0.02, 4.5, 0, Math.PI * 2);
+          cc.fill();
+        }
+        // under it, the study wall's dado rail and two raised panels: lit top-left edges, shadowed bottom-right edges
+        cc.fillStyle = withAlpha(dark, 0.45);
+        cc.fillRect(0, 404, 720, 12);
+        cc.fillStyle = withAlpha(warm, 0.32);
+        cc.fillRect(0, 403, 720, 1.6);
+        for (const [px, pw] of [[60, 270], [372, 270]] as const) {
+          const py = 452, ph = 200;
+          cc.fillStyle = withAlpha(dark, 0.3);
+          cc.fillRect(px, py, pw, ph);
+          cc.fillStyle = withAlpha(warm, 0.28);
+          cc.fillRect(px, py, pw, 1.6);
+          cc.fillRect(px, py, 1.6, ph);
+          cc.fillStyle = withAlpha(dark, 0.6);
+          cc.fillRect(px, py + ph - 2, pw, 2);
+          cc.fillRect(px + pw - 2, py, 2, ph);
+        }
+      }, { blur: 3 })(c, a.x, a.y);
+    });
+  }
   const g2 = Math.exp(-Math.pow((t - b.glint - 0.1) / 0.28, 2));
   const wl = 0.95 * win(t, b.wall - 0.7, b.wall);
+  textureCase(f, 'end', true);
   studyCase(f, {
     shot: ID,
     when: 'end',
     key: ID,
-    board: { state: ch11Board(ID, 'end') },
+    board: false,
     flames: false,
     // the candle naming rule (kit): the label comes forward beside the flame, horizontal, with its date range
     // ('lit 2020 · still burning'), and its neighbours dim; held from the lighting to the crane, so the kit card is
     // the candle's label (no duplicate of our own); the script's 'contested, as of October 2026' is set beneath
     // the kit's naming card is off: this shot sets the hero label itself (heroLabel, sized to the legibility audit)
-    shelf: { over: { scale: { flame: 1 } }, named: {} },
-    wall: { glint: { W4: g2 } },
+    shelf: false,
+    wall: { glint: { W4: 0 } },
     extra: (c, env) => {
       drawLineage(c, env);
       for (const g of [CARD19, CARD85]) drawQuoteCard(c, env, g, { light: poolAt(POOL, g.x - STUDY.board.x, g.y - STUDY.board.y) + 0.2, underline: 1 });
+      // the W4 slip re-laid over the kit's copy WITHOUT its small pin (which sat on the header line); the brass pin is
+      // drawn above the header after the light
+      if (t >= b.wallCut) drawSlip(c, W4_SLIP, { x: W4.x, y: W4.y, k: STUDY.wall.k, light: slotLight('W4'), glint: 0, pin: false }, env);
       // the W4 slip catches the light fully as the camera arrives
       if (wl > 0.01) {
         c.save();
@@ -808,59 +1437,118 @@ function paintShelfWall(f: Frame, t: number, b: B) {
         c.fillRect(W4.x - 150, W4.y - 150, 300, 300);
         c.restore();
       }
-      void W4_PIN;
+      // the W4 pin: brass, at the slip's top centre above its header; it glints on w4glint (the bookend)
+      if (t >= b.wallCut) w4Pin(c, env, g2, toScreen(LAYERS.L4, cam, 0, 0).k);
+      // W6's corner, half-lit in shadow (round-4 critic: it read as a blank dark card): from the cut, a 35 % lamp falloff
+      // warms its UPPER-LEFT corner over about a quarter of the slip, so its paper edge and a sliver of its typed line
+      // catch the light (texture: the words stay unreadable in the shadow beyond)
+      const w6 = win(t, b.wallCut - 0.01, b.wallCut + 0.35);
+      if (w6 > 0.01) {
+        const sw = 116 * 0.95, sh = 76 * 0.95;
+        const x0 = W6.x - sw / 2, y0 = W6.y - sh / 2;
+        const R = Math.hypot(sw, sh) * 0.5;
+        c.save();
+        c.globalAlpha *= w6;
+        // a soft 35 % lamp falloff from the corner: the lit slip re-laid through nested discs about the corner, each
+        // pass faint, so the light builds toward the corner and feathers out into the kit's own shadowed paper
+        const N = 12, pa = 1 - Math.pow(0.12, 1 / N);
+        for (let i = 0; i < N; i++) {
+          c.save();
+          c.beginPath();
+          c.arc(x0, y0, R * (0.74 - (0.66 * i) / (N - 1)), 0, Math.PI * 2);
+          c.clip();
+          c.globalAlpha *= pa;
+          textRole(c, 'texture', () => drawSlip(c, W6_SLIP, { x: W6.x, y: W6.y, k: STUDY.wall.k, light: 0.35, glint: 0, pin: false }, env));
+          c.restore();
+        }
+        // the lamp's warmth on the corner
+        c.globalCompositeOperation = 'lighter';
+        const wg = c.createRadialGradient(x0, y0, 2, x0, y0, R * 0.55);
+        wg.addColorStop(0, withAlpha(mixLab(env.mood.halo, env.mood.core, 0.2), 0.2));
+        wg.addColorStop(1, withAlpha(env.mood.halo, 0));
+        c.fillStyle = wg;
+        c.beginPath();
+        c.rect(x0, y0, sw, sh);
+        c.clip();
+        c.fillRect(x0, y0, sw, sh);
+        c.restore();
+        c.save();
+        c.globalAlpha *= w6;
+        // the paper's cut edge catching the lamp along the top and left
+        c.strokeStyle = withAlpha(mixLab(env.mood.halo, env.mood.core, 0.3), 0.5);
+        c.lineWidth = 1.1;
+        c.beginPath();
+        c.moveTo(x0 + sw * 0.42, y0 + 0.5);
+        c.lineTo(x0 + 0.5, y0 + 0.5);
+        c.lineTo(x0 + 0.5, y0 + sh * 0.5);
+        c.stroke();
+        c.restore();
+      }
     },
   });
+  const away = t >= b.wallCut ? 1 : 0;
+  // L5 (round-2 revise): a near candle out of focus at the bottom-left, a dark cut-paper stub with its scored rings
+  // catching a little of the new flame, and the shelf's near edge under it, so the macro has a foreground plane and
+  // the drift and crane slide it against the candles and the Wall
+  if (t < b.wallCut) {
+    f.layer('L5', (c, env) => {
+      const k = NEAR.k;
+      const w = 420 / k, h = 520 / k;
+      f.cached(`${ID}/L5candle/${env.mood.id}`, Math.ceil(w) + 4, Math.ceil(h) + 4, (cc) => {
+        cc.scale(1 / k, 1 / k);
+        // art origin = screen (-30, 250) on the shelf's first frame
+        cc.fillStyle = env.fill('fg');
+        // the stub: a tall wide candle body, its top cut level, a dark wick
+        cc.fillRect(70, 60, 150, 470);
+        cc.fillRect(143, 36, 4, 26);
+        // the shelf's near lip under it
+        cc.fillRect(0, 430, 420, 100);
+        // scored rings catching the new flame on the right edge, and the lip's lit edge
+        cc.fillStyle = withAlpha(env.mood.rim, 0.32);
+        for (let y = 80; y < 430; y += 22) cc.fillRect(196, y, 24, 2);
+        cc.fillStyle = withAlpha(env.mood.rim, 0.55);
+        cc.fillRect(218, 60, 3, 370);
+        cc.fillRect(0, 429, 420, 3);
+      }, { blur: 9 })(c, NEAR.x, NEAR.y);
+    });
+  }
+  // the new flame's falloff: the frame outside its pool sinks ≈40% darker while the shelf holds
+  const fall = (1 - away) * win(t, b.cut, b.cut + 0.6);
+  if (fall > 0.01) {
+    screenPass(f, (c) => {
+      const fs = toScreen(LAYERS.L4, cam, FLAME.x, FLAME.y);
+      const g = c.createRadialGradient(fs.x + 60, fs.y + 90, 90, fs.x + 60, fs.y + 90, 700);
+      g.addColorStop(0, withAlpha(f.mood.fg, 0));
+      g.addColorStop(0.6, withAlpha(f.mood.fg, 0.38 * fall));
+      g.addColorStop(1, withAlpha(f.mood.fg, 0.6 * fall));
+      c.fillStyle = g;
+      c.fillRect(-4, -4, 1288, 728);
+      // the cabinet's foot and the board's last card edge above the flame sink into the dark
+      const yb = Math.max(40, fs.y + 6);
+      const top = c.createLinearGradient(0, 0, 0, yb);
+      top.addColorStop(0, withAlpha(f.mood.fg, 0.9 * fall));
+      top.addColorStop(0.6, withAlpha(f.mood.fg, 0.72 * fall));
+      top.addColorStop(1, withAlpha(f.mood.fg, 0));
+      c.fillStyle = top;
+      c.fillRect(-4, -4, 1288, yb + 4);
+      // round-4 critic: one faint lamp shaft from the upper right, down across the candles, its streaks drifting
+      // through the music-only hold (soft, low: the new flame stays the one bright point)
+      const benv = (f as FilmFrame).env('L4');
+      godRays(c, { beams: [SHELF_BEAM], intensity: 0.32 * fall, streaks: 5, softness: 46, shimmer: 0.2, salt: 115 }, benv);
+      dustMotes(c, { area: { x: -20, y: -20, w: 1320, h: 760 }, count: 70, beam: SHELF_BEAM, brightness: 0.3 * fall, size: 0.9, salt: 116 }, benv);
+    });
+  }
+  // (the flames are lit AFTER the falloff passes, so the dark never dims a flame)
+  // round-2 revise: the new flame is the brightest point in frame; its older neighbours burn lower while the shelf
+  // holds (they come back up as the crane leaves for the Wall)
   for (const v of V1) {
     if (v.state !== 'live') continue;
     const p = candleFlame({ x: candleX(V1, v.id), y: STUDY.shelf.y, view: v, s: STUDY.shelf.s });
     const hero = v.id === 'scale';
     // the new flame flares as it is born from the roofline light, then settles
-    const k = hero ? 1 + 0.6 * Math.exp(-(t - b.cut) * 3) : 1;
-    f.practical({ x: p.x, y: p.y + 2, kind: 'candle', seed: 300 + v.slot * 7, intensity: 0.9 * k, radius: hero ? 52 : 40 });
+    const k = hero ? 1.15 + 0.6 * Math.exp(-(t - b.cut) * 3) : 0.5 + 0.4 * away;
+    f.practical({ x: p.x, y: p.y + 2, kind: 'candle', seed: 300 + v.slot * 7, intensity: 0.9 * k, radius: hero ? 64 : 40 });
   }
-  // L5: the near end of the shelf plank and its scrolled bracket, soft in the foreground (lower right), so the push
-  // and the crane slide a third plane against the candles and the wall
-  f.layer('L5', (c, env) => {
-    const k = NEAR.k;
-    const w = 440 / k, h = 300 / k;
-    f.cached(`${ID}/L5shelf/${env.mood.id}`, Math.ceil(w) + 4, Math.ceil(h) + 4, (cc) => {
-      cc.scale(1 / k, 1 / k);
-      // the shelf's near end, swinging toward the lens: its plank a dark wedge rising out of the lower-right corner,
-      // its scalloped apron and lamp-lit lip echoing the shelf behind it (art origin = screen (860, 560))
-      const lip = (x: number) => 150 - (x / 420) * 110;
-      cc.fillStyle = env.fill('fg');
-      cc.beginPath();
-      cc.moveTo(0, lip(0));
-      cc.lineTo(420, lip(420));
-      cc.lineTo(420, 300);
-      cc.lineTo(0, 300);
-      cc.closePath();
-      cc.fill();
-      // the apron's scallops hanging under the plank's front
-      cc.beginPath();
-      for (let x = 0; x < 420; x += 34) {
-        const y = lip(x) + 30;
-        cc.moveTo(x, y);
-        cc.quadraticCurveTo(x + 17, y + 26 - (x / 420) * 10, x + 34, lip(x + 34) + 30);
-      }
-      cc.lineTo(420, 300);
-      cc.lineTo(0, 300);
-      cc.fill();
-      cc.strokeStyle = withAlpha(env.mood.rim, 0.55);
-      cc.lineWidth = 2.5;
-      cc.beginPath();
-      cc.moveTo(0, lip(0));
-      cc.lineTo(420, lip(420));
-      cc.stroke();
-      cc.strokeStyle = withAlpha(env.mood.rim, 0.2);
-      cc.lineWidth = 1.5;
-      cc.beginPath();
-      cc.moveTo(0, lip(0) + 28);
-      cc.lineTo(420, lip(420) + 28);
-      cc.stroke();
-    }, { blur: 7 })(c, NEAR.x, NEAR.y);
-  });
   void V0;
   void softPlate;
   void MOODS;

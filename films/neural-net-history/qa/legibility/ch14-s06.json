@@ -1,84 +1,84 @@
 {
  "shot": "ch14-s06",
- "at": "2026-10-08T02:42:45.450Z",
+ "at": "2026-10-13T09:35:11.756Z",
  "minCapPx": 22,
  "sampled": 26,
  "texts": 14,
- "offenders": [
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
+  {
+   "text": "WASHINGTON",
+   "capWhileSubject": 24.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "2026",
+   "capWhileSubject": 42.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "LIMA",
+   "capWhileSubject": 26.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "2024",
+   "capWhileSubject": 43.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "BLETCHLEY",
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "2023",
+   "capWhileSubject": 44.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "WASHINGTON · 23–25 SEPTEMBER 2026",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "SUPER INTELLIGENCE DIALOGUE (US)",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "AI DIALOGUE (CHINA)",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
   {
    "text": "COMPUTE IS THE CHOKEPOINT",
    "maxCap": 7.8,
-   "minCap": 7.8,
-   "first": 18.55,
-   "last": 19.55,
-   "font": "6.888px \"IBM Plex Mono\""
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2022",
+   "maxCap": 8.2,
+   "why": "drawn as texture"
   },
   {
    "text": "CHINA IS ONE TO THREE YEARS BEHIND",
    "maxCap": 7.8,
-   "minCap": 7.8,
-   "first": 18.55,
-   "last": 19.55,
-   "font": "6.888px \"IBM Plex Mono\""
+   "why": "drawn as texture"
   },
   {
    "text": "THE GAP IS MONTHS, NOT YEARS",
    "maxCap": 7.8,
-   "minCap": 7.8,
-   "first": 18.55,
-   "last": 19.55,
-   "font": "6.888px \"IBM Plex Mono\""
+   "why": "drawn as texture"
   },
   {
-   "text": "WASHINGTON",
-   "maxCap": 9.7,
-   "minCap": 7.4,
-   "first": 0.55,
-   "last": 19.55,
-   "font": "600 10.6px \"IBM Plex Mono\""
-  },
-  {
-   "text": "LIMA",
-   "maxCap": 11.6,
-   "minCap": 8.8,
-   "first": 0.55,
-   "last": 19.55,
-   "font": "600 12.4px \"IBM Plex Mono\""
-  },
-  {
-   "text": "BLETCHLEY",
-   "maxCap": 11.9,
-   "minCap": 9,
-   "first": 0.55,
-   "last": 19.55,
-   "font": "600 12.4px \"IBM Plex Mono\""
+   "text": "LIT 2025 · CONTESTED",
+   "maxCap": 8.2,
+   "why": "drawn as texture"
   }
  ],
- "textureTexts": 2,
- "ok": [
-  {
-   "text": "2023",
-   "maxCap": 37.8
-  },
-  {
-   "text": "2024",
-   "maxCap": 37
-  },
-  {
-   "text": "2026",
-   "maxCap": 36.1
-  },
-  {
-   "text": "WASHINGTON · 23–25 SEPTEMBER 2026",
-   "maxCap": 22.1
-  },
-  {
-   "text": "SUPER INTELLIGENCE DIALOGUE (US)",
-   "maxCap": 22.1
-  },
-  {
-   "text": "AI DIALOGUE (CHINA)",
-   "maxCap": 22.1
-  }
- ]
+ "textureTexts": 5
 }

@@ -10,7 +10,8 @@
 //        narration/lines.json               per line: clip, speechStart/End, display-word timings (clip-relative)
 //        narration/ledger.json              spend ledger (every paid request; shared with voice auditions)
 //        narration/stt.json                 STT round trip (scribe_v1) of every line where a lexicon entry fires or
-//                                           qa.stt is required, once per clip version (film:stt; skip with --no-stt)
+//                                           qa.stt is required, once per take, plus every line re-taken in this run
+//                                           (film:stt; skip with --no-stt)
 //        film.json stages.narration
 // Line edits (story chapter fields, free to change: clips re-cut from the cache): insertGaps {"word": sec}
 //   opens a breath after a rushed word ("word#2" picks its second occurrence; a negative value tightens an over-long pause, keeping >= 0.12 s of it);
@@ -27,6 +28,9 @@
 // lines.json record keeps its take: it is re-cut from the chunk it was recorded in, and only the changed or new
 // lines of a shot are synthesized (consecutive ones together, with the neighbouring lines as previous/next text).
 // Editing one line re-pays for that line, not the shot. --force re-synthesizes everything selected.
+// PIN: script line tts {take: "<cache key>"} pins the line to a recorded take in narration/cache (a single-line
+// request whose text is the line's spoken text): it is cut from that exact audio, never re-synthesized, so a
+// take the director chose survives later script/voice changes. Pinned keys are listed with --dry-run.
 // SOLO: script line tts {solo, speed} asks for a line on its own request (speed = that line's voice speed). A line
 // whose clip has no clean edge (see below) is listed in narration/solo.json and re-generated on its own in the
 // same run (--no-solo-retake to skip), once per take.
@@ -88,7 +92,8 @@ function buildPlan(script, voice, lex, maxChars, prevDoc, solo) {
       const tts = l.tts || {};
       const sig = lineSig(voice, sp.spoken, tts);
       const rec = prevDoc.lines?.[l.id];
-      const soloWanted = !!tts.solo || Number.isFinite(tts.speed) || !!solo.lines[l.id];
+      const soloWanted = !!tts.solo || !!tts.take || Number.isFinite(tts.speed) || !!solo.lines[l.id];
+      if (tts.take && !cacheHas(tts.take)) throw new Error(`line ${l.id} is pinned to take ${tts.take}, which is not in narration/cache`);
       // keep the recorded take when nothing that shapes it changed (and a solo request is already met)
       const recSolo = rec ? (prevDoc.chunks?.[rec.chunk]?.lines?.length ?? 2) === 1 : false;
       const keep = !a.force && rec && rec.sig === sig && cacheHas(rec.chunk) && (!soloWanted || recSolo);
@@ -116,6 +121,15 @@ function buildPlan(script, voice, lex, maxChars, prevDoc, solo) {
         c.settings = Number.isFinite(speed) ? { ...voice.settings, speed } : voice.settings;
         c.key = sha({ v: voice.voiceId, m: voice.model, s: c.settings, seed: voice.seed, f: voice.format, t: c.text, p: c.prevText.slice(-1000), n: c.nextText.slice(0, 500) });
         c.cached = !a.force && cacheHas(c.key);
+        // a pinned take: this (solo) chunk IS the recorded request; it is never sent again, even with --force
+        const pin = c.lines.length === 1 && c.lines[0].tts.take;
+        if (pin) {
+          const rec = readJson(path.join(P.narration.cache, `${pin}.json`));
+          if (rec.text !== c.text) throw new Error(`line ${c.lines[0].id}: pinned take ${pin} says ${JSON.stringify(rec.text)}, but the line's spoken text is ${JSON.stringify(c.text)}`);
+          c.key = pin;
+          c.cached = true;
+          c.pinned = true;
+        }
       });
       chunks.push(...gc);
       i = j;
@@ -269,6 +283,7 @@ async function main() {
     linesDoc.chunks[r.chunk] = { lines: mates.map((m) => ({ id: m.id, spoken: m.spoken })) };
   }
   const prevDoc = JSON.parse(JSON.stringify(linesDoc));
+  const startSigs = Object.fromEntries(Object.entries(linesDoc.lines || {}).map(([id, r]) => [id, `${r.sig}:${r.clipSha ?? ''}`]));
   const solo = readSolo();
   let plan = buildPlan(script, voice, lex, maxChars, prevDoc, solo);
   const est0 = (pl) => pl.flatMap((s) => s.chunks).filter((c) => !c.cached);
@@ -412,7 +427,10 @@ async function main() {
   // STT as data: round-trip the lines with names the voice must get right (only clips that changed)
   let stt = null;
   if (a.stt !== false) {
-    const r = await refreshStt(P, { script, lex, linesDoc, only: plan.flatMap((s) => s.lines.map((l) => l.id)) });
+    // review round 3: every line given a NEW take in this run is transcribed (word error rate against its text),
+    // not only the lines where a name or lexicon entry fires
+    const retaken = plan.flatMap((s) => s.lines.map((l) => l.id)).filter((id) => linesDoc.lines[id] && startSigs[id] !== `${linesDoc.lines[id].sig}:${linesDoc.lines[id].clipSha ?? ''}`);
+    const r = await refreshStt(P, { script, lex, linesDoc, only: plan.flatMap((s) => s.lines.map((l) => l.id)), also: retaken });
     for (const e of r.errors) problems.push(`stt ${e}`);
     const failing = r.targets.filter((id) => r.records[id] && !r.records[id].pass);
     for (const id of failing) problems.push(`stt ${id}: expected terms missing from "${r.records[id].transcript}"`);

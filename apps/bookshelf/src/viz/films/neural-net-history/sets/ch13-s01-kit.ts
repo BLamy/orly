@@ -17,6 +17,8 @@
  *   capSize(c, font, cap, …) the px size that puts `font`'s cap height at `cap` px on a 1080p frame under the current
  *                            transform, measured LIVE at the alphabetic baseline (review round 1 legibility floor)
  */
+import { rimNear } from './rimNear';
+import { addEllipse, addFoil, addRect, at as atMotif, finial, memoPath } from '../../../film/silhouette/ornament';
 import type { Camera3, Frame, LayerSpec, Palette, PaintEnv, Pose } from '../../../film/contracts';
 import { LAYERS } from '../../../film/contracts';
 import { overscan, toLayer, toScreen, type Rect } from '../../../film/core/multiplane';
@@ -85,8 +87,10 @@ export const BENGIO13 = createPuppet({ ...SPECS['bengio-2020s'], id: 'bengio-ch1
 export const STAND13: Pose = pose({ hipF: 5, kneeF: -4, hipB: -4, kneeB: -1, torso: -2, neck: 8, head: -8, shoulderF: 4, elbowF: 14, wristF: 6, shoulderB: -8, elbowB: 12, wristB: 4 });
 /** reaching up to the pin, fingers pinched */
 export const REACH: Pose = pose({ hipF: 5, kneeF: -4, hipB: -4, kneeB: -1, torso: -3, neck: 4, head: -10, shoulderF: 104, elbowF: 16, wristF: -8, shoulderB: -10, elbowB: 12, wristB: 4 }, { handF: 'pinch' });
-/** the slip lowered in front of him, head bowed to read it */
-export const LOOK: Pose = pose({ hipF: 5, kneeF: -4, hipB: -4, kneeB: -1, torso: 3, neck: 16, head: 14, shoulderF: 30, elbowF: 78, wristF: -18, shoulderB: -6, elbowB: 16, wristB: 6 }, { handF: 'pinch' });
+/** the slip raised to his chest, head dipped to read it. Review r1 (ch13-s01 pose): the torso stays near upright (0 here,
+ *  ~4 deg with Hinton's stoop) and the look lives in a 12-15 deg neck-and-head dip, so he reads as a man reading a slip,
+ *  not a bowing waiter; the forearm is folded up so the slip sits at chest height (ch13-s02 opens on this pose too) */
+export const LOOK: Pose = pose({ hipF: 5, kneeF: -4, hipB: -4, kneeB: -1, torso: 0, neck: 6, head: 4, shoulderF: 26, elbowF: 104, wristF: -26, shoulderB: -6, elbowB: 16, wristB: 6 }, { handF: 'pinch' });
 
 // ===================================================================================================== the 2012 stage
 /** the 2012 candle, as it stands in May 2023 (eleven rings burned, still lit) */
@@ -110,8 +114,9 @@ export const W6_VIEW = wallStateAt('ch13-s01', 'start').find((s) => s.slot === '
 /** the Krizhevsky slip (W4) re-pinned 70 px left on the stage's wall flat, so Hinton's head reads against bare wall
  *  (it slides over the chess slip's bare pin, W2); ch13-s01 and ch13-s02 share it for continuity */
 export const SHIFT13: Partial<Record<WallSlot, [number, number]>> = { W4: [-61, 0] };
-/** the held slip grows as he lowers it to read (the legibility floor while he holds it), carried into ch13-s02 */
-export const HELD_K = 1.3;
+/** the held slip's scale on its pinned size (carried into ch13-s02). Review r1 (scale): 70 % of the round-3 size (it read
+ *  as a placard, 1.6x his shoulders); its type is set in three larger lines instead (heldSlip), >= 22 px cap at 1080 */
+export const HELD_K = 0.91;
 /** the wall flat's layer: just behind the action plane (almost no parallax against L4) */
 export const WALL_FLAT: LayerSpec = { id: 'ch13WallFlat', z: 1045, haze: 0.1, blur: 0.4 };
 
@@ -160,12 +165,24 @@ export interface Stage13Opts {
   back?: (c: C, env: PaintEnv) => void;
   /** the action plane: figures, props (after floor, pool, candle) */
   draw?: (c: C, env: PaintEnv, g: { flame: { x: number; y: number }; inPool: (x: number) => number }) => void;
-  /** after the rim pass, before the flame practical (L4 lights that must not be rimmed) */
+  /** the rim pass direction */
   rimDir?: { x: number; y: number };
+  /** (review r1, value) painted on L4 AFTER the flame practical, before the near plane: the figures. The flame's
+   *  additive halo then never washes over them, so they stay true near-black, the darkest shapes in frame */
+  front?: (c: C, env: PaintEnv) => void;
+  /** other practicals (lamps) to paint with the flame, BEFORE `front` (so their halos never wash over the figures) */
+  lights?: () => void;
+  /** the stage's rose grade 0..1 (roseGrade, after the near plane). Default 1 on chapter 13's stages (keys 'ch13-…'),
+   *  so every cut between them (s01 → s02, s03 → s04) keeps one grade; 0 elsewhere */
+  grade?: number;
   /** backlight intensity multiplier */
   sky?: number;
   /** dust motes turning in the candle's light (0..1, default 1) */
   motes?: number;
+  /** review round 4 (art): the dim checker floor under the action plane (default on; false = the plain boards) */
+  floor?: boolean;
+  /** (review r1, ch13-s03) the candle's width on its scale `s` (default 1): a squat, massive candle without a taller flame */
+  candleSx?: number;
   /** depth dressing: fog band A over the backdrop's lower third, an upstage rim on the wall flat's top edge, and a
    *  blurred L5 near plane (a dark proscenium curtain edge and/or the stage lip), so the figures are the only sharp
    *  plane between two soft ones */
@@ -186,8 +203,64 @@ export interface Depth13 {
   lipY?: number;
   /** the camera the near plane is laid out for (default the last of `cams`); parallax is softened toward it */
   ref?: Camera3;
+  /** the carved newel at lower left (review round 3 ornamental near plane; default on) */
+  newel?: boolean;
+  /** the newel's size on rimNear's authored size (default 0.78, rimNear's own); smaller keeps it under the lower
+   *  third's name cards and clear of the faces */
+  newelScale?: number;
   /** near-plane strength 0..1 (default 1) */
   near?: number;
+  /** (review r1, clutter) slide the newel this many screen px (negative = left, toward the frame edge) */
+  newelDx?: number;
+  /** (review r1, clutter) 0..1: push the newel back into the dark (its warm edge catch mostly gone, a flatter ink) */
+  newelDark?: number;
+  /** review round 4 (art, ch15-s06 hall): a second carved plane, rimNear's pierced chair-back, at the other lower
+   *  corner (default side right, scale 0.62; same 40 % clamped parallax and push-in fade as the newel) */
+  chair?: { side?: 'left' | 'right'; scale?: number; dx?: number; rim?: number };
+}
+
+/** review round 4 (art: "add a dim parquet or checker floor, 15-20 % contrast, to the stage13 set and the ch15-s06
+ *  hall"): perspective squares on the stage boards, every other one darkened by a translucent board-ink square
+ *  (alpha CHECKER_DARK, so the step is ~17 % of the local luminance wherever it falls: in the candle's pool and in the
+ *  dark beyond; measured 15-19 % on ch15-s06 / ch13-s04 stills), converging on the candle like the old seams.
+ *  Painted after the light pools and before the seams, the candle and the figures. */
+const CHECKER_DARK = 0.19;
+function checkerFloor13(c: C, env: PaintEnv, cx: number, fy: number, r: Rect) {
+  const bot = r.y + r.h;
+  const depth = bot - fy;
+  if (depth <= 4) return;
+  // rows: the far edge at the floor line, rows deepening toward the camera (a mild perspective)
+  const rowsY: number[] = [];
+  for (let k = 0; k <= 12; k++) rowsY.push(fy + depth * (k / 12) ** 1.8);
+  // the column through the candle at offset i: 60 px apart at the floor line, 110 px at the frame bottom
+  const colX = (i: number, y: number) => cx + i * (60 + 50 * ((y - fy) / depth));
+  const i0 = Math.floor((r.x - cx) / 60) - 2;
+  const i1 = Math.ceil((r.x + r.w - cx) / 60) + 2;
+  c.save();
+  c.fillStyle = withAlpha(env.mood.fg, CHECKER_DARK);
+  c.beginPath();
+  for (let k = 0; k < rowsY.length - 1; k++) {
+    const ya = rowsY[k], yb = rowsY[k + 1];
+    for (let i = i0; i < i1; i++) {
+      if (((i + k) & 1) === 0) continue;
+      c.moveTo(colX(i, ya), ya);
+      c.lineTo(colX(i + 1, ya), ya);
+      c.lineTo(colX(i + 1, yb), yb);
+      c.lineTo(colX(i, yb), yb);
+      c.closePath();
+    }
+  }
+  c.fill();
+  // a hairline seam between rows so the squares read as laid, not printed
+  c.strokeStyle = withAlpha(env.mood.fg, 0.22);
+  c.lineWidth = 1;
+  c.beginPath();
+  for (const y of rowsY) {
+    c.moveTo(r.x, y);
+    c.lineTo(r.x + r.w, y);
+  }
+  c.stroke();
+  c.restore();
 }
 
 const bake = (f: Frame, c: C, key: string, r: Rect, paint: (cc: C) => void) =>
@@ -333,6 +406,9 @@ export function stage13(f: Frame, o: Stage13Opts) {
     };
     if (fk > 0) pool(o.candleX, R, fk, undefined, o.poolEdge);
     for (const p of o.pools ?? []) pool(p.x, p.rx, p.k, p.tint, undefined, p.y ?? fy);
+    // review round 4: the checker floor goes OVER the pools (a translucent dark square), so its contrast holds at
+    // ~17 % inside the candle's light as well as in the dark beyond
+    if (o.floor !== false) checkerFloor13(c, env, o.candleX, fy, r);
     c.strokeStyle = withAlpha(env.mood.fg, 0.35);
     c.lineWidth = 1;
     for (let i = -22; i <= 22; i++) {
@@ -341,15 +417,27 @@ export function stage13(f: Frame, o: Stage13Opts) {
       c.lineTo(o.candleX + i * 110, r.y + r.h);
       c.stroke();
     }
+    const csx = o.candleSx ?? 1;
+    c.save();
+    if (csx !== 1) {
+      c.translate(o.candleX, 0);
+      c.scale(csx, 1);
+      c.translate(-o.candleX, 0);
+    }
     beliefCandle(c, { x: o.candleX, y: fy, view: o.candle, s: o.s, burn: o.burn, flame: fk, drawFlame: false, letters: 0 }, env);
     waxCandle(c, { x: o.candleX, y: fy, view: o.candle, s: o.s, burn: o.burn, flame: fk, letters: o.letters ?? 0.8 }, env);
+    c.restore();
     o.draw?.(c, env, { flame, inPool });
     const mk = (o.motes ?? 1) * fk;
     if (mk > 0.01) dustMotes(c, { area: { x: flame.x - 420, y: flame.y - 300, w: 840, h: 560 }, count: Math.round(60 * mk), drift: { x: 1.5, y: -2.5 }, brightness: 0.55 * mk, salt: 13 + o.candle.slot }, env);
   });
   f.rim(o.rimDir ?? { x: 0, y: -1 });
   if (fk > 0) f.practical({ x: flame.x, y: flame.y + 4 * o.s, kind: 'candle', seed: 2012 + o.candle.slot, intensity: fk, radius: 70 + 40 * fk });
+  o.lights?.();
+  if (o.front) f.layer('L4', (c, env) => o.front!(c, env));
   if (o.depth) nearPlane13(f, o.depth, o.cams);
+  // review r1 (mood): duskRose read as the study's amber on these stages; the chapter's stage grade moves it ~10 % to rose
+  roseGrade(f, o.grade ?? (o.key.startsWith('ch13-') ? 1 : 0));
   return { flame, inPool, rimX: o.candleX + R, rimXL: o.candleX - R };
 }
 
@@ -359,8 +447,14 @@ export function stage13(f: Frame, o: Stage13Opts) {
 export function nearPlane13(f: Frame, d: Depth13, cams: Camera3[]) {
   const cam = f.cam;
   const k = (d.near ?? 1) * (1 - win(cam.z, 300, 430));
-  if (k <= 0.01 || (!d.curtain && d.lipY === undefined)) return;
   const ref = d.ref ?? cams[cams.length - 1] ?? cam;
+  // review round 3: the three camps' room gets its ornamental near plane: a carved stair newel at lower left
+  if (d.newel !== false) {
+    if (d.newelDx !== undefined || d.newelDark !== undefined) newel13(f, { ref, alpha: k, scale: d.newelScale ?? 0.78, dx: d.newelDx ?? 0, dark: d.newelDark ?? 0 });
+    else rimNear(f, { kind: 'newel', side: 'left', ref, alpha: k, scale: d.newelScale });
+  }
+  if (d.chair) rimNear(f, { kind: 'chair', side: d.chair.side ?? 'right', ref, alpha: k, scale: d.chair.scale ?? 0.62, dx: d.chair.dx, rim: d.chair.rim });
+  if (k <= 0.01 || (!d.curtain && d.lipY === undefined)) return;
   const L5 = LAYERS.L5;
   /** a screen point at the reference camera → the L5 point to draw now: it keeps 40% of its true L5 parallax,
    *  clamped to ±60 screen px, so the frame edge slides a little under a pan but never wanders into the picture */
@@ -426,6 +520,85 @@ export function nearPlane13(f: Frame, d: Depth13, cams: Camera3[]) {
   });
 }
 
+/** rimNear's carved newel (same geometry, same 40 % clamped parallax), with two review-r1 knobs: `dx` slides it
+ *  toward the frame edge, `dark` pushes it back into the dark (its warm edge catch cut, a flat near-black ink) */
+function newelPath13(): Path2D {
+  return memoPath('ch13/newel', () => {
+    const p = new Path2D();
+    addRect(p, -36, -40, 72, 40);
+    addRect(p, -28, -300, 56, 262);
+    addRect(p, -18, -280, 36, 96, true);
+    addRect(p, -18, -170, 36, 112, true);
+    addFoil(p, 0, -232, 9, 4, { ccw: true });
+    addRect(p, -38, -318, 76, 18);
+    addRect(p, -32, -326, 64, 8);
+    atMotif(p, finial('urn', 64), 0, -326);
+    const run = 250, rise = 104;
+    p.moveTo(24, -286);
+    p.lineTo(run, -286 - rise);
+    p.lineTo(run, -266 - rise);
+    p.lineTo(24, -266);
+    p.closePath();
+    for (let i = 1; i <= 3; i++) {
+      const x = 24 + i * 58;
+      const top = -266 - (i * 58 * rise) / (run - 24);
+      addRect(p, x - 4.5, top, 9, -top - 30);
+      addEllipse(p, x, top + (-top - 30) * 0.58, 8.5, 15);
+      addEllipse(p, x, top + 9, 6.5, 8);
+    }
+    p.moveTo(24, -38);
+    p.lineTo(run, -38 - rise);
+    p.lineTo(run, -12 - rise);
+    p.lineTo(24, -12);
+    p.closePath();
+    return p;
+  });
+}
+function newel13(f: Frame, o: { ref: Camera3; alpha: number; scale: number; dx: number; dark: number }) {
+  if (o.alpha <= 0.01) return;
+  const L5 = LAYERS.L5;
+  const anchor = { x: 128 * o.scale + o.dx, y: 742 };
+  f.layer('L5', (c, env) => {
+    const cam = f.cam;
+    const aL = toLayer(L5, o.ref, anchor.x, anchor.y);
+    const sNow = toScreen(L5, cam, aL.x, aL.y);
+    const cl = (v: number, a: number) => Math.max(-a, Math.min(a, v));
+    const dx = cl(0.4 * (sNow.x - anchor.x), 40), dy = cl(0.4 * (sNow.y - anchor.y), 30);
+    const p0 = toLayer(L5, cam, 0, 0), p1 = toLayer(L5, cam, 1, 0);
+    const k = p1.x - p0.x;
+    c.save();
+    c.translate(p0.x, p0.y);
+    c.scale(k, k);
+    c.translate(anchor.x + dx, anchor.y + dy);
+    c.globalAlpha *= o.alpha;
+    c.scale(o.scale, o.scale);
+    const p = newelPath13();
+    c.fillStyle = mixLab(env.fill('fg'), '#000000', 0.4 * o.dark);
+    c.fill(p, 'evenodd');
+    const rimA = 0.55 * (1 - 0.8 * o.dark);
+    if (rimA > 0.02) {
+      c.clip(p, 'evenodd');
+      c.translate(-2.2, 1.2);
+      c.strokeStyle = withAlpha(mixLab(env.mood.rim, env.mood.core, 0.4), rimA);
+      c.lineWidth = 2.4;
+      c.stroke(p);
+    }
+    c.restore();
+  });
+}
+
+/** (review r1, mood) the stage's grade nudged ~10 % toward rose (a 'color' wash: hue and chroma move, luminance stays,
+ *  so the near-blacks stay black), so the FLAME PUSH visibly changes location from the amber study. k 0..1 */
+export const ROSE13 = '#a8687a';
+export function roseGrade(f: Frame, k = 1) {
+  if (k <= 0.01) return;
+  screen(f, (c) => {
+    c.globalCompositeOperation = 'color';
+    c.fillStyle = withAlpha(ROSE13, 0.13 * k);
+    c.fillRect(0, 0, 1280, 720);
+  });
+}
+
 /** the worry candle's lettering, legible: IBM Plex Mono, near-black ink with a 1 px warm halo, set in two lines
  *  rising up the wax from the base. size = font size in layer px. */
 export const WORRY_LINES = ['SMARTER-THAN-HUMAN AI MAY BE', 'YEARS AWAY, AND DANGEROUS'] as const;
@@ -480,13 +653,38 @@ export interface HeldSlip {
   /** 0..1 deep-shadow (the study's W6 rule): only the lower corner lit */
   shadow?: number;
   alpha?: number;
+  /** review r1 (scale): the type set in three larger lines (default true), so the slip can be small in his hand and
+   *  still read at >= 22 px cap; false keeps the Wall's own two-line setting */
+  legible?: boolean;
 }
+const SLIP_LINES = ['30 TO 50', 'YEARS OR', 'EVEN LONGER'];
 /** the 30-to-50-years slip, centred at (x, y) */
 export function heldSlip(c: C, env: PaintEnv, o: HeldSlip) {
-  const v = { slot: 'W6' as const, who: '', text: '30 TO 50 YEARS OR EVEN LONGER', due: undefined };
-  drawSlip(c, v, { x: o.x, y: o.y, k: o.k, light: o.light ?? 0.8, curl: Math.max(0.35, o.curl ?? 0.35), yellow: 0.35 + 0.65 * (o.dark ?? 0), rot: o.rot ?? 0, pin: o.pin ?? false, alpha: o.alpha }, env);
+  const legible = o.legible !== false;
+  const v = { slot: 'W6' as const, who: '', text: legible ? '' : '30 TO 50 YEARS OR EVEN LONGER', due: undefined };
+  const light = o.light ?? 0.8;
+  drawSlip(c, v, { x: o.x, y: o.y, k: o.k, light, curl: Math.max(0.35, o.curl ?? 0.35), yellow: 0.35 + 0.65 * (o.dark ?? 0), rot: o.rot ?? 0, pin: o.pin ?? false, alpha: o.alpha }, env);
   const sz = WALL_SLOTS.W6;
   const w = sz.w * o.k, h = sz.h * o.k;
+  if (legible) {
+    c.save();
+    c.globalAlpha *= o.alpha ?? 1;
+    c.translate(o.x, o.y);
+    c.rotate((o.rot ?? 0) + hash1(5, 23) * 0.04 + Math.max(0.35, o.curl ?? 0.35) * 0.05);
+    let size = 16.5 * o.k;
+    c.font = `400 ${size}px ${FONT.typewriter}`;
+    const widest = Math.max(...SLIP_LINES.map((l) => c.measureText(l).width));
+    if (widest > w * 0.89) size *= (w * 0.89) / widest;
+    c.font = `400 ${size}px ${FONT.typewriter}`;
+    c.textAlign = 'center';
+    c.textBaseline = 'alphabetic';
+    c.fillStyle = mixLab(env.mood.ink, paperTone(env, light), 0.1);
+    const lh = size * 1.06;
+    // the block centred a touch below the pin
+    const y0 = 4 * o.k - lh + size * 0.36;
+    SLIP_LINES.forEach((l, i) => c.fillText(l, 0, y0 + i * lh));
+    c.restore();
+  }
   const dk = o.dark ?? 0;
   const sh = o.shadow ?? 0;
   if (dk <= 0.01 && sh <= 0.01) return;
@@ -544,36 +742,55 @@ export function darkW7(c: C, env: PaintEnv, x: number, y: number, k: number, a: 
   c.restore();
 }
 
-/** the three lab heads (Hassabis, Altman, Dario Amodei): a step upstage in the same pool (L3, smaller and hazier
- *  than the signatories), equal in light, their x staggered so they never read as an evenly spaced picket line.
- *  They never dissolve (a faded puppet doubles its overlapping limbs): they EMERGE from the haze on 'labs' (ink
- *  from the haze colour to near-black) and, in ch13-s04, step back into it (`retreat` 0..1: a step further upstage
- *  toward the exit at upstage right while the haze swallows them). */
+/** the three lab heads (Hassabis, Altman, Dario Amodei): a step upstage in the same pool, equal in size and light,
+ *  their x staggered so they never read as an evenly spaced picket line.
+ *  Review r1 (continuity): translucent figures are this film's ghost-memory device, so the lab heads are SOLID
+ *  near-black silhouettes at full alpha, like the signatories; depth comes only from scale (~0.8x) and a touch of
+ *  haze in the ink (never transparency), and each carries the same warm rim from the candle. Draw them in the stage's
+ *  `front` pass (after the flame), before the signatories. On 'labs' (ch13-s03) each steps out of the dark on twos:
+ *  three drawings in which the ink deepens from the backdrop's haze to near-black, and the backdrop behind them comes
+ *  up (labGlow). `retreat` (0..1) is kept for callers: a small step further upstage, still solid. */
 export const LAB_POS = [
-  { x: 760, y: 606, s: 0.74 },
-  { x: 842, y: 600, s: 0.7 },
-  { x: 946, y: 609, s: 0.76 },
+  { x: 772, y: 608, s: 0.8 },
+  { x: 856, y: 602, s: 0.78 },
+  { x: 952, y: 610, s: 0.81 },
 ] as const;
 const LAB = () => [cast.hassabis, cast.altman, cast['amodei-dario']];
-export function labHeads(c: C, env: PaintEnv, t: number, b: { labs: number }, fade: number, retreat = 0) {
+/** 0..1: how far lab head i has stepped out of the dark (on twos) */
+export function labIn(t: number, labs: number, i: number) {
+  const tq = tq12(t);
+  return clamp01((tq - (labs + 0.1 * i)) / 0.34);
+}
+export function labHeads(c: C, env: PaintEnv, t: number, b: { labs: number }, fade = 1, retreat = 0) {
   const tq = tq12(t);
   for (let i = 0; i < 3; i++) {
-    // emerge: the haze gives them up one after another (on twos)
-    const e = win(tq, b.labs + 0.12 * i, b.labs + 0.9 + 0.12 * i) * fade;
+    const e = labIn(t, b.labs, i) * fade;
+    if (e <= 0.001) continue;
+    // three drawings on twos: haze-inked, half, near-black (a step forward into the light with each)
+    const st = e >= 1 ? 1 : Math.ceil(e * 3) / 3;
     const r = clamp01(retreat * 1.15 - 0.08 * i);
-    const lost = Math.max(1 - e, sm(r));
-    if (lost >= 0.995) continue;
     const P = LAB_POS[i];
-    const ink = mixLab(PUPPET_NEAR_BLACK, env.mood.haze, 0.3 + 0.25 * r);
+    const ink = mixLab(mixLab(PUPPET_NEAR_BLACK, env.mood.haze, 0.08 + 0.1 * r), mixLab(env.mood.set, env.mood.haze, 0.5), 0.75 * (1 - st));
     const pz: Pose = withLife({ ...STAND13 }, tq, 300 + i * 17, 0.8);
-    const sc = P.s * (1 - 0.16 * r);
-    const o = { x: P.x + 70 * r, y: P.y - 16 * r, facing: 'left' as const, pose: pz, scale: sc };
-    // one group alpha for the whole figure (overlapping limbs never double up)
-    groupAlpha(c, 1 - lost, (g) => {
-      g.filter = `blur(${((0.5 + 1.2 * r) * env.pxScale).toFixed(2)}px)`;
-      LAB()[i].draw(g, { ...o, ink, light: { x: -1, y: -0.2, floor: 0.1 }, edgeRim: { x: -1, y: -0.35, px: 1.2, alpha: 0.4 } }, env);
-    });
+    const sc = P.s * (1 - 0.1 * r) * (0.97 + 0.03 * st);
+    const o = { x: P.x + 8 * (1 - st) + 40 * r, y: P.y - 3 * (1 - st) - 10 * r, facing: 'left' as const, pose: pz, scale: sc };
+    LAB()[i].draw(c, { ...o, ink, light: { x: -1, y: -0.2, floor: 0.12 }, edgeRim: { x: -1, y: -0.4, px: 2.25, alpha: 0.85 * st, warm: 0.65 } }, env);
   }
+}
+/** the backdrop coming up behind the lab heads as they step out (L2 / backdrop callback): a soft warm glow */
+export function labGlow(c: C, env: PaintEnv, k: number) {
+  if (k <= 0.01) return;
+  c.save();
+  c.globalCompositeOperation = 'lighter';
+  c.translate(870, 420);
+  c.scale(1.5, 1);
+  const g = c.createRadialGradient(0, 0, 0, 0, 0, 180);
+  g.addColorStop(0, withAlpha(mixLab(env.mood.halo, env.mood.rim, 0.4), 0.2 * k));
+  g.addColorStop(0.55, withAlpha(env.mood.halo, 0.09 * k));
+  g.addColorStop(1, withAlpha(env.mood.halo, 0));
+  c.fillStyle = g;
+  c.fillRect(-180, -180, 360, 360);
+  c.restore();
 }
 
 /** draw into a scratch buffer with the current transform, then composite it with ONE alpha (a fading puppet whose
@@ -848,7 +1065,7 @@ export function screen(f: Frame, draw: (c: C) => void) {
 }
 
 /** a date-only stamp in IBM Plex Mono (1989 on), tracked, with the caption-bar rule; bottom-left by default */
-export function monoDate(c: C, text: string, at: number, dur: number, env: { t: number; mood: Palette }, o: { x?: number; y?: number; align?: 'left' | 'right' } = {}) {
+export function monoDate(c: C, text: string, at: number, dur: number, env: { t: number; mood: Palette }, o: { x?: number; y?: number; align?: 'left' | 'right'; ink?: string; plate?: number } = {}) {
   const t = env.t;
   const A = win(t, at, at + 0.4) * (1 - win(t, at + dur - 0.5, at + dur));
   if (A <= 0.003) return;
@@ -858,10 +1075,10 @@ export function monoDate(c: C, text: string, at: number, dur: number, env: { t: 
   const size = capSize(c, `500 19px ${FONT.mono}`, 24, c.getTransform().a || 1);
   c.save();
   const estW = text.length * size * 0.72;
-  softPlate(c, right ? x - estW / 2 : x + estW / 2, y - 6, estW + 170, 96, env.mood.ink, 0.5 * A);
+  softPlate(c, right ? x - estW / 2 : x + estW / 2, y - 6, estW + 170, 96, env.mood.ink, (o.plate ?? 0.5) * A);
   const k = win(t, at, at + 0.6);
   c.globalAlpha = A * k;
-  c.fillStyle = textColor(env.mood);
+  c.fillStyle = o.ink ?? textColor(env.mood);
   const w = drawTracked(c, text, x + (right ? 0 : (1 - k) * -10), y, { font: `500 ${size}px ${FONT.mono}`, size, tracking: 0.08, align: right ? 'right' : 'left' });
   const rx = right ? x - w : x;
   c.globalAlpha = A * 0.6;

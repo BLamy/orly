@@ -6,26 +6,39 @@
  * TEACHES self-attention against ch10-s01's slow reader. The hall camera that tracked in s01 now HOLDS STILL:
  * nothing needs to travel.
  *   'Drop'         the scribe bends, sets his lamp on the floor, turns and walks out of frame (2017 stamped)
- *   'attention'    a brief dip: the slips go dark, the abandoned lamp's small pool the only light
- *   'every'        every slip down the WHOLE hall lights at the same instant, and threads of light shoot between
- *                  EVERY pair at once
- *                  (all queries together). Thread brightness ← an attention weight: a toy softmax over illustrative
- *                  word vectors (each slip's row sums to 1), not a trained model.
+ *   'keep'         (review round 3) a SHORT dark beat (≤ 0.4 s): the veil dips on 'keep' and lifts before
+ *                  'attention' (3.78); the s01 wicks die in it, the abandoned lamp's pool the only light. The scribe
+ *                  stays PUPPET_NEAR_BLACK in it (drawn after the rim pass), rimmed only on the lamp side.
+ *   'attention'    every slip in the hall glows FAINTLY (a quarter of its lit value): the hall is waiting
+ *   'every'        (4.79) every slip down the WHOLE hall steps to full at the same instant, and threads shoot out
+ *                  from EVERY slip at once on that word (front-loaded, so they show a beat later)
+ *   'every other'  the web DENSIFIES: the strongest third of the pairs first, every pair joined by the end of 'other'
+ *                  (~6.6), all meeting mid-span.
+ *                  Far pairs hang in nested loops under the far end of the line (sag grows with the pair's distance),
+ *                  so the web reads all the way to the vanishing point. Every thread grows by the same fraction of its
+ *                  own ARC LENGTH at every frame (so near and far are equally far along), with a bright tip. Thread brightness ← an attention weight: a toy
+ *                  softmax over illustrative word vectors (each slip's row sums to 1), not a trained model.
+ *   'all at once'  the brightness PEAK of the shot (rising from 'all', cresting just after 'once'), then the web
+ *                  settles to a steady glow
  *   'Transformer'  a small parchment banner drops low over the floor (clear of the slips), THE TRANSFORMER on it
  *   'title'        beneath it, in the banner's own hand, ATTENTION IS ALL YOU NEED, then the eight authors in the
  *                  paper's order (Vaswani · Shazeer · Parmar · Uszkoreit · Jones · Gomez · Kaiser · Polosukhin);
  *                  the web glows through the result line and the hold; '2017' is lettered on the banner's foot
- *   hold           a very slow lens push (3%) on the web and banner while a shimmer wave runs through the threads
+ *   hold           a very slow lens push (3%) on the web and banner; ONE shimmer wave runs the length of the hammock
+ *                  on 'out-translated', then the web settles to a steady glow a second before the cut
+ *   depth          a blurred L5 pew end in the bottom-left corner (the scribe walks out behind it); the far quarter of
+ *                  the slip row is a step dimmer so the line never fuses into one smear at the vanishing point
  *   continuity     the wicks the s01 relay lit still glow as embers down the line when the shot opens; they go out
- *                  on 'attention' (the slow reader's light is gone before the new one comes)
+ *                  in the dip on 'reader' (the slow reader's light is gone before the new one comes)
  */
 import { Timeline } from '../../../core';
 import { CAMERA3_HOME, MOODS, defineShot, mixLab, withAlpha } from '../../../film';
 import { hash1 } from '../../../film/core/frame';
 import type { PaintEnv, Pose } from '../../../film';
-import { POSES, blendPose, pose, strideLength, walkPose, withLife } from '../../../film/silhouette/puppet';
+import { POSES, PUPPET_NEAR_BLACK, blendPose, pose, strideLength, walkPose, withLife } from '../../../film/silhouette/puppet';
+import type { PuppetDrawOpts } from '../../../film';
 import { FONT, drawTracked, legibleSize, measureTracked } from '../../../film/silhouette/type';
-import { HALL, HALL_VP, HALL_WORDS, type HallCam, floorPoint, hallArch, hallHaze, hallSlip, handLamp, scribe, scribeDraw, slipAt, slipScreen, wickFlame } from '../sets/ch10-s01-hall';
+import { HALL, HALL_VP, HALL_WORDS, type HallCam, floorPoint, hallArch, hallHaze, hallSlip, handLamp, scribe, slipAt, slipScreen, wickFlame } from '../sets/ch10-s01-hall';
 
 type C = CanvasRenderingContext2D;
 const ID = 'ch10-s04';
@@ -96,6 +109,72 @@ const PAIRS: { i: number; j: number; w: number }[] = (() => {
   return ps.sort((a, b) => a.w - b.w);
 })();
 const WMAX = Math.max(...PAIRS.map((p) => p.w));
+/** the still camera never moves the slips (the hold's push is a lens zoom), so every thread's curve is fixed: bake
+ *  its geometry once. Each thread hangs from the two slips' feet; its sag grows with its span on screen (so the far
+ *  pairs hang in nested loops under the far end of the line instead of piling onto it) */
+interface Thread {
+  ax: number; ay: number; bx: number; by: number; mx: number; my: number;
+  /** normalised weight 0..1 */
+  w: number;
+  /** base alpha (weight × depth × crowding) and width */
+  a0: number;
+  lw: number;
+  /** the pair's middle index (for the shimmer wave) */
+  mid: number;
+  /** strength rank 0 (strongest) .. 1 (weakest): the web densifies from the strong pairs to the weak */
+  r: number;
+  /** cumulative arc length at u = k / ARC_N (for equal-fraction growth) */
+  arc: Float32Array;
+}
+const ARC_N = 16;
+/** the bezier parameter at arc length `len` along a thread */
+function arcU(th: Thread, len: number): number {
+  const A = th.arc;
+  if (len <= 0) return 0;
+  if (len >= A[ARC_N]) return 1;
+  let k = 0;
+  while (k < ARC_N - 1 && A[k + 1] < len) k++;
+  return (k + (len - A[k]) / Math.max(1e-6, A[k + 1] - A[k])) / ARC_N;
+}
+const THREADS: Thread[] = (() => {
+  const S = Array.from({ length: NT }, (_, i) => slipScreen(CAM, i));
+  return PAIRS.map((pr, k) => {
+    const a = S[pr.i], b = S[pr.j];
+    const w = pr.w / WMAX;
+    const ax = a.x, ay = a.y + a.h * 0.98, bx = b.x, by = b.y + b.h * 0.98;
+    const dx = Math.abs(bx - ax);
+    const sNear = Math.max(a.s, b.s), sFar = Math.min(a.s, b.s);
+    // near pairs: a sag that grows with screen span, capped by depth; far pairs: at least half their span + a few px
+    const sag = Math.max(Math.min(14 + dx * 0.28, 150 * sNear + 10), 4 + dx * 0.52);
+    const depth = 1 - hallHaze(Math.max(a.vz, b.vz));
+    const fadeD = 0.5 + 0.5 * Math.max(0, depth);
+    // crowding: the far slips bunch toward the vanishing point, so their threads overlap; additive light must stay a
+    // web there, not a streak: thin them, but never below a visible floor
+    const densK = 0.3 + 0.7 * Math.pow(clamp01(sFar / 0.32), 0.8);
+    const span = Math.hypot(bx - ax, by - ay);
+    const spanK = 0.45 + 0.55 * Math.pow(clamp01(span / 140), 0.8);
+    const mx = (ax + bx) / 2, my = Math.max(ay, by) + sag;
+    const arc = new Float32Array(ARC_N + 1);
+    let px = ax, py = ay;
+    for (let k = 1; k <= ARC_N; k++) {
+      const u = k / ARC_N;
+      const qx = (1 - u) * (1 - u) * ax + 2 * (1 - u) * u * mx + u * u * bx;
+      const qy = (1 - u) * (1 - u) * ay + 2 * (1 - u) * u * my + u * u * by;
+      arc[k] = arc[k - 1] + Math.hypot(qx - px, qy - py);
+      px = qx;
+      py = qy;
+    }
+    return {
+      ax, ay, bx, by,
+      mx, my, arc,
+      w,
+      a0: (0.16 + 0.85 * Math.pow(w, 0.7)) * fadeD * densK * spanK,
+      lw: Math.max(0.7, 0.55 + 2.6 * w * Math.sqrt((a.s + b.s) / 2)),
+      mid: (pr.i + pr.j) / 2,
+      r: 1 - k / Math.max(1, PAIRS.length - 1),
+    };
+  });
+})();
 
 // ------------------------------------------------------------------------------------------------ the scribe's exit
 const CARRY: Pose = pose({ hipF: 5, kneeF: -4, hipB: -4, kneeB: -1, torso: -2, neck: 6, head: -4, shoulderF: 30, elbowF: 66, wristF: -6, shoulderB: -8, elbowB: 14 }, { handF: 'grip' });
@@ -107,11 +186,20 @@ interface Plan {
   release: number;
   turn: number;
   walk0: number;
-  dark0: number;
-  dark: number;
+  /** the short dark beat: down from dip0 ('keep'), back up by dip1 (before 'attention'); ≤ 0.4 s in all */
+  dip0: number;
+  dip1: number;
+  /** 'attention': every slip glows faintly */
+  attn: number;
   /** 'every': every slip's paper and wick light at the same instant (one step on twos) */
   every: number;
-  /** 'once': the threads shoot between every pair in a single 1/3 s step (with the score's full chord) */
+  /** threads shoot from every slip at once: grow0 ('every') → grow1 (they meet mid-span by the end of 'every other') */
+  grow0: number;
+  grow1: number;
+  /** the web densifies (weaker pairs join) from 'every' until dense1 (the end of 'every other') */
+  dense1: number;
+  /** 'all' → 'once': the brightness peak */
+  all: number;
   once: number;
   named: number;
   title: number;
@@ -338,6 +426,51 @@ function banner(c: C, env: PaintEnv, p: Plan, t: number, web: number) {
   c.fillRect(x0 - 12, top - 6, x1 - x0 + 24, 1.2);
 }
 
+/** the near occluder (critic round 1, depth): the carved END of a hall pew in the bottom-left corner, blurred on L5
+ *  at ~60% value, its seat and back running out of frame; a poppyhead finial and a pierced quatrefoil (evenodd) */
+function pewEnd(c: C, env: PaintEnv) {
+  const m = env.mood;
+  const ink = mixLab(m.fg, m.set, 0.12);
+  const P = new Path2D();
+  // the bench end: a square board with a moulded cap, a rolled arm-scroll at its top front corner
+  P.moveTo(-40, 760);
+  P.lineTo(-40, 500);
+  P.lineTo(78, 500);
+  P.bezierCurveTo(104, 500, 116, 512, 116, 528);
+  P.bezierCurveTo(116, 546, 98, 552, 90, 542);
+  P.bezierCurveTo(84, 534, 92, 524, 100, 530);
+  P.lineTo(100, 548);
+  P.lineTo(104, 760);
+  P.closePath();
+  // the cap moulding
+  P.rect(-40, 490, 112, 10);
+  // a pierced quatrefoil and a lancet slot (evenodd holes)
+  const qx = 34, qy = 590, r = 12;
+  for (let k = 0; k < 4; k++) {
+    const a = (k * Math.PI) / 2;
+    const cx = qx + Math.cos(a) * r * 1.4, cy = qy + Math.sin(a) * r * 1.4;
+    P.moveTo(cx + r, cy);
+    P.arc(cx, cy, r, 0, Math.PI * 2);
+  }
+  P.moveTo(26, 700);
+  P.lineTo(26, 650);
+  P.quadraticCurveTo(34, 632, 42, 650);
+  P.lineTo(42, 700);
+  P.closePath();
+  c.fillStyle = ink;
+  c.fill(P, 'evenodd');
+  c.fill(new Path2D('M -40 530 h 20 v 230 h -20 Z'));
+  // a thin top light on the cap and the scroll (window side)
+  c.strokeStyle = withAlpha(m.rim, 0.25);
+  c.lineWidth = 2;
+  c.beginPath();
+  c.moveTo(-40, 490);
+  c.lineTo(72, 490);
+  c.moveTo(78, 500);
+  c.bezierCurveTo(104, 500, 116, 512, 116, 528);
+  c.stroke();
+}
+
 function dateStamp(c: C, text: string, at: number, dur: number, t: number, m: { core: string; ink: string }) {
   const A = sm((t - at) / 0.5) * (1 - sm((t - at - dur) / 0.6));
   if (A <= 0) return;
@@ -371,11 +504,17 @@ export default defineShot({
       release: drop + 0.38,
       turn: drop + 0.62,
       walk0: drop + 0.7,
-      // a real dark beat on 'attention' (the old light goes out: windows and slips dark, the lamp's pool the only
-      // light), then EVERY slip lights at once on 'every', and the threads join every pair on 'once'
-      dark0: T.word(L1, 'attention') - 0.32,
-      dark: T.word(L1, 'attention') - 0.02,
+      // (review round 3) the dark beat is SHORT: down on 'keep', back up before 'attention' (≤ 0.4 s in all); the
+      // slips glow faintly on 'attention' and step to full on 'every'; threads shoot from every slip on 'every' and
+      // densify through 'every other'; 'all at once' is the brightness peak
+      dip0: T.word(L1, 'keep') - 0.02,
+      dip1: Math.min(T.word(L1, 'keep') + 0.36, T.word(L1, 'attention') - 0.06),
+      attn: T.word(L1, 'attention'),
       every: T.word(L1, 'every'),
+      grow0: T.word(L1, 'every'),
+      grow1: T.wordEnd(L1, 'other') + 0.05,
+      dense1: T.wordEnd(L1, 'other'),
+      all: T.word(L1, 'all'),
       once: T.word(L1, 'once'),
       named: T.word(L1, 'Transformer'),
       title: T.word(L2, 'title'),
@@ -398,14 +537,30 @@ export default defineShot({
     const tint = sm((t + 0.35) / 1.55);
     if (tint < 1) f.setMood('serverCyan', { from: 'duskRose', u: tint });
 
-    // light states: the windows dim to dark for the held beat, and come back (cooler) with the web
-    const darkK = sm((t - p.dark0) / (p.dark - p.dark0)) * (1 - (tq >= p.every ? 1 : 0));
-    const allOn = tq >= p.every ? 1 : 0; // a single step, on the word
-    const web = clamp01((t - p.once) / 0.33);
-    // the hold's beat: one bright wave through the web on 'out-translated'
-    const pulse = Math.exp(-Math.pow((t - (p.outT + 0.12)) / 0.38, 2));
-    const glowK = allOn * (0.9 + 0.1 * pulse + 0.05 * Math.sin(t * 1.3));
-    f.backlight({ sunX: HALL_VP.x - 30, sunY: HALL_VP.y - 10, intensity: lerp(1, 0.04, darkK) * (1 - 0.35 * allOn) });
+    // light states: the held dark beat ('keep' → 'every'), then every slip lights at once on 'every' (the same step)
+    // a single step, on the word (light is on ones: the first frame at or after 'every' is lit, not the next two)
+    const allOn = t >= p.every - 1 / 48 ? 1 : 0;
+    // the dark beat: a short dip on 'keep' (down in 0.12 s, back up by dip1, before 'attention'), never a held black
+    const darkK = allOn ? 0 : sm((t - p.dip0) / 0.12) * (1 - sm((t - (p.dip1 - 0.16)) / 0.16));
+    // 'attention': the slips glow faintly (a quarter of their lit value) until the one-step light-up on 'every'
+    const faint = allOn ? 0 : sm((t - (p.attn - 0.16)) / 0.22);
+    // the threads grow from every slip at once, from 'every' (0 → 1: they meet mid-span by the end of 'every other')
+    const web = clamp01((t - p.grow0) / (p.grow1 - p.grow0));
+    // and the web densifies: the strongest third of the pairs on 'every', every pair by the end of 'every other'
+    const dens = allOn ? lerp(0.34, 1.06, sm((t - p.grow0) / (p.dense1 - p.grow0))) : 0;
+    // 'all at once': the shot's brightness peak (rising from 'all', cresting just after 'once', settling over ~1.5 s)
+    const crest = p.once + 0.12;
+    const peak = t < crest ? sm((t - (p.all - 0.12)) / (crest - (p.all - 0.12))) : Math.exp(-Math.pow((t - crest) / 1.15, 2));
+    // the hold's beat: ONE bright wave runs the length of the hammock on 'out-translated' (~2 s, near → far), then
+    // the web settles to a steady glow a second before the cut (no breathing, no shimmer)
+    const WAVE0 = p.outT - 0.1, WAVE_D = 2.0;
+    const pulse = sm((t - WAVE0) / 0.3) * (1 - sm((t - (WAVE0 + WAVE_D - 0.3)) / 0.4));
+    const settle = 1 - sm((t - (p.D - 2.3)) / 1.3);
+    const glowK = allOn ? 0.62 + 0.26 * web + 0.5 * peak + 0.08 * pulse + 0.04 * Math.sin(t * 1.3) * settle : 0.32 * faint;
+    // the windows: back a step lower after the dip (the hall waits), cooler under the web, swelling with its peak
+    // (the hall comes back from the dip already at its waiting level: no bright bounce before 'attention')
+    const base = 1 - 0.22 * sm((t - p.dip0) / 0.3);
+    f.backlight({ sunX: HALL_VP.x - 30, sunY: HALL_VP.y - 10, intensity: lerp(base, 0.1, darkK) * (1 - allOn * (0.35 - 0.45 * peak)) });
 
     // the hall (static camera: baked once per mood, blended through the tint crossfade)
     f.layer('L2', (c, env) => {
@@ -420,7 +575,8 @@ export default defineShot({
       }
     });
     // the dark beat (and the dimmer hall behind the web), on an unblurred sheet just in front of the walls
-    const veil = Math.max(0.9 * darkK, 0.3 * allOn);
+    // (after the dip the hall waits a shade dimmer; under the web it is dimmer still, lifting at the peak)
+    const veil = Math.max(0.85 * darkK, 0.16 * sm((t - p.dip0) / 0.3), allOn * (0.3 - 0.16 * peak));
     if (veil > 0) {
       f.layer(VEIL, (c, env) => {
         c.fillStyle = withAlpha(env.mood.fg, veil);
@@ -436,9 +592,26 @@ export default defineShot({
     const sc = scribeAt(p, t);
     const lampPt = floorPoint(CAM, SX + 34, SZ - 30);
     const lampS = lampPt.s;
+    // the scribe (as the hall set's scribeDraw, but VALUE-KEPT in the dark beat: his ink is not hazed toward the hall
+    // while it is dark, so he stays the darkest shape, and once the lamp is down only its side catches a rim)
+    const sq = floorPoint(CAM, sc.x, SZ);
+    const sh = hallHaze(sq.vz);
+    const lampSide = { x: 0.85, y: 0.5 };
+    const keyDir = sc.lampInHand ? { x: 0.6, y: -0.8 } : lampSide;
+    const sOpts: PuppetDrawOpts = {
+      x: sq.x,
+      y: sq.y,
+      facing: sc.facing,
+      pose: withLife(sc.pose, tq, 5),
+      scale: sq.s,
+      ink: mixLab(PUPPET_NEAR_BLACK, f.mood.haze, sh * 0.85 * (1 - darkK)),
+      light: { ...keyDir, floor: 0.15 * (1 - darkK) },
+      edgeRim: { ...keyDir, px: 1.5, alpha: 0.55 * (1 - sh) },
+    };
+    const sHand = scribe.anchor(sOpts, 'handF');
 
     // the s01 relay's wicks, still glowing as embers (brighter near, a spark far down); out on 'attention'
-    const emberK = 1 - sm((t - p.dark0) / Math.max(0.3, p.dark - p.dark0));
+    const emberK = 1 - sm((t - p.dip0) / 0.22);
     const embers = (c: C, near: boolean) => {
       if (emberK <= 0.003) return;
       for (let i = 22; i >= 0; i--) {
@@ -454,15 +627,26 @@ export default defineShot({
         if ((S.vz <= 2400) !== near) continue;
         const atLamp = !near ? 0 : i <= SLIP0 + 1 && sc.lampInHand ? 0.5 : 0;
         // the far slips glow less (hazed), so the line never fuses into one bright streak at the vanishing point
-        const ownD = Math.max(0.3, 1 - hallHaze(S.vz) * 0.95);
+        // and the far quarter of the row drops a further step (~10% in value) so it never smears at the vanishing point
+        const farQ = 1 - 0.16 * sm((i - HALL.N * 0.7) / (HALL.N * 0.12));
+        const ownD = Math.max(0.3, 1 - hallHaze(S.vz) * 0.95) * farQ;
         hallSlip(c, CAM, env, i, { lit: atLamp, own: glowK * (i < NT ? 1 : 0.6) * ownD, dim: darkK, textScale: 1.45, swing: Math.sin(tq * 0.9 + i * 1.7) * 0.012 });
+      }
+      // 'attention': every wick shows a faint point (the hall is waiting); the full light comes on 'every'
+      if (!allOn && faint > 0.01) {
+        for (let i = HALL.N - 1; i >= 0; i--) {
+          const S = slipScreen(CAM, i);
+          if ((S.vz <= 2400) !== near) continue;
+          const k = 0.24 * faint * Math.max(0.15, 1 - hallHaze(S.vz)) * (1 - 0.3 * sm((i - HALL.N * 0.7) / (HALL.N * 0.12)));
+          wickFlame(c, S.wick.x, S.wick.y - 4 * S.s, S.s, k, t, i * 7 + 3, light, 0);
+        }
       }
       // every wick relights on 'every', with its slip (the same step), brighter near, a point far down the line
       if (allOn > 0) {
         for (let i = HALL.N - 1; i >= 0; i--) {
           const S = slipScreen(CAM, i);
           if ((S.vz <= 2400) !== near) continue;
-          const k = 0.75 * Math.max(0.15, 1 - hallHaze(S.vz)) * (0.94 + 0.06 * Math.sin(tq * 5 + i));
+          const k = 0.75 * Math.max(0.15, 1 - hallHaze(S.vz)) * (0.94 + 0.06 * Math.sin(tq * 5 + i)) * (1 - 0.3 * sm((i - HALL.N * 0.7) / (HALL.N * 0.12)));
           wickFlame(c, S.wick.x, S.wick.y - 4 * S.s, S.s, k, t, i * 7 + 3, light, 0);
         }
       }
@@ -484,7 +668,7 @@ export default defineShot({
           // no minimum radius and a steep depth falloff: dozens of far halos must not stack into a streak
           const r = 92 * S.s;
           const dk = 1 - hallHaze(S.vz);
-          const a = 0.2 * glowK * dk * dk * dk;
+          const a = 0.2 * glowK * dk * dk * dk * (1 - 0.3 * sm((i - HALL.N * 0.7) / (HALL.N * 0.12)));
           if (r < 2 || a < 0.004) continue;
           const g = c.createRadialGradient(S.x, S.y + S.h / 2, 0, S.x, S.y + S.h / 2, r);
           g.addColorStop(0, withAlpha(env.mood.core, a));
@@ -497,75 +681,95 @@ export default defineShot({
       drawSlips(c, env, true);
       embers(c, true);
 
-      // THE WEB: every pair at once; brightness and width ← the pair's attention weight
+      // THE WEB: threads shoot out from every slip at once and meet mid-span; brightness and width ← the pair's
+      // attention weight. Batched by (colour, alpha, width) so ~1900 threads cost a few dozen strokes.
       if (web > 0) {
         const op = c.globalCompositeOperation;
         c.globalCompositeOperation = 'lighter';
         c.lineCap = 'round';
-        const S = Array.from({ length: NT }, (_, i) => slipScreen(CAM, i));
-        // the hold's shimmer: a slow wave of brightness travelling down the line (alpha 0.6 → 0.9)
-        const shimOn = sm((t - (p.authors + 0.5)) / 1.2);
-        for (const pr of PAIRS) {
-          const a = S[pr.i], b = S[pr.j];
-          const w = pr.w / WMAX;
-          const ax = a.x, ay = a.y + a.h * 0.98, bx = b.x, by = b.y + b.h * 0.98;
-          const dx = bx - ax;
-          // a sag that grows with screen span but is capped by depth, so the far end never funnels into one streak
-          const sNear = Math.max(a.s, b.s);
-          const sag = Math.min(14 + Math.abs(dx) * 0.28, 150 * sNear + 10);
-          const mx = (ax + bx) / 2, my = Math.max(ay, by) + sag;
-          // threads fade with depth like the slips (by their deeper end)
-          const depth = 1 - hallHaze(Math.max(a.vz, b.vz));
-          const fadeD = 0.42 + 0.58 * Math.max(0, depth);
-          const mid = (pr.i + pr.j) / 2;
-          const shim0 = lerp(1, 0.6 + 0.3 * (0.5 + 0.5 * Math.sin((t - p.authors) * 1.6 - mid * 0.45)), shimOn);
-          // the 'out-translated' wave: a bright front running down the line from the near slips
-          const front = (t - (p.outT - 0.1)) * 40;
-          const wave = pulse > 0.01 ? 0.9 * Math.exp(-Math.pow((mid - front) / 6, 2)) * Math.min(1, pulse * 3) : 0;
-          const shim = shim0 + wave;
-          // the thread shoots out from both ends at once (a single step: 1/3 s)
-          // short threads between two far slips are dimmed by their screen span, so the dozens that meet near the
-          // vanishing point stay a fine web instead of piling into one hot streak
-          const span = Math.hypot(bx - ax, by - ay);
-          const spanK = 0.18 + 0.82 * Math.pow(clamp01(span / 140), 0.8);
-          // and every thread is thinned toward its far end by how crowded the line is there on screen (slips
-          // shrink and bunch toward the vanishing point, so their threads overlap): additive light stays a web
-          const densK = 0.16 + 0.84 * Math.pow(clamp01(Math.min(a.s, b.s) / 0.32), 0.75);
-          const al = (0.13 + 0.9 * Math.pow(w, 0.7)) * web * (glowK / 0.95) * fadeD * shim * spanK * densK;
-          if (al < 0.006) continue;
-          c.strokeStyle = withAlpha(w > 0.45 ? env.mood.core : env.mood.rim, Math.min(1, al));
-          c.lineWidth = 0.5 + 2.6 * w * Math.sqrt((a.s + b.s) / 2);
-          c.beginPath();
+        // a faint breathing shimmer after the authors, gone before the one wave (so the wave is the hold's event)
+        const shimOn = sm((t - (p.authors + 0.5)) / 1.2) * (1 - sm((t - (WAVE0 - 0.5)) / 0.5));
+        // the 'out-translated' wave: a bright front running ONCE the length of the line, near → far, over WAVE_D
+        const front = ((t - WAVE0) / WAVE_D) * (NT + 10) - 5;
+        const lightK = (glowK / 0.88) * (0.7 + 0.3 * web) * (1 + 0.75 * peak);
+        const buckets = new Map<string, { path: Path2D; a: number; lw: number; core: boolean }>();
+        // while they travel, each thread's leading tip burns brighter (light shooting out of every slip at once)
+        const tips = new Map<number, Path2D>();
+        // every thread is the SAME fraction of its own arc length along at every frame (each end grows to the
+        // middle): fast out of the slip, slowing as they meet
+        // (front-loaded so the first threads already show a beat after 'every')
+        const gu = (1 - Math.pow(1 - web, 3)) * 0.5;
+        for (const th of THREADS) {
+          const shim0 = lerp(1, 0.86 + 0.1 * Math.sin((t - p.authors) * 1.6 - th.mid * 0.45), shimOn);
+          const wave = pulse > 0.01 ? 1.7 * Math.exp(-Math.pow((th.mid - front) / 6, 2)) * pulse : 0;
+          // densify: a pair joins the web as `dens` passes its rank (the strongest first, every pair by 'other')
+          const dk = clamp01((dens - th.r) / 0.06);
+          if (dk <= 0) continue;
+          const al = th.a0 * lightK * (shim0 + wave) * dk;
+          const aq = Math.min(wave > 0.05 ? 34 : 24, Math.round(al * 40));
+          if (aq <= 0) continue;
+          const core = th.w > 0.45;
+          const wq = Math.round(th.lw * 3);
+          const key = `${core ? 1 : 0}|${aq}|${wq}`;
+          let bk = buckets.get(key);
+          if (!bk) buckets.set(key, (bk = { path: new Path2D(), a: aq / 40, lw: wq / 3, core }));
+          const P = bk.path;
           if (web >= 1) {
-            c.moveTo(ax, ay);
-            c.quadraticCurveTo(mx, my, bx, by);
+            P.moveTo(th.ax, th.ay);
+            P.quadraticCurveTo(th.mx, th.my, th.bx, th.by);
           } else {
-            // partial: from each end toward the middle
-            const qx = (u: number) => (1 - u) * (1 - u) * ax + 2 * (1 - u) * u * mx + u * u * bx;
-            const qy = (u: number) => (1 - u) * (1 - u) * ay + 2 * (1 - u) * u * my + u * u * by;
-            const n = 8;
-            c.moveTo(ax, ay);
-            for (let k = 1; k <= n; k++) c.lineTo(qx((k / n) * web * 0.5), qy((k / n) * web * 0.5));
-            c.moveTo(bx, by);
-            for (let k = 1; k <= n; k++) c.lineTo(qx(1 - (k / n) * web * 0.5), qy(1 - (k / n) * web * 0.5));
+            // partial: from each end toward the middle (both ends at once: every slip looks out at the same time)
+            const qx = (u: number) => (1 - u) * (1 - u) * th.ax + 2 * (1 - u) * u * th.mx + u * u * th.bx;
+            const qy = (u: number) => (1 - u) * (1 - u) * th.ay + 2 * (1 - u) * u * th.my + u * u * th.by;
+            const L = th.arc[ARC_N];
+            const n = 6;
+            P.moveTo(th.ax, th.ay);
+            for (let k = 1; k <= n; k++) {
+              const u = arcU(th, (k / n) * gu * L);
+              P.lineTo(qx(u), qy(u));
+            }
+            P.moveTo(th.bx, th.by);
+            for (let k = 1; k <= n; k++) {
+              const u = arcU(th, L - (k / n) * gu * L);
+              P.lineTo(qx(u), qy(u));
+            }
+            // the burning tips have a floor, so the far slips visibly shoot their threads at the same frame too
+            const tq2 = Math.min(24, Math.round(Math.min(1, Math.max(0.3, al * 2.4)) * 24));
+            if (tq2 > 1) {
+              let tp = tips.get(tq2);
+              if (!tp) tips.set(tq2, (tp = new Path2D()));
+              const ua = arcU(th, gu * 0.8 * L), ub = arcU(th, gu * L);
+              const va = arcU(th, L - gu * 0.8 * L), vb = arcU(th, L - gu * L);
+              tp.moveTo(qx(ua), qy(ua));
+              tp.lineTo(qx(ub), qy(ub));
+              tp.moveTo(qx(va), qy(va));
+              tp.lineTo(qx(vb), qy(vb));
+            }
           }
-          c.stroke();
+        }
+        for (const bk of buckets.values()) {
+          c.strokeStyle = withAlpha(bk.core ? env.mood.core : env.mood.rim, Math.min(1, bk.a));
+          c.lineWidth = bk.lw;
+          c.stroke(bk.path);
+        }
+        if (web < 1) {
+          const tipK = 0.6 * (1 - sm((web - 0.7) / 0.3));
+          c.lineWidth = 1.3;
+          for (const [q, tp] of tips) {
+            c.strokeStyle = withAlpha(env.mood.core, (q / 24) * tipK);
+            c.stroke(tp);
+          }
         }
         c.globalCompositeOperation = op;
       }
 
-      // the abandoned lamp (on the floor once released) and its pool
+      // the abandoned lamp (on the floor once released) and its pool (the scribe himself is drawn after the rim pass)
       const lampOnFloor = !sc.lampInHand;
-      const sd = scribeDraw(c, CAM, env, { x: sc.x, z: SZ, pose: withLife(sc.pose, tq, 5), facing: sc.facing, light: { x: 0.6, y: -0.8 } });
       const lk = 0.82 * (1 - 0.4 * allOn);
-      if (sd && sc.lampInHand) {
-        handLamp(c, env, sd.hand.x, sd.hand.y, sd.q.s, lk, t, warm);
-      } else if (lampOnFloor) {
-        handLamp(c, env, lampPt.x, lampPt.y - 31 * lampS * 1.25, lampS * 1.25, lk, t, warm);
-      }
+      if (lampOnFloor) handLamp(c, env, lampPt.x, lampPt.y - 31 * lampS * 1.25, lampS * 1.25, lk, t, warm);
       // the lamp's pool on the floor
       const pk = lk * (0.6 + 0.4 * darkK);
-      const px = lampOnFloor ? lampPt.x : sd ? sd.hand.x : lampPt.x;
+      const px = lampOnFloor ? lampPt.x : sHand.x;
       const op = c.globalCompositeOperation;
       c.globalCompositeOperation = 'lighter';
       c.save();
@@ -583,6 +787,11 @@ export default defineShot({
 
 
     f.layer('L4', (c, env) => {
+      // the scribe, after the rim pass: near-black, rimmed only on his own key side (the lamp, once it is down)
+      if (sq.vz > 130 && sq.x > -200) {
+        scribe.draw(c, sOpts, env);
+        if (sc.lampInHand) handLamp(c, env, sHand.x, sHand.y, sq.s, 0.82, t, warm);
+      }
       // once every line has inked, the banner is static: bake it
       if (t > p.authors + 1.7) {
         const tt = p.authors + 1.8;
@@ -593,6 +802,22 @@ export default defineShot({
           banner(cc, env, p, tt, 1);
         })(c, bx, 0);
       } else banner(c, env, p, t, web);
+    });
+
+    // the near plane: a pew end in the bottom-left corner (the scribe walks out behind it)
+    f.layer('L5', (c, env) => {
+      const bakePew = (moodId: 'duskRose' | 'serverCyan') =>
+        f.cached(`${ID}/pew/${moodId}`, 220, 400, (cc) => {
+          cc.translate(40, -400);
+          pewEnd(cc, { ...env, mood: MOODS[moodId] } as PaintEnv);
+        });
+      bakePew('serverCyan')(c, -40, 400);
+      if (tint < 1) {
+        c.save();
+        c.globalAlpha = 1 - tint;
+        bakePew('duskRose')(c, -40, 400);
+        c.restore();
+      }
     });
 
     dateStamp(f.c, '2017', p.drop, 3.6, t, f.mood);

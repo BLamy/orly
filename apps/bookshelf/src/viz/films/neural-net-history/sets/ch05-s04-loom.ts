@@ -22,7 +22,7 @@
  */
 import type { PaintEnv, Palette } from '../../../film/contracts';
 import { MOODS, mixLab, withAlpha } from '../../../film/silhouette/palette';
-import { FONT, softPlate } from '../../../film/silhouette/type';
+import { FONT, cardProbe, softPlate, textRole } from '../../../film/silhouette/type';
 import { glow, knot, paperLantern, weightColor, weightWidth } from '../../../film/silhouette/metaphors/kit';
 import { XOR_221, forward, grads, lossAt, netAt } from '../../../film/silhouette/metaphors/mlp';
 import { hash1 } from '../../../film/core/frame';
@@ -69,9 +69,79 @@ export const LOOM = {
 export const ember = (m: Palette) => mixLab(m.rim, MOODS.emberRed.rim, 0.6);
 
 // ------------------------------------------------------------------ the frame
+/**
+ * The demonstration's prop lettering (review round 4: off the breast beam, out of the subtitle zone): a dark header
+ * board sitting on the TOP beam, with the words cut as aged-parchment paper letters (#c9b78c at 75 %, a step under
+ * the slips) in two lines, lit by a warm wash from the beam's lamp. Unlit it is part of the set (letters at a trace,
+ * texture); lit it is read (cap height ~25 px at 1080p in the training framing). `fly` 0..1 hoists the board up
+ * out of frame on its two lines (theatre scenery flown out) so the family trees and the quote card have the top.
+ */
+export const LETTER_BOARD = { x0: 688, x1: 1312, y0: 38, y1: 86 };
+export function loomLettering(c: C, env: PaintEnv, o: { lit: number; fly: number }) {
+  const m = env.mood;
+  const B = LETTER_BOARD;
+  if (o.fly >= 1) return;
+  const dy = -440 * o.fly * o.fly;
+  const ink = env.fill('ink');
+  c.save();
+  c.translate(0, dy);
+  // the two lift lines (scenery lines up into the flies)
+  c.strokeStyle = ink;
+  c.lineWidth = 1;
+  c.beginPath();
+  for (const lx of [B.x0 + 40, B.x1 - 40]) {
+    c.moveTo(lx, B.y0);
+    c.lineTo(lx, B.y0 - 900);
+  }
+  c.stroke();
+  // the board: ink, with a top edge catching the lamp and two small end brackets
+  c.fillStyle = ink;
+  c.fillRect(B.x0, B.y0, B.x1 - B.x0, B.y1 - B.y0);
+  c.fillRect(B.x0 + 30, B.y1, 10, 6);
+  c.fillRect(B.x1 - 40, B.y1, 10, 6);
+  c.fillStyle = withAlpha(m.rim, 0.22 + 0.25 * o.lit);
+  c.fillRect(B.x0, B.y0, B.x1 - B.x0, 1.2);
+  // the beam's lamp falling on the letters
+  if (o.lit > 0.01) {
+    c.save();
+    c.beginPath();
+    c.rect(B.x0, B.y0, B.x1 - B.x0, B.y1 - B.y0);
+    c.clip();
+    c.save();
+    c.translate((B.x0 + B.x1) / 2, (B.y0 + B.y1) / 2);
+    c.scale(1, 0.22);
+    glow(c, 0, 0, 380, mixLab(m.halo, m.rim, 0.5), 0.3 * o.lit);
+    c.restore();
+    c.restore();
+  }
+  const role = o.lit > 0.35 ? 'subject' : 'texture';
+  textRole(c, role, () => {
+    c.textAlign = 'center';
+    c.textBaseline = 'alphabetic';
+    c.letterSpacing = '1.5px';
+    const size = 20;
+    const lines = ['THE 1986 METHOD, ON EXCLUSIVE-OR', '·  A DEMONSTRATION  ·'];
+    const ys = [B.y0 + 22, B.y0 + 43];
+    const cx = (B.x0 + B.x1) / 2;
+    lines.forEach((l, k) => {
+      c.font = `400 ${size}px ${FONT.fellSC}`;
+      const w = c.measureText(l).width;
+      if (w > B.x1 - B.x0 - 30) c.font = `400 ${(size * (B.x1 - B.x0 - 30)) / w}px ${FONT.fellSC}`;
+      // the cut paper's own shadow on the board, then the parchment letter
+      c.fillStyle = withAlpha('#000000', 0.5 * (0.3 + 0.7 * o.lit));
+      c.fillText(l, cx + 1.2, ys[k] + 1.4);
+      c.fillStyle = withAlpha(mixLab('#c9b78c', m.set, 0.55 * (1 - o.lit)), 0.14 + 0.61 * o.lit);
+      c.fillText(l, cx, ys[k]);
+    });
+    c.letterSpacing = '0px';
+  });
+  c.restore();
+}
+
 export function loomFrame(c: C, env: PaintEnv, o: { lettering: number; strip: number }) {
   const m = env.mood;
   const ink = env.fill('ink');
+  void o.lettering;
   c.fillStyle = ink;
   // uprights with feet, the top beam with end finials, the breast beam
   for (const px of LOOM.postX) {
@@ -89,24 +159,9 @@ export function loomFrame(c: C, env: PaintEnv, o: { lettering: number; strip: nu
   const by = LOOM.breastY;
   c.fillStyle = ink;
   c.fillRect(LOOM.postX[0] - 10, by, LOOM.postX[1] - LOOM.postX[0] + 20, 58);
-  // its prop lettering: cut-paper capitals in two lines on a pale strip, lit by the lamp on 'Again'
-  // (sized to the 22 px cap floor at the training framing; it is read through the scrub and the check)
-  const L = o.lettering;
-  const paper = mixLab(mixLab(m.set, m.setHaze, 0.35), mixLab(m.halo, m.rim, 0.5), 0.05 + 0.8 * L);
-  c.fillStyle = paper;
-  c.fillRect(LOOM.cx - 272, by + 4, 544, 50);
-  c.textAlign = 'center';
-  c.textBaseline = 'middle';
-  c.fillStyle = withAlpha(m.ink, 0.28 + 0.67 * L);
-  c.letterSpacing = '1px';
-  c.font = `400 23px ${FONT.fellSC}`;
-  const l1 = 'THE 1986 METHOD, ON EXCLUSIVE-OR';
-  const w1 = c.measureText(l1).width;
-  if (w1 > 528) c.font = `400 ${(23 * 528) / w1}px ${FONT.fellSC}`;
-  c.fillText(l1, LOOM.cx, by + 18);
-  c.font = `400 23px ${FONT.fellSC}`;
-  c.fillText('·  A DEMONSTRATION  ·', LOOM.cx, by + 41);
-  c.letterSpacing = '0px';
+  // (review r4) the breast beam is plain timber now: the demonstration's lettering rides the TOP beam (loomLettering)
+  c.fillStyle = withAlpha(m.rim, 0.16);
+  c.fillRect(LOOM.postX[0] - 10, by, LOOM.postX[1] - LOOM.postX[0] + 20, 1.2);
   // the journal clipping pinned under the beam, right of the left post
   if (o.strip > 0.003) {
     const S = LOOM.strip;
@@ -197,6 +252,9 @@ export interface LoomNetOpts {
   gathered?: number;
   /** knob radius (layer px) */
   knobR?: number;
+  /** 0..1 'its share of the blame' (review r4): every string's thickness pulses by its real |dL/dw|, normalised over
+   *  all six strings (the most-blamed 1.5x, the least 0.6x) */
+  share?: number;
 }
 
 /** where the messenger's knob sits on each string (fraction from the upper end) */
@@ -293,6 +351,21 @@ function tugMark(c: C, x: number, y: number, r: number, base: number, turn: numb
   c.restore();
 }
 
+/** a soft halo along a heavily-blamed string (the share of the blame, made visible) */
+function glowString(c: C, S: { x0: number; y0: number; x1: number; y1: number }, bow: number, col: string, k: number) {
+  const mid = onString(S, bow, 0.5);
+  c.save();
+  c.globalCompositeOperation = 'lighter';
+  c.strokeStyle = withAlpha(col, 0.35 * k);
+  c.lineWidth = 9;
+  c.lineCap = 'round';
+  c.beginPath();
+  c.moveTo(S.x0, S.y0);
+  c.quadraticCurveTo(mid.cx, mid.cy, S.x1, S.y1);
+  c.stroke();
+  c.restore();
+}
+
 /** the messenger: a dark bead in a ring of light */
 function bead(c: C, x: number, y: number, r: number, k: number, env: PaintEnv) {
   if (k <= 0.01) return;
@@ -331,6 +404,8 @@ export function loomNet(c: C, o: LoomNetOpts, env: PaintEnv) {
   const litLayer = (l: number) => (l === 0 ? sm(o.wave / 0.25) : sm((o.wave - (l - 0.25)) / 0.25));
 
   // strings, knobs, knots and the messenger
+  const share = o.share ?? 0;
+  const gAll = g ? Math.max(1e-6, ...g.gW.flat(2).map(Math.abs)) : 1;
   for (let l = 0; l < 2; l++) {
     const gMax = g ? Math.max(1e-6, ...g.gW[l].flat().map(Math.abs)) : 1;
     for (let j = 0; j < net.W[l].length; j++)
@@ -345,12 +420,15 @@ export function loomNet(c: C, o: LoomNetOpts, env: PaintEnv) {
         const gN = g ? Math.min(1, Math.abs(g.gW[l][j][i]) / gMax) : 0;
         const tug = onIt ? Math.exp(-(((bu - KNOB_U) / 0.09) ** 2)) : 0;
         const lit = litLayer(l + 1) * 0.6;
-        const col = mixLab(weightColor(m, w), m.core, 0.22 * lit + 0.2 * tug * gN);
+        const gA = g ? Math.abs(g.gW[l][j][i]) / gAll : 0;
+        const col = mixLab(weightColor(m, w), m.core, 0.22 * lit + 0.2 * tug * gN + 0.3 * share * gA);
         c.save();
-        c.globalAlpha *= (0.55 + 0.3 * lit + 0.15 * tug) * (1 - 0.35 * dim);
+        c.globalAlpha *= (0.55 + 0.3 * lit + 0.15 * tug + 0.3 * share * gA) * (1 - 0.35 * dim);
         c.strokeStyle = col;
         c.lineCap = 'round';
-        c.lineWidth = weightWidth(w, wMax) * (1 + 1.1 * tug * gN);
+        // (on 'share') x0.6 for the least-blamed string up to x1.5 for the most, plus a few px so thin strings show it
+        c.lineWidth = weightWidth(w, wMax) * (1 + 1.1 * tug * gN) * lerp(1, 0.6 + 0.9 * gA, share) + 4.5 * share * gA * gA;
+        if (share > 0.01 && gA > 0.3) glowString(c, S, bow, col, share * (gA - 0.3) * 1.4);
         const mid = onString(S, bow, 0.5);
         c.beginPath();
         c.moveTo(S.x0, S.y0);
@@ -538,59 +616,82 @@ export function targetSlips(c: C, o: { lift: number[]; tick: number[]; hot: numb
 }
 
 // ------------------------------------------------------------------ the family trees (1986 paper's other demo)
-/** one family as 12 people in three generations; identical shape for both families */
+/**
+ * One family as 12 people in three generations, identical in shape for both families: two grandparent couples;
+ * their four children (two of whom marry each other, two of whom marry in); two grandchildren. Tree px, origin at
+ * the hanging rod's centre; ROW = each generation's bust base line. (review r4: busts ~35 px tall at the family
+ * framing, i.e. ~53 px at 1080p, so they read as people; marriage bars and descent lines cut wide enough to read.)
+ */
+const ROW = [44, 104, 164];
+const BUST = 0.46;
+const BUST_H = 74.5 * BUST;
+const BUST_W = 24 * BUST;
 const PEOPLE: { x: number; y: number; gen: number }[] = [
-  { x: -78, y: 0, gen: 0 }, { x: -46, y: 0, gen: 0 }, { x: 46, y: 0, gen: 0 }, { x: 78, y: 0, gen: 0 },
-  { x: -96, y: 62, gen: 1 }, { x: -62, y: 62, gen: 1 }, { x: -16, y: 62, gen: 1 }, { x: 16, y: 62, gen: 1 }, { x: 62, y: 62, gen: 1 }, { x: 96, y: 62, gen: 1 },
-  { x: -40, y: 124, gen: 2 }, { x: 40, y: 124, gen: 2 },
-];
+  { x: -86, gen: 0 }, { x: -54, gen: 0 }, { x: 54, gen: 0 }, { x: 86, gen: 0 },
+  { x: -112, gen: 1 }, { x: -80, gen: 1 }, { x: -16, gen: 1 }, { x: 16, gen: 1 }, { x: 80, gen: 1 }, { x: 112, gen: 1 },
+  { x: -96, gen: 2 }, { x: 96, gen: 2 },
+].map((p) => ({ ...p, y: ROW[p.gen] }));
 const COUPLES: [number, number][] = [[0, 1], [2, 3], [4, 5], [6, 7], [8, 9]];
-const DESCENT: [number, number][] = [[0, 5], [0, 6], [2, 7], [2, 8], [6, 10], [8, 11]];
+/** [couple index, child] */
+const DESCENT: [number, number][] = [[0, 5], [0, 6], [1, 7], [1, 8], [2, 10], [4, 11]];
+/** half the tree's width (tree px) */
+export const TREE_HALF_W = 112 + BUST_W + 8;
 
-/** the larger net's six hidden lanterns: hung from the top beam in the free band between the output and the
- *  hidden pair, three either side of the XOR strings (never in front of the XOR lanterns) */
-export const FAMILY_NET = { xs: [764, 830, 896, 1104, 1170, 1236], y: 252, r: 21 };
+/** the larger net's six hidden lanterns: on their OWN lower bar between the trees, under the XOR inputs and above the
+ *  breast beam (review r4: never strung over the XOR output and its slips) */
+export const FAMILY_NET = { xs: [790, 880, 940, 1060, 1120, 1210], y: 518, r: 17, barY: 494, barX0: 768, barX1: 1232 };
 
 /**
- * Two identical family trees cut as silhouette paper (no card behind them): a hanging rod on two threads, the
- * couple and descent lines as ink strips, the people as small profile busts (couples face each other).
- * The hidden lanterns tint them: nationality (tree vs tree, split in VALUE as well as hue: one tree pale and
- * warm, the other darker and cool), then generation (three value bands, light → dark, top to bottom).
+ * Two identical family trees cut as silhouette paper (no card behind them), each hung on two threads from the flies:
+ * a rod, the couples joined by marriage bars, descent lines down to the children, the people as profile busts
+ * (couples face each other). The six hidden lanterns tint them: nationality (tree vs tree, split in VALUE as well as
+ * hue), then generation (three value bands, light → dark, top to bottom).
  */
 export function familyTrees(
   c: C,
-  o: { drop: number; nat: number; gen: number; net: number; t: number; lx: number; rx: number; y: number; alpha?: number; k?: number },
+  o: { drop: number; nat: number; gen: number; net: number; t: number; trees: { x: number; y: number }[]; alpha?: number },
   env: PaintEnv,
 ) {
   const m = env.mood;
   if (o.drop <= 0.003 || (o.alpha ?? 1) <= 0.003) return;
-  const K = o.k ?? 0.86;
   const ink = env.fill('ink');
   const natCol = [mixLab(m.core, m.rim, 0.25), mixLab(mixLab(m.halo, MOODS.winterBlue.rim, 0.55), m.set, 0.62)];
-  const genCol = [mixLab(m.core, m.rim, 0.15), mixLab(m.rim, m.halo, 0.55), mixLab(m.halo, m.set, 0.55)];
-  const trees: { x: number; side: 0 | 1 }[] = [
-    { x: o.lx, side: 0 },
-    { x: o.rx, side: 1 },
-  ];
-  const dropY = (1 - sm(o.drop)) * -260;
+  // generation = three clearly different VALUES of one lantern gold, top to bottom (1.0 / 0.62 / 0.32)
+  const gold = mixLab(m.core, m.halo, 0.25);
+  const genCol = [gold, mixLab(m.ink, gold, 0.62), mixLab(m.ink, gold, 0.32)];
+  const trees = o.trees.map((tr, side) => ({ ...tr, side: side as 0 | 1 }));
+  const dd = sm(o.drop);
+  const dropY = (1 - dd) * -340;
   c.save();
   c.globalAlpha *= o.alpha ?? 1;
-  // the larger net: six lanterns on threads from the beam (units 0–2 nationality, 3–5 generation)
+  // the larger net on its own bar: the bar on two threads from the top beam, six lanterns on short cords under it
   const N = FAMILY_NET;
-  const netPt = (k: number) => ({ x: N.xs[k], y: N.y + dropY * 0.4 });
+  const netDrop = (1 - dd) * -60;
+  c.save();
+  c.globalAlpha *= dd;
+  c.strokeStyle = ink;
+  c.lineWidth = 1;
+  c.beginPath();
+  for (const bx of [N.barX0 + 6, N.barX1 - 6]) {
+    c.moveTo(bx, LOOM.beamY + 8);
+    c.lineTo(bx, N.barY + netDrop);
+  }
+  for (const x of N.xs) {
+    c.moveTo(x, N.barY + netDrop);
+    c.lineTo(x, N.y + netDrop - N.r * 1.18);
+  }
+  c.stroke();
+  c.fillStyle = ink;
+  c.fillRect(N.barX0, N.barY + netDrop - 2, N.barX1 - N.barX0, 4);
+  c.restore();
+  const netPt = (k: number) => ({ x: N.xs[k], y: N.y + netDrop });
   for (let k = 0; k < 6; k++) {
     const { x, y } = netPt(k);
-    c.strokeStyle = ink;
-    c.lineWidth = 1.1;
-    c.beginPath();
-    c.moveTo(x, LOOM.beamY + 8);
-    c.lineTo(x, y - N.r - 5);
-    c.stroke();
-    const act = k < 3 ? o.nat * (0.55 + 0.45 * (k === 1 ? 1 : 0.5 + 0.5 * Math.sin(o.t * 3 + k))) : o.gen * (0.6 + 0.4 * (k === 4 ? 1 : 0.6));
-    paperLantern(c, { x, y, r: N.r, act: Math.max(0.05, act) * o.net, tassel: false, halo: 0.4, alpha: sm(o.drop) }, env);
+    const act = k < 3 ? Math.max(o.nat, 0.55 * o.gen) * (0.55 + 0.45 * (k === 1 ? 1 : 0.5 + 0.5 * Math.sin(o.t * 3 + k))) : Math.max(o.gen, 0.55 * o.nat) * (0.6 + 0.4 * (k === 4 ? 1 : 0.6));
+    paperLantern(c, { x, y, r: N.r, act: Math.max(0.05, act) * o.net, tassel: false, halo: 0.4, alpha: dd }, env);
   }
-  // each half of the row is tied to the tree on its side (a thread from every lantern to the tree's rod end)
-  const tie = (tr: { x: number; side: 0 | 1 }) => ({ x: tr.x + (tr.side ? -112 : 112) * K, y: o.y + dropY - 30 * K });
+  // each half of the row is tied to the tree on its side (a thread from every lantern to the tree's inner low corner)
+  const tie = (tr: { x: number; y: number; side: 0 | 1 }) => ({ x: tr.x + (tr.side ? -1 : 1) * (TREE_HALF_W - 14), y: tr.y + dropY + ROW[2] - 14 });
   const threads = (col: string, a: number, w: number) => {
     c.save();
     c.globalAlpha *= a;
@@ -601,59 +702,67 @@ export function familyTrees(
       const { x, y } = netPt(k);
       const e = tie(tr);
       c.beginPath();
-      c.moveTo(x + (tr.side ? N.r * 0.8 : -N.r * 0.8), y);
-      c.quadraticCurveTo((x + e.x) / 2, Math.min(y, e.y) - 18, e.x, e.y);
+      c.moveTo(x, y - N.r * 0.6);
+      c.quadraticCurveTo((x + e.x) / 2, Math.min(y, e.y) - 30, e.x, e.y);
       c.stroke();
     }
     c.restore();
   };
-  threads(ink, sm(o.drop) * 0.7, 0.9);
+  threads(ink, dd * 0.7, 0.9);
+  const amt = Math.max(o.nat, o.gen);
   for (const tr of trees) {
     c.save();
-    c.translate(tr.x, o.y + dropY);
-    c.scale(K, K);
-    c.globalAlpha *= sm(o.drop);
+    c.translate(tr.x, tr.y + dropY);
+    c.globalAlpha *= dd;
     // the hanging rod and its two threads
     c.strokeStyle = ink;
-    c.lineWidth = 1 / K;
-    for (const dx of [-80, 80]) {
-      c.beginPath();
-      c.moveTo(dx, -32);
+    c.lineWidth = 1;
+    c.beginPath();
+    for (const dx of [-96, 96]) {
+      c.moveTo(dx, -8);
       c.lineTo(dx, -1000);
-      c.stroke();
     }
+    c.stroke();
     c.fillStyle = ink;
-    c.fillRect(-116, -34, 232, 4);
-    // the cut-paper lines: thin ink strips (each gen-0 bust hangs from the rod on a short strip)
-    const strip = 2.6;
-    for (let i = 0; i < 4; i++) c.fillRect(PEOPLE[i].x - 1, -30, 2, PEOPLE[i].y - 22 + 30);
-    for (const [i, j] of COUPLES) c.fillRect(Math.min(PEOPLE[i].x, PEOPLE[j].x), PEOPLE[i].y + 6, Math.abs(PEOPLE[j].x - PEOPLE[i].x), strip);
-    for (const [i, j] of DESCENT) {
+    c.fillRect(-TREE_HALF_W, -10, TREE_HALF_W * 2, 4);
+    // the cut-paper lines (ink strips): each grandparent hangs from the rod on a short strip
+    const strip = 3;
+    for (let i = 0; i < 4; i++) c.fillRect(PEOPLE[i].x - 1, -6, 2, PEOPLE[i].y - BUST_H + 6);
+    // marriage bars at shoulder height, between the two busts of each couple
+    const barY = (g: number) => ROW[g] - 12;
+    COUPLES.forEach(([i, j]) => {
       const a0 = PEOPLE[i], b0 = PEOPLE[j];
-      const sx = COUPLES.find(([p]) => p === i) ? (a0.x + PEOPLE[i + 1].x) / 2 : a0.x;
-      c.fillRect(sx - strip / 2, a0.y + 6, strip, 26);
-      c.fillRect(Math.min(sx, b0.x) - strip / 2, a0.y + 30, Math.abs(b0.x - sx) + strip, strip);
-      c.fillRect(b0.x - strip / 2, a0.y + 30, strip, b0.y - 22 - (a0.y + 30));
+      c.fillRect(Math.min(a0.x, b0.x) + BUST_W - 2, barY(a0.gen) - strip / 2, Math.abs(b0.x - a0.x) - 2 * BUST_W + 4, strip);
+    });
+    // descent: from the marriage bar's middle down to a sibling bar, then down into each child's head
+    for (const [cp, ch] of DESCENT) {
+      const [i, j] = COUPLES[cp];
+      const mx = (PEOPLE[i].x + PEOPLE[j].x) / 2;
+      const g = PEOPLE[i].gen;
+      const kid = PEOPLE[ch];
+      const sibY = kid.y - BUST_H - 10;
+      c.fillRect(mx - strip / 2, barY(g), strip, sibY - barY(g));
+      c.fillRect(Math.min(mx, kid.x) - strip / 2, sibY - strip / 2, Math.abs(kid.x - mx) + strip, strip);
+      c.fillRect(kid.x - strip / 2, sibY, strip, 10);
     }
     // the people: profile busts, couples facing each other; tinted by what the hidden lanterns found
-    const amt = Math.max(o.nat, o.gen);
     PEOPLE.forEach((p, k) => {
       const natC = natCol[tr.side];
       const tint = o.gen > 0.01 ? mixLab(natC, genCol[p.gen], sm(o.gen)) : natC;
       const col = amt > 0.01 ? mixLab(m.ink, tint, amt * 0.95) : m.ink;
-      const cp = COUPLES.findIndex(([a, b]) => a === k || b === k);
-      const facing = cp >= 0 ? (COUPLES[cp][0] === k ? 1 : -1) : k % 2 ? -1 : 1;
-      bust5(c, p.x, p.y + 12, 0.44, facing, col, 0, (k * 7 + tr.side) % 3 === 0 ? 1 : 0);
-      if (amt > 0.02) glow(c, p.x, p.y - 8, 15, tint, 0.14 * amt);
+      const cpi = COUPLES.findIndex(([a, b]) => a === k || b === k);
+      const facing = cpi >= 0 ? (COUPLES[cpi][0] === k ? 1 : -1) : k % 2 ? -1 : 1;
+      bust5(c, p.x, p.y, BUST, facing, col, 0, (k * 7 + tr.side) % 3 === 0 ? 1 : 0);
+      if (amt > 0.02) glow(c, p.x, p.y - BUST_H * 0.55, 22, tint, 0.16 * amt * (o.gen > 0.01 ? lerp(1, [1, 0.55, 0.2][p.gen], sm(o.gen)) : 1));
     });
     c.restore();
   }
   // threads of light from the hidden row to the trees while they tint
-  const th = Math.max(o.nat, o.gen) * o.net;
+  const th = amt * o.net;
   if (th > 0.01) {
     c.save();
     c.globalCompositeOperation = 'lighter';
-    threads(m.core, 0.32 * th, 1.5);
+    threads(m.core, 0.34 * th, 1.6);
     c.restore();
   }
   c.restore();
@@ -694,8 +803,6 @@ const EQ1b: Seg[] = [{ t: 'Σ', big: true }, { t: 'j', sub: true }, { t: ' blame
  *   blame(i) = slope(i) ·  /  Σj blame(j) · wji  /  Δwji = −ε · blame(j) · yi
  * reveal: per-line ink progress [0..1] × 3 (ink drying in left → right). (x, y) = top-left.
  */
-const EQ2a: Seg[] = [{ t: 'Δw' }, { t: 'ji', sub: true }, { t: ' = −ε' }];
-const EQ2b: Seg[] = [{ t: '· blame(j) · y' }, { t: 'i', sub: true }];
 
 /** measure the tall (four-line) card at `size`: { w, h } */
 export function equationCardSize(c: C, size: number, wide = false) {
@@ -707,17 +814,20 @@ export function equationCardSize(c: C, size: number, wide = false) {
     }, 0);
   const lines = (wide ? WIDE : TALL).map(([sg, ind]) => meas(sg) + ind * size);
   c.restore();
-  return { w: Math.ceil(Math.max(...lines) + 40), h: Math.ceil(size * 1.42 * (wide ? 2 : 4) + (wide ? 38 : 30)) };
+  return { w: Math.ceil(Math.max(...lines) + 40), h: Math.ceil(size * 1.42 * (wide ? WIDE : TALL).length + (wide ? 38 : 30)) };
 }
-/** four lines, two per rule (the gather, then the tug), with a hairline between the rules */
-const TALL: [Seg[], number][] = [[EQ1a, 0], [EQ1b, 0.9], [EQ2a, 0], [EQ2b, 0.9]];
+/** three lines: the gather rule over two lines, then (below a hairline) the tug rule whole on ONE line
+ *  (review r1: 'Δw = −ε' / '· blame(j) · y' broke badly) */
+const TALL: [Seg[], number][] = [[EQ1a, 0], [EQ1b, 0.9], [EQ2, 0]];
 /** two lines: each rule whole on its own line (review round 1: no wrapped equations) */
 const WIDE: [Seg[], number][] = [[EQ1, 0], [EQ2, 0]];
 
-export function equationCard(c: C, o: { x: number; y: number; alpha: number; reveal: number[]; mood: Palette; size?: number; tall?: boolean; wide?: boolean }) {
+export function equationCard(c: C, o: { x: number; y: number; alpha: number; reveal: number[]; mood: Palette; size?: number; tall?: boolean; wide?: boolean; dim?: number }) {
   if (o.alpha <= 0.003) return;
   const P = MOODS.parchment;
   const size = o.size ?? 21;
+  /** (review r1 value) the paper sits a step down into the room's haze so the lanterns stay the light sources */
+  const dim = o.dim ?? 0;
   c.save();
   c.globalAlpha = o.alpha;
   c.textBaseline = 'alphabetic';
@@ -732,19 +842,50 @@ export function equationCard(c: C, o: { x: number; y: number; alpha: number; rev
   const lh = size * 1.42;
   const h = Math.ceil(lh * lines.length + (o.wide ? 38 : o.tall ? 30 : 22));
   softPlate(c, o.x + w / 2, o.y + h / 2, w + 90, h + 70, o.mood.ink, 0.45);
+  // the card audit (kit card-entry rule): paper vs its first line's ink
+  cardProbe(c, 'equationCard', o.x, o.y, w, h, 1, clamp01((o.reveal[0] ?? 0) * 6));
   c.fillStyle = withAlpha(P.fg, 0.4);
   c.fillRect(o.x + 4, o.y + 5, w, h);
-  c.fillStyle = mixLab(P.sky[0], P.sky[2], 0.3);
+  // up to ~0.2 the paper sinks into the haze; past it (a card still in shadow) it sinks on toward the set's dark
+  const haze = mixLab(mixLab(o.mood.setHaze, o.mood.set, 0.3), mixLab(o.mood.set, o.mood.fg, 0.45), clamp01((dim - 0.2) / 0.66));
+  // (review r4) the paper a step (~20 %) down in value, to sit with the slips and the clipping, not over the lanterns
+  const paper = mixLab(mixLab(P.sky[1], P.set, 0.5), haze, dim);
+  c.fillStyle = paper;
+  if (dim > 0) {
+    // a soft paper edge (the card hangs in haze): the fill bleeds a few px past its cut line
+    c.shadowColor = withAlpha(paper, 0.6);
+    c.shadowBlur = 4 * Math.hypot(c.getTransform().a, c.getTransform().b);
+  }
+  // a DECKLED cut edge (review r4): a torn, uneven rim all round, with a few deeper nicks
+  const dk = (k: number, sd: number) => 2.6 * (hash1(k, sd) - 0.5) + (hash1(k, sd + 9) > 0.86 ? -2.2 : 0);
+  const NX = 40, NY = 18;
   c.beginPath();
-  c.moveTo(o.x, o.y);
-  for (let k = 0; k <= 16; k++) c.lineTo(o.x + (w * k) / 16, o.y + hash1(k, 3) * 1.4);
-  for (let k = 0; k <= 8; k++) c.lineTo(o.x + w + hash1(k, 4) * 1.4, o.y + (h * k) / 8);
-  for (let k = 16; k >= 0; k--) c.lineTo(o.x + (w * k) / 16, o.y + h + hash1(k, 5) * 1.4);
+  c.moveTo(o.x + dk(0, 3), o.y + dk(0, 13));
+  for (let k = 1; k <= NX; k++) c.lineTo(o.x + (w * k) / NX, o.y - dk(k, 3));
+  for (let k = 1; k <= NY; k++) c.lineTo(o.x + w + dk(k, 4), o.y + (h * k) / NY);
+  for (let k = NX - 1; k >= 0; k--) c.lineTo(o.x + (w * k) / NX, o.y + h + dk(k, 5));
+  for (let k = NY - 1; k >= 1; k--) c.lineTo(o.x - dk(k, 6), o.y + (h * k) / NY);
   c.closePath();
   c.fill();
-  c.strokeStyle = withAlpha(P.ink, 0.3);
-  c.lineWidth = 0.8;
-  c.strokeRect(o.x + 6, o.y + 6, w - 12, h - 12);
+  c.shadowColor = 'rgba(0,0,0,0)';
+  c.shadowBlur = 0;
+  // a faint fibre tone across the paper (not a flat slab)
+  c.save();
+  c.clip();
+  for (let k = 0; k < 7; k++) {
+    c.fillStyle = withAlpha(P.ink, 0.025 + 0.02 * hash1(k, 21));
+    c.fillRect(o.x, o.y + h * hash1(k, 22), w, 2 + 10 * hash1(k, 23));
+  }
+  c.restore();
+  // one pin at the top centre (where the card's thread is tied)
+  c.fillStyle = withAlpha('#000000', 0.35);
+  c.beginPath();
+  c.arc(o.x + w / 2 + 1, o.y + 9.5, 3.6, 0, Math.PI * 2);
+  c.fill();
+  c.fillStyle = mixLab(o.mood.halo, o.mood.set, 0.4);
+  c.beginPath();
+  c.arc(o.x + w / 2, o.y + 8, 3.4, 0, Math.PI * 2);
+  c.fill();
   c.fillStyle = withAlpha(P.ink, 0.92);
   if (o.wide) {
     c.fillStyle = withAlpha(P.ink, 0.35 * clamp01((o.reveal[2] ?? 0) * 4));
@@ -766,7 +907,9 @@ export function equationCard(c: C, o: { x: number; y: number; alpha: number; rev
   }
   lines.forEach(([sg, ind], k) => {
     const gap = o.tall && k >= 2 ? 8 : 0;
-    if ((o.reveal[k] ?? 0) > 0) drawSegs(c, sg, o.x + 20 + ind, o.y + 11 + gap + lh * (k + 0.78), size, clamp01(o.reveal[k]));
+    // the tall card's third line is the whole tug rule: it inks over the last two reveal steps
+    const r = o.tall && k === 2 ? 0.42 * clamp01(o.reveal[2] ?? 0) + 0.58 * clamp01(o.reveal[3] ?? 0) : clamp01(o.reveal[k] ?? 0);
+    if (r > 0) drawSegs(c, sg, o.x + 20 + ind, o.y + 11 + gap + lh * (k + 0.78), size, r);
   });
   c.restore();
   return { w, h };

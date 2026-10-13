@@ -6,7 +6,7 @@
 //                                                          span, power-averaged with the -70 LUFS absolute and -10 LU
 //                                                          relative gates (BS.1770 integration over that window only)
 //   spanPeaks(file, spans)              -> { [id]: M }     each span's loudest momentary window (informational)
-//   levelOffsets(peaks, requested)      -> { [id]: { M, offsetDb, requestedDb, errorDb } }
+//   levelOffsets(peaks, requested)      -> { [id]: { M, offsetDb, requestedDb, errorDb } }   (requested = intendedDb(line))
 //                                          offsetDb = M - median(M of every OTHER line); errorDb = offsetDb - requestedDb
 //   median(xs)
 // The narration stem applies levelDb as clip gain AFTER its compressor and peak stage (timeline.mjs), so the
@@ -15,7 +15,25 @@
 // L1307b sat 4 dB under the median in average loudness. Lines are matched, and checked, on their gated loudness.
 import { momentary } from './ffmpeg.mjs';
 
+// Review round 2: the leveling is capped (ride + trim at most ±MAX_LEVELING_DB), so a take keeps some of its own
+// level and lines are no longer flattened to one loudness. A line within LEVEL_TOLERANCE_DB of its intended level
+// passes; QA warns beyond LEVEL_WARN_DB (the cap left it there, or a levelDb offset stacks on the ride) and fails
+// beyond LEVEL_FAIL_DB (the take needs re-narrating).
 export const LEVEL_TOLERANCE_DB = 0.5;
+export const LEVEL_WARN_DB = 1.5;
+export const LEVEL_FAIL_DB = 3;
+export const MAX_LEVELING_DB = 3;
+/** script line field `level`: a delivery hint the ride honours (dB relative to the common line level). */
+export const LEVEL_HINTS = { soft: -2 };
+export function levelHintDb(level) {
+  if (level == null) return 0;
+  if (!(level in LEVEL_HINTS)) throw new Error(`unknown line level hint "${level}" (known: ${Object.keys(LEVEL_HINTS).join(', ')})`);
+  return LEVEL_HINTS[level];
+}
+/** intended offset of a script line from the common level: its level hint plus levelDb */
+export function intendedDb(line) {
+  return (Number(line?.levelDb) || 0) + levelHintDb(line?.level);
+}
 
 export function median(xs) {
   const s = [...xs].sort((x, y) => x - y);
@@ -60,14 +78,22 @@ export function spanLoudness(file, spans, M = momentary(file)) {
   return out;
 }
 
-export function levelOffsets(peaks, requested = {}) {
+/** requested = intended offset (hint + levelDb); hints = the level hint alone. driftDb = offsetDb - hint: how far the
+ *  line sits from where lineLufs + its hint wants it (capped leveling, or a levelDb stacking on the ride). */
+export function levelOffsets(peaks, requested = {}, hints = {}) {
   const ids = Object.keys(peaks);
+  const sorted = ids.map((x) => peaks[x]).sort((x, y) => x - y);
   const out = {};
   for (const id of ids) {
-    const others = ids.filter((x) => x !== id).map((x) => peaks[x]);
-    const offsetDb = others.length ? peaks[id] - median(others) : 0;
+    // median of every OTHER line (one removal from the sorted list: O(n) per line)
+    const k = sorted.indexOf(peaks[id]);
+    const others = [...sorted.slice(0, k), ...sorted.slice(k + 1)];
+    const n = others.length;
+    const med = n ? (n % 2 ? others[(n - 1) / 2] : (others[n / 2 - 1] + others[n / 2]) / 2) : peaks[id];
+    const offsetDb = peaks[id] - med;
     const requestedDb = Number(requested[id]) || 0;
-    out[id] = { M: +peaks[id].toFixed(2), offsetDb: +offsetDb.toFixed(2), requestedDb, errorDb: +(offsetDb - requestedDb).toFixed(2) };
+    const hintDb = Number(hints[id]) || 0;
+    out[id] = { M: +peaks[id].toFixed(2), offsetDb: +offsetDb.toFixed(2), requestedDb, errorDb: +(offsetDb - requestedDb).toFixed(2), ...(hintDb ? { hintDb } : {}), driftDb: +(offsetDb - hintDb).toFixed(2) };
   }
   return out;
 }

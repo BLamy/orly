@@ -5,7 +5,13 @@
 //                                       line naming a cast member (surname; matched leniently: spelling drift of
 //                                       up to 25 % is accepted, a different word is not), or whose script line sets
 //                                       qa.stt "required" (qa.expect lists terms that must come back)
-//   matchTerms(transcript, terms)    -> [{ term, accept, found }]   (case/punctuation-blind; number words = digits)
+//   matchTerms(transcript, terms)    -> [{ term, accept, found, near? }]   found = one accept form appears LITERALLY
+//                                       (case/punctuation-blind; number words = digits). Review round 3: sound-alike
+//                                       matching let "Ahmoudai" pass for Amodei, so a near spelling is only reported
+//                                       (near: true) and never passes. A heard form a human has judged correct (RP
+//                                       "Le Kun" for LeCun) goes in voice.json sttHeard {term: [forms]} and is accepted.
+//   recordState(P, rec, take)        -> 'current' | 'stale-take' | 'stale-clip' | 'missing'  (a record is current only
+//                                       while its lineSig equals the take's sig AND its sig equals the clip's sha)
 //   wordErrorRate(ref, hyp)          -> 0..1 on normalised words (informational)
 //   readStt(P) / writeStt(P, doc)    narration/stt.json { version, lines: { <lineId>: SttRecord } }
 //   clipSig(P, rec)                  the current clip's signature (sha of the clip wav, 12 hex): a record is
@@ -90,9 +96,14 @@ export function castNames(script) {
   return [...seen.values()];
 }
 
-export function sttTargets(script, lex) {
+/** voice.json sttHeard: { term: [heard forms] } — forms a human judged to be the right pronunciation spelled
+ *  another way by the transcriber (each needs a reason in voice.json sttHeardNotes). */
+export const heardForms = (voiceCfg) => (voiceCfg && typeof voiceCfg.sttHeard === 'object' && voiceCfg.sttHeard) || {};
+
+export function sttTargets(script, lex, { heard = {} } = {}) {
   const out = [];
   const names = castNames(script);
+  const withHeard = (t) => (heard[t.term]?.length ? { ...t, accept: [...new Set([...t.accept, ...heard[t.term]])] } : t);
   for (const ch of script.chapters || [])
     for (const shot of ch.shots || [])
       for (const l of shot.lines || []) {
@@ -109,7 +120,7 @@ export function sttTargets(script, lex) {
         }
         const qa = l.qa || {};
         for (const t of qa.expect || []) if (!terms.some((x) => x.term === t)) terms.push({ term: t, accept: [t], from: 'qa', fuzzy: /^[A-Z][a-z]{4,}$/.test(t) });
-        if (terms.length || qa.stt === 'required') out.push({ lineId: l.id, shot: shot.id, text: l.text, terms });
+        if (terms.length || qa.stt === 'required') out.push({ lineId: l.id, shot: shot.id, text: l.text, terms: terms.map(withHeard) });
       }
   return out;
 }
@@ -153,8 +164,27 @@ function fuzzyHas(hay, form) {
 
 export function matchTerms(transcript, terms) {
   const hay = normText(transcript);
-  return terms.map((t) => ({ term: t.term, accept: t.accept, found: t.accept.some((f) => containsSeq(hay, normText(f)) || (t.fuzzy && fuzzyHas(hay, f))), ...(t.from ? { from: t.from } : {}) }));
+  return terms.map((t) => {
+    const found = t.accept.some((f) => containsSeq(hay, normText(f)));
+    const near = !found && t.accept.some((f) => fuzzyHas(hay, f));
+    return { term: t.term, accept: t.accept, found, ...(near ? { near: true } : {}), ...(t.from ? { from: t.from } : {}) };
+  });
 }
+
+/** a record is current only while it transcribes the CURRENT take (lineSig = the take's sig in lines.json) of the
+ *  current clip file (sig = the clip's sha). Review round 3: L1517's record still held the old text's transcript. */
+export function recordState(P, rec, take) {
+  if (!rec) return 'missing';
+  if (!take) return 'stale-take';
+  if ((rec.lineSig ?? null) !== (take.sig ?? null)) return 'stale-take';
+  if (rec.sig !== clipSig(P, take)) return 'stale-clip';
+  return 'current';
+}
+
+/** WER above this on a line with no expected terms fails its round trip (the take does not say the current text) */
+export const WER_FAIL = 0.5;
+/** pass rule for one record: every expected term found literally; a line without terms must match its text */
+export const recordPass = (transcript, expectedTerms, wer) => !!transcript && expectedTerms.every((x) => x.found) && (expectedTerms.length || wer <= WER_FAIL);
 
 export function wordErrorRate(ref, hyp) {
   const r = normText(displayWords(ref).join(' '));
@@ -212,10 +242,17 @@ export async function transcribe(file, { model = STT_MODEL, retries = 3 } = {}) 
  * Spend goes in narration/ledger.json as kind 'stt' (cost from the character-cost header: about 0.37 credits per
  * second of clip, 2 for L0104's 6.5 s and 6 for L0108's 16.5 s on 2026-10-06). Never throws for one line's API error: it is returned in errors.
  */
-export async function refreshStt(P, { script, lex, linesDoc, voiceSig, only = [], force = false, dryRun = false, log = console.log } = {}) {
+export async function refreshStt(P, { script, lex, linesDoc, voiceSig, only = [], also = [], heard, force = false, dryRun = false, log = console.log } = {}) {
   const doc = readStt(P);
   const want = new Set(only);
-  const targets = sttTargets(script, lex).filter((t) => !want.size || want.has(t.lineId));
+  heard = heard ?? heardForms(readJson(P.voice, {}));
+  const all = sttTargets(script, lex, { heard });
+  const targets = all.filter((t) => !want.size || want.has(t.lineId));
+  // review round 3: every line RE-NARRATED in a fix round is transcribed too, not only name targets (its pass
+  // rule is the word error rate against its current text)
+  const byId = new Map();
+  for (const ch of script.chapters || []) for (const shot of ch.shots || []) for (const l of shot.lines || []) byId.set(l.id, { lineId: l.id, shot: shot.id, text: l.text, terms: [] });
+  for (const id of also) if (!targets.some((t) => t.lineId === id) && byId.has(id)) targets.push(all.find((t) => t.lineId === id) || byId.get(id));
   const checked = [];
   const skipped = [];
   const errors = [];
@@ -227,10 +264,22 @@ export async function refreshStt(P, { script, lex, linesDoc, voiceSig, only = []
     }
     const sig = clipSig(P, rec);
     const old = doc.lines[t.lineId];
-    if (!force && old && old.sig === sig && old.pass) {
-      skipped.push(t.lineId);
-      continue;
+    // current = same take (lineSig) and same clip (sig): re-judge it under today's rules without paying again
+    if (!force && old && recordState(P, old, rec) === 'current' && old.transcript) {
+      old.expectedTerms = matchTerms(old.transcript, t.terms);
+      old.pass = recordPass(old.transcript, old.expectedTerms, old.wer ?? 0);
+      if (old.pass) {
+        skipped.push(t.lineId);
+        continue;
+      }
+      if (!t.terms.length || old.expectedTerms.some((x) => !x.found)) {
+        // the same clip transcribes the same way: re-paying cannot change the verdict; a re-take (or a human's
+        // sttHeard entry) must
+        skipped.push(t.lineId);
+        continue;
+      }
     }
+    if (old && recordState(P, old, rec) === 'stale-take') log(`  stt ${t.lineId}: record transcribes an older take (lineSig ${old.lineSig} vs ${rec.sig}): re-transcribing`);
     const file = path.resolve(P.dir, rec.clip);
     if (dryRun) {
       log(`  stt ${t.lineId}: would transcribe ${rec.clip} (${rec.duration}s; expect ${t.terms.map((x) => x.term).join(', ') || 'no terms'})`);
@@ -240,7 +289,8 @@ export async function refreshStt(P, { script, lex, linesDoc, voiceSig, only = []
     try {
       const r = await transcribe(file);
       const expectedTerms = matchTerms(r.text, t.terms);
-      const pass = expectedTerms.every((x) => x.found) && !!r.text;
+      const wer = wordErrorRate(rec.spoken ?? t.text, r.text);
+      const pass = recordPass(r.text, expectedTerms, wer);
       doc.lines[t.lineId] = {
         lineId: t.lineId,
         model: STT_MODEL,
@@ -250,7 +300,8 @@ export async function refreshStt(P, { script, lex, linesDoc, voiceSig, only = []
         sig,
         lineSig: rec.sig ?? voiceSig ?? null,
         clip: rec.clip,
-        wer: wordErrorRate(rec.spoken ?? t.text, r.text),
+        wer,
+        ...(t.terms.length ? {} : { scope: 'renarrated' }),
         requestId: r.requestId,
         at: new Date().toISOString(),
       };
@@ -262,7 +313,7 @@ export async function refreshStt(P, { script, lex, linesDoc, voiceSig, only = []
       errors.push(`${t.lineId}: ${redact(e.message)}`);
     }
   }
-  if (!dryRun && checked.length) {
+  if (!dryRun && (checked.length || skipped.length)) {
     doc.updatedAt = new Date().toISOString();
     writeStt(P, doc);
   }

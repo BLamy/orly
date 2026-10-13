@@ -7,13 +7,24 @@
 // written in ABSOLUTE film seconds (tl subtracts T0). 84 BPM, one 4/4 bar per cycle (2.857 s).
 // Last onset 1218.99 (the D of the soft rising fourth after 'The candle burned on'); fade 1221.35-1222.35.
 setcpm(84/4)
-const CPS = 84/240, T0 = 1128.392, DUR = 93.958
+const CPS = 84/240, T0 = 1144.725, DUR = 95.379
+// CLOCK RE-FIT (2026-10-13, clock 2159.9583 s): window 1144.725-1240.104 (95.379 s). The event times below are
+// still written on the 2139.54 s clock (comments too); base() maps them: +16.333 s up to 'wins' (old 1163.0),
+// +17.754 s from the move-78 answer on (L0906 was re-narrated 1.42 s longer). The Seoul stones and MOVE 37
+// are written in current absolute seconds (tln): each in a micro-gap of L0906, MOVE 37 in the gap after the
+// spoken 'thirty-seven' (1185.28-1185.60), not on it. Notes that span L0906 are 1.42 s longer.
+const base = t => t < 1163.0 ? t + 16.333 : t + 17.754
 // Times are quantized to 1/128 bar (integer step weights, exact binary fractions).
 const Q = 128, qn = s => Math.round(s * CPS * Q)
 const tl = (...evs) => { const out = []; let cur = 0
-  for (const [t, d, p] of evs) { const a = qn(t - T0), b = qn(t - T0 + d); if (a < cur) throw new Error('tl overlap at ' + t)
+  for (const [t, d, p] of evs) { const a = qn(base(t) - T0), b = qn(base(t) - T0 + d); if (a < cur) throw new Error('tl overlap at ' + t)
     if (a > cur) out.push([a - cur, silence]); out.push([b - a, p]); cur = b }
   const end = qn(DUR); if (cur > end) throw new Error('tl runs past the window'); if (end > cur) out.push([end - cur, silence])
+  return stepcat(...out).slow(end / Q) }
+const tln = (...evs) => { const out = []; let cur = 0
+  for (const [t, d, p] of evs) { const a = qn(t - T0), b = qn(t - T0 + d); if (a < cur) throw new Error('tln overlap at ' + t)
+    if (a > cur) out.push([a - cur, silence]); out.push([b - a, p]); cur = b }
+  const end = qn(DUR); if (cur > end) throw new Error('tln runs past the window'); if (end > cur) out.push([end - cur, silence])
   return stepcat(...out).slow(end / Q) }
 const bars = s => qn(s) / Q
 const loop = (pat, d) => pat.fast(bars(d))
@@ -24,51 +35,62 @@ const pad = x => x.attack(.8).release(1.8).lpf(1100).room(.5).rsize(5)
 // m11's held A-E carries through the join (the gap after L0828) and settles onto D as the pool spreads
 // ('everything' 1135.422): M1's rising fourth, once, softly (a warm synth pad, not the celesta)
 $: pad(tl([1135.132, 5.0, note("a4@0.29 d5@4.71")]).s("triangle").gain(.022))
-$: pad(tl([1128.392, 7.03, note("[a2,e3]")], [1135.422, 9.35, note("[d2,a2,f#3]")]).s("triangle").gain(.03))
-$: tl([1128.392, 7.03, note("a1")], [1135.422, 9.35, note("d2")]).s("gm_contrabass").velocity(.16).attack(.8).release(1.5).lpf(380)
+// r3 (low band): the pad's A-E and D major sit above the narrator's fundamental (A3 and up) and carry the
+// tall man's held D (the strings only strike it); the contrabass is at A1 / D1 behind lpf 250
+$: pad(tl([1128.392, 7.03, note("[a3,e4]")], [1135.422, 9.35, note("[a3,d4,f#4]")]).s("triangle").gain(.013))
+$: tl([1128.392, 7.03, note("a1")], [1135.422, 9.35, note("d1")]).s("gm_contrabass").velocity(.14).attack(.8).release(1.5).lpf(250)
 // the GPU-era pulse (M5c) arrives with 'December 2012' (1136.422), low, and STOPS DEAD on the halted
 // bidding ('stop' 1144.772); it returns, low, for the founding (1181.05) and leaves after the ledger
-$: tl([1136.422, 8.35, loop(note("38 50 45 50 38 50 45 50"), 8.35).velocity("[.5 .7 .85 1]")],
-      [1181.05, 15.3, loop(note("38 50 45 50 38 50 45 50"), 15.3).velocity("[.6 .8 1 1 1 .9 .6 .3]")])
-  .s("sawtooth").lpf(sine.range(650, 950).slow(4)).decay(.17).sustain(0).gain(.05).room(.25).rsize(5)
+// r3 (low band): both pulses run under speech (L0902, L0909), so they sit an octave down (D1 D2 A1 D2)
+$: tl([1136.422, 8.35, loop(note("26 38 33 38 26 38 33 38"), 8.35).velocity("[.5 .7 .85 1]")],
+      [1181.05, 15.3, loop(note("26 38 33 38 26 38 33 38"), 15.3).velocity("[.6 .8 1 1 1 .9 .6 .3]")])
+  .s("sawtooth").lpf(sine.range(340, 460).slow(4)).decay(.17).sustain(0).gain(.05).room(.25).rsize(5)
 $: tl([1136.422, 8.35, s("pink")], [1181.05, 15.3, s("pink")]).hpf(7000).lpf(12000).gain(.004).attack(2).release(.05)
 // the rising fourth again, bright, as the tall man is revealed standing ('standReveal' 1141.162): lit
 // and held, high strings above the voice
-$: hall(tl([1140.882, 3.89, note("[a5,a4]@0.28 [d6,d5]@3.61")]).s("gm_string_ensemble_1").velocity(.10).attack(.08).release(.5).lpf(4000))
+// r3 (per word): struck in the 0.28-s gap after 'account' (A 1157.23, D 1157.37) and let go before 'auctioned';
+// the pad's D4 holds the pitch under the line
+$: hall(tln([1157.23, .62, note("a5@0.14 d6@0.48")]).s("gm_string_ensemble_1").velocity(.03).attack(.04).release(.35).lpf(2400))
 // each dropped envelope a muted pluck ('dropOuts' 1143.212 ...)
-$: tl([1143.212, 1.6, note("f#5 d5 a4 d5")]).s("gm_pizzicato_strings").velocity(.14).lpf(2200).room(.2).rsize(5)
+$: tl([1143.212, 1.6, note("f#5 d5 a4 d5")]).s("gm_pizzicato_strings").velocity(.045).lpf(1500).room(.2).rsize(5)   // r3: halved
 // the freeze: one held tone (high D) ... and a single soft low note, unresolved, as the chosen envelope
 // is laid face up ('choseGoogle' 1147.522): the bass slips to E, towards the Go board
-$: tl([1144.772, 3.5, note("[d6]")]).s("gm_pad_bowed").velocity(.08).attack(.05).release(2.5).room(.5).rsize(5)
-$: tl([1147.522, 1.488, note("e2")], [1149.01, 31.6, note("e2")]).s("gm_contrabass").velocity(.14).attack(.4).release(2.5).lpf(380)
+$: tl([1144.772, 3.5, note("[d6]")]).s("gm_pad_bowed").velocity(.035).attack(.4).release(1.5).room(.5).rsize(5)   // r3: creeps in, half as loud
+// r3 (low band): the slip to E is struck in the clear (e2, after 'Google'); under L0905-L0907 the drone is
+// E1-B1 behind lpf 250, off the narrator's chest register
+$: tl([1147.522, 1.488, note("e2").lpf(380)], [1149.01, 33.02, note("e1").lpf(120).velocity(.08)]).s("gm_contrabass").velocity(.14).attack(.4).release(2.5)
 
 // ================================================================ THE GO CANDLE (E minor, a hush)
 // a low E drone carries from the auction through Seoul; it thins away as the lids go on ('lids' 1176.7)
-$: tl([1149.01, 27.69, note("[e1]")]).s("sine").gain(.024).attack(3).release(3)
-// (critic r1: thinned under L0906 'Seoul, 2016...' — velocity .065, lpf 420)
-$: hall(tl([1149.01, 27.69, note("[e2,b2]")]).s("gm_cello").velocity(.065).attack(3).release(3).lpf(420))
+$: tl([1149.01, 29.11, note("e1")]).s("sine").gain(.024).attack(3).release(3)
+$: tl([1149.01, 29.11, note("b1")]).s("sine").gain(.012).attack(3).release(3)   // r3: the fifth B1 as a pure tone (no harmonics on the voice)
+// r3: the cello's E-B is dropped under the lines and kept for the hold after the lids (1194.45-1197.3)
+$: hall(tln([1194.45, 2.85, note("[e2,b2]")]).s("gm_cello").velocity(.065).attack(.8).release(1.5).lpf(420))
 // one plucked note as the slip comes into focus ('slip' 1151.49): B, the forecast's note; then M1 small
 // (B -> E) as the Go candle is lit on 'years' ('goCandleLit' 1153.73); 'It took under two' ('dueGlint'
 // 1156.61): the candle's note re-struck lightly, already overtaken
 // (critic r1: L0905 / L0905b were below 0 dB in 1-4 kHz: the harp plucks under them are ~4 dB softer and
 // the harp is low-passed at 2 kHz; the lit B -> E is a glint, not a statement)
-$: hall(tl([1151.49, 1.6, note("b5").velocity(.07)], [1153.48, 2.9, note("b5@0.25 e6@2.65").velocity(.075)],
-          [1156.61, 3.0, note("[b5,e6]").velocity(.045)]).s("gm_orchestral_harp").lpf(2000))
+$: hall(tl([1151.49, 1.6, note("b5").velocity(.03)], [1153.48, 2.9, note("b5@0.25 e6@2.65").velocity(.02)],
+          [1156.61, 2.0, note("[b5,e6]").velocity(.02)]).s("gm_orchestral_harp").lpf(1800))
 // SEOUL. A riffle of soft tones for the human games ('humanGames' 1159.77); then the machine against
 // itself: one tone, passed L <-> R ('selfPlay' 1161.08); a warm low note on 'wins' (1162.71)
-$: hall(tl([1159.77, 1.1, note("e6 g6 b5 d6 a5 e6 b6 g6 d6")]).s("gm_orchestral_harp").velocity(.07).lpf(3000))
-$: hall(tl([1161.08, 1.6, note("e6 ~ e6 ~ e6 ~ e6 ~")]).s("gm_orchestral_harp").velocity(.055).lpf(3000).pan(.2))
-$: hall(tl([1161.28, 1.6, note("e6 ~ e6 ~ e6 ~ e6 ~")]).s("gm_orchestral_harp").velocity(.055).lpf(3000).pan(.8))
-$: hall(tl([1162.71, 4.0, note("[e2,b2]")]).s("gm_orchestral_harp").velocity(.08).lpf(900))   // r1: was .15, the loudest moment once the hold was trimmed
+$: hall(tl([1159.77, 1.1, note("e6 g6 b5 d6 a5 e6 b6 g6 d6")]).s("gm_orchestral_harp").velocity(.016).lpf(2000))   // r3: halved (on 'human games')
+$: hall(tl([1161.08, 1.6, note("e6 ~ e6 ~ e6 ~ e6 ~")]).s("gm_orchestral_harp").velocity(.025).lpf(2400).pan(.2))
+$: hall(tl([1161.28, 1.6, note("e6 ~ e6 ~ e6 ~ e6 ~")]).s("gm_orchestral_harp").velocity(.025).lpf(2400).pan(.8))
+$: hall(tl([1162.71, 4.0, note("[e1,b1]")]).s("gm_orchestral_harp").velocity(.08).lpf(300))   // r3: an octave down, it rings into L0906   // r1: was .15, the loudest moment once the hold was trimmed
 // each move one struck stone; MOVE 37 ('move37' 1167.19): a strange high note (Bb, a tritone off the E),
 // its ring cut short so it is gone before Lee Sedol's line (L0907 1171); MOVE 78 ('move78' 1172.34):
 // the same note a fifth higher, a human answer, on the harp, only a touch (velocity .07, short note and a
 // 1.5-s release) since it falls inside L0907 (critic r1: worst-masked line in 1-4 kHz under the old F6).
 // (gm_vibraphone has no zone above C6: E6/F6 hang the offline render.)
-$: hall(tl([1163.39, 1.4, note("g5")], [1164.99, 2.0, note("a5")], [1167.19, 2.0, note("bb5")])
-  .s("gm_vibraphone").velocity(.05).hpf(700).release(.9))
-$: hall(tl([1172.34, .5, note("f6")]).s("gm_orchestral_harp").velocity(.07).release(1.5).lpf(3000))
-$: hall(tl([1167.19, 2.3, note("[e2,bb2]").velocity(.045)], [1172.34, 3.6, note("[b1,f2]").velocity(.05)]).s("gm_string_ensemble_1").attack(1).release(1).lpf(500))
+// (2026-10-13 re-fit, current clock) G in the gap after 'sixteen' (1182.10), A in the gap after 'move'
+// (1184.06), MOVE 37's Bb in the gap after 'thirty-seven' (1185.30): a short strike, softer, its ring
+// mostly gone under 'one-in-ten-thousand'
+$: hall(tln([1182.10, 1.4, note("g5").velocity(.035)], [1184.06, 1.2, note("a5").velocity(.035)], [1185.30, .5, note("bb5").velocity(.035)])
+  .s("gm_vibraphone").hpf(700).release(.8))
+$: hall(tln([1189.96, .2, note("f6")]).s("gm_orchestral_harp").velocity(.022).release(.45).lpf(2600))   // r3: in the gap after 'Sedol', gone before 'move' 
+$: hall(stack(tln([1185.30, 2.3, note("[e2,bb2]").velocity(.03)]), tl([1172.34, 3.6, note("[b1,f2]").velocity(.035)])).s("gm_string_ensemble_1").attack(1).release(1).lpf(250))
 // the lids go on (1176.7): the drone alone. Then in the music-only hold, M1 IN FULL inside two seconds
 // as the Go candle goes out: B -> E lit ('candleWipe' 1177.4), E held as B-F# slides under it (doubt),
 // E falls to D# over B (gone, 'goSnuff' 1179.01). A belief that lasted two years.
@@ -83,13 +105,18 @@ $: hall(tl([1177.4, .55, note("[e2,b2,g3]")], [1177.95, 1.06, note("[b1,f#2,b2]"
 // THE FOUNDING FIGURE ('founded' 1183.43): plain pizzicato, four notes D A B F#, even, no swell.
 // (m16's founding must match exactly: gm_pizzicato_strings, d4 a3 b3 f#3, 8ths at 84, velocity .3.)
 $: tl([1183.43, 1.43, note("d4 a3 b3 f#3")]).s("gm_pizzicato_strings").velocity(.3).lpf(2200).room(.3).rsize(5)
-$: pad(tl([1181.05, 8.33, note("[d2,a2,f#3]")], [1189.38, 1.86, note("[b1,f#2,d3]")], [1191.24, 6.0, note("[g1,d2,a2]")]).s("triangle").gain(.028))
+$: pad(tl([1181.05, 8.33, note("[a3,d4,f#4]")], [1189.38, 1.86, note("[b3,d4,f#4]")], [1191.24, 6.0, note("[b3,d4,g4]")]).s("triangle").gain(.02))   // r3: above the voice's fundamental
 // the quotation splits into two voices moving together, above the voice: warm, a major sixth on
 // 'benefit' (1189.38); cold, a minor second on 'damage' (1191.24); nothing resolves
-$: hall(tl([1187.14, 2.24, note("[e5,c#6]")], [1189.38, 1.86, note("[f#5,d6]")], [1191.24, 4.2, note("[c#6,d6]")])
-  .s("gm_string_ensemble_1").velocity(.08).attack(.6).release(2).lpf(4000))
+// r3 (per word): half as loud and behind lpf 1500 under the words; 'benefit' lets go before 'or' (1208.58);
+// the cold rub is only breathed under 'damage society...' and BLOOMS in the breath after 'incorrectly'
+// (1211.83-1212.43), then answers once more, alone, in the hold after 'dollars' and dies before the Wall
+$: hall(tln([1204.894, 2.2, note("[e5,c#6]").velocity(.025).release(1)], [1207.134, 1.0, note("[f#5,d6]").velocity(.025).release(.3)],
+            [1208.994, 2.0, note("[c#6,d6]").velocity(.018).release(.6)], [1211.85, .5, note("[c#6,d6]").velocity(.06).attack(.22).release(.45)],
+            [1214.62, 1.8, note("[c#6,d6]").velocity(.04).attack(.5).release(1.6)])
+  .s("gm_string_ensemble_1").attack(.6).lpf(1500))
 // a single dry pluck as the ledger entry is set ('ledger' 1194.37)
-$: tl([1194.37, 1.0, note("d5")]).s("gm_woodblock").velocity(.12)
+$: tl([1194.37, 1.0, note("d5")]).s("gm_woodblock").velocity(.07)
 
 // ================================================================ DOUBT, AND THE CANDLE THAT BURNED ON
 // a thin low drone only, under the doubters (L0910 1201.06-1221.29)
@@ -100,9 +127,11 @@ $: hall(tl([1200.75, 19.0, note("[d2,a2]")]).s("gm_cello").velocity(.07).attack(
 $: tl([1204.82, 1.0, note("a5")], [1212.77, 1.9, note("a5 a5 a5 a5 a5 a5")], [1215.98, 1.0, note("a5")]).s("gm_woodblock").velocity(.07)
 // 'The candle burned on' ('burnedOn' 1217.93): M1's rising fourth, very soft, high and unresolved (the
 // A on 'on' 1218.68, the D 0.31 s later), released before the line ends; nothing ominous, nothing after
-$: hall(tl([1218.68, 2.1, note("a5@0.31 d6@1.79")]).s("gm_string_ensemble_1").velocity(.06).attack(.25).release(1.0).lpf(3000))
+$: hall(tl([1218.68, 1.0, note("a5@0.31 d6@0.69")]).s("gm_string_ensemble_1").velocity(.035).attack(.2).release(.6).lpf(2400))   // r3: half as loud, short ring (it sat on 'still')
 
 // revision: +2 dB (2.6 -> 3.3); the render measured -24.0 LUFS, outside the house -21 +/- 2 and 2 LU
 // under its neighbours m11 (-22.2) and m13 (-22.4)
 // critic r1 revision: the softened Go material dropped the render to -23.3 LUFS; +0.65 dB back towards the house level
-all(x => x.postgain(3.55))
+// round-3 voice pass (critic r1 of the round-2 film): the Go drone, the pulses and the pads left the narrator's
+// chest register and the high strings were halved under the words, taking ~2.5 LU out; +1 dB back
+all(x => x.postgain(3.99))

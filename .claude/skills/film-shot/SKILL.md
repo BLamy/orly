@@ -142,6 +142,47 @@ it** (start 0.1–0.3 s before). Keep `tl.hold()`s so beats breathe. Transitions
 - Film sets may carry film-wide rules of their own (neural-net-history: the candle naming rule in
   sets/beliefCandle.ts, the shared near occluders in sets/occluders.ts, the vellum X-ray in sets/xrayColumn.ts).
 
+## Film-wide rules from review round 3 (kit-enforced or audited)
+
+- **Cards carry their text:** a paper card's first line inks within 3 frames of the paper passing 30 % opacity,
+  or card and text fade together; never a blank card. Type kit: `cardPaperAlpha(t, inkAt, fade?)` (the paper for a
+  card whose first line inks at inkAt), `cardFirstInkAt(paperStart)`, `cardInkAlpha(t, inkAt)`, and
+  `cardProbe(c, id, x, y, w, h, paper, ink)` on every paper card you paint (no-op outside the audit). Audit:
+  `node generator/film/cards.mjs --slug <slug> --shot <id>` (fails a probed card whose paper is over 50 % opaque
+  while its text is under 20 % for more than 0.3 s; warns on unprobed light paper). QA: sheets.cards.
+- **Puppet rim and period detail:** every `edgeRim` is floored to 2.25-3 px at 1080p, at least 80 % opaque and 60-70 %
+  warm (pass `warm: 0` only for a deliberately cool light); jackets cut a lapel notch and a coat-skirt kick, notch
+  lapels show a pale shirt V with the tie breaking it, shirt cuffs read as pale bands, lenses glint, and the cast
+  carries hand props (cast.ts). Do not hide these with `cutLines: false` on a figure that is the subject.
+- **Rim rooms' near plane** (neural-net-history): `candleStage({ near: { kind: 'chair' | 'fret' | 'newel' } })` or
+  `rimNear(f, …)` (sets/rimNear.ts) draws one carved, pierced L5 ornament at a lower frame corner; ch13's stage
+  draws its newel through nearPlane13 (`newel: false` to drop it).
+- **X-ray cabinet as subject:** when it fills more than 25 % of the frame the kit rests its face at 60 %,
+  desaturated, lifts only the slot that is lighting, and inks glyph rows in warm grey (#cfc6b0 at 70 %). A shot's
+  own overlays on the cabinet follow the same rule (no additive cyan-white washes over every band).
+- **Never write over another pass's work:** bracket every shot-file edit with
+  `node generator/film/shot-guard.mjs read|check|commit --slug <slug> --shot <id> --owner <label>` (check before each
+  write: exit 3 = re-read and merge). Record each routed note's outcome with
+  `node generator/film/shot-ledger.mjs record --slug <slug> --key <ledger> --shot <id> --outcome … --reason … --times …`;
+  the stage closes the ledger with `shot-ledger.mjs finalize`, which greps each note's key strings (comments do not
+  count) and downgrades a "fixed" that misses.
+
+## Film-wide rules from review round 4 (kit-enforced or audited)
+
+- **No ghost text:** when one text card replaces another, the outgoing text is at 0 within 4 frames of the incoming
+  text passing 30 %. Type kit: `textSwap(t, inAt, fade?)` -> `{ in, out }` (or `textSwapIn` / `textSwapOut`), so a
+  crossfade never shows two readable layers on top of each other; `textProbe(c, id, x, y, w, h, alpha)` reports a
+  baked text layer the recorder cannot see; wrap a deliberate overlap (a stamp struck across a card) in
+  `ghostOk(c, () => ...)`. Audit: `node generator/film/cards.mjs --slug <slug> --shot <id>` also FAILS two different
+  text layers whose boxes overlap while both are above 25 % for more than 0.25 s (QA sheets.ghostText).
+- **Cast idles:** every named cast member has a signature idle (weight shift, hands clasped behind, hand at chin or
+  glasses, arms folded, hands in pockets) and a head tilt within +/- 4 deg; `POSES.stand` (or any standing pose)
+  picks them up from `spec.signature.idle`. Line-ups must not read as identical mannequins: keep the idles unless a
+  beat needs a gesture. Hinton (2010s-2020s) wears `sweptBack` hair (receding front, combed back).
+- **Never re-add what a routed note removed:** the critic and reviser receive every routed note of this and the
+  previous rounds for the shot; the ledger's absent-key check expands each removal to respellings (digits and
+  words, abbreviations, the note's own quoted nouns), and any hit makes the outcome partial.
+
 ## Rules
 
 1. **Pure:** no `Math.random`, `Date.now`, `performance.now`, rAF, CSS animation, d3 transitions. Seeded

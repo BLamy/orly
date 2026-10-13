@@ -12,8 +12,13 @@
  *
  *   deepStack(c, { x, y, w, h, rows, ghost?, pulse?, acts?, frame?, alpha? }, env)
  *     rows[l]   0..1 how lit row l is (l = 0 input … 3 top)
- *     ghost[l]  0..1 progress of row l's "rebuild its input" echo (l = 1..3): a knot runs DOWN the strings,
- *               then row l-1 shows a faint dashed ring glowing with the reconstruction, then it fades
+ *     ghost[l]  0..1 progress of row l's "rebuild its input" echo (l = 1..3), literal (review ch07-s02 r1):
+ *               0 → .4  a ghost COPY of row l-1's pattern (row l's reconstruction of it) travels DOWN the
+ *                       strings from row l, knots running with it
+ *               .4 → .75 it lands on row l-1 as dashed ghost lanterns; where ghost and real coincide the
+ *                       lantern brightens softly (the rebuild matches its input)
+ *               .75 → 1 the ghost fades
+ *     neutral   0..1 the warm-up pattern drains to an even, neutral light (no echoes, every lantern alike)
  *     pulse     0..2 one fine-tuning pulse: 0 → 1 up the whole stack, 1 → 2 back down (≤ 0 / ≥ 2: none)
  *     frame     0..1 the loom's uprights and cords catch the light
  *   stackLayout(o) → { r, rows: [{ y, xs[] }] } unit centres (for cameras, digit feeds, labels)
@@ -131,6 +136,8 @@ export interface StackDraw {
   bloom?: number;
   /** brightness gain of the fine-tune pulse (default 1) */
   pulseGain?: number;
+  /** 0..1 the learned pattern drains to an even, neutral light */
+  neutral?: number;
 }
 export interface StackLayout {
   r: number;
@@ -166,6 +173,7 @@ export function deepStack(c: C, o: StackDraw, env: PaintEnv) {
   const frame = clamp01(o.frame ?? 1);
   const pulse = o.pulse ?? -1;
   const rowsLit = o.rows;
+  const neutral = clamp01(o.neutral ?? 0);
   const ghost = o.ghost ?? [];
   const nRows = STACK_SIZES.length;
   // the pulse's position in row units (0 bottom … 3 top)
@@ -206,7 +214,7 @@ export function deepStack(c: C, o: StackDraw, env: PaintEnv) {
   for (let l = 0; l < nRows - 1; l++) {
     const W = Ws[l];
     const lo = lay.rows[l], hi = lay.rows[l + 1];
-    const lit = Math.min(rowsLit[l] ?? 0, rowsLit[l + 1] ?? 0);
+    const lit = Math.min(rowsLit[l] ?? 0, rowsLit[l + 1] ?? 0) * (1 - 0.45 * neutral);
     const pl = Math.max(pulseAt(l), pulseAt(l + 1));
     for (let j = 0; j < hi.xs.length; j++) {
       for (let i = 0; i < lo.xs.length; i++) {
@@ -215,10 +223,10 @@ export function deepStack(c: C, o: StackDraw, env: PaintEnv) {
         thread(c, { ...T, w: weightWidth(w, STACK.wMax) * 0.75, color: mixLab(weightColor(m, w), m.core, 0.3 * lit + 0.4 * pl), alpha: 0.1 + 0.5 * lit + 0.35 * pl }, env);
         // the rebuild echo: a knot running DOWN the string from row l+1 to row l
         const g = ghost[l + 1] ?? 0;
-        if (g > 0 && g < 0.45) {
-          const u = sm(g / 0.42);
+        if (g > 0 && g < 0.42) {
+          const u = sm(g / 0.4);
           const p = threadPoint(T, 1 - u);
-          knot(c, p.x, p.y, 2.2 + 2.5 * Math.min(1, Math.abs(w) / 4), 0.35 * Math.sin(Math.PI * Math.min(1, g / 0.42)), env);
+          knot(c, p.x, p.y, 1.8 + 2 * Math.min(1, Math.abs(w) / 4), 0.3 * Math.sin(Math.PI * Math.min(1, g / 0.4)), env);
         }
         // the fine-tune pulse travelling along the strings
         if (pulseRow > -1) {
@@ -239,38 +247,62 @@ export function deepStack(c: C, o: StackDraw, env: PaintEnv) {
     const lit = clamp01(rowsLit[l] ?? 0);
     const pl = pulseAt(l);
     for (let i = 0; i < row.xs.length; i++) {
-      const a = acts[l][i];
+      const a = acts[l][i] + (0.5 - acts[l][i]) * neutral;
       const act = lit * (0.12 + 0.88 * a) + 0.6 * pl;
       paperLantern(c, { x: row.xs[i], y: row.y, r, act: Math.min(1, act), flare: pl, hang: r * 0.25, tassel: l === 0, halo: 0.55 }, env);
     }
   }
 
-  // --- the rebuild ghost: row l-1 shows a faint dashed ring glowing with row l's reconstruction
+  // --- the rebuild echo (literal): a ghost copy of row l-1's pattern, as row l rebuilds it, travels DOWN the
+  // strings and lands on row l-1; where it matches the real pattern the lantern brightens
   for (let l = 1; l < nRows; l++) {
     const g = ghost[l] ?? 0;
-    if (g <= 0.28 || g >= 1) continue;
-    // a clear plateau (≈ 60 %) for the middle of the echo, then it fades as the row settles
-    // (review ch07 r1: the echo must read at 1080p: a dark keyline under a bright dashed ring, held ≈ 0.6 s)
-    const k = 0.95 * sm((g - 0.28) / 0.1) * (1 - sm((g - 0.84) / 0.16));
-    const row = lay.rows[l - 1];
+    if (g <= 0 || g >= 1) continue;
+    const lo = lay.rows[l - 1], hi = lay.rows[l];
     const rec = STACK.recon[l];
+    const real = acts[l - 1];
+    const down = sm(g / 0.4); // 0 at row l → 1 landed on row l-1
+    const k = sm(g / 0.08) * (1 - sm((g - 0.76) / 0.24));
+    const land = sm((g - 0.36) / 0.1) * (1 - sm((g - 0.76) / 0.24)); // the coincidence
+    const cxHi = (hi.xs[0] + hi.xs[hi.xs.length - 1]) / 2;
+    const spanHi = hi.xs[hi.xs.length - 1] - hi.xs[0];
+    const spanLo = lo.xs[lo.xs.length - 1] - lo.xs[0];
+    const squeeze = spanHi / Math.max(1, spanLo);
     c.save();
-    for (let i = 0; i < row.xs.length; i++) {
-      const v = rec[i] ?? 0;
-      const rx = r * (1.45 + 0.12 * v), ry = r * (1.6 + 0.12 * v);
+    for (let i = 0; i < lo.xs.length; i++) {
+      const v = clamp01(rec[i] ?? 0);
+      // start compressed into row l's span, end on row l-1's lantern
+      const x0 = cxHi + (lo.xs[i] - cxHi) * squeeze;
+      const x = x0 + (lo.xs[i] - x0) * down;
+      const y = hi.y + (lo.y - hi.y) * down;
+      const rr = r * (1.3 + 0.25 * v);
+      // ghost lantern: a dark keyline, a bright dashed ring, a glow ∝ the rebuilt value (on/off reads)
       c.setLineDash([]);
-      c.lineWidth = 3.6;
-      c.strokeStyle = withAlpha(m.ink, 0.45 * k);
+      c.lineWidth = 4;
+      c.strokeStyle = withAlpha(m.ink, 0.5 * k);
       c.beginPath();
-      c.ellipse(row.xs[i], row.y, rx, ry, 0, 0, Math.PI * 2);
+      c.ellipse(x, y, rr, rr * 1.12, 0, 0, Math.PI * 2);
       c.stroke();
-      c.setLineDash([4, 3]);
-      c.lineWidth = 2;
-      c.strokeStyle = withAlpha(mixLab(m.core, '#ffffff', 0.3), (0.5 + 0.5 * v) * k);
+      c.setLineDash([5, 3.5]);
+      c.lineWidth = 2.4;
+      c.strokeStyle = withAlpha(mixLab(m.core, '#ffffff', 0.35), (0.35 + 0.65 * v) * k);
       c.beginPath();
-      c.ellipse(row.xs[i], row.y, rx, ry, 0, 0, Math.PI * 2);
+      c.ellipse(x, y, rr, rr * 1.12, 0, 0, Math.PI * 2);
       c.stroke();
-      glow(c, row.xs[i], row.y, r * 3, m.core, (0.15 + 0.8 * v) * k);
+      if (v > 0.5) {
+        c.setLineDash([]);
+        c.fillStyle = withAlpha(mixLab(m.core, '#ffffff', 0.25), 0.55 * (v - 0.5) * 2 * k);
+        c.beginPath();
+        c.ellipse(x, y, rr * 0.42, rr * 0.5, 0, 0, Math.PI * 2);
+        c.fill();
+      }
+      glow(c, x, y, r * 2.8, m.core, (0.1 + 0.6 * v) * k);
+      // landed: ghost and real coincide → a soft brightening on the matching (lit) lanterns
+      if (land > 0.01) {
+        const match = (1 - Math.abs(v - (real[i] ?? 0))) * (0.25 + 0.75 * (real[i] ?? 0));
+        glow(c, lo.xs[i], lo.y, r * 4.2, m.halo, 0.55 * match * land);
+        glow(c, lo.xs[i], lo.y, r * 2, m.core, 0.7 * match * land);
+      }
     }
     c.restore();
   }

@@ -1,80 +1,64 @@
 {
  "shot": "ch14-s04",
- "at": "2026-10-08T02:42:43.417Z",
+ "at": "2026-10-13T07:23:10.981Z",
  "minCapPx": 22,
  "sampled": 31,
  "texts": 10,
- "offenders": [
-  {
-   "text": "OPEN",
-   "maxCap": 7.4,
-   "minCap": 7.2,
-   "first": 13.23,
-   "last": 15.25,
-   "font": "600 8.6px \"IBM Plex Mono\""
-  },
-  {
-   "text": "WEIGHTS",
-   "maxCap": 7.4,
-   "minCap": 7.2,
-   "first": 13.23,
-   "last": 15.25,
-   "font": "600 8.6px \"IBM Plex Mono\""
-  },
-  {
-   "text": "R1",
-   "maxCap": 12.1,
-   "minCap": 11.7,
-   "first": 13.23,
-   "last": 15.25,
-   "font": "bold 14px \"IBM Plex Mono\""
-  },
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
   {
    "text": "SEP 2024 · OPENAI o1",
-   "maxCap": 19.4,
-   "minCap": 19.4,
-   "first": 2.66,
-   "last": 11.25,
-   "font": "500 18.5px \"IBM Plex Mono\""
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
   },
   {
-   "text": "LONG CHAIN OF THOUGHT, HIDDEN BY DESIGN",
-   "maxCap": 19.4,
-   "minCap": 19.4,
-   "first": 2.66,
-   "last": 11.25,
-   "font": "500 18.5px \"IBM Plex Mono\""
+   "text": "LONG CHAIN OF THOUGHT,",
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
   },
   {
-   "text": "27 JANUARY 2025",
-   "maxCap": 19.4,
-   "minCap": 19.4,
-   "first": 16,
-   "last": 21.25,
-   "font": "500 18.5px \"IBM Plex Mono\""
+   "text": "HIDDEN BY DESIGN",
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
   },
-  {
-   "text": "NVIDIA −17% · −$589B · RECORD 1-DAY LOSS FOR A US FIRM",
-   "maxCap": 19.4,
-   "minCap": 19.4,
-   "first": 16,
-   "last": 21.25,
-   "font": "500 18.5px \"IBM Plex Mono\""
-  }
- ],
- "textureTexts": 0,
- "ok": [
   {
    "text": "20 JANUARY 2025 · PREMIER’S SYMPOSIUM",
-   "maxCap": 22.1
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "liang wenfeng",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "founder of DeepSeek",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "27 JANUARY 2025",
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "NVIDIA −17% · −$589B",
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "RECORD 1-DAY LOSS FOR A US FIRM",
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
   }
- ]
+ ],
+ "texture": [
+  {
+   "text": "R1",
+   "maxCap": 27.8,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 1
 }

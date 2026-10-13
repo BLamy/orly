@@ -104,10 +104,25 @@ gap  = next line's preGap ?? this line's pauseAfter ?? 0.45 s
 duration = max(computed, minDuration)
 ```
 
-Per-line stem fields: each line is ridden to -20 LUFS, then `wordRides` ({"right": 5}) lift
-under-stressed words and `levelDb` (-3 for a hushed opening) offsets the whole line, all before
-the speech compressor. Changing `preGap`, `pauseAfter` or `levelDb` needs only `film:timeline`
-(no re-narration); `insertGaps` re-cuts clips from the cache in `film:narrate`.
+Per-line stem fields: each line is ridden toward -20 LUFS, but the leveling (ride + post-dynamics
+trim) moves a line at most ±3 dB, so takes keep some of their own level (review round 2: full
+leveling flattened the narrator). `wordRides` ({"right": 5}) lift under-stressed words before the
+speech compressor; `gainEnvelope` ([{"from": "told", "to": "plan", "db": 4}], 30 ms ramps) is per-word
+clip gain that can also cut, and the line's ride is measured on the enveloped clip; `level: 'soft'` (asides, closing lines) sits the line 2 dB under the common level
+and `levelDb` adds a small exact offset, both as clip gain after the dynamics. Keep |levelDb| ≤ 1.5
+(it stacks on the ride: +3 dB offsets made the hushed L1501 the loudest line in the film); QA warns
+when a line ends more than 1.5 dB from lineLufs + its hint, and when a line's momentary peak in the
+master exceeds the narration's p95 by more than 2 dB. Changing `preGap`, `pauseAfter`, `level` or
+`levelDb` needs only `film:timeline` (no re-narration); `insertGaps` re-cuts clips from the cache in
+`film:narrate`.
+
+The mix trims music-only swells (no-speech momentary windows louder than the narrator's median
+line peak minus 2 dB, at most 3 dB) and music-only transients that would cross the master ceiling,
+so the master limiter (target ≤ 1.5 dB) only meets speech peaks. A sparse foley bus
+(`score/foley.json`, synthesized in `generator/film/lib/foley.mjs`: stamp, lamp-click, match-strike,
+match-flare; at most 10 events, each in a speech gap or under its line's last words, dry plus a
+small-room reverb at -28 to -32 LUFS short-term) is added after the master gain, like the room tone.
+Its anchors are shot-local (`{shot, beat}` or `{shot, line, word}`), so events follow re-fits.
 
 Word times come from the character alignment. Beats anchored to `{line, word, edge, offset}`
 resolve to shot-local seconds. The result (`FilmTimelineData`) is written to

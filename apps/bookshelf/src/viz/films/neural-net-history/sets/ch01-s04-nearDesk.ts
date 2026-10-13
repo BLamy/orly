@@ -189,13 +189,14 @@ export function study01Near(f: Frame, o: { key: string; cams: Camera3[]; lamp: n
 
 /** the left bookcase flanking the board: books as ink against an amber backlight (just in front of the study wall) */
 export const SHELF_PLANE: LayerSpec = { id: 'study01Shelves', z: 1045, haze: 0.12, blur: 0.6 };
-export function study01Shelves(f: Frame, o: { key: string; cams: Camera3[]; lamp?: number }) {
+export function study01Shelves(f: Frame, o: { key: string; cams: Camera3[]; lamp?: number; glow?: number }) {
   const lamp = o.lamp ?? 1;
+  const glow = o.glow ?? 0;
   f.layer(SHELF_PLANE, (c, env) => {
     const r = overscan(SHELF_PLANE, o.cams, 40);
-    f.cached(`${o.key}/shelves01b/${env.mood.id}/${rk(r)}`, Math.ceil(r.w), Math.ceil(r.h), (cc) => {
+    f.cached(`${o.key}/shelves01b/${env.mood.id}/${glow.toFixed(2)}/${rk(r)}`, Math.ceil(r.w), Math.ceil(r.h), (cc) => {
       cc.translate(-r.x, -r.y);
-      bookcase(cc, -170, -80, 270, 1120, 3, env);
+      bookcase(cc, -170, -80, 270, 1120, 3, env, glow);
     })(c, r.x, r.y);
     if (lamp < 0.999) {
       c.fillStyle = withAlpha(env.mood.fg, 0.9 * (1 - lamp));
@@ -248,18 +249,20 @@ export function study01Chair(f: Frame, o: { key: string; cams: Camera3[]; alpha?
   });
 }
 
-function bookcase(c: C, x: number, y: number, w: number, h: number, seed: number, env: PaintEnv) {
+function bookcase(c: C, x: number, y: number, w: number, h: number, seed: number, env: PaintEnv, glow = 0) {
   const m = env.mood;
   const ink = env.fill('ink');
   const rows = 6;
   const rh = h / rows;
-  // the amber backlight between the books (brightest mid-height of each bay, toward the lamp side)
+  // the amber backlight between the books (brightest mid-height of each bay, toward the lamp side); `glow`
+  // raises the band just above the book tops so the ragged tops cut against it (ch01-s04's establishing medium)
   for (let i = 0; i < rows; i++) {
     const by = y + i * rh;
     const g = c.createLinearGradient(0, by, 0, by + rh);
-    g.addColorStop(0, mixLab(m.set, m.halo, 0.2));
-    g.addColorStop(0.6, mixLab(m.setHaze, m.halo, 0.45));
-    g.addColorStop(1, mixLab(m.set, m.halo, 0.25));
+    g.addColorStop(0, mixLab(m.set, m.halo, 0.2 + 0.2 * glow));
+    if (glow > 0) g.addColorStop(0.32, mixLab(m.setHaze, m.halo, 0.45 + 0.4 * glow));
+    g.addColorStop(0.6, mixLab(m.setHaze, m.halo, 0.45 + 0.25 * glow));
+    g.addColorStop(1, mixLab(m.set, m.halo, 0.25 + 0.1 * glow));
     c.fillStyle = g;
     c.fillRect(x, by, w, rh);
   }

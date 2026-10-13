@@ -1,133 +1,152 @@
 // m07 — THE RIVAL SUSPECT: the false-clue walk -> the knowledge boom (C major, brittle synth brass)
-// -> the second winter (C minor, guttered) -> the messenger nobody heard (F major -> D minor, piano alone).
-// Window 554.95-626.52 (71.57 s, clock 2139.54 s; re-fitted 2026-10-12: shifted +0.75 s bodily, no line inside it changed length, every cue-local hit re-checked against timeline.json). 76 BPM, one 4/4 bar per cycle.
-// All times below are cue-local seconds (absolute - 554.95); tl() places one-shot gestures on the locked
-// clock, so the cue is through-composed and ENDS: last onset 68.40 (623.35); the piano's unresolved E rings
-// 1.7 s in clear air before the fade 625.02-626.52, into m08's D minor piano.
+// -> the dissenter at its rim (Dreyfus: M4 on a lone cello, C dorian) -> the second winter (C minor, guttered)
+// -> the messenger nobody heard (F major -> D minor, piano alone).
+// CLOCK RE-FIT (2026-10-13, clock 2159.9583 s): window 554.700-640.355 (85.655 s). The new line L0514b
+// (Hubert Dreyfus, 574.54-588.07) adds 14.08 s inside ch05-s07; everything from the sea on moved +14.08 s
+// and the Dreyfus section is new. Every event below is written in ABSOLUTE film seconds (tl subtracts T0).
+// 76 BPM, one 4/4 bar per cycle. Last onset 637.18 (the piano's unresolved E); it rings 1.7 s in clear
+// air before the fade 638.855-640.355, into m08's D minor piano.
 setcpm(76/4)
-const CPS = 76/240, DUR = 71.57
-// tl([t, d, pat], ...): pat stretched over [t, t+d] seconds; gaps are silence; total = DUR.
+const CPS = 76/240, T0 = 554.7, DUR = 85.655
+// tl([t, d, pat], ...): pat stretched over [t, t+d] (absolute seconds); gaps are silence; total = DUR.
 // Times are quantized to 1/128 bar (integer step weights) so the pattern arithmetic stays exact and fast.
 const Q = 128, qn = s => Math.round(s * CPS * Q)
 const tl = (...evs) => { const out = []; let cur = 0
-  for (const [t, d, p] of evs) { const a = qn(t), b = qn(t + d); if (a < cur) throw new Error('tl overlap at ' + t)
+  for (const [t, d, p] of evs) { const a = qn(t - T0), b = qn(t - T0 + d); if (a < cur) throw new Error('tl overlap at ' + t)
     if (a > cur) out.push([a - cur, silence]); out.push([b - a, p]); cur = b }
   const end = qn(DUR); if (end > cur) out.push([end - cur, silence]); if (cur > end) throw new Error('tl past DUR')
   return stepcat(...out).slow(end / Q) }
 const bars = s => qn(s) / Q // seconds -> bars, for .fast() of looping figures inside a slot
 
-// ---- OPENING (moved from m06): the false-clue card turns over ('falseClue' 556.06 = 1.11,
-// 'falseClueTurn' 557.06 = 2.11). M2's detective walk, wry and off-kilter, in C, dry and low: the
-// chromatic step arrives a hair late; it stops dead as the card lands, leaving room for the match strike.
-$: tl([0.30, 2.31, note("c2@2 eb2@2 f2@3 f#2@1 g2@4")]).s("gm_pizzicato_strings")
+// ---- OPENING (ch05-s06's tail): the false-clue card turns over ('falseClue' 555.81, 'falseClueTurn'
+// 556.81). M2's detective walk, wry and off-kilter, in C, dry and low: the chromatic step arrives a hair
+// late; it stops dead as the card lands, leaving room for the match strike.
+$: tl([555.00, 2.31, note("c2@2 eb2@2 f2@3 f#2@1 g2@4")]).s("gm_pizzicato_strings")
   .velocity("[.42 .36 .4 .3 .46]").lpf(1500).room(.3).rsize(3)
-$: tl([2.11, 0.5, note("[c2,g2]")]).s("gm_contrabass").velocity(.22).release(.6).lpf(360)
+$: tl([556.81, 0.5, note("[c2,g2]")]).s("gm_contrabass").velocity(.22).release(.6).lpf(360)
 
-// ---- M1 KNOWLEDGE CANDLE, lit on the match strike ('lit' 560.38 = 5.43): G -> C on bright, brittle synth
-// brass, voiced high (G5 -> C6 sits above the voice) with a soft unison an octave down behind lpf.
-$: tl([5.00, 3.87, note("g5 c6@8")]).s("gm_synth_brass_1").velocity(.18).attack(.02).release(1.6).lpf(4200).room(.45).rsize(4)
-$: tl([5.00, 3.6, note("g4 c5@8")]).s("gm_synth_brass_1").velocity(.035).release(1.4).lpf(1100).room(.45).rsize(4)
+// ---- M1 KNOWLEDGE CANDLE, lit on the match strike ('suspect' / 'lit' 560.13): G -> C on bright, brittle
+// synth brass, voiced high (G5 -> C6 sits above the voice) with a soft unison an octave down behind lpf.
+$: tl([559.70, 2.4, note("g5 c6@8")]).s("gm_synth_brass_1").velocity(.085).attack(.02).release(1.4).lpf(2600).room(.45).rsize(4)
+$: tl([559.70, 3.6, note("g4 c5@8")]).s("gm_synth_brass_1").velocity(.035).release(1.4).lpf(1100).room(.45).rsize(4)
 
-// ---- the boom's harmony: low and bright, below D3 while he speaks; Fm/C under "never went into routine use"
+// ---- the boom's harmony: low and bright, below D3 while he speaks; Fm/C under "never went into routine use";
+// then THE RIM (Dreyfus): C minor, Ab, Bb, C minor (M4's Dm-Bb-C-Dm, a tone down), and a Db rub under
+// "sudden unexpected difficulties"; C major again for the sea.
 $: tl(
-  [2.60, 2.80, note("[c2,g2]")],
-  [5.43, 3.15, note("[c2,g2,c3,e3]")],              // lit: C major under the held C
-  [8.58, 3.25, note("[c2,g2,e3]")],                 // 'knowledge' (563.53): the typing begins
-  [11.83, 3.08, note("[a1,e2,c3]")],                // 'system' (566.78)
-  [14.91, 2.37, note("[f1,c2,a2]")],                // 'above Stanford'
-  [17.28, 2.72, note("[c2,ab2,c3,f3]")],            // 'never' (572.23): the first shadow, Fm/C
-  [20.00, 3.40, note("[c2,g2,e3]")],                // 'sea' (574.95)
-  [23.40, 3.42, note("[a1,e2,c3]")],
-  [26.82, 2.50, note("[f1,c2,a2]")]                 // the single held chord under "practically nothing"
+  [557.30, 2.80, note("[c2,g2]")],
+  [560.13, 3.15, note("[c2,g2,c3,e3]")],              // lit: C major under the held C
+  [563.28, 3.25, note("[c2,g2,e3]")],                 // 'knowledge' (563.28): the typing begins
+  [566.53, 3.08, note("[a1,e2,c3]")],                 // 'system' (566.53)
+  [569.61, 2.37, note("[f1,c2,a2]")],                 // 'above Stanford'
+  [571.98, 2.62, note("[c2,ab2,c3,f3]")],             // 'never' (571.98): the first shadow, Fm/C
+  [588.78, 3.40, note("[c2,g2,e3]")],                 // 'sea' (588.78)
+  [592.18, 3.42, note("[a1,e2,c3]")],
+  [595.60, 2.50, note("[f1,c2,a2]")]                  // the single held chord under "practically nothing"
 ).s("gm_string_ensemble_1").velocity(.14).attack(.5).release(2).lpf(900).room(.45).rsize(4)
-$: tl([2.60, 14.68, note("c2")], [17.28, 2.72, note("c2")], [20.00, 9.4, note("<c2 a1 f1>").slow(3)])
+// the rim's harmony (L0514b), softer and darker than the boom
+$: tl(
+  [574.60, 3.02, note("[c2,g2,eb3]")],                // 'rim' (574.99): C minor, the dissenter's colour
+  [577.62, 2.11, note("[ab1,eb2,c3]")],               // 'Dreyfus' ... 'real expertise'
+  [579.73, 1.66, note("[bb1,f2,d3]")],                // 'intuition, not rules'
+  [581.39, 4.69, note("[c2,g2,eb3]")],                // 'He saw a pattern: early, dramatic success'
+  [586.08, 2.45, note("[db2,ab2,f3]")]                // 'sudden unexpected difficulties': the rub
+).s("gm_string_ensemble_1").velocity(.085).attack(.8).release(2).lpf(800).room(.45).rsize(4)
+$: tl([557.30, 14.68, note("c2")], [571.98, 5.64, note("c2")], [577.62, 2.11, note("ab1")], [579.73, 1.66, note("bb1")],
+      [581.39, 7.14, note("c2")], [588.78, 9.4, note("<c2 a1 f1>").slow(3)])
   .s("gm_contrabass").velocity(.16).attack(.3).release(1.5).lpf(380)
 // the held chord's high air under the quote (above D5)
-$: tl([26.82, 2.6, note("[a5,c6,e6]")]).s("gm_pad_bowed").velocity(.09).attack(.6).release(2).room(.45).rsize(4)
+$: tl([595.60, 2.6, note("[a5,c6,e6]")]).s("gm_pad_bowed").velocity(.06).lpf(2200).attack(.6).release(2).room(.45).rsize(4)
+
+// ---- THE DISSENTER AT THE RIM (L0514b 574.54-588.07). M4, the holdouts' walk, on a lone cello in
+// C dorian, low (G2-F3, under the voice's band): it opens with the candle's rising fourth on 'rim' ->
+// 'philosopher' and then keeps walking stepwise instead of holding: persistence, not certainty, against
+// the boom's bright C major. It rests on C under "early, dramatic success", and the typing comes back
+// faintly around him: the boom goes on; on 'sudden' it trips (one clack late) and stops.
+$: tl([574.99, 13.0, note("g2@0.68 c3@1.95 d3@0.68 eb3@1.43 f3@0.81 eb3@0.85 d3@0.5 bb2@1.51 c3@4.59")])
+  .s("gm_cello").velocity("[.2 .24 .2 .23 .22 .2 .17 .2 .19]").attack(.15).release(1.3).lpf(1000).room(.5).rsize(4)
+$: tl([583.40, 2.68, note("a5 ~ a5 a5 ~ a5 ~ a5 a5 a5 ~ a5 ~ a5 a5 ~").fast(bars(2.68)).velocity(.06)],
+      [586.30, 0.4, note("a5").velocity(.05)])
+  .s("gm_woodblock").lpf(5000).room(.2).rsize(4)
 
 // ---- the TYPING rhythm: woodblock clacks + feather-light pizz 16ths, high and dry. Starts on
-// 'knowledge' (8.58), stops dead on 'never' (17.28) for a bar, returns softer on 'sea' (20.00), stops for
-// the quote ('practically' 26.82), returns for Tokyo ('tokyo' 585.28 = 30.33).
+// 'knowledge' (563.28), stops dead on 'never' (571.98), returns softer on 'sea' (588.78), stops for
+// the quote ('practically' 595.60), returns for Tokyo ('tokyo' 599.11).
 const typeWB = note("a5 ~ a5 a5 ~ a5 ~ a5 a5 a5 ~ a5 ~ a5 a5 ~")
 const typePZ = note("c6 g5 c6 g5 c6 g5 e6 g5 c6 g5 c6 g5 d6 g5 c6 g5")
-$: tl([8.58, 8.70, typeWB.fast(bars(8.70)).velocity(.13)],
-      [20.00, 6.8, typeWB.fast(bars(6.8)).velocity(.09)],
-      [30.33, 5.0, typeWB.fast(bars(5.0)).velocity(.08)])
+$: tl([563.28, 8.70, typeWB.fast(bars(8.70)).velocity(.09)],
+      [588.78, 6.8, typeWB.fast(bars(6.8)).velocity(.09)],
+      [599.11, 5.0, typeWB.fast(bars(5.0)).velocity(.08)])
   .s("gm_woodblock").lpf(5000).room(.2).rsize(4)
-$: tl([8.58, 8.70, typePZ.fast(bars(8.70)).velocity(perlin.range(.06, .12))],
-      [20.00, 6.8, typePZ.fast(bars(6.8)).velocity(perlin.range(.04, .08))],
-      [30.33, 5.0, typePZ.fast(bars(5.0)).velocity(perlin.range(.04, .07))])
+$: tl([563.28, 8.70, typePZ.fast(bars(8.70)).velocity(perlin.range(.04, .08))],
+      [588.78, 6.8, typePZ.fast(bars(6.8)).velocity(perlin.range(.04, .08))],
+      [599.11, 5.0, typePZ.fast(bars(5.0)).velocity(perlin.range(.04, .07))])
   .s("gm_pizzicato_strings").lpf(6000).room(.2).rsize(4)
 
-// ---- the rolling SEA ('sea' 574.95 = 20.00): harp arpeggio, low and rolling, a high glint on each crest.
-// The Tokyo aside (30.33) gets the same figure, unchanged and equally warm.
+// ---- the rolling SEA ('sea' 588.78): harp arpeggio, low and rolling, a high glint on each crest.
+// The Tokyo aside (599.11) gets the same figure, unchanged and equally warm.
 const sea = note("c2 g2 c3 e3 g3 e3 c3 g2 a1 e2 a2 c3 e3 c3 a2 e2")
 const sea2 = note("f1 c2 f2 a2 c3 a2 f2 c2 g1 d2 g2 b2 d3 b2 g2 d2")
-$: tl([20.00, 6.8, sea.fast(bars(6.8)).velocity(.15)],      // under L0515: thinner, so the rolling stays below the voice
-      [30.33, 2.53, sea.slow(2).velocity(.3)], [32.86, 2.48, sea2.slow(2).velocity(.27)])
+$: tl([588.78, 6.8, sea.fast(bars(6.8)).velocity(.15)],      // under L0515: thinner, so the rolling stays below the voice
+      [599.11, 2.53, sea.slow(2).velocity(.3)], [601.64, 2.48, sea2.slow(2).velocity(.27)])
   .s("gm_orchestral_harp").lpf(2400).room(.5).rsize(4)
-$: tl([20.00, 6.8, note("[g5 ~ ~ ~] [~ ~ e5 ~]").fast(bars(6.8))], [30.33, 5.0, note("g5 ~ e5 ~ a5 ~ g5 ~")])
+$: tl([588.78, 6.8, note("[g5 ~ ~ ~] [~ ~ e5 ~]").fast(bars(6.8))], [599.11, 5.0, note("g5 ~ e5 ~ a5 ~ g5 ~")])
   .s("gm_orchestral_harp").velocity(.14).room(.5).rsize(4)
 
-// ---- the FILE SEAL on 'file' (584.28 = 29.33), in the clear after L0515: A -> D, plucked, doubled by
-// the low clarinet
-$: tl([29.33, 1.1, note("a3 d3")]).s("gm_pizzicato_strings").velocity(.42).lpf(2000).room(.45).rsize(4)
-$: tl([29.33, 1.5, note("a3 d3@2")]).s("gm_clarinet").velocity(.2).attack(.05).release(.8).lpf(1600).room(.45).rsize(4)
+// ---- the FILE SEAL on 'file' (598.11), in the clear after L0515: A -> D, plucked, doubled by the low clarinet
+$: tl([598.11, 1.1, note("a3 d3")]).s("gm_pizzicato_strings").velocity(.42).lpf(2000).room(.45).rsize(4)
+$: tl([598.11, 1.5, note("a3 d3@2")]).s("gm_clarinet").velocity(.2).attack(.05).release(.8).lpf(1600).room(.45).rsize(4)
 
-// ---- Tokyo's warmth: the speech gap 583.88-590.31 (28.93-35.36) is the boom's one swell
-// (strings, C -> Am -> F -> G)
-$: tl([30.33, 5.03, note("[c3,e3,g3,c4] [a2,e3,a3,c4] [f2,c3,f3,a3] [g2,d3,g3,b3]")])
+// ---- Tokyo's warmth: the speech gap 597.72-604.14 is the boom's one swell (strings, C -> Am -> F -> G)
+$: tl([599.11, 5.03, note("[c3,e3,g3,c4] [a2,e3,a3,c4] [f2,c3,f3,a3] [g2,d3,g3,b3]")])
   .s("gm_string_ensemble_1").velocity(.17).attack(.6).release(1.8).lpf(1500).room(.45).rsize(4)
 
-// ---- THE SECOND WINTER. The panel ('panel' 590.31 = 35.36): the typing thins to ONE repeated note, a
-// warning from inside; it dies away as Schank's card rises (592.04-594.15). C minor underneath.
-$: tl([35.36, 3.6, note("g5*9").velocity("[.12 .11 .1 .09 .08 .07 .06 .05 .04]")])
+// ---- THE SECOND WINTER. The panel ('In 1984' 604.14): the typing thins to ONE repeated note, a
+// warning from inside; it dies away as Schank's card rises (605.87-607.98). C minor underneath.
+$: tl([604.14, 3.6, note("g5*9").velocity("[.12 .11 .1 .09 .08 .07 .06 .05 .04]")])
   .s("gm_pizzicato_strings").lpf(5000).room(.3).rsize(4)
-$: tl([35.36, 3.84, note("[c2,g2,eb3]")], [39.20, 3.9, note("[c2,g2,eb3]")])
+$: tl([604.14, 3.84, note("[c2,g2,eb3]")], [607.98, 3.9, note("[c2,g2,eb3]")])
   .s("gm_string_ensemble_1").velocity(.12).attack(1).release(2.5).lpf(800).room(.5).rsize(4)
-$: tl([35.36, 11.65, note("c2")], [47.01, 1.35, note("ab1")], [48.36, 7.3, note("g1")])
+$: tl([604.14, 11.65, note("c2")], [615.79, 1.35, note("ab1")], [617.14, 7.3, note("g1")])
   .s("gm_contrabass").velocity(.22).attack(.6).release(2.5).lpf(380)
-// snow ('snow' 594.15 = 39.20): bowed glass, high and thin
-$: tl([39.20, 7.6, note("[eb5,g5,c6]")]).s("gm_pad_bowed").velocity(.1).attack(2).release(3).room(.6).rsize(4)
-// the speech gap 594.55-598.05 (39.60-43.10): the cello alone, a falling C minor phrase (a winter walk)
-$: tl([39.75, 3.2, note("c3@2 bb2 ab2@2 g2@3")]).s("gm_cello").velocity(.3).attack(.12).release(1.4).lpf(1300).room(.5).rsize(4)
+// snow ('snow' 607.98): bowed glass, high and thin
+$: tl([607.98, 7.6, note("[eb5,g5,c6]")]).s("gm_pad_bowed").velocity(.06).lpf(2200).attack(2).release(3).room(.6).rsize(4)
+// the speech gap 608.38-611.88: the cello alone, a falling C minor phrase (a winter walk; it rhymes with
+// Dreyfus's walk, now going down)
+$: tl([608.53, 3.2, note("c3@2 bb2 ab2@2 g2@3")]).s("gm_cello").velocity(.3).attack(.12).release(1.4).lpf(1300).room(.5).rsize(4)
 
-// ---- 'dark' (601.96 = 47.01): the bass sinks; Cyc's taper ('knowledge' 604.33 = 49.38) gets one thin
-// high C that will not resolve; the knowledge candle's flame (cello C3 from 'candle' 49.75) falls on
-// 'seven' (605.98 = 51.03) only to Bb, over G: guttered, not gone, never reaching the B that would
-// resolve it. (2026-10-12 revision: this all sits under the end of L0522, so the celesta, glass, cello and
-// strings are 2-3 dB softer: the fall is heard as a shading of the line, and the gap after it is the swell.)
-$: tl([49.38, 6.0, note("c5")]).s("gm_celesta").velocity(.14).room(.6).rsize(4)
-$: tl([49.38, 6.6, note("c6")]).s("gm_pad_bowed").velocity(.07).attack(1.2).release(3).room(.6).rsize(4)
-$: tl([49.75, 6.4, note("c3 bb2@4")]).s("gm_cello").velocity("[.2 .24]").attack(.5).release(2).lpf(900).room(.5).rsize(4)
-$: tl([51.03, 4.6, note("[g1,d2,g2]")]).s("gm_string_ensemble_1").velocity(.11).attack(.8).release(2.5).lpf(700).room(.5).rsize(4)
+// ---- 'dark' (615.79): the bass sinks; Cyc's taper ('knowledge' 618.16) gets one thin high C that will not
+// resolve; the knowledge candle's flame (cello C3 from 'candle' 618.53) falls on 'seven' (619.81) only to
+// Bb, over G: guttered, not gone, never reaching the B that would resolve it. (All under the end of L0522,
+// so the celesta, glass, cello and strings are soft: the fall shades the line; the gap after it is the swell.)
+$: tl([618.16, 6.0, note("c5")]).s("gm_celesta").velocity(.09).room(.6).rsize(4)
+$: tl([618.16, 6.6, note("c6")]).s("gm_pad_bowed").velocity(.045).lpf(2200).attack(1.2).release(3).room(.6).rsize(4)
+$: tl([618.53, 6.4, note("c3 bb2@4")]).s("gm_cello").velocity("[.2 .24]").attack(.5).release(2).lpf(900).room(.5).rsize(4)
+$: tl([619.81, 4.6, note("[g1,d2,g2]")]).s("gm_string_ensemble_1").velocity(.11).attack(.8).release(2.5).lpf(700).room(.5).rsize(4)
 
-// ---- THE MESSENGER UNHEARD. Lead-in in the gap 606.85-611.27 (51.90-56.32): M3's forward arpeggio,
-// slow and warm in F (celesta sounds an octave up), landing on F major as the dawnGold shot opens
-// (610.67 = 55.72).
-$: tl([53.40, 2.32, note("f3 a3 c4 f4@2")]).s("gm_celesta").velocity(.3).room(.6).rsize(4)
-// (2026-10-12) the gap's one warm breath: F major strings in the middle register swell under the arpeggio
-// and are released at 55.7 so they have thinned before "Two critics" (56.32); the low F pedal takes over.
-$: tl([53.20, 2.50, note("[c3,f3,a3,c4]")]).s("gm_string_ensemble_1").velocity(.13).attack(1.1).release(1.1).lpf(1500).room(.5).rsize(4)
-$: tl([55.72, 11.18, note("[f1,f2]")]).s("gm_contrabass").velocity(.13).attack(1).release(2).lpf(380)
-$: tl([55.72, 11.18, note("[f2,c3]")]).s("gm_cello").velocity(.085).attack(1.2).release(2).lpf(700).room(.5).rsize(4)
-// the critics (611.27-617.77): a held suspension above the voice, Bb over F (doubt); no resolution on
-// "Still argued" ('still' 617.25 = 62.30)
-$: tl([56.10, 10.8, note("[a5,c6]@1 [bb5,c6]@4")]).s("gm_pad_bowed").velocity(.1).attack(1.5).release(3).room(.6).rsize(4)
-// 'worked' (619.05 = 64.10): the X-ray's glassy shimmer
-$: tl([64.06, 1.4, note("[f5 c6 a5 f6 c6 a6]")]).s("gm_fx_crystal").velocity(.14).room(.7).rsize(4)
-$: tl([64.06, 1.4, note("[c5 f5 a5 c6]")]).s("gm_celesta").velocity(.12).room(.7).rsize(4)
-// 'stopped listening' (621.85-622.59 = 66.90-67.64): F major slips to D minor underneath
-// (revision: the bowed D pedal is released at 69.4 instead of being held to 71.5: its loop swells kept
-// it at full level into the fade; now it decays from 69.4 and the piano's E is what rings at the join)
-$: tl([66.90, 2.5, note("[d2,a2]")]).s("gm_cello").velocity(.16).attack(1).release(2.2).lpf(600).room(.5).rsize(4)
-$: tl([66.90, 2.5, note("d2")]).s("gm_contrabass").velocity(.18).attack(1).release(2.2).lpf(380)
-$: tl([66.90, 2.6, note("[a5,d6]")]).s("gm_pad_bowed").velocity(.07).attack(1).release(2.5).room(.6).rsize(4)
-// PIANO enters alone the moment the line ends ('listening' ends 622.59 = 67.64): a falling D minor
-// figure, three notes, stopping on E (the ninth, unresolved), handing over to m08's quiet-years piano,
-// which completes it on D. (Revision: it used to start under 'listening' at 67.30, mid-band under the
-// last word; now it is in the clear.) Last onset 68.40 (623.35, the E), by the 623.42 target.
-$: tl([67.70, 1.4, note("a4 f4 e4@2")]).s("piano").velocity("[.31 .27 .25]").room(.6).rsize(4)
-$: tl([68.38, 2.4, note("[d3,a3]")]).s("piano").velocity(.16).room(.6).rsize(4)
+// ---- THE MESSENGER UNHEARD. Lead-in in the gap 620.68-625.10: M3's forward arpeggio, slow and warm in F
+// (celesta sounds an octave up), landing on F major as the dawnGold shot opens (624.50).
+$: tl([622.18, 2.32, note("f3 a3 c4 f4@2")]).s("gm_celesta").velocity(.3).room(.6).rsize(4)
+// the gap's one warm breath: F major strings in the middle register swell under the arpeggio and are
+// released at 624.48 so they have thinned before "Two critics" (625.10); the low F pedal takes over.
+$: tl([621.98, 2.50, note("[c3,f3,a3,c4]")]).s("gm_string_ensemble_1").velocity(.13).attack(1.1).release(1.1).lpf(1500).room(.5).rsize(4)
+$: tl([624.50, 11.18, note("[f1,f2]")]).s("gm_contrabass").velocity(.13).attack(1).release(2).lpf(380)
+$: tl([624.50, 11.18, note("[f2,c3]")]).s("gm_cello").velocity(.085).attack(1.2).release(2).lpf(700).room(.5).rsize(4)
+// the critics (625.10-631.60): a held suspension above the voice, Bb over F (doubt); no resolution on
+// "Still argued" ('still' 631.08)
+$: tl([624.88, 7.4, note("[a5,c6]@1 [bb5,c6]@4")]).s("gm_pad_bowed").velocity(.07).lpf(2200).attack(1.5).release(2.2).room(.6).rsize(4)
+// 'worked' (632.88): the X-ray's glassy shimmer
+$: tl([632.84, 1.4, note("[f5 c6 a5 f6 c6 a6]")]).s("gm_fx_crystal").velocity(.05).room(.7).rsize(4)
+$: tl([632.84, 1.4, note("[c5 f5 a5 c6]")]).s("gm_celesta").velocity(.05).room(.7).rsize(4)
+// 'stopped listening' (635.68-636.42): F major slips to D minor underneath; the bowed D pedal decays
+// from 638.2 so the piano's E is what rings at the join
+$: tl([635.68, 2.5, note("[d2,a2]")]).s("gm_cello").velocity(.16).attack(1).release(2.2).lpf(600).room(.5).rsize(4)
+$: tl([635.68, 2.5, note("d2")]).s("gm_contrabass").velocity(.18).attack(1).release(2.2).lpf(380)
+$: tl([635.68, 2.6, note("[a5,d6]")]).s("gm_pad_bowed").velocity(.04).lpf(2000).attack(1).release(2.5).room(.6).rsize(4)
+// PIANO enters alone the moment the line ends ('listening' ends 636.42): a falling D minor figure, three
+// notes, stopping on E (the ninth, unresolved), handing over to m08's quiet-years piano, which completes it
+// on D. Last onset 637.18 (the E), by the 637.2 target.
+$: tl([636.48, 1.4, note("a4 f4 e4@2")]).s("piano").velocity("[.31 .27 .25]").room(.6).rsize(4)
+$: tl([637.16, 2.4, note("[d3,a3]")]).s("piano").velocity(.16).room(.6).rsize(4)
 
-all(x => x.postgain(2.0))
+all(x => x.postgain(2.2))

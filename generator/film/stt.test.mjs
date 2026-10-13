@@ -1,7 +1,7 @@
 // Unit tests: STT term matching (lib/stt.mjs) and per-line level offsets (lib/levels.mjs). Pure, no network.
 import { test } from 'node:test';
 import assert from 'node:assert/strict';
-import { normText, matchTerms, sttTargets, wordErrorRate, castNames, soundKey } from './lib/stt.mjs';
+import { normText, matchTerms, sttTargets, wordErrorRate, castNames, soundKey, recordState, recordPass } from './lib/stt.mjs';
 import { levelOffsets, median } from './lib/levels.mjs';
 import { compileLexicon } from './lib/text.mjs';
 
@@ -40,8 +40,10 @@ test('sttTargets: explicit spoken lines and every line naming a cast member; nam
   assert.deepEqual(t.map((x) => x.lineId), ['A', 'B']);
   const hb = t[1].terms;
   assert.equal(hb[0].term, 'Hochreiter');
-  assert.deepEqual(matchTerms('In 1997, Hockreiter carried it.', hb).map((x) => x.found), [true]);
-  assert.deepEqual(matchTerms('In 1997, the writer carried it.', hb).map((x) => x.found), [false]);
+  // review round 3: a near spelling is reported (near) but never passes; the literal form does
+  assert.deepEqual(matchTerms('In 1997, Hockreiter carried it.', hb).map((x) => [x.found, !!x.near]), [[false, true]]);
+  assert.deepEqual(matchTerms('In 1997, Hochreiter carried it.', hb).map((x) => x.found), [true]);
+  assert.deepEqual(matchTerms('In 1997, the writer carried it.', hb).map((x) => [x.found, !!x.near]), [[false, false]]);
   // sound keys: an RP reading heard by the transcriber with another spelling
   assert.equal(soundKey('LeCun'), soundKey('La Kun'));
   assert.equal(soundKey('Amodei'), soundKey('Ahmadai'));
@@ -62,4 +64,22 @@ test('levelOffsets: offset from the median of the OTHER lines', () => {
   assert.equal(lv.L1.errorDb, 0);
   assert.equal(lv.L4.offsetDb, -1.5);
   assert.equal(lv.L2.errorDb, 0);
+});
+
+test('literal accept forms: Ahmoudai fails for Amodei; a human-judged heard form (sttHeard) passes', () => {
+  const lex = compileLexicon({ Amodei: 'Ah-moh-day', LeCun: 'Le Cun' });
+  const script = { chapters: [{ shots: [{ id: 's1', lines: [{ id: 'A', text: 'Dario Amodei.' }, { id: 'B', text: 'LeCun spoke.' }] }] }] };
+  const [a, b] = sttTargets(script, lex, { heard: { LeCun: ['Le Kun'] } });
+  assert.deepEqual(matchTerms('Dario Ahmoudai.', a.terms).map((x) => x.found), [false]);
+  assert.deepEqual(matchTerms('Dario Amodei.', a.terms).map((x) => x.found), [true]);
+  assert.deepEqual(matchTerms('Jan Le Kun spoke.', b.terms).map((x) => x.found), [true]);
+});
+
+test('recordState: a record of an older take is stale even when the clip file sig matches nothing', () => {
+  const P = { dir: '/nonexistent' };
+  assert.equal(recordState(P, null, { sig: 'x' }), 'missing');
+  assert.equal(recordState(P, { lineSig: 'old', sig: 'a' }, { sig: 'new' }), 'stale-take');
+  assert.equal(recordPass('', [], 0), false);
+  assert.equal(recordPass('the right words', [], 0.1), true);
+  assert.equal(recordPass('other words entirely', [], 0.9), false);
 });

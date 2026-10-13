@@ -1,27 +1,34 @@
 {
  "shot": "ch08-s09",
- "at": "2026-10-12T17:53:48.057Z",
+ "at": "2026-10-13T04:13:49.942Z",
  "minCapPx": 22,
  "sampled": 23,
  "texts": 4,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
- "textureTexts": 0,
- "ok": [
+ "subjects": [
   {
    "text": "largely color-agnostic",
-   "maxCap": 29.4
+   "capWhileSubject": 29.4,
+   "why": "script onScreenText"
   },
   {
    "text": "— KRIZHEVSKY ET AL., 2012",
-   "maxCap": 22
-  },
-  {
-   "text": "ILLUSTRATIVE",
-   "maxCap": 22.1
+   "capWhileSubject": 22,
+   "why": "script onScreenText"
   },
   {
    "text": "largely color-specific",
-   "maxCap": 29.4
+   "capWhileSubject": 29.4,
+   "why": "script onScreenText"
   }
- ]
+ ],
+ "texture": [
+  {
+   "text": "ILLUSTRATIVE",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 1
 }

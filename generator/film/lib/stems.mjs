@@ -69,6 +69,12 @@ export async function publishStems(P, out, { slug, timeline, cues, log = () => {
     if (await encode(src, path.join(linesDir, name), { channels: 1, bitrate: '96k' })) encoded++;
     return { path: lines[id].clip, url: `audio/lines/${name}`, duration: mediaDuration(src), lineId: id };
   });
+  // the foley bus (mix/loudness.json foley, rendered by film:mix at its final level): published as un-ducked cues
+  // whose gain cancels the master gain the player applies to everything (the mix adds foley after that gain)
+  const masterGain = loudness?.loudnorm?.gainDb ?? 0;
+  const foley = (loudness?.foley?.events || []).filter((e) => e.render && fs.existsSync(path.join(P.dir, e.render)))
+    .map((e) => ({ id: e.id, start: e.t, end: +(e.t + e.duration).toFixed(4), render: e.render, gainDb: +(-masterGain).toFixed(2), duck: false, fadeIn: 0, fadeOut: 0, foley: true, kind: e.kind }));
+  cues = [...cues, ...foley];
   const withRender = cues.filter((c) => c.render && fs.existsSync(path.join(P.dir, c.render)));
   const renders = await pool(withRender, 4, async (c) => {
     const src = path.join(P.dir, c.render);

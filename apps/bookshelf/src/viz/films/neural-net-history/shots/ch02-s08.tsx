@@ -22,7 +22,7 @@
  */
 import { Timeline } from '../../../core';
 import type { Camera3, Frame, PaintEnv, Pose, ShotScene } from '../../../film';
-import { FONT, LAYERS, PUPPET_NEAR_BLACK, defineShot, dustMotes, overscan, mixLab, pose, softPlate, toLayer, toScreen, withAlpha, withLife, annotation, textColor, legibleSize } from '../../../film';
+import { FONT, LAYERS, PUPPET_NEAR_BLACK, defineShot, dustMotes, overscan, mixLab, pose, softPlate, toLayer, toScreen, withAlpha, withLife, annotation, textColor, legibleSize, makeCanvas } from '../../../film';
 import { WALL_SLOTS } from '../sets/wallOfForecasts';
 import { cast, hands } from '../cast';
 import { candleStage, floorShadow, stageSpot, type StageGeo } from '../sets/candleStage';
@@ -36,7 +36,7 @@ import { chairBack } from '../sets/occluders';
 import { paintContext, setPaintContext } from '../../../film/core/paintContext';
 import { hcl } from 'd3';
 import { hash1 } from '../../../film/core/frame';
-import { clamp01, compositeSub, lerp, monotone, ordered, sm, subFrame, tq12, win } from '../sets/ch02-s05b-util';
+import { clamp01, lerp, monotone, ordered, sm, subFrame, tq12, win } from '../sets/ch02-s05b-util';
 
 const ID = 'ch02-s08';
 type C = CanvasRenderingContext2D;
@@ -350,7 +350,10 @@ function retinaInset(c: C, m: Frame['mood'], t: number, b: Beats, frogScreen: { 
   // it never lights. The optic nerve leaves the eye cup through the disc's edge and runs to the optic tectum.
   c.save();
   c.setTransform(c.getTransform().scale(1 / DISP.k, 1 / DISP.k).translate(-DISP.x + INSET.x * DISP.k, -DISP.y + INSET.y * DISP.k));
+  // (present while the inset is open; it settles to full strength just before "brain", and never lights)
+  c.globalAlpha = A * (0.55 + 0.45 * win(t, b.brain - 0.45, b.brain + 0.05));
   frogBrain(c, m, BRAIN.x, BRAIN.y, BRAIN.s);
+  c.globalAlpha = A;
   c.restore();
   // the connector: two fine lines from the frog's eye to the iris (it is HIS eye, magnified)
   c.strokeStyle = withAlpha(m.rim, 0.45);
@@ -475,87 +478,89 @@ function retinaInset(c: C, m: Frame['mood'], t: number, b: Beats, frogScreen: { 
   c.restore();
 }
 
-/** the brain sits behind the eye (screen px): its front lobes tucked behind the disc's right edge */
-const BRAIN = { x: 596, y: 356, s: 0.95 };
-/** where the optic nerve leaves the disc (design space of the r-142 disc) */
-const NERVE_EXIT = { x: INSET.x + INSET.r - 4, y: INSET.y + 26 };
+/** the frog's brain, dark, set just above and behind the frog's head, in the gap between the inset's lower-right
+ *  rim and the candle (screen px): eye (the frog) -> retina (the inset, glowing) -> brain (dark), read in a chain */
+const BRAIN = { x: 594, y: 444, s: 1.24 };
+/** where the optic nerve leaves the disc (design space of the r-142 disc): its lower-right edge, toward the brain */
+const NERVE_EXIT = { x: INSET.x + (INSET.r - 4) * Math.cos(0.5), y: INSET.y + (INSET.r - 4) * Math.sin(0.5) };
 const toDisp = (p: { x: number; y: number }) => ({ x: DISP.x + (p.x - INSET.x) * DISP.k, y: DISP.y + (p.y - INSET.y) * DISP.k });
-/** a frog's brain, dorsal view, nose to the left (toward the eye): paired olfactory bulbs, paired cerebral
- *  hemispheres, the two round optic lobes (the tectum, where the eye's fibres arrive), a thin cerebellum and the
- *  medulla tapering into the cord. Dark paper with a faint rim: it does not light. */
-const BRAIN_PATH = (() => {
-  const p = new Path2D();
+/** a frog's brain, dorsal view, nose to the left (toward the eye's inset), cut as SEPARATE paper pieces so its
+ *  anatomy reads: paired olfactory bulbs, the long paired cerebral hemispheres, the small diencephalon, the two big
+ *  round optic lobes (the tectum, where the eye's fibres arrive), the thin cerebellum band and the medulla tapering
+ *  into the cord. Back to front, so each piece's cut-line separates it from the one behind. */
+const BRAIN_PARTS: Path2D[] = (() => {
   const pair = (cx: number, dy: number, rx: number, ry: number, rot: number) => {
-    p.moveTo(cx + rx, -dy);
+    const p = new Path2D();
     p.ellipse(cx, -dy, rx, ry, -rot, 0, Math.PI * 2);
     p.moveTo(cx + rx, dy);
     p.ellipse(cx, dy, rx, ry, rot, 0, Math.PI * 2);
+    return p;
   };
-  pair(-62, 8, 12, 7, 0.15); // olfactory bulbs
-  pair(-24, 13, 32, 13, 0.08); // cerebral hemispheres
-  pair(26, 17, 19, 16, 0); // optic lobes (tectum)
-  p.moveTo(46, -20);
-  p.quadraticCurveTo(52, 0, 46, 20);
-  p.lineTo(54, 20);
-  p.quadraticCurveTo(60, 0, 54, -20);
-  p.closePath(); // cerebellum band
-  p.moveTo(52, -15);
-  p.quadraticCurveTo(76, -10, 104, -4);
-  p.lineTo(104, 4);
-  p.quadraticCurveTo(76, 10, 52, 15);
-  p.closePath(); // medulla → cord
-  return p;
+  const medulla = new Path2D();
+  medulla.moveTo(46, -13);
+  medulla.quadraticCurveTo(66, -9, 90, -3.5);
+  medulla.lineTo(90, 3.5);
+  medulla.quadraticCurveTo(66, 9, 46, 13);
+  medulla.closePath();
+  const cerebellum = new Path2D();
+  cerebellum.moveTo(40, -19);
+  cerebellum.quadraticCurveTo(47, 0, 40, 19);
+  cerebellum.lineTo(47, 19);
+  cerebellum.quadraticCurveTo(54, 0, 47, -19);
+  cerebellum.closePath();
+  const optic = new Path2D();
+  optic.arc(24, -15, 15, 0, Math.PI * 2);
+  optic.moveTo(39, 15);
+  optic.arc(24, 15, 15, 0, Math.PI * 2);
+  const dien = new Path2D();
+  dien.ellipse(4, 0, 9, 9, 0, 0, Math.PI * 2);
+  return [medulla, cerebellum, optic, dien, pair(-26, 12, 30, 11.5, 0.06), pair(-64, 6.5, 10.5, 6.5, 0.2)];
 })();
-/** the frog's skull seen from above (snout to the left, toward the eye), a faint DOTTED cut-line around the brain
- *  so it reads as the frog's own head: the orbits are the two notches, the cord leaves at the back */
-const SKULL_PATH = (() => {
+/** its outer contour (for the one faint rim on the side facing the candle) */
+const BRAIN_OUTLINE = (() => {
   const p = new Path2D();
-  const half = (sg: number) => {
-    p.bezierCurveTo(-122, -24 * sg, -104, -40 * sg, -86, -46 * sg);
-    p.bezierCurveTo(-70, -30 * sg, -34, -30 * sg, -16, -50 * sg); // the orbit's notch
-    p.bezierCurveTo(14, -66 * sg, 56, -62 * sg, 76, -44 * sg);
-    p.bezierCurveTo(92, -30 * sg, 96, -16 * sg, 100, -10 * sg);
-    p.lineTo(126, -8 * sg);
-  };
-  p.moveTo(-124, 0);
-  half(1);
-  p.moveTo(-124, 0);
-  half(-1);
+  for (const q of BRAIN_PARTS) p.addPath(q);
   return p;
 })();
 function frogBrain(c: C, m: Frame['mood'], x: number, y: number, s: number) {
   c.save();
   c.translate(x, y);
   c.scale(s, s);
-  softPlate(c, 0, 0, 320, 170, m.ink, 0.45);
-  c.save();
-  c.setLineDash([3, 4.5]);
-  c.strokeStyle = withAlpha(m.rim, 0.42);
-  c.lineWidth = 1.2;
-  c.stroke(SKULL_PATH);
-  // the eyes in their orbits (dotted), the near one is the eye we are looking into
-  for (const sg of [-1, 1]) {
-    c.beginPath();
-    c.arc(-52, -50 * sg, 15, 0, Math.PI * 2);
-    c.stroke();
+  softPlate(c, 0, 0, 250, 110, m.ink, 0.4);
+  const body = mixLab(m.ink, m.set, 0.2);
+  // the cut between pieces: the paper behind showing through a hair-line gap (dim, never a light)
+  const gap = withAlpha(mixLab(m.set, m.rim, 0.3), 0.75);
+  c.lineJoin = 'round';
+  for (const p of BRAIN_PARTS) {
+    c.fillStyle = body;
+    c.fill(p, 'nonzero');
+    c.strokeStyle = gap;
+    c.lineWidth = 1.5 / s;
+    c.stroke(p);
   }
-  c.restore();
-  c.fillStyle = mixLab(m.ink, m.set, 0.18);
-  c.fill(BRAIN_PATH, 'nonzero');
-  c.strokeStyle = withAlpha(m.rim, 0.34);
-  c.lineWidth = 1.1;
-  c.stroke(BRAIN_PATH);
-  // the midline between the paired lobes
-  c.strokeStyle = withAlpha(m.fg, 0.8);
+  // the midline groove between the paired lobes
+  c.strokeStyle = gap;
+  c.lineWidth = 1.3 / s;
   c.beginPath();
   c.moveTo(-74, 0);
-  c.lineTo(46, 0);
+  c.lineTo(-5, 0);
+  c.moveTo(13, 0);
+  c.lineTo(40, 0);
   c.stroke();
+  // a faint rim on the upper edge (the candle is up and to the right): unlit, far below the retina's clusters
+  c.save();
+  c.beginPath();
+  c.rect(-90, -40, 200, 30);
+  c.clip();
+  c.strokeStyle = withAlpha(m.rim, 0.32);
+  c.lineWidth = 1 / s;
+  c.stroke(BRAIN_OUTLINE);
+  c.restore();
   c.restore();
 }
 /** the nerve's path in screen px: the cup → the disc's edge → into the near optic lobe; u in 0..1 */
 function nerveAt(u: number) {
-  const a = toDisp({ x: INSET.x - 40, y: INSET.y - 14 }), e = toDisp(NERVE_EXIT), z = { x: BRAIN.x + 22, y: BRAIN.y + 14 };
+  const a = toDisp({ x: INSET.x - 40, y: INSET.y - 14 }), e = toDisp(NERVE_EXIT), z = { x: BRAIN.x + 24 * BRAIN.s, y: BRAIN.y - 29 * BRAIN.s };
   if (u < 0.62) {
     const v = u / 0.62, cx = toDisp({ x: INSET.x + 40, y: INSET.y + 4 });
     return { x: (1 - v) * (1 - v) * a.x + 2 * v * (1 - v) * cx.x + v * v * e.x, y: (1 - v) * (1 - v) * a.y + 2 * v * (1 - v) * cx.y + v * v * e.y };
@@ -737,16 +742,17 @@ export default defineShot({
       name: T.beat('clueCard'),
       xray: T.beat('xray'),
       band: T.beat('xrayBand1'),
-      // band 1 holds lit, then fades where it can be SEEN: done ~0.35 s before the cut (the next shot's ink bleed
-      // straddles it)
-      fade: Math.min(T.beat('xrayFade'), T.duration - 0.85),
+      // band 1 holds lit (~0.9 s at full glow), then the whole column fades out in 0.55 s, gone ~0.6 s before the
+      // cut (the next shot's ink bleed straddles it): the shot ends clean, nothing grey left where the column stood
+      fade: Math.min(T.beat('xrayFade'), T.duration - 1.15),
       // the hands: in during the short tilt (0.55 s), press on "name", and gone by name + 0.32; the clean card holds
       pin0: T.beat('clueCard') - 0.55,
       pinDur: 0.87,
       tilt: T.word('L0220', 'least') + 0.3,
-      // a clean 0.9 s cross-dissolve from the held C1 insert to the X-ray plate (the column fades up inside it)
-      dis0: T.beat('clueCard') + 0.88,
-      dis1: T.beat('clueCard') + 1.78,
+      // the clean pinned card holds alone in SILENCE (>= 0.5 s after "…name on it." ends: the retake's extra length is
+      // absorbed here), then a 0.75 s cross-dissolve to the X-ray plate (the column fades up late inside it)
+      dis0: Math.max(T.beat('clueCard') + 0.88, T.line('L0220').end + 0.5),
+      dis1: Math.max(T.beat('clueCard') + 0.88, T.line('L0220').end + 0.5) + 0.75,
     };
     const D = T.duration;
     // ---- stage camera: wide → toward the frog for the eye → up to the candle → INTO the ember (ease-in dolly)
@@ -791,14 +797,16 @@ export default defineShot({
       const e = 1 - (1 - u) ** 3;
       return { x: lerp(STUB_WICK.x, kt[0][1], e), y: lerp(STUB_WICK.y + 6, kt[0][2], e), z: lerp(720, kt[0][3], e), lens: 1 };
     };
-    // the X-ray plate: the column centred and square-on, ~58% of the frame's height, a slow push while band 1 glows
+    // the X-ray plate, drawn OVER THE BOARD: the column square-on in the right third (~48% of the frame's height),
+    // the board to its left (its WHO TAUGHT IT? case card, and the oxblood question card swaying on its thread in
+    // the upper-left third), a slow push and drift toward band 1 while it glows
     const XC = xrayGlowAt(STUDY.xray);
     const colH = XRAY.h * STUDY.xray.s;
     const zFor = (frac: number) => 1000 - 1000 / ((frac * 720) / colH);
     const xrayCam = (t: number): Camera3 => {
       const u = clamp01((t - b.dis0) / (D - b.dis0));
       const e = 0.5 * u + 0.5 * sm(u); // starts already drifting (no dead stop after the dissolve)
-      return { x: XC.x, y: XC.y + 6, z: lerp(zFor(0.55), zFor(0.61), e), lens: 1 };
+      return { x: lerp(XC.x - 355, XC.x - 335, e), y: lerp(XC.y - 120, XC.y - 110, e), z: lerp(zFor(0.48), zFor(0.505), e), lens: 1 };
     };
     const STAGE_CAMS = [stageCam(0), stageCam(b.irisOpen), stageCam(b.eye), stageCam(b.gutter), stageCam(b.out + 0.2)];
     const STUDY_CAMS = [studyCam(b.cut + 0.2), studyCam(firstT), studyCam(b.tilt), studyCam(b.name), studyCam(b.name + 0.6), xrayCam(b.dis0), xrayCam(b.band), xrayCam(D)];
@@ -817,7 +825,17 @@ export default defineShot({
       const u = sm((t - b.dis0) / (b.dis1 - b.dis0));
       const cv = subFrame(f, `${ID}/insert`, f.mood, (g) => paintStudy(g, scene, t, tq, scene.studyCam(t)));
       paintStudy(f, scene, t, tq, scene.xrayCam(t));
-      compositeSub(f, cv, 1 - u);
+      // a rack-focus dissolve: the outgoing insert goes soft as it fades, so the board's cards never read twice (the
+      // X-ray plate shows the same board, wider: a sharp double exposure would be ghost text)
+      const c = f.c;
+      const k = c.canvas.width / 1280;
+      c.save();
+      c.setTransform(1, 0, 0, 1, 0, 0);
+      c.globalAlpha = Math.min(1, (1 - u) ** 1.25);
+      c.filter = `blur(${(9 * sm(u * 1.6) * k).toFixed(2)}px)`;
+      c.drawImage(cv, 0, 0);
+      c.filter = 'none';
+      c.restore();
     } else paintStudy(f, scene, t, tq, scene.xrayCam(t));
   },
 });
@@ -1002,15 +1020,39 @@ function sleeveBreak(c: C, a: ArmPose, len: number, env: PaintEnv) {
   c.fill();
   c.restore();
 }
-const VEIL = hcl(198, 12, 40).formatHex();
+let isoCanvas: HTMLCanvasElement | null = null;
+/** paint `draw` (in c's current transform) on a cleared offscreen layer, then composite it onto c at alpha a */
+function isolated(c: C, a: number, draw: (cc: C) => void) {
+  if (a <= 0.002) return;
+  const W = c.canvas.width, H = c.canvas.height;
+  if (!isoCanvas || isoCanvas.width !== W || isoCanvas.height !== H) isoCanvas = makeCanvas(W, H);
+  const cc = isoCanvas.getContext('2d')!;
+  cc.setTransform(1, 0, 0, 1, 0, 0);
+  cc.globalAlpha = 1;
+  cc.globalCompositeOperation = 'source-over';
+  cc.filter = 'none';
+  cc.clearRect(0, 0, W, H);
+  cc.setTransform(c.getTransform());
+  cc.save();
+  draw(cc);
+  cc.restore();
+  cc.setTransform(1, 0, 0, 1, 0, 0);
+  c.save();
+  c.setTransform(1, 0, 0, 1, 0, 0);
+  c.globalAlpha *= a;
+  c.drawImage(isoCanvas, 0, 0);
+  c.restore();
+}
+/** the veil's vellum: a dim cool grey, darker than the old pale slab (the empty bands are faint strata, not lights) */
+const VEIL = hcl(198, 8, 27).formatHex();
 /** a veil of dim vellum over the X-ray's unlit bands (2-7): in this first drawing they read as nearly empty */
-function unlitVeil(c: C, o: { x: number; y: number; s?: number }, a: number) {
+function unlitVeil(c: C, o: { x: number; y: number; s?: number }, a: number, col = VEIL) {
   const s = o.s ?? 1;
   c.save();
   c.translate(o.x, o.y);
   c.scale(s, s);
   // band by band (the cut-card dividers between them stay), dense enough that no later band's cut-outs show
-  c.fillStyle = withAlpha(VEIL, a);
+  c.fillStyle = withAlpha(col, a);
   for (let i = 2; i <= 7; i++) {
     const r = bandBox(i);
     c.fillRect(r.x - 2, r.y - 2, r.w + 4, r.h + 4);
@@ -1089,13 +1131,14 @@ function paintStudy(f: Frame, scene: Scene, t: number, tq: number, cam: Camera3)
   const side = { R: toLayer(LAYERS.L4, cam, 1460, ps.y - 190), L: handsEntry(cam, 'L4').L };
   let hp = u > 0 && u < 1 ? hands.act('pin', u, pinPt, { held: 'card', scale: 0.44, entry: side }) : null;
   if (hp?.right && hp.right.shape === 'press') hp = { ...hp, right: { ...hp.right, shape: 'pinch' } };
-  const xa = win(t, b.xray - 0.3, b.xray + 0.4);
+  // the column comes up LATE in the dissolve (~0.3 at its midpoint: no muddy double exposure over the 1943 card)
+  const xa = win(t, Math.max(b.xray - 0.1, b.dis0 + 0.1), b.dis1 + 0.1);
   const bandU = clamp01((t - b.band) / 0.55);
-  // band 1 (and the column with it) fades before the cut; as it fades the chat box settles back into its
-  // card at the output slot (the column IS the chat box: never both at full strength)
-  const dim = win(t, b.fade, b.fade + 0.5);
-  const xLight = xa * (1 - 0.85 * dim);
-  const colA = xa * (1 - 0.85 * dim);
+  // band 1 (and the column with it, frame, veil and all) fades out completely before the cut; as it fades the chat
+  // box settles back into its card at the output slot (the column IS the chat box: never both at full strength)
+  const dim = win(t, b.fade, b.fade + 0.55);
+  const xLight = xa * (1 - dim);
+  const colA = xa * (1 - dim);
   const cardA = dim;
   const xs = xrayBandsAt(ID, 'start');
   studyCase(f, {
@@ -1148,14 +1191,15 @@ function paintStudy(f: Frame, scene: Scene, t: number, tq: number, cam: Camera3)
       }
       // the X-ray column: drawn for the first time (seven faint, empty bands), then band 1 lights alone
       if (colA > 0) {
-        c.save();
-        c.globalAlpha *= colA;
-        // a practical glow, not a second accent: the cyan drawn ~30% less saturated
-        c.filter = 'saturate(0.55)';
-        xrayColumn(c, { ...STUDY.xray, state: { ...xs, lit: xs.lit.map(() => false) }, light: xLight, reveal: { band: 1, u: bandU }, translucency: 0.12 + 0.12 * bandU }, env);
-        unlitVeil(c, STUDY.xray, 0.88);
-        c.filter = 'none';
-        c.restore();
+        // drawn in isolation and composited at colA: the kit's paper pass sets globalAlpha = 1 inside, so a column
+        // drawn straight under a fading alpha left an opaque grey slab (frame, veil and all now fade together)
+        isolated(c, colA, (cc) => {
+          // a practical glow, not a second accent: the cyan drawn ~30% less saturated
+          cc.filter = 'saturate(0.55)';
+          xrayColumn(cc, { ...STUDY.xray, state: { ...xs, lit: xs.lit.map(() => false) }, light: xLight, reveal: { band: 1, u: bandU }, translucency: 0.12 + 0.12 * bandU }, env);
+          unlitVeil(cc, STUDY.xray, 0.94, mixLab(VEIL, env.fill('set'), 0.4));
+          cc.filter = 'none';
+        });
         // band 1's tiny threshold lanterns light warm (the one saturated accent at this moment), each with its own
         // flicker, in ~0.5 s
         bandOneGlow(c, env, STUDY.xray, colA * sm(bandU) * (1 - 0.9 * dim), tq);
@@ -1189,6 +1233,23 @@ function paintStudy(f: Frame, scene: Scene, t: number, tq: number, cam: Camera3)
       c.restore();
     });
   }
+  // the X-ray plate: the board behind the column sinks to a soft, dimmer plane (left and top), so the column and
+  // band 1's lanterns carry the light; the output slot (right of centre) stays clear for the chat box card
+  if (xa > 0) {
+    const c = f.c;
+    c.save();
+    const g = c.createLinearGradient(0, 0, 1280 * 0.58, 0);
+    g.addColorStop(0, withAlpha(f.mood.fg, 0.34 * xa));
+    g.addColorStop(1, withAlpha(f.mood.fg, 0));
+    c.fillStyle = g;
+    c.fillRect(0, 0, 1280, 720);
+    const v = c.createLinearGradient(0, 0, 0, 260);
+    v.addColorStop(0, withAlpha(f.mood.fg, 0.18 * xa));
+    v.addColorStop(1, withAlpha(f.mood.fg, 0));
+    c.fillStyle = v;
+    c.fillRect(0, 0, 1280, 260);
+    c.restore();
+  }
   studyNear(f, { key: ID, cams, file: true, occluders: { drape: false, valance: false } });
   // the study's near plane at the shelf: the detective's wing-chair back at lower right (L5, blurred, sliding
   // faster than the shelf as the camera pulls back and tilts)
@@ -1216,5 +1277,6 @@ function paintStudy(f: Frame, scene: Scene, t: number, tq: number, cam: Camera3)
   const tx = sw.x + 120, ty = sw.y - 40;
   annotation(f.c, { text: 'THE BRAIN IS A LOGIC MACHINE', sub: '1943–1959 · 16', x: sw.x + 14, y: sw.y, tx, ty, at: labAt, dur: labDur, size: 22 }, { t, mood: f.mood, seed: 59 });
   const slip = toScreen(LAYERS.L4, f.cam, STUB_X + 64, STUDY.shelf.y - 1);
-  authorsSlip(f.c, f.mood, t, b, slip.x, slip.y, labAt + 0.35, labAt + labDur);
+  // the slip (the paper itself) stands up on the narrator's "paper" (T.word, follows the L0220 retake)
+  authorsSlip(f.c, f.mood, t, b, slip.x, slip.y, Math.max(labAt + 0.35, b.paper - 0.15), labAt + labDur);
 }

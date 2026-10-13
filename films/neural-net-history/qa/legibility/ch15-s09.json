@@ -1,252 +1,204 @@
 {
  "shot": "ch15-s09",
- "at": "2026-10-13T00:16:44.005Z",
+ "at": "2026-10-13T21:38:03.357Z",
  "minCapPx": 22,
  "sampled": 31,
- "texts": 34,
- "offenders": [
-  {
-   "text": "2022",
-   "maxCap": 10.2,
-   "minCap": 10,
-   "first": 22.25,
-   "last": 24.25,
-   "font": "9px \"Special Elite\""
-  },
-  {
-   "text": "JAN 2025",
-   "maxCap": 10.2,
-   "minCap": 10,
-   "first": 22.25,
-   "last": 24.25,
-   "font": "9px \"Special Elite\""
-  },
-  {
-   "text": "2025",
-   "maxCap": 10.2,
-   "minCap": 10,
-   "first": 22.25,
-   "last": 24.25,
-   "font": "9px \"Special Elite\""
-  },
-  {
-   "text": "KRIZHEVSKY, SUTSKEVER & HINTON · 2012",
-   "maxCap": 11.4,
-   "minCap": 7.6,
-   "first": 0.25,
-   "last": 2.25,
-   "font": "5.3923px \"Special Elite\""
-  },
-  {
-   "text": "DUE 2024",
-   "maxCap": 16.1,
-   "minCap": 10.7,
-   "first": 0.25,
-   "last": 2.25,
-   "font": "7.6px \"Special Elite\""
-  },
-  {
-   "text": "TURING · DUE 2000",
-   "maxCap": 17.1,
-   "minCap": 11.4,
-   "first": 0.25,
-   "last": 2.25,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "ROSENBLATT · 1961",
-   "maxCap": 17.1,
-   "minCap": 11.4,
-   "first": 0.25,
-   "last": 2.25,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "Linguistic capability,",
-   "maxCap": 17.1,
-   "minCap": 11.4,
-   "first": 0.25,
-   "last": 2.25,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "related to perceptual",
-   "maxCap": 17.1,
-   "minCap": 11.4,
-   "first": 0.25,
-   "last": 2.25,
-   "font": "8.075px \"Special Elite\""
-  },
+ "texts": 38,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
   {
    "text": "experience, is of the",
-   "maxCap": 17.1,
-   "minCap": 11.4,
-   "first": 0.25,
-   "last": 2.25,
-   "font": "8.075px \"Special Elite\""
+   "capWhileSubject": 24.2,
+   "why": "script onScreenText"
   },
   {
-   "text": "essence…",
-   "maxCap": 17.1,
-   "minCap": 11.4,
-   "first": 0.25,
-   "last": 2.25,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "COULOM · MAY 2014",
-   "maxCap": 17.1,
-   "minCap": 11.4,
-   "first": 0.25,
-   "last": 2.25,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "HASSABIS · 2025",
-   "maxCap": 17.1,
-   "minCap": 11.4,
-   "first": 0.25,
-   "last": 2.25,
-   "font": "8.075px \"Special Elite\""
+   "text": "HINTON · SEPT 2017",
+   "capWhileSubject": 32,
+   "why": "script onScreenText"
   },
   {
    "text": "The future depends on",
-   "maxCap": 18.2,
-   "minCap": 11.4,
-   "first": 0.25,
-   "last": 2.25,
-   "font": "8.075px \"Special Elite\""
+   "capWhileSubject": 25.9,
+   "why": "script onScreenText"
   },
   {
    "text": "some graduate student",
-   "maxCap": 18.2,
-   "minCap": 11.4,
-   "first": 0.25,
-   "last": 2.25,
-   "font": "8.075px \"Special Elite\""
+   "capWhileSubject": 25.9,
+   "why": "script onScreenText"
   },
   {
    "text": "who is deeply suspicious",
-   "maxCap": 18.2,
-   "minCap": 11.4,
-   "first": 0.25,
-   "last": 2.25,
-   "font": "8.075px \"Special Elite\""
+   "capWhileSubject": 25.9,
+   "why": "script onScreenText"
   },
   {
    "text": "of everything I have",
-   "maxCap": 18.2,
-   "minCap": 11.4,
-   "first": 0.25,
-   "last": 2.25,
-   "font": "8.075px \"Special Elite\""
+   "capWhileSubject": 25.9,
+   "why": "script onScreenText"
   },
   {
    "text": "said.",
-   "maxCap": 18.2,
-   "minCap": 11.4,
-   "first": 0.25,
-   "last": 2.25,
-   "font": "8.075px \"Special Elite\""
+   "capWhileSubject": 25.9,
+   "why": "script onScreenText"
   },
   {
-   "text": "3 in 10 fooled",
-   "maxCap": 20.1,
-   "minCap": 13.4,
-   "first": 0.25,
-   "last": 2.25,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "…simply by waiting",
-   "maxCap": 20.1,
-   "minCap": 13.4,
-   "first": 0.25,
-   "last": 2.25,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "for faster GPUs and",
-   "maxCap": 20.1,
-   "minCap": 13.4,
-   "first": 0.25,
-   "last": 2.25,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "bigger datasets…",
-   "maxCap": 20.1,
-   "minCap": 13.4,
-   "first": 0.25,
-   "last": 2.25,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "I think maybe ten",
-   "maxCap": 20.1,
-   "minCap": 13.4,
-   "first": 0.25,
-   "last": 2.25,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "years",
-   "maxCap": 20.1,
-   "minCap": 13.4,
-   "first": 0.25,
-   "last": 2.25,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "AGI in 5 to 10 years",
-   "maxCap": 20.1,
-   "minCap": 13.4,
-   "first": 0.25,
-   "last": 2.25,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "· about even odds",
-   "maxCap": 20.1,
-   "minCap": 13.4,
-   "first": 0.25,
-   "last": 2.25,
-   "font": "9.5px \"Special Elite\""
-  }
- ],
- "textureTexts": 0,
- "ok": [
-  {
-   "text": "HINTON · SEPT 2017",
-   "maxCap": 22.6
-  },
-  {
-   "text": "WHO TAUGHT",
-   "maxCap": 33
-  },
-  {
-   "text": "IT?",
-   "maxCap": 33
+   "text": "CASE FILE",
+   "capWhileSubject": 33.1,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "The future depends on some graduate",
-   "maxCap": 23.4
+   "capWhileSubject": 33.1,
+   "why": "script onScreenText"
   },
   {
    "text": "student who is deeply suspicious of",
-   "maxCap": 23.4
+   "capWhileSubject": 33.1,
+   "why": "script onScreenText"
   },
   {
    "text": "everything I have said.",
-   "maxCap": 23.4
+   "capWhileSubject": 33.1,
+   "why": "script onScreenText"
   },
   {
    "text": "— Geoffrey Hinton, 2017, as quoted by Gary Marcus",
-   "maxCap": 27.1
+   "capWhileSubject": 27,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "LEARNING + ACCOMPLICES",
+   "capWhileSubject": 23.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "NEVER ONE PERSON",
+   "capWhileSubject": 23.2,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "STATUS: OPEN",
-   "maxCap": 23.4
+   "capWhileSubject": 34.2,
+   "why": "drawn as subject (kit card or textRole)"
   }
- ]
+ ],
+ "texture": [
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 24.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 28.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ROSENBLATT · 1961",
+   "maxCap": 24.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Linguistic capability,",
+   "maxCap": 24.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "related to perceptual",
+   "maxCap": 24.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "essence…",
+   "maxCap": 24.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KRIZHEVSKY, SUTSKEVER & HINTON · 2012",
+   "maxCap": 16.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "…simply by waiting",
+   "maxCap": 28.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "for faster GPUs and",
+   "maxCap": 28.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "bigger datasets…",
+   "maxCap": 28.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "COULOM · MAY 2014",
+   "maxCap": 24.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "I think maybe ten",
+   "maxCap": 28.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "years",
+   "maxCap": 28.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "DUE 2024",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "HASSABIS · 2025",
+   "maxCap": 24.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "AGI in 5 to 10 years",
+   "maxCap": 28.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "· about even odds",
+   "maxCap": 28.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CASE FILE · WHO TAUGHT IT?",
+   "maxCap": 13.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 48.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IT?",
+   "maxCap": 48.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2022",
+   "maxCap": 15.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "JAN 2025",
+   "maxCap": 15.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2025",
+   "maxCap": 15.2,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 23
 }

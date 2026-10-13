@@ -1,27 +1,49 @@
 {
  "shot": "ch08-s05",
- "at": "2026-10-12T18:26:51.799Z",
+ "at": "2026-10-13T15:13:24.670Z",
  "minCapPx": 22,
  "sampled": 30,
- "texts": 4,
+ "texts": 7,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
- "textureTexts": 0,
- "ok": [
+ "subjects": [
   {
-   "text": "55 · 27 · 13 · 13 · 13",
-   "maxCap": 23.6
+   "text": "→ 2 great halls",
+   "capWhileSubject": 23.6,
+   "why": "named: \"great halls\""
   },
   {
-   "text": "→ 4096 · 4096 · 1000",
-   "maxCap": 23.6
+   "text": "→ 1,000 answers",
+   "capWhileSubject": 23.6,
+   "why": "named: \"answers\""
   },
   {
-   "text": "≈ 60 million numbers",
-   "maxCap": 23.6
+   "text": "≈ 60 million",
+   "capWhileSubject": 23.6,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "numbers",
+   "capWhileSubject": 23.6,
+   "why": "script onScreenText"
   },
   {
    "text": "650,000 neurons",
-   "maxCap": 23.6
+   "capWhileSubject": 23.6,
+   "why": "script onScreenText"
   }
- ]
+ ],
+ "texture": [
+  {
+   "text": "5 stencil layers",
+   "maxCap": 23.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "of 4,096",
+   "maxCap": 23.6,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 2
 }

@@ -381,15 +381,19 @@
    "holdAfter": 1.8,
    "minDuration": 21,
    "transitionIn": "cut",
-   "visual": "THIS SHOT: the classical recipe staged as a two-stage paper machine, so the viewer sees what 'clean learning, hand-made seeing' means. CAMERA: a slow lateral track left to right along a workbench below Vapnik's blackboard (same duskRose as ch06-s03), then a gentle rise for the lift. STAGE ONE, on 'expert': a pair of hands (an expert's, shirt-sleeved; not the narrator's tweed cuffs) cuts a small TIN STENCIL with snips: a few hand-chosen shapes (an edge, a corner, a loop), the same kind of pierced stencil that returns in ch08-s04 (rhyme it: same tin, same pierced dots); each photo slid under the stencil becomes a short row of numbers. STAGE TWO, on 'line': a simple learner (a small brass ruler on a pivot) swings over a field of paper dots, warm on one side, cool on the other, and settles on one straight chalk line between them. On 'kernel': the two crowds are mixed so no straight line can part them (a warm ring around a cool cluster, flat on the board); the date card sets in (1992 · Boser, Guyon & Vapnik). On 'lifted': the board's paper plane rises into a gentle HILL (the warm ring stays low on the slopes, the cool cluster rides up to the summit), side-lit so the height reads. On 'flat cut': one flat sheet of vellum slides in horizontally and slices the hill between them: one flat cut parts the crowds; drop back down to the flat board and the cut becomes a closed chalk ring around the cool cluster. On 'clean': the brass ruler and the vellum sheet glow softly (the learning: tidy, provable). On 'hand-made': the camera settles back on the expert's tin stencil at the left of the bench, snips beside it, lamp-lit: the seeing was cut by hand. Hold on it. TEXT RULE: besides stamps and name cards, at most two text items in this shot: the date card and the term label 'kernel trick'.",
+   "visual": "THIS SHOT: the classical recipe staged as a two-stage paper machine, so the viewer sees what 'clean learning, hand-made seeing' means. CAMERA: a slow lateral track left to right along a workbench below Vapnik's blackboard (same duskRose as ch06-s03), then a gentle rise for the lift. STAGE ONE, on 'expert': a pair of hands (an expert's, shirt-sleeved; not the narrator's tweed cuffs) cuts a small TIN STENCIL with snips: a few hand-chosen shapes (an edge, a corner, a loop), the same kind of pierced stencil that returns in ch08-s04 (rhyme it: same tin, same pierced dots); each photo slid under the stencil becomes a short row of numbers. STAGE TWO, on 'line': a simple learner (a small brass ruler on a pivot) swings over a field of paper dots, warm on one side, cool on the other, and settles on one straight chalk line between them. On 'kernel': the two crowds are mixed so no straight line can part them (a warm ring around a cool cluster, flat on the board); the date card sets in (1992 · Boser, Guyon & Vapnik). On 'lifted': the board's paper plane rises into a gentle HILL (the warm ring stays low on the slopes, the cool cluster rides up to the summit), side-lit so the height reads. On 'flat cut': one flat sheet of vellum slides in horizontally and slices the hill between them: one flat cut parts the crowds; drop back down to the flat board and the cut becomes a closed chalk ring around the cool cluster. On 'clean': the brass ruler and the vellum sheet glow softly (the learning: tidy, provable). On 'hand-made': the camera settles back on the expert's tin stencil at the left of the bench, snips beside it, lamp-lit: the seeing was cut by hand. Hold on it. TEXT RULE: besides stamps and name cards, at most two text items in this shot: the date card and the term label 'kernel trick'. SCRIPT NOTE (review round 9): the recipe is now two lines, using the old silent tail: L0607b (the expert's stencil, the ruler's line) and L0607c (the kernel lift and flat cut; 'clean' and 'hand-made'); the beats keep their words.",
    "lines": [
     {
      "id": "L0607b",
-     "text": "An expert cut the features by hand; the machine only drew the line. The kernel trick lifted the crowds, so one flat cut could part them. The learning was clean; the seeing was hand-made.",
-     "direction": "clear and fair, a teacher laying out a recipe; small breath after 'line'; let 'one flat cut' be visual; the last sentence slower, the two halves balanced, weight on 'clean' and 'hand-made'",
-     "insertGaps": {
-      "line": 0.25
-     }
+     "text": "An expert chose what to measure, by hand; the machine only drew the line.",
+     "direction": "clear and fair, a teacher laying out a recipe; 'by hand' lightly; 'only drew the line' plain",
+     "pauseAfter": 0.9
+    },
+    {
+     "id": "L0607c",
+     "text": "When no straight line would do, the kernel trick lifted one crowd up a hill, and one flat cut parted them. The learning was clean; the seeing was hand-made.",
+     "pauseAfter": 0.5,
+     "direction": "let 'lifted' and 'one flat cut' be visual; then the last sentence slower, the two halves balanced, the weight on 'clean' and 'hand-made'"
     }
    ],
    "beats": [
@@ -423,7 +427,7 @@
     {
      "id": "kernel",
      "at": {
-      "line": "L0607b",
+      "line": "L0607c",
       "word": "kernel",
       "edge": "start"
      },
@@ -432,7 +436,7 @@
     {
      "id": "lift",
      "at": {
-      "line": "L0607b",
+      "line": "L0607c",
       "word": "lifted",
       "edge": "start"
      },
@@ -441,7 +445,7 @@
     {
      "id": "cut",
      "at": {
-      "line": "L0607b",
+      "line": "L0607c",
       "word": "flat",
       "edge": "start"
      },
@@ -450,7 +454,7 @@
     {
      "id": "clean",
      "at": {
-      "line": "L0607b",
+      "line": "L0607c",
       "word": "clean",
       "edge": "start"
      },
@@ -459,7 +463,7 @@
     {
      "id": "handmade",
      "at": {
-      "line": "L0607b",
+      "line": "L0607c",
       "word": "hand-made",
       "edge": "start"
      },

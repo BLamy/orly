@@ -1,59 +1,74 @@
 {
  "shot": "ch10-s04",
- "at": "2026-10-12T20:38:46.346Z",
+ "at": "2026-10-13T14:56:54.284Z",
  "minCapPx": 22,
  "sampled": 25,
  "texts": 12,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
- "textureTexts": 0,
- "ok": [
-  {
-   "text": "at",
-   "maxCap": 24.5
-  },
-  {
-   "text": "bank",
-   "maxCap": 26.9
-  },
-  {
-   "text": "river",
-   "maxCap": 29.9
-  },
-  {
-   "text": "the",
-   "maxCap": 33.7
-  },
-  {
-   "text": "crossed",
-   "maxCap": 34.6
-  },
-  {
-   "text": "we",
-   "maxCap": 45.1
-  },
-  {
-   "text": "2017",
-   "maxCap": 22.1
-  },
+ "subjects": [
   {
    "text": "THE TRANSFORMER",
-   "maxCap": 31.9
+   "capWhileSubject": 31.9,
+   "why": "named: \"transformer\""
   },
   {
    "text": "attention is all you need",
-   "maxCap": 22.1
+   "capWhileSubject": 22.1,
+   "why": "named: \"attention need\""
   },
   {
    "text": "Vaswani · Shazeer · Parmar · Uszkoreit",
-   "maxCap": 22.1
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
   },
   {
    "text": "Jones · Gomez · Kaiser · Polosukhin",
-   "maxCap": 22.1
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "at",
+   "maxCap": 24.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "bank",
+   "maxCap": 26.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "river",
+   "maxCap": 29.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "the",
+   "maxCap": 33.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "crossed",
+   "maxCap": 34.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "we",
+   "maxCap": 45.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2017",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "dusk",
-   "maxCap": 22.4
+   "maxCap": 22.4,
+   "why": "not named, not in onScreenText"
   }
- ]
+ ],
+ "textureTexts": 8
 }

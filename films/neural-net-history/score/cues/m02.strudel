@@ -1,7 +1,19 @@
-// m02 "Clue One: A Switch That Fires" (neural-net-history), 72.35-196.03 s (123.68 s). G major, celesta.
+// m02 "Clue One: A Switch That Fires" (neural-net-history), 74.2667-199.3217 s (125.055 s). G major, celesta.
+// RE-FIT (round 4, 2026-10-13) to the current clock (narration/timeline.json, 2164 s): ch02-s01..s07 and ch02-s08 up to
+// L0220 moved bodily (+2.1667 s against this file's previous fit), L0220 was re-narrated 1.375 s longer
+// (188.919-195.212, 'paper' 189.14), so the X-ray hits and the fade move +3.5417. Every absolute time in this file,
+// code and comments, was moved with its word or beat and checked; S = the current window start. No hit names a word
+// of L0220: the near silence under it is just the room tone, now held across the longer line. Older notes are history.
+// CRITIC R1 / ROUND 3 (2026-10-13), measured per line in 250-2k / 1-4k (gain -4 dB, no duck), every line now
+// >= 9.4 dB in both (L0216 was 6.9 hi, L0204/L0212 7.3, L0219 7.0 hi on a re-render; renders vary +-0.8 dB):
+// Widrow's celesta is ONE short soft pair (D on "Bernard", G on "Widrow"); the downhill slide B-A-G-F# moved to
+// the cello below D3, landing on E with the celesta's lone E after "wrong"; the 'All' chime is a damped tick and
+// the firing dyad D-G (heard D5-G5, under 1 kHz) blooms in the breath after "All" and again after "fired" (the
+// high G-D chime there had dominated L0204's 1-4k band); L0204's plucks -1 dB; Turing's music-box rise -1 dB and
+// its top D moved off "machine" into the clear (145.00); the suspension's G5 -2 dB.
 // VOICE-BAND PASS (critic r1, 2026-10-12): every line measured in the 250-2k and 1-4k bands (whole line, no duck)
 // and now >= 8.2 dB clear in both (was -2.0): under a line the celesta/music box sit 6 dB lower or move into the
-// breaths ('fired' chime -> 93.70, 'logic' -> 99.60, the network notes into its two breaths, Hebb's thickening into
+// breaths ('fired' chime -> 95.62, 'logic' -> 101.52, the network notes into its two breaths, Hebb's thickening into
 // the hold after "grows", Turing's top D after "machine", Widrow's E struck and let go before "Remember him");
 // the candle's D -> G -4.5 dB, struck and let go, its string G5 hold -4 dB; the file seal, the slip chord and the
 // celesta question end before the next line; the chorale under L0215 softer and darker (lpf 1050).
@@ -9,47 +21,47 @@
 // D major is now D-A below with the F# on top (the flame's own note), nothing in the voice's band.
 // Review round 1 re-fit: every hit is placed on the NEW clock (narration/timeline.json, film 2121.42 s).
 // setcps(1): one cycle = one second. Events are written at ABSOLUTE film seconds; line() subtracts the
-// cue start S. Events: [filmSec, lenSec, notes, velocity, {per-event params}]. Body = 123.68 cycles.
+// cue start S. Events: [filmSec, lenSec, notes, velocity, {per-event params}]. Body = 125.055 cycles.
 // gm_celesta sounds an octave above the written note (written d4 = heard D5), so celesta under speech is
 // written d4 and up (heard D5+). Mid-range strings under a line stay at velocity <= .14 behind lpf 1200.
 //
-//  72.35-75.5  IN under m01's fade (join gap 66.06-76.10): strings take over m01's held D4 (the D becomes the
-//              fifth of G); the low G enters at 74.3 as m01's A-E is gone; the wick glint on "wickCatch"
-//              (74.98) is the first celesta note (heard D6), alone before L0201 (76.10).
-//  75.5-84.5   a curious celesta figure in the gaps around "Chicago, around 1941" and the Pitts/McCulloch
-//              line (78.36, 83.6); low G strings, cello, far-off train rumble.
-//  84.5-102.6  THE LOGIC LANTERNS: the celesta is the machine. A soft pluck when an input lights ("oneIn"
-//              88.29), a bright chime when the wick catches ("fire" 89.25), a rest when it snaps dark ("dark"
-//              90.24); three input plucks under "Enough signals at once" summed into one chime on "fired"
-//              (93.20); a little chime chain along "network"; AND (100.15: pluck, pluck, chime only on both)
-//              and OR (101.39: one pluck, chime at once).
-//  102.6-110.5 M2's walk for the pinning (102.96), stopping dead; a held cello D2 under "The nets could not
-//              learn" (106.66); the FILE SEAL on "file" (109.05): A -> D. The D is the dominant: the candle can
+//  74.27-77.42  IN under m01's fade (join gap 68.00-78.02): strings take over m01's held D4 (the D becomes the
+//              fifth of G); the low G enters at 76.22 as m01's A-E is gone; the wick glint on "wickCatch"
+//              (76.90) is the first celesta note (heard D6), alone before L0201 (78.02).
+//  77.42-86.42   a curious celesta figure in the gaps around "Chicago, around 1941" and the Pitts/McCulloch
+//              line (80.28, 85.52); low G strings, cello, far-off train rumble.
+//  86.42-104.52  THE LOGIC LANTERNS: the celesta is the machine. A soft pluck when an input lights ("oneIn"
+//              90.21), a damped tick when the wick catches ("fire" 91.17) blooming into the D-G firing dyad in the breath (91.57), a rest when it snaps dark ("dark"
+//              92.16); three input plucks under "Enough signals at once" summed into one chime on "fired"
+//              (95.12); a little chime chain along "network"; AND (102.07: pluck, pluck, chime only on both)
+//              and OR (103.31: one pluck, chime at once).
+//  104.52-112.42 M2's walk for the pinning (104.88), stopping dead; a held cello D2 under "The nets could not
+//              learn" (108.58); the FILE SEAL on "file" (110.97): A -> D. The D is the dominant: the candle can
 //              now be lit in G.
-//  110.5-126.4 M1 IN G, lit: celesta D -> G exactly on "light" (111.29) / "intoFlame" (111.95), the flame
-//              held high by strings (G5) over G major; on "Gerard" (120.98) the bass moves to D-A under the
+//  112.42-128.32 M1 IN G, lit: celesta D -> G exactly on "light" (113.21) / "intoFlame" (113.87), the flame
+//              held high by strings (G5) over G major; on "Gerard" (122.90) the bass moves to D-A under the
 //              held G (doubted). No resolution.
-//  126.4-134.7 HEBB: a ghost touch (B, celesta) on each pass (129.01, 129.73, 131.24: the words "cell", "fire",
+//  128.32-136.62 HEBB: a ghost touch (B, celesta) on each pass (130.93, 131.65, 133.16: the words "cell", "fire",
 //              "grows"), then in the reading hold the two-note figure B -> D three times, each fuller (celesta,
-//              + music box, + harp: 131.86, 132.92, 133.98), decayed before "Alan" (135.31).
-//  134.7-147.5 TURING: a hopeful IV-V-I turn under "educate a child machine" (141.47-142.05) with a music-box
-//              rise (high); the walk, quietly, for the slip pin (143.15); a soft held G chord while the slip
-//              is read (speech-free 143.05-148.14).
-//  147.5-174.1 DARTMOUTH: a soft valve-organ chorale G - G/B - C on "name" (150.46) - D in the gap after
-//              "intelligence" (152.91) - G/D - Em - C, thinning to ONE organ note on "symbols" (157.60).
-//              Widrow (161.22-170.38): solo celesta, M1's rising fourth D -> G on "Widrow" (162.59), tender,
-//              then a line that slides downhill ("sliding" 168.17 ... "wrong" 170.05), all at <= .14 under the
-//              line, and stops on E after "wrong" (170.42), unresolved. "Remember him" (170.98) in near silence.
-//  174.1-196.0 THE CANDLE OUT: the held G over D-A (the suspension) under the frog's-eye line (174.68-182.98);
-//              the FALL G -> F# with a D major chord exactly on "sixteen" (185.34); near silence for "The
-//              paper that put it out..." (187.00-191.91); under the X-ray a faint high shimmer and the rising
-//              fourth once more, softly (D on "xray" 192.21 -> G on "xrayBand1" 192.71). Last onset 192.71;
-//              ends on an open G (V of C) ringing through the fade (194.43-196.03); m03's C-major organ
-//              enters at 194.03.
+//              + music box, + harp: 133.78, 134.84, 135.90), decayed before "Alan" (137.23).
+//  136.62-149.42 TURING: a hopeful IV-V-I turn under "educate a child machine" (143.39-143.97) with a music-box
+//              rise (high, ghosted; its top D after "machine", 145.00); the walk, quietly, for the slip pin (145.07); a soft held G chord while the slip
+//              is read (speech-free 144.97-150.06).
+//  149.42-176.02 DARTMOUTH: a soft valve-organ chorale G - G/B - C on "name" (152.38) - D in the gap after
+//              "intelligence" (154.83) - G/D - Em - C, thinning to ONE organ note on "symbols" (159.52).
+//              Widrow (163.14-172.30): solo celesta, M1's rising fourth D -> G on "Bernard Widrow" (164.09/164.51),
+//              one short soft pair; the cello slides downhill below D3 ("sliding" 170.09 ... "less" 171.68) and
+//              lands on E with the celesta after "wrong" (172.30/172.34), unresolved. "Remember him" (172.90) in near silence.
+//  176.02-199.32 THE CANDLE OUT: the held G over D-A (the suspension) under the frog's-eye line (176.60-184.90);
+//              the FALL G -> F# with a D major chord exactly on "sixteen" (187.26); near silence for "The
+//              paper that put it out..." (188.92-195.20); under the X-ray a faint high shimmer and the rising
+//              fourth once more, softly (D on "xray" 195.51 -> G on "xrayBand1" 196.01). Last onset 196.01;
+//              ends on an open G (V of C) ringing through the fade (197.72-199.32); m03's C-major organ
+//              enters at 197.32 (its 2-s fade-in).
 setcps(1)
 
-const S = 72.35       // cue start (film seconds)
-const N = 125         // cycles covered by each compiled lane (body 123.68)
+const S = 74.2667     // cue start (film seconds)
+const N = 126         // cycles covered by each compiled lane (body 125.055)
 const G = 2.7         // level trim (target about -21 LUFS integrated)
 
 function line(evs, defs) {
@@ -86,146 +98,154 @@ function line(evs, defs) {
 // ------------------------------------------------------------------ celesta: the lead (heard an octave up)
 $: line([
   // the wick catches: the first note, alone
-  [74.98, .6, 'd5', .2, { release: .4 }],
+  [76.90, .6, 'd5', .2, { release: .4 }],
   // the 1940s, curious: in the gaps
-  [78.36, .25, 'd5', .2], [78.6, .5, 'c5', .18],                                           // after "Chicago, around 1941"
-  [83.6, .3, 'b4', .22], [83.85, .3, 'a4', .2], [84.1, .3, 'g4', .2], [84.4, .5, 'a4', .2, { release: .35 }], // a question, gone before "In" (85.14)
+  [80.28, .25, 'd5', .2], [80.52, .32, 'c5', .16, { release: .2 }],                                           // after "Chicago, around 1941"
+  [85.52, .3, 'b4', .22], [85.77, .3, 'a4', .2], [86.02, .3, 'g4', .2], [86.32, .5, 'a4', .2, { release: .35 }], // a question, gone before "In" (87.06)
   // the logic lanterns: pluck (input) / chime (fire). Voice-band pass (critic r1): under L0203/L0204 the plucks are
-  // ghosts (~-6 dB) and the bright chimes sit in the breaths ('fired' -> 93.70, 'logic' -> 99.60); the one chime
-  // the picture pins to a word ('fire' 89.25 = "All") is a single soft G, short, so "or nothing" is clear.
-  [88.29, .3, 'e4', .08],                                                                   // input lights ("oneIn")
-  [89.25, .35, 'g4', .1, { release: .3 }],                                                   // the wick catches ("fire")
-  // "dark" 90.24: rest
-  [91.62, .2, 'e4', .07], [92.02, .2, 'e4', .075], [92.42, .2, 'e4', .08],                // enough signals at once...
-  [93.7, .35, '[g4,d5]', .15, { release: .3 }],                                             // ...and it fired (in the breath)
-  [95.96, .2, 'd4', .07], [96.45, .3, 'g4', .11, { release: .25 }],                         // a network (g in the breath)
-  [96.98, .2, 'b4', .07], [97.9, .25, 'd5', .11, { release: .25 }],                         // a neural network (d in the breath)
-  [99.6, .45, '[g4,d5]', .17, { release: .3 }],                                              // "logic" (in the breath)
+  // ghosts (~-6 dB) and the bright chimes sit in the breaths ('fired' -> 95.62, 'logic' -> 101.52); the one chime
+  // the picture pins to a word ('fire' 89 = "All") is a single soft G, short, so "or nothing" is clear.
+  [90.21, .3, 'e4', .08],                                                                   // input lights ("oneIn")
+  [91.17, .18, 'g4', .05, { release: .12 }],                                                 // the wick catches on "All": a damped tick
+  [91.57, .16, '[d4,g4]', .11, { release: .1 }],                                             // ...and blooms in the breath after "All" (flame lit): the firing dyad, gone before "or"
+  // "dark" 92.16: rest
+  [93.54, .2, 'e4', .062], [93.94, .2, 'e4', .067], [94.34, .2, 'e4', .071],              // enough signals at once...
+  [95.62, .34, '[d4,g4]', .17, { release: .26 }],                                            // ...and it FIRED (in the breath): the candle's fourth as a dyad, heard D5-G5, under 1 kHz
+  [97.88, .2, 'd4', .062], [98.37, .3, 'g4', .098, { release: .22 }],                       // a network (g in the breath)
+  [98.90, .2, 'b4', .062], [99.82, .18, 'd5', .085, { release: .12 }],                       // a neural network (d in the 0.28-s breath, damped)
+  [101.52, .45, '[g4,d5]', .17, { release: .3 }],                                              // "logic" (in the breath)
   // AND: input A, input B, chime only when both sound
-  [100.15, .25, 'e4', .16], [100.42, .25, 'a4', .16], [100.7, .6, '[g4,d5]', .3],
+  [102.07, .25, 'e4', .16], [102.34, .25, 'a4', .16], [102.62, .6, '[g4,d5]', .3],
   // OR: one input, chime at once
-  [101.39, .2, 'e4', .16], [101.6, .9, '[g4,d5]', .3],
+  [103.31, .2, 'e4', .16], [103.52, .9, '[g4,d5]', .3],
   // M1 in G, LIT: D -> G on "light" / "intoFlame"
   // voice-band pass: D -> G 4.5 dB down and the G struck and let go (the strings hold the flame); the 3-s ring
   // had sat on "Each belief gets one" in the vowel band
-  [111.29, .3, 'd4', .14, { release: .25 }], [111.95, 1.0, 'g4', .17, { release: .8 }],
-  // Hebb: the passes are pinned to words ("cell" 129.01, "fire" 129.73, "grows" 131.24), so under L0211 they are
-  // ghost touches, one note each; the thread THICKENS in the 3.5-s reading hold after "grows" (131.78-135.31):
-  // B -> D three times, each fuller (celesta, + music box, + harp), the last decayed before "Alan" (135.31)
-  [129.01, .3, 'b4', .07], [129.73, .3, 'b4', .075], [131.24, .3, 'b4', .08],
-  [131.86, .3, 'b4', .2], [132.16, .7, 'd5', .23],
-  [132.92, .3, 'b4', .22], [133.22, .7, 'd5', .26],
-  [133.98, .32, 'b4', .2], [134.3, .6, 'd5', .22, { release: .45 }],
-  // Widrow: M1's rising fourth, tender; then the line slides downhill and stops on E. Critic r1: everything
-  // under L0216 (161.22-170.38) at <= .14, and the E lands after "wrong" (170.38), alone, at 170.42.
-  [162.17, .42, 'd4', .13], [162.59, 2.0, 'g4', .14],
-  [164.81, .4, 'a4', .1], [165.21, .9, 'b4', .11],
-  // the E is struck in the breath after "wrong" and let go, so "Remember him" (170.98) is in near silence
-  [168.2, .45, 'b4', .11], [168.65, .45, 'a4', .1], [169.1, .5, 'g4', .1], [169.6, .6, 'f#4', .1], [170.42, .35, 'e4', .15, { release: .45 }],
+  [113.21, .3, 'd4', .14, { release: .25 }], [113.87, 1.0, 'g4', .17, { release: .8 }],
+  // Hebb: the passes are pinned to words ("cell" 130.93, "fire" 131.65, "grows" 133.16), so under L0211 they are
+  // ghost touches, one note each; the thread THICKENS in the 3.5-s reading hold after "grows" (133.70-137.23):
+  // B -> D three times, each fuller (celesta, + music box, + harp), the last decayed before "Alan" (137.23)
+  [130.93, .3, 'b4', .07], [131.65, .3, 'b4', .075], [133.16, .3, 'b4', .08],
+  [133.78, .3, 'b4', .2], [134.08, .7, 'd5', .23],
+  [134.84, .3, 'b4', .22], [135.14, .7, 'd5', .26],
+  [135.90, .32, 'b4', .2], [136.22, .6, 'd5', .22, { release: .45 }],
+  // Widrow: M1's rising fourth as ONE soft, short pair on "Bernard Widrow", struck and let go; nothing else
+  // from the celesta under L0216 (critic r1 round 3: the moving melody sat in the vowel band). The downhill slide
+  // B-A-G-F# is the cello's, below D3, under "sliding downhill toward less wrong"; the celesta's E lands alone
+  // in the breath after "wrong", with the cello's E, so "Remember him" is in near silence
+  [164.09, .28, 'd4', .095, { release: .22 }], [164.51, .4, 'g4', .1, { release: .35 }],
+  [172.34, .35, 'e4', .15, { release: .45 }],
   // the X-ray: the rising fourth once more, softly, as if kept
-  [192.21, .5, 'd4', .2], [192.71, 3, 'g4', .24],
+  [195.51, .5, 'd4', .2], [196.01, 3, 'g4', .24],
 ])
   .s('gm_celesta').gain(G * .7).room(.6).rsize(5).orbit(2)
 
 // music box: Hebb's thread thickening (passes 2-3), Turing's child machine (heard high)
 $: line([
-  [132.92, .3, 'b5', .12], [133.22, .7, 'd6', .14],
-  [133.98, .32, 'b5', .14], [134.3, .6, 'd6', .15, { release: .45 }],
-  // Turing: the rise under "child machine" 6 dB down; its top D arrives after "machine" (142.42), in the clear
-  [141.47, .3, 'g5', .07], [141.77, .3, 'a5', .075], [142.05, .35, 'b5', .08], [142.5, 1.4, 'd6', .18],
+  [134.84, .3, 'b5', .12], [135.14, .7, 'd6', .14],
+  [135.90, .32, 'b5', .14], [136.22, .6, 'd6', .15, { release: .45 }],
+  // Turing: the rise under "educate a child" ghosted; its top D arrives after "machine" ends, in the clear
+  // (critic r1 round 3: it had landed ON "machine")
+  [143.39, .28, 'g5', .06], [143.69, .26, 'a5', .064], [143.97, .3, 'b5', .068, { release: .2 }], [145.00, 1.4, 'd6', .18],
 ])
   .s('gm_music_box').gain(G * .75).room(.6).rsize(5).orbit(2)
 
 // harp: the third pass is the fullest; the Hebb hold
 $: line([
-  [133.98, 1.2, '[g3,b3,d4]', .1, { release: 1.0 }],     // the fullest pass, in the hold
+  [135.90, 1.2, '[g3,b3,d4]', .1, { release: 1.0 }],     // the fullest pass, in the hold
 ])
   .s('gm_orchestral_harp').gain(G).release(2).lpf(2200).room(.5).rsize(4).orbit(2)
 
 // ------------------------------------------------------------------ strings: low bed, the flame (G5), the chords
 $: line([
   // the hand-off: m01's held D carried on, then the 1940s bed, low
-  [72.35, 3.3, 'd4', .07, { attack: 1.4, release: 1.5 }],
-  [74.3, 10.3, '[g2,d3]', .12, { attack: 2.5, release: 2 }],
-  [84.5, 6.0, '[g2,d3]', .1, { attack: 1.5, release: 1.5 }],
-  [91.0, 8.3, '[e2,b2]', .1, { attack: 1.5, release: 1.5 }],
-  [99.6, 2.8, '[g2,d3,b3]', .12, { attack: .4, release: 1.2 }],                 // "logic" (in the breath)
+  [74.27, 3.3, 'd4', .07, { attack: 1.4, release: 1.5 }],
+  [76.22, 10.3, '[g2,d3]', .12, { attack: 2.5, release: 2 }],
+  [86.42, 6.0, '[g2,d3]', .1, { attack: 1.5, release: 1.5 }],
+  [92.92, 8.3, '[e2,b2]', .1, { attack: 1.5, release: 1.5 }],
+  [101.52, 2.8, '[g2,d3,b3]', .12, { attack: .4, release: 1.2 }],                 // "logic" (in the breath)
   // THE FLAME: G5 held (lit), over G major; on "Gerard" the bass drops to D-A (doubted)
-  [111.95, 15.2, 'g5', .04, { attack: 1.2, release: 3 }],      // voice-band pass: -4 dB under L0209
-  [111.95, 9.0, '[g2,b2,d3]', .075, { attack: 1.4, release: 2 }],
-  [120.98, 6.6, '[d2,a2,d3]', .12, { attack: 1.6, release: 2.5 }],
+  [113.87, 15.2, 'g5', .04, { attack: 1.2, release: 3 }],      // voice-band pass: -4 dB under L0209
+  [113.87, 9.0, '[g2,b2,d3]', .075, { attack: 1.4, release: 2 }],
+  [122.90, 6.6, '[d2,a2,d3]', .12, { attack: 1.6, release: 2.5 }],
   // Hebb: a warm vi - IV under the thread
-  [127.51, 4.0, '[e2,b2,g3]', .09, { attack: 1.5, release: 1.5 }],
-  [131.24, 4.0, '[c2,g2,e3]', .1, { attack: 1.2, release: 2 }],
+  [129.43, 4.0, '[e2,b2,g3]', .09, { attack: 1.5, release: 1.5 }],
+  [133.16, 4.0, '[c2,g2,e3]', .1, { attack: 1.2, release: 2 }],
   // Turing: the hopeful turn IV - V - I under "educate a child machine"
-  [137.3, 4.1, '[c2,g2,e3]', .085, { attack: 1.6, release: 1 }],             // starts under "proposed": no hole after Hebb
-  [141.47, 1.0, '[d2,a2,f#3]', .11, { attack: .5, release: .8 }],
-  [142.44, 1.2, '[g2,d3,b3]', .12, { attack: .4, release: 1 }],
-  // a soft held G while the slip is read (no voice 143.05-148.14)
-  [144.01, 3.3, '[g3,b3,d4,g4]', .19, { attack: 1.4, release: 1.1 }],
+  [139.22, 4.1, '[c2,g2,e3]', .085, { attack: 1.6, release: 1 }],             // starts under "proposed": no hole after Hebb
+  [143.39, 1.0, '[d2,a2,f#3]', .11, { attack: .5, release: .8 }],
+  [144.36, 1.2, '[g2,d3,b3]', .105, { attack: .4, release: 1 }],
+  // a soft held G while the slip is read (no voice 144.97-150.06)
+  [145.93, 3.3, '[g3,b3,d4,g4]', .19, { attack: 1.4, release: 1.1 }],
   // THE CANDLE OUT: the suspension (G5 over D-A), then the fall G -> F# on "sixteen" with D major
-  [173.9, 11.44, 'g5', .085, { attack: 2, release: .25 }],
-  [174.2, 11.14, '[d2,a2]', .13, { attack: 2, release: .3 }],
-  [185.34, 1.4, 'f#5', .095, { attack: .08, release: 1.6 }],
-  [185.34, 1.4, '[d2,a2]', .13, { attack: .08, release: 1.6 }],
+  [175.82, 11.44, 'g5', .068, { attack: 2, release: .25 }],      // critic r1 round 3: -2 dB, L0218/L0219 were 8 dB
+  [176.12, 11.14, '[d2,a2]', .12, { attack: 2, release: .3 }],
+  [187.26, 1.4, 'f#5', .08, { attack: .08, release: 1.6 }],
+  [187.26, 1.4, '[d2,a2]', .12, { attack: .08, release: 1.6 }],
   // the X-ray: open G (V of C), left ringing through the fade
-  [192.71, 2.6, '[g2,d3]', .1, { attack: 1.2, release: 2.5 }],
+  [196.01, 2.6, '[g2,d3]', .1, { attack: 1.2, release: 2.5 }],
 ], { attack: 1, release: 2 })
   .s('gm_string_ensemble_1').gain(G).lpf(1200).room(.6).rsize(5).orbit(4)
 
 // high shimmer: bowed glass under the X-ray (heard high)
 $: line([
-  [192.21, 3.0, '[g5,d6]', .1, { attack: 1, release: 2.5 }],
+  [195.51, 3.0, '[g5,d6]', .1, { attack: 1, release: 2.5 }],
 ])
   .s('gm_pad_bowed').gain(G).lpf(5000).room(.7).rsize(6).orbit(5)
 
 // cello: the low anchor; "could not learn"; the Widrow pedal; the suspension's root
 $: line([
-  [74.5, 8.0, 'g2', .14, { attack: 2, release: 2 }],
-  [106.66, 2.4, 'd2', .2, { attack: .4, release: 1.2 }],                        // "The nets could not learn"
-  [161.21, 6.4, 'g2', .1, { attack: 2, release: 1.5 }],                         // Widrow's dream
-  [167.81, 4.4, 'e2', .1, { attack: 1.2, release: 2 }],                         // downhill
-  [173.6, 11.74, 'd2', .14, { attack: 2.2, release: .3 }],                      // the suspension's root
-  [185.34, 1.6, 'd2', .15, { attack: .05, release: 1.6 }],                      // gone: the half cadence
-  [192.71, 2.6, 'g1', .14, { attack: 1.2, release: 2.5 }],                      // the open G, V of C
+  [76.42, 8.0, 'g2', .14, { attack: 2, release: 2 }],
+  [108.58, 2.4, 'd2', .2, { attack: .4, release: 1.2 }],                        // "The nets could not learn"
+  [163.13, 6.7, 'g2', .1, { attack: 2, release: .6 }],                          // Widrow's dream
+  // downhill: the slide below D3 (bowed, legato), on "sliding" / "downhill" / "toward" / "less", landing on E
+  // with the celesta in the breath after "wrong" (M1's fall plant: m20 gives Widrow the full motif on cello)
+  [170.09, .5, 'b2', .085, { attack: .12, release: .35 }],
+  [170.59, .6, 'a2', .085, { attack: .12, release: .35 }],
+  [171.19, .49, 'g2', .085, { attack: .12, release: .35 }],
+  [171.68, .62, 'f#2', .085, { attack: .12, release: .35 }],
+  [172.30, 3.2, 'e2', .1, { attack: .1, release: 2 }],
+  [175.52, 11.74, 'd2', .14, { attack: 2.2, release: .3 }],                      // the suspension's root
+  [187.26, 1.6, 'd2', .15, { attack: .05, release: 1.6 }],                      // gone: the half cadence
+  [196.01, 2.6, 'g1', .14, { attack: 1.2, release: 2.5 }],                      // the open G, V of C
 ], { attack: 1, release: 2 })
   .s('gm_cello').gain(G).lpf(700).room(.5).rsize(4).orbit(1)
 
 // ------------------------------------------------------------------ M2: the walk and the file seal (pizz + clarinet)
 $: line([
-  [102.96, .8, 'd2', .4], [103.87, .8, 'f2', .36], [104.78, .8, 'g2', .38], [105.69, .8, 'g#2', .38],   // the pinning; stops dead
-  [109.05, .55, 'a2', .42], [109.62, 1.0, 'd2', .44],                                                    // FILE SEAL on "file"
-  [143.15, .6, 'd2', .26], [143.71, .6, 'f2', .24], [144.27, .6, 'g2', .24], [144.83, 1.2, 'a2', .24],  // the slip pin, quietly
+  [104.88, .8, 'd2', .4], [105.79, .8, 'f2', .36], [106.70, .8, 'g2', .38], [107.61, .8, 'g#2', .38],   // the pinning; stops dead
+  [110.97, .55, 'a2', .42], [111.54, 1.0, 'd2', .44],                                                    // FILE SEAL on "file"
+  [145.07, .6, 'd2', .26], [145.63, .6, 'f2', .24], [146.19, .6, 'g2', .24], [146.75, 1.2, 'a2', .24],  // the slip pin, quietly
 ])
   .s('gm_pizzicato_strings').gain(G * .85).lpf(1500).room(.35).rsize(3).orbit(3)
 $: line([
-  [109.05, .57, 'a3', .2, { attack: .04, release: .3 }],
-  [109.62, 1.0, 'd3', .2, { attack: .06, release: .5 }],      // the seal, then silence: gone before "We" (111.06)
+  [110.97, .57, 'a3', .2, { attack: .04, release: .3 }],
+  [111.54, 1.0, 'd3', .2, { attack: .06, release: .5 }],      // the seal, then silence: gone before "We" (112.98)
 ])
   .s('gm_clarinet').gain(G).lpf(1400).room(.4).rsize(3).orbit(3)
 
 // ------------------------------------------------------------------ DARTMOUTH: the valve-organ chorale
-// voice-led, low and soft under the voice; the change to D falls in the gap after "intelligence" (152.91)
+// voice-led, low and soft under the voice; the change to D falls in the gap after "intelligence" (154.83)
 $: line([
-  [147.61, 1.6, '[g2,d3,g3,b3]', .07, { lpf: 1050 }],                    // L0215 (148.14-152.91) sits on these: soft
-  [149.21, 1.26, '[b1,d3,g3,b3]', .07, { lpf: 1050 }],
-  [150.47, 1.2, '[c2,e3,g3,c4]', .09, { lpf: 1050 }],                    // "name"
-  [151.67, 1.25, '[a1,e3,a3,c4]', .075, { lpf: 1050 }],
-  [152.92, 1.0, '[d2,d3,f#3,a3]', .15],                   // the gap after "intelligence"
-  [153.92, 1.3, '[d2,d3,g3,b3]', .11],                    // G/D
-  [155.21, 1.3, '[e2,e3,g3,b3]', .09],                    // Em
-  [156.51, 1.1, '[c2,e3,g3]', .08],                       // C
-  [157.61, 3.4, 'g3', .08, { release: 1.2 }],             // thins to ONE note on "symbols"
+  [149.53, 1.6, '[g2,d3,g3,b3]', .07, { lpf: 1050 }],                    // L0215 (150.06-154.83) sits on these: soft
+  [151.13, 1.26, '[b1,d3,g3,b3]', .07, { lpf: 1050 }],
+  [152.39, 1.2, '[c2,e3,g3,c4]', .09, { lpf: 1050 }],                    // "name"
+  [153.59, 1.25, '[a1,e3,a3,c4]', .075, { lpf: 1050 }],
+  [154.84, 1.0, '[d2,d3,f#3,a3]', .15],                   // the gap after "intelligence"
+  [155.84, 1.3, '[d2,d3,g3,b3]', .11],                    // G/D
+  [157.13, 1.3, '[e2,e3,g3,b3]', .09],                    // Em
+  [158.43, 1.1, '[c2,e3,g3]', .08],                       // C
+  [159.53, 3.4, 'g3', .08, { release: 1.2 }],             // thins to ONE note on "symbols"
 ], { attack: .25, release: .6, lpf: 1400 })
   .s('gm_drawbar_organ').gain(G).room(.55).rsize(5).orbit(6)
 
-// room tone under "The paper that put it out..." (187.00-191.91): a sine D at about -30 dB, so the near
+// room tone under "The paper that put it out..." (188.92-195.20): a sine D at about -30 dB, so the near
 // silence never drops to digital silence before the X-ray
 $: line([
-  [186.6, 6.3, 'd2', .5, { attack: 1, release: 1.2 }],
+  [188.52, 7.68, 'd2', .5, { attack: 1, release: 1.2 }],
 ])
   .s('sine').gain(.03).lpf(300).orbit(7)
 
-// far-off train rumble under the 1940s (74.5-84.0)
-$: s("~@2.15 brown@9.85 ~@113").slow(N)
+// far-off train rumble under the 1940s (76.42-85.92)
+$: s("~@2.15 brown@9.85 ~@114").slow(N)
   .attack(3).release(2).gain(.09).lpf(150).orbit(7)

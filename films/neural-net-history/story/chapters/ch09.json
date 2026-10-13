@@ -261,9 +261,19 @@
     {
      "id": "L0906",
      "text": "Seoul, 2016. AlphaGo played move thirty-seven, a one-in-ten-thousand move.",
-     "spoken": "Seoul, twenty sixteen. AlphaGo played move thirty-seven, a one-in-ten-thousand move.",
-     "direction": "slow; a fact on a card; let 'one-in-ten-thousand' hang",
-     "pauseAfter": 0.64
+     "spoken": "Seoul, twenty sixteen. AlphaGo played move... thirty-seven, a one-in-ten-thousand move.",
+     "direction": "slow; a fact on a card; 'move' clearly a word on its own, a small pause before 'thirty-seven'; let 'one-in-ten-thousand' hang NARRATION: re-generate this line on its own (not inside a shot chunk) at voice speed about 0.88; the text is unchanged.",
+     "pauseAfter": 0.64,
+     "tts": {
+      "solo": true,
+      "speed": 0.88
+     },
+     "qa": {
+      "stt": "required",
+      "expect": [
+       "move thirty-seven"
+      ]
+     }
     },
     {
      "id": "L0907",

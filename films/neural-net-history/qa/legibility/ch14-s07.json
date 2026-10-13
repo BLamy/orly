@@ -1,152 +1,144 @@
 {
  "shot": "ch14-s07",
- "at": "2026-10-08T02:42:46.517Z",
+ "at": "2026-10-13T21:39:38.732Z",
  "minCapPx": 22,
  "sampled": 32,
- "texts": 21,
- "offenders": [
+ "texts": 26,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
   {
-   "text": "WASHINGTON",
-   "maxCap": 7.3,
-   "minCap": 5.5,
-   "first": 0.25,
-   "last": 23.25,
-   "font": "600 10.6px \"IBM Plex Mono\""
+   "text": "THE GAP IS MONTHS,",
+   "capWhileSubject": 26,
+   "why": "script onScreenText"
   },
   {
-   "text": "LIMA",
-   "maxCap": 8.8,
-   "minCap": 6.6,
-   "first": 0.25,
-   "last": 23.25,
-   "font": "600 12.4px \"IBM Plex Mono\""
-  },
-  {
-   "text": "BLETCHLEY",
-   "maxCap": 9,
-   "minCap": 6.8,
-   "first": 0.25,
-   "last": 23.25,
-   "font": "600 12.4px \"IBM Plex Mono\""
-  },
-  {
-   "text": "2022",
-   "maxCap": 12.7,
-   "minCap": 5.4,
-   "first": 0.25,
-   "last": 23.25,
-   "font": "7.38px \"Special Elite\""
-  },
-  {
-   "text": "LIT 2025 · CONTESTED",
-   "maxCap": 12.7,
-   "minCap": 5.4,
-   "first": 0.25,
-   "last": 23.25,
-   "font": "7.38px \"Special Elite\""
+   "text": "NOT YEARS",
+   "capWhileSubject": 26,
+   "why": "named: \"years\""
   },
   {
    "text": "~6 MONTHS",
-   "maxCap": 12.8,
-   "minCap": 12.8,
-   "first": 4.25,
-   "last": 21.25,
-   "font": "600 20px \"IBM Plex Mono\""
+   "capWhileSubject": 24.6,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "HASSABIS (GOOGLE DEEPMIND)",
+   "capWhileSubject": 23.1,
+   "why": "script onScreenText"
   },
   {
    "text": "IN CHIPS: “NANOSECONDS”",
-   "maxCap": 12.8,
-   "minCap": 12.8,
-   "first": 5.25,
-   "last": 21.25,
-   "font": "600 20px \"IBM Plex Mono\""
+   "capWhileSubject": 24.6,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "HUANG (NVIDIA)",
+   "capWhileSubject": 23.1,
+   "why": "script onScreenText"
   },
   {
    "text": "OVERTAKE IN 3–5 YRS?",
-   "maxCap": 12.8,
-   "minCap": 12.8,
-   "first": 6.25,
-   "last": 21.25,
-   "font": "600 20px \"IBM Plex Mono\""
+   "capWhileSubject": 24.6,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "UNDER 1 IN 5 · LIN (QWEN)",
+   "capWhileSubject": 23.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "…the real gap is the difference",
+   "capWhileSubject": 25.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "between originality and imitation.”",
+   "capWhileSubject": 25.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "liang wenfeng",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "July 2024 · ChinaTalk translation",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "CAN A FENCE",
+   "capWhileSubject": 25.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "AROUND CHIPS",
+   "capWhileSubject": 25.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "HOLD?",
+   "capWhileSubject": 25.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "STATUS: OPEN",
+   "capWhileSubject": 23.8,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "WASHINGTON",
+   "maxCap": 18.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2026",
+   "maxCap": 31.8,
+   "why": "drawn as texture"
   },
   {
    "text": "COMPUTE IS THE CHOKEPOINT",
    "maxCap": 17,
-   "minCap": 7.2,
-   "first": 0.25,
-   "last": 23.25,
-   "font": "6.888px \"IBM Plex Mono\""
+   "why": "drawn as texture"
   },
   {
-   "text": "CHINA IS ONE TO THREE YEARS BEHIND",
-   "maxCap": 17,
-   "minCap": 7.2,
-   "first": 0.25,
-   "last": 23.25,
-   "font": "6.888px \"IBM Plex Mono\""
+   "text": "2022",
+   "maxCap": 18,
+   "why": "drawn as texture"
   },
   {
-   "text": "THE GAP IS MONTHS, NOT YEARS",
-   "maxCap": 17,
-   "minCap": 7.2,
-   "first": 0.25,
-   "last": 23.25,
-   "font": "6.888px \"IBM Plex Mono\""
+   "text": "LIT 2025 · CONTESTED",
+   "maxCap": 18,
+   "why": "drawn as texture"
   },
   {
-   "text": "HASSABIS (GOOGLE DEEPMIND)",
-   "maxCap": 18.8,
-   "minCap": 18.8,
-   "first": 4.25,
-   "last": 21.25,
-   "font": "500 18px \"IBM Plex Mono\""
+   "text": "lit 2025 · still burning",
+   "maxCap": 22,
+   "why": "not named, not in onScreenText"
   },
   {
-   "text": "HUANG (NVIDIA)",
-   "maxCap": 18.8,
-   "minCap": 18.8,
-   "first": 5.25,
-   "last": 21.25,
-   "font": "500 18px \"IBM Plex Mono\""
-  },
-  {
-   "text": "UNDER 1 IN 5 · LIN (QWEN)",
-   "maxCap": 18.8,
-   "minCap": 18.8,
-   "first": 6.25,
-   "last": 21.25,
-   "font": "500 18px \"IBM Plex Mono\""
-  }
- ],
- "textureTexts": 0,
- "ok": [
-  {
-   "text": "2023",
-   "maxCap": 28.6
+   "text": "LIMA",
+   "maxCap": 16.2,
+   "why": "drawn as texture"
   },
   {
    "text": "2024",
-   "maxCap": 27.9
+   "maxCap": 26.2,
+   "why": "drawn as texture"
   },
   {
-   "text": "2026",
-   "maxCap": 27.3
+   "text": "BLETCHLEY",
+   "maxCap": 15.4,
+   "why": "drawn as texture"
   },
   {
-   "text": "…the real gap is the difference",
-   "maxCap": 25.5
-  },
-  {
-   "text": "between originality and imitation.”",
-   "maxCap": 25.5
-  },
-  {
-   "text": "liang wenfeng",
-   "maxCap": 22
-  },
-  {
-   "text": "July 2024 · ChinaTalk translation",
-   "maxCap": 22
+   "text": "2023",
+   "maxCap": 24.8,
+   "why": "drawn as texture"
   }
- ]
+ ],
+ "textureTexts": 10
 }

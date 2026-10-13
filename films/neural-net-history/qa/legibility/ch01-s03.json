@@ -1,59 +1,74 @@
 {
  "shot": "ch01-s03",
- "at": "2026-10-12T07:33:09.458Z",
+ "at": "2026-10-13T04:12:52.211Z",
  "minCapPx": 22,
  "sampled": 15,
  "texts": 12,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
- "textureTexts": 0,
- "ok": [
-  {
-   "text": "Why",
-   "maxCap": 44.1
-  },
-  {
-   "text": "is",
-   "maxCap": 44.1
-  },
-  {
-   "text": "the",
-   "maxCap": 46.3
-  },
-  {
-   "text": "sky",
-   "maxCap": 44.1
-  },
-  {
-   "text": "blue?",
-   "maxCap": 44.1
-  },
-  {
-   "text": "Sunlight",
-   "maxCap": 46.3
-  },
-  {
-   "text": "scatters",
-   "maxCap": 46.3
-  },
-  {
-   "text": "in",
-   "maxCap": 46.3
-  },
-  {
-   "text": "air.",
-   "maxCap": 46.3
-  },
-  {
-   "text": "2026",
-   "maxCap": 29.3
-  },
+ "subjects": [
   {
    "text": "at least 700 million weekly users",
-   "maxCap": 28.5
+   "capWhileSubject": 28.5,
+   "why": "script onScreenText"
   },
   {
    "text": "International AI Safety Report, 2026",
-   "maxCap": 30.4
+   "capWhileSubject": 30.4,
+   "why": "script onScreenText"
   }
- ]
+ ],
+ "texture": [
+  {
+   "text": "Why",
+   "maxCap": 44.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "is",
+   "maxCap": 44.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "the",
+   "maxCap": 46.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "sky",
+   "maxCap": 44.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "blue?",
+   "maxCap": 44.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Sunlight",
+   "maxCap": 46.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "scatters",
+   "maxCap": 46.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "in",
+   "maxCap": 46.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "air.",
+   "maxCap": 46.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2026",
+   "maxCap": 29.3,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 10
 }

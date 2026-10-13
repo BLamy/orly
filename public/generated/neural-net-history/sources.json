@@ -155,7 +155,8 @@
      "id": "ch01-s06",
      "start": 58.1667,
      "lines": [
-      "L0114"
+      "L0114",
+      "L0114b"
      ],
      "claims": [
       {
@@ -213,7 +214,7 @@
     },
     {
      "id": "ch01-s07",
-     "start": 66.5833,
+     "start": 68.5,
      "lines": [],
      "claims": [],
      "quotes": []
@@ -224,11 +225,11 @@
    "number": 2,
    "id": "ch02",
    "title": "Clue One: A Switch That Fires",
-   "start": 75.5,
+   "start": 77.4167,
    "shots": [
     {
      "id": "ch02-s01",
-     "start": 75.5,
+     "start": 77.4167,
      "lines": [
       "L0201",
       "L0202"
@@ -248,7 +249,7 @@
     },
     {
      "id": "ch02-s02",
-     "start": 84.5417,
+     "start": 86.4583,
      "lines": [
       "L0203",
       "L0204"
@@ -269,7 +270,7 @@
     },
     {
      "id": "ch02-s03",
-     "start": 102.5833,
+     "start": 104.5,
      "lines": [
       "L0206",
       "L0207"
@@ -299,7 +300,7 @@
     },
     {
      "id": "ch02-s04",
-     "start": 110.4583,
+     "start": 112.375,
      "lines": [
       "L0209",
       "L0210"
@@ -339,7 +340,7 @@
     },
     {
      "id": "ch02-s05",
-     "start": 126.4167,
+     "start": 128.3333,
      "lines": [
       "L0211"
      ],
@@ -379,7 +380,7 @@
     },
     {
      "id": "ch02-s05b",
-     "start": 134.7083,
+     "start": 136.625,
      "lines": [
       "L0212"
      ],
@@ -408,7 +409,7 @@
     },
     {
      "id": "ch02-s07",
-     "start": 147.5417,
+     "start": 149.4583,
      "lines": [
       "L0215",
       "L0215b",
@@ -505,7 +506,7 @@
     },
     {
      "id": "ch02-s08",
-     "start": 174.0833,
+     "start": 176,
      "lines": [
       "L0218",
       "L0219",
@@ -531,11 +532,11 @@
    "number": 3,
    "id": "ch03",
    "title": "Clue Two: A Knob That Turns",
-   "start": 195.3333,
+   "start": 198.625,
    "shots": [
     {
      "id": "ch03-s01",
-     "start": 195.3333,
+     "start": 198.625,
      "lines": [
       "L0301",
       "L0302"
@@ -566,7 +567,7 @@
     },
     {
      "id": "ch03-s02",
-     "start": 208.0833,
+     "start": 211.375,
      "lines": [
       "L0303",
       "L0304"
@@ -616,7 +617,7 @@
     },
     {
      "id": "ch03-s03",
-     "start": 221.875,
+     "start": 225.1667,
      "lines": [
       "L0305",
       "L0306"
@@ -656,7 +657,7 @@
     },
     {
      "id": "ch03-s04",
-     "start": 235.625,
+     "start": 238.9167,
      "lines": [
       "L0307",
       "L0308",
@@ -698,7 +699,7 @@
     },
     {
      "id": "ch03-s05",
-     "start": 256.8333,
+     "start": 260.125,
      "lines": [
       "L0310",
       "L0311"
@@ -720,7 +721,7 @@
     },
     {
      "id": "ch03-s06",
-     "start": 269.4583,
+     "start": 272.75,
      "lines": [
       "L0312"
      ],
@@ -768,7 +769,7 @@
     },
     {
      "id": "ch03-s08",
-     "start": 289.9167,
+     "start": 293.2083,
      "lines": [
       "L0318"
      ],
@@ -816,7 +817,7 @@
     },
     {
      "id": "ch03-s09",
-     "start": 304.25,
+     "start": 307.5417,
      "lines": [
       "L0319",
       "L0320"
@@ -881,11 +882,11 @@
    "number": 4,
    "id": "ch04",
    "title": "The Cold Case",
-   "start": 321.0833,
+   "start": 324.375,
    "shots": [
     {
      "id": "ch04-s01",
-     "start": 321.0833,
+     "start": 324.375,
      "lines": [
       "L0401",
       "L0402",
@@ -927,7 +928,7 @@
     },
     {
      "id": "ch04-s02",
-     "start": 345.1667,
+     "start": 348.4583,
      "lines": [
       "L0404",
       "L0405"
@@ -968,7 +969,7 @@
     },
     {
      "id": "ch04-s03",
-     "start": 366.125,
+     "start": 369.4167,
      "lines": [
       "L0406"
      ],
@@ -1007,7 +1008,7 @@
     },
     {
      "id": "ch04-s04",
-     "start": 376.75,
+     "start": 380.0417,
      "lines": [
       "L0408"
      ],
@@ -1027,7 +1028,7 @@
     },
     {
      "id": "ch04-s05",
-     "start": 387.25,
+     "start": 390.5417,
      "lines": [
       "L0409"
      ],
@@ -1056,7 +1057,7 @@
     },
     {
      "id": "ch04-s06",
-     "start": 398.75,
+     "start": 402.0417,
      "lines": [
       "L0410",
       "L0411"
@@ -1164,7 +1165,7 @@
     },
     {
      "id": "ch04-s07",
-     "start": 421.3333,
+     "start": 424.625,
      "lines": [
       "L0412"
      ],
@@ -1205,7 +1206,7 @@
     },
     {
      "id": "ch04-s08",
-     "start": 433.25,
+     "start": 436.5417,
      "lines": [
       "L0415",
       "L0416"
@@ -1250,11 +1251,11 @@
    "number": 5,
    "id": "ch05",
    "title": "Clue Three: The Messenger Who Runs Backward",
-   "start": 450.625,
+   "start": 453.9167,
    "shots": [
     {
      "id": "ch05-s01",
-     "start": 450.625,
+     "start": 453.9167,
      "lines": [
       "L0501",
       "L0524",
@@ -1304,7 +1305,7 @@
     },
     {
      "id": "ch05-s03",
-     "start": 470.4583,
+     "start": 473.75,
      "lines": [
       "L0505",
       "L0505b"
@@ -1335,7 +1336,7 @@
     },
     {
      "id": "ch05-s04",
-     "start": 483.875,
+     "start": 487.1667,
      "lines": [
       "L0507",
       "L0508",
@@ -1396,7 +1397,7 @@
     },
     {
      "id": "ch05-s05",
-     "start": 527,
+     "start": 530.2917,
      "lines": [
       "L0510"
      ],
@@ -1425,7 +1426,7 @@
     },
     {
      "id": "ch05-s06",
-     "start": 536.4167,
+     "start": 539.7083,
      "lines": [
       "L0511",
       "L0512"
@@ -1495,10 +1496,11 @@
     },
     {
      "id": "ch05-s07",
-     "start": 557.4583,
+     "start": 560.75,
      "lines": [
       "L0513",
-      "L0514"
+      "L0514",
+      "L0514b"
      ],
      "claims": [
       {
@@ -1528,13 +1530,33 @@
        "sources": [
         "https://en.wikipedia.org/wiki/Mycin"
        ]
+      },
+      {
+       "id": "e5-dreyfus",
+       "claim": "Hubert Dreyfus argued in What Computers Can't Do (1972) that expertise is intuitive and embodied; in the 1992 MIT Press edition he called GOFAI a 'degenerating research program'. John McCarthy rejected the charge in 1996.",
+       "date": "1972-1996",
+       "status": "confirmed",
+       "sources": [
+        "https://archive.org/details/dreyfus-what-computers-still-cant-do-a-critique-of-artificial-reason",
+        "https://www-formal.stanford.edu/jmc/reviews/dreyfus/dreyfus.html"
+       ]
       }
      ],
-     "quotes": []
+     "quotes": [
+      {
+       "id": "q-dreyfus-pattern",
+       "text": "...the field of artificial intelligence exhibits a recurring pattern: early, dramatic success followed by sudden unexpected difficulties.",
+       "speaker": "Hubert L. Dreyfus",
+       "date": "1972",
+       "source": "https://archive.org/details/dreyfus-what-computers-still-cant-do-a-critique-of-artificial-reason",
+       "context": "What Computers Can't Do (1972), reprinted in the 1992 edition. Not verified as wording of the 1965 RAND paper.",
+       "where": "narration L0514b"
+      }
+     ]
     },
     {
      "id": "ch05-s08",
-     "start": 574.75,
+     "start": 592.125,
      "lines": [
       "L0515"
      ],
@@ -1601,7 +1623,7 @@
     },
     {
      "id": "ch05-s09b",
-     "start": 589.7083,
+     "start": 607.0833,
      "lines": [
       "L0522a",
       "L0522"
@@ -1671,7 +1693,7 @@
     },
     {
      "id": "ch05-s10",
-     "start": 610.6667,
+     "start": 628.0417,
      "lines": [
       "L0523",
       "L0519"
@@ -1714,11 +1736,11 @@
    "number": 6,
    "id": "ch06",
    "title": "The Quiet Years",
-   "start": 626.6667,
+   "start": 644.0417,
    "shots": [
     {
      "id": "ch06-s01",
-     "start": 626.6667,
+     "start": 644.0417,
      "lines": [
       "L0601"
      ],
@@ -1759,7 +1781,7 @@
     },
     {
      "id": "ch06-s02",
-     "start": 638.2083,
+     "start": 655.5833,
      "lines": [
       "L0603",
       "L0604"
@@ -1791,7 +1813,7 @@
     },
     {
      "id": "ch06-s03",
-     "start": 650.2083,
+     "start": 667.5833,
      "lines": [
       "L0605",
       "L0606",
@@ -1843,9 +1865,10 @@
     },
     {
      "id": "ch06-s03b",
-     "start": 674.9583,
+     "start": 692.3333,
      "lines": [
-      "L0607b"
+      "L0607b",
+      "L0607c"
      ],
      "claims": [
       {
@@ -1884,7 +1907,7 @@
     },
     {
      "id": "ch06-s04",
-     "start": 695.9583,
+     "start": 713.3333,
      "lines": [
       "L0608",
       "L0609"
@@ -1953,7 +1976,7 @@
     },
     {
      "id": "ch06-s05",
-     "start": 715.5417,
+     "start": 732.9167,
      "lines": [
       "L0610",
       "L0612"
@@ -1983,7 +2006,7 @@
     },
     {
      "id": "ch06-s06",
-     "start": 740.4167,
+     "start": 757.7917,
      "lines": [
       "L0613",
       "L0614"
@@ -2014,7 +2037,7 @@
     },
     {
      "id": "ch06-s07",
-     "start": 756,
+     "start": 773.375,
      "lines": [
       "L0615"
      ],
@@ -2054,7 +2077,7 @@
     },
     {
      "id": "ch06-s08",
-     "start": 768.2083,
+     "start": 785.5833,
      "lines": [
       "L0616"
      ],
@@ -2088,11 +2111,11 @@
    "number": 7,
    "id": "ch07",
    "title": "Two Accomplices: Data and Fire",
-   "start": 775.7917,
+   "start": 793.1667,
    "shots": [
     {
      "id": "ch07-s01",
-     "start": 775.7917,
+     "start": 793.1667,
      "lines": [
       "L0701"
      ],
@@ -2111,7 +2134,7 @@
     },
     {
      "id": "ch07-s02",
-     "start": 796.2917,
+     "start": 813.6667,
      "lines": [
       "L0702",
       "L0703"
@@ -2170,7 +2193,7 @@
     },
     {
      "id": "ch07-s03",
-     "start": 819.9583,
+     "start": 837.3333,
      "lines": [
       "L0704",
       "L0705",
@@ -2242,7 +2265,7 @@
     },
     {
      "id": "ch07-s04",
-     "start": 843.8333,
+     "start": 861.2083,
      "lines": [
       "L0706",
       "L0707"
@@ -2281,7 +2304,7 @@
     },
     {
      "id": "ch07-s06",
-     "start": 862.8333,
+     "start": 880.2083,
      "lines": [
       "L0710"
      ],
@@ -2306,11 +2329,11 @@
    "number": 8,
    "id": "ch08",
    "title": "DEEP DIVE — The Night in Florence",
-   "start": 871,
+   "start": 888.375,
    "shots": [
     {
      "id": "ch08-s01",
-     "start": 871,
+     "start": 888.375,
      "lines": [
       "L0802"
      ],
@@ -2341,7 +2364,7 @@
     },
     {
      "id": "ch08-s02",
-     "start": 887.8333,
+     "start": 905.2083,
      "lines": [
       "L0803"
      ],
@@ -2391,7 +2414,7 @@
     },
     {
      "id": "ch08-s03",
-     "start": 900.9167,
+     "start": 918.2917,
      "lines": [
       "L0805"
      ],
@@ -2419,7 +2442,7 @@
     },
     {
      "id": "ch08-s04",
-     "start": 915.9583,
+     "start": 933.3333,
      "lines": [
       "L0806",
       "L0807",
@@ -2440,7 +2463,7 @@
     },
     {
      "id": "ch08-s05",
-     "start": 939.375,
+     "start": 956.75,
      "lines": [
       "L0809",
       "L0810"
@@ -2460,7 +2483,7 @@
     },
     {
      "id": "ch08-s06",
-     "start": 960.0833,
+     "start": 977.4583,
      "lines": [
       "L0811",
       "L0812"
@@ -2490,7 +2513,7 @@
     },
     {
      "id": "ch08-s07",
-     "start": 972.1667,
+     "start": 989.5417,
      "lines": [
       "L0813"
      ],
@@ -2518,7 +2541,7 @@
     },
     {
      "id": "ch08-s08",
-     "start": 988.9583,
+     "start": 1006.3333,
      "lines": [
       "L0815",
       "L0816"
@@ -2547,7 +2570,7 @@
     },
     {
      "id": "ch08-s08b",
-     "start": 1006.5417,
+     "start": 1023.9167,
      "lines": [
       "L0830"
      ],
@@ -2575,7 +2598,7 @@
     },
     {
      "id": "ch08-s09",
-     "start": 1018.9167,
+     "start": 1036.2917,
      "lines": [
       "L0817",
       "L0818"
@@ -2615,7 +2638,7 @@
     },
     {
      "id": "ch08-s10",
-     "start": 1036.4583,
+     "start": 1053.8333,
      "lines": [
       "L0819"
      ],
@@ -2653,7 +2676,7 @@
     },
     {
      "id": "ch08-s11",
-     "start": 1044.5417,
+     "start": 1061.9167,
      "lines": [
       "L0820",
       "L0821"
@@ -2693,7 +2716,7 @@
     },
     {
      "id": "ch08-s12",
-     "start": 1054.3333,
+     "start": 1073.2083,
      "lines": [
       "L0822",
       "L0823"
@@ -2725,7 +2748,7 @@
     },
     {
      "id": "ch08-s13",
-     "start": 1067.3333,
+     "start": 1086.2083,
      "lines": [
       "L0834",
       "L0825"
@@ -2786,7 +2809,7 @@
     },
     {
      "id": "ch08-s13b",
-     "start": 1078.3333,
+     "start": 1097.2083,
      "lines": [
       "L0826",
       "L0831",
@@ -2876,7 +2899,7 @@
     },
     {
      "id": "ch08-s14",
-     "start": 1116.5833,
+     "start": 1135.4583,
      "lines": [
       "L0827",
       "L0828"
@@ -2920,11 +2943,11 @@
    "number": 9,
    "id": "ch09",
    "title": "The Gold Rush",
-   "start": 1128.7083,
+   "start": 1148.5833,
    "shots": [
     {
      "id": "ch09-s01",
-     "start": 1128.7083,
+     "start": 1148.5833,
      "lines": [
       "L0901",
       "L0902"
@@ -2982,7 +3005,7 @@
     },
     {
      "id": "ch09-s03a",
-     "start": 1149.0417,
+     "start": 1168.9167,
      "lines": [
       "L0905"
      ],
@@ -3012,7 +3035,7 @@
     },
     {
      "id": "ch09-s03",
-     "start": 1157.5,
+     "start": 1177.375,
      "lines": [
       "L0905b",
       "L0906",
@@ -3094,7 +3117,7 @@
     },
     {
      "id": "ch09-s04",
-     "start": 1180.5417,
+     "start": 1201.8333,
      "lines": [
       "L0909",
       "L0909b"
@@ -3125,7 +3148,7 @@
     },
     {
      "id": "ch09-s05",
-     "start": 1200.4583,
+     "start": 1221.75,
      "lines": [
       "L0910"
      ],
@@ -3177,11 +3200,11 @@
    "number": 10,
    "id": "ch10",
    "title": "DEEP DIVE — Everything Looks at Everything",
-   "start": 1225.3333,
+   "start": 1246.625,
    "shots": [
     {
      "id": "ch10-s01",
-     "start": 1225.3333,
+     "start": 1246.625,
      "lines": [
       "L1002"
      ],
@@ -3220,7 +3243,7 @@
     },
     {
      "id": "ch10-s02",
-     "start": 1235.2083,
+     "start": 1256.5,
      "lines": [
       "L1005"
      ],
@@ -3258,7 +3281,7 @@
     },
     {
      "id": "ch10-s03",
-     "start": 1248.2917,
+     "start": 1269.5833,
      "lines": [
       "L1006",
       "L1007"
@@ -3297,7 +3320,7 @@
     },
     {
      "id": "ch10-s04",
-     "start": 1263.375,
+     "start": 1284.6667,
      "lines": [
       "L1009",
       "L1024"
@@ -3353,7 +3376,7 @@
     },
     {
      "id": "ch10-s05",
-     "start": 1283.1667,
+     "start": 1304.4583,
      "lines": [
       "L1010"
      ],
@@ -3382,7 +3405,7 @@
     },
     {
      "id": "ch10-s06",
-     "start": 1299.8333,
+     "start": 1321.125,
      "lines": [
       "L1011",
       "L1012",
@@ -3413,7 +3436,7 @@
     },
     {
      "id": "ch10-s07",
-     "start": 1327.875,
+     "start": 1351.2917,
      "lines": [
       "L1015",
       "L1016",
@@ -3443,7 +3466,7 @@
     },
     {
      "id": "ch10-s08",
-     "start": 1347.875,
+     "start": 1371.2917,
      "lines": [
       "L1019"
      ],
@@ -3480,7 +3503,7 @@
     },
     {
      "id": "ch10-s09",
-     "start": 1358.5,
+     "start": 1381.9167,
      "lines": [
       "L1020",
       "L1020b"
@@ -3500,7 +3523,7 @@
     },
     {
      "id": "ch10-s10",
-     "start": 1372.0417,
+     "start": 1395.4583,
      "lines": [
       "L1021"
      ],
@@ -3519,7 +3542,7 @@
     },
     {
      "id": "ch10-s12",
-     "start": 1381.1667,
+     "start": 1404.5833,
      "lines": [
       "L1025",
       "L1027"
@@ -3566,7 +3589,7 @@
     },
     {
      "id": "ch10-s13b",
-     "start": 1399.875,
+     "start": 1423.2917,
      "lines": [
       "L1030"
      ],
@@ -3606,7 +3629,7 @@
     },
     {
      "id": "ch10-s14",
-     "start": 1411.4583,
+     "start": 1434.875,
      "lines": [
       "L1032",
       "L1033"
@@ -3659,11 +3682,11 @@
    "number": 11,
    "id": "ch11",
    "title": "Read Everything",
-   "start": 1435.0833,
+   "start": 1458.5,
    "shots": [
     {
      "id": "ch11-s01",
-     "start": 1435.0833,
+     "start": 1458.5,
      "lines": [],
      "claims": [
       {
@@ -3700,7 +3723,7 @@
     },
     {
      "id": "ch11-s02",
-     "start": 1449.0833,
+     "start": 1472.5,
      "lines": [
       "L1103",
       "L1104"
@@ -3770,7 +3793,7 @@
     },
     {
      "id": "ch11-s03",
-     "start": 1478.875,
+     "start": 1502.9167,
      "lines": [
       "L1107"
      ],
@@ -3799,7 +3822,7 @@
     },
     {
      "id": "ch11-s05",
-     "start": 1492,
+     "start": 1516.0417,
      "lines": [
       "L1110",
       "L1112"
@@ -3839,7 +3862,7 @@
     },
     {
      "id": "ch11-s08",
-     "start": 1514.75,
+     "start": 1538.7917,
      "lines": [
       "L1117",
       "L1118"
@@ -3912,11 +3935,11 @@
    "number": 12,
    "id": "ch12",
    "title": "The Last Accomplice, and the Return to the Scene",
-   "start": 1540.125,
+   "start": 1564.1667,
    "shots": [
     {
      "id": "ch12-s01",
-     "start": 1540.125,
+     "start": 1564.1667,
      "lines": [
       "L1201"
      ],
@@ -3935,7 +3958,7 @@
     },
     {
      "id": "ch12-s02",
-     "start": 1549.2083,
+     "start": 1573.25,
      "lines": [
       "L1204",
       "L1205"
@@ -3955,7 +3978,7 @@
     },
     {
      "id": "ch12-s06",
-     "start": 1565.125,
+     "start": 1589.1667,
      "lines": [
       "L1212",
       "L1215",
@@ -3976,7 +3999,7 @@
     },
     {
      "id": "ch12-s07",
-     "start": 1585.9583,
+     "start": 1610,
      "lines": [
       "L1217"
      ],
@@ -4014,7 +4037,7 @@
     },
     {
      "id": "ch12-s08",
-     "start": 1600.875,
+     "start": 1624.9167,
      "lines": [
       "L1219"
      ],
@@ -4085,11 +4108,10 @@
     },
     {
      "id": "ch12-s03",
-     "start": 1618.375,
+     "start": 1642.4167,
      "lines": [
       "L1206",
       "L1207",
-      "L1208",
       "L1219b"
      ],
      "claims": [
@@ -4187,11 +4209,11 @@
    "number": 13,
    "id": "ch13",
    "title": "The Case Reopened",
-   "start": 1654.4167,
+   "start": 1671.2083,
    "shots": [
     {
      "id": "ch13-s01",
-     "start": 1654.4167,
+     "start": 1671.2083,
      "lines": [
       "L1302",
       "L1303",
@@ -4233,7 +4255,7 @@
     },
     {
      "id": "ch13-s02",
-     "start": 1681.25,
+     "start": 1698.0417,
      "lines": [
       "L1304"
      ],
@@ -4283,7 +4305,7 @@
     },
     {
      "id": "ch13-s03",
-     "start": 1690.25,
+     "start": 1707.0417,
      "lines": [
       "L1307",
       "L1307b",
@@ -4325,7 +4347,7 @@
     },
     {
      "id": "ch13-s04",
-     "start": 1714,
+     "start": 1730.7917,
      "lines": [
       "L1309",
       "L1310",
@@ -4392,7 +4414,7 @@
        "speaker": "Timnit Gebru, Emily M. Bender, Angelina McMillan-Major (DAIR statement)",
        "date": "31 March 2023",
        "source": "https://www.dair-institute.org/blog/letter-statement-March2023/",
-       "context": "Statement from the listed authors of Stochastic Parrots on the pause letter.",
+       "context": "Statement from the listed authors of Stochastic Parrots on the pause letter. Byline re-checked at the source on 2026-10-12 (review round 2): the page lists Timnit Gebru, Emily M. Bender and Angelina McMillan-Major only; Margaret Mitchell is not listed, so she is not added.",
        "where": "narration L1310"
       },
       {
@@ -4408,7 +4430,7 @@
     },
     {
      "id": "ch13-s06",
-     "start": 1738.6667,
+     "start": 1755.4583,
      "lines": [
       "L1316"
      ],
@@ -4450,11 +4472,11 @@
    "number": 14,
    "id": "ch14",
    "title": "Two Shores",
-   "start": 1753.3333,
+   "start": 1770.125,
    "shots": [
     {
      "id": "ch14-s01",
-     "start": 1753.3333,
+     "start": 1770.125,
      "lines": [
       "L1401",
       "L1402"
@@ -4484,7 +4506,7 @@
     },
     {
      "id": "ch14-s02",
-     "start": 1764.5,
+     "start": 1781.2917,
      "lines": [
       "L1403",
       "L1405"
@@ -4569,7 +4591,7 @@
     },
     {
      "id": "ch14-s03",
-     "start": 1784.75,
+     "start": 1805.2083,
      "lines": [
       "L1406",
       "L1407"
@@ -4601,7 +4623,7 @@
     },
     {
      "id": "ch14-s04",
-     "start": 1804.0833,
+     "start": 1824.5417,
      "lines": [
       "L1408",
       "L1408b",
@@ -4656,7 +4678,7 @@
     },
     {
      "id": "ch14-s04b",
-     "start": 1825.7917,
+     "start": 1846.25,
      "lines": [
       "L1410",
       "L1410b"
@@ -4704,7 +4726,7 @@
     },
     {
      "id": "ch14-s05",
-     "start": 1841.0833,
+     "start": 1861.875,
      "lines": [
       "L1416"
      ],
@@ -4746,7 +4768,7 @@
     },
     {
      "id": "ch14-s06",
-     "start": 1850.0833,
+     "start": 1872.5,
      "lines": [
       "L1414",
       "L1415"
@@ -4788,7 +4810,7 @@
     },
     {
      "id": "ch14-s07",
-     "start": 1870.125,
+     "start": 1892.5417,
      "lines": [
       "L1417",
       "L1420",
@@ -4840,11 +4862,11 @@
    "number": 15,
    "id": "ch15",
    "title": "Case Status: Open",
-   "start": 1895.0833,
+   "start": 1916.1667,
    "shots": [
     {
      "id": "ch15-s01",
-     "start": 1895.0833,
+     "start": 1916.1667,
      "lines": [
       "L1501",
       "L1502",
@@ -4955,7 +4977,7 @@
     },
     {
      "id": "ch15-s03",
-     "start": 1935.0417,
+     "start": 1960.6667,
      "lines": [
       "L1504",
       "L1505"
@@ -4976,7 +4998,7 @@
     },
     {
      "id": "ch15-s04",
-     "start": 1949.8333,
+     "start": 1976.5417,
      "lines": [
       "L1530",
       "L1531"
@@ -5018,11 +5040,12 @@
     },
     {
      "id": "ch15-s05",
-     "start": 1972,
+     "start": 1998.7083,
      "lines": [
       "L1522",
       "L1522b",
       "L1522c",
+      "L1522d",
       "L1525"
      ],
      "claims": [
@@ -5087,7 +5110,7 @@
     },
     {
      "id": "ch15-s06",
-     "start": 2010.9167,
+     "start": 2037.4583,
      "lines": [
       "L1509"
      ],
@@ -5157,7 +5180,7 @@
     },
     {
      "id": "ch15-s07",
-     "start": 2025.3333,
+     "start": 2051.875,
      "lines": [
       "L1511"
      ],
@@ -5195,7 +5218,7 @@
     },
     {
      "id": "ch15-s08",
-     "start": 2039.4167,
+     "start": 2065.9583,
      "lines": [
       "L1527",
       "L1514",
@@ -5284,6 +5307,17 @@
         "https://en.wikipedia.org/wiki/Perceptron",
         "https://search.worldcat.org/title/mark-i-perceptron-press-conference-records-1960/oclc/63287884"
        ]
+      },
+      {
+       "id": "e10-attention-explanation",
+       "claim": "Whether attention weights explain a model was debated: Jain and Wallace, 'Attention is not Explanation' (arXiv 26 February 2019, mostly on BiLSTM-with-attention classifiers); Clark et al. found BERT heads tracking syntax and coreference 'with remarkably high accuracy' (11 June 2019); Wiegreffe and Pinter replied 'Attention is not not Explanation' (13 August 2019).",
+       "date": "2019",
+       "status": "contested",
+       "sources": [
+        "https://arxiv.org/abs/1902.10186",
+        "https://arxiv.org/abs/1906.04341",
+        "https://arxiv.org/abs/1908.04626"
+       ]
       }
      ],
      "quotes": [
@@ -5300,7 +5334,7 @@
     },
     {
      "id": "ch15-s09",
-     "start": 2082.7083,
+     "start": 2109.25,
      "lines": [
       "L1517",
       "L1518",
@@ -5331,7 +5365,7 @@
     },
     {
      "id": "ch15-s10",
-     "start": 2108.0417,
+     "start": 2135.2917,
      "lines": [],
      "claims": [
       {
@@ -5571,8 +5605,8 @@
   }
  ],
  "counts": {
-  "claims": 221,
-  "quotes": 64,
-  "sources": 313
+  "claims": 223,
+  "quotes": 65,
+  "sources": 318
  }
 }

@@ -1,43 +1,139 @@
 {
  "shot": "ch04-s02",
- "at": "2026-10-12T08:47:52.129Z",
+ "at": "2026-10-13T04:13:15.794Z",
  "minCapPx": 22,
  "sampled": 23,
  "texts": 25,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
- "textureTexts": 0,
- "ok": [
-  {
-   "text": "PERCEPTRONS",
-   "maxCap": 24
-  },
+ "subjects": [
   {
    "text": "seymour papert",
-   "maxCap": 25.9
+   "capWhileSubject": 25.9,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "marvin minsky",
-   "maxCap": 25.9
+   "capWhileSubject": 25.9,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "MIT",
-   "maxCap": 26.4
+   "capWhileSubject": 26.4,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "— Minsky and Papert, 1969",
-   "maxCap": 23.5
+   "capWhileSubject": 23.5,
+   "why": "script onScreenText"
   },
   {
    "text": "MANY-LAYERED NETS ARE",
-   "maxCap": 23.8
+   "capWhileSubject": 33.8,
+   "why": "script onScreenText"
   },
   {
    "text": "A STERILE EXTENSION",
-   "maxCap": 23.8
+   "capWhileSubject": 33.8,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "PERCEPTRONS",
+   "maxCap": 41.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "o",
+   "maxCap": 30.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "u",
+   "maxCap": 30.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "r",
+   "maxCap": 30.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "i",
+   "maxCap": 30.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "n",
+   "maxCap": 30.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "t",
+   "maxCap": 30.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "v",
+   "maxCap": 30.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "e",
+   "maxCap": 30.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "j",
+   "maxCap": 30.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "d",
+   "maxCap": 30.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "g",
+   "maxCap": 30.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "m",
+   "maxCap": 30.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "h",
+   "maxCap": 30.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "a",
+   "maxCap": 30.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "x",
+   "maxCap": 30.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "s",
+   "maxCap": 30.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "l",
+   "maxCap": 30.4,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "lit 1969",
-   "maxCap": 22
+   "maxCap": 22,
+   "why": "not named, not in onScreenText"
   }
- ]
+ ],
+ "textureTexts": 19
 }

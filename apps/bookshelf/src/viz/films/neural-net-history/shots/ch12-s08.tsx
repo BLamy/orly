@@ -18,7 +18,7 @@
  *         'Claude' (4) 14 MAR 2023: two equal lanterns light at the same instant in two neighbouring panes
  *                  every date stamp types itself under its window and STAYS until the dissolve; from 'rival' the
  *                  camera pushes in on the block of four (to 1.16), settling just after the twin lanterns
- *   STUDY  sitBack a 0.5 s dissolve home (serverCyan → candleAmber under it, eased): the board, the X-ray box glowing
+ *   STUDY  sitBack a 0.25 s dissolve home (round 4 ghost fix; serverCyan → candleAmber under it, eased): the board, the X-ray box glowing
  *                  in its frame; a hand comes up from the bottom edge through the gap below the case card, tilts
  *                  WHO TAUGHT IT? a little, as if closing, and sits back; the board holds
  *   WALL  notQuite one continuous eased truck from the board right along to the Wall of Forecasts (~2 s), past Coulom's
@@ -180,8 +180,10 @@ export default defineShot({
       scatter,
       w4: T.beat('sameDay'),
       ho,
-      // home on 'sitBack': a short dissolve that lands as the hand arrives
-      diss0: sit - 0.55,
+      // home on 'sitBack': a short dissolve that lands as the hand arrives. Review round 4 (ghost-text audit: the 0.5 s
+      // dissolve showed the façade's date stamps and ledger entry over the board's cards, both > 25 %, for 0.33 s): 0.25 s,
+      // so the façade's words are gone four frames after the study passes 30 % (type kit rule)
+      diss0: sit - 0.3,
       diss1: sit - 0.05,
       reach0: sit - 0.5,
       tilt0: sit - 0.02,
@@ -336,14 +338,16 @@ function paintFacade(f: Frame, b: B, t: number) {
   stamp(f, cam, WINS[0], '21 DEC 2022', b.w1 + 0.1, t);
   stamp(f, cam, WINS[1], '23 JAN 2023', b.w2 + 0.1, t);
   stamp(f, cam, WINS[2], '24 FEB', b.w3 + 0.08, t, { tail: ' → 3 MAR 2023', at2: b.scatter + 0.05 });
-  stamp(f, cam, WINS[3], '14 MAR 2023', b.w4 + 0.06, t);
+  // (review r1: typed at 18 cps it was whole only ≈ 0.65 s before the dissolve) the last stamp is PRESSED whole on the
+  // twin lanterns' beat, one strike with a small ink spread, so all four stamps read together for ≈ 1.2 s before the cut
+  stamp(f, cam, WINS[3], '14 MAR 2023', b.w4, t, undefined, true);
 }
 
-function stamp(f: Frame, cam: Camera3, w: (typeof WINS)[number], text: string, at: number, t: number, more?: { tail: string; at2: number }) {
+function stamp(f: Frame, cam: Camera3, w: (typeof WINS)[number], text: string, at: number, t: number, more?: { tail: string; at2: number }, press = false) {
   if (t < at) return;
   const tq = tq12(t);
   const cps = 18;
-  const n1 = Math.min(text.length, Math.floor((tq - at) * cps + 1e-6));
+  const n1 = press ? text.length : Math.min(text.length, Math.floor((tq - at) * cps + 1e-6));
   const n2 = more && t >= more.at2 ? Math.min(more.tail.length, Math.floor((tq - more.at2) * cps + 1e-6)) : 0;
   const shown = text.slice(0, Math.max(0, n1)) + (more ? more.tail.slice(0, Math.max(0, n2)) : '');
   const full = text + (more ? more.tail : '');
@@ -358,8 +362,19 @@ function stamp(f: Frame, cam: Camera3, w: (typeof WINS)[number], text: string, a
   c.letterSpacing = `${0.08 * size}px`;
   const wFull = c.measureText(full).width;
   c.letterSpacing = '0px';
-  softPlate(c, p.x, p.y - 7, wFull + 70, 44, '#03080b', 0.55 * win(t, at - 0.05, at + 0.25));
+  softPlate(c, p.x, p.y - 7, wFull + 70, 44, '#03080b', 0.55 * (press ? 1 : win(t, at - 0.05, at + 0.25)));
   c.fillStyle = mixLab('#e6edee', f.mood.core, 0.22);
+  if (press) {
+    // the strike: the ink lands a hair heavy and spread, then settles to the type's own weight within ≈ 0.2 s
+    const u = clamp01((t - at) / 0.2);
+    if (u < 1) {
+      c.save();
+      c.shadowColor = withAlpha(mixLab('#e6edee', f.mood.core, 0.22), 0.6 * (1 - u));
+      c.shadowBlur = 5 * (1 - u) * f.pxScale;
+      drawTracked(c, shown, p.x - wFull / 2, p.y, { font, size, tracking: 0.08 });
+      c.restore();
+    }
+  }
   // left-aligned from where the full text would start, so typing never shifts the letters already set
   drawTracked(c, shown, p.x - wFull / 2, p.y, { font, size, tracking: 0.08 });
   // a typed cursor while typing

@@ -1,75 +1,94 @@
 {
  "shot": "ch02-s03",
- "at": "2026-10-12T07:32:07.435Z",
+ "at": "2026-10-13T04:12:58.594Z",
  "minCapPx": 22,
  "sampled": 12,
  "texts": 16,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
- "textureTexts": 0,
- "ok": [
-  {
-   "text": "WHO TAUGHT",
-   "maxCap": 52.3
-  },
-  {
-   "text": "IT?",
-   "maxCap": 52.3
-  },
-  {
-   "text": "RULES",
-   "maxCap": 30.3
-  },
-  {
-   "text": "KNOWLEDGE",
-   "maxCap": 26.2
-  },
-  {
-   "text": "LEARNING",
-   "maxCap": 26.2
-  },
-  {
-   "text": "1943",
-   "maxCap": 30.3
-  },
+ "subjects": [
   {
    "text": "THE STRUCTURE OF",
-   "maxCap": 25.7
+   "capWhileSubject": 36.5,
+   "why": "script onScreenText"
   },
   {
    "text": "THE NET DOES NOT",
-   "maxCap": 25.7
+   "capWhileSubject": 36.5,
+   "why": "script onScreenText"
   },
   {
    "text": "CHANGE WITH",
-   "maxCap": 25.7
+   "capWhileSubject": 36.5,
+   "why": "script onScreenText"
   },
   {
    "text": "TIME.",
-   "maxCap": 25.7
+   "capWhileSubject": 36.5,
+   "why": "script onScreenText"
   },
   {
    "text": "— McCulloch & Pitts, 1943",
-   "maxCap": 25.7
+   "capWhileSubject": 25.8,
+   "why": "script onScreenText"
   },
   {
    "text": "How could a net",
-   "maxCap": 37.7
+   "capWhileSubject": 37.7,
+   "why": "script onScreenText"
   },
   {
    "text": "rewire itself?",
-   "maxCap": 37.7
+   "capWhileSubject": 37.7,
+   "why": "script onScreenText"
   },
   {
    "text": "THE STRUCTURE",
-   "maxCap": 22.6
+   "capWhileSubject": 32,
+   "why": "script onScreenText"
   },
   {
    "text": "OF THE NET",
-   "maxCap": 22.6
+   "capWhileSubject": 32,
+   "why": "script onScreenText"
   },
   {
    "text": "DOES NOT",
-   "maxCap": 22.6
+   "capWhileSubject": 32,
+   "why": "script onScreenText"
   }
- ]
+ ],
+ "texture": [
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 74.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IT?",
+   "maxCap": 74.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "RULES",
+   "maxCap": 42.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 37.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 37.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1943",
+   "maxCap": 42.9,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 6
 }

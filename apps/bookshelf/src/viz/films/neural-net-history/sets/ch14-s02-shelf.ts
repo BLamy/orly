@@ -41,7 +41,7 @@ export const behindCandle = (o: Partial<ReflCandle> = {}): ReflCandle => ({
   x: SHELF_R.behind,
   y: SHELF_R.y,
   s: SHELF_R.s,
-  lines: ['CHINA IS ONE TO', 'THREE YEARS BEHIND'],
+  lines: ['CHINA IS A YEAR', 'OR TWO BEHIND'],
   tag: 'LIT 2022',
   rings: 0,
   state: 'live',
@@ -53,13 +53,17 @@ function oldView(shot: string, id: string): CandleView {
   return { ...shelfStateAt(shot, 'start').find((v) => v.id === id)!, tag: '' };
 }
 
-/** the plank and the older candles at its left (texture: dim, unlabelled); returns their flame points */
-export function shelfRefl(c: C, env: PaintEnv, shot: string): { x: number; y: number }[] {
+/** the plank and the older candles at its left (texture: dim, unlabelled); returns their flame points. oldAlpha
+ *  dims the older candles further (ch14-s02 review: half, so the two new candles own the shelf) */
+export function shelfRefl(c: C, env: PaintEnv, shot: string, oldAlpha = 1): { x: number; y: number }[] {
   shelfEnd(c, env, SHELF_R.x0, SHELF_R.x1, SHELF_R.y, SHELF_R.s);
   const out: { x: number; y: number }[] = [];
   for (const [id, x] of [['scale', SHELF_R.old.scale], ['worry', SHELF_R.old.worry]] as const) {
     const v = oldView(shot, id);
+    c.save();
+    c.globalAlpha *= oldAlpha;
     beliefCandle(c, { x, y: SHELF_R.y, view: v, s: SHELF_R.s, letters: 0.35, seed: x }, env);
+    c.restore();
     if (v.state === 'live') out.push(candleFlame({ x, y: SHELF_R.y, view: v, s: SHELF_R.s }));
   }
   return out;

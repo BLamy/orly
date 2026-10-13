@@ -39,7 +39,7 @@ import { BOARD, SLOTS, boardStateAt, shelfStateAt, wallStateAt, xrayBandsAt, typ
 import { caseBoard, DEFAULT_POOL, type BoardDraw, type Pool } from './caseBoard';
 import { candleShelf, shelfFlames, shelfSlotX, type ShelfDraw } from './beliefCandle';
 import { wallOfForecasts, WALL, WALL_SLOTS, type WallDraw } from './wallOfForecasts';
-import { xrayColumn, xrayGlowAt, XRAY, type XrayDraw } from './xrayColumn';
+import { xrayColumn, xrayEmphasis, xrayGlowAt, XRAY, type XrayDraw, xrayScreenFraction, XRAY_REST, XRAY_SUBJECT_FRACTION } from './xrayColumn';
 import type { WallSlot } from './studyState';
 import { studyNearOccluders } from './occluders';
 
@@ -279,11 +279,15 @@ export function studyCase(f: Frame, o: StudyCaseOpts) {
   }
   if (o.xray !== false && (o.xray || xrayBandsAt(o.shot, when).lit.some(Boolean))) {
     const g = xrayGlowAt({ ...STUDY.xray, ...(o.xray ?? {}) });
-    const L = (o.xray && o.xray.light) ?? 1;
+    // review round 2 (art): the spill follows the face (60 % at rest, full while a band lights) and is desaturated 40 %
+    // review round 3: when the cabinet is the subject (over 25 % of the frame) the spill stays near the resting face
+    const subject = xrayScreenFraction(f.cam, { ...STUDY.xray, ...(o.xray ?? {}) }) > XRAY_SUBJECT_FRACTION;
+    const emph = xrayEmphasis(o.xray || {});
+    const L = ((o.xray && o.xray.light) ?? 1) * (subject ? Math.min(emph, XRAY_REST + 0.15) : emph);
     f.layer('L4', (c) => {
       c.save();
       c.globalCompositeOperation = 'lighter';
-      const C = MOODS.serverCyan;
+      const C = { halo: mixLab(MOODS.serverCyan.halo, '#9a9a96', 0.4) };
       const R = 340;
       const gr = c.createRadialGradient(g.x, g.y, 20, g.x, g.y, R);
       gr.addColorStop(0, withAlpha(C.halo, 0.2 * L));

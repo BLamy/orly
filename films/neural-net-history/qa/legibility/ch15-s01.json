@@ -1,67 +1,83 @@
 {
  "shot": "ch15-s01",
- "at": "2026-10-13T00:00:47.480Z",
+ "at": "2026-10-13T21:40:43.271Z",
  "minCapPx": 22,
- "sampled": 51,
+ "sampled": 56,
  "texts": 14,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
- "textureTexts": 0,
- "ok": [
+ "subjects": [
   {
    "text": "Case Status: Open",
-   "maxCap": 22.8
+   "capWhileSubject": 32.3,
+   "why": "script onScreenText"
   },
   {
    "text": "CALIFORNIA · 8 OCTOBER 2024",
-   "maxCap": 22.1
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "geoffrey hinton",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "“for foundational discoveries and inventions that enable",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "script onScreenText"
   },
   {
    "text": "machine learning with artificial neural networks”",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "script onScreenText"
   },
   {
    "text": "nobel prize in physics, 2024",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "script onScreenText"
   },
   {
    "text": "john hopfield",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "physicist · aged 91",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "…it does seem a bit of",
-   "maxCap": 31.3
+   "capWhileSubject": 31.3,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "a stretch.”",
-   "maxCap": 31.3
+   "capWhileSubject": 31.3,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "dame wendy hall",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "2024",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "demis hassabis · john jumper",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "DeepMind",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   }
- ]
+ ],
+ "texture": [],
+ "textureTexts": 0
 }

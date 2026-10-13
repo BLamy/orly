@@ -1,75 +1,94 @@
 {
  "shot": "ch10-s08",
- "at": "2026-10-12T20:44:54.857Z",
+ "at": "2026-10-13T04:14:04.909Z",
  "minCapPx": 22,
  "sampled": 16,
  "texts": 16,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
- "textureTexts": 0,
- "ok": [
-  {
-   "text": "I",
-   "maxCap": 26.2
-  },
-  {
-   "text": "arrived",
-   "maxCap": 26.2
-  },
-  {
-   "text": "at",
-   "maxCap": 26.2
-  },
-  {
-   "text": "the",
-   "maxCap": 26.2
-  },
-  {
-   "text": "bank",
-   "maxCap": 26.2
-  },
-  {
-   "text": "after",
-   "maxCap": 26.2
-  },
-  {
-   "text": "crossing",
-   "maxCap": 26.2
-  },
-  {
-   "text": "river",
-   "maxCap": 26.2
-  },
+ "subjects": [
   {
    "text": "· hand-set weights",
-   "maxCap": 23.2
+   "capWhileSubject": 23.2,
+   "why": "script onScreenText"
   },
   {
    "text": "ILLUSTRATIVE",
-   "maxCap": 22.1
-  },
-  {
-   "text": "0.58",
-   "maxCap": 27.5
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
   },
   {
    "text": "8 heads × 64 numbers each  (4 shown)",
-   "maxCap": 27.5
+   "capWhileSubject": 27.5,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "I",
+   "maxCap": 26.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "arrived",
+   "maxCap": 26.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "at",
+   "maxCap": 26.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "the",
+   "maxCap": 26.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "bank",
+   "maxCap": 26.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "after",
+   "maxCap": 26.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "crossing",
+   "maxCap": 26.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "river",
+   "maxCap": 26.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0.58",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "what am I?",
-   "maxCap": 22.6
+   "maxCap": 22.6,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "what came just before?",
-   "maxCap": 22.6
+   "maxCap": 22.6,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "what was done?",
-   "maxCap": 22.6
+   "maxCap": 22.6,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "who did it?",
-   "maxCap": 22.6
+   "maxCap": 22.6,
+   "why": "not named, not in onScreenText"
   }
- ]
+ ],
+ "textureTexts": 13
 }

@@ -588,7 +588,7 @@
       "said#2": 0.3,
       "hope": 0.3
      },
-     "levelDb": 2
+     "trimDb": 0
     }
    ],
    "leadIn": 0.6,

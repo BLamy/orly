@@ -1,452 +1,359 @@
 {
  "shot": "ch12-s03",
- "at": "2026-10-12T21:18:18.245Z",
+ "at": "2026-10-13T20:52:28.974Z",
  "minCapPx": 22,
- "sampled": 45,
- "texts": 77,
- "offenders": [
-  {
-   "text": "KRIZHEVSKY, SUTSKEVER & HINTON · 2012",
-   "maxCap": 11,
-   "minCap": 4.3,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "5.3923px \"Special Elite\""
-  },
-  {
-   "text": "KELLEY 1960 … LE CUN 1985",
-   "maxCap": 14.8,
-   "minCap": 5.8,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "7.26819px \"Special Elite\""
-  },
-  {
-   "text": "DUE 2024",
-   "maxCap": 15.5,
-   "minCap": 6.1,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "7.6px \"Special Elite\""
-  },
-  {
-   "text": "BACK-PROPAGATING",
-   "maxCap": 16.2,
-   "minCap": 6.4,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "7.9475px \"Special Elite\""
-  },
-  {
-   "text": "ERROR-CORRECTION",
-   "maxCap": 16.2,
-   "minCap": 6.4,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "7.9475px \"Special Elite\""
-  },
-  {
-   "text": "EXPERIMENTS · 1961 ?",
-   "maxCap": 16.2,
-   "minCap": 6.4,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "7.9475px \"Special Elite\""
-  },
-  {
-   "text": "GENERATING",
-   "maxCap": 16.2,
-   "minCap": 6.4,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "7.9475px \"Special Elite\""
-  },
-  {
-   "text": "WIKIPEDIA ·",
-   "maxCap": 16.2,
-   "minCap": 6.4,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "7.9475px \"Special Elite\""
-  },
-  {
-   "text": "2018 · GPT",
-   "maxCap": 16.2,
-   "minCap": 6.4,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "7.9475px \"Special Elite\""
-  },
-  {
-   "text": "TURING · DUE 2000",
-   "maxCap": 16.4,
-   "minCap": 6.5,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "ROSENBLATT · 1961",
-   "maxCap": 16.4,
-   "minCap": 6.5,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "Linguistic capability,",
-   "maxCap": 16.4,
-   "minCap": 6.5,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "related to perceptual",
-   "maxCap": 16.4,
-   "minCap": 6.5,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "experience, is of the",
-   "maxCap": 16.4,
-   "minCap": 6.5,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "essence…",
-   "maxCap": 16.4,
-   "minCap": 6.5,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "COULOM · MAY 2014",
-   "maxCap": 16.4,
-   "minCap": 6.5,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "HINTON · SEPT 2017",
-   "maxCap": 16.4,
-   "minCap": 6.5,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "…some graduate student",
-   "maxCap": 16.4,
-   "minCap": 6.5,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "who is deeply suspicious",
-   "maxCap": 16.4,
-   "minCap": 6.5,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "of everything I have",
-   "maxCap": 16.4,
-   "minCap": 6.5,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "said.",
-   "maxCap": 16.4,
-   "minCap": 6.5,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "THE STRUCTURE OF",
-   "maxCap": 19,
-   "minCap": 7.5,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "THE NET DOES NOT",
-   "maxCap": 19,
-   "minCap": 7.5,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "CHANGE WITH",
-   "maxCap": 19,
-   "minCap": 7.5,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "TIME.",
-   "maxCap": 19,
-   "minCap": 7.5,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "KNOWLEDGE",
-   "maxCap": 19.3,
-   "minCap": 7.6,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "LEARNING",
-   "maxCap": 19.3,
-   "minCap": 7.6,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "3 in 10 fooled",
-   "maxCap": 19.3,
-   "minCap": 7.6,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "…simply by waiting",
-   "maxCap": 19.3,
-   "minCap": 7.6,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "for faster GPUs and",
-   "maxCap": 19.3,
-   "minCap": 7.6,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "bigger datasets…",
-   "maxCap": 19.3,
-   "minCap": 7.6,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "I think maybe ten",
-   "maxCap": 19.3,
-   "minCap": 7.6,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "years",
-   "maxCap": 19.3,
-   "minCap": 7.6,
-   "first": 0.25,
-   "last": 14.5,
-   "font": "9.5px \"Special Elite\""
-  }
- ],
- "textureTexts": 0,
- "ok": [
-  {
-   "text": "WHO TAUGHT",
-   "maxCap": 38.7
-  },
-  {
-   "text": "IT?",
-   "maxCap": 38.7
-  },
-  {
-   "text": "RULES",
-   "maxCap": 22.4
-  },
-  {
-   "text": "1943",
-   "maxCap": 22.4
-  },
-  {
-   "text": "1958",
-   "maxCap": 22.4
-  },
-  {
-   "text": "1969",
-   "maxCap": 22.4
-  },
-  {
-   "text": "HELSINKI ·",
-   "maxCap": 22.4
-  },
-  {
-   "text": "1970",
-   "maxCap": 22.4
-  },
-  {
-   "text": "1986",
-   "maxCap": 22.4
-  },
-  {
-   "text": "1989",
-   "maxCap": 22.4
-  },
-  {
-   "text": "DATA",
-   "maxCap": 22.4
-  },
-  {
-   "text": "FIRE",
-   "maxCap": 22.4
-  },
-  {
-   "text": "2012",
-   "maxCap": 22.4
-  },
-  {
-   "text": "2017",
-   "maxCap": 22.4
-  },
-  {
-   "text": "a",
-   "maxCap": 25.2
-  },
-  {
-   "text": "2018",
-   "maxCap": 22.4
-  },
-  {
-   "text": "2022",
-   "maxCap": 27.1
-  },
-  {
-   "text": "FOUNDED JAN 2021 · ANNOUNCED 28 MAY 2021",
-   "maxCap": 22.8
-  },
+ "sampled": 37,
+ "texts": 69,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
   {
    "text": "an AI safety",
-   "maxCap": 22.8
+   "capWhileSubject": 32.4,
+   "why": "named: \"safety\""
   },
   {
    "text": "and research",
-   "maxCap": 22.8
+   "capWhileSubject": 32.4,
+   "why": "named: \"research\""
   },
   {
    "text": "company",
-   "maxCap": 22.8
+   "capWhileSubject": 32.4,
+   "why": "named: \"company\""
   },
   {
-   "text": "$50",
-   "maxCap": 25.6
+   "text": "FOUNDED JAN 2021 · ANNOUNCED 28 MAY 2021",
+   "capWhileSubject": 22.8,
+   "why": "script onScreenText"
   },
   {
-   "text": "$500M",
-   "maxCap": 27.1
+   "text": "(later exposed as fraud;",
+   "capWhileSubject": 24.4,
+   "why": "script onScreenText"
   },
   {
-   "text": "FTX",
-   "maxCap": 27.1
+   "text": "Anthropic not implicated)",
+   "capWhileSubject": 24.4,
+   "why": "script onScreenText"
   },
   {
-   "text": "202",
-   "maxCap": 25.8
+   "text": "$500M · FTX",
+   "capWhileSubject": 24.9,
+   "why": "script onScreenText"
   },
   {
-   "text": "(Anthropi",
-   "maxCap": 26.2
+   "text": "billions · Amazon, Goo",
+   "capWhileSubject": 24.1,
+   "why": "script onScreenText"
   },
   {
-   "text": "(Anthropic not implica",
-   "maxCap": 26.5
-  },
-  {
-   "text": "(Anthropic not implicated in its fra",
-   "maxCap": 26.7
-  },
-  {
-   "text": "(Anthropic not implicated in its fraud)",
-   "maxCap": 27.1
-  },
-  {
-   "text": "2023",
-   "maxCap": 26.9
-  },
-  {
-   "text": "2023–24",
-   "maxCap": 27.1
-  },
-  {
-   "text": "Amazon",
-   "maxCap": 27.1
-  },
-  {
-   "text": "$8",
-   "maxCap": 27
-  },
-  {
-   "text": "$8B",
-   "maxCap": 27.1
-  },
-  {
-   "text": "Google",
-   "maxCap": 27.1
-  },
-  {
-   "text": "up to $2",
-   "maxCap": 27.1
-  },
-  {
-   "text": "up to $2B",
-   "maxCap": 24.3
+   "text": "billions · Amazon, Google",
+   "capWhileSubject": 24.9,
+   "why": "script onScreenText"
   },
   {
    "text": "BARD",
-   "maxCap": 35.8
-  },
-  {
-   "text": "6 FEB 2023",
-   "maxCap": 28.5
+   "capWhileSubject": 28.5,
+   "why": "named: \"bard\""
   },
   {
    "text": "LLaMA",
-   "maxCap": 29.6
+   "capWhileSubject": 28.2,
+   "why": "named: \"llama\""
   },
   {
-   "text": "3 MAR 2023",
-   "maxCap": 23.6
-  },
-  {
-   "text": "GPT-4",
-   "maxCap": 28
-  },
-  {
-   "text": "14 MAR 2023",
-   "maxCap": 22.3
+   "text": "WEIGHTS LEAKED",
+   "capWhileSubject": 24.5,
+   "why": "named: \"weights leaked\""
   },
   {
    "text": "CLAUDE",
-   "maxCap": 28
+   "capWhileSubject": 29.4,
+   "why": "named: \"claude\""
   }
- ]
+ ],
+ "texture": [
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 54.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IT?",
+   "maxCap": 54.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "RULES",
+   "maxCap": 31.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1943",
+   "maxCap": 31.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 27,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 27,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 27,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 27,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1958",
+   "maxCap": 31.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1969",
+   "maxCap": 31.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "HELSINKI ·",
+   "maxCap": 31.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1970",
+   "maxCap": 31.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1986",
+   "maxCap": 31.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KELLEY 1960 … LE CUN 1985",
+   "maxCap": 21,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1989",
+   "maxCap": 31.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "DATA",
+   "maxCap": 31.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "FIRE",
+   "maxCap": 31.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2012",
+   "maxCap": 31.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2017",
+   "maxCap": 31.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "GENERATING",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "WIKIPEDIA ·",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2018 · GPT",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "a",
+   "maxCap": 43.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2018",
+   "maxCap": 31.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2022",
+   "maxCap": 31.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 23.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ROSENBLATT · 1961",
+   "maxCap": 23.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Linguistic capability,",
+   "maxCap": 23.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "related to perceptual",
+   "maxCap": 23.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "experience, is of the",
+   "maxCap": 23.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "essence…",
+   "maxCap": 23.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KRIZHEVSKY, SUTSKEVER & HINTON · 2012",
+   "maxCap": 15.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "…simply by waiting",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "for faster GPUs and",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "bigger datasets…",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "COULOM · MAY 2014",
+   "maxCap": 23.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "I think maybe ten",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "years",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "DUE 2024",
+   "maxCap": 22,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "HINTON · SEPT 2017",
+   "maxCap": 23.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "…some graduate student",
+   "maxCap": 23.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "who is deeply suspicious",
+   "maxCap": 23.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "of everything I have",
+   "maxCap": 23.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "said.",
+   "maxCap": 23.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "6 FEB 2023",
+   "maxCap": 25,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "24 FEB 2023",
+   "maxCap": 24.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "3 MAR 2023",
+   "maxCap": 24,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "MAR 2023",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "GPT-4",
+   "maxCap": 29.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "14 MAR 2023",
+   "maxCap": 25.8,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 56
 }

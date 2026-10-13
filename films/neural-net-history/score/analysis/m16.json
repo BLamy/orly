@@ -1,18 +1,18 @@
 {
  "id": "m16",
- "start": 1562.95,
- "end": 1654.65,
+ "start": 1586.9917,
+ "end": 1672.2517,
  "file": "films/neural-net-history/score/renders/m16.wav",
- "duration": 97.7,
- "I": -24.1,
- "LRA": 14.9,
- "TP": -4.5,
- "expected": 97.7,
+ "duration": 91.26,
+ "I": -24.5,
+ "LRA": 13.9,
+ "TP": -6.6,
+ "expected": 91.26,
  "lengthErrorMs": 0,
  "lengthOk": true,
  "spectrogram": "films/neural-net-history/score/analysis/m16.png",
- "cueSeconds": 91.7,
+ "cueSeconds": 85.26,
  "cps": 0.25,
- "lastStrikeLocal": 87.42,
- "lastStrike": 1650.37
+ "lastStrikeLocal": 80.34,
+ "lastStrike": 1667.332
 }

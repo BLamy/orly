@@ -1,25 +1,29 @@
 {
- "round": 2,
- "at": "2026-10-13T00:56:57Z",
+ "round": 5,
+ "at": "2026-10-13T22:22:12Z",
  "pass": false,
- "mean": 7.83,
+ "mean": 8.43,
  "bar": 8.5,
  "floor": 8,
  "scores": {
-  "accuracy": 8,
-  "depth": 8.08,
-  "clarity": 7.67,
-  "story": 8,
-  "visual": 7.67,
-  "sync": 7.58,
-  "sound": 7.5,
-  "curiosity": 8.17
+  "accuracy": 8.5,
+  "depth": 8.58,
+  "clarity": 8.33,
+  "story": 8.5,
+  "visual": 8.17,
+  "sync": 8.5,
+  "sound": 8.17,
+  "curiosity": 8.67
  },
  "notes": {
-  "sound": "Round 1's boost for quiet lines was added on top of the per-line level matching, so five lines now jump out; the hushed 2 a.m. Nobel call is the loudest line in the film. L0821 runs too fast (224 words a minute), and the closing cards play over 22 s with no music.",
-  "sync": "Five round-1 shot fixes never actually landed. The final shot (ch15-s09) is still near-black under the last spoken line, and its match strikes only after the line ends.",
-  "visual": "Some on-screen text the narration points to is still below the 22 px legibility floor, and LeCun, Bengio and Hassabis are still the same generic puppet.",
-  "clarity": "Three line changes are proposed: Anthropic's $1.5B pirated-books settlement gets a spoken line, its funding line moves to an on-screen card, and the US–China act gets a question it later answers. The symbolic-AI era is missing its dissenter (Hubert Dreyfus)."
+  "accuracy": "Every quote is verbatim, every claim id exists, and contested history (who invented backprop, how far behind China is) is shown as contested. It stops at 8.5 because two late edits weakened fairness toward the narrator's own maker: the end card dropped the line saying Anthropic is a lab in this story, and Anthropic's export-control position now arrives last and alone in silence.",
+  "depth": "AlexNet and the transformer are worked step by step with real numbers a viewer can check by pencil, from a 3x3 edge stencil to a hand-computed softmax over 'river bank' and a quadratic-cost hall that grows from 100 to 400 pairs. Each era gets its belief, a named dissenter and how long the belief lasted.",
+  "clarity": "Almost every idea arrives as a picture before a symbol, so a curious teenager can follow it. What holds it back is the final chapter: the planning experiment (rabbit switched off, habit chosen) is shown but never said, and the Nobel line is a 15-second sentence with nested clauses.",
+  "story": "The case-file frame pays off its plants: the dinner bet, Widrow's lantern, Hopfield's forgotten Versailles talk, and an ending that answers 'who taught it?' while leaving the file open. The present-day stretch is still dense, and the Nobel call, the peak of Hinton's arc, plays to an empty room.",
+  "visual": "The paper-cut silhouette style is consistent and often striking, from the stencil cathedral to the all-pairs attention hall, and the long-running card and figure problems are now fixed. A handful of frames still read as double exposures (a translucent citation ribbon, a dissolve between framings, a crossfade full of old cards), and the last stamp and match hand are the weakest pieces in the closing shot.",
+  "sync": "Picture lands on the spoken word almost everywhere: the stamps strike on 'stands' and 'open', the candle flares on 'candles', the named card rises on 'behind'. Small misses remain, such as the Nobel phone lighting just after 'rings' and a type-on that flickers past before the cut.",
+  "sound": "The mix is clean (-16 LUFS, every line at least 10.9 dB over the music), 'Nobody told it to plan' is now fully present, and the three STATUS: OPEN stamps form an audible motif. It sits just above the bar because one stamp clacks over the word it names, a music swell after the quietest line plays as a sting, the turn into the story is still brisk, and no person has yet signed off on how the narrator says real names.",
+  "curiosity": "The film opens on a riddle ('who taught it?') and keeps adding open questions (who paid for dinner, can a fence around chips hold, how far and how fast) that pull a viewer through 36 minutes. It ends on an honest open file and a dark lantern rather than a tidy verdict."
  },
- "summary": "Round 2 FAILS the gate, but it is a clear step up from round 1 (mean 7.42 → 7.83). Weighted means: accuracy 8.00, depth 8.08, clarity 7.67, story 8.00, visual 7.67, sync 7.58, sound 7.50, curiosity 8.17. The bar is 8.5, with every dimension at 8 or above. There are no critical issues. Reviewers agree that most round-1 notes landed: quote integrity is airtight and the sources page is published; the prologue pace, chunk ghosts, cue joins and masking are fixed; ch12 is reordered; the AlphaGo board, ledger, kernel shot and BY HAND bowl are in; and the deep dives are expert-grade. Four dimensions are still below 8. SOUND (7.50): the +3 dB quiet-line offsets stacked on top of rides, so five lines now jump out (L1501 is the loudest line in the film); L0821 fails pacing; the end cards run on hiss. SYNC (7.58), VISUAL and CLARITY (7.67): five round-1 shot fixes were never applied, and three of those files are untouched since Oct 7. The worst are ch15-s09 (near-black under the last line, which I confirmed on the sheet), ch10-s04 (all-pairs attention arrives late), ch15-s08 (static recap), ch15-s10 (placeholder end cards) and ch14-s05. Subject text under 22 px and generic LeCun/Bengio/Hassabis puppets add to it. Accuracy and story hold at 8, with three structural notes: a spoken Anthropic settlement line, so 'the labs, under the same light' is even-handed; L1208 cut to a ledger card so Anthropic stops being the only runner with a founding story; and a voiced Act-3 question (L1405 → L1418) to turn the docket into a case. Highest leverage, in order: (1) actually apply and sheet-verify the carried-over shot fixes (ch15-s09, ch10-s04, ch15-s08, ch15-s10, ch14-s05, ch14-s04b, ch05-s04, ch08-s13b); (2) zero the stacked line offsets and re-narrate L0821/L0828/L1505/L0906/L0114; (3) the balance and plant lines (L1522d, L1522b, L1208 cut, L1405/L1418, L1416) with their shot re-fits; (4) the Dreyfus line (L0514b) and the L0607b split; (5) the kit-wide legibility rule and figure silhouettes; (6) the m21 end-card pad, m13 candle-out and m10 thinning."
+ "summary": "Round 5 does NOT pass: mean 8.43 against the 8.5 bar, though every dimension is now at or above 8 and no issue is critical. The long-running failures are finally closed on their sheets: ch15-s06 (Hassabis pin gone), ch10-s12 (one fact, no compute ratio), the stamp foley, L1505's level and the m19 placement. Sound rose from 7.67 to 8.17. Two fairness regressions came in with round 4's critic and credits passes, both about the narrator's own maker: Anthropic's export-control position now lands last and alone in silence (ch14-s04b), and the end card lost the on-screen disclosure that Anthropic is a lab in this story (ch15-s10). Both are major and cheap to fix. The rest of the gap is clarity, visual and sound polish concentrated in the final chapter: say the rabbit/habit experiment aloud (new line L1504b), split the 15-second Nobel sentence (L1502), put Hinton in the Nobel bedroom and clear the translucent ribbon (ch15-s01), make the final stamp legible and the match hand real (ch15-s09), and remove the three double exposures (ch14-s07, ch04-s07, ch15-s05). On sound: tuck the how-far stamp under 'open', soften the m19 swell and give L0220 its silence (m02)."
 }

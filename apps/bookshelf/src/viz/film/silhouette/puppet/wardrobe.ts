@@ -68,9 +68,9 @@ const T = (o: Partial<WardrobeDef> & Pick<WardrobeDef, 'top' | 'sleeve' | 'trous
 });
 
 export const WARDROBES: Record<string, WardrobeDef> = {
-  doubleBreasted: T({ top: 'doubleBreasted', hem: 18, pad: 0.9, waist: 0.2, chest: 1.5, sleeve: { kind: 'jacket', pad: 0.9, shirtCuff: true }, trousers: 'pleated', shoes: 'oxford', collar: 'notch', details: ['lapel', 'buttons', 'pocketFlap', 'breastPocket', 'shirtCuff', 'trouserCuff', 'cuff'] }),
-  suit: T({ top: 'tailored', hem: 16, pad: 0.5, sleeve: { kind: 'jacket', pad: 0.5, shirtCuff: true }, trousers: 'straight', shoes: 'oxford', collar: 'notch', details: ['lapel', 'buttons', 'pocketFlap', 'breastPocket', 'shirtCuff', 'cuff'] }),
-  threePiece: T({ top: 'tailored', hem: 16, pad: 0.6, chest: 1, sleeve: { kind: 'jacket', pad: 0.6, shirtCuff: true }, trousers: 'pleated', shoes: 'oxford', collar: 'notch', details: ['lapel', 'waistcoat', 'watchChain', 'buttons', 'pocketFlap', 'shirtCuff', 'trouserCuff'] }),
+  doubleBreasted: T({ top: 'doubleBreasted', hem: 18, pad: 0.9, waist: 0.2, chest: 1.5, sleeve: { kind: 'jacket', pad: 0.9, shirtCuff: true }, trousers: 'pleated', shoes: 'oxford', collar: 'notch', tie: 'wide', details: ['lapel', 'buttons', 'pocketFlap', 'breastPocket', 'shirtCuff', 'trouserCuff', 'cuff'] }),
+  suit: T({ top: 'tailored', hem: 16, pad: 0.5, sleeve: { kind: 'jacket', pad: 0.5, shirtCuff: true }, trousers: 'straight', shoes: 'oxford', collar: 'notch', tie: 'wide', details: ['lapel', 'buttons', 'pocketFlap', 'breastPocket', 'shirtCuff', 'cuff'] }),
+  threePiece: T({ top: 'tailored', hem: 16, pad: 0.6, chest: 1, sleeve: { kind: 'jacket', pad: 0.6, shirtCuff: true }, trousers: 'pleated', shoes: 'oxford', collar: 'notch', tie: 'wide', details: ['lapel', 'waistcoat', 'watchChain', 'buttons', 'pocketFlap', 'shirtCuff', 'trouserCuff'] }),
   overcoat: T({ top: 'overcoat', hem: 16, pad: 0.8, chest: 2, bulk: 0.06, sleeve: { kind: 'labcoat', pad: 0.8 }, trousers: 'pleated', shoes: 'oxford', collar: 'notch', lower: { waist: 0.36, hem: 86, flare: 6, coat: true }, details: ['lapel', 'buttons', 'beltLine', 'coatPocket', 'cuff'] }),
   labCoat: T({ top: 'labcoat', hem: 16, pad: 0.2, chest: 0.5, bulk: 0.04, sleeve: { kind: 'labcoat' }, trousers: 'straight', shoes: 'oxford', collar: 'notch', tie: 'narrow', lower: { waist: 0.36, hem: 92, flare: 5, coat: true }, details: ['lapel', 'penPocket', 'buttons', 'coatPocket', 'cuff', 'hemLine'] }),
   shortSleeve: T({ top: 'shirt', hem: 2, waist: 0.2, sleeve: { kind: 'short' }, trousers: 'straight', shoes: 'oxford', collar: 'shirt', tie: 'narrow', details: ['placket', 'shirtPocket', 'belt', 'sleeveHem', 'crease'] }),
@@ -79,7 +79,7 @@ export const WARDROBES: Record<string, WardrobeDef> = {
   slimSuit: T({ top: 'tailored', hem: 13, pad: 0.15, waist: 0.45, sleeve: { kind: 'jacket', shirtCuff: true }, trousers: 'slim', shoes: 'loafer', collar: 'notch', tie: 'narrow', details: ['lapel', 'buttons', 'pocketFlap', 'shirtCuff'] }),
   sweaterVest: T({ top: 'vest', hem: 4, waist: 0.1, sleeve: { kind: 'shirt' }, trousers: 'flared', shoes: 'boot', collar: 'shirt', tie: 'wide', details: ['vneck', 'rib', 'cuff', 'belt', 'crease'] }),
   rolledSleeves: T({ top: 'shirt', hem: 2, waist: 0.1, sleeve: { kind: 'rolled' }, trousers: 'pleated', shoes: 'oxford', collar: 'shirt', tie: 'loose', details: ['placket', 'cuff', 'belt', 'shirtPocket', 'crease'] }),
-  blazer: T({ top: 'tailored', hem: 19, pad: 0.7, bulk: 0.05, waist: 0.05, sleeve: { kind: 'jacket', pad: 0.7 }, trousers: 'pleated', shoes: 'loafer', collar: 'notch', details: ['lapel', 'buttons', 'pocketFlap', 'breastPocket', 'cuff'] }),
+  blazer: T({ top: 'tailored', hem: 19, pad: 0.7, bulk: 0.05, waist: 0.05, sleeve: { kind: 'jacket', pad: 0.7, shirtCuff: true }, trousers: 'pleated', shoes: 'loafer', collar: 'notch', details: ['lapel', 'buttons', 'pocketFlap', 'breastPocket', 'cuff'] }),
   polo: T({ top: 'shirt', hem: 4, waist: 0, bulk: 0.02, sleeve: { kind: 'short' }, trousers: 'pleated', shoes: 'loafer', collar: 'shirt', details: ['placket', 'belt', 'sleeveHem', 'crease'] }),
   fleece: T({ top: 'fleece', hem: 9, waist: 0, bulk: 0.08, chest: 1, sleeve: { kind: 'fleece' }, trousers: 'cargo', shoes: 'sneaker', collar: 'zip', lanyard: true, details: ['zip', 'chestZip', 'rib', 'cuff', 'cargoPocket', 'sole'] }),
   hoodie: T({ top: 'hoodie', hem: 9, waist: 0, bulk: 0.07, sleeve: { kind: 'hoodie' }, trousers: 'jeans', shoes: 'sneaker', collar: 'hood', strings: true, details: ['strings', 'hoodEdge', 'kangaroo', 'rib', 'cuff', 'sole'] }),
@@ -156,6 +156,8 @@ export function torsoArt(b: Body, w: WardrobeDef, facing: Facing): PartArt {
   const knit = ['cardigan', 'turtleneck', 'vest', 'shirt', 'tshirt', 'quarterZip', 'blouse', 'gilet'].includes(w.top);
   const bulky = w.top === 'hoodie' || w.top === 'fleece';
   const hem = w.hem;
+  // tailored jackets and coats carry the period silhouette details (review round 3: "smooth mannequins")
+  const jacket = w.top === 'tailored' || w.top === 'doubleBreasted' || w.top === 'overcoat' || w.top === 'labcoat' || w.top === 'peplum';
   const chestX = (fem ? 19.8 : 19.2) * W + w.chest;
   const { f: waistF, b: waistB } = waistX(b, w, W);
   const seatB = -(fem ? 21.5 : 19.4) * W;
@@ -172,8 +174,14 @@ export function torsoArt(b: Body, w: WardrobeDef, facing: Facing): PartArt {
   if (hem > 4) {
     // jacket / coat / knit falling over the seat
     pts.push([seatB - (knit ? 0 : 0.5), y(0.1)]);
-    pts.push([seatB + (bulky ? 0.5 : 1.2), hem - 2, 0.6]);
-    pts.push([seatB + (bulky ? 2 : 2.5), hem, 0]);
+    if (jacket && hem > 12) {
+      // review round 3 (period silhouette): the coat skirt kicks out over the seat to a crisp back-vent corner
+      pts.push([seatB - 1.4, hem - 4, 0.7]);
+      pts.push([seatB - 2.6, hem + 1.2, 0]);
+    } else {
+      pts.push([seatB + (bulky ? 0.5 : 1.2), hem - 2, 0.6]);
+      pts.push([seatB + (bulky ? 2 : 2.5), hem, 0]);
+    }
     const frontHem = w.top === 'tailored' || w.top === 'doubleBreasted' || w.top === 'peplum' ? 14 * W : 15.5 * W;
     pts.push([frontHem, hem, w.top === 'tailored' || w.top === 'peplum' ? 0.4 : 0]);
     pts.push([17 * W + b.belly, Math.min(hem - 6, y(0.02)), 0.8]);
@@ -193,7 +201,15 @@ export function torsoArt(b: Body, w: WardrobeDef, facing: Facing): PartArt {
   pts.push([waistF, y(0.38)]);
   pts.push([chestX, y(fem ? 0.64 : 0.7)]);
   if (fem) pts.push([chestX - 2.2 * W, y(0.75), 0.8]);
-  pts.push([(fem ? 14.6 : 16.8) * W + w.chest * 0.5, y(0.87)]);
+  const shoulderFront = (fem ? 14.6 : 16.8) * W + w.chest * 0.5;
+  if (jacket) {
+    // the lapel's roll stands proud of the chest and breaks the line at its notch (a cut-paper lapel, read in
+    // silhouette at sheet scale)
+    pts.push([chestX + 0.9, y(0.765), 0.7]);
+    pts.push([shoulderFront + 2.6, y(0.842), 0]);
+    pts.push([shoulderFront + 0.2, y(0.858), 0]);
+  }
+  pts.push([shoulderFront, y(0.87)]);
   pts.push([10.5, y(0.975), 0.6]);
   pts.push([2, y(1.07)]);
   const pieces: Path2D[] = [smooth(pts)];
@@ -306,6 +322,12 @@ export function torsoArt(b: Body, w: WardrobeDef, facing: Facing): PartArt {
         st('dartLine', [[6, y(0.66)], [7, y(0.42)]], 0.3);
         break;
     }
+  }
+  if (w.collar === 'notch' && jacket) {
+    // review round 3: the shirt front between the lapels, a pale V the tie (hangers) breaks: the figure stops
+    // reading as one smooth mannequin. Deeper on a single-breasted jacket, shallower on a double-breasted one.
+    const vb = w.top === 'doubleBreasted' ? 0.6 : w.top === 'labcoat' || w.top === 'overcoat' ? 0.62 : 0.55;
+    lights.push({ path: smooth([[3.5, y(1.035)], [10, y(0.985), 0.5], [shoulderFront - 0.8, y(0.875), 0.4], [chestX - 1.4, y(0.74), 0.6], [fx(vb + 0.06) - 2.8, y(vb), 0], [13 * W - 3.2, y(0.78), 0.6], [7.5, y(0.94), 0.5]]), alpha: 0.62, id: 'shirtFront' });
   }
   if (w.collar === 'shirt' || w.top === 'tailored' || w.top === 'doubleBreasted' || w.top === 'labcoat') {
     // pale shirt collar at the throat (semi-transparent cloth, §2.6)
@@ -429,6 +451,8 @@ export interface Hanger {
   rest: number;
   /** visible only when it swings out past the chest (tie under a closed jacket) */
   hiddenUnder?: boolean;
+  /** held by the jacket: shown in the shirt V, swinging at most a few degrees past rest */
+  pinned?: boolean;
 }
 
 export function hangers(b: Body, w: WardrobeDef): Hanger[] {
@@ -442,13 +466,17 @@ export function hangers(b: Body, w: WardrobeDef): Hanger[] {
     const knotY = w.tie === 'loose' ? 7 : 2;
     const p = smooth([[-2.2, knotY - 2, 0.4], [2.6, knotY - 2, 0.4], [1.8, knotY + 3.5, 0], [wd * 0.62, len - 6, 0.5], [0.4, len, 0], [-wd * 0.5, len - 6, 0.5], [-1.8, knotY + 3.5, 0]]);
     const enclosed = w.top === 'tailored' || w.top === 'doubleBreasted' || w.top === 'cardigan' || w.top === 'labcoat';
+    // review round 3: under a notch-lapel jacket the tie shows in the pale shirt V (pinned to the chest, swinging
+    // only a little); under a cardigan it stays hidden until it swings out
+    const showsInV = enclosed && w.collar === 'notch';
     out.push({
       id: 'tie',
       pivot: [9 * W, y(0.985)],
       pieces: [p],
       cuts: [{ id: 'tie', path: curve([[-1.6, knotY + 4], [-wd * 0.45, len - 6], [0.4, len - 0.5]]), alpha: enclosed ? 0 : 0.42 }],
       rest: 9,
-      hiddenUnder: enclosed,
+      hiddenUnder: enclosed && !showsInV,
+      pinned: showsInV,
     });
   }
   if (w.strings) {

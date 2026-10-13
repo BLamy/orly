@@ -1,71 +1,154 @@
 {
  "shot": "ch06-s02",
- "at": "2026-10-12T09:08:03.043Z",
+ "at": "2026-10-13T04:15:30.436Z",
  "minCapPx": 22,
  "sampled": 16,
- "texts": 15,
+ "texts": 28,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
- "textureTexts": 0,
- "ok": [
-  {
-   "text": "$ 1,250.00",
-   "maxCap": 38.8
-  },
-  {
-   "text": "$ 15.60",
-   "maxCap": 38.5
-  },
-  {
-   "text": "$ 2,400.00",
-   "maxCap": 37.9
-  },
-  {
-   "text": "1998",
-   "maxCap": 23
-  },
-  {
-   "text": "$ 120.75",
-   "maxCap": 38.8
-  },
-  {
-   "text": "$ 38.10",
-   "maxCap": 38.6
-  },
-  {
-   "text": "$ 7.99",
-   "maxCap": 37.4
-  },
+ "subjects": [
   {
    "text": "It is deployed commercially and reads",
-   "maxCap": 27.4
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "several million checks per day.”",
-   "maxCap": 27.4
-  },
-  {
-   "text": "$ 905.43",
-   "maxCap": 38.1
+   "capWhileSubject": 27.4,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "lecun et al., 1998",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "fielded 1996 · ~1 US cheque in 10, per LeCun",
-   "maxCap": 22.1
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "560.00",
+   "maxCap": 24,
+   "why": "not named, not in onScreenText"
   },
   {
-   "text": "$ 560.00",
-   "maxCap": 40.6
+   "text": "48.00",
+   "maxCap": 24,
+   "why": "not named, not in onScreenText"
   },
   {
-   "text": "$ 72.19",
-   "maxCap": 39.3
+   "text": "125.00",
+   "maxCap": 24,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "72.19",
+   "maxCap": 24,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "310.00",
+   "maxCap": 24,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "$ 125.00",
+   "maxCap": 38.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "15.60",
+   "maxCap": 24,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "905.43",
+   "maxCap": 24,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "64.00",
+   "maxCap": 24,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "240.00",
+   "maxCap": 24,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "120.75",
+   "maxCap": 24,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "38.10",
+   "maxCap": 24,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "$ 64.00",
+   "maxCap": 38,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1998",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "$ 240.00",
+   "maxCap": 37.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "7.99",
+   "maxCap": 24,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "$ 38.10",
+   "maxCap": 37.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "$ 48.00",
+   "maxCap": 37,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "$ 310.00",
-   "maxCap": 39
+   "maxCap": 36.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "$ 15.60",
+   "maxCap": 37.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "$ 905.43",
+   "maxCap": 38.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "$ 120.75",
+   "maxCap": 38.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "$ 560.00",
+   "maxCap": 38.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "$ 72.19",
+   "maxCap": 38.1,
+   "why": "not named, not in onScreenText"
   }
- ]
+ ],
+ "textureTexts": 24
 }

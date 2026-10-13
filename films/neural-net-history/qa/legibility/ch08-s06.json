@@ -1,19 +1,24 @@
 {
  "shot": "ch08-s06",
- "at": "2026-10-12T17:53:31.690Z",
+ "at": "2026-10-13T20:21:49.032Z",
  "minCapPx": 22,
  "sampled": 16,
  "texts": 2,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
- "textureTexts": 0,
- "ok": [
+ "subjects": [
   {
    "text": "back-propagation, 1986",
-   "maxCap": 26.4
-  },
+   "capWhileSubject": 26.4,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
   {
    "text": "ILLUSTRATIVE",
-   "maxCap": 22.1
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
   }
- ]
+ ],
+ "textureTexts": 1
 }

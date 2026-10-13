@@ -1,103 +1,134 @@
 {
  "shot": "ch08-s04",
- "at": "2026-10-12T18:26:47.347Z",
+ "at": "2026-10-13T04:13:44.976Z",
  "minCapPx": 22,
  "sampled": 32,
  "texts": 24,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
- "textureTexts": 0,
- "ok": [
-  {
-   "text": "−1",
-   "maxCap": 24.9
-  },
-  {
-   "text": "0",
-   "maxCap": 24.9
-  },
-  {
-   "text": "+1",
-   "maxCap": 24.9
-  },
-  {
-   "text": "−2",
-   "maxCap": 24.9
-  },
-  {
-   "text": "+2",
-   "maxCap": 24.9
-  },
+ "subjects": [
   {
    "text": "ILLUSTRATIVE · a toy stencil, set by hand",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "script onScreenText"
   },
   {
    "text": "AlexNet’s first-layer stencils: 11 × 11 × 3, in colour, learned",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "script onScreenText"
   },
   {
    "text": "(−1)(1)",
-   "maxCap": 22.1
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
   },
   {
    "text": "(0)(0.12)",
-   "maxCap": 22.1
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
   },
   {
    "text": "(1)(0)",
-   "maxCap": 22.1
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
   },
   {
    "text": "(−2)(1)",
-   "maxCap": 22.1
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
   },
   {
    "text": "(2)(0)",
-   "maxCap": 22.1
-  },
-  {
-   "text": "= −4",
-   "maxCap": 24.7
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
   },
   {
    "text": "RELU",
-   "maxCap": 22.1
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
   },
   {
    "text": "below zero counts as zero",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "named: \"below zero counts\""
   },
   {
    "text": "(−1)(0.12)",
-   "maxCap": 22.1
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
   },
   {
    "text": "(0)(0.24)",
-   "maxCap": 22.1
-  },
-  {
-   "text": "(1)(1)",
-   "maxCap": 22.1
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
   },
   {
    "text": "max(0,",
-   "maxCap": 22.1
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "(1)(1)",
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
   },
   {
    "text": "(−2)(0)",
-   "maxCap": 22.1
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
   },
   {
    "text": "(2)(1)",
-   "maxCap": 22.1
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
   },
   {
    "text": "(−1)(0)",
-   "maxCap": 22.1
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
   },
   {
    "text": ") = 3.88",
-   "maxCap": 24.7
+   "capWhileSubject": 24.7,
+   "why": "script onScreenText"
   }
- ]
+ ],
+ "texture": [
+  {
+   "text": "−1",
+   "maxCap": 24.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0",
+   "maxCap": 24.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "+1",
+   "maxCap": 24.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "−2",
+   "maxCap": 24.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "+2",
+   "maxCap": 24.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "−4",
+   "maxCap": 18.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "= −4",
+   "maxCap": 24.7,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 7
 }

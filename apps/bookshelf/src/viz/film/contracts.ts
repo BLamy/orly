@@ -299,7 +299,24 @@ export interface PuppetSpec {
    *  glance"), applied on every draw: stoop (deg, + = torso and neck forward), chinUp (deg, head lifted),
    *  hairScale (hair mass, 1 = default), rim (a back-top contour rim on every draw that does not pass its own
    *  edgeRim: true, or an explicit edgeRim) */
-  signature?: { stoop?: number; chinUp?: number; hairScale?: number; rim?: boolean | { x: number; y: number; px?: number; alpha?: number } };
+  signature?: {
+    stoop?: number;
+    chinUp?: number;
+    hairScale?: number;
+    /** head size about the neck joint (review round 2: LeCun's broader, rounder head): a number or {x, y} */
+    headScale?: number | { x: number; y: number };
+    /** the rim cut: true = 1.5 px warm rim on the LIGHT-FACING edge (toward o.light when the shot passes it, else
+     *  back-top), or an explicit {x, y} direction; warm = 0..1 blend of the rim toward the mood's warm core */
+    rim?: boolean | { x: number; y: number; px?: number; alpha?: number; warm?: number };
+    /** review round 4 ("line-ups read as identical mannequins"): the person's own idle, drawn whenever a shot
+     *  passes a standing pose (POSES.stand or anything within ~8 deg of it on legs and arms, not walking): one of
+     *  puppet/poses IDLE_GESTURES (shift = weight shift carrying the prop at the waist, rest, clasp = hands behind the back, think = hand at the chin,
+     *  glasses = hand at the glasses, fold = arms folded, pocket = hand at the pocket). It fades out as the pose
+     *  moves away from standing (fully off by ~20 deg), so gestures and walks are untouched. */
+    idle?: 'stand' | 'rest' | 'shift' | 'clasp' | 'think' | 'listen' | 'fold' | 'glasses' | 'pocket';
+    /** head tilt in degrees on every draw (+ = nod down, - = chin up), within +/- 4 */
+    tilt?: number;
+  };
 }
 
 export interface PuppetDrawOpts {
@@ -322,7 +339,7 @@ export interface PuppetDrawOpts {
   /** a rim cut on the figure's own contour on the side facing (x, y) only (the window side): `px` wide in
    *  1080p px (default 1.5), at `alpha` (default 0.6), in env.fill('rim'). Unlike f.rim() it touches only this
    *  figure, so a shot can rim the set on its tops alone and still light the man's window-side edge. */
-  edgeRim?: { x: number; y: number; px?: number; alpha?: number };
+  edgeRim?: { x: number; y: number; px?: number; alpha?: number; warm?: number };
 }
 
 export interface Puppet {
@@ -346,12 +363,19 @@ export interface ScriptLine {
   pauseAfter?: number;
   /** seconds of silence before this line; wins over the previous line's pauseAfter (default 0.45; ignored on a shot's first line, use leadIn) */
   preGap?: number;
-  /** level offset in dB for this line in the narration stem, applied after the per-line ride and word rides and before the speech compressor (e.g. -3 for a hushed opening) */
+  /** level offset in dB for this line in the narration stem, applied as clip gain after the ride and the speech
+   *  dynamics, so it lands as written. Keep |levelDb| <= 1.5 (it stacks on the ride); prefer `level`. */
   levelDb?: number;
+  /** delivery hint the ride honours: 'soft' = 2 dB under the common line level (asides, closing lines) */
+  level?: 'soft';
   /** editorial breaths opened inside the take after a word: {"shape": 0.3} */
   insertGaps?: Record<string, number>;
   /** dB lifts on words the take under-stresses: {"right": 5} */
   wordRides?: Record<string, number>;
+  /** per-word clip gain in film:timeline, from the start of word `from` to the end of word `to` (default: from),
+   *  rampMs (default 30) ramps outside the span; can cut as well as lift, and the line's ride is measured on the
+   *  enveloped clip: [{"from": "Nobody", "db": -2}, {"from": "told", "to": "plan", "db": 4}] */
+  gainEnvelope?: { from: string; to?: string; db: number; rampMs?: number }[];
   /** delivery note for the narrator (not spoken) */
   direction?: string;
   /** synthesis controls (film:narrate): solo = generate this line in its own request (never inside a shot chunk);

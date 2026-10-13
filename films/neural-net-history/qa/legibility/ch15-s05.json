@@ -1,75 +1,149 @@
 {
  "shot": "ch15-s05",
- "at": "2026-10-13T00:09:56.278Z",
+ "at": "2026-10-13T21:40:49.235Z",
  "minCapPx": 22,
- "sampled": 52,
- "texts": 16,
+ "sampled": 51,
+ "texts": 27,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
- "textureTexts": 0,
- "ok": [
+ "subjects": [
+  {
+   "text": "META",
+   "capWhileSubject": 44.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "GOOGLE DEEPMIND",
+   "capWhileSubject": 37.3,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "as of October 2026",
+   "capWhileSubject": 27.5,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "ANTHROPIC",
+   "capWhileSubject": 27,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "OPENAI",
+   "capWhileSubject": 35.8,
+   "why": "drawn as subject (kit card or textRole)"
+  },
   {
    "text": "as of",
-   "maxCap": 34.2
+   "capWhileSubject": 44.3,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "October 2026",
-   "maxCap": 34.2
+   "capWhileSubject": 44.3,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "FEB–SEP 2026",
-   "maxCap": 33.8
+   "capWhileSubject": 35.8,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
-   "text": "AUG: UNLAWFUL",
-   "maxCap": 32.3
+   "text": "…not based on any articulable",
+   "capWhileSubject": 28,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
-   "text": "RETALIATION",
-   "maxCap": 32.3
+   "text": "basis to believe that Anthropic",
+   "capWhileSubject": 28,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
-   "text": "(N.D. CAL.)",
-   "maxCap": 32.3
+   "text": "would actually sabotage its model.”",
+   "capWhileSubject": 28,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
-   "text": "SEP: UPHELD 2–1",
-   "maxCap": 32.3
+   "text": "The Department reasonably feared",
+   "capWhileSubject": 28,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
-   "text": "(D.C. CIR.)",
-   "maxCap": 32.3
+   "text": "judge lin",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "that Anthropic might manipulate",
+   "capWhileSubject": 28,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "Claude's design”",
+   "capWhileSubject": 28,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "N.D. Cal. · Aug 2026 · unlawful retaliation",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "judge katsas",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "D.C. Cir. · Sep 2026 · upheld 2–1",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "APPROVED",
-   "maxCap": 34.2
+   "capWhileSubject": 44.3,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "JULY 2026",
-   "maxCap": 34.2
+   "capWhileSubject": 44.3,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
-   "text": "$1.5B SETTLEMENT",
-   "maxCap": 32.9
-  },
-  {
-   "text": "PIRATED BOOKS",
-   "maxCap": 32.9
+   "text": "ANTHROPIC · $1.5B SETTLEMENT · PIRATED BOOKS",
+   "capWhileSubject": 23,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "…a 'warning shot' for us and for",
-   "maxCap": 30.4
+   "capWhileSubject": 30.4,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "the world”",
-   "maxCap": 30.4
+   "capWhileSubject": 30.4,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "openai",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "August 2026",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   }
- ]
+ ],
+ "texture": [
+  {
+   "text": "GOOGLE",
+   "maxCap": 17.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "DEEPMIND",
+   "maxCap": 17.6,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 2
 }

@@ -63,9 +63,10 @@ export const CHI = {
 const sm = (u: number) => (u <= 0 ? 0 : u >= 1 ? 1 : u * u * (3 - 2 * u));
 const lerp = (a: number, b: number, u: number) => a + (b - a) * u;
 
-/** Chicago appears at this T (s06's fifth-image end, when the narration enters: L0114 re-recorded, "We" at
- *  4.20 s of an 8.42 s shot, so T = 4.20 − 8.42 ≈ −4.22; the camera moves from the first Chicago frame) */
-export const CHI_T0 = -4.22;
+/** the earliest T Chicago can appear (round 3 re-take: s06 lands on "starts", ≈ 4.27 s of a 9.917 s shot, so
+ *  T ≈ −5.64; a little earlier here so a slower re-take still finds the camera moving from its first frame).
+ *  Only the s06 half of chiCam depends on it: for T ≥ 0 (ch01-s07) the move is unchanged */
+export const CHI_T0 = -5.8;
 /** the linear push's origin, fixed so the hand-off into ch01-s07 (T ≥ 0) is unchanged by the re-recording */
 const PUSH_T0 = -3.375;
 /** the shared camera: slow truck + push in s06, an accelerating dolly into the window in s07 */
@@ -101,6 +102,8 @@ let G: {
   escapeLit: Path2D;
   tank: Path2D;
   cuts: Path2D;
+  /** the walk-up's sky edge: cornice cap, parapet blocks, chimney caps, the tank's cap (tops only) */
+  skyline: Path2D;
   mid: Path2D;
   midTank: Path2D;
   far: Path2D;
@@ -267,6 +270,24 @@ function geo() {
     cuts.moveTo(tx - tw / 2 + 2, y);
     cuts.lineTo(tx + tw / 2 - 2, y);
   }
+  // the sky edge, tops only: what the deepening sky rims once it has gone neutral
+  const skyline = new Path2D();
+  const seg = (x0: number, y0: number, x1: number, y1: number) => {
+    skyline.moveTo(x0, y0);
+    skyline.lineTo(x1, y1);
+  };
+  seg(bx0 - 14, roofY - 8, 1000, roofY - 8);
+  seg(1150, roofY - 8, 1476, roofY - 8);
+  seg(1510, roofY - 8, bx1, roofY - 8);
+  seg(1000, roofY - 26, 1040, roofY - 26);
+  seg(1110, roofY - 26, 1150, roofY - 26);
+  seg(1040, roofY - 38, 1110, roofY - 38);
+  seg(756, roofY - 68, 798, roofY - 68);
+  seg(1476, roofY - 50, 1510, roofY - 50);
+  seg(tx - tw / 2 - 2, tTop + 2, tx - 2, tTop - 33);
+  seg(tx + 2, tTop - 33, tx + tw / 2 + 2, tTop + 2);
+  seg(tx - tw / 2 - 4, tBot - 4, tx - tw / 2, tBot - 4);
+  seg(tx + tw / 2, tBot - 4, tx + tw / 2 + 4, tBot - 4);
   // ---------------- L2: the nearer roofs to the left (walk-ups and a warehouse, one tank, chimneys)
   const mid = new Path2D();
   const roofs: [number, number, number][] = [
@@ -381,7 +402,10 @@ function geo() {
   near.rect(P0.x - 600, P0.y, P1.x - P0.x + 600, 900);
   near.rect(P0.x - 600, P0.y - 10, P1.x - P0.x + 606, 12);
   near.rect(P1.x, P2.y, P3.x - P1.x, 900);
-  const C0 = at(150, 520), C1 = at(262, 650);
+  // (review r1, stamp) the stack stands well right of the old spot: the near roof slides ≈ 350 px through s06's
+  // stamp window, so it must start right of the walk-up's base to stay clear of CHICAGO · 1940s (x 64 … 280) until
+  // the stamp has gone
+  const C0 = at(420, 520), C1 = at(532, 650);
   const cw = C1.x - C0.x;
   near.rect(C0.x, C0.y, cw, C1.y - C0.y + 20);
   near.rect(C0.x - 8, C0.y - 12, cw + 16, 14);
@@ -432,7 +456,7 @@ function geo() {
     hang(0.15, 0.24, 70, 'shirt');
     hang(0.9, 0.95, 40, 'towel');
   }
-  G = { bldg, panes, bars, stone, escape, escapeLit, tank, cuts, mid, midTank, far, farLit, girder, piers, near, nearRim, line, wash };
+  G = { bldg, panes, bars, stone, escape, escapeLit, tank, cuts, skyline, mid, midTank, far, farLit, girder, piers, near, nearRim, line, wash };
   return G;
 }
 
@@ -462,6 +486,8 @@ export interface BackdropOpts {
   fog?: number;
   /** bake the static art even under a mixed palette id (a constant crossfadeMood) */
   bake?: boolean;
+  /** 0..1: lift the far skyline (L1) toward the sky's own value, to open a value step between it and the El */
+  farLift?: number;
 }
 /** the far city alone: L1 (stars, moon, skyline), L2 (nearer roofs), a fog sheet, L3 (the El + its train) */
 export function chiBackdrop(f: Frame, o: BackdropOpts) {
@@ -472,7 +498,7 @@ export function chiBackdrop(f: Frame, o: BackdropOpts) {
   const art = (c: C, key: string, L: LayerSpec, pad: number, draw: (cc: C) => void) => {
     if (!stable) return draw(c);
     const r = overscan(L, o.cams, pad);
-    f.cached(`nnh-chi-${o.key}-${key}-${m.id}-${N.toFixed(2)}-${rk(r)}`, Math.ceil(r.w), Math.ceil(r.h), (cc) => {
+    f.cached(`nnh-chi-${o.key}-${key}-${m.id}-${N.toFixed(2)}-${(o.farLift ?? 0).toFixed(2)}-${rk(r)}`, Math.ceil(r.w), Math.ceil(r.h), (cc) => {
       cc.translate(-r.x, -r.y);
       draw(cc);
     })(c, r.x, r.y);
@@ -485,7 +511,7 @@ export function chiBackdrop(f: Frame, o: BackdropOpts) {
       c.restore();
       moon(c, { x: 300, y: 118, r: 15, phase: 0.22, halo: 1.1 * N, craters: false }, env);
     }
-    c.fillStyle = env.fill('set');
+    c.fillStyle = o.farLift ? mixLab(env.fill('set'), env.mood.sky[2], o.farLift) : env.fill('set');
     c.fill(g.far);
     c.fillStyle = withAlpha(mixLab(env.mood.halo, env.mood.core, 0.3), 0.18 + 0.32 * N);
     c.fill(g.farLit);
@@ -648,7 +674,12 @@ function drawWalkUp(c: C, env: PaintEnv, g: NonNullable<typeof G>, lamp: number,
   const ink = env.fill('ink');
   // the brick sits a hair above ink so the ink fire escape, the stone and the cornice read on it
   const brick = mixLab(ink, m.set, 0.12);
-  const glass = mixLab(ink, m.sky[1], 0.22);
+  // (review r1, facade) the unlit glass lifted to ≈ L* 18-20 with a faint backlit sky reflection (stronger in the
+  // upper floors, which see more sky), so the dark walk-up reads as a grid of windows before the lamp clicks on
+  const glass = mixLab(ink, m.sky[2], 0.33);
+  const glassG = c.createLinearGradient(0, CHI.rows[0], 0, CHI.rows[CHI.rows.length - 1] + CHI.winH);
+  glassG.addColorStop(0, mixLab(ink, m.sky[2], 0.38));
+  glassG.addColorStop(1, mixLab(ink, m.sky[2], 0.3));
   c.fillStyle = brick;
   c.fill(g.bldg);
   c.fillStyle = ink;
@@ -656,12 +687,12 @@ function drawWalkUp(c: C, env: PaintEnv, g: NonNullable<typeof G>, lamp: number,
   // stone dressings: lintels + keystones, sills, dentils, string courses
   c.fillStyle = mixLab(brick, m.set, 0.32);
   c.fill(g.stone);
-  c.fillStyle = glass;
+  c.fillStyle = glassG;
   c.fill(g.panes);
   const L = CHI.lamp;
   const k = Math.max(0, Math.min(1, lamp));
   if (k <= 0) {
-    c.fillStyle = glass;
+    c.fillStyle = glassG;
     c.fillRect(L.x, L.y, L.w, L.h);
   } else {
     const gr = c.createLinearGradient(0, L.y, 0, L.y + L.h);
@@ -699,6 +730,12 @@ function drawWalkUp(c: C, env: PaintEnv, g: NonNullable<typeof G>, lamp: number,
   c.strokeStyle = withAlpha(m.rim, 0.2);
   c.lineWidth = 1.1;
   c.stroke(g.cuts);
+  // the sky's catch on the tops (cornice cap, parapet, chimney caps, the tank's cone): a hairline of the sky's own
+  // light, so the silhouette edge still carries once the sky has deepened to a neutral night
+  c.strokeStyle = withAlpha(mixLab(m.sky[1], m.rim, 0.55), 0.6);
+  c.lineWidth = 1.5;
+  c.lineCap = 'round';
+  c.stroke(g.skyline);
   if (k > 0) {
     c.save();
     c.globalCompositeOperation = 'lighter';

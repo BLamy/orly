@@ -121,45 +121,101 @@ export function hallBackdropDark(f: Frame, id: string, cams: Camera3[], o: DarkH
 }
 
 /**
- * L5 pew backs: a row of near-black pew ends and backs whose tops sit ~9% above the frame's bottom edge for the
- * CURRENT camera (vertically pinned to the frame so the bottom 10% always carries the dark anchor; horizontal
- * parallax is true L5 parallax). a = 0..1 rises the row in (from below).
+ * L5 pew backs (reviser r1: real carved pews, a true near plane): near-black pew backs whose capping rail sits ~96 px
+ * (720p; ~144 px at 1080p) above the frame's bottom edge for the CURRENT camera (vertically pinned so the bottom of
+ * frame always carries the dark anchor; horizontal parallax is true L5 parallax). Each bay of the back is a sunk
+ * panel PIERCED with a quatrefoil (the hall glows through the holes); pew ends rise above the rail every ~240 px,
+ * each with a carved poppyhead finial. a = 0..1 rises the row in (from below).
  */
 export function pewBacks(f: Frame, id: string, cams: Camera3[], a: number): void {
   if (a <= 0.01) return;
   const cam = f.cam;
+  const RISE = 96;
   f.layer('L5', (c, env) => {
-    const bottom = toLayer(LAYERS.L5, cam, 640, 720).y;
-    const top = toLayer(LAYERS.L5, cam, 640, 720 - 66 * a).y;
+    const top = toLayer(LAYERS.L5, cam, 640, 720 - RISE * a).y;
     const r = overscan(LAYERS.L5, cams, 80);
     const W = Math.ceil(r.w);
-    const H = 140;
-    const draw = f.cached(`${id}/pews/${env.mood.id}/${Math.round(r.x)}/${W}`, W, H, (cc) => {
+    const H = 230;
+    const RAIL = 40; // the capping rail's top, in art px (the pew ends and finials stand above it)
+    const draw = f.cached(`${id}/pews2/${env.mood.id}/${Math.round(r.x)}/${W}`, W, H, (cc) => {
       const fg = env.fill('fg');
+      const rimC = env.mood.rim;
       cc.fillStyle = fg;
-      // the continuous pew back (a low rail), with a moulded top edge
-      cc.fillRect(0, 22, W, H - 22);
-      // pew ends every ~230 px: a tall rounded end with a finial
-      for (let x = -40, k = 0; x < W + 240; x += 230 + 30 * hash1(k, 31), k++) {
-        const w = 34;
+      // the back: one slab from the rail down, each bay pierced with a quatrefoil (cut out, so the hall shows through)
+      cc.fillRect(0, RAIL + 10, W, H - RAIL - 10);
+      cc.save();
+      cc.globalCompositeOperation = 'destination-out';
+      for (let x = 14; x + 60 < W; x += 60) {
+        const cx = x + 30, cy = RAIL + 50;
+        const lr = 9.5, off = 8.5;
+        for (const [dx, dy] of [[0, -off], [off, 0], [0, off], [-off, 0]]) {
+          cc.beginPath();
+          cc.arc(cx + dx, cy + dy, lr, 0, Math.PI * 2);
+          cc.fill();
+        }
+      }
+      cc.restore();
+      // the quatrefoils' solid centres (the carving's boss) and the bays' framing stiles
+      for (let x = 14; x + 60 < W; x += 60) {
+        const cx = x + 30, cy = RAIL + 50;
+        cc.beginPath();
+        cc.arc(cx, cy, 4.2, 0, Math.PI * 2);
+        cc.fill();
+        cc.fillRect(x - 3, RAIL + 10, 6, H);
+      }
+      // the capping rail: a moulded top (a bead over a cavetto) a little wider than the back
+      cc.beginPath();
+      cc.moveTo(0, RAIL + 14);
+      cc.lineTo(0, RAIL + 4);
+      cc.quadraticCurveTo(0, RAIL, 6, RAIL);
+      cc.lineTo(W, RAIL);
+      cc.lineTo(W, RAIL + 14);
+      cc.closePath();
+      cc.fill();
+      // pew ends every ~240 px: a tall end with a shaped shoulder and a carved poppyhead (three-lobed) finial
+      const ends: number[] = [];
+      for (let x = 30, k = 0; x < W + 240; x += 232 + 26 * hash1(k, 31), k++) ends.push(x);
+      for (const x of ends) {
+        const w = 40;
         cc.beginPath();
         cc.moveTo(x - w / 2, H);
-        cc.lineTo(x - w / 2, 16);
-        cc.quadraticCurveTo(x - w / 2, 0, x, 0);
-        cc.quadraticCurveTo(x + w / 2, 0, x + w / 2, 16);
+        cc.lineTo(x - w / 2, 30);
+        cc.quadraticCurveTo(x - w / 2, 18, x - w / 2 + 8, 16);
+        cc.lineTo(x + w / 2 - 8, 16);
+        cc.quadraticCurveTo(x + w / 2, 18, x + w / 2, 30);
         cc.lineTo(x + w / 2, H);
         cc.closePath();
         cc.fill();
+        // neck + poppyhead: a central bud and two curled side leaves
+        cc.fillRect(x - 4, 6, 8, 12);
         cc.beginPath();
-        cc.arc(x, -6, 6, 0, Math.PI * 2);
+        cc.ellipse(x, -4, 6.5, 11, 0, 0, Math.PI * 2);
         cc.fill();
+        for (const s of [-1, 1]) {
+          cc.beginPath();
+          cc.moveTo(x, 10);
+          cc.quadraticCurveTo(x + s * 15, 10, x + s * 15, -3);
+          cc.quadraticCurveTo(x + s * 15, -10, x + s * 9, -8);
+          cc.quadraticCurveTo(x + s * 11, 1, x + s * 3, 4);
+          cc.closePath();
+          cc.fill();
+        }
+        // a pierced trefoil in the end's face
+        cc.save();
+        cc.globalCompositeOperation = 'destination-out';
+        for (const [dx, dy] of [[0, -5], [-5, 3], [5, 3]]) {
+          cc.beginPath();
+          cc.arc(x + dx, 52 + dy, 4.6, 0, Math.PI * 2);
+          cc.fill();
+        }
+        cc.restore();
       }
-      // a faint rim on the top edge, from the windows
-      cc.fillStyle = withAlpha(env.mood.rim, 0.18);
-      cc.fillRect(0, 22, W, 1.2);
+      // a faint rim on the top edges, from the windows
+      cc.fillStyle = withAlpha(rimC, 0.22);
+      cc.fillRect(6, RAIL, W, 1.3);
+      for (const x of ends) cc.fillRect(x - 12, 16, 24, 1.1);
     });
-    // the rail top (art y 22) lands on `top`; the art runs well past the frame's bottom edge
-    void bottom;
-    draw(c, r.x, top - 22);
+    // the rail top (art y RAIL) lands on `top`; the art runs well past the frame's bottom edge
+    draw(c, r.x, top - RAIL);
   });
 }

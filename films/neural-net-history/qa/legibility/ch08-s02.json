@@ -1,43 +1,53 @@
 {
  "shot": "ch08-s02",
- "at": "2026-10-12T18:26:40.336Z",
+ "at": "2026-10-13T04:13:43.243Z",
  "minCapPx": 22,
  "sampled": 18,
  "texts": 8,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
- "textureTexts": 0,
- "ok": [
+ "subjects": [
   {
    "text": "TORONTO · 2011",
-   "maxCap": 22.1
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "ilya sutskever",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "graduate student",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "alex krizhevsky",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "geoffrey hinton",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "supervisor",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "BEDROOM (CHM) · LAB (NVIDIA)",
-   "maxCap": 23.6
+   "capWhileSubject": 23.6,
+   "why": "script onScreenText"
   },
   {
    "text": "2 × GTX 580 · 3 GB",
-   "maxCap": 23.6
+   "capWhileSubject": 23.6,
+   "why": "script onScreenText"
   }
- ]
+ ],
+ "texture": [],
+ "textureTexts": 0
 }

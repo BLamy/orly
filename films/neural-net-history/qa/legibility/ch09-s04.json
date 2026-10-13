@@ -1,356 +1,244 @@
 {
  "shot": "ch09-s04",
- "at": "2026-10-12T19:30:46.953Z",
+ "at": "2026-10-13T06:11:59.202Z",
  "minCapPx": 22,
  "sampled": 25,
  "texts": 46,
- "offenders": [
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
   {
-   "text": "KRIZHEVSKY, SUTSKEVER & HINTON · 2012",
-   "maxCap": 8.6,
-   "minCap": 4.7,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "5.3923px \"Special Elite\""
-  },
-  {
-   "text": "KELLEY 1960 … LE CUN 1985",
-   "maxCap": 11.6,
-   "minCap": 6.4,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "7.26819px \"Special Elite\""
-  },
-  {
-   "text": "DUE 2024",
-   "maxCap": 12.1,
-   "minCap": 6.7,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "7.6px \"Special Elite\""
-  },
-  {
-   "text": "BACK-PROPAGATING",
-   "maxCap": 12.7,
-   "minCap": 7,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "7.9475px \"Special Elite\""
-  },
-  {
-   "text": "ERROR-CORRECTION",
-   "maxCap": 12.7,
-   "minCap": 7,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "7.9475px \"Special Elite\""
-  },
-  {
-   "text": "EXPERIMENTS · 1961 ?",
-   "maxCap": 12.7,
-   "minCap": 7,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "7.9475px \"Special Elite\""
-  },
-  {
-   "text": "TURING · DUE 2000",
-   "maxCap": 12.9,
-   "minCap": 7.1,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "ROSENBLATT · 1961",
-   "maxCap": 12.9,
-   "minCap": 7.1,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "Linguistic capability,",
-   "maxCap": 12.9,
-   "minCap": 7.1,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "related to perceptual",
-   "maxCap": 12.9,
-   "minCap": 7.1,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "experience, is of the",
-   "maxCap": 12.9,
-   "minCap": 7.1,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "essence…",
-   "maxCap": 12.9,
-   "minCap": 7.1,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "COULOM · MAY 2014",
-   "maxCap": 12.9,
-   "minCap": 7.1,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "THE STRUCTURE OF",
-   "maxCap": 14.9,
-   "minCap": 8.2,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "THE NET DOES NOT",
-   "maxCap": 14.9,
-   "minCap": 8.2,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "CHANGE WITH",
-   "maxCap": 14.9,
-   "minCap": 8.2,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "TIME.",
-   "maxCap": 14.9,
-   "minCap": 8.2,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "KNOWLEDGE",
-   "maxCap": 15.1,
-   "minCap": 8.3,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "LEARNING",
-   "maxCap": 15.1,
-   "minCap": 8.3,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "3 in 10 fooled",
-   "maxCap": 15.1,
-   "minCap": 8.3,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "…simply by waiting",
-   "maxCap": 15.1,
-   "minCap": 8.3,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "for faster GPUs and",
-   "maxCap": 15.1,
-   "minCap": 8.3,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "bigger datasets…",
-   "maxCap": 15.1,
-   "minCap": 8.3,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "I think maybe ten",
-   "maxCap": 15.1,
-   "minCap": 8.3,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "years",
-   "maxCap": 15.1,
-   "minCap": 8.3,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "OPENAI · 11 DEC 2015",
-   "maxCap": 15.1,
-   "minCap": 8.7,
-   "first": 2.25,
-   "last": 13.25,
-   "font": "500 6.6px \"IBM Plex Mono\""
+   "text": "could benefit society,",
+   "capWhileSubject": 24,
+   "why": "named: \"benefit society\""
   },
   {
    "text": "damage society if built",
-   "maxCap": 16.9,
-   "minCap": 9.7,
-   "first": 2.25,
-   "last": 13.25,
-   "font": "500 7.39132px \"IBM Plex Mono\""
-  },
-  {
-   "text": "RULES",
-   "maxCap": 17.5,
-   "minCap": 9.6,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "11px \"Special Elite\""
-  },
-  {
-   "text": "1943",
-   "maxCap": 17.5,
-   "minCap": 9.6,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "11px \"Special Elite\""
-  },
-  {
-   "text": "1958",
-   "maxCap": 17.5,
-   "minCap": 9.6,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "11px \"Special Elite\""
-  },
-  {
-   "text": "1969",
-   "maxCap": 17.5,
-   "minCap": 9.6,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "11px \"Special Elite\""
-  },
-  {
-   "text": "HELSINKI ·",
-   "maxCap": 17.5,
-   "minCap": 9.6,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "11px \"Special Elite\""
-  },
-  {
-   "text": "1970",
-   "maxCap": 17.5,
-   "minCap": 9.6,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "11px \"Special Elite\""
-  },
-  {
-   "text": "1986",
-   "maxCap": 17.5,
-   "minCap": 9.6,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "11px \"Special Elite\""
-  },
-  {
-   "text": "1989",
-   "maxCap": 17.5,
-   "minCap": 9.6,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "11px \"Special Elite\""
-  },
-  {
-   "text": "DATA",
-   "maxCap": 17.5,
-   "minCap": 9.6,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "11px \"Special Elite\""
-  },
-  {
-   "text": "FIRE",
-   "maxCap": 17.5,
-   "minCap": 9.6,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "11px \"Special Elite\""
-  },
-  {
-   "text": "2012",
-   "maxCap": 17.5,
-   "minCap": 9.6,
-   "first": 0.25,
-   "last": 13.25,
-   "font": "11px \"Special Elite\""
-  },
-  {
-   "text": "could benefit society,",
-   "maxCap": 17.7,
-   "minCap": 10.2,
-   "first": 2.25,
-   "last": 13.25,
-   "font": "500 7.72729px \"IBM Plex Mono\""
+   "capWhileSubject": 23.1,
+   "why": "named: \"damage society\""
   },
   {
    "text": "or used incorrectly.",
-   "maxCap": 19.4,
-   "minCap": 11.2,
-   "first": 2.25,
-   "last": 13.25,
-   "font": "500 8.50002px \"IBM Plex Mono\""
-  }
- ],
- "textureTexts": 0,
- "ok": [
-  {
-   "text": "WHO TAUGHT",
-   "maxCap": 30.3
-  },
-  {
-   "text": "IT?",
-   "maxCap": 30.3
+   "capWhileSubject": 26.5,
+   "why": "named: \"used incorrectly\""
   },
   {
    "text": "11 DECEMBER 2015",
-   "maxCap": 22.8
+   "capWhileSubject": 22.8,
+   "why": "script onScreenText"
   },
   {
-   "text": "committed $1B ·",
-   "maxCap": 23.1
+   "text": "committed $1B",
+   "capWhileSubject": 23.1,
+   "why": "script onScreenText"
   },
   {
-   "text": "expected to spend a tiny f",
-   "maxCap": 22.2
+   "text": "· expected to spend a tiny f",
+   "capWhileSubject": 22.2,
+   "why": "script onScreenText"
   },
   {
-   "text": "expected to spend a tiny fraction at first",
-   "maxCap": 23.1
+   "text": "· expected to spend a tiny fraction at first",
+   "capWhileSubject": 23.1,
+   "why": "script onScreenText"
   }
- ]
+ ],
+ "texture": [
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 58.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IT?",
+   "maxCap": 58.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "RULES",
+   "maxCap": 33.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 29.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 29.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1943",
+   "maxCap": 33.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 28.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 28.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 28.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 28.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1958",
+   "maxCap": 33.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 24.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 24.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 24.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1969",
+   "maxCap": 33.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "HELSINKI ·",
+   "maxCap": 33.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1970",
+   "maxCap": 33.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1986",
+   "maxCap": 33.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KELLEY 1960 … LE CUN 1985",
+   "maxCap": 22.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1989",
+   "maxCap": 33.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "DATA",
+   "maxCap": 33.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "FIRE",
+   "maxCap": 33.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2012",
+   "maxCap": 33.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 24.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 29.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ROSENBLATT · 1961",
+   "maxCap": 24.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Linguistic capability,",
+   "maxCap": 24.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "related to perceptual",
+   "maxCap": 24.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "experience, is of the",
+   "maxCap": 24.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "essence…",
+   "maxCap": 24.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KRIZHEVSKY, SUTSKEVER & HINTON · 2012",
+   "maxCap": 16.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "…simply by waiting",
+   "maxCap": 29.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "for faster GPUs and",
+   "maxCap": 29.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "bigger datasets…",
+   "maxCap": 29.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "COULOM · MAY 2014",
+   "maxCap": 24.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "I think maybe ten",
+   "maxCap": 29.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "years",
+   "maxCap": 29.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "DUE 2024",
+   "maxCap": 23.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "OPENAI · 11 DEC 2015",
+   "maxCap": 20.6,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 39
 }

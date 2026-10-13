@@ -15,18 +15,27 @@
  *             hand runs 19% further round the dial
  *   'felt'    a faint paper ghost hand fades up on the WITH TOOLS dial, stopping 20% short of where WITHOUT stopped
  *   'date'    the lamp's pool draws back a little from the stopwatches, as from an old exhibit
+ * REVIEW ROUND 4: (a) the study's shared L6 wing-chair back is off in this shot (during the tilt it flew through as a
+ * soft near-black blob over the right 40 % of frame, +6.1 to +6.8); in its place a slim door-jamb upright on L6
+ * (under 10 % of frame wide, a 2 px warm rim on its lit edge) slides past the right edge during the tilt, so the
+ * move keeps its near plane. (b) Under the ruler's foot a 10 px source line, 'METR estimates · frontier models'
+ * (the rungs are measurements of frontier models; no single lab is implied).
  */
 import { Timeline } from '../../../core';
 import type { Camera3, Frame, LayerSpec, PaintEnv } from '../../../film';
-import { LAYERS, PUPPET_NEAR_BLACK, defineShot, mixLab, toLayer, toScreen, withAlpha } from '../../../film';
-import { FONT } from '../../../film/silhouette/type';
+import { LAYERS, PUPPET_NEAR_BLACK, defineShot, makeCanvas, mixLab, toLayer, toScreen, withAlpha } from '../../../film';
+import { FONT, textRole } from '../../../film/silhouette/type';
 import { hands } from '../cast';
 import { handsEntry } from '../sets/narratorHands';
 import { STUDY, candleX, studyCase, studyNear, studyRoom } from '../sets/study';
-import { shelfStateAt } from '../sets/studyState';
+import { SLOTS, boardStateAt, shelfStateAt } from '../sets/studyState';
+import { WALL_SLOTS } from '../sets/wallOfForecasts';
+import { DEFAULT_POOL, caseBoard } from '../sets/caseBoard';
 import { candleFlame } from '../sets/beliefCandle';
 import { monotone } from '../sets/ch02-s05b-util';
-import { clamp01, label15, lerp, pulse, screen, sm, tq12, win } from '../sets/ch15-s01-kit';
+import { clamp01, label15, lerp, screen, sm, tq12, win } from '../sets/ch15-s01-kit';
+import { RULER, drawFoldingRuler } from '../sets/ch15-s04-ruler';
+import { XRAY, XRAY_GLYPH_WARM, XRAY_REST } from '../sets/xrayColumn';
 
 const ID = 'ch15-s04';
 type C = CanvasRenderingContext2D;
@@ -36,13 +45,11 @@ const V1 = shelfStateAt(ID, 'end');
 const SX = candleX(V1, 'scale');
 const SCALE_V = V1.find((v) => v.id === 'scale')!;
 const FLAME = candleFlame({ x: SX, y: STUDY.shelf.y, view: SCALE_V, s: STUDY.shelf.s });
-/** the folding ruler on the study wall under the Wall of Forecasts' far end (L4 world) */
-const RULER = { x: 1836, base: 912, sec: 42, w: 32, n: 9 };
-/** sections: 0 = MINUTES at the foot; each hinge above is one doubling (log scale) */
-const TICKS: Record<number, string> = { 0: 'MINUTES', 4: '1 HOUR', 6: '4 HOURS', 8: '16 HOURS' };
-const PINS: Record<number, string> = { 4: '1 HOUR · MAR 2025', 8: '16 HOURS · MAY 2026' };
 /** the desk top plane (same depth as the near desk, but sharp: a rack focus onto the exhibit) */
 const DESK: LayerSpec = { id: 'ch15DeskTop', z: 650, haze: 0, blur: 0 };
+/** reviser r1: the near bookcase upright at L6 depth but only lightly softened, so its profile and warm rim survive the
+ *  crossing (on the stock L6 blur it read as a soft near-black upright with no edge) */
+const JAMB_L: LayerSpec = { id: 'ch15s04Jamb', z: LAYERS.L6.z, haze: 0, blur: 2.2 };
 const WATCH = { y: STUDY.deskY - 2, r: 46, a: 1528, b: 1668 };
 
 interface B {
@@ -51,6 +58,8 @@ interface B {
   candle: number;
   measure: number;
   every: number;
+  /** the last section (16 HOURS pin) opens on 'twice'; the sign swings on 'long' */
+  twice: number;
   long: number;
   yet: number;
   trial: number;
@@ -58,12 +67,15 @@ interface B {
   date: number;
   climbing: number;
   authors: number;
+  b3: number;
 }
 interface Scene {
   tl: Timeline;
   b: B;
   cam: (t: number) => Camera3;
   CAMS: Camera3[];
+  /** the L6 door-jamb upright (layer-local x, width) */
+  JAMB: { x: number; w: number };
   [k: string]: unknown;
 }
 
@@ -86,6 +98,7 @@ export default defineShot<Scene>({
       candle: T.beat('b1b'),
       measure: T.beat('b2'),
       every: T.word('L1530', 'every'),
+      twice: T.word('L1530', 'twice'),
       long: T.word('L1530', 'long'),
       yet: T.beat('b4'),
       trial: T.word('L1531', 'trial'),
@@ -93,30 +106,37 @@ export default defineShot<Scene>({
       date: T.beat('b7'),
       climbing: T.word('L1530', 'climbing'),
       authors: T.word('L1531', 'authors'),
+      b3: T.beat('b3'),
     };
     const K0 = frameOnLayer(LAYERS.L4, FLAME, { x: 640, y: 236 }, 1.7);
     const K1 = frameOnLayer(LAYERS.L4, FLAME, { x: 640, y: 250 }, 1.86);
-    // the ruler framed to the right of the X-ray box (it stays wholly out of frame) with the study window beyond
-    const K2 = frameOnLayer(LAYERS.L4, { x: RULER.x, y: RULER.base - 100 }, { x: 590, y: 420 }, 1.62);
-    const K3 = frameOnLayer(LAYERS.L4, { x: RULER.x, y: RULER.base - RULER.sec * 5.4 }, { x: 600, y: 380 }, 1.3);
+    // 'measure': a TILT UP from the trimmed flame to the ruler beside the Wall. Review round 1 (composition): trucked
+    // right ~200 px and pushed in ~12% so the ruler and its tick lettering sit on the centre-right third (the ruler at
+    // x ~700, its labels running right to ~1030) and the hardware cabinet and the chat box fall off the frame's left;
+    // as it unfolds it fills about 85% of the frame height
+    // reviser r1: trucked ~210 px further right, so the ruler and its x2 ticks stand on the left third line while
+    // 'grow twice as long' is spoken and the x-ray cabinet is backdrop at the frame's left edge
+    const K2 = frameOnLayer(LAYERS.L4, { x: RULER.x, y: RULER.base }, { x: 440, y: 640 }, 1.46);
+    const K3 = frameOnLayer(LAYERS.L4, { x: RULER.x, y: RULER.base }, { x: 434, y: 652 }, 1.49);
     // the stopwatches sit on the lower third, the trial label beneath them
     const K4 = frameOnLayer(DESK, { x: (WATCH.a + WATCH.b) / 2, y: WATCH.y - 60 }, { x: 640, y: 420 }, 2.15);
     const K5 = frameOnLayer(DESK, { x: (WATCH.a + WATCH.b) / 2 + 6, y: WATCH.y - 58 }, { x: 640, y: 422 }, 2.22);
-    // slow grammar: the tilt eases from 'climbing' into 'every' (~3.5 s); the crane drifts up with the unfolding;
-    // the pan to the desk leaves on 'long' and lands about 'trial'
-    // the axes are staggered so the camera never swings through the near desk lamp: going up, it rises first and
-    // trucks right once it is above the desk; going down to the exhibit, it trucks left first, then descends
-    const tUp0 = b.climbing - 0.1, tUp1 = b.every + 0.1;
-    const tDn0 = b.long - 0.25, tDn1 = b.trial + 0.45;
-    const mid = (u: number) => tUp0 + (tUp1 - tUp0) * u;
-    const fx = monotone([[0, K0.x], [tUp0, K1.x], [mid(0.35), K1.x + (K2.x - K1.x) * 0.08], [tUp1, K2.x], [tDn0, K3.x], [tDn0 + (tDn1 - tDn0) * 0.6, K4.x + (K3.x - K4.x) * 0.1], [tDn1, K4.x], [D, K5.x]]);
-    const fy = monotone([[0, K0.y], [tUp0, K1.y], [mid(0.7), K2.y + (K1.y - K2.y) * 0.08], [tUp1, K2.y], [tDn0, K3.y], [tDn0 + (tDn1 - tDn0) * 0.35, K3.y + (K4.y - K3.y) * 0.06], [tDn1, K4.y], [D, K5.y]]);
+    // the tilt runs from just before 'measure' for ~2.5 s; the ruler then holds while it unfolds (a slow drift);
+    // the pan to the desk leaves after 'long' (the sign has swung) and lands about 'trial'. Going down to the
+    // exhibit it trucks left first, then descends, so the camera never swings through the near desk lamp.
+    const tUp0 = b.measure - 0.2, tUp1 = b.measure + 2.4;
+    const tDn0 = b.long + 0.3, tDn1 = b.trial + 0.45;
+    const fx = monotone([[0, K0.x], [tUp0, K1.x], [tUp1, K2.x], [tDn0, K3.x], [tDn0 + (tDn1 - tDn0) * 0.6, K4.x + (K3.x - K4.x) * 0.1], [tDn1, K4.x], [D, K5.x]]);
+    const fy = monotone([[0, K0.y], [tUp0, K1.y], [tUp1, K2.y], [tDn0, K3.y], [tDn0 + (tDn1 - tDn0) * 0.35, K3.y + (K4.y - K3.y) * 0.06], [tDn1, K4.y], [D, K5.y]]);
     const fz = monotone([[0, K0.z], [tUp0, K1.z], [tUp1, K2.z], [tDn0, K3.z], [tDn1, K4.z], [D, K5.z]]);
     const cam = (t: number): Camera3 => ({ x: fx(t), y: fy(t), z: fz(t), lens: 1 });
     const CAMS: Camera3[] = [];
     for (let i = 0; i <= 40; i++) CAMS.push(cam((D * i) / 40));
+    // review round 4 (a): the door jamb sits at screen x ~1150 at the tilt's mid-point (+6.46), ~90 px wide
+    const cm = cam(b.measure + 0.96);
+    const j0 = toLayer(LAYERS.L6, cm, 1150, 360).x, j1 = toLayer(LAYERS.L6, cm, 1240, 360).x;
     tl.hold(0, D);
-    return { tl, b, cam, CAMS };
+    return { tl, b, cam, CAMS, JAMB: { x: j0, w: j1 - j0 } };
   },
   paint(f, _s, sc) {
     const t = f.t;
@@ -128,24 +148,58 @@ export default defineShot<Scene>({
     const hu = clamp01((tq - b.trim) / 1.5);
     const snipped = hu >= 0.45;
     const tall = sm(clamp01((t - (b.trim + 0.7)) / 0.6));
-    // ruler: sections unfold evenly from 'every' to 'long'
+    // ruler: an even pluck, one section every ~0.73 s from 'every' (section 1 open on 'every') to 'twice'
+    // (section 8, with the 16 HOURS pin, open on 'twice'); the sign drops and swings on 'long'
     const unfold = (i: number) => {
       if (i === 0) return 1;
-      const step = (b.long - b.every) / 8;
-      const at = b.every - 0.15 + (i - 1) * step;
-      return sm(clamp01((tq - at) / 0.42));
+      const step = (b.twice - b.every) / 7;
+      const done = b.every + (i - 1) * step;
+      return sm(clamp01((tq - (done - 0.4)) / 0.4));
     };
-    // 'out of date': from 'authors' the lamp's pool draws back from the exhibit (down 40% over 1.5 s)
-    const pool = 1 - 0.4 * win(t, b.authors, b.authors + 1.5);
+    // 'out of date': from just before 'date' the lamp's pool draws back from the exhibit (radius and light ~30%)
+    // reviser r1: a clear 0.8 s falloff from 'date' (key light about -30 % on the dials) before the cut
+    const pool = 1 - 0.3 * sm(clamp01((t - (b.date - 0.1)) / 0.8));
 
     studyRoom(f, { key: ID, cams: sc.CAMS, outside: { mood: 'duskRose', kind: 'dusk' } });
+    // the case board above the shelf (only its lowest cards graze the top of the opening frames): its pinned slips are
+    // set texture here, not the subject (review round 2: the 1943 slip's 'TIME.' read as a label)
+    f.layer('L4', (c, env) => {
+      textRole(c, 'texture', () => {
+        const pool = STUDY.pool;
+        caseBoard(c, { ...STUDY.board, state: boardStateAt(ID, 'end'), pool: { ...DEFAULT_POOL, ...pool, cx: pool.cx - STUDY.board.x, cy: pool.cy - STUDY.board.y } }, env);
+      });
+      // review round 1: while the ruler is the subject the chat box's cyan is no accent (desaturated, ≤ 50 %)
+      chatBoxMute(c, env, win(t, b.measure - 0.6, b.measure) * (1 - win(t, b.yet, b.yet + 0.6)));
+    });
     studyCase(f, {
       shot: ID,
       when: 'end',
       key: ID,
+      board: false,
       flames: false,
+      // HAND-OFF (round 3): the X-ray cabinet subject rule through the study set, 5.5-12 s: the face rests at 60 %
+      // (XRAY_REST), no slot lifts in this shot, desaturated; the glyph rows warm grey (XRAY_GLYPH_WARM, #cfc6b0)
+      xray: { dim: XRAY_REST },
       extra: (c, env) => {
-        drawRuler(c, env, t, b, unfold);
+        xraySubjectTone(c);
+        // the foot's lettering sets in on 'measure'; at the desk the lamp shade's shadow takes the wall's light
+        const deskShade = win(t, b.yet + 0.4, b.trial + 0.6);
+        // reviser r1: the foot's MINUTES lettering and the source line set in only once the tilt has brought the ruler
+        // inside the safe area (they ran off the right edge at +6.2 / +6.46)
+        drawFoldingRuler(c, env, { t, unfold, signAt: b.long, foot: win(t, b.b3 - 0.45, b.b3 + 0.05), lit: 1 - deskShade });
+        // review round 4 (b), historian balance: the source line under the ladder (about 10 px on screen)
+        const srcA = 0.82 * win(t, b.b3, b.b3 + 0.5) * (1 - deskShade);
+        if (srcA > 0.003) {
+          c.save();
+          c.globalAlpha *= srcA;
+          c.font = `500 6.8px ${FONT.mono}`;
+          (c as C & { letterSpacing: string }).letterSpacing = '0.4px';
+          c.textAlign = 'left';
+          c.textBaseline = 'middle';
+          c.fillStyle = mixLab(env.mood.rim, env.mood.haze, 0.35);
+          textRole(c, 'texture', () => c.fillText('METR estimates · frontier models', RULER.x + RULER.w / 2 + 16, RULER.base + 13));
+          c.restore();
+        }
         // the hands and the snuffer-scissors at the wick
         if (hu > 0 && hu < 1) {
           const E = handsEntry(cam, 'L4');
@@ -181,18 +235,43 @@ export default defineShot<Scene>({
         c.fillRect(0, 0, 1280, 720);
       });
     }
-    studyNear(f, { key: ID, cams: sc.CAMS, file: true, lamp: pool });
+    // review round 4 (a): the chair back is off here (it crossed as a soft near-black blob during the tilt)
+    studyNear(f, { key: ID, cams: sc.CAMS, file: true, lamp: pool, occluders: { chair: false } });
+    // ... and its place on the near plane is taken by a slim door-jamb upright with a warm rim on its lit edge
+    f.layer(JAMB_L, (c, env) => doorJamb(c, env, sc.JAMB, cam));
     // at the desk, the lamp's shade throws the upper wall into shadow (the exhibit is the lit plane)
     const shade = win(t, b.yet + 0.4, b.trial + 0.6);
     if (shade > 0.01) {
       screen(f, (c) => {
         const g = c.createLinearGradient(0, 0, 0, 300);
-        g.addColorStop(0, withAlpha(f.mood.fg, 0.78 * shade));
-        g.addColorStop(0.55, withAlpha(f.mood.fg, 0.4 * shade));
+        g.addColorStop(0, withAlpha(f.mood.fg, 0.9 * shade));
+        g.addColorStop(0.55, withAlpha(f.mood.fg, 0.5 * shade));
         g.addColorStop(1, withAlpha(f.mood.fg, 0));
         c.fillStyle = g;
         c.fillRect(0, 0, 1280, 300);
       });
+    }
+    // review round 1: the Wall's KRIZHEVSKY slip beside the ruler sits back (haze ~40 %, ~1.5 px blur) from 'measure'
+    // to 'Yet', so its lettering never competes with the ruler's
+    const slipK = win(t, b.measure - 0.3, b.measure + 0.3) * (1 - win(t, b.yet - 0.2, b.yet + 0.4));
+    if (slipK > 0.003) {
+      const w4 = WALL_SLOTS.W4, k = STUDY.wall.k;
+      const cx = STUDY.wall.x + w4.x * k, cy = STUDY.wall.y + w4.y * k;
+      const a = toScreen(LAYERS.L4, cam, cx - (w4.w / 2) * k - 14, cy - (w4.h / 2) * k - 22);
+      const z = toScreen(LAYERS.L4, cam, cx + (w4.w / 2) * k + 14, cy + (w4.h / 2) * k + 14);
+      sitBack(f, a.x, a.y, z.x - a.x, z.y - a.y, 1.5 * slipK, mixLab(f.mood.set, f.mood.haze, 0.45), 0.4 * slipK, 14);
+    }
+    // review round 1: behind the stopwatches the candle shelf drops a stop (blur ~1.5 px, haze 0.45), so its sleeves'
+    // lettering never stands between the dials; the exhibit itself is painted sharp after it
+    const dropK = win(t, b.yet - 0.5, b.yet + 0.3);
+    if (dropK > 0.003) sitBack(f, 0, 0, 1280, 720, 1.5 * dropK, mixLab(f.mood.fg, f.mood.haze, 0.35), 0.45 * dropK);
+    // reviser r1: while the ruler is the subject the x-ray cabinet sits back further (haze, a little blur): a backdrop
+    const cabK = win(t, b.measure + 1.4, b.measure + 2.4) * (1 - win(t, b.yet - 0.2, b.yet + 0.4));
+    if (cabK > 0.003) {
+      const xs = STUDY.xray.s;
+      const a = toScreen(LAYERS.L4, cam, STUDY.xray.x - (XRAY.w / 2) * xs - 12, STUDY.xray.y - XRAY.h * xs - 12);
+      const z = toScreen(LAYERS.L4, cam, STUDY.xray.x + (XRAY.w / 2) * xs + 12, STUDY.xray.y + 12);
+      sitBack(f, a.x, a.y, z.x - a.x, z.y - a.y, 1.2 * cabK, mixLab(f.mood.set, f.mood.fg, 0.5), 0.38 * cabK, 16);
     }
     // the exhibit on the desk, sharp
     const showW = win(t, b.yet - 0.6, b.yet + 0.2);
@@ -202,12 +281,133 @@ export default defineShot<Scene>({
     });
     screen(f, (c) => {
       const te = { t, mood: f.mood };
-      // the ruler's label on a soft plate at the ruler's lower left, clear of the sign at its top
-      label15(c, { text: 'METR, Mar 2025 · doubles ≈ every 7 months', sub: 'task length that agents finish half the time', x: 40, y: 500, align: 'left', at: b.measure + 0.1, until: b.long - 0.35, size: 19 }, te);
+      // the ruler's label at the frame's lower left, on an evenly feathered plate (it sits over the board's foot)
+      const ra = win(t, b.measure + 0.1, b.measure + 0.6) * (1 - win(t, b.long + 0.25, b.long + 0.75));
+      // reviser r1: the ruler now stands on the left third, so its label sits at the lower right, clear of the ruler
+      if (ra > 0.003) evenPlate(c, 676, 548, 560, 82, f.mood.ink, 0.78 * ra);
+      label15(c, { text: 'METR, Mar 2025 · doubles ≈ every 7 months', sub: 'task length that agents finish half the time', x: 696, y: 578, align: 'left', at: b.measure + 0.1, until: b.long + 0.25, size: 19 }, te);
       label15(c, { text: 'METR trial, July 2025 · 19% slower · felt 20% faster', x: 640, y: 604, at: b.yet + 0.35, size: 21 }, te);
     });
   },
 });
+
+/** review round 4 (a) / reviser r1: a slim BOOKCASE UPRIGHT on the near plane (cut paper: the stile, the shelf ends
+ *  stepping out of it toward the light, a few book tops on each shelf), its lit (left) edges carrying a 2 px warm rim.
+ *  Drawn on a lightly softened L6-depth plane so the profile and the rim read as it crosses; never a blob */
+function doorJamb(c: C, env: PaintEnv, J: { x: number; w: number }, cam: Camera3) {
+  const k = toScreen(LAYERS.L6, cam, J.x, 360).k;
+  const px = 1 / (1.5 * Math.max(0.2, k)); // one 1080p pixel in L6 units
+  const y0 = -2000, y1 = 3000;
+  const rim = withAlpha(mixLab(env.mood.halo, env.mood.core, 0.5), 1);
+  c.fillStyle = PUPPET_NEAR_BLACK;
+  c.fillRect(J.x, y0, J.w, y1 - y0);
+  // shelf ends every ~170 units (anchored to the room, so they slide with the upright), each with three book tops
+  const top = toLayer(LAYERS.L6, cam, 0, -200).y, bot = toLayer(LAYERS.L6, cam, 0, 920).y;
+  const step = 170;
+  for (let y = Math.floor(top / step) * step; y < bot; y += step) {
+    const sw = J.w * 0.55, th = J.w * 0.12;
+    c.fillStyle = PUPPET_NEAR_BLACK;
+    c.fillRect(J.x - sw, y, sw, th);
+    // book tops standing on it, cut off by the frame of the upright
+    for (let i = 0; i < 3; i++) {
+      const bw = J.w * (0.11 + 0.03 * (i % 2)), bh = J.w * (0.55 + 0.2 * ((i * 7 + Math.round(y)) % 3) / 2);
+      c.fillRect(J.x - sw + 4 + i * (bw + 3), y - bh, bw, bh);
+    }
+    c.fillStyle = rim;
+    c.fillRect(J.x - sw, y, sw, 2.2 * px);
+    c.fillRect(J.x - sw, y, 2.2 * px, th);
+  }
+  // the stile's lit edge
+  c.fillStyle = rim;
+  c.fillRect(J.x, y0, 3 * px, y1 - y0);
+}
+
+/** the chat box's slot (board units → world), muted: its cyan pulled to grey and half its light taken */
+function chatBoxMute(c: C, _env: PaintEnv, k: number) {
+  if (k <= 0.003) return;
+  const O = SLOTS.O;
+  // the card's own screen panel only (the cork around it is left alone)
+  const x = STUDY.board.x + (O.x - O.w / 2 + 6) * STUDY.board.k, y = STUDY.board.y + (O.y - O.h / 2 + 6) * STUDY.board.k;
+  const w = (O.w - 12) * STUDY.board.k, h = (O.h - 12) * STUDY.board.k;
+  c.save();
+  c.beginPath();
+  c.rect(x, y, w, h);
+  c.clip();
+  c.globalCompositeOperation = 'saturation';
+  c.fillStyle = `rgba(128,128,128,${(0.85 * k).toFixed(3)})`;
+  c.fillRect(x, y, w, h);
+  c.globalCompositeOperation = 'multiply';
+  c.fillStyle = `rgba(150,138,124,${(0.55 * k).toFixed(3)})`;
+  c.fillRect(x, y, w, h);
+  c.restore();
+}
+
+/** a screen region sits back: blurred by px and hazed toward col by alpha (one copy, device pixels) */
+let sbx: HTMLCanvasElement | null = null;
+function sitBack(f: Frame, x: number, y: number, w: number, h: number, px: number, col: string, alpha: number, feather = 0) {
+  const s = f.pxScale;
+  const X = Math.max(0, Math.floor(x * s)), Y = Math.max(0, Math.floor(y * s));
+  const W = Math.min(f.c.canvas.width - X, Math.ceil(w * s)), H = Math.min(f.c.canvas.height - Y, Math.ceil(h * s));
+  if (W <= 2 || H <= 2) return;
+  if (!sbx || sbx.width < W || sbx.height < H) sbx = makeCanvas(Math.max(W, sbx?.width ?? 0), Math.max(H, sbx?.height ?? 0));
+  const g = sbx.getContext('2d')!;
+  g.setTransform(1, 0, 0, 1, 0, 0);
+  g.globalCompositeOperation = 'copy';
+  g.filter = `blur(${(px * s).toFixed(2)}px)`;
+  g.drawImage(f.c.canvas, X, Y, W, H, 0, 0, W, H);
+  g.filter = 'none';
+  g.globalCompositeOperation = 'source-over';
+  g.fillStyle = withAlpha(col, alpha);
+  g.fillRect(0, 0, W, H);
+  if (feather > 0) {
+    // feathered edges: no hard box where the region meets the untouched frame
+    const F = feather * s;
+    g.globalCompositeOperation = 'destination-in';
+    g.filter = `blur(${(F * 0.5).toFixed(1)}px)`;
+    g.fillStyle = '#000';
+    g.fillRect(F, F, W - 2 * F, H - 2 * F);
+    g.filter = 'none';
+    g.globalCompositeOperation = 'source-over';
+  }
+  const c = f.c;
+  c.save();
+  c.setTransform(1, 0, 0, 1, 0, 0);
+  c.globalAlpha = 1;
+  c.drawImage(sbx, 0, 0, W, H, X, Y, W, H);
+  c.restore();
+}
+
+/** the cabinet beside the ruler fills ~14 % of the frame here (under the kit's 25 % subject threshold), so the subject
+ *  rule's tone is applied explicitly over its vellum window: chroma pulled down again and the light glyph strokes
+ *  warmed toward warm grey (#cfc6b0), so it never reads as a cyan UI screen next to the warm ruler */
+function xraySubjectTone(c: C) {
+  const s = STUDY.xray.s;
+  c.save();
+  c.translate(STUDY.xray.x, STUDY.xray.y);
+  c.scale(s, s);
+  c.beginPath();
+  c.rect(-XRAY.w / 2, -XRAY.h, XRAY.w, XRAY.h);
+  c.clip();
+  c.globalCompositeOperation = 'saturation';
+  c.fillStyle = 'rgba(128,128,128,0.55)';
+  c.fillRect(-XRAY.w / 2, -XRAY.h, XRAY.w, XRAY.h);
+  c.globalCompositeOperation = 'color';
+  c.globalAlpha = 0.85;
+  c.fillStyle = XRAY_GLYPH_WARM;
+  c.fillRect(-XRAY.w / 2, -XRAY.h, XRAY.w, XRAY.h);
+  c.restore();
+}
+
+/** an evenly feathered rounded plate (screen px): solid in the middle, soft at every edge (not a radial smudge) */
+function evenPlate(c: C, x: number, y: number, w: number, h: number, ink: string, alpha: number) {
+  c.save();
+  c.filter = 'blur(10px)';
+  c.fillStyle = withAlpha(ink, alpha);
+  c.beginPath();
+  c.roundRect(x + 10, y + 10, w - 20, h - 20, 10);
+  c.fill();
+  c.restore();
+}
 
 // ===================================================================================================== snuffer-scissors
 function scissors(c: C, env: PaintEnv, x: number, y: number, ang: number, open: number) {
@@ -233,160 +433,6 @@ function scissors(c: C, env: PaintEnv, x: number, y: number, ang: number, open: 
   c.restore();
 }
 
-// ===================================================================================================== the ruler
-function drawRuler(c: C, env: PaintEnv, t: number, b: B, unfold: (i: number) => number) {
-  const m = env.mood;
-  const R = RULER;
-  const card = PUPPET_NEAR_BLACK;
-  const tickCol = mixLab(m.rim, '#f3e2bd', 0.35);
-  // the nail at the foot
-  c.fillStyle = mixLab(m.halo, m.set, 0.35);
-  c.beginPath();
-  c.arc(R.x, R.base - 6, 3.5, 0, Math.PI * 2);
-  c.fill();
-  // stacked sections: each swings up about its hinge at the top of the one below, in the wall's plane, like a
-  // carpenter's folding ruler opening (folded = hanging back down over the section below; alternate sides)
-  const brass = mixLab(m.halo, '#e8cf8f', 0.35);
-  const hingeDot = (x: number, y: number) => {
-    c.fillStyle = brass;
-    c.beginPath();
-    c.arc(x, y, 3.4, 0, Math.PI * 2);
-    c.fill();
-    c.fillStyle = withAlpha('#fff6dc', 0.6);
-    c.beginPath();
-    c.arc(x - 0.9, y - 0.9, 1.2, 0, Math.PI * 2);
-    c.fill();
-  };
-  let topY = R.base;
-  for (let i = 0; i < R.n; i++) {
-    const u = unfold(i);
-    if (u <= 0) break;
-    const hingeY = topY;
-    const side = i % 2 ? 1 : -1;
-    const ang = side * (1 - u) * Math.PI; // 0 = straight up; ±π = folded back down
-    c.save();
-    c.translate(R.x, hingeY);
-    c.rotate(ang);
-    c.fillStyle = card;
-    c.fillRect(-R.w / 2, -R.sec, R.w, R.sec + 0.5);
-    // paper-tone ticks along the left edge: ten minor, a major at the section's foot
-    c.fillStyle = withAlpha(tickCol, 0.8);
-    for (let k = 0; k < 10; k++) {
-      const yy = -(k / 10) * R.sec;
-      const w = k === 0 ? R.w * 0.62 : k === 5 ? R.w * 0.42 : R.w * 0.24;
-      c.fillRect(-R.w / 2, yy - 0.6, w, 1.2);
-    }
-    if (i > 0) {
-      c.font = `600 11px ${FONT.mono}`;
-      c.textAlign = 'right';
-      c.textBaseline = 'middle';
-      c.fillStyle = withAlpha(tickCol, 0.7);
-      c.fillText('×2', R.w / 2 - 3, -R.sec * 0.5);
-    }
-    // the brass hinge at this section's foot (and the next hinge at its top)
-    hingeDot(0, 0);
-    hingeDot(0, -R.sec);
-    c.restore();
-    topY = hingeY - R.sec * Math.cos(ang);
-    if (u < 1) break;
-  }
-  // the date scale beside the ruler: one 7-month span per doubling (the even rhythm, shown not only spoken)
-  {
-    const open = (() => {
-      let n = 0;
-      for (let i = 1; i < R.n; i++) if (unfold(i) >= 0.98) n = i;
-      return n;
-    })();
-    const dx = R.x + R.w / 2 + 6;
-    c.fillStyle = withAlpha(tickCol, 0.55);
-    c.fillRect(dx, R.base - open * R.sec, 1.2, open * R.sec);
-    for (let i = 0; i <= open; i++) {
-      const y = R.base - i * R.sec;
-      c.fillStyle = withAlpha(tickCol, 0.8);
-      c.fillRect(dx, y - 0.6, 7, 1.2);
-      if (i < open) {
-        c.font = `500 10.5px ${FONT.mono}`;
-        c.textAlign = 'left';
-        c.textBaseline = 'middle';
-        c.fillStyle = withAlpha(tickCol, 0.62);
-        c.fillText('7 mo', dx + 6, y - R.sec / 2);
-      }
-    }
-  }
-  // tick labels and the two brass pins (prop lettering, on the wall beside the ruler)
-  for (const [k, txt] of Object.entries(TICKS)) {
-    const i = Number(k);
-    if (unfold(i) < 0.95 && i > 0) continue;
-    const y = R.base - i * R.sec;
-    const a = i === 0 ? 1 : win(t, 0, 1) * clamp01((unfold(i) - 0.95) * 20);
-    c.save();
-    c.globalAlpha *= a;
-    c.fillStyle = withAlpha(tickCol, 0.9);
-    c.fillRect(R.x - R.w / 2 - 12, y - 0.6, 12, 1.2);
-    c.font = `500 15px ${FONT.mono}`;
-    c.textAlign = 'right';
-    c.textBaseline = 'middle';
-    c.fillText(txt, R.x - R.w / 2 - 18, y);
-    c.restore();
-  }
-  for (const [k, txt] of Object.entries(PINS)) {
-    const i = Number(k);
-    const u = clamp01((unfold(i) - 0.9) * 10);
-    if (u <= 0) continue;
-    const y = R.base - i * R.sec;
-    const gl = pulse(t, 0, 0, 0) + 0;
-    c.save();
-    c.globalAlpha *= u;
-    c.fillStyle = mixLab(m.halo, m.core, 0.3);
-    c.beginPath();
-    c.arc(R.x + R.w / 2 + 44, y, 4.5, 0, Math.PI * 2);
-    c.fill();
-    c.fillStyle = withAlpha('#ffffff', 0.5);
-    c.beginPath();
-    c.arc(R.x + R.w / 2 + 42.8, y - 1.3, 1.6, 0, Math.PI * 2);
-    c.fill();
-    c.fillStyle = withAlpha(tickCol, 0.5);
-    c.fillRect(R.x + R.w / 2 + 14, y - 0.5, 26, 1);
-    c.font = `500 14px ${FONT.mono}`;
-    c.textAlign = 'left';
-    c.textBaseline = 'middle';
-    c.fillStyle = withAlpha(tickCol, 0.85);
-    c.fillText(txt, R.x + R.w / 2 + 54, y);
-    c.restore();
-    void gl;
-  }
-  // the last section runs past 16 HOURS; the hand-lettered sign swings from it
-  const last = unfold(R.n - 1);
-  if (last > 0.6) {
-    const y0 = R.base - (R.n - 1) * R.sec - R.sec * 0.6;
-    const tt = t - (b.long - 0.1);
-    const sw = tt > 0 ? 0.22 * Math.sin(tt * 4.2) * Math.exp(-tt * 0.9) : 0;
-    c.save();
-    c.globalAlpha *= clamp01((last - 0.6) * 3);
-    c.translate(R.x - R.w / 2 - 2, y0 - 62);
-    c.rotate(sw);
-    c.strokeStyle = withAlpha(tickCol, 0.6);
-    c.lineWidth = 0.8;
-    c.beginPath();
-    c.moveTo(0, 0);
-    c.lineTo(-14, 12);
-    c.moveTo(0, 0);
-    c.lineTo(-110, 12);
-    c.stroke();
-    c.translate(-124, -6);
-    const paper = mixLab('#d9c39a', m.halo, 0.3);
-    c.fillStyle = paper;
-    c.fillRect(6, 18, 112, 34);
-    c.fillStyle = withAlpha('#2a211b', 0.85);
-    c.font = `italic 400 13px ${FONT.fell}`;
-    c.textAlign = 'center';
-    c.textBaseline = 'middle';
-    c.fillText('UNRELIABLE', 62, 29);
-    c.fillText('ABOVE HERE', 62, 43);
-    c.restore();
-  }
-}
-
 // ===================================================================================================== the stopwatches
 /** WITHOUT stops at this angle (radians from 12 o'clock); WITH TOOLS runs 19% further; the ghost (felt) 20% short */
 const A_WITHOUT = Math.PI * 1.32;
@@ -401,31 +447,50 @@ function drawWatches(c: C, env: PaintEnv, t: number, b: B, pool: number) {
   const aWithout = Math.min(A_WITHOUT, run);
   const aWith = Math.min(A_WITH, run);
   const ghost = win(t, b.felt - 0.1, b.felt + 0.7);
+  // the WITHOUT hand's stop, copied as a faint tick onto the WITH TOOLS bezel once it has stopped: real hand >
+  // WITHOUT mark > ghost hand, read on one dial
+  const tStop = start + A_WITHOUT / speed;
+  const mark = win(tq12(t), tStop + 0.15, tStop + 0.6);
+  // the lamp's pool on the exhibit: full until 'date', then its radius and light draw back ~30% (an old exhibit)
+  const pk = clamp01((pool - 0.7) / 0.3);
+  // on 'date' the pool slides off the exhibit, up and right toward the lamp (as from an old exhibit)
+  const cx = (WATCH.a + WATCH.b) / 2 + (1 - pk) * 150, cy = WATCH.y - 60 - (1 - pk) * 40;
+  const R = 300 * (0.7 + 0.3 * pk);
+  c.save();
+  c.globalCompositeOperation = 'lighter';
+  const pg = c.createRadialGradient(cx, cy + 30, 10, cx, cy + 30, R);
+  pg.addColorStop(0, withAlpha(m.halo, 0.2 * (0.7 + 0.3 * pk)));
+  pg.addColorStop(1, withAlpha(m.halo, 0));
+  c.fillStyle = pg;
+  c.fillRect(cx - R, cy + 30 - R, 2 * R, 2 * R);
+  c.restore();
   // a sharp sliver of desk top under them
   c.fillStyle = mixLab(m.set, m.fg, 0.35);
   c.fillRect(WATCH.a - 140, WATCH.y, WATCH.b - WATCH.a + 280, 6);
   c.fillStyle = withAlpha(m.rim, 0.35 * pool);
   c.fillRect(WATCH.a - 140, WATCH.y, WATCH.b - WATCH.a + 280, 1);
-  watch(c, env, WATCH.a, 'WITHOUT', aWithout, 0, pool);
-  watch(c, env, WATCH.b, 'WITH TOOLS', aWith, ghost, pool);
-  // the lamp's pool drawing back: the exhibit settles into shade
-  const back = 1 - pool;
-  if (back > 0.01) {
-    const cx = (WATCH.a + WATCH.b) / 2, cy = WATCH.y - 60;
-    const g = c.createRadialGradient(cx, cy, 20, cx, cy, 260);
-    g.addColorStop(0, withAlpha(m.fg, 0.55 * back / 0.4));
-    g.addColorStop(1, withAlpha(m.fg, 0));
+  watch(c, env, WATCH.a, 'WITHOUT', aWithout, 0, pk, 0);
+  watch(c, env, WATCH.b, 'WITH TOOLS', aWith, ghost, pk, mark);
+  // as the pool draws back, the shade closes in round the exhibit
+  if (pk < 0.99) {
+    const g = c.createRadialGradient(cx, cy + 20, R * 0.55, cx, cy + 20, R * 1.25);
+    g.addColorStop(0, withAlpha(m.fg, 0.3 * (1 - pk)));
+    g.addColorStop(1, withAlpha(m.fg, 0.8 * (1 - pk)));
     c.fillStyle = g;
-    c.fillRect(cx - 260, cy - 260, 520, 520);
+    c.fillRect(cx - 700, cy - 500, 1400, 1000);
   }
 }
 
-function watch(c: C, env: PaintEnv, x: number, name: string, ang: number, ghost: number, pool: number) {
+function watch(c: C, env: PaintEnv, x: number, name: string, ang: number, ghost: number, pool: number, mark: number) {
   const m = env.mood;
   const r = WATCH.r;
   const cy = WATCH.y - 14 - r;
   const ink = PUPPET_NEAR_BLACK;
-  const face = mixLab(mixLab('#e6d6b4', m.halo, 0.25), m.set, 0.25 + 0.35 * (1 - pool));
+  // review round 1 (light): the dial is lit by the lamp at the upper right: its lit side grades toward the halo, its
+  // far side a stop darker; as the pool slides off on 'date' the whole face falls toward the far side's value
+  const base = mixLab(mixLab('#d2c09a', m.halo, 0.2), m.set, 0.38);
+  const lit = mixLab(base, m.halo, 0.12 + 0.18 * pool);
+  const far = mixLab(base, m.fg, 0.58);
   // the stand foot, the case, the crown and the start button
   c.fillStyle = ink;
   c.beginPath();
@@ -445,14 +510,26 @@ function watch(c: C, env: PaintEnv, x: number, name: string, ang: number, ghost:
   c.rotate(-0.6);
   c.fillRect(-4, -r - 14, 8, 10);
   c.restore();
-  // the brass bezel catching the lamp (from the right)
-  c.strokeStyle = withAlpha(mixLab(m.rim, m.halo, 0.4), 0.8 * pool);
+  // the brass bezel: a rim along its top (the lamp is above), brightest toward the lamp at the upper right
+  c.strokeStyle = withAlpha(mixLab(m.rim, m.halo, 0.4), 0.35 + 0.5 * pool);
   c.lineWidth = 1.6;
   c.beginPath();
-  c.arc(x, cy, r + 4, -Math.PI * 0.45, Math.PI * 0.25);
+  c.arc(x, cy, r + 4, -Math.PI * 0.62, Math.PI * 0.12);
   c.stroke();
-  // the dial
-  c.fillStyle = face;
+  c.strokeStyle = withAlpha(m.rim, 0.3 + 0.25 * pool);
+  c.lineWidth = 1.1;
+  c.beginPath();
+  c.arc(x, cy, r + 5.5, -Math.PI * 0.95, -Math.PI * 0.6);
+  c.stroke();
+  c.beginPath();
+  c.arc(x - 10, cy - r - 21, 9, Math.PI * 1.1, Math.PI * 1.9);
+  c.stroke();
+  // the dial, graded from the lamp side (upper right) to the far side
+  const fg = c.createLinearGradient(x + r * 0.7, cy - r * 0.7, x - r * 0.7, cy + r * 0.7);
+  fg.addColorStop(0, lit);
+  fg.addColorStop(0.45, mixLab(lit, far, 0.35));
+  fg.addColorStop(1, far);
+  c.fillStyle = fg;
   c.beginPath();
   c.arc(x, cy, r, 0, Math.PI * 2);
   c.fill();
@@ -466,13 +543,25 @@ function watch(c: C, env: PaintEnv, x: number, name: string, ang: number, ghost:
     c.fillRect(-0.6, -r + 3, 1.2, L);
     c.restore();
   }
+  // the WITHOUT stop, copied onto this dial (review round 1: twice as long and in the WITHOUT hand's own ink, so
+  // 'ran further than without' reads at a glance: real hand > this mark > ghost hand)
+  if (mark > 0.01) {
+    c.save();
+    c.translate(x, cy);
+    c.rotate(A_WITHOUT);
+    c.fillStyle = withAlpha(ink, 0.95 * mark);
+    c.fillRect(-1.6, -r - 4, 3.2, 26);
+    c.restore();
+  }
   // the ghost hand (what they felt): translucent paper, shorter run
   if (ghost > 0.01) {
     c.save();
-    c.globalAlpha *= 0.85 * ghost;
+    // reviser r1: a translucent paper ghost (about 50 %, warm paper tone, a soft edge), never the brightest thing
+    c.globalAlpha *= 0.5 * ghost;
+    c.filter = 'blur(0.6px)';
     c.translate(x, cy);
     c.rotate(A_FELT);
-    c.fillStyle = mixLab('#fbf3df', m.halo, 0.2);
+    c.fillStyle = mixLab('#d9c398', m.halo, 0.3);
     c.beginPath();
     c.moveTo(-1.2, 4);
     c.lineTo(-1.2, -r + 17);

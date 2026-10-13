@@ -87,8 +87,23 @@ export function paintRewindImage(f: Frame, img: RewindImage, u: number, uq = u, 
 // =====================================================================================================
 // 1 · GO STONE — a lit goban seen low across its edge; a hand sets one white stone
 // =====================================================================================================
-const GO = { x: 640, y: 780, s: 10 };
+/** the board sits low (review r1: its top edge near y 620 at 1080p, the box body below the frame) so the stone's
+ *  lift plays in the open air of the upper two thirds, not crammed against the frame top */
+const GO = { x: 640, y: 907, s: 10 };
 const GO_PT = { col: 12, row: 6 };
+/** the hand's scale (× CM·GO.s): small enough that fingers, hand and shirt cuff all sit inside the frame */
+const GO_HAND = 0.48;
+/**
+ * The image's choreography in FORWARD progress u (rewind plays 1 → 0; ch15 plays 0 → 1). Read backwards: it opens on
+ * the forward END state (fingertips resting on the just-placed stone), a click ring contracts INTO the stone, the
+ * stone peels off the board up into the fingers, hand and stone rise together along an arc to the upper third,
+ * and only in the last ≈ 0.2 s does the hand rise out of frame.
+ *   [0, GO_U.enter]        hand enters from above (fwd) / exits (rewind)
+ *   [GO_U.enter, GO_U.land] hand + stone descend along the arc (fwd) / rise (rewind)
+ *   [GO_U.land, GO_U.click] the stone sinks out of the fingers onto the board (fwd) / peels up into them (rewind)
+ *   [GO_U.click, 1]        the click ring expands from the stone (fwd) / contracts into it (rewind); the hand rests
+ */
+const GO_U = { enter: 0.2 / REWIND_STEP, land: 1 - 0.24 / REWIND_STEP, click: 1 - 0.14 / REWIND_STEP };
 const GO_CAMS: Camera3[] = [
   { x: 640, y: 360, z: 10, lens: 1 },
   { x: 640, y: 360, z: 100, lens: 1 },
@@ -250,24 +265,38 @@ function paintGo(f: Frame, u: number, uq: number) {
   gradeBack(f, GRADE.goStone);
   const o = { x: GO.x, y: GO.y, s: GO.s, view: 'perspective' as const, count: 46, seed: 2016, bowls: true };
   const target = goBoard.point(o, GO_PT.col, GO_PT.row);
-  const hover = { x: target.x + 60, y: target.y - 200 };
-  // forward: the hand lowers the stone (0 → .5), lets go (.5 → .6), withdraws (.6 → 1); on the twos
-  let p: { x: number; y: number };
-  let holding: boolean;
-  if (uq < 0.5) {
-    const e = sm(uq / 0.5);
-    p = { x: lerp(hover.x, target.x, e), y: lerp(hover.y, target.y, e) };
-    holding = true;
-  } else if (uq < 0.6) {
-    p = target;
-    holding = uq < 0.55;
-  } else {
-    const e = sm((uq - 0.6) / 0.4);
-    p = { x: lerp(target.x, hover.x + 40, e), y: lerp(target.y, hover.y - 60, e) };
-    holding = false;
-  }
   const k = CM * GO.s;
   const stoneR = 0.95 * 0.9 * k;
+  /** the stone sits this far up in the grip (fingertips resting on its crown while it lies on the board) */
+  const grip = stoneR * 0.55;
+  // the arc's top: the upper-third line (y ≈ 270 stage ≈ 405 at 1080p), a little right of the point
+  const hover = { x: target.x + 48, y: 268 };
+  const gone = { x: hover.x + 34, y: -70 };
+  // hand (fingertip) and stone positions on the twos (see GO_U)
+  let hand: { x: number; y: number };
+  let st: { x: number; y: number };
+  let lift = 0;
+  if (uq < GO_U.enter) {
+    const e = sm(uq / GO_U.enter);
+    hand = { x: lerp(gone.x, hover.x, e), y: lerp(gone.y, hover.y, e) };
+    st = hand;
+    lift = 1;
+  } else if (uq < GO_U.land) {
+    const e = sm((uq - GO_U.enter) / (GO_U.land - GO_U.enter));
+    // an arc, not a straight drop: it bows out to the right on the way
+    hand = { x: lerp(hover.x, target.x, e) + 26 * Math.sin(Math.PI * e), y: lerp(hover.y, target.y - grip, e) };
+    st = hand;
+    lift = 1;
+  } else {
+    hand = { x: target.x, y: target.y - grip };
+    lift = 1 - sm((uq - GO_U.land) / (GO_U.click - GO_U.land));
+    st = { x: target.x, y: target.y - grip * lift };
+  }
+  // the click ring (on ones): forward it leaves the stone as it touches and spreads, fading; played backwards it
+  // appears faint and wide and contracts INTO the stone, bright, the instant before the stone peels off
+  const w = clamp01((u - GO_U.click) / (1 - GO_U.click));
+  const ringA = u > GO_U.click ? 0.62 * Math.pow(1 - w, 0.8) : 0;
+  const ringR = stoneR * (1.15 + 1.9 * w);
   const stone = (c: C, env: PaintEnv, x: number, y: number) => {
     c.beginPath();
     c.ellipse(x, y - stoneR * 0.22, stoneR, stoneR * 0.46, 0, 0, Math.PI * 2);
@@ -279,13 +308,14 @@ function paintGo(f: Frame, u: number, uq: number) {
   };
   // the hero: the board's body and the hand at true ink (ungraded except for the colour cast)
   const heroEnv = (env: PaintEnv): PaintEnv => ({ ...env, fill: (role) => (role === 'ink' || role === 'fg' ? env.mood.ink : env.fill(role)) });
+  const poolY = GO.y - 420;
   f.layer('L4', (c, env0) => {
     const env = heroEnv(env0);
     goBoard(c, o, env);
     // the lamp's pool on the board top
     c.save();
     c.globalCompositeOperation = 'lighter';
-    c.translate(600, 360);
+    c.translate(620, poolY);
     c.scale(1, 0.32);
     const g = c.createRadialGradient(0, 0, 10, 0, 0, 420);
     g.addColorStop(0, withAlpha(env.mood.halo, 0.26));
@@ -293,77 +323,78 @@ function paintGo(f: Frame, u: number, uq: number) {
     c.fillStyle = g;
     c.fillRect(-420, -420, 840, 840);
     c.restore();
-    if (!holding) stone(c, env, target.x, target.y);
-    // the pendant lamp's shade and flex at the top of frame
+    // the stone's contact shadow on the board: full while it lies there, shrinking as it peels off
+    if (lift < 1) {
+      c.save();
+      c.fillStyle = withAlpha(env.mood.ink, 0.55 * (1 - lift));
+      c.beginPath();
+      c.ellipse(target.x + 2, target.y + stoneR * 0.06, stoneR * (1.02 - 0.25 * lift), stoneR * 0.4 * (1 - 0.3 * lift), 0, 0, Math.PI * 2);
+      c.fill();
+      c.restore();
+    }
+    // the click ring: a thin rim ellipse lying on the board round the point
+    if (ringA > 0.01) {
+      c.save();
+      c.globalCompositeOperation = 'lighter';
+      c.strokeStyle = withAlpha(mixLab(env.mood.rim, env.mood.core, 0.5), ringA);
+      c.lineWidth = 1.6;
+      c.beginPath();
+      c.ellipse(target.x, target.y - stoneR * 0.18, ringR, ringR * 0.42, 0, 0, Math.PI * 2);
+      c.stroke();
+      c.restore();
+    }
+    // the pendant lamp's shade and flex, hung into the frame above the board
     c.fillStyle = env.mood.ink;
-    c.fillRect(518, -200, 3, 236);
+    c.fillRect(518, -200, 3, 276);
     c.beginPath();
-    c.moveTo(470, 72);
-    c.quadraticCurveTo(476, 40, 506, 30);
-    c.lineTo(534, 30);
-    c.quadraticCurveTo(564, 40, 570, 72);
+    c.moveTo(470, 112);
+    c.quadraticCurveTo(476, 80, 506, 70);
+    c.lineTo(534, 70);
+    c.quadraticCurveTo(564, 80, 570, 112);
     c.closePath();
     c.fill();
-    // the hand (ink, on the twos), the stone held between index and middle finger; smaller, so the
-    // fingertip and the stone are the subject
-    drawHand(c, env, p.x + 2, p.y - 3, Math.PI * 0.6, 0.62, k * 0.74);
-    if (holding) stone(c, env, p.x, p.y);
+    // the stone, then the hand over it (ink, on the twos): index and middle finger resting on its crown
+    stone(c, env, st.x, st.y);
+    drawHand(c, env, hand.x + 2, hand.y - 3, Math.PI * 0.6, 0.62, k * GO_HAND);
   });
   f.rim({ x: 0.2, y: -1 });
-  f.practical({ x: 520, y: 78, kind: 'lamp', seed: 61, intensity: 0.85, radius: 70 });
-  // L5: the near plane, soft: the opponent's lidded bowl at the lower left and a spindle chair back cutting
-  // the right edge (the pull-back slides them out past the board)
+  f.practical({ x: 520, y: 118, kind: 'lamp', seed: 61, intensity: 0.85, radius: 70 });
+  // L5: the near plane, soft: the two lidded Go bowls (black's and white's) filling the lower corners, the
+  // pull-back sliding them out past the board
   f.layer('L5', (c, env) => {
     const r = overscan(LAYERS.L5, GO_CAMS, 60);
-    bake(f, c, `nnh-rw-go2-L5-${env.mood.id}-${rk(r)}`, r, (cc) => {
-      cc.fillStyle = env.mood.ink;
-      // the bowl: a big turned body cropped by the lower-left corner, its lid set ajar on the rim
-      cc.beginPath();
-      cc.ellipse(-10, 780, 230, 150, 0, Math.PI, 0);
-      cc.lineTo(220, 960);
-      cc.lineTo(-240, 960);
-      cc.closePath();
-      cc.fill();
-      cc.beginPath();
-      cc.ellipse(10, 640, 214, 40, -0.1, 0, Math.PI * 2);
-      cc.fill();
-      cc.beginPath();
-      cc.ellipse(22, 620, 84, 22, -0.1, Math.PI, 0);
-      cc.fill();
-      cc.strokeStyle = withAlpha(env.mood.rim, 0.34);
-      cc.lineWidth = 2.2;
-      cc.beginPath();
-      cc.ellipse(10, 638, 214, 40, -0.1, Math.PI * 1.15, Math.PI * 1.85);
-      cc.stroke();
-      cc.beginPath();
-      cc.ellipse(22, 618, 84, 22, -0.1, Math.PI * 1.2, Math.PI * 1.8);
-      cc.stroke();
-      // the chair back: two turned posts, a crest rail and spindles, cropped by the right edge
-      cc.fillStyle = env.mood.ink;
-      const x0 = 1150, x1 = 1420, top = 430;
-      for (const px of [x0, x1]) {
-        cc.fillRect(px - 15, top - 20, 30, 760 - top + 40);
+    bake(f, c, `nnh-rw-go3-L5-${env.mood.id}-${rk(r)}`, r, (cc) => {
+      const bowl = (cx: number, top: number, w: number, tilt: number) => {
+        const h = w * 0.62;
+        cc.fillStyle = env.mood.ink;
+        // the turned body: shoulders bulging out below the rim, tucking in to a low foot
         cc.beginPath();
-        cc.ellipse(px, top - 26, 20, 20, 0, 0, Math.PI * 2);
+        cc.moveTo(cx - w * 0.43, top);
+        cc.bezierCurveTo(cx - w * 0.58, top + h * 0.3, cx - w * 0.52, top + h * 0.85, cx - w * 0.3, top + h);
+        cc.lineTo(cx + w * 0.3, top + h);
+        cc.bezierCurveTo(cx + w * 0.52, top + h * 0.85, cx + w * 0.58, top + h * 0.3, cx + w * 0.43, top);
+        cc.closePath();
         cc.fill();
-      }
-      cc.beginPath();
-      cc.moveTo(x0, top);
-      cc.quadraticCurveTo((x0 + x1) / 2, top - 40, x1, top);
-      cc.lineTo(x1, top + 46);
-      cc.quadraticCurveTo((x0 + x1) / 2, top + 6, x0, top + 46);
-      cc.closePath();
-      cc.fill();
-      for (let k = 1; k < 5; k++) {
-        const sx = x0 + ((x1 - x0) * k) / 5;
-        cc.fillRect(sx - 5, top + 20, 10, 760 - top);
-      }
-      cc.fillRect(x0, 640, x1 - x0, 22);
-      cc.strokeStyle = withAlpha(env.mood.rim, 0.3);
-      cc.beginPath();
-      cc.moveTo(x0 - 15, top - 18);
-      cc.quadraticCurveTo((x0 + x1) / 2, top - 58, x1 + 15, top - 18);
-      cc.stroke();
+        cc.fillRect(cx - w * 0.32, top + h - 2, w * 0.64, 600);
+        // the lid: a low dome on the rim
+        cc.beginPath();
+        cc.ellipse(cx, top, w * 0.45, w * 0.08, tilt, 0, Math.PI * 2);
+        cc.fill();
+        cc.beginPath();
+        cc.ellipse(cx, top - w * 0.03, w * 0.36, w * 0.1, tilt, Math.PI, 0);
+        cc.fill();
+        // the window light along the lid's far lip and the dome's crown
+        cc.strokeStyle = withAlpha(env.mood.rim, 0.34);
+        cc.lineWidth = 2.2;
+        cc.beginPath();
+        cc.ellipse(cx, top - 1, w * 0.45, w * 0.08, tilt, Math.PI * 1.15, Math.PI * 1.85);
+        cc.stroke();
+        cc.beginPath();
+        cc.ellipse(cx, top - w * 0.03 - 1, w * 0.36, w * 0.1, tilt, Math.PI * 1.2, Math.PI * 1.8);
+        cc.stroke();
+      };
+      bowl(70, 560, 520, -0.06);
+      bowl(1250, 590, 470, 0.07);
     });
   });
   gradeHero(f);
@@ -389,10 +420,10 @@ const FAN_LIGHT: LayerSpec = { id: 'fanLight', z: 1000, haze: 0.03, blur: 0 };
 /**
  * forward: the fans start from rest at FAN_X0 and wind up to FAN_RATE rev/s at u = 1, so played backwards they
  * open at full speed (a smoked veil over the light) and decay to still, crisp blades by ≈ 0.63 s into the image.
- * The status light is on for u ≥ LED_ON (backwards: it dims on the twos ≈ 0.58 s into the image, ≈ 1.83 s in
- * ch01-s06, and is out a frame-pair later).
+ * The status light is on for u ≥ LED_ON (backwards: it dims on the twos ≈ 0.42 s into the image and is out at
+ * ≈ 0.50 s, ≈ 1.75 s in ch01-s06: dark before the cut to the snow).
  */
-const FAN_X0 = 0.16, FAN_RATE = 3.0, LED_ON = 1 - 0.55 / REWIND_STEP;
+const FAN_X0 = 0.16, FAN_RATE = 3.0, LED_ON = 1 - 0.38 / REWIND_STEP;
 function fanRate(u: number) {
   const x = clamp01((u - FAN_X0) / (1 - FAN_X0));
   return FAN_RATE * Math.pow(x, 1.5);
@@ -424,9 +455,79 @@ function bladeGeo() {
   BLADES = P;
   return P;
 }
+/** the lower card's plane: a little deeper than the hero, defocused ≈ 1.5 px */
+const FAN_LOWER: LayerSpec = { id: 'fanLower', z: 1060, haze: 0.1, blur: 1.5 };
+/** one card: blades (a smoked veil while fast), hubs, the shroud with its two openings, the bracket, the edge
+ *  connector and the power plug. Value rule: no outline strokes, top rims only (the opening's upper lip, the
+ *  shroud's top chamfer, the bracket's top). */
+function fanCard(c: C, card: (typeof CARDS)[number], ink: string, rim: string, u: number, detail: number) {
+  const rate = fanRate(u);
+  const turns = fanTurns(u);
+  const shutter = 1 / 24;
+  const smear = rate * Math.PI * 2 * shutter;
+  const K = Math.max(1, Math.min(14, Math.ceil(smear / 0.06)));
+  const a = K === 1 ? 1 : 1 - Math.pow(0.12, 1 / K);
+  const B = bladeGeo();
+  for (let fi = 0; fi < FAN_XS.length; fi++) {
+    const fx = FAN_XS[fi];
+    const base = turns * Math.PI * 2 * (fi % 2 ? -1 : 1) + fi * 0.4 + card.y * 0.01;
+    c.save();
+    c.translate(fx, card.y);
+    c.fillStyle = ink;
+    for (let k = 0; k < K; k++) {
+      c.save();
+      c.globalAlpha = a;
+      c.rotate(base - (fi % 2 ? -1 : 1) * smear * (k / K));
+      c.scale(FAN_R, FAN_R);
+      c.fill(B);
+      c.restore();
+    }
+    c.globalAlpha = 1;
+    c.beginPath();
+    c.arc(0, 0, FAN_R * 0.3, 0, Math.PI * 2);
+    c.fill();
+    c.strokeStyle = withAlpha(rim, 0.3 * detail);
+    c.lineWidth = 1.2;
+    c.beginPath();
+    c.arc(0, 0, FAN_R * 0.22, Math.PI * 1.1, Math.PI * 1.9);
+    c.stroke();
+    c.restore();
+  }
+  const x0 = card.x - card.w / 2, y0 = card.y - card.h / 2;
+  c.fillStyle = ink;
+  c.beginPath();
+  c.roundRect(x0, y0, card.w, card.h, 18);
+  for (const fx of FAN_XS) {
+    c.moveTo(fx + FAN_R, card.y);
+    c.arc(fx, card.y, FAN_R, 0, Math.PI * 2, true);
+  }
+  c.fill('evenodd');
+  for (const fx of FAN_XS) {
+    for (let q = 0; q < 3; q++) {
+      c.save();
+      c.translate(fx, card.y);
+      c.rotate(q * ((Math.PI * 2) / 3) + 0.5);
+      c.fillRect(FAN_R * 0.28, -2, FAN_R * 0.72, 4);
+      c.restore();
+    }
+  }
+  c.fillRect(x0 - 26, y0 - 14, 22, card.h + 40);
+  c.fillRect(x0 + 120, y0 + card.h - 2, 380, 12);
+  c.fillRect(x0 + card.w - 150, y0 - 16, 70, 18);
+  // top rims only: the shroud's top chamfer, the openings' upper lips, the bracket's top
+  c.fillStyle = withAlpha(rim, 0.34 * detail);
+  c.fillRect(x0 + 22, y0 + 8, card.w - 44, 1.3);
+  c.strokeStyle = withAlpha(rim, 0.5 * detail);
+  c.lineWidth = 1.3;
+  for (const fx of FAN_XS) {
+    c.beginPath();
+    c.arc(fx, card.y, FAN_R + 5, Math.PI * 1.15, Math.PI * 1.85);
+    c.stroke();
+  }
+  c.fillRect(x0 - 26, y0 - 14, 22, 1.3);
+}
 function paintFans(f: Frame, u: number, uq: number) {
   f.setMood(FANS_MOOD);
-  const rate = fanRate(u);
   f.camera({ x: 640, y: 360, z: lerp(20, 90, u), lens: 1 });
   f.backlight({ sunX: 640, sunY: 380, sunRadius: 620, intensity: 0.35 });
   // L2: the tower's back panel: ink-dark steel, a few perforations catching the room behind
@@ -505,127 +606,102 @@ function paintFans(f: Frame, u: number, uq: number) {
     });
     for (const card of CARDS) for (const fx of FAN_XS) disc(c, fx - R, card.y - R);
   });
-  gradeBack(f, GRADE.fans);
-  // L4: the hero: blades (ink; a smoked veil while fast, crisp as they stop), hubs, the card shrouds with
-  // their two round openings, the PCIe brackets, the power plugs
-  f.layer('L4', (c, env) => {
-    const ink = env.mood.ink;
-    const rim = env.mood.rim;
-    const turns = fanTurns(u);
-    const shutter = 1 / 24;
-    const smear = rate * Math.PI * 2 * shutter;
-    const K = Math.max(1, Math.min(14, Math.ceil(smear / 0.06)));
-    const a = K === 1 ? 1 : 1 - Math.pow(0.12, 1 / K);
-    const B = bladeGeo();
+  // the backlight leaking round the cards: the grille glows through the gap between them and past their ends
+  // (on the fans' own plane, before the hero), so each card stands as a cut-out against light
+  f.layer(FAN_LIGHT, (c, env) => {
+    c.save();
+    c.globalCompositeOperation = 'lighter';
+    const gy = (CARDS[0].y + CARDS[0].h / 2 + CARDS[1].y - CARDS[1].h / 2) / 2;
+    const g = c.createLinearGradient(0, gy - 70, 0, gy + 70);
+    g.addColorStop(0, withAlpha(env.mood.halo, 0));
+    g.addColorStop(0.5, withAlpha(mixLab(env.mood.halo, env.mood.core, 0.3), 0.3));
+    g.addColorStop(1, withAlpha(env.mood.halo, 0));
+    c.fillStyle = g;
+    c.fillRect(150, gy - 70, 980, 140);
     for (const card of CARDS) {
-      for (let fi = 0; fi < FAN_XS.length; fi++) {
-        const fx = FAN_XS[fi];
-        const base = turns * Math.PI * 2 * (fi % 2 ? -1 : 1) + fi * 0.4 + card.y * 0.01;
-        c.save();
-        c.translate(fx, card.y);
-        c.fillStyle = ink;
-        for (let k = 0; k < K; k++) {
-          c.save();
-          c.globalAlpha = a;
-          c.rotate(base - (fi % 2 ? -1 : 1) * smear * (k / K));
-          c.scale(FAN_R, FAN_R);
-          c.fill(B);
-          c.restore();
-        }
-        c.globalAlpha = 1;
-        // hub with its sticker ring
-        c.beginPath();
-        c.arc(0, 0, FAN_R * 0.3, 0, Math.PI * 2);
-        c.fill();
-        c.strokeStyle = withAlpha(rim, 0.35);
-        c.lineWidth = 1.2;
-        c.beginPath();
-        c.arc(0, 0, FAN_R * 0.22, 0, Math.PI * 2);
-        c.stroke();
-        c.restore();
-      }
-      // the shroud, its two openings cut out
-      const x0 = card.x - card.w / 2, y0 = card.y - card.h / 2;
-      c.fillStyle = ink;
-      c.beginPath();
-      c.roundRect(x0, y0, card.w, card.h, 18);
       for (const fx of FAN_XS) {
-        c.moveTo(fx + FAN_R, card.y);
-        c.arc(fx, card.y, FAN_R, 0, Math.PI * 2, true);
+        const R = FAN_R * 1.9;
+        const h = c.createRadialGradient(fx, card.y, FAN_R * 0.6, fx, card.y, R);
+        h.addColorStop(0, withAlpha(env.mood.halo, 0.22));
+        h.addColorStop(1, withAlpha(env.mood.halo, 0));
+        c.fillStyle = h;
+        c.fillRect(fx - R, card.y - R, 2 * R, 2 * R);
       }
-      c.fill('evenodd');
-      // the opening's four struts (the motor's spider)
-      for (const fx of FAN_XS) {
-        for (let q = 0; q < 3; q++) {
-          c.save();
-          c.translate(fx, card.y);
-          c.rotate(q * ((Math.PI * 2) / 3) + 0.5);
-          c.fillRect(FAN_R * 0.28, -2, FAN_R * 0.72, 4);
-          c.restore();
-        }
-      }
-      // the bracket at left, the edge connector below, the power plug on the top edge
-      c.fillRect(x0 - 26, y0 - 14, 22, card.h + 40);
-      c.fillRect(x0 + 120, y0 + card.h - 2, 380, 12);
-      c.fillRect(x0 + card.w - 150, y0 - 16, 70, 18);
-      // cut-lines catching the light from behind: the shroud's chamfer, the opening rims, the bracket slots
-      c.strokeStyle = withAlpha(rim, 0.32);
-      c.lineWidth = 1.3;
-      c.beginPath();
-      c.roundRect(x0 + 8, y0 + 8, card.w - 16, card.h - 16, 12);
-      c.stroke();
-      c.strokeStyle = withAlpha(rim, 0.5);
-      for (const fx of FAN_XS) {
-        c.beginPath();
-        c.arc(fx, card.y, FAN_R + 5, Math.PI * 1.05, Math.PI * 1.95);
-        c.stroke();
-      }
-      for (let k = 0; k < 5; k++) c.strokeRect(x0 - 20, y0 + 12 + k * 36, 10, 24);
     }
-    // the LED's housing on the top card's edge
-    c.fillStyle = ink;
+    c.restore();
+  });
+  gradeBack(f, GRADE.fans);
+  // the LOWER card sits deeper in the tower: a plane behind the hero, defocused ~1.5 px and lifted ~10 % toward
+  // the haze, with a haze sheet lying between it and the upper card
+  f.layer(FAN_LOWER, (c, env) => {
+    fanCard(c, CARDS[1], mixLab(env.mood.ink, env.mood.haze, 0.1), env.mood.rim, u, 0.55);
+  });
+  {
+    const hy = toScreen(LAYERS.L4, f.cam, 0, CARDS[1].y - 30).y;
+    f.fog({ yCenter: hy, height: 330, alpha: 0.2, drift: -6 });
+  }
+  // L4: the hero (the upper card): blades (ink; a smoked veil while fast, crisp as they stop), hubs, the shroud
+  // with its two round openings, the PCIe bracket, the power plug; the status LED's housing
+  f.layer('L4', (c, env) => {
+    fanCard(c, CARDS[0], env.mood.ink, env.mood.rim, u, 1);
+    c.fillStyle = env.mood.ink;
     c.fillRect(STATUS_LED.x - 14, STATUS_LED.y - 8, 28, 16);
   });
   f.rim({ x: 0, y: -1 });
   gradeHero(f);
-  // L5: the near plane, blurred: the edge of the tower's open side panel at frame left (its folded lip and a
-  // thumbscrew catching the grille light) and a heavy power cable sagging across the lower right corner
+  // L5: the near plane, blurred: the tower's open side panel framing the view at both edges (its folded lip and
+  // a thumbscrew catching the grille light), and (L6, softer still) a heavy power cable looping across the
+  // lower right corner
   f.layer('L5', (c, env) => {
     const ink = mixLab(env.mood.ink, env.mood.fg, 0.5);
     c.fillStyle = ink;
     c.beginPath();
     c.moveTo(-300, -200);
-    c.lineTo(88, -200);
-    c.lineTo(88, 120);
-    c.quadraticCurveTo(70, 140, 70, 170);
-    c.lineTo(70, 900);
+    c.lineTo(118, -200);
+    c.lineTo(118, 120);
+    c.quadraticCurveTo(100, 140, 100, 170);
+    c.lineTo(100, 900);
     c.lineTo(-300, 900);
     c.closePath();
     c.fill();
+    c.beginPath();
+    c.moveTo(1600, -200);
+    c.lineTo(1170, -200);
+    c.lineTo(1170, 560);
+    c.quadraticCurveTo(1186, 584, 1186, 610);
+    c.lineTo(1186, 900);
+    c.lineTo(1600, 900);
+    c.closePath();
+    c.fill();
     c.fillStyle = withAlpha(env.mood.rim, 0.4);
-    c.fillRect(85, -200, 3, 320);
-    c.fillRect(69, 170, 3, 730);
+    c.fillRect(115, -200, 3, 320);
+    c.fillRect(99, 170, 3, 730);
+    c.fillStyle = withAlpha(env.mood.rim, 0.3);
+    c.fillRect(1170, -200, 3, 760);
     c.fillStyle = ink;
     c.beginPath();
-    c.arc(52, 300, 14, 0, Math.PI * 2);
+    c.arc(70, 300, 14, 0, Math.PI * 2);
     c.fill();
     c.strokeStyle = withAlpha(env.mood.rim, 0.3);
     c.lineWidth = 1.5;
     c.beginPath();
-    c.arc(52, 300, 14, Math.PI * 1.1, Math.PI * 1.9);
+    c.arc(70, 300, 14, Math.PI * 1.1, Math.PI * 1.9);
     c.stroke();
+  });
+  f.layer('L6', (c, env) => {
+    const ink = mixLab(env.mood.ink, env.mood.fg, 0.5);
     c.strokeStyle = ink;
     c.lineCap = 'round';
-    c.lineWidth = 30;
+    c.lineWidth = 34;
     c.beginPath();
-    c.moveTo(1360, 430);
-    c.bezierCurveTo(1200, 500, 1090, 640, 1040, 800);
+    c.moveTo(1420, 380);
+    c.bezierCurveTo(1150, 470, 1000, 660, 1100, 860);
     c.stroke();
     c.strokeStyle = withAlpha(env.mood.rim, 0.3);
-    c.lineWidth = 2.4;
+    c.lineWidth = 3;
     c.beginPath();
-    c.moveTo(1360, 415);
-    c.bezierCurveTo(1194, 486, 1080, 626, 1026, 790);
+    c.moveTo(1420, 362);
+    c.bezierCurveTo(1144, 452, 986, 646, 1084, 850);
     c.stroke();
   });
   // the image's one accent: the status light, ungraded, stepping off on the twos (≈ 0.6 s into the image)
@@ -661,8 +737,9 @@ const SNOW_CAMS: Camera3[] = [
   { x: 640, y: 360, z: 0, lens: 1 },
   { x: 640, y: 360, z: 60, lens: 1 },
 ];
-/** flakes' speed multiplier: at 0.75 s per image the climb has to read in 18 frames */
-const SNOW_FALL = 1.5;
+/** flakes' speed multiplier: at 0.75 s per image the climb has to read in 18 frames (review r1: ×1.5 again, so
+ *  stills 0.55 s apart inside the image differ plainly) */
+const SNOW_FALL = 2.25;
 let FENCE: Path2D | null = null;
 function fenceGeo(x0: number, x1: number, y: number, depth: number) {
   if (FENCE) return FENCE;
@@ -699,13 +776,14 @@ function fenceGeo(x0: number, x1: number, y: number, depth: number) {
   FENCE = P;
   return P;
 }
-/** near flakes as streaks: the head leads, the tail trails behind it (dir -1: climbing, tail below) */
+/** near flakes: a soft ROUND head with a very short tail (review r1: ≤ 6 px at 1080p, never a tadpole) trailing
+ *  away from the direction of travel (dir -1: climbing, tail below), in cool haze-white */
 function flakeStreaks(c: C, tf: number, dir: -1 | 1, color: string) {
   const n = 150;
   c.save();
   c.lineCap = 'round';
-  c.strokeStyle = color;
   c.fillStyle = color;
+  c.strokeStyle = color;
   for (let i = 0; i < n; i++) {
     const d = 0.5 + 0.5 * hash1(i, 7101);
     const x0 = -40 + 1360 * (0.5 + 0.5 * hash1(i, 7102));
@@ -713,19 +791,75 @@ function flakeStreaks(c: C, tf: number, dir: -1 | 1, color: string) {
     const v = 120 * SNOW_FALL * (0.65 + 0.9 * d);
     const y = ((((y0 + v * tf) % 820) + 820) % 820) - 50;
     const x = x0 + 16 * Math.sin(tf * 0.9 + i * 1.7) * d;
-    const len = (v / 24) * 2.4;
-    const r = 1.0 + 2.2 * d * d;
-    const tail = dir === -1 ? len : -len;
-    c.globalAlpha = 0.28 + 0.3 * d;
-    c.lineWidth = r * 1.2;
+    const r = 1.2 + 1.3 * d * d;
+    // the tail: stage 2.6 → 4 px (≤ 6 px at 1080p), one soft stroke thinner than the head
+    const tail = (dir === -1 ? 1 : -1) * (2.6 + 1.4 * d);
+    c.globalAlpha = 0.2 * (0.7 + 0.3 * d);
+    c.lineWidth = r * 1.3;
     c.beginPath();
     c.moveTo(x, y);
     c.lineTo(x, y + tail);
     c.stroke();
-    c.globalAlpha = 0.6 + 0.35 * d;
+    // the head: a soft halo, then the round core
+    c.globalAlpha = 0.16 + 0.06 * d;
+    c.beginPath();
+    c.arc(x, y, r * 1.8, 0, Math.PI * 2);
+    c.fill();
+    c.globalAlpha = 0.5 + 0.1 * d;
     c.beginPath();
     c.arc(x, y, r, 0, Math.PI * 2);
     c.fill();
+  }
+  c.restore();
+}
+/** big out-of-focus flakes right at the lens (L5, blurred), travelling ≈ 1.8× the near flakes: the depth cue that
+ *  makes the climb read even in a still pair (review r1) */
+function lensFlakes(c: C, tf: number, color: string) {
+  const n = 16;
+  c.save();
+  c.fillStyle = color;
+  for (let i = 0; i < n; i++) {
+    const d = 0.5 + 0.5 * hash1(i, 7201);
+    const x = -60 + 1400 * (0.5 + 0.5 * hash1(i, 7202)) + 24 * Math.sin(tf * 0.7 + i);
+    const y0 = 1000 * (0.5 + 0.5 * hash1(i, 7203));
+    const v = 120 * SNOW_FALL * 1.8 * (0.8 + 0.5 * d);
+    const y = ((((y0 + v * tf) % 1000) + 1000) % 1000) - 140;
+    const r = 6 + 7 * d;
+    c.globalAlpha = 0.22 + 0.14 * d;
+    c.beginPath();
+    c.arc(x, y, r, 0, Math.PI * 2);
+    c.fill();
+  }
+  c.restore();
+}
+/** the near flakes' plane: between the hero trees and the lens, almost sharp */
+const FLAKES_NEAR: LayerSpec = { id: 'flakesNear', z: 820, haze: 0, blur: 0.5 };
+/** snow lifting off the field (the rewind only): a few soft puffs leave the surface in the near band and climb,
+ *  thinning as they rise; p = rewind progress through the image (0 → 1) */
+function surfacePuffs(c: C, p: number, color: string) {
+  const P = [
+    { x: 300, y: 660, r: 26, ph: 0.0 },
+    { x: 610, y: 690, r: 32, ph: 0.35 },
+    { x: 880, y: 650, r: 22, ph: 0.62 },
+    { x: 1120, y: 700, r: 30, ph: 0.18 },
+  ];
+  c.save();
+  for (const q of P) {
+    const k = (p * 1.25 + q.ph) % 1;
+    const a = Math.sin(Math.PI * k) * 0.32;
+    if (a < 0.01) continue;
+    const y = q.y - 70 * k;
+    const r = q.r * (0.6 + 0.9 * k);
+    const g = c.createRadialGradient(q.x, y, 0, q.x, y, r);
+    g.addColorStop(0, withAlpha(color, a));
+    g.addColorStop(1, withAlpha(color, 0));
+    c.fillStyle = g;
+    c.save();
+    c.translate(q.x, y);
+    c.scale(1.6, 1);
+    c.translate(-q.x, -y);
+    c.fillRect(q.x - r, y - r, 2 * r, 2 * r);
+    c.restore();
   }
   c.restore();
 }
@@ -761,6 +895,8 @@ function paintSnow(f: Frame, u: number, dir: -1 | 1) {
       snowfield(cc, { x0: r.x, x1: r.x + r.w, y: 560, depth: 260, seed: 8, drifts: 6, fence: false }, env);
     });
   });
+  // a soft fog band lying along the field's far edge, so the horizon is a breath of haze, not a ruled line
+  f.fog({ yCenter: toScreen(LAYERS.L4, f.cam, 0, 562).y, height: 64, alpha: 0.32, drift: 6 });
   gradeBack(f, GRADE.snow);
   // the hero: the oak, the birch and the fence at true ink
   f.layer('L4', (c, env0) => {
@@ -776,8 +912,14 @@ function paintSnow(f: Frame, u: number, dir: -1 | 1) {
   f.rim({ x: 0.6, y: -0.3 });
   gradeHero(f);
   // the near band, over the graded frame: big soft flakes right in front of us, streaking as they climb
-  f.layer('L5', (c) => {
-    flakeStreaks(c, tf, dir, mixLab(ROSE.core, ROSE.rim, 0.35));
+  // (the puffs on the blurred near plane; the streaks on a plane just in front of the trees, nearly sharp, so
+  // each flake's head and tail survive the depth blur and the climb reads in a still)
+  f.layer('L5', (c, env) => {
+    if (dir === -1) surfacePuffs(c, 1 - u, mixLab(env.mood.haze, '#f4f2ee', 0.55));
+    lensFlakes(c, tf, mixLab(env.mood.haze, '#f4f2ee', 0.6));
+  });
+  f.layer(FLAKES_NEAR, (c, env) => {
+    flakeStreaks(c, tf, dir, mixLab(env.mood.haze, '#f4f2ee', 0.55));
   });
 }
 
@@ -953,7 +1095,29 @@ function paintKnob(f: Frame, u: number) {
   f.fog('A');
   f.layer('L3', (c, env) => {
     const r = overscan(LAYERS.L3, KNOB_CAMS, 40);
-    bake(f, c, `nnh-rw-knob6-L3-${env.mood.id}-${rk(r)}`, r, (cc) => {
+    bake(f, c, `nnh-rw-knob7-L3-${env.mood.id}-${rk(r)}`, r, (cc) => {
+      // the rack's face plate behind the hero: one flat panel with a continuous lit top edge and lip, a rack
+      // ear with its screw slots at the left, and two engraved rules (it says "a knob on a rack")
+      const plate = mixLab(env.fill('ink'), env.fill('set'), 0.42);
+      const P0 = { x: -300, y: 168, x1: 690, y1: 640 };
+      cc.fillStyle = plate;
+      cc.fillRect(P0.x, P0.y, P0.x1 - P0.x, P0.y1 - P0.y);
+      cc.fillStyle = mixLab(plate, env.fill('ink'), 0.5);
+      cc.fillRect(P0.x1 - 10, P0.y, 10, P0.y1 - P0.y);
+      cc.fillStyle = withAlpha(env.mood.rim, 0.55);
+      cc.fillRect(P0.x, P0.y, P0.x1 - P0.x, 2);
+      cc.fillStyle = withAlpha(env.mood.rim, 0.22);
+      cc.fillRect(P0.x1 - 2, P0.y, 2, P0.y1 - P0.y);
+      cc.fillStyle = withAlpha(env.fill('ink'), 0.5);
+      for (const y of [214, 600]) cc.fillRect(P0.x, y, P0.x1 - P0.x - 12, 1.5);
+      for (const y of [236, 330, 430, 530]) {
+        cc.fillStyle = env.fill('ink');
+        cc.beginPath();
+        cc.roundRect(150, y, 22, 9, 4.5);
+        cc.fill();
+        cc.fillStyle = withAlpha(env.mood.rim, 0.25);
+        cc.fillRect(152, y, 18, 1);
+      }
       cc.fillStyle = env.fill('ink');
       cc.fillRect(640, 432, 900, 18);
       unit(cc, env, 770, 322, 94, 0.5, 0.4, 432);
@@ -974,6 +1138,25 @@ function paintKnob(f: Frame, u: number) {
     c.moveTo(-200, railY + 0.5);
     c.lineTo(800, railY + 0.5);
     c.stroke();
+    // the knob's scale on the plate: a short arc of tick marks round the skirt (−135° … +135°, majors every
+    // 45°), printed in the panel's light, so the pointer reads as a setting
+    {
+      const H = KNOB_HERO;
+      const S = { x: H.x + AX.x * 0.42 * H.R, y: H.y + AX.y * 0.42 * H.R };
+      c.strokeStyle = withAlpha(mixLab(env.mood.rim, env.mood.halo, 0.4), 0.7);
+      c.lineCap = 'butt';
+      for (let i = 0; i <= 18; i++) {
+        const th = ((-135 + i * 15) * Math.PI) / 180;
+        const major = i % 3 === 0;
+        const r0 = H.R * 1.27, r1 = H.R * (major ? 1.44 : 1.36);
+        const sx = Math.sin(th), sy = -Math.cos(th);
+        c.lineWidth = major ? 3 : 1.8;
+        c.beginPath();
+        c.moveTo(S.x + sx * r0 * SQ, S.y + sy * r0);
+        c.lineTo(S.x + sx * r1 * SQ, S.y + sy * r1);
+        c.stroke();
+      }
+    }
     drawKnob(c, KNOB_HERO.x, KNOB_HERO.y, KNOB_HERO.R, a, { ink, rim: env.mood.rim, detail: 1, railY });
   });
   f.rim({ x: 0.3, y: -1 });
@@ -1005,14 +1188,17 @@ const WICK_CAMS: Camera3[] = [
   { x: 640, y: 340, z: 30, lens: 1 },
   { x: 640, y: 340, z: 110, lens: 1 },
 ];
-const LANT = { x: 640, y: 300, r: 66 };
-/** forward: an ember glows from u ≈ .17, the flame takes at .46 and the lantern is full by .8. Played backwards
- *  the glow shrinks into the ember at ≈ 3.9 s, the ember holds (flickering on the twos) and is out at ≈ 4.12 s */
+/** review r1: hung ≈ 40 px higher (clear sky between the tassel and the El girder) and off centre at ≈ 0.6W, on
+ *  the screen position of the window that lights in Chicago (≈ 0.65W, y ≈ 326 at the cut): a match on position */
+const LANT = { x: 780, y: 262, r: 66 };
+/** forward: an ember glows from u ≈ .43, the flame takes at .58 and the lantern is full by .98. Played backwards
+ *  (ch01-s06, image from 3.50 s) the glow shrinks into the ember by ≈ 3.82 s, the ember holds (flickering on the
+ *  twos) and is out at ≈ 3.93 s, on "go": a beat of dark lantern before the cut on "back" */
 export function wickAct(u: number) {
-  return sm((u - 0.46) / 0.34);
+  return sm((u - 0.58) / 0.4);
 }
 export function wickEmber(u: number) {
-  return u >= 0.18 ? 1 : u >= 0.15 ? 0.45 : 0;
+  return u >= 0.48 ? 1 : u >= 0.43 ? 0.45 : 0;
 }
 function paintWick(f: Frame, u: number, uq: number) {
   f.setMood(WICK_MOOD);
@@ -1021,7 +1207,9 @@ function paintWick(f: Frame, u: number, uq: number) {
   f.camera({ x: 640, y: 340, z: lerp(30, 110, u), lens: 1 });
   f.backlight({ sunX: 760, sunY: 470, sunRadius: 820, intensity: 0.7 });
   // behind the lantern, the very city the Rewind lands on (flat-topped blocks, roof tanks, the El)
-  chiBackdrop(f, { cams: WICK_CAMS, key: 'wick', night: 0.5, bake: true });
+  // (review r1, depth) the far skyline lifted a step toward the sky, so far city / El / lantern / near roof make
+  // four values sliding at four speeds in the dolly
+  chiBackdrop(f, { cams: WICK_CAMS, key: 'wick', night: 0.5, bake: true, farLift: 0.3 });
   f.fog('B');
   gradeBack(f, GRADE.wick);
   const wy = LANT.y + LANT.r * 0.38;
@@ -1043,6 +1231,46 @@ function paintWick(f: Frame, u: number, uq: number) {
   });
   f.rim({ x: 0, y: 1 });
   if (act > 0.02) f.practical({ x: LANT.x, y: wy, kind: 'candle', seed: 33, intensity: 0.7 * act, radius: 46 });
+  // L5 (review r1, depth): the near occluder: the dark edge of the roof we watch from across the lower left (coping,
+  // a chimney stack with two pots) and a sagging wire across the lower right, blurred and at true ink
+  f.layer('L5', (c, env) => {
+    const r = overscan(LAYERS.L5, WICK_CAMS, 60);
+    bake(f, c, `nnh-rw-wick-L5-${env.mood.id}-${rk(r)}`, r, (cc) => {
+      const ink = env.mood.ink;
+      cc.fillStyle = ink;
+      cc.beginPath();
+      cc.moveTo(r.x, 640);
+      cc.lineTo(420, 640);
+      cc.lineTo(470, 676);
+      cc.lineTo(560, 676);
+      cc.lineTo(600, r.y + r.h);
+      cc.lineTo(r.x, r.y + r.h);
+      cc.closePath();
+      cc.fill();
+      cc.fillRect(r.x, 630, 430 - r.x, 12); // the coping
+      cc.fillRect(96, 548, 104, 92); // the stack
+      cc.fillRect(88, 538, 120, 12);
+      cc.fillRect(112, 506, 24, 34); // pots
+      cc.fillRect(108, 500, 32, 7);
+      cc.fillRect(156, 516, 20, 24);
+      cc.fillRect(152, 511, 28, 6);
+      cc.fillStyle = withAlpha(env.mood.rim, 0.22);
+      cc.fillRect(r.x, 630, 430 - r.x, 1.6);
+      cc.fillRect(88, 538, 120, 1.6);
+      // the wire: a slack catenary from off frame right, dipping low across the corner
+      cc.strokeStyle = ink;
+      cc.lineWidth = 3.2;
+      cc.beginPath();
+      cc.moveTo(820, r.y + r.h);
+      cc.quadraticCurveTo(1080, 560, r.x + r.w, 520);
+      cc.stroke();
+      cc.lineWidth = 2.2;
+      cc.beginPath();
+      cc.moveTo(940, r.y + r.h);
+      cc.quadraticCurveTo(1160, 630, r.x + r.w, 600);
+      cc.stroke();
+    });
+  });
   gradeHero(f);
   // the ember: a core-only point (≈3 px) seen through the paper, flickering on the twos, after the glow has gone
   const e = ember * (1 - sm(act / 0.25));

@@ -1,8 +1,8 @@
 /**
  * ch10-s10 — talk, think, six times over (serverCyan hall; 9.1 s; cut in). Each word-slip of the worked example spools
  * out a ribbon of light (its residual stream) through a great horizontal loom of six blocks: the 2017 reading half (the
- * encoder), so its threads reach BOTH ways. Numbers: sets/ch10-s10-loom (a real forward pass, seeded untrained weights;
- * said on screen in the hold).
+ * encoder), so its threads reach BOTH ways. Numbers: sets/ch10-s10-loom (a real forward pass with seeded toy
+ * weights; tagged ILLUSTRATIVE lower-right).
  *
  *   0 → 0.85   the shot opens on ch10-s06's toy row (crossed · the · river · bank on its parchment strip, with s05's
  *              mirrors and notes and s09's clock faces pinned above): the step back to the toy; the slips swing down
@@ -13,7 +13,7 @@
  *              then lanterns flash), each 'BLOCK n' header brightening as it is reached; block 6 by ≈ 7.2 s. The camera
  *              trucks right with the front through blocks 1-3, then eases back to reveal all six
  *   hold       on EVERY ribbon a thin bright core runs unbroken through all six blocks (the residual lane) beside the
- *              dimmed side-trips; the honesty caption is read; a 5% push in the last second
+ *              dimmed side-trips; the ILLUSTRATIVE tag holds lower-right; a 5% push in the last second
  */
 import { Timeline } from '../../../core';
 import type { Camera3, PaintEnv } from '../../../film';
@@ -21,6 +21,7 @@ import { MOODS, defineShot, mixLab, withAlpha } from '../../../film';
 import { glow, paperLantern } from '../../../film/silhouette/metaphors/kit';
 import { softPlate } from '../../../film/silhouette/type';
 import { encoderForward } from '../sets/ch10-s10-loom';
+import { rimNear } from '../sets/rimNear';
 import { clockFace } from '../sets/ch10-s09-clock';
 import { INK, clamp01, hallBackdrop, ink, kMirror, lerp, monotone, sm, tq12, vNote, win, wordSlip } from '../sets/ch10-s06-kit';
 import { parchmentPlate } from '../../../film/silhouette/metaphors/kit';
@@ -100,7 +101,7 @@ export default defineShot({
     const front = monotone(pts);
     const cam = (t: number): Camera3 => {
       let c = mixCam(CAM_A, CAM_A2, sm((t - (six - 0.2)) / 1.9));
-      c = mixCam(c, CAM_B, sm((t - (six + 1.4)) / (frontEnd - six - 1.4)));
+      c = mixCam(c, CAM_B, sm((t - (six + 0.9)) / (frontEnd - six - 0.9)));
       return mixCam(c, CAM_C, sm((t - (D - 1.05)) / 1.0));
     };
     const b: B = { D, talk, think, six, over, frontEnd, front, cam };
@@ -116,16 +117,38 @@ export default defineShot({
     hallBackdrop(f, ID, CAMS, { beamY: 70, dim: 0.42 });
     f.layer('L4', (c, env) => loom(c, t, b, env, cam));
     f.rim({ x: 0, y: -1 });
+    // (review) the deepest-black plane: a carved chair back at the lower-left corner, blurred on L5, so the pull-back
+    // slides three planes (hall, loom, chair) against each other and the wide's empty floor band has a foreground
+    rimNear(f, { kind: 'chair', side: 'left', ref: CAM_B, scale: 0.6 });
     // the label sets in once the pull-back has carried the block headers clear of the top band
-    const la = win(t, b.six + 1.8, b.six + 2.3);
+    const la = win(t, b.six + 1.3, b.six + 1.75);
     if (la > 0) {
       softPlate(f.c, 640, 44, 660, 72, CY.fg, 0.6 * la);
       ink(f.c, 'attention → feed-forward, × 6', 640, 54, { size: 29, align: 'center', color: mixLab('#efe3cf', CY.core, 0.2), alpha: la, legible: true });
     }
-    const ha = win(t, b.frontEnd - 0.4, b.frontEnd + 0.1);
-    if (ha > 0) {
-      softPlate(f.c, 640, 596, 560, 56, CY.fg, 0.5 * ha);
-      ink(f.c, 'untrained toy weights: real bindings', 640, 604, { italic: true, size: 25, align: 'center', color: mixLab('#efe3cf', CY.core, 0.2), alpha: ha, legible: true });
+    // (review round 4) the film's standard stamped tag, lower-right, from the moment the loom runs: the toy numbers
+    // are illustrative (as in ch10-s06 and ch08-s09)
+    const ta = win(t, b.talk - 0.3, b.talk + 0.2);
+    if (ta > 0) {
+      const tx = 1176;
+      const ty = 604;
+      const tagCol = mixLab(CY.rim, '#efe3cf', 0.45);
+      const tagO = { font: 'sc' as const, size: 20, weight: 600, tracking: 2.5, align: 'right' as const, color: tagCol, legible: true };
+      // (review) a stamped tag, not text over busy art: an opaque plate the size of the stroked box, feathered at its rim
+      const tw0 = ink(f.c, 'ILLUSTRATIVE', tx, ty, { ...tagO, alpha: 0 });
+      softPlate(f.c, tx - tw0 / 2 - 1, ty - 7.5, tw0 + 40, 52, CY.fg, 0.6 * ta);
+      f.c.save();
+      f.c.globalAlpha *= 0.85 * ta;
+      f.c.fillStyle = CY.fg;
+      f.c.fillRect(tx - tw0 - 10, ty - 24, tw0 + 18, 33);
+      f.c.restore();
+      const tw = ink(f.c, 'ILLUSTRATIVE', tx, ty, { ...tagO, alpha: 0.85 * ta });
+      f.c.save();
+      f.c.globalAlpha *= 0.5 * ta;
+      f.c.strokeStyle = tagCol;
+      f.c.lineWidth = 1.2;
+      f.c.strokeRect(tx - tw - 10, ty - 24, tw + 18, 33);
+      f.c.restore();
     }
   },
 });
@@ -213,9 +236,9 @@ function loom(c: C, t: number, b: B, env: PaintEnv, cam: Camera3) {
     c.restore();
     if (l === 0) {
       const a = win(t, b.talk - 0.1, b.talk + 0.5) * (1 - win(t, b.six - 0.5, b.six - 0.2));
-      ink(c, 'talk', attX(0) + 8, TOP - 46, { italic: true, size: 23, align: 'right', color: CORE, alpha: a, legible: true });
+      ink(c, 'talk', attX(0) + 8, TOP - 76, { italic: true, size: 23, align: 'right', color: CORE, alpha: a, legible: true });
       const a2 = win(t, b.think - 0.1, b.think + 0.5) * (1 - win(t, b.six - 0.5, b.six - 0.2));
-      ink(c, 'think alone', ffX(0) - 12, TOP - 46, { italic: true, size: 23, align: 'left', color: CORE, alpha: a2, legible: true });
+      ink(c, 'think alone', ffX(0) - 12, TOP - 76, { italic: true, size: 23, align: 'left', color: CORE, alpha: a2, legible: true });
     }
   }
 
@@ -233,8 +256,9 @@ function loom(c: C, t: number, b: B, env: PaintEnv, cam: Camera3) {
       const lit1 = litAt(xEnd);
       const base = mixLab(env.fill('set'), env.mood.haze, 0.25);
       const g = c.createLinearGradient(xPrev, 0, xEnd, 0);
-      // ahead of the front a ribbon is dim (0.3); behind it, lit; in the hold all but the lane ease down
-      const keep = 1 - 0.25 * lane;
+      // ahead of the front a ribbon is dim (0.3); behind it, lit; in the hold the bodies drop to ≈ 0.35 so the lane's
+      // 2 px white core reads as one unbroken line beside the dimmed side-trips
+      const keep = 1 - 0.65 * lane;
       g.addColorStop(0, withAlpha(mixLab(base, CORE, 0.12 + 0.7 * lit0), (0.3 + 0.7 * lit0) * keep));
       g.addColorStop(1, withAlpha(mixLab(base, CORE, 0.12 + 0.7 * lit1), (0.3 + 0.7 * lit1) * keep));
       c.save();
@@ -245,7 +269,7 @@ function loom(c: C, t: number, b: B, env: PaintEnv, cam: Camera3) {
       const xl = Math.min(xEnd, fx);
       if (xl > xPrev) {
         c.globalCompositeOperation = 'lighter';
-        c.strokeStyle = withAlpha(CORE, 0.5 * (1 - 0.5 * lane));
+        c.strokeStyle = withAlpha(CORE, 0.5 * (1 - 0.8 * lane));
         c.lineWidth = Math.max(1, w * 0.3);
         c.beginPath();
         c.moveTo(xPrev, y);

@@ -145,12 +145,17 @@ Record what you changed in films/${slug}/film.json stages.fixes["round${round}-g
     }
     // 3. shots and cues in parallel (the score must re-fit any shifted windows if lines were re-narrated)
     const cueNotes = { ...fx.cues }
-    await parallel([
-      () => (Object.keys(shotNotes).length ? run('film-shots', { slug, ...(revoice ? { allShots: true } : { shots: Object.keys(shotNotes) }), notes: shotNotes }) : Promise.resolve(null)),
+    const shotsWanted = !!(Object.keys(shotNotes).length || fx.global?.length)
+    const [fixShots] = await parallel([
+      () => (shotsWanted ? run('film-shots', { slug, ...(revoice ? { allShots: true } : { shots: Object.keys(shotNotes) }), notes: shotNotes, ledger: `round${round}-shots` }) : Promise.resolve(null)),
       () => (Object.keys(cueNotes).length || renarrated.length
         ? run('film-score', { slug, cues: !revoice && Object.keys(cueNotes).length ? Object.keys(cueNotes) : undefined, notes: { ...cueNotes, ...(revoice ? { _clock: 'The narrator was re-cast and the whole film re-narrated: every cue window moved. Re-fit (or recompose) EVERY cue to the new timeline.json and re-render it.' } : renarrated.length ? { _clock: `Shots ${renarrated.join(', ')} were re-narrated and the clock moved: re-fit every cue window that changed.` } : {}) } })
         : Promise.resolve(null)),
     ])
+    // parallel() turns a thrown stage into null: a film-shots run that failed (e.g. its ledger left a routed shot
+    // without an outcome) must stop the loop, not slip through to assemble (review round 3)
+    if (shotsWanted && (!fixShots || fixShots.failedGroups?.length)) return stopped('shots (fix round)', fixShots ? { failedGroups: fixShots.failedGroups } : 'film-shots failed (see its ledger error); re-run to resume')
+    if (shotsWanted) log(`round ${round} shot ledger: ${JSON.stringify(fixShots.ledger?.counts || {})}`)
     asm = await run('film-assemble', { slug, preview: A.preview, publish: A.publish, ...(revoice ? {} : { shots: Object.keys(shotNotes) }) })
     if (asm.status !== 'done') return stopped('assemble (fix round)', asm)
   }

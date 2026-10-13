@@ -1,18 +1,18 @@
 {
  "id": "m20",
- "start": 2009.65,
- "end": 2038.15,
+ "start": 2036.191,
+ "end": 2064.691,
  "file": "films/neural-net-history/score/renders/m20.wav",
  "duration": 34.5,
- "I": -23,
- "LRA": 8.7,
- "TP": -8.5,
+ "I": -22.9,
+ "LRA": 9.2,
+ "TP": -8.6,
  "expected": 34.5,
  "lengthErrorMs": 0,
  "lengthOk": true,
  "spectrogram": "films/neural-net-history/score/analysis/m20.png",
  "cueSeconds": 28.5,
  "cps": 1,
- "lastStrikeLocal": 23.02,
- "lastStrike": 2032.67
+ "lastStrikeLocal": 27.5,
+ "lastStrike": 2063.691
 }

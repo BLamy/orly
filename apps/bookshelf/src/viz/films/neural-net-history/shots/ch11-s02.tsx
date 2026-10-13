@@ -26,6 +26,7 @@
 import { Timeline } from '../../../core';
 import type { Camera3, Frame, PaintEnv } from '../../../film';
 import { LAYERS, defineShot, hash1, mixLab, overscan, toLayer, toScreen, withAlpha } from '../../../film';
+import { cardProbe, legibleSize } from '../../../film/silhouette/type';
 import { FONT } from '../../../film/silhouette/type';
 import { hands } from '../cast';
 import { HAND_LEN, type Pt } from '../sets/narratorHands';
@@ -34,10 +35,10 @@ import { bankersLamp, candlestick } from '../../../film/silhouette/props';
 import type { LayerSpec } from '../../../film';
 import { LIT_HEIGHT, SLOTS, shelfStateAt, xrayBandsAt } from '../sets/studyState';
 import { vellumBox, vellumHalo } from '../sets/ch11-s01-vellum';
-import { candleFlame } from '../sets/beliefCandle';
+import { candleFlame, fontForYear } from '../sets/beliefCandle';
 import { DEFAULT_POOL, oxblood, poolAt } from '../sets/caseBoard';
 import { screenPass } from '../sets/ch06-s01-kit';
-import { WINDOW_CAM, clamp01, lerp, libraryRoom, mixCam, pinArm, sm, tq12, win } from '../sets/ch11-s01-kit';
+import { LIBV, LIB_WINDOW, WINDOW_CAM, clamp01, lerp, libraryRoom, mixCam, pinArm, sm, tq12, win } from '../sets/ch11-s01-kit';
 import { CARD19, CARD85, GPT_CARD, GW_CARD, drawQuoteCard, lineageCard, type QuoteCardGeo } from '../sets/ch11-s02-cards';
 
 type C = CanvasRenderingContext2D;
@@ -49,7 +50,8 @@ const CYC = V.find((v) => v.id === 'cyc')!;
 const CYC_FLAME = candleFlame({ x: CYC_X, y: STUDY.shelf.y, view: CYC, s: STUDY.shelf.s });
 /** the shelf views with Cyc's label reading as of 2019 ('lit 1984 · still burning': it goes out only in ch13) */
 const V_NAMED = V.map((v) => (v.id === 'cyc' ? { ...v, years: null } : v));
-/** the Cyc taper's label: named through the shelf hold (horizontal, beside the flame, legible) */
+/** the Cyc taper's label: named through the shelf hold (drawn by the shot BELOW THE SHELF LIP, review round 3: beside
+ *  the flame it sat over the neighbouring candle's 'NEURAL NETS ARE FIDDLY' wax lettering) */
 function cycNamed(t: number, b: B): number {
   return win(t, b.taper - 0.3, b.taper + 0.3) * (1 - win(t, b.D - 0.9, b.D - 0.35));
 }
@@ -59,38 +61,59 @@ const BOARD0: Camera3 = { x: 868, y: 330, z: 190, lens: 1 };
 const BOARD1: Camera3 = { x: 872, y: 318, z: 214, lens: 1 };
 /** the push in (≈1.4×) on the C3 → C4 thread, landing on the GPT card on 'writing' */
 const THREAD: Camera3 = { x: 878, y: 292, z: 428, lens: 1 };
-const C19A: Camera3 = { x: CARD19.x + 10, y: CARD19.y - 4, z: 500, lens: 1 };
-const C19B: Camera3 = { x: CARD19.x + 4, y: CARD19.y - 2, z: 540, lens: 1 };
-/** the window as the hero: the glass fills most of the frame, the unlabelled shelves crisp behind it */
-const WIN0: Camera3 = { ...WINDOW_CAM, x: STUDY.window.x + STUDY.window.w / 2, y: 470, z: 575 };
-const WIN1: Camera3 = { ...WINDOW_CAM, x: STUDY.window.x + STUDY.window.w / 2 + 6, y: 466, z: 600 };
+/** the 2019 card framed in the LEFT of the frame (screen ≈ 430, 420), the chat box at right: the glossary tag
+ *  (core/terms.ts, top-left from 'predict') then hangs over plain cork above the FIRE column, not over the WHO TAUGHT
+ *  IT? case card (review round 3) */
+const C19A: Camera3 = { x: CARD19.x + 117, y: CARD19.y - 30, z: 500, lens: 1 };
+const C19B: Camera3 = { x: CARD19.x + 109, y: CARD19.y - 28, z: 540, lens: 1 };
+/** back on the card for the chain, centred, then an 8 % push in (z 540 → 574 is k 2.17 → 2.35 on L4) */
+const C19C0: Camera3 = { x: CARD19.x + 2, y: CARD19.y + 6, z: 540, lens: 1 };
+const C19C1: Camera3 = { x: CARD19.x + 4, y: CARD19.y + 8, z: 574, lens: 1 };
+/** the window as the hero (review round 3): the glass fills ≈ 70 % of the frame width (wall k ≈ 2.9), centred on the
+ *  window (a wall-plane point wx sits at frame centre for cam.x = 640 + (wx − 640)·1.07) */
+const wallCam = (wx: number, wy: number, z: number): Camera3 => ({ ...WINDOW_CAM, x: 640 + (wx - 640) * (STUDY_WALL.z / 1000), y: 360 + (wy - 360) * (STUDY_WALL.z / 1000), z });
+const WIN0: Camera3 = wallCam(STUDY.window.x + STUDY.window.w / 2 + 8, 520, 700);
+const WIN1: Camera3 = wallCam(STUDY.window.x + STUDY.window.w / 2 + 2, 512, 716);
 const PAIR0: Camera3 = { x: (CARD19.x + CARD85.x) / 2 - 30, y: CARD19.y - 4, z: 360, lens: 1 };
 const PAIR1: Camera3 = { x: (CARD19.x + CARD85.x) / 2 + 40, y: CARD19.y - 6, z: 392, lens: 1 };
 /** close on the 1985 card while 'practically nothing' is said (VT323 at ≈ 27 px cap height at 1080p) */
 const C85A: Camera3 = { x: CARD85.x - 6, y: CARD85.y - 2, z: 588, lens: 1 };
 const C85B: Camera3 = { x: CARD85.x + 2, y: CARD85.y - 4, z: 606, lens: 1 };
 /** the pull back on 'raw': the 1985 card at frame left, the study window (its library) at frame right */
-const RAWCAM: Camera3 = { x: 1650, y: 480, z: -215, lens: 1 };
-const SHELF0: Camera3 = { x: CYC_X + 70, y: STUDY.shelf.y - 118, z: 468, lens: 1 };
+/** (review round 3) 40 px lower than before and further back, so the 1985 card, the chat box and the window glass are
+ *  all whole where the thread lands (the Wall of Forecasts' slips no longer cropped at the top edge) */
+const RAWCAM: Camera3 = { x: 1598, y: 440, z: -285, lens: 1 };
+/** the shelf (review round 3): framed higher so the plank and its apron read above the near lip, the label under it */
+const SHELF0: Camera3 = { x: CYC_X + 40, y: STUDY.shelf.y - 70, z: 430, lens: 1 };
 /** the shelf hold (music only to the end): a slow truck along the candles, the taper drifting toward frame centre */
-const SHELF1: Camera3 = { x: CYC_X + 10, y: STUDY.shelf.y - 126, z: 500, lens: 1 };
-const CAMS = [BOARD0, BOARD1, THREAD, C19A, C19B, WIN0, WIN1, PAIR0, PAIR1, C85A, C85B, RAWCAM, SHELF0, SHELF1];
+const SHELF1: Camera3 = { x: CYC_X + 12, y: STUDY.shelf.y - 74, z: 455, lens: 1 };
+const CAMS = [BOARD0, BOARD1, THREAD, C19A, C19B, C19C0, C19C1, WIN0, WIN1, PAIR0, PAIR1, C85A, C85B, RAWCAM, SHELF0, SHELF1];
 
 interface B {
   D: number;
   linPin: number;
   gptPin: number;
   thread0: number;
+  /** the thread reaches the GENERATING WIKIPEDIA card */
+  threadGw: number;
   push0: number;
   blueprint: number;
   goal: number;
   predict: number;
+  /** the gold sheen across 'predict the next word' starts here (0.4 s) */
+  sheen0: number;
   move19: number;
   win0: number;
   win1: number;
+  /** 'labels': the empty tag-hooks glint */
+  labels: number;
   chain0: number;
   chain1: number;
   file0: number;
+  /** the hand pinches the old card on the oldCard beat: the drawing-out starts here */
+  oldCard: number;
+  /** the rack focus 2019 → 1985 ends as 'From' is said */
+  rackEnd: number;
   pair0: number;
   pin85: number;
   rack0: number;
@@ -108,27 +131,41 @@ export default defineShot({
     const tl = new Timeline();
     const D = T.duration;
     const goal = T.beat('newCard');
+    // round 3 (re-recorded narration): the lead-in pins are anchored to the new take. The GENERATING WIKIPEDIA card
+    // is up before the first word; the GPT card lands as 'G P T' is said; the oxblood thread then runs C3-d → GW → GPT,
+    // brisk, landing on 'writing' (the blueprint passing hands)
+    const PIN = 1.1;
+    const gptPin = T.word('L1103', 'G') - 0.45 * PIN;
+    const thread0 = gptPin + PIN + 0.05;
+    const push0 = T.word('L1103', 'Transformer\'s') - 0.8;
+    const blueprint = T.beat('blueprint');
     const b: B = {
       D,
-      linPin: 0.15,
-      gptPin: 1.25,
-      thread0: 2.35,
-      push0: T.word('L1103', 'Transformer\'s') - 0.8,
-      blueprint: T.beat('blueprint'),
+      linPin: Math.min(0.15, T.line('L1103').start - 0.45 * PIN),
+      gptPin,
+      thread0,
+      threadGw: Math.min(blueprint - 0.7, Math.max(push0 + 0.2, thread0 + 0.85)),
+      push0,
+      blueprint,
       goal,
       predict: T.beat('predict'),
+      sheen0: T.word('L1103', 'predict') - 0.15,
       move19: T.word('L1103', 'pages') - 0.2,
       win0: T.beat('noLabels') - 0.12,
       win1: T.word('L1103', 'every') - 0.1,
+      labels: T.beat('noLabels'),
       chain0: T.word('L1103', 'every'),
       chain1: T.wordEnd('L1103', 'answer'),
-      file0: T.beat('oldCard') - 0.1,
+      file0: T.beat('oldCard') - 0.15,
+      oldCard: T.beat('oldCard'),
+      rackEnd: T.line('L1104').start,
       pair0: T.word('L1104', "Lenat's") + 0.05,
       pin85: T.word('L1104', "Lenat's") + 0.05,
       rack0: T.word('L1104', 'practically') - 0.35,
       // the push in on the 1985 card lands as 'practically' is said; the pull back starts on the second 'from'
       close0: T.word('L1104', 'practically') - 0.65,
-      pull0: T.word('L1104', 'from#2') - 0.2,
+      // (the pull back starts just after 'nothing', so the mid-move frames around 'raw' are already wide)
+      pull0: T.word('L1104', 'nothing') + 0.1,
       raw: T.beat('thread'),
       shelf0: T.word('L1104', 'Sensible') - 0.32,
       taper: T.beat('taper'),
@@ -143,19 +180,19 @@ export default defineShot({
     const cam = camAt(t, b);
     f.camera(cam);
     const tq = tq12(t);
-    const flick = t > b.taper - 0.05 && t < b.taper + 0.6 ? 1 - 0.55 * Math.sin(clamp01((t - b.taper + 0.05) / 0.5) * Math.PI) * (1 + 0.3 * Math.sin(t * 60)) : 1;
+    const flick = flickAt(t, b.taper);
     libraryRoom(f, { key: ID, cams: CAMS, crisp: true, windowGlow: 0.25 + 0.6 * win(t, b.raw + 0.3, b.raw + 0.7) + 0.3 * (t > b.win0 && t < b.win1 ? 1 : 0) });
     // the arms enter from the bottom edge below the board (bent at the elbow, never across the chat box)
     const below = toLayer(LAYERS.L4, cam, 700, 820);
     const entry = { R: below, L: below };
-    const rack = win(t, b.rack0, b.rack0 + 0.8);
+    const rack = 0;
     studyCase(f, {
       shot: ID,
       when: 'start',
       key: ID,
       flames: false,
       xray: false,
-      shelf: { views: V_NAMED, over: { cyc: { flame: flick } }, named: { cyc: cycNamed(t, b) } },
+      shelf: { views: V_NAMED, over: { cyc: { flame: flick } }, named: {} },
       extra: (c, env) => {
         // the X-ray as backlit vellum (the round-1 restyle, as in ch11-s01)
         vellumBox(c, env, { ...STUDY.xray, state: xrayBandsAt(ID, 'start'), light: 0.85 });
@@ -170,8 +207,9 @@ export default defineShot({
       const k = v.id === 'cyc' ? flick : 1;
       f.practical({ x: p.x, y: p.y + 2, kind: 'candle', seed: 300 + v.slot * 7, intensity: 0.9 * k, radius: v.id === 'cyc' ? 34 : 40 });
     }
-    if (cam.z < 330 || t >= b.shelf0) studyNear(f, { key: ID, cams: CAMS.filter((q) => q.z < 480), file: true });
+    if (cam.z < 330) studyNear(f, { key: ID, cams: CAMS.filter((q) => q.z < 480), file: true });
     pairNear(f, t, b, cam);
+    if (t >= b.win0 && t < b.win1) windowGlance(f, t, b, cam);
     if (t >= b.shelf0) shelfNear(f, cam);
     if (t >= b.shelf0) {
       // the shelf: a pool of light on the Cyc taper; its neighbours fall away into the room's shadow
@@ -183,6 +221,21 @@ export default defineShot({
         g.addColorStop(1, withAlpha(f.mood.fg, 0.62));
         c.fillStyle = g;
         c.fillRect(-4, -4, 1288, 728);
+      });
+      cycLabel(f, cam, cycNamed(t, b));
+    }
+    // the glossary tag (core/terms.ts, top-left, 'TOKENS' from 'predict'): the board's corner falls into the lamp's
+    // shadow while it hangs, so the tag reads over a plain dark field
+    const termK = win(t, b.predict - 0.1, b.predict + 0.4) * (1 - win(t, b.win0 - 0.4, b.win0));
+    if (termK > 0) {
+      screenPass(f, (c) => {
+        const g = c.createRadialGradient(170, 70, 30, 170, 70, 520);
+        const dark = mixLab(f.mood.ink, '#000000', 0.35);
+        g.addColorStop(0, withAlpha(dark, 0.72 * termK));
+        g.addColorStop(0.5, withAlpha(dark, 0.45 * termK));
+        g.addColorStop(1, withAlpha(dark, 0));
+        c.fillStyle = g;
+        c.fillRect(-4, -4, 760, 560);
       });
     }
     void CYC_FLAME;
@@ -196,15 +249,16 @@ function camAt(t: number, b: B): Camera3 {
   if (t < b.move19) return mixCam(BOARD1, THREAD, sm((t - b.push0) / (b.blueprint + 0.45 - b.push0)));
   if (t < b.win0) return mixCam(mixCam(THREAD, C19A, sm((t - b.move19) / 1.6)), C19B, sm((t - b.move19 - 1.6) / (b.win0 - b.move19 - 1.6)) * 0.4);
   if (t < b.win1) return mixCam(WIN0, WIN1, sm((t - b.win0) / (b.win1 - b.win0)));
-  if (t < b.file0) return mixCam(C19B, { ...C19B, z: C19B.z + 22 }, sm((t - b.win1) / (b.file0 - b.win1)));
+  // the chain: back on the card, centred, pushing in ≈ 8 % while the hops run (so the chain is the subject)
+  if (t < b.file0) return mixCam(C19C0, C19C1, sm((t - b.chain0 + 0.1) / 1.9));
   if (t < b.shelf0) {
     const u1 = sm((t - b.pair0) / 0.9);
     const pair = mixCam(PAIR0, PAIR1, u1);
     const uc = sm((t - b.close0) / 0.75);
     const close = mixCam(C85A, C85B, sm((t - b.close0 - 0.75) / (b.pull0 - b.close0 - 0.75)));
     const near = mixCam(pair, close, uc);
-    // the pull back: a slow ease out of the close-up, landing just after 'raw'
-    const u2 = sm((t - b.pull0) / (b.raw + 0.55 - b.pull0));
+    // the pull back: eased out over 1.2 s, landing as the thread reaches the glass
+    const u2 = sm((t - b.pull0) / 1.2);
     return mixCam(near, RAWCAM, u2);
   }
   return mixCam(SHELF0, SHELF1, sm((t - b.shelf0) / (b.D - b.shelf0)));
@@ -244,10 +298,16 @@ function boardBeat(c: C, env: PaintEnv, t: number, tq: number, b: B, entry: { R:
   const uLin = (tq - b.linPin) / 1.1;
   const uGpt = (tq - b.gptPin) / 1.1;
   const landed = win(t, b.blueprint - 0.1, b.blueprint + 0.3) * (1 - win(t, b.blueprint + 1.6, b.blueprint + 2.6));
-  if (uLin >= 0.45) lineageCard(c, env, GW, ['GENERATING', 'WIKIPEDIA · 2018'], 12.6, 0.15);
-  if (uGpt >= 0.45) lineageCard(c, env, GPT, ['GPT'], 21, 0.15 + 0.35 * landed);
+  if (uLin >= 0.45) {
+    lineageCard(c, env, GW, ['GENERATING', 'WIKIPEDIA · 2018'], 12.6, 0.15);
+    cardProbe(c, 'ch11-s02/gw', GW.x - GW.w / 2, GW.y - GW.h / 2, GW.w, GW.h, 1, 1);
+  }
+  if (uGpt >= 0.45) {
+    lineageCard(c, env, GPT, ['GPT'], 21, 0.15 + 0.35 * landed);
+    cardProbe(c, 'ch11-s02/gpt', GPT.x - GPT.w / 2, GPT.y - GPT.h / 2, GPT.w, GPT.h, 1, 1);
+  }
   // the thread: C3-d → GW by 'Transformer's', GW → GPT landing on 'writing'
-  const tGw = b.push0 + 0.2;
+  const tGw = b.threadGw;
   const th = tq < tGw ? AT_GW * clamp01((tq - b.thread0) / (tGw - b.thread0)) : AT_GW + (1 - AT_GW) * clamp01((tq - tGw) / (b.blueprint - tGw));
   if (tq > b.thread0) {
     const { pts, end } = pathAt(th);
@@ -270,26 +330,48 @@ function boardBeat(c: C, env: PaintEnv, t: number, tq: number, b: B, entry: { R:
   }
   if (uLin > 0 && uLin < 1) {
     const pose = hands.act('pin', uLin, GW_PIN, { held: 'card', scale: 0.6, entry });
-    pinArm(c, env, pose, { heldDraw: (cc, at, _h, e) => lineageCard(cc, e, { ...GW, x: at.x, y: at.y + GW.h / 2 - 7 }, ['GENERATING', 'WIKIPEDIA · 2018'], 12.6, 0.3) });
+    pinArm(c, env, pose, {
+      heldDraw: (cc, at, _h, e) => {
+        lineageCard(cc, e, { ...GW, x: at.x, y: at.y + GW.h / 2 - 7 }, ['GENERATING', 'WIKIPEDIA · 2018'], 12.6, 0.3);
+        cardProbe(cc, 'ch11-s02/gw-held', at.x - GW.w / 2, at.y - 7, GW.w, GW.h, 1, 1);
+      },
+    });
   }
   if (uGpt > 0 && uGpt < 1) {
     const pose = hands.act('pin', uGpt, GPT_PIN, { held: 'card', scale: 0.6, entry });
-    pinArm(c, env, pose, { heldDraw: (cc, at, _h, e) => lineageCard(cc, e, { ...GPT, x: at.x, y: at.y + GPT.h / 2 - 7 }, ['GPT'], 21, 0.3) });
+    pinArm(c, env, pose, {
+      heldDraw: (cc, at, _h, e) => {
+        lineageCard(cc, e, { ...GPT, x: at.x, y: at.y + GPT.h / 2 - 7 }, ['GPT'], 21, 0.3);
+        cardProbe(cc, 'ch11-s02/gpt-held', at.x - GPT.w / 2, at.y - 7, GPT.w, GPT.h, 1, 1);
+      },
+    });
   }
   // ---- the 2019 card: pinned on 'goal'
   const PIN_DUR = 1.15;
   const u19 = (tq - (b.goal - 0.45 * PIN_DUR)) / PIN_DUR;
-  const lamp19 = 0.25 * win(t, b.predict - 0.15, b.predict + 0.35);
-  // every next word its own right answer: one hop per ≈ 0.35 s on twos, 'is → trained → with → a → simple → objective:'
-  const hop = Math.max(0, Math.min(5.4, (tq - b.chain0 + 0.1) / 0.35));
+  // 'predict the next word' catches the lamp on 'predict' (a feathered glow clipped to the card, then a 0.4 s gold
+  // sheen from T.word('L1103','predict') - 0.15); the glow settles to a low warmth for the rest of the line
+  const lamp19 = win(t, b.predict - 0.15, b.predict + 0.35) * (1 - 0.55 * win(t, b.predict + 1.6, b.predict + 3.0));
+  const sheen = (t - b.sheen0) / 0.4;
+  // every next word its own right answer: 5 hops of ≈ 0.35 s on twos from T.word('L1103','every'), along
+  // 'objective: predict the next word…' (a lamp-gold underline under word n arcs on to word n+1)
+  const hop = Math.max(0, Math.min(5, (tq - b.chain0) / 0.35));
   const hopFade = win(t, b.chain1 + 0.35, b.chain1 + 0.9);
-  const blur19 = 2.2 * rack * (1 - win(t, b.raw - 0.6, b.raw + 0.2) * 0.7);
+  // the rack focus 2019 → 1985: the 2019 card goes soft (≈ 1.5 px) in the breath before 'From' and stays soft beside
+  // the sharp 1985 card; the old card sharpens in the FILE insert, ending on T.line('L1104').start
+  const blur19 = 1.5 * win(t, b.file0 - 0.3, b.file0) * (1 - win(t, b.raw - 0.6, b.raw + 0.2) * 0.5);
   if (u19 >= 0.45) {
-    drawQuoteCard(c, env, CARD19, { light: poolAt(POOL, CARD19.x - STUDY.board.x, CARD19.y - STUDY.board.y) + 0.2, highlight: lamp19, hop, hopFade, blur: blur19 });
+    drawQuoteCard(c, env, CARD19, { light: poolAt(POOL, CARD19.x - STUDY.board.x, CARD19.y - STUDY.board.y) + 0.2, highlight: lamp19, sheen, hop, hopFrom: 6, hopFade, blur: blur19 });
+    cardProbe(c, 'ch11-s02/2019', CARD19.x - CARD19.w / 2, CARD19.y - CARD19.h / 2, CARD19.w, CARD19.h, 1, 1);
   }
   if (u19 > 0 && u19 < 1) {
     const pose = hands.act('pin', u19, { x: CARD19.x, y: CARD19.y - CARD19.h / 2 + 7 }, { held: 'card', scale: 0.78, entry });
-    pinArm(c, env, pose, { heldDraw: (cc, at, _h, e) => drawQuoteCard(cc, e, { ...CARD19, x: at.x, y: at.y + CARD19.h / 2 - 7 }, { light: 0.9, highlight: 0, chain: 0 }) });
+    pinArm(c, env, pose, {
+      heldDraw: (cc, at, _h, e) => {
+        drawQuoteCard(cc, e, { ...CARD19, x: at.x, y: at.y + CARD19.h / 2 - 7 }, { light: 0.9, highlight: 0, chain: 0 });
+        cardProbe(cc, 'ch11-s02/2019-held', at.x - CARD19.w / 2, at.y - 7, CARD19.w, CARD19.h, 1, 1);
+      },
+    });
   }
   // ---- the 1985 card: pinned beside it, after the FILE insert
   const PIN85 = 0.95;
@@ -297,7 +379,9 @@ function boardBeat(c: C, env: PaintEnv, t: number, tq: number, b: B, entry: { R:
   if (u85 >= 0.45 || tq >= b.pin85 + PIN85) {
     const lit85 = poolAt(POOL, CARD85.x - STUDY.board.x, CARD85.y - STUDY.board.y) + 0.22;
     // the faded-ink underline was on the card in the file: it is there as the card is pinned (as in ch11-s08)
-    drawQuoteCard(c, env, CARD85, { light: lit85, underline: 1, blur: 1.6 * (1 - rack) * (u85 >= 1 ? 1 : 0) });
+    drawQuoteCard(c, env, CARD85, { light: lit85, underline: 1 });
+    void rack;
+    cardProbe(c, 'ch11-s02/1985', CARD85.x - CARD85.w / 2, CARD85.y - CARD85.h / 2, CARD85.w, CARD85.h, 1, 1);
     // 'raw': a thread of light from the card, routed BELOW the chat box, ending on the study window's glass where
     // the library shows (the glass is on the wall plane: its point is projected into L4 under the live camera)
     const ru = clamp01((t - b.raw + 0.15) / 0.6);
@@ -311,7 +395,12 @@ function boardBeat(c: C, env: PaintEnv, t: number, tq: number, b: B, entry: { R:
   }
   if (u85 > 0 && u85 < 1) {
     const pose = hands.act('pin', u85, { x: CARD85.x, y: CARD85.y - CARD85.h / 2 + 7 }, { held: 'card', scale: 0.78, entry });
-    pinArm(c, env, pose, { heldDraw: (cc, at, _h, e) => drawQuoteCard(cc, e, { ...CARD85, x: at.x, y: at.y + CARD85.h / 2 - 7 }, { light: 0.85, underline: 1 }) });
+    pinArm(c, env, pose, {
+      heldDraw: (cc, at, _h, e) => {
+        drawQuoteCard(cc, e, { ...CARD85, x: at.x, y: at.y + CARD85.h / 2 - 7 }, { light: 0.85, underline: 1 });
+        cardProbe(cc, 'ch11-s02/1985-held', at.x - CARD85.w / 2, at.y - 7, CARD85.w, CARD85.h, 1, 1);
+      },
+    });
   }
 }
 
@@ -368,25 +457,221 @@ function pairNear(f: Frame, t: number, b: B, cam: Camera3) {
   });
 }
 
-/** the shelf hold's near plane: an unlit brass candlestick at frame left and the shelf's front lip, both blurred */
+/** the shelf hold's near plane (review round 3): the shelf's front lip at about 60 % (not a black band), below the plank
+ *  and its apron so they read, and a small unlit candlestick at the far left, both blurred */
 const SHELF_NEAR: LayerSpec = { id: 'shelfNear', z: 820, haze: 0, blur: 6 };
 function shelfNear(f: Frame, cam: Camera3) {
   f.layer(SHELF_NEAR, (c, env) => {
     const ink = mixLab(env.mood.ink, '#000000', 0.3);
+    const lip = mixLab(env.mood.ink, env.mood.set, 0.6);
     const e2 = { ...env, fill: (r: Parameters<PaintEnv['fill']>[0]) => (r === 'ink' || r === 'fg' ? ink : env.fill(r)) } as PaintEnv;
-    // world anchors: the candlestick stands on the near lip left of the taper; the lip runs under the frame
-    const base = { x: CYC_X - 250, y: STUDY.shelf.y + 70 };
+    // world anchors: the lip runs under the frame ≈ 110 below the plank's screen line; the candlestick stands on it
+    const base = { x: CYC_X - 330, y: STUDY.shelf.y + 160 };
     c.save();
     c.filter = `blur(${(4 * env.pxScale).toFixed(1)}px)`;
-    candlestick(c, { x: base.x, y: base.y, s: 9, variant: 'table', lit: false, burn: 0.6 }, e2);
-    c.fillStyle = ink;
+    c.globalAlpha = 0.6;
+    c.fillStyle = lip;
     c.fillRect(CYC_X - 1200, base.y, 2600, 300);
-    c.fillStyle = withAlpha(env.mood.rim, 0.35);
-    c.fillRect(CYC_X - 1200, base.y, 2600, 2);
+    c.globalAlpha = 1;
+    c.fillStyle = withAlpha(env.mood.rim, 0.45);
+    c.fillRect(CYC_X - 1200, base.y, 2600, 2.4);
+    candlestick(c, { x: base.x, y: base.y, s: 6, variant: 'table', lit: false, burn: 0.6 }, e2);
     c.restore();
     void cam;
   });
 }
+
+/** the Cyc flicker on 'sensible': the flame dips to 40 % for 2 frames, then recovers over 0.5 s */
+function flickAt(t: number, taper: number): number {
+  const d = t - taper;
+  if (d < 0 || d > 0.62) return 1;
+  if (d < 2 / 24) return 0.4;
+  return 0.4 + 0.6 * sm((d - 2 / 24) / 0.5);
+}
+
+/** the Cyc taper's label, BELOW the shelf lip under the taper (screen-locked, legible), a fine leader up to its tag */
+function cycLabel(f: Frame, cam: Camera3, k: number) {
+  if (k <= 0.01) return;
+  const p = toScreen(LAYERS.L4, cam, CYC_X, STUDY.shelf.y + 24 * STUDY.shelf.s);
+  screenPass(f, (c) => {
+    const m = f.mood;
+    const face = fontForYear(1984);
+    const size = legibleSize(c, `400 20px ${face}`, 20);
+    const dSize = legibleSize(c, `italic 400 18px ${FONT.text}`, 18);
+    const t1 = 'CYC';
+    const t2 = 'lit 1984 · still burning';
+    c.save();
+    c.font = `italic 400 ${dSize}px ${FONT.text}`;
+    const dw = c.measureText(t2).width;
+    c.font = `400 ${size}px ${face}`;
+    const tw = c.measureText(t1).width;
+    const pad = 12;
+    const w = Math.max(tw, dw) + pad * 2;
+    const h = size * 1.1 + dSize * 1.35 + pad * 1.4;
+    const x0 = Math.max(40, Math.min(1240 - w, p.x - w / 2));
+    const y0 = Math.min(720 * 0.88 - h - 4, p.y + 14);
+    c.globalAlpha = Math.min(1, k * 1.15);
+    c.strokeStyle = withAlpha(m.rim, 0.7);
+    c.lineWidth = 1;
+    c.beginPath();
+    c.moveTo(p.x, p.y - 4);
+    c.lineTo(p.x, y0);
+    c.stroke();
+    c.shadowColor = withAlpha('#000000', 0.45);
+    c.shadowBlur = 10;
+    c.shadowOffsetY = 4;
+    const paper = mixLab(m.halo, '#efe4cc', 0.6);
+    c.fillStyle = paper;
+    c.fillRect(x0, y0, w, h);
+    c.shadowColor = 'rgba(0,0,0,0)';
+    c.shadowBlur = 0;
+    c.shadowOffsetY = 0;
+    c.strokeStyle = withAlpha(m.ink, 0.35);
+    c.lineWidth = 0.8;
+    c.strokeRect(x0 + 4, y0 + 4, w - 8, h - 8);
+    const inkC = mixLab(m.ink, '#1d160f', 0.5);
+    c.fillStyle = inkC;
+    c.textAlign = 'left';
+    c.textBaseline = 'alphabetic';
+    c.font = `400 ${size}px ${face}`;
+    c.fillText(t1, x0 + pad, y0 + pad * 0.7 + size * 0.95);
+    c.font = `italic 400 ${dSize}px ${FONT.text}`;
+    c.fillStyle = withAlpha(inkC, 0.88);
+    c.fillText(t2, x0 + pad, y0 + pad * 0.7 + size * 1.1 + dSize * 1.05);
+    cardProbe(c, 'ch11-s02/cyc-label', x0, y0, w, h, Math.min(1, k * 1.15), Math.min(1, k * 1.15));
+    c.restore();
+  });
+}
+
+// ================================================================================================= WINDOW glance
+/** one empty tag-hook per visible shelf of the library behind the glass (the crisp canyon on LIB_WINDOW, centred on
+ *  LIBV): a dark pin under the shelf board's front edge with no tag on it. World points on LIB_WINDOW, chosen at
+ *  module load for the WIN0 framing so each sits inside a glass pane. */
+const PANE_BAR = 9;
+function panesScreen(cam: Camera3): { x: number; y: number; w: number; h: number }[] {
+  const W = STUDY.window;
+  const out: { x: number; y: number; w: number; h: number }[] = [];
+  for (let i = 0; i < 3; i++) {
+    for (let j = 0; j < 6; j++) {
+      const ax = W.x + (W.w * i) / 3 + (i ? PANE_BAR / 2 : 0), bx = W.x + (W.w * (i + 1)) / 3 - (i < 2 ? PANE_BAR / 2 : 0);
+      const ay = W.y + (W.h * j) / 6 + (j ? PANE_BAR / 2 : 0), by = W.y + (W.h * (j + 1)) / 6 - (j < 5 ? PANE_BAR / 2 : 0);
+      const p = toScreen(STUDY_WALL, cam, ax, ay), q = toScreen(STUDY_WALL, cam, bx, by);
+      out.push({ x: p.x, y: p.y, w: q.x - p.x, h: q.y - p.y });
+    }
+  }
+  return out;
+}
+const HOOKS: { x: number; y: number; r: number; i: number }[] = (() => {
+  const out: { x: number; y: number; r: number; i: number }[] = [];
+  const panes = panesScreen(WIN0);
+  const inPane = (x: number, y: number) => panes.some((p) => x > p.x + 14 && x < p.x + p.w - 14 && y > p.y + 14 && y < p.y + p.h - 14 && y > 40 && y < 600);
+  // the aisle's left-hand stack (side −1, X = LIBV.x − 430/z) is the one across the glass at this framing; one hook
+  // per shelf board, at a depth where it is inside a pane
+  for (let row = 0; row < 9; row++) {
+    const yb = 300 - 40 - row * 118;
+    for (const sx of [700, 560, 840, 980, 420]) {
+      const Xw = toLayer(LIB_WINDOW, WIN0, sx, 0).x;
+      const z = 430 / (LIBV.x - Xw);
+      if (!(z > 0.45 && z < 4)) continue;
+      const wy = LIBV.y + (yb + 9) / z;
+      const sp = toScreen(LIB_WINDOW, WIN0, Xw, wy);
+      if (!inPane(sp.x, sp.y)) continue;
+      out.push({ x: Xw, y: wy, r: 1 / z, i: out.length });
+      break;
+    }
+  }
+  return out;
+})();
+/** the glance's near plane: the edge of a heavy curtain at frame left (L5, blurred), sliding against the glass */
+const WIN_NEAR: LayerSpec = { id: 'winNear', z: 860, haze: 0, blur: 6 };
+function windowGlance(f: Frame, t: number, b: B, cam: Camera3) {
+  // the hooks, seen through the panes only (clipped to the glass on screen)
+  const panes = panesScreen(cam);
+  const at = b.labels;
+  f.layer(LIB_WINDOW, (c, env) => {
+    c.save();
+    c.beginPath();
+    for (const p of panes) {
+      const a = toLayer(LIB_WINDOW, cam, p.x, p.y), q = toLayer(LIB_WINDOW, cam, p.x + p.w, p.y + p.h);
+      c.rect(a.x, a.y, q.x - a.x, q.y - a.y);
+    }
+    c.clip();
+    const pin = mixLab(MOODS_CYAN_INK, '#000000', 0.25);
+    for (const h of HOOKS) {
+      const r = 7 * h.r;
+      c.fillStyle = pin;
+      c.strokeStyle = pin;
+      c.lineWidth = Math.max(0.8, 1.6 * h.r);
+      // the pin head under the board's front edge, and its empty hook (a small J, nothing hanging from it)
+      c.beginPath();
+      c.arc(h.x, h.y + r * 0.5, r * 0.45, 0, Math.PI * 2);
+      c.fill();
+      c.beginPath();
+      c.moveTo(h.x, h.y + r * 0.8);
+      c.lineTo(h.x, h.y + r * 2.0);
+      c.quadraticCurveTo(h.x, h.y + r * 2.7, h.x + r * 0.7, h.y + r * 2.5);
+      c.stroke();
+      // each glints once on 'labels' (staggered along the shelves)
+      const gk = win(t, at - 0.05 + 0.05 * h.i, at + 0.12 + 0.05 * h.i) * (1 - win(t, at + 0.3 + 0.05 * h.i, at + 0.75 + 0.05 * h.i));
+      if (gk > 0.01) {
+        c.save();
+        c.globalCompositeOperation = 'lighter';
+        const R = r * 3.2;
+        const g = c.createRadialGradient(h.x, h.y + r * 0.5, 0, h.x, h.y + r * 0.5, R);
+        g.addColorStop(0, withAlpha('#dff6ff', 0.85 * gk));
+        g.addColorStop(1, withAlpha('#dff6ff', 0));
+        c.fillStyle = g;
+        c.fillRect(h.x - R, h.y + r * 0.5 - R, 2 * R, 2 * R);
+        c.strokeStyle = withAlpha('#eafaff', 0.7 * gk);
+        c.lineWidth = Math.max(0.6, 0.9 * h.r);
+        c.beginPath();
+        c.moveTo(h.x - R * 0.8, h.y + r * 0.5);
+        c.lineTo(h.x + R * 0.8, h.y + r * 0.5);
+        c.moveTo(h.x, h.y + r * 0.5 - R * 0.8);
+        c.lineTo(h.x, h.y + r * 0.5 + R * 0.8);
+        c.stroke();
+        c.restore();
+      }
+    }
+    c.restore();
+    void env;
+  });
+  // the curtain's edge at frame left (and a sliver of the window casing), out of focus
+  f.layer(WIN_NEAR, (c, env) => {
+    const ink = mixLab(env.mood.ink, '#000000', 0.25);
+    const top = toLayer(WIN_NEAR, WIN0, 0, -40), bot = toLayer(WIN_NEAR, WIN0, 0, 780);
+    const edge = toLayer(WIN_NEAR, WIN0, 150, 0).x;
+    const left = toLayer(WIN_NEAR, WIN0, -120, 0).x;
+    c.save();
+    c.filter = `blur(${(5 * env.pxScale).toFixed(1)}px)`;
+    c.fillStyle = ink;
+    c.beginPath();
+    c.moveTo(left, top.y);
+    c.lineTo(edge, top.y);
+    const n = 8;
+    for (let i = 1; i <= n; i++) {
+      const y = top.y + ((bot.y - top.y) * i) / n;
+      c.lineTo(edge + (i % 2 ? -1 : 1) * (edge - left) * 0.06, y);
+    }
+    c.lineTo(left, bot.y);
+    c.closePath();
+    c.fill();
+    // fold lines catching the lamp (warm, faint)
+    c.strokeStyle = withAlpha(env.mood.rim, 0.3);
+    c.lineWidth = (edge - left) * 0.012;
+    for (const u of [0.42, 0.7, 0.9]) {
+      const x = left + (edge - left) * u;
+      c.beginPath();
+      c.moveTo(x, top.y);
+      c.lineTo(x - (edge - left) * 0.03, bot.y);
+      c.stroke();
+    }
+    c.restore();
+    void t;
+  });
+}
+/** the hooks' ink: the library's cool near-black, through the glass */
+const MOODS_CYAN_INK = '#0c1820';
 
 function glint(c: C, env: PaintEnv, p: Pt, k: number) {
   if (k <= 0.01) return;
@@ -416,9 +701,13 @@ function paintFile(f: Frame, t: number, b: B) {
   f.camera(mixCam(FILE0, FILE1, sm(d / dur)));
   f.backlight({ intensity: 0.15 });
   const tq = tq12(t) - b.file0;
-  // the card: lying in the closed folder → slides out of its mouth (top edge out by 'file') → lifted toward the lamp
-  const slide = sm((tq - 0.3) / 0.45);
-  const lift = sm((tq - 0.75) / Math.max(0.3, dur - 0.85));
+  // the hand comes in from the lower right in the breath after 'answer' and pinches the card's top edge ON the oldCard
+  // beat; the card slides out of the folder's mouth from there and is lifted toward the lamp (review round 3)
+  const hd = b.oldCard - b.file0;
+  const slide = sm((tq - hd) / 0.45);
+  const lift = sm((tq - hd - 0.45) / Math.max(0.3, dur - hd - 0.55));
+  // the rack focus's second half: the insert comes into focus as the old card is drawn, sharp on T.line('L1104').start
+  const focus = 2.6 * (1 - sm((t - (b.rackEnd - 0.6)) / 0.6));
   const S = lerp(2.0, 2.3, lift);
   const sy = lerp(0.5, 1, lift);
   const card = { x: lerp(640, 664, lift), y: lerp(lerp(MOUTH + 92, MOUTH - 82, slide), 318, lift), rot: lerp(-0.02, 0.02, lift) };
@@ -437,18 +726,46 @@ function paintFile(f: Frame, t: number, b: B) {
       cc.fillRect(r.x, r.y, r.w, r.h);
       // grain: boards running away from the lens toward a vanishing point high above the frame
       const VP = { x: 640, y: -900 };
-      cc.strokeStyle = withAlpha(env.mood.fg, 0.32);
-      cc.lineWidth = 1;
+      const far = (xb: number) => ({ x: VP.x + (xb - VP.x) * 0.25, y: VP.y + (r.y + r.h - VP.y) * 0.25 });
+      // boards of slightly different tone (not a ruled stripe), each with a few long grain streaks and a rare knot
       for (let i = -24; i <= 24; i++) {
-        const xb = 640 + i * 70 + hash1(i, 3) * 10;
+        const xa = 640 + i * 70 + hash1(i, 3) * 10, xb = 640 + (i + 1) * 70 + hash1(i + 1, 3) * 10;
+        const fa = far(xa), fb = far(xb);
+        cc.fillStyle = withAlpha(hash1(i, 5) > 0 ? env.mood.halo : env.mood.fg, 0.05 + 0.06 * Math.abs(hash1(i, 6)));
         cc.beginPath();
-        cc.moveTo(xb, r.y + r.h);
-        cc.lineTo(VP.x + (xb - VP.x) * 0.25, VP.y + (r.y + r.h - VP.y) * 0.25);
+        cc.moveTo(xa, r.y + r.h);
+        cc.lineTo(xb, r.y + r.h);
+        cc.lineTo(fb.x, fb.y);
+        cc.lineTo(fa.x, fa.y);
+        cc.closePath();
+        cc.fill();
+        cc.strokeStyle = withAlpha(env.mood.fg, 0.38);
+        cc.lineWidth = 1.2;
+        cc.beginPath();
+        cc.moveTo(xa, r.y + r.h);
+        cc.lineTo(fa.x, fa.y);
         cc.stroke();
+        cc.strokeStyle = withAlpha(env.mood.fg, 0.12);
+        cc.lineWidth = 0.8;
+        for (let q = 0; q < 3; q++) {
+          const u = 0.2 + 0.6 * (0.5 + 0.5 * hash1(i * 5 + q, 7));
+          const x0 = lerp(xa, xb, u), x1 = lerp(fa.x, fb.x, u + 0.08 * hash1(i * 5 + q, 8));
+          cc.beginPath();
+          cc.moveTo(x0, r.y + r.h);
+          cc.quadraticCurveTo((x0 + x1) / 2 + 6 * hash1(i * 5 + q, 9), (r.y + r.h + fa.y) / 2, x1, fa.y);
+          cc.stroke();
+        }
+        if (hash1(i, 10) > 0.6) {
+          const kx = lerp(xa, xb, 0.5), ky = 120 + 400 * (0.5 + 0.5 * hash1(i, 11));
+          cc.beginPath();
+          cc.ellipse(kx, ky, 5, 14, 0, 0, Math.PI * 2);
+          cc.stroke();
+        }
       }
     })(c, r.x, r.y);
   });
   f.layer('L4', (c, env) => {
+    if (focus > 0.05) c.filter = `blur(${(focus * env.pxScale).toFixed(2)}px)`;
     // the folder lies on the desk, seen at an angle (its far edge, the mouth, narrower than its near edge)
     folderBack(c, env);
     // the card while it is still in the folder or sliding out of its mouth: drawn UNDER the front cover
@@ -461,6 +778,7 @@ function paintFile(f: Frame, t: number, b: B) {
       cc.fillStyle = withAlpha(env.mood.fg, 0.4 * lift);
       cc.fillRect(-CARD85.w / 2 + 8, -CARD85.h / 2 + 12, CARD85.w, CARD85.h);
       drawQuoteCard(cc, env, { ...CARD85, x: 0, y: 0 }, { light: 0.95, underline: 1 });
+      cardProbe(cc, 'ch11-s02/1985-file', -CARD85.w / 2, -CARD85.h / 2, CARD85.w, CARD85.h, 1, 1);
       cc.restore();
     };
     if (lift < 0.02) drawCardNow(c);
@@ -469,16 +787,17 @@ function paintFile(f: Frame, t: number, b: B) {
     // the hand: reaches to the mouth, pinches the card's top edge as it slides out, draws it up toward the lamp
     const len = HAND_LEN * 1.5;
     const top = { x: card.x + (CARD85.w / 2) * S - 34, y: card.y - (CARD85.h / 2) * S * sy + 10 };
-    if (tq < 0.3) {
-      const u = sm(tq / 0.3);
-      const at = { x: lerp(1180, 820, u), y: lerp(700, MOUTH + 6, u) };
-      hands.draw(c, { right: hands.reach({ x: 1500, y: 860 }, at, 'open', len), scale: 1.5 }, env);
+    if (tq < hd) {
+      // already in frame at the cut (lower right), reaching the mouth on the beat
+      const u = sm(tq / hd);
+      const at = { x: lerp(1000, 820, u), y: lerp(560, MOUTH + 6, u) };
+      hands.draw(c, { right: hands.reach({ x: 1500, y: 860 }, at, u > 0.8 ? 'pinch' : 'open', len), scale: 1.5 }, env);
     } else {
       hands.draw(c, { right: hands.reach({ x: 1500, y: top.y + 380 }, top, 'pinch', len), scale: 1.5 }, env);
     }
   });
   f.rim({ x: 0, y: -1 });
-  f.practical({ x: 300, y: 70, kind: 'lamp', seed: 41, intensity: 0.45, radius: 90 });
+  f.practical({ x: 330, y: 40, kind: 'lamp', seed: 41, intensity: 0.5, radius: 110 });
   // L5: the desk's near edge across the bottom of the frame (dark, blurred, a rim of lamp light on its lip)
   f.layer('L5', (c, env) => {
     const r = overscan(LAYERS.L5, FILE_CAMS, 60);
@@ -526,6 +845,43 @@ function paintFile(f: Frame, t: number, b: B) {
       cc.fillRect(-10, -22, 480, 4);
       cc.restore();
     })(c, r.x, r.y);
+    // the green-shaded banker's lamp's rim at the top edge, out of focus: its glass shade's lower lip (bottle green,
+    // low chroma) and the warm underside where the bulb shows
+    // (screen-placed at the FILE0 framing: the shade's lower lip ≈ 84 px down the frame at upper left)
+    const L = toLayer(LAYERS.L6, FILE0, 300, 84);
+    const sc = toScreen(LAYERS.L6, FILE0, 0, 0).k;
+    const u = (v: number) => v / sc;
+    c.save();
+    c.filter = `blur(${(4 * env.pxScale).toFixed(1)}px)`;
+    // the warm underside (the bulb's light inside the shade) just under the lip
+    const glow = c.createRadialGradient(L.x, L.y + u(4), u(10), L.x, L.y + u(4), u(260));
+    glow.addColorStop(0, withAlpha(mixLab(env.mood.core, '#fff0c8', 0.5), 0.85));
+    glow.addColorStop(0.35, withAlpha(env.mood.halo, 0.35));
+    glow.addColorStop(1, withAlpha(env.mood.halo, 0));
+    c.fillStyle = glow;
+    c.beginPath();
+    c.ellipse(L.x, L.y + u(6), u(300), u(34), 0, 0, Math.PI * 2);
+    c.fill();
+    // the shade: a long bottle-green half-cylinder seen from below, its lip a lit curve
+    const shade = mixLab('#1d3a28', env.mood.ink, 0.3);
+    c.fillStyle = shade;
+    c.beginPath();
+    c.moveTo(L.x - u(330), L.y - u(400));
+    c.lineTo(L.x + u(330), L.y - u(400));
+    c.lineTo(L.x + u(330), L.y - u(30));
+    c.quadraticCurveTo(L.x, L.y + u(14), L.x - u(330), L.y - u(30));
+    c.closePath();
+    c.fill();
+    c.strokeStyle = withAlpha(mixLab('#8fbf8f', env.mood.core, 0.45), 0.8);
+    c.lineWidth = u(3);
+    c.beginPath();
+    c.moveTo(L.x + u(330), L.y - u(30));
+    c.quadraticCurveTo(L.x, L.y + u(14), L.x - u(330), L.y - u(30));
+    c.stroke();
+    // the green glass catching its own light along the cylinder (a soft highlight band)
+    c.fillStyle = withAlpha('#5f8f68', 0.35);
+    c.fillRect(L.x - u(330), L.y - u(70), u(660), u(14));
+    c.restore();
   });
   // the lamp pool's falloff and a vignette, over everything (screen)
   screenPass(f, (c) => {
@@ -566,10 +922,21 @@ function folderBack(c: C, env: PaintEnv) {
   // the tab on the back cover's far edge
   quad(c, [{ x: 450, y: MOUTH - 16 }, { x: 560, y: MOUTH - 16 }, { x: 552, y: MOUTH - 36 }, { x: 462, y: MOUTH - 36 }]);
   c.fill();
-  // older slips filed in it: their edges just inside the mouth
-  for (let i = 0; i < 3; i++) {
-    c.fillStyle = mixLab(env.mood.rim, env.mood.halo, 0.35 + 0.1 * i);
-    c.fillRect(FOLD.fl.x + 30 + i * 14, MOUTH - 10 + i * 2, FOLD.fr.x - FOLD.fl.x - 70 - i * 18, 4);
+  // the cards filed in it before (the earlier 'Put that in the file' cards): five stacked edges standing up out of the
+  // mouth, staggered, each with its lit top edge, a shadow line between them and a typed ink tick at the corner
+  for (let i = 0; i < 5; i++) {
+    const x0 = FOLD.fl.x + 22 + i * 9 + 6 * hash1(i, 71);
+    const x1 = FOLD.fr.x - 26 - i * 13 + 8 * hash1(i, 72);
+    const top = MOUTH - 40 + i * 6 + 3 * hash1(i, 73);
+    const paper = i % 2 ? mixLab('#d9c792', env.mood.halo, 0.3) : mixLab('#e6dcc1', env.mood.halo, 0.25);
+    c.fillStyle = withAlpha(env.mood.fg, 0.45);
+    c.fillRect(x0 + 2, top + 3, x1 - x0, MOUTH - top);
+    c.fillStyle = mixLab(paper, env.mood.set, 0.12 + 0.07 * i);
+    c.fillRect(x0, top, x1 - x0, MOUTH - top + 2);
+    c.fillStyle = withAlpha(env.mood.core, 0.55);
+    c.fillRect(x0, top, x1 - x0, 1.4);
+    c.fillStyle = withAlpha('#2a2418', 0.45);
+    c.fillRect(x0 + 8 + 30 * (0.5 + 0.5 * hash1(i, 74)), top + 5, 26 + 18 * (0.5 + 0.5 * hash1(i, 75)), 1.6);
   }
 }
 /** the front cover, on top: lit by the lamp's pool, its top edge (the mouth) lifted a hair by the fingers */

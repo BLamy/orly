@@ -3,7 +3,12 @@
  * HELD (≥ 0.5 s), sampled on twos.
  *
  *   POSES[g]                 g ∈ stand · rest (weight back, knee eased) · clasp (hands behind) · present · point · write · think · doubt · dissent ·
- *                            triumph · despair · authority · lean · sit · type · listen · walkStand
+ *                            triumph · despair · authority · lean · sit · type · listen · walkStand ·
+ *                            fold (arms folded across the chest) · glasses (a hand up at the glasses / temple) ·
+ *                            pocket (weight on the back leg, near hand at the trouser pocket) ·
+ *                            shift (weight on the back leg, the near forearm crooked at the waist carrying the prop)
+ *   IDLE_GESTURES            the gestures a cast signature may name as its idle (review round 4: line-ups read as
+ *                            identical mannequins; puppet/index.ts applies spec.signature.idle to a standing pose)
  *   pose(angles, hands?)     build a Pose; unspecified ankles keep the feet flat
  *   blendPose(a, b, u)       joint-wise lerp; hands swap at u = 0.5 (a sprite swap, never a morph)
  *   addPose(base, delta)     additive offsets (talk beats, breathing)
@@ -26,7 +31,8 @@ import { JOINTS } from './rig';
 
 export type GestureId =
   | 'stand' | 'present' | 'point' | 'write' | 'think' | 'doubt' | 'dissent' | 'triumph'
-  | 'despair' | 'authority' | 'lean' | 'sit' | 'type' | 'listen' | 'walkStand' | 'rest' | 'clasp';
+  | 'despair' | 'authority' | 'lean' | 'sit' | 'type' | 'listen' | 'walkStand' | 'rest' | 'clasp'
+  | 'fold' | 'glasses' | 'pocket' | 'shift';
 
 type A = Partial<Record<JointId, number>>;
 
@@ -60,7 +66,21 @@ export const POSES: Record<GestureId, Pose> = {
   lean: pose({ hipF: 2, kneeF: -2, hipB: -16, kneeB: 0, torso: 16, neck: -2, head: -6, shoulderF: 30, elbowF: 6, wristF: -58, shoulderB: 18, elbowB: 10, wristB: -50 }, { handF: 'palmDown', handB: 'palmDown' }),
   sit: pose({ hipF: 88, kneeF: -86, hipB: 84, kneeB: -80, torso: 2, neck: 3, head: 0, shoulderF: 18, elbowF: 56, wristF: 4, shoulderB: 12, elbowB: 58 }),
   type: pose({ hipF: 86, kneeF: -84, hipB: 82, kneeB: -78, torso: 7, neck: 2, head: 4, shoulderF: 14, elbowF: 78, wristF: 8, shoulderB: 10, elbowB: 80, wristB: 8 }, { handF: 'typing', handB: 'typing' }),
+  // review round 4 idles: the forearms cross the chest (a held book or papers rides against it)
+  // (upper arms hang, elbows at the waist, forearms climb across the chest so the fists sit at the chest front)
+  fold: pose({ ...STANCE, torso: -3, neck: 8, head: -6, shoulderF: -6, elbowF: 128, wristF: 16, shoulderB: 0, elbowB: 120, wristB: 10 }, { handF: 'fist', handB: 'fist' }),
+  // weight shifted onto the back leg, the near forearm crooked at the waist carrying the prop (never a book at the hip)
+  // (the upper arm drawn back so the hand rests at the belt front; a held prop rides there, an empty hand reads as resting)
+  shift: pose({ hipF: 11, kneeF: -13, hipB: -3, kneeB: 0, torso: -3, neck: 9, head: -5, shoulderF: -18, elbowF: 70, wristF: 6, shoulderB: -8, elbowB: 12, wristB: 6 }),
+  // a hand up at the glasses (or temple): the chin hand, higher; a pen or chalk stays in it, anything else passes back
+  glasses: pose({ ...STANCE, hipF: 7, torso: 1, neck: 9, head: -3, shoulderF: 40, elbowF: 148, wristF: -40, shoulderB: -6, elbowB: 14, wristB: 4 }, { handF: 'chin', handB: 'relaxed' }),
+  // weight on the back leg, the near hand at the trouser pocket (a palm-down hand never holds the prop: it passes back)
+  pocket: pose({ hipF: 12, kneeF: -12, hipB: -3, kneeB: 0, torso: -3, neck: 9, head: -5, shoulderF: -14, elbowF: 34, wristF: 12, shoulderB: -5, elbowB: 12, wristB: 4 }, { handF: 'palmDown', handB: 'relaxed' }),
 };
+
+/** the gestures a cast signature may name as its idle (spec.signature.idle) */
+export const IDLE_GESTURES = ['stand', 'rest', 'shift', 'clasp', 'think', 'listen', 'fold', 'glasses', 'pocket'] as const;
+export type IdleGesture = (typeof IDLE_GESTURES)[number];
 
 const lerp = (a: number, b: number, u: number) => a + (b - a) * u;
 

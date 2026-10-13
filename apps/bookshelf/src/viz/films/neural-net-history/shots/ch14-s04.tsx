@@ -4,16 +4,22 @@
  * view; a week later the left bank's ticker-strip tears and falls (winterBlue; 20.92 s; in: cut).
  *
  *   shutter    0.3        left bank, Sept 2024: high in a tower, a tall shuttered window; behind its slats, in
- *                         silhouette only, a long scroll of scratch paper begins to spool between two rollers
- *   longer     'longer'   the scroll spools faster; the o1 label sets in under the window
- *   reward     'reward'   one crisp typed answer line slides out under the sill; a small brass check-stamp drops on it
- *   hidden     'hidden'   the slats close tight: only the answer shows; the scroll's shadow still moves behind
- *   hall       'Then'     pan across the water to the right bank, 20 Jan 2025: far off, one lit window in a formal
- *                         hall, a long table of officials, one small generic figure among them; date stamp, name card
- *   lantern    'recipe'   at the water's edge below, the R1 lantern is set on the water: translucent, the same scroll
- *                         inside in plain view, a recipe card tied to its handle
+ *                         silhouette, a spool and a long paper strip running down (its perforations travelling); the
+ *                         strip's loose end curls out through a slot under the sill and hangs down the tower
+ *   longer     'longer'   the scroll spools faster and the hanging curl grows visibly longer; the o1 label sets in
+ *                         in the sky right of the tower
+ *   reward     'reward'   the answer slip slides out under the sill (3.40-4.0 s); the brass check-stamp lands by 4.0 s
+ *   hidden     'hid'      the slats close tight and the hanging curl is drawn back in through the slot: only the
+ *                         answer shows; light leaks through the slats and the strip's shadow keeps moving behind them;
+ *                         the o1 label is gone 0.4 s before the pan
+ *   hall       'Then'     pan across the water to the right bank and push in on the hall's tall lit window, 20 Jan
+ *                         2025: a long table of seated officials (cast.delegate) and Liang Wenfeng (cast.liang) standing
+ *                         at its head, rimmed by the hanging lamp; date stamp, name card
+ *   lantern    'method'   at the water's edge below, the R1 lantern is set on the water: paper glowing from within,
+ *                         the SAME scroll visible through it in plain view, a recipe card tied to its handle
  *   rightstone 'all'      it drifts past the jetty's end; a hand from the right shore sets a second stone
- *   tear       'week'     cut to the left bank, 27 Jan: the tall ticker-strip hanging from a tower begins to tear
+ *   tear       'week'     cut to the left bank, 27 Jan: the tall ticker-strip hanging from a tower begins to tear;
+ *                         the Nvidia label is in beside the strip (leader line) by 'week' + 0.2 s
  *   fall       'fell'     it drops in one long fall; a chip silhouette on the bank dims; hold on the torn end swinging
  * No red anywhere: the drop is carried by the falling banner and its label. TEXT RULE: the o1 label (gone with the
  * pan) and the Nvidia label, besides stamps and the name card. WINDOW RULE (sets/ch14-s01-strait).
@@ -21,7 +27,8 @@
 import { Timeline } from '../../../core';
 import type { Camera3, PaintEnv } from '../../../film';
 import type { Frame, LayerSpec } from '../../../film';
-import { FONT, LAYERS, MOODS, defineShot, mixLab, nameCard, placeStamp, toLayer, toScreen, withAlpha } from '../../../film';
+import { FONT, LAYERS, MOODS, POSES, PUPPET_NEAR_BLACK, defineShot, mixLab, nameCard, placeStamp, toLayer, withAlpha, withLife } from '../../../film';
+import { cast } from '../cast';
 import { STONES, boardPoint, clamp01, h01, lerp, monoLabel, monotone, sm, stoneHand, strait, tq12, win, windowFrame } from '../sets/ch14-s01-strait';
 import { ruleFence } from '../sets/ch14-s02-fence';
 
@@ -37,7 +44,10 @@ const BANNER = { x: -43, top: 66, bot: 418, w: 42 } as const;
 const CHIP: P = { x: 330, y: 456 };
 /** the right bank's formal hall (L3) and its one lit window */
 const HALL = { x0: 960, x1: 1196, top: 302, base: 456 } as const;
-const HWIN = { x: 1072, y: 360, w: 104, h: 44 } as const;
+/** review r1: a tall lit window, so the officials and Liang are puppets at a readable height (≥ 110 px on screen) */
+const HWIN = { x: 1078, y: 364, w: 156, h: 92 } as const;
+/** the hall's hanging lamp (its light keys the figures' rims) */
+const HLAMP: P = { x: HWIN.x - 18, y: HWIN.y - HWIN.h / 2 + 12 };
 /** the R1 lantern floats on the water beyond the jetty's end: its base on this L3 line */
 const LANTERN_Y = 471;
 /** camera coordinate that puts an L3 world coordinate w at screen coordinate sc with lens k (same for x and y) */
@@ -101,10 +111,15 @@ export default defineShot<Scene>({
     const p0 = b.hall - 0.35;
     const keys: [number, number, number, number, number, number][] = [
       // part 1: a slow push (≈ 6%) with a slight drift, so the window is never a still picture
-      [0, WIN.x, WIN.y + 20, 586, 304, 2.2],
-      [p0, WIN.x, WIN.y + 20, 548, 292, 2.34],
-      [b.panEnd, 846, 420, 640, 360, 1.3],
-      [b.cut, 862, 416, 640, 360, 1.36],
+      // (review r1: framed a little lower so the scroll's curl under the sill is in the picture)
+      [0, WIN.x, WIN.y + 44, 560, 318, 2.15],
+      [p0, WIN.x, WIN.y + 44, 530, 306, 2.26],
+      // review r1: the pan lands pushed in on the hall's lit window (lens 1.55), so the name card has a person
+      [b.panEnd, HWIN.x, HWIN.y, 800, 300, 1.55],
+      // round 2: a slow push toward the jetty's end and the lantern as it is set on the water, so its lettering
+      // (R1 · OPEN WEIGHTS) reads while 'weights … open to all' is spoken
+      [b.lantern + 1.0, 600, 470, 360, 430, 1.5],
+      [b.cut, 596, 470, 352, 430, 1.53],
     ];
     const fx = monotone(keys.map((k) => [k[0], camL3(k[1], k[3], k[5])]));
     const fy = monotone(keys.map((k) => [k[0], camL3(k[2], k[4], k[5], 360)]));
@@ -151,7 +166,8 @@ export default defineShot<Scene>({
     // practicals behind the action plane: the hall's window, the lantern's flame, the shuttered window's light
     if (!part3 && t > b.lantern - 0.2) {
       const lp = lanternPos(t, b);
-      f.practical({ x: lp.x, y: lp.y - 24, kind: 'candle', seed: 1425, intensity: 0.6 * win(t, b.lantern - 0.2, b.lantern + 0.4), radius: 20, layer: 'L3' });
+      // the light inside the R1 lantern (review r1: it glows from within)
+      f.practical({ x: lp.x, y: lp.y - LANT.h * 0.5, kind: 'lamp', seed: 1425, intensity: 0.7 * win(t, b.lantern - 0.2, b.lantern + 0.4), radius: 34, layer: 'L3' });
     }
     // part 1's near plane: a dark parapet across the bottom of the frame; it slides away left with the pan
     if (!part3) nearParapet(f, t, b);
@@ -159,18 +175,47 @@ export default defineShot<Scene>({
     // type
     const env = { t, mood: f.mood };
     if (!part3) {
-      const ls = toScreen(LAYERS.L3, cam, WIN.x, WIN.y + WIN.h / 2 + 64);
-      const a = win(t, b.longer, b.longer + 0.5) * (1 - win(t, b.hall + 0.6, b.hall + 1.3));
-      monoLabel(f.c, f.mood, 'SEP 2024 · OPENAI o1', ls.x, ls.y + 26, { a, size: 18.5 });
-      monoLabel(f.c, f.mood, 'LONG CHAIN OF THOUGHT, HIDDEN BY DESIGN', ls.x, ls.y + 54, { a, size: 18.5 });
+      // the o1 label sits in the sky right of the tower (screen-locked: part 1's camera barely moves) and is gone
+      // 0.4 s BEFORE the pan starts, so it is never dragged off mid-read (its 'until: hall')
+      const pan0 = b.hall - 0.35;
+      const a = win(t, b.longer, b.longer + 0.5) * (1 - win(t, pan0 - 0.45, pan0 - 0.05));
+      monoLabel(f.c, f.mood, 'SEP 2024 · OPENAI o1', 770, 238, { a, size: 18.5, align: 'left' });
+      monoLabel(f.c, f.mood, 'LONG CHAIN OF THOUGHT,', 770, 272, { a, size: 18.5, align: 'left' });
+      monoLabel(f.c, f.mood, 'HIDDEN BY DESIGN', 770, 300, { a, size: 18.5, align: 'left' });
       placeStamp(f.c, { place: '20 January 2025', date: 'Premier’s symposium', year: 2025, x: 104, y: 664, at: b.hall + 0.5, dur: b.cut - b.hall - 0.5, fade: 0.3 }, env);
-      nameCard(f.c, { name: 'Liang Wenfeng', role: 'founder of DeepSeek', align: 'right', x: 1176, y: 214, at: b.hall + 1.2, dur: Math.min(3.6, b.cut - b.hall - 1.3), fade: 0.4 }, env);
+      nameCard(f.c, { name: 'Liang Wenfeng', role: 'founder of DeepSeek', align: 'right', x: 1176, y: 140, at: b.hall + 1.2, dur: Math.min(3.6, b.cut - b.hall - 1.3), fade: 0.4 }, env);
     } else {
-      monoLabel(f.c, f.mood, '27 JANUARY 2025', 104, 664, { align: 'left', a: win(t, b.tear + 0.1, b.tear + 0.5), size: 18.5 });
-      monoLabel(f.c, f.mood, 'NVIDIA −17% · −$589B · RECORD 1-DAY LOSS FOR A US FIRM', 760, 92, { a: win(t, b.tear + 0.15, b.tear + 0.65), size: 18.5 });
+      monoLabel(f.c, f.mood, '27 JANUARY 2025', 104, 664, { align: 'left', a: win(t, b.tear - 0.05, b.tear + 0.2), size: 18.5 });
+      // review r1: the Nvidia label sits NEXT TO the ticker strip it is about (left, x ≈ 470-800, y ≈ 80-130),
+      // tied to the strip by a short leader, and is in by 'week' + 0.2 s
+      const al = win(t, b.tear - 0.05, b.tear + 0.2);
+      const sx = toScreenX(cam, BANNER.x + BANNER.w / 2 + 2);
+      if (al > 0.003) {
+        f.c.save();
+        f.c.globalAlpha = al * 0.8;
+        f.c.strokeStyle = mixLab('#e8e2d2', f.mood.rim, 0.3);
+        f.c.lineWidth = 1;
+        f.c.beginPath();
+        f.c.moveTo(sx + 4, 104);
+        f.c.lineTo(470, 104);
+        f.c.stroke();
+        f.c.fillStyle = f.c.strokeStyle;
+        f.c.beginPath();
+        f.c.arc(sx + 3, 104, 2.4, 0, Math.PI * 2);
+        f.c.fill();
+        f.c.restore();
+      }
+      monoLabel(f.c, f.mood, 'NVIDIA −17% · −$589B', 482, 98, { a: al, size: 18.5, align: 'left' });
+      monoLabel(f.c, f.mood, 'RECORD 1-DAY LOSS FOR A US FIRM', 482, 128, { a: al, size: 18.5, align: 'left' });
     }
   },
 });
+
+/** screen x of an L3 world x under a lens-only camera (part 3: the strip's edge, for the label's leader) */
+function toScreenX(cam: Camera3, wx: number) {
+  const k = cam.lens;
+  return 640 + (wx - 640) * k - (cam.x - 640) * ((k * 1000) / LAYERS.L3.z);
+}
 
 // =====================================================================================================  left bank
 /** T1: a tall tower with a stepped crown; high in it the shuttered window (its light identical to the right bank's) */
@@ -201,8 +246,55 @@ function tower1(c: C, env: PaintEnv, t: number, b: B) {
   shutteredWindow(c, env, t, b);
 }
 
-/** the shuttered window: lit interior, the spooling scroll in silhouette, the slats (open → closed on 'hidden'), the
- *  sill, the answer line sliding out under it and the brass check-stamp */
+/** the working-notes scroll, the same on both shores (tower window and R1 lantern): a spool at the top, a long
+ *  paper strip running down from it in SILHOUETTE against the light, its perforations and ruled ticks travelling
+ *  down at `off` (px), a few loose coils gathering at the bottom. Drawn in local px: x0..x1 the opening, y0..y1. */
+function scrollSilhouette(c: C, ink: string, light: string, o: { x0: number; x1: number; y0: number; y1: number; off: number; spin: number; coil: number; sx?: number; sw?: number }) {
+  const sw = o.sw ?? 12;
+  const sx = o.sx ?? o.x0 + (o.x1 - o.x0) * 0.42;
+  const R = Math.min(9, (o.x1 - o.x0) * 0.16);
+  const cy = o.y0 + R + 3;
+  c.save();
+  c.fillStyle = ink;
+  // the spool (a disc with three spokes, turning) and its spindle bracket
+  c.beginPath();
+  c.arc(sx - sw / 2 + R * 0.2, cy, R, 0, Math.PI * 2);
+  c.fill();
+  c.strokeStyle = light;
+  c.lineWidth = 0.9;
+  c.beginPath();
+  for (let k = 0; k < 3; k++) {
+    const a = o.spin + (k * Math.PI * 2) / 3;
+    c.moveTo(sx - sw / 2 + R * 0.2 + Math.cos(a) * 2, cy + Math.sin(a) * 2);
+    c.lineTo(sx - sw / 2 + R * 0.2 + Math.cos(a) * (R - 2), cy + Math.sin(a) * (R - 2));
+  }
+  c.stroke();
+  c.fillRect(o.x0, cy - 1, sx - o.x0, 2);
+  // the strip, down from the spool's right side to the bottom
+  c.fillRect(sx - sw / 2, cy, sw, o.y1 - cy);
+  // its perforations (holes the light shows through), travelling down: the sense of spooling
+  c.fillStyle = light;
+  const pitch = 7;
+  const ph = ((o.off % pitch) + pitch) % pitch;
+  for (let y = cy + ph; y < o.y1 - 2; y += pitch) {
+    c.fillRect(sx - sw / 2 + 1.6, y, 1.6, 2.4);
+    c.fillRect(sx + sw / 2 - 3.2, y, 1.6, 2.4);
+  }
+  // loose coils gathering at the bottom (more of them as the run gets longer)
+  c.strokeStyle = ink;
+  c.lineWidth = 2.6;
+  for (let k = 0; k < o.coil; k++) {
+    const r = 5 + k * 1.6;
+    c.beginPath();
+    c.ellipse(sx + 4 + k * 1.2, o.y1 - r * 0.55, r, r * 0.55, 0, 0, Math.PI * 2);
+    c.stroke();
+  }
+  c.restore();
+}
+
+/** the shuttered window: lit interior, the spooling scroll in silhouette behind the slats, the slats (open → closed
+ *  on 'hid'), the sill; the strip's loose end curls out through a slot under the sill and hangs down the facade,
+ *  growing visibly on 'longer' and drawn back in on 'hid'; the answer slip slides out and is stamped */
 function shutteredWindow(c: C, env: PaintEnv, t: number, b: B) {
   const m = env.mood;
   const tq = tq12(t);
@@ -210,107 +302,147 @@ function shutteredWindow(c: C, env: PaintEnv, t: number, b: B) {
   // frame and reveal
   c.fillStyle = env.fill('ink');
   c.fillRect(x0 - 6, y0 - 6, WIN.w + 12, WIN.h + 12);
-  // the lit room behind
   const room = c.createLinearGradient(0, y0, 0, y0 + WIN.h);
-  room.addColorStop(0, withAlpha(WARM, 0.9));
-  room.addColorStop(1, withAlpha(mixLab(WARM, m.halo, 0.4), 0.95));
+  room.addColorStop(0, withAlpha(WARM, 0.92));
+  room.addColorStop(1, withAlpha(mixLab(WARM, m.halo, 0.4), 0.96));
+  // spooling speed: steady, then fast on 'longer'
+  const speed = lerp(14, 70, win(t, b.longer - 0.2, b.longer + 0.6));
+  const off = t * 14 + Math.max(0, t - b.longer) * (speed - 14);
+  const strip = { sx: x0 + 20, sw: 13 };
+  const sil = mixLab(m.ink, '#000000', 0.25);
   c.save();
   c.beginPath();
   c.rect(x0, y0, WIN.w, WIN.h);
   c.clip();
   c.fillStyle = room;
   c.fillRect(x0, y0, WIN.w, WIN.h);
-  // the scroll: two dark rollers standing at the window's inner left and right edges, a pale band of scratch paper
-  // running between them, ink-line ticks of working scrolling across it (fast after 'longer')
-  const speed = lerp(16, 64, win(t, b.longer - 0.2, b.longer + 0.6));
-  const off = t * 16 + Math.max(0, t - b.longer) * (speed - 16);
-  const band = { y0: WIN.y - 17, y1: WIN.y + 17 };
-  const rx = [x0 + 6, x0 + WIN.w - 6];
-  const drawBand = (alpha: number) => {
-    c.save();
-    c.globalAlpha *= alpha;
-    c.fillStyle = mixLab('#f1e9d8', WARM, 0.25);
-    c.fillRect(rx[0], band.y0, rx[1] - rx[0], band.y1 - band.y0);
-    c.fillStyle = withAlpha(m.ink, 0.72);
-    for (let r = 0; r < 5; r++) {
-      const y = band.y0 + 5 + r * 6;
-      for (let k = 0; k < 12; k++) {
-        const w = 2.5 + 7 * h01(k + r * 29, 911);
-        const x = rx[0] + 3 + ((((k * 11.3 - off + r * 7) % 60) + 60) % 60);
-        if (x + w > rx[1] - 3) continue;
-        c.fillRect(x, y, w, 1.5);
-      }
-    }
-    c.restore();
-  };
-  drawBand(1);
-  c.fillStyle = mixLab(m.ink, '#000000', 0.2);
-  for (const x of rx) {
-    c.beginPath();
-    c.roundRect(x - 5, band.y0 - 9, 10, band.y1 - band.y0 + 18, 4);
-    c.fill();
-  }
-  // slats: half open (the paper band reads between them) → closed tight on 'hidden' (on twos)
+  const coil = Math.round(1 + 3 * win(t, b.longer, b.reward + 1));
+  scrollSilhouette(c, sil, withAlpha(WARM, 0.95), { x0, x1: x0 + WIN.w, y0, y1: y0 + WIN.h, off, spin: off / 9, coil, sx: strip.sx, sw: strip.sw });
+  // slats: half open (the scroll reads between them) → closed tight on 'hid' (on twos)
   const close = sm((tq - (b.hidden - 0.08)) / 0.5);
   const n = 10;
   const pitch = WIN.h / n;
   for (let i = 0; i < n; i++) {
     const y = y0 + i * pitch;
-    const th = lerp(pitch * 0.5, pitch - 0.35, close);
+    const th = lerp(pitch * 0.42, pitch - 0.35, close);
     c.fillStyle = nearInk(env);
     c.fillRect(x0, y + (pitch - th) / 2, WIN.w, th);
     c.fillStyle = withAlpha(m.rim, 0.25);
     c.fillRect(x0, y + (pitch - th) / 2, WIN.w, 0.6);
   }
-  // closed: the band's moving shadow still shows through the slats
-  if (close > 0.5) drawBand(0.25 * (close - 0.5) * 2);
+  // closed: light leaks through the slats' seams and the strip's moving shadow still crosses them
+  if (close > 0.3) {
+    const k = sm((close - 0.3) / 0.7);
+    c.globalCompositeOperation = 'lighter';
+    c.fillStyle = withAlpha(WARM, 0.3 * k);
+    for (let i = 1; i < n; i++) c.fillRect(x0, y0 + i * pitch - 0.5, WIN.w, 1);
+    c.globalCompositeOperation = 'source-over';
+    c.fillStyle = withAlpha(sil, 0.55 * k);
+    c.fillRect(strip.sx - strip.sw / 2, y0, strip.sw, WIN.h);
+    const ph = ((off % 7) + 7) % 7;
+    c.fillStyle = withAlpha(WARM, 0.22 * k);
+    for (let y = y0 + ph; y < y0 + WIN.h; y += 7) c.fillRect(strip.sx - strip.sw / 2 + 1.6, y, strip.sw - 3.2, 1.2);
+  }
   c.restore();
-  // mullion, sill, the light spilling under it
+  // mullion, sill, the slot under it
   c.fillStyle = env.fill('ink');
   c.fillRect(WIN.x - 1.5, y0, 3, WIN.h);
   c.fillRect(x0 - 10, y0 + WIN.h + 4, WIN.w + 20, 6);
+  c.fillStyle = withAlpha(m.rim, 0.35);
+  c.fillRect(x0 - 10, y0 + WIN.h + 3.6, WIN.w + 20, 0.8);
   const sillY = y0 + WIN.h + 10;
-  // the answer line: out under the sill on 'reward', a paper slip with one crisp typed line
-  const ua = sm((tq - (b.reward - 0.15)) / 0.45);
+  // the strip's loose end out through the slot, hanging down the tower in a long curl: it grows on 'longer' (the
+  // notes get long), and on 'hid' it is drawn back in through the slot (hidden by design)
+  const grow = 16 + 3 * t + 74 * sm((t - (b.longer - 0.1)) / 1.4) + 8 * Math.max(0, t - b.longer - 1.4);
+  const retract = 1 - sm((tq - (b.hidden + 0.05)) / 0.8);
+  const L = grow * retract;
+  if (L > 0.5) hangingCurl(c, env, strip.sx, sillY - 1, L, off, t);
+  // the answer line (review r1): out under the sill from 'reward' − 0.17 s over 0.6 s, a paper slip with one crisp
+  // typed line; the brass check-stamp lands on it at ≈ 'reward' + 0.42 s
+  const ua = sm((tq - (b.reward - 0.17)) / 0.6);
   if (ua > 0) {
-    const slipW = 56, slipH = 15 * ua;
+    const slipW = 36, slipH = 16 * ua;
+    const sx = WIN.x + 19;
     c.save();
     c.globalCompositeOperation = 'lighter';
-    const pool = c.createRadialGradient(WIN.x, sillY + 8, 0, WIN.x, sillY + 8, 60);
+    const pool = c.createRadialGradient(sx, sillY + 8, 0, sx, sillY + 8, 50);
     pool.addColorStop(0, withAlpha(WARM, 0.22));
     pool.addColorStop(1, withAlpha(WARM, 0));
     c.fillStyle = pool;
-    c.fillRect(WIN.x - 60, sillY - 20, 120, 90);
+    c.fillRect(sx - 50, sillY - 20, 100, 80);
     c.restore();
     c.fillStyle = mixLab(m.rim, '#f1e8d6', 0.5);
-    c.fillRect(WIN.x - slipW / 2, sillY, slipW, slipH);
-    if (ua > 0.6) {
+    c.fillRect(sx - slipW / 2, sillY, slipW, slipH);
+    if (ua > 0.5) {
       c.fillStyle = withAlpha(m.ink, 0.85);
-      for (let k = 0; k < 6; k++) c.fillRect(WIN.x - slipW / 2 + 5 + k * 7.6, sillY + slipH - 7, 5 + (k % 2) * 1.5, 1.6);
+      for (let k = 0; k < 4; k++) c.fillRect(sx - slipW / 2 + 4 + k * 6.6, sillY + slipH - 7, 4.4 + (k % 2) * 1.5, 1.6);
     }
-    // the brass check-stamp drops onto it, lifts away, leaving the mark
-    const us = (tq - (b.reward + 0.35)) / 0.7;
+    const us = (tq - (b.reward + 0.1)) / 0.7;
     if (us > 0) {
       const brass = mixLab(MOODS.candleAmber.halo, '#c9a14a', 0.5);
       if (us < 1) {
         const y = sillY - 40 + 46 * (us < 0.45 ? sm(us / 0.45) : 1 - sm((us - 0.6) / 0.4) * 0.9);
         c.fillStyle = env.fill('ink');
-        c.fillRect(WIN.x + 14, y - 16, 5, 12);
+        c.fillRect(sx + 6, y - 16, 5, 12);
         c.fillStyle = brass;
-        c.fillRect(WIN.x + 10, y - 5, 13, 5);
+        c.fillRect(sx + 2, y - 5, 13, 5);
       }
       if (us > 0.42) {
         c.strokeStyle = brass;
         c.lineWidth = 1.6;
         c.lineCap = 'round';
         c.beginPath();
-        c.moveTo(WIN.x + 12, sillY + 6);
-        c.lineTo(WIN.x + 15.5, sillY + 10);
-        c.lineTo(WIN.x + 22, sillY + 2.5);
+        c.moveTo(sx + 5, sillY + 6);
+        c.lineTo(sx + 8.5, sillY + 10);
+        c.lineTo(sx + 15, sillY + 2.5);
         c.stroke();
       }
     }
   }
+}
+
+/** the scroll's loose end hanging down the facade from the sill slot: a paper strip in shadow (one step lighter than
+ *  the tower), rim-lit on its sky side, ticks of writing travelling down it, ending in a loose curl */
+function hangingCurl(c: C, env: PaintEnv, x: number, y: number, L: number, off: number, t: number) {
+  const m = env.mood;
+  const w = 9;
+  const pts: P[] = [];
+  const n = Math.max(2, Math.ceil(L / 4));
+  for (let i = 0; i <= n; i++) {
+    const v = (i / n) * L;
+    pts.push({ x: x + 2.4 * Math.sin(v * 0.06 + t * 0.9) * Math.min(1, v / 30), y: y + v });
+  }
+  const end = pts[pts.length - 1];
+  const paper = mixLab(mixLab(m.setHaze, '#d9d3c5', 0.32), m.set, 0.15);
+  c.save();
+  c.lineJoin = 'round';
+  c.strokeStyle = paper;
+  c.lineWidth = w;
+  c.beginPath();
+  pts.forEach((p, i) => (i ? c.lineTo(p.x, p.y) : c.moveTo(p.x, p.y)));
+  // the curl: the strip rolls up on itself at its end
+  const r = Math.min(8, 3 + L * 0.05);
+  c.arc(end.x + r, end.y, r, Math.PI, Math.PI * 2.75, false);
+  c.stroke();
+  // writing ticks travelling down the strip (unreadable at this distance: the work, not its content)
+  c.strokeStyle = withAlpha(m.ink, 0.5);
+  c.lineWidth = 1;
+  const ph = ((off % 6) + 6) % 6;
+  c.beginPath();
+  for (let v = ph + 3; v < L - 2; v += 6) {
+    const p = pts[Math.min(pts.length - 1, Math.round((v / L) * n))];
+    const ww = 2 + 3.5 * h01(Math.floor((v - off) / 6), 921);
+    c.moveTo(p.x - w / 2 + 1.6, p.y);
+    c.lineTo(p.x - w / 2 + 1.6 + ww, p.y);
+  }
+  c.stroke();
+  // the sky side catches the rim
+  c.strokeStyle = withAlpha(m.rim, 0.55);
+  c.lineWidth = 0.7;
+  c.beginPath();
+  pts.forEach((p, i) => (i ? c.lineTo(p.x + w / 2, p.y) : c.moveTo(p.x + w / 2, p.y)));
+  c.stroke();
+  c.restore();
 }
 
 /** T2: the tower with the ticker banner; on 'week' the strip tears, on 'fell' it drops in one long fall */
@@ -442,9 +574,12 @@ function chipSign(c: C, env: PaintEnv, t: number, b: B) {
 }
 
 // =====================================================================================================  right bank
-/** the formal hall: a low colonnaded block; one lit window, a long table of officials, one small figure apart */
+/** the formal hall: a low colonnaded block with one tall lit window. Inside (review r1: puppets, not pictograms): a
+ *  long table of seated officials (cast.delegate, alike, generic) under a hanging lamp, and Liang Wenfeng
+ *  (cast.liang) standing at the table's head, PUPPET_NEAR_BLACK, his edge rimmed toward the lamp */
 function hall(c: C, env: PaintEnv, t: number, b: B) {
   const m = env.mood;
+  const tq = tq12(t);
   c.save();
   c.fillStyle = nearInk(env);
   c.fillRect(HALL.x0, HALL.top, HALL.x1 - HALL.x0, HALL.base - HALL.top);
@@ -455,44 +590,67 @@ function hall(c: C, env: PaintEnv, t: number, b: B) {
   c.lineTo((HALL.x0 + HALL.x1) / 2, HALL.top - 30);
   c.lineTo(HALL.x1 + 4, HALL.top - 6);
   c.fill();
+  c.fillStyle = withAlpha(m.rim, 0.4);
+  c.fillRect(HALL.x0 - 8, HALL.top - 6.5, HALL.x1 - HALL.x0 + 16, 0.9);
   c.fillStyle = withAlpha(m.rim, 0.12);
-  for (let x = HALL.x0 + 12; x < HALL.x1 - 6; x += 22) c.fillRect(x, HALL.top + 64, 1, HALL.base - HALL.top - 70);
-  // the one lit window
-  const x0 = HWIN.x - HWIN.w / 2, y0 = HWIN.y - HWIN.h / 2;
-  c.fillStyle = withAlpha(WARM, 0.88);
+  for (let x = HALL.x0 + 12; x < HALL.x1 - 6; x += 22) if (x < HWIN.x - HWIN.w / 2 - 4 || x > HWIN.x + HWIN.w / 2 + 4) c.fillRect(x, HALL.top + 14, 1, HALL.base - HALL.top - 20);
+  // the lit window
+  const x0 = HWIN.x - HWIN.w / 2, y0 = HWIN.y - HWIN.h / 2, y1 = y0 + HWIN.h;
+  c.save();
+  c.beginPath();
+  c.rect(x0, y0, HWIN.w, HWIN.h);
+  c.clip();
+  const room = c.createRadialGradient(HLAMP.x, HLAMP.y, 4, HLAMP.x, HLAMP.y, HWIN.w * 0.8);
+  room.addColorStop(0, withAlpha(mixLab(WARM, '#fff3d6', 0.3), 0.96));
+  room.addColorStop(1, withAlpha(mixLab(WARM, m.halo, 0.45), 0.9));
+  c.fillStyle = room;
   c.fillRect(x0, y0, HWIN.w, HWIN.h);
-  // the long table and the officials (heads and shoulders, all alike), one figure apart at the end (generic)
-  const ink = mixLab(m.ink, m.set, 0.15);
-  c.fillStyle = ink;
-  c.fillRect(x0 + 8, y0 + HWIN.h - 12, HWIN.w - 30, 4);
-  for (let i = 0; i < 7; i++) {
-    const x = x0 + 14 + i * 10.5;
-    bust(c, x, y0 + HWIN.h - 12, 1);
+  // the hanging lamp: a cord and a shade
+  c.fillStyle = PUPPET_NEAR_BLACK;
+  c.fillRect(HLAMP.x - 0.4, y0, 0.8, HLAMP.y - y0 - 3);
+  c.beginPath();
+  c.moveTo(HLAMP.x - 7, HLAMP.y + 1);
+  c.lineTo(HLAMP.x - 2.5, HLAMP.y - 4);
+  c.lineTo(HLAMP.x + 2.5, HLAMP.y - 4);
+  c.lineTo(HLAMP.x + 7, HLAMP.y + 1);
+  c.closePath();
+  c.fill();
+  // the seated officials along the table (all alike: generic), facing the head of the table
+  const ink = PUPPET_NEAR_BLACK;
+  const rimTo = (x: number) => ({ x: HLAMP.x - x, y: HLAMP.y - (y1 - 40) });
+  for (let i = 0; i < 5; i++) {
+    const x = x0 + 14 + i * 19;
+    const n = Math.hypot(rimTo(x).x, rimTo(x).y) || 1;
+    cast.delegate.draw(
+      c,
+      { x, y: y1 + 1, facing: 'right', pose: withLife(POSES.sit, tq, 50 + i), scale: 0.2, ink, light: { x: rimTo(x).x / n, y: rimTo(x).y / n, floor: 0 }, edgeRim: { x: rimTo(x).x / n, y: rimTo(x).y / n, px: 1.2, alpha: 0.5 } },
+      env,
+    );
   }
-  // the small generic figure (no likeness), a little apart at the table's head
-  bust(c, x0 + HWIN.w - 9, y0 + HWIN.h - 9.5, 1.08);
-  // window bars
-  c.fillStyle = env.fill('set');
-  c.fillRect(HWIN.x - 0.8, y0, 1.6, HWIN.h);
-  c.fillRect(x0, HWIN.y - 0.6, HWIN.w, 1.2);
+  // the long table: a dark top and a cloth to the floor (it hides the seated legs)
+  c.fillStyle = mixLab(PUPPET_NEAR_BLACK, m.set, 0.12);
+  c.fillRect(x0 + 2, y1 - 26, 104, 3.5);
+  c.fillRect(x0 + 4, y1 - 23, 100, 23);
+  c.fillStyle = withAlpha(mixLab(WARM, m.rim, 0.4), 0.6);
+  c.fillRect(x0 + 2, y1 - 26.4, 104, 0.8);
+  // Liang Wenfeng at the table's head, standing apart: the one figure the name card points to
+  const lx = x0 + HWIN.w - 26;
+  const nl = Math.hypot(HLAMP.x - lx, HLAMP.y - (y1 - 60)) || 1;
+  const dir = { x: (HLAMP.x - lx) / nl, y: (HLAMP.y - (y1 - 60)) / nl };
+  const lpose = withLife(t > b.hall + 1.2 ? POSES.present : POSES.stand, tq, 77);
+  cast.liang.draw(c, { x: lx, y: y1 + 2, facing: 'left', pose: lpose, scale: 0.245, ink, light: { x: dir.x, y: dir.y, floor: 0 }, edgeRim: { x: dir.x, y: dir.y, px: 1.6, alpha: 0.75 } }, env);
+  c.restore();
+  // window frame bars (thin, so the figures read)
+  c.fillStyle = nearInk(env);
+  c.fillRect(x0 - 3, y0 - 3, HWIN.w + 6, 3);
+  c.fillRect(x0 - 3, y1, HWIN.w + 6, 4);
   // its light on the water below the hall
   c.globalCompositeOperation = 'lighter';
   for (let i = 0; i < 8; i++) {
     c.fillStyle = withAlpha(WARM, 0.14 * (1 - i / 8));
-    c.fillRect(HWIN.x - 20 + 3 * Math.sin(t * 1.3 + i), HALL.base + 6 + i * 4, 40 - i * 3, 1.2);
+    c.fillRect(HWIN.x - 24 + 3 * Math.sin(t * 1.3 + i), HALL.base + 6 + i * 4, 48 - i * 3, 1.2);
   }
   c.restore();
-}
-function bust(c: C, x: number, y: number, s: number) {
-  c.beginPath();
-  c.arc(x, y - 9 * s, 2.6 * s, 0, Math.PI * 2);
-  c.fill();
-  c.beginPath();
-  c.moveTo(x - 4 * s, y);
-  c.quadraticCurveTo(x - 4 * s, y - 6 * s, x, y - 6 * s);
-  c.quadraticCurveTo(x + 4 * s, y - 6 * s, x + 4 * s, y);
-  c.closePath();
-  c.fill();
 }
 
 function lanternPos(t: number, b: B): P {
@@ -501,85 +659,78 @@ function lanternPos(t: number, b: B): P {
   const x = t < b.all ? lerp(b.lx0, b.lx1, 1 - (1 - u1) * (1 - u1)) : lerp(b.lx1, b.lx2, clamp01((t - b.all) / Math.max(0.5, b.cut - b.all)));
   return { x, y: LANTERN_Y + 0.8 * Math.sin(t * 1.6) };
 }
-/** the R1 lantern: translucent paper over a light frame, standing ON the water (its reflection rippling under it), the
- *  working-notes scroll inside in plain view as a clear band of ink lines, a recipe card tied to its handle */
+/** the R1 lantern (review r1): a paper lantern glowing FROM INSIDE (an f.practical at its centre), its paper
+ *  translucent so the strait shows at its edges, and through it, in plain view, the same scroll as the shuttered
+ *  tower's (spool, strip, perforations, coils) in silhouette; the recipe card tied to its handle. The picture
+ *  says: the same notes, shown. */
 function lantern(c: C, env: PaintEnv, t: number, b: B) {
   if (t < b.lantern - 0.25) return;
   const m = env.mood;
   const tq = tq12(t);
   const p = lanternPos(tq, b);
   const set = sm((tq - (b.lantern - 0.25)) / 0.45);
-  const S = 0.7;
-  const W = 66 * S, H = 92 * S;
+  const W = LANT.w, H = LANT.h;
   const bob = 0.025 * Math.sin(tq * 1.4);
   c.save();
   c.translate(p.x, p.y - (1 - set) * 14);
   c.globalAlpha = set;
-  // the reflection under it: the lit paper flipped, 35%, broken by the ripple
+  // the reflection under it: the lit paper flipped, broken by the ripple
   c.save();
   c.globalCompositeOperation = 'lighter';
   for (let i = 0; i < 12; i++) {
     const y = 2 + i * 3.2;
     const k = 1 - i / 12;
-    c.fillStyle = withAlpha(WARM, 0.35 * k * k);
+    c.fillStyle = withAlpha(WARM, 0.3 * k * k);
     c.fillRect(-W / 2 + 2 + 2.2 * Math.sin(t * 1.9 + i * 0.9), y, W - 4, 1.9);
   }
   c.restore();
-  // the waterline: a dark lip and a ring of disturbed water
   c.strokeStyle = withAlpha(m.rim, 0.35);
   c.lineWidth = 0.8;
   c.beginPath();
   c.ellipse(0, 0.5, W * 0.62 + 2 * Math.sin(t * 1.2), 2.4, 0, 0, Math.PI * 2);
   c.stroke();
   c.rotate(bob);
-  // the paper body: translucent (the strait shows through it), lit from within
-  const body = c.createLinearGradient(0, -H, 0, 0);
-  body.addColorStop(0, withAlpha(mixLab(WARM, '#f6ecd8', 0.45), 0.42));
-  body.addColorStop(1, withAlpha(mixLab(WARM, m.halo, 0.25), 0.56));
-  c.fillStyle = body;
+  const body = new Path2D();
+  body.moveTo(-W / 2 + 2, -H + 6);
+  body.bezierCurveTo(-W / 2 - 6, -H * 0.7, -W / 2 - 6, -H * 0.3, -W / 2 + 2, -1.5);
+  body.lineTo(W / 2 - 2, -1.5);
+  body.bezierCurveTo(W / 2 + 6, -H * 0.3, W / 2 + 6, -H * 0.7, W / 2 - 2, -H + 6);
+  body.closePath();
+  // the paper, lit from within: bright at its heart, thinner toward the edges where the strait shows through
+  const glow = c.createRadialGradient(0, -H * 0.5, 4, 0, -H * 0.5, W * 0.72);
+  glow.addColorStop(0, withAlpha(mixLab(WARM, '#fff4d8', 0.5), 0.9));
+  glow.addColorStop(0.6, withAlpha(mixLab(WARM, m.halo, 0.2), 0.6));
+  glow.addColorStop(1, withAlpha(mixLab(WARM, m.halo, 0.5), 0.32));
+  c.fillStyle = glow;
+  c.fill(body);
+  // inside, in plain view: the scroll, the same as the tower's, its silhouette softened by the paper
+  c.save();
+  c.clip(body);
+  c.globalAlpha *= 0.82;
+  const off = t * 22;
+  scrollSilhouette(c, mixLab(m.ink, '#000000', 0.2), withAlpha(mixLab(WARM, '#fff4d8', 0.4), 1), { x0: -W / 2 + 6, x1: W / 2 - 6, y0: -H + 8, y1: -4, off, spin: off / 9, coil: 3, sx: -W / 2 + 24, sw: 11 });
+  c.restore();
+  // ribs of the frame, faint through the paper; the top and bottom rims
+  c.strokeStyle = withAlpha(m.ink, 0.22);
+  c.lineWidth = 0.6;
   c.beginPath();
-  c.moveTo(-W / 2, -H + 6);
-  c.quadraticCurveTo(-W / 2 - 3, -H / 2, -W / 2, -1.5);
-  c.lineTo(W / 2, -1.5);
-  c.quadraticCurveTo(W / 2 + 3, -H / 2, W / 2, -H + 6);
-  c.closePath();
-  c.fill();
-  // the frame: top and bottom rims, a few ribs
+  for (let k = 1; k < 6; k++) {
+    const y = -H + 6 + ((H - 8) * k) / 6;
+    c.moveTo(-W / 2 - 2, y);
+    c.lineTo(W / 2 + 2, y);
+  }
+  c.stroke();
   c.fillStyle = env.fill('ink');
-  c.fillRect(-W / 2 - 1.5, -H + 3, W + 3, 3.6);
-  c.fillRect(-W / 2 - 1.5, -3, W + 3, 3.6);
-  c.fillStyle = withAlpha(m.ink, 0.22);
-  for (let k = 1; k < 4; k++) c.fillRect(-W / 2 + (W * k) / 4, -H + 7, 0.6, H - 10);
-  // inside, in plain view: the same scroll, a clear pale band of ink lines between two rollers
-  const by = -H * 0.75;
-  c.fillStyle = withAlpha('#f6efe0', 0.85);
-  c.fillRect(-W / 2 + 6, by - 6, W - 12, 12);
-  c.fillStyle = withAlpha(m.ink, 0.75);
-  for (const rx of [-W / 2 + 5, W / 2 - 5]) {
-    c.beginPath();
-    c.roundRect(rx - 2.2, by - 9, 4.4, 18, 2);
-    c.fill();
-  }
-  const off = t * 14;
-  c.fillStyle = withAlpha(m.ink, 0.7);
-  for (let r = 0; r < 3; r++) {
-    const y = by - 4 + r * 3.6;
-    for (let k = 0; k < 7; k++) {
-      const w = 2 + 5 * h01(k + r * 29, 911);
-      const x = -W / 2 + 8 + ((((k * 7.1 - off + r * 4) % 30) + 30) % 30);
-      if (x + w > W / 2 - 8) continue;
-      c.fillRect(x, y, w, 1.1);
-    }
-  }
-  // the lettering: R1 · OPEN WEIGHTS
-  c.fillStyle = withAlpha(MOODS.parchment.ink, 0.92);
+  c.fillRect(-W / 2 + 1, -H + 3, W - 2, 3.6);
+  c.fillRect(-W / 2 + 1, -3, W - 2, 3.6);
+  c.fillStyle = withAlpha(m.rim, 0.5);
+  c.fillRect(-W / 2 + 1, -H + 2.6, W - 2, 0.8);
+  // its name, small, inked on the paper beside the scroll
+  c.fillStyle = withAlpha(MOODS.parchment.ink, 0.78);
   c.textAlign = 'center';
   c.textBaseline = 'alphabetic';
-  c.font = `700 14px ${FONT.mono}`;
-  c.fillText('R1', 0, -H * 0.43);
-  c.font = `600 8.6px ${FONT.mono}`;
-  c.fillText('OPEN', 0, -H * 0.43 + 10.5);
-  c.fillText('WEIGHTS', 0, -H * 0.43 + 19.5);
+  c.font = `700 17px ${FONT.mono}`;
+  c.fillText('R1', W * 0.22, -H * 0.6);
   // the handle and the recipe card tied to it
   c.strokeStyle = env.fill('ink');
   c.lineWidth = 1.2;
@@ -596,13 +747,16 @@ function lantern(c: C, env: PaintEnv, t: number, b: B) {
   c.save();
   c.translate(W * 0.5 + 4, cy);
   c.rotate(0.25 + 0.08 * Math.sin(tq * 1.2));
-  c.fillStyle = mixLab(m.rim, '#f3ead8', 0.55);
-  c.fillRect(-1, 0, 15, 10.5);
+  c.fillStyle = mixLab(m.rim, '#f3ead8', 0.6);
+  c.fillRect(-1, 0, 18, 12.5);
+  c.fillStyle = withAlpha(mixLab(WARM, '#fff4d8', 0.4), 0.8);
+  c.fillRect(-1, 0, 0.8, 12.5);
   c.fillStyle = withAlpha(m.ink, 0.6);
-  for (let k = 0; k < 3; k++) c.fillRect(1.5, 2.6 + k * 2.6, 10 - k * 1.5, 0.7);
+  for (let k = 0; k < 4; k++) c.fillRect(1.5, 2.4 + k * 2.4, 12 - k * 1.8, 0.7);
   c.restore();
   c.restore();
 }
+const LANT = { w: 64, h: 90 } as const;
 
 /** the near-black value every nearest building shares (one step lighter than nothing) */
 function nearInk(env: PaintEnv) {

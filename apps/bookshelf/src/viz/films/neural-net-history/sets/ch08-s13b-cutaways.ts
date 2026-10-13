@@ -9,9 +9,11 @@
  *         o: { ball: 0..1 (the roll; 1 = settled), footing: 0..1 (light on the stencils), stamp: 0..1 }
  *   fogScene(f, cams, o)   THE FOG (winterBlue, the ch05/ch08-s10 hills at night): the traveller settled in the valley,
  *       fog over everything; 'data' pictures drift down into the fog, 'fire' warms it from inside, and on 'cut its
- *       own' a mosaic of learned stencils rises out of the fog; on 'many layers deep' two more ranks of stencils rise
- *       behind it, smaller and hazier (layers, deep). Planes: L2 far range · L4 hills + the ranks · L5 near bank. Tiles are ILLUSTRATIVE (the ch08-s06 procedural set, not the real conv1 weights).
- *         o: { data, fire, rank1, rank2, rank3: 0..1 }
+ *       own' a big mosaic of learned stencils rises out of the fog (≈ 30 % of the frame); on 'many layers deep' it
+ *       stacks itself into the ch08-s05 cathedral tower, and on 'deep learning' light climbs it to the crown.
+ *       Planes: L1 sky · L2 far range · L4 hills + the mosaic/tower · L5 near bank. Tiles are ILLUSTRATIVE (the
+ *       ch08-s06 procedural set, not the real conv1 weights).
+ *         o: FogOpts { t, dataT (s), fire, snap 0..1, stackT (s), light 0..1 }
  * Both are pure functions of their inputs; static art is cached per mood.
  */
 import type { Camera3, Frame, PaintEnv } from '../../../film/contracts';
@@ -58,7 +60,9 @@ export function ballPos(k: number): { x: number; y: number } {
 }
 
 export function bowlScene(f: Frame, cams: Camera3[], o: { ball: number; footing: number; stamp: number }): void {
-  f.setMood('duskRose');
+  // review round 1 (continuity): pulled most of the way toward the study's candleAmber, so the rivals' hall reads
+  // as a cutaway of this sequence, not a new one (a fixed blend: one palette, one bake)
+  f.setMood('candleAmber', { from: 'duskRose', u: 0.62 });
   f.backlight({ sunX: 640, sunY: 230, sunRadius: 640, intensity: 0.8 });
   // L2: the hall's back wall, its tall arched windows as holes
   f.layer('L2', (c, env) => {
@@ -206,52 +210,229 @@ function stamp(c: C, env: PaintEnv, k: number) {
 const HILLS = { x: -90, w: 1460 };
 /** the valley floor: x ≈ 1.96 → sx */
 export const VALLEY = { x: HILLS.x + ((1.96 + 6.4) / 12.8) * HILLS.w, y: 636 };
-/** three ranks of stencils, a stack receding up and to the right (layers, deep): all on the action plane, because
- *  the kit's back ridges are painted there too and would hide anything set behind them; depth reads by size, haze
- *  and overlap (the scene's parallax comes from L2 mountains · L4 · L5 bank) */
-const RANKS = [
-  { cols: 7, rows: 2, size: 54, gap: 8, cx: 790, top: 372, seed: 0, haze: 0 },
-  { cols: 8, rows: 2, size: 40, gap: 6, cx: 880, top: 280, seed: 1, haze: 0.36 },
-  { cols: 9, rows: 2, size: 30, gap: 5, cx: 960, top: 214, seed: 2, haze: 0.56 },
-];
-function rank(c: C, env: PaintEnv, i: number, k: number) {
-  if (k <= 0.003) return;
-  const R = RANKS[i];
+/**
+ * THE THESIS PICTURE (review round 3, story + art + teacher T306: 'the net cut its own' needs its own image).
+ *   prints  'given data': small pictures drift down into the fog and hover in it, drifting (the specks)
+ *   snap    'cut' (25.82): twelve of the drifting pictures SNAP into one row of learned edge stencils, the first
+ *           stencil row (the grey oriented edges of the ch08-s06 mosaic, GPU-1 tiles, ILLUSTRATIVE); the rest sink
+ *           back into the fog. The row hangs large in the fog through 'its own'.
+ *   stack   'many layers' (26.88): the row settles as the base course and the tower of ch08-s05 STACKS over it,
+ *           course by course rising out of the fog (wide to narrow, then the crown), complete by 'deep learning'
+ *   light   'deep learning' (28.4): light climbs the tower course by course to the crown
+ */
+const TW = { cx: 640, base: 522, size: 30, pitch: 34, ledge: 8 };
+/** the first stencil row while it hangs alone in the fog (before it settles as the base course) */
+const ROW = { n: 12, size: 52, pitch: 58, y: 430 };
+/** the twelve learned EDGE stencils of the first row (GPU-1 tiles: grey oriented stripes and edges) */
+const ROW_K = Array.from({ length: ROW.n }, (_, q) => (q * 4 + 1) % 48);
+/** the tower's courses, bottom up: [cols, rows]; courses 3-5 share one width (the 13 · 13 · 13 shaft), then the crown */
+const COURSES: [number, number][] = [[12, 2], [8, 2], [4, 2], [4, 1], [4, 1], [3, 1], [1, 1]];
+interface Slot { x: number; y: number; ci: number }
+const TOWER_SLOTS: Slot[] = [];
+const COURSE_BOX: { x0: number; x1: number; y0: number; y1: number }[] = [];
+{
+  let y = TW.base;
+  COURSES.forEach(([cols, rows], ci) => {
+    const w = cols * TW.pitch;
+    const y1 = y;
+    for (let r = 0; r < rows; r++) {
+      for (let q = 0; q < cols; q++) TOWER_SLOTS.push({ x: TW.cx - w / 2 + TW.pitch / 2 + q * TW.pitch, y: y - TW.pitch / 2 - r * TW.pitch, ci });
+    }
+    y -= rows * TW.pitch;
+    COURSE_BOX.push({ x0: TW.cx - w / 2, x1: TW.cx + w / 2, y0: y, y1 });
+    // the crown's two tiers sit straight on each other; every other course has a stone ledge above it
+    if (ci < COURSES.length - 2) y -= TW.ledge;
+  });
+}
+const TOWER_TOP = COURSE_BOX[COURSE_BOX.length - 1].y0;
+/** when course ci starts to rise, after 'many layers' (s); each takes STAGE_D: the crown lands ≈ 1.55 s in */
+const courseAt = (ci: number) => 0.12 + ci * 0.17;
+const STAGE_D = 0.45;
+/** how far the row has settled into the base course (0..1), from 'many layers' */
+const settleOf = (stackT: number) => sm(stackT / 0.5);
+/** a course's stone has risen behind its tiles (0..1) */
+const landedOf = (ci: number, stackT: number) => (ci === 0 ? settleOf(stackT) : sm((stackT - courseAt(ci) - 0.2) / 0.25));
+
+// ---- the drifting pictures ('given data')
+const PRINTS = 26;
+const h01 = (i: number, k: number) => (hash1(i, k) + 1) / 2;
+/** a picture's place while it drifts (dt s after 'data'): it falls into the fog and hovers there, drifting */
+function printAt(i: number, dt: number): { x: number; y: number; rot: number; a: number } {
+  const s0 = 0.05 + 0.55 * h01(i, 21);
+  const u = Math.max(0, Math.min(1, (dt - s0) / 1.5));
+  const fall = 1 - Math.pow(1 - u, 2.4);
+  const hover = 330 + 120 * h01(i, 25);
+  const x = 470 + 700 * h01(i, 22) + Math.sin(dt * 0.9 + i) * 10;
+  const y = 110 + (hover - 110) * fall + Math.sin(dt * 1.3 + i * 1.7) * 4 * u;
+  const rot = (h01(i, 23) - 0.5) * 0.8 + Math.sin(dt * 0.7 + i) * 0.15;
+  return { x, y, rot, a: sm((dt - s0) / 0.25) };
+}
+/** the twelve pictures that become the first row: picked across the spread, assigned to columns by their x */
+const SNAPPERS: number[] = (() => {
+  const all = Array.from({ length: PRINTS }, (_, i) => ({ i, x: 470 + 700 * h01(i, 22) }));
+  all.sort((p, q) => p.x - q.x);
+  const pick: number[] = [];
+  for (let q = 0; q < ROW.n; q++) pick.push(all[Math.round((q * (PRINTS - 1)) / (ROW.n - 1))].i);
+  return pick;
+})();
+function drawPrint(c: C, m: PaintEnv['mood'], i: number, x: number, y: number, rot: number, a: number, sc = 1) {
+  if (a <= 0.003) return;
+  c.save();
+  c.globalAlpha = a * 0.85;
+  c.translate(x, y);
+  c.rotate(rot);
+  c.scale(sc, sc);
+  c.fillStyle = mixLab(m.halo, '#eef2f5', 0.5);
+  c.fillRect(-9, -7, 18, 14);
+  c.fillStyle = withAlpha(m.ink, 0.7);
+  if (i % 3 === 0) {
+    c.beginPath();
+    c.arc(0, 1, 4, 0, Math.PI * 2);
+    c.fill();
+  } else if (i % 3 === 1) c.fillRect(-5, -2, 10, 8);
+  else {
+    c.beginPath();
+    c.moveTo(-7, 6);
+    c.lineTo(-1, -4);
+    c.lineTo(6, 6);
+    c.fill();
+  }
+  c.restore();
+}
+
+/** a stencil tile on its dark mount, with the climbing light over it */
+function drawTile(c: C, m: PaintEnv['mood'], atlas: ReturnType<typeof tileAtlas>, k: number, x: number, y: number, size: number, a: number, lk: number) {
+  if (a <= 0.003) return;
+  c.globalAlpha = a * 0.96;
+  c.fillStyle = withAlpha(m.ink, 0.85);
+  c.fillRect(x - size / 2 - 2, y - size / 2 - 2, size + 4, size + 4);
+  atlas.draw(c, k, x, y, size);
+  if (lk > 0.003) {
+    c.save();
+    c.globalCompositeOperation = 'lighter';
+    c.globalAlpha = a;
+    c.fillStyle = withAlpha(mixLab(m.core, '#f2d6a0', 0.55), 0.3 * lk);
+    c.fillRect(x - size / 2, y - size / 2, size, size);
+    c.restore();
+  }
+  c.globalAlpha = 1;
+}
+
+function thesis(c: C, env: PaintEnv, o: FogOpts) {
+  const m = env.mood;
+  const dt = o.dataT;
+  const snap = o.snap;
+  const S = o.stackT;
+  const nC = COURSES.length;
+  // ---- the drifting pictures: the ones that do not become the row sink back into the fog as the row snaps
+  if (dt > 0) {
+    for (let i = 0; i < PRINTS; i++) {
+      if (snap > 0 && SNAPPERS.includes(i)) continue;
+      const p = printAt(i, dt);
+      const gone = sm(snap / 0.6);
+      drawPrint(c, m, i, p.x, p.y + 30 * gone, p.rot, p.a * (1 - gone));
+    }
+  }
+  if (snap <= 0 && S <= -0.5) return;
   const atlas = tileAtlas(`${KEY}-fog-grey`, [1, 0.97, 0.9], 0.3);
   atlas.update('learned', () => ({ u: 1, seed: 7 }));
-  const m = env.mood;
-  const pitch = R.size + R.gap;
-  const w = R.cols * pitch - R.gap;
-  const x0 = R.cx - w / 2 + R.size / 2;
-  // each tile rises out of the fog on twos-ish stagger (left to right), sliding up from below the fog line
-  c.save();
-  for (let r = 0; r < R.rows; r++) {
-    for (let q = 0; q < R.cols; q++) {
-      const n = r * R.cols + q;
-      const lag = (q / R.cols) * 0.3 + (hash1(n, 11 + R.seed) + 1) * 0.05;
-      const u = sm((k - lag) / 0.55);
-      if (u <= 0) continue;
-      const tk = (n * 7 + R.seed * 31) % TILE_N;
-      const x = x0 + q * pitch;
-      const y = R.top + r * pitch + R.size / 2 + (1 - u) * 150;
-      c.globalAlpha = u * (i === 0 ? 0.95 : i === 1 ? 0.85 : 0.75);
-      // the glass tile's lead frame and a little light through it, hazed with depth
-      c.fillStyle = withAlpha(m.ink, 0.85);
-      c.fillRect(x - R.size / 2 - 2, y - R.size / 2 - 2, R.size + 4, R.size + 4);
-      atlas.draw(c, tk, x, y, R.size);
-      if (R.haze > 0) {
-        c.fillStyle = withAlpha(m.haze, R.haze);
-        c.fillRect(x - R.size / 2 - 2, y - R.size / 2 - 2, R.size + 4, R.size + 4);
+  const settle = settleOf(S);
+  // ---- the tower's dark stone: each course a cut-paper block a little wider than its tiles, a ledge above it, and a
+  // spire over the crown; it rises course by course as the tiles arrive
+  if (S > 0) {
+    const ink = env.fill('ink');
+    COURSE_BOX.forEach((bx, ci) => {
+      const a = landedOf(ci, S);
+      if (a <= 0.003) return;
+      const lift = (1 - a) * 18;
+      c.globalAlpha = a;
+      c.fillStyle = ink;
+      c.fillRect(bx.x0 - 10, bx.y0 - 6 + lift, bx.x1 - bx.x0 + 20, bx.y1 - bx.y0 + 10);
+      if (ci < nC - 2) {
+        c.fillRect(bx.x0 - 20, bx.y0 - TW.ledge - 4 + lift, bx.x1 - bx.x0 + 40, TW.ledge + 2);
+        // little pinnacles at the ledge ends (the s05 façade's stepped corners)
+        for (const ex of [bx.x0 - 20, bx.x1 + 12]) c.fillRect(ex, bx.y0 - TW.ledge - 22 + lift, 8, 20);
       }
+      c.fillStyle = withAlpha(m.rim, 0.35 * a);
+      c.fillRect(bx.x0 - 10, bx.y0 - 6 + lift, bx.x1 - bx.x0 + 20, 1.2);
+    });
+    const sa = landedOf(nC - 1, S);
+    if (sa > 0.003) {
+      c.globalAlpha = sa;
+      c.fillStyle = ink;
+      c.beginPath();
+      c.moveTo(TW.cx - 12, TOWER_TOP - 6);
+      c.lineTo(TW.cx, TOWER_TOP - 70 + (1 - sa) * 30);
+      c.lineTo(TW.cx + 12, TOWER_TOP - 6);
+      c.closePath();
+      c.fill();
+    }
+    c.globalAlpha = 1;
+  }
+  const lightOf = (ci: number) => sm((o.light * (nC + 1) - ci) / 1.2);
+  // ---- the upper courses: each is SET DOWN onto the course below (lowered from above into its slots), course by course
+  if (S > 0) {
+    for (let j = ROW.n; j < TOWER_SLOTS.length; j++) {
+      const sl = TOWER_SLOTS[j];
+      const q = j % 12;
+      const st = courseAt(sl.ci) + (q / 12) * 0.08;
+      const u = sm((S - st) / STAGE_D);
+      if (u <= 0) continue;
+      const x = sl.x;
+      const y = sl.y - (1 - u) * 70;
+      const size = TW.size * (1.12 - 0.12 * u);
+      drawTile(c, m, atlas, (j * 7) % TILE_N, x, y, size, sm(u / 0.35), u * lightOf(sl.ci));
+    }
+  }
+  // ---- the first stencil row: snapped out of the drifting pictures on 'cut', hanging large in the fog, then
+  // settling as the tower's base course on 'many layers'
+  for (let q = 0; q < ROW.n; q++) {
+    const i = SNAPPERS[q];
+    // a short stagger from the middle out, so the snap reads as one gesture
+    const lag = Math.abs(q - (ROW.n - 1) / 2) * 0.012;
+    const e0 = Math.max(0, Math.min(1, (snap - lag) / 0.85));
+    if (e0 <= 0) continue;
+    // a snap: fast in, a hair of overshoot, settled
+    const e = e0 < 1 ? 1 - Math.pow(1 - e0, 3) * Math.cos(e0 * 2.2) : 1;
+    const p = printAt(i, Math.max(0, dt));
+    const rx = TW.cx + (q - (ROW.n - 1) / 2) * ROW.pitch;
+    const sl = TOWER_SLOTS[q];
+    const tx = rx + (sl.x - rx) * settle;
+    const ty = ROW.y + (sl.y - ROW.y) * settle;
+    const size0 = ROW.size + (TW.size - ROW.size) * settle;
+    const x = p.x + (tx - p.x) * e;
+    const y = p.y + (ty - p.y) * e;
+    const size = 16 + (size0 - 16) * e;
+    // the picture turns into the stencil as it lands
+    drawPrint(c, m, i, x, y, p.rot * (1 - e), p.a * (1 - sm(e0 / 0.6)), size / 16);
+    drawTile(c, m, atlas, ROW_K[q], x, y, size, sm(e0 / 0.5), lightOf(0) * settle);
+    // the cut: a pale edge flash as each stencil lands
+    const flash = e0 >= 1 ? Math.exp(-(snap - lag - 0.85) * 3.5) : 0;
+    if (flash > 0.01) {
+      c.save();
+      c.globalCompositeOperation = 'lighter';
+      c.strokeStyle = withAlpha(mixLab(m.core, '#eef2f5', 0.4), 0.55 * flash * (1 - settle));
+      c.lineWidth = 1.6;
+      c.strokeRect(x - size / 2 - 2, y - size / 2 - 2, size + 4, size + 4);
+      c.restore();
     }
   }
   c.globalAlpha = 1;
-  // the fog laps at the rank's foot (so it reads as rising OUT of it)
-  const fy = R.top + R.rows * pitch + 6;
-  c.translate(R.cx, fy);
-  c.scale((w / 2 + 90) / 60, 1);
+  // the crown's glow as the light arrives, and a soft warm aura round the whole lit tower
+  if (o.light > 0.003) {
+    const crown = sm((o.light - 0.75) / 0.25);
+    glow(c, TW.cx, TOWER_TOP + 20, 120, mixLab(m.core, '#f2d6a0', 0.5), 0.35 * crown);
+    glow(c, TW.cx, (TOWER_TOP + TW.base) / 2, 360, m.halo, 0.12 * o.light);
+  }
+  // the fog laps at the foot (the row hangs IN it; the tower stands in it)
+  const k = sm(S / 0.8);
+  const footY = ROW.y + ROW.size / 2 + 14 + (TW.base + 4 - (ROW.y + ROW.size / 2 + 14)) * k;
+  const halfW = 400 - 170 * k;
+  c.save();
+  c.translate(TW.cx, footY);
+  c.scale((halfW + 90) / 60, 1);
   const g = c.createRadialGradient(0, 0, 0, 0, 0, 60);
-  g.addColorStop(0, withAlpha(m.haze, 0.7));
+  g.addColorStop(0, withAlpha(m.haze, 0.75));
   g.addColorStop(0.55, withAlpha(m.haze, 0.45));
   g.addColorStop(1, withAlpha(m.haze, 0));
   c.fillStyle = g;
@@ -259,7 +440,19 @@ function rank(c: C, env: PaintEnv, i: number, k: number) {
   c.restore();
 }
 
-export function fogScene(f: Frame, cams: Camera3[], o: { t: number; data: number; fire: number; rank1: number; rank2: number; rank3: number }): void {
+export interface FogOpts {
+  t: number;
+  /** seconds since 'given data' (negative before) */
+  dataT: number;
+  fire: number;
+  /** 0..1 the snap of the first stencil row on 'cut' (≈ 0.4 s) */
+  snap: number;
+  /** seconds since 'many layers' (negative before) */
+  stackT: number;
+  light: number;
+}
+
+export function fogScene(f: Frame, cams: Camera3[], o: FogOpts): void {
   f.setMood('winterBlue');
   f.backlight({ sunX: 900, sunY: 300, sunRadius: 700, intensity: 0.5 });
   // our own sky (the kit's is erased in L4: its two cloud bands end in a hard edge): a moon under thin cloud, stars
@@ -332,40 +525,8 @@ export function fogScene(f: Frame, cams: Camera3[], o: { t: number; data: number
       c.fillRect(r.x - 10, r.y - 10, r.w + 20, 232 - r.y + 10);
       c.restore();
     }
-    // 'data': pictures drifting down into the fog (small pale prints, each with a dark subject cut in it)
-    if (o.data > 0.01) {
-      for (let i = 0; i < 26; i++) {
-        const start = hash1(i, 21) * 0.6;
-        const u = (o.data - start) / 0.9;
-        if (u <= 0 || u >= 1) continue;
-        const x = 520 + hash1(i, 22) * 620 + Math.sin(u * 5 + i) * 10;
-        const y = 120 + u * 430;
-        const a = sm(u / 0.15) * (1 - sm((u - 0.6) / 0.4));
-        c.save();
-        c.globalAlpha = a * 0.85;
-        c.translate(x, y);
-        c.rotate((hash1(i, 23) - 0.5) * 0.8 + u * (hash1(i, 24) - 0.5) * 2);
-        c.fillStyle = mixLab(m.halo, '#eef2f5', 0.5);
-        c.fillRect(-9, -7, 18, 14);
-        c.fillStyle = withAlpha(m.ink, 0.7);
-        if (i % 3 === 0) {
-          c.beginPath();
-          c.arc(0, 1, 4, 0, Math.PI * 2);
-          c.fill();
-        } else if (i % 3 === 1) c.fillRect(-5, -2, 10, 8);
-        else {
-          c.beginPath();
-          c.moveTo(-7, 6);
-          c.lineTo(-1, -4);
-          c.lineTo(6, 6);
-          c.fill();
-        }
-        c.restore();
-      }
-    }
-    rank(c, env, 2, o.rank3);
-    rank(c, env, 1, o.rank2);
-    rank(c, env, 0, o.rank1);
+    // 'data': the pictures drifting down into the fog, and the thesis picture (thesis)
+    thesis(c, env, o);
   });
   f.rim({ x: 0.3, y: -1 });
   if (o.fire > 0.01) f.practical({ x: VALLEY.x, y: VALLEY.y - 40, kind: 'lamp', seed: 2012, intensity: 0.4 * o.fire, radius: 160, layer: 'L4' });

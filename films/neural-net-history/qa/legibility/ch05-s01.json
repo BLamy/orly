@@ -1,60 +1,64 @@
 {
  "shot": "ch05-s01",
- "at": "2026-10-12T09:00:11.101Z",
+ "at": "2026-10-13T04:13:21.626Z",
  "minCapPx": 22,
  "sampled": 29,
  "texts": 10,
- "offenders": [
-  {
-   "text": "05",
-   "maxCap": 15.5,
-   "minCap": 15.5,
-   "first": 0.65,
-   "last": 3.65,
-   "font": "21.3px \"Special Elite\""
-  },
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
   {
    "text": "Clue Three: The Messenger Who Runs Backward",
-   "maxCap": 19,
-   "minCap": 19,
-   "first": 0.65,
-   "last": 3.65,
-   "font": "26px \"Special Elite\""
-  }
- ],
- "textureTexts": 0,
- "ok": [
+   "capWhileSubject": 26.9,
+   "why": "script onScreenText"
+  },
   {
    "text": "VER",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "VERSA",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "VERSAILLES · SU",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "john hopfield",
-   "maxCap": 25.9
+   "capWhileSubject": 25.9,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "VERSAILLES · SUMMER",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "physicist, Caltech",
-   "maxCap": 26.4
+   "capWhileSubject": 26.4,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "VERSAILLES · SUMMER 198",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "VERSAILLES · SUMMER 1981",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   }
- ]
+ ],
+ "texture": [
+  {
+   "text": "05",
+   "maxCap": 22,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 1
 }

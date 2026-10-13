@@ -1,552 +1,404 @@
 {
  "shot": "ch13-s06",
- "at": "2026-10-12T23:59:08.336Z",
+ "at": "2026-10-13T07:01:09.907Z",
  "minCapPx": 22,
  "sampled": 22,
- "texts": 77,
- "offenders": [
+ "texts": 78,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
   {
-   "text": "KRIZHEVSKY, SUTSKEVER & HINTON · 2012",
-   "maxCap": 11.8,
-   "minCap": 4.4,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "5.3923px \"Special Elite\""
-  },
-  {
-   "text": "CYC",
-   "maxCap": 12.1,
-   "minCap": 3.9,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "9px VT323"
-  },
-  {
-   "text": "INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND",
-   "maxCap": 12.8,
-   "minCap": 4.8,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "11px VT323"
-  },
-  {
-   "text": "NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY",
-   "maxCap": 15.5,
-   "minCap": 5.8,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "8.4px \"IBM Plex Mono\""
-  },
-  {
-   "text": "LANGUAGE MUST BE READ IN ORDER",
-   "maxCap": 15.5,
-   "minCap": 5.8,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "8.4px \"IBM Plex Mono\""
-  },
-  {
-   "text": "TO SEE, A MACHINE NEEDS FEATURES DESIGNED BY",
-   "maxCap": 15.5,
-   "minCap": 5.8,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "8.4px \"IBM Plex Mono\""
-  },
-  {
-   "text": "EXPERTS",
-   "maxCap": 15.5,
-   "minCap": 5.8,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "8.4px \"IBM Plex Mono\""
-  },
-  {
-   "text": "DEEP NETS MUST BE WARMED UP LAYER BY LAYER",
-   "maxCap": 15.5,
-   "minCap": 5.8,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "8.4px \"IBM Plex Mono\""
-  },
-  {
-   "text": "LEARNED FEATURES, GIVEN DATA AND ARITHMETIC",
-   "maxCap": 15.5,
-   "minCap": 5.8,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "8.4px \"IBM Plex Mono\""
-  },
-  {
-   "text": "A GO MACHINE IS A DECADE AWAY",
-   "maxCap": 15.5,
-   "minCap": 5.8,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "8.4px \"IBM Plex Mono\""
-  },
-  {
-   "text": "SCALE IS THE MAIN LEVER",
-   "maxCap": 15.5,
-   "minCap": 5.8,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "8.4px \"IBM Plex Mono\""
-  },
-  {
-   "text": "SMARTER-THAN-HUMAN AI MAY BE YEARS AWAY, AND",
-   "maxCap": 15.5,
-   "minCap": 5.8,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "8.4px \"IBM Plex Mono\""
-  },
-  {
-   "text": "DANGEROUS",
-   "maxCap": 15.5,
-   "minCap": 5.8,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "8.4px \"IBM Plex Mono\""
-  },
-  {
-   "text": "KELLEY 1960 … LE CUN 1985",
-   "maxCap": 15.9,
-   "minCap": 5.9,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "7.26819px \"Special Elite\""
-  },
-  {
-   "text": "DUE 2024",
-   "maxCap": 16.6,
-   "minCap": 6.2,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "7.6px \"Special Elite\""
-  },
-  {
-   "text": "BACK-PROPAGATING",
-   "maxCap": 17.4,
-   "minCap": 6.5,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "7.9475px \"Special Elite\""
-  },
-  {
-   "text": "ERROR-CORRECTION",
-   "maxCap": 17.4,
-   "minCap": 6.5,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "7.9475px \"Special Elite\""
-  },
-  {
-   "text": "EXPERIMENTS · 1961 ?",
-   "maxCap": 17.4,
-   "minCap": 6.5,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "7.9475px \"Special Elite\""
-  },
-  {
-   "text": "GENERATING",
-   "maxCap": 17.4,
-   "minCap": 6.5,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "7.9475px \"Special Elite\""
-  },
-  {
-   "text": "WIKIPEDIA ·",
-   "maxCap": 17.4,
-   "minCap": 6.5,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "7.9475px \"Special Elite\""
-  },
-  {
-   "text": "2018 · GPT",
-   "maxCap": 17.4,
-   "minCap": 6.5,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "7.9475px \"Special Elite\""
-  },
-  {
-   "text": "TURING · DUE 2000",
-   "maxCap": 17.6,
-   "minCap": 6.6,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "ROSENBLATT · 1961",
-   "maxCap": 17.6,
-   "minCap": 6.6,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "Linguistic capability,",
-   "maxCap": 17.6,
-   "minCap": 6.6,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "related to perceptual",
-   "maxCap": 17.6,
-   "minCap": 6.6,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "experience, is of the",
-   "maxCap": 17.6,
-   "minCap": 6.6,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "essence…",
-   "maxCap": 17.6,
-   "minCap": 6.6,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "COULOM · MAY 2014",
-   "maxCap": 17.6,
-   "minCap": 6.6,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "HINTON · SEPT 2017",
-   "maxCap": 17.6,
-   "minCap": 6.6,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "…some graduate student",
-   "maxCap": 17.6,
-   "minCap": 6.6,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "who is deeply suspicious",
-   "maxCap": 17.6,
-   "minCap": 6.6,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "of everything I have",
-   "maxCap": 17.6,
-   "minCap": 6.6,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "said.",
-   "maxCap": 17.6,
-   "minCap": 6.6,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "OPENAI · 11 DEC 2015",
-   "maxCap": 17.9,
-   "minCap": 6.7,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "8.2px \"Special Elite\""
-  },
-  {
-   "text": "ANTHROPIC · 28 MAY 2021",
-   "maxCap": 17.9,
-   "minCap": 6.7,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "8.2px \"Special Elite\""
-  },
-  {
-   "text": "THE BRAIN IS A LOGIC MACHINE",
-   "maxCap": 18.4,
-   "minCap": 6.9,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "8.4px \"Special Elite\""
-  },
-  {
-   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
-   "maxCap": 18.4,
-   "minCap": 6.9,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "8.4px \"Special Elite\""
-  },
-  {
-   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
-   "maxCap": 18.4,
-   "minCap": 6.9,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "8.4px \"Special Elite\""
-  },
-  {
-   "text": "c. 1980",
-   "maxCap": 19.7,
-   "minCap": 7.4,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "9px \"Special Elite\""
-  },
-  {
-   "text": "MID-1990s",
-   "maxCap": 19.7,
-   "minCap": 7.4,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "9px \"Special Elite\""
-  },
-  {
-   "text": "1997",
-   "maxCap": 19.7,
-   "minCap": 7.4,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "9px \"Special Elite\""
-  },
-  {
-   "text": "1999",
-   "maxCap": 19.7,
-   "minCap": 7.4,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "9px \"Special Elite\""
-  },
-  {
-   "text": "2006",
-   "maxCap": 19.7,
-   "minCap": 7.4,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "9px \"Special Elite\""
-  },
-  {
-   "text": "2014",
-   "maxCap": 19.7,
-   "minCap": 7.4,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "9px \"Special Elite\""
-  },
-  {
-   "text": "2020",
-   "maxCap": 19.7,
-   "minCap": 7.4,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "9px \"Special Elite\""
-  },
-  {
-   "text": "2023",
-   "maxCap": 19.7,
-   "minCap": 7.4,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "9px \"Special Elite\""
-  },
-  {
-   "text": "THE STRUCTURE OF",
-   "maxCap": 20.4,
-   "minCap": 7.6,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "THE NET DOES NOT",
-   "maxCap": 20.4,
-   "minCap": 7.6,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "CHANGE WITH",
-   "maxCap": 20.4,
-   "minCap": 7.6,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "TIME.",
-   "maxCap": 20.4,
-   "minCap": 7.6,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "KNOWLEDGE",
-   "maxCap": 20.8,
-   "minCap": 7.8,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "LEARNING",
-   "maxCap": 20.8,
-   "minCap": 7.8,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "3 in 10 fooled",
-   "maxCap": 20.8,
-   "minCap": 7.8,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "…simply by waiting",
-   "maxCap": 20.8,
-   "minCap": 7.8,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "for faster GPUs and",
-   "maxCap": 20.8,
-   "minCap": 7.8,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "bigger datasets…",
-   "maxCap": 20.8,
-   "minCap": 7.8,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "I think maybe ten",
-   "maxCap": 20.8,
-   "minCap": 7.8,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "years",
-   "maxCap": 20.8,
-   "minCap": 7.8,
-   "first": 0.55,
-   "last": 13.55,
-   "font": "9.5px \"Special Elite\""
+   "text": "CYC · 1984–2023 · 39",
+   "capWhileSubject": 28.2,
+   "why": "script onScreenText"
   }
  ],
- "textureTexts": 0,
- "ok": [
+ "texture": [
   {
    "text": "WHO TAUGHT",
-   "maxCap": 41.5
+   "maxCap": 58.6,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "IT?",
-   "maxCap": 41.5
+   "maxCap": 58.6,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "RULES",
-   "maxCap": 24
+   "maxCap": 34,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 29.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 29.3,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "1943",
-   "maxCap": 24
+   "maxCap": 34,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 28.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 28.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 28.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 28.9,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "1958",
-   "maxCap": 24
+   "maxCap": 34,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 24.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 24.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 24.5,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "1969",
-   "maxCap": 24
+   "maxCap": 34,
+   "why": "drawn as texture"
   },
   {
    "text": "HELSINKI ·",
-   "maxCap": 24
+   "maxCap": 34,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "1970",
-   "maxCap": 24
+   "maxCap": 34,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "1986",
-   "maxCap": 24
+   "maxCap": 34,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KELLEY 1960 … LE CUN 1985",
+   "maxCap": 22.4,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "1989",
-   "maxCap": 24
+   "maxCap": 34,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "DATA",
-   "maxCap": 24
+   "maxCap": 34,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "FIRE",
-   "maxCap": 24
+   "maxCap": 34,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "2012",
-   "maxCap": 24
+   "maxCap": 34,
+   "why": "drawn as texture"
   },
   {
    "text": "2017",
-   "maxCap": 24
+   "maxCap": 34,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "GENERATING",
+   "maxCap": 24.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "WIKIPEDIA ·",
+   "maxCap": 24.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2018 · GPT",
+   "maxCap": 24.5,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "a",
-   "maxCap": 27
+   "maxCap": 46.5,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "2018",
-   "maxCap": 24
+   "maxCap": 34,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "2022",
-   "maxCap": 24
+   "maxCap": 34,
+   "why": "not named, not in onScreenText"
   },
   {
-   "text": "CYC · 1984–2023 · 39",
-   "maxCap": 24.1
+   "text": "OPENAI · 11 DEC 2015",
+   "maxCap": 25.3,
+   "why": "not named, not in onScreenText"
   },
   {
-   "text": "lit 1984 · out 2023 · 39 years",
-   "maxCap": 22
+   "text": "ANTHROPIC · 28 MAY 2021",
+   "maxCap": 25.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 24.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 29.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "ROSENBLATT · 1961",
+   "maxCap": 24.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "Linguistic capability,",
+   "maxCap": 24.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "related to perceptual",
+   "maxCap": 24.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "experience, is of the",
+   "maxCap": 24.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "essence…",
+   "maxCap": 24.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "KRIZHEVSKY, SUTSKEVER & HINTON · 2012",
+   "maxCap": 16.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "…simply by waiting",
+   "maxCap": 29.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "for faster GPUs and",
+   "maxCap": 29.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "bigger datasets…",
+   "maxCap": 29.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "COULOM · MAY 2014",
+   "maxCap": 24.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "I think maybe ten",
+   "maxCap": 29.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "years",
+   "maxCap": 29.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "DUE 2024",
+   "maxCap": 23.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "HINTON · SEPT 2017",
+   "maxCap": 24.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "…some graduate student",
+   "maxCap": 24.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "who is deeply suspicious",
+   "maxCap": 24.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "of everything I have",
+   "maxCap": 24.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "said.",
+   "maxCap": 24.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "THE BRAIN IS A LOGIC MACHINE",
+   "maxCap": 25.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
+   "maxCap": 25.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
+   "maxCap": 25.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND",
+   "maxCap": 27.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "c. 1980",
+   "maxCap": 27.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY",
+   "maxCap": 26.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "MID-1990s",
+   "maxCap": 27.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "LANGUAGE MUST BE READ IN ORDER",
+   "maxCap": 26.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1997",
+   "maxCap": 27.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "TO SEE, A MACHINE NEEDS FEATURES DESIGNED BY",
+   "maxCap": 26.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "EXPERTS",
+   "maxCap": 26.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1999",
+   "maxCap": 27.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "DEEP NETS MUST BE WARMED UP LAYER BY LAYER",
+   "maxCap": 26.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2006",
+   "maxCap": 27.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "LEARNED FEATURES, GIVEN DATA AND ARITHMETIC",
+   "maxCap": 26.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "A GO MACHINE IS A DECADE AWAY",
+   "maxCap": 26.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2014",
+   "maxCap": 27.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "SCALE IS THE MAIN LEVER",
+   "maxCap": 26.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2020",
+   "maxCap": 27.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "SMARTER-THAN-HUMAN AI MAY BE YEARS AWAY, AND",
+   "maxCap": 26.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "DANGEROUS",
+   "maxCap": 26.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2023",
+   "maxCap": 27.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "CYC",
+   "maxCap": 22.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "30 TO 50 YEARS OR",
+   "maxCap": 8.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "EVEN LONGER",
+   "maxCap": 8.8,
+   "why": "not named, not in onScreenText"
   }
- ]
+ ],
+ "textureTexts": 77
 }

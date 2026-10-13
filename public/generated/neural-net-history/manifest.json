@@ -6,7 +6,7 @@
   "subtitle": "A case history of neural networks, 1943–2026",
   "accent": "#b0277a",
   "film": {
-    "runtime": 2139.5417,
+    "runtime": 2164,
     "fps": 24,
     "width": 1920,
     "height": 1080,
@@ -21,16 +21,16 @@
     "score": {
       "engine": "strudel",
       "cues": 21,
-      "musicSeconds": 2167.2
+      "musicSeconds": 2193.6
     },
     "loudness": {
       "I": -16,
-      "TP": -2.1,
-      "LRA": 6.3
+      "TP": -1.9,
+      "LRA": 5.9
     },
     "audio": {
       "stems": "audio/film-audio.json",
-      "clock": 2139.5417
+      "clock": 2164
     },
     "logline": "A machine answers you in fluent sentences, and nobody ever wrote it a rulebook. So who taught it? A teacher follows the case from a lamp in Chicago in 1943 to the present, lighting a candle for each era's certainty and letting it burn exactly as long as people believed it, while the doubters stand at the edge of its light. In the end the culprit is never one person: the case board itself turns out to be shaped like a neural network, with one lantern still dark.",
     "vhs": {
@@ -45,6 +45,8 @@
       "tagline": "Crack the case of the thinking machine!"
     },
     "sources": "sources/",
+    "sourcesData": "sources.json",
+    "credits": "credits.json",
     "review": "review.json",
     "sourcesUrl": "https://orly.brett-lamy.workers.dev/generated/neural-net-history/sources/"
   },
@@ -65,9 +67,10 @@
         39.71,
         46.193,
         49.333,
-        62.367
+        61.867,
+        66.069
       ],
-      "duration": 75.5,
+      "duration": 77.417,
       "filmStart": 0
     },
     {
@@ -94,8 +97,8 @@
         108.084,
         111.502
       ],
-      "duration": 119.833,
-      "filmStart": 75.5
+      "duration": 121.208,
+      "filmStart": 77.4167
     },
     {
       "number": 3,
@@ -120,7 +123,7 @@
         117.392
       ],
       "duration": 125.75,
-      "filmStart": 195.3333
+      "filmStart": 198.625
     },
     {
       "number": 4,
@@ -143,7 +146,7 @@
         119.296
       ],
       "duration": 129.542,
-      "filmStart": 321.0833
+      "filmStart": 324.375
     },
     {
       "number": 5,
@@ -165,14 +168,15 @@
         99.505,
         107.433,
         115.302,
-        124.725,
-        139.683,
-        147.421,
-        160.642,
-        167.764
+        124.165,
+        138.808,
+        153.767,
+        161.505,
+        174.725,
+        181.847
       ],
-      "duration": 176.042,
-      "filmStart": 450.625
+      "duration": 190.125,
+      "filmStart": 453.9167
     },
     {
       "number": 6,
@@ -187,6 +191,7 @@
         35.846,
         42.856,
         49.092,
+        54.659,
         69.892,
         76.607,
         89.475,
@@ -197,7 +202,7 @@
         144.142
       ],
       "duration": 149.125,
-      "filmStart": 626.6667
+      "filmStart": 644.0417
     },
     {
       "number": 7,
@@ -216,7 +221,7 @@
         87.642
       ],
       "duration": 95.208,
-      "filmStart": 775.7917
+      "filmStart": 793.1667
     },
     {
       "number": 8,
@@ -243,19 +248,19 @@
         166.058,
         174.742,
         177.998,
-        183.933,
-        191.86,
-        196.833,
-        202.066,
-        208.033,
-        217.376,
-        225.03,
-        238.607,
-        246.583,
-        254.15
+        185.433,
+        193.36,
+        198.333,
+        203.566,
+        209.533,
+        218.876,
+        226.53,
+        240.107,
+        248.083,
+        255.65
       ],
-      "duration": 257.708,
-      "filmStart": 871
+      "duration": 260.208,
+      "filmStart": 888.375
     },
     {
       "number": 9,
@@ -268,13 +273,13 @@
         20.933,
         29.392,
         35.129,
-        42.294,
-        52.333,
-        65.971,
-        72.35
+        43.733,
+        53.75,
+        67.388,
+        73.767
       ],
-      "duration": 96.625,
-      "filmStart": 1128.7083
+      "duration": 98.042,
+      "filmStart": 1148.5833
     },
     {
       "number": 10,
@@ -292,22 +297,22 @@
         75.1,
         84.659,
         90.089,
-        96.351,
-        103.142,
-        109.079,
-        112.93,
-        124.142,
-        133.767,
-        139.127,
-        147.308,
-        156.433,
-        168.494,
-        175.142,
-        186.725,
-        200.255
+        98.511,
+        105.267,
+        111.204,
+        115.055,
+        126.267,
+        135.892,
+        141.252,
+        149.433,
+        158.558,
+        170.619,
+        177.267,
+        188.85,
+        202.38
       ],
-      "duration": 209.75,
-      "filmStart": 1225.3333
+      "duration": 211.875,
+      "filmStart": 1246.625
     },
     {
       "number": 11,
@@ -316,15 +321,15 @@
       "scene": "films/neural-net-history",
       "cues": [
         14.8,
-        31.375,
-        44.992,
-        57.517,
-        71.697,
-        80.267,
-        86.324
+        33.314,
+        45.617,
+        58.142,
+        72.322,
+        80.892,
+        86.949
       ],
-      "duration": 105.042,
-      "filmStart": 1435.0833
+      "duration": 105.667,
+      "filmStart": 1458.5
     },
     {
       "number": 12,
@@ -341,12 +346,11 @@
         52.233,
         61.35,
         78.85,
-        89.706,
-        93.917,
-        103.628
+        89.381,
+        95.392
       ],
-      "duration": 114.292,
-      "filmStart": 1540.125
+      "duration": 107.042,
+      "filmStart": 1564.1667
     },
     {
       "number": 13,
@@ -368,7 +372,7 @@
         85.25
       ],
       "duration": 98.917,
-      "filmStart": 1654.4167
+      "filmStart": 1671.2083
     },
     {
       "number": 14,
@@ -380,22 +384,22 @@
         7.319,
         11.767,
         24.79,
-        32.017,
-        40.652,
-        51.35,
-        61.022,
-        66.209,
-        72.858,
-        79.044,
-        90.95,
-        97.35,
-        105.002,
-        117.392,
-        123.701,
-        130.321
+        35.683,
+        44.318,
+        55.017,
+        64.689,
+        69.876,
+        76.525,
+        82.711,
+        92.65,
+        102.975,
+        110.627,
+        123.017,
+        129.326,
+        135.946
       ],
-      "duration": 141.75,
-      "filmStart": 1753.3333
+      "duration": 146.042,
+      "filmStart": 1770.125
     },
     {
       "number": 15,
@@ -405,29 +409,30 @@
       "cues": [
         4.2,
         10.625,
-        21.81,
-        28.155,
-        40.558,
-        51.793,
-        55.55,
-        68.863,
-        77.517,
-        86.395,
-        93.543,
-        101.689,
-        118.833,
-        130.85,
-        149.133,
-        160.375,
-        166.423,
-        174.073,
-        178.872,
-        188.425,
-        192.888,
-        202.769
+        26.326,
+        32.671,
+        45.1,
+        56.335,
+        61.175,
+        74.488,
+        83.142,
+        92.02,
+        98.053,
+        101.899,
+        110.039,
+        124.292,
+        136.308,
+        154.592,
+        165.834,
+        171.882,
+        179.532,
+        184.331,
+        193.883,
+        199.054,
+        208.935
       ],
-      "duration": 244.458,
-      "filmStart": 1895.0833
+      "duration": 247.833,
+      "filmStart": 1916.1667
     }
   ]
 }

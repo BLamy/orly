@@ -18,11 +18,9 @@
      "id": "L0101",
      "text": "Here is a small wonder.",
      "pauseAfter": 0.75,
-     "direction": "very soft, unhurried, as if leaning in to share a secret; a smile in the voice on 'wonder' NARRATION: re-generate this line on its own (not inside a shot chunk) at voice speed about 0.85-0.88, target 140-160 wpm; the text is unchanged.",
-     "spoken": "Here is... a small wonder.",
+     "direction": "PINNED TAKE (user direction 2026-10-13): the original recording from 2026-10-06 (narration/cache/86e2ab505f32364a), plain and unhurried, without the later 'leaning in' excitement or the 'Here is...' break. Do not re-record or re-direct this line.",
      "tts": {
-      "solo": true,
-      "speed": 0.86
+      "take": "86e2ab505f32364a"
      }
     }
    ],
@@ -274,7 +272,9 @@
      "tts": {
       "solo": true,
       "speed": 0.86
-     }
+     },
+     "level": "soft",
+     "levelDb": 1
     }
    ],
    "visual": "THIS SHOT: the lamp clicks on in the detective's study; the hands pin the case card WHO TAUGHT IT? and file the makers' own admission of a flaw. CAMERA: BOARD (the lamp's pool resolving onto the empty board; the K pin a 1–2 s insert), then FILE (top-down on the desk for the slip and its fold). Lamp change (a real mood change, serverCyan to candleAmber; the line waits for the lamp): the frozen earth's last cyan window becomes the switch-click of a green-shaded banker's lamp (props/lights bankersLamp). A book-lined study builds out of the dark around the lamp's pool: shelves as ink silhouettes against an amber backlight, haze drifting through the lamplight. In the pool, a dark corkboard (the Case Board) on the wall above a writing desk, empty but for faint pin-holes marking its slots. BOARD MAP (canonical, from the staging appendix; repeated word for word): the Case Board is a fixed grid of slots laid out as network columns by era, left to right: C1 (1943–1969) the far-left input column, C2 (1969–1997), C3 (2006–2017), C4 (2018–2023), and the output, the glowing chat box, at the far right; the case card WHO TAUGHT IT? hangs in slot K at the board's centre; the suspect cards S1 RULES, S2 KNOWLEDGE and S3 LEARNING hang in the left margin, top to bottom; the founding row F1–F2 runs beneath columns C3 and C4; the question-card thread runs along the board's top edge (slots Q1 to Q4, left to right), a low-chroma oxblood string (emberRed rim mixed about 60% into candleAmber) that glints only where the lamp's pool falls; the Wall of Forecasts hangs to the board's right, its slots W1 to W8 left to right (W1 Turing, W2 chess, W3 Rosenblatt 1961, W4 Florence 2012, W5 Coulom, W6 the 30-to-50-years slip in shadow, W7 Hinton 2017, W8 an empty pin until ch15). The detective is only two steady, cuffed hands (mid-life, not elderly) entering from below frame, never a body, never a face. On 'Who taught it?' the hands pin a single index card in slot K, the centre of the board, with a brass pin: 'WHO TAUGHT IT?' in Special Elite typewriter type. On L0107 the right hand slides a printed strip across the desk into the lamplight and the camera tilts down to it: the launch post's sentence, set as a typed slip with its date (the full launch-post attribution moves to creditsSources), which the narrator reads aloud on L0108 (the text on screen is exactly what is spoken). On 'file' the hands fold the slip once and drop it into a manila folder, close the flap, and tap it twice. The folder stays on the desk at frame right for the rest of the film's study scenes.",
@@ -455,18 +455,28 @@
   {
    "id": "ch01-s06",
    "kind": "montage",
-   "setting": "The Rewind: five images run backwards, 2016 to the war years, ending on Chicago at night",
+   "setting": "The Rewind: five images run backwards, 2016 to World War Two, ending on Chicago at night",
    "era": "1943–2026",
    "mood": "duskRose",
-   "leadIn": 4.2,
+   "leadIn": 3.7,
    "holdAfter": 0.5,
    "lines": [
     {
      "id": "L0114",
-     "text": "We go back to the war years, to a lamp in Chicago.",
+     "text": "Our story starts all the way back in World War Two.",
+     "pauseAfter": 0.8,
+     "direction": "the turn into the story (user wording, 2026-10-13, fixed); plain and warm, the voice's own delivery, only a touch slower: no inserted gaps, no ellipsis, no dramatic or excited re-direction (the user rejected an earlier slowed, excited take); a real pause after (pauseAfter 0.8) before 'To a lamp, in Chicago.' NARRATION (2026-10-13, optional, minor; last attempt): the current take (speed 0.88, cache 6890e78e03cc7d49) runs 194 wpm against the 150 film median. Try ONE more SOLO take at tts speed 0.84 and keep it only if its speech lands at 3.7-4.0 s, sounds plain, and has STT WER 0. Otherwise restore the current take (tts {solo: true, speed: 0.88, take: '6890e78e03cc7d49'}) and close the item for good. If replaced: L0114b keeps its take and its 0.8 s pause; ch01-s06 re-fits by T.word ('starts', 'Two', 'Chicago'); m01's dead cut stays >= 0.2 s before 'Our'. CLOSED (2026-10-13, narration): the speed-0.84 solo take ran 3.55 s of speech (under 3.7) with STT WER 0.091 (\"II\" for \"Two\"), so per this direction the 0.88 take 6890e78e03cc7d49 is restored and pinned; the item is closed for good.",
+     "tts": {
+      "solo": true,
+      "speed": 0.88,
+      "take": "6890e78e03cc7d49"
+     }
+    },
+    {
+     "id": "L0114b",
+     "text": "To a lamp, in Chicago.",
      "pauseAfter": 0.66,
-     "direction": "the turn, tying back to the case question; slow, a slight weight on 'war years', a small lift on Chicago NARRATION: re-generate this line on its own (not inside a shot chunk) at voice speed about 0.85-0.88, target 140-160 wpm; the text is unchanged.",
-     "spoken": "We go back to the war years... to a lamp in Chicago.",
+     "direction": "second half of the turn; quiet, unhurried, a small lift on 'Chicago' NARRATION: solo clip at voice speed 0.80 (pair with L0114 at 4.6-5.0 s overall); ch01-s06's silent hold absorbs the difference; m01's reversed swell is re-fitted to the new line timing.",
      "tts": {
       "solo": true,
       "speed": 0.8
@@ -521,14 +531,14 @@
      "id": "stamp",
      "at": {
       "line": "L0114",
-      "word": "years"
+      "word": "Two"
      },
      "what": "date stamp CHICAGO · 1940s types itself"
     },
     {
      "id": "lampOn",
      "at": {
-      "line": "L0114",
+      "line": "L0114b",
       "word": "Chicago"
      },
      "what": "one lamp clicks on in a distant 1940s window"

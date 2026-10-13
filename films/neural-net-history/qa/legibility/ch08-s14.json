@@ -1,276 +1,274 @@
 {
  "shot": "ch08-s14",
- "at": "2026-10-12T19:04:09.403Z",
+ "at": "2026-10-13T05:11:41.721Z",
  "minCapPx": 22,
- "sampled": 17,
+ "sampled": 18,
  "texts": 52,
- "offenders": [
-  {
-   "text": "INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND",
-   "maxCap": 8.7,
-   "minCap": 8.7,
-   "first": 0.55,
-   "last": 0.55,
-   "font": "11px VT323"
-  },
-  {
-   "text": "NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY",
-   "maxCap": 10.4,
-   "minCap": 10.4,
-   "first": 0.55,
-   "last": 0.55,
-   "font": "8.4px \"IBM Plex Mono\""
-  },
-  {
-   "text": "TO SEE, A MACHINE NEEDS FEATURES DESIGNED BY",
-   "maxCap": 10.4,
-   "minCap": 10.4,
-   "first": 0.55,
-   "last": 0.55,
-   "font": "8.4px \"IBM Plex Mono\""
-  },
-  {
-   "text": "EXPERTS",
-   "maxCap": 10.4,
-   "minCap": 10.4,
-   "first": 0.55,
-   "last": 0.55,
-   "font": "8.4px \"IBM Plex Mono\""
-  },
-  {
-   "text": "DEEP NETS MUST BE WARMED UP LAYER BY LAYER",
-   "maxCap": 10.4,
-   "minCap": 10.4,
-   "first": 0.55,
-   "last": 0.55,
-   "font": "8.4px \"IBM Plex Mono\""
-  },
-  {
-   "text": "LEARNED FEATURES, GIVEN DATA AND ARITHMETIC",
-   "maxCap": 10.4,
-   "minCap": 10.4,
-   "first": 0.55,
-   "last": 0.55,
-   "font": "8.4px \"IBM Plex Mono\""
-  },
-  {
-   "text": "THE BRAIN IS A LOGIC MACHINE",
-   "maxCap": 12.4,
-   "minCap": 12.4,
-   "first": 0.55,
-   "last": 0.55,
-   "font": "8.4px \"Special Elite\""
-  },
-  {
-   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
-   "maxCap": 12.4,
-   "minCap": 12.4,
-   "first": 0.55,
-   "last": 0.55,
-   "font": "8.4px \"Special Elite\""
-  },
-  {
-   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
-   "maxCap": 12.4,
-   "minCap": 12.4,
-   "first": 0.55,
-   "last": 0.55,
-   "font": "8.4px \"Special Elite\""
-  },
-  {
-   "text": "c. 1980",
-   "maxCap": 13.3,
-   "minCap": 13.3,
-   "first": 0.55,
-   "last": 0.55,
-   "font": "9px \"Special Elite\""
-  },
-  {
-   "text": "1984",
-   "maxCap": 13.3,
-   "minCap": 13.3,
-   "first": 0.55,
-   "last": 0.55,
-   "font": "9px \"Special Elite\""
-  },
-  {
-   "text": "MID-1990s",
-   "maxCap": 13.3,
-   "minCap": 13.3,
-   "first": 0.55,
-   "last": 0.55,
-   "font": "9px \"Special Elite\""
-  },
-  {
-   "text": "1999",
-   "maxCap": 13.3,
-   "minCap": 13.3,
-   "first": 0.55,
-   "last": 0.55,
-   "font": "9px \"Special Elite\""
-  },
-  {
-   "text": "2006",
-   "maxCap": 13.3,
-   "minCap": 13.3,
-   "first": 0.55,
-   "last": 0.55,
-   "font": "9px \"Special Elite\""
-  }
- ],
- "textureTexts": 0,
- "ok": [
-  {
-   "text": "WHO TAUGHT",
-   "maxCap": 127.5
-  },
-  {
-   "text": "IT?",
-   "maxCap": 127.5
-  },
-  {
-   "text": "RULES",
-   "maxCap": 73.8
-  },
-  {
-   "text": "KNOWLEDGE",
-   "maxCap": 63.8
-  },
-  {
-   "text": "LEARNING",
-   "maxCap": 63.8
-  },
-  {
-   "text": "1943",
-   "maxCap": 73.8
-  },
-  {
-   "text": "THE STRUCTURE OF",
-   "maxCap": 62.8
-  },
-  {
-   "text": "THE NET DOES NOT",
-   "maxCap": 62.8
-  },
-  {
-   "text": "CHANGE WITH",
-   "maxCap": 62.8
-  },
-  {
-   "text": "TIME.",
-   "maxCap": 62.8
-  },
-  {
-   "text": "1958",
-   "maxCap": 73.8
-  },
-  {
-   "text": "BACK-PROPAGATING",
-   "maxCap": 53.3
-  },
-  {
-   "text": "ERROR-CORRECTION",
-   "maxCap": 53.3
-  },
-  {
-   "text": "EXPERIMENTS · 1961 ?",
-   "maxCap": 53.3
-  },
-  {
-   "text": "1969",
-   "maxCap": 73.8
-  },
-  {
-   "text": "HELSINKI ·",
-   "maxCap": 73.8
-  },
-  {
-   "text": "1970",
-   "maxCap": 73.8
-  },
-  {
-   "text": "1986",
-   "maxCap": 73.8
-  },
-  {
-   "text": "KELLEY 1960 … LE CUN 1985",
-   "maxCap": 48.8
-  },
-  {
-   "text": "1989",
-   "maxCap": 73.8
-  },
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
   {
    "text": "DATA",
-   "maxCap": 73.8
-  },
-  {
-   "text": "FIRE",
-   "maxCap": 73.8
-  },
-  {
-   "text": "TURING · DUE 2000",
-   "maxCap": 54.2
-  },
-  {
-   "text": "3 in 10 fooled",
-   "maxCap": 63.8
-  },
-  {
-   "text": "ROSENBLATT · 1961",
-   "maxCap": 54.2
-  },
-  {
-   "text": "Linguistic capability,",
-   "maxCap": 54.2
-  },
-  {
-   "text": "related to perceptual",
-   "maxCap": 54.2
-  },
-  {
-   "text": "experience, is of the",
-   "maxCap": 54.2
-  },
-  {
-   "text": "essence…",
-   "maxCap": 54.2
+   "capWhileSubject": 104.7,
+   "why": "script onScreenText"
   },
   {
    "text": "2012",
-   "maxCap": 90.1
+   "capWhileSubject": 127.7,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "…simply by waiting for",
-   "maxCap": 44.6
+   "capWhileSubject": 63.3,
+   "why": "script onScreenText"
   },
   {
    "text": "faster GPUs and bigger",
-   "maxCap": 44.6
+   "capWhileSubject": 63.3,
+   "why": "script onScreenText"
   },
   {
    "text": "datasets…",
-   "maxCap": 44.6
+   "capWhileSubject": 63.3,
+   "why": "script onScreenText"
   },
   {
    "text": "KRIZHEVSKY, SUTSKEVER & HINTON · 2012",
-   "maxCap": 36.2
-  },
-  {
-   "text": "DUE",
-   "maxCap": 40.3
+   "capWhileSubject": 51.3,
+   "why": "script onScreenText"
   },
   {
    "text": "…our results can be improved simply by waiting for faster",
-   "maxCap": 26.4
+   "capWhileSubject": 26.4,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "GPUs and bigger datasets to become available.”",
-   "maxCap": 26.4
+   "capWhileSubject": 26.4,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "krizhevsky, sutskever & hinton",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   }
- ]
+ ],
+ "texture": [
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 180.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IT?",
+   "maxCap": 180.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "RULES",
+   "maxCap": 104.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 90.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 90.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1943",
+   "maxCap": 104.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 89,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 89,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 89,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 89,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1958",
+   "maxCap": 104.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 75.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 75.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 75.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1969",
+   "maxCap": 104.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "HELSINKI ·",
+   "maxCap": 104.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1970",
+   "maxCap": 104.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1986",
+   "maxCap": 104.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KELLEY 1960 … LE CUN 1985",
+   "maxCap": 69.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1989",
+   "maxCap": 104.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "FIRE",
+   "maxCap": 104.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 76.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 90.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ROSENBLATT · 1961",
+   "maxCap": 76.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Linguistic capability,",
+   "maxCap": 76.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "related to perceptual",
+   "maxCap": 76.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "experience, is of the",
+   "maxCap": 76.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "essence…",
+   "maxCap": 76.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE BRAIN IS A LOGIC MACHINE",
+   "maxCap": 17.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
+   "maxCap": 17.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
+   "maxCap": 17.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND",
+   "maxCap": 18.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "c. 1980",
+   "maxCap": 18.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1984",
+   "maxCap": 18.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY",
+   "maxCap": 17.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "MID-1990s",
+   "maxCap": 18.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TO SEE, A MACHINE NEEDS FEATURES DESIGNED BY",
+   "maxCap": 17.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "EXPERTS",
+   "maxCap": 17.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1999",
+   "maxCap": 18.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "DEEP NETS MUST BE WARMED UP LAYER BY LAYER",
+   "maxCap": 17.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2006",
+   "maxCap": 18.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNED FEATURES, GIVEN DATA AND ARITHMETIC",
+   "maxCap": 17.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "DUE",
+   "maxCap": 68.6,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 43
 }

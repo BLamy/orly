@@ -1,68 +1,79 @@
 {
  "shot": "ch10-s01",
- "at": "2026-10-12T20:38:35.401Z",
+ "at": "2026-10-13T04:13:59.325Z",
  "minCapPx": 22,
  "sampled": 14,
  "texts": 13,
- "offenders": [
-  {
-   "text": "1997",
-   "maxCap": 16.8,
-   "minCap": 16.8,
-   "first": 2.85,
-   "last": 9.82,
-   "font": "16.2px \"Special Elite\""
-  }
- ],
- "textureTexts": 0,
- "ok": [
-  {
-   "text": "we",
-   "maxCap": 52.8
-  },
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
   {
    "text": "DEEP DIVE · Everything Looks at Everything",
-   "maxCap": 23.8
-  },
-  {
-   "text": "crossed",
-   "maxCap": 40.8
-  },
-  {
-   "text": "the",
-   "maxCap": 33.2
+   "capWhileSubject": 23.8,
+   "why": "script onScreenText"
   },
   {
    "text": "LANGUAGE MUST BE",
-   "maxCap": 22.5
+   "capWhileSubject": 22.5,
+   "why": "named: \"language\""
   },
   {
    "text": "READ IN ORDER",
-   "maxCap": 22.5
+   "capWhileSubject": 22.5,
+   "why": "named: \"read order\""
+  }
+ ],
+ "texture": [
+  {
+   "text": "we",
+   "maxCap": 52.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "crossed",
+   "maxCap": 40.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "the",
+   "maxCap": 33.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1997",
+   "maxCap": 16.8,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "× 1.0",
-   "maxCap": 22.1
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "LANGUAGE MUST BE READ",
-   "maxCap": 26
+   "maxCap": 26,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "IN ORDER",
-   "maxCap": 26
+   "maxCap": 26,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "lit 1997 · still burning",
-   "maxCap": 22
+   "maxCap": 22,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "river",
-   "maxCap": 28
+   "maxCap": 28,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "bank",
-   "maxCap": 24.2
+   "maxCap": 24.2,
+   "why": "not named, not in onScreenText"
   }
- ]
+ ],
+ "textureTexts": 10
 }

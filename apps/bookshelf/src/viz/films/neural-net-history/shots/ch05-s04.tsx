@@ -24,17 +24,19 @@
  * The machine is real: XOR_221 (mlp.ts), its forward pass, its true per-sample gradients, its training run.
  */
 import { Timeline } from '../../../core';
-import type { Camera3, PaintEnv, Pose, ShotScene } from '../../../film';
-import { LAYERS, PoseTrack, chair, chalkboard, defineShot, mixLab, pose, quoteCard, seatHeight, toLayer, toScreen, withAlpha, withLife, writingDesk, POSES } from '../../../film';
+import type { Camera3, Frame, PaintEnv, Pose, ShotScene } from '../../../film';
+import { LAYERS, PoseTrack, cardPaperAlpha, placeStamp, chair, chalkboard, defineShot, mixLab, paintContext, pose, quoteCard, seatHeight, setPaintContext, textRole, toLayer, toScreen, withAlpha, withLife, writingDesk, POSES } from '../../../film';
 import { XOR_221 } from '../../../film';
 import { cast } from '../cast';
 import { candleStage, floorShadow } from '../sets/candleStage';
 import { waxCandle } from '../sets/ch02-s04-waxCandle';
-import { candleNamingAt, shelfStateAt, type CandleView } from '../sets/studyState';
+import { shelfStateAt, type CandleView } from '../sets/studyState';
+import { namedLabelStaged } from '../sets/ch05-s04-namedCard';
 import { stageLip } from '../sets/ch03-s06-kit';
 import { nameCardLg } from '../sets/ch02-s01-nameCardLg';
-import { LOOM, SLIPS, equationCard, equationCardSize, familyTrees, loomFrame, loomNet, targetSlips } from '../sets/ch05-s04-loom';
-import { camKeys, clamp01, lerp, phosphorStamp, sm, tq12, win } from '../sets/ch05-s01-kit';
+import { LOOM, SLIPS, equationCard, equationCardSize, familyTrees, loomFrame, loomLettering, loomNet, targetSlips } from '../sets/ch05-s04-loom';
+import { candleFlame } from '../sets/beliefCandle';
+import { camKeys, clamp01, lerp, sm, tq12, win } from '../sets/ch05-s01-kit';
 
 const ID = 'ch05-s04';
 const START = shelfStateAt(ID, 'start').find((v) => v.id === 'sterile')!;
@@ -80,6 +82,10 @@ interface Beats {
   share: number;
   solved: number;
   pull: number;
+  /** 'not' (L0521): the trees stay whole in frame until here */
+  not: number;
+  /** the generation tint (after >= 1.6 s of nationality) */
+  gen: number;
   /** the tugs, made visible: upper knobs on the first 'lantern', lower knobs on the second */
   tugTop: number;
   tugLow: number;
@@ -123,7 +129,13 @@ export default defineShot<Scene>({
     const runs = T.word('L0508', 'runs');
     const lan1 = T.word('L0508', 'lantern');
     const lan2 = T.word('L0508', 'lantern#2');
-    const gather = (lan1 + lan2) / 2;
+    const tugging = T.word('L0508', 'tugging');
+    // (review r2) the tugs are slow enough to SEE the knobs turn: the bead reaches the upper knobs just before
+    // 'lantern' and turns them over ~0.45 s; it reaches the hidden lanterns on the second 'lantern' and gathers;
+    // it reaches the lower knobs just before 'tugging' and turns them over ~0.45 s
+    const tugTop = lan1 - 0.1;
+    const gather = lan2 - 0.05;
+    const tugLow = Math.max(gather + 0.45, tugging - 0.3);
     const b: Beats = {
       stamp: T.beat('stamp'),
       authors: T.beat('authors'),
@@ -143,11 +155,17 @@ export default defineShot<Scene>({
       share: T.word('L0508', 'share'),
       solved: T.word('L0509', 'solved'),
       pull: T.beat('family') - 1.6,
-      tugTop: lan1,
-      tugLow: lan2,
+      not: T.word('L0521', 'not'),
+      // (review r4) nationality from just before 'features', generation in by ~35.0 and held through the first
+      // second of the pull-back (the trees stay whole in frame to ~36.6)
+      gen: T.beat('features') + 0.7,
+      tugTop,
+      tugLow,
       gather,
       // the gather rule inks in as the bead gathers; the tug rule under 'tugging each knob … share of the blame'
-      ink: [gather - 0.1, gather + 0.75, T.word('L0508', 'tugging') - 0.05, T.word('L0508', 'share') - 0.1],
+      // (review r3) the card arrives with 'blame(i) = slope(i) ·' already inked by 'lantern' (20.37): its first line
+      // starts 0.5 s before the word and dries in 0.45 s; the Σ line follows on the gather at the hidden pair
+      ink: [lan1 - 0.5, gather + 0.75, tugging - 0.05, T.word('L0508', 'share') - 0.1],
       pullFrom: T.beat('train') + 0.5,
       // the bead forms at the output on 'messenger' and waits; on 'runs' it sets off down the strings:
       // the upper knobs on 'lantern' (tug), the hidden pair (gather), the lower knobs on 'lantern' (tug), the inputs
@@ -155,13 +173,13 @@ export default defineShot<Scene>({
         [m0 - 0.05, 0],
         [m0 + 0.35, 0.02],
         [runs, 0.02],
-        [lan1 - 0.12, 0.5],
-        [lan1 + 0.1, 0.5],
-        [gather + 0.04, 1.0],
-        [gather + 0.1, 1.0],
-        [lan2 - 0.12, 1.5],
-        [lan2 + 0.2, 1.5],
-        [lan2 + 0.75, 2.0],
+        [tugTop - 0.02, 0.5],
+        [tugTop + 0.5, 0.5],
+        [gather, 1.0],
+        [gather + 0.2, 1.0],
+        [tugLow - 0.02, 1.5],
+        [tugLow + 0.55, 1.5],
+        [tugLow + 1.1, 2.0],
       ],
       caseDur: 0.8,
     };
@@ -183,18 +201,29 @@ export default defineShot<Scene>({
       [1.4, LOOM.strip.x + 60, 160, 290],
       [4.6, cx, 318, 120],
       [b.forward, cx, 314, 150],
-      [b.error + 0.3, cx + 6, 313, 192],
-      [b.messenger + 1.9, cx + 138, 297, 262],
-      [b.pullFrom, cx + 146, 297, 272],
-      [b.pullFrom + 2.6, cx, 316, 172],
-      [b.xor + 3.0, cx, 318, 165],
-      [b.pull + 1.9, cx - 4, 312, 12],
+      // (review r2) from the messenger to the blame the loom fills ~70% of the frame height (k ~1.56 at z 360:
+      // output crown to input tassels ~330 layer px -> ~515 screen px), set left so the rule's card hangs at right
+      [b.error - 1.2, cx + 40, 316, 232],
+      [b.messenger + 0.7, cx + 98, 320, 352],
+      [b.pullFrom, cx + 102, 320, 372],
+      // (review r4) the training framing sits a little lower so the lettering board on the top beam is in frame
+      [b.pullFrom + 2.6, cx, 312, 172],
+      [b.xor + 3.0, cx, 314, 165],
+      // (review r1 layout) the family framing sits a little higher in the frame so the loom's top beam drops clear of
+      // the quote card's attribution
+      [b.pull + 1.9, cx - 4, 280, 12],
       // the trees tint (nationality, then generation) in this framing; then the pull back and down onto the
-      // candle stage: the candle settles a third of the way in from the left, its pool and the stage lip below
-      [b.features + 0.7, cx - 26, 311, 0],
-      [b.sterile + 1.8, 612, 300, -400],
-      [b.out + 0.6, 578, 298, -490],
-      [D, 572, 298, -506],
+      // candle stage. (review r1 sync) the pull-back first dollies OUT, centred between the trees, so both trees stay
+      // whole in frame until 'not' and the generation tint reads during it; only then does it settle left onto the
+      // candle, a third of the way in, its pool and the stage lip below
+      [b.features + 0.7, cx - 20, 280, 0],
+      [b.sterile - 0.1, cx - 40, 284, -24],
+      // (review r4 timing) the first second of the pull-back is a centred dolly OUT: both trees stay whole in frame
+      // with their generation bands until ~36.6; only then does it pan left onto the candle
+      [b.sterile + 1.2, cx - 66, 290, -150],
+      [b.not + 0.5, 702, 302, -340],
+      [b.out + 0.6, 590, 298, -462],
+      [D, 576, 298, -500],
     ]);
     tl.hold(0, D);
     const CAMS: Camera3[] = [];
@@ -224,7 +253,7 @@ export default defineShot<Scene>({
     let hiddenHold = 0;
     // the tug marks hold from each tug until the training starts; the gathered blame rings likewise
     const keep = 1 - win(t, b.train - 0.1, b.train + 0.4);
-    const tugs: [number, number] = [win(t, b.tugLow - 0.12, b.tugLow + 0.12) * keep, win(t, b.tugTop - 0.12, b.tugTop + 0.12) * keep];
+    const tugs: [number, number] = [win(t, b.tugLow - 0.05, b.tugLow + 0.35) * keep, win(t, b.tugTop - 0.05, b.tugTop + 0.35) * keep];
     const gathered = win(t, b.gather, b.gather + 0.2) * keep;
     if (t < b.train) {
       // one sample, by hand: forward, check, error, messenger
@@ -232,8 +261,9 @@ export default defineShot<Scene>({
       lift[2] = win(t, b.check - 0.2, b.check + 0.4) * (1 - win(t, b.train, b.train + 0.5));
       error = win(t, b.error - 0.1, b.error + 0.35);
       back = piecewise(b.backKeys, t);
-      nudged[1] = win(t, b.tugTop - 0.12, b.tugTop + 0.1);
-      nudged[0] = win(t, b.tugLow - 0.12, b.tugLow + 0.2);
+      // the knob turns over ~0.45 s while the bead waits on it
+      nudged[1] = win(t, b.tugTop, b.tugTop + 0.45);
+      nudged[0] = win(t, b.tugLow, b.tugLow + 0.45);
       if (back >= 2) error *= 1 - win(t, b.blame - 0.25, b.blame + 0.4);
     } else if (t < b.xor) {
       // training: four samples cycling at an ever-faster cadence; the weights follow the real run
@@ -276,10 +306,22 @@ export default defineShot<Scene>({
     const isOut = t >= b.out + 0.05;
     // the kit's naming card (on 'candle') builds its date line from the tag ('lit 1969 · out 1986 · 17 years'):
     // the base tag turns to its full range only once that card has gone, so the card never reads it twice
-    const naming = (candleNamingAt(ID, ctx.timing, t).sterile ?? 0) > 0;
+    // (review r2 legibility) the candle is NAMED from 'sterile extension' (not only on 'candle'): this shot drives the
+    // naming rule itself, one continuous horizontal label from 'extension' (as the pull-back brings the candle into
+    // frame) through 'seventeen years'; the kit's own naming (on 'candle') is held off so it never reads twice
+    // (review r1) in once the pull-back has brought the flame into frame (mid 'extension')
+    // (review r1 sync) the card lands on 'not' (the verdict): until then the family trees, whole in frame beside the
+    // candle, hold the space the card would cover; the taper's own lettering names the candle meanwhile
+    // (review r4 hold) after the date line has inked it stays up, dimmed to 60 %, through the hold: the last frame still
+    // says '17 years' while the quote card is read
+    const nameK = win(t, b.not - 0.1, b.not + 0.25) * (1 - 0.4 * win(t, b.out + 1.3, b.out + 1.8));
+    const naming = nameK > 0;
+    void ctx;
     const view: CandleView = isOut ? { ...ENDV, tag: naming ? ENDV.tag : '1969–1986 · 17', smoke: true } : { ...START };
     const burnNow = isOut ? 0 : burn;
 
+    const pc = paintContext();
+    setPaintContext(null);
     candleStage(f, {
       key: ID,
       cams: sc.CAMS,
@@ -295,7 +337,7 @@ export default defineShot<Scene>({
         // the loom's paper screen (L3): a tall sheet behind the machine, warmed where the lanterns glow
         const m = env.mood;
         const x0 = 318, x1 = 1560, y0 = 36, y1 = 590;
-        f.cached(`${ID}/screen2/${m.id}`, x1 - x0, y1 - y0, (cc) => {
+        f.cached(`${ID}/screen4/${m.id}`, x1 - x0, y1 - y0, (cc) => {
           const g = cc.createRadialGradient((x1 - x0) * 0.5, (y1 - y0) * 0.4, 30, (x1 - x0) * 0.5, (y1 - y0) * 0.45, (x1 - x0) * 0.62);
           g.addColorStop(0, mixLab(m.set, m.setHaze, 0.55));
           g.addColorStop(0.55, mixLab(m.set, m.fg, 0.22));
@@ -303,7 +345,7 @@ export default defineShot<Scene>({
           cc.fillStyle = g;
           cc.fillRect(0, 0, x1 - x0, y1 - y0);
           // a dim high window in the back wall, seen through the haze (depth: the room beyond the screen)
-          const wx = 150, wy = 40, ww = 104, wh = 250;
+          const wx = 150, wy = 40, ww = 104, wh = 140;
           const wp = new Path2D();
           wp.moveTo(wx, wy + wh);
           wp.lineTo(wx, wy + ww / 2);
@@ -319,7 +361,7 @@ export default defineShot<Scene>({
           cc.clip(wp);
           cc.fillStyle = mixLab(m.set, m.fg, 0.3);
           cc.fillRect(wx + ww / 2 - 2, wy, 4, wh);
-          for (let k = 1; k < 4; k++) cc.fillRect(wx, wy + ww / 2 + k * 48, ww, 3);
+          cc.fillRect(wx, wy + ww / 2 + 40, ww, 3);
           cc.restore();
           // its light falling as a soft shaft down the screen
           cc.save();
@@ -367,7 +409,36 @@ export default defineShot<Scene>({
         }
         // the wax over the shared candle; its years marked once the camera has pulled back
         const camS = 1000 / (1000 - cam.z);
-        waxCandle(c, { x: geo.candleX, y: geo.floorY, view, s: CANDLE_S, burn: burnNow, flame: fOut, letters: 0.7, years: { size: 13.5 / camS, alpha: win(t, b.sterile + 1.6, b.sterile + 2.6) } }, env);
+        // the vertical lettering is texture (a narrow taper in the wide); the named label below is what is read
+        textRole(c, 'texture', () => waxCandle(c, { x: geo.candleX, y: geo.floorY, view, s: CANDLE_S, burn: burnNow, flame: fOut, letters: 0.7 * (1 - nameK), years: { size: 13.5 / camS, alpha: win(t, b.sterile + 1.6, b.sterile + 2.6) } }, env));
+        // (review r1 sync) the card's date line reads only 'lit 1969' while the candle burns; '· out 1986 · 17 years'
+        // inks in on 'seventeen'
+        // (review r4) the card hangs LEFT of the candle, clear of the sleeve, so the dark 17-ring sleeve and its smoke
+        // are unobstructed from 'seventeen' to the end
+        if (nameK > 0) namedLabelStaged(c, { x: geo.candleX, y: geo.floorY, view: { ...view, tag: START.tag }, s: CANDLE_S, burn: burnNow, named: nameK, ending: win(t, b.out - 0.1, b.out + 0.4), side: 'left', clear: 48, wrap: 17 }, env);
+        // (review r4) the snuffed wick's thread of smoke, readable in the hold: ~2.5 px, ~50 %, a slow drift on twos
+        if (isOut) {
+          const fl = candleFlame({ x: geo.candleX, y: geo.floorY, view, s: CANDLE_S, burn: 0 });
+          const camK = 1000 / (1000 - cam.z);
+          const rise = clamp01((t - b.out) / 1.4);
+          const H = 210 * rise;
+          const tq2 = tq;
+          c.save();
+          c.lineCap = 'round';
+          const N = 26;
+          for (let k = 0; k < N; k++) {
+            const u0 = k / N, u1 = (k + 1) / N;
+            if (u1 * 210 > H) break;
+            const px = (u: number) => fl.x + Math.sin(u * 7.5 - tq2 * 1.3) * (2 + 16 * u * u) + 6 * u * Math.sin(tq2 * 0.4);
+            c.strokeStyle = withAlpha(mixLab(m.haze, m.core, 0.5), 0.56 * (1 - 0.85 * u0));
+            c.lineWidth = (2.6 - 0.8 * u0) / camK;
+            c.beginPath();
+            c.moveTo(px(u0), fl.y - 4 - u0 * 210);
+            c.lineTo(px(u1), fl.y - 4 - u1 * 210);
+            c.stroke();
+          }
+          c.restore();
+        }
         // Rumelhart at his chalkboard (left), on twos
         const rs = sc.rum.sample(t);
         const ro = { x: RUM_X, y: geo.floorY, facing: rs.facing, pose: withLife(rs.pose, tq, 1986, 0.8), scale: FIG_S, light: { x: -0.6, y: -1, floor: 0.25 } };
@@ -387,7 +458,11 @@ export default defineShot<Scene>({
         c.restore();
         floorShadow(c, geo, RUM_X, (cc) => cast.rumelhart.draw(cc, { ...ro, x: 0, y: 0 }, env), env, 0.8);
         const rimR = authorRim(t, b.authors);
-        if (rimR > 0.01) drawRimmed(c, env, rimR, (e2, dx, dy) => cast.rumelhart.draw(c, { ...ro, x: ro.x + dx, y: ro.y + dy, cutLines: false }, e2));
+        if (rimR > 0.01) {
+          // a double pass: his rim reads against the window's wash as clearly as Hinton's against the dark
+          drawRimmed(c, env, rimR, (e2, dx, dy) => cast.rumelhart.draw(c, { ...ro, x: ro.x + dx * 1.5, y: ro.y + dy * 1.5, cutLines: false }, e2));
+          drawRimmed(c, env, rimR, (e2, dx, dy) => cast.rumelhart.draw(c, { ...ro, x: ro.x + dx, y: ro.y + dy, cutLines: false }, e2));
+        }
         cast.rumelhart.draw(c, ro, env);
         // Hinton seated at his desk (right), facing the loom
         const hs = sc.hin.sample(t);
@@ -398,34 +473,47 @@ export default defineShot<Scene>({
         cast['hinton-young'].draw(c, ho, env);
         writingDesk(c, { x: DESK_X, y: geo.floorY, s: FIG_S * 1.05, w: 100 }, env);
         // the loom and its network
-        loomFrame(c, env, { lettering: win(t, b.train - 0.1, b.train + 0.6), strip: 1 - win(t, b.train, b.train + 0.8) * 0.4 });
+        // (review r1 ending) after 'seventeen' the breast beam's lettering falls back (the card and the stub hold the frame)
+        loomFrame(c, env, { lettering: 0, strip: (1 - win(t, b.train, b.train + 0.8) * 0.4) * (1 - 0.5 * win(t, b.family - 0.3, b.family + 0.4)) });
+        // (review r4) the demonstration's prop lettering rides the TOP beam: in shadow until 'Again', lit through the
+        // scrub and the XOR check, then flown out on its lines as the family trees fly in
+        const flyAt = b.xor + 4 * b.caseDur + 0.1;
+        loomLettering(c, env, { lit: win(t, b.train - 0.1, b.train + 0.6), fly: clamp01((t - flyAt) / 1.1) });
         // while the family demonstration plays, the XOR network steps back to ~0.4 (two machines, never tangled);
         // after 'seventeen' its trained lanterns come back up a little, softly lit above the stub
-        const loomA = 1 - 0.6 * win(t, b.family - 0.3, b.family + 0.4) + 0.2 * win(t, b.out + 0.2, b.out + 1.2);
+        // (review r4) the XOR net steps back to ~30 % while the family demonstration plays
+        const loomA = 1 - 0.7 * win(t, b.family - 0.3, b.family + 0.4) + 0.25 * win(t, b.out + 0.2, b.out + 1.2);
+        c.save();
+        c.globalAlpha *= loomA * (1 - 0.6 * win(t, b.out + 0.1, b.out + 0.9));
+        targetSlips(c, { lift, tick, hot, t }, env);
+        c.restore();
         c.save();
         c.globalAlpha *= loomA;
-        targetSlips(c, { lift, tick, hot, t }, env);
-        loomNet(c, { epoch, x, y, wave, back, error, nudged, labels, readout, hiddenHold, dim: 0, tugs, gathered, knobR: 9 + 2.5 * win(t, b.messenger, b.messenger + 1.5) * keep }, env);
+        loomNet(c, { epoch, x, y, wave, back, error, nudged, labels, readout, hiddenHold, dim: 0, tugs, gathered, knobR: 9 + 5 * win(t, b.messenger, b.messenger + 1.5) * keep, share: win(t, b.share - 0.15, b.share + 0.2) * (1 - win(t, b.blame + 0.55, b.blame + 0.95)) }, env);
         c.restore();
         // the family trees (the paper's own demonstration), dropped in on threads once the check is done
+        // (review r4) the trees hang in the clear thirds outside the posts (below the high window, above the authors),
+        // the six-lantern net on its own lower bar between them
         familyTrees(
           c,
           {
-            drop: win(t, b.family, b.family + 0.7),
-            nat: win(t, b.features, b.features + 0.45) * (1 - win(t, b.features + 1.0, b.features + 1.5)),
-            gen: win(t, b.features + 1.0, b.features + 1.5),
-            net: win(t, b.features - 0.3, b.features + 0.3),
+            drop: win(t, b.family - 0.3, b.family + 0.5),
+            nat: win(t, b.features - 0.25, b.features + 0.2) * (1 - win(t, b.gen, b.gen + 0.45)),
+            gen: win(t, b.gen, b.gen + 0.45),
+            net: win(t, b.features - 0.4, b.features + 0.2),
             t,
-            lx: 600,
-            rx: 1400,
-            y: 236,
+            trees: [
+              { x: 552, y: 238 },
+              { x: 1440, y: 238 },
+            ],
             // the ending belongs to the card and the stub: after 'seventeen' the trees and their net fall back
-            alpha: 1 - 0.72 * win(t, b.out + 0.1, b.out + 0.9),
+            alpha: 1 - 0.9 * win(t, b.out + 0.1, b.out + 0.9),
           },
           env,
         );
       },
     });
+    setPaintContext(pc);
     // the near drape's valance along the top edge (L5, blurred): depth before the pull-back, easing away
     const postA = 1 - win(t, b.pull, b.pull + 2.4);
     if (postA > 0.01)
@@ -448,6 +536,10 @@ export default defineShot<Scene>({
         c.fill();
         c.restore();
       });
+    // (review r1 depth) through the push-in a near drape leg (L5, blurred) stands at the lower-left edge, so the dolly
+    // shows three planes sliding: the drape, the loom, the paper screen behind it
+    const legA = win(t, b.messenger - 0.7, b.messenger + 0.5) * (1 - win(t, b.pullFrom - 0.1, b.pullFrom + 0.9));
+    if (legA > 0.01) nearLeg(f, sc.cam(b.messenger + 0.7), legA);
     // the stage's near lip, set forward so the floor (and the candle's pool on it) reads in the wide pull-back
     stageLip(f, sc.CAMS, ID, 800);
     // vignette: the lanterns are the light; the corners fall to ink
@@ -463,19 +555,37 @@ export default defineShot<Scene>({
       c.restore();
     }
 
+    // (review r1) through the push-in Hinton's corner falls to ink: he sits beyond the edge of the light, so the
+    // close framing never slices a lit figure at the frame edge (he returns as the camera pulls back)
+    const shade = win(t, b.error - 1.0, b.messenger + 0.3) * (1 - win(t, b.pullFrom + 0.2, b.pullFrom + 1.6));
+    if (shade > 0.01) {
+      const c = f.c;
+      c.save();
+      c.translate(1290, 735);
+      c.scale(1.25, 1);
+      const g = c.createRadialGradient(0, 0, 40, 0, 0, 330);
+      g.addColorStop(0, withAlpha(f.mood.ink, 0.96 * shade));
+      g.addColorStop(0.55, withAlpha(f.mood.ink, 0.8 * shade));
+      g.addColorStop(1, withAlpha(f.mood.ink, 0));
+      c.fillStyle = g;
+      c.fillRect(-340, -340, 680, 680);
+      c.restore();
+    }
     // the authors catching the light in turn as they are named (a warm wash behind each, then settling)
-    for (const [who, at, wx, wy] of [
-      ['r', b.authors, RUM_X, 520],
-      ['h', b.hinton, HIN_X - 30, 560],
+    // (review r1) Rumelhart's pulse matches Hinton's: he stands in the window's wash, so his pool is a step stronger
+    // and a little wider to read as the same 'catching the light'
+    for (const [who, at, wx, wy, gain, rad] of [
+      ['r', b.authors, RUM_X - 6, 500, 0.62, 175],
+      ['h', b.hinton, HIN_X - 30, 560, 0.42, 150],
     ] as const) {
       const k = (0.35 + 0.65 * authorRim(t, at)) * win(t, at - 0.15, at + 0.2) * (1 - 0.6 * win(t, at + 1.2, at + 2.6)) * (1 - win(t, b.pull, b.pull + 2));
       if (k > 0.01) {
         const p = toScreen(LAYERS.L4, cam, wx, wy);
         const c = f.c;
         c.save();
-        const R = 150 * p.k;
+        const R = rad * p.k;
         const g = c.createRadialGradient(p.x, p.y, 10, p.x, p.y, R);
-        g.addColorStop(0, withAlpha(f.mood.halo, 0.42 * k));
+        g.addColorStop(0, withAlpha(f.mood.halo, gain * k));
         g.addColorStop(1, withAlpha(f.mood.halo, 0));
         c.globalCompositeOperation = 'screen';
         c.fillStyle = g;
@@ -490,20 +600,27 @@ export default defineShot<Scene>({
 
     // ------------------------------------------------------------ type
     const tenv = { t, mood: f.mood, seed: 1986 };
-    phosphorStamp(f.c, { place: 'NATURE', date: '9 OCT 1986', year: 1986, at: Math.max(0.6, b.stamp - 0.1), until: b.train + 0.2, fade: 0.3 }, tenv);
+    // (review r1) typed in as the iris opens (from ~1.2 s), quickly, so the stamp beat shows the date
     nameCardLg(f.c, { name: 'David Rumelhart', role: 'with Hinton & Williams', x: 64, y: 66, align: 'left', at: b.authors, dur: 3.8 }, tenv);
     // the rule, large, hung beside the loom in the push-in: the gather (as the bead gathers at the hidden
     // pair), then the tug (under 'tugging each knob by its share of the blame'); gone as the camera pulls back
     {
-      // two lines, each rule whole on its line; the plate ~15% wider than the old four-line card
-      const tallW = equationCardSize(f.c, 40).w;
-      const w40 = equationCardSize(f.c, 40, true).w;
-      const EQ = Math.min(40, (40 * (1.15 * tallW - 40)) / (w40 - 40));
-      const sz = equationCardSize(f.c, EQ, true);
-      const x0 = Math.min(1236 - sz.w, 860);
-      const y0 = 236;
-      // the paper fades in WITH the ink (no blank plate ahead of the first stroke)
-      const a = win(t, b.ink[0] - 0.02, b.ink[0] + 0.3) * (1 - win(t, b.pullFrom - 0.2, b.pullFrom + 0.5));
+      // (review r2) the card is the TALL four-line card, ~1.6x the old cap height, filling the gap between the
+      // pushed-in loom (left two thirds) and the frame's right safe edge: at most 420 px wide
+      // (review r1) three lines, the tug rule whole on one line; the card ~40 px wider (460) to carry it
+      const w40 = equationCardSize(f.c, 40).w;
+      const EQ = Math.min(48, (40 * (460 - 40)) / (w40 - 40));
+      const sz = equationCardSize(f.c, EQ);
+      // (review r4) right edge pulled in to x <= 1200 (1800 at 1080p), inside the action-safe margin
+      const x0 = 1194 - sz.w;
+      // (review r4) pulled in to x <= 1200 it hangs higher, between the slips and the lower knobs' +/- signs
+      const y0 = Math.min(Math.max(150, 372 - sz.h / 2), 424 - sz.h);
+      // (review r3, kit card-entry rule) the card is lowered into the right third on its thread and arrives WITH its
+      // first stroke: the paper passes 30 % two frames before the gather rule starts inking (b.ink[0], on the
+      // bead's gather after 'lantern'), so it never hangs blank (it was a blank grey card from 'messenger', 18.6-20.5 s)
+      const a = cardPaperAlpha(t, b.ink[0], 0.4) * (1 - win(t, b.pullFrom - 0.2, b.pullFrom + 0.5));
+      const litCard = win(t, b.ink[0] - 0.35, b.ink[0] + 0.25);
+      const lower = (1 - sm((t - b.ink[0] + 0.75) / 0.85)) * -60;
       if (a > 0.003) {
         // the card's thread up out of frame (it hangs, like the slips)
         const c = f.c;
@@ -512,28 +629,83 @@ export default defineShot<Scene>({
         c.strokeStyle = f.mood.ink;
         c.lineWidth = 1.2;
         c.beginPath();
-        c.moveTo(x0 + sz.w / 2, y0);
+        c.moveTo(x0 + sz.w / 2, y0 + lower);
         c.lineTo(x0 + sz.w / 2 + 6, -10);
         c.stroke();
         c.restore();
       }
       equationCard(f.c, {
         x: x0,
-        y: y0,
+        y: y0 + lower,
         alpha: a,
-        wide: true,
+        tall: true,
         size: EQ,
-        reveal: [clamp01((t - b.ink[0]) / 0.7), clamp01((t - b.ink[1]) / 0.7), clamp01((t - b.ink[2]) / 0.55), clamp01((t - b.ink[3]) / 0.6)],
+        dim: lerp(0.86, 0.26, litCard),
+        reveal: [clamp01((t - b.ink[0]) / 0.45), clamp01((t - b.ink[1]) / 0.7), clamp01((t - b.ink[2]) / 0.55), clamp01((t - b.ink[3]) / 0.6)],
         mood: f.mood,
       });
     }
+    // (drawn over the equation card's thread)
+    // (review r4) typed on from the stamp beat (complete by ~1.6 s), and set TOP-RIGHT: at the bottom left it cut
+    // Rumelhart's chalkboard legs and feet through the whole full-loom framing
+    placeStamp(f.c, { place: 'NATURE', date: '9 OCT 1986', year: 1986, x: 1226, y: 76, align: 'right', at: b.stamp, dur: b.train + 0.2 - b.stamp, fade: 0.3, cps: 34 }, tenv);
     // in as the trees tint (its first line by the beat), riding the pull-back to settle just right of the stub's
     // smoke, high in the dark above the candle
-    const qy = lerp(84, 92, win(t, b.sterile, b.sterile + 3.6));
+    const qy = lerp(102, 104, win(t, b.sterile, b.sterile + 3.6));
     const qx = lerp(478, 462, win(t, b.sterile, b.sterile + 3.6));
-    quoteCard(f.c, { quote: '…come to represent important features of the task domain', speaker: 'Nature, 1986', x: qx, y: qy, width: 520, maxChars: 34, size: 27, at: b.quote - 0.4, stagger: 0.3 }, tenv);
+    // (review r2) the silent beat (30.8-35.2) carries the paper's own words at a legible size: in as soon as the
+    // four XOR cases have been checked, so it is read before the family trees drop and tint to show it
+    quoteCard(f.c, { quote: '…come to represent important features of the task domain', speaker: 'Nature, 1986', x: qx, y: qy, width: 560, maxChars: 34, size: 30, at: Math.min(b.quote - 0.4, b.xor + 4 * b.caseDur + 0.15) + 0.6, stagger: 0.3 }, tenv);
   },
 });
+
+/** the near drape leg (L5): authored in SCREEN px at the push-in camera `ref` (lower-left edge), baked with a soft
+ *  blur, then carried into L5 so it slides with true parallax as the camera moves */
+function nearLeg(f: Frame, ref: Camera3, a: number) {
+  const k0 = toScreen(LAYERS.L5, ref, 0, 0).k;
+  const at = toLayer(LAYERS.L5, ref, 0, 0);
+  f.layer('L5', (c, env) => {
+    c.save();
+    c.globalAlpha *= a;
+    c.translate(at.x, at.y);
+    c.scale(1 / k0, 1 / k0);
+    // local box in screen px: x -60 … 360, y -20 … 780
+    f.cached(`${ID}/nearLeg2/${env.mood.id}`, 420, 800, (cc) => {
+      cc.translate(60, 20);
+      const edge = new Path2D();
+      // the drape hangs straight down the left edge, is caught by a tie-back, and sweeps out across the corner
+      edge.moveTo(40, -20);
+      edge.bezierCurveTo(46, 160, 40, 330, 30, 470);
+      edge.quadraticCurveTo(24, 525, 44, 565);
+      edge.bezierCurveTo(70, 650, 200, 700, 340, 780);
+      const body = new Path2D();
+      body.moveTo(-60, -20);
+      body.addPath(edge);
+      body.lineTo(-60, 780);
+      body.closePath();
+      cc.fillStyle = env.mood.ink;
+      cc.fill(body);
+      // the fabric's edge catching the lanterns, and two long folds
+      cc.strokeStyle = withAlpha(mixLab(env.mood.rim, env.mood.halo, 0.4), 0.55);
+      cc.lineWidth = 3.5;
+      cc.stroke(edge);
+      cc.strokeStyle = withAlpha(env.mood.rim, 0.1);
+      cc.lineWidth = 2;
+      for (const fx of [10, 26]) {
+        cc.beginPath();
+        cc.moveTo(fx, -20);
+        cc.bezierCurveTo(fx + 4, 180, fx - 2, 360, fx * 0.7, 480);
+        cc.stroke();
+      }
+      // the tie-back cord
+      cc.fillStyle = withAlpha(env.mood.rim, 0.3);
+      cc.beginPath();
+      cc.ellipse(30, 515, 24, 6, -0.25, 0, Math.PI * 2);
+      cc.fill();
+    }, { blur: 4 })(c, -60, -20);
+    c.restore();
+  });
+}
 
 /** an author catching the light as named: up fast, held ~0.8 s, then down to a trace */
 function authorRim(t: number, at: number) {

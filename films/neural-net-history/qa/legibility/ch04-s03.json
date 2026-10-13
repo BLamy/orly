@@ -1,19 +1,149 @@
 {
  "shot": "ch04-s03",
- "at": "2026-10-12T08:41:13.688Z",
+ "at": "2026-10-13T04:13:17.527Z",
  "minCapPx": 22,
  "sampled": 14,
  "texts": 27,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
- "textureTexts": 0,
- "ok": [
-  {
-   "text": "PERCEPTRONS",
-   "maxCap": 23.9
-  },
+ "subjects": [
   {
    "text": "— US Congress, Mansfield Amendment, 1969",
-   "maxCap": 22.1
+   "capWhileSubject": 23.5,
+   "why": "script onScreenText"
   }
- ]
+ ],
+ "texture": [
+  {
+   "text": "PERCEPTRONS",
+   "maxCap": 41.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1",
+   "maxCap": 26.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "9",
+   "maxCap": 26.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "6",
+   "maxCap": 26.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "T",
+   "maxCap": 22.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "u",
+   "maxCap": 22.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "r",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "i",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "n",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "g",
+   "maxCap": 22.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "A",
+   "maxCap": 22.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "w",
+   "maxCap": 22.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "a",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "d",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "M",
+   "maxCap": 22.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "v",
+   "maxCap": 22.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "s",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "k",
+   "maxCap": 22.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "y",
+   "maxCap": 22.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "e",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "c",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "t",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "p",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "l",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "o",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "h",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 26
 }

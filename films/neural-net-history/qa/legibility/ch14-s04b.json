@@ -1,132 +1,119 @@
 {
  "shot": "ch14-s04b",
- "at": "2026-10-08T02:42:44.182Z",
+ "at": "2026-10-13T21:39:36.774Z",
  "minCapPx": 22,
  "sampled": 23,
- "texts": 18,
- "offenders": [
+ "texts": 21,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
   {
-   "text": "COMPUTE MATTERS LESS?",
-   "maxCap": 6.5,
-   "minCap": 6.5,
-   "first": 3.25,
-   "last": 14.25,
-   "font": "600 5.2px \"IBM Plex Mono\""
+   "text": "CHINA IS A YEAR",
+   "capWhileSubject": 28.2,
+   "why": "named: \"china year\""
   },
   {
-   "text": "DECISIVE",
-   "maxCap": 11.5,
-   "minCap": 11.1,
-   "first": 5.79,
-   "last": 14.25,
-   "font": "600 9.4px \"IBM Plex Mono\""
+   "text": "OR TWO BEHIND",
+   "capWhileSubject": 28.2,
+   "why": "named: \"behind\""
   },
   {
    "text": "HELPS HUAWEI",
-   "maxCap": 11.5,
-   "minCap": 11.1,
-   "first": 6.59,
-   "last": 14.25,
-   "font": "600 9.4px \"IBM Plex Mono\""
+   "capWhileSubject": 30,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "HUANG (NVIDIA)",
+   "capWhileSubject": 25,
+   "why": "script onScreenText"
   },
   {
    "text": "SELF-DEFEATING",
-   "maxCap": 11.5,
-   "minCap": 11.4,
-   "first": 10.84,
-   "last": 14.25,
-   "font": "600 9.4px \"IBM Plex Mono\""
+   "capWhileSubject": 30,
+   "why": "script onScreenText"
   },
+  {
+   "text": "CHINA’S FOREIGN",
+   "capWhileSubject": 25,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "MINISTRY",
+   "capWhileSubject": 25,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "DECISIVE",
+   "capWhileSubject": 30,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "AMODEI (ANTHROPIC),",
+   "capWhileSubject": 25,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "KHAN (EX-NSC)",
+   "capWhileSubject": 25,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
   {
    "text": "SCALE IS THE MAIN LEVER",
    "maxCap": 15.8,
-   "minCap": 15.8,
-   "first": 0.25,
-   "last": 14.25,
-   "font": "7.728px \"IBM Plex Mono\""
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "SMARTER-THAN-HUMAN AI MAY BE YEARS AWAY, AND",
    "maxCap": 15.8,
-   "minCap": 15.8,
-   "first": 0.25,
-   "last": 14.25,
-   "font": "7.728px \"IBM Plex Mono\""
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "DANGEROUS",
    "maxCap": 15.8,
-   "minCap": 15.8,
-   "first": 0.25,
-   "last": 14.25,
-   "font": "7.728px \"IBM Plex Mono\""
+   "why": "not named, not in onScreenText"
   },
-  {
-   "text": "AMODEI (ANTHROPIC),",
-   "maxCap": 16.9,
-   "minCap": 16.2,
-   "first": 5.79,
-   "last": 14.25,
-   "font": "500 8.4px \"IBM Plex Mono\""
-  },
-  {
-   "text": "KHAN (EX-NSC)",
-   "maxCap": 16.9,
-   "minCap": 16.2,
-   "first": 5.79,
-   "last": 14.25,
-   "font": "500 8.4px \"IBM Plex Mono\""
-  },
-  {
-   "text": "HUANG (NVIDIA)",
-   "maxCap": 16.9,
-   "minCap": 16.3,
-   "first": 6.59,
-   "last": 14.25,
-   "font": "500 8.4px \"IBM Plex Mono\""
-  },
-  {
-   "text": "CHINA’S FOREIGN",
-   "maxCap": 16.9,
-   "minCap": 16.7,
-   "first": 10.84,
-   "last": 14.25,
-   "font": "500 8.4px \"IBM Plex Mono\""
-  },
-  {
-   "text": "MINISTRY",
-   "maxCap": 16.9,
-   "minCap": 16.7,
-   "first": 10.84,
-   "last": 14.25,
-   "font": "500 8.4px \"IBM Plex Mono\""
-  }
- ],
- "textureTexts": 0,
- "ok": [
   {
    "text": "COMPUTE IS",
-   "maxCap": 28.2
+   "maxCap": 28.2,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "THE CHOKEPOINT",
-   "maxCap": 28.2
+   "maxCap": 28.2,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "LIT 2022",
-   "maxCap": 24.4
+   "maxCap": 24.4,
+   "why": "not named, not in onScreenText"
   },
   {
-   "text": "CHINA IS ONE TO",
-   "maxCap": 28.2
+   "text": "COMPUTE MATTERS LESS?",
+   "maxCap": 28.8,
+   "why": "not named, not in onScreenText"
   },
   {
-   "text": "THREE YEARS BEHIND",
-   "maxCap": 28.2
+   "text": "OCT 2022 –",
+   "maxCap": 19.9,
+   "why": "not named, not in onScreenText"
   },
   {
-   "text": "OCT 2022 – JAN 2025 · ≈ 2",
-   "maxCap": 24.4
+   "text": "JAN 2025",
+   "maxCap": 19.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "≈ 2",
+   "maxCap": 19.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "lit Oct 2022 · out Jan 2025 · ≈ 2 years",
+   "maxCap": 22,
+   "why": "not named, not in onScreenText"
   }
- ]
+ ],
+ "textureTexts": 11
 }

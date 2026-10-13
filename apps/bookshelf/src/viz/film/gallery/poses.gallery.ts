@@ -8,7 +8,7 @@ const ROW1: GestureId[] = ['stand', 'present', 'point', 'write', 'think', 'doubt
 const ROW2: GestureId[] = ['triumph', 'despair', 'authority', 'lean', 'sit', 'type', 'listen'];
 const who: Record<GestureId, number> = {
   stand: 0, present: 2, point: 4, write: 4, think: 6, doubt: 1, dissent: 8,
-  triumph: 9, despair: 7, authority: 0, lean: 3, sit: 5, type: 8, listen: 3, walkStand: 0, rest: 1, clasp: 0,
+  triumph: 9, despair: 7, authority: 0, lean: 3, sit: 5, type: 8, listen: 3, walkStand: 0, rest: 1, clasp: 0, fold: 2, glasses: 6, pocket: 1, shift: 3,
 };
 const cast = ERA_CAST.map((s) => createPuppet(s));
 

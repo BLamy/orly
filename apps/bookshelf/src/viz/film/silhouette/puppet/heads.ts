@@ -32,7 +32,7 @@ export interface HeadArt {
   /** ink pieces, head-local units */
   pieces: Path2D[];
   /** lens shape (lit) and frame stroke, drawn after the ink */
-  lens?: { fill: Path2D; frame: Path2D; frameW: number };
+  lens?: { fill: Path2D; frame: Path2D; frameW: number; glint?: Path2D };
   cuts: Cut[];
   eye: [number, number];
   top: [number, number];
@@ -156,6 +156,8 @@ export function headArt(o: HeadOpts): HeadArt {
       const p = ellipsePath(...P(cx, cy), rx * h, ry * h);
       lens = { fill: p, frame: p, frameW: fw * h };
     }
+    // the glint: a small tilted catch-light high on the lens's front edge (review round 3)
+    lens!.glint = ellipsePath(...P(cx + rx * 0.35, cy - ry * 0.42), rx * 0.42 * h, ry * 0.26 * h, -0.5);
     const arm = curve(S([[cx - rx, cy - ry * 0.6], [0.15, -0.53], [-0.04, -0.5], [-0.09, -0.44]]));
     cuts.push({ id: 'glassesArm', path: arm, alpha: 0.4, w: g === 'heavy' ? 1.5 : 1.1 });
     if (g === 'browline' || g === 'heavy') {

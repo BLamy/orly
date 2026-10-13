@@ -8,8 +8,8 @@
  *                    11 DECEMBER 2015 sets in with the pin ('Months before Seoul' is a step back in time)
  *   BOARD   'Musk'   the pin stays bare (no name cards; the founders are named only in the narration); the card
  *                    settles in its slot
- *           (from 'co-chaired' the camera pushes in until the card is the subject: its two spoken phrases, typed in Plex
- *                    Mono, read at the 22 px cap-height floor by 'benefit', the lanterns still whole beneath it)
+ *           (round 2: from 'Musk' the camera pushes ≈ 1.5× in until the card and its nail fill the frame: the two
+ *                    spoken phrases, typed in Plex Mono, read at ≥ 22 px cap height by 'could', the lanterns whole beneath)
  *           'benefit' a WARM hand-lantern swings into light from the pin (the promise the lab names); the card's
  *                    phrase 'could benefit society' lights
  *           'damage' a COLD hand-lantern swings in beside it on the same nail (the danger it names); 'damage society
@@ -31,7 +31,7 @@ import { HAND_LEN, type HandsPose } from '../sets/narratorHands';
 import { slotWorld, studyCase, studyRoom } from '../sets/study';
 import { SLOTS } from '../sets/studyState';
 import { paperTone } from '../sets/caseBoard';
-import { frameOn, mixFrame } from '../sets/ch09-s03a-kit';
+import { frameOn, kOf, mixFrame } from '../sets/ch09-s03a-kit';
 import { clamp01, lerp, sm, tq12, win } from '../sets/ch02-s05b-util';
 
 type C = CanvasRenderingContext2D;
@@ -43,7 +43,9 @@ const F1C = slotWorld('F1');
 const F1PIN = slotWorld('F1', 'pin');
 /** both lanterns hang from ONE brass nail beneath F1 (hope and fear on one nail), resting a little apart */
 const NAIL = { x: F1C.x, y: F1C.y + F1.h / 2 + 6 };
-const CORD = 30;
+/** round 2: long cords, so both lanterns hang wholly BELOW the board's bottom rail (y 650–666), clear of its dark
+ *  band, in the darker zone beneath the board where their glows carry */
+const CORD = 62;
 /** rest angles: the two lanterns lean apart against each other (≈ 60 px apart on screen in the medium) */
 const REST_A = 0.45;
 const WARM = MOODS.candleAmber;
@@ -55,7 +57,8 @@ const COLD = MOODS.winterBlue;
 // ------------------------------------------------------------------------------------------------ cameras
 /** BOARD: frontal medium on C3/C4 and the founding row */
 const BOARD0 = frameOn({ x: F1C.x - 40, y: 430 }, { x: 640, y: 360 }, 1.2);
-const BOARD1 = frameOn({ x: F1C.x - 30, y: 440 }, { x: 640, y: 360 }, 1.26);
+/** round 2: the opening push eases onto F1's empty slot, centre frame by ≈ 2.4 s, just before the hand enters */
+const BOARD1 = frameOn(F1C, { x: 640, y: 372 }, 1.42);
 /** INSERT on F1 (brief): the card a little low and right, so the hand comes up from the frame's lower edge with a
  *  short forearm */
 const INS0 = frameOn(F1C, { x: 690, y: 400 }, 2.15);
@@ -68,6 +71,12 @@ const MED0 = frameOn({ x: (F1C.x + F2C.x) / 2 - 8, y: F1C.y - 48 }, { x: 640, y:
 const MED1 = frameOn({ x: F1C.x + 52, y: F1C.y - 46 }, { x: 640, y: 344 }, 1.97);
 const MED2 = frameOn({ x: F1C.x + 48, y: F1C.y - 46 }, { x: 640, y: 342 }, 1.99);
 const F2PIN = slotWorld('F2', 'pin');
+/** round 2 (legibility): the QUOTE push. From 'Musk' the camera keeps pushing (≈ 1.5× over ≈ 2.5 s, then a slow
+ *  drift) until the card and the two lanterns hanging beneath it fill the frame's middle: the two spoken phrases read
+ *  at ≥ 22 px cap height at 1080p while the narrator says them ('benefit' → 'incorrectly'), the lanterns whole below */
+const QFOCUS = { x: F1C.x, y: F1C.y + 66 };
+const QUOTE0 = frameOn(QFOCUS, { x: 640, y: 352 }, 2.9);
+const QUOTE1 = frameOn(QFOCUS, { x: 640, y: 350 }, 2.98);
 /** the LEDGER: pulled back, the open ledger on the side table's dark edge under the lamp's pool */
 /** round 1: the ledger is a set, not a slide: the open book lies at a slight angle on the side table, its fresh
  *  right page ≈ half the frame (the left page cropped at frame left), the table running off to the right into the
@@ -76,7 +85,7 @@ const F2PIN = slotWorld('F2', 'pin');
 const LEDGER0: Camera3 = frameOn({ x: 760, y: 300 }, { x: 610, y: 330 }, 0.9);
 /** the ledger push: eased in toward the entry as it is typed (gentle: the page stays ≈ half the frame) */
 const LEDGER1 = frameOn({ x: 740, y: 280 }, { x: 600, y: 330 }, 0.96);
-const CAMS = [BOARD0, BOARD1, INS0, INS1, MED0, MED1, MED2, CAMERA3_HOME];
+const CAMS = [BOARD0, BOARD1, INS0, INS1, MED0, MED1, MED2, QUOTE0, QUOTE1, CAMERA3_HOME];
 
 interface B {
   D: number;
@@ -86,6 +95,8 @@ interface B {
   founded: number;
   lant: number;
   musk: number;
+  human: number;
+  quote: number;
   benefit: number;
   damage: number;
   ledger: number;
@@ -113,6 +124,10 @@ export default defineShot({
       founded,
       lant: T.word('L0909', 'co-chaired') + 0.5,
       musk: T.beat('names'),
+      // the push starts as the founders' names close ('Musk') and lands before 'could' (≈ 2.5 s; the phrase is
+      // legible before it is said)
+      human: T.beat('names') + 0.2,
+      quote: T.word('L0909', 'could') - 0.45,
       benefit: T.beat('warmLantern'),
       damage: T.beat('coldLantern'),
       // cut to the ledger a beat before, so the page is visibly turning on the beat ('backers' − 0.56)
@@ -129,11 +144,15 @@ export default defineShot({
     const b = scene.b as B;
     const t = f.t;
     f.setMood('candleAmber');
-    if (t < b.ins0) boardView(f, b, t, mixFrame(BOARD0, BOARD1, sm(t / b.ins0)));
+    if (t < b.ins0) boardView(f, b, t, mixFrame(BOARD0, BOARD1, sm(Math.min(1, t / (b.founded - 0.5)))));
     else if (t < b.lant) boardView(f, b, t, mixFrame(INS0, INS1, sm((t - b.ins0) / (b.lant - b.ins0))));
     else if (t < b.ledger) {
-      const reach = b.benefit - 0.3;
-      const cam = t < reach ? mixFrame(MED0, MED1, sm((t - b.lant) / (reach - b.lant))) : mixFrame(MED1, MED2, sm((t - reach) / (b.ledger - reach)));
+      // the medium settles (the founding row, F2's empty pin), then from 'Musk' the push onto the quotation
+      const cam = t < b.human
+        ? mixFrame(MED0, MED1, sm((t - b.lant) / (b.human - b.lant)))
+        : t < b.quote
+          ? mixFrame(MED1, QUOTE0, sm((t - b.human) / (b.quote - b.human)))
+          : mixFrame(QUOTE0, QUOTE1, sm((t - b.quote) / (b.ledger - b.quote)));
       boardView(f, b, t, cam);
     }
     else ledgerView(f, b, t);
@@ -178,16 +197,22 @@ function boardView(f: Frame, b: B, t: number, cam: Camera3) {
   darkenExhibits(f, cam);
   // the lanterns' own light (after the rim pass): warm on 'benefit', cold on 'damage'
   lanternLight(f, b, t);
-  // the lamp's falloff on the board (≈ 20% darker toward the frame's edges), so the field is never dead-even
+  // the lamp's pool on the board (round 2): the card sits in light, the frame's corners ≈ 25-30% darker
   {
     const c = f.c;
-    const g = c.createRadialGradient(600, 320, 160, 640, 360, 820);
+    const g = c.createRadialGradient(610, 330, 90, 640, 360, 760);
     g.addColorStop(0, withAlpha(f.mood.fg, 0));
-    g.addColorStop(1, withAlpha(f.mood.fg, 0.24));
+    g.addColorStop(0.55, withAlpha(f.mood.fg, 0.14));
+    g.addColorStop(1, withAlpha(f.mood.fg, 0.4));
     c.fillStyle = g;
     c.fillRect(0, 0, 1280, 720);
+    c.save();
+    c.globalCompositeOperation = 'lighter';
+    glow(c, 600, 300, 420, f.mood.halo, 0.07);
+    c.restore();
   }
   f.layer('L4', (c, env) => dustMotes(c, { area: { x: F1C.x - 420, y: F1C.y - 360, w: 840, h: 560 }, count: 30, drift: { x: -3, y: -2 }, brightness: 0.4, salt: 904 }, env));
+  sideTableNear(f, cam);
   lampShade(f);
 }
 
@@ -250,6 +275,58 @@ function darkenExhibits(f: Frame, cam: Camera3) {
   c.restore();
 }
 
+/** round 2: the side table's near corner at frame lower right (L5, soft): the closed ledger's corner and a round
+ *  pin tin on it. It is painted in the near layer (its blur), but placed by SCREEN position each frame: as the camera
+ *  pushes in (scale ×2.6 over the shot) it drifts outward toward the corner and grows a little faster than the board,
+ *  as a near object does, without ever swelling over the card */
+const K_MED = kOf(MED0);
+function sideTableNear(f: Frame, cam: Camera3) {
+  const r = kOf(cam) / K_MED;
+  const out = Math.pow(r, 0.22);
+  // (lower RIGHT: the side table is on the lamp side, and the lower left belongs to the date stamp)
+  const sx = 640 + (1140 - 640) * out, sy = 360 + (640 - 360) * out;
+  const size = Math.pow(r, 0.5);
+  f.layer('L5', (c, env) => {
+    const m = env.mood;
+    const ink = '#0b0d0b';
+    const p = toLayer(LAYERS.L5, cam, sx, sy);
+    const kL = toScreen(LAYERS.L5, cam, 0, 0).k;
+    c.save();
+    c.translate(p.x, p.y);
+    c.scale(-size / kL, size / kL); // mirrored: the table runs off to the right
+    // the table's top edge, then the ledger lying on it, its corner toward the board (screen units from here)
+    c.fillStyle = mixLab(ink, m.fg, 0.4);
+    c.beginPath();
+    c.moveTo(-900, 30);
+    c.lineTo(110, 30);
+    c.lineTo(170, 400);
+    c.lineTo(-900, 400);
+    c.closePath();
+    c.fill();
+    c.fillStyle = ink;
+    c.beginPath();
+    c.moveTo(-900, 8);
+    c.lineTo(-60, -4);
+    c.lineTo(-40, 40);
+    c.lineTo(-900, 46);
+    c.closePath();
+    c.fill();
+    // the pin tin: a squat round tin, its lid's rim catching the lamp
+    c.fillRect(-28, -18, 56, 40);
+    c.beginPath();
+    c.ellipse(0, -18, 28, 8, 0, 0, Math.PI * 2);
+    c.fill();
+    c.strokeStyle = withAlpha(mixLab(m.rim, m.halo, 0.4), 0.5);
+    c.lineWidth = 1.6;
+    c.beginPath();
+    c.ellipse(0, -18, 27, 7.4, 0, Math.PI * 1.05, Math.PI * 1.95);
+    c.stroke();
+    c.fillStyle = withAlpha(m.rim, 0.3);
+    c.fillRect(-900, 7, 840, 1.4);
+    c.restore();
+  });
+}
+
 /** the green-shaded lamp's shade edge at the frame's top right: the frame's darkest shape (near, soft, screen space) */
 function lampShade(f: Frame) {
   const c = f.c;
@@ -306,7 +383,14 @@ function announcement(c: C, env: PaintEnv, o: AnnOpts) {
   // the sentence as faint texture (small), with the two SPOKEN phrases typed large (≥ 28 px at 1080p in the medium)
   // on their own lines, dim until the narrator says them, then struck dark and lit
   const small = (text: string, y: number) => {
-    c.font = `400 4.4px ${FONT.mono}`;
+    // round 2: fitted to the card's width (it ran past the card's right edge once the push made it visible)
+    let size = 4.4;
+    c.font = `400 ${size}px ${FONT.mono}`;
+    const tw = c.measureText(text).width;
+    if (tw > w - 12) {
+      size *= (w - 12) / tw;
+      c.font = `400 ${size}px ${FONT.mono}`;
+    }
     c.fillStyle = withAlpha(ink, 0.24);
     c.fillText(text, -w / 2 + 6, y);
   };
@@ -434,7 +518,9 @@ function lanternLight(f: Frame, b: B, t: number) {
       const P = which === 'warm' ? WARM : { halo: COLD.halo, core: mixLab(COLD.rim, '#eef6fb', 0.35) };
       const end = { x: L.pivot.x + Math.sin(L.a) * L.len, y: L.pivot.y + Math.cos(L.a) * L.len };
       const flick = 1 + 0.05 * Math.sin(tq * 19 + (which === 'warm' ? 0 : 2));
-      glow(c, end.x, end.y + 34, 150, P.halo, 0.2 * L.on * flick);
+      glow(c, end.x, end.y + 34, 150, P.halo, 0.14 * L.on * flick);
+      // round 2: each lantern lights the board around it (≈ 90 px on screen): warm beside cold on the one nail
+      glow(c, end.x + (which === 'warm' ? -6 : 6), end.y + 20, 44, P.halo, 0.3 * L.on * flick);
       glow(c, end.x, end.y + 34, 34, P.core, 0.45 * L.on * flick);
     }
   });
@@ -540,6 +626,12 @@ function ledgerShade(f: Frame) {
   c.quadraticCurveTo(120, 112, 250, 78);
   c.stroke();
   c.restore();
+  // round 2: the shade's lit underside: the bulb's glow pooling under its rim and spilling down onto the table
+  c.save();
+  c.globalCompositeOperation = 'lighter';
+  glow(c, 110, 128, 120, mixLab(m.core, '#fff2d0', 0.3), 0.32);
+  glow(c, 150, 150, 420, m.halo, 0.12);
+  c.restore();
 }
 
 function desk(f: Frame, c: C, env: PaintEnv) {
@@ -615,14 +707,39 @@ function ledgerBook(c: C, env: PaintEnv, b: B, t: number) {
       }
     }
   };
+  // round 2: the book has a body: stacked page edges (the fore-edge) showing under each page's outer and lower edge
+  for (let i = 4; i >= 1; i--) {
+    c.fillStyle = mixLab(paper, m.set, 0.25 + i * 0.08);
+    c.fillRect(spine - pageW - i * 1.6, top + i * 2.2, pageW * 2 + i * 3.2, H);
+    c.fillStyle = withAlpha(m.fg, 0.35);
+    c.fillRect(spine - pageW - i * 1.6, top + H + i * 2.2 - 0.6, pageW * 2 + i * 3.2, 0.8);
+  }
   page(spine - pageW, pageW, mixLab(paper, m.set, 0.08), true);
   page(spine, pageW, paper);
-  const gs = c.createLinearGradient(spine - 40, 0, spine + 40, 0);
+  // the pages curl down into the spine: their top and bottom edges dip toward the gutter (the table shows in the
+  // notch), and a deep gutter shadow, darker on the page that curls away from the lamp
+  c.fillStyle = env.fill('ink');
+  for (const [y0, dir] of [[top, 1], [bottom, -1]] as const) {
+    c.beginPath();
+    c.moveTo(spine - 70, y0 - dir * 0.5);
+    c.quadraticCurveTo(spine - 14, y0, spine, y0 + dir * 7);
+    c.quadraticCurveTo(spine + 14, y0, spine + 70, y0 - dir * 0.5);
+    c.lineTo(spine + 70, y0 - dir * 9);
+    c.lineTo(spine - 70, y0 - dir * 9);
+    c.closePath();
+    c.fill();
+  }
+  const gs = c.createLinearGradient(spine - 70, 0, spine + 70, 0);
   gs.addColorStop(0, withAlpha(m.fg, 0));
-  gs.addColorStop(0.5, withAlpha(m.fg, 0.35));
+  gs.addColorStop(0.42, withAlpha(m.fg, 0.32));
+  gs.addColorStop(0.5, withAlpha(m.fg, 0.62));
+  gs.addColorStop(0.56, withAlpha(m.fg, 0.4));
   gs.addColorStop(1, withAlpha(m.fg, 0));
   c.fillStyle = gs;
-  c.fillRect(spine - 40, top, 80, H);
+  c.fillRect(spine - 70, top + 4, 140, H - 8);
+  // the curl's lit ridge just right of the gutter (the right page rises toward the lamp)
+  c.fillStyle = withAlpha(m.halo, 0.16);
+  c.fillRect(spine + 16, top + 8, 10, H - 16);
   // the turning leaf: from the right page over to the left (foreshortened by cos, on twos), its underside darker
   const tq = tq12(t);
   const u = clamp01((tq - b.turn0) / (b.turn1 - b.turn0));
@@ -651,7 +768,8 @@ function ledgerBook(c: C, env: PaintEnv, b: B, t: number) {
 function entry(c: C, env: PaintEnv, b: B, t: number) {
   if (t < b.type0) return;
   // one entry on two ruled lines (the ledger's lines are 38 px apart): the figure, then the funders' own words
-  const lines = ['committed $1B ·', 'expected to spend a tiny fraction at first'];
+  // (round 2: the middle dot opens line 2, so it never dangles at the end of line 1)
+  const lines = ['committed $1B', '· expected to spend a tiny fraction at first'];
   const total = lines[0].length + lines[1].length;
   const cps = total / (b.type1 - b.type0);
   const tq = tq12(t);

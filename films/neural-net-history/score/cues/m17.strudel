@@ -1,6 +1,10 @@
 // m17 — THE CASE REOPENED (ch13 s01-s04, s06). duskRose with an emberRed edge.
 // RE-FIT (review round 1) to the 2139.54 s clock: window 1653.15–1752.15 s (99.00 s). Every event is written in
 // ABSOLUTE film seconds (line() subtracts T0). Key: D minor (the home key darkened again: doubt from the centre).
+// CURRENT CLOCK (2026-10-13, 2159.9583 s): window 1666.108–1765.108 s (99.00 s); moved bodily +12.958 s, no line inside it
+//    changed. The code's absolute times stay on the 2139.54 s clock (T0 = 1653.15 was the cue start there), so every event
+//    is still exact relative to the cue: add 12.958 s to read a time on the current clock (slip 1668.58, 'down' 1673.61,
+//    'harms' 1729.88, 'water' 1762.47; all re-checked against narration/timeline.json).
 // Rubato; 54 BPM only for the three camps' piano pulse (1.111 s).
 //
 //   1653.15–1660.65 THE SLIP     low strings in D minor, alone in the gap after L1219b; M1's rising fourth A2 → D3 as
@@ -30,6 +34,12 @@
 //                                horn and its Dm(add9) about 3 dB softer under the line; Cyc's celesta lighter.
 // CRITIC r1, ROUND 2 (2026-10-12): the hand-off to m18 no longer chops a ringing note: the 'water' harp E is released
 //                                by 1751.5 and the fade-out is the full 1.5 s overlap (1750.65-1752.15; cues.json fadeOut 1.5).
+// CRITIC r1 (2026-10-13, current clock): M4's walk back to the rim is a set motif payoff and was only ~1.6 dB above the
+//                                bed. It now has its own lane in the only music-only gap (1699.49-1703.81 current = code
+//                                1686.53-1690.85): cello sul tasto (lpf 700), the held D swelling from 1699.60, D3-E3-F3 on
+//                                'walk', the piano A on 'rim' clearer (.1 -> .17); all released by 1703.68, before L1307.
+//                                Measured: gap 1699.6-1703.5 is +4.4 dB against the fair-line bed (was +1.8 dB, now +6.2);
+//                                L1307's first second unchanged. The rest of the cue untouched.
 const T0 = 1653.15, DUR = 99.0, BPM = 54
 const VEL = 4.1          // global velocity scale (about -22 LUFS integrated)
 // ---- seconds-based event compiler (shared by m13-m18; here events are absolute film seconds) ---
@@ -100,10 +110,19 @@ $: line([
 $: line([
   [1664.08, 9.5, 'd3', .16, { attack: 1.2 }],                      // 'Machines smarter than people?': the held D
   [1673.58, 6.47, 'd3', .14, { attack: 1.4 }],                     // re-struck in the gap before L1303b
-  [1680.05, 7.28, 'd3', .13, { attack: 1.4 }],                     // ... and after it, under the fair line
-  [1687.33, .5, 'd3', .17, { attack: .1 }], [1687.83, .54, 'e3', .17], [1688.37, 1.6, 'f3', .17, { release: 1.6 }],  // the walk back
+  [1680.05, 6.59, 'd3', .13, { attack: 1.4, release: .6 }],       // ... and after it, under the fair line; hands over to the walk at the gap
   [1696.97, 6.3, 'a2', .06, { attack: .8, release: 1.2 }],         // review r1: the pedal alone under L1307b (below D3)
 ], { attack: .2, release: 1.2 }).s('gm_cello').lpf(900).hpf(40).room(.4).rsize(4).orbit(1)
+
+// ═══ THE WALK BACK TO THE RIM (critic r1, round 1 of this pass): M1's held note turns back into M4 ══════════════
+// The only music-only gap of the cue (current clock 1699.49-1703.81 = code 1686.53-1690.85). The walk is brought
+// forward about 4 dB here, in its own lane: cello sul tasto (darker lpf, slower bow), the held D swelling as the fair
+// line ends, then D3 -> E3 -> F3 on 'walk'; everything released by code 1690.75, before L1307 (code 1690.85).
+$: line([
+  [1686.64, 1.19, 'd3', .25, { attack: .55 }],                    // the held D swells into the gap (no re-attack)
+  [1687.83, .54, 'e3', .25, { attack: .12 }],                     // the walk ...
+  [1688.37, 1.6, 'f3', .24, { attack: .12, release: .75 }],         // ... to the rim; gone by 1690.72
+], { release: .3 }).s('gm_cello').lpf(700).hpf(40).gain(1.12).room(.4).rsize(4).orbit(1)
 $: line([
   [1664.08, 23.07, 'a1', .08, { attack: 3, release: 1.5 }],        // pp low A: the D held over A (doubt)
   [1690.55, 6.42, 'd2', .1, { attack: .6, release: .7 }],          // the worry: Dm(add9) floor, gone by the letter
@@ -134,7 +153,7 @@ $: line([
 
 // ═══ PIANO: one note at the rim; THREE CAMPS line 2 (present harms): a plain D5 in quarters ══════════════
 $: line([
-  [1688.37, 2.0, 'a5', .1],
+  [1688.37, 1.55, 'a5', .17, { release: .8 }],                      // 'rim': the A clear in the gap, released by 1690.72
   ...run(1716.92, 1737.52, Q, ['d5'], .1, .9),                       // 'harms' → stops after "The third"
 ], { release: 1 }).s('piano').lpf(2600).room(.45).rsize(3).orbit(7)
 

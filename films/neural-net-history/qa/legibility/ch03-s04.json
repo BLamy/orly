@@ -1,107 +1,194 @@
 {
  "shot": "ch03-s04",
- "at": "2026-10-12T08:08:37.915Z",
+ "at": "2026-10-13T04:13:11.196Z",
  "minCapPx": 22,
  "sampled": 29,
  "texts": 36,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
- "textureTexts": 0,
- "ok": [
-  {
-   "text": "MARK I",
-   "maxCap": 22.6
-  },
+ "subjects": [
   {
    "text": "PERCEPTRON",
-   "maxCap": 24
-  },
-  {
-   "text": "RETINA · 20 × 20 PHOTOCELLS",
-   "maxCap": 29.1
+   "capWhileSubject": 34,
+   "why": "script onScreenText"
   },
   {
    "text": "ASSOCIATION UNITS · WEIGHTS AS KNOBS",
-   "maxCap": 29.1
-  },
-  {
-   "text": "VERTICAL",
-   "maxCap": 29.1
-  },
-  {
-   "text": "HORIZONTAL",
-   "maxCap": 29.1
-  },
-  {
-   "text": "RESPONSE UNIT",
-   "maxCap": 29.1
+   "capWhileSubject": 29.1,
+   "why": "named: \"weights knobs\""
   },
   {
    "text": "knob = weight",
-   "maxCap": 23.2
+   "capWhileSubject": 23.2,
+   "why": "script onScreenText"
   },
   {
    "text": "how strongly one wire counts",
-   "maxCap": 27.4
-  },
-  {
-   "text": "presentation 2",
-   "maxCap": 23.5
-  },
-  {
-   "text": "Σ w·a = +3",
-   "maxCap": 22.8
-  },
-  {
-   "text": "said “horizontal”",
-   "maxCap": 23.5
+   "capWhileSubject": 27.4,
+   "why": "script onScreenText"
   },
   {
    "text": "wrong: the knobs turn",
-   "maxCap": 23.5
+   "capWhileSubject": 23.5,
+   "why": "named: \"wrong knobs\""
   },
   {
    "text": "said “horizontal” — wrong: the knobs turn",
-   "maxCap": 22.1
+   "capWhileSubject": 22.1,
+   "why": "named: \"wrong knobs\""
   },
   {
    "text": "illustration: the perceptron rule, run for real",
-   "maxCap": 23.5
+   "capWhileSubject": 23.5,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "MARK I",
+   "maxCap": 32.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "B",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "U",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "F",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "A",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "L",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "O",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "9",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "5",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "8",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "6",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "RETINA · 20 × 20 PHOTOCELLS",
+   "maxCap": 29.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "VERTICAL",
+   "maxCap": 29.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "HORIZONTAL",
+   "maxCap": 29.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "RESPONSE UNIT",
+   "maxCap": 29.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "presentation 2",
+   "maxCap": 23.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Σ w·a = +3",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "said “horizontal”",
+   "maxCap": 23.5,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "Σ w·a = +8",
-   "maxCap": 22.9
+   "maxCap": 22.9,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "said “horizontal” — correct",
-   "maxCap": 22.4
+   "maxCap": 22.4,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "presentation 37   ·   mistakes in the last 20: 2",
-   "maxCap": 23.5
+   "maxCap": 23.5,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "correct",
-   "maxCap": 23.5
+   "maxCap": 23.5,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "Σ w·a = +2",
-   "maxCap": 23
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "presentation 77   ·   mistakes in the last 20: 2",
-   "maxCap": 23.5
+   "maxCap": 23.5,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "Σ w·a = −6",
-   "maxCap": 23.2
+   "maxCap": 23.2,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "Σ w·a = 0",
-   "maxCap": 23.4
+   "maxCap": 23.4,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "said “vertical” — wrong: the knobs turn",
-   "maxCap": 22.7
+   "maxCap": 22.7,
+   "why": "not named, not in onScreenText"
   }
- ]
+ ],
+ "textureTexts": 29
 }

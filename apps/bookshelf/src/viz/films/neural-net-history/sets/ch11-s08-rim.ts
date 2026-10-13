@@ -8,7 +8,7 @@
  *   accountCard(c, env, o)    one of two equal plain cards (Gebru's departure: both accounts)
  */
 import type { PaintEnv } from '../../../film';
-import { hash1, mixLab, withAlpha } from '../../../film';
+import { hash1, mixLab, paperTexture, withAlpha } from '../../../film';
 import { FONT } from '../../../film/silhouette/type';
 import { MFONT, drawSlug } from '../../../film';
 
@@ -16,11 +16,15 @@ type C = CanvasRenderingContext2D;
 const clamp01 = (u: number) => (u <= 0 ? 0 : u >= 1 ? 1 : u);
 
 export const ISLES = { a: { x: 1090, y: 676 }, b: { x: 1420, y: 676 } } as const;
-/** a point along the cable, u 0 (island a) → 1 (island b) */
+/** round-2 revise: the cable LANDS on both islands, at each telegraph key (beside the tiny operator), runs down the
+ *  beach into the sea and sags across the floor between them */
+const KEY_A = { x: ISLES.a.x + 25, y: ISLES.a.y - 3 };
+const KEY_B = { x: ISLES.b.x - 25, y: ISLES.b.y - 3 };
+/** a point along the cable, u 0 (island a's key) → 1 (island b's key) */
 export function cableAt(u: number) {
-  const a = ISLES.a, b = ISLES.b;
-  const x = a.x + 34 + (b.x - a.x - 68) * u;
-  const y = a.y + 18 + 16 * Math.sin(Math.PI * u) + 3 * Math.sin(u * 9);
+  const x = KEY_A.x + (KEY_B.x - KEY_A.x) * u;
+  const s = Math.sin(Math.PI * u);
+  const y = KEY_A.y + 37 * Math.pow(s, 0.55) + 2.5 * Math.sin(u * 9) * s;
   return { x, y };
 }
 
@@ -32,8 +36,12 @@ export interface IslandsDraw {
   /** after the bear: island a sends fast; the octopus sends nothing useful */
   alarm: number;
   light: number;
-  /** shot time at which the octopus's half stalls (its reply scrambles) */
+  /** shot time the bear rises (round-3 review): from here the islander's half of the cable (island a → octopus) flashes
+   *  a fast, IRREGULAR pulse (the alarm), while the octopus's half (octopus → island b) answers with the SAME regular
+   *  dash pattern it was copying before (the shape without the meaning) until `replyUntil`, then goes dark */
   stallAt?: number;
+  /** shot time the octopus's regular reply stops (default stallAt + 1.6) */
+  replyUntil?: number;
 }
 function isle(c: C, env: PaintEnv, x: number, y: number, flip: number, seed: number) {
   const ink = env.fill('ink');
@@ -109,67 +117,68 @@ export function islands(c: C, env: PaintEnv, o: IslandsDraw) {
     else c.lineTo(p.x, p.y);
   }
   c.stroke();
-  c.strokeStyle = withAlpha(m.rim, 0.3 * o.light);
+  c.strokeStyle = withAlpha(m.rim, 0.45 * o.light);
   c.lineWidth = 0.8;
   c.stroke();
+  // where it comes ashore, a small clamp at each key so the landing reads
+  c.fillStyle = env.fill('ink');
+  for (const k of [KEY_A, KEY_B]) c.fillRect(k.x - 2.5, k.y - 2.5, 5, 4);
   // pulses: dot-dash marks travelling along the cable. Island a → octopus (0 → .5), octopus → island b (.5 → 1):
-  // the octopus re-sends the same pattern it heard (it copies the shape). After the bear, a's pulses run fast and
-  // the octopus's side goes quiet but for a few stray dots.
+  // the octopus re-sends the same pattern it heard (it copies the shape perfectly). Round-3 review: when the bear
+  // rises, the islander's half flashes the ALARM (fast, irregular), and the octopus's half keeps answering with the
+  // same regular pattern as before (shape without meaning), then goes dark. No text.
   if (o.talk <= 0.01) return;
   c.save();
   c.globalCompositeOperation = 'lighter';
   const pattern = [1, 0, 1, 1, 0, 0, 1, 0, 1, 0, 0, 1, 1, 1, 0];
-  // island a keeps sending (faster once the bear is there); the octopus's half copies it perfectly until the alarm,
-  // then STALLS: its last pulses freeze on the cable and dim, and one scrambled burst of dashes jitters at its arm
-  const speed = 0.18 + 0.22 * o.alarm;
+  const speed = 0.18;
   const tStall = o.stallAt ?? Infinity;
+  const tReply = o.replyUntil ?? tStall + 1.6;
+  // the islander's half: regular until the bear; then the regular marks clear off within 0.15 s as the alarm takes over
+  const calm = o.t < tStall ? 1 : 1 - clamp01((o.t - tStall) / 0.15);
+  // the octopus's half: the same regular pattern, on and on, until it simply stops (dark over 0.35 s)
+  const reply = 1 - clamp01((o.t - tReply) / 0.35);
   for (let k = 0; k < 14; k++) {
     const phase = (o.t * speed + k / 14) % 1;
     const dash = pattern[k % pattern.length] === 1;
-    drawPulse(c, env, phase * 0.5, dash, o.talk);
-    if (o.t < tStall) drawPulse(c, env, 0.5 + phase * 0.5, dash, o.talk);
-    else {
-      const frozen = ((tStall * 0.18 + k / 14) % 1) * 0.5 + 0.5;
-      // round-1 revise: the octopus's half goes DARK (nothing useful to send), not merely dim
-      const dark = Math.max(0, 1 - (o.t - tStall) / 0.5);
-      if (dark > 0.01) drawPulse(c, env, frozen, dash, o.talk * dark);
-    }
+    if (calm > 0.01) drawPulse(c, env, phase * 0.5, dash, o.talk * calm);
+    if (reply > 0.01) drawPulse(c, env, 0.5 + phase * 0.5, dash, o.talk * reply);
   }
-  if (o.t >= tStall && o.t < tStall + 1.2) {
-    // the scrambled reply: short dashes at odd angles, re-drawn on twos (nothing useful to send)
-    const p = cableAt(0.56);
-    const fr = Math.floor(o.tq * 12);
-    c.fillStyle = withAlpha(env.mood.core, 0.85 * o.talk * (1 - Math.max(0, (o.t - tStall - 0.5) / 0.7)));
-    for (let j = 0; j < 7; j++) {
-      const a = hash1(j * 7 + fr, 41) * Math.PI;
-      const r = 5 + 9 * (hash1(j + fr * 3, 43) * 0.5 + 0.5);
-      c.save();
-      c.translate(p.x + Math.cos(a) * r, p.y - 4 + Math.sin(a) * r * 0.5);
-      c.rotate(a * 2);
-      c.fillRect(-3, -0.8, 6, 1.6);
-      c.restore();
+  if (o.t >= tStall) {
+    // the alarm: fast, uneven, bright marks racing from the islander's key toward the octopus (on twos)
+    const tq = Math.floor(o.t * 12) / 12;
+    const up = clamp01((o.t - tStall) / 0.12);
+    for (let k = 0; k < 11; k++) {
+      const ph = (tq * (0.95 + 0.35 * (0.5 + 0.5 * hash1(k, 81))) + 0.37 * (0.5 + 0.5 * hash1(k, 82)) + k * 0.083) % 1;
+      const dash = hash1(k * 7 + Math.floor(tq * 4), 83) > 0.1;
+      const flick = 0.65 + 0.35 * (0.5 + 0.5 * hash1(k + Math.floor(tq * 12) * 13, 84));
+      drawPulse(c, env, ph * 0.5, dash, o.talk * up * flick * 1.25, 1.45);
     }
   }
   c.restore();
 }
-function drawPulse(c: C, env: PaintEnv, u: number, dash: boolean, a: number) {
+function drawPulse(c: C, env: PaintEnv, u: number, dash: boolean, a: number, k = 1) {
   const p = cableAt(u);
-  const g = c.createRadialGradient(p.x, p.y, 0, p.x, p.y, 5);
-  g.addColorStop(0, withAlpha(env.mood.core, 0.4 * a));
+  const R = 5 * k;
+  const g = c.createRadialGradient(p.x, p.y, 0, p.x, p.y, R);
+  g.addColorStop(0, withAlpha(env.mood.core, Math.min(1, 0.4 * a)));
   g.addColorStop(1, withAlpha(env.mood.core, 0));
   c.fillStyle = g;
-  c.fillRect(p.x - 5, p.y - 5, 10, 10);
-  c.fillStyle = withAlpha(env.mood.core, 0.9 * a);
-  if (dash) c.fillRect(p.x - 4, p.y - 1, 8, 2);
-  else c.fillRect(p.x - 1.2, p.y - 1.2, 2.4, 2.4);
+  c.fillRect(p.x - R, p.y - R, 2 * R, 2 * R);
+  c.fillStyle = withAlpha(env.mood.core, Math.min(1, 0.9 * a));
+  // (the alarm's marks are uneven in length as well as in spacing)
+  if (dash) c.fillRect(p.x - 4 * k, p.y - k, 8 * k * (k > 1 ? 0.6 + 0.8 * Math.abs(Math.sin(u * 97)) : 1), 2 * k);
+  else c.fillRect(p.x - 1.2 * k, p.y - 1.2 * k, 2.4 * k, 2.4 * k);
 }
 
 export interface OctopusDraw {
   tq: number;
   /** 0..1 tapping (it stops, puzzled, after the bear) */
   tap: number;
-  /** 0..1 the puzzled lift of the mantle */
+  /** 0..1 the puzzled tilt of the mantle (≈10°) */
   puzzled: number;
+  /** 0..1 the tapping arm lifted and held still over the cable (it has nothing to send) */
+  hover?: number;
 }
 export function octopus(c: C, env: PaintEnv, o: OctopusDraw) {
   const p = cableAt(0.5);
@@ -193,7 +202,7 @@ export function octopus(c: C, env: PaintEnv, o: OctopusDraw) {
   }
   // the tapping arm reaches to the cable and taps it (on twos)
   const beat = Math.floor(o.tq * 6) % 2;
-  const lift = o.tap * (beat ? 7 : 0);
+  const lift = o.tap * (beat ? 7 : 0) + (o.hover ?? 0) * 9;
   c.lineWidth = 2.6;
   c.beginPath();
   c.moveTo(6, -14);
@@ -202,7 +211,7 @@ export function octopus(c: C, env: PaintEnv, o: OctopusDraw) {
   // the mantle: a rounded bulb leaning back, tilted when puzzled
   c.save();
   c.translate(0, -16);
-  c.rotate(-0.35 + 0.35 * o.puzzled);
+  c.rotate(-0.35 + 0.175 * o.puzzled);
   c.beginPath();
   c.moveTo(-9, 2);
   c.bezierCurveTo(-16, -10, -14, -34, 0, -36);
@@ -218,63 +227,90 @@ export function octopus(c: C, env: PaintEnv, o: OctopusDraw) {
   c.restore();
 }
 
-/** a bear standing up on the left island's beach: ears, a long snout, forepaws raised (it rises on twos) */
-export function bear(c: C, env: PaintEnv, rise: number) {
+/**
+ * Round-2 revise: a BEAR, unmistakably: reared up on the left island's beach, broad and heavy (≈1.6× the first cut's
+ * body, ≈1.3× its height), a shoulder hump behind the neck, a broad head with short round ears set low and a blunt
+ * muzzle, forelegs spread wide with claws. It rises on twos.
+ */
+export interface BearDraw {
+  /** where it stands (diorama px) and its size (1 = the first cut, ≈110 px tall) */
+  x?: number;
+  y?: number;
+  s?: number;
+  /** 1 faces right (toward the cable), -1 faces left */
+  facing?: 1 | -1;
+}
+/** round-3 review: default placement is SMALL (≈1.15× the tiny islander), standing on the left island's beach just
+ *  beyond the islander, facing him (it had been taller than Bender and merged with her silhouette) */
+export const BEAR_AT = { x: ISLES.a.x + 44, y: ISLES.a.y - 6, s: 0.26, facing: -1 as const };
+export function bear(c: C, env: PaintEnv, rise: number, o: BearDraw = BEAR_AT) {
   if (rise <= 0.01) return;
-  const x = ISLES.a.x - 26, y = ISLES.a.y - 2;
+  const x = o.x ?? BEAR_AT.x, y = o.y ?? BEAR_AT.y, s = o.s ?? BEAR_AT.s, facing = o.facing ?? BEAR_AT.facing;
   c.save();
-  c.translate(x, y + 40 * (1 - rise));
+  c.translate(x, y + 50 * s * (1 - rise));
+  c.scale(s * facing, s);
   c.globalAlpha *= Math.min(1, rise * 2);
-  c.fillStyle = env.fill('ink');
+  const ink = env.fill('ink');
+  c.fillStyle = ink;
   c.beginPath();
-  // hind legs planted, a heavy body standing upright, head turned toward the cable (right)
-  c.moveTo(-12, 0);
-  c.lineTo(-13, -14);
-  c.quadraticCurveTo(-19, -30, -15, -46); // rump and back
-  c.quadraticCurveTo(-12, -60, -4, -64); // shoulder
-  c.lineTo(-3, -70); // nape
-  c.quadraticCurveTo(0, -76, 6, -76); // crown
-  c.lineTo(9, -75);
-  c.lineTo(17, -71); // snout
-  c.lineTo(18, -67);
-  c.lineTo(8, -65); // jaw
-  c.quadraticCurveTo(8, -58, 10, -54); // chest
-  c.quadraticCurveTo(12, -40, 9, -24); // belly
-  c.quadraticCurveTo(8, -12, 7, 0);
-  c.lineTo(1, 0);
-  c.lineTo(-1, -12);
-  c.lineTo(-5, -12);
-  c.lineTo(-6, 0);
+  // hind legs: thick, short, planted wide (pads flat on the sand)
+  c.moveTo(-30, 0);
+  c.lineTo(-29, -10);
+  c.quadraticCurveTo(-36, -30, -33, -50); // haunch and rump
+  c.quadraticCurveTo(-30, -72, -22, -84); // back rising to the hump
+  c.quadraticCurveTo(-17, -97, -6, -97); // the shoulder hump
+  c.quadraticCurveTo(-2, -97, 0, -95); // nape dips
+  c.quadraticCurveTo(1, -108, 11, -108); // crown of the broad, round head
+  c.quadraticCurveTo(20, -108, 23, -101); // brow
+  c.lineTo(28, -99); // the muzzle: short, deep and blunt
+  c.quadraticCurveTo(33, -98, 33, -93); // the nose, square-ish
+  c.quadraticCurveTo(33, -87, 26, -86);
+  c.quadraticCurveTo(20, -84, 17, -81); // heavy jaw
+  c.quadraticCurveTo(22, -70, 20, -56); // throat and chest
+  c.quadraticCurveTo(22, -36, 14, -22); // the big belly
+  c.quadraticCurveTo(12, -12, 14, 0); // front of the near hind leg
+  c.lineTo(-1, 0);
+  c.lineTo(-3, -13);
+  c.lineTo(-11, -13);
+  c.lineTo(-13, 0);
   c.closePath();
   c.fill();
-  // ears
+  // ears: short and round, set low on the back of the head
   c.beginPath();
-  c.arc(-1, -76, 2.8, 0, Math.PI * 2);
-  c.arc(4, -78, 2.6, 0, Math.PI * 2);
+  c.arc(1, -105, 4.6, 0, Math.PI * 2);
   c.fill();
-  // forepaws raised (two short arms reaching up and forward, claws)
+  c.beginPath();
+  c.arc(10, -108, 4.4, 0, Math.PI * 2);
+  c.fill();
+  // forelegs spread wide: one reaching forward toward the cable, one back and up; thick, with claws
   c.lineCap = 'round';
-  c.strokeStyle = env.fill('ink');
-  c.lineWidth = 4.2;
-  for (const [ax, ay, bx, by] of [[4, -56, 15, -64], [2, -50, 16, -54]] as const) {
+  c.lineJoin = 'round';
+  c.strokeStyle = ink;
+  for (const [ax, ay, ex, ey, px, py] of [
+    [10, -78, 30, -74, 44, -84],
+    [-14, -82, -36, -90, -46, -104],
+  ] as const) {
+    c.lineWidth = 11;
     c.beginPath();
     c.moveTo(ax, ay);
-    c.lineTo(bx, by);
+    c.quadraticCurveTo(ex, ey, px, py);
     c.stroke();
-    c.lineWidth = 1;
+    c.lineWidth = 1.6;
+    const dx = Math.sign(px - ax);
     for (let k = -1; k <= 1; k++) {
       c.beginPath();
-      c.moveTo(bx + 1, by + k * 1.4);
-      c.lineTo(bx + 4, by + k * 1.8 - 1);
+      c.moveTo(px + dx * 4, py + k * 3);
+      c.lineTo(px + dx * 9, py + k * 3.6 - 2);
       c.stroke();
     }
-    c.lineWidth = 4.2;
   }
-  c.strokeStyle = withAlpha(env.mood.rim, 0.45);
-  c.lineWidth = 0.8;
+  // the lit edge along the hump and back, toward the candle
+  c.strokeStyle = withAlpha(env.mood.rim, 0.5);
+  c.lineWidth = 1;
   c.beginPath();
-  c.moveTo(-14, -44);
-  c.quadraticCurveTo(-11, -60, -3, -65);
+  c.moveTo(-34, -46);
+  c.quadraticCurveTo(-30, -72, -22, -84);
+  c.quadraticCurveTo(-17, -97, -6, -97);
   c.stroke();
   c.restore();
 }
@@ -398,22 +434,43 @@ export interface AccountCardDraw {
   /** font size (world px) */
   size?: number;
 }
+/** round-2 revise: a paper prop in the world, not a slide: paper grain, a pin at its top, the candle's light falling
+ *  off across it (lit edge toward the flame, the far corner in shadow), and its peak a step below white. Both cards
+ *  get exactly the same treatment. */
 export function accountCard(c: C, env: PaintEnv, o: AccountCardDraw) {
   if (o.rise <= 0.01) return;
   const m = env.mood;
   const y = o.y + (1 - o.rise) * 30;
+  const x0 = o.x - o.w / 2, y0 = y - o.h / 2;
   c.save();
   c.globalAlpha *= clamp01(o.rise * 1.4);
-  c.fillStyle = withAlpha(m.fg, 0.35);
-  c.fillRect(o.x - o.w / 2 + 3, y - o.h / 2 + 4, o.w, o.h);
-  c.fillStyle = mixLab(mixLab('#e9e2d0', m.set, 0.45), mixLab('#f2ebdc', m.halo, 0.2), Math.min(1, 0.3 + o.light));
-  c.fillRect(o.x - o.w / 2, y - o.h / 2, o.w, o.h);
+  c.fillStyle = withAlpha(m.fg, 0.45);
+  c.fillRect(x0 + 4, y0 + 5, o.w, o.h);
+  c.fillStyle = mixLab(mixLab('#d8cfbc', m.set, 0.5), mixLab('#e2d6c0', m.halo, 0.28), Math.min(1, 0.25 + o.light));
+  c.fillRect(x0, y0, o.w, o.h);
+  paperTexture(c, { x: x0, y: y0, w: o.w, h: o.h }, { alpha: 0.6, offset: { x: o.x * 2, y: 0 } });
+  // the light falls off across the card, away from the flame (upper left lit, lower right in shadow)
+  const fo = c.createLinearGradient(x0, y0, x0 + o.w, y0 + o.h);
+  fo.addColorStop(0, withAlpha(m.fg, 0));
+  fo.addColorStop(0.55, withAlpha(m.fg, 0.12));
+  fo.addColorStop(1, withAlpha(m.fg, 0.38));
+  c.fillStyle = fo;
+  c.fillRect(x0, y0, o.w, o.h);
+  // the pin
+  c.fillStyle = mixLab(m.halo, m.set, 0.35);
+  c.beginPath();
+  c.arc(o.x, y0 + 7, 3.6, 0, Math.PI * 2);
+  c.fill();
+  c.fillStyle = withAlpha(m.rim, 0.6);
+  c.beginPath();
+  c.arc(o.x - 1, y0 + 6, 1.2, 0, Math.PI * 2);
+  c.fill();
   c.fillStyle = '#1d1a20';
   const fs = o.size ?? 15;
   c.font = `500 ${fs}px ${FONT.mono}`;
   c.textAlign = 'center';
   c.textBaseline = 'middle';
   const lh = fs * 1.34;
-  o.lines.forEach((l, i) => c.fillText(l, o.x, y + (i - (o.lines.length - 1) / 2) * lh));
+  o.lines.forEach((l, i) => c.fillText(l, o.x, y + 4 + (i - (o.lines.length - 1) / 2) * lh));
   c.restore();
 }

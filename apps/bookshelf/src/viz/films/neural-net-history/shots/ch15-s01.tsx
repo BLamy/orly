@@ -2,7 +2,9 @@
  * ch15-s01 — Case Status: Open. A phone lights in an empty hotel room at 2 a.m.; its glow becomes a Nobel medallion;
  * the medallion's rim match-cuts into an arch of the Hall of Mirrors (chapter 5), where the mirrored figures that
  * once looked away turn at last toward the physicist; a critic's card; a second medallion folds a protein.
- * (candleAmber → the hall's gold; 36.42 s; in: fadeBlack.)
+ * (candleAmber → the hall's gold; 44.5 s; in: fadeBlack.) Review round 4: re-fit to the longer L1502 take (the
+ * Versailles callback): every hall beat rides T.word ('Hopfield' the match cut, 'Versailles' the mirrored figures
+ * begin to turn toward him, 'memories' a slow push onto the medallion, 'Boltzmann' the ease back to the wide hall).
  *
  *   0.1        the CHAPTER INDEX TAB 'Case Status: Open' drops at top-left, holds 2.5 s, slides up
  *   0 → 5.3    fade up on the dark room (bed edge, bedside table, a sash window, net drapes, a car-park light);
@@ -13,10 +15,13 @@
  *   'Nobel'    the glow warms and blooms into a gold medallion that rises and turns edge-on → face-on; a paper
  *              ribbon unrolls beneath it with the physics citation
  *   'Hopfield' MATCH CUT: the medallion's rim settles into the round head of a mirror arch in the Hall of Mirrors;
- *              the physicist at a lectern; his name card
- *   'downhill' an engraved hollow on the medallion's blank face; a paper ball rolls in and settles (the 1982 memory)
+ *              the physicist at a lectern; his name card JOHN HOPFIELD
+ *   'Versailles' the mirrored figures begin to turn toward him, one by one (profile → facing out of the glass): the
+ *              hall that once did not look now looks; the crowd behind them ripples round through the rest of the shot
+ *   'memories' a slow push onto the medallion; on 'downhill' an engraved hollow on its blank face, a paper ball rolls
+ *              in and settles (the 1982 memory)
+ *   'Boltzmann' the camera eases back out to the wide hall
  *   'cools'    the haze around the medallion cools to pale and warms back (a net that settles as it cools)
- *   L1502 end  the mirrored figures begin to turn toward him, one by one (profile → facing out of the glass)
  *   'cheered'  the ribbon's lettering fades; Dame Wendy Hall's card; one mirrored figure at the hall's rim stays
  *              turned away
  *   'chemistry's' the card fades; in the next arch a second gold medallion turns face-on; the DeepMind name card
@@ -24,13 +29,14 @@
  *   end        the two medallions side by side; the figures finish turning; one stays turned away
  */
 import { Timeline } from '../../../core';
-import type { Camera3, Frame, LayerSpec, PaintEnv, Pose } from '../../../film';
+import type { Camera3, Frame, LayerSpec, PaintEnv, Palette, Pose } from '../../../film';
 import {
   CAMERA3_HOME, LAYERS, MOODS, PUPPET_NEAR_BLACK, POSES, defineShot, mixLab, nameCard, overscan, placeStamp, podium, quoteCard,
   toScreen, withAlpha, withLife,
 } from '../../../film';
 import { hash1 } from '../../../film/core/frame';
-import { cast } from '../cast';
+import { SPECS, cast } from '../cast';
+import { createPuppet } from '../../../film/silhouette/puppet';
 import { CHANDELIERS, HALL5, archPath, hall15 } from '../sets/ch15-s01-hall';
 import { indexTab } from '../sets/indexTab';
 import { figure15 } from '../sets/ch15-s01-figures';
@@ -112,6 +118,7 @@ interface B {
   cut: number;
   hop: number;
   downhill: number;
+  boltz: number;
   cools: number;
   turn0: number;
   cheered: number;
@@ -141,11 +148,13 @@ export default defineShot<Scene>({
       phone: T.beat('b1'),
       buzz2: T.beat('b2'),
       nobel: T.beat('b3'),
-      cut: T.beat('b4') - 0.12,
-      hop: T.beat('b4'),
+      cut: T.word('L1502', 'Hopfield') - 0.12,
+      hop: T.word('L1502', 'Hopfield'),
       downhill: T.beat('b4b'),
-      cools: T.beat('b4c'),
-      turn0: T.beat('b5'),
+      boltz: T.word('L1502', 'Boltzmann'),
+      cools: T.word('L1502', 'cools'),
+      // review round 4: the mirrored figures begin to turn toward Hopfield on 'Versailles' (the Versailles callback)
+      turn0: T.word('L1502', 'Versailles'),
       cheered: T.beat('b6'),
       chem: T.beat('chem'),
       fold: T.beat('fold'),
@@ -178,12 +187,23 @@ export default defineShot<Scene>({
     // and the ball read and the physicist stays whole in frame while his card reads), ONE slow pull back to the wide
     // hall by the turning; a held wide while the figures turn; then one long slow push onto the two medallions
     // from just before 'chemistry's' that settles after 'proteins' and holds
-    void memories; void boltz; void network;
+    // review round 4 (the longer L1502): a near-hold from the cut while the figures begin to turn on 'Versailles';
+    // on 'memories' a slow push onto the medallion (the hollow and the ball read on 'downhill'); held to 'Boltzmann',
+    // then the ease back out to the wide hall, landing before 'cools' so the cooling haze reads in the hall
+    // reviser r1: the medallion TEACHES 'memories that roll downhill' and 'a net that settles as it cools', so from
+    // 'memories' -0.2 the camera pushes ~1.4x onto it (the ball reads rolling into the dip on 'downhill', the
+    // Boltzmann dots settle into it as the face cools), holds to 'cools' +0.6, then pulls back out for
+    // 'Not everyone cheered'
+    void network;
+    void boltz;
     const meds = (MED1.x + MED2.x) / 2;
+    const kPush = kCut * 1.04 * 1.4;
     const keys: Key[] = [
       [b.cut, MED1.x, MED1.y, CUT_M.x, CUT_M.y, kCut],
-      [16.0, MED1.x, MED1.y, 610, 212, kCut * 1.1],
-      [21.5, mid.x - 30, mid.y, 640, 322, 0.8],
+      [memories - 0.2, MED1.x, MED1.y, 614, 211, kCut * 1.04],
+      [b.downhill + 0.25, MED1.x, MED1.y, 640, 292, kPush],
+      [b.cools + 0.6, MED1.x, MED1.y, 640, 300, kPush * 1.02],
+      [T.word('L1528', 'cheered') + 0.9, mid.x - 30, mid.y, 640, 322, 0.8],
       [b.chem - 0.6, mid.x - 24, mid.y, 640, 324, 0.8],
       [b.fold + 0.4, meds, MED1.y, 640, 232, 1.13],
       [D, meds, MED1.y, 640, 230, 1.14],
@@ -234,6 +254,35 @@ export default defineShot<Scene>({
           cool: cool * 0.9,
           cord: t > b.cut ? 1 : 0,
         }, env);
+        // reviser r1: on 'Boltzmann' a scatter of jittering dots (the net's units, hot) settles into the dip as
+        // the face cools (they rest in the basin from 'cools')
+        if (t > b.boltz - 0.05) boltzDots(c, med, t, b, f.mood);
+      }
+      // reviser r1: from 'chem' the key light leaves the physicist and finds the second medallion (the protein)
+      const key2 = win(t, b.chem - 0.1, b.chem + 1.0);
+      const m2k = medallion2Pose(sc, t);
+      if (key2 > 0.01 && m2k.a > 0.01) {
+        c.save();
+        c.globalCompositeOperation = 'lighter';
+        const g = c.createRadialGradient(m2k.x, m2k.y, m2k.r * 0.6, m2k.x, m2k.y, m2k.r * 3.4);
+        g.addColorStop(0, withAlpha(f.mood.core, 0.26 * key2));
+        g.addColorStop(0.45, withAlpha(f.mood.halo, 0.1 * key2));
+        g.addColorStop(1, withAlpha(f.mood.halo, 0));
+        c.fillStyle = g;
+        c.fillRect(m2k.x - m2k.r * 3.4, m2k.y - m2k.r * 3.4, m2k.r * 6.8, m2k.r * 6.8);
+        // a soft shaft of key light falling onto it from above
+        const sh = c.createLinearGradient(0, m2k.y - 360, 0, m2k.y + m2k.r);
+        sh.addColorStop(0, withAlpha(f.mood.halo, 0));
+        sh.addColorStop(1, withAlpha(f.mood.halo, 0.09 * key2));
+        c.fillStyle = sh;
+        c.beginPath();
+        c.moveTo(m2k.x - m2k.r * 0.7, m2k.y - 360);
+        c.lineTo(m2k.x + m2k.r * 0.7, m2k.y - 360);
+        c.lineTo(m2k.x + m2k.r * 1.5, m2k.y + m2k.r);
+        c.lineTo(m2k.x - m2k.r * 1.5, m2k.y + m2k.r);
+        c.closePath();
+        c.fill();
+        c.restore();
       }
       // the second medallion (chemistry), in the next arch
       const m2 = medallion2Pose(sc, t);
@@ -251,7 +300,8 @@ export default defineShot<Scene>({
       // the citation ribbon beneath the first medallion: unrolls on 'Nobel', its lettering fades on 'cheered'
       const open = win(t, b.nobel + 0.55, b.nobel + 1.6);
       // the whole ribbon goes with its lettering (no empty plate left over the audience)
-      const rA = 1 - win(t, b.cheered - 0.1, b.cheered + 0.3);
+      // reviser r1: once JOHN HOPFIELD's card is up the ribbon steps back to ~55 % so the Versailles turn has the frame
+      const rA = (1 - win(t, b.cheered - 0.1, b.cheered + 0.3)) * (1 - 0.45 * win(t, b.hop + 1.7, b.hop + 2.4));
       if (open > 0 && rA > 0) {
         ribbonBanner(c, {
           text: 'for foundational discoveries and inventions that enable machine learning with artificial neural networks',
@@ -286,7 +336,8 @@ export default defineShot<Scene>({
       // and held inside the safe area
       {
         // screen-locked just behind his head on the open (right) side; the push pivots near him so he holds still
-        nameCard(c, { name: 'John Hopfield', role: 'physicist · aged 91', at: b.hop + 0.1, dur: 2.4, align: 'left', x: 960, y: 318 }, te);
+        // review round 4: the name leads (JOHN HOPFIELD over the caption), held through 'Versailles'
+        nameCard(c, { name: 'JOHN HOPFIELD', role: 'physicist · aged 91', at: b.hop + 0.1, dur: Math.max(2.4, b.turn0 + 1.4 - b.hop), align: 'left', x: 960, y: 318 }, te);
       }
       // Dame Wendy Hall's card: on the clear wall band at top centre-right (the term corner stays free), on its
       // own dark plate, from 'cheered'
@@ -339,6 +390,41 @@ function medallion2Pose(sc: Scene, t: number): { x: number; y: number; r: number
   const cam = sc.hall(t);
   const p = toScreen(LAYERS.L2, cam, MED2.x, MED2.y);
   return { x: p.x, y: p.y, r: MED2.r * p.k, turn: sm((tq12(t) - b.chem) / 1.3), a: win(t, b.chem - 0.1, b.chem + 0.35) };
+}
+
+/** the Boltzmann dots (reviser r1): 7 small beads on the medallion's face (its own geometry: the kit's basin, W = 0.7r,
+ *  D = 0.36r, y0 = -0.04r). Hot on 'Boltzmann' (scattered over the face, jittering on twos), cooling to rest in the
+ *  dip by 'cools'; the jitter amplitude is the temperature */
+function boltzDots(c: C, med: { x: number; y: number; r: number; a: number }, t: number, b: B, mood: Palette) {
+  const r = med.r;
+  const W = r * 0.7, D = r * 0.36, y0 = -r * 0.04;
+  const basinY = (u: number) => { const q = Math.max(0, 1 - u * u); return y0 + q * q * D; };
+  const heat = 1 - sm((t - b.boltz - 0.2) / (b.cools + 0.25 - b.boltz - 0.2));
+  const fade = win(t, b.boltz - 0.05, b.boltz + 0.3) * med.a;
+  if (fade <= 0.003) return;
+  const tq = tq12(t);
+  const step = Math.floor(tq * 12);
+  const br = Math.max(2, r * 0.045);
+  c.save();
+  c.globalAlpha *= fade;
+  for (let i = 0; i < 7; i++) {
+    // hot home: spread over the face (above the basin line); cold home: a tight cluster in the dip
+    const uHot = -0.85 + (1.7 * i) / 6 + 0.08 * hash1(i, 31);
+    const liftHot = r * (0.12 + 0.4 * (0.5 + 0.5 * hash1(i, 32)));
+    const uCold = (i - 3) * 0.085;
+    const u = lerp(uCold, uHot, heat) + heat * 0.09 * hash1(i * 31 + step, 33);
+    const lift = lerp(br * 0.95 + (i % 2) * br * 1.6 * (Math.abs(i - 3) < 2 ? 1 : 0), liftHot, heat) + heat * r * 0.06 * hash1(i * 17 + step, 34);
+    const x = med.x + u * W;
+    const y = med.y + Math.min(basinY(Math.max(-1, Math.min(1, u))) - br * 0.95, basinY(Math.max(-1, Math.min(1, u))) - lift);
+    c.fillStyle = mixLab('#f3ead6', mood.halo, 0.2);
+    c.beginPath();
+    c.arc(x, y, br, 0, Math.PI * 2);
+    c.fill();
+    c.strokeStyle = withAlpha('#5a3c12', 0.75);
+    c.lineWidth = Math.max(0.8, br * 0.22);
+    c.stroke();
+  }
+  c.restore();
 }
 
 function coolHaze(c: C, x: number, y: number, r: number, k: number) {
@@ -742,7 +828,10 @@ function heroFigures(c: C, env: PaintEnv, t: number, b: B) {
 }
 const HERO_TYPES = [5, 0, 1, 4, 3, 2, 1, 0];
 
-const HOP_P = cast.hopfield;
+/** reviser r1: the 2024 physicist (aged 91) wears the bald crown, not the 1982 receding cut: the receding style's
+ *  hairline cut ran parallel to the back of the skull and read as a second head behind his profile */
+const HOP_P = createPuppet({ ...SPECS.hopfield, hair: 'bald' });
+void cast;
 function paintHall(f: Frame, sc: Scene, t: number) {
   const b = sc.b;
   const cam = sc.hall(t);
@@ -768,7 +857,17 @@ function paintHall(f: Frame, sc: Scene, t: number) {
       // the physicist at a lectern, facing the first medallion's arch
       const pz: Pose = withLife({ ...POSES.stand, angles: { ...POSES.stand.angles, head: -2, neck: 6 } }, tq, 1982, 0.8);
       podium(c, { x: LECT.x, y: HOP.floor, s: 1.05 }, env);
-      HOP_P.draw(c, { x: HOP.x, y: HOP.floor, facing: 'left', pose: pz, ink: PUPPET_NEAR_BLACK, light: { x: 0, y: -1, floor: 0.2 }, edgeRim: { x: -0.4, y: -1, px: 1.4, alpha: 0.55 } }, env);
+      const hopO = { x: HOP.x, y: HOP.floor, facing: 'left' as const, pose: pz, ink: PUPPET_NEAR_BLACK, light: { x: -0.5, y: -1, floor: 0.2 } };
+      HOP_P.draw(c, { ...hopO, edgeRim: { x: -0.4, y: -1, px: 1.4, alpha: 0.55 } }, env);
+      // reviser r1: on 'chem' his rim light dims to ~40 % (the same figure laid over it without a rim): the key light
+      // moves to the second medallion while the voice moves to the chemistry prize
+      const dim = 0.6 * win(t, b.chem - 0.1, b.chem + 1.0);
+      if (dim > 0.01) {
+        c.save();
+        c.globalAlpha *= dim;
+        HOP_P.draw(c, { ...hopO, edgeRim: { x: -0.4, y: -1, alpha: 0 } }, env);
+        c.restore();
+      }
     },
   });
   void CAMERA3_HOME;

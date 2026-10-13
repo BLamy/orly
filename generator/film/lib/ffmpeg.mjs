@@ -106,6 +106,25 @@ export function loudness(file, filterPrefix = '') {
   };
 }
 
+/** Short-term loudness (EBU R128, 3 s window) every 100 ms: [{t, S}]; the file is padded with 3 s of silence so a
+ *  short event is measured over a whole window. `from`/`to` (seconds) limit the analysis to a slice. */
+export function shortTerm(file, { from = null, to = null } = {}) {
+  const tmp = path.join(os.tmpdir(), `shortterm-${process.pid}-${Date.now()}.txt`);
+  const cut = from != null ? ['-ss', String(Math.max(0, from)), ...(to != null ? ['-to', String(to)] : [])] : [];
+  ff(['-v', 'error', ...cut, '-i', file, '-af', `apad=pad_dur=3,ebur128=metadata=1,ametadata=print:key=lavfi.r128.S:file=${tmp}`, '-f', 'null', '-']);
+  const out = [];
+  let t = null;
+  for (const line of fs.readFileSync(tmp, 'utf8').split('\n')) {
+    const pt = line.match(/pts_time:([\d.]+)/);
+    if (pt) t = Number(pt[1]);
+    const m = line.match(/lavfi\.r128\.S=(\S+)/);
+    if (m && t != null) out.push({ t: t + (from ?? 0), S: Number.isFinite(Number(m[1])) ? Number(m[1]) : -120 });
+  }
+  fs.rmSync(tmp, { force: true });
+  return out;
+}
+export const maxShortTerm = (file, opts) => Math.max(...shortTerm(file, opts).map((q) => q.S));
+
 /** Momentary loudness (EBU R128, 400 ms window) every 100 ms: [{t, M}] with t = window end in seconds. */
 export function momentary(file) {
   const tmp = path.join(os.tmpdir(), `momentary-${process.pid}-${Date.now()}.txt`);

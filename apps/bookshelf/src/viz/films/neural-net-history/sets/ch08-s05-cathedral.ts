@@ -58,10 +58,19 @@ export interface CathedralState {
   /** optional: a FAN of ≈ 50 brighter threads per hall (a subset of the all-pairs threads, alpha `fan`), drawn
    *  over the faint all-pairs sheet so 'every lantern sees everything' reads as lines, not a haze (ch08-s05) */
   fan?: number;
-  /** 'stencilling': bright spots feeding up, 0..1 progress */
+  /** 'stencilling': 0..1 a column of bright cells in each course lifts straight up into the next course's arches,
+   *  which light in response, one course after another; 1..2 the lit columns fade */
   feed: number;
-  /** pooling marks: a 3 × 3 window sweeping the top of course k-1 while course k rises */
-  pool: { k: number; u: number } | null;
+  /** the course the feed's climb starts from (default 0); ch08-s05 starts it at 1, after the stencilling close-up */
+  feedFrom?: number;
+  /** 'stencilling' close-up (ch08-s05): 0..1 a 3 × 3 cluster of course 1's bright spots lifts, ghosted, onto course 2's
+   *  face as a small lit pattern (0–0.42); one course-2 stencil tile slides across it in three steps on twos
+   *  (0.42–0.8) and, matched, the course-2 cell above lights (0.8–1); 1..2 the pattern fades as the light climbs */
+  stencil?: number;
+  /** pooling marks: a rim-coloured 3 × 3 frame SNAPS across course k-1 in `steps` positions (u 0..1 over `dur`
+   *  seconds) while course k rises; the cell it keeps flashes core for one 'two' at each snap. `mag` draws the frame
+   *  and its nine cells magnified about the window's centre (a loupe), so 'keep the brightest' reads */
+  pool: { k: number; u: number; steps?: number; dur?: number; mag?: number } | null;
   /** the rose-window vignette: kind and strength (0 = the photograph) */
   vignette: { kind: 'strokes' | 'textures' | 'parts' | 'things' | null; k: number };
   t: number;
@@ -263,38 +272,11 @@ export function cathedral(c: C, env: PaintEnv, s: CathedralState) {
     c.restore();
     if (s.lit[k] > 0.05) glow(c, CAT.cx, (co.y0 + co.y1) / 2, co.w * 0.6 + 40, m.halo, 0.12 * s.lit[k]);
   });
-  // ---- pooling: a tiny 3 × 3 window sweeps the lower course's top row and keeps the brightest cell
-  if (s.pool && s.pool.k > 0) {
-    const lo = COURSES[s.pool.k - 1];
-    const pw = (lo.w - 8) / lo.cols;
-    const x0 = CAT.cx - lo.w / 2 + 4;
-    const span = lo.cols - 3;
-    const pos = Math.min(span, Math.floor(s.pool.u * (span / 2 + 1)) * 2);
-    const wx = x0 + pos * pw;
-    const wy = lo.y0 + 3;
-    c.strokeStyle = withAlpha(m.core, 0.9 * Math.sin(Math.PI * Math.min(1, s.pool.u)));
-    c.lineWidth = 1.4;
-    c.strokeRect(wx, wy, pw * 3, Math.min(lo.y1 - lo.y0 - 6, pw * 3));
-    // the brightest of the three in the top row, carried up to the course above
-    let best = 0, bv = -1;
-    for (let q = 0; q < 3; q++) if (act(s.pool.k - 1, pos + q, 0) > bv) { bv = act(s.pool.k - 1, pos + q, 0); best = q; }
-    glow(c, wx + (best + 0.5) * pw, wy + 8, 12, m.core, 0.7 * Math.sin(Math.PI * Math.min(1, s.pool.u)));
-  }
-  // ---- 'stencilling': bright spots feed up, the picture the next course slides over
-  if (s.feed > 0 && s.feed < 1) {
-    for (let k = 0; k < 4; k++) {
-      const lo = COURSES[k], hi = COURSES[k + 1];
-      const u = Math.max(0, Math.min(1, s.feed * 5 - k));
-      if (u <= 0 || u >= 1) continue;
-      for (let q = 0; q < 6; q++) {
-        const fx = CAT.cx + (hash1(k * 13 + q, 571) - 0.5) * lo.w * 0.8;
-        const tx = CAT.cx + (hash1(k * 13 + q, 572) - 0.5) * hi.w * 0.8;
-        const y = lo.y0 + (hi.y1 - lo.y0) * 0 + (hi.y0 + 10 - lo.y0) * u;
-        const x = fx + (tx - fx) * u;
-        glow(c, x, y, 15, m.core, 0.9 * Math.sin(Math.PI * u));
-      }
-    }
-  }
+  // ---- pooling: a 3 × 3 frame snaps across the lower course (on twos) and keeps its brightest cell
+  if (s.pool && s.pool.k > 0) poolFrame(c, env, s.pool);
+  // ---- 'stencilling': a column of bright cells lifts straight up into the next course, which lights in response
+  if (s.stencil !== undefined && s.stencil > 0 && s.stencil < 2.2) stencilLift(c, env, s.stencil);
+  if (s.feed > 0 && s.feed < 2) feedUp(c, env, s.feed, s.feedFrom ?? 0);
   // ---- the two great halls: arcades of 32 lanterns spanning tower to tower
   HALLS.forEach((h, k) => {
     const b = s.hall[k];
@@ -354,6 +336,242 @@ export function cathedral(c: C, env: PaintEnv, s: CathedralState) {
   if ((s.fan ?? 0) > 0.003) threadsFan(c, env, s.fan!, s.lit);
   // ---- the crown: a band of 1,000 small lanterns, one per category
   if (s.crown > 0.001) crownBand(c, env, s);
+}
+
+const cellOf = (k: number) => {
+  const co = COURSES[k];
+  const pw = (co.w - 8) / co.cols;
+  const ph = (co.y1 - co.y0 - 10) / co.rows;
+  const x0 = CAT.cx - co.w / 2 + 4;
+  return { co, pw, ph, x0, cx: (i: number) => x0 + (i + 0.5) * pw, cy: (j: number) => co.y0 + 5 + j * ph + ph * 0.5 };
+};
+/** a lancet window (the same arch the courses cut), filled */
+function lancet(c: C, cx: number, cy: number, pw: number, ph: number) {
+  const ww = pw * 0.6, wh = ph * 0.76;
+  const wx = cx - ww / 2, wy = cy - ph * 0.5 + ph * 0.12;
+  c.beginPath();
+  c.moveTo(wx, wy + wh);
+  c.lineTo(wx, wy + ww * 0.5);
+  c.quadraticCurveTo(wx + ww / 2, wy - ww * 0.3, wx + ww, wy + ww * 0.5);
+  c.lineTo(wx + ww, wy + wh);
+  c.closePath();
+  c.fill();
+}
+
+/** POOLING: a rim-coloured 3 × 3 frame (≈ 2-3 px at 1080p) snaps across the lower course in `steps` positions;
+ *  on each snap the cell it keeps (the brightest of its nine) flashes core for one 'two', then stays marked */
+function poolFrame(c: C, env: PaintEnv, p: { k: number; u: number; steps?: number; dur?: number; mag?: number }) {
+  const m = env.mood;
+  const steps = p.steps ?? 5;
+  const dur = p.dur ?? 0.85;
+  const k0 = p.k - 1;
+  const L = cellOf(k0);
+  const rows = Math.min(3, L.co.rows);
+  const u = Math.max(0, Math.min(0.9999, p.u));
+  const step = Math.floor(u * steps);
+  const since = (u * steps - step) * (dur / steps);
+  const pos = Math.round((step * (L.co.cols - 3)) / Math.max(1, steps - 1));
+  const fx = L.x0 + pos * L.pw;
+  const fy = L.co.y0 + 5;
+  const fw = 3 * L.pw, fh = rows * L.ph;
+  let bi = 0, bj = 0, bv = -1;
+  for (let j = 0; j < rows; j++) for (let i = 0; i < 3; i++) if (act(k0, pos + i, j) > bv) { bv = act(k0, pos + i, j); bi = i; bj = j; }
+  const fade = Math.min(1, (1 - u) * steps * 1.5, u * steps * 4 + 0.3);
+  c.save();
+  const mag = p.mag ?? 1;
+  if (mag !== 1) {
+    // the loupe: the window and its nine cells drawn magnified about the window's centre, on a dark backing, so the
+    // nine values and the one kept read at a glance
+    const mx = fx + fw / 2, my = fy + fh / 2;
+    c.translate(mx, my);
+    c.scale(mag, mag);
+    c.translate(-mx, -my);
+    c.fillStyle = withAlpha(mixLab(m.ink, '#000000', 0.25), 0.88 * fade);
+    c.fillRect(fx - 2, fy - 2, fw + 4, fh + 4);
+    for (let j = 0; j < rows; j++)
+      for (let i = 0; i < 3; i++) {
+        const v = Math.min(1, 0.14 + 0.62 * act(k0, pos + i, j));
+        c.fillStyle = withAlpha(mixLab(mixLab(m.set, m.ink, 0.2), m.core, v), fade);
+        lancet(c, L.cx(pos + i), L.cy(j), L.pw, L.ph);
+      }
+  }
+  // the kept cell: core for one 'two' after the snap, then a steady marked cell
+  const flash = since < 1 / 12 ? 1 : 0;
+  c.fillStyle = withAlpha(m.core, (0.45 + 0.55 * flash) * fade);
+  lancet(c, L.cx(pos + bi), L.cy(bj), L.pw * 1.15, L.ph * 1.05);
+  if (flash) glow(c, L.cx(pos + bi), L.cy(bj), 14, m.core, 0.8 * fade);
+  // the frame and its two inner rules each way
+  c.strokeStyle = withAlpha(mixLab(m.rim, m.core, 0.25), 0.95 * fade);
+  c.lineWidth = 1.3 / Math.sqrt(mag);
+  c.strokeRect(fx, fy, fw, fh);
+  c.lineWidth = 0.5 / Math.sqrt(mag);
+  c.strokeStyle = withAlpha(m.rim, 0.55 * fade);
+  c.beginPath();
+  for (let q = 1; q < 3; q++) {
+    c.moveTo(fx + q * L.pw, fy);
+    c.lineTo(fx + q * L.pw, fy + fh);
+  }
+  for (let q = 1; q < rows; q++) {
+    c.moveTo(fx, fy + q * L.ph);
+    c.lineTo(fx + fw, fy + q * L.ph);
+  }
+  c.stroke();
+  c.restore();
+}
+
+/** the column each course hands up (in the UPPER course's columns), staggered so the climb zig-zags up the tower */
+const FEED_COL = [6, 1, 3, 2];
+/**
+ * 'each stencilling the one below': course by course (0.25 of `feed` each), a column of bright cells in course k
+ * brightens, lifts STRAIGHT up into course k+1's arches, and those arches light in response; after feed 1 the lit
+ * columns fade out by feed 2.
+ */
+function feedUp(c: C, env: PaintEnv, feed: number, from = 0) {
+  const m = env.mood;
+  const out = 1 - Math.max(0, Math.min(1, (feed - 1.2) / 0.8));
+  const n0 = 4 - from;
+  c.save();
+  for (let k = from; k < 4; k++) {
+    const u = Math.max(0, Math.min(1, Math.min(feed, 1) * n0 - (k - from)));
+    if (u <= 0) continue;
+    const lo = cellOf(k), hi = cellOf(k + 1);
+    const hc = FEED_COL[k];
+    const hx = hi.cx(hc);
+    const li = Math.max(0, Math.min(lo.co.cols - 1, Math.round((hx - lo.x0) / lo.pw - 0.5)));
+    const lx = lo.cx(li);
+    const n = lo.co.rows;
+    // 1. the source column brightens
+    const src = u < 0.25 ? u / 0.25 : 0.55;
+    c.fillStyle = withAlpha(m.core, Math.min(1, src) * out);
+    for (let j = 0; j < n; j++) lancet(c, lx, lo.cy(j), lo.pw, lo.ph);
+    // 2. its cells lift straight up (a faint rim trail behind them)
+    if (u >= 0.25 && u < 0.8) {
+      const v = Math.min(1, (u - 0.25) / 0.5);
+      const e = v * v * (3 - 2 * v);
+      c.strokeStyle = withAlpha(m.rim, 0.45);
+      c.lineWidth = 1;
+      c.beginPath();
+      c.moveTo(lx, lo.cy(0));
+      c.lineTo(lx + (hx - lx) * e, lo.cy(0) + (hi.cy(hi.co.rows - 1) - lo.cy(0)) * e);
+      c.stroke();
+      for (let j = 0; j < n; j++) {
+        const tj = Math.min(hi.co.rows - 1, j);
+        const x = lx + (hx - lx) * e;
+        const y = lo.cy(j) + (hi.cy(tj) - lo.cy(j)) * e;
+        c.fillStyle = withAlpha(m.core, 0.95);
+        c.fillRect(x - lo.pw * 0.26, y - lo.ph * 0.3, lo.pw * 0.52, lo.ph * 0.6);
+        glow(c, x, y, 10, m.core, 0.5);
+      }
+    }
+    // 3. the upper course's arches in that column light in response (and stay lit while the climb goes on)
+    if (u >= 0.7) {
+      const r = Math.min(1, (u - 0.7) / 0.2) * out;
+      c.fillStyle = withAlpha(m.core, r);
+      for (let j = 0; j < hi.co.rows; j++) lancet(c, hx, hi.cy(j), hi.pw, hi.ph);
+      glow(c, hx, (hi.co.y0 + hi.co.y1) / 2, 22, m.core, 0.55 * r);
+    }
+  }
+  c.restore();
+}
+
+/** the close-up's 3 × 3 cluster of course 1 (under course 2's FEED_COL[0] column) and its bright spots: a diagonal
+ *  stroke (illustrative) — the course-2 stencil that matches it is a tin square with its diagonal cut open */
+const STENCIL_MASK = (() => {
+  const lo = cellOf(0), hi = cellOf(1);
+  const hx = hi.cx(FEED_COL[0]);
+  const li0 = Math.max(0, Math.min(lo.co.cols - 3, Math.round((hx - lo.x0) / lo.pw - 0.5) - 1));
+  const v = [1, 0.12, 0.22, 0.12, 1, 0.16, 0.2, 0.14, 1];
+  const m = v.map((x) => (x > 0.5 ? 1 : 0));
+  return { li0, v, m };
+})();
+/**
+ * 'each stencilling the one below', in close-up (ch08-s05): a 3 × 3 cluster of course 1's bright spots brightens and
+ * lifts, ghosted, onto course 2's face, landing as a small lit pattern; one course-2 stencil tile (a tin square with
+ * three open cells on its diagonal and the pattern's other bright cells) slides across it in three steps on twos;
+ * matched, the light shows through its holes and the course-2 arches above it light. u 0..1 (see CathedralState),
+ * 1..2.2 it fades as the light climbs on.
+ */
+function stencilLift(c: C, env: PaintEnv, u: number) {
+  const m = env.mood;
+  const lo = cellOf(0), hi = cellOf(1);
+  const hc = FEED_COL[0];
+  const hx = hi.cx(hc), hy = hi.cy(1);
+  const { li0, v: val, m: mask } = STENCIL_MASK;
+  const q = 15; // the landed pattern's pitch (world px): ≈ 60 px wide on screen, legible in the tilt-up framing
+  const out = 1 - Math.max(0, Math.min(1, (u - 1.4) / 0.8));
+  const sm3 = (x0: number) => { const x = Math.max(0, Math.min(1, x0)); return x * x * (3 - 2 * x); };
+  c.save();
+  // 1. course 1's cluster shows its bright spots (0 → 0.1): a diagonal stroke of three lit cells
+  const src = Math.min(1, u / 0.1) * (u < 0.42 ? 1 : 0.4) * out;
+  for (let j = 0; j < 3; j++)
+    for (let i = 0; i < 3; i++) {
+      c.fillStyle = withAlpha(m.core, src * val[j * 3 + i]);
+      lancet(c, lo.cx(li0 + i), lo.cy(j), lo.pw, lo.ph);
+      if (val[j * 3 + i] > 0.5) glow(c, lo.cx(li0 + i), lo.cy(j), 12, m.core, 0.5 * src);
+    }
+  // 2. the ghost cluster lifts (0.08 → 0.4) onto course 2's face and lands there as a small lit picture
+  const lift = sm3((u - 0.08) / 0.32);
+  // 4. (later) the stencil, matched, lifts away and course 2's cell lights: the pattern dims as it does
+  const done = sm3((u - 0.9) / 0.12);
+  if (u >= 0.08) {
+    const ground = sm3((u - 0.28) / 0.12) * out;
+    if (ground > 0) {
+      c.fillStyle = withAlpha(mixLab(m.ink, '#000000', 0.3), 0.9 * ground);
+      c.fillRect(hx - q * 1.7, hy - q * 1.7, q * 3.4, q * 3.4);
+    }
+    for (let j = 0; j < 3; j++)
+      for (let i = 0; i < 3; i++) {
+        const a = val[j * 3 + i];
+        const x = lo.cx(li0 + i) + (hx + (i - 1) * q - lo.cx(li0 + i)) * lift;
+        const y = lo.cy(j) + (hy + (j - 1) * q - lo.cy(j)) * lift;
+        const sz = lo.pw * 0.55 + (q * 0.66 - lo.pw * 0.55) * lift;
+        c.fillStyle = withAlpha(mixLab(m.halo, m.core, 0.6), (lift < 1 ? 0.8 : 1) * a * out * (1 - 0.6 * done));
+        c.fillRect(x - sz / 2, y - sz / 2, sz, sz);
+        if (a > 0.5 && lift < 1) glow(c, x, y, 10, m.core, 0.4 * out);
+      }
+  }
+  // 3. the stencil tile slides across in three steps on twos (0.42, 0.53, 0.64), aligned from 0.64
+  if (u >= 0.42 && done < 1) {
+    const step = Math.min(2, Math.floor((u - 0.42) / 0.11));
+    const tx = hx - (2 - step) * q * 1.7;
+    const ty = hy - 14 * done;
+    const tin = mixLab(mixLab(m.set, m.setHaze, 0.45), m.rim, 0.15);
+    const T = q * 1.55;
+    c.globalAlpha *= 1 - done;
+    c.fillStyle = withAlpha(tin, 0.96 * out);
+    const plate = new Path2D();
+    plate.rect(tx - T, ty - T, 2 * T, 2 * T);
+    for (let j = 0; j < 3; j++)
+      for (let i = 0; i < 3; i++) if (mask[j * 3 + i]) plate.rect(tx + (i - 1) * q - q * 0.36, ty + (j - 1) * q - q * 0.36, q * 0.72, q * 0.72);
+    c.fill(plate, 'evenodd');
+    c.strokeStyle = withAlpha(mixLab(m.rim, m.core, 0.3), 0.9 * out);
+    c.lineWidth = 1;
+    c.beginPath();
+    c.moveTo(tx - T, ty + T);
+    c.lineTo(tx - T, ty - T);
+    c.lineTo(tx + T, ty - T);
+    c.stroke();
+    // matched: every hole fills with light (all three spots show through)
+    const hit = step === 2 ? sm3((u - 0.66) / 0.08) * out : 0;
+    if (hit > 0) {
+      c.fillStyle = withAlpha(m.core, hit);
+      for (let j = 0; j < 3; j++)
+        for (let i = 0; i < 3; i++)
+          if (mask[j * 3 + i]) {
+            c.fillRect(tx + (i - 1) * q - q * 0.34, ty + (j - 1) * q - q * 0.34, q * 0.68, q * 0.68);
+            glow(c, tx + (i - 1) * q, ty + (j - 1) * q, 12, m.core, 0.6 * hit);
+          }
+    }
+    c.globalAlpha /= Math.max(0.001, 1 - done);
+  }
+  // 4. course 2's arches in that column light (the detector fired) as the tile lifts away
+  const fire = sm3((u - 0.86) / 0.12) * out;
+  if (fire > 0) {
+    c.fillStyle = withAlpha(m.core, fire);
+    for (let j = 0; j < hi.co.rows; j++) lancet(c, hx, hi.cy(j), hi.pw, hi.ph);
+    glow(c, hx, (hi.co.y0 + hi.co.y1) / 2, 26, m.core, 0.6 * fire);
+  }
+  c.restore();
 }
 
 /** every lantern sees everything: each fc6 lantern threads to every top cell of the 13-tower (conv5), and each fc7

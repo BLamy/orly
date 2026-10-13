@@ -67,7 +67,7 @@
       "color": "#b0277a",
       "href": "?film=neural-net-history",
       "kind": "film",
-      "runtime": 2139.54,
+      "runtime": 2164,
       "vhs": {
         "subject": "Computer Science",
         "theme": "sunset",
@@ -83,12 +83,12 @@
         {
           "number": 1,
           "title": "The Wonder in the Dark Room",
-          "duration": 75.5
+          "duration": 77.417
         },
         {
           "number": 2,
           "title": "Clue One: A Switch That Fires",
-          "duration": 119.833
+          "duration": 121.208
         },
         {
           "number": 3,
@@ -103,7 +103,7 @@
         {
           "number": 5,
           "title": "Clue Three: The Messenger Who Runs Backward",
-          "duration": 176.042
+          "duration": 190.125
         },
         {
           "number": 6,
@@ -118,27 +118,27 @@
         {
           "number": 8,
           "title": "DEEP DIVE — The Night in Florence",
-          "duration": 257.708
+          "duration": 260.208
         },
         {
           "number": 9,
           "title": "The Gold Rush",
-          "duration": 96.625
+          "duration": 98.042
         },
         {
           "number": 10,
           "title": "DEEP DIVE — Everything Looks at Everything",
-          "duration": 209.75
+          "duration": 211.875
         },
         {
           "number": 11,
           "title": "Read Everything",
-          "duration": 105.042
+          "duration": 105.667
         },
         {
           "number": 12,
           "title": "The Last Accomplice, and the Return to the Scene",
-          "duration": 114.292
+          "duration": 107.042
         },
         {
           "number": 13,
@@ -148,15 +148,15 @@
         {
           "number": 14,
           "title": "Two Shores",
-          "duration": 141.75
+          "duration": 146.042
         },
         {
           "number": 15,
           "title": "Case Status: Open",
-          "duration": 244.458
+          "duration": 247.833
         }
       ],
-      "createdAt": "2026-10-08T01:04:44.878Z",
+      "createdAt": "2026-10-13T22:24:37.593Z",
       "sources": "generated/neural-net-history/sources/"
     },
     {

@@ -1,243 +1,304 @@
 {
  "shot": "ch08-s13b",
- "at": "2026-10-12T19:52:43.741Z",
+ "at": "2026-10-13T15:16:42.776Z",
  "minCapPx": 22,
  "sampled": 48,
  "texts": 58,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
- "textureTexts": 0,
- "ok": [
-  {
-   "text": "WHY WOULD ANYONE",
-   "maxCap": 42.2
-  },
-  {
-   "text": "CHOOSE THE FOG?",
-   "maxCap": 42.2
-  },
-  {
-   "text": "WHO TAUGHT",
-   "maxCap": 73
-  },
-  {
-   "text": "IT?",
-   "maxCap": 73
-  },
-  {
-   "text": "RULES",
-   "maxCap": 42.2
-  },
-  {
-   "text": "KNOWLEDGE",
-   "maxCap": 36.5
-  },
-  {
-   "text": "LEARNING",
-   "maxCap": 36.5
-  },
-  {
-   "text": "1943",
-   "maxCap": 42.2
-  },
-  {
-   "text": "THE STRUCTURE OF",
-   "maxCap": 35.9
-  },
-  {
-   "text": "THE NET DOES NOT",
-   "maxCap": 35.9
-  },
-  {
-   "text": "CHANGE WITH",
-   "maxCap": 35.9
-  },
-  {
-   "text": "TIME.",
-   "maxCap": 35.9
-  },
-  {
-   "text": "1958",
-   "maxCap": 42.2
-  },
-  {
-   "text": "BACK-PROPAGATING",
-   "maxCap": 30.5
-  },
-  {
-   "text": "ERROR-CORRECTION",
-   "maxCap": 30.5
-  },
-  {
-   "text": "EXPERIMENTS · 1961 ?",
-   "maxCap": 30.5
-  },
-  {
-   "text": "1969",
-   "maxCap": 42.2
-  },
-  {
-   "text": "HELSINKI ·",
-   "maxCap": 42.2
-  },
-  {
-   "text": "1970",
-   "maxCap": 42.2
-  },
-  {
-   "text": "1986",
-   "maxCap": 42.2
-  },
-  {
-   "text": "KELLEY 1960 … LE CUN 1985",
-   "maxCap": 27.9
-  },
-  {
-   "text": "1989",
-   "maxCap": 42.2
-  },
-  {
-   "text": "DATA",
-   "maxCap": 42.2
-  },
-  {
-   "text": "FIRE",
-   "maxCap": 42.2
-  },
-  {
-   "text": "TURING · DUE 2000",
-   "maxCap": 31
-  },
-  {
-   "text": "3 in 10 fooled",
-   "maxCap": 36.5
-  },
-  {
-   "text": "ROSENBLATT · 1961",
-   "maxCap": 31
-  },
-  {
-   "text": "Linguistic capability,",
-   "maxCap": 31
-  },
-  {
-   "text": "related to perceptual",
-   "maxCap": 31
-  },
-  {
-   "text": "experience, is of the",
-   "maxCap": 31
-  },
-  {
-   "text": "essence…",
-   "maxCap": 31
-  },
-  {
-   "text": "THE BRAIN IS A LOGIC MACHINE",
-   "maxCap": 32.3
-  },
-  {
-   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
-   "maxCap": 32.3
-  },
-  {
-   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
-   "maxCap": 32.3
-  },
-  {
-   "text": "INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND",
-   "maxCap": 22.6
-  },
-  {
-   "text": "c. 1980",
-   "maxCap": 34.6
-  },
-  {
-   "text": "1984",
-   "maxCap": 34.6
-  },
-  {
-   "text": "NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY",
-   "maxCap": 27.2
-  },
-  {
-   "text": "TO SEE, A MACHINE NEEDS FEATURES DESIGNED BY",
-   "maxCap": 27.2
-  },
-  {
-   "text": "EXPERTS",
-   "maxCap": 27.2
-  },
-  {
-   "text": "DEEP NETS MUST BE WARMED UP LAYER BY LAYER",
-   "maxCap": 27.2
-  },
-  {
-   "text": "2006",
-   "maxCap": 34.6
-  },
-  {
-   "text": "lit 1999",
-   "maxCap": 50.4
-  },
-  {
-   "text": "lit mid-1990s",
-   "maxCap": 50.4
-  },
-  {
-   "text": "1999 – 2012 · 13",
-   "maxCap": 57.9
-  },
+ "subjects": [
   {
    "text": "speech first:",
-   "maxCap": 27.9
+   "capWhileSubject": 28.9,
+   "why": "script onScreenText"
   },
   {
    "text": "Android voice search,",
-   "maxCap": 27.9
+   "capWhileSubject": 28.9,
+   "why": "script onScreenText"
   },
   {
    "text": "July 2012",
-   "maxCap": 27.9
-  },
-  {
-   "text": "mid-1990s – 2012",
-   "maxCap": 57.9
+   "capWhileSubject": 28.9,
+   "why": "script onScreenText"
   },
   {
    "text": "10–15 years, by field",
-   "maxCap": 57.9
+   "capWhileSubject": 25.1,
+   "why": "named: \"years field\""
   },
   {
    "text": "BY HAND",
-   "maxCap": 27.1
-  },
-  {
-   "text": "2012",
-   "maxCap": 35.7
+   "capWhileSubject": 38.1,
+   "why": "named: \"hand\""
   },
   {
    "text": "LEARNED FEATURES, GIVEN DATA AND ARITHMETIC",
-   "maxCap": 33.4
+   "capWhileSubject": 78.4,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "Before AlexNet, almost none of",
-   "maxCap": 26.4
+   "capWhileSubject": 26.4,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "the leading computer vision",
-   "maxCap": 26.4
+   "capWhileSubject": 26.4,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "papers used neural nets.”",
-   "maxCap": 26.4
+   "capWhileSubject": 26.4,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "computer history museum",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "2025",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   }
- ]
+ ],
+ "texture": [
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 70.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 82.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ROSENBLATT · 1961",
+   "maxCap": 70.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Linguistic capability,",
+   "maxCap": 70.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "related to perceptual",
+   "maxCap": 70.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "experience, is of the",
+   "maxCap": 70.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "essence…",
+   "maxCap": 70.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "WHY WOULD ANYONE",
+   "maxCap": 95.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "CHOOSE THE FOG?",
+   "maxCap": 95.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 165.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "IT?",
+   "maxCap": 165.6,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "RULES",
+   "maxCap": 95.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 82.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 82.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1943",
+   "maxCap": 95.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 81.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 81.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 81.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 81.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1958",
+   "maxCap": 95.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 69.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 69.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 69.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1969",
+   "maxCap": 95.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "HELSINKI ·",
+   "maxCap": 95.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1970",
+   "maxCap": 95.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1986",
+   "maxCap": 95.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "KELLEY 1960 … LE CUN 1985",
+   "maxCap": 63.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1989",
+   "maxCap": 95.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "DATA",
+   "maxCap": 95.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "FIRE",
+   "maxCap": 95.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "THE BRAIN IS A LOGIC MACHINE",
+   "maxCap": 73.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
+   "maxCap": 73.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
+   "maxCap": 73.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND",
+   "maxCap": 77.9,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "c. 1980",
+   "maxCap": 78.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1984",
+   "maxCap": 78.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY",
+   "maxCap": 74.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "TO SEE, A MACHINE NEEDS FEATURES DESIGNED BY",
+   "maxCap": 74.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "EXPERTS",
+   "maxCap": 74.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "DEEP NETS MUST BE WARMED UP LAYER BY LAYER",
+   "maxCap": 74.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2006",
+   "maxCap": 78.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "lit 1999",
+   "maxCap": 57.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "lit mid-1990s",
+   "maxCap": 57.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1999 – 2012 · 13",
+   "maxCap": 105.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "mid-1990s – 2012",
+   "maxCap": 105.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2012",
+   "maxCap": 78.4,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 47
 }

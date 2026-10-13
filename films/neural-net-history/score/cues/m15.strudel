@@ -2,6 +2,9 @@
 // 2139.54 s clock. Key: D major (scale: M1 stops on the Asus4, still burning) → B minor (the rim cello, M4's walk) →
 // G major (the last accomplice; m02's child-machine turn, same notes). 84 BPM where there is a grid (bar 2.857 s,
 // beat .714 s), the build's bars anchored so a downbeat falls on 'skyline' (11.49). Cue-local seconds (absolute − 1489.50).
+// CURRENT CLOCK (2026-10-13, 2159.9583 s): window 1509.375–1583.825 s (74.45 s); moved bodily +19.875 s, no line inside it
+//    changed: cue-local times re-checked against narration/timeline.json (skyline 11.49, candleLit 17.65, w4glint 24.62,
+//    choose 54.80, snip 64.64, preferred 68.37, caveat 69.91) and unchanged. Cue-local = absolute − 1509.375 now.
 // RE-FIT (review round 1): ch11-s05 +2.33 s, ch12-s01/s02 +3.25 s; the rim walk re-laid on the L1117/L1118 words;
 // Marcus's hold now follows "the accounts differ" (45.07); the child-machine turn waits for "better?" to end.
 // The join: m15 enters at 1489.50 (1.5 s fade-in) on a low D, inside the gap 1488.48–1492.60 (L1107 → L1110).

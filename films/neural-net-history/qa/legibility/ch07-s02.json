@@ -1,240 +1,214 @@
 {
  "shot": "ch07-s02",
- "at": "2026-10-12T18:27:30.848Z",
+ "at": "2026-10-13T05:11:09.305Z",
  "minCapPx": 22,
  "sampled": 32,
  "texts": 40,
- "offenders": [
-  {
-   "text": "INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND",
-   "maxCap": 13,
-   "minCap": 7.4,
-   "first": 0.25,
-   "last": 1.25,
-   "font": "11px VT323"
-  },
-  {
-   "text": "NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY",
-   "maxCap": 15.7,
-   "minCap": 8.9,
-   "first": 0.25,
-   "last": 23.25,
-   "font": "8.4px \"IBM Plex Mono\""
-  },
-  {
-   "text": "KELLEY 1960 … LE CUN 1985",
-   "maxCap": 16.1,
-   "minCap": 9.2,
-   "first": 0.25,
-   "last": 1.25,
-   "font": "7.26819px \"Special Elite\""
-  },
-  {
-   "text": "BACK-PROPAGATING",
-   "maxCap": 17.6,
-   "minCap": 10,
-   "first": 0.25,
-   "last": 1.25,
-   "font": "7.9475px \"Special Elite\""
-  },
-  {
-   "text": "ERROR-CORRECTION",
-   "maxCap": 17.6,
-   "minCap": 10,
-   "first": 0.25,
-   "last": 1.25,
-   "font": "7.9475px \"Special Elite\""
-  },
-  {
-   "text": "EXPERIMENTS · 1961 ?",
-   "maxCap": 17.6,
-   "minCap": 10,
-   "first": 0.25,
-   "last": 1.25,
-   "font": "7.9475px \"Special Elite\""
-  },
-  {
-   "text": "THE BRAIN IS A LOGIC MACHINE",
-   "maxCap": 18.6,
-   "minCap": 10.6,
-   "first": 0.25,
-   "last": 1.25,
-   "font": "8.4px \"Special Elite\""
-  },
-  {
-   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
-   "maxCap": 18.6,
-   "minCap": 10.6,
-   "first": 0.25,
-   "last": 1.25,
-   "font": "8.4px \"Special Elite\""
-  },
-  {
-   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
-   "maxCap": 18.6,
-   "minCap": 10.6,
-   "first": 0.25,
-   "last": 1.25,
-   "font": "8.4px \"Special Elite\""
-  },
-  {
-   "text": "c. 1980",
-   "maxCap": 19.9,
-   "minCap": 11.4,
-   "first": 0.25,
-   "last": 1.25,
-   "font": "9px \"Special Elite\""
-  },
-  {
-   "text": "1984",
-   "maxCap": 19.9,
-   "minCap": 11.4,
-   "first": 0.25,
-   "last": 1.25,
-   "font": "9px \"Special Elite\""
-  },
-  {
-   "text": "MID-1990s",
-   "maxCap": 19.9,
-   "minCap": 11.4,
-   "first": 0.25,
-   "last": 23.25,
-   "font": "9px \"Special Elite\""
-  },
-  {
-   "text": "THE STRUCTURE OF",
-   "maxCap": 20.7,
-   "minCap": 11.8,
-   "first": 0.25,
-   "last": 1.25,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "THE NET DOES NOT",
-   "maxCap": 20.7,
-   "minCap": 11.8,
-   "first": 0.25,
-   "last": 1.25,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "CHANGE WITH",
-   "maxCap": 20.7,
-   "minCap": 11.8,
-   "first": 0.25,
-   "last": 1.25,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "TIME.",
-   "maxCap": 20.7,
-   "minCap": 11.8,
-   "first": 0.25,
-   "last": 1.25,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "KNOWLEDGE",
-   "maxCap": 21,
-   "minCap": 12,
-   "first": 0.25,
-   "last": 1.25,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "LEARNING",
-   "maxCap": 21,
-   "minCap": 12,
-   "first": 0.25,
-   "last": 1.25,
-   "font": "9.5px \"Special Elite\""
-  }
- ],
- "textureTexts": 1,
- "ok": [
-  {
-   "text": "WHY WOULD ANYONE",
-   "maxCap": 24.3
-  },
-  {
-   "text": "CHOOSE THE FOG?",
-   "maxCap": 24.3
-  },
-  {
-   "text": "WHO TAUGHT",
-   "maxCap": 42.1
-  },
-  {
-   "text": "IT?",
-   "maxCap": 42.1
-  },
-  {
-   "text": "RULES",
-   "maxCap": 24.3
-  },
-  {
-   "text": "1943",
-   "maxCap": 24.3
-  },
-  {
-   "text": "1958",
-   "maxCap": 24.3
-  },
-  {
-   "text": "1969",
-   "maxCap": 24.3
-  },
-  {
-   "text": "HELSINKI ·",
-   "maxCap": 24.3
-  },
-  {
-   "text": "1970",
-   "maxCap": 24.3
-  },
-  {
-   "text": "1986",
-   "maxCap": 24.3
-  },
-  {
-   "text": "1989",
-   "maxCap": 24.3
-  },
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
   {
    "text": "geoffrey hinton",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "with Ruslan Salakhutdinov · Toronto",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "TORONTO · 2006",
-   "maxCap": 22.1
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "DEEP NETS MUST BE WARMED UP",
-   "maxCap": 23.6
+   "capWhileSubject": 23.6,
+   "why": "script onScreenText"
   },
   {
    "text": "LAYER BY LAYER",
-   "maxCap": 23.6
+   "capWhileSubject": 23.6,
+   "why": "script onScreenText"
   },
   {
    "text": "All three",
-   "maxCap": 23.6
+   "capWhileSubject": 23.6,
+   "why": "script onScreenText"
   },
   {
    "text": "conditions are",
-   "maxCap": 23.6
+   "capWhileSubject": 23.6,
+   "why": "script onScreenText"
   },
   {
    "text": "now satisfied.",
-   "maxCap": 23.6
+   "capWhileSubject": 23.6,
+   "why": "script onScreenText"
   },
   {
    "text": "Hinton & Salakhutdinov, 2006",
-   "maxCap": 23.5
+   "capWhileSubject": 23.5,
+   "why": "script onScreenText"
   }
- ]
+ ],
+ "texture": [
+  {
+   "text": "WHY WOULD ANYONE",
+   "maxCap": 34.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHOOSE THE FOG?",
+   "maxCap": 34.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 59.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IT?",
+   "maxCap": 59.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "RULES",
+   "maxCap": 34.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 29.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 29.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1943",
+   "maxCap": 34.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 29.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 29.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 29.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 29.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1958",
+   "maxCap": 34.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 24.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 24.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 24.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1969",
+   "maxCap": 34.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "HELSINKI ·",
+   "maxCap": 34.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1970",
+   "maxCap": 34.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1986",
+   "maxCap": 34.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KELLEY 1960 … LE CUN 1985",
+   "maxCap": 22.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1989",
+   "maxCap": 34.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE BRAIN IS A LOGIC MACHINE",
+   "maxCap": 26.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
+   "maxCap": 26.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
+   "maxCap": 26.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND",
+   "maxCap": 28,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "c. 1980",
+   "maxCap": 28.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1984",
+   "maxCap": 28.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY",
+   "maxCap": 26.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "MID-1990s",
+   "maxCap": 28.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "DEEP NETS MUST BE WARMED UP LAYER BY LAYER",
+   "maxCap": 6.2,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 31
 }

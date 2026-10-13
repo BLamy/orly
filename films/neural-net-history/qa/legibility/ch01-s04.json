@@ -1,63 +1,79 @@
 {
  "shot": "ch01-s04",
- "at": "2026-10-12T07:33:10.226Z",
+ "at": "2026-10-13T04:56:04.773Z",
  "minCapPx": 22,
  "sampled": 23,
  "texts": 13,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
- "textureTexts": 0,
- "ok": [
-  {
-   "text": "WHO",
-   "maxCap": 25.1
-  },
+ "subjects": [
   {
    "text": "TAUGHT IT?",
-   "maxCap": 25.1
+   "capWhileSubject": 35.3,
+   "why": "script onScreenText"
   },
   {
    "text": "“ChatGPT sometimes writes",
-   "maxCap": 23.4
+   "capWhileSubject": 33.2,
+   "why": "script onScreenText"
   },
   {
    "text": "plausible-sounding but incorrect",
-   "maxCap": 23.4
+   "capWhileSubject": 33.2,
+   "why": "script onScreenText"
   },
   {
    "text": "or nonsensical answers.”",
-   "maxCap": 23.4
+   "capWhileSubject": 33.2,
+   "why": "script onScreenText"
   },
   {
    "text": "— OpenAI, 30 Nov 2022",
-   "maxCap": 23.4
+   "capWhileSubject": 33.2,
+   "why": "script onScreenText"
   },
   {
    "text": "sometimes",
-   "maxCap": 22.6
+   "capWhileSubject": 32,
+   "why": "script onScreenText"
   },
   {
    "text": "writes",
-   "maxCap": 22.6
+   "capWhileSubject": 32,
+   "why": "script onScreenText"
   },
   {
    "text": "plausible-sounding",
-   "maxCap": 23.4
+   "capWhileSubject": 33.2,
+   "why": "script onScreenText"
   },
   {
    "text": "incorrect",
-   "maxCap": 23.4
-  },
-  {
-   "text": "or",
-   "maxCap": 23.2
+   "capWhileSubject": 33.2,
+   "why": "script onScreenText"
   },
   {
    "text": "nonsensical",
-   "maxCap": 23.4
+   "capWhileSubject": 33.2,
+   "why": "script onScreenText"
   },
   {
    "text": "answers",
-   "maxCap": 23.4
+   "capWhileSubject": 33.2,
+   "why": "script onScreenText"
   }
- ]
+ ],
+ "texture": [
+  {
+   "text": "WHO",
+   "maxCap": 35.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "or",
+   "maxCap": 32.9,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 2
 }

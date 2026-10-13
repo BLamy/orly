@@ -1,9 +1,14 @@
-// m14 — READ EVERYTHING (ch11 s01-s03). Window 1434.85–1491.00 s (56.15 s) on the 2139.54 s clock.
-// candleAmber → serverCyan. Key: D major (the study), D mixolydian for the next-word machine (C natural: the
-// machine's loose bVII). 88 BPM where there is a grid (beat .6818 s); cue-local seconds (absolute − 1434.85).
-// RE-FIT (review round 1): ch11-s01 and ch11-s03 kept their shapes (+0.02 s / +2.24 s); ch11-s02 was re-narrated,
-// so the piano's re-strikes now sit in the breaths of L1103 and the IV → I moved to "sensible … at the time".
-// The join: m14 enters at 1434.85 (1.5 s fade-in) on m13's D, inside the 16.8 s speech-free gap before L1103.
+// m14 — READ EVERYTHING (ch11 s01-s03). candleAmber → serverCyan.
+// CURRENT CLOCK (review round 3, 2026-10-13, timeline 2153.5417 s): window 1456.475–1513.25 s (56.775 s).
+//    cue-local = absolute − 1456.475. RE-FIT: L1103 was re-narrated (+1.94 s: "In 2019, OpenAI's GPT-2, a
+//    Transformer's writing half, read some eight million web pages ... or rather, the next word-piece. No labels
+//    needed ..."), so the solo piano's re-strikes moved into the new breaths (before "read", before "predict",
+//    after "piece", after "answer", after "team") and the IV → I into "sensible … at the time" (39.22 / 40.65);
+//    ch11-s02 is 0.625 s longer, so the next-word machine moved with "pour" (46.05). ch11-s01 is unchanged
+//    (it moved bodily with the window): xray5 0.633, pinC3d 3.033, recut 4.933, library 9.483, machines 10.333.
+// Key: D major (the study), D mixolydian for the next-word machine (C natural: the machine's loose bVII).
+// 88 BPM where there is a grid (beat .6818 s); everything placed in cue-local seconds.
+// The join: m14 enters at the window start (1.5 s fade-in) on m13's D, inside the speech-free gap before L1103.
 //
 //   0.00–14.23 (no narration: the film's structural cadence, V → I, the home key earned back after m13's A)
 //              0.63 the dominant arrives under m13's ringing D6 (D held over A-E: the doubted candle, as in the slip);
@@ -12,18 +17,21 @@
 //              landing on the third (F#) over D/F# at 6.63: solved. The first time the two themes meet.
 //              6.63–8.67 the peak: G(add9), the melody F# → G → A; 9.48 (library) A7sus4, 10.33 (machines) A7;
 //              11.70 D: the arrival, celesta relighting A → D on top; the GPU pulse (16ths, lighter and quicker,
-//              from the recut) follows the bass and thins away; everything settles by 14.2, before L1103.
-//  14.23–44.03 SOLO PIANO: one D (D6 over a low D2 frame) under the 2019 quotation, re-struck only in its breaths
-//              (before "read", before "predict the next word", before "every"); a kind IV → I (G → D): the G
-//              under "sensible" (37.29), the D in the clear after "time" (38.72), left to ring through the gap.
-//  44.03–56.15 THE NEXT-WORD MACHINE (M5): pulse D2 D3 A2 C3 locked to "pour" (45.43); one wooden tick per drawer;
-//              in the temperature pause (47.43) it loosens to spread quarters, tightens on "set" (49.36) with a
-//              chime, again (50.82); C/D lift on "No rulebook" (51.54), Dsus4 on "Only odds" (52.72); the pulse
-//              stops half a second before the X-ray: one shimmer lands on a plain D chord (53.84), the last strike. m15 enters at
-//              54.65 in D; the fade is 55.50–56.15.
-// VOICE PASS (2026-10-11): the next-word machine (pulse, bass, C/D lift, chimes) about 3 dB softer under L1107,
-//              which had measured 8 dB speech-to-music; the X-ray chord after 'odds' keeps its level.
-const DUR = 56.15, BPM = 88
+//              from the recut) follows the bass and thins away; everything settles by 14.2, before L1103 (15.03).
+//  14.23–46.0  SOLO PIANO: one D (D6 over a low D2 frame) under the 2019 quotation, re-struck only in its breaths;
+//              a kind IV → I (G → D): the G under "sensible", the D in the clear after "time", left to ring
+//              through the gap.
+//  46.0–56.78  THE NEXT-WORD MACHINE (M5): pulse D2 D3 A2 C3 locked to "pour" (46.05); one wooden tick per
+//              drawer; in the temperature pause (48.05) it loosens to spread quarters, tightens on "set" (49.98)
+//              with a chime, again (51.45); C/D lift on "No rulebook" (52.16), Dsus4 on "Only odds" (53.34); the
+//              pulse stops half a second before the X-ray: one shimmer lands on a plain D chord after "odds"
+//              (xray 54.46), the last strike, its decay shortened so it is mostly gone by the 0.65 s fade
+//              (56.13–56.78); m15 enters at 55.28 in D.
+// VOICE PASS (2026-10-11): the next-word machine (pulse, bass, C/D lift, chimes) about 3 dB softer under L1107.
+// VOICE PASS (round 3, 2026-10-13): "Pick" sits exactly on 'set' and the chime masked it (0.2 dB in 1-4 kHz): the
+//    picture's beat keeps only a ghost celesta touch, the chime moves into the breath after "one" (50.62), and the
+//    drawer ticks start there too.
+const DUR = 56.775, BPM = 88
 const VEL = 2.75         // global velocity scale (about -22 LUFS integrated)
 // ---- seconds-based event compiler (shared by m13-m18) ----------------------------------------
 // Events are [startSec, holdSec, notes, velocity, {per-event params}] in cue-local seconds. Each lane
@@ -86,10 +94,13 @@ const P_FS = 6.63, P_G = 7.99, P_A = 8.67, HOME = 11.70
 // climbs, and the study is quiet again by 14.2 (L1103 at 15.03). Applied to every voice of the opening.
 const arc = (t) => (t < PIN ? .62 : t < P_FS ? .6 : t < LIBRARY ? .64 : t < MACHINES ? .52 : t < HOME ? .44 : t < S02 ? .36 : 1)
 const shape = (evs) => evs.map((e) => (e && e[0] < S02 ? [e[0], e[1], e[2], +(e[3] * arc(e[0])).toFixed(4), e[4]] : e))
-const READ = 21.05, PREDICT = 23.95, EVERY = 28.30, ANSWER_END = 31.05, TEAM = 33.55
-const SENSIBLE = 37.29, TIME_END = 38.72
-const M = 2.24                       // ch11-s03: the earlier grid, shifted onto the new "pour"
-const POUR = 43.19 + M, TEMP = 45.19 + M, SET = 47.12 + M, AGAIN = 48.59 + M, NORULE = 49.30 + M, ODDS = 50.48 + M, XRAY = 51.60 + M
+// L1103 / L1104 breaths (cue-local): 'half' ends 21.01 → 'read' 21.36; 'goal' ends 23.93 → 'predict' 24.50;
+// 'piece' ends 28.49 → 'No' 29.08; 'answer' ends 32.95 → 'From' 33.55; 'team' ends 35.46 → 'practically' 35.81
+const READ = 21.05, PREDICT = 24.0, PIECE_END = 28.53, ANSWER_END = 32.98, TEAM = 35.48
+const SENSIBLE = 39.22, TIME_END = 40.65
+// ch11-s03 beats and words: 'pour', 'temperature', 'set', 'again', "No" (rulebook), "Only" (odds), 'xray'
+const POUR = 46.05, TEMP = 48.05, SET = 49.98, AGAIN = 51.45, NORULE = 52.16, ODDS = 53.34, XRAY = 54.456
+const ONE_END = 50.62   // the breath after "Pick one." ('one' ends 50.58, "Ask" 51.10)
 
 // ═══ CELESTA (sounds an octave above the written note) ═════════════════════════════════════════════════
 $: line(shape([
@@ -99,11 +110,13 @@ $: line(shape([
   [P_FS, 2.0, 'f#5', .26, { release: 2.4 }],
   [P_A, 1.2, 'a4', .12], [P_A + B, 1.2, 'd5', .12],                             // a soft echo of the pass at the peak
   [HOME - .34, .34, 'a4', .16], [HOME, 2.2, 'd5', .22, { release: 3 }],          // M1 relit on the arrival (sounding A5 → D6)
-  [SET, .9, '[a4,d5]', .06, { release: .8 }], [AGAIN, .9, '[a4,d5]', .06, { release: .8 }],   // the sort is set ... and again (soft: under the line)
+  [SET, .25, 'd5', .022, { release: .3 }],                                    // the sort is set: a ghost touch on "Pick" (the picture's beat)
+  [ONE_END, .3, '[a4,d5]', .06, { release: .4 }],                            // ... its chime in the breath after "one", gone by "Ask"
+  [AGAIN, .25, '[a4,d5]', .03, { release: .35 }],                            // and again: halved and short (it sits on the word)
 ]), { release: 1.4 }).s('gm_celesta').room(.65).rsize(4).orbit(3)
 
 $: line([
-  [SET, .9, 'd5', .045], [AGAIN, .9, 'd5', .045],                            // the chime's body (vibraphone ≤ C6 written range is safe at D5)
+  [ONE_END, .3, 'd5', .04, { release: .5 }], [AGAIN, .25, 'd5', .022, { release: .4 }],                            // the chime's body (vibraphone ≤ C6 written range is safe at D5)
 ]).s('gm_vibraphone').release(2).room(.6).rsize(4).orbit(3)
 
 // harp: the arrival's roll, the forward pass an octave below, the home chord
@@ -134,12 +147,12 @@ $: line(shape([
   [RECUT + 2 * E, 1.0, 'e4', .17, { attack: .15, lpf: 2200 }], [P_FS, 1.36, 'f#4', .22, { attack: .15, lpf: 2400 }],
   [P_G, .68, 'g4', .23, { attack: .12, lpf: 2400 }], [P_A, 1.66, 'a4', .25, { attack: .12, lpf: 2400 }],
   [MACHINES, 1.37, 'g4', .19, { attack: .15, lpf: 2200 }], [HOME, 2.2, 'f#4', .17, { attack: .15, release: 1.8, lpf: 2200 }],
-  [S02 + .1, 14.0, '[d6]', .025, { attack: 3, release: 2, lpf: 6000 }],      // a thread of high D: the flame, very faint
+  [S02 + .1, 14.6, '[d6]', .025, { attack: 3, release: 2, lpf: 6000 }],      // a thread of high D: the flame, very faint
   [TIME_END, 5.0, '[d3,f#3,a3]', .1, { attack: 1.5, release: 1.5 }],         // the D of "time", carried through the gap
   [POUR - .79, 6.9, '[d3,a3]', .07, { attack: 1.5, release: .8 }],
   [NORULE, 1.18, '[c3,e3,g3]', .08, { attack: .25, release: .8 }],           // "No rulebook": C/D, a lift
   [ODDS, .55, '[d3,g3,a3]', .075, { attack: .3, release: .2 }],              // "Only odds": Dsus4
-  [XRAY, 1.0, '[d3,f#3,a3]', .12, { attack: .08, release: 2.5 }],             // the X-ray: plain D
+  [XRAY, 1.0, '[d3,f#3,a3]', .12, { attack: .08, release: 1.4 }],             // the X-ray: plain D
 ]), { attack: 1, release: 1.5, lpf: 1300 }).s('gm_string_ensemble_1').hpf(120).room(.6).rsize(4).orbit(2)
 
 // ═══ CELLO: M1's rising fourth an octave below the violins, then the bass line's warmth ══════════════════
@@ -156,21 +169,22 @@ $: line(shape([
   [RECUT + 2 * E, 1.36, 'e2', .2], [P_FS, 1.36, 'f#2', .22], [P_G, 1.49, 'g2', .23],
   [LIBRARY, .85, 'a1', .21], [MACHINES, 1.37, 'a1', .2],
   [HOME, 2.4, 'd2', .21, { release: 1.8 }],
-  [S02 + .1, 6.7, 'd2', .1, { attack: 2.5 }], [READ, 7.0, 'd2', .09, { attack: 2 }], [EVERY, 5.0, 'd2', .08, { attack: 2 }],
+  [S02 + .1, 6.7, 'd2', .1, { attack: 2.5 }], [READ, 7.4, 'd2', .09, { attack: 2 }], [PIECE_END, 4.4, 'd2', .08, { attack: 2 }],
+  [ANSWER_END, 2.4, 'd2', .07, { attack: 1.5 }],
   [TEAM, 3.6, 'd2', .08, { attack: 2, release: 1 }],
   [SENSIBLE, 1.4, 'g1', .12, { attack: .6 }],
   [TIME_END, 5.0, 'd2', .16, { attack: .6 }],
   [POUR - .79, 6.9, 'd2', .09, { attack: 1, release: .6 }],
   [NORULE, 1.18, 'c2', .10, { attack: .2, release: .5 }], [ODDS, .6, 'd2', .10, { attack: .2, release: .2 }],
-  [XRAY, 1.0, 'd2', .17, { attack: .05, release: 2.4 }],
+  [XRAY, 1.0, 'd2', .17, { attack: .05, release: 1.4 }],
 ]), { attack: .8, release: 1.4 }).s('gm_contrabass').lpf(380).hpf(40).room(.3).rsize(3).orbit(1)
 
 // ═══ SOLO PIANO: the one D under the quotation (re-struck in its breaths); sensible … at the time (IV → I) ═══
 $: line([
-  [S02 + .27, 6.4, '[d2,d6]', .2], [READ, 2.8, 'd6', .14], [PREDICT, 4.2, '[d2,d6]', .16], [EVERY, 2.7, 'd6', .13],
+  [S02 + .27, 6.4, '[d2,d6]', .2], [READ, 2.9, 'd6', .14], [PREDICT, 4.4, '[d2,d6]', .16], [PIECE_END, 4.3, 'd6', .13],
   [ANSWER_END, 2.4, 'a5', .1], [TEAM, 3.6, 'd6', .09],
   [SENSIBLE, 1.4, '[g2,d3]', .12], [TIME_END, 3.5, '[d2,a2,f#3,d4]', .19, { release: 3.5 }],
-  [XRAY, 1.6, '[d2,a2,d3,f#3,a3]', .13, { release: 2.4 }],                            // the X-ray: a plain D, the last strike
+  [XRAY, 1.2, '[d2,a2,d3,f#3,a3]', .13, { release: 1.5 }],                            // the X-ray: a plain D, the last strike
 ], { release: 3 }).s('piano').lpf(3000).room(.55).rsize(4).orbit(7)
 
 // ═══ THE PULSE (oscillator): lighter and quicker in the study; the next-word machine in D mixolydian ═════
@@ -187,5 +201,5 @@ $: line(shape([
 // ═══ WOOD: one tick per drawer as it slides ══════════════════════════════════════════════════════════
 $: line([
   ...[0, .34, .68, 1.02, 1.20].map((d) => [POUR + d, .1, 'd6', .055]),
-  ...run(SET, XRAY - .5, B, ['a5'], .035, .5),
+  ...run(SET + B, XRAY - .5, B, ['a5'], .026, .5),                              // from the breath after "one": nothing struck on "Pick"
 ]).s('gm_woodblock').room(.2).orbit(6)

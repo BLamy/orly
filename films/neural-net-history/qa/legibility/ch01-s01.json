@@ -1,10 +1,12 @@
 {
  "shot": "ch01-s01",
- "at": "2026-10-12T07:33:08.491Z",
+ "at": "2026-10-13T04:12:51.243Z",
  "minCapPx": 22,
  "sampled": 12,
  "texts": 0,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
- "textureTexts": 0,
- "ok": []
+ "subjects": [],
+ "texture": [],
+ "textureTexts": 0
 }

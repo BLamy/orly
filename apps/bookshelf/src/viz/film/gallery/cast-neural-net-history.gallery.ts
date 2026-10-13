@@ -178,6 +178,32 @@ const g: GalleryModule = {
       return;
     }
 
+    if (q.get('idle') !== null) {
+      // review round 4: every named person handed plain POSES.stand, so the kit draws their signature idle + tilt
+      // (the line-up test: no two neighbours may read as the same mannequin); ?idle=1 shows the later rows
+      const env = makeEnv({ mood: 'candleAmber', t: genv.t, seed: 9 });
+      const p = mood('candleAmber');
+      backdrop(c, p, 720);
+      const named = (Object.keys(SPECS) as CastId[]).filter((id) => (SPECS[id] as { signature?: unknown }).signature);
+      const half = Math.ceil(named.length / 2);
+      const ids = q.get('idle') === '1' ? named.slice(half) : named.slice(0, half);
+      const per = 11;
+      ids.forEach((id, i) => {
+        const col = i % per, row = Math.floor(i / per);
+        const x = 70 + col * 114, y = 330 + row * 330;
+        const s = 250 / 330;
+        cast[id].draw(c, { x, y, facing: 'right', pose: life('stand', i * 5 + 1, env.tq), scale: s, edgeRim: { x: 1, y: -0.4 } }, env);
+        c.fillStyle = withAlpha(p.core, 0.85);
+        c.font = '12px Georgia';
+        c.textAlign = 'center';
+        const sg = (SPECS[id] as { signature?: { idle?: string; tilt?: number } }).signature;
+        c.fillText(short(id).split(' ').slice(-1)[0], x, y + 20);
+        c.fillText(`${sg?.idle ?? 'stand'} ${sg?.tilt ?? 0}°`, x, y + 36);
+        c.textAlign = 'left';
+      });
+      return;
+    }
+
     if (q.get('thumb') !== null) {
       const env = makeEnv({ mood: 'duskRose', t: genv.t, seed: 5 });
       const p = mood('duskRose');
@@ -201,6 +227,27 @@ const g: GalleryModule = {
       return;
     }
 
+    if (q.has('four')) {
+      // review round 2: Hinton, LeCun, Bengio and Hassabis must read apart by silhouette alone (no captions needed),
+      // with the warm light-facing rim and the collar + sleeve cuts; key light from the right (o.light)
+      const env = makeEnv({ mood: 'candleAmber', t: genv.t, seed: 9 });
+      const p = mood('candleAmber');
+      backdrop(c, p, 640);
+      const ids: CastId[] = ['hinton', 'lecun', 'bengio', 'hassabis', 'lecun-2020s', 'bengio-2020s'];
+      ids.forEach((id, i) => {
+        const x = 130 + i * 205;
+        cast[id].draw(c, { x, y: 640, facing: 'right', pose: addPose(life('stand', i * 5 + 2, env.tq), {}), scale: 1.25, light: { x: 1, y: -0.4 } }, env);
+        c.fillStyle = withAlpha(p.core, 0.85);
+        c.font = '15px Georgia';
+        c.textAlign = 'center';
+        c.fillText(short(id), x, 672);
+        c.textAlign = 'left';
+      });
+      c.fillStyle = withAlpha(p.rim, 0.75);
+      c.font = 'italic 15px Georgia';
+      c.fillText('the four (and the 2020s LeCun / Bengio): silhouette signatures, warm light-facing rim, collar + sleeve cuts', 24, 30);
+      return;
+    }
     const page = PAGES[Math.max(0, Math.min(PAGES.length - 1, Number(q.get('page') ?? '0')))];
     const env = makeEnv({ mood: page.mood, t: genv.t, seed: 9 });
     const p = mood(page.mood);

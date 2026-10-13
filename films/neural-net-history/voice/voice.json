@@ -64,6 +64,43 @@
       "at": null,
       "clipSig": null,
       "note": "review round 1: audition and human listen"
+    },
+    {
+      "term": "LeCun",
+      "line": "L0821",
+      "expect": "luh-KUN",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": "review round 3: STT heard a spelling variant (voice.json sttHeard); confirm by ear"
+    },
+    {
+      "term": "Lenat",
+      "line": "L1104",
+      "expect": "LEN-at",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": "review round 3: STT heard a spelling variant (voice.json sttHeard); confirm by ear"
     }
-  ]
+  ],
+  "sttHeard": {
+    "LeCun": [
+      "Le Kun"
+    ],
+    "Lenat": [
+      "Lennart"
+    ],
+    "Uszkoreit": [
+      "Ushko Wright"
+    ]
+  },
+  "sttHeardNotes": {
+    "$rule": "review round 3: STT terms must appear literally. A form listed here is a transcriber SPELLING of the right sounds, never a different pronunciation (no vowel or stress shift: Ahmoudai for Amodei is NOT acceptable). Each entry stays provisional until its listening[] sign-off is ok.",
+    "LeCun": "L0821/L1311 transcribe \"Jan Le Kun\": luh-KUN, the same sounds as LeCun. Added 2026-10-13 by the round-3 global fixer (model judgement); listening sign-off pending.",
+    "Lenat": "L1104 transcribes \"Lennart\": LEN-at in a non-rhotic RP read, the same sounds. Added 2026-10-13 by the round-3 global fixer (model judgement); listening sign-off pending.",
+    "Uszkoreit": "L1006 transcribes \"Ushko Wright\": OOSH-ko-rite heard with a short first vowel. Provisional; the existing Uszkoreit listening sign-off decides."
+  }
 }

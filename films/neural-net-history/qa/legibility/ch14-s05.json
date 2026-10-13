@@ -1,51 +1,28 @@
 {
  "shot": "ch14-s05",
- "at": "2026-10-08T02:42:44.582Z",
+ "at": "2026-10-13T09:35:10.073Z",
  "minCapPx": 22,
- "sampled": 12,
- "texts": 5,
- "offenders": [
+ "sampled": 14,
+ "texts": 3,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
   {
    "text": "NEURIPS 2022 TOP AUTHORS",
-   "maxCap": 11.2,
-   "minCap": 11.2,
-   "first": 0.55,
-   "last": 0.55,
-   "font": "600 17.5px \"IBM Plex Mono\""
-  },
-  {
-   "text": "FIRST DEGRE",
-   "maxCap": 11.3,
-   "minCap": 11.3,
-   "first": 1.3,
-   "last": 1.3,
-   "font": "600 17.5px \"IBM Plex Mono\""
-  },
-  {
-   "text": "FIRST DEGREE: CHIN",
-   "maxCap": 11.3,
-   "minCap": 11.3,
-   "first": 1.55,
-   "last": 1.55,
-   "font": "600 17.5px \"IBM Plex Mono\""
+   "capWhileSubject": 23.2,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "FIRST DEGREE: CHINA 47% · US 18%",
-   "maxCap": 11.5,
-   "minCap": 10.8,
-   "first": 2.55,
-   "last": 7.55,
-   "font": "600 17.5px \"IBM Plex Mono\""
+   "capWhileSubject": 23.5,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
-   "text": "OCT 2025 · OPEN QWEN PASSES LLAMA IN DOWNLOADS",
-   "maxCap": 18.8,
-   "minCap": 18.8,
-   "first": 4.29,
-   "last": 7.55,
-   "font": "500 18px \"IBM Plex Mono\""
+   "text": "WHERE THEY WORK: US FIRST · ~60% OF TOP AI INSTITUTIONS (MacroPolo)",
+   "capWhileSubject": 23,
+   "why": "drawn as subject (kit card or textRole)"
   }
  ],
- "textureTexts": 0,
- "ok": []
+ "texture": [],
+ "textureTexts": 0
 }

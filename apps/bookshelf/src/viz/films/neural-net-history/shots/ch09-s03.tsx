@@ -1,7 +1,7 @@
 /**
  * ch09-s03 — Seoul, March 2016: ghost human games, then self-play under a reward pulse; move 37 lands with a ring
  * of light, and Lee Sedol's equally rare wedge answers it; then home to the study, where the Go candle goes out
- * (duskRose → candleAmber; 23.04 s; in: paper wipe out of the Coulom slip's grain).
+ * (duskRose → candleAmber; 24.46 s; in: paper wipe out of the Coulom slip's grain).
  * Board positions are the real match records (game 2 before move 37, game 4 before move 78: sets/ch09-s03-go.ts).
  *
  *   WIDE  0       the wipe clears onto a Go board under a low hanging lamp. Lee Sedol sits on the left, chin in hand,
@@ -33,7 +33,7 @@
  */
 import { Timeline } from '../../../core';
 import type { Camera3, Frame, PaintEnv, Pose } from '../../../film';
-import { FONT, LAYERS, MOODS, PUPPET_NEAR_BLACK, defineShot, dustMotes, mixLab, nameCard, paperWipe, placeStamp, pose, softPlate, toScreen, withAlpha, withLife } from '../../../film';
+import { FONT, LAYERS, MOODS, PUPPET_NEAR_BLACK, defineShot, dustMotes, mixLab, nameCard, paperWipe, placeStamp, pose, softPlate, toLayer, toScreen, withAlpha, withLife } from '../../../film';
 import { glow } from '../../../film/silhouette/metaphors/kit';
 import { cast } from '../cast';
 import { STUDY, studyCase, studyRoom } from '../sets/study';
@@ -64,8 +64,11 @@ const UPRIGHT: Pose = pose({ ...SEAT, torso: 3, neck: 6, head: 0, shoulderF: 22,
 const HASS_POSE: Pose = pose({ hipF: 5, kneeF: -4, hipB: -4, kneeB: -1, torso: 1, neck: 8, head: 2, shoulderF: -12, elbowF: 30, shoulderB: -16, elbowB: 26 }, { handF: 'relaxed' });
 
 // ------------------------------------------------------------------------------------------------ cameras
-const WIDE0 = frameOn({ x: 690, y: 455 }, { x: 640, y: 360 }, 1.32);
-const WIDE1 = frameOn({ x: 676, y: 462 }, { x: 640, y: 360 }, 1.4);
+// round 2: the hall framed 40 px lower (the floor band ~15% of frame, not 30%)
+const WIDE0 = frameOn({ x: 690, y: 455 }, { x: 640, y: 400 }, 1.32);
+const WIDE1 = frameOn({ x: 676, y: 462 }, { x: 640, y: 400 }, 1.4);
+/** the board in the hall (the slow push of the 'Seoul' wide aims here) */
+const BOARD_W = { x: 652, y: 480 };
 const TOPC0: Camera3 = { x: TOP.cx, y: TOP.cy, z: 0, lens: 1 };
 const TOPC1: Camera3 = { x: TOP.cx + 6, y: TOP.cy + 4, z: 50, lens: 1 };
 const T37a = frameOn(topXY(12, 9), { x: 640, y: 360 }, 1.1);
@@ -75,12 +78,21 @@ const GAP = topXY(M78.c, M78.r);
  *  pushes in slowly toward the gap as Lee's hand comes in */
 const CLOSE0 = T37b;
 const CLOSE1 = frameOn(GAP, { x: 600, y: 340 }, 1.45);
-/** CLOSE on the Coulom slip (its typed DUE 2024 at the legibility floor), as ch09-s03a left it before the grain */
-const WALLC0 = frameOn(W5C, { x: 630, y: 352 }, 4.1);
-const WALLC1 = frameOn(W5C, { x: 636, y: 356 }, 4.35);
-const SHELFC0 = frameOn(GO.flame, { x: 560, y: 236 }, 1.5);
-const SHELFC1 = frameOn(GO.flame, { x: 556, y: 250 }, 1.68);
-const STUDY_CAMS = [WALLC0, WALLC1, SHELFC0, SHELFC1];
+/** CLOSE on the Coulom slip (its typed DUE 2024 at the legibility floor), as ch09-s03a left it before the grain.
+ *  round 2: the slip sits a little right of centre so its neighbour (Rosenblatt's slip, W3) lies WHOLE in the frame,
+ *  in the pool's shadow, instead of cut in half by the frame's left edge */
+const WALLC0 = frameOn(W5C, { x: 800, y: 352 }, 4.1);
+const WALLC1 = frameOn(W5C, { x: 802, y: 356 }, 4.35);
+/** round 2: the coda is ONE continuous camera move, no dissolve. After the glint the camera settles from the Coulom
+ *  slip down to the shelf, holding the slip in frame the whole way: it ends with the slip's lower edge in the top
+ *  right of frame and the Go candle on the shelf below it, so the glint and the snuff share one frame */
+const SHELF_K = 0.92;
+const SHELFC0 = frameOn(GO.flame, { x: 540, y: 438 }, SHELF_K);
+const SHELFC1 = frameOn(GO.flame, { x: 548, y: 444 }, 0.935);
+/** where the W5 slip sits on screen in the shelf framing (the move holds W5 on a straight screen path to here) */
+const W5_END = toScreen(LAYERS.L4, SHELFC0, W5C.x, W5C.y);
+const W5_START = { x: 802, y: 356 };
+const STUDY_CAMS = [WALLC0, WALLC1, SHELFC0, SHELFC1, frameOn(W5C, { x: 900, y: 260 }, 2.2), frameOn(W5C, { x: 1040, y: 140 }, 1.3)];
 
 interface B {
   D: number;
@@ -105,8 +117,8 @@ interface B {
   wipe0: number;
   wipe1: number;
   glint: number;
-  dis0: number;
-  dis1: number;
+  mv0: number;
+  mv1: number;
   snuff: number;
   selfTimes: number[];
 }
@@ -123,9 +135,10 @@ export default defineShot({
     const m37 = T.beat('move37');
     const m78 = T.beat('move78');
     const wipe0 = T.beat('candleWipe');
-    // self-play: the hand sets the stones from 'itself' until just before 'rewarded'
-    const s0 = itself + 0.05, s1 = T.word('L0905b', 'rewarded') - 0.05;
-    const selfTimes = SELFPLAY.map((_, i) => s0 + ((s1 - s0) * i) / (SELFPLAY.length - 1));
+    // self-play (round 2): the hand plays a whole quick game, ~50 stones, from 'itself' until just before 'wins':
+    // the first moves deliberate, then faster and faster, so the board visibly fills and the game ends
+    const s0 = itself + 0.05, s1 = wins - 0.22;
+    const selfTimes = SELFPLAY.map((_, i) => s0 + (s1 - s0) * Math.pow(i / (SELFPLAY.length - 1), 0.62));
     const b: B = {
       D,
       in: T.beat('seoulIn'),
@@ -154,11 +167,11 @@ export default defineShot({
       wipe1: wipe0 + 0.62,
       // a clear 0.4 s star glint on the slot-5 pin; the snuff a touch early so the dark candle holds ≥ 1.5 s
       glint: T.beat('pinGlint') - 0.15,
-      // round 1: a quick 0.2 s dissolve to the shelf, then the LIVE Go flame holds ≥ 0.3 s on screen before the snuff
-      // (the viewer sees the flame go out, never arrives on a dark wick)
-      dis0: T.beat('pinGlint') + 0.15,
-      dis1: T.beat('pinGlint') + 0.35,
-      snuff: Math.max(T.beat('pinGlint') + 0.7, T.beat('goSnuff') - 0.05),
+      // round 2: no cut and no dissolve: right after the glint peaks the camera settles from the slip to the shelf
+      // in one eased move (≈ 0.7 s); the live Go flame is in frame ≥ 0.3 s before the snuff
+      mv0: T.beat('pinGlint') + 0.02,
+      mv1: T.beat('pinGlint') + 0.72,
+      snuff: Math.max(T.beat('pinGlint') + 0.84, T.beat('goSnuff') - 0.05),
       selfTimes,
     };
     tl.hold(0, D);
@@ -202,8 +215,7 @@ function boardAt(b: B, t: number): Stone[] {
 }
 
 function wide(f: Frame, b: B, t: number, part: 'A' | 'B' | 'C' | 'D') {
-  // one continuous slow push across all four WIDE visits (the hall never jumps)
-  const cam = mixFrame(WIDE0, WIDE1, sm(t / b.wipe0));
+  const cam = wideCam(b, t, part);
   f.camera(cam);
   f.setMood('duskRose');
   f.backlight({ sunX: 620, sunY: 330, sunRadius: 460, intensity: 0.36 });
@@ -264,17 +276,57 @@ function wide(f: Frame, b: B, t: number, part: 'A' | 'B' | 'C' | 'D') {
       const p = part === 'D' ? withLife(UPRIGHT, tq, 904, 0.8) : withLife(CHIN, tq, 904, 0.8);
       c.save();
       c.globalAlpha *= 1 - away;
-      LEE_P.draw(c, { x: LEE.x, y: FLOOR, facing: 'right', pose: p, ink: PUPPET_NEAR_BLACK, light: { x: 0.5, y: -0.85, floor: 0.12 }, edgeRim: { x: 0.6, y: -0.8, px: 1.5, alpha: 0.6 } }, env);
+      // round 2: a warm 1.5 px rim on the LAMP side (his profile and chin-in-hand face the lamp), so he reads
+      // against the bright paper screens behind him
+      LEE_P.draw(c, { x: LEE.x, y: FLOOR, facing: 'right', pose: p, ink: PUPPET_NEAR_BLACK, light: { x: 0.9, y: -0.45, floor: 0.12 }, edgeRim: { x: 1, y: -0.35, px: 1.5, alpha: 0.9, warm: 0.8 } }, env);
       c.restore();
     }
   });
   f.rim({ x: 0.2, y: -1 });
   f.layer('L4', (c, env) => dustMotes(c, { area: { x: LAMP.x - 260, y: LAMP.y, w: 520, h: 300 }, count: 26, drift: { x: -2, y: -3 }, brightness: 0.45, salt: 903 }, env));
-  // near plane: a column edge at frame right, soft (the hall's frame)
+  // round 2 near planes: a folding screen's edge at frame left (L5, soft, ~150 px into frame) and a column edge just
+  // inside frame right (L6, softest); with the wall on L2 and the action on L4 the push slides four planes
+  f.layer('L5', (c, env) => hallScreen(f, c, env));
   f.layer('L6', (c, env) => {
+    const a = toLayer(LAYERS.L6, WIDE0, 1262, 0);
     c.fillStyle = env.fill('fg');
-    c.fillRect(1180, -200, 260, 1200);
+    c.fillRect(a.x, -600, 400, 2400);
   });
+}
+
+/** the WIDE camera: one continuous slow push across all four visits (the hall never jumps), plus (round 2) a slow
+ *  push in toward the board during the 'Seoul' wide, so the hold is never static */
+function wideCam(b: B, t: number, part: 'A' | 'B' | 'C' | 'D') {
+  const base = mixFrame(WIDE0, WIDE1, sm(t / b.wipe0));
+  if (part !== 'B') return base;
+  const u = sm((t - b.wide2) / (b.top37 - b.wide2));
+  const s = toScreen(LAYERS.L4, base, BOARD_W.x, BOARD_W.y);
+  return frameOn(BOARD_W, { x: lerp(s.x, 652, u * 0.5), y: lerp(s.y, 470, u * 0.4) }, s.k * (1 + 0.09 * u));
+}
+
+/** a folding paper screen standing at frame left, nearer than the action (L5): a dark lacquer frame and lattice, the
+ *  paper between faintly warm with the lamp; cached */
+function hallScreen(f: Frame, c: C, env: PaintEnv) {
+  const a = toLayer(LAYERS.L5, WIDE0, 150, 80);
+  const b = toLayer(LAYERS.L5, WIDE0, 0, 760);
+  const w = 260, x1 = a.x; // the screen's inner edge sits ~150 px into frame
+  const draw = f.cached(`${ID}/hallScreen/${env.mood.id}/${Math.round(x1)}`, w + 40, Math.ceil(b.y - a.y) + 40, (cc) => {
+    const m = env.mood;
+    const H = b.y - a.y;
+    cc.translate(w, 20);
+    // paper panes (a little warm, very dim), then the lacquer frame and lattice
+    cc.fillStyle = mixLab(env.fill('fg'), m.halo, 0.1);
+    cc.fillRect(-w, 0, w, H);
+    cc.fillStyle = env.fill('fg');
+    cc.fillRect(-14, 0, 14, H);
+    cc.fillRect(-w, 0, w, 12);
+    for (let k = 1; k < 4; k++) cc.fillRect(-14 - k * 46, 0, 4, H);
+    for (let k = 1; k < 9; k++) cc.fillRect(-w, k * (H / 9), w, 4);
+    // the lamp-side edge of the stile catches a thread of light
+    cc.fillStyle = withAlpha(m.rim, 0.22);
+    cc.fillRect(-1.2, 12, 1.2, H - 12);
+  });
+  draw(c, x1 - w, a.y - 20);
 }
 
 function hallWall(f: Frame, c: C, env: PaintEnv) {
@@ -282,26 +334,51 @@ function hallWall(f: Frame, c: C, env: PaintEnv) {
     cc.translate(300, 200);
     const m = env.mood;
     const wall = mixLab(env.fill('set'), m.fg, 0.3);
-    // three tall paper screens, softly backlit, in a dark wall (holes with a lattice)
+    // three tall paper screens, softly backlit, in a dark wall (holes with a lattice); round 2: the screens run
+    // lower (the floor line drops to y 640) and a heavy lintel beam with a pierced transom frieze crowns them
+    const PH = 440, PY = 160, BASE = 640;
     cc.fillStyle = wall;
     cc.beginPath();
     cc.rect(-300, -200, 1900, 1000);
-    const panels = [[250, 120], [560, 120], [870, 120]];
-    for (const [x, y] of panels) cc.rect(x, y, 220, 400);
+    const panels = [[250, PY], [560, PY], [870, PY]];
+    for (const [x, y] of panels) cc.rect(x, y, 220, PH);
+    // the transom frieze: a row of small pierced lozenges across the whole wall, above the screens
+    for (let x = -280; x < 1580; x += 34) {
+      cc.moveTo(x + 17, 110);
+      cc.lineTo(x + 30, 124);
+      cc.lineTo(x + 17, 138);
+      cc.lineTo(x + 4, 124);
+      cc.closePath();
+    }
     cc.fill('evenodd');
     cc.fillStyle = withAlpha(mixLab(m.rim, m.halo, 0.5), 0.12);
-    for (const [x, y] of panels) cc.fillRect(x, y, 220, 400);
+    for (const [x, y] of panels) cc.fillRect(x, y, 220, PH);
     cc.fillStyle = env.fill('ink');
     for (const [x, y] of panels) {
-      for (let k = 1; k < 4; k++) cc.fillRect(x + (k * 220) / 4 - 2, y, 4, 400);
-      for (let k = 1; k < 7; k++) cc.fillRect(x, y + (k * 400) / 7 - 2, 220, 4);
+      for (let k = 1; k < 4; k++) cc.fillRect(x + (k * 220) / 4 - 2, y, 4, PH);
+      for (let k = 1; k < 8; k++) cc.fillRect(x, y + (k * PH) / 8 - 2, 220, 4);
       cc.fillRect(x - 8, y - 8, 236, 8);
-      cc.fillRect(x - 8, y + 400, 236, 10);
+      cc.fillRect(x - 8, y + PH, 236, 10);
     }
+    // the lintel: a deep beam across the hall (ink), its lower edge catching a thread of lamp light; brackets drop
+    // from it between the bays
+    cc.fillRect(-300, 70, 1900, 34);
+    cc.fillRect(-300, 140, 1900, 8);
+    for (const x of [235, 545, 855, 1165]) {
+      cc.beginPath();
+      cc.moveTo(x - 30, 148);
+      cc.lineTo(x + 30, 148);
+      cc.quadraticCurveTo(x + 8, 152, x + 6, 176);
+      cc.lineTo(x - 6, 176);
+      cc.quadraticCurveTo(x - 8, 152, x - 30, 148);
+      cc.fill();
+    }
+    cc.fillStyle = withAlpha(m.rim, 0.28);
+    cc.fillRect(-300, 103, 1900, 1.4);
     cc.fillStyle = withAlpha(m.fg, 0.6);
-    cc.fillRect(-300, 586, 1900, 14);
+    cc.fillRect(-300, BASE - 14, 1900, 14);
     cc.fillStyle = mixLab(wall, m.fg, 0.4);
-    cc.fillRect(-300, 600, 1900, 400);
+    cc.fillRect(-300, BASE, 1900, 400);
   });
   draw(c, -300, -200);
 }
@@ -383,13 +460,15 @@ function top(f: Frame, b: B, t: number) {
   });
   // self-play: stones placed at selfTimes; the reward pulse runs back through them; then the grid goes plain
   const n = SELFPLAY.length;
-  const runBack = (n - 1) * 0.08;
-  const plain = 1 - win(tq, b.wins + runBack + 0.25, b.wins + runBack + 0.6);
+  // round 2: the reward is a NARROW warm wavefront that runs back through the finished game in move order, last
+  // stone first, each stone flashing briefly, the whole run inside ~0.75 s; then the grid goes plain before the cut
+  const gap = Math.min(0.05, 0.75 / (n - 1));
+  const runBack = (n - 1) * gap;
+  const plain = 1 - win(tq, b.wins + runBack + 0.02, b.wide2 - 0.02);
   const alpha = (i: number) => (tq >= b.selfTimes[i] ? plain : 0);
-  // the reward runs BACK through the game, last move first, one stone every 0.08 s, each flashing warm
   const glowAt = (i: number) => {
-    const at = b.wins + (n - 1 - i) * 0.08;
-    return t < at ? 0 : 1.15 * Math.exp(-(t - at) * 3.2) * win(t, at, at + 0.06);
+    const at = b.wins + (n - 1 - i) * gap;
+    return t < at ? 0 : 1.1 * Math.exp(-(t - at) * 15) * win(t, at, at + 0.03);
   };
   f.layer('L4', (c, env) => {
     goTop(c, env, { stones: SELFPLAY, alpha, glow: glowAt, ghosts });
@@ -398,32 +477,6 @@ function top(f: Frame, b: B, t: number) {
     if (h) castHand(c, env, { ...h, who: 'machine', len: 112 });
   });
   f.rim({ x: -0.4, y: -0.9 });
-  // the reward: one warm ring from the last stone, running back over the board
-  const last = SELFPLAY[n - 1];
-  f.layer('L4', (c, env) => {
-    const u = clamp01((t - b.wins) / 1.2);
-    if (u > 0 && u < 1) {
-      const p = topXY(last.c, last.r);
-      c.save();
-      c.globalCompositeOperation = 'lighter';
-      const R = 40 + 560 * sm(u);
-      const a = 0.7 * Math.min(1, u * 6) * (1 - u);
-      const g = c.createRadialGradient(p.x, p.y, R * 0.55, p.x, p.y, R);
-      g.addColorStop(0, withAlpha(env.mood.halo, 0));
-      g.addColorStop(0.88, withAlpha(env.mood.core, a));
-      g.addColorStop(1, withAlpha(env.mood.halo, 0));
-      c.fillStyle = g;
-      c.fillRect(p.x - R, p.y - R, 2 * R, 2 * R);
-      // each stone the pulse reaches flashes warm (a small halo on top of goTop's own stone glow)
-      for (let i = 0; i < n; i++) {
-        const k = glowAt(i);
-        if (k < 0.02) continue;
-        const q = topXY(SELFPLAY[i].c, SELFPLAY[i].r);
-        glow(c, q.x, q.y, TOP.step * 1.3, env.mood.halo, 0.55 * Math.min(1, k));
-      }
-      c.restore();
-    }
-  });
   lampOnBoard(f, cam);
   topNear(f);
 }
@@ -592,65 +645,40 @@ function close78(f: Frame, b: B, t: number) {
 }
 
 // ================================================================================================ STUDY
-function paintStudy(f: Frame, b: B, t: number) {
-  if (t < b.dis0) wallView(f, b, t);
-  else if (t < b.dis1) {
-    const u = sm((t - b.dis0) / (b.dis1 - b.dis0));
-    const cv = subFrame(f, `${ID}/wallSub`, 'candleAmber', (g) => wallView(g, b, t));
-    shelfView(f, b, t);
-    compositeSub(f, cv, 1 - u);
-  } else shelfView(f, b, t);
+/** the coda camera: a slow drift on the slip through the glint, then ONE eased settle that keeps the W5 slip on a
+ *  straight screen path from its close position to the top right of frame while the scale falls to the shelf's,
+ *  so the shelf and the Go candle rise into frame beneath the slip; then a slow drift on the shelf */
+function codaCam(b: B, t: number): Camera3 {
+  if (t < b.mv0) return mixFrame(WALLC0, WALLC1, sm((t - b.wipe0) / (b.mv0 - b.wipe0)));
+  if (t < b.mv1) {
+    const u = sm((t - b.mv0) / (b.mv1 - b.mv0));
+    const k = Math.exp(lerp(Math.log(4.35), Math.log(SHELF_K), u));
+    return frameOn(W5C, { x: lerp(W5_START.x, W5_END.x, u), y: lerp(W5_START.y, W5_END.y, u) }, k);
+  }
+  return mixFrame(SHELFC0, SHELFC1, sm((t - b.mv1) / (b.D - b.mv1)));
 }
+/** 0..1: how far the coda has settled onto the shelf */
+const settle = (b: B, t: number) => sm((t - b.mv0) / (b.mv1 - b.mv0));
 
-function wallView(f: Frame, b: B, t: number) {
-  const cam = mixFrame(WALLC0, WALLC1, sm((t - b.wipe0) / (b.dis1 - b.wipe0)));
+/** every lit candle on the shelf except the Go candle (drawn by the shot) */
+const SHELF_ONLY = SHELF_ORDER.filter((id) => id !== 'go');
+const SHELF_END = shelfStateAt(ID, 'end');
+function shelfFlamePoints() {
+  return shelfFlames({ ...STUDY.shelf, views: SHELF_END, only: SHELF_ONLY });
+}
+/** the shelf front's lip on the near plane (L5): its top edge lands ~30 px above the frame's bottom on the shelf */
+const LIP = toLayer(LAYERS.L5, SHELFC0, 0, 700);
+
+function paintStudy(f: Frame, b: B, t: number) {
+  const cam = codaCam(b, t);
+  const u = settle(b, t);
   f.camera(cam);
   f.setMood('candleAmber');
   studyRoom(f, { key: ID, cams: STUDY_CAMS, outside: { mood: 'duskRose', kind: 'night' } });
   f.fog('B');
+  const tq = tq12(t);
   // the pin glint: a clear 0.4 s star (up fast, held, then gone)
   const g = win(t, b.glint - 0.04, b.glint + 0.08) * (1 - win(t, b.glint + 0.26, b.glint + 0.44));
-  studyCase(f, {
-    shot: ID,
-    when: 'end',
-    key: ID,
-    flames: false,
-    board: false,
-    shelf: false,
-    xray: { light: 0.15 },
-    wall: { hide: ['W5'] },
-    extra: (c, env) => coulomSlip(c, env, { pinGlint: g, light: 0.8 }),
-  });
-  wallPool(f, cam, W5C, 360, 1.1);
-  if (g > 0.01) {
-    // the star itself, in screen space on the pin head: long thin rays and a hot core
-    const pin = toScreen(LAYERS.L4, cam, W5C.x, W5C.y - W5S.h / 2 + 6 * STUDY.wall.k);
-    const c = f.c;
-    c.save();
-    c.globalCompositeOperation = 'lighter';
-    glow(c, pin.x, pin.y, 60, f.mood.core, 0.7 * g);
-    c.strokeStyle = withAlpha(mixLab(f.mood.core, '#fff4da', 0.5), 0.9 * g);
-    c.lineCap = 'round';
-    for (const [len, a, lw] of [[64, 0, 1.6], [64, Math.PI / 2, 1.6], [26, Math.PI / 4, 1], [26, -Math.PI / 4, 1]] as const) {
-      const r = len * (0.6 + 0.4 * g);
-      c.lineWidth = lw;
-      c.beginPath();
-      c.moveTo(pin.x - Math.cos(a) * r, pin.y - Math.sin(a) * r);
-      c.lineTo(pin.x + Math.cos(a) * r, pin.y + Math.sin(a) * r);
-      c.stroke();
-    }
-    c.restore();
-  }
-}
-
-/** every lit candle on the shelf except the Go candle (drawn by the shot) */
-const SHELF_ONLY = SHELF_ORDER.filter((id) => id !== 'go');
-function shelfView(f: Frame, b: B, t: number) {
-  const cam = mixFrame(SHELFC0, SHELFC1, sm((t - b.dis0) / (b.D - b.dis0)));
-  f.camera(cam);
-  f.setMood('candleAmber');
-  studyRoom(f, { key: ID, cams: STUDY_CAMS, outside: { mood: 'duskRose', kind: 'night' } });
-  const tq = tq12(t);
   // the snuff: the flame shrinks to nothing over three twos-ticks; the smoke thread rises from then on
   const fk = 1 - sm((tq - b.snuff) / 0.25);
   const out = tq >= b.snuff + 0.25;
@@ -660,29 +688,101 @@ function shelfView(f: Frame, b: B, t: number) {
     when: 'end',
     key: ID,
     flames: false,
+    // (the Case Board above the shelf stays dark, out of the lamp's reach: the frame falls off to shadow there)
     board: false,
-    wall: false,
     xray: false,
+    wall: { hide: ['W5'] },
     shelf: { drawFlames: false, only: SHELF_ONLY },
+    // the lamp is off frame LEFT in this framing: the candles' and slips' edges catch it from the upper left
+    rimDir: { x: -0.85, y: -0.5 },
     extra: (c, env) => {
+      coulomSlip(c, env, { pinGlint: 0.35 * g, light: 0.8 });
       const v = out ? goView('out') : { ...goView('lit'), rings: 2 };
-      beliefCandle(c, { x: GO.x, y: GO.y, view: v, s: STUDY.shelf.s, flame: out ? undefined : fk, smoke: out ? smoke : 0, letters: 0.85, drawFlame: false, named: 0 }, env);
+      beliefCandle(c, { x: GO.x, y: GO.y, view: v, s: STUDY.shelf.s, flame: out ? undefined : fk, smoke: 0, letters: 0.85, drawFlame: false, named: 0 }, env);
+      if (out && smoke > 0) goSmoke(c, env, t, smoke);
       // the candle naming card once it is out: the belief and its span (lit 2014 · out 2016 · 2 years), held to the cut
-      const nk = win(t, b.snuff + 0.32, b.snuff + 0.62);
+      const nk = win(t, b.snuff + 0.22, b.snuff + 0.5);
       if (nk > 0) namedLabel(c, { x: GO.x, y: GO.y, view: { ...goView('out'), tag: '2014' }, s: STUDY.shelf.s, named: nk }, env);
     },
   });
-  // live flames on the shelf (the nets' candle beside it), and the Go flame until it is snuffed
-  const views = shelfFlamePoints();
-  for (const p of views) f.practical({ x: p.x, y: p.y, kind: 'candle', seed: p.seed, intensity: 0.85, radius: 34 });
+  // the lamp's pool: on the slip through the glint, then opening to take in the shelf and the slip together
+  const pc = { x: lerp(W5C.x, GO.flame.x + 230, u), y: lerp(W5C.y, GO.flame.y - 60, u) };
+  wallPool(f, cam, pc, lerp(320, 400, u), 1.1, lerp(1.45, 1.5, u));
+  // the lamp's practical glow from off frame left, falling across the shelf (grows in as the camera settles)
+  if (u > 0.01) {
+    const c = f.c;
+    c.save();
+    c.globalCompositeOperation = 'lighter';
+    const lg = c.createRadialGradient(-160, 470, 40, -160, 470, 980);
+    lg.addColorStop(0, withAlpha(f.mood.halo, 0.26 * u));
+    lg.addColorStop(0.45, withAlpha(f.mood.halo, 0.09 * u));
+    lg.addColorStop(1, withAlpha(f.mood.halo, 0));
+    c.fillStyle = lg;
+    c.fillRect(0, 0, 1280, 720);
+    c.restore();
+  }
+  // live flames on the shelf (the nets' candle among them), and the Go flame until it is snuffed
+  for (const p of shelfFlamePoints()) f.practical({ x: p.x, y: p.y, kind: 'candle', seed: p.seed, intensity: 0.85, radius: 34 });
   if (!out) {
     const fl = { x: GO.flame.x, y: GO.flame.y + 2 * 6 * STUDY.shelf.s };
     f.practical({ x: fl.x, y: fl.y, kind: 'candle', seed: 2016, intensity: 0.9 * fk, radius: 32 * (0.4 + 0.6 * fk) });
   }
+  // the shelf front's lip, near and soft (L5): it rises into the bottom of frame as the camera settles
+  f.layer('L5', (c, env) => {
+    c.fillStyle = env.fill('fg');
+    c.fillRect(LIP.x - 2000, LIP.y, 6000, 900);
+    c.fillStyle = withAlpha(env.mood.rim, 0.3);
+    c.fillRect(LIP.x - 2000, LIP.y, 6000, 1.6);
+  });
+  if (g > 0.01) {
+    // the star itself, in screen space on the pin head (round 2: ~40% smaller, and its arms kept off the slip's
+    // header: long rays up and sideways at the pin head, only a stub downward)
+    const pin = toScreen(LAYERS.L4, cam, W5C.x, W5C.y - W5S.h / 2 + 6 * STUDY.wall.k);
+    const c = f.c;
+    c.save();
+    c.globalCompositeOperation = 'lighter';
+    glow(c, pin.x, pin.y - 2, 30, f.mood.core, 0.6 * g);
+    c.strokeStyle = withAlpha(mixLab(f.mood.core, '#fff4da', 0.5), 0.9 * g);
+    c.lineCap = 'round';
+    const r = 38 * (0.6 + 0.4 * g);
+    const seg = (x0: number, y0: number, x1: number, y1: number, lw: number) => {
+      c.lineWidth = lw;
+      c.beginPath();
+      c.moveTo(x0, y0);
+      c.lineTo(x1, y1);
+      c.stroke();
+    };
+    seg(pin.x - r, pin.y - 3, pin.x + r, pin.y - 3, 1.3);
+    seg(pin.x, pin.y - r, pin.x, pin.y + 4, 1.3);
+    const d = 11 * (0.6 + 0.4 * g);
+    seg(pin.x - d, pin.y - 3 - d, pin.x + d, pin.y - 3 + d * 0.3, 0.9);
+    seg(pin.x + d, pin.y - 3 - d, pin.x - d, pin.y - 3 + d * 0.3, 0.9);
+    c.restore();
+  }
 }
-const SHELF_END = shelfStateAt(ID, 'end');
-function shelfFlamePoints() {
-  return shelfFlames({ ...STUDY.shelf, views: SHELF_END, only: SHELF_ONLY });
+
+/** the put-out Go candle's thread of smoke: it rises from the wick and leans right, up toward the slip that
+ *  forecast it (drawn on ones) */
+function goSmoke(c: C, env: PaintEnv, t: number, k: number) {
+  const s = STUDY.shelf.s;
+  const base = { x: GO.flame.x, y: GO.flame.y + 2 * 6 * s - 4 };
+  const m = env.mood;
+  c.save();
+  c.lineCap = 'round';
+  for (const [lw, a] of [[3.2, 0.08], [1.3, 0.3]] as const) {
+    c.strokeStyle = withAlpha(mixLab(m.haze, m.rim, 0.35), a * k);
+    c.lineWidth = lw * s;
+    c.beginPath();
+    c.moveTo(base.x, base.y);
+    for (let i = 1; i <= 36; i++) {
+      const u = i / 36;
+      const yy = base.y - u * 300 * s;
+      const xx = base.x + u * u * 120 * s + Math.sin(u * 7 - t * 1.3 + 3) * (2 + 12 * u) * s + Math.sin(u * 3.1 - t * 0.6 + 7) * 7 * u * s;
+      c.lineTo(xx, yy);
+    }
+    c.stroke();
+  }
+  c.restore();
 }
 
 // ================================================================================================ type
@@ -753,9 +853,10 @@ function overlays(f: Frame, b: B, t: number) {
 /** the caption '1 in 10,000' in Plex Mono, stamped (a quick overshoot) beside a stone: to its right, unless that
  *  would put it near the right-hand name cards, then to its left; kept above the lower card band */
 function rareStamp(f: Frame, p: { x: number; y: number; k: number }, dt: number) {
-  // round 1: the SAME offset from its stone for move 37 and move 78 (up and to the right), so the two captions rhyme,
-  // with a 1 px leader from the caption to the stone it names
-  const side = p.x > 1000 ? -1 : 1;
+  // the SAME offset from its stone for move 37 and move 78, so the two captions rhyme, with a 1 px leader from the
+  // caption to the stone it names. Round 2: up and to the LEFT (move 37's White neighbour sits up and to its right,
+  // where the leader used to end), the leader ending exactly at the stone's edge on a 3 px dot
+  const side = -1;
   const c = f.c;
   const a = Math.min(1, dt / 0.08);
   const s = 1 + 0.22 * Math.exp(-dt * 14);
@@ -771,15 +872,22 @@ function rareStamp(f: Frame, p: { x: number; y: number; k: number }, dt: number)
   {
     const x0 = x - side * (w / 2 + 4), y0 = y + 6;
     const ang = Math.atan2(y0 - p.y, x0 - p.x);
-    const r = TOP.step * 0.55 * p.k;
+    const r = TOP.step * 0.48 * p.k;
     const k = Math.min(1, dt / 0.25);
     const x1 = p.x + Math.cos(ang) * r, y1 = p.y + Math.sin(ang) * r;
-    c.strokeStyle = withAlpha(mixLab('#f4e8d4', f.mood.core, 0.2), 0.85);
+    const ink = mixLab('#f4e8d4', f.mood.core, 0.2);
+    c.strokeStyle = withAlpha(ink, 0.85);
     c.lineWidth = 1;
     c.beginPath();
     c.moveTo(x0, y0);
     c.lineTo(lerp(x0, x1, k), lerp(y0, y1, k));
     c.stroke();
+    if (k >= 1) {
+      c.fillStyle = withAlpha(ink, 0.95);
+      c.beginPath();
+      c.arc(x1, y1, 1.5, 0, Math.PI * 2);
+      c.fill();
+    }
   }
   c.translate(x, y);
   c.scale(s, s);

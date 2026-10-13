@@ -1,79 +1,104 @@
 {
  "shot": "ch10-s05",
- "at": "2026-10-12T20:38:32.242Z",
+ "at": "2026-10-13T06:21:05.504Z",
  "minCapPx": 22,
  "sampled": 24,
- "texts": 17,
+ "texts": 18,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
- "textureTexts": 0,
- "ok": [
-  {
-   "text": "crossed",
-   "maxCap": 55.9
-  },
-  {
-   "text": "we",
-   "maxCap": 30.2
-  },
-  {
-   "text": "the",
-   "maxCap": 55.9
-  },
-  {
-   "text": "river",
-   "maxCap": 55.9
-  },
-  {
-   "text": "bank",
-   "maxCap": 55.9
-  },
-  {
-   "text": "0.21",
-   "maxCap": 28.1
-  },
-  {
-   "text": "−1.30",
-   "maxCap": 28.1
-  },
-  {
-   "text": "0.84",
-   "maxCap": 28.1
-  },
-  {
-   "text": "0.07",
-   "maxCap": 28.1
-  },
-  {
-   "text": "−0.56",
-   "maxCap": 28.1
-  },
-  {
-   "text": "1.12",
-   "maxCap": 28.1
-  },
+ "subjects": [
   {
    "text": "question ·",
-   "maxCap": 22.5
-  },
-  {
-   "text": "Q",
-   "maxCap": 32.1
+   "capWhileSubject": 22.5,
+   "why": "script onScreenText"
   },
   {
    "text": "label ·",
-   "maxCap": 22.5
-  },
-  {
-   "text": "K",
-   "maxCap": 32.1
+   "capWhileSubject": 22.5,
+   "why": "script onScreenText"
   },
   {
    "text": "message ·",
-   "maxCap": 22.5
+   "capWhileSubject": 22.5,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "crossed",
+   "maxCap": 51.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "we",
+   "maxCap": 30.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "the",
+   "maxCap": 51.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "river",
+   "maxCap": 51.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "bank",
+   "maxCap": 51.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "water",
+   "maxCap": 50.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0.21",
+   "maxCap": 27.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "−1.30",
+   "maxCap": 27.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0.84",
+   "maxCap": 27.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0.07",
+   "maxCap": 27.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "−0.56",
+   "maxCap": 27.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1.12",
+   "maxCap": 27.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Q",
+   "maxCap": 32.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "K",
+   "maxCap": 32.1,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "V",
-   "maxCap": 32.1
+   "maxCap": 32.1,
+   "why": "not named, not in onScreenText"
   }
- ]
+ ],
+ "textureTexts": 15
 }

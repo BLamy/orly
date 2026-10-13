@@ -61,8 +61,21 @@ for (const k of ['wrong', 'turn', 'hear']) if (typeof b[k] !== 'number') throw n
 const words = shot.lines.flatMap((l) => l.words.map((w) => ({ w: w.w ?? w.word ?? w.text, a: A(w.start), z: A(w.end) })));
 const lineEnd = (id) => A(shot.lines.find((l) => l.id === id).end);
 const LAST = shot.lines.at(-1).id;
-/** true if [t0, t1] touches a spoken word (with a small guard) */
-const underSpeech = (t0, t1 = t0) => words.some((w) => t1 > w.a - 0.06 && t0 < w.z + 0.06);
+/** true if [t0, t1] touches a spoken word (with a small guard). A pause between two words of one line that is
+ *  shorter than a breath (0.45 s) counts as speech: critic round 1 (2026-10-13) measured the clatter placed in
+ *  L0308's micro-gaps ('turned | a little | toward the answer') ringing onto the words ('little' 1.8 dB clear in
+ *  1-4 kHz, 'toward' 3.0, 'answer' 4.7). The machine is heard at full level only from the breath after the line. */
+const BREATH = 0.45;
+const spans = shot.lines.flatMap((l) => {
+  const ws = l.words.map((w) => [A(w.start), A(w.end)]);
+  const out = [];
+  for (const [a, z] of ws) {
+    if (out.length && a - out.at(-1)[1] < BREATH) out.at(-1)[1] = z;
+    else out.push([a, z]);
+  }
+  return out;
+});
+const underSpeech = (t0, t1 = t0) => spans.some(([a, z]) => t1 > a - 0.06 && t0 < z + 0.06);
 
 // ---------------------------------------------------------------- the shot's step(t) schedule (mirrors the shot)
 // KEEP IN SYNC with apps/bookshelf/src/viz/films/<slug>/shots/ch03-s04.tsx build(): `const step = linear([...])`
@@ -146,7 +159,7 @@ for (const p of shown) {
   const dir = p.step.img.target;
   const span = Math.max(p.turned - p.judge, n * 0.014);
   const under = underSpeech(p.judge, p.judge + span);
-  const [f0, f1] = under ? [2600, 4200] : [1100, 3000];
+  const [f0, f1] = under ? [5200, 7600] : [1100, 3000]; // under a line: above the voice band (5 kHz and up)
   for (let c = 0; c < n; c++) {
     const u = c / Math.max(1, n - 1);
     const f = Math.round(dir > 0 ? lerp(f0, f1, u) : lerp(f1, f0, u));
@@ -238,12 +251,14 @@ const block = `${BEGIN}
 // the current clock. Do not edit by hand: re-run the tool. Presentations ${s0 + 1}-${HOLD + 1} shown
 // (${shown.filter((p) => p.step.error).length} mistakes heard as motor ratchets; right answers are silent).
 // the eye: a relay clack per presentation (909 rimshot + a low armature thump in the clear)
-${layer(ev.relay, '{ attack: .001, release: .02 }', ".s('rim').bank('RolandTR909').gain(.55).hpf(300).room(.18).rsize(2).orbit(5)")}
-${layer(ev.relayUnder, '{ attack: .001, release: .02 }', ".s('rim').bank('RolandTR909').gain(.3).hpf(1500).orbit(5)")}
-${layer(ev.thump, '{ attack: .001, release: .03 }', ".s('square').decay(.025).sustain(0).lpf(180).gain(.5).orbit(5)")}
+${layer(ev.relay, '{ attack: .001, release: .02 }', ".s('rim').bank('RolandTR909').gain(.36).hpf(300).room(.18).rsize(2).orbit(5)")}
+// under a line the clacks and ratchets are ~8 dB down and high-passed/band-passed at 5 kHz and up (critic round 1:
+// L0308 'a little toward the answer' must stay 9 dB clear in 1-4 kHz); full level from the breath after the line
+${layer(ev.relayUnder, '{ attack: .001, release: .02 }', ".s('rim').bank('RolandTR909').gain(.12).hpf(5000).orbit(5)")}
+${layer(ev.thump, '{ attack: .001, release: .03 }', ".s('square').decay(.025).sustain(0).lpf(180).gain(.4).orbit(5)")}
 // mistakes: the motor ratchets (detent clicks; resonance sweeps up toward "horizontal", down toward "vertical")
 ${layer(ev.ratchet, '{ attack: .001, release: .01, bpf: 2000 }', ".s('white').decay(.009).sustain(0).bpq(4).gain(1.6).room(.12).rsize(1.5).orbit(3)")}
-${layer(ev.ratchetUnder, '{ attack: .001, release: .01, bpf: 3000 }', ".s('white').decay(.007).sustain(0).bpq(5).gain(.7).orbit(3)")}
+${layer(ev.ratchetUnder, '{ attack: .001, release: .01, bpf: 6000 }', ".s('white').decay(.007).sustain(0).bpq(5).hpf(4500).gain(.28).orbit(3)")}
 ${layer(ev.hum, '{ attack: .01, release: .04 }', ".s('square').lpf(220).vib(18).vibmod(.15).gain(.12).orbit(3)")}
 // the error rate as harmony (organ, soft): cluster while guessing, C major once the last 20 are right
 $: line(${J(ev.pad)})
@@ -251,8 +266,9 @@ $: line(${J(ev.pad)})
 // "You could hear it learn": each lit knob clicks one notch, its detent tuned by its learned weight
 ${layer(ev.knob, '{ attack: .001, release: .012, bpf: 2000 }', ".s('white').decay(.011).sustain(0).bpq(6).gain(1.9).room(.15).rsize(1.5).orbit(3)")}
 ${layer(ev.knobUnder, '{ attack: .001, release: .01, bpf: 3600 }', ".s('white').decay(.006).sustain(0).bpq(6).gain(.6).orbit(3)")}
-// it learned: the response relay latches
-${layer(ev.latch, '{ attack: .001, release: .04 }', ".s('rim').bank('RolandTR909').gain(.8).lpf(5000).room(.25).rsize(2).orbit(5)")}
+// it learned: the response relay latches (gains trimmed 2026-10-13: the latch and the first clack were the cue's
+// true peak, -1.5 dBTP; now under -3)
+${layer(ev.latch, '{ attack: .001, release: .04 }', ".s('rim').bank('RolandTR909').gain(.38).lpf(5000).room(.25).rsize(2).orbit(5)")}
 $: line(${J(ev.coda)}, { attack: .05, release: .6 })
   .s('gm_drawbar_organ').gain(G * .8).hpf(120).lpf(1500).room(.5).rsize(4).orbit(2)
 ${END}`;

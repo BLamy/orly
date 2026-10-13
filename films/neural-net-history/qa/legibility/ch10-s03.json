@@ -1,43 +1,53 @@
 {
  "shot": "ch10-s03",
- "at": "2026-10-12T20:38:42.054Z",
+ "at": "2026-10-13T04:14:00.642Z",
  "minCapPx": 22,
  "sampled": 19,
  "texts": 8,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
- "textureTexts": 0,
- "ok": [
+ "subjects": [
   {
    "text": "GOOGLE · 2016",
-   "maxCap": 22.1
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "jakob uszkoreit",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "Google",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "illia polosukhin",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "…the biggest incorrect",
-   "maxCap": 29.4
+   "capWhileSubject": 29.4,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "prediction of my life”",
-   "maxCap": 29.4
+   "capWhileSubject": 29.4,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "mat kelcey",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "2024",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   }
- ]
+ ],
+ "texture": [],
+ "textureTexts": 0
 }

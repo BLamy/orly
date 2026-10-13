@@ -1,0 +1,23 @@
+{
+ "shot": "ch10-s13b",
+ "at": "2026-10-13T20:02:12.490Z",
+ "step": 0.0833,
+ "sampled": 126,
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "honestCard"
+ ],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "honestCard",
+   "probed": true,
+   "from": 3.8,
+   "to": 10.967,
+   "minInkWhilePaper": 0.21
+  }
+ ]
+}

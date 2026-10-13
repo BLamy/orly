@@ -42,7 +42,10 @@
     "film:publish": "node generator/film/publish.mjs",
     "film:snap": "node generator/film/snap.mjs",
     "film:check-workflows": "node tools/film/check-workflows.mjs",
-    "film:test": "node --test generator/film/text.test.mjs generator/film/split.test.mjs generator/film/timeline.test.mjs generator/film/script.test.mjs generator/film/stt.test.mjs apps/bookshelf/src/viz/film/silhouette/metaphors/xorRule.test.mjs apps/bookshelf/editor-server.test.ts 'apps/bookshelf/src/editor/**/*.test.ts'",
+    "film:ledger": "node generator/film/shot-ledger.mjs",
+    "film:guard": "node generator/film/shot-guard.mjs",
+    "film:cue-notes": "node generator/film/cue-notes.mjs",
+    "film:test": "node --test generator/film/text.test.mjs generator/film/split.test.mjs generator/film/timeline.test.mjs generator/film/script.test.mjs generator/film/stt.test.mjs generator/film/shotledger.test.mjs apps/bookshelf/src/viz/film/silhouette/metaphors/xorRule.test.mjs apps/bookshelf/editor-server.test.ts 'apps/bookshelf/src/editor/**/*.test.ts'",
     "editor:test": "node --test apps/bookshelf/editor-server.test.ts 'apps/bookshelf/src/editor/**/*.test.ts'"
   },
   "dependencies": {

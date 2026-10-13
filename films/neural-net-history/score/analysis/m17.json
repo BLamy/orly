@@ -1,12 +1,12 @@
 {
  "id": "m17",
- "start": 1653.15,
- "end": 1752.15,
+ "start": 1669.9417,
+ "end": 1768.9417,
  "file": "films/neural-net-history/score/renders/m17.wav",
  "duration": 105,
- "I": -24.4,
- "LRA": 7.5,
- "TP": -10.4,
+ "I": -23.7,
+ "LRA": 9,
+ "TP": -9.9,
  "expected": 105,
  "lengthErrorMs": 0,
  "lengthOk": true,
@@ -14,5 +14,5 @@
  "cueSeconds": 99,
  "cps": 0.225,
  "lastStrikeLocal": 96.46,
- "lastStrike": 1749.61
+ "lastStrike": 1766.402
 }

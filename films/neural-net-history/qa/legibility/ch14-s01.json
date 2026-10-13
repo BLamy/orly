@@ -1,88 +1,74 @@
 {
  "shot": "ch14-s01",
- "at": "2026-10-08T02:42:40.717Z",
+ "at": "2026-10-13T07:23:08.080Z",
  "minCapPx": 22,
  "sampled": 14,
- "texts": 11,
- "offenders": [
+ "texts": 12,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
   {
-   "text": "14",
-   "maxCap": 11.7,
-   "minCap": 11.7,
-   "first": 0.55,
-   "last": 3.55,
-   "font": "16px \"Special Elite\""
-  },
-  {
-   "text": "NEW GENERATION",
-   "maxCap": 18.9,
-   "minCap": 16.8,
-   "first": 2.55,
-   "last": 10.55,
-   "font": "600 18px \"Cormorant SC\""
+   "text": "Two Shores",
+   "capWhileSubject": 26.9,
+   "why": "script onScreenText"
   },
   {
    "text": "AI DEVELOPMENT PLAN",
-   "maxCap": 18.9,
-   "minCap": 16.8,
-   "first": 2.55,
-   "last": 10.55,
-   "font": "600 18px \"Cormorant SC\""
+   "capWhileSubject": 24.3,
+   "why": "script onScreenText"
   },
-  {
-   "text": "Two Shores",
-   "maxCap": 19,
-   "minCap": 19,
-   "first": 0.55,
-   "last": 3.55,
-   "font": "26px \"Special Elite\""
-  },
-  {
-   "text": "2017 plan (DigiChina translation)",
-   "maxCap": 19.2,
-   "minCap": 17,
-   "first": 2.74,
-   "last": 10.55,
-   "font": "italic 17.5px \"EB Garamond\""
-  },
-  {
-   "text": "2030",
-   "maxCap": 20.5,
-   "minCap": 18.2,
-   "first": 2.55,
-   "last": 10.55,
-   "font": "500 17.5px \"IBM Plex Mono\""
-  },
-  {
-   "text": "2020",
-   "maxCap": 20.5,
-   "minCap": 18.2,
-   "first": 2.74,
-   "last": 10.55,
-   "font": "500 17.5px \"IBM Plex Mono\""
-  },
-  {
-   "text": "2025",
-   "maxCap": 20.5,
-   "minCap": 18.2,
-   "first": 2.74,
-   "last": 10.55,
-   "font": "500 17.5px \"IBM Plex Mono\""
-  }
- ],
- "textureTexts": 0,
- "ok": [
   {
    "text": "“…the world’s primary",
-   "maxCap": 25.2
+   "capWhileSubject": 25.4,
+   "why": "script onScreenText"
   },
   {
    "text": "AI innovation center”",
-   "maxCap": 25.2
+   "capWhileSubject": 25.4,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "2017 plan",
+   "capWhileSubject": 24.8,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "(DigiChina translation)",
+   "capWhileSubject": 24.8,
+   "why": "script onScreenText"
   },
   {
    "text": "20 JULY 2017 · STATE COUNCIL OF CHINA",
-   "maxCap": 22.1
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
   }
- ]
+ ],
+ "texture": [
+  {
+   "text": "14",
+   "maxCap": 22,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "NEW GENERATION",
+   "maxCap": 24.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2030",
+   "maxCap": 24.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2020",
+   "maxCap": 24.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2025",
+   "maxCap": 24.9,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 5
 }

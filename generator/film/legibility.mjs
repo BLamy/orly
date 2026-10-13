@@ -8,10 +8,16 @@
 // CanvasRenderingContext2D fillText/strokeText (init script): for each draw it measures the current font's cap
 // height ('H', or the small-cap 'h' for an SC face setting lower case) times the current transform (camera, layer
 // parallax and offscreen bakes included) on the 1080p frame, and the draw's opacity (globalAlpha x fill alpha).
-// Sampling: a frame every --every s (default 1) plus every beat. A text OFFENDS when, across the whole shot, its
-// LARGEST cap height while visible (opacity >= 0.3) stays under --min (22) px. Text under 6 px is texture (ledger
-// scribble, newspaper columns), reported apart. Output: films/<slug>/qa/legibility/<shot>.json and summary.json
-// (per shot: offenders with max cap px, first and last time seen). Read with the contact sheet before fixing.
+// Sampling: a frame every --every s (default 1) plus every beat.
+// ROLES (review round 2: "tag every text item as 'subject' (named or meant to be read) or 'texture', and fail any
+// subject text under 22 px cap"). A text's role is, in order: the role it was drawn under (kit textRole(c, role, fn):
+// the kit's cards are 'subject'); else 'subject' when it is one of the shot's script onScreenText items (or a wrapped
+// piece of one), or when the narrator says its words while it is visible (at least two of its significant words, or
+// its only one, within ±2 s of a sample where it shows); else 'texture'. A SUBJECT text FAILS when its largest cap
+// height while it is the subject (visible at opacity >= 0.3; for a named text, within its named window) stays under
+// --min (22) px. Texture is reported apart and never fails. Output: films/<slug>/qa/legibility/<shot>.json and
+// summary.json (per shot: offenders = failing subject texts with max cap px, why each is subject, and the time it is
+// named; texture counts). Read with the contact sheet before fixing.
 import fs from 'node:fs';
 import path from 'node:path';
 import { parseArgs, list, num, helpText } from './lib/args.mjs';
@@ -58,9 +64,12 @@ function recorder() {
         let r = cache.get(key);
         if (r == null) {
           const save = this.font;
+          const saveBase = this.textBaseline;
           this.font = f100;
-          const mm = orig === P2.fillText ? this.measureText(sc ? 'h' : 'H') : this.measureText(sc ? 'h' : 'H');
+          this.textBaseline = 'alphabetic'; // the ascent is relative to the current baseline
+          const mm = this.measureText(sc ? 'h' : 'H');
           this.font = save;
+          this.textBaseline = saveBase;
           r = mm.actualBoundingBoxAscent > 1 ? mm.actualBoundingBoxAscent / 100 : 0.68;
           cache.set(key, r);
         }
@@ -70,7 +79,7 @@ function recorder() {
         const H = window.__film?.height || 1080;
         const cap = size * r * dev * (1080 / H);
         const alpha = this.globalAlpha * alphaOf(name === 'fillText' ? this.fillStyle : this.strokeStyle);
-        rec.push({ text: s.slice(0, 80), cap: Math.round(cap * 10) / 10, alpha: Math.round(alpha * 100) / 100, font: this.font.slice(0, 60) });
+        rec.push({ text: s.slice(0, 80), cap: Math.round(cap * 10) / 10, alpha: Math.round(alpha * 100) / 100, font: this.font.slice(0, 60), role: this.__textRole || null });
       }
       return orig.call(this, text, x, y, maxW);
     };
@@ -79,14 +88,51 @@ function recorder() {
   wrap('strokeText');
 }
 
+const STOP = new Set('the a an and or of to in on at by for with from is are was were be as it its this that these those not no but if then than into over under who what when where which while will would can could may might must shall should has have had do does did i you he she we they them his her our their my your me us him also just only very more most less much many some any each every all one two three four five six seven eight nine ten'.split(' '));
+const norm = (x) => String(x).toUpperCase().replace(/[^A-Z0-9]+/g, ' ').trim();
+const sigWords = (x) => norm(x).split(' ').filter((w) => w.length >= 3 && !STOP.has(w.toLowerCase()) && !/^\d+$/.test(w));
+/** classify a text the shot drew: { role, why, window? } */
+function classify(e, script, tlShot) {
+  if (e.roles.has('texture') && !e.roles.has('subject')) return { role: 'texture', why: 'drawn as texture' };
+  if (e.roles.has('subject')) return { role: 'subject', why: 'drawn as subject (kit card or textRole)' };
+  // a script onScreenText item, or a wrapped / typing-on piece of one: most of its tokens are that item's tokens
+  // (the last may be a typed-on prefix); a lone token must be a word of 4+ letters (a bare year is not enough)
+  const toks = norm(e.text).split(' ').filter(Boolean);
+  const ost = (script?.onScreenText || []).map((o) => norm(o.text).split(' ').filter(Boolean));
+  const inItem = (item) => {
+    const set = new Set(item);
+    const hits = toks.filter((tk, i) => set.has(tk) || (i === toks.length - 1 && item.some((w) => w.startsWith(tk) && tk.length >= 2)));
+    if (toks.length === 1) return hits.length === 1 && /^[A-Z]{4,}$/.test(toks[0]);
+    return hits.length >= Math.max(2, Math.ceil(toks.length * 0.6));
+  };
+  if (toks.length && ost.some(inItem)) return { role: 'subject', why: 'script onScreenText' };
+  const words = sigWords(e.text);
+  if (words.length && tlShot) {
+    const spoken = tlShot.lines.flatMap((l) => l.words.map((w) => ({ w: norm(w.w), t: w.start })));
+    const need = Math.min(2, words.length);
+    let hit = null;
+    for (const smp of e.samples) {
+      const near = new Set(spoken.filter((w) => Math.abs(w.t - smp.t) <= 2).flatMap((w) => w.w.split(' ')));
+      const got = words.filter((w) => near.has(w) || near.has(w.replace(/S$/, '')) || near.has(`${w}S`));
+      if (got.length >= need) {
+        hit = hit || { from: smp.t, to: smp.t, words: got };
+        hit.to = smp.t;
+      }
+    }
+    if (hit) return { role: 'subject', why: `named: "${hit.words.slice(0, 3).join(' ').toLowerCase()}"`, window: [hit.from, hit.to] };
+  }
+  return { role: 'texture', why: 'not named, not in onScreenText' };
+}
+
 async function main() {
   const tl = readJson(P.app.timeline, null) ?? readJson(P.narration.timeline);
+  const scriptShots = new Map((readJson(P.script, { chapters: [] }).chapters || []).flatMap((c) => c.shots || []).map((s) => [s.id, s]));
   const site = await openSite({ mode: a.build ? 'build' : 'dev', base: a.base });
   const browser = await launchChromium({ gpu: true });
   const summary = readJson(path.join(OUT, 'summary.json'), { shots: {} });
+  const ids = [...list(a.shot), ...list(a.shots)];
   try {
     const h = await openHarness(browser, site.base, a.slug, { width: 1920, height: 1080, init: recorder });
-    const ids = [...list(a.shot), ...list(a.shots)];
     const shots = ids.length ? ids.map((id) => h.info.shots.find((s) => s.id === id)) : h.info.shots;
     mkdirp(OUT);
     for (const shot of shots) {
@@ -112,23 +158,48 @@ async function main() {
           window.__legRec = null;
           return r;
         });
+        // one draw per text per frame: the largest (a text drawn twice, e.g. shadow + face, counts once)
+        const frame = new Map();
         for (const d of rec) {
           if (d.alpha < 0.3) continue;
           const k = d.text.trim();
-          const e = seen.get(k) ?? { text: k, maxCap: 0, minCap: Infinity, first: lt, last: lt, font: d.font };
+          const f = frame.get(k);
+          if (!f || d.cap > f.cap) frame.set(k, { ...d, role: d.role || f?.role || null });
+          else if (d.role && !f.role) f.role = d.role;
+        }
+        for (const [k, d] of frame) {
+          const e = seen.get(k) ?? { text: k, maxCap: 0, minCap: Infinity, first: lt, last: lt, font: d.font, roles: new Set(), samples: [] };
           e.maxCap = Math.max(e.maxCap, d.cap);
           e.minCap = Math.min(e.minCap, d.cap);
           e.last = lt;
+          if (d.role) e.roles.add(d.role);
+          e.samples.push({ t: lt, cap: d.cap });
           seen.set(k, e);
         }
       }
-      const all = [...seen.values()].map((e) => ({ ...e, first: +e.first.toFixed(2), last: +e.last.toFixed(2) }));
-      const offenders = all.filter((e) => e.maxCap < MIN && e.maxCap >= TEXTURE && e.text.replace(/[^A-Za-z0-9]/g, '').length >= 2).sort((x, y) => x.maxCap - y.maxCap);
-      const texture = all.filter((e) => e.maxCap < TEXTURE).length;
-      const doc = { shot: shot.id, at: new Date().toISOString(), minCapPx: MIN, sampled: ts.size, texts: all.length, offenders, textureTexts: texture, ok: all.filter((e) => e.maxCap >= MIN).map((e) => ({ text: e.text, maxCap: e.maxCap })) };
+      const sShot = scriptShots.get(shot.id);
+      const all = [...seen.values()].map((e) => {
+        const c = classify(e, sShot, tlShot);
+        // a named text is judged while it is named (±2 s of its window); others over everything they are visible
+        const judged = c.window ? e.samples.filter((q) => q.t >= c.window[0] - 2 && q.t <= c.window[1] + 2) : e.samples;
+        const capWhileSubject = Math.max(0, ...judged.map((q) => q.cap));
+        const { roles, samples, ...rest } = e;
+        return { ...rest, first: +e.first.toFixed(2), last: +e.last.toFixed(2), role: c.role, why: c.why, ...(c.window ? { namedAt: c.window.map((x) => +x.toFixed(2)) } : {}), capWhileSubject };
+      });
+      const meaningful = (e) => e.text.replace(/[^A-Za-z0-9]/g, '').length >= 2;
+      const under = all.filter((e) => e.role === 'subject' && meaningful(e) && e.capWhileSubject < MIN);
+      // a typing-on text leaves its prefixes behind ("AAA", "AAAI-84 · AU"): report the longest only
+      const offenders = under.filter((e) => !under.some((o) => o !== e && o.text.length > e.text.length && o.text.startsWith(e.text))).sort((x, y) => x.capWhileSubject - y.capWhileSubject);
+      const texture = all.filter((e) => e.role === 'texture');
+      const doc = {
+        shot: shot.id, at: new Date().toISOString(), minCapPx: MIN, sampled: ts.size, texts: all.length,
+        rule: 'subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails',
+        offenders, subjects: all.filter((e) => e.role === 'subject').map((e) => ({ text: e.text, capWhileSubject: e.capWhileSubject, why: e.why })),
+        texture: texture.map((e) => ({ text: e.text, maxCap: e.maxCap, why: e.why })), textureTexts: texture.length,
+      };
       writeJson(path.join(OUT, `${shot.id}.json`), doc, 1);
-      summary.shots[shot.id] = { offenders: offenders.map((o) => `${o.text} (${o.maxCap}px)`), texts: all.length, at: doc.at };
-      console.log(`  ${shot.id}: ${all.length} texts, ${offenders.length} under ${MIN}px${offenders.length ? `: ${offenders.slice(0, 6).map((o) => `"${o.text.slice(0, 28)}" ${o.maxCap}`).join(', ')}` : ''}`);
+      summary.shots[shot.id] = { offenders: offenders.map((o) => `${o.text} (${o.capWhileSubject}px; ${o.why})`), subjects: doc.subjects.length, texture: texture.length, texts: all.length, at: doc.at, fail: offenders.length > 0 };
+      console.log(`  ${shot.id}: ${all.length} texts (${doc.subjects.length} subject, ${texture.length} texture), ${offenders.length} subject under ${MIN}px${offenders.length ? `: ${offenders.slice(0, 6).map((o) => `"${o.text.slice(0, 28)}" ${o.capWhileSubject}`).join(', ')}` : ''}`);
     }
     await h.close();
   } finally {
@@ -137,9 +208,11 @@ async function main() {
   }
   summary.at = new Date().toISOString();
   summary.minCapPx = MIN;
+  summary.rule = 'review round 2: subject text (kit cards, script onScreenText, or named by the narrator while visible) fails under minCapPx; texture is exempt';
   writeJson(path.join(OUT, 'summary.json'), summary, 1);
   const bad = Object.entries(summary.shots).filter(([, s]) => s.offenders.length);
-  console.log(`${bad.length} shot(s) with text under ${MIN}px cap height → ${rel(path.join(OUT, 'summary.json'))}`);
+  console.log(`${bad.length} shot(s) FAIL: subject text under ${MIN}px cap height → ${rel(path.join(OUT, 'summary.json'))}`);
+  if (bad.length && ids.some((id) => bad.some(([k]) => k === id))) process.exitCode = 1;
 }
 
 main().catch((e) => {

@@ -39,6 +39,10 @@ export interface Arm {
   lift?: number;
   /** the lamp's direction (screen axes): a 1.5 px rim (1080p) is cut on the hand's contour facing it only */
   light?: Pt;
+  /** 0..1: paper-cut detail lines on the back of the hand in the lamp's colour (a knuckle line across the four
+   *  joints with a bump per knuckle, the splits between the fingers, the folded fingers' knuckles, the wrist
+   *  crease), so a hand lying on a lit desk never reads as a mitten. Default 0 (none). */
+  detail?: number;
 }
 
 /** a forearm direction from degrees off the vertical: 0 = straight up, +35 = up and to the right */
@@ -264,6 +268,66 @@ export function drawArm(c: C, env: PaintEnv, a: Arm) {
       m.lineTo(tj[0] + 0.1, tj[1] - 0.02);
       m.closePath();
       m.fill();
+    }
+    if (a.detail && a.detail > 0) {
+      // the detail lines, kept inside the piece (source-atop), in a lamp-warm value a few steps above the ink
+      m.globalCompositeOperation = 'source-atop';
+      m.strokeStyle = withAlpha(mixLab(ink, mixLab(rim, env.mood.core, 0.3), 0.5), 0.6 * a.detail);
+      m.lineCap = 'round';
+      m.lineJoin = 'round';
+      m.lineWidth = 0.011;
+      m.beginPath();
+      // the finger splits: between each pair of adjacent fingers, from the knuckle line out to the tips
+      for (let i = 0; i < 3; i++) {
+        const f0 = S.fingers[i], f1 = S.fingers[i + 1];
+        const j0 = jointOf(f0), j1 = jointOf(f1);
+        const bx = (f0.base[0] + f1.base[0]) / 2, by = (f0.base[1] + f1.base[1]) / 2;
+        if (f0.curl > 1.2 || f1.curl > 1.2) {
+          // a folded neighbour: a short split from the knuckle line only
+          m.moveTo(bx - 0.02, by);
+          m.lineTo(bx + 0.05, by);
+          continue;
+        }
+        const t0 = tipOf(f0), t1 = tipOf(f1);
+        m.moveTo(bx, by);
+        m.lineTo((j0[0] + j1[0]) / 2, (j0[1] + j1[1]) / 2);
+        m.lineTo((t0[0] + t1[0]) / 2, (t0[1] + t1[1]) / 2);
+      }
+      m.stroke();
+      // the knuckle line: a shallow arc behind the four joints, a small bump over each knuckle; the middle
+      // joints of the extended fingers as short ticks; the folded fingers' knuckles as hooks at their stubs
+      m.lineWidth = 0.009;
+      m.beginPath();
+      const kn = BASES.map((b) => [b[0] - 0.05, b[1]] as P);
+      m.moveTo(kn[0][0], kn[0][1] - 0.05);
+      for (let i = 0; i < kn.length; i++) {
+        const [kx, ky] = kn[i];
+        m.lineTo(kx, ky - 0.035);
+        m.quadraticCurveTo(kx + 0.035, ky, kx, ky + 0.035);
+      }
+      m.stroke();
+      m.beginPath();
+      for (const f of S.fingers) {
+        const j = jointOf(f);
+        const n = f.a + Math.PI / 2;
+        if (f.curl > 1.2) {
+          m.moveTo(j[0] + Math.cos(n) * f.w * 0.4, j[1] + Math.sin(n) * f.w * 0.4);
+          m.quadraticCurveTo(j[0] + Math.cos(f.a) * 0.03, j[1] + Math.sin(f.a) * 0.03, j[0] - Math.cos(n) * f.w * 0.4, j[1] - Math.sin(n) * f.w * 0.4);
+        } else {
+          m.moveTo(j[0] + Math.cos(n) * f.w * 0.3, j[1] + Math.sin(n) * f.w * 0.3);
+          m.lineTo(j[0] - Math.cos(n) * f.w * 0.3, j[1] - Math.sin(n) * f.w * 0.3);
+        }
+      }
+      // the thumb's joint and the wrist crease
+      {
+        const tj = jointOf(S.thumb);
+        const n = S.thumb.a + Math.PI / 2;
+        m.moveTo(tj[0] + Math.cos(n) * 0.035, tj[1] + Math.sin(n) * 0.035);
+        m.lineTo(tj[0] - Math.cos(n) * 0.035, tj[1] - Math.sin(n) * 0.035);
+        m.moveTo(0.02, -0.12);
+        m.quadraticCurveTo(0.05, 0, 0.02, 0.12);
+      }
+      m.stroke();
     }
     m.restore();
     m.globalCompositeOperation = 'source-over';

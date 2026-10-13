@@ -118,15 +118,35 @@ export const ROW_CUP = featureCounts(CUP);
 export const ROW_BIRD = featureCounts(BIRD);
 
 /**
- * The tin stencil, standing in a slotted wooden stand (its foot at x, y = plate bottom-left at x, y − PLATE_H):
- * a sheet of pierced TIN (grey metal with a cut-paper sheen, punched round holes with a burr, a bent lip along the
- * top), the same tin and the same round holes as ch08-s04's. With no print behind it the holes glow with the
- * backlight; a paper PRINT slid behind it (from the right: `photo` + `dx` in plate px, 0 = in place) shows through
- * every pierced hole: its pale paper where it is blank, its INK where the drawing covers the hole. `count[w]` (0..1)
- * rings the covered holes of window w as its number is typed (the count, made visible). `pierced` = how many of the
- * PIERCE holes are cut so far (fractional = the next one opening). `lit` (0..1) is the work lamp on the tin's face.
+ * The tin stencil (round 4: a THIN pierced plate on a small easel, ch08-s04's rhyme — not a box): a sheet of dark tin,
+ * under 4 px thick in silhouette, leaning back on a three-legged easel whose slim ledge carries its bottom edge (the
+ * ledge top at y − 14; x, y = the easel's front-left foot). No bevel, no box depth: the plate is a dark cut shape whose
+ * punched round holes let the light through. With no print behind it the holes glow with the backlight; a paper PRINT
+ * slid behind it (from the right: `photo` + `dx` in plate px, 0 = in place) shows through every pierced hole: its pale
+ * paper where it is blank, its INK where the drawing covers the hole. `count[w]` (0..1) rings the covered holes of
+ * window w as its number is typed. `pierced` = how many of the PIERCE holes are cut so far (fractional = the next one
+ * opening). `lit` (0..1) is the work lamp on the tin's cut edge.
  */
-export function tinStencil(c: C, env: PaintEnv, o: { x: number; y: number; pierced: number; photo?: Photo | null; dx?: number; lit?: number; glowK?: number; count?: number[] }) {
+export function tinStencil(
+  c: C,
+  env: PaintEnv,
+  o: {
+    x: number;
+    y: number;
+    pierced: number;
+    photo?: Photo | null;
+    dx?: number;
+    /** round 6: several prints at once (the outgoing one slides out left as the next slides in); the last is counted */
+    photos?: { photo: Photo; dx: number }[];
+    lit?: number;
+    glowK?: number;
+    count?: number[];
+    /** the easel's legs and ledge: the one near-black cut shape against the lamp pool (default: the layer's ink) */
+    legInk?: string;
+    /** where the hanging work lamp is (world), for the tin's hotspot and the legs' rim (default: above the plate) */
+    lamp?: { x: number; y: number };
+  },
+) {
   const m = env.mood;
   const ink = env.fill('ink');
   const x0 = o.x, y0 = o.y - PLATE_H - 14;
@@ -134,30 +154,34 @@ export function tinStencil(c: C, env: PaintEnv, o: { x: number; y: number; pierc
   const dx = o.dx ?? 0;
   const paper = mixLab(MOODS.parchment.sky[3], m.halo, 0.3);
   const photoInk = mixLab(MOODS.parchment.ink, m.fg, 0.25);
+  // the easel's back leg (behind everything): from the apex down and back to the bench
+  const apex = { x: x0 + PLATE_W / 2, y: y0 - 22 };
+  c.strokeStyle = ink;
+  c.lineCap = 'round';
+  c.lineWidth = 3;
+  c.beginPath();
+  c.moveTo(apex.x, apex.y);
+  c.lineTo(apex.x + 6, o.y - 8);
+  c.stroke();
   // the print behind the plate: a paper card a little larger than the tin, its drawing in plate coords (+dx); only
   // its overhang is seen around the tin (sliding in from the right, it is seen whole before it goes behind)
   const M = 10;
-  if (o.photo) {
+  const prints = o.photos ?? (o.photo ? [{ photo: o.photo, dx }] : []);
+  for (const pr of prints) {
     c.save();
     c.fillStyle = withAlpha(m.fg, 0.35);
-    c.fillRect(x0 + dx - M + 4, y0 - M + 5, PLATE_W + 2 * M, PLATE_H + 2 * M);
+    c.fillRect(x0 + pr.dx - M + 4, y0 - M + 5, PLATE_W + 2 * M, PLATE_H + 2 * M);
     c.fillStyle = paper;
-    c.fillRect(x0 + dx - M, y0 - M, PLATE_W + 2 * M, PLATE_H + 2 * M);
+    c.fillRect(x0 + pr.dx - M, y0 - M, PLATE_W + 2 * M, PLATE_H + 2 * M);
     c.strokeStyle = withAlpha(MOODS.parchment.ink, 0.35);
     c.lineWidth = 1;
-    c.strokeRect(x0 + dx - M, y0 - M, PLATE_W + 2 * M, PLATE_H + 2 * M);
-    c.translate(x0 + dx, y0);
-    o.photo.draw(c, withAlpha(photoInk, 0.95));
+    c.strokeRect(x0 + pr.dx - M, y0 - M, PLATE_W + 2 * M, PLATE_H + 2 * M);
+    c.translate(x0 + pr.dx, y0);
+    pr.photo.draw(c, withAlpha(photoInk, 0.95));
     c.restore();
   }
-  // the stand: a wooden foot with a slot, two slim posts
-  c.fillStyle = ink;
-  c.fillRect(x0 - 18, o.y - 14, PLATE_W + 36, 14);
-  c.fillRect(x0 - 9, y0 - 4, 6, PLATE_H + 18);
-  c.fillRect(x0 + PLATE_W + 3, y0 - 4, 6, PLATE_H + 18);
-  c.fillStyle = withAlpha(m.rim, 0.45 * lit);
-  c.fillRect(x0 - 18, o.y - 14, PLATE_W + 36, 1.4);
-  // the tin plate with its holes (evenodd)
+  const counted = prints.length ? prints[prints.length - 1] : null;
+  // the thin tin plate with its holes (evenodd): one dark cut shape
   const plate = new Path2D();
   plate.rect(x0, y0, PLATE_W, PLATE_H);
   const nCut = Math.floor(o.pierced + 1e-6);
@@ -171,63 +195,54 @@ export function tinStencil(c: C, env: PaintEnv, o: { x: number; y: number; pierc
     plate.moveTo(x0 + h.x + r, y0 + h.y);
     plate.arc(x0 + h.x, y0 + h.y, r, 0, Math.PI * 2);
   });
-  // grey tin, lit by the lamp from the left: a cool metal grey (desaturated toward the set), a diagonal sheen band
-  const tinBase = mixLab(mixLab(m.setHaze, '#8a8c8c', 0.55), m.set, 0.2);
-  const tg = c.createLinearGradient(x0, y0, x0 + PLATE_W, y0 + PLATE_H);
-  tg.addColorStop(0, mixLab(tinBase, m.halo, 0.25 * lit));
-  tg.addColorStop(0.32, mixLab(tinBase, '#d9d6cf', 0.32 * lit));
-  tg.addColorStop(0.42, mixLab(tinBase, m.halo, 0.1 * lit));
-  tg.addColorStop(1, mixLab(tinBase, m.fg, 0.35));
+  // round 6 (review: 'make the tin read as tin'): a tin-grey sheet about 35 % lighter than the ink, so the black hand and
+  // snips read against it; the work lamp's hotspot sits on the plate under the shade, and its cut edges carry a lamp rim
+  const lamp = o.lamp ?? { x: x0 + PLATE_W * 0.6, y: y0 - 160 };
+  const tin = mixLab(ink, mixLab('#9a9c98', m.halo, 0.18), 0.36);
+  const tg = c.createLinearGradient(x0, y0, x0 + PLATE_W * 0.7, y0 + PLATE_H);
+  tg.addColorStop(0, mixLab(tin, m.halo, 0.2 * lit));
+  tg.addColorStop(0.55, tin);
+  tg.addColorStop(1, mixLab(tin, ink, 0.4));
   c.fillStyle = tg;
   c.fill(plate, 'evenodd');
-  // scored guide lines: each window's outline and its 3 × 3 lattice, scratched into the tin (fine, not frames)
-  c.strokeStyle = withAlpha(mixLab(tinBase, m.fg, 0.6), 0.55);
-  c.lineWidth = 0.9;
-  c.beginPath();
-  for (let w = 0; w < 3; w++) {
-    const wx = x0 + PAD + w * (WIN_W + GAP);
-    for (let q = 1; q < 3; q++) {
-      c.moveTo(wx + q * CELL, y0 + PAD);
-      c.lineTo(wx + q * CELL, y0 + PAD + WIN_W);
-      c.moveTo(wx, y0 + PAD + q * CELL);
-      c.lineTo(wx + WIN_W, y0 + PAD + q * CELL);
-    }
-    c.rect(wx, y0 + PAD, WIN_W, WIN_W);
+  // the lamp hotspot: a soft warm sheen on the plate below the shade (clipped to the tin, so the holes stay holes)
+  {
+    const hx = Math.max(x0 + 20, Math.min(x0 + PLATE_W - 20, lamp.x)), hy = y0 + PLATE_H * 0.28;
+    c.save();
+    c.clip(plate, 'evenodd');
+    const hg = c.createRadialGradient(hx, hy, 2, hx, hy, PLATE_W * 0.55);
+    hg.addColorStop(0, withAlpha(mixLab(m.halo, '#fff3dc', 0.35), 0.5 * lit));
+    hg.addColorStop(0.45, withAlpha(m.halo, 0.18 * lit));
+    hg.addColorStop(1, withAlpha(m.halo, 0));
+    c.fillStyle = hg;
+    c.fillRect(x0, y0, PLATE_W, PLATE_H);
+    c.restore();
   }
-  c.stroke();
-  // the hammered dimples of the unpunched hole marks (where a hole could go: the tin is a general stencil)
-  c.fillStyle = withAlpha(mixLab(tinBase, m.fg, 0.5), 0.35);
-  for (let w = 0; w < 3; w++)
-    for (let q = 0; q < 9; q++) {
-      if (SHAPES[w].mask[q]) continue;
-      const h = holeXY(w, q);
-      c.beginPath();
-      c.arc(x0 + h.x, y0 + h.y, 1.6, 0, Math.PI * 2);
-      c.fill();
-    }
-  // the bent lip: the top edge rolled forward (a lit roll, a shadow under it), and a folded right edge
-  c.fillStyle = mixLab(tinBase, '#e6e1d6', 0.45 * lit);
-  c.fillRect(x0 - 2, y0 - 5, PLATE_W + 4, 5);
-  c.fillStyle = withAlpha(m.fg, 0.5);
-  c.fillRect(x0, y0, PLATE_W, 1.6);
-  c.fillStyle = mixLab(tinBase, m.fg, 0.45);
-  c.fillRect(x0 + PLATE_W - 4, y0, 4, PLATE_H);
+  // its thickness: a 2 px edge on the right (the sheet leans back a touch on the easel), and the lamp on its cut edges
+  c.fillStyle = ink;
+  c.fillRect(x0 + PLATE_W, y0 + 1, 2.2, PLATE_H);
+  c.fillStyle = withAlpha(mixLab(m.rim, '#fff4dc', 0.4), 0.95 * lit);
+  c.fillRect(x0, y0 - 0.8, PLATE_W, 2);
+  c.fillStyle = withAlpha(mixLab(m.rim, '#fff4dc', 0.25), 0.55 * lit);
+  c.fillRect(x0 - 0.6, y0, 1.3, PLATE_H);
+  c.fillRect(x0 + PLATE_W - 0.8, y0, 1.2, PLATE_H * 0.7);
   // through each hole: the print (paper or ink), or the backlight when nothing is behind it
   PIERCE.forEach((p, k) => {
     const r = radius(k);
     if (r <= 0.3) return;
     const h = holeXY(p.w, p.q);
     const cx = x0 + h.x, cy = y0 + h.y;
-    const behind = !!o.photo && h.x >= dx - M && h.x <= dx + PLATE_W + M;
-    if (behind) {
-      const inked = o.photo!.ink(h.x - dx, h.y);
+    let cover: { photo: Photo; dx: number } | null = null;
+    for (const pr of prints) if (h.x >= pr.dx - M && h.x <= pr.dx + PLATE_W + M) cover = pr;
+    if (cover) {
+      const inked = cover.photo.ink(h.x - cover.dx, h.y);
       c.fillStyle = inked ? photoInk : mixLab(paper, m.core, 0.25);
       c.beginPath();
       c.arc(cx, cy, r, 0, Math.PI * 2);
       c.fill();
       if (!inked) glow(c, cx, cy, r * 2, m.core, 0.12 * (o.glowK ?? 1));
       // the count: the covered holes of this window are ringed, warm, as its number types
-      const ck = o.count?.[p.w] ?? 0;
+      const ck = cover === counted ? o.count?.[p.w] ?? 0 : 0;
       if (inked && ck > 0.01) {
         c.strokeStyle = withAlpha(mixLab(m.core, '#ffcf6a', 0.4), 0.95 * ck);
         c.lineWidth = 1.8;
@@ -237,30 +252,49 @@ export function tinStencil(c: C, env: PaintEnv, o: { x: number; y: number; pierc
         glow(c, cx, cy, r * 2.6, m.core, 0.3 * ck);
       }
     } else {
-      c.fillStyle = mixLab(m.core, m.halo, 0.25);
+      // the backlight through a punched hole
+      c.fillStyle = mixLab(m.core, '#fff2d6', 0.3);
       c.beginPath();
       c.arc(cx, cy, r, 0, Math.PI * 2);
       c.fill();
-      glow(c, cx, cy, r * 2.8, m.core, 0.32 * (o.glowK ?? 1));
+      glow(c, cx, cy, r * 3, m.core, 0.4 * (o.glowK ?? 1));
     }
-    // the punched burr: a dark rim on the upper-left, a lit lip on the lower-right
-    c.lineWidth = 1;
-    c.strokeStyle = withAlpha(m.fg, 0.6);
+    // the punched burr: a fine lit lip on the lower right
+    c.lineWidth = 0.9;
+    c.strokeStyle = withAlpha(mixLab(m.rim, '#ffffff', 0.2), 0.4 * lit);
     c.beginPath();
-    c.arc(cx, cy, r, Math.PI * 0.75, Math.PI * 1.75);
-    c.stroke();
-    c.strokeStyle = withAlpha(mixLab(m.rim, '#ffffff', 0.2), 0.5 * lit);
-    c.beginPath();
-    c.arc(cx, cy, r + 0.6, Math.PI * 1.85, Math.PI * 0.65);
+    c.arc(cx, cy, r + 0.5, Math.PI * 1.85, Math.PI * 0.65);
     c.stroke();
   });
-  // the cut tin's bright edge (a fine rim along the top of the lip: the lamp catches it)
-  c.strokeStyle = withAlpha(m.rim, 0.6 * lit);
-  c.lineWidth = 1;
+  // the easel's two front legs (splayed, from the apex past the plate's sides to the bench) and its ledge: round 6, the
+  // frame's one NEAR-BLACK cut shape against the lamp pool, each leg rim-lit on its lamp side
+  const legInk = o.legInk ?? ink;
+  const rimLeg = withAlpha(mixLab(m.rim, '#fff0d0', 0.35), 0.85 * lit);
+  c.strokeStyle = legInk;
+  c.lineWidth = 4.4;
   c.beginPath();
-  c.moveTo(x0 - 2, y0 - 4.5);
-  c.lineTo(x0 + PLATE_W + 2, y0 - 4.5);
+  c.moveTo(apex.x - 4, apex.y);
+  c.lineTo(x0 - 14, o.y);
+  c.moveTo(apex.x + 4, apex.y);
+  c.lineTo(x0 + PLATE_W + 14, o.y);
   c.stroke();
+  // the lamp rims: the inner (lamp-facing) edge of each leg, and the hanger's apex
+  c.strokeStyle = rimLeg;
+  c.lineWidth = 1.3;
+  c.beginPath();
+  c.moveTo(apex.x - 4 + 2.2, apex.y + 4);
+  c.lineTo(x0 - 14 + 2.2, o.y - 2);
+  c.moveTo(apex.x + 4 - 2.2, apex.y + 4);
+  c.lineTo(x0 + PLATE_W + 14 - 2.2, o.y - 2);
+  c.stroke();
+  c.fillStyle = legInk;
+  c.beginPath();
+  c.arc(apex.x, apex.y, 4, 0, Math.PI * 2);
+  c.fill();
+  // the ledge: a batten across the legs under the plate's bottom edge, its top lit
+  c.fillRect(x0 - 12, o.y - 14, PLATE_W + 24, 5.5);
+  c.fillStyle = rimLeg;
+  c.fillRect(x0 - 12, o.y - 14.4, PLATE_W + 24, 1.4);
 }
 
 /** tin snips (closed or open by `open` 0..1), pivot at (0, 0), blades pointing +x, in local units (≈ 1 px) */
@@ -389,19 +423,29 @@ export function snipsArm(c: C, env: PaintEnv, o: { tip: { x: number; y: number }
 }
 
 /** the snips laid down on the bench beside the stencil (closed, a glint on the pivot) */
-export function snipsAtRest(c: C, env: PaintEnv, x: number, y: number, rot: number, glint = 0) {
+export function snipsAtRest(c: C, env: PaintEnv, x: number, y: number, rot: number, glint = 0, ink?: string) {
   c.save();
   c.translate(x, y);
   c.rotate(rot);
   c.scale(1, 0.55);
-  snips(c, env.fill('ink'), withAlpha(env.mood.rim, 0.6 + 0.4 * glint), 0.05);
+  // round 6: full ink (near-black) with a lamp rim along the blades' top edges
+  snips(c, ink ?? env.fill('ink'), withAlpha(env.mood.rim, 0.6 + 0.4 * glint), 0.05);
+  c.strokeStyle = withAlpha(mixLab(env.mood.rim, '#fff0d0', 0.3), 0.55 + 0.4 * glint);
+  c.lineWidth = 1.6;
+  c.beginPath();
+  c.moveTo(2, -4.6);
+  c.quadraticCurveTo(22, -6.6, 34, -1.6);
+  c.moveTo(-4, -4.4);
+  c.quadraticCurveTo(-30, -13, -60, -10);
+  c.stroke();
   c.restore();
   if (glint > 0.02) glow(c, x, y, 18, env.mood.core, 0.35 * glint);
 }
 
 // ================================================================================================ the field
-export const SIGMA = 0.42;
-export const H0 = 0.25;
+/** round 4: a broader hill (the warm ring sits on its lower slopes, h ≈ 0.13–0.32) and a cut at 42% of its height */
+export const SIGMA = 0.6;
+export const H0 = 0.42;
 /** where the flat cut meets the hill, back on the flat field: the closed ring */
 export const R0 = SIGMA * Math.sqrt(Math.log(1 / H0));
 export const hOf = (r: number) => Math.exp(-((r / SIGMA) ** 2));

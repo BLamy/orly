@@ -26,6 +26,33 @@
  * Shot code that sets its own fonts for readable text should size them with legibleSize (or push in until the
  * card is the subject); decorative texture text (newspaper columns, ledger scribble) is exempt.
  * `generator/film/legibility.mjs` audits every fillText in a shot and lists text under the floor.
+ *
+ * CARD ENTRY CARRIES ITS TEXT (review round 3: paper cards showed blank for 0.5-2 s before their text inked, which
+ * read as placeholder frames). A card's first line is inked within CARD_INK_FRAMES (3) frames of the paper passing
+ * CARD_PAPER_LIMIT (30 %) opacity, or card and text fade together. Every paper card a shot paints goes through:
+ *   cardPaperAlpha(t, inkAt, fade?)  -> 0..1  the paper's opacity for a card whose first line inks at `inkAt`
+ *                                             (passes 30 % two frames before it; fades in over `fade`, default 0.35)
+ *   cardFirstInkAt(paperStart, fade?) -> s   the latest time the first line may start inking for a paper fade that
+ *                                             starts at paperStart (for cards whose paper timing is fixed)
+ *   cardInkAlpha(t, inkAt, dur?)     -> 0..1  the first line's ink, fully up CARD_INK_FRAMES after inkAt
+ *   cardProbe(c, id, x, y, w, h, paper, ink)  report the card to the QA (no-op outside the audit): rect in current
+ *                                             user units, paper and ink opacity before globalAlpha
+ * `generator/film/cards.mjs` flags any card whose paper is over 50 % opaque while its text is under 20 % for more than
+ * 0.3 s (QA sheets.cards): probed cards FAIL, unprobed light paper rects found by its recorder WARN.
+ *
+ * NO GHOST TEXT (review round 4: crossfades left two text layers readable on top of each other: ch15-s10 8.50 and
+ * 14.58, ch15-s06 2.67, ch14-s07 8.8-12.8). When one text card REPLACES another, the outgoing text is at 0 within
+ * TEXT_SWAP_FRAMES (4) frames of the incoming text passing 30 %:
+ *   textSwapIn(t, inAt, fade?)    -> 0..1  the incoming text (smoothstep over `fade`, default 0.35 s, from inAt)
+ *   textSwapOut(t, inAt, fade?)   -> 0..1  the outgoing text: 1 until inAt, 0 four frames after the incoming passes 30 %
+ *   textSwap(t, inAt, fade?)      -> { in, out }
+ *   textProbe(c, id, x, y, w, h, alpha)   report a text layer to the ghost audit (no-op outside it; cardProbe reports
+ *                                         its card's ink as a text layer too)
+ *   ghostOk(c, fn)                 text drawn inside fn may overlap other text on purpose (a rubber stamp struck
+ *                                  across a card); the audit skips it
+ * `generator/film/cards.mjs` also records every non-texture text line (fillText/strokeText, merged per line) and every
+ * textProbe, and FAILS (QA sheets.ghostText) two different text layers whose boxes overlap (>= 20 % of the smaller)
+ * while both are above GHOST_TEXT_ALPHA (25 %) for more than 0.25 s.
  */
 import type { Palette } from '../contracts';
 import { hash1 } from './atmosphere';
@@ -108,6 +135,88 @@ export function envelope(t: number, at = 0, dur = Infinity, fade = 0.5): number 
   const fo = Number.isFinite(dur) && fade > 0 ? smooth((at + dur - t) / fade) : t <= at + dur ? 1 : 0;
   return Math.min(fi, fo);
 }
+// ---------------------------------------------------------------------------
+// card entry (review round 3): the paper never shows without its first line
+// ---------------------------------------------------------------------------
+export const CARD_INK_FRAMES = 3;
+export const CARD_PAPER_LIMIT = 0.3;
+const FILM_FPS = 24;
+/** smoothstep u where it crosses CARD_PAPER_LIMIT (0.3): u^2 (3 - 2u) = 0.3 */
+const U30 = 0.37353;
+/** the paper's opacity for a card whose first line starts inking at `inkAt`: it passes 30 % two frames before */
+export function cardPaperAlpha(t: number, inkAt: number, fade = 0.35): number {
+  const start = inkAt - 2 / FILM_FPS - U30 * fade;
+  return smooth((t - start) / Math.max(1e-3, fade));
+}
+/** the latest start of the first line's ink for a paper fade that starts at `paperStart` and lasts `fade` */
+export function cardFirstInkAt(paperStart: number, fade = 0.35): number {
+  return paperStart + U30 * fade + (CARD_INK_FRAMES - 1) / FILM_FPS;
+}
+/** the first line's ink: up over CARD_INK_FRAMES frames (or `dur`) from `inkAt` */
+export function cardInkAlpha(t: number, inkAt: number, dur = CARD_INK_FRAMES / FILM_FPS): number {
+  return smooth((t - inkAt) / Math.max(1e-3, dur));
+}
+type CardRec = { id: string; x: number; y: number; w: number; h: number; paper: number; ink: number };
+/** report a paper card to the card audit (generator/film/cards.mjs sets globalThis.__cardRec while it records) */
+export function cardProbe(c: CanvasRenderingContext2D, id: string, x: number, y: number, w: number, h: number, paper: number, ink: number): void {
+  const rec = (globalThis as unknown as { __cardRec?: CardRec[] | null }).__cardRec;
+  if (!rec) return;
+  const m = c.getTransform();
+  const pts = [
+    [x, y],
+    [x + w, y],
+    [x, y + h],
+    [x + w, y + h],
+  ].map(([px, py]) => [m.a * px + m.c * py + m.e, m.b * px + m.d * py + m.f]);
+  const xs = pts.map((p) => p[0]);
+  const ys = pts.map((p) => p[1]);
+  const ga = c.globalAlpha;
+  rec.push({ id, x: Math.min(...xs), y: Math.min(...ys), w: Math.max(...xs) - Math.min(...xs), h: Math.max(...ys) - Math.min(...ys), paper: paper * ga, ink: ink * ga });
+}
+// ---------------------------------------------------------------------------
+// text swaps (review round 4): no ghost text
+// ---------------------------------------------------------------------------
+export const TEXT_SWAP_FRAMES = 4;
+export const GHOST_TEXT_ALPHA = 0.25;
+/** the incoming text of a swap: up over `fade` from inAt */
+export function textSwapIn(t: number, inAt: number, fade = 0.35): number {
+  return smooth((t - inAt) / Math.max(1e-3, fade));
+}
+/** the outgoing text of a swap: 1 until inAt, 0 TEXT_SWAP_FRAMES frames after the incoming text passes 30 % */
+export function textSwapOut(t: number, inAt: number, fade = 0.35): number {
+  const span = U30 * Math.max(1e-3, fade) + TEXT_SWAP_FRAMES / FILM_FPS;
+  return 1 - smooth((t - inAt) / span);
+}
+export function textSwap(t: number, inAt: number, fade = 0.35): { in: number; out: number } {
+  return { in: textSwapIn(t, inAt, fade), out: textSwapOut(t, inAt, fade) };
+}
+type TextRec = { id: string; x: number; y: number; w: number; h: number; alpha: number };
+/** report a text layer (rect in current user units, alpha before globalAlpha) to the ghost-text audit */
+export function textProbe(c: CanvasRenderingContext2D, id: string, x: number, y: number, w: number, h: number, alpha: number): void {
+  const rec = (globalThis as unknown as { __textRec?: TextRec[] | null }).__textRec;
+  if (!rec) return;
+  const m = c.getTransform();
+  const pts = [
+    [x, y],
+    [x + w, y],
+    [x, y + h],
+    [x + w, y + h],
+  ].map(([px, py]) => [m.a * px + m.c * py + m.e, m.b * px + m.d * py + m.f]);
+  const xs = pts.map((p) => p[0]);
+  const ys = pts.map((p) => p[1]);
+  rec.push({ id, x: Math.min(...xs), y: Math.min(...ys), w: Math.max(...xs) - Math.min(...xs), h: Math.max(...ys) - Math.min(...ys), alpha: alpha * c.globalAlpha });
+}
+/** text drawn inside fn overlaps other text on purpose (a stamp struck across a card): the ghost audit skips it */
+export function ghostOk<T>(c: CanvasRenderingContext2D, fn: () => T): T {
+  const cc = c as CanvasRenderingContext2D & { __ghostOk?: boolean };
+  const prev = cc.__ghostOk;
+  cc.__ghostOk = true;
+  try {
+    return fn();
+  } finally {
+    cc.__ghostOk = prev;
+  }
+}
 /** local progress of a sub-step [a, b] seconds after `at` */
 const step = (t: number, at: number, a: number, b: number) => smooth((t - at - a) / (b - a));
 function devScale(c: CanvasRenderingContext2D) {
@@ -119,6 +228,24 @@ function devScale(c: CanvasRenderingContext2D) {
 // legibility floor
 // ---------------------------------------------------------------------------
 export const MIN_CAP_1080 = 22;
+// ---------------------------------------------------------------------------
+// TEXT ROLES (review round 2): every piece of text is 'subject' (named in the narration, or meant to be read: it
+// must reach MIN_CAP_1080 while it is the subject) or 'texture' (shelf sleeves, ledger scribble, newspaper columns:
+// read as pattern, exempt). The legibility audit (generator/film/legibility.mjs) reads the role a draw was made under;
+// with no explicit role it classifies the text itself (script onScreenText, or words the narrator says while it is
+// visible). The kit's cards are 'subject'. Wrap texture in textRole(c, 'texture', () => ...), and wrap a shot's own
+// subject text in textRole(c, 'subject', ...) so the audit fails it when it is small.
+export type TextRole = 'subject' | 'texture';
+export function textRole<T>(c: CanvasRenderingContext2D, role: TextRole, fn: () => T): T {
+  const cc = c as CanvasRenderingContext2D & { __textRole?: TextRole };
+  const prev = cc.__textRole;
+  cc.__textRole = role;
+  try {
+    return fn();
+  } finally {
+    cc.__textRole = prev;
+  }
+}
 let FRAME_PX = 1.5; // device px per stage px of the frame being painted (the reel sets it; 1.5 = 1920x1080)
 /** the reel tells the type kit how big the output frame is (device px per stage px) */
 export function setTypeFrameScale(pxScale: number): void {
@@ -135,10 +262,26 @@ function capRatio(c: CanvasRenderingContext2D, font: string, text: string): numb
   if (r == null) {
     c.save();
     c.font = f100;
+    // measured on the alphabetic baseline: actualBoundingBoxAscent is relative to the CURRENT textBaseline, so a
+    // context left at 'top' or 'middle' by the caller cached a wrong ratio for the whole film (review round 2:
+    // index tabs drawn at 19 px cap after ch01-s04 measured the typewriter face under another baseline)
+    c.textBaseline = 'alphabetic';
     const m = c.measureText(sample);
     c.restore();
     r = m.actualBoundingBoxAscent > 1 ? m.actualBoundingBoxAscent / 100 : 0.68;
-    if (typeof document === 'undefined' || document.fonts?.status !== 'loading') capCache.set(key, r);
+    // cache only once the face itself is available: before a web font is first requested, fonts.status is
+    // 'loaded' and measureText runs on the FALLBACK face (a taller cap ratio), which pinned titles under the floor
+    // (review round 2 legibility audit: Special Elite index tabs at 19 px cap)
+    let ready = true;
+    if (typeof document !== 'undefined' && document.fonts) {
+      try {
+        ready = document.fonts.status !== 'loading' && document.fonts.check(f100);
+        if (!ready) void document.fonts.load(f100).catch(() => undefined);
+      } catch {
+        ready = true;
+      }
+    }
+    if (ready) capCache.set(key, r);
   }
   return r;
 }
@@ -387,7 +530,7 @@ export interface TitleCardOpts {
   maxWidth?: number;
 }
 const backlitCache = new Map<string, HTMLCanvasElement>();
-export function titleCard(c: CanvasRenderingContext2D, o: TitleCardOpts, env: TypeEnv): void {
+function titleCardPaint(c: CanvasRenderingContext2D, o: TitleCardOpts, env: TypeEnv): void {
   const at = o.at ?? 0;
   const A = envelope(env.t, at, o.dur, o.fade ?? 0.8);
   if (A <= 0) return;
@@ -479,7 +622,7 @@ export interface ChapterCardOpts {
   dur?: number;
   fade?: number;
 }
-export function chapterCard(c: CanvasRenderingContext2D, o: ChapterCardOpts, env: TypeEnv): void {
+function chapterCardPaint(c: CanvasRenderingContext2D, o: ChapterCardOpts, env: TypeEnv): void {
   const at = o.at ?? 0;
   const A = envelope(env.t, at, o.dur, o.fade ?? 0.8);
   if (A <= 0) return;
@@ -540,7 +683,7 @@ export interface PlaceStampOpts {
   plate?: boolean;
 }
 export const stampStyleFor = (year?: number): StampStyle => (year === undefined || year < 1970 ? 'typewriter' : year < 1990 ? 'phosphor' : 'mono');
-export function placeStamp(c: CanvasRenderingContext2D, o: PlaceStampOpts, env: TypeEnv): void {
+function placeStampPaint(c: CanvasRenderingContext2D, o: PlaceStampOpts, env: TypeEnv): void {
   const at = o.at ?? 0;
   const A = envelope(env.t, at, o.dur, o.fade ?? 0.5);
   if (A <= 0) return;
@@ -637,7 +780,7 @@ export interface NameCardOpts {
   /** soft ink plate for legibility (default true) */
   plate?: boolean;
 }
-export function nameCard(c: CanvasRenderingContext2D, o: NameCardOpts, env: TypeEnv): void {
+function nameCardPaint(c: CanvasRenderingContext2D, o: NameCardOpts, env: TypeEnv): void {
   const at = o.at ?? 0;
   const A = envelope(env.t, at, o.dur ?? 3.5, o.fade ?? 0.4);
   if (A <= 0) return;
@@ -712,7 +855,7 @@ export interface QuoteCardOpts {
   stagger?: number;
   plate?: boolean;
 }
-export function quoteCard(c: CanvasRenderingContext2D, o: QuoteCardOpts, env: TypeEnv): void {
+function quoteCardPaint(c: CanvasRenderingContext2D, o: QuoteCardOpts, env: TypeEnv): void {
   const at = o.at ?? 0;
   const A = envelope(env.t, at, o.dur, o.fade ?? 0.6);
   if (A <= 0) return;
@@ -797,7 +940,7 @@ export interface AnnotationOpts {
   size?: number;
   color?: string;
 }
-export function annotation(c: CanvasRenderingContext2D, o: AnnotationOpts, env: TypeEnv): void {
+function annotationPaint(c: CanvasRenderingContext2D, o: AnnotationOpts, env: TypeEnv): void {
   const at = o.at ?? 0;
   const A = envelope(env.t, at, o.dur, o.fade ?? 0.4);
   if (A <= 0) return;
@@ -859,3 +1002,11 @@ export function annotation(c: CanvasRenderingContext2D, o: AnnotationOpts, env: 
   }
   c.restore();
 }
+
+// the kit's cards are always the subject of their moment (legibility audit: fail under MIN_CAP_1080)
+export const titleCard = (c: CanvasRenderingContext2D, o: TitleCardOpts, env: TypeEnv): void => textRole(c, 'subject', () => titleCardPaint(c, o, env));
+export const chapterCard = (c: CanvasRenderingContext2D, o: ChapterCardOpts, env: TypeEnv): void => textRole(c, 'subject', () => chapterCardPaint(c, o, env));
+export const placeStamp = (c: CanvasRenderingContext2D, o: PlaceStampOpts, env: TypeEnv): void => textRole(c, 'subject', () => placeStampPaint(c, o, env));
+export const nameCard = (c: CanvasRenderingContext2D, o: NameCardOpts, env: TypeEnv): void => textRole(c, 'subject', () => nameCardPaint(c, o, env));
+export const quoteCard = (c: CanvasRenderingContext2D, o: QuoteCardOpts, env: TypeEnv): void => textRole(c, 'subject', () => quoteCardPaint(c, o, env));
+export const annotation = (c: CanvasRenderingContext2D, o: AnnotationOpts, env: TypeEnv): void => textRole(c, 'subject', () => annotationPaint(c, o, env));

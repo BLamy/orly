@@ -231,9 +231,18 @@
      ],
      "found": true,
      "from": "lexicon"
+    },
+    {
+     "term": "Hassabis",
+     "accept": [
+      "Hassabis",
+      "Huh-sabbis"
+     ],
+     "found": true,
+     "from": "lexicon"
     }
    ],
-   "pass": true,
+   "pass": 2,
    "sig": "421a73056146",
    "lineSig": "49ca05178ce0",
    "clip": "narration/clips/L1529.wav",
@@ -408,7 +417,7 @@
   "L0220": {
    "lineId": "L0220",
    "model": "scribe_v1",
-   "transcript": "The paper that put it out, for Pitts at least, had his own name on it",
+   "transcript": "The paper that put it out for pitt's at least had his own name on it",
    "expectedTerms": [
     {
      "term": "Pitts",
@@ -419,13 +428,13 @@
      "from": "cast"
     }
    ],
-   "pass": true,
-   "sig": "a94ce7d88ff2",
-   "lineSig": "fed413245ebe",
+   "pass": 1,
+   "sig": "c4390f260696",
+   "lineSig": "d0ec4eb20fd7",
    "clip": "narration/clips/L0220.wav",
    "wer": 0,
    "requestId": null,
-   "at": "2026-10-08T02:20:46.384Z"
+   "at": "2026-10-13T18:03:47.488Z"
   },
   "L0302": {
    "lineId": "L0302",
@@ -953,7 +962,7 @@
   "L0821": {
    "lineId": "L0821",
    "model": "scribe_v1",
-   "transcript": "A bad back kept Hinton from flying Yan Laekhun stood at the rear of a packed room",
+   "transcript": "A bad back kept Hinton from flying Jan Le Kun stood at the rear of a packed room",
    "expectedTerms": [
     {
      "term": "LeCun",
@@ -974,12 +983,12 @@
     }
    ],
    "pass": true,
-   "sig": "3f62b4219cdc",
-   "lineSig": "ccd49dd9a3a9",
+   "sig": "48b569aa550d",
+   "lineSig": "38617a559728",
    "clip": "narration/clips/L0821.wav",
-   "wer": 0.167,
+   "wer": 0.111,
    "requestId": null,
-   "at": "2026-10-12T06:35:47.914Z"
+   "at": "2026-10-13T01:45:27.372Z"
   },
   "L0822": {
    "lineId": "L0822",
@@ -1030,7 +1039,7 @@
   "L0906": {
    "lineId": "L0906",
    "model": "scribe_v1",
-   "transcript": "Seoul 2016 AlphaGo played movie 37, a one in 10,000 move.",
+   "transcript": "Seoul 2016, AlphaGo played move 37, a one in 10,000 move.",
    "expectedTerms": [
     {
      "term": "AlphaGo",
@@ -1040,15 +1049,23 @@
      ],
      "found": true,
      "from": "lexicon"
+    },
+    {
+     "term": "move thirty-seven",
+     "accept": [
+      "move thirty-seven"
+     ],
+     "found": true,
+     "from": "qa"
     }
    ],
    "pass": true,
-   "sig": "9fd36020d139",
-   "lineSig": "9ba8df117071",
+   "sig": "99932257d7bc",
+   "lineSig": "5f092b234753",
    "clip": "narration/clips/L0906.wav",
-   "wer": 0.385,
+   "wer": 0.308,
    "requestId": null,
-   "at": "2026-10-08T02:16:19.246Z"
+   "at": "2026-10-13T01:45:28.715Z"
   },
   "L0909": {
    "lineId": "L0909",
@@ -1148,7 +1165,7 @@
   "L1103": {
    "lineId": "L1103",
    "model": "scribe_v1",
-   "transcript": "In 2019, OpenAI's GPT-2, a transformer's writing half, read some eight million web pages with one goal: predict the next word. No labels needed. Every next word is its own right answer.",
+   "transcript": "In 2019, OpenAI's GPT-2, a transformer's writing half, read some eight million web pages with one goal: predict the next word, or rather, the next word piece. No labels needed. Every next word is its own right answer.",
    "expectedTerms": [
     {
      "term": "GPT",
@@ -1169,13 +1186,13 @@
      "from": "lexicon"
     }
    ],
-   "pass": true,
-   "sig": "f8bb41580a00",
-   "lineSig": "c1058f6a5492",
+   "pass": 2,
+   "sig": "62842b767b83",
+   "lineSig": "42b2601fbe9d",
    "clip": "narration/clips/L1103.wav",
-   "wer": 0.139,
+   "wer": 0.119,
    "requestId": null,
-   "at": "2026-10-08T02:16:28.453Z"
+   "at": "2026-10-13T10:51:56.131Z"
   },
   "L1104": {
    "lineId": "L1104",
@@ -1278,7 +1295,7 @@
   "L1206": {
    "lineId": "L1206",
    "model": "scribe_v1",
-   "transcript": "Among the runners, a lab born in 2021, former OpenAI researchers led by Dario and Daniela Ahmoudai had founded Anthropic.",
+   "transcript": "Among the runners, a lab born in twenty twenty one former OpenAI researchers led by Dario and Daniela Amodei had founded Anthropic.",
    "expectedTerms": [
     {
      "term": "OpenAI",
@@ -1293,19 +1310,19 @@
      "term": "Amodei",
      "accept": [
       "Amodei",
-      "Ah-mo-day"
+      "Ah-moh-day"
      ],
      "found": true,
      "from": "lexicon"
     }
    ],
-   "pass": true,
-   "sig": "a0245e318058",
-   "lineSig": "b3ef9b0be862",
+   "pass": 2,
+   "sig": "ab3b0ca1d449",
+   "lineSig": "b6111e43b53d",
    "clip": "narration/clips/L1206.wav",
    "wer": 0.217,
    "requestId": null,
-   "at": "2026-10-08T02:21:03.546Z"
+   "at": "2026-10-13T10:51:57.156Z"
   },
   "L1207": {
    "lineId": "L1207",
@@ -1356,7 +1373,7 @@
   "L1219b": {
    "lineId": "L1219b",
    "model": "scribe_v1",
-   "transcript": "Google announced Bard, Meta's Llama leaked within days, GPT-4 and Claude arrived the same March day.",
+   "transcript": "Google announced Bard, Meta shared LLaMA with researchers, and within a week, its weights leaked. GPT-4 and Claude arrived the same March day.",
    "expectedTerms": [
     {
      "term": "GPT",
@@ -1378,12 +1395,12 @@
     }
    ],
    "pass": true,
-   "sig": "f9364f97d062",
-   "lineSig": "220c55d0045f",
+   "sig": "a17f8c854dc4",
+   "lineSig": "52b612c90736",
    "clip": "narration/clips/L1219b.wav",
-   "wer": 0.158,
+   "wer": 0.115,
    "requestId": null,
-   "at": "2026-10-08T02:16:35.081Z"
+   "at": "2026-10-13T01:45:29.597Z"
   },
   "L1302": {
    "lineId": "L1302",
@@ -1655,7 +1672,7 @@
   "L1502": {
    "lineId": "L1502",
    "model": "scribe_v1",
-   "transcript": "A Nobel Prize in Physics shared with John Hopfield for memories that roll downhill and the Boltzmann machine Hinton co-invented, a net that settles as it cools.",
+   "transcript": "A Nobel Prize in Physics, shared with John Hopfield. He wrote that nobody he met remembered his Versailles talk. The prize was for memories that roll downhill and the Boltzmann machine Hinton co-invented, a net that settles as it cools.",
    "expectedTerms": [
     {
      "term": "Hinton",
@@ -1674,13 +1691,13 @@
      "from": "cast"
     }
    ],
-   "pass": true,
-   "sig": "9fb7c0298d20",
-   "lineSig": "f8090143e0dd",
+   "pass": 2,
+   "sig": "71f5eb181721",
+   "lineSig": "0316f409aa01",
    "clip": "narration/clips/L1502.wav",
    "wer": 0,
    "requestId": null,
-   "at": "2026-10-08T02:21:07.574Z"
+   "at": "2026-10-13T22:31:14.876Z"
   },
   "L1530": {
    "lineId": "L1530",
@@ -1853,7 +1870,7 @@
      "from": "cast"
     }
    ],
-   "pass": true,
+   "pass": 1,
    "sig": "bfc9556fbb50",
    "lineSig": "272a1d201c98",
    "clip": "narration/clips/L1501.wav",
@@ -1875,14 +1892,144 @@
      "from": "cast"
     }
    ],
-   "pass": true,
-   "sig": "5e72fe657120",
-   "lineSig": "a99bbb719342",
+   "pass": 1,
+   "sig": "1e8b8fc77c91",
+   "lineSig": "a051439c7a17",
    "clip": "narration/clips/L1517.wav",
    "wer": 0,
    "requestId": null,
-   "at": "2026-10-12T06:35:51.107Z"
+   "at": "2026-10-13T10:51:57.856Z"
+  },
+  "L0514b": {
+   "lineId": "L0514b",
+   "model": "scribe_v1",
+   "transcript": "At its rim stood a philosopher, Hubert Dreyfus. Real expertise is intuition, not rules. He saw a pattern: early dramatic success followed by sudden unexpected difficulties.",
+   "expectedTerms": [
+    {
+     "term": "Dreyfus",
+     "accept": [
+      "Dreyfus",
+      "Dry-fuss"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "59b654bcbd5d",
+   "lineSig": "55c2d9c221b9",
+   "clip": "narration/clips/L0514b.wav",
+   "wer": 0.074,
+   "requestId": null,
+   "at": "2026-10-13T01:45:26.141Z"
+  },
+  "L1522b": {
+   "lineId": "L1522b",
+   "model": "scribe_v1",
+   "transcript": "The Pentagon named it a supply chain risk and signed with OpenAI instead.",
+   "expectedTerms": [
+    {
+     "term": "OpenAI",
+     "accept": [
+      "OpenAI",
+      "Open A.I."
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": true,
+   "sig": "0ee602aa800f",
+   "lineSig": "ca7800c01944",
+   "clip": "narration/clips/L1522b.wav",
+   "wer": 0.143,
+   "requestId": null,
+   "at": "2026-10-13T01:45:30.556Z"
+  },
+  "L0114": {
+   "lineId": "L0114",
+   "model": "scribe_v1",
+   "transcript": "Our story starts all the way back in World War II",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "c04803682036",
+   "lineSig": "152d3031b73a",
+   "clip": "narration/clips/L0114.wav",
+   "wer": 0.091,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-13T22:31:58.985Z"
+  },
+  "L0114b": {
+   "lineId": "L0114b",
+   "model": "scribe_v1",
+   "transcript": "to a lamp in Chicago.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "2b7b1819f381",
+   "lineSig": "102e721fcd67",
+   "clip": "narration/clips/L0114b.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-13T11:05:41.980Z"
+  },
+  "L1405": {
+   "lineId": "L1405",
+   "model": "scribe_v1",
+   "transcript": "Two new candles Computing power is the choke point and China is a year or two behind A new question for the file Can a fence around chips hold?",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "557660352460",
+   "lineSig": "501772f45aad",
+   "clip": "narration/clips/L1405.wav",
+   "wer": 0.071,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-13T11:05:43.121Z"
+  },
+  "L0101": {
+   "lineId": "L0101",
+   "model": "scribe_v1",
+   "transcript": "Here is a small wonder",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "ceb8d62082fc",
+   "lineSig": "ca643afba082",
+   "clip": "narration/clips/L0101.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-13T11:27:40.750Z"
+  },
+  "L1410b": {
+   "lineId": "L1410b",
+   "model": "scribe_v1",
+   "transcript": "China a year or two behind That belief burned about two years",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "fa47b6c1e353",
+   "lineSig": "964148d7bfd7",
+   "clip": "narration/clips/L1410b.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-13T18:03:51.412Z"
+  },
+  "L1504b": {
+   "lineId": "L1504b",
+   "model": "scribe_v1",
+   "transcript": "Snuff that plan out and it rhymes with habit instead.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "b54bb0eef587",
+   "lineSig": "83b417f34e16",
+   "clip": "narration/clips/L1504b.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-13T22:31:16.178Z"
   }
  },
- "updatedAt": "2026-10-12T06:35:51.108Z"
+ "updatedAt": "2026-10-13T22:31:58.987Z"
 }

@@ -6,7 +6,10 @@
  *   HAIR_STYLES       -> the supported style names
  *
  * Styles: sidePart · slicked · crewCut · flatTop · receding · bald · curly ·
- * shaggy · messy · long · bob · bun · ponytail · beehive · perm · waves.
+ * shaggy · messy · long · bob · bun · ponytail · beehive · perm · waves · sweptBack.
+ * sweptBack (review round 4, Hinton): a receding front (the hairline starts high on the dome, the temple shows)
+ * with the hair combed straight back into a raised crown and a fuller back that ends in a soft nape flick, so the
+ * profile reads as swept-back and receding at 64 px.
  * `fall` is the secondary part (long hair, ponytail) with its own pivot; the
  * rig swings it with the one-twos-tick lag. A parting is asymmetric: it is
  * drawn as a part line only when the parted side faces camera; the other
@@ -19,7 +22,7 @@ import { curve, ellipsePath, smooth, sxy, type Pt } from './rig';
 
 export const HAIR_STYLES = [
   'sidePart', 'slicked', 'crewCut', 'flatTop', 'receding', 'bald', 'curly', 'shaggy', 'messy',
-  'long', 'bob', 'bun', 'ponytail', 'beehive', 'perm', 'waves',
+  'long', 'bob', 'bun', 'ponytail', 'beehive', 'perm', 'waves', 'sweptBack',
 ] as const;
 
 export interface HairArt {
@@ -155,6 +158,16 @@ export function hairArt(style: string, o: { h: number; fig: 'm' | 'f'; seed: num
     case 'waves':
       art.pieces.push(sm([[0.31, -0.8], [0.37, -0.86], [0.385, -0.98, 0.6], [0.29, -1.085, 0.7], [0.14, -1.06], [0.0, -1.1], [-0.2, -1.085], [-0.4, -0.97], [-0.52, -0.76], [-0.555, -0.5], [-0.535, -0.28], [-0.465, -0.13, 0.6], [-0.36, -0.1, 0.6], [-0.3, -0.2], [-0.1, -0.4, 0], [0.12, -0.66, 0]]));
       art.cuts.push(cut('roll', [[0.32, -0.92], [0.28, -1.0], [0.2, -1.02], [0.16, -0.96]], 0.44), cut('curls', [[-0.48, -0.36], [-0.42, -0.2], [-0.34, -0.2]], 0.4), hairline());
+      break;
+    case 'sweptBack':
+      // starts ON the skull high on the dome (no hair over the brow: the receding front), steps up into the
+      // combed-back mass, flat over the top, a backward sweep behind the crown, fuller above the ear, short at the nape
+      art.pieces.push(sm([[0.18, -1.0], [0.1, -1.06, 0.5], [-0.06, -1.095], [-0.24, -1.09], [-0.41, -1.03], [-0.535, -0.9], [-0.575, -0.8, 0.6], [-0.56, -0.66], [-0.51, -0.5], [-0.45, -0.42, 0.6], [-0.37, -0.46], [-0.22, -0.6, 0], [-0.04, -0.8, 0], [0.1, -0.93]]));
+      art.cuts.push(
+        cut('hairline', [[0.18, -1.0], [0.1, -0.9], [0.04, -0.76]], 0.34),
+        cut('sweep', [[0.1, -1.04], [-0.08, -1.07], [-0.3, -1.03], [-0.5, -0.86]], 0.42),
+        cut('sweep', [[0.0, -0.97], [-0.18, -1.0], [-0.38, -0.93], [-0.5, -0.72]], 0.3),
+      );
       break;
     default:
       // unknown style → tidy short hair

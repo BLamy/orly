@@ -11,6 +11,7 @@
 //                                                        STEMS the player places on the picture's timeline (lib/stems.mjs)
 //        public/generated/<slug>/audio/chapter-<n>.m4a   legacy fallback, only with --chapter-audio (and a mix newer than the clock)
 //        public/generated/<slug>/film.vtt                (captions)
+//        public/generated/<slug>/credits.json            models/tools that made the film + a strudel.cc link per cue (lib/credits.mjs)
 //        public/generated/<slug>/review.json             the latest critic round (scores, per-dimension notes) shown under the player
 //        public/generated/<slug>/animal.webp|png         (if films/<slug>/cover/animal.* exists)
 //        public/generated/<slug>/sources/index.html      the sources page: per chapter and shot, every claim id ->
@@ -29,6 +30,7 @@ import { filmPaths, readJson, writeJson, rel, mkdirp } from './lib/paths.mjs';
 import { stageDone, stageFailed, readFilm } from './lib/ledger.mjs';
 import { buildSources, sourcesHtml } from './lib/sources.mjs';
 import { publishStems } from './lib/stems.mjs';
+import { buildCredits } from './lib/credits.mjs';
 
 const a = parseArgs(process.argv.slice(2), { boolean: ['dry-run', 'help', 'chapter-audio'], string: ['slug', 'dir', 'series', 'author', 'role', 'master-url', 'subtitle', 'site'] });
 // the deployed shelf (CLAUDE.md); the sources page is served from it at /generated/<slug>/sources/
@@ -126,6 +128,8 @@ async function main() {
       logline: script.logline,
       ...(script.vhs ? { vhs: script.vhs } : {}),
       sources: 'sources/',
+      sourcesData: 'sources.json',
+      credits: 'credits.json',
       ...(latestReview(P) ? { review: 'review.json' } : {}),
       sourcesUrl: `${SITE}/generated/${a.slug}/sources/`,
     },
@@ -159,6 +163,12 @@ async function main() {
   for (const f of fs.readdirSync(path.join(out, 'audio'))) if (/^chapter-\d+\.m4a$/.test(f)) fs.rmSync(path.join(out, 'audio', f));
   for (const c of chapters) if (c.audio) fs.copyFileSync(path.join(P.mix.chapters, `${c.number}.m4a`), path.join(out, c.audio));
   const stems = await publishStems(P, out, { slug: a.slug, timeline: tl, cues, log: (m) => console.log(m) });
+  // credits from the recorded provenance (models, voice, music with strudel.cc links): the page's Credits section
+  // and the film's own end-credits card (apps/bookshelf/src/viz/films/<slug>/credits.json) read the same file
+  const credits = buildCredits(P, { slug: a.slug, cues, voice });
+  writeJson(path.join(out, 'credits.json'), credits, 1);
+  const appCredits = path.join(P.dir, '../../apps/bookshelf/src/viz/films', a.slug, 'credits.json');
+  if (fs.existsSync(path.dirname(appCredits))) writeJson(appCredits, { card: credits.card, footer: credits.footer }, 1);
   // the latest critic round, shown under the player (scores per dimension + why)
   const review = latestReview(P);
   if (review) writeJson(path.join(out, 'review.json'), review, 1);

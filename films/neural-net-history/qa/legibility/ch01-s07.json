@@ -1,23 +1,28 @@
 {
  "shot": "ch01-s07",
- "at": "2026-10-08T02:41:16.753Z",
+ "at": "2026-10-13T04:12:56.877Z",
  "minCapPx": 22,
  "sampled": 11,
  "texts": 3,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
- "textureTexts": 0,
- "ok": [
+ "subjects": [
   {
    "text": "WHO TAUGHT",
-   "maxCap": 97.5
+   "capWhileSubject": 97.5,
+   "why": "script onScreenText"
   },
   {
    "text": "THE MACHINE?",
-   "maxCap": 97.5
+   "capWhileSubject": 97.5,
+   "why": "script onScreenText"
   },
   {
    "text": "A case history of neural networks, 1943–2026",
-   "maxCap": 33.8
+   "capWhileSubject": 33.8,
+   "why": "script onScreenText"
   }
- ]
+ ],
+ "texture": [],
+ "textureTexts": 0
 }

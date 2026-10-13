@@ -1,6 +1,9 @@
 /**
  * ch08-s14 — the paper's waiting sentence is pinned in W4 on the Wall of Forecasts and filed, while a single
- * green LED multiplies into a distant aisle of racks (candleAmber, STUDY LOCK; 12.1 s; chapter 8's last shot).
+ * green LED multiplies into a distant aisle of racks (candleAmber, STUDY LOCK; 13.13 s; chapter 8's last shot).
+ * Round 2 clock (L0827 / L0828 re-recorded): every beat reads the clock (T.word / T.beat): slip pinned by 'said' (2.12),
+ * LED card opens on 'waiting' (3.89), the rack on 'G P Us' (4.89), the aisle by 'available' (7.53), FILE cut on 'Put'
+ * (8.57) closing on 'file' (10.30), clue card at 10.46, LED push ends at the handoff beat (13.0).
  *
  *   in        crossfade from ch08-s13b's candle stage (dawnGold): the REVERSE FLAME PUSH. We open INSIDE the new
  *             candle's flame: until ~0.45 s a dark vignette with the flame's teardrop core standing in it,
@@ -87,6 +90,9 @@ const SHELF = frameOn(LFLAME, SHELF_AT, K_SHELF);
 /** the Wall: the W4 slip lower left, its LED card upper right of it, both inside the lamp's pool */
 const WALL0 = frameOn(W4C, { x: 470, y: 384 }, 1.74);
 const WALL1 = frameOn(W4C, { x: 462, y: 390 }, 1.86);
+/** 'datasets': a dolly in on the LED card so its aisle of racks fills ≈ 35 % of the frame width before the FILE cut
+ *  (the card upper centre, the quote card still clear below it) */
+const WALLD = frameOn(IC, { x: 700, y: 236 }, 2.75);
 /** the board insert: C3-c left of centre, the 1986 and 1989 cards at left, FIRE above; a slow push in on the clue */
 const C3W0 = slotWorld('C3-c');
 /** the clue card is the subject of the insert: it hangs a size larger than a slot card (its learned-filter tile
@@ -177,9 +183,10 @@ export default defineShot({
     const dis0 = Math.max(0.7, results - 0.45);
     const dis1 = dis0 + 0.4;
     const wallIn = dis1 + 0.7;
-    // the move: threads fully lit ≥ .6 s, a ~0.9 s truck to the Wall, then the push into the LED card
-    const truck0 = Math.max(clue + 0.15, pushB - 1.0);
-    const truck1 = truck0 + 0.85;
+    // the move (REVIEW round 1): the truck to the LED card starts right after the clue shimmer and the push into it
+    // is eased over ≈ 1.0 s (never a 4× jump in half a second)
+    const truck0 = clue + 0.1;
+    const truck1 = truck0 + 0.7;
     const lk = Math.log;
     const b: B = {
       D,
@@ -209,21 +216,23 @@ export default defineShot({
       wallK: monotone([
         [dis0, lk(kOf(WALL0))],
         [wallIn, lk(kOf(WALL0))],
-        [cutFile, lk(kOf(WALL1))],
+        [T.word('L0827', 'datasets') - 0.15, lk(kOf(WALL1))],
+        [cutFile, lk(kOf(WALLD))],
       ]),
       wallX: monotone([
         [dis0, WALL0.x],
         [wallIn, WALL0.x],
-        [cutFile, WALL1.x],
+        [T.word('L0827', 'datasets') - 0.15, WALL1.x],
+        [cutFile, WALLD.x],
       ]),
       wallY: monotone([
         [dis0, WALL0.y + TILT_IN / kOf(WALL0)],
         [wallIn, WALL0.y],
-        [cutFile, WALL1.y],
+        [T.word('L0827', 'datasets') - 0.15, WALL1.y],
+        [cutFile, WALLD.y],
       ]),
       endK: monotone([
-        [truck0, lk(kOf(BOARD1))],
-        [truck0 + 0.5, lk(1.22)],
+        [truck0 + 0.1, lk(kOf(BOARD1))],
         [pushB, lk(K_FULL)],
       ]),
     };
@@ -245,7 +254,7 @@ export default defineShot({
       } else paintWall(f, b, t);
       quoteCard(
         f.c,
-        { quote: QUOTE, speaker: 'Krizhevsky, Sutskever & Hinton', source: '2012', x: 640, y: 550, width: 980, maxChars: 58, size: 27, at: b.quoteAt, dur: b.cutFile - 0.12 - b.quoteAt, fade: 0.4, stagger: 0.28 },
+        { quote: QUOTE, speaker: 'Krizhevsky, Sutskever & Hinton', source: '2012', x: 890, y: 532, width: 620, maxChars: 38, size: 27, at: b.quoteAt, dur: b.cutFile - 0.12 - b.quoteAt, fade: 0.4, stagger: 0.28 },
         { t, mood: f.mood },
       );
     } else if (t < b.cutBoard) paintFile(f, b, t);
@@ -359,8 +368,9 @@ function paintWall(f: Frame, b: B, t: number) {
   const pin0 = b.pinLand - 0.45 * PIN_DUR;
   const u = (tq - pin0) / PIN_DUR;
   const landed = tq >= b.pinLand;
-  // the hand comes in from the frame's upper right, so the forearm stays high, clear of the quote's place
-  const entry = { R: toLayer(LAYERS.L4, cm, 1410, 96), L: toLayer(LAYERS.L4, cm, 1410, 300) };
+  // the hand comes in steeply from the TOP edge (upper right), so only ≈ 70 % of the old forearm crosses the frame
+  // and the cuff and hand carry the silhouette, high and clear of the quote's place
+  const entry = { R: toLayer(LAYERS.L4, cm, 1150, -150), L: toLayer(LAYERS.L4, cm, 1300, 120) };
   studyCase(f, {
     shot: ID,
     when: 'start',
@@ -1025,7 +1035,7 @@ const TIES: { to: SlotId; ctrl: Pt }[] = [
 ];
 const THREAD_GAP = 0.2;
 const THREAD_DUR = 0.34;
-function thread(c: C, env: PaintEnv, a: Pt, b: Pt, m: Pt, u: number, k: number, bead: number) {
+function thread(c: C, env: PaintEnv, a: Pt, b: Pt, m: Pt, u: number, k: number, bead: number, comet = false) {
   if (u <= 0.003 || k <= 0.003) return;
   const at = (v: number) => {
     const w = 1 - v;
@@ -1049,11 +1059,26 @@ function thread(c: C, env: PaintEnv, a: Pt, b: Pt, m: Pt, u: number, k: number, 
   if (bead > 0 && bead < 1) {
     const p = at(bead);
     const a2 = Math.sin(Math.PI * bead);
-    const g = c.createRadialGradient(p.x, p.y, 0, p.x, p.y, 14);
+    if (comet) {
+      // a bright tail behind the bead
+      c.strokeStyle = withAlpha(mixLab(env.mood.core, '#ffffff', 0.2), 0.9 * a2);
+      c.lineWidth = 2.6;
+      c.lineCap = 'round';
+      c.beginPath();
+      const t0 = Math.max(0, bead - 0.16);
+      for (let i = 0; i <= 8; i++) {
+        const q = at(t0 + ((bead - t0) * i) / 8);
+        if (i === 0) c.moveTo(q.x, q.y);
+        else c.lineTo(q.x, q.y);
+      }
+      c.stroke();
+    }
+    const R = comet ? 22 : 14;
+    const g = c.createRadialGradient(p.x, p.y, 0, p.x, p.y, R);
     g.addColorStop(0, withAlpha(env.mood.core, 0.85 * a2));
     g.addColorStop(1, withAlpha(env.mood.core, 0));
     c.fillStyle = g;
-    c.fillRect(p.x - 14, p.y - 14, 28, 28);
+    c.fillRect(p.x - R, p.y - R, 2 * R, 2 * R);
   }
   c.restore();
 }
@@ -1067,7 +1092,10 @@ function boardCam(b: B, t: number): Camera3 {
   const s0 = toScreen(LAYERS.L4, BOARD1, IC.x, IC.y);
   const u = ease.move(clamp01((t - b.truck0) / (b.truck1 - b.truck0)));
   const s = { x: lerp(s0.x, 640, u), y: lerp(s0.y, 360, u) };
-  const k = Math.exp(b.endK(Math.min(t, b.pushB)));
+  // the push, eased in log scale over ≈ 1.0 s (truck0 + 0.1 → the handoff)
+  const kb = Math.log(kOf(BOARD1)), kf = Math.log(K_FULL);
+  const v = clamp01((Math.min(t, b.pushB) - b.truck0 - 0.1) / (b.pushB - b.truck0 - 0.1));
+  const k = Math.exp(lerp(kb, kf, v * v * v * (v * (6 * v - 15) + 10)));
   return frameOn(IC, s, k);
 }
 
@@ -1097,9 +1125,11 @@ function paintBoard(f: Frame, b: B, t: number) {
       if (u >= 0.45) {
         TIES.forEach(({ to, ctrl }, i) => {
           const bead = (t - b.clue - i * 0.07) / 0.55;
-          // the head of each thread as it draws carries a bright bead, so the eye rides it to its card
+          // the head of each thread as it draws carries a bright bead, so the eye rides it to its card; ON the
+          // 'clue' beat the threads flare and a comet of light runs out along each (the music sting's picture)
           const grow = thr(i * THREAD_GAP);
-          thread(c, env, pin, slotWorld(to, 'pin'), ctrl, grow, 1.45, grow > 0 && grow < 1 ? grow : bead);
+          const flare = Math.exp(-Math.max(0, t - b.clue) * 2.6) * win(t, b.clue - 0.04, b.clue + 0.04);
+          thread(c, env, pin, slotWorld(to, 'pin'), ctrl, grow, 1.45 + 1.3 * flare, grow > 0 && grow < 1 ? grow : bead, grow >= 1 && bead > 0 && bead < 1);
         });
         const land = Math.exp(-Math.max(0, t - b.clueLand) * 2.0) * win(t, b.clueLand - 0.04, b.clueLand + 0.08);
         const ring = 0.3 * Math.exp(-Math.max(0, t - b.threads) * 1.4) * win(t, b.threads, b.threads + 0.2);

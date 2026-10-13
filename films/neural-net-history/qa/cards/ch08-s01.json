@@ -1,0 +1,21 @@
+{
+ "shot": "ch08-s01",
+ "at": "2026-10-13T19:58:03.576Z",
+ "step": 0.0833,
+ "sampled": 195,
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "drawImage@1161,730",
+   "probed": false,
+   "from": 11.8,
+   "to": 16.717,
+   "minInkWhilePaper": 0.52
+  }
+ ]
+}

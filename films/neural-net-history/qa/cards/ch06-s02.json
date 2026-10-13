@@ -1,0 +1,259 @@
+{
+ "shot": "ch06-s02",
+ "at": "2026-10-13T19:55:32.847Z",
+ "step": 0.0833,
+ "sampled": 131,
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "fillRect@1204,541",
+   "probed": false,
+   "from": 0.55,
+   "to": 0.8,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@975,541",
+   "probed": false,
+   "from": 0.55,
+   "to": 1.55,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@737,588",
+   "probed": false,
+   "from": 0.55,
+   "to": 1.883,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@481,541",
+   "probed": false,
+   "from": 0.55,
+   "to": 1.217,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@252,541",
+   "probed": false,
+   "from": 0.55,
+   "to": 2.217,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@128,541",
+   "probed": false,
+   "from": 0.717,
+   "to": 2.633,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@110,541",
+   "probed": false,
+   "from": 1.05,
+   "to": 3.3,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@91,541",
+   "probed": false,
+   "from": 1.383,
+   "to": 3.717,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@123,542",
+   "probed": false,
+   "from": 1.8,
+   "to": 2.967,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@103,542",
+   "probed": false,
+   "from": 2.133,
+   "to": 4.383,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@83,542",
+   "probed": false,
+   "from": 2.467,
+   "to": 4.8,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@113,543",
+   "probed": false,
+   "from": 2.883,
+   "to": 4.05,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@93,543",
+   "probed": false,
+   "from": 3.217,
+   "to": 5.05,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@74,544",
+   "probed": false,
+   "from": 3.55,
+   "to": 5.467,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@55,544",
+   "probed": false,
+   "from": 3.883,
+   "to": 5.8,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@86,545",
+   "probed": false,
+   "from": 4.3,
+   "to": 6.217,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@69,545",
+   "probed": false,
+   "from": 4.633,
+   "to": 6.55,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@52,545",
+   "probed": false,
+   "from": 4.967,
+   "to": 7.3,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@87,545",
+   "probed": false,
+   "from": 5.383,
+   "to": 7.633,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@53,547",
+   "probed": false,
+   "from": 5.717,
+   "to": 6.217,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@-133,644",
+   "probed": false,
+   "from": 6.8,
+   "to": 6.883,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@-91,625",
+   "probed": false,
+   "from": 7.217,
+   "to": 7.883,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@-107,628",
+   "probed": false,
+   "from": 7.55,
+   "to": 8.3,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@-126,638",
+   "probed": false,
+   "from": 7.883,
+   "to": 9.383,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@-80,625",
+   "probed": false,
+   "from": 8.3,
+   "to": 10.467,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@-111,655",
+   "probed": false,
+   "from": 8.55,
+   "to": 8.717,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@265,591",
+   "probed": false,
+   "from": 8.967,
+   "to": 10.133,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@197,617",
+   "probed": false,
+   "from": 9.05,
+   "to": 9.8,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@-138,561",
+   "probed": false,
+   "from": 9.133,
+   "to": 10.8,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@-133,547",
+   "probed": false,
+   "from": 9.3,
+   "to": 11.217,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@-54,537",
+   "probed": false,
+   "from": 9.633,
+   "to": 11.383,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@-64,536",
+   "probed": false,
+   "from": 9.967,
+   "to": 11.383,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@-32,536",
+   "probed": false,
+   "from": 10.383,
+   "to": 11.383,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@-62,535",
+   "probed": false,
+   "from": 10.717,
+   "to": 11.383,
+   "minInkWhilePaper": 0.92
+  },
+  {
+   "id": "fillRect@-108,533",
+   "probed": false,
+   "from": 11.05,
+   "to": 11.383,
+   "minInkWhilePaper": 0.92
+  }
+ ]
+}

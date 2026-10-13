@@ -1,0 +1,62 @@
+{
+ "slug": "neural-net-history",
+ "at": "2026-10-13T11:24:31.599Z",
+ "summary": {
+  "pass": 2,
+  "warn": 0,
+  "fail": 3,
+  "skip": 0
+ },
+ "checks": [
+  {
+   "stage": "score",
+   "id": "renders",
+   "status": "fail",
+   "detail": "m21: window 2061..2159.9583 outside 0..2159.625",
+   "problems": [
+    "m21: window 2061..2159.9583 outside 0..2159.625"
+   ],
+   "warns": []
+  },
+  {
+   "stage": "score",
+   "id": "analysisSummary",
+   "status": "fail",
+   "detail": "films/neural-net-history/score/analysis/summary.json is stale (measured on a 2159.9583 s clock, timeline is 2159.625 s): re-run film:score analyze --slug neural-net-history",
+   "problems": [
+    "measured on a 2159.9583 s clock, timeline is 2159.625 s"
+   ]
+  },
+  {
+   "stage": "score",
+   "id": "cueJoins",
+   "status": "fail",
+   "detail": "cue changes under narration (move the incoming cue earlier, or the clock needs a head-hold): m03→m04 317.68–320.68 s under L0320; m04→m05 364.70–365.45 s under L0405; m06→m07 554.60–555.40 s under L0512; m08→m09 788.40–790.80 s under L0616; m10→m11 1056.32–1057.82 s under L0819; m12→m13 1239.10–1240.14 s under L0910; m14→m15 1509.38–1510.88 s under L1107; m15→m16 1581.63–1583.83 s under L1205; m16→m17 1665.92–1668.42 s under L1219b; m18→m19 1912.35–1914.60 s under L1418",
+   "under": [
+    "m03→m04 317.68–320.68 s under L0320",
+    "m04→m05 364.70–365.45 s under L0405",
+    "m06→m07 554.60–555.40 s under L0512",
+    "m08→m09 788.40–790.80 s under L0616",
+    "m10→m11 1056.32–1057.82 s under L0819",
+    "m12→m13 1239.10–1240.14 s under L0910",
+    "m14→m15 1509.38–1510.88 s under L1107",
+    "m15→m16 1581.63–1583.83 s under L1205",
+    "m16→m17 1665.92–1668.42 s under L1219b",
+    "m18→m19 1912.35–1914.60 s under L1418"
+   ],
+   "tight": []
+  },
+  {
+   "stage": "score",
+   "id": "notesClock",
+   "status": "pass",
+   "detail": "every cue-note body is on the current clock (anchored times match their anchors; no bare absolute times)"
+  },
+  {
+   "stage": "score",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "36.5 min of music over 36.0 min (101%)"
+  }
+ ]
+}

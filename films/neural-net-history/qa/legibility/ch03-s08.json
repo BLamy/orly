@@ -1,247 +1,309 @@
 {
  "shot": "ch03-s08",
- "at": "2026-10-12T08:05:14.668Z",
+ "at": "2026-10-13T04:13:13.327Z",
  "minCapPx": 22,
  "sampled": 21,
  "texts": 59,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
- "textureTexts": 0,
- "ok": [
-  {
-   "text": "A",
-   "maxCap": 25.7
-  },
-  {
-   "text": "B",
-   "maxCap": 25.7
-  },
-  {
-   "text": "C",
-   "maxCap": 25.7
-  },
-  {
-   "text": "D",
-   "maxCap": 25.7
-  },
-  {
-   "text": "E",
-   "maxCap": 25.7
-  },
-  {
-   "text": "F",
-   "maxCap": 25.7
-  },
-  {
-   "text": "G",
-   "maxCap": 25.7
-  },
-  {
-   "text": "H",
-   "maxCap": 25.7
-  },
-  {
-   "text": "I",
-   "maxCap": 25.7
-  },
-  {
-   "text": "J",
-   "maxCap": 25.7
-  },
-  {
-   "text": "K",
-   "maxCap": 25.7
-  },
-  {
-   "text": "L",
-   "maxCap": 25.7
-  },
-  {
-   "text": "M",
-   "maxCap": 25.7
-  },
-  {
-   "text": "N",
-   "maxCap": 25.7
-  },
-  {
-   "text": "O",
-   "maxCap": 25.7
-  },
-  {
-   "text": "P",
-   "maxCap": 25.7
-  },
-  {
-   "text": "Q",
-   "maxCap": 25.7
-  },
-  {
-   "text": "R",
-   "maxCap": 25.7
-  },
-  {
-   "text": "S",
-   "maxCap": 25.7
-  },
-  {
-   "text": "T",
-   "maxCap": 25.7
-  },
-  {
-   "text": "U",
-   "maxCap": 25.7
-  },
-  {
-   "text": "V",
-   "maxCap": 25.7
-  },
-  {
-   "text": "W",
-   "maxCap": 25.7
-  },
-  {
-   "text": "X",
-   "maxCap": 25.7
-  },
-  {
-   "text": "Y",
-   "maxCap": 25.7
-  },
-  {
-   "text": "Z",
-   "maxCap": 25.7
-  },
+ "subjects": [
   {
    "text": "BACK-PROPAGATING",
-   "maxCap": 32.1
+   "capWhileSubject": 32.1,
+   "why": "script onScreenText"
   },
   {
    "text": "ERROR-CORRECTION",
-   "maxCap": 32.1
+   "capWhileSubject": 32.1,
+   "why": "script onScreenText"
   },
   {
    "text": "EXPERIMENTS",
-   "maxCap": 23.4
-  },
-  {
-   "text": "1",
-   "maxCap": 26.9
-  },
-  {
-   "text": "9",
-   "maxCap": 26.9
-  },
-  {
-   "text": "6",
-   "maxCap": 26.9
+   "capWhileSubject": 23.4,
+   "why": "script onScreenText"
   },
   {
    "text": "“Linguistic capability, related to perceptual",
-   "maxCap": 28.4
+   "capWhileSubject": 28.4,
+   "why": "script onScreenText"
   },
   {
    "text": "experience, is of the essence…”",
-   "maxCap": 28.4
+   "capWhileSubject": 28.4,
+   "why": "script onScreenText"
   },
   {
    "text": "— rosenblatt, 1961",
-   "maxCap": 22
-  },
-  {
-   "text": "AND IF NO STRAIGHT LINE",
-   "maxCap": 44.4
-  },
-  {
-   "text": "EXISTS?",
-   "maxCap": 44.4
-  },
-  {
-   "text": "WHO TAUGHT",
-   "maxCap": 76.7
-  },
-  {
-   "text": "IT?",
-   "maxCap": 76.7
-  },
-  {
-   "text": "RULES",
-   "maxCap": 44.4
-  },
-  {
-   "text": "KNOWLEDGE",
-   "maxCap": 38.4
-  },
-  {
-   "text": "LEARNING",
-   "maxCap": 38.4
-  },
-  {
-   "text": "1943",
-   "maxCap": 44.4
+   "capWhileSubject": 22,
+   "why": "script onScreenText"
   },
   {
    "text": "THE STRUCTURE OF",
-   "maxCap": 37.8
-  },
-  {
-   "text": "THE NET DOES NOT",
-   "maxCap": 37.8
-  },
-  {
-   "text": "CHANGE WITH",
-   "maxCap": 37.8
-  },
-  {
-   "text": "TIME.",
-   "maxCap": 37.8
-  },
-  {
-   "text": "EXPERIMENTS · 1961 ?",
-   "maxCap": 32.1
-  },
-  {
-   "text": "TURING · DUE 2000",
-   "maxCap": 34.9
-  },
-  {
-   "text": "3 in 10 fooled",
-   "maxCap": 41.1
-  },
-  {
-   "text": "SIMON & NEWELL",
-   "maxCap": 43.1
-  },
-  {
-   "text": "CHESS CHAMPION",
-   "maxCap": 43.1
-  },
-  {
-   "text": "BY 1968",
-   "maxCap": 43.1
-  },
-  {
-   "text": "1968",
-   "maxCap": 43.1
+   "capWhileSubject": 37.8,
+   "why": "script onScreenText"
   },
   {
    "text": "ROSENBLATT · 1961",
-   "maxCap": 34.9
+   "capWhileSubject": 34.9,
+   "why": "script onScreenText"
   },
   {
    "text": "Linguistic capability,",
-   "maxCap": 34.9
+   "capWhileSubject": 34.9,
+   "why": "script onScreenText"
   },
   {
    "text": "related to perceptual",
-   "maxCap": 34.9
+   "capWhileSubject": 34.9,
+   "why": "script onScreenText"
   },
   {
    "text": "experience, is of the",
-   "maxCap": 34.9
+   "capWhileSubject": 34.9,
+   "why": "script onScreenText"
   },
   {
    "text": "essence…",
-   "maxCap": 34.9
+   "capWhileSubject": 34.9,
+   "why": "script onScreenText"
   }
- ]
+ ],
+ "texture": [
+  {
+   "text": "A",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "B",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "C",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "D",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "E",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "F",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "G",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "H",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "I",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "J",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "K",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "L",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "M",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "N",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "O",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "P",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Q",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "R",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "S",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "T",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "U",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "V",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "W",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "X",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Y",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Z",
+   "maxCap": 25.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1",
+   "maxCap": 26.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "9",
+   "maxCap": 26.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "6",
+   "maxCap": 26.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "AND IF NO STRAIGHT LINE",
+   "maxCap": 44.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "EXISTS?",
+   "maxCap": 44.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 76.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IT?",
+   "maxCap": 76.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "RULES",
+   "maxCap": 44.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 38.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 38.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1943",
+   "maxCap": 44.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 37.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 37.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 37.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 32.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 34.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 41.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "SIMON & NEWELL",
+   "maxCap": 43.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHESS CHAMPION",
+   "maxCap": 43.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "BY 1968",
+   "maxCap": 43.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1968",
+   "maxCap": 43.1,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 47
 }

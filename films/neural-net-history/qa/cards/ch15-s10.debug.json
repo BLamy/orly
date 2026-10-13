@@ -1,0 +1,117 @@
+{
+ "lt": 2.683333333333334,
+ "merged": [
+  {
+   "text": "We can only see a short distance ahead, but we",
+   "alpha": 0.92,
+   "i": 2,
+   "box": {
+    "x": 463.1611731772864,
+    "y": 420.63820282181143,
+    "w": 994.3826092828822,
+    "h": 56.46016341668019
+   }
+  },
+  {
+   "text": "can see plenty there that needs to be done.",
+   "alpha": 0.92,
+   "i": 3,
+   "box": {
+    "x": 507.2171772537258,
+    "y": 501.6214616080129,
+    "w": 906.2706011300033,
+    "h": 56.46016341668013
+   }
+  },
+  {
+   "text": "Alan Turing, 1950",
+   "alpha": 0.8,
+   "i": 5,
+   "box": {
+    "x": 831.709858726118,
+    "y": 627.3496220073459,
+    "w": 257.285238185219,
+    "h": 35.98322088704958
+   }
+  }
+ ],
+ "visible": [
+  "We can only see a short distance ahead, but we",
+  "can see plenty there that needs to be done.",
+  "Alan Turing, 1950"
+ ],
+ "occ": [
+  {
+   "x": 921.3316340744495,
+   "y": 601.860004491806,
+   "w": 78.04168748855591,
+   "h": 1.3507215142250288,
+   "i": 4,
+   "how": "fillRect",
+   "a": 0.5,
+   "cv": 7
+  }
+ ],
+ "comp": [
+  {
+   "src": 160,
+   "dst": 7,
+   "g": 1,
+   "op": "source-over",
+   "i": 0
+  },
+  {
+   "src": 161,
+   "dst": 7,
+   "g": 1,
+   "op": "source-over",
+   "i": 1
+  },
+  {
+   "src": 7,
+   "dst": 3,
+   "g": 1,
+   "op": "source-over",
+   "i": 6
+  },
+  {
+   "src": 7,
+   "dst": 9,
+   "g": 1,
+   "op": "source-over",
+   "i": 7
+  },
+  {
+   "src": 3,
+   "dst": 16,
+   "g": 1,
+   "op": "copy",
+   "i": 8
+  },
+  {
+   "src": 16,
+   "dst": 3,
+   "g": 0.08800000000000001,
+   "op": "screen",
+   "i": 9
+  }
+ ],
+ "textCv": [
+  [
+   "We can only see a short distance ahead, but we",
+   7,
+   2
+  ],
+  [
+   "can see plenty there that needs to be done.",
+   7,
+   3
+  ],
+  [
+   "Alan Turing, 1950",
+   7,
+   5
+  ]
+ ],
+ "pairs": []
+}

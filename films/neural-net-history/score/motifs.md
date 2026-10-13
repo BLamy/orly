@@ -1,53 +1,44 @@
 # Score motifs: Who Taught the Machine? (neural-net-history)
 
-The music director's bible for the 21 cues in `cues.json`. The clock is `narration/timeline.json`
-(film **2121.42 s** since review round 1). Every time below is in **absolute film seconds** unless it is
+The music director's bible for the 21 cues in `cues.json`. **Current clock: 2164.00 s** (`narration/timeline.json`,
+after the review-round-4 re-narration of L0114, L0220, L1410b and L1502, the ch15-s05 tail cut to 1.51 s and the ch15-s10 end cards grown to 28.71 s). Every time below is in **absolute film seconds** unless it is
 marked cue-local. In Strudel code, cue-local time = absolute time − `cue.start`.
 
-## Clock re-fit, 2026-10-12 (the clock is now 2139.5417 s)
+## Current clock (read this first)
 
-Ten lines were re-narrated (L0415, L0505, L0610, L0612, L0701, L0821, L0832b, L0902, L1501, L1517). Every cue keeps its
-id, motifs and intent; the cues whose insides moved were re-fitted to the new words and re-rendered:
+**`cues.json` is the authority for times.** Each cue's `notes` open with ONE paragraph headed `CURRENT CLOCK`,
+generated from the current timeline: its window, its shots and the lines under it, whether its IN and OUT joins sit in a
+speech-free gap (QA `score.cueJoins`), its measured last strike, and a `RE-FIT PENDING` flag when lines inside it changed
+length. The times in the rest of each cue's notes were re-mapped onto the 2164.00 s clock through their word and beat anchors
+(`cue-notes.mjs --fix`; an anchor that no longer resolves keeps its name and loses its number): place every hit by the word or beat it names,
+looked up in `narration/timeline.json`, never by an old number. The clock re-fit history (round 1, the 2026-10-12 re-fit, rounds 3 and 4)
+is archived in `score/clock-history.md` and, per cue, in `score/notes-history.json`. Motifs, keys and instrumentation are
+unchanged. The development tables further down still quote times from earlier clocks: use their names, not their numbers.
+The scored silences table at the end is on the current clock.
 
-- **m05** the cello's A2 -> D3 and the 'light' overtone move onto the new L0415 words (+0.2 s); window unchanged.
-- **m06** from the desks' second key on, +0.583 s (L0505 longer); window 448.48-555.65, fade after L0512.
-- **m08** the bet (L0610) is 5.6 s longer: the waltz grows from ten bars to **fourteen**, Jackel's A7 on 'Jackel', the tune
-  starting again for Vapnik's counter-bet, still stopping on the E half-diminished chord on 'paid' (M2's unanswered question);
-  the whisper (M3 running back), the protected pipe, the chess slip and the fog all +7.46 s; window 624.52-776.97.
-- **m09** L0701 now tells both bets (13.9 s): the thaw's open fifth walks **I - vi - IV - V in Bb** under it (Gm on 'By 2000',
-  Eb on 'By 2005', F on 'Each man lost one bet'), two tiny high replies in its breaths, the pizzicato wink on 'lost', and the
-  M1 warm-up candle (F -> Bb) follows exactly as before; window 775.47-871.08.
-- **m11** the Florence hold is 2.6 s shorter (it still cuts dead on 'fifteen'); M4's fourth now lands A2 on 'light', D3 on
-  'him' (L0832b longer); window 1042.48-1129.89.
-- **m12** the auction's beats (L0902) placed on the new words; everything after +0.46 s; window 1128.39-1222.35.
-- **m19** from the phone on, +0.5 s (L1501); window 1895.35-2011.15.
-- **m21** the film ends 0.125 s earlier: window 2039.42-2139.54 (the last chord has long decayed by then).
-
-## Review round 1: the clock moved (read this first)
-
-The prologue was re-narrated slower, eight chapter openers gained head-holds and a new shot (ch06-s03b,
-the kernel trick) was added, so every window moved. **The cue sheet (`cues.json`) is the authority for
-times:** each cue's notes open with its new window, its IN and OUT joins (each inside a speech-free gap,
-QA `score.cueJoins`), and its LAST STRIKE BY target, and every hit in the notes has been re-mapped to
-the new clock through the beat and word names it cites. Times quoted further down this bible (the
-development tables, the scored silences) are from the earlier clock unless marked *new clock*: use the
-names, not the numbers. Motifs, keys and instrumentation are unchanged. What moved between cues:
-
-| moved | from → to | why |
-|---|---|---|
-| the wick glint at the end of the title (`wickCatch` 74.98) | m01 → **m02's first note** | the m01→m02 join must finish by 74.6 (1.5 s before L0201) |
-| M2's wry walk for the false-clue card (`falseClue` 555.31, `falseClueTurn` 556.31) | m06 → **m07's opening** | the join is in the 3.4 s gap after L0512 |
-| **the slip motif** (`slipPinned` 1205.94, `draught` 1207.14: A→D, D held over A-E, solo celesta) | m12 → **m13's opening** | a join after it could not finish before L1002 (1209.68); same pitches and instrument, so m21 still resolves it |
-| ch12-s08 (the stampede) now plays **before** ch12-s03 (Anthropic, then Bard / LLaMA / GPT-4 and Claude the same day) | inside m16 | the shots were re-ordered; m16 now ends on the founding figure (two equal plucks on `sameDayChips` 1631.83) |
-| THE LABS UNDER THE SAME LIGHT (ch15-s05, the founding figure once per lamp) | m20 → **m19** | the only usable gap inside ch15-s05 lies between Anthropic's lines and OpenAI's: one cue now carries both labs (fairness); m20 is the holdouts and Widrow |
-| the m04→m05 join | kept **before** the snow line (364.95-365.70, a short fade on the decaying held D) | the hand-off's later gap (374.3) would have put the winter's first line inside the sterile cue |
-| m21's window | now runs to the film's end (2121.42) | the end cards are 31.5 s; the last suspension decays inside the window |
-| m16's stampede no longer stops dead | the double-speed pulse falls back to **M5c at m12's own eighths and level** on `sitBack` and carries through the cut into the founding (review r1) | the stampede's energy carries into ch12-s03 instead of restarting after a flashback; the founding stays identical to m12's |
-
-All 21 cues are rendered at their new windows (m11, m12, m16, m17 and m18 were the last; their sources
-now place every event in absolute film seconds, so the next clock move is a find-and-replace on beat
-times rather than a re-derivation).
-
+| cue | window (s) | shots | state after the round-4 clock move (director re-fit 2026-10-13) |
+|---|---|---|---|
+| m01 | 0.000-76.267 | ch01-s01…ch01-s07 | RE-FIT PENDING: L0114 re-narrated (ch01-s06 +0.417 s); title/subtitle in ch01-s07 +0.417 s; the dead cut stays on `wick`, 0.2 s before "Our" |
+| m02 | 74.267-199.322 | ch02-s01…ch02-s08 | RE-FIT PENDING: ch02-s01…s07 +0.417 s; L0220 1.375 s longer; OUT gap after L0220 → L0301 |
+| m03 | 197.322-324.222 | ch03-s01…ch03-s09 | moved bodily +1.792 s; source re-based to this clock (constants +3.5417 s, sonified block regenerated) and re-rendered with a voice pass (wcheck 20 → 0 flags); exact |
+| m04 | 322.222-368.992 | ch04-s01…ch04-s02 | moved bodily +1.792 s with its shots; render unchanged and still exact |
+| m05 | 368.292-453.602 | ch04-s03…ch04-s08 | moved bodily +1.792 s with its shots; render unchanged and still exact |
+| m06 | 451.769-558.942 | ch05-s01…ch05-s06 | moved bodily +1.792 s with its shots; render unchanged and still exact |
+| m07 | 558.242-643.897 | ch05-s07…ch05-s10 | moved bodily +1.792 s with its shots; render unchanged and still exact |
+| m08 | 641.895-794.345 | ch06-s01…ch06-s08 | moved bodily +1.792 s with its shots; render unchanged and still exact |
+| m09 | 792.843-888.458 | ch07-s01…ch07-s06 | moved bodily +1.792 s with its shots; render unchanged and still exact |
+| m10 | 887.058-1061.358 | ch08-s01…ch08-s10 | moved bodily +1.792 s with its shots; render unchanged and still exact |
+| m11 | 1059.858-1149.756 | ch08-s11…ch08-s14 | moved bodily +1.792 s with its shots; render unchanged and still exact |
+| m12 | 1148.267-1243.646 | ch09-s01…ch09-s05 | moved bodily +1.792 s with its shots; render unchanged and still exact |
+| m13 | 1242.882-1460.770 | ch10-s01…ch10-s14 | moved bodily +1.792 s with its shots; render unchanged and still exact |
+| m14 | 1458.267-1515.042 | ch11-s01…ch11-s03 | moved bodily +1.792 s with its shots; render unchanged and still exact |
+| m15 | 1513.542-1587.992 | ch11-s05…ch12-s02 | moved bodily +1.792 s with its shots; render unchanged and still exact |
+| m16 | 1586.992-1672.252 | ch12-s06…ch12-s03 | moved bodily +1.792 s with its shots; render unchanged and still exact |
+| m17 | 1669.942-1768.942 | ch13-s01…ch13-s06 | moved bodily +1.792 s with its shots; render unchanged and still exact |
+| m18 | 1767.442-1917.935 | ch14-s01…ch14-s07 | RE-FITTED (composer, 2026-10-13): s01-s04b +1.792 s, s05-s07 +2.125 s; ch14-s04b re-composed to L1410b's beats (G → F# on `behind`, tags on `tag1`/`tag2` + the breath after the line, two E7 glints on `two`); nothing struck within 1.1 s of fx-stamp-fence on `stands`; exact, 0 wcheck flags |
+| m19 | 1916.433-2038.900 | ch15-s01…ch15-s05 | RE-FITTED (composer v20, 2026-10-13, critic round 1): lamp = one soft harp D under the name, the full figure in the next breath (after `weapons` / `systems`), one F# bloom per lab (after `books` / `shot`), nothing under 'a warning shot'; the floor rests under L1522c/L1522d and the doubling; last strike 2035.99; exact, 0 wcheck flags |
+| m20 | 2036.191-2064.691 | ch15-s06…ch15-s07 | moved bodily +3.750 s with its shots; render unchanged and still exact |
+| m21 | 2065.958-2164.000 | ch15-s08…ch15-s10 | RE-FIT PENDING: s08/s09 +3.75 s (keep the held E's re-bow ≥ 0.3 s from fx-stamp-howfar on `open`; silence under fx-stamp b3); ch15-s10 now 28.71 s (Turing b1, CREDITS b2, SOURCES `sources`, fade b3): window to 2164.00 |
 
 ## The governing idea: a flame is a held note
 
@@ -59,7 +50,7 @@ The film measures beliefs with candles, so the score measures them with one held
 - **Gone** = the held note **falls one step** (4 → 3) and the chord fades.
 
 A belief that is still burning stops on the suspension and never resolves. **The film's last chord is
-that suspension** (Asus4 in D: lit as the new unlettered candle catches at `b6` 2088.08, the bass drops under the held D at the cut to black, about 2089.5, and it rings out over the silent Turing card; *new clock*). Cue boundaries land on
+that suspension** (Asus4 in D: the new unlettered candle's wick catches on 'candles' 2127.56, M1 rises in the clear after 'come from' (ends 2128.54), the bass drops under the held D at the cut to black (ch15-s10, 2131.54), and the suspension is held as a ppp pad under the end cards, thinning to the D alone; *current clock 2153.5417 s*). Cue boundaries land on
 candle lightings wherever the clock allows, so "how long" becomes something you hear: the longer a
 belief burns, the longer its note is held across the cue.
 
@@ -102,9 +93,13 @@ film ends on the unresolved Asus4 of D.
 ## House rules for every composer
 
 **Register under speech.** The narrator is a warm, unhurried mid-life RP baritone (fundamental about
-90-250 Hz, formants to about 3 kHz). While he speaks, sustained material stays **below D3** (drones,
-contrabass, cello pedals, pizz), and any mid-range strings or pads sit at velocity .10-.15 behind
-`lpf(1000-1400)`. Melody in the 200 Hz-2 kHz band belongs in the **gaps between lines** (the clock gives
+90-250 Hz, formants to about 3 kHz). While he speaks, sustained material stays **below about A2 (110 Hz), thin above it**
+(critic r1 of the round-2 film, replacing "below D3": a D2-D3 drone or pulse sits right on his fundamental): drones,
+contrabass and cello pedals at D1/A1 behind `lpf(250)` (a bowed contrabass sounds its 2nd and 3rd harmonics, so
+E1-B1 is heard at E2-B2: a fifth below E2 is best a pure `sine`), GPU pulses an octave down (D1 D2 A1 D2) behind
+`lpf(350-480)`, pad chord tones at A3/B3 and up, and the D2-D3 octave only in the gaps; any mid-range strings or
+pads sit at velocity .10-.15 behind `lpf(1000-1400)`. Note: `note("[a,b]").gain("[x,y]")` does NOT give each
+note its own gain (it multiplies the stacks: four voices); write one `$:` per gain. Melody in the 200 Hz-2 kHz band belongs in the **gaps between lines** (the clock gives
 every gap). Swells only where the voice is silent (beats listed in each cue's notes). Never put a moving
 melody in the 300-1200 Hz band under a line.
 
@@ -120,12 +115,16 @@ tails too: a seal, a chord or a celesta note that rings past a line's first word
 **Check:** measure each line in the 250-2 kHz and 1-4 kHz bands (render + `gainDb`, whole line, no duck);
 every line at least **7.5 dB** clear in both (renders vary 1-2 dB in reverberant passages, so aim for 9).
 Passed this way: m19 v9, m21 v5, m02 and m04 (critic round 1 voice-band pass).
+**Per-word and low-band check (critic r1 of the round-2 film):** also every word of 0.2 s or longer at least
+**3 dB** clear in both bands (a picture-pinned strike on a key word is halved with a short ring, or moved into the
+nearest breath), and every line at least **6 dB** voice-over-music in **80-250 Hz** before the duck (aim for 9 in
+the render + `gainDb` measure). A per-line + per-word + low-band checker: `.orly-work/score-m08-12/wcheck.mjs <cue>`.
 
 **Length and endings.** `cycles = (end - start) × cps`. Compose with `arrange([n, pattern], …)` or
 one-shot sequences with `.slow(n)` so the music is through-composed and **ends**: the last onset falls
 **before the overlap region** (the final 2-4 s of the window, where the next cue fades in), and the
 last sound is a struck or released chord that decays naturally. A cue with `fadeOut: 0` is not faded
-(only m21, by design: its window now runs to the film's end and its last chord decays inside it). Every other cue is faded over `[end - fadeOut, end]`
+(none now: m21's window runs to the film's end and its end-card pad decays to the room-tone floor inside it, with only a 1 s safety fade on the last second). Every cue is faded over `[end - fadeOut, end]`
 and cut at `end`, so its music should already be decaying there.
 
 **Phase.** To hit a word on a downbeat, shift the bar frame as perceptron-short did: choose cps, then
@@ -203,7 +202,7 @@ $: note("d2@4 a1@8 ~@4").slow(4).s("gm_contrabass").velocity(.25).lpf(400)
 | m02 106-122 / 176-179 | THE BRAIN IS A LOGIC MACHINE (G: D→G over G, G over D-A, G→F#) | celesta lights it on 107.08; strings suspend on "Gerard" 116.77; **first full statement** with the fall on "sixteen" 178.32 |
 | m03 212.6 / 298.1 | A MACHINE THAT LEARNS WILL SOON SEE… (C: G→C) | valve organ; suspension under Minsky; falls on "seven" 298.06 |
 | m04 345.5 | MANY LAYERS ARE A DEAD END (D minor: A→D over Dm) | low clarinet over cello, dark; held through the whole winter (m05) as a cello pedal |
-| m06 501 | sterile candle goes out | its own colour (low clarinet over cello) falls on "seventeen" 500.97, cleanly |
+| m06 523.51 | sterile candle goes out | its own colour (low clarinet over cello) falls on "seventeen" 523.51, softly under the line; the cello's A-E carries it |
 | m07 537.6 / 582.8 | KNOWLEDGE, BY HAND (C) | synth brass lights it; cello falls **a step short** on "seven" (guttered); a thin high note stays for Cyc |
 | m08 650.7 | FIDDLY, AND BEATEN ANYWAY (D minor) | solo piano, plain; suspension under the rim |
 | m09 729.4 / 794 | WARM UP LAYER BY LAYER (Bb) | warm synth pad under piano; suspension on "nearly" (746.8); the piano falls as it gutters |
@@ -343,16 +342,18 @@ All five snippets were rendered through `score.mjs file` on 2026-10-06 with no `
 
 ---
 
-## Scored silences (keep them silent) — *clock 2139.54 s (2026-10-12)*
+## Scored silences (keep them silent) — *current clock 2164.00 s (re-mapped in review round 4)*
 
 | time | where | how |
 |---|---|---|
-| 29.58-30.2 | the lamp click (ch 1, ch01-s04 head) | m01 rests under the click, then the walk |
-| 66.06-67.58 | after the rewind, the first beat of the title (`title` 67.58) | m01 rests after the rewind sucks back |
-| 376.75-387.25 | Pitts's lamp on the sill (ch04-s04; L0408 377.75-382.64) | m05: one cello harmonic, barely there, or nothing |
-| 387.25-394.94 | Rosenblatt (ch04-s05) | m05: silence through the line; M1 on solo cello only on the dedication (`dedication` 394.94) |
-| 1660.65-1664.08 | Hinton lifts his own slip (ch 13) | m17 stops dead on `down` 1660.65; nothing until the quote (`Machines` 1664.08) |
-| 1829.99-1831.28 | the struck match is shaken out (ch 14) | m18: the whole motif in two seconds, then silence to `steady` |
-| 2038.15-2039.42 | between the last witnesses and the reveal | real gap between m20 and m21 |
-| about 2094.15-2097.95 | the stamp (`b3` 2094.84) and the lamp click (`b4` 2097.34) (ch 15) | m21: the music rests after the slip is read; the struck match (`b5` 2104.89) also lands in near-silence |
-| about 2118-2139.54 | the Turing card and the end cards | m21's body is silent: its last suspension has decayed |
+| 29.58-30.20 | the lamp click (ch 1, ch01-s04 head; fx-lamp-on) | m01 rests under the click, then the walk |
+| 68.00-69.50 | after the rewind and L0114b, the first beat of the title (`title` 69.50) | m01 rests after the rewind sucks back |
+| 380.04-390.54 | Pitts's lamp on the sill (ch04-s04; L0408 381.04-385.93) | m05: one cello harmonic, barely there, or nothing |
+| 390.54-398.23 | Rosenblatt (ch04-s05) | m05: silence through the line; M1 on solo cello only on the dedication (`dedication`) |
+| 1677.45-1680.87 | Hinton lifts his own slip (ch 13) | m17 stops dead on `down`; nothing until the quote ('Machines') |
+| 1850.45-1851.74 | the struck match is shaken out (ch14-s04b, `match` → `steady`) | m18: the whole motif in two seconds, then silence to `steady` |
+| 2064.69-2065.96 | between the last witnesses and the reveal | real gap between m20 and m21 |
+| about 2121.3-2125.3 | the stamp (`b3` 2122.00, fx-stamp) and the lamp click (`b4` 2124.50, fx-lamp-off) (ch15-s09) | m21: the music rests after the slip is read; the match struck on 'new' (2131.09) also lands in near-silence |
+| 2132.29-2164.00 | the Turing card and the end cards (ch15-s10, now 28.71 s: b1 2135.79, CREDITS b2 2143.79, `sources` 2156.59, fade b3 2163.19) | NOT silent since round 2: m21 keeps the suspension as a ppp pad (A-E + D, then the D alone), one soft celesta D on SOURCES, at the room-tone floor before the film's end |
+
+FOLEY (review round 2): the stamp, the lamp clicks and the struck match now sound on the foley bus (`score/foley.json`, mixed by film:mix after the master gain at -29 to -31 LUFS short-term): keep the music resting under them.

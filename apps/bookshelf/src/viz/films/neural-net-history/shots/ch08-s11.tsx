@@ -1,8 +1,10 @@
 /**
  * ch08-s11 — Florence, 2012: an overfull hall, a young presenter at the lectern, Hinton absent (a small far
- * inset), and LeCun standing at the rear wall (dawnGold; 9.79 s; in on fadeBlack from the misty hills).
- * Clock of 2026-10-12: L0821 now names Hinton ('A bad back kept Hinton from flying'); the inset opens on 'kept'
- * so it is full on 'Hinton' and closes as 'flying' ends.
+ * inset), and LeCun standing at the rear wall (dawnGold; 11.29 s; in on fadeBlack from the misty hills).
+ * Clock of 2026-10-12 (round 2: L0821 re-narrated solo at 0.85, 'A bad back... kept Hinton from flying. Yann Le Cun
+ * stood at the rear of a packed room.', 4.46 → 10.76 s): every beat is read from the clock (T.word / T.beat): the
+ * hall cut at 4.26, the inset opens on 'kept' (5.77) so it is full on 'Hinton' (6.11) and closes as 'flying' ends
+ * (≈ 7.4); the pan reaches the rear wall on 'Yann' (7.88) and settles by 'rear' (9.49); hold on the packed room.
  *
  *   0 → 'Florence'  establishing exterior: the city at late-afternoon gold, a ribbed dome and a slender bell tower
  *                   in silhouette against luminous haze (the hall itself stays generic); a slow push; the place
@@ -23,7 +25,7 @@
 import { Timeline } from '../../../core';
 import type { Camera3, Frame, PaintEnv, Pose, ShotScene } from '../../../film';
 import {
-  LAYERS, POSES, PUPPET_NEAR_BLACK, chair, defineShot, mixLab, overscan, placeStamp, podium, pose, seatHeight, toLayer, withAlpha, withLife,
+  LAYERS, POSES, PUPPET_NEAR_BLACK, chair, defineShot, mixLab, overscan, placeStamp, podium, pose, seatHeight, toLayer, toScreen, withAlpha, withLife,
 } from '../../../film';
 import { FONT, softPlate, textColor } from '../../../film/silhouette/type';
 import { glow } from '../../../film/silhouette/metaphors/kit';
@@ -40,20 +42,21 @@ type C = CanvasRenderingContext2D;
 const FLOOR = 640;
 /** the screen (L3 world) and the projector at the rear (L3 world) */
 const SCREEN = { x: 150, y: 150, w: 320, h: 208 };
-const PROJ = { x: 2050, y: 196 };
+/** the projector sits low at the rear, so its beam crosses the standing crowd's heads on its way to the screen */
+const PROJ = { x: 2050, y: 430 };
 const LECTERN_X = 540;
 /** Li sits clear of the lectern's base (her chair and the podium never merge, §10 rule 2) */
 const LI_X = 770;
-/** the standing crowd: two ranks shoulder to shoulder (L4 sharp in front, L3 smaller and hazed behind) */
-const CROWD_X0 = 960;
-const CROWD_PITCH = 34;
-const CROWD_N = 7;
-const BACK_X0 = 900;
-const BACK_PITCH = 38;
-const BACK_N = 8;
-/** the rear wall (the end of the room) and LeCun standing against it */
-const WALL_X = 1250;
-const LECUN_X = WALL_X + 30;
+/** the standing crowd along the aisle: two ranks (L4 sharp in front, L3 smaller and behind fog B), staggered so
+ *  light shows between the heads */
+const CROWD_XS = [992, 1050, 1110, 1172];
+const BACK_XS = [928, 1002, 1076, 1150];
+/** the rear wall's edge (L3 world: a pilaster) and LeCun (L4): the RIGHTMOST standing figure, against the wall's
+ *  lit patch; off frame right in the wide, he enters on 'Yann' as the camera trucks along the aisle */
+const WALL_X = 1150;
+const LECUN_X = 1290;
+/** the lit patch of rear wall behind LeCun (L3 world, where he lands when the camera settles) */
+const PATCH = { x: 1262, y: 330 };
 const h01 = (i: number, s: number) => (hash1(i, s) + 1) / 2;
 /** arms folded: the upper arm a touch forward, the forearm a bar across the chest (fist at the far elbow) */
 const FOLD: Pose = pose({ hipF: 4, kneeF: -2, hipB: -4, kneeB: 0, torso: -2, neck: 6, head: -6, shoulderF: -18, elbowF: 112, wristF: -50, shoulderB: -20, elbowB: 110, wristB: -50 }, { handF: 'fist', handB: 'fist' });
@@ -74,6 +77,8 @@ interface B {
   aisles: number;
   yann: number;
   lecunCard: number;
+  /** the Hinton inset and card are gone by here (≈ the end of 'flying'), before the truck */
+  flyEnd: number;
 }
 interface Scene extends ShotScene {
   b: B;
@@ -98,20 +103,23 @@ export default defineShot<Scene>({
       aisles: T.beat('aisles'),
       yann: T.beat('lecun'),
       lecunCard: T.beat('lecun') + 0.1,
+      flyEnd: Math.min(7.3, T.wordEnd('L0821', 'flying')),
     };
     const ext = camKeys([
       [0, 620, 352, -30],
       [b.hall, 650, 340, 70],
     ]);
-    // the interior: one slow eased pan (≈7 %/s at its peak) from the hall cut, under the screen-locked Hinton inset,
-    // along the packed aisle to the rear wall; LeCun is on the right third by 'Yann' + 0.2 and the camera settles
-    const P0 = { x: 860, y: 378, z: 30 }, P1 = { x: 1092, y: 392, z: 118 };
-    const panEnd = Math.min(D - 0.6, b.yann + 1.1);
+    // the interior: WIDE on the left first (the screen, the presenter, Li), a slow drift while Hinton's inset plays;
+    // then one eased truck right along the aisle (≈ 175 px over 6.8 → 9.5 s, ≈ 5 % of the frame per second) past
+    // the standing crowd, so the rear wall's lit patch and LeCun ENTER frame on 'Yann'; then a settle
+    const P0 = { x: 650, y: 380, z: 30 }, P1 = { x: 818, y: 388, z: 56 };
+    const pan0 = 6.8, pan1 = Math.min(D - 0.8, 9.5);
     const int = (t: number): Camera3 => {
-      const u = clamp01((t - b.hall) / (panEnd - b.hall));
-      const e = (1 - Math.cos(Math.PI * u)) / 2;
-      const drift = clamp01((t - panEnd) / Math.max(0.1, D - panEnd));
-      return { x: P0.x + (P1.x - P0.x) * e + 8 * drift, y: P0.y + (P1.y - P0.y) * e + 3 * drift, z: P0.z + (P1.z - P0.z) * e + 26 * drift, lens: 1 };
+      const pre = clamp01((t - b.hall) / (pan0 - b.hall));
+      const u = clamp01((t - pan0) / (pan1 - pan0));
+      const e = u * u * (3 - 2 * u);
+      const drift = clamp01((t - pan1) / Math.max(0.1, D - pan1));
+      return { x: P0.x + 6 * pre + (P1.x - P0.x - 6) * e + 6 * drift, y: P0.y + (P1.y - P0.y) * e + 2 * drift, z: P0.z + 4 * pre + (P1.z - P0.z - 4) * e + 12 * drift, lens: 1 };
     };
     const ECAMS = [ext(0), ext(b.hall / 2), ext(b.hall)];
     const ICAMS: Camera3[] = [];
@@ -126,24 +134,27 @@ export default defineShot<Scene>({
     else interior(f, sc, t);
     // ---- screen-locked type
     const env = { t, mood: f.mood, seed: 1012 };
-    placeStamp(f.c, { place: 'Florence', date: 'Friday 12 October 2012 · 17:05', year: 2012, y: 638, at: b.florence - 0.25, dur: b.hall + 1.6 - b.florence, fade: 0.4 }, env);
+    // the place stamp holds ≈ 3.5 s, then hands the lower-left stamp row to the event label (the top-left corner
+    // stays clear for the reel's glossary tags)
+    placeStamp(f.c, { place: 'Florence', date: 'Friday 12 October 2012 · 17:05', year: 2012, y: 638, at: b.florence - 0.25, dur: b.hall + 0.55 - b.florence, fade: 0.35 }, env);
     if (t >= b.hall) {
-      const la = win(t, b.hall + 0.15, b.hall + 0.6) * (1 - win(t, b.aisles - 0.2, b.aisles + 0.3));
+      const la = win(t, b.hall + 0.95, b.hall + 1.35) * (1 - win(t, b.yann - 0.6, b.yann - 0.2));
       if (la > 0.003) {
         const c = f.c;
         c.save();
-        softPlate(c, 250, 70, 520, 90, f.mood.ink, 0.55 * la);
+        softPlate(c, 250, 620, 520, 64, f.mood.ink, 0.55 * la);
         c.globalAlpha = la;
         c.font = `500 22px ${FONT.mono}`;
         c.fillStyle = textColor(f.mood);
         c.textAlign = 'left';
         c.textBaseline = 'alphabetic';
-        c.fillText('ImageNet challenge workshop, ECCV', 54, 78);
+        c.fillText('ImageNet challenge workshop, ECCV', 54, 628);
         c.restore();
       }
       hintonInset(f, t, b);
-      nameCardLg(f.c, { name: 'Geoffrey Hinton', role: '', x: 784, y: 112, at: b.tall - 0.3, dur: Math.max(1.4, b.yann - 0.05 - (b.tall - 0.3)), fade: 0.3 }, env);
-      nameCardLg(f.c, { name: 'Yann LeCun', role: "the full room, by Fei-Fei Li's account", align: 'right', x: 1216, y: 200, at: b.lecunCard, dur: b.D - b.lecunCard + 1, fade: 0.4 }, env);
+      nameCardLg(f.c, { name: 'Geoffrey Hinton', role: '', x: 784, y: 112, at: b.tall - 0.3, dur: Math.max(1.0, b.flyEnd - (b.tall - 0.3)), fade: 0.3 }, env);
+      nameCardLg(f.c, { name: 'Yann LeCun', role: "the full room, by Fei-Fei Li's account", align: 'right', x: 1216, y: 132, at: b.lecunCard, dur: b.D - b.lecunCard + 1, fade: 0.4 }, env);
+      lecunLeader(f, sc, t);
     }
   },
 });
@@ -247,16 +258,16 @@ function interior(f: Frame, sc: Scene, t: number) {
     // the projector beam from the rear of the room, over the heads; it fades out before it meets the screen
     projectorBeam(c, env, { from: PROJ, to: { x: SCREEN.x + SCREEN.w + 30, y: SCREEN.y + SCREEN.h / 2 }, w0: 8, w1: SCREEN.h * 0.42, a: flick, fadeEnd: true });
     // the rows of seated heads, receding into the dark of the room
-    audienceHeads(c, env, { x0: 640, x1: WALL_X - 170, y: 486, lean: 0, seed: 41, tq, pitch: 66 });
+    audienceHeads(c, env, { x0: 640, x1: 1060, y: 486, lean: 0, seed: 41, tq, pitch: 66 });
     audienceHeads(c, env, { x0: 640, x1: 1000, y: 540, lean: 0, seed: 53, tq, pitch: 58 });
-    // the back rank of standers: smaller, hazed, shoulder to shoulder, baselines staggered (a packed room)
-    for (let i = BACK_N - 1; i >= 0; i--) {
-      const P = ATTENDEES[(i + 3) % ATTENDEES.length];
-      const x = BACK_X0 + i * BACK_PITCH + hash1(i, 71) * 8;
-      const k = 0.8 * (1 + 0.08 * hash1(i, 73));
-      const base = VARIANTS[(i * 3 + 1) % VARIANTS.length];
-      P.draw(c, { x, y: 596 + ((i % 3) - 1) * 6, facing: 'left', pose: withLife({ ...base }, tq + i * 0.29, 500 + i, 0.9), scale: k }, env);
-    }
+    // the back rank of standers up the aisle (L3, smaller, behind fog B): spaced so light shows between the heads,
+    // baselines stepping up the raked floor
+    BACK_XS.forEach((x, i) => {
+      const P = ATTENDEES[(i * 3 + 1) % ATTENDEES.length];
+      const k = 0.78 * (1 + 0.06 * hash1(i, 73));
+      const base = [LOOKUP, POCKET, WEIGHT][i % 3];
+      P.draw(c, { x: x + hash1(i, 71) * 6, y: 588 - (i % 2) * 6, facing: 'left', pose: withLife({ ...base }, tq + i * 0.29, 500 + i, 0.9), scale: k, light: LIGHT, edgeRim: { ...EDGE, px: 1.0, alpha: 0.3 } }, env);
+    });
   });
   f.practical({ x: SCREEN.x + SCREEN.w / 2, y: SCREEN.y + SCREEN.h / 2, kind: 'screen', seed: 1205, intensity: 0.75, radius: 220, layer: 'L3' });
   f.fog('B');
@@ -283,23 +294,21 @@ function interior(f: Frame, sc: Scene, t: number) {
     const cs = seatHeight(SPECS.li, POSES.sit) / Math.max(1, seatY);
     for (const cx of [LI_X + 74, LI_X + 74 + 120]) chair(c, { x: cx, y: FLOOR, s: cs, style: 'modern', view: 'side', flip: true }, env);
     li.draw(c, { x: LI_X, y: FLOOR, facing: 'left', pose: sitP, ink: PUPPET_NEAR_BLACK, light: LIGHT, edgeRim: EDGE }, env);
-    // the packed aisle: people standing shoulder to shoulder, looking up at the screen; four pose variants, heights
-    // ±8 %, one turned to his neighbour
+    // the packed aisle: people standing along it, looking up at the screen; three pose variants (none with folded
+    // arms: that is LeCun's), heights ±8 %, one turned to his neighbour; light between the heads
     audienceHeads(c, env, { x0: 660, x1: 900, y: 590, lean: 0, seed: 61, tq, pitch: 64 });
-    for (let i = CROWD_N - 1; i >= 0; i--) {
+    CROWD_XS.forEach((x0, i) => {
       const P = ATTENDEES[(i * 5 + 2) % ATTENDEES.length];
-      const x = CROWD_X0 + i * CROWD_PITCH + hash1(i, 31) * 7;
-      const sc2 = 0.97 * (1 + 0.08 * hash1(i, 37));
-      const turned = i === 4;
-      const base = turned ? pose({ ...POSES.listen.angles, head: 6, neck: 12 }) : VARIANTS[(i * 7 + 3) % VARIANTS.length];
+      const x = x0 + hash1(i, 31) * 6;
+      const sc2 = 0.96 * (1 + 0.07 * hash1(i, 37));
+      const turned = i === 2;
+      const base = turned ? pose({ ...POSES.listen.angles, head: 6, neck: 12 }) : [LOOKUP, POCKET, WEIGHT][i % 3];
       const p = withLife({ ...base }, tq + i * 0.37, 300 + i, 0.9);
-      P.draw(c, { x, y: FLOOR + (h01(i, 39) > 0.5 ? 4 : 0), facing: turned ? 'right' : 'left', pose: p, scale: sc2, ink: PUPPET_NEAR_BLACK, light: LIGHT, edgeRim: { ...EDGE, alpha: 0.4 } }, env);
-    }
-    // LeCun, standing against the rear wall in profile, arms folded, picked out by a rim of the screen's light
-    const lp = withLife({ ...FOLD }, tq, 1960, 0.8);
-    cast.lecun.draw(c, { x: LECUN_X, y: FLOOR, facing: 'left', pose: lp, ink: PUPPET_NEAR_BLACK, light: LIGHT, edgeRim: { x: -1, y: -0.15, px: 2.2, alpha: 0.12 + 0.88 * pick } }, env);
-    // a standing neighbour just past him (he is among others)
-    ATTENDEES[3].draw(c, { x: LECUN_X + 132, y: FLOOR, facing: 'left', pose: withLife({ ...WEIGHT }, tq, 91, 0.9), scale: 0.95, ink: PUPPET_NEAR_BLACK, light: LIGHT, edgeRim: { ...EDGE, alpha: 0.35 } }, env);
+      P.draw(c, { x, y: FLOOR + (h01(i, 39) > 0.5 ? 4 : 0), facing: turned ? 'right' : 'left', pose: p, scale: sc2, ink: PUPPET_NEAR_BLACK, light: LIGHT, edgeRim: { ...EDGE, px: 1.2, alpha: 0.4 } }, env);
+    });
+    // LeCun: the rightmost standing figure, against the rear wall's lit patch, in profile, arms folded; the screen's
+    // light cuts a strong rim (2.5 px against the crowd's 1.2) as he enters on 'Yann'
+    cast.lecun.draw(c, lecunOpts(tq, pick), env);
   });
   f.rim({ x: -1, y: -0.3 });
   // near plane: the backs of seated heads at the bottom edge, soft
@@ -310,6 +319,37 @@ function interior(f: Frame, sc: Scene, t: number) {
   });
   void clamp01;
   void sm;
+}
+
+function lecunOpts(tq: number, pick: number) {
+  const lp = withLife({ ...FOLD }, tq, 1960, 0.8);
+  return { x: LECUN_X, y: FLOOR, facing: 'left' as const, pose: lp, ink: PUPPET_NEAR_BLACK, light: LIGHT, edgeRim: { x: -1, y: -0.15, px: 2.5, alpha: 0.35 + 0.6 * pick } };
+}
+
+/** the LeCun card's leader: a fine rule from under the card down to just above his head, so the name lands on him */
+function lecunLeader(f: Frame, sc: Scene, t: number) {
+  const b = sc.b;
+  const a = win(t, b.lecunCard + 0.15, b.lecunCard + 0.55);
+  if (a <= 0.003) return;
+  const cam = sc.int(t);
+  const hd = cast.lecun.anchor(lecunOpts(tq12(t), 1), 'head');
+  const p = toScreen(LAYERS.L4, cam, hd.x, hd.y - 34);
+  const c = f.c;
+  const top = 196;
+  if (p.y - top < 20) return;
+  c.save();
+  c.globalAlpha = a;
+  c.strokeStyle = withAlpha(mixLab(f.mood.rim, f.mood.halo, 0.4), 0.85);
+  c.lineWidth = 1.2;
+  c.beginPath();
+  c.moveTo(p.x, top);
+  c.lineTo(p.x, top + (p.y - top) * Math.min(1, a * 1.2));
+  c.stroke();
+  c.fillStyle = withAlpha(mixLab(f.mood.rim, f.mood.halo, 0.4), 0.9);
+  c.beginPath();
+  c.arc(p.x, top, 2.2, 0, Math.PI * 2);
+  c.fill();
+  c.restore();
 }
 
 /** the projected screen: ONE bright keystoned rectangle (nothing on it), a soft radial hot spot, a faint frame */
@@ -348,30 +388,35 @@ function projectionScreen(c: C, env: PaintEnv, flick: number) {
   c.restore();
 }
 
-/** the rear wall (L3): a panelled stretch of the end wall behind LeCun, a pilaster at its screen-side edge, and the
- *  screen's light spilling warm across it (he stands against it, cut out by it) */
+/** the rear wall (L3): a panelled stretch of the end wall, its edge a proper PILASTER (base, shaft, capital), the wall
+ *  feathered into the hall's dark (no value step), and the screen's light spilling across it in a lit patch behind
+ *  LeCun's shoulders (ΔL* ≥ 25 against his near-black) */
 function rearWall(c: C, env: PaintEnv, pick: number) {
   const m = env.mood;
-  const X0 = WALL_X - 150, X1 = WALL_X + 900;
-  c.fillStyle = mixLab(env.fill('set'), m.fg, 0.35);
+  const X0 = WALL_X, X1 = WALL_X + 1000;
+  const wall = mixLab(env.fill('set'), m.fg, 0.35);
+  const fe = c.createLinearGradient(X0, 0, X0 + 160, 0);
+  fe.addColorStop(0, withAlpha(wall, 0));
+  fe.addColorStop(1, wall);
+  c.fillStyle = fe;
   c.fillRect(X0, -200, X1 - X0, FLOOR + 400);
-  // the spill: a soft warm pool on the wall behind his shoulders
+  // the lit patch behind his shoulders
   c.save();
-  c.translate(WALL_X - 70, 370);
-  c.scale(0.8, 1);
-  const sp = c.createRadialGradient(0, 0, 10, 0, 0, 300);
-  sp.addColorStop(0, withAlpha(mixLab(m.setHaze, m.halo, 0.55), 0.35 + 0.6 * pick));
-  sp.addColorStop(0.55, withAlpha(mixLab(m.set, m.halo, 0.28), 0.2 + 0.35 * pick));
+  c.translate(PATCH.x, PATCH.y);
+  c.scale(0.75, 1);
+  const sp = c.createRadialGradient(0, 0, 10, 0, 0, 260);
+  sp.addColorStop(0, withAlpha(mixLab(m.setHaze, m.halo, 0.7), 0.7 + 0.3 * pick));
+  sp.addColorStop(0.5, withAlpha(mixLab(m.setHaze, m.halo, 0.4), 0.4 + 0.3 * pick));
   sp.addColorStop(1, withAlpha(m.set, 0));
   c.fillStyle = sp;
   c.fillRect(-300, -300, 600, 600);
   c.restore();
   // panelling: a dado rail, raised panels below it and tall panels above (cut-lines in shadow and rim)
   const ink = env.fill('ink');
-  c.fillStyle = withAlpha(ink, 0.55);
-  c.fillRect(X0, 452, X1 - X0, 8);
-  for (let px = X0 + 40; px < X1; px += 120) {
-    c.strokeStyle = withAlpha(ink, 0.42);
+  c.fillStyle = withAlpha(ink, 0.45);
+  c.fillRect(X0 + 40, 452, X1 - X0, 8);
+  for (let px = X0 + 70; px < X1; px += 120) {
+    c.strokeStyle = withAlpha(ink, 0.36);
     c.lineWidth = 2;
     c.strokeRect(px, 476, 92, 130);
     c.strokeRect(px, 150, 92, 280);
@@ -384,18 +429,31 @@ function rearWall(c: C, env: PaintEnv, pick: number) {
     c.lineTo(px + 1, 429);
     c.stroke();
   }
-  // the pilaster at the wall's screen-side edge: dark, its face rimmed toward the screen
+  // the pilaster: a moulded base on the floor, a fluted shaft, a capital with an abacus under the cornice
   c.fillStyle = ink;
-  c.fillRect(X0 - 30, -200, 34, FLOOR + 400);
-  c.fillRect(X0 - 40, 440, 54, 18);
-  c.fillStyle = withAlpha(m.rim, 0.28);
-  c.fillRect(X0 - 30, -200, 1.4, FLOOR + 400);
+  c.fillRect(X0 - 18, 70, 36, FLOOR - 70);
+  c.fillRect(X0 - 28, FLOOR - 30, 56, 30);
+  c.fillRect(X0 - 24, FLOOR - 40, 48, 12);
+  c.fillRect(X0 - 26, 92, 52, 14);
+  c.fillRect(X0 - 32, 78, 64, 12);
+  c.fillRect(X0 - 400, 60, 1600, 20);
+  c.strokeStyle = withAlpha(m.rim, 0.1);
+  c.lineWidth = 1;
+  c.beginPath();
+  for (const dx of [-8, 0, 8]) {
+    c.moveTo(X0 + dx, 112);
+    c.lineTo(X0 + dx, FLOOR - 46);
+  }
+  c.stroke();
+  c.fillStyle = withAlpha(m.rim, 0.26);
+  c.fillRect(X0 - 18, 106, 1.4, FLOOR - 146);
+  c.fillRect(X0 - 32, 78, 64, 1.2);
 }
 
 /** the lantern-slide inset from ch08-s02: Hinton standing alone at a lectern-height desk, far away */
 function hintonInset(f: Frame, t: number, b: B) {
   // opens on 'kept' (full on 'Hinton'), closes in the breath after 'flying', before 'Yann': ~1.9 s on screen
-  const a = win(t, b.tall - 0.55, b.tall - 0.05) * (1 - win(t, Math.max(b.flying, b.yann - 0.55), b.yann - 0.05));
+  const a = win(t, b.tall - 0.55, b.tall - 0.05) * (1 - win(t, b.flyEnd - 0.4, b.flyEnd));
   if (a <= 0.003) return;
   const c = f.c;
   const m = f.mood;

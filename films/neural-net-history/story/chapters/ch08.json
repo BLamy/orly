@@ -1155,9 +1155,13 @@
     {
      "id": "L0821",
      "text": "A bad back kept Hinton from flying. Yann LeCun stood at the rear of a packed room.",
-     "direction": "quiet, factual, kindly on 'a bad back'; 'the tall man, Hinton' a light reminder of chapter 4's tall young man, the name tucked in; a little rueful on 'flying'; LeCun's name clear; no comment",
+     "direction": "quiet, factual, unhurried, kindly on 'a bad back' and a small pause after it; a little rueful on 'flying'; LeCun's name clear; no comment NARRATION: re-generate this line on its own (not inside a shot chunk) at voice speed about 0.84-0.86, target 150-165 wpm (6.0-6.5 s); the text is unchanged.",
      "pauseAfter": 0.5,
-     "spoken": "A bad back kept Hinton from flying. Yann Le Cun stood at the rear of a packed room."
+     "spoken": "A bad back... kept Hinton from flying. Yann Le Cun stood at the rear of a packed room.",
+     "tts": {
+      "solo": true,
+      "speed": 0.85
+     }
     }
    ],
    "leadIn": 1.2,
@@ -1619,8 +1623,13 @@
     {
      "id": "L0828",
      "text": "Put that in the file.",
-     "direction": "the refrain (fifth and last time): quiet, deliberate; it ends the chapter",
-     "pauseAfter": 0.66
+     "direction": "the refrain (fifth and last time): quiet, deliberate, slightly slower; it ends the chapter NARRATION: re-generate this line on its own (not inside a shot chunk) at voice speed about 0.82-0.85, target 1.9-2.2 s, matching L0109; the text is unchanged.",
+     "pauseAfter": 0.66,
+     "spoken": "Put that... in the file.",
+     "tts": {
+      "solo": true,
+      "speed": 0.84
+     }
     }
    ],
    "leadIn": 1,

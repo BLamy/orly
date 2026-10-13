@@ -806,7 +806,7 @@
    "leadIn": 0.6,
    "holdAfter": 0.5,
    "transitionIn": "cut",
-   "visual": "THIS SHOT: the KNOWLEDGE suspect gets its own candle; engineers type rules into an expert system that beats specialists in a blinded test, while the ward door stays shut. CAMERA: SHELF (low macro; the knowledge candle lit, with a 1–2 s BOARD insert on the S2 card), then the flame push onto the stage. Plain cut (same room, same mood): the candle shelf beneath the case board. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. On 'suspect', the KNOWLEDGE suspect card in slot S2 of the board's left margin (a small drawer of index cards) catches the light. The hands strike a match at the far end of the candle shelf and light a new candle: INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND, lettered in small caps (VT323 era face); its tag reads c. 1980; here the candle is new: no sleeve yet, only the full stub with its flame at the top ring. Camera pushes into the flame onto the paper stage (the push-into-the-flame cue, done in-shot, no lamp change), where the same candle stands huge and throws a broad amber pool. Inside the pool: anonymous knowledge engineers (generic silhouettes, not named people) at desks, copying rules from tall stacks of index cards onto terminals; card-strips printed IF … THEN … drift upward like sparks. At the left edge of the pool: a clinician at a time-sharing terminal answering question after question; on the screen a single word, WHY?, glows. On 'system' (L0514), a blinded-test plate drops in front of the stage: ten sealed envelopes (cases), a row of eight judges' silhouettes with blindfolds of cut paper, and two bars: the program's prescriptions rated acceptable 65% of the time, five Stanford specialists' 42.5–62.5% (the bar for the specialists is a range). On 'never', the terminal's screen goes quiet and a hospital ward door at the back of the stage stays closed. At the rim of this candle's light, half in shadow and facing out: a small figure holding the lantern network from shot 4 like a hand-lantern (generic, unnamed: the connectionists, who said knowledge should be learned, not typed in). TEXT RULE: besides stamps and name cards, at most two text items in this shot.",
+   "visual": "THIS SHOT: the KNOWLEDGE suspect gets its own candle; engineers type rules into an expert system that beats specialists in a blinded test, while the ward door stays shut. CAMERA: SHELF (low macro; the knowledge candle lit, with a 1–2 s BOARD insert on the S2 card), then the flame push onto the stage. Plain cut (same room, same mood): the candle shelf beneath the case board. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. On 'suspect', the KNOWLEDGE suspect card in slot S2 of the board's left margin (a small drawer of index cards) catches the light. The hands strike a match at the far end of the candle shelf and light a new candle: INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND, lettered in small caps (VT323 era face); its tag reads c. 1980; here the candle is new: no sleeve yet, only the full stub with its flame at the top ring. Camera pushes into the flame onto the paper stage (the push-into-the-flame cue, done in-shot, no lamp change), where the same candle stands huge and throws a broad amber pool. Inside the pool: anonymous knowledge engineers (generic silhouettes, not named people) at desks, copying rules from tall stacks of index cards onto terminals; card-strips printed IF … THEN … drift upward like sparks. At the left edge of the pool: a clinician at a time-sharing terminal answering question after question; on the screen a single word, WHY?, glows. On 'system' (L0514), a blinded-test plate drops in front of the stage: ten sealed envelopes (cases), a row of eight judges' silhouettes with blindfolds of cut paper, and two bars: the program's prescriptions rated acceptable 65% of the time, five Stanford specialists' 42.5–62.5% (the bar for the specialists is a range). On 'never', the terminal's screen goes quiet and a hospital ward door at the back of the stage stays closed. At the rim of this candle's light, half in shadow and facing out: a small figure holding the lantern network from shot 4 like a hand-lantern (generic, unnamed: the connectionists, who said knowledge should be learned, not typed in). TEXT RULE: besides stamps and name cards, at most two text items in this shot. SCRIPT NOTE (review round 9): L0514b names the era's dissenter: on 'philosopher' a second figure, Hubert Dreyfus, stands at the rim of the knowledge candle's light (the rim is reserved for doubters), with his name card; his quoted pattern is spoken, not carded.",
    "lines": [
     {
      "id": "L0513",
@@ -818,7 +818,20 @@
      "id": "L0514",
      "text": "One expert system, built from experts' rules, was rated above Stanford specialists, yet never went into routine use.",
      "direction": "'built from experts' rules' as a light gloss, not a definition lecture; a small wry turn on the second half, no mockery",
-     "spoken": "One expert system, built from experts' rules, was rated above Stanford specialists, yet never went into routine use."
+     "spoken": "One expert system, built from experts' rules, was rated above Stanford specialists, yet never went into routine use.",
+     "pauseAfter": 0.55
+    },
+    {
+     "id": "L0514b",
+     "text": "At its rim stood a philosopher, Hubert Dreyfus: real expertise is intuition, not rules. He saw a pattern: “early, dramatic success followed by sudden unexpected difficulties.”",
+     "pauseAfter": 0.6,
+     "direction": "steady, fair, a teacher naming the dissenter; 'Hubert Dreyfus' clear and unhurried; 'intuition, not rules' balanced; the quoted words as his, read plainly, a small weight on 'sudden unexpected difficulties'; about 7 s",
+     "qa": {
+      "stt": "required",
+      "expect": [
+       "Dreyfus"
+      ]
+     }
     }
    ],
    "beats": [
@@ -857,6 +870,14 @@
       "edge": "start"
      },
      "what": "terminal quiet; the ward door stays shut"
+    },
+    {
+     "id": "dreyfus",
+     "at": {
+      "line": "L0514b",
+      "word": "philosopher"
+     },
+     "what": "at the rim of the candle's light, half in shadow, a lone standing figure (the philosopher) beside the lantern-holder; his name card sets in"
     }
    ],
    "cast": [
@@ -880,6 +901,11 @@
      "kind": "label",
      "text": "MYCIN · blinded test, 1979 · acceptable: 65% vs 42.5–62.5%",
      "beat": "test"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Hubert Dreyfus, philosopher",
+     "beat": "dreyfus"
     }
    ],
    "music": {
@@ -889,7 +915,11 @@
    "claims": [
     "e5-knowledge-principle",
     "e5-mycin",
-    "e5-mycin-unused"
+    "e5-mycin-unused",
+    "e5-dreyfus"
+   ],
+   "creditsSources": [
+    "“...the field of artificial intelligence exhibits a recurring pattern: early, dramatic success followed by sudden unexpected difficulties.” — Hubert L. Dreyfus, What Computers Can't Do (1972) (q-dreyfus-pattern)"
    ]
   },
   {

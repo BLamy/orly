@@ -6,14 +6,25 @@
  * becomes the flame of LANGUAGE MUST BE READ IN ORDER; we pull back out of that flame onto the shelf (never through
  * black) while the light crossfades serverCyan → candleAmber (1.2 s, no dip); the line starts once the amber is up.
  *   'twenty'      the flame gutters and goes out with exactly 20 rings burned: the 120 px ghost sleeve stays, dark,
- *                 with a thread of smoke; its hanging tag is re-inked lit 1997 → 1997 – 2017 · 20
- *   'Transformer' a parchment card rises lower right (clear of the dawn window's upper panes and the lit 2012 flame)
- *                 and writes: not the first attention · (line end + 0.1) not only attention · (+ 0.7) built to translate
+ *                 with a thread of smoke; its hanging tag is re-inked 1997 → 1997–2017 (set "1997" over "–2017")
+ *   'Transformer' a parchment card rises (reviser r1) low and centre-right, over the shelf front between the 1999 and
+ *                 2006 candles, its right edge clear of the lit 2012 candle (the shot's other live flame), and writes: not the first attention · (line end + 0.1) not only attention · (+ 0.7) built to translate
  *                 (each "not" an oxblood correction); complete by ~7.5 s, holding ~4 s.
- *   'replaced'    inside the smoke ABOVE the sleeve tops, a small lamp lit in a translation room (tag 2018) dissolves
- *                 in; on 'two years' a search box lit in a window (tag 2019). Both lit by the dawn (never a re-tint).
- * (round-2) the pull-back takes ~3.5 s and lands before 'Transformer'; the hold drift-trucks ~120 px so the in-order
- * candle settles on the left third. The re-inked base tag (1997– / 2017) hangs LEFT of its candle, in the gap.
+ *   'replaced'    (critic round 1) IN THE SMOKE COLUMN of the dead candle (over its ghost sleeve, where the thread of
+ *                 smoke rises), 1.5× the old size: a small lamp lit in a translation room (tag 2018) dissolves in out
+ *                 of the smoke; on 'two years' a search box lit in a window (tag 2019) dissolves in above it as the
+ *                 lamp settles back a step (a cross-dissolve up the column). The new way grows out of the old belief's
+ *                 smoke. Both lit by the dawn (never a re-tint). (reviser r1) the room is a TRANSLATION room: its open
+ *                 book's facing pages are headed EN | DE in prop lettering, with a small arrow across the gutter and two
+ *                 glyph rhythms (short English words, long German compounds). Each year tag is candle-tag size and tied
+ *                 by a short string to its own lamp desk / search window; the cameos' bloom is ~30% softer. The lamp
+ *                 comes on just after the card's first row is complete (its "not" lands ~4.3 s), so each reveal gets its
+ *                 own moment.
+ * (round-2) the pull-back takes ~3.5 s and lands before 'Transformer'; then (critic round 1) a slow ~30 px drift
+ * through the hold, with a blurred near case-board end sliding in at the right edge (a third plane). The re-inked
+ * base tag (1997 – 2017) hangs at the candle's BASE, right of its foot, in the row with the other year tags. The
+ * other candles' vertical belief lettering is ~30% lower in contrast, so LANGUAGE MUST BE READ IN ORDER is the one
+ * the eye reads.
  * CANDLE-CLOCK RULE: every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring
  * at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down
  * one ring per year the belief is held; the burned wax stays above the stub as a ghost sleeve, so the sleeve's
@@ -22,11 +33,12 @@
 import { Timeline } from '../../../core';
 import type { Camera3, Frame, PaintEnv } from '../../../film';
 import { LAYERS, MOODS, defineShot, mixLab, toLayer, toScreen, withAlpha } from '../../../film';
-import { FONT, legibleSize } from '../../../film/silhouette/type';
+import { FONT, cardPaperAlpha, cardProbe, legibleSize, textRole } from '../../../film/silhouette/type';
 import { glow } from '../../../film/silhouette/metaphors/kit';
 import { makeCanvas } from '../../../film/silhouette/atmosphere';
 import { STUDY, STUDY_WALL, candleX, studyCase, studyNear, studyRoom } from '../sets/study';
-import { shelfStateAt, type CandleView } from '../sets/studyState';
+import { shelfStateAt, wallStateAt, type CandleView } from '../sets/studyState';
+import { wallOfForecasts } from '../sets/wallOfForecasts';
 import { candleFlame } from '../sets/beliefCandle';
 import { camKeys } from '../sets/ch03-s06-kit';
 import { clamp01, sm, tq12, win } from '../sets/ch02-s05b-util';
@@ -47,6 +59,10 @@ const FL = candleFlame({ x: IN_X, y: SY, view: IN0, s: SS });
 const SLEEVE_TOP = SY - 270 * SS;
 const DAWN = MOODS.dawnGold;
 const OXBLOOD = '#7a2a26';
+/** the honest card's right edge and foot (screen px): left of the lit 2012 candle (x ≈ 960-1015), above the shelf's
+ *  base tags (y ≈ 600) */
+const CARD_RIGHT = 946;
+const CARD_FOOT = 584;
 
 interface B {
   D: number;
@@ -74,7 +90,7 @@ export default defineShot({
       [0, FL.x, FL.y - 2, 880],
       [0.6, FL.x - 6, FL.y + 6, 800],
       [settle, IN_X + 80, 806, 470],
-      [D, IN_X + 142, 800, 492],
+      [D, IN_X + 96, 802, 484],
     ]);
     const cams: Camera3[] = [];
     for (let i = 0; i <= 40; i++) cams.push(cam((D * i) / 40));
@@ -110,15 +126,24 @@ export default defineShot({
     const isOut = t >= b.out + 0.4;
     const views = V0.map((v) => (v.id === 'inorder' ? { ...(isOut ? IN1 : v), tag: '' } : v));
     const smokeK = isOut ? 1.7 * (1 + 0.5 * (1 - win(t, b.out + 2, b.out + 2.8))) : 0;
+    // (round-2 legibility hand-off) the Wall of Forecasts lies off frame to the right of this low shelf macro: its
+    // slips are never seen or read here ('ten years' on Coulom's slip only matched the narrator's 'two years'), so
+    // it is drawn as texture, ahead of the case (the board and the wall do not overlap)
+    f.layer('L4', (c, env) => textRole(c, 'texture', () => wallOfForecasts(c, { ...STUDY.wall, slips: wallStateAt(ID, 'start'), light: 1 }, env)));
     studyCase(f, {
       shot: ID,
       when: 'start',
       key: ID,
+      wall: false,
       flames: false,
       shelf: {
         views,
         drawFlames: false,
-        over: { inorder: isOut ? { smoke: smokeK } : { flame: Math.max(0.001, k) } },
+        over: {
+          // (critic round 1) the other candles' belief lettering ~30% lower in contrast; the subject candle's stays
+          ...Object.fromEntries(V0.filter((v) => v.id !== 'inorder').map((v) => [v.id, { letters: 0.42 }])),
+          inorder: isOut ? { smoke: smokeK, letters: 0.7 } : { flame: Math.max(0.001, k), letters: 0.7 },
+        },
       },
       extra: (c, env) => {
         darkenRails(c, env);
@@ -142,6 +167,7 @@ export default defineShot({
       f.practical({ x: p.x, y: p.y - 4, kind: 'candle', seed: 300 + v.slot * 7, intensity: 0.5, radius: 28 });
     }
     if (cam.z < 560) studyNear(f, { key: ID, cams: b.cams, file: true });
+    if (cam.z < 560) nearBoard(f, b, cam);
     // the macro's one sharp thing: the flame itself (the wall of light's knot, now a candle flame)
     macroFlame(f, cam, t);
 
@@ -250,6 +276,43 @@ function macroFlame(f: Frame, cam: Camera3, t: number) {
   });
 }
 
+/** (critic round 1, depth) the near END of the case board at the right edge of frame: a dark plank with a moulded
+ *  bracket at the shelf, out of focus on its own near plane; the hold's drift slides it in from the edge */
+const NEAR_L = { id: 'near13b', z: 800, haze: 0, blur: 7 };
+function nearBoard(f: Frame, b: B, cam: Camera3) {
+  const e = b.cam(b.D);
+  // placed from the END frame: its inner edge at screen x 1206
+  const tl = toLayer(NEAR_L, e, 1206, -60);
+  const br = toLayer(NEAR_L, e, 1340, 790);
+  const sh = toLayer(NEAR_L, e, 1206, toScreen(LAYERS.L4, e, IN_X, SY).y + 6);
+  const W = Math.ceil(br.x - tl.x + 40), H = Math.ceil(br.y - tl.y);
+  const a = sm((560 - cam.z) / 60);
+  f.layer(NEAR_L, (c, env) => {
+    const draw = f.cached(`${ID}/nearBoard/${env.mood.id}/${W}x${H}`, W, H, (cc) => {
+      const m = env.mood;
+      cc.fillStyle = mixLab(m.fg, m.ink, 0.3);
+      const x0 = 20;
+      cc.fillRect(x0, 0, W - x0, H);
+      // the moulded bracket at shelf height, stepping out toward the shelf
+      const yb = sh.y - tl.y;
+      cc.beginPath();
+      cc.moveTo(x0, yb - 18);
+      cc.quadraticCurveTo(x0 - 14, yb - 10, x0 - 18, yb + 6);
+      cc.lineTo(x0 - 18, yb + 26);
+      cc.lineTo(x0, yb + 30);
+      cc.closePath();
+      cc.fill();
+      // a warm rim on its inner edge (the candles' side)
+      cc.fillStyle = withAlpha(m.rim, 0.22);
+      cc.fillRect(x0, 0, 1.6, H);
+    });
+    c.save();
+    c.globalAlpha *= a;
+    draw(c, tl.x - 20, tl.y);
+    c.restore();
+  });
+}
+
 /** the shelf's plank and scalloped trim (and the dark rail above the candles) one full value step darker: only the
  *  case's own pixels are touched (source-atop in the L4 pass), the wall behind stays as it is */
 function darkenRails(c: C, env: PaintEnv) {
@@ -331,89 +394,125 @@ function smokePlume(c: C, env: PaintEnv, t: number, b: B) {
  *  read-in-order candle (soft-edged, ~0.7 opacity: seen IN the smoke, not pasted over the shelf), lit by the dawn */
 function vignettes(f: Frame, c: C, env: PaintEnv, t: number, b: B) {
   // each cameo on its own word: the lamp on 'replaced', the search box on 'two years'
-  const aL = win(t, b.spread - 0.15, b.spread + 0.6);
+  const aL = win(t, b.spread - 0.05, b.spread + 0.65);
   const aR = win(t, b.two - 0.15, b.two + 0.6);
   if (aL <= 0.01) return;
   const m = env.mood;
-  const rise = 6 * win(t, b.spread, b.D);
-  // (round-2) lifted into the haze plume ABOVE the sleeve tops (end-frame screen y ≈ 70-100), so the sleeves stay
-  // clean bars of the chart; positions are fixed in the world from the end frame
+  // both drift up slowly with the smoke
+  const rise = 10 * win(t, b.spread, b.D);
+  // (critic round 1) DOWN IN THE SMOKE COLUMN of the dead candle: the lamp low in the column (just above the snuffed
+  // wick, over the ghost sleeve), the search box above it; world positions fixed from the end frame
   const e = b.cam(b.D);
-  const pL = toLayer(LAYERS.L4, e, toScreen(LAYERS.L4, e, IN_X, 0).x + 58, 98);
-  const pR = toLayer(LAYERS.L4, e, toScreen(LAYERS.L4, e, IN_X, 0).x + 250, 72);
-  // left / lower: a translation room — a lamp lit over a pair of facing pages (tag 2018)
-  cameo(f, c, 'room', pL.x, pL.y - rise, 38, aL, m, (cc, x, y) => {
+  const sx = toScreen(LAYERS.L4, e, IN_X, 0).x;
+  const yWick = toScreen(LAYERS.L4, e, IN_X, FL.y).y;
+  const yTop = toScreen(LAYERS.L4, e, IN_X, SLEEVE_TOP).y;
+  const pL = toLayer(LAYERS.L4, e, sx + 4, lerpN(yTop, yWick, 0.62));
+  const pR = toLayer(LAYERS.L4, e, sx - 6, lerpN(yTop, yWick, 0.08));
+  // the cross-dissolve up the column: as the search box forms, the lamp settles back a step into the smoke
+  const lampK = aL * (1 - 0.3 * aR);
+  // lower: a translation room — a lamp lit over a pair of facing pages (tag 2018)
+  cameo(f, c, 'room2', pL.x, pL.y - rise, 60, lampK, m, (cc, x, y) => {
     const ink = cc.fillStyle as string;
     // desk
-    cc.fillRect(x - 42, y + 22, 84, 5);
-    cc.fillRect(x - 38, y + 27, 4, 22);
-    cc.fillRect(x + 34, y + 27, 4, 22);
-    // the lamp: base, arm, shade (tipped down toward the pages)
-    cc.fillRect(x - 34, y + 18, 12, 4);
+    cc.fillRect(x - 54, y + 24, 104, 5);
+    cc.fillRect(x - 50, y + 29, 4, 22);
+    cc.fillRect(x + 42, y + 29, 4, 22);
+    // the lamp at the desk's left end: base, arm, shade tipped down toward the book
+    cc.fillRect(x - 54, y + 20, 13, 4);
     cc.save();
     cc.lineWidth = 2.6;
     cc.strokeStyle = ink;
     cc.beginPath();
-    cc.moveTo(x - 28, y + 18);
-    cc.lineTo(x - 32, y - 4);
-    cc.lineTo(x - 16, y - 16);
+    cc.moveTo(x - 48, y + 20);
+    cc.lineTo(x - 52, y - 4);
+    cc.lineTo(x - 38, y - 18);
     cc.stroke();
     cc.restore();
     cc.beginPath();
-    cc.moveTo(x - 19, y - 22);
-    cc.lineTo(x - 2, y - 10);
-    cc.lineTo(x - 9, y - 3);
-    cc.lineTo(x - 25, y - 14);
+    cc.moveTo(x - 42, y - 25);
+    cc.lineTo(x - 24, y - 13);
+    cc.lineTo(x - 31, y - 6);
+    cc.lineTo(x - 48, y - 17);
     cc.closePath();
     cc.fill();
-    // its cone of light onto the pages
+    // its cone of light onto the book
     cc.save();
     cc.globalCompositeOperation = 'lighter';
-    const cg = cc.createLinearGradient(0, y - 6, 0, y + 22);
-    cg.addColorStop(0, withAlpha(DAWN.core, 0.55));
-    cg.addColorStop(1, withAlpha(DAWN.halo, 0.12));
+    const cg = cc.createLinearGradient(0, y - 10, 0, y + 24);
+    cg.addColorStop(0, withAlpha(DAWN.core, 0.4));
+    cg.addColorStop(1, withAlpha(DAWN.halo, 0.08));
     cc.fillStyle = cg;
     cc.beginPath();
-    cc.moveTo(x - 18, y - 8);
-    cc.lineTo(x - 6, y - 6);
-    cc.lineTo(x + 34, y + 21);
-    cc.lineTo(x - 14, y + 21);
+    cc.moveTo(x - 40, y - 10);
+    cc.lineTo(x - 28, y - 8);
+    cc.lineTo(x + 40, y + 23);
+    cc.lineTo(x - 30, y + 23);
     cc.closePath();
     cc.fill();
     cc.restore();
-    // a pair of facing pages, lit: one language on the left page, the other on the right (scribbles, no real text)
-    cc.fillStyle = mixLab(DAWN.core, '#fff8ea', 0.45);
+    // the open book: two facing pages, EN | DE, one language rendered into the other
+    const page = mixLab(DAWN.core, '#fff8ea', 0.5);
+    cc.fillStyle = page;
     cc.beginPath();
-    cc.moveTo(x - 6, y + 9);
-    cc.lineTo(x + 12, y + 7);
-    cc.lineTo(x + 13, y + 21);
-    cc.lineTo(x - 7, y + 22);
+    cc.moveTo(x - 28, y - 2);
+    cc.lineTo(x + 2, y - 5);
+    cc.lineTo(x + 2, y + 23);
+    cc.lineTo(x - 29, y + 23);
     cc.closePath();
     cc.fill();
     cc.beginPath();
-    cc.moveTo(x + 14, y + 7);
-    cc.lineTo(x + 32, y + 9);
-    cc.lineTo(x + 33, y + 22);
-    cc.lineTo(x + 15, y + 21);
+    cc.moveTo(x + 5, y - 5);
+    cc.lineTo(x + 35, y - 2);
+    cc.lineTo(x + 36, y + 23);
+    cc.lineTo(x + 5, y + 23);
     cc.closePath();
     cc.fill();
-    cc.strokeStyle = withAlpha(ink, 0.8);
-    cc.lineWidth = 1;
+    // prop lettering: the page heads
+    cc.fillStyle = withAlpha(ink, 0.95);
+    cc.font = `700 11px ${FONT.mono}`;
+    cc.textAlign = 'center';
+    cc.textBaseline = 'alphabetic';
+    cc.fillText('EN', x - 13, y + 7);
+    cc.fillText('DE', x + 20, y + 7);
+    // two glyph rhythms: short English words (left) → long German compounds (right)
+    cc.strokeStyle = withAlpha(ink, 0.75);
+    cc.lineWidth = 1.2;
     for (let r = 0; r < 4; r++) {
-      const yy = y + 10.5 + r * 2.9;
-      const wl = 13 - (r % 2) * 3;
-      cc.beginPath();
-      cc.moveTo(x - 4, yy);
-      cc.lineTo(x - 4 + wl, yy - 0.2);
-      cc.moveTo(x + 16, yy);
-      cc.lineTo(x + 16 + wl + 1, yy + 0.2);
-      cc.stroke();
+      const yy = y + 11 + r * 3.2;
+      let px = x - 25;
+      for (let k = 0; px < x - 2; k++) {
+        const wl = 2 + ((r * 5 + k * 3) % 4);
+        cc.beginPath();
+        cc.moveTo(px, yy);
+        cc.lineTo(Math.min(x - 2, px + wl), yy);
+        cc.stroke();
+        px += wl + 2;
+      }
+      let qx = x + 8;
+      for (let k = 0; qx < x + 33; k++) {
+        const wl = 9 + ((r * 7 + k * 5) % 8);
+        cc.beginPath();
+        cc.moveTo(qx, yy);
+        cc.lineTo(Math.min(x + 33, qx + wl), yy);
+        cc.stroke();
+        qx += wl + 2;
+      }
     }
+    // the small arrow across the gutter: EN → DE
+    cc.lineWidth = 1.6;
+    cc.strokeStyle = ink;
+    cc.beginPath();
+    cc.moveTo(x - 6, y - 11);
+    cc.lineTo(x + 10, y - 11);
+    cc.moveTo(x + 6, y - 14);
+    cc.lineTo(x + 10, y - 11);
+    cc.lineTo(x + 6, y - 8);
+    cc.stroke();
     cc.fillStyle = ink;
-    return { lx: x - 12, ly: y - 8 };
-  }, '2018');
-  // right / higher: a window with a search box lit in it (tag 2019)
-  cameo(f, c, 'search', pR.x, pR.y - rise, 36, aR, m, (cc, x, y) => {
+    return { lx: x - 34, ly: y - 10 };
+  }, '2018', { x: 48, y: 27 });
+  // higher: a window with a search box lit in it (tag 2019)
+  cameo(f, c, 'search', pR.x, pR.y - rise, 54, aR, m, (cc, x, y) => {
     cc.save();
     cc.lineWidth = 3;
     cc.strokeStyle = cc.fillStyle as string;
@@ -428,8 +527,10 @@ function vignettes(f: Frame, c: C, env: PaintEnv, t: number, b: B) {
     cc.fillRect(x - 44, y + 32, 88, 5);
     cc.restore();
     return { lx: x, ly: y + 12, box: true };
-  }, '2019');
+  }, '2019', { x: 37, y: -20 });
 }
+
+const lerpN = (a: number, b2: number, u: number) => a + (b2 - a) * u;
 
 function cameo(
   f: Frame,
@@ -442,6 +543,8 @@ function cameo(
   m: PaintEnv['mood'],
   draw: (c: C, x: number, y: number) => { lx: number; ly: number; box?: boolean },
   year: string,
+  /** where its tag's string is tied (the lamp desk's end / the search window's frame), in r = 58 units */
+  tie: { x: number; y: number },
 ) {
   if (a <= 0.01) return;
   const S = Math.ceil(r * 2.6);
@@ -450,8 +553,9 @@ function cameo(
   const bmp = f.cached(`${ID}/cameo/${name}/${m.id}/${S}`, S, S, (cc) => {
     // a soft oval of dawn light in the smoke: the backlight the little scene is cut against
     const g = cc.createRadialGradient(cx, cy, 0, cx, cy, r * 1.15);
-    g.addColorStop(0, withAlpha(mixLab(DAWN.sky[3], DAWN.core, 0.35), 0.85));
-    g.addColorStop(0.6, withAlpha(DAWN.sky[3], 0.5));
+    // (reviser r1) ~30% less bloom than before: the card, not the cameos, is the hottest read in the hold
+    g.addColorStop(0, withAlpha(mixLab(DAWN.sky[3], DAWN.core, 0.35), 0.6));
+    g.addColorStop(0.6, withAlpha(DAWN.sky[3], 0.35));
     g.addColorStop(1, withAlpha(DAWN.sky[2], 0));
     cc.fillStyle = g;
     cc.fillRect(0, 0, S, S);
@@ -474,10 +578,10 @@ function cameo(
       cc.moveTo(cx + 20.5 * sc, ly + 2.5 * sc);
       cc.lineTo(cx + 23.5 * sc, ly + 5.5 * sc);
       cc.stroke();
-      glow(cc, cx, ly, 46 * sc, DAWN.core, 0.35);
+      glow(cc, cx, ly, 46 * sc, DAWN.core, 0.24);
     } else {
-      glow(cc, lx, ly, 40 * sc, DAWN.core, 0.55);
-      glow(cc, lx + 10 * sc, ly + 26 * sc, 30 * sc, DAWN.halo, 0.3);
+      glow(cc, lx, ly, 34 * sc, DAWN.core, 0.38);
+      glow(cc, lx + 10 * sc, ly + 26 * sc, 26 * sc, DAWN.halo, 0.2);
     }
     // feather the whole cameo into the smoke (about 25 px at 1080p)
     cc.globalCompositeOperation = 'destination-in';
@@ -487,87 +591,101 @@ function cameo(
     cc.fillStyle = fe;
     cc.fillRect(0, 0, S, S);
   });
+  // it forms out of the smoke: a soft swell of dawn-lit haze leads it in
   c.save();
-  c.globalAlpha *= 0.72 * a;
+  c.globalCompositeOperation = 'lighter';
+  glow(c, x, y, r * 1.5, mixLab(m.haze, DAWN.halo, 0.5), 0.15 * Math.sin(Math.PI * Math.min(1, a)) + 0.04 * a);
+  c.restore();
+  c.save();
+  c.globalAlpha *= 0.78 * a;
   bmp(c, x - cx, y - cy);
   c.restore();
-  // its small paper tag with the year (prop lettering), hung at the cameo's lower right
+  // its small paper tag with the year (prop lettering): (reviser r1) candle-tag size (the legibility floor, no
+  // larger) and tied by a short string to its own object, so it belongs to the vision, not to the shelf
   c.save();
   c.globalAlpha *= a;
-  // (round-2) 1.5× and sized to the legibility floor; hung at the cameo's right, level with it (off the sleeves)
-  const tx = x + r * 1.02, ty = y - r * 0.12;
-  c.strokeStyle = withAlpha(mixLab(m.haze, DAWN.halo, 0.4), 0.7);
-  c.lineWidth = 0.9;
+  const ax = x + tie.x * sc, ay = y + tie.y * sc;
+  const tx = ax + 7, ty = ay + 9;
+  c.strokeStyle = withAlpha(mixLab(m.haze, DAWN.halo, 0.3), 0.85);
+  c.lineWidth = 1;
   c.beginPath();
-  c.moveTo(tx - 12, ty - 12);
-  c.lineTo(tx, ty - 2);
+  c.moveTo(ax, ay);
+  c.quadraticCurveTo(ax + 1, ay + 6, tx, ty);
   c.stroke();
+  c.fillStyle = withAlpha(mixLab(m.haze, DAWN.halo, 0.3), 0.9);
+  c.beginPath();
+  c.arc(ax, ay, 1.6, 0, Math.PI * 2);
+  c.fill();
   const paper = mixLab(mixLab(m.halo, '#b08a52', 0.25), m.rim, 0.5);
-  const fs = legibleSize(c, `500 20px ${FONT.mono}`, 20, year);
+  const fs = legibleSize(c, `500 11px ${FONT.mono}`, 11, year);
   c.font = `500 ${fs}px ${FONT.mono}`;
-  const tw = c.measureText(year).width + 12, th = fs + 7;
-  c.fillStyle = paper;
+  const tw = c.measureText(year).width + 8, th = fs + 5;
   c.translate(tx, ty);
-  c.rotate(0.06);
-  c.fillRect(-4, -2, tw, th);
+  c.rotate(0.08);
+  c.fillStyle = paper;
+  c.beginPath();
+  c.moveTo(0, 0);
+  c.lineTo(tw, 0);
+  c.lineTo(tw, th);
+  c.lineTo(0, th);
+  c.lineTo(-3, th / 2);
+  c.closePath();
+  c.fill();
   c.fillStyle = mixLab(m.ink, paper, 0.1);
   c.textAlign = 'left';
   c.textBaseline = 'middle';
-  c.fillText(year, 2, th / 2 - 1.5);
+  c.fillText(year, 3, th / 2 + 0.5);
   c.restore();
 }
 
-/** the candle's base tag, larger than the shelf's own: 1997 → re-inked 1997 – 2017. (round-2) 1.5× and sized to the
- *  legibility floor; it swings to the LEFT of its candle, into the gap before the neighbouring candle, set in two lines
- *  ("1997 –" over "2017") so it fits the gap and never covers another candle's lettering. */
+/** the candle's base tag, larger than the shelf's own: 1997 → re-inked 1997–2017. (round-2) 1.5× and sized to the
+ *  legibility floor; set in two lines so it fits the gap between candles and never covers another candle's lettering.
+ *  (reviser r1) the break comes BEFORE the en dash ("1997" over "–2017"), so the range reads as one date span. */
 function baseTag(c: C, env: PaintEnv, t: number, b: B) {
   const m = env.mood;
   const u = win(t, b.out + 0.55, b.out + 1.35);
   const size = legibleSize(c, `500 18px ${FONT.mono}`, 18, '2017');
   c.save();
   c.font = `500 ${size}px ${FONT.mono}`;
-  const wy = c.measureText('2017').width;
-  const dashW = size * 0.3;
-  const w = wy + dashW + 7;
+  const w = c.measureText('–2017').width + 7;
   const lh = size * 1.08;
   const h = u <= 0.02 ? size + 8 : lh * 2 + 7;
-  // the knot on the candle's left edge; the tag hangs left of it, inside the gap before the neighbouring candle
-  const kx = IN_X - 15, ky = SY - 128;
+  // (critic round 1) at the candle's BASE, in the row with the other year tags: the knot on the candle's right foot
+  // (where the shelf hangs every candle's tag), the tag hanging right of it with its foot just above the plank
+  const kx = IN_X + 17, ky = SY - 4 - h;
   c.translate(kx, ky);
-  c.rotate(-0.04);
+  c.rotate(0.04);
   c.strokeStyle = withAlpha(m.rim, 0.5);
   c.lineWidth = 0.9;
   c.beginPath();
-  c.moveTo(2, -6);
-  c.lineTo(-1, 0);
+  c.moveTo(-3, -6);
+  c.lineTo(1, 0);
   c.stroke();
   const paper = mixLab(mixLab(m.halo, '#b08a52', 0.3), m.rim, 0.42);
   c.fillStyle = paper;
   c.beginPath();
-  c.moveTo(-1, 0);
-  c.lineTo(-1 - w, 0);
-  c.lineTo(-1 - w, h);
-  c.lineTo(-1, h);
-  c.lineTo(2, Math.min(h / 2, 10));
+  c.moveTo(1, 0);
+  c.lineTo(1 + w, 0);
+  c.lineTo(1 + w, h);
+  c.lineTo(1, h);
+  c.lineTo(-2, Math.min(h / 2, 10));
   c.closePath();
   c.fill();
   const inkC = mixLab(m.ink, paper, 0.1);
   c.fillStyle = inkC;
   c.textAlign = 'left';
   c.textBaseline = 'middle';
-  const tx = -1 - w + 3;
+  const tx = 1 + 4;
   if (u <= 0.02) c.fillText('1997', tx, (size + 8) / 2 + 0.5);
   else {
-    // "1997–" over "2017": the en dash drawn as a short rule so the tag fits the gap between candles
-    const y1 = 3.5 + lh / 2;
-    c.fillText('1997', tx, y1);
-    c.fillRect(tx + wy + 1.5, y1 - size * 0.06, dashW, Math.max(1.4, size * 0.08));
-    const full = c.measureText('2017').width;
+    // "1997" over "–2017" (an en dash, the line broken before it): the new end date writes on
+    c.fillText('1997', tx, 3.5 + lh / 2);
+    const full = c.measureText('–2017').width;
     c.save();
     c.beginPath();
     c.rect(tx - 1, 3.5 + lh, (full + 2) * clamp01(u * 1.15), lh);
     c.clip();
-    c.fillText('2017', tx, 3.5 + lh * 1.5);
+    c.fillText('–2017', tx, 3.5 + lh * 1.5);
     c.restore();
   }
   c.restore();
@@ -596,11 +714,18 @@ function smokeCloud(c: C, env: PaintEnv, t: number, b: B) {
 
 /** the honest card: rises on 'Transformer', writes three phrases on their beats, holds through the hold */
 function honestCard(c: C, f: Frame, t: number, b: B) {
-  const rise = win(t, b.honest1 - 0.35, b.honest1 + 0.2);
+  // (review r3, kit card-entry rule) the paper rises WITH its first phrase: it passes 30 % two frames before 'the
+  // first attention' starts inking (it showed blank at 3.83 s)
+  const ink0 = b.honest1 + 0.05;
+  const rise = cardPaperAlpha(t, ink0 + 0.1, 0.35);
   if (rise <= 0.005) return;
   const m = f.mood;
-  // (round-2) parked lower right, clear of the dawn window's upper panes and the lit 2012 flame
-  const W = 384, H = 204, X = 1238 - W, Y = 334;
+  // (reviser r1) parked low and centre-right, over the shelf front between the 1999 and 2006 candles: its right edge
+  // stops short of the lit 2012 candle (screen x ≈ 1000 through the hold), its foot above the bottom 12 % of frame
+  const size = legibleSize(c, `italic 500 26px ${FONT.text}`, 26, 'the first attention');
+  c.font = `italic 500 ${size}px ${FONT.text}`;
+  const W = Math.ceil(c.measureText('not the first attention').width + 64), H = Math.round(size * 2 * 1.75 + 76);
+  const X = CARD_RIGHT - W, Y = CARD_FOOT - H;
   const dy = (1 - rise) * 18;
   c.save();
   c.globalAlpha = rise;
@@ -611,6 +736,8 @@ function honestCard(c: C, f: Frame, t: number, b: B) {
   c.fillRect(X + 4, Y + 6, W, H);
   c.fillStyle = paper;
   c.fillRect(X, Y, W, H);
+  // the probe reports how much of the first phrase is written (its ink is the reveal of a clipped write-on)
+  cardProbe(c, 'honestCard', X, Y, W, H, 1, clamp01((t - ink0) / 0.18));
   c.strokeStyle = withAlpha(m.ink, 0.35);
   c.lineWidth = 1;
   c.strokeRect(X + 8, Y + 8, W - 16, H - 16);
@@ -620,17 +747,17 @@ function honestCard(c: C, f: Frame, t: number, b: B) {
   c.arc(X + W / 2, Y + 12, 3.2, 0, Math.PI * 2);
   c.fill();
   const ink = mixLab(m.ink, '#2a1c12', 0.4);
-  const size = legibleSize(c, `italic 500 29px ${FONT.text}`, 29, 'the first attention');
   const rows: { pre: string; rest: string; at: number }[] = [
-    { pre: 'not ', rest: 'the first attention', at: b.honest1 + 0.05 },
+    { pre: 'not ', rest: 'the first attention', at: ink0 },
     { pre: 'not ', rest: 'only attention', at: b.honest2 },
     { pre: '', rest: 'built to translate', at: b.honest3 },
   ];
   rows.forEach((r, i) => {
-    const y = Y + 62 + i * 52;
+    const y = Y + 30 + size + i * size * 1.75;
     const x = X + 30;
     // the phrase is written first, then corrected with an oxblood "not"
-    const d = clamp01((t - r.at) / 0.45);
+    // the first phrase writes on quickly (0.18 s, while the paper is still rising) so the card is never read as blank
+    const d = clamp01((t - r.at) / (i === 0 ? 0.18 : 0.45));
     if (d <= 0) return;
     c.font = `italic 500 ${size}px ${FONT.text}`;
     const wPre = r.pre ? c.measureText(r.pre).width : 0;
@@ -643,7 +770,9 @@ function honestCard(c: C, f: Frame, t: number, b: B) {
     c.fillText(r.rest, x + wPre, y);
     c.restore();
     if (r.pre) {
-      const k = clamp01((t - r.at - 0.42) / 0.28);
+      // (reviser r1) the first row's "not" lands quickly (complete ~0.45 s after the phrase starts), so the card's entry
+      // is finished before the lamp comes on at 'replaced'; the later rows keep their slower correction
+      const k = i === 0 ? clamp01((t - r.at - 0.24) / 0.2) : clamp01((t - r.at - 0.42) / 0.28);
       if (k > 0) {
         c.save();
         c.beginPath();

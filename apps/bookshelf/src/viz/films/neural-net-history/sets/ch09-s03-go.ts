@@ -58,11 +58,30 @@ export const GAME4: Stone[] = [
 /** move 78 (record: W 'ki'): Lee Sedol's wedge into the gap between Black (9, 8) and (11, 8) */
 export const M78: Stone = S(10, 8, 'w');
 
-/** a quick self-play game (illustrative): stones in the order the anonymous hand sets them, both colours */
-export const SELFPLAY: Stone[] = [
+/** a quick self-play game (illustrative): stones in the order the anonymous hand sets them, both colours. The
+ *  opening is set by hand (corners, sides); the rest grows deterministically next to earlier stones (contact plays
+ *  and extensions), so by its last move the board looks like a finished game (~50 stones) */
+const SELF_OPENING: Stone[] = [
   S(15, 3, 'b'), S(3, 15, 'w'), S(3, 3, 'b'), S(15, 15, 'w'), S(9, 9, 'b'), S(13, 15, 'w'), S(15, 9, 'b'), S(5, 3, 'w'), S(9, 15, 'b'), S(3, 9, 'w'),
   S(12, 12, 'b'), S(6, 6, 'w'),
 ];
+export const SELFPLAY: Stone[] = (() => {
+  const out = [...SELF_OPENING];
+  const used = new Set(out.map((s) => s.r * 19 + s.c));
+  const OFF = [[1, 0], [-1, 0], [0, 1], [0, -1], [1, 1], [-1, 1], [1, -1], [-1, -1], [2, 0], [0, 2], [-2, 0], [0, -2], [2, 1], [1, 2]];
+  for (let i = 0; out.length < 50 && i < 4000; i++) {
+    const col: Col = out.length % 2 ? 'w' : 'b';
+    // play near one of the last dozen stones (the game moves around the board), mostly near a stone of the other colour
+    const back = 1 + Math.floor((hash1(i, 311) * 0.5 + 0.5) * Math.min(12, out.length - 0.01));
+    const from = out[out.length - back];
+    const o = OFF[Math.floor((hash1(i, 312) * 0.5 + 0.5) * (OFF.length - 0.01))];
+    const c = from.c + o[0], r = from.r + o[1];
+    if (c < 1 || c > 17 || r < 1 || r > 17 || used.has(r * 19 + c)) continue;
+    used.add(r * 19 + c);
+    out.push(S(c, r, col));
+  }
+  return out;
+})();
 
 /** ghost games (the human record): seeded scatters around the corners, one per sheet */
 export function ghostGame(seed: number, n = 44): Stone[] {
@@ -167,7 +186,13 @@ export function goTop(c: C, env: PaintEnv, o: GoTopOpts) {
   }
   // rings of light on the board (under the stones)
   for (const r of o.rings ?? []) ringTop(c, env, r);
-  // stones
+  // warm halos BEHIND the stones (a lit stone keeps its own full ink: a black stone stays black), then the stones,
+  // then a thin warm edge on each lit stone
+  if (o.glow) o.stones.forEach((s, i) => {
+    const a = o.alpha ? o.alpha(i) : 1;
+    const k = o.glow!(i);
+    if (a > 0.01 && k > 0.01) stoneHalo(c, env, topXY(s.c, s.r), a * k);
+  });
   o.stones.forEach((s, i) => {
     const a = o.alpha ? o.alpha(i) : 1;
     if (a <= 0.01) return;
@@ -215,14 +240,28 @@ export function stoneTop(c: C, env: PaintEnv, p: { x: number; y: number }, col: 
     c.fill();
   }
   if (glow > 0.01) {
-    c.globalCompositeOperation = 'lighter';
-    const R = rr * 2.6;
-    const g = c.createRadialGradient(p.x, p.y, 0, p.x, p.y, R);
-    g.addColorStop(0, withAlpha(m.core, 0.9 * glow));
-    g.addColorStop(1, withAlpha(m.halo, 0));
-    c.fillStyle = g;
-    c.fillRect(p.x - R, p.y - R, 2 * R, 2 * R);
+    // the lit stone's edge catches the warm light (its fill is untouched)
+    c.strokeStyle = withAlpha(mixLab(m.core, '#fff2d8', 0.3), Math.min(1, 0.9 * glow));
+    c.lineWidth = 1.6;
+    c.beginPath();
+    c.arc(p.x, p.y, rr - 0.6, 0, Math.PI * 2);
+    c.stroke();
   }
+  c.restore();
+}
+
+/** a warm halo around a stone, drawn under it: radius capped at 1.5 stone diameters */
+export function stoneHalo(c: C, env: PaintEnv, p: { x: number; y: number }, k: number, rr = TOP.step * 0.46) {
+  const m = env.mood;
+  const R = rr * 3;
+  c.save();
+  c.globalCompositeOperation = 'lighter';
+  const g = c.createRadialGradient(p.x, p.y, rr * 0.8, p.x, p.y, R);
+  g.addColorStop(0, withAlpha(m.core, 0.85 * Math.min(1.2, k)));
+  g.addColorStop(0.45, withAlpha(m.halo, 0.35 * Math.min(1.2, k)));
+  g.addColorStop(1, withAlpha(m.halo, 0));
+  c.fillStyle = g;
+  c.fillRect(p.x - R, p.y - R, 2 * R, 2 * R);
   c.restore();
 }
 

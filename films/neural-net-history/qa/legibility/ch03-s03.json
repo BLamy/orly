@@ -1,95 +1,119 @@
 {
  "shot": "ch03-s03",
- "at": "2026-10-12T08:05:05.977Z",
+ "at": "2026-10-13T04:13:10.226Z",
  "minCapPx": 22,
  "sampled": 19,
  "texts": 21,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
- "textureTexts": 0,
- "ok": [
-  {
-   "text": "How could a net rewire",
-   "maxCap": 30
-  },
-  {
-   "text": "itself?",
-   "maxCap": 30
-  },
-  {
-   "text": "WHO TAUGHT",
-   "maxCap": 51.9
-  },
-  {
-   "text": "IT?",
-   "maxCap": 51.9
-  },
-  {
-   "text": "RULES",
-   "maxCap": 30
-  },
-  {
-   "text": "KNOWLEDGE",
-   "maxCap": 25.9
-  },
-  {
-   "text": "LEARNING",
-   "maxCap": 25.9
-  },
-  {
-   "text": "1943",
-   "maxCap": 30
-  },
-  {
-   "text": "THE STRUCTURE OF",
-   "maxCap": 25.5
-  },
-  {
-   "text": "THE NET DOES NOT",
-   "maxCap": 25.5
-  },
-  {
-   "text": "CHANGE WITH",
-   "maxCap": 25.5
-  },
-  {
-   "text": "TIME.",
-   "maxCap": 25.5
-  },
-  {
-   "text": "TURING · DUE 2000",
-   "maxCap": 22.1
-  },
-  {
-   "text": "3 in 10 fooled",
-   "maxCap": 25.9
-  },
-  {
-   "text": "THE BRAIN IS A LOGIC MACHINE",
-   "maxCap": 22.9
-  },
-  {
-   "text": "1958",
-   "maxCap": 32.6
-  },
+ "subjects": [
   {
    "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
-   "maxCap": 30.4
+   "capWhileSubject": 43.1,
+   "why": "script onScreenText"
   },
   {
    "text": "A MACHINE THAT LEARNS",
-   "maxCap": 22.6
+   "capWhileSubject": 32.1,
+   "why": "script onScreenText"
   },
   {
    "text": "WILL SOON SEE, TALK",
-   "maxCap": 22.6
+   "capWhileSubject": 32.1,
+   "why": "script onScreenText"
   },
   {
    "text": "AND THINK",
-   "maxCap": 22.6
+   "capWhileSubject": 32.1,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "How could a net rewire",
+   "maxCap": 42.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "itself?",
+   "maxCap": 42.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 73.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IT?",
+   "maxCap": 73.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "RULES",
+   "maxCap": 42.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 36.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 36.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1943",
+   "maxCap": 42.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 36.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 36.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 36.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 36.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 31.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 36.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE BRAIN IS A LOGIC MACHINE",
+   "maxCap": 32.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1958",
+   "maxCap": 46.2,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "lit 1958",
-   "maxCap": 22
+   "maxCap": 22,
+   "why": "not named, not in onScreenText"
   }
- ]
+ ],
+ "textureTexts": 17
 }

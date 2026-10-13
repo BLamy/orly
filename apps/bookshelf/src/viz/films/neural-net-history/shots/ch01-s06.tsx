@@ -1,5 +1,6 @@
 /**
- * ch01-s06 — THE REWIND (montage, duskRose, ≈7.6 s; cut in from ch01-s05's full wide).
+ * ch01-s06 — THE REWIND (montage, duskRose, ≈9.9 s; cut in from ch01-s05's full wide). Narration (round 3
+ * re-take): L0114 "Our story starts all the way back in World War Two." · L0114b "To a lamp, in Chicago."
  *
  * 0 → goStone   the study EXACTLY as ch01-s05 leaves it (THE FULL WIDE, candleAmber, the same calls as its held wide:
  *               bare shelf plank, only W6 on the Wall, the night window in deep blue, lamp, file, chair). From the `rewind` beat it shudders like a stretched tape and
@@ -10,13 +11,14 @@
  *               reuses), each running BACKWARDS in strict reverse order of time (sets/ch01-s06-rewind.ts; the tape
  *               grade on the back plates, every hero cut-out at true ink): a Go stone lifts off a lit board into a
  *               hand · inside a dark tower two graphics cards' fans, backlit through the grille, spin down to still
- *               blades and the cyan status light goes out (≈ 1.85 s) · snow rises off a white field in streaks ·
+ *               blades and the cyan status light goes out (≈ 1.75 s) · snow rises off a white field in streaks ·
  *               a motorised knob (knurled cap, shaft, motor) in a row of identical knobs unturns ≈ 90° · a paper
- *               lantern over the Chicago night goes dark, ember last, before the line enters. A torn-band tape
- *               shudder runs under all five and hits hardest on each cut. Nothing is captioned.
- * line          the shudder stops on the last ember; Chicago, 1940s (sets/ch01-s06-chicago.ts): a brick walk-up
+ *               lantern over the Chicago night goes dark, ember last, out ≈ 3.93 s under "Our story", so a beat of
+ *               dark lantern holds before the cut on "starts" (the line enters 0.2 s into the fifth image). A torn-band tape shudder runs under all five and hits hardest on each
+ *               cut. Nothing is captioned.
+ * "starts"      the shudder stops on the last ember and we land in Chicago, 1940s (sets/ch01-s06-chicago.ts): a brick walk-up
  *               against a duskRose sky deepening to night, the El (ch02-s01's lattice girder) with a dark train
- *               crawling along it, a near roof and clothesline. On "years" the stamp CHICAGO · 1940s types itself
+ *               crawling along it, a near roof and clothesline. On "Two" the stamp CHICAGO · 1940s types itself
  *               bottom left (sets/ch01-s06-stamp.ts, baseline y 604, above the caption band); on "Chicago" one
  *               lamp clicks on in a top-floor window: a soft halo, a warm catch on the sill and the fire escape's
  *               nearest rails (no beam), the shot's only warm accent. The camera trucks and pushes toward
@@ -66,6 +68,10 @@ function paintStudy(f: Frame, t: number, rewindAt: number, goAt: number) {
   study01Shelves(f, { key: 'ch01-s06', cams });
   windowWash(f, cam);
   const ghost = sm((t - rewindAt) / Math.max(0.05, goAt - rewindAt));
+  // review r1 (study rewind): the ghost SLEEVES come back first and fast (≈ 0.6 by 0.3 s), and the shelf flames
+  // are held back until the sleeves read (from ≈ 0.32 s), so no flame ever floats mid-wall as a stray spark
+  const sleeveGhost = sm((t - rewindAt + 0.02) / 0.12);
+  const flameGhost = sm((t - rewindAt - 0.07) / 0.15) * sleeveGhost;
   const views = shelfStateAt('ch01-s05', 'start');
   const shelf: ShelfDraw = { ...STUDY.shelf, views, ghost: 0, drawFlames: false, named: {}, over: UNLETTERED };
   const slips = wallStateAt('ch01-s05', 'start');
@@ -89,9 +95,9 @@ function paintStudy(f: Frame, t: number, rewindAt: number, goAt: number) {
       }
       shelfBand(c, env);
       candleShelf(c, { ...shelf, only: [] }, env);
-      if (ghost > 0.01) {
+      if (sleeveGhost > 0.01) {
         c.save();
-        c.globalAlpha *= 0.88 * ghost;
+        c.globalAlpha *= 0.88 * sleeveGhost;
         candleShelf(c, shelf, env);
         c.restore();
       }
@@ -119,8 +125,8 @@ function paintStudy(f: Frame, t: number, rewindAt: number, goAt: number) {
       }
     },
   });
-  if (ghost > 0.02) {
-    for (const fl of shelfFlames(shelf)) f.practical({ x: fl.x, y: fl.y + 6, kind: 'candle', seed: fl.seed, intensity: 0.75 * ghost, radius: 36 });
+  if (flameGhost > 0.02) {
+    for (const fl of shelfFlames(shelf)) f.practical({ x: fl.x, y: fl.y + 6, kind: 'candle', seed: fl.seed, intensity: 0.75 * flameGhost, radius: 36 });
   }
   // fog lying along the shelf, the amber backlight, the near desk + lamp + file, the lamp's spill, the grade and
   // the chair: exactly as ch01-s05's held wide
@@ -140,17 +146,23 @@ export default defineShot({
     const tl = new Timeline();
     tl.hold(0, T.duration);
     const starts = REWIND_IMAGES.map((id) => T.beat(id));
+    const wickEnd = starts[4] + REWIND_STEP;
     return {
       tl,
       dur: T.duration,
       rewind: T.beat('rewind'),
       starts,
-      /** Chicago appears when the fifth image's beat is spent, and never after the narration's own entry
-       *  (L0114 re-recorded 2026-10-12: "We" at 4.20 s, "years" 5.48, "Chicago" 7.21; the wick's shudder dies
-       *  over 3.95–4.20 s, so the last ember is out as the line enters; stamp/lampOn ride T.beat) */
-      chi: Math.min(starts[4] + REWIND_STEP, T.line('L0114').start),
-      stamp: T.beat('stamp'),
-      lampOn: T.beat('lampOn'),
+      /** L0114 re-narrated (round 3, user wording): "Our story starts all the way back in World War Two."
+       *  then L0114b "To a lamp, in Chicago." Everything below rides T.word, so a slower re-take moves it.
+       *  The line enters 0.2 s into the fifth image, so the wick's reverse plays out under "Our story…"
+       *  (ember out ≈ 3.93); the cut to 1940s Chicago lands on "starts" (0.1 s ahead of the word), never
+       *  before the fifth image's beat is spent and never later than "back" */
+      chi: Math.min(T.word('L0114', 'back'), Math.max(wickEnd, T.word('L0114', 'starts') - 0.1)),
+      /** CHICAGO · 1940s types itself on "Two" (the stamp beat), a hair ahead so the first key lands on it */
+      stamp: T.word('L0114', 'Two') - 0.06,
+      /** the window lamp clicks on (on the twos) on "Chicago" in L0114b. Round 4 (retake, "Chicago" 9.098): a
+       *  hair ahead only, so its twos step is the one holding the frame ON the word (9.083), not the step before */
+      lampOn: T.word('L0114b', 'Chicago') - 0.01,
     };
   },
   paint(f, _s, scene) {
@@ -173,17 +185,20 @@ export default defineShot({
       // steady under the images, hardest across each cut (two frames either side)
       const toCut = Math.min(local, REWIND_STEP - local);
       shudder = 0.34 + 0.66 * (1 - sm(toCut / 0.09));
-      if (k === 4) shudder *= 1 - sm((local - 0.45) / 0.25); // dies with the last ember
+      if (k === 4) shudder *= 1 - sm((local - 0.24) / 0.2); // dies with the last ember (out ≈ 3.93 s, under "Our story")
     } else {
       // the duskRose sky deepens to night over ~1.6 s; the lamp clicks on (on the twos) on "Chicago"
       const night = sm((t - chi) / 1.7);
-      const tq = Math.floor(t * 12 + 1e-9) / 12;
+      // 1e-3 s of slack: the rounded shot start hands a frame on a twos boundary in a hair short of it
+      const tq = Math.floor((t + 1e-3) * 12) / 12;
       const dt = tq - Math.floor(scene.lampOn * 12 + 1e-9) / 12;
       const lamp = dt < 0 ? 0 : dt < 1 / 12 ? 0.55 : dt < 2 / 12 ? 1.12 : 1;
       chicagoNight(f, { T: Math.max(CHI_T0, T), night, lamp });
-      // the stamp types on "years", holds, and is gone before the crossfade into the title
+      // the stamp types on "Two", holds, and is gone before the crossfade into the title
       const A = sm((t - scene.stamp) / 0.15) * (1 - sm((t - (dur - 0.55)) / 0.4));
-      caseStamp(f.c, STAMP, { t, at: scene.stamp, A, mood: f.mood });
+      // round 4 (L0114 retake, "Two" 6.742): 1e-3 s of slack so the frame ON "Two" (local 6.75, which the rounded
+      // shot start hands us as 6.74996) counts as its own twos step and the first key strikes on it, not a frame late
+      caseStamp(f.c, STAMP, { t: t + 1e-3, at: scene.stamp, A, mood: f.mood });
     }
     tapeShudder(f, shudder, 1943, -1);
   },

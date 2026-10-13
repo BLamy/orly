@@ -1,220 +1,214 @@
 {
  "shot": "ch05-s06",
- "at": "2026-10-12T08:20:22.876Z",
+ "at": "2026-10-13T04:13:25.694Z",
  "minCapPx": 22,
  "sampled": 32,
- "texts": 39,
- "offenders": [
-  {
-   "text": "THE STRUCTURE OF",
-   "maxCap": 14.6,
-   "minCap": 9.2,
-   "first": 0.55,
-   "last": 20.99,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "THE NET DOES NOT",
-   "maxCap": 14.6,
-   "minCap": 9.2,
-   "first": 0.55,
-   "last": 20.99,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "CHANGE WITH",
-   "maxCap": 14.6,
-   "minCap": 9.2,
-   "first": 0.55,
-   "last": 20.99,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "TIME.",
-   "maxCap": 14.6,
-   "minCap": 9.2,
-   "first": 0.55,
-   "last": 20.99,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "KNOWLEDGE",
-   "maxCap": 14.8,
-   "minCap": 9.3,
-   "first": 0.55,
-   "last": 20.99,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "LEARNING",
-   "maxCap": 14.8,
-   "minCap": 9.3,
-   "first": 0.55,
-   "last": 20.99,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "RULES",
-   "maxCap": 17.1,
-   "minCap": 10.8,
-   "first": 0.55,
-   "last": 20.99,
-   "font": "11px \"Special Elite\""
-  },
-  {
-   "text": "1943",
-   "maxCap": 17.1,
-   "minCap": 10.8,
-   "first": 0.55,
-   "last": 20.99,
-   "font": "11px \"Special Elite\""
-  },
-  {
-   "text": "1958",
-   "maxCap": 17.1,
-   "minCap": 10.8,
-   "first": 0.55,
-   "last": 20.99,
-   "font": "11px \"Special Elite\""
-  },
-  {
-   "text": "1969",
-   "maxCap": 17.1,
-   "minCap": 10.8,
-   "first": 0.55,
-   "last": 20.99,
-   "font": "11px \"Special Elite\""
-  },
+ "texts": 40,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
   {
    "text": "HELSINKI ·",
-   "maxCap": 17.1,
-   "minCap": 10.8,
-   "first": 0.55,
-   "last": 20.99,
-   "font": "11px \"Special Elite\""
-  },
-  {
-   "text": "THEN HOW DO YOU TRAIN",
-   "maxCap": 18.7,
-   "minCap": 16.5,
-   "first": 0.55,
-   "last": 2.55,
-   "font": "11px \"Special Elite\""
-  },
-  {
-   "text": "THE HIDDEN LAYER?",
-   "maxCap": 18.7,
-   "minCap": 16.5,
-   "first": 0.55,
-   "last": 2.55,
-   "font": "11px \"Special Elite\""
-  }
- ],
- "textureTexts": 0,
- "ok": [
-  {
-   "text": "WHO TAUGHT",
-   "maxCap": 29.6
-  },
-  {
-   "text": "IT?",
-   "maxCap": 29.6
-  },
-  {
-   "text": "1970",
-   "maxCap": 27.5
-  },
-  {
-   "text": "BACK-PROPAGATING",
-   "maxCap": 23.1
-  },
-  {
-   "text": "ERROR-CORRECTION",
-   "maxCap": 23.1
-  },
-  {
-   "text": "EXPERIMENTS · 1961 ?",
-   "maxCap": 23.1
+   "capWhileSubject": 22.9,
+   "why": "named: \"helsinki\""
   },
   {
    "text": "KELLEY",
-   "maxCap": 30.8
-  },
-  {
-   "text": "1960",
-   "maxCap": 27.5
+   "capWhileSubject": 30.8,
+   "why": "script onScreenText"
   },
   {
    "text": "BRYSON",
-   "maxCap": 30.8
-  },
-  {
-   "text": "1961",
-   "maxCap": 27.5
+   "capWhileSubject": 30.8,
+   "why": "script onScreenText"
   },
   {
    "text": "DREYFUS",
-   "maxCap": 30.8
-  },
-  {
-   "text": "1962",
-   "maxCap": 27.5
+   "capWhileSubject": 30.8,
+   "why": "script onScreenText"
   },
   {
    "text": "LINNAINMAA",
-   "maxCap": 24.2
+   "capWhileSubject": 24.2,
+   "why": "script onScreenText"
   },
   {
    "text": "WERBOS",
-   "maxCap": 30.8
+   "capWhileSubject": 30.8,
+   "why": "script onScreenText"
   },
   {
    "text": "1974/82",
-   "maxCap": 27.5
+   "capWhileSubject": 27.5,
+   "why": "script onScreenText"
   },
   {
    "text": "RUMELHART",
-   "maxCap": 24.2
-  },
-  {
-   "text": "1982",
-   "maxCap": 27.5
+   "capWhileSubject": 24.2,
+   "why": "script onScreenText"
   },
   {
    "text": "PARKER",
-   "maxCap": 30.8
-  },
-  {
-   "text": "1985",
-   "maxCap": 27.5
+   "capWhileSubject": 30.8,
+   "why": "script onScreenText"
   },
   {
    "text": "LE CUN",
-   "maxCap": 30.8
+   "capWhileSubject": 30.8,
+   "why": "script onScreenText"
   },
   {
    "text": "credit still disputed",
-   "maxCap": 28.6
+   "capWhileSubject": 28.6,
+   "why": "script onScreenText"
   },
   {
    "text": "geoffrey hinton",
-   "maxCap": 25.9
+   "capWhileSubject": 25.9,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "writing in 2020",
-   "maxCap": 26.4
+   "capWhileSubject": 26.4,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 42,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IT?",
+   "maxCap": 42,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "RULES",
+   "maxCap": 24.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 21,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 21,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1943",
+   "maxCap": 24.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 20.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 20.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 20.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 20.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1958",
+   "maxCap": 24.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1969",
+   "maxCap": 24.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1970",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THEN HOW DO YOU TRAIN",
+   "maxCap": 26.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE HIDDEN LAYER?",
+   "maxCap": 26.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 32.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 32.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 32.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1960",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1961",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1962",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1982",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1985",
+   "maxCap": 27.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "NATURE · 1986",
+   "maxCap": 25,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "same name,",
-   "maxCap": 58.9
+   "maxCap": 58.8,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "a different",
-   "maxCap": 58.9
+   "maxCap": 58.8,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "procedure",
-   "maxCap": 58.9
+   "maxCap": 58.8,
+   "why": "not named, not in onScreenText"
   }
- ]
+ ],
+ "textureTexts": 27
 }

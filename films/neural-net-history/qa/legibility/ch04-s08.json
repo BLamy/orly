@@ -1,232 +1,214 @@
 {
  "shot": "ch04-s08",
- "at": "2026-10-12T08:41:49.626Z",
+ "at": "2026-10-13T04:13:20.660Z",
  "minCapPx": 22,
  "sampled": 22,
  "texts": 40,
- "offenders": [
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
   {
-   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
-   "maxCap": 10,
-   "minCap": 7.8,
-   "first": 0.25,
-   "last": 16.25,
-   "font": "11.088px \"Special Elite\""
+   "text": "S",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
-   "text": "BACK-PROPAGATING",
-   "maxCap": 11.4,
-   "minCap": 8.2,
-   "first": 8.25,
-   "last": 15.25,
-   "font": "7.9475px \"Special Elite\""
+   "text": "U",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
-   "text": "ERROR-CORRECTION",
-   "maxCap": 11.4,
-   "minCap": 8.2,
-   "first": 8.25,
-   "last": 15.25,
-   "font": "7.9475px \"Special Elite\""
+   "text": "E",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
-   "text": "EXPERIMENTS · 1961 ?",
-   "maxCap": 11.4,
-   "minCap": 8.2,
-   "first": 8.25,
-   "last": 15.25,
-   "font": "7.9475px \"Special Elite\""
+   "text": "X",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
-   "text": "TURING · DUE 2000",
-   "maxCap": 11.6,
-   "minCap": 8.3,
-   "first": 8.25,
-   "last": 15.25,
-   "font": "8.075px \"Special Elite\""
+   "text": "1",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
-   "text": "ROSENBLATT · 1961",
-   "maxCap": 11.6,
-   "minCap": 8.3,
-   "first": 8.25,
-   "last": 15.25,
-   "font": "8.075px \"Special Elite\""
+   "text": "9",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
-   "text": "Linguistic capability,",
-   "maxCap": 11.6,
-   "minCap": 8.3,
-   "first": 8.25,
-   "last": 15.25,
-   "font": "8.075px \"Special Elite\""
+   "text": "7",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
-   "text": "related to perceptual",
-   "maxCap": 11.6,
-   "minCap": 8.3,
-   "first": 8.25,
-   "last": 15.25,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "experience, is of the",
-   "maxCap": 11.6,
-   "minCap": 8.3,
-   "first": 8.25,
-   "last": 15.25,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "essence…",
-   "maxCap": 11.6,
-   "minCap": 8.3,
-   "first": 8.25,
-   "last": 15.25,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "THE STRUCTURE OF",
-   "maxCap": 13.4,
-   "minCap": 9.6,
-   "first": 8.25,
-   "last": 15.25,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "THE NET DOES NOT",
-   "maxCap": 13.4,
-   "minCap": 9.6,
-   "first": 8.25,
-   "last": 15.25,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "CHANGE WITH",
-   "maxCap": 13.4,
-   "minCap": 9.6,
-   "first": 8.25,
-   "last": 15.25,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "TIME.",
-   "maxCap": 13.4,
-   "minCap": 9.6,
-   "first": 8.25,
-   "last": 15.25,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "KNOWLEDGE",
-   "maxCap": 13.6,
-   "minCap": 9.8,
-   "first": 8.25,
-   "last": 15.25,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "LEARNING",
-   "maxCap": 13.6,
-   "minCap": 9.8,
-   "first": 8.25,
-   "last": 15.25,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "3 in 10 fooled",
-   "maxCap": 13.6,
-   "minCap": 9.8,
-   "first": 8.25,
-   "last": 15.25,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "SIMON & NEWELL",
-   "maxCap": 14.3,
-   "minCap": 10.3,
-   "first": 8.25,
-   "last": 15.25,
-   "font": "9.975px \"Special Elite\""
-  },
-  {
-   "text": "BY 1968",
-   "maxCap": 14.3,
-   "minCap": 10.3,
-   "first": 8.25,
-   "last": 15.25,
-   "font": "9.975px \"Special Elite\""
-  },
-  {
-   "text": "1969",
-   "maxCap": 15.8,
-   "minCap": 8.4,
-   "first": 0.25,
-   "last": 16.25,
-   "font": "11.88px \"Special Elite\""
-  },
-  {
-   "text": "RULES",
-   "maxCap": 15.8,
-   "minCap": 11.3,
-   "first": 8.25,
-   "last": 15.25,
-   "font": "11px \"Special Elite\""
-  },
-  {
-   "text": "1943",
-   "maxCap": 15.8,
-   "minCap": 11.3,
-   "first": 8.25,
-   "last": 15.25,
-   "font": "11px \"Special Elite\""
-  },
-  {
-   "text": "1958",
-   "maxCap": 15.8,
-   "minCap": 11.3,
-   "first": 8.25,
-   "last": 15.25,
-   "font": "11px \"Special Elite\""
-  }
- ],
- "textureTexts": 0,
- "ok": [
-  {
-   "text": "WHO TAUGHT",
-   "maxCap": 27.2
-  },
-  {
-   "text": "IT?",
-   "maxCap": 27.2
-  },
-  {
-   "text": "AND IF NO STRAIGHT LINE EXISTS?",
-   "maxCap": 22
-  },
-  {
-   "text": "HELSINKI",
-   "maxCap": 24.4
-  },
-  {
-   "text": "1970",
-   "maxCap": 24.4
+   "text": "6",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "CHESS CHAMPION",
-   "maxCap": 23.6
+   "capWhileSubject": 33.5,
+   "why": "script onScreenText"
   },
   {
    "text": "DUE 1968",
-   "maxCap": 23.6
+   "capWhileSubject": 33.5,
+   "why": "script onScreenText"
   },
   {
    "text": "THEN HOW DO YOU TRAIN THE HIDDEN LAYER?",
-   "maxCap": 25.8
+   "capWhileSubject": 36.6,
+   "why": "script onScreenText"
   },
   {
    "text": "OVERDUE",
-   "maxCap": 23.6
+   "capWhileSubject": 33.1,
+   "why": "script onScreenText"
   }
- ]
+ ],
+ "texture": [
+  {
+   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
+   "maxCap": 14.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1969",
+   "maxCap": 22.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 38.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IT?",
+   "maxCap": 38.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "RULES",
+   "maxCap": 22.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 19.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 19.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1943",
+   "maxCap": 22.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 19,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 19,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 19,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 19,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1958",
+   "maxCap": 22.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 16.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 16.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 16.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 16.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 19.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ROSENBLATT · 1961",
+   "maxCap": 16.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "Linguistic capability,",
+   "maxCap": 16.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "related to perceptual",
+   "maxCap": 16.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "experience, is of the",
+   "maxCap": 16.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "essence…",
+   "maxCap": 16.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "AND IF NO STRAIGHT LINE EXISTS?",
+   "maxCap": 31.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "HELSINKI",
+   "maxCap": 34.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1970",
+   "maxCap": 34.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "SIMON & NEWELL",
+   "maxCap": 20.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "BY 1968",
+   "maxCap": 20.3,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 28
 }

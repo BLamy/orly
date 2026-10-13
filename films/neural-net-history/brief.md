@@ -31,3 +31,10 @@
 - Real people are depicted respectfully as silhouettes; never put invented words in a real person's mouth.
 - Geopolitics (the US–China race) is presented factually and even-handedly: export controls, compute, talent, open-weight models, safety debates. No caricature of any nation or people.
 - Anthropic is covered with the same factual standard as every other lab: no promotion.
+
+## User directions recorded during production
+- 2026-10-11: real people are NAMED in narration. Geoffrey Hinton is "Geoffrey Hinton" / "Hinton", never "the tall man" or "the man" (an epithet may describe his figure in stage directions only).
+- 2026-10-11: the 1995 dinner bet must be legible: name Larry Jackel and Vladimir Vapnik and say how each bet ended.
+- 2026-10-12: machine sonifications are mechanical (the Mark I clacks: relays, ratchets, detents), never chimes.
+- 2026-10-13: the opening line L0101 "Here is a small wonder." is PINNED to its original 2026-10-06 take (tts.take 86e2ab505f32364a): no re-records, no "Here is..." respelling, no "leaning in" excitement.
+- 2026-10-13: the turn into the story is the user's wording: "Our story starts all the way back in World War Two." (L0114), said plainly at normal pace.

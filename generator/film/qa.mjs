@@ -18,15 +18,21 @@
 //              timelineSeconds stamp equals the timeline duration, both within one frame; fail when stale).
 //   score      also cueJoins: a cue change (fade-out + fade-in) never overlaps narration, and the incoming cue sounds
 //              alone >= 1.5 s before the next line (warn).
-//   mix        master -16 ±0.5 LUFS, TP ≤ -1.5 (+0.1), length = film, duck depth vs its target (ceiling: warn > ±1.5 dB, fail > +3 dB), master limiter ≤ 2 dB,
-//              stem limiter ≤ 1 dB, chapter slices < 25 MiB, line levels (each line's momentary peak within 0.5 dB of
-//              its levelDb offset from the median of the other lines, measured on the stem), a fading cue's fade
-//              starting ≥ 1.6 s after its lastStrike,
+//   mix        master -16 ±0.5 LUFS, TP ≤ -1.5 (+0.1), length = film, duck depth vs its target (ceiling: warn > ±1.5 dB, fail > +3 dB), master limiter ≤ 1.5 dB (warn),
+//              stem limiter ≤ 1 dB, chapter slices < 25 MiB, line levels (review round 2: each line's gated loudness vs
+//              the median of the other lines, measured on the stem: warn when it sits more than 1.5 dB from where
+//              lineLufs + its level hint wants it, or when |levelDb| > 1.5 stacks on the ride; fail beyond 3 dB or when a
+//              requested hint/offset misses by more than 1.5 dB), linePeaks (warn when a line's loudest momentary
+//              window in the master exceeds the narration's p95 by more than 2 dB), foley (≤ 10 events, each in a gap or
+//              under its line's last words, -28..-32 LUFS short-term), swells (music-only moments trimmed), a fading
+//              cue's fade starting ≥ 1.6 s after its lastStrike,
 //              floor (room tone: the quietest 400 ms window > -70 LUFS, never digital zero), musicEq, lineMasking (each
 //              line's voice vs music in its own window: fail < 6 dB, warn < 10 dB), master newer than its inputs.
 //   render     film.mp4 frame count = round(duration × fps), 1920×1080, A/V within one frame, captions +
 //              chapters present, newer than master/timeline.
-//   sheets     a contact sheet per shot, newer than the timeline.
+//   sheets     a contact sheet per shot, newer than the timeline; cards (qa/cards/summary.json from cards.mjs: a probed
+//              paper card blank for > 0.3 s fails, unprobed suspect paper and unaudited shots warn); ghostText (same
+//              audit, review round 4: two different text layers overlapping while both are > 25 % opaque for > 0.25 s fail).
 //   publish    manifest (if published) is format 3, kind film, every referenced file exists and is < 25 MiB;
 //              warns when the shelf copy is stale (runtime ≠ timeline, or older than the master).
 // Writes qa/reports/qa-<time>.json and qa/reports/latest.json; film.json stages.qa. Exit 1 on any fail.
@@ -39,8 +45,9 @@ import { speak, displayWords } from './lib/text.mjs';
 import { loadLexicon, lineSig } from './lib/voicecfg.mjs';
 import { videoInfo } from './lib/ffmpeg.mjs';
 import { readWav } from './lib/wav.mjs';
-import { sttTargets, readStt, clipSig, STT_MODEL } from './lib/stt.mjs';
-import { spanLoudness, levelOffsets, lineSpans, LEVEL_TOLERANCE_DB } from './lib/levels.mjs';
+import { cueContext, auditBody, splitNotes } from './lib/cuenotes.mjs';
+import { sttTargets, readStt, clipSig, STT_MODEL, heardForms, recordState, matchTerms, recordPass } from './lib/stt.mjs';
+import { spanLoudness, levelOffsets, lineSpans, LEVEL_TOLERANCE_DB, LEVEL_WARN_DB, LEVEL_FAIL_DB, levelHintDb, intendedDb } from './lib/levels.mjs';
 import { edgePeaks, isCutEdge, EDGE_DB, EDGE_FAIL_DB } from './lib/split.mjs';
 
 const a = parseArgs(process.argv.slice(2), { boolean: ['json', 'help'], string: ['slug', 'dir', 'stage'] });
@@ -132,21 +139,40 @@ function qaNarration() {
   if (stem) add('narration', 'stem', Math.abs(stem.integrated - stem.target) <= 1 && stem.truePeak <= -1 && (stem.limitedDb ?? 0) <= 1 ? 'pass' : 'warn', `stem ${stem.integrated} LUFS (target ${stem.target}), TP ${stem.truePeak} dBTP, limiter ${stem.limitedDb ?? 0} dB${stem.compressor ? `, compressor ${stem.compressor.grDb} dB GR, line rides ≤ ${Math.max(0, ...Object.values(stem.rides || {}).map((r) => Math.abs(r.rideDb))).toFixed(1)} dB` : ''}`);
   // STT as data (film:stt → narration/stt.json): every line where a lexicon entry fires (or qa.stt is required)
   // needs a passing round trip whose sig matches its CURRENT clip; a missing, stale or failing record fails
-  const targets = sttTargets(script, lex);
+  // review round 3: a record is current only while it transcribes the CURRENT take (lineSig) of the current clip
+  // (sig); terms are re-judged here under today's literal rule (no sound-alikes), and a stale record of ANY line
+  // (a re-narrated line that is not a name target too) fails
+  const heard = heardForms(readJson(P.voice, {}));
+  const targets = sttTargets(script, lex, { heard });
   if (!targets.length) add('narration', 'stt', 'pass', 'no line needs an STT round trip (no lexicon entry fires, no qa.stt)');
   else {
     const stt = readStt(P);
     const bad = [];
     const good = [];
+    const tIds = new Set(targets.map((t) => t.lineId));
     for (const t of targets) {
       const rec = stt.lines[t.lineId];
-      const cur = clipSig(P, doc.lines[t.lineId]);
-      if (!rec) bad.push(`${t.lineId}: no record`);
-      else if (rec.sig !== cur) bad.push(`${t.lineId}: stale (record for clip ${rec.sig}, current clip ${cur})`);
-      else if (!rec.pass) bad.push(`${t.lineId}: ${rec.expectedTerms.filter((x) => !x.found).map((x) => x.term).join(', ')} missing from "${rec.transcript}"`);
-      else good.push(`${t.lineId} (${rec.expectedTerms.map((x) => x.term).join(', ')})`);
+      const take = doc.lines[t.lineId];
+      const state = recordState(P, rec, take);
+      if (state === 'missing') bad.push(`${t.lineId}: no record`);
+      else if (state === 'stale-take') bad.push(`${t.lineId}: STALE (record transcribes take ${rec.lineSig}, current take ${take?.sig}: "${rec.transcript}")`);
+      else if (state === 'stale-clip') bad.push(`${t.lineId}: stale (record for clip ${rec.sig}, current clip ${clipSig(P, take)})`);
+      else {
+        const terms = matchTerms(rec.transcript, t.terms);
+        const miss = terms.filter((x) => !x.found);
+        if (miss.length) bad.push(`${t.lineId}: ${miss.map((x) => `${x.term}${x.near ? ' (only a near spelling)' : ''}`).join(', ')} not heard literally in "${rec.transcript}" (accept ${miss.map((x) => x.accept.join('/')).join('; ')})`);
+        else good.push(`${t.lineId} (${terms.map((x) => x.term).join(', ')})`);
+      }
     }
-    add('narration', 'stt', bad.length ? 'fail' : 'pass', bad.length ? `${bad.join('; ')} — run film:stt --slug ${a.slug}` : `${good.length} lines round-tripped on the current clips (${STT_MODEL}): ${good.join('; ')}`, { targets: targets.map((t) => t.lineId) });
+    // records of re-narrated lines that are not name targets: stale or off-text records fail too
+    for (const [id, rec] of Object.entries(stt.lines || {})) {
+      if (tIds.has(id) || !doc.lines[id]) continue;
+      const state = recordState(P, rec, doc.lines[id]);
+      if (state !== 'current') bad.push(`${id}: ${state} record (re-narrated line; re-run film:stt --lines ${id})`);
+      else if (!recordPass(rec.transcript, [], rec.wer ?? 1)) bad.push(`${id}: transcript does not match the current text (WER ${rec.wer}): "${rec.transcript}"`);
+      else good.push(`${id} (re-take, WER ${rec.wer})`);
+    }
+    add('narration', 'stt', bad.length ? 'fail' : 'pass', bad.length ? `${bad.join('; ')} — run film:stt --slug ${a.slug}` : `${good.length} lines round-tripped on the current takes (${STT_MODEL}; terms heard literally): ${good.join('; ')}`, { targets: targets.map((t) => t.lineId), bad });
   }
   // the human half: stress can only be judged by ear (voice.json listening[], film:voice signoff)
   const voiceCfg = readJson(P.voice, {});
@@ -169,7 +195,19 @@ function qaTimeline() {
     const tIds = timeline.shots.flatMap((s) => s.lines.map((l) => l.id)).join(',');
     const sIds = scriptLines.map((l) => l.id).join(',');
     add('timeline', 'matchesScript', tIds === sIds ? 'pass' : 'fail', tIds === sIds ? 'lines match script.json' : 'timeline lines differ from script.json — re-run film:timeline');
-    if (mtime(P.script) > mtime(P.narration.timeline)) add('timeline', 'fresh', 'warn', 'script.json is newer than timeline.json');
+    // review round 3: after line re-takes the clock must be rebuilt BEFORE assemble. Fails when a line's text or
+    // take changed after timeline.json was built (script text differs, or lines.json holds a newer take than the
+    // clock's line duration says); a script.json that was only touched (same text) passes with a note.
+    const tLines = new Map(timeline.shots.flatMap((s) => s.lines.map((l) => [l.id, l])));
+    const textDiff = scriptLines.filter((l) => tLines.has(l.id) && tLines.get(l.id).text !== l.text).map((l) => l.id);
+    const takes = readJson(P.narration.lines, { lines: {} }).lines || {};
+    // a line spans speechStart..speechEnd of its take on the clock: a re-take with another length shows here
+    const takeDiff = Object.entries(takes).filter(([id, r]) => tLines.has(id) && Number.isFinite(r.speechEnd) && Math.abs(tLines.get(id).end - tLines.get(id).start - (r.speechEnd - r.speechStart)) > 0.002).map(([id]) => id);
+    const newerTakes = mtime(P.narration.lines) > mtime(P.narration.timeline);
+    const touched = mtime(P.script) > mtime(P.narration.timeline);
+    if (textDiff.length || takeDiff.length) add('timeline', 'fresh', 'fail', `the clock predates the current lines (${[...textDiff.map((id) => `${id} text`), ...takeDiff.map((id) => `${id} take`)].slice(0, 12).join(', ')}) — run film:timeline, re-fit shot anchors, re-mix`);
+    else if (newerTakes) add('timeline', 'fresh', 'fail', 'narration/lines.json is newer than timeline.json (re-takes not laid on the clock) — run film:timeline');
+    else add('timeline', 'fresh', 'pass', touched ? 'script.json was touched after timeline.json, but every line text matches the clock' : 'timeline.json is newer than script.json and lines.json');
   }
   const fps = timeline.fps;
   const offFrame = timeline.shots.filter((s) => Math.abs(s.start * fps - Math.round(s.start * fps)) > 1e-3 || Math.abs(s.end * fps - Math.round(s.end * fps)) > 1e-3).map((s) => s.id);
@@ -220,6 +258,18 @@ function qaScore() {
   add('score', 'renders', problems.length ? 'fail' : warns.length ? 'warn' : 'pass', [...problems, ...warns].slice(0, 12).join('; ') || `${cues.length} cues rendered at exact length`, { problems, warns });
   qaScoreSummary(cues, D);
   qaCueJoins(cues);
+  // review round 3: cue-note BODIES must not carry absolute times that contradict the current clock (the CURRENT
+  // CLOCK paragraph is the only time authority); fix with film cue-notes --fix (re-maps anchors, strips the rest)
+  if (timeline) {
+    const bad = [];
+    for (const c of cues) {
+      const { body } = splitNotes(c.notes);
+      if (!body) continue;
+      const r = auditBody(body, cueContext(c, timeline));
+      if (r.stale.length || r.bare.length) bad.push(`${c.id}: ${r.stale.length} stale anchored${r.stale.length ? ` (e.g. '${r.stale[0].anchor}' ${r.stale[0].at} vs ${r.stale[0].now})` : ''}, ${r.bare.length} bare`);
+    }
+    add('score', 'notesClock', bad.length ? 'warn' : 'pass', bad.length ? `${bad.join('; ')} — run node generator/film/cue-notes.mjs --slug ${a.slug} --fix` : 'every cue-note body is on the current clock (anchored times match their anchors; no bare absolute times)');
+  }
   const music = cues.reduce((s, c) => s + (c.end - c.start), 0);
   if (Number.isFinite(D)) add('score', 'coverage', 'pass', `${(music / 60).toFixed(1)} min of music over ${(D / 60).toFixed(1)} min (${((music / D) * 100).toFixed(0)}%)`);
 }
@@ -300,19 +350,54 @@ function qaMix() {
     add('mix', 'moments', 'pass', `${fm ? `${first} peaks ${fm.M} LUFS momentary; ` : ''}loudest music-only windows: ${top || 'none'}`);
   }
   const pre = L.loudnorm?.preLimit;
-  add('mix', 'preLimit', pre && pre.reductionDb > 2 ? 'warn' : 'pass', pre ? `master limiter takes ${pre.reductionDb} dB off the peaks before the final gain${pre.reductionDb > 2 ? ' (> 2 dB)' : ''}` : 'no master limiting (constant gain only)', { reductionDb: pre?.reductionDb ?? 0 });
+  // review round 2: aim for at most 1.5 dB of master limiting (reach -16 LUFS by trimming music swells, not speech)
+  add('mix', 'preLimit', pre && pre.reductionDb > 1.5 ? 'warn' : 'pass', pre ? `master limiter takes ${pre.reductionDb} dB off the peaks before the final gain${pre.reductionDb > 1.5 ? ' (> 1.5 dB)' : ''}${pre.where ? `; over the ceiling: speech ${pre.where.speech.seconds} s (max ${pre.where.speech.maxDb} dB), music-only ${pre.where.music.seconds} s (max ${pre.where.music.maxDb} dB)` : ''}` : 'no master limiting (constant gain only)', { reductionDb: pre?.reductionDb ?? 0 });
   const st = L.narration;
   if (st) add('mix', 'stemLimit', (st.limitedDb ?? 0) > 1 ? 'warn' : 'pass', `narration stem limiter ${st.limitedDb ?? 0} dB${st.compressor ? `; speech compressor ${st.compressor.grDb} dB GR` : ''}`);
   // per-line levels, measured here on the narration stem (independent of what timeline.mjs reports): each line's
   // loudest momentary window must sit within 0.5 dB of its requested levelDb offset from the median of the others
   if (fs.existsSync(P.narration.wav) && timeline && !timeline.draft) {
-    const requested = Object.fromEntries(scriptLines.map((l) => [l.id, Number(l.levelDb) || 0]));
+    const requested = Object.fromEntries(scriptLines.map((l) => [l.id, intendedDb(l)]));
+    const hints = Object.fromEntries(scriptLines.map((l) => [l.id, levelHintDb(l.level)]));
+    const levelDbOf = Object.fromEntries(scriptLines.map((l) => [l.id, Number(l.levelDb) || 0]));
     // each line's OWN window (shot start + line start/end), gated loudness: not the loudest 400 ms (review round 1)
-    const lv = levelOffsets(spanLoudness(P.narration.wav, lineSpans(timeline)), requested);
-    const bad = Object.entries(lv).filter(([, v]) => Math.abs(v.errorDb) > LEVEL_TOLERANCE_DB);
-    const shown = Object.entries(lv).filter(([, v]) => v.requestedDb).map(([k, v]) => `${k} ${v.offsetDb} (want ${v.requestedDb})`);
-    add('mix', 'lineLevels', bad.length ? 'fail' : 'pass', bad.length ? `line levels off by more than ${LEVEL_TOLERANCE_DB} dB (gated loudness of the line's window vs median of the other lines): ${bad.map(([k, v]) => `${k} ${v.offsetDb >= 0 ? '+' : ''}${v.offsetDb} dB, want ${v.requestedDb}`).join('; ')} — re-run film:timeline` : `every line within ${LEVEL_TOLERANCE_DB} dB of its requested offset${shown.length ? `; ${shown.join(', ')}` : ''}; spread of the rest ${(() => { const r = Object.values(lv).filter((v) => !v.requestedDb).map((v) => v.offsetDb); return r.length ? `${Math.min(...r)}..${Math.max(...r)}` : 'n/a'; })()} dB`, { lines: lv });
+    const lv = levelOffsets(spanLoudness(P.narration.wav, lineSpans(timeline)), requested, hints);
+    const rows = Object.entries(lv);
+    // review round 2: the leveling is capped at ±3 dB, so lines keep some of their own level; warn on drift from
+    // lineLufs + hint beyond 1.5 dB, fail beyond 3 dB, and fail a requested hint/offset that misses by > 1.5 dB
+    // (a small levelDb may compensate a capped ride, so a hinted line is judged against its hint, not hint + levelDb)
+    const fail = rows.filter(([, v]) => Math.abs(v.driftDb) > LEVEL_FAIL_DB || (v.hintDb && Math.abs(v.driftDb) > LEVEL_WARN_DB));
+    const drift = rows.filter(([k, v]) => !fail.some(([f]) => f === k) && Math.abs(v.driftDb) > LEVEL_WARN_DB);
+    const stacked = Object.entries(levelDbOf).filter(([, d]) => Math.abs(d) > LEVEL_WARN_DB);
+    const shown = rows.filter(([, v]) => v.hintDb || v.requestedDb).map(([k, v]) => `${k} ${v.offsetDb} (${v.hintDb ? `hint ${v.hintDb}` : 'no hint'}${v.requestedDb !== (v.hintDb || 0) ? `, levelDb ${+(v.requestedDb - (v.hintDb || 0)).toFixed(2)}` : ''})`);
+    const rest = rows.filter(([, v]) => !v.hintDb && !v.requestedDb).map(([, v]) => v.offsetDb);
+    const status = fail.length ? 'fail' : drift.length || stacked.length ? 'warn' : 'pass';
+    add('mix', 'lineLevels', status,
+      `${fail.length ? `off their intended level: ${fail.map(([k, v]) => `${k} ${v.offsetDb >= 0 ? '+' : ''}${v.offsetDb} dB, want ${v.hintDb || 0}`).join('; ')} — re-run film:timeline or re-narrate; ` : ''}` +
+      `${drift.length ? `more than ${LEVEL_WARN_DB} dB from lineLufs + hint (capped leveling keeps the take's level): ${drift.map(([k, v]) => `${k} ${v.driftDb >= 0 ? '+' : ''}${v.driftDb}`).join(', ')}; ` : ''}` +
+      `${stacked.length ? `levelDb over ±${LEVEL_WARN_DB} stacks on the ride: ${stacked.map(([k, d]) => `${k} ${d}`).join(', ')}; ` : ''}` +
+      `${shown.length ? `hinted/offset: ${shown.join(', ')}; ` : ''}spread of the rest ${rest.length ? `${Math.min(...rest)}..${Math.max(...rest)}` : 'n/a'} dB`,
+      { lines: lv });
   }
+  // review round 2: five lines (+2/+3 dB offsets on top of the rides) peaked 4-5 dB over every other line; warn when a
+  // line's loudest momentary window in the master exceeds the narration's median line peak by more than 2 dB
+  if (L.moments?.lines) {
+    const pk = Object.entries(L.moments.lines).map(([k, v]) => [k, v.M]).filter(([, m]) => Number.isFinite(m));
+    const sorted = pk.map(([, m]) => m).sort((x, y) => x - y);
+    const p95 = sorted[Math.min(sorted.length - 1, Math.floor(sorted.length * 0.95))];
+    // review round 3 (L1505 was 5 dB over its neighbour): the bar is the MEDIAN line peak + 2 dB, not p95 + 2
+    const n = sorted.length;
+    const med = +(n % 2 ? sorted[(n - 1) / 2] : (sorted[n / 2 - 1] + sorted[n / 2]) / 2).toFixed(2);
+    const hot = pk.filter(([, m]) => m > med + 2).sort((x, y) => y[1] - x[1]);
+    add('mix', 'linePeaks', hot.length ? 'warn' : 'pass', `narration momentary peaks: median ${med} LUFS, p95 ${p95}, max ${sorted[n - 1]}${hot.length ? `; over median + 2 dB: ${hot.map(([k, m]) => `${k} ${m}`).join(', ')}` : ' (none over median + 2 dB)'}`, { median: med, p95, hot });
+  }
+  if (L.foley) {
+    const f = L.foley;
+    const bad = (f.events || []).filter((e) => e.problems?.length);
+    const ok = f.checks ? Object.values(f.checks).every(Boolean) : true;
+    add('mix', 'foley', ok ? 'pass' : 'warn', f.source ? `${(f.events || []).length} foley events (max ${f.max})${(f.events || []).length ? `: ${f.events.map((e) => `${e.id} ${e.t}s ${e.lufsS} LUFS S`).join(', ')}` : ''}${bad.length ? `; placement: ${bad.map((e) => `${e.id} ${e.problems.join('/')}`).join('; ')}` : ''}${f.checks && !f.checks.level ? '; a level is outside -28..-32 LUFS S' : ''}` : 'no score/foley.json (no foley bus)');
+  }
+  if (L.swells?.regions) add('mix', 'swells', 'pass', `music-only ceiling ${L.swells.ceiling} LUFS M (line p50 ${L.swells.lineMomentaryP50} − ${L.swells.margin}); ${L.swells.regions.length} swells trimmed${L.swells.regions.length ? `: ${L.swells.regions.slice().sort((x, y) => y.M - x.M).slice(0, 5).map((r) => `${r.peakAt}s −${r.trimDb} dB`).join(', ')}` : ''}`);
   // a fading cue's last strike rings in clear air before the fade-out begins (mix.mjs --fade-after-strike, 1.6 s)
   const fades = (L.cues || []).filter((c) => c.fade);
   if (fades.length) {
@@ -358,6 +443,23 @@ function qaSheets() {
   const miss = timeline.shots.filter((s) => !fs.existsSync(path.join(P.qa.sheets, `${s.id}.png`))).map((s) => s.id);
   const old = timeline.shots.filter((s) => fs.existsSync(path.join(P.qa.sheets, `${s.id}.png`)) && mtime(path.join(P.qa.sheets, `${s.id}.png`)) < mtime(P.app.timeline)).map((s) => s.id);
   add('sheets', 'coverage', miss.length ? 'warn' : old.length ? 'warn' : 'pass', miss.length ? `missing sheets: ${miss.slice(0, 10).join(',')}${miss.length > 10 ? '…' : ''}` : old.length ? `older than the timeline: ${old.slice(0, 10).join(',')}` : `${timeline.shots.length} sheets current`);
+  // review round 3: no paper card shows blank (generator/film/cards.mjs): paper > 50 % with text < 20 % for > 0.3 s
+  // fails on a card the type kit's cardProbe reports, warns on unprobed light paper; a shot whose source is newer
+  // than its audit is listed as unaudited
+  const cs = readJson(path.join(P.qa.dir, 'cards', 'summary.json'), null);
+  if (!cs) add('sheets', 'cards', 'warn', `no card audit — run node generator/film/cards.mjs --slug ${a.slug} --all`);
+  else {
+    const fails = Object.entries(cs.shots || {}).filter(([, v]) => v.fails?.length).map(([k, v]) => `${k}: ${v.fails.join('; ')}`);
+    const sus = Object.entries(cs.shots || {}).filter(([, v]) => v.suspects?.length).map(([k]) => k);
+    const shotSrc = (id) => path.join(P.app.dir, 'shots', `${id}.tsx`);
+    const unaudited = timeline.shots.filter((s) => !cs.shots?.[s.id] || (fs.existsSync(shotSrc(s.id)) && mtime(shotSrc(s.id)) > Date.parse(cs.shots[s.id].at || 0))).map((s) => s.id);
+    add('sheets', 'cards', fails.length ? 'fail' : sus.length || unaudited.length ? 'warn' : 'pass', fails.length ? `blank paper cards: ${fails.slice(0, 8).join(' | ')}` : `${Object.keys(cs.shots || {}).length} shots audited, no blank probed card${sus.length ? `; suspect unprobed paper (read the frames): ${sus.slice(0, 8).join(', ')}` : ''}${unaudited.length ? `; unaudited or changed since: ${unaudited.length} shots (${unaudited.slice(0, 6).join(', ')}…)` : ''}`, { fails, suspects: sus, unaudited });
+    // review round 4: no ghost text (the same audit): two different text layers overlapping, both > 25 % opaque, > 0.25 s
+    const ghostAudited = Object.entries(cs.shots || {}).filter(([, v]) => Array.isArray(v.ghosts));
+    const ghosts = ghostAudited.filter(([, v]) => v.ghosts.length).map(([k, v]) => `${k}: ${v.ghosts.slice(0, 2).join('; ')}`);
+    const noGhostAudit = timeline.shots.filter((s) => !Array.isArray(cs.shots?.[s.id]?.ghosts)).map((s) => s.id);
+    add('sheets', 'ghostText', ghosts.length ? 'fail' : noGhostAudit.length || unaudited.length ? 'warn' : 'pass', ghosts.length ? `ghost text (two text layers both > 25 % for > 0.25 s; fix with the type kit's textSwapOut): ${ghosts.slice(0, 8).join(' | ')}` : `${ghostAudited.length} shots audited, no ghost text${noGhostAudit.length ? `; no ghost audit yet: ${noGhostAudit.length} shots (${noGhostAudit.slice(0, 6).join(', ')}…)` : ''}${unaudited.length ? `; changed since the audit: ${unaudited.length} shots` : ''}`, { ghosts, noGhostAudit });
+  }
 }
 
 function qaPublish() {

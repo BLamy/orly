@@ -1,332 +1,384 @@
 {
  "shot": "ch13-s03",
- "at": "2026-10-13T00:09:59.436Z",
+ "at": "2026-10-13T21:19:44.118Z",
  "minCapPx": 22,
  "sampled": 33,
  "texts": 74,
- "offenders": [
-  {
-   "text": "MARCH 2023 · PAUSE LETTER",
-   "maxCap": 13.5,
-   "minCap": 13.5,
-   "first": 8.25,
-   "last": 12.55,
-   "font": "500 22px \"IBM Plex Mono\""
-  },
-  {
-   "text": "NO MAJOR LAB PAUSED",
-   "maxCap": 13.5,
-   "minCap": 13.5,
-   "first": 8.25,
-   "last": 12.55,
-   "font": "500 22px \"IBM Plex Mono\""
-  },
-  {
-   "text": "30 MAY 2023",
-   "maxCap": 14.1,
-   "minCap": 14.1,
-   "first": 15.55,
-   "last": 16.55,
-   "font": "500 23px \"IBM Plex Mono\""
-  },
-  {
-   "text": "SMARTER-THAN-HUMAN AI",
-   "maxCap": 15.3,
-   "minCap": 15.1,
-   "first": 1.41,
-   "last": 3.55,
-   "font": "24.8329px \"IBM Plex Mono\""
-  },
-  {
-   "text": "MAY BE YEARS AWAY, AND",
-   "maxCap": 15.3,
-   "minCap": 15.1,
-   "first": 1.41,
-   "last": 3.55,
-   "font": "24.8329px \"IBM Plex Mono\""
-  },
-  {
-   "text": "DANGEROUS",
-   "maxCap": 15.3,
-   "minCap": 15.1,
-   "first": 1.41,
-   "last": 3.55,
-   "font": "24.8329px \"IBM Plex Mono\""
-  }
- ],
- "textureTexts": 0,
- "ok": [
-  {
-   "text": "WHO TAUGHT",
-   "maxCap": 91.8
-  },
-  {
-   "text": "IT?",
-   "maxCap": 91.8
-  },
-  {
-   "text": "RULES",
-   "maxCap": 53.2
-  },
-  {
-   "text": "KNOWLEDGE",
-   "maxCap": 45.9
-  },
-  {
-   "text": "LEARNING",
-   "maxCap": 45.9
-  },
-  {
-   "text": "1943",
-   "maxCap": 53.2
-  },
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
   {
    "text": "THE STRUCTURE OF",
-   "maxCap": 45.2
-  },
-  {
-   "text": "THE NET DOES NOT",
-   "maxCap": 45.2
-  },
-  {
-   "text": "CHANGE WITH",
-   "maxCap": 45.2
-  },
-  {
-   "text": "TIME.",
-   "maxCap": 45.2
-  },
-  {
-   "text": "1958",
-   "maxCap": 53.2
-  },
-  {
-   "text": "BACK-PROPAGATING",
-   "maxCap": 38.4
-  },
-  {
-   "text": "ERROR-CORRECTION",
-   "maxCap": 38.4
-  },
-  {
-   "text": "EXPERIMENTS · 1961 ?",
-   "maxCap": 38.4
-  },
-  {
-   "text": "1969",
-   "maxCap": 53.2
-  },
-  {
-   "text": "HELSINKI ·",
-   "maxCap": 53.2
-  },
-  {
-   "text": "1970",
-   "maxCap": 53.2
-  },
-  {
-   "text": "1986",
-   "maxCap": 53.2
-  },
-  {
-   "text": "KELLEY 1960 … LE CUN 1985",
-   "maxCap": 35.1
-  },
-  {
-   "text": "1989",
-   "maxCap": 53.2
-  },
-  {
-   "text": "DATA",
-   "maxCap": 53.2
-  },
-  {
-   "text": "FIRE",
-   "maxCap": 53.2
-  },
-  {
-   "text": "2012",
-   "maxCap": 53.2
-  },
-  {
-   "text": "2017",
-   "maxCap": 53.2
-  },
-  {
-   "text": "GENERATING",
-   "maxCap": 38.4
-  },
-  {
-   "text": "WIKIPEDIA ·",
-   "maxCap": 38.4
-  },
-  {
-   "text": "2018 · GPT",
-   "maxCap": 38.4
-  },
-  {
-   "text": "a",
-   "maxCap": 59.8
-  },
-  {
-   "text": "2018",
-   "maxCap": 53.2
-  },
-  {
-   "text": "2022",
-   "maxCap": 53.2
-  },
-  {
-   "text": "OPENAI · 11 DEC 2015",
-   "maxCap": 39.6
-  },
-  {
-   "text": "ANTHROPIC · 28 MAY 2021",
-   "maxCap": 39.6
-  },
-  {
-   "text": "THE BRAIN IS A LOGIC MACHINE",
-   "maxCap": 40.6
-  },
-  {
-   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
-   "maxCap": 40.6
-  },
-  {
-   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
-   "maxCap": 40.6
-  },
-  {
-   "text": "INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND",
-   "maxCap": 28.4
-  },
-  {
-   "text": "c. 1980",
-   "maxCap": 43.5
-  },
-  {
-   "text": "1984",
-   "maxCap": 43.5
-  },
-  {
-   "text": "NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY",
-   "maxCap": 34.2
-  },
-  {
-   "text": "MID-1990s",
-   "maxCap": 43.5
-  },
-  {
-   "text": "LANGUAGE MUST BE READ IN ORDER",
-   "maxCap": 34.2
-  },
-  {
-   "text": "1997",
-   "maxCap": 43.5
-  },
-  {
-   "text": "TO SEE, A MACHINE NEEDS FEATURES DESIGNED BY",
-   "maxCap": 34.2
-  },
-  {
-   "text": "EXPERTS",
-   "maxCap": 34.2
-  },
-  {
-   "text": "1999",
-   "maxCap": 43.5
-  },
-  {
-   "text": "DEEP NETS MUST BE WARMED UP LAYER BY LAYER",
-   "maxCap": 34.2
-  },
-  {
-   "text": "2006",
-   "maxCap": 43.5
-  },
-  {
-   "text": "LEARNED FEATURES, GIVEN DATA AND ARITHMETIC",
-   "maxCap": 34.2
-  },
-  {
-   "text": "A GO MACHINE IS A DECADE AWAY",
-   "maxCap": 34.2
-  },
-  {
-   "text": "2014",
-   "maxCap": 43.5
-  },
-  {
-   "text": "SCALE IS THE MAIN LEVER",
-   "maxCap": 34.2
-  },
-  {
-   "text": "2020",
-   "maxCap": 43.5
-  },
-  {
-   "text": "2023",
-   "maxCap": 43.5
+   "capWhileSubject": 64.1,
+   "why": "script onScreenText"
   },
   {
    "text": "SMARTER-THAN-HUMAN AI MAY BE",
-   "maxCap": 42.3
+   "capWhileSubject": 80.5,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "YEARS AWAY, AND DANGEROUS",
-   "maxCap": 42.3
+   "capWhileSubject": 80.5,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
-   "text": "lit 2023 · still burning",
-   "maxCap": 22
+   "text": "SMARTER-THAN-HUMAN",
+   "capWhileSubject": 26,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "AI MAY BE YEARS",
+   "capWhileSubject": 26,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "AWAY, AND DANGEROUS",
+   "capWhileSubject": 26,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "MARCH 2023 · PAUSE LETTER",
+   "capWhileSubject": 28.3,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "NO MAJOR LAB PAUSED",
+   "capWhileSubject": 28.3,
+   "why": "script onScreenText"
   },
   {
    "text": "“Mitigating the risk of extinction from AI",
-   "maxCap": 39
+   "capWhileSubject": 36.2,
+   "why": "script onScreenText"
   },
   {
    "text": "should be a global priority…”",
-   "maxCap": 39
+   "capWhileSubject": 36.2,
+   "why": "script onScreenText"
   },
   {
    "text": "— STATEMENT ON AI RISK",
-   "maxCap": 23.1
+   "capWhileSubject": 23.1,
+   "why": "script onScreenText"
+  },
+  {
+   "text": "30 MAY 2023",
+   "capWhileSubject": 24.1,
+   "why": "script onScreenText"
   },
   {
    "text": "Geoffrey Hinton",
-   "maxCap": 30
+   "capWhileSubject": 29.4,
+   "why": "script onScreenText"
   },
   {
    "text": "geoffrey hinton",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "Yoshua Bengio",
-   "maxCap": 30
+   "capWhileSubject": 29.4,
+   "why": "script onScreenText"
   },
   {
    "text": "first signatory",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "yoshua bengio",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "second signatory",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  }
+ ],
+ "texture": [
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 130.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IT?",
+   "maxCap": 130.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "RULES",
+   "maxCap": 75.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 65.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 65.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1943",
+   "maxCap": 75.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 64.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 64.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 64.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1958",
+   "maxCap": 75.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 54.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 54.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 54.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1969",
+   "maxCap": 75.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "HELSINKI ·",
+   "maxCap": 75.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1970",
+   "maxCap": 75.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1986",
+   "maxCap": 75.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KELLEY 1960 … LE CUN 1985",
+   "maxCap": 49.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1989",
+   "maxCap": 75.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "DATA",
+   "maxCap": 75.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "FIRE",
+   "maxCap": 75.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2012",
+   "maxCap": 75.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2017",
+   "maxCap": 75.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "GENERATING",
+   "maxCap": 54.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "WIKIPEDIA ·",
+   "maxCap": 54.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2018 · GPT",
+   "maxCap": 54.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "a",
+   "maxCap": 103.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2018",
+   "maxCap": 75.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "2022",
+   "maxCap": 75.4,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "OPENAI · 11 DEC 2015",
+   "maxCap": 56.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "ANTHROPIC · 28 MAY 2021",
+   "maxCap": 56.2,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE BRAIN IS A LOGIC MACHINE",
+   "maxCap": 57.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
+   "maxCap": 57.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
+   "maxCap": 57.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND",
+   "maxCap": 61.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "c. 1980",
+   "maxCap": 61.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1984",
+   "maxCap": 61.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY",
+   "maxCap": 58.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "MID-1990s",
+   "maxCap": 61.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "LANGUAGE MUST BE READ IN ORDER",
+   "maxCap": 58.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1997",
+   "maxCap": 61.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "TO SEE, A MACHINE NEEDS FEATURES DESIGNED BY",
+   "maxCap": 58.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "EXPERTS",
+   "maxCap": 58.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "1999",
+   "maxCap": 61.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "DEEP NETS MUST BE WARMED UP LAYER BY LAYER",
+   "maxCap": 58.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2006",
+   "maxCap": 61.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "LEARNED FEATURES, GIVEN DATA AND ARITHMETIC",
+   "maxCap": 58.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "A GO MACHINE IS A DECADE AWAY",
+   "maxCap": 58.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2014",
+   "maxCap": 61.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "SCALE IS THE MAIN LEVER",
+   "maxCap": 58.3,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2020",
+   "maxCap": 61.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "2023",
+   "maxCap": 61.7,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "lit 2023 · still burning",
+   "maxCap": 22,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "Demis Hassabis",
-   "maxCap": 25.5
+   "maxCap": 25.1,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "Sam Altman",
-   "maxCap": 25.5
+   "maxCap": 25.1,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "Dario Amodei",
-   "maxCap": 25.5
+   "maxCap": 25.1,
+   "why": "not named, not in onScreenText"
   }
- ]
+ ],
+ "textureTexts": 56
 }

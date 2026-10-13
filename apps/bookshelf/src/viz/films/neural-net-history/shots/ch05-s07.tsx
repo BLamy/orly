@@ -23,10 +23,21 @@
  *   'yet'         the camera drifts left toward the clinician and the ward door at the back (the plate, hung at the
  *                 right, holds until 'routine' so both bars can be read, then rises out)
  *   'never'       the clinician's screen goes quiet; the typing stops; the ward door behind him stays shut
+ *
+ * L0514b (round 2, the era's dissenter): the camera trucks right along the stage to the candle's right rim.
+ *   'philosopher' at the rim, beyond the lantern-bearer and half in shadow, a lone standing figure facing out
+ *                 catches the candle's rim light
+ *   'Hubert'      his name card: HUBERT DREYFUS · What Computers Can't Do, 1972
+ *   'real'        he turns back toward the candle and holds out an open hand: one IF … THEN strip drifts out of
+ *                 the pool and settles on it ('intuition'); on 'not rules' the hand turns down and the rule drops
+ *   'early'       the quote card inks in (verbatim, q-dreyfus-pattern); on 'dramatic success' the flame flares and
+ *                 a flurry of IF … THEN strips rises from the card stacks toward it; on 'sudden' the strips stall
+ *                 and flutter down, and the flame gutters, then steadies (the pattern, acted out)
+ *   TEXT RULE: through L0514b the name card and the quote card are the only text on screen.
  */
 import { Timeline } from '../../../core';
 import type { Camera3, Frame, PaintEnv, Pose } from '../../../film';
-import { FONT, LAYERS, MOODS, POSES, addPose, blendPose, defineShot, legibleSize, mixLab, overscan, paintContext, pose, setPaintContext, softPlate, toLayer, toScreen, withAlpha, withLife } from '../../../film';
+import { FONT, LAYERS, MOODS, POSES, PUPPET_NEAR_BLACK, addPose, blendPose, createPuppet, defineShot, legibleSize, mixLab, nameCard, overscan, quoteCard, paintContext, pose, setPaintContext, softPlate, textRole, toLayer, toScreen, withAlpha, withLife } from '../../../film';
 import { hands } from '../cast';
 import { STUDY, STUDY_CAMS, candleX, studyCase, studyNear, studyRoom } from '../sets/study';
 import { boardStateAt, shelfStateAt } from '../sets/studyState';
@@ -37,6 +48,8 @@ import { glow } from '../../../film/silhouette/metaphors/kit';
 import {
   GEN, cardStack, clamp01, softArmHands, handLantern, ifThenStrip, lerp, mixCam, officeStool, phosphorOf, pulse, simpleDesk, sm, terminal80, terminalScreen, tq12, win,
 } from '../sets/ch05-s07-kit';
+import { cardCabinetNear } from '../sets/ch05-s07-near';
+import { hash1 } from '../../../film/core/frame';
 
 type C = CanvasRenderingContext2D;
 const ID = 'ch05-s07';
@@ -89,6 +102,19 @@ const CONN_X = GEO.rimX + 52;
 const CONN = GEN.connectionist;
 const CONN_HOLD: Pose = pose({ hipF: 5, kneeF: -4, hipB: -4, kneeB: -1, torso: -1, neck: 6, head: -4, shoulderF: 62, elbowF: 26, wristF: -20, shoulderB: -8, elbowB: 16 }, { handF: 'grip' });
 const CLIN_REST: Pose = { ...POSES.sit, angles: { ...POSES.sit.angles, torso: 0, neck: 0, head: 6, shoulderF: 8, elbowF: 50, wristF: 6, shoulderB: 6, elbowB: 52 }, handF: 'relaxed', handB: 'relaxed' };
+// (round 2) the era's dissenter at the right rim, beyond the lantern-bearer, in the dark past the pool's edge
+const DREY_X = 1340;
+const DREYFUS = createPuppet({ id: 'dreyfus', height: 318, build: 'tall', era: '1970s', wardrobe: 'blazer', hair: 'wavy', facialHair: 'none', glasses: 'none', profile: { nose: 0.56, brow: 0.52, chin: 0.48, jaw: 0.5 }, signature: { stoop: 3 } });
+/** the refusal on 'not rules': forearm raised toward the candle, the open palm out */
+/** 'real expertise': a hand held out, palm up, catching the one rule that drifts out of the pool to the rim */
+const DREY_HOLD: Pose = pose({ hipF: 5, kneeF: -4, hipB: -4, kneeB: -1, torso: 3, neck: 12, head: 10, shoulderF: 34, elbowF: 54, wristF: -14, shoulderB: -8, elbowB: 14 }, { handF: 'open' });
+/** 'not rules': the hand turns down and the strip drops */
+const DREY_DROP: Pose = pose({ hipF: 5, kneeF: -4, hipB: -4, kneeB: -1, torso: -2, neck: 4, head: -4, shoulderF: 22, elbowF: 30, wristF: 30, shoulderB: -8, elbowB: 14 }, { handF: 'open' });
+// (review r3) the dissenter's name card and his quoted pattern (research/quotes.json q-dreyfus-pattern, verbatim)
+const DREY_NAME = 'HUBERT DREYFUS';
+const DREY_BOOK = "What Computers Can't Do, 1972";
+const DREY_QUOTE = '…early, dramatic success followed by sudden unexpected difficulties.';
+const DREY_ATTR = '— Hubert Dreyfus, 1972';
 // the ward door at the back of the stage (L3), behind the clinician
 const DOOR = { x: 128, w: 150, h: 262 };
 
@@ -115,6 +141,23 @@ interface B {
   never: number;
   plateOut: number;
   drift: number;
+  /** L0514b: the truck to the rim, the reveal, the name, the turn, the refusal, the pattern */
+  truck0: number;
+  truck1: number;
+  rim: number;
+  philosopher: number;
+  hubert: number;
+  intuition: number;
+  not: number;
+  real: number;
+  pattern: number;
+  early: number;
+  /** the name card's start (inked on 'Hubert') and the quote card's start (inked on 'early') */
+  nameAt: number;
+  quoteAt: number;
+  dramatic: number;
+  sudden: number;
+  followed: number;
 }
 
 export default defineShot({
@@ -146,14 +189,39 @@ export default defineShot({
       system: T.beat('test'),
       rated: T.word('L0514', 'rated'),
       stanford: T.word('L0514', 'Stanford'),
-      barAt: T.word('L0514', 'was') - 0.12,
-      rangeAt: T.word('L0514', 'above') - 0.12,
+      // (review r4) the program's bar fills on 'rated' and the specialists' band lands on 'above': both bars and both
+      // numbers are complete by 'Stanford' (12.80)
+      barAt: T.word('L0514', 'rated') - 0.1,
+      rangeAt: T.word('L0514', 'above') - 0.05,
       yet: T.word('L0514', 'yet'),
       never: T.beat('never'),
       // (review r1) the plate lifts out from ~14.3 so the frame is clear by 'never': the payoff (the screen
       // going quiet, the ward door's light going out) plays on an open stage
-      plateOut: T.beat('never') - 0.47,
+      // (review r4) the plate (now smaller, over the upper-right wall) slides up and out only ON 'never'
+      plateOut: T.beat('never'),
       drift: T.word('L0514', 'yet') - 0.45,
+      // the door beat plays out (the seam dims to ~15.5), then the truck right along the stage, settled by 'Hubert'
+      // (review r1) the camera holds ~1 s on the shut door before it trucks right
+      // (review r4) on 'never' the camera pushes a little left onto the ward door (~0.55 s), then HOLDS on it 1.2 s
+      // before the truck to the rim
+      truck0: T.beat('never') + 0.55 + 1.2,
+      truck1: T.word('L0514b', 'Hubert') - 0.1,
+      rim: T.word('L0514b', 'rim'),
+      philosopher: T.beat('dreyfus'),
+      hubert: T.word('L0514b', 'Hubert'),
+      intuition: T.word('L0514b', 'intuition'),
+      not: T.word('L0514b', 'not'),
+      real: T.word('L0514b', 'real'),
+      pattern: T.word('L0514b', 'pattern'),
+      early: T.word('L0514b', 'early'),
+      // the card sets in on 'philosopher' (the script beat) so both its lines are inked by 'Hubert' (kit: name
+      // line +0.5 s, title line +0.9 s)
+      nameAt: T.word('L0514b', 'Hubert') - 0.95,
+      // the quote sets in after 'pattern' so its first line is legible on 'early' (kit: first line +0.25 … +0.95 s)
+      quoteAt: T.word('L0514b', 'early') - 0.8,
+      dramatic: T.word('L0514b', 'dramatic'),
+      followed: T.word('L0514b', 'followed'),
+      sudden: T.word('L0514b', 'sudden'),
     };
     tl.hold(0, D);
     return { tl, b };
@@ -164,7 +232,7 @@ export default defineShot({
     const b = scene.b as B;
     // the bright pass over the cut: rises through the push, peaks at the cut, falls as the stage pulls back
     // (capped near L* 80 and kept to ~0.6 s around 'knowledge')
-    const flash = t < b.stage ? win(t, b.stage - 0.3, b.stage) : 1 - win(t, b.stage, b.stage + 0.3);
+    const flash = t < b.stage ? win(t, b.stage - 0.38, b.stage) : 1 - win(t, b.stage + 0.04, b.stage + 0.38);
     if (t < b.insert0 || (t >= b.insert1 && t < b.stage)) shelf(f, t, tq, b);
     else if (t < b.insert1) insert(f, t, b);
     else stage(f, t, tq, b);
@@ -172,14 +240,18 @@ export default defineShot({
     if (flash > 0.002) {
       const c = f.c;
       const P = f.mood;
+      // (review r4, style bible push-into-the-flame) at the peak of the push a soft bloom from the flame whites out
+      // ~40 % of the frame, so the cut onto the stage happens inside the flare; it is gone ~0.35 s either side
+      const fp = t < b.stage ? toScreen(LAYERS.L4, f.cam, SHELF_FLAME.x, SHELF_FLAME.y) : toScreen(LAYERS.L4, f.cam, GEO.flame.x, GEO.flame.y);
+      const cx = lerp(fp.x, 640, 0.5), cy = lerp(fp.y, 360, 0.5);
       c.save();
       c.setTransform(f.pxScale, 0, 0, f.pxScale, 0, 0);
-      c.globalCompositeOperation = 'lighter';
-      const g = c.createRadialGradient(640, 360, 20, 640, 360, 900);
-      // (review r1) capped: a warm lift over the cut, never a white-out (the candle edge and the planks keep
-      // their darks, at least 25% under the flame)
-      g.addColorStop(0, withAlpha(P.core, 0.1 * flash));
-      g.addColorStop(0.4, withAlpha(mixLab(P.core, P.halo, 0.5), 0.06 * flash));
+      const R = 640;
+      const white = mixLab(P.core, '#fffaf0', 0.55);
+      const g = c.createRadialGradient(cx, cy, 0, cx, cy, R);
+      g.addColorStop(0, withAlpha(white, 0.97 * flash));
+      g.addColorStop(0.53, withAlpha(white, 0.86 * flash));
+      g.addColorStop(0.75, withAlpha(mixLab(P.core, P.halo, 0.5), 0.4 * flash));
       g.addColorStop(1, withAlpha(P.halo, 0));
       c.fillStyle = g;
       c.fillRect(0, 0, 1280, 720);
@@ -212,6 +284,19 @@ export default defineShot({
     }
     if (t >= b.system - 0.2 && t < b.plateOut + 0.5) testPlate(f, t, tq, b);
     if (t > b.typed - 0.5 && t < b.typed + 1.9) nearStrip(f, t, b);
+    // (review r3, historian + teacher + art) L0514b: the name card is fully inked ON 'Hubert' (19.34), with his book:
+    // the name line is in by ~18.9 and the title line by ~19.3 (the kit sizes both over the 22 px cap floor); it holds
+    // until the quote card takes its place
+    if (t > b.nameAt - 0.05 && t < b.quoteAt + 0.1) {
+      const tenv = { t, mood: f.mood, seed: 1972 };
+      nameCard(f.c, { name: DREY_NAME, role: DREY_BOOK, x: 1232, y: 214, align: 'right', at: b.nameAt, dur: b.quoteAt - 0.05 - b.nameAt, fade: 0.35 }, tenv);
+    }
+    // (review r3) on 'early' (26.19) his pattern is carded, verbatim (q-dreyfus-pattern), in the quote kit's style,
+    // and held to the cut; the rule-strip collapse plays behind it at reduced alpha
+    if (t > b.quoteAt - 0.05) {
+      const tenv = { t, mood: f.mood, seed: 1972 };
+      quoteCard(f.c, { quote: DREY_QUOTE, speaker: DREY_ATTR.slice(2), x: 1010, y: 168, width: 420, maxChars: 30, size: 27, at: b.quoteAt, dur: b.D - b.quoteAt + 2, fade: 0.35, stagger: 0.28 }, tenv);
+    }
   },
 });
 
@@ -274,7 +359,12 @@ function shelf(f: Frame, t: number, tq: number, b: B) {
         c.restore();
       }
       beliefCandle(c, { x: SHELF_X, y: STUDY.shelf.y, view: KNOW, s: STUDY.shelf.s, flame: flameK, letters: 0, drawFlame: false, named: 0 }, env);
-      waxCandle(c, { x: SHELF_X, y: STUDY.shelf.y, view: KNOW, s: STUDY.shelf.s, flame: flameK, letters: 0.85 }, env);
+      // (round 2 legibility) the lettering up the taper is texture at shelf distance: the belief label is what is read
+      textRole(c, 'texture', () => waxCandle(c, { x: SHELF_X, y: STUDY.shelf.y, view: KNOW, s: STUDY.shelf.s, flame: flameK, letters: 0.85 }, env));
+      // (review r4) the macro on the push reads as a CANDLE TOP, not a pillow: the wax glows translucent under the
+      // flame, a melt pool with its raised lip round the wick, and crisp scored rings down the shoulder
+      const mk = sm((pushU - 0.12) / 0.4) * flameK;
+      if (mk > 0.01) macroTop(c, env, mk);
       if (hp) softArmHands(c, hp, env);
     },
   });
@@ -378,6 +468,62 @@ function deskCorner(f: Frame, cam: Camera3) {
   });
 }
 
+/** the candle's top seen in the macro of the flame push (L4 world, s = 1: 30 px wide, rings every 6 px) */
+function macroTop(c: C, env: PaintEnv, k: number) {
+  const m = env.mood;
+  const x = SHELF_X, top = SHELF_FLAME.y + 2, hw = 15 * STUDY.shelf.s;
+  const R = 6 * STUDY.shelf.s;
+  c.save();
+  // light through the wax: the flame glowing in the top of the column
+  c.beginPath();
+  c.rect(x - hw, top - 0.5, 2 * hw, 8 * R);
+  c.clip();
+  c.globalCompositeOperation = 'lighter';
+  const g = c.createRadialGradient(x, top + 1, 0.5, x, top + 3, 3.4 * R);
+  g.addColorStop(0, withAlpha(mixLab(m.core, m.halo, 0.25), 0.42 * k));
+  g.addColorStop(0.5, withAlpha(m.halo, 0.16 * k));
+  g.addColorStop(1, withAlpha(m.halo, 0));
+  c.fillStyle = g;
+  c.fillRect(x - hw, top - 1, 2 * hw, 8 * R);
+  c.globalCompositeOperation = 'source-over';
+  // the scored rings down the shoulder: a dark groove with a lit lower lip (every fifth a full-width major ring)
+  for (let i = 1; i <= 8; i++) {
+    const yy = top + i * R;
+    const major = (45 - i) % 5 === 0;
+    const inset = major ? 0.5 : 2 * hw * 0.18;
+    c.strokeStyle = withAlpha(mixLab(m.ink, m.set, 0.4), (major ? 0.55 : 0.4) * k);
+    c.lineWidth = major ? 0.42 : 0.3;
+    c.beginPath();
+    c.moveTo(x - hw + inset, yy);
+    c.lineTo(x + hw - inset, yy);
+    c.stroke();
+    c.strokeStyle = withAlpha(mixLab(m.core, m.halo, 0.5), 0.3 * k);
+    c.lineWidth = 0.22;
+    c.beginPath();
+    c.moveTo(x - hw + inset, yy + 0.4);
+    c.lineTo(x + hw - inset, yy + 0.4);
+    c.stroke();
+  }
+  c.restore();
+  // the melt pool round the wick and its raised lip (seen a touch from above)
+  c.save();
+  c.fillStyle = withAlpha(mixLab(m.core, m.halo, 0.35), 0.8 * k);
+  c.beginPath();
+  c.ellipse(x, top + 0.9, hw * 0.74, 1.05, 0, 0, Math.PI * 2);
+  c.fill();
+  c.strokeStyle = withAlpha(mixLab(m.set, m.halo, 0.45), 0.75 * k);
+  c.lineWidth = 0.45;
+  c.beginPath();
+  c.ellipse(x, top + 0.9, hw * 0.86, 1.5, 0, 0, Math.PI * 2);
+  c.stroke();
+  c.strokeStyle = withAlpha(m.core, 0.6 * k);
+  c.lineWidth = 0.3;
+  c.beginPath();
+  c.ellipse(x, top + 0.6, hw * 0.88, 1.4, 0, Math.PI * 1.05, Math.PI * 1.95);
+  c.stroke();
+  c.restore();
+}
+
 /** the hand target that puts the match flame (at the hold) right at the wick */
 function wickTarget(entry: { R: { x: number; y: number }; L: { x: number; y: number } }, strikeAt: { x: number; y: number }) {
   let tg = { x: SHELF_FLAME.x, y: SHELF_FLAME.y };
@@ -441,6 +587,7 @@ function insert(f: Frame, t: number, b: B) {
 }
 
 // ================================================================================================= STAGE
+const DOOR_CAM: Camera3 = { x: 540, y: 390, z: 66, lens: 1 };
 function stageCam(t: number, b: B): Camera3 {
   // (review r2) ONE continuous pull and ONE push, no ping-pong. The cut lands mid-distance (the flame and the candle's
   // shoulder) and pulls back on a single decelerating curve (an exponential settle, ~z 96 by 7.3 s so the pool's
@@ -449,23 +596,31 @@ function stageCam(t: number, b: B): Camera3 {
   const C0: Camera3 = { x: CX + 14, y: FLAME_Y + 120, z: 420, lens: 1 };
   const CW: Camera3 = { x: 612, y: 384, z: 45, lens: 1 };
   const CN: Camera3 = { x: 604, y: 388, z: 45, lens: 1 };
-  const CD: Camera3 = { x: 600, y: 394, z: 70, lens: 1 };
+  // (review r4) the door framing: a small push left and in on 'never', so the ward door clears the clinician
+  const CD: Camera3 = DOOR_CAM;
+  // (round 2) the rim: the candle's flame on the left third, the lantern-bearer and the philosopher on the right
+  const CR: Camera3 = { x: 846, y: 386, z: 52, lens: 1 };
+  const CR2: Camera3 = { x: 936, y: 380, z: 112, lens: 1 };
   if (t < b.system) {
     const U = b.system - b.stage, K = 1.6;
     const u = clamp01((t - b.stage) / U);
     const e = (1 - Math.exp(-K * U * u)) / (1 - Math.exp(-K * U));
     return mixCam(C0, CW, e);
   }
-  if (t < b.never) return mixCam(CW, CN, sm((t - b.system) / (b.never - b.system)));
-  return mixCam(CN, CD, sm((t - b.never) / (b.D - b.never)));
+  if (t < b.never - 0.1) return mixCam(CW, CN, sm((t - b.system) / (b.never - 0.1 - b.system)));
+  if (t < b.never + 0.55) return mixCam(CN, CD, sm((t - b.never + 0.1) / 0.65));
+  if (t < b.truck0) return CD;
+  if (t < b.truck1) return mixCam(CD, CR, sm((t - b.truck0) / (b.truck1 - b.truck0)));
+  return mixCam(CR, CR2, sm((t - b.truck1) / (b.D - b.truck1)));
 }
 
 function stage(f: Frame, t: number, tq: number, b: B) {
   const cam = stageCam(t, b);
   f.camera(cam);
-  const CAMS: Camera3[] = [stageCam(b.stage, b), stageCam(b.stage + 1.25, b), stageCam(b.system, b), stageCam(b.never, b), stageCam(b.D, b)];
+  const CAMS: Camera3[] = [stageCam(b.stage, b), stageCam(b.stage + 1.25, b), stageCam(b.system, b), stageCam(b.never, b), DOOR_CAM, stageCam(b.truck1, b), stageCam(b.D, b)];
   // (review r1) on 'never' exactly the screen goes dark: done by ~15.0 s
-  const quiet = win(t, b.never - 0.02, b.never + 0.24);
+  // (review r1) the screen starts going quiet ON 'never' (WHY? already dimming at 14.77, dark by ~15.0)
+  const quiet = win(t, b.never - 0.1, b.never + 0.2);
   const typing = tq < b.never;
   // the clinician: types an answer, pauses, types again (question after question); then hands drop
   const clinBeat = Math.floor((tq - b.stage) / 1.4);
@@ -473,8 +628,17 @@ function stage(f: Frame, t: number, tq: number, b: B) {
   const clinP = withLife(typing ? (clinTyping ? typeLoop(POSES.type, tq) : POSES.type) : blendPose(POSES.type, CLIN_REST, sm((tq - b.never) / 0.5)), tq, 31, 0.6);
   const e1P = withLife(typing ? typeLoop(POSES.type, tq + 0.08) : blendPose(POSES.type, CLIN_REST, sm((tq - b.never - 0.15) / 0.5)), tq, 57, 0.6);
   const e2P = withLife(typing ? typeLoop(POSES.type, tq + 0.17) : POSES.type, tq, 83, 0.6);
-  const connP = withLife(CONN_HOLD, tq, 19, 0.8);
+  // (review r4) as Dreyfus turns back to the candle on 'real expertise' the lantern-bearer answers: a 0.5 s breath and
+  // a glance up along his lantern, on twos (tq), so the two rim figures read as the era's two kinds of doubter
+  const connK = pulse(tq, b.real - 0.1, 0.25, 0.55);
+  const connP = withLife(addPose(CONN_HOLD, { torso: -3 * connK, neck: -5 * connK, head: -9 * connK, shoulderF: 7 * connK, elbowF: -4 * connK }), tq, 19, 0.8);
   const screenK = 1 - 0.88 * quiet;
+  // (round 2) Dreyfus's pattern, acted out by the flame: a flare on 'dramatic success', a gutter on 'sudden', then steady
+  const flare = pulse(t, b.dramatic - 0.2, 0.5, 1.9);
+  const gut = pulse(t, b.sudden - 0.05, 0.18, 2.0);
+  const flick = Math.sin(t * 41) * Math.sin(t * 17.3);
+  const fk = Math.max(0.38, 1 - gut * (0.52 + 0.14 * flick));
+  const dre = dreyfusAt(tq, b);
   const whyA = (clinTyping ? 0.55 : 1) * (1 - quiet);
 
   // the stage candle is the same candle: its naming label is this shot's own (beliefLabel), so the kit's
@@ -487,20 +651,37 @@ function stage(f: Frame, t: number, tq: number, b: B) {
     candle: KNOW,
     candleX: CX,
     s: STAGE_S,
-    flame: 1,
+    flame: fk,
     letters: 0,
     back: (c, env) => {
+      // (review r4 depth) the haze in front of the back wall lifted ~12 %, brightest round the flame, so the candle's
+      // pool of light carves the space
+      {
+        const fs = toScreen(LAYERS.L4, cam, GEO.flame.x, GEO.flame.y + 140);
+        const fl = toLayer(LAYERS.L3, cam, fs.x, fs.y);
+        const R = 760;
+        const hz = c.createRadialGradient(fl.x, fl.y, 40, fl.x, fl.y, R);
+        hz.addColorStop(0, withAlpha(mixLab(env.mood.haze, env.mood.halo, 0.35), 0.16 * fk));
+        hz.addColorStop(0.55, withAlpha(env.mood.haze, 0.1 * fk));
+        hz.addColorStop(1, withAlpha(env.mood.haze, 0.03));
+        c.fillStyle = hz;
+        c.fillRect(fl.x - R, fl.y - R, 2 * R, 2 * R);
+      }
       wardDoor(f, c, env, CAMS, t, b);
       // the second engineer, one rank back
       simpleDesk(c, E2_X - 150, E2_X - 52, E2_DESK_Y, FY, env);
       cardStack(c, E2_X - 132, E2_DESK_Y, 24, 92, env, 7);
       terminal80(c, { x: E2_X - 92, y: E2_DESK_Y, view: 'side', facing: 'right', screen: 0.85 }, env);
       officeStool(c, E2_X + 8, FY - 118, FY, 'left', env);
-      E2.draw(c, { x: E2_X, y: FY, facing: 'left', pose: e2P }, env);
+      // (review r1) one rank back he is a SOLID figure in the hazed L3 ink: no interior cut-lines (they read as
+      // the chair and desk showing through him), only a faint rim on the candle side
+      // (review r4) a SOLID near-black figure one plane back: the stage's haze (fog B, laid over this L3 plane) is what
+      // lifts him a step, never alpha on the puppet, so he reads as depth, not a ghost
+      E2.draw(c, { x: E2_X, y: FY, facing: 'left', pose: e2P, ink: PUPPET_NEAR_BLACK, cutLines: false, edgeRim: { x: -1, y: -0.4, px: 1.2, alpha: 0.35, warm: 0.5 } }, env);
     },
     draw: (c, env, g) => {
       doorSeam(c, env, cam, t, b);
-      waxCandle(c, { x: g.candleX, y: g.floorY, view: KNOW, s: STAGE_S, flame: 1, letters: 0.42 }, env);
+      textRole(c, 'texture', () => waxCandle(c, { x: g.candleX, y: g.floorY, view: KNOW, s: STAGE_S, flame: fk, letters: 0.42 }, env));
       // shadows first (away from the candle), then furniture and figures
       floorShadow(c, g, CONN_X, (cc) => CONN.draw(cc, { x: 0, y: 0, facing: 'right', pose: connP }, env), env, 1.05);
       floorShadow(c, g, E1_X, (cc) => E1.draw(cc, { x: 0, y: 0, facing: 'left', pose: e1P }, env), env, 0.7);
@@ -523,11 +704,21 @@ function stage(f: Frame, t: number, tq: number, b: B) {
       CONN.draw(c, { x: CONN_X, y: FY, facing: 'right', pose: connP, cutLines: true, light: { x: -1, y: -0.35, floor: 0.04 } }, env);
       const hand = CONN.anchor({ x: CONN_X, y: FY, facing: 'right', pose: connP }, 'handF');
       handLantern(c, hand.x + 2, hand.y - 4, 84, env, { light: 0.95 });
+      // the philosopher beyond him, past the pool's edge: dark until 'philosopher', when the candle's rim finds him
+      const rimK = win(t, b.philosopher - 0.15, b.philosopher + 0.35);
+      if (rimK > 0.01) glow(c, DREY_X - 20, FY - 190, 230, mixLab(env.mood.halo, env.mood.set, 0.4), 0.16 * rimK);
+      floorShadow(c, g, DREY_X, (cc) => DREYFUS.draw(cc, { x: 0, y: 0, facing: dre.facing, pose: dre.pose }, env), env, 0.5);
+      DREYFUS.draw(c, { x: DREY_X, y: FY, facing: dre.facing, pose: dre.pose, ink: PUPPET_NEAR_BLACK, light: { x: -1, y: -0.35, floor: 0.04 }, edgeRim: { x: -1, y: -0.3, px: 1.8, alpha: 0.2 + 0.7 * rimK, warm: 0.6 } }, env);
+      caughtStrip(c, env, t, b);
+      // the pattern's flurry of rules
+      burst(c, env, t, b, g.flame);
       // IF … THEN strips rising like sparks toward the flame
       strips(c, env, t, b, g.flame);
     },
   });
   setPaintContext(pc);
+  // the flare's extra light on the stage (and its dip with the gutter is the candleStage pool itself)
+  if (flare > 0.01) f.practical({ x: GEO.flame.x, y: GEO.flame.y + 6, kind: 'candle', seed: 1972, intensity: 0.6 * flare, radius: 150 });
   // the screens' light (phosphor practicals) and the held lanterns' faint glow
   const cs = terminalScreen(CLIN_TERM);
   f.practical({ x: cs.x, y: cs.y + 30, kind: 'screen', seed: 1979, intensity: 0.32 * screenK, radius: 40 });
@@ -536,6 +727,147 @@ function stage(f: Frame, t: number, tq: number, b: B) {
   // the stage lip (L5): once the camera is back from the flame
   const lipA = clamp01((420 - cam.z) / 160);
   if (lipA > 0.01) stageLip(f, CAMS, lipA);
+  // (review r4 depth) a card-catalogue cabinet's corner on L5 at the lower left, left of the ward door, sliding (clamped)
+  // through the push onto the door and the truck to the rim
+  if (lipA > 0.01) cardCabinetNear(f, { ref: DOOR_CAM, alpha: lipA });
+  // (review r1 light) the candle is a HARD practical: its pool falls off fast (~20% darker at the frame edges and over
+  // the curtain top), and the right third (the rim, reserved for doubters) sits a clear step below the pool
+  const fall = win(t, b.stage + 0.25, b.stage + 0.9);
+  if (fall > 0.01) {
+    const c = f.c;
+    const fp = toScreen(LAYERS.L4, cam, GEO.flame.x, GEO.flame.y);
+    c.save();
+    c.setTransform(f.pxScale, 0, 0, f.pxScale, 0, 0);
+    const R = 980;
+    const g = c.createRadialGradient(fp.x, fp.y + 140, 180, fp.x, fp.y + 140, R);
+    g.addColorStop(0, withAlpha(f.mood.ink, 0));
+    g.addColorStop(0.5, withAlpha(f.mood.ink, 0.16 * fall));
+    g.addColorStop(1, withAlpha(f.mood.ink, 0.42 * fall));
+    c.fillStyle = g;
+    c.fillRect(0, 0, 1280, 720);
+    // the right third: a further step down toward the rim (measured from the flame, so it follows the truck)
+    const x0 = Math.max(fp.x + 260, 640);
+    const rg = c.createLinearGradient(x0, 0, x0 + 420, 0);
+    rg.addColorStop(0, withAlpha(f.mood.ink, 0));
+    rg.addColorStop(1, withAlpha(f.mood.ink, 0.34 * fall));
+    c.fillStyle = rg;
+    c.fillRect(x0, 0, 1280 - x0 + 2, 720);
+    // the curtain top
+    const tg = c.createLinearGradient(0, 0, 0, 240);
+    tg.addColorStop(0, withAlpha(f.mood.ink, 0.3 * fall));
+    tg.addColorStop(1, withAlpha(f.mood.ink, 0));
+    c.fillStyle = tg;
+    c.fillRect(0, 0, 1280, 240);
+    c.restore();
+  }
+}
+
+/** Dreyfus at the rim (on twos): facing out, hand at his chin; on 'real expertise' he turns back toward the candle
+ *  and holds out a hand that catches one drifting rule; on 'not rules' the hand turns down and lets it drop; from
+ *  'pattern' he watches the candle, hand at the chin again */
+function dreyfusAt(tq: number, b: B): { facing: 'left' | 'right'; pose: Pose } {
+  const turn = b.real - 0.15;
+  let p: Pose;
+  let facing: 'left' | 'right' = 'right';
+  if (tq < turn) p = POSES.think;
+  else {
+    facing = 'left';
+    const hold = sm((tq - turn) / 0.6);
+    const drop = sm((tq - (b.not - 0.05)) / 0.3);
+    const back = sm((tq - (b.pattern - 0.4)) / 0.7);
+    p = blendPose(blendPose(blendPose(POSES.think, DREY_HOLD, hold), DREY_DROP, drop), POSES.think, back);
+  }
+  return { facing, pose: withLife(p, tq, 1972, 0.7) };
+}
+
+/** the one rule that drifts out of the pool to the philosopher's hand, is held, and is let fall on 'not rules' */
+function caughtStrip(c: C, env: PaintEnv, t: number, b: B) {
+  const born = b.real - 1.1;
+  const arrive = b.intuition - 0.2;
+  const drop = b.not + 0.1;
+  if (t < born) return;
+  const tq = tq12(t);
+  const dre = dreyfusAt(tq, b);
+  const hand = DREYFUS.anchor({ x: DREY_X, y: FY, facing: dre.facing, pose: dre.pose }, 'handF');
+  const src = { x: E1_X + 92, y: FY - 176 };
+  let x: number, y: number, rot: number, a = 1;
+  if (tq < arrive) {
+    // an arc over the lantern-bearer's head to the open hand
+    const u = sm((tq - born) / (arrive - born));
+    const hx = hand.x, hy = hand.y - 7;
+    // (review r1) a high arc: its apex clears the lantern-holder's head by ~40 px (it never sits on it like a hat)
+    const cx = (src.x + hx) / 2, cy = Math.min(src.y, hy) - 540;
+    x = (1 - u) * (1 - u) * src.x + 2 * u * (1 - u) * cx + u * u * hx;
+    y = (1 - u) * (1 - u) * src.y + 2 * u * (1 - u) * cy + u * u * hy;
+    rot = 0.35 * Math.sin(tq * 3.4) * (1 - u);
+    a = win(tq - born, 0, 0.25);
+  } else if (tq < drop) {
+    x = hand.x;
+    y = hand.y - 7;
+    rot = -0.05;
+  } else {
+    const ft = tq - drop;
+    const hy = hand.y - 7;
+    const fall = 20 * ft + 260 * ft * ft;
+    y = Math.min(FY - 3, hy + fall);
+    const landed = hy + fall >= FY - 3;
+    x = hand.x - 10 * ft + (landed ? 0 : 10 * Math.sin(ft * 7));
+    rot = landed ? 0.04 : 0.9 * Math.sin(ft * 6.5);
+    a = 1 - win(ft, 1.6, 2.4);
+  }
+  ifThenStrip(c, x, y, 1.0, rot, a, env);
+}
+
+/** the pattern's flurry: on 'early, dramatic success' IF … THEN strips stream up from the card stacks toward the
+ *  flame; on 'sudden' every strip still in the air stalls and flutters down to the boards */
+function burst(c: C, env: PaintEnv, t: number, b: B, flame: { x: number; y: number }) {
+  const t0 = b.early - 0.1;
+  const stall = b.sudden + 0.05;
+  if (t < t0) return;
+  const LIFE = 2.3;
+  // (review r3) the quote card is the subject from 'early': the strips play behind it at reduced alpha
+  const behind = 1 - 0.45 * win(t, b.quoteAt, b.quoteAt + 0.5);
+  const srcs = [
+    { x: E1_X + 92, y: FY - 170 },
+    { x: E1_X + 128, y: FY - 122 },
+    { x: E1_X - 120, y: E1_DESK_Y - 106 },
+    { x: E1_TERM.x + 4, y: E1_DESK_Y - 70 },
+  ];
+  for (let i = 0; i < 30; i++) {
+    const born = t0 + i * 0.1 + 0.05 * Math.sin(i * 5.1);
+    if (born >= stall || t < born) continue;
+    const src = srcs[i % 4];
+    const pos = (age: number) => {
+      const u = Math.min(1, age / LIFE);
+      return {
+        x: lerp(src.x, flame.x + 50 + 26 * Math.sin(i * 2.1), sm(u) * 0.85) + 12 * Math.sin(age * 2.6 + i),
+        y: src.y - 120 * age - 10 * age * age,
+        u,
+      };
+    };
+    const ageNow = t - born;
+    if (t < stall) {
+      if (ageNow > LIFE) continue;
+      const p = pos(ageNow);
+      const a = behind * win(ageNow, 0, 0.2) * (1 - win(ageNow, LIFE - 0.5, LIFE));
+      ifThenStrip(c, p.x, p.y, 1.1 - 0.3 * p.u, 0.25 * Math.sin(ageNow * 1.8 + i * 1.3), a, env);
+    } else {
+      const ageS = stall - born;
+      if (ageS > LIFE - 0.3) continue; // already burned at the flame
+      const p = pos(ageS);
+      const ft = t - stall;
+      // (review r3) the collapse lands on 'sudden unexpected difficulties' (28.87-30.11): every strip is on the boards
+      // within ~1.2 s of the stall
+      const fall = 40 * ft + 260 * ft * ft;
+      const y = Math.min(FY - 4, p.y + fall);
+      const landed = p.y + fall >= FY - 4;
+      const tLand = (-40 + Math.sqrt(1600 + 1040 * Math.max(0, FY - 4 - p.y))) / 520;
+      const a = behind * win(ageS, 0, 0.2) * (landed ? 1 - win(ft, tLand + 0.6, tLand + 1.4) : 1);
+      const x = p.x + 16 * Math.sin(ft * 3.1 + i) * (landed ? 0 : 1);
+      const rot = landed ? (i % 2 ? 0.08 : -0.06) : 0.6 * Math.sin(ft * 4.2 + i * 1.7);
+      ifThenStrip(c, x, y, 1.1 - 0.3 * p.u, rot, a, env);
+    }
+  }
 }
 
 /** a two-drawing typing loop on twos */
@@ -650,22 +982,25 @@ function wardDoor(f: Frame, c: C, env: PaintEnv, cams: Camera3[], t: number, b: 
   draw(c, x0 - 40, y0 - 30);
   // the portholes keep their ward light (the ward is there; nobody comes through); they dim a little with the seam
   const seam = doorSeamK(t, b);
+  // (review r1 teaching) on 'never' the two lit portholes go dark over ~0.6 s: the ward door shuts its light
+  const portK = win(t, b.never, b.never + 0.6);
   c.save();
-  c.fillStyle = withAlpha(env.mood.ink, 0.45 * (1 - seam));
+  c.fillStyle = withAlpha(env.mood.ink, Math.max(0.45 * (1 - seam), 0.9 * portK));
   for (const cx of ports) {
     c.beginPath();
     c.arc(cx, y0 + PORT_Y, PORT_R + 0.5, 0, Math.PI * 2);
     c.fill();
   }
   c.globalCompositeOperation = 'lighter';
-  for (const cx of ports) glow(c, cx, y0 + PORT_Y, 40, ward, 0.26 * seam);
+  for (const cx of ports) glow(c, cx, y0 + PORT_Y, 40, ward, 0.26 * seam * (1 - portK));
   c.restore();
 }
 
 /** (review r2) the ward door's own beat on 'never': the seam of light under it NARROWS and dims to ~40% over 0.6 s
  *  (starting just after the screen goes quiet), so the shut door reads as staying shut */
 function doorSeamK(t: number, b: B) {
-  return 1 - 0.6 * win(t, b.never + 0.1, b.never + 0.7);
+  // (review r4) the sliver goes OUT on 'never' (not to 40 %): the ward stays shut and dark
+  return 1 - win(t, b.never + 0.05, b.never + 0.6);
 }
 
 /** the line of ward light under the door and its spill on the boards, drawn on the action plane (the L4 floor would
@@ -679,20 +1014,21 @@ function doorSeam(c: C, env: PaintEnv, cam: Camera3, t: number, b: B) {
   const a = toLayer(LAYERS.L4, cam, sL.x, sL.y);
   const z = toLayer(LAYERS.L4, cam, sR.x, sR.y);
   const w = z.x - a.x, y = a.y - 8;
-  const ward = mixLab(env.mood.core, MOODS.winterBlue.halo, 0.35);
-  const hh = 7 * narrow;
+  // (review r4) a WARM sliver of the ward's light under the door (the one change of light on 'never')
+  const ward = mixLab(env.mood.core, env.mood.halo, 0.25);
+  const hh = 4 + 6 * narrow;
   c.save();
   c.globalCompositeOperation = 'lighter';
   const g = c.createLinearGradient(0, y + 2 - hh, 0, y + 2);
   g.addColorStop(0, withAlpha(ward, 0));
-  g.addColorStop(0.6, withAlpha(ward, 0.6 * seam));
-  g.addColorStop(1, withAlpha(ward, 0.95 * seam));
+  g.addColorStop(0.5, withAlpha(ward, 0.7 * seam));
+  g.addColorStop(1, withAlpha(ward, 1.0 * seam));
   c.fillStyle = g;
   c.fillRect(a.x, y + 2 - hh, w, hh);
   c.translate(a.x + w / 2, y + 2);
   c.scale(1, 0.12 * narrow);
   const sg = c.createRadialGradient(0, 0, 4, 0, 0, w * 0.8);
-  sg.addColorStop(0, withAlpha(ward, 0.5 * seam));
+  sg.addColorStop(0, withAlpha(ward, 0.65 * seam));
   sg.addColorStop(1, withAlpha(ward, 0));
   c.fillStyle = sg;
   c.fillRect(-w, 0, 2 * w, w);
@@ -781,6 +1117,9 @@ function beliefLabel(f: Frame, a: number, x: number, y: number, k = 1) {
 
 /** the blinded-test plate: a parchment flat lowered on two strings in front of the stage. Everything on it that
  *  is meant to be read is sized to the 22 px (1080p) cap-height floor with legibleSize; the axis is two numbers. */
+const PLATE_S = 0.7;
+const PLATE_RIGHT = 1046;
+const PLATE_TOP = 24;
 function testPlate(f: Frame, t: number, tq: number, b: B) {
   const c = f.c;
   const Pp = MOODS.parchment;
@@ -789,21 +1128,29 @@ function testPlate(f: Frame, t: number, tq: number, b: B) {
   const X = 616, Y = 36, W = 604, H = 482;
   // drop on twos with a small settle; rise out at the end
   // (review r1) a 0.3 s drop: the whole plate, title included, is in by ~9.5 (on 'system')
-  const d0 = b.system - 0.12;
+  // (review r1) dropped 0.33 s earlier so the title row is in by ~9.2, before the bottom row is read
+  const d0 = b.system - 0.45;
   let dy: number;
   const du = clamp01((tq - d0) / 0.3);
   if (tq < d0) dy = -H - 120;
   else if (du < 1) dy = -(H + 120) * Math.pow(1 - du, 2.2) + 10 * Math.sin(du * Math.PI);
   else dy = 0;
-  const ru = clamp01((t - b.plateOut) / 0.42);
-  dy -= (H + 140) * ru * ru;
+  const ru = clamp01((t - b.plateOut) / 0.5);
+  dy -= (H + 160) * ru * ru;
   const y0 = Y + dy;
   const ink = Pp.ink;
   const TW = FONT.typewriter;
+  c.save();
+  // (review r4) the plate hangs ~30 % smaller over the upper wall right of the flame (its top-right corner at 1046, 24),
+  // between the candle and the lantern-bearer, so the engineers' heads and their card stacks stay in view under it
+  // while 'built from experts' rules' is said
+  c.translate(PLATE_RIGHT, PLATE_TOP);
+  c.scale(PLATE_S, PLATE_S);
+  c.translate(-(X + W), -Y);
+  // sized UNDER the plate's scale, so every line clears the 22 px (1080p) floor at the size it is seen
   const tSize = legibleSize(c, `400 31px ${TW}`, 31, 'H');
   const hSize = legibleSize(c, `600 32px ${FONT.sc}`, 32, 'MYCIN');
   const iSize = legibleSize(c, `italic 400 26px ${FONT.text}`, 26, 'H');
-  c.save();
   // the strings from the flies
   c.strokeStyle = withAlpha(mixLab(P.ink, P.set, 0.4), 0.9);
   c.lineWidth = 1.5;
@@ -814,18 +1161,41 @@ function testPlate(f: Frame, t: number, tq: number, b: B) {
     c.stroke();
   }
   // shadow, paper (lamp-lit parchment, a step down so it sits in the amber room rather than glowing), rule
+  // (review r4) a deckled cut edge (a torn, uneven rim with a few nicks), no hairline border
+  const deckle = (ox: number, oy: number) => {
+    const dk = (k: number, sd: number) => 3.2 * (hash1(k, sd) - 0.5) + (hash1(k, sd + 9) > 0.86 ? -2.6 : 0);
+    const NX = 44, NY = 34;
+    const p = new Path2D();
+    p.moveTo(X + ox, y0 + oy);
+    for (let k = 1; k <= NX; k++) p.lineTo(X + ox + (W * k) / NX, y0 + oy - dk(k, 31));
+    for (let k = 1; k <= NY; k++) p.lineTo(X + ox + W + dk(k, 32), y0 + oy + (H * k) / NY);
+    for (let k = NX - 1; k >= 0; k--) p.lineTo(X + ox + (W * k) / NX, y0 + oy + H + dk(k, 33));
+    for (let k = NY - 1; k >= 1; k--) p.lineTo(X + ox - dk(k, 34), y0 + oy + (H * k) / NY);
+    p.closePath();
+    return p;
+  };
   c.fillStyle = withAlpha(P.fg, 0.5);
-  c.fillRect(X + 8, y0 + 10, W, H);
-  c.fillStyle = mixLab(mixLab(Pp.sky[1], P.halo, 0.12), P.set, 0.16);
-  c.fillRect(X, y0, W, H);
-  c.strokeStyle = withAlpha(ink, 0.5);
-  c.lineWidth = 1.2;
-  c.strokeRect(X + 10, y0 + 10, W - 20, H - 20);
+  c.fill(deckle(8, 10));
+  // the paper a step (~20 %) down in value, so the lamp and the screens stay the lights in the room
+  const paperP = deckle(0, 0);
+  c.fillStyle = mixLab(mixLab(Pp.sky[1], P.halo, 0.12), P.set, 0.36);
+  c.fill(paperP);
+  c.save();
+  c.clip(paperP);
+  for (let k = 0; k < 9; k++) {
+    c.fillStyle = withAlpha(ink, 0.025 + 0.02 * hash1(k, 41));
+    c.fillRect(X, y0 + H * hash1(k, 42), W, 2 + 14 * hash1(k, 43));
+  }
+  c.restore();
   // pins
-  c.fillStyle = mixLab(P.halo, P.set, 0.3);
   for (const sx of [X + 60, X + W - 60]) {
+    c.fillStyle = withAlpha('#000000', 0.35);
     c.beginPath();
-    c.arc(sx, y0 + 8, 3.4, 0, Math.PI * 2);
+    c.arc(sx + 1.2, y0 + 10, 4.6, 0, Math.PI * 2);
+    c.fill();
+    c.fillStyle = mixLab(P.halo, P.set, 0.3);
+    c.beginPath();
+    c.arc(sx, y0 + 8.5, 4.4, 0, Math.PI * 2);
     c.fill();
   }
   const text = (txt: string, x: number, y: number, align: CanvasTextAlign, font: string, a = 1) => {
@@ -836,7 +1206,15 @@ function testPlate(f: Frame, t: number, tq: number, b: B) {
     c.fillText(txt, x, y);
   };
   // the heading (the plate's caption: what this is)
-  text('MYCIN · blinded test, 1979', X + W / 2, y0 + 52, 'center', `600 ${hSize}px ${FONT.sc}`);
+  // (review r4) set in full capitals: at the plate's smaller scale the small-cap x-height fell under the 22 px floor
+  {
+    const title = 'MYCIN · BLINDED TEST, 1979';
+    c.save();
+    c.letterSpacing = '-0.5px';
+    text(title, X + W / 2, y0 + 52, 'center', `600 ${hSize}px ${FONT.sc}`);
+    c.letterSpacing = '0px';
+    c.restore();
+  }
   c.fillStyle = withAlpha(ink, 0.4);
   c.fillRect(X + W / 2 - 120, y0 + 64, 240, 1.2);
 

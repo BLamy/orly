@@ -1,37 +1,39 @@
 /**
  * ch01-s04 — the case opens: the lamp clicks on in the detective's study; the hands pin the case card
  * WHO TAUGHT IT? at the centre of the board, then slide the makers' own admission of a flaw into the
- * lamplight and file it (candleAmber, 17.79 s, lampChange in from the frozen earth).
+ * lamplight and file it (candleAmber, 19.25 s, lampChange in from the frozen earth).
  *
  * The study is the one geography of sets/study.ts (shared with ch01-s05's full wide): the left bookcase
  * flanking the Case Board, the Wall of Forecasts in the dark to the board's right, the empty candle shelf
- * below, and the green-shaded banker's lamp on the desk in front, under its own pool (sets/ch01-s04-nearDesk).
+ * below, and the green-shaded banker's lamp on the desk in front, under its own pool (sets/ch01-s04-nearDesk),
+ * the manila file lying beside it and the case books at the desk's far end.
  *
- * BOARD (0 → ~8.3 s): the lamp clicks on (`lamp`, 0.5 s): its green shade rises into the bottom of frame,
- *   lit from inside along its lip, and the study builds out of the dark from its pool outward: the empty
- *   board with faint pin-holes, the bookcase (ink against an amber backlight), haze in the lamplight. A PIN
- *   INSERT: the camera pushes in to slot K as one cuffed hand (articulated fingers, shirt cuff, jacket sleeve,
- *   a short forearm from the lower right at ~35°) rises holding the card by its right edge; the card is pressed
- *   flat onto its brass pin exactly on "taught" and the hand withdraws along its forearm. The camera eases back
- *   only to a medium where the card still reads (≥ 28 px), and on "launched" begins a slow drift down past the
- *   board's foot to the lamp's green shade, carrying L0107.
- * TILT (~7.9 → ~8.8 s): the desk's dark front edge wipes up through the lens (a hidden cut) and the FILE
- *   camera (top-down on the desk) arrives still moving.
- * FILE (~8.3 s →): on "admitted" a hand pushes a typed slip into the lamp's pool: the launch post's sentence and
- *   its date, exactly as L0108 reads it. A slow push in while it is read; the index finger follows the reading
- *   from BENEATH the slip's lower edge (never over the words). On "Put" the right hand folds the slip once,
- *   carries it into the folder the left hand holds open; the left hand closes the flap on "file" and leaves;
- *   the right hand taps the folder twice (two visible lifts, on twos) and rests flat on it to the cut.
- *   The lamp's green shade, seen from above, is a soft near-plane shape at the top-left edge of frame.
+ * DARK (0 → `lamp`): not black: a 3–5 % ambient ghost of the room (the lamp's silhouette and the desk edge
+ *   against a faint wash of window light) so the click reads as a lamp switching on in a room.
+ * BOARD (`lamp` → ~8.5 s): the lamp clicks on: its lip and pool are the brightest values; the bookcase stands as
+ *   ink against an amber backlight; a dado rail and panelling under the board. A PIN INSERT: the camera pushes
+ *   in to slot K (the board's lit top rail, the oxblood question thread glinting where K's pool reaches it, the
+ *   pin-hole grid of the BOARD MAP columns, the left edge of the board in frame) as one cuffed hand rises holding
+ *   the card; it is pressed onto its brass pin exactly on "taught". The camera eases back to a medium (both board
+ *   edges, K ≥ 28 px), and on "ChatGPT" begins one slow drift down and right past the board's foot to the desk:
+ *   by "late" the lamp, the manila file and the case books are established; a blurred book stack (L6) slides up
+ *   through the bottom-left corner, so four planes move against each other. Dust turns in the lamplight.
+ * FILE (cut ~8.46 s, top-down on the desk): on "admitted" a hand pushes a typed slip into the lamp's pool: the
+ *   launch post's sentence and its date, exactly as L0108 reads it. A slow push in while it is read; the index
+ *   finger follows the reading from BENEATH the slip's lower edge (never over the words). On "that" the right
+ *   hand hinges the slip's RIGHT half over its crease (three drawings on twos, the back one step darker), takes
+ *   the folded slip by its crease and drops it into the folder on "case"; the left hand tips the flap shut on
+ *   "file"; the right hand taps the folder twice and rests on it to the cut. The banker's lamp's green shade and
+ *   lit lip sit at the top-left edge of frame, the case books' spines at the top right.
  */
 import { Timeline } from '../../../core';
-import { FONT, LAYERS, defineShot, fbm, legibleSize, makeCanvas, mixLab, overscan, toScreen, withAlpha } from '../../../film';
-import type { Camera3, Frame, PaintEnv } from '../../../film';
+import { FONT, LAYERS, MOODS, defineShot, dustMotes, fbm, legibleSize, makeCanvas, mixLab, overscan, toScreen, withAlpha } from '../../../film';
+import type { Camera3, Frame, LayerSpec, PaintEnv } from '../../../film';
 import { STUDY, slotWorld, studyCase, studyRoom } from '../sets/study';
-import { SLOTS, wallStateAt } from '../sets/studyState';
+import { BOARD, Q_SLOTS, SLOTS, wallStateAt } from '../sets/studyState';
 import { paperTone } from '../sets/caseBoard';
 import { hash1 } from '../../../film/silhouette/atmosphere';
-import { BULB01, LAMP01, SHELF_PLANE, shadeGreen, study01Near, study01Shelves } from '../sets/ch01-s04-nearDesk';
+import { BULB01, DESK01, LAMP01, SHELF_PLANE, shadeGreen, study01Near, study01Shelves } from '../sets/ch01-s04-nearDesk';
 import { armDir, drawArm, wristAt, type Arm, type HandShape01, type Pt } from '../sets/ch01-s04-hands';
 import { ch01Card } from '../sets/ch01-s04-cards';
 
@@ -41,20 +43,22 @@ const KP = slotWorld('K', 'centre');
  *  ch01-s03's home window sat, so the lampChange carries that last cyan point into the switch-on; the board
  *  fills the upper half, the bookcase at frame left */
 const OPEN: Camera3 = { x: 725, y: 635, z: -420, lens: 1 };
-/** the pin insert: the card a little below centre, so the board's top frame edge (rim-lit) and the oxblood
- *  thread cross the top of K's pool and the pool reads as cork on a board, not a lit wall */
-const INSERT: Camera3 = { x: KP.x + 20, y: KP.y - 62, z: 290, lens: 1 };
-/** the medium after the pin: K still reads at ≥ 28 px */
-const MED: Camera3 = { x: KP.x + 40, y: KP.y + 50, z: 150, lens: 1 };
-/** the drift's end: down past the board's foot to the lamp's green shade */
-const LOW: Camera3 = { x: 740, y: 980, z: 120, lens: 1 };
-const BOARD_CAMS = [OPEN, { ...OPEN, z: OPEN.z + 40 }, INSERT, MED, LOW, { ...LOW, y: LOW.y + 420 }];
+/** the pin insert: K a little right of and below centre, so the board's lit top rail (≈ y 42) and the oxblood
+ *  thread (≈ y 112) cross the top of frame above K's pool and the board's left edge stands in frame (≈ x 48) */
+const INSERT: Camera3 = { x: KP.x - 80, y: KP.y - 90, z: 290, lens: 1 };
+/** the medium after the pin: K centred and ≥ 28 px; both side edges and the top rail of the board in frame */
+const MED: Camera3 = { x: 655, y: 302, z: 150, lens: 1 };
+/** the drift's end: down and right past the board's foot to the desk: the lamp at the left third, the manila
+ *  file right of it, the ends of the case books at the right edge, the dado and the candle shelf behind */
+const LOW: Camera3 = { x: 1040, y: 800, z: -150, lens: 1 };
+const LOW2: Camera3 = { x: 1060, y: 806, z: -128, lens: 1 };
+const BOARD_CAMS = [OPEN, { ...OPEN, z: OPEN.z + 40 }, INSERT, MED, LOW, LOW2];
 /** the near bookcase's lamp-side edge (L5 world): ~70 px in from frame left in the establishing medium, so the
  *  study's own amber-backlit bookcase reads beside it; it slides out past the lens on the push */
 const BOOKCASE_EDGE = -168;
 
-/** the cut's marks, anchored on `slip` ("admitted"): the board's slow drift down to the desk (one 3 s ease from
- *  "launched") ends on a clean CUT to the top-down FILE plate just before the slip enters (no wipe, no black) */
+/** the cut's marks, anchored on `slip` ("admitted"): the board's drift down to the desk (from "ChatGPT") ends on
+ *  a clean CUT to the top-down FILE plate just before the slip enters (no wipe, no black) */
 const tiltMarks = (slipAt: number) => ({ tilt0: slipAt - 0.2, mid: slipAt - 0.2, tilt1: slipAt - 0.2 });
 
 // ---------------------------------------------------------------- the pin
@@ -82,14 +86,17 @@ const READ: [string, number, number][] = [
   ['or', 2, 0], ['nonsensical', 2, 1], ['answers', 2, 2],
 ];
 const HAND_F = 230; // hand length on the FILE plate (a closer camera)
-/** the banker's lamp seen from above (L5 world): CROPPED just past the top-left corner of the FILE plate, so only
- *  the bulb's warm spill from under its lip reaches the desk (no dark shape intruding on the frame) */
-const LAMP_TOP = { x: -190, y: -30 };
-const DIR_R = armDir(-26);
-/** the carry and the taps: the right forearm nearly upright from the bottom edge, so it stays BELOW the folder */
-const DIR_R2 = armDir(-7);
-/** the left hand: nearly upright from the bottom edge, wrist bent forward onto the flap */
-const DIR_L = armDir(6);
+/** the banker's lamp seen from above (L5 world, blurred): its green shade and lit lip in the top-left corner of
+ *  the FILE plate, the nearest thing to the lens up there; it slides out as the camera pushes toward the folder */
+const LAMP_TOP = { x: 96, y: 90 };
+/** forearm angles on the FILE plate, all from the lower right and leaning (30–50° off the vertical) so the wrist
+ *  and the shirt cuff stay in frame whenever a hand is at work: the push, the reading finger, the fold, the taps */
+const DIR_PUSH = armDir(-45);
+const DIR_READ = armDir(-50);
+const DIR_FOLD = armDir(-35);
+const DIR_TAP = armDir(-50);
+/** the left hand: from the lower left, low and leaning (65°), so its cuff is in frame at the flap */
+const DIR_L = armDir(62);
 
 const clamp01 = (x: number) => Math.max(0, Math.min(1, x));
 const sm = (u: number) => (u <= 0 ? 0 : u >= 1 ? 1 : u * u * (3 - 2 * u));
@@ -102,24 +109,23 @@ const lerpP = (a: Pt, b: Pt, u: number): Pt => ({ x: lerp(a.x, b.x, u), y: lerp(
 const lerpCam = (a: Camera3, b: Camera3, u: number): Camera3 => ({ x: lerp(a.x, b.x, u), y: lerp(a.y, b.y, u), z: lerp(a.z, b.z, u), lens: lerp(a.lens, b.lens, u) });
 const q2 = (t: number) => Math.floor(t * 12 + 1e-6) / 12; // on twos
 
+/** the drift down to the desk: from "ChatGPT", 2.6 s (≈ 96 % there on "late"); then a slow creep in to the cut */
+const DRIFT = 2.6;
 /** the board camera as a pure function of time */
-function boardCam(t: number, B: { pin: number; launched: number; tilt0: number; mid: number }): Camera3 {
-  const T_TILT0 = B.tilt0, T_MID = B.mid;
+function boardCam(t: number, B: { pin: number; chatAt: number; mid: number }): Camera3 {
   // the medium holds (a slow creep in) while the study resolves round the lamp, then the push to slot K
   const inS = B.pin - 0.95, inE = B.pin - 0.1;
-  const outS = B.pin + 0.85, outE = B.launched - 0.15;
+  const outS = B.pin + 0.55, outE = B.chatAt - 0.02;
   const o2 = { ...OPEN, z: OPEN.z + 40 };
   if (t < inS) return lerpCam(OPEN, o2, clamp01(t / inS));
   if (t < inE) return lerpCam(o2, INSERT, smr((t - inS) / (inE - inS)));
-  const i2 = { ...INSERT, z: INSERT.z + 14 };
+  const i2 = { ...INSERT, z: INSERT.z + 10 };
   if (t < outS) return lerpCam(INSERT, i2, (t - inE) / (outS - inE));
   if (t < outE) return lerpCam(i2, MED, smr((t - outS) / (outE - outS)));
-  if (t < B.launched) return MED;
-  // from "launched": ONE slow ease (~3 s) down past the board's foot to the lamp and the desk top; it is still
-  // settling when the cut to the FILE plate comes
-  void T_MID;
-  const u = clamp01((t - B.launched) / Math.max(0.5, T_TILT0 + 0.15 - B.launched));
-  return lerpCam(MED, LOW, smr(u));
+  // from "ChatGPT": ONE slow ease down and right past the board's foot to the lamp, the file and the books
+  const dE = B.chatAt + DRIFT;
+  if (t < dE) return lerpCam(MED, LOW, smr((t - B.chatAt) / DRIFT));
+  return lerpCam(LOW, LOW2, clamp01((t - dE) / Math.max(0.5, B.mid - dE)));
 }
 
 export default defineShot({
@@ -136,6 +142,8 @@ export default defineShot({
       lampAt: T.beat('lamp'),
       pin: T.beat('pinCase'),
       launched: T.word('L0107', 'launched'),
+      chatAt: T.word('L0107', 'Chat'),
+      thatAt: T.word('L0109', 'that'),
       slipAt: T.beat('slip'),
       fileAt: T.beat('file'),
       putAt: T.word('L0109', 'Put'),
@@ -161,6 +169,8 @@ type SC = {
   lampAt: number;
   pin: number;
   launched: number;
+  chatAt: number;
+  thatAt: number;
   slipAt: number;
   fileAt: number;
   putAt: number;
@@ -181,8 +191,13 @@ function paintBoard(f: Frame, sc: SC, t: number) {
   const cam = boardCam(t, sc);
   f.camera(cam);
   const L = lampLevel(t, sc.lampAt);
+  // the establishing medium's weight (1 until the push to K begins)
+  const estab = 1 - sm((t - (sc.pin - 0.95)) / 0.7);
+  // the drift down to the desk (0 → 1 from "ChatGPT")
+  const follow = smr((t - sc.chatAt) / DRIFT);
   studyRoom(f, { key: 'ch01-s04', cams: BOARD_CAMS, outside: { mood: 'winterBlue', kind: 'city', city: 0.3 } });
-  study01Shelves(f, { key: 'ch01-s04', cams: BOARD_CAMS, lamp: 0.25 + 0.75 * L });
+  // the bookcase as ink against an amber backlight: the band above each row of book tops raised (glow)
+  study01Shelves(f, { key: 'ch01-s04', cams: BOARD_CAMS, lamp: 0.25 + 0.75 * L, glow: 1 });
   // haze drifting through the lamplight, between the shelves and the board
   f.fog({ yCenter: 470, height: 340, alpha: 0.15 * L, drift: 9 });
 
@@ -223,13 +238,14 @@ function paintBoard(f: Frame, sc: SC, t: number) {
     key: 'ch01-s04',
     shelf: { only: [] },
     // the cork is DARK (about L* 25) outside a tight lamp pool round K, so the board stands apart from the wall
-    board: { hide: ['K'], pinHoles: true, pool: BOARD_POOL },
+    board: { hide: ['K'], pinHoles: false, pool: BOARD_POOL },
     wall: { slips: WALL_SLIPS, hide: WALL_HIDE },
     extra: (c, env) => {
+      wallPanelling(c, env);
       corkDetail(c, env);
       // the hand works from behind the card: its fingertips behind the edge it holds, never over the type
       if (sock) {
-        const arm: Arm = { wrist: wristAt(sock, PIN_DIR, shape, HAND_L4, 'R', 0.12), dir: PIN_DIR, shape, side: 'R', len: HAND_L4, bend: 0.12, light: { x: 0.25, y: 1 } };
+        const arm: Arm = { wrist: wristAt(sock, PIN_DIR, shape, HAND_L4, 'R', 0.12), dir: PIN_DIR, shape, side: 'R', len: HAND_L4, bend: 0.12, light: { x: 0.25, y: 1 }, detail: 0.7 };
         drawArm(c, env, arm);
       }
       if (tq >= sc.pin) {
@@ -252,6 +268,12 @@ function paintBoard(f: Frame, sc: SC, t: number) {
       if (sock && carrying) ch01Card(c, K, { x: sock.x - GRIP_OFF.x, y: sock.y - GRIP_OFF.y, light: 0.9, rot: -0.02 * press, lift: press }, env);
     },
   });
+  // dust turning in the lamp's pool, a plane just in front of the board
+  if (L > 0.05) {
+    f.layer(DUST_PLANE, (c, env) => {
+      dustMotes(c, { area: { x: 260, y: 40, w: 820, h: 1000 }, count: 120, drift: { x: 3, y: -2.5 }, size: 1.15, brightness: 0.75 * L, color: mixLab(env.mood.core, env.mood.halo, 0.4), salt: 404 }, env);
+    });
+  }
   // haze drifting through the lamp's pool, in front of the board (it catches the light, so it reads as air)
   {
     const pc = toScreen(LAYERS.L4, cam, STUDY.pool.cx, STUDY.pool.cy);
@@ -284,8 +306,29 @@ function paintBoard(f: Frame, sc: SC, t: number) {
       cc.fillRect(BOOKCASE_EDGE - 2, by, 2, bh);
     })(c, bx, by);
   });
+  // before the click: the ghost of the room. A faint wash of window light on the wall behind the lamp, so the
+  // lamp's silhouette and the desk's edge stand dark against it (≈ 4 % after the dark below), never pure black
+  const ghost = 1 - sm((t - sc.lampAt) / 0.5);
+  if (ghost > 0.01) {
+    const c = f.c;
+    const gp = toScreen(LAYERS.L5, cam, BULB01.x, BULB01.y - 60);
+    c.save();
+    c.globalCompositeOperation = 'lighter';
+    c.translate(gp.x, gp.y);
+    c.scale(1, 0.62);
+    const g = c.createRadialGradient(0, 0, 0, 0, 0, 460);
+    const cool = mixLab(f.mood.haze, '#93a6b8', 0.5);
+    g.addColorStop(0, withAlpha(cool, 0.9 * ghost));
+    g.addColorStop(0.5, withAlpha(cool, 0.4 * ghost));
+    g.addColorStop(1, withAlpha(cool, 0));
+    c.fillStyle = g;
+    c.fillRect(-460, -460, 920, 920);
+    c.restore();
+  }
   // the desk and the banker's lamp in front of the board (near plane): it clicks on, green shade lit
   study01Near(f, { key: 'ch01-s04', cams: BOARD_CAMS, lamp: L, file: false });
+  // the manila file waiting beside the lamp (open, empty: the slip has not been filed yet)
+  f.layer('L5', (c, env) => deskFile(c, env));
   // the establishing medium in the wide's own grammar (ch01-s05/s06): a haze band lying at desk height across the
   // lamp's pool, so the lamp and the desk edge stand as ink against lit air
   {
@@ -296,17 +339,13 @@ function paintBoard(f: Frame, sc: SC, t: number) {
     }
   }
   // the pool: a DARK corkboard. A tight pool (~280 px) around K, so the card is the brightest shape; outside it
-  // the cork sinks to about L* 30 and the corners to near ink. As the camera drifts down after "launched" the
-  // pool's centre follows it to the lamp's shade.
+  // the cork sinks to about L* 30 and the corners to near ink. On the drift the pool slides from K to the desk's
+  // own pool between the lamp and the file, and widens.
   const kc = toScreen(LAYERS.L4, cam, KC.x, KC.y);
-  const lpS = toScreen(LAYERS.L5, cam, BULB01.x, BULB01.y);
-  const follow = sm((t - sc.launched) / Math.max(0.5, sc.tilt0 - sc.launched));
-  const pcx = lerp(kc.x, lerp(kc.x, lpS.x, 0.6), follow), pcy = lerp(kc.y, lerp(kc.y, lpS.y, 0.75), follow);
-  // in the establishing medium the pool lies broader and the dark lifts, so the bookcase and the room read as
-  // ink against the lamplight; it tightens onto K as the push arrives
-  const estab = 1 - sm((t - (sc.pin - 0.95)) / 0.7);
+  const dp = toScreen(LAYERS.L5, cam, LAMP01.x + 420, DESK01.back - 30);
+  const pcx = lerp(kc.x, dp.x, follow), pcy = lerp(kc.y, dp.y, follow);
   const ecx = toScreen(LAYERS.L4, cam, STUDY.pool.cx, STUDY.pool.cy + 120);
-  const pr = 250 * Math.min(1.35, Math.max(0.8, kc.k)) * (1 + 0.3 * estab);
+  const pr = lerp(250 * Math.min(1.35, Math.max(0.8, kc.k)), 430, follow) * (1 + 0.3 * estab);
   {
     const c = f.c;
     const gx = lerp(pcx, ecx.x, estab), gy = lerp(pcy, ecx.y, estab);
@@ -323,8 +362,8 @@ function paintBoard(f: Frame, sc: SC, t: number) {
     const lampS = toScreen(LAYERS.L5, cam, BULB01.x, BULB01.y + 40);
     const caseS = toScreen(SHELF_PLANE, cam, -35, 470);
     vignetteWithHoles(f, g, (0.25 + 0.75 * L), estab > 0.01 ? [
-      { x: lampS.x, y: lampS.y, rx: 300, ry: 190, k: 0.9 * estab },
-      { x: caseS.x, y: caseS.y, rx: 200 * caseS.k, ry: 520 * caseS.k, k: 0.62 * estab },
+      { x: lampS.x, y: lampS.y, rx: 320, ry: 200, k: 0.92 * estab },
+      { x: caseS.x, y: caseS.y, rx: 210 * caseS.k, ry: 560 * caseS.k, k: 0.85 * estab },
     ] : []);
     // haze drifting through the pool: soft lit wisps crossing the lamplight (additive, slow, seeded)
     c.save();
@@ -346,15 +385,43 @@ function paintBoard(f: Frame, sc: SC, t: number) {
     }
     c.restore();
   }
-  // the study resolving out of the dark from the lamp's pool outward (the lamp clicks at `lamp`)
+  // the board's structure catching the lamp (over the dark: lit edges hold their light): the top rail's lip,
+  // both side edges, and the oxblood question thread glinting where K's pool reaches it
+  boardEdges(f, cam, L * (1 - 0.85 * follow));
+  // the lamp is the brightest thing in the room: its lit lip and the pool it throws on the desk
+  if (L > 0.05) {
+    const c = f.c;
+    const lp = toScreen(LAYERS.L5, cam, LAMP01.x, LAMP01.y - 29.8 * LAMP01.k);
+    const dk = toScreen(LAYERS.L5, cam, LAMP01.x + 40, DESK01.back + 6);
+    c.save();
+    c.globalCompositeOperation = 'lighter';
+    for (const [x, y, rx, ry, a] of [[lp.x, lp.y + 2, 150 * lp.k, 22 * lp.k, 0.5], [dk.x, dk.y, 360 * dk.k, 34 * dk.k, 0.32]] as const) {
+      c.save();
+      c.translate(x, y);
+      c.scale(1, ry / rx);
+      const g = c.createRadialGradient(0, 0, 0, 0, 0, rx);
+      g.addColorStop(0, withAlpha(mixLab(f.mood.core, f.mood.halo, 0.4), a * L));
+      g.addColorStop(0.4, withAlpha(f.mood.halo, a * 0.35 * L));
+      g.addColorStop(1, withAlpha(f.mood.halo, 0));
+      c.fillStyle = g;
+      c.fillRect(-rx, -rx, 2 * rx, 2 * rx);
+      c.restore();
+    }
+    c.restore();
+  }
+  // the nearest plane on the drift (L6, soft): a stack of case books at the desk's near-left corner that rises
+  // through the bottom-left corner as the camera comes down to the desk
+  if (follow > 0.3) f.layer('L6', (c, env) => nearBooks(c, env));
+  // the study resolving out of the dark from the lamp's pool outward (the lamp clicks at `lamp`); capped, so the
+  // ghost of the room survives under it
   if (L < 0.999) {
     const c = f.c;
     const pc = toScreen(LAYERS.L4, cam, STUDY.pool.cx + 100, STUDY.pool.cy + 200);
     const r = 140 + 1150 * sm(L);
     const g = c.createRadialGradient(pc.x, pc.y, r * 0.2, pc.x, pc.y, r);
     const ink = f.mood.fg;
-    g.addColorStop(0, withAlpha(ink, 0.9 * (1 - L)));
-    g.addColorStop(1, withAlpha(ink, Math.min(1, 0.98 * (1 - L) + 0.25 * (1 - sm(L)))));
+    g.addColorStop(0, withAlpha(ink, Math.min(0.84, 0.9 * (1 - L))));
+    g.addColorStop(1, withAlpha(ink, Math.min(0.88, 0.98 * (1 - L) + 0.25 * (1 - sm(L)))));
     c.save();
     c.fillStyle = g;
     c.fillRect(-20, -20, 1320, 760);
@@ -374,36 +441,173 @@ function paintBoard(f: Frame, sc: SC, t: number) {
   }
 }
 
+/** dust in the lamp's pool: a plane a little in front of the board */
+const DUST_PLANE: LayerSpec = { id: 'ch01-s04-dust', z: 900, haze: 0, blur: 0.4 };
+
 /** the board's lamp pool on the cork (board units): tight round K, so the cork outside falls to about L* 25 */
 const BOARD_POOL = { cx: K.x, cy: K.y + 30, r: 330, k: 0.85 };
-/** cork detail drawn over the board (s04's board is empty but for K): sparse flecks (granules a step lighter
- *  and darker than the cork) and the frame's edges catching the lamp from below: a rim on the bottom rail and a
- *  fainter one down each side, so the board's edge reads against the wall in the establishing medium */
-const FLECKS = Array.from({ length: 260 }, (_, i) => ({
-  x: (hash1(i, 301) * 0.5 + 0.5) * 1000,
-  y: (hash1(i, 302) * 0.5 + 0.5) * 620,
-  r: 1.1 + (hash1(i, 303) * 0.5 + 0.5) * 2.2,
-  lite: hash1(i, 304) > 0.1,
-}));
+/** the BOARD MAP's pin-hole grid (board units): the four clue columns C1–C4 (holes every 48 down each), the
+ *  suspects' margin S1–S3 at the left, and the question clips Q1–Q4 under the thread along the top edge */
+const PIN_GRID: { x: number; y: number; q?: boolean }[] = (() => {
+  const out: { x: number; y: number; q?: boolean }[] = [];
+  for (const x of [230, 370, 640, 790]) for (let y = 96; y <= 576; y += 48) out.push({ x, y });
+  for (let y = 120; y <= 480; y += 60) out.push({ x: 80, y });
+  for (const x of Object.values(Q_SLOTS)) out.push({ x, y: BOARD.threadY + 16, q: true });
+  return out;
+})();
+/** cork detail over the board (s04's board is empty but for K): the pin-hole grid, each hole a dark prick with
+ *  its lower lip catching the lamp (the lamp stands below the board), lit by K's pool and gone in the dark */
 function corkDetail(c: CanvasRenderingContext2D, env: PaintEnv) {
   const m = env.mood;
   const bx = STUDY.board.x, by = STUDY.board.y;
-  for (const F of FLECKS) {
-    const d = Math.hypot((F.x - BOARD_POOL.cx) / 1.15, F.y - BOARD_POOL.cy) / (BOARD_POOL.r * 1.3);
+  const lip = mixLab(m.halo, m.rim, 0.4);
+  for (const P of PIN_GRID) {
+    const d = Math.hypot((P.x - BOARD_POOL.cx) / 1.25, P.y - BOARD_POOL.cy) / (BOARD_POOL.r * 1.35);
     const lit = Math.max(0, 1 - d);
-    c.fillStyle = withAlpha(F.lite ? mixLab(m.halo, m.setHaze, 0.4) : m.fg, (F.lite ? 0.1 + 0.28 * lit : 0.22 + 0.2 * lit));
+    const x = bx + P.x, y = by + P.y;
+    const r = P.q ? 2.2 : 1.8;
+    c.fillStyle = withAlpha(m.fg, 0.55 + 0.3 * lit);
     c.beginPath();
-    c.ellipse(bx + F.x, by + F.y, F.r, F.r * 0.75, F.x * 0.01, 0, Math.PI * 2);
+    c.arc(x, y, r, 0, Math.PI * 2);
     c.fill();
+    if (lit > 0.02) {
+      c.strokeStyle = withAlpha(lip, 0.15 + 0.6 * lit);
+      c.lineWidth = 1;
+      c.beginPath();
+      c.arc(x, y, r + 0.9, Math.PI * 0.15, Math.PI * 0.85);
+      c.stroke();
+    }
   }
-  // the frame's edges lit from below (the lamp stands under the board)
-  const W = 1000, H = 620, b = 16;
-  c.fillStyle = withAlpha(mixLab(m.rim, m.halo, 0.3), 0.6);
-  c.fillRect(bx - b, by + H + b - 2, W + 2 * b, 2);
-  c.fillStyle = withAlpha(mixLab(m.rim, m.halo, 0.3), 0.35);
-  c.fillRect(bx - 1.5, by, 1.5, H);
-  c.fillRect(bx + W, by, 1.5, H);
-  c.fillRect(bx, by + H, W, 1.2);
+}
+
+/** the wall under the board: a dado rail (its top catching the lamp) and panelling down to the candle shelf, from
+ *  the bookcase's edge to the window, so the wall in the establishing medium and on the drift is not a void */
+function wallPanelling(c: CanvasRenderingContext2D, env: PaintEnv) {
+  const m = env.mood;
+  const x0 = 110, x1 = 1960, ry = 740;
+  c.fillStyle = mixLab(m.set, m.fg, 0.3);
+  c.fillRect(x0, ry, x1 - x0, 14);
+  c.fillStyle = withAlpha(mixLab(m.rim, m.halo, 0.3), 0.42);
+  c.fillRect(x0, ry, x1 - x0, 1.6);
+  c.fillStyle = withAlpha(m.fg, 0.4);
+  c.fillRect(x0, ry + 14, x1 - x0, 2.5);
+  // raised panels below the rail: a recessed field with its top and lamp-side edges catching the light
+  for (let x = x0 + 20; x + 200 < x1; x += 236) {
+    c.fillStyle = withAlpha(m.fg, 0.22);
+    c.fillRect(x, ry + 40, 200, 150);
+    c.fillStyle = withAlpha(mixLab(m.rim, m.halo, 0.3), 0.16);
+    c.fillRect(x, ry + 190, 200, 1.4);
+    c.fillStyle = withAlpha(m.fg, 0.35);
+    c.fillRect(x, ry + 40, 200, 1.4);
+  }
+}
+
+/** lit edges of the board (screen space, after the dark): the top rail's lower lip and its outer top edge, the
+ *  inner lips of both side rails (brightest low, near the lamp), and the oxblood thread's glint across the top of
+ *  K's pool. Strength `a` (0..1). */
+function boardEdges(f: Frame, cam: Camera3, a: number) {
+  if (a < 0.02) return;
+  const c = f.c;
+  const B = STUDY.board;
+  const P = (bx: number, by: number) => toScreen(LAYERS.L4, cam, B.x + bx, B.y + by);
+  const lit = mixLab(f.mood.rim, f.mood.halo, 0.35);
+  const falloff = (bx: number) => Math.exp(-(((bx - K.x) / 360) ** 2));
+  c.save();
+  c.lineCap = 'round';
+  // the top rail: its lower lip (where the rail meets the cork) and, fainter, its outer top edge
+  for (const [by, w, al] of [[0, 1.1, 0.7], [-16, 0.9, 0.32]] as const) {
+    for (let bx = -16; bx < BOARD.w + 16; bx += 40) {
+      const p0 = P(bx, by), p1 = P(bx + 40, by);
+      c.strokeStyle = withAlpha(lit, a * al * (0.25 + 0.75 * falloff(bx + 20)));
+      c.lineWidth = w * p0.k;
+      c.beginPath();
+      c.moveTo(p0.x, p0.y);
+      c.lineTo(p1.x, p1.y);
+      c.stroke();
+    }
+  }
+  // the side rails' inner lips: lit from below, fading up the board
+  for (const bx of [0, BOARD.w]) {
+    for (let by = 0; by < BOARD.h; by += 40) {
+      const p0 = P(bx, by), p1 = P(bx, by + 40);
+      c.strokeStyle = withAlpha(lit, a * 0.5 * (0.3 + 0.7 * (by / BOARD.h)));
+      c.lineWidth = 1.1 * p0.k;
+      c.beginPath();
+      c.moveTo(p0.x, p0.y);
+      c.lineTo(p1.x, p1.y);
+      c.stroke();
+    }
+  }
+  // the question thread's glint: where K's pool reaches the top of the board
+  // (the case board's oxblood, lifted toward the lamp's halo)
+  const glint = mixLab(mixLab(mixLab(MOODS.emberRed.rim, f.mood.set, 0.6), f.mood.halo, 0.55), f.mood.halo, 0.25);
+  const sag = (bx: number) => BOARD.threadY + Math.sin(((bx - 40) / 920) * Math.PI) * 10;
+  for (let bx = 200; bx < 800; bx += 12) {
+    const p0 = P(bx, sag(bx) - 0.6), p1 = P(bx + 12, sag(bx + 12) - 0.6);
+    const g = Math.exp(-(((bx + 6 - K.x) / 170) ** 2));
+    c.strokeStyle = withAlpha(glint, a * 0.85 * g);
+    c.lineWidth = 1.3 * p0.k;
+    c.beginPath();
+    c.moveTo(p0.x, p0.y);
+    c.lineTo(p1.x, p1.y);
+    c.stroke();
+  }
+  c.restore();
+}
+
+/** the manila file on the desk (L5 world, as ch01-s05's wide shows it), open and still empty */
+function deskFile(c: CanvasRenderingContext2D, env: PaintEnv) {
+  const D = DESK01;
+  const manila = mixLab(mixLab(env.mood.halo, '#b08a52', 0.35), env.mood.set, 0.3);
+  const fx = 1330, fw = 340;
+  const topY = D.back + 3, frontY = D.front - 12;
+  c.fillStyle = mixLab(manila, env.mood.fg, 0.12);
+  c.beginPath();
+  c.moveTo(fx + 30, topY + 1);
+  c.lineTo(fx + 34, topY - 13);
+  c.lineTo(fx + 104, topY - 13);
+  c.lineTo(fx + 108, topY + 1);
+  c.closePath();
+  c.fill();
+  c.fillStyle = manila;
+  c.beginPath();
+  c.moveTo(fx + 12, topY);
+  c.lineTo(fx + fw + 8, topY);
+  c.lineTo(fx + fw, frontY);
+  c.lineTo(fx, frontY);
+  c.closePath();
+  c.fill();
+  c.fillStyle = mixLab(manila, env.mood.fg, 0.6);
+  c.fillRect(fx, frontY, fw, 8);
+  c.fillStyle = withAlpha(mixLab(env.mood.halo, env.mood.core, 0.5), 0.65);
+  c.fillRect(fx + 12, topY, fw - 4, 1.6);
+  c.fillRect(fx + 34, topY - 13, 70, 1.4);
+}
+
+/** a stack of closed books at the desk's near-left corner (L6 world): spines to camera, each top face catching
+ *  the lamp (a lit band), page blocks and spine bands as cut-lines */
+function nearBooks(c: CanvasRenderingContext2D, env: PaintEnv) {
+  const m = env.mood;
+  const ink = env.fill('ink');
+  const lit = mixLab(m.rim, m.halo, 0.3);
+  let y = 2120;
+  const books = [[170, 330, 0], [150, 300, 18], [140, 320, -12], [125, 280, 10]] as const;
+  for (let i = 0; i < books.length; i++) {
+    const [h, w, dx] = books[i];
+    const x = 690 + dx;
+    y -= h;
+    c.fillStyle = mixLab(ink, m.set, 0.08 + 0.06 * (i % 2));
+    c.fillRect(x, y, w, h);
+    c.fillStyle = withAlpha(m.rim, 0.22);
+    c.fillRect(x + 34, y + h * 0.24, w - 68, 4);
+    c.fillRect(x + 34, y + h * 0.74, w - 68, 4);
+    // the top face, foreshortened, lit toward the lamp (right)
+    const g = c.createLinearGradient(x, 0, x + w, 0);
+    g.addColorStop(0, withAlpha(lit, 0.18));
+    g.addColorStop(1, withAlpha(lit, 0.55));
+    c.fillStyle = g;
+    c.fillRect(x, y - 10, w, 10);
+  }
 }
 
 /** a full-frame dark (fill style `g`, at alpha `A`) with soft elliptical holes (k = how much of the dark the hole
@@ -458,45 +662,54 @@ function lampLevel(t: number, at: number) {
 
 // =====================================================================================================
 // FILE (top-down on the desk)
-/** two closed books, one squared over the other, seen from above at the top-right corner of the desk (L5) */
+/** two closed books, one squared over the other, seen from above at the top-right corner of the desk (L5): each
+ *  cover a step off ink, the page block along its lamp-side edge as a pale band ruled with page lines, and the
+ *  spine along its left edge: a rounded back with raised bands catching the lamp */
 function deskBooks(c: CanvasRenderingContext2D, env: PaintEnv) {
   const m = env.mood;
   const book = (x: number, y: number, w: number, h: number, rot: number, tone: number) => {
     c.save();
     c.translate(x, y);
     c.rotate(rot);
-    c.fillStyle = mixLab(env.fill('ink'), m.set, tone);
+    // the cloth cover, a step off ink, catching a little of the lamp toward its lower left
+    const cv = c.createLinearGradient(-w / 2, h / 2, w / 2, -h / 2);
+    cv.addColorStop(0, mixLab(env.fill('ink'), m.set, tone + 0.18));
+    cv.addColorStop(1, mixLab(env.fill('ink'), m.set, tone));
+    c.fillStyle = cv;
     c.beginPath();
     c.roundRect(-w / 2, -h / 2, w, h, 5);
     c.fill();
-    // the page block along the lamp-side long edge (a pale band) and the spine's two cut lines
-    c.fillStyle = withAlpha(mixLab(m.halo, m.setHaze, 0.5), 0.35);
-    c.fillRect(-w / 2 + 6, h / 2 - 9, w - 14, 5);
-    c.fillStyle = withAlpha(m.rim, 0.22);
-    c.fillRect(-w / 2 + 16, -h / 2 + 4, 1.4, h - 8);
-    c.fillRect(-w / 2 + 24, -h / 2 + 4, 1.4, h - 8);
-    c.fillStyle = withAlpha(m.rim, 0.45);
-    c.fillRect(-w / 2 + 4, -h / 2, w - 8, 1.4);
+    // the page block showing along the lamp-side (lower) edge: a pale band ruled with page lines
+    c.fillStyle = withAlpha(mixLab(m.halo, m.setHaze, 0.45), 0.5);
+    c.fillRect(-w / 2 + 24, h / 2 - 9, w - 30, 7);
+    c.fillStyle = withAlpha(m.fg, 0.35);
+    for (let k = 0; k < 3; k++) c.fillRect(-w / 2 + 24, h / 2 - 8 + k * 2.2, w - 30, 0.6);
+    // the spine along the left edge: a rounded back with four raised bands, lit across their tops
+    c.fillStyle = withAlpha(mixLab(m.rim, m.halo, 0.2), 0.16);
+    c.fillRect(-w / 2 + 2, -h / 2 + 3, 18, h - 6);
+    c.fillStyle = withAlpha(m.rim, 0.5);
+    for (const k of [0.2, 0.4, 0.6, 0.8]) c.fillRect(-w / 2 + 2, -h / 2 + h * k, 18, 2.2);
     c.restore();
   };
-  book(1190, 70, 330, 220, 0.12, 0.16);
-  book(1175, 40, 300, 200, 0.03, 0.26);
+  book(1190, 70, 330, 220, 0.12, 0.12);
+  book(1175, 40, 300, 200, 0.03, 0.2);
 }
 
-// =====================================================================================================
-/** the slip (centre x,y), folded once by `fold` (0 flat → 1 LEFT half laid over the right, so the folded slip
- *  sits on the folder's side); edges rim-lit, no shadow. `hl` (per READ word, 0..1) lays a lamp-warm underline
- *  under the word being spoken and warms its letters. */
+/** the slip (centre x,y), folded once by `fold` (0 flat → 1 its RIGHT half hinged over the crease and laid on the
+ *  left half); edges rim-lit. The front of the turning half darkens as it stands up away from the lamp; its back,
+ *  coming down, is one step darker than the paper, with the type showing through faintly (mirrored). `hl` (per
+ *  READ word, 0..1) lays a lamp-warm underline under the word being spoken and warms its letters. */
 function slip(c: CanvasRenderingContext2D, env: PaintEnv, x: number, y: number, rot: number, fold: number, light: number, hl?: number[]) {
   const W = SLIP.w, H = SLIP.h;
   const paper = paperTone(env, light);
+  const back = mixLab(paper, env.mood.set, 0.24);
   const ink = mixLab(env.mood.ink, paper, 0.12);
   const rim = withAlpha(env.mood.rim, 0.55);
   const warm = mixLab(env.mood.core, env.mood.halo, 0.35);
   c.save();
   c.translate(x, y);
   c.rotate(rot);
-  const text = (left: boolean, alpha = 1) => {
+  const text = (left: boolean, alpha = 1, color = ink) => {
     if (alpha <= 0.01) return;
     c.save();
     c.globalAlpha *= alpha;
@@ -504,14 +717,14 @@ function slip(c: CanvasRenderingContext2D, env: PaintEnv, x: number, y: number, 
     if (left) c.rect(-W / 2, -H / 2, W / 2, H);
     else c.rect(0, -H / 2, W / 2, H);
     c.clip();
-    c.fillStyle = ink;
+    c.fillStyle = color;
     const font = `400 ${legibleSize(c, slipFont(), SLIP_PX)}px ${FONT.typewriter}`;
     c.font = font;
     c.textAlign = 'left';
     c.textBaseline = 'alphabetic';
     QUOTE.forEach((ln, i) => c.fillText(ln, -W / 2 + QUOTE_X[i], -H / 2 + 64 + i * 43));
     // the reading: a lamp-warm underline that travels with the spoken words, and the word's letters warmed
-    if (hl) {
+    if (hl && color === ink) {
       for (let i = 0; i < READ.length; i++) {
         const a = hl[i];
         if (!(a > 0.01)) continue;
@@ -539,7 +752,7 @@ function slip(c: CanvasRenderingContext2D, env: PaintEnv, x: number, y: number, 
     c.font = font;
     c.globalAlpha *= 0.85;
     c.textAlign = 'right';
-    c.fillStyle = ink;
+    c.fillStyle = color;
     c.fillText(ATTRIB, W / 2 - 34, H / 2 - 26);
     c.restore();
   };
@@ -548,45 +761,54 @@ function slip(c: CanvasRenderingContext2D, env: PaintEnv, x: number, y: number, 
     c.lineWidth = 1;
     c.strokeRect(x0 + 0.5, -H / 2 + 0.5, w - 1, H - 1);
   };
-  // the right half stays flat
+  // the left half stays flat
   c.fillStyle = paper;
-  c.fillRect(0, -H / 2, W / 2, H);
-  text(false);
-  edge(fold < 0.02 ? -W / 2 : 0, W / 2 + (fold < 0.02 ? W / 2 : 0));
-  // left half: flat (0) → on edge (0.5) → face down over the right half (1)
-  const k = Math.cos(Math.PI * fold);
-  if (Math.abs(k) > 0.01) {
-    c.save();
-    c.scale(k, 1);
-    if (k > 0) {
-      c.fillStyle = paper;
-      c.fillRect(-W / 2, -H / 2, W / 2, H);
-      // the type on the rising half fades as it foreshortens (squeezed glyphs read as a glitch, not as paper)
-      text(true, clamp01((k - 0.55) / 0.35));
-      // the rising half darkens as it turns away from the lamp
-      c.fillStyle = withAlpha(env.mood.fg, 0.5 * Math.sin(Math.PI * fold));
-      c.fillRect(-W / 2, -H / 2, W / 2, H);
-    } else {
-      c.fillStyle = mixLab(paper, env.mood.set, 0.2 + 0.25 * Math.sin(Math.PI * fold));
-      c.fillRect(-W / 2, -H / 2, W / 2, H);
-    }
+  c.fillRect(-W / 2, -H / 2, W / 2, H);
+  text(true);
+  if (fold < 0.02) {
+    c.fillRect(0, -H / 2, W / 2, H);
+    text(false);
+    edge(-W / 2, W);
+  } else {
     edge(-W / 2, W / 2);
-    c.restore();
-  }
-  // the crease: scored before the fold starts (a faint line), then a shade line with a lit lip that deepens as
-  // the half turns over; the turning half casts a soft shade on the flat half while it stands up
-  if (fold > 0) {
     const up = Math.sin(Math.PI * fold);
-    const sg = c.createLinearGradient(0, 0, 60 * up + 1, 0);
-    sg.addColorStop(0, withAlpha(env.mood.fg, 0.35 * up));
-    sg.addColorStop(1, withAlpha(env.mood.fg, 0));
-    c.fillStyle = sg;
-    c.fillRect(0, -H / 2, 60 * up + 1, H);
+    // the half standing up throws a soft shade across the flat half on the side it is falling toward
+    if (fold < 1) {
+      const sw = 70 * up + 1;
+      const sg = c.createLinearGradient(0, 0, -sw, 0);
+      sg.addColorStop(0, withAlpha(env.mood.fg, 0.38 * up));
+      sg.addColorStop(1, withAlpha(env.mood.fg, 0));
+      c.fillStyle = sg;
+      c.fillRect(-sw, -H / 2, sw, H);
+    }
+    // right half: flat (0) → on edge (0.5) → face down over the left half (1)
+    const k = Math.cos(Math.PI * fold);
+    if (Math.abs(k) > 0.01) {
+      c.save();
+      c.scale(k, 1);
+      if (k > 0) {
+        c.fillStyle = paper;
+        c.fillRect(0, -H / 2, W / 2, H);
+        // the type on the rising half fades as it foreshortens (squeezed glyphs read as a glitch, not as paper)
+        text(false, clamp01((k - 0.55) / 0.35));
+        c.fillStyle = withAlpha(env.mood.fg, 0.5 * up);
+        c.fillRect(0, -H / 2, W / 2, H);
+      } else {
+        // the back: one step darker than the paper, a touch darker still while it is steep to the lamp, the
+        // type showing through faintly (the scale has already mirrored it)
+        c.fillStyle = mixLab(back, env.mood.fg, 0.25 * up);
+        c.fillRect(0, -H / 2, W / 2, H);
+        text(false, 0.09 * (1 - up), mixLab(back, env.mood.ink, 0.5));
+      }
+      edge(0, W / 2);
+      c.restore();
+    }
   }
+  // the crease: scored before the fold (a faint line), then a shade line with a lit lip as the half goes over
   c.fillStyle = withAlpha(env.mood.fg, 0.12 + 0.5 * Math.min(1, fold * 2));
   c.fillRect(-1, -H / 2, 2, H);
   c.fillStyle = withAlpha(env.mood.rim, 0.3 + 0.4 * Math.min(1, fold * 2));
-  c.fillRect(-2.2, -H / 2, 1.2, H);
+  c.fillRect(1, -H / 2, 1.2, H);
   c.restore();
 }
 
@@ -749,10 +971,11 @@ function deskPen(c: CanvasRenderingContext2D, env: PaintEnv) {
   c.restore();
 }
 
-/** manila tones (about L* 50-55 under the pool): the back panel a step darker than the front flap */
+/** manila tones (about L* 45-50 under the pool, ~15 % under the slip's paper, so the slip stays the brightest
+ *  object in frame): the back panel a step darker than the front flap */
 const MANILA = (m: PaintEnv['mood']) => mixLab(m.halo, '#b08a52', 0.35);
-const MANILA_BACK = (m: PaintEnv['mood']) => mixLab(MANILA(m), m.set, 0.52);
-const MANILA_FRONT = (m: PaintEnv['mood']) => mixLab(MANILA(m), m.set, 0.4);
+const MANILA_BACK = (m: PaintEnv['mood']) => mixLab(MANILA(m), m.set, 0.6);
+const MANILA_FRONT = (m: PaintEnv['mood']) => mixLab(MANILA(m), m.set, 0.5);
 /** the front flap's top edge sits this far below the back panel's (so the folder reads as two leaves) */
 const FLAP_DROP = 24;
 /** the folder's front flap (hinged along the bottom; `open` lifts it toward the camera, foreshortening it): a
@@ -791,12 +1014,11 @@ function wordX(c: CanvasRenderingContext2D, line: number, idx: number) {
 
 function paintFile(f: Frame, sc: SC, t: number) {
   // a clean cut in (the drift down to the desk carried the move): the plate starts settled
-  const yOff = 0;
   const read = sm((t - sc.slipAt - 0.6) / (sc.readEnd - sc.slipAt));
   const toFolder = sm((t - (sc.putAt - 0.4)) / 1.4);
   const cam: Camera3 = {
     x: lerp(lerp(640, 600, read), 760, toFolder),
-    y: 360 - yOff + lerp(0, 14, read),
+    y: 360 + lerp(0, 14, read),
     z: lerp(lerp(0, 70, read), 50, toFolder),
     lens: 1,
   };
@@ -806,9 +1028,15 @@ function paintFile(f: Frame, sc: SC, t: number) {
 
   // -------- the action's clock (on twos)
   const tq = q2(t);
+  const W = SLIP.w, H = SLIP.h;
   const slideS = sc.slipAt - 0.25, slideE = sc.slipAt + 0.9; // in the lamp's pool by ~9.6 s
-  const openS = sc.putAt - 0.5, openE = sc.putAt - 0.1; // the left hand lifts the flap
-  const foldS = sc.inAt - 0.62, foldE = sc.inAt - 0.05; // folded by "in the" (a readable fold: ~0.6 s)
+  // THE FOLD: three drawings on twos round "that" (0.3 · 0.6 · 0.85), then the right half lies flat on the left
+  const FOLD_AT = [sc.thatAt - 0.17, sc.thatAt - 0.085, sc.thatAt, sc.thatAt + 0.085];
+  const FOLD_V = [0.3, 0.6, 0.85, 1];
+  let fold = 0;
+  for (let i = 0; i < FOLD_AT.length; i++) if (tq >= FOLD_AT[i] - 1e-6) fold = FOLD_V[i];
+  const foldS = FOLD_AT[0], foldE = FOLD_AT[3];
+  const gripAt = foldE + 0.17; // the hand has the folded slip by its crease
   const carryE = sc.caseAt; // dropped into the folder on "case"
   const shutS = sc.fileAt - 0.25, shutE = sc.fileAt; // the flap closes, ending on "file"
   // two separate index-finger taps 0.25 s apart (on twos), after the left hand has left the frame
@@ -816,21 +1044,18 @@ function paintFile(f: Frame, sc: SC, t: number) {
   const LIFT = 0.17;
 
   const slideU = sm((tq - slideS) / (slideE - slideS));
-  const foldU = sm((tq - foldS) / (foldE - foldS));
-  const carryU = sm((tq - foldE) / (carryE - foldE));
-  // the slip slides straight up from below frame into the pool, left of the folder (never under it)
+  const carryU = sm((tq - gripAt) / (carryE - gripAt));
+  // the slip slides up from below frame into the pool, left of the folder (never under it)
   let sx = lerp(SLIP_REST.x + 30, SLIP_REST.x, slideU), sy = lerp(SLIP_REST.y + 470, SLIP_REST.y, slideU);
   let rot = lerp(0.07, -0.012, slideU);
   const dropAt = { x: FOLDER.x + 4, y: FOLDER.y + 10 };
-  // folded left over right, the packet's centre is sx + W/4
-  sx = lerp(sx, dropAt.x - SLIP.w / 4, carryU);
+  // folded right over left, the packet is the slip's left half: its centre is sx - W/4
+  sx = lerp(sx, dropAt.x + W / 4, carryU);
   sy = lerp(sy, dropAt.y, carryU);
   rot = lerp(rot, 0.02, carryU);
   const filed = tq >= carryE;
   // the folder lies open (its flap standing up, seen edge-on) from the cut; the left hand tips the flap over at
   // shutS and it falls shut, accelerating, on "file"
-  void openS;
-  void openE;
   const fallU = clamp01((tq - shutS) / (shutE - shutS));
   const open = tq < shutS ? 1 : 1 - (0.25 * fallU + 0.75 * fallU * fallU);
   // the reading: one warm underline per spoken word, easing in on its first syllable and fading after it;
@@ -850,41 +1075,43 @@ function paintFile(f: Frame, sc: SC, t: number) {
     if (!filed) flap(c, env, open);
     if (tq >= slideS) {
       const light = 0.55 + 0.45 * slideU;
-      // the slip's soft contact shadow (wider and fainter while it is lifted and carried)
       if (!filed) {
-        const lift = Math.sin(Math.PI * carryU) + 0.6 * Math.sin(Math.PI * foldU);
-        const fw = SLIP.w * (1 - 0.5 * foldU);
-        contactShadow(f, c, env, sx + (SLIP.w / 4) * foldU + 8 + 14 * lift, sy + 10 + 18 * lift, fw + 6, SLIP.h + 6, rot, 0.5 * (1 - 0.4 * lift));
-      }
-      if (filed) {
+        // the slip's soft contact shadow (wider and fainter while it is lifted and carried)
+        const lift = Math.sin(Math.PI * carryU) + 0.5 * Math.sin(Math.PI * fold);
+        // its footprint: the left half plus whatever of the right half has not yet gone over the crease
+        const reach = fold < 0.02 ? W / 2 : Math.max(0, (W / 2) * Math.cos(Math.PI * fold));
+        const fw = W / 2 + reach, fcx = (reach - W / 2) / 2;
+        contactShadow(f, c, env, sx + fcx + 8 + 14 * lift, sy + 10 + 18 * lift, fw + 6, H + 6, rot, 0.5 * (1 - 0.4 * lift));
+        slip(c, env, sx, sy, rot, fold, light, hl);
+      } else {
         c.save();
         c.beginPath();
         c.rect(FOLDER.x - FOLDER.w / 2, FOLDER.y - FOLDER.h / 2, FOLDER.w, FOLDER.h);
         c.clip();
         slip(c, env, sx, sy, rot, 1, light);
         c.restore();
-      } else slip(c, env, sx, sy, rot, foldU, light, hl);
+      }
     }
     if (filed) flap(c, env, open);
 
-    // -------- the hands (short forearms from the lower edge, fixed angles)
+    // -------- the hands (short forearms from the lower edge, leaning, cuffs in frame; knuckle cut-lines)
     const arms: Arm[] = [];
     const LAMP_DIR = { x: -0.6, y: -0.8 };
-    const R = (sock: Pt, shape: HandShape01, lift = 0, bend = 0.1, dir = DIR_R) => arms.push({ wrist: wristAt(sock, dir, shape, HAND_F, 'R', bend), dir, shape, side: 'R', len: HAND_F, bend, lift, light: LAMP_DIR });
-    const Lh = (sock: Pt, shape: HandShape01, bend = 0.2) => arms.push({ wrist: wristAt(sock, DIR_L, shape, HAND_F, 'L', bend), dir: DIR_L, shape, side: 'L', len: HAND_F, bend, light: LAMP_DIR });
-    const awayR = (p: Pt, d: number): Pt => ({ x: p.x - Math.cos(DIR_R) * d, y: p.y - Math.sin(DIR_R) * d });
-    const awayL = (p: Pt, d: number): Pt => ({ x: p.x - Math.cos(DIR_L) * d, y: p.y - Math.sin(DIR_L) * d });
-    const edgeR = { x: sx + SLIP.w / 2 - 16, y: sy + 40 };
+    const R = (sock: Pt, shape: HandShape01, dir: number, lift = 0, bend = 0.1) => arms.push({ wrist: wristAt(sock, dir, shape, HAND_F, 'R', bend), dir, shape, side: 'R', len: HAND_F, bend, lift, light: LAMP_DIR, detail: 1 });
+    const Lh = (sock: Pt, shape: HandShape01, bend = 0.15) => arms.push({ wrist: wristAt(sock, DIR_L, shape, HAND_F, 'L', bend), dir: DIR_L, shape, side: 'L', len: HAND_F, bend, light: LAMP_DIR, detail: 1 });
+    const away = (p: Pt, dir: number, d: number): Pt => ({ x: p.x - Math.cos(dir) * d, y: p.y - Math.sin(dir) * d });
+    // the push: fingertips on the slip's lower edge carry it up into the light, then withdraw
     if (tq >= slideS - 0.3 && tq < slideE + 0.6) {
-      // fingertips push the slip's right edge into the light, then withdraw
+      // (left of the attribution, on the slip's bottom margin: the fingertips never touch the type)
+      const corner = { x: sx - 150, y: sy + H / 2 + 4 };
       const inU = sm((tq - (slideS - 0.3)) / 0.3);
       const outU = sm((tq - slideE - 0.05) / 0.5);
-      R(lerpP(lerpP(awayR(edgeR, 500), edgeR, inU), awayR(edgeR, 620), outU), 'flat');
+      R(lerpP(lerpP(away(corner, DIR_PUSH, 500), corner, inU), away(corner, DIR_PUSH, 620), outU), 'flat', DIR_PUSH);
     }
     // the index finger follows the reading from BENEATH the slip's lower edge (never over the words)
     const rS = sc.readStart - 0.35, rE = sc.readEnd + 0.15;
     if (tq >= rS && tq < rE + 0.45) {
-      const under = SLIP_REST.y + SLIP.h / 2 + 7;
+      const under = SLIP_REST.y + H / 2 + 7;
       let wx = wordX(c, READ[0][1], READ[0][2]);
       for (let i = 0; i < READ.length; i++) {
         const [s0] = sc.read[i];
@@ -897,51 +1124,46 @@ function paintFile(f: Frame, sc: SC, t: number) {
       const tip = { x: wx, y: under };
       const inU = sm((tq - rS) / 0.35);
       const outU = sm((tq - rE) / 0.45);
-      R(lerpP(lerpP(awayR(tip, 420), tip, inU), awayR(tip, 560), outU), 'press', 0, 0.05);
+      R(lerpP(lerpP(away(tip, DIR_READ, 420), tip, inU), away(tip, DIR_READ, 560), outU), 'press', DIR_READ, 0, 0.05);
     }
-    if (tq >= foldS - 0.3 && tq < carryE + 0.1) {
-      // the right hand takes the slip's right edge, folds it over, carries it to the folder by the fold
-      const reachU = sm((tq - (foldS - 0.3)) / 0.3);
+    // the fold: the right hand comes to the slip's lower right corner, lifts that edge over the crease (it follows
+    // the edge through the first two drawings, so it never crosses the left half's type), lets the half fall,
+    // then takes the folded slip by its crease and carries it into the folder, letting go on "case"
+    if (tq >= foldS - 0.35 && tq < carryE + 0.1) {
+      const cornerAt = (fv: number): Pt => ({ x: sx + (W / 2 - 14) * Math.cos(Math.PI * fv), y: sy + H / 2 - 14 - 44 * Math.sin(Math.PI * fv) });
+      const crease = { x: sx - 10, y: sy + 30 };
       let p: Pt;
-      // reaching across to the slip's LEFT edge, laying the left half over the right, then carrying it by the fold
-      const ex = (SLIP.w / 2 - 16) * Math.cos(Math.PI * foldU);
-      const edgeLft = { x: sx - SLIP.w / 2 + 16, y: sy + 40 };
-      // after the fold it carries the packet by its LOWER edge (its centre), the forearm swinging upright from
-      // the bottom of frame, so the arm stays below the folder and never crosses its face
-      const carryGrip = { x: sx + SLIP.w / 4, y: sy + SLIP.h / 2 - 14 };
-      const sw = sm((tq - foldE) / 0.17);
-      if (tq < foldS) p = lerpP(awayR(edgeLft, 420), edgeLft, reachU);
-      else if (tq < foldE) p = { x: sx - ex, y: sy + 40 - 50 * Math.sin(Math.PI * foldU) };
-      else p = lerpP({ x: sx + SLIP.w / 2 - 24, y: sy + 40 }, carryGrip, sw);
-      // the forearm rights itself through the fold, so it never lies across the folder's corner
-      const dir = lerp(DIR_R, DIR_R2, tq < foldE ? foldU : 1);
-      R(p, tq >= carryE ? 'open' : 'pinch', 0, tq < foldE ? 0.1 : 0.2, dir);
+      let shape: HandShape01 = 'pinch';
+      if (tq < foldS) p = lerpP(away(cornerAt(0), DIR_FOLD, 420), cornerAt(0), sm((tq - (foldS - 0.35)) / 0.3));
+      else if (fold < 0.85) p = cornerAt(fold);
+      else if (tq < gripAt) {
+        // released at the top of the arc: the hand drops back and down to the crease side of the packet
+        p = lerpP(cornerAt(0.6), crease, sm((tq - FOLD_AT[2]) / (gripAt - FOLD_AT[2])));
+        shape = 'open';
+      } else p = crease;
+      if (tq >= carryE) shape = 'open';
+      R(p, shape, DIR_FOLD, 0, 0.1);
     } else if (tq >= carryE + 0.1) {
-      // to the closed flap: the index finger out, two separate taps (lift, strike; on twos), then the hand
+      // to the closed folder: the index finger out, two separate taps (lift, strike; on twos), then the hand
       // settles flat on the file to the cut
-      // the taps land on the folder's lower margin, the forearm upright below it (never across the folder)
-      const rest = { x: FOLDER.x + 30, y: FOLDER.y + FOLDER.h / 2 - 22 };
+      const rest = { x: FOLDER.x - 30, y: FOLDER.y + 36 };
+      const from = { x: sx - 10, y: sy + 30 };
       const toU = sm((tq - carryE - 0.1) / (taps[0] - LIFT - carryE - 0.1));
-      const from = { x: sx + SLIP.w / 4, y: sy + SLIP.h / 2 - 14 };
       const lifted = taps.some((tt) => tq >= tt - LIFT && tq < tt) ? 1 : 0;
       const p = lerpP(from, rest, toU);
       const tapping = tq < taps[1] + 2 / 12;
-      R({ x: p.x, y: p.y + 16 * lifted }, tapping ? 'press' : 'flat', lifted, 0.22, DIR_R2);
+      R({ x: p.x, y: p.y + 14 * lifted }, tapping ? 'press' : 'flat', DIR_TAP, lifted, 0.18);
     }
-    // the left hand: rises from the bottom edge to the flap standing open at the folder's lower edge, tips it
-    // over, lets go while the flap edge is still in the folder's lower part, and withdraws straight down; the
-    // flap falls shut on "file" by itself (the hand never reaches over the folder's face)
-    if (tq >= shutS - 0.55 && tq < shutE + 0.25) {
-      // the flap stands open, edge-on along the folder's lower edge: the fingertips come up to that edge from
-      // below and push it over; the hand stays below the folder the whole time
+    // the left hand: from the lower left, fingertips to the flap standing open along the folder's lower edge; it
+    // tips the flap over, lets go while the flap is still falling, and withdraws the way it came; the flap falls
+    // shut on "file" by itself (the hand never reaches over the folder's face)
+    if (tq >= shutS - 0.55 && tq < shutE + 0.3) {
       const F = FOLDER;
-      const REACH = 0.55 * HAND_F; // palm socket -> fingertips
-      const grip = { x: F.x - 70, y: F.y + F.h / 2 + 4 + REACH };
+      const grip = { x: F.x - F.w / 2 + 110, y: F.y + F.h / 2 + 2 };
       const inU = sm((tq - (shutS - 0.55)) / 0.4);
       const push = sm((tq - (shutS - 0.12)) / 0.12);
-      const outU = sm((tq - (shutS + 0.06)) / 0.3);
-      const from = { x: grip.x - 30, y: grip.y + 420 };
-      const p = lerpP(lerpP(from, { x: grip.x, y: grip.y - 10 * push }, inU), { x: grip.x - 20, y: grip.y + 460 }, outU);
+      const outU = sm((tq - (shutS + 0.06)) / 0.34);
+      const p = lerpP(lerpP(away(grip, DIR_L, 420), { x: grip.x + 6 * push, y: grip.y - 12 * push }, inU), away(grip, DIR_L, 520), outU);
       Lh(p, 'flat');
     }
     for (const a of arms) drawArm(c, env, a);
@@ -957,90 +1179,30 @@ function paintFile(f: Frame, sc: SC, t: number) {
     c.fillStyle = g;
     c.fillRect(-400, -500, 1600, 1500);
     c.restore();
-    // a stack of closed case books at the top-right corner (between the desk and the lamp in height: its own
-    // plane, so the top-down camera's drift shows three planes sliding: desk, books, lamp shade)
+  });
+  // the pool falls off hard into ink toward the frame's edges (before the near planes, which keep their own light)
+  {
+    const c = f.c;
+    c.save();
+    // (the light stays on the slip until it is carried, then follows it to the folder)
+    const vc = toScreen(LAYERS.L4, cam, lerp(SLIP_REST.x + 60, FOLDER.x - 40, sm((t - (sc.thatAt + 0.15)) / 1.1)), SLIP_REST.y + 20);
+    const vg = c.createRadialGradient(vc.x, vc.y, 120, vc.x, vc.y, 720);
+    vg.addColorStop(0, withAlpha(f.mood.fg, 0));
+    vg.addColorStop(0.36, withAlpha(f.mood.fg, 0.14));
+    vg.addColorStop(0.56, withAlpha(f.mood.fg, 0.72));
+    vg.addColorStop(0.78, withAlpha(f.mood.fg, 0.95));
+    vg.addColorStop(1, withAlpha(f.mood.fg, 0.99));
+    c.fillStyle = vg;
+    c.fillRect(-20, -20, 1320, 760);
+    c.restore();
+  }
+  // the near planes (L5, soft): the case books at the top-right corner, and the banker's lamp seen from above at
+  // the top-left: its green half-cylinder shade with its lip lit from inside and the bulb's spill on the desk
+  f.layer('L5', (c, env) => {
     deskBooks(c, env);
+    lampFromAbove(c, env, flick);
   });
-  // the banker's lamp seen from above at the top-left corner, recognisable: the long half-cylinder of green
-  // glass (dark at its crown's edges, lighter toward the open lip, a soft highlight along the curve), its rolled
-  // ends, the brass arm running out past the frame, and the lip glowing from inside with the bulb's spill on
-  // the desk beneath; the nearest plane of all (L6, soft): a lamp-head occluder at the corner
-  f.layer('L6', (c, env) => {
-    const m = env.mood;
-    const G = shadeGreen(env, 1);
-    const ink = env.fill('ink');
-    c.save();
-    c.translate(LAMP_TOP.x, LAMP_TOP.y);
-    c.rotate(-0.32);
-    // the bulb's light spilling out from under the lip onto the desk
-    c.save();
-    c.globalCompositeOperation = 'lighter';
-    const ug = c.createRadialGradient(0, 44, 6, 0, 60, 210);
-    ug.addColorStop(0, withAlpha(m.core, 0.5));
-    ug.addColorStop(0.3, withAlpha(m.halo, 0.28));
-    ug.addColorStop(1, withAlpha(m.halo, 0));
-    c.fillStyle = ug;
-    c.fillRect(-230, -120, 460, 380);
-    c.restore();
-    // the brass arm (ink with a lit edge), out past the frame's top-left edge
-    c.strokeStyle = ink;
-    c.lineCap = 'round';
-    c.lineWidth = 12;
-    c.beginPath();
-    c.moveTo(0, 6);
-    c.lineTo(-270, -170);
-    c.stroke();
-    c.strokeStyle = withAlpha(mixLab(m.rim, m.core, 0.3), 0.45);
-    c.lineWidth = 1.6;
-    c.beginPath();
-    c.moveTo(4, 2);
-    c.lineTo(-262, -172);
-    c.stroke();
-    // the shade: green glass, a half-cylinder seen from above (the gradient runs across its width: dark crown
-    // edge at the back, the curve catching a highlight, lighter glass toward the lip)
-    const shade = new Path2D();
-    shade.roundRect(-152, -46, 304, 88, 30);
-    const sg = c.createLinearGradient(0, -46, 0, 42);
-    sg.addColorStop(0, mixLab(G.dark, ink, 0.35));
-    sg.addColorStop(0.35, G.dark);
-    sg.addColorStop(0.55, mixLab(G.dark, G.lip, 0.55));
-    sg.addColorStop(0.8, mixLab(G.dark, G.lip, 0.35));
-    sg.addColorStop(1, G.lip);
-    c.fillStyle = sg;
-    c.fill(shade);
-    // the rolled ends (darker caps) and a soft highlight running along the curve
-    c.fillStyle = withAlpha(ink, 0.55);
-    c.beginPath();
-    c.roundRect(-152, -46, 26, 88, [30, 0, 0, 30]);
-    c.roundRect(126, -46, 26, 88, [0, 30, 30, 0]);
-    c.fill();
-    c.fillStyle = withAlpha(mixLab(G.lip, m.rim, 0.5), 0.35);
-    c.fillRect(-120, -8, 240, 3);
-    // the finial at the crown and the shade's crisp outline
-    c.fillStyle = ink;
-    c.beginPath();
-    c.ellipse(0, -2, 9, 6, 0, 0, Math.PI * 2);
-    c.fill();
-    c.strokeStyle = withAlpha(ink, 0.9);
-    c.lineWidth = 2;
-    c.stroke(shade);
-    // the lip lit from inside along the open edge
-    c.fillStyle = withAlpha(mixLab(m.core, m.halo, 0.35), 0.95);
-    c.beginPath();
-    c.roundRect(-140, 38, 280, 6, 3);
-    c.fill();
-    c.save();
-    c.globalCompositeOperation = 'lighter';
-    const lg = c.createLinearGradient(0, 30, 0, 64);
-    lg.addColorStop(0, withAlpha(m.core, 0.35));
-    lg.addColorStop(1, withAlpha(m.halo, 0));
-    c.fillStyle = lg;
-    c.fillRect(-150, 38, 300, 26);
-    c.restore();
-    c.restore();
-  });
-  // a fountain pen lying across the desk's near edge, bottom left: the nearest plane (L6, soft), so the
-  // top-down drift shows three planes sliding (desk, books + lamp, pen)
+  // a fountain pen lying across the desk's near edge, bottom left: the nearest plane (L6, soft)
   f.layer('L6', (c, env) => deskPen(c, env));
   // the desk's near edge along the bottom of frame (L5, blurred): a dark lip with the lamp catching its top
   f.layer('L5', (c, env) => {
@@ -1055,18 +1217,90 @@ function paintFile(f: Frame, sc: SC, t: number) {
     c.fillStyle = withAlpha(env.mood.rim, 0.22);
     c.fillRect(-500, 676, 2400, 1.5);
   });
-  // the pool falls off hard into ink toward the frame's edges
-  const c = f.c;
+}
+
+/** the banker's lamp from above (L5 world, at LAMP_TOP): the brass arm running out of frame, the long green
+ *  half-cylinder shade (dark at its crown's back edge, lighter toward the open lip, a soft highlight along the
+ *  curve), its rolled ends, and the lip: an arc lit from inside, with the bulb's spill fanning onto the desk */
+function lampFromAbove(c: CanvasRenderingContext2D, env: PaintEnv, flick: number) {
+  const m = env.mood;
+  const G = shadeGreen(env, 1);
+  const ink = env.fill('ink');
   c.save();
-  const vc = toScreen(LAYERS.L4, cam, lerp(SLIP_REST.x + 60, FOLDER.x - 40, toFolder), SLIP_REST.y + 20);
-  // (as tight as the board's pool: the corners sink below L* 15, so both plates read as lit by the one lamp)
-  const vg = c.createRadialGradient(vc.x, vc.y, 120, vc.x, vc.y, 720);
-  vg.addColorStop(0, withAlpha(f.mood.fg, 0));
-  vg.addColorStop(0.36, withAlpha(f.mood.fg, 0.14));
-  vg.addColorStop(0.56, withAlpha(f.mood.fg, 0.72));
-  vg.addColorStop(0.78, withAlpha(f.mood.fg, 0.95));
-  vg.addColorStop(1, withAlpha(f.mood.fg, 0.99));
-  c.fillStyle = vg;
-  c.fillRect(-20, -20, 1320, 760);
+  c.translate(LAMP_TOP.x, LAMP_TOP.y);
+  c.rotate(-0.32);
+  // the bulb's light spilling out from under the lip onto the desk
+  c.save();
+  c.globalCompositeOperation = 'lighter';
+  const ug = c.createRadialGradient(0, 56, 6, 0, 80, 240);
+  ug.addColorStop(0, withAlpha(m.core, 0.42 * flick));
+  ug.addColorStop(0.3, withAlpha(m.halo, 0.22 * flick));
+  ug.addColorStop(1, withAlpha(m.halo, 0));
+  c.fillStyle = ug;
+  c.fillRect(-260, -100, 520, 420);
+  c.restore();
+  // the brass arm (ink with a lit edge), out past the frame's top-left corner
+  c.strokeStyle = ink;
+  c.lineCap = 'round';
+  c.lineWidth = 12;
+  c.beginPath();
+  c.moveTo(0, 6);
+  c.lineTo(-270, -170);
+  c.stroke();
+  c.strokeStyle = withAlpha(mixLab(m.rim, m.core, 0.3), 0.45);
+  c.lineWidth = 1.6;
+  c.beginPath();
+  c.moveTo(4, 2);
+  c.lineTo(-262, -172);
+  c.stroke();
+  // the shade, its open lip bowed toward the desk (the half-cylinder's mouth seen from above)
+  const shade = new Path2D();
+  shade.moveTo(-152, -16);
+  shade.quadraticCurveTo(-152, -46, -122, -46);
+  shade.lineTo(122, -46);
+  shade.quadraticCurveTo(152, -46, 152, -16);
+  shade.lineTo(150, 36);
+  shade.quadraticCurveTo(0, 58, -150, 36);
+  shade.closePath();
+  const sg = c.createLinearGradient(0, -46, 0, 50);
+  sg.addColorStop(0, mixLab(G.dark, ink, 0.35));
+  sg.addColorStop(0.35, G.dark);
+  sg.addColorStop(0.55, mixLab(G.dark, G.lip, 0.55));
+  sg.addColorStop(0.8, mixLab(G.dark, G.lip, 0.4));
+  sg.addColorStop(1, G.lip);
+  c.fillStyle = sg;
+  c.fill(shade);
+  // the rolled ends (darker caps) and a soft highlight running along the curve
+  c.fillStyle = withAlpha(ink, 0.5);
+  c.beginPath();
+  c.roundRect(-152, -46, 24, 84, [30, 0, 0, 24]);
+  c.roundRect(128, -46, 24, 84, [0, 30, 24, 0]);
+  c.fill();
+  c.fillStyle = withAlpha(mixLab(G.lip, m.rim, 0.5), 0.4);
+  c.fillRect(-118, -10, 236, 3);
+  // the finial at the crown and the shade's crisp outline
+  c.fillStyle = ink;
+  c.beginPath();
+  c.ellipse(0, -6, 9, 6, 0, 0, Math.PI * 2);
+  c.fill();
+  c.strokeStyle = withAlpha(ink, 0.9);
+  c.lineWidth = 2;
+  c.stroke(shade);
+  // the lip: an arc lit from inside along the open edge, and its glow on the glass just above it
+  c.strokeStyle = withAlpha(mixLab(m.core, m.halo, 0.35), 0.95 * flick);
+  c.lineWidth = 5;
+  c.beginPath();
+  c.moveTo(-142, 37);
+  c.quadraticCurveTo(0, 57, 142, 37);
+  c.stroke();
+  c.save();
+  c.globalCompositeOperation = 'lighter';
+  c.strokeStyle = withAlpha(m.core, 0.3 * flick);
+  c.lineWidth = 16;
+  c.beginPath();
+  c.moveTo(-138, 40);
+  c.quadraticCurveTo(0, 62, 138, 40);
+  c.stroke();
+  c.restore();
   c.restore();
 }

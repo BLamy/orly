@@ -1,0 +1,204 @@
+{
+  "round": 3,
+  "pass": false,
+  "scores": {
+    "accuracy": 8.17,
+    "depth": 8.25,
+    "clarity": 8,
+    "story": 8.17,
+    "visual": 7.83,
+    "sync": 7.83,
+    "sound": 7.67,
+    "curiosity": 8.42
+  },
+  "mean": 8.04,
+  "bar": 8.5,
+  "weighting": "mean across 5 reviewers; owning lens counted double (historian:accuracy; teacher:depth,clarity; story:story,curiosity; art:visual,sync; sound:sound)",
+  "reviewerScores": {
+    "historian": {
+      "accuracy": 8.5,
+      "depth": 8,
+      "clarity": 8,
+      "story": 8,
+      "visual": 8,
+      "sync": 8,
+      "sound": 7.5,
+      "curiosity": 8
+    },
+    "teacher": {
+      "accuracy": 8,
+      "depth": 8.5,
+      "clarity": 8,
+      "story": 8,
+      "visual": 7.5,
+      "sync": 8,
+      "sound": 7.5,
+      "curiosity": 8.5
+    },
+    "story": {
+      "accuracy": 8,
+      "depth": 8.5,
+      "clarity": 8,
+      "story": 8.5,
+      "visual": 8,
+      "sync": 8,
+      "sound": 7.5,
+      "curiosity": 9
+    },
+    "art": {
+      "accuracy": 8,
+      "depth": 8,
+      "clarity": 8,
+      "story": 8,
+      "visual": 8,
+      "sync": 7.5,
+      "sound": 7.5,
+      "curiosity": 8
+    },
+    "sound": {
+      "accuracy": 8,
+      "depth": 8,
+      "clarity": 8,
+      "story": 8,
+      "visual": 7.5,
+      "sync": 8,
+      "sound": 8,
+      "curiosity": 8
+    }
+  },
+  "criticalIssues": 0,
+  "belowBar": [
+    "visual",
+    "sync",
+    "sound"
+  ],
+  "carriedOverUnapplied": [
+    "ch10-s04",
+    "ch15-s09",
+    "ch09-s05",
+    "ch10-s12",
+    "ch08-s05",
+    "ch05-s07",
+    "ch15-s06",
+    "ch15-s10",
+    "ch08-s13b"
+  ],
+  "ledgerAudit": {
+    "round2-shots": "ABSENT. film.json stages.fixes holds only round1-global and round2-global. Every reviewer audited the round-2 routes against the regenerated sheets (06:29-06:31 local) instead. The showrunner re-checked the two contested ids (ch10-s04, ch15-s09) and the ch08-s05 source directly.",
+    "fixed": [
+      "L1522d",
+      "L1522b",
+      "L1219b",
+      "L1208 (cut)",
+      "L1416",
+      "L1405/L1418 question card",
+      "L0821",
+      "L0828",
+      "L1501 level",
+      "L0906",
+      "m12",
+      "m13",
+      "m10",
+      "m21 (pad)",
+      "foley bus",
+      "ch14-s05",
+      "ch14-s02",
+      "ch14-s03",
+      "ch12-s03",
+      "ch12-s07",
+      "ch11-s08",
+      "ch13-s04",
+      "ch15-s04 (labels)",
+      "ch15-s08",
+      "ch03-s06",
+      "ch13-s04 DAIR byline (historian note withdrawn)",
+      "ch05-s04 (formula and loom)",
+      "ch06-s03b (split)",
+      "ch10-s05",
+      "ch10-s06 softmax voiced (L1013)"
+    ],
+    "partial": {
+      "ch10-s04": "The all-pairs web is in, but the timing is not. Showrunner check: +3.75 is near-black, and +4.92 on 'every' shows a single beam. Threads start at about 6.0.",
+      "ch15-s09": "The window lamp is lit at 'lamp' (+18.17). Showrunner check: +16.25 is black, the hand appears only at +22.0, and the wick lights at +23.50 on 'from'. The foley strike is at 'new' (+22.58), so picture and sound now disagree.",
+      "ch05-s07": "The name card is in but late, with no book or year. The quote card is missing.",
+      "ch08-s13b": "The tower rises on 'deep', but 'cut its own' has no image, and the man is lit after 'him'.",
+      "ch14-s04b": "Order and size are fixed. DECISIVE still hangs highest and centred.",
+      "ch15-s05": "The bands and the settlement are in. The 'ANTHROPIC ·' prefix was dropped, the legibility audit is stale, and the pan crops the tags.",
+      "ch14-s07": "The stamp and question are in. The gap candle is a ghost, and the fence card is 1 s late.",
+      "ch06-s03b": "The split and the label are in. The readout is off the safe area, and the hill is 1.4 s late.",
+      "L0114": "The ellipsis gave only 0.53 s.",
+      "L1013/L1103": "softmax is voiced. word-piece is not."
+    },
+    "skipped_unrecorded": {
+      "ch09-s05": "Marcus card: third round with no change.",
+      "ch10-s12": "BLEU and 1/7 remain. The BLEU line came back.",
+      "ch08-s05": "Fixed and then OVERWRITTEN by a later pass (legibility at 05:11Z, source at 05:32Z still has '55 · 27 · 13').",
+      "ch15-s06": "LeCun AMI Labs label not applied.",
+      "ch15-s10": "Trim to about 22 s not applied (still 28.9 s).",
+      "L1206": "Amodei pronunciation still unverified."
+    }
+  },
+  "showrunnerChecks": [
+    "ch10-s04 sheet: +3.75 near-black; +4.92 ('every') shows one straight beam, no threads; +6.92 shows the web. Art is right, and the teacher's 'fixed' is wrong on timing.",
+    "ch15-s09 sheet: +16.25 pure black; hand barely visible at +22.00; wick lit at +23.50 (b5 23.53, 'from'). The foley strike at 'new' (+22.58) runs ahead of the picture.",
+    "ch08-s05 source line 113 still reads ['55 · 27 · 13 · 13 · 13', '→ 4096 · 4096 · 1000']. The regression is confirmed.",
+    "film.json stages.fixes keys: round1-global, round2-global only. round2-shots is absent.",
+    "'one to three years' appears only in bible.md Era 13 belief B (synthesis). claims e13-gap gives 'one or two years' (Liang, July 2024). The label lives in sets/ch14-s02-shelf.ts, sets/studyState.ts, ch14-s02.tsx and ch14-s04b.tsx."
+  ],
+  "fixes": {
+    "shots": {
+      "ch15-s09": "MAJOR, routed for the third round (story + art; the showrunner confirmed it on the sheet). The flame catches at +23.50 on 'from', after 'new candles' (22.57/22.80). +16.25 is pure black, and the left 60% of the frame stays black until about +22.0. The foley bus already places the match strike on 'new' (master 2126.87) and the flare on 'candles' (2127.09), so the picture is now about 0.9 s behind its own sound. Fix: anchor every beat with T.word on L1520, never hard-coded seconds, because L1517 is being re-taken longer. From 'Somewhere' (~16.6), raise a warm interior plane on the left (desk edge and candle shelf in silhouette, about 15% luma), and have the window lamp at full brightness by 'lamp' (17.94). Bring the hand and matchbox in on 'suspicious' (20.53). Strike on 'new' (22.57) and touch the wick on 'candles' (22.80), so the flame has settled by 'come from'. Hold the lit candle at least 2 s before the cut. Verify on stills at 16.6, 17.94, 20.53, 22.57 and 22.80, and confirm that the strike frame matches score/foley.json.",
+      "ch08-s13b": "MAJOR, second round (story + art + teacher T306). (a) 'Now, it found him': the tall man enters the lamp pool only at 37.29, after 'him' (37.07), over an empty desk. From 'Now' (35.88), stand him at the desk just outside the pool. Widen the pool to his feet on 'found' (36.72) and light him fully on 'him' (37.07). Hold at least 1.2 s before the cut, borrowing 0.5 s from the empty shelf push at 29.4-30.5 if needed. (b) On 'cut' (25.82), snap the drifting specks into the first stencil row (the learned edge mosaic from ch08-s06), so 'the net cut its own' has its own image. Then stack the tower over it from 'many layers' (26.88), complete by 'deep learning' (28.4). Verify at 25.82, 26.88, 36.72 and 37.07.",
+      "ch10-s04": "MAJOR, third round (art + teacher T307; the showrunner confirmed it on the sheet). At +3.75 the frame is near-black. At +4.92, on 'every', it still shows one straight beam down the hall, and the crossing threads appear only at about +6.0. The fix stage changed the arcs but not the timing. Set dip0/dip1 so the dark beat lasts 0.4 s or less and ends before 'attention' (3.78). Let the slips glow faintly on 'attention', then step to full on 'every' (4.79). Start drawing the all-pairs arcs from EVERY slip on T.word('every') (4.79), not on 'looks' minus 0.12, and densify them through 'every other' (5.94-6.30). Keep 'once' (7.32) as the brightness peak, and leave the banner unchanged. Verify on stills at 3.78, 4.79, 5.0, 6.0 and 7.32. The 4.92 still must show threads.",
+      "ch05-s07": "MAJOR, second round, half applied (historian + teacher + art). (a) Ink the name card on 'Hubert' (19.34), not about 20.6, as 'HUBERT DREYFUS · What Computers Can't Do, 1972', at 22 px cap or larger. (b) On 'early' (26.19), ink a quote card in quote-kit style (as in ch02-s07) with the verbatim q-dreyfus-pattern text '…early, dramatic success followed by sudden unexpected difficulties.' and attribution '— Hubert Dreyfus, 1972'. Hold it to the cut (+31.38). Keep the rule-slip collapse behind it at reduced alpha, landing on 'sudden unexpected difficulties' (28.87-30.11). Verify at 19.34, 26.2, 28.4 and 30.4, and run legibility.",
+      "ch09-s05": "Minor, but unapplied for the THIRD round (historian + teacher + art). In the silent tail, from 21.0, pin a horizontal card 'GARY MARCUS · 2018 · Deep Learning: A Critical Appraisal' [e9-marcus] at 22 px cap or larger, held at least 2 s, before the dim at about 23.9. Also bring the LEARNED FEATURES card in already inked on 'candle' (17.47), not as a ghosted card, and drop the floating stat block once the board returns. Verify at 17.47, 21.5 and 23.0.",
+      "ch08-s05": "REGRESSION (teacher). qa/legibility measured the fixed card, but a later pass overwrote the source: line 113 still reads L1 = ['55 · 27 · 13 · 13 · 13', '→ 4096 · 4096 · 1000']. Set L1 to ['5 stencil layers', '→ 2 great halls of 4,096', '→ 1,000 answers'], inked on 'halls' (11.73), with '→ 1,000 answers' brightening on 'thousand' (15.70). Keep the 60M/650k card. Re-sheet, re-run legibility, then grep the file for '55 · 27' to confirm it is gone.",
+      "ch10-s12": "Minor, unapplied for the third round and now worse (teacher). In the 9.6-13.5 silence, keep ONE card: the sundial with '12 hours · one machine, 8 GPUs' at 22 px cap or larger, from 'sundial' (9.66) to 'wall' (13.54). Delete the 'EN→DE 27.3 · 28.4 BLEU' line and the '≈ 1/7 the compute' two-bar chart. BLEU is never defined, and L1024 already carries the result. Grep the file for 'BLEU' and '1/7' to confirm both are gone.",
+      "ch13-s01": "Minor (story). The film's second through-line question is spoken in L1303b but never pinned. On 'second question' (about 20.9-22.1), have a hand pin a card 'HOW FAR? HOW FAST?' beside WHO TAUGHT IT?, in the same typewriter card style, at 22 px cap or larger, held to the end of the shot.",
+      "ch15-s08": "Minor (story). Pays off ch13-s01. Show the 'HOW FAR? HOW FAST?' card on the rewired board. On 'how far, how fast' (L1516b), push gently onto it, and on 'stays open' stamp it STATUS: OPEN (the same stamp and foley as ch14-s07 and ch15-s09). Then pull back to the dark lantern for the final hold. Keep the THE FIELD, 2019-2025 card.",
+      "ch15-s05": "Minor (historian + story + art; merged). (a) Restore the label 'ANTHROPIC · $1.5B SETTLEMENT · PIRATED BOOKS' (settlementLabel(), about line 572) through legibleSize at 22 px cap or larger, textRole 'subject'. Re-run legibility AFTER the final edit, because the current audit predates the 10:07Z edit. (b) Tag the two unnamed plinths 'GOOGLE DEEPMIND' and 'META' (texture role, dimmer) and light them softly through L1522, so 'the labs' reads as the field. No narration change. (c) Replace the pan at 26.75-27.75, which crops the tags ('ED', 'as of October 2026'), with a 0.6 s dissolve from the Anthropic plinth framing to the OpenAI plinth framing, all inside the safe area. Push in about 1.3x on the paired Lin/Katsas quotes while they are up. Verify at 23.1, 26.0, 27.2 and 19.5.",
+      "ch15-s06": "Minor (story + historian; merged). Cut the silent Hassabis beat at +1.8-3.2, or reduce it to background texture on the Wall, so L1509 opens straight on the three holdouts at b2 (3.22). Under LeCun's 2024 quote, at 'the third' (about +6.3), add a 22 px label 'left Meta, Nov 2025, to build world models · AMI Labs' [e14-lecun], held through +9.9 or later.",
+      "ch14-s04b": "Minor (historian). Hang the three position tags in ONE row at the same y and the same size (HELPS HUAWEI left, SELF-DEFEATING centre, DECISIVE right). Keep the lighting order and timing. Today DECISIVE · AMODEI (ANTHROPIC) hangs highest and centred, which reads as a verdict. Also change the candle label to 'CHINA IS A YEAR OR TWO / BEHIND' (see L1405). Verify at +12.4 and +14.3.",
+      "ch14-s02": "Minor (follows L1405). Change the behind-candle label to 'CHINA IS A YEAR OR TWO BEHIND' (lines ['CHINA IS A YEAR', 'OR TWO BEHIND'], also in sets/ch14-s02-shelf.ts), and re-anchor its naming window to the new words in L1405. Keep the 'CAN A FENCE AROUND CHIPS HOLD?' card on 'fence'.",
+      "ch14-s07": "Minor (art). The new gap candle on 'A newer candle' (1.05) is a pale ghost. Halve the fog in front of it from 0.8, add a warm vertical reflection on the water, and double its flame glow radius. Ink the OPEN fence card on 'fence' (13.75), not 14.75, with no blank grey strip at 13.71.",
+      "ch06-s03b": "Minor (art + teacher; merged). Reframe so the hand-chosen readout ('2 4 0 / 0 3 1') and both counters sit fully inside the 5% safe area from 4.75 to 13.92 (truck about 120 px right, or pull back to about 0.9x). Centre the locked tail (16.2-20.0) on the readout and plate together. Ink 'features, chosen by hand' on 'measure' (2.15) and hold it through 'drew the line' (4.99). Start the kernel hill on 'lifted' (9.07), at full height by 'hill' (10.29).",
+      "ch05-s04": "Minor (teacher + art; also covered by the global blank-card rule). The blank grey card at 18.58-20.54: bring the formula card in already inked ('blame(i) = slope(i)·…') on 'lantern' (20.37), or keep it off screen until then. Verify at 19.0, 20.37 and 22.5.",
+      "ch15-s10": "Minor (story; carried over from round 2). The end cards still run 28.9 s. Hold Turing for about 8 s, the authorship card for about 6 s and SOURCES for at least 4-6 s, then fade on the candle glow, about 22 s in all. If the clock cannot shrink, give the spare seconds to the candle-only fade, not to the text cards. Hand off to m21 for re-fitting.",
+      "ch11-s05": "Minor (teacher). Glint the 2012 waiting-note card ('…simply by waiting for faster GPUs and bigger datasets…') on 'waiting note' (about 1.6-2.6), before the log-scale chart takes the frame, so the callback lands for the eye as well as the ear. Keep the tail glint as a bookend, or trim the tail by 1.5 s."
+    },
+    "cues": {
+      "m21": "Minor (sound). Under the disclosure card (2141.4-2152.5), hold the lone D at about -34 to -36 M instead of letting it decay to -40, which reads as silence at -16 LUFS. Keep the SOURCES celesta as written. Then re-fit the window end and the b2/sources pad points to the trimmed ch15-s10 (about 22 s) and to the longer L1517 retake. The slip celesta should land on the new cut, with strings entering after 'back in twenty seventeen'.",
+      "m01": "Minor (sound). L0109 'Put that in the case file.' (46.19-48.32), the first statement of the motto, has the film's thinnest voice margin (lineMasking 10.0 dB). Thin the 1-4 kHz layers (celesta and the pizz upper notes) by about 3 dB across 46.0-48.4, and move any struck onset into the 0.76 s gap between 'that' and 'in'. Target lineMasking at 13 dB or more. If L0114 is split, also re-fit the reversed swell before 'We'."
+    },
+    "lines": {
+      "L1505": "MAJOR (sound). The re-take fixed the pacing but carries +3.52 dB clip trim and a hot nasal onset, so 'Nobody told it... to plan' is now the loudest spoken moment in the film (-8.9 M, 5 dB above L1504). Set trimDb to 0, add level 'soft', and lengthen the fade-in to about 40 ms (or de-click the first 30 ms). Target momentary at or below -12.5 M, within 1.5 dB of L1504. If the onset is still hot, re-take solo at speed 0.85 with the same spoken 'Nobody told it... to plan.' and a calmer stability. Confirm that ch15-s03's word anchors are unchanged.",
+      "L1405": "Minor (accuracy). 'one to three years' comes only from the bible's own synthesis. The only dated estimate (e13-gap, Liang Wenfeng, July 2024) is 'a gap of one or two years'. Rewrite as: 'Two new candles: computing power is the chokepoint, and China is a year or two behind. A new question for the file: can a fence around chips hold?' [e13-oct2023, e13-gap]. Re-narrate solo and update the candle labels in sets/ch14-s02-shelf.ts, sets/studyState.ts ('behind' entry), ch14-s02.tsx and ch14-s04b.tsx to 'CHINA IS A YEAR OR TWO BEHIND', and the bible's Era 13 belief B to match.",
+      "L1206": "Minor, second round (sound). 'Amodei' has never been heard. STT returns 'Ahmoudai' (ah-MOO-dye), yet stt.json marks it found. Synthesize L1206 solo with 2-3 respellings ('Ah-moh-day', 'Uh-moh-day', 'Amo-day'). Keep the take whose STT returns 'Amodei' or 'Amoday' (no 'moo'/'mou', no 'dai'/'dye'), record clipSig, and flag it for human sign-off in voice.json.",
+      "L1517": "Minor (sound). At 191 wpm the line is rushed (0.32 s between 'light' and 'back'). USER DIRECTION (2026-10-11): he is named — never 'the tall man' or 'the man'. Re-take solo at speed 0.80 with the CURRENT text ('The last word goes to Hinton, back in 2017.'), spoken 'The last word goes to Hinton... back in twenty seventeen.' Target about 4.5-5 s. ch15-s09 absorbs the extra length through T.word anchors; m21 re-fits. Re-run STT.",
+      "L0114": "Minor (sound). The turn into the story runs 3.95 s against a 4.5-5 s target, and the ellipsis made only a 0.53 s pause. Split it into two solo clips with the text unchanged: 'We go back to the war years.' (pauseAfter 0.8) and 'To a lamp, in Chicago.', both at speed 0.80, for 4.6-5.0 s overall. ch01-s06's silent hold absorbs the difference. Hand m01's reversed swell to the re-fit.",
+      "L1103": "Minor (depth). An expert will note that GPT-2 predicts tokens, not words. Change it to: 'In 2019, OpenAI’s GPT-2, a Transformer’s writing half, read some eight million web pages with one goal: “predict the next word”, or rather, the next word-piece. No labels needed: every next word is its own right answer.' Keep the quoted span verbatim and outside the gloss, re-narrate solo, and let ch11-s02 absorb about 1.3 s."
+    },
+    "global": [
+      "MAJOR (process): the per-shot ledger is still missing, and one fix was silently reverted. All five reviewers found no stages.fixes['round2-shots'], even though film-loop passes ledger: 'round<n>-shots' (film-loop.js:149) and film-shots.js:164-166 has a ledger step. That step is a late, low-effort agent that never ran or wrote nothing. Separately, ch08-s05's fix was measured by legibility at 05:11Z and then overwritten at 05:32Z by a later pass, while the shot stayed 'revised'. Fix: (1) Write the ledger in the workflow script itself, deterministically, with no agent: read film.json, merge stages.fixes[key], write. Throw (fail the stage) if any routed shot id has no outcome. (2) Before an author writes a shot file, compare its mtime/hash with the one read at task start; if it changed, re-read and merge. Never let concurrent or resumed passes write over each other. (3) After the stage, run a mechanical note check: for each routed note, grep the shot source for its key strings (e.g. '2 great halls', 'GARY MARCUS', 'BLEU' must be absent, 'ANTHROPIC ·') and downgrade 'fixed' to 'partial' on a miss. (4) Back-fill 'round2-shots' from the round-3 verdict's carriedOverUnapplied and ledgerAudit, then write 'round3-shots' with the word times checked per id.",
+      "MAJOR (visual, kit): blank card stock. Cards show as blank paper for 0.5-2 s before their text inks, which reads as placeholder frames: ch05-s04 18.58-20.54, ch10-s13b 3.83, ch14-s07 13.71, ch03-s06 9.50 and ch09-s05 17.46. In the type/card kit, card entry must carry its text: ink the first line within 3 frames of the card passing 30% opacity, or fade card and text together. Add a QA check that flags any card whose paper is over 50% opaque while its text alpha is under 20% for more than 0.3 s. Hand-off: ch10-s13b and ch03-s06 need only the kit change plus a re-sheet.",
+      "MAJOR (visual, kit): puppets read as smooth mannequins next to the reference frame (lace cuffs, coat skirts, curled wigs, rim-lit edges, props). The round-2 rim pass does not show at sheet scale. In the puppet kit, raise the key-side rim to 2-3 px at 1080 with a warm tint at 60-70%. Give each cast member period silhouette details (lapels, a tie or scarf break, a hand prop: pen, pipe, notebook, a glint off glasses). Add one ornamental foreground plane per rim room (fretwork, chair-back tracery, a carved newel), as studyNear does, to the ch06/ch11/ch13 rooms. Hand-off for a re-sheet check: ch13-s04, ch13-s03, ch06-s04, ch11-s08.",
+      "Minor (visual, kit): the x-ray cabinet still reads as a saturated cyan UI screen wherever it is the subject: ch12-s07 at 0-11 s, ch15-s04 at 5.5-12 and ch08-s01 at 0.08. Apply xrayEmphasis's resting state (60% face, desaturated) whenever the cabinet fills more than 25% of the frame, lift only the lit slot, and ink the glyph rows in warm grey (#cfc6b0 at 70%) instead of near-white.",
+      "Minor (sound, mix): the speech chain is still pressed (stem limiter 3.01 dB, compressor 3.41 dB GR). Zero the residual trimDb (+0.87 to +1.21) on L1307b, L1011, L0312 and L1417, and let the capped rides level them. Lower the narration stem target by 1 dB and recover it at the master gain (1.45 dB of limiter headroom is left), so the stem limiter takes 1.5 dB or less. Tag L0217 and L1522c level 'soft' so lineLevels reflects their directed quiet. Target: no line more than 2 dB above the median momentary.",
+      "Minor (sound, QA): STT can pass stale or lenient checks. In stt.mjs, invalidate a record whose lineSig no longer matches the current take, and fail QA 'stt' on stale records (L1517's still transcribes the old text). Transcribe every line re-narrated in a fix round, not only name targets. Require each accept form to appear literally (case-insensitive) in the transcript, so 'Ahmoudai' fails for Amodei.",
+      "Minor (score docs): cue-note bodies still contain stale absolute times that contradict their CURRENT CLOCK paragraph (m10: lastHall 948.83, 'm11 enters … 1042.48'; m13: 1264.78-~1284.05, 1263.28, 1290.87-1281.54). Re-map every absolute time in each body through the caption anchors, or strip them and keep word names only.",
+      "Minor (pipeline): QA warns timeline.fresh (script.json is newer than timeline.json). After the L1405, L1103, L1505, L1517, L0114 and L1206 re-takes, rebuild timeline.json, re-fit shot anchors, re-mix, and confirm timeline.fresh passes before assemble."
+    ]
+  },
+  "summary": "Round 3 FAILS the gate, but it is the best round yet (mean 7.42 → 7.83 → 8.04). Weighted scores: accuracy 8.17, depth 8.25, clarity 8.0, story 8.17, visual 7.83, sync 7.83, sound 7.67, curiosity 8.42. To pass, every dimension must reach 8 and the mean must reach 8.5. There are no critical issues. Accuracy, depth, clarity, story and curiosity now clear 8. All five reviewers confirm that the round-2 fairness, Act-3 spine, sound-level and end-card fixes landed. Three dimensions remain below 8. SYNC (7.83): the third round of late payoffs. ch15-s09's flame catches on 'from' (the showrunner confirmed +23.50 on the sheet, about 0.9 s after the foley strike). ch08-s13b lights Hinton after 'him'. ch10-s04 shows one beam on 'every' (confirmed at +4.92). VISUAL (7.83): mannequin puppets, blank card stock and the cyan cabinet. SOUND (7.67): the L1505 re-take carries +3.5 dB of trim and is now the loudest line in the film. The process failure remains the root cause. No round2-shots ledger was written, and ch08-s05's fix was overwritten by a later pass. ch09-s05 (Marcus) and ch10-s12 (BLEU) are unapplied for the third round. Round 4 should make the ledger deterministic with an overwrite guard, fix the four sync payoffs (ch15-s09, ch08-s13b, ch10-s04, ch05-s07), apply the two visual kit rules (cards ink with their paper, a puppet rim/detail pass), and take the trim off L1505. Those changes alone should lift sync, visual and sound past 8. The remaining minor notes are cheap and close the carried-over items.",
+  "at": "2026-10-13T10:41:17Z",
+  "dimensionNotes": {
+    "accuracy": "Every on-screen and spoken quotation matches its source (0 mismatches across 64), and Act 3 now treats the labs even-handedly, including Anthropic's own $1.5B settlement. It stops short of excellent on small things: 'China is one to three years behind' has no dated source (the record says one or two), and two dissenters, Dreyfus's quote and Marcus in 2018, are spoken of or implied but never cited on screen.",
+    "depth": "Both deep dives are expert-grade: you can check the AlexNet stencil sums and the attention softmax (0.20/0.07/0.53/0.20) by hand. Every era has a named belief, a dissenter and a duration. It loses a little where the film says 'next word' rather than 'word-piece', and where the deep-learning era's 2018 critic is missing from his own era.",
+    "clarity": "The key pictures now land: self-attention lights up a whole hall, and backprop gets a readable blame formula. A few unexplained text cards still clutter it, though. One shows layer sizes like '55 · 27 · 13' (a fix that was later overwritten), and another shows a BLEU score the film never defines.",
+    "story": "The question ledger is unusually well kept: 'who taught it', 'can a fence around chips hold' and the dark lantern are each paid off or deliberately left open. It loses a little because the second big question, 'how far, how fast', never gets its own card, and the final match strike lands a beat late.",
+    "visual": "The paper-cut theatre has strong layered sets and memorable images (the stencil cathedral, the Seoul Go board, the winter-blue city). It is held back by puppets that read as smooth mannequins next to the art reference, by cards that flash blank before their text inks, and by a cyan cabinet that breaks the amber palette.",
+    "sync": "Most beats hit their words, but several key payoffs still arrive late. The final candle catches on 'from' rather than 'new candles' (and after its own match-strike sound). Hinton is lit only after 'it found him'. The transformer's every-word-to-every-word threads appear about a second after 'every'.",
+    "sound": "The score is the film's signature: a candle motif, era-specific orchestration and scored silences. The master is clean (-16 LUFS, every line above 10 dB of margin). One re-take, 'Nobody told it... to plan', now jumps out 5 dB louder than its neighbours, and a few lines (the prologue turn, Hinton's last-word hand-off) are still rushed.",
+    "curiosity": "It keeps you leaning forward. Each era is framed as a case-file question, the dissenters are given real airtime, and it ends on open questions rather than a victory lap. This is the film's strongest dimension."
+  }
+}

@@ -26,10 +26,27 @@
  * SIGNATURES (review round 1: "Hinton, LeCun, Bengio and Hassabis must read apart at a glance"): every real
  * person carries spec.signature (puppet kit): a posture (stoop / chinUp), a hair mass, and a back-top contour
  * rim on every draw (backlit cut paper), plus 2-3 interior cut lines first in the detail budget.
- *  - Hinton: the tallest figure (342) with a forward stoop (8°: he stands to work), swept-back waves.
- *  - LeCun: glasses, close curls (hair mass 0.92), chin up: compact and upright.
- *  - Bengio: the big wavy hair mass (shaggy, 1.28-1.3) and heavy brow, a little shorter (316), a slight stoop.
- *  - Hassabis: the smallest of the four (300), cropped hair, upright, blazer.
+ *  - Hinton: the tallest figure (342) with a forward stoop (8°: he stands to work), swept-back receding hair (round 4).
+ *  - LeCun: a broader, rounder head (headScale 1.2 × 1.1), heavy glasses, a heavier (stocky) build, close
+ *    curls, chin up: compact and upright (review round 2).
+ *  - Bengio: a big curly hair mass (1.3) and a close-trimmed beard line (beardEdge cut), heavy brow, a slight stoop.
+ *  - Hassabis: the shortest of the four (286), close-cropped (hair mass 0.8), upright, blazer.
+ * Round 2 (kit): every named puppet (spec.signature) draws a 1.5 px WARM rim on its light-facing edge (pass the
+ * shot's key-light direction as o.light; otherwise back-top) and always shows a collar and a sleeve cut.
+ * Round 3 (kit + cast, "smooth mannequins"): the rim is 2.5 px at 1080p and 65 % warm (kit floor 2.25-3 px, 60-70 %
+ * warm on every edgeRim); jackets cut a lapel notch into the chest line and kick their coat skirt out at the back
+ * vent; notch-lapel jackets show a pale shirt V with the tie breaking it (1940s-50s suits now wear ties); shirt cuffs
+ * read as pale bands; lenses carry a glint; and every cast member holds a period hand prop (pen, notebook, papers,
+ * chalk, mug, laptop or phone; the kit passes it to whichever hand can hold it).
+ * Lee Sedol keeps empty hands (the Go stone is a shot prop).
+ * Round 4 (kit + cast, "line-ups read as identical mannequins"): every named person carries signature.idle, drawn
+ * whenever a shot passes a standing pose (puppet kit: weighted by how close the pose is to POSES.stand, so gestures
+ * and walks are untouched): shift (weight on the back leg, the prop carried in a crooked arm), clasp (hands behind the back), think (hand at the chin), glasses
+ * (hand at the glasses or temple), fold (arms folded, the prop held to the chest), pocket (near hand at the pocket);
+ * and signature.tilt, a head tilt of -4..+4 deg (+ = nod). Line-ups get different idles: ch13-s03/ch13-s04/ch15-s06
+ * Hinton shift · Bengio clasp · LeCun fold · Amodei glasses · Altman pocket; ch11-s08 Bender glasses · Gebru shift ·
+ * Marcus fold; ch10-s03 Uszkoreit shift · Hans glasses · Kelcey fold · Polosukhin pocket. Hinton's hair is the kit's
+ * sweptBack (receding front, combed straight back, fuller behind; period photographs), replacing generic waves.
  */
 import type { PuppetSpec } from '../../film/contracts';
 import { createPuppet } from '../../film/silhouette/puppet';
@@ -52,7 +69,7 @@ export const SPECS = {
   'navy-officer': {
     id: 'navy-officer', height: 328, build: 'average', era: '1950s', wardrobe: 'doubleBreasted', hair: 'crewCut',
     facialHair: 'none', glasses: 'none', hat: 'cap', profile: { nose: 0.5, brow: 0.55, chin: 0.58, jaw: 0.6 },
-    prop: 'none', details: ['lapel', 'buttons'],
+    prop: 'papers', details: ['lapel', 'buttons'],
   },
   reporter: {
     id: 'reporter', height: 320, build: 'average', era: '1950s', wardrobe: 'suit', hair: 'sidePart',
@@ -62,7 +79,7 @@ export const SPECS = {
   'crowd-worker': {
     id: 'crowd-worker', height: 300, build: 'average', era: '2000s', wardrobe: 'fleeceF', hair: 'ponytail',
     facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.42, brow: 0.3, chin: 0.42, jaw: 0.35 },
-    prop: 'none', details: [],
+    prop: 'mug', details: [],
   },
   labeller: {
     id: 'labeller', height: 300, build: 'average', era: '2020s', wardrobe: 'tshirt:f', hair: 'bun',
@@ -80,25 +97,25 @@ export const SPECS = {
     id: 'pitts', height: 296, build: 'slight', era: '1940s', wardrobe: 'suit', hair: 'sidePart',
     facialHair: 'none', glasses: 'round', hat: 'none', profile: { nose: 0.45, brow: 0.45, chin: 0.42, jaw: 0.4 },
     prop: 'papers', details: ['lapel', 'shirtCuff'],
-    signature: { stoop: 6, hairScale: 0.95, rim: true },
+    signature: { idle: 'shift', tilt: 3, stoop: 6, hairScale: 0.95, rim: true },
   },
   mcculloch: {
     id: 'mcculloch', height: 330, build: 'average', era: '1940s', wardrobe: 'threePiece', hair: 'messy',
     facialHair: 'fullBeard', glasses: 'none', hat: 'none', profile: { nose: 0.55, brow: 0.6, chin: 0.5, jaw: 0.55 },
     prop: 'pen', details: ['waistcoat', 'watchChain'],
-    signature: { chinUp: 3, hairScale: 1.15, rim: true },
+    signature: { idle: 'fold', tilt: -2, chinUp: 3, hairScale: 1.15, rim: true },
   },
   gerard: {
     id: 'gerard', height: 322, build: 'average', era: '1940s', wardrobe: 'doubleBreasted', hair: 'receding',
     facialHair: 'none', glasses: 'round', hat: 'none', profile: { nose: 0.52, brow: 0.55, chin: 0.52, jaw: 0.55 },
-    prop: 'none', details: ['lapel', 'buttons'],
-    signature: { rim: true },
+    prop: 'pen', details: ['lapel', 'buttons'],
+    signature: { idle: 'clasp', tilt: 2, rim: true },
   },
   hebb: {
     id: 'hebb', height: 330, build: 'slight', era: '1940s', wardrobe: 'suit', hair: 'receding',
     facialHair: 'none', glasses: 'rimless', hat: 'none', profile: { nose: 0.55, brow: 0.5, chin: 0.48, jaw: 0.42 },
-    prop: 'none', details: ['lapel'],
-    signature: { stoop: 3, rim: true },
+    prop: 'book', details: ['lapel'],
+    signature: { idle: 'glasses', tilt: 1, stoop: 3, rim: true },
   },
 
   // ---------------------------------------------------------------- 1950s
@@ -106,189 +123,189 @@ export const SPECS = {
     id: 'turing', height: 326, build: 'average', era: '1950s', wardrobe: 'blazer', hair: 'messy',
     facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.5, brow: 0.55, chin: 0.5, jaw: 0.5 },
     prop: 'chalk', details: [],
-    signature: { stoop: 4, hairScale: 1.1, rim: true },
+    signature: { idle: 'pocket', tilt: 3, stoop: 4, hairScale: 1.1, rim: true },
   },
   minsky: {
     id: 'minsky', height: 312, build: 'slight', era: '1950s', wardrobe: 'rolledSleeves', hair: 'crewCut',
     facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.5, brow: 0.5, chin: 0.45, jaw: 0.45 },
-    prop: 'none', details: [],
-    signature: { chinUp: 2, rim: true },
+    prop: 'chalk', details: [],
+    signature: { idle: 'fold', tilt: -2, chinUp: 2, rim: true },
   },
   mccarthy: {
     id: 'mccarthy', height: 322, build: 'average', era: '1950s', wardrobe: 'cardigan', hair: 'sidePart',
     facialHair: 'none', glasses: 'heavy', hat: 'none', profile: { nose: 0.48, brow: 0.5, chin: 0.52, jaw: 0.5 },
-    prop: 'none', details: [],
-    signature: { rim: true },
+    prop: 'pen', details: [],
+    signature: { idle: 'glasses', tilt: -3, rim: true },
   },
   widrow: {
     id: 'widrow', height: 324, build: 'average', era: '1950s', wardrobe: 'slimSuit', hair: 'waves',
     facialHair: 'none', glasses: 'browline', hat: 'none', profile: { nose: 0.52, brow: 0.5, chin: 0.55, jaw: 0.55 },
-    prop: 'none', details: ['lapel', 'shirtCuff'],
-    signature: { chinUp: 2, rim: true },
+    prop: 'pen', details: ['lapel', 'shirtCuff'],
+    signature: { idle: 'clasp', tilt: 2, chinUp: 2, rim: true },
   },
   rosenblatt: {
     id: 'rosenblatt', height: 322, build: 'slight', era: '1950s', wardrobe: 'shortSleeve', hair: 'slicked',
     facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.5, brow: 0.45, chin: 0.5, jaw: 0.45 },
     prop: 'cards', details: ['placket', 'crease'],
-    signature: { chinUp: 4, hairScale: 1.05, rim: true },
+    signature: { idle: 'shift', tilt: -3, chinUp: 4, hairScale: 1.05, rim: true },
   },
 
   // ---------------------------------------------------------------- 1960s–70s
   'minsky-1960s': {
     id: 'minsky-1960s', height: 312, build: 'slight', era: '1960s', wardrobe: 'turtleneck', hair: 'receding',
     facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.5, brow: 0.55, chin: 0.45, jaw: 0.45 },
-    prop: 'none', details: [],
-    signature: { stoop: 2, rim: true },
+    prop: 'chalk', details: [],
+    signature: { idle: 'think', tilt: 2, stoop: 2, rim: true },
   },
   papert: {
     id: 'papert', height: 326, build: 'average', era: '1960s', wardrobe: 'blazer', hair: 'shaggy',
     facialHair: 'fullBeard', glasses: 'none', hat: 'none', profile: { nose: 0.55, brow: 0.55, chin: 0.5, jaw: 0.5 },
     prop: 'book', details: [],
-    signature: { hairScale: 1.2, rim: true },
+    signature: { idle: 'fold', tilt: -1, hairScale: 1.2, rim: true },
   },
   lighthill: {
     id: 'lighthill', height: 326, build: 'average', era: '1970s', wardrobe: 'suit', hair: 'sidePart',
     facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.52, brow: 0.55, chin: 0.55, jaw: 0.52 },
     prop: 'papers', details: [],
-    signature: { chinUp: 2, rim: true },
+    signature: { idle: 'clasp', tilt: -3, chinUp: 2, rim: true },
   },
   michie: {
     id: 'michie', height: 340, build: 'tall', era: '1970s', wardrobe: 'slimSuit', hair: 'slicked',
     facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.55, brow: 0.5, chin: 0.48, jaw: 0.45 },
-    prop: 'none', details: [],
-    signature: { chinUp: 1, rim: true },
+    prop: 'papers', details: [],
+    signature: { idle: 'pocket', tilt: 2, chinUp: 1, rim: true },
   },
 
   // ---------------------------------------------------------------- 1980s
   'hinton-young': {
     id: 'hinton-young', height: 340, build: 'tall', era: '1980s', wardrobe: 'cardigan', hair: 'messy',
     facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.55, brow: 0.5, chin: 0.5, jaw: 0.48 },
-    prop: 'none', details: ['collar', 'crease'],
-    signature: { stoop: 6, hairScale: 1.08, rim: true },
+    prop: 'pen', details: ['collar', 'crease'],
+    signature: { idle: 'think', tilt: 3, stoop: 6, hairScale: 1.08, rim: true },
   },
   hopfield: {
     id: 'hopfield', height: 338, build: 'tall', era: '1980s', wardrobe: 'suit', hair: 'receding',
     facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.5, brow: 0.5, chin: 0.52, jaw: 0.45 },
     prop: 'chalk', details: [],
-    signature: { stoop: 2, rim: true },
+    signature: { idle: 'clasp', tilt: 1, stoop: 2, rim: true },
   },
   rumelhart: {
     id: 'rumelhart', height: 322, build: 'average', era: '1980s', wardrobe: 'sweaterVest', hair: 'sidePart',
     facialHair: 'beard', glasses: 'none', hat: 'none', profile: { nose: 0.5, brow: 0.52, chin: 0.5, jaw: 0.55 },
     prop: 'chalk', details: [],
-    signature: { rim: true },
+    signature: { idle: 'shift', tilt: -2, rim: true },
   },
   lenat: {
     id: 'lenat', height: 322, build: 'average', era: '1980s', wardrobe: 'rolledSleeves', hair: 'curly',
     facialHair: 'beard', glasses: 'heavy', hat: 'none', profile: { nose: 0.5, brow: 0.5, chin: 0.5, jaw: 0.55 },
     prop: 'cards', details: [],
-    signature: { hairScale: 1.12, rim: true },
+    signature: { idle: 'fold', tilt: -3, hairScale: 1.12, rim: true },
   },
   fodor: {
     id: 'fodor', height: 320, build: 'average', era: '1980s', wardrobe: 'blazer', hair: 'receding',
     facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.55, brow: 0.55, chin: 0.48, jaw: 0.5 },
-    prop: 'none', details: [],
-    signature: { rim: true },
+    prop: 'book', details: [],
+    signature: { idle: 'think', tilt: 2, rim: true },
   },
   pylyshyn: {
     id: 'pylyshyn', height: 320, build: 'average', era: '1980s', wardrobe: 'suit', hair: 'sidePart',
     facialHair: 'none', glasses: 'heavy', hat: 'none', profile: { nose: 0.48, brow: 0.5, chin: 0.52, jaw: 0.5 },
-    prop: 'none', details: [],
-    signature: { rim: true },
+    prop: 'papers', details: [],
+    signature: { idle: 'glasses', tilt: -1, rim: true },
   },
 
   // ---------------------------------------------------------------- 1990s–2000s
   lecun: {
-    id: 'lecun', height: 322, build: 'average', era: '1990s', wardrobe: 'polo', hair: 'curly',
-    facialHair: 'none', glasses: 'rectangular', hat: 'none', profile: { nose: 0.5, brow: 0.5, chin: 0.5, jaw: 0.52 },
-    prop: 'none', details: ['shirtCollar', 'armSeam'],
-    signature: { chinUp: 4, hairScale: 0.92, rim: true },
+    id: 'lecun', height: 322, build: 'stocky', era: '1990s', wardrobe: 'polo', hair: 'curly',
+    facialHair: 'none', glasses: 'heavy', hat: 'none', profile: { nose: 0.5, brow: 0.5, chin: 0.56, jaw: 0.6 },
+    prop: 'pen', details: ['shirtCollar', 'armSeam'],
+    signature: { idle: 'fold', tilt: -2, chinUp: 4, hairScale: 0.8, headScale: { x: 1.2, y: 1.1 }, rim: true },
   },
   vapnik: {
     id: 'vapnik', height: 320, build: 'stocky', era: '1990s', wardrobe: 'suit', hair: 'receding',
     facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.52, brow: 0.58, chin: 0.55, jaw: 0.6 },
     prop: 'chalk', details: [],
-    signature: { stoop: 3, rim: true },
+    signature: { idle: 'clasp', tilt: 3, stoop: 3, rim: true },
   },
   jackel: {
     id: 'jackel', height: 322, build: 'average', era: '1990s', wardrobe: 'blazer', hair: 'sidePart',
     facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.48, brow: 0.48, chin: 0.5, jaw: 0.5 },
-    prop: 'none', details: [],
-    signature: { rim: true },
+    prop: 'papers', details: [],
+    signature: { idle: 'pocket', tilt: -2, rim: true },
   },
   hochreiter: {
     id: 'hochreiter', height: 322, build: 'average', era: '1990s', wardrobe: 'polo', hair: 'sidePart',
     facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.52, brow: 0.5, chin: 0.48, jaw: 0.48 },
-    prop: 'none', details: [],
-    signature: { rim: true },
+    prop: 'pen', details: [],
+    signature: { idle: 'think', tilt: 1, rim: true },
   },
   bengio: {
-    id: 'bengio', height: 316, build: 'average', era: '2000s', wardrobe: 'fleece', hair: 'shaggy',
-    facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.5, brow: 0.65, chin: 0.5, jaw: 0.5 },
-    prop: 'none', details: ['collar', 'armSeam'],
-    signature: { stoop: 3, hairScale: 1.15, rim: true },
+    id: 'bengio', height: 316, build: 'average', era: '2000s', wardrobe: 'fleece', hair: 'curly',
+    facialHair: 'beard', glasses: 'none', hat: 'none', profile: { nose: 0.5, brow: 0.65, chin: 0.5, jaw: 0.5 },
+    prop: 'pen', details: ['collar', 'armSeam', 'beardEdge', 'curls'],
+    signature: { idle: 'clasp', tilt: 3, stoop: 3, hairScale: 1.3, rim: true },
   },
   li: {
     id: 'li', height: 300, build: 'slight', era: '2000s', wardrobe: 'trouserSuit', hair: 'long',
     facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.4, brow: 0.3, chin: 0.42, jaw: 0.35 },
     prop: 'clipboard', details: [],
-    signature: { chinUp: 2, rim: true },
+    signature: { idle: 'fold', tilt: -2, chinUp: 2, rim: true },
   },
 
   // ---------------------------------------------------------------- 2010s
   hinton: {
-    id: 'hinton', height: 342, build: 'tall', era: '2010s', wardrobe: 'blazer', hair: 'waves',
+    id: 'hinton', height: 342, build: 'tall', era: '2010s', wardrobe: 'blazer', hair: 'sweptBack',
     facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.55, brow: 0.5, chin: 0.5, jaw: 0.48 },
     prop: 'laptop', details: ['shirtCollar', 'crease', 'armSeam'],
-    signature: { stoop: 8, hairScale: 1.06, rim: true },
+    signature: { idle: 'shift', tilt: 2, stoop: 8, hairScale: 1.06, rim: true },
   },
   sutskever: {
     id: 'sutskever', height: 318, build: 'slight', era: '2010s', wardrobe: 'polo', hair: 'receding',
     facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.5, brow: 0.55, chin: 0.48, jaw: 0.45 },
     prop: 'papers', details: [],
-    signature: { stoop: 2, rim: true },
+    signature: { idle: 'think', tilt: -2, stoop: 2, rim: true },
   },
   krizhevsky: {
     id: 'krizhevsky', height: 318, build: 'slight', era: '2010s', wardrobe: 'hoodie', hair: 'sidePart',
     facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.48, brow: 0.48, chin: 0.48, jaw: 0.45 },
-    prop: 'none', details: [],
-    signature: { stoop: 5, rim: true },
+    prop: 'laptop', details: [],
+    signature: { idle: 'pocket', tilt: 3, stoop: 5, rim: true },
   },
   hassabis: {
-    id: 'hassabis', height: 300, build: 'slight', era: '2010s', wardrobe: 'blazer', hair: 'crewCut',
+    id: 'hassabis', height: 286, build: 'slight', era: '2010s', wardrobe: 'blazer', hair: 'crewCut',
     facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.45, brow: 0.5, chin: 0.48, jaw: 0.45 },
-    prop: 'none', details: ['shirtCollar', 'crease', 'armSeam'],
-    signature: { chinUp: 2, hairScale: 0.9, rim: true },
+    prop: 'pen', details: ['shirtCollar', 'armSeam', 'crease'],
+    signature: { idle: 'clasp', tilt: -2, chinUp: 2, hairScale: 0.8, headScale: 0.96, rim: true },
   },
   'lee-sedol': {
     id: 'lee-sedol', height: 312, build: 'average', era: '2010s', wardrobe: 'suit', hair: 'bob',
     facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.45, brow: 0.5, chin: 0.48, jaw: 0.5 },
     prop: 'none', details: [],
-    signature: { stoop: 4, rim: true },
+    signature: { idle: 'think', tilt: 4, stoop: 4, rim: true },
   },
   uszkoreit: {
     id: 'uszkoreit', height: 338, build: 'tall', era: '2010s', wardrobe: 'tshirt', hair: 'messy',
     facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.52, brow: 0.5, chin: 0.52, jaw: 0.5 },
-    prop: 'none', details: [],
-    signature: { rim: true },
+    prop: 'mug', details: [],
+    signature: { idle: 'shift', tilt: 2, rim: true },
   },
   'hans-uszkoreit': {
     id: 'hans-uszkoreit', height: 318, build: 'average', era: '2010s', wardrobe: 'cardigan', hair: 'receding',
     facialHair: 'none', glasses: 'rimless', hat: 'none', profile: { nose: 0.52, brow: 0.55, chin: 0.5, jaw: 0.5 },
-    prop: 'none', details: [],
-    signature: { stoop: 3, rim: true },
+    prop: 'book', details: [],
+    signature: { idle: 'glasses', tilt: 3, stoop: 3, rim: true },
   },
   kelcey: {
     id: 'kelcey', height: 320, build: 'average', era: '2010s', wardrobe: 'hoodie', hair: 'crewCut',
     facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.5, brow: 0.5, chin: 0.5, jaw: 0.52 },
-    prop: 'none', details: [],
-    signature: { rim: true },
+    prop: 'laptop', details: [],
+    signature: { idle: 'fold', tilt: -2, rim: true },
   },
   polosukhin: {
     id: 'polosukhin', height: 322, build: 'average', era: '2010s', wardrobe: 'quarterZip', hair: 'sidePart',
     facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.5, brow: 0.48, chin: 0.5, jaw: 0.5 },
-    prop: 'none', details: [],
-    signature: { rim: true },
+    prop: 'mug', details: [],
+    signature: { idle: 'pocket', tilt: 1, rim: true },
   },
 
   // ---------------------------------------------------------------- 2020s
@@ -296,49 +313,49 @@ export const SPECS = {
     id: 'amodei-dario', height: 320, build: 'average', era: '2020s', wardrobe: 'quarterZip', hair: 'curly',
     facialHair: 'none', glasses: 'rectangular', hat: 'none', profile: { nose: 0.5, brow: 0.5, chin: 0.5, jaw: 0.5 },
     prop: 'papers', details: [],
-    signature: { stoop: 2, hairScale: 1.1, rim: true },
+    signature: { idle: 'glasses', tilt: 2, stoop: 2, hairScale: 1.1, rim: true },
   },
   bender: {
     id: 'bender', height: 302, build: 'average', era: '2020s', wardrobe: 'cardiganF', hair: 'long',
     facialHair: 'none', glasses: 'rimless', hat: 'none', profile: { nose: 0.42, brow: 0.3, chin: 0.45, jaw: 0.35 },
-    prop: 'none', details: [],
-    signature: { rim: true },
+    prop: 'book', details: [],
+    signature: { idle: 'glasses', tilt: -1, rim: true },
   },
   gebru: {
     id: 'gebru', height: 302, build: 'average', era: '2020s', wardrobe: 'blouseTrousers', hair: 'curly',
     facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.42, brow: 0.32, chin: 0.42, jaw: 0.35 },
-    prop: 'none', details: [],
-    signature: { hairScale: 1.15, rim: true },
+    prop: 'papers', details: [],
+    signature: { idle: 'shift', tilt: 2, hairScale: 1.15, rim: true },
   },
   marcus: {
     id: 'marcus', height: 320, build: 'average', era: '2020s', wardrobe: 'blazer', hair: 'curly',
     facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.5, brow: 0.52, chin: 0.48, jaw: 0.5 },
-    prop: 'none', details: [],
-    signature: { chinUp: 2, rim: true },
+    prop: 'book', details: [],
+    signature: { idle: 'fold', tilt: -3, chinUp: 2, rim: true },
   },
   altman: {
     id: 'altman', height: 306, build: 'slight', era: '2020s', wardrobe: 'quarterZip', hair: 'sidePart',
     facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.45, brow: 0.45, chin: 0.48, jaw: 0.45 },
-    prop: 'none', details: [],
-    signature: { rim: true },
+    prop: 'phone', details: [],
+    signature: { idle: 'pocket', tilt: -1, rim: true },
   },
   'lecun-2020s': {
-    id: 'lecun-2020s', height: 322, build: 'average', era: '2020s', wardrobe: 'blazer', hair: 'curly',
-    facialHair: 'none', glasses: 'heavy', hat: 'none', profile: { nose: 0.5, brow: 0.5, chin: 0.5, jaw: 0.52 },
-    prop: 'none', details: ['shirtCollar', 'crease'],
-    signature: { chinUp: 4, hairScale: 0.95, rim: true },
+    id: 'lecun-2020s', height: 322, build: 'stocky', era: '2020s', wardrobe: 'blazer', hair: 'curly',
+    facialHair: 'none', glasses: 'heavy', hat: 'none', profile: { nose: 0.5, brow: 0.5, chin: 0.56, jaw: 0.6 },
+    prop: 'pen', details: ['shirtCollar', 'armSeam', 'crease'],
+    signature: { idle: 'fold', tilt: -2, chinUp: 4, hairScale: 0.82, headScale: { x: 1.2, y: 1.1 }, rim: true },
   },
   'bengio-2020s': {
-    id: 'bengio-2020s', height: 316, build: 'average', era: '2020s', wardrobe: 'blazer', hair: 'shaggy',
-    facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.5, brow: 0.65, chin: 0.5, jaw: 0.5 },
-    prop: 'none', details: ['shirtCollar', 'crease'],
-    signature: { stoop: 4, hairScale: 1.18, rim: true },
+    id: 'bengio-2020s', height: 316, build: 'average', era: '2020s', wardrobe: 'blazer', hair: 'curly',
+    facialHair: 'beard', glasses: 'none', hat: 'none', profile: { nose: 0.5, brow: 0.65, chin: 0.5, jaw: 0.5 },
+    prop: 'papers', details: ['shirtCollar', 'armSeam', 'beardEdge', 'curls'],
+    signature: { idle: 'clasp', tilt: 3, stoop: 4, hairScale: 1.32, rim: true },
   },
   liang: {
     id: 'liang', height: 320, build: 'average', era: '2020s', wardrobe: 'suit', hair: 'sidePart',
     facialHair: 'none', glasses: 'none', hat: 'none', profile: { nose: 0.5, brow: 0.5, chin: 0.5, jaw: 0.5 },
-    prop: 'none', details: [],
-    signature: { rim: true },
+    prop: 'papers', details: [],
+    signature: { idle: 'clasp', tilt: 1, rim: true },
   },
 } satisfies Record<string, Spec>;
 

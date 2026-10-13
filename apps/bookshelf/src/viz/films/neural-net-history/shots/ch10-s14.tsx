@@ -31,6 +31,7 @@ import { glow } from '../../../film/silhouette/metaphors/kit';
 import { FONT, legibleSize } from '../../../film/silhouette/type';
 import { camKeys } from '../sets/ch03-s06-kit';
 import { screenPass } from '../sets/ch06-s01-kit';
+import { rimNear } from '../sets/rimNear';
 import { CY, clamp01, glassCup, hallBackdrop, ink, lerp, sm, tq12, win, wordSlip } from '../sets/ch10-s06-kit';
 
 type C = CanvasRenderingContext2D;
@@ -173,8 +174,9 @@ export default defineShot({
     const drift = sm((t - b.cut - 0.25) / 1.7);
     // ---- ghost frames behind each loom: its other blocks, in the haze
     f.layer('L3', (c, env) => {
-      ghostFrames(c, env, RD, 1 - 0.85 * drift, -150 * drift);
-      ghostFrames(c, env, WR, 1 - 0.85 * win(t, b.curtain - 1.6, b.curtain), 0);
+      // (critic round 4) both stacks and their '× 6' labels go all the way to 0: the end holds only the loom and the slot
+      ghostFrames(c, env, RD, 1 - drift, -150 * drift);
+      ghostFrames(c, env, WR, 1 - win(t, b.curtain - 1.6, b.curtain), 0);
     });
     // ---- the looms
     const dimK = 0.3 * win(t, b.next - 0.1, b.next + 1.4); // the cups dim over the hold: the slot is the last thing seen
@@ -210,6 +212,10 @@ export default defineShot({
       blade(c, env, t, b);
     });
     f.rim({ x: 0.1, y: -1 });
+    // (critic round 4) the opening wide's foreground: a carved chair back at the lower-left corner, blurred on L5 (the
+    // darkest plane), under the empty floor band; it slides with the push and is gone before the curtain
+    const nearA = 1 - win(t, b.cut + 1.6, b.curtain - 1.2);
+    if (nearA > 0.01) rimNear(f, { kind: 'chair', side: 'left', ref: b.cams[0], alpha: nearA, scale: 0.6 });
     // the decoder-only chip, screen-locked in the emptied left half (it carries the shot's date)
     screenPass(f, (c) => decoderChip(c, f, t, b));
   },
@@ -525,19 +531,12 @@ function curtain(c: C, env: PaintEnv, t: number, b: B) {
   c.strokeStyle = withAlpha(m.rim, 0.5);
   c.lineWidth = 1.2;
   c.stroke(CURTAIN);
-  // the hypotenuse made plain: a 2 px rim on the stepped edge and a straight diagonal score line along it
+  // the hypotenuse made plain: a 2 px rim on the stepped edge (the real rule: row i blocks columns j > i). (critic
+  // round 4) no straight diagonal score: it cut across the empty glasses and contradicted the steps
   c.strokeStyle = withAlpha(mixLab(m.core, '#ffffff', 0.2), 0.85);
   c.lineWidth = 2;
   c.lineJoin = 'miter';
   c.stroke(CURTAIN_STEPS);
-  c.strokeStyle = withAlpha(m.core, 0.4);
-  c.lineWidth = 1.4;
-  c.setLineDash([10, 6]);
-  c.beginPath();
-  c.moveTo(CURTAIN_DIAG.x0, CURTAIN_DIAG.y0);
-  c.lineTo(CURTAIN_DIAG.x1, CURTAIN_DIAG.y1);
-  c.stroke();
-  c.setLineDash([]);
   c.restore();
   // once opaque: the masked crossings, empty glasses outlined on the black card
   const a = win(t, b.masked + 0.6, b.masked + 1.0) * 0.55;
@@ -625,11 +624,14 @@ function ghostSlot(c: C, env: PaintEnv, t: number, b: B) {
 
 /** the chip: "decoder only" over two dated citations, typed on their words; clears before the curtain */
 function decoderChip(c: C, f: Frame, t: number, b: B) {
-  const A = win(t, b.cut + 0.3, b.cut + 0.8) * (1 - win(t, b.curtain - 0.85, b.curtain - 0.2));
+  // review round 4 (ghost-text audit: the chip rose over the encoder column's word tags, 'the / cat / sat', which
+  // were still leaving at cut + 0.3 to + 0.9): it now waits for the column to clear and lands on 'half'
+  const IN = 0.95;
+  const A = win(t, b.cut + IN, b.cut + IN + 0.45) * (1 - win(t, b.curtain - 0.85, b.curtain - 0.2));
   if (A <= 0.01) return;
   const m = f.mood;
   const X = 56, Y = 232, W = 400, H = 170;
-  const rise = (1 - win(t, b.cut + 0.3, b.cut + 0.9)) * 14;
+  const rise = (1 - win(t, b.cut + IN, b.cut + IN + 0.6)) * 14;
   c.save();
   c.translate(0, rise);
   // a soft ink plate (the hall is busy behind): feathered dark card with a cut-paper rim on its top edge
@@ -654,7 +656,7 @@ function decoderChip(c: C, f: Frame, t: number, b: B) {
   c.textBaseline = 'alphabetic';
   c.fillText('decoder only', X + 4, Y + 50);
   c.fillStyle = withAlpha(pale, 0.5);
-  c.fillRect(X + 4, Y + 64, 140 * win(t, b.cut + 0.5, b.cut + 1.2), 1);
+  c.fillRect(X + 4, Y + 64, 140 * win(t, b.cut + IN + 0.2, b.cut + IN + 0.9), 1);
   // the two citations, typed on (mono, after 1990)
   const mFont = (sz: number) => `500 ${sz}px ${FONT.mono}`;
   const mSize = legibleSize(c, mFont(21), 21, 'Liu');
@@ -665,7 +667,7 @@ function decoderChip(c: C, f: Frame, t: number, b: B) {
     c.fillStyle = col;
     c.fillText(text.slice(0, n), X + 4, y);
   };
-  type('Liu et al., Google · Jan 2018', b.cut + 0.55, Y + 106, dim);
+  type('Liu et al., Google · Jan 2018', b.cut + IN + 0.25, Y + 106, dim);
   const l2 = 'OpenAI GPT · June 2018';
   type(l2, b.openai - 0.1, Y + 144, dim);
   // "GPT" brightens on its name

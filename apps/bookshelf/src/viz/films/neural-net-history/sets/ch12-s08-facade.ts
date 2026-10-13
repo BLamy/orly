@@ -415,6 +415,12 @@ export const EMBER = {
   core: mixLab(MOODS.emberRed.core, MOODS.serverCyan.core, 0.4),
   rim: mixLab(MOODS.emberRed.rim, MOODS.serverCyan.rim, 0.4),
 };
+/** the corridor-end bulb and its floor pool: the ember pushed a further ≈ 15-25 % toward emberRed's own halo, short of full red */
+const ALARM = MOODS.emberRed.halo;
+const EMBER_ALARM = {
+  halo: mixLab(EMBER.halo, ALARM, 0.25),
+  bulb: mixLab(mixLab(EMBER.core, EMBER.halo, 0.55), ALARM, 0.3),
+};
 
 /** (1) 21 DEC 2022: a lamp comes on at the end of a long generic corridor, under a CODE RED sign + 'reported' tag */
 export function corridor(c: C, env: PaintEnv, W: Win, k: number, t: number) {
@@ -449,7 +455,7 @@ export function corridor(c: C, env: PaintEnv, W: Win, k: number, t: number) {
   quad([[w, 0], [E.x1, E.y0], [E.x1, E.y1], [w, h]], [w, h / 2], 0.42);
   // the end wall, lit
   const eg = c.createRadialGradient(vp.x, E.y0 + 10, 2, vp.x, vp.y, 44);
-  eg.addColorStop(0, mixLab(EMBER.core, EMBER.halo, 0.6));
+  eg.addColorStop(0, mixLab(mixLab(EMBER.core, EMBER.halo, 0.6), ALARM, 0.2));
   eg.addColorStop(1, mixLab(EMBER.halo, dark, 0.5));
   c.fillStyle = eg;
   c.fillRect(E.x0, E.y0, E.x1 - E.x0, E.y1 - E.y0);
@@ -528,12 +534,15 @@ export function corridor(c: C, env: PaintEnv, W: Win, k: number, t: number) {
   c.closePath();
   c.fill();
   const fl = 1 + 0.03 * Math.sin(t * 37.1) * Math.sin(t * 11.3);
-  glow(c, vp.x, E.y0 + 22, 150, EMBER.halo, 0.32 * k * fl);
-  glow(c, vp.x, E.y0 + 21, 22, mixLab(EMBER.core, EMBER.halo, 0.4), 0.6 * k * fl);
+  // (review r1: the bulb read warm white, not ember) the bulb and its floor pool pushed ≈ 15 % further into the ember's
+  // own red (ALARM), and the hot core a touch lower so the additive glows stop clipping to white: a hint of alarm,
+  // still well short of full red
+  glow(c, vp.x, E.y0 + 22, 150, EMBER_ALARM.halo, 0.32 * k * fl);
+  glow(c, vp.x, E.y0 + 21, 22, EMBER_ALARM.bulb, 0.5 * k * fl);
   c.save();
   c.translate(vp.x, E.y1 + 22);
   c.scale(0.35, 1);
-  glow(c, 0, 0, 52, EMBER.halo, 0.22 * k);
+  glow(c, 0, 0, 52, EMBER_ALARM.halo, 0.24 * k);
   c.restore();
   // the sign: a plain plate hanging from the ceiling, its letters cut through so the lamp shows in them
   // (round 1: CODE RED and its tag are read, so they are set at the 22 px cap-height floor for the pushed-in frame)
@@ -741,18 +750,32 @@ export function handover(c: C, env: PaintEnv, W: Win, k: number, tm: HandoverTim
   c.lineTo(L.x, L.y - 18);
   c.stroke();
   paperLantern(c, { x: L.x, y: L.y, r: 15, act: k, hang: 0, tassel: false, halo: 0.9 }, env);
-  c.fillStyle = PUPPET_NEAR_BLACK;
-  c.fillRect(L.x - 0.5, L.y + 15, 1, 6);
+  // (review r1: hung beneath the lantern, the tag was cut by the sill and read 'MFTA') the paper tag is tied to the
+  // lantern's bail and hangs beside it, on the side away from the researchers, its foot well clear of the sill
+  const bail = { x: L.x, y: L.y - 16 };
+  const hole = { x: L.x - 24, y: L.y - 12 };
+  c.strokeStyle = PUPPET_NEAR_BLACK;
+  c.lineWidth = 0.9;
+  c.beginPath();
+  c.moveTo(bail.x, bail.y);
+  c.quadraticCurveTo(bail.x - 12, bail.y - 3, hole.x, hole.y);
+  c.stroke();
   c.save();
-  c.translate(L.x, L.y + 21);
-  c.rotate(0.05 * Math.sin(tq * 2.1));
+  c.translate(hole.x, hole.y);
+  c.rotate(0.06 + 0.04 * Math.sin(tq * 2.1));
+  c.fillStyle = withAlpha(m.fg, 0.35);
+  c.fillRect(-70, 2, 72, 30);
   c.fillStyle = mixLab(mixLab('#ddd6c4', m.rim, 0.3), m.halo, 0.2);
-  c.fillRect(-36, 0, 72, 30);
+  c.fillRect(-72, 0, 72, 30);
+  c.fillStyle = withAlpha(m.fg, 0.5);
+  c.beginPath();
+  c.arc(-5, 5, 1.6, 0, Math.PI * 2);
+  c.fill();
   c.fillStyle = mixLab(m.ink, '#2a2420', 0.3);
   c.font = `400 22px ${FONT.typewriter}`;
   c.textAlign = 'center';
   c.textBaseline = 'alphabetic';
-  c.fillText('META', 0, 23);
+  c.fillText('META', -38, 23);
   c.restore();
   c.restore();
 }
@@ -767,7 +790,13 @@ export function twinLanterns(c: C, env: PaintEnv, W: Win, k: number, flare: numb
     c.rect(0, 0, hf.w, W.h);
     c.clip();
     glass(c, env, hf.w, W.h);
-    if (k > 0.002) {
+    // (review r1: the unlit lanterns showed faintly from the shot's first frame, spoiling 'sameDay') until the twin
+    // lanterns light (k > 0, from T.beat('sameDay') - 0.04) the panes are flat unlit glass and nothing else
+    if (k <= 0.002) {
+      c.restore();
+      continue;
+    }
+    {
       c.globalAlpha *= clamp01(k * 1.2);
       c.fillStyle = mixLab(env.fill('set'), m.fg, 0.6);
       c.fillRect(0, 0, hf.w, W.h);
@@ -876,6 +905,9 @@ interface Runner {
   lane: number;
   s: number;
   ph: number;
+  /** body type: 0 long coat (a kicking coat skirt, flat cap), 1 knee skirt and a shoulder bag (ponytail), 2 short jacket,
+   *  a phone held out in the front hand (its screen a 2 px cyan dot) */
+  kind: 0 | 1 | 2;
 }
 /** the stampede: each runner crosses into the low street frame (330 px from the door) at `tIn`; a dense first wave
  *  is already streaming in from both sides by 'stampede' (3.3 s), the rest keep coming through the pull-back */
@@ -895,24 +927,48 @@ export const RUNNERS: Runner[] = Array.from({ length: 74 }, (_, i) => {
     // nearer the camera (lower on the pavement) a little larger
     s: (0.92 + 0.22 * h01(i, 96)) * (1 + (lane - FAC.street - 6) / 170),
     ph: h01(i, 97),
+    kind: Math.min(2, Math.floor(h01(i, 98) * 3)) as 0 | 1 | 2,
   } as Runner;
 }).sort((a, b) => a.lane - b.lane);
 
-/** a cut-paper runner (texture-size crowd figure): rigid limbs on twos */
-function runner(c: C, x: number, y: number, H: number, f: 1 | -1, phase: number) {
+type P = { x: number; y: number };
+/** a tapered paper limb: a capsule from a (width w0) to b (width w1), filled */
+function taper(c: C, a: P, b: P, w0: number, w1: number) {
+  const dx = b.x - a.x, dy = b.y - a.y;
+  const l = Math.hypot(dx, dy) || 1;
+  const nx = -dy / l, ny = dx / l;
+  const an = Math.atan2(dy, dx);
+  c.beginPath();
+  c.moveTo(a.x + (nx * w0) / 2, a.y + (ny * w0) / 2);
+  c.lineTo(b.x + (nx * w1) / 2, b.y + (ny * w1) / 2);
+  c.arc(b.x, b.y, w1 / 2, an + Math.PI / 2, an - Math.PI / 2, true);
+  c.lineTo(a.x - (nx * w0) / 2, a.y - (ny * w0) / 2);
+  c.arc(a.x, a.y, w0 / 2, an - Math.PI / 2, an + Math.PI / 2, true);
+  c.closePath();
+  c.fill();
+}
+function poly(c: C, pts: P[]) {
+  c.beginPath();
+  c.moveTo(pts[0].x, pts[0].y);
+  for (let i = 1; i < pts.length; i++) c.lineTo(pts[i].x, pts[i].y);
+  c.closePath();
+  c.fill();
+}
+
+/** (review r1: the stick figures read as placeholders) a cut-paper runner in the film's puppet grammar, at crowd size:
+ *  three body types (a long coat with a kicking skirt and a flat cap; a knee skirt with a shoulder bag and a ponytail;
+ *  a short jacket with a phone held out), tapered thigh-and-calf legs with shoes, cuffed arms, a nose on the profile.
+ *  Rigid parts on twos. Returns where the phone is (kind 2), so the caller can light its screen. */
+function runner(c: C, x: number, y: number, H: number, f: 1 | -1, phase: number, kind: 0 | 1 | 2): P | null {
   const phi = phase * Math.PI * 2;
   const bob = -0.03 * H * Math.abs(Math.sin(phi));
   const hip = { x, y: y - 0.5 * H + bob };
-  const lean = 0.26;
-  const neck = { x: hip.x + f * Math.sin(lean) * 0.31 * H, y: hip.y - Math.cos(lean) * 0.31 * H };
-  c.lineCap = 'round';
-  const limb = (a: { x: number; y: number }, b: { x: number; y: number }, w: number) => {
-    c.lineWidth = w;
-    c.beginPath();
-    c.moveTo(a.x, a.y);
-    c.lineTo(b.x, b.y);
-    c.stroke();
-  };
+  const lean = kind === 2 ? 0.2 : 0.26;
+  const ax = { x: f * Math.sin(lean), y: -Math.cos(lean) };
+  const px = { x: -ax.y * f, y: ax.x * f };
+  const along = (p: P, d: number, s = 0) => ({ x: p.x + ax.x * d * H + px.x * s * H, y: p.y + ax.y * d * H + px.y * s * H });
+  const neck = along(hip, 0.31);
+  // legs: thigh and calf tapering to the ankle, a shoe pointing forward
   for (const off of [Math.PI, 0]) {
     const s = Math.sin(phi + off);
     const a = 0.62 * s;
@@ -920,23 +976,95 @@ function runner(c: C, x: number, y: number, H: number, f: 1 | -1, phase: number)
     const knee = { x: hip.x + f * Math.sin(a) * 0.25 * H, y: hip.y + Math.cos(a) * 0.25 * H };
     const a2 = a - bend * 1.25;
     const ank = { x: knee.x + f * Math.sin(a2) * 0.25 * H, y: knee.y + Math.cos(a2) * 0.25 * H };
-    limb(hip, knee, 0.085 * H);
-    limb(knee, ank, 0.07 * H);
-    limb(ank, { x: ank.x + f * 0.07 * H, y: ank.y + 0.01 * H }, 0.05 * H);
+    taper(c, hip, knee, 0.105 * H, 0.072 * H);
+    taper(c, knee, ank, 0.07 * H, 0.04 * H);
+    poly(c, [
+      { x: ank.x - f * 0.025 * H, y: ank.y - 0.02 * H },
+      { x: ank.x + f * 0.03 * H, y: ank.y - 0.012 * H },
+      { x: ank.x + f * 0.085 * H, y: ank.y + 0.012 * H },
+      { x: ank.x + f * 0.08 * H, y: ank.y + 0.03 * H },
+      { x: ank.x - f * 0.03 * H, y: ank.y + 0.03 * H },
+    ]);
   }
-  limb(hip, neck, 0.16 * H);
-  const sh = { x: neck.x - f * 0.02 * H, y: neck.y + 0.04 * H };
-  for (const off of [0, Math.PI]) {
+  // torso: hips narrower than the shoulders
+  const sh = along(hip, 0.27);
+  poly(c, [along(hip, -0.02, -0.07), along(hip, -0.02, 0.06), along(sh, 0, 0.085), along(neck, 0, 0.04), along(neck, 0, -0.05), along(sh, 0, -0.09)]);
+  const swing = Math.sin(phi);
+  if (kind === 0) {
+    // the long coat: shoulders to the knee, its skirt kicking out behind on the stride, a raised collar point
+    const kick = 0.07 + 0.05 * Math.abs(swing);
+    poly(c, [
+      along(sh, 0.02, 0.09),
+      along(hip, -0.02, 0.09),
+      along(hip, -0.25, 0.11 + 0.02 * swing),
+      along(hip, -0.29, -0.06),
+      along(hip, -0.27, -0.13 - kick),
+      along(hip, -0.04, -0.09),
+      along(sh, 0.02, -0.1),
+      along(neck, 0.04, -0.04),
+    ]);
+  } else if (kind === 1) {
+    // the knee skirt, flaring and fluttering with the stride
+    const fl = 0.02 * swing;
+    poly(c, [along(hip, 0.04, 0.07), along(hip, -0.21, 0.14 + fl), along(hip, -0.24, 0.02), along(hip, -0.22, -0.15 + fl), along(hip, 0.04, -0.075)]);
+  } else {
+    // the short jacket: a boxy hem just below the hip, a collar
+    poly(c, [along(sh, 0.02, 0.09), along(hip, -0.07, 0.095), along(hip, -0.09, -0.1), along(sh, 0.02, -0.1), along(neck, 0.03, -0.03)]);
+  }
+  // arms: upper arm and cuffed forearm; the phone-holder's front arm is bent forward, the screen at chest height
+  let phone: P | null = null;
+  for (const off of [Math.PI, 0]) {
+    const front = off === 0;
     const s = Math.sin(phi + off);
-    const a = -0.85 * s;
+    let a = -0.85 * s;
+    let a2 = a + 1.5;
+    if (kind === 2 && front) {
+      a = -0.35;
+      a2 = 1.25;
+    }
     const el = { x: sh.x + f * Math.sin(a) * 0.17 * H, y: sh.y + Math.cos(a) * 0.17 * H };
-    const a2 = a + 1.5;
-    limb(sh, el, 0.06 * H);
-    limb(el, { x: el.x + f * Math.sin(a2) * 0.15 * H, y: el.y + Math.cos(a2) * 0.15 * H }, 0.05 * H);
+    const wr = { x: el.x + f * Math.sin(a2) * 0.15 * H, y: el.y + Math.cos(a2) * 0.15 * H };
+    taper(c, sh, el, 0.075 * H, 0.06 * H);
+    taper(c, el, wr, 0.06 * H, 0.04 * H);
+    // the cuff and hand
+    c.beginPath();
+    c.arc(wr.x, wr.y, 0.032 * H, 0, Math.PI * 2);
+    c.fill();
+    if (kind === 2 && front) {
+      // the phone: a small dark slab in the hand, tilted up to the face
+      poly(c, [{ x: wr.x - 0.012 * H, y: wr.y - 0.05 * H }, { x: wr.x + f * 0.03 * H, y: wr.y - 0.055 * H }, { x: wr.x + f * 0.034 * H, y: wr.y + 0.01 * H }, { x: wr.x, y: wr.y + 0.012 * H }]);
+      phone = { x: wr.x + f * 0.012 * H, y: wr.y - 0.022 * H };
+    }
   }
+  if (kind === 1) {
+    // the shoulder bag: a strap across the back from the shoulder, the bag bouncing at the far hip
+    const bag = along(hip, 0.03 + 0.012 * Math.abs(swing), -0.12);
+    c.save();
+    c.lineWidth = Math.max(0.6, 0.018 * H);
+    c.beginPath();
+    const s0 = along(sh, 0.01, 0.06);
+    c.moveTo(s0.x, s0.y);
+    c.lineTo(bag.x, bag.y);
+    c.stroke();
+    c.restore();
+    poly(c, [along(bag, 0.02, 0.02), along(bag, 0.02, -0.07), along(bag, -0.07, -0.08), along(bag, -0.075, 0.03)]);
+  }
+  // the head: a rounded skull with a nose on the profile; a flat cap, a ponytail, or short hair
+  const hc = along(neck, 0.085, 0.01);
+  const r = 0.072 * H;
   c.beginPath();
-  c.arc(neck.x + f * 0.05 * H, neck.y - 0.09 * H, 0.08 * H, 0, Math.PI * 2);
+  c.ellipse(hc.x, hc.y, r * 0.95, r * 1.05, 0, 0, Math.PI * 2);
   c.fill();
+  poly(c, [{ x: hc.x + f * r * 0.8, y: hc.y - r * 0.25 }, { x: hc.x + f * r * 1.32, y: hc.y + r * 0.12 }, { x: hc.x + f * r * 0.85, y: hc.y + r * 0.3 }]);
+  if (kind === 0) {
+    poly(c, [{ x: hc.x - f * r * 1.05, y: hc.y - r * 0.2 }, { x: hc.x - f * r * 0.7, y: hc.y - r * 1.15 }, { x: hc.x + f * r * 0.7, y: hc.y - r * 1.1 }, { x: hc.x + f * r * 1.55, y: hc.y - r * 0.55 }, { x: hc.x + f * r * 0.9, y: hc.y - r * 0.4 }]);
+  } else if (kind === 1) {
+    const sw = 0.25 * swing;
+    taper(c, { x: hc.x - f * r * 0.7, y: hc.y - r * 0.55 }, { x: hc.x - f * r * 2.1, y: hc.y + r * (0.15 + sw) }, r * 0.55, r * 0.25);
+  } else {
+    poly(c, [{ x: hc.x - f * r * 1.02, y: hc.y + r * 0.1 }, { x: hc.x - f * r * 0.9, y: hc.y - r * 0.9 }, { x: hc.x + f * r * 0.3, y: hc.y - r * 1.22 }, { x: hc.x + f * r * 0.95, y: hc.y - r * 0.6 }]);
+  }
+  return phone;
 }
 
 /** the stampede: figures streaming in from both sides into the door's light (cut-paper texture on twos). Near the
@@ -972,11 +1100,19 @@ export function runners(c: C, env: PaintEnv, tq: number, doorK = 1) {
       // the rim: the figure once in the door's light, offset toward the door, then the black cut-out over it
       c.fillStyle = withAlpha(rimCol, 0.9 * lit);
       c.strokeStyle = withAlpha(rimCol, 0.9 * lit);
-      runner(c, x + r.side * 1.3, y - 0.5, H, r.side, ph);
+      runner(c, x + r.side * 1.3, y - 0.5, H, r.side, ph, r.kind);
     }
     c.fillStyle = PUPPET_NEAR_BLACK;
     c.strokeStyle = PUPPET_NEAR_BLACK;
-    runner(c, x, y, H, r.side, ph);
+    const phone = runner(c, x, y, H, r.side, ph, r.kind);
+    if (phone) {
+      // the phone's screen: one small cyan dot (≈ 2 px on screen), with the faintest bloom
+      glow(c, phone.x, phone.y, 3.2, m.halo, 0.35 * a);
+      c.fillStyle = withAlpha(mixLab(m.core, '#ffffff', 0.2), a);
+      c.beginPath();
+      c.arc(phone.x, phone.y, 0.75, 0, Math.PI * 2);
+      c.fill();
+    }
   }
   c.globalAlpha = 1;
 }

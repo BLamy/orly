@@ -1,18 +1,18 @@
 {
  "id": "m08",
- "start": 624.52,
- "end": 776.97,
+ "start": 641.8947,
+ "end": 794.3447,
  "file": "films/neural-net-history/score/renders/m08.wav",
  "duration": 158.45,
- "I": -22.1,
+ "I": -24.2,
  "LRA": 12.2,
- "TP": -5.6,
+ "TP": -6.5,
  "expected": 158.45,
  "lengthErrorMs": 0,
  "lengthOk": true,
  "spectrogram": "films/neural-net-history/score/analysis/m08.png",
  "cueSeconds": 152.45,
  "cps": 0.275,
- "lastStrikeLocal": 147.86,
- "lastStrike": 772.38
+ "lastStrikeLocal": 145.1,
+ "lastStrike": 786.995
 }

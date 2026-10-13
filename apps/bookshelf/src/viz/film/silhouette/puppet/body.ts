@@ -151,7 +151,8 @@ export function armArt(b: Body, s: SleeveSpec, near: boolean): { upper: LimbArt;
     if (s.shirtCuff) {
       const cuff = new Path2D();
       cuff.rect(-fw1 * 0.38 + 0.6, F - 1, fw1 * 0.76, 3.2);
-      fore.cuts.push({ id: 'shirtCuff', path: cuff, mode: 'fill', alpha: 0.26 });
+      // review round 3: the shirt cuff reads as a pale band at the wrist (the period's lace-cuff accent, plainly cut)
+      fore.cuts.push({ id: 'shirtCuff', path: cuff, mode: 'fill', alpha: 0.6 });
     }
   } else if (s.kind === 'shirt' || s.kind === 'dress') {
     fore.cuts.push({ id: 'cuff', path: curve([[-fw1 * 0.5 + 0.5, F - 5], [0.6, F - 4.6], [fw1 * 0.5 + 0.5, F - 5]]) });

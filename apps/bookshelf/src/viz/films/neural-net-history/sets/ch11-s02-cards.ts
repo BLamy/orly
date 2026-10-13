@@ -38,10 +38,14 @@ export interface QuoteCardDraw {
   highlight?: number;
   /** 2019: 0..1 progress of each word underlining the next (old look; kept for other shots) */
   chain?: number;
-  /** 2019: every next word its own answer: hops so far (float, one per word) from word `hopFrom` (default 1, 'is'):
-   *  an arc runs from the word to the NEXT word, which lifts and gets a tick (its answer) */
+  /** 2019: 0..1 progress of the gold sheen sweeping 'predict the next word' (outside 0..1: none) */
+  sheen?: number;
+  /** 2019: every next word its own answer: hops so far (float, up to 5) from word `hopFrom` (default 6, 'objective:'):
+   *  a lamp-gold underline under word n arcs on to word n+1 */
   hop?: number;
   hopFrom?: number;
+  /** the hop line width in card units (default: 3 px at 1080p under the current transform) */
+  hopLw?: number;
   /** 0..1 the hop marks fade out */
   hopFade?: number;
   /** 1985: faded underline under the key words 0..1 */
@@ -55,6 +59,19 @@ interface WordBox {
   x: number;
   y: number;
   w: number;
+}
+
+/** the 'predict the next word' rows: one box per line, in reading order (card units) */
+function predictRows(words: WordBox[], size: number): { x: number; y: number; w: number }[] {
+  const rows: { x: number; y: number; w: number }[] = [];
+  for (const i of PREDICT) {
+    const wb = words[i];
+    const r = rows.find((q) => Math.abs(q.y - wb.y) < 1);
+    if (r) r.w = wb.x + wb.w - r.x;
+    else rows.push({ x: wb.x, y: wb.y, w: wb.w });
+  }
+  void size;
+  return rows;
 }
 
 export function drawQuoteCard(c: C, env: PaintEnv, g: QuoteCardGeo, o: QuoteCardDraw) {
@@ -115,85 +132,117 @@ export function drawQuoteCard(c: C, env: PaintEnv, g: QuoteCardGeo, o: QuoteCard
         x += w + c.measureText(' ').width;
       }
     });
-    // 'predict the next word' catches the lamp: a warm wash behind those words
+    // 'predict the next word' catches the lamp (review round 3): a feathered warm glow CLIPPED TO THE CARD behind
+    // those words only (6-8 px of soft falloff at 1080p, never a hard-edged box), then a short gold sheen that sweeps
+    // across them in reading order ('predict' → 'the next word…')
     const hl = o.highlight ?? 0;
-    if (hl > 0.01) {
+    const sheen = o.sheen ?? -1;
+    const devPx = Math.max(0.2, Math.hypot(c.getTransform().a, c.getTransform().b)); // device px per card unit
+    const toDev1080 = (px1080: number) => (px1080 * (env.pxScale || 1.5)) / 1.5; // 1080p px → device px
+    const rows = predictRows(words, size);
+    if (hl > 0.01 || (sheen > 0 && sheen < 1)) {
       c.save();
-      c.globalCompositeOperation = 'lighter';
-      for (const i of PREDICT) {
-        const wb = words[i];
-        const gg = c.createRadialGradient(wb.x + wb.w / 2, wb.y - size * 0.35, 1, wb.x + wb.w / 2, wb.y - size * 0.35, wb.w * 0.9 + 8);
-        gg.addColorStop(0, withAlpha(m.core, 0.75 * hl));
-        gg.addColorStop(1, withAlpha(m.core, 0));
-        c.fillStyle = gg;
-        c.fillRect(wb.x - 12, wb.y - size * 1.4, wb.w + 24, size * 2.1);
+      c.beginPath();
+      c.rect(x0 + 0.5, y0 + 0.5, g.w - 1, g.h - 1);
+      c.clip();
+      if (hl > 0.01) {
+        const feather = toDev1080(7); // the falloff, in device px
+        c.filter = `blur(${(feather + (o.blur ?? 0) * devPx * 0.5).toFixed(2)}px)`;
+        c.fillStyle = withAlpha(mixLab(m.halo, '#f2c56a', 0.55), 0.55 * hl);
+        for (const r of rows) {
+          c.beginPath();
+          c.roundRect(r.x - 2, r.y - size * 0.95, r.w + 4, size * 1.3, 3);
+          c.fill();
+        }
+        c.filter = 'none';
+      }
+      if (sheen > 0 && sheen < 1) {
+        // one band travelling the concatenated rows (reading order), clipped to the soft word boxes
+        const total = rows.reduce((a, r) => a + r.w + 8, 0);
+        let pos = -14 + (total + 28) * sheen;
+        c.globalCompositeOperation = 'lighter';
+        for (const r of rows) {
+          const bx = r.x - 4 + pos;
+          pos -= r.w + 8;
+          if (bx < r.x - 20 || bx > r.x + r.w + 24) continue;
+          c.save();
+          c.beginPath();
+          c.roundRect(r.x - 3, r.y - size * 1.0, r.w + 6, size * 1.4, 3);
+          c.clip();
+          const band = c.createLinearGradient(bx - 9, 0, bx + 9, 0);
+          band.addColorStop(0, withAlpha('#ffd27a', 0));
+          band.addColorStop(0.5, withAlpha('#ffd27a', 0.55));
+          band.addColorStop(1, withAlpha('#ffd27a', 0));
+          c.fillStyle = band;
+          c.fillRect(bx - 10, r.y - size * 1.1, 20, size * 1.6);
+          c.restore();
+        }
       }
       c.restore();
     }
-    // every next word its own answer: which word is lifting right now (the answer of the current hop)
+    // every next word its own right answer (review round 3): a lamp-gold underline (3 px at 1080p) runs under word n
+    // and arcs on to word n+1, one hop at a time; earlier hops stay, dimmed
     const hop = o.hop ?? 0;
-    const from = o.hopFrom ?? 1;
+    const from = o.hopFrom ?? 6;
     const hopK = 1 - (o.hopFade ?? 0);
     const hj = Math.floor(hop);
     const hf = hop - hj;
-    const ansIdx = hop > 0 && hopK > 0 ? Math.min(words.length - 1, from + hj + 1) : -1;
-    // the answer's lift: up 2.5 px with a lamp glint behind it while its hop lands (hf 0.4 → 1)
-    const liftK = ansIdx >= 0 ? Math.sin(Math.min(1, Math.max(0, (hf - 0.35) / 0.65)) * Math.PI) * hopK : 0;
-    if (liftK > 0.01) {
-      const wb = words[ansIdx];
-      c.save();
-      c.globalCompositeOperation = 'lighter';
-      const gg = c.createRadialGradient(wb.x + wb.w / 2, wb.y - size * 0.4, 1, wb.x + wb.w / 2, wb.y - size * 0.4, wb.w * 0.8 + 10);
-      gg.addColorStop(0, withAlpha(m.core, 0.8 * liftK));
-      gg.addColorStop(1, withAlpha(m.core, 0));
-      c.fillStyle = gg;
-      c.fillRect(wb.x - 14, wb.y - size * 1.6, wb.w + 28, size * 2.4);
-      c.restore();
-    }
+    const ansIdx = hop > 0 && hopK > 0 && hf > 0.55 ? Math.min(words.length - 1, from + hj + 1) : -1;
+    const liftK = ansIdx >= 0 ? Math.sin(Math.min(1, (hf - 0.55) / 0.45) * Math.PI) * hopK : 0;
     // the words
     let k = 0;
     L19.forEach((ln) => {
       for (const wd of ln.split(' ')) {
         const wb = words[k];
-        // (one weight throughout, a preloaded face: the lamp's wash and a deeper ink carry the emphasis)
+        // (one weight throughout, a preloaded face: the lamp's glow and a deeper ink carry the emphasis)
         c.fillStyle = PREDICT.has(k) && hl > 0.01 ? mixLab(inkCol, '#000000', 0.45 * hl) : inkCol;
         c.font = `500 ${size}px ${FONT.mono}`;
-        c.fillText(wd, wb.x, wb.y - (k === ansIdx ? 2.5 * liftK : 0));
+        c.fillText(wd, wb.x, wb.y - (k === ansIdx ? 1.6 * liftK : 0));
         k++;
       }
     });
-    // the hops: an arc from each asking word to the next (drawn on in the hop's first half), a tick over the answer
     if (hop > 0 && hopK > 0) {
+      const gold = mixLab('#b9831f', m.halo, 0.12);
+      const lw = Math.max(0.6, o.hopLw ?? toDev1080(3) / devPx);
       c.save();
-      c.strokeStyle = oxblood(env, 0.15);
+      c.strokeStyle = gold;
       c.lineCap = 'round';
-      for (let j = 0; j <= hj && from + j + 1 < words.length; j++) {
-        const a = words[from + j], nb = words[from + j + 1];
+      c.lineJoin = 'round';
+      c.lineWidth = lw;
+      const last = words.length - 1;
+      for (let j = 0; j <= hj && from + j <= last; j++) {
+        const a = words[from + j];
         const cur = j === hj;
-        const u = cur ? Math.min(1, hf / 0.45) : 1;
-        if (u <= 0) continue;
-        c.globalAlpha = hopK * (cur ? 1 : 0.4);
-        c.lineWidth = cur ? 1.5 : 1;
-        const ax = a.x + a.w / 2, ay = a.y - size - 1;
-        const bx = nb.x + nb.w / 2, by = nb.y - size - 1;
-        const same = Math.abs(a.y - nb.y) < 1;
-        const cx = same ? (ax + bx) / 2 : Math.max(ax, bx) + 26, cy = same ? Math.min(ay, by) - 9 : (ay + by) / 2 - 4;
-        c.beginPath();
-        c.moveTo(ax, ay);
-        const n = 14;
-        for (let q = 1; q <= n * u; q++) {
-          const v = q / n, w = 1 - v;
-          c.lineTo(w * w * ax + 2 * w * v * cx + v * v * bx, w * w * ay + 2 * w * v * cy + v * v * by);
-        }
-        c.stroke();
-        if (u >= 1) {
-          // the arrowhead / tick: this next word is its answer
+        c.globalAlpha = hopK * (cur ? 1 : 0.5);
+        // the underline under word n (first 55 % of its hop)
+        const uu = cur ? Math.min(1, hf / 0.55) : 1;
+        const uy = a.y + 2.6;
+        if (uu > 0) {
           c.beginPath();
-          c.moveTo(bx - 3, by - 3.5);
-          c.lineTo(bx, by);
-          c.lineTo(bx + 3, by - 3.5);
+          c.moveTo(a.x, uy);
+          c.lineTo(a.x + a.w * uu, uy);
           c.stroke();
         }
+        // the arc on to word n+1 (the rest of the hop)
+        if (from + j + 1 > last || from + j + 1 >= from + 5) continue;
+        const ua = cur ? Math.max(0, Math.min(1, (hf - 0.55) / 0.45)) : 1;
+        if (ua <= 0) continue;
+        const nb = words[from + j + 1];
+        const vy = nb.y + 2.6;
+        const P0 = { x: a.x + a.w, y: uy };
+        const P3 = { x: nb.x, y: vy };
+        const same = Math.abs(a.y - nb.y) < 1;
+        // same line: a small hop up over the space; next line: out past the word, down the gap and back to the margin
+        const P1 = same ? { x: P0.x + 3, y: uy - size * 0.9 } : { x: P0.x + 10, y: uy + size * 0.7 };
+        const P2 = same ? { x: P3.x - 3, y: vy - size * 0.9 } : { x: P3.x - 14, y: vy - size * 0.9 };
+        c.beginPath();
+        c.moveTo(P0.x, P0.y);
+        const n = 18;
+        for (let q = 1; q <= n * ua; q++) {
+          const v = q / n, w = 1 - v;
+          c.lineTo(w * w * w * P0.x + 3 * w * w * v * P1.x + 3 * w * v * v * P2.x + v * v * v * P3.x, w * w * w * P0.y + 3 * w * w * v * P1.y + 3 * w * v * v * P2.y + v * v * v * P3.y);
+        }
+        c.stroke();
       }
       c.restore();
     }
@@ -241,27 +290,43 @@ export function drawQuoteCard(c: C, env: PaintEnv, g: QuoteCardGeo, o: QuoteCard
     c.font = `400 ${size}px ${FONT.phosphor}`;
     const lh = size * 1.12;
     const top = y0 + 30;
-    c.fillStyle = inkCol;
-    L85.forEach((ln, i) => c.fillText(ln, x0 + 10, top + i * lh));
-    // faded underlines: 'practically nothing' and 'from the raw text'
+    // the lines; each underline starts exactly under its first letter
+    // (review round 3: the 'from' underline started at the space before it)
     const u = o.underline ?? 0;
-    if (u > 0) {
-      c.strokeStyle = withAlpha(oxblood(env, 0.05), 0.8);
-      c.lineWidth = 1.5;
-      const seg = (line: number, from: string, to: string) => {
-        const ln = L85[line];
-        const a = c.measureText(ln.slice(0, ln.indexOf(from))).width;
-        const b = to ? c.measureText(ln.slice(0, ln.indexOf(to) + to.length)).width : c.measureText(ln).width;
-        const y = top + line * lh + 2.5;
+    const UL: Record<number, [string, string]> = { 0: ['practically', 'nothing'], 3: ['from', 'raw'], 4: ['text.', ''] };
+    c.fillStyle = inkCol;
+    L85.forEach((ln, i) => {
+      const y = top + i * lh;
+      const ul = UL[i];
+      if (!ul) {
+        c.fillText(ln, x0 + 10, y);
+        return;
+      }
+      const ia = ln.indexOf(ul[0]);
+      // (search for the end word AFTER the start word: 'raw' also occurs inside 'draw', which ran the 'from the raw'
+      // underline backwards over the space before 'from')
+      const ib = ul[1] ? ln.indexOf(ul[1], ia) + ul[1].length : ln.length;
+      // (measured at 100 px and scaled, so hinted advances at the small nominal size cannot drift the offsets)
+      c.font = `400 100px ${FONT.phosphor}`;
+      const kk = size / 100;
+      const full = c.measureText(ln).width * kk;
+      const xa = x0 + 10 + full - c.measureText(ln.slice(ia)).width * kk;
+      const xb = x0 + 10 + full - (ib < ln.length ? c.measureText(ln.slice(ib)).width * kk : 0);
+      c.font = `400 ${size}px ${FONT.phosphor}`;
+      c.fillText(ln, x0 + 10, y);
+      if (u > 0) {
+        // faded ink: 'practically nothing' and 'from the raw text'
+        c.save();
+        c.strokeStyle = withAlpha(oxblood(env, 0.05), 0.8);
+        c.lineWidth = 1.5;
         c.beginPath();
-        c.moveTo(x0 + 10 + a, y + 0.4 * Math.sin(a));
-        c.lineTo(x0 + 10 + a + (b - a) * u, y - 0.4);
+        c.moveTo(xa + 0.6, y + 2.5 + 0.4 * Math.sin(xa));
+        c.lineTo(xa + 0.6 + (xb - xa - 0.6) * u, y + 2.1);
         c.stroke();
-      };
-      seg(0, 'practically', 'nothing');
-      seg(3, 'from', 'raw');
-      seg(4, 'text.', '');
-    }
+        c.restore();
+        c.fillStyle = inkCol;
+      }
+    });
     // the source at the foot, on two lines so it can be set large (≥ 26 px at 1080p from the PAIR camera)
     c.font = `400 ${14.5}px ${FONT.phosphor}`;
     c.fillStyle = withAlpha(inkCol, 0.88);

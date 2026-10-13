@@ -38,6 +38,7 @@ import { armArt, bodyFor, legArt, shoeArt, shoeContacts, type Body, type Cut, ty
 import { HEAD_PIVOT, headArt, type HeadArt } from './heads';
 import { hairArt, hatArt, type HairArt, type HatArt } from './hair';
 import { HOLDING_SHAPES, handArt, propArt } from './hands';
+import { POSES } from './poses';
 import { ang, DEG, lerp, mApply, mMul, mRotate, mTranslate, strHash, UNIT_H, type M } from './rig';
 import { hangers, lowerArt, lowerCuts, neckArt, torsoArt, wardrobeFor, type Hanger, type PartArt, type WardrobeDef } from './wardrobe';
 
@@ -48,6 +49,13 @@ export { JOINT_LIMITS, UNIT_H, clampAngle } from './rig';
 export * from './poses';
 export * from './motion';
 export * from './walk';
+
+/** period silhouette details drawn on every figure that has them, outside the ≤ 8 cut-line budget (review round 3:
+ *  "puppets read as smooth mannequins": the shirt V, its collar and the shirt cuffs are cloth, not cut lines) */
+const ALWAYS = new Set(['shirtFront', 'shirtCollar', 'shirtCuff']);
+/** the key-side contour rim (review round 3: the 1.5 px round-2 rim did not show at sheet scale): 2-3 px at 1080p,
+ *  warm 60-70 % toward the mood's core, unless a shot passes warm: 0 (a cool light by design) */
+export const RIM = { px: 2.5, minPx: 2.25, maxPx: 3, alpha: 0.9, minAlpha: 0.8, warm: 0.65, minWarm: 0.6, maxWarm: 0.7 } as const;
 
 /** near-black figure fill (review round 4, value hierarchy): darker than any mood's set ink, never #000 */
 export const PUPPET_NEAR_BLACK = '#0b0d0b';
@@ -144,7 +152,10 @@ function budget(B: Built, facing: Facing): Set<string> {
   for (const h of B.hangers) if (!h.hiddenUnder) add(h.cuts);
   B.torso[facing].lights?.forEach((l) => present.add(l.id));
   const w = B.w;
+  // a named person (spec.signature) always shows two interior cuts first: a collar and a sleeve (review round 2)
+  const named = B.spec.signature ? [['shirtCollar', 'collar', 'lapel', 'vneck', 'turtleFold'].find((id) => present.has(id)), ['armSeam', 'cuff', 'shirtCuff'].find((id) => present.has(id))].filter((x): x is string => !!x) : [];
   const order = [
+    ...named,
     'glassesArm',
     ...(B.spec.details ?? []),
     'armSeam',
@@ -219,7 +230,12 @@ function fk(B: Built, p: Pose, dy: number): Rig {
   const root = mTranslate([1, 0, 0, 1, 0, 0], 0, -b.hipY + dy);
   const torso = mRotate(root, ang(p, 'torso') * DEG);
   const neck = mRotate(mTranslate(torso, b.neckBase[0], b.neckBase[1]), ang(p, 'neck') * DEG);
-  const head = mRotate(mTranslate(neck, b.neckLean, -b.neckLen), ang(p, 'head') * DEG);
+  const head0 = mRotate(mTranslate(neck, b.neckLean, -b.neckLen), ang(p, 'head') * DEG);
+  // signature head size about the neck joint (head-local origin): hair, hat, glasses and cuts follow it
+  const hsc = B.spec.signature?.headScale;
+  const hx = typeof hsc === 'number' ? hsc : hsc?.x ?? 1;
+  const hy = typeof hsc === 'number' ? hsc : hsc?.y ?? 1;
+  const head = hx !== 1 || hy !== 1 ? mMul(head0, [hx, 0, 0, hy, 0, 0] as M) : head0;
   const arm = (s: 'F' | 'B') => {
     const sh = mRotate(mTranslate(torso, b.shoulder[0] + (s === 'B' ? -1.5 : 0), b.shoulder[1]), -ang(p, `shoulder${s}`) * DEG);
     const el = mRotate(mTranslate(sh, 0, b.upperArm), -ang(p, `elbow${s}`) * DEG);
@@ -264,19 +280,47 @@ function worldM(B: Built, o: PuppetDrawOpts): { W: M; k: number } {
 const angleOf = (m: M) => Math.atan2(m[1], m[0]) / DEG;
 
 // ---------------------------------------------------------------- drawing
-/** the spec's posture signature on top of any pose (stoop / chin), on the pose and its lag copy */
+/** review round 4: how much a pose is "just standing" (1) vs doing something (0): legs and arms within ~8 deg of
+ *  POSES.stand with relaxed hands and no walk drift = 1, fading to 0 by ~20 deg. Breathing and idle head motion
+ *  (withLife: torso/neck/head) do not count. */
+const IDLE_JOINTS = ['hipF', 'kneeF', 'hipB', 'kneeB', 'shoulderF', 'elbowF', 'wristF', 'shoulderB', 'elbowB', 'wristB'] as const;
+export function standness(p: Pose): number {
+  if ((p as PuppetPose).drift) return 0;
+  if ((p.handF ?? 'relaxed') !== 'relaxed' || (p.handB ?? 'relaxed') !== 'relaxed') return 0;
+  const s = POSES.stand.angles;
+  let d = 0;
+  for (const j of IDLE_JOINTS) d = Math.max(d, Math.abs((p.angles[j] ?? 0) - (s[j] ?? 0)));
+  return d <= 8 ? 1 : d >= 20 ? 0 : 1 - (d - 8) / 12;
+}
+
+/** the spec's posture signature on top of any pose (stoop / chin / tilt), on the pose and its lag copy; and the
+ *  person's own idle (signature.idle, review round 4) in place of a plain standing pose, weighted by standness */
 function signed(B: Built, pose: Pose): Pose {
   const sg = B.spec.signature;
-  if (!sg || (!sg.stoop && !sg.chinUp) || (pose as { __signed?: boolean }).__signed) return pose;
-  const add = (q: Pose): Pose => ({
-    ...q,
-    angles: {
-      ...q.angles,
-      torso: (q.angles.torso ?? 0) + (sg.stoop ?? 0) * 0.55,
-      neck: (q.angles.neck ?? 0) + (sg.stoop ?? 0) * 0.45,
-      head: (q.angles.head ?? 0) - (sg.chinUp ?? 0),
-    },
-  });
+  const idle = sg?.idle && sg.idle !== 'stand' ? POSES[sg.idle] : null;
+  if (!sg || (!sg.stoop && !sg.chinUp && !sg.tilt && !idle) || (pose as { __signed?: boolean }).__signed) return pose;
+  const tilt = Math.max(-4, Math.min(4, sg.tilt ?? 0));
+  const add = (q: Pose): Pose => {
+    let a = q.angles;
+    let hands: Partial<Pose> = {};
+    const w = idle ? standness(q) : 0;
+    if (idle && w > 0) {
+      const st = POSES.stand.angles;
+      a = { ...a };
+      for (const k of Object.keys(idle.angles) as (keyof typeof a)[]) a[k] = (a[k] ?? 0) + w * ((idle.angles[k] ?? 0) - (st[k] ?? 0));
+      if (w >= 0.5) hands = { handF: idle.handF, handB: idle.handB };
+    }
+    return {
+      ...q,
+      ...hands,
+      angles: {
+        ...a,
+        torso: (a.torso ?? 0) + (sg.stoop ?? 0) * 0.55,
+        neck: (a.neck ?? 0) + (sg.stoop ?? 0) * 0.45,
+        head: (a.head ?? 0) - (sg.chinUp ?? 0) + tilt,
+      },
+    };
+  };
   const pp = pose as PuppetPose;
   return { ...add(pp), ...(pp.prev ? { prev: add(pp.prev) } : {}), __signed: true } as PuppetPose;
 }
@@ -342,7 +386,7 @@ function drawPuppet(B: Built, c: CanvasRenderingContext2D, o0: PuppetDrawOpts, e
     if (!cutsOn || !cs) return;
     const style = cutStyle();
     for (const ct of cs) {
-      if (!allowed.has(ct.id) && !ct.id.startsWith('prop:')) continue;
+      if (!allowed.has(ct.id) && !ct.id.startsWith('prop:') && !ALWAYS.has(ct.id)) continue;
       const a = (ct.alpha ?? 0.48) * cutAlpha;
       if (a <= 0) continue;
       c.globalAlpha = a;
@@ -429,7 +473,7 @@ function drawPuppet(B: Built, c: CanvasRenderingContext2D, o0: PuppetDrawOpts, e
   part(R.torso, torso);
   if (torso.lights && cutsOn) {
     for (const l of torso.lights) {
-      if (!allowed.has(l.id)) continue;
+      if (!allowed.has(l.id) && !ALWAYS.has(l.id)) continue;
       c.globalAlpha = l.alpha * cutAlpha;
       c.fillStyle = rim;
       c.fill(l.path);
@@ -467,12 +511,18 @@ function drawPuppet(B: Built, c: CanvasRenderingContext2D, o0: PuppetDrawOpts, e
   set(R.head);
   fill(B.head.pieces);
   const hs = B.spec.signature?.hairScale ?? 1;
-  if (Math.abs(hs - 1) > 1e-3) {
-    // hair mass grows about the crown (head-local): the signature reads at 64 px
-    const hu = B.b.head;
-    const cx = (0 - HEAD_PIVOT[0]) * hu;
-    const cy = (-0.62 - HEAD_PIVOT[1]) * hu;
-    set(mMul(R.head, [hs, 0, 0, hs, cx * (1 - hs), cy * (1 - hs)] as M));
+  // hair mass grows about the crown (head-local): the signature reads at 64 px; its cut-lines (curls, parting)
+  // scale with it (round 2: at 0.8 the curl cuts floated above a shrunken mass)
+  const hairM: M = Math.abs(hs - 1) > 1e-3
+    ? (() => {
+        const hu = B.b.head;
+        const cx = (0 - HEAD_PIVOT[0]) * hu;
+        const cy = (-0.62 - HEAD_PIVOT[1]) * hu;
+        return mMul(R.head, [hs, 0, 0, hs, cx * (1 - hs), cy * (1 - hs)] as M);
+      })()
+    : R.head;
+  if (hairM !== R.head) {
+    set(hairM);
     fill(B.hair.pieces);
     set(R.head);
   } else fill(B.hair.pieces);
@@ -484,14 +534,23 @@ function drawPuppet(B: Built, c: CanvasRenderingContext2D, o0: PuppetDrawOpts, e
     c.strokeStyle = ink;
     c.lineWidth = L.frameW;
     c.stroke(L.frame);
+    // a glint off the glasses (review round 3): a small warm catch-light on the lens's upper front
+    if (L.glint && cutsOn) {
+      c.fillStyle = mixLab(rim, env.mood.core, 0.5);
+      c.globalAlpha = 0.85;
+      c.fill(L.glint);
+      c.globalAlpha = 1;
+    }
     c.fillStyle = ink;
   }
   cuts(B.head.cuts);
+  if (hairM !== R.head) set(hairM);
   cuts(facing === 'left' && B.hair.cutsFacingLeft ? B.hair.cutsFacingLeft : B.hair.cuts);
+  if (hairM !== R.head) set(R.head);
   if (B.hat) cuts(B.hat.cuts);
   // 9. hanging extras on the chest (tie, strings, lanyard)
   for (const h of B.hangers) {
-    const swing = Math.max(h.rest, torsoEff + trail);
+    const swing = h.pinned ? h.rest + Math.max(-3, Math.min(4, (torsoEff + trail) * 0.15)) : Math.max(h.rest, torsoEff + trail);
     if (h.hiddenUnder && swing < 12) continue;
     const hm = mRotate(mTranslate(R.torso, h.pivot[0], h.pivot[1]), -swing * DEG);
     set(hm);
@@ -516,11 +575,18 @@ const fit = (cv: HTMLCanvasElement | null, w: number, h: number) => {
 /** the figure, then a crescent cut on its contour facing o.edgeRim (mask minus the mask shifted away from it) */
 function drawWithEdgeRim(B: Built, c: CanvasRenderingContext2D, o: PuppetDrawOpts, env: PaintEnv) {
   drawPuppet(B, c, o, env);
-  const er = o.edgeRim!;
-  const n = Math.hypot(er.x, er.y);
-  if (n < 1e-6 || (er.alpha ?? 0.6) <= 0) return;
+  const er0 = o.edgeRim!;
+  const n = Math.hypot(er0.x, er0.y);
+  if (n < 1e-6 || (er0.alpha ?? 0.6) <= 0) return;
+  // kit floor (review round 3): every rim is 2-3 px at 1080p, at least 80 % opaque, warm 60-70 % (warm: 0 stays cool)
+  const er = {
+    ...er0,
+    px: Math.min(RIM.maxPx, Math.max(RIM.minPx, er0.px ?? RIM.px)),
+    alpha: Math.max(RIM.minAlpha, er0.alpha ?? RIM.alpha),
+    warm: er0.warm === 0 ? 0 : Math.min(RIM.maxWarm, Math.max(RIM.minWarm, er0.warm ?? RIM.warm)),
+  };
   const dev = (env.pxScale || 1.5) / 1.5;
-  const off = (er.px ?? 1.5) * dev;
+  const off = er.px * dev;
   const T = c.getTransform();
   const bb = boundsOf(B, o);
   let x0 = Infinity;
@@ -554,7 +620,8 @@ function drawWithEdgeRim(B: Built, c: CanvasRenderingContext2D, o: PuppetDrawOpt
   r.clearRect(0, 0, w, h);
   r.drawImage(rimMask, 0, 0, w, h, 0, 0, w, h);
   r.globalCompositeOperation = 'source-in';
-  r.fillStyle = env.fill('rim');
+  // a warm rim (review round 2): the rim colour pulled toward the mood's warm core (lamp / candle light)
+  r.fillStyle = er.warm ? mixLab(env.fill('rim'), env.mood.core, Math.min(1, er.warm)) : env.fill('rim');
   r.fillRect(0, 0, w, h);
   r.globalCompositeOperation = 'destination-out';
   r.drawImage(rimMask, 0, 0, w, h, (-er.x / n) * off, (-er.y / n) * off, w, h);
@@ -630,11 +697,13 @@ export function createPuppet(spec: PuppetSpec): Puppet {
   return {
     spec,
     draw: (c, o, env) => {
-      // signature rim: a back-top contour cut (backlit cut-paper) unless the shot sets its own edgeRim
+      // signature rim (review round 2; 2.5 px since round 3): a WARM rim on the light-facing edge: toward o.light when the shot
+      // passes its key-light direction, else the back-top contour (backlit cut paper); a shot's own edgeRim wins
       const sr = spec.signature?.rim;
       if (!o.edgeRim && sr) {
         const back = o.facing === 'right' ? -0.55 : 0.55;
-        o = { ...o, edgeRim: sr === true ? { x: back, y: -1, px: 1.6, alpha: 0.7 } : sr };
+        const dir = o.light ? { x: o.light.x, y: o.light.y } : { x: back, y: -1 };
+        o = { ...o, edgeRim: sr === true ? { ...dir, px: RIM.px, alpha: RIM.alpha, warm: RIM.warm } : { warm: RIM.warm, ...sr } };
       }
       return o.edgeRim ? drawWithEdgeRim(B, c, o, env) : drawPuppet(B, c, o, env);
     },
@@ -647,7 +716,8 @@ export function createPuppet(spec: PuppetSpec): Puppet {
 export function feet(spec: PuppetSpec, o: PuppetDrawOpts): { F: { heel: { x: number; y: number }; toe: { x: number; y: number } }; B: { heel: { x: number; y: number }; toe: { x: number; y: number } } } {
   const B = builtFor(spec);
   const { W, k } = worldM(B, o);
-  const R = fk(B, o.pose, rootDy(B, o.pose, k));
+  const p = signed(B, o.pose);
+  const R = fk(B, p, rootDy(B, p, k));
   const c = shoeContacts(B.w.shoes);
   const at = (m: M, q: [number, number]) => mApply(mMul(W, m), q[0], q[1]);
   return { F: { heel: at(R.anF, c.heel), toe: at(R.anF, c.toe) }, B: { heel: at(R.anB, c.heel), toe: at(R.anB, c.toe) } };

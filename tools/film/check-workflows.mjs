@@ -9,6 +9,13 @@ const DIR = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../../.c
 let bad = 0;
 for (const f of readdirSync(DIR).filter((n) => n.endsWith('.js'))) {
   const src = readFileSync(path.join(DIR, f), 'utf8').replace(/^export\s+const\s+meta/m, 'const meta');
+  // workflow scripts must be deterministic for resume: no wall clock (the runtime throws on Date.now()/new Date())
+  const clock = src.split('\n').findIndex((l) => /\bnew Date\(|\bDate\.now\(/.test(l.replace(/\/\/.*$/, '')));
+  if (clock >= 0) {
+    bad++;
+    console.log(`ERROR ${f}:${clock + 1}: Date.now()/new Date() are unavailable in workflow scripts (let an agent run \`date\` instead)`);
+    continue;
+  }
   try {
     new Function(`return (async () => {\n${src}\n})`);
     console.log(`ok    ${f}`);

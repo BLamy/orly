@@ -19,13 +19,24 @@
  *                    equation inks right after the fourth; the struck row HOLDS to 15.9 s
  *   15.9 s           only then: the work rows clear, the scores and equation rise, the halves drop under their cups,
  *                    the cups firm up with each cup's own WORD etched under it (crossed · the · river · bank) to the end
- *   pour             the jug pours cup by cup, levels = the real softmax; on 'river' its cup and its word glow
+ *   pour             the jug pours cup by cup, levels = the real softmax; on 'higher scores' the halves under the
+ *                    cups glow by their size (river's 2 brightest) and river's long pour runs through 'far bigger'
+ *   'half'           a dashed half-full mark is drawn across river's cup, just under its 0.53 waterline (½)
+ *   'river'          its cup and its word glow
+ *   'softmax'        a long brace inks over the four cups, labelled softmax (the jug's name, 'to the trade'); it
+ *                    stays (dimmed) as the recipe once the messages flow
  *   'messages'       each word's sealed note (s05's envelope, ≈ 40 px) leaves its slip, drops into its own cup and rides
  *                    that cup's stream of light up into bank; stream width ∝ share. The cup levels STAY (they are the
  *                    shares, not used up)
  *   'water's'        the meter comes in 0.3 s before the word (0.53 bar full on it); bank's slip tints gold → water-blue
- * Camera: close on the slip row (1.25×) → pulled back to the table on 'multiply' → after the hold, the whole plate at
- * 1.0× for the pour (slips under the glossary tag, cups and their words above the caption band) → a slow settle.
+ * Camera (critic round 1): OPENS WIDE — the whole plate at ~80% of frame width, hung in the dark hall with its
+ * windows and border showing and a lamp falloff on the parchment (corners ~15% darker), so the cut from s05's cyan
+ * hall keeps the silhouette world around the infographic — and holds while the slips are set out; the slips hang
+ * ~120 px lower on long cords for that (no empty lower two-thirds), rising to their rail as the label rows ink; then
+ * a slow ~5 s push in to the table for the number rows → after the hold, the whole plate at 1.0× for the pour, shifted
+ * 40 px right while the reel's SOFTMAX glossary tag owns the top-left → a slow settle.
+ * Pour: the jug comes in from the LEFT, moves over each cup in turn and pours a short, slightly curved falling stream
+ * (no stream while it travels). The halves under the cups sit 10 px lower, clear of the cups' base lines.
  * Depth: hazed hall (L2/L3), the plate (L4), the lamp shade (L5, in frame during the close opening), near timber posts
  * left and right (L5, blurred).
  */
@@ -94,8 +105,8 @@ const RISE = 176;
 const HDR_X = 290;
 const CUP = { y: 500, h: 100, w: 72 };
 /** under each cup: the half (later its message) and the cup's own word */
-const HALF_Y = CUP.y + 34;
-const WORD_Y = CUP.y + 66;
+const HALF_Y = CUP.y + 44;
+const WORD_Y = CUP.y + 72;
 const MIR_S = 1.5;
 const NOTE_S = 0.62;
 /** cup level = share / LVL (so river's 0.53 leaves room above its waterline for the etching) */
@@ -131,6 +142,11 @@ interface B {
   pourAt: [number, number][];
   jugOut: number;
   far: number;
+  /** L1013 (re-recorded, round 2): 'higher' scores · 'bigger' shares · about 'half' · 'softmax', to the trade */
+  higher: number;
+  bigger: number;
+  half: number;
+  softmax: number;
   river: number;
   messages: number;
   shares2: number;
@@ -143,28 +159,30 @@ interface B {
  * glossary tag owns the top-left; the plate's left margin and the hall's near post sit under it) · full: eased back
  * and right for the messages and the meter · end: a slow settle.
  */
-const CAM_CLOSE: Camera3 = { x: 650, y: 160, z: 200, lens: 1 };
-const CAM_CLOSE2: Camera3 = { x: 648, y: 168, z: 212, lens: 1 };
+/** the opening: the whole plate in the hall (critic round 1), then a slow push in to the table */
+const CAM_OPEN: Camera3 = { x: 640, y: 330, z: -40, lens: 1 };
+const CAM_OPEN2: Camera3 = { x: 636, y: 326, z: -26, lens: 1 };
 const CAM_TABLE: Camera3 = { x: 566, y: 318, z: 96, lens: 1 };
 const CAM_TABLE2: Camera3 = { x: 562, y: 320, z: 110, lens: 1 };
 /** the whole plate at 1.0×: the slip row sits just under the glossary tag's bottom edge, the cups' words above the caption band */
-const CAM_POUR: Camera3 = { x: 640, y: 302, z: 0, lens: 1 };
-const CAM_POUR2: Camera3 = { x: 642, y: 304, z: 10, lens: 1 };
+const CAM_POUR: Camera3 = { x: 600, y: 302, z: 0, lens: 1 };
+const CAM_POUR2: Camera3 = { x: 602, y: 304, z: 10, lens: 1 };
 const CAM_FULL: Camera3 = { x: 646, y: 312, z: 24, lens: 1 };
 const CAM_END: Camera3 = { x: 652, y: 316, z: 44, lens: 1 };
-const CAMS = [CAM_CLOSE, CAM_CLOSE2, CAM_TABLE, CAM_TABLE2, CAM_POUR, CAM_POUR2, CAM_FULL, CAM_END];
+const CAMS = [CAM_OPEN, CAM_OPEN2, CAM_TABLE, CAM_TABLE2, CAM_POUR, CAM_POUR2, CAM_FULL, CAM_END];
 const mixCam = (a: Camera3, b: Camera3, u: number): Camera3 => ({ x: lerp(a.x, b.x, u), y: lerp(a.y, b.y, u), z: lerp(a.z, b.z, u), lens: 1 });
 /** the struck row holds until here; only then does anything move toward the pour */
 const holdEnd = (b: B) => b.halve + 1.42;
 function camAt(t: number, b: B): Camera3 {
-  const back0 = b.multiply - 0.45;
-  const back1 = back0 + 2.4;
+  // the wide opening holds while the slips are set out (a hair of drift), then a slow push in (~5 s) to the table
+  const push0 = b.slipIn[3] + 0.4;
+  const back1 = b.multiply + 0.5;
   const pour0 = holdEnd(b);
   const pour1 = pour0 + 2.1;
   const full0 = b.river + 0.35;
   const full1 = full0 + 2.4;
-  let c = mixCam(CAM_CLOSE, CAM_CLOSE2, sm(t / back0));
-  c = mixCam(c, CAM_TABLE, sm((t - back0) / (back1 - back0)));
+  let c = mixCam(CAM_OPEN, CAM_OPEN2, sm(t / push0));
+  c = mixCam(c, CAM_TABLE, sm((t - push0) / (back1 - push0)));
   c = mixCam(c, CAM_TABLE2, sm((t - back1) / (pour0 - back1)));
   c = mixCam(c, CAM_POUR, sm((t - pour0) / (pour1 - pour0)));
   c = mixCam(c, CAM_POUR2, sm((t - pour1) / (full0 - pour1)));
@@ -208,6 +226,10 @@ export default defineShot({
       pourAt,
       jugOut: at + 0.1,
       far: T.word('L1013', 'far'),
+      higher: T.word('L1013', 'higher'),
+      bigger: T.word('L1013', 'bigger'),
+      half: T.word('L1013', 'half'),
+      softmax: T.word('L1013', 'softmax'),
       river: T.beat('shares'),
       messages: T.beat('messages'),
       shares2: T.word('L1014', 'shares'),
@@ -219,13 +241,19 @@ export default defineShot({
   paint(f, _s, scene) {
     const t = f.t;
     const b = scene.b as B;
-    f.camera(camAt(t, b));
+    // while the reel's SOFTMAX glossary tag shows (top-left, from 'Pour'), the plate sits 40 px further right on
+    // screen (CAM_POUR is shifted; this covers the end of the struck-row hold before the camera gets there)
+    const cam = camAt(t, b);
+    const tagK = win(t, b.pour - 0.45, b.pour + 0.1) * (1 - win(t, holdEnd(b), holdEnd(b) + 2.1));
+    const sL4 = 1000 / (1000 - cam.z);
+    f.camera({ ...cam, x: cam.x - (40 / sL4) * tagK });
     f.backlight({ sunX: 640, sunY: 430, sunRadius: 560, intensity: 0.75 });
     hallBackdrop(f, ID, CAMS, { beamY: -10, dim: 0.12 });
     f.layer('L4', (c, env) => {
       plateCords(c, PLATE, env, -400);
       parchmentPlate(c, { ...PLATE, seed: 1006 }, env);
       lampWash(c, PLATE, 640, 1);
+      lampFalloff(c);
       plate(c, t, b, env);
     });
     f.practical({ x: 640, y: 6, kind: 'lamp', seed: 1006, intensity: 0.72, radius: 64, layer: 'L4' });
@@ -257,6 +285,31 @@ export default defineShot({
   },
 });
 
+/** (critic round 1) the plate lamp's falloff: the parchment's corners ~15% darker than under the lamp, so the plate
+ *  sits in the hall's light instead of being a flat bright field */
+function lampFalloff(c: C) {
+  const { x, y, w, h } = PLATE;
+  c.save();
+  c.beginPath();
+  c.rect(x, y, w, h);
+  c.clip();
+  const lx = 640, ly = y + 10;
+  const R = Math.hypot(w / 2, h);
+  const g = c.createRadialGradient(lx, ly, 120, lx, ly, R);
+  const dark = mixLab(CY.fg, P.ink, 0.4);
+  g.addColorStop(0, withAlpha(dark, 0));
+  g.addColorStop(0.45, withAlpha(dark, 0.05));
+  g.addColorStop(0.8, withAlpha(dark, 0.16));
+  g.addColorStop(1, withAlpha(dark, 0.22));
+  c.fillStyle = g;
+  c.fillRect(x, y, w, h);
+  c.restore();
+}
+
+/** (critic round 1) the slips hang ~120 px lower on long cords while they are set out (the lower plate is not left
+ *  empty under a row pinned to the top), rising to their rail as the label rows ink */
+const rowDY = (b: B, t: number) => 120 * (1 - sm((t - (b.kRow - 0.45)) / 0.75));
+
 // ================================================================================================= the plate
 function plate(c: C, t: number, b: B, env: PaintEnv) {
   const tq = tq12(t);
@@ -278,10 +331,11 @@ function plate(c: C, t: number, b: B, env: PaintEnv) {
   // the struck row (scores, the pen's halves, the equation) holds complete until holdEnd; then the work rows fade, the
   // scores and equation rise, and the halves drop to the slots under their cups (all before the first pour)
   const H = holdEnd(b);
-  const clear = win(t, H, H + 0.55);
+  // (the work rows are mostly gone before the scores start to rise through them)
+  const clear = win(t, H, H + 0.35);
   const workA = 1 - clear;
-  const rise = -RISE * win(t, H + 0.05, H + 0.7);
-  const dimScores = 1 - win(t, H + 0.05, H + 0.7);
+  const rise = -RISE * win(t, H + 0.22, H + 0.85);
+  const dimScores = 1 - win(t, H + 0.12, H + 0.7);
   const eqDim = lerp(1, 0.22, win(t, b.messages - 0.7, b.messages + 0.1));
   const yS = ROW.score + rise;
   const yH = ROW.half + rise;
@@ -289,7 +343,7 @@ function plate(c: C, t: number, b: B, env: PaintEnv) {
   // ---------------------------------------------------------------- row headers
   const hdr = (text: string, y: number, at: number, a = 1) =>
     ink(c, text, HDR_X, y, { italic: true, size: ROWLBL, align: 'right', color: mixLab(INK, P.sky[1], 0.3), alpha: win(t, at - 0.1, at + 0.4) * a });
-  hdr('label', ROW.k, b.kRow, workA);
+  hdr('label', ROW.k, b.kRow + 0.3, workA);
   hdr('question', ROW.q, b.qRow, workA);
   hdr('multiply, add', ROW.prod, b.multiply, workA);
   hdr('score', yS, b.scores, dimScores);
@@ -323,6 +377,9 @@ function plate(c: C, t: number, b: B, env: PaintEnv) {
   const lanternUp = win(t, b.question - 0.35, b.question + 0.35);
   const lantY = lerp(LANT.y0, LANT.y1, win(tq, b.bankWord - 0.1, b.bankWord + 0.4));
   const beamOut = 1 - win(t, b.add + 0.2, b.add + 1.2);
+  const dy = rowDY(b, tq);
+  c.save();
+  c.translate(0, dy);
   for (let i = 0; i < 4; i++) {
     const at = b.beamAt[i];
     const d = win(t, at - 0.32, at);
@@ -332,8 +389,12 @@ function plate(c: C, t: number, b: B, env: PaintEnv) {
     const fresh = 1 - 0.6 * win(t, at + 0.4, at + 1.2);
     lightStream(c, pts, 1.8, LIGHT, CORE, 0.8 * fresh * beamOut);
   }
+  c.restore();
 
   // ---------------------------------------------------------------- slips, with s05's mirror and sealed note; the lantern
+  // (drawn dy lower while the row is set out: the cords to the rail run longer)
+  c.save();
+  c.translate(0, dy);
   for (let i = 0; i < 4; i++) {
     const at = b.slipIn[i];
     const a = win(t, at - 0.25, at + 0.15);
@@ -351,7 +412,7 @@ function plate(c: C, t: number, b: B, env: PaintEnv) {
     c.strokeStyle = mixLab(INK, P.sky[1], 0.15);
     c.lineWidth = 1.1;
     c.beginPath();
-    c.moveTo(m.x, RAIL_Y);
+    c.moveTo(m.x, RAIL_Y - dy);
     c.lineTo(m.x, loopY);
     c.stroke();
     c.restore();
@@ -361,7 +422,7 @@ function plate(c: C, t: number, b: B, env: PaintEnv) {
     c.scale(g, g);
     kMirror(c, 0, mirrorLoop(MIR_S), touched, MIR_S, a, INK, env);
     c.restore();
-    wordSlip(c, { x: X[i], y: SLIP_Y, text: WORDS[i], size: SLIP_SIZE, h: SLIP_H, alpha: a, rot: swing + flutter, tint, lit, cord: SLIP_Y - RAIL_Y - 10 });
+    wordSlip(c, { x: X[i], y: SLIP_Y, text: WORDS[i], size: SLIP_SIZE, h: SLIP_H, alpha: a, rot: swing + flutter, tint, lit, cord: SLIP_Y - RAIL_Y - 10 + dy });
     // the sealed note (message) hangs from the slip's bottom-right corner on a short cord
     const n = noteAt(i);
     const ng = sm(win(tq, at + 0.05, at + 0.6));
@@ -400,11 +461,12 @@ function plate(c: C, t: number, b: B, env: PaintEnv) {
     const k = 0.18 + 0.82 * lanternUp - 0.3 * win(t, b.halve, b.halve + 1.5) + 0.25 * win(t, b.messages, b.messages + 0.6);
     qLantern(c, LANT.x, lantY, k, env, 1.3, lantA);
   }
+  c.restore();
 
   // ---------------------------------------------------------------- the workings, column by column
   for (let i = 0; i < 4; i++) {
     const x = X[i];
-    const kA = win(t, b.kRow + i * 0.12, b.kRow + i * 0.12 + 0.35) * workA;
+    const kA = win(t, b.kRow + 0.3 + i * 0.12, b.kRow + 0.3 + i * 0.12 + 0.35) * workA;
     nums(c, K[i], x, ROW.k, kA, INK);
     const qA = win(t, b.qRow + i * 0.12, b.qRow + i * 0.12 + 0.4) * workA;
     const drop = (1 - win(t, b.qRow + i * 0.12, b.qRow + i * 0.12 + 0.4)) * -26;
@@ -463,6 +525,10 @@ function plate(c: C, t: number, b: B, env: PaintEnv) {
       const k = dropK(i);
       // a gentle arc: out and down, landing under the cup
       const hy = lerp(ROW.half, HALF_Y, k) - Math.sin(k * Math.PI) * 18;
+      // 'higher scores get far bigger shares': each half glows by its size (river's 2 the brightest), held through
+      // 'bigger', while river's cup takes its long pour
+      const hp = win(t, b.higher - 0.15, b.higher + 0.3) * (1 - win(t, b.bigger + 0.5, b.bigger + 1.2)) * k;
+      if (hp > 0.01 && HALF[i] > 0) glow(c, x, hy - 12, 26 + 12 * HALF[i], P.halo, 0.32 * hp * HALF[i]);
       ink(c, String(HALF[i]), x, hy, { font: 'mono', size: lerp(34, 30, k), weight: 600, align: 'center', color: INK, alpha: hA, draw: win(t, s0 + 0.14, s0 + 0.3) });
     }
   }
@@ -525,24 +591,81 @@ function plate(c: C, t: number, b: B, env: PaintEnv) {
     const nA = win(t, b.messages - 0.5, b.messages);
     if (MSG[i]) ink(c, MSG[i], X[i], HALF_Y, { italic: true, size: 24, align: 'center', color: mixLab(INK, P.sky[1], 0.3), alpha: nA, legible: true });
   }
+  // 'about half runs to river': a dashed half-full mark across river's cup, just under its waterline, with a ½
+  {
+    const hA = win(t, b.half - 0.15, b.half + 0.25) * (1 - 0.55 * win(t, b.messages - 0.6, b.messages));
+    if (hA > 0.01) {
+      const yHalf = CUP.y - CUP.h * (0.5 / LVL);
+      const x0 = X[2] - CUP.w / 2 - 16, x1 = X[2] + CUP.w / 2 + 6;
+      const d = win(t, b.half - 0.15, b.half + 0.25);
+      c.save();
+      c.strokeStyle = withAlpha(OXBLOOD, 0.9 * hA);
+      c.lineWidth = 2;
+      c.setLineDash([6, 4]);
+      c.beginPath();
+      c.moveTo(x0, yHalf);
+      c.lineTo(lerp(x0, x1, d), yHalf);
+      c.stroke();
+      c.setLineDash([]);
+      c.restore();
+      ink(c, '½', x0 - 6, yHalf + 9, { size: 28, weight: 600, align: 'right', color: OXBLOOD, alpha: hA, legible: true });
+    }
+  }
+  // 'softmax, to the trade': a long brace inks over the four cups and the jug's trade name lands above it; it stays
+  // as the recipe (dimmed while the messages stream up through it)
+  {
+    const sA = win(t, b.softmax - 0.2, b.softmax + 0.15) * lerp(1, 0.35, win(t, b.messages - 0.6, b.messages - 0.1));
+    if (sA > 0.01) {
+      const d = win(t, b.softmax - 0.2, b.softmax + 0.45);
+      const y = CUP.y - CUP.h - 30;
+      const x0 = X[0] - CUP.w / 2 - 6, x1 = X[3] + CUP.w / 2 + 6, xm = (x0 + x1) / 2;
+      c.save();
+      c.globalAlpha *= sA;
+      c.strokeStyle = INK;
+      c.lineWidth = 1.8;
+      c.lineCap = 'round';
+      // a curly brace opening down onto the cups: ends hook down, the middle points up at its name
+      const pts: [number, number][] = [];
+      const n = 48;
+      for (let q = 0; q <= n; q++) {
+        const u = q / n;
+        const x = lerp(x0, x1, u);
+        const e = Math.min(u, 1 - u) * 2; // 0 at the ends, 1 in the middle
+        const hook = 12 * Math.exp(-Math.pow(Math.min(u, 1 - u) / 0.025, 2));
+        const tip = -9 * Math.exp(-Math.pow((u - 0.5) / 0.022, 2));
+        pts.push([x, y + hook + tip + 2 * (1 - e)]);
+      }
+      c.beginPath();
+      const upto = Math.max(1, Math.round(n * d));
+      pts.slice(0, upto + 1).forEach(([x, yy], q) => (q ? c.lineTo(x, yy) : c.moveTo(x, yy)));
+      c.stroke();
+      c.restore();
+      ink(c, 'softmax', xm, y - 18, { size: 30, italic: true, weight: 600, align: 'center', color: INK, alpha: sA * win(t, b.softmax - 0.1, b.softmax + 0.25), draw: win(t, b.softmax - 0.1, b.softmax + 0.5), legible: true });
+    }
+  }
   // the jug: comes in from the right, pours into each cup in turn, lifts away
   {
     const inA = win(tq, H + 0.2, H + 0.75);
     const outA = 1 - win(tq, b.jugOut, b.jugOut + 0.5);
     const a = inA * outA;
     if (a > 0) {
-      let tx = X[3] + 180;
+      // (critic round 1) it comes in from the LEFT, already over the first cup when it tips, and moves cup to cup
+      // between pours: the stream only ever falls a short way from a lip that is right over its cup
+      const JX = (i: number) => X[i] + 14;
+      let tx = lerp(X[0] - 200, JX(0), sm(clamp01((tq - (H + 0.2)) / Math.max(0.2, b.pourAt[0][0] - 0.12 - (H + 0.2)))));
       let tilt = 0.1;
       let pouring = -1;
+      for (let i = 1; i < 4; i++) {
+        const [a0] = b.pourAt[i];
+        const prevEnd = b.pourAt[i - 1][1];
+        const mv = sm(clamp01((tq - (prevEnd + 0.04)) / Math.max(0.12, a0 - 0.08 - (prevEnd + 0.04))));
+        if (tq >= prevEnd) tx = lerp(JX(i - 1), JX(i), mv);
+      }
       for (let i = 0; i < 4; i++) {
         const [a0, a1] = b.pourAt[i];
-        const prevEnd = i ? b.pourAt[i - 1][1] : H + 0.75;
-        const mv = sm(clamp01((tq - prevEnd) / Math.max(0.15, a0 - prevEnd)));
-        const fromX = i ? X[i - 1] : X[3] + 180;
-        if (tq >= prevEnd) tx = lerp(fromX, X[i], mv);
         if (tq >= a0 - 0.1 && tq <= a1 + 0.05) pouring = i;
       }
-      if (tq > b.pourAt[3][1]) tx = lerp(X[3], X[3] + 210, sm((tq - b.pourAt[3][1]) / 0.8));
+      if (tq > b.pourAt[3][1]) tx = lerp(JX(3), X[3] + 230, sm((tq - b.pourAt[3][1]) / 0.8));
       if (pouring >= 0) {
         const [a0, a1] = b.pourAt[pouring];
         tilt = 0.1 + 0.95 * (sm((tq - a0 + 0.1) / 0.2) - sm((tq - a1) / 0.2));
@@ -556,11 +679,20 @@ function plate(c: C, t: number, b: B, env: PaintEnv) {
       const lip = jug(c, px, py, tilt, S, LIGHT, CORE, 0.35 + 0.65 * remaining, a);
       if (pouring >= 0) {
         const [a0, a1] = b.pourAt[pouring];
-        const flow = win(t, a0, a0 + 0.12) * (1 - win(t, a1 - 0.05, a1 + 0.1));
+        // only when the lip is over its cup (never a long slant across the plate)
+        const over = 1 - sm((Math.abs(lip.lipX - X[pouring]) - 18) / 14);
+        const flow = win(t, a0, a0 + 0.12) * (1 - win(t, a1 - 0.05, a1 + 0.1)) * over;
         if (flow > 0.01) {
           const yEnd = CUP.y - CUP.h * (SHARE[pouring] / LVL) * clamp01((t - a0) / (a1 - a0)) - 2;
           const w = 2 + 8 * SHARE[pouring];
-          lightStream(c, [{ x: lip.lipX, y: lip.lipY }, { x: lip.lipX - 3, y: lip.lipY + 14 }, { x: X[pouring] - 2, y: yEnd }], w, LIGHT, CORE, flow * a);
+          // a short falling stream: it leaves the lip with a little forward speed and curves down into the cup
+          const pts: { x: number; y: number }[] = [];
+          const ex = X[pouring] - 2;
+          for (let q = 0; q <= 10; q++) {
+            const u = q / 10;
+            pts.push({ x: lip.lipX + (ex - lip.lipX) * Math.sqrt(u) - 6 * Math.sin(u * Math.PI) * (u < 0.5 ? 1 : 0.5), y: lerp(lip.lipY, yEnd, u * u * 0.6 + u * 0.4) });
+          }
+          lightStream(c, pts, w, LIGHT, CORE, flow * a);
         }
       }
     }

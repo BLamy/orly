@@ -1,19 +1,24 @@
 {
  "shot": "ch08-s08b",
- "at": "2026-10-12T17:53:44.177Z",
+ "at": "2026-10-13T04:13:49.175Z",
  "minCapPx": 22,
  "sampled": 16,
  "texts": 2,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
- "textureTexts": 0,
- "ok": [
+ "subjects": [
   {
    "text": "dropout · p = 0.5 · the two big halls only (fc6, fc7)",
-   "maxCap": 25.1
-  },
+   "capWhileSubject": 25.1,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
   {
    "text": "ILLUSTRATIVE",
-   "maxCap": 22.1
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
   }
- ]
+ ],
+ "textureTexts": 1
 }

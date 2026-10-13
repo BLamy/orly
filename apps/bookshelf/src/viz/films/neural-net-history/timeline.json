@@ -1,112 +1,112 @@
 {
  "slug": "neural-net-history",
  "fps": 24,
- "duration": 2139.5417,
+ "duration": 2168.4167,
  "chapters": [
   {
    "id": "ch01",
    "number": 1,
    "title": "The Wonder in the Dark Room",
    "start": 0,
-   "end": 75.5
+   "end": 77.4167
   },
   {
    "id": "ch02",
    "number": 2,
    "title": "Clue One: A Switch That Fires",
-   "start": 75.5,
-   "end": 195.3333
+   "start": 77.4167,
+   "end": 198.625
   },
   {
    "id": "ch03",
    "number": 3,
    "title": "Clue Two: A Knob That Turns",
-   "start": 195.3333,
-   "end": 321.0833
+   "start": 198.625,
+   "end": 324.375
   },
   {
    "id": "ch04",
    "number": 4,
    "title": "The Cold Case",
-   "start": 321.0833,
-   "end": 450.625
+   "start": 324.375,
+   "end": 453.9167
   },
   {
    "id": "ch05",
    "number": 5,
    "title": "Clue Three: The Messenger Who Runs Backward",
-   "start": 450.625,
-   "end": 626.6667
+   "start": 453.9167,
+   "end": 644.0417
   },
   {
    "id": "ch06",
    "number": 6,
    "title": "The Quiet Years",
-   "start": 626.6667,
-   "end": 775.7917
+   "start": 644.0417,
+   "end": 793.1667
   },
   {
    "id": "ch07",
    "number": 7,
    "title": "Two Accomplices: Data and Fire",
-   "start": 775.7917,
-   "end": 871
+   "start": 793.1667,
+   "end": 888.375
   },
   {
    "id": "ch08",
    "number": 8,
    "title": "DEEP DIVE — The Night in Florence",
-   "start": 871,
-   "end": 1128.7083
+   "start": 888.375,
+   "end": 1148.5833
   },
   {
    "id": "ch09",
    "number": 9,
    "title": "The Gold Rush",
-   "start": 1128.7083,
-   "end": 1225.3333
+   "start": 1148.5833,
+   "end": 1246.625
   },
   {
    "id": "ch10",
    "number": 10,
    "title": "DEEP DIVE — Everything Looks at Everything",
-   "start": 1225.3333,
-   "end": 1435.0833
+   "start": 1246.625,
+   "end": 1458.5
   },
   {
    "id": "ch11",
    "number": 11,
    "title": "Read Everything",
-   "start": 1435.0833,
-   "end": 1540.125
+   "start": 1458.5,
+   "end": 1564.1667
   },
   {
    "id": "ch12",
    "number": 12,
    "title": "The Last Accomplice, and the Return to the Scene",
-   "start": 1540.125,
-   "end": 1654.4167
+   "start": 1564.1667,
+   "end": 1671.2083
   },
   {
    "id": "ch13",
    "number": 13,
    "title": "The Case Reopened",
-   "start": 1654.4167,
-   "end": 1753.3333
+   "start": 1671.2083,
+   "end": 1770.125
   },
   {
    "id": "ch14",
    "number": 14,
    "title": "Two Shores",
-   "start": 1753.3333,
-   "end": 1895.0833
+   "start": 1770.125,
+   "end": 1916.1667
   },
   {
    "id": "ch15",
    "number": 15,
    "title": "Case Status: Open",
-   "start": 1895.0833,
-   "end": 2139.5417
+   "start": 1916.1667,
+   "end": 2168.4167
   }
  ],
  "shots": [
@@ -120,32 +120,32 @@
      "id": "L0101",
      "text": "Here is a small wonder.",
      "start": 3.5,
-     "end": 5.346,
+     "end": 4.638,
      "words": [
       {
        "w": "Here",
        "start": 3.5,
-       "end": 3.802
+       "end": 3.721
       },
       {
        "w": "is",
-       "start": 3.86,
-       "end": 3.999
+       "start": 3.755,
+       "end": 3.825
       },
       {
        "w": "a",
-       "start": 4.348,
-       "end": 4.429
+       "start": 3.86,
+       "end": 3.895
       },
       {
        "w": "small",
-       "start": 4.51,
-       "end": 4.858
+       "start": 3.93,
+       "end": 4.208
       },
       {
        "w": "wonder",
-       "start": 4.928,
-       "end": 5.346
+       "start": 4.266,
+       "end": 4.638
       }
      ]
     }
@@ -153,7 +153,7 @@
    "beats": {
     "cursor": 0.6,
     "room": 2.2,
-    "type": 4.928
+    "type": 4.266
    },
    "transitionIn": "fadeBlack",
    "transitionDur": 1.6,
@@ -745,73 +745,101 @@
    "id": "ch01-s06",
    "chapter": "ch01",
    "start": 58.1667,
-   "end": 66.5833,
+   "end": 68.5,
    "lines": [
     {
      "id": "L0114",
-     "text": "We go back to the war years, to a lamp in Chicago.",
-     "start": 4.2,
-     "end": 7.892,
+     "text": "Our story starts all the way back in World War Two.",
+     "start": 3.7,
+     "end": 7.102,
      "words": [
       {
-       "w": "We",
-       "start": 4.2,
-       "end": 4.397
+       "w": "Our",
+       "start": 3.7,
+       "end": 3.921
       },
       {
-       "w": "go",
-       "start": 4.467,
-       "end": 4.583
+       "w": "story",
+       "start": 3.955,
+       "end": 4.385
       },
       {
-       "w": "back",
-       "start": 4.653,
-       "end": 4.839
+       "w": "starts",
+       "start": 4.455,
+       "end": 4.896
       },
       {
-       "w": "to",
-       "start": 4.885,
-       "end": 4.955
+       "w": "all",
+       "start": 4.965,
+       "end": 5.209
       },
       {
        "w": "the",
-       "start": 5.024,
-       "end": 5.094
+       "start": 5.279,
+       "end": 5.349
       },
       {
-       "w": "war",
-       "start": 5.14,
-       "end": 5.373
+       "w": "way",
+       "start": 5.418,
+       "end": 5.569
       },
       {
-       "w": "years",
-       "start": 5.477,
-       "end": 5.93
-      },
-      {
-       "w": "to",
-       "start": 6.371,
-       "end": 6.522
-      },
-      {
-       "w": "a",
-       "start": 6.626,
-       "end": 6.65
-      },
-      {
-       "w": "lamp",
-       "start": 6.719,
-       "end": 6.986
+       "w": "back",
+       "start": 5.65,
+       "end": 5.836
       },
       {
        "w": "in",
-       "start": 7.056,
-       "end": 7.149
+       "start": 5.894,
+       "end": 5.976
+      },
+      {
+       "w": "World",
+       "start": 6.057,
+       "end": 6.359
+      },
+      {
+       "w": "War",
+       "start": 6.417,
+       "end": 6.649
+      },
+      {
+       "w": "Two",
+       "start": 6.742,
+       "end": 7.102
+      }
+     ]
+    },
+    {
+     "id": "L0114b",
+     "text": "To a lamp, in Chicago.",
+     "start": 7.902,
+     "end": 9.829,
+     "words": [
+      {
+       "w": "To",
+       "start": 7.902,
+       "end": 8.076
+      },
+      {
+       "w": "a",
+       "start": 8.181,
+       "end": 8.227
+      },
+      {
+       "w": "lamp",
+       "start": 8.32,
+       "end": 8.668
+      },
+      {
+       "w": "in",
+       "start": 8.831,
+       "end": 9.028
       },
       {
        "w": "Chicago",
-       "start": 7.207,
-       "end": 7.892
+       "start": 9.098,
+       "end": 9.829
       }
      ]
     }
@@ -823,8 +851,8 @@
     "snow": 2,
     "knob": 2.75,
     "wick": 3.5,
-    "stamp": 5.477,
-    "lampOn": 7.207
+    "stamp": 6.742,
+    "lampOn": 9.098
    },
    "transitionIn": "cut",
    "transitionDur": 0,
@@ -833,8 +861,8 @@
   {
    "id": "ch01-s07",
    "chapter": "ch01",
-   "start": 66.5833,
-   "end": 75.5,
+   "start": 68.5,
+   "end": 77.4167,
    "lines": [],
    "beats": {
     "title": 1,
@@ -848,8 +876,8 @@
   {
    "id": "ch02-s01",
    "chapter": "ch02",
-   "start": 75.5,
-   "end": 84.5417,
+   "start": 77.4167,
+   "end": 86.4583,
    "lines": [
     {
      "id": "L0201",
@@ -967,8 +995,8 @@
   {
    "id": "ch02-s02",
    "chapter": "ch02",
-   "start": 84.5417,
-   "end": 102.5833,
+   "start": 86.4583,
+   "end": 104.5,
    "lines": [
     {
      "id": "L0203",
@@ -1174,8 +1202,8 @@
   {
    "id": "ch02-s03",
    "chapter": "ch02",
-   "start": 102.5833,
-   "end": 110.4583,
+   "start": 104.5,
+   "end": 112.375,
    "lines": [
     {
      "id": "L0206",
@@ -1257,8 +1285,8 @@
   {
    "id": "ch02-s04",
    "chapter": "ch02",
-   "start": 110.4583,
-   "end": 126.4167,
+   "start": 112.375,
+   "end": 128.3333,
    "lines": [
     {
      "id": "L0209",
@@ -1479,8 +1507,8 @@
   {
    "id": "ch02-s05",
    "chapter": "ch02",
-   "start": 126.4167,
-   "end": 134.7083,
+   "start": 128.3333,
+   "end": 136.625,
    "lines": [
     {
      "id": "L0211",
@@ -1565,8 +1593,8 @@
   {
    "id": "ch02-s05b",
    "chapter": "ch02",
-   "start": 134.7083,
-   "end": 147.5417,
+   "start": 136.625,
+   "end": 149.4583,
    "lines": [
     {
      "id": "L0212",
@@ -1691,8 +1719,8 @@
   {
    "id": "ch02-s07",
    "chapter": "ch02",
-   "start": 147.5417,
-   "end": 174.0833,
+   "start": 149.4583,
+   "end": 176,
    "lines": [
     {
      "id": "L0215",
@@ -2022,8 +2050,8 @@
   {
    "id": "ch02-s08",
    "chapter": "ch02",
-   "start": 174.0833,
-   "end": 195.3333,
+   "start": 176,
+   "end": 198.625,
    "lines": [
     {
      "id": "L0218",
@@ -2200,87 +2228,87 @@
      "id": "L0220",
      "text": "The paper that put it out, for Pitts at least, had his own name on it.",
      "start": 12.919,
-     "end": 17.823,
+     "end": 19.212,
      "words": [
       {
        "w": "The",
        "start": 12.919,
-       "end": 13.07
+       "end": 13.082
       },
       {
        "w": "paper",
-       "start": 13.128,
-       "end": 13.453
+       "start": 13.14,
+       "end": 13.476
       },
       {
        "w": "that",
-       "start": 13.511,
-       "end": 13.674
+       "start": 13.534,
+       "end": 13.708
       },
       {
        "w": "put",
-       "start": 13.732,
-       "end": 13.917
+       "start": 13.767,
+       "end": 13.964
       },
       {
        "w": "it",
-       "start": 13.976,
-       "end": 14.092
+       "start": 14.022,
+       "end": 14.161
       },
       {
        "w": "out",
-       "start": 14.161,
-       "end": 14.475
+       "start": 14.243,
+       "end": 14.579
       },
       {
        "w": "for",
-       "start": 14.868,
-       "end": 15.042
+       "start": 15.171,
+       "end": 15.357
       },
       {
        "w": "Pitts",
-       "start": 15.111,
-       "end": 15.46
+       "start": 15.438,
+       "end": 15.926
       },
       {
        "w": "at",
-       "start": 15.518,
-       "end": 15.611
+       "start": 16.402,
+       "end": 16.599
       },
       {
        "w": "least",
-       "start": 15.68,
-       "end": 16.052
+       "start": 16.681,
+       "end": 17.075
       },
       {
        "w": "had",
-       "start": 16.406,
-       "end": 16.592
+       "start": 17.598,
+       "end": 17.818
       },
       {
        "w": "his",
-       "start": 16.65,
-       "end": 16.766
+       "start": 17.876,
+       "end": 18.016
       },
       {
        "w": "own",
-       "start": 16.836,
-       "end": 17.022
+       "start": 18.097,
+       "end": 18.294
       },
       {
        "w": "name",
-       "start": 17.091,
-       "end": 17.393
+       "start": 18.376,
+       "end": 18.701
       },
       {
        "w": "on",
-       "start": 17.451,
-       "end": 17.567
+       "start": 18.759,
+       "end": 18.898
       },
       {
        "w": "it",
-       "start": 17.625,
-       "end": 17.823
+       "start": 18.956,
+       "end": 19.212
       }
      ]
     }
@@ -2292,10 +2320,10 @@
     "gutter": 10.453,
     "out": 11.254,
     "stub": 12.369,
-    "clueCard": 17.091,
-    "xray": 18.123,
-    "xrayBand1": 18.623,
-    "xrayFade": 21.123
+    "clueCard": 18.376,
+    "xray": 19.512,
+    "xrayBand1": 20.012,
+    "xrayFade": 22.512
    },
    "transitionIn": "crossfade",
    "transitionDur": 1,
@@ -2304,8 +2332,8 @@
   {
    "id": "ch03-s01",
    "chapter": "ch03",
-   "start": 195.3333,
-   "end": 208.0833,
+   "start": 198.625,
+   "end": 211.375,
    "lines": [
     {
      "id": "L0301",
@@ -2454,8 +2482,8 @@
   {
    "id": "ch03-s02",
    "chapter": "ch03",
-   "start": 208.0833,
-   "end": 221.875,
+   "start": 211.375,
+   "end": 225.1667,
    "lines": [
     {
      "id": "L0303",
@@ -2645,8 +2673,8 @@
   {
    "id": "ch03-s03",
    "chapter": "ch03",
-   "start": 221.875,
-   "end": 235.625,
+   "start": 225.1667,
+   "end": 238.9167,
    "lines": [
     {
      "id": "L0305",
@@ -2849,8 +2877,8 @@
   {
    "id": "ch03-s04",
    "chapter": "ch03",
-   "start": 235.625,
-   "end": 256.8333,
+   "start": 238.9167,
+   "end": 260.125,
    "lines": [
     {
      "id": "L0307",
@@ -3139,8 +3167,8 @@
   {
    "id": "ch03-s05",
    "chapter": "ch03",
-   "start": 256.8333,
-   "end": 269.4583,
+   "start": 260.125,
+   "end": 272.75,
    "lines": [
     {
      "id": "L0310",
@@ -3238,8 +3266,8 @@
   {
    "id": "ch03-s06",
    "chapter": "ch03",
-   "start": 269.4583,
-   "end": 289.9167,
+   "start": 272.75,
+   "end": 293.2083,
    "lines": [
     {
      "id": "L0312",
@@ -3398,8 +3426,8 @@
   {
    "id": "ch03-s08",
    "chapter": "ch03",
-   "start": 289.9167,
-   "end": 304.25,
+   "start": 293.2083,
+   "end": 307.5417,
    "lines": [
     {
      "id": "L0318",
@@ -3526,8 +3554,8 @@
   {
    "id": "ch03-s09",
    "chapter": "ch03",
-   "start": 304.25,
-   "end": 321.0833,
+   "start": 307.5417,
+   "end": 324.375,
    "lines": [
     {
      "id": "L0319",
@@ -3731,8 +3759,8 @@
   {
    "id": "ch04-s01",
    "chapter": "ch04",
-   "start": 321.0833,
-   "end": 345.1667,
+   "start": 324.375,
+   "end": 348.4583,
    "lines": [
     {
      "id": "L0401",
@@ -4025,8 +4053,8 @@
   {
    "id": "ch04-s02",
    "chapter": "ch04",
-   "start": 345.1667,
-   "end": 366.125,
+   "start": 348.4583,
+   "end": 369.4167,
    "lines": [
     {
      "id": "L0404",
@@ -4287,8 +4315,8 @@
   {
    "id": "ch04-s03",
    "chapter": "ch04",
-   "start": 366.125,
-   "end": 376.75,
+   "start": 369.4167,
+   "end": 380.0417,
    "lines": [
     {
      "id": "L0406",
@@ -4397,8 +4425,8 @@
   {
    "id": "ch04-s04",
    "chapter": "ch04",
-   "start": 376.75,
-   "end": 387.25,
+   "start": 380.0417,
+   "end": 390.5417,
    "lines": [
     {
      "id": "L0408",
@@ -4475,8 +4503,8 @@
   {
    "id": "ch04-s05",
    "chapter": "ch04",
-   "start": 387.25,
-   "end": 398.75,
+   "start": 390.5417,
+   "end": 402.0417,
    "lines": [
     {
      "id": "L0409",
@@ -4559,8 +4587,8 @@
   {
    "id": "ch04-s06",
    "chapter": "ch04",
-   "start": 398.75,
-   "end": 421.3333,
+   "start": 402.0417,
+   "end": 424.625,
    "lines": [
     {
      "id": "L0410",
@@ -4780,8 +4808,8 @@
   {
    "id": "ch04-s07",
    "chapter": "ch04",
-   "start": 421.3333,
-   "end": 433.25,
+   "start": 424.625,
+   "end": 436.5417,
    "lines": [
     {
      "id": "L0412",
@@ -4907,8 +4935,8 @@
   {
    "id": "ch04-s08",
    "chapter": "ch04",
-   "start": 433.25,
-   "end": 450.625,
+   "start": 436.5417,
+   "end": 453.9167,
    "lines": [
     {
      "id": "L0415",
@@ -5086,8 +5114,8 @@
   {
    "id": "ch05-s01",
    "chapter": "ch05",
-   "start": 450.625,
-   "end": 470.4583,
+   "start": 453.9167,
+   "end": 473.75,
    "lines": [
     {
      "id": "L0501",
@@ -5329,8 +5357,8 @@
   {
    "id": "ch05-s03",
    "chapter": "ch05",
-   "start": 470.4583,
-   "end": 483.875,
+   "start": 473.75,
+   "end": 487.1667,
    "lines": [
     {
      "id": "L0505",
@@ -5481,8 +5509,8 @@
   {
    "id": "ch05-s04",
    "chapter": "ch05",
-   "start": 483.875,
-   "end": 527,
+   "start": 487.1667,
+   "end": 530.2917,
    "lines": [
     {
      "id": "L0507",
@@ -5920,8 +5948,8 @@
   {
    "id": "ch05-s05",
    "chapter": "ch05",
-   "start": 527,
-   "end": 536.4167,
+   "start": 530.2917,
+   "end": 539.7083,
    "lines": [
     {
      "id": "L0510",
@@ -6005,8 +6033,8 @@
   {
    "id": "ch05-s06",
    "chapter": "ch05",
-   "start": 536.4167,
-   "end": 557.4583,
+   "start": 539.7083,
+   "end": 560.75,
    "lines": [
     {
      "id": "L0511",
@@ -6195,8 +6223,8 @@
   {
    "id": "ch05-s07",
    "chapter": "ch05",
-   "start": 557.4583,
-   "end": 574.75,
+   "start": 560.75,
+   "end": 592.125,
    "lines": [
     {
      "id": "L0513",
@@ -6393,13 +6421,152 @@
        "end": 16.782
       }
      ]
+    },
+    {
+     "id": "L0514b",
+     "text": "At its rim stood a philosopher, Hubert Dreyfus: real expertise is intuition, not rules. He saw a pattern: “early, dramatic success followed by sudden unexpected difficulties.”",
+     "start": 17.332,
+     "end": 30.858,
+     "words": [
+      {
+       "w": "At",
+       "start": 17.332,
+       "end": 17.518
+      },
+      {
+       "w": "its",
+       "start": 17.576,
+       "end": 17.704
+      },
+      {
+       "w": "rim",
+       "start": 17.785,
+       "end": 18.04
+      },
+      {
+       "w": "stood",
+       "start": 18.121,
+       "end": 18.365
+      },
+      {
+       "w": "a",
+       "start": 18.4,
+       "end": 18.423
+      },
+      {
+       "w": "philosopher",
+       "start": 18.458,
+       "end": 19.05
+      },
+      {
+       "w": "Hubert",
+       "start": 19.341,
+       "end": 19.747
+      },
+      {
+       "w": "Dreyfus",
+       "start": 19.84,
+       "end": 20.629
+      },
+      {
+       "w": "real",
+       "start": 21.105,
+       "end": 21.372
+      },
+      {
+       "w": "expertise",
+       "start": 21.442,
+       "end": 22.231
+      },
+      {
+       "w": "is",
+       "start": 22.289,
+       "end": 22.452
+      },
+      {
+       "w": "intuition",
+       "start": 22.522,
+       "end": 23.183
+      },
+      {
+       "w": "not",
+       "start": 23.334,
+       "end": 23.52
+      },
+      {
+       "w": "rules",
+       "start": 23.601,
+       "end": 24.17
+      },
+      {
+       "w": "He",
+       "start": 24.693,
+       "end": 24.809
+      },
+      {
+       "w": "saw",
+       "start": 24.878,
+       "end": 25.111
+      },
+      {
+       "w": "a",
+       "start": 25.18,
+       "end": 25.215
+      },
+      {
+       "w": "pattern",
+       "start": 25.273,
+       "end": 25.703
+      },
+      {
+       "w": "early",
+       "start": 26.19,
+       "end": 26.539
+      },
+      {
+       "w": "dramatic",
+       "start": 26.736,
+       "end": 27.305
+      },
+      {
+       "w": "success",
+       "start": 27.375,
+       "end": 28.036
+      },
+      {
+       "w": "followed",
+       "start": 28.199,
+       "end": 28.582
+      },
+      {
+       "w": "by",
+       "start": 28.652,
+       "end": 28.791
+      },
+      {
+       "w": "sudden",
+       "start": 28.872,
+       "end": 29.209
+      },
+      {
+       "w": "unexpected",
+       "start": 29.337,
+       "end": 30.068
+      },
+      {
+       "w": "difficulties",
+       "start": 30.115,
+       "end": 30.858
+      }
+     ]
     }
    ],
    "beats": {
     "lit": 2.922,
     "stage": 6.068,
     "test": 9.317,
-    "never": 14.773
+    "never": 14.773,
+    "dreyfus": 18.458
    },
    "transitionIn": "cut",
    "transitionDur": 0,
@@ -6408,8 +6575,8 @@
   {
    "id": "ch05-s08",
    "chapter": "ch05",
-   "start": 574.75,
-   "end": 589.7083,
+   "start": 592.125,
+   "end": 607.0833,
    "lines": [
     {
      "id": "L0515",
@@ -6546,8 +6713,8 @@
   {
    "id": "ch05-s09b",
    "chapter": "ch05",
-   "start": 589.7083,
-   "end": 610.6667,
+   "start": 607.0833,
+   "end": 628.0417,
    "lines": [
     {
      "id": "L0522a",
@@ -6750,8 +6917,8 @@
   {
    "id": "ch05-s10",
    "chapter": "ch05",
-   "start": 610.6667,
-   "end": 626.6667,
+   "start": 628.0417,
+   "end": 644.0417,
    "lines": [
     {
      "id": "L0523",
@@ -6951,8 +7118,8 @@
   {
    "id": "ch06-s01",
    "chapter": "ch06",
-   "start": 626.6667,
-   "end": 638.2083,
+   "start": 644.0417,
+   "end": 655.5833,
    "lines": [
     {
      "id": "L0601",
@@ -7062,8 +7229,8 @@
   {
    "id": "ch06-s02",
    "chapter": "ch06",
-   "start": 638.2083,
-   "end": 650.2083,
+   "start": 655.5833,
+   "end": 667.5833,
    "lines": [
     {
      "id": "L0603",
@@ -7191,8 +7358,8 @@
   {
    "id": "ch06-s03",
    "chapter": "ch06",
-   "start": 650.2083,
-   "end": 674.9583,
+   "start": 667.5833,
+   "end": 692.3333,
    "lines": [
     {
      "id": "L0605",
@@ -7486,14 +7653,14 @@
   {
    "id": "ch06-s03b",
    "chapter": "ch06",
-   "start": 674.9583,
-   "end": 695.9583,
+   "start": 692.3333,
+   "end": 713.3333,
    "lines": [
     {
      "id": "L0607b",
-     "text": "An expert cut the features by hand; the machine only drew the line. The kernel trick lifted the crowds, so one flat cut could part them. The learning was clean; the seeing was hand-made.",
+     "text": "An expert chose what to measure, by hand; the machine only drew the line.",
      "start": 0.8,
-     "end": 12.521,
+     "end": 5.467,
      "words": [
       {
        "w": "An",
@@ -7503,180 +7670,233 @@
       {
        "w": "expert",
        "start": 0.997,
-       "end": 1.427
+       "end": 1.404
       },
       {
-       "w": "cut",
-       "start": 1.473,
-       "end": 1.648
-      },
-      {
-       "w": "the",
-       "start": 1.694,
+       "w": "chose",
+       "start": 1.45,
        "end": 1.764
       },
       {
-       "w": "features",
-       "start": 1.81,
-       "end": 2.158
+       "w": "what",
+       "start": 1.798,
+       "end": 1.961
+      },
+      {
+       "w": "to",
+       "start": 2.007,
+       "end": 2.077
+      },
+      {
+       "w": "measure",
+       "start": 2.147,
+       "end": 2.483
       },
       {
        "w": "by",
-       "start": 2.205,
-       "end": 2.379
+       "start": 2.541,
+       "end": 2.704
       },
       {
        "w": "hand",
-       "start": 2.46,
-       "end": 2.89
+       "start": 2.785,
+       "end": 3.192
       },
       {
        "w": "the",
-       "start": 3.087,
-       "end": 3.18
+       "start": 3.528,
+       "end": 3.633
       },
       {
        "w": "machine",
-       "start": 3.238,
-       "end": 3.656
+       "start": 3.679,
+       "end": 4.109
       },
       {
        "w": "only",
-       "start": 3.726,
-       "end": 4.039
+       "start": 4.167,
+       "end": 4.504
       },
       {
        "w": "drew",
-       "start": 4.097,
-       "end": 4.318
+       "start": 4.585,
+       "end": 4.805
       },
       {
        "w": "the",
-       "start": 4.376,
-       "end": 4.446
+       "start": 4.863,
+       "end": 4.933
       },
       {
        "w": "line",
-       "start": 4.504,
-       "end": 4.98
+       "start": 4.991,
+       "end": 5.467
+      }
+     ]
+    },
+    {
+     "id": "L0607c",
+     "text": "When no straight line would do, the kernel trick lifted one crowd up a hill, and one flat cut parted them. The learning was clean; the seeing was hand-made.",
+     "start": 6.367,
+     "end": 16.235,
+     "words": [
+      {
+       "w": "When",
+       "start": 6.367,
+       "end": 6.587
       },
       {
-       "w": "The",
-       "start": 5.624,
-       "end": 5.74
+       "w": "no",
+       "start": 6.657,
+       "end": 6.796
+      },
+      {
+       "w": "straight",
+       "start": 6.866,
+       "end": 7.203
+      },
+      {
+       "w": "line",
+       "start": 7.249,
+       "end": 7.458
+      },
+      {
+       "w": "would",
+       "start": 7.481,
+       "end": 7.644
+      },
+      {
+       "w": "do",
+       "start": 7.69,
+       "end": 7.911
+      },
+      {
+       "w": "the",
+       "start": 8.201,
+       "end": 8.306
       },
       {
        "w": "kernel",
-       "start": 5.798,
-       "end": 6.112
+       "start": 8.364,
+       "end": 8.677
       },
       {
        "w": "trick",
-       "start": 6.158,
-       "end": 6.402
+       "start": 8.735,
+       "end": 8.991
       },
       {
        "w": "lifted",
-       "start": 6.472,
-       "end": 6.774
-      },
-      {
-       "w": "the",
-       "start": 6.809,
-       "end": 6.878
-      },
-      {
-       "w": "crowds",
-       "start": 6.913,
-       "end": 7.377
-      },
-      {
-       "w": "so",
-       "start": 7.482,
-       "end": 7.691
+       "start": 9.072,
+       "end": 9.432
       },
       {
        "w": "one",
-       "start": 7.772,
-       "end": 7.97
+       "start": 9.513,
+       "end": 9.711
+      },
+      {
+       "w": "crowd",
+       "start": 9.757,
+       "end": 10.036
+      },
+      {
+       "w": "up",
+       "start": 10.082,
+       "end": 10.163
+      },
+      {
+       "w": "a",
+       "start": 10.21,
+       "end": 10.233
+      },
+      {
+       "w": "hill",
+       "start": 10.291,
+       "end": 10.546
+      },
+      {
+       "w": "and",
+       "start": 10.93,
+       "end": 11.092
+      },
+      {
+       "w": "one",
+       "start": 11.173,
+       "end": 11.359
       },
       {
        "w": "flat",
-       "start": 8.051,
-       "end": 8.295
+       "start": 11.44,
+       "end": 11.684
       },
       {
        "w": "cut",
-       "start": 8.376,
-       "end": 8.608
+       "start": 11.766,
+       "end": 12.009
       },
       {
-       "w": "could",
-       "start": 8.666,
-       "end": 8.829
-      },
-      {
-       "w": "part",
-       "start": 8.864,
-       "end": 9.096
+       "w": "parted",
+       "start": 12.091,
+       "end": 12.462
       },
       {
        "w": "them",
-       "start": 9.142,
-       "end": 9.305
+       "start": 12.497,
+       "end": 12.671
       },
       {
        "w": "The",
-       "start": 9.804,
-       "end": 9.92
+       "start": 13.228,
+       "end": 13.344
       },
       {
        "w": "learning",
-       "start": 9.978,
-       "end": 10.268
+       "start": 13.414,
+       "end": 13.716
       },
       {
        "w": "was",
-       "start": 10.326,
-       "end": 10.431
+       "start": 13.774,
+       "end": 13.879
       },
       {
        "w": "clean",
-       "start": 10.512,
-       "end": 10.872
+       "start": 13.948,
+       "end": 14.343
       },
       {
        "w": "the",
-       "start": 10.942,
-       "end": 11.058
+       "start": 14.61,
+       "end": 14.726
       },
       {
        "w": "seeing",
-       "start": 11.127,
-       "end": 11.464
+       "start": 14.796,
+       "end": 15.144
       },
       {
        "w": "was",
-       "start": 11.545,
-       "end": 11.685
+       "start": 15.225,
+       "end": 15.388
       },
       {
        "w": "hand-made",
-       "start": 11.743,
-       "end": 12.521
+       "start": 15.446,
+       "end": 16.235
       }
      ]
     }
    ],
    "beats": {
     "expert": 0.997,
-    "learner": 3.238,
-    "line": 4.504,
-    "kernel": 5.798,
-    "lift": 6.472,
-    "cut": 8.051,
-    "clean": 10.512,
-    "handmade": 11.743
+    "learner": 3.679,
+    "line": 4.991,
+    "kernel": 8.364,
+    "lift": 9.072,
+    "cut": 11.44,
+    "clean": 13.948,
+    "handmade": 15.446
    },
    "transitionIn": "cut",
    "transitionDur": 0,
@@ -7685,8 +7905,8 @@
   {
    "id": "ch06-s04",
    "chapter": "ch06",
-   "start": 695.9583,
-   "end": 715.5417,
+   "start": 713.3333,
+   "end": 732.9167,
    "lines": [
     {
      "id": "L0608",
@@ -7940,8 +8160,8 @@
   {
    "id": "ch06-s05",
    "chapter": "ch06",
-   "start": 715.5417,
-   "end": 740.4167,
+   "start": 732.9167,
+   "end": 757.7917,
    "lines": [
     {
      "id": "L0610",
@@ -8275,8 +8495,8 @@
   {
    "id": "ch06-s06",
    "chapter": "ch06",
-   "start": 740.4167,
-   "end": 756,
+   "start": 757.7917,
+   "end": 773.375,
    "lines": [
     {
      "id": "L0613",
@@ -8465,8 +8685,8 @@
   {
    "id": "ch06-s07",
    "chapter": "ch06",
-   "start": 756,
-   "end": 768.2083,
+   "start": 773.375,
+   "end": 785.5833,
    "lines": [
     {
      "id": "L0615",
@@ -8607,8 +8827,8 @@
   {
    "id": "ch06-s08",
    "chapter": "ch06",
-   "start": 768.2083,
-   "end": 775.7917,
+   "start": 785.5833,
+   "end": 793.1667,
    "lines": [
     {
      "id": "L0616",
@@ -8688,8 +8908,8 @@
   {
    "id": "ch07-s01",
    "chapter": "ch07",
-   "start": 775.7917,
-   "end": 796.2917,
+   "start": 793.1667,
+   "end": 813.6667,
    "lines": [
     {
      "id": "L0701",
@@ -8880,8 +9100,8 @@
   {
    "id": "ch07-s02",
    "chapter": "ch07",
-   "start": 796.2917,
-   "end": 819.9583,
+   "start": 813.6667,
+   "end": 837.3333,
    "lines": [
     {
      "id": "L0702",
@@ -9193,8 +9413,8 @@
   {
    "id": "ch07-s03",
    "chapter": "ch07",
-   "start": 819.9583,
-   "end": 843.8333,
+   "start": 837.3333,
+   "end": 861.2083,
    "lines": [
     {
      "id": "L0704",
@@ -9456,8 +9676,8 @@
   {
    "id": "ch07-s04",
    "chapter": "ch07",
-   "start": 843.8333,
-   "end": 862.8333,
+   "start": 861.2083,
+   "end": 880.2083,
    "lines": [
     {
      "id": "L0706",
@@ -9649,8 +9869,8 @@
   {
    "id": "ch07-s06",
    "chapter": "ch07",
-   "start": 862.8333,
-   "end": 871,
+   "start": 880.2083,
+   "end": 888.375,
    "lines": [
     {
      "id": "L0710",
@@ -9715,8 +9935,8 @@
   {
    "id": "ch08-s01",
    "chapter": "ch08",
-   "start": 871,
-   "end": 887.8333,
+   "start": 888.375,
+   "end": 905.2083,
    "lines": [
     {
      "id": "L0802",
@@ -9903,8 +10123,8 @@
   {
    "id": "ch08-s02",
    "chapter": "ch08",
-   "start": 887.8333,
-   "end": 900.9167,
+   "start": 905.2083,
+   "end": 918.2917,
    "lines": [
     {
      "id": "L0803",
@@ -10029,8 +10249,8 @@
   {
    "id": "ch08-s03",
    "chapter": "ch08",
-   "start": 900.9167,
-   "end": 915.9583,
+   "start": 918.2917,
+   "end": 933.3333,
    "lines": [
     {
      "id": "L0805",
@@ -10189,8 +10409,8 @@
   {
    "id": "ch08-s04",
    "chapter": "ch08",
-   "start": 915.9583,
-   "end": 939.375,
+   "start": 933.3333,
+   "end": 956.75,
    "lines": [
     {
      "id": "L0806",
@@ -10503,8 +10723,8 @@
   {
    "id": "ch08-s05",
    "chapter": "ch08",
-   "start": 939.375,
-   "end": 960.0833,
+   "start": 956.75,
+   "end": 977.4583,
    "lines": [
     {
      "id": "L0809",
@@ -10736,8 +10956,8 @@
   {
    "id": "ch08-s06",
    "chapter": "ch08",
-   "start": 960.0833,
-   "end": 972.1667,
+   "start": 977.4583,
+   "end": 989.5417,
    "lines": [
     {
      "id": "L0811",
@@ -10874,8 +11094,8 @@
   {
    "id": "ch08-s07",
    "chapter": "ch08",
-   "start": 972.1667,
-   "end": 988.9583,
+   "start": 989.5417,
+   "end": 1006.3333,
    "lines": [
     {
      "id": "L0813",
@@ -11060,8 +11280,8 @@
   {
    "id": "ch08-s08",
    "chapter": "ch08",
-   "start": 988.9583,
-   "end": 1006.5417,
+   "start": 1006.3333,
+   "end": 1023.9167,
    "lines": [
     {
      "id": "L0815",
@@ -11293,8 +11513,8 @@
   {
    "id": "ch08-s08b",
    "chapter": "ch08",
-   "start": 1006.5417,
-   "end": 1018.9167,
+   "start": 1023.9167,
+   "end": 1036.2917,
    "lines": [
     {
      "id": "L0830",
@@ -11478,8 +11698,8 @@
   {
    "id": "ch08-s09",
    "chapter": "ch08",
-   "start": 1018.9167,
-   "end": 1036.4583,
+   "start": 1036.2917,
+   "end": 1053.8333,
    "lines": [
     {
      "id": "L0817",
@@ -11688,8 +11908,8 @@
   {
    "id": "ch08-s10",
    "chapter": "ch08",
-   "start": 1036.4583,
-   "end": 1044.5417,
+   "start": 1053.8333,
+   "end": 1061.9167,
    "lines": [
     {
      "id": "L0819",
@@ -11790,8 +12010,8 @@
   {
    "id": "ch08-s11",
    "chapter": "ch08",
-   "start": 1044.5417,
-   "end": 1054.3333,
+   "start": 1061.9167,
+   "end": 1073.2083,
    "lines": [
     {
      "id": "L0820",
@@ -11825,97 +12045,97 @@
      "id": "L0821",
      "text": "A bad back kept Hinton from flying. Yann LeCun stood at the rear of a packed room.",
      "start": 4.456,
-     "end": 9.286,
+     "end": 10.76,
      "words": [
       {
        "w": "A",
        "start": 4.456,
-       "end": 4.537
+       "end": 4.584
       },
       {
        "w": "bad",
-       "start": 4.607,
-       "end": 4.793
+       "start": 4.723,
+       "end": 4.99
       },
       {
        "w": "back",
-       "start": 4.851,
-       "end": 5.071
-      },
-      {
-       "w": "kept",
-       "start": 5.164,
+       "start": 5.071,
        "end": 5.373
       },
       {
+       "w": "kept",
+       "start": 5.768,
+       "end": 6.058
+      },
+      {
        "w": "Hinton",
-       "start": 5.408,
-       "end": 5.721
+       "start": 6.105,
+       "end": 6.499
       },
       {
        "w": "from",
-       "start": 5.768,
-       "end": 5.907
+       "start": 6.557,
+       "end": 6.743
       },
       {
        "w": "flying",
-       "start": 5.977,
-       "end": 6.406
+       "start": 6.824,
+       "end": 7.358
       },
       {
        "w": "Yann",
-       "start": 6.824,
-       "end": 7.091
+       "start": 7.881,
+       "end": 8.16
       },
       {
        "w": "Le",
-       "start": 7.15,
-       "end": 7.242
+       "start": 8.229,
+       "end": 8.334
       },
       {
        "w": "Cun",
-       "start": 7.3,
-       "end": 7.579
+       "start": 8.415,
+       "end": 8.775
       },
       {
        "w": "stood",
-       "start": 7.66,
-       "end": 7.939
+       "start": 8.856,
+       "end": 9.17
       },
       {
        "w": "at",
-       "start": 7.985,
-       "end": 8.043
+       "start": 9.216,
+       "end": 9.286
       },
       {
        "w": "the",
-       "start": 8.078,
-       "end": 8.148
+       "start": 9.344,
+       "end": 9.413
       },
       {
        "w": "rear",
-       "start": 8.206,
-       "end": 8.415
+       "start": 9.495,
+       "end": 9.739
       },
       {
        "w": "of",
-       "start": 8.485,
-       "end": 8.543
+       "start": 9.82,
+       "end": 9.889
       },
       {
        "w": "a",
-       "start": 8.601,
-       "end": 8.624
+       "start": 9.959,
+       "end": 9.982
       },
       {
        "w": "packed",
-       "start": 8.682,
-       "end": 8.949
+       "start": 10.052,
+       "end": 10.365
       },
       {
        "w": "room",
-       "start": 9.007,
-       "end": 9.286
+       "start": 10.447,
+       "end": 10.76
       }
      ]
     }
@@ -11923,9 +12143,9 @@
    "beats": {
     "florence": 1.2,
     "hall": 4.256,
-    "professor": 5.408,
-    "aisles": 6.506,
-    "lecun": 6.824
+    "professor": 6.105,
+    "aisles": 7.458,
+    "lecun": 7.881
    },
    "transitionIn": "fadeBlack",
    "transitionDur": 1.6,
@@ -11934,8 +12154,8 @@
   {
    "id": "ch08-s12",
    "chapter": "ch08",
-   "start": 1054.3333,
-   "end": 1067.3333,
+   "start": 1073.2083,
+   "end": 1086.2083,
    "lines": [
     {
      "id": "L0822",
@@ -12047,8 +12267,8 @@
   {
    "id": "ch08-s13",
    "chapter": "ch08",
-   "start": 1067.3333,
-   "end": 1078.3333,
+   "start": 1086.2083,
+   "end": 1097.2083,
    "lines": [
     {
      "id": "L0834",
@@ -12196,8 +12416,8 @@
   {
    "id": "ch08-s13b",
    "chapter": "ch08",
-   "start": 1078.3333,
-   "end": 1116.5833,
+   "start": 1097.2083,
+   "end": 1135.4583,
    "lines": [
     {
      "id": "L0826",
@@ -12672,8 +12892,8 @@
   {
    "id": "ch08-s14",
    "chapter": "ch08",
-   "start": 1116.5833,
-   "end": 1128.7083,
+   "start": 1135.4583,
+   "end": 1148.5833,
    "lines": [
     {
      "id": "L0827",
@@ -12797,32 +13017,32 @@
      "id": "L0828",
      "text": "Put that in the file.",
      "start": 8.567,
-     "end": 9.809,
+     "end": 10.796,
      "words": [
       {
        "w": "Put",
        "start": 8.567,
-       "end": 8.787
+       "end": 8.869
       },
       {
        "w": "that",
-       "start": 8.834,
-       "end": 9.043
+       "start": 8.927,
+       "end": 9.229
       },
       {
        "w": "in",
-       "start": 9.101,
-       "end": 9.194
+       "start": 9.949,
+       "end": 10.111
       },
       {
        "w": "the",
-       "start": 9.24,
-       "end": 9.31
+       "start": 10.169,
+       "end": 10.239
       },
       {
        "w": "file",
-       "start": 9.368,
-       "end": 9.809
+       "start": 10.297,
+       "end": 10.796
       }
      ]
     }
@@ -12830,9 +13050,9 @@
    "beats": {
     "slip": 1.221,
     "leds": 3.891,
-    "file": 9.368,
-    "clue": 10.809,
-    "handoff": 12.009
+    "file": 10.297,
+    "clue": 11.796,
+    "handoff": 12.996
    },
    "transitionIn": "crossfade",
    "transitionDur": 1,
@@ -12841,8 +13061,8 @@
   {
    "id": "ch09-s01",
    "chapter": "ch09",
-   "start": 1128.7083,
-   "end": 1149.0417,
+   "start": 1148.5833,
+   "end": 1168.9167,
    "lines": [
     {
      "id": "L0901",
@@ -13046,8 +13266,8 @@
   {
    "id": "ch09-s03a",
    "chapter": "ch09",
-   "start": 1149.0417,
-   "end": 1157.5,
+   "start": 1168.9167,
+   "end": 1177.375,
    "lines": [
     {
      "id": "L0905",
@@ -13166,8 +13386,8 @@
   {
    "id": "ch09-s03",
    "chapter": "ch09",
-   "start": 1157.5,
-   "end": 1180.5417,
+   "start": 1177.375,
+   "end": 1201.8333,
    "lines": [
     {
      "id": "L0905b",
@@ -13241,150 +13461,150 @@
      "id": "L0906",
      "text": "Seoul, 2016. AlphaGo played move thirty-seven, a one-in-ten-thousand move.",
      "start": 6.337,
-     "end": 12.862,
+     "end": 14.301,
      "words": [
       {
        "w": "Seoul",
        "start": 6.337,
-       "end": 6.801
+       "end": 6.859
       },
       {
        "w": "twenty",
-       "start": 7.01,
-       "end": 7.347
+       "start": 7.08,
+       "end": 7.51
       },
       {
        "w": "sixteen",
-       "start": 7.394,
-       "end": 7.916
+       "start": 7.568,
+       "end": 8.218
       },
       {
        "w": "Alpha",
-       "start": 8.334,
-       "end": 8.647
+       "start": 8.624,
+       "end": 8.961
       },
       {
        "w": "Go",
-       "start": 8.705,
-       "end": 8.914
-      },
-      {
-       "w": "played",
-       "start": 9.007,
+       "start": 9.031,
        "end": 9.263
       },
       {
+       "w": "played",
+       "start": 9.356,
+       "end": 9.681
+      },
+      {
        "w": "move",
-       "start": 9.321,
-       "end": 9.646
+       "start": 9.75,
+       "end": 10.215
       },
       {
        "w": "thirty-seven",
-       "start": 9.692,
-       "end": 10.4
+       "start": 10.563,
+       "end": 11.445
       },
       {
        "w": "a",
-       "start": 10.749,
-       "end": 10.842
+       "start": 11.77,
+       "end": 11.863
       },
       {
        "w": "one-in-ten-thousand",
-       "start": 10.969,
-       "end": 12.246
+       "start": 11.991,
+       "end": 13.628
       },
       {
        "w": "move",
-       "start": 12.374,
-       "end": 12.862
+       "start": 13.756,
+       "end": 14.301
       }
      ]
     },
     {
      "id": "L0907",
      "text": "Then Lee Sedol found a move just as rare, and won the match’s only human game.",
-     "start": 13.502,
-     "end": 19.005,
+     "start": 14.941,
+     "end": 20.444,
      "words": [
       {
        "w": "Then",
-       "start": 13.502,
-       "end": 13.734
+       "start": 14.941,
+       "end": 15.173
       },
       {
        "w": "Lee",
-       "start": 13.827,
-       "end": 14.674
+       "start": 15.266,
+       "end": 16.113
       },
       {
        "w": "Sedol",
-       "start": 13.827,
-       "end": 14.674
+       "start": 15.266,
+       "end": 16.113
       },
       {
        "w": "found",
-       "start": 14.837,
-       "end": 15.115
+       "start": 16.276,
+       "end": 16.554
       },
       {
        "w": "a",
-       "start": 15.162,
-       "end": 15.197
+       "start": 16.601,
+       "end": 16.636
       },
       {
        "w": "move",
-       "start": 15.255,
-       "end": 15.533
+       "start": 16.694,
+       "end": 16.972
       },
       {
        "w": "just",
-       "start": 15.591,
-       "end": 15.812
+       "start": 17.03,
+       "end": 17.251
       },
       {
        "w": "as",
-       "start": 15.858,
-       "end": 15.94
+       "start": 17.297,
+       "end": 17.379
       },
       {
        "w": "rare",
-       "start": 16.033,
-       "end": 16.474
+       "start": 17.472,
+       "end": 17.913
       },
       {
        "w": "and",
-       "start": 16.764,
-       "end": 16.915
+       "start": 18.203,
+       "end": 18.354
       },
       {
        "w": "won",
-       "start": 16.985,
-       "end": 17.159
+       "start": 18.424,
+       "end": 18.598
       },
       {
        "w": "the",
-       "start": 17.205,
-       "end": 17.275
+       "start": 18.644,
+       "end": 18.714
       },
       {
        "w": "match’s",
-       "start": 17.31,
-       "end": 17.67
+       "start": 18.749,
+       "end": 19.109
       },
       {
        "w": "only",
-       "start": 17.762,
-       "end": 18.111
+       "start": 19.201,
+       "end": 19.55
       },
       {
        "w": "human",
-       "start": 18.18,
-       "end": 18.471
+       "start": 19.619,
+       "end": 19.91
       },
       {
        "w": "game",
-       "start": 18.54,
-       "end": 19.005
+       "start": 19.979,
+       "end": 20.444
       }
      ]
     }
@@ -13396,13 +13616,13 @@
     "reward": 5.209,
     "makers": 0.6,
     "machineCard": 1.227,
-    "move37": 9.692,
-    "rare37": 10.969,
-    "move78": 14.837,
-    "lids": 19.205,
-    "candleWipe": 19.905,
-    "pinGlint": 20.805,
-    "goSnuff": 21.505
+    "move37": 10.563,
+    "rare37": 11.991,
+    "move78": 16.276,
+    "lids": 20.644,
+    "candleWipe": 21.344,
+    "pinGlint": 22.244,
+    "goSnuff": 22.944
    },
    "transitionIn": "paperWipe",
    "transitionDur": 1,
@@ -13411,8 +13631,8 @@
   {
    "id": "ch09-s04",
    "chapter": "ch09",
-   "start": 1180.5417,
-   "end": 1200.4583,
+   "start": 1201.8333,
+   "end": 1221.75,
    "lines": [
     {
      "id": "L0909",
@@ -13620,8 +13840,8 @@
   {
    "id": "ch09-s05",
    "chapter": "ch09",
-   "start": 1200.4583,
-   "end": 1225.3333,
+   "start": 1221.75,
+   "end": 1246.625,
    "lines": [
     {
      "id": "L0910",
@@ -13872,8 +14092,8 @@
   {
    "id": "ch10-s01",
    "chapter": "ch10",
-   "start": 1225.3333,
-   "end": 1235.2083,
+   "start": 1246.625,
+   "end": 1256.5,
    "lines": [
     {
      "id": "L1002",
@@ -13979,8 +14199,8 @@
   {
    "id": "ch10-s02",
    "chapter": "ch10",
-   "start": 1235.2083,
-   "end": 1248.2917,
+   "start": 1256.5,
+   "end": 1269.5833,
    "lines": [
     {
      "id": "L1005",
@@ -14134,8 +14354,8 @@
   {
    "id": "ch10-s03",
    "chapter": "ch10",
-   "start": 1248.2917,
-   "end": 1263.375,
+   "start": 1269.5833,
+   "end": 1284.6667,
    "lines": [
     {
      "id": "L1006",
@@ -14312,8 +14532,8 @@
   {
    "id": "ch10-s04",
    "chapter": "ch10",
-   "start": 1263.375,
-   "end": 1283.1667,
+   "start": 1284.6667,
+   "end": 1304.4583,
    "lines": [
     {
      "id": "L1009",
@@ -14536,8 +14756,8 @@
   {
    "id": "ch10-s05",
    "chapter": "ch10",
-   "start": 1283.1667,
-   "end": 1299.8333,
+   "start": 1304.4583,
+   "end": 1321.125,
    "lines": [
     {
      "id": "L1010",
@@ -14749,8 +14969,8 @@
   {
    "id": "ch10-s06",
    "chapter": "ch10",
-   "start": 1299.8333,
-   "end": 1327.875,
+   "start": 1321.125,
+   "end": 1351.2917,
    "lines": [
     {
      "id": "L1011",
@@ -14935,167 +15155,187 @@
     },
     {
      "id": "L1013",
-     "text": "Pour one jug of light: higher scores get far bigger shares. About half runs to river.",
+     "text": "Pour one jug of light: higher scores get far bigger shares. About half runs to river: softmax, to the trade.",
      "start": 15.589,
-     "end": 21.301,
+     "end": 23.461,
      "words": [
       {
        "w": "Pour",
        "start": 15.589,
-       "end": 15.845
+       "end": 15.856
       },
       {
        "w": "one",
-       "start": 15.914,
-       "end": 16.135
+       "start": 15.926,
+       "end": 16.111
       },
       {
        "w": "jug",
-       "start": 16.193,
-       "end": 16.39
+       "start": 16.169,
+       "end": 16.355
       },
       {
        "w": "of",
-       "start": 16.437,
-       "end": 16.506
+       "start": 16.402,
+       "end": 16.46
       },
       {
        "w": "light",
-       "start": 16.588,
-       "end": 16.878
+       "start": 16.541,
+       "end": 16.843
       },
       {
        "w": "higher",
        "start": 17.191,
-       "end": 17.493
+       "end": 17.505
       },
       {
        "w": "scores",
-       "start": 17.528,
-       "end": 17.946
+       "start": 17.539,
+       "end": 17.992
       },
       {
        "w": "get",
-       "start": 18.074,
-       "end": 18.259
+       "start": 18.12,
+       "end": 18.317
       },
       {
        "w": "far",
-       "start": 18.387,
-       "end": 18.677
+       "start": 18.445,
+       "end": 18.724
       },
       {
        "w": "bigger",
-       "start": 18.747,
-       "end": 18.968
+       "start": 18.793,
+       "end": 19.026
       },
       {
        "w": "shares",
-       "start": 19.026,
-       "end": 19.502
+       "start": 19.072,
+       "end": 19.548
       },
       {
        "w": "About",
-       "start": 19.92,
-       "end": 20.233
+       "start": 20.07,
+       "end": 20.396
       },
       {
        "w": "half",
-       "start": 20.303,
-       "end": 20.523
+       "start": 20.465,
+       "end": 20.674
       },
       {
        "w": "runs",
-       "start": 20.593,
-       "end": 20.825
+       "start": 20.755,
+       "end": 21.011
       },
       {
        "w": "to",
-       "start": 20.872,
-       "end": 20.941
+       "start": 21.069,
+       "end": 21.15
       },
       {
        "w": "river",
-       "start": 21.023,
-       "end": 21.301
+       "start": 21.231,
+       "end": 21.51
+      },
+      {
+       "w": "softmax",
+       "start": 21.719,
+       "end": 22.427
+      },
+      {
+       "w": "to",
+       "start": 22.648,
+       "end": 22.764
+      },
+      {
+       "w": "the",
+       "start": 22.834,
+       "end": 22.903
+      },
+      {
+       "w": "trade",
+       "start": 22.95,
+       "end": 23.461
       }
      ]
     },
     {
      "id": "L1014",
      "text": "Bank takes in the messages in those shares, and now means the water's edge.",
-     "start": 21.851,
-     "end": 26.204,
+     "start": 24.011,
+     "end": 28.364,
      "words": [
       {
        "w": "Bank",
-       "start": 21.851,
-       "end": 22.129
+       "start": 24.011,
+       "end": 24.289
       },
       {
        "w": "takes",
-       "start": 22.211,
-       "end": 22.501
+       "start": 24.371,
+       "end": 24.661
       },
       {
        "w": "in",
-       "start": 22.547,
-       "end": 22.64
+       "start": 24.707,
+       "end": 24.8
       },
       {
        "w": "the",
-       "start": 22.687,
-       "end": 22.756
+       "start": 24.847,
+       "end": 24.916
       },
       {
        "w": "messages",
-       "start": 22.791,
-       "end": 23.186
+       "start": 24.951,
+       "end": 25.346
       },
       {
        "w": "in",
-       "start": 23.244,
-       "end": 23.337
+       "start": 25.404,
+       "end": 25.497
       },
       {
        "w": "those",
-       "start": 23.383,
-       "end": 23.604
+       "start": 25.543,
+       "end": 25.764
       },
       {
        "w": "shares",
-       "start": 23.639,
-       "end": 24.033
+       "start": 25.799,
+       "end": 26.193
       },
       {
        "w": "and",
-       "start": 24.149,
-       "end": 24.324
+       "start": 26.309,
+       "end": 26.484
       },
       {
        "w": "now",
-       "start": 24.405,
-       "end": 24.66
+       "start": 26.565,
+       "end": 26.82
       },
       {
        "w": "means",
-       "start": 24.788,
-       "end": 25.032
+       "start": 26.948,
+       "end": 27.192
       },
       {
        "w": "the",
-       "start": 25.078,
-       "end": 25.148
+       "start": 27.238,
+       "end": 27.308
       },
       {
        "w": "water's",
-       "start": 25.206,
-       "end": 25.601
+       "start": 27.366,
+       "end": 27.761
       },
       {
        "w": "edge",
-       "start": 25.728,
-       "end": 26.204
+       "start": 27.888,
+       "end": 28.364
       }
      ]
     }
@@ -15107,9 +15347,9 @@
     "scores": 10.321,
     "halve": 14.478,
     "pour": 15.589,
-    "shares": 21.023,
-    "messages": 22.791,
-    "tint": 25.206
+    "shares": 21.231,
+    "messages": 24.951,
+    "tint": 27.366
    },
    "transitionIn": "cut",
    "transitionDur": 0,
@@ -15126,8 +15366,8 @@
   {
    "id": "ch10-s07",
    "chapter": "ch10",
-   "start": 1327.875,
-   "end": 1347.875,
+   "start": 1351.2917,
+   "end": 1371.2917,
    "lines": [
     {
      "id": "L1015",
@@ -15377,8 +15617,8 @@
   {
    "id": "ch10-s08",
    "chapter": "ch10",
-   "start": 1347.875,
-   "end": 1358.5,
+   "start": 1371.2917,
+   "end": 1381.9167,
    "lines": [
     {
      "id": "L1019",
@@ -15478,8 +15718,8 @@
   {
    "id": "ch10-s09",
    "chapter": "ch10",
-   "start": 1358.5,
-   "end": 1372.0417,
+   "start": 1381.9167,
+   "end": 1395.4583,
    "lines": [
     {
      "id": "L1020",
@@ -15666,8 +15906,8 @@
   {
    "id": "ch10-s10",
    "chapter": "ch10",
-   "start": 1372.0417,
-   "end": 1381.1667,
+   "start": 1395.4583,
+   "end": 1404.5833,
    "lines": [
     {
      "id": "L1021",
@@ -15751,8 +15991,8 @@
   {
    "id": "ch10-s12",
    "chapter": "ch10",
-   "start": 1381.1667,
-   "end": 1399.875,
+   "start": 1404.5833,
+   "end": 1423.2917,
    "lines": [
     {
      "id": "L1025",
@@ -15937,8 +16177,8 @@
   {
    "id": "ch10-s13b",
    "chapter": "ch10",
-   "start": 1399.875,
-   "end": 1411.4583,
+   "start": 1423.2917,
+   "end": 1434.875,
    "lines": [
     {
      "id": "L1030",
@@ -16038,8 +16278,8 @@
   {
    "id": "ch10-s14",
    "chapter": "ch10",
-   "start": 1411.4583,
-   "end": 1435.0833,
+   "start": 1434.875,
+   "end": 1458.5,
    "lines": [
     {
      "id": "L1032",
@@ -16327,8 +16567,8 @@
   {
    "id": "ch11-s01",
    "chapter": "ch11",
-   "start": 1435.0833,
-   "end": 1449.0833,
+   "start": 1458.5,
+   "end": 1472.5,
    "lines": [],
    "beats": {
     "indexTab": 0.1,
@@ -16346,14 +16586,14 @@
   {
    "id": "ch11-s02",
    "chapter": "ch11",
-   "start": 1449.0833,
-   "end": 1478.875,
+   "start": 1472.5,
+   "end": 1502.9167,
    "lines": [
     {
      "id": "L1103",
-     "text": "In 2019, OpenAI’s GPT-2, a Transformer’s writing half, read some eight million web pages with one goal: “predict the next word.” No labels needed: every next word is its own right answer.",
+     "text": "In 2019, OpenAI’s GPT-2, a Transformer’s writing half, read some eight million web pages with one goal: “predict the next word”, or rather, the next word-piece. No labels needed: every next word is its own right answer.",
      "start": 0.8,
-     "end": 16.775,
+     "end": 18.714,
      "words": [
       {
        "w": "In",
@@ -16367,38 +16607,38 @@
       },
       {
        "w": "nineteen",
-       "start": 1.392,
-       "end": 2.007
+       "start": 1.404,
+       "end": 2.019
       },
       {
        "w": "Open",
-       "start": 2.263,
-       "end": 2.6
+       "start": 2.205,
+       "end": 2.53
       },
       {
        "w": "A.I.'s",
-       "start": 2.681,
-       "end": 3.319
+       "start": 2.611,
+       "end": 3.25
       },
       {
        "w": "G",
-       "start": 3.482,
-       "end": 3.702
+       "start": 3.412,
+       "end": 3.633
       },
       {
        "w": "P",
-       "start": 3.877,
-       "end": 3.97
+       "start": 3.819,
+       "end": 3.946
       },
       {
        "w": "T",
-       "start": 4.155,
-       "end": 4.283
+       "start": 4.132,
+       "end": 4.26
       },
       {
        "w": "two",
-       "start": 4.469,
-       "end": 4.782
+       "start": 4.446,
+       "end": 4.771
       },
       {
        "w": "a",
@@ -16413,237 +16653,267 @@
       {
        "w": "writing",
        "start": 5.99,
-       "end": 6.361
+       "end": 6.373
       },
       {
        "w": "half",
-       "start": 6.442,
-       "end": 6.768
+       "start": 6.454,
+       "end": 6.779
       },
       {
        "w": "read",
-       "start": 7.116,
-       "end": 7.29
+       "start": 7.127,
+       "end": 7.302
       },
       {
        "w": "some",
-       "start": 7.325,
-       "end": 7.487
+       "start": 7.348,
+       "end": 7.511
       },
       {
        "w": "eight",
-       "start": 7.545,
-       "end": 7.754
+       "start": 7.569,
+       "end": 7.766
       },
       {
        "w": "million",
-       "start": 7.801,
-       "end": 8.103
+       "start": 7.812,
+       "end": 8.114
       },
       {
        "w": "web",
-       "start": 8.161,
-       "end": 8.323
+       "start": 8.172,
+       "end": 8.335
       },
       {
        "w": "pages",
-       "start": 8.381,
-       "end": 8.799
+       "start": 8.393,
+       "end": 8.822
       },
       {
        "w": "with",
-       "start": 8.846,
-       "end": 8.997
+       "start": 8.869,
+       "end": 9.02
       },
       {
        "w": "one",
-       "start": 9.066,
-       "end": 9.264
+       "start": 9.09,
+       "end": 9.287
       },
       {
        "w": "goal",
-       "start": 9.322,
-       "end": 9.67
+       "start": 9.345,
+       "end": 9.693
       },
       {
        "w": "predict",
-       "start": 10.227,
-       "end": 10.703
+       "start": 10.262,
+       "end": 10.738
       },
       {
        "w": "the",
-       "start": 10.773,
-       "end": 10.866
+       "start": 10.808,
+       "end": 10.889
       },
       {
        "w": "next",
-       "start": 10.912,
-       "end": 11.168
+       "start": 10.947,
+       "end": 11.191
       },
       {
        "w": "word",
-       "start": 11.226,
-       "end": 11.655
+       "start": 11.249,
+       "end": 11.679
+      },
+      {
+       "w": "or",
+       "start": 12.131,
+       "end": 12.305
+      },
+      {
+       "w": "rather",
+       "start": 12.375,
+       "end": 12.735
+      },
+      {
+       "w": "the",
+       "start": 12.956,
+       "end": 13.06
+      },
+      {
+       "w": "next",
+       "start": 13.13,
+       "end": 13.35
+      },
+      {
+       "w": "word",
+       "start": 13.408,
+       "end": 13.664
+      },
+      {
+       "w": "piece",
+       "start": 13.722,
+       "end": 14.256
       },
       {
        "w": "No",
-       "start": 12.735,
-       "end": 12.979
+       "start": 14.848,
+       "end": 15.057
       },
       {
        "w": "labels",
-       "start": 13.072,
-       "end": 13.49
+       "start": 15.138,
+       "end": 15.521
       },
       {
        "w": "needed",
-       "start": 13.571,
-       "end": 14.001
+       "start": 15.591,
+       "end": 15.963
       },
       {
        "w": "every",
-       "start": 14.384,
-       "end": 14.697
+       "start": 16.311,
+       "end": 16.648
       },
       {
        "w": "next",
-       "start": 14.767,
-       "end": 15.022
+       "start": 16.706,
+       "end": 16.949
       },
       {
        "w": "word",
-       "start": 15.08,
-       "end": 15.371
+       "start": 17.008,
+       "end": 17.298
       },
       {
        "w": "is",
-       "start": 15.44,
-       "end": 15.545
+       "start": 17.367,
+       "end": 17.53
       },
       {
        "w": "its",
-       "start": 15.603,
-       "end": 15.73
+       "start": 17.588,
+       "end": 17.716
       },
       {
        "w": "own",
-       "start": 15.788,
-       "end": 15.951
+       "start": 17.774,
+       "end": 17.913
       },
       {
        "w": "right",
-       "start": 16.021,
-       "end": 16.276
+       "start": 17.983,
+       "end": 18.227
       },
       {
        "w": "answer",
-       "start": 16.334,
-       "end": 16.775
+       "start": 18.285,
+       "end": 18.714
       }
      ]
     },
     {
      "id": "L1104",
      "text": "From the file, Lenat's team: “practically nothing” from “the raw text.” It sounded sensible, at the time.",
-     "start": 17.375,
-     "end": 24.457,
+     "start": 19.314,
+     "end": 26.396,
      "words": [
       {
        "w": "From",
-       "start": 17.375,
-       "end": 17.572
+       "start": 19.314,
+       "end": 19.511
       },
       {
        "w": "the",
-       "start": 17.618,
-       "end": 17.688
+       "start": 19.557,
+       "end": 19.627
       },
       {
        "w": "file",
-       "start": 17.746,
-       "end": 18.245
+       "start": 19.685,
+       "end": 20.184
       },
       {
        "w": "Lenat's",
-       "start": 18.396,
-       "end": 18.907
+       "start": 20.335,
+       "end": 20.846
       },
       {
        "w": "team",
-       "start": 18.953,
-       "end": 19.29
+       "start": 20.892,
+       "end": 21.229
       },
       {
        "w": "practically",
-       "start": 19.638,
-       "end": 20.207
+       "start": 21.577,
+       "end": 22.146
       },
       {
        "w": "nothing",
-       "start": 20.289,
-       "end": 20.648
+       "start": 22.228,
+       "end": 22.587
       },
       {
        "w": "from",
-       "start": 20.73,
-       "end": 20.927
+       "start": 22.669,
+       "end": 22.866
       },
       {
        "w": "the",
-       "start": 20.997,
-       "end": 21.066
-      },
-      {
-       "w": "raw",
-       "start": 21.136,
-       "end": 21.392
-      },
-      {
-       "w": "text",
-       "start": 21.461,
-       "end": 22.03
-      },
-      {
-       "w": "It",
-       "start": 22.448,
-       "end": 22.599
-      },
-      {
-       "w": "sounded",
-       "start": 22.669,
+       "start": 22.936,
        "end": 23.005
       },
       {
+       "w": "raw",
+       "start": 23.075,
+       "end": 23.331
+      },
+      {
+       "w": "text",
+       "start": 23.4,
+       "end": 23.969
+      },
+      {
+       "w": "It",
+       "start": 24.387,
+       "end": 24.538
+      },
+      {
+       "w": "sounded",
+       "start": 24.608,
+       "end": 24.944
+      },
+      {
        "w": "sensible",
-       "start": 23.052,
-       "end": 23.655
+       "start": 24.991,
+       "end": 25.594
       },
       {
        "w": "at",
-       "start": 23.737,
-       "end": 23.899
+       "start": 25.676,
+       "end": 25.838
       },
       {
        "w": "the",
-       "start": 23.934,
-       "end": 24.004
+       "start": 25.873,
+       "end": 25.943
       },
       {
        "w": "time",
-       "start": 24.05,
-       "end": 24.457
+       "start": 25.989,
+       "end": 26.396
       }
      ]
     }
    ],
    "beats": {
     "blueprint": 5.99,
-    "newCard": 9.322,
-    "predict": 10.227,
-    "noLabels": 13.072,
-    "oldCard": 16.925,
-    "thread": 21.136,
-    "taper": 23.052
+    "newCard": 9.345,
+    "predict": 10.262,
+    "noLabels": 15.138,
+    "oldCard": 18.864,
+    "thread": 23.075,
+    "taper": 24.991
    },
    "transitionIn": "cut",
    "transitionDur": 0,
@@ -16652,16 +16922,16 @@
     {
      "text": "tokens",
      "gloss": "models read word-pieces, not whole words",
-     "at": 10.227,
-     "until": 14.427
+     "at": 10.262,
+     "until": 14.462
     }
    ]
   },
   {
    "id": "ch11-s03",
    "chapter": "ch11",
-   "start": 1478.875,
-   "end": 1492,
+   "start": 1502.9167,
+   "end": 1516.0417,
    "lines": [
     {
      "id": "L1107",
@@ -16784,8 +17054,8 @@
   {
    "id": "ch11-s05",
    "chapter": "ch11",
-   "start": 1492,
-   "end": 1514.75,
+   "start": 1516.0417,
+   "end": 1538.7917,
    "lines": [
     {
      "id": "L1110",
@@ -17010,8 +17280,8 @@
   {
    "id": "ch11-s08",
    "chapter": "ch11",
-   "start": 1514.75,
-   "end": 1540.125,
+   "start": 1538.7917,
+   "end": 1564.1667,
    "lines": [
     {
      "id": "L1117",
@@ -17251,8 +17521,8 @@
   {
    "id": "ch12-s01",
    "chapter": "ch12",
-   "start": 1540.125,
-   "end": 1549.2083,
+   "start": 1564.1667,
+   "end": 1573.25,
    "lines": [
     {
      "id": "L1201",
@@ -17341,8 +17611,8 @@
   {
    "id": "ch12-s02",
    "chapter": "ch12",
-   "start": 1549.2083,
-   "end": 1565.125,
+   "start": 1573.25,
+   "end": 1589.1667,
    "lines": [
     {
      "id": "L1204",
@@ -17535,8 +17805,8 @@
   {
    "id": "ch12-s06",
    "chapter": "ch12",
-   "start": 1565.125,
-   "end": 1585.9583,
+   "start": 1589.1667,
+   "end": 1610,
    "lines": [
     {
      "id": "L1212",
@@ -17779,8 +18049,8 @@
   {
    "id": "ch12-s07",
    "chapter": "ch12",
-   "start": 1585.9583,
-   "end": 1600.875,
+   "start": 1610,
+   "end": 1624.9167,
    "lines": [
     {
      "id": "L1217",
@@ -17860,8 +18130,8 @@
   {
    "id": "ch12-s08",
    "chapter": "ch12",
-   "start": 1600.875,
-   "end": 1618.375,
+   "start": 1624.9167,
+   "end": 1642.4167,
    "lines": [
     {
      "id": "L1219",
@@ -18014,412 +18284,329 @@
   {
    "id": "ch12-s03",
    "chapter": "ch12",
-   "start": 1618.375,
-   "end": 1654.4167,
+   "start": 1642.4167,
+   "end": 1671.2083,
    "lines": [
     {
      "id": "L1206",
      "text": "Among the runners, a lab born in 2021: former OpenAI researchers, led by Dario and Daniela Amodei, had founded Anthropic.",
      "start": 0.6,
-     "end": 10.956,
+     "end": 10.631,
      "words": [
       {
        "w": "Among",
        "start": 0.6,
-       "end": 0.902
+       "end": 0.89
       },
       {
        "w": "the",
-       "start": 0.948,
-       "end": 1.018
+       "start": 0.937,
+       "end": 1.006
       },
       {
        "w": "runners",
-       "start": 1.053,
-       "end": 1.436
+       "start": 1.03,
+       "end": 1.413
       },
       {
        "w": "a",
-       "start": 1.703,
-       "end": 1.773
+       "start": 1.668,
+       "end": 1.738
       },
       {
        "w": "lab",
-       "start": 1.9,
-       "end": 2.109
+       "start": 1.831,
+       "end": 2.028
       },
       {
        "w": "born",
-       "start": 2.237,
-       "end": 2.574
+       "start": 2.121,
+       "end": 2.446
       },
       {
        "w": "in",
-       "start": 2.643,
-       "end": 2.736
+       "start": 2.516,
+       "end": 2.609
       },
       {
        "w": "twenty",
-       "start": 2.783,
-       "end": 3.096
+       "start": 2.655,
+       "end": 2.934
       },
       {
        "w": "twenty-one",
-       "start": 3.143,
-       "end": 3.828
+       "start": 2.968,
+       "end": 3.619
       },
       {
        "w": "former",
-       "start": 4.106,
-       "end": 4.466
+       "start": 3.897,
+       "end": 4.257
       },
       {
        "w": "Open",
-       "start": 4.536,
-       "end": 4.849
+       "start": 4.327,
+       "end": 4.629
       },
       {
        "w": "A.I",
-       "start": 4.931,
-       "end": 5.325
+       "start": 4.71,
+       "end": 5.105
       },
       {
        "w": "researchers",
-       "start": 5.43,
-       "end": 6.15
+       "start": 5.198,
+       "end": 5.929
       },
       {
        "w": "led",
-       "start": 6.498,
-       "end": 6.684
+       "start": 6.277,
+       "end": 6.463
       },
       {
        "w": "by",
-       "start": 6.73,
-       "end": 6.846
+       "start": 6.509,
+       "end": 6.626
       },
       {
        "w": "Dario",
-       "start": 6.904,
-       "end": 7.45
+       "start": 6.684,
+       "end": 7.218
       },
       {
        "w": "and",
-       "start": 7.52,
-       "end": 7.624
+       "start": 7.287,
+       "end": 7.392
       },
       {
        "w": "Daniela",
-       "start": 7.67,
-       "end": 8.344
+       "start": 7.438,
+       "end": 8.054
       },
       {
-       "w": "Ah-mo-day",
-       "start": 8.425,
-       "end": 9.296
+       "w": "Ah-moh-day",
+       "start": 8.135,
+       "end": 9.017
       },
       {
        "w": "had",
-       "start": 9.644,
-       "end": 9.783
+       "start": 9.331,
+       "end": 9.47
       },
       {
        "w": "founded",
-       "start": 9.853,
-       "end": 10.248
+       "start": 9.54,
+       "end": 9.934
       },
       {
        "w": "Anthropic",
-       "start": 10.318,
-       "end": 10.956
+       "start": 10.004,
+       "end": 10.631
       }
      ]
     },
     {
      "id": "L1207",
      "text": "It called itself “an AI safety and research company”.",
-     "start": 11.456,
-     "end": 15.067,
+     "start": 11.131,
+     "end": 14.742,
      "words": [
       {
        "w": "It",
-       "start": 11.456,
-       "end": 11.607
+       "start": 11.131,
+       "end": 11.282
       },
       {
        "w": "called",
-       "start": 11.665,
-       "end": 11.909
+       "start": 11.34,
+       "end": 11.584
       },
       {
        "w": "itself",
-       "start": 11.944,
-       "end": 12.373
+       "start": 11.619,
+       "end": 12.048
       },
       {
        "w": "an",
-       "start": 12.524,
-       "end": 12.652
+       "start": 12.199,
+       "end": 12.327
       },
       {
        "w": "AI",
-       "start": 12.78,
-       "end": 13.279
+       "start": 12.455,
+       "end": 12.954
       },
       {
        "w": "safety",
-       "start": 13.43,
-       "end": 13.894
+       "start": 13.105,
+       "end": 13.569
       },
       {
        "w": "and",
-       "start": 13.952,
-       "end": 14.045
+       "start": 13.627,
+       "end": 13.72
       },
       {
        "w": "research",
-       "start": 14.103,
-       "end": 14.544
+       "start": 13.778,
+       "end": 14.219
       },
       {
        "w": "company",
-       "start": 14.602,
-       "end": 15.067
-      }
-     ]
-    },
-    {
-     "id": "L1208",
-     "text": "Five hundred million dollars came from FTX, later exposed as a fraud; Anthropic was not implicated. Then billions from Amazon and Google.",
-     "start": 15.667,
-     "end": 24.828,
-     "words": [
-      {
-       "w": "Five",
-       "start": 15.667,
-       "end": 15.981
-      },
-      {
-       "w": "hundred",
-       "start": 16.016,
-       "end": 16.283
-      },
-      {
-       "w": "million",
-       "start": 16.341,
-       "end": 16.642
-      },
-      {
-       "w": "dollars",
-       "start": 16.7,
-       "end": 17.026
-      },
-      {
-       "w": "came",
-       "start": 17.084,
-       "end": 17.293
-      },
-      {
-       "w": "from",
-       "start": 17.316,
-       "end": 17.467
-      },
-      {
-       "w": "FTX",
-       "start": 17.56,
-       "end": 18.315
-      },
-      {
-       "w": "later",
-       "start": 18.466,
-       "end": 18.802
-      },
-      {
-       "w": "exposed",
-       "start": 18.86,
-       "end": 19.383
-      },
-      {
-       "w": "as",
-       "start": 19.418,
-       "end": 19.499
-      },
-      {
-       "w": "a",
-       "start": 19.557,
-       "end": 19.58
-      },
-      {
-       "w": "fraud",
-       "start": 19.65,
-       "end": 20.172
-      },
-      {
-       "w": "Anthropic",
-       "start": 20.521,
-       "end": 21.124
-      },
-      {
-       "w": "was",
-       "start": 21.182,
-       "end": 21.298
-      },
-      {
-       "w": "not",
-       "start": 21.38,
-       "end": 21.554
-      },
-      {
-       "w": "implicated",
-       "start": 21.612,
-       "end": 22.343
-      },
-      {
-       "w": "Then",
-       "start": 22.808,
-       "end": 23.017
-      },
-      {
-       "w": "billions",
-       "start": 23.098,
-       "end": 23.539
-      },
-      {
-       "w": "from",
-       "start": 23.574,
-       "end": 23.702
-      },
-      {
-       "w": "Amazon",
-       "start": 23.76,
-       "end": 24.131
-      },
-      {
-       "w": "and",
-       "start": 24.201,
-       "end": 24.282
-      },
-      {
-       "w": "Google",
-       "start": 24.352,
-       "end": 24.828
+       "start": 14.277,
+       "end": 14.742
       }
      ]
     },
     {
      "id": "L1219b",
-     "text": "Google announced Bard; Meta's LLaMA leaked within days; GPT-4 and Claude arrived the same March day.",
-     "start": 25.378,
-     "end": 33.609,
+     "text": "Google announced Bard; Meta shared LLaMA with researchers, and within a week its weights leaked; GPT-4 and Claude arrived the same March day.",
+     "start": 17.142,
+     "end": 27.173,
      "words": [
       {
        "w": "Google",
-       "start": 25.378,
-       "end": 25.761
+       "start": 17.142,
+       "end": 17.514
       },
       {
        "w": "announced",
-       "start": 25.796,
-       "end": 26.237
+       "start": 17.537,
+       "end": 17.885
       },
       {
        "w": "Bard",
-       "start": 26.33,
-       "end": 26.852
+       "start": 17.943,
+       "end": 18.419
       },
       {
-       "w": "Meta's",
-       "start": 27.05,
-       "end": 27.387
+       "w": "Meta",
+       "start": 18.57,
+       "end": 18.86
+      },
+      {
+       "w": "shared",
+       "start": 18.907,
+       "end": 19.185
       },
       {
        "w": "Llama",
-       "start": 27.456,
-       "end": 27.886
+       "start": 19.243,
+       "end": 19.568
       },
       {
-       "w": "leaked",
-       "start": 27.955,
-       "end": 28.222
+       "w": "with",
+       "start": 19.627,
+       "end": 19.766
       },
       {
-       "w": "within",
-       "start": 28.257,
-       "end": 28.513
-      },
-      {
-       "w": "days",
-       "start": 28.582,
-       "end": 29.058
-      },
-      {
-       "w": "G",
-       "start": 29.407,
-       "end": 29.592
-      },
-      {
-       "w": "P",
-       "start": 29.778,
-       "end": 29.906
-      },
-      {
-       "w": "T",
-       "start": 30.068,
-       "end": 30.196
-      },
-      {
-       "w": "four",
-       "start": 30.382,
-       "end": 30.73
+       "w": "researchers",
+       "start": 19.812,
+       "end": 20.474
       },
       {
        "w": "and",
-       "start": 30.916,
-       "end": 31.125
+       "start": 20.822,
+       "end": 20.95
+      },
+      {
+       "w": "within",
+       "start": 20.997,
+       "end": 21.217
+      },
+      {
+       "w": "a",
+       "start": 21.264,
+       "end": 21.287
+      },
+      {
+       "w": "week",
+       "start": 21.345,
+       "end": 21.589
+      },
+      {
+       "w": "its",
+       "start": 21.681,
+       "end": 21.867
+      },
+      {
+       "w": "weights",
+       "start": 21.937,
+       "end": 22.239
+      },
+      {
+       "w": "leaked",
+       "start": 22.308,
+       "end": 22.634
+      },
+      {
+       "w": "G",
+       "start": 23.051,
+       "end": 23.237
+      },
+      {
+       "w": "P",
+       "start": 23.458,
+       "end": 23.586
+      },
+      {
+       "w": "T",
+       "start": 23.771,
+       "end": 23.864
+      },
+      {
+       "w": "four",
+       "start": 24.027,
+       "end": 24.375
+      },
+      {
+       "w": "and",
+       "start": 24.596,
+       "end": 24.781
       },
       {
        "w": "Claude",
-       "start": 31.206,
-       "end": 31.868
+       "start": 24.863,
+       "end": 25.443
       },
       {
        "w": "arrived",
-       "start": 32.007,
-       "end": 32.448
+       "start": 25.629,
+       "end": 26.047
       },
       {
        "w": "the",
-       "start": 32.483,
-       "end": 32.553
+       "start": 26.07,
+       "end": 26.14
       },
       {
        "w": "same",
-       "start": 32.599,
-       "end": 32.855
+       "start": 26.186,
+       "end": 26.43
       },
       {
        "w": "March",
-       "start": 32.901,
-       "end": 33.192
+       "start": 26.476,
+       "end": 26.767
       },
       {
        "w": "day",
-       "start": 33.261,
-       "end": 33.609
+       "start": 26.825,
+       "end": 27.173
       }
      ]
     }
    ],
    "beats": {
-    "pin": 9.853,
-    "names": 11.356,
-    "selfDescription": 13.43,
-    "largeSystems": 14.103,
-    "ledger": 16.341,
-    "bigTech": 23.76,
-    "bard": 26.33,
-    "llama": 27.955,
-    "sameDayChips": 31.206
+    "pin": 9.54,
+    "names": 11.031,
+    "selfDescription": 13.105,
+    "largeSystems": 13.778,
+    "ledger": 15.242,
+    "bigTech": 16.542,
+    "bard": 17.943,
+    "llama": 22.308,
+    "sameDayChips": 24.863
    },
    "transitionIn": "cut",
    "transitionDur": 0,
@@ -18428,8 +18615,8 @@
   {
    "id": "ch13-s01",
    "chapter": "ch13",
-   "start": 1654.4167,
-   "end": 1681.25,
+   "start": 1671.2083,
+   "end": 1698.0417,
    "lines": [
     {
      "id": "L1302",
@@ -18735,8 +18922,8 @@
   {
    "id": "ch13-s02",
    "chapter": "ch13",
-   "start": 1681.25,
-   "end": 1690.25,
+   "start": 1698.0417,
+   "end": 1707.0417,
    "lines": [
     {
      "id": "L1304",
@@ -18820,8 +19007,8 @@
   {
    "id": "ch13-s03",
    "chapter": "ch13",
-   "start": 1690.25,
-   "end": 1714,
+   "start": 1707.0417,
+   "end": 1730.7917,
    "lines": [
     {
      "id": "L1307",
@@ -19091,8 +19278,8 @@
   {
    "id": "ch13-s04",
    "chapter": "ch13",
-   "start": 1714,
-   "end": 1738.6667,
+   "start": 1730.7917,
+   "end": 1755.4583,
    "lines": [
     {
      "id": "L1309",
@@ -19401,8 +19588,8 @@
   {
    "id": "ch13-s06",
    "chapter": "ch13",
-   "start": 1738.6667,
-   "end": 1753.3333,
+   "start": 1755.4583,
+   "end": 1770.125,
    "lines": [
     {
      "id": "L1316",
@@ -19525,8 +19712,8 @@
   {
    "id": "ch14-s01",
    "chapter": "ch14",
-   "start": 1753.3333,
-   "end": 1764.5,
+   "start": 1770.125,
+   "end": 1781.2917,
    "lines": [
     {
      "id": "L1401",
@@ -19664,8 +19851,8 @@
   {
    "id": "ch14-s02",
    "chapter": "ch14",
-   "start": 1764.5,
-   "end": 1784.75,
+   "start": 1781.2917,
+   "end": 1805.2083,
    "lines": [
     {
      "id": "L1403",
@@ -19802,89 +19989,149 @@
     },
     {
      "id": "L1405",
-     "text": "Two new candles: computing power is the chokepoint, and China is one to three years behind.",
+     "text": "Two new candles: computing power is the chokepoint, and China is a year or two behind. A new question for the file: can a fence around chips hold?",
      "start": 13.623,
-     "end": 19.718,
+     "end": 23.399,
      "words": [
       {
        "w": "Two",
        "start": 13.623,
-       "end": 13.82
+       "end": 13.844
       },
       {
        "w": "new",
-       "start": 13.902,
-       "end": 14.029
+       "start": 13.913,
+       "end": 14.041
       },
       {
        "w": "candles",
-       "start": 14.087,
+       "start": 14.099,
        "end": 14.575
       },
       {
        "w": "computing",
        "start": 14.958,
-       "end": 15.446
+       "end": 15.457
       },
       {
        "w": "power",
-       "start": 15.504,
-       "end": 15.783
+       "start": 15.515,
+       "end": 15.771
       },
       {
        "w": "is",
-       "start": 15.852,
-       "end": 15.957
+       "start": 15.841,
+       "end": 15.933
       },
       {
        "w": "the",
-       "start": 16.003,
-       "end": 16.073
+       "start": 15.98,
+       "end": 16.049
       },
       {
        "w": "chokepoint",
-       "start": 16.119,
-       "end": 16.723
+       "start": 16.096,
+       "end": 16.7
       },
       {
        "w": "and",
-       "start": 17.013,
-       "end": 17.164
+       "start": 16.967,
+       "end": 17.118
       },
       {
        "w": "China",
-       "start": 17.222,
-       "end": 17.594
+       "start": 17.187,
+       "end": 17.57
       },
       {
        "w": "is",
-       "start": 17.652,
-       "end": 17.756
+       "start": 17.628,
+       "end": 17.745
       },
       {
-       "w": "one",
-       "start": 17.849,
-       "end": 18.116
+       "w": "a",
+       "start": 17.791,
+       "end": 17.826
       },
       {
-       "w": "to",
-       "start": 18.174,
-       "end": 18.255
+       "w": "year",
+       "start": 17.895,
+       "end": 18.104
       },
       {
-       "w": "three",
-       "start": 18.337,
-       "end": 18.685
+       "w": "or",
+       "start": 18.163,
+       "end": 18.244
       },
       {
-       "w": "years",
-       "start": 18.766,
-       "end": 19.057
+       "w": "two",
+       "start": 18.29,
+       "end": 18.43
       },
       {
        "w": "behind",
-       "start": 19.115,
-       "end": 19.718
+       "start": 18.511,
+       "end": 19.103
+      },
+      {
+       "w": "A",
+       "start": 19.66,
+       "end": 19.73
+      },
+      {
+       "w": "new",
+       "start": 19.811,
+       "end": 19.939
+      },
+      {
+       "w": "question",
+       "start": 19.985,
+       "end": 20.334
+      },
+      {
+       "w": "for",
+       "start": 20.38,
+       "end": 20.484
+      },
+      {
+       "w": "the",
+       "start": 20.531,
+       "end": 20.601
+      },
+      {
+       "w": "file",
+       "start": 20.659,
+       "end": 21.135
+      },
+      {
+       "w": "can",
+       "start": 21.425,
+       "end": 21.576
+      },
+      {
+       "w": "a",
+       "start": 21.622,
+       "end": 21.645
+      },
+      {
+       "w": "fence",
+       "start": 21.727,
+       "end": 22.017
+      },
+      {
+       "w": "around",
+       "start": 22.052,
+       "end": 22.377
+      },
+      {
+       "w": "chips",
+       "start": 22.47,
+       "end": 22.853
+      },
+      {
+       "w": "hold",
+       "start": 22.946,
+       "end": 23.399
       }
      ]
     }
@@ -19893,8 +20140,9 @@
     "fence": 5.511,
     "tools": 7.206,
     "reply": 9.273,
-    "candle": 14.087,
-    "behind": 19.115
+    "candle": 14.099,
+    "behind": 18.511,
+    "question": 21.727
    },
    "transitionIn": "cut",
    "transitionDur": 0,
@@ -19903,8 +20151,8 @@
   {
    "id": "ch14-s03",
    "chapter": "ch14",
-   "start": 1784.75,
-   "end": 1804.0833,
+   "start": 1805.2083,
+   "end": 1824.5417,
    "lines": [
     {
      "id": "L1406",
@@ -20142,8 +20390,8 @@
   {
    "id": "ch14-s04",
    "chapter": "ch14",
-   "start": 1804.0833,
-   "end": 1825.7917,
+   "start": 1824.5417,
+   "end": 1846.25,
    "lines": [
     {
      "id": "L1408",
@@ -20398,8 +20646,8 @@
   {
    "id": "ch14-s04b",
    "chapter": "ch14",
-   "start": 1825.7917,
-   "end": 1841.0833,
+   "start": 1846.25,
+   "end": 1861.875,
    "lines": [
     {
      "id": "L1410",
@@ -20476,54 +20724,69 @@
     },
     {
      "id": "L1410b",
-     "text": "China trailing by years? That belief burned about two.",
+     "text": "China a year or two behind? That belief burned about two years.",
      "start": 6.586,
-     "end": 10.777,
+     "end": 11.102,
      "words": [
       {
        "w": "China",
        "start": 6.586,
-       "end": 7.004
+       "end": 7.039
       },
       {
-       "w": "trailing",
-       "start": 7.051,
-       "end": 7.457
+       "w": "a",
+       "start": 7.097,
+       "end": 7.143
       },
       {
-       "w": "by",
-       "start": 7.527,
-       "end": 7.701
+       "w": "year",
+       "start": 7.225,
+       "end": 7.422
       },
       {
-       "w": "years",
-       "start": 7.829,
-       "end": 8.339
-      },
-      {
-       "w": "That",
-       "start": 8.932,
-       "end": 9.14
-      },
-      {
-       "w": "belief",
-       "start": 9.21,
-       "end": 9.64
-      },
-      {
-       "w": "burned",
-       "start": 9.779,
-       "end": 10.104
-      },
-      {
-       "w": "about",
-       "start": 10.139,
-       "end": 10.383
+       "w": "or",
+       "start": 7.48,
+       "end": 7.55
       },
       {
        "w": "two",
-       "start": 10.441,
-       "end": 10.777
+       "start": 7.596,
+       "end": 7.747
+      },
+      {
+       "w": "behind",
+       "start": 7.817,
+       "end": 8.409
+      },
+      {
+       "w": "That",
+       "start": 8.862,
+       "end": 9.082
+      },
+      {
+       "w": "belief",
+       "start": 9.14,
+       "end": 9.465
+      },
+      {
+       "w": "burned",
+       "start": 9.558,
+       "end": 9.941
+      },
+      {
+       "w": "about",
+       "start": 9.976,
+       "end": 10.197
+      },
+      {
+       "w": "two",
+       "start": 10.255,
+       "end": 10.487
+      },
+      {
+       "w": "years",
+       "start": 10.58,
+       "end": 11.102
       }
      ]
     }
@@ -20534,8 +20797,8 @@
     "steady": 5.486,
     "tag1": 5.586,
     "tag2": 6.186,
-    "out": 7.051,
-    "two": 10.441,
+    "out": 7.817,
+    "two": 10.255,
     "hold": 5.386
    },
    "transitionIn": "cut",
@@ -20545,48 +20808,103 @@
   {
    "id": "ch14-s05",
    "chapter": "ch14",
-   "start": 1841.0833,
-   "end": 1850.0833,
+   "start": 1861.875,
+   "end": 1872.5,
    "lines": [
     {
      "id": "L1416",
-     "text": "But America employed the most.",
-     "start": 3.2,
-     "end": 4.872,
+     "text": "Nearly half the top researchers first studied in China. But America employed the most of them.",
+     "start": 0.9,
+     "end": 6.995,
      "words": [
       {
-       "w": "But",
-       "start": 3.2,
-       "end": 3.386
+       "w": "Nearly",
+       "start": 0.9,
+       "end": 1.283
       },
       {
-       "w": "America",
-       "start": 3.432,
-       "end": 3.827
-      },
-      {
-       "w": "employed",
-       "start": 3.885,
-       "end": 4.291
+       "w": "half",
+       "start": 1.364,
+       "end": 1.643
       },
       {
        "w": "the",
-       "start": 4.326,
-       "end": 4.396
+       "start": 1.724,
+       "end": 1.806
+      },
+      {
+       "w": "top",
+       "start": 1.875,
+       "end": 2.119
+      },
+      {
+       "w": "researchers",
+       "start": 2.212,
+       "end": 2.85
+      },
+      {
+       "w": "first",
+       "start": 2.943,
+       "end": 3.21
+      },
+      {
+       "w": "studied",
+       "start": 3.245,
+       "end": 3.605
+      },
+      {
+       "w": "in",
+       "start": 3.652,
+       "end": 3.721
+      },
+      {
+       "w": "China",
+       "start": 3.791,
+       "end": 4.279
+      },
+      {
+       "w": "But",
+       "start": 4.638,
+       "end": 4.836
+      },
+      {
+       "w": "America",
+       "start": 4.882,
+       "end": 5.416
+      },
+      {
+       "w": "employed",
+       "start": 5.486,
+       "end": 6.09
+      },
+      {
+       "w": "the",
+       "start": 6.136,
+       "end": 6.206
       },
       {
        "w": "most",
-       "start": 4.454,
-       "end": 4.872
+       "start": 6.287,
+       "end": 6.554
+      },
+      {
+       "w": "of",
+       "start": 6.624,
+       "end": 6.705
+      },
+      {
+       "w": "them",
+       "start": 6.786,
+       "end": 6.995
       }
      ]
     }
    ],
    "beats": {
     "plate": 0.3,
-    "studied": 0.9,
-    "work": 3.432,
-    "lanterns": 3.885
+    "studied": 3.245,
+    "work": 4.882,
+    "lanterns": 5.486
    },
    "transitionIn": "crossfade",
    "transitionDur": 1,
@@ -20595,8 +20913,8 @@
   {
    "id": "ch14-s06",
    "chapter": "ch14",
-   "start": 1850.0833,
-   "end": 1870.125,
+   "start": 1872.5,
+   "end": 1892.5417,
    "lines": [
     {
      "id": "L1414",
@@ -20800,8 +21118,8 @@
   {
    "id": "ch14-s07",
    "chapter": "ch14",
-   "start": 1870.125,
-   "end": 1895.0833,
+   "start": 1892.5417,
+   "end": 1916.1667,
    "lines": [
     {
      "id": "L1417",
@@ -20951,129 +21269,124 @@
     },
     {
      "id": "L1418",
-     "text": "The chokepoint candle still burns, argued over. As of October 2026, nobody agrees how wide the gap is, or whether it will close.",
+     "text": "The fence still stands, argued over. As of October 2026, nobody agrees how wide the gap is, or whether it will close.",
      "start": 13.529,
-     "end": 24.129,
+     "end": 22.794,
      "words": [
       {
        "w": "The",
        "start": 13.529,
-       "end": 13.645
+       "end": 13.68
       },
       {
-       "w": "chokepoint",
-       "start": 13.703,
-       "end": 14.167
-      },
-      {
-       "w": "candle",
-       "start": 14.225,
-       "end": 14.597
+       "w": "fence",
+       "start": 13.75,
+       "end": 14.017
       },
       {
        "w": "still",
-       "start": 14.667,
-       "end": 14.992
+       "start": 14.04,
+       "end": 14.26
       },
       {
-       "w": "burns",
-       "start": 15.061,
-       "end": 15.595
+       "w": "stands",
+       "start": 14.33,
+       "end": 14.853
       },
       {
        "w": "argued",
-       "start": 15.909,
-       "end": 16.35
+       "start": 15.143,
+       "end": 15.549
       },
       {
        "w": "over",
-       "start": 16.408,
-       "end": 16.71
+       "start": 15.607,
+       "end": 15.909
       },
       {
        "w": "As",
-       "start": 17.337,
-       "end": 17.534
+       "start": 16.373,
+       "end": 16.571
       },
       {
        "w": "of",
-       "start": 17.616,
-       "end": 17.743
+       "start": 16.64,
+       "end": 16.733
       },
       {
        "w": "October",
-       "start": 17.871,
-       "end": 18.463
+       "start": 16.815,
+       "end": 17.337
       },
       {
        "w": "twenty",
-       "start": 18.591,
-       "end": 18.928
+       "start": 17.43,
+       "end": 17.743
       },
       {
        "w": "twenty-six",
-       "start": 18.974,
-       "end": 19.74
+       "start": 17.79,
+       "end": 18.545
       },
       {
        "w": "nobody",
-       "start": 19.996,
-       "end": 20.414
+       "start": 18.858,
+       "end": 19.276
       },
       {
        "w": "agrees",
-       "start": 20.472,
-       "end": 20.913
+       "start": 19.334,
+       "end": 19.775
       },
       {
        "w": "how",
-       "start": 20.971,
-       "end": 21.11
+       "start": 19.845,
+       "end": 20.007
       },
       {
        "w": "wide",
-       "start": 21.191,
-       "end": 21.517
+       "start": 20.089,
+       "end": 20.425
       },
       {
        "w": "the",
-       "start": 21.551,
-       "end": 21.621
+       "start": 20.449,
+       "end": 20.518
       },
       {
        "w": "gap",
-       "start": 21.667,
-       "end": 21.911
+       "start": 20.565,
+       "end": 20.774
       },
       {
        "w": "is",
-       "start": 21.993,
-       "end": 22.271
+       "start": 20.855,
+       "end": 21.099
       },
       {
        "w": "or",
-       "start": 22.619,
-       "end": 22.794
+       "start": 21.412,
+       "end": 21.528
       },
       {
        "w": "whether",
-       "start": 22.852,
-       "end": 23.119
+       "start": 21.575,
+       "end": 21.83
       },
       {
        "w": "it",
-       "start": 23.188,
-       "end": 23.246
+       "start": 21.9,
+       "end": 21.958
       },
       {
        "w": "will",
-       "start": 23.281,
-       "end": 23.432
+       "start": 21.993,
+       "end": 22.132
       },
       {
        "w": "close",
-       "start": 23.479,
-       "end": 24.129
+       "start": 22.178,
+       "end": 22.794
       }
      ]
     }
@@ -21085,8 +21398,9 @@
     "tag2": 4.909,
     "tag3": 5.909,
     "liang": 7.536,
-    "rise": 19.996,
-    "chokepoint": 13.703
+    "rise": 18.858,
+    "chokepoint": 13.75,
+    "stamp": 14.33
    },
    "transitionIn": "cut",
    "transitionDur": 0,
@@ -21095,8 +21409,8 @@
   {
    "id": "ch15-s01",
    "chapter": "ch15",
-   "start": 1895.0833,
-   "end": 1935.0417,
+   "start": 1916.1667,
+   "end": 1960.9167,
    "lines": [
     {
      "id": "L1501",
@@ -21163,355 +21477,420 @@
     },
     {
      "id": "L1502",
-     "text": "A Nobel Prize in physics, shared with John Hopfield: for memories that roll downhill, and the Boltzmann machine Hinton co-invented, a net that settles as it cools.",
+     "text": "A Nobel Prize in physics, shared with John Hopfield. He wrote that nobody he met remembered his Versailles talk. The prize was for memories that roll downhill, and the Boltzmann machine Hinton co-invented, a net that settles as it cools.",
      "start": 10.625,
-     "end": 21.26,
+     "end": 26.043,
      "words": [
       {
        "w": "A",
        "start": 10.625,
-       "end": 10.683
+       "end": 10.729
       },
       {
        "w": "Nobel",
-       "start": 10.776,
-       "end": 11.113
+       "start": 10.857,
+       "end": 11.205
       },
       {
        "w": "Prize",
-       "start": 11.182,
-       "end": 11.473
+       "start": 11.287,
+       "end": 11.647
       },
       {
        "w": "in",
-       "start": 11.507,
-       "end": 11.565
+       "start": 11.693,
+       "end": 11.763
       },
       {
        "w": "physics",
-       "start": 11.635,
-       "end": 12.099
+       "start": 11.821,
+       "end": 12.297
       },
       {
        "w": "shared",
-       "start": 12.227,
-       "end": 12.529
+       "start": 12.401,
+       "end": 12.715
       },
       {
        "w": "with",
-       "start": 12.564,
-       "end": 12.68
+       "start": 12.738,
+       "end": 12.854
       },
       {
        "w": "John",
-       "start": 12.726,
-       "end": 12.912
+       "start": 12.912,
+       "end": 13.11
       },
       {
        "w": "Hopfield",
-       "start": 12.982,
-       "end": 13.539
+       "start": 13.168,
+       "end": 13.702
       },
       {
-       "w": "for",
-       "start": 13.899,
-       "end": 14.038
+       "w": "He",
+       "start": 14.294,
+       "end": 14.41
       },
       {
-       "w": "memories",
-       "start": 14.085,
-       "end": 14.456
+       "w": "wrote",
+       "start": 14.456,
+       "end": 14.688
       },
       {
        "w": "that",
-       "start": 14.503,
-       "end": 14.619
+       "start": 14.723,
+       "end": 14.863
       },
       {
-       "w": "roll",
-       "start": 14.677,
-       "end": 14.921
+       "w": "nobody",
+       "start": 14.99,
+       "end": 15.432
       },
       {
-       "w": "downhill",
-       "start": 15.002,
-       "end": 15.559
+       "w": "he",
+       "start": 15.49,
+       "end": 15.571
       },
       {
-       "w": "and",
-       "start": 15.884,
-       "end": 16.024
+       "w": "met",
+       "start": 15.652,
+       "end": 15.954
       },
       {
-       "w": "the",
+       "w": "remembered",
        "start": 16.082,
-       "end": 16.14
+       "end": 16.523
       },
       {
-       "w": "Boltzmann",
-       "start": 16.198,
-       "end": 16.674
+       "w": "his",
+       "start": 16.569,
+       "end": 16.685
       },
       {
-       "w": "machine",
-       "start": 16.743,
-       "end": 17.138
+       "w": "Versailles",
+       "start": 16.755,
+       "end": 17.382
       },
       {
-       "w": "Hinton",
-       "start": 17.196,
-       "end": 17.591
+       "w": "talk",
+       "start": 17.452,
+       "end": 17.835
       },
       {
-       "w": "co-invented",
-       "start": 17.684,
+       "w": "The",
+       "start": 18.357,
        "end": 18.462
       },
       {
-       "w": "a",
-       "start": 18.903,
-       "end": 18.961
+       "w": "prize",
+       "start": 18.508,
+       "end": 18.868
       },
       {
-       "w": "net",
-       "start": 19.077,
-       "end": 19.332
+       "w": "was",
+       "start": 18.915,
+       "end": 19.042
+      },
+      {
+       "w": "for",
+       "start": 19.112,
+       "end": 19.216
+      },
+      {
+       "w": "memories",
+       "start": 19.274,
+       "end": 19.669
       },
       {
        "w": "that",
-       "start": 19.46,
-       "end": 19.634
+       "start": 19.716,
+       "end": 19.843
+      },
+      {
+       "w": "roll",
+       "start": 19.901,
+       "end": 20.134
+      },
+      {
+       "w": "downhill",
+       "start": 20.215,
+       "end": 20.772
+      },
+      {
+       "w": "and",
+       "start": 21.074,
+       "end": 21.225
+      },
+      {
+       "w": "the",
+       "start": 21.271,
+       "end": 21.341
+      },
+      {
+       "w": "Boltzmann",
+       "start": 21.387,
+       "end": 21.875
+      },
+      {
+       "w": "machine",
+       "start": 21.945,
+       "end": 22.479
+      },
+      {
+       "w": "Hinton",
+       "start": 22.572,
+       "end": 23.001
+      },
+      {
+       "w": "co-invented",
+       "start": 23.083,
+       "end": 23.814
+      },
+      {
+       "w": "a",
+       "start": 24.197,
+       "end": 24.267
+      },
+      {
+       "w": "net",
+       "start": 24.36,
+       "end": 24.546
+      },
+      {
+       "w": "that",
+       "start": 24.58,
+       "end": 24.743
       },
       {
        "w": "settles",
-       "start": 19.704,
-       "end": 20.157
+       "start": 24.813,
+       "end": 25.207
       },
       {
        "w": "as",
-       "start": 20.401,
-       "end": 20.575
+       "start": 25.254,
+       "end": 25.335
       },
       {
        "w": "it",
-       "start": 20.633,
-       "end": 20.691
+       "start": 25.393,
+       "end": 25.463
       },
       {
        "w": "cools",
-       "start": 20.761,
-       "end": 21.26
+       "start": 25.521,
+       "end": 26.043
       }
      ]
     },
     {
      "id": "L1528",
      "text": "Not everyone cheered. Was this physics? One critic called it “a bit of a stretch.”",
-     "start": 21.81,
-     "end": 27.255,
+     "start": 26.593,
+     "end": 32.038,
      "words": [
       {
        "w": "Not",
-       "start": 21.81,
-       "end": 22.007
+       "start": 26.593,
+       "end": 26.79
       },
       {
        "w": "everyone",
-       "start": 22.077,
-       "end": 22.507
+       "start": 26.86,
+       "end": 27.29
       },
       {
        "w": "cheered",
-       "start": 22.553,
-       "end": 22.948
+       "start": 27.336,
+       "end": 27.731
       },
       {
        "w": "Was",
-       "start": 23.482,
-       "end": 23.679
+       "start": 28.265,
+       "end": 28.462
       },
       {
        "w": "this",
-       "start": 23.737,
-       "end": 23.888
+       "start": 28.52,
+       "end": 28.671
       },
       {
        "w": "physics",
-       "start": 23.958,
-       "end": 24.457
+       "start": 28.741,
+       "end": 29.24
       },
       {
        "w": "One",
-       "start": 24.829,
-       "end": 25.072
+       "start": 29.612,
+       "end": 29.855
       },
       {
        "w": "critic",
-       "start": 25.119,
-       "end": 25.444
+       "start": 29.902,
+       "end": 30.227
       },
       {
        "w": "called",
-       "start": 25.502,
-       "end": 25.757
+       "start": 30.285,
+       "end": 30.54
       },
       {
        "w": "it",
-       "start": 25.804,
-       "end": 25.908
+       "start": 30.587,
+       "end": 30.691
       },
       {
        "w": "a",
-       "start": 26.233,
-       "end": 26.303
+       "start": 31.016,
+       "end": 31.086
       },
       {
        "w": "bit",
-       "start": 26.373,
-       "end": 26.524
+       "start": 31.156,
+       "end": 31.307
       },
       {
        "w": "of",
-       "start": 26.57,
-       "end": 26.628
+       "start": 31.353,
+       "end": 31.411
       },
       {
        "w": "a",
-       "start": 26.675,
-       "end": 26.698
+       "start": 31.458,
+       "end": 31.481
       },
       {
        "w": "stretch",
-       "start": 26.744,
-       "end": 27.255
+       "start": 31.527,
+       "end": 32.038
       }
      ]
     },
     {
      "id": "L1529",
      "text": "The next day, chemistry's prize went in part to DeepMind's Demis Hassabis and John Jumper, for a network that predicts the shapes of proteins.",
-     "start": 28.155,
-     "end": 37.745,
+     "start": 32.938,
+     "end": 42.528,
      "words": [
       {
        "w": "The",
-       "start": 28.155,
-       "end": 28.271
+       "start": 32.938,
+       "end": 33.054
       },
       {
        "w": "next",
-       "start": 28.341,
-       "end": 28.561
+       "start": 33.124,
+       "end": 33.344
       },
       {
        "w": "day",
-       "start": 28.619,
-       "end": 28.886
+       "start": 33.402,
+       "end": 33.669
       },
       {
        "w": "chemistry's",
-       "start": 29.142,
-       "end": 29.722
+       "start": 33.925,
+       "end": 34.505
       },
       {
        "w": "prize",
-       "start": 29.804,
-       "end": 30.245
+       "start": 34.587,
+       "end": 35.028
       },
       {
        "w": "went",
-       "start": 30.373,
-       "end": 30.628
+       "start": 35.156,
+       "end": 35.411
       },
       {
        "w": "in",
-       "start": 30.686,
-       "end": 30.756
+       "start": 35.469,
+       "end": 35.539
       },
       {
        "w": "part",
-       "start": 30.837,
-       "end": 31.174
+       "start": 35.62,
+       "end": 35.957
       },
       {
        "w": "to",
-       "start": 31.255,
-       "end": 31.359
+       "start": 36.038,
+       "end": 36.142
       },
       {
        "w": "DeepMind's",
-       "start": 31.441,
-       "end": 32.056
+       "start": 36.224,
+       "end": 36.839
       },
       {
        "w": "Demis",
-       "start": 32.195,
-       "end": 33.438
+       "start": 36.978,
+       "end": 38.221
       },
       {
        "w": "Hassabis",
-       "start": 32.195,
-       "end": 33.438
+       "start": 36.978,
+       "end": 38.221
       },
       {
        "w": "and",
-       "start": 33.658,
-       "end": 33.832
+       "start": 38.441,
+       "end": 38.615
       },
       {
        "w": "John",
-       "start": 33.925,
-       "end": 34.146
+       "start": 38.708,
+       "end": 38.929
       },
       {
        "w": "Jumper",
-       "start": 34.227,
-       "end": 34.657
+       "start": 39.01,
+       "end": 39.44
       },
       {
        "w": "for",
-       "start": 35.098,
-       "end": 35.26
+       "start": 39.881,
+       "end": 40.043
       },
       {
        "w": "a",
-       "start": 35.295,
-       "end": 35.318
+       "start": 40.078,
+       "end": 40.101
       },
       {
        "w": "network",
-       "start": 35.376,
-       "end": 35.771
+       "start": 40.159,
+       "end": 40.554
       },
       {
        "w": "that",
-       "start": 35.818,
-       "end": 35.945
+       "start": 40.601,
+       "end": 40.728
       },
       {
        "w": "predicts",
-       "start": 35.98,
-       "end": 36.352
+       "start": 40.763,
+       "end": 41.135
       },
       {
        "w": "the",
-       "start": 36.41,
-       "end": 36.479
+       "start": 41.193,
+       "end": 41.262
       },
       {
        "w": "shapes",
-       "start": 36.537,
-       "end": 36.862
+       "start": 41.32,
+       "end": 41.645
       },
       {
        "w": "of",
-       "start": 36.909,
-       "end": 36.967
+       "start": 41.692,
+       "end": 41.75
       },
       {
        "w": "proteins",
-       "start": 37.037,
-       "end": 37.745
+       "start": 41.82,
+       "end": 42.528
       }
      ]
     }
@@ -21520,15 +21899,15 @@
     "indexTab": 0.1,
     "b1": 9.366,
     "b2": 10.375,
-    "b3": 10.776,
-    "b4": 12.982,
-    "b4b": 15.002,
-    "b4c": 20.761,
-    "b5": 21.26,
-    "b6": 22.553,
-    "chem": 29.142,
-    "fold": 37.037,
-    "turned": 38.345
+    "b3": 10.857,
+    "b4": 13.168,
+    "b4b": 20.215,
+    "b4c": 25.521,
+    "b5": 26.043,
+    "b6": 27.336,
+    "chem": 33.925,
+    "fold": 41.82,
+    "turned": 43.128
    },
    "transitionIn": "fadeBlack",
    "transitionDur": 1.6,
@@ -21537,8 +21916,8 @@
   {
    "id": "ch15-s03",
    "chapter": "ch15",
-   "start": 1935.0417,
-   "end": 1949.8333,
+   "start": 1960.9167,
+   "end": 1980.9583,
    "lines": [
     {
      "id": "L1504",
@@ -21689,35 +22068,93 @@
      ]
     },
     {
-     "id": "L1505",
-     "text": "Nobody told it to plan.",
+     "id": "L1504b",
+     "text": "Snuff that plan out, and it rhymes with “habit” instead.",
      "start": 11.835,
-     "end": 13.181,
+     "end": 15.364,
      "words": [
       {
-       "w": "Nobody",
+       "w": "Snuff",
        "start": 11.835,
-       "end": 12.241
+       "end": 12.265
       },
       {
-       "w": "told",
-       "start": 12.299,
-       "end": 12.52
-      },
-      {
-       "w": "it",
-       "start": 12.566,
-       "end": 12.647
-      },
-      {
-       "w": "to",
-       "start": 12.682,
-       "end": 12.74
+       "w": "that",
+       "start": 12.311,
+       "end": 12.45
       },
       {
        "w": "plan",
-       "start": 12.81,
-       "end": 13.181
+       "start": 12.497,
+       "end": 12.729
+      },
+      {
+       "w": "out",
+       "start": 12.799,
+       "end": 13.042
+      },
+      {
+       "w": "and",
+       "start": 13.356,
+       "end": 13.495
+      },
+      {
+       "w": "it",
+       "start": 13.565,
+       "end": 13.623
+      },
+      {
+       "w": "rhymes",
+       "start": 13.681,
+       "end": 13.994
+      },
+      {
+       "w": "with",
+       "start": 14.029,
+       "end": 14.18
+      },
+      {
+       "w": "habit",
+       "start": 14.296,
+       "end": 14.679
+      },
+      {
+       "w": "instead",
+       "start": 14.772,
+       "end": 15.364
+      }
+     ]
+    },
+    {
+     "id": "L1505",
+     "text": "Nobody told it to plan.",
+     "start": 15.964,
+     "end": 18.402,
+     "words": [
+      {
+       "w": "Nobody",
+       "start": 15.964,
+       "end": 16.568
+      },
+      {
+       "w": "told",
+       "start": 16.637,
+       "end": 16.974
+      },
+      {
+       "w": "it",
+       "start": 17.044,
+       "end": 17.253
+      },
+      {
+       "w": "to",
+       "start": 17.682,
+       "end": 17.833
+      },
+      {
+       "w": "plan",
+       "start": 17.914,
+       "end": 18.402
       }
      ]
     }
@@ -21725,8 +22162,9 @@
    "beats": {
     "b1": 0.6,
     "b2": 9.133,
-    "b3": 11.535,
-    "b4": 12.81,
+    "b3": 11.835,
+    "habit": 14.296,
+    "b4": 17.914,
     "who": 3.967
    },
    "transitionIn": "crossfade",
@@ -21736,8 +22174,8 @@
   {
    "id": "ch15-s04",
    "chapter": "ch15",
-   "start": 1949.8333,
-   "end": 1972,
+   "start": 1980.9583,
+   "end": 2003.125,
    "lines": [
     {
      "id": "L1530",
@@ -22052,8 +22490,8 @@
   {
    "id": "ch15-s05",
    "chapter": "ch15",
-   "start": 1972,
-   "end": 2010.9167,
+   "start": 2003.125,
+   "end": 2041.875,
    "lines": [
     {
      "id": "L1522",
@@ -22165,275 +22603,373 @@
     },
     {
      "id": "L1522b",
-     "text": "The Pentagon said a supplier may not set such limits, and named it a supply-chain risk.",
+     "text": "The Pentagon named it a supply-chain risk, and signed with OpenAI instead.",
      "start": 9.478,
-     "end": 16.026,
+     "end": 14.911,
      "words": [
       {
        "w": "The",
        "start": 9.478,
-       "end": 9.617
+       "end": 9.606
       },
       {
        "w": "Pentagon",
-       "start": 9.675,
-       "end": 10.186
-      },
-      {
-       "w": "said",
-       "start": 10.279,
-       "end": 10.511
-      },
-      {
-       "w": "a",
-       "start": 10.569,
-       "end": 10.593
-      },
-      {
-       "w": "supplier",
-       "start": 10.662,
-       "end": 11.37
-      },
-      {
-       "w": "may",
-       "start": 11.463,
-       "end": 11.649
-      },
-      {
-       "w": "not",
-       "start": 11.73,
-       "end": 11.881
-      },
-      {
-       "w": "set",
-       "start": 11.951,
-       "end": 12.23
-      },
-      {
-       "w": "such",
-       "start": 12.299,
-       "end": 12.543
-      },
-      {
-       "w": "limits",
-       "start": 12.613,
-       "end": 13.077
-      },
-      {
-       "w": "and",
-       "start": 13.495,
-       "end": 13.669
+       "start": 9.664,
+       "end": 10.198
       },
       {
        "w": "named",
-       "start": 13.75,
-       "end": 14.052
+       "start": 10.279,
+       "end": 10.558
       },
       {
        "w": "it",
-       "start": 14.11,
-       "end": 14.226
+       "start": 10.593,
+       "end": 10.685
       },
       {
        "w": "a",
-       "start": 14.308,
-       "end": 14.377
+       "start": 10.743,
+       "end": 10.767
       },
       {
        "w": "supply",
-       "start": 14.459,
-       "end": 14.981
+       "start": 10.836,
+       "end": 11.324
       },
       {
        "w": "chain",
-       "start": 15.074,
-       "end": 15.446
+       "start": 11.405,
+       "end": 11.719
       },
       {
        "w": "risk",
-       "start": 15.585,
-       "end": 16.026
+       "start": 11.812,
+       "end": 12.148
+      },
+      {
+       "w": "and",
+       "start": 12.23,
+       "end": 12.427
+      },
+      {
+       "w": "signed",
+       "start": 12.52,
+       "end": 12.891
+      },
+      {
+       "w": "with",
+       "start": 12.926,
+       "end": 13.065
+      },
+      {
+       "w": "Open",
+       "start": 13.147,
+       "end": 13.507
+      },
+      {
+       "w": "A.I",
+       "start": 13.6,
+       "end": 14.157
+      },
+      {
+       "w": "instead",
+       "start": 14.261,
+       "end": 14.911
       }
      ]
     },
     {
      "id": "L1522c",
      "text": "Two courts have split. That case, too, is open.",
-     "start": 16.626,
-     "end": 19.772,
+     "start": 15.511,
+     "end": 18.657,
      "words": [
       {
        "w": "Two",
-       "start": 16.626,
-       "end": 16.835
+       "start": 15.511,
+       "end": 15.72
       },
       {
        "w": "courts",
-       "start": 16.916,
-       "end": 17.276
+       "start": 15.801,
+       "end": 16.161
       },
       {
        "w": "have",
-       "start": 17.346,
-       "end": 17.508
+       "start": 16.231,
+       "end": 16.393
       },
       {
        "w": "split",
-       "start": 17.543,
-       "end": 17.95
+       "start": 16.428,
+       "end": 16.835
       },
       {
        "w": "That",
-       "start": 18.414,
-       "end": 18.611
+       "start": 17.299,
+       "end": 17.496
       },
       {
        "w": "case",
-       "start": 18.669,
-       "end": 18.913
+       "start": 17.554,
+       "end": 17.798
       },
       {
        "w": "too",
-       "start": 18.96,
-       "end": 19.192
+       "start": 17.845,
+       "end": 18.077
       },
       {
        "w": "is",
-       "start": 19.262,
-       "end": 19.378
+       "start": 18.147,
+       "end": 18.263
       },
       {
        "w": "open",
-       "start": 19.447,
-       "end": 19.772
+       "start": 18.332,
+       "end": 18.657
+      }
+     ]
+    },
+    {
+     "id": "L1522d",
+     "text": "And Anthropic paid a record one and a half billion dollars to settle claims it built a library from pirated books.",
+     "start": 19.357,
+     "end": 26.497,
+     "words": [
+      {
+       "w": "And",
+       "start": 19.357,
+       "end": 19.554
+      },
+      {
+       "w": "Anthropic",
+       "start": 19.636,
+       "end": 20.239
+      },
+      {
+       "w": "paid",
+       "start": 20.321,
+       "end": 20.564
+      },
+      {
+       "w": "a",
+       "start": 20.611,
+       "end": 20.657
+      },
+      {
+       "w": "record",
+       "start": 20.715,
+       "end": 21.122
+      },
+      {
+       "w": "one",
+       "start": 21.215,
+       "end": 21.424
+      },
+      {
+       "w": "and",
+       "start": 21.47,
+       "end": 21.54
+      },
+      {
+       "w": "a",
+       "start": 21.598,
+       "end": 21.644
+      },
+      {
+       "w": "half",
+       "start": 21.725,
+       "end": 21.958
+      },
+      {
+       "w": "billion",
+       "start": 22.027,
+       "end": 22.41
+      },
+      {
+       "w": "dollars",
+       "start": 22.48,
+       "end": 22.886
+      },
+      {
+       "w": "to",
+       "start": 22.956,
+       "end": 23.049
+      },
+      {
+       "w": "settle",
+       "start": 23.142,
+       "end": 23.502
+      },
+      {
+       "w": "claims",
+       "start": 23.548,
+       "end": 23.978
+      },
+      {
+       "w": "it",
+       "start": 24.047,
+       "end": 24.152
+      },
+      {
+       "w": "built",
+       "start": 24.21,
+       "end": 24.477
+      },
+      {
+       "w": "a",
+       "start": 24.535,
+       "end": 24.558
+      },
+      {
+       "w": "library",
+       "start": 24.628,
+       "end": 25.127
+      },
+      {
+       "w": "from",
+       "start": 25.185,
+       "end": 25.371
+      },
+      {
+       "w": "pirated",
+       "start": 25.452,
+       "end": 25.986
+      },
+      {
+       "w": "books",
+       "start": 26.044,
+       "end": 26.497
       }
      ]
     },
     {
      "id": "L1525",
      "text": "In a test with safeguards deliberately lowered, OpenAI’s agents broke loose into another company’s real systems. OpenAI called it a warning shot.",
-     "start": 24.772,
-     "end": 34.513,
+     "start": 27.497,
+     "end": 37.238,
      "words": [
       {
        "w": "In",
-       "start": 24.772,
-       "end": 24.9
+       "start": 27.497,
+       "end": 27.625
       },
       {
        "w": "a",
-       "start": 24.958,
-       "end": 24.981
+       "start": 27.683,
+       "end": 27.706
       },
       {
        "w": "test",
-       "start": 25.039,
-       "end": 25.341
+       "start": 27.764,
+       "end": 28.066
       },
       {
        "w": "with",
-       "start": 25.387,
-       "end": 25.526
+       "start": 28.112,
+       "end": 28.251
       },
       {
        "w": "safeguards",
-       "start": 25.585,
-       "end": 26.153
+       "start": 28.31,
+       "end": 28.878
       },
       {
        "w": "deliberately",
-       "start": 26.211,
-       "end": 26.734
+       "start": 28.936,
+       "end": 29.459
       },
       {
        "w": "lowered",
-       "start": 26.792,
-       "end": 27.152
+       "start": 29.517,
+       "end": 29.877
       },
       {
        "w": "Open",
-       "start": 27.454,
-       "end": 27.802
+       "start": 30.179,
+       "end": 30.527
       },
       {
        "w": "A.I.'s",
-       "start": 27.883,
-       "end": 28.406
+       "start": 30.608,
+       "end": 31.131
       },
       {
        "w": "agents",
-       "start": 28.464,
-       "end": 28.928
+       "start": 31.189,
+       "end": 31.653
       },
       {
        "w": "broke",
-       "start": 28.975,
-       "end": 29.265
+       "start": 31.7,
+       "end": 31.99
       },
       {
        "w": "loose",
-       "start": 29.323,
-       "end": 29.578
+       "start": 32.048,
+       "end": 32.303
       },
       {
        "w": "into",
-       "start": 29.636,
-       "end": 29.845
+       "start": 32.361,
+       "end": 32.57
       },
       {
        "w": "another",
-       "start": 29.927,
-       "end": 30.229
+       "start": 32.652,
+       "end": 32.954
       },
       {
        "w": "company's",
-       "start": 30.287,
-       "end": 30.693
+       "start": 33.012,
+       "end": 33.418
       },
       {
        "w": "real",
-       "start": 30.763,
-       "end": 30.972
+       "start": 33.488,
+       "end": 33.697
       },
       {
        "w": "systems",
-       "start": 31.03,
-       "end": 31.61
+       "start": 33.755,
+       "end": 34.335
       },
       {
        "w": "Open",
-       "start": 32.237,
-       "end": 32.585
+       "start": 34.962,
+       "end": 35.31
       },
       {
        "w": "A.I",
-       "start": 32.667,
-       "end": 33.085
+       "start": 35.392,
+       "end": 35.81
       },
       {
        "w": "called",
-       "start": 33.189,
-       "end": 33.444
+       "start": 35.914,
+       "end": 36.169
       },
       {
        "w": "it",
-       "start": 33.479,
-       "end": 33.561
+       "start": 36.204,
+       "end": 36.286
       },
       {
        "w": "a",
-       "start": 33.619,
-       "end": 33.642
+       "start": 36.344,
+       "end": 36.367
       },
       {
        "w": "warning",
-       "start": 33.7,
-       "end": 34.048
+       "start": 36.425,
+       "end": 36.773
       },
       {
        "w": "shot",
-       "start": 34.118,
-       "end": 34.513
+       "start": 36.843,
+       "end": 37.238
       }
      ]
     }
@@ -22443,15 +22979,15 @@
     "b2": 3.05,
     "sealEye": 6.37,
     "sealDrone": 8.402,
-    "b2b": 9.675,
-    "risk": 15.585,
-    "b3": 16.916,
-    "b4": 20.972,
-    "b5": 25.039,
-    "b5b": 26.792,
-    "b7": 28.975,
-    "b6": 32.237,
-    "b8": 34.513
+    "b2b": 9.664,
+    "risk": 11.812,
+    "b3": 15.801,
+    "b4": 23.142,
+    "b5": 27.764,
+    "b5b": 29.517,
+    "b7": 31.7,
+    "b6": 34.962,
+    "b8": 37.238
    },
    "transitionIn": "cut",
    "transitionDur": 0,
@@ -22460,8 +22996,8 @@
   {
    "id": "ch15-s06",
    "chapter": "ch15",
-   "start": 2010.9167,
-   "end": 2025.3333,
+   "start": 2041.875,
+   "end": 2056.2917,
    "lines": [
     {
      "id": "L1509",
@@ -22576,8 +23112,8 @@
   {
    "id": "ch15-s07",
    "chapter": "ch15",
-   "start": 2025.3333,
-   "end": 2039.4167,
+   "start": 2056.2917,
+   "end": 2070.375,
    "lines": [
     {
      "id": "L1511",
@@ -22719,8 +23255,8 @@
   {
    "id": "ch15-s08",
    "chapter": "ch15",
-   "start": 2039.4167,
-   "end": 2082.7083,
+   "start": 2070.375,
+   "end": 2113.6667,
    "lines": [
     {
      "id": "L1527",
@@ -23129,7 +23665,8 @@
     "b9": 28.557,
     "b10": 30.042,
     "b10b": 33.316,
-    "openFile": 37.186
+    "openFile": 37.186,
+    "stamp": 37.929
    },
    "transitionIn": "lampChange",
    "transitionDur": 1.2,
@@ -23138,271 +23675,271 @@
   {
    "id": "ch15-s09",
    "chapter": "ch15",
-   "start": 2082.7083,
-   "end": 2108.0417,
+   "start": 2113.6667,
+   "end": 2139.7083,
    "lines": [
     {
      "id": "L1517",
      "text": "The last word goes to Hinton, back in 2017.",
      "start": 0.8,
-     "end": 4.713,
+     "end": 5.421,
      "words": [
       {
        "w": "The",
        "start": 0.8,
-       "end": 0.974
+       "end": 1.032
       },
       {
        "w": "last",
-       "start": 1.055,
-       "end": 1.311
+       "start": 1.102,
+       "end": 1.38
       },
       {
        "w": "word",
-       "start": 1.369,
-       "end": 1.636
+       "start": 1.439,
+       "end": 1.752
       },
       {
        "w": "goes",
-       "start": 1.706,
-       "end": 1.961
+       "start": 1.822,
+       "end": 2.135
       },
       {
        "w": "to",
-       "start": 1.996,
-       "end": 2.065
+       "start": 2.193,
+       "end": 2.286
       },
       {
        "w": "Hinton",
-       "start": 2.147,
-       "end": 2.646
+       "start": 2.379,
+       "end": 2.936
       },
       {
        "w": "back",
-       "start": 3.099,
-       "end": 3.343
+       "start": 3.517,
+       "end": 3.795
       },
       {
        "w": "in",
-       "start": 3.412,
-       "end": 3.494
+       "start": 3.865,
+       "end": 3.97
       },
       {
        "w": "twenty",
-       "start": 3.552,
-       "end": 3.923
+       "start": 4.039,
+       "end": 4.492
       },
       {
        "w": "seventeen",
-       "start": 3.993,
-       "end": 4.713
+       "start": 4.562,
+       "end": 5.421
       }
      ]
     },
     {
      "id": "L1518",
      "text": "“The future depends on some graduate student who is deeply suspicious of everything I have said.”",
-     "start": 5.263,
-     "end": 11.544,
+     "start": 5.971,
+     "end": 12.252,
      "words": [
       {
        "w": "The",
-       "start": 5.263,
-       "end": 5.379
+       "start": 5.971,
+       "end": 6.087
       },
       {
        "w": "future",
-       "start": 5.448,
-       "end": 5.866
+       "start": 6.156,
+       "end": 6.574
       },
       {
        "w": "depends",
-       "start": 5.924,
-       "end": 6.377
+       "start": 6.632,
+       "end": 7.085
       },
       {
        "w": "on",
-       "start": 6.447,
-       "end": 6.644
+       "start": 7.155,
+       "end": 7.352
       },
       {
        "w": "some",
-       "start": 6.737,
-       "end": 6.981
+       "start": 7.445,
+       "end": 7.689
       },
       {
        "w": "graduate",
-       "start": 7.039,
-       "end": 7.573
+       "start": 7.747,
+       "end": 8.281
       },
       {
        "w": "student",
-       "start": 7.608,
-       "end": 8.165
+       "start": 8.316,
+       "end": 8.873
       },
       {
        "w": "who",
-       "start": 8.351,
-       "end": 8.513
+       "start": 9.059,
+       "end": 9.221
       },
       {
        "w": "is",
-       "start": 8.583,
-       "end": 8.664
+       "start": 9.291,
+       "end": 9.372
       },
       {
        "w": "deeply",
-       "start": 8.734,
-       "end": 9.14
+       "start": 9.442,
+       "end": 9.848
       },
       {
        "w": "suspicious",
-       "start": 9.222,
-       "end": 9.907
+       "start": 9.93,
+       "end": 10.615
       },
       {
        "w": "of",
-       "start": 9.976,
-       "end": 10.081
+       "start": 10.684,
+       "end": 10.789
       },
       {
        "w": "everything",
-       "start": 10.209,
-       "end": 10.766
+       "start": 10.917,
+       "end": 11.474
       },
       {
        "w": "I",
-       "start": 10.847,
-       "end": 10.905
+       "start": 11.555,
+       "end": 11.613
       },
       {
        "w": "have",
-       "start": 10.998,
-       "end": 11.149
+       "start": 11.706,
+       "end": 11.857
       },
       {
        "w": "said",
-       "start": 11.195,
-       "end": 11.544
+       "start": 11.903,
+       "end": 12.252
       }
      ]
     },
     {
      "id": "L1520",
      "text": "Somewhere tonight a lamp is on, and someone at the rim is suspicious. That is where new candles come from.",
-     "start": 15.144,
-     "end": 22.331,
+     "start": 15.852,
+     "end": 23.039,
      "words": [
       {
        "w": "Somewhere",
-       "start": 15.144,
-       "end": 15.597
+       "start": 15.852,
+       "end": 16.305
       },
       {
        "w": "tonight",
-       "start": 15.632,
-       "end": 16.073
+       "start": 16.34,
+       "end": 16.781
       },
       {
        "w": "a",
-       "start": 16.329,
-       "end": 16.421
+       "start": 17.037,
+       "end": 17.129
       },
       {
        "w": "lamp",
-       "start": 16.503,
-       "end": 16.723
+       "start": 17.211,
+       "end": 17.431
       },
       {
        "w": "is",
-       "start": 16.781,
-       "end": 16.874
+       "start": 17.489,
+       "end": 17.582
       },
       {
        "w": "on",
-       "start": 16.944,
-       "end": 17.153
+       "start": 17.652,
+       "end": 17.861
       },
       {
        "w": "and",
-       "start": 17.559,
-       "end": 17.722
+       "start": 18.267,
+       "end": 18.43
       },
       {
        "w": "someone",
-       "start": 17.815,
-       "end": 18.221
+       "start": 18.523,
+       "end": 18.929
       },
       {
        "w": "at",
-       "start": 18.256,
-       "end": 18.337
+       "start": 18.964,
+       "end": 19.045
       },
       {
        "w": "the",
-       "start": 18.384,
-       "end": 18.453
+       "start": 19.092,
+       "end": 19.161
       },
       {
        "w": "rim",
-       "start": 18.511,
-       "end": 18.767
+       "start": 19.219,
+       "end": 19.475
       },
       {
        "w": "is",
-       "start": 18.894,
-       "end": 19.057
+       "start": 19.602,
+       "end": 19.765
       },
       {
        "w": "suspicious",
-       "start": 19.092,
-       "end": 19.8
+       "start": 19.8,
+       "end": 20.508
       },
       {
        "w": "That",
-       "start": 20.322,
-       "end": 20.624
+       "start": 21.03,
+       "end": 21.332
       },
       {
        "w": "is",
-       "start": 20.694,
-       "end": 20.81
+       "start": 21.402,
+       "end": 21.518
       },
       {
        "w": "where",
-       "start": 20.856,
-       "end": 21.065
+       "start": 21.564,
+       "end": 21.773
       },
       {
        "w": "new",
-       "start": 21.135,
-       "end": 21.298
+       "start": 21.843,
+       "end": 22.006
       },
       {
        "w": "candles",
-       "start": 21.356,
-       "end": 21.762
+       "start": 22.064,
+       "end": 22.47
       },
       {
        "w": "come",
-       "start": 21.82,
-       "end": 22.041
+       "start": 22.528,
+       "end": 22.749
       },
       {
        "w": "from",
-       "start": 22.087,
-       "end": 22.331
+       "start": 22.795,
+       "end": 23.039
       }
      ]
     }
    ],
    "beats": {
-    "b1": 1.369,
-    "b2": 5.448,
-    "b3": 12.044,
-    "b4": 14.544,
-    "b5": 22.087,
-    "b6": 23.531
+    "b1": 1.439,
+    "b2": 6.156,
+    "b3": 12.752,
+    "b4": 15.252,
+    "b5": 22.795,
+    "b6": 24.239
    },
    "transitionIn": "cut",
    "transitionDur": 0,
@@ -23411,14 +23948,14 @@
   {
    "id": "ch15-s10",
    "chapter": "ch15",
-   "start": 2108.0417,
-   "end": 2139.5417,
+   "start": 2139.7083,
+   "end": 2168.4167,
    "lines": [],
    "beats": {
     "b1": 0.5,
-    "b2": 11.3,
-    "sources": 23.5,
-    "b3": 30.7
+    "b2": 8.5,
+    "sources": 21.3,
+    "b3": 27.9
    },
    "transitionIn": "fadeBlack",
    "transitionDur": 1.6,

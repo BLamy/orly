@@ -4,6 +4,14 @@
  * cut its own, many layers deep), LEARNED FEATURES is lit on 'deep learning', and the light finally finds Hinton
  * standing at his desk (candleAmber, STUDY LOCK → dawnGold on the stage; 38.25 s; crossfade in from the workshop).
  *
+ * ROUND 2 (verdict, teacher T205 + art): THE FOG holds through the whole thesis line to 29.2 s; on 'cut its own'
+ * (25.8) a 12 x 5 mosaic of learned stencils (ch08-s06 tiles) rises out of it, ≈ 30 % of the frame; on 'many layers
+ * deep' (26.9) it stacks itself course by course into the ch08-s05 stepped tower, lit from base to crown on 'deep
+ * learning' (28.4). The shelf returns only in the pause before L0832b: the new candle is lit at ≈ 30.0 (the CHM card
+ * rises with it), the flame push at ≈ 31.5 lands on the stage under 'And Hinton?'. On the stage the pool widens from
+ * 'Now' (35.9); Hinton steps out of the dark into it on 'found' (36.7) and is fully lit on 'him' (37.1), held to the
+ * end (≈ 1.2 s: the clock is locked). Legibility: board cards and wax lettering are texture; the fog card (camera
+ * pushed in on 'Why choose the fog?'), the re-inked tags (12 px) and a belief plate on 'fiddly-nets' are subjects.
  * ROUND 1 (review verdict, teacher + story; clock of 2026-10-12, L0832b now 'And Hinton?'): L0832 plays over two
  * cutaways instead of the shelf — 'Why' → THE CLEAN BOWL (sets/ch08-s13b-cutaways, duskRose: a ball rolls to its
  * one bottom; on 'stencils' the camera tilts down to the footing of hand-cut tin stencils, stamped BY HAND on 'cut')
@@ -49,16 +57,17 @@
  */
 import { Timeline } from '../../../core';
 import type { Camera3, Frame, PaintEnv, ShotScene } from '../../../film';
-import { LAYERS, POSES, PUPPET_NEAR_BLACK, anglepoiseLamp, chair, defineShot, mixLab, quoteCard, toLayer, toScreen, withAlpha, withLife, writingDesk } from '../../../film';
+import { LAYERS, POSES, PUPPET_NEAR_BLACK, anglepoiseLamp, chair, defineShot, mixLab, quoteCard, textRole, toLayer, toScreen, walkTo, withAlpha, withLife, writingDesk } from '../../../film';
 import { FONT, legibleSize, softPlate } from '../../../film/silhouette/type';
 import { glow } from '../../../film/silhouette/metaphors/kit';
-import { cast } from '../cast';
+import { SPECS, cast } from '../cast';
 import { STUDY, STUDY_WALL, candleX, studyCase, studyNear, studyRoom } from '../sets/study';
-import { LIT_HEIGHT, RING_PX, boardStateAt, candleNamingAt, shelfStateAt, type CandleView } from '../sets/studyState';
+import { BOARD, LIT_HEIGHT, Q_SLOTS, RING_PX, boardStateAt, candleNamingAt, shelfStateAt, type BoardState, type CandleView } from '../sets/studyState';
 import { bowlScene, fogScene } from '../sets/ch08-s13b-cutaways';
 import { valance } from '../sets/occluders';
-import { beliefCandle, candleFlame } from '../sets/beliefCandle';
-import { drawCard, oxblood } from '../sets/caseBoard';
+import { beliefCandle, candleFlame, candleShelf, type ShelfDraw } from '../sets/beliefCandle';
+import { DEFAULT_POOL, caseBoard, drawCard, oxblood, poolAt } from '../sets/caseBoard';
+import { beliefLabel } from '../sets/ch07-s01-kit';
 import { candleStage, type StageGeo } from '../sets/candleStage';
 import { waxCandle } from '../sets/ch02-s04-waxCandle';
 import { cathedralLantern } from '../sets/ch08-s12-lanterns';
@@ -67,6 +76,8 @@ import { camKeys } from '../sets/ch03-s06-kit';
 import { clamp01, lerp, sm, tq12, win } from '../sets/ch02-s05b-util';
 import { pulse } from '../sets/ch05-s01-kit';
 import { screenPass } from '../sets/ch06-s01-kit';
+import { createFrame } from '../../../film/core/frame';
+import { makeCanvas } from '../../../film/silhouette/atmosphere';
 
 const ID = 'ch08-s13b';
 type C = CanvasRenderingContext2D;
@@ -87,11 +98,16 @@ const NEW1: CandleView = { ...view(V1, 'learned'), tag: '2012' };
 const NEW_UNLIT: CandleView = { ...NEW1, state: 'unlit' };
 const EXP_FLAME0 = candleFlame({ x: EXP_X, y: SY, view: EXP0, s: SS });
 const NEW_FLAME = candleFlame({ x: NEW_X, y: SY, view: NEW1, s: SS });
-/** the small hand-cut tin stencil leaning in the empty slot between the two old candles */
-const TIN = { x: (FID_X + EXP_X) / 2 - 22, y: SY - 22, s: 19 };
+/** the small hand-cut tin stencil, leaning LEFT of the 1990s (fiddly-nets) candle, so the two dark sleeves stand
+ *  side by side with nothing between them (review r1, teacher) */
+const TIN = { x: FID_X - 48, y: SY - 22, s: 19 };
 /** the fog card: its place on the oxblood thread (Q3) and where it lands */
 const Q_DEF = { id: 'Q-Q3', w: 168, h: 44, icon: 'question' as const, text: 'WHY WOULD ANYONE CHOOSE THE FOG?' };
-const LAND = { x: EXP_X + 6, y: SY - 22, rot: -0.1 };
+/** REVIEW r1 (artistry): it lies at the foot of the warm-up candle's dark sleeve, just left of the new candle, so the
+ *  answered question is whole in the macro (it was cropped at the frame edge at the expert-features sleeve) */
+const LAND = { x: NEW_X - 80, y: SY - 22, rot: -0.06 };
+/** the macro on the new candle: its flame and the whole of its wax lettering in frame, the lettering ≥ 22 px cap */
+const MACRO = { x: 90, y: SY - 148, z: 590 };
 
 // ------------------------------------------------------------------------------------------------ the stage
 const ST_X = 430;
@@ -99,7 +115,9 @@ const ST_X = 430;
 const ST_S = 1.08;
 const DESK_X = 1046;
 /** Hinton's mark: the far rim of the pool, just past the desk's lamp end */
-const HINTON_X = 1176;
+const HINTON_X = 1222;
+/** his one step in from the dark (a walk on twos, settling on his mark) */
+const HINTON_WALK = (at: number) => walkTo(SPECS.hinton, { x0: HINTON_X + 120, x1: HINTON_X, at, scale: 1.12 });
 /** the stage pool a touch softer (flame strength into candleStage) */
 const STAGE_FK = 0.84;
 const STAGE_VIEW: CandleView = { ...NEW1 };
@@ -120,8 +138,11 @@ interface B {
   data: number;
   fire: number;
   rank1: number;
-  rank2: number;
-  rank3: number;
+  /** 'cut' (the net cut its own): the drifting pictures snap into the first stencil row */
+  snapAt: number;
+  /** the fog's thesis picture: the mosaic stacks into the cathedral tower ('many layers deep'), lit on 'deep learning' */
+  stack: number;
+  tower: number;
   truck0: number;
   lit: number;
   own: number;
@@ -129,7 +150,16 @@ interface B {
   push0: number;
   stageT: number;
   desk: number;
+  /** 'Thirty-six': the widen has landed on the dark desk at the far rim */
+  thirtySix: number;
   lamp: number;
+  /** 'Now': Hinton already stands at the desk, just outside the pool */
+  now: number;
+  /** his step in from the dark, timed to land on his mark before 'Now' */
+  walkAt: number;
+  /** the pool reaches his feet on 'found'; he is fully lit on 'him' */
+  found: number;
+  him: number;
 }
 interface Scene extends ShotScene {
   b: B;
@@ -151,11 +181,20 @@ export default defineShot<Scene>({
     const tl = new Timeline();
     const D = T.duration;
     const W = (w: string) => T.word('L0832', w);
-    // the new candle is lit on the name: 'deep learning'
-    const lit = W('deep#2') - 0.1;
-    const push0 = Math.max(T.beat('push') - 0.15, lit + 1.55);
-    const stageT = push0 + 0.95;
-    const cutC = W('deep') - 0.1;
+    // ROUND 2 (teacher T205): the fog plate holds through the whole thesis line ('... many layers deep: deep
+    // learning', to 29.07 + a breath), so 'deep learning' lands on its own picture; we return to the shelf only for
+    // the pause before L0832b, where the new candle is lit (the taper is already reaching as we cut back)
+    // REVIEW r1 (sync, major): the thesis noun and the flame coincide. The fog tower is lit on 'deep' (27.62) and
+    // stands lit to 'deep#2'; the shelf dissolves back ON 'deep#2' (28.40, a 0.6 s dissolve centred on it) and the
+    // new candle's flame CATCHES on 'learning' (28.68). (Cue note for the score, m11: move the rising fourth from
+    // 'newcandle' 24.22 to 'learning' 28.68.)
+    const cutC = T.word('L0832', 'deep#2');
+    const lit = T.word('L0832', 'learning') - 0.04;
+    // REVIEW r1 (sync): the flame push starts ≈ 29.9, as soon as the lettering has read (≈ 1.25 s macro hold), and
+    // lands on the stage by ≈ 30.7, so 'And Hinton?' (31.27) plays over the stage and the empty desk, not a white-out
+    const push0 = Math.max(lit + 1.2, 29.88);
+    const stageT = push0 + 0.8;
+    const thirtySix = T.word('L0832b', 'Thirty-six');
     const b: B = {
       D,
       out: T.beat('out'),
@@ -171,16 +210,25 @@ export default defineShot<Scene>({
       data: T.beat('newcandle') - 0.2,
       fire: W('fire') - 0.1,
       rank1: W('cut#2') - 0.15,
-      rank2: W('many') - 0.25,
-      rank3: W('many') + 0.08,
+      // the second 'cut' of the line is the net's own ('the net cut its own'); the first is the rivals' 'cut by hand'
+      snapAt: T.word('L0832', 'cut#2') - 0.28,
+      stack: T.word('L0832', 'many') - 0.1,
+      // the light climbs the tower on 'deep' (27.62), so it stands lit before the dissolve back on 'deep#2'
+      tower: W('deep') + 0.05,
       truck0: cutC,
       lit,
-      own: lit + 0.7,
-      deep: W('learning') - 0.3,
+      own: lit + 0.6,
+      deep: lit + 0.25,
       push0,
       stageT,
-      desk: Math.max(T.beat('desk'), stageT + 0.8),
+      desk: stageT + 0.05,
+      thirtySix,
       lamp: T.beat('desklamp'),
+      now: T.word('L0832b', 'Now'),
+      // the step in from the dark lands (with its settle) ≈ 0.45 s before 'Now'
+      walkAt: T.word('L0832b', 'Now') - 0.45 - HINTON_WALK(0)(0).arrive,
+      found: T.word('L0832b', 'found'),
+      him: T.word('L0832b', 'him'),
     };
     // ---- the study camera (keys: t, x, y, z)
     const S_A = { x: 700, y: 812, z: 440 };
@@ -194,21 +242,32 @@ export default defineShot<Scene>({
       // after 'fiddly' a held framing on both dark sleeves side by side (≈ 2 s), then on toward the question
       [b.fiddly + 0.6, 652, 836, 470],
       [b.fiddly + 2.6, 654, 838, 474],
-      [b.cutA, 664, 846, 474],
-      // back from the fog: the dark expert sleeve with the answered card at its foot, a truck to the new candle
-      [b.cutC, 880, 852, 448],
-      [b.lit + 0.3, 1000, 850, 466],
-      [b.push0 + 0.12, 1012, 846, 488],
+      // 'Why choose the fog?': a slow push toward the board's top edge, the fog card on the thread readable
+      [b.cutA, 664, 830, 500],
+      // back from the fog straight into MACRO on the new candle (flame and the whole of its lettering in frame),
+      // settling as it is lit, held so the lettering reads, then the flame push
+      // (the candle on the left third, the CHM card in the open wall right of it; the answered fog card lies out of
+      // frame left, so the macro carries two text items)
+      [b.cutC, NEW_X + MACRO.x - 14, MACRO.y + 6, MACRO.z - 50],
+      [b.lit, NEW_X + MACRO.x, MACRO.y, MACRO.z],
+      [b.push0, NEW_X + MACRO.x - 10, MACRO.y - 4, MACRO.z + 12],
       [b.stageT, NEW_FLAME.x, NEW_FLAME.y - 4, 905],
     ]);
     // ---- the stage camera
     const g = stageGeoFor(1);
+    // out of the flame and back to the whole pool: the candle at left, the empty desk dark at its far rim, landed by
+    // 'Thirty-six'; a held drift through the line; on 'Now' the pool (and the frame) widen a little more
+    // REVIEW r1: out of the flame by 'And' (31.27), the candle and the dark desk in frame by 'Hinton' (31.56); a slow
+    // truck RIGHT (≈ 110 px) through 33 → 35.9 gives Hinton's mark breathing room from the right edge, so he stands
+    // against the lit wall; the camera SETTLES by 'him' (37.07) and the tableau holds still to the cut
     const stage = camKeys([
       [b.stageT, ST_X, g.flame.y + 18, 820],
-      [b.stageT + 0.5, ST_X + 12, g.flame.y + 46, 690],
-      [Math.max(b.stageT + 0.8, b.desk), ST_X + 40, g.flame.y + 90, 520],
-      [b.desk + 2.3, 752, 470, 150],
-      [D, 772, 474, 120],
+      [b.stageT + 0.3, ST_X + 40, g.flame.y + 60, 620],
+      [T.word('L0832b', 'Hinton') - 0.05, 712, 486, 330],
+      [b.thirtySix + 0.3, 748, 482, 280],
+      [b.lamp, 852, 476, 210],
+      [b.him, 880, 472, 150],
+      [D, 881, 472, 148],
     ]);
     // ---- the cutaways' cameras: the bowl (a slow push, then a tilt down to its stencil footing on 'stencils');
     // the fog (a slow push toward the valley as the stencils rise)
@@ -218,10 +277,14 @@ export default defineShot<Scene>({
       [b.stencils + 0.9, 640, 452, 150],
       [b.cutB, 640, 462, 172],
     ]);
+    // the fog: a slow push toward the valley as the pictures fall; on 'cut its own' the camera settles square on the
+    // mosaic; on 'many layers deep' it eases back and up so the whole tower stands in the frame, then holds
     const fogCam = camKeys([
       [b.cutB, 700, 372, 10],
-      [b.rank1, 760, 392, 80],
-      [b.cutC, 806, 398, 140],
+      [b.rank1, 660, 360, 70],
+      [b.stack + 0.2, 650, 352, 64],
+      [b.tower + 0.4, 640, 330, 20],
+      [b.cutC, 640, 326, 10],
     ]);
     const BCAMS: Camera3[] = [];
     const FCAMS: Camera3[] = [];
@@ -242,27 +305,25 @@ export default defineShot<Scene>({
   paint(f, _s, sc) {
     const t = f.t;
     const b = sc.b;
-    if (t >= b.cutA && t < b.cutB) {
-      f.camera(sc.bowlCam(t));
-      bowlScene(f, sc.BCAMS, {
-        ball: clamp01((t - b.cutA - 0.15) / (b.bowl + 0.5 - b.cutA)),
-        footing: win(t, b.stencils - 0.2, b.stencils + 0.6),
-        stamp: clamp01((tq12(t) - b.stampAt) / 0.4),
-      });
-    } else if (t >= b.cutB && t < b.cutC) {
-      f.camera(sc.fogCam(t));
-      fogScene(f, sc.FCAMS, {
-        t,
-        data: clamp01((t - b.data) / 1.6),
-        fire: win(t, b.fire - 0.1, b.fire + 0.7),
-        rank1: clamp01((t - b.rank1) / 0.7),
-        rank2: clamp01((t - b.rank2) / 0.6),
-        rank3: clamp01((t - b.rank3) / 0.55),
-      });
-    } else if (t < b.stageT) paintStudy(f, sc, t);
+    if (t >= b.cutA && t < b.cutB) paintBowl(f, sc, t);
+    else if (t >= b.cutB && t < b.cutC) paintFog(f, sc, t);
+    else if (t < b.stageT) paintStudy(f, sc, t);
     else paintStage(f, sc, t);
-    // soft dips at the cutaways' joins (never to full black): 0.2 s either side of each cut
-    for (const cut of [b.cutA, b.cutB, b.cutC]) {
+    // REVIEW (round 1, palette): into and out of the fog the pictures DISSOLVE over 0.6 s (winterBlue ↔ the amber
+    // of the bowl and the shelf cross in Lab on screen), never a hard cut: the other picture is painted into its own
+    // frame and laid over at the crossing's weight (each side held at its edge time, so neither camera jumps)
+    for (const [cut, before, after] of [
+      [b.cutB, (g: Frame) => paintBowl(g, sc, Math.min(t, b.cutB - 1 / 48)), (g: Frame) => paintFog(g, sc, Math.max(t, b.cutB))],
+      [b.cutC, (g: Frame) => paintFog(g, sc, Math.min(t, b.cutC - 1 / 48)), (g: Frame) => paintStudy(g, sc, Math.max(t, b.cutC))],
+    ] as const) {
+      const u = clamp01((t - (cut - XF / 2)) / XF);
+      if (u <= 0 || u >= 1) continue;
+      const k = sm(u);
+      if (t < cut) overlayFrame(f, after, k);
+      else overlayFrame(f, before, 1 - k);
+    }
+    // a soft dip at the bowl's join (never to full black): 0.2 s either side of the cut
+    for (const cut of [b.cutA]) {
       const k = 1 - clamp01(Math.abs(t - cut) / 0.2);
       if (k <= 0.002) continue;
       screenPass(f, (c) => {
@@ -309,7 +370,7 @@ export default defineShot<Scene>({
         source: '2025',
         // right of the flame through the shelf and the push; as the stage widens it glides left and up, clear of
         // Hinton at the pool's far rim
-        x: lerp(990, 750, sm((t - b.desk) / 2.2)),
+        x: lerp(990, 700, sm((t - b.desk) / 2.2)),
         y: lerp(214, 190, sm((t - b.desk) / 2.2)),
         width: 430,
         maxChars: 30,
@@ -321,6 +382,66 @@ export default defineShot<Scene>({
   },
 });
 
+/** the fog's dissolves (s) */
+const XF = 0.6;
+function paintBowl(f: Frame, sc: Scene, t: number) {
+  const b = sc.b;
+  f.camera(sc.bowlCam(t));
+  bowlScene(f, sc.BCAMS, {
+    ball: clamp01((t - b.cutA - 0.15) / (b.bowl + 0.5 - b.cutA)),
+    footing: win(t, b.stencils - 0.2, b.stencils + 0.6),
+    stamp: clamp01((tq12(t) - b.stampAt) / 0.4),
+  });
+}
+function paintFog(f: Frame, sc: Scene, t: number) {
+  const b = sc.b;
+  f.camera(sc.fogCam(t));
+  fogScene(f, sc.FCAMS, {
+    t,
+    fire: win(t, b.fire - 0.1, b.fire + 0.7),
+    dataT: t - b.data,
+    // ROUND 3 (story + art + teacher T306): on 'cut' (25.82) the drifting pictures SNAP into the first stencil row
+    // (the learned edge mosaic of ch08-s06), so 'the net cut its own' has its own image
+    snap: clamp01((tq12(t) - b.snapAt) / 0.36),
+    // 'many layers' (26.88): the row settles as the base course and the tower stacks over it, course by course,
+    // complete by 'deep learning' (28.4)
+    // (a touch quicker than the set's own schedule, so the crown has landed by ≈ 27.95 and the light has climbed
+    // to it before the dissolve back on 'deep#2')
+    stackT: (tq12(t) - b.stack) * 1.35,
+    // 'deep learning': light climbs the tower from its base course to the crown
+    light: clamp01((t - b.tower) / 0.68),
+  });
+}
+/** paint another picture into its own frame and lay it over this one at alpha a */
+let SUB: HTMLCanvasElement | null = null;
+function overlayFrame(f: Frame, paint: (g: Frame) => void, a: number) {
+  const c = f.c;
+  const cv = c.canvas;
+  if (!SUB || SUB.width !== cv.width || SUB.height !== cv.height) SUB = makeCanvas(cv.width, cv.height);
+  const g = SUB.getContext('2d')!;
+  g.setTransform(1, 0, 0, 1, 0, 0);
+  g.globalAlpha = 1;
+  g.globalCompositeOperation = 'source-over';
+  g.filter = 'none';
+  g.clearRect(0, 0, SUB.width, SUB.height);
+  const sf = createFrame({ c: g, pxScale: f.pxScale, t: f.t, fps: f.fps, frame: f.frame, seed: f.seed, mood: f.mood, weave: 0 });
+  paint(sf);
+  c.save();
+  c.setTransform(1, 0, 0, 1, 0, 0);
+  c.globalAlpha = a;
+  c.globalCompositeOperation = 'source-over';
+  c.filter = 'none';
+  c.drawImage(SUB, 0, 0);
+  c.restore();
+}
+
+/** the reserved candle before it is lit: every warm tone of the palette folded to the set value hazed ≈ 0.3 */
+function unlitEnv(env: PaintEnv): PaintEnv {
+  const m = env.mood;
+  const v = mixLab(mixLab(m.set, m.fg, 0.25), m.haze, 0.3);
+  return { ...env, mood: { ...m, halo: v, core: v, setHaze: v, rim: mixLab(m.rim, v, 0.8) } };
+}
+
 interface TaperPose {
   tip: P;
   hand: P;
@@ -330,20 +451,22 @@ interface TaperPose {
 }
 /** where the hand and taper are (L4 world), or null when off screen */
 function taperPose(t: number, b: B, cam: Camera3): TaperPose | null {
-  const t0 = b.lit - 0.95, t1 = b.lit - 0.06, t2 = b.lit + 0.22, t3 = b.lit + 0.78;
+  const t0 = b.lit - 0.95, t1 = b.lit - 0.06, t2 = b.lit + 0.2, t3 = b.lit + 0.62;
   if (t <= t0 || t >= t3) return null;
   const tq = tq12(t);
   // 0 = off the right edge … 1 = the taper's flame at the wick
   const k = tq < t1 ? 1 - Math.pow(1 - clamp01((tq - t0) / (t1 - t0)), 2.2) : tq < t2 ? 1 : 1 - Math.pow(clamp01((tq - t2) / (t3 - t2)), 1.8);
   const o = toLayer(LAYERS.L4, cam, 0, 0), p = toLayer(LAYERS.L4, cam, 100, 0);
   const u = (p.x - o.x) / 100;
-  const rightEdge = toLayer(LAYERS.L4, cam, 1300, 0).x;
   const wick = { x: NEW_FLAME.x + 2, y: NEW_FLAME.y + 6 };
-  const L = 300 * u; // the taper, ~300 screen px
-  const off = rightEdge + 40 * u - wick.x; // how far right the tip starts
-  const tip = { x: wick.x + (1 - k) * off, y: wick.y + (1 - k) * 30 * u };
-  const hand = { x: tip.x + L * 0.97, y: tip.y + L * 0.2 };
-  const edge = { x: rightEdge + 60 * u, y: hand.y + 70 * u };
+  // REVIEW r1 (artistry): a SHORT taper (≈ 130 screen px) reaching up from the lower right, its hand just below and
+  // right of the wick and the forearm running down off the frame's lower edge, so no dark arm crosses the top third
+  const dir = { x: 0.62, y: 0.78 };
+  const L = 130 * u;
+  const enter = 820 * u; // the tip starts this far down-right of the wick (the hand well off the frame)
+  const tip = { x: wick.x + dir.x * (1 - k) * enter, y: wick.y + dir.y * (1 - k) * enter };
+  const hand = { x: tip.x + dir.x * L, y: tip.y + dir.y * L };
+  const edge = { x: hand.x + dir.x * 700 * u, y: hand.y + dir.y * 700 * u };
   return { tip, hand, edge, u };
 }
 /** a recognisable hand-and-taper silhouette: a cuffed forearm from the right edge, fingers pinching a long thin
@@ -370,10 +493,10 @@ function drawTaper(c: C, env: PaintEnv, p: TaperPose) {
   c.quadraticCurveTo(p.tip.x - 5 * u, p.tip.y - 4 * u, p.tip.x, p.tip.y - 15 * u);
   c.fill();
   // the forearm (a sleeve with a cuff), from the right edge to the wrist
-  const wr = { x: p.hand.x + 44 * u, y: p.hand.y + 12 * u };
+  const wr = { x: p.hand.x + Math.cos(ang) * 40 * u, y: p.hand.y + Math.sin(ang) * 40 * u };
   const nx = -(p.edge.y - wr.y), ny = p.edge.x - wr.x;
   const nl = Math.hypot(nx, ny) || 1;
-  const w0 = 14 * u, w1 = 20 * u;
+  const w0 = 10 * u, w1 = 14 * u;
   c.fillStyle = ink;
   c.beginPath();
   c.moveTo(wr.x + (nx / nl) * w0, wr.y + (ny / nl) * w0);
@@ -445,8 +568,9 @@ function paintStudy(f: Frame, sc: Scene, t: number) {
 
   // ---- the two old candles: burning down their last ring, then out
   const expBurn = clamp01(t / (b.out - 0.15));
-  const expK = 1 - sm((t - b.out + 0.05) / 0.4);
-  const expOut = t >= b.out + 0.38;
+  // the gutter starts at 'thirteen' − 0.2 and the flame is dead ON 'thirteen' (+0.1)
+  const expK = 1 - sm((t - b.out + 0.2) / 0.3);
+  const expOut = t >= b.out + 0.12;
   const fidBurn = clamp01(t / (b.fiddly - 0.1));
   const bend = sm((t - b.fiddly + 0.12) / 0.3);
   const fidK = 1 - sm((t - b.fiddly - 0.12) / 0.38);
@@ -466,22 +590,32 @@ function paintStudy(f: Frame, sc: Scene, t: number) {
   // out again by lit + 0.8
   const taper = taperPose(t, b, cam);
 
+  const shelfDraw: ShelfDraw = {
+    ...STUDY.shelf,
+    views,
+    drawFlames: false,
+    named: {},
+    over: {
+      experts: expOut ? { smoke: 1.6 } : { burn: expBurn, flame: Math.max(0.001, expK) },
+      fiddly: fidOut ? { smoke: 1.4 } : { burn: fidBurn, flame: Math.max(0.001, fidK) },
+    },
+  };
   studyCase(f, {
     shot: ID,
     when: 'start',
     key: ID,
     flames: false,
-    board: { state: boardState },
-    shelf: {
-      views,
-      drawFlames: false,
-      named: {},
-      over: {
-        experts: expOut ? { smoke: 1.6 } : { burn: expBurn, flame: Math.max(0.001, expK) },
-        fiddly: fidOut ? { smoke: 1.4 } : { burn: fidBurn, flame: Math.max(0.001, fidK) },
-      },
-    },
+    board: false,
+    shelf: false,
     extra: (c, env) => {
+      // ROUND 2 (legibility): the board's old cards and the candles' wax lettering are TEXTURE here (drawn on this
+      // layer's own context so the role holds); the subjects are drawn as such: the fog card on the thread (pushed
+      // in on 'Why choose the fog?'), the re-inked tags, and the fiddly-nets belief plate on its name
+      textRole(c, 'texture', () => {
+        caseBoard(c, { ...STUDY.board, state: boardState, pool: BOARD_POOL }, env);
+        candleShelf(c, shelfDraw, env);
+      });
+      if (!answered) textRole(c, 'subject', () => q3Card(c, env, boardState));
       // the tin stencil leaning in the empty slot (the clean bowl stood on stencils cut by hand)
       const glint = 0.45 + 0.55 * pulse(t, b.cutC + 0.1, 0.25, 0.9);
       tinStencil(c, env, { x: TIN.x, y: TIN.y, s: TIN.s, kind: 'comb', rot: 0.12, lit: glint });
@@ -499,8 +633,13 @@ function paintStudy(f: Frame, sc: Scene, t: number) {
       // (blank wax and no tag until the hands strike: its belief and its year appear only as it is lit)
       const nv = t < b.lit ? NEW_UNLIT : NEW1;
       const letters = 0.9 * win(t, b.lit + 0.05, b.lit + 0.6);
-      beliefCandle(c, { x: NEW_X, y: SY, view: t < b.lit ? { ...nv, tag: '' } : nv, s: SS, flame: newK, letters: 0, drawFlame: false }, env);
-      waxCandle(c, { x: NEW_X, y: SY, view: nv, s: SS, flame: newK, letters }, env);
+      // REVIEW r1 (artistry): until it is lit the reserved candle holds at SET value in the haze (no lit top, no
+      // warm upper wax), so it never pre-empts the reveal or pulls the eye from the candles going out
+      const ce = t < b.lit ? unlitEnv(env) : env;
+      beliefCandle(c, { x: NEW_X, y: SY, view: t < b.lit ? { ...nv, tag: '' } : nv, s: SS, flame: newK, letters: 0, drawFlame: false }, ce);
+      waxCandle(c, { x: NEW_X, y: SY, view: nv, s: SS, flame: newK, letters: 0 }, ce);
+      // its lettering, a size up and in a firmer ink than the kit's (the new belief is READ in the macro)
+      if (letters > 0.01) textRole(c, 'subject', () => waxLetters(c, env, NEW_X, SY, NEW1.text ?? '', letters));
       learnedTile(c, env, t, b, newK);
       // the fog card: in the hand (the hands draw it), falling, lying
       if (answered) fogCard(c, env);
@@ -597,7 +736,8 @@ function ghostBoard(c: C, env: PaintEnv, t: number, b: B) {
 /** a paper tag hanging on a short thread from the shelf's front edge under a candle; re-inked (old → new) at u */
 function shelfTag(c: C, env: PaintEnv, x: number, oldLines: string[], newLines: string[], u: number, tq: number, seed: number) {
   const m = env.mood;
-  const size = 10.5;
+  // read when re-inked ('ten to fifteen years, field by field'): 12 px at L4 = 22+ px cap at the shelf camera
+  const size = 12;
   c.save();
   c.font = `500 ${size}px ${FONT.mono}`;
   const lines = u > 0.02 ? newLines : oldLines;
@@ -718,14 +858,45 @@ function fogCard(c: C, env: PaintEnv) {
   c.restore();
 }
 
+/** the fiddly-nets belief plate: offset from its candle's top (screen px) */
+const PLATE_DX = -250;
+const PLATE_Y = 150;
+/** the board's lamp pool, exactly as studyCase passes it (lamp 1) */
+const BOARD_POOL = { ...DEFAULT_POOL, ...STUDY.pool, k: 1, cx: STUDY.pool.cx - STUDY.board.x, cy: STUDY.pool.cy - STUDY.board.y };
+/** the fog card on the oxblood thread (Q3), drawn over the board's own copy as the subject (same place, same paper) */
+function q3Card(c: C, env: PaintEnv, st: BoardState) {
+  const q = st.questions.find((qq) => qq.slot === 'Q3');
+  if (!q) return;
+  const { x, y, k } = STUDY.board;
+  const bx = Q_SLOTS.Q3;
+  const qy = y + BOARD.threadY * k + Math.sin(((bx - 40) / 920) * Math.PI) * 10 * k;
+  const light = poolAt(BOARD_POOL, bx, BOARD.threadY + 40);
+  drawCard(c, { id: 'Q-Q3', w: 168, h: 44, icon: 'question', text: q.text }, { x: x + bx * k, y: qy + 10 * k + 22 * k, k, light, pin: false }, env);
+}
+
+/** the new candle's lettering, cut into the wax up its length (as waxCandle draws it, 9 px, firmer ink) */
+function waxLetters(c: C, env: PaintEnv, x: number, y: number, text: string, a: number) {
+  const m = env.mood;
+  c.save();
+  c.translate(x, y - 10 * SS);
+  c.rotate(-Math.PI / 2);
+  c.font = `500 ${9 * SS}px ${FONT.typewriter}`;
+  c.textBaseline = 'middle';
+  c.textAlign = 'left';
+  c.fillStyle = withAlpha(mixLab(m.ink, '#000000', 0.25), 0.92 * a);
+  c.fillText(text, 0, 0.5 * SS);
+  c.restore();
+}
+
 /** a faint learned-filter tile (a grey striped edge) glinting in the new candle's wax on 'own' */
 function learnedTile(c: C, env: PaintEnv, t: number, b: B, newK: number) {
   const g = pulse(t, b.own - 0.2, 0.3, 1.4);
   const a = newK * (0.18 + 0.55 * g + 0.12 * win(t, b.own, b.own + 1.6));
   if (a <= 0.01) return;
   const m = env.mood;
-  const x = NEW_X, y = SY - LIT_HEIGHT * SS + 70;
-  const s = 11;
+  // above the end of the lettering, just under the flame: it glints in the macro hold
+  const x = NEW_X, y = SY - LIT_HEIGHT * SS + 15;
+  const s = 9;
   c.save();
   c.globalAlpha *= a;
   c.translate(x, y);
@@ -757,11 +928,17 @@ function paintStage(f: Frame, sc: Scene, t: number) {
   const cam = sc.stage(t);
   f.camera(cam);
   f.setMood('dawnGold', { from: 'candleAmber', u: win(t, b.push0 + 0.1, b.stageT + 0.4) });
-  const reach = sm((t - (b.lamp - 0.1)) / 1.1);
+  // ROUND 3 (story + art + teacher T306), 'Now, it found him': from 'Now' Hinton STANDS at the desk just outside the
+  // pool (a near-black cut-out against the lamp's dim spill on the wall); the pool widens from 'Now' and reaches his
+  // FEET on 'found'; he is fully lit on 'him' (by him − 0.07) and held ≈ 1.25 s to the cut
+  const reach = sm((t - (b.now - 0.05)) / (b.found + 0.02 - (b.now - 0.05)));
+  const feet = sm((t - (b.found - 0.2)) / 0.3);
+  const full = sm((t - (b.found + 0.02)) / (b.him - 0.07 - (b.found + 0.02)));
   // the lamp clicks on: a short stutter on twos, then steady
-  const lu = (tq - (b.lamp + 0.5)) / 0.35;
+  const lu = (tq - (b.lamp + 0.1)) / 0.35;
   const lampK = lu <= 0 ? 0 : lu < 0.25 ? 0.9 : lu < 0.5 ? 0.25 : lu < 1 ? 1 : 1;
-  const pool = 1.0 + 0.72 * reach;
+  // R ≈ 385 px · pool: 2.1 puts his feet (746 px from the candle) inside the lit falloff
+  const pool = 1.0 + 1.1 * reach;
   const geo = candleStage(f, {
     key: ID,
     cams: sc.GCAMS,
@@ -775,33 +952,67 @@ function paintStage(f: Frame, sc: Scene, t: number) {
       // the candle as WAX (a lip, a melt cup and a drip, the lettering cut into it) over the stage's ink stub
       waxCandle(c, { x: ST_X, y: g.floorY, view: STAGE_VIEW, s: ST_S, flame: 1, letters: 0.85 }, env);
       desk(c, env, g, t, lampK);
-      // Hinton, standing at the far rim beside his desk, facing the flame (never seated): in the dark until the
-      // widening pool reaches him on 'Now'; the lamp behind him then cuts his contour out of the wall
-      const found = Math.max(reach, 0.6 * lampK);
+      // Hinton (never seated): he steps in out of the dark during 'the edge of the light' and is on his mark,
+      // standing, by 'Now'; breathing on twos; on 'him' his head lifts a little toward the light
+      const w = HINTON_WALK(b.walkAt)(t);
+      // (the head lift completes ON 'him', so the tableau after it is still)
+      const lift = sm((tq - (b.him - 0.4)) / 0.4);
+      const base = w.walking ? w.pose : withLife({ ...w.pose }, tq, 1947, 0.7);
+      const hp = { ...base, angles: { ...base.angles, head: (base.angles.head ?? 0) - 5 * lift, neck: (base.angles.neck ?? 0) - 2 * lift } };
+      const gx = HINTON_X - 14;
+      // the reading lamp's dim spill on the wall behind his shoulders: the edge of the light he stands at, so the
+      // figure reads as a dark cut-out from 'Now' before the pool reaches him
+      if (lampK > 0) {
+        c.save();
+        c.globalCompositeOperation = 'lighter';
+        const wg = c.createRadialGradient(gx, g.floorY - 250, 10, gx, g.floorY - 250, 230);
+        wg.addColorStop(0, withAlpha(env.mood.halo, (0.16 + 0.34 * full) * lampK));
+        wg.addColorStop(1, withAlpha(env.mood.halo, 0));
+        c.fillStyle = wg;
+        c.fillRect(gx - 240, g.floorY - 490, 480, 490);
+        c.restore();
+      }
+      const emerge = sm((t - b.walkAt + 0.05) / 0.3);
+      c.save();
+      c.globalAlpha *= emerge;
       cast.hinton.draw(c, {
-        x: HINTON_X,
+        x: w.x,
         y: g.floorY,
         facing: 'left',
-        pose: withLife({ ...POSES.stand }, tq, 1947, 0.7),
+        pose: hp,
         scale: 1.12,
         ink: PUPPET_NEAR_BLACK,
         light: { x: -1, y: -0.3, floor: 0 },
-        edgeRim: { x: -1, y: -0.35, px: 1.8, alpha: 0.9 * found },
+        // a thin rim from the lamp while he stands at the edge; the full warm rim once the light has found him
+        edgeRim: { x: -1, y: -0.35, px: 1.8 + 0.9 * full, alpha: 0.35 * lampK + 0.6 * full },
       }, env);
-      // until 'Now' the far rim of the pool is near black: a veil over the wall AND the figure (same value, so even
-      // the stage's rim pass finds no contour); the reach and the lamp dissolve it
+      c.restore();
+      // the dark past the pool's rim: a veil over the wall AND the figure, at full strength until 'Now'; from 'Now'
+      // it thins so he stands as a silhouette at the edge; the widening pool pushes its edge back; it is gone by 'him'
       {
-        const dk = 1 - found;
-        if (dk > 0.003) {
-          // the pool's falloff: everything right of the desk's lamp end sinks to near black, floor to flies
+        const va = 0.97 * (1 - 0.5 * sm((t - (b.now - 0.4)) / 0.6)) * (1 - 0.45 * feet) * (1 - full);
+        if (va > 0.003) {
           const nb = mixLab(env.mood.ink, '#000000', 0.3);
-          const x0 = DESK_X + 20, x1 = HINTON_X - 40;
+          const x0 = DESK_X + 20 + 90 * reach, x1 = HINTON_X - 40 + 24 * reach;
           const vg = c.createLinearGradient(x0, 0, x1, 0);
           vg.addColorStop(0, withAlpha(nb, 0));
-          vg.addColorStop(1, withAlpha(nb, 0.97 * dk));
+          vg.addColorStop(1, withAlpha(nb, va));
           c.fillStyle = vg;
           c.fillRect(x0, g.floorY - 1200, 3000, 1200 + 4);
         }
+      }
+      // 'found': the pool's light runs across the floor to his feet (a warm spill under them, over the veil)
+      if (feet > 0.003) {
+        c.save();
+        c.globalCompositeOperation = 'lighter';
+        c.translate(HINTON_X - 30, g.floorY + 10);
+        c.scale(1, 0.14);
+        const fg = c.createRadialGradient(0, 0, 0, 0, 0, 200);
+        fg.addColorStop(0, withAlpha(mixLab(env.mood.halo, env.mood.core, 0.2), 0.42 * feet));
+        fg.addColorStop(1, withAlpha(env.mood.halo, 0));
+        c.fillStyle = fg;
+        c.fillRect(-200, -200, 400, 400);
+        c.restore();
       }
     },
   });

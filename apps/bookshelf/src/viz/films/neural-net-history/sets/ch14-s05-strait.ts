@@ -24,7 +24,7 @@
 import type { Camera3, Frame, LayerSpec, MoodId, PaintEnv } from '../../../film/contracts';
 import { LAYERS } from '../../../film/contracts';
 import { MOODS, makeEnv, mixLab, withAlpha } from '../../../film/silhouette/palette';
-import { FONT, softPlate } from '../../../film/silhouette/type';
+import { FONT, softPlate, textRole } from '../../../film/silhouette/type';
 import { skyline } from '../../../film/silhouette/architecture';
 import { goBoard } from '../../../film/silhouette/props';
 import { hash1 } from '../../../film/core/frame';
@@ -150,35 +150,84 @@ function waterBody(c: C, env: PaintEnv, x0: number, x1: number) {
 function farFence(c: C, env: PaintEnv, a: number, hi = 0) {
   if (a <= 0.01) return;
   const m = env.mood;
-  // hi (0..1): the pages caught by a cool rim, darker against the horizon glow so each sheet reads
-  const paper = mixLab(mixLab(m.set, m.haze, 0.42), m.ink, 0.35 * hi);
-  const lines = mixLab(m.rim, m.haze, 0.3 - 0.2 * hi);
-  const n = 12;
-  const w = (FENCE.x1 - FENCE.x0) / n;
+  // review r1: a row of evenly ruled slabs read as server racks. Now: two stakes in the water carry a sagging tie
+  // line; nine loose paper sheets hang from it on two pins each, gapped, leaning a little each their own way, short
+  // typed lines (not full-width rules), a turned-up corner. hi (0..1): the cool rim caught once on 'chip'
+  const paper = mixLab(mixLab(m.setHaze, m.haze, 0.45), m.ink, 0.25 * hi);
+  const lines = mixLab(m.ink, m.set, 0.4);
+  const ink = mixLab(m.set, m.ink, 0.4);
+  const n = 9;
+  const span = FENCE.x1 - FENCE.x0;
+  const pitch = span / n;
+  const w = pitch - 5;
+  const topY = HZ - FENCE.h - 4;
+  const sag = 5;
+  const lineY = (x: number) => topY + sag * (1 - Math.pow((2 * (x - FENCE.x0)) / span - 1, 2));
   c.save();
   c.globalAlpha *= Math.min(1, a);
+  // the stakes and the tie line
+  c.fillStyle = ink;
+  for (const x of [FENCE.x0 - 6, FENCE.x1 + 4]) c.fillRect(x, topY - 5, 2.2, HZ + 6 - (topY - 5));
+  c.strokeStyle = withAlpha(mixLab(ink, m.rim, 0.25 + 0.5 * hi), 0.95);
+  c.lineWidth = 0.9;
+  c.beginPath();
+  c.moveTo(FENCE.x0 - 5, topY - 4);
+  for (let k = 0; k <= 16; k++) {
+    const x = FENCE.x0 + (span * k) / 16;
+    c.lineTo(x, lineY(x));
+  }
+  c.lineTo(FENCE.x1 + 5, topY - 4);
+  c.stroke();
   for (let i = 0; i < n; i++) {
-    const x = FENCE.x0 + i * w;
-    const h = FENCE.h * (0.86 + 0.14 * Math.abs(hash1(i, 33)));
-    const lean = 0.03 * hash1(i, 34);
+    const x = FENCE.x0 + (i + 0.5) * pitch;
+    const h = FENCE.h * (0.74 + 0.16 * Math.abs(hash1(i, 33)));
+    const lean = (i % 2 ? 1 : -1) * 0.05 + 0.04 * hash1(i, 34);
+    const y0 = lineY(x);
     c.save();
-    c.translate(x + w / 2, HZ + 2);
+    c.translate(x, y0);
     c.rotate(lean);
     c.fillStyle = paper;
-    c.fillRect(-w / 2 + 0.8, -h, w - 1.6, h);
-    c.fillStyle = withAlpha(lines, 0.55 + 0.3 * hi);
-    for (let k = 1; k < 7; k++) c.fillRect(-w / 2 + 3, -h + k * (h / 8), w - 6, 0.7);
-    c.fillStyle = withAlpha(m.rim, 0.6 + 0.4 * hi);
-    c.fillRect(-w / 2 + 0.8, -h - 0.6, w - 1.6, 1.1 + 0.9 * hi);
+    c.beginPath();
+    c.moveTo(-w / 2, 0);
+    c.lineTo(w / 2, 0);
+    c.lineTo(w / 2, h - 4);
+    c.lineTo(w / 2 - 4, h);
+    c.lineTo(-w / 2, h);
+    c.closePath();
+    c.fill();
+    // the turned-up corner
+    c.fillStyle = mixLab(paper, m.rim, 0.35);
+    c.beginPath();
+    c.moveTo(w / 2, h - 4);
+    c.lineTo(w / 2 - 4, h - 4);
+    c.lineTo(w / 2 - 4, h);
+    c.closePath();
+    c.fill();
+    // a short heading and typed lines of varying length
+    c.fillStyle = withAlpha(lines, 0.7);
+    c.fillRect(-w / 2 + 2.5, 5, w * 0.55, 1.3);
+    for (let k = 0; k < 5; k++) {
+      const len = (w - 5) * (0.55 + 0.4 * Math.abs(hash1(i * 7 + k, 35)));
+      c.fillRect(-w / 2 + 2.5, 9.5 + k * ((h - 14) / 5), len, 0.7);
+    }
+    // two pins at the top
+    c.fillStyle = mixLab(m.ink, m.rim, 0.25 + 0.4 * hi);
+    for (const px of [-w / 2 + 2.6, w / 2 - 2.6]) {
+      c.beginPath();
+      c.arc(px, 1.2, 1.25, 0, Math.PI * 2);
+      c.fill();
+    }
+    // top edge catches the horizon; on 'chip' a cool rim down the lit side
+    c.fillStyle = withAlpha(m.rim, 0.45 + 0.5 * hi);
+    c.fillRect(-w / 2, -0.4, w, 0.9 + 0.7 * hi);
     if (hi > 0.01) {
-      // the cool rim down each sheet's lit edge, so the gaps between the pages read
-      c.fillStyle = withAlpha(m.rim, 0.6 * hi);
-      c.fillRect(w / 2 - 2.2, -h, 1, h);
+      c.fillStyle = withAlpha(m.rim, 0.7 * hi);
+      c.fillRect(w / 2 - 1, 0, 1, h - 4);
     }
     c.restore();
-    // its reflection
-    c.fillStyle = withAlpha(paper, 0.3);
-    c.fillRect(x + 0.8, HZ + 3, w - 1.6, h * 0.45);
+    // its reflection, broken by the swell
+    c.fillStyle = withAlpha(paper, 0.22);
+    for (let k = 0; k < 4; k++) c.fillRect(x - w / 2 + 1 + hash1(i * 5 + k, 36) * 1.5, HZ + 4 + k * 3.2, w - 2, 1.6);
   }
   c.restore();
 }
@@ -254,10 +303,11 @@ export function nearWater(c: C, env: PaintEnv, x0 = -300, x1 = 1600, y0 = 470, y
 /** jetty geometry (L4 world): a plank walkway from the near bank (bottom-left) out to a square landing near the
  *  centre of the frame; a rail along its right edge (the side facing the camera's right) */
 export const JETTY = {
-  /** walkway left / right edges, near → far */
-  L0: { x: -120, y: 980 },
+  /** walkway left / right edges, near → far. Review r1 (ch14-s06): a lower eye line, so the walkway runs in at a
+   *  gentler angle (≈ 27°) instead of a hard corner-to-corner diagonal */
+  L0: { x: -400, y: 846 },
   L1: { x: 586, y: 486 },
-  R0: { x: 150, y: 1000 },
+  R0: { x: -130, y: 884 },
   R1: { x: 640, y: 494 },
   /** the landing: a wider platform at the end */
   land: { x0: 556, x1: 760, yb: 498, yf: 470, thick: 9 },
@@ -274,6 +324,13 @@ export function railTop(u: number): P {
 }
 /** the lantern's light point (hung from the post's arm) */
 export const LANTERN = { x: JETTY.post.x + 22, y: JETTY.post.top + 26 };
+/** a small lamp on its own post on the rail, in the gap between the BLETCHLEY and LIMA pages (review r1, ch14-s06:
+ *  the pages are lit by a practical at a post head, so they carry a warm edge before they lift) */
+export const RAIL_LAMP_U = 0.52;
+export function railLampPoint(): P {
+  const b = railTop(RAIL_LAMP_U);
+  return { x: b.x, y: b.y - 112 };
+}
 
 export interface PageState {
   text: string;
@@ -282,6 +339,33 @@ export interface PageState {
   u: number;
   /** 0 = hanging flat against the rail, 1 = lifted into the light */
   lift: number;
+  /** 'subject' (default: ch14-s06 reads them) or 'texture' (set dressing once read, ch14-s07) */
+  role?: 'subject' | 'texture';
+  /** the post lantern's warm light on the page's lantern-facing (top, right) edges 0..1 (default 1) */
+  warm?: number;
+  /** ink seals pressed on the page (ch14-s06 'both'): side -1 = from the left shore, 1 = from the right; u 0..1 press */
+  seals?: { side: -1 | 1; u: number }[];
+  /** whole-page alpha (a page leaving the frame fades to texture: pageEdgeAlpha) */
+  alpha?: number;
+  /** where its warm light comes from (L4); default: the landing's lantern, up to the right */
+  warmFrom?: P;
+}
+/** a page's screen rect for a camera (stage px), for clean-edge fades */
+export function pageScreenRect(u: number, cam: Camera3): { x0: number; y0: number; x1: number; y1: number } {
+  const at = railTop(u);
+  const s = lerp(1.04, 0.9, u);
+  const a = toScreen(LAYERS.L4, cam, at.x - (PAGE.w / 2) * s, at.y);
+  const b = toScreen(LAYERS.L4, cam, at.x + (PAGE.w / 2) * s, at.y + (PAGE.h + 26) * s);
+  return { x0: a.x, y0: a.y, x1: b.x, y1: b.y };
+}
+/** CLEAN EDGES (review r1): a page that starts to leave the frame (or the title-safe bottom band) fades to texture,
+ *  ≤ 0.3 alpha once a third of it is outside; whole in frame it is untouched */
+export function pageEdgeAlpha(u: number, cam: Camera3, margin = 6): number {
+  const r = pageScreenRect(u, cam);
+  const w = r.x1 - r.x0, h = r.y1 - r.y0;
+  const out = Math.max((margin - r.x0) / w, (r.x1 - (1280 - margin)) / w, (r.y1 - (720 - margin)) / h, 0);
+  // and gone once it is mostly out (no pale slab left at the edge)
+  return (1 - 0.75 * sm(out / 0.33)) * (1 - sm((out - 0.33) / 0.35));
 }
 export interface JettyOpts {
   pages?: PageState[];
@@ -291,9 +375,13 @@ export interface JettyOpts {
   lantern?: number;
   /** extra paint on the landing after the board (handset, cords) */
   onBoard?: (c: C, env: PaintEnv) => void;
+  /** the rail lamp's glass 0..1 (omitted = no rail lamp; the shot adds f.practical at railLampPoint()) */
+  railLamp?: number;
 }
 
-const PAGE = { w: 72, h: 104 };
+// sized so the place name reaches the 22 px cap floor when the camera holds on a lifted page (review round 2:
+// BLETCHLEY read at 20 px, WASHINGTON at 16 px on the old 72 px pages)
+const PAGE = { w: 104, h: 128 };
 
 function page(c: C, env: PaintEnv, p: PageState) {
   const m = env.mood;
@@ -302,7 +390,10 @@ function page(c: C, env: PaintEnv, p: PageState) {
   const lift = sm(p.lift);
   const w = PAGE.w, h = PAGE.h;
   const pinL = -w / 2 + 9;
+  const pa = p.alpha ?? 1;
+  if (pa <= 0.01) return;
   c.save();
+  c.globalAlpha *= pa;
   c.translate(at.x, at.y + 2);
   c.scale(s, s);
   // in shadow: the page hangs askew from its left pin (its right pin popped), turned down ~12°, away from the
@@ -327,6 +418,31 @@ function page(c: C, env: PaintEnv, p: PageState) {
   c.quadraticCurveTo(-w / 4, h - 3, -w / 2 + 1, h);
   c.closePath();
   c.fill();
+  // the post lantern's warm light (review r1): even in shadow the page's lantern-facing corner is warmed and its top
+  // and right edges carry a warm hairline, so the pages read as paper in lamplight, not grey slabs
+  // the side facing the light (+1 right, -1 left); a nearer light warms the page more
+  const lf = p.warmFrom ?? LANTERN;
+  const side = lf.x >= at.x ? 1 : -1;
+  const near = clamp01(1 - (Math.abs(lf.x - at.x) - 60) / 360);
+  const warm = (p.warm ?? 1) * (1 - 0.45 * lift) * (0.55 + 0.45 * near);
+  if (warm > 0.01) {
+    c.save();
+    c.globalCompositeOperation = 'lighter';
+    const g = c.createLinearGradient((side * w) / 2, 0, (-side * w) / 2, h);
+    g.addColorStop(0, withAlpha(WARM, 0.36 * warm));
+    g.addColorStop(0.55, withAlpha(WARM, 0.05 * warm));
+    g.addColorStop(1, withAlpha(WARM, 0));
+    c.fillStyle = g;
+    c.fillRect(-w / 2, 0, w, h);
+    c.restore();
+    c.strokeStyle = withAlpha(mixLab(WARM, '#fff4dc', 0.3), 0.8 * warm);
+    c.lineWidth = 1.6;
+    c.beginPath();
+    c.moveTo(-side * (w / 2 - 6), 0.6);
+    c.lineTo(side * (w / 2 - 0.6), 0.6);
+    c.lineTo(side * (w / 2 - 1.2), h - 4);
+    c.stroke();
+  }
   // edge rim toward the lantern (upper right): faint in shadow, bright once lifted
   c.strokeStyle = withAlpha(m.rim, 0.12 + 0.6 * lift);
   c.lineWidth = 1;
@@ -335,6 +451,40 @@ function page(c: C, env: PaintEnv, p: PageState) {
   c.lineTo(w / 2, 0.5);
   c.lineTo(w / 2 - 1, h - 3);
   c.stroke();
+  // the two ink seals (one from each shore's side), pressed under the year
+  for (const sl of p.seals ?? []) {
+    if (sl.u <= 0.001) continue;
+    const k = sm(sl.u / 0.6);
+    const press = 1 + 0.5 * (1 - sm(sl.u));
+    const sx = sl.side * w * 0.24 + sl.side * 14 * (1 - k);
+    const sy = h - 20;
+    c.save();
+    c.translate(sx, sy);
+    c.rotate(sl.side * 0.12);
+    c.scale(press, press);
+    c.globalAlpha *= k;
+    const sealInk = mixLab(m.ink, m.fg, 0.2);
+    c.fillStyle = sealInk;
+    c.beginPath();
+    c.arc(0, 0, 10, 0, Math.PI * 2);
+    c.fill();
+    c.strokeStyle = withAlpha(paper, 0.6);
+    c.lineWidth = 1;
+    c.beginPath();
+    c.arc(0, 0, 7, 0, Math.PI * 2);
+    c.stroke();
+    // a plain cut mark in the seal (no emblem): a short bar and three ticks
+    c.fillStyle = withAlpha(paper, 0.55);
+    c.fillRect(-3.6, -0.7, 7.2, 1.4);
+    for (let j = -1; j <= 1; j++) c.fillRect(j * 2.6 - 0.5, 2, 1, 2.4);
+    // the fresh impression catches the lamp
+    c.strokeStyle = withAlpha(WARM, 0.5 * (1 - 0.6 * sm(sl.u)));
+    c.lineWidth = 1.2;
+    c.beginPath();
+    c.arc(0, 0, 10.5, -Math.PI * 0.6, Math.PI * 0.05);
+    c.stroke();
+    c.restore();
+  }
   // pins (the right one only holds once lifted)
   c.fillStyle = mixLab(m.ink, m.rim, 0.4);
   c.beginPath();
@@ -353,11 +503,15 @@ function page(c: C, env: PaintEnv, p: PageState) {
   c.fillStyle = mixLab(paper, ink, lerp(0.4, 1, lift));
   c.textAlign = 'center';
   c.textBaseline = 'alphabetic';
-  c.font = `600 ${p.text.length > 9 ? 10.6 : 12.4}px ${FONT.mono}`;
-  c.fillText(p.text, 0, h * 0.4);
-  c.fillRect(-w * 0.3, h * 0.4 + 7, w * 0.6, 0.8);
-  c.font = `500 24px ${FONT.mono}`;
-  c.fillText(p.year, 0, h * 0.4 + 34);
+  // the place name as large as the page allows (IBM Plex Mono advance 0.6 em), the year under a rule
+  const fs = Math.min(17, (w - 10) / (p.text.length * 0.6));
+  textRole(c, p.role ?? 'subject', () => {
+    c.font = `600 ${fs.toFixed(1)}px ${FONT.mono}`;
+    c.fillText(p.text, 0, h * 0.38);
+    c.fillRect(-w * 0.3, h * 0.38 + 8, w * 0.6, 0.8);
+    c.font = `500 28px ${FONT.mono}`;
+    c.fillText(p.year, 0, h * 0.38 + 42);
+  });
   c.restore();
 }
 
@@ -466,8 +620,43 @@ export function jetty(c: C, env: PaintEnv, o: JettyOpts = {}) {
   c.lineTo(a0.x, a0.y + 0.8);
   c.closePath();
   c.fill();
+  // the rail lamp: a slim post up from the rail between the first two pages, a small lamp at its head
+  if (o.railLamp !== undefined) {
+    const b0 = railTop(RAIL_LAMP_U);
+    const lp = railLampPoint();
+    c.fillStyle = ink;
+    c.fillRect(b0.x - 2, lp.y + 10, 4, b0.y - lp.y - 8);
+    c.fillRect(b0.x - 4, b0.y - 3, 8, 4);
+    c.beginPath();
+    c.moveTo(lp.x - 6, lp.y - 9);
+    c.lineTo(lp.x + 6, lp.y - 9);
+    c.lineTo(lp.x, lp.y - 15);
+    c.closePath();
+    c.fill();
+    c.fillRect(lp.x - 6, lp.y - 9, 12, 2);
+    c.fillRect(lp.x - 6, lp.y + 8, 12, 2.6);
+    c.fillStyle = mixLab(m.halo, WARM, 0.55);
+    c.globalAlpha = 0.35 + 0.65 * o.railLamp;
+    c.fillRect(lp.x - 5, lp.y - 7, 10, 15);
+    c.globalAlpha = 1;
+    c.fillStyle = ink;
+    c.fillRect(lp.x - 0.7, lp.y - 7, 1.4, 15);
+    c.fillStyle = withAlpha(m.rim, 0.45);
+    c.fillRect(b0.x - 2, lp.y + 10, 0.9, b0.y - lp.y - 8);
+    // its warm light (the cool practical sits on top): a soft warm pool around the head
+    c.save();
+    c.globalCompositeOperation = 'lighter';
+    const spr = softSprite(WARM, 0.25);
+    c.globalAlpha = 0.5 * o.railLamp;
+    c.drawImage(spr, lp.x - 46, lp.y - 46, 92, 92);
+    c.globalAlpha = 0.22 * o.railLamp;
+    c.drawImage(spr, lp.x - 130, lp.y - 70, 260, 200);
+    c.restore();
+  }
   // pages pinned to the rail
-  for (const p of o.pages ?? []) page(c, env, p);
+  // far page first: each nearer page overlaps the one beyond it (never its lettering)
+  const lampAt = o.railLamp !== undefined ? railLampPoint() : undefined;
+  for (const p of [...(o.pages ?? [])].sort((a, b) => b.u - a.u)) page(c, env, { warmFrom: lampAt, ...p });
   // the lantern post and its arm, the lantern itself (its light is the shot's practical)
   const P = J.post;
   c.fillStyle = ink;
@@ -501,7 +690,7 @@ export function jetty(c: C, env: PaintEnv, o: JettyOpts = {}) {
  * `back` 0..1 is the pull back INTO the study (ch14-s07's end): the opening shrinks toward the centre, the study
  * wall, a second sash and the deep sill come into view, and the lamp's candleAmber warms the wall (STUDY LOCK).
  */
-export function windowFrame(f: Frame, o: { back?: number } = {}) {
+export function windowFrame(f: Frame, o: { back?: number; jambs?: number; dy?: number } = {}) {
   const c = f.c;
   const back = sm(o.back ?? 0);
   const am = MOODS.candleAmber;
@@ -512,6 +701,8 @@ export function windowFrame(f: Frame, o: { back?: number } = {}) {
   c.translate(cx, cy);
   c.scale(k, k);
   c.translate(-cx, -cy);
+  // the window is the nearest plane: in a tilt it slides furthest (dy, stage px)
+  c.translate(0, o.dy ?? 0);
   const ink = mixLab(am.fg, am.ink, 0.4);
   // the opening: narrow stiles at the sides and head, and a deep SILL along the bottom (a study window, not a
   // letterbox): its top lit by the lamp with a candleAmber rim hairline
@@ -526,10 +717,32 @@ export function windowFrame(f: Frame, o: { back?: number } = {}) {
   // a glazing bar down the middle would cross the image's centre: the sash bars sit outside the opening only
   // (a second sash each side, seen once the camera pulls back)
   for (const x of [-300, -150, X1 + 136, X1 + 286]) c.fillRect(x, Y0 - 40, 14, Y1 - Y0 + 80);
+  // the sash's own JAMBS just inside the opening (review r1, the window ch14-s07 pulls back to): ~40 px of faint
+  // ink at each side, a meeting-rail catch on each, candleAmber hairlines on their inner edges
+  const jk = o.jambs ?? 1;
+  const JW = 40, CATCH = Y0 + (Y1 - Y0) * 0.46;
+  if (jk > 0.01) {
+    c.fillStyle = withAlpha(ink, 0.8 * jk);
+    c.fillRect(X0, Y0, JW, Y1 - Y0);
+    c.fillRect(X1 - JW, Y0, JW, Y1 - Y0);
+    c.fillStyle = withAlpha(ink, 0.95 * jk);
+    for (const [x0, dir] of [[X0 + JW, 1], [X1 - JW, -1]] as const) {
+      c.fillRect(dir > 0 ? x0 : x0 - 16, CATCH - 5, 16, 10);
+      c.fillRect(dir > 0 ? x0 - JW : x0, CATCH - 7, JW, 14);
+    }
+  }
   c.filter = 'none';
   c.fillStyle = withAlpha(am.rim, 0.36 + 0.2 * back);
   c.fillRect(X0 - 1.4, Y0 + 4, 1.4, Y1 - Y0 - 8);
   c.fillRect(X1, Y0 + 4, 1.4, Y1 - Y0 - 8);
+  if (jk > 0.01) {
+    c.fillStyle = withAlpha(am.rim, 0.3 * jk);
+    c.fillRect(X0 + JW, Y0 + 2, 1, Y1 - Y0 - 4);
+    c.fillRect(X1 - JW - 1, Y0 + 2, 1, Y1 - Y0 - 4);
+    c.fillStyle = withAlpha(am.rim, 0.42 * jk);
+    c.fillRect(X0, CATCH - 7.5, JW + 16, 1);
+    c.fillRect(X1 - JW - 16, CATCH - 7.5, JW + 16, 1);
+  }
   c.fillStyle = withAlpha(am.rim, 0.22 + 0.2 * back);
   c.fillRect(X0 + 4, Y0 - 1.2, X1 - X0 - 8, 1.2);
   // the sill: its top face (a narrow lamp-warmed band), a candleAmber hairline on its front edge, then the shadowed
@@ -661,9 +874,13 @@ export function handset(c: C, env: PaintEnv, o: { drop: number; plates?: number 
   c.restore();
 }
 
-/** the cord, both ways from the handset into the water toward each shore. `glow` 0..1 runs a light along its length
- *  outward from the handset (incidents); far ends are passed in L4 coords (use across() from the shore points). */
-export function handsetCords(c: C, env: PaintEnv, o: { ends: { L: P; R: P }; farL: P; farR: P; reveal: number; glow: number; t: number }) {
+/** the cord, both ways from the handset into the water toward each shore; far ends are passed in L4 coords (use
+ *  across() from the shore points). Review r1: no static glows at the cradle (they read as headlights).
+ *    glow   0..1  a faint, even light along the whole cord (the channel open), no hot spot at either end
+ *    pulse  0..1  a travelling pulse from the handset out to each shore (incidents), its bead fading in only once it
+ *                 has left the cradle; omitted / ≤ 0 = none
+ *    land   0..1  the soft landing glow where each cord reaches its skyline */
+export function handsetCords(c: C, env: PaintEnv, o: { ends: { L: P; R: P }; farL: P; farR: P; reveal: number; glow: number; t: number; pulse?: number; land?: number }) {
   if (o.reveal <= 0.001) return;
   const m = env.mood;
   const ink = env.fill('ink');
@@ -701,28 +918,41 @@ export function handsetCords(c: C, env: PaintEnv, o: { ends: { L: P; R: P }; far
       c.lineTo(pts[i].x, pts[i].y);
       c.stroke();
     }
-    if (o.glow > 0.001) {
-      // the line lights along its length, and a brighter bead runs out to the shore
-      c.globalCompositeOperation = 'lighter';
-      const head = clamp01(o.glow * 1.25);
-      c.lineCap = 'butt';
-      for (let i = 1; i <= shown; i++) {
-        const q = i / n;
-        if (q > head) break;
-        const a2 = (0.3 + 0.45 * (1 - q)) * Math.min(1, o.glow * 2) * (0.8 + 0.2 * Math.sin(o.t * 3 - q * 12));
-        c.strokeStyle = withAlpha(mixLab(m.rim, WARM, 0.5), a2);
-        c.lineWidth = lerp(2.6, 1, q);
-        c.beginPath();
-        c.moveTo(pts[i - 1].x, pts[i - 1].y);
-        c.lineTo(pts[i].x, pts[i].y);
-        c.stroke();
-      }
-      if (head < 1) {
-        const hp = pts[Math.min(n, Math.floor(head * n))];
-        const spr = softSprite(WARM, 0.3);
-        c.globalAlpha = 0.9;
-        c.drawImage(spr, hp.x - 16, hp.y - 16, 32, 32);
-      }
+    const col = mixLab(m.rim, WARM, 0.5);
+    c.globalCompositeOperation = 'lighter';
+    c.lineCap = 'butt';
+    // the right cord's pulse leaves a beat after the left's (never a matched pair of lights at the cradle)
+    const pulse = (o.pulse ?? 0) > 0 ? clamp01((o.pulse ?? 0) * 1.12 - (side > 0 ? 0.12 : 0)) : 0;
+    const head = pulse > 0 ? 1 - Math.pow(1 - pulse, 1.6) : -1;
+    for (let i = 1; i <= shown; i++) {
+      const q = i / n;
+      // the even channel light, plus the pulse's short tail behind its head
+      let a2 = 0.22 * o.glow;
+      if (head > 0 && q <= head && q > head - 0.16) a2 += 0.75 * (1 - (head - q) / 0.16) * sm(head / 0.12);
+      if (a2 <= 0.005) continue;
+      c.strokeStyle = withAlpha(col, Math.min(1, a2));
+      c.lineWidth = lerp(2.2, 1, q);
+      c.beginPath();
+      c.moveTo(pts[i - 1].x, pts[i - 1].y);
+      c.lineTo(pts[i].x, pts[i].y);
+      c.stroke();
+    }
+    if (head > 0 && head < 1) {
+      const hp = pts[Math.min(n, Math.round(head * n))];
+      const spr = softSprite(WARM, 0.3);
+      // the bead fades in only once it is out on the water, and swells a little as it runs
+      c.globalAlpha = 0.85 * sm((head - 0.18) / 0.2) * (1 - 0.3 * sm((head - 0.85) / 0.15));
+      const r = lerp(9, 14, head);
+      c.drawImage(spr, hp.x - r, hp.y - r, 2 * r, 2 * r);
+    }
+    const land = o.land ?? 0;
+    if (land > 0.005) {
+      // its landing at the skyline: a low, wide soft glow on the water under the shore
+      const spr = softSprite(WARM, 0.2);
+      c.globalAlpha = 0.7 * land;
+      c.drawImage(spr, b.x - 34, b.y - 9, 68, 18);
+      c.globalAlpha = 0.45 * land;
+      c.drawImage(spr, b.x - 12, b.y - 12, 24, 20);
     }
     c.restore();
   }
@@ -744,12 +974,14 @@ export interface ReflectOpts {
   res?: number;
   /** draw the study shelf / hands into the sheet, in sheet-local coords (origin = sheet top-left), candleAmber env */
   draw: (c: C, env: PaintEnv) => void;
-  /** flames drawn brighter on top (sheet-local points) */
-  flames?: { x: number; y: number; k: number; seed: number }[];
+  /** flames drawn brighter on top (sheet-local points); r = glow radius multiplier (default 1) */
+  flames?: { x: number; y: number; k: number; seed: number; r?: number }[];
   /** ONE uniform strength for the whole reflection (~0.35) */
   alpha?: number;
   /** horizontal ripple displacement in screen px (2–3) */
   ripple?: number;
+  /** a per-band strength factor 0..1 by the band's L2-world y (e.g. thinner where the columns cross the skylines) */
+  bandAlpha?: (yWorld: number) => number;
 }
 
 /** the glass's own plane: L2 depth, but unblurred so the reflection composites straight onto the scene */
@@ -781,8 +1013,14 @@ export function reflection(f: Frame, o: ReflectOpts) {
     c.globalCompositeOperation = 'screen';
     c.globalAlpha *= Math.min(1, alpha);
     const band = 3 / sc;
+    const base = c.globalAlpha;
     for (let y = 0; y < o.h; y += band) {
       const hh = Math.min(band, o.h - y);
+      if (o.bandAlpha) {
+        const ka = o.bandAlpha(o.y + (y + hh / 2) * sc);
+        if (ka <= 0.004) continue;
+        c.globalAlpha = base * ka;
+      }
       c.drawImage(sheet!.cv, 0, y * ps * res, W, hh * ps * res, o.x + ripple(y * sc), o.y + y * sc, o.w * sc, hh * sc);
     }
     c.restore();
@@ -797,12 +1035,13 @@ export function reflection(f: Frame, o: ReflectOpts) {
         const fx = o.x + fl.x * sc + ripple(fl.y * sc), fy = o.y + fl.y * sc;
         const tr = 1 + 0.07 * Math.sin(t * 9.1 + fl.seed) * Math.sin(t * 3.7 + fl.seed * 2);
         const k = fl.k * Math.min(1.2, alpha / 0.35);
-        const g = c.createRadialGradient(fx, fy, 0, fx, fy, r0 * tr);
+        const rr = r0 * (fl.r ?? 1) * tr;
+        const g = c.createRadialGradient(fx, fy, 0, fx, fy, rr);
         g.addColorStop(0, withAlpha(am.core, 0.55 * k));
-        g.addColorStop(0.2, withAlpha(am.halo, 0.26 * k));
+        g.addColorStop(0.2 / (fl.r ?? 1), withAlpha(am.halo, 0.26 * k));
         g.addColorStop(1, withAlpha(am.halo, 0));
         c.fillStyle = g;
-        c.fillRect(fx - r0 * 1.1, fy - r0 * 1.1, r0 * 2.2, r0 * 2.2);
+        c.fillRect(fx - rr * 1.1, fy - rr * 1.1, rr * 2.2, rr * 2.2);
       }
       c.restore();
     }
@@ -833,7 +1072,8 @@ export function paperTag(c: C, o: TagOpts, env: PaintEnv) {
   const m = env.mood;
   const am = MOODS.candleAmber;
   const size = o.size ?? 18;
-  const sz2 = size * 0.9;
+  // the speaker line nearly as large as the estimate: both are read (22 px cap floor)
+  const sz2 = size * 0.96;
   c.save();
   c.font = `600 ${size}px ${FONT.mono}`;
   const w1 = c.measureText(o.lines[0]).width;

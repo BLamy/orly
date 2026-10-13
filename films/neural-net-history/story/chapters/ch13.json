@@ -262,7 +262,7 @@
      "text": "In March, an open letter asked for a pause. None came.",
      "pauseAfter": 0.6,
      "direction": "plain and brief, a matter of record; a small beat before 'None came', said flatly, no irony",
-     "levelDb": 3
+     "trimDb": 0
     },
     {
      "id": "L1308",

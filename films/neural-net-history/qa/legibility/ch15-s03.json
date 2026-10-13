@@ -1,76 +1,84 @@
 {
  "shot": "ch15-s03",
- "at": "2026-10-08T02:42:48.882Z",
+ "at": "2026-10-13T21:40:44.848Z",
  "minCapPx": 22,
- "sampled": 20,
+ "sampled": 21,
  "texts": 14,
- "offenders": [
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
   {
    "text": "MARCH 2025",
-   "maxCap": 19.9,
-   "minCap": 19.9,
-   "first": 0.55,
-   "last": 2.55,
-   "font": "500 19px \"IBM Plex Mono\""
+   "capWhileSubject": 24.1,
+   "why": "script onScreenText"
   },
   {
    "text": "Anthropic, on Claude 3.5 Haiku · via a simplified replacement model",
-   "maxCap": 19.9,
-   "minCap": 19.9,
-   "first": 4.37,
-   "last": 8.55,
-   "font": "500 19px \"IBM Plex Mono\""
-  }
- ],
- "textureTexts": 0,
- "ok": [
-  {
-   "text": "He",
-   "maxCap": 41.3
-  },
-  {
-   "text": "saw",
-   "maxCap": 41.3
-  },
-  {
-   "text": "a",
-   "maxCap": 41.3
-  },
-  {
-   "text": "carrot",
-   "maxCap": 41.3
-  },
-  {
-   "text": "and",
-   "maxCap": 41.3
-  },
-  {
-   "text": "had",
-   "maxCap": 41.3
-  },
-  {
-   "text": "to",
-   "maxCap": 41.3
-  },
-  {
-   "text": "grab",
-   "maxCap": 41.3
-  },
-  {
-   "text": "it",
-   "maxCap": 41.3
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
   },
   {
    "text": "rabbit",
-   "maxCap": 42.3
+   "capWhileSubject": 30.8,
+   "why": "script onScreenText"
   },
   {
    "text": "habit",
-   "maxCap": 42.7
+   "capWhileSubject": 31.5,
+   "why": "script onScreenText"
   },
   {
    "text": "rabbit → (suppressed) → habit",
-   "maxCap": 23
+   "capWhileSubject": 23,
+   "why": "script onScreenText"
   }
- ]
+ ],
+ "texture": [
+  {
+   "text": "He",
+   "maxCap": 30.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "saw",
+   "maxCap": 30.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "a",
+   "maxCap": 30.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "carrot",
+   "maxCap": 30.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "and",
+   "maxCap": 30.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "had",
+   "maxCap": 30.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "to",
+   "maxCap": 30.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "grab",
+   "maxCap": 30.4,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "it",
+   "maxCap": 30.4,
+   "why": "drawn as texture"
+  }
+ ],
+ "textureTexts": 9
 }

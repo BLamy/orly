@@ -23,6 +23,8 @@ import type { ReelOverlay } from '../viz/film/core/reel';
 import { ASSET_BASE } from '../library/shared';
 import { importFilmReport, type FilmImportData } from '../editor/model/importFilm';
 import { createAudioEngine, type EditorAudioEngine } from '../editor/engine/audio';
+import { SourcesPanel, type SourcesDoc } from './SourcesPanel';
+import { CreditsPanel, type CreditsDoc } from './CreditsPanel';
 import './film-player.css';
 
 interface FilmChapter {
@@ -39,7 +41,7 @@ interface FilmManifest {
   chapters?: FilmChapter[];
   /** film.sources: the sources page (every claim and quotation, chapter by chapter), relative to the film's folder;
    *  film.audio.stems: the per-line / per-cue soundtrack (generator/film/lib/stems.mjs) */
-  film?: { sources?: string; review?: string; audio?: { stems?: string; clock?: number } };
+  film?: { sources?: string; sourcesData?: string; credits?: string; review?: string; audio?: { stems?: string; clock?: number } };
 }
 /** the latest critic round (generator/film/publish.mjs → review.json) */
 interface FilmReview {
@@ -115,6 +117,8 @@ export function FilmPlayer({ slug }: { slug: string }) {
   const engineRef = useRef<EditorAudioEngine | null>(null);
   const [stemsReady, setStemsReady] = useState(false);
   const [review, setReview] = useState<FilmReview | null>(null);
+  const [sourcesDoc, setSourcesDoc] = useState<SourcesDoc | null>(null);
+  const [creditsDoc, setCreditsDoc] = useState<CreditsDoc | null>(null);
   // fullscreen: the screen and its own overlay controls go fullscreen together
   const shellRef = useRef<HTMLDivElement | null>(null);
   const [full, setFull] = useState(false);
@@ -156,16 +160,82 @@ export function FilmPlayer({ slug }: { slug: string }) {
     };
   }, [reviewUrl, slug]);
 
-  // fullscreen state follows the document (Esc / the browser can leave it too)
+  // the sources (claims + quotations with links), shown under the scores
+  const sourcesData = manifest?.film?.sourcesData ?? (manifest?.film?.sources ? 'sources.json' : undefined);
   useEffect(() => {
-    const on = () => setFull(document.fullscreenElement === shellRef.current && !!shellRef.current);
+    if (!sourcesData) return;
+    let dead = false;
+    fetch(`${ASSET_BASE}generated/${slug}/${sourcesData}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => !dead && d?.chapters && setSourcesDoc(d))
+      .catch(() => {});
+    return () => {
+      dead = true;
+    };
+  }, [sourcesData, slug]);
+
+  // credits (models, tools, a strudel.cc link per cue), at the foot of the page
+  const creditsUrl = manifest?.film?.credits;
+  useEffect(() => {
+    if (!creditsUrl) return;
+    let dead = false;
+    fetch(`${ASSET_BASE}generated/${slug}/${creditsUrl}`)
+      .then((r) => (r.ok ? r.json() : null))
+      .then((d) => !dead && d?.roles && setCreditsDoc(d))
+      .catch(() => {});
+    return () => {
+      dead = true;
+    };
+  }, [creditsUrl, slug]);
+
+  // fullscreen: the Fullscreen API where the browser allows it on an element (desktop, Android, iPad); otherwise
+  // (iPhone Safari only fullscreens <video>) a CSS fullscreen that fills the visible viewport. `full` covers both.
+  const [pseudo, setPseudo] = useState(false);
+  const [portraitHint, setPortraitHint] = useState(false);
+  const touch = useMemo(() => typeof window !== 'undefined' && window.matchMedia?.('(pointer: coarse)').matches, []);
+  useEffect(() => {
+    const on = () => setFull(!!shellRef.current && document.fullscreenElement === shellRef.current);
     document.addEventListener('fullscreenchange', on);
-    return () => document.removeEventListener('fullscreenchange', on);
+    document.addEventListener('webkitfullscreenchange', on);
+    return () => {
+      document.removeEventListener('fullscreenchange', on);
+      document.removeEventListener('webkitfullscreenchange', on);
+    };
   }, []);
+  useEffect(() => {
+    if (!pseudo) return;
+    setFull(true);
+    document.body.classList.add('fp-locked');
+    return () => {
+      document.body.classList.remove('fp-locked');
+      setFull(false);
+    };
+  }, [pseudo]);
   const toggleFull = useCallback(() => {
-    if (document.fullscreenElement) void document.exitFullscreen();
-    else void shellRef.current?.requestFullscreen?.();
-  }, []);
+    if (pseudo) return setPseudo(false);
+    if (document.fullscreenElement) return void document.exitFullscreen();
+    const el = shellRef.current as (HTMLDivElement & { webkitRequestFullscreen?: () => Promise<void> | void }) | null;
+    const req = el?.requestFullscreen?.bind(el) ?? el?.webkitRequestFullscreen?.bind(el);
+    const fallback = () => {
+      setPseudo(true);
+      if (window.matchMedia?.('(orientation: portrait)').matches) {
+        setPortraitHint(true);
+        window.setTimeout(() => setPortraitHint(false), 3000);
+      }
+    };
+    if (!req || !document.fullscreenEnabled) return fallback();
+    Promise.resolve(req())
+      .then(() => {
+        // phones: prefer landscape while fullscreen (Android Chrome; ignored where unsupported)
+        const o = screen.orientation as ScreenOrientation & { lock?: (o: string) => Promise<void> };
+        if (touch) o?.lock?.('landscape').catch(() => {});
+      })
+      .catch(fallback);
+  }, [pseudo, touch]);
+  const chromeRef = useRef(chrome);
+  chromeRef.current = chrome;
+  const playingRef = useRef(playing);
+  playingRef.current = playing;
   /** show the fullscreen controls on activity; hide them after 2.5 s while playing */
   const poke = useCallback(() => {
     setChrome(true);
@@ -357,6 +427,12 @@ export function FilmPlayer({ slug }: { slug: string }) {
     setOsd({ text: '❚❚ PAUSE', until: Infinity });
   }, []);
 
+  /** the screen: on touch in fullscreen, a tap first shows the controls; with them up, it plays/pauses */
+  const onScreenTap = useCallback(() => {
+    if (full && touch && !chromeRef.current) return poke();
+    (playingRef.current ? pause : play)();
+  }, [full, touch, poke, play, pause]);
+
   const seek = useCallback(
     (time: number, label?: string) => {
       const x = Math.max(0, Math.min(duration, time));
@@ -395,14 +471,15 @@ export function FilmPlayer({ slug }: { slug: string }) {
         const i = Math.max(0, chapterAt(tRef.current) - (tRef.current - (chapters[chapterAt(tRef.current)]?.filmStart ?? 0) > 3 ? 0 : 1));
         if (chapters[i]) seek(chapters[i].filmStart, `|◀◀ CH ${chapters[i].number}`);
       } else if (e.key === 'Escape') {
-        if (!document.fullscreenElement) eject();
+        if (pseudo) setPseudo(false);
+        else if (!document.fullscreenElement) eject();
       }
       else if (e.key === 'c') setCc((x) => !x);
       else if (e.key === 'f') toggleFull();
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
-  }, [playing, play, pause, seek, chapterAt, chapters, toggleFull]);
+  }, [playing, play, pause, seek, chapterAt, chapters, toggleFull, pseudo]);
 
   // OSD expiry
   useEffect(() => {
@@ -417,8 +494,8 @@ export function FilmPlayer({ slug }: { slug: string }) {
 
   return (
     <div className="fp">
-      <div ref={shellRef} className={`fp-shell${full ? ' is-full' : ''}${full && !chrome && playing ? ' is-idle' : ''}`} onMouseMove={full ? poke : undefined}>
-      <div className="fp-screen" onClick={() => (playing ? pause() : play())}>
+      <div ref={shellRef} className={`fp-shell${full ? ' is-full' : ''}${pseudo ? ' is-pseudo' : ''}${full && !chrome && playing ? ' is-idle' : ''}`} onMouseMove={full && !touch ? poke : undefined}>
+      <div className="fp-screen" onClick={onScreenTap}>
         <FilmStack width={W} height={H} overlays={overlays} sceneRef={sceneRef} finishRef={finishRef} style={{ width: '100%', height: 'auto', aspectRatio: `${FILM_W} / ${FILM_H}` }} />
         {!inserted && (
           <div className="fp-blue">
@@ -434,9 +511,10 @@ export function FilmPlayer({ slug }: { slug: string }) {
         {osd && <div className="fp-osd fp-osd-text">{osd.text}</div>}
         <div className="fp-counter fp-osd-text">SP {clock(t)}</div>
         {caption && <div className="fp-cc">{caption}</div>}
+        {portraitHint && <div className="fp-rotate fp-osd-text">⟳ ROTATE FOR FULL SCREEN</div>}
       </div>
       {full && (
-        <div className="fp-fsbar" onMouseMove={poke}>
+        <div className="fp-fsbar" onMouseMove={poke} onTouchStart={poke}>
           <button className="fp-key fp-play" onClick={() => (playing ? pause() : play())} title="Play / pause (space)">
             {playing ? '❚❚' : '▶'}
           </button>
@@ -507,6 +585,26 @@ export function FilmPlayer({ slug }: { slug: string }) {
         )}
       </div>
       {review && <ReviewPanel review={review} />}
+      {sourcesDoc && (
+        <SourcesPanel
+          doc={sourcesDoc}
+          now={t}
+          onSeek={(x) => {
+            seek(x, 'SOURCE ▶');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+          pageUrl={manifest?.film?.sources ? `${ASSET_BASE}generated/${slug}/${manifest.film.sources}` : undefined}
+        />
+      )}
+      {creditsDoc && (
+        <CreditsPanel
+          doc={creditsDoc}
+          onSeek={(x) => {
+            seek(x, 'MUSIC ▶');
+            window.scrollTo({ top: 0, behavior: 'smooth' });
+          }}
+        />
+      )}
       <audio ref={audioRef} preload="auto" onEnded={onEnded} />
     </div>
   );

@@ -226,7 +226,7 @@ export const CANDLES: CandleDef[] = [
   { id: 'scale', text: 'SCALE IS THE MAIN LEVER', tag: '2020', litYear: 2020, years: null, lit: 'ch11-s05', kind: 'candle', group: 'main', note: 'still burning, contested; wick trimmed (not snuffed) in ch15-s04' },
   { id: 'worry', text: 'SMARTER-THAN-HUMAN AI MAY BE YEARS AWAY, AND DANGEROUS', tag: '2023', litYear: 2023, years: null, lit: 'ch13-s03', kind: 'candle', group: 'main', note: 'still burning' },
   { id: 'chokepoint', text: 'COMPUTE IS THE CHOKEPOINT', tag: '2022', litYear: 2022, years: null, lit: 'ch14-s02', kind: 'candle', group: 'window', note: 'still burning, contested' },
-  { id: 'behind', text: 'CHINA IS ONE TO THREE YEARS BEHIND', tag: '2022', litYear: 2022, years: 2, lit: 'ch14-s02', end: 'ch14-s04', how: 'out', frayed: true, kind: 'candle', group: 'window' },
+  { id: 'behind', text: 'CHINA IS A YEAR OR TWO BEHIND', tag: '2022', litYear: 2022, years: 2, lit: 'ch14-s02', end: 'ch14-s04', how: 'out', frayed: true, kind: 'candle', group: 'window' },
   { id: 'match', text: "COMPUTE DOESN'T MATTER", tag: 'JAN 2025', litYear: 2025, years: 0, lit: 'ch14-s04', end: 'ch14-s04', how: 'out', kind: 'match', group: 'window', note: 'struck and out within a day; lies flat, blackened' },
   { id: 'gap', text: 'THE GAP IS MONTHS, NOT YEARS', tag: '2025', litYear: 2025, years: null, lit: 'ch14-s07', kind: 'candle', group: 'window', note: 'still burning, contested' },
   { id: 'new', text: '', tag: '', litYear: 2026, years: null, lit: 'ch15-s09', kind: 'blank', group: 'end', note: 'unlettered, unscored; lit by a hand from the viewer’s side' },

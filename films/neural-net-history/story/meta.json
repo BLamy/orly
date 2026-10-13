@@ -244,7 +244,7 @@
           "end": "still burning, contested, as of October 2026"
         },
         {
-          "text": "CHINA IS ONE TO THREE YEARS BEHIND",
+          "text": "CHINA IS A YEAR OR TWO BEHIND",
           "lit": "2022 (ch14-s02)",
           "end": "out January 2025 (ch14-s04)",
           "years": "about 2"
@@ -265,7 +265,7 @@
           "end": "open"
         }
       ],
-      "placement": "CANDLE PLACEMENT: every belief candle stands on the one study shelf beneath the case board, ordered by the year on its base tag, left to right; a candle lit late in the film is set into its year's place on the shelf (so the 1999 expert-features candle, lit in ch08-s01, stands left of the 2006 warm-up candle lit in ch07-s02, and the 1997 read-in-order candle, lit in ch10-s01, stands left of both). The China-race candles of chapter 14 (COMPUTE IS THE CHOKEPOINT, CHINA IS ONE TO THREE YEARS BEHIND, the match, THE GAP IS MONTHS, NOT YEARS) stand at the shelf's right end, by the study window; chapter 14 shows them only as a reflection in that window over the strait (opened in ch13-s06), never on the jetty; ch15-s08 sees them directly.",
+      "placement": "CANDLE PLACEMENT: every belief candle stands on the one study shelf beneath the case board, ordered by the year on its base tag, left to right; a candle lit late in the film is set into its year's place on the shelf (so the 1999 expert-features candle, lit in ch08-s01, stands left of the 2006 warm-up candle lit in ch07-s02, and the 1997 read-in-order candle, lit in ch10-s01, stands left of both). The China-race candles of chapter 14 (COMPUTE IS THE CHOKEPOINT, CHINA IS A YEAR OR TWO BEHIND, the match, THE GAP IS MONTHS, NOT YEARS) stand at the shelf's right end, by the study window; chapter 14 shows them only as a reflection in that window over the strait (opened in ch13-s06), never on the jetty; ch15-s08 sees them directly.",
       "finaleChart": "ch15-s08 reads the shelf as a bar chart in wax: sleeves of every length with no trend by decade. Tallest dark bar: Cyc 39; then read-in-order 20, sterile 17, logic 16, fiddly-nets about 16 (frayed), expert stencils 13, learning-machine about 7 (frayed), knowledge about 7, warm-up about 5 (frayed), Go 2, China one-to-three about 2, the match flat. Still lit at the right end as of October 2026: learned features (2012), scale (2020, trimmed), compute chokepoint (2022, contested), smarter-than-human AI may be years away and dangerous (2023), the gap is months, not years (2025, contested)."
     },
     "xrayColumn": "Defined in ch02-s08: the chat box as a translucent column of seven faint bands, bottom to top: 1 threshold lanterns (1943), 2 adjustable knobs (1958), 3 hidden layers and a backward arrow (1986), 4 furnaces and a sea of text (2012), 5 threads (2017), 6 type sorts (2018), 7 shears (2022); a seam between bands 3 and 4 that never lights (the hand-cut stencils). Each X-ray beat lights exactly one new band; ch12-s07 lights them all.",
@@ -823,5 +823,6 @@
       "canonical": "FOUNDING GRAMMAR (canonical, every lab): flat even light, no office, no spotlight, no faces, no hero framing; a typewritten announcement pinned in the founding row (F1 OpenAI, 11 December 2015, ch09-s04; F2 Anthropic, founded January 2021, announced 28 May 2021, ch12-s03), same height and size, no name card under the pin (founders are named only in the narration); a warm and a cold hand-lantern hanging from the same nail; one plain ledger page in IBM Plex Mono for the lab's money. The lantern MEANINGS never change from lab to lab: the WARM lantern is always the promise the lab names, the COLD lantern is always the danger the lab names. OpenAI: warm on 'benefit', cold on 'damage'. Anthropic: cold on 'safety' (the risk its name answers, as OpenAI's 'damage'), warm on 'research'. The order of swings may differ; the meanings may not."
     }
   },
-  "runtimeCeilingSec": 2160
+  "runtimeCeilingSec": 2172,
+  "runtimeCeilingNote": "2026-10-13: +6 s for the end CREDITS card (user direction: list every model and tool), outside the story runtime."
 }

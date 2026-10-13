@@ -24,6 +24,9 @@ export interface LampTag {
   light?: number;
   str?: number;
   size?: number;
+  /** the lines after the first on the FRONT face set at this fraction of the first (a lab name over a smaller
+   *  'as of October 2026'; review round 4) */
+  subFront?: number;
 }
 export const TAG_W = 196;
 export const tagH = (face: string, size: number) => (face.includes('|') ? size * 2.9 + 10 : size * 1.9 + 14);
@@ -82,16 +85,25 @@ export function lampTag(c: C, o: LampTag, env: PaintEnv) {
     c.textAlign = 'center';
     c.textBaseline = 'alphabetic';
     (c as C & { letterSpacing: string }).letterSpacing = '0.5px';
+    const sub = sx >= 0 ? o.subFront ?? 1 : 1;
+    const rel = (i: number) => (i === 0 ? 1 : sub);
     let s2 = size;
-    c.font = `500 ${s2}px ${FONT.mono}`;
-    const widest = () => Math.max(...lines.map((l) => c.measureText(l).width));
-    while (widest() > w - 44 && s2 > 12) {
-      s2 -= 0.5;
-      c.font = `500 ${s2}px ${FONT.mono}`;
-    }
-    const lh = s2 * 1.18;
-    const y0 = h / 2 + 4 + s2 * 0.36 - ((lines.length - 1) * lh) / 2;
-    lines.forEach((ln, i) => c.fillText(ln, 12, y0 + i * lh));
+    const widest = () =>
+      Math.max(
+        ...lines.map((l, i) => {
+          c.font = `500 ${s2 * rel(i)}px ${FONT.mono}`;
+          return c.measureText(l).width;
+        }),
+      );
+    while (widest() > w - 44 && s2 > 12) s2 -= 0.5;
+    const hs = lines.map((_, i) => s2 * rel(i) * 1.18);
+    const total = hs.reduce((a, b) => a + b, 0) - hs[0];
+    let y = h / 2 + 4 + s2 * 0.36 - total / 2;
+    lines.forEach((ln, i) => {
+      if (i > 0) y += hs[i];
+      c.font = `500 ${s2 * rel(i)}px ${FONT.mono}`;
+      c.fillText(ln, 12, y);
+    });
   }
   c.restore();
 }

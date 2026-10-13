@@ -8,17 +8,21 @@
  *   'these' →      "these stencils": the 96 jewels lift off the ring and fly into the glass, enlarging, and as
  *   'noise'        they travel they dissolve into static ("they began as noise"); the photograph fades out under
  *                  them. On 'noise' the glass is 96 panes of pure grey speckle, seething on twos ("television snow").
- *   'noise' →      a slow pull back (2.8 s) to the whole cathedral; a picture flicks through the glass and light
- *   'messenger'    climbs the courses to the crown.
+ *   'noise' →      a slow pull back (2.8 s) to the whole cathedral; light climbs the courses to the crown (the
+ *   'messenger'    forward pass; no picture is ever shown in the glass, so it never reads as the net drawing one).
  *   'messenger'    the dark bead in its ring of light (ch05's design) appears at the crown and runs DOWN the
  *                  cathedral's axis: the crown, the two halls, the five stencil courses s05 just named, the plinth,
  *                  into the glass on "cut them". Each course flashes and jolts 2 px as the bead passes; on arrival
- *                  the tiles sharpen one visible step. Label: back-propagation, 1986 (beside the crown; it fades
- *                  before the camera moves).
- *   'nudge'        the camera eases back in onto the window (2.6 s) while the passes repeat, faster and faster,
- *                  picture after picture flicking through the glass; each arrival is one more step of sharpening.
- *   'mosaic'       the last pass lands; the bead fades in the glass; the finished mosaic (grey edges at every angle,
- *                  soft colour blobs, interleaved) holds, still, through the music: the chapter's thesis image.
+ *                  the seething snow freezes (still noise). Label: back-propagation, 1986 (beside the crown; it
+ *                  fades before the camera moves).
+ *   'nudge'        the camera eases back in onto the window (2.4 s) while the passes repeat, faster and faster.
+ *                  The glass only ever shows the SAME 96-tile grid in intermediate states, each step landing on a
+ *                  word: 'nudge' (8.29) ~40 % of the tiles click from noise to oriented strokes (mostly the grey
+ *                  edge tiles, rippling out from where the bead sank), the rest stay noise; 'nudge' again (9.02)
+ *                  ~70 %; the two quick passes after it only sharpen what is already structured.
+ *   'mosaic'       the last pass lands: the remaining tiles resolve and every tile reaches full contrast; the bead
+ *                  fades in the glass; the finished edge/colour mosaic (grey edges at every angle, soft colour
+ *                  blobs, interleaved) holds, still, through the music: the chapter's thesis image.
  *                  ILLUSTRATIVE stamp on the ring (procedural tiles, not the real weights).
  */
 import { Timeline } from '../../../core';
@@ -30,7 +34,7 @@ import { hash1 } from '../../../film/silhouette/atmosphere';
 import { mixCam } from '../sets/ch08-s01-kit';
 import { CAT, cathedral, type CathedralState } from '../sets/ch08-s05-cathedral';
 import { tileAtlas, TILE_N } from '../sets/ch08-s06-filters';
-import { clamp01, inkLabel, lerp, picture, pulse, sm, win } from '../sets/ch08-s06-kit';
+import { clamp01, inkLabel, lerp, pulse, sm, win } from '../sets/ch08-s06-kit';
 import {
   CELL,
   GL,
@@ -69,8 +73,10 @@ const PUSH = 2.4;
 interface Pass {
   start: number; // bead appears at the crown
   land: number; // bead sinks into the glass
-  pic: number;
-  U: number; // learned level after this pass
+  /** fraction of the 96 tiles that show learned structure after this pass (the same grid, never a picture) */
+  F: number;
+  /** contrast of the structured tiles after this pass (noise left in them = 1 - C) */
+  C: number;
 }
 interface B {
   D: number;
@@ -85,7 +91,23 @@ interface B {
   passes: Pass[];
 }
 
-const JIT = Array.from({ length: TILE_N }, (_, k) => hash1(k, 6061));
+/** the order in which tiles find their structure: mostly the grey oriented-edge tiles first (k < 48), so the ~40 %
+ *  step reads as "some tiles show strokes"; the toy vertical-edge tile (k 24, ch08-s04's hand stencil) is first */
+const RANK: number[] = (() => {
+  const key = Array.from({ length: TILE_N }, (_, k) => (k === 24 ? -1 : hash1(k, 6091) + (k < 48 ? 0 : 0.55)));
+  const order = Array.from({ length: TILE_N }, (_, k) => k).sort((a, z) => key[a] - key[z]);
+  const r = new Array<number>(TILE_N).fill(0);
+  order.forEach((k, i) => (r[k] = i));
+  return r;
+})();
+/** each tile's click delay after a landing: it ripples out from the glass centre, where the bead sinks */
+const DELAY: number[] = (() => {
+  const d = new Array<number>(TILE_N).fill(0);
+  SLOTS.forEach((sl, j) => {
+    d[S06_TILE(j)] = 0.18 * Math.min(1, Math.hypot(sl.x - GL.x, sl.y - GL.y) / GL.r) + 0.03 * hash1(j, 6097);
+  });
+  return d;
+})();
 /** each jewel's flight: lift-off delay (by angle, so the ring empties as a sweep) */
 const FLY = Array.from({ length: 96 }, (_, q) => 0.05 + 0.5 * ((jewel(q).a / (Math.PI * 2) + 0.25) % 1) + 0.08 * hash1(q, 6071));
 const FLY_DUR = 0.85;
@@ -111,11 +133,14 @@ export default defineShot({
     const mosaic = T.beat('mosaic');
     const cutThem = T.word('L0812', 'cut');
     const nudge2 = T.word('L0812', 'nudge#2');
-    // landings: "cut them", 'nudge', 'nudge' again, then faster and faster to 'mosaic'
+    // landings: "cut them", 'nudge', 'nudge' again, then faster and faster to 'mosaic'.
+    // The grid's states: noise (snow freezes on "cut them") -> ~40 % structured on 'nudge' -> ~70 % on 'nudge'
+    // again -> the two quick passes sharpen the structured tiles -> the full mosaic on 'mosaic'.
     const lands = [cutThem, nudge, nudge2, lerp(nudge2, mosaic, 0.36), lerp(nudge2, mosaic, 0.69), mosaic];
     const durs = [cutThem - bead, 0.8, 0.62, 0.46, 0.36, 0.3];
-    const Us = [0.16, 0.33, 0.5, 0.67, 0.84, 1];
-    const passes: Pass[] = lands.map((land, i) => ({ start: i === 0 ? bead : land - durs[i], land, pic: i, U: Us[i] }));
+    const Fs = [0, 0.4, 0.7, 0.7, 0.7, 1];
+    const Cs = [0, 0.8, 0.86, 0.91, 0.95, 1];
+    const passes: Pass[] = lands.map((land, i) => ({ start: i === 0 ? bead : land - durs[i], land, F: Fs[i], C: Cs[i] }));
     const b: B = {
       D,
       these: T.word('L0811', 'these'),
@@ -159,15 +184,6 @@ export default defineShot({
         light: 1,
         lift: st.lift,
       });
-      // a picture flicks through the glass before each pass (the forward light)
-      if (st.flick.a > 0.01) {
-        c.save();
-        c.beginPath();
-        c.arc(GL.x, GL.y, GL.r, 0, Math.PI * 2);
-        c.clip();
-        picture(c, st.flick.i, GL.x, GL.y, GL.r * 2, mixLab(env.mood.ink, env.mood.set, 0.3), mixLab(env.mood.halo, env.mood.core, 0.5), 0.5 * st.flick.a);
-        c.restore();
-      }
       // the bead sinking into the glass: a ring of light spreading across the panes
       if (st.ripple > 0.01) {
         c.save();
@@ -239,7 +255,6 @@ interface St {
   photo: number;
   lift: (j: number) => number;
   beads: Bead[];
-  flick: { i: number; a: number };
   ripple: number;
 }
 
@@ -247,46 +262,58 @@ interface St {
 const flightU = (t: number, b: B, q: number) => clamp01((t - b.these - FLY[q]) / FLY_DUR);
 
 function teach(t: number, b: B): St {
-  // learned level: each landing is one visible step (eased over 0.12 s), never a continuous blend
-  let U = 0;
+  // the grid's state: each landing is one discrete step of the SAME 96 tiles (a tile clicks from noise to its
+  // oriented strokes when the landing's ripple reaches it), never a picture and never a continuous blend
   let ripple = 0;
-  let land = 0;
+  let moving = false;
+  let landed = 0;
   for (const p of b.passes) {
-    const e = sm((t - p.land) / 0.12);
-    if (e > 0) U = lerp(U, p.U, e);
     ripple = Math.max(ripple, pulse(t, p.land - 0.02, 0.06, 0.32));
-    land = Math.max(land, pulse(t, p.land, 0.04, 0.22));
+    if (t >= p.land - 0.01 && t <= p.land + 0.32) moving = true;
+    if (t >= p.land) landed++;
   }
+  const tileU = (k: number) => {
+    let u = 0;
+    for (const p of b.passes) {
+      const e = sm((t - p.land - DELAY[k]) / 0.08);
+      if (e <= 0) break;
+      const target = RANK[k] < p.F * TILE_N - 0.5 ? p.C : 0;
+      u = lerp(u, target, e);
+    }
+    return u;
+  };
   // television snow: from the jewels' arrival until the messenger, on twos
   const snowAmt = win(t, b.these + 0.6, b.noise) * (1 - win(t, b.bead - 0.3, b.passes[0].land)) * 0.7;
   const snowTick = snowAmt > 0.002 ? Math.floor(t * 12) : 0;
-  const tileState = (k: number) => {
-    // front-loaded (the noise term dominates a linear blend): each pass is a visible step of sharpening
-    const e = 0.55 * (0.75 + 0.6 * JIT[k]);
-    const u = U >= 1 ? 1 : Math.pow(U, e);
-    return { u, seed: 1, snow: snowAmt };
-  };
-  const key = `${U.toFixed(3)}|${snowTick}`;
+  const tileState = (k: number) => ({ u: tileU(k), seed: 1, snow: snowAmt });
+  const key = `${moving ? t.toFixed(3) : landed}|${snowTick}|${snowAmt.toFixed(3)}`;
   // the cells fill as their jewels arrive
   const slotU = new Array<number>(96).fill(0);
   for (let q = 0; q < 96; q++) slotU[JEWEL_SLOT[q]] = sm(flightU(t, b, q));
   const cellA = (j: number) => (slotU[j] >= 0.999 ? 1 : 0);
   const photo = 1 - win(t, b.these + 0.35, b.noise - 0.15);
-  const lift = (j: number) => land * (0.55 + 0.45 * hash1(j, 6081));
+  // each landing flashes only the tiles that click into structure (rippling out with them); the others take a
+  // faint tug, so the window never washes out and every intermediate state stays readable
+  const lift = (j: number) => {
+    const k = S06_TILE(j);
+    let v = 0;
+    let prevF = 0;
+    for (const p of b.passes) {
+      const fresh = RANK[k] >= prevF * TILE_N - 0.5 && RANK[k] < p.F * TILE_N - 0.5;
+      const amt = p === b.passes[0] ? 0.3 : fresh ? 0.95 : 0.14;
+      v = Math.max(v, amt * pulse(t, p.land + DELAY[k], 0.03, 0.22));
+      prevF = p.F;
+    }
+    return v * (0.8 + 0.2 * hash1(j, 6081));
+  };
 
-  // forward light: a quick climb window → crown just before each bead (a picture went up, the error comes back)
+  // forward light: a quick climb window → crown just before each bead (the forward pass goes up as light only,
+  // the error comes back down as the bead)
   let front = -1;
-  let flickI = -1;
-  let flickA = 0;
   for (const p of b.passes) {
     const fw = p === b.passes[0] ? 0.75 : Math.min(0.42, (p.land - p.start) * 0.55);
     const a0 = p.start - fw;
     if (t >= a0 && t <= p.start + 0.1) front = Math.max(front, clamp01((t - a0) / fw));
-    const fa = sm((t - a0 + 0.22) / 0.1) * (1 - sm((t - a0 - fw * 0.5) / 0.14));
-    if (fa > flickA && t > a0 - 0.25 && t < p.start) {
-      flickA = fa;
-      flickI = p.pic;
-    }
   }
   // base light (s05's resting state), the climbing front, and each stage's tug as the bead passes
   const lit = [0.35, 0.35, 0.35, 0.35, 0.35, 0.6, 0.6, 0.3];
@@ -326,7 +353,7 @@ function teach(t: number, b: B): St {
     }
   });
   const cat = fullCathedral({ course, hall, crown, lit: lit.map(clamp01), t, threads: 0.42 });
-  return { key, tileState, snowTick, cat, cellA, photo, lift, beads, flick: { i: flickI, a: flickA }, ripple };
+  return { key, tileState, snowTick, cat, cellA, photo, lift, beads, ripple };
 }
 
 /** s05's ring jewels lift off and fly into the glass, enlarging and turning to static as they go */

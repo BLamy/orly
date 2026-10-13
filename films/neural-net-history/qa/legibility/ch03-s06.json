@@ -1,148 +1,139 @@
 {
  "shot": "ch03-s06",
- "at": "2026-10-12T08:05:10.950Z",
+ "at": "2026-10-13T14:36:43.415Z",
  "minCapPx": 22,
  "sampled": 25,
- "texts": 24,
- "offenders": [
+ "texts": 25,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
+ "offenders": [],
+ "subjects": [
   {
-   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
-   "maxCap": 14.2,
-   "minCap": 13.4,
-   "first": 0.25,
-   "last": 17.25,
-   "font": "15.12px \"Special Elite\""
+   "text": "“Love,”",
+   "capWhileSubject": 33.3,
+   "why": "script onScreenText"
   },
   {
-   "text": "1958",
-   "maxCap": 15.2,
-   "minCap": 14.3,
-   "first": 0.25,
-   "last": 17.25,
-   "font": "16.2px \"Special Elite\""
-  },
-  {
-   "text": "TURING · DUE 2000",
-   "maxCap": 18.2,
-   "minCap": 11.7,
-   "first": 17.84,
-   "last": 20.25,
-   "font": "8.075px \"Special Elite\""
-  },
-  {
-   "text": "THE STRUCTURE OF",
-   "maxCap": 21.1,
-   "minCap": 13.5,
-   "first": 17.84,
-   "last": 20.25,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "THE NET DOES NOT",
-   "maxCap": 21.1,
-   "minCap": 13.5,
-   "first": 17.84,
-   "last": 20.25,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "CHANGE WITH",
-   "maxCap": 21.1,
-   "minCap": 13.5,
-   "first": 17.84,
-   "last": 20.25,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "TIME.",
-   "maxCap": 21.1,
-   "minCap": 13.5,
-   "first": 17.84,
-   "last": 20.25,
-   "font": "9.35px \"Special Elite\""
-  },
-  {
-   "text": "KNOWLEDGE",
-   "maxCap": 21.4,
-   "minCap": 13.8,
-   "first": 17.84,
-   "last": 20.25,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "LEARNING",
-   "maxCap": 21.4,
-   "minCap": 13.8,
-   "first": 17.84,
-   "last": 20.25,
-   "font": "9.5px \"Special Elite\""
-  },
-  {
-   "text": "3 in 10 fooled",
-   "maxCap": 21.4,
-   "minCap": 13.8,
-   "first": 17.84,
-   "last": 20.25,
-   "font": "9.5px \"Special Elite\""
-  }
- ],
- "textureTexts": 0,
- "ok": [
-  {
-   "text": "“Love,” he said.",
-   "maxCap": 33.3
+   "text": "he said.",
+   "capWhileSubject": 33.3,
+   "why": "script onScreenText"
   },
   {
    "text": "“Hope.",
-   "maxCap": 33.3
+   "capWhileSubject": 33.3,
+   "why": "script onScreenText"
   },
   {
    "text": "Despair.”",
-   "maxCap": 33.3
+   "capWhileSubject": 33.3,
+   "why": "script onScreenText"
   },
   {
    "text": "— Rosenblatt, on its limits (New Yorker, 1958)",
-   "maxCap": 23.5
-  },
-  {
-   "text": "AND IF NO STRAIGHT LINE",
-   "maxCap": 24.8
-  },
-  {
-   "text": "EXISTS?",
-   "maxCap": 24.8
-  },
-  {
-   "text": "WHO TAUGHT",
-   "maxCap": 42.8
-  },
-  {
-   "text": "IT?",
-   "maxCap": 42.8
-  },
-  {
-   "text": "RULES",
-   "maxCap": 24.8
-  },
-  {
-   "text": "1943",
-   "maxCap": 24.8
+   "capWhileSubject": 23.5,
+   "why": "script onScreenText"
   },
   {
    "text": "SIMON & NEWELL",
-   "maxCap": 22.5
+   "capWhileSubject": 22.3,
+   "why": "script onScreenText"
   },
   {
    "text": "CHESS CHAMPION",
-   "maxCap": 22.5
+   "capWhileSubject": 22.3,
+   "why": "script onScreenText"
   },
   {
    "text": "BY 1968",
-   "maxCap": 22.5
+   "capWhileSubject": 22.3,
+   "why": "script onScreenText"
+  }
+ ],
+ "texture": [
+  {
+   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
+   "maxCap": 18.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1958",
+   "maxCap": 19.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "AND IF NO STRAIGHT LINE",
+   "maxCap": 24.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "EXISTS?",
+   "maxCap": 24.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 42.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "IT?",
+   "maxCap": 42.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "RULES",
+   "maxCap": 24.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 21.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 21.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1943",
+   "maxCap": 24.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 20.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 20.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 20.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 20.9,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 18.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 21.3,
+   "why": "not named, not in onScreenText"
   },
   {
    "text": "1968",
-   "maxCap": 22.5
+   "maxCap": 22.3,
+   "why": "not named, not in onScreenText"
   }
- ]
+ ],
+ "textureTexts": 17
 }

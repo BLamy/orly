@@ -17,7 +17,7 @@ import type { PaintEnv } from '../../../film/contracts';
 import { MOODS, mixLab, withAlpha } from '../../../film/silhouette/palette';
 import { hash1 } from '../../../film/core/frame';
 import { hcl } from 'd3';
-import { XRAY, xrayColumn, type XrayDraw } from './xrayColumn';
+import { XRAY, xrayColumn, xrayEmphasis, type XrayDraw } from './xrayColumn';
 
 type C = CanvasRenderingContext2D;
 export type BandRect = { x: number; y: number; w: number; h: number };
@@ -91,7 +91,7 @@ export function vellumBox(c: C, env: PaintEnv, o: VellumBoxOpts) {
   // the shared cabinet; the hero band is kept dark in it (it is re-drawn below as the shot's own)
   const state = o.own ? { ...o.state, lit: o.state.lit.map((v, i) => (i + 1 === o.own!.band ? false : v)) } : o.state;
   const reveal = o.own && o.reveal?.band === o.own.band ? undefined : o.reveal;
-  xrayColumn(c, { ...o, state, reveal }, env);
+  xrayColumn(c, { ...o, state, reveal, paper: false }, env);
   c.save();
   c.translate(o.x, o.y);
   c.scale(s, s);
@@ -126,7 +126,7 @@ export function vellumBox(c: C, env: PaintEnv, o: VellumBoxOpts) {
   c.rect(-W / 2, -H, W, H);
   c.clip();
   c.globalCompositeOperation = 'saturation';
-  c.fillStyle = `rgba(128,128,128,${0.3 * k})`;
+  c.fillStyle = `rgba(128,128,128,${0.42 * k})`;
   c.fillRect(-W / 2, -H, W, H);
   c.globalCompositeOperation = 'multiply';
   c.fillStyle = withAlpha(mixLab(MOODS.candleAmber.rim, '#ffffff', 0.6), 0.18 * k);
@@ -137,6 +137,24 @@ export function vellumBox(c: C, env: PaintEnv, o: VellumBoxOpts) {
     c.globalAlpha = 0.3 * k;
     c.fillStyle = pat;
     c.fillRect(-W / 2, -H, W, H);
+  }
+  // review round 2 (art): a soft inner vignette, and the face dimmed to 60 % except while a band lights
+  {
+    const vg = c.createRadialGradient(0, -H / 2, Math.min(W, H) * 0.22, 0, -H / 2, Math.hypot(W / 2, H / 2));
+    vg.addColorStop(0, 'rgba(10,12,11,0)');
+    vg.addColorStop(0.6, 'rgba(10,12,11,0.14)');
+    vg.addColorStop(1, 'rgba(10,12,11,0.5)');
+    c.globalAlpha = 1;
+    c.globalCompositeOperation = 'source-over';
+    c.fillStyle = vg;
+    c.fillRect(-W / 2, -H, W, H);
+    const lit = o.own ? Math.max(xrayEmphasis(o), 0.6 + 0.4 * Math.max(0, Math.min(1, o.own.glow)) * Math.sin(Math.PI * Math.max(0, Math.min(1, o.own.u))) ** 0.6) : xrayEmphasis(o);
+    if (lit < 0.999) {
+      const v = Math.round(255 * lit);
+      c.globalCompositeOperation = 'multiply';
+      c.fillStyle = `rgb(${v},${v},${v})`;
+      c.fillRect(-W / 2, -H, W, H);
+    }
   }
   c.restore();
   // ---- the heavier cut-card frame: a black mat with notched corners and an inner bevel of lamp light

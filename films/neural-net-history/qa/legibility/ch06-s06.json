@@ -1,95 +1,119 @@
 {
  "shot": "ch06-s06",
- "at": "2026-10-13T01:32:25.870Z",
+ "at": "2026-10-13T04:13:36.575Z",
  "minCapPx": 22,
  "sampled": 21,
  "texts": 21,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
- "textureTexts": 0,
- "ok": [
+ "subjects": [
   {
    "text": "word",
-   "maxCap": 25.6
-  },
-  {
-   "text": "by",
-   "maxCap": 25.6
-  },
-  {
-   "text": "0.5",
-   "maxCap": 23
-  },
-  {
-   "text": "1",
-   "maxCap": 23
-  },
-  {
-   "text": "× 0.5",
-   "maxCap": 24.8
-  },
-  {
-   "text": "illustrative",
-   "maxCap": 22.1
-  },
-  {
-   "text": "0.031",
-   "maxCap": 23
-  },
-  {
-   "text": "0.0625",
-   "maxCap": 23
-  },
-  {
-   "text": "0.125",
-   "maxCap": 23
-  },
-  {
-   "text": "0.25",
-   "maxCap": 23
-  },
-  {
-   "text": "≈ 0.0005",
-   "maxCap": 23
+   "capWhileSubject": 25.6,
+   "why": "named: \"word\""
   },
   {
    "text": "vanishing gradients",
-   "maxCap": 31.3
+   "capWhileSubject": 31.3,
+   "why": "script onScreenText"
   },
   {
    "text": "Hochreiter 1991  ·  Bengio, Simard & Frasconi 1994",
-   "maxCap": 23
+   "capWhileSubject": 23,
+   "why": "script onScreenText"
   },
   {
    "text": "sepp hochreiter & jürgen schmidhuber",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "LSTM, 1997",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "× 1.0",
-   "maxCap": 23
+   "capWhileSubject": 23,
+   "why": "script onScreenText"
   },
   {
    "text": "LSTM  ·  × 1.0 loop  ·  input gate  ·  output gate",
-   "maxCap": 26.4
+   "capWhileSubject": 26.4,
+   "why": "script onScreenText"
   },
   {
    "text": "step",
-   "maxCap": 23.5
-  },
-  {
-   "text": "43",
-   "maxCap": 28.3
-  },
-  {
-   "text": "218",
-   "maxCap": 28.3
-  },
-  {
-   "text": "1,019",
-   "maxCap": 28.3
+   "capWhileSubject": 23.5,
+   "why": "named: \"step\""
   }
- ]
+ ],
+ "texture": [
+  {
+   "text": "by",
+   "maxCap": 25.6,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0.5",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "× 0.5",
+   "maxCap": 24.8,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "illustrative",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0.031",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0.0625",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0.125",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "0.25",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "≈ 0.0005",
+   "maxCap": 23,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "92",
+   "maxCap": 28.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "542",
+   "maxCap": 28.3,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "1,021",
+   "maxCap": 28.3,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 13
 }

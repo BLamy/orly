@@ -1,0 +1,82 @@
+{
+ "$notes": "The foley bus (review round 2): sparse practical sounds, at most 10 in the film, each in a speech gap or under a line's last words. Synthesized by generator/film/lib/foley.mjs; mixed by film:mix after the master gain, dry plus a small-room reverb, at lufsS (max short-term LUFS, -28 to -32). Anchors are shot-local, so each event follows its shot's re-fit. A shot that moves one of these moments must move the anchor here too.",
+ "events": [
+  {
+   "id": "fx-lamp-on",
+   "kind": "lamp-click",
+   "at": {
+    "shot": "ch01-s04",
+    "beat": "lamp"
+   },
+   "lufsS": -31,
+   "why": "The case opens: the study lamp clicks on (bookends fx-lamp-off at the end of the film). In the gap before L0106."
+  },
+  {
+   "id": "fx-stamp-fence",
+   "kind": "stamp",
+   "at": {
+    "shot": "ch14-s07",
+    "beat": "stamp"
+   },
+   "lufsS": -32,
+   "wetDb": -16,
+   "maxDur": 0.6,
+   "underWord": "stands",
+   "why": "Review round 4: the first of the film's three STATUS: OPEN stamps (the fence question card, ON 'stands' in L1418; beat ch14-s07 stamp = T.word(L1418, stands)). The quietest and driest of the three (-32 LUFS S, room 16 dB under the hit, cut to 0.6 s) so it never masks 'stands'; underWord allows the onset under that one word only."
+  },
+  {
+   "id": "fx-stamp-howfar",
+   "kind": "stamp",
+   "at": {
+    "shot": "ch15-s08",
+    "beat": "stamp"
+   },
+   "lufsS": -31,
+   "why": "Review round 4: the second STATUS: OPEN stamp, on the HOW FAR? HOW FAST? card ON 'open' (the last word of L1516b; beat ch15-s08 stamp = T.word(L1516b, open)), so the clack lands under the line's last word. Between the fence stamp (-32) and the final fx-stamp (-29): a clack means the question stays open, three times."
+  },
+  {
+   "id": "fx-stamp",
+   "kind": "stamp",
+   "at": {
+    "shot": "ch15-s09",
+    "beat": "b3"
+   },
+   "lufsS": -29,
+   "why": "STATUS: OPEN stamped on the case card (wordless beat after L1518). The strongest of the film's three stamps (-29; fx-stamp-fence -32, fx-stamp-howfar -31)."
+  },
+  {
+   "id": "fx-lamp-off",
+   "kind": "lamp-click",
+   "at": {
+    "shot": "ch15-s09",
+    "beat": "b4"
+   },
+   "lufsS": -30,
+   "why": "The desk lamp clicks off (b4), in the gap before L1520."
+  },
+  {
+   "id": "fx-match-strike",
+   "kind": "match-strike",
+   "at": {
+    "shot": "ch15-s09",
+    "line": "L1520",
+    "word": "new"
+   },
+   "lufsS": -31,
+   "underLastWords": "new candles come from",
+   "why": "The match strikes on 'new' (round-2 ch15-s09 note): the scratch starts on the word and its ignition pop lands on 'candles', where the flare and the wick take over."
+  },
+  {
+   "id": "fx-match-flare",
+   "kind": "match-flare",
+   "at": {
+    "shot": "ch15-s09",
+    "line": "L1520",
+    "word": "candles"
+   },
+   "lufsS": -31,
+   "underLastWords": "new candles come from",
+   "why": "The flare as the wick catches on 'candles', settling by 'from'."
+  }
+ ]
+}

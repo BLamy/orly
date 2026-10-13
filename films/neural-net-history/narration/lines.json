@@ -5,52 +5,51 @@
    "shot": "ch01-s01",
    "chapter": "ch01",
    "text": "Here is a small wonder.",
-   "spoken": "Here is... a small wonder.",
-   "sig": "52710555e031",
-   "speed": 0.86,
-   "chunk": "415bb942542ea3f2",
+   "spoken": "Here is a small wonder.",
+   "sig": "ca643afba082",
+   "chunk": "86e2ab505f32364a",
    "clip": "narration/clips/L0101.wav",
-   "clipSha": "2042e6ef0432",
-   "duration": 2.2885,
+   "clipSha": "ceb8d62082fc",
+   "duration": 1.538,
    "speechStart": 0.12,
-   "speechEnd": 1.966,
+   "speechEnd": 1.258,
    "words": [
     {
      "w": "Here",
      "start": 0.12,
-     "end": 0.422
+     "end": 0.341
     },
     {
      "w": "is",
-     "start": 0.48,
-     "end": 0.619
+     "start": 0.375,
+     "end": 0.445
     },
     {
      "w": "a",
-     "start": 0.968,
-     "end": 1.049
+     "start": 0.48,
+     "end": 0.515
     },
     {
      "w": "small",
-     "start": 1.13,
-     "end": 1.478
+     "start": 0.55,
+     "end": 0.828
     },
     {
      "w": "wonder",
-     "start": 1.548,
-     "end": 1.966
+     "start": 0.886,
+     "end": 1.258
     }
    ],
    "wordsFrom": "display",
    "cut": {
     "from": 0,
-    "to": 2.1685,
+    "to": 1.418,
     "pad": 0.12,
-    "head": "take-head",
+    "head": "take-start",
     "tail": "take-tail",
     "edgeDb": {
-     "head": -83.6,
-     "tail": -84.3
+     "head": -39.8,
+     "tail": -80.5
     },
     "clean": true
    }
@@ -753,88 +752,83 @@
   "L0114": {
    "shot": "ch01-s06",
    "chapter": "ch01",
-   "text": "We go back to the war years, to a lamp in Chicago.",
-   "spoken": "We go back to the war years... to a lamp in Chicago.",
-   "sig": "42567dc93132",
-   "speed": 0.8,
-   "chunk": "22aa3d0c214c467e",
+   "text": "Our story starts all the way back in World War Two.",
+   "spoken": "Our story starts all the way back in World War Two.",
+   "sig": "152d3031b73a",
+   "speed": 0.88,
+   "chunk": "6890e78e03cc7d49",
    "clip": "narration/clips/L0114.wav",
-   "clipSha": "f8573a578dfd",
-   "duration": 4.1645,
+   "clipSha": "c04803682036",
+   "duration": 3.7045,
    "speechStart": 0.12,
-   "speechEnd": 3.812,
+   "speechEnd": 3.522,
    "words": [
     {
-     "w": "We",
+     "w": "Our",
      "start": 0.12,
-     "end": 0.317
+     "end": 0.341
     },
     {
-     "w": "go",
-     "start": 0.387,
-     "end": 0.503
+     "w": "story",
+     "start": 0.375,
+     "end": 0.805
     },
     {
-     "w": "back",
-     "start": 0.573,
-     "end": 0.759
+     "w": "starts",
+     "start": 0.875,
+     "end": 1.316
     },
     {
-     "w": "to",
-     "start": 0.805,
-     "end": 0.875
+     "w": "all",
+     "start": 1.385,
+     "end": 1.629
     },
     {
      "w": "the",
-     "start": 0.944,
-     "end": 1.014
+     "start": 1.699,
+     "end": 1.769
     },
     {
-     "w": "war",
-     "start": 1.06,
-     "end": 1.293
+     "w": "way",
+     "start": 1.838,
+     "end": 1.989
     },
     {
-     "w": "years",
-     "start": 1.397,
-     "end": 1.85
-    },
-    {
-     "w": "to",
-     "start": 2.291,
-     "end": 2.442
-    },
-    {
-     "w": "a",
-     "start": 2.546,
-     "end": 2.57
-    },
-    {
-     "w": "lamp",
-     "start": 2.639,
-     "end": 2.906
+     "w": "back",
+     "start": 2.07,
+     "end": 2.256
     },
     {
      "w": "in",
-     "start": 2.976,
+     "start": 2.314,
+     "end": 2.396
+    },
+    {
+     "w": "World",
+     "start": 2.477,
+     "end": 2.779
+    },
+    {
+     "w": "War",
+     "start": 2.837,
      "end": 3.069
     },
     {
-     "w": "Chicago",
-     "start": 3.127,
-     "end": 3.812
+     "w": "Two",
+     "start": 3.162,
+     "end": 3.522
     }
    ],
    "wordsFrom": "display",
    "cut": {
     "from": 0,
-    "to": 4.0445,
+    "to": 3.5845,
     "pad": 0.12,
     "head": "take-start",
     "tail": "take-tail",
     "edgeDb": {
-     "head": -35.8,
-     "tail": -68.2
+     "head": -42.1,
+     "tail": -56.4
     },
     "clean": true
    }
@@ -2376,117 +2370,107 @@
    "shot": "ch02-s08",
    "chapter": "ch02",
    "text": "The paper that put it out, for Pitts at least, had his own name on it.",
-   "spoken": "The paper that put it out, for Pitts at least, had his own name on it.",
-   "sig": "fed413245ebe",
-   "speed": 0.8,
-   "chunk": "852d0abc05940d6e",
+   "spoken": "The paper that put it out... for Pitts, at least... had his own name on it.",
+   "sig": "d0ec4eb20fd7",
+   "speed": 0.75,
+   "chunk": "70fe114b878670f5",
    "clip": "narration/clips/L0220.wav",
-   "clipSha": "a94ce7d88ff2",
-   "duration": 5.0818,
+   "clipSha": "c4390f260696",
+   "duration": 6.718,
    "speechStart": 0.12,
-   "speechEnd": 5.024,
+   "speechEnd": 6.413,
    "words": [
     {
      "w": "The",
      "start": 0.12,
-     "end": 0.271
+     "end": 0.283
     },
     {
      "w": "paper",
-     "start": 0.329,
-     "end": 0.654
+     "start": 0.341,
+     "end": 0.677
     },
     {
      "w": "that",
-     "start": 0.712,
-     "end": 0.875
+     "start": 0.735,
+     "end": 0.909
     },
     {
      "w": "put",
-     "start": 0.933,
-     "end": 1.118
+     "start": 0.968,
+     "end": 1.165
     },
     {
      "w": "it",
-     "start": 1.177,
-     "end": 1.293
+     "start": 1.223,
+     "end": 1.362
     },
     {
      "w": "out",
-     "start": 1.362,
-     "end": 1.676
+     "start": 1.444,
+     "end": 1.78
     },
     {
      "w": "for",
-     "start": 2.069,
-     "end": 2.243
+     "start": 2.372,
+     "end": 2.558
     },
     {
      "w": "Pitts",
-     "start": 2.312,
-     "end": 2.661
+     "start": 2.639,
+     "end": 3.127
     },
     {
      "w": "at",
-     "start": 2.719,
-     "end": 2.812
+     "start": 3.603,
+     "end": 3.8
     },
     {
      "w": "least",
-     "start": 2.881,
-     "end": 3.253
+     "start": 3.882,
+     "end": 4.276
     },
     {
      "w": "had",
-     "start": 3.607,
-     "end": 3.793
+     "start": 4.799,
+     "end": 5.019
     },
     {
      "w": "his",
-     "start": 3.851,
-     "end": 3.967
+     "start": 5.077,
+     "end": 5.217
     },
     {
      "w": "own",
-     "start": 4.037,
-     "end": 4.223
+     "start": 5.298,
+     "end": 5.495
     },
     {
      "w": "name",
-     "start": 4.292,
-     "end": 4.594
+     "start": 5.577,
+     "end": 5.902
     },
     {
      "w": "on",
-     "start": 4.652,
-     "end": 4.768
+     "start": 5.96,
+     "end": 6.099
     },
     {
      "w": "it",
-     "start": 4.826,
-     "end": 5.024
-    }
-   ],
-   "insertedGaps": [
-    {
-     "at": 1.7225,
-     "gap": 0.3
-    },
-    {
-     "at": 3.005,
-     "gap": 0.25
+     "start": 6.157,
+     "end": 6.413
     }
    ],
    "wordsFrom": "display",
    "cut": {
     "from": 0,
-    "to": 4.4118,
+    "to": 6.598,
     "pad": 0.12,
-    "head": "take-start",
+    "head": "take-head",
     "tail": "take-tail",
     "edgeDb": {
-     "head": -50.6,
-     "tail": -71.8
+     "head": -83.4,
+     "tail": -83.6
     },
     "clean": true
    }
@@ -12472,116 +12456,117 @@
    "shot": "ch08-s11",
    "chapter": "ch08",
    "text": "A bad back kept Hinton from flying. Yann LeCun stood at the rear of a packed room.",
-   "spoken": "A bad back kept Hinton from flying. Yann Le Cun stood at the rear of a packed room.",
-   "sig": "ccd49dd9a3a9",
-   "chunk": "6e7cc0ab3d753d14",
+   "spoken": "A bad back... kept Hinton from flying. Yann Le Cun stood at the rear of a packed room.",
+   "sig": "38617a559728",
+   "speed": 0.85,
+   "chunk": "fe751c6890a52635",
    "clip": "narration/clips/L0821.wav",
-   "clipSha": "3f62b4219cdc",
-   "duration": 5.26,
+   "clipSha": "48b569aa550d",
+   "duration": 6.7115,
    "speechStart": 0.12,
-   "speechEnd": 4.95,
+   "speechEnd": 6.424,
    "words": [
     {
      "w": "A",
      "start": 0.12,
-     "end": 0.201
+     "end": 0.248
     },
     {
      "w": "bad",
-     "start": 0.271,
-     "end": 0.457
+     "start": 0.387,
+     "end": 0.654
     },
     {
      "w": "back",
-     "start": 0.515,
-     "end": 0.735
-    },
-    {
-     "w": "kept",
-     "start": 0.828,
+     "start": 0.735,
      "end": 1.037
     },
     {
+     "w": "kept",
+     "start": 1.432,
+     "end": 1.722
+    },
+    {
      "w": "Hinton",
-     "start": 1.072,
-     "end": 1.385
+     "start": 1.769,
+     "end": 2.163
     },
     {
      "w": "from",
-     "start": 1.432,
-     "end": 1.571
+     "start": 2.221,
+     "end": 2.407
     },
     {
      "w": "flying",
-     "start": 1.641,
-     "end": 2.07
+     "start": 2.488,
+     "end": 3.022
     },
     {
      "w": "Yann",
-     "start": 2.488,
-     "end": 2.755
+     "start": 3.545,
+     "end": 3.824
     },
     {
      "w": "Le",
-     "start": 2.814,
-     "end": 2.906
+     "start": 3.893,
+     "end": 3.998
     },
     {
      "w": "Cun",
-     "start": 2.964,
-     "end": 3.243
+     "start": 4.079,
+     "end": 4.439
     },
     {
      "w": "stood",
-     "start": 3.324,
-     "end": 3.603
+     "start": 4.52,
+     "end": 4.834
     },
     {
      "w": "at",
-     "start": 3.649,
-     "end": 3.707
+     "start": 4.88,
+     "end": 4.95
     },
     {
      "w": "the",
-     "start": 3.742,
-     "end": 3.812
+     "start": 5.008,
+     "end": 5.077
     },
     {
      "w": "rear",
-     "start": 3.87,
-     "end": 4.079
+     "start": 5.159,
+     "end": 5.403
     },
     {
      "w": "of",
-     "start": 4.149,
-     "end": 4.207
+     "start": 5.484,
+     "end": 5.553
     },
     {
      "w": "a",
-     "start": 4.265,
-     "end": 4.288
+     "start": 5.623,
+     "end": 5.646
     },
     {
      "w": "packed",
-     "start": 4.346,
-     "end": 4.613
+     "start": 5.716,
+     "end": 6.029
     },
     {
      "w": "room",
-     "start": 4.671,
-     "end": 4.95
+     "start": 6.111,
+     "end": 6.424
     }
    ],
    "wordsFrom": "spoken",
    "cut": {
     "from": 0,
-    "to": 5.14,
+    "to": 6.5915,
     "pad": 0.12,
     "head": "take-head",
     "tail": "take-tail",
     "edgeDb": {
-     "head": -51.9,
-     "tail": -84.1
+     "head": -52.1,
+     "tail": -83.9
     },
     "clean": true
    }
@@ -13571,51 +13556,52 @@
    "shot": "ch08-s14",
    "chapter": "ch08",
    "text": "Put that in the file.",
-   "spoken": "Put that in the file.",
-   "sig": "17a16a257bfe",
-   "chunk": "e0360e176dff549c",
+   "spoken": "Put that... in the file.",
+   "sig": "5b7421831dc1",
+   "speed": 0.84,
+   "chunk": "f8d83e5a56cac23e",
    "clip": "narration/clips/L0828.wav",
-   "clipSha": "286a434d2b18",
-   "duration": 1.895,
-   "speechStart": 0.4305,
-   "speechEnd": 1.6725,
+   "clipSha": "924b3071c35c",
+   "duration": 2.5715,
+   "speechStart": 0.12,
+   "speechEnd": 2.349,
    "words": [
     {
      "w": "Put",
-     "start": 0.4305,
-     "end": 0.6505
+     "start": 0.12,
+     "end": 0.422
     },
     {
      "w": "that",
-     "start": 0.6975,
-     "end": 0.9065
+     "start": 0.48,
+     "end": 0.782
     },
     {
      "w": "in",
-     "start": 0.9645,
-     "end": 1.0575
+     "start": 1.502,
+     "end": 1.664
     },
     {
      "w": "the",
-     "start": 1.1035,
-     "end": 1.1735
+     "start": 1.722,
+     "end": 1.792
     },
     {
      "w": "file",
-     "start": 1.2315,
-     "end": 1.6725
+     "start": 1.85,
+     "end": 2.349
     }
    ],
    "wordsFrom": "display",
    "cut": {
-    "from": 7.1045,
-    "to": 8.9995,
-    "pad": 0,
-    "head": "gap",
+    "from": 0,
+    "to": 2.4515,
+    "pad": 0.12,
+    "head": "take-head",
     "tail": "take-tail",
     "edgeDb": {
-     "head": -55.5,
-     "tail": -83.8
+     "head": -57.5,
+     "tail": -83.9
     },
     "clean": true
    }
@@ -14056,81 +14042,82 @@
    "shot": "ch09-s03",
    "chapter": "ch09",
    "text": "Seoul, 2016. AlphaGo played move thirty-seven, a one-in-ten-thousand move.",
-   "spoken": "Seoul, twenty sixteen. Alpha Go played move thirty-seven, a one-in-ten-thousand move.",
-   "sig": "9ba8df117071",
-   "chunk": "75f6c34764cba044",
+   "spoken": "Seoul, twenty sixteen. Alpha Go played move... thirty-seven, a one-in-ten-thousand move.",
+   "sig": "5f092b234753",
+   "speed": 0.88,
+   "chunk": "fecc2c5f710fa4be",
    "clip": "narration/clips/L0906.wav",
-   "clipSha": "9fd36020d139",
-   "duration": 6.7875,
+   "clipSha": "99932257d7bc",
+   "duration": 8.3415,
    "speechStart": 0.12,
-   "speechEnd": 6.645,
+   "speechEnd": 8.084,
    "words": [
     {
      "w": "Seoul",
      "start": 0.12,
-     "end": 0.584
+     "end": 0.642
     },
     {
      "w": "twenty",
-     "start": 0.793,
-     "end": 1.13
+     "start": 0.863,
+     "end": 1.293
     },
     {
      "w": "sixteen",
-     "start": 1.177,
-     "end": 1.699
+     "start": 1.351,
+     "end": 2.001
     },
     {
      "w": "Alpha",
-     "start": 2.117,
-     "end": 2.43
+     "start": 2.407,
+     "end": 2.744
     },
     {
      "w": "Go",
-     "start": 2.488,
-     "end": 2.697
-    },
-    {
-     "w": "played",
-     "start": 2.79,
+     "start": 2.814,
      "end": 3.046
     },
     {
+     "w": "played",
+     "start": 3.139,
+     "end": 3.464
+    },
+    {
      "w": "move",
-     "start": 3.104,
-     "end": 3.429
+     "start": 3.533,
+     "end": 3.998
     },
     {
      "w": "thirty-seven",
-     "start": 3.475,
-     "end": 4.183
+     "start": 4.346,
+     "end": 5.228
     },
     {
      "w": "a",
-     "start": 4.532,
-     "end": 4.625
+     "start": 5.553,
+     "end": 5.646
     },
     {
      "w": "one-in-ten-thousand",
-     "start": 4.752,
-     "end": 6.029
+     "start": 5.774,
+     "end": 7.411
     },
     {
      "w": "move",
-     "start": 6.157,
-     "end": 6.645
+     "start": 7.539,
+     "end": 8.084
     }
    ],
    "wordsFrom": "spoken",
    "cut": {
     "from": 0,
-    "to": 6.6675,
+    "to": 8.2215,
     "pad": 0.12,
-    "head": "take-start",
+    "head": "take-head",
     "tail": "take-tail",
     "edgeDb": {
-     "head": -17.2,
-     "tail": -56.5
+     "head": -57.6,
+     "tail": -77.9
     },
     "clean": true
    }
@@ -15872,107 +15859,127 @@
   "L1013": {
    "shot": "ch10-s06",
    "chapter": "ch10",
-   "text": "Pour one jug of light: higher scores get far bigger shares. About half runs to river.",
-   "spoken": "Pour one jug of light: higher scores get far bigger shares. About half runs to river.",
-   "sig": "0dbd2b9f60b2",
-   "chunk": "5ee1b5c663b7ce9e",
+   "text": "Pour one jug of light: higher scores get far bigger shares. About half runs to river: softmax, to the trade.",
+   "spoken": "Pour one jug of light: higher scores get far bigger shares. About half runs to river: softmax, to the trade.",
+   "sig": "f00cbafbf23e",
+   "chunk": "cb58d2a54dcad152",
    "clip": "narration/clips/L1013.wav",
-   "clipSha": "5a4e889051dd",
-   "duration": 6.2838,
-   "speechStart": 0.2785,
-   "speechEnd": 5.9905,
+   "clipSha": "3266f94a66e9",
+   "duration": 8.212,
+   "speechStart": 0.12,
+   "speechEnd": 7.992,
    "words": [
     {
      "w": "Pour",
-     "start": 0.2785,
-     "end": 0.5345
+     "start": 0.12,
+     "end": 0.387
     },
     {
      "w": "one",
-     "start": 0.6035,
-     "end": 0.8245
+     "start": 0.457,
+     "end": 0.642
     },
     {
      "w": "jug",
-     "start": 0.8825,
-     "end": 1.0795
+     "start": 0.7,
+     "end": 0.886
     },
     {
      "w": "of",
-     "start": 1.1265,
-     "end": 1.1955
+     "start": 0.933,
+     "end": 0.991
     },
     {
      "w": "light",
-     "start": 1.2775,
-     "end": 1.5675
+     "start": 1.072,
+     "end": 1.374
     },
     {
      "w": "higher",
-     "start": 1.8805,
-     "end": 2.1825
+     "start": 1.722,
+     "end": 2.036
     },
     {
      "w": "scores",
-     "start": 2.2175,
-     "end": 2.6355
+     "start": 2.07,
+     "end": 2.523
     },
     {
      "w": "get",
-     "start": 2.7635,
-     "end": 2.9485
+     "start": 2.651,
+     "end": 2.848
     },
     {
      "w": "far",
-     "start": 3.0765,
-     "end": 3.3665
+     "start": 2.976,
+     "end": 3.255
     },
     {
      "w": "bigger",
-     "start": 3.4365,
-     "end": 3.6575
+     "start": 3.324,
+     "end": 3.557
     },
     {
      "w": "shares",
-     "start": 3.7155,
-     "end": 4.1915
+     "start": 3.603,
+     "end": 4.079
     },
     {
      "w": "About",
-     "start": 4.6095,
-     "end": 4.9225
+     "start": 4.601,
+     "end": 4.927
     },
     {
      "w": "half",
-     "start": 4.9925,
-     "end": 5.2125
+     "start": 4.996,
+     "end": 5.205
     },
     {
      "w": "runs",
-     "start": 5.2825,
-     "end": 5.5145
+     "start": 5.286,
+     "end": 5.542
     },
     {
      "w": "to",
-     "start": 5.5615,
-     "end": 5.6305
+     "start": 5.6,
+     "end": 5.681
     },
     {
      "w": "river",
-     "start": 5.7125,
-     "end": 5.9905
+     "start": 5.762,
+     "end": 6.041
+    },
+    {
+     "w": "softmax",
+     "start": 6.25,
+     "end": 6.958
+    },
+    {
+     "w": "to",
+     "start": 7.179,
+     "end": 7.295
+    },
+    {
+     "w": "the",
+     "start": 7.365,
+     "end": 7.434
+    },
+    {
+     "w": "trade",
+     "start": 7.481,
+     "end": 7.992
     }
    ],
    "wordsFrom": "display",
    "cut": {
-    "from": 14.3615,
-    "to": 20.6453,
-    "pad": 0,
-    "head": "gap",
-    "tail": "gap",
+    "from": 0,
+    "to": 8.092,
+    "pad": 0.12,
+    "head": "take-head",
+    "tail": "take-tail",
     "edgeDb": {
-     "head": -59.2,
-     "tail": -53.1
+     "head": -55.5,
+     "tail": -88.5
     },
     "clean": true
    }
@@ -17276,15 +17283,15 @@
   "L1103": {
    "shot": "ch11-s02",
    "chapter": "ch11",
-   "text": "In 2019, OpenAI’s GPT-2, a Transformer’s writing half, read some eight million web pages with one goal: “predict the next word.” No labels needed: every next word is its own right answer.",
-   "spoken": "In twenty nineteen, Open A.I.'s G P T two, a Transformer's writing half, read some eight million web pages with one goal: \"predict the next word.\" No labels needed: every next word is its own right answer.",
-   "sig": "c1058f6a5492",
-   "chunk": "7c5b99f94d5a1f0c",
+   "text": "In 2019, OpenAI’s GPT-2, a Transformer’s writing half, read some eight million web pages with one goal: “predict the next word”, or rather, the next word-piece. No labels needed: every next word is its own right answer.",
+   "spoken": "In twenty nineteen, Open A.I.'s G P T two, a Transformer's writing half, read some eight million web pages with one goal: \"predict the next word\", or rather, the next word piece. No labels needed: every next word is its own right answer.",
+   "sig": "42b2601fbe9d",
+   "chunk": "d560132699edcd3e",
    "clip": "narration/clips/L1103.wav",
-   "clipSha": "f8bb41580a00",
-   "duration": 16.365,
+   "clipSha": "62842b767b83",
+   "duration": 18.289,
    "speechStart": 0.12,
-   "speechEnd": 16.095,
+   "speechEnd": 18.034,
    "words": [
     {
      "w": "In",
@@ -17298,38 +17305,38 @@
     },
     {
      "w": "nineteen",
-     "start": 0.712,
-     "end": 1.327
+     "start": 0.724,
+     "end": 1.339
     },
     {
      "w": "Open",
-     "start": 1.583,
-     "end": 1.92
+     "start": 1.525,
+     "end": 1.85
     },
     {
      "w": "A.I.'s",
-     "start": 2.001,
-     "end": 2.639
+     "start": 1.931,
+     "end": 2.57
     },
     {
      "w": "G",
-     "start": 2.802,
-     "end": 3.022
+     "start": 2.732,
+     "end": 2.953
     },
     {
      "w": "P",
-     "start": 3.197,
-     "end": 3.29
+     "start": 3.139,
+     "end": 3.266
     },
     {
      "w": "T",
-     "start": 3.475,
-     "end": 3.603
+     "start": 3.452,
+     "end": 3.58
     },
     {
      "w": "two",
-     "start": 3.789,
-     "end": 4.102
+     "start": 3.766,
+     "end": 4.091
     },
     {
      "w": "a",
@@ -17344,144 +17351,174 @@
     {
      "w": "writing",
      "start": 5.31,
-     "end": 5.681
+     "end": 5.693
     },
     {
      "w": "half",
-     "start": 5.762,
-     "end": 6.088
+     "start": 5.774,
+     "end": 6.099
     },
     {
      "w": "read",
-     "start": 6.436,
-     "end": 6.61
+     "start": 6.447,
+     "end": 6.622
     },
     {
      "w": "some",
-     "start": 6.645,
-     "end": 6.807
+     "start": 6.668,
+     "end": 6.831
     },
     {
      "w": "eight",
-     "start": 6.865,
-     "end": 7.074
+     "start": 6.889,
+     "end": 7.086
     },
     {
      "w": "million",
-     "start": 7.121,
-     "end": 7.423
+     "start": 7.132,
+     "end": 7.434
     },
     {
      "w": "web",
-     "start": 7.481,
-     "end": 7.643
+     "start": 7.492,
+     "end": 7.655
     },
     {
      "w": "pages",
-     "start": 7.701,
-     "end": 8.119
+     "start": 7.713,
+     "end": 8.142
     },
     {
      "w": "with",
-     "start": 8.166,
-     "end": 8.317
+     "start": 8.189,
+     "end": 8.34
     },
     {
      "w": "one",
-     "start": 8.386,
-     "end": 8.584
+     "start": 8.41,
+     "end": 8.607
     },
     {
      "w": "goal",
-     "start": 8.642,
-     "end": 8.99
+     "start": 8.665,
+     "end": 9.013
     },
     {
      "w": "predict",
-     "start": 9.547,
-     "end": 10.023
+     "start": 9.582,
+     "end": 10.058
     },
     {
      "w": "the",
-     "start": 10.093,
-     "end": 10.186
+     "start": 10.128,
+     "end": 10.209
     },
     {
      "w": "next",
-     "start": 10.232,
-     "end": 10.488
+     "start": 10.267,
+     "end": 10.511
     },
     {
      "w": "word",
-     "start": 10.546,
-     "end": 10.975
+     "start": 10.569,
+     "end": 10.999
+    },
+    {
+     "w": "or",
+     "start": 11.451,
+     "end": 11.625
+    },
+    {
+     "w": "rather",
+     "start": 11.695,
+     "end": 12.055
+    },
+    {
+     "w": "the",
+     "start": 12.276,
+     "end": 12.38
+    },
+    {
+     "w": "next",
+     "start": 12.45,
+     "end": 12.67
+    },
+    {
+     "w": "word",
+     "start": 12.728,
+     "end": 12.984
+    },
+    {
+     "w": "piece",
+     "start": 13.042,
+     "end": 13.576
     },
     {
      "w": "No",
-     "start": 12.055,
-     "end": 12.299
+     "start": 14.168,
+     "end": 14.377
     },
     {
      "w": "labels",
-     "start": 12.392,
-     "end": 12.81
+     "start": 14.458,
+     "end": 14.841
     },
     {
      "w": "needed",
-     "start": 12.891,
-     "end": 13.321
+     "start": 14.911,
+     "end": 15.283
     },
     {
      "w": "every",
-     "start": 13.704,
-     "end": 14.017
+     "start": 15.631,
+     "end": 15.968
     },
     {
      "w": "next",
-     "start": 14.087,
-     "end": 14.342
+     "start": 16.026,
+     "end": 16.269
     },
     {
      "w": "word",
-     "start": 14.4,
-     "end": 14.691
+     "start": 16.328,
+     "end": 16.618
     },
     {
      "w": "is",
-     "start": 14.76,
-     "end": 14.865
+     "start": 16.687,
+     "end": 16.85
     },
     {
      "w": "its",
-     "start": 14.923,
-     "end": 15.05
+     "start": 16.908,
+     "end": 17.036
     },
     {
      "w": "own",
-     "start": 15.108,
-     "end": 15.271
+     "start": 17.094,
+     "end": 17.233
     },
     {
      "w": "right",
-     "start": 15.341,
-     "end": 15.596
+     "start": 17.303,
+     "end": 17.547
     },
     {
      "w": "answer",
-     "start": 15.654,
-     "end": 16.095
+     "start": 17.605,
+     "end": 18.034
     }
    ],
    "wordsFrom": "spoken",
    "cut": {
     "from": 0,
-    "to": 16.245,
+    "to": 18.169,
     "pad": 0.12,
     "head": "take-head",
-    "tail": "gap",
+    "tail": "take-tail",
     "edgeDb": {
-     "head": -42.6,
-     "tail": -83.7
+     "head": -39.3,
+     "tail": -85.4
     },
     "clean": true
    }
@@ -18913,136 +18950,136 @@
    "shot": "ch12-s03",
    "chapter": "ch12",
    "text": "Among the runners, a lab born in 2021: former OpenAI researchers, led by Dario and Daniela Amodei, had founded Anthropic.",
-   "spoken": "Among the runners, a lab born in twenty twenty-one: former Open A.I. researchers, led by Dario and Daniela Ah-mo-day, had founded Anthropic.",
-   "sig": "b3ef9b0be862",
-   "chunk": "5e1b004304fe8aae",
+   "spoken": "Among the runners, a lab born in twenty twenty-one: former Open A.I. researchers, led by Dario and Daniela Ah-moh-day, had founded Anthropic.",
+   "sig": "b6111e43b53d",
+   "chunk": "082402e93aafbdac",
    "clip": "narration/clips/L1206.wav",
-   "clipSha": "a0245e318058",
-   "duration": 10.7235,
+   "clipSha": "ab3b0ca1d449",
+   "duration": 10.4285,
    "speechStart": 0.12,
-   "speechEnd": 10.476,
+   "speechEnd": 10.151,
    "words": [
     {
      "w": "Among",
      "start": 0.12,
-     "end": 0.422
+     "end": 0.41
     },
     {
      "w": "the",
-     "start": 0.468,
-     "end": 0.538
+     "start": 0.457,
+     "end": 0.526
     },
     {
      "w": "runners",
-     "start": 0.573,
-     "end": 0.956
+     "start": 0.55,
+     "end": 0.933
     },
     {
      "w": "a",
-     "start": 1.223,
-     "end": 1.293
+     "start": 1.188,
+     "end": 1.258
     },
     {
      "w": "lab",
-     "start": 1.42,
-     "end": 1.629
+     "start": 1.351,
+     "end": 1.548
     },
     {
      "w": "born",
-     "start": 1.757,
-     "end": 2.094
+     "start": 1.641,
+     "end": 1.966
     },
     {
      "w": "in",
-     "start": 2.163,
-     "end": 2.256
+     "start": 2.036,
+     "end": 2.129
     },
     {
      "w": "twenty",
-     "start": 2.303,
-     "end": 2.616
+     "start": 2.175,
+     "end": 2.454
     },
     {
      "w": "twenty-one",
-     "start": 2.663,
-     "end": 3.348
+     "start": 2.488,
+     "end": 3.139
     },
     {
      "w": "former",
-     "start": 3.626,
-     "end": 3.986
+     "start": 3.417,
+     "end": 3.777
     },
     {
      "w": "Open",
-     "start": 4.056,
-     "end": 4.369
+     "start": 3.847,
+     "end": 4.149
     },
     {
      "w": "A.I",
-     "start": 4.451,
-     "end": 4.845
+     "start": 4.23,
+     "end": 4.625
     },
     {
      "w": "researchers",
-     "start": 4.95,
-     "end": 5.67
+     "start": 4.718,
+     "end": 5.449
     },
     {
      "w": "led",
-     "start": 6.018,
-     "end": 6.204
+     "start": 5.797,
+     "end": 5.983
     },
     {
      "w": "by",
-     "start": 6.25,
-     "end": 6.366
+     "start": 6.029,
+     "end": 6.146
     },
     {
      "w": "Dario",
-     "start": 6.424,
-     "end": 6.97
+     "start": 6.204,
+     "end": 6.738
     },
     {
      "w": "and",
-     "start": 7.04,
-     "end": 7.144
+     "start": 6.807,
+     "end": 6.912
     },
     {
      "w": "Daniela",
-     "start": 7.19,
-     "end": 7.864
+     "start": 6.958,
+     "end": 7.574
     },
     {
-     "w": "Ah-mo-day",
-     "start": 7.945,
-     "end": 8.816
+     "w": "Ah-moh-day",
+     "start": 7.655,
+     "end": 8.537
     },
     {
      "w": "had",
-     "start": 9.164,
-     "end": 9.303
+     "start": 8.851,
+     "end": 8.99
     },
     {
      "w": "founded",
-     "start": 9.373,
-     "end": 9.768
+     "start": 9.06,
+     "end": 9.454
     },
     {
      "w": "Anthropic",
-     "start": 9.838,
-     "end": 10.476
+     "start": 9.524,
+     "end": 10.151
     }
    ],
    "wordsFrom": "spoken",
    "cut": {
     "from": 0,
-    "to": 10.6035,
+    "to": 10.3085,
     "pad": 0.12,
     "head": "take-start",
-    "tail": "gap",
+    "tail": "take-tail",
     "edgeDb": {
-     "head": -41.7,
-     "tail": -73.5
+     "head": -43,
+     "tail": -76.6
     },
     "clean": true
    }
@@ -19414,122 +19451,157 @@
   "L1219b": {
    "shot": "ch12-s03",
    "chapter": "ch12",
-   "text": "Google announced Bard; Meta's LLaMA leaked within days; GPT-4 and Claude arrived the same March day.",
-   "spoken": "Google announced Bard; Meta's Llama leaked within days; G P T four and Claude arrived the same March day.",
-   "sig": "220c55d0045f",
-   "chunk": "5e1b004304fe8aae",
+   "text": "Google announced Bard; Meta shared LLaMA with researchers, and within a week its weights leaked; GPT-4 and Claude arrived the same March day.",
+   "spoken": "Google announced Bard; Meta shared Llama with researchers, and within a week its weights leaked; G P T four and Claude arrived the same March day.",
+   "sig": "52b612c90736",
+   "chunk": "f4b4ea698e4ea5f7",
    "clip": "narration/clips/L1219b.wav",
-   "clipSha": "f9364f97d062",
-   "duration": 8.8665,
-   "speechStart": 0.3555,
-   "speechEnd": 8.5865,
+   "clipSha": "a17f8c854dc4",
+   "duration": 10.4385,
+   "speechStart": 0.12,
+   "speechEnd": 10.151,
    "words": [
     {
      "w": "Google",
-     "start": 0.3555,
-     "end": 0.7385
+     "start": 0.12,
+     "end": 0.492
     },
     {
      "w": "announced",
-     "start": 0.7735,
-     "end": 1.2145
+     "start": 0.515,
+     "end": 0.863
     },
     {
      "w": "Bard",
-     "start": 1.3075,
-     "end": 1.8295
+     "start": 0.921,
+     "end": 1.397
     },
     {
-     "w": "Meta's",
-     "start": 2.0275,
-     "end": 2.3645
+     "w": "Meta",
+     "start": 1.548,
+     "end": 1.838
+    },
+    {
+     "w": "shared",
+     "start": 1.885,
+     "end": 2.163
     },
     {
      "w": "Llama",
-     "start": 2.4335,
-     "end": 2.8635
+     "start": 2.221,
+     "end": 2.546
     },
     {
-     "w": "leaked",
-     "start": 2.9325,
-     "end": 3.1995
+     "w": "with",
+     "start": 2.605,
+     "end": 2.744
     },
     {
-     "w": "within",
-     "start": 3.2345,
-     "end": 3.4905
-    },
-    {
-     "w": "days",
-     "start": 3.5595,
-     "end": 4.0355
-    },
-    {
-     "w": "G",
-     "start": 4.3845,
-     "end": 4.5695
-    },
-    {
-     "w": "P",
-     "start": 4.7555,
-     "end": 4.8835
-    },
-    {
-     "w": "T",
-     "start": 5.0455,
-     "end": 5.1735
-    },
-    {
-     "w": "four",
-     "start": 5.3595,
-     "end": 5.7075
+     "w": "researchers",
+     "start": 2.79,
+     "end": 3.452
     },
     {
      "w": "and",
-     "start": 5.8935,
-     "end": 6.1025
+     "start": 3.8,
+     "end": 3.928
+    },
+    {
+     "w": "within",
+     "start": 3.975,
+     "end": 4.195
+    },
+    {
+     "w": "a",
+     "start": 4.242,
+     "end": 4.265
+    },
+    {
+     "w": "week",
+     "start": 4.323,
+     "end": 4.567
+    },
+    {
+     "w": "its",
+     "start": 4.659,
+     "end": 4.845
+    },
+    {
+     "w": "weights",
+     "start": 4.915,
+     "end": 5.217
+    },
+    {
+     "w": "leaked",
+     "start": 5.286,
+     "end": 5.612
+    },
+    {
+     "w": "G",
+     "start": 6.029,
+     "end": 6.215
+    },
+    {
+     "w": "P",
+     "start": 6.436,
+     "end": 6.564
+    },
+    {
+     "w": "T",
+     "start": 6.749,
+     "end": 6.842
+    },
+    {
+     "w": "four",
+     "start": 7.005,
+     "end": 7.353
+    },
+    {
+     "w": "and",
+     "start": 7.574,
+     "end": 7.759
     },
     {
      "w": "Claude",
-     "start": 6.1835,
-     "end": 6.8455
+     "start": 7.841,
+     "end": 8.421
     },
     {
      "w": "arrived",
-     "start": 6.9845,
-     "end": 7.4255
+     "start": 8.607,
+     "end": 9.025
     },
     {
      "w": "the",
-     "start": 7.4605,
-     "end": 7.5305
+     "start": 9.048,
+     "end": 9.118
     },
     {
      "w": "same",
-     "start": 7.5765,
-     "end": 7.8325
+     "start": 9.164,
+     "end": 9.408
     },
     {
      "w": "March",
-     "start": 7.8785,
-     "end": 8.1695
+     "start": 9.454,
+     "end": 9.745
     },
     {
      "w": "day",
-     "start": 8.2385,
-     "end": 8.5865
+     "start": 9.803,
+     "end": 10.151
     }
    ],
    "wordsFrom": "spoken",
    "cut": {
-    "from": 24.0955,
-    "to": 32.962,
-    "pad": 0,
-    "head": "gap",
+    "from": 0,
+    "to": 10.3185,
+    "pad": 0.12,
+    "head": "take-head",
     "tail": "take-tail",
     "edgeDb": {
-     "head": -57.8,
-     "tail": -88.6
+     "head": -69.7,
+     "tail": -82.2
     },
     "clean": true
    }
@@ -21091,107 +21163,167 @@
   "L1405": {
    "shot": "ch14-s02",
    "chapter": "ch14",
-   "text": "Two new candles: computing power is the chokepoint, and China is one to three years behind.",
-   "spoken": "Two new candles: computing power is the chokepoint, and China is one to three years behind.",
-   "sig": "0673f94f7934",
-   "chunk": "b0430192019d4d1f",
+   "text": "Two new candles: computing power is the chokepoint, and China is a year or two behind. A new question for the file: can a fence around chips hold?",
+   "spoken": "Two new candles: computing power is the chokepoint, and China is a year or two behind. A new question for the file: can a fence around chips hold?",
+   "sig": "501772f45aad",
+   "chunk": "8b5d7a25bc50bfff",
    "clip": "narration/clips/L1405.wav",
-   "clipSha": "af41e438caed",
-   "duration": 6.657,
-   "speechStart": 0.3295,
-   "speechEnd": 6.4245,
+   "clipSha": "557660352460",
+   "duration": 10.2135,
+   "speechStart": 0.12,
+   "speechEnd": 9.896,
    "words": [
     {
      "w": "Two",
-     "start": 0.3295,
-     "end": 0.5265
+     "start": 0.12,
+     "end": 0.341
     },
     {
      "w": "new",
-     "start": 0.6085,
-     "end": 0.7355
+     "start": 0.41,
+     "end": 0.538
     },
     {
      "w": "candles",
-     "start": 0.7935,
-     "end": 1.2815
+     "start": 0.596,
+     "end": 1.072
     },
     {
      "w": "computing",
-     "start": 1.6645,
-     "end": 2.1525
+     "start": 1.455,
+     "end": 1.954
     },
     {
      "w": "power",
-     "start": 2.2105,
-     "end": 2.4895
+     "start": 2.012,
+     "end": 2.268
     },
     {
      "w": "is",
-     "start": 2.5585,
-     "end": 2.6635
+     "start": 2.338,
+     "end": 2.43
     },
     {
      "w": "the",
-     "start": 2.7095,
-     "end": 2.7795
+     "start": 2.477,
+     "end": 2.546
     },
     {
      "w": "chokepoint",
-     "start": 2.8255,
-     "end": 3.4295
+     "start": 2.593,
+     "end": 3.197
     },
     {
      "w": "and",
-     "start": 3.7195,
-     "end": 3.8705
+     "start": 3.464,
+     "end": 3.615
     },
     {
      "w": "China",
-     "start": 3.9285,
-     "end": 4.3005
+     "start": 3.684,
+     "end": 4.067
     },
     {
      "w": "is",
-     "start": 4.3585,
-     "end": 4.4625
+     "start": 4.125,
+     "end": 4.242
     },
     {
-     "w": "one",
-     "start": 4.5555,
-     "end": 4.8225
+     "w": "a",
+     "start": 4.288,
+     "end": 4.323
     },
     {
-     "w": "to",
-     "start": 4.8805,
-     "end": 4.9615
+     "w": "year",
+     "start": 4.392,
+     "end": 4.601
     },
     {
-     "w": "three",
-     "start": 5.0435,
-     "end": 5.3915
+     "w": "or",
+     "start": 4.66,
+     "end": 4.741
     },
     {
-     "w": "years",
-     "start": 5.4725,
-     "end": 5.7635
+     "w": "two",
+     "start": 4.787,
+     "end": 4.927
     },
     {
      "w": "behind",
-     "start": 5.8215,
-     "end": 6.4245
+     "start": 5.008,
+     "end": 5.6
+    },
+    {
+     "w": "A",
+     "start": 6.157,
+     "end": 6.227
+    },
+    {
+     "w": "new",
+     "start": 6.308,
+     "end": 6.436
+    },
+    {
+     "w": "question",
+     "start": 6.482,
+     "end": 6.831
+    },
+    {
+     "w": "for",
+     "start": 6.877,
+     "end": 6.981
+    },
+    {
+     "w": "the",
+     "start": 7.028,
+     "end": 7.098
+    },
+    {
+     "w": "file",
+     "start": 7.156,
+     "end": 7.632
+    },
+    {
+     "w": "can",
+     "start": 7.922,
+     "end": 8.073
+    },
+    {
+     "w": "a",
+     "start": 8.119,
+     "end": 8.142
+    },
+    {
+     "w": "fence",
+     "start": 8.224,
+     "end": 8.514
+    },
+    {
+     "w": "around",
+     "start": 8.549,
+     "end": 8.874
+    },
+    {
+     "w": "chips",
+     "start": 8.967,
+     "end": 9.35
+    },
+    {
+     "w": "hold",
+     "start": 9.443,
+     "end": 9.896
     }
    ],
    "wordsFrom": "display",
    "cut": {
-    "from": 11.8725,
-    "to": 18.5295,
-    "pad": 0,
-    "head": "gap",
+    "from": 0,
+    "to": 10.0935,
+    "pad": 0.12,
+    "head": "take-head",
     "tail": "take-tail",
     "edgeDb": {
-     "head": -60.6,
-     "tail": -58.2
+     "head": -65.1,
+     "tail": -83.6
     },
     "clean": true
    }
@@ -21848,52 +21980,108 @@
   "L1416": {
    "shot": "ch14-s05",
    "chapter": "ch14",
-   "text": "But America employed the most.",
-   "spoken": "But America employed the most.",
-   "sig": "b15a25fac9e6",
-   "chunk": "7e6dc1ba1729cf8e",
+   "text": "Nearly half the top researchers first studied in China. But America employed the most of them.",
+   "spoken": "Nearly half the top researchers first studied in China. But America employed the most of them.",
+   "sig": "ae49b271da00",
+   "speed": 0.9,
+   "chunk": "a2ce765c2672e9ce",
    "clip": "narration/clips/L1416.wav",
-   "clipSha": "24be9c4bd54a",
-   "duration": 2.1634,
+   "clipSha": "896742a445e4",
+   "duration": 6.4825,
    "speechStart": 0.12,
-   "speechEnd": 1.792,
+   "speechEnd": 6.215,
    "words": [
     {
-     "w": "But",
+     "w": "Nearly",
      "start": 0.12,
-     "end": 0.306
+     "end": 0.503
     },
     {
-     "w": "America",
-     "start": 0.352,
-     "end": 0.747
-    },
-    {
-     "w": "employed",
-     "start": 0.805,
-     "end": 1.211
+     "w": "half",
+     "start": 0.584,
+     "end": 0.863
     },
     {
      "w": "the",
-     "start": 1.246,
-     "end": 1.316
+     "start": 0.944,
+     "end": 1.026
+    },
+    {
+     "w": "top",
+     "start": 1.095,
+     "end": 1.339
+    },
+    {
+     "w": "researchers",
+     "start": 1.432,
+     "end": 2.07
+    },
+    {
+     "w": "first",
+     "start": 2.163,
+     "end": 2.43
+    },
+    {
+     "w": "studied",
+     "start": 2.465,
+     "end": 2.825
+    },
+    {
+     "w": "in",
+     "start": 2.872,
+     "end": 2.941
+    },
+    {
+     "w": "China",
+     "start": 3.011,
+     "end": 3.499
+    },
+    {
+     "w": "But",
+     "start": 3.858,
+     "end": 4.056
+    },
+    {
+     "w": "America",
+     "start": 4.102,
+     "end": 4.636
+    },
+    {
+     "w": "employed",
+     "start": 4.706,
+     "end": 5.31
+    },
+    {
+     "w": "the",
+     "start": 5.356,
+     "end": 5.426
     },
     {
      "w": "most",
-     "start": 1.374,
-     "end": 1.792
+     "start": 5.507,
+     "end": 5.774
+    },
+    {
+     "w": "of",
+     "start": 5.844,
+     "end": 5.925
+    },
+    {
+     "w": "them",
+     "start": 6.006,
+     "end": 6.215
     }
    ],
    "wordsFrom": "display",
    "cut": {
     "from": 0,
-    "to": 2.0434,
+    "to": 6.3625,
     "pad": 0.12,
     "head": "take-start",
     "tail": "take-tail",
     "edgeDb": {
-     "head": -46.2,
-     "tail": -76.5
+     "head": -40.4,
+     "tail": -88.4
     },
     "clean": true
    }
@@ -22313,147 +22501,142 @@
   "L1418": {
    "shot": "ch14-s07",
    "chapter": "ch14",
-   "text": "The chokepoint candle still burns, argued over. As of October 2026, nobody agrees how wide the gap is, or whether it will close.",
-   "spoken": "The chokepoint candle still burns, argued over. As of October twenty twenty-six, nobody agrees how wide the gap is, or whether it will close.",
-   "sig": "0abe09cfdc40",
-   "chunk": "573939359cb3b20a",
+   "text": "The fence still stands, argued over. As of October 2026, nobody agrees how wide the gap is, or whether it will close.",
+   "spoken": "The fence still stands, argued over. As of October twenty twenty-six, nobody agrees how wide the gap is, or whether it will close.",
+   "sig": "53ee1dbf8363",
+   "chunk": "8d2d960667558035",
    "clip": "narration/clips/L1418.wav",
-   "clipSha": "8187fe0f91b7",
-   "duration": 11.025,
-   "speechStart": 0.29,
-   "speechEnd": 10.89,
+   "clipSha": "f423fd22b604",
+   "duration": 9.57,
+   "speechStart": 0.12,
+   "speechEnd": 9.385,
    "words": [
     {
      "w": "The",
-     "start": 0.29,
-     "end": 0.406
+     "start": 0.12,
+     "end": 0.271
     },
     {
-     "w": "chokepoint",
-     "start": 0.464,
-     "end": 0.928
-    },
-    {
-     "w": "candle",
-     "start": 0.986,
-     "end": 1.358
+     "w": "fence",
+     "start": 0.341,
+     "end": 0.608
     },
     {
      "w": "still",
-     "start": 1.428,
-     "end": 1.753
+     "start": 0.631,
+     "end": 0.851
     },
     {
-     "w": "burns",
-     "start": 1.822,
-     "end": 2.356
+     "w": "stands",
+     "start": 0.921,
+     "end": 1.444
     },
     {
      "w": "argued",
-     "start": 2.67,
-     "end": 3.111
+     "start": 1.734,
+     "end": 2.14
     },
     {
      "w": "over",
-     "start": 3.169,
-     "end": 3.471
+     "start": 2.198,
+     "end": 2.5
     },
     {
      "w": "As",
-     "start": 4.098,
-     "end": 4.295
+     "start": 2.964,
+     "end": 3.162
     },
     {
      "w": "of",
-     "start": 4.377,
-     "end": 4.504
+     "start": 3.231,
+     "end": 3.324
     },
     {
      "w": "October",
-     "start": 4.632,
-     "end": 5.224
+     "start": 3.406,
+     "end": 3.928
     },
     {
      "w": "twenty",
-     "start": 5.352,
-     "end": 5.689
+     "start": 4.021,
+     "end": 4.334
     },
     {
      "w": "twenty-six",
-     "start": 5.735,
-     "end": 6.501
+     "start": 4.381,
+     "end": 5.136
     },
     {
      "w": "nobody",
-     "start": 6.757,
-     "end": 7.175
+     "start": 5.449,
+     "end": 5.867
     },
     {
      "w": "agrees",
-     "start": 7.233,
-     "end": 7.674
+     "start": 5.925,
+     "end": 6.366
     },
     {
      "w": "how",
-     "start": 7.732,
-     "end": 7.871
+     "start": 6.436,
+     "end": 6.598
     },
     {
      "w": "wide",
-     "start": 7.952,
-     "end": 8.278
+     "start": 6.68,
+     "end": 7.016
     },
     {
      "w": "the",
-     "start": 8.312,
-     "end": 8.382
+     "start": 7.04,
+     "end": 7.109
     },
     {
      "w": "gap",
-     "start": 8.428,
-     "end": 8.672
+     "start": 7.156,
+     "end": 7.365
     },
     {
      "w": "is",
-     "start": 8.754,
-     "end": 9.032
+     "start": 7.446,
+     "end": 7.69
     },
     {
      "w": "or",
-     "start": 9.38,
-     "end": 9.555
+     "start": 8.003,
+     "end": 8.119
     },
     {
      "w": "whether",
-     "start": 9.613,
-     "end": 9.88
+     "start": 8.166,
+     "end": 8.421
     },
     {
      "w": "it",
-     "start": 9.949,
-     "end": 10.007
+     "start": 8.491,
+     "end": 8.549
     },
     {
      "w": "will",
-     "start": 10.042,
-     "end": 10.193
+     "start": 8.584,
+     "end": 8.723
     },
     {
      "w": "close",
-     "start": 10.24,
-     "end": 10.89
+     "start": 8.769,
+     "end": 9.385
     }
    ],
    "wordsFrom": "spoken",
    "cut": {
-    "from": 10.043,
-    "to": 21.068,
-    "pad": 0,
-    "head": "gap",
+    "from": 0,
+    "to": 9.45,
+    "pad": 0.12,
+    "head": "take-head",
     "tail": "take-tail",
     "edgeDb": {
-     "head": -67.1,
-     "tail": -70
+     "head": -88.8,
+     "tail": -83.4
     },
     "clean": true
    }
@@ -22544,162 +22727,227 @@
   "L1502": {
    "shot": "ch15-s01",
    "chapter": "ch15",
-   "text": "A Nobel Prize in physics, shared with John Hopfield: for memories that roll downhill, and the Boltzmann machine Hinton co-invented, a net that settles as it cools.",
-   "spoken": "A Nobel Prize in physics, shared with John Hopfield: for memories that roll downhill, and the Boltzmann machine Hinton co-invented, a net that settles as it cools.",
-   "sig": "f8090143e0dd",
-   "chunk": "9357c0bf7cd24370",
+   "text": "A Nobel Prize in physics, shared with John Hopfield. He wrote that nobody he met remembered his Versailles talk. The prize was for memories that roll downhill, and the Boltzmann machine Hinton co-invented, a net that settles as it cools.",
+   "spoken": "A Nobel Prize in physics, shared with John Hopfield. He wrote that nobody he met remembered his Versailles talk. The prize was for memories that roll downhill, and the Boltzmann machine Hinton co-invented, a net that settles as it cools.",
+   "sig": "0316f409aa01",
+   "chunk": "3bbe47205e2f32ef",
    "clip": "narration/clips/L1502.wav",
-   "clipSha": "9fb7c0298d20",
-   "duration": 11.208,
-   "speechStart": 0.2505,
-   "speechEnd": 10.8855,
+   "clipSha": "71f5eb181721",
+   "duration": 15.888,
+   "speechStart": 0.12,
+   "speechEnd": 15.538,
    "words": [
     {
      "w": "A",
-     "start": 0.2505,
-     "end": 0.3085
+     "start": 0.12,
+     "end": 0.224
     },
     {
      "w": "Nobel",
-     "start": 0.4015,
-     "end": 0.7385
+     "start": 0.352,
+     "end": 0.7
     },
     {
      "w": "Prize",
-     "start": 0.8075,
-     "end": 1.0985
+     "start": 0.782,
+     "end": 1.142
     },
     {
      "w": "in",
-     "start": 1.1325,
-     "end": 1.1905
+     "start": 1.188,
+     "end": 1.258
     },
     {
      "w": "physics",
-     "start": 1.2605,
-     "end": 1.7245
+     "start": 1.316,
+     "end": 1.792
     },
     {
      "w": "shared",
-     "start": 1.8525,
-     "end": 2.1545
+     "start": 1.896,
+     "end": 2.21
     },
     {
      "w": "with",
-     "start": 2.1895,
-     "end": 2.3055
+     "start": 2.233,
+     "end": 2.349
     },
     {
      "w": "John",
-     "start": 2.3515,
-     "end": 2.5375
+     "start": 2.407,
+     "end": 2.605
     },
     {
      "w": "Hopfield",
-     "start": 2.6075,
-     "end": 3.1645
+     "start": 2.663,
+     "end": 3.197
+    },
+    {
+     "w": "He",
+     "start": 3.789,
+     "end": 3.905
+    },
+    {
+     "w": "wrote",
+     "start": 3.951,
+     "end": 4.183
+    },
+    {
+     "w": "that",
+     "start": 4.218,
+     "end": 4.358
+    },
+    {
+     "w": "nobody",
+     "start": 4.485,
+     "end": 4.927
+    },
+    {
+     "w": "he",
+     "start": 4.985,
+     "end": 5.066
+    },
+    {
+     "w": "met",
+     "start": 5.147,
+     "end": 5.449
+    },
+    {
+     "w": "remembered",
+     "start": 5.577,
+     "end": 6.018
+    },
+    {
+     "w": "his",
+     "start": 6.064,
+     "end": 6.18
+    },
+    {
+     "w": "Versailles",
+     "start": 6.25,
+     "end": 6.877
+    },
+    {
+     "w": "talk",
+     "start": 6.947,
+     "end": 7.33
+    },
+    {
+     "w": "The",
+     "start": 7.852,
+     "end": 7.957
+    },
+    {
+     "w": "prize",
+     "start": 8.003,
+     "end": 8.363
+    },
+    {
+     "w": "was",
+     "start": 8.41,
+     "end": 8.537
     },
     {
      "w": "for",
-     "start": 3.5245,
-     "end": 3.6635
+     "start": 8.607,
+     "end": 8.711
     },
     {
      "w": "memories",
-     "start": 3.7105,
-     "end": 4.0815
+     "start": 8.769,
+     "end": 9.164
     },
     {
      "w": "that",
-     "start": 4.1285,
-     "end": 4.2445
+     "start": 9.211,
+     "end": 9.338
     },
     {
      "w": "roll",
-     "start": 4.3025,
-     "end": 4.5465
+     "start": 9.396,
+     "end": 9.629
     },
     {
      "w": "downhill",
-     "start": 4.6275,
-     "end": 5.1845
+     "start": 9.71,
+     "end": 10.267
     },
     {
      "w": "and",
-     "start": 5.5095,
-     "end": 5.6495
+     "start": 10.569,
+     "end": 10.72
     },
     {
      "w": "the",
-     "start": 5.7075,
-     "end": 5.7655
+     "start": 10.766,
+     "end": 10.836
     },
     {
      "w": "Boltzmann",
-     "start": 5.8235,
-     "end": 6.2995
+     "start": 10.882,
+     "end": 11.37
     },
     {
      "w": "machine",
-     "start": 6.3685,
-     "end": 6.7635
+     "start": 11.44,
+     "end": 11.974
     },
     {
      "w": "Hinton",
-     "start": 6.8215,
-     "end": 7.2165
+     "start": 12.067,
+     "end": 12.496
     },
     {
      "w": "co-invented",
-     "start": 7.3095,
-     "end": 8.0875
+     "start": 12.578,
+     "end": 13.309
     },
     {
      "w": "a",
-     "start": 8.5285,
-     "end": 8.5865
+     "start": 13.692,
+     "end": 13.762
     },
     {
      "w": "net",
-     "start": 8.7025,
-     "end": 8.9575
+     "start": 13.855,
+     "end": 14.041
     },
     {
      "w": "that",
-     "start": 9.0855,
-     "end": 9.2595
+     "start": 14.075,
+     "end": 14.238
     },
     {
      "w": "settles",
-     "start": 9.3295,
-     "end": 9.7825
+     "start": 14.308,
+     "end": 14.702
     },
     {
      "w": "as",
-     "start": 10.0265,
-     "end": 10.2005
+     "start": 14.749,
+     "end": 14.83
     },
     {
      "w": "it",
-     "start": 10.2585,
-     "end": 10.3165
+     "start": 14.888,
+     "end": 14.958
     },
     {
      "w": "cools",
-     "start": 10.3865,
-     "end": 10.8855
+     "start": 15.016,
+     "end": 15.538
     }
    ],
    "wordsFrom": "display",
    "cut": {
-    "from": 5.5545,
-    "to": 16.7625,
-    "pad": 0,
-    "head": "gap",
-    "tail": "gap",
+    "from": 0,
+    "to": 15.768,
+    "pad": 0.12,
+    "head": "take-head",
+    "tail": "take-tail",
     "edgeDb": {
-     "head": -59.3,
-     "tail": -83.8
+     "head": -52.2,
+     "tail": -83.7
     },
     "clean": true
    }
@@ -23127,51 +23375,52 @@
    "shot": "ch15-s03",
    "chapter": "ch15",
    "text": "Nobody told it to plan.",
-   "spoken": "Nobody told it to plan.",
-   "sig": "ded76a0c02f6",
-   "chunk": "46c405f19382bce9",
+   "spoken": "Nobody told it... to plan.",
+   "sig": "4f57e15d7394",
+   "speed": 0.84,
+   "chunk": "e4b682eb614c877c",
    "clip": "narration/clips/L1505.wav",
-   "clipSha": "bdd51cdf738e",
-   "duration": 2.073,
-   "speechStart": 0.3895,
-   "speechEnd": 1.7355,
+   "clipSha": "146cd56db0cd",
+   "duration": 2.878,
+   "speechStart": 0.12,
+   "speechEnd": 2.558,
    "words": [
     {
      "w": "Nobody",
-     "start": 0.3895,
-     "end": 0.7955
+     "start": 0.12,
+     "end": 0.724
     },
     {
      "w": "told",
-     "start": 0.8535,
-     "end": 1.0745
+     "start": 0.793,
+     "end": 1.13
     },
     {
      "w": "it",
-     "start": 1.1205,
-     "end": 1.2015
+     "start": 1.2,
+     "end": 1.409
     },
     {
      "w": "to",
-     "start": 1.2365,
-     "end": 1.2945
+     "start": 1.838,
+     "end": 1.989
     },
     {
      "w": "plan",
-     "start": 1.3645,
-     "end": 1.7355
+     "start": 2.07,
+     "end": 2.558
     }
    ],
    "wordsFrom": "display",
    "cut": {
-    "from": 9.8045,
-    "to": 11.8775,
-    "pad": 0,
-    "head": "gap",
+    "from": 0,
+    "to": 2.758,
+    "pad": 0.12,
+    "head": "take-start",
     "tail": "take-tail",
     "edgeDb": {
-     "head": -59.6,
-     "tail": -81
+     "head": -8.8,
+     "tail": -83.6
     },
     "clean": true
    }
@@ -24556,77 +24805,77 @@
    "shot": "ch15-s09",
    "chapter": "ch15",
    "text": "The last word goes to Hinton, back in 2017.",
-   "spoken": "The last word goes to Hinton, back in twenty seventeen.",
-   "sig": "a99bbb719342",
-   "speed": 0.86,
-   "chunk": "1103a7544c7125fa",
+   "spoken": "The last word goes to Hinton... back in twenty seventeen.",
+   "sig": "a051439c7a17",
+   "speed": 0.8,
+   "chunk": "d70d3da9162264a4",
    "clip": "narration/clips/L1517.wav",
-   "clipSha": "5e72fe657120",
-   "duration": 4.3405,
+   "clipSha": "1e8b8fc77c91",
+   "duration": 5.041,
    "speechStart": 0.12,
-   "speechEnd": 4.033,
+   "speechEnd": 4.741,
    "words": [
     {
      "w": "The",
      "start": 0.12,
-     "end": 0.294
+     "end": 0.352
     },
     {
      "w": "last",
-     "start": 0.375,
-     "end": 0.631
+     "start": 0.422,
+     "end": 0.7
     },
     {
      "w": "word",
-     "start": 0.689,
-     "end": 0.956
+     "start": 0.759,
+     "end": 1.072
     },
     {
      "w": "goes",
-     "start": 1.026,
-     "end": 1.281
+     "start": 1.142,
+     "end": 1.455
     },
     {
      "w": "to",
-     "start": 1.316,
-     "end": 1.385
+     "start": 1.513,
+     "end": 1.606
     },
     {
      "w": "Hinton",
-     "start": 1.467,
-     "end": 1.966
+     "start": 1.699,
+     "end": 2.256
     },
     {
      "w": "back",
-     "start": 2.419,
-     "end": 2.663
+     "start": 2.837,
+     "end": 3.115
     },
     {
      "w": "in",
-     "start": 2.732,
-     "end": 2.814
+     "start": 3.185,
+     "end": 3.29
     },
     {
      "w": "twenty",
-     "start": 2.872,
-     "end": 3.243
+     "start": 3.359,
+     "end": 3.812
     },
     {
      "w": "seventeen",
-     "start": 3.313,
-     "end": 4.033
+     "start": 3.882,
+     "end": 4.741
     }
    ],
    "wordsFrom": "spoken",
    "cut": {
     "from": 0,
-    "to": 4.2205,
+    "to": 4.921,
     "pad": 0.12,
     "head": "take-head",
     "tail": "take-tail",
     "edgeDb": {
-     "head": -83.8,
-     "tail": -84.2
+     "head": -83.7,
+     "tail": -83.5
     },
     "clean": true
    }
@@ -25174,71 +25423,86 @@
   "L1410b": {
    "shot": "ch14-s04b",
    "chapter": "ch14",
-   "text": "China trailing by years? That belief burned about two.",
-   "spoken": "China trailing by years? That belief burned about two.",
-   "sig": "a1ce8dff9fac",
-   "chunk": "cf7d26291f2d4fc3",
+   "text": "China a year or two behind? That belief burned about two years.",
+   "spoken": "China a year or two behind? That belief burned about two years.",
+   "sig": "964148d7bfd7",
+   "chunk": "7199b38ead90fa42",
    "clip": "narration/clips/L1410b.wav",
-   "clipSha": "7f0f18f06101",
-   "duration": 4.636,
+   "clipSha": "fa47b6c1e353",
+   "duration": 4.971,
    "speechStart": 0.12,
-   "speechEnd": 4.311,
+   "speechEnd": 4.636,
    "words": [
     {
      "w": "China",
      "start": 0.12,
-     "end": 0.538
+     "end": 0.573
     },
     {
-     "w": "trailing",
-     "start": 0.585,
-     "end": 0.991
+     "w": "a",
+     "start": 0.631,
+     "end": 0.677
     },
     {
-     "w": "by",
-     "start": 1.061,
-     "end": 1.235
+     "w": "year",
+     "start": 0.759,
+     "end": 0.956
     },
     {
-     "w": "years",
-     "start": 1.363,
-     "end": 1.873
-    },
-    {
-     "w": "That",
-     "start": 2.466,
-     "end": 2.674
-    },
-    {
-     "w": "belief",
-     "start": 2.744,
-     "end": 3.174
-    },
-    {
-     "w": "burned",
-     "start": 3.313,
-     "end": 3.638
-    },
-    {
-     "w": "about",
-     "start": 3.673,
-     "end": 3.917
+     "w": "or",
+     "start": 1.014,
+     "end": 1.084
     },
     {
      "w": "two",
-     "start": 3.975,
-     "end": 4.311
+     "start": 1.13,
+     "end": 1.281
+    },
+    {
+     "w": "behind",
+     "start": 1.351,
+     "end": 1.943
+    },
+    {
+     "w": "That",
+     "start": 2.396,
+     "end": 2.616
+    },
+    {
+     "w": "belief",
+     "start": 2.674,
+     "end": 2.999
+    },
+    {
+     "w": "burned",
+     "start": 3.092,
+     "end": 3.475
+    },
+    {
+     "w": "about",
+     "start": 3.51,
+     "end": 3.731
+    },
+    {
+     "w": "two",
+     "start": 3.789,
+     "end": 4.021
+    },
+    {
+     "w": "years",
+     "start": 4.114,
+     "end": 4.636
     }
    ],
    "wordsFrom": "display",
    "cut": {
-    "from": 4.8935,
-    "to": 9.508,
-    "pad": 0.0215,
-    "head": "gap",
+    "from": 0,
+    "to": 4.851,
+    "pad": 0.12,
+    "head": "take-head",
     "tail": "take-tail",
     "edgeDb": {
-     "head": -83.1,
+     "head": -89,
      "tail": -84.1
     },
     "clean": true
@@ -25247,113 +25511,98 @@
   "L1522b": {
    "shot": "ch15-s05",
    "chapter": "ch15",
-   "text": "The Pentagon said a supplier may not set such limits, and named it a supply-chain risk.",
-   "spoken": "The Pentagon said a supplier may not set such limits, and named it a supply chain risk.",
-   "sig": "2d0adbc49fe3",
+   "text": "The Pentagon named it a supply-chain risk, and signed with OpenAI instead.",
+   "spoken": "The Pentagon named it a supply chain risk, and signed with Open A.I. instead.",
+   "sig": "ca7800c01944",
    "speed": 0.86,
-   "chunk": "869c5f7fe4c4de08",
+   "chunk": "27bf5ba84789e1a0",
    "clip": "narration/clips/L1522b.wav",
-   "clipSha": "fb5b1155e645",
-   "duration": 6.933,
+   "clipSha": "0ee602aa800f",
+   "duration": 5.8555,
    "speechStart": 0.12,
-   "speechEnd": 6.668,
+   "speechEnd": 5.553,
    "words": [
     {
      "w": "The",
      "start": 0.12,
-     "end": 0.259
+     "end": 0.248
     },
     {
      "w": "Pentagon",
-     "start": 0.317,
-     "end": 0.828
-    },
-    {
-     "w": "said",
-     "start": 0.921,
-     "end": 1.153
-    },
-    {
-     "w": "a",
-     "start": 1.211,
-     "end": 1.235
-    },
-    {
-     "w": "supplier",
-     "start": 1.304,
-     "end": 2.012
-    },
-    {
-     "w": "may",
-     "start": 2.105,
-     "end": 2.291
-    },
-    {
-     "w": "not",
-     "start": 2.372,
-     "end": 2.523
-    },
-    {
-     "w": "set",
-     "start": 2.593,
-     "end": 2.872
-    },
-    {
-     "w": "such",
-     "start": 2.941,
-     "end": 3.185
-    },
-    {
-     "w": "limits",
-     "start": 3.255,
-     "end": 3.719
-    },
-    {
-     "w": "and",
-     "start": 4.137,
-     "end": 4.311
+     "start": 0.306,
+     "end": 0.84
     },
     {
      "w": "named",
-     "start": 4.392,
-     "end": 4.694
+     "start": 0.921,
+     "end": 1.2
     },
     {
      "w": "it",
-     "start": 4.752,
-     "end": 4.868
+     "start": 1.235,
+     "end": 1.327
     },
     {
      "w": "a",
-     "start": 4.95,
-     "end": 5.019
+     "start": 1.385,
+     "end": 1.409
     },
     {
      "w": "supply",
-     "start": 5.101,
-     "end": 5.623
+     "start": 1.478,
+     "end": 1.966
     },
     {
      "w": "chain",
-     "start": 5.716,
-     "end": 6.088
+     "start": 2.047,
+     "end": 2.361
     },
     {
      "w": "risk",
-     "start": 6.227,
-     "end": 6.668
+     "start": 2.454,
+     "end": 2.79
+    },
+    {
+     "w": "and",
+     "start": 2.872,
+     "end": 3.069
+    },
+    {
+     "w": "signed",
+     "start": 3.162,
+     "end": 3.533
+    },
+    {
+     "w": "with",
+     "start": 3.568,
+     "end": 3.707
+    },
+    {
+     "w": "Open",
+     "start": 3.789,
+     "end": 4.149
+    },
+    {
+     "w": "A.I",
+     "start": 4.242,
+     "end": 4.799
+    },
+    {
+     "w": "instead",
+     "start": 4.903,
+     "end": 5.553
     }
    ],
    "wordsFrom": "spoken",
    "cut": {
     "from": 0,
-    "to": 6.813,
+    "to": 5.7355,
     "pad": 0.12,
-    "head": "take-head",
+    "head": "take-start",
     "tail": "take-tail",
     "edgeDb": {
-     "head": -56.8,
-     "tail": -63.8
+     "head": -49.7,
+     "tail": -88.8
     },
     "clean": true
    }
@@ -25507,15 +25756,15 @@
   "L0607b": {
    "shot": "ch06-s03b",
    "chapter": "ch06",
-   "text": "An expert cut the features by hand; the machine only drew the line. The kernel trick lifted the crowds, so one flat cut could part them. The learning was clean; the seeing was hand-made.",
-   "spoken": "An expert cut the features by hand; the machine only drew the line. The kernel trick lifted the crowds, so one flat cut could part them. The learning was clean; the seeing was hand-made.",
-   "sig": "55f9b34eddda",
-   "chunk": "52a356ae6a5f81b9",
+   "text": "An expert chose what to measure, by hand; the machine only drew the line.",
+   "spoken": "An expert chose what to measure, by hand; the machine only drew the line.",
+   "sig": "99ac2972e531",
+   "chunk": "fbdb63015bd47e6c",
    "clip": "narration/clips/L0607b.wav",
-   "clipSha": "c52734ad99ef",
-   "duration": 12.0785,
+   "clipSha": "a52b68af6afb",
+   "duration": 4.8945,
    "speechStart": 0.12,
-   "speechEnd": 11.841,
+   "speechEnd": 4.787,
    "words": [
     {
      "w": "An",
@@ -25525,185 +25774,676 @@
     {
      "w": "expert",
      "start": 0.317,
-     "end": 0.747
+     "end": 0.724
     },
     {
-     "w": "cut",
-     "start": 0.793,
-     "end": 0.968
-    },
-    {
-     "w": "the",
-     "start": 1.014,
+     "w": "chose",
+     "start": 0.77,
      "end": 1.084
     },
     {
-     "w": "features",
-     "start": 1.13,
-     "end": 1.478
+     "w": "what",
+     "start": 1.118,
+     "end": 1.281
+    },
+    {
+     "w": "to",
+     "start": 1.327,
+     "end": 1.397
+    },
+    {
+     "w": "measure",
+     "start": 1.467,
+     "end": 1.803
     },
     {
      "w": "by",
-     "start": 1.525,
-     "end": 1.699
+     "start": 1.861,
+     "end": 2.024
     },
     {
      "w": "hand",
-     "start": 1.78,
-     "end": 2.21
+     "start": 2.105,
+     "end": 2.512
     },
     {
      "w": "the",
-     "start": 2.407,
-     "end": 2.5
+     "start": 2.848,
+     "end": 2.953
     },
     {
      "w": "machine",
-     "start": 2.558,
-     "end": 2.976
+     "start": 2.999,
+     "end": 3.429
     },
     {
      "w": "only",
-     "start": 3.046,
-     "end": 3.359
+     "start": 3.487,
+     "end": 3.824
     },
     {
      "w": "drew",
-     "start": 3.417,
-     "end": 3.638
+     "start": 3.905,
+     "end": 4.125
     },
     {
      "w": "the",
-     "start": 3.696,
-     "end": 3.766
+     "start": 4.183,
+     "end": 4.253
     },
     {
      "w": "line",
-     "start": 3.824,
-     "end": 4.3
-    },
-    {
-     "w": "The",
-     "start": 4.944,
-     "end": 5.06
-    },
-    {
-     "w": "kernel",
-     "start": 5.118,
-     "end": 5.432
-    },
-    {
-     "w": "trick",
-     "start": 5.478,
-     "end": 5.722
-    },
-    {
-     "w": "lifted",
-     "start": 5.792,
-     "end": 6.094
-    },
-    {
-     "w": "the",
-     "start": 6.129,
-     "end": 6.198
-    },
-    {
-     "w": "crowds",
-     "start": 6.233,
-     "end": 6.697
-    },
-    {
-     "w": "so",
-     "start": 6.802,
-     "end": 7.011
-    },
-    {
-     "w": "one",
-     "start": 7.092,
-     "end": 7.29
-    },
-    {
-     "w": "flat",
-     "start": 7.371,
-     "end": 7.615
-    },
-    {
-     "w": "cut",
-     "start": 7.696,
-     "end": 7.928
-    },
-    {
-     "w": "could",
-     "start": 7.986,
-     "end": 8.149
-    },
-    {
-     "w": "part",
-     "start": 8.184,
-     "end": 8.416
-    },
-    {
-     "w": "them",
-     "start": 8.462,
-     "end": 8.625
-    },
-    {
-     "w": "The",
-     "start": 9.124,
-     "end": 9.24
-    },
-    {
-     "w": "learning",
-     "start": 9.298,
-     "end": 9.588
-    },
-    {
-     "w": "was",
-     "start": 9.646,
-     "end": 9.751
-    },
-    {
-     "w": "clean",
-     "start": 9.832,
-     "end": 10.192
-    },
-    {
-     "w": "the",
-     "start": 10.262,
-     "end": 10.378
-    },
-    {
-     "w": "seeing",
-     "start": 10.447,
-     "end": 10.784
-    },
-    {
-     "w": "was",
-     "start": 10.865,
-     "end": 11.005
-    },
-    {
-     "w": "hand-made",
-     "start": 11.063,
-     "end": 11.841
-    }
-   ],
-   "insertedGaps": [
-    {
-     "at": 4.497,
-     "gap": 0.25
+     "start": 4.311,
+     "end": 4.787
     }
    ],
    "wordsFrom": "display",
    "cut": {
     "from": 0,
-    "to": 11.7085,
+    "to": 4.7745,
+    "pad": 0.12,
+    "head": "take-start",
+    "tail": "gap",
+    "edgeDb": {
+     "head": -44.1,
+     "tail": -60.7
+    },
+    "clean": true
+   }
+  },
+  "L0514b": {
+   "shot": "ch05-s07",
+   "chapter": "ch05",
+   "text": "At its rim stood a philosopher, Hubert Dreyfus: real expertise is intuition, not rules. He saw a pattern: “early, dramatic success followed by sudden unexpected difficulties.”",
+   "spoken": "At its rim stood a philosopher, Hubert Dry-fuss: real expertise is intuition, not rules. He saw a pattern: \"early, dramatic success followed by sudden unexpected difficulties.\"",
+   "sig": "55c2d9c221b9",
+   "chunk": "5271fe4d03798645",
+   "clip": "narration/clips/L0514b.wav",
+   "clipSha": "59b654bcbd5d",
+   "duration": 14.0055,
+   "speechStart": 0.12,
+   "speechEnd": 13.646,
+   "words": [
+    {
+     "w": "At",
+     "start": 0.12,
+     "end": 0.306
+    },
+    {
+     "w": "its",
+     "start": 0.364,
+     "end": 0.492
+    },
+    {
+     "w": "rim",
+     "start": 0.573,
+     "end": 0.828
+    },
+    {
+     "w": "stood",
+     "start": 0.909,
+     "end": 1.153
+    },
+    {
+     "w": "a",
+     "start": 1.188,
+     "end": 1.211
+    },
+    {
+     "w": "philosopher",
+     "start": 1.246,
+     "end": 1.838
+    },
+    {
+     "w": "Hubert",
+     "start": 2.129,
+     "end": 2.535
+    },
+    {
+     "w": "Dreyfus",
+     "start": 2.628,
+     "end": 3.417
+    },
+    {
+     "w": "real",
+     "start": 3.893,
+     "end": 4.16
+    },
+    {
+     "w": "expertise",
+     "start": 4.23,
+     "end": 5.019
+    },
+    {
+     "w": "is",
+     "start": 5.077,
+     "end": 5.24
+    },
+    {
+     "w": "intuition",
+     "start": 5.31,
+     "end": 5.971
+    },
+    {
+     "w": "not",
+     "start": 6.122,
+     "end": 6.308
+    },
+    {
+     "w": "rules",
+     "start": 6.389,
+     "end": 6.958
+    },
+    {
+     "w": "He",
+     "start": 7.481,
+     "end": 7.597
+    },
+    {
+     "w": "saw",
+     "start": 7.666,
+     "end": 7.899
+    },
+    {
+     "w": "a",
+     "start": 7.968,
+     "end": 8.003
+    },
+    {
+     "w": "pattern",
+     "start": 8.061,
+     "end": 8.491
+    },
+    {
+     "w": "early",
+     "start": 8.978,
+     "end": 9.327
+    },
+    {
+     "w": "dramatic",
+     "start": 9.524,
+     "end": 10.093
+    },
+    {
+     "w": "success",
+     "start": 10.163,
+     "end": 10.824
+    },
+    {
+     "w": "followed",
+     "start": 10.987,
+     "end": 11.37
+    },
+    {
+     "w": "by",
+     "start": 11.44,
+     "end": 11.579
+    },
+    {
+     "w": "sudden",
+     "start": 11.66,
+     "end": 11.997
+    },
+    {
+     "w": "unexpected",
+     "start": 12.125,
+     "end": 12.856
+    },
+    {
+     "w": "difficulties",
+     "start": 12.903,
+     "end": 13.646
+    }
+   ],
+   "wordsFrom": "display",
+   "cut": {
+    "from": 0,
+    "to": 13.8855,
     "pad": 0.12,
     "head": "take-head",
     "tail": "take-tail",
     "edgeDb": {
-     "head": -73.4,
-     "tail": -83.6
+     "head": -47.8,
+     "tail": -76.3
+    },
+    "clean": true
+   }
+  },
+  "L0607c": {
+   "shot": "ch06-s03b",
+   "chapter": "ch06",
+   "text": "When no straight line would do, the kernel trick lifted one crowd up a hill, and one flat cut parted them. The learning was clean; the seeing was hand-made.",
+   "spoken": "When no straight line would do, the kernel trick lifted one crowd up a hill, and one flat cut parted them. The learning was clean; the seeing was hand-made.",
+   "sig": "4c68af27ca46",
+   "chunk": "fbdb63015bd47e6c",
+   "clip": "narration/clips/L0607c.wav",
+   "clipSha": "a224885c67be",
+   "duration": 10.3025,
+   "speechStart": 0.3195,
+   "speechEnd": 10.1875,
+   "words": [
+    {
+     "w": "When",
+     "start": 0.3195,
+     "end": 0.5395
+    },
+    {
+     "w": "no",
+     "start": 0.6095,
+     "end": 0.7485
+    },
+    {
+     "w": "straight",
+     "start": 0.8185,
+     "end": 1.1555
+    },
+    {
+     "w": "line",
+     "start": 1.2015,
+     "end": 1.4105
+    },
+    {
+     "w": "would",
+     "start": 1.4335,
+     "end": 1.5965
+    },
+    {
+     "w": "do",
+     "start": 1.6425,
+     "end": 1.8635
+    },
+    {
+     "w": "the",
+     "start": 2.1535,
+     "end": 2.2585
+    },
+    {
+     "w": "kernel",
+     "start": 2.3165,
+     "end": 2.6295
+    },
+    {
+     "w": "trick",
+     "start": 2.6875,
+     "end": 2.9435
+    },
+    {
+     "w": "lifted",
+     "start": 3.0245,
+     "end": 3.3845
+    },
+    {
+     "w": "one",
+     "start": 3.4655,
+     "end": 3.6635
+    },
+    {
+     "w": "crowd",
+     "start": 3.7095,
+     "end": 3.9885
+    },
+    {
+     "w": "up",
+     "start": 4.0345,
+     "end": 4.1155
+    },
+    {
+     "w": "a",
+     "start": 4.1625,
+     "end": 4.1855
+    },
+    {
+     "w": "hill",
+     "start": 4.2435,
+     "end": 4.4985
+    },
+    {
+     "w": "and",
+     "start": 4.8825,
+     "end": 5.0445
+    },
+    {
+     "w": "one",
+     "start": 5.1255,
+     "end": 5.3115
+    },
+    {
+     "w": "flat",
+     "start": 5.3925,
+     "end": 5.6365
+    },
+    {
+     "w": "cut",
+     "start": 5.7185,
+     "end": 5.9615
+    },
+    {
+     "w": "parted",
+     "start": 6.0435,
+     "end": 6.4145
+    },
+    {
+     "w": "them",
+     "start": 6.4495,
+     "end": 6.6235
+    },
+    {
+     "w": "The",
+     "start": 7.1805,
+     "end": 7.2965
+    },
+    {
+     "w": "learning",
+     "start": 7.3665,
+     "end": 7.6685
+    },
+    {
+     "w": "was",
+     "start": 7.7265,
+     "end": 7.8315
+    },
+    {
+     "w": "clean",
+     "start": 7.9005,
+     "end": 8.2955
+    },
+    {
+     "w": "the",
+     "start": 8.5625,
+     "end": 8.6785
+    },
+    {
+     "w": "seeing",
+     "start": 8.7485,
+     "end": 9.0965
+    },
+    {
+     "w": "was",
+     "start": 9.1775,
+     "end": 9.3405
+    },
+    {
+     "w": "hand-made",
+     "start": 9.3985,
+     "end": 10.1875
+    }
+   ],
+   "wordsFrom": "display",
+   "cut": {
+    "from": 4.6845,
+    "to": 14.987,
+    "pad": 0,
+    "head": "gap",
+    "tail": "take-tail",
+    "edgeDb": {
+     "head": -55.7,
+     "tail": -63.1
+    },
+    "clean": true
+   }
+  },
+  "L1522d": {
+   "shot": "ch15-s05",
+   "chapter": "ch15",
+   "text": "And Anthropic paid a record one and a half billion dollars to settle claims it built a library from pirated books.",
+   "spoken": "And Anthropic paid a record one and a half billion dollars to settle claims it built a library from pirated books.",
+   "sig": "64973b24a666",
+   "speed": 0.85,
+   "chunk": "9c6f5a08b65dc7c6",
+   "clip": "narration/clips/L1522d.wav",
+   "clipSha": "3a7bacc264ff",
+   "duration": 7.6125,
+   "speechStart": 0.12,
+   "speechEnd": 7.26,
+   "words": [
+    {
+     "w": "And",
+     "start": 0.12,
+     "end": 0.317
+    },
+    {
+     "w": "Anthropic",
+     "start": 0.399,
+     "end": 1.002
+    },
+    {
+     "w": "paid",
+     "start": 1.084,
+     "end": 1.327
+    },
+    {
+     "w": "a",
+     "start": 1.374,
+     "end": 1.42
+    },
+    {
+     "w": "record",
+     "start": 1.478,
+     "end": 1.885
+    },
+    {
+     "w": "one",
+     "start": 1.978,
+     "end": 2.187
+    },
+    {
+     "w": "and",
+     "start": 2.233,
+     "end": 2.303
+    },
+    {
+     "w": "a",
+     "start": 2.361,
+     "end": 2.407
+    },
+    {
+     "w": "half",
+     "start": 2.488,
+     "end": 2.721
+    },
+    {
+     "w": "billion",
+     "start": 2.79,
+     "end": 3.173
+    },
+    {
+     "w": "dollars",
+     "start": 3.243,
+     "end": 3.649
+    },
+    {
+     "w": "to",
+     "start": 3.719,
+     "end": 3.812
+    },
+    {
+     "w": "settle",
+     "start": 3.905,
+     "end": 4.265
+    },
+    {
+     "w": "claims",
+     "start": 4.311,
+     "end": 4.741
+    },
+    {
+     "w": "it",
+     "start": 4.81,
+     "end": 4.915
+    },
+    {
+     "w": "built",
+     "start": 4.973,
+     "end": 5.24
+    },
+    {
+     "w": "a",
+     "start": 5.298,
+     "end": 5.321
+    },
+    {
+     "w": "library",
+     "start": 5.391,
+     "end": 5.89
+    },
+    {
+     "w": "from",
+     "start": 5.948,
+     "end": 6.134
+    },
+    {
+     "w": "pirated",
+     "start": 6.215,
+     "end": 6.749
+    },
+    {
+     "w": "books",
+     "start": 6.807,
+     "end": 7.26
+    }
+   ],
+   "wordsFrom": "display",
+   "cut": {
+    "from": 0,
+    "to": 7.4925,
+    "pad": 0.12,
+    "head": "take-start",
+    "tail": "take-tail",
+    "edgeDb": {
+     "head": -45.8,
+     "tail": -83.9
+    },
+    "clean": true
+   }
+  },
+  "L0114b": {
+   "shot": "ch01-s06",
+   "chapter": "ch01",
+   "text": "To a lamp, in Chicago.",
+   "spoken": "To a lamp, in Chicago.",
+   "sig": "102e721fcd67",
+   "speed": 0.8,
+   "chunk": "b042e35b70462ddd",
+   "clip": "narration/clips/L0114b.wav",
+   "clipSha": "2b7b1819f381",
+   "duration": 2.417,
+   "speechStart": 0.12,
+   "speechEnd": 2.047,
+   "words": [
+    {
+     "w": "To",
+     "start": 0.12,
+     "end": 0.294
+    },
+    {
+     "w": "a",
+     "start": 0.399,
+     "end": 0.445
+    },
+    {
+     "w": "lamp",
+     "start": 0.538,
+     "end": 0.886
+    },
+    {
+     "w": "in",
+     "start": 1.049,
+     "end": 1.246
+    },
+    {
+     "w": "Chicago",
+     "start": 1.316,
+     "end": 2.047
+    }
+   ],
+   "wordsFrom": "display",
+   "cut": {
+    "from": 0,
+    "to": 2.297,
+    "pad": 0.12,
+    "head": "take-head",
+    "tail": "take-tail",
+    "edgeDb": {
+     "head": -50.2,
+     "tail": -88.9
+    },
+    "clean": true
+   }
+  },
+  "L1504b": {
+   "shot": "ch15-s03",
+   "chapter": "ch15",
+   "text": "Snuff that plan out, and it rhymes with “habit” instead.",
+   "spoken": "Snuff that plan out, and it rhymes with \"habit\" instead.",
+   "sig": "83b417f34e16",
+   "chunk": "6f0466401cf22896",
+   "clip": "narration/clips/L1504b.wav",
+   "clipSha": "b54bb0eef587",
+   "duration": 3.934,
+   "speechStart": 0.12,
+   "speechEnd": 3.649,
+   "words": [
+    {
+     "w": "Snuff",
+     "start": 0.12,
+     "end": 0.55
+    },
+    {
+     "w": "that",
+     "start": 0.596,
+     "end": 0.735
+    },
+    {
+     "w": "plan",
+     "start": 0.782,
+     "end": 1.014
+    },
+    {
+     "w": "out",
+     "start": 1.084,
+     "end": 1.327
+    },
+    {
+     "w": "and",
+     "start": 1.641,
+     "end": 1.78
+    },
+    {
+     "w": "it",
+     "start": 1.85,
+     "end": 1.908
+    },
+    {
+     "w": "rhymes",
+     "start": 1.966,
+     "end": 2.279
+    },
+    {
+     "w": "with",
+     "start": 2.314,
+     "end": 2.465
+    },
+    {
+     "w": "habit",
+     "start": 2.581,
+     "end": 2.964
+    },
+    {
+     "w": "instead",
+     "start": 3.057,
+     "end": 3.649
+    }
+   ],
+   "wordsFrom": "display",
+   "cut": {
+    "from": 0,
+    "to": 3.814,
+    "pad": 0.12,
+    "head": "take-start",
+    "tail": "take-tail",
+    "edgeDb": {
+     "head": -21.7,
+     "tail": -84
     },
     "clean": true
    }
@@ -25712,7 +26452,7 @@
  "shots": {
   "ch01-s01": {
    "chunks": [
-    "415bb942542ea3f2"
+    "86e2ab505f32364a"
    ],
    "lines": [
     "L0101"
@@ -25760,10 +26500,12 @@
   },
   "ch01-s06": {
    "chunks": [
-    "22aa3d0c214c467e"
+    "6890e78e03cc7d49",
+    "b042e35b70462ddd"
    ],
    "lines": [
-    "L0114"
+    "L0114",
+    "L0114b"
    ]
   },
   "ch01-s07": {
@@ -25837,7 +26579,7 @@
   "ch02-s08": {
    "chunks": [
     "e2071d13c3fb3da6",
-    "852d0abc05940d6e"
+    "70fe114b878670f5"
    ],
    "lines": [
     "L0218",
@@ -26041,11 +26783,13 @@
   },
   "ch05-s07": {
    "chunks": [
-    "cd0a210da720de21"
+    "cd0a210da720de21",
+    "5271fe4d03798645"
    ],
    "lines": [
     "L0513",
-    "L0514"
+    "L0514",
+    "L0514b"
    ]
   },
   "ch05-s08": {
@@ -26291,7 +27035,7 @@
   "ch08-s11": {
    "chunks": [
     "ee14c2cc97ae07b3",
-    "6e7cc0ab3d753d14"
+    "fe751c6890a52635"
    ],
    "lines": [
     "L0820",
@@ -26330,7 +27074,8 @@
   },
   "ch08-s14": {
    "chunks": [
-    "e0360e176dff549c"
+    "e0360e176dff549c",
+    "f8d83e5a56cac23e"
    ],
    "lines": [
     "L0827",
@@ -26358,7 +27103,7 @@
   "ch09-s03": {
    "chunks": [
     "ef4284e1280868f7",
-    "75f6c34764cba044"
+    "fecc2c5f710fa4be"
    ],
    "lines": [
     "L0905b",
@@ -26428,7 +27173,8 @@
   },
   "ch10-s06": {
    "chunks": [
-    "5ee1b5c663b7ce9e"
+    "5ee1b5c663b7ce9e",
+    "cb58d2a54dcad152"
    ],
    "lines": [
     "L1011",
@@ -26504,6 +27250,7 @@
   },
   "ch11-s02": {
    "chunks": [
+    "d560132699edcd3e",
     "7c5b99f94d5a1f0c"
    ],
    "lines": [
@@ -26575,13 +27322,13 @@
   },
   "ch12-s03": {
    "chunks": [
-    "5e1b004304fe8aae",
-    "fee18c4ed4954362"
+    "082402e93aafbdac",
+    "fee18c4ed4954362",
+    "f4b4ea698e4ea5f7"
    ],
    "lines": [
     "L1206",
     "L1207",
-    "L1208",
     "L1219b"
    ]
   },
@@ -26654,7 +27401,7 @@
   "ch14-s02": {
    "chunks": [
     "4505ec62e488cbc0",
-    "b0430192019d4d1f"
+    "8b5d7a25bc50bfff"
    ],
    "lines": [
     "L1403",
@@ -26684,7 +27431,8 @@
   },
   "ch14-s04b": {
    "chunks": [
-    "cf7d26291f2d4fc3"
+    "cf7d26291f2d4fc3",
+    "7199b38ead90fa42"
    ],
    "lines": [
     "L1410",
@@ -26693,7 +27441,7 @@
   },
   "ch14-s05": {
    "chunks": [
-    "7e6dc1ba1729cf8e"
+    "a2ce765c2672e9ce"
    ],
    "lines": [
     "L1416"
@@ -26711,7 +27459,8 @@
   "ch14-s07": {
    "chunks": [
     "573939359cb3b20a",
-    "dac8171117d41dfe"
+    "dac8171117d41dfe",
+    "8d2d960667558035"
    ],
    "lines": [
     "L1417",
@@ -26722,8 +27471,9 @@
   "ch15-s01": {
    "chunks": [
     "66014036aef62348",
-    "9357c0bf7cd24370",
-    "5b9328ee6ed36955"
+    "3bbe47205e2f32ef",
+    "5b9328ee6ed36955",
+    "9357c0bf7cd24370"
    ],
    "lines": [
     "L1501",
@@ -26735,10 +27485,12 @@
   "ch15-s03": {
    "chunks": [
     "09b0ac2ff2cc917b",
-    "46c405f19382bce9"
+    "6f0466401cf22896",
+    "e4b682eb614c877c"
    ],
    "lines": [
     "L1504",
+    "L1504b",
     "L1505"
    ]
   },
@@ -26754,12 +27506,14 @@
   "ch15-s05": {
    "chunks": [
     "6bffccf8074f8b4d",
-    "869c5f7fe4c4de08"
+    "27bf5ba84789e1a0",
+    "9c6f5a08b65dc7c6"
    ],
    "lines": [
     "L1522",
     "L1522b",
     "L1522c",
+    "L1522d",
     "L1525"
    ]
   },
@@ -26793,7 +27547,7 @@
   },
   "ch15-s09": {
    "chunks": [
-    "1103a7544c7125fa",
+    "d70d3da9162264a4",
     "04174a6fdabdc274"
    ],
    "lines": [
@@ -26808,10 +27562,11 @@
   },
   "ch06-s03b": {
    "chunks": [
-    "52a356ae6a5f81b9"
+    "fbdb63015bd47e6c"
    ],
    "lines": [
-    "L0607b"
+    "L0607b",
+    "L0607c"
    ]
   }
  },
@@ -26829,7 +27584,7 @@
   "seed": 1943,
   "format": "mp3_44100_192"
  },
- "updatedAt": "2026-10-12T06:35:44.295Z",
+ "updatedAt": "2026-10-13T22:31:57.773Z",
  "chunks": {
   "5469e904521db1bf": {
    "lines": [
@@ -29789,6 +30544,520 @@
     "style": 0.05,
     "use_speaker_boost": true,
     "speed": 0.86
+   }
+  },
+  "609c0644d88f00e9": {
+   "lines": [
+    {
+     "id": "L0114",
+     "spoken": "We go back to the war years.... To a lamp, in Chicago."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.8
+   }
+  },
+  "5271fe4d03798645": {
+   "lines": [
+    {
+     "id": "L0514b",
+     "spoken": "At its rim stood a philosopher, Hubert Dry-fuss: real expertise is intuition, not rules. He saw a pattern: \"early, dramatic success followed by sudden unexpected difficulties.\""
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.95
+   }
+  },
+  "fbdb63015bd47e6c": {
+   "lines": [
+    {
+     "id": "L0607b",
+     "spoken": "An expert chose what to measure, by hand; the machine only drew the line."
+    },
+    {
+     "id": "L0607c",
+     "spoken": "When no straight line would do, the kernel trick lifted one crowd up a hill, and one flat cut parted them. The learning was clean; the seeing was hand-made."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.95
+   }
+  },
+  "fe751c6890a52635": {
+   "lines": [
+    {
+     "id": "L0821",
+     "spoken": "A bad back... kept Hinton from flying. Yann Le Cun stood at the rear of a packed room."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.85
+   }
+  },
+  "f8d83e5a56cac23e": {
+   "lines": [
+    {
+     "id": "L0828",
+     "spoken": "Put that... in the file."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.84
+   }
+  },
+  "fecc2c5f710fa4be": {
+   "lines": [
+    {
+     "id": "L0906",
+     "spoken": "Seoul, twenty sixteen. Alpha Go played move... thirty-seven, a one-in-ten-thousand move."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.88
+   }
+  },
+  "cb58d2a54dcad152": {
+   "lines": [
+    {
+     "id": "L1013",
+     "spoken": "Pour one jug of light: higher scores get far bigger shares. About half runs to river: softmax, to the trade."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.95
+   }
+  },
+  "f4b4ea698e4ea5f7": {
+   "lines": [
+    {
+     "id": "L1219b",
+     "spoken": "Google announced Bard; Meta shared Llama with researchers, and within a week its weights leaked; G P T four and Claude arrived the same March day."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.95
+   }
+  },
+  "ceb6289431ce920c": {
+   "lines": [
+    {
+     "id": "L1405",
+     "spoken": "Two new candles: computing power is the chokepoint, and China is one to three years behind. A new question for the file: can a fence around chips hold?"
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.95
+   }
+  },
+  "a2ce765c2672e9ce": {
+   "lines": [
+    {
+     "id": "L1416",
+     "spoken": "Nearly half the top researchers first studied in China. But America employed the most of them."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.9
+   }
+  },
+  "8d2d960667558035": {
+   "lines": [
+    {
+     "id": "L1418",
+     "spoken": "The fence still stands, argued over. As of October twenty twenty-six, nobody agrees how wide the gap is, or whether it will close."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.95
+   }
+  },
+  "7d85bd6245e2edac": {
+   "lines": [
+    {
+     "id": "L1505",
+     "spoken": "Nobody told it... to plan."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.85
+   }
+  },
+  "27bf5ba84789e1a0": {
+   "lines": [
+    {
+     "id": "L1522b",
+     "spoken": "The Pentagon named it a supply chain risk, and signed with Open A.I. instead."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.86
+   }
+  },
+  "3abe4a6570686aa8": {
+   "lines": [
+    {
+     "id": "L1522d",
+     "spoken": "And Anthropic paid a record one and a half billion dollars to settle claims it built a library from pirated books."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.95
+   }
+  },
+  "1a334456ba6f1adf": {
+   "lines": [
+    {
+     "id": "L1517",
+     "spoken": "The last word goes to the man from the edge of the light, back in twenty seventeen."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.86
+   }
+  },
+  "9c6f5a08b65dc7c6": {
+   "lines": [
+    {
+     "id": "L1522d",
+     "spoken": "And Anthropic paid a record one and a half billion dollars to settle claims it built a library from pirated books."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.85
+   }
+  },
+  "928e03e34f74bcae": {
+   "lines": [
+    {
+     "id": "L1517",
+     "spoken": "The last word goes to the man from the edge of the light, back in twenty seventeen."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.8
+   }
+  },
+  "e4b682eb614c877c": {
+   "lines": [
+    {
+     "id": "L1505",
+     "spoken": "Nobody told it... to plan."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.84
+   }
+  },
+  "8a3145c1fe906007": {
+   "lines": [
+    {
+     "id": "L0114",
+     "spoken": "We go back to the war years."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.8
+   }
+  },
+  "b042e35b70462ddd": {
+   "lines": [
+    {
+     "id": "L0114b",
+     "spoken": "To a lamp, in Chicago."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.8
+   }
+  },
+  "d560132699edcd3e": {
+   "lines": [
+    {
+     "id": "L1103",
+     "spoken": "In twenty nineteen, Open A.I.'s G P T two, a Transformer's writing half, read some eight million web pages with one goal: \"predict the next word\", or rather, the next word piece. No labels needed: every next word is its own right answer."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.95
+   }
+  },
+  "082402e93aafbdac": {
+   "lines": [
+    {
+     "id": "L1206",
+     "spoken": "Among the runners, a lab born in twenty twenty-one: former Open A.I. researchers, led by Dario and Daniela Ah-moh-day, had founded Anthropic."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.95
+   }
+  },
+  "8b5d7a25bc50bfff": {
+   "lines": [
+    {
+     "id": "L1405",
+     "spoken": "Two new candles: computing power is the chokepoint, and China is a year or two behind. A new question for the file: can a fence around chips hold?"
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.95
+   }
+  },
+  "d70d3da9162264a4": {
+   "lines": [
+    {
+     "id": "L1517",
+     "spoken": "The last word goes to Hinton... back in twenty seventeen."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.8
+   }
+  },
+  "195f7e65e330443a": {
+   "lines": [
+    {
+     "id": "L0114",
+     "spoken": "We go back to the war years."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.7
+   }
+  },
+  "86e2ab505f32364a": {
+   "lines": [
+    {
+     "id": "L0101",
+     "spoken": "Here is a small wonder."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.95
+   }
+  },
+  "ca30fa228caaddaf": {
+   "lines": [
+    {
+     "id": "L0114",
+     "spoken": "Our story starts all the way back in World War Two."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.95
+   }
+  },
+  "6890e78e03cc7d49": {
+   "lines": [
+    {
+     "id": "L0114",
+     "spoken": "Our story starts all the way back in World War Two."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.88
+   }
+  },
+  "70fe114b878670f5": {
+   "lines": [
+    {
+     "id": "L0220",
+     "spoken": "The paper that put it out... for Pitts, at least... had his own name on it."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.75
+   }
+  },
+  "7199b38ead90fa42": {
+   "lines": [
+    {
+     "id": "L1410b",
+     "spoken": "China a year or two behind? That belief burned about two years."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.95
+   }
+  },
+  "c90484d9a98bcdb0": {
+   "lines": [
+    {
+     "id": "L1502",
+     "spoken": "A Nobel Prize in physics, shared with John Hopfield, whose Versailles talk, he wrote, nobody he met remembered: for memories that roll downhill, and the Boltzmann machine Hinton co-invented, a net that settles as it cools."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.95
+   }
+  },
+  "b0bc11ad52d6e374": {
+   "lines": [
+    {
+     "id": "L0114",
+     "spoken": "Our story starts all the way back in World War Two."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.84
+   }
+  },
+  "3bbe47205e2f32ef": {
+   "lines": [
+    {
+     "id": "L1502",
+     "spoken": "A Nobel Prize in physics, shared with John Hopfield. He wrote that nobody he met remembered his Versailles talk. The prize was for memories that roll downhill, and the Boltzmann machine Hinton co-invented, a net that settles as it cools."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.95
+   }
+  },
+  "6f0466401cf22896": {
+   "lines": [
+    {
+     "id": "L1504b",
+     "spoken": "Snuff that plan out, and it rhymes with \"habit\" instead."
+    }
+   ],
+   "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 0.95
    }
   }
  }

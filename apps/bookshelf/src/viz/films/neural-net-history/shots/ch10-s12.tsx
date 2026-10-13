@@ -9,12 +9,22 @@
  *   'multiplication'  the web shrinks and collapses into one 8 × 8 grid; its rows are cut and wired to the rack; at
  *               matrix + 0.4 s ALL EIGHT row-wires, grid bands and slabs fire in the SAME frame, then share one pulse.
  *   'chips'     the slabs are seen for what they are: eight graphics chips (fan, die, gold fingers).
- *   pause       two facts. TIME: 'sundial' the shadow sweeps half a day · "12 hours", then "one machine, 8 GPUs"
- *               under the rack. COST: 'seventh' two compute piles stack (old GNMT+RL 3 × 7 blocks, new 3 × 1:
- *               a seventh) · "≈ 1/7 the compute" (derived, per the script's label). No BLEU ledger.
- *   'catch'     the plate is flown out on its cords; behind it, in the hall, the sentence's banner of ten slips.
+ *   pause       (review round 3) ONE card only: the TIME card rises on 'sundial' (9.66) with "12 hours" inking as the
+ *               paper comes up (cards carry their text), its paper sundial's shadow sweeps half a day, and "one
+ *               machine, 8 GPUs" inks about 0.4 s after 'sundial'. (Review round 4) the card carries ONE fact and
+ *               nothing else: no cost comparison of any kind. Every line at the 22 px cap floor or larger. It holds,
+ *               alone, until 'wall' (13.54): the plate is flown out a beat after 'catch', and the card is the last
+ *               thing on it to go. (L1024 already carries the result.)
+ *   'chips'     (reviser r1) the eight cyan dies cast a soft glow onto the paper around the rack through the hold.
+ *   plate       (critic round 1) ~75% of frame height, its foot behind the pews, the hall showing above and beside it;
+ *               the window light rakes it harder (a ~15% falloff from the top-left). As it flies out, its contents fade
+ *               before they cross the top of frame (nothing is clipped by the frame edge).
+ *   'catch'     a beat after it, the plate is flown out on its cords; behind it, in the hall, the sentence's banner
+ *               of ten slips.
  *   'twice'     the sentence grows slip by slip to twenty, landing 20 words · 400 pairs on 'four'; the threads
- *               multiply, thicken, and the centre closes into a near-solid sheet of light.
+ *               multiply, thicken, and the centre closes into a near-solid sheet of light. (reviser r1) the slips
+ *               carry the hall's real words (HALL_WORDS, as in ch10-s04 / s10), and the ten-word web's outline stays
+ *               drawn OVER the grown web (a solid warm contour) until 'looking', so the two sizes compare.
  *   'looking'   "cost ∝ n²" inks as its own larger serif mark on a slate tag beside the counter (complete ≈ 16.9 s);
  *               the camera eases toward the wall's brightest knot (it becomes the candle's flame in ch10-s13b).
  * Grid shading is illustrative (seeded scores); the counts (n words → n² pairs) are exact.
@@ -27,11 +37,12 @@ import type { Camera3, PaintEnv } from '../../../film';
 import { defineShot, mixLab, withAlpha } from '../../../film';
 import { glow, parchmentPlate } from '../../../film/silhouette/metaphors/kit';
 import { hash1 } from '../../../film/silhouette/atmosphere';
-import { FONT, legibleSize } from '../../../film/silhouette/type';
+import { FONT, cardInkAlpha, cardPaperAlpha, cardProbe, legibleSize } from '../../../film/silhouette/type';
 import { camKeys } from '../sets/ch03-s06-kit';
 import { CY, INK, OXBLOOD, P, clamp01, ink, lerp, plateCords, platePool, sm, tq12, win, wordSlip } from '../sets/ch10-s06-kit';
 import type { InkOpts } from '../sets/ch10-s06-kit';
 import { hallBackdropDark, pewBacks } from '../sets/ch10-s12-hall';
+import { HALL_WORDS } from '../sets/ch10-s01-hall';
 
 type C = CanvasRenderingContext2D;
 const ID = 'ch10-s12';
@@ -41,8 +52,13 @@ const ID = 'ch10-s12';
 // the web group (slips, web, the scribe's lamp) is drawn at WEB_K× about the grid's top centre (x 420) until
 // 'multiplication', then shrinks onto the 8 × 8 grid it collapses into; the rack sits whole at right from frame 0.
 const PL = { x: 96, y: 52, w: 1088, h: 610 };
+/** (critic round 1) the plate is drawn at PK about its foot (PPIV): ~75% of frame height, the hall around it */
+const PK = 0.88;
+const PPIV = { x: 640, y: 662 };
+/** and lifted so its lowest lettering clears the pews' finials (its foot still passes behind them) */
+const PLIFT = -22;
 const NS = 8;
-const G = { x: 260, y: 206, cell: 40 };
+const G = { x: 260, y: 206, cell: 38 };
 const gx = (j: number) => G.x + (j + 0.5) * G.cell;
 const gy = (i: number) => G.y + (i + 0.5) * G.cell;
 const slipX = (i: number) => gx(i);
@@ -60,9 +76,10 @@ const SLAB = { w: 36, y0: 240, y1: 472 };
 const slabX = (k: number) => 768 + k * 48;
 const DIE_Y = 358;
 const SLAB_FILL = '#1f2a2d';
-const DIAL = { x: 330, y: 598, rx: 112, ry: 30 };
-/** the two compute piles (blocks of 13 px): the old system 3 × 7, the new 3 × 1 (a seventh) */
-const PILE = { x: 640, base: 628, b: 13 };
+/** the TIME card: one pinned card, centred under the grid and the rack, holding the sundial, "12 hours" and "one
+ *  machine, 8 GPUs" (one fact) */
+const TCARD = { x: 376, y: 520, w: 528, h: 132 };
+const DIAL = { x: 478, y: 594, rx: 74, ry: 20 };
 
 /** row r of the grid is computed by chip 7 − r (a nested ribbon: no wire crosses another or a slab) */
 const chipOf = (r: number) => NS - 1 - r;
@@ -154,7 +171,12 @@ interface B {
   matrix: number;
   chips: number;
   sundial: number;
-  seventh: number;
+  /** the TIME card rises with "12 hours" inking on it; its dial sweeps sweep0 → sweep1; "one machine, 8 GPUs" at gpus */
+  card0: number;
+  sweep0: number;
+  sweep1: number;
+  gpus: number;
+  /** the plate flies out (a beat after 'catch'); the TIME card on it holds until 'wall' */
   fly: number;
   wall: number;
   /** 'four': the sentence has reached twenty words (400 pairs) */
@@ -180,8 +202,12 @@ export default defineShot({
       matrix: T.beat('matrix'),
       chips: T.beat('chips'),
       sundial: T.beat('sundial'),
-      seventh: T.beat('seventh'),
-      fly: T.word('L1027', 'catch') - 0.05,
+      card0: 0,
+      sweep0: 0,
+      sweep1: 0,
+      gpus: 0,
+      // a beat after 'catch' (the line's own pause), so the TIME card still reads until 'wall'
+      fly: Math.max(T.word('L1027', 'catch') + 0.3, T.beat('wall') - 0.3),
       wall: T.beat('wall'),
       four: T.word('L1027', 'four'),
       pace: 0.12,
@@ -191,6 +217,13 @@ export default defineShot({
     };
     // the tenth..twentieth slips arrive evenly so the counter lands 20 · 400 on 'four' and holds through 'looking'
     b.pace = Math.max(0.09, (b.four - 0.1 - b.wall) / 9);
+    // (review round 3) the one card rises on 'sundial' with its first line inking as the paper comes up; the dial's
+    // shadow sweeps half a day (≈ 1.4 s), then "one machine, 8 GPUs"; it holds alone until 'wall'
+    b.card0 = b.sundial - 0.45;
+    b.sweep0 = b.sundial + 0.1;
+    b.sweep1 = b.sweep0 + 1.4;
+    // (review round 4) the machine line inks about 0.4 s after 'sundial', while the shadow sweeps
+    b.gpus = b.sundial + 0.4;
     const PCY = PL.y + PL.h / 2;
     b.cam = camKeys([
       [0, 640, PCY - 10, 0],
@@ -198,13 +231,17 @@ export default defineShot({
       [b.once - 0.15, 606, PCY - 18, 46],
       [b.matrix + 0.7, 640, PCY - 6, 22],
       [b.chips + 0.4, 652, PCY - 4, 30],
-      [b.sundial - 0.15, 640, PCY + 18, 34],
-      [b.fly - 0.25, 636, PCY + 34, 60],
-      [b.fly + 0.2, 636, PCY + 30, 66],
-      [b.wall - 0.1, 632, 352, 70],
+      // the pause: the TIME card is the subject, so the camera pushes in on it (slowly), then lifts with the fly
+      // centred on the one card (dial + time), so all of it stays in frame
+      [b.card0 + 0.9, 640, PCY + 74, 60],
+      [b.fly - 0.25, 640, PCY + 90, 78],
+      [b.fly + 0.2, 630, PCY + 50, 70],
+      [b.wall + 0.35, 632, 352, 70],
       [b.wall + 3.1, 900, 372, -96],
       [b.costEq + 0.3, 912, 382, -100],
-      [D, KNOT.x, KNOT.y - 6, -30],
+      // (reviser r1) the last move eases the knot up to frame y ≈ 313 (470 at 1080p), x ≈ 653: where ch10-s13b's
+      // opening flame burns, so the crossfade is a true match-cut
+      [D, KNOT.x - 14, KNOT.y + 44, -30],
     ]);
     tl.hold(0, D);
     return { tl, b };
@@ -214,7 +251,7 @@ export default defineShot({
     const b = scene.b as B;
     const cam = b.cam(t);
     f.camera(cam);
-    const cams = [b.cam(0), b.cam(b.once), b.cam(b.chips + 0.6), b.cam(b.wall + 3.1), b.cam(b.D)];
+    const cams = [b.cam(0), b.cam(b.once), b.cam(b.chips + 0.6), b.cam(b.fly - 0.25), b.cam(b.wall + 3.1), b.cam(b.D)];
     f.backlight({ sunX: 760, sunY: 420, sunRadius: 520, intensity: 0.85 });
     hallBackdropDark(f, ID, cams, { stone: 0.38, dim: 0.12 });
 
@@ -235,7 +272,10 @@ export default defineShot({
         c.translate(SWAY_PIV.x, SWAY_PIV.y);
         c.rotate(sway);
         c.translate(-SWAY_PIV.x, -SWAY_PIV.y);
-        plateCords(c, PL, env, -900);
+        c.translate(PPIV.x, PPIV.y + PLIFT);
+        c.scale(PK, PK);
+        c.translate(-PPIV.x, -PPIV.y);
+        plateCords(c, PL, env, -1100);
         // its cast shadow on the hazed hall behind: a soft offset card (down-right, away from the windows' key)
         const sh = f.cached(`${ID}/plateShadow/${env.mood.id}/${PL.w}x${PL.h}`, PL.w, PL.h, (cc) => {
           cc.fillStyle = withAlpha(env.mood.fg, 0.85);
@@ -245,15 +285,30 @@ export default defineShot({
         parchmentPlate(c, { ...PL, seed: 1012 }, env);
         platePool(c, PL, 640, 40, { halo: P.halo, ink: P.ink });
         windowRake(c, t);
-        plate(c, env, t, b);
+        // as the plate flies, its contents fade before they reach the top of frame (never clipped by the edge)
+        const contentA = 1 - sm((flyU - 0.04) / 0.24);
+        if (contentA > 0.003) {
+          c.save();
+          c.globalAlpha *= contentA;
+          plate(c, env, t, b);
+          c.restore();
+        }
+        // the TIME card is the last thing on the plate to go: it reads until 'wall', then fades well inside the frame
+        const cardA = 1 - sm((flyU - 0.3) / 0.28);
+        if (cardA > 0.003) {
+          c.save();
+          c.globalAlpha *= cardA;
+          sundial(c, t, b);
+          c.restore();
+        }
         c.restore();
       });
       // the chips' own light (the one accent): eight dies lit together, in the same frame
-      const chipK = fireK(t, b) * (0.75 + 0.25 * win(t, b.chips - 0.1, b.chips + 0.5)) * (1 - 0.35 * win(t, b.seventh - 0.3, b.seventh + 0.4));
+      const chipK = fireK(t, b) * (0.75 + 0.25 * win(t, b.chips - 0.1, b.chips + 0.5)) * (1 - 0.3 * win(t, b.card0, b.card0 + 0.5));
       if (chipK > 0.01)
         for (let k = 0; k < 8; k++) {
-          const p = swayPt(slabX(k), DIE_Y, sway, SWAY_PIV);
-          f.practical({ x: p.x, y: p.y + dy, kind: 'screen', seed: 120 + k, intensity: 0.42 * chipK, radius: 46 });
+          const p = swayPt(PPIV.x + (slabX(k) - PPIV.x) * PK, PPIV.y + PLIFT + (DIE_Y - PPIV.y) * PK, sway, SWAY_PIV);
+          f.practical({ x: p.x, y: p.y + dy, kind: 'screen', seed: 120 + k, intensity: 0.42 * chipK * (1 - sm(flyU / 0.26)), radius: 46 * PK });
         }
     }
     // the wall's knot as a practical: only once the threads have grown and converge there (n ≥ 14)
@@ -281,12 +336,26 @@ function windowRake(c: C, t: number) {
   c.rect(PL.x, PL.y, PL.w, PL.h);
   c.clip();
   const g = c.createLinearGradient(PL.x, PL.y, PL.x + PL.w * 0.8, PL.y + PL.h * 1.1);
+  // (critic round 1) a harder rake: lit top-left, darker toward the bottom-right, cooled by the hall
+  const shade = mixLab(INK, CY.fg, 0.45);
+  // (reviser r1) the paper itself one step down (~15 %): the plate is no longer the brightest value in frame;
+  // (critic r1, round 4) a further ~10 %, so the chips' cyan on 'chips' is the brightest value on the plate
+  c.fillStyle = withAlpha(mixLab(shade, CY.haze, 0.35), 0.26);
+  c.fillRect(PL.x, PL.y, PL.w, PL.h);
   g.addColorStop(0, withAlpha('#fffaf0', 0.2));
-  g.addColorStop(0.42, withAlpha('#fffaf0', 0.04));
-  g.addColorStop(0.7, withAlpha(INK, 0.05));
-  g.addColorStop(1, withAlpha(INK, 0.2));
+  g.addColorStop(0.3, withAlpha('#fffaf0', 0.03));
+  g.addColorStop(0.6, withAlpha(shade, 0.14));
+  g.addColorStop(1, withAlpha(shade, 0.36));
   c.fillStyle = g;
   c.fillRect(PL.x, PL.y, PL.w, PL.h);
+  // (reviser r1) the right third falls into shade: the window's light stops at the jamb
+  const sx = PL.x + PL.w * 0.62;
+  const sg0 = c.createLinearGradient(sx, 0, PL.x + PL.w, 0);
+  sg0.addColorStop(0, withAlpha(shade, 0));
+  sg0.addColorStop(0.35, withAlpha(shade, 0.16));
+  sg0.addColorStop(1, withAlpha(shade, 0.3));
+  c.fillStyle = sg0;
+  c.fillRect(sx, PL.y, PL.x + PL.w - sx, PL.h);
   // two shafts of window light falling diagonally across the card (a slow drift as the plate sways)
   const drift = 10 * Math.sin(t * 0.31);
   c.globalCompositeOperation = 'lighter';
@@ -407,6 +476,21 @@ function plate(c: C, env: PaintEnv, t: number, b: B) {
     }
     c.setLineDash([]);
   }
+  // ---- (reviser r1) the dies' own light on the paper around the rack: from 'chips' through the hold, eased down
+  // as the TIME card comes up (the one accent, motivated by the eight lit dies)
+  const spill = win(t, b.chips - 0.1, b.chips + 0.6) * (1 - 0.55 * win(t, b.card0, b.card0 + 1));
+  if (spill > 0.01) {
+    c.save();
+    c.globalCompositeOperation = 'lighter';
+    const cx = (RACK.x0 + RACK.x1) / 2, cy = DIE_Y;
+    const sg = c.createRadialGradient(cx, cy, 40, cx, cy, 330);
+    sg.addColorStop(0, withAlpha(CY.halo, 0.2 * spill));
+    sg.addColorStop(0.5, withAlpha(CY.halo, 0.08 * spill));
+    sg.addColorStop(1, withAlpha(CY.halo, 0));
+    c.fillStyle = sg;
+    c.fillRect(cx - 340, cy - 300, 680, 600);
+    c.restore();
+  }
   // ---- the rack of eight slabs → eight graphics chips
   rack(c, env, t, b, fire);
   if (drawU > 0.001) {
@@ -448,63 +532,7 @@ function plate(c: C, env: PaintEnv, t: number, b: B) {
     c.restore();
   }
 
-  // ---- the pause: two facts. Time: the sundial's half day and "12 hours" (one machine, 8 GPUs under the rack).
-  // Cost: the two compute piles, the new one a seventh of the old, and "≈ 1/7 the compute".
-  sundial(c, t, b);
-  piles(c, t, b);
-}
-
-/** the old system's compute (GNMT+RL, 3 × 7 blocks) and the Transformer's (3 × 1): about a seventh as high */
-function piles(c: C, t: number, b: B) {
-  const t0 = b.seventh - 0.2;
-  const a = win(t, t0 - 0.2, t0);
-  if (a <= 0.01) return;
-  const tq = tq12(t);
-  const B0 = PILE.b;
-  const block = (x: number, y: number, seed: number, u: number) => {
-    if (u <= 0.001) return;
-    const drop = (1 - sm(u)) * -26;
-    c.save();
-    c.globalAlpha *= Math.min(1, u * 2);
-    const j = (hash1(seed, 3) - 0.5) * 1.6;
-    c.fillStyle = mixLab(INK, SLAB_FILL, 0.4 + 0.3 * hash1(seed, 4));
-    c.beginPath();
-    c.moveTo(x + 0.8 + j, y + drop + 0.6);
-    c.lineTo(x + B0 - 0.6, y + drop + 1 + j * 0.4);
-    c.lineTo(x + B0 - 0.8 + j * 0.5, y + drop + B0 - 0.6);
-    c.lineTo(x + 0.6, y + drop + B0 - 0.8);
-    c.closePath();
-    c.fill();
-    c.fillStyle = withAlpha(P.halo, 0.35);
-    c.fillRect(x + 1.5, y + drop + 1, B0 - 4, 1.2);
-    c.restore();
-  };
-  c.save();
-  c.globalAlpha *= a;
-  // a shared ground line
-  c.strokeStyle = withAlpha(INK, 0.55);
-  c.lineWidth = 1.2;
-  c.beginPath();
-  c.moveTo(PILE.x - 10, PILE.base + 1);
-  c.lineTo(PILE.x + 3 * B0 + 22 + 3 * B0 + 10, PILE.base + 1);
-  c.stroke();
-  // the old pile stacks up row by row (fast), then the new pile lands: one row
-  for (let r = 0; r < 7; r++)
-    for (let q = 0; q < 3; q++) block(PILE.x + q * B0, PILE.base - (r + 1) * B0, r * 3 + q, clamp01((tq - t0 - r * 0.05) / 0.18));
-  const x2 = PILE.x + 3 * B0 + 22;
-  for (let q = 0; q < 3; q++) block(x2 + q * B0, PILE.base - B0, 40 + q, clamp01((tq - t0 - 0.45) / 0.2));
-  // a faint tick at the old pile's height carried across, so the ratio reads
-  const tick = win(t, t0 + 0.55, t0 + 0.8);
-  c.strokeStyle = withAlpha(INK, 0.35 * tick);
-  c.setLineDash([3, 3]);
-  c.beginPath();
-  c.moveTo(PILE.x + 3 * B0 + 2, PILE.base - 7 * B0);
-  c.lineTo(x2 + 3 * B0, PILE.base - 7 * B0);
-  c.stroke();
-  c.setLineDash([]);
-  c.restore();
-  // the second fact, beside the piles and under the rack label
-  rink(c, '≈ 1/7 the compute', x2 + 3 * B0 + 22, PILE.base - 6, { size: 30, italic: true, align: 'left', draw: clamp01((t - t0 - 0.5) / 0.5), alpha: win(t, t0 + 0.4, t0 + 0.6) });
+  // ---- the pause: ONE fact, on the TIME card (drawn by the caller, so it can outlast the plate's other contents)
 }
 
 /** ink() with its size raised to the legibility floor under the current transform (camera + layer scale) */
@@ -538,20 +566,23 @@ function ghostLamp(c: C, env: PaintEnv, t: number, tq: number, b: B) {
   const k = Math.min(NS - 1, Math.floor(u));
   const fr = u - Math.floor(u);
   const x = lerp(slipX(k), slipX(Math.min(NS - 1, k + 1)), sm(clamp01((fr - 0.55) / 0.45)));
-  const y = SLIP_TOP - 40 - 10 * Math.sin(Math.PI * sm(clamp01((fr - 0.55) / 0.45)));
+  // (critic round 4) the lamp drawn twice as large (×3) and its ticks 1.5×, so the queue reads on the full plate
+  const y = SLIP_TOP - 54 - 12 * Math.sin(Math.PI * sm(clamp01((fr - 0.55) / 0.45)));
   // the slips it has already read, ticked
   for (let i = 0; i < k; i++) {
-    c.strokeStyle = withAlpha(INK, 0.6 * a);
-    c.lineWidth = 1.3;
+    const tx = slipX(i), ty = SLIP_TOP - 22;
+    c.strokeStyle = withAlpha(INK, 0.7 * a);
+    c.lineWidth = 2;
+    c.lineCap = 'round';
     c.beginPath();
-    c.moveTo(slipX(i) - 5, SLIP_TOP - 22);
-    c.lineTo(slipX(i) - 1, SLIP_TOP - 18);
-    c.lineTo(slipX(i) + 6, SLIP_TOP - 27);
+    c.moveTo(tx - 7.5, ty);
+    c.lineTo(tx - 1.5, ty + 6);
+    c.lineTo(tx + 9, ty - 7.5);
     c.stroke();
   }
   c.save();
   c.translate(x, y);
-  c.scale(1.5, 1.5);
+  c.scale(3, 3);
   c.translate(-x, -y);
   c.save();
   c.globalAlpha *= a * 0.85;
@@ -567,6 +598,7 @@ function ghostLamp(c: C, env: PaintEnv, t: number, tq: number, b: B) {
   c.stroke();
   c.restore();
   glow(c, x, y - 1, 16, CY.core, 0.6 * a);
+  // (×3 about the lamp: the glow above is in the scaled frame too)
   c.fillStyle = withAlpha(mixLab(CY.core, '#ffffff', 0.3), a);
   c.beginPath();
   c.moveTo(x, y - 8);
@@ -654,37 +686,52 @@ function rack(c: C, env: PaintEnv, t: number, b: B, lightK: number) {
       c.restore();
     }
   }
-  // the second fact of the pause, under the rack as the eight chips pulse together
-  // part of the first fact (the time): what the half day ran on, inked under the rack just after "12 hours"
-  const t1 = b.sundial + 0.55;
-  rink(c, 'one machine, 8 GPUs', (RACK.x0 + RACK.x1) / 2, RACK.y1 + 48, { size: 30, italic: true, align: 'center', draw: clamp01((t - t1) / 0.5), alpha: win(t, t1 - 0.1, t1 + 0.1) });
   void env;
 }
 
-/** a paper sundial: a flat dial disc in slight perspective, a triangular gnomon, and its cast shadow sweeping half a day */
+/** the TIME card: one small pinned card (lift shadow, two pins) holding a paper sundial whose cast shadow sweeps half a
+ *  day, with "12 hours" and "one machine, 8 GPUs" inked beside it: one fact, one card */
 function sundial(c: C, t: number, b: B) {
-  const a = win(t, b.sundial - 0.35, b.sundial + 0.1);
+  // cards carry their text: "12 hours" inks as the paper passes 30 % (type kit cardPaperAlpha / cardInkAlpha)
+  const h0 = b.card0 + 0.18;
+  const a = cardPaperAlpha(t, h0, 0.3);
   if (a <= 0.01) return;
   const { x, y, rx, ry } = DIAL;
   const rim = (th: number, k = 1) => ({ x: x + Math.cos(th) * rx * k, y: y + Math.sin(th) * ry * k });
   c.save();
   c.globalAlpha *= a;
-  // the disc's thickness (a darker card edge) and a soft contact shadow on the plate
-  c.fillStyle = withAlpha(INK, 0.18);
+  c.translate(0, (1 - a) * 10);
+  // the card
+  const K = TCARD;
+  c.fillStyle = withAlpha(INK, 0.22);
+  c.fillRect(K.x + 5, K.y + 7, K.w, K.h);
+  c.fillStyle = mixLab(P.sky[1], '#fff6e0', 0.38);
+  c.fillRect(K.x, K.y, K.w, K.h);
+  c.strokeStyle = withAlpha(INK, 0.45);
+  c.lineWidth = 1;
+  c.strokeRect(K.x + 6, K.y + 6, K.w - 12, K.h - 12);
+  c.fillStyle = OXBLOOD;
+  for (const px of [K.x + 18, K.x + K.w - 18]) {
+    c.beginPath();
+    c.arc(px, K.y + 12, 3, 0, Math.PI * 2);
+    c.fill();
+  }
+  // the disc's thickness (a darker card edge) and a soft contact shadow
+  c.fillStyle = withAlpha(INK, 0.16);
   c.beginPath();
-  c.ellipse(x + 6, y + 12, rx + 4, ry + 3, 0, 0, Math.PI * 2);
+  c.ellipse(x + 5, y + 9, rx + 3, ry + 3, 0, 0, Math.PI * 2);
   c.fill();
   c.fillStyle = mixLab(INK, P.sky[1], 0.35);
   c.beginPath();
-  c.ellipse(x, y + 6, rx, ry, 0, 0, Math.PI * 2);
+  c.ellipse(x, y + 5, rx, ry, 0, 0, Math.PI * 2);
   c.fill();
   // the face
-  c.fillStyle = mixLab(P.sky[1], '#fff6e0', 0.45);
+  c.fillStyle = mixLab(P.sky[1], '#fff6e0', 0.6);
   c.beginPath();
   c.ellipse(x, y, rx, ry, 0, 0, Math.PI * 2);
   c.fill();
   c.strokeStyle = INK;
-  c.lineWidth = 1.6;
+  c.lineWidth = 1.5;
   c.stroke();
   // an inner chapter ring and the hour lines across the far half of the dial (dawn → dusk)
   c.strokeStyle = withAlpha(INK, 0.45);
@@ -696,14 +743,14 @@ function sundial(c: C, t: number, b: B) {
     const th = Math.PI + (h / 12) * Math.PI;
     const p0 = rim(th, h % 3 === 0 ? 0.62 : 0.8);
     const p1 = rim(th, 0.95);
-    c.lineWidth = h % 6 === 0 ? 1.6 : 1;
+    c.lineWidth = h % 6 === 0 ? 1.5 : 0.9;
     c.beginPath();
     c.moveTo(p0.x, p0.y);
     c.lineTo(p1.x, p1.y);
     c.stroke();
   }
-  // the CAST shadow of the gnomon sweeps 180° (half a day) after 'sundial'
-  const u = sm(clamp01((t - b.sundial) / 1.3));
+  // the CAST shadow of the gnomon sweeps 180° (half a day)
+  const u = sm(clamp01((t - b.sweep0) / (b.sweep1 - b.sweep0)));
   const th = Math.PI + u * Math.PI;
   if (u > 0.01) {
     c.fillStyle = withAlpha(INK, 0.1);
@@ -716,7 +763,7 @@ function sundial(c: C, t: number, b: B) {
   const tip = rim(th, 0.94);
   const nx = -Math.sin(th) * ry, ny = Math.cos(th) * rx;
   const nl = Math.hypot(nx, ny) || 1;
-  const hw = 5.5;
+  const hw = 4.5;
   c.fillStyle = withAlpha(INK, 0.62);
   c.beginPath();
   c.moveTo(x + (nx / nl) * hw, y + (ny / nl) * hw * 0.4);
@@ -724,10 +771,9 @@ function sundial(c: C, t: number, b: B) {
   c.lineTo(x - (nx / nl) * hw, y - (ny / nl) * hw * 0.4);
   c.closePath();
   c.fill();
-  // the gnomon: a triangular card on the noon line, its sloping edge (the style) rising from the dial's centre
-  // to a tall upright at the back of the dial
+  // the gnomon: a triangular card on the noon line
   const back = rim(Math.PI * 1.5 + 0.5, 0.8);
-  const top = { x: back.x, y: back.y - 40 };
+  const top = { x: back.x, y: back.y - 30 };
   c.fillStyle = INK;
   c.beginPath();
   c.moveTo(x, y);
@@ -742,9 +788,16 @@ function sundial(c: C, t: number, b: B) {
   c.moveTo(x, y);
   c.lineTo(top.x - 1.5, top.y);
   c.stroke();
+  // the fact, on the same card: "12 hours" inks with the paper (the shadow then sweeps those twelve hours), then
+  // what it ran on as the sweep finishes; both lines at the 22 px cap floor or larger (rink)
+  const tx = x + rx + 26;
+  const hA = cardInkAlpha(t, h0, 0.16);
+  rink(c, '12 hours', tx, K.y + 56, { size: 46, italic: true, weight: 600, align: 'left', alpha: hA });
+  const g0 = b.gpus;
+  const gA = win(t, g0 - 0.05, g0 + 0.1);
+  rink(c, 'one machine, 8 GPUs', tx, K.y + 104, { size: 32, italic: true, align: 'left', draw: clamp01((t - g0) / 0.45), alpha: gA });
+  cardProbe(c, 'timeCard', K.x, K.y, K.w, K.h, a, Math.max(hA, gA * 0.5));
   c.restore();
-  // the first fact: beside the dial, inked as the shadow finishes its sweep
-  rink(c, '12 hours', x + rx + 22, y + 12, { size: 32, italic: true, align: 'left', draw: clamp01((t - b.sundial - 0.3) / 0.45), alpha: win(t, b.sundial + 0.25, b.sundial + 0.45) });
 }
 
 // =====================================================================================================
@@ -830,30 +883,39 @@ function banner(c: C, env: PaintEnv, t: number, b: B) {
   glow(c, KNOT.x, KNOT.y, 120 + 120 * grow, m.halo, 0.26 * on * kk);
   glow(c, KNOT.x, KNOT.y, 34 + 20 * grow, m.core, 0.42 * on * kk + 0.25 * win(t, b.costEq, b.D));
   c.restore();
-  // ---- a ghost of the ten-word web's outline, kept as the sentence doubles (compare the two sizes)
-  const ghost = win(t, b.wall - 0.1, b.wall + 0.3) * on;
+  // ---- (reviser r1) the ten-word web's outline, drawn OVER the grown threads as one full solid arc from the first
+  // slip to the tenth (a dark keyline under warm paper, so it reads against the light), held until 'looking'
+  const ghost = win(t, b.wall - 0.1, b.wall + 0.3) * (1 - win(t, b.looking, b.looking + 0.45)) * on;
   if (ghost > 0.01) {
     const x0 = bx(0), x1 = bx(9);
     c.save();
-    c.strokeStyle = withAlpha(SLIP_PAPER_GHOST, 0.9 * ghost);
-    c.lineWidth = 2.4;
-    c.setLineDash([7, 6]);
+    c.lineCap = 'round';
     c.beginPath();
     c.moveTo(x0, HSLIP_BOT);
     c.quadraticCurveTo((x0 + x1) / 2, HSLIP_BOT + arcLift(9), x1, HSLIP_BOT);
+    c.strokeStyle = withAlpha(env.fill('ink'), 0.5 * ghost);
+    c.lineWidth = 5;
     c.stroke();
-    c.setLineDash([]);
+    c.strokeStyle = withAlpha(SLIP_PAPER_GHOST, 0.6 * ghost);
+    c.lineWidth = 2.4;
+    c.stroke();
     c.restore();
   }
-  // ---- the slips
+  // ---- the slips, each with its word (the hall's sentence, as in ch10-s04 / s10)
   for (let i = 0; i < n; i++) {
     const a = arrive(i);
     const y = HSLIP_TOP - (1 - a) * 120;
     c.save();
     c.globalAlpha *= Math.min(1, a * 1.6);
-    wordSlip(c, { x: bx(i), y, w: 44, h: HSLIP_H, text: '', lit: 0.25 + 0.5 * grow, cord: HSLIP_TOP - BEAM_Y - 22 });
-    scribble(c, bx(i), y + 22, 26, i * 5 + 11, withAlpha(INK, 0.8));
-    scribble(c, bx(i), y + 36, 20, i * 5 + 12, withAlpha(INK, 0.65));
+    wordSlip(c, { x: bx(i), y, w: 50, h: HSLIP_H, text: '', lit: 0.25 + 0.5 * grow, cord: HSLIP_TOP - BEAM_Y - 22 });
+    const word = HALL_WORDS[i % HALL_WORDS.length];
+    c.font = `600 15px ${FONT.text}`;
+    const fs = Math.min(15, (15 * 42) / Math.max(1, c.measureText(word).width));
+    c.font = `600 ${fs.toFixed(1)}px ${FONT.text}`;
+    c.fillStyle = INK;
+    c.textAlign = 'center';
+    c.textBaseline = 'alphabetic';
+    c.fillText(word, bx(i), y + HSLIP_H * 0.56);
     c.restore();
   }
   // ---- the counter on the beam, centred over the slips; the cost law as its own larger serif mark beside it
@@ -868,6 +930,26 @@ function banner(c: C, env: PaintEnv, t: number, b: B) {
   const mid = (bx(0) + bx(n - 1)) / 2;
   const left = mid - (wCount + gap + wCost) / 2;
   ink(c, label, left, BEAM_Y + 8, { size: sCount, font: 'mono', color: col, alpha: on });
+  // (critic round 4) the starting count, frozen as growth starts: a dimmed '10 words · 100 pairs' on a slate tag hung
+  // above the beam's left end, over the ten-word ghost arc's first slips, held until 'looking'. On 'four' the beam
+  // reads 10 · 100 beside 20 · 400.
+  const refA = win(t, b.wall - 0.1, b.wall + 0.3) * (1 - win(t, b.looking, b.looking + 0.45)) * on;
+  if (refA > 0.01) {
+    const REF = '10 words · 100 pairs';
+    const wRef = measure(c, REF, sCount, 'mono', 500);
+    const rx = bx(0) - 46, ry = BEAM_Y - 26;
+    c.save();
+    c.globalAlpha *= refA;
+    c.fillStyle = withAlpha(env.fill('ink'), 0.9);
+    c.beginPath();
+    c.roundRect(rx - 12, ry - sCount * 1.02, wRef + 24, sCount * 1.42, 4);
+    c.fill();
+    c.strokeStyle = withAlpha(m.rim, 0.3);
+    c.lineWidth = 1;
+    c.stroke();
+    c.restore();
+    ink(c, REF, rx, ry, { size: sCount, font: 'mono', color: col, alpha: 0.6 * refA });
+  }
   // inks on 'looking' and is complete by costEq + 0.6 (≈ 16.9 s), then holds to the cut
   const eq = clamp01((t - b.looking + 0.05) / Math.max(0.4, b.costEq + 0.6 - b.looking));
   if (eq > 0) {

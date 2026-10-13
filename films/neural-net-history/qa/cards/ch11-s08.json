@@ -1,0 +1,89 @@
+{
+ "shot": "ch11-s08",
+ "at": "2026-10-13T20:03:42.687Z",
+ "step": 0.0833,
+ "sampled": 298,
+ "rule": "paper > 50% with text < 20% for more than 0.3 s",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
+ "probedCards": [
+  "ch11-s08/slugs",
+  "ch11-s08/accountA",
+  "ch11-s08/accountB",
+  "ch11-s08/clue"
+ ],
+ "fails": [],
+ "suspects": [],
+ "ghosts": [],
+ "cards": [
+  {
+   "id": "ch11-s08/slugs",
+   "probed": true,
+   "from": 6.8,
+   "to": 23.633,
+   "minInkWhilePaper": 0.55
+  },
+  {
+   "id": "ch11-s08/accountA",
+   "probed": true,
+   "from": 16.967,
+   "to": 23.633,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch11-s08/accountB",
+   "probed": true,
+   "from": 16.967,
+   "to": 23.633,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@78,288",
+   "probed": false,
+   "from": 23.717,
+   "to": 25.3,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@579,-49",
+   "probed": false,
+   "from": 23.717,
+   "to": 25.3,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@578,221",
+   "probed": false,
+   "from": 23.717,
+   "to": 25.3,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@577,490",
+   "probed": false,
+   "from": 23.717,
+   "to": 25.3,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@579,764",
+   "probed": false,
+   "from": 23.717,
+   "to": 25.3,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "fillRect@1064,7",
+   "probed": false,
+   "from": 23.717,
+   "to": 25.3,
+   "minInkWhilePaper": 1
+  },
+  {
+   "id": "ch11-s08/clue",
+   "probed": true,
+   "from": 23.883,
+   "to": 25.3,
+   "minInkWhilePaper": 1
+  }
+ ]
+}

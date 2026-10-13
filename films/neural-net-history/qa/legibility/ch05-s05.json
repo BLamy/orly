@@ -1,23 +1,28 @@
 {
  "shot": "ch05-s05",
- "at": "2026-10-12T08:20:19.561Z",
+ "at": "2026-10-13T04:13:24.626Z",
  "minCapPx": 22,
  "sampled": 13,
  "texts": 3,
+ "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
- "textureTexts": 0,
- "ok": [
+ "subjects": [
   {
    "text": "GRADIENT DESCENT",
-   "maxCap": 22.1
+   "capWhileSubject": 22.1,
+   "why": "script onScreenText"
   },
   {
    "text": "each step downhill, toward less error",
-   "maxCap": 22
+   "capWhileSubject": 22,
+   "why": "named: \"step downhill toward\""
   },
   {
    "text": "timid steps can stall · rare in the 1986 tests",
-   "maxCap": 33.3
+   "capWhileSubject": 33.3,
+   "why": "script onScreenText"
   }
- ]
+ ],
+ "texture": [],
+ "textureTexts": 0
 }

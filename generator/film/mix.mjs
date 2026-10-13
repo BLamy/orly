@@ -26,6 +26,13 @@
 // loudness.json musicEq (the low band's measured reduction under speech).
 // ROOM TONE: a continuous floor of tape hiss (pink noise, high-passed at 2.5 kHz, decorrelated L/R) at --floor-lufs
 // (-58 LUFS) is added AFTER the master gain, so the master never reaches digital zero (QA mix.floor).
+// SWELL TRIM (review round 2: the loudest moments of the film were music-only swells, and the master limiter took
+// 2.7 dB to reach -16 LUFS): after the premix, every no-speech momentary window louder than the narrator's typical
+// line peak minus --swell-margin (2 dB) is trimmed by its excess (at most --swell-max 3 dB), on the MUSIC bus only,
+// with 0.6 s ramps that finish before the next line. Reported in loudness.json swells.
+// FOLEY (review round 2): score/foley.json events (lib/foley.mjs: synthesized, dry + small-room reverb) are added
+// after the master gain, like the room tone, each at its own max short-term loudness (-28 to -32 LUFS); at most 10
+// in a film, each starting in a speech gap or under a line's last words. Reported in loudness.json foley.
 // With no cues.json the master is the narration alone (same loudness targets).
 import fs from 'node:fs';
 import os from 'node:os';
@@ -33,8 +40,9 @@ import path from 'node:path';
 import { parseArgs, num, die, helpText } from './lib/args.mjs';
 import { filmPaths, readJson, writeJson, rel, mkdirp, resolveIn } from './lib/paths.mjs';
 import { stageStart, stageDone, stageFailed } from './lib/ledger.mjs';
-import { ff, loudness, loudnormMeasure, mediaDuration, momentary } from './lib/ffmpeg.mjs';
-import { spanLoudness, lineSpans } from './lib/levels.mjs';
+import { ff, loudness, loudnormMeasure, mediaDuration, momentary, maxShortTerm } from './lib/ffmpeg.mjs';
+import { resolveFoley, renderFoley, underWordProblems, MAX_FOLEY_EVENTS, FOLEY_LUFS_RANGE } from './lib/foley.mjs';
+import { spanLoudness, spanPeaks, lineSpans } from './lib/levels.mjs';
 import { readWav } from './lib/wav.mjs';
 import { lastStrike as findLastStrike } from './lib/onsets.mjs';
 
@@ -42,7 +50,7 @@ const SR = 48000;
 const MAX_SLICE = 25 * 1024 * 1024;
 const a = parseArgs(process.argv.slice(2), {
   boolean: ['help', 'chapters', 'keep-temp'],
-  string: ['slug', 'dir', 'lufs', 'tp', 'lra', 'fade-after-strike', 'duck-threshold', 'duck-ratio', 'duck-attack', 'duck-release', 'floor-lufs', 'shelf-hz', 'shelf-ratio', 'hpf-hz'],
+  string: ['slug', 'dir', 'lufs', 'tp', 'lra', 'fade-after-strike', 'duck-threshold', 'duck-ratio', 'duck-attack', 'duck-release', 'floor-lufs', 'shelf-hz', 'shelf-ratio', 'hpf-hz', 'swell-margin', 'swell-max'],
   default: { chapters: true },
 });
 if (a.help || !a.slug) {
@@ -57,6 +65,45 @@ const FLOOR_LUFS = num(a['floor-lufs'], -58);
 const HPF_HZ = num(a['hpf-hz'], 35);
 const SHELF_HZ = num(a['shelf-hz'], 120);
 const SHELF_RATIO = num(a['shelf-ratio'], 2.5);
+const SWELL_MARGIN = num(a['swell-margin'], 2);
+const SWELL_MAX = num(a['swell-max'], 3);
+const SWELL_RAMP = 0.6;
+
+/** no-speech momentary windows over the ceiling, grouped into regions: [{a, b, peakAt, M, trimDb}] */
+function findSwells(M, spans, ceiling) {
+  const busy = (t) => spans.some((x) => t > x.a - 0.1 && t - 0.4 < x.b + 0.1);
+  const hot = M.filter((q) => q.t >= 0.4 && !busy(q.t) && q.M > ceiling);
+  const regions = [];
+  for (const q of hot) {
+    const r = regions[regions.length - 1];
+    if (r && q.t - 0.4 <= r.b + 0.5) {
+      r.b = q.t;
+      if (q.M > r.M) Object.assign(r, { M: q.M, peakAt: q.t });
+    } else regions.push({ a: q.t - 0.4, b: q.t, M: q.M, peakAt: q.t });
+  }
+  for (const r of regions) {
+    r.trimDb = +Math.min(SWELL_MAX, r.M - ceiling).toFixed(2);
+    // ramps: down before the region, back up after it, never into the next line (the duck holds the music there)
+    const next = spans.filter((x) => x.a >= r.b).sort((x, y) => x.a - y.a)[0];
+    const prev = spans.filter((x) => x.b <= r.a).sort((x, y) => y.b - x.b)[0];
+    r.rampIn = +Math.max(0.1, Math.min(SWELL_RAMP, r.a - (prev ? prev.b : 0))).toFixed(3);
+    r.rampOut = +Math.max(0.1, Math.min(SWELL_RAMP, (next ? next.a : Infinity) - r.b)).toFixed(3);
+    for (const k of ['a', 'b', 'M', 'peakAt']) r[k] = +r[k].toFixed(2);
+  }
+  return regions.filter((r) => r.trimDb >= 0.25);
+}
+/** an ffmpeg volume expression of t: the product of each region's trim, with linear (in gain) ramps */
+function swellExpr(regions) {
+  if (!regions.length) return null;
+  return regions
+    .map((r) => {
+      const g = 10 ** (-r.trimDb / 20);
+      const A = r.a - r.rampIn;
+      const B = r.b + r.rampOut;
+      return `(1-${(1 - g).toFixed(5)}*clip(min((t-${A.toFixed(3)})/${r.rampIn},(${B.toFixed(3)}-t)/${r.rampOut}),0,1))`;
+    })
+    .join('*');
+}
 
 function loadCues() {
   if (!fs.existsSync(P.score.cues)) return [];
@@ -116,6 +163,74 @@ function minMomentary(file) {
   const v = +Math.min(...M.map((q) => q.M)).toFixed(1);
   minMomentaryCache = { file, mtime: fs.statSync(file).mtimeMs, v };
   return v;
+}
+
+/** where the master limiter works: 10 ms blocks of the premix whose sample peak × gain exceeds the ceiling, split by
+ *  whether a line is speaking (seconds over, and the largest overshoot in dB, for each) */
+function overshoots(premix, gainDb, limDb, spans) {
+  const raw = premix.replace(/\.wav$/, '.peak.f32');
+  ff(['-y', '-v', 'error', '-i', premix, '-f', 'f32le', '-c:a', 'pcm_f32le', '-ac', '2', '-ar', String(SR), raw]);
+  const fd = fs.openSync(raw, 'r');
+  const thr = 10 ** ((limDb - gainDb) / 20);
+  const blk = SR / 100; // 10 ms
+  const buf = Buffer.alloc(blk * 2 * 4 * 1000);
+  const res = { speech: { seconds: 0, maxDb: 0 }, music: { seconds: 0, maxDb: 0 }, musicBlocks: [] };
+  const sorted = [...spans].sort((x, y) => x.a - y.a);
+  let si = 0;
+  let pos = 0;
+  for (;;) {
+    const n = fs.readSync(fd, buf, 0, buf.length, null);
+    if (n <= 0) break;
+    const f = new Float32Array(buf.buffer, buf.byteOffset, Math.floor(n / 4));
+    for (let o = 0; o < f.length; o += blk * 2) {
+      let pk = 0;
+      for (let i = o; i < Math.min(f.length, o + blk * 2); i++) pk = Math.max(pk, Math.abs(f[i]));
+      const t = (pos + o / 2) / SR;
+      if (pk > thr) {
+        while (si < sorted.length && sorted[si].b < t) si++;
+        const inSpeech = si < sorted.length && sorted[si].a <= t + 0.01;
+        const r = inSpeech ? res.speech : res.music;
+        r.seconds += 0.01;
+        r.maxDb = Math.max(r.maxDb, 20 * Math.log10(pk / thr));
+        if (!inSpeech) res.musicBlocks.push({ t: +t.toFixed(3), overDb: +(20 * Math.log10(pk / thr)).toFixed(2) });
+      }
+    }
+    pos += f.length / 2;
+  }
+  fs.closeSync(fd);
+  fs.rmSync(raw, { force: true });
+  for (const r of [res.speech, res.music]) Object.assign(r, { seconds: +r.seconds.toFixed(2), maxDb: +r.maxDb.toFixed(2) });
+  return res;
+}
+
+/** score/foley.json → rendered events (lib/foley.mjs), with placement checks */
+function buildFoley(tmp, timeline, D) {
+  const src = path.join(P.score.dir, 'foley.json');
+  if (!fs.existsSync(src)) return { source: null, events: [], checks: { count: true, placement: true, level: true } };
+  const doc = readJson(src);
+  const resolved = resolveFoley(doc.events || [], timeline);
+  const events = resolved.map((ev) => {
+    if (!(ev.t >= 0 && ev.t < D)) return { ...ev, file: null, problems: [...ev.problems, `outside the film (${ev.t} s)`] };
+    mkdirp(path.join(P.score.dir, 'foley'));
+    const file = path.join(P.score.dir, 'foley', `${ev.id}.wav`); // kept: the shelf's stems publish it (lib/stems.mjs)
+    const r = renderFoley(ev, file, (f) => maxShortTerm(f));
+    // a declared 'underLastWords' event may start under the words it names (the last words of its line)
+    const named = (list) => (p) => !String(list).split(/\s+/).some((w) => p.includes(`("${w}")`) || p.toLowerCase().includes(`("${w.toLowerCase()}")`));
+    let problems = ev.underLastWords ? ev.problems.filter(named(ev.underLastWords)) : ev.problems;
+    // review round 4: a declared underWord event (a word-synced practical, e.g. ch14-s07's stamp ON 'stands') may
+    // start under that word only while it stays short and quiet (lib/foley.mjs UNDER_WORD_MAX_DUR / _LUFS)
+    const uw = underWordProblems(ev, r);
+    if (ev.underWord) problems = [...problems.filter(named(uw.allowed.join(' '))), ...uw.problems];
+    return { id: ev.id, kind: ev.kind, t: ev.t, shot: ev.shot, shotLocal: ev.shotLocal, lufsS: r.lufsS, duration: r.duration, file, render: rel(file).replace(/^films\/[^/]+\//, ''), problems, ...(ev.underLastWords ? { underLastWords: ev.underLastWords } : {}), ...(ev.underWord ? { underWord: ev.underWord } : {}) };
+  });
+  for (const e of events) console.log(`  foley ${e.id}: ${e.kind} at ${e.t} s (${e.shot} +${e.shotLocal}) ${e.lufsS} LUFS S${e.problems.length ? ` — ${e.problems.join('; ')}` : ''}`);
+  const [lo, hi] = FOLEY_LUFS_RANGE;
+  return {
+    source: rel(src),
+    max: MAX_FOLEY_EVENTS,
+    events,
+    checks: { count: events.length <= MAX_FOLEY_EVENTS, placement: events.every((e) => !e.problems.length), level: events.every((e) => e.lufsS >= lo - 0.5 && e.lufsS <= hi + 0.5) },
+  };
 }
 
 async function main() {
@@ -290,16 +405,82 @@ async function main() {
     duckCfg.applied = { threshold: +(10 ** (thrDb / 20)).toFixed(5), thresholdDb: +thrDb.toFixed(2), ratio, depthDb: d, calibrated: calibration.length > 1 };
     if (!inBand(d)) console.warn(`  warn: duck calibration could not reach ${T} ±${TOL} dB (got ${d} dB at ${thrDb.toFixed(1)} dBFS, ratio ${ratio})`);
     else if (calibration.length > 1) console.log(`  duck: calibrated ${calibration[0].depthDb} → ${d} dB (target ${T}): threshold ${calibration[0].thresholdDb} → ${thrDb.toFixed(1)} dBFS, ratio ${duckCfg.ratio} → ${ratio}`);
-    chains.push(...duckGraph(10 ** (thrDb / 20), ratio), ...shelfGraph(10 ** (thrDb / 20), 'key1', 'ducked1', 'dbusEq'));
+    chains.push(...duckGraph(10 ** (thrDb / 20), ratio), ...shelfGraph(10 ** (thrDb / 20), 'key1', 'ducked1', 'dbusEq0'), '[dbusEq0]anull%SWELL%[dbusEq]');
     mixIns.push('[dbusEq]');
     outs.push(['-map', '[dryO]', '-f', 'f32le', '-c:a', 'pcm_f32le', dryF], ['-map', '[wetO]', '-f', 'f32le', '-c:a', 'pcm_f32le', wetF], ['-map', '[loDryO]', '-f', 'f32le', '-c:a', 'pcm_f32le', loDryF], ['-map', '[loWetO]', '-f', 'f32le', '-c:a', 'pcm_f32le', loWetF]);
   } else chains.push('[key0]anullsink', '[key1]anullsink');
   if (free.length) {
-    chains.push(`${free.join('')}amix=inputs=${free.length}:normalize=0:duration=longest,lowshelf=f=${SHELF_HZ}:g=-2.5[fbus]`); // undducked cues: a static shelf
+    chains.push(`${free.join('')}amix=inputs=${free.length}:normalize=0:duration=longest,lowshelf=f=${SHELF_HZ}:g=-2.5%SWELL%[fbus]`); // undducked cues: a static shelf
     mixIns.push('[fbus]');
   }
   chains.push(`${mixIns.join('')}amix=inputs=${mixIns.length}:normalize=0:duration=first,apad=whole_dur=${D},atrim=end=${D}[mix]`);
-  ff(['-y', '-v', 'error', ...inputs, '-filter_complex', chains.join(';'), '-map', '[mix]', '-c:a', 'pcm_f32le', '-ar', String(SR), premix, ...outs.flat()]);
+  const renderPremix = (expr, withOuts) =>
+    ff(['-y', '-v', 'error', ...inputs, '-filter_complex', [...chains, ...(withOuts || !duck.length ? [] : ['[dryO]anullsink', '[wetO]anullsink', '[loDryO]anullsink', '[loWetO]anullsink'])].join(';').replaceAll('%SWELL%', expr ? `,volume=eval=frame:volume='${expr}'` : ',anull'), '-map', '[mix]', '-c:a', 'pcm_f32le', '-ar', String(SR), premix, ...(withOuts ? outs.flat() : [])]);
+  renderPremix(null, true);
+  // swell trim: the narrator's typical line peak in the premix sets the ceiling for music-only moments
+  const allSpans = lineSpans(timeline);
+  let swells = { margin: SWELL_MARGIN, max: SWELL_MAX, regions: [] };
+  if (cues.length) {
+    const M0 = momentary(premix);
+    const linePk = Object.values(spanPeaks(premix, allSpans, M0)).filter(Number.isFinite).sort((x, y) => x - y);
+    const p50 = linePk[Math.floor(linePk.length / 2)];
+    const ceiling = +(p50 - SWELL_MARGIN).toFixed(2);
+    const regions = findSwells(M0, allSpans, ceiling);
+    swells = { margin: SWELL_MARGIN, max: SWELL_MAX, lineMomentaryP50: +p50.toFixed(2), ceiling, regions };
+    if (regions.length) {
+      console.log(`  swells: ${regions.length} music-only moments over ${ceiling} LUFS M (line p50 ${p50.toFixed(1)} − ${SWELL_MARGIN}) trimmed: ${regions.slice().sort((x, y) => y.M - x.M).slice(0, 6).map((r) => `${r.peakAt}s ${r.M}→−${r.trimDb} dB`).join(', ')}`);
+      renderPremix(swellExpr(regions), false);
+    }
+    // peak trims (review round 2: "reach -16 LUFS by trimming music-only peaks instead of limiting speech"): the
+    // master limiter's largest overshoot was one music-only transient. Every music-only 10 ms block that would
+    // cross the master ceiling at the provisional gain is trimmed on the music bus (0.05 s ramps, never into a
+    // line), so the limiter only meets speech peaks.
+    // iterated (review round 2 follow-up): one pass left a transient 1.6 dB over (the block grid straddles it), so the
+    // trims are re-measured on the trimmed premix and deepened, at most 3 passes; each trim spans its blocks ±10 ms
+    const peaks = [];
+    for (let pass = 0; pass < 3; pass++) {
+      const m0 = loudnormMeasure(premix, TARGET);
+      const g0 = TARGET.I - Number(m0.input_i);
+      const lim0 = TARGET.TP - 0.7;
+      const ov = overshoots(premix, g0, lim0 - 0.3, allSpans);
+      if (!ov.musicBlocks.length) break;
+      let added = 0;
+      for (const b of ov.musicBlocks) {
+        const hit = peaks.find((r) => b.t >= r.a - 0.03 && b.t <= r.b + 0.03);
+        if (hit) {
+          if (hit.trimDb >= 9) continue;
+          hit.trimDb = +Math.min(9, hit.trimDb + b.overDb + 0.3).toFixed(2);
+          hit.a = Math.min(hit.a, b.t - 0.01);
+          hit.b = Math.max(hit.b, b.t + 0.02);
+          added++;
+          continue;
+        }
+        const r = peaks[peaks.length - 1];
+        if (r && b.t - r.b <= 0.1 && b.t >= r.a) {
+          r.b = b.t + 0.02;
+          r.trimDb = Math.max(r.trimDb, +Math.min(9, b.overDb + 0.3).toFixed(2));
+        } else peaks.push({ a: b.t - 0.01, b: b.t + 0.02, trimDb: +Math.min(9, b.overDb + 0.3).toFixed(2), peak: true });
+        added++;
+      }
+      if (!added) break;
+      for (const r of peaks) {
+        const next = allSpans.filter((x) => x.a >= r.b).sort((x, y) => x.a - y.a)[0];
+        const prev = allSpans.filter((x) => x.b <= r.a).sort((x, y) => y.b - x.b)[0];
+        r.rampIn = +Math.max(0.005, Math.min(0.05, r.a - (prev ? prev.b : 0))).toFixed(3);
+        r.rampOut = +Math.max(0.005, Math.min(0.05, (next ? next.a : Infinity) - r.b)).toFixed(3);
+        r.M = null;
+        r.peakAt = +r.a.toFixed(2);
+        r.a = +r.a.toFixed(3);
+        r.b = +r.b.toFixed(3);
+        r.passes = pass + 1;
+      }
+      renderPremix(swellExpr([...swells.regions, ...peaks]), false);
+    }
+    if (peaks.length) {
+      swells.peakTrims = peaks;
+      console.log(`  peak trims: ${peaks.length} music-only transients over the master ceiling trimmed: ${peaks.slice().sort((x, y) => y.trimDb - x.trimDb).slice(0, 6).map((r) => `${r.peakAt}s −${r.trimDb} dB (${r.passes} pass${r.passes > 1 ? 'es' : ''})`).join(', ')}`);
+    }
+  }
 
   // Master loudness by ONE constant gain (linear normalisation; no dynamic loudnorm pumping). If that gain would
   // push true peak past the ceiling, a transparent look-ahead limiter takes the overshoot and the gain is
@@ -314,8 +495,13 @@ async function main() {
   const lim = TARGET.TP - 0.7; // sample-peak ceiling; true peak overshoots it by a few tenths at most
   // the room-tone floor, calibrated once: pink noise, 2.5 kHz high-pass, decorrelated channels, at FLOOR_LUFS
   const floor = roomTone(tmp, D);
+  // the foley bus (score/foley.json): rendered at its final level, placed sample-exact, added after the master gain
+  const foley = buildFoley(tmp, timeline, D);
+  const fx = foley.events.filter((e) => e.file);
+  const fxIns = fx.flatMap((e) => ['-i', e.file]);
+  const fxGraph = fx.length ? `;${fx.map((e, i) => `[${i + 2}:a]aformat=sample_fmts=fltp:channel_layouts=stereo,adelay=delays=${Math.round(e.t * SR)}S:all=1[fx${i}]`).join(';')};${fx.map((_, i) => `[fx${i}]`).join('')}amix=inputs=${fx.length}:normalize=0:duration=longest,apad=whole_dur=${D},atrim=end=${D}[fxbus]` : '';
   const render = (g, limit) =>
-    ff(['-y', '-v', 'error', '-i', premix, '-i', floor.file, '-filter_complex', `[0:a]volume=${g.toFixed(3)}dB${limit ? `,alimiter=limit=${(10 ** (lim / 20)).toFixed(5)}:attack=3:release=80:level=0:latency=1` : ''},aresample=${SR}[m];[m][1:a]amix=inputs=2:normalize=0:duration=first[out]`, '-map', '[out]', '-ar', String(SR), '-c:a', 'pcm_s24le', P.mix.master]);
+    ff(['-y', '-v', 'error', '-i', premix, '-i', floor.file, ...fxIns, '-filter_complex', `[0:a]volume=${g.toFixed(3)}dB${limit ? `,alimiter=limit=${(10 ** (lim / 20)).toFixed(5)}:attack=3:release=80:level=0:latency=1` : ''},aresample=${SR}[m]${fxGraph};[m][1:a]${fx.length ? '[fxbus]' : ''}amix=inputs=${fx.length ? 3 : 2}:normalize=0:duration=first[out]`, '-map', '[out]', '-ar', String(SR), '-c:a', 'pcm_s24le', P.mix.master]);
   if (inTP + gain <= TARGET.TP - 0.2) render(gain, false);
   else {
     normalization = 'linear+limit';
@@ -325,8 +511,10 @@ async function main() {
       if (!Number.isFinite(got) || Math.abs(TARGET.I - got) <= 0.1) break;
       gain += TARGET.I - got;
     }
-    preLimit = { gainDb: +gain.toFixed(2), limitDbfs: lim, reductionDb: +Math.max(0, inTP + gain - lim).toFixed(2) };
-    if (preLimit.reductionDb > 2) console.warn(`  warn: the master limiter takes ${preLimit.reductionDb} dB off the peaks (> 2 dB): lower the music or check the stem`);
+    preLimit = { gainDb: +gain.toFixed(2), limitDbfs: lim, reductionDb: +Math.max(0, inTP + gain - lim).toFixed(2), where: overshoots(premix, gain, lim, lineSpans(timeline)) };
+    const w = preLimit.where;
+    console.log(`  master limiter: ${preLimit.reductionDb} dB peak GR; over the ceiling in speech ${w.speech.seconds} s (max ${w.speech.maxDb} dB), in music-only ${w.music.seconds} s (max ${w.music.maxDb} dB)`);
+    if (preLimit.reductionDb > 1.5) console.warn(`  warn: the master limiter takes ${preLimit.reductionDb} dB off the peaks (> 1.5 dB): lower the music or check the stem`);
   }
   const pass2 = { normalization_type: normalization };
   const final = loudness(P.mix.master);
@@ -403,6 +591,7 @@ async function main() {
       chapters: chapters.every((c) => c.ok),
       // a fading cue's last strike rings at least FADE_AFTER_STRIKE s before its fade starts (cues without a marker: null = unverified)
       fadeAfterStrike: placed.every((p) => !p.fade || p.fade.ok !== false),
+      foley: Object.values(foley.checks).every(Boolean),
     },
     loudnorm: { input: { I: +m.input_i, TP: +m.input_tp, LRA: +m.input_lra, thresh: +m.input_thresh }, gainDb: +gain.toFixed(2), normalization: pass2.normalization_type ?? null, preLimit },
     duck: { ...duckRes, ...duckCfg, calibration },
@@ -411,6 +600,8 @@ async function main() {
     narration: readJson(P.narration.stem, null),
     moments,
     lineMasking,
+    swells,
+    foley: { ...foley, events: foley.events.map(({ file, ...e }) => e) },
     cues: placed,
     chapters,
   };

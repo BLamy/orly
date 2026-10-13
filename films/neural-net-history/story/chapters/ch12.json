@@ -561,21 +561,24 @@
    "era": "2021",
    "mood": "candleAmber",
    "leadIn": 0.6,
-   "holdAfter": 2.4,
+   "holdAfter": 1.6,
    "transitionIn": "cut",
-   "visual": "THIS SHOT: the founding grammar again, a step back to 2021: Anthropic's announcement pinned bare in the founding row, the same warm and cold hand-lanterns on one nail, and the same plain ledger page for the money. CAMERA: BOARD. A plain cut along the study (STUDY LOCK, study to study, no lamp change) from the full wide of ch12-s07 to the founding row of the case board, for a step back in time: the first figure through the new door. The step back is carried by the date stamp and the narration ('a lab born in 2021'). FOUNDING GRAMMAR (canonical; the same objects, word for word, for every lab's founding, OpenAI's in ch09-s04 and Anthropic's here): a typewritten announcement pinned in the founding row; no name card under the pin (the founders are named only in the narration); a warm and a cold hand-lantern hanging from the same nail, whose meanings never change from lab to lab: the WARM lantern is always the promise the lab names, the COLD lantern is always the danger the lab names (OpenAI: warm on 'benefit', cold on 'damage'; Anthropic: cold on 'safety', the risk its name answers, warm on 'research'; the order of swings may differ, the meanings may not); and one plain ledger page in IBM Plex Mono for the lab's money. This shot is staged exactly as OpenAI's founding in chapter 9, and must match it. The date stamp reads 'FOUNDED JAN 2021 · ANNOUNCED 28 MAY 2021', because Anthropic's founding (January 2021) and its public announcement (28 May 2021) are different days, whereas OpenAI's 11 December 2015 stamp is its founding announcement; the stamp must not let a bare announcement date read as the founding date. No office, no garage, no spotlight, no faces, no hero framing, flat even light. On 'founded' the hands pin a typewritten announcement dated 28 May 2021 into its slot on the case board (slot F2 of the founding row, beneath column C4: the same height and size as OpenAI's 2015 announcement in F1); its text stays faint except the one phrase the narrator speaks, 'an AI safety and research company', which lights on 'safety' (exactly as ch09-s04 lights only its spoken phrases; no separate quote card, so no dollar figure appears off the ledger). No name cards under the pin: the founders are named only in the narration, exactly as OpenAI's pin in ch09-s04 carries no names (both pins bare). On 'safety', the COLD hand-lantern swings into light on the pin (the danger the name answers, as OpenAI's cold lantern swung on 'damage'); on 'research' the WARM one swings beside it (the promise, as OpenAI's warm lantern swung on 'benefit'): the same pair, the same meanings, on one nail. The lanterns are unlabelled and carry no verdict. On the third line, the ledger on the side table turns a page; in the same plain ledger style used for every lab's money in the film (OpenAI's in ch09-s04; Microsoft–OpenAI arrives in shot 8), the entries are set in IBM Plex Mono: the FTX money with its footnote that Anthropic was not implicated in the fraud, then, on 'Amazon', the later Amazon and Google commitments. Every dollar figure for Anthropic is on the ledger and nowhere else. Nothing comments on any entry. No logos. STUDY LOCK: the study is candleAmber, the same lamp as every other study beat; no era tint on the board, the ledger or the lanterns. SCRIPT NOTE (review round 1): now follows the stampede (s08) and closes ch12. L1206 opens 'Among the runners…'; the rewritten L1219b closes the shot: Bard, LLaMA, then GPT-4 and Claude chips set down on the desk as each is named.",
+   "visual": "THIS SHOT: the founding grammar again, a step back to 2021: Anthropic's announcement pinned bare in the founding row, the same warm and cold hand-lanterns on one nail, and the same plain ledger page for the money. CAMERA: BOARD. A plain cut along the study (STUDY LOCK, study to study, no lamp change) from the full wide of ch12-s07 to the founding row of the case board, for a step back in time: the first figure through the new door. The step back is carried by the date stamp and the narration ('a lab born in 2021'). FOUNDING GRAMMAR (canonical; the same objects, word for word, for every lab's founding, OpenAI's in ch09-s04 and Anthropic's here): a typewritten announcement pinned in the founding row; no name card under the pin (the founders are named only in the narration); a warm and a cold hand-lantern hanging from the same nail, whose meanings never change from lab to lab: the WARM lantern is always the promise the lab names, the COLD lantern is always the danger the lab names (OpenAI: warm on 'benefit', cold on 'damage'; Anthropic: cold on 'safety', the risk its name answers, warm on 'research'; the order of swings may differ, the meanings may not); and one plain ledger page in IBM Plex Mono for the lab's money. This shot is staged exactly as OpenAI's founding in chapter 9, and must match it. The date stamp reads 'FOUNDED JAN 2021 · ANNOUNCED 28 MAY 2021', because Anthropic's founding (January 2021) and its public announcement (28 May 2021) are different days, whereas OpenAI's 11 December 2015 stamp is its founding announcement; the stamp must not let a bare announcement date read as the founding date. No office, no garage, no spotlight, no faces, no hero framing, flat even light. On 'founded' the hands pin a typewritten announcement dated 28 May 2021 into its slot on the case board (slot F2 of the founding row, beneath column C4: the same height and size as OpenAI's 2015 announcement in F1); its text stays faint except the one phrase the narrator speaks, 'an AI safety and research company', which lights on 'safety' (exactly as ch09-s04 lights only its spoken phrases; no separate quote card, so no dollar figure appears off the ledger). No name cards under the pin: the founders are named only in the narration, exactly as OpenAI's pin in ch09-s04 carries no names (both pins bare). On 'safety', the COLD hand-lantern swings into light on the pin (the danger the name answers, as OpenAI's cold lantern swung on 'damage'); on 'research' the WARM one swings beside it (the promise, as OpenAI's warm lantern swung on 'benefit'): the same pair, the same meanings, on one nail. The lanterns are unlabelled and carry no verdict. After the second line, in a silence of about 2.5 s with no narration (L1208 was cut in review round 9; the ledger carries the money alone), the ledger on the side table turns a page; in the same plain ledger style used for every lab's money in the film (OpenAI's in ch09-s04; Microsoft–OpenAI arrives in shot 8), the entries are set in IBM Plex Mono: '$500M · FTX (later exposed as fraud; Anthropic not implicated)', then, a beat later, 'billions · Amazon, Google'. Every dollar figure for Anthropic is on the ledger and nowhere else. Nothing comments on any entry. No logos. STUDY LOCK: the study is candleAmber, the same lamp as every other study beat; no era tint on the board, the ledger or the lanterns. SCRIPT NOTE (review round 1): now follows the stampede (s08) and closes ch12. L1206 opens 'Among the runners…'; the rewritten L1219b closes the shot: Bard, LLaMA, then GPT-4 and Claude chips set down on the desk as each is named.",
    "lines": [
     {
      "id": "L1206",
      "text": "Among the runners, a lab born in 2021: former OpenAI researchers, led by Dario and Daniela Amodei, had founded Anthropic.",
-     "direction": "plain, documentary, no warmth added and none withheld; 'Among the runners' carries on from the stampede; 'Amodei' (ah-mo-DAY) clear; STT and human listen target",
+     "direction": "plain, documentary, no warmth added and none withheld; 'Among the runners' carries on from the stampede; 'Amodei' (ah-moh-DAY, three syllables, no 'moo', no 'dye') clear NARRATION: synthesize solo with 2-3 respellings of the surname in spoken ('Ah-moh-day', then 'Uh-moh-day', 'Amo-day'); keep the take whose STT returns 'Amodei' or 'Amoday' (reject any transcript with 'moo'/'mou' or 'dai'/'dye', even if the fuzzy match calls it found); record its clipSig and flag Amodei for human sign-off in voice.json listening[].",
      "pauseAfter": 0.5,
-     "spoken": "Among the runners, a lab born in twenty twenty-one: former Open A.I. researchers, led by Dario and Daniela Ah-mo-day, had founded Anthropic.",
+     "spoken": "Among the runners, a lab born in twenty twenty-one: former Open A.I. researchers, led by Dario and Daniela Ah-moh-day, had founded Anthropic.",
      "qa": {
       "stt": "required",
       "expect": [
        "Amodei"
       ]
+     },
+     "tts": {
+      "solo": true
      }
     },
     {
@@ -586,18 +589,12 @@
      "spoken": "It called itself “an A.I. safety and research company”."
     },
     {
-     "id": "L1208",
-     "text": "Five hundred million dollars came from FTX, later exposed as a fraud; Anthropic was not implicated. Then billions from Amazon and Google.",
-     "spoken": "Five hundred million dollars came from F-T-X, later exposed as a fraud; Anthropic was not implicated. Then billions from Amazon and Google.",
-     "direction": "flat and fair, the same tone as any other lab's money; a small breath before 'Then billions'",
-     "pauseAfter": 0.55
-    },
-    {
      "id": "L1219b",
-     "text": "Google announced Bard; Meta's LLaMA leaked within days; GPT-4 and Claude arrived the same March day.",
-     "spoken": "Google announced Bard; Meta's Llama leaked within days; G P T four and Claude arrived the same March day.",
-     "direction": "level and even-handed, three runners in one breath each, no lab stressed; a small breath at each semicolon; 'the same March day' lightly, a fact worth a small raised eyebrow",
-     "pauseAfter": 0.8
+     "text": "Google announced Bard; Meta shared LLaMA with researchers, and within a week its weights leaked; GPT-4 and Claude arrived the same March day.",
+     "spoken": "Google announced Bard; Meta shared Llama with researchers, and within a week its weights leaked; G P T four and Claude arrived the same March day.",
+     "direction": "level and even-handed, three runners one after another, no lab stressed; Meta's sharing said plainly (deliberate, to researchers), 'within a week its weights leaked' as a plain fact; a small breath at each semicolon; 'the same March day' lightly, a fact worth a small raised eyebrow",
+     "pauseAfter": 0.8,
+     "preGap": 2.4
     }
    ],
    "beats": [
@@ -637,18 +634,20 @@
     {
      "id": "ledger",
      "at": {
-      "line": "L1208",
-      "word": "million"
+      "line": "L1207",
+      "edge": "end",
+      "offset": 0.5
      },
-     "what": "the ledger page turns; the FTX entry and its footnote are set"
+     "what": "the ledger page turns; the FTX entry and its footnote are set (card text, no narration)"
     },
     {
      "id": "bigTech",
      "at": {
-      "line": "L1208",
-      "word": "Amazon"
+      "line": "L1207",
+      "edge": "end",
+      "offset": 1.8
      },
-     "what": "the Amazon and Google entries are set beneath, same style"
+     "what": "the Amazon and Google entry is set beneath, same style"
     },
     {
      "id": "bard",
@@ -693,8 +692,13 @@
     },
     {
      "kind": "label",
-     "text": "2022 · FTX $500M (Anthropic not implicated in its fraud) · 2023–24 · Amazon $8B · Google up to $2B",
+     "text": "$500M · FTX (later exposed as fraud; Anthropic not implicated)",
      "beat": "ledger"
+    },
+    {
+     "kind": "label",
+     "text": "billions · Amazon, Google",
+     "beat": "bigTech"
     }
    ],
    "music": {

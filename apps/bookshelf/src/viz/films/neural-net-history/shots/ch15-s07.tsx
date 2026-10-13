@@ -39,6 +39,7 @@ import {
   wrapLines,
 } from '../../../film';
 import { overscan, toLayer } from '../../../film/core/multiplane';
+import { legibleSize } from '../../../film/silhouette/type';
 import { frameOn, mixFrame } from '../sets/ch09-s03a-kit';
 import { clamp01, lerp, sm, tq12, win } from '../sets/ch13-s01-kit';
 
@@ -57,7 +58,7 @@ const STAND_X = 500;
 const CROOK = { x: 568, y: 318 };
 const LANTERN = { x: 568, y: 436, rx: 40, ry: 52 };
 /** the quote card at rest: propped on the sill against the lower pane, right of the lantern */
-const CARD = { w: 270, h: 112, x: 800, rot: -0.035 };
+const CARD = { w: 300, h: 124, x: 812, rot: -0.035 };
 const CARD_REST = { x: CARD.x, y: SILL_Y - CARD.h / 2 - 1 };
 const QUOTE = '…I never got over it.';
 const ATTR = 'Bernard Widrow, 2005, recalling Dartmouth, 1956';
@@ -68,7 +69,8 @@ const WALL_L: LayerSpec = { id: 'ch15s07wall', z: 1035, haze: 0.04, blur: 0.4 };
 const OUT_NEAR: LayerSpec = { id: 'ch15s07out', z: 1500, haze: 0.22, blur: 1.2 };
 
 const CAM0 = frameOn({ x: 680, y: 320 }, { x: 640, y: 360 }, 0.94);
-const CAM1 = frameOn({ x: 716, y: 432 }, { x: 640, y: 370 }, 1.48);
+// the push ends harder and lower: the lantern near the lower-third line, the dark band under the sill ~18% of frame
+const CAM1 = frameOn({ x: 716, y: 450 }, { x: 640, y: 446 }, 1.62);
 const CAMS: Camera3[] = [CAM0, mixFrame(CAM0, CAM1, 0.5), CAM1];
 /** the right curtain's tieback (L5, near and soft): placed so it holds the lower-right corner at the end of the push */
 const TIE = toLayer(LAYERS.L5, CAM1, 1150, 450);
@@ -337,22 +339,24 @@ function quoteCardPaper(c: C, env: PaintEnv, light: number) {
   c.fillText(QUOTE, 0, -10);
   c.globalAlpha *= 0.78;
   c.fillRect(-16, 8, 32, 0.9);
-  c.font = `400 15px ${FONT.text}`;
-  const lines = wrapLines(c, ATTR, `400 15px ${FONT.text}`, w - 30, 60);
-  lines.forEach((ln, i) => c.fillText(ln, 0, 28 + i * 18));
+  // the attribution reads at the 22 px cap floor at the settled framing (review round 2: it measured 21.5)
+  c.font = `400 17.5px ${FONT.text}`;
+  const lines = wrapLines(c, ATTR, `400 17.5px ${FONT.text}`, w - 30, 60);
+  lines.forEach((ln, i) => c.fillText(ln, 0, 30 + i * 21));
 }
 
 /** the card's path: it drifts down past the glass like a leaf (on the twos), slows, and settles on the sill */
 function cardPose(t: number, b2: number, land: number) {
+  // it enters the upper panes on 'He' (seen drifting past the glass), not above the frame
   const t0 = b2 - 0.12;
   const u = clamp01((tq12(t) - t0) / (land - t0));
   if (t < t0) return null;
   const e = 1 - Math.pow(1 - u, 2.2);
-  const y = lerp(-180, CARD_REST.y, e);
+  const y = lerp(120, CARD_REST.y, e);
   const sway = (1 - e) * (1 - e);
   const x = CARD_REST.x + 70 * sway * Math.sin(u * Math.PI * 2.4 + 0.4) + 24 * (1 - e);
   const rot = CARD.rot + 0.42 * sway * Math.sin(u * Math.PI * 2.4 + 1.6);
-  return { x, y, rot, settled: u >= 1 };
+  return { x, y, rot, settled: u >= 1, a: clamp01((t - t0) / 0.35), contact: sm(clamp01((u - 0.82) / 0.18)) };
 }
 
 // ------------------------------------------------------------------------------------------------ the shot
@@ -479,14 +483,18 @@ export default defineShot<Scene>({
       c.beginPath();
       c.rect(WIN.x, WIN.y, WIN.w, WIN.h);
       c.clip();
+      // (a soft irregular smear, no hard edge: old glass, not a disc)
       const jx = 2.2 * vnoise2(t * 1.4, 2.1), jy = 1.5 * vnoise2(t * 1.1, 5.3);
       const rx = LANTERN.x + 38 + jx, ry = LANTERN.y - 8 + jy;
-      warmGlow(c, rx, ry, 72, 0.42);
+      warmGlow(c, rx, ry, 72, 0.21);
       c.globalCompositeOperation = 'lighter';
-      c.fillStyle = withAlpha(A.halo, 0.12);
+      c.filter = 'blur(14px)';
+      c.fillStyle = withAlpha(A.halo, 0.06);
       c.beginPath();
-      c.ellipse(rx, ry, LANTERN.rx * 0.9, LANTERN.ry * 0.9, 0, 0, Math.PI * 2);
+      c.ellipse(rx - 4, ry + 6, LANTERN.rx * 0.8, LANTERN.ry * 1.05, 0.25, 0, Math.PI * 2);
+      c.ellipse(rx + 10, ry - 14, LANTERN.rx * 0.45, LANTERN.ry * 0.6, -0.4, 0, Math.PI * 2);
       c.fill();
+      c.filter = 'none';
       c.restore();
     });
     f.fog('B');
@@ -497,7 +505,20 @@ export default defineShot<Scene>({
       sill(c, env);
       lantern(c, env, t);
       if (cp) {
+        // the contact shadow where the card's foot meets the sill, deepening as it settles
+        if (cp.contact > 0.01) {
+          c.save();
+          c.translate(CARD_REST.x, SILL_Y + 2);
+          c.scale(1, 0.12);
+          const sg = c.createRadialGradient(0, 0, 0, 0, 0, CARD.w * 0.62);
+          sg.addColorStop(0, withAlpha(PUPPET_NEAR_BLACK, 0.7 * cp.contact));
+          sg.addColorStop(1, withAlpha(PUPPET_NEAR_BLACK, 0));
+          c.fillStyle = sg;
+          c.fillRect(-CARD.w, -CARD.w, CARD.w * 2, CARD.w * 2);
+          c.restore();
+        }
         c.save();
+        c.globalAlpha *= cp.a;
         c.translate(cp.x, cp.y);
         c.rotate(cp.rot);
         const light = clamp01(1 - Math.abs(cp.x - LANTERN.x) / 520);
@@ -595,7 +616,7 @@ export default defineShot<Scene>({
     // ---- type: the date stamp (date only, the 1990s-on mono face) and his name card, both on 'Widrow'
     const tenv = { t, mood: f.mood, seed: 1511 };
     dateStamp(f.c, '30 SEPTEMBER 2025', t, sc.b1 - 0.1, sc.D);
-    nameCard(f.c, { name: 'Bernard Widrow', role: 'died 30 September 2025, aged 95', at: sc.b1 + 0.3, dur: Math.min(4.2, sc.b2 - sc.b1 - 0.5), align: 'right', x: 1228, y: 612 }, tenv);
+    nameCard(f.c, { name: 'Bernard Widrow', role: 'died 30 September 2025, aged 95', at: sc.b1 - 0.11, dur: Math.min(4.6, sc.b2 - sc.b1 - 0.3), align: 'right', x: 1228, y: 612 }, tenv);
   },
 });
 
@@ -604,7 +625,9 @@ function dateStamp(c: C, text: string, t: number, at: number, D: number) {
   const A0 = win(t, at, at + 0.6) * (1 - win(t, D - 0.6, D - 0.1));
   if (A0 <= 0.003) return;
   const m = MOODS.winterBlue;
-  const x = 48, y = 672, size = 18.5;
+  const x = 48, y = 672;
+  // the kit's legibility floor (review round 2: the stamp measured 19.4 px cap)
+  const size = legibleSize(c, `500 18.5px ${FONT.mono}`, 18.5);
   c.save();
   c.globalAlpha = A0;
   softPlate(c, x + 120, y - 6, 420, 90, m.ink, 0.5);
