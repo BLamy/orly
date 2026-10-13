@@ -1,0 +1,272 @@
+{
+ "shot": "ch06-s07",
+ "at": "2026-10-13T01:36:23.279Z",
+ "minCapPx": 22,
+ "sampled": 18,
+ "texts": 48,
+ "offenders": [
+  {
+   "text": "INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND",
+   "maxCap": 10.6,
+   "minCap": 4.7,
+   "first": 0.55,
+   "last": 6.55,
+   "font": "11px VT323"
+  },
+  {
+   "text": "NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY",
+   "maxCap": 12.8,
+   "minCap": 5.7,
+   "first": 0.55,
+   "last": 6.55,
+   "font": "8.4px \"IBM Plex Mono\""
+  },
+  {
+   "text": "THE BRAIN IS A LOGIC MACHINE",
+   "maxCap": 15.2,
+   "minCap": 6.7,
+   "first": 0.55,
+   "last": 6.55,
+   "font": "8.4px \"Special Elite\""
+  },
+  {
+   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
+   "maxCap": 15.2,
+   "minCap": 6.7,
+   "first": 0.55,
+   "last": 6.55,
+   "font": "8.4px \"Special Elite\""
+  },
+  {
+   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
+   "maxCap": 15.2,
+   "minCap": 6.7,
+   "first": 0.55,
+   "last": 6.55,
+   "font": "8.4px \"Special Elite\""
+  },
+  {
+   "text": "SIMON & NEWELL",
+   "maxCap": 15.9,
+   "minCap": 8,
+   "first": 0.55,
+   "last": 4.55,
+   "font": "9.975px \"Special Elite\""
+  },
+  {
+   "text": "BY 1968",
+   "maxCap": 15.9,
+   "minCap": 8,
+   "first": 0.55,
+   "last": 4.55,
+   "font": "9.975px \"Special Elite\""
+  },
+  {
+   "text": "c. 1980",
+   "maxCap": 16.2,
+   "minCap": 7.2,
+   "first": 0.55,
+   "last": 6.55,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "1984",
+   "maxCap": 16.2,
+   "minCap": 7.2,
+   "first": 0.55,
+   "last": 6.55,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "MID-1990s",
+   "maxCap": 16.2,
+   "minCap": 7.2,
+   "first": 0.55,
+   "last": 6.55,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "CHESS CHAMPION",
+   "maxCap": 18.4,
+   "minCap": 8,
+   "first": 0.55,
+   "last": 4.55,
+   "font": "9.975px \"Special Elite\""
+  },
+  {
+   "text": "DUE 1968",
+   "maxCap": 18.4,
+   "minCap": 9.2,
+   "first": 0.55,
+   "last": 4.55,
+   "font": "11.5px \"Special Elite\""
+  },
+  {
+   "text": "KELLEY 1960 … LE CUN 1985",
+   "maxCap": 20,
+   "minCap": 5.8,
+   "first": 0.55,
+   "last": 11.55,
+   "font": "7.26819px \"Special Elite\""
+  },
+  {
+   "text": "OVERDUE",
+   "maxCap": 21.2,
+   "minCap": 10.6,
+   "first": 0.55,
+   "last": 4.55,
+   "font": "bold 12.88px \"Special Elite\""
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 21.9,
+   "minCap": 6.4,
+   "first": 0.55,
+   "last": 11.55,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 21.9,
+   "minCap": 6.4,
+   "first": 0.55,
+   "last": 11.55,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 21.9,
+   "minCap": 6.4,
+   "first": 0.55,
+   "last": 11.55,
+   "font": "7.9475px \"Special Elite\""
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "WHO PAID FOR DINNER?",
+   "maxCap": 30.3
+  },
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 52.3
+  },
+  {
+   "text": "IT?",
+   "maxCap": 52.3
+  },
+  {
+   "text": "RULES",
+   "maxCap": 30.3
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 26.1
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 26.1
+  },
+  {
+   "text": "1943",
+   "maxCap": 30.3
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 25.7
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 25.7
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 25.7
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 25.7
+  },
+  {
+   "text": "1958",
+   "maxCap": 30.3
+  },
+  {
+   "text": "1969",
+   "maxCap": 30.3
+  },
+  {
+   "text": "HELSINKI ·",
+   "maxCap": 30.3
+  },
+  {
+   "text": "1970",
+   "maxCap": 30.3
+  },
+  {
+   "text": "1986",
+   "maxCap": 30.3
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 22.2
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 26.1
+  },
+  {
+   "text": "ROSENBLATT · 1961",
+   "maxCap": 22.2
+  },
+  {
+   "text": "Linguistic capability,",
+   "maxCap": 22.2
+  },
+  {
+   "text": "related to perceptual",
+   "maxCap": 22.2
+  },
+  {
+   "text": "experience, is of the",
+   "maxCap": 22.2
+  },
+  {
+   "text": "essence…",
+   "maxCap": 22.2
+  },
+  {
+   "text": "NE",
+   "maxCap": 26.2
+  },
+  {
+   "text": "NEW YO",
+   "maxCap": 26.2
+  },
+  {
+   "text": "NEW YORK · 11 MAY 19",
+   "maxCap": 26.2
+  },
+  {
+   "text": "NEW YORK · 11 MAY 1997",
+   "maxCap": 26.2
+  },
+  {
+   "text": "1968 → 1997",
+   "maxCap": 41.2
+  },
+  {
+   "text": "29 years late",
+   "maxCap": 37.5
+  },
+  {
+   "text": "200 million positions a second",
+   "maxCap": 29.4
+  },
+  {
+   "text": "2000",
+   "maxCap": 28
+  }
+ ]
+}

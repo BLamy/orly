@@ -1,3 +1,5 @@
+import { composeVhs, drawVhsSpine, type VhsSpec } from './vhs';
+
 // Compose an O'Reilly-style book cover onto a canvas: white field, a colored
 // "O'REILLY" banner, a colored title block (title + rule + subtitle), the
 // generated animal engraving in the lower-right, and the author line. Publisher
@@ -17,6 +19,9 @@ export interface BookMeta {
   chapters?: { number?: number; title: string; duration?: number }[];
   createdAt?: string; // ISO timestamp, used for the "Recently Added" shelf
   hidden?: boolean; // unlisted: absent from every shelf surface, URL-only
+  kind?: 'book' | 'film'; // films are VHS tapes on the shelf (library/vhs.ts), not O'RLY books
+  vhs?: VhsSpec; // film sleeve details (subject banner, theme, clip-art)
+  runtime?: number; // film runtime in seconds
 }
 
 // A colourful O'Reilly-ish palette (assign per book for a varied shelf).
@@ -161,6 +166,7 @@ export function drawSpine(
   ctx: CanvasRenderingContext2D, W: number, H: number, b: BookMeta,
   seriesIndex?: number,
 ) {
+  if (b.kind === 'film') return drawVhsSpine(ctx, W, H, b);
   const color = b.color || '#d6202b';
 
   ctx.fillStyle = '#fbfbf9';
@@ -213,6 +219,12 @@ export function composeCover(
 ): Promise<HTMLCanvasElement> {
   const hit = COVER_CACHE.get(b.slug);
   if (hit) return hit;
+  if (b.kind === 'film') {
+    // a film's "cover" is its VHS clamshell front (the sleeve art, not the animal)
+    const v = composeVhs(b, W, H, b.vhs?.art ?? null);
+    COVER_CACHE.set(b.slug, v);
+    return v;
+  }
   const p = new Promise<HTMLCanvasElement>((resolve) => {
     const cover = document.createElement('canvas');
     cover.width = W;

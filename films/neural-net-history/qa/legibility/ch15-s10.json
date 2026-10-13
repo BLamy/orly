@@ -1,0 +1,43 @@
+{
+ "shot": "ch15-s10",
+ "at": "2026-10-08T02:42:57.865Z",
+ "minCapPx": 22,
+ "sampled": 32,
+ "texts": 8,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "We can only see a short distance ahead, but we",
+   "maxCap": 37.4
+  },
+  {
+   "text": "can see plenty there that needs to be done.",
+   "maxCap": 37.4
+  },
+  {
+   "text": "Alan Turing, 1950",
+   "maxCap": 23.6
+  },
+  {
+   "text": "Written with Claude Opus 5.5, made by Anthropic, a",
+   "maxCap": 25.6
+  },
+  {
+   "text": "lab in this story, and held to the same sources",
+   "maxCap": 25.6
+  },
+  {
+   "text": "and standard as every other.",
+   "maxCap": 25.6
+  },
+  {
+   "text": "SOURCES",
+   "maxCap": 27.8
+  },
+  {
+   "text": "· published with the film",
+   "maxCap": 25.7
+  }
+ ]
+}

@@ -1,0 +1,27 @@
+{
+ "shot": "ch08-s05",
+ "at": "2026-10-12T18:26:51.799Z",
+ "minCapPx": 22,
+ "sampled": 30,
+ "texts": 4,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "55 · 27 · 13 · 13 · 13",
+   "maxCap": 23.6
+  },
+  {
+   "text": "→ 4096 · 4096 · 1000",
+   "maxCap": 23.6
+  },
+  {
+   "text": "≈ 60 million numbers",
+   "maxCap": 23.6
+  },
+  {
+   "text": "650,000 neurons",
+   "maxCap": 23.6
+  }
+ ]
+}

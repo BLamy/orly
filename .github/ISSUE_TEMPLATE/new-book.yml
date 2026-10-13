@@ -53,8 +53,8 @@ body:
     id: model
     attributes:
       label: Model
-      description: Astra plans and models in 3D; Fable 5.1 authors D3 animations
+      description: Claude Opus 5.5 (high effort) plans, writes and codes everything
       options:
-        - "Astra planning + Fable 5.1 animations (claude-fable-5-1)"
+        - "Claude Opus 5.5 — all planning, story and code (claude-opus-5-5)"
     validations:
       required: true

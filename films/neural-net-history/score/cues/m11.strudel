@@ -1,0 +1,148 @@
+// m11 — THE NIGHT IN FLORENCE, part 2: the number. D major.
+// Room tone and one held A (the Florence suspension A-D-E, waiting) -> SILENCE on 'fifteen' for two full
+// beats through "A cliff" -> M1 re-enters as a slow swelling ostinato in D (the cliff's music-only
+// swell, peaking ~1066.1 and down 8 dB before 'Fair credit') -> fair credit (no deflation; the bed sits
+// below D3 and above D5 through the caveat; a generous low string line; the workshop rhythm once more,
+// slower, stopping on the empty bench) -> two candles out (kind piano falls D -> C#, the second an
+// octave lower) -> LEARNED FEATURES lit on 'data' in full strings (A -> D) -> a single warm line ->
+// M4's opening fourth on the cello becomes M1's held note on 'him', and the held Asus4 swells softly
+// through the hold on the tall man -> a soft pulse for the LEDs, the file seal on one low bell, an
+// unresolved shimmer for the clue.
+// CLOCK RE-FIT (2026-10-12, clock 2139.54 s): window 1042.483-1129.891 (87.408 s; was 89.20). The re-narrated
+// L0821 is 2.58 s shorter (the Florence hold now ends on 'fifteen' at 1061.18: 18.6 s) and L0832b 0.79 s longer
+// (A2 on 'light' 1113.233, D3 on 'him' 1115.401); everything after 'him' sits +17.291 s from the old clock.
+// Every event below is
+// written in ABSOLUTE film seconds (tl subtracts T0). 60 BPM, one 4/4 bar per cycle (4 s).
+// Last onset ~1128.241 (the last note of the clue glint); the held suspension is released by ~1128.091 so
+// m12's own A-E carries it, and the cue ends on the file bell's natural decay (critic r1: it used to hold
+// -19 to -21 LUFS into a 0.8-s fade). The fade runs 1129.091-1129.891 over almost nothing.
+// CRITIC r1 (cross-stage): the cliff hold after 'A cliff.' (L0823 ends 1063.39, L0834 'Fair' 1067.83) is only
+// 4.44 s, so the swell peaks after 2.65 s and is gone. Story/narration has been asked for a 6-8 s hold. This
+// source is READY for it: set XH to the extra seconds the new clock puts between 'cliff' and 'Fair' (new hold
+// minus 4.44); every event from 1067.0 on moves by XH, the window grows by XH (update cues.json end: +XH), and
+// with XH > 0.5 the cliff takes its long form (rise 2.6 s, about XH+0.35 s at full level with a plagal
+// D - G/D - D glow and one soft timpani stroke, then a 1.43-s recession before 'Fair credit'). Pre-tested at
+// XH = 2.6 (a 7.0-s hold) through score.mjs file mode: the peak holds about -14.5 LUFS momentary for 3 s and
+// is ~9 dB down at 'Fair'. XH = 0 renders exactly the short form below.
+const XH = 0
+setcpm(60/4)
+const CPS = 60/240, T0 = 1042.483, DUR = 87.408 + XH
+const at = t => t >= 1067.0 ? t + XH : t
+// Times are quantized to 1/128 bar (integer step weights, exact binary fractions).
+const Q = 128, qn = s => Math.round(s * CPS * Q)
+const tlx = sh => (...evs) => { const out = []; let cur = 0
+  for (const [t0, d, p] of evs) { const t = sh(t0), a = qn(t - T0), b = qn(t - T0 + d); if (a < cur) throw new Error('tl overlap at ' + t)
+    if (a > cur) out.push([a - cur, silence]); out.push([b - a, p]); cur = b }
+  const end = qn(DUR); if (cur > end) throw new Error('tl runs past the window'); if (end > cur) out.push([end - cur, silence])
+  return stepcat(...out).slow(end / Q) }
+const tl = tlx(at), tlc = tlx(t => t)
+const bars = s => qn(s) / Q
+const loop = (pat, d) => pat.fast(bars(d))
+const hall = x => x.room(.55).rsize(6)
+
+// ================================================================ FLORENCE (near silence)
+// room tone: a packed hall breathing, very low (from the join in the gap after L0819, through L0820-L0822)
+$: tl([1042.483, 18.617, s("pink")]).lpf(1400).hpf(120).gain(.004).attack(2).release(.05)
+// the held A: an A2 on the cello (attack 1.2: it swells out of m10's decaying A, r1 join) and a pp A5 high above; the D and E of the suspension join under
+// L0821 ('A bad back...' 1048.993; 'Hinton' 1049.95; the E3 enters at 1050.183), so the candle's held Asus4 waits under the narration
+// (a small reverb send only, so the cut on 'fifteen' leaves real silence, not a tail)
+$: tl([1042.483, 18.617, note("a2")]).s("gm_cello").velocity(.16).attack(1.2).release(.12).lpf(700).room(.12).rsize(6)
+$: tl([1042.483, 18.617, note("a5@7.7 [a5,d6]@10.917")]).s("gm_string_ensemble_1").velocity(.06).attack(2).release(.12).lpf(2600).room(.12).rsize(6)
+$: tl([1050.183, 10.917, note("[e3]")]).s("gm_cello").velocity(.09).attack(3).release(.12).lpf(600).room(.12).rsize(6)
+// "Second place missed 26.2 percent": the held note only. SILENCE on 'fifteen' (1061.18): every voice is
+// cut at 1061.1 (short releases) and nothing sounds through "A cliff" (1062.86-1063.39) until 1063.45.
+
+// ================================================================ THE CLIFF: M1 as a slow swelling ostinato in D
+// harp + celesta 8ths built on the rising fourth, swelling in the music-only hold (1063.45-1067.83).
+// Review r1: the swell PEAKS at ~1066.1 and is down at least 8 dB by 1067.5 (velocity .3 -> .12, the
+// strings released from 1066.2); from 1066.4 the ostinato moves up above D5 and carries on gently under
+// the caveat (no deflation) while everything else sits below D3, through the end of L0834 (1072.62).
+const ost = note("a3 d4 a4 d4 f#4 d4 a4 d4")
+const ostHi = note("a5 d6 a5 d6 f#5 d6 a5 d6")
+// LONG = the cliff hold story/narration was asked for (6-8 s). ab(long, short) picks the form; the short
+// form is the 4.44-s hold exactly as rendered before (review r1). tlc places cliff events WITHOUT the
+// post-cliff shift (so a long-form event after 1067.0 is written with its own '+ XH').
+const LONG = XH > .5, ab = (l, s) => LONG ? l() : s()
+// harp ostinato. Long form: the rise (5 eighths, .18 -> .3), then the PEAK held at .3 from 1065.95 for
+// XH + .45 s (it restarts on the rising fourth as the strings arrive), then up above D5 under the caveat.
+$: ab(() => hall(tlc([1063.45, 2.5, loop(ost, 2.5).velocity("[.18 .24 .3]")], [1065.95, .45 + XH, loop(ost, .45 + XH).velocity("[.27 .27 .26 .22]")],
+              [1066.4 + XH, 6.2, loop(ostHi, 6.2).velocity("[.09 .075 .07 .065]")]).s("gm_orchestral_harp").lpf(3000)),
+      () => hall(tl([1063.45, 2.95, loop(ost, 2.95).velocity("[.18 .24 .3]")], [1066.4, 6.2, loop(ostHi, 6.2).velocity("[.09 .075 .07 .065]")])
+  .s("gm_orchestral_harp").lpf(3000)))
+$: ab(() => hall(tlc([1063.45, 2.5, loop(note("a4 d5 ~ d5 ~ d5 a4 d5"), 2.5).velocity("[.1 .15 .2]")], [1065.95, .45 + XH, loop(note("a4 d5 ~ d5 ~ d5 a4 d5"), .45 + XH).velocity(.17)],
+              [1066.4 + XH, 5.2, loop(note("a5 d6 ~ ~ ~ d6 ~ ~"), 5.2).velocity(.045)]).s("gm_celesta")),
+      () => hall(tl([1063.45, 2.95, loop(note("a4 d5 ~ d5 ~ d5 a4 d5"), 2.95).velocity("[.1 .15 .2]")], [1066.4, 5.2, loop(note("a5 d6 ~ ~ ~ d6 ~ ~"), 5.2).velocity(.045)])
+  .s("gm_celesta")))
+// the swell chord (attack 2.6 -> peak ~1066.1, released over 1 s), then a bed below D3 only.
+// Long form: the core D (d3 a3 d4) holds the peak for XH + .15 s while the top two voices glow plagally,
+// D (f#4 a4) -> G/D (g4 b4) -> D (f#4 a4): the field turning towards the light, then home; released 1 s
+// so the strings are gone ~.6 s before 'Fair credit'. A low horn doubles the core under the peak, and
+// one soft timpani D marks the arrival (restrained: the only percussion in the swell).
+const PL = .15 + XH, G1 = 1066.05 + PL * .35, G2 = G1 + PL * .35
+$: ab(() => hall(stack(
+        tlc([1063.45, 2.75 + XH, note("[d3,a3,d4]").attack(2.6)]),
+        tlc([1063.45, G1 - 1063.45, note("[f#4,a4]").attack(2.6)], [G1, G2 - G1, note("[g4,b4]").attack(.5)], [G2, 1066.2 + XH - G2, note("[f#4,a4]").attack(.4)]))
+      .s("gm_string_ensemble_1").velocity(.27).release(1.0).lpf(2400)),
+      () => hall(tl([1063.45, 2.75, note("[d3,a3,d4,f#4,a4]")]).s("gm_string_ensemble_1").velocity(.3).attack(2.6).release(1.0).lpf(2400)))
+$: ab(() => hall(tlc([1065.0, 1.2 + XH, note("[d2,a2,d3]")])).s("gm_french_horn").velocity(.13).attack(1.0).release(1.0).lpf(1200), () => silence)
+$: ab(() => hall(tlc([1066.05, 1.5, note("d2")])).s("gm_timpani").velocity(.14).release(1.5), () => silence)
+$: hall(tl([1067.2, 2.63, note("[d2,a2]").velocity(.065)], [1069.83, 1.8, note("[g1,d2,b2]").velocity(.065)],
+          [1071.63, 1.44, note("[f#1,a2]").velocity(.065)], [1073.07, 2.0, note("[b1,f#2]").velocity(.09)],
+          [1075.07, 1.93, note("[g1,d2,b2]").velocity(.08)])
+  .s("gm_string_ensemble_1").attack(1).release(1.6).lpf(2400))
+$: tl([1063.45, 3.75 + XH, note("d2").velocity(.2)], [1067.2, 2.63, note("d2").velocity(.12)], [1069.83, 1.8, note("g1").velocity(.12)],
+      [1071.63, 1.44, note("f#1").velocity(.12)], [1073.07, 2.0, note("b1").velocity(.18)], [1075.07, 1.93, note("g1").velocity(.18)])
+  .s("gm_contrabass").attack(1.2).release(1.6).lpf(380)
+// a warm, generous line under the Swiss lab ('Swiss' 1073.35), low on the cello, after the caveat
+// (critic r1: L0825 was 3.8 dB in 150-800 Hz over this line: now below D3 throughout and at velocity .10,
+// B A F# | E F# D over the Bm -> G bed)
+$: hall(tl([1073.07, 3.93, note("b2 a2 f#2@2 e2 f#2 d2@2")]).s("gm_cello").velocity(.10).attack(.2).release(1.5).lpf(900))
+// the workshop rhythm from m10, once more and slower, stopping on the empty bench ('ignore' 1077)
+$: tl([1074.31, 2.69, note("d3 ~ a2 ~ d3 ~ [a2 a2] ~")]).s("piano").velocity(.14).lpf(650).release(.15).room(.3).rsize(6)
+$: tl([1074.31, 2.69, note("~ ~ g5 ~ ~ ~ ~ ~")]).s("gm_woodblock").velocity(.06)
+
+// ================================================================ TWO CANDLES OUT, ONE LIT
+// the expert-features candle's falling resolution, kindly, on solo piano ('thirteen' 1081.29);
+// the fiddly-nets candle an octave lower ('fiddly-nets' 1089.41). Both fall under narration (L0826,
+// L0831), so the right hand sits at D5 and above (revision: the second fall was D4 -> C#4, a moving
+// line in the voice band under 'fiddly-nets'; it is now D6 -> C#6 then D5 -> C#5, the second still
+// an octave lower), and the left-hand fifths stay below D3.
+$: hall(tl([1081.01, 6.0, note("d6@1.3 c#6@4.7").velocity(.26)], [1089.11, 6.0, note("d5@1.3 c#5@4.7").velocity(.24)]).s("piano"))
+$: hall(tl([1081.29, 5.7, note("[a2,e3]").velocity(.18)], [1089.41, 5.7, note("[a1,e2]").velocity(.2)]).s("piano"))
+// a quiet held note under the fog question ('Why choose the fog?' 1096.03)
+$: hall(tl([1096.03, 6.2, note("[a3,e4]")]).s("gm_pad_bowed").velocity(.1).attack(1.5).release(1.5).lpf(900))
+// LEARNED FEATURES: the rising fourth on 'data' (1102.55) in full strings, lit and held in D major;
+// a small lift on 'deep learning' (1106.73), stepping down in the breath after it
+$: hall(tl([1102.29, 5.1, note("[a2,a3,a4]@.26 [d3,d4,d5]@4.84")], [1107.4, 2.2, note("[d4,d5] [c#4,c#5] [b3,b4] [a3,a4]@2")])
+  .s("gm_string_ensemble_1").velocity(.16).attack(.12).release(1.8).lpf(2800))
+$: hall(tl([1102.55, 4.18, note("[d2,a2,f#3]")], [1106.73, .7, note("[g2,d3,b3]")]).s("gm_string_ensemble_1").velocity(.13).attack(.3).release(1.8).lpf(1600))
+$: tl([1102.55, 4.84, note("[d1,d2]")]).s("gm_contrabass").velocity(.24).attack(.3).release(2).lpf(380)
+// the celesta glint answers 'deep learning' in the breath after it (was on the words)
+$: hall(tl([1107.45, 1.2, note("[f#5 a5 d6 f#6]")]).s("gm_celesta").velocity(.12))
+
+// "And the tall man? ... Now, it found him." M4's opening fourth on the cello (A2 on 'light' 1113.233),
+// and on 'him' (1115.401) it does not walk on: D3 becomes M1's held note, over A-E (Asus4, still
+// burning) as the desk lamp clicks on. It holds through the refrain and is let go in the gap after it
+// (released from ~1126.591-1126.791, gone by ~1111): m12's own A-E picks the suspension up.
+$: hall(tl([1113.233, 2.168, note("a2")], [1115.401, 11.4, note("d3")]).s("gm_cello").velocity(.24).attack(.15).release(1.5).lpf(1400))
+$: hall(tl([1115.401, 11.4, note("[a1,e2,a2,e3]")]).s("gm_string_ensemble_1").velocity(.09).attack(1.5).release(1.5).lpf(800))
+$: hall(tl([1115.401, 11.2, note("[d5,e5,a5]")]).s("gm_string_ensemble_1").velocity(.05).attack(2.5).release(1.5).lpf(2600))
+$: tl([1115.401, 11.4, note("a1")]).s("gm_contrabass").velocity(.15).attack(1.5).release(1.5).lpf(380)
+// review r1: the swell covers the longer hold on the tall man (after 'him' through the cut to ch08-s14),
+// cresting ~1116.691 and gone before 'Our results' (1117.581)
+$: hall(tl([1115.401, 1.9, note("[a4,d5,e5]")]).s("gm_string_ensemble_1").velocity(.12).attack(1.3).release(.9).lpf(3000))
+
+// ================================================================ THE PROPHECY
+// a quiet pulse for the multiplying LEDs ('leds' 1120.471): M5c, very soft, under the A-E; it stops at
+// the refrain ('Put that in the file' 1125.151)
+$: tl([1120.471, 5.48, loop(note("a1 a2 e2 a2 a1 a2 e2 a2"), 5.48).velocity("[.4 .55 .7 .85 1 1 1 .8]")])
+  .s("sawtooth").lpf(700).decay(.16).sustain(0).gain(.05)
+$: tl([1120.471, 5.48, s("pink")]).hpf(7000).lpf(12000).gain(.004).attack(2).release(.5)
+// the file seal: a single low bell ANSWERS the refrain, struck just after 'file' ends (L0828 ends 1126.391;
+// critic r1: struck on the word it masked the line). It is the sound the cue ends on.
+$: hall(tl([1126.491, 2.0, note("d3")]).s("gm_tubular_bells").velocity(.26).release(1.4))
+// the clue pin in the hold ('clue' 1127.391): a small glint that does not resolve (D-E-A), short and dry of
+// long-ringing colours so the bell's decay is the last thing heard
+$: hall(tl([1127.341, 1.2, note("[a5 d6 e6 a6]")]).s("gm_celesta").velocity(.07).release(.8))
+
+all(x => x.postgain(2.5))

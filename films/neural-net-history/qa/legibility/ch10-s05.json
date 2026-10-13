@@ -1,0 +1,79 @@
+{
+ "shot": "ch10-s05",
+ "at": "2026-10-12T20:38:32.242Z",
+ "minCapPx": 22,
+ "sampled": 24,
+ "texts": 17,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "crossed",
+   "maxCap": 55.9
+  },
+  {
+   "text": "we",
+   "maxCap": 30.2
+  },
+  {
+   "text": "the",
+   "maxCap": 55.9
+  },
+  {
+   "text": "river",
+   "maxCap": 55.9
+  },
+  {
+   "text": "bank",
+   "maxCap": 55.9
+  },
+  {
+   "text": "0.21",
+   "maxCap": 28.1
+  },
+  {
+   "text": "−1.30",
+   "maxCap": 28.1
+  },
+  {
+   "text": "0.84",
+   "maxCap": 28.1
+  },
+  {
+   "text": "0.07",
+   "maxCap": 28.1
+  },
+  {
+   "text": "−0.56",
+   "maxCap": 28.1
+  },
+  {
+   "text": "1.12",
+   "maxCap": 28.1
+  },
+  {
+   "text": "question ·",
+   "maxCap": 22.5
+  },
+  {
+   "text": "Q",
+   "maxCap": 32.1
+  },
+  {
+   "text": "label ·",
+   "maxCap": 22.5
+  },
+  {
+   "text": "K",
+   "maxCap": 32.1
+  },
+  {
+   "text": "message ·",
+   "maxCap": 22.5
+  },
+  {
+   "text": "V",
+   "maxCap": 32.1
+  }
+ ]
+}

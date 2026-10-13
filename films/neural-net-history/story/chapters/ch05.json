@@ -1,0 +1,1323 @@
+{
+ "id": "ch05",
+ "number": 5,
+ "title": "Clue Three: The Messenger Who Runs Backward",
+ "blurb": "1981–1995. The thaw. A talk in the Hall of Mirrors that nobody remembered; Hinton's wandering desk reaches Toronto; and in October 1986 a messenger, back-propagation, runs backward through a lantern network and teaches the hidden layer, putting out the seventeen-year 'sterile' candle. Credit is shared, the fog is planted, and the second suspect, knowledge typed in by hand, has its boom and its winter. Two critics ask whether a net can ever be systematic; it is still argued. The messenger worked. Within a decade, most of the field had stopped listening.",
+ "shots": [
+  {
+   "id": "ch05-s01",
+   "kind": "scene",
+   "setting": "Versailles, France · summer 1981 · late afternoon · the Hall of Mirrors during a symposium",
+   "era": "1980s",
+   "mood": "dawnGold",
+   "leadIn": 1.6,
+   "holdAfter": 2.6,
+   "transitionIn": "lampChange",
+   "visual": "THIS SHOT: Versailles, 1981: in the Hall of Mirrors Hopfield's ring of eight lanterns rolls a half-memory downhill until the whole pattern returns, while the mirrored crowd looks away. CHAPTER INDEX TAB (the film's chapter-card device for clue chapters): at the shot's first frame a manila index tab, typed in Special Elite with the chapter title 'Clue Three: The Messenger Who Runs Backward', drops down from the frame's top edge at top-left, like a file-divider tab, holds for 2.5 seconds over the picture, and slides back up (top-left, so it never shares the bottom-left corner with a place or date stamp); no new shot, no lamp change. CAMERA: the Hall of Mirrors (era location; no study visit in this shot). (In sequence, never stacked: the tab drops at the first frame; the hall resolves out of the haze, wordless, at 1.0 s, with no stamp text yet; the bottom-left place stamp types on only on 'Hopfield'; the name card follows on 'presents'.) The incoming lamp change from chapter 4's winterBlue carries the mood change; the shot opens directly in the Hall of Mirrors (no study, no second lamp change, no overlay). A long multiplane gallery seen down its length: L1 a run of tall arched windows burning dawnGold, L2 the mirrored arcades opposite, every mirror a slightly warped cut-out panel that repeats the room, L3 a small lectern and an easel at mid-floor, L4 rows of seated paper-cut silhouettes with their backs to us, L5 two chandeliers as black filigree in the foreground, swinging very slightly. Haze hangs in shafts of window light. At the easel a tall man in a suit (Hopfield) chalks a small ring of eight lanterns joined by threads; a faint glow passes round the ring. HIS IDEA, shown on the easel (no new text): on 'half' only four of the eight lanterns are lit, a broken pattern; a small chalk ball sits on the rim of a chalked hollow drawn under the ring; on 'downhill' the ball rolls down into the hollow while, lantern by lantern, the missing four light up; on 'whole' all eight hold the full remembered pattern (the same pattern every time: a stored memory recalled, not learned). The trick of the shot: in the mirrors the audience multiplies into hundreds of reflected silhouettes, and as the camera trucks slowly left along the hall, just after the line, every reflected head is turned away, toward the windows, the chandeliers, each other. Nobody, in any mirror, is looking at the easel. Just after the line, wordless, the reflections begin to fade from the far end of the hall toward us, mirror by mirror, until only the man and his little ring of lanterns remain reflected (nobody remembered the talk; his own words on it are in the published sources list). Then the chalked ring in the last mirror glows once, warmly, and holds. (The blank 'plant' card is tucked behind the case board in ch05-s06, in the study.) SCRIPT NOTE (review round 1): new line L0524b (Hopfield's own words, q-hopfield-versailles) plays over the turned-away mirrored crowd; the reflections fade on 'remembered', and the last mirror's ring glows about 1.2 s after the line.",
+   "lines": [
+    {
+     "id": "L0501",
+     "text": "Versailles, 1981. John Hopfield presents a network.",
+     "direction": "unhurried; let 'Versailles' land with a little pleasure",
+     "spoken": "Versailles, nineteen eighty-one. John Hopfield presents a network."
+    },
+    {
+     "id": "L0524",
+     "text": "Give it half a memory, and it rolls downhill, like a ball, until the whole memory returns.",
+     "direction": "the idea, simply and with a little wonder; slow on 'half a memory', a gentle lift on 'the whole memory returns'",
+     "pauseAfter": 0.7
+    },
+    {
+     "id": "L0524b",
+     "text": "Years later, he wrote: “I have never met anyone who remembered hearing the talk.”",
+     "spoken": "Years later, he wrote: “I have never met anyone who remembered hearing the talk.”",
+     "pauseAfter": 0.6,
+     "direction": "quiet, fond, a little rueful; 'Years later, he wrote' plain, then his words read plainly as his, with a faint smile on 'remembered hearing the talk' (a plant: the Nobel in chapter 15 turns the room toward him)"
+    }
+   ],
+   "beats": [
+    {
+     "id": "indexTab",
+     "at": {
+      "shotTime": 0.1
+     },
+     "what": "manila index tab typed 'Clue Three: The Messenger Who Runs Backward' drops down from the frame's top edge at top-left, holds 2.5 s, slides back up"
+    },
+    {
+     "id": "hall",
+     "at": {
+      "shotTime": 1
+     },
+     "what": "the Hall of Mirrors resolves out of the haze (no stamp text yet)"
+    },
+    {
+     "id": "hopfield",
+     "at": {
+      "line": "L0501",
+      "word": "Hopfield",
+      "edge": "start"
+     },
+     "what": "camera finds the man at the easel; place stamp VERSAILLES · SUMMER 1981 types on, bottom-left"
+    },
+    {
+     "id": "card",
+     "at": {
+      "line": "L0501",
+      "word": "presents",
+      "edge": "start"
+     },
+     "what": "name card John Hopfield"
+    },
+    {
+     "id": "ring",
+     "at": {
+      "line": "L0501",
+      "word": "network",
+      "edge": "start"
+     },
+     "what": "the chalked ring of eight lanterns glows once around its loop"
+    },
+    {
+     "id": "half",
+     "at": {
+      "line": "L0524",
+      "word": "half",
+      "edge": "start"
+     },
+     "what": "easel ring: only four of eight lanterns lit, a broken pattern; a chalk ball on the rim of a chalked hollow"
+    },
+    {
+     "id": "roll",
+     "at": {
+      "line": "L0524",
+      "word": "downhill",
+      "edge": "start"
+     },
+     "what": "the chalk ball rolls into the hollow as the missing lanterns light one by one"
+    },
+    {
+     "id": "whole",
+     "at": {
+      "line": "L0524",
+      "word": "whole",
+      "edge": "start"
+     },
+     "what": "all eight lanterns hold the full stored pattern: the memory completed"
+    },
+    {
+     "id": "turned",
+     "at": {
+      "line": "L0524",
+      "edge": "end",
+      "offset": 0.3
+     },
+     "what": "wordless, then under L0524b: truck left reveals the mirrored crowd, every reflected head turned away"
+    },
+    {
+     "id": "fade",
+     "at": {
+      "line": "L0524b",
+      "word": "remembered",
+      "edge": "start"
+     },
+     "what": "reflections fade mirror by mirror from the far end"
+    },
+    {
+     "id": "glow",
+     "at": {
+      "line": "L0524b",
+      "edge": "end",
+      "offset": 1.2
+     },
+     "what": "the chalked ring in the last remaining mirror glows once and holds"
+    }
+   ],
+   "cast": [
+    "hopfield"
+   ],
+   "props": [
+    "easel with chalked ring of lanterns and a chalked hollow with a chalk ball",
+    "lectern",
+    "chandeliers",
+    "mirrored arcades",
+    "rows of seated audience silhouettes (generic)"
+   ],
+   "onScreenText": [
+    {
+     "kind": "title",
+     "text": "Clue Three: The Messenger Who Runs Backward",
+     "beat": "indexTab"
+    },
+    {
+     "kind": "place",
+     "text": "VERSAILLES · SUMMER 1981",
+     "beat": "hopfield"
+    },
+    {
+     "kind": "nameCard",
+     "text": "John Hopfield · physicist, Caltech",
+     "beat": "card"
+    }
+   ],
+   "music": {
+    "cue": "ch05-thaw",
+    "note": "The thaw begins. After chapter 4's solo cello, a first warm colour: a slow celesta-and-strings figure in dawnGold, quiet (intensity 2/10), with long reverb like a large gilded room. Under 'remembered' the texture thins to a single sustained note as the reflections fade; nothing resolves yet."
+   },
+   "claims": [
+    "e4-hopfield-versailles",
+    "e4-hopfield-caltech",
+    "e4-hopfield"
+   ],
+   "creditsSources": [
+    "“I have never met anyone who remembered hearing the talk.” — John J. Hopfield, recalling his summer 1981 talk at Versailles (q-hopfield-versailles)"
+   ],
+   "quotes": [
+    "q-hopfield-versailles"
+   ]
+  },
+  {
+   "id": "ch05-s03",
+   "kind": "scene",
+   "setting": "the rim of the light · 1978–1987 · night · a sequence of desks: San Diego, Cambridge, Pittsburgh, Toronto",
+   "era": "1980s",
+   "mood": "labGreen",
+   "leadIn": 0.6,
+   "holdAfter": 3.4,
+   "transitionIn": "crossfade",
+   "visual": "THIS SHOT: the tall man is named as Geoffrey Hinton; his desk travels the rim of the light to Pittsburgh, where a small net flickers hot and settles as it cools. CAMERA: stage: a slow lateral move along the rim of the light (no study visit). Crossfade from the Hall of Mirrors (its easel's chalk ring of lanterns lingering a beat as a faint ghost) back to the candle stage from chapter 4: the sterile candle MANY-LAYERED NETS ARE A STERILE EXTENSION (lit 1969, clean rim) still burns at centre, its pool of light dim. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. Here the sterile candle's dark-scored ghost sleeve is already long (a little over a decade of rings) and its flame is still live; it stays soft in the background and its rings are not counted in this shot (it goes out in ch05-s04). At the very rim, where we left him, the tall man is seated at a desk, back straight, head bent over paper. He is SEATED THROUGHOUT; never standing in this era. As the narrator names him, a name card appears. Then the desk travels: a slow lateral camera move along the rim of the light, and the desk and chair dissolve and re-form at each stop while the man stays seated, the backdrop behind him swapping as layered cut-outs: San Diego (palm silhouettes, a low campus roofline), Cambridge (a gothic window tracery), Pittsburgh (bridges and a steel-mill stack against labGreen dusk). San Diego and Cambridge are brief passing stops with no stamps, a glance each (two unhurried backdrop swaps, about half a second each, in the pause after L0505, the camera reaching Pittsburgh, and its stamp, just before L0505b begins; the palms and the gothic tracery carry them); the camera settles at Pittsburgh, which gets a VT323 phosphor date stamp, bottom left, as does Toronto later (one stamp at a time in that corner). At the Pittsburgh desk, a small lantern network on the desk flickers hot (lanterns blinking at random), then steadies as a tiny thermometer label falls 20 → 15 → 12 → 10: the Boltzmann machine SETTLING as it cools, one breath of it, under the line L0505b (the flicker on 'built', the thermometer falling on 'settles'; the cooling is how it settles into a state, not how it learns; its learning, by comparing waking and dreaming statistics, is not shown). The Pittsburgh stop is the long one, held until the label has been read; its only label, on 'With two colleagues', is 'Boltzmann machine · with Sejnowski & Ackley · 1985' (a three-author paper; the full citation is in the credits). Last stop: Toronto, 1987, held to the end of the shot, a window with snow beginning outside over a generic city skyline (no landmarks).",
+   "lines": [
+    {
+     "id": "L0505",
+     "text": "At the sterile candle’s rim, all the while, stood Geoffrey Hinton.",
+     "direction": "a reveal, but gentle; no fanfare",
+     "pauseAfter": 1.6
+    },
+    {
+     "id": "L0505b",
+     "text": "With two colleagues, he built a net that settles as it cools.",
+     "direction": "quiet, almost an aside, inside the desk montage; 'settles as it cools' slow and plain (a plant: the Nobel citation in chapter 15 calls back to it) NARRATION: re-generate this line on its own (not inside a shot chunk) at voice speed about 0.88, target 140-160 wpm; the text is unchanged.",
+     "pauseAfter": 0.4,
+     "tts": {
+      "solo": true,
+      "speed": 0.88
+     }
+    }
+   ],
+   "beats": [
+    {
+     "id": "name",
+     "at": {
+      "line": "L0505",
+      "word": "Hinton",
+      "edge": "start"
+     },
+     "what": "name card appears beside the seated figure"
+    },
+    {
+     "id": "travel",
+     "at": {
+      "line": "L0505",
+      "edge": "end",
+      "offset": 0.1
+     },
+     "what": "desk begins to travel along the rim: San Diego palms and a low campus roofline (no stamp)"
+    },
+    {
+     "id": "cambridge",
+     "at": {
+      "line": "L0505",
+      "edge": "end",
+      "offset": 0.6
+     },
+     "what": "a brief passing stop: Cambridge gothic window tracery (no stamp)"
+    },
+    {
+     "id": "boltz",
+     "at": {
+      "line": "L0505",
+      "edge": "end",
+      "offset": 1.1
+     },
+     "what": "the camera settles at the Pittsburgh desk: bridges and a mill stack against labGreen dusk; stamp PITTSBURGH · 1982; the long stop of the sequence"
+    },
+    {
+     "id": "label",
+     "at": {
+      "line": "L0505b",
+      "word": "With",
+      "edge": "start"
+     },
+     "what": "label: Boltzmann machine · with Sejnowski & Ackley · 1985"
+    },
+    {
+     "id": "hot",
+     "at": {
+      "line": "L0505b",
+      "word": "built",
+      "edge": "start"
+     },
+     "what": "the small lantern net on the desk flickers hot, lanterns blinking at random"
+    },
+    {
+     "id": "settle",
+     "at": {
+      "line": "L0505b",
+      "word": "settles",
+      "edge": "start"
+     },
+     "what": "thermometer label falls 20 → 15 → 12 → 10 and the net steadies: settling, not learning"
+    },
+    {
+     "id": "toronto",
+     "at": {
+      "line": "L0505b",
+      "edge": "end",
+      "offset": 0.7
+     },
+     "what": "desk arrives at a Toronto window, snow beginning; stamp TORONTO · 1987; holds to the end of the shot"
+    }
+   ],
+   "cast": [
+    "hinton-young"
+   ],
+   "props": [
+    "desk and chair (seated figure)",
+    "small lantern network on the desk",
+    "the chapter-4 candle (MANY-LAYERED NETS ARE A STERILE EXTENSION)"
+   ],
+   "onScreenText": [
+    {
+     "kind": "nameCard",
+     "text": "Geoffrey Hinton",
+     "beat": "name"
+    },
+    {
+     "kind": "date",
+     "text": "PITTSBURGH · 1982",
+     "beat": "boltz",
+     "until": "toronto"
+    },
+    {
+     "kind": "label",
+     "text": "Boltzmann machine · with Sejnowski & Ackley · 1985",
+     "beat": "label",
+     "until": "toronto"
+    },
+    {
+     "kind": "date",
+     "text": "TORONTO · 1987",
+     "beat": "toronto"
+    }
+   ],
+   "music": {
+    "cue": "ch05-desks",
+    "note": "A walking figure in pizzicato strings and a soft drum-machine tick (1980s, labGreen), one small modulation per desk. At the Boltzmann flicker (under L0505b), a brief shimmer of random high notes that settle into a chord as the temperature falls. The chapter-4 cello holds a low pedal underneath: still the winter's candle."
+   },
+   "claims": [
+    "e4-hinton-cv",
+    "e4-boltzmann"
+   ],
+   "creditsSources": [
+    "Boltzmann machine: D. H. Ackley, G. E. Hinton & T. J. Sejnowski, “A Learning Algorithm for Boltzmann Machines”, Cognitive Science 9(1), 1985. It settles to a state by simulated annealing (cooling) and learns by comparing clamped and free-running co-activation statistics (e4-boltzmann)."
+   ]
+  },
+  {
+   "id": "ch05-s04",
+   "kind": "plate",
+   "setting": "the loom · 9 October 1986 · night · a lantern network hung from a loom beam",
+   "era": "1980s",
+   "mood": "dawnGold",
+   "leadIn": 1.3,
+   "holdAfter": 2,
+   "minDuration": 22,
+   "transitionIn": "iris",
+   "visual": "THIS SHOT: the deep dive's heart: on a loom of lanterns, light flows up, the error glows, and the messenger bead runs back down tugging each knob by its share of the blame, until the exclusive-or puzzle solves itself and the sterile candle goes out. CAMERA: plate (the loom), then a pull back onto the stage (no study visit). Iris opens on a printed journal title strip pinned to a loom beam (date stamp, VT323: NATURE · 9 OCT 1986; the three authors are named on Rumelhart's name card, not on the stamp). Teaching machine: lanternNetwork with XOR_221 (two inputs, two hidden lanterns, one output), labels on, readout on (epoch · loss only); the beam itself carries small cut-paper prop lettering, 'the 1986 method, on exclusive-or · a demonstration', part of the set rather than a caption (this is a demonstration of the method, not a figure from the paper). The four XOR target slips hang under the output as small paper tags showing only digits: (0,0)→0, (0,1)→1, (1,0)→1, (1,1)→0. At epoch 0 the strings are thin and random-coloured. Small silhouettes flank the plate: left, Rumelhart standing at a chalkboard; right, Hinton seated at his desk at the edge of the light (never standing). FORWARD (on 'Light'): present sample x = (1, 0), target 1; wave 0 → 2: light climbs from the input lanterns through the hidden pair to the output; forward knots slide up each string sized by |w·a|. The output lantern glows only faintly. CHECK (on 'checked'): the target slip for (1, 0), reading 1, lifts up beside the output lantern so the two can be compared. ERROR (on 'error'): the gap between the output and its target slip glows as a low-chroma ember rim on the top lantern (emberRed mixed about 60% into dawnGold, the oxblood-thread recipe; never full saturated red, which the film spends once, on the STATUS: OPEN stamp). BACKWARD (on 'messenger'): back 0 → 2: the messenger, a dark bead in a ring of light, leaves the output and runs DOWN the same strings; at each string it pauses a beat and the string thickens or thins by its real gradient |dL/dw| (its share of the blame); at each hidden lantern the bead gathers the weighted sum of the blame from above, scaled by that lantern's own slope (how steeply its glow responds), then splits down its strings (the plate's equation inks in as it does). Then (on 'Again') the NATURE stamp fades and the lamp's light falls on the beam's prop lettering 'the 1986 method, on exclusive-or · a demonstration', which stays legible through the whole training scrub and the XOR check (and the line itself says 'our exclusive-or puzzle') (the paper's own demos were the family trees and symmetry; the XOR run is ours); epoch scrubs 0 → end at ever-faster cadence, four samples cycling, the loss readout falling; the strings settle into their trained pattern and the two hidden lanterns glow in distinct, opposite patterns across the four inputs. XOR CHECK (on 'solved', then the line's music-only pause): the trained network answers all four cases in turn, at an even pace, the output lantern bright exactly for (0,1) and (1,0), each target slip ticking as it is matched. FAMILY TREES (L0520 was cut for runtime, so this plays wordless in the long music-only pause after L0509 (which lands on 'By itself'), only once the XOR check has finished): beside the loom, two small paper-cut family trees drop in on threads, one English and one Italian, identical in shape (pictures only, no names or labels); a larger lantern net hangs between them, and a moment later its hidden lanterns tint the people of the trees, first splitting them by nationality (two tints, one per tree), then by generation (three bands, top to bottom). The hands are nowhere in frame: nothing pointed (nobody told the lanterns to sort). THE STERILE CANDLE GOES OUT (on 'sterile'): the camera pulls back and down; the loom is revealed hanging over the candle stage at the rim of the old sterile candle's pool (the same stage as ch05-s03). CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. Here: the candle MANY-LAYERED NETS ARE A STERILE EXTENSION, lit 1969, still alight with a clean rim. (The question card THEN HOW DO YOU TRAIN THE HIDDEN LAYER? stays on the case board's thread in the study; it comes down in ch05-s06, not on this stage.) On 'seventeen' the candle goes out: its sleeve of seventeen scored rings (102 px) goes dark above the stub, a thread of smoke rises, and its tag reads 1969–1986 · 17. QUOTE CARD (cued with the tinting of the family trees, which it describes, before L0521): the short fragment of the paper's abstract, about the hidden units, rises as a quote card beside the tinted trees and rides the pull-back to hang in the warm light above the candle; it stays through the candle going out and the hold. HOLD (holdAfter, music only, no new action under it): the card above the smoking stub, held to be read in silence; the full abstract sentence goes to the credits. The trained hidden lanterns stay softly lit on the loom above, so the card's subject is in frame. TEXT RULE: besides stamps and name cards, at most two text items in this shot (the equation and the quote); the candle's tag is candle furniture.",
+   "lines": [
+    {
+     "id": "L0507",
+     "text": "October 1986: a paper by David Rumelhart, Hinton and Ronald Williams. Light flows up through layers of lanterns, our nerve cells. The answer is checked against the right one; the error glows.",
+     "direction": "slow; name the three authors evenly, no one stressed; then each clause matches the machine; a small beat after 'up'. PRONUNCIATION: audition 'Rumelhart' as written; respell in spoken only if it fails ('Roomel-hart'); STT and human listen target.",
+     "spoken": "October, nineteen eighty-six: a paper by David Rumelhart, Hinton and Ronald Williams. Light flows up through layers of lanterns, our nerve cells. The answer is checked against the right one; the error glows.",
+     "qa": {
+      "stt": "required",
+      "expect": [
+       "Rumelhart"
+      ]
+     }
+    },
+    {
+     "id": "L0508",
+     "text": "Then a messenger, back-propagation, runs back down, lantern by lantern, tugging each knob by its share of the blame.",
+     "direction": "the heart of the chapter: unhurried; name 'back-propagation' plainly, as a term being introduced; slight emphasis on 'back' and 'share'",
+     "pauseAfter": 0.55
+    },
+    {
+     "id": "L0509",
+     "text": "Again and again, until our exclusive-or puzzle is solved. By itself.",
+     "direction": "wonder, held in check; 'our exclusive-or puzzle' marks the demonstration as ours, not the paper's; a small breath before 'By itself', and let the pause land on it",
+     "pauseAfter": 4.4
+    },
+    {
+     "id": "L0521",
+     "text": "The sterile extension, it turns out, was not. That candle burned seventeen years.",
+     "direction": "the habit line for a candle going out: slow, kind; a gentle smile on 'was not'",
+     "pauseAfter": 0.6
+    }
+   ],
+   "beats": [
+    {
+     "id": "stamp",
+     "at": {
+      "shotTime": 0.9
+     },
+     "what": "iris opens on the journal strip and date stamp"
+    },
+    {
+     "id": "authors",
+     "at": {
+      "line": "L0507",
+      "word": "Rumelhart",
+      "edge": "start"
+     },
+     "what": "Rumelhart at his chalkboard (left) and Hinton seated at his desk (right) catch the light in turn as they are named"
+    },
+    {
+     "id": "forward",
+     "at": {
+      "line": "L0507",
+      "word": "Light",
+      "edge": "start"
+     },
+     "what": "sample (1,0) presented; forward wave climbs 0 → 2"
+    },
+    {
+     "id": "check",
+     "at": {
+      "line": "L0507",
+      "word": "checked",
+      "edge": "start"
+     },
+     "what": "the target slip for (1,0) lifts beside the output lantern for comparison"
+    },
+    {
+     "id": "error",
+     "at": {
+      "line": "L0507",
+      "word": "error",
+      "edge": "start"
+     },
+     "what": "output lantern's error rim glows a low-chroma ember (emberRed mixed about 60% into dawnGold) against its target slip"
+    },
+    {
+     "id": "messenger",
+     "at": {
+      "line": "L0508",
+      "word": "messenger",
+      "edge": "start"
+     },
+     "what": "the messenger bead leaves the output; backward pulse 0 → 2"
+    },
+    {
+     "id": "blame",
+     "at": {
+      "line": "L0508",
+      "word": "blame",
+      "edge": "start"
+     },
+     "what": "bead gathers the blame from above, scaled by each hidden lantern's slope, and splits; backprop equation inks in"
+    },
+    {
+     "id": "train",
+     "at": {
+      "line": "L0509",
+      "word": "Again",
+      "edge": "start"
+     },
+     "what": "NATURE stamp fades; the demo caption lettered on the loom beam catches the light; epoch scrub to trained; loss readout falls; hidden lanterns find opposite patterns"
+    },
+    {
+     "id": "xor",
+     "at": {
+      "line": "L0509",
+      "word": "solved",
+      "edge": "start"
+     },
+     "what": "XOR check: all four cases in turn, about 0.8 s each, running into the line’s music-only pause"
+    },
+    {
+     "id": "sterile",
+     "at": {
+      "line": "L0521",
+      "word": "sterile",
+      "edge": "start"
+     },
+     "what": "pull back onto the candle stage: the loom hangs at the rim of the sterile candle's pool"
+    },
+    {
+     "id": "out",
+     "at": {
+      "line": "L0521",
+      "word": "seventeen",
+      "edge": "start"
+     },
+     "what": "the sterile candle goes out: seventeen-ring dark sleeve, smoke, tag 1969–1986 · 17"
+    },
+    {
+     "id": "quote",
+     "at": {
+      "line": "L0509",
+      "edge": "end",
+      "offset": 3.3
+     },
+     "what": "abstract fragment rises as a quote card over the family trees as the hidden lanterns tint them (it describes exactly this), and stays up as the camera pulls back to the candle"
+    },
+    {
+     "id": "family",
+     "at": {
+      "line": "L0509",
+      "edge": "end",
+      "offset": 2.8
+     },
+     "what": "wordless, once the XOR check ends: two identical family trees (English, Italian) drop in on threads; a larger lantern net between them"
+    },
+    {
+     "id": "features",
+     "at": {
+      "line": "L0509",
+      "edge": "end",
+      "offset": 3.3
+     },
+     "what": "hidden lanterns tint the trees by nationality, then by generation; no hands in frame"
+    }
+   ],
+   "cast": [
+    "rumelhart",
+    "hinton-young"
+   ],
+   "props": [
+    "loom beam with paper lanterns and strings",
+    "journal title strip",
+    "chalkboard",
+    "desk",
+    "XOR target slips (digits only)",
+    "two paper-cut family trees",
+    "the sterile candle (MANY-LAYERED NETS ARE A STERILE EXTENSION)"
+   ],
+   "onScreenText": [
+    {
+     "kind": "date",
+     "text": "NATURE · 9 OCT 1986",
+     "beat": "stamp"
+    },
+    {
+     "kind": "nameCard",
+     "text": "David Rumelhart · with Hinton & Williams",
+     "beat": "authors"
+    },
+    {
+     "kind": "equation",
+     "text": "blame(i) = slope(i) · Σ_j blame(j) · w_ji     Δw_ji = −ε · blame(j) · y_i",
+     "beat": "blame"
+    },
+    {
+     "kind": "quote",
+     "text": "…come to represent important features of the task domain — Nature, 1986",
+     "beat": "quote"
+    }
+   ],
+   "music": {
+    "cue": "ch05-messenger",
+    "note": "The first mechanical ostinato of the film, tied to the machine: an upward arpeggio for the forward wave, a single sustained dissonance for the glowing error, then the same arpeggio played in reverse, descending, as the messenger runs down (each note on a string-tug). During the training scrub the ostinato accelerates and brightens; four clean answering notes for the XOR check. Under the family trees, a lighter, wondering figure. On 'seventeen' the candle motif's falling resolution = gone (low clarinet over cello, the sterile candle's own colour), and it resolves cleanly as the smoke rises. Intensity rises from 3 to 6, then a breath of near-silence under the quote card."
+   },
+   "claims": [
+    "e4-rhw",
+    "e3-xor-known",
+    "e4-rhw-family",
+    "e3-sterile"
+   ],
+   "creditsSources": [
+    "“As a result of the weight adjustments, internal ‘hidden’ units which are not part of the input or output come to represent important features of the task domain, and the regularities in the task are captured by the interactions of these units.” — Rumelhart, Hinton & Williams, Nature, 9 October 1986 (q-rhw-abstract)"
+   ]
+  },
+  {
+   "id": "ch05-s05",
+   "kind": "scene",
+   "setting": "the misty hills · timeless · night · a traveller with a lantern",
+   "era": "timeless",
+   "mood": "dawnGold",
+   "leadIn": 0.6,
+   "holdAfter": 5.4,
+   "transitionIn": "cut",
+   "visual": "THIS SHOT: the misty hills: a lantern-bearer steps downhill in fog, one tug at a time, and stalls in a shallow hollow until the fog lifts to show the deeper valley. Teaching machine: mistyHills. Plain cut to a wide night landscape of layered paper hills under dawnGold sky, fog low in the valleys (fog 0.8). The front ridge IS the loss curve: height is error. As the shot opens, before the line, a thin thread of light runs along the ridge from the high left slope down to the deep valley floor and fades (unlettered: height means error). A small traveller with a hand-lantern stands at x0 = −5.3 on the left slope; the lantern's pool shows only the ground at his feet, and the lit tangent and step arrow (tangent 1) show the slope he can feel. First walk (on 'downhill'; each step is one tug of the messenger's knobs): timid stride, lr = MISTY_LR.timid (0.2): short careful steps, cairns left behind (trail on), the traveller walks down into the hollow at x ≈ −2.91 and stops; the fog closes softly around him; he lifts his lantern, sees nothing below, and believes he has arrived (he stops in the hollow on 'fog'). Just after the line the camera rises slightly, lifting the fog for the viewer only, to reveal the true valley floor far to the right (x ≈ 1.96), much deeper. HOLD (holdAfter, music only): the label 'timid steps can stall · rare in the 1986 tests' holds to the end of the shot over the stalled traveller and the deeper valley he cannot see (the 1986 paper reported its network 'very rarely' got stuck this way; the fear of false valleys belongs to the 1990s critics in chapter 6, not to the 1986 results). (The bold stride that leaps the ridge is shown once, in ch08-s10, on 'big strides first'.) The axes stay unlettered. TEXT RULE: one text item in this shot. The fog itself is the plant for chapter 6: leave a wisp of it drifting across the final frame.",
+   "lines": [
+    {
+     "id": "L0510",
+     "text": "Each tug, a step downhill toward less error, in fog.",
+     "direction": "gentle teacher; 'Each tug' calls back to the messenger's tugs; 'toward less error' names what height means; a beat after 'fog', then let the picture finish the walk",
+     "pauseAfter": 0.4
+    }
+   ],
+   "beats": [
+    {
+     "id": "error",
+     "at": {
+      "shotTime": 0.2
+     },
+     "what": "a thread of light runs down the ridge, unlettered: height is error"
+    },
+    {
+     "id": "walk",
+     "at": {
+      "line": "L0510",
+      "word": "downhill",
+      "edge": "start"
+     },
+     "what": "timid traveller starts down from x0 = −5.3 (lr 0.2); each step a tug"
+    },
+    {
+     "id": "fog",
+     "at": {
+      "line": "L0510",
+      "word": "fog",
+      "edge": "start"
+     },
+     "what": "lantern pool shows only the slope at his feet"
+    },
+    {
+     "id": "hollow",
+     "at": {
+      "line": "L0510",
+      "word": "fog",
+      "edge": "start"
+     },
+     "what": "timid traveller stops in the hollow at x ≈ −2.91; fog closes round him; he believes he has arrived"
+    },
+    {
+     "id": "trapped",
+     "at": {
+      "line": "L0510",
+      "edge": "end",
+      "offset": 0
+     },
+     "what": "camera lifts the fog for the viewer to reveal the deeper valley; label 'timid steps can stall · rare in the 1986 tests', held to the end of the shot"
+    },
+    {
+     "id": "termGD",
+     "at": {
+      "line": "L0510",
+      "word": "downhill",
+      "edge": "start"
+     },
+     "what": "glossary tag: gradient descent (film-level overlay)"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "hand-lantern",
+    "cairns",
+    "fog sheets"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "timid steps can stall · rare in the 1986 tests",
+     "beat": "trapped"
+    },
+    {
+     "kind": "term",
+     "text": "gradient descent",
+     "gloss": "each step downhill, toward less error",
+     "beat": "termGD"
+    }
+   ],
+   "music": {
+    "cue": "ch05-messenger",
+    "note": "The ostinato drops away to a low, uncertain pad (fog). Each footstep is a soft muted pluck; the timid walk ends on an unresolved note in the hollow. The bold leap is a rising fourth in the strings that lands warmly in the valley: a hint of the candle's lit figure without lighting a candle."
+   },
+   "claims": [
+    "e4-rhw",
+    "e4-rhw-brain"
+   ]
+  },
+  {
+   "id": "ch05-s06",
+   "kind": "scene",
+   "setting": "the detective's study · timeless · night · the case board under the green-shaded lamp",
+   "era": "timeless",
+   "mood": "candleAmber",
+   "leadIn": 4.2,
+   "holdAfter": 2.8,
+   "transitionIn": "crossfade",
+   "visual": "THIS SHOT: on the board the training question is answered and dropped; threads of light run from several inventors' cards to the Helsinki card, and the 1986 strip is pinned beside it. CAMERA: the reverse flame push out to BOARD (the Q1 burn-out and the plant as inserts in the lead-in; the C2-row and C2-h cards as inserts; no held wide). Reverse flame push back to the study (no lamp change, no black): the traveller's hand-lantern flame from the misty hills fills the frame, and the camera pulls back out of it onto the study's candle shelf and case board, tint-crossfading (crossfadeMood) from dawnGold to candleAmber as it clears the flame; the line waits for the pull-back. The case board in candleAmber. BOARD MAP (canonical, from the staging appendix; repeated word for word): the Case Board is a fixed grid of slots laid out as network columns by era, left to right: C1 (1943–1969) the far-left input column, C2 (1969–1997), C3 (2006–2017), C4 (2018–2023), and the output, the glowing chat box, at the far right; the case card WHO TAUGHT IT? hangs in slot K at the board's centre; the suspect cards S1 RULES, S2 KNOWLEDGE and S3 LEARNING hang in the left margin, top to bottom; the founding row F1–F2 runs beneath columns C3 and C4; the question-card thread runs along the board's top edge (slots Q1 to Q4, left to right), a low-chroma oxblood string (emberRed rim mixed about 60% into candleAmber) that glints only where the lamp's pool falls; the Wall of Forecasts hangs to the board's right, its slots W1 to W8 left to right (W1 Turing, W2 chess, W3 Rosenblatt 1961, W4 Florence 2012, W5 Coulom, W6 the 30-to-50-years slip in shadow, W7 Hinton 2017, W8 an empty pin until ch15). FIRST BEAT (lead-in, before the plant): the hands unpin the oxblood-thread question card THEN HOW DO YOU TRAIN THE HIDDEN LAYER? from slot Q1 on the top-edge thread and let it fall into the lamp's pool on the desk, where it curls and burns out softly (answered by the 1986 paper; no text beyond the card itself). Then, still in the lead-in, the plant: the two steady hands tuck a small blank card behind the case board, unexplained (only after the question card has burned out, and before the line). Then the camera pushes in on the board; the hands rest at the frame's lower edge (no magnifier). On 'invented' the camera finds a cluster of small index cards pinned in a loose row (slot C2-row) at the foot of column C2, which so far holds only the scissors card in C2-a and the Helsinki card in C2-h, each with a name and year in the hands' fountain-pen script: KELLEY 1960 · BRYSON 1961 · DREYFUS 1962 · LINNAINMAA 1970 · WERBOS 1974/82 · RUMELHART 1982 · PARKER 1985 · LE CUN 1985, with 'credit still disputed' pencilled under the row. On 'separately' threads of light run from several of these cards toward an empty pin just right of the Helsinki card (C2-h). On 'Helsinki' the brightest thread lights from end to end: the one from the Helsinki card pinned in chapter 4 (column C2, just below the scissors card; the thesis about rounding errors). On 'stick' the hands pin the 1986 paper's title strip on that pin, beside the Helsinki card in C2-h, and every thread converges on it. On 'claimed' a name card for Hinton appears at the board's edge (no quote card: the words are spoken). Just after the line, the RUMELHART 1982 card in the inventor row catches the lamp, and a beat later the cards to its left (Kelley, Bryson, Dreyfus, Linnainmaa, Werbos) glow faintly together (the rest of Hinton's sentence, crediting Rumelhart and earlier fields, is in the published sources list). HOLD (holdAfter, music only): the false clue. The 1961 caption card from chapter 3, BACK-PROPAGATING ERROR-CORRECTION EXPERIMENTS (in its 1950s–60s slot in column C1, tagged with an oxblood question mark), lifts off its pin by itself; the hands turn it over to show a pencilled note on the back, 'same name, a different procedure', and set it back half in shadow. TEXT RULE: besides stamps and name cards, at most two text items in this shot (the inventor cards and the false-clue note).",
+   "lines": [
+    {
+     "id": "L0511",
+     "text": "Who invented the messenger? Several people, separately, that Helsinki student among them. The 1986 paper made it stick.",
+     "direction": "a detective weighing evidence; even-handed, unhurried; 'that Helsinki student' as a callback, with a little satisfaction",
+     "pauseAfter": 0.55,
+     "spoken": "Who invented the messenger? Several people, separately, that Helsinki student among them. The nineteen eighty-six paper made it stick."
+    },
+    {
+     "id": "L0512",
+     "text": "Hinton later wrote: “I have never claimed that I invented backpropagation.”",
+     "direction": "read the quote verbatim, without irony; plain and fair, a small beat between its two sentences"
+    }
+   ],
+   "beats": [
+    {
+     "id": "question",
+     "at": {
+      "shotTime": 1.4
+     },
+     "what": "the hands unpin THEN HOW DO YOU TRAIN THE HIDDEN LAYER? from Q1; it drops into the lamp's pool and burns out"
+    },
+    {
+     "id": "plant",
+     "at": {
+      "shotTime": 3.3
+     },
+     "what": "the hands tuck a small blank card behind the case board (the plant)"
+    },
+    {
+     "id": "who",
+     "at": {
+      "line": "L0511",
+      "word": "invented",
+      "edge": "start"
+     },
+     "what": "camera finds the row of inventor cards"
+    },
+    {
+     "id": "threads",
+     "at": {
+      "line": "L0511",
+      "word": "separately",
+      "edge": "start"
+     },
+     "what": "threads light from the cards toward the empty pin beside the Helsinki card"
+    },
+    {
+     "id": "helsinki",
+     "at": {
+      "line": "L0511",
+      "word": "Helsinki",
+      "edge": "start"
+     },
+     "what": "the Helsinki card's thread lights end to end, brightest of all"
+    },
+    {
+     "id": "stick",
+     "at": {
+      "line": "L0511",
+      "word": "stick",
+      "edge": "start"
+     },
+     "what": "the hands pin the 1986 title strip beside the Helsinki card (C2-h); threads converge"
+    },
+    {
+     "id": "hinton",
+     "at": {
+      "line": "L0512",
+      "word": "claimed",
+      "edge": "start"
+     },
+     "what": "Hinton name card at the board's edge"
+    },
+    {
+     "id": "rumelhart",
+     "at": {
+      "line": "L0512",
+      "edge": "end",
+      "offset": 0.3
+     },
+     "what": "the RUMELHART 1982 inventor card catches the lamp"
+    },
+    {
+     "id": "others",
+     "at": {
+      "line": "L0512",
+      "edge": "end",
+      "offset": 1
+     },
+     "what": "the earlier inventor cards to its left glow faintly together"
+    },
+    {
+     "id": "falseClue",
+     "at": {
+      "line": "L0512",
+      "edge": "end",
+      "offset": 1.4
+     },
+     "what": "music only: the 1961 BACK-PROPAGATING caption card lifts off its pin"
+    },
+    {
+     "id": "falseClueTurn",
+     "at": {
+      "line": "L0512",
+      "edge": "end",
+      "offset": 2.4
+     },
+     "what": "the hands turn the card over to show its pencilled back (the false clue)"
+    }
+   ],
+   "cast": [
+    "narrator-hands"
+   ],
+   "props": [
+    "case board",
+    "fountain pen",
+    "blank plant card",
+    "inventor index cards",
+    "Helsinki thesis card (from ch04)",
+    "1961 caption card (from ch03)",
+    "1986 title strip",
+    "oxblood-thread question card THEN HOW DO YOU TRAIN THE HIDDEN LAYER? (from Q1)"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "Kelley 1960 · Bryson 1961 · Dreyfus 1962 · Linnainmaa 1970 · Werbos 1974/82 · Rumelhart 1982 · Parker 1985 · Le Cun 1985 · credit still disputed",
+     "beat": "who"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Geoffrey Hinton · writing in 2020",
+     "beat": "hinton"
+    }
+   ],
+   "music": {
+    "cue": "ch05-messenger",
+    "note": "As the question card burns out in the lead-in, the candle motif's clean falling resolution, once, very soft. Study texture: low clarinet and the lamp's hum, intensity 3. A small plucked motif for each thread lighting, the Helsinki thread getting the warmest note on 'Helsinki'. A wry, slightly off-kilter pizzicato as the false-clue card turns over in the hold."
+   },
+   "claims": [
+    "e4-backprop-priority",
+    "e3-linnainmaa",
+    "e4-rhw-cites",
+    "e2-backprop-name",
+    "e4-hinton-notinventor"
+   ]
+  },
+  {
+   "id": "ch05-s07",
+   "kind": "scene",
+   "setting": "the candle stage · c. 1980 · evening · a second candle lit; a clinician at a time-sharing terminal",
+   "era": "1980s",
+   "mood": "candleAmber",
+   "leadIn": 0.6,
+   "holdAfter": 0.5,
+   "transitionIn": "cut",
+   "visual": "THIS SHOT: the KNOWLEDGE suspect gets its own candle; engineers type rules into an expert system that beats specialists in a blinded test, while the ward door stays shut. CAMERA: SHELF (low macro; the knowledge candle lit, with a 1–2 s BOARD insert on the S2 card), then the flame push onto the stage. Plain cut (same room, same mood): the candle shelf beneath the case board. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. On 'suspect', the KNOWLEDGE suspect card in slot S2 of the board's left margin (a small drawer of index cards) catches the light. The hands strike a match at the far end of the candle shelf and light a new candle: INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND, lettered in small caps (VT323 era face); its tag reads c. 1980; here the candle is new: no sleeve yet, only the full stub with its flame at the top ring. Camera pushes into the flame onto the paper stage (the push-into-the-flame cue, done in-shot, no lamp change), where the same candle stands huge and throws a broad amber pool. Inside the pool: anonymous knowledge engineers (generic silhouettes, not named people) at desks, copying rules from tall stacks of index cards onto terminals; card-strips printed IF … THEN … drift upward like sparks. At the left edge of the pool: a clinician at a time-sharing terminal answering question after question; on the screen a single word, WHY?, glows. On 'system' (L0514), a blinded-test plate drops in front of the stage: ten sealed envelopes (cases), a row of eight judges' silhouettes with blindfolds of cut paper, and two bars: the program's prescriptions rated acceptable 65% of the time, five Stanford specialists' 42.5–62.5% (the bar for the specialists is a range). On 'never', the terminal's screen goes quiet and a hospital ward door at the back of the stage stays closed. At the rim of this candle's light, half in shadow and facing out: a small figure holding the lantern network from shot 4 like a hand-lantern (generic, unnamed: the connectionists, who said knowledge should be learned, not typed in). TEXT RULE: besides stamps and name cards, at most two text items in this shot.",
+   "lines": [
+    {
+     "id": "L0513",
+     "text": "Since about 1980, our second suspect had its own candle: intelligence is knowledge, typed in by hand.",
+     "direction": "a change of key, slightly brisker; 'since about nineteen eighty' plainly, to set the clock back; 'our second suspect' dry and quiet, the detective's aside; 'by hand' with gentle emphasis",
+     "spoken": "Since about nineteen eighty, our second suspect had its own candle: intelligence is knowledge, typed in by hand."
+    },
+    {
+     "id": "L0514",
+     "text": "One expert system, built from experts' rules, was rated above Stanford specialists, yet never went into routine use.",
+     "direction": "'built from experts' rules' as a light gloss, not a definition lecture; a small wry turn on the second half, no mockery",
+     "spoken": "One expert system, built from experts' rules, was rated above Stanford specialists, yet never went into routine use."
+    }
+   ],
+   "beats": [
+    {
+     "id": "lit",
+     "at": {
+      "line": "L0513",
+      "word": "suspect",
+      "edge": "start"
+     },
+     "what": "the KNOWLEDGE suspect card catches the light; match struck; the knowledge candle is lit on the shelf"
+    },
+    {
+     "id": "stage",
+     "at": {
+      "line": "L0513",
+      "word": "knowledge",
+      "edge": "start"
+     },
+     "what": "push through the flame onto the stage; engineers typing rules in the pool"
+    },
+    {
+     "id": "test",
+     "at": {
+      "line": "L0514",
+      "word": "system",
+      "edge": "start"
+     },
+     "what": "blinded-test plate drops in: 65% vs 42.5–62.5%"
+    },
+    {
+     "id": "never",
+     "at": {
+      "line": "L0514",
+      "word": "never",
+      "edge": "start"
+     },
+     "what": "terminal quiet; the ward door stays shut"
+    }
+   ],
+   "cast": [
+    "narrator-hands"
+   ],
+   "props": [
+    "candle: INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND",
+    "time-sharing terminal showing WHY?",
+    "index-card stacks",
+    "IF … THEN strips",
+    "blinded-test plate",
+    "hand-held lantern network at the rim"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND",
+     "beat": "lit"
+    },
+    {
+     "kind": "label",
+     "text": "MYCIN · blinded test, 1979 · acceptable: 65% vs 42.5–62.5%",
+     "beat": "test"
+    }
+   ],
+   "music": {
+    "cue": "ch05-knowledge",
+    "note": "Candle motif, rising fourth = lit, played by a bright, slightly brittle 1980s synth-brass (confident, corporate optimism) on the match strike. A busy, regular keyboard-typing rhythm for the rule writers, intensity 4. Under 'never went into routine use', the rhythm stops for one bar."
+   },
+   "claims": [
+    "e5-knowledge-principle",
+    "e5-mycin",
+    "e5-mycin-unused"
+   ]
+  },
+  {
+   "id": "ch05-s08",
+   "kind": "scene",
+   "setting": "Austin, Texas · 1984–1985 · night · a sea of index cards; then the manila file on the desk",
+   "era": "1985",
+   "mood": "candleAmber",
+   "leadIn": 0.6,
+   "holdAfter": 5.8,
+   "transitionIn": "cut",
+   "visual": "THIS SHOT: Austin: an encyclopedia unfolds into a sea of index cards, the thin CYC taper is lit, and its 'practically nothing' quote is filed. CAMERA: stage, then a FILE insert (top-down: the slip folded into the file), then the Tokyo aside on the stage. A one-volume desk encyclopedia lies open on the stage floor; its pages lift away and fold themselves into thousands of index cards that spill outward into a paper sea, rolling in slow waves. A man (Lenat) at a tall humming cabinet with a big monochrome screen types card after card; small paper-cut sailing ships ride the sea of cards toward a far horizon (the explorers' metaphor, purely visual). Place stamp: AUSTIN · 1984. On 'Lenat's' his name card rises. On 'candle', a very thin taper lettered CYC in tiny caps rises out of the sea of cards beside his cabinet and lights by itself (the same taper that stands on the study shelf in ch05-s09b; no new text). On 'hand', just before 'wrote', the stage dims to the quote card (its attribution carries the year, 1985), set in typewriter face on a parchment slip; the words 'practically nothing' are underlined by the narrator's pen as he reads them. After the line, wordless (the refrain is habit by now), the two steady hands take the slip, fold it once, and drop it into the manila file on the desk; the file's tab reads CASE; there are already three slips in it. Then, as the hands close the file, a visual aside in the line's music-only pause and hold, cued only once the file has closed and held to the end of the shot so its one short label can be read: across the paper sea, in Tokyo, rows of tall racks with small researchers at keyboards (generic silhouettes, calm, working), labelled as a national project for logic machines, not for learning; a small cut-paper placard on the racks reads FIFTH GENERATION (prop lettering, part of the set, not a caption). Keep it dignified and neutral: no flags, no emblems. TEXT RULE: besides stamps and name cards, at most two text items in this shot (the quote and the Tokyo label).",
+   "lines": [
+    {
+     "id": "L0515",
+     "text": "Doug Lenat's team lit its own candle: common sense, by hand. They wrote that AI could draw “practically nothing” from raw text.",
+     "spoken": "Doug Lenat's team lit its own candle: common sense, by hand. They wrote that A.I. could draw “practically nothing” from raw text.",
+     "direction": "'its own candle' plainly (a plant: chapter 13 pays it off as the longest candle on the shelf); read the quoted words straight; respect, not mockery",
+     "pauseAfter": 2.4
+    }
+   ],
+   "beats": [
+    {
+     "id": "sea",
+     "at": {
+      "shotTime": 0.2
+     },
+     "what": "encyclopedia unfolds into a sea of index cards; Lenat typing; stamp AUSTIN · 1984"
+    },
+    {
+     "id": "lenat",
+     "at": {
+      "line": "L0515",
+      "word": "Lenat's",
+      "edge": "start"
+     },
+     "what": "name card Douglas Lenat"
+    },
+    {
+     "id": "taper",
+     "at": {
+      "line": "L0515",
+      "word": "candle",
+      "edge": "start"
+     },
+     "what": "a very thin taper lettered CYC rises from the card sea and lights"
+    },
+    {
+     "id": "quotecard",
+     "at": {
+      "line": "L0515",
+      "word": "hand",
+      "edge": "start"
+     },
+     "what": "stage dims to the quote card (on 'hand', just before 'wrote')"
+    },
+    {
+     "id": "quote",
+     "at": {
+      "line": "L0515",
+      "word": "practically",
+      "edge": "start"
+     },
+     "what": "the pen underlines the words as they are read"
+    },
+    {
+     "id": "file",
+     "at": {
+      "line": "L0515",
+      "edge": "end",
+      "offset": 0.4
+     },
+     "what": "wordless: the hands fold the slip and drop it into the manila file (the refrain is now habit, unspoken)"
+    },
+    {
+     "id": "tokyo",
+     "at": {
+      "line": "L0515",
+      "edge": "end",
+      "offset": 1.4
+     },
+     "what": "brief aside: Tokyo racks of logic machines with researchers at work"
+    }
+   ],
+   "cast": [
+    "lenat",
+    "narrator-hands"
+   ],
+   "props": [
+    "encyclopedia unfolding into index cards",
+    "Lisp-machine cabinet with bitmap screen",
+    "paper ships",
+    "manila file marked CASE",
+    "parallel inference machine racks"
+   ],
+   "onScreenText": [
+    {
+     "kind": "place",
+     "text": "AUSTIN · 1984",
+     "beat": "sea"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Douglas Lenat · Cyc: common sense, typed in by hand",
+     "beat": "lenat"
+    },
+    {
+     "kind": "quote",
+     "text": "…practically nothing that current AI technology could draw from the raw text. — Lenat, Prakash & Shepherd, 1985",
+     "beat": "quotecard"
+    },
+    {
+     "kind": "label",
+     "text": "TOKYO 1982 · logic, not learning",
+     "beat": "tokyo"
+    }
+   ],
+   "music": {
+    "cue": "ch05-knowledge",
+    "note": "The typing rhythm continues softer, with a rolling, sea-like arpeggio under the cards. Everything drops to a single held chord under the quote. The refrain gets its own tiny figure (the same two notes it has had since chapter 1) as the file closes. The Tokyo aside: the same arpeggio, unchanged, equally warm: no 'oriental' clichés."
+   },
+   "claims": [
+    "e5-cyc",
+    "e5-cyc-rawtext",
+    "e5-fgcs",
+    "e5-fgcs-not-nn",
+    "e5-pim"
+   ],
+   "creditsSources": [
+    "“…there is practically nothing that current AI technology could draw from the raw text. Rather, we must carefully re-represent the encyclopedia's knowledge—by hand—into some more structured form.” — Douglas B. Lenat, Mary Prakash & Mary Shepherd, AI Magazine, Winter 1985 (q-lenat-rawtext)"
+   ]
+  },
+  {
+   "id": "ch05-s09b",
+   "kind": "scene",
+   "setting": "the study: the candle shelf beneath the case board, by the window · 1984–1987 · night",
+   "era": "1980s",
+   "mood": "candleAmber",
+   "leadIn": 0.6,
+   "holdAfter": 3.8,
+   "transitionIn": "crossfade",
+   "visual": "THIS SHOT: beside the shelf, through the window, a panel warns of winter; the Lisp-machine cabinet goes dark, snow falls, and the knowledge candle gutters at seven rings. CAMERA: SHELF (low macro along the knowledge candle, the Cyc taper and the cabinet), the study window behind it carrying the panel and the snow. Slow crossfade to the candle shelf beneath the case board, in the study (STUDY LOCK: the lamp stays candleAmber throughout; the era colour enters only through the window). Beside the shelf, the study window. THE DISSENT (L0522a): as the line begins, beyond the glass and in winterBlue only (the era colour enters through the window), a long panel table on a low stage resolves out of the haze, five generic seated silhouettes behind it (insiders of the field; nobody is drawn as a likeness), with a place stamp (it carries the panel's name, THE DARK AGES OF AI, which the narration no longer speaks); on 'panel' one of them leans to a microphone and his words rise as a quote card at the window's edge, attributed to Roger Schank (the card names him, so no separate name card; it is read in the music-only pause, not spoken); about 3.4 s after the line, once the card has been read, the panel and the card fade back into the haze. On 'winter' a few paper flakes drift past the glass, in a cold winterBlue sky seen outside only (the panel's warning, now as weather); on 'winter' (L0522) the snow thickens and falls steadily: the second winter. On 'machines', on the shelf beside the candle, a small humming cabinet with a monochrome screen (the Lisp-machine cabinet from ch05-s08, in miniature) glows; on 'selling' its screen goes dark; just after 'selling' a few paper banknotes lift off the shelf and drift out of the pool into shadow (no text; the 1987 collapse is also the date on the candle's tag). The lamp does not cool. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. Here: the knowledge candle (INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND, lit c. 1980) has burned down seven rings; on 'seven' its flame GUTTERS (it is not cleanly put out: whether the idea failed is contested): the flame shrinks to a faint ember, the seven-ring sleeve (42 px) dims above the stub with a frayed rim, a thin thread of smoke rises, and its tag reads c. 1980–1987 · 7. Right beside it, a very thin taper lettered CYC in tiny caps, lit 1984, keeps burning, steady and small, three rings down. On 'knowledge' (just before the gutter) the taper's small label fades up. As the candle gutters on 'seven', tiny paper IF … THEN strips drift out of its smoke and slip, one by one, into the drawers of an ordinary office filing cabinet at the end of the shelf, and its label fades up (rule engines lived on: whether the idea failed is contested). Hold (holdAfter) on the guttered stub, the lone taper and the cabinet, both labels readable. TEXT RULE: besides stamps (the AAAI-84 panel stamp) and candle tags, at most two text items on screen at once in this shot (first the Schank quote card, which leaves with the panel; later the Cyc label and the cabinet label); the knowledge candle's words are its own lettering, a prop, not a caption.",
+   "lines": [
+    {
+     "id": "L0522a",
+     "text": "In 1984, at a panel, insiders warned of a coming winter.",
+     "spoken": "In nineteen eighty-four, at a panel, insiders warned of a coming winter.",
+     "direction": "the dissent, given its due: plain and even; leave room for the panel stamp and Schank's card to be read",
+     "pauseAfter": 3.5
+    },
+    {
+     "id": "L0522",
+     "text": "By 1987 the special machines for these programs stopped selling: a second winter. The knowledge candle burned about seven years.",
+     "direction": "plain, a little rueful; 'a second winter' with a quiet weight (the first was in chapter 4, and the panel just warned of it); 'the special machines' as a picture; the candle habit at the end, even",
+     "pauseAfter": 0.6,
+     "spoken": "By nineteen eighty-seven the special machines for these programs stopped selling: a second winter. The knowledge candle burned about seven years."
+    }
+   ],
+   "beats": [
+    {
+     "id": "panel",
+     "at": {
+      "line": "L0522a",
+      "edge": "start"
+     },
+     "what": "through the study window, in winterBlue haze outside the glass, a long panel table on a low stage with five generic seated silhouettes; place stamp AAAI-84 · AUSTIN · THE DARK AGES OF AI"
+    },
+    {
+     "id": "snow",
+     "at": {
+      "line": "L0522a",
+      "word": "winter",
+      "edge": "start"
+     },
+     "what": "a few paper flakes drift past the study window: the warned-of winter, as weather; the lamp stays candleAmber"
+    },
+    {
+     "id": "schank",
+     "at": {
+      "line": "L0522a",
+      "word": "panel",
+      "edge": "start"
+     },
+     "what": "one panel silhouette leans to a microphone; quote card: “…I don't much believe in expert systems.” — Roger Schank (the panel stamp carries the year)"
+    },
+    {
+     "id": "panelFade",
+     "at": {
+      "line": "L0522a",
+      "edge": "end",
+      "offset": 3.4
+     },
+     "what": "the panel table and Schank's card fade back into the haze beyond the glass; only the flakes remain"
+    },
+    {
+     "id": "dark",
+     "at": {
+      "line": "L0522",
+      "word": "selling",
+      "edge": "start"
+     },
+     "what": "the miniature Lisp-machine cabinet (glowing since 'machines') goes dark"
+    },
+    {
+     "id": "fled",
+     "at": {
+      "line": "L0522",
+      "word": "selling",
+      "edge": "start",
+      "offset": 0.8
+     },
+     "what": "just after the cabinet goes dark: paper banknotes lift off the shelf and drift into shadow (no words; the money leaving)"
+    },
+    {
+     "id": "returned",
+     "at": {
+      "line": "L0522",
+      "word": "winter",
+      "edge": "start"
+     },
+     "what": "the snow outside the window thickens and falls steadily: the second winter has come"
+    },
+    {
+     "id": "gutter",
+     "at": {
+      "line": "L0522",
+      "word": "seven",
+      "edge": "start"
+     },
+     "what": "knowledge candle gutters to an ember: seven-ring sleeve dims with a frayed rim, thin smoke, tag c. 1980–1987 · 7; the thin Cyc taper keeps burning"
+    },
+    {
+     "id": "cyc",
+     "at": {
+      "line": "L0522",
+      "word": "knowledge",
+      "edge": "start"
+     },
+     "what": "Cyc label beside the thin taper, which stays lit"
+    },
+    {
+     "id": "cabinet",
+     "at": {
+      "line": "L0522",
+      "word": "about",
+      "edge": "start"
+     },
+     "what": "as the candle begins to gutter, IF … THEN strips drift out of its smoke into the office filing cabinet; cabinet label rises"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "knowledge candle stub (guttered)",
+    "thin Cyc taper",
+    "study window with falling paper snow",
+    "office filing cabinet",
+    "IF … THEN strips",
+    "miniature Lisp-machine cabinet (from ch05-s08)",
+    "paper banknotes"
+   ],
+   "onScreenText": [
+    {
+     "kind": "place",
+     "text": "AAAI-84 · AUSTIN · “THE DARK AGES OF AI” (panel)",
+     "beat": "panel",
+     "until": "panelFade"
+    },
+    {
+     "kind": "quote",
+     "text": "“…I don't much believe in expert systems.” — Roger Schank",
+     "beat": "schank",
+     "until": "panelFade"
+    },
+    {
+     "kind": "label",
+     "text": "CYC · begun 1984 · Lenat kept at it until 2023",
+     "beat": "cyc"
+    },
+    {
+     "kind": "label",
+     "text": "rule engines lived on in business software",
+     "beat": "cabinet"
+    }
+   ],
+   "music": {
+    "cue": "ch05-knowledge",
+    "note": "On 'seven', the candle motif's falling figure, played by the cello, but left a step short of resolving (guttered, not gone). One high, thin sustained note stays for the Cyc taper and does not resolve. Under the panel (L0522a), the typing rhythm thins to a single repeated note, a warning heard from inside; it stops as Schank's card rises."
+   },
+   "claims": [
+    "e5-cyc",
+    "e5-lenat-death",
+    "e5-expert-survive",
+    "e5-lisp-crash",
+    "e5-aaai84"
+   ],
+   "creditsSources": [
+    "“You may have come to the wrong person; I don't much believe in expert systems.” — Roger Schank, AAAI-84 panel ‘The Dark Ages of AI’, Austin, August 1984; published in AI Magazine 6(3), 1985 (q-schank-expert)"
+   ]
+  },
+  {
+   "id": "ch05-s10",
+   "kind": "scene",
+   "setting": "the stage · 1988 · night · the messenger's lamp throws its own pool of light; two figures at its rim; then the case board and the chat box",
+   "era": "1988",
+   "mood": "dawnGold",
+   "leadIn": 0.6,
+   "holdAfter": 0.9,
+   "minDuration": 16,
+   "transitionIn": "crossfade",
+   "visual": "THIS SHOT: John loves the girl, the girl loves John: two word-strips swap at the messenger's rim, unresolved; in the study X-ray band 3 lights and the messenger's clue card is pinned. CAMERA: stage, then X-RAY (square-on, band 3), then BOARD (the C2-b pin as an insert). Crossfade (a real mood change, from the study's candleAmber to the stage's dawnGold). The trained lantern network from shot 4 now hangs over the stage as a warm lamp (not a belief candle, no rings), throwing a dawnGold pool. Inside it, a small crowd of generic figures leans in over thick two-volume books. At the rim, half in shadow and facing out, their long shadows across the floor: two men in jackets (Fodor and Pylyshyn), name cards in on 'critics'. On 'John' the argument becomes a picture: two paper word-strips rise between them, JOHN LOVES THE GIRL and THE GIRL LOVES JOHN, and on 'always' they swap places like a pair of tiles. On 'net', one of the lanterns in the hanging network flickers uncertainly. On 'John', with the strips, the small 'still argued' label fades in beneath them, so it is read before the cut to the study on 'worked'; on 'argued' the two strips stay hanging in the half-light at the rim, unresolved. Then the narrator's turn. On 'worked', the study (STUDY LOCK: as the frame reaches the study the whole tint crossfades briskly from dawnGold to candleAmber; the board is candleAmber; the X-ray box glows serverCyan as a practical): the X-ray chat box (the glowing rectangle from chapter 1) appears and holds from 'worked' until the camera finds the board on 'listening', slightly more translucent than in chapter 3. X-RAY COLUMN (as defined in ch02) band 3 lights: hidden layers as rows of small lanterns, with a thin arrow of light running backward through them, top to bottom (bands 1–2, the threshold lanterns and the knobs, stay softly lit; the seam above band 3 stays dark; bands 4–7 stay faint and empty). Nothing else new lights. On 'listening', the case board. BOARD MAP (canonical, from the staging appendix; repeated word for word): the Case Board is a fixed grid of slots laid out as network columns by era, left to right: C1 (1943–1969) the far-left input column, C2 (1969–1997), C3 (2006–2017), C4 (2018–2023), and the output, the glowing chat box, at the far right; the case card WHO TAUGHT IT? hangs in slot K at the board's centre; the suspect cards S1 RULES, S2 KNOWLEDGE and S3 LEARNING hang in the left margin, top to bottom; the founding row F1–F2 runs beneath columns C3 and C4; the question-card thread runs along the board's top edge (slots Q1 to Q4, left to right), a low-chroma oxblood string (emberRed rim mixed about 60% into candleAmber) that glints only where the lamp's pool falls; the Wall of Forecasts hangs to the board's right, its slots W1 to W8 left to right (W1 Turing, W2 chess, W3 Rosenblatt 1961, W4 Florence 2012, W5 Coulom, W6 the 30-to-50-years slip in shadow, W7 Hinton 2017, W8 an empty pin until ch15). The hands pin this chapter's clue card, a bead of light running backward on a string, into slot C2-b (column C2, beneath the scissors card, beside the Helsinki card). Threads of light tie it to the 1958 knob card in column C1 and to the Helsinki card. The LEARNING suspect card in slot S3 catches: its paper lantern glows warm for a beat, then sinks to a low ember. Through the study window, the messenger's dawnGold pool on the stage far behind fades by half, and many of the figures inside it drift out of the light toward the dark. Hold on the board. TEXT RULE: besides stamps and name cards, at most two text items in this shot.",
+   "lines": [
+    {
+     "id": "L0523",
+     "text": "Two critics asked: can a net that says John loves the girl always say the girl loves John? Still argued.",
+     "direction": "even-handed, curious; the question asked plainly, letting the two halves about John and the girl mirror each other; 'Still argued' with a small lift, unresolved",
+     "pauseAfter": 0.62
+    },
+    {
+     "id": "L0519",
+     "text": "The messenger worked. Within a decade, most of the field had stopped listening.",
+     "direction": "the chapter's turn: quiet, a little rueful; a long beat after 'worked'"
+    }
+   ],
+   "beats": [
+    {
+     "id": "rim",
+     "at": {
+      "line": "L0523",
+      "word": "critics"
+     },
+     "what": "Fodor and Pylyshyn at the rim; name cards"
+    },
+    {
+     "id": "strips",
+     "at": {
+      "line": "L0523",
+      "word": "John",
+      "edge": "start"
+     },
+     "what": "word-strips JOHN LOVES THE GIRL / THE GIRL LOVES JOHN rise between the two critics; the small label 'still argued · a 2023 reply claims to meet it' fades in beneath them"
+    },
+    {
+     "id": "swap",
+     "at": {
+      "line": "L0523",
+      "word": "always",
+      "edge": "start"
+     },
+     "what": "the two strips swap places like tiles"
+    },
+    {
+     "id": "net",
+     "at": {
+      "line": "L0523",
+      "word": "net",
+      "edge": "start"
+     },
+     "what": "a lantern in the hanging network flickers uncertainly"
+    },
+    {
+     "id": "still",
+     "at": {
+      "line": "L0523",
+      "word": "argued",
+      "edge": "start"
+     },
+     "what": "the strips hang unresolved at the rim"
+    },
+    {
+     "id": "xray",
+     "at": {
+      "line": "L0519",
+      "word": "worked",
+      "edge": "start"
+     },
+     "what": "frame tint-crossfades to candleAmber (study lock); X-RAY COLUMN band 3 lights (hidden layers and a backward arrow; bands 1–2 stay softly lit; the seam stays dark)"
+    },
+    {
+     "id": "clue",
+     "at": {
+      "line": "L0519",
+      "word": "listening",
+      "edge": "start"
+     },
+     "what": "clue card pinned in slot C2-b: a bead running backward on a string; threads to the knob and the Helsinki card; LEARNING card glows then sinks to an ember; the stage pool, seen through the window, fades by half"
+    }
+   ],
+   "cast": [
+    "fodor",
+    "pylyshyn",
+    "narrator-hands"
+   ],
+   "props": [
+    "trained lantern network hung as a lamp",
+    "two-volume books",
+    "word-strips JOHN LOVES THE GIRL / THE GIRL LOVES JOHN",
+    "X-ray chat box",
+    "clue card: bead of light on a string",
+    "LEARNING suspect card",
+    "case board threads"
+   ],
+   "onScreenText": [
+    {
+     "kind": "nameCard",
+     "text": "Jerry Fodor · Zenon Pylyshyn · 1988",
+     "beat": "rim"
+    },
+    {
+     "kind": "label",
+     "text": "JOHN LOVES THE GIRL ⇄ THE GIRL LOVES JOHN",
+     "beat": "strips"
+    },
+    {
+     "kind": "label",
+     "text": "still argued · a 2023 reply claims to meet it",
+     "beat": "strips",
+     "until": "xray"
+    }
+   ],
+   "music": {
+    "cue": "ch05-messenger",
+    "note": "Lead-in: the messenger's arpeggio, slow and warm. Under the critics, a held suspension (doubt) that does not resolve on 'still argued'. On 'worked', the X-ray's glassy shimmer; on 'stopped listening' the harmony slips from dawnGold major to a quieter minor colour and piano enters alone, handing over to chapter 6's quiet-years piano. End unresolved, intensity 2."
+   },
+   "claims": [
+    "e4-fodor-pylyshyn",
+    "e4-systematicity-2023",
+    "e6-nn-winter"
+   ]
+  }
+ ]
+}

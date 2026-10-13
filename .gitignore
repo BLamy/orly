@@ -27,3 +27,29 @@ series/from-rlcd-to-predictive-tab/source-snapshot/
 artifacts/blender/
 
 artifacts/three/
+
+# Film pipeline: sources (brief, research, story, voice/*.json, score/*.strudel, cues.json, timeline.json) are
+# tracked; regenerable media and per-run scratch are not.
+films/*/narration/cache/
+films/*/narration/clips/
+films/*/narration/*.wav
+films/*/voice/auditions/*.mp3
+films/*/score/renders/
+films/*/score/analysis/*.png
+films/*/mix/
+films/*/render/
+films/*/qa/stills/
+public/generated/*/film/*.mp4
+# Film editor (docs/film/EDITOR.md): edit/project.json is tracked; exports, imported media and save backups are not.
+films/*/edit/exports/
+films/*/edit/media/
+films/*/edit/backups/
+# Film QA: contact sheets and per-shot audit images are regenerable (film:sheets, legibility.mjs, depth.mjs);
+# the review JSON and QA reports are tracked.
+films/*/qa/sheets/
+films/*/qa/depth/
+films/*/qa/legibility/*.png
+# stray agent scratch at the repo root
+/s03/
+/.raw
+/.txt

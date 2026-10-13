@@ -1,0 +1,127 @@
+{
+ "shot": "ch03-s01",
+ "at": "2026-10-12T08:04:46.017Z",
+ "minCapPx": 22,
+ "sampled": 18,
+ "texts": 30,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "L",
+   "maxCap": 24.8
+  },
+  {
+   "text": "E",
+   "maxCap": 22.1
+  },
+  {
+   "text": "T",
+   "maxCap": 24.8
+  },
+  {
+   "text": "R",
+   "maxCap": 22.1
+  },
+  {
+   "text": "I",
+   "maxCap": 24.8
+  },
+  {
+   "text": "G",
+   "maxCap": 24.8
+  },
+  {
+   "text": "H",
+   "maxCap": 24.8
+  },
+  {
+   "text": "S",
+   "maxCap": 24.8
+  },
+  {
+   "text": "0",
+   "maxCap": 44.2
+  },
+  {
+   "text": "Clue Two: A Knob That Turns",
+   "maxCap": 29
+  },
+  {
+   "text": "W",
+   "maxCap": 24.8
+  },
+  {
+   "text": "A",
+   "maxCap": 24.8
+  },
+  {
+   "text": "N",
+   "maxCap": 24.8
+  },
+  {
+   "text": "O",
+   "maxCap": 24.8
+  },
+  {
+   "text": "frank rosenblatt",
+   "maxCap": 25.9
+  },
+  {
+   "text": "psychologist, Cornell Aeronautical Laboratory",
+   "maxCap": 26.4
+  },
+  {
+   "text": "1",
+   "maxCap": 44.1
+  },
+  {
+   "text": "7",
+   "maxCap": 44.2
+  },
+  {
+   "text": "J",
+   "maxCap": 24.8
+  },
+  {
+   "text": "U",
+   "maxCap": 24.8
+  },
+  {
+   "text": "Y",
+   "maxCap": 24.8
+  },
+  {
+   "text": "2",
+   "maxCap": 44.1
+  },
+  {
+   "text": "9",
+   "maxCap": 44.1
+  },
+  {
+   "text": "5",
+   "maxCap": 44.2
+  },
+  {
+   "text": "8",
+   "maxCap": 43.9
+  },
+  {
+   "text": "B",
+   "maxCap": 22.1
+  },
+  {
+   "text": "M",
+   "maxCap": 22.1
+  },
+  {
+   "text": "4",
+   "maxCap": 44.2
+  },
+  {
+   "text": "6",
+   "maxCap": 44
+  }
+ ]
+}

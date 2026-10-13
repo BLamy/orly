@@ -1,0 +1,59 @@
+{
+ "shot": "ch10-s04",
+ "at": "2026-10-12T20:38:46.346Z",
+ "minCapPx": 22,
+ "sampled": 25,
+ "texts": 12,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "at",
+   "maxCap": 24.5
+  },
+  {
+   "text": "bank",
+   "maxCap": 26.9
+  },
+  {
+   "text": "river",
+   "maxCap": 29.9
+  },
+  {
+   "text": "the",
+   "maxCap": 33.7
+  },
+  {
+   "text": "crossed",
+   "maxCap": 34.6
+  },
+  {
+   "text": "we",
+   "maxCap": 45.1
+  },
+  {
+   "text": "2017",
+   "maxCap": 22.1
+  },
+  {
+   "text": "THE TRANSFORMER",
+   "maxCap": 31.9
+  },
+  {
+   "text": "attention is all you need",
+   "maxCap": 22.1
+  },
+  {
+   "text": "Vaswani · Shazeer · Parmar · Uszkoreit",
+   "maxCap": 22.1
+  },
+  {
+   "text": "Jones · Gomez · Kaiser · Polosukhin",
+   "maxCap": 22.1
+  },
+  {
+   "text": "dusk",
+   "maxCap": 22.4
+  }
+ ]
+}

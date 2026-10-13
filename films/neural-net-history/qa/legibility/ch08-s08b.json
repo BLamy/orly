@@ -1,0 +1,19 @@
+{
+ "shot": "ch08-s08b",
+ "at": "2026-10-12T17:53:44.177Z",
+ "minCapPx": 22,
+ "sampled": 16,
+ "texts": 2,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "dropout · p = 0.5 · the two big halls only (fc6, fc7)",
+   "maxCap": 25.1
+  },
+  {
+   "text": "ILLUSTRATIVE",
+   "maxCap": 22.1
+  }
+ ]
+}

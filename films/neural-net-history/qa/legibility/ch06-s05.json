@@ -1,0 +1,384 @@
+{
+ "shot": "ch06-s05",
+ "at": "2026-10-12T09:22:49.719Z",
+ "minCapPx": 22,
+ "sampled": 31,
+ "texts": 83,
+ "offenders": [
+  {
+   "text": "3/14/95",
+   "maxCap": 12,
+   "minCap": 9.9,
+   "first": 20.25,
+   "last": 24.25,
+   "font": "4.6px \"Special Elite\""
+  },
+  {
+   "text": "Witnessed by Y. LeCun",
+   "maxCap": 12,
+   "minCap": 9.9,
+   "first": 20.25,
+   "last": 24.25,
+   "font": "4.6px \"Special Elite\""
+  },
+  {
+   "text": "KELLEY 1960 … LE CUN 1985",
+   "maxCap": 16.3,
+   "minCap": 15.7,
+   "first": 20.05,
+   "last": 24.25,
+   "font": "7.26819px \"Special Elite\""
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 17.9,
+   "minCap": 17.1,
+   "first": 20.05,
+   "last": 24.25,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 17.9,
+   "minCap": 17.1,
+   "first": 20.05,
+   "last": 24.25,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 17.9,
+   "minCap": 17.1,
+   "first": 20.05,
+   "last": 24.25,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 21,
+   "minCap": 20.1,
+   "first": 20.05,
+   "last": 24.25,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 21,
+   "minCap": 20.1,
+   "first": 20.05,
+   "last": 24.25,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 21,
+   "minCap": 20.1,
+   "first": 20.05,
+   "last": 24.25,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 21,
+   "minCap": 20.1,
+   "first": 20.05,
+   "last": 24.25,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 21.4,
+   "minCap": 20.5,
+   "first": 20.05,
+   "last": 24.25,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 21.4,
+   "minCap": 20.5,
+   "first": 20.05,
+   "last": 24.25,
+   "font": "9.5px \"Special Elite\""
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "BELL LABS · 14 MARCH 1995",
+   "maxCap": 22.1
+  },
+  {
+   "text": "Jackel",
+   "maxCap": 36.7
+  },
+  {
+   "text": "bets",
+   "maxCap": 36.7
+  },
+  {
+   "text": "(one",
+   "maxCap": 36.7
+  },
+  {
+   "text": "fancy",
+   "maxCap": 36.7
+  },
+  {
+   "text": "dinner)",
+   "maxCap": 36.7
+  },
+  {
+   "text": "that",
+   "maxCap": 36.7
+  },
+  {
+   "text": "by",
+   "maxCap": 36.7
+  },
+  {
+   "text": "March",
+   "maxCap": 36.7
+  },
+  {
+   "text": "14,",
+   "maxCap": 36.7
+  },
+  {
+   "text": "2000,",
+   "maxCap": 36.7
+  },
+  {
+   "text": "people",
+   "maxCap": 36.7
+  },
+  {
+   "text": "will",
+   "maxCap": 36.7
+  },
+  {
+   "text": "understand",
+   "maxCap": 36.7
+  },
+  {
+   "text": "quantitatively",
+   "maxCap": 36.7
+  },
+  {
+   "text": "why",
+   "maxCap": 36.7
+  },
+  {
+   "text": "big",
+   "maxCap": 36.7
+  },
+  {
+   "text": "neural",
+   "maxCap": 36.7
+  },
+  {
+   "text": "nets",
+   "maxCap": 36.7
+  },
+  {
+   "text": "working",
+   "maxCap": 36.7
+  },
+  {
+   "text": "on",
+   "maxCap": 36.7
+  },
+  {
+   "text": "large",
+   "maxCap": 36.7
+  },
+  {
+   "text": "databases",
+   "maxCap": 36.7
+  },
+  {
+   "text": "are",
+   "maxCap": 36.7
+  },
+  {
+   "text": "not",
+   "maxCap": 36.7
+  },
+  {
+   "text": "so",
+   "maxCap": 36.7
+  },
+  {
+   "text": "bad.",
+   "maxCap": 36.7
+  },
+  {
+   "text": "(Understanding",
+   "maxCap": 36.7
+  },
+  {
+   "text": "means",
+   "maxCap": 36.7
+  },
+  {
+   "text": "there",
+   "maxCap": 36.7
+  },
+  {
+   "text": "be",
+   "maxCap": 36.7
+  },
+  {
+   "text": "clear",
+   "maxCap": 36.7
+  },
+  {
+   "text": "conditions",
+   "maxCap": 36.7
+  },
+  {
+   "text": "and",
+   "maxCap": 36.7
+  },
+  {
+   "text": "bounds)",
+   "maxCap": 36.7
+  },
+  {
+   "text": "larry jackel",
+   "maxCap": 22.8
+  },
+  {
+   "text": "with Vapnik",
+   "maxCap": 23.3
+  },
+  {
+   "text": "LeCun (witness)",
+   "maxCap": 23.3
+  },
+  {
+   "text": "use",
+   "maxCap": 36.6
+  },
+  {
+   "text": "no",
+   "maxCap": 36.6
+  },
+  {
+   "text": "one",
+   "maxCap": 36.6
+  },
+  {
+   "text": "in",
+   "maxCap": 36.6
+  },
+  {
+   "text": "his",
+   "maxCap": 36.6
+  },
+  {
+   "text": "right",
+   "maxCap": 36.6
+  },
+  {
+   "text": "mind",
+   "maxCap": 36.6
+  },
+  {
+   "text": "Vapnik",
+   "maxCap": 36.6
+  },
+  {
+   "text": "2005,",
+   "maxCap": 36.6
+  },
+  {
+   "text": "essentially",
+   "maxCap": 36.6
+  },
+  {
+   "text": "like",
+   "maxCap": 36.6
+  },
+  {
+   "text": "those",
+   "maxCap": 36.6
+  },
+  {
+   "text": "used",
+   "maxCap": 36.6
+  },
+  {
+   "text": "1995.",
+   "maxCap": 36.6
+  },
+  {
+   "text": "…no one in his right mind will use",
+   "maxCap": 28.4
+  },
+  {
+   "text": "neural nets that are essentially",
+   "maxCap": 28.4
+  },
+  {
+   "text": "like those used in 1995.",
+   "maxCap": 28.4
+  },
+  {
+   "text": "— vapnik’s bet",
+   "maxCap": 22
+  },
+  {
+   "text": "V. Vapnik   3/14/95",
+   "maxCap": 43.3
+  },
+  {
+   "text": "L. Jackel   3/14/95",
+   "maxCap": 43.3
+  },
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 42.7
+  },
+  {
+   "text": "IT?",
+   "maxCap": 42.7
+  },
+  {
+   "text": "RULES",
+   "maxCap": 24.7
+  },
+  {
+   "text": "1943",
+   "maxCap": 24.7
+  },
+  {
+   "text": "1958",
+   "maxCap": 24.7
+  },
+  {
+   "text": "1969",
+   "maxCap": 24.7
+  },
+  {
+   "text": "HELSINKI ·",
+   "maxCap": 24.7
+  },
+  {
+   "text": "1970",
+   "maxCap": 24.7
+  },
+  {
+   "text": "1986",
+   "maxCap": 24.7
+  },
+  {
+   "text": "Witnessed by Y. LeCun   3/14/95",
+   "maxCap": 43.3
+  },
+  {
+   "text": "WHO PAID FOR DINNER?",
+   "maxCap": 24.7
+  }
+ ]
+}

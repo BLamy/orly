@@ -1,0 +1,48 @@
+{
+ "shot": "ch15-s07",
+ "at": "2026-10-08T02:42:52.982Z",
+ "minCapPx": 22,
+ "sampled": 15,
+ "texts": 6,
+ "offenders": [
+  {
+   "text": "30 SEPTEMBER 2025",
+   "maxCap": 19.4,
+   "minCap": 19.4,
+   "first": 2.85,
+   "last": 12.85,
+   "font": "500 18.5px \"IBM Plex Mono\""
+  },
+  {
+   "text": "Bernard Widrow, 2005, recalling",
+   "maxCap": 21.5,
+   "minCap": 18.8,
+   "first": 7.85,
+   "last": 12.85,
+   "font": "15px \"EB Garamond\""
+  },
+  {
+   "text": "Dartmouth, 1956",
+   "maxCap": 21.5,
+   "minCap": 18.8,
+   "first": 7.85,
+   "last": 12.85,
+   "font": "15px \"EB Garamond\""
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "bernard widrow",
+   "maxCap": 22
+  },
+  {
+   "text": "died 30 September 2025, aged 95",
+   "maxCap": 22
+  },
+  {
+   "text": "…I never got over it.",
+   "maxCap": 40.2
+  }
+ ]
+}

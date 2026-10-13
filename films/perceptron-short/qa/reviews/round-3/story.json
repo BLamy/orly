@@ -1,0 +1,68 @@
+{
+  "reviewer": "story",
+  "lens": "STORY & CURIOSITY: arc, stakes, emotion, pacing, memorable images, questions planted and paid off",
+  "round": 3,
+  "previousRounds": "Round-2 story issues checked against render/film.mp4 (frames 2.8-65.7 s) and the re-locked clock (65.83 s). FIXED: (1) The tail glitch is gone. Try 5's horizontal bar flares alone at about 47.0 s with NOW/THEN captions. By 49.0 s the needle is back at centre and the lantern is idle. At 50.0 s two separate plates (VERTICAL | HORIZONTAL) appear under 'what it could learn: simple patterns'. (2) The gap before L0108 is now 2.6 s (45.77 to 48.36), so try 5 lands in clear air, and m01 gives it a quiet D6-F#6 echo (cue notes rev 8). (3) L0105 now plants the question: 'Nobody gave it the rule' (mk1-trained verified). (4) Bookend: Rosenblatt now leans in to the eye, whose lit bar repeats try 5, instead of holding the s02 pose. (5) The verdict captions are larger, with the verdict word in small caps and a legible THEN ghost. (6) The 1969 Minsky & Papert stamp and the 'interest faded' line add a real third act. PARTIAL: s01 still shows the stand and racks in clear silhouette from about 1.3 s. Rosenblatt still walks in from the right frame edge (absent at 15.6 s, mid-stride at 19.5 s).",
+  "scores": {
+    "accuracy": 8,
+    "depth": 7.5,
+    "clarity": 7.5,
+    "story": 8,
+    "visual": 8,
+    "sync": 8,
+    "sound": 8,
+    "curiosity": 7.5
+  },
+  "issues": [
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "major",
+      "problem": "The fall is told, not shown, and it is the film's longest still stretch. From 50.0 to 58.0 s the frame is a frozen tableau: the lit horizontal bar, the two learned plates and the 1969 stamp. Meanwhile the narrator says 'In 1969, Minsky and Papert showed just how simple; for years, interest faded.' Nothing on stage shows what 'just how simple' means, and the planned stage-light dim on 'years' (57.34) is not visible between the 54.5 and 57.0 s frames. The film built its best rhythm ('Wrong, and wrong again... right') and then gives up the obvious emotional rhyme: a task where the 'right' never comes. Curiosity gets no answer to 'simple compared with what?'",
+      "fix": "On 'showed just how simple' (54.91-56.4), add a third small plate beside the two learned ones that holds the XOR case limit-linear covers. For example, two cells where 'one lit, not both' means YES and 'both' or 'none' means NO, tagged 'XOR' in era type. Under it, run the REAL trainPerceptron on XOR (never fake it) and show its own mini try row ticking fast: ✗ ✓ ✗ ✗ ✓ ✗ ... and never settling. The lantern gutters cold blue-grey on each ✗, the same 'wrong' treatment as tries 1-3, and it never flares. On 'for years, interest faded' (57.1-58.7), dim the stage lights one clear notch (about -25% key) while the XOR row keeps flickering. Then start the iris on 'faded', as now. Cue m01: under the XOR flicker, quote the 'wrong' F-over-Bb cell once, and do NOT resolve it before the Bb-to-D turn on 'descendants'."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "The planted question is visually undercut. As the narrator says 'Nobody gave it the rule' (the word 'rule' is at 24.46 s), the caption 'an illustration of the rule' sits on screen (24.0-27.4 s). A first-time viewer hears 'nobody gave it the rule' while reading 'the rule' and has to reconcile the two. Then, on 'Show it a shape' (25.3), the tag 'correct answer: horizontal' is already printed under the retina, which can read as the machine being told the answer before it guesses.",
+      "fix": "Change the disclaimer to 'an illustration, simplified' (or 'illustration · not the real wiring') and bring it in after L0105 ends (27.4 s). Hold back the 'correct answer: …' tag until the moment of the verdict on each try (it is the teacher's answer, revealed after the guess), so the guess visibly happens in the dark first."
+    },
+    {
+      "owner": "line",
+      "id": "L0105",
+      "severity": "minor",
+      "problem": "The question is planted and answered in the same breath. 'Nobody gave it the rule.' runs into 'Show it a shape' only 0.84 s after 'rule' ends, so the viewer never gets a beat to wonder 'then how?' before the demonstration begins. This is the film's one deliberate mystery, and it is the shortest silence in s03.",
+      "fix": "Re-narrate L0105 with about a 1.1-1.3 s pause after 'rule' (a <break> or a split into two clips with a preGap), keeping 'intrigued' on 'rule'. Picture: hold the empty retina with the needle trembling at centre through the pause. The cost is about 0.4 s; take it from the bookend hold, which has spare time after 'mistakes'. Re-anchor the s03 'shape' beat."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s02",
+      "severity": "minor",
+      "problem": "The setup is still 23 s of a 66 s film (35%) before the story's question arrives, and the human character only enters with 4 s to spare. Rosenblatt walks in from the right frame edge during 'the project of' (absent at 15.6 s, mid-stride at 19.5 s). So the one person in the film arrives as a pass-through, not as someone who belongs to the machine. Carried over from round 2 (art)."
+      ,
+      "fix": "Have him already present in the lab, small and in silhouette from the 'wires' or 'dials' beat (about 11-14 s), working at the patch board. On 'Frank' (20.83) he turns and lifts his arm to the plate. This gives the bookend (him leaning into the eye) a person we have already seen at work. No new lines or claims."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s03",
+      "severity": "minor",
+      "problem": "The bookend's lovely final image, the man looking into his machine's eye, has a silhouette tangent. From 60.2 to 65 s his head profile overlaps the back edge of the camera box, so the two shapes fuse into one mass. At a glance it reads as a box-headed figure, not as a face peering in.",
+      "fix": "Move the figure (or the stand) about 20-30 px apart at 1080p so a sliver of window light separates his brow and nose from the box. Keep the lean and the hand on the stand. Optionally give the eye's lit bar a faint glow on his face edge as the title brightens."
+    },
+    {
+      "owner": "shot",
+      "id": "ch01-s01",
+      "severity": "minor",
+      "problem": "Carried over from rounds 1 and 2, and still only partly fixed. From about 1.3 s the eye on its stand, the desk and all the racks read in clear silhouette under the title, so s02's part-by-part reveal ('Its eye… Behind it… racks of dials') shows things already seen.",
+      "fix": "Hold the stand and racks below about 15% luminance in s01, so only the window, the blind shafts and the glint across the eye on 'see' (2.79 s) read. Let the s02 crossfade bring up the machine."
+    }
+  ],
+  "best_moments": [
+    "'Wrong, and wrong again, and then, quite suddenly... right' (40.6-45.4 s): each word gets its own try. Tries 2 and 3 gutter cold, the retina goes dark in the held breath (43.6 s), try 4's vertical bar comes up, and the lantern flares exactly on 'right' (45.34) into the D-major bloom. This is a genuinely felt turn.",
+    "Try 5 in the new clear-air gap (about 47.0 s): the same horizontal bar that was called VERTICAL on try 1 is now called HORIZONTAL, with 'NOW try 5 · RIGHT' over 'THEN try 1 · WRONG' and a quiet celesta echo. Learning is proven as a before/after, and the joy gets its own beat before the limit arrives.",
+    "The three-act shape of the close: 'what it could learn: simple patterns' on two clean plates, then the 1969 stamp and 'for years, interest faded' as the iris closes on the lantern (58-59.6 s), so the fading is literal.",
+    "The lantern iris that match-dissolves to the eye glowing in the night lab, with Rosenblatt leaning in to look into it and the title returning small. The fairy-tale opening 'Once, a machine learned to see' is paid off by a man looking into the eye that saw.",
+    "'Nobody gave it the rule' finally plants the film's real wonder, and 'still learn from mistakes' answers it 40 s later, closing the theme of learning from error that the whole demonstration is built on."
+  ]
+}

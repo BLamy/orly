@@ -1,0 +1,63 @@
+{
+ "shot": "ch04-s07",
+ "at": "2026-10-12T08:43:39.946Z",
+ "minCapPx": 22,
+ "sampled": 18,
+ "texts": 13,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "FUKUSHIMA · TOKYO · 1979",
+   "maxCap": 22.8
+  },
+  {
+   "text": "AMARI · JAPAN · 1967",
+   "maxCap": 22.8
+  },
+  {
+   "text": "a way to train more than one layer",
+   "maxCap": 22
+  },
+  {
+   "text": "HELSINKI · 1970",
+   "maxCap": 22.8
+  },
+  {
+   "text": "ROUNDING ERRORS",
+   "maxCap": 39.8
+  },
+  {
+   "text": "C     ACCUMULATED ROUNDING ERROR",
+   "maxCap": 32.5
+  },
+  {
+   "text": "DO 20 K = N, 1, -1",
+   "maxCap": 32.5
+  },
+  {
+   "text": "D(K) = D(K) + E(K)*W(K)",
+   "maxCap": 32.5
+  },
+  {
+   "text": "20 CONTINUE",
+   "maxCap": 32.5
+  },
+  {
+   "text": "DO 30 K = 1, N",
+   "maxCap": 32.5
+  },
+  {
+   "text": "R(K) = R(K) + D(K)*U(K)",
+   "maxCap": 32.5
+  },
+  {
+   "text": "30 CONTINUE",
+   "maxCap": 32.5
+  },
+  {
+   "text": "thesis: reverse-mode differentiation",
+   "maxCap": 25.4
+  }
+ ]
+}

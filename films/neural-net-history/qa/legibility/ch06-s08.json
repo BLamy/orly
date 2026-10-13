@@ -1,0 +1,188 @@
+{
+ "shot": "ch06-s08",
+ "at": "2026-10-13T01:36:25.975Z",
+ "minCapPx": 22,
+ "sampled": 12,
+ "texts": 32,
+ "offenders": [
+  {
+   "text": "KELLEY 1960 … LE CUN 1985",
+   "maxCap": 16.9,
+   "minCap": 7.5,
+   "first": 0.25,
+   "last": 6.25,
+   "font": "7.26819px \"Special Elite\""
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 18.4,
+   "minCap": 8.2,
+   "first": 0.25,
+   "last": 6.25,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 18.4,
+   "minCap": 8.2,
+   "first": 0.25,
+   "last": 6.25,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 18.4,
+   "minCap": 8.2,
+   "first": 0.25,
+   "last": 6.25,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 18.7,
+   "minCap": 8.4,
+   "first": 0.25,
+   "last": 6.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "ROSENBLATT · 1961",
+   "maxCap": 18.7,
+   "minCap": 8.4,
+   "first": 0.25,
+   "last": 6.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "Linguistic capability,",
+   "maxCap": 18.7,
+   "minCap": 8.4,
+   "first": 0.25,
+   "last": 6.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "related to perceptual",
+   "maxCap": 18.7,
+   "minCap": 8.4,
+   "first": 0.25,
+   "last": 6.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "experience, is of the",
+   "maxCap": 18.7,
+   "minCap": 8.4,
+   "first": 0.25,
+   "last": 6.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "essence…",
+   "maxCap": 18.7,
+   "minCap": 8.4,
+   "first": 0.25,
+   "last": 6.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 21.7,
+   "minCap": 9.7,
+   "first": 0.25,
+   "last": 6.25,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 21.7,
+   "minCap": 9.7,
+   "first": 0.25,
+   "last": 6.25,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 21.7,
+   "minCap": 9.7,
+   "first": 0.25,
+   "last": 6.25,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 21.7,
+   "minCap": 9.7,
+   "first": 0.25,
+   "last": 6.25,
+   "font": "9.35px \"Special Elite\""
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "WHO PAID FOR DINNER?",
+   "maxCap": 25.5
+  },
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 44.1
+  },
+  {
+   "text": "IT?",
+   "maxCap": 44.1
+  },
+  {
+   "text": "RULES",
+   "maxCap": 25.5
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 22
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 22
+  },
+  {
+   "text": "1943",
+   "maxCap": 25.5
+  },
+  {
+   "text": "1969",
+   "maxCap": 25.5
+  },
+  {
+   "text": "HELSINKI ·",
+   "maxCap": 25.5
+  },
+  {
+   "text": "1970",
+   "maxCap": 25.5
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 22
+  },
+  {
+   "text": "1958",
+   "maxCap": 25.5
+  },
+  {
+   "text": "1986",
+   "maxCap": 25.5
+  },
+  {
+   "text": "1989",
+   "maxCap": 25.5
+  },
+  {
+   "text": "WHY WOULD ANYONE",
+   "maxCap": 25.5
+  },
+  {
+   "text": "CHOOSE THE FOG?",
+   "maxCap": 25.5
+  }
+ ]
+}

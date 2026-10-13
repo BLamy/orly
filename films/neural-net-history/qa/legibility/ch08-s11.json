@@ -1,0 +1,31 @@
+{
+ "shot": "ch08-s11",
+ "at": "2026-10-12T19:30:36.107Z",
+ "minCapPx": 22,
+ "sampled": 14,
+ "texts": 5,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "FLORENCE · FRIDAY 12 OCTOBER 2012 · 17:05",
+   "maxCap": 22.1
+  },
+  {
+   "text": "ImageNet challenge workshop, ECCV",
+   "maxCap": 23
+  },
+  {
+   "text": "geoffrey hinton",
+   "maxCap": 25.9
+  },
+  {
+   "text": "yann lecun",
+   "maxCap": 25.9
+  },
+  {
+   "text": "the full room, by Fei-Fei Li's account",
+   "maxCap": 26.4
+  }
+ ]
+}

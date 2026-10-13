@@ -1,0 +1,204 @@
+{
+ "shot": "ch05-s09b",
+ "at": "2026-10-13T01:20:08.357Z",
+ "minCapPx": 22,
+ "sampled": 30,
+ "texts": 27,
+ "offenders": [
+  {
+   "text": "CYC",
+   "maxCap": 7.7,
+   "minCap": 6.4,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "11px VT323"
+  },
+  {
+   "text": "IF … THEN",
+   "maxCap": 10.5,
+   "minCap": 5.3,
+   "first": 17.55,
+   "last": 19.55,
+   "font": "11.3474px VT323"
+  },
+  {
+   "text": "THE BRAIN IS A LOGIC MACHINE",
+   "maxCap": 11,
+   "minCap": 9.1,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "8.4px \"Special Elite\""
+  },
+  {
+   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
+   "maxCap": 11,
+   "minCap": 9.1,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "8.4px \"Special Elite\""
+  },
+  {
+   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
+   "maxCap": 11,
+   "minCap": 9.1,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "8.4px \"Special Elite\""
+  },
+  {
+   "text": "INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND",
+   "maxCap": 11,
+   "minCap": 9.1,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "8.4px \"Special Elite\""
+  },
+  {
+   "text": "AAA",
+   "maxCap": 11.4,
+   "minCap": 11.4,
+   "first": 1,
+   "last": 1,
+   "font": "26px VT323"
+  },
+  {
+   "text": "AAAI-84 · AU",
+   "maxCap": 11.4,
+   "minCap": 11.4,
+   "first": 1.55,
+   "last": 1.55,
+   "font": "26px VT323"
+  },
+  {
+   "text": "AAAI-84 · AUSTIN · “THE DARK",
+   "maxCap": 11.4,
+   "minCap": 11.4,
+   "first": 2.55,
+   "last": 2.55,
+   "font": "26px VT323"
+  },
+  {
+   "text": "AAAI-84 · AUSTIN · “THE DARK AG",
+   "maxCap": 11.4,
+   "minCap": 11.4,
+   "first": 2.73,
+   "last": 2.73,
+   "font": "26px VT323"
+  },
+  {
+   "text": "AAAI-84 · AUSTIN · “THE DARK AGES OF AI” (PA",
+   "maxCap": 11.4,
+   "minCap": 11.4,
+   "first": 3.55,
+   "last": 3.55,
+   "font": "26px VT323"
+  },
+  {
+   "text": "AAAI-84 · AUSTIN · “THE DARK AGES OF AI” (PANEL)",
+   "maxCap": 11.4,
+   "minCap": 11.4,
+   "first": 4.55,
+   "last": 8.64,
+   "font": "26px VT323"
+  },
+  {
+   "text": "c. 1980",
+   "maxCap": 11.6,
+   "minCap": 9.8,
+   "first": 0.55,
+   "last": 16.55,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "1943",
+   "maxCap": 11.8,
+   "minCap": 9.8,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "1958",
+   "maxCap": 11.8,
+   "minCap": 9.8,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "1969",
+   "maxCap": 11.8,
+   "minCap": 9.8,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "1984",
+   "maxCap": 11.8,
+   "minCap": 9.8,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "c. 1980–1987 · 7",
+   "maxCap": 11.8,
+   "minCap": 11.7,
+   "first": 16.67,
+   "last": 19.55,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "INTELLIGENCE IS",
+   "maxCap": 13.5,
+   "minCap": 13.5,
+   "first": 15.02,
+   "last": 16.34,
+   "font": "34.5px VT323"
+  },
+  {
+   "text": "KNOWLEDGE,",
+   "maxCap": 13.5,
+   "minCap": 13.5,
+   "first": 15.02,
+   "last": 16.34,
+   "font": "34.5px VT323"
+  },
+  {
+   "text": "TYPED IN BY HAND",
+   "maxCap": 13.5,
+   "minCap": 13.5,
+   "first": 15.02,
+   "last": 16.34,
+   "font": "34.5px VT323"
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "…I don’t much believe in expert systems.”",
+   "maxCap": 31.3
+  },
+  {
+   "text": "ROGER SCHANK",
+   "maxCap": 22
+  },
+  {
+   "text": "lit c. 1980 · guttered c. 1987",
+   "maxCap": 23.5
+  },
+  {
+   "text": "7 years",
+   "maxCap": 23.5
+  },
+  {
+   "text": "CYC · begun 1984 · Lenat kept at it until 2023",
+   "maxCap": 26.4
+  },
+  {
+   "text": "rule engines lived on in business software",
+   "maxCap": 26.4
+  }
+ ]
+}

@@ -1,0 +1,103 @@
+{
+  "reviewer": "story-editor",
+  "round": 8,
+  "lens": "story, curiosity and voice",
+  "runtimeCheck": "script.mjs assemble --check: 3,438 words, 33.3 min (1998.5 s) at the locked voice's 143.5 wpm (Dave Edge, speed 0.95), 0 errors, 1 warning against the 32.0 min target. This is inside the brief's 30-35 min range, so runtime is not critical. The additions below come to about +75 words (about +31 s, so about 33.8 min). Use the hold trims in the last issue to stay near 33.5.",
+  "scores": {
+    "accuracy": 8.5,
+    "depth": 8.5,
+    "clarity": 8.5,
+    "story": 8.5,
+    "curiosity": 8.5,
+    "visual": 8.5,
+    "voice": 8.5
+  },
+  "critical": [],
+  "issues": [
+    {
+      "where": "ch13-s01, after L1303 (new L1303b)",
+      "problem": "Act 4 has nine minutes with no spoken question pulling it forward. Acts 1-3 run on 'Who taught it?' and the lit-box payoff at L1212/L1215 all but answers it (an existing model, tuned by human choices). After that, ch13-ch14 play as a run of position statements: the pause, the warning, three camps, export rules, DeepSeek, the gap. The chapter is called 'The Case Reopened', but the ear is never told what the reopened case is about. The finale's STATUS: OPEN stamp, 'The newest still burn' and 'One lantern is still dark' therefore pay off a question that was never asked aloud.",
+      "fix": "After Hinton's quote, add L1303b: 'So the file reopens, on a second question: how far will it go, and how fast?' (+15, pauseAfter 0.8; narrator framing, not a claim). This gives ch13-ch15 a spine. The worry candle (L1307), the gap (L1418) and 'The candle of now: abilities will keep climbing, fast' (L1530) each answer part of it, and STATUS: OPEN answers the rest. Keep the 'Who taught it?' verdict as the final answer to the first question."
+    },
+    {
+      "where": "ch12-s08 L1219",
+      "problem": "ChatGPT is one of the brief's named topics and the film's return to the scene, but its arrival has no scale and no felt shock. 'Through that door, a stampede.' is followed only by GPT-4 and Claude launching on the same day. The code red, the investment and the leak are carried by wordless windows. A listener never hears how fast the world came through the door, and that is the stake that makes Act 4's worry make sense.",
+      "fix": "L1219: 'Through that door, a stampede. By one estimate, a hundred million users within two months, and rival labs running after them.' (+17; add claim e12-users, already marked in the bible as an analyst estimate, so keep 'By one estimate'). This makes 'stampede' literal and lets the three wordless windows illustrate 'rival labs running'."
+    },
+    {
+      "where": "ch14-s07 L1418 → ch15-s01 L1501 (re-raised from round 7)",
+      "problem": "The film's clock still jumps back without a signal at the start of the finale. 'As of October 2026, nobody agrees…' is followed about 4 s later by 'Two in the morning, October 2024.' Two Octobers two years apart sit back to back, and a listener loses the clock right where the last chapter begins.",
+      "fix": "L1501: 'Back to October 2024. Two in the morning; the tall man's phone rings.' (+2). The film already uses 'Back in 2021' for the same move (L1206), so the device is established."
+    },
+    {
+      "where": "ch15-s04 L1530",
+      "problem": "Round 7's garden path is only half fixed. In 'the tasks AI agents can finish alone on a computer double in length…' the subject is 10 words long before the verb, and the ear joins 'computer double' as if it were a noun phrase. This is the last new candle before the verdict.",
+      "fix": "'The candle of now: abilities will keep climbing, fast. By one measure, every seven months or so, the tasks an AI agent can finish on its own grow twice as long.' (+1). The time comes first and the verb is plain. Claim e14-metr-horizon is unchanged."
+    },
+    {
+      "where": "ch15-s08 L1515 (re-raised from round 7)",
+      "problem": "Two minutes before the verdict, the film says aloud that Lenat's was 'thirty-nine years, the longest candle on our shelf' (L1316). The verdict's summary then tops out at 'Some candles burned twenty years'. The headline figure undersells the film's own record, and an attentive listener hears the mismatch.",
+      "fix": "'Some candles burned nearly forty years; some, two; one match, a day. The newest still burn.' (+1). Claims e5-cyc and e5-lenat-death are already on the shot."
+    },
+    {
+      "where": "ch03-s03 L0306",
+      "problem": "This is the only verbless rim line in the film: 'At its rim, Marvin Minsky, doubting such nets could tell whether a shape was one piece, or two.' The other rim lines use a verb ('Ralph Gerard, at its rim, argued…'; 'At the other, Yann LeCun called…'). Read slowly, it sounds like a stage direction that has wandered into the narration.",
+      "fix": "'At its rim stood Marvin Minsky, who doubted such nets could tell whether a shape was in one piece, or two.' (+3; claim e2-minsky-1961 covers 'two separated parts')."
+    },
+    {
+      "where": "ch02-s05b L0212",
+      "problem": "The plant most directly relevant to the film's question is being wasted. 'Who taught it?' is the case, and Turing's 1950 idea was to educate a machine rather than program it. At the moment the line passes as a fact on a list, then gets 4.66 s of silent hold. The audience should feel the case's question first raised here, in 1950.",
+      "fix": "'Alan Turing, in 1950, proposed something stranger: not to program a grown-up mind, but to educate a child machine.' (+9; claim e1-turing-1950, which matches his 'instead of… the adult mind, why not… the child's?'). Optionally take 1 s off the shot's holdAfter (4.66 → 3.7). The silent Turing card at ch15-s10 then closes a thread the ear actually heard."
+    },
+    {
+      "where": "ch10-s04 L1024",
+      "problem": "'It out-translated every rival, after half a day's training' overstates the claim. Per e10-results, the 12-hour base model beat every earlier model and ensemble on English-German only. The English-French record needed the big model's 3.5 days.",
+      "fix": "'Its title: Attention Is All You Need. From English to German, it beat every rival after half a day's training.' (+3). Accurate, and it still has the punch."
+    },
+    {
+      "where": "ch14-s04 L1408",
+      "problem": "In 'OpenAI kept its notes hidden', 'its' most naturally means OpenAI's own notes (its research), not the model's working notes that the sentence before introduced. The point of the two-shores contrast (hidden notes vs. a published recipe) depends on this.",
+      "fix": "'OpenAI kept those notes hidden.' (0 words)"
+    },
+    {
+      "where": "ch08-s01 L0802",
+      "problem": "This is the deep dive's opening stake, and 'With five guesses, the best missed over one in four.' is too compressed for the ear. It does not say five guesses per what, or the best what. The cliff at L0822 ('twenty-six point two… fifteen point three') only feels like a cliff if this baseline was understood.",
+      "fix": "'…designed by experts, by hand. Even allowed five guesses a picture, the best program missed more than one in four.' (+5)."
+    },
+    {
+      "where": "ch15-s01, after L1528 (optional)",
+      "problem": "This is a missed curiosity beat, and it would also balance the labs. In October 2024 both science prizes went to neural-network work. The film voices only physics, and DeepMind (the lab of AlphaGo) does not appear at all in the present-day chapters, while Anthropic is named six times in the last nine minutes. The chemistry prize currently lives only on the sources card.",
+      "fix": "After 'One critic called it “a bit of a stretch.”' add: 'The next day, chemistry's prize went in part to DeepMind's Demis Hassabis and John Jumper, for a network that predicts the shapes of proteins.' (+24; claims e12-nobel-chem and e11-alphafold). If runtime must be held, this is the first addition to drop."
+    },
+    {
+      "where": "ch15-s07 L1511",
+      "problem": "Widrow's death has no time stamp. It sits after 2026 events, so the ear may take it as recent news rather than a year back. A date would also give the elegy its weight: he lived to see ChatGPT and the Nobel.",
+      "fix": "'In 2025, Bernard Widrow, who fell for the dream in 1956, died at ninety-five. He wrote that he “never got over it.”' (+2; claim e2-widrow-death, 30 September 2025)."
+    },
+    {
+      "where": "ch03-s09 L0319",
+      "problem": "In 'By the mid-sixties, most had moved on.', 'most' has no antecedent. The line before is Rosenblatt's 1961 quote, so the ear cannot tell most of whom.",
+      "fix": "'By the mid-sixties, most of the other groups had moved on.' (+4; claim e2-exits: SRI's and Widrow's groups largely left)."
+    },
+    {
+      "where": "ch08-s10 L0819",
+      "problem": "In 'the steps cut three times by hand', the verb 'cut' collides with the chapter's main verb. Stencils are 'cut' five times in this deep dive ('Nobody cut these stencils', 'the messenger cut them', 'the net cut its own'). For a moment the ear hears the people hand-cutting something again, which is the opposite of the chapter's point.",
+      "fix": "'Then five or six days downhill in fog, the stride shortened three times, by hand.' (0 words)"
+    },
+    {
+      "where": "Runtime offsets (holds)",
+      "problem": "The additions above come to about +75 words, about +31 s, which would put the film at about 33.8 min. That is still within range, but it drifts from the 32 min target.",
+      "fix": "Trim silent holds that have no reading load: ch03-s06 holdAfter 11.1 → 9.5 (the LOVE · HOPE · DESPAIR card plus chess slip still gets more than 9 s); ch10-s13b 5.7 → 4.5; ch14-s04b 5.0 → 4.0; ch02-s05b 4.66 → 3.7; ch15-s06 5.2 → 4.2. That is about -6 s. If the target must be held, drop the optional chemistry line first (about -10 s)."
+    }
+  ],
+  "strengths": [
+    "Round 7's card was taken almost entirely, and the film is better for it. The Boltzmann machine is planted by voice ('a net that settles as it cools') and paid off correctly in the Nobel citation. Widrow's dream is now specific ('building an artificial brain, for good'), so 'never got over it' lands. 'Buffalo, again: the perceptron's city.' The ch12 reorder puts 'A new door' straight against 'language was the door'. 'Machines had just learned to think longer…' sits on the two shores, where it belongs. OpenAI's founding quote is now attributed to OpenAI, and the Pentagon case ends 'that case, too, is open.'",
+    "The spine holds over 33 minutes. The case question (Who taught it?) is answered by one verdict ('Learning, with its accomplices'). One quiet figure runs from 'A tall young man takes his place, far from the flame' to 'Thirty-six years at the edge of the light. Now, it found him.' and on to a 2 a.m. phone call. One device, the candle clock, gives the brief's 'how long people thought that way' a felt duration every time.",
+    "The plant-and-payoff web is the best writing in the film, and almost every thread is now closed by ear. 'Put that in the file' is planted three times (the makers' flaw, Rosenblatt's language note, AlexNet's waiting note) and retrieved three times. 'If one exists.' returns as 'No straight cut can separate them.' 'Who paid for dinner?' becomes 'Each man lost one bet.' 'Why choose the fog?' pays off 'Its landscape is one clean bowl'. The student's thesis on rounding errors is paid off, and so is 'practically nothing' from raw text. The lamp in Chicago comes back as 'Somewhere tonight a lamp is on'.",
+    "The ending is earned and beautiful. 'Never one person. The board was a network all along.' is the film's thesis folded into its own staging. The last line, 'Somewhere tonight a lamp is on, and someone at the rim is suspicious. That is where new candles come from.', turns the film's recurring 'At its rim' dissenters into an invitation to the viewer, which is exactly the brief's 'spark curiosity'.",
+    "Both deep dives teach real mechanics by ear through inherited, tactile props. AlexNet gets the pierced tin stencil, 'Below zero counts as zero', the weir and the snuffed lanterns. Its noise-to-stencil line is the film's loveliest: 'They began as noise, like television snow. The messenger from 1986 cut them, nudge by nudge.' The two halves that split colour from edges finish on 'Every time.' The transformer gets the question, label and message cards, scored 'the stencil's way'. Then come 'two, nothing, four, two', the jug where 'About half runs to river' (the arithmetic checks out at e² over the sum, about 53%), and the halving explained back from 'Divide by eight'.",
+    "The voice is distinct, warm and wry. It saves its one first-person moment for 'You could hear it learn. I love that.' Its dry asides land: 'A winter, then, of prestige, not of use.'; 'Its plan named no rival.'; 'It left out the research, and the chips.'; 'Two signed. The third stood apart.' It is also honest about what is unknown: 'nobody knows exactly when'; 'Still argued.'; 'the accounts differ'; 'Its authors now call that result out of date.'",
+    "The emotional low of Act 1 is plain and unforced ('That May, Walter Pitts died alone. McCulloch followed four months later.' / 'on his forty-third birthday, Frank Rosenblatt drowned while sailing.'). It is set up by the film's most likeable line ('“At the moment, none whatever,” Dr. Rosenblatt said cheerfully.'), so the loss is felt rather than reported.",
+    "Fairness is part of the drama. The Navy, the press and Rosenblatt all 'fed the hype'. 'Fair credit: that was seven networks voting'. The Swiss lab gets its due, and so does Hinton's 'Google has acted very responsibly'. Three camps are given their own words. China's plan 'named no rival', and Beijing's reply gets its own sentence. Anthropic's FTX money, its book settlement and a contested court case sit under the same light as OpenAI's warning shot."
+  ]
+}

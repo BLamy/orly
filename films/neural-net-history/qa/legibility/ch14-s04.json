@@ -1,0 +1,80 @@
+{
+ "shot": "ch14-s04",
+ "at": "2026-10-08T02:42:43.417Z",
+ "minCapPx": 22,
+ "sampled": 31,
+ "texts": 10,
+ "offenders": [
+  {
+   "text": "OPEN",
+   "maxCap": 7.4,
+   "minCap": 7.2,
+   "first": 13.23,
+   "last": 15.25,
+   "font": "600 8.6px \"IBM Plex Mono\""
+  },
+  {
+   "text": "WEIGHTS",
+   "maxCap": 7.4,
+   "minCap": 7.2,
+   "first": 13.23,
+   "last": 15.25,
+   "font": "600 8.6px \"IBM Plex Mono\""
+  },
+  {
+   "text": "R1",
+   "maxCap": 12.1,
+   "minCap": 11.7,
+   "first": 13.23,
+   "last": 15.25,
+   "font": "bold 14px \"IBM Plex Mono\""
+  },
+  {
+   "text": "SEP 2024 · OPENAI o1",
+   "maxCap": 19.4,
+   "minCap": 19.4,
+   "first": 2.66,
+   "last": 11.25,
+   "font": "500 18.5px \"IBM Plex Mono\""
+  },
+  {
+   "text": "LONG CHAIN OF THOUGHT, HIDDEN BY DESIGN",
+   "maxCap": 19.4,
+   "minCap": 19.4,
+   "first": 2.66,
+   "last": 11.25,
+   "font": "500 18.5px \"IBM Plex Mono\""
+  },
+  {
+   "text": "27 JANUARY 2025",
+   "maxCap": 19.4,
+   "minCap": 19.4,
+   "first": 16,
+   "last": 21.25,
+   "font": "500 18.5px \"IBM Plex Mono\""
+  },
+  {
+   "text": "NVIDIA −17% · −$589B · RECORD 1-DAY LOSS FOR A US FIRM",
+   "maxCap": 19.4,
+   "minCap": 19.4,
+   "first": 16,
+   "last": 21.25,
+   "font": "500 18.5px \"IBM Plex Mono\""
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "20 JANUARY 2025 · PREMIER’S SYMPOSIUM",
+   "maxCap": 22.1
+  },
+  {
+   "text": "liang wenfeng",
+   "maxCap": 22
+  },
+  {
+   "text": "founder of DeepSeek",
+   "maxCap": 22
+  }
+ ]
+}

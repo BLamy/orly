@@ -1,0 +1,43 @@
+{
+ "shot": "ch04-s02",
+ "at": "2026-10-12T08:47:52.129Z",
+ "minCapPx": 22,
+ "sampled": 23,
+ "texts": 25,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "PERCEPTRONS",
+   "maxCap": 24
+  },
+  {
+   "text": "seymour papert",
+   "maxCap": 25.9
+  },
+  {
+   "text": "marvin minsky",
+   "maxCap": 25.9
+  },
+  {
+   "text": "MIT",
+   "maxCap": 26.4
+  },
+  {
+   "text": "— Minsky and Papert, 1969",
+   "maxCap": 23.5
+  },
+  {
+   "text": "MANY-LAYERED NETS ARE",
+   "maxCap": 23.8
+  },
+  {
+   "text": "A STERILE EXTENSION",
+   "maxCap": 23.8
+  },
+  {
+   "text": "lit 1969",
+   "maxCap": 22
+  }
+ ]
+}

@@ -1,0 +1,67 @@
+{
+ "shot": "ch02-s01",
+ "at": "2026-10-08T03:06:25.232Z",
+ "minCapPx": 22,
+ "sampled": 13,
+ "texts": 14,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "C",
+   "maxCap": 22.8
+  },
+  {
+   "text": "H",
+   "maxCap": 22.8
+  },
+  {
+   "text": "I",
+   "maxCap": 22.8
+  },
+  {
+   "text": "A",
+   "maxCap": 22.8
+  },
+  {
+   "text": "G",
+   "maxCap": 22.8
+  },
+  {
+   "text": "Clue One: A Switch That Fires",
+   "maxCap": 26.9
+  },
+  {
+   "text": "O",
+   "maxCap": 22.8
+  },
+  {
+   "text": "c",
+   "maxCap": 22.8
+  },
+  {
+   "text": "1",
+   "maxCap": 22.8
+  },
+  {
+   "text": "9",
+   "maxCap": 22.8
+  },
+  {
+   "text": "4",
+   "maxCap": 22.8
+  },
+  {
+   "text": "walter pitts",
+   "maxCap": 25.9
+  },
+  {
+   "text": "about 18",
+   "maxCap": 26.4
+  },
+  {
+   "text": "warren mcculloch",
+   "maxCap": 25.9
+  }
+ ]
+}

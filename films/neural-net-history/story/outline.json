@@ -1,0 +1,2286 @@
+{
+  "slug": "neural-net-history",
+  "title": "Who Taught the Machine?",
+  "subtitle": "A case history of neural networks, 1943–2026",
+  "runtimeTargetSec": 1920,
+  "wordsTarget": 3040,
+  "totals": {
+    "minutes": 32.0,
+    "words": 3040,
+    "shots": 128
+  },
+  "devices": [
+    "Case Board (clue cards, red-thread question cards, era date stamps; the Wall of Forecasts pinned beside it)",
+    "Belief Candles: a candle-clock (one ring per year, fixed scale) staged at the Edge of the Light (holders in the pool, dissenters at the rim)",
+    "X-ray chat box (the Suspect's Anatomy): only components really present in a modern chat model light up",
+    "Refrain 'Put that in the file.' (exactly five times: ch01, ch02, ch03, ch05, ch08)"
+  ],
+  "moods": [
+    "duskRose",
+    "candleAmber",
+    "winterBlue",
+    "labGreen",
+    "dawnGold",
+    "serverCyan",
+    "emberRed"
+  ],
+  "chapters": [
+    {
+      "id": "ch01",
+      "number": 1,
+      "title": "The Wonder in the Dark Room",
+      "years": "2026 → 1943",
+      "minutes": 1.5,
+      "words": 150,
+      "shots": 7,
+      "summary": "Present day: a chat box writes back, at least seven hundred million people a week use such machines, and nobody wrote it a rulebook. The detective's hands open the case (WHO TAUGHT IT?), file the launch post's own 'plausible-sounding but incorrect' admission, pin three suspects (Rules, Knowledge, Learning) and reveal, unexplained, the candle shelf and the Wall of Forecasts. The Rewind lands on Chicago, 1943; title card.",
+      "candle": "the shelf of stubs, unexplained (no candle lit)",
+      "turn": "To find who taught it, we have to go back eighty-three years. To a lamp in Chicago.",
+      "shotList": [
+        {
+          "id": "ch01-s01",
+          "kind": "scene",
+          "setting": "a dark modern room at night, 2026; a desk, a window on a deep-blue city",
+          "era": "2020s",
+          "mood": "serverCyan",
+          "purpose": "Open on a blinking cursor and an anonymous person at a desk: plant the wonder.",
+          "machine": null,
+          "cast": [
+            "chat-user"
+          ],
+          "claims": []
+        },
+        {
+          "id": "ch01-s02",
+          "kind": "scene",
+          "setting": "close on the glowing chat box",
+          "era": "2020s",
+          "mood": "serverCyan",
+          "purpose": "An illustrative reply is set one type sort at a time: a box that writes back, one word at a time (captioned 'illustration').",
+          "machine": "typeSlugs",
+          "cast": [],
+          "claims": []
+        },
+        {
+          "id": "ch01-s03",
+          "kind": "scene",
+          "setting": "pull back through the window: the city, then the night side of the earth lit with windows",
+          "era": "2020s",
+          "mood": "serverCyan",
+          "purpose": "Scale and the riddle: at least seven hundred million people a week, and nobody ever wrote it a rulebook.",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "e14-bengio"
+          ]
+        },
+        {
+          "id": "ch01-s04",
+          "kind": "scene",
+          "setting": "the detective's study: a green-shaded desk lamp clicks on; the dark case board",
+          "era": "timeless",
+          "mood": "candleAmber",
+          "purpose": "The hands pin the case card WHO TAUGHT IT? and file the launch post's admission: 'Put that in the file.' (refrain 1)",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "q12-chatgpt-limits",
+            "e12-chatgpt-launch"
+          ]
+        },
+        {
+          "id": "ch01-s05",
+          "kind": "scene",
+          "setting": "the case board, the candle shelf below it and the Wall of Forecasts beside it",
+          "era": "timeless",
+          "mood": "candleAmber",
+          "purpose": "Pin three suspects (RULES, KNOWLEDGE, LEARNING); tilt down to the shelf of stubs of very different heights, a few still burning. Plant the questions without asking them.",
+          "machine": "candle-clock (shelf)",
+          "cast": [],
+          "claims": []
+        },
+        {
+          "id": "ch01-s06",
+          "kind": "montage",
+          "setting": "the Rewind: five images run backwards (Go stone, snow, knob, bedroom fans, lantern wick)",
+          "era": "1943–2026",
+          "mood": "duskRose",
+          "purpose": "Plant the five clues paid off in ch15; land on the date stamp CHICAGO · 1943.",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "e1-mp-paper"
+          ]
+        },
+        {
+          "id": "ch01-s07",
+          "kind": "card",
+          "setting": "title card: letters cut from black card, backlit",
+          "era": "timeless",
+          "mood": "candleAmber",
+          "purpose": "WHO TAUGHT THE MACHINE? / A case history of neural networks, 1943–2026. First statement of the candle motif, third note held back.",
+          "machine": null,
+          "cast": [],
+          "claims": []
+        }
+      ]
+    },
+    {
+      "id": "ch02",
+      "number": 2,
+      "title": "Clue One: A Switch That Fires",
+      "years": "1941–1959",
+      "minutes": 1.75,
+      "words": 175,
+      "shots": 8,
+      "summary": "A teenage logician and a doctor of forty-two make a neuron into an all-or-none switch (1943); a paper lantern lights only above a threshold. Their nets could not learn: the first red-thread question goes up. The candle THE BRAIN IS A LOGIC MACHINE is lit, with Gerard at its rim. Hebb's postulate, Turing's child machine and his fifty-year slip; Minsky at the centre of SNARC's light; Dartmouth names the field, Minsky turns to symbols, and Widrow 'never got over it'. A frog's-eye paper co-written by Pitts puts the candle out after sixteen rings.",
+      "candle": "THE BRAIN IS A LOGIC MACHINE (16 rings, 1943–1959)",
+      "turn": "The paper that put out this candle had his name on it.",
+      "shotList": [
+        {
+          "id": "ch02-s01",
+          "kind": "scene",
+          "setting": "Chicago, about 1941, evening; an El trestle beyond a window",
+          "era": "1940s",
+          "mood": "candleAmber",
+          "purpose": "Introduce the teenager (about 18) and the doctor (42) who takes him into his family home.",
+          "machine": null,
+          "cast": [
+            "pitts",
+            "mcculloch"
+          ],
+          "claims": [
+            "e1-pitts-age"
+          ]
+        },
+        {
+          "id": "ch02-s02",
+          "kind": "plate",
+          "setting": "parchment plate: the 1943 paper's figure redrawn in paper-cut",
+          "era": "1940s",
+          "mood": "candleAmber",
+          "purpose": "The threshold unit: a paper lantern's wick catches only above a cut-line ring; three lanterns make AND, then OR. X-ray: threshold units glow.",
+          "machine": "paperLantern (threshold unit) on a parchmentPlate",
+          "cast": [],
+          "claims": [
+            "e1-mp-paper",
+            "q-mp-allornone"
+          ]
+        },
+        {
+          "id": "ch02-s03",
+          "kind": "scene",
+          "setting": "the case board under the desk lamp",
+          "era": "timeless",
+          "mood": "candleAmber",
+          "purpose": "Fifth assumption on a card; first red-thread card: 'How would a machine change its own wiring?' — 'Put that in the file.' (refrain 2)",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "q-mp-assumption5",
+            "e1-mp-nolearn"
+          ]
+        },
+        {
+          "id": "ch02-s04",
+          "kind": "scene",
+          "setting": "the stage: the 1943 candle's pool of light",
+          "era": "1940s",
+          "mood": "candleAmber",
+          "purpose": "Candle lit: THE BRAIN IS A LOGIC MACHINE. McCulloch and Pitts in the pool; Gerard at the rim (the brain more dial than switch); most brain scientists barely noticed.",
+          "machine": "candle-clock",
+          "cast": [
+            "mcculloch",
+            "pitts",
+            "gerard"
+          ],
+          "claims": [
+            "e1-gerard",
+            "e1-mp-ripple"
+          ]
+        },
+        {
+          "id": "ch02-s05",
+          "kind": "plate",
+          "setting": "two lanterns and a thickening thread; then the Wall of Forecasts",
+          "era": "1940s–1950",
+          "mood": "candleAmber",
+          "purpose": "Hebb's postulate (not the later slogan); Turing's child machine filed and his 'about fifty years' slip pinned as the first forecast.",
+          "machine": "lanternNetwork (two lanterns, Hebbian thread)",
+          "cast": [
+            "hebb",
+            "turing"
+          ],
+          "claims": [
+            "e1-hebb",
+            "q-hebb-postulate",
+            "e1-hebb-notslogan",
+            "q-turing-child",
+            "e1-turing-1950",
+            "q-turing-fifty"
+          ]
+        },
+        {
+          "id": "ch02-s06",
+          "kind": "scene",
+          "setting": "Harvard, summer 1951: a rack of glowing tubes, clutches and knobs",
+          "era": "1950s",
+          "mood": "labGreen",
+          "purpose": "SNARC: about forty neurons, a surplus bomber autopilot turning the knobs; young Minsky in the centre of the light. 'We sort of quit science for a while to watch the machine.'",
+          "machine": null,
+          "cast": [
+            "minsky"
+          ],
+          "claims": [
+            "e1-snarc",
+            "q-minsky-snarc-watch",
+            "e1-minsky-thesis"
+          ]
+        },
+        {
+          "id": "ch02-s07",
+          "kind": "scene",
+          "setting": "Dartmouth, summer 1956: a colonial college hall at dusk",
+          "era": "1950s",
+          "mood": "duskRose",
+          "purpose": "'Neuron Nets' is topic three of the proposal that names artificial intelligence; Minsky turns towards symbols; Widrow sits in for a week and 'never got over it'.",
+          "machine": null,
+          "cast": [
+            "minsky",
+            "mccarthy",
+            "widrow"
+          ],
+          "claims": [
+            "e1-dartmouth-neuronnets",
+            "e1-mccarthy-name",
+            "e1-minsky-switch",
+            "q-widrow-dartmouth",
+            "e2-widrow-dartmouth"
+          ]
+        },
+        {
+          "id": "ch02-s08",
+          "kind": "scene",
+          "setting": "the shelf in the study; a frog silhouette on a lily pad cut-out in the candle's last light",
+          "era": "1959",
+          "mood": "candleAmber",
+          "purpose": "The frog's-eye paper, with Pitts's own name on it, puts the candle out: sixteen rings. Clue card: a lantern with a wick.",
+          "machine": "candle-clock",
+          "cast": [],
+          "claims": [
+            "e1-frog"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ch03",
+      "number": 3,
+      "title": "Clue Two: A Knob That Turns",
+      "years": "1957–1966",
+      "minutes": 2.0,
+      "words": 205,
+      "shots": 9,
+      "summary": "Washington, 1958: a computer learns left from right in fifty cards and the Navy predicts it will be 'conscious of its existence' (blame shared fairly). The candle A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK is lit; Minsky now stands at its rim. In Buffalo the Mark I's knobs turn only on mistakes; the convergence theorem's 'if' becomes a new question card. Rosenblatt's cheer, ADALINE built over a weekend, and the 1961 book: the limit, a false clue ('back-propagating error-correction') and a sentence about language put in the file. By 1965–66 the groups have left: about seven rings.",
+      "candle": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK (c. 7 rings, 1958–c. 1965)",
+      "turn": "Nobody could teach the second layer. And then someone wrote a book about why.",
+      "shotList": [
+        {
+          "id": "ch03-s01",
+          "kind": "scene",
+          "setting": "Washington, 7 July 1958: a room-sized computer, punch cards dropping into a hopper",
+          "era": "1950s",
+          "mood": "labGreen",
+          "purpose": "After fifty cards the machine tells left from right; tally counts to fifty.",
+          "machine": null,
+          "cast": [
+            "rosenblatt",
+            "navy-officer",
+            "reporter"
+          ],
+          "claims": [
+            "e2-1958-demo"
+          ]
+        },
+        {
+          "id": "ch03-s02",
+          "kind": "card",
+          "setting": "next morning: a newspaper boy runs the headline across the frame; quote card",
+          "era": "1950s",
+          "mood": "labGreen",
+          "purpose": "The Navy 'expects will be able to walk, talk, see, write, reproduce itself and be conscious of its existence'; blame shared (the lede, Rosenblatt's exuberance, the 'happy bloodhounds' press).",
+          "machine": null,
+          "cast": [
+            "newsboy"
+          ],
+          "claims": [
+            "q-nyt-1958",
+            "e2-nyt-lede",
+            "e2-hype-responsibility",
+            "q-rosenblatt-bloodhounds"
+          ]
+        },
+        {
+          "id": "ch03-s03",
+          "kind": "scene",
+          "setting": "the stage: the 1958 candle's pool",
+          "era": "1950s",
+          "mood": "labGreen",
+          "purpose": "Candle lit. Rosenblatt inside the light; Minsky has moved to the rim ('two separated parts'); Rosenblatt's footnote: 'the loyal opposition'.",
+          "machine": "candle-clock (Edge of the Light)",
+          "cast": [
+            "rosenblatt",
+            "minsky",
+            "navy-officer"
+          ],
+          "claims": [
+            "e2-minsky-1961",
+            "q-minsky-twoparts",
+            "q-rosenblatt-loyal"
+          ]
+        },
+        {
+          "id": "ch03-s04",
+          "kind": "scene",
+          "setting": "Buffalo, 1958: the Mark I as a backlit harp of random patch cords, a 20×20 eye, racks of motor-driven knobs",
+          "era": "1950s",
+          "mood": "labGreen",
+          "purpose": "Date stamp BUFFALO · 1958. The perceptron learns bars; only active knobs turn, only on mistakes: 'you could hear it learn'. The wiring question card comes down. X-ray: weights glow.",
+          "machine": "perceptronRetina (on the markIPerceptron set)",
+          "cast": [
+            "rosenblatt"
+          ],
+          "claims": [
+            "e2-mark1-specs",
+            "e2-mark1-random"
+          ]
+        },
+        {
+          "id": "ch03-s05",
+          "kind": "plate",
+          "setting": "parchment plate: the learning rule and a dividing line",
+          "era": "1950s",
+          "mood": "labGreen",
+          "purpose": "w ← w + η·t·x on screen; the convergence theorem finds a line *if* one exists. New card: 'And if no straight line exists?'",
+          "machine": "perceptronRetina + parchmentPlate",
+          "cast": [],
+          "claims": [
+            "e2-convergence"
+          ]
+        },
+        {
+          "id": "ch03-s06",
+          "kind": "card",
+          "setting": "quote cards beside Rosenblatt in the pool; Simon and Newell's slip pinned on the Wall",
+          "era": "1950s",
+          "mood": "labGreen",
+          "purpose": "'At the moment, none whatever,' said cheerfully; 'Love. Hope. Despair.' The chess-in-ten-years slip goes up on the Wall of Forecasts.",
+          "machine": null,
+          "cast": [
+            "rosenblatt"
+          ],
+          "claims": [
+            "q-rosenblatt-none",
+            "q-rosenblatt-love",
+            "q-simon-chess",
+            "e1-chess-prediction"
+          ]
+        },
+        {
+          "id": "ch03-s07",
+          "kind": "scene",
+          "setting": "Stanford, a weekend in fall 1959: a bench, a black shoebox with a meter needle",
+          "era": "1950s",
+          "mood": "labGreen",
+          "purpose": "Widrow and Hoff: a smoother rule on Friday; 'By late Sunday afternoon, the single neuron was fabricated and working.'",
+          "machine": null,
+          "cast": [
+            "widrow",
+            "hoff"
+          ],
+          "claims": [
+            "q-widrow-sunday",
+            "e2-lms",
+            "e2-adaline"
+          ]
+        },
+        {
+          "id": "ch03-s08",
+          "kind": "scene",
+          "setting": "1961: Rosenblatt's book open on a desk; the Wall of Forecasts",
+          "era": "1960s",
+          "mood": "labGreen",
+          "purpose": "The limit (26 letters, two typefaces); the caption BACK-PROPAGATING ERROR-CORRECTION as a false clue; 'Linguistic capability… is of the essence' pinned. 'Put that in the file.' (refrain 3)",
+          "machine": null,
+          "cast": [
+            "rosenblatt"
+          ],
+          "claims": [
+            "q-rosenblatt-limit",
+            "e2-mark1-limits",
+            "e2-backprop-name",
+            "q-rosenblatt-linguistic"
+          ]
+        },
+        {
+          "id": "ch03-s09",
+          "kind": "scene",
+          "setting": "the 1958 candle guttering; figures leaving the pool one by one",
+          "era": "1960s",
+          "mood": "duskRose",
+          "purpose": "By 1965–66 the groups have left, stuck on training more than one layer: about seven rings. Clue card: a knob.",
+          "machine": "candle-clock",
+          "cast": [
+            "widrow"
+          ],
+          "claims": [
+            "e2-exits"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ch04",
+      "number": 4,
+      "title": "The Cold Case",
+      "years": "1969–1982",
+      "minutes": 1.75,
+      "words": 165,
+      "shots": 8,
+      "summary": "The first winter, in sparse words and long holds. One straight cut can never solve XOR; two cuts can, but nobody knows how to train them, and Perceptrons offers only an 'intuitive judgment that the extension is sterile'. The cold year 1969 (Turing Award, Mansfield Amendment, Pitts's death told as a lamp on a sill), Rosenblatt's death in 1971 and the handwritten dedication, Lighthill in Britain, and the fair line that the book was one cause among several. The lamplighters' windows in the snow, including a Helsinki thesis on rounding errors; a tall young man appears at a desk at the rim, Sussex 1976.",
+      "candle": "MANY-LAYERED NETS ARE A STERILE EXTENSION (c. 17 rings, frayed; 1969–c. 1986)",
+      "turn": "He would spend the next thirty-six years at the edge of the light.",
+      "shotList": [
+        {
+          "id": "ch04-s01",
+          "kind": "plate",
+          "setting": "parchment plate: four lanterns at the corners, a pair of scissors",
+          "era": "1960s",
+          "mood": "labGreen",
+          "purpose": "XOR: one cut always leaves a lantern on the wrong side; two cuts (a hidden layer) carve the band. Representing was known; training was not.",
+          "machine": "xorPlate",
+          "cast": [],
+          "claims": [
+            "e3-perceptrons",
+            "e3-xor-known"
+          ]
+        },
+        {
+          "id": "ch04-s02",
+          "kind": "card",
+          "setting": "quote card, then the stage: the 1969 candle lit beside a giant book",
+          "era": "1960s",
+          "mood": "duskRose",
+          "purpose": "'…our intuitive judgment that the extension is sterile.' Candle lit. The straight-line card is replaced: 'Then how do you train the hidden layer?' (Irony: the first author built SNARC.)",
+          "machine": "candle-clock",
+          "cast": [
+            "minsky-1960s",
+            "papert"
+          ],
+          "claims": [
+            "q-perceptrons-sterile",
+            "e3-sterile",
+            "e1-snarc"
+          ]
+        },
+        {
+          "id": "ch04-s03",
+          "kind": "scene",
+          "setting": "a field at dusk: the book's shadow lengthens into night; snow begins",
+          "era": "1969",
+          "mood": "winterBlue",
+          "purpose": "The cold year: a Turing Award, and Congress narrowing military research to 'a direct and apparent relationship'. Snow density is a labelled qualitative ramp.",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "e3-minsky-turing",
+            "q-mansfield",
+            "e3-mansfield"
+          ]
+        },
+        {
+          "id": "ch04-s04",
+          "kind": "scene",
+          "setting": "a boarding-house window at night; a small lamp left on the sill",
+          "era": "1969",
+          "mood": "winterBlue",
+          "purpose": "Pitts dies alone on 14 May 1969; McCulloch four months later. Restraint: the lamp, a hold, no dramatisation.",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "e1-pitts-death"
+          ]
+        },
+        {
+          "id": "ch04-s05",
+          "kind": "scene",
+          "setting": "a single candle; a book opening to a handwritten line",
+          "era": "1971–1972",
+          "mood": "winterBlue",
+          "purpose": "11 July 1971: Rosenblatt drowns sailing on his 43rd birthday (no weather, no implication). The next printing: 'In memory of Frank Rosenblatt'. Hold in silence.",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "e3-rosenblatt-death",
+            "e3-dedication"
+          ]
+        },
+        {
+          "id": "ch04-s06",
+          "kind": "scene",
+          "setting": "a raised lecture platform in Britain; a televised debate across a candle",
+          "era": "1970s",
+          "mood": "winterBlue",
+          "purpose": "Lighthill and the 'combinatorial explosion'; the debate; UK funding falls for almost a decade. Fair line: true, narrow theorems read as a verdict, one cause among several; Papert's 'Snow White' card.",
+          "machine": null,
+          "cast": [
+            "lighthill",
+            "michie"
+          ],
+          "claims": [
+            "e3-lighthill",
+            "q-lighthill-explosion",
+            "e3-lighthill-debate",
+            "e3-uk-cut",
+            "e3-killed-debate",
+            "e3-alpac",
+            "q-papert-understand"
+          ]
+        },
+        {
+          "id": "ch04-s07",
+          "kind": "scene",
+          "setting": "the winter map: a snowbound paper landscape at night with a few lit windows",
+          "era": "1967–1980",
+          "mood": "winterBlue",
+          "purpose": "The lamplighters: Amari, a Helsinki thesis on rounding errors (the clue filed under the wrong subject), Werbos (disputed), Fukushima at a broadcaster's lab. 'Nobody in the warm houses was looking at these windows. That is what a winter is.'",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "e3-amari",
+            "e3-linnainmaa",
+            "e3-werbos",
+            "e3-neocognitron"
+          ]
+        },
+        {
+          "id": "ch04-s08",
+          "kind": "scene",
+          "setting": "the low winter candle; at the very rim of its light, a desk; the Wall beside the board",
+          "era": "1976",
+          "mood": "winterBlue",
+          "purpose": "Sussex, 1976: a tall young man, seated at a desk at the edge of the light (unnamed for now; never standing in this era). The chess slip yellows and curls. Clue card: scissors making two cuts, tied to the Helsinki thesis.",
+          "machine": "candle-clock (Edge of the Light)",
+          "cast": [
+            "hinton-young"
+          ],
+          "claims": [
+            "e4-hinton-cv",
+            "q-simon-chess"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ch05",
+      "number": 5,
+      "title": "Clue Three: The Messenger Who Runs Backward",
+      "years": "1981–1995",
+      "minutes": 2.25,
+      "words": 225,
+      "shots": 10,
+      "summary": "The thaw: Hopfield's Versailles talk that nobody remembered; the tall man's wandering desks to Toronto (seated). October 1986: a lantern network learns XOR as the messenger runs backward and the hidden-layer card comes down; the misty hills plant the fog. Fair credit (several inventors; the 1961 false clue returns). Meanwhile the rival suspect Knowledge has its boom (MYCIN, Cyc's 1985 'practically nothing' put in the file), the 'AI Winter' is named in 1984 and Lisp machines go dark in 1987; Fodor and Pylyshyn stand at the rim of the connectionist light.",
+      "candle": "INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND (c. 7 rings, c. 1980–1987; a thin Cyc taper ~39)",
+      "turn": "The messenger worked. And for the next fifteen years, almost nobody important wanted to hear from it.",
+      "shotList": [
+        {
+          "id": "ch05-s01",
+          "kind": "scene",
+          "setting": "Versailles, summer 1981: the Hall of Mirrors, hundreds of mirrored silhouettes, none looking",
+          "era": "1980s",
+          "mood": "dawnGold",
+          "purpose": "A physicist presents a network; 'I have never met anyone who remembered hearing the talk.' Plant for the Nobel.",
+          "machine": null,
+          "cast": [
+            "hopfield"
+          ],
+          "claims": [
+            "e4-hopfield-versailles",
+            "q-hopfield-versailles"
+          ]
+        },
+        {
+          "id": "ch05-s02",
+          "kind": "plate",
+          "setting": "parchment plate: an energy landscape of valleys",
+          "era": "1980s",
+          "mood": "dawnGold",
+          "purpose": "A ball rolls into a valley and a half-remembered pattern completes itself (memory as a valley).",
+          "machine": "parchmentPlate (energy valleys)",
+          "cast": [],
+          "claims": [
+            "e4-hopfield"
+          ]
+        },
+        {
+          "id": "ch05-s03",
+          "kind": "scene",
+          "setting": "a sequence of desks at the rim of the light: San Diego, Cambridge, Pittsburgh, Toronto 1987",
+          "era": "1980s",
+          "mood": "labGreen",
+          "purpose": "The tall man's wandering, seated at each desk; Toronto partly because US AI money was military. The Boltzmann machine as one flicker of cooling lanterns.",
+          "machine": "lanternNetwork (brief cooling flicker)",
+          "cast": [
+            "hinton-young"
+          ],
+          "claims": [
+            "e4-hinton-cv",
+            "e4-hinton-leaves-us",
+            "e4-boltzmann"
+          ]
+        },
+        {
+          "id": "ch05-s04",
+          "kind": "plate",
+          "setting": "9 October 1986: a lantern network on a loom of strings",
+          "era": "1980s",
+          "mood": "dawnGold",
+          "purpose": "Real XOR training: light flows up, error glows, the messenger runs back and tugs each string by its share of the blame. The hidden-layer card comes down; hidden units find features (family trees).",
+          "machine": "lanternNetwork (XOR, forward wave + backward messenger)",
+          "cast": [
+            "rumelhart",
+            "hinton-young"
+          ],
+          "claims": [
+            "e4-rhw",
+            "q-rhw-abstract",
+            "e4-rhw-family"
+          ]
+        },
+        {
+          "id": "ch05-s05",
+          "kind": "scene",
+          "setting": "the misty hills at night: a traveller with a lantern",
+          "era": "timeless",
+          "mood": "dawnGold",
+          "purpose": "Gradient descent: he sees only the slope at his feet; a timid stride is trapped in a hollow, a bold one clears the ridge. Plant: the fog and its traps.",
+          "machine": "mistyHills",
+          "cast": [],
+          "claims": [
+            "e4-rhw"
+          ]
+        },
+        {
+          "id": "ch05-s06",
+          "kind": "scene",
+          "setting": "the case board: the Helsinki thread lights; the 1961 caption card lifts",
+          "era": "timeless",
+          "mood": "candleAmber",
+          "purpose": "Who invented it? Several people, independently; the 1986 paper made it stick. The false clue returns. 'I have never claimed that I invented backpropagation.' NETtalk babbles then reads; a van steers through autumn woods.",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "e4-backprop-priority",
+            "e2-backprop-name",
+            "q-hinton-notinvent",
+            "e4-nettalk",
+            "q-nettalk-babble",
+            "q-alvinn-drive"
+          ]
+        },
+        {
+          "id": "ch05-s07",
+          "kind": "scene",
+          "setting": "the stage: a second candle at the far end of the shelf; drawers of index cards like a sea",
+          "era": "1980s",
+          "mood": "candleAmber",
+          "purpose": "The rival suspect's candle lit: INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND. MYCIN beats specialists in a blinded test, never used on a patient; Cyc begins.",
+          "machine": "candle-clock",
+          "cast": [
+            "lenat"
+          ],
+          "claims": [
+            "e5-knowledge-principle",
+            "e5-mycin",
+            "e5-mycin-unused",
+            "e5-cyc"
+          ]
+        },
+        {
+          "id": "ch05-s08",
+          "kind": "card",
+          "setting": "quote card filed into the manila folder",
+          "era": "1985",
+          "mood": "candleAmber",
+          "purpose": "Cyc, 1985: 'practically nothing that current AI technology could draw from the raw text.' 'Put that in the file.' (refrain 4) Fifth Generation researchers at racks, not a menace.",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "q-lenat-rawtext",
+            "e5-fgcs",
+            "e5-fgcs-not-nn"
+          ]
+        },
+        {
+          "id": "ch05-s09",
+          "kind": "scene",
+          "setting": "Austin 1984, then 1987: a room of cubicles whose screens go dark one by one",
+          "era": "1980s",
+          "mood": "winterBlue",
+          "purpose": "The 'AI Winter' named as a pun on nuclear winter; the Lisp-machine market collapses in about a year. The knowledge candle gutters at about seven rings; the thin Cyc taper keeps burning.",
+          "machine": "candle-clock",
+          "cast": [],
+          "claims": [
+            "q-mcdermott-winter",
+            "e5-aaai84",
+            "e5-lisp-crash",
+            "e5-cyc",
+            "e5-lenat-death"
+          ]
+        },
+        {
+          "id": "ch05-s10",
+          "kind": "scene",
+          "setting": "the connectionist light; two figures at its rim",
+          "era": "1988",
+          "mood": "dawnGold",
+          "purpose": "Fodor and Pylyshyn: 'John loves the girl…'; still argued in 2023. X-ray: hidden layers and a backward arrow glow. Clue card: a bead running backward on a string.",
+          "machine": "candle-clock (Edge of the Light)",
+          "cast": [
+            "fodor",
+            "pylyshyn"
+          ],
+          "claims": [
+            "q-fodor-pylyshyn",
+            "e4-fodor-pylyshyn",
+            "e4-systematicity-2023"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ch06",
+      "number": 6,
+      "title": "The Quiet Years",
+      "years": "1988–2006",
+      "minutes": 1.75,
+      "words": 180,
+      "shots": 8,
+      "summary": "Classical machine learning done justice. At Bell Labs a stencil learns ZIP codes from Buffalo mail ('Buffalo, twice') and later reads about one US check in ten: a winter of prestige, not of use. Vapnik's widest street and the SVM's one clean bowl (no fog, no traps) against the misty hills; Breiman's verdict. The candle NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY, with the holdouts' testimony at its rim. The 1995 dinner bet; the fading whisper and the LSTM's protected pipe; the chess slip comes down 29 years late. Ends on 'Why would anyone choose the fog?'",
+      "candle": "NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY (c. 12 rings, frayed; late 1990s–c. 2009–12)",
+      "turn": "One clean bowl. No fog. No traps. So why would anyone choose the fog?",
+      "shotList": [
+        {
+          "id": "ch06-s01",
+          "kind": "scene",
+          "setting": "Holmdel, 1988–89: a gooseneck camera over a handwritten digit under a desk lamp",
+          "era": "1980s",
+          "mood": "duskRose",
+          "purpose": "A pierced tin stencil slides over the digit (brief preview); ZIP codes from Buffalo mail. 'Buffalo, twice.'",
+          "machine": "stencilLantern (brief preview)",
+          "cast": [
+            "lecun"
+          ],
+          "claims": [
+            "e6-lecun-belllabs",
+            "e6-lecun-1989",
+            "e2-mark1-specs"
+          ]
+        },
+        {
+          "id": "ch06-s02",
+          "kind": "scene",
+          "setting": "a bank's back room, 1996: a cheque sorter running",
+          "era": "1990s",
+          "mood": "duskRose",
+          "purpose": "'It is deployed commercially and reads several million cheques per day'; about one check in ten (LeCun's estimate). 'A winter of prestige, not of use.'",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "q-lecun-checks",
+            "e6-checks"
+          ]
+        },
+        {
+          "id": "ch06-s03",
+          "kind": "plate",
+          "setting": "Vapnik's blackboard becomes the widest empty street between two crowds of lanterns; then a single clean bowl",
+          "era": "1990s",
+          "mood": "duskRose",
+          "purpose": "SVMs with support vectors on the kerb; the landscape is one clean bowl, no fog, no traps, set against the misty hills. Breiman's quote card. The fairest case for the age's belief.",
+          "machine": "mistyHills (contrast: one convex bowl) + parchmentPlate",
+          "cast": [
+            "vapnik",
+            "breiman"
+          ],
+          "claims": [
+            "e6-svm",
+            "q-breiman-svm",
+            "e6-two-cultures"
+          ]
+        },
+        {
+          "id": "ch06-s04",
+          "kind": "scene",
+          "setting": "the stage: the 1990s candle; small hand-lanterns at its rim",
+          "era": "1990s–2000s",
+          "mood": "duskRose",
+          "purpose": "Candle lit. At the rim: LeCun, the tall man at a Toronto window, Bengio in Montréal; testimony cards ('couldn't get our papers published', 'the worst possible time', 'This is crazy…'); the 'Deep Learning conspiracy'.",
+          "machine": "candle-clock (Edge of the Light)",
+          "cast": [
+            "lecun",
+            "hinton-young",
+            "bengio"
+          ],
+          "claims": [
+            "e6-nn-winter",
+            "q-lecun-outcast",
+            "q-bengio-worst",
+            "q-hinton-crazy",
+            "e6-outcast",
+            "q-lecun-conspiracy",
+            "e6-ncap"
+          ]
+        },
+        {
+          "id": "ch06-s05",
+          "kind": "scene",
+          "setting": "Bell Labs, 14 March 1995: one typed sheet on a table, three signatures",
+          "era": "1990s",
+          "mood": "duskRose",
+          "purpose": "The Jackel–Vapnik bet, LeCun as witness. Red-thread card: 'Who paid for dinner?'",
+          "machine": null,
+          "cast": [
+            "jackel",
+            "vapnik",
+            "lecun"
+          ],
+          "claims": [
+            "e6-bet",
+            "q-bet-vapnik",
+            "q-bet-jackel"
+          ]
+        },
+        {
+          "id": "ch06-s06",
+          "kind": "plate",
+          "setting": "a long line of lanterns passing a whisper; a protected pipe",
+          "era": "1990s",
+          "mood": "duskRose",
+          "purpose": "Vanishing gradients: the error fades like a whisper down a long line; the LSTM pipe carries it over a thousand steps. Plant for ch10.",
+          "machine": "lanternNetwork (deep chain, fading signal)",
+          "cast": [
+            "hochreiter"
+          ],
+          "claims": [
+            "e5-vanishing",
+            "e6-lstm",
+            "q-lstm"
+          ]
+        },
+        {
+          "id": "ch06-s07",
+          "kind": "scene",
+          "setting": "the Wall of Forecasts beside the board",
+          "era": "1997–2000",
+          "mood": "candleAmber",
+          "purpose": "May 1997: the chess slip comes down, 29 years late, won by search with no neural learning. The year 2000 passes and Turing's slip curls.",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "e6-deepblue",
+            "e1-chess-prediction",
+            "q-turing-fifty"
+          ]
+        },
+        {
+          "id": "ch06-s08",
+          "kind": "scene",
+          "setting": "the case board; the fog card pinned on red thread",
+          "era": "timeless",
+          "mood": "candleAmber",
+          "purpose": "Clue card: a pierced tin stencil and a pipe. Close on the new card: 'Why would anyone choose the fog?'",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "e6-svm"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ch07",
+      "number": 7,
+      "title": "Two Accomplices: Data and Fire",
+      "years": "2006–2012",
+      "minutes": 1.25,
+      "words": 125,
+      "shots": 6,
+      "summary": "The dinner bet resolves (each man lost one). The 2006 belief that deep nets must be warmed up layer by layer is lit ('All three conditions are now satisfied' — they were nearly right). Accomplice one, data: Fei-Fei Li's nineteen-year estimate, tenure advice and nearly fifty thousand crowd workers in 167 countries. Accomplice two, fire: gaming cards, a seventy-fold speed-up, 'good old on-line back-propagation' with no warming up, the rectifier, and phones already hearing through neural nets. The pre-training candle gutters; the word will come back in a different coat.",
+      "candle": "DEEP NETS MUST BE WARMED UP LAYER BY LAYER (c. 5 rings, frayed; 2006–c. 2010–12)",
+      "turn": "Keep an eye on that word, pre-training. It will come back wearing a different coat.",
+      "shotList": [
+        {
+          "id": "ch07-s01",
+          "kind": "card",
+          "setting": "the red thread: the dinner card",
+          "era": "timeless",
+          "mood": "candleAmber",
+          "purpose": "'Who paid for dinner?' Each man lost one. The card comes down.",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "e6-bet"
+          ]
+        },
+        {
+          "id": "ch07-s02",
+          "kind": "scene",
+          "setting": "the stage: the 2006 candle; the tall man at its rim (standing allowed from the mid-2000s)",
+          "era": "2000s",
+          "mood": "dawnGold",
+          "purpose": "Candle lit; the paper's last line on a card: 'All three conditions are now satisfied.' — 'They were nearly right.'",
+          "machine": "candle-clock",
+          "cast": [
+            "hinton"
+          ],
+          "claims": [
+            "e7-dbn",
+            "e7-autoencoder",
+            "q-hs-threeconditions",
+            "e7-pretraining-belief"
+          ]
+        },
+        {
+          "id": "ch07-s03",
+          "kind": "scene",
+          "setting": "Princeton 2007, then a dark globe whose windows light up one by one",
+          "era": "2000s",
+          "mood": "dawnGold",
+          "purpose": "Accomplice one, data: about nineteen years by hand ('no graduate students would want to do this project!'), tenure advice, 'In summer 2008, we discovered crowdsourcing', almost fifty thousand workers in 167 countries. A mosaic of thumbnails folds into a tree.",
+          "machine": null,
+          "cast": [
+            "li",
+            "crowd-worker"
+          ],
+          "claims": [
+            "q-li-slide-moral",
+            "e7-imagenet-19years",
+            "q-li-tenure",
+            "e7-imagenet-skeptics",
+            "q-li-slide-crowd",
+            "q-li-workers",
+            "e7-imagenet-workers"
+          ]
+        },
+        {
+          "id": "ch07-s04",
+          "kind": "scene",
+          "setting": "a gaming card held up to the lamp; its fans spin up like small furnaces",
+          "era": "2000s–2010s",
+          "mood": "dawnGold",
+          "purpose": "Accomplice two, fire: cards not built for this, seventy times faster; 'good old on-line back-propagation' with no warming up; the rectifier.",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "e7-cuda",
+            "e7-raina",
+            "q-ciresan-goodold",
+            "e7-ciresan",
+            "e7-relu"
+          ]
+        },
+        {
+          "id": "ch07-s05",
+          "kind": "scene",
+          "setting": "summer 2012: a phone glowing in a hand on a dark street",
+          "era": "2010s",
+          "mood": "serverCyan",
+          "purpose": "Phones already hearing through neural networks, about three months before Florence.",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "e7-jellybean",
+            "q-vanhoucke-android"
+          ]
+        },
+        {
+          "id": "ch07-s06",
+          "kind": "scene",
+          "setting": "the shelf: the 2006 candle gutters with a frayed rim and a 'c.' tag",
+          "era": "2012",
+          "mood": "candleAmber",
+          "purpose": "The pre-training candle goes out (end date interpretive). X-ray: racks of cards and a sea of text glow. Clue card: two small furnaces.",
+          "machine": "candle-clock",
+          "cast": [],
+          "claims": [
+            "e7-pretraining-belief"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ch08",
+      "number": 8,
+      "title": "DEEP DIVE — The Night in Florence",
+      "years": "2011–2013",
+      "minutes": 5.0,
+      "words": 400,
+      "shots": 14,
+      "summary": "AlexNet in the five-beat grammar, with a teaching promise. The belief (features designed by experts; 28.2% and 25.8%), the bedroom with two gaming cards, then the machine built part by part: a photo as a grid of lights, one stencil and its worked number, stencils on stencils in a cathedral of true layer shapes, stencils learned from noise by the 1986 messenger, the weir and the ladle, ten bits per label against sixty million numbers (crops, mirrors, dropout), two towers that specialised without being told, five days downhill with the stride cut by hand three times. Florence, 12 October 2012: 15.3% against 26.2% (an ensemble of seven; best single net 18.2%). What lasted, fair credit to IDSIA, the 'waiting' prophecy, and the honest note that convolution is not part of the suspect.",
+      "candle": "TO SEE, A MACHINE NEEDS FEATURES DESIGNED BY EXPERTS (13 rings, 1999–2012) goes out; LEARNED FEATURES, GIVEN DATA AND ARITHMETIC is lit (still burning)",
+      "turn": "Put that in the file. And not every clue is a part of the suspect.",
+      "shotList": [
+        {
+          "id": "ch08-s01",
+          "kind": "scene",
+          "setting": "a craftsman's workshop: tin stencils cut by hand, fed to a judge's lectern; a leaderboard of lanterns",
+          "era": "2010–2011",
+          "mood": "candleAmber",
+          "purpose": "Teaching promise. Beat 1, the belief and why it was reasonable: experts design features; 28.2% (2010), about 25.8% (2011). Candle lit.",
+          "machine": "candle-clock + leaderboard of lanterns",
+          "cast": [],
+          "claims": [
+            "e8-vision-belief",
+            "e7-ilsvrc2010"
+          ]
+        },
+        {
+          "id": "ch08-s02",
+          "kind": "scene",
+          "setting": "Toronto, 2011: a bedroom with a tower PC, two gaming cards, fans whining",
+          "era": "2010s",
+          "mood": "candleAmber",
+          "purpose": "A student who believed performance would scale with data talks a friend into trying; the friend writes the code. 'According to the Computer History Museum, a bedroom' (NVIDIA says a lab). Desk lamp → GPU LED match cut.",
+          "machine": null,
+          "cast": [
+            "sutskever",
+            "krizhevsky",
+            "hinton"
+          ],
+          "claims": [
+            "e8-origin",
+            "e8-bedroom",
+            "e8-gpus"
+          ]
+        },
+        {
+          "id": "ch08-s03",
+          "kind": "plate",
+          "setting": "match cut: the Mark I's 20×20 photocell eye becomes a 224×224×3 grid",
+          "era": "1958 → 2012",
+          "mood": "serverCyan",
+          "purpose": "A photo is just a grid of lights (numbers).",
+          "machine": "perceptronRetina → pixel grid",
+          "cast": [],
+          "claims": [
+            "e8-architecture",
+            "e2-mark1-specs"
+          ]
+        },
+        {
+          "id": "ch08-s04",
+          "kind": "plate",
+          "setting": "a pierced 3×3 tin lantern sliding over a stitched '4'; its light on the wall",
+          "era": "2012",
+          "mood": "candleAmber",
+          "purpose": "Beat 2–3: convolution as a stencil and a wall; the real rectified dot product fills the feature map; one cell worked on parchment.",
+          "machine": "stencilLantern",
+          "cast": [],
+          "claims": [
+            "e8-architecture"
+          ]
+        },
+        {
+          "id": "ch08-s05",
+          "kind": "scene",
+          "setting": "the cathedral of stencils rising block by block from a rose window that is the photograph",
+          "era": "2012",
+          "mood": "dawnGold",
+          "purpose": "96 stencils, then stencils on stencils: edges → textures → parts → things; true face widths 55, 27, 13, 13, 13; three great halls; a thousand doors; about sixty million numbers. 'So the depth really is important…'",
+          "machine": "alexnetCathedral",
+          "cast": [],
+          "claims": [
+            "e8-architecture",
+            "q-alexnet-depth",
+            "e8-ingredients"
+          ]
+        },
+        {
+          "id": "ch08-s06",
+          "kind": "scene",
+          "setting": "the cathedral stairs; noise tiles resolving into a mosaic",
+          "era": "2012",
+          "mood": "dawnGold",
+          "purpose": "Nobody cut them: the stencils begin as noise and are learned as the messenger from ch05 runs down the stairs.",
+          "machine": "alexnetCathedral + lanternNetwork messenger",
+          "cast": [],
+          "claims": [
+            "q-supervision-slide-learned"
+          ]
+        },
+        {
+          "id": "ch08-s07",
+          "kind": "plate",
+          "setting": "a weir and a ladle on parchment",
+          "era": "2012",
+          "mood": "dawnGold",
+          "purpose": "The rectifier (a weir; about six times faster to train) and overlapping pooling (a ladle that keeps the brightest bead).",
+          "machine": "parchmentPlate (weir, bead tray)",
+          "cast": [],
+          "claims": [
+            "e8-ingredients",
+            "q-supervision-slide-relu"
+          ]
+        },
+        {
+          "id": "ch08-s08",
+          "kind": "plate",
+          "setting": "a scale tipping; a hall of shifted mirrors; half the lanterns snuffed",
+          "era": "2012",
+          "mood": "dawnGold",
+          "purpose": "About ten bits per label against sixty million numbers: crops and mirrors make more pictures; dropout snuffs half the lanterns on every example (p = 0.5).",
+          "machine": "lanternNetwork (dropout)",
+          "cast": [],
+          "claims": [
+            "q-alexnet-10bits",
+            "e8-ingredients",
+            "q-alexnet-dropout"
+          ]
+        },
+        {
+          "id": "ch08-s09",
+          "kind": "scene",
+          "setting": "the cathedral's two towers joined by a few bridges of light",
+          "era": "2012",
+          "mood": "serverCyan",
+          "purpose": "Two cards that talk only at certain layers; unbidden, one tower learns colourless edges and the other colour blobs, every run. Plant: nobody told them. On screen only: ≈96% of numbers vs ≈92% of arithmetic.",
+          "machine": "alexnetCathedral (GPU split)",
+          "cast": [],
+          "claims": [
+            "e8-gpu-split",
+            "q-alexnet-colour",
+            "e8-params-fc"
+          ]
+        },
+        {
+          "id": "ch08-s10",
+          "kind": "scene",
+          "setting": "the misty hills at night; the bedroom window frosting",
+          "era": "2012",
+          "mood": "winterBlue",
+          "purpose": "Five days downhill: many small steps, the stride cut by hand three times, about ninety passes.",
+          "machine": "mistyHills",
+          "cast": [],
+          "claims": [
+            "e8-gpus",
+            "e8-ingredients"
+          ]
+        },
+        {
+          "id": "ch08-s11",
+          "kind": "scene",
+          "setting": "Florence, Friday 12 October 2012, 17:05: a crowded hall kept generic",
+          "era": "2010s",
+          "mood": "dawnGold",
+          "purpose": "Beat 4, the night it was tested: the last talk of the session; the professor could not sit, so could not fly (an empty place); by Li's account LeCun stood at the back.",
+          "machine": null,
+          "cast": [
+            "krizhevsky",
+            "li",
+            "lecun"
+          ],
+          "claims": [
+            "e8-florence",
+            "e8-hinton-absent"
+          ]
+        },
+        {
+          "id": "ch08-s12",
+          "kind": "plate",
+          "setting": "the result plate: a row of lanterns at one height, one dropping far lower",
+          "era": "2012",
+          "mood": "dawnGold",
+          "purpose": "Fifteen point three against twenty-six point two; caption: seven networks together; best single network 18.2% on validation.",
+          "machine": "alexnetResultPlate",
+          "cast": [],
+          "claims": [
+            "e8-result",
+            "e8-ensemble",
+            "q-alexnet-153"
+          ]
+        },
+        {
+          "id": "ch08-s13",
+          "kind": "scene",
+          "setting": "the workshop's stencils hanging unused; the shelf; a new candle lit",
+          "era": "2012–2013",
+          "mood": "dawnGold",
+          "purpose": "Beat 5, what lasted: every top-five team used convnets within a year; fair credit (IDSIA's earlier wins, road signs 2011); the CHM before/after card; Hinton's quip card. The expert-features candle goes out at thirteen rings; LEARNED FEATURES, GIVEN DATA AND ARITHMETIC is lit. The fog card comes down.",
+          "machine": "candle-clock",
+          "cast": [],
+          "claims": [
+            "e8-ilsvrc2013",
+            "q-chm-beforeafter",
+            "e7-gtsrb",
+            "e8-first-debate",
+            "q-hinton-nobel-quip"
+          ]
+        },
+        {
+          "id": "ch08-s14",
+          "kind": "scene",
+          "setting": "the Wall of Forecasts; a GPU LED multiplying into a distant aisle; the X-ray box",
+          "era": "2012",
+          "mood": "serverCyan",
+          "purpose": "The prophecy slip: '…simply by waiting for faster GPUs and bigger datasets…' — 'Put that in the file.' (refrain 5). 'Not every clue is a part of the suspect': convolution does not light in the box. Clue card: a tile from the 96 filters.",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "q-alexnet-waiting",
+            "e8-waiting"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ch09",
+      "number": 9,
+      "title": "The Gold Rush",
+      "years": "2012–2017",
+      "minutes": 1.0,
+      "words": 100,
+      "shots": 5,
+      "summary": "Four held images and a quiet plant. Lake Tahoe, December 2012: a man who had not sat for seven years stands at a laptop on an upturned wastebasket and auctions a three-person company (per Cade Metz), at the centre of the new light. Words become places (king − man + woman near queen). Go: Coulom's 'maybe ten years' slip glints early as move 37 and Lee Sedol's move 78 play out; the candle lasts about two rings. A panda becomes a 'gibbon'; a lab is founded with hope and fear in one sentence. Hinton's 'graduate student' slip is pinned without comment.",
+      "candle": "A GO MACHINE IS A DECADE AWAY (2 rings, 2014–2016)",
+      "turn": "(the slip, in silence)",
+      "shotList": [
+        {
+          "id": "ch09-s01",
+          "kind": "scene",
+          "setting": "Harrah's, Lake Tahoe, December 2012: Room 731, a laptop on an upturned wastebasket",
+          "era": "2010s",
+          "mood": "serverCyan",
+          "purpose": "Hinton, standing, in the centre of the new candle's light, auctions a three-person company by email and stops at forty-four million dollars (per Cade Metz).",
+          "machine": "candle-clock (Edge of the Light: centre)",
+          "cast": [
+            "hinton"
+          ],
+          "claims": [
+            "e8-auction",
+            "e8-auction-details",
+            "e8-hinton-back"
+          ]
+        },
+        {
+          "id": "ch09-s02",
+          "kind": "plate",
+          "setting": "a star-field of words with an arrow copied from 'man' to 'woman'",
+          "era": "2013",
+          "mood": "serverCyan",
+          "purpose": "Words become places: king − man + woman lands near queen, once king itself is ruled out.",
+          "machine": "parchmentPlate (word star-field)",
+          "cast": [],
+          "claims": [
+            "e9-word2vec",
+            "e9-king-queen",
+            "e9-analogy-caveat"
+          ]
+        },
+        {
+          "id": "ch09-s03",
+          "kind": "scene",
+          "setting": "Seoul, March 2016: a Go board under a hanging lamp; the Wall's 2014 slip",
+          "era": "2010s",
+          "mood": "duskRose",
+          "purpose": "Coulom's 'maybe ten years'; move 37 (one in ten thousand), then Lee Sedol's move 78, also rated one in ten thousand, which won humanity's only game. The pin glints; the candle burns about two rings.",
+          "machine": "candle-clock",
+          "cast": [
+            "lee-sedol",
+            "hassabis"
+          ],
+          "claims": [
+            "q-coulom",
+            "e9-go-decade",
+            "e9-move37",
+            "e9-move78",
+            "e9-lee-sedol"
+          ]
+        },
+        {
+          "id": "ch09-s04",
+          "kind": "plate",
+          "setting": "a panda, a veil of faint noise, a 'gibbon'",
+          "era": "2014",
+          "mood": "duskRose",
+          "purpose": "Doubt from inside the rush: imperceptible noise turns a panda into a 99.3% gibbon. December 2015: a lab founded with benefit and damage in one sentence.",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "e9-adversarial",
+            "q-openai-damage",
+            "e9-openai"
+          ]
+        },
+        {
+          "id": "ch09-s05",
+          "kind": "scene",
+          "setting": "the far end of the Wall of Forecasts, in silence",
+          "era": "2017",
+          "mood": "candleAmber",
+          "purpose": "September 2017: a slip goes up, 'The future depends on some graduate student who is deeply suspicious of everything I have said.' No comment.",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "q-hinton-suspicious",
+            "e9-hinton-funeral"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ch10",
+      "number": 10,
+      "title": "DEEP DIVE — Everything Looks at Everything",
+      "years": "2014–2018",
+      "minutes": 5.0,
+      "words": 420,
+      "shots": 14,
+      "summary": "The Transformer in the five-beat grammar, with a teaching promise. The belief that language must be read in order (a slow scribe, the whisper from ch06), the 2014 bottleneck and its highlighter, and the people (a lunch, doubters at the rim, a twenty-year-old intern from Hinton's Toronto lab, an engineer who overheard and rewrote the code). The machine part by part: fire the reader and keep the highlighter; three cards; the worked number for 'bank'; why divide by eight; 'it' → 'animal' with eight heads; positions as clock hands; talk then think, six times. The night it was tested (five minutes before the deadline, random author order), why it won (one big multiplication, twelve hours on one machine, a seventh of the compute) and its n² catch. What lasted, the honest sentence, and the curtain over the future that turns a translator into a writer.",
+      "candle": "LANGUAGE MUST BE READ IN ORDER (20 rings, 1997–2017)",
+      "turn": "Hide the future, and ask the machine, over and over: what comes next?",
+      "shotList": [
+        {
+          "id": "ch10-s01",
+          "kind": "scene",
+          "setting": "a long hall of hanging word-slips; a scribe passing a single lamp down the line",
+          "era": "2010s",
+          "mood": "duskRose",
+          "purpose": "Teaching promise. Beat 1: the belief, reasonable for twenty years; the whisper fades down the line; 'If you have a thousand words, you have to wait for a thousand cycles.' Candle lit.",
+          "machine": "candle-clock + slow scribe",
+          "cast": [],
+          "claims": [
+            "e10-rnn-belief",
+            "q10-polosukhin-cycles",
+            "e5-vanishing"
+          ]
+        },
+        {
+          "id": "ch10-s02",
+          "kind": "plate",
+          "setting": "parchment heat-map between English and French word-slips",
+          "era": "2014",
+          "mood": "duskRose",
+          "purpose": "Squeezing a sentence into one vector was 'a bottleneck'; attention lets the translator look back at every word (the map bends where French reorders).",
+          "machine": "parchmentPlate (alignment heat-map)",
+          "cast": [],
+          "claims": [
+            "e9-seq2seq",
+            "q-bahdanau",
+            "e9-attention"
+          ]
+        },
+        {
+          "id": "ch10-s03",
+          "kind": "scene",
+          "setting": "Mountain View, 2016–17: couches, whiteboards, a cafe table; the case board's red thread from Toronto",
+          "era": "2010s",
+          "mood": "duskRose",
+          "purpose": "A suggestion over lunch; doubt at the rim (a colleague's 'biggest incorrect prediction of my life', a father at the dinner table); a twenty-year-old intern from Hinton's Toronto lab (red thread on the board); an engineer overhears and rewrites the code, after which it finally got better.",
+          "machine": null,
+          "cast": [
+            "uszkoreit",
+            "polosukhin",
+            "kelcey",
+            "hans-uszkoreit",
+            "gomez",
+            "shazeer",
+            "vaswani",
+            "parmar"
+          ],
+          "claims": [
+            "e10-design-doc",
+            "q10-kelcey",
+            "q10-uszkoreit-dad",
+            "e10-hans",
+            "e10-gomez",
+            "e10-shazeer-joins"
+          ]
+        },
+        {
+          "id": "ch10-s04",
+          "kind": "scene",
+          "setting": "the hall: the scribe vanishes and every slip lights at once",
+          "era": "2017",
+          "mood": "serverCyan",
+          "purpose": "Fire the reader, keep the highlighter: '…dispensing with recurrence and convolutions entirely.'",
+          "machine": "threadsOfLight (all slips at once)",
+          "cast": [],
+          "claims": [
+            "q10-aiayn-abstract",
+            "e10-architecture"
+          ]
+        },
+        {
+          "id": "ch10-s05",
+          "kind": "plate",
+          "setting": "each word-slip grows a small lantern, a mirror and a sealed note",
+          "era": "2017",
+          "mood": "serverCyan",
+          "purpose": "Three cards: a question (query), a label (key), a message (value).",
+          "machine": "threadsOfLight (Q·K·V cards)",
+          "cast": [],
+          "claims": [
+            "e10-architecture"
+          ]
+        },
+        {
+          "id": "ch10-s06",
+          "kind": "plate",
+          "setting": "parchment arithmetic for 'crossed the river bank'; a jug pouring into four lantern-glass cups",
+          "era": "2017",
+          "mood": "candleAmber",
+          "purpose": "Beat 3, the worked number (labelled illustrative): scores 2, 0, 4, 2; halved; softmax 0.20 / 0.07 / 0.53 / 0.20; 'bank' turns water-blue.",
+          "machine": "parchmentPlate + attentionMath (jug of light)",
+          "cast": [],
+          "claims": [
+            "e10-architecture",
+            "e10-blog"
+          ]
+        },
+        {
+          "id": "ch10-s07",
+          "kind": "plate",
+          "setting": "the same jug shown twice: frozen and soft",
+          "era": "2017",
+          "mood": "candleAmber",
+          "purpose": "Why divide by eight: unscaled, the jug tips everything into one cup and learning freezes; ÷√64 keeps it soft.",
+          "machine": "parchmentPlate + attentionMath",
+          "cast": [],
+          "claims": [
+            "e10-sqrt",
+            "q10-softmax-gradients"
+          ]
+        },
+        {
+          "id": "ch10-s08",
+          "kind": "scene",
+          "setting": "the hall of slips: 'The animal didn't cross the street because it was too tired'",
+          "era": "2017",
+          "mood": "serverCyan",
+          "purpose": "'it' looks back at 'animal'; thread width = computed weight; eight heads in eight low-chroma hues ask different questions at once.",
+          "machine": "threadsOfLight (multi-head)",
+          "cast": [],
+          "claims": [
+            "e10-architecture",
+            "e10-ablations"
+          ]
+        },
+        {
+          "id": "ch10-s09",
+          "kind": "plate",
+          "setting": "wave barcodes on each slip; a clock face with three hands",
+          "era": "2017",
+          "mood": "serverCyan",
+          "purpose": "Where am I? Each position wears a barcode of waves, like a clock's second, minute and hour hands.",
+          "machine": "parchmentPlate (positional waves)",
+          "cast": [],
+          "claims": [
+            "e10-positional"
+          ]
+        },
+        {
+          "id": "ch10-s10",
+          "kind": "scene",
+          "setting": "a loom of light: ribbons through looms and lanterns, six storeys",
+          "era": "2017",
+          "mood": "serverCyan",
+          "purpose": "Talk, then think, six times; a highway lane carries the original past every step (toy weights labelled).",
+          "machine": "transformerLoom",
+          "cast": [],
+          "claims": [
+            "e10-architecture"
+          ]
+        },
+        {
+          "id": "ch10-s11",
+          "kind": "scene",
+          "setting": "19 May 2017, night: a micro-kitchen; a title card; a footnote ink-bleeding in",
+          "era": "2010s",
+          "mood": "duskRose",
+          "purpose": "Beat 4, the night it was tested: the English–French number 'like, five minutes before we submitted'; the title 'five seconds of thought'; 'Equal contribution. Listing order is random.'",
+          "machine": null,
+          "cast": [
+            "parmar",
+            "jones"
+          ],
+          "claims": [
+            "q10-parmar-kitchen",
+            "e10-deadline",
+            "q10-jones-title",
+            "e10-title",
+            "q10-random-order"
+          ]
+        },
+        {
+          "id": "ch10-s12",
+          "kind": "plate",
+          "setting": "eight slabs in one rack light at once; a half-day sundial; a web of threads thickening into a wall",
+          "era": "2017",
+          "mood": "serverCyan",
+          "purpose": "Why it won: one big multiplication; twelve hours on one machine of eight chips, about a seventh of the compute, records set. The catch: cost grows with the square of the length (n²).",
+          "machine": "threadsOfLight (n² wall)",
+          "cast": [],
+          "claims": [
+            "q10-gomez-matmul",
+            "e10-results",
+            "e10-flops",
+            "e10-table1"
+          ]
+        },
+        {
+          "id": "ch10-s13",
+          "kind": "scene",
+          "setting": "Long Beach, 6 December 2017: a poster crowd; an older figure steps from the rim",
+          "era": "2010s",
+          "mood": "dawnGold",
+          "purpose": "Beat 5, what lasted: 'Security had to tell us to leave'; the LSTM's co-inventor praises it (the ch06 pipe glows once and goes dark); the candle out at twenty rings, the new way spread within about eighteen months; the honest sentence.",
+          "machine": "candle-clock",
+          "cast": [
+            "hochreiter",
+            "uszkoreit"
+          ],
+          "claims": [
+            "q10-security",
+            "e10-poster",
+            "e10-bert-search",
+            "e10-recombination"
+          ]
+        },
+        {
+          "id": "ch10-s14",
+          "kind": "scene",
+          "setting": "the loom splits; a triangular curtain drops over the future; a typesetter's case",
+          "era": "2018",
+          "mood": "serverCyan",
+          "purpose": "Cut the loom in half, mask the future, ask 'what comes next?' X-ray: attention threads glow. Clue card: a thread of light between two word-slips.",
+          "machine": "transformerLoom → nextToken",
+          "cast": [],
+          "claims": [
+            "e10-liu-decoder",
+            "e10-architecture"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ch11",
+      "number": 11,
+      "title": "Read Everything",
+      "years": "2018–2022",
+      "minutes": 1.75,
+      "words": 185,
+      "shots": 8,
+      "summary": "Pre-training returns in a new coat. Cyc's 1985 card is set beside GPT-2's one-line objective ('In 1985, that was a perfectly sensible thing to believe'), and the typesetter's case answers the prologue's 'no rulebook'. GPT-2 withheld and released in stages ('too dangerous' was a headline). The straight line on log paper, GPT-3's hundred and seventy-five billion, the 'waiting' slip glinting, the Bitter Lesson; readers spot GPT-3's articles only about 52% of the time (an echo of Turing, not a pass). Chinchilla corrects the recipe; the doubters crowd the rim (octopus, parrots, Gebru's exit in two voices, Marcus).",
+      "candle": "SCALE IS THE MAIN LEVER (2020–, still burning) · GROW THE MODEL FASTER THAN THE DATA (2 rings, 2020–2022)",
+      "turn": "It had read nearly everything. It still didn't know what we wanted.",
+      "shotList": [
+        {
+          "id": "ch11-s01",
+          "kind": "scene",
+          "setting": "the study: an old coat on a hook relabelled PRE-TRAINING; a library of raw text",
+          "era": "2018",
+          "mood": "serverCyan",
+          "purpose": "Read raw text first, specialise later; GPT's blueprint from a Google paper co-written by two Transformer authors.",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "e10-gpt1",
+            "e10-bert",
+            "e10-liu-decoder"
+          ]
+        },
+        {
+          "id": "ch11-s02",
+          "kind": "card",
+          "setting": "the 1985 card pulled from the file and set beside a 2019 card",
+          "era": "2019",
+          "mood": "candleAmber",
+          "purpose": "'…practically nothing… from the raw text' beside 'predict the next word, given all of the previous words'. 'In 1985, that was a perfectly sensible thing to believe.'",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "q-lenat-rawtext",
+            "q10-gpt2-objective"
+          ]
+        },
+        {
+          "id": "ch11-s03",
+          "kind": "plate",
+          "setting": "a typesetter's case whose drawers slide out by probability",
+          "era": "2019",
+          "mood": "serverCyan",
+          "purpose": "Next-word prediction as type sorts chosen by real softmax over illustrative scores; temperature widens the spread. The 'no rulebook' riddle answered. X-ray: type sorts glow.",
+          "machine": "nextToken / typeSlugs",
+          "cast": [],
+          "claims": [
+            "e10-gpt2"
+          ]
+        },
+        {
+          "id": "ch11-s04",
+          "kind": "scene",
+          "setting": "a model held behind glass, then released in stages",
+          "era": "2019",
+          "mood": "serverCyan",
+          "purpose": "Withheld over 'concerns about malicious applications', released in stages; 'too dangerous to release' was a newspaper's headline.",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "e10-gpt2-staged",
+            "q10-gpt2-withhold",
+            "e10-too-dangerous",
+            "q10-guardian-headline"
+          ]
+        },
+        {
+          "id": "ch11-s05",
+          "kind": "scene",
+          "setting": "log-log paper becoming a night city whose lit windows are parameters",
+          "era": "2020",
+          "mood": "serverCyan",
+          "purpose": "The straight line across more than seven orders of magnitude; GPT-3's 175 billion; the 'waiting' slip glints; the Bitter Lesson card. Candle lit: SCALE IS THE MAIN LEVER.",
+          "machine": "candle-clock + growing city (scaling)",
+          "cast": [],
+          "claims": [
+            "q11-kaplan-powerlaw",
+            "e11-kaplan",
+            "e11-gpt3",
+            "q-alexnet-waiting",
+            "q11-bitter-opening",
+            "e11-bitter"
+          ]
+        },
+        {
+          "id": "ch11-s06",
+          "kind": "scene",
+          "setting": "the Wall: Turing's curled slip stirs",
+          "era": "2020",
+          "mood": "candleAmber",
+          "purpose": "Readers spotted GPT-3's news articles only about 52% of the time, barely better than a coin toss (paraphrase; no quote marks): an echo of Turing's slip, not a pass.",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "e11-gpt3-detect",
+            "q-turing-fifty"
+          ]
+        },
+        {
+          "id": "ch11-s07",
+          "kind": "scene",
+          "setting": "a small rodent beside its bigger cousin on the shelf",
+          "era": "2022",
+          "mood": "serverCyan",
+          "purpose": "Chinchilla: models were 'significantly undertrained'; the small candle GROW THE MODEL FASTER THAN THE DATA goes out at two rings; the big one is refined, not snuffed.",
+          "machine": "candle-clock",
+          "cast": [],
+          "claims": [
+            "e11-chinchilla",
+            "q11-chinchilla-undertrained"
+          ]
+        },
+        {
+          "id": "ch11-s08",
+          "kind": "scene",
+          "setting": "the rim of the scaling light, crowded; an octopus on a telegraph cable between two islands",
+          "era": "2020–2022",
+          "mood": "duskRose",
+          "purpose": "The doubters: form without meaning (the octopus), the parrots, Gebru's exit in two voices, 'aren't universal laws like gravity'. Clue card: a single type sort.",
+          "machine": "candle-clock (Edge of the Light)",
+          "cast": [
+            "bender",
+            "gebru",
+            "marcus"
+          ],
+          "claims": [
+            "q11-octopus-form",
+            "e11-octopus",
+            "e11-parrots",
+            "q11-parrot",
+            "e11-gebru",
+            "q11-marcus-laws"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ch12",
+      "number": 12,
+      "title": "The Last Accomplice, and the Return to the Scene",
+      "years": "2017–2023",
+      "minutes": 1.75,
+      "words": 180,
+      "shots": 8,
+      "summary": "The gardener: a simulated robot learns a backflip from nine hundred human choices (Turing's child machine, educated), and InstructGPT's small model is preferred to a hundred-times-larger one. Anthropic's founding told plainly (no founder count; its self-description; FTX money; Constitutional AI with its caveat). A 2022 belief that a chatbot is sentient echoes 1958, undecided. Then the return to the dark room, 30 November 2022: not a new engine but a new door. The X-ray is complete; the launch post's admission and Rosenblatt's 1961 sentence about language are read over the box. A one-breath stampede. 'Case solved?' 'Not quite.'",
+      "candle": "(no new candle; the X-ray completes)",
+      "turn": "Case solved? … Not quite.",
+      "shotList": [
+        {
+          "id": "ch12-s01",
+          "kind": "scene",
+          "setting": "2017: a one-legged simulated robot under a lamp; two clips side by side",
+          "era": "2010s",
+          "mood": "duskRose",
+          "purpose": "Nine hundred human choices, under an hour: a backflip. Turing's child-machine card glints: education.",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "q11-backflip",
+            "e11-christiano",
+            "q-turing-child"
+          ]
+        },
+        {
+          "id": "ch12-s02",
+          "kind": "plate",
+          "setting": "a hedge and garden shears; each snip a preference",
+          "era": "2022",
+          "mood": "duskRose",
+          "purpose": "InstructGPT's 1.3B preferred to the 175B, '100x fewer parameters'; labellers agreed about three times in four.",
+          "machine": "parchmentPlate (hedge and shears)",
+          "cast": [
+            "labeller"
+          ],
+          "claims": [
+            "q11-instructgpt-100x",
+            "e11-instructgpt"
+          ]
+        },
+        {
+          "id": "ch12-s03",
+          "kind": "scene",
+          "setting": "an office of plain desks, 2021; a ledger page",
+          "era": "2020s",
+          "mood": "duskRose",
+          "purpose": "Anthropic plainly: former OpenAI researchers led by Dario and Daniela Amodei (no count); 'an AI safety and research company' planning compute-hungry research; funding stated flatly, FTX included (not implicated).",
+          "machine": null,
+          "cast": [
+            "amodei-dario",
+            "amodei-daniela"
+          ],
+          "claims": [
+            "e11-anthropic-founding",
+            "q11-anthropic-seriesa",
+            "e11-series-a",
+            "e12-anthropic-funding"
+          ]
+        },
+        {
+          "id": "ch12-s04",
+          "kind": "plate",
+          "setting": "a short scroll of sixteen principles; a quill rewriting an answer",
+          "era": "2022",
+          "mood": "duskRose",
+          "purpose": "Constitutional AI: the model critiques and rewrites its own answer; humans still wrote the list.",
+          "machine": "parchmentPlate (scroll)",
+          "cast": [],
+          "claims": [
+            "e11-cai",
+            "q11-cai-rules"
+          ]
+        },
+        {
+          "id": "ch12-s05",
+          "kind": "scene",
+          "setting": "June 2022: a figure at a terminal; a gramophone and a listening dog in silhouette",
+          "era": "2020s",
+          "mood": "duskRose",
+          "purpose": "An engineer believes a chatbot is sentient; Google says no evidence; the gramophone dog. The 1958 card trembles in the file. Generated text labelled; the film does not decide.",
+          "machine": null,
+          "cast": [
+            "lemoine"
+          ],
+          "claims": [
+            "e11-lemoine",
+            "q11-brynjolfsson-gramophone",
+            "q-nyt-1958"
+          ]
+        },
+        {
+          "id": "ch12-s06",
+          "kind": "scene",
+          "setting": "30 November 2022: the dark room from the prologue, the same rectangle",
+          "era": "2020s",
+          "mood": "serverCyan",
+          "purpose": "A free research preview, a GPT-3.5 model tuned with human feedback; its engineers hadn't expected much; a million users in about five days (reported). 'Not a new engine. A new door.'",
+          "machine": null,
+          "cast": [
+            "chat-user"
+          ],
+          "claims": [
+            "e12-chatgpt-launch",
+            "e12-users"
+          ]
+        },
+        {
+          "id": "ch12-s07",
+          "kind": "scene",
+          "setting": "the X-ray chat box, fully lit; two cards from the file held over it",
+          "era": "2022",
+          "mood": "serverCyan",
+          "purpose": "Every component glows. The prologue's card read in full; Rosenblatt's 1961 sentence read over the box: 'sixty-one years early'. Clue card: garden shears.",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "q12-chatgpt-limits",
+            "q-rosenblatt-linguistic"
+          ]
+        },
+        {
+          "id": "ch12-s08",
+          "kind": "montage",
+          "setting": "a one-breath stampede of small lit windows",
+          "era": "2022–2023",
+          "mood": "serverCyan",
+          "purpose": "A reported 'code red'; a multiyear, multibillion-dollar investment; GPT-4 and Claude on the same day; research weights leaked within a week. The hands sit back: 'Case solved?' 'Not quite.'",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "e12-code-red",
+            "e12-microsoft",
+            "e12-gpt4",
+            "e12-claude-launch",
+            "e12-llama-leak"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ch13",
+      "number": 13,
+      "title": "The Case Reopened",
+      "years": "2023",
+      "minutes": 1.5,
+      "words": 145,
+      "shots": 6,
+      "summary": "May 2023: a pan along the Wall of Forecasts finds a slip that has been there all along, and the tall man, standing, takes down his own '30 to 50 years' forecast; in fairness, 'Google has acted very responsibly'; he walks from the centre of the light back to its rim ('Persistence is not the same as certainty'). A new candle of worry is lit with the one-sentence extinction statement. The debate splits into three lamps (existential worry, present harms, doom-scepticism), two Turing laureates in the light and one at its edge. Five days in November at OpenAI, reasons attributed and still disputed.",
+      "candle": "SMARTER-THAN-HUMAN AI MAY BE YEARS AWAY, AND DANGEROUS (2023–, still burning)",
+      "turn": "The case had reopened. And it was no longer confined to one country.",
+      "shotList": [
+        {
+          "id": "ch13-s01",
+          "kind": "scene",
+          "setting": "the Wall of Forecasts; a tall standing figure with white hair swept back",
+          "era": "2020s",
+          "mood": "duskRose",
+          "purpose": "The pan reveals his slip; he lifts it off its pin. Quote card: '…I thought it was 30 to 50 years or even longer away. Obviously, I no longer think that.' The emotional hinge.",
+          "machine": null,
+          "cast": [
+            "hinton"
+          ],
+          "claims": [
+            "q12-hinton-wayoff",
+            "e12-hinton-timeline",
+            "e12-hinton-leaves"
+          ]
+        },
+        {
+          "id": "ch13-s02",
+          "kind": "scene",
+          "setting": "the stage: he walks from the centre of the light to its rim",
+          "era": "2023",
+          "mood": "duskRose",
+          "purpose": "Fairness card: 'Google has acted very responsibly.' 'Persistence is not the same as certainty.'",
+          "machine": "candle-clock (Edge of the Light: centre → rim)",
+          "cast": [
+            "hinton"
+          ],
+          "claims": [
+            "q12-hinton-tweet",
+            "e12-hinton-leaves"
+          ]
+        },
+        {
+          "id": "ch13-s03",
+          "kind": "scene",
+          "setting": "a new candle lit; a one-sentence statement as a parchment strip",
+          "era": "2023",
+          "mood": "emberRed",
+          "purpose": "Candle lit; the statement on extinction risk, his name first and Bengio's second.",
+          "machine": "candle-clock",
+          "cast": [
+            "hinton",
+            "bengio-2020s"
+          ],
+          "claims": [
+            "q12-cais",
+            "e12-cais"
+          ]
+        },
+        {
+          "id": "ch13-s04",
+          "kind": "scene",
+          "setting": "three lamps, not two teams, on one stage",
+          "era": "2023",
+          "mood": "duskRose",
+          "purpose": "Present harms ('real and present') at one rim; doom-scepticism ('preposterously ridiculous') at the other, LeCun at the edge; two of three 2018 Turing laureates in the light, one at its edge.",
+          "machine": "candle-clock (Edge of the Light)",
+          "cast": [
+            "gebru",
+            "bender",
+            "lecun-2020s",
+            "bengio-2020s",
+            "hinton"
+          ],
+          "claims": [
+            "e12-three-camps",
+            "q12-dair-harms",
+            "e12-dair",
+            "q12-lecun-ridiculous",
+            "e12-lecun-2023",
+            "e9-turing"
+          ]
+        },
+        {
+          "id": "ch13-s05",
+          "kind": "scene",
+          "setting": "a long boardroom table in silhouette; a calendar turning five days",
+          "era": "2023",
+          "mood": "duskRose",
+          "purpose": "November 2023: OpenAI's board removes its chief executive ('not consistently candid'); five days later he is back. Why is still disputed (later reporting; a law-firm review). No verdict.",
+          "machine": null,
+          "cast": [
+            "altman"
+          ],
+          "claims": [
+            "e12-altman-fired",
+            "q12-board",
+            "e12-altman-why"
+          ]
+        },
+        {
+          "id": "ch13-s06",
+          "kind": "scene",
+          "setting": "the case board: the case card reopened; a thread runs off the board's edge toward water",
+          "era": "timeless",
+          "mood": "candleAmber",
+          "purpose": "The hands re-pin the case card. Turn toward Two Shores.",
+          "machine": null,
+          "cast": [],
+          "claims": []
+        }
+      ]
+    },
+    {
+      "id": "ch14",
+      "number": 14,
+      "title": "Two Shores",
+      "years": "2017–2026",
+      "minutes": 1.75,
+      "words": 180,
+      "shots": 7,
+      "summary": "The US–China race as dated beliefs on two equally warm shores with a shared Go board on a jetty. 2017's plan names no rival; October 2022's fence of rule pages and Beijing's reply in its own words light COMPUTE IS THE CHOKEPOINT. A small price tag on a vast building (one run's rented-chip price, by DeepSeek's own accounting); R1 released and its founder at the Premier's symposium the same day; a week later the largest one-day market loss in US history: a struck match, out within a day, with fair dissent ('7-10 months'; 'not adversaries'). Open weights cross the water; talent; allegations as allegations. Rivals still sign the same pages (Bletchley, Lima, a September 2026 channel with two names). THE GAP IS MONTHS still burns.",
+      "candle": "COMPUTE IS THE CHOKEPOINT (c. 2 rings, 2022–2025) · the struck match (27 Jan 2025, one day) · THE GAP IS MONTHS (2025–, still burning)",
+      "turn": "As of October 2026, nobody knows who is ahead. Everyone agrees it's close.",
+      "shotList": [
+        {
+          "id": "ch14-s01",
+          "kind": "scene",
+          "setting": "two skylines at equal height and warmth across dark water; a Go board on a jetty between them",
+          "era": "2017",
+          "mood": "dawnGold",
+          "purpose": "China's 2017 plan: 'the world's primary AI innovation center' by 2030, naming no rival.",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "q13-plan2017",
+            "e13-plan2017"
+          ]
+        },
+        {
+          "id": "ch14-s02",
+          "kind": "scene",
+          "setting": "a fence of rule pages rising across the water; a reply carried back the next day",
+          "era": "2022",
+          "mood": "dawnGold",
+          "purpose": "October 2022 controls in Washington's words; Beijing's reply in its own (translation flagged); Liang: chips, not money (translation). Candle lit: COMPUTE IS THE CHOKEPOINT.",
+          "machine": "candle-clock",
+          "cast": [
+            "delegate"
+          ],
+          "claims": [
+            "q13-bis-2022",
+            "e13-oct2022",
+            "q13-mao-2022",
+            "e13-china-2022-response",
+            "q13-liang-chips"
+          ]
+        },
+        {
+          "id": "ch14-s03",
+          "kind": "scene",
+          "setting": "a small price tag reading $5.576M hanging on a vast dark building",
+          "era": "2024",
+          "mood": "dawnGold",
+          "purpose": "The rented-chip price of one final training run, by DeepSeek's own accounting; it left out the research, the people and the thousands of chips behind it.",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "q13-deepseek-cost",
+            "e13-deepseek-v3",
+            "e13-cost-debate"
+          ]
+        },
+        {
+          "id": "ch14-s04",
+          "kind": "scene",
+          "setting": "20–27 January 2025: a founder in a distant room of officials; then a match struck and blown out",
+          "era": "2020s",
+          "mood": "emberRed",
+          "purpose": "R1 released in the open the same day its founder sits at the Premier's symposium; a week later the app tops the chart and a chip-maker suffers the largest one-day loss in US market history. COMPUTE DOESN'T MATTER: a struck match, one day. The chokepoint candle gutters at about two rings.",
+          "machine": "candle-clock (struck match)",
+          "cast": [
+            "liang"
+          ],
+          "claims": [
+            "e13-r1-release",
+            "e13-crash"
+          ]
+        },
+        {
+          "id": "ch14-s05",
+          "kind": "card",
+          "setting": "quote cards on both shores",
+          "era": "2025",
+          "mood": "dawnGold",
+          "purpose": "Dissent, immediate and fair: 'close to the performance of US models 7-10 months older'; 'I don't see DeepSeek themselves as adversaries'.",
+          "machine": null,
+          "cast": [
+            "amodei-dario"
+          ],
+          "claims": [
+            "q13-amodei-7-10",
+            "q13-amodei-adversaries",
+            "e13-gap"
+          ]
+        },
+        {
+          "id": "ch14-s06",
+          "kind": "scene",
+          "setting": "small lanterns (open weights) floating across the water between the shores",
+          "era": "2025–2026",
+          "mood": "dawnGold",
+          "purpose": "Open weights near the frontier; Washington's plan wants 'leading open models founded on American values'; nearly half of top researchers first studied in China and most work in the US; distillation accusations and Beijing's rejection, both as claims.",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "e13-open-releases",
+            "q13-action-plan",
+            "e13-talent",
+            "e13-distillation"
+          ]
+        },
+        {
+          "id": "ch14-s07",
+          "kind": "scene",
+          "setting": "the jetty at night: one hotline handset with two name-plates; both shores lit",
+          "era": "2023–2026",
+          "mood": "dawnGold",
+          "purpose": "Rivals sign the same pages: Bletchley; 'human control over the decision to use nuclear weapons'; September 2026: one channel, two names. Candle lit, still burning: THE GAP IS MONTHS (estimates from a chip-seller's 'nanoseconds behind America in AI', Nov 2025, said with a commercial stake, to months, to a compute deficit; do not use the Sept 2025 'nanoseconds' line as being about AI).",
+          "machine": "candle-clock",
+          "cast": [],
+          "claims": [
+            "e12-bletchley",
+            "q13-lima",
+            "e13-lima",
+            "e13-summits-2026",
+            "e13-gap",
+            "q13-huang-nov"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ch15",
+      "number": 15,
+      "title": "Case Status: Open",
+      "years": "2024 – 5 October 2026",
+      "minutes": 2.0,
+      "words": 205,
+      "shots": 10,
+      "summary": "The fast-forward and the reveal. A phone at 2 a.m. in a cheap hotel: a Nobel shared with the physicist whose Versailles talk nobody remembered, now ninety-one. What the suspect does now: thinking behind a curtain; a model that picks 'rabbit' before writing the line ('Nobody told it to plan'); METR's ruler running out at sixteen hours beside a trial in which developers were slower. Every lab under the same light, as of October 2026. The last witnesses at the rim and the closing irony. Widrow's death at ninety-five and Mechanical Turk's closure five days ago: the oldest witnesses leave the room. The rewind plays forward, the board becomes a lantern network with one lantern dark, the shelf becomes a bar chart in wax, the last slip is read, STATUS: OPEN, and a hand from the viewer's side lights a new unlettered candle on an unresolved chord. Turing's closing line; disclosure card.",
+      "candle": "the shelf seen whole (a bar chart in wax); a new unlettered candle lit by the viewer's hand",
+      "turn": "The case is not closed. It never is. Somewhere tonight a lamp is on, and someone is suspicious. Perhaps it's you.",
+      "shotList": [
+        {
+          "id": "ch15-s01",
+          "kind": "scene",
+          "setting": "October 2024, about 2 a.m.: a phone glowing in a dark, plain hotel room; a medallion",
+          "era": "2020s",
+          "mood": "candleAmber",
+          "purpose": "'…how could I be sure it wasn't a spoof call.' A Nobel shared with the physicist from Versailles, now ninety-one: the talk nobody remembered, remembered. 'a bit of a stretch'.",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "q12-hinton-hotel",
+            "q12-hinton-spoof",
+            "e12-nobel-physics",
+            "e4-nobel",
+            "q12-wendy-hall"
+          ]
+        },
+        {
+          "id": "ch15-s02",
+          "kind": "scene",
+          "setting": "a theatre curtain hiding a long scroll; only its last line shows",
+          "era": "2024–2025",
+          "mood": "serverCyan",
+          "purpose": "Think longer: hidden chains of thought; in the open, a reasoning stage costing about $294,000 (a partial cost).",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "e14-o1",
+            "e14-r1"
+          ]
+        },
+        {
+          "id": "ch15-s03",
+          "kind": "scene",
+          "setting": "a brass microscope over a lantern network; a rhyme being written",
+          "era": "2025",
+          "mood": "candleAmber",
+          "purpose": "The model picks 'rabbit' before writing the line, and researchers can swap it for 'habit'. 'Nobody told it to plan.' (pays off the two towers)",
+          "machine": "lanternNetwork (under the microscope)",
+          "cast": [],
+          "claims": [
+            "e14-biology",
+            "q14-biology-rhyme"
+          ]
+        },
+        {
+          "id": "ch15-s04",
+          "kind": "scene",
+          "setting": "a carpenter's ruler climbing the wall from minutes to hours",
+          "era": "2025–2026",
+          "mood": "candleAmber",
+          "purpose": "Doubling about every seven months; the ruler runs out at about sixteen hours, exactly where the newest model sits; the honest twin: early-2025 tools made developers 19% slower while they felt faster.",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "e14-metr-horizon",
+            "e14-metr-rct",
+            "q14-metr-slower"
+          ]
+        },
+        {
+          "id": "ch15-s05",
+          "kind": "montage",
+          "setting": "a shelf of small lamps, one per lab, each with a date tag 'as of October 2026'",
+          "era": "2026",
+          "mood": "duskRose",
+          "purpose": "Every lab under the same light: a withheld model and its maker's claim; two courts split; a $1.5 billion settlement; a 'warning shot' and its sceptic; 'We must slow the pace…' and 'unlikely… any time soon'; a voluntary accord with no penalties.",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "q14-glasswing-vulns",
+            "e14-glasswing",
+            "e14-dow",
+            "e14-dow-courts",
+            "e14-copyright",
+            "q14-openai-warningshot",
+            "e14-hf-dissent",
+            "q14-schieber",
+            "q14-amodei-slow",
+            "q14-amodei-unlikely",
+            "e14-pacing",
+            "e14-accord"
+          ]
+        },
+        {
+          "id": "ch15-s06",
+          "kind": "scene",
+          "setting": "the rim of the still-burning candles; the Wall of Forecasts",
+          "era": "2026",
+          "mood": "candleAmber",
+          "purpose": "Hassabis's 'five to 10 years' slip goes up (about even odds); LeCun 'off-ramp' at the edge; Sutskever 'back to the age of research'. The closing irony: the winter's holdouts were proved right, and now two warn the road is dangerous and the third that it doesn't go far enough.",
+          "machine": "candle-clock (Edge of the Light)",
+          "cast": [
+            "hassabis",
+            "lecun-2020s",
+            "sutskever-2020s",
+            "hinton",
+            "bengio-2020s"
+          ],
+          "claims": [
+            "q14-hassabis-5-10",
+            "e14-hassabis",
+            "q14-lecun-offramp",
+            "e14-lecun",
+            "q14-sutskever-research",
+            "e14-sutskever-research",
+            "e9-turing",
+            "e14-hinton-odds",
+            "e14-bengio"
+          ]
+        },
+        {
+          "id": "ch15-s07",
+          "kind": "scene",
+          "setting": "two date stamps; a shoebox neuron on a sill; a globe of small windows going dark",
+          "era": "2025–2026",
+          "mood": "winterBlue",
+          "purpose": "30 September 2025: Widrow, who 'never got over it', dies at ninety-five. 30 September 2026: the marketplace where almost fifty thousand strangers labelled ImageNet closes, five days before 'now'. The oldest witnesses leave the room.",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "e2-widrow-death",
+            "q-widrow-dartmouth",
+            "e7-mturk-closed",
+            "q-li-workers"
+          ]
+        },
+        {
+          "id": "ch15-s08",
+          "kind": "montage",
+          "setting": "the Fast-Forward, then the pull-back: board above, shelf below",
+          "era": "1943–2026",
+          "mood": "candleAmber",
+          "purpose": "The rewind plays forward ('Every one of those was a clue'); the board becomes a lantern network, a wave of light runs from the 1943 wick to the chat box, one lantern stays dark under the card 'How, exactly, does it reach its answer?'; the shelf is a bar chart in wax ('the newest are short partly because they haven't finished burning').",
+          "machine": "lanternNetwork (board as network) + candle-clock (bar chart in wax)",
+          "cast": [],
+          "claims": [
+            "q14-biology-quarter",
+            "e14-biology"
+          ]
+        },
+        {
+          "id": "ch15-s09",
+          "kind": "scene",
+          "setting": "the study in the dark; the last slip floating into the lamp's light; a hand reaching in from the viewer's side",
+          "era": "2026",
+          "mood": "candleAmber",
+          "purpose": "The last slip read: 'The future depends on some graduate student who is deeply suspicious of everything I have said.' STATUS: OPEN. The lamp clicks off; an open palm from our side strikes a match and lights a new, unlettered candle. 'Perhaps it's you.' The motif holds its suspension and does not resolve.",
+          "machine": "candle-clock (new unlettered candle)",
+          "cast": [],
+          "claims": [
+            "q-hinton-suspicious"
+          ]
+        },
+        {
+          "id": "ch15-s10",
+          "kind": "card",
+          "setting": "silent end card on parchment, then a credits disclosure card",
+          "era": "timeless",
+          "mood": "candleAmber",
+          "purpose": "Turing, 1950: 'We can only see a short distance ahead, but we can see plenty there that needs to be done.' Then: written with Claude Opus 5.5, a model made by Anthropic, one of the labs in this story, held to the same sources and standard.",
+          "machine": null,
+          "cast": [],
+          "claims": [
+            "q-turing-closing",
+            "e14-anthropic-releases"
+          ]
+        }
+      ]
+    }
+  ]
+}

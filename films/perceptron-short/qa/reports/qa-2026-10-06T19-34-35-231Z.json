@@ -1,0 +1,288 @@
+{
+ "slug": "perceptron-short",
+ "at": "2026-10-06T19:34:35.231Z",
+ "summary": {
+  "pass": 29,
+  "warn": 3,
+  "fail": 2,
+  "skip": 0
+ },
+ "checks": [
+  {
+   "stage": "narration",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "9 lines narrated and current",
+   "missing": [],
+   "stale": []
+  },
+  {
+   "stage": "narration",
+   "id": "pacing",
+   "status": "pass",
+   "detail": "130 wpm overall",
+   "wpm": 130.1,
+   "perShot": {
+    "ch01-s01": 181.4,
+    "ch01-s02": 121.5,
+    "ch01-s03": 130.9
+   }
+  },
+  {
+   "stage": "narration",
+   "id": "clipEdges",
+   "status": "pass",
+   "detail": "all clip edges quiet",
+   "loud": []
+  },
+  {
+   "stage": "narration",
+   "id": "stem",
+   "status": "pass",
+   "detail": "stem -18 LUFS (target -18), TP -2 dBTP, limiter 0.74 dB, compressor 3.48 dB GR, line rides ≤ 2.0 dB"
+  },
+  {
+   "stage": "narration",
+   "id": "stt",
+   "status": "pass",
+   "detail": "2 lines round-tripped on the current clips (scribe_v1): L0104 (Mark I, Rosenblatt); L0108 (1969, Papert)",
+   "targets": [
+    "L0104",
+    "L0108"
+   ]
+  },
+  {
+   "stage": "narration",
+   "id": "listening",
+   "status": "warn",
+   "detail": "Rosenblatt pending; Papert pending — a human listens and runs film:voice signoff --slug perceptron-short --term <term> --by <name>"
+  },
+  {
+   "stage": "timeline",
+   "id": "draft",
+   "status": "pass",
+   "detail": "locked from narration"
+  },
+  {
+   "stage": "timeline",
+   "id": "appCopy",
+   "status": "pass",
+   "detail": "app copy identical"
+  },
+  {
+   "stage": "timeline",
+   "id": "matchesScript",
+   "status": "pass",
+   "detail": "lines match script.json"
+  },
+  {
+   "stage": "timeline",
+   "id": "frames",
+   "status": "pass",
+   "detail": "shots contiguous, on whole frames"
+  },
+  {
+   "stage": "timeline",
+   "id": "beats",
+   "status": "pass",
+   "detail": "15 beats inside their shots"
+  },
+  {
+   "stage": "timeline",
+   "id": "runtime",
+   "status": "pass",
+   "detail": "1.1 min vs target 1.0 min (113%)"
+  },
+  {
+   "stage": "timeline",
+   "id": "ceiling",
+   "status": "pass",
+   "detail": "67.75 s vs ceiling 68 s (story/meta.json runtimeCeilingSec)"
+  },
+  {
+   "stage": "score",
+   "id": "renders",
+   "status": "pass",
+   "detail": "1 cues rendered at exact length",
+   "problems": [],
+   "warns": []
+  },
+  {
+   "stage": "score",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "1.1 min of music over 1.1 min (97%)"
+  },
+  {
+   "stage": "mix",
+   "id": "loudness",
+   "status": "pass",
+   "detail": "-15.9 LUFS (target -16), LRA 4.4, linear normalization"
+  },
+  {
+   "stage": "mix",
+   "id": "truePeak",
+   "status": "pass",
+   "detail": "-2.6 dBTP (ceiling -1.5)"
+  },
+  {
+   "stage": "mix",
+   "id": "length",
+   "status": "pass",
+   "detail": "67.75s vs film 67.75s"
+  },
+  {
+   "stage": "mix",
+   "id": "duck",
+   "status": "pass",
+   "detail": "music ducks 3.21 dB (target 3, ceiling; warn beyond ±1.5) under 53.1s of narration; calibrated to threshold -26.04 dBFS, ratio 3"
+  },
+  {
+   "stage": "mix",
+   "id": "moments",
+   "status": "pass",
+   "detail": "L0101 peaks -16.9 LUFS momentary; loudest music-only windows: -16.5 LUFS @ 47.1s, -19.2 LUFS @ 4.5s, -20 LUFS @ 5.6s"
+  },
+  {
+   "stage": "mix",
+   "id": "preLimit",
+   "status": "pass",
+   "detail": "no master limiting (constant gain only)",
+   "reductionDb": 0
+  },
+  {
+   "stage": "mix",
+   "id": "stemLimit",
+   "status": "pass",
+   "detail": "narration stem limiter 0.74 dB; speech compressor 3.48 dB GR"
+  },
+  {
+   "stage": "mix",
+   "id": "lineLevels",
+   "status": "pass",
+   "detail": "every line within 0.5 dB of its requested offset; L0101 -5 (want -5), L0108 -1.5 (want -1.5); spread of the rest -0.03..0 dB",
+   "lines": {
+    "L0101": {
+     "M": -19.53,
+     "offsetDb": -5,
+     "requestedDb": -5,
+     "errorDb": 0
+    },
+    "L0102": {
+     "M": -14.53,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0103": {
+     "M": -14.55,
+     "offsetDb": -0.03,
+     "requestedDb": 0,
+     "errorDb": -0.03
+    },
+    "L0104": {
+     "M": -14.53,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0105": {
+     "M": -14.53,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0105b": {
+     "M": -14.53,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0106": {
+     "M": -14.53,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0107": {
+     "M": -14.53,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0108": {
+     "M": -16.03,
+     "offsetDb": -1.5,
+     "requestedDb": -1.5,
+     "errorDb": 0
+    }
+   }
+  },
+  {
+   "stage": "mix",
+   "id": "fadeAfterStrike",
+   "status": "fail",
+   "detail": "m01: fade 65.533–65.83 s starts 0.873 s after the last strike (64.66 s; min 1.6) — the window is too short"
+  },
+  {
+   "stage": "mix",
+   "id": "chapters",
+   "status": "pass",
+   "detail": "1 slices"
+  },
+  {
+   "stage": "render",
+   "id": "frames",
+   "status": "fail",
+   "detail": "1580 frames (expected 1626 = round(67.75 × 24))"
+  },
+  {
+   "stage": "render",
+   "id": "format",
+   "status": "pass",
+   "detail": "1920×1080 @ 24 fps yuv420p"
+  },
+  {
+   "stage": "render",
+   "id": "av",
+   "status": "pass",
+   "detail": "video 65.833s, audio 65.833333s (aac)"
+  },
+  {
+   "stage": "render",
+   "id": "extras",
+   "status": "pass",
+   "detail": "captions muxed"
+  },
+  {
+   "stage": "render",
+   "id": "chapters",
+   "status": "pass",
+   "detail": "1 chapters muxed (timeline has 1)"
+  },
+  {
+   "stage": "render",
+   "id": "fresh",
+   "status": "warn",
+   "detail": "film.mp4 is older than the master or the timeline — re-render"
+  },
+  {
+   "stage": "sheets",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "3 sheets current"
+  },
+  {
+   "stage": "publish",
+   "id": "manifest",
+   "status": "pass",
+   "detail": "1 chapters, kind film"
+  },
+  {
+   "stage": "publish",
+   "id": "current",
+   "status": "warn",
+   "detail": "shelf copy is stale (runtime 65.8333 s ≠ timeline 67.75 s; manifest older than mix/master.wav): re-run film:publish"
+  }
+ ]
+}

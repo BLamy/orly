@@ -1,0 +1,23 @@
+{
+ "shot": "ch05-s05",
+ "at": "2026-10-12T08:20:19.561Z",
+ "minCapPx": 22,
+ "sampled": 13,
+ "texts": 3,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "GRADIENT DESCENT",
+   "maxCap": 22.1
+  },
+  {
+   "text": "each step downhill, toward less error",
+   "maxCap": 22
+  },
+  {
+   "text": "timid steps can stall · rare in the 1986 tests",
+   "maxCap": 33.3
+  }
+ ]
+}

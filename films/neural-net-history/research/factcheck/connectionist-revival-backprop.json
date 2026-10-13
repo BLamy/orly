@@ -1,0 +1,135 @@
+{
+  "id": "connectionist-revival-backprop",
+  "checked": 55,
+  "confirmed": 34,
+  "corrected": 13,
+  "unverifiable": 6,
+  "corrections": [
+    {
+      "original": "Schmidhuber says the NN application was \"not in the 1974 thesis, contrary to some claims\".",
+      "verdict": "corrected",
+      "fix": "This was a paraphrase in quotation marks. It is replaced with Schmidhuber's actual wording: the first NN-specific application was Werbos 1982, \"but not yet in his 1974 thesis, as is sometimes claimed\"; the thesis had only \"some preliminary, NN-specific discussion (Werbos, 1974, section 5.5.1)\".",
+      "sources": ["https://people.idsia.ch/~juergen/who-invented-backpropagation.html"]
+    },
+    {
+      "original": "NETtalk ... ran at about 2 letters/sec on a VAX 11/780 (key claim 13; curiosity hook 6).",
+      "verdict": "corrected",
+      "fix": "The paper gives \"about 2 letters/sec on a VAX 11/780 FPA\" for \"a network of 10,000 weights\" during learning, not for the standard 18,629-weight NETtalk. The figure is no longer attached to NETtalk itself. All other NETtalk numbers are confirmed (203/80/26, 18,629 weights, 1,024 words, 95% after 50 passes, understandable by 10 passes).",
+      "sources": ["https://papers.cnl.salk.edu/PDFs/Parallel%20Networks%20That%20Learn%20to%20Pronounce%20English%20Text%201987-3351.pdf"]
+    },
+    {
+      "original": "Key claim 8 / dossier framing: RHW 'did not cite the origin of the method' (implying no acknowledgment of prior work).",
+      "verdict": "corrected",
+      "fix": "The quote is accurate, but context was added. The 1986 Nature paper states \"Variants on the learning procedure have been discovered independently by David Parker (personal communication) and by Yann Le Cun\" and cites Le Cun, Proc. Cognitiva 85, 599-604 as ref. 3. The omission concerns the earlier origins (Linnainmaa 1970, Werbos), not all prior work.",
+      "sources": ["https://gwern.net/doc/ai/nn/1986-rumelhart-2.pdf", "https://www.nature.com/articles/323533a0"]
+    },
+    {
+      "original": "Linnainmaa described reverse-mode differentiation in a 1970 Finnish master's thesis, with FORTRAN code (BIT 1976).",
+      "verdict": "corrected",
+      "fix": "The FORTRAN code is in the 1970 thesis itself (pp. 58-60, per Schmidhuber). BIT 16(2):146-160 (June 1976) is the later journal version.",
+      "sources": ["https://people.idsia.ch/~juergen/who-invented-backpropagation.html", "https://doi.org/10.1007/BF01931367"]
+    },
+    {
+      "original": "In 1989 Cybenko, and separately Hornik, Stinchcombe & White, proved that one hidden layer ... can approximate any continuous (Borel measurable) function.",
+      "verdict": "corrected",
+      "fix": "The claim was incomplete. Funahashi (1989), 'On the approximate realization of continuous mappings by neural networks', Neural Networks 2(3):183-192, was a third independent proof. The Cybenko and Hornik et al. abstract wording, and the existence-only caveat, are confirmed.",
+      "sources": ["https://doi.org/10.1016/0893-6080(89)90003-8", "https://doi.org/10.1007/BF02551274", "https://www.sciencedirect.com/science/article/abs/pii/0893608089900208"]
+    },
+    {
+      "original": "Toronto, 1987 ... CIFAR's support \"at the time ... met with widespread skepticism\".",
+      "verdict": "corrected",
+      "fix": "The quote was misattributed. CIFAR says the neural-network field \"at the time had been met with widespread skepticism and an episodic dearth of funding\"; the skepticism was not aimed at CIFAR's support.",
+      "sources": ["https://cifar.ca/cifarnews/2024/10/08/long-time-cifar-fellow-geoffrey-hinton-awarded-2024-nobel-prize-in-physics/"]
+    },
+    {
+      "original": "Rumelhart ... died on 13 March 2011 of complications of a progressive neurodegenerative disease (Pick's disease) [S27 APS].",
+      "verdict": "corrected",
+      "fix": "The source attribution is fixed. APS and Stanford say only 'progressive neurodegenerative disease'; 'Pick's disease' comes from the NYT obituary (Benedict Carey), citing his son. The claim that he co-directed the UCSD Institute for Cognitive Science is now marked UNVERIFIED.",
+      "sources": ["https://www.psychologicalscience.org/observer/david-rumelhart", "http://archive.boston.com/bostonglobe/obituaries/articles/2011/03/28/david_rumelhart_created_perception_simulations_at_68/", "https://news.stanford.edu/stories/2011/03/david-rumelhart-pioneer-cognitive-neuroscience-dies-68"]
+    },
+    {
+      "original": "Hinton: postdoc at UCSD around 1978-82 (with an interval at Cambridge; exact dates UNVERIFIED); Oct 1982 CMU 'month from a single profile'.",
+      "verdict": "corrected",
+      "fix": "All dates now come from Hinton's own CV: Sussex Jan 1976 - Sept 1978; UCSD Visiting Scholar Oct 1978 - Sept 1980; MRC APU Cambridge Oct 1980 - Sept 1982; UCSD Visiting Asst Prof Jan - June 1982; CMU Oct 1982 - June 1987; Toronto from Jul 1987; CIFAR Fellow 1987. Key claim 16 (CMU 1982-1987, Toronto 1987, CIFAR AIRS founded 1983, NCAP 2004) is confirmed.",
+      "sources": ["https://www.cs.toronto.edu/~hinton/shortcv.pdf", "https://cifar.ca/awards/cifar-nobel-laureates/", "https://cifar.ca/our-story/"]
+    },
+    {
+      "original": "1983: Hinton & Sejnowski, 'Optimal perceptual inference' ... This is the first Boltzmann machine paper.",
+      "verdict": "corrected",
+      "fix": "This was an overclaim. The Boltzmann paper's own reference list shows Hinton & Sejnowski, 'Analyzing cooperative computation' (Cognitive Science Society, May 1983), which predates the June 1983 CVPR paper, and Fahlman, Hinton & Sejnowski (AAAI, Aug 1983). The entry now reads 'one of the earliest'.",
+      "sources": ["https://www.cs.toronto.edu/~hinton/absps/cogscibm.pdf"]
+    },
+    {
+      "original": "Schneider ... called the interest \"explosive\" and \"the most dramatic shift in theoretical orientation in psychology in the last 20 years\".",
+      "verdict": "corrected",
+      "fix": "A hedge had been dropped. Schneider said the shift was *probably* \"the most dramatic shift...\" (as quoted by Gibbons 2019). 'Probably' is now restored.",
+      "sources": ["https://onlinelibrary.wiley.com/doi/10.1002/jhbs.21946"]
+    },
+    {
+      "original": "Lake & Baroni, Nature, 25 Oct 2023.",
+      "verdict": "corrected",
+      "fix": "The dates are made precise: published online 25 Oct 2023, print Nature 623:115-121 (2 Nov 2023). The quote 'the systematicity challenge persists' is verbatim, but the next sentence claims they 'successfully address' it. That caveat must accompany the quote.",
+      "sources": ["https://www.nature.com/articles/s41586-023-06668-3", "https://api.crossref.org/works/10.1038/s41586-023-06668-3"]
+    },
+    {
+      "original": "Pinker & Prince, 'On language and connectionism', Cognition 28:73-193.",
+      "verdict": "corrected",
+      "fix": "The full title is restored: 'On language and connectionism: Analysis of a parallel distributed processing model of language acquisition'. Pages 73-193 are confirmed.",
+      "sources": ["https://doi.org/10.1016/0010-0277(88)90032-7"]
+    },
+    {
+      "original": "1995 No Hands Across America ... RALPH, not ALVINN [S26 CMU press release].",
+      "verdict": "corrected",
+      "fix": "The RALPH-not-ALVINN fact is confirmed, but the cited CMU press release predates the trip and names neither system. New sources were added for RALPH, the dates (23-31 July 1995) and 2,797 of 2,849 miles (98.2%) steered autonomously.",
+      "sources": ["https://www.therobotreport.com/back-to-the-future-autonomous-driving-in-1995/", "http://www.robothalloffame.org/inductees/08inductees/navlab.html", "https://www.cs.cmu.edu/~tjochem/nhaa/official_press_release.html"]
+    },
+    {
+      "original": "Key claim 12: The systematicity debate is unresolved after 35+ years.",
+      "verdict": "contested",
+      "fix": "The claim is now marked CONTESTED. Lake & Baroni (2023) say the challenge 'persists' and then claim to have 'successfully address[ed]' it; critics dispute that. Script wording should avoid both 'solved' and 'unanswered'.",
+      "sources": ["https://www.nature.com/articles/s41586-023-06668-3"]
+    },
+    {
+      "original": "Sejnowski moved to the Salk Institute in La Jolla in 1988.",
+      "verdict": "contested",
+      "fix": "Salk/EurekAlert says 1988; Sejnowski's own Brain Prize biography says 1989. The dossier now uses 'late 1980s' and notes that he was Hopfield's PhD student (Princeton, 1978).",
+      "sources": ["https://www.eurekalert.org/news-releases/539980", "https://brainprize.org/winners/computational-and-theoretical-neuroscience-2024/terrence-j-sejnowski"]
+    },
+    {
+      "original": "Hinton left the US partly because of opposition to Reagan-era policy in Central America.",
+      "verdict": "unverifiable",
+      "fix": "The verified reasons are military/DoD funding of AI and disillusionment with Reagan-era politics; the ACM Turing biography cites the 'Star Wars' initiative, as reported via search. The 'Central America' specific was not traced and is marked UNVERIFIED.",
+      "sources": ["https://www.britannica.com/biography/Geoffrey-Hinton", "https://en.wikipedia.org/wiki/Geoffrey_Hinton", "https://amturing.acm.org/award_winners/hinton_4791679.cfm"]
+    },
+    {
+      "original": "1979: Hinton and James Anderson organise a meeting (at UCSD, La Jolla).",
+      "verdict": "unverifiable",
+      "fix": "Gibbons confirms the year, the organisers and the resulting book (Parallel Models of Associative Memory, 1981) but gives no venue. The location is marked UNVERIFIED.",
+      "sources": ["https://onlinelibrary.wiley.com/doi/10.1002/jhbs.21946"]
+    },
+    {
+      "original": "Past-tense model ... tests on 86 low-frequency verbs.",
+      "verdict": "unverifiable",
+      "fix": "The Pinker & Prince text confirms 10 verbs (2 regular) then 410 more (334 regular), giving 420 verbs presented 190 times. The figure of 86 test verbs was not found and is marked UNVERIFIED pending PDP vol. 2 ch. 18.",
+      "sources": ["http://www.blutner.de/NeuralNets/Texts/Pinker_Prince.htm"]
+    },
+    {
+      "original": "Rumelhart co-directed the Institute for Cognitive Science with Donald Norman.",
+      "verdict": "unverifiable",
+      "fix": "Not stated in the APS obituary, which mentions only his collaboration with Norman. Marked UNVERIFIED.",
+      "sources": ["https://www.psychologicalscience.org/observer/david-rumelhart"]
+    },
+    {
+      "original": "MIT Press lists Vol. 1 hardcover as 17 July 1986.",
+      "verdict": "unverifiable",
+      "fix": "The MIT Press page was blocked in this pass. A 1986 publication is confirmed by Gibbons and Crossref-era citations; the exact day is unconfirmed.",
+      "sources": ["https://mitpress.mit.edu/9780262680530/parallel-distributed-processing-volume-1/"]
+    },
+    {
+      "original": "NETtalk appeared on NBC's Today show.",
+      "verdict": "unverifiable",
+      "fix": "This was already flagged. The broadcast date is unverified; the only source is Sejnowski 2018, cited via Wikipedia and Liu.",
+      "sources": ["https://yuxi-liu-wired.github.io/essays/posts/backstory-of-backpropagation/"]
+    }
+  ]
+}

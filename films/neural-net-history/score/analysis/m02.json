@@ -1,0 +1,18 @@
+{
+ "id": "m02",
+ "start": 72.35,
+ "end": 196.03,
+ "file": "films/neural-net-history/score/renders/m02.wav",
+ "duration": 129.68,
+ "I": -23.3,
+ "LRA": 10.2,
+ "TP": -6.9,
+ "expected": 129.68,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/neural-net-history/score/analysis/m02.png",
+ "cueSeconds": 123.68,
+ "cps": 1,
+ "lastStrikeLocal": 119.96,
+ "lastStrike": 192.31
+}

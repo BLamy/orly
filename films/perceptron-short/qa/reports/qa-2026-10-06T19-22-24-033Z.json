@@ -1,0 +1,129 @@
+{
+ "slug": "perceptron-short",
+ "at": "2026-10-06T19:22:24.033Z",
+ "summary": {
+  "pass": 9,
+  "warn": 0,
+  "fail": 1,
+  "skip": 0
+ },
+ "checks": [
+  {
+   "stage": "mix",
+   "id": "loudness",
+   "status": "pass",
+   "detail": "-15.9 LUFS (target -16), LRA 4.4, linear normalization"
+  },
+  {
+   "stage": "mix",
+   "id": "truePeak",
+   "status": "pass",
+   "detail": "-2.6 dBTP (ceiling -1.5)"
+  },
+  {
+   "stage": "mix",
+   "id": "length",
+   "status": "pass",
+   "detail": "67.75s vs film 67.75s"
+  },
+  {
+   "stage": "mix",
+   "id": "duck",
+   "status": "pass",
+   "detail": "music ducks 3.21 dB (target 3, ceiling; warn beyond ±1.5) under 53.1s of narration; calibrated to threshold -26.04 dBFS, ratio 3"
+  },
+  {
+   "stage": "mix",
+   "id": "moments",
+   "status": "pass",
+   "detail": "L0101 peaks -16.9 LUFS momentary; loudest music-only windows: -16.5 LUFS @ 47.1s, -19.2 LUFS @ 4.5s, -20 LUFS @ 5.6s"
+  },
+  {
+   "stage": "mix",
+   "id": "preLimit",
+   "status": "pass",
+   "detail": "no master limiting (constant gain only)",
+   "reductionDb": 0
+  },
+  {
+   "stage": "mix",
+   "id": "stemLimit",
+   "status": "pass",
+   "detail": "narration stem limiter 0.74 dB; speech compressor 3.48 dB GR"
+  },
+  {
+   "stage": "mix",
+   "id": "lineLevels",
+   "status": "pass",
+   "detail": "every line within 0.5 dB of its requested offset; L0101 -5 (want -5), L0108 -1.5 (want -1.5); spread of the rest -0.03..0 dB",
+   "lines": {
+    "L0101": {
+     "M": -19.53,
+     "offsetDb": -5,
+     "requestedDb": -5,
+     "errorDb": 0
+    },
+    "L0102": {
+     "M": -14.53,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0103": {
+     "M": -14.55,
+     "offsetDb": -0.03,
+     "requestedDb": 0,
+     "errorDb": -0.03
+    },
+    "L0104": {
+     "M": -14.53,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0105": {
+     "M": -14.53,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0105b": {
+     "M": -14.53,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0106": {
+     "M": -14.53,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0107": {
+     "M": -14.53,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0
+    },
+    "L0108": {
+     "M": -16.03,
+     "offsetDb": -1.5,
+     "requestedDb": -1.5,
+     "errorDb": 0
+    }
+   }
+  },
+  {
+   "stage": "mix",
+   "id": "fadeAfterStrike",
+   "status": "fail",
+   "detail": "m01: fade 65.533–65.83 s starts 0.873 s after the last strike (64.66 s; min 1.6) — the window is too short"
+  },
+  {
+   "stage": "mix",
+   "id": "chapters",
+   "status": "pass",
+   "detail": "1 slices"
+  }
+ ]
+}

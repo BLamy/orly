@@ -1,0 +1,86 @@
+{
+  "reviewer": "historian",
+  "round": 5,
+  "lens": "accuracy and fairness: every statement and on-screen text checked against research/claims.json and quotes.json, with the bible's era analyses and contested-matters section as backup",
+  "wordCount": 3412,
+  "spokenWordCount": 3497,
+  "method": "I dumped every narration line, spoken override and on-screen text item in all 15 chapters, with each shot's cited claims (466 claims and 369 quotes on file; every cited claim ID and quote ID resolves). I machine-matched every quoted fragment, spoken and on screen, against quotes.json after normalising punctuation. All 80 match word for word. The only non-match is the mentioned word 'rabbit' (L1504), which is a word being mentioned, not a quotation. I checked speaker, date and provenance for each quote entry used. I read every line and label against the text of the claims its shot cites. I used the bible's era analyses (Eras 3, 5, 6, 7, 8, 10 and 13) and its 'Anthropic vs the US government' contested-matters entry to check beliefs, durations and dissent. I read the visuals of ch01-s05, ch01-s06, ch03-s01, ch03-s06, ch12-s03, ch13-s06, ch14-s05, ch14-s07 and ch15-s05, where the staging carries facts. Round-4 status: of 12 items, 11 are fixed as specified. These are: the 'few holdouts' framing at L0609 and L1312; the Lin Junyang tag; XOR at L0509; 'the match's only human game'; the export-controls dissent label; the accord label; the 'simplified copy' hedge at L1504; METR dated March 2025; 'British funding'; DeepSeek's 'final training run'; and the NCAP card naming Bengio and Fleet. The Hinton tweet is still secondary-sourced. Runtime fell from 3,557 to 3,412 words but is still over the target.",
+  "scores": {
+    "accuracy": 8.5,
+    "depth": 8,
+    "clarity": 7.5,
+    "story": 8,
+    "curiosity": 8,
+    "visual": 8,
+    "voice": 7.5
+  },
+  "critical": [
+    "BRIEF / RUNTIME, still over. Narration is 3,412 written words (3,497 spoken, with years read out) against the brief's target of about 3,040 for 32 minutes. At the house pace that is about 36.5–37 minutes before music-only holds. The brief's range is 30–35 minutes. FIX: cut about 300–370 more words, from lines that carry no unique claim. Keep the deep-dive mechanics, the attributions and the fairness clauses. Candidates: ch01-s05 L0112 (the Wall explains itself on screen, 9 words). ch02-s04 L0209: keep the candle rule, drop 'with doubters at the rim of its light'; the rim device is shown every time (9). ch05-s05 L0510: fold into L0508 as 'downhill, in fog' (about 15). ch06-s08 L0616 (7). ch08-s13b L0835 (7), which repeats L0416. ch10-s01 L1002: drop the first sentence (11). ch11-s01: merge L1101 and L1102 (about 6). ch11-s08 L1119 (12). ch12-s08: merge L1219–L1221 into 'Then, a stampede. Case solved? Not quite.' (keep, but cut elsewhere). ch13-s01 L1301: drop 'all along' plus the stamp line (about 5). ch15-s08 L1527: trim the accomplice list to 'data, fire, a messenger, and people choosing' (3). ch15-s09 L1519 (7). Re-run the word count and the quote check afterwards."
+  ],
+  "issues": [
+    {
+      "where": "ch06-s03 (L0605–L0607, OST 'convex: one global optimum'), brief requirement 'Classical ML'",
+      "problem": "The brief names classical ML explicitly. The film shows it as one method, the SVM, plus the dinner bet. The bible's Era 6 'belief of the age' is broader: convex optimisation and VC theory, boosting (AdaBoost 1995, Gödel Prize 2003), random forests (Breiman 2001), graphical models (Pearl's Bayesian networks, 1985–88), and statistics over hand-written rules in speech and translation (Jelinek's IBM group). All of these are confirmed claims (e6-adaboost, e6-randomforest, e6-pearl, e6-ibm-smt, e6-two-cultures), and none is spoken or shown. 'The rivals were good' promises a field and delivers one method. This is the thinnest of the brief's named requirements.",
+      "fix": "No new narration is needed. Add one label on the rivals' board in ch06-s03, beat 'board' or 'proof', at 70 characters or fewer: 'ALSO WINNING · boosting 1995 · random forests 2001 · Bayesian nets 1988'. Optionally add a second small slip: 'speech & translation by statistics · IBM, from 1987'. Add e6-adaboost, e6-randomforest, e6-pearl and e6-ibm-smt to the shot's claims. Or, if words come free from the runtime cut, make L0605 'The rivals were good: boosting, forests of decision trees, and this one.' (+7)."
+    },
+    {
+      "where": "ch08-s13b L0831 ('Beside it, the fiddly-nets candle went out too, after ten to fifteen years, by field') and the AlexNet framing generally",
+      "problem": "The bible's Era 7 states that 'Deep learning's first mass-market wins came in speech, months before AlexNet' (e7-jellybean: Android voice search shipped a DNN acoustic model in July 2012, and Google said so on 6 August 2012). Era 6 dates the fiddly-nets belief's end to 'speech around 2009–2012, vision in 2012'. The film never mentions speech. 'By field' is accurate but opaque. As a result the film makes AlexNet the sole turning point. The bible flags that as a disputed emphasis (e8-first-debate, e7-dannet), and the film credits IDSIA but not the speech groups.",
+      "fix": "Add one label at the fiddly-nets candle as it goes out (ch08-s13b): 'speech went first: a neural net in Android voice search, July 2012'. Add e7-jellybean to the shot's claims. This needs no extra narration."
+    },
+    {
+      "where": "ch14-s04 L1410 ('a struck match, out within a day') and ch15-s08 L1515 ('one match, a day')",
+      "problem": "The bible's Era 13 belief C ('maybe compute doesn't matter') says only that it was 'held briefly by markets' and that 'dissent was immediate'. No claim says the belief ended within a day; e13-crash documents a one-day loss, not a next-day recovery. The film turns the length of the crash into the length of the belief, and L1515 then states that as the shortest candle on the shelf.",
+      "fix": "Tie the match to the documented single day. L1410: 'Markets bet that computing power didn't matter: a struck match, one day's panic.' L1515 can then stay as written ('one match, a day'). Alternatively: 'a struck match, quickly out'."
+    },
+    {
+      "where": "ch14-s07 L1420 (Liang Wenfeng quote)",
+      "problem": "This is spoken straight after 'A newer candle: the gap is months, not years' (a 2025–26 belief, bible Era 13 D). But the quote is from July 2024, before R1 and while belief B ('one to three years behind') still held. Liang was answering the 'one or two years' framing (e13-gap). Only the on-screen card carries the date. To the ear, it sounds like a 2026 reply to the 'months' candle.",
+      "fix": "'Back in 2024, DeepSeek's founder, in translation: “the real gap is the difference between originality and imitation.”' (+3 words; the spoken override should read 'twenty twenty-four'). Or move L1420 before L1417."
+    },
+    {
+      "where": "ch14-s04 OST beat 'out' (export-controls label)",
+      "problem": "This is a fairness asymmetry. The label flags only Huang's commercial interest ('HUANG, WHO SELLS CHIPS'). The pro-controls side is named by affiliation only ('AMODEI, ANTHROPIC'). Anthropic is a US rival to the Chinese labs in question, and this film is made with an Anthropic model, so marking one side's interest and not the other's reads as tilted. A second point: 'THEY HARDENED CHINA'S SELF-RELIANCE (BEIJING'S OWN CHIP RULES)' states as fact what e13-export-debate gives as an inference ('Beijing's own purchase restrictions suggest...'). The label is also about 200 characters of capitals, too long to read in the beat.",
+      "fix": "Use parallel affiliations and keep the inference marked as one: 'DO THE CONTROLS WORK? · decisive (Amodei, Anthropic; Saif Khan, ex-NSC) · they hand the market to Huawei (Huang, Nvidia) · they spurred self-reliance (suggested by Beijing's chip-buying curbs)'. Split it into two slips if the TEXT RULE allows."
+    },
+    {
+      "where": "ch13-s02 L1304 / OST 'Google has acted very responsibly.'",
+      "problem": "This is carried over from rounds 3 and 4. quotes.json still marks q12-hinton-tweet as secondary: Wikipedia wording, with some reproductions reading 'can talk', and a note to 'check the original tweet before on-screen text'. The substance is confirmed in e12-hinton-leaves, and the four quoted words are not affected by the variant.",
+      "fix": "Research should confirm the tweet against an archive and update the quote entry. Until then, keep '(as widely reproduced)' on the card. This is acceptable for lock, but it should be closed before publish."
+    },
+    {
+      "where": "ch05-s03 OST 'Boltzmann machine · 1985 · Ackley, Hinton & Sejnowski · learns as it cools'",
+      "problem": "This is technically loose. In the Boltzmann machine, simulated annealing (the 'cooling') is how the network settles to a state. Learning comes from comparing clamped and free-running co-activation statistics (e4-boltzmann; the bible's Boltzmann staging note says 'the weight change is the difference'). 'Learns as it cools' merges the two.",
+      "fix": "'Boltzmann machine · 1985 · Ackley, Hinton & Sejnowski · settles as it cools, learns by comparing waking and dreaming'. Or the shorter 'settles as it cools'."
+    },
+    {
+      "where": "ch12-s03 OST date '28 MAY 2021' (Anthropic founding shot)",
+      "problem": "Anthropic was founded in January 2021 (e11-anthropic-founding; 26 January is the business-registry date). 28 May 2021 is the Series A announcement (e11-series-a). In a shot whose spoken line is '...founded Anthropic', a bare date stamp reads as the founding date. OpenAI's stamp (11 Dec 2015) really is its founding announcement, so the matched staging grammar makes the two dates look equivalent when they are not.",
+      "fix": "Stamp: 'FOUNDED JAN 2021 · ANNOUNCED 28 MAY 2021'. Or keep '28 MAY 2021' and add 'announcement' to it, as the visual already describes the pin as 'a typewritten announcement'."
+    },
+    {
+      "where": "ch03-s06 OST quote '“Love,” he said. “Hope. Despair.” — Rosenblatt, The New Yorker, 1958'",
+      "problem": "The quote is verbatim, but its meaning depends on context. The New Yorker asked Rosenblatt what the perceptron was NOT capable of (q-rosenblatt-love context). The context is staged only as a wordless gesture, and nothing on screen says it. Out of context, the three words could be read as Rosenblatt claiming the machine has, or will have, feelings. That reverses the meaning, in the very shot that fairly shares out responsibility for the hype.",
+      "fix": "Extend the attribution: '— Rosenblatt, asked what it could never do · The New Yorker, 1958'."
+    },
+    {
+      "where": "ch02-s07 L0215 ('By 1956 the field had a name, artificial intelligence, and Minsky turned to symbols and rules')",
+      "problem": "This is minor. e1-minsky-switch dates the switch 'after 1956': Solomonoff's ideas at Dartmouth drew him away from nets, and he co-founded MIT's AI Project in 1959. 'By 1956' governs both clauses, so the switch is placed slightly early.",
+      "fix": "'By 1956 the field had a name, artificial intelligence, and Minsky soon turned to symbols and rules: our first suspect.' (+1 word)."
+    },
+    {
+      "where": "ch15-s02 L1503 ('rewarded for right answers, they wrote long working notes first')",
+      "problem": "This is minor. 'Rewarded for right answers' is DeepSeek's documented method (e14-r1: rule-based rewards). For o1, e14-o1 says only 'trained with large-scale RL', and OpenAI did not publish the reward scheme. 'That year' is anchored to o1 (September 2024), so the sentence credits o1 with a reward method that is documented only for R1.",
+      "fix": "'That year, machines learned to think longer: trained by reward, they wrote long working notes first.' Or keep the line, since L1521 immediately says that only DeepSeek published its recipe."
+    }
+  ],
+  "strengths": [
+    "Quote discipline is still exemplary. All 80 quoted fragments, spoken and on screen, match quotes.json word for word, including the split Hopfield quote at L0502 and the 'cheerfully' New Yorker sentence. Speakers, dates and provenance markers are correct: 'as quoted by Gary Marcus', 'AP translation', 'ChinaTalk translation', 'recalling colleagues' advice', 'as reported by Cade Metz', 'writing in 2020' and 'as widely reproduced'. Fragments are cut at clause boundaries, with ellipses on screen. Paraphrases (Hassabis's odds, Huang's 'nanoseconds' as a tag, Lin's estimate) carry no quote marks except where the claim itself quotes the word.",
+    "The round-4 fixes landed as specified and in the script's voice. 'A few stubborn holdouts, among them...' feeds 'Three of those holdouts' and 'Three of those who...'. The NCAP card now credits Bengio, Fleet and others. XOR is 'our exclusive-or puzzle'. Lee Sedol 'won the match's only human game'. The chokepoint candle finally gets dissenters at its rim. The accord says 'voluntary · no penalties'. Anthropic's rabbit finding carries 'inside a simplified copy'. METR is dated March 2025. 'British funding fell'. DeepSeek 'priced its model's final training run'.",
+    "Even-handedness across labs is structural. OpenAI's and Anthropic's foundings share one staging grammar (bare pins, paired lanterns, a plain ledger). FTX carries 'not implicated'. Anthropic's Pentagon standoff states the government's position, sourced to the bible's contested-matters entry ('a contractor imposing use limits is a supply-chain risk'), and ends 'Courts are split'. Anthropic's $1.5 billion settlement stands beside OpenAI's sandbox escape under a written equal-time rule. The closing card discloses that the film was made with an Anthropic model.",
+    "The geopolitics are factual and balanced. Washington's stated reason and Beijing's reply are both quoted verbatim and marked as translations. China's 2017 plan 'named no rival'. The talent plate puts 47% against 18% and adds 'America employed the most'. The DeepSeek cost carries the report's own caveat and an outside estimate. Bletchley and the September 2026 dialogue sit beside 'Chip rules unchanged'. The gap chapter ends on 'nobody agrees'.",
+    "Contested matters are flagged where they come up. Examples: bedroom or lab; the Mark I's 1958–60; eight names for backprop with 'credit still disputed' and Hinton's own disclaimer; 'Historians still argue; there were several blows'; Gebru's departure with both accounts at the same size; the auction 'by one reporter's account'; the warm-up candle 'nobody knows exactly when'; systematicity 'still argued'; seven networks voting with the single net at 18.2%; and the IDSIA contest wins credited by name.",
+    "The deep-dive mechanics check out exactly against the claims and the bible's machine notes. 224×224×3 = 150,528. The worked stencil sums to 3.88. 96 first-layer kernels and the 55·27·13·13·13 → 4096·4096·1000 stack. About 10 bits × 1.2 million labels ≈ 12 million against 60 million weights. ×2048 augmentation. Dropout on fc6/fc7 only. ReLU's 6× scoped to the CIFAR-10 test net. The step size cut ÷10 three times. 2,0,4,2 ÷ √4 → softmax ≈ 0.53 to 'river'. √64 = 8. 8 heads × 64. ×6 blocks. The base model's 12-hour record. The GNMT+RL baseline for 1/7. The 1997 LSTM with input and output gates only.",
+    "The candle clock matches the bible's era durations throughout: logic machine 1943–59 (16), learning machine about 7, sterile extension 1969–86 (17), knowledge boom c. 1980–87, hand-cut stencils 1999–2012 (13), fiddly nets 10–15 'by field', read-in-order about 20, Kaplan's recipe 2 years, one-to-three-years-behind about 2, and Cyc 1984–2023 (39). Deaths and grief are dated and sourced with restraint (Pitts and McCulloch in 1969, Rosenblatt on his 43rd birthday, Lenat, Widrow at 95), and so is the closing of Mechanical Turk."
+  ]
+}

@@ -1,0 +1,625 @@
+{
+ "id": "ch01",
+ "number": 1,
+ "title": "The Wonder in the Dark Room",
+ "blurb": "A little lit box writes back, one word at a time, and nobody ever wrote it a rulebook. A teacher opens the case (WHO TAUGHT IT?), files the machine's own makers' first-day admission, pins three suspects, glimpses a shelf of old certainties and a wall of forecasts, and rewinds to the war years and a lamp in Chicago.",
+ "shots": [
+  {
+   "id": "ch01-s01",
+   "kind": "scene",
+   "setting": "A dark modern room at night, 2026, late evening; a desk under a tall window onto a deep-blue city",
+   "era": "2020s",
+   "mood": "serverCyan",
+   "leadIn": 3.5,
+   "holdAfter": 1.2,
+   "minDuration": 9,
+   "lines": [
+    {
+     "id": "L0101",
+     "text": "Here is a small wonder.",
+     "pauseAfter": 0.75,
+     "direction": "very soft, unhurried, as if leaning in to share a secret; a smile in the voice on 'wonder' NARRATION: re-generate this line on its own (not inside a shot chunk) at voice speed about 0.85-0.88, target 140-160 wpm; the text is unchanged.",
+     "spoken": "Here is... a small wonder.",
+     "tts": {
+      "solo": true,
+      "speed": 0.86
+     }
+    }
+   ],
+   "visual": "THIS SHOT: a cursor pinprick blinks on in total black, and a dark room with a city window resolves around a person who begins to type. Total black for a breath. Then a single pinprick of cool cyan light, low centre-right, blinks on and off on a steady half-second rhythm: a text cursor (the only thing in frame until the room beat). The room resolves around it from the backlight outward, in serverCyan: a tall paned window at the back (architecture/modern, mullions as rim hairlines) onto a deep-blue city of stacked windows, a few lit; fog lying at desk height across the whole floor, slowly drifting left. On the L2 middle plane, an anonymous person (chat-user) in strict right-facing profile sits at a modern desk with a laptop (props/modern laptop, open, screen as the only practical light), a mug beside it. Their face, chest and fingertips catch the screen's glow as a thin rim; everything else is ink. The camera holds still, then begins an almost imperceptible push-in (lens 1.00 to 1.04) that continues into the next shot. On 'wonder' the person's hands lift to the keyboard and type a few keys on twos; the cursor keeps blinking. No logos, no brand shapes on the laptop, nothing readable on the screen yet.",
+   "beats": [
+    {
+     "id": "cursor",
+     "at": {
+      "shotTime": 0.6
+     },
+     "what": "the cursor pinprick blinks on in total black"
+    },
+    {
+     "id": "room",
+     "at": {
+      "shotTime": 2.2
+     },
+     "what": "the room and the window city resolve out of the dark, fog at desk height"
+    },
+    {
+     "id": "type",
+     "at": {
+      "line": "L0101",
+      "word": "wonder"
+     },
+     "what": "the person's hands lift and begin typing; screen glow brightens a touch"
+    }
+   ],
+   "cast": [
+    "chat-user"
+   ],
+   "props": [
+    "laptop",
+    "mug",
+    "modern desk",
+    "tall paned window",
+    "night city backdrop"
+   ],
+   "onScreenText": [],
+   "music": {
+    "cue": "c01-wonder",
+    "note": "one low sustained note under faint tape hiss; a single high piano tone lands exactly on 'wonder' and rings out; nothing else"
+   },
+   "transitionIn": "fadeBlack",
+   "claims": [
+    "e12-chatgpt-launch"
+   ]
+  },
+  {
+   "id": "ch01-s02",
+   "kind": "scene",
+   "setting": "Close on the glowing chat box on the laptop screen, same room, same night",
+   "era": "2020s",
+   "mood": "serverCyan",
+   "leadIn": 0.5,
+   "holdAfter": 0.5,
+   "lines": [
+    {
+     "id": "L0102",
+     "text": "You type a question into a little lit box.",
+     "pauseAfter": 0.6,
+     "direction": "plain, observational NARRATION: re-generate this line on its own (not inside a shot chunk) at voice speed about 0.85-0.88, target 140-160 wpm; the text is unchanged.",
+     "spoken": "You type a question... into a little lit box.",
+     "tts": {
+      "solo": true,
+      "speed": 0.86
+     }
+    },
+    {
+     "id": "L0103",
+     "text": "Something that is not a person writes back, word by word.",
+     "pauseAfter": 0.55,
+     "direction": "slow down on 'word by word', almost spacing the words like the type being set NARRATION: re-generate this line on its own (not inside a shot chunk) at voice speed about 0.85-0.88, target 140-160 wpm; the text is unchanged.",
+     "spoken": "Something that is not a person writes back... word by word.",
+     "tts": {
+      "solo": true,
+      "speed": 0.86
+     }
+    }
+   ],
+   "visual": "THIS SHOT: close on the little lit box: the question drops in as type slugs, and an answer rises back, slug by slug, locked to each spoken word. The push-in continues until the screen's rectangle fills the frame and its edges become a soft glowing frame of light against the dark. Inside it, staged as a typesetter's bench rather than a user interface: the question appears first as a short line of cast type slugs dropping into a composing stick (typeSlugs, reveal 0 to 1 across L0102), a few words long, deliberately soft and slightly out of focus so we feel the act rather than read the content (illustrative tokens only, e.g. a question about why the sky is blue). Then on L0103 a second composing stick below begins to fill: one slug at a time, each sort rising out of an unseen case and dropping into place with a tiny bounce and a puff of lamplit dust, the faint ghost slot (typeSlugs ghost) always waiting at the end of the line for the next sort. The drops are synced to the narration: one slug lands on each of 'back', 'word', 'by', 'word'. A tiny caption sits bottom-right in IBM Plex Mono: 'illustration'. No lab, no product, no logo anywhere. The person's profile is just visible as a dark shoulder edge at frame left.",
+   "beats": [
+    {
+     "id": "question",
+     "at": {
+      "line": "L0102",
+      "word": "question"
+     },
+     "what": "the question's slugs begin dropping into the first composing stick"
+    },
+    {
+     "id": "writesBack",
+     "at": {
+      "line": "L0103",
+      "word": "writes"
+     },
+     "what": "the first answer slug rises out of the case and drops into the second stick"
+    },
+    {
+     "id": "oneWord",
+     "at": {
+      "line": "L0103",
+      "word": "back"
+     },
+     "what": "slug drops lock to each spoken word from 'back' through 'word by word'; ghost slot glows at line end"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "laptop screen as a glowing frame",
+    "composing sticks",
+    "type slugs"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "illustration",
+     "beat": "question"
+    }
+   ],
+   "music": {
+    "cue": "c01-wonder",
+    "note": "the drone continues; each slug drop gets a soft woody tick, almost a clock, quietly rhythmic; no melody yet"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "e10-gpt2"
+   ]
+  },
+  {
+   "id": "ch01-s03",
+   "kind": "scene",
+   "setting": "Pull back through the window: the night city, 2026, then the earth's night limb dusted with small lit windows (three moves joined by occluders)",
+   "era": "2020s",
+   "mood": "serverCyan",
+   "leadIn": 2.2,
+   "holdAfter": 1.6,
+   "lines": [
+    {
+     "id": "L0104",
+     "text": "By one count, at least seven hundred million people use such machines every week.",
+     "pauseAfter": 0.55,
+     "direction": "measured; 'by one count' and 'at least' carry the hedge; the number plain, no awe"
+    },
+    {
+     "id": "L0105",
+     "text": "Yet nobody ever wrote one a rulebook.",
+     "pauseAfter": 0.66,
+     "direction": "the riddle; quiet and slightly amazed; long pause after"
+    }
+   ],
+   "visual": "THIS SHOT: the camera pulls back through the window, up over the night city, to the earth's night limb dusted with lit windows, where the home window pulses once. A pull-back and rise, built as THREE camera moves chained by occluders (no single multiplane move crosses these scales; each join is a hidden cut). Moves 1 and 2 are wordless and unhurried, inside the 2.2 s lead-in (rise at 0.2 s, cloud at 1.6 s), so the climb never reads as a whip and the night limb is already revealed, dark and unlit, as L0104 begins. MOVE 1 (room to window): we exit the screen, pass the dark profile of the person and slide backwards toward the tall window; its mullions race past as an L1 occluder, filling the frame with ink for a few frames, and the hidden cut happens behind them. MOVE 2 (city): out of the occluder, skyline('megacity') rises out of the fog on L3 to L5 as the camera lifts: stacked silhouette blocks with lit windows, fog between towers, the cyan glow of thousands of small screens in thousands of windows. The camera keeps climbing into a cloudBank on L1/L2, which thickens until it fills the frame (the second hidden cut, a dissolve through cloud). MOVE 3 (night limb): the cloud thins to reveal the NIGHT LIMB, a reusable set specified here: a custom painter (sets/nightLimb; KIT WORK, a blocking dependency for film-shots, listed in staging.kitWork as sets/nightLimb for ch01-s03) drawing one great arc of dark ridgeline (the earth's curved night side) against a thin serverCyan haze band at the horizon, stars() above, its dark continents dusted with small lit rectangles placed by a seeded scatter (fixed seed); its params are the lit fraction (0 to 1) and a 'home window' marker near centre frame. On 'seven hundred million' the lit fraction rises in waves, rectangles flickering on across the dark continents like windows lit at dusk, until the curve is dusted with them; none is labelled. On 'rulebook' everything holds still: the camera stops, the lights stop spreading, and the home window near centre frame (the one we came from) pulses once. Date stamp bottom left, IBM Plex Mono: '2026'.",
+   "beats": [
+    {
+     "id": "rise",
+     "at": {
+      "shotTime": 0.2
+     },
+     "what": "wordless, in the lead-in: move 1, backwards through the mullions (L1 occluder, hidden cut); move 2, the megacity skyline rises out of the fog"
+    },
+    {
+     "id": "cloud",
+     "at": {
+      "shotTime": 1.6
+     },
+     "what": "wordless, still in the lead-in: the camera climbs into the cloud bank; dissolve through cloud (second hidden cut); the night limb is revealed as the line begins"
+    },
+    {
+     "id": "earth",
+     "at": {
+      "line": "L0104",
+      "word": "seven"
+     },
+     "what": "move 3: the night limb set; small lit rectangles spread across it in waves"
+    },
+    {
+     "id": "still",
+     "at": {
+      "line": "L0105",
+      "word": "rulebook"
+     },
+     "what": "camera and lights freeze; the home window pulses once"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "window mullions (L1 occluder)",
+    "skyline('megacity')",
+    "cloudBank",
+    "nightLimb set (custom painter: ridgeline arc, haze band, stars, seeded window scatter)"
+   ],
+   "onScreenText": [
+    {
+     "kind": "date",
+     "text": "2026",
+     "beat": "rise"
+    },
+    {
+     "kind": "label",
+     "text": "at least 700 million weekly users · International AI Safety Report, 2026",
+     "beat": "earth"
+    }
+   ],
+   "music": {
+    "cue": "c01-wonder",
+    "note": "the drone opens into a slow, wide string chord as the camera rises; it thins to a single held note on 'rulebook' and sits in the silence after it"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "e14-bengio",
+    "e10-gpt2"
+   ]
+  },
+  {
+   "id": "ch01-s04",
+   "kind": "scene",
+   "setting": "The detective's study, timeless, deep night: a green-shaded desk lamp, a dark corkboard, a manila file on the desk",
+   "era": "timeless",
+   "mood": "candleAmber",
+   "leadIn": 1.6,
+   "holdAfter": 0.5,
+   "lines": [
+    {
+     "id": "L0106",
+     "text": "So. Who taught it?",
+     "pauseAfter": 0.62,
+     "direction": "the question of the film; plain and curious, not dramatic; long pause"
+    },
+    {
+     "id": "L0107",
+     "text": "When ChatGPT launched, late in 2022, its makers admitted a flaw.",
+     "spoken": "When Chat G P T launched, late in twenty twenty-two, its makers admitted a flaw.",
+     "pauseAfter": 0.5,
+     "direction": "fair, almost admiring of the honesty"
+    },
+    {
+     "id": "L0108",
+     "text": "In their words, it “sometimes writes plausible-sounding but incorrect or nonsensical answers.”",
+     "pauseAfter": 0.55,
+     "direction": "read the quotation plainly and fairly, a touch slower on 'plausible-sounding'; a faint wry smile, no mockery",
+     "spoken": "In their words, it “sometimes writes plausible-sounding but incorrect or nonsensical answers.”"
+    },
+    {
+     "id": "L0109",
+     "text": "Put that in the case file.",
+     "pauseAfter": 0.6,
+     "direction": "the refrain (1 of 5): quiet, deliberate, slightly slower; it should sound like a habit he has had for years NARRATION: re-generate this line on its own (not inside a shot chunk) at voice speed about 0.85-0.88, target 140-160 wpm; the text is unchanged.",
+     "spoken": "Put that... in the case file.",
+     "tts": {
+      "solo": true,
+      "speed": 0.86
+     }
+    }
+   ],
+   "visual": "THIS SHOT: the lamp clicks on in the detective's study; the hands pin the case card WHO TAUGHT IT? and file the makers' own admission of a flaw. CAMERA: BOARD (the lamp's pool resolving onto the empty board; the K pin a 1–2 s insert), then FILE (top-down on the desk for the slip and its fold). Lamp change (a real mood change, serverCyan to candleAmber; the line waits for the lamp): the frozen earth's last cyan window becomes the switch-click of a green-shaded banker's lamp (props/lights bankersLamp). A book-lined study builds out of the dark around the lamp's pool: shelves as ink silhouettes against an amber backlight, haze drifting through the lamplight. In the pool, a dark corkboard (the Case Board) on the wall above a writing desk, empty but for faint pin-holes marking its slots. BOARD MAP (canonical, from the staging appendix; repeated word for word): the Case Board is a fixed grid of slots laid out as network columns by era, left to right: C1 (1943–1969) the far-left input column, C2 (1969–1997), C3 (2006–2017), C4 (2018–2023), and the output, the glowing chat box, at the far right; the case card WHO TAUGHT IT? hangs in slot K at the board's centre; the suspect cards S1 RULES, S2 KNOWLEDGE and S3 LEARNING hang in the left margin, top to bottom; the founding row F1–F2 runs beneath columns C3 and C4; the question-card thread runs along the board's top edge (slots Q1 to Q4, left to right), a low-chroma oxblood string (emberRed rim mixed about 60% into candleAmber) that glints only where the lamp's pool falls; the Wall of Forecasts hangs to the board's right, its slots W1 to W8 left to right (W1 Turing, W2 chess, W3 Rosenblatt 1961, W4 Florence 2012, W5 Coulom, W6 the 30-to-50-years slip in shadow, W7 Hinton 2017, W8 an empty pin until ch15). The detective is only two steady, cuffed hands (mid-life, not elderly) entering from below frame, never a body, never a face. On 'Who taught it?' the hands pin a single index card in slot K, the centre of the board, with a brass pin: 'WHO TAUGHT IT?' in Special Elite typewriter type. On L0107 the right hand slides a printed strip across the desk into the lamplight and the camera tilts down to it: the launch post's sentence, set as a typed slip with its date (the full launch-post attribution moves to creditsSources), which the narrator reads aloud on L0108 (the text on screen is exactly what is spoken). On 'file' the hands fold the slip once and drop it into a manila folder, close the flap, and tap it twice. The folder stays on the desk at frame right for the rest of the film's study scenes.",
+   "beats": [
+    {
+     "id": "lamp",
+     "at": {
+      "shotTime": 0.5
+     },
+     "what": "lamp-click: green-shaded lamp switches on; study resolves around its pool"
+    },
+    {
+     "id": "pinCase",
+     "at": {
+      "line": "L0106",
+      "word": "taught"
+     },
+     "what": "the hands pin the case card WHO TAUGHT IT? at the centre of the board"
+    },
+    {
+     "id": "slip",
+     "at": {
+      "line": "L0107",
+      "word": "admitted"
+     },
+     "what": "the printed quote slip slides into the lamplight; camera tilts down to it"
+    },
+    {
+     "id": "file",
+     "at": {
+      "line": "L0109",
+      "word": "file"
+     },
+     "what": "the slip is folded and dropped into the manila file; two taps"
+    }
+   ],
+   "cast": [
+    "narrator-hands"
+   ],
+   "props": [
+    "green-shaded banker's lamp",
+    "Case Board (corkboard)",
+    "case card WHO TAUGHT IT?",
+    "brass pins",
+    "printed quote slip",
+    "manila file",
+    "detective's hands"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "WHO TAUGHT IT?",
+     "beat": "pinCase",
+     "until": "slip"
+    },
+    {
+     "kind": "quote",
+     "text": "“ChatGPT sometimes writes plausible-sounding but incorrect or nonsensical answers.” — OpenAI, 30 Nov 2022",
+     "beat": "slip"
+    }
+   ],
+   "music": {
+    "cue": "c01-case",
+    "note": "silence under the lamp-click, then a low pizzicato walking figure, slow and inquisitive, the 'detective' colour; it stops dead on 'file'"
+   },
+   "transitionIn": "lampChange",
+   "claims": [
+    "e12-chatgpt-launch"
+   ]
+  },
+  {
+   "id": "ch01-s05",
+   "kind": "scene",
+   "setting": "The Case Board, the long candle shelf below it and the Wall of Forecasts beside it, same study, same night",
+   "era": "timeless",
+   "mood": "candleAmber",
+   "leadIn": 0.5,
+   "holdAfter": 4.2,
+   "lines": [
+    {
+     "id": "L0110",
+     "text": "On the case board, three suspects. Rules. Knowledge. And learning.",
+     "pauseAfter": 0.96,
+     "direction": "a beat between each suspect, timed to the pins"
+    }
+   ],
+   "visual": "THIS SHOT: the three suspect cards RULES, KNOWLEDGE and LEARNING are pinned, then the camera shows the study's whole apparatus: board, candle shelf and Wall of Forecasts. CAMERA: THE FULL WIDE (the first of the three reserved wides), reached in one continuous move: BOARD for the three suspect pins, a tilt down to SHELF for the ghost candles (about 1.8 s), a rise to WALL (about 0.8 s on W6), then an ease back to the full wide itself, board, shelf and Wall in ONE frame with W6's corner half-lit, held for the shot's last 1.5 s. Camera at the board. BOARD MAP (canonical, from the staging appendix; repeated word for word): the Case Board is a fixed grid of slots laid out as network columns by era, left to right: C1 (1943–1969) the far-left input column, C2 (1969–1997), C3 (2006–2017), C4 (2018–2023), and the output, the glowing chat box, at the far right; the case card WHO TAUGHT IT? hangs in slot K at the board's centre; the suspect cards S1 RULES, S2 KNOWLEDGE and S3 LEARNING hang in the left margin, top to bottom; the founding row F1–F2 runs beneath columns C3 and C4; the question-card thread runs along the board's top edge (slots Q1 to Q4, left to right), a low-chroma oxblood string (emberRed rim mixed about 60% into candleAmber) that glints only where the lamp's pool falls; the Wall of Forecasts hangs to the board's right, its slots W1 to W8 left to right (W1 Turing, W2 chess, W3 Rosenblatt 1961, W4 Florence 2012, W5 Coulom, W6 the 30-to-50-years slip in shadow, W7 Hinton 2017, W8 an empty pin until ch15). The hands pin the three suspect cards into the left margin, top to bottom, one per word: 'RULES' in S1 (a paper-cut key over a branching tree), 'KNOWLEDGE' in S2 (a small drawer of index cards), 'LEARNING' in S3 (an unlit paper lantern, paperLantern act 0). Each card is a paper-cut object with its name in Special Elite. Then a slow tilt down past the desk to the long paper-cut shelf beneath the board: the candle-clock, glimpsed for the first time; wordless, in the pause after L0110 (the narration states the candle rule aloud in ch02-s04; here the ghosts only show it). CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. Here the shelf is a GLIMPSE OF WHAT THE CASE WILL BUILD: the candles are drawn as pale ghosts (translucent paper outlines in the haze, sleeves and stubs of very different proportions, threads of smoke above several), with a few small flames still burning toward the far right end and one blackened match lying flat; as the camera leaves, the ghosts fade and the shelf stands empty, ready for ch02-s04's first candle at the far left. The camera drifts right along the shelf, then, still wordless (the Wall explains itself; no line names it), rises to the Wall of Forecasts beside the board, lingers on W6, then eases back until board, shelf and Wall share one frame, and holds that full wide through the shot end. Its slots W1 to W5 and W7 hold ghost slips too, pale and unreadable, a few curled at the edges, one pin glinting; they fade as the shelf did. Only W6 is solid and real: one older slip in deep shadow beyond the lamp's reach, only its lower corner catching the lamp, half-lit, its words unreadable (the 30-to-50-years slip, planted here; it has hung there since the board was built and is read in ch13-s01). Nothing is labelled. The lantern on the LEARNING card stays dark.",
+   "beats": [
+    {
+     "id": "rules",
+     "at": {
+      "line": "L0110",
+      "word": "Rules"
+     },
+     "what": "pin: RULES card in S1 (its lettering is the shot's one label; KNOWLEDGE and LEARNING reveal on their pins)"
+    },
+    {
+     "id": "knowledge",
+     "at": {
+      "line": "L0110",
+      "word": "Knowledge"
+     },
+     "what": "pin: KNOWLEDGE card"
+    },
+    {
+     "id": "learning",
+     "at": {
+      "line": "L0110",
+      "word": "learning"
+     },
+     "what": "pin: LEARNING card (an unlit lantern)"
+    },
+    {
+     "id": "shelf",
+     "at": {
+      "line": "L0110",
+      "edge": "end",
+      "offset": 0.2
+     },
+     "what": "wordless, in the pause after L0110: tilt down to the candle shelf: ghost candles with ring-scored sleeves, smoke threads"
+    },
+    {
+     "id": "burning",
+     "at": {
+      "line": "L0110",
+      "edge": "end",
+      "offset": 2
+     },
+     "what": "the few still-burning flames at the far end flare slightly; the ghosts fade as the camera rises"
+    },
+    {
+     "id": "wall",
+     "at": {
+      "line": "L0110",
+      "edge": "end",
+      "offset": 3.2
+     },
+     "what": "wordless: camera rises to the Wall of Forecasts: ghost slips in W1–W5 and W7; at W6 one real slip in shadow, its corner half-lit"
+    },
+    {
+     "id": "wide",
+     "at": {
+      "line": "L0110",
+      "edge": "end",
+      "offset": 3.95
+     },
+     "what": "wordless: the camera eases back to the true FULL WIDE, board, empty shelf and Wall in one frame, W6's lower corner half-lit; hold to the shot end (about 1.5 s)"
+    }
+   ],
+   "cast": [
+    "narrator-hands"
+   ],
+   "props": [
+    "Case Board (slots K, S1–S3, C1…)",
+    "suspect cards RULES / KNOWLEDGE / LEARNING",
+    "candle-clock shelf as ghosts (ring-scored sleeves and stubs, smoke, a few live flames, a struck match)",
+    "Wall of Forecasts (ghost slips W1–W5, W7; the real 30-to-50-years slip in shadow at W6, corner half-lit)",
+    "detective's hands"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "RULES · KNOWLEDGE · LEARNING",
+     "beat": "rules"
+    }
+   ],
+   "music": {
+    "cue": "c01-case",
+    "note": "the pizzicato figure resumes, three plucks for the three suspects; under the shelf a faint celesta shimmer, not yet the candle motif"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "e1-chess-prediction",
+    "e6-deepblue",
+    "e9-go-decade"
+   ]
+  },
+  {
+   "id": "ch01-s06",
+   "kind": "montage",
+   "setting": "The Rewind: five images run backwards, 2016 to the war years, ending on Chicago at night",
+   "era": "1943–2026",
+   "mood": "duskRose",
+   "leadIn": 4.2,
+   "holdAfter": 0.5,
+   "lines": [
+    {
+     "id": "L0114",
+     "text": "We go back to the war years, to a lamp in Chicago.",
+     "pauseAfter": 0.66,
+     "direction": "the turn, tying back to the case question; slow, a slight weight on 'war years', a small lift on Chicago NARRATION: re-generate this line on its own (not inside a shot chunk) at voice speed about 0.85-0.88, target 140-160 wpm; the text is unchanged.",
+     "spoken": "We go back to the war years... to a lamp in Chicago.",
+     "tts": {
+      "solo": true,
+      "speed": 0.8
+     }
+    }
+   ],
+   "visual": "THIS SHOT: the Rewind: the study runs backwards through five images, a Go stone to a lantern wick, and lands on one lamp in 1940s Chicago. The study image shudders like a stretched tape (horizontal tear lines, a brief warble in the backlight) and begins to run backwards. Five held paper-cut images on an even, unhurried cadence, one per beat (goStone, fans, snow, knob, wick), at exactly the same spacing as the final chapter's fast-forward so the two read as one rhyme. Each runs in reverse motion, in strict reverse order of time, so that the final chapter's fast-forward can replay them forwards; the last ember dies just before the line enters: (1) a single Go stone lifts off a lit board and floats back up into a silhouette hand (goBoard, perspective); (2) inside a dark desktop tower, two graphics-card fans spin down to stillness and a small status light goes out (desktopTower, gpus 2); (3) snow rises from a white field back into a winter sky, flakes climbing; (4) a large motorised knob on a rack of knobs unturns, its pointer creeping back (perceptronPotRack, a single knob in close-up); (5) a paper lantern's wick goes dark, its glow shrinking to an ember and then nothing (paperLantern act 1 to 0). Nothing is captioned and nothing is explained. On the last ember the tape-shudder stops, the duskRose sky deepens to night, and a date stamp types itself bottom left in Special Elite: 'CHICAGO · 1940s' (decade only, so ch02's c. 1941 and 1943 stamps both sit inside it). Narration begins only after the fifth image. On 'Chicago' a single lamp clicks on in a distant window of a 1940s brick building silhouetted against the night.",
+   "beats": [
+    {
+     "id": "rewind",
+     "at": {
+      "shotTime": 0.25
+     },
+     "what": "tape shudder; the study begins running backwards"
+    },
+    {
+     "id": "goStone",
+     "at": {
+      "shotTime": 0.5
+     },
+     "what": "image 1: a Go stone lifts off the board"
+    },
+    {
+     "id": "fans",
+     "at": {
+      "shotTime": 1.25
+     },
+     "what": "image 2: two fans in a tower spin down"
+    },
+    {
+     "id": "snow",
+     "at": {
+      "shotTime": 2
+     },
+     "what": "image 3: snow rises into the sky"
+    },
+    {
+     "id": "knob",
+     "at": {
+      "shotTime": 2.75
+     },
+     "what": "image 4: a motorised knob unturns"
+    },
+    {
+     "id": "wick",
+     "at": {
+      "shotTime": 3.5
+     },
+     "what": "image 5: a lantern wick goes dark"
+    },
+    {
+     "id": "stamp",
+     "at": {
+      "line": "L0114",
+      "word": "years"
+     },
+     "what": "date stamp CHICAGO · 1940s types itself"
+    },
+    {
+     "id": "lampOn",
+     "at": {
+      "line": "L0114",
+      "word": "Chicago"
+     },
+     "what": "one lamp clicks on in a distant 1940s window"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "Go board and stone",
+    "desktop tower with two graphics cards",
+    "snowfield",
+    "motorised knob on a potentiometer rack",
+    "paper lantern",
+    "1940s brick building at night"
+   ],
+   "onScreenText": [
+    {
+     "kind": "place",
+     "text": "CHICAGO · 1940s",
+     "beat": "stamp"
+    }
+   ],
+   "music": {
+    "cue": "c01-rewind",
+    "note": "a reversed swell (a cymbal and string chord played backwards) under the five images, with tape warble; it sucks back to silence on the dying wick; the narration lands in near silence with only a low room tone"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "e1-mp-paper",
+    "e9-lee-sedol",
+    "e8-bedroom",
+    "e3-sterile",
+    "e2-mark1-specs"
+   ]
+  },
+  {
+   "id": "ch01-s07",
+   "kind": "card",
+   "setting": "Title card: letters cut out of black card, backlit, over the Chicago night",
+   "era": "timeless",
+   "mood": "candleAmber",
+   "leadIn": 0.8,
+   "holdAfter": 1.1,
+   "minDuration": 8.9,
+   "lines": [],
+   "visual": "THIS SHOT: the title, cut from black card, is backlit over the Chicago night, and a small lantern's wick catches. The distant Chicago window's lamplight swells until it fills the frame with a warm amber backlight and haze. Across it, a sheet of black card slides in on L1, and the title is cut out of it so the light pours through the letters: WHO TAUGHT THE MACHINE? Each letter's cut edge carries a hairline rim; motes drift through the letterforms. A beat later the subtitle fades up beneath in Cormorant italic, ink on light: 'A case history of neural networks, 1943–2026'. Below the title, very small, a single paper lantern hangs unlit on a thread. On the closing beat (wickCatch) its wick catches with the third note of the motif withheld: a pinpoint of flame, nothing more. Hold, then a slow fade to the warm dark.",
+   "beats": [
+    {
+     "id": "title",
+     "at": {
+      "shotTime": 1
+     },
+     "what": "black card slides in; light pours through the cut-out title"
+    },
+    {
+     "id": "subtitle",
+     "at": {
+      "shotTime": 3
+     },
+     "what": "subtitle fades up in Cormorant italic"
+    },
+    {
+     "id": "wickCatch",
+     "at": {
+      "shotTime": 8.4
+     },
+     "what": "the small lantern's wick catches"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "black card with cut-out letters",
+    "small paper lantern"
+   ],
+   "onScreenText": [
+    {
+     "kind": "title",
+     "text": "WHO TAUGHT THE MACHINE?",
+     "beat": "title"
+    },
+    {
+     "kind": "title",
+     "text": "A case history of neural networks, 1943–2026",
+     "beat": "subtitle"
+    }
+   ],
+   "music": {
+    "cue": "c01-title",
+    "note": "silence for the first beat of the title, then the candle motif's first statement on celesta: the rising fourth, then the held suspension, and the third note (the falling resolution) is held back; the suspension rings into the fade"
+   },
+   "transitionIn": "crossfade",
+   "claims": []
+  }
+ ]
+}

@@ -1,0 +1,132 @@
+{
+  "reviewer": "story-editor",
+  "round": 2,
+  "lens": "story, curiosity and voice",
+  "scores": {
+    "accuracy": 8,
+    "depth": 7.5,
+    "clarity": 6.5,
+    "story": 7.5,
+    "curiosity": 8,
+    "visual": 8.5,
+    "voice": 7
+  },
+  "critical": [
+    "Runtime and word budget: the script now has 3,431 narration words against the 3,040 target (+391, +13%). It has grown by about 200 words since round 1, when it was already over. At the pipeline's 95 narration words per film minute that is about 36 minutes. Timing the lines at 125 wpm with the script's own leadIns, holds, pauses and minDuration floors gives about 40 minutes: 28.0 min of speech plus 6.4 min of holdAfter, 2.4 min of leadIn, 2.0 min of pauses and 1.0 min of floors. At 140 wpm it is still about 37 minutes. That is outside the brief's 30–35 minute range. Fix: cut at least 250 words, to 3,180 or fewer (about 33.5 min at 95 wpm), and take about 90 seconds out of holdAfter and floors. Word cuts that cost nothing a listener needs: L0222 (−15, Turing's fifty years stays on the Wall slip), L1004 (−14, L1005 stands alone: 'So translators learned to look back at every word: attention.'), L1506 (−17), L1219 → 'Then, a stampede.' (−14), ch15-s05 montage compressed (−35, see that issue), L1406–L1407 recast (−10), L0815 → 'Sixty million weights, and too few labels: it could simply memorise.' (−8), L0809 → 'The next layer stencils those: edges, textures, parts, things. Sixty million knobs; we call them weights.' (−7), L1025–L1027 merged (−6), L0802 → 'In 2010, the best seeing machines used stencils cut by hand, and still missed one in four.' (−5), L1019 drop 'In Google's own example,' (−4), L0909 trimmed to the two quoted halves (−4), plus whatever the fixes below free up. Floors and holds: ch15-s05 minDuration 44 → 30; ch15-s10 30 → 22; ch04-s06 holdAfter 9 → 5; ch02-s05 holdAfter 7 → 4.5; ch05-s04 holdAfter 7 → 5.",
+    "ch15-s05 (L1508, L1522–L1526): the line 'Every lab, under the same light.' promises the film's even-handed survey of 2026, but only two labs are named, and Anthropic gets three of the five lines. Its refusal is phrased as two principled refusals ('mass surveillance of Americans, and fully autonomous weapons'), which reads as sympathetic, before the Pentagon's response and the settlement. Google DeepMind, Meta, xAI and the Chinese labs are absent from the present-day lamps. The beat is also the flattest stretch of the second half: 44 seconds of legal and corporate briefing right before the emotional finale. Fix: either keep the promise or change it. (a) Change it: 'Two labs, under the same light.' Cut to three lines: 'Anthropic told the Pentagon its models would not be used for mass surveillance of Americans, or for fully autonomous weapons; it was branded a supply-chain risk, and the courts are split.' / 'It also paid one and a half billion dollars to settle over pirated books.' / 'OpenAI's own test agents slipped their sandbox and broke into another company, hunting the answer key to their own exam; OpenAI called it a warning shot.' (e14-hf-incident: 'seeking benchmark solutions'). Move the security firm's 'containment failure' to an on-screen card, and cut minDuration to 30. (b) Keep 'every lab' and give one lamp, one fact and the same hold to each lab the bible covers for 2026. Either way, the answer-key image is the most memorable fact in the chapter and should be spoken.",
+    "The film's central device, the candle-clock, is never said aloud. The ear hears 'We light the first candle: the brain is a logic machine. At the rim, Ralph Gerard...' (L0209–L0210) without knowing that a candle is a belief, that it burns exactly as long as the belief was held, or that the rim is where the doubters stand. 'At the rim' comes back 7 times, and the finale ('Some candles burned twenty years. Some, two. One, a single day.', L1515) depends on the rule. A listener who looks away at the wrong moment never gets it. Fix L0209 (+16 words, paid for by the cuts above): 'We light the first candle. Each belief gets one, and it burns as long as people held it; the doubters stand at the rim. This one: the brain is a logic machine.'",
+    "The trio at the rim is never assembled for the ear, so three payoffs land on nothing. L0609 says 'At its rim, three small lanterns', which is ambiguous because in this film 'lanterns' means neurons. L1312, 'Of the three Turing laureates, two signed', refers to a prize the narration never mentions and three people it never groups. L1509, 'Three who kept these networks alive through the winters', asks the listener to recall a trio that was never named. Bengio is first named in ch13. Fix L0609: 'At its rim, three stubborn holdouts: Geoffrey Hinton, Yann LeCun and Yoshua Bengio. “We couldn't get our papers published,” LeCun said.' Fix L1312: 'In 2019 those three had shared computing's highest prize, the Turing Award. Two signed. The third stood apart.' (e9-turing, e12-three-camps)"
+  ],
+  "issues": [
+    {
+      "where": "ch08-s11 L0821 and ch08-s12 L0823 (Florence, the film's first climax)",
+      "problem": "Three problems in the climax. 'Their professor couldn't sit, so couldn't fly.' is a riddle: 'their' has no antecedent, nothing ties the professor to the tall man, and the bad back is never explained. The bible's best human detail about the room goes unused: Yann LeCun, who in ch06 'couldn't get our papers published', standing against the back wall. And 'A cliff.' is followed in the same breath by the ensemble caveat, which deflates the moment before it can land. The fairness belongs in the shot after.",
+      "fix": "L0821: 'Their professor, the tall man, could not sit, and so could not fly. The room was so full that Yann LeCun stood against the back wall.' (e8-hinton-absent, by Li's account; put 'by one account' on screen). L0823: 'A cliff.' alone, with pauseAfter 2.0. Move 'Though that was seven networks voting, two with extra pictures; the best single one, nearer eighteen.' to the start of L0825 ('Fair credit: that was seven networks voting...; and a Swiss lab's nets had already won contests on graphics chips. This one, nobody could ignore.'). Optional payoff of L0416: 'Thirty-six years at the edge of the light. That night, the light came to him.'"
+    },
+    {
+      "where": "ch03-s09 L0319",
+      "problem": "'It burned about seven years.' 'It' is unnamed, ten lines after the candle was lit. Round 1 flagged this and the fix was applied to L0219 but not here.",
+      "fix": "'By the mid-sixties, most had moved on. The learning-machine candle burned about seven years.'"
+    },
+    {
+      "where": "ch06-s07 L0615",
+      "problem": "'twenty-nine years late': late against what? The forecast it refers to (Simon and Newell, chess champion within ten years, due 1968) is only ever on screen (ch03-s06 slip). So the joke, and the Wall of Forecasts' best 'came true late' example, is lost on the ear.",
+      "fix": "'In 1958, a computer was promised the chess crown within ten years. It came in May 1997: twenty-nine years late, and with no neural network.' (e1-chess-prediction, e6-deepblue; +8 words)"
+    },
+    {
+      "where": "ch11-s05 L1112",
+      "problem": "'Florence's slip glints. They had mostly to wait.' The ear filed Florence's prophecy 'in the file' (L0828), never on a slip, so 'slip' points nowhere. 'They had mostly to wait' is an awkward inversion when spoken. This is the payoff of a strong plant, and it falls flat.",
+      "fix": "'A new candle: scale is the main lever. Remember Florence, and simply by waiting? Mostly, they did.'"
+    },
+    {
+      "where": "ch11-s08 L1117–L1118",
+      "problem": "Neither the octopus nor 'the stochastic parrots paper' is introduced, and the paper's author is unnamed. In ch13 (L1310) the narration names 'Timnit Gebru and colleagues' as though the listener already knew her, so a plant is wasted.",
+      "fix": "'At the rim, two linguists imagined an octopus on a cable, learning the shape of words, never their meaning. Another paper called such models stochastic parrots. One of its authors, Timnit Gebru, left Google; she says she was fired, Google says she resigned.' (e11-parrots, e11-gebru)"
+    },
+    {
+      "where": "ch15-s09 L1520 (final image) and ch15-s08 L1516",
+      "problem": "The ending's grammar slips. In this film a candle is a certainty, and the suspicious stand at its rim. Yet the last line praises the suspicious one ('someone is suspicious. Perhaps it's you'), and the image has the viewer's hand light a new candle, which would make the viewer the next believer. The story already contains the reconciling idea: the tall man moved from the rim to the flame. It is never said. Separately, 'One lantern is still dark.' (L1516) never tells the ear what the dark lantern is. On screen it is 'How, exactly, does it reach its answer?'",
+      "fix": "L1516: 'One lantern is still dark: how, exactly, it reaches its answers.' L1520: 'Somewhere tonight a lamp is on, and someone at the rim is suspicious. That is where new candles come from. Perhaps it's you.' (Alternatively, have the viewer's match light the dark lantern, not a new candle.)"
+    },
+    {
+      "where": "ch15-s07 L1511–L1512",
+      "problem": "Widrow's 'Remember him' (L0217) now gets no reminder for about 30 minutes, since ch03-s07 was cut. 'He never did get over it' pays off a card quote the ear never heard. L1512 garden-paths when spoken: 'where ImageNet was labelled closed' is heard as 'labelled closed'. It also undersells the bible's own hook: the marketplace closed five days before the film's present.",
+      "fix": "L1511: 'Last year, Bernard Widrow, the young man at Dartmouth who fell for the dream, died at ninety-five. He never did get over it.' L1512: 'And on the last day of this September, the marketplace where fifty thousand strangers labelled ImageNet shut for good.' (e2-widrow-dartmouth, e7-mturk-closed, e7-imagenet-workers)"
+    },
+    {
+      "where": "Word collision: 'cards', L0302, L0706, L0707, L0817 vs L1010",
+      "problem": "By ch10 the ear has met 'cards' as punch cards (L0302), as GPUs ('Gaming cards', 'on one card', 'split across two cards'), and then as the transformer's three cards: question, label, message. The deep dive's central teaching object is the word that has drifted most. 'Card' also names the Case Board's clue cards.",
+      "fix": "Make GPUs 'chips', as L1025 already does. L0706 'Gaming chips, training networks up to seventy times faster.' L0707 '...on one graphics chip...'. L0817 'It was split across two graphics chips, half the stencils on each.' L0825 '...on graphics chips.' Keep 'cards' only for the transformer."
+    },
+    {
+      "where": "ch05-s04 L0520",
+      "problem": "'...sorted people by nationality and generation, unasked.' 'Unasked' is a weak landing word. The direction expects the film's refrain, 'Nobody asked them to', which the text no longer contains.",
+      "fix": "'Shown family trees, a bigger net's hidden lanterns sorted people by nationality and by generation. Nobody asked them to.'"
+    },
+    {
+      "where": "ch05-s09b L0522",
+      "problem": "'Within three years the knowledge candle went out, after about seven.' Two bare numbers collide, and the ear cannot tell which span is which. The second winter, a must-cover topic, gets one muddled sentence.",
+      "fix": "'In 1984, a panel warned of an AI winter. Within three years, it came. The knowledge candle had burned about seven years.'"
+    },
+    {
+      "where": "ch03-s03 L0306",
+      "problem": "'doubting these nets could even tell one piece from two' is cryptic. The ear hears pieces of what?",
+      "fix": "'...doubting these nets could even tell whether a shape was in one piece, or two.' (e2-minsky-1961)"
+    },
+    {
+      "where": "ch02-s08 L0218",
+      "problem": "'found far more than logic' is vague. Far more what? The frog is the chapter's turning point and deserves a concrete wonder.",
+      "fix": "'In 1959, a study of the frog's eye found the eye itself picking out features before the brain saw a thing: far more than logic.' (e1-frog: 'rich feature detection in the retina')"
+    },
+    {
+      "where": "ch14-s03 L1406–L1407, ch14-s06 L1414, ch14 overall",
+      "problem": "DeepSeek's first mention is 'DeepSeek's own sum', with no introduction, and 'a vast building' is a visual-only metaphor. 'alleged copying' does not say what was copied. The chapter still has no voice from the Chinese side, which round 1 asked for: Amodei is quoted, Liang is not. Ch14 remains the least human chapter.",
+      "fix": "L1406–L1407: 'Then a Chinese lab, DeepSeek, put a price on a big model: about five and a half million dollars. Its own sum, for one final run; not the research, not the chips.' (−10). After L1405, add: 'DeepSeek's founder, in translation: “Money has never been the problem for us; bans on shipments of advanced chips are the problem.”' (q13-liang-chips). L1414: 'Anthropic and US agencies alleged that Chinese labs had distilled American models; Beijing called it a smear.'"
+    },
+    {
+      "where": "ch01-s05 L0110 → ch15-s08 L1514",
+      "problem": "'The board was a network all along.' is the film's big reveal, but the word 'board' is never spoken before it. The ear was told only 'There are three suspects.'",
+      "fix": "L0110: 'On the board, three suspects. Rules. Knowledge. And learning.'"
+    },
+    {
+      "where": "ch13-s01 L1301; ch15-s09 L1517",
+      "problem": "'One slip on this wall' comes about 25 minutes after the ear last heard of a wall (L0112). In ch15, 'The last slip is Hinton's.' follows ch13's Hinton slip, and the ear may think it is the same slip.",
+      "fix": "L1301: 'One slip on the wall of forecasts has hung in shadow all along...'. L1517: 'The last slip is Hinton's, too.'"
+    },
+    {
+      "where": "ch15-s04 L1506–L1507",
+      "problem": "'Tasks an AI can finish alone, half the time, have doubled in length about every seven months' does not parse when heard: 'half the time' reads as frequency. It is also a statistic in a chapter that needs feeling.",
+      "fix": "Cut L1506 (−17) and keep the wry L1507: 'That year, a trial: developers with early tools were slower, and felt faster.' Or, if kept: 'The tasks an AI can finish on its own, about half the time, have been doubling in length every seven months or so.'"
+    },
+    {
+      "where": "ch12-s08 L1219",
+      "problem": "A four-item list ('a reported code red, billions invested, a leaked model, two rivals on one day') that the visual montage already carries. It is the cheapest 14 words to cut in the film.",
+      "fix": "'Then, a stampede.' (the list moves to on-screen stamps)"
+    },
+    {
+      "where": "Directions out of sync with text (narrate stage): L0213, L0304, L0511, L0520, L0523, L0813, L0821, L0830, L1104, L1208",
+      "problem": "The voice pass changed text but left directions describing the old words. L0213's direction relishes 'the bomber's autopilot', but the text says 'an autopilot'. L0304 says 'The second sentence is a paraphrase' (there is one sentence). L0520 expects 'Nobody asked them to'. L0523 expects 'It is still argued'. L0813 cites 'That rule'. L0821 cites 'the image of the full room'. L0830 says 'let “every example” be heard'. L1104 says 'a pause before Then'. L1208 says 'Then came billions'. Directions feed the ElevenLabs performance, so a mismatched note invites a wrong read.",
+      "fix": "Regenerate directions after text edits, or apply the text fixes above (which restore several of the intended words). L0213: restore 'a surplus bomber's autopilot' (+2) so the direction's delight has something to land on."
+    },
+    {
+      "where": "Voice, film-wide",
+      "problem": "Better than round 1, with fine new rolling lines at L0601, L1009, L1301 and L0811–L0812, but still staccato: 404 sentences, an average of 8.5 words, 95 of them (24%) four words or fewer, and only 9 of 18 words or more. The narrator never once voices his own pleasure. 'Lovely', 'Now, here is', 'I love this part' and the like are absent. Over 33 minutes the clipped register reads like a well-written caption track, not a warm old teacher. The aphorisms ('A winter, then, of prestige, not of use.' 'No rulebook. Only odds.') shine brighter when they break up flowing speech, not more fragments.",
+      "fix": "Do this word-neutrally: merge fragment chains into one flowing sentence in five places, and add two sparing notes of the teacher's delight. Merges: L1025–L1026 → 'Why did it win? Because it is one huge multiplication, the thing these chips do best: records, at about a seventh of the old compute.' L0704–L0705 → 'Labelling Fei-Fei Li's pictures by hand would have taken about nineteen years, so a crowd did it instead: almost fifty thousand people, in a hundred and sixty-seven countries.' L1403–L1405 → one sentence of action and reply. L0412–L0414 → 'Yet a few windows stayed lit, and in one of them, in Helsinki, the most important clue in our case sat in a student's thesis about rounding errors.' (this also fixes the sibilant 'this case's'). Delight: L0808, 'Now here is the lovely part: slide it along...'. L1017, 'Our toy had four; and that, you see, is why we halved.'"
+    },
+    {
+      "where": "ch04-s07 L0413 → ch05-s06 L0511",
+      "problem": "The plant ('this case's most important clue') is now paid, but only as a subordinate clause: 'one in that Helsinki thesis'. The promise was 'most important clue', and the payoff is said as a footnote.",
+      "fix": "L0511: 'Who invented it? Several people, separately. Remember Helsinki? That thesis held the same trick, run backward, in 1970. The 1986 paper made it stick.' (e3-linnainmaa, e4-backprop-priority)"
+    }
+  ],
+  "strengths": [
+    "Round 1's structural notes have mostly landed. The suspects are tagged as they appear ('Our first suspect', 'our second suspect'), and the verdict L1527 ('Not rules alone. Not knowledge, typed in by hand. Learning, with its accomplices: data, fire, a messenger running backward, and people choosing.') gives the detective frame a satisfying close, with the LEARNING lantern lit at last on 'Learning'.",
+    "The transformer deep dive now says the step that matters out loud. L1014 ('Bank takes in the messages in those shares, and now means the water's edge') completes the cards, jug and cups chain. 'Our toy had four: hence, halve.' pays off the promise of L1001 with real charm.",
+    "New human beats are excellent and restrained. Lee Sedol's own words (L0910). The family-trees wonder (L0520). Fodor and Pylyshyn's 'John loves the girl' (L0523) as a live, unresolved debate. Dame Wendy Hall's dissent on the Nobel (L1528). Uszkoreit's 'So did his father.' (L1007).",
+    "The plant-and-payoff lattice is the film's spine and is still a joy. 'Remember it for him' turns into 'The talk nobody remembered, remembered.' 'Who paid for dinner?' becomes 'Each man lost one bet.' 'Why would anyone choose the fog?' is answered by 'Given data and fire, it led somewhere better.' 'a different coat' becomes 'Here it is: pre-training, in a different coat.' The 1985 'practically nothing' is met by GPT-2's one-sentence goal. Rosenblatt's 1961 sentence returns as 'Sixty-one years early.'",
+    "The silent pinning of the 'graduate student' slip (ch09-s05) and its return as the last spoken quotation (L1518) is a beautifully patient plant. Hinton taking down his own forecast ('It is his own.') and walking back to the rim ('Persistence is not the same as certainty.') remain the emotional heart of the second half.",
+    "The best lines are genuinely quotable and right for a slow voice: 'No rulebook. Only odds.' 'It was not a new engine. It was a new door.' 'A struck match, out within a day.' 'Nobody told it to plan.' 'Some candles burned twenty years. Some, two. One, a single day.'",
+    "Fairness is built into the voice rather than bolted on: 'Historians still argue. There were several blows.' 'She says she was fired; Google says she resigned.' 'The same essay argued for strict export controls.' 'Six months, says one lab chief. Nanoseconds, says a chip seller. Too little compute, says a lab in China.' 'As of October 2026, nobody agrees how wide the gap is.'",
+    "The act break works as an act break: 'Case solved? / Not quite.' (L1220–L1221) after the return to the dark room. It earns the third act and plants a question that ch13–ch15 answer."
+  ]
+}

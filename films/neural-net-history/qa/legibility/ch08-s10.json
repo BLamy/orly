@@ -1,0 +1,67 @@
+{
+ "shot": "ch08-s10",
+ "at": "2026-10-12T19:23:02.619Z",
+ "minCapPx": 22,
+ "sampled": 13,
+ "texts": 14,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "pass 00 of ≈ 90",
+   "maxCap": 23
+  },
+  {
+   "text": "pass 13 of ≈ 90",
+   "maxCap": 23
+  },
+  {
+   "text": "5–6 days · ≈ 90 passes · 1.2 million pictures",
+   "maxCap": 22
+  },
+  {
+   "text": "pass 19 of ≈ 90",
+   "maxCap": 23
+  },
+  {
+   "text": "pass 29 of ≈ 90",
+   "maxCap": 23
+  },
+  {
+   "text": "lr ÷ 10",
+   "maxCap": 27.7
+  },
+  {
+   "text": "pass 41 of ≈ 90",
+   "maxCap": 23
+  },
+  {
+   "text": "step size ÷ 10, three times",
+   "maxCap": 22
+  },
+  {
+   "text": "pass 43 of ≈ 90",
+   "maxCap": 23
+  },
+  {
+   "text": "pass 61 of ≈ 90",
+   "maxCap": 23
+  },
+  {
+   "text": "pass 66 of ≈ 90",
+   "maxCap": 23
+  },
+  {
+   "text": "pass 87 of ≈ 90",
+   "maxCap": 23
+  },
+  {
+   "text": "pass 89 of ≈ 90",
+   "maxCap": 23
+  },
+  {
+   "text": "pass 90 of ≈ 90",
+   "maxCap": 23
+  }
+ ]
+}

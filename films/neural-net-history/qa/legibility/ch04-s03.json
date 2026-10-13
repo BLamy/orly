@@ -1,0 +1,19 @@
+{
+ "shot": "ch04-s03",
+ "at": "2026-10-12T08:41:13.688Z",
+ "minCapPx": 22,
+ "sampled": 14,
+ "texts": 27,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "PERCEPTRONS",
+   "maxCap": 23.9
+  },
+  {
+   "text": "— US Congress, Mansfield Amendment, 1969",
+   "maxCap": 22.1
+  }
+ ]
+}

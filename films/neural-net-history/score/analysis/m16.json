@@ -1,0 +1,18 @@
+{
+ "id": "m16",
+ "start": 1562.95,
+ "end": 1654.65,
+ "file": "films/neural-net-history/score/renders/m16.wav",
+ "duration": 97.7,
+ "I": -24.1,
+ "LRA": 14.9,
+ "TP": -4.5,
+ "expected": 97.7,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/neural-net-history/score/analysis/m16.png",
+ "cueSeconds": 91.7,
+ "cps": 0.25,
+ "lastStrikeLocal": 87.42,
+ "lastStrike": 1650.37
+}

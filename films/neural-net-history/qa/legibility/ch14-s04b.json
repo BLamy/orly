@@ -1,0 +1,132 @@
+{
+ "shot": "ch14-s04b",
+ "at": "2026-10-08T02:42:44.182Z",
+ "minCapPx": 22,
+ "sampled": 23,
+ "texts": 18,
+ "offenders": [
+  {
+   "text": "COMPUTE MATTERS LESS?",
+   "maxCap": 6.5,
+   "minCap": 6.5,
+   "first": 3.25,
+   "last": 14.25,
+   "font": "600 5.2px \"IBM Plex Mono\""
+  },
+  {
+   "text": "DECISIVE",
+   "maxCap": 11.5,
+   "minCap": 11.1,
+   "first": 5.79,
+   "last": 14.25,
+   "font": "600 9.4px \"IBM Plex Mono\""
+  },
+  {
+   "text": "HELPS HUAWEI",
+   "maxCap": 11.5,
+   "minCap": 11.1,
+   "first": 6.59,
+   "last": 14.25,
+   "font": "600 9.4px \"IBM Plex Mono\""
+  },
+  {
+   "text": "SELF-DEFEATING",
+   "maxCap": 11.5,
+   "minCap": 11.4,
+   "first": 10.84,
+   "last": 14.25,
+   "font": "600 9.4px \"IBM Plex Mono\""
+  },
+  {
+   "text": "SCALE IS THE MAIN LEVER",
+   "maxCap": 15.8,
+   "minCap": 15.8,
+   "first": 0.25,
+   "last": 14.25,
+   "font": "7.728px \"IBM Plex Mono\""
+  },
+  {
+   "text": "SMARTER-THAN-HUMAN AI MAY BE YEARS AWAY, AND",
+   "maxCap": 15.8,
+   "minCap": 15.8,
+   "first": 0.25,
+   "last": 14.25,
+   "font": "7.728px \"IBM Plex Mono\""
+  },
+  {
+   "text": "DANGEROUS",
+   "maxCap": 15.8,
+   "minCap": 15.8,
+   "first": 0.25,
+   "last": 14.25,
+   "font": "7.728px \"IBM Plex Mono\""
+  },
+  {
+   "text": "AMODEI (ANTHROPIC),",
+   "maxCap": 16.9,
+   "minCap": 16.2,
+   "first": 5.79,
+   "last": 14.25,
+   "font": "500 8.4px \"IBM Plex Mono\""
+  },
+  {
+   "text": "KHAN (EX-NSC)",
+   "maxCap": 16.9,
+   "minCap": 16.2,
+   "first": 5.79,
+   "last": 14.25,
+   "font": "500 8.4px \"IBM Plex Mono\""
+  },
+  {
+   "text": "HUANG (NVIDIA)",
+   "maxCap": 16.9,
+   "minCap": 16.3,
+   "first": 6.59,
+   "last": 14.25,
+   "font": "500 8.4px \"IBM Plex Mono\""
+  },
+  {
+   "text": "CHINA’S FOREIGN",
+   "maxCap": 16.9,
+   "minCap": 16.7,
+   "first": 10.84,
+   "last": 14.25,
+   "font": "500 8.4px \"IBM Plex Mono\""
+  },
+  {
+   "text": "MINISTRY",
+   "maxCap": 16.9,
+   "minCap": 16.7,
+   "first": 10.84,
+   "last": 14.25,
+   "font": "500 8.4px \"IBM Plex Mono\""
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "COMPUTE IS",
+   "maxCap": 28.2
+  },
+  {
+   "text": "THE CHOKEPOINT",
+   "maxCap": 28.2
+  },
+  {
+   "text": "LIT 2022",
+   "maxCap": 24.4
+  },
+  {
+   "text": "CHINA IS ONE TO",
+   "maxCap": 28.2
+  },
+  {
+   "text": "THREE YEARS BEHIND",
+   "maxCap": 28.2
+  },
+  {
+   "text": "OCT 2022 – JAN 2025 · ≈ 2",
+   "maxCap": 24.4
+  }
+ ]
+}

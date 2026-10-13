@@ -1,0 +1,19 @@
+{
+ "shot": "ch08-s06",
+ "at": "2026-10-12T17:53:31.690Z",
+ "minCapPx": 22,
+ "sampled": 16,
+ "texts": 2,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "back-propagation, 1986",
+   "maxCap": 26.4
+  },
+  {
+   "text": "ILLUSTRATIVE",
+   "maxCap": 22.1
+  }
+ ]
+}

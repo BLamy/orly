@@ -1,0 +1,212 @@
+{
+ "shot": "ch09-s05",
+ "at": "2026-10-12T19:34:56.518Z",
+ "minCapPx": 22,
+ "sampled": 35,
+ "texts": 32,
+ "offenders": [
+  {
+   "text": "DUE",
+   "maxCap": 6.7,
+   "minCap": 6.4,
+   "first": 21.24,
+   "last": 24.02,
+   "font": "6.08px \"Special Elite\""
+  },
+  {
+   "text": "KRIZHEVSKY, SUTSKEVER & HINTON · 2012",
+   "maxCap": 9,
+   "minCap": 5.1,
+   "first": 0.25,
+   "last": 24.02,
+   "font": "5.3923px \"Special Elite\""
+  },
+  {
+   "text": "The future depends on",
+   "maxCap": 9,
+   "minCap": 8.7,
+   "first": 21.24,
+   "last": 24.02,
+   "font": "8.17px \"Special Elite\""
+  },
+  {
+   "text": "LEARNED FEATURES, GIVEN DATA AND ARITHMETIC",
+   "maxCap": 11.8,
+   "minCap": 6.7,
+   "first": 0.25,
+   "last": 24.02,
+   "font": "8.4px \"IBM Plex Mono\""
+  },
+  {
+   "text": "DUE 2024",
+   "maxCap": 12.7,
+   "minCap": 7.2,
+   "first": 0.25,
+   "last": 24.02,
+   "font": "7.6px \"Special Elite\""
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 13.5,
+   "minCap": 7.7,
+   "first": 0.25,
+   "last": 24.02,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "ROSENBLATT · 1961",
+   "maxCap": 13.5,
+   "minCap": 7.7,
+   "first": 0.25,
+   "last": 24.02,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "Linguistic capability,",
+   "maxCap": 13.5,
+   "minCap": 7.7,
+   "first": 0.25,
+   "last": 24.02,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "related to perceptual",
+   "maxCap": 13.5,
+   "minCap": 7.7,
+   "first": 0.25,
+   "last": 24.02,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "experience, is of the",
+   "maxCap": 13.5,
+   "minCap": 7.7,
+   "first": 0.25,
+   "last": 24.02,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "essence…",
+   "maxCap": 13.5,
+   "minCap": 7.7,
+   "first": 0.25,
+   "last": 24.02,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "COULOM · MAY 2014",
+   "maxCap": 13.5,
+   "minCap": 7.7,
+   "first": 0.25,
+   "last": 24.02,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "2012",
+   "maxCap": 15.1,
+   "minCap": 8.6,
+   "first": 0.25,
+   "last": 24.02,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 15.9,
+   "minCap": 9,
+   "first": 0.25,
+   "last": 24.02,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "…simply by waiting",
+   "maxCap": 15.9,
+   "minCap": 9,
+   "first": 0.25,
+   "last": 24.02,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "for faster GPUs and",
+   "maxCap": 15.9,
+   "minCap": 9,
+   "first": 0.25,
+   "last": 24.02,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "bigger datasets…",
+   "maxCap": 15.9,
+   "minCap": 9,
+   "first": 0.25,
+   "last": 24.02,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "I think maybe ten",
+   "maxCap": 15.9,
+   "minCap": 9,
+   "first": 0.25,
+   "last": 24.02,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "years",
+   "maxCap": 15.9,
+   "minCap": 9,
+   "first": 0.25,
+   "last": 24.02,
+   "font": "9.5px \"Special Elite\""
+  }
+ ],
+ "textureTexts": 1,
+ "ok": [
+  {
+   "text": "panda 57.7%",
+   "maxCap": 25.2
+  },
+  {
+   "text": "gary marcus",
+   "maxCap": 22
+  },
+  {
+   "text": "“Deep Learning: A Critical Appraisal”, 2018",
+   "maxCap": 22
+  },
+  {
+   "text": "gibbon 99.3%",
+   "maxCap": 26.1
+  },
+  {
+   "text": "gender misread:",
+   "maxCap": 22.8
+  },
+  {
+   "text": "darker-skinned women up to 34.7% ·",
+   "maxCap": 22.8
+  },
+  {
+   "text": "lighter-skinned men up to 0.8%",
+   "maxCap": 22.8
+  },
+  {
+   "text": "Buolamwini & Gebru, 2018",
+   "maxCap": 22.7
+  },
+  {
+   "text": "LEARNED FEATURES, GIVEN",
+   "maxCap": 23.9
+  },
+  {
+   "text": "DATA AND ARITHMETIC",
+   "maxCap": 23.9
+  },
+  {
+   "text": "lit 2012 · still burning",
+   "maxCap": 22.9
+  },
+  {
+   "text": "lit 2012 · still burning, stil",
+   "maxCap": 22.9
+  }
+ ]
+}

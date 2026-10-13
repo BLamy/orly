@@ -1,0 +1,18 @@
+{
+ "id": "m21",
+ "start": 2039.417,
+ "end": 2139.5417,
+ "file": "films/neural-net-history/score/renders/m21.wav",
+ "duration": 110.1247,
+ "I": -24,
+ "LRA": 17.8,
+ "TP": -4.6,
+ "expected": 110.1247,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/neural-net-history/score/analysis/m21.png",
+ "cueSeconds": 100.1247,
+ "cps": 1,
+ "lastStrikeLocal": 66.04,
+ "lastStrike": 2105.457
+}

@@ -1,0 +1,76 @@
+{
+ "shot": "ch15-s03",
+ "at": "2026-10-08T02:42:48.882Z",
+ "minCapPx": 22,
+ "sampled": 20,
+ "texts": 14,
+ "offenders": [
+  {
+   "text": "MARCH 2025",
+   "maxCap": 19.9,
+   "minCap": 19.9,
+   "first": 0.55,
+   "last": 2.55,
+   "font": "500 19px \"IBM Plex Mono\""
+  },
+  {
+   "text": "Anthropic, on Claude 3.5 Haiku · via a simplified replacement model",
+   "maxCap": 19.9,
+   "minCap": 19.9,
+   "first": 4.37,
+   "last": 8.55,
+   "font": "500 19px \"IBM Plex Mono\""
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "He",
+   "maxCap": 41.3
+  },
+  {
+   "text": "saw",
+   "maxCap": 41.3
+  },
+  {
+   "text": "a",
+   "maxCap": 41.3
+  },
+  {
+   "text": "carrot",
+   "maxCap": 41.3
+  },
+  {
+   "text": "and",
+   "maxCap": 41.3
+  },
+  {
+   "text": "had",
+   "maxCap": 41.3
+  },
+  {
+   "text": "to",
+   "maxCap": 41.3
+  },
+  {
+   "text": "grab",
+   "maxCap": 41.3
+  },
+  {
+   "text": "it",
+   "maxCap": 41.3
+  },
+  {
+   "text": "rabbit",
+   "maxCap": 42.3
+  },
+  {
+   "text": "habit",
+   "maxCap": 42.7
+  },
+  {
+   "text": "rabbit → (suppressed) → habit",
+   "maxCap": 23
+  }
+ ]
+}

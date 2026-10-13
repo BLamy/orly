@@ -1,0 +1,91 @@
+{
+ "shot": "ch08-s03",
+ "at": "2026-10-12T18:26:43.605Z",
+ "minCapPx": 22,
+ "sampled": 19,
+ "texts": 20,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "B",
+   "maxCap": 22
+  },
+  {
+   "text": "U",
+   "maxCap": 22
+  },
+  {
+   "text": "F",
+   "maxCap": 22
+  },
+  {
+   "text": "A",
+   "maxCap": 22
+  },
+  {
+   "text": "L",
+   "maxCap": 22
+  },
+  {
+   "text": "O",
+   "maxCap": 22
+  },
+  {
+   "text": "1",
+   "maxCap": 22
+  },
+  {
+   "text": "9",
+   "maxCap": 22
+  },
+  {
+   "text": "5",
+   "maxCap": 22
+  },
+  {
+   "text": "8",
+   "maxCap": 22
+  },
+  {
+   "text": "6",
+   "maxCap": 22
+  },
+  {
+   "text": "0",
+   "maxCap": 22
+  },
+  {
+   "text": "20 × 20 = 400",
+   "maxCap": 23.6
+  },
+  {
+   "text": "TORONTO · 2012",
+   "maxCap": 22.1
+  },
+  {
+   "text": "0.77",
+   "maxCap": 40
+  },
+  {
+   "text": "R",
+   "maxCap": 35.5
+  },
+  {
+   "text": "0.81",
+   "maxCap": 40
+  },
+  {
+   "text": "G",
+   "maxCap": 35.5
+  },
+  {
+   "text": "0.76",
+   "maxCap": 40
+  },
+  {
+   "text": "224 × 224 × 3 = 150,528",
+   "maxCap": 27.2
+  }
+ ]
+}

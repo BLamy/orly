@@ -1,0 +1,133 @@
+{
+  "reviewer": "sound",
+  "round": 2,
+  "at": "2026-10-12",
+  "method": "No playback. I decoded mix/master.wav and narration/narration.wav to 16 kHz mono and estimated the music bus as master minus 1.346 x narration (least-squares gain, +2.58 dB, matching loudnorm). I measured voice-to-music per line and per word, both unweighted and roughly K-weighted (HPF 100 Hz plus a +4 dB shelf at 1.5 kHz), against absolute line and word times from narration/timeline.json. I also read mix/loudness.json, qa/reports/latest.json, the 21 cue notes, score/motifs.md, the m11/m13/m21 spectrograms, voice/lexicon.json, narration/stt.json, script `spoken`/direction/tts fields, and the ch15-s09 and ch15-s10 sheets. Then I checked every round-1 sound issue against the new master.",
+  "scores": { "accuracy": 8, "depth": 8, "clarity": 8, "story": 8, "visual": 7.5, "sync": 8, "sound": 7.5, "curiosity": 8 },
+  "round1_followup": {
+    "fixed": [
+      "Prologue pace: L0101 264->163 wpm, L0102 229->162, L0103 217->144, L0109 248->169; ch01 now 151 wpm, film speech rate 146 wpm",
+      "Chunk-split ghosts: clipEdges says all 176 cut edges are under -50 dBFS",
+      "Cue joins: all 20 crossfades now finish 1.6-12.5 s before the next line (QA cueJoins pass); each new key is heard alone",
+      "m11 Florence: the swell peaks at -13.2 dB at 1066.0 and falls to about -30 by 'Fair credit' (1067.83); median voice-to-music on L0834 is 16.5 dB",
+      "m21 thesis line L1514: music sits at -33 under the voice (median 20.8 dB); the bloom (-12.1) lands in the gap at 2060",
+      "m13 worked numbers: L1011 30.5 dB, L1012 26.6 dB, L1013 25.2 dB clear",
+      "m17 'None came' (L1307b) 26.3 dB; m18 L1409 47 dB and L1417 20.8 dB; m10 L0811 34 dB; m03 L0308 25.6 dB",
+      "Digital zero is gone: a pink-noise room tone at -58 LUFS sits under everything; the quietest 400 ms measures -58.1 LUFS",
+      "Music bus: 35 Hz HPF plus a keyed 120 Hz shelf; duck depth 3.41 dB against a 3 dB target",
+      "Names: Uszkoreit, Amodei respelled in `spoken`; lexicon now applies inside `spoken`; STT covers 74 lines with every cast name; quotation marks restored (L0610, L1518, L0405, L0312)",
+      "QA checks: lineLevels, fadeAfterStrike and lineMasking now measure real windows"
+    ],
+    "partly_fixed_or_regressed": [
+      "Quiet-line gain (L1307b/L1417/L1501/L0312/L1011): over-corrected; these are now the loudest lines in the film (see global issue)",
+      "End cards: no longer digital zero, but 22 s of room tone only (2117.5-2139.5) under the Turing, disclosure and sources cards",
+      "Listen sign-off for Uszkoreit, Amodei, Hochreiter, Schmidhuber and Rumelhart is still pending (QA warn)",
+      "Pacing: QA now FAILS on L0821 (224 wpm), a line that was re-narrated this round"
+    ]
+  },
+  "summary": "Big step up. Almost every round-1 sound issue is fixed: the prologue is unhurried, the chunk-edge ghosts are gone, every cue change lands in clear air before the chapter's first line, all the masked key lines now sit 16-47 dB over the music, the master never touches digital zero, and the low end is controlled. Technically the master is clean: -16.0 LUFS, -2.1 dBTP, LRA 6.3. The score's design remains the film's sonic strength: the candle leitmotif, the per-era orchestration, scored silences and the unresolved Asus4. What keeps sound below 8: (1) the round-1 '+3 dB' line fix was stacked on top of per-line rides that already level every line. L1307b, L1417, L1501, L1011 and L0312 now stand 2.5-3.5 dB above the rest of the narration, with momentary peaks of -6.9 to -8.6 LUFS against a typical -12 to -13. They will pop out, including the hushed 2 a.m. Nobel call that opens ch15. (2) QA fails on pacing (L0821 224 wpm), and three lines marked 'quiet/slow/deliberate' are read at 223-242 wpm, among them the chapter-closing refrain. (3) After the last chord decays, the end cards run on 22 s of hiss. (4) Smaller items: the move-37 line (STT heard 'movie'), the human listen sign-off for respelled names, the buried candle-out leitmotif in m13, a heavily stacked speech dynamics chain, and ch08 having the thinnest voice-music margins.",
+  "issues": [
+    {
+      "owner": "global",
+      "severity": "major",
+      "problem": "The fix for quiet lines over-corrected. The mix rides every line to -20 LUFS (stem.json rides, up to +/-6 dB), and then the round-1 offsets (+3 dB L1307b/L1417/L1501, +2 dB L0312/L1011) were added on top. Rough K-weighted per-line energy: the narration median is -15.0 and almost every line falls between -16.1 and -14.5. These five lines are outliers: L1417 -11.5, L1307b -11.6, L1501 -12.3, L1011 -12.9, L0312 -13.5. Their momentary peaks hit -6.9 (L1501), -7.1 (L1307b), -7.7 (L1417), -8.3 (L1011) and -8.6 (L0312) LUFS, where every other line peaks around -11 to -14 (mix.moments). The masking these offsets were meant to cure is now handled in the cues: those lines sit 20-30 dB over the music. The result is five lines that jump 3-5 dB louder. L1501 ('Two in the morning... Hinton's phone rings'), the intimate ch15 opener, is now the loudest spoken moment in the film.",
+      "fix": "In the mix config, set the requested offsets for L1307b, L1417, L1501, L0312 and L1011 to 0 dB, or at most +0.5 dB, and let the line rides do the levelling. Re-run film-assemble. Then check that mix.moments shows no line's momentary peak more than 2 dB above the narration's p95 (about -11 LUFS). Add a QA warn when the requested offset plus the ride puts a line more than 1.5 dB off lineLufs."
+    },
+    {
+      "owner": "line",
+      "id": "L0821",
+      "severity": "major",
+      "problem": "The automated pacing check FAILS on this line: 224 wpm. 'A bad back kept Hinton from flying' takes 1.5 s, against a direction of 'quiet, factual, kindly on a bad back... a little rueful on flying'. It was re-narrated this round and is still the fastest long line in the film. It sets up the Florence night (ch08-s11), where the brief's 'slow, distinguished, unhurried' voice matters most.",
+      "fix": "Re-narrate solo at tts speed 0.84-0.86, with a breath in `spoken`: 'A bad back... kept Hinton from flying. Yann Le Cun stood at the rear of a packed room.' Target 150-165 wpm (about 6.0-6.5 s). Re-fit ch08-s11 and the m11 hits after the line."
+    },
+    {
+      "owner": "cue",
+      "id": "m21",
+      "severity": "minor",
+      "problem": "The last line ends at 2105.04. The m21 Asus4 rings out and reaches the room-tone floor by about 2117.5, which leaves 22 s (2117.5-2139.54) of hiss alone under the Turing quote's fade, the Claude/Anthropic disclosure card and the SOURCES card. That is better than round 1's digital zero, but it still reads as the film having ended, and it invites viewers to close the tab before the sources card the historian asked to be checkable. The notes contradict themselves: 'decays to silence by about 2100' versus a last onset of about 2107.85 and a film end of 2139.54.",
+      "fix": "Keep the suspension alive under the end cards. Hold the A-E fifth plus the D as a ppp bowed pad or string pad (lpf about 1.2 kHz, about -32 LUFS short-term) through the Turing card (to about 2127, card fade at +10.8 s). Let it thin to the D alone under the disclosure card and fade to the floor by about 2134. Optionally add one soft celesta D on the 'sources' beat (2131.54). It must stay unresolved, with no cadence. Rewrite the m21 notes so they give one consistent end time."
+    },
+    {
+      "owner": "line",
+      "id": "L0828",
+      "severity": "minor",
+      "problem": "The film's refrain 'Put that in the file.' closes ch08 (direction: 'the refrain, fifth and last time: quiet, deliberate; it ends the chapter'), but it is read in 1.24 s (242 wpm), the fastest line in the film. The same refrain at L0109 takes 2.12 s, so the motto speeds up just when it should land.",
+      "fix": "Re-narrate solo at speed 0.82-0.85, `spoken`: 'Put that... in the file.' Target 1.9-2.2 s, matching L0109. Hold the existing pauseAfter of 0.66 s."
+    },
+    {
+      "owner": "line",
+      "id": "L1505",
+      "severity": "minor",
+      "problem": "'Nobody told it to plan.' takes 1.35 s (223 wpm) against the direction 'slow; the strangest fact in the film, said simply'. Rushing it throws away the beat.",
+      "fix": "Re-narrate solo at speed 0.85 with a comma, `spoken`: 'Nobody told it... to plan.' Target about 2.0 s. Re-fit ch15-s03 by its word names."
+    },
+    {
+      "owner": "line",
+      "id": "L0906",
+      "severity": "minor",
+      "problem": "Pronunciation and masking risk on the film's most famous number. The STT round trip transcribed 'Seoul 2016 AlphaGo played movie 37' (WER 0.385, the worst in the STT set), so 'move' is being heard as 'movie'. L0906 also has the lowest K-weighted voice-to-music margin in the film (p10 about 1 dB, median 11.7 dB). m12's 'strange, high note' for MOVE 37 is placed at 1167.24, on the spoken 'thirty-seven'.",
+      "fix": "Re-narrate solo with `spoken` 'AlphaGo played move... thirty-seven', or 'move number thirty-seven', at speed 0.88. Add 'move thirty-seven' to this line's STT expected terms. See the m12 issue for the note placement."
+    },
+    {
+      "owner": "cue",
+      "id": "m12",
+      "severity": "minor",
+      "problem": "The MOVE 37 'strange, high note' (1167.24) lands on the word 'thirty-seven' instead of answering it, the same pattern as round 1's m13 number plucks. It also sits under a line that STT already mishears.",
+      "fix": "Move the move-37 note into the micro-gap after 'thirty-seven' (about 1167.8-1168.0), before 'a one-in-ten-thousand move'. Place it in D6 or above at half velocity if it must overlap. Re-fit it after L0906 is re-narrated."
+    },
+    {
+      "owner": "line",
+      "id": "L1206",
+      "severity": "minor",
+      "problem": "The respelled names are still unverified by ear: the QA 'listening' check shows Uszkoreit, Amodei, Hochreiter, Schmidhuber and Rumelhart as pending. STT for L1206 returned 'Daniela Ahmoudai', which suggests 'Ah-mo-day' may be voiced as 'ah-MOO-dye'. L1006 returned 'Jacob Ushko Wright', which is acceptable (OOSH-ko-right).",
+      "fix": "A human listens to L1206, L1006, L0614 and L0507 and runs film:voice signoff for each term. If Amodei comes out with 'moo' or 'dye', respell as 'Ah-moh-day' (or 'Ahmo-day'), re-narrate L1206 solo and re-check STT."
+    },
+    {
+      "owner": "cue",
+      "id": "m13",
+      "severity": "minor",
+      "problem": "THE CANDLE OUT (notes: 'strings carry M1 IN FULL as the read-in-order candle goes out', candleOut 1400.79) is effectively inaudible. The music drops to the room-tone floor at 1397.5-1400.4, and the M1 statement then begins under L1030 (from 1400.4), where it measures -33 to -40, 18-25 dB under the voice. The film's governing leitmotif for a candle going out is spent under speech, and the clear 2.9 s before it is spent on near-silence.",
+      "fix": "Sound the rising fourth and the held suspension in the 1397.5-1400.4 gap, at a level like the other music-only candle moments (about -20 LUFS M). Keep the low cluster's decay but do not drop to the floor. Then let the falling resolution land in the gap after L1030, or under it above D5 at low velocity."
+    },
+    {
+      "owner": "cue",
+      "id": "m10",
+      "severity": "minor",
+      "problem": "The ch08 deep dive (m10) has the thinnest voice-to-music margins in the film. mix.lineMasking: L0819 10.0, L0812 10.3, L0810 10.9 dB. K-weighted p10 on L0802 is 3.6 dB and on L0813 4.9 dB, with content words such as 'experts', 'by hand', 'picture' and 'flat' at 0-6 dB. This is the dense worked-example chapter (stencils, ReLU, the two halls), and the viewer needs every word.",
+      "fix": "Under L0802-L0819, thin m10 to intensity 0.3 or below in the 250 Hz-3 kHz band. Move sustained mid voices above D5 or below D3, and keep the ostinato pulse out of the voice's fundamental range (100-250 Hz) while he speaks. Target at least 13 dB for each line in lineMasking."
+    },
+    {
+      "owner": "global",
+      "severity": "minor",
+      "problem": "The line rides now level every line to within about 1.6 dB (K-weighted line energy -16.1 to -14.5, apart from the five over-corrected lines), so loudness no longer follows the directions. Rides reach +5.1 dB on L0109 ('Put that in the case file', meant as an aside), +6 dB on L1522c ('That case, too, is open') and +4.8 dB on L1104. The 'very soft... leaning in' L0101 is turned down 5.1 dB to match exposition. The speech chain also stacks an RMS compressor (3.43 dB GR), a peak stage (5.2 dB peak cut, crest 20.7 -> 15.5 dB), a stem limiter (2.72 dB) and a master limiter (2.73 dB; QA warns on both limiters). Together these risk a flat, pressed-forward narrator.",
+      "fix": "Cap rides at +/-3 dB and add an optional per-line `level` hint (for example 'soft' = -2 dB relative to lineLufs) that the ride honours, so asides and the closing lines sit 1.5-3 dB under exposition. Relax the peak stage (ratio 2, or drop it) and reach -16 LUFS by trimming the music-only swell peaks (-12.3 LUFS M at 2060.8, -12.5 at 1355.2, -13 at 1066.3) by about 2 dB instead of limiting speech. Aim for a master limiter at or below 1.5 dB GR."
+    },
+    {
+      "owner": "global",
+      "severity": "minor",
+      "problem": "There is no foley/SFX layer. The ending's on-screen physical events fall in m21's deliberate rest and so play over hiss only: the STATUS: OPEN stamp (2094.84), the lamp click (2097.34) and the struck match (2104.89, under L1520). The scored silence is the right call, but in a paper-cut theatre film these events are written to be heard. The cue notes even name them as the reason for the rest.",
+      "fix": "Add a sparse foley bus (at most about 10 events in the film, all in speech gaps or under the last word): a paper stamp thud, a lamp switch click, a match strike and flare, and possibly the typewriter on Case Board cards. Mix each at about -28 to -32 LUFS short-term, dry with a small-room reverb, and run them through the same room-tone character so they belong to the study."
+    },
+    {
+      "owner": "line",
+      "id": "L0114",
+      "severity": "minor",
+      "problem": "The prologue's handoff line 'We go back to the war years... to a lamp in Chicago.' is still 195 wpm (3.69 s) despite tts speed 0.8 and the ellipsis, and L0104 (187) and L0105 (191) sit just under it. The ellipsis seems not to have produced a pause.",
+      "fix": "Re-narrate solo with an explicit break, `spoken`: 'We go back to the war years. ... To a lamp, in Chicago.' (or split it into two clips with a 0.4 s pauseAfter). Target 4.5-5 s. ch01-s06's silent hold absorbs the extra time."
+    },
+    {
+      "owner": "global",
+      "severity": "minor",
+      "problem": "The music documentation has drifted. score/motifs.md still says the film is 2121.42 s in its opening paragraph and only further down notes the 2139.54 s clock. The m21 notes give three different decay times (by 2100, by about 2102, and a 6-9 s ring after 2107.85). Composers and critics revising cues next round will place hits from stale numbers.",
+      "fix": "Regenerate the headline of motifs.md, and the time references in each cue's notes, from the current timeline. Keep one 'current clock' paragraph per cue and archive the clock-refit history in a separate notes field."
+    }
+  ],
+  "best_moments": [
+    "Cue joins are fixed: all 20 cue changes now finish in clear air 1.6-12.5 s before the next line, so each era's new key and colour (G for the 1940s, the C valve organ, D-minor winter, F thaw) is heard alone before the narrator speaks.",
+    "Florence, 'A cliff.': the music cuts dead, then swells to -13.2 at 1066.0 and falls away to about -30 by 'Fair credit' at 1067.83, leaving the caveat 16.5 dB clear. Last round it masked that line; now it is the best-timed swell in the film.",
+    "The thesis line 'The board was a network all along' sits about 21 dB over a held-back network texture, and the seven-era bloom (-12.1 LUFS M) opens in the gap right after 'network', exactly as the notes promised.",
+    "The ending's scored silence (about 2094.5-2097.5), with nothing but room tone under the STATUS: OPEN stamp and the lamp, followed by the cello walk under 'Somewhere tonight a lamp is on' and the unresolved Asus4 on the new candle.",
+    "ch11's 14.8 s music-only opening (1435-1449.9): m14 carries the index tab and the X-ray at -19 to -26 with nothing spoken. The film trusts the score.",
+    "Mix hygiene: -16.0 LUFS, -2.1 dBTP, LRA 6.3. A -58 LUFS room-tone floor means no digital zero anywhere. Every chunk edge is under -50 dBFS, music sits a median of about 17-18 dB under the voice, and the worked attention numbers (L1011-L1013) are 25-30 dB clear."
+  ]
+}

@@ -1,0 +1,104 @@
+{
+ "shot": "ch13-s04",
+ "at": "2026-10-12T23:59:04.212Z",
+ "minCapPx": 22,
+ "sampled": 29,
+ "texts": 21,
+ "offenders": [
+  {
+   "text": "SMARTER-THAN-HUMAN AI MAY BE",
+   "maxCap": 6.9,
+   "minCap": 4.6,
+   "first": 0.25,
+   "last": 24.07,
+   "font": "500 10.4px \"IBM Plex Mono\""
+  },
+  {
+   "text": "YEARS AWAY, AND DANGEROUS",
+   "maxCap": 6.9,
+   "minCap": 4.6,
+   "first": 0.25,
+   "last": 24.07,
+   "font": "500 10.4px \"IBM Plex Mono\""
+  },
+  {
+   "text": "2023",
+   "maxCap": 7.1,
+   "minCap": 4.7,
+   "first": 0.25,
+   "last": 24.07,
+   "font": "9px \"Special Elite\""
+  }
+ ],
+ "textureTexts": 1,
+ "ok": [
+  {
+   "text": "“Mitigating the risk of extinction from AI",
+   "maxCap": 38.8
+  },
+  {
+   "text": "should be a global priority…”",
+   "maxCap": 38.8
+  },
+  {
+   "text": "— STATEMENT ON AI RISK",
+   "maxCap": 23.1
+  },
+  {
+   "text": "Geoffrey Hinton",
+   "maxCap": 29.8
+  },
+  {
+   "text": "Yoshua Bengio",
+   "maxCap": 29.8
+  },
+  {
+   "text": "Demis Hassabis",
+   "maxCap": 25.4
+  },
+  {
+   "text": "Sam Altman",
+   "maxCap": 25.4
+  },
+  {
+   "text": "Dario Amodei",
+   "maxCap": 25.4
+  },
+  {
+   "text": "timnit gebru · emily m. bender",
+   "maxCap": 22
+  },
+  {
+   "text": "The harms from so-called AI",
+   "maxCap": 27.4
+  },
+  {
+   "text": "are real and present…”",
+   "maxCap": 27.4
+  },
+  {
+   "text": "gebru, bender & mcmillan-major",
+   "maxCap": 22
+  },
+  {
+   "text": "yann lecun",
+   "maxCap": 22
+  },
+  {
+   "text": "…just preposterously",
+   "maxCap": 29.4
+  },
+  {
+   "text": "ridiculous.”",
+   "maxCap": 29.4
+  },
+  {
+   "text": "2018 a.m. turing award",
+   "maxCap": 22
+  },
+  {
+   "text": "Bengio · Hinton · LeCun",
+   "maxCap": 22
+  }
+ ]
+}

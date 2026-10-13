@@ -1,0 +1,76 @@
+{
+ "shot": "ch09-s01",
+ "at": "2026-10-12T19:17:18.756Z",
+ "minCapPx": 22,
+ "sampled": 31,
+ "texts": 11,
+ "offenders": [
+  {
+   "text": "LEARNED FEATURES, GIVEN DATA AND ARITHMETIC",
+   "maxCap": 8.7,
+   "minCap": 4.4,
+   "first": 0.25,
+   "last": 19.25,
+   "font": "13.608px \"IBM Plex Mono\""
+  },
+  {
+   "text": "2012",
+   "maxCap": 11.1,
+   "minCap": 5.6,
+   "first": 0.25,
+   "last": 19.25,
+   "font": "14.58px \"Special Elite\""
+  },
+  {
+   "text": "LEARNED FEATURES,",
+   "maxCap": 15.3,
+   "minCap": 14.8,
+   "first": 3.97,
+   "last": 6.25,
+   "font": "24.8329px \"IBM Plex Mono\""
+  },
+  {
+   "text": "GIVEN DATA AND",
+   "maxCap": 15.3,
+   "minCap": 14.8,
+   "first": 3.97,
+   "last": 6.25,
+   "font": "24.8329px \"IBM Plex Mono\""
+  },
+  {
+   "text": "ARITHMETIC",
+   "maxCap": 15.3,
+   "minCap": 14.8,
+   "first": 3.97,
+   "last": 6.25,
+   "font": "24.8329px \"IBM Plex Mono\""
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "The Gold Rush",
+   "maxCap": 22.4
+  },
+  {
+   "text": "lit 2012 · still burning",
+   "maxCap": 22
+  },
+  {
+   "text": "LAKE TAHOE · DECEMBER 2012 · ROOM 731",
+   "maxCap": 22.1
+  },
+  {
+   "text": "as reported by Cade Metz",
+   "maxCap": 22.7
+  },
+  {
+   "text": "$44,000,000",
+   "maxCap": 23
+  },
+  {
+   "text": "GOOGLE",
+   "maxCap": 30.9
+  }
+ ]
+}

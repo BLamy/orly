@@ -1,0 +1,300 @@
+{
+ "shot": "ch05-s07",
+ "at": "2026-10-13T01:20:06.420Z",
+ "minCapPx": 22,
+ "sampled": 21,
+ "texts": 47,
+ "offenders": [
+  {
+   "text": "DUE 1968",
+   "maxCap": 9.9,
+   "minCap": 9.2,
+   "first": 0.25,
+   "last": 5.25,
+   "font": "7.6px \"Special Elite\""
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 10.5,
+   "minCap": 9.8,
+   "first": 0.25,
+   "last": 5.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "SIMON & NEWELL · 1958",
+   "maxCap": 10.5,
+   "minCap": 9.8,
+   "first": 0.25,
+   "last": 5.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "ROSENBLATT · 1961",
+   "maxCap": 10.5,
+   "minCap": 9.8,
+   "first": 0.25,
+   "last": 5.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "Linguistic capability,",
+   "maxCap": 10.5,
+   "minCap": 9.8,
+   "first": 0.25,
+   "last": 5.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "related to perceptual",
+   "maxCap": 10.5,
+   "minCap": 9.8,
+   "first": 0.25,
+   "last": 5.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "experience, is of the",
+   "maxCap": 10.5,
+   "minCap": 9.8,
+   "first": 0.25,
+   "last": 5.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "essence…",
+   "maxCap": 10.5,
+   "minCap": 9.8,
+   "first": 0.25,
+   "last": 5.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "THE BRAIN IS A LOGIC MACHINE",
+   "maxCap": 10.9,
+   "minCap": 10.1,
+   "first": 0.25,
+   "last": 5.25,
+   "font": "8.4px \"Special Elite\""
+  },
+  {
+   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
+   "maxCap": 10.9,
+   "minCap": 10.1,
+   "first": 0.25,
+   "last": 5.25,
+   "font": "8.4px \"Special Elite\""
+  },
+  {
+   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
+   "maxCap": 10.9,
+   "minCap": 10.1,
+   "first": 0.25,
+   "last": 5.25,
+   "font": "8.4px \"Special Elite\""
+  },
+  {
+   "text": "INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND",
+   "maxCap": 10.9,
+   "minCap": 10.1,
+   "first": 0.25,
+   "last": 5.25,
+   "font": "8.4px \"Special Elite\""
+  },
+  {
+   "text": "IF … THEN",
+   "maxCap": 11.9,
+   "minCap": 4.4,
+   "first": 6.47,
+   "last": 16.25,
+   "font": "13.468px VT323"
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 12.4,
+   "minCap": 11.5,
+   "first": 0.25,
+   "last": 5.25,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "SIMON & NEWELL ·",
+   "maxCap": 12.4,
+   "minCap": 11.5,
+   "first": 0.25,
+   "last": 5.25,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "CHESS CHAMPION BY",
+   "maxCap": 12.4,
+   "minCap": 11.5,
+   "first": 0.25,
+   "last": 5.25,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "1968",
+   "maxCap": 12.4,
+   "minCap": 11.5,
+   "first": 0.25,
+   "last": 5.25,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "INTELLIGENCE IS KNOWLEDGE,",
+   "maxCap": 14,
+   "minCap": 11.8,
+   "first": 5.25,
+   "last": 7.25,
+   "font": "36px VT323"
+  },
+  {
+   "text": "TYPED IN BY HAND",
+   "maxCap": 14,
+   "minCap": 11.8,
+   "first": 5.25,
+   "last": 7.25,
+   "font": "36px VT323"
+  },
+  {
+   "text": "c. 1980",
+   "maxCap": 16.6,
+   "minCap": 10.2,
+   "first": 0.25,
+   "last": 16.25,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "KELLEY 1960 … LE CUN 1985",
+   "maxCap": 17.1,
+   "minCap": 8.8,
+   "first": 0.25,
+   "last": 5.25,
+   "font": "7.26819px \"Special Elite\""
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 18.7,
+   "minCap": 9.6,
+   "first": 0.25,
+   "last": 5.25,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 18.7,
+   "minCap": 9.6,
+   "first": 0.25,
+   "last": 5.25,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 18.7,
+   "minCap": 9.6,
+   "first": 0.25,
+   "last": 5.25,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "WHY?",
+   "maxCap": 19,
+   "minCap": 12.7,
+   "first": 6.25,
+   "last": 14.25,
+   "font": "24px VT323"
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 44.7
+  },
+  {
+   "text": "IT?",
+   "maxCap": 44.7
+  },
+  {
+   "text": "RULES",
+   "maxCap": 25.9
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 22.4
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 22.4
+  },
+  {
+   "text": "1943",
+   "maxCap": 25.9
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 22
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 22
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 22
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 22
+  },
+  {
+   "text": "1958",
+   "maxCap": 25.9
+  },
+  {
+   "text": "1969",
+   "maxCap": 25.9
+  },
+  {
+   "text": "HELSINKI ·",
+   "maxCap": 25.9
+  },
+  {
+   "text": "1970",
+   "maxCap": 25.9
+  },
+  {
+   "text": "MYCIN · blinded test, 1979",
+   "maxCap": 22.5
+  },
+  {
+   "text": "prescriptions rated acceptable",
+   "maxCap": 25.5
+  },
+  {
+   "text": "0",
+   "maxCap": 22.6
+  },
+  {
+   "text": "100%",
+   "maxCap": 22.6
+  },
+  {
+   "text": "program",
+   "maxCap": 22.6
+  },
+  {
+   "text": "5 Stanford specialists",
+   "maxCap": 22.6
+  },
+  {
+   "text": "65%",
+   "maxCap": 22.6
+  },
+  {
+   "text": "42.5–62.5%",
+   "maxCap": 22.6
+  }
+ ]
+}

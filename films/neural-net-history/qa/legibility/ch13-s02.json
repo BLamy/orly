@@ -1,0 +1,204 @@
+{
+ "shot": "ch13-s02",
+ "at": "2026-10-12T23:58:56.523Z",
+ "minCapPx": 22,
+ "sampled": 13,
+ "texts": 26,
+ "offenders": [
+  {
+   "text": "DUE 2024",
+   "maxCap": 7.7,
+   "minCap": 6.7,
+   "first": 0.25,
+   "last": 8.25,
+   "font": "9.2px \"Special Elite\""
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 8.2,
+   "minCap": 7.1,
+   "first": 0.25,
+   "last": 8.25,
+   "font": "9.775px \"Special Elite\""
+  },
+  {
+   "text": "ROSENBLATT · 1961",
+   "maxCap": 8.2,
+   "minCap": 7.1,
+   "first": 0.25,
+   "last": 8.25,
+   "font": "9.775px \"Special Elite\""
+  },
+  {
+   "text": "Linguistic capability,",
+   "maxCap": 8.2,
+   "minCap": 7.1,
+   "first": 0.25,
+   "last": 8.25,
+   "font": "9.775px \"Special Elite\""
+  },
+  {
+   "text": "related to perceptual",
+   "maxCap": 8.2,
+   "minCap": 7.1,
+   "first": 0.25,
+   "last": 8.25,
+   "font": "9.775px \"Special Elite\""
+  },
+  {
+   "text": "experience, is of the",
+   "maxCap": 8.2,
+   "minCap": 7.1,
+   "first": 0.25,
+   "last": 8.25,
+   "font": "9.775px \"Special Elite\""
+  },
+  {
+   "text": "essence…",
+   "maxCap": 8.2,
+   "minCap": 7.1,
+   "first": 0.25,
+   "last": 8.25,
+   "font": "9.775px \"Special Elite\""
+  },
+  {
+   "text": "COULOM · MAY 2014",
+   "maxCap": 8.2,
+   "minCap": 7.1,
+   "first": 0.25,
+   "last": 8.25,
+   "font": "9.775px \"Special Elite\""
+  },
+  {
+   "text": "HINTON · SEPT 2017",
+   "maxCap": 8.2,
+   "minCap": 7.1,
+   "first": 0.25,
+   "last": 8.25,
+   "font": "9.775px \"Special Elite\""
+  },
+  {
+   "text": "…some graduate student",
+   "maxCap": 8.2,
+   "minCap": 7.1,
+   "first": 0.25,
+   "last": 8.25,
+   "font": "9.775px \"Special Elite\""
+  },
+  {
+   "text": "who is deeply suspicious",
+   "maxCap": 8.2,
+   "minCap": 7.1,
+   "first": 0.25,
+   "last": 8.25,
+   "font": "9.775px \"Special Elite\""
+  },
+  {
+   "text": "of everything I have",
+   "maxCap": 8.2,
+   "minCap": 7.1,
+   "first": 0.25,
+   "last": 8.25,
+   "font": "9.775px \"Special Elite\""
+  },
+  {
+   "text": "said.",
+   "maxCap": 8.2,
+   "minCap": 7.1,
+   "first": 0.25,
+   "last": 8.25,
+   "font": "9.775px \"Special Elite\""
+  },
+  {
+   "text": "30 TO 50 YEARS OR",
+   "maxCap": 9.1,
+   "minCap": 7.9,
+   "first": 0.25,
+   "last": 8.25,
+   "font": "10.81px \"Special Elite\""
+  },
+  {
+   "text": "EVEN LONGER",
+   "maxCap": 9.1,
+   "minCap": 7.9,
+   "first": 0.25,
+   "last": 8.25,
+   "font": "10.81px \"Special Elite\""
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 9.6,
+   "minCap": 8.4,
+   "first": 0.25,
+   "last": 8.25,
+   "font": "11.5px \"Special Elite\""
+  },
+  {
+   "text": "…simply by waiting",
+   "maxCap": 9.6,
+   "minCap": 8.4,
+   "first": 0.25,
+   "last": 8.25,
+   "font": "11.5px \"Special Elite\""
+  },
+  {
+   "text": "for faster GPUs and",
+   "maxCap": 9.6,
+   "minCap": 8.4,
+   "first": 0.25,
+   "last": 8.25,
+   "font": "11.5px \"Special Elite\""
+  },
+  {
+   "text": "bigger datasets…",
+   "maxCap": 9.6,
+   "minCap": 8.4,
+   "first": 0.25,
+   "last": 8.25,
+   "font": "11.5px \"Special Elite\""
+  },
+  {
+   "text": "I think maybe ten",
+   "maxCap": 9.6,
+   "minCap": 8.4,
+   "first": 0.25,
+   "last": 8.25,
+   "font": "11.5px \"Special Elite\""
+  },
+  {
+   "text": "years",
+   "maxCap": 9.6,
+   "minCap": 8.4,
+   "first": 0.25,
+   "last": 8.25,
+   "font": "11.5px \"Special Elite\""
+  },
+  {
+   "text": "LEARNED FEATURES, GIVEN DATA AND ARITHMETIC",
+   "maxCap": 10.6,
+   "minCap": 9.2,
+   "first": 0.25,
+   "last": 8.25,
+   "font": "12.6px \"Special Elite\""
+  },
+  {
+   "text": "2012",
+   "maxCap": 11.3,
+   "minCap": 9.8,
+   "first": 0.25,
+   "last": 8.25,
+   "font": "13.5px \"Special Elite\""
+  }
+ ],
+ "textureTexts": 1,
+ "ok": [
+  {
+   "text": "“Google has acted very responsibly.”",
+   "maxCap": 27.4
+  },
+  {
+   "text": "— Hinton, May 2023 (tweet, as widely reproduced)",
+   "maxCap": 23
+  }
+ ]
+}

@@ -1,0 +1,272 @@
+{
+ "shot": "ch05-s10",
+ "at": "2026-10-13T01:20:10.118Z",
+ "minCapPx": 22,
+ "sampled": 22,
+ "texts": 36,
+ "offenders": [
+  {
+   "text": "KELLEY 1960 … LE CUN 1985",
+   "maxCap": 12.8,
+   "minCap": 7.2,
+   "first": 8.55,
+   "last": 13.55,
+   "font": "7.26819px \"Special Elite\""
+  },
+  {
+   "text": "DUE 1968",
+   "maxCap": 13.4,
+   "minCap": 10.5,
+   "first": 8.55,
+   "last": 10.55,
+   "font": "7.6px \"Special Elite\""
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 14,
+   "minCap": 7.9,
+   "first": 8.55,
+   "last": 13.55,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 14,
+   "minCap": 7.9,
+   "first": 8.55,
+   "last": 13.55,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 14,
+   "minCap": 7.9,
+   "first": 8.55,
+   "last": 13.55,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 14.2,
+   "minCap": 11.1,
+   "first": 8.55,
+   "last": 10.55,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "SIMON & NEWELL · 1958",
+   "maxCap": 14.2,
+   "minCap": 11.1,
+   "first": 8.55,
+   "last": 10.55,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "ROSENBLATT · 1961",
+   "maxCap": 14.2,
+   "minCap": 11.1,
+   "first": 8.55,
+   "last": 10.55,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "Linguistic capability,",
+   "maxCap": 14.2,
+   "minCap": 11.1,
+   "first": 8.55,
+   "last": 10.55,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "related to perceptual",
+   "maxCap": 14.2,
+   "minCap": 11.1,
+   "first": 8.55,
+   "last": 10.55,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "experience, is of the",
+   "maxCap": 14.2,
+   "minCap": 11.1,
+   "first": 8.55,
+   "last": 10.55,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "essence…",
+   "maxCap": 14.2,
+   "minCap": 11.1,
+   "first": 8.55,
+   "last": 10.55,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "1986",
+   "maxCap": 15.5,
+   "minCap": 11,
+   "first": 11.55,
+   "last": 13.55,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 16.5,
+   "minCap": 9.3,
+   "first": 8.55,
+   "last": 13.55,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 16.5,
+   "minCap": 9.3,
+   "first": 8.55,
+   "last": 13.55,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 16.5,
+   "minCap": 9.3,
+   "first": 8.55,
+   "last": 13.55,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 16.5,
+   "minCap": 9.3,
+   "first": 8.55,
+   "last": 13.55,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 16.7,
+   "minCap": 9.5,
+   "first": 8.55,
+   "last": 13.55,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 16.7,
+   "minCap": 9.5,
+   "first": 8.55,
+   "last": 13.55,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 16.7,
+   "minCap": 13.1,
+   "first": 8.55,
+   "last": 10.55,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "SIMON & NEWELL ·",
+   "maxCap": 16.7,
+   "minCap": 13.1,
+   "first": 8.55,
+   "last": 10.55,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "CHESS CHAMPION BY",
+   "maxCap": 16.7,
+   "minCap": 13.1,
+   "first": 8.55,
+   "last": 10.55,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "1968",
+   "maxCap": 16.7,
+   "minCap": 13.1,
+   "first": 8.55,
+   "last": 10.55,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "RULES",
+   "maxCap": 19.4,
+   "minCap": 11,
+   "first": 8.55,
+   "last": 13.55,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "1943",
+   "maxCap": 19.4,
+   "minCap": 11,
+   "first": 8.55,
+   "last": 13.55,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "1958",
+   "maxCap": 19.4,
+   "minCap": 11,
+   "first": 8.55,
+   "last": 13.55,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "1969",
+   "maxCap": 19.4,
+   "minCap": 11,
+   "first": 8.55,
+   "last": 13.55,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "HELSINKI ·",
+   "maxCap": 19.4,
+   "minCap": 11,
+   "first": 8.55,
+   "last": 13.55,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "1970",
+   "maxCap": 19.4,
+   "minCap": 11,
+   "first": 8.55,
+   "last": 13.55,
+   "font": "11px \"Special Elite\""
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "jerry fodor · zenon pylyshyn",
+   "maxCap": 25.9
+  },
+  {
+   "text": "1988",
+   "maxCap": 26.4
+  },
+  {
+   "text": "THE GIRL LOVES JOHN",
+   "maxCap": 24.4
+  },
+  {
+   "text": "JOHN LOVES THE GIRL",
+   "maxCap": 24.4
+  },
+  {
+   "text": "still argued · a 2023 reply claims to meet it",
+   "maxCap": 25.5
+  },
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 33.5
+  },
+  {
+   "text": "IT?",
+   "maxCap": 33.5
+  }
+ ]
+}

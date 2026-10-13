@@ -1,0 +1,103 @@
+{
+ "shot": "ch08-s04",
+ "at": "2026-10-12T18:26:47.347Z",
+ "minCapPx": 22,
+ "sampled": 32,
+ "texts": 24,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "−1",
+   "maxCap": 24.9
+  },
+  {
+   "text": "0",
+   "maxCap": 24.9
+  },
+  {
+   "text": "+1",
+   "maxCap": 24.9
+  },
+  {
+   "text": "−2",
+   "maxCap": 24.9
+  },
+  {
+   "text": "+2",
+   "maxCap": 24.9
+  },
+  {
+   "text": "ILLUSTRATIVE · a toy stencil, set by hand",
+   "maxCap": 22
+  },
+  {
+   "text": "AlexNet’s first-layer stencils: 11 × 11 × 3, in colour, learned",
+   "maxCap": 22
+  },
+  {
+   "text": "(−1)(1)",
+   "maxCap": 22.1
+  },
+  {
+   "text": "(0)(0.12)",
+   "maxCap": 22.1
+  },
+  {
+   "text": "(1)(0)",
+   "maxCap": 22.1
+  },
+  {
+   "text": "(−2)(1)",
+   "maxCap": 22.1
+  },
+  {
+   "text": "(2)(0)",
+   "maxCap": 22.1
+  },
+  {
+   "text": "= −4",
+   "maxCap": 24.7
+  },
+  {
+   "text": "RELU",
+   "maxCap": 22.1
+  },
+  {
+   "text": "below zero counts as zero",
+   "maxCap": 22
+  },
+  {
+   "text": "(−1)(0.12)",
+   "maxCap": 22.1
+  },
+  {
+   "text": "(0)(0.24)",
+   "maxCap": 22.1
+  },
+  {
+   "text": "(1)(1)",
+   "maxCap": 22.1
+  },
+  {
+   "text": "max(0,",
+   "maxCap": 22.1
+  },
+  {
+   "text": "(−2)(0)",
+   "maxCap": 22.1
+  },
+  {
+   "text": "(2)(1)",
+   "maxCap": 22.1
+  },
+  {
+   "text": "(−1)(0)",
+   "maxCap": 22.1
+  },
+  {
+   "text": ") = 3.88",
+   "maxCap": 24.7
+  }
+ ]
+}

@@ -2,7 +2,7 @@
 # Fan a series plan out into per-book pipeline runs.
 #
 # The series generation step (new-series.md, CI path) writes /tmp/series-plan.json:
-#   { "series": "…", "source": "<repo url>", "model": "claude-fable-5-1",
+#   { "series": "…", "source": "<repo url>", "model": "claude-opus-5-5",
 #     "books": [ { "order": 1, "title": "…", "subtitle": "…", "animal": "…",
 #                  "accent": "#hex", "subsystem": "<what to explain>" }, … ] }
 # For each book: create a new-book issue (form-shaped body). Issues created
@@ -23,7 +23,8 @@ jq -e '.series and (.books | length > 0)' "$PLAN" > /dev/null || {
 
 series=$(jq -r .series "$PLAN")
 source_url=$(jq -r .source "$PLAN")
-model="claude-fable-5-1" # animation role is fixed by repository policy
+# every authoring role is fixed by repository policy (generator/authoring-models.json)
+model=$(jq -r .author "$(dirname "$0")/../../generator/authoring-models.json")
 total=$(jq -r '.books | length' "$PLAN")
 children=""
 

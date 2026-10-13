@@ -1,0 +1,252 @@
+{
+ "shot": "ch15-s09",
+ "at": "2026-10-13T00:16:44.005Z",
+ "minCapPx": 22,
+ "sampled": 31,
+ "texts": 34,
+ "offenders": [
+  {
+   "text": "2022",
+   "maxCap": 10.2,
+   "minCap": 10,
+   "first": 22.25,
+   "last": 24.25,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "JAN 2025",
+   "maxCap": 10.2,
+   "minCap": 10,
+   "first": 22.25,
+   "last": 24.25,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "2025",
+   "maxCap": 10.2,
+   "minCap": 10,
+   "first": 22.25,
+   "last": 24.25,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "KRIZHEVSKY, SUTSKEVER & HINTON · 2012",
+   "maxCap": 11.4,
+   "minCap": 7.6,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "5.3923px \"Special Elite\""
+  },
+  {
+   "text": "DUE 2024",
+   "maxCap": 16.1,
+   "minCap": 10.7,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "7.6px \"Special Elite\""
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 17.1,
+   "minCap": 11.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "ROSENBLATT · 1961",
+   "maxCap": 17.1,
+   "minCap": 11.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "Linguistic capability,",
+   "maxCap": 17.1,
+   "minCap": 11.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "related to perceptual",
+   "maxCap": 17.1,
+   "minCap": 11.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "experience, is of the",
+   "maxCap": 17.1,
+   "minCap": 11.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "essence…",
+   "maxCap": 17.1,
+   "minCap": 11.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "COULOM · MAY 2014",
+   "maxCap": 17.1,
+   "minCap": 11.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "HASSABIS · 2025",
+   "maxCap": 17.1,
+   "minCap": 11.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "The future depends on",
+   "maxCap": 18.2,
+   "minCap": 11.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "some graduate student",
+   "maxCap": 18.2,
+   "minCap": 11.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "who is deeply suspicious",
+   "maxCap": 18.2,
+   "minCap": 11.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "of everything I have",
+   "maxCap": 18.2,
+   "minCap": 11.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "said.",
+   "maxCap": 18.2,
+   "minCap": 11.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 20.1,
+   "minCap": 13.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "…simply by waiting",
+   "maxCap": 20.1,
+   "minCap": 13.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "for faster GPUs and",
+   "maxCap": 20.1,
+   "minCap": 13.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "bigger datasets…",
+   "maxCap": 20.1,
+   "minCap": 13.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "I think maybe ten",
+   "maxCap": 20.1,
+   "minCap": 13.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "years",
+   "maxCap": 20.1,
+   "minCap": 13.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "AGI in 5 to 10 years",
+   "maxCap": 20.1,
+   "minCap": 13.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "· about even odds",
+   "maxCap": 20.1,
+   "minCap": 13.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "9.5px \"Special Elite\""
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "HINTON · SEPT 2017",
+   "maxCap": 22.6
+  },
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 33
+  },
+  {
+   "text": "IT?",
+   "maxCap": 33
+  },
+  {
+   "text": "The future depends on some graduate",
+   "maxCap": 23.4
+  },
+  {
+   "text": "student who is deeply suspicious of",
+   "maxCap": 23.4
+  },
+  {
+   "text": "everything I have said.",
+   "maxCap": 23.4
+  },
+  {
+   "text": "— Geoffrey Hinton, 2017, as quoted by Gary Marcus",
+   "maxCap": 27.1
+  },
+  {
+   "text": "STATUS: OPEN",
+   "maxCap": 23.4
+  }
+ ]
+}

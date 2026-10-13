@@ -1,0 +1,87 @@
+{
+ "shot": "ch04-s01",
+ "at": "2026-10-12T08:31:53.187Z",
+ "minCapPx": 22,
+ "sampled": 30,
+ "texts": 19,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "The Cold Case",
+   "maxCap": 29
+  },
+  {
+   "text": "x₁",
+   "maxCap": 34.5
+  },
+  {
+   "text": "x₂",
+   "maxCap": 34.5
+  },
+  {
+   "text": "lit?",
+   "maxCap": 32.9
+  },
+  {
+   "text": "0",
+   "maxCap": 72.4
+  },
+  {
+   "text": "1",
+   "maxCap": 72.4
+  },
+  {
+   "text": "XOR (exclusive or): lit when exactly one input is on",
+   "maxCap": 24.9
+  },
+  {
+   "text": "9",
+   "maxCap": 26.9
+  },
+  {
+   "text": "6",
+   "maxCap": 26.9
+  },
+  {
+   "text": "(0, 1)",
+   "maxCap": 22.5
+  },
+  {
+   "text": "(0, 0)",
+   "maxCap": 22.5
+  },
+  {
+   "text": "(1, 1)",
+   "maxCap": 22.5
+  },
+  {
+   "text": "(1, 0)",
+   "maxCap": 22.5
+  },
+  {
+   "text": "on the wrong side:",
+   "maxCap": 22.5
+  },
+  {
+   "text": "2",
+   "maxCap": 72.4
+  },
+  {
+   "text": "h₁",
+   "maxCap": 23.5
+  },
+  {
+   "text": "h₂",
+   "maxCap": 23.5
+  },
+  {
+   "text": "×2",
+   "maxCap": 24.9
+  },
+  {
+   "text": "in Japan, Amari had a method",
+   "maxCap": 24.9
+  }
+ ]
+}

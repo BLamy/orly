@@ -1,0 +1,292 @@
+{
+ "shot": "ch10-s13b",
+ "at": "2026-10-12T20:23:24.913Z",
+ "minCapPx": 22,
+ "sampled": 16,
+ "texts": 69,
+ "offenders": [
+  {
+   "text": "KRIZHEVSKY, SUTSKEVER & HINTON · 2012",
+   "maxCap": 20.5,
+   "minCap": 7.4,
+   "first": 0.55,
+   "last": 10.55,
+   "font": "5.3923px \"Special Elite\""
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 72.1
+  },
+  {
+   "text": "IT?",
+   "maxCap": 72.1
+  },
+  {
+   "text": "RULES",
+   "maxCap": 41.8
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 36.1
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 36.1
+  },
+  {
+   "text": "1943",
+   "maxCap": 41.8
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 35.5
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 35.5
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 35.5
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 35.5
+  },
+  {
+   "text": "1958",
+   "maxCap": 41.8
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 30.2
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 30.2
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 30.2
+  },
+  {
+   "text": "1969",
+   "maxCap": 41.8
+  },
+  {
+   "text": "HELSINKI ·",
+   "maxCap": 41.8
+  },
+  {
+   "text": "1970",
+   "maxCap": 41.8
+  },
+  {
+   "text": "1986",
+   "maxCap": 41.8
+  },
+  {
+   "text": "KELLEY 1960 … LE CUN 1985",
+   "maxCap": 27.6
+  },
+  {
+   "text": "1989",
+   "maxCap": 41.8
+  },
+  {
+   "text": "DATA",
+   "maxCap": 41.8
+  },
+  {
+   "text": "FIRE",
+   "maxCap": 41.8
+  },
+  {
+   "text": "2012",
+   "maxCap": 41.8
+  },
+  {
+   "text": "OPENAI · 11 DEC 2015",
+   "maxCap": 31.1
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 30.7
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 36.1
+  },
+  {
+   "text": "ROSENBLATT · 1961",
+   "maxCap": 30.7
+  },
+  {
+   "text": "Linguistic capability,",
+   "maxCap": 30.7
+  },
+  {
+   "text": "related to perceptual",
+   "maxCap": 30.7
+  },
+  {
+   "text": "experience, is of the",
+   "maxCap": 30.7
+  },
+  {
+   "text": "essence…",
+   "maxCap": 30.7
+  },
+  {
+   "text": "…simply by waiting",
+   "maxCap": 36.1
+  },
+  {
+   "text": "for faster GPUs and",
+   "maxCap": 36.1
+  },
+  {
+   "text": "bigger datasets…",
+   "maxCap": 36.1
+  },
+  {
+   "text": "COULOM · MAY 2014",
+   "maxCap": 30.7
+  },
+  {
+   "text": "I think maybe ten",
+   "maxCap": 36.1
+  },
+  {
+   "text": "years",
+   "maxCap": 36.1
+  },
+  {
+   "text": "DUE 2024",
+   "maxCap": 28.9
+  },
+  {
+   "text": "HINTON · SEPT 2017",
+   "maxCap": 30.7
+  },
+  {
+   "text": "…some graduate student",
+   "maxCap": 30.7
+  },
+  {
+   "text": "who is deeply suspicious",
+   "maxCap": 30.7
+  },
+  {
+   "text": "of everything I have",
+   "maxCap": 30.7
+  },
+  {
+   "text": "said.",
+   "maxCap": 30.7
+  },
+  {
+   "text": "THE BRAIN IS A LOGIC MACHINE",
+   "maxCap": 31.9
+  },
+  {
+   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
+   "maxCap": 31.9
+  },
+  {
+   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
+   "maxCap": 31.9
+  },
+  {
+   "text": "INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND",
+   "maxCap": 22.3
+  },
+  {
+   "text": "c. 1980",
+   "maxCap": 34.2
+  },
+  {
+   "text": "1984",
+   "maxCap": 34.2
+  },
+  {
+   "text": "NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY",
+   "maxCap": 26.9
+  },
+  {
+   "text": "MID-1990s",
+   "maxCap": 34.2
+  },
+  {
+   "text": "LANGUAGE MUST BE READ IN ORDER",
+   "maxCap": 26.9
+  },
+  {
+   "text": "TO SEE, A MACHINE NEEDS FEATURES DESIGNED BY",
+   "maxCap": 26.9
+  },
+  {
+   "text": "EXPERTS",
+   "maxCap": 26.9
+  },
+  {
+   "text": "1999",
+   "maxCap": 34.2
+  },
+  {
+   "text": "DEEP NETS MUST BE WARMED UP LAYER BY LAYER",
+   "maxCap": 26.9
+  },
+  {
+   "text": "2006",
+   "maxCap": 34.2
+  },
+  {
+   "text": "LEARNED FEATURES, GIVEN DATA AND ARITHMETIC",
+   "maxCap": 26.9
+  },
+  {
+   "text": "A GO MACHINE IS A DECADE AWAY",
+   "maxCap": 26.9
+  },
+  {
+   "text": "2014",
+   "maxCap": 34.2
+  },
+  {
+   "text": "1997",
+   "maxCap": 57.6
+  },
+  {
+   "text": "2017",
+   "maxCap": 33.5
+  },
+  {
+   "text": "the first attention",
+   "maxCap": 28.4
+  },
+  {
+   "text": "not",
+   "maxCap": 28.4
+  },
+  {
+   "text": "2018",
+   "maxCap": 24.1
+  },
+  {
+   "text": "2019",
+   "maxCap": 24.1
+  },
+  {
+   "text": "only attention",
+   "maxCap": 28.4
+  },
+  {
+   "text": "built to translate",
+   "maxCap": 28.4
+  }
+ ]
+}

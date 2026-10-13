@@ -1,0 +1,112 @@
+// m09 — TWO ACCOMPLICES (candleAmber -> dawnGold): a dinner settled, the warm-up candle, a crowd of
+// workers, fire. Bb major (the warm-up candle: F -> Bb, held over F-C on "Nearly", falls Bb -> A over
+// F -> D), pivoting to D through F -> F# exactly as the GPU pulse ENTERS on 'fire' (845.903), never earlier.
+// CLOCK RE-FIT (2026-10-12, clock 2139.54 s): window 775.468-871.083 (95.615 s; was 84.74). The re-narrated L0701
+// now tells both bets ('Who paid for dinner? Both men...' 3.92-17.79, 10.9 s longer): under it the thaw's open
+// fifth walks slowly I - vi - IV - V (Bb, Gm on 'By 2000', Eb on 'By 2005', F on 'Each man lost one bet'), two
+// tiny high replies in the breaths after 'work' and 'them', the pizzicato wink on 'lost' (16.64) and the card's
+// fall on 'cardDown' (19.00); everything from there on is +10.875 s against the old cue.
+// 72 BPM, one 4/4 bar per cycle. Times are cue-local (absolute - 775.468). Alone from 1.50 (m08's fade ends
+// 776.97) to L0701 (3.92).
+// Last onset 91.815 (867.283, the X-ray shimmer); ends on the A (the dominant of D) DECAYING into m10's
+// opening: the clarinet lift and the shimmer arrive about a second earlier than before and the cello A
+// is let go at 868.083, so 'clue' (869.783) is under -26 LUFS momentary and the hand-off is a decay, not a
+// fade (critic r1: the cue's maximum used to sit at 868.143, right at the cut); fade 869.883-871.083.
+setcpm(72/4)
+const CPS = 72/240, DUR = 95.615
+// Times are quantized to 1/128 bar (integer step weights) so the pattern arithmetic stays exact and fast.
+const Q = 128, qn = s => Math.round(s * CPS * Q)
+const tl = (...evs) => { const out = []; let cur = 0
+  for (const [t, d, p] of evs) { const a = qn(t), b = qn(t + d); if (a < cur) throw new Error('tl overlap at ' + t)
+    if (a > cur) out.push([a - cur, silence]); out.push([b - a, p]); cur = b }
+  const end = qn(DUR); if (end > cur) out.push([end - cur, silence]); if (cur > end) throw new Error('tl past DUR')
+  return stepcat(...out).slow(end / Q) }
+const bars = s => qn(s) / Q
+const P = x => x.s("piano").room(.5).rsize(5)
+
+// ================= PIANO, right hand (high, light): the fog's A finally steps up to Bb (the thaw)
+$: P(tl(
+  [1.55, 0.6, note("a5 bb5@3").velocity(.13)],
+  // L0701's two bets, answered in its breaths: after 'work' (D, the third of Bb) and after 'them' (C, over Eb)
+  [11.12, 1.0, note("d6").velocity(.075)],
+  [15.42, 1.0, note("c6").velocity(.07)],
+  [19.175, 1.5, note("d5 f5 bb5@2").velocity("[.1 .12 .14@2]")],               // gap before 2006: lighter
+  [23.215, 5.0, note("[f5,bb5]").velocity(.12)],                               // the lit flame, doubled high
+  // accomplice one, data (L0704 45.09 -> 'crowd' 57.67): a light running figure, high (>= D5) and dry
+  [45.095, 12.58, note("[~ d6] [bb5 f5] [~ c6] [bb5 ~] [~ d6] [bb5 g5] [~ eb6] [d6 ~] [~ c6] [a5 f5] [~ c6] [bb5 ~] [~ d6] [f6 d6] [c6 a5] [bb5 ~]").fast(bars(12.58) / 4).velocity(perlin.range(.08, .13))],
+  // the speech gap 841.013-844.433 (65.55-68.97): a falling Bb phrase in the open, then hush before the fire
+  [65.775, 2.8, note("f5 d5 bb4 c5@2").velocity("[.16 .14 .13 .12@2]")],
+  // the warm-up candle gutters ('candle' 864.023 = 88.56): Bb falls to A on 'guttered' (88.92), high
+  [88.175, 3.0, note("bb5@1 a5@3").velocity("[.17 .14@3]")]
+))
+// ================= PIANO, left hand (low)
+$: P(tl(
+  [1.75, 5.0, note("[bb1,f2]").velocity(.12)],                                 // the thaw's first open fifth
+  // the two bets settled, slowly and low under L0701: vi on 'By 2000' (6.84), IV on 'By 2005' (11.68),
+  // V on 'Each man lost one bet' (15.95)
+  [6.84, 4.84, note("[g1,d2]").velocity(.1)],
+  [11.68, 4.27, note("[eb2,bb2]").velocity(.1)],
+  [15.95, 2.9, note("[f1,c2]").velocity(.11)],
+  [18.995, 4.1, note("[bb1,f2]").velocity(.15)],                                 // the card's fall ('cardDown' 18.99)
+  [23.215, 5.4, note("[bb1,f2]").velocity(.13)],
+  // "one layer at a time, each rebuilding its own input" ('layers' 28.64): a tower built note by note, low
+  [28.645, 4.2, note("bb1 f2 bb2 d3@2").velocity("[.1 .1 .11 .12@2]")],
+  [45.095, 12.58, note("bb1 ~ f2 ~ g1 ~ d2 ~ eb2 ~ bb1 ~ f1 ~ c2 ~").fast(bars(12.58) / 4).velocity(.1)],
+  [60.425, 1.16, note("[f1,c2,a2,eb3]").velocity(.12)],                          // V7 (in the breath before L0712) ...
+  [61.585, 3.9, note("[bb1,f2]").velocity(.13)],                                 // ... I on 'ImageNet', low only
+  [88.175, 3.0, note("[f2]@1 [d2,a2]@3").velocity(.15)]
+))
+
+// ================= 'lost' (792.108 = 16.64): a two-note pizzicato wink
+$: tl([16.64, 0.5, note("f5 bb4")]).s("gm_pizzicato_strings").velocity(.3).room(.4).rsize(5)
+// the three conditions, one high pluck each ('computers' 33.30, 'data' 34.50, 'weights' 36.06)
+$: tl([33.295, 0.9, note("bb5")], [34.495, 1.3, note("d6")], [36.065, 1.0, note("f6")]).s("gm_pizzicato_strings").velocity(.18).room(.4).rsize(5)
+
+// ================= THE WARM-UP CANDLE on a warm synth pad (the first hint of the GPU colour).
+// 'candle' 798.683 = 23.21: F -> Bb lit; on 'Nearly' (816.963 = 41.50) the harmony slides to F-C under the
+// held Bb (Fsus4, doubt) and is left hanging until the data section begins (45.09).
+const pad = x => x.attack(.9).release(2.2).lpf(950).room(.5).rsize(5)
+$: pad(tl([22.885, 22.2, note("f4@.33 bb4@24")]).s("triangle").gain(.016))
+$: pad(tl([22.885, 22.2, note("f4@.33 bb4@24")]).s("sawtooth").gain(.004))
+$: pad(tl(
+  [23.215, 5.43, note("[bb2,d3,f3]")], [28.645, 4.65, note("[g2,bb2,d3]")], [33.295, 3.72, note("[eb2,bb2,g3]")],
+  [37.015, 4.48, note("[c2,eb3,g3]")], [41.495, 3.6, note("[f2,c3]")]
+).s("triangle").gain(.035))
+$: tl([23.215, 5.43, note("bb1")], [28.645, 4.65, note("g1")], [33.295, 3.72, note("eb1")], [37.015, 4.48, note("c2")], [41.495, 3.6, note("f1")])
+  .s("gm_contrabass").velocity(.16).attack(.6).release(2).lpf(380)
+
+// ================= THE CROWD ('crowd' 833.143 = 57.67): the strings open out; every lighting window a
+// soft celesta pluck, density rising ('windows' 59.15); a small settling cadence on 'ImageNet' (61.59).
+// Critic r1: L0712 ('It became ImageNet...' 836.503-841.013) was the worst line in 250-2k under the full
+// string chord, so under the line the cadence keeps only its bass (bb1-f2); the V7 is short and sits in
+// the breath between the lines; the celesta run finishes before 836.383; and the cadence's UPPER voices
+// (F5-Bb5-D6) arrive in the gap after the line (841.033 = 65.56) above the falling Bb phrase.
+$: tl([57.675, 2.75, note("[bb1,f2,bb2,d3]").velocity(.09)], [60.425, 1.16, note("[f1,c2,a2,eb3,f5,a5]").velocity(.09)],
+      [61.585, 3.95, note("[bb1,f2]").velocity(.105)], [65.565, 2.1, note("[bb1,f2,f5,bb5,d6]").velocity(.1)])
+  .s("gm_string_ensemble_1").attack(.7).release(1.3).lpf(1800).room(.5).rsize(5)
+$: tl([59.145, 1.75, note("bb4 ~ ~ ~ f5 ~ ~ d5 ~ c5 ~ bb4 f5 ~ d5 g5 bb5 f5 c6 d5 bb4 f5 d6 bb5")]).s("gm_celesta").velocity(perlin.range(.05, .11)).release(.8).lpf(3500).room(.6).rsize(5)   // r1: softer, it sits under the end of L0705
+
+// ================= FIRE: the GPU pulse (M5c) ENTERS on 'fire' (845.903 = 70.44). D major via F -> F#.
+// Low and warm, under D3 and behind lpf while he speaks; a fan-whir in the rhythm; a lift on 'record'
+// (857.553 = 82.08); it stops when the shot cuts to the guttering candle (862.833 = 87.36).
+$: tl([70.435, 16.93, note("[d2 d3 a2 d3]*2").fast(bars(16.93))]).s("sawtooth").lpf(sine.range(650, 950).slow(4)).decay(.18).sustain(0).gain(.06).room(.3).rsize(5)
+$: tl([70.435, 16.93, s("[~ white]*8").fast(bars(16.93))]).decay(.035).sustain(0).hpf(7000).gain(.03)
+$: tl([70.435, 16.93, s("pink")]).hpf(6500).lpf(11000).gain(.008).attack(2).release(1)           // fan whine
+$: pad(tl([70.435, 4.2, note("[d3,f#3,a3]")], [74.635, 4.2, note("[b2,d3,f#3]")], [78.835, 3.25, note("[g2,b2,d3]")],
+          [82.085, 2.74, note("[a2,c#3,e3]")], [84.825, 2.54, note("[d3,f#3,a3]")]).s("triangle").gain(.035))
+$: tl([70.435, 4.2, note("d2")], [74.635, 4.2, note("b1")], [78.835, 3.25, note("g1")], [82.085, 2.74, note("a1")], [84.825, 2.54, note("d2")])
+  .s("gm_contrabass").velocity(.15).attack(.4).release(1.5).lpf(380)
+// the lift on 'record': a high string swell above the voice
+$: tl([82.085, 3.4, note("[a5,c#6,e6]")]).s("gm_string_ensemble_1").velocity(.1).attack(1.2).release(1.8).room(.5).rsize(5)
+
+// ================= in the gap after L0710 (ends 866.483 = 91.02): the woodwind lift F#4 -> A4 (the
+// "pre-training" figure m14 will rhyme with), its A arriving just before 'coat' (867.683); the X-ray's soft
+// shimmer rises a beat earlier (867.283 = 91.81), the cue's last onset. Critic r1: both about a second
+// earlier than before, with shorter releases, so the lift has bloomed and gone before the cut.
+$: tl([91.065, 2.0, note("f#4 a4@3")]).s("gm_clarinet").velocity(.2).attack(.08).release(.8).lpf(1800).room(.5).rsize(5)
+$: tl([91.815, 1.0, note("a5 d6 f#6 a6 d6 a5")]).s("gm_fx_crystal").velocity(.08).release(.6).room(.6).rsize(5)
+// the A, the dominant of D, under the lift: let go at 868.083 so it decays into m10's opening (Florence)
+$: tl([89.875, 2.74, note("[a2,a3]")]).s("gm_cello").velocity(.13).attack(.8).release(1.5).lpf(800).room(.5).rsize(5)
+$: tl([91.075, 1.5, note("a4")]).s("gm_pad_bowed").velocity(.07).attack(.8).release(1.5).room(.6).rsize(5)
+
+all(x => x.postgain(3.8))

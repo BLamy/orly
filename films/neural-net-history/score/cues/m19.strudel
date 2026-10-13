@@ -1,0 +1,215 @@
+// m19 — "Case Status: Open", part 1 (neural-net-history, ch15-s01/s03/s04/s05). Window 1895.35–2011.15 (115.80 s),
+// fadeIn 1.5 (to 1896.85), fadeOut 1.3 (2009.85–2011.15). Rubato at 60 BPM: setcps(1), one cycle = one second.
+// Every event is written at its ABSOLUTE film second through A(t) = t − 1895.35 (the clock: narration/timeline.json).
+// Wonder, not triumph; intensity about 0.2-0.3; level and fair for the labs.
+// CLOCK RE-FIT (2026-10-12, clock 2139.54 s): the re-narrated L1501 lands 'phone rings' ~0.45 s later and every word
+// after it +0.5 s, so from the phone on each event moves +0.5 s against the cue's start (the window grows 115.30 -> 115.80 s;
+// the fade 2009.85-2011.15 still sits in the gap after L1525, 2006.51-2013.92).
+//
+//  1896.95  in the clear (m18's fade is done, L1501 at 1899.28): a low string D and two celesta glints, F#-A: the key is D
+//  1904.45/1904.70, 1905.30/1905.50  the phone: two short low pulses on 'phone' (b1), two more in the breath after 'rings' (b2)
+//  1908.08 "Hopfield": bowed-glass Hall of Mirrors; 1908.64 the breath after "John Hopfield": M1's rising fourth (celesta
+//          A->D, whole in the breath) + high strings D-F# (lit)
+//  1916.36 the breath after "cools" (the turn): the same rising fourth at the SAME level, glass for the turn
+//  1919.92 "One critic called it a bit of a stretch": the floor moves to A-E under the held D5 (doubted, not moved)
+//  1929.76 the breath after "John Jumper": the rising fourth a third time, the same level; glass carries the hold (1932.85-1934.95)
+//  v10 (critic round 1): no fourth is struck on a word any more: each statement closes a laureate attribution in the
+//          breath after it (Hopfield / Hinton's 'cools' / Hassabis and Jumper), identical; the wick's fourth is in the clear
+//  1935.07 the microscope: the GPU pulse thinned to three celesta ticks, gone before 'Researchers' (1935.64); a hanging
+//          E6 struck in the breaths (1938.76, 1941.54)
+//  1944.65 just after "rabbit": a two-note chime D6-A5;  1946.75-1949.15 "Nobody told it to plan": soft A-D + high E5, unresolved
+//  1950.03/1950.19 the trimmed wick: the rising fourth once, softly, before "The candle of now"
+//  1955.34-1962.84 the doubling: an even low pizz tick-tock every .75 s; celesta climbs D6 E6 F#6 A6 B6 and stops
+//          short of D; the clock stops mid-pattern before "Yet" (1963.95)
+//  1964.65 the stopwatches: the clock resumes over Bm; the ghost hand (1967.08) gets a late, small tick;
+//          it resumes a shade slower over G and stops cleanly on "date" (1971.05) on a soft D
+//  1971.55 THE LABS UNDER THE SAME LIGHT: the founding figure (D A B F#, harp, centred, D5 and up), identical
+//          every time, once per lamp stop: 1972.4 the shelf (D) · 1975.05 Anthropic (Bm) · 1992.97 its tag
+//          flips in the silence (G) · 1997.04 OpenAI (Em/D) · 2006.51 its warning-shot card, the phrase alone.
+//          Two stops per lab, the same phrase, the same level, the same register. Last onset 2007.41;
+//          the F# rings through the fade (2009.85-2011.15) as m20 enters.
+//  v9 (2026-10-12, voice-band pass; per-layer stems rendered to find the culprits): the celesta's struck D (587 Hz) rang
+//          5.5 s into the vowel band under L1502/L1528/L1529 (0-4 dB clear in 450-700 Hz): every M1 D is now struck and
+//          let go (1.4 s + 2 s release), the three statements still identical; the microscope's hanging E6 (celesta + glass)
+//          sat at the voice's own level in L1504's 1-4 kHz band: -6 dB, a thread; the doubling's climb -2.8 dB; the lab
+//          figure under a line -2.2 dB at all three under-voice lamps (shelf, Anthropic, OpenAI), the two clear-air stops
+//          (one per lab) unchanged. Every line now 7-16 dB clear in both voice bands (was 1.8-17).
+setcps(1)
+const S = 1895.35
+const A = (t) => +(t - S).toFixed(3)
+const N = 116       // seconds covered by each compiled sequence (the window is 115.80 s)
+const G = 2.5       // master trim (postgain): v2 -23.4 LUFS at 2.3; v3 -21.4 at 2.8 but only 3-6 dB under the voice,
+                    // so v4 lowers everything under a line by about 3 dB (VU: under-voice velocity); v5 -26.1 at 2.5 with every
+                    // line >= 10.7 dB under the voice; v6 at 2.7 -24.6 but the critic line only 8.7 dB under (renders vary about
+                    // ±1 dB: Strudel's room IR is noise), so v7 keeps 2.5 and trims the layers that ring into the lines
+const VU = .72      // under-voice scale: every layer that sounds under a line
+const PH0 = .26 * VU * .82  // the founding figure's v8 velocity (v5: L1522 measured 9.0 dB under)
+const PH = PH0 * .78 * .75  // v9: the figure under a line, identical at every lamp under the voice (the shelf, Anthropic,
+                            // OpenAI): -2.2 dB (v8's L1522 kept only 5-6 dB clear in the 250-2k and 1-4k voice bands);
+                            // v13: a further -2.5 dB and the F# damped under a line ('labs', 'under', 'refused', 'drop'
+                            // were 1-3 dB clear in the vowel band), still identical at all three under-voice lamps
+const CL = 1.4      // v8 (relative to PH0, unchanged in v9): the two music-only lamp stops (Anthropic's tag 1992.97, OpenAI's card 2006.51) bloom by the
+                    // SAME +3 dB, one per lab: the clear-air statements were as quiet as the under-voice ones (-25.5 LUFS)
+
+// ---- shared helper: events in cue-local SECONDS (setcps(1): one cycle = one second = one beat at 60 BPM) ----
+// [start, dur, notes, velocity, {per-event params}] compiled into one mini-notation sequence per lane
+// (overlapping events go to new lanes), so every onset sits exactly where the clock needs it.
+function line(evs, defs) {
+  defs = defs || {}
+  const sorted = [...evs].sort((a, b) => a[0] - b[0])
+  const lanes = []
+  for (const e of sorted) {
+    let lane = lanes.find((l) => l.end <= e[0] + 1e-6)
+    if (!lane) { lane = { end: 0, evs: [] }; lanes.push(lane) }
+    lane.evs.push(e)
+    lane.end = e[0] + e[1]
+  }
+  const keys = Object.keys(defs)
+  const seq = (lane, val) => {
+    let pos = 0
+    const out = []
+    for (const e of lane.evs) {
+      if (e[0] - pos > 1e-6) out.push('~@' + (e[0] - pos).toFixed(4))
+      out.push(val(e) + '@' + e[1].toFixed(4))
+      pos = e[0] + e[1]
+    }
+    if (N - pos > 1e-6) out.push('~@' + (N - pos).toFixed(4))
+    return mini('[' + out.join(' ') + ']')
+  }
+  return stack(...lanes.map((lane) => {
+    let p = note(seq(lane, (e) => e[2])).velocity(seq(lane, (e) => e[3]))
+    for (const k of keys) p = p[k](seq(lane, (e) => (e[4] && e[4][k] != null ? e[4][k] : defs[k])))
+    return p.slow(N).postgain(G)
+  }))
+}
+
+// HARMONY (the floor, below D3): a low string D moved only by the story. D for the call and the prizes;
+// A-E under the critic (the held D5 above becomes a sus4: doubted, not moved); D for chemistry; nothing but
+// celesta over the microscope; a soft A-D for "Nobody told it to plan"; D for the candle of now; Bm then G
+// for the trial that felt faster and was slower; a soft D on "date". Then the lamps: D, Bm, G, Em/D.
+const H = [
+  [A(1895.55), A(1905.65) - A(1895.55), 'd2', '[d2,a2]', { attack: 2.5 }],
+  [A(1905.65), 10.3, 'd2', '[d2,a2]'],                               // "Nobel"
+  [A(1916.36), 3.49, 'd2', '[d2,a2]', { attack: .6 }],              // the breath after "cools" (v10)
+  [A(1919.85), 4.2, 'a1', '[a1,e2]', { attack: 2 }],                 // "One critic called it a bit of a stretch"
+  [A(1924.05), 9.0, 'd2', '[d2,a2]'],                                // "chemistry's"
+  [A(1933.05), 2.6, 'd2', '[d2,a2]', { release: 2.5 }],              // the hold, settling
+  [A(1946.65), 2.6, 'a1', '[a2,d3]', { attack: 1.2, release: 3 }],   // "Nobody told it to plan"
+  [A(1949.95), 14.0, 'd2', '[d2,a2]', { attack: 1.5 }],              // the candle of now, the doubling
+  [A(1964.55), 4.4, 'b1', '[b1,f#2]', { attack: 1.2 }],              // "Yet in one trial"
+  [A(1968.95), 2.1, 'g1', '[g1,d2]', { attack: 1 }],                 // "Its authors now call that result…"
+  [A(1971.05), 1.0, 'd2', '[d2,a2]', { attack: .4, release: 1.4 }],  // "date": the clock's soft D
+  // THE LABS: one harmony per lamp stop, never louder, never darker
+  [A(1972.4), 2.6, 'd2', '[d2,a2]', { attack: 1 }],                // the shelf
+  [A(1975.05), 6.3, 'b1', '[b1,f#2]', { attack: 1 }],                // Anthropic (the limits)
+  [A(1981.35), 11.5, 'b1', '[b1,f#2]', { attack: 1.6 }],             // re-bowed for the Pentagon and the courts (v8: the
+                                                                     // 17.6-s Bm had decayed to 16 dB under L1522b/c)
+  [A(1992.97), 3.9, 'g1', '[g1,d2]', { attack: .8 }, CL],           // its tag flips: the settlement, in the clear
+  [A(1997.04), 9.0, 'd2', '[d2,g2,b2]', { attack: .8, release: 1.6 }],  // OpenAI (Em/D), gone before its card
+  [A(2006.51), 2.7, 'd2', '[d2,a2,f#3]', { attack: .7, release: 3 }, CL], // the warning-shot card, in the clear: the
+                                                                     // cue's last chord, D, level (v8), rings through the fade
+]
+$: line(H.map(([t, d, r, c, p, k], i) => [t, d, r, (i ? .15 * VU : .17) * (k || 1), p]), { attack: 1.5, release: 3 })
+  .s('gm_contrabass').hpf(50).lpf(380).room(.3).rsize(3).orbit(1)
+$: line(H.map(([t, d, r, c, p, k], i) => [t, d, c, (i ? .085 * VU : .085) * (k || 1), p]), { attack: 1.5, release: 3 })
+  .s('gm_string_ensemble_1').hpf(40).lpf(650).room(.5).rsize(4).orbit(2)
+
+// THE FLAME (high strings, above the voice): D major lit on "Nobel"; lit again, the same level, on "cools",
+// its D then held over the critic's A-E; lit a third time, the same level, on "chemistry's".
+// "Nobody told it to plan": the high suspended E over the soft A-D (m10's two towers, remembered).
+$: line([
+  // v10: each flame is lit in the breath after its laureate's words, with the fourth, never on a word
+  [A(1908.64), 6.9, '[d5,f#5]', .042 * VU],                          // after "John Hopfield"
+  [A(1916.36), 3.45, '[d5,f#5]', .042 * VU],                         // after "cools"
+  [A(1919.85), 9.85, 'd5', .05 * VU, { attack: 1.4 }],               // the critic and the next day: one thin D held
+  [A(1929.76), 3.1, '[d5,f#5]', .042 * VU],                          // after "John Jumper"
+  [A(1946.65), 1.6, 'e5', .085 * VU, { attack: 1.2, release: 1.5 }],
+  [A(1948.25), 1.4, '[e5,a5]', .12, { attack: .6, release: 1.2 }],   // v12: gone by 'The candle' (1950.63)   // v8: after "plan" the unresolved chord swells in
+                                                                     // the clear (1948.22-1950.63), then gives way to the wick
+  // v8: EVERY LAB UNDER THE SAME LIGHT: one thin held D5 (the candle's own note) above the voice under each lab's
+  // lines, identical in pitch, level and length per line: Anthropic (1975.05-1980.95, 1981.35-1991.75) and OpenAI
+  // (1997.04-2006.45); the floor alone had left the Pentagon/courts lines 17 dB under, the others 12
+  [A(1975.05), 5.9, 'd5', .05 * VU, { attack: 1.4, release: 1.4 }],
+  [A(1981.35), 10.4, 'd5', .05 * VU, { attack: 1.4, release: 1.6 }],
+  [A(1997.04), 9.4, 'd5', .05 * VU, { attack: 1.4, release: 1.6 }],
+], { attack: 1.2, release: 2.8 })
+  .s('gm_string_ensemble_1').lpf(2600).room(.6).rsize(5).orbit(3)
+
+// SOLO CELESTA (sounds an octave above the written note). Opening glints in the clear; M1's rising fourth
+// A -> D three times at the SAME level (Nobel / cools / chemistry); the GPU pulse thinned to ticks that drop
+// away; the question's E6 hanging over the microscope; the rabbit chime D6-A5; the rising fourth once more on
+// the trimmed wick; the doubling climbs D6 E6 F#6 A6 B6 and stops short of D.
+// v9: the D no longer rings for 5.5 s at 587 Hz under the line (layer stems: the celesta was the loudest thing in the
+// 450-700 Hz vowel band under L1502/L1528/L1529, 0-4 dB clear of the voice); it is struck and let go, the strings hold it
+// v10 (critic round 1): the statements were struck ON 'Nobel' and 'cools' (-9.8 dB on 'cools'); each fourth now sits
+// whole inside the breath right after its laureate's words (A at t, D 0.2 s later, gone in about a second):
+// after "John Hopfield" (1908.62-1908.98), after "cools" (1916.34-1916.89, the turn), after "John Jumper"
+// (1929.74-1930.18). Three laureate attributions, three identical fourths: the same spacing, level and register.
+// v11: the breaths are 0.36-0.55 s, so the fourth is tight (A, D 0.16 s later) and the D is damped (0.22 s + 0.5 s
+// release): v10's 1.25-s D still rang into "for memories" and "for a network" (2-5 dB clear in the vowel band)
+// v12: all three -2.5 dB together (still identical) and the D damped harder: v11 kept the first word after each
+// breath ('for', 'Not', 'for') only 1-2 dB clear in the vowel band
+// v13: the A pickup had kept the lane's 1.4-s release and was what still rang into 'for' (A4, 440 Hz): damped as well
+const M1 = (t, v) => [[A(t), .16, 'a3', v * .75, { release: .3 }], [A(t) + .16, .2, 'd4', (v + .02) * .75, { release: .35 }]]
+$: line([
+  [A(1896.95), .4, 'f#4', .17], [A(1897.4), 1.8, 'a4', .15, { release: 2.5 }],
+  ...M1(1908.64, .21 * VU), ...M1(1916.36, .21 * VU), ...M1(1929.76, .21 * VU),   // v10: in the breaths, still identical
+  // v13: the GPU ticks fall away BEFORE 'Researchers' (1935.64), three of them, damped
+  [A(1935.07), .2, 'd4', .2 * VU, { release: .5 }], [A(1935.27), .2, 'd5', .14 * VU, { release: .4 }], [A(1935.47), .15, 'a4', .08 * VU, { release: .3 }],
+  // v13: the hanging E struck in the breaths (after 'studies' 1938.74, after 'model' 1941.50), not on 'in one of' / 'copy'
+  [A(1938.76), .8, 'e5', .07 * VU, { release: 1.0 }], [A(1941.54), 1.0, 'e5', .06 * VU, { release: 1.4 }],   // v9: -5.6 dB: the
+  // hanging E6 sat in L1504's 1-4 kHz band at the voice's own level (1.8 dB clear); a thread, not a tone
+  [A(1944.65), .15, 'd5', .13 * VU, { release: .35 }], [A(1944.8), .25, 'a4', .09 * VU, { release: .4 }],   // v13: 'rabbit' chime in
+  // the breath after the word (1944.64-1944.93), as the lantern glows; was struck on it
+  [A(1950.03), .16, 'a3', .19 * VU * .75, { release: .3 }], [A(1950.19), .2, 'd4', .2 * VU * .75, { release: .35 }],   // the trimmed wick (v10: the M1 shape,
+  // whole in the clear before "The candle of now" at 1950.63, no longer struck on 'candle')
+  // v14: the climb -2.5 dB more and damped (it sounds D6-B6, the 1-4 kHz band, under 'every seven', 'own', 'grow')
+  [A(1955.34), .4, 'd5', .06 * VU, { release: .8 }], [A(1956.84), .4, 'e5', .06 * VU, { release: .8 }], [A(1958.34), .4, 'f#5', .06 * VU, { release: .8 }], [A(1959.84), .4, 'a5', .06 * VU, { release: .8 }], [A(1961.34), .6, 'b5', .06 * VU, { release: 1 }],
+], { release: 1.4 })
+  .s('gm_celesta').room(.7).rsize(5).orbit(4)
+
+// BOWED GLASS: the Hall of Mirrors turning (m06's Versailles colour), the hold while the figures turn,
+// the question's E6 held over the microscope, and the hold after "proteins".
+$: line([
+  [A(1908.08), 4.0, '[a5,d6]', .045 * VU],
+  [A(1916.36), .4, '[f#5,a5,d6]', .045, { attack: .25, release: .7 }],   // the turn (1916.34-1916.89), v10: in the breath only
+  [A(1932.85), 2.4, '[f#5,a5,d6]', .095],
+  [A(1938.76), 3.0, 'e6', .016 * VU, { attack: 1.8, release: 2 }],   // v9: -6 dB, v13 a further -4 dB: a halo on the E, no more
+], { attack: 1.5, release: 3 })
+  .s('gm_pad_bowed').lpf(5000).room(.7).rsize(5).orbit(5)
+
+// THE PHONE: two short low pulses, twice (in the gap after "twenty-four", then on "phone rings"),
+// a buzz absorbed into the floor, not a ringtone.
+// v10: on the picture's two buzzes: b1 'phone' (1904.45) and b2, the second buzz in the breath after "rings" (1905.45)
+$: line([[A(1904.45), .18, 'd2', .5], [A(1904.7), .18, 'd2', .5], [A(1905.3), .16, 'd2', .5], [A(1905.5), .16, 'd2', .5]])
+  .s('sawtooth').lpf(320).attack(.02).decay(.16).sustain(0).release(.05).gain(.22).orbit(6)
+
+// THE CLOCK (low pizz, below D3): an even tick-tock for the doubling ruler (11 plucks, .75 s apart, ending on a
+// tick without its tock: stopped mid-pattern at the top); it resumes for the stopwatches, hesitates when the
+// ghost hand appears (1967.08), resumes a shade slower, and stops cleanly on a soft D on "date" (1971.05).
+const clock = []
+for (let k = 0; k < 11; k++) clock.push([A(1955.34) + .75 * k, .3, k % 2 ? 'a2' : 'd2', .22 * VU])
+;[1964.65, 1965.15, 1965.65, 1966.15, 1966.65].forEach((t, i) => clock.push([A(t), .25, i % 2 ? 'a2' : 'd2', .2 * VU]))
+clock.push([A(1967.37), .25, 'a2', .13 * VU])                       // the late, small tick: a hesitation
+;[1968.1, 1968.65, 1969.2, 1969.75, 1970.3].forEach((t, i) => clock.push([A(t), .25, i % 2 ? 'a2' : 'd2', .19 * VU]))
+clock.push([A(1971.05), .5, 'd2', .2 * VU])
+$: line(clock, { release: .5 })
+  .s('gm_pizzicato_strings').lpf(1000).room(.35).rsize(2.5).orbit(7)
+
+// THE FOUNDING FIGURE (harp, centred, D5 and up): D A B F#, even 0.3-s notes, the F# left ringing.
+// Identical at every lamp stop: velocity, register and length never change for either lab.
+const fig = (t, v, fr) => [[A(t), .3, 'd5', v], [A(t) + .3, .3, 'a5', v], [A(t) + .6, .3, 'b5', v], [A(t) + .9, fr ? .6 : 1.4, 'f#5', v, { release: fr || 2.2 }]]
+$: line([
+  ...fig(1971.55, PH, 1.2),   // the shelf of identical lamps (v13: a sound bridge from the clock's last D: it starts in the
+                              // clear after 'date' (1971.49) and its F# lands on the shelf's light (b1 1972.4), not on 'The labs')
+  ...fig(1975.05, PH, 1.2),   // the Anthropic lamp
+  ...fig(1992.97, PH0 * CL),   // its tag flips (the settlement card, read in silence): in the clear, +3 dB
+  ...fig(1997.04, PH, 1.2),   // the OpenAI lamp
+  ...fig(2006.51, PH0 * CL),   // its warning-shot card, in the music-only hold, +3 dB (last onset 2007.41)
+], { release: 1.5 })
+  .s('gm_orchestral_harp').pan(.5).room(.55).rsize(4).orbit(8)
+// v8: in the two clear-air stops only (one per lab, identical), the phrase is doubled an octave below
+// (D4 A4 B4 F#4): the same figure, warmer, never a different phrase for either lab.
+const fig8 = (t, v) => fig(t, v).map(([s, d, n, vv, p]) => [s, d, n.replace('5', '4'), vv, p])
+$: line([...fig8(1992.97, PH0 * .85), ...fig8(2006.51, PH0 * .85)], { release: 1.5 })
+  .s('gm_orchestral_harp').pan(.5).room(.55).rsize(4).orbit(8)

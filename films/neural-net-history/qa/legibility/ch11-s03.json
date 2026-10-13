@@ -1,0 +1,151 @@
+{
+ "shot": "ch11-s03",
+ "at": "2026-10-13T01:10:19.800Z",
+ "minCapPx": 22,
+ "sampled": 21,
+ "texts": 36,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "The",
+   "maxCap": 32.2
+  },
+  {
+   "text": "animal",
+   "maxCap": 32.2
+  },
+  {
+   "text": "didn",
+   "maxCap": 32.2
+  },
+  {
+   "text": "'t",
+   "maxCap": 32.2
+  },
+  {
+   "text": "cross",
+   "maxCap": 32.2
+  },
+  {
+   "text": "the",
+   "maxCap": 32.2
+  },
+  {
+   "text": "street",
+   "maxCap": 32.2
+  },
+  {
+   "text": "because",
+   "maxCap": 32.2
+  },
+  {
+   "text": "it",
+   "maxCap": 32.2
+  },
+  {
+   "text": "was",
+   "maxCap": 32.2
+  },
+  {
+   "text": "too",
+   "maxCap": 31.9
+  },
+  {
+   "text": "tired",
+   "maxCap": 31.4
+  },
+  {
+   "text": "wide",
+   "maxCap": 23.4
+  },
+  {
+   "text": "busy",
+   "maxCap": 23.4
+  },
+  {
+   "text": "scared",
+   "maxCap": 23.4
+  },
+  {
+   "text": "slow",
+   "maxCap": 23.4
+  },
+  {
+   "text": "dark",
+   "maxCap": 23.4
+  },
+  {
+   "text": "for example: illustrative scores, not from a real model",
+   "maxCap": 24.5
+  },
+  {
+   "text": "56%",
+   "maxCap": 23.2
+  },
+  {
+   "text": "17%",
+   "maxCap": 23.2
+  },
+  {
+   "text": "12%",
+   "maxCap": 23.2
+  },
+  {
+   "text": "8%",
+   "maxCap": 23.2
+  },
+  {
+   "text": "4%",
+   "maxCap": 23.2
+  },
+  {
+   "text": "3%",
+   "maxCap": 23.2
+  },
+  {
+   "text": "after",
+   "maxCap": 23
+  },
+  {
+   "text": "to",
+   "maxCap": 23
+  },
+  {
+   "text": "and",
+   "maxCap": 23
+  },
+  {
+   "text": "from",
+   "maxCap": 23
+  },
+  {
+   "text": "today",
+   "maxCap": 23
+  },
+  {
+   "text": "again",
+   "maxCap": 23
+  },
+  {
+   "text": "61%",
+   "maxCap": 23.2
+  },
+  {
+   "text": "15%",
+   "maxCap": 23.2
+  },
+  {
+   "text": "10%",
+   "maxCap": 23.2
+  },
+  {
+   "text": "7%",
+   "maxCap": 23.2
+  },
+  {
+   "text": "2%",
+   "maxCap": 23.2
+  }
+ ]
+}

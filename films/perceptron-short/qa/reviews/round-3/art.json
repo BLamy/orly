@@ -1,0 +1,63 @@
+{
+  "reviewer": "art",
+  "lens": "visuals & motion",
+  "round": 3,
+  "method": "Read the three qa/sheets and pulled 88 more frames from render/film.mp4 at word timings in narration/timeline.json (full-res crops at 21.4, 38.0, 55.5 and 63.9 s).",
+  "scores": {"accuracy": 8, "depth": 7, "clarity": 8, "story": 8, "visual": 7.5, "sync": 8.5, "sound": 7.5, "curiosity": 7.5},
+  "roundTwoFollowUp": {
+    "fixed": [
+      "ch01-s03 tail retina glitch: the try-5 bar stays frozen and clean from 47.3 s until the iris (checked at 49.3, 50.0, 51.2, 53.0, 55.5 and 57.3 s). No cells morph after try 5.",
+      "ch01-s03 limit beat: on 'only' (49.27 s) the caption clears, the needle returns to centre and the lantern dims. On 'simple' (49.92 s) two separate plates (VERTICAL | HORIZONTAL, with a divider) and 'what it could learn: simple patterns' fade in. The 1969 stamp types on '1969' (51.97 s), the stage dims a notch on 'years', the iris closes on 'faded', and the eye's grid appears on 'descendants'.",
+      "ch01-s03 captions: 'try 3 · WRONG' is fully up at 41.7 s ('wrong again' 41.52), and 'try 4 · RIGHT' is up with the lantern flare at 45.34 s ('right').",
+      "ch01-s03 then/now: a NOW / THEN label pair now carries the try-1 comparison and reads at 1080p",
+      "ch01-s03 teaching: the 'threshold' engraving appears on 'total' (32.55 s). The 'correct answer: …' tag sits under the retina, and WEIGHTS · DIALS lands on 'dials' (30.88 s).",
+      "ch01-s01 to s02 now plays as one continuous push. The eye holds only a glint on 'see' and lights its bar from 'eye'.",
+      "Bookend: slow dolly back from 61 to 63 s, the title returns, the desk is a near-black foreground plane, and Rosenblatt now faces the eye.",
+      "Lab set: rack faces now vary (patch-panel rack, PERCEPTRON rack, louvred rack, meter rack), and out-of-focus foreground cable garlands give real parallax depth in s02."
+    ],
+    "partlyFixed": [
+      "ch01-s02 Rosenblatt: he now faces the machine and presents the rack on 'Frank' (20.83 s) while the name card resolves beside him. But he still walks in from the right frame edge: absent at 17.0 s, cut by the frame edge at 18.0 s, mid-stride at 19.6 and 20.5 s. He also keeps the full thin outline, a ramrod-straight presenting arm, and a chin tilted up toward the ceiling.",
+      "Global set craft: there are fewer identical racks, but every rack and figure still carries the same thin light outline on all edges, not only on the edges facing the window."
+    ],
+    "notFixed": [
+      "Ghost needle at VERTICAL during try 5: not seen in the 46.6 to 48.4 s frames (minor; the NOW/THEN text carries the comparison)."
+    ]
+  },
+  "issues": [
+    {"owner": "shot", "id": "ch01-s03", "severity": "major",
+     "problem": "Text collision during the key teaching beat. In the push-in on 'nudge … had a say' (about 36.9 to 39.2 s), the try-counter boxes (X and four empties) slide up over the 'correct answer: horizontal' tag under the retina. At 38.0 s the tag reads 'correct[X]n[ ]e[ ]hori[ ]ontal', and the tag's left edge is also cropped by the frame. The two elements are clearly on different layers or scale anchors, so they drift through each other as the camera moves. The tag and counter separate again by 39.6 s.",
+     "fix": "Parent the counter and the answer tag to the same retina group, so they scale and translate together under the camera. Keep the counter at least 12 px below the tag's descender line at every camera scale. Alternatively, fade the counter out for the duration of the nudge push (36.0 to 39.4 s) and bring it back with the try-2 shape. Also clamp the push so the tag stays at least 24 px inside the left frame edge. Re-sheet with a sample at 38.0 s."},
+    {"owner": "shot", "id": "ch01-s02", "severity": "major",
+     "problem": "Carried over from round 2 and only partly fixed. Rosenblatt still walks in from the right frame edge under 'Perceptron, the project of psychologist' (17.5 to 20.5 s): he is cut by the edge at 18.0 s and in a walking stride at 19.6 and 20.5 s. His chin is tilted up so his gaze goes over the meters to the ceiling, the presenting arm is a rigid straight line, and a light outline runs around his whole body. Next to the reference (poised, costumed period figures, rim-lit on one side) he still reads as a mannequin.",
+     "fix": "Have him already standing in frame when the camera's truck reaches him (place him in the scene from s02 start, revealed by the camera, not walking). Or have him step out from behind the meter rack on 'Mark' (16.62 s) and be planted by 'Perceptron' (17.53 s). Level the head so the eyeline meets the meter panel. Bend the presenting elbow about 15 degrees with an open, relaxed hand. Keep the lit rim on the window-facing side only. Add a tie and cuff notch."},
+    {"owner": "shot", "id": "ch01-s03", "severity": "minor",
+     "problem": "In the bookend (60.0 to 64.4 s), Rosenblatt's head overlaps the rear of the eye's camera housing (crop at 63.9 s). His face disappears into the box, so the two silhouettes merge into one blob. In a silhouette medium, a tangent or overlap at the head is the first thing to read wrong.",
+     "fix": "Move him about 60 to 80 px right (or the stand left), so a clear sliver of window light separates his profile from the housing. Keep his eyeline on the lit bar, about 10 degrees down."},
+    {"owner": "shot", "id": "ch01-s03", "severity": "minor",
+     "problem": "The tail is rushed. 'mistakes' ends at about 64.3 s, the picture is already dimming at 64.4 s and is near-black by 65.0 s, so the bookend's final composition (title, figure and lit eye) gets almost no clear air. The small gesture on 'mistakes' is buried in the fade.",
+     "fix": "Within the 66 s ceiling, start the fade about 0.6 s after 'mistakes' ends and complete it on the last frame (a 0.9 s fade). Or take 0.5 s from the 58.7 to 60.0 s near-black iris stretch, where the frame is almost empty, and give it to the end hold."},
+    {"owner": "shot", "id": "ch01-s03", "severity": "minor",
+     "problem": "The NOW / THEN pair implies the same shape, but the try-5 bar (about 16 cells, 46.6 s on) is visibly longer than the try-1 bar (about 9 cells). A sharp viewer sees a different shape and the comparison muddles: is it the same shape now right, or a new shape also right?",
+     "fix": "Pick one. If try 5 is meant to show generalisation, label it 'NOW · a new bar · said horizontal · RIGHT' and drop or retitle the THEN line. If it is meant as before/after, present the identical try-1 bar. Either way, add the faint ghost needle at VERTICAL for about 0.6 s, as asked in round 2."},
+    {"owner": "shot", "id": "ch01-s03", "severity": "minor",
+     "problem": "The Minsky and Papert prop beside the 1969 stamp (52 to 58 s) is a tiny, spine-on, lit rectangle about 60 px wide. At normal viewing it reads as a wall lamp or a fluorescent fixture, not a book.",
+     "fix": "Draw the closed book at about 2x size, three-quarter on, with visible board covers and page block. Set it on a small shelf or lectern silhouette under the stamp. Keep it untitled (no likeness, no cover art)."},
+    {"owner": "shot", "id": "ch01-s02", "severity": "minor",
+     "problem": "The name card builds in the wrong reading order. The italic 'psychologist' appears alone at about 19.8 to 20.5 s, then 'FRANK ROSENBLATT' fades in above it on 'Frank'. Word-synced, but the card's subtitle shows before its title.",
+     "fix": "Bring in the full card (name and role) as one unit on 'Frank' (20.83 s), or have the rule and name lead by 0.1 s and the role follow by 0.3 s."},
+    {"owner": "global", "severity": "minor",
+     "problem": "The lab set (sets/lab.ts) still outlines every rack, window frame and figure with the same thin light stroke, so the planes flatten together. The reference gets its separation from value (near-black foreground, hazed back wall), not from line.",
+     "fix": "Remove the stroke from edges that do not face the windows, and keep a 1-2 px rim only on window-facing edges. Drop the back-wall racks about 8% further into haze, so the three planes separate on value alone."},
+    {"owner": "global", "severity": "minor",
+     "problem": "QA warns that the shelf copy is stale: the manifest runtime is 60.375 s against a 65.83 s timeline. Viewers on the shelf would see the round-2 cut.",
+     "fix": "Re-run film:publish after this round's render."}
+  ],
+  "best_moments": [
+    "ch01-s03 at 49.3 to 51.2 s: on 'only' the stage settles (caption off, needle to centre, lantern down). On 'simple' two small separated plates, VERTICAL | HORIZONTAL, fade in under 'what it could learn: simple patterns'. A clean, frozen statement of the limit, replacing round 2's glitch.",
+    "ch01-s03 at 45.34 s: on 'right' the needle swings to VERTICAL, the lantern flares and blooms, the counter ticks a check, and the caption reads RIGHT, all on the word.",
+    "ch01-s03 at 28.4 to 33.0 s: threads from the lit cells only, WEIGHTS · DIALS on 'dials', the engraved 'threshold' on 'total', and the needle falling to one side on 'decides'. The rule is built up one word at a time.",
+    "ch01-s03 at 36.1 to 37.6 s: on 'nudge', arc arrows turn only the dials fed by lit cells while the unused dials dim back.",
+    "ch01-s02 at 11.5 to 17.6 s: the truck along the machine reveals the patch board on 'wires' (glints running down the cables), dials turning on 'motors', and the PERCEPTRON plate catching the light, under out-of-focus foreground cable garlands that give real multiplane depth.",
+    "ch01-s01 to s02: the title over the blind-striped lab now flows into one continuous push to the eye, which lights its bar on 'eye'."
+  ]
+}

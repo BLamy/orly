@@ -1,0 +1,184 @@
+{
+ "shot": "ch08-s01",
+ "at": "2026-10-12T18:26:36.681Z",
+ "minCapPx": 22,
+ "sampled": 23,
+ "texts": 27,
+ "offenders": [
+  {
+   "text": "INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND",
+   "maxCap": 8.2,
+   "minCap": 7.4,
+   "first": 0.55,
+   "last": 8.56,
+   "font": "11px VT323"
+  },
+  {
+   "text": "NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY",
+   "maxCap": 9.8,
+   "minCap": 8.9,
+   "first": 0.55,
+   "last": 8.56,
+   "font": "8.4px \"IBM Plex Mono\""
+  },
+  {
+   "text": "DEEP NETS MUST BE WARMED UP LAYER BY LAYER",
+   "maxCap": 9.8,
+   "minCap": 8.9,
+   "first": 0.55,
+   "last": 8.56,
+   "font": "8.4px \"IBM Plex Mono\""
+  },
+  {
+   "text": "TO SEE, A MACHINE NEEDS FEATURES DESIGNED BY",
+   "maxCap": 9.8,
+   "minCap": 9,
+   "first": 2.2,
+   "last": 8.56,
+   "font": "8.4px \"IBM Plex Mono\""
+  },
+  {
+   "text": "EXPERTS",
+   "maxCap": 9.8,
+   "minCap": 9,
+   "first": 2.2,
+   "last": 8.56,
+   "font": "8.4px \"IBM Plex Mono\""
+  },
+  {
+   "text": "THE BRAIN IS A LOGIC MACHINE",
+   "maxCap": 11.6,
+   "minCap": 10.6,
+   "first": 0.55,
+   "last": 8.56,
+   "font": "8.4px \"Special Elite\""
+  },
+  {
+   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
+   "maxCap": 11.6,
+   "minCap": 10.6,
+   "first": 0.55,
+   "last": 8.56,
+   "font": "8.4px \"Special Elite\""
+  },
+  {
+   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
+   "maxCap": 11.6,
+   "minCap": 10.6,
+   "first": 0.55,
+   "last": 8.56,
+   "font": "8.4px \"Special Elite\""
+  },
+  {
+   "text": "1943",
+   "maxCap": 12.5,
+   "minCap": 11.3,
+   "first": 0.55,
+   "last": 8.56,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "1958",
+   "maxCap": 12.5,
+   "minCap": 11.3,
+   "first": 0.55,
+   "last": 8.56,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "1969",
+   "maxCap": 12.5,
+   "minCap": 11.3,
+   "first": 0.55,
+   "last": 8.56,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "c. 1980",
+   "maxCap": 12.5,
+   "minCap": 11.3,
+   "first": 0.55,
+   "last": 8.56,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "1984",
+   "maxCap": 12.5,
+   "minCap": 11.3,
+   "first": 0.55,
+   "last": 8.56,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "MID-1990s",
+   "maxCap": 12.5,
+   "minCap": 11.3,
+   "first": 0.55,
+   "last": 8.56,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "2006",
+   "maxCap": 12.5,
+   "minCap": 11.3,
+   "first": 0.55,
+   "last": 8.56,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "DEEP DIVE · The Night in Florence",
+   "maxCap": 19,
+   "minCap": 19,
+   "first": 0.55,
+   "last": 3.55,
+   "font": "26px \"Special Elite\""
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "lit 1999",
+   "maxCap": 22.9
+  },
+  {
+   "text": "TO SEE, A MACHINE NEEDS",
+   "maxCap": 23.6
+  },
+  {
+   "text": "FEATURES DESIGNED BY EXPERTS",
+   "maxCap": 23.6
+  },
+  {
+   "text": "20%",
+   "maxCap": 26
+  },
+  {
+   "text": "25%",
+   "maxCap": 26
+  },
+  {
+   "text": "30%",
+   "maxCap": 26
+  },
+  {
+   "text": "2010",
+   "maxCap": 22.1
+  },
+  {
+   "text": "2011",
+   "maxCap": 22.1
+  },
+  {
+   "text": "IMAGENET CHALLENGE · 2010–2011",
+   "maxCap": 22.1
+  },
+  {
+   "text": "top-5 error",
+   "maxCap": 23.6
+  },
+  {
+   "text": "2010: 28.2% · 2011: ≈ 25.8%",
+   "maxCap": 23.6
+  }
+ ]
+}

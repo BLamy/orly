@@ -1,0 +1,51 @@
+{
+ "shot": "ch08-s12",
+ "at": "2026-10-12T19:39:46.164Z",
+ "minCapPx": 22,
+ "sampled": 17,
+ "texts": 10,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "35%",
+   "maxCap": 32.5
+  },
+  {
+   "text": "30%",
+   "maxCap": 32.5
+  },
+  {
+   "text": "25%",
+   "maxCap": 32.5
+  },
+  {
+   "text": "20%",
+   "maxCap": 32.5
+  },
+  {
+   "text": "15%",
+   "maxCap": 32.5
+  },
+  {
+   "text": "SuperVision ·",
+   "maxCap": 27.1
+  },
+  {
+   "text": "Toronto",
+   "maxCap": 27.1
+  },
+  {
+   "text": "−10.9",
+   "maxCap": 23.3
+  },
+  {
+   "text": "ILSVRC-2012 · top-5 error",
+   "maxCap": 26.2
+  },
+  {
+   "text": "15.3% vs 26.2% (second place)",
+   "maxCap": 26.2
+  }
+ ]
+}

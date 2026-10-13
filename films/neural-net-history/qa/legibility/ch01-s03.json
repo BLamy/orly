@@ -1,0 +1,59 @@
+{
+ "shot": "ch01-s03",
+ "at": "2026-10-12T07:33:09.458Z",
+ "minCapPx": 22,
+ "sampled": 15,
+ "texts": 12,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "Why",
+   "maxCap": 44.1
+  },
+  {
+   "text": "is",
+   "maxCap": 44.1
+  },
+  {
+   "text": "the",
+   "maxCap": 46.3
+  },
+  {
+   "text": "sky",
+   "maxCap": 44.1
+  },
+  {
+   "text": "blue?",
+   "maxCap": 44.1
+  },
+  {
+   "text": "Sunlight",
+   "maxCap": 46.3
+  },
+  {
+   "text": "scatters",
+   "maxCap": 46.3
+  },
+  {
+   "text": "in",
+   "maxCap": 46.3
+  },
+  {
+   "text": "air.",
+   "maxCap": 46.3
+  },
+  {
+   "text": "2026",
+   "maxCap": 29.3
+  },
+  {
+   "text": "at least 700 million weekly users",
+   "maxCap": 28.5
+  },
+  {
+   "text": "International AI Safety Report, 2026",
+   "maxCap": 30.4
+  }
+ ]
+}

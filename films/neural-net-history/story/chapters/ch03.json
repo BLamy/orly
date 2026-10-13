@@ -1,0 +1,904 @@
+{
+ "id": "ch03",
+ "number": 3,
+ "title": "Clue Two: A Knob That Turns",
+ "blurb": "1958 to about 1965. A program on a borrowed computer learns to sort cards marked left from right and the Navy expects it to be conscious, though the hype had many authors; in Buffalo the Mark I's knobs turn only when it is wrong, and you can hear it learn. A theorem's small 'if', a cheerful 'none whatever', a false clue shown in silence and a sentence about language put in the file. The candle burns about seven years: only the last knobs ever learned, and almost nobody can teach a layer in the middle.",
+ "shots": [
+  {
+   "id": "ch03-s01",
+   "kind": "scene",
+   "setting": "Washington, D.C., 7 July 1958, a hot afternoon; the Weather Bureau's machine room",
+   "era": "1950s",
+   "mood": "labGreen",
+   "lines": [
+    {
+     "id": "L0301",
+     "text": "Washington, 1958.",
+     "pauseAfter": 0.55,
+     "direction": "unhurried; a new place, a new decade",
+     "spoken": "Washington, nineteen fifty-eight."
+    },
+    {
+     "id": "L0302",
+     "text": "Frank Rosenblatt’s perceptron, a program on a borrowed computer, learns in fifty tries to sort cards marked left or right.",
+     "direction": "plain wonder, no hype; a small lift on 'learns'; 'a program on a borrowed computer' said lightly, as an aside"
+    }
+   ],
+   "leadIn": 2.7,
+   "holdAfter": 0.5,
+   "visual": "THIS SHOT: Washington, 1958: in the Weather Bureau's machine room the perceptron sorts punched cards left or right, and the tally climbs to fifty. CHAPTER INDEX TAB (the film's chapter-card device for clue chapters): at the shot's first frame a manila index tab, typed in Special Elite with the chapter title 'Clue Two: A Knob That Turns', drops down from the frame's top edge at TOP-left like a file-divider tab, holds for 2.5 seconds over the picture, and slides back up (top-left, so it never shares the bottom-left corner with the date stamp); no new shot, no lamp change. Ink-bleed in from the ch02 study to a long, low machine room in labGreen backlight: a row of tall IBM 704 cabinets as black slabs with pierced vent grilles, tape drives like round eyes, a high clerestory window throwing a slanting green beam through haze (dust motes in the beam). On 'borrowed' a small tag hanging from the nearest cabinet catches the green beam: IBM 704 · U.S. WEATHER BUREAU (the 1958 learner was a program on this borrowed machine; the Mark I does not exist yet). Mid-ground: a card reader on the right whose hopper drops punch cards one at a time, each a small bright rectangle with a single notch on its left or right edge. Rosenblatt (profile, facing right, slight build, 1950s jacket) stands beside the reader, hands loose; a naval officer in a peaked cap stands behind him with hands clasped; a reporter with a notepad leans in at frame left. Camera: a slow lateral dolly left-to-right across three planes (cabinets L2, figures L3, a foreground cable run L5). A paper tally in Special Elite type in the lower right (its numerals are part of the prop, not a caption) counts the cards 1 to 50 as they fall from 'perceptron' (one tick per card, on twos), and above the reader a small two-lamp panel marked LEFT / RIGHT: for the first dozen cards the lamps flicker inconsistently; after about card 30 the correct lamp lights every time (left-notched card: LEFT; right-notched card: RIGHT; it is sorting cards, not learning the idea of direction), and at 50 the reporter's pencil starts to move. Date stamp bottom left as L0302 begins (the index tab hangs top-left, so the two never share a corner). Name card for Rosenblatt on first appearance.",
+   "beats": [
+    {
+     "id": "indexTab",
+     "at": {
+      "line": "L0301",
+      "edge": "start"
+     },
+     "what": "manila index tab typed 'Clue Two: A Knob That Turns' drops down from the top edge at top-left like a file-divider tab, holds 2.5 s, slides back up"
+    },
+    {
+     "id": "stamp",
+     "at": {
+      "line": "L0302",
+      "edge": "start"
+     },
+     "what": "date stamp WASHINGTON · 7 JULY 1958 types in, bottom left (the index tab is top-left)"
+    },
+    {
+     "id": "computer",
+     "at": {
+      "line": "L0302",
+      "word": "borrowed"
+     },
+     "what": "the tag IBM 704 · U.S. WEATHER BUREAU on the nearest cabinet catches the green beam"
+    },
+    {
+     "id": "name",
+     "at": {
+      "line": "L0302",
+      "word": "Rosenblatt’s"
+     },
+     "what": "name card FRANK ROSENBLATT fades up beside his silhouette"
+    },
+    {
+     "id": "cards",
+     "at": {
+      "line": "L0302",
+      "word": "perceptron"
+     },
+     "what": "card hopper starts dropping cards; tally begins counting toward 50; lamps flicker inconsistently at first"
+    },
+    {
+     "id": "learned",
+     "at": {
+      "line": "L0302",
+      "edge": "end"
+     },
+     "what": "tally (prop numerals) reaches 50; the correct lamp now lights on every card; the reporter starts writing (held through holdAfter)"
+    }
+   ],
+   "cast": [
+    "rosenblatt",
+    "navy-officer",
+    "reporter"
+   ],
+   "props": [
+    "IBM 704 cabinets",
+    "card reader and hopper",
+    "punch cards notched left or right",
+    "LEFT/RIGHT lamp panel",
+    "paper tally",
+    "reporter's notepad"
+   ],
+   "onScreenText": [
+    {
+     "kind": "title",
+     "text": "Clue Two: A Knob That Turns",
+     "beat": "indexTab"
+    },
+    {
+     "kind": "date",
+     "text": "WASHINGTON · 7 JULY 1958",
+     "beat": "stamp"
+    },
+    {
+     "kind": "label",
+     "text": "IBM 704 · U.S. WEATHER BUREAU",
+     "beat": "computer"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Frank Rosenblatt · psychologist, Cornell Aeronautical Laboratory",
+     "beat": "name"
+    }
+   ],
+   "music": {
+    "cue": "ch03-a-labs",
+    "note": "new cue on the lamp change: valve organ and a soft motor-whirr pulse, labGreen; bright and curious, intensity 3/10; a small lift as the tally reaches fifty"
+   },
+   "transitionIn": "inkBleed",
+   "claims": [
+    "e2-1958-demo",
+    "e2-onr"
+   ]
+  },
+  {
+   "id": "ch03-s02",
+   "kind": "card",
+   "setting": "Washington, the next morning, 8 July 1958; a street at dawn, then a newspaper quote card",
+   "era": "1950s",
+   "mood": "labGreen",
+   "lines": [
+    {
+     "id": "L0303",
+     "text": "Newspapers said the Navy expected it to “walk, talk, see, write, reproduce itself and be conscious of its existence.”",
+     "direction": "read the list with relish and a straight face; a tiny breath before 'conscious'",
+     "spoken": "Newspapers said the Navy expected it to “walk, talk, see, write, reproduce itself and be conscious of its existence.”"
+    },
+    {
+     "id": "L0304",
+     "text": "In fairness, the Navy, the press and Rosenblatt all fed the hype.",
+     "pauseAfter": 0.5,
+     "direction": "fair-minded, gently wry; no scolding; a paraphrase, said plainly, not as a quote"
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 0.5,
+   "visual": "THIS SHOT: a newsboy thrusts the next morning's paper at the lens; the hype's quote card sets, and the Navy's cap, the press card and Rosenblatt's own slip rise in one even pool. A street of paper-cut brownstones against a pale dawn. The camera HOLDS (no whip, no pan): a newsboy in a flat cap runs in from the left in profile across the foreground (walk cycle on twos, feet planted), stops at centre, turns and thrusts his paper toward the lens on a hold, the headline legible: NEW NAVY DEVICE LEARNS BY DOING. The paper itself, now an L6 occluder filling the frame, wipes into a parchment quote card. The lede fragment sets in Special Elite one phrase at a time, synced to the narration: walk, talk, see, write, reproduce itself, and finally 'conscious of its existence', which glows faintly. Attribution under it: UPI in The New York Times, 8 July 1958 (the full lede moves to creditsSources). On L0304 the card tilts and slides aside and three things share one even pool of light (no villain lighting), each lifting a little on its own noun: a naval officer's peaked cap (plain, no insignia) on 'Navy'; the NYT card on 'press'; and a small slip in Rosenblatt's own hand from summer 1958, shown as hatched, illegible handwriting (a paraphrase, never quoted), on 'Rosenblatt'. All three end level, side by side, in the same light.",
+   "beats": [
+    {
+     "id": "headline",
+     "at": {
+      "shotTime": 0.3
+     },
+     "what": "camera held; newsboy runs in, stops, thrusts the paper toward the lens; headline readable"
+    },
+    {
+     "id": "card",
+     "at": {
+      "line": "L0303",
+      "word": "expected"
+     },
+     "what": "the paper (L6 occluder) wipes into the quote card; lede begins setting"
+    },
+    {
+     "id": "conscious",
+     "at": {
+      "line": "L0303",
+      "word": "conscious"
+     },
+     "what": "the final clause sets and glows faintly"
+    },
+    {
+     "id": "blame",
+     "at": {
+      "line": "L0304",
+      "word": "fairness"
+     },
+     "what": "card slides aside; one even pool of light opens beside it"
+    },
+    {
+     "id": "navy",
+     "at": {
+      "line": "L0304",
+      "word": "Navy"
+     },
+     "what": "a plain naval cap (no insignia) lifts into the even pool"
+    },
+    {
+     "id": "papers",
+     "at": {
+      "line": "L0304",
+      "word": "press"
+     },
+     "what": "the NYT card lifts beside the cap"
+    },
+    {
+     "id": "own",
+     "at": {
+      "line": "L0304",
+      "word": "Rosenblatt"
+     },
+     "what": "Rosenblatt's own 1958 slip (hatched handwriting, unquoted) lifts into the same light; all three level"
+    }
+   ],
+   "cast": [
+    "newsboy"
+   ],
+   "props": [
+    "newspaper with headline",
+    "parchment quote card",
+    "naval officer's peaked cap (no insignia)",
+    "Rosenblatt's 1958 slip (hatched handwriting)"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "NEW NAVY DEVICE LEARNS BY DOING",
+     "beat": "headline"
+    },
+    {
+     "kind": "quote",
+     "text": "“…walk, talk, see, write, reproduce itself and be conscious of its existence.” — UPI in The New York Times, 8 July 1958",
+     "beat": "card"
+    }
+   ],
+   "music": {
+    "cue": "ch03-a-labs",
+    "note": "the organ figure turns jaunty under the newsboy, a little brass-band bounce at intensity 4/10; it thins to a single held note under 'conscious of its existence' so the phrase lands in near-silence; three small even plucks as the cap, the card and the slip lift, none louder than the others"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "e2-nyt-lede",
+    "e2-hype-responsibility",
+    "e2-neurodynamics"
+   ],
+   "quotes": [
+    "q-nyt-1958"
+   ],
+   "creditsSources": [
+    "“The Navy revealed the embryo of an electronic computer today that it expects will be able to walk, talk, see, write, reproduce itself and be conscious of its existence.” — UPI wire story, The New York Times, p. 25, 8 July 1958 (q-nyt-1958)"
+   ]
+  },
+  {
+   "id": "ch03-s03",
+   "kind": "scene",
+   "setting": "the study shelf beneath the case board, then the paper stage: the pool of light around the 1958 candle (timeless stage, dressed as a 1950s lab)",
+   "era": "1950s",
+   "mood": "candleAmber",
+   "lines": [
+    {
+     "id": "L0305",
+     "text": "A second candle: a machine that learns will soon see, talk and think.",
+     "pauseAfter": 0.55,
+     "direction": "ceremonial but light; the belief in a slightly larger voice, as if quoting the age"
+    },
+    {
+     "id": "L0306",
+     "text": "At its rim stood Marvin Minsky, who doubted such nets could tell whether a shape was in one piece, or two.",
+     "direction": "a small smile; the irony is in the word 'rim'; the doubt said fairly, as a serious objection",
+     "tts": {
+      "solo": true,
+      "speed": 0.86
+     }
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 0.5,
+   "visual": "THIS SHOT: the second candle is lit for the learning machine, and at its rim Minsky holds up a shape cut into two pieces. CAMERA: SHELF (low macro; the second candle lit), then the flame push onto the stage. Cut to the study shelf beneath the case board in the banker's lamp's candleAmber pool; under the cut the light tint-crossfades (crossfadeMood, 0.7 s, no dip) from the dawn street's labGreen to candleAmber, so the tint never pops (STUDY LOCK: study, board, shelf and Wall are always candleAmber; era colour stays only in practicals). CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. The first candle's stub stands at the far left with its dark sixteen-ring sleeve. The hands strike a match and light the second candle beside it, lettered in Special Elite small caps (a paraphrase, never in quotation marks): A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK; its base tag reads '1958'; no sleeve yet, the flame on the top ring. On 'candle' the camera pushes into the flame (flame push: a push into its brightness, about 1.2 seconds, never through black, so the line is never spoken over a dark frame; over the same 1.2 s the light tint-crossfades (crossfadeMood, no dip) from candleAmber to the stage's labGreen) and we arrive on the paper stage, dressed as a 1950s lab: the same candle, huge, stands at centre-left and throws a pool of light across a paper floor, haze hanging in the beam. Inside the pool, facing the flame: Rosenblatt, the naval officer, the reporter (believers stand in the light). At the rim, half in shadow, facing out, his long shadow thrown across the floor toward camera: young Minsky (the same puppet who turned from the lantern at Dartmouth in ch02, now at the edge), placed on the right third; on 'Minsky' a tiny cut-out of his 1951 tube-rack learning machine (the one on the Dartmouth sill, ch02-s07) glints at his feet. On 'two' his doubt becomes a picture, not text: beside him a small paper-cut shape lifts into the light, cut in two separate pieces with a gap between, and a cut-out question mark beside it. Rosenblatt, inside the pool, turns his head toward the rim: two views, one light, no card (his 'loyal opposition' footnote moves to the end-credits sources card). Slow push-in on the gap between them (under 3% of frame width per second).",
+   "beats": [
+    {
+     "id": "belief",
+     "at": {
+      "line": "L0305",
+      "word": "second"
+     },
+     "what": "the candle's lettering and its '1958' base tag are held centre frame as the match strikes"
+    },
+    {
+     "id": "lit",
+     "at": {
+      "line": "L0305",
+      "word": "candle"
+     },
+     "what": "the match lights the second candle on the shelf; flame push into its flame (about 1.2 s, never through black) with crossfadeMood candleAmber to labGreen, onto the stage"
+    },
+    {
+     "id": "rim",
+     "at": {
+      "line": "L0306",
+      "word": "rim"
+     },
+     "what": "camera finds Minsky at the edge, his shadow long across the floor"
+    },
+    {
+     "id": "built",
+     "at": {
+      "line": "L0306",
+      "word": "Minsky"
+     },
+     "what": "a tiny cut-out of Minsky's 1951 learning machine glints at his feet"
+    },
+    {
+     "id": "minskycard",
+     "at": {
+      "line": "L0306",
+      "word": "two"
+     },
+     "what": "beside Minsky a paper-cut shape cut into two separate pieces lifts into the light, with a cut-out question mark"
+    }
+   ],
+   "cast": [
+    "rosenblatt",
+    "minsky",
+    "navy-officer",
+    "narrator-hands"
+   ],
+   "props": [
+    "study shelf with the 1943 stub and its dark sleeve",
+    "candle-clock: A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK (base tag 1958)",
+    "tiny SNARC knob-rack cut-out",
+    "paper-cut shape cut into two separate pieces, with a question mark"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
+     "beat": "belief"
+    }
+   ],
+   "music": {
+    "cue": "ch03-b-candle",
+    "note": "the candle motif: a rising fourth on valve organ as the match catches and the camera pushes into the flame (lit and held); under Minsky, the held suspension (doubted), left unresolved through the hold"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "e2-nyt-lede",
+    "e2-minsky-1961",
+    "e1-snarc"
+   ],
+   "quotes": [
+    "q-rosenblatt-loyal",
+    "q-minsky-twoparts"
+   ]
+  },
+  {
+   "id": "ch03-s04",
+   "kind": "scene",
+   "setting": "Cornell Aeronautical Laboratory, Buffalo, New York, 1958–60, night; the Mark I installation",
+   "era": "1950s",
+   "mood": "labGreen",
+   "lines": [
+    {
+     "id": "L0307",
+     "text": "In Buffalo, Rosenblatt built it as a machine: an eye, random wires, and motor-driven knobs. Each knob sets how strongly one wire counts: its weight.",
+     "pauseAfter": 0.55,
+     "direction": "slow, naming each part as the camera reaches it; a small stress on 'machine' (the 1958 learner was a program; this is the hardware); then plainly, defining: 'how strongly one wire counts'; a small warm stress on 'weights', a word we will keep"
+    },
+    {
+     "id": "L0308",
+     "text": "When it was wrong, only the knobs of lit wires turned, a little, toward the answer.",
+     "pauseAfter": 0.6,
+     "direction": "precise, teacherly; slight weight on 'wrong' and 'lit'"
+    },
+    {
+     "id": "L0309",
+     "text": "You could hear it learn. I love that.",
+     "direction": "hushed delight; \"I love that\" is the teacher's own aside, smiling, almost to himself",
+     "tts": {
+      "solo": true,
+      "speed": 0.85
+     }
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 0.5,
+   "minDuration": 21,
+   "visual": "THIS SHOT: Buffalo: the Mark I's photocell eye, its harp of random wires and its motor-driven knobs; on each mistake only the lit wires' knobs turn, and you can hear it learn. The film's first great machine image. The markIPerceptron set: a row of grey 1950s cabinets as backlit silhouettes. A dolly from left to right along the installation (three parallax planes, fog sheet between L2 and L3). (1) The eye on its stand: a 20×20 grid of photocells, lit from inside, aimed at a card. (2) The cabinet stencilled MARK I, doors open: the patchboard as a harp of hundreds of patch cords, backlit so every cord is a dark string against green light, wired at random (seeded, no pattern). (3) The rack stencilled PERCEPTRON: rows of potentiometer knobs, each with its own small motor housing, each knob sitting on one of the last wires, between the association units and the response dial (the random wires behind them have no knobs and never change). On 'weight' the camera eases close on one knob and its single string: it turns a notch and the string thickens, then thins, so the eye sees that a knob is how strongly one wire counts. Then the camera settles and the teaching machine takes over the same frame: perceptronRetina, driven by its real training record (horizontal vs vertical bars, the rule applied only on mistakes). A card lands on the retina; bright wires show the lit cells feeding the association units that fire; the dial swings; when the answer is wrong, ONLY the lit knobs rotate (each by its real Δw) and their loom strings to the response dial thicken (warm for +, cool for -). Unlit knobs never move; on a correct answer nothing moves at all. A small caption: 'illustration: the perceptron rule, run for real'. The tally readout ('presentation n · mistakes in the last 20') counts down as it learns. On 'hear it learn' the picture holds still and only the motors move, each turn a tiny whirr that the score picks up. The camera stays on the machine through the whole hold (the wiring question card comes down in ch03-s05's board beat, not here). Date stamp bottom left in Special Elite.",
+   "beats": [
+    {
+     "id": "stamp",
+     "at": {
+      "line": "L0307",
+      "word": "Buffalo"
+     },
+     "what": "date stamp BUFFALO · 1958–60"
+    },
+    {
+     "id": "eye",
+     "at": {
+      "line": "L0307",
+      "word": "eye"
+     },
+     "what": "camera on the photocell eye; grid lights (no label)"
+    },
+    {
+     "id": "wires",
+     "at": {
+      "line": "L0307",
+      "word": "wires"
+     },
+     "what": "the patchboard harp of random cords, backlit"
+    },
+    {
+     "id": "knobs",
+     "at": {
+      "line": "L0307",
+      "word": "knobs"
+     },
+     "what": "rack of motor-driven knobs; machine handed to perceptronRetina (reveal 0→1)"
+    },
+    {
+     "id": "weight",
+     "at": {
+      "line": "L0307",
+      "word": "weight"
+     },
+     "what": "close on one knob and its single loom string to the response dial: the knob turns a notch and the string thickens, then thins (how strongly that wire counts); the small label 'knob = weight' sets beside it"
+    },
+    {
+     "id": "wrong",
+     "at": {
+      "line": "L0308",
+      "word": "wrong"
+     },
+     "what": "first mistake: dial swings the wrong way"
+    },
+    {
+     "id": "turn",
+     "at": {
+      "line": "L0308",
+      "word": "turned"
+     },
+     "what": "only lit knobs rotate by their real Δw; strings re-tension; training steps then run at speed"
+    },
+    {
+     "id": "hear",
+     "at": {
+      "line": "L0309",
+      "word": "hear"
+     },
+     "what": "picture holds; only motors turn; whirr in the score"
+    }
+   ],
+   "cast": [
+    "rosenblatt"
+   ],
+   "props": [
+    "Mark I: photocell eye, patchboard of random cords, potentiometer rack with motors, response dial"
+   ],
+   "onScreenText": [
+    {
+     "kind": "date",
+     "text": "BUFFALO · 1958–60",
+     "beat": "stamp"
+    },
+    {
+     "kind": "label",
+     "text": "knob = weight: how strongly one wire counts",
+     "beat": "weight"
+    },
+    {
+     "kind": "label",
+     "text": "illustration: the perceptron rule, run for real",
+     "beat": "turn"
+    }
+   ],
+   "music": {
+    "cue": "ch03-b-candle",
+    "note": "valve organ ostinato locked to the training steps; the motor whirr becomes a rhythmic element, landing on each knob turn; drops out on 'hear it learn' so the whirrs are heard alone; intensity 5/10"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "e2-mark1-specs",
+    "e2-mark1-random",
+    "e2-mark1-build"
+   ]
+  },
+  {
+   "id": "ch03-s05",
+   "kind": "plate",
+   "setting": "parchment plate: the learning rule and a dividing line (timeless)",
+   "era": "1950s",
+   "mood": "labGreen",
+   "lines": [
+    {
+     "id": "L0310",
+     "text": "A theorem promised the rule would find a dividing line.",
+     "pauseAfter": 0.55,
+     "direction": "lovely, satisfied; then slow down"
+    },
+    {
+     "id": "L0311",
+     "text": "If one exists.",
+     "direction": "quiet, the smallest word in the film carrying the most weight"
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 6.3,
+   "visual": "THIS SHOT: a parchment plate inks the learning rule and a dividing line that jumps on mistakes and settles; then IF is circled and a new question card goes up on the thread. CAMERA: plate, then a tilt up to BOARD (the Q1 swap as a 1–2 s insert). Paper-fold transition to a parchment plate in ink. Top: the rule sets in KaTeX, w ← w + η·t·x, with three small ink labels underneath (weight, step, right answer × input). Below: a square plot with a scatter of small ink dots (circles = one kind, crosses = the other), separable. A straight ink line starts at a bad angle and, with each mistake, jumps (on twos) to a new angle; after a handful of jumps it settles cleanly between the two kinds and stops. On 'If one exists' the word IF is circled in ink in a margin note, and the plate's line freezes. Then, in the music-only hold, the camera tilts up off the plate to the case board, and as it reaches the board the light tint-crossfades (crossfadeMood, 1.2 s, no dip) from labGreen to candleAmber (STUDY LOCK: study, board, shelf and Wall are always candleAmber; era colour stays only in practicals). BOARD MAP (canonical, from the staging appendix; repeated word for word): the Case Board is a fixed grid of slots laid out as network columns by era, left to right: C1 (1943–1969) the far-left input column, C2 (1969–1997), C3 (2006–2017), C4 (2018–2023), and the output, the glowing chat box, at the far right; the case card WHO TAUGHT IT? hangs in slot K at the board's centre; the suspect cards S1 RULES, S2 KNOWLEDGE and S3 LEARNING hang in the left margin, top to bottom; the founding row F1–F2 runs beneath columns C3 and C4; the question-card thread runs along the board's top edge (slots Q1 to Q4, left to right), a low-chroma oxblood string (emberRed rim mixed about 60% into candleAmber) that glints only where the lamp's pool falls; the Wall of Forecasts hangs to the board's right, its slots W1 to W8 left to right (W1 Turing, W2 chess, W3 Rosenblatt 1961, W4 Florence 2012, W5 Coulom, W6 the 30-to-50-years slip in shadow, W7 Hinton 2017, W8 an empty pin until ch15). At thread slot Q1, the far-left end of the oxblood thread, the hands first unpin the card from ch02, HOW COULD A NET REWIRE ITSELF? (answered: a knob that turns), and let it drop into the lamp's pool; then they pin the new card in the same slot, Q1: AND IF NO STRAIGHT LINE EXISTS? It sways a little and holds, music only, long enough to read (31 characters).",
+   "beats": [
+    {
+     "id": "rule",
+     "at": {
+      "shotTime": 0.5
+     },
+     "what": "the rule sets in on the plate"
+    },
+    {
+     "id": "line",
+     "at": {
+      "line": "L0310",
+      "word": "dividing"
+     },
+     "what": "the dividing line jumps on mistakes and settles"
+    },
+    {
+     "id": "if",
+     "at": {
+      "line": "L0311",
+      "word": "If"
+     },
+     "what": "IF circled in ink in the margin"
+    },
+    {
+     "id": "unpin",
+     "at": {
+      "line": "L0311",
+      "edge": "end",
+      "offset": 1.3
+     },
+     "what": "once the tilt up to the board and the 1.2 s crossfadeMood labGreen to candleAmber (STUDY LOCK) have finished: the wiring question card is unpinned from the oxblood thread and drops into the lamp's pool"
+    },
+    {
+     "id": "newcard",
+     "at": {
+      "line": "L0311",
+      "edge": "end",
+      "offset": 2.2
+     },
+     "what": "new red-thread card pinned in the vacated slot; held to read"
+    }
+   ],
+   "cast": [
+    "narrator-hands"
+   ],
+   "props": [
+    "parchment plate",
+    "ink scatter of two classes",
+    "ink margin note",
+    "oxblood-thread card HOW COULD A NET REWIRE ITSELF? (unpinned)",
+    "oxblood-thread question card AND IF NO STRAIGHT LINE EXISTS?"
+   ],
+   "onScreenText": [
+    {
+     "kind": "equation",
+     "text": "w \\leftarrow w + \\eta\\, t\\, x",
+     "beat": "rule",
+     "until": "unpin"
+    },
+    {
+     "kind": "label",
+     "text": "AND IF NO STRAIGHT LINE EXISTS?",
+     "beat": "newcard"
+    }
+   ],
+   "music": {
+    "cue": "ch03-b-candle",
+    "note": "the ostinato simplifies to a clean pizzicato as the line settles; on 'If one exists' everything stops except one sustained organ note: the first technical cliffhanger; a soft resolving pluck as the old wiring card drops, the held note returning under the new card"
+   },
+   "transitionIn": "paperWipe",
+   "claims": [
+    "e2-convergence"
+   ]
+  },
+  {
+   "id": "ch03-s06",
+   "kind": "scene",
+   "setting": "the 1958 candle's pool; then the Wall of Forecasts beside the case board, 1958",
+   "era": "1950s",
+   "mood": "labGreen",
+   "lines": [
+    {
+     "id": "L0312",
+     "text": "A magazine asked what use it was. “At the moment, none whatever,” Dr. Rosenblatt said cheerfully. And what could it never do? “Love,” he said. “Hope. Despair.”",
+     "spoken": "A magazine asked what use it was. “At the moment, none whatever,” Doctor Rosenblatt said cheerfully. And what could it never do? “Love,” he said. “Hope. Despair.”",
+     "direction": "enjoy the first half; this is the most likeable man in the chapter. Then 'And what could it never do?' a gentle turn, and the quotation lower and slower, without a smile: 'Love,' a breath, 'he said', then 'Hope.' and 'Despair.' each set down alone",
+     "insertGaps": {
+      "said#2": 0.3,
+      "hope": 0.3
+     },
+     "levelDb": 2
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 7.8,
+   "visual": "THIS SHOT: Rosenblatt shrugs his cheerful 'none whatever'; asked what it could never do, he answers LOVE · HOPE · DESPAIR, and the card lands on the spoken words and is read in full; then a pan to the Wall, where the chess slip is pinned in W2. CAMERA: stage, then a pan right to WALL (the W2 pin). Cut back to the candle's pool; under the cut the light tint-crossfades (crossfadeMood, 0.7 s, no dip) from the board's candleAmber to the stage's labGreen. In the pool: Rosenblatt in profile, his hand rising open as if presenting nothing at all (a cheerful shrug, a hand-sprite swap to 'open' on the quote). The quote is spoken, so no card for it. Then, as the narrator asks what it could never do and reads his answer ('Love,' he said. 'Hope. Despair.'), he throws up his hands (both arms rise, held on twos), and three words lift beside him one at a time like sparks, on a small card whose one-line attribution beneath gives the question he was answering (so the words are never read as a claim that the machine feels): LOVE · HOPE · DESPAIR, then the short line '— Rosenblatt, on its limits (New Yorker, 1958)' (quoted verbatim with its 'he said', as the magazine printed it; the source stays on the card, like every other reported quote; the full exchange is in creditsSources), held together, music only, until the whole card has been read. After that the camera pans right off the stage to the Wall of Forecasts beside the case board, and as it reaches the Wall the light tint-crossfades (crossfadeMood, 1.2 s, no dip) from labGreen to candleAmber (STUDY LOCK: study, board, shelf and Wall are always candleAmber; era colour stays only in practicals) (its slots W1 to W8 left to right: W1 Turing, W2 chess, W3 Rosenblatt 1961, W4 Florence 2012, W5 Coulom, W6 the 30-to-50-years slip in shadow, W7 Hinton 2017, W8 an empty pin until ch15). The hands pin the chess slip in slot W2, just right of Turing's slip in W1. The slip is fresh white; a small due-date tag hangs from its pin. Further along the wall, beyond the lamp's reach, the corner of one older slip hangs half-lit in shadow (slot W6, unread). The slip reads SIMON & NEWELL · CHESS CHAMPION BY 1968. Hold on the slip to the end of the shot, long enough to read it (order: sparks and card read, then pan and pin, then the slip read; the beats carry the clock). SCRIPT NOTE (review round 1): L0312 now voices the answer (q-rosenblatt-love), so the card lands on the spoken words, not in silence; the hold is about 5 s shorter, so the pan to the Wall comes about 4.8 s after the line ends.",
+   "beats": [
+    {
+     "id": "none",
+     "at": {
+      "line": "L0312",
+      "word": "none"
+     },
+     "what": "open-hand shrug (no card: the quote is spoken)"
+    },
+    {
+     "id": "love",
+     "at": {
+      "line": "L0312",
+      "word": "Love",
+      "offset": -0.2
+     },
+     "what": "as 'Love' is spoken: both hands thrown up; LOVE lifts out as a spark, the short attribution line (— Rosenblatt, on its limits (New Yorker, 1958)) beneath"
+    },
+    {
+     "id": "despair",
+     "at": {
+      "line": "L0312",
+      "word": "Hope"
+     },
+     "what": "HOPE, then DESPAIR, lift out as they are spoken; the whole card held, music only, to read until the pan"
+    },
+    {
+     "id": "slip",
+     "at": {
+      "line": "L0312",
+      "edge": "end",
+      "offset": 4.8
+     },
+     "what": "only once the card has been read: pan to the Wall of Forecasts with crossfadeMood labGreen to candleAmber (STUDY LOCK); chess slip pinned in slot W2, its due-date tag 1968; held to read to the end of the shot"
+    }
+   ],
+   "cast": [
+    "rosenblatt",
+    "narrator-hands"
+   ],
+   "props": [
+    "quote card",
+    "Wall of Forecasts",
+    "forecast slip: SIMON & NEWELL · CHESS CHAMPION BY 1968 (due-date tag 1968), slot W2",
+    "Turing's slip from ch02, slot W1",
+    "an older slip's corner in shadow, slot W6"
+   ],
+   "onScreenText": [
+    {
+     "kind": "quote",
+     "text": "“Love,” he said. “Hope. Despair.” — Rosenblatt, on its limits (New Yorker, 1958)",
+     "beat": "love",
+     "until": "slip"
+    },
+    {
+     "kind": "label",
+     "text": "SIMON & NEWELL · CHESS CHAMPION BY 1968",
+     "beat": "slip"
+    }
+   ],
+   "music": {
+    "cue": "ch03-b-candle",
+    "note": "light, warm; a celesta grace note on 'cheerfully'; in the silent 'Love, Hope, Despair' beat the organ drops to a single tender chord, the only sound; a little tick-tock figure as the forecast slip is pinned"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "e2-newyorker",
+    "e1-chess-prediction"
+   ],
+   "quotes": [
+    "q-rosenblatt-none",
+    "q-rosenblatt-love"
+   ],
+   "creditsSources": [
+    "“Love,” he said. “Hope. Despair. Human nature, in short.” — Frank Rosenblatt, asked what the perceptron could never do, as reported in The New Yorker, 6 December 1958 (q-rosenblatt-love)"
+   ]
+  },
+  {
+   "id": "ch03-s08",
+   "kind": "scene",
+   "setting": "Ithaca, 1961: Rosenblatt's book open on a desk under a lamp; then the Wall of Forecasts and the case board",
+   "era": "1960s",
+   "mood": "labGreen",
+   "lines": [
+    {
+     "id": "L0318",
+     "text": "In his 1961 book: “Linguistic capability, related to perceptual experience, is of the essence.” Put that in the file.",
+     "spoken": "In his nineteen sixty-one book: “Linguistic capability, related to perceptual experience, is of the essence.” Put that in the file.",
+     "direction": "plain on the book; the quote slowly and with respect; then the refrain, warm and deliberate (refrain 3 of 5)"
+    }
+   ],
+   "leadIn": 2.2,
+   "holdAfter": 3.3,
+   "visual": "THIS SHOT: Rosenblatt's 1961 book lies open on its language sentence and a caption that looks like a clue; the sentence is filed and pinned to the Wall in W3. CAMERA: the 1961 book on its desk (era location, labGreen), a FILE insert (top-down: the carbon copy into the file), then BOARD (the C1-c pin) and WALL (the W3 pin). Cut from the Wall; under the cut the light tint-crossfades (crossfadeMood, 0.7 s, no dip) from candleAmber to the green-shaded lamp's labGreen. A heavy book open on a desk under a green-shaded lamp, one spread of pale parchment pages, held in silence through the lead-in (music only). Left page: the Mark I's alphabet attempt as a paper-cut grid of the 26 capitals in two typefaces; as the page settles, half the letters in the second typeface blur and smear (the limit shown, not typed). Right page: a figure caption printed in caps, BACK-PROPAGATING ERROR-CORRECTION EXPERIMENTS; the hands stamp a small oxblood question mark beside it (the FALSE CLUE, shown not spoken: the same name, a different procedure; chapter 5 turns this card over). The line begins on the book. On 'Linguistic' a single printed sentence lifts from the left page as a quote card (the linguistic-capability sentence, as spoken). On 'Put that in the file' a carbon copy of it drops into the manila folder lying beside the book and the folder closes. Then, in the hold (music only): the camera lifts from the desk to the case board, and as it reaches the board the light tint-crossfades (crossfadeMood, 1.2 s, no dip) from the green-shaded lamp's labGreen to candleAmber (STUDY LOCK: study, board, shelf and Wall are always candleAmber; era colour stays only in practicals); the two steady hands pin the caption card, with its oxblood question mark, into slot C1-c (column C1's foot, where doubtful clues hang), then pin the sentence to the Wall of Forecasts in slot W3, just right of the chess slip in W2.",
+   "beats": [
+    {
+     "id": "letters",
+     "at": {
+      "shotTime": 0.2
+     },
+     "what": "the book spread: the alphabet attempt, half the second typeface smearing (Rosenblatt's own admitted limit, shown not spoken)"
+    },
+    {
+     "id": "caption",
+     "at": {
+      "shotTime": 1
+     },
+     "what": "the right page's caption BACK-PROPAGATING ERROR-CORRECTION EXPERIMENTS catches the lamp"
+    },
+    {
+     "id": "false",
+     "at": {
+      "shotTime": 1.9
+     },
+     "what": "the hands stamp an oxblood question mark beside the caption (false clue, silent)"
+    },
+    {
+     "id": "linguistic",
+     "at": {
+      "line": "L0318",
+      "word": "Linguistic"
+     },
+     "what": "the sentence lifts from the page as a quote card"
+    },
+    {
+     "id": "file",
+     "at": {
+      "line": "L0318",
+      "word": "file"
+     },
+     "what": "carbon copy drops into the manila folder beside the book; folder closes"
+    },
+    {
+     "id": "board",
+     "at": {
+      "line": "L0318",
+      "edge": "end",
+      "offset": 0.4
+     },
+     "what": "lift to the board with crossfadeMood labGreen to candleAmber (STUDY LOCK); caption card pinned in C1-c with its oxblood question mark"
+    },
+    {
+     "id": "wall",
+     "at": {
+      "line": "L0318",
+      "edge": "end",
+      "offset": 1.98
+     },
+     "what": "the sentence pinned to the Wall of Forecasts in slot W3; held to the end of the hold"
+    }
+   ],
+   "cast": [
+    "rosenblatt",
+    "narrator-hands"
+   ],
+   "props": [
+    "Principles of Neurodynamics (book)",
+    "green-shaded desk lamp",
+    "alphabet grid in two typefaces",
+    "case board card with oxblood question mark",
+    "Wall of Forecasts",
+    "manila folder"
+   ],
+   "onScreenText": [
+    {
+     "kind": "date",
+     "text": "1961",
+     "beat": "letters"
+    },
+    {
+     "kind": "label",
+     "text": "BACK-PROPAGATING ERROR-CORRECTION EXPERIMENTS",
+     "beat": "caption"
+    },
+    {
+     "kind": "quote",
+     "text": "“Linguistic capability, related to perceptual experience, is of the essence…” — Rosenblatt, 1961",
+     "beat": "linguistic"
+    }
+   ],
+   "music": {
+    "cue": "ch03-b-candle",
+    "note": "a minor turn in the organ for the limit; a sly two-note 'detective' figure on low clarinet under the false clue; the refrain lands on a soft, open chord as the file closes"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "e2-mark1-limits",
+    "e2-backprop-name",
+    "e2-neurodynamics"
+   ],
+   "quotes": [
+    "q-rosenblatt-linguistic"
+   ]
+  },
+  {
+   "id": "ch03-s09",
+   "kind": "scene",
+   "setting": "the paper stage at dusk, about 1965–66: the 1958 candle guttering; then the case board",
+   "era": "1960s",
+   "mood": "duskRose",
+   "lines": [
+    {
+     "id": "L0319",
+     "text": "By the mid-sixties, most of the other groups had moved on. The learning-machine candle burned about seven years.",
+     "pauseAfter": 2,
+     "direction": "slower; a little elegy, not a tragedy"
+    },
+    {
+     "id": "L0320",
+     "text": "Then two men wrote a book about what a single layer of knobs could never do.",
+     "direction": "the turn: dry and ominous, landing softly on 'never do' NARRATION: re-generate this line on its own (not inside a shot chunk) at voice speed about 0.88, target 140-160 wpm; the text is unchanged.",
+     "tts": {
+      "solo": true,
+      "speed": 0.82
+     }
+    }
+   ],
+   "leadIn": 0.6,
+   "holdAfter": 0.9,
+   "minDuration": 16.8,
+   "visual": "THIS SHOT: figures leave the 1958 candle's pool until it gutters out at seven rings; in the study X-ray band 2 lights, and a closed book's shadow slides across the board. CAMERA: stage, then BOARD (the C1-b pin as an insert), then X-RAY (square-on, band 2). Tint crossfade from candleAmber (ch03-s08 ends at the case board) to duskRose (a real mood change). The 1958 candle on its stage, lower now: about seven rings have burned away, and they stand above the stub as a ghost paper sleeve. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. Figures leave the pool one by one, walking out of frame on twos (no moonwalking): the reporter, the officer, then Widrow, who pauses at the rim and turns toward a small antenna silhouette on the horizon before going. Rosenblatt alone stays near the flame. The candle gutters out, its rim frayed; a thread of smoke rises; the stub keeps a small tag '1958–c. 1965 · 7', and the seven-ring sleeve (42 px) stands dark above it. Cut to the case board; over the cut the light tint-crossfades (crossfadeMood, 0.6 s, no dip) from duskRose to candleAmber (STUDY LOCK: study, board, shelf and Wall are always candleAmber; era colour stays only in practicals): the hands pin the chapter's clue card, a paper-cut potentiometer knob, into slot C1-b, column C1's second node, just below the 1943 wick card at C1, and run a thread of light from it to the wick card and on up to the LEARNING suspect card from ch01. The LEARNING card's dark paper lantern flickers once, faintly, and goes dark again. Then, without narration, in the pause before the turn line (first the board pin, then the X-ray), the X-ray chat box appears and holds through the pause and into the turn line (its own serverCyan glow is a practical; the board around it stays candleAmber) (X-RAY COLUMN as defined in ch02): band 1, the threshold lanterns, stays softly lit, and band 2 above it now lights, thousands of tiny adjustable knobs (adjustable weights). On 'book' a large rectangular shadow, the shape of a closed book, slides across the board from the right and darkens it, and the X-ray box fades beneath it (no Mark I wiring inset here: ch03-s04 already showed that only the last knobs turn).",
+   "beats": [
+    {
+     "id": "leave",
+     "at": {
+      "line": "L0319",
+      "word": "moved"
+     },
+     "what": "figures leave the pool one by one; Widrow turns toward the antenna"
+    },
+    {
+     "id": "gutter",
+     "at": {
+      "line": "L0319",
+      "word": "seven"
+     },
+     "what": "the flame gutters out with seven rings in the ghost sleeve; frayed rim; smoke thread; tag 1958–c. 1965 · 7"
+    },
+    {
+     "id": "clue",
+     "at": {
+      "line": "L0319",
+      "edge": "end",
+      "offset": 0.3
+     },
+     "what": "cut to the board with crossfadeMood duskRose to candleAmber (STUDY LOCK); hands pin the knob clue card in slot C1-b under the wick card; thread of light to the wick and the LEARNING suspect card, whose lantern flickers once"
+    },
+    {
+     "id": "xray",
+     "at": {
+      "line": "L0319",
+      "edge": "end",
+      "offset": 0.9
+     },
+     "what": "X-ray column: band 2 (adjustable knobs) lights above band 1 (no narration); held through the pause and into the turn line; fades under the book's shadow on 'book'"
+    },
+    {
+     "id": "xrayout",
+     "at": {
+      "line": "L0320",
+      "word": "book"
+     },
+     "what": "the book's shadow slides over the X-ray box and it fades beneath it"
+    },
+    {
+     "id": "shadow",
+     "at": {
+      "line": "L0320",
+      "word": "book"
+     },
+     "what": "the shadow of a closed book slides across the board"
+    }
+   ],
+   "cast": [
+    "rosenblatt",
+    "widrow",
+    "narrator-hands"
+   ],
+   "props": [
+    "candle-clock (guttering; seven-ring ghost sleeve above the stub)",
+    "antenna silhouette",
+    "clue card: a knob",
+    "LEARNING suspect card with dark lantern",
+    "X-ray chat box",
+    "book-shaped shadow"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "1958 – c. 1965 · about 7 years",
+     "beat": "gutter"
+    }
+   ],
+   "music": {
+    "cue": "ch03-c-gutter",
+    "note": "the candle motif's falling resolution on solo organ as the flame gutters (gone); a held, low cello note enters under the book's shadow, foreshadowing the winter; intensity falls to 2/10"
+   },
+   "transitionIn": "crossfade",
+   "claims": [
+    "e2-exits",
+    "e2-mark1-specs",
+    "e3-amari",
+    "e2-mark1-random",
+    "e3-perceptrons"
+   ]
+  }
+ ]
+}

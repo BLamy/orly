@@ -1,0 +1,89 @@
+{
+ "reviewer": "art-director",
+ "round": 7,
+ "lens": "visual direction: specific, ambitious, drawable silhouette ideas that teach; moods, staging, transitions, teaching machines; kit feasibility",
+ "scores": {
+  "accuracy": 8,
+  "depth": 8.5,
+  "clarity": 7.5,
+  "story": 8,
+  "curiosity": 8.5,
+  "visual": 8,
+  "voice": 7.5
+ },
+ "critical": [
+  "THE CHAPTER INDEX TAB AND THE DATE STAMP USE THE SAME CORNER AT THE SAME MOMENT. Round 6's fix put the tab on every chapter opener, which is good, but the tab rises from the case file at frame BOTTOM-LEFT and is on screen for about 3.3 s after its cue (0.4 s slide up, 2.5 s hold, 0.4 s slide down). placeStamp (kit-catalog: 'era-adaptive type-on stamp, bottom-left') is the film's date and place device, and in six openers the two overlap. ch02-s01: tab and the CHICAGO · c. 1941 stamp both land at 0.6 s, and the visual itself says 'types itself bottom left'. ch03-s01: the stamp at 2.4 s, while the tab is up until about 3.9 s, even though the visual says 'once the index tab has slid away'. ch05-s01: VERSAILLES · SUMMER 1981 at 1.2 s. ch06-s01: HOLMDEL, NEW JERSEY · 1989 at 1.5 s. ch11-s01: '2018' has no beat, so it shows at 0 s. ch12-s01: 'JUNE 2017' has no beat, so it shows at 0 s. ch14-s01's 20 JULY 2017 stamp (2.3 s) collides too if it is drawn with placeStamp and not as lettering on the page. FIX (one change, no retiming): move the tab to the TOP-left. It drops down from the frame's top edge like a file-divider tab, which is also where a manila tab lives. Edit the canonical CHAPTER INDEX TAB sentence in all 14 openers to say so. If the tab must stay bottom-left, cue every stamp in an opener at tab cue +3.4 s or later: ch02-s01 on L0202 'Walter', ch03-s01 on L0302 'computer', ch05-s01 on L0524 'half', ch06-s01 on L0601 'learns', ch11-s01 on beat 'library', ch12-s01 on beat 'choose'. TOOLING: script.mjs should treat the index tab as occupying bottom-left for [cue, cue+3.3] and fail any date or place item cued inside that window.",
+  "THE FINALE'S FAST-FORWARD NO LONGER RHYMES WITH THE PROLOGUE'S REWIND, AND ITS CAPTIONS FLASH. ch01-s06 now runs its five reversed images at 0.75 s each (goStone 0.5 … wick 3.5), as round 6 asked. ch15-s08 crams the lamp change and all five forward flashes into a 3.6 s lead-in: b1 at 0.8 s, and the hands sit back on 'Who' at 3.6 s. That gives about 0.56 s per image, so the rhyme the visual promises ('the prologue's rewind replays forwards') plays at a different speed. All four era stamps (BUFFALO · 1958–60, 1969, 2012, SEOUL · 2016) are also cued on the single beat b1 with no 'until', so the gate counts them as on screen for 37 s when each really lasts about half a second. The rewind had no captions at all. FIX: drop the four stamps, so the rhyme stays wordless like its partner (the images are its own callbacks). Give each flash its own beat at the rewind's pitch: ff1 knob 1.0, ff2 snow 1.75, ff3 fans 2.5, ff4 goStone 3.25, ff5 wick-in-the-chat-box 4.0. Set leadIn 4.8 (+1.2 s) so the hands sit back after the fifth flash. Also in ch15-s08, b10b ('still', 29.2 s) fires BEFORE b10 ('dark', 29.6 s), so the microscope-limit card rises before the camera has drifted up to the microscope, and the visual says the card rises on 'answers'. Re-anchor b10 to L1516 word 'lantern' and b10b to 'answers'.",
+  "THE COLD OPEN'S TWO BIG MOVES ARE MIS-TIMED. (a) ch01-s03: beat 'earth' (the night limb, on 'seven', 2.5 s) fires BEFORE beat 'cloud' (the dissolve through cloud that is supposed to reveal it, on 'people', 3.8 s). The three-move pull-back from window to city to limb is also packed into the first 3.4 s of a 6 s line, so the rise reads as a whip and the order is backwards. FIX: leadIn 0.4 → 2.2, so moves 1 and 2 happen wordless in the lead-in (rise at 0.2, cloud at 1.6). Keep earth on 'seven' (now about 4.1 s) so the waves of lit windows land on 'seven hundred million', and keep 'still' on 'rulebook'. Raise holdAfter 0.5 → 1.6, which the lampChange rule into ch01-s04 also requires (+2.9 s in all). (b) ch01-s05, the first of the three reserved FULL WIDES and the only glimpse of the ghost candle-chart: everything after L0110 has 2.26 s (pause 0.96 + hold 1.3). The shelf tilt is at end+0.2, the drift and flare at +1.0, the rise to the Wall at +1.42, and the shot ends at +2.26. So the ghost sleeves get about 1.2 s, and the W6 plant (the slip the whole of ch13 pays off) gets 0.8 s of a 'rise … and hold'. FIX: holdAfter 1.3 → 4.5 (+3.2 s), burning at end+2.0, wall at end+3.2, and end the shot on an actual full wide (board, shelf and Wall in one frame, W6's corner half-lit) for its last 1.5 s. As written, the 'full wide' is three mediums in sequence and never one frame.",
+  "THE GATE STILL CANNOT SEE TEXT THAT IS CROWDED OUT, AS OPPOSED TO CARRIED OUT, OF FRAME. 'until' fixed the camera-exit cases, but stamps and labels fired a fraction of a second apart still pass. ch05-s03: SAN DIEGO · 1978, CAMBRIDGE · 1980 and PITTSBURGH · 1982 at end+0.3, +0.6 and +0.9, all in the same bottom-left stamp position, so each is overwritten after 0.3 s. ch12-s08: four windows at 0.6 s spacing. Window 3 alone must show a lantern handed through a window AND, 'a week later', its light scattering like sparks, in 0.6 s. ch15-s08: the four fast-forward stamps on one beat (above). ch14-s07: three ~40-character estimate tags at end+0.0, +0.5 and +1.0, about 14 s of reading, followed at 8.6 s by a 118-character Liang quote card plus a name card while L1420 is being spoken. ch14-s04b: four tags (146 characters) arrive while the film's densest sentence, L1410, is still being spoken. ch14-s04b and ch14-s07 also break staging.textRule ('at most two text items'), as do ch04-s06, ch11-s08 and ch14-s02 (three each). FIX (fields): ch05-s03 drop the San Diego and Cambridge stamps (the palms and the gothic tracery carry them), boltz at end+0.9, toronto at end+4.1, holdAfter 6.2 → 5.4. ch12-s08: investment +1.0, leak +2.0 with a new beat 'scatter' at +2.6, sameDay +3.2, L1219 pauseAfter 4.2 → 5.2. ch14-s07: tags at end+0.0, +1.0 and +2.0, L1417 pauseAfter 2.0 → 3.0, drop the Liang nameCard (the quote's attribution names him). ch14-s04b: move tag4 (the inference) to creditsSources, set tag2 at 'over' +0.8, holdAfter 4.0 → 5.0. Then either amend textRule to allow 'dissent tags: up to three, 40 characters or fewer, at least 1 s apart' or cut to two. TOOLING: in script.mjs, give each date or place item an implicit 'until' at the next date or place beat in the same shot, and when several items share one beat, sum their reading times."
+ ],
+ "issues": [
+  {
+   "where": "staging.transitions vs ch01-s04, ch03-s01, ch05-s01, ch05-s04, ch13-s01",
+   "problem": "The staging rule says that wherever a lampChange stays, the incoming leadIn and the outgoing holdAfter are at least 1.6 s (iris 1.2, inkBleed 1.1). Five signature transitions break it: ch01-s04 lampChange leadIn 1.2 after ch01-s03 holdAfter 0.5; ch03-s01 inkBleed leadIn 0.6; ch05-s01 lampChange leadIn 1.2; ch05-s04 iris leadIn 0.6; ch13-s01 lampChange leadIn 1.2 after ch12-s08 holdAfter 0.5. The lamp-click and the iris are the film's punctuation, and at these lengths they will read as cuts with a flicker.",
+   "fix": "ch01-s03 holdAfter 1.6 (folded into critical 3) and ch01-s04 leadIn 1.6. ch03-s01 leadIn 1.1. ch05-s01 leadIn 1.6. ch05-s04 leadIn 1.2. ch12-s08 holdAfter 1.6 and ch13-s01 leadIn 1.6. About +4.6 s in all."
+  },
+  {
+   "where": "ch03-s05 (beats unpin, newcard)",
+   "problem": "In 0.1 s (end+0.1 → +0.2), the visual asks for a tilt from plate to board, a 1.2 s labGreen→candleAmber crossfade, the hands unpinning HOW COULD A NET REWIRE ITSELF? and dropping it into the lamp's pool, and the new Q1 card being pinned.",
+   "fix": "unpin at end+1.3 (after the tilt and the crossfade), newcard at end+2.2, holdAfter 3.9 → 6.0, so AND IF NO STRAIGHT LINE EXISTS? (31 characters, 4.1 s) holds to read. +2.1 s."
+  },
+  {
+   "where": "ch12-s07 (fullWide hold)",
+   "problem": "The second reserved FULL WIDE (board, shelf and Wall in one frame, the X-ray glowing at the board's output, every band lit) begins its pull-back at 13.9 s, and the shot ends at 16.2 s. That leaves about 1 s of held wide after the move, at the film's anatomical payoff. Round 6 asked for holdAfter 3.5; the field is still 2.0.",
+   "fix": "holdAfter 2.0 → 3.5 (+1.5 s)."
+  },
+  {
+   "where": "ch12-s01 (mood, transitionIn, lead-in)",
+   "problem": "(a) The mood field is still duskRose, but the shot opens in the study on the X-ray box (STUDY LOCK: the mood names the opening location; flagged in round 6). (b) It inkBleeds in from ch11-s08's board, which is the same amber study, and then does a second ink bleed in-shot from the shears slot. That is two signature transitions back to back. (c) In a 1.4 s lead-in, the index tab, the slot glint and the whole bleed must happen, and the visual says the bleed finishes 'under the first words'.",
+   "fix": "mood candleAmber; transitionIn 'cut' (study to study), so the slot-origin ink bleed is the chapter's one signature move; leadIn 1.4 → 2.4, with the glint at 0.6 and the bleed from 1.0 to 2.2. 'JUNE 2017' on beat 'choose' (see critical 1). +1.0 s."
+  },
+  {
+   "where": "ch06-s04 (opening), ch14-s03 (opening)",
+   "problem": "Two round-6 tint pops remain on plain cuts with no crossfadeMood. ch06-s03's duskRose plate → ch06-s04's candleAmber shelf. ch14-s02 ends on the candleAmber reflection over dawnGold water → ch14-s03 is winterBlue, so the strait jumps from dawn to winter dusk on a cut.",
+   "fix": "ch06-s04: 'Cut, with crossfadeMood duskRose→candleAmber, 0.7 s, no dip, under it'. ch14-s03: open on the price tag in close-up (no water in frame), with crossfadeMood dawnGold→winterBlue 0.8 s under the cut, so the sky has changed by the time the pull-back on 'million' reveals it."
+  },
+  {
+   "where": "ch14-s02 (beat leftstone), ch14-s04 (beat rightstone)",
+   "problem": "ch14-s02: the paper fence starts rising on 'fenced' (3.6 s), and 0.4 s later, on 'off', the camera cuts away to the jetty to set a stone and comes back. The film's clearest export-control image is interrupted almost as soon as it starts, and the BIS quote card cued on 'fenced' plays to an empty frame. ch14-s04: the R1 lantern launches at 6.6, the cutaway to the jetty is at 7.5, and the cut to the left bank is at 8.8: three locations in 2.2 s. The jetty already sits at the centre of every ch14 wide, so neither cutaway is needed.",
+   "fix": "Delete both cutaways. ch14-s02: on 'tools', after the fence stands, a hand from the left shore sets its stone at the jetty's end within the same wide. ch14-s04: the R1 lantern floats past the jetty's end, and the right-shore hand sets its stone as the lantern passes, in the same frame."
+  },
+  {
+   "where": "ch11-s01 (lead-in)",
+   "problem": "X-ray band 5 lasts 1.8 s (0.4 → 2.2), half under the index tab, while band 1 had 2.5 s. The undated '2018' stamp sits in the tab's corner. Four locations (X-RAY, BOARD, COAT, LIBRARY) are in one shot, and the band-5 ritual is the one getting squeezed.",
+   "fix": "pinC3d at 2.8, leadIn 4.0 → 4.6 (+0.6). '2018' on beat 'library' (it belongs to the library, not the study). Pay for it with holdAfter 7.1 → 6.0 (the library breathes 4 s after the machines arrive). Net −0.5 s."
+  },
+  {
+   "where": "ch13-s04 (Gebru quote card)",
+   "problem": "The card is 140 characters with attribution ('… replying to the March pause letter') and needs 13 s. It is cued on 'Gebru', and the pan right on 'other' carries it out of frame after about 7 s. The gate passes it because there is no 'until'.",
+   "fix": "Cut the attribution to '— Gebru, Bender & McMillan-Major, March 2023', move 'replying to the March pause letter' to creditsSources, and add until: 'lecun'. Do the same for LeCun's card (until: 'medals')."
+  },
+  {
+   "where": "ch12-s03 (beats names, pin)",
+   "problem": "'names' (the pin stays bare and the announcement settles in its slot, 6.2 s) fires before 'pin' (the hands pin the announcement, 6.6 s), so it settles before it is pinned. ch09-s04, its FOUNDING GRAMMAR twin, has them the right way round.",
+   "fix": "names at {line L1206, edge end, offset 0.4}, so it comes after pin."
+  },
+  {
+   "where": "ch05-s01 (lamp change into the Hall of Mirrors)",
+   "problem": "Besides the lead-in shortfall (above), the place stamp at 1.2 s, the name card at 2.9 s and the ring glow at 4.2 s all come under a tab that sits up from 0.1 to about 3.4 s. The teaching image (half a memory rolling downhill into the whole) starts only at 5.9 s, which is fine, but the opening three seconds stack four elements.",
+   "fix": "With critical 1's corner move and leadIn 1.6, cue 'hall' at 1.0 (no stamp text yet) and the place stamp on 'Hopfield'. The tab, the stamp and the name card then arrive in sequence."
+  },
+  {
+   "where": "visual text length (all ch14 shots, 15 BOARD MAP shots, 36 CANDLE-CLOCK shots)",
+   "problem": "Verbatim canonical blocks (BOARD MAP, CANDLE-CLOCK RULE, WINDOW RULE, CANDLE PLACEMENT) are about 18% of all visual text (52,800 of 286,600 characters). In ch14-s04b and ch14-s07, the shot's own idea starts after about 2,000 characters of boilerplate. Shot authors read the visual first, so the thing that makes each shot unique is buried. This is non-blocking.",
+   "fix": "Open each visual with a one-sentence 'THIS SHOT:' line naming its teaching image and its move (e.g. ch14-s04b: 'THIS SHOT: a match lettered COMPUTE DOESN'T MATTER flares for one day and is shaken out; the one-to-three-years candle blows out at two rings'). Or have the assembler expand {{BOARD_MAP}}-style tokens, so the chapter sources stay readable and authors still get the verbatim text."
+  },
+  {
+   "where": "runtime ledger for this card",
+   "problem": "Fixes that add time: ch01-s03 +2.9, ch01-s05 +3.2, ch15-s08 +1.2, ch03-s05 +2.1, ch12-s07 +1.5, ch12-s01 +1.0, transitions about +3.5 (net of ch01-s03), ch12-s08 +1.0 (pause; its holdAfter is counted in the transitions), ch14-s07 +1.0, ch14-s04b +1.0, for about +18.4 s. Savings: ch05-s03 −0.8, ch11-s01 −0.5. Net about +17 s on a 34.5-minute script, which would put it at about 34.8 min, under the 35.2 ceiling but over the story editor's 34.5 gate.",
+   "fix": "Visual-lens savings where the picture already carries the words: ch11-s05 L1110 cut 'The giant GPT-3' to 'GPT-3' (the 175 BILLION WEIGHTS plate and the 96-storey tower carry the size); ch03-s06 shorten the card's attribution to '— Rosenblatt, The New Yorker, 1958', slip at end+6.6, holdAfter 13 → 11.5 (−1.5 s); ch06-s08 minDuration 7 → 6 (−1 s). The story editor owns the remaining roughly 12 s of words. Do not take it from the four critical shots."
+  }
+ ],
+ "strengths": [
+  "Round 6's biggest structural asks all landed. Every chapter now opens on the same INDEX TAB (with 'DEEP DIVE ·' on chapters 8 and 10). The X-ray ritual has real time: band 1 runs 2.5 s, band 4 3 s, ch12-s07 lights seven bands at 0.8 s each, and band 5 has moved to ch11-s01's lead-in. ch08-s13b now goes through the new candle's flame onto its stage before revealing the 1976 desk, so the 36-year payoff is drawn in the right world. ch14-s07 pulls back INTO the study instead of rising over the jetty. The shelf is ordered by the year on each base tag. ch09-s03's candle-outs, ch13-s06's Cyc death and ch15-s09's STATUS: OPEN all hold long enough to land.",
+  "The teaching machines remain the film's signature, and they are bound to real, checkable numbers. Hopfield's half-memory rolls downhill like a chalk ball on the easel while the missing lanterns relight. The log-log ruled line tilts back to become GPT-3's roofline, and three example strips fill in a fourth with no pen touching the tower. DeepSeek's $5.576M price tag pulls back to a vast data hall, with second and third buildings for 'not the research, not the chips'. The folding ruler doubles section by section up to UNRELIABLE ABOVE HERE. The two stopwatches show the METR trial's ghost hand (felt faster) against the real hand (slower). None of these is a talking head or a box-and-arrow diagram, and each one is an argument a viewer can see.",
+  "The 'until' field is used where it matters. ch11-s01's PRE-TRAINING tag, ch15-s02's hidden-notes label, ch15-s04's ruler label and ch14-s02's BIS card all now leave with the camera rather than at shot end, and none of them is unreadable by the gate's own rule.",
+  "Even-handedness is built into the frame: the mirror-balanced shores with identical warmth and the same rhythm of lit windows, the jetty's Go board as a record of moves and answers, the identical lamps in ch15-s05 with a fairness rule that admits the stops are unequal in time and says why, FOUNDING GRAMMAR's fixed lantern meanings for every lab, and the three-lamps staging of the 2023 split, with overlapping pools and Hinton's shadow falling into the present-harms lamp.",
+  "The bookends rhyme in pictures: the cursor in total black (ch01-s01) returns as the only light after the lamp clicks off (ch15-s09). The ghost shelf and W6's half-lit corner (ch01-s05) are paid off by Hinton taking that slip down himself (ch13-s01). The unlit LEARNING lantern lights only in the verdict. The board turns out to be a lanternNetwork with one dark lantern under the last question, and the microscope is turned toward it. Once critical 2 restores the 0.75 s pitch, the rewind and fast-forward will close the loop."
+ ]
+}

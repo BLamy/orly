@@ -1,0 +1,52 @@
+{
+ "shot": "ch04-s05",
+ "at": "2026-10-12T02:33:52.872Z",
+ "minCapPx": 22,
+ "sampled": 14,
+ "texts": 9,
+ "offenders": [
+  {
+   "text": "PERCEPTRONS",
+   "maxCap": 17.7,
+   "minCap": 17.1,
+   "first": 0.55,
+   "last": 6.55,
+   "font": "600 31.5084px \"Cormorant SC\""
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "1",
+   "maxCap": 26.9
+  },
+  {
+   "text": "J",
+   "maxCap": 26.9
+  },
+  {
+   "text": "U",
+   "maxCap": 26.9
+  },
+  {
+   "text": "L",
+   "maxCap": 26.9
+  },
+  {
+   "text": "Y",
+   "maxCap": 26.9
+  },
+  {
+   "text": "9",
+   "maxCap": 26.9
+  },
+  {
+   "text": "7",
+   "maxCap": 26.9
+  },
+  {
+   "text": "second printing, 1972",
+   "maxCap": 22.1
+  }
+ ]
+}

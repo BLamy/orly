@@ -1,0 +1,75 @@
+{
+ "shot": "ch02-s03",
+ "at": "2026-10-12T07:32:07.435Z",
+ "minCapPx": 22,
+ "sampled": 12,
+ "texts": 16,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 52.3
+  },
+  {
+   "text": "IT?",
+   "maxCap": 52.3
+  },
+  {
+   "text": "RULES",
+   "maxCap": 30.3
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 26.2
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 26.2
+  },
+  {
+   "text": "1943",
+   "maxCap": 30.3
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 25.7
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 25.7
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 25.7
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 25.7
+  },
+  {
+   "text": "— McCulloch & Pitts, 1943",
+   "maxCap": 25.7
+  },
+  {
+   "text": "How could a net",
+   "maxCap": 37.7
+  },
+  {
+   "text": "rewire itself?",
+   "maxCap": 37.7
+  },
+  {
+   "text": "THE STRUCTURE",
+   "maxCap": 22.6
+  },
+  {
+   "text": "OF THE NET",
+   "maxCap": 22.6
+  },
+  {
+   "text": "DOES NOT",
+   "maxCap": 22.6
+  }
+ ]
+}

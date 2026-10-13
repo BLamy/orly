@@ -1,0 +1,148 @@
+{
+ "shot": "ch03-s06",
+ "at": "2026-10-12T08:05:10.950Z",
+ "minCapPx": 22,
+ "sampled": 25,
+ "texts": 24,
+ "offenders": [
+  {
+   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
+   "maxCap": 14.2,
+   "minCap": 13.4,
+   "first": 0.25,
+   "last": 17.25,
+   "font": "15.12px \"Special Elite\""
+  },
+  {
+   "text": "1958",
+   "maxCap": 15.2,
+   "minCap": 14.3,
+   "first": 0.25,
+   "last": 17.25,
+   "font": "16.2px \"Special Elite\""
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 18.2,
+   "minCap": 11.7,
+   "first": 17.84,
+   "last": 20.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 21.1,
+   "minCap": 13.5,
+   "first": 17.84,
+   "last": 20.25,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 21.1,
+   "minCap": 13.5,
+   "first": 17.84,
+   "last": 20.25,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 21.1,
+   "minCap": 13.5,
+   "first": 17.84,
+   "last": 20.25,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 21.1,
+   "minCap": 13.5,
+   "first": 17.84,
+   "last": 20.25,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 21.4,
+   "minCap": 13.8,
+   "first": 17.84,
+   "last": 20.25,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 21.4,
+   "minCap": 13.8,
+   "first": 17.84,
+   "last": 20.25,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 21.4,
+   "minCap": 13.8,
+   "first": 17.84,
+   "last": 20.25,
+   "font": "9.5px \"Special Elite\""
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "“Love,” he said.",
+   "maxCap": 33.3
+  },
+  {
+   "text": "“Hope.",
+   "maxCap": 33.3
+  },
+  {
+   "text": "Despair.”",
+   "maxCap": 33.3
+  },
+  {
+   "text": "— Rosenblatt, on its limits (New Yorker, 1958)",
+   "maxCap": 23.5
+  },
+  {
+   "text": "AND IF NO STRAIGHT LINE",
+   "maxCap": 24.8
+  },
+  {
+   "text": "EXISTS?",
+   "maxCap": 24.8
+  },
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 42.8
+  },
+  {
+   "text": "IT?",
+   "maxCap": 42.8
+  },
+  {
+   "text": "RULES",
+   "maxCap": 24.8
+  },
+  {
+   "text": "1943",
+   "maxCap": 24.8
+  },
+  {
+   "text": "SIMON & NEWELL",
+   "maxCap": 22.5
+  },
+  {
+   "text": "CHESS CHAMPION",
+   "maxCap": 22.5
+  },
+  {
+   "text": "BY 1968",
+   "maxCap": 22.5
+  },
+  {
+   "text": "1968",
+   "maxCap": 22.5
+  }
+ ]
+}

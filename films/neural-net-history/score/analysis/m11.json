@@ -1,0 +1,18 @@
+{
+ "id": "m11",
+ "start": 1042.483,
+ "end": 1129.891,
+ "file": "films/neural-net-history/score/renders/m11.wav",
+ "duration": 93.408,
+ "I": -23.1,
+ "LRA": 16,
+ "TP": -4.8,
+ "expected": 93.408,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/neural-net-history/score/analysis/m11.png",
+ "cueSeconds": 87.408,
+ "cps": 0.25,
+ "lastStrikeLocal": 70.9,
+ "lastStrike": 1113.383
+}

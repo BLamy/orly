@@ -1,0 +1,63 @@
+{
+ "shot": "ch01-s04",
+ "at": "2026-10-12T07:33:10.226Z",
+ "minCapPx": 22,
+ "sampled": 23,
+ "texts": 13,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "WHO",
+   "maxCap": 25.1
+  },
+  {
+   "text": "TAUGHT IT?",
+   "maxCap": 25.1
+  },
+  {
+   "text": "“ChatGPT sometimes writes",
+   "maxCap": 23.4
+  },
+  {
+   "text": "plausible-sounding but incorrect",
+   "maxCap": 23.4
+  },
+  {
+   "text": "or nonsensical answers.”",
+   "maxCap": 23.4
+  },
+  {
+   "text": "— OpenAI, 30 Nov 2022",
+   "maxCap": 23.4
+  },
+  {
+   "text": "sometimes",
+   "maxCap": 22.6
+  },
+  {
+   "text": "writes",
+   "maxCap": 22.6
+  },
+  {
+   "text": "plausible-sounding",
+   "maxCap": 23.4
+  },
+  {
+   "text": "incorrect",
+   "maxCap": 23.4
+  },
+  {
+   "text": "or",
+   "maxCap": 23.2
+  },
+  {
+   "text": "nonsensical",
+   "maxCap": 23.4
+  },
+  {
+   "text": "answers",
+   "maxCap": 23.4
+  }
+ ]
+}

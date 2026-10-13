@@ -1,0 +1,43 @@
+{
+ "shot": "ch08-s02",
+ "at": "2026-10-12T18:26:40.336Z",
+ "minCapPx": 22,
+ "sampled": 18,
+ "texts": 8,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "TORONTO · 2011",
+   "maxCap": 22.1
+  },
+  {
+   "text": "ilya sutskever",
+   "maxCap": 22
+  },
+  {
+   "text": "graduate student",
+   "maxCap": 22
+  },
+  {
+   "text": "alex krizhevsky",
+   "maxCap": 22
+  },
+  {
+   "text": "geoffrey hinton",
+   "maxCap": 22
+  },
+  {
+   "text": "supervisor",
+   "maxCap": 22
+  },
+  {
+   "text": "BEDROOM (CHM) · LAB (NVIDIA)",
+   "maxCap": 23.6
+  },
+  {
+   "text": "2 × GTX 580 · 3 GB",
+   "maxCap": 23.6
+  }
+ ]
+}

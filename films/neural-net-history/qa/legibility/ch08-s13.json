@@ -1,0 +1,79 @@
+{
+ "shot": "ch08-s13",
+ "at": "2026-10-12T19:45:05.129Z",
+ "minCapPx": 22,
+ "sampled": 16,
+ "texts": 17,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "35%",
+   "maxCap": 44.2
+  },
+  {
+   "text": "30%",
+   "maxCap": 44.2
+  },
+  {
+   "text": "25%",
+   "maxCap": 44.2
+  },
+  {
+   "text": "20%",
+   "maxCap": 44.2
+  },
+  {
+   "text": "15%",
+   "maxCap": 44.2
+  },
+  {
+   "text": "SuperVision ·",
+   "maxCap": 35.7
+  },
+  {
+   "text": "Toronto",
+   "maxCap": 35.7
+  },
+  {
+   "text": "7 networks voting (2 pre-trained on extra data)",
+   "maxCap": 25.1
+  },
+  {
+   "text": "16.4%",
+   "maxCap": 44.2
+  },
+  {
+   "text": "18.2%",
+   "maxCap": 44.2
+  },
+  {
+   "text": "one network alone 18.2% (validation)",
+   "maxCap": 25.1
+  },
+  {
+   "text": "IDSIA",
+   "maxCap": 23.1
+  },
+  {
+   "text": "IDSIA, 2011:",
+   "maxCap": 25.1
+  },
+  {
+   "text": "road signs 99.46%",
+   "maxCap": 25.1
+  },
+  {
+   "text": "best human 99.22%",
+   "maxCap": 25.1
+  },
+  {
+   "text": "2010",
+   "maxCap": 22.1
+  },
+  {
+   "text": "2011",
+   "maxCap": 22.1
+  }
+ ]
+}

@@ -1,0 +1,358 @@
+{
+  "slug": "perceptron-short",
+  "title": "The Machine That Learned to See",
+  "subtitle": "a one-minute silhouette short",
+  "logline": "A grid of four hundred light cells, a nest of wires, and a rule for learning from mistakes.",
+  "runtimeTargetSec": 60,
+  "vhs": {
+    "subject": "Computer Science",
+    "theme": "cosmos",
+    "icons": [
+      "crt",
+      "lightbulb",
+      "neuron",
+      "gear"
+    ],
+    "tagline": "Watch a machine learn to see!"
+  },
+  "runtimeCeilingSec": 68,
+  "cast": [
+    {
+      "id": "rosenblatt",
+      "name": "Frank Rosenblatt",
+      "role": "psychologist, Cornell Aeronautical Laboratory",
+      "firstAppearance": "ch01-s02",
+      "height": 322,
+      "build": "slight",
+      "era": "1950s",
+      "wardrobe": "labCoat",
+      "hair": "sidePart",
+      "facialHair": "none",
+      "glasses": "none",
+      "hat": "none",
+      "profile": {
+        "nose": 0.5,
+        "brow": 0.45,
+        "chin": 0.5,
+        "jaw": 0.45
+      },
+      "prop": "none",
+      "details": [
+        "lapel",
+        "pocket"
+      ]
+    }
+  ],
+  "chapters": [
+    {
+      "id": "ch01",
+      "number": 1,
+      "title": "The Machine That Learned to See",
+      "blurb": "Rosenblatt's Mark I Perceptron learns from its mistakes.",
+      "shots": [
+        {
+          "id": "ch01-s01",
+          "kind": "card",
+          "setting": "Title card over a night-dark laboratory window",
+          "era": "1950s",
+          "mood": "labGreen",
+          "lines": [
+            {
+              "id": "L0101",
+              "text": "Once, a machine learned to see.",
+              "direction": "quiet, a storyteller beginning",
+              "levelDb": -5
+            }
+          ],
+          "leadIn": 1.2,
+          "holdAfter": 0.6,
+          "minDuration": 5.2,
+          "visual": "Black. A faint green-grey backlight rises behind tall laboratory windows; fog drifts. The title card 'The Machine That Learned to See' fades up in small caps with fine rules, then a place stamp 'CORNELL AERONAUTICAL LABORATORY · BUFFALO, NEW YORK · c. 1960'. The camera begins a slow dolly toward the middle window.",
+          "beats": [
+            {
+              "id": "title",
+              "at": {
+                "shotTime": 0.8
+              },
+              "what": "title card fades up"
+            },
+            {
+              "id": "place",
+              "at": {
+                "line": "L0101",
+                "word": "machine"
+              },
+              "what": "place stamp appears"
+            }
+          ],
+          "onScreenText": [
+            {
+              "kind": "title",
+              "text": "The Machine That Learned to See"
+            },
+            {
+              "kind": "place",
+              "text": "Cornell Aeronautical Laboratory · Buffalo, New York · c. 1960",
+              "beat": "place"
+            }
+          ],
+          "music": {
+            "note": "a single low string drone with a soft celesta figure; wonder held in reserve"
+          },
+          "transitionIn": "fadeBlack",
+          "claims": [
+            "mk1-builder"
+          ]
+        },
+        {
+          "id": "ch01-s02",
+          "kind": "scene",
+          "setting": "Cornell Aeronautical Laboratory, Buffalo, New York, night",
+          "era": "1950s",
+          "mood": "labGreen",
+          "lines": [
+            {
+              "id": "L0102",
+              "text": "Its eye: four hundred light cells, twenty by twenty.",
+              "insertGaps": {
+                "eye": -0.1
+              }
+            },
+            {
+              "id": "L0103",
+              "text": "Behind it, wires, and racks of dials that motors turned."
+            },
+            {
+              "id": "L0104",
+              "text": "It was the Mark I Perceptron, the project of psychologist Frank Rosenblatt.",
+              "direction": "plain and clear; let the name end the sentence, Rosenblatt said as one ordinary word, not syllable by syllable",
+              "preGap": 0.8,
+              "qa": {
+                "stt": "required",
+                "expect": [
+                  "Rosenblatt"
+                ],
+                "note": "after narration run one ElevenLabs STT round trip on this clip and assert 'Rosenblatt' comes back; then mark the lexicon note confirmed. Never 'skip'."
+              },
+              "insertGaps": {
+                "Perceptron": -0.15
+              }
+            }
+          ],
+          "visual": "Multiplane lab interior under flickering fluorescent tubes: venetian-blind windows backlit green-grey, the Mark I Perceptron in profile on the action plane — the photocell camera grid on its stand at left, the patch board of tangled cables, the racks of potentiometer units at right. Rosenblatt's silhouette stands beside the racks, then turns to present the machine. Camera trucks left-to-right along the machine, revealing eye, then wires, then dials, landing on the figure as his name is spoken; a name card appears on first mention.",
+          "beats": [
+            {
+              "id": "eye",
+              "at": {
+                "line": "L0102",
+                "word": "eye"
+              },
+              "what": "the photocell grid catches the light; cells shimmer"
+            },
+            {
+              "id": "wires",
+              "at": {
+                "line": "L0103",
+                "word": "wires"
+              },
+              "what": "camera reaches the patch board; cables catch a rim light"
+            },
+            {
+              "id": "dials",
+              "at": {
+                "line": "L0103",
+                "word": "motors"
+              },
+              "what": "a few potentiometer dials turn"
+            },
+            {
+              "id": "name",
+              "at": {
+                "line": "L0104",
+                "word": "Frank"
+              },
+              "what": "name card; Rosenblatt turns and presents the machine"
+            }
+          ],
+          "cast": [
+            "rosenblatt"
+          ],
+          "props": [
+            "markOnePerceptron",
+            "fluorescentTubes"
+          ],
+          "onScreenText": [
+            {
+              "kind": "nameCard",
+              "text": "Frank Rosenblatt — psychologist",
+              "beat": "name"
+            }
+          ],
+          "music": {
+            "note": "pulse of plucked low strings under the voice, curious"
+          },
+          "transitionIn": "crossfade",
+          "claims": [
+            "mk1-builder",
+            "mk1-retina",
+            "mk1-weights",
+            "mk1-patchboard"
+          ],
+          "leadIn": 0.4
+        },
+        {
+          "id": "ch01-s03",
+          "kind": "plate",
+          "setting": "Inside the machine's mind: a lantern-lit theatre of photocells",
+          "era": "1950s",
+          "mood": "candleAmber",
+          "lines": [
+            {
+              "id": "L0105",
+              "text": "Nobody gave it the rule. Show it a shape; it guesses.",
+              "insertGaps": {
+                "rule": 0.69,
+                "shape": 0.15
+              },
+              "direction": "plant the question: 'Nobody gave it the rule' plain and a touch intrigued, the lift on 'rule'; a full beat after 'rule' (1.1-1.2 s, opened editorially) to let the question land, then the demonstration"
+            },
+            {
+              "id": "L0105b",
+              "text": "Each lit cell tugs the needle through the dials it feeds; the total decides.",
+              "direction": "plain, explaining; even and continuous through 'Each lit cell tugs' (no gap over 0.12 s inside it); keep the short pause before 'the total decides' and a light lift on 'total'",
+              "insertGaps": {
+                "Each": -0.1,
+                "cell": -0.07
+              }
+            },
+            {
+              "id": "L0106",
+              "text": "When it guesses wrong, motors nudge the dials that had a say, a little, toward the right answer.",
+              "pauseAfter": 0.6,
+              "direction": "even and continuous through 'had a say' (no gap over 0.15 s inside it); 'a little' as a light aside; 'nudge' clear"
+            },
+            {
+              "id": "L0107",
+              "text": "Wrong, and wrong again, and then, quite suddenly... right.",
+              "direction": "slow, savouring the turn; a held breath after 'suddenly', then 'right' as its own weighted beat, landing at least as firmly as 'Wrong'",
+              "wordRides": {
+                "right": 5
+              },
+              "preGap": 0.95
+            },
+            {
+              "id": "L0108",
+              "text": "It could learn only simple patterns. In 1969, Minsky and Papert showed just how simple; for years, interest faded. Its descendants, today's neural networks, still learn from mistakes.",
+              "direction": "quieter, reflective, closing the story; a small breath after 'patterns' and after 'faded'; Papert as PAP-ert; then warm, unhurried into 'descendants'",
+              "preGap": 2,
+              "levelDb": -1.5,
+              "insertGaps": {
+                "patterns": -0.4,
+                "simple#2": -0.1,
+                "faded": -0.15
+              }
+            }
+          ],
+          "holdAfter": 2.93,
+          "visual": "The perceptron retina teaching machine (captioned as an illustration of the rule): a 20 by 20 grid of photocell lanterns shows a shape; threads of light run through a short tangle to dials and on to the response unit's needle, which swings with the weighted total and answers by whether it passes a threshold mark. On each wrong guess only the threads and dials fed by lit cells change (real perceptron-rule updates) and the try counter advances; on 'right' the lantern flares warm, then a second, different shape is also answered correctly. Over the closing line the lantern irises out and match-dissolves back to the night lab of s02 (the eye glowing on its stand, Rosenblatt beside it, the title small), then the final composition HOLDS in clear air (bookend hold about 2.9 s after 'mistakes': the last word, the last chord about 0.15 s later, and the picture fade starting about 1.0 s after that chord, finishing on the last frame), so word, chord and fade never arrive together.",
+          "beats": [
+            {
+              "id": "shape",
+              "at": {
+                "line": "L0105",
+                "word": "shape"
+              },
+              "what": "a shape lights on the retina"
+            },
+            {
+              "id": "tug",
+              "at": {
+                "line": "L0105b",
+                "word": "tugs"
+              },
+              "what": "threads from the lit cells pulse into the dials toward the needle"
+            },
+            {
+              "id": "sum",
+              "at": {
+                "line": "L0105b",
+                "word": "total"
+              },
+              "what": "the needle swings with the weighted total against the threshold mark; the answer follows which side it lands"
+            },
+            {
+              "id": "nudge",
+              "at": {
+                "line": "L0106",
+                "word": "nudge"
+              },
+              "what": "on a wrong guess, only the weight threads fed by lit cells change"
+            },
+            {
+              "id": "right",
+              "at": {
+                "line": "L0107",
+                "word": "right"
+              },
+              "what": "the response lantern glows: correct"
+            },
+            {
+              "id": "limit",
+              "at": {
+                "line": "L0108",
+                "word": "simple"
+              },
+              "what": "the second correct answer has landed; the theatre begins to iris out"
+            },
+            {
+              "id": "minsky",
+              "at": {
+                "line": "L0108",
+                "word": "Minsky"
+              },
+              "what": "era stamp '1969 · PERCEPTRONS · MINSKY & PAPERT' with a closed-book silhouette (never a likeness)"
+            },
+            {
+              "id": "years",
+              "at": {
+                "line": "L0108",
+                "word": "years"
+              },
+              "what": "the stage lights dim a notch"
+            },
+            {
+              "id": "descendants",
+              "at": {
+                "line": "L0108",
+                "word": "descendants"
+              },
+              "what": "match-dissolve to the night lab bookend: the eye glowing, Rosenblatt beside it"
+            }
+          ],
+          "music": {
+            "note": "the celesta figure returns and resolves on 'right'; the D-major bloom rings on under the second correct answer and the closing line, the music-box echo spreads, and everything decays to silence just before the fade to black completes"
+          },
+          "transitionIn": "iris",
+          "claims": [
+            "mk1-trained",
+            "mk1-rule",
+            "mk1-weights",
+            "mk1-sum",
+            "limit-linear",
+            "lineage-mlp",
+            "mk1-patchboard"
+          ],
+          "onScreenText": [
+            {
+              "kind": "date",
+              "text": "1969 · Perceptrons · Minsky & Papert",
+              "beat": "minsky",
+              "until": "descendants"
+            }
+          ],
+          "leadIn": 0.45
+        }
+      ]
+    }
+  ]
+}

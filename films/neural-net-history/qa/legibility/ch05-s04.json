@@ -1,0 +1,244 @@
+{
+ "shot": "ch05-s04",
+ "at": "2026-10-12T08:20:14.679Z",
+ "minCapPx": 22,
+ "sampled": 56,
+ "texts": 51,
+ "offenders": [
+  {
+   "text": "1969–1986 · 17",
+   "maxCap": 11,
+   "minCap": 11,
+   "first": 42.65,
+   "last": 42.65,
+   "font": "18.9px \"Special Elite\""
+  },
+  {
+   "text": "1985",
+   "maxCap": 16.2,
+   "minCap": 16.1,
+   "first": 37.65,
+   "last": 39.65,
+   "font": "26.52px \"Special Elite\""
+  },
+  {
+   "text": "1986",
+   "maxCap": 16.2,
+   "minCap": 16.1,
+   "first": 40.28,
+   "last": 42.65,
+   "font": "27.56px \"Special Elite\""
+  },
+  {
+   "text": "MANY-LAYERED NETS ARE",
+   "maxCap": 18.3,
+   "minCap": 17.7,
+   "first": 39.65,
+   "last": 41.65,
+   "font": "25.1407px \"Special Elite\""
+  },
+  {
+   "text": "A STERILE EXTENSION",
+   "maxCap": 18.3,
+   "minCap": 17.7,
+   "first": 39.65,
+   "last": 41.65,
+   "font": "25.1407px \"Special Elite\""
+  },
+  {
+   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
+   "maxCap": 20,
+   "minCap": 10.3,
+   "first": 0.65,
+   "last": 42.65,
+   "font": "17.64px \"Special Elite\""
+  },
+  {
+   "text": "1969",
+   "maxCap": 21.4,
+   "minCap": 11,
+   "first": 0.65,
+   "last": 42.65,
+   "font": "18.9px \"Special Elite\""
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "0 0",
+   "maxCap": 22.6
+  },
+  {
+   "text": "0",
+   "maxCap": 28.3
+  },
+  {
+   "text": "0 1",
+   "maxCap": 22.6
+  },
+  {
+   "text": "1",
+   "maxCap": 28.3
+  },
+  {
+   "text": "1 0",
+   "maxCap": 22.6
+  },
+  {
+   "text": "1 1",
+   "maxCap": 22.6
+  },
+  {
+   "text": "NATURE",
+   "maxCap": 22
+  },
+  {
+   "text": "NATURE · 9 O",
+   "maxCap": 22
+  },
+  {
+   "text": "NATURE · 9 OCT 1986",
+   "maxCap": 22
+  },
+  {
+   "text": "x₁ = 1",
+   "maxCap": 29.6
+  },
+  {
+   "text": "x₂ = 0",
+   "maxCap": 29.6
+  },
+  {
+   "text": "OUTPUT",
+   "maxCap": 24.5
+  },
+  {
+   "text": "HIDDEN",
+   "maxCap": 24.5
+  },
+  {
+   "text": "INPUT",
+   "maxCap": 24.5
+  },
+  {
+   "text": "david rumelhart",
+   "maxCap": 25.9
+  },
+  {
+   "text": "with Hinton & Williams",
+   "maxCap": 26.4
+  },
+  {
+   "text": "ŷ = 0.36",
+   "maxCap": 32.3
+  },
+  {
+   "text": "blame(i) = slope(i) ·",
+   "maxCap": 39.2
+  },
+  {
+   "text": "j",
+   "maxCap": 24.3
+  },
+  {
+   "text": "blame(j) · w",
+   "maxCap": 39.2
+  },
+  {
+   "text": "ji",
+   "maxCap": 24.3
+  },
+  {
+   "text": "Δw",
+   "maxCap": 39.2
+  },
+  {
+   "text": "· blame(j) · y",
+   "maxCap": 39.2
+  },
+  {
+   "text": "i",
+   "maxCap": 24.3
+  },
+  {
+   "text": "THE 1986 METHOD, ON EXCLUSIVE-OR",
+   "maxCap": 22.3
+  },
+  {
+   "text": "·  A DEMONSTRATION  ·",
+   "maxCap": 22.3
+  },
+  {
+   "text": "x₁ = 0",
+   "maxCap": 29.6
+  },
+  {
+   "text": "ŷ = 0.55",
+   "maxCap": 32.3
+  },
+  {
+   "text": "epoch 6   ·   loss 0.706",
+   "maxCap": 28.3
+  },
+  {
+   "text": "ŷ = 0.53",
+   "maxCap": 32.3
+  },
+  {
+   "text": "epoch 15   ·   loss 0.697",
+   "maxCap": 28.3
+  },
+  {
+   "text": "ŷ = 0.64",
+   "maxCap": 30.9
+  },
+  {
+   "text": "epoch 173   ·   loss 0.501",
+   "maxCap": 27
+  },
+  {
+   "text": "ŷ = 0.99",
+   "maxCap": 28.9
+  },
+  {
+   "text": "epoch 549   ·   loss 0.016",
+   "maxCap": 25.2
+  },
+  {
+   "text": "x₂ = 1",
+   "maxCap": 26
+  },
+  {
+   "text": "ŷ = 1.00",
+   "maxCap": 28.3
+  },
+  {
+   "text": "epoch 1179   ·   loss 0.005",
+   "maxCap": 24.8
+  },
+  {
+   "text": "ŷ = 0.00",
+   "maxCap": 28.3
+  },
+  {
+   "text": "epoch 1500   ·   loss 0.004",
+   "maxCap": 24.8
+  },
+  {
+   "text": "…come to represent important",
+   "maxCap": 26.4
+  },
+  {
+   "text": "features of the task domain”",
+   "maxCap": 26.4
+  },
+  {
+   "text": "nature, 1986",
+   "maxCap": 22
+  },
+  {
+   "text": "lit 1969 · out 1986 · 17 years",
+   "maxCap": 22
+  }
+ ]
+}

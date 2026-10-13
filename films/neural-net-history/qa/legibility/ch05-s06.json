@@ -1,0 +1,220 @@
+{
+ "shot": "ch05-s06",
+ "at": "2026-10-12T08:20:22.876Z",
+ "minCapPx": 22,
+ "sampled": 32,
+ "texts": 39,
+ "offenders": [
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 14.6,
+   "minCap": 9.2,
+   "first": 0.55,
+   "last": 20.99,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 14.6,
+   "minCap": 9.2,
+   "first": 0.55,
+   "last": 20.99,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 14.6,
+   "minCap": 9.2,
+   "first": 0.55,
+   "last": 20.99,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 14.6,
+   "minCap": 9.2,
+   "first": 0.55,
+   "last": 20.99,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 14.8,
+   "minCap": 9.3,
+   "first": 0.55,
+   "last": 20.99,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 14.8,
+   "minCap": 9.3,
+   "first": 0.55,
+   "last": 20.99,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "RULES",
+   "maxCap": 17.1,
+   "minCap": 10.8,
+   "first": 0.55,
+   "last": 20.99,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "1943",
+   "maxCap": 17.1,
+   "minCap": 10.8,
+   "first": 0.55,
+   "last": 20.99,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "1958",
+   "maxCap": 17.1,
+   "minCap": 10.8,
+   "first": 0.55,
+   "last": 20.99,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "1969",
+   "maxCap": 17.1,
+   "minCap": 10.8,
+   "first": 0.55,
+   "last": 20.99,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "HELSINKI ·",
+   "maxCap": 17.1,
+   "minCap": 10.8,
+   "first": 0.55,
+   "last": 20.99,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "THEN HOW DO YOU TRAIN",
+   "maxCap": 18.7,
+   "minCap": 16.5,
+   "first": 0.55,
+   "last": 2.55,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "THE HIDDEN LAYER?",
+   "maxCap": 18.7,
+   "minCap": 16.5,
+   "first": 0.55,
+   "last": 2.55,
+   "font": "11px \"Special Elite\""
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 29.6
+  },
+  {
+   "text": "IT?",
+   "maxCap": 29.6
+  },
+  {
+   "text": "1970",
+   "maxCap": 27.5
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 23.1
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 23.1
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 23.1
+  },
+  {
+   "text": "KELLEY",
+   "maxCap": 30.8
+  },
+  {
+   "text": "1960",
+   "maxCap": 27.5
+  },
+  {
+   "text": "BRYSON",
+   "maxCap": 30.8
+  },
+  {
+   "text": "1961",
+   "maxCap": 27.5
+  },
+  {
+   "text": "DREYFUS",
+   "maxCap": 30.8
+  },
+  {
+   "text": "1962",
+   "maxCap": 27.5
+  },
+  {
+   "text": "LINNAINMAA",
+   "maxCap": 24.2
+  },
+  {
+   "text": "WERBOS",
+   "maxCap": 30.8
+  },
+  {
+   "text": "1974/82",
+   "maxCap": 27.5
+  },
+  {
+   "text": "RUMELHART",
+   "maxCap": 24.2
+  },
+  {
+   "text": "1982",
+   "maxCap": 27.5
+  },
+  {
+   "text": "PARKER",
+   "maxCap": 30.8
+  },
+  {
+   "text": "1985",
+   "maxCap": 27.5
+  },
+  {
+   "text": "LE CUN",
+   "maxCap": 30.8
+  },
+  {
+   "text": "credit still disputed",
+   "maxCap": 28.6
+  },
+  {
+   "text": "geoffrey hinton",
+   "maxCap": 25.9
+  },
+  {
+   "text": "writing in 2020",
+   "maxCap": 26.4
+  },
+  {
+   "text": "same name,",
+   "maxCap": 58.9
+  },
+  {
+   "text": "a different",
+   "maxCap": 58.9
+  },
+  {
+   "text": "procedure",
+   "maxCap": 58.9
+  }
+ ]
+}

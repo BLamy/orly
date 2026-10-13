@@ -7,19 +7,30 @@ as an **O'RLY‑parody** O'Reilly‑style book. The shelf deploys to Cloudflare 
 
 ## Authoring model routing
 
-Use **GPT-6 Astra (`gpt-6-astra`) for planning and Blender 3D modeling** and
-**Claude Fable 5.1 (`claude-fable-5-1`) for D3/SVG animations**. Follow
-[the authoring model workflow](docs/authoring-models.md) for handoffs, provider
-provenance and hybrid scene verification. Always launch Claude with
-`npx --yes @anthropic-ai/claude-code@latest`, never the installed global CLI.
-Keep the exact requested model; save progress on a provider limit rather than
-silently substituting. Astra may continue independent 3D/integration work.
+**Claude Opus 5.5 (`claude-opus-5-5`) at high reasoning effort authors everything
+that is code or story**: research plans, scripts and narration, visual plans,
+D3/SVG and Canvas scenes, Three.js, Blender Python, music (Strudel code),
+pipeline code and revisions. No other model may write code or story — never
+`gpt-6-astra`, never `claude-fable-5-1`, never a silent fallback. In Workflow
+scripts pin it explicitly: `agent(prompt, { model: 'claude-opus-5-5', effort: 'high' })`.
+Headless CLI runs use `npx --yes @anthropic-ai/claude-code@latest --model claude-opus-5-5`.
+Cover art may still use an image model (it is neither code nor story).
+See [the authoring model workflow](docs/authoring-models.md).
 
 ## The main thing you do here
 **Create a new book** when asked: run **`/new-book <repo> | <subsystem> | <title>`**
-(see `.claude/commands/new-book.md`). It digests the repo, Astra writes the visual plan and Fable authors D3 scenes,
+(see `.claude/commands/new-book.md`). It digests the repo, Opus 5.5 writes the visual plan and authors the scenes,
 then the pipeline narrates it (ElevenLabs), generates an O'RLY cover (gpt‑image),
 adds Noun Project icons, and you commit + push to redeploy.
+
+## Films
+**Films** are the long-form level above books: 20–40 minute, art-directed (silhouette /
+paper-cut), narrated and scored documentaries rendered frame-exactly in JavaScript.
+Start with **[docs/film/ARCHITECTURE.md](docs/film/ARCHITECTURE.md)** (stages, timing
+model, engine, routing). Make one with **`/new-film`** (`.claude/commands/new-film.md`);
+the stages run as saved workflows in `.claude/workflows/film-*.js` (`/film-research`,
+`/film-story`, … `/film-loop`). Film code lives in `apps/bookshelf/src/viz/film/`,
+`generator/film/`, `tools/film/`; each film's sources and provenance live in `films/<slug>/`.
 
 ## Architecture
 - `generator/` — the pipeline (run via `npm run explain`):
@@ -52,7 +63,8 @@ adds Noun Project icons, and you commit + push to redeploy.
 - **Ground everything in real code** — no invented components/files/flows. The
   storyboard system prompt (`generator/prompts/storyboard.txt`) enforces this.
 - Keys live in a **gitignored `.env`** (ElevenLabs, OpenAI, Noun Project). Never
-  commit secrets. Planning uses Astra; D3 authoring uses the signed-in latest Claude CLI.
+  commit secrets. All planning and authoring runs Opus 5.5 at high effort through the
+  signed-in latest Claude CLI (`generator/run-opus.mjs`).
   See docs/authoring-models.md for CI credentials.
 
 ## Run locally

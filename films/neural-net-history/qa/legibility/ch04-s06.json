@@ -1,0 +1,83 @@
+{
+ "shot": "ch04-s06",
+ "at": "2026-10-12T08:47:53.062Z",
+ "minCapPx": 22,
+ "sampled": 28,
+ "texts": 33,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "sir james lighthill",
+   "maxCap": 22
+  },
+  {
+   "text": "applied mathematician, Cambridge",
+   "maxCap": 22
+  },
+  {
+   "text": "A",
+   "maxCap": 32.6
+  },
+  {
+   "text": "B",
+   "maxCap": 32.6
+  },
+  {
+   "text": "C",
+   "maxCap": 32.6
+  },
+  {
+   "text": "donald michie",
+   "maxCap": 22
+  },
+  {
+   "text": "Edinburgh",
+   "maxCap": 22
+  },
+  {
+   "text": "We did not think of our work as killing",
+   "maxCap": 27.4
+  },
+  {
+   "text": "Snow White; we saw it as a way to",
+   "maxCap": 27.4
+  },
+  {
+   "text": "understand her.”",
+   "maxCap": 27.4
+  },
+  {
+   "text": "papert, 1988",
+   "maxCap": 22
+  },
+  {
+   "text": "TRANSLATION",
+   "maxCap": 24.8
+  },
+  {
+   "text": "1966",
+   "maxCap": 27.9
+  },
+  {
+   "text": "MANSFIELD",
+   "maxCap": 24.8
+  },
+  {
+   "text": "1969",
+   "maxCap": 27.9
+  },
+  {
+   "text": "PERCEPTRONS",
+   "maxCap": 24.8
+  },
+  {
+   "text": "LIGHTHILL",
+   "maxCap": 24.8
+  },
+  {
+   "text": "1973",
+   "maxCap": 27.9
+  }
+ ]
+}

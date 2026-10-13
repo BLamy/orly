@@ -1,0 +1,84 @@
+{
+ "shot": "ch14-s06",
+ "at": "2026-10-08T02:42:45.450Z",
+ "minCapPx": 22,
+ "sampled": 26,
+ "texts": 14,
+ "offenders": [
+  {
+   "text": "COMPUTE IS THE CHOKEPOINT",
+   "maxCap": 7.8,
+   "minCap": 7.8,
+   "first": 18.55,
+   "last": 19.55,
+   "font": "6.888px \"IBM Plex Mono\""
+  },
+  {
+   "text": "CHINA IS ONE TO THREE YEARS BEHIND",
+   "maxCap": 7.8,
+   "minCap": 7.8,
+   "first": 18.55,
+   "last": 19.55,
+   "font": "6.888px \"IBM Plex Mono\""
+  },
+  {
+   "text": "THE GAP IS MONTHS, NOT YEARS",
+   "maxCap": 7.8,
+   "minCap": 7.8,
+   "first": 18.55,
+   "last": 19.55,
+   "font": "6.888px \"IBM Plex Mono\""
+  },
+  {
+   "text": "WASHINGTON",
+   "maxCap": 9.7,
+   "minCap": 7.4,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "600 10.6px \"IBM Plex Mono\""
+  },
+  {
+   "text": "LIMA",
+   "maxCap": 11.6,
+   "minCap": 8.8,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "600 12.4px \"IBM Plex Mono\""
+  },
+  {
+   "text": "BLETCHLEY",
+   "maxCap": 11.9,
+   "minCap": 9,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "600 12.4px \"IBM Plex Mono\""
+  }
+ ],
+ "textureTexts": 2,
+ "ok": [
+  {
+   "text": "2023",
+   "maxCap": 37.8
+  },
+  {
+   "text": "2024",
+   "maxCap": 37
+  },
+  {
+   "text": "2026",
+   "maxCap": 36.1
+  },
+  {
+   "text": "WASHINGTON · 23–25 SEPTEMBER 2026",
+   "maxCap": 22.1
+  },
+  {
+   "text": "SUPER INTELLIGENCE DIALOGUE (US)",
+   "maxCap": 22.1
+  },
+  {
+   "text": "AI DIALOGUE (CHINA)",
+   "maxCap": 22.1
+  }
+ ]
+}

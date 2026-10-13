@@ -1,0 +1,108 @@
+// m12 — THE GOLD RUSH (serverCyan / duskRose): a creed, an auction, the Go candle lit and out inside one
+// cue (two years), a lab founded, doubt from inside, and the candle that burned on.
+// (THE SLIP MOTIF now opens m13: a cue change after it could not finish before L1002.)
+// CLOCK RE-FIT (2026-10-12, clock 2139.54 s): window 1128.392-1222.35 (93.958 s). The re-narrated L0902 (the auction)
+// moved its beats (standReveal, dropOuts, stop, choseGoogle placed on the new words) and everything after it
+// +0.458 s against the cue's start, so the fade now starts after L0910 ends (1221.294). Every event below is
+// written in ABSOLUTE film seconds (tl subtracts T0). 84 BPM, one 4/4 bar per cycle (2.857 s).
+// Last onset 1218.99 (the D of the soft rising fourth after 'The candle burned on'); fade 1221.35-1222.35.
+setcpm(84/4)
+const CPS = 84/240, T0 = 1128.392, DUR = 93.958
+// Times are quantized to 1/128 bar (integer step weights, exact binary fractions).
+const Q = 128, qn = s => Math.round(s * CPS * Q)
+const tl = (...evs) => { const out = []; let cur = 0
+  for (const [t, d, p] of evs) { const a = qn(t - T0), b = qn(t - T0 + d); if (a < cur) throw new Error('tl overlap at ' + t)
+    if (a > cur) out.push([a - cur, silence]); out.push([b - a, p]); cur = b }
+  const end = qn(DUR); if (cur > end) throw new Error('tl runs past the window'); if (end > cur) out.push([end - cur, silence])
+  return stepcat(...out).slow(end / Q) }
+const bars = s => qn(s) / Q
+const loop = (pat, d) => pat.fast(bars(d))
+const hall = x => x.room(.5).rsize(5)
+const pad = x => x.attack(.8).release(1.8).lpf(1100).room(.5).rsize(5)
+
+// ================================================================ A CREED, AN AUCTION
+// m11's held A-E carries through the join (the gap after L0828) and settles onto D as the pool spreads
+// ('everything' 1135.422): M1's rising fourth, once, softly (a warm synth pad, not the celesta)
+$: pad(tl([1135.132, 5.0, note("a4@0.29 d5@4.71")]).s("triangle").gain(.022))
+$: pad(tl([1128.392, 7.03, note("[a2,e3]")], [1135.422, 9.35, note("[d2,a2,f#3]")]).s("triangle").gain(.03))
+$: tl([1128.392, 7.03, note("a1")], [1135.422, 9.35, note("d2")]).s("gm_contrabass").velocity(.16).attack(.8).release(1.5).lpf(380)
+// the GPU-era pulse (M5c) arrives with 'December 2012' (1136.422), low, and STOPS DEAD on the halted
+// bidding ('stop' 1144.772); it returns, low, for the founding (1181.05) and leaves after the ledger
+$: tl([1136.422, 8.35, loop(note("38 50 45 50 38 50 45 50"), 8.35).velocity("[.5 .7 .85 1]")],
+      [1181.05, 15.3, loop(note("38 50 45 50 38 50 45 50"), 15.3).velocity("[.6 .8 1 1 1 .9 .6 .3]")])
+  .s("sawtooth").lpf(sine.range(650, 950).slow(4)).decay(.17).sustain(0).gain(.05).room(.25).rsize(5)
+$: tl([1136.422, 8.35, s("pink")], [1181.05, 15.3, s("pink")]).hpf(7000).lpf(12000).gain(.004).attack(2).release(.05)
+// the rising fourth again, bright, as the tall man is revealed standing ('standReveal' 1141.162): lit
+// and held, high strings above the voice
+$: hall(tl([1140.882, 3.89, note("[a5,a4]@0.28 [d6,d5]@3.61")]).s("gm_string_ensemble_1").velocity(.10).attack(.08).release(.5).lpf(4000))
+// each dropped envelope a muted pluck ('dropOuts' 1143.212 ...)
+$: tl([1143.212, 1.6, note("f#5 d5 a4 d5")]).s("gm_pizzicato_strings").velocity(.14).lpf(2200).room(.2).rsize(5)
+// the freeze: one held tone (high D) ... and a single soft low note, unresolved, as the chosen envelope
+// is laid face up ('choseGoogle' 1147.522): the bass slips to E, towards the Go board
+$: tl([1144.772, 3.5, note("[d6]")]).s("gm_pad_bowed").velocity(.08).attack(.05).release(2.5).room(.5).rsize(5)
+$: tl([1147.522, 1.488, note("e2")], [1149.01, 31.6, note("e2")]).s("gm_contrabass").velocity(.14).attack(.4).release(2.5).lpf(380)
+
+// ================================================================ THE GO CANDLE (E minor, a hush)
+// a low E drone carries from the auction through Seoul; it thins away as the lids go on ('lids' 1176.7)
+$: tl([1149.01, 27.69, note("[e1]")]).s("sine").gain(.024).attack(3).release(3)
+// (critic r1: thinned under L0906 'Seoul, 2016...' — velocity .065, lpf 420)
+$: hall(tl([1149.01, 27.69, note("[e2,b2]")]).s("gm_cello").velocity(.065).attack(3).release(3).lpf(420))
+// one plucked note as the slip comes into focus ('slip' 1151.49): B, the forecast's note; then M1 small
+// (B -> E) as the Go candle is lit on 'years' ('goCandleLit' 1153.73); 'It took under two' ('dueGlint'
+// 1156.61): the candle's note re-struck lightly, already overtaken
+// (critic r1: L0905 / L0905b were below 0 dB in 1-4 kHz: the harp plucks under them are ~4 dB softer and
+// the harp is low-passed at 2 kHz; the lit B -> E is a glint, not a statement)
+$: hall(tl([1151.49, 1.6, note("b5").velocity(.07)], [1153.48, 2.9, note("b5@0.25 e6@2.65").velocity(.075)],
+          [1156.61, 3.0, note("[b5,e6]").velocity(.045)]).s("gm_orchestral_harp").lpf(2000))
+// SEOUL. A riffle of soft tones for the human games ('humanGames' 1159.77); then the machine against
+// itself: one tone, passed L <-> R ('selfPlay' 1161.08); a warm low note on 'wins' (1162.71)
+$: hall(tl([1159.77, 1.1, note("e6 g6 b5 d6 a5 e6 b6 g6 d6")]).s("gm_orchestral_harp").velocity(.07).lpf(3000))
+$: hall(tl([1161.08, 1.6, note("e6 ~ e6 ~ e6 ~ e6 ~")]).s("gm_orchestral_harp").velocity(.055).lpf(3000).pan(.2))
+$: hall(tl([1161.28, 1.6, note("e6 ~ e6 ~ e6 ~ e6 ~")]).s("gm_orchestral_harp").velocity(.055).lpf(3000).pan(.8))
+$: hall(tl([1162.71, 4.0, note("[e2,b2]")]).s("gm_orchestral_harp").velocity(.08).lpf(900))   // r1: was .15, the loudest moment once the hold was trimmed
+// each move one struck stone; MOVE 37 ('move37' 1167.19): a strange high note (Bb, a tritone off the E),
+// its ring cut short so it is gone before Lee Sedol's line (L0907 1171); MOVE 78 ('move78' 1172.34):
+// the same note a fifth higher, a human answer, on the harp, only a touch (velocity .07, short note and a
+// 1.5-s release) since it falls inside L0907 (critic r1: worst-masked line in 1-4 kHz under the old F6).
+// (gm_vibraphone has no zone above C6: E6/F6 hang the offline render.)
+$: hall(tl([1163.39, 1.4, note("g5")], [1164.99, 2.0, note("a5")], [1167.19, 2.0, note("bb5")])
+  .s("gm_vibraphone").velocity(.05).hpf(700).release(.9))
+$: hall(tl([1172.34, .5, note("f6")]).s("gm_orchestral_harp").velocity(.07).release(1.5).lpf(3000))
+$: hall(tl([1167.19, 2.3, note("[e2,bb2]").velocity(.045)], [1172.34, 3.6, note("[b1,f2]").velocity(.05)]).s("gm_string_ensemble_1").attack(1).release(1).lpf(500))
+// the lids go on (1176.7): the drone alone. Then in the music-only hold, M1 IN FULL inside two seconds
+// as the Go candle goes out: B -> E lit ('candleWipe' 1177.4), E held as B-F# slides under it (doubt),
+// E falls to D# over B (gone, 'goSnuff' 1179.01). A belief that lasted two years.
+// (critic r1: this hold was the loudest passage of the whole score; trimmed ~3.5 dB so it peaks near
+// -16.5 LUFS momentary in the render: still M1 in full, but below the AlexNet cliff and the finale)
+$: hall(tl([1177.4, 3.0, note("b4@0.25 e5@1.35 d#5@1.4")]).s("gm_vibraphone").velocity(.11))
+$: hall(tl([1177.4, 3.0, note("b3@0.25 e4@1.35 d#4@1.4")]).s("gm_orchestral_harp").velocity(.10))
+$: hall(tl([1177.4, .55, note("[e2,b2,g3]")], [1177.95, 1.06, note("[b1,f#2,b2]")], [1179.01, 1.8, note("[b1,f#2,d#3]")])
+  .s("gm_string_ensemble_1").velocity(.08).attack(.15).release(1.4).lpf(1200))
+
+// ================================================================ A LAB FOUNDED (D major, pulse low)
+// THE FOUNDING FIGURE ('founded' 1183.43): plain pizzicato, four notes D A B F#, even, no swell.
+// (m16's founding must match exactly: gm_pizzicato_strings, d4 a3 b3 f#3, 8ths at 84, velocity .3.)
+$: tl([1183.43, 1.43, note("d4 a3 b3 f#3")]).s("gm_pizzicato_strings").velocity(.3).lpf(2200).room(.3).rsize(5)
+$: pad(tl([1181.05, 8.33, note("[d2,a2,f#3]")], [1189.38, 1.86, note("[b1,f#2,d3]")], [1191.24, 6.0, note("[g1,d2,a2]")]).s("triangle").gain(.028))
+// the quotation splits into two voices moving together, above the voice: warm, a major sixth on
+// 'benefit' (1189.38); cold, a minor second on 'damage' (1191.24); nothing resolves
+$: hall(tl([1187.14, 2.24, note("[e5,c#6]")], [1189.38, 1.86, note("[f#5,d6]")], [1191.24, 4.2, note("[c#6,d6]")])
+  .s("gm_string_ensemble_1").velocity(.08).attack(.6).release(2).lpf(4000))
+// a single dry pluck as the ledger entry is set ('ledger' 1194.37)
+$: tl([1194.37, 1.0, note("d5")]).s("gm_woodblock").velocity(.12)
+
+// ================================================================ DOUBT, AND THE CANDLE THAT BURNED ON
+// a thin low drone only, under the doubters (L0910 1201.06-1221.29)
+$: tl([1200.75, 21.0, note("d1")]).s("sine").gain(.025).attack(3).release(2)
+$: hall(tl([1200.75, 19.0, note("[d2,a2]")]).s("gm_cello").velocity(.07).attack(3).release(2).lpf(500))
+// one dry muted tick on 'fool' (1204.82); soft ticks under the falling face stamps ('darkerTicks'
+// 1212.77: many; 'lighterTick' 1215.98: one)
+$: tl([1204.82, 1.0, note("a5")], [1212.77, 1.9, note("a5 a5 a5 a5 a5 a5")], [1215.98, 1.0, note("a5")]).s("gm_woodblock").velocity(.07)
+// 'The candle burned on' ('burnedOn' 1217.93): M1's rising fourth, very soft, high and unresolved (the
+// A on 'on' 1218.68, the D 0.31 s later), released before the line ends; nothing ominous, nothing after
+$: hall(tl([1218.68, 2.1, note("a5@0.31 d6@1.79")]).s("gm_string_ensemble_1").velocity(.06).attack(.25).release(1.0).lpf(3000))
+
+// revision: +2 dB (2.6 -> 3.3); the render measured -24.0 LUFS, outside the house -21 +/- 2 and 2 LU
+// under its neighbours m11 (-22.2) and m13 (-22.4)
+// critic r1 revision: the softened Go material dropped the render to -23.3 LUFS; +0.65 dB back towards the house level
+all(x => x.postgain(3.55))

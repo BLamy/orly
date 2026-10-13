@@ -1,0 +1,29 @@
+{
+  "reviewer": "historian",
+  "lens": "accuracy & fairness",
+  "round": 2,
+  "scores": { "accuracy": 8.5, "depth": 7, "clarity": 8, "story": 7.5, "visual": 8, "sync": 8, "sound": 7.5, "curiosity": 7 },
+  "issues": [
+    { "owner": "line", "id": "L0105b", "severity": "minor",
+      "problem": "\"Each lit cell tugs the needle through its dial\" says each photocell has its own dial wired straight to the needle. The film's own bible says the Mark I reached the response unit 'through a randomly wired association layer', and the weights (claim mk1-weights) sat on those connections, not on the 400 cells. The picture is already more faithful than the line: at 34.29 s the lit cells' threads pass through the patch tangle and fan out to several dials (about 80 on the board, not 400). The 'an illustration of the rule' caption covers the simplified board, but this narrated sentence is about 'it', the Mark I.",
+      "fix": "Re-narrate as \"Each lit cell tugs the needle through the dials it is wired to, and the total decides.\" (or \"...through the dials it feeds...\"). Re-anchor the 'dial' and 'decides' beats in ch01-s03 to the new word timings. The visual needs no change." },
+    { "owner": "line", "id": "L0103", "severity": "minor",
+      "problem": "\"Behind it ran a nest of wires\" is supported only by the bible ('patch board of tangled cables'), not by research/claims.json, which the brief makes the only allowed source. Racks, dials and motors are covered by mk1-weights; the wiring is not.",
+      "fix": "No text change. Research adds and verifies a claim, e.g. 'mk1-patchboard: the Mark I's photocells were connected to its association units through a patch board, with the connections wired at random' (Wikipedia 'Perceptron'; Smithsonian NMAH object 334414). Then cite it on ch01-s02 in script.json." }
+  ],
+  "previousIssuesCheck": [
+    "L0106 (major): FIXED. Now 'nudge the dials that had a say': only weights fed by active inputs move, which matches mk1-rule and the ch01-s03 picture (36.93 s nudge beat).",
+    "L0101 (minor): RESOLVED via the alternative fix. 'learned to see' is kept, but L0108 now says plainly 'It could learn only simple patterns' (limit-linear), so the overreach is balanced inside the film.",
+    "L0104 (minor): FIXED. 'built by psychologist Frank Rosenblatt's project' matches mk1-builder word for word and no longer gives sole construction credit. The unsourced 'called it a perceptron' is gone. 'Mark I' is respelled 'Mark One' in the lexicon.",
+    "ch01-s03 (minor): FIXED. The 'an illustration of the rule' caption is on screen at 28.5 s. The counter reads 'try 1 · said vertical · wrong'. Threads now pass through a patch tangle before the dials. The record is a real trainFromRandom run (W W W R R), and the verdicts match the needle and the shape on screen at 40.08 s.",
+    "ch01-s02 (minor): FIXED. Rosenblatt is in shirtsleeves (sets/ch01-s02-rosenblatt.ts overrides cast.ts labCoat), upright and respectful. The ungrounded meter console is gone (patch panel plus racks), and the eye is a camera box with a stimulus card in the bookend.",
+    "ch01-s01 (minor): FIXED. The first frame is true black, and the place stamp reads 'CORNELL AERONAUTICAL LABORATORY · BUFFALO, NEW YORK · c. 1960' (mk1-builder 1957-60, mk1-retina 1960).",
+    "global depth / scope (minor): FIXED. L0108 adds the limit and the lineage, both backed by newly verified claims (limit-linear, lineage-mlp) with their caveats respected: 'descendants ... still learn from mistakes' claims shared error-driven learning, not Rosenblatt's identical rule."
+  ],
+  "fairnessNotes": "Even-handed. The limit is stated as a property of the machine ('it could learn only simple patterns'), not as a verdict on neural networks. The contested story that Minsky and Papert 'killed' the field is left out entirely instead of being told one-sidedly. No lab or company is named or favoured in the lineage line. Rosenblatt is shown upright in era-plain shirtsleeves, not as a likeness, with an accurate role card ('Frank Rosenblatt · psychologist'). No quotes are used, as the brief requires.",
+  "best_moments": [
+    "ch01-s03 at 36.9-40.1 s: on 'nudge the dials that had a say', only the dials threaded to the lit cells turn while the caption reads 'try 1 · said vertical · wrong'. The narration and the picture now state the error-correction rule the same way, and both are correct.",
+    "ch01-s02 at 10.9 s: the '20' brackets and the '400 light cells' callout on a visibly 20 x 20 camera-box grid land on 'twenty by twenty' exactly as claim mk1-retina states.",
+    "ch01-s03 at 48.97-57.76 s: 'It could learn only simple patterns' followed by 'its descendants ... still learn from mistakes' gives the limit and the legacy in two honest sentences, avoiding both hype and the AI-winter cliché, then bookends to Rosenblatt beside the eye in the night lab."
+  ]
+}

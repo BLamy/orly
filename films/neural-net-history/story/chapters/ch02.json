@@ -1,0 +1,1026 @@
+{
+ "id": "ch02",
+ "number": 2,
+ "title": "Clue One: A Switch That Fires",
+ "blurb": "Chicago, 1941 to 1959. A shy teenager and a doctor turn the nerve cell into an all-or-none switch, and switches into logic; but their nets cannot learn. The first candle is lit (THE BRAIN IS A LOGIC MACHINE), with a dissenter at its rim. Hebb and Turing guess where learning might live; Dartmouth names the field, and young Minsky, who had built a learning machine, turns to rules, and one young engineer never gets over it. A frog's eye puts the candle out after sixteen years.",
+ "shots": [
+  {
+   "id": "ch02-s01",
+   "kind": "scene",
+   "setting": "Chicago, about 1941, evening; a lamplit study in a family house, an elevated railway trestle beyond the window",
+   "era": "1940s",
+   "mood": "candleAmber",
+   "leadIn": 0.6,
+   "holdAfter": 1,
+   "lines": [
+    {
+     "id": "L0201",
+     "text": "Chicago, around 1941.",
+     "spoken": "Chicago, around nineteen forty-one.",
+     "pauseAfter": 0.6,
+     "direction": "setting the scene, like opening a casebook"
+    },
+    {
+     "id": "L0202",
+     "text": "A shy teenager, Walter Pitts, found a home with a doctor, Warren McCulloch.",
+     "pauseAfter": 0.6,
+     "direction": "warm, fond of both; a small tenderness on 'home'"
+    }
+   ],
+   "visual": "THIS SHOT: Chicago, about 1941: a lamplit family study where Warren McCulloch offers the shy teenager Walter Pitts a home. CHAPTER INDEX TAB (the film's chapter-card device for clue chapters): at the shot's first frame a manila index tab, typed in Special Elite with the chapter title 'Clue One: A Switch That Fires', drops down from the frame's top edge at top-left, like a file-divider tab on a manila folder, holds for 2.5 seconds over the picture, and slides back up; no new shot, no lamp change. From the title's warm dark, the lamp in the distant window grows into a room. Exterior first, L4: an elevated railway trestle crosses the amber dusk sky; a train of lit windows slides along it left to right, its rumble felt in a tremble of the haze. The camera tracks through the window into a 1940s study (interiors kit: bookshelves, a rolltop writing desk, a standard lamp). The date stamp types itself bottom left (clear of the index tab, which sits top-left) in Special Elite: 'CHICAGO · c. 1941'. Two figures in profile, the first time we see the film's people: Warren McCulloch (mcculloch: tall, full unruly beard, three-piece suit with a watch chain) stands at the left by the desk, facing right; a slight, spectacled young man in a suit a size too big, Walter Pitts (pitts), stands in the doorway at right, holding a bundle of papers to his chest, facing left. On 'McCulloch' he steps forward and offers a hand; Pitts hesitates on twos, then shakes it. On 'found a home' the camera eases back: the room is warmer than we thought, a second lamp comes on in a doorway behind them (the household beyond, never shown), and McCulloch gestures Pitts in. Name cards rise beside each figure: Pitts's on his name, McCulloch's early, on 'doctor', so it can be read.",
+   "beats": [
+    {
+     "id": "indexTab",
+     "at": {
+      "line": "L0201",
+      "edge": "start"
+     },
+     "what": "manila index tab typed 'Clue One: A Switch That Fires' drops down from the frame top edge at top-left, holds 2.5 s, slides back up"
+    },
+    {
+     "id": "stamp",
+     "at": {
+      "line": "L0201",
+      "word": "Chicago"
+     },
+     "what": "date stamp CHICAGO · c. 1941 types itself"
+    },
+    {
+     "id": "pitts",
+     "at": {
+      "line": "L0202",
+      "word": "Pitts"
+     },
+     "what": "name card: Walter Pitts"
+    },
+    {
+     "id": "mcculloch",
+     "at": {
+      "line": "L0202",
+      "word": "doctor",
+      "offset": -0.7
+     },
+     "what": "name card: Warren McCulloch; he steps forward and offers a hand"
+    },
+    {
+     "id": "home",
+     "at": {
+      "line": "L0202",
+      "word": "home"
+     },
+     "what": "a second lamp comes on in the doorway behind; McCulloch gestures Pitts in"
+    }
+   ],
+   "cast": [
+    "mcculloch",
+    "pitts"
+   ],
+   "props": [
+    "elevated railway trestle with a lit train",
+    "rolltop writing desk",
+    "standard lamp",
+    "bookshelves",
+    "bundle of papers"
+   ],
+   "onScreenText": [
+    {
+     "kind": "title",
+     "text": "Clue One: A Switch That Fires",
+     "beat": "indexTab"
+    },
+    {
+     "kind": "place",
+     "text": "CHICAGO · c. 1941",
+     "beat": "stamp"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Walter Pitts · about 18",
+     "beat": "pitts"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Warren McCulloch",
+     "beat": "mcculloch"
+    }
+   ],
+   "music": {
+    "cue": "c02-switch",
+    "note": "celesta and soft strings of the 1940s; a gentle, curious figure in a major key; intensity low (0.3); a far-off train rumble folded into the low end"
+   },
+   "transitionIn": "crossfade",
+   "claims": [
+    "e1-pitts-age"
+   ]
+  },
+  {
+   "id": "ch02-s02",
+   "kind": "plate",
+   "setting": "A parchment plate in the lamplight, 1943: the paper's idea redrawn as paper lanterns on threads",
+   "era": "1940s",
+   "mood": "candleAmber",
+   "leadIn": 0.6,
+   "holdAfter": 3,
+   "lines": [
+    {
+     "id": "L0203",
+     "text": "In 1943 they described a nerve cell as a switch. All, or nothing.",
+     "spoken": "In nineteen forty-three they described a nerve cell as a switch. All, or nothing.",
+     "pauseAfter": 0.6,
+     "direction": "clear and teacherly; a tiny emphasis on 'All' and 'nothing'"
+    },
+    {
+     "id": "L0204",
+     "text": "Enough signals at once, and it fired. Wire such cells into a network, a neural network, and you had logic.",
+     "pauseAfter": 0.6,
+     "direction": "one flowing breath: the switch, then the logic; a small lift on \"logic\""
+    }
+   ],
+   "visual": "THIS SHOT: a parchment plate turns the 1943 paper into lanterns on threads: a wick that catches only past its threshold ring, then AND and OR lanterns filling their truth tables. The camera descends onto the desk, where a parchment plate (parchmentPlate) lies in the lamp's pool, its ink rules faint. Top left, the date stamp 'CHICAGO · 1943'. The 1943 paper's figure is redrawn in paper-cut: a single hanging paper lantern (paperLantern, the threshold unit) with two threads running into it from the left, each thread ending in a small input knot. Around the lantern's waist a cut-line ring is drawn in ink: the threshold, labelled θ. MECHANICS, in sync: on 'switch' the left input knot lights (value 1) and a bead of light travels its thread into the lantern; the lantern's inner glow rises to the ring but not past it: the wick does NOT catch (act stays 0, a faint ember). On 'All' the second knot lights too; two beads arrive together, the glow climbs past the cut-line ring, and the wick catches all at once, a full flame, no half-measures. On 'nothing' one input drops out and the flame snaps fully dark. A tiny tally under each lantern counts arriving signals (1, then 2). On 'logic' (the second half of L0204) the plate splits into two lanterns side by side with identical wiring: the left lantern's ring is cut high (θ = 2, labelled AND) and the right one's low (θ = 1, labelled OR). Four input patterns play in turn on both at once (00, 10, 01, 11) as small lit knots: the AND lantern lights only on 11; the OR lantern lights on 10, 01 and 11. These four patterns play briskly in the music-only hold after the line, each lit wick chiming, so the viewer can read the logic without words. A small truth table builds itself in ink beside each as the patterns play. No quote card on this plate (the 1943 abstract sentence moves to the end-credits sources card). On-screen text is held to two items besides the stamp: the threshold rule, and one shared caption under the pair, 'AND · θ = 2   ·   OR · θ = 1', with each half set directly beneath its own lantern. The θ glyph on each ring is drawn ink, part of the plate. Plain cut in: the camera's descent onto the desk continues the move from the study.",
+   "beats": [
+    {
+     "id": "stamp",
+     "at": {
+      "line": "L0203",
+      "word": "forty-three"
+     },
+     "what": "date stamp CHICAGO · 1943; plate settles in the lamplight"
+    },
+    {
+     "id": "oneIn",
+     "at": {
+      "line": "L0203",
+      "word": "switch"
+     },
+     "what": "one input lights; glow rises to the ring but the wick does not catch"
+    },
+    {
+     "id": "fire",
+     "at": {
+      "line": "L0203",
+      "word": "All"
+     },
+     "what": "both inputs arrive; glow passes the threshold ring; the wick catches fully"
+    },
+    {
+     "id": "dark",
+     "at": {
+      "line": "L0203",
+      "word": "nothing"
+     },
+     "what": "one input drops; flame snaps dark"
+    },
+    {
+     "id": "threshold",
+     "at": {
+      "line": "L0204",
+      "word": "Enough"
+     },
+     "what": "the cut-line ring brightens and its θ label appears; tally counts 2 then fire"
+    },
+    {
+     "id": "split",
+     "at": {
+      "line": "L0204",
+      "word": "logic",
+      "offset": -0.46
+     },
+     "what": "the plate splits into two lanterns: AND (θ = 2) and OR (θ = 1)"
+    },
+    {
+     "id": "and",
+     "at": {
+      "line": "L0204",
+      "edge": "end",
+      "offset": 0.6
+     },
+     "what": "the AND lantern lights only on input 11; truth table fills"
+    },
+    {
+     "id": "or",
+     "at": {
+      "line": "L0204",
+      "edge": "end",
+      "offset": 1.84
+     },
+     "what": "the OR lantern lights on 10, 01 and 11; truth table fills"
+    }
+   ],
+   "cast": [],
+   "props": [
+    "parchment plate",
+    "paper lanterns (threshold units)",
+    "threads with input knots",
+    "ink threshold ring θ",
+    "truth tables"
+   ],
+   "onScreenText": [
+    {
+     "kind": "date",
+     "text": "CHICAGO · 1943",
+     "beat": "stamp"
+    },
+    {
+     "kind": "equation",
+     "text": "fires if  x₁ + x₂ ≥ θ",
+     "beat": "threshold"
+    },
+    {
+     "kind": "label",
+     "text": "AND · θ = 2   ·   OR · θ = 1",
+     "beat": "split"
+    }
+   ],
+   "music": {
+    "cue": "c02-switch",
+    "note": "the celesta becomes the machine: a soft single pluck whenever an input knot lights, and a brighter chime only when a wick catches, so the AND/OR logic can be heard; rests when the flame snaps dark"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "e1-mp-paper"
+   ]
+  },
+  {
+   "id": "ch02-s03",
+   "kind": "scene",
+   "setting": "The Case Board under the desk lamp, timeless, night",
+   "era": "timeless",
+   "mood": "candleAmber",
+   "leadIn": 0.6,
+   "holdAfter": 2.3,
+   "lines": [
+    {
+     "id": "L0206",
+     "text": "But the wiring never changed.",
+     "pauseAfter": 1.8,
+     "direction": "plain; then a long silence while the card is read; let the card do the quoting"
+    },
+    {
+     "id": "L0207",
+     "text": "The nets could not learn.",
+     "pauseAfter": 0.96,
+     "direction": "a gentle turn; no judgement NARRATION: re-generate this line on its own (not inside a shot chunk) at voice speed about 0.88, target 140-160 wpm; the text is unchanged.",
+     "tts": {
+      "solo": true,
+      "speed": 0.88
+     }
+    }
+   ],
+   "visual": "THIS SHOT: on the Case Board, the card for fixed wiring is pinned and the first oxblood question card is hung: the nets could not learn. CAMERA: BOARD (the C1-a pin and the Q1 card as 1–2 s inserts; the push-in on the assumption card), with one FILE insert (top-down) for the carbon copy. Plain cut back to the study (same lamp, same mood). BOARD MAP (canonical, from the staging appendix; repeated word for word): the Case Board is a fixed grid of slots laid out as network columns by era, left to right: C1 (1943–1969) the far-left input column, C2 (1969–1997), C3 (2006–2017), C4 (2018–2023), and the output, the glowing chat box, at the far right; the case card WHO TAUGHT IT? hangs in slot K at the board's centre; the suspect cards S1 RULES, S2 KNOWLEDGE and S3 LEARNING hang in the left margin, top to bottom; the founding row F1–F2 runs beneath columns C3 and C4; the question-card thread runs along the board's top edge (slots Q1 to Q4, left to right), a low-chroma oxblood string (emberRed rim mixed about 60% into candleAmber) that glints only where the lamp's pool falls; the Wall of Forecasts hangs to the board's right, its slots W1 to W8 left to right (W1 Turing, W2 chess, W3 Rosenblatt 1961, W4 Florence 2012, W5 Coulom, W6 the 30-to-50-years slip in shadow, W7 Hinton 2017, W8 an empty pin until ch15). The two steady hands lift the lit AND lantern off the plate (now a small paper-cut card of a lantern with a wick) and set it to one side; then they pin a typed index card in slot C1-a, the footnote slot just under column C1's head: the paper's fifth assumption, verbatim, in Special Elite. The camera pushes in on the words and holds, music only, in the pause after the line so they can be read in silence (the card stays up, legible, through L0207). As L0207 begins the hands take a short length of oxblood thread, run it along the top edge of the board, and hang from its far-left end (thread slot Q1) the first open-question card, handwritten in fountain pen: 'How could a net rewire itself?' It sways a little on the thread. At the end of the last line, wordless, the hands slip a carbon copy of the assumption card into the manila file and close it.",
+   "beats": [
+    {
+     "id": "pinAssumption",
+     "at": {
+      "line": "L0206",
+      "word": "wiring",
+      "offset": -0.56
+     },
+     "what": "the typed assumption card is pinned to the board"
+    },
+    {
+     "id": "quoteRead",
+     "at": {
+      "line": "L0206",
+      "edge": "end",
+      "offset": 0.2
+     },
+     "what": "camera pushes in on the verbatim assumption card; held for reading"
+    },
+    {
+     "id": "redThread",
+     "at": {
+      "line": "L0207",
+      "edge": "start"
+     },
+     "what": "oxblood thread strung across the top; first question card hung from it"
+    },
+    {
+     "id": "file",
+     "at": {
+      "line": "L0207",
+      "edge": "end",
+      "offset": 0.9
+     },
+     "what": "the hands slip a carbon copy of the assumption card into the manila file and close it (wordless)"
+    }
+   ],
+   "cast": [
+    "narrator-hands"
+   ],
+   "props": [
+    "Case Board",
+    "typed assumption card",
+    "oxblood thread",
+    "question card",
+    "manila file",
+    "fountain pen",
+    "detective's hands"
+   ],
+   "onScreenText": [
+    {
+     "kind": "quote",
+     "text": "The structure of the net does not change with time. — McCulloch & Pitts, 1943",
+     "beat": "pinAssumption"
+    },
+    {
+     "kind": "label",
+     "text": "How could a net rewire itself?",
+     "beat": "redThread"
+    }
+   ],
+   "music": {
+    "cue": "c02-switch",
+    "note": "the 1940s figure pauses; the detective's pizzicato returns for the pinning; a single held low note under 'could not learn'; silence for the refrain"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "e1-mp-nolearn"
+   ]
+  },
+  {
+   "id": "ch02-s04",
+   "kind": "scene",
+   "setting": "The paper stage inside the first candle's pool of light, 1943 to 1950s, timeless night",
+   "era": "1940s",
+   "mood": "candleAmber",
+   "leadIn": 0.6,
+   "holdAfter": 0.5,
+   "lines": [
+    {
+     "id": "L0209",
+     "text": "We light the first candle. Each belief gets one, burning as long as it was held. This one: the brain is a logic machine.",
+     "pauseAfter": 0.55,
+     "direction": "ceremonial but light, like lighting a birthday candle with great care; the rule said plainly, as a game we will play all evening; a small turn on \"This one\""
+    },
+    {
+     "id": "L0210",
+     "text": "Ralph Gerard, at its rim, argued the brain was more dial than switch.",
+     "pauseAfter": 0.6,
+     "direction": "fair-minded; give the dissenter real weight"
+    }
+   ],
+   "visual": "THIS SHOT: the hands strike the first match and light the first belief candle; a push into its flame finds McCulloch and Pitts facing it and Ralph Gerard at the rim with his dial. CAMERA: SHELF (low macro; the first candle lit), then the push into the flame onto the stage. The candle-clock, first use; establish the rules carefully. CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. Tilt down from the board to the long paper-cut shelf beneath it. The hands strike a match and light the first candle at the far left. Lettered on it in Special Elite small caps (a paraphrase, never in quotation marks): THE BRAIN IS A LOGIC MACHINE; its base tag reads '1943'; no sleeve yet, the flame on the top ring. On 'candle' the camera pushes into the flame (a quick push into its brightness, never through black, so the line is never spoken over a dark frame) and we arrive on the paper stage: the same candle, huge, stands on a dark stage floor and throws a round pool of amber light across it, haze hanging in the beam. The narration states the rule aloud here, and the picture follows it word by word: on 'held', in the pool, facing the flame, McCulloch and Pitts are revealed (the holders, the film's rule: believers stand in the light); just after 'held' (the rule's other half is shown, not said: doubters stand at the rim) the camera drifts to the edge of the pool, where the light fades into shadow, and finds it empty for a moment; on 'logic' the lettering on the huge candle catches the flame. In the pause after L0209 a row of anonymous figures in lab coats far back on L4 passes by outside the pool without turning their heads. On 'Gerard' a third figure (gerard: dignified, round glasses, suit) is revealed standing at the rim, half in shadow, facing OUT, his long shadow thrown across the floor away from the candle (the film's rule: whoever doubts stands at the edge). On 'dial' a small paper-cut dial appears beside his raised hand, its needle sweeping smoothly through every value; beside McCulloch a little toggle switch flicks between two positions. The two images sit side by side for a breath.",
+   "beats": [
+    {
+     "id": "light",
+     "at": {
+      "line": "L0209",
+      "word": "light"
+     },
+     "what": "the hands strike a match and light the first candle on the shelf"
+    },
+    {
+     "id": "intoFlame",
+     "at": {
+      "line": "L0209",
+      "word": "candle"
+     },
+     "what": "a quick push into the flame's brightness (never to black) onto the paper stage and its pool of light"
+    },
+    {
+     "id": "holders",
+     "at": {
+      "line": "L0209",
+      "word": "held"
+     },
+     "what": "McCulloch and Pitts revealed in the pool, facing the flame (believers stand in the light)"
+    },
+    {
+     "id": "rimRule",
+     "at": {
+      "line": "L0209",
+      "word": "held",
+      "offset": 0.5
+     },
+     "what": "the camera drifts to the dark edge of the pool: an empty place where the light fades, waiting (the rim is shown, not said)"
+    },
+    {
+     "id": "thisOne",
+     "at": {
+      "line": "L0209",
+      "word": "logic"
+     },
+     "what": "the lettering THE BRAIN IS A LOGIC MACHINE catches the flame on the huge candle"
+    },
+    {
+     "id": "passers",
+     "at": {
+      "line": "L0209",
+      "edge": "end",
+      "offset": 0.3
+     },
+     "what": "anonymous figures pass far behind without turning"
+    },
+    {
+     "id": "gerard",
+     "at": {
+      "line": "L0210",
+      "word": "Gerard"
+     },
+     "what": "Gerard revealed at the rim, facing out; name card rises"
+    },
+    {
+     "id": "dialSwitch",
+     "at": {
+      "line": "L0210",
+      "word": "dial"
+     },
+     "what": "a sweeping dial beside Gerard; a flicking switch beside McCulloch"
+    }
+   ],
+   "cast": [
+    "mcculloch",
+    "pitts",
+    "gerard",
+    "narrator-hands"
+   ],
+   "props": [
+    "candle-clock shelf",
+    "the first candle (lettered, ringed)",
+    "matches",
+    "paper stage with pool of light",
+    "paper-cut dial",
+    "toggle switch"
+   ],
+   "onScreenText": [
+    {
+     "kind": "label",
+     "text": "THE BRAIN IS A LOGIC MACHINE",
+     "beat": "light"
+    },
+    {
+     "kind": "date",
+     "text": "1943",
+     "beat": "light"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Ralph Gerard · neurophysiologist · 1950",
+     "beat": "gerard"
+    }
+   ],
+   "music": {
+    "cue": "c02-candle",
+    "note": "the candle motif, first full use: the rising fourth on celesta exactly as the candle catches (lit and held); on 'Gerard' a soft string suspension enters beneath it (doubted); it does not resolve yet"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "e1-mp-paper",
+    "e1-mp-ripple",
+    "e1-gerard"
+   ]
+  },
+  {
+   "id": "ch02-s05",
+   "kind": "plate",
+   "setting": "Two lanterns and a thread on a parchment plate, Montreal 1949",
+   "era": "1940s",
+   "mood": "candleAmber",
+   "leadIn": 0.6,
+   "holdAfter": 2.9,
+   "lines": [
+    {
+     "id": "L0211",
+     "text": "Donald Hebb guessed: when one cell helps fire another, their link grows.",
+     "pauseAfter": 0.55,
+     "direction": "patient; the thread thickens as he speaks"
+    }
+   ],
+   "visual": "THIS SHOT: two lanterns on a parchment plate: each time A helps fire B, the thread between them thickens, Hebb's guess made visible. Occluder wipe in: a sheet of parchment slides across the candle stage from the right and becomes the plate (same amber lamp). Date stamp 'MONTREAL · 1949'. Hebb (hebb, a lean figure in a 1940s suit) is a small silhouette standing at the plate's left margin, as if beside a blackboard. On the plate: two paper lanterns, A and B, joined by a single loom thread (kit lanternNetwork with two units and fixed weights; thread width bound to the connection weight w). MECHANICS, in sync with L0211: lantern A lights; a bead of light runs down the thread; lantern B lights a moment later. Each time this happens (three times, on 'cell', 'fire' and 'grows'), w steps up (0.2, 0.5, 0.9) and the thread visibly thickens and brightens with it, and on the third pass B lights faster and brighter from A alone. The weight is shown only by the thread's width and a drawn tick scale beside it, no text. In the music-only hold after the line (the quote card is already up from the first pass), the passes keep repeating slowly with w held at 0.9, while the trimmed postulate sits as a quote card across the plate's foot, to be read at leisure. (The 'fire together, wire together' correction slip moves to the end-credits sources card.)",
+   "beats": [
+    {
+     "id": "hebbStamp",
+     "at": {
+      "line": "L0211",
+      "word": "Hebb"
+     },
+     "what": "date stamp MONTREAL · 1949; Hebb's name card"
+    },
+    {
+     "id": "quoteUp",
+     "at": {
+      "line": "L0211",
+      "word": "guessed",
+      "offset": -0.56
+     },
+     "what": "the trimmed postulate settles as a quote card across the plate's foot"
+    },
+    {
+     "id": "pass1",
+     "at": {
+      "line": "L0211",
+      "word": "cell"
+     },
+     "what": "A lights, bead travels, B lights; thread thickens (w = 0.2 to 0.5)"
+    },
+    {
+     "id": "pass2",
+     "at": {
+      "line": "L0211",
+      "word": "fire"
+     },
+     "what": "second pass; thread thicker"
+    },
+    {
+     "id": "pass3",
+     "at": {
+      "line": "L0211",
+      "word": "grows"
+     },
+     "what": "third pass; B lights quickly from A alone; w = 0.9"
+    }
+   ],
+   "cast": [
+    "hebb"
+   ],
+   "props": [
+    "parchment plate",
+    "two paper lanterns joined by a loom thread",
+    "thread-width tick scale",
+    "correction slip"
+   ],
+   "onScreenText": [
+    {
+     "kind": "place",
+     "text": "MONTREAL · 1949",
+     "beat": "hebbStamp"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Donald Hebb · psychologist, McGill",
+     "beat": "hebbStamp"
+    },
+    {
+     "kind": "quote",
+     "text": "…A's efficiency, as one of the cells firing B, is increased. — Hebb, 1949",
+     "beat": "quoteUp"
+    }
+   ],
+   "music": {
+    "cue": "c02-switch",
+    "note": "a slow two-note figure that repeats three times, each repetition a little louder and fuller, tracking the thread's growth; it keeps cycling softly through the reading hold"
+   },
+   "transitionIn": "paperWipe",
+   "claims": [
+    "e1-hebb",
+    "e1-hebb-notslogan"
+   ]
+  },
+  {
+   "id": "ch02-s05b",
+   "kind": "plate",
+   "setting": "Manchester, 1950, night: a window in a brick university building; then the Wall of Forecasts beside the Case Board",
+   "era": "1940s",
+   "mood": "candleAmber",
+   "leadIn": 0.6,
+   "holdAfter": 4.45,
+   "lines": [
+    {
+     "id": "L0212",
+     "text": "Alan Turing, in 1950, proposed something stranger: not to program a grown-up mind, but to educate a child machine.",
+     "pauseAfter": 0.55,
+     "direction": "a lift of curiosity on 'stranger'; 'program a grown-up mind' plain, then a twinkle on 'educate a child machine'; this is the case question asked early, so let it land; the forecast itself is left to the slip on the Wall, unspoken",
+     "spoken": "Alan Turing, in nineteen fifty, proposed something stranger: not to program a grown-up mind, but to educate a child machine."
+    }
+   ],
+   "visual": "THIS SHOT: Turing at his Manchester window with a child's slate and a schoolroom bell; then a pan to the Wall, where his forecast slip is pinned in W1. CAMERA: the Manchester window (era location), then a pan right to WALL (the W1 pin). Cut to Manchester, same amber lamp. Date stamp 'MANCHESTER · 1950'. A tall lit window in a dark brick façade; inside it, Turing (turing, rumpled tweed) as a small silhouette at a desk, his name card rising on 'Turing'. On 'educate' a schoolroom bell on the sill gives a single soft swing, and on 'child' a small paper-cut child's slate appears on the sill beside him. On 'machine', as the line ends, the camera pans right off the window and on to the Wall of Forecasts beside the Case Board. BOARD MAP (canonical, from the staging appendix; repeated word for word): the Case Board is a fixed grid of slots laid out as network columns by era, left to right: C1 (1943–1969) the far-left input column, C2 (1969–1997), C3 (2006–2017), C4 (2018–2023), and the output, the glowing chat box, at the far right; the case card WHO TAUGHT IT? hangs in slot K at the board's centre; the suspect cards S1 RULES, S2 KNOWLEDGE and S3 LEARNING hang in the left margin, top to bottom; the founding row F1–F2 runs beneath columns C3 and C4; the question-card thread runs along the board's top edge (slots Q1 to Q4, left to right), a low-chroma oxblood string (emberRed rim mixed about 60% into candleAmber) that glints only where the lamp's pool falls; the Wall of Forecasts hangs to the board's right, its slots W1 to W8 left to right (W1 Turing, W2 chess, W3 Rosenblatt 1961, W4 Florence 2012, W5 Coulom, W6 the 30-to-50-years slip in shadow, W7 Hinton 2017, W8 an empty pin until ch15). In the music-only hold, as the pan reaches the Wall (just after the line ends), the hands pin Turing's slip into slot W1, nearest the board, typed in Special Elite and legible for the whole hold: 'TURING · DUE 2000 · 3 in 10 fooled' (a paraphrase of his forecast: a questioner fooled at least 3 times in 10 after five minutes of questions; the verbatim forecast is on the end-credits sources card). It hangs crisp and white; it will curl later. The rest of the wall stays in shadow; at W6 the corner of one older slip is just visible, half-lit. The camera holds on the slip.",
+   "beats": [
+    {
+     "id": "turing",
+     "at": {
+      "line": "L0212",
+      "word": "Turing"
+     },
+     "what": "date stamp MANCHESTER · 1950; Turing at his window; name card"
+    },
+    {
+     "id": "child",
+     "at": {
+      "line": "L0212",
+      "word": "child"
+     },
+     "what": "a child's slate appears on the sill"
+    },
+    {
+     "id": "educated",
+     "at": {
+      "line": "L0212",
+      "word": "educate"
+     },
+     "what": "a schoolroom bell on the sill gives one soft swing"
+    },
+    {
+     "id": "pan",
+     "at": {
+      "line": "L0212",
+      "word": "machine"
+     },
+     "what": "as the line ends, the camera pans right off the window to the Wall of Forecasts beside the Case Board"
+    },
+    {
+     "id": "slip",
+     "at": {
+      "line": "L0212",
+      "edge": "end",
+      "offset": 0.1
+     },
+     "what": "just after the line, as the pan arrives at the Wall, the hands pin the slip in W1: TURING · DUE 2000 · 3 in 10 fooled"
+    }
+   ],
+   "cast": [
+    "turing",
+    "narrator-hands"
+   ],
+   "props": [
+    "brick façade with a lit window",
+    "child's slate",
+    "schoolroom bell",
+    "Wall of Forecasts",
+    "forecast slip",
+    "Case Board",
+    "detective's hands"
+   ],
+   "onScreenText": [
+    {
+     "kind": "place",
+     "text": "MANCHESTER · 1950",
+     "beat": "turing"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Alan Turing · mathematician",
+     "beat": "turing"
+    },
+    {
+     "kind": "label",
+     "text": "TURING · DUE 2000 · 3 in 10 fooled",
+     "beat": "slip"
+    }
+   ],
+   "music": {
+    "cue": "c02-switch",
+    "note": "a light, hopeful turn under 'child machine'; then the detective's pizzicato, quietly, for the pin, and a soft held chord while the slip is read"
+   },
+   "transitionIn": "cut",
+   "claims": [
+    "e1-turing-1950",
+    "e1-turing-prediction"
+   ]
+  },
+  {
+   "id": "ch02-s07",
+   "kind": "scene",
+   "setting": "Dartmouth College, Hanover, summer 1956, dusk: the top floor of a colonial college hall, tall windows over the green",
+   "era": "1950s",
+   "mood": "duskRose",
+   "leadIn": 0.6,
+   "holdAfter": 2.3,
+   "lines": [
+    {
+     "id": "L0215",
+     "text": "By 1956 the field had a name: artificial intelligence.",
+     "pauseAfter": 0.5,
+     "direction": "a turning point told lightly; the new name said plainly",
+     "spoken": "By nineteen fifty-six the field had a name: artificial intelligence."
+    },
+    {
+     "id": "L0215b",
+     "text": "Marvin Minsky, who had built a learning machine himself, soon turned to symbols and rules: our first suspect.",
+     "direction": "warm on 'built a learning machine', slight weight on 'symbols'; 'our first suspect' dry and quiet, the detective's aside",
+     "pauseAfter": 0.55
+    },
+    {
+     "id": "L0216",
+     "text": "A young engineer, Bernard Widrow, fell for the dream of building an artificial brain, for good. His machines learned by sliding downhill, toward less wrong.",
+     "pauseAfter": 0.6,
+     "direction": "warm, with real feeling; a paraphrase, not a quotation (his own words, \"I never got over it\", rise on the quote card; the narration quotes them only at his death, L1511); the second sentence lighter, a small forward glance at what he would build, with a gentle downward lilt on 'downhill'"
+    },
+    {
+     "id": "L0217",
+     "text": "Remember him.",
+     "pauseAfter": 0.66,
+     "direction": "quiet, a promise to the viewer"
+    }
+   ],
+   "visual": "THIS SHOT: Dartmouth, summer 1956: the new name is chalked, Minsky turns from his learning machine to the board of symbols and rules, and young Widrow falls for the dream at the rim. CAMERA: Dartmouth, outside and in (era location; no study visit: the RULES emblem is chalked on Dartmouth's own board). Slow tint crossfade from the Wall's candleAmber (ch02-s05b) to duskRose (a mood change; this chapter has no lamp changes, only tint crossfades, so the film stays out of black). Exterior first: a white colonial college hall with a cupola, silhouetted against a rose dusk over a wide green, elms at the edges, fog low on the grass. Date stamp 'DARTMOUTH · SUMMER 1956'. The camera rises to the top-floor windows and passes inside: a long room, a big dictionary on a stand near a window, a long table with papers, a chalkboard, a typed proposal page pinned beside it (its numbered topics too small to read; one line faintly lit by the lantern's glow). Figures at the windows in silhouette: John McCarthy (mccarthy, glasses, late twenties) by the chalkboard; Minsky by the table. On 'name' McCarthy chalks two words on the board: ARTIFICIAL INTELLIGENCE; beside them, the pinned proposal page's dateline catches the light (the label notes the name came in the proposal of August 1955, before this summer). On 'Minsky' his name card rises; on 'learning', on the sill beside the lantern, a small paper-cut of the learning machine he had helped build at Harvard in 1951 (a rack of glowing tubes and a few knobs, SNARC) glows once, so the eye has what the ear is told. On 'symbols' Minsky turns his back on a small paper lantern hanging at the window and faces the chalkboard full of symbols and branching rules; the lantern swings gently, still lit. On 'suspect' (landing on 'Rules') the camera glances, for one beat, to a small paper-cut key over a branching tree chalked in the board's corner: the RULES suspect's emblem from the Case Board (ch01-s05), now with a face to it. On L0216 the camera finds, at the far end of the room by the door, a young man in jacket, tie and heavy glasses, Bernard Widrow (widrow), half in shadow, at the rim; his name card rises. On 'good' he looks not at the chalkboard but at the little swinging lantern Minsky turned from, and its light catches the rim of his glasses. On 'fell' his verbatim words rise beside him as a quote card (the card carries its date: he recalled it in 2005) and stay up through L0217 and the hold. On 'downhill' the lantern's swinging glow throws a faint misty-hill outline on the wall beside him, and a single bead of light rolls down its slope and settles in the valley: a first glimpse of the downhill landscape the film will return to. On 'Remember' the frame softly irises down on Widrow and the lantern together (an in-shot iris that never closes fully).",
+   "beats": [
+    {
+     "id": "stamp",
+     "at": {
+      "line": "L0215",
+      "edge": "start"
+     },
+     "what": "date stamp DARTMOUTH · SUMMER 1956; rise to the top-floor windows"
+    },
+    {
+     "id": "name",
+     "at": {
+      "line": "L0215",
+      "word": "name"
+     },
+     "what": "McCarthy chalks the new name: ARTIFICIAL INTELLIGENCE"
+    },
+    {
+     "id": "minsky",
+     "at": {
+      "line": "L0215b",
+      "word": "Minsky"
+     },
+     "what": "Minsky by the table catches the light; name card"
+    },
+    {
+     "id": "snarc",
+     "at": {
+      "line": "L0215b",
+      "word": "learning"
+     },
+     "what": "on the sill beside the lantern, a small paper-cut of his 1951 learning machine (a rack of glowing tubes, a few knobs) glows once"
+    },
+    {
+     "id": "symbols",
+     "at": {
+      "line": "L0215b",
+      "word": "symbols"
+     },
+     "what": "Minsky turns from the lantern towards the chalkboard of symbols and rules"
+    },
+    {
+     "id": "suspect",
+     "at": {
+      "line": "L0215b",
+      "word": "suspect"
+     },
+     "what": "glance to the RULES emblem (key over a branching tree) in the chalkboard's corner"
+    },
+    {
+     "id": "widrow",
+     "at": {
+      "line": "L0216",
+      "word": "Widrow"
+     },
+     "what": "Widrow revealed by the door at the rim; name card"
+    },
+    {
+     "id": "quoteUp",
+     "at": {
+      "line": "L0216",
+      "word": "fell"
+     },
+     "what": "Widrow's verbatim words rise beside him as a quote card"
+    },
+    {
+     "id": "taken",
+     "at": {
+      "line": "L0216",
+      "word": "good"
+     },
+     "what": "Widrow looks at the swinging lantern; light catches his glasses"
+    },
+    {
+     "id": "downhill",
+     "at": {
+      "line": "L0216",
+      "word": "downhill"
+     },
+     "what": "beside Widrow, the lantern's glow throws a faint misty-hill outline on the wall: a single bead of light rolls down its slope and settles in the valley (the downhill landscape the film returns to)"
+    },
+    {
+     "id": "remember",
+     "at": {
+      "line": "L0217",
+      "word": "Remember"
+     },
+     "what": "soft in-shot iris down on Widrow and the lantern"
+    }
+   ],
+   "cast": [
+    "mccarthy",
+    "minsky",
+    "widrow"
+   ],
+   "props": [
+    "colonial college hall with cupola",
+    "elms and green",
+    "dictionary on a stand",
+    "long table with papers",
+    "chalkboard",
+    "proposal page",
+    "small paper lantern at a window",
+    "RULES emblem chalked in the board's corner",
+    "small paper-cut of a tube-rack learning machine on the sill"
+   ],
+   "onScreenText": [
+    {
+     "kind": "place",
+     "text": "DARTMOUTH · SUMMER 1956",
+     "beat": "stamp"
+    },
+    {
+     "kind": "nameCard",
+     "text": "John McCarthy · named the field",
+     "beat": "name"
+    },
+    {
+     "kind": "label",
+     "text": "ARTIFICIAL INTELLIGENCE · named in the proposal, August 1955",
+     "beat": "name"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Bernard Widrow · engineer",
+     "beat": "widrow"
+    },
+    {
+     "kind": "quote",
+     "text": "I was so taken by this that I never got over it. — Bernard Widrow, recalling it in 2005",
+     "beat": "quoteUp"
+    },
+    {
+     "kind": "nameCard",
+     "text": "Marvin Minsky · built SNARC, 1951",
+     "beat": "minsky"
+    }
+   ],
+   "music": {
+    "cue": "c02-lab",
+    "note": "the valve organ broadens into a hopeful chorale for the naming, then thins on 'symbols'; under Widrow a single solo celesta line, the candle motif's rising fourth played tenderly, unresolved"
+   },
+   "transitionIn": "crossfade",
+   "claims": [
+    "e1-dartmouth-proposal",
+    "e1-dartmouth-neuronnets",
+    "e1-mccarthy-name",
+    "e1-minsky-switch",
+    "e2-widrow-dartmouth",
+    "e1-snarc",
+    "e2-lms",
+    "e2-adaline"
+   ]
+  },
+  {
+   "id": "ch02-s08",
+   "kind": "scene",
+   "setting": "The candle's paper stage in its last light, 1959, then the study shelf and the Case Board, night",
+   "era": "1950s",
+   "mood": "candleAmber",
+   "leadIn": 0.6,
+   "holdAfter": 3.4,
+   "lines": [
+    {
+     "id": "L0218",
+     "text": "A 1959 study of the frog's eye found the eye itself already sorting the world, picking out features before the brain saw a thing.",
+     "spoken": "A nineteen fifty-nine study of the frog's eye found the eye itself already sorting the world, picking out features before the brain saw a thing.",
+     "pauseAfter": 0.6,
+     "direction": "a gentle wonder at the frog; not a defeat; 'the eye itself' with quiet surprise (the sorting happens before any logic); a small weight on 'before the brain'"
+    },
+    {
+     "id": "L0219",
+     "text": "The logic-machine candle burned sixteen years.",
+     "pauseAfter": 0.55,
+     "direction": "the habit line, compressed; level and kind; name the belief clearly"
+    },
+    {
+     "id": "L0220",
+     "text": "The paper that put it out, for Pitts at least, had his own name on it.",
+     "pauseAfter": 0.84,
+     "direction": "the turn; quiet, with tenderness for Pitts; let the silence after it do the work; 'for Pitts at least' a light, honest qualifier, not an aside. NARRATION: re-generate this line on its own (not inside a shot chunk) at voice speed about 0.88, target 140-160 wpm; the text is unchanged.",
+     "tts": {
+      "solo": true,
+      "speed": 0.8
+     },
+     "insertGaps": {
+      "out": 0.3,
+      "least": 0.25
+     }
+    }
+   ],
+   "visual": "THIS SHOT: the frog's eye picks out features, the logic-machine candle goes out at sixteen rings, and back in the study the first clue is pinned and X-ray band 1 lights. CAMERA: stage, then the reverse flame push out to SHELF, a tilt up to BOARD (the C1 pin as an insert), then X-RAY (the column drawn square-on over the board). Palette crossfade back to the candle's paper stage (crossfadeMood duskRose to candleAmber, brief; never through black). CANDLE-CLOCK RULE (canonical; repeated word for word in every candle shot): every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one ring per year the belief is held. The wax that burns away is never lost: it stays above the stub as a ghost paper sleeve, ring-scored and translucent in the haze, so sleeve plus stub is always the full lit height and the SLEEVE's length is the years (16 rings = 96 px; 39 rings = 234 px). The sleeves are the bars of the chart: a longer sleeve means a belief held longer. A candle still lit has a live flame where sleeve meets stub; one put out keeps its sleeve, dark, with a thread of smoke; one that guttered has a frayed rim. The great candle has burned low: its flame now sits sixteen rings down, a ghost sleeve of sixteen rings above it. In its light, a paper-cut frog sits on a lily pad at the front of the stage, in silhouette, its large eye lit by a rim of amber. Date stamp '1959'. On 'features' the frog's eye opens into a magnified inset (an in-frame iris): a fine paper-cut lattice of retina where many small cells light up in varied, overlapping clusters as a shadow passes, far richer than the single wick of the logic lantern from s02, which hangs small and plain beside it for comparison; on 'brain' a faint paper-cut outline of the frog's brain behind the eye stays dark while the retina's clusters already glow (the eye does the picking-out first); the paper's author card, with all four authors' names and the year, sits under the inset and stays up through L0220. On 'logic' the candle's flame gutters. On 'Sixteen' it goes out: a thread of smoke rises and curls through the haze, and the pool of light on the stage shrinks to nothing. McCulloch and Pitts are left in shadow; Pitts, the smaller figure, lowers his head (restraint: no other gesture). At the end of L0219, a REVERSE FLAME PUSH (no lamp change, never through black): the camera pulls back out of the dying wick's last ember and the huge stage candle becomes the small stub on the study shelf: the stub stands at the far left with its dark ghost sleeve of sixteen scored rings above it and a small tag, '1943–1959 · 16'. On 'name' the camera tilts up to the board and the hands pin the chapter's clue card in slot C1, the head of the far-left input column: a paper-cut lantern with a wick, date-stamped 1943. Then, without narration, a short X-ray beat inside the pause and hold. X-RAY COLUMN (canonical; defined here, read in ch12-s07): the chat box is drawn as a translucent stratigraphic column of seven faint, empty, unlabelled bands, stacked bottom to top, with one thin seam between the third and fourth bands that never lights (the hand-cut stencils' seam). Each X-ray beat in the film lights exactly one band, in order from the bottom: 1 threshold lanterns (1943), 2 adjustable knobs (1958), 3 hidden layers and a backward arrow (1986), 4 furnaces and a sea of text (2012), 5 threads (2017), 6 type sorts (2018), 7 shears (2022). Lit bands stay softly lit at every later appearance; unlit bands stay faint. Here, just after the line, the column is drawn for the first time, faint, over the board: seven empty bands. A moment later only band 1 at the bottom lights, a scatter of tiny threshold lanterns glowing (the one component of this chapter really present in a modern chat model), and stays lit through most of the hold. It fades before the cut. The oxblood question card still sways on its thread.",
+   "beats": [
+    {
+     "id": "stamp",
+     "at": {
+      "line": "L0218",
+      "word": "fifty-nine"
+     },
+     "what": "date stamp 1959; the frog on its lily pad in the candle's low light"
+    },
+    {
+     "id": "eye",
+     "at": {
+      "line": "L0218",
+      "word": "features"
+     },
+     "what": "magnified inset of the frog's retina: many small cells light in varied clusters as a shadow passes, the eye picking out features on its own"
+    },
+    {
+     "id": "brain",
+     "at": {
+      "line": "L0218",
+      "word": "brain"
+     },
+     "what": "a faint paper-cut outline of the frog's brain behind the eye stays dark while the retina's clusters already glow"
+    },
+    {
+     "id": "gutter",
+     "at": {
+      "line": "L0219",
+      "word": "candle"
+     },
+     "what": "the candle's flame gutters"
+    },
+    {
+     "id": "out",
+     "at": {
+      "line": "L0219",
+      "word": "Sixteen"
+     },
+     "what": "the candle goes out; smoke rises; the pool of light shrinks to nothing"
+    },
+    {
+     "id": "stub",
+     "at": {
+      "line": "L0219",
+      "edge": "end"
+     },
+     "what": "reverse flame push out of the dying ember to the shelf: the stub and its dark sixteen-ring sleeve, with its tag"
+    },
+    {
+     "id": "clueCard",
+     "at": {
+      "line": "L0220",
+      "word": "name"
+     },
+     "what": "the hands pin the clue card in slot C1, the head of the far-left input column: a lantern with a wick, 1943"
+    },
+    {
+     "id": "xray",
+     "at": {
+      "line": "L0220",
+      "edge": "end",
+      "offset": 0.3
+     },
+     "what": "the X-ray column fades up over the board: seven faint, empty bands"
+    },
+    {
+     "id": "xrayBand1",
+     "at": {
+      "line": "L0220",
+      "edge": "end",
+      "offset": 0.8
+     },
+     "what": "wordless X-ray beat: band 1 (threshold lanterns) lights alone"
+    },
+    {
+     "id": "xrayFade",
+     "at": {
+      "line": "L0220",
+      "edge": "end",
+      "offset": 3.3
+     },
+     "what": "band 1 fades; the oxblood question card still sways on its thread"
+    }
+   ],
+   "cast": [
+    "mcculloch",
+    "pitts",
+    "narrator-hands"
+   ],
+   "props": [
+    "the first candle (burned sixteen rings, with its ghost sleeve)",
+    "paper-cut frog on a lily pad",
+    "magnified retina inset",
+    "candle stub with dark sleeve and tag",
+    "clue card: a lantern with a wick",
+    "X-ray column (seven bands)",
+    "Case Board",
+    "detective's hands"
+   ],
+   "onScreenText": [
+    {
+     "kind": "date",
+     "text": "1959",
+     "beat": "stamp"
+    },
+    {
+     "kind": "label",
+     "text": "Lettvin, Maturana, McCulloch & Pitts · 1959",
+     "beat": "eye",
+     "until": "stub"
+    },
+    {
+     "kind": "label",
+     "text": "THE BRAIN IS A LOGIC MACHINE · 1943–1959 · 16",
+     "beat": "stub"
+    }
+   ],
+   "music": {
+    "cue": "c02-candle",
+    "note": "the candle motif completes for the first time: the held suspension, then the falling resolution exactly as the flame goes out on 'Sixteen' (gone); then near silence for the last line; under the X-ray a faint high shimmer, and the celesta plays the rising fourth once, softly, as if something has been kept"
+   },
+   "transitionIn": "crossfade",
+   "claims": [
+    "e1-frog"
+   ]
+  }
+ ]
+}

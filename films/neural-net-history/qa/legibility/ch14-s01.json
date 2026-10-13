@@ -1,0 +1,88 @@
+{
+ "shot": "ch14-s01",
+ "at": "2026-10-08T02:42:40.717Z",
+ "minCapPx": 22,
+ "sampled": 14,
+ "texts": 11,
+ "offenders": [
+  {
+   "text": "14",
+   "maxCap": 11.7,
+   "minCap": 11.7,
+   "first": 0.55,
+   "last": 3.55,
+   "font": "16px \"Special Elite\""
+  },
+  {
+   "text": "NEW GENERATION",
+   "maxCap": 18.9,
+   "minCap": 16.8,
+   "first": 2.55,
+   "last": 10.55,
+   "font": "600 18px \"Cormorant SC\""
+  },
+  {
+   "text": "AI DEVELOPMENT PLAN",
+   "maxCap": 18.9,
+   "minCap": 16.8,
+   "first": 2.55,
+   "last": 10.55,
+   "font": "600 18px \"Cormorant SC\""
+  },
+  {
+   "text": "Two Shores",
+   "maxCap": 19,
+   "minCap": 19,
+   "first": 0.55,
+   "last": 3.55,
+   "font": "26px \"Special Elite\""
+  },
+  {
+   "text": "2017 plan (DigiChina translation)",
+   "maxCap": 19.2,
+   "minCap": 17,
+   "first": 2.74,
+   "last": 10.55,
+   "font": "italic 17.5px \"EB Garamond\""
+  },
+  {
+   "text": "2030",
+   "maxCap": 20.5,
+   "minCap": 18.2,
+   "first": 2.55,
+   "last": 10.55,
+   "font": "500 17.5px \"IBM Plex Mono\""
+  },
+  {
+   "text": "2020",
+   "maxCap": 20.5,
+   "minCap": 18.2,
+   "first": 2.74,
+   "last": 10.55,
+   "font": "500 17.5px \"IBM Plex Mono\""
+  },
+  {
+   "text": "2025",
+   "maxCap": 20.5,
+   "minCap": 18.2,
+   "first": 2.74,
+   "last": 10.55,
+   "font": "500 17.5px \"IBM Plex Mono\""
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "“…the world’s primary",
+   "maxCap": 25.2
+  },
+  {
+   "text": "AI innovation center”",
+   "maxCap": 25.2
+  },
+  {
+   "text": "20 JULY 2017 · STATE COUNCIL OF CHINA",
+   "maxCap": 22.1
+  }
+ ]
+}

@@ -1,0 +1,15 @@
+{
+ "shot": "ch08-s07",
+ "at": "2026-10-12T17:53:35.276Z",
+ "minCapPx": 22,
+ "sampled": 21,
+ "texts": 1,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "f(x) = max(0, x)   ·   ≈ 6× faster (their 4-layer test, CIFAR-10)",
+   "maxCap": 25.9
+  }
+ ]
+}

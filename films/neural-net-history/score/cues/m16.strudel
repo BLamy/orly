@@ -1,0 +1,195 @@
+// m16 — THE RETURN TO THE SCENE (ch12 s06 → s07 → s08 → s03). serverCyan → candleAmber.
+// RE-FIT (review round 1) to the 2139.54 s clock and the RE-ORDERED chapter: window 1562.95–1654.65 s (91.70 s).
+// Every event is written in ABSOLUTE film seconds (line() subtracts T0). Key: D. The prologue's lit box comes back
+// exactly (contrabass D2, tape hiss, the one piano E6, the ninth: a question with no third), and this time it is
+// ANSWERED: a warm Dmaj9 after "door". 60 BPM (one beat = 1 s) except the pulse, which keeps m12's 84 BPM grid.
+//
+//   1562.95–1585.96 THE LIT BOX    lead-in in the gap after L1205: m01's drone and hiss at m01's pitch and level,
+//                                  alone before L1212; E6 in the gap after "free to all" (1573.47); Dmaj9 on "door"
+//                                  (1575.98); on "The first note in the file" the lone E6 again (1577.87); it rises with
+//                                  the pull-back (1582.36) and the lit city (1584.16).
+//   1585.96–1600.88 THE X-RAY      seven chimes from 'tilt' (1586.26), one per era colour in order (celesta, valve organ,
+//                                  cello, piano, synth, harp, pizz), building D A D F# A E D, complete on 'shears'
+//                                  (1591.86); under Rosenblatt the valve organ alone; near silence for "language was the
+//                                  door"; one organ note opens out under the full wide (1598.45) and gives way on the cut.
+//   1600.88–1618.38 THE STAMPEDE   m12's GPU pulse at double speed from the cut, kept under D3 and thin under L1219; one
+//                                  accent per window (users, codeRed, investment, leak), the two equal lanterns struck
+//                                  together (sameDay 1613.94). Review r1: the energy CARRIES into s03 instead of stopping
+//                                  dead: on 'sitBack' (1615.54) the pulse falls back to m12's own eighths and level (one
+//                                  held piano F# over it), and on 'notQuite' (1616.74) the candle's D alone on solo celesta
+//                                  (then the founding figure's B) rides over the pulse (round 2: no rising fourth, no A-E).
+//   1618.38–1654.42 PLAINLY        the pulse carries on at m12's level under L1206; the SAME founding figure as OpenAI's in
+//                                  m12 (pizz D4 A3 B3 F#3, 8ths at 84, velocity .3, same pad, same level) on 'founded'
+//                                  (1628.23), the same dry tick on 'ledger' (1634.72), the same thin drone under the money
+//                                  line. Nothing warmer, louder or more consonant than m12. The race: one even pluck per
+//                                  lantern (bard 1644.70, llama 1646.33), and on 'sameDayChips' (1649.58) two IDENTICAL
+//                                  plucks struck together, panned apart: the last strike; an open D-A rings into the fade
+//                                  (1652.15–1654.65) as m17 enters at 1653.15.
+// VOICE PASS (2026-10-11): the Dmaj9 answer now lands in the breath just AFTER "door" (1576.37; the word ends 1576.33)
+//                                  instead of on top of it, a touch softer; the second E6 and Rosenblatt's organ softer.
+// CRITIC r1 (2026-10-11): the music-only X-ray build (1581.95-1592.35) and the full wide lifted about 2 dB (LIFT), with a
+//                                  soft D-A floor under the chimes; the chord now releases fast after 'shears' so Rosenblatt's
+//                                  line is clear; the 'Not quite' celesta D decays before L1206 (it had masked its first 3 s).
+// CLOCK RE-FIT (2026-10-12, clock 2139.54 s): every absolute time +17.75 s (no line inside the window changed length).
+// WORD PASS (2026-10-12): the 'Not quite' celesta D still rang over "Among" (L1206, -7.6 dB in 1-4 kHz): it now releases
+//                                by 1618.9, before the line.
+// CRITIC r1, ROUND 2 (2026-10-12, M1 economy): 'Not quite' no longer quotes the film's last gesture (celesta A -> D
+//                                over A-E): the celesta holds the D alone over the pulse and leans to the founding figure's
+//                                B; the A-E strings are gone and the 'sitBack' piano note is F#, not A.
+const T0 = 1562.95, DUR = 91.7, BPM = 60
+const VEL = 3.2          // global velocity scale (about -22 LUFS integrated)
+const LIFT = 1.17        // critic r1: the music-only X-ray build (1581.95-1592.35) and the full wide, about +2 dB
+// ---- seconds-based event compiler (shared by m13-m18; here events are absolute film seconds) ---
+// Events are [startSec, holdSec, notes, velocity, {per-event params}]. Each lane is compiled to one
+// mini-notation sequence that spans SPAN seconds, then slowed to SPAN·cps cycles, so every onset lands
+// exactly where the clock needs it, independent of the tempo grid.
+const CPS = BPM / 240
+setcps(CPS)
+const SPAN = Math.ceil(DUR) + 4
+const DFLT = { pan: .5, lpf: 18000, attack: .01, release: .3 }
+const r4 = (x) => (Math.round(x * 10000) / 10000).toFixed(4)
+function line(evs, defs) {
+  defs = defs || {}
+  const sorted = evs.filter(Boolean).map((e) => [e[0] - T0, ...e.slice(1)]).filter((e) => e[0] < DUR).sort((a, b) => a[0] - b[0])
+  const lanes = []
+  for (const e of sorted) {
+    let lane = lanes.find((l) => l.end <= e[0] + 1e-6)
+    if (!lane) { lane = { end: 0, evs: [] }; lanes.push(lane) }
+    lane.evs.push(e)
+    lane.end = e[0] + e[1]
+  }
+  const keys = new Set(Object.keys(defs))
+  for (const e of sorted) if (e[4]) for (const k of Object.keys(e[4])) keys.add(k)
+  const seq = (lane, val) => {
+    let pos = 0
+    const out = []
+    for (const e of lane.evs) {
+      if (e[0] - pos > 1e-6) out.push('~@' + r4(e[0] - pos))
+      out.push(val(e) + '@' + r4(e[1]))
+      pos = e[0] + e[1]
+    }
+    if (SPAN - pos > 1e-6) out.push('~@' + r4(SPAN - pos))
+    return mini('[' + out.join(' ') + ']')
+  }
+  return stack(...lanes.map((lane) => {
+    let p = note(seq(lane, (e) => e[2])).velocity(seq(lane, (e) => r4(Math.min(1, e[3] * VEL))))
+    for (const k of keys) p = p[k](seq(lane, (e) => (e[4] && e[4][k] != null ? e[4][k] : defs[k] != null ? defs[k] : DFLT[k] != null ? DFLT[k] : 0)))
+    return p.slow(SPAN * CPS)
+  }))
+}
+// a run of notes on a grid: from t0 (inclusive) to t1 (exclusive), one onset every `step` seconds,
+// cycling through `notes`; vel may be a number or a function of (i, t); len = hold as a fraction of step
+function run(t0, t1, step, notes, vel, len, params) {
+  const out = []
+  for (let i = 0, t = t0; t < t1 - 1e-6; i++, t = t0 + i * step) {
+    const n = notes[i % notes.length]
+    if (n === '~') continue
+    const v = typeof vel === 'function' ? vel(i, t) : vel
+    if (v <= 0) continue
+    out.push([t, step * (len || 1), n, +v.toFixed(3), typeof params === 'function' ? params(i, t) : params])
+  }
+  return out
+}
+// ------------------------------------------------------------------------------------------------
+const M01 = 2.0 / VEL    // m01's level trim (G = 2.0), so the lit box returns at exactly m01's level
+const M12 = 2.6 / VEL    // m12's postgain (2.6), so the founding figure and the pulse match m12 exactly
+const E84 = 60 / 84 / 2, S84 = E84 / 2                    // m12's eighth (.357 s) and sixteenth (.179 s)
+const loc = (t) => r4(t - T0)
+
+// ═══ M2: THE LIT BOX (m01's drone, hiss and tone, exactly) ═════════════════════════════════════════════
+$: line([
+  [1563.05, 8.0, 'd2', .22, { attack: 2 }],                                // alone in the gap after L1205
+  [1570.85, 9.6, 'd2', .2, { attack: 2.5 }],
+  [1580.60, 5.6, '[d2,a2]', .2, { attack: 2.2, release: 2.2 }],           // rising toward the pull-back
+  [1586.20, 7.0, 'd2', .14, { attack: 1.5 }],                              // the X-ray's floor
+  [1593.20, 7.6, 'd2', .1, { attack: 2, release: 1.2 }],
+], { attack: 2, release: 3 }).s('gm_contrabass').postgain(M01).lpf(380).hpf(40).room(.4).rsize(4).orbit(1)
+
+$: s(mini('[~@0.1 pink@' + r4(1585.96 - T0 - .1) + ' ~@' + r4(SPAN - (1585.96 - T0)) + ']')).slow(SPAN * CPS)
+  .attack(1.5).release(.8).gain(.013).hpf(2600).lpf(9000).orbit(6)
+
+$: line([
+  [1573.47, 7, 'e6', .42],                                                 // the one tone, in the gap after "free to all"
+  [1577.87, 5, 'e6', .24],                                                  // "The first note in the file": the lone E6 again
+]).s('piano').postgain(M01).release(3).room(.8).rsize(6).orbit(2)
+
+// ...answered: a warm Dmaj9 on "door" (piano, struck soft) — the first time the opening's question gets harmony
+$: line([
+  [1576.37, 1.8, '[d2,a2,f#3,c#4,e4]', .18, { release: 2.2 }],              // just after "door" (ends 1576.33): the word stays clear
+  [1615.54, 1.6, 'f#4', .1, { release: 2.5 }],                             // the hands sit back: one held piano F# (round 2: not A, so no A -> D cell forms with the celesta)
+], { release: 2 }).s('piano').lpf(2600).room(.55).rsize(4).orbit(7)
+
+// ═══ STRINGS: the answer, the rise, the X-ray chord ═════════════════════════════════════════════════════
+$: line([
+  [1576.37, 1.6, '[a2,f#3,c#4,e4]', .12, { attack: .35, release: 1 }],    // Dmaj9 (thins away before "firstNote")
+  [1582.20, 1.96, '[a2,f#3,c#4,e4]', .12 * LIFT, { attack: 1.6 }],        // the pull-back
+  [1584.16, 2.3, '[d3,a3,c#4,e4,f#4]', .15 * LIFT, { attack: .8, release: 1.5, lpf: 2000 }],  // the city lit
+  [1586.26, 5.75, '[d3,a3]', .045 * LIFT, { attack: 2.5, release: .3 }],    // a floor under the chimes, growing towards 'shears'
+  [1591.86, .3, '[d3,a3,d4,f#4,a4,e5]', .12 * LIFT, { attack: .15, release: .3, lpf: 2400 }],  // the X-ray complete (then gone for Rosenblatt)
+], { attack: 1, release: 1.5, lpf: 1400 }).s('gm_string_ensemble_1').room(.6).rsize(4).orbit(3)
+
+// ═══ THE X-RAY: one chime per band, the era colours in order, building D A D F# A E D ═════════════════
+const XR = (k) => 1586.26 + k * (5.6 / 6)                                  // 'tilt' → 'shears' (1591.86)
+const ROS = 1592.36                                                        // L1217 'Rosenblatt's'
+$: line([[XR(0), ROS - .15 - XR(0), 'd4', .21 * LIFT, { release: .4 }]]).s('gm_celesta').room(.6).rsize(4).orbit(3)            // 1940s: celesta (sounds D5)
+$: line([
+  [XR(1), ROS - .1 - XR(1), 'a3', .16 * LIFT, { release: .3 }],                                                      // 1950s: valve organ
+  [ROS, 3.6, '[d3,a3]', .08, { attack: .3, release: 1 }],                                                 // under Rosenblatt: the organ alone
+  [1597.05, 1.0, 'a3', .08, { attack: .6, release: .3 }],                                                // one note after "door" ...
+  [1598.15, 2.75, '[d3,a3,e4]', .13 * LIFT, { attack: 1.2, release: .9 }],                                      // ... opening out under the full wide, giving way on the cut
+], { release: .8 }).s('gm_drawbar_organ').lpf(1400).room(.5).rsize(4).orbit(4)
+$: line([[XR(2), ROS - .1 - XR(2), 'd3', .18 * LIFT, { attack: .2, release: .3 }]]).s('gm_cello').lpf(1100).room(.4).orbit(1) // winter: cello
+$: line([[XR(3), 2.5, 'f#4', .2 * LIFT]]).s('piano').release(.5).room(.55).rsize(4).orbit(7)                   // the quiet years: piano
+$: line([[XR(4), ROS - .1 - XR(4), 'a4', .21 * LIFT, { attack: .05, release: .3 }]]).s('triangle').lpf(2400).gain(.16).room(.5).orbit(5) // GPU: synth
+$: line([[XR(5), 1.2, 'e5', .21 * LIFT]]).s('gm_orchestral_harp').release(.5).room(.5).rsize(3).orbit(4)         // two shores: harp
+$: line([[XR(6), .8, 'd4', .24 * LIFT]]).s('gm_pizzicato_strings').release(.6).room(.4).orbit(4)                   // the shears: pizz
+
+// ═══ THE STAMPEDE: m12's pulse at double speed, under D3; one accent per window ═══════════════════════
+const CUT = 1600.88, SIT = 1615.54
+$: line(run(CUT, SIT, S84, ['d2', 'a2', 'd2', 'a1'], (i, t) => (i % 4 === 0 ? 1 : .75) * Math.min(1, .55 + (t - CUT) * .05) / VEL, .9))
+  .s('sawtooth').lpf(sine.range(650, 950).slow(4)).hpf(40).decay(.17).sustain(0).gain(.13).postgain(2.6).room(.25).rsize(5).orbit(5)
+$: line([
+  [1606.94, .4, '[d3,a3]', .15], [1609.94, .4, '[d3,a3]', .15], [1610.94, .4, '[d3,a3]', .15], [1612.14, .4, '[d3,a3]', .2],   // under L1219: lighter
+  [1613.94, .4, '[d3,a3]', .1, { pan: .3 }], [1613.94, .4, '[d3,a3]', .1, { pan: .7 }],   // two equal lanterns: identical, one accent
+], { release: .4 }).s('gm_string_ensemble_1').lpf(1600).room(.4).orbit(3)
+$: line([
+  [1606.94, .5, 'd2', .17], [1609.94, .5, 'd2', .17], [1610.94, .5, 'd2', .17], [1612.14, .5, 'd2', .22],
+  [1613.94, .5, 'd2', .11, { pan: .3 }], [1613.94, .5, 'd2', .11, { pan: .7 }],
+], { release: .6 }).s('gm_timpani').room(.3).orbit(1)
+
+// ═══ THE CARRY: from 'sitBack' the pulse falls back to m12's own eighths, notes and level (gain .05 · 2.6),
+// through the cut into s03 and under the founding, leaving after the ledger as m12's did ═══════════════
+const M12V = [.6, .8, 1, 1, 1, .9, .6, .3]
+// (gain .1 = twice m12's .05: the carry leaves 'sitBack' at the stampede's weight and eases to exactly m12's level,
+// velocity x .5, by 1624.25, before the founding; after the ledger it tapers away as m12's did)
+const carry = (t) => (t < 1624.25 ? 1 - .5 * (t - SIT) / (1624.25 - SIT) : .5) * (t > 1635.15 ? Math.max(.3, 1 - (t - 1635.15) * .4) : 1)
+$: line(run(SIT, 1636.95, E84, ['d2', 'd3', 'a2', 'd3'], (i, t) => M12V[i % 8] * carry(t) / VEL, 1))
+  .s('sawtooth').lpf(sine.range(650, 950).slow(4)).decay(.17).sustain(0).gain(.1).postgain(2.6).room(.25).rsize(5).orbit(5)
+$: s(mini('[~@' + loc(CUT) + ' pink@' + r4(1636.95 - CUT) + ' ~@' + r4(SPAN - (1636.95 - T0)) + ']')).slow(SPAN * CPS)
+  .hpf(7000).lpf(12000).gain(.004).attack(2).release(.05).postgain(2.6).orbit(6)
+// 'Not quite' (1616.74), critic r1 round 2 (M1 economy): the exact 'celesta A -> D over A-E' sonority is reserved for the
+// title, the slip (m13) and the film's end (m21). Here the flame is simply still lit: the held D alone on solo celesta
+// (sounding D6) over the pulse, no rising fourth, no A-E; then the founding figure's B (sounding B5), soft, a question
+// that leans toward the founding. Both gone before L1206 (1618.97).
+$: line([
+  [1616.74, .6, 'd5', .2, { release: .6 }],                                // the held D (sounding D6)
+  [1617.34, .55, 'b4', .13, { release: .7 }],                              // the founding figure's B (sounding B5)
+]).s('gm_celesta').room(.65).rsize(4).orbit(3)
+
+// ═══ PLAINLY: m12's founding figure, pad, tick and drone, at m12's level ═══════════════════════════════
+const FOUNDED = 1628.23
+$: line([[FOUNDED, E84, 'd4', .3], [FOUNDED + E84, E84, 'a3', .3], [FOUNDED + 2 * E84, E84, 'b3', .3], [FOUNDED + 3 * E84, E84, 'f#3', .3]])
+  .s('gm_pizzicato_strings').postgain(M12).lpf(2200).room(.3).rsize(5).orbit(4)
+$: line([[1618.38, 12.0, '[d2,a2,f#3]', 1 / VEL], [1630.38, 4.6, '[g1,d2,a2]', 1 / VEL]]).s('triangle').gain(.028).postgain(2.6)
+  .attack(.8).release(1.8).lpf(1100).room(.5).rsize(5).orbit(5)
+$: line([[1634.72, 1.0, 'd5', .12]]).s('gm_woodblock').postgain(M12).orbit(6)                       // the ledger
+// the same thin drone under the money line, which becomes the open D-A the race rings over
+$: line([[1635.35, 19.0, '[d2,a2]', .07, { attack: 3, release: 2 }]]).s('gm_cello').postgain(M12).lpf(500).room(.5).rsize(5).orbit(1)
+$: line([[1635.35, 19.0, 'd1', 1 / VEL]]).s('sine').gain(.025).postgain(2.6).attack(3).release(2).orbit(5)
+
+// the race: the same pizzicato, one even pluck per lantern, no lab louder than another; the two equal
+// lanterns ('sameDayChips' 1649.58) struck together with identical pitch, level and register, panned apart
+$: line([
+  [1644.70, E84, 'a3', .22], [1646.33, E84, 'b3', .22],
+  [1649.58, E84, 'd4', .11, { pan: .3 }], [1649.58, E84, 'd4', .11, { pan: .7 }],
+]).s('gm_pizzicato_strings').postgain(M12).lpf(2200).room(.3).rsize(5).orbit(4)

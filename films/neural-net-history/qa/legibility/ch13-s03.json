@@ -1,0 +1,332 @@
+{
+ "shot": "ch13-s03",
+ "at": "2026-10-13T00:09:59.436Z",
+ "minCapPx": 22,
+ "sampled": 33,
+ "texts": 74,
+ "offenders": [
+  {
+   "text": "MARCH 2023 · PAUSE LETTER",
+   "maxCap": 13.5,
+   "minCap": 13.5,
+   "first": 8.25,
+   "last": 12.55,
+   "font": "500 22px \"IBM Plex Mono\""
+  },
+  {
+   "text": "NO MAJOR LAB PAUSED",
+   "maxCap": 13.5,
+   "minCap": 13.5,
+   "first": 8.25,
+   "last": 12.55,
+   "font": "500 22px \"IBM Plex Mono\""
+  },
+  {
+   "text": "30 MAY 2023",
+   "maxCap": 14.1,
+   "minCap": 14.1,
+   "first": 15.55,
+   "last": 16.55,
+   "font": "500 23px \"IBM Plex Mono\""
+  },
+  {
+   "text": "SMARTER-THAN-HUMAN AI",
+   "maxCap": 15.3,
+   "minCap": 15.1,
+   "first": 1.41,
+   "last": 3.55,
+   "font": "24.8329px \"IBM Plex Mono\""
+  },
+  {
+   "text": "MAY BE YEARS AWAY, AND",
+   "maxCap": 15.3,
+   "minCap": 15.1,
+   "first": 1.41,
+   "last": 3.55,
+   "font": "24.8329px \"IBM Plex Mono\""
+  },
+  {
+   "text": "DANGEROUS",
+   "maxCap": 15.3,
+   "minCap": 15.1,
+   "first": 1.41,
+   "last": 3.55,
+   "font": "24.8329px \"IBM Plex Mono\""
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 91.8
+  },
+  {
+   "text": "IT?",
+   "maxCap": 91.8
+  },
+  {
+   "text": "RULES",
+   "maxCap": 53.2
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 45.9
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 45.9
+  },
+  {
+   "text": "1943",
+   "maxCap": 53.2
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 45.2
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 45.2
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 45.2
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 45.2
+  },
+  {
+   "text": "1958",
+   "maxCap": 53.2
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 38.4
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 38.4
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 38.4
+  },
+  {
+   "text": "1969",
+   "maxCap": 53.2
+  },
+  {
+   "text": "HELSINKI ·",
+   "maxCap": 53.2
+  },
+  {
+   "text": "1970",
+   "maxCap": 53.2
+  },
+  {
+   "text": "1986",
+   "maxCap": 53.2
+  },
+  {
+   "text": "KELLEY 1960 … LE CUN 1985",
+   "maxCap": 35.1
+  },
+  {
+   "text": "1989",
+   "maxCap": 53.2
+  },
+  {
+   "text": "DATA",
+   "maxCap": 53.2
+  },
+  {
+   "text": "FIRE",
+   "maxCap": 53.2
+  },
+  {
+   "text": "2012",
+   "maxCap": 53.2
+  },
+  {
+   "text": "2017",
+   "maxCap": 53.2
+  },
+  {
+   "text": "GENERATING",
+   "maxCap": 38.4
+  },
+  {
+   "text": "WIKIPEDIA ·",
+   "maxCap": 38.4
+  },
+  {
+   "text": "2018 · GPT",
+   "maxCap": 38.4
+  },
+  {
+   "text": "a",
+   "maxCap": 59.8
+  },
+  {
+   "text": "2018",
+   "maxCap": 53.2
+  },
+  {
+   "text": "2022",
+   "maxCap": 53.2
+  },
+  {
+   "text": "OPENAI · 11 DEC 2015",
+   "maxCap": 39.6
+  },
+  {
+   "text": "ANTHROPIC · 28 MAY 2021",
+   "maxCap": 39.6
+  },
+  {
+   "text": "THE BRAIN IS A LOGIC MACHINE",
+   "maxCap": 40.6
+  },
+  {
+   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
+   "maxCap": 40.6
+  },
+  {
+   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
+   "maxCap": 40.6
+  },
+  {
+   "text": "INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND",
+   "maxCap": 28.4
+  },
+  {
+   "text": "c. 1980",
+   "maxCap": 43.5
+  },
+  {
+   "text": "1984",
+   "maxCap": 43.5
+  },
+  {
+   "text": "NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY",
+   "maxCap": 34.2
+  },
+  {
+   "text": "MID-1990s",
+   "maxCap": 43.5
+  },
+  {
+   "text": "LANGUAGE MUST BE READ IN ORDER",
+   "maxCap": 34.2
+  },
+  {
+   "text": "1997",
+   "maxCap": 43.5
+  },
+  {
+   "text": "TO SEE, A MACHINE NEEDS FEATURES DESIGNED BY",
+   "maxCap": 34.2
+  },
+  {
+   "text": "EXPERTS",
+   "maxCap": 34.2
+  },
+  {
+   "text": "1999",
+   "maxCap": 43.5
+  },
+  {
+   "text": "DEEP NETS MUST BE WARMED UP LAYER BY LAYER",
+   "maxCap": 34.2
+  },
+  {
+   "text": "2006",
+   "maxCap": 43.5
+  },
+  {
+   "text": "LEARNED FEATURES, GIVEN DATA AND ARITHMETIC",
+   "maxCap": 34.2
+  },
+  {
+   "text": "A GO MACHINE IS A DECADE AWAY",
+   "maxCap": 34.2
+  },
+  {
+   "text": "2014",
+   "maxCap": 43.5
+  },
+  {
+   "text": "SCALE IS THE MAIN LEVER",
+   "maxCap": 34.2
+  },
+  {
+   "text": "2020",
+   "maxCap": 43.5
+  },
+  {
+   "text": "2023",
+   "maxCap": 43.5
+  },
+  {
+   "text": "SMARTER-THAN-HUMAN AI MAY BE",
+   "maxCap": 42.3
+  },
+  {
+   "text": "YEARS AWAY, AND DANGEROUS",
+   "maxCap": 42.3
+  },
+  {
+   "text": "lit 2023 · still burning",
+   "maxCap": 22
+  },
+  {
+   "text": "“Mitigating the risk of extinction from AI",
+   "maxCap": 39
+  },
+  {
+   "text": "should be a global priority…”",
+   "maxCap": 39
+  },
+  {
+   "text": "— STATEMENT ON AI RISK",
+   "maxCap": 23.1
+  },
+  {
+   "text": "Geoffrey Hinton",
+   "maxCap": 30
+  },
+  {
+   "text": "geoffrey hinton",
+   "maxCap": 22
+  },
+  {
+   "text": "Yoshua Bengio",
+   "maxCap": 30
+  },
+  {
+   "text": "first signatory",
+   "maxCap": 22
+  },
+  {
+   "text": "yoshua bengio",
+   "maxCap": 22
+  },
+  {
+   "text": "second signatory",
+   "maxCap": 22
+  },
+  {
+   "text": "Demis Hassabis",
+   "maxCap": 25.5
+  },
+  {
+   "text": "Sam Altman",
+   "maxCap": 25.5
+  },
+  {
+   "text": "Dario Amodei",
+   "maxCap": 25.5
+  }
+ ]
+}

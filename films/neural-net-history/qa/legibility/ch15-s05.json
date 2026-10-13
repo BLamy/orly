@@ -1,0 +1,75 @@
+{
+ "shot": "ch15-s05",
+ "at": "2026-10-13T00:09:56.278Z",
+ "minCapPx": 22,
+ "sampled": 52,
+ "texts": 16,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "as of",
+   "maxCap": 34.2
+  },
+  {
+   "text": "October 2026",
+   "maxCap": 34.2
+  },
+  {
+   "text": "FEB–SEP 2026",
+   "maxCap": 33.8
+  },
+  {
+   "text": "AUG: UNLAWFUL",
+   "maxCap": 32.3
+  },
+  {
+   "text": "RETALIATION",
+   "maxCap": 32.3
+  },
+  {
+   "text": "(N.D. CAL.)",
+   "maxCap": 32.3
+  },
+  {
+   "text": "SEP: UPHELD 2–1",
+   "maxCap": 32.3
+  },
+  {
+   "text": "(D.C. CIR.)",
+   "maxCap": 32.3
+  },
+  {
+   "text": "APPROVED",
+   "maxCap": 34.2
+  },
+  {
+   "text": "JULY 2026",
+   "maxCap": 34.2
+  },
+  {
+   "text": "$1.5B SETTLEMENT",
+   "maxCap": 32.9
+  },
+  {
+   "text": "PIRATED BOOKS",
+   "maxCap": 32.9
+  },
+  {
+   "text": "…a 'warning shot' for us and for",
+   "maxCap": 30.4
+  },
+  {
+   "text": "the world”",
+   "maxCap": 30.4
+  },
+  {
+   "text": "openai",
+   "maxCap": 22
+  },
+  {
+   "text": "August 2026",
+   "maxCap": 22
+  }
+ ]
+}

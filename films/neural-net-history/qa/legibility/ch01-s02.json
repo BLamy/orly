@@ -1,0 +1,51 @@
+{
+ "shot": "ch01-s02",
+ "at": "2026-10-12T07:33:08.927Z",
+ "minCapPx": 22,
+ "sampled": 13,
+ "texts": 10,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "Why",
+   "maxCap": 52.3
+  },
+  {
+   "text": "illustration",
+   "maxCap": 28.3
+  },
+  {
+   "text": "is",
+   "maxCap": 52.3
+  },
+  {
+   "text": "the",
+   "maxCap": 54.9
+  },
+  {
+   "text": "sky",
+   "maxCap": 52.3
+  },
+  {
+   "text": "blue?",
+   "maxCap": 52.3
+  },
+  {
+   "text": "Sunlight",
+   "maxCap": 54.9
+  },
+  {
+   "text": "scatters",
+   "maxCap": 54.9
+  },
+  {
+   "text": "air.",
+   "maxCap": 54.9
+  },
+  {
+   "text": "in",
+   "maxCap": 54.9
+  }
+ ]
+}

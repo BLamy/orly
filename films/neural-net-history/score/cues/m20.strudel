@@ -1,0 +1,107 @@
+// m20 — "Case Status: Open", part 2 (neural-net-history, ch15-s06/s07). Window 2009.65–2038.15 (28.50 s),
+// fadeIn 1.5 (to 2011.15), fadeOut 1 (2037.15–2038.15). Rubato at 60 BPM: setcps(1), one cycle = one second;
+// events written at their ABSOLUTE film second through A(t) = t − 2009.65. The labs moved to m19.
+// The crest of the forecasts (0.4), then winter, leaving (0.2).
+//
+//  THE THREE HOLDOUTS (2010.92–2025.33): M1 on solo cello in D minor. In the clear before L1509 (2013.92):
+//     A2 on "b1" 2011.22, D3 lit on "b1b" 2012.72 over Dm (m19's harp F# has faded: the key turns minor alone).
+//     The floor moves to C under "dangerous" 2017.18 (the held D grinding gently against C below and E above)
+//     and to A-E under "far enough" 2019.56 (Asus4); the unresolved suspension swells in the music-only hold
+//     2020.25–2024.95 while the cards are read (the cue's only swell), and does NOT resolve.
+//  WIDROW (2025.33–2039.42, winterBlue): solo cello plays M1 once, FULLY: A2 2025.50 in the lead-in, D3 lit
+//     2026.30 over Dm and winter glass; held through "died at ninety-five"; the floor slides to A-E on
+//     "ninety-five" 2031.67 (doubt); the fall D -> C# over A on "it" (2035.21, after "never got over it");
+//     one high celesta note per window going dark from "He wrote" 2033.02 (E6 C#6 A5 E5, thinning).
+//     Last onset 2035.50; silent before the fade (2037.15), a beat of silence before m21 at the cut (2039.42).
+//  v6 (2026-10-12): RE-WRITTEN ON THE 2139.5417 s CLOCK (every absolute time +18.25 s; no line inside the cue changed
+//     length, so nothing moved against the picture). Under L1511 the 1-4 kHz voice band kept only 6.5 dB clear of the
+//     music: the lit D3 -1.9 dB, the winter glass -2.5 dB and the windows' celesta -4 dB (the falling line unchanged).
+setcps(1)
+const S = 2009.65
+const A = (t) => +(t - S).toFixed(3)
+const N = 29        // seconds covered by each compiled sequence (the window is 28.50 s)
+const G = 2.2       // master trim (postgain): v1 (old clock, with the labs) -21.3 LUFS at 2.5; v2 -20.7 but only
+                    // 4-8 dB under the voice, so v3 scales every layer under a line by VU (about -3 dB); v4 -20.7 with
+                    // L1509/L1511 9.2/9.4 dB under, so G 2.5 -> 2.2
+const VU = .72      // under-voice scale (L1509 2013.92-2020.20, L1511 2025.93-2035.21)
+const VH = .64      // v5 (2026-10-11): L1509 measured 9.8 dB under (peak 5.3): the holdouts' under-voice layers -1 dB more
+
+// ---- shared helper: events in cue-local SECONDS (setcps(1): one cycle = one second = one beat at 60 BPM) ----
+// [start, dur, notes, velocity, {per-event params}] compiled into one mini-notation sequence per lane
+// (overlapping events go to new lanes), so every onset sits exactly where the clock needs it.
+function line(evs, defs) {
+  defs = defs || {}
+  const sorted = [...evs].sort((a, b) => a[0] - b[0])
+  const lanes = []
+  for (const e of sorted) {
+    let lane = lanes.find((l) => l.end <= e[0] + 1e-6)
+    if (!lane) { lane = { end: 0, evs: [] }; lanes.push(lane) }
+    lane.evs.push(e)
+    lane.end = e[0] + e[1]
+  }
+  const keys = Object.keys(defs)
+  const seq = (lane, val) => {
+    let pos = 0
+    const out = []
+    for (const e of lane.evs) {
+      if (e[0] - pos > 1e-6) out.push('~@' + (e[0] - pos).toFixed(4))
+      out.push(val(e) + '@' + e[1].toFixed(4))
+      pos = e[0] + e[1]
+    }
+    if (N - pos > 1e-6) out.push('~@' + (N - pos).toFixed(4))
+    return mini('[' + out.join(' ') + ']')
+  }
+  return stack(...lanes.map((lane) => {
+    let p = note(seq(lane, (e) => e[2])).velocity(seq(lane, (e) => e[3]))
+    for (const k of keys) p = p[k](seq(lane, (e) => (e[4] && e[4][k] != null ? e[4][k] : defs[k])))
+    return p.slow(N).postgain(G)
+  }))
+}
+
+// THE FLOOR (contrabass + low strings, below D3). The holdouts: Dm (lit) → C under "dangerous" → A-E under
+// "far enough" (the hold). Widrow: Dm → A-E on "ninety-five" → A (the fall, on "it").
+const W = [
+  [A(2010.55), A(2012.72) - A(2010.55), 'd2', '[d2,a2]', { attack: 1.4 }],   // a floor under the A2 pick-up
+  [A(2012.72), 4.4, 'd2', '[d2,a2]', { attack: .8 }, VH],
+  [A(2017.10), 2.4, 'c2', '[c2,g2]', { attack: 1 }, VH],
+  [A(2019.50), 5.4, 'a1', '[a1,e2,a2]', { attack: 1.2, release: 2.5 }],
+  [A(2026.30), 5.35, 'd2', '[d2,a2]', { attack: 1.5 }, VU],
+  [A(2031.65), 3.55, 'a1', '[a1,e2]', { attack: 1.4 }, VU],
+  [A(2035.21), .55, 'a1', '[a1,e2,a2]', { attack: .3, release: .8 }],
+]
+$: line(W.map(([t, d, r, c, p, u]) => [t, d, r, .15 * (u || 1), p]), { attack: 1, release: 2.5 })
+  .s('gm_contrabass').hpf(50).lpf(380).room(.3).rsize(3).orbit(2)
+$: line(W.map(([t, d, r, c, p, u]) => [t, d, c, .085 * (u || 1), p]), { attack: 1, release: 2.5 })
+  .s('gm_string_ensemble_1').hpf(40).lpf(700).room(.5).rsize(4).orbit(3)
+
+// HIGH STRINGS: the Dm third high and thin when the holdouts' candle is lit; E5 over C ("dangerous": the held
+// D grinding between C and E); then the crest in the hold: Asus4 opened out with the held D on top.
+$: line([
+  [A(2012.72), 4.3, 'f5', .06 * VH, { attack: 1.4 }],
+  [A(2017.10), 2.4, 'e5', .065 * VH, { attack: 1 }],
+  [A(2020.25), 4.9, '[e3,a3,d4]', .27, { attack: 1.6, release: 2.6, lpf: 1800 }],
+  [A(2020.25), 4.9, '[e4,a4,d5]', .14, { attack: 2, release: 2.6, lpf: 2600 }],
+], { attack: 1.2, release: 2.5, lpf: 2400 })
+  .s('gm_string_ensemble_1').room(.6).rsize(5).orbit(4)
+
+// SOLO CELLO: M1. The holdouts: lit and held, re-bowed under "dangerous" and "far enough", never resolved.
+// Widrow: lit, held, and the fall D -> C# on "never got over it".
+$: line([
+  [A(2011.22), 1.5, 'a2', .3, { attack: .3 }],
+  [A(2012.72), 4.38, 'd3', .31 * VH],
+  [A(2017.10), 2.4, 'd3', .28 * VH],
+  [A(2019.50), 5.4, 'd3', .33, { attack: .9, release: 2.4 }],   // v5: swells into the hold, not under 'far enough'
+  [A(2025.50), .8, 'a2', .25, { attack: .35 }],
+  [A(2026.30), 5.35, 'd3', .21 * VU],   // v6: -1.9 dB under 'In twenty twenty-five, Bernard Widrow'
+  [A(2031.65), 3.55, 'd3', .23 * VU],
+  [A(2035.21), .5, 'c#3', .26, { attack: .15, release: .6 }],
+], { attack: .25, release: 1.6 })
+  .s('gm_cello').lpf(950).room(.5).rsize(3.5).orbit(5)
+
+// WINTER GLASS for Widrow's sill (very soft, high), and the windows going dark (celesta, E6 C#6 A5 E5).
+$: line([[A(2026.45), 7.4, '[d5,a5]', .045 * VU]], { attack: 2, release: 2 })
+  .s('gm_pad_bowed').lpf(5000).room(.7).rsize(5).orbit(6)
+$: line([
+  [A(2033.02), .8, 'e5', .1 * VU], [A(2033.87), .7, 'c#5', .08 * VU], [A(2034.70), .45, 'a4', .065 * VU], [A(2035.50), .3, 'e4', .07, { release: .5 }],
+], { release: .8 })
+  .s('gm_celesta').room(.6).rsize(4).orbit(6)

@@ -1,0 +1,168 @@
+// m15 — SCALE, THE RIM, THE GARDENER (ch11 s05, s08; ch12 s01, s02). Window 1489.50–1563.95 s (74.45 s) on the
+// 2139.54 s clock. Key: D major (scale: M1 stops on the Asus4, still burning) → B minor (the rim cello, M4's walk) →
+// G major (the last accomplice; m02's child-machine turn, same notes). 84 BPM where there is a grid (bar 2.857 s,
+// beat .714 s), the build's bars anchored so a downbeat falls on 'skyline' (11.49). Cue-local seconds (absolute − 1489.50).
+// RE-FIT (review round 1): ch11-s05 +2.33 s, ch12-s01/s02 +3.25 s; the rim walk re-laid on the L1117/L1118 words;
+// Marcus's hold now follows "the accounts differ" (45.07); the child-machine turn waits for "better?" to end.
+// The join: m15 enters at 1489.50 (1.5 s fade-in) on a low D, inside the gap 1488.48–1492.60 (L1107 → L1110).
+//
+//   0.00–25.25 SCALE      a low D alone (1.0), then the GPU pulse gathers, density doubling with each power of ten:
+//                         quarters (2.92) → eighths (8.63) → sixteenths on the skyline (11.49), all held below D3
+//                         under the long line; harmony D – Bm – G – D – A (low); M1 on warm synth: A → D on 'A new
+//                         candle' (17.45/17.65); on 'lever' (19.81) the bass drops to A-E under the held D = Asus4,
+//                         and STOPS THERE; the swell lives in the gap (20.12–25.85); a pp celesta glint (24.62).
+//  25.25–50.62 THE RIM   the synth recedes; solo cello takes the held D, then M4's walk in B minor, low and sparse;
+//                         the cello carries Marcus's music-only hold (45.15–48.75), half a beat of silence, then one
+//                         low E under the pinned type sort (49.72), unresolved.
+//  50.62–59.71 CHOOSING  duskRose piano in G, a light pizz hop on the beat (grid on 'choose' 54.80); a lift (IV) as the
+//                         hand chooses; in the hold, m02's child-machine turn: music box G5 A5 B5 → D6 over C – D – G.
+//  59.71–74.45 SHEARS    the hop becomes the shears' snip on 'shaped' (64.64); a warm G on 'preferred' (68.37);
+//                         a quiet pad under the caveat (69.91), fading 72.25–74.45 (G → m16's D drone: plagal).
+// VOICE PASS (2026-10-11): pulse and floor about 2 dB softer under L1110, the candle synth and its doubling ~3 dB
+//                         softer under 'A new candle: scale is the main lever' (it measured 6 dB speech-to-music),
+//                         the warm G on 'preferred' lighter; the Asus4 swell in the gap after 'lever' is unchanged.
+// CLOCK RE-FIT (2026-10-12, clock 2139.54 s): the window moved bodily +17.75 s; cue-local times unchanged (checked).
+// WORD PASS (2026-10-12): per-word 1-4 kHz margins: the Wall's celesta glint and the candle synth's tail now clear
+//                         "At the rim" (L1117); the child-machine turn's D6 and its G chord release as "By 2022" begins.
+const DUR = 74.45, BPM = 84
+const VEL = 3.2          // global velocity scale (about -22 LUFS integrated)
+// ---- seconds-based event compiler (shared by m13-m18) ----------------------------------------
+// Events are [startSec, holdSec, notes, velocity, {per-event params}] in cue-local seconds. Each lane
+// is compiled to one mini-notation sequence that spans SPAN seconds, then slowed to SPAN·cps cycles,
+// so every onset lands exactly where the clock needs it, independent of the tempo grid.
+const CPS = BPM / 240
+setcps(CPS)
+const SPAN = Math.ceil(DUR) + 4
+const DFLT = { pan: .5, lpf: 18000, attack: .01, release: .3 }
+const r4 = (x) => (Math.round(x * 10000) / 10000).toFixed(4)
+function line(evs, defs) {
+  defs = defs || {}
+  const sorted = evs.filter((e) => e && e[0] < DUR).sort((a, b) => a[0] - b[0])
+  const lanes = []
+  for (const e of sorted) {
+    let lane = lanes.find((l) => l.end <= e[0] + 1e-6)
+    if (!lane) { lane = { end: 0, evs: [] }; lanes.push(lane) }
+    lane.evs.push(e)
+    lane.end = e[0] + e[1]
+  }
+  const keys = new Set(Object.keys(defs))
+  for (const e of sorted) if (e[4]) for (const k of Object.keys(e[4])) keys.add(k)
+  const seq = (lane, val) => {
+    let pos = 0
+    const out = []
+    for (const e of lane.evs) {
+      if (e[0] - pos > 1e-6) out.push('~@' + r4(e[0] - pos))
+      out.push(val(e) + '@' + r4(e[1]))
+      pos = e[0] + e[1]
+    }
+    if (SPAN - pos > 1e-6) out.push('~@' + r4(SPAN - pos))
+    return mini('[' + out.join(' ') + ']')
+  }
+  return stack(...lanes.map((lane) => {
+    let p = note(seq(lane, (e) => e[2])).velocity(seq(lane, (e) => r4(Math.min(1, e[3] * VEL))))
+    for (const k of keys) p = p[k](seq(lane, (e) => (e[4] && e[4][k] != null ? e[4][k] : defs[k] != null ? defs[k] : DFLT[k] != null ? DFLT[k] : 0)))
+    return p.slow(SPAN * CPS)
+  }))
+}
+// a run of notes on a grid: from t0 (inclusive) to t1 (exclusive), one onset every `step` seconds,
+// cycling through `notes`; vel may be a number or a function of (i, t); len = hold as a fraction of step
+function run(t0, t1, step, notes, vel, len, params) {
+  const out = []
+  for (let i = 0, t = t0; t < t1 - 1e-6; i++, t = t0 + i * step) {
+    const n = notes[i % notes.length]
+    if (n === '~') continue
+    const v = typeof vel === 'function' ? vel(i, t) : vel
+    if (v <= 0) continue
+    out.push([t, step * (len || 1), n, +v.toFixed(3), typeof params === 'function' ? params(i, t) : params])
+  }
+  return out
+}
+// ------------------------------------------------------------------------------------------------
+const B = 60 / BPM, E = B / 2, S16 = B / 4, BAR = 4 * B
+const SKYLINE = 11.49, A_NEW = 17.45, CANDLE = 17.65, LEVER = 19.81, GLINT = 24.62, RIM = 25.25
+const MARCUS = 45.15, CLUE = 49.72, CHOOSE = 54.80, TURN = 57.75, S02 = 59.71
+const P = 3.25                                            // ch12-s01/s02: the earlier grid, shifted onto 'choose'
+const SHAPED = 61.39 + P, PREFERRED = 65.12 + P, CAVEAT = 66.66 + P
+const g0 = SKYLINE - 3 * BAR                              // bar grid: 2.92, 5.78, 8.63, 11.49, 14.35, 17.20
+const bar = (n) => g0 + n * BAR
+const hop0 = CHOOSE - 5 * B                               // the robot's hop grid (51.23), 'choose' on a beat
+const W = .39                                             // the rim walk: the earlier phrase, re-laid on "rim"
+
+// ═══ THE PULSE (oscillator, M5c): density doubles with each power of ten ════════════════════════════════
+$: line([
+  ...run(bar(0), bar(2), B, ['d2', 'd3', 'a2', 'd3'], (i) => (i % 4 === 0 ? .17 : .12), .5),
+  ...run(bar(2), bar(3), E, ['g1', 'g2', 'd2', 'g2'], (i) => (i % 4 === 0 ? .18 : .12), .6),
+  ...run(bar(3), bar(4), S16, ['d2', 'd3', 'a2', 'd3'], (i) => (i % 4 === 0 ? .19 : .11), .6),
+  ...run(bar(4), bar(5), S16, ['a1', 'a2', 'e2', 'a2'], (i) => (i % 4 === 0 ? .19 : .11), .6),
+  ...run(bar(5), LEVER, E, ['d2', 'd3', 'a2', 'd3'], .095, .6),
+  ...run(LEVER, LEVER + 3.8, E, ['a1', 'a2', 'e2', 'a2'], (i, t) => .15 * (1 - (t - LEVER) / 4.5), .6),
+]).s('sawtooth').lpf(560).hpf(40).decay(.18).sustain(0).gain(.32).room(.2).orbit(5)
+
+// ═══ LOW HARMONY under the long line (below D3), then the rim's drone ════════════════════════════════════
+$: line([
+  [1.0, bar(1) - 1.0, 'd2', .18, { attack: 1.0 }],                        // the key, alone before L1110
+  [bar(1), BAR, 'b1', .18], [bar(2), BAR, 'g1', .19],
+  [bar(3), BAR, 'd2', .17], [bar(4), BAR, 'a1', .17], [bar(5), LEVER - bar(5), 'd2', .14],
+  [LEVER, 4.8, 'a1', .2, { attack: .4, release: 1.4 }],                   // Asus4: the floor drops, the D stays
+  [26.19, 10.0, 'b1', .1, { attack: 2.5, release: 1 }],                   // B minor under the walk
+  [36.40, 6.4, 'g1', .09, { attack: 1.5, release: 1 }],                   // under the parrots
+  [42.85, 5.9, 'e2', .1, { attack: 1, release: .5 }],                     // 'left Google; the accounts differ' → Marcus
+  [CLUE, 1.8, 'e2', .16, { attack: .05, release: 2.2 }],                  // the pinned type sort: unresolved
+  [TURN, .7, 'c2', .12], [TURN + .7, .97, 'd2', .13], [TURN + 1.67, 2.6, 'g1', .14, { release: 1.5 }],   // C – D – G
+  [S02 + .6, 8.0, 'g1', .08, { attack: 2 }], [PREFERRED, 4.2, 'g1', .09, { attack: .4, release: 1.4 }],
+], { attack: .6, release: 1.2 }).s('gm_contrabass').lpf(380).hpf(40).room(.3).rsize(3).orbit(1)
+
+// ═══ M1 on warm synth: A → D on 'A new candle', held as Asus4 from 'lever' — never resolved ═════════════
+$: line([
+  [A_NEW, .2, 'a4', .2, { attack: .03 }], [CANDLE, 7.2, 'd5', .2, { attack: .05, release: 1.0 }],
+]).s('triangle').lpf(2200).gain(.16).room(.5).rsize(4).orbit(3)
+
+// ═══ STRINGS ═══════════════════════════════════════════════════════════════════════════════════════════
+$: line([
+  [1.0, bar(1) - 1.0, '[d3,a3]', .05, { attack: 1.2 }],                   // the key, soft, before the pulse
+  [bar(5), LEVER - bar(5), '[f#3,a3]', .055, { attack: 1 }],               // D, soft, under 'A new candle'
+  [CANDLE, 6.4, 'd5', .06, { attack: .4, release: 1.6, lpf: 2600 }],        // the flame, doubled
+  [LEVER, 4.4, '[a2,e3,a3]', .16, { attack: .8, release: 1.4 }],            // the suspension swells in the gap
+  [36.40, 6.4, '[g2,d3]', .05, { attack: 2, release: 1 }],
+  [hop0 + 1.82, 1.75, '[g2,d3,b3]', .06, { attack: 1 }],
+  [CHOOSE, 2.35, '[c3,e3,g3]', .07, { attack: .6 }],                      // the lift as the hand chooses
+  [TURN, .7, '[c3,g3,e4]', .1, { attack: .3, release: .6 }],              // m02's turn: IV ...
+  [TURN + .7, .97, '[d3,a3,f#4]', .12, { attack: .3, release: .6 }],      // ... V ...
+  [TURN + 1.67, .9, '[g3,b3,d4,g4]', .13, { attack: .3, release: 1.0 }],  // ... I (released as L1204 begins)
+  [S02 + .6, 8.0, '[g2,d3]', .06, { attack: 2, release: 1 }],             // the gardener's ground, under the line
+  [PREFERRED, 1.5, '[g2,d3,b3,d4]', .07, { attack: .3, release: 1.0, lpf: 1800 }],   // 'preferred': warm G
+  [CAVEAT, 3.3, '[g2,d3,b3]', .07, { attack: 1.0, release: 1.4 }],       // the caveat: a quiet pad, decaying into the fade
+], { attack: 1, release: 1.5, lpf: 1300 }).s('gm_string_ensemble_1').room(.6).rsize(4).orbit(2)
+
+// celesta glint: the held A-D (m11's waiting suspension), pp, on the Wall's glint
+$: line([[GLINT, .8, '[a4,d5]', .1]]).s('gm_celesta').release(.6).room(.7).rsize(5).orbit(3)
+
+// ═══ THE RIM: solo cello (duskRose). The held D, M4's walk in B minor, Marcus's hold ═════════════════════
+$: line([
+  [RIM - .22, 1.2, 'd3', .15, { attack: .8, release: .8 }],                               // takes the held D from the synth
+  [25.80 + W, .6, 'f#2', .15], [26.40 + W, 1.2, 'b2', .15], [27.60 + W, .95, 'c#3', .14], // M4: F#2 B2 – C#3 |
+  [28.62 + W, 1.35, 'd3', .15], [29.97 + W, .8, 'e3', .13], [30.77 + W, 1.5, 'd3', .14],   // D3 – E3 D3 |
+  [32.31 + W, 1.1, 'c#3', .15], [33.41 + W, 1.5, 'a2', .14],                             // C#3 A2 |
+  [34.91 + W, 6.0, 'b2', .13, { attack: .4, release: 1 }],                               // B2 (the rim)
+  [MARCUS, .6, 'f#2', .28], [MARCUS + .6, .6, 'b2', .28], [MARCUS + 1.2, 1.0, 'd3', .3], // Marcus: the walk again, freer
+  [MARCUS + 2.2, 1.4, 'c#3', .27, { release: .25 }],                                     // ... stops on C#: half a beat of silence
+], { attack: .15, release: 1.2 }).s('gm_cello').lpf(1000).hpf(40).room(.35).rsize(3).orbit(1)
+
+// ═══ CHOOSING: duskRose piano in G; the pizz hop; the shears ═══════════════════════════════════════════
+$: line([
+  [hop0, 1.6, '[g2,d3]', .15], [hop0 + 2 * B, .8, 'b5', .1], [hop0 + 3 * B, .8, 'd6', .1],
+  [CHOOSE, 1.6, '[c3,g3]', .15], [CHOOSE, 1.2, 'e6', .13], [CHOOSE + .72, 1.0, 'g6', .11],   // the lift as the hand chooses
+  [PREFERRED, 2.0, '[g1,g2]', .085, { release: 2 }], [PREFERRED, 1.6, 'b5', .07],
+], { release: 1.6 }).s('piano').lpf(3000).room(.55).rsize(4).orbit(7)
+
+$: line([
+  ...run(hop0, TURN - .1, B, ['g2', 'd3', 'b2', 'd3'], (i) => (i % 4 === 0 ? .2 : .15), .45),   // the robot's hops
+  ...run(S02 + .6, SHAPED - .09, 2 * B, ['g2', 'd3'], .13, .4),                               // under 'By 2022 ...'
+  // the shears: two blades, on the beat of 'shaped', then twice more as the hedge is shaped (high: a snip, not a note)
+  ...[SHAPED, SHAPED + .72, SHAPED + 1.44].flatMap((t, i) => [[t, .1, '[d5,g5]', .15 - i * .025], [t + .12, .1, '[d5,g5]', .12 - i * .025]]),
+], { release: .25 }).s('gm_pizzicato_strings').lpf(2400).room(.35).rsize(3).orbit(4)
+
+// m02's child-machine turn, unspoken, same notes: music box G5 A5 B5 → D6 (education, at last)
+$: line([
+  [TURN + .7, .3, 'g5', .16], [TURN + 1.0, .28, 'a5', .17], [TURN + 1.28, .39, 'b5', .18], [TURN + 1.67, .55, 'd6', .2, { release: .7 }],
+]).s('gm_music_box').release(1.8).room(.6).rsize(5).orbit(3)

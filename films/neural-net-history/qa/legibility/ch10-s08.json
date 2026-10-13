@@ -1,0 +1,75 @@
+{
+ "shot": "ch10-s08",
+ "at": "2026-10-12T20:44:54.857Z",
+ "minCapPx": 22,
+ "sampled": 16,
+ "texts": 16,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "I",
+   "maxCap": 26.2
+  },
+  {
+   "text": "arrived",
+   "maxCap": 26.2
+  },
+  {
+   "text": "at",
+   "maxCap": 26.2
+  },
+  {
+   "text": "the",
+   "maxCap": 26.2
+  },
+  {
+   "text": "bank",
+   "maxCap": 26.2
+  },
+  {
+   "text": "after",
+   "maxCap": 26.2
+  },
+  {
+   "text": "crossing",
+   "maxCap": 26.2
+  },
+  {
+   "text": "river",
+   "maxCap": 26.2
+  },
+  {
+   "text": "· hand-set weights",
+   "maxCap": 23.2
+  },
+  {
+   "text": "ILLUSTRATIVE",
+   "maxCap": 22.1
+  },
+  {
+   "text": "0.58",
+   "maxCap": 27.5
+  },
+  {
+   "text": "8 heads × 64 numbers each  (4 shown)",
+   "maxCap": 27.5
+  },
+  {
+   "text": "what am I?",
+   "maxCap": 22.6
+  },
+  {
+   "text": "what came just before?",
+   "maxCap": 22.6
+  },
+  {
+   "text": "what was done?",
+   "maxCap": 22.6
+  },
+  {
+   "text": "who did it?",
+   "maxCap": 22.6
+  }
+ ]
+}

@@ -1,0 +1,296 @@
+{
+ "shot": "ch09-s03",
+ "at": "2026-10-12T19:08:59.267Z",
+ "minCapPx": 22,
+ "sampled": 36,
+ "texts": 47,
+ "offenders": [
+  {
+   "text": "INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND",
+   "maxCap": 7.1,
+   "minCap": 6.5,
+   "first": 21.2,
+   "last": 22.55,
+   "font": "11px VT323"
+  },
+  {
+   "text": "NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY",
+   "maxCap": 8.5,
+   "minCap": 7.8,
+   "first": 21.2,
+   "last": 22.55,
+   "font": "8.4px \"IBM Plex Mono\""
+  },
+  {
+   "text": "TO SEE, A MACHINE NEEDS FEATURES DESIGNED BY",
+   "maxCap": 8.5,
+   "minCap": 7.8,
+   "first": 21.2,
+   "last": 22.55,
+   "font": "8.4px \"IBM Plex Mono\""
+  },
+  {
+   "text": "EXPERTS",
+   "maxCap": 8.5,
+   "minCap": 7.8,
+   "first": 21.2,
+   "last": 22.55,
+   "font": "8.4px \"IBM Plex Mono\""
+  },
+  {
+   "text": "DEEP NETS MUST BE WARMED UP LAYER BY LAYER",
+   "maxCap": 8.5,
+   "minCap": 7.8,
+   "first": 21.2,
+   "last": 22.55,
+   "font": "8.4px \"IBM Plex Mono\""
+  },
+  {
+   "text": "LEARNED FEATURES, GIVEN DATA AND ARITHMETIC",
+   "maxCap": 8.5,
+   "minCap": 7.8,
+   "first": 21.2,
+   "last": 22.55,
+   "font": "8.4px \"IBM Plex Mono\""
+  },
+  {
+   "text": "A GO MACHINE IS A DECADE AWAY",
+   "maxCap": 8.5,
+   "minCap": 7.8,
+   "first": 21.2,
+   "last": 22.55,
+   "font": "8.4px \"IBM Plex Mono\""
+  },
+  {
+   "text": "THE BRAIN IS A LOGIC MACHINE",
+   "maxCap": 10.1,
+   "minCap": 9.2,
+   "first": 21.2,
+   "last": 22.55,
+   "font": "8.4px \"Special Elite\""
+  },
+  {
+   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
+   "maxCap": 10.1,
+   "minCap": 9.2,
+   "first": 21.2,
+   "last": 22.55,
+   "font": "8.4px \"Special Elite\""
+  },
+  {
+   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
+   "maxCap": 10.1,
+   "minCap": 9.2,
+   "first": 21.2,
+   "last": 22.55,
+   "font": "8.4px \"Special Elite\""
+  },
+  {
+   "text": "2014",
+   "maxCap": 10.1,
+   "minCap": 9.9,
+   "first": 21.2,
+   "last": 21.55,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "1943",
+   "maxCap": 10.9,
+   "minCap": 9.9,
+   "first": 21.2,
+   "last": 22.55,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "1958",
+   "maxCap": 10.9,
+   "minCap": 9.9,
+   "first": 21.2,
+   "last": 22.55,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "1969",
+   "maxCap": 10.9,
+   "minCap": 9.9,
+   "first": 21.2,
+   "last": 22.55,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "c. 1980",
+   "maxCap": 10.9,
+   "minCap": 9.9,
+   "first": 21.2,
+   "last": 22.55,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "1984",
+   "maxCap": 10.9,
+   "minCap": 9.9,
+   "first": 21.2,
+   "last": 22.55,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "MID-1990s",
+   "maxCap": 10.9,
+   "minCap": 9.9,
+   "first": 21.2,
+   "last": 22.55,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "1999",
+   "maxCap": 10.9,
+   "minCap": 9.9,
+   "first": 21.2,
+   "last": 22.55,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "2006",
+   "maxCap": 10.9,
+   "minCap": 9.9,
+   "first": 21.2,
+   "last": 22.55,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "2012",
+   "maxCap": 10.9,
+   "minCap": 9.9,
+   "first": 21.2,
+   "last": 22.55,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "2014–2016",
+   "maxCap": 10.9,
+   "minCap": 10.3,
+   "first": 21.9,
+   "last": 22.55,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "A GO MACHINE IS A",
+   "maxCap": 15.3,
+   "minCap": 15.3,
+   "first": 22.55,
+   "last": 22.55,
+   "font": "24.8329px \"IBM Plex Mono\""
+  },
+  {
+   "text": "DECADE AWAY",
+   "maxCap": 15.3,
+   "minCap": 15.3,
+   "first": 22.55,
+   "last": 22.55,
+   "font": "24.8329px \"IBM Plex Mono\""
+  },
+  {
+   "text": "KRIZHEVSKY, SUTSKEVER & HINTON · 2012",
+   "maxCap": 17.1,
+   "minCap": 16.3,
+   "first": 20.3,
+   "last": 21.2,
+   "font": "5.3923px \"Special Elite\""
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "SEOUL · MARCH 2016",
+   "maxCap": 22.1
+  },
+  {
+   "text": "lee sedol",
+   "maxCap": 22
+  },
+  {
+   "text": "professional Go player (9-dan)",
+   "maxCap": 22
+  },
+  {
+   "text": "demis hassabis",
+   "maxCap": 22
+  },
+  {
+   "text": "DeepMind co-founder",
+   "maxCap": 22
+  },
+  {
+   "text": "alphago",
+   "maxCap": 22
+  },
+  {
+   "text": "DeepMind (Google)",
+   "maxCap": 22
+  },
+  {
+   "text": "1 in 10,000",
+   "maxCap": 31.1
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 25.6
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 30.1
+  },
+  {
+   "text": "ROSENBLATT · 1961",
+   "maxCap": 25.6
+  },
+  {
+   "text": "Linguistic capability,",
+   "maxCap": 25.6
+  },
+  {
+   "text": "related to perceptual",
+   "maxCap": 25.6
+  },
+  {
+   "text": "experience, is of the",
+   "maxCap": 25.6
+  },
+  {
+   "text": "essence…",
+   "maxCap": 25.6
+  },
+  {
+   "text": "…simply by waiting",
+   "maxCap": 30.1
+  },
+  {
+   "text": "for faster GPUs and",
+   "maxCap": 30.1
+  },
+  {
+   "text": "bigger datasets…",
+   "maxCap": 30.1
+  },
+  {
+   "text": "COULOM · MAY 2014",
+   "maxCap": 25.6
+  },
+  {
+   "text": "I think maybe ten",
+   "maxCap": 30.1
+  },
+  {
+   "text": "years",
+   "maxCap": 30.1
+  },
+  {
+   "text": "DUE 2024",
+   "maxCap": 24.1
+  },
+  {
+   "text": "lit 2014 · out 2016 · 2 years",
+   "maxCap": 22
+  }
+ ]
+}

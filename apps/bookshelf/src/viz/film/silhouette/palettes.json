@@ -1,0 +1,130 @@
+{
+  "duskRose": {
+    "sky": [
+      "#49342e",
+      "#705248",
+      "#8e6c62",
+      "#b18e79"
+    ],
+    "set": "#413129",
+    "setHaze": "#5e4c43",
+    "haze": "#776457",
+    "fg": "#0d0805",
+    "ink": "#14100e",
+    "rim": "#d8ac93",
+    "halo": "#af895d",
+    "core": "#f5d998"
+  },
+  "candleAmber": {
+    "sky": [
+      "#493428",
+      "#71533a",
+      "#916d45",
+      "#b58f54"
+    ],
+    "set": "#423126",
+    "setHaze": "#5f4c3f",
+    "haze": "#7b634d",
+    "fg": "#0f0803",
+    "ink": "#15100c",
+    "rim": "#ddad64",
+    "halo": "#b78744",
+    "core": "#f3da90"
+  },
+  "winterBlue": {
+    "sky": [
+      "#2e3b47",
+      "#485c6d",
+      "#637887",
+      "#8899a1"
+    ],
+    "set": "#2e363d",
+    "setHaze": "#48515a",
+    "haze": "#5f6a72",
+    "fg": "#050a0f",
+    "ink": "#0d1115",
+    "rim": "#a5b9c4",
+    "halo": "#7b95a0",
+    "core": "#e1ddca"
+  },
+  "labGreen": {
+    "sky": [
+      "#303c37",
+      "#4a5e52",
+      "#667a65",
+      "#90997c"
+    ],
+    "set": "#2d372f",
+    "setHaze": "#47534a",
+    "haze": "#606b5c",
+    "fg": "#050b07",
+    "ink": "#0e1210",
+    "rim": "#afba96",
+    "halo": "#899666",
+    "core": "#dee0a5"
+  },
+  "dawnGold": {
+    "sky": [
+      "#3b3744",
+      "#6f524f",
+      "#956b43",
+      "#b3903e"
+    ],
+    "set": "#41312a",
+    "setHaze": "#5f4c43",
+    "haze": "#7b6349",
+    "fg": "#0f0704",
+    "ink": "#15100d",
+    "rim": "#daaf48",
+    "halo": "#b08a41",
+    "core": "#f2db85"
+  },
+  "serverCyan": {
+    "sky": [
+      "#2d3a4e",
+      "#3d5e6e",
+      "#477d87",
+      "#62a1a2"
+    ],
+    "set": "#28373e",
+    "setHaze": "#41535a",
+    "haze": "#4b6e73",
+    "fg": "#010b10",
+    "ink": "#0a1216",
+    "rim": "#75c3c5",
+    "halo": "#36a0a3",
+    "core": "#92edea"
+  },
+  "emberRed": {
+    "sky": [
+      "#4d3136",
+      "#804a49",
+      "#a66155",
+      "#cc8368"
+    ],
+    "set": "#462f2e",
+    "setHaze": "#644948",
+    "haze": "#865e56",
+    "fg": "#100707",
+    "ink": "#160f0f",
+    "rim": "#f99e7d",
+    "halo": "#d0794e",
+    "core": "#fcd791"
+  },
+  "parchment": {
+    "sky": [
+      "#e9dcc3",
+      "#e4d4b8",
+      "#ddcaa9",
+      "#d3bd98"
+    ],
+    "set": "#b9a27e",
+    "setHaze": "#cbb791",
+    "haze": "#efe5d2",
+    "fg": "#2a211b",
+    "ink": "#1a1310",
+    "rim": "#fff6e6",
+    "halo": "#f2c879",
+    "core": "#fff3d0"
+  }
+}

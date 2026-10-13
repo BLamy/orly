@@ -1,0 +1,71 @@
+{
+ "shot": "ch06-s02",
+ "at": "2026-10-12T09:08:03.043Z",
+ "minCapPx": 22,
+ "sampled": 16,
+ "texts": 15,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "$ 1,250.00",
+   "maxCap": 38.8
+  },
+  {
+   "text": "$ 15.60",
+   "maxCap": 38.5
+  },
+  {
+   "text": "$ 2,400.00",
+   "maxCap": 37.9
+  },
+  {
+   "text": "1998",
+   "maxCap": 23
+  },
+  {
+   "text": "$ 120.75",
+   "maxCap": 38.8
+  },
+  {
+   "text": "$ 38.10",
+   "maxCap": 38.6
+  },
+  {
+   "text": "$ 7.99",
+   "maxCap": 37.4
+  },
+  {
+   "text": "It is deployed commercially and reads",
+   "maxCap": 27.4
+  },
+  {
+   "text": "several million checks per day.”",
+   "maxCap": 27.4
+  },
+  {
+   "text": "$ 905.43",
+   "maxCap": 38.1
+  },
+  {
+   "text": "lecun et al., 1998",
+   "maxCap": 22
+  },
+  {
+   "text": "fielded 1996 · ~1 US cheque in 10, per LeCun",
+   "maxCap": 22.1
+  },
+  {
+   "text": "$ 560.00",
+   "maxCap": 40.6
+  },
+  {
+   "text": "$ 72.19",
+   "maxCap": 39.3
+  },
+  {
+   "text": "$ 310.00",
+   "maxCap": 39
+  }
+ ]
+}

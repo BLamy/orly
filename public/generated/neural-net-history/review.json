@@ -1,0 +1,25 @@
+{
+ "round": 2,
+ "at": "2026-10-13T00:56:57Z",
+ "pass": false,
+ "mean": 7.83,
+ "bar": 8.5,
+ "floor": 8,
+ "scores": {
+  "accuracy": 8,
+  "depth": 8.08,
+  "clarity": 7.67,
+  "story": 8,
+  "visual": 7.67,
+  "sync": 7.58,
+  "sound": 7.5,
+  "curiosity": 8.17
+ },
+ "notes": {
+  "sound": "Round 1's boost for quiet lines was added on top of the per-line level matching, so five lines now jump out; the hushed 2 a.m. Nobel call is the loudest line in the film. L0821 runs too fast (224 words a minute), and the closing cards play over 22 s with no music.",
+  "sync": "Five round-1 shot fixes never actually landed. The final shot (ch15-s09) is still near-black under the last spoken line, and its match strikes only after the line ends.",
+  "visual": "Some on-screen text the narration points to is still below the 22 px legibility floor, and LeCun, Bengio and Hassabis are still the same generic puppet.",
+  "clarity": "Three line changes are proposed: Anthropic's $1.5B pirated-books settlement gets a spoken line, its funding line moves to an on-screen card, and the US–China act gets a question it later answers. The symbolic-AI era is missing its dissenter (Hubert Dreyfus)."
+ },
+ "summary": "Round 2 FAILS the gate, but it is a clear step up from round 1 (mean 7.42 → 7.83). Weighted means: accuracy 8.00, depth 8.08, clarity 7.67, story 8.00, visual 7.67, sync 7.58, sound 7.50, curiosity 8.17. The bar is 8.5, with every dimension at 8 or above. There are no critical issues. Reviewers agree that most round-1 notes landed: quote integrity is airtight and the sources page is published; the prologue pace, chunk ghosts, cue joins and masking are fixed; ch12 is reordered; the AlphaGo board, ledger, kernel shot and BY HAND bowl are in; and the deep dives are expert-grade. Four dimensions are still below 8. SOUND (7.50): the +3 dB quiet-line offsets stacked on top of rides, so five lines now jump out (L1501 is the loudest line in the film); L0821 fails pacing; the end cards run on hiss. SYNC (7.58), VISUAL and CLARITY (7.67): five round-1 shot fixes were never applied, and three of those files are untouched since Oct 7. The worst are ch15-s09 (near-black under the last line, which I confirmed on the sheet), ch10-s04 (all-pairs attention arrives late), ch15-s08 (static recap), ch15-s10 (placeholder end cards) and ch14-s05. Subject text under 22 px and generic LeCun/Bengio/Hassabis puppets add to it. Accuracy and story hold at 8, with three structural notes: a spoken Anthropic settlement line, so 'the labs, under the same light' is even-handed; L1208 cut to a ledger card so Anthropic stops being the only runner with a founding story; and a voiced Act-3 question (L1405 → L1418) to turn the docket into a case. Highest leverage, in order: (1) actually apply and sheet-verify the carried-over shot fixes (ch15-s09, ch10-s04, ch15-s08, ch15-s10, ch14-s05, ch14-s04b, ch05-s04, ch08-s13b); (2) zero the stacked line offsets and re-narrate L0821/L0828/L1505/L0906/L0114; (3) the balance and plant lines (L1522d, L1522b, L1208 cut, L1405/L1418, L1416) with their shot re-fits; (4) the Dreyfus line (L0514b) and the L0607b split; (5) the kit-wide legibility rule and figure silhouettes; (6) the m21 end-card pad, m13 candle-out and m10 thinning."
+}

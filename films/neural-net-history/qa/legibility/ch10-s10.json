@@ -1,0 +1,67 @@
+{
+ "shot": "ch10-s10",
+ "at": "2026-10-12T20:45:00.933Z",
+ "minCapPx": 22,
+ "sampled": 12,
+ "texts": 14,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "crossed",
+   "maxCap": 34
+  },
+  {
+   "text": "the",
+   "maxCap": 34
+  },
+  {
+   "text": "river",
+   "maxCap": 34
+  },
+  {
+   "text": "bank",
+   "maxCap": 34
+  },
+  {
+   "text": "talk",
+   "maxCap": 31.3
+  },
+  {
+   "text": "think alone",
+   "maxCap": 31.3
+  },
+  {
+   "text": "BLOCK 1",
+   "maxCap": 24.6
+  },
+  {
+   "text": "BLOCK 2",
+   "maxCap": 24.6
+  },
+  {
+   "text": "BLOCK 3",
+   "maxCap": 24.6
+  },
+  {
+   "text": "BLOCK 4",
+   "maxCap": 23.9
+  },
+  {
+   "text": "BLOCK 5",
+   "maxCap": 22.1
+  },
+  {
+   "text": "attention → feed-forward, × 6",
+   "maxCap": 28.4
+  },
+  {
+   "text": "BLOCK 6",
+   "maxCap": 22.1
+  },
+  {
+   "text": "untrained toy weights: real bindings",
+   "maxCap": 24.5
+  }
+ ]
+}

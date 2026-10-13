@@ -1,0 +1,43 @@
+{
+ "shot": "ch10-s12",
+ "at": "2026-10-12T20:23:21.582Z",
+ "minCapPx": 22,
+ "sampled": 25,
+ "texts": 8,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "12 hours",
+   "maxCap": 33.7
+  },
+  {
+   "text": "one machine, 8 GPUs",
+   "maxCap": 31.6
+  },
+  {
+   "text": "≈ 1/7 the compute",
+   "maxCap": 31.6
+  },
+  {
+   "text": "10 words · 100 pairs",
+   "maxCap": 24.8
+  },
+  {
+   "text": "13 words · 169 pairs",
+   "maxCap": 24.5
+  },
+  {
+   "text": "18 words · 324 pairs",
+   "maxCap": 23.7
+  },
+  {
+   "text": "20 words · 400 pairs",
+   "maxCap": 22.1
+  },
+  {
+   "text": "cost ∝ n²",
+   "maxCap": 34
+  }
+ ]
+}

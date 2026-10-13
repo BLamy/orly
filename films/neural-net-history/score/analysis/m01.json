@@ -1,0 +1,18 @@
+{
+ "id": "m01",
+ "start": 0,
+ "end": 74.35,
+ "file": "films/neural-net-history/score/renders/m01.wav",
+ "duration": 80.35,
+ "I": -22.4,
+ "LRA": 7,
+ "TP": -6.8,
+ "expected": 80.35,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/neural-net-history/score/analysis/m01.png",
+ "cueSeconds": 74.35,
+ "cps": 1,
+ "lastStrikeLocal": 67.7,
+ "lastStrike": 67.7
+}

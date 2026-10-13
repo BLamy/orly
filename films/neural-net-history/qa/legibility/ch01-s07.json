@@ -1,0 +1,23 @@
+{
+ "shot": "ch01-s07",
+ "at": "2026-10-08T02:41:16.753Z",
+ "minCapPx": 22,
+ "sampled": 11,
+ "texts": 3,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 97.5
+  },
+  {
+   "text": "THE MACHINE?",
+   "maxCap": 97.5
+  },
+  {
+   "text": "A case history of neural networks, 1943–2026",
+   "maxCap": 33.8
+  }
+ ]
+}

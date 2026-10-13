@@ -1,0 +1,55 @@
+{
+ "shot": "ch05-s08",
+ "at": "2026-10-13T01:04:58.738Z",
+ "minCapPx": 22,
+ "sampled": 22,
+ "texts": 11,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "AU",
+   "maxCap": 22
+  },
+  {
+   "text": "AUSTIN · 1984",
+   "maxCap": 22
+  },
+  {
+   "text": "douglas lenat",
+   "maxCap": 25.9
+  },
+  {
+   "text": "Cyc: common sense, typed in by hand",
+   "maxCap": 26.4
+  },
+  {
+   "text": "CYC",
+   "maxCap": 22.9
+  },
+  {
+   "text": "…practically nothing that current AI",
+   "maxCap": 35.2
+  },
+  {
+   "text": "technology could draw from the raw text.",
+   "maxCap": 35.2
+  },
+  {
+   "text": "— Lenat, Prakash & Shepherd, 1985",
+   "maxCap": 23.5
+  },
+  {
+   "text": "CASE",
+   "maxCap": 25.9
+  },
+  {
+   "text": "FIFTH GENERATION",
+   "maxCap": 44.1
+  },
+  {
+   "text": "TOKYO 1982 · logic, not learning",
+   "maxCap": 29.4
+  }
+ ]
+}

@@ -1,0 +1,68 @@
+{
+ "shot": "ch10-s01",
+ "at": "2026-10-12T20:38:35.401Z",
+ "minCapPx": 22,
+ "sampled": 14,
+ "texts": 13,
+ "offenders": [
+  {
+   "text": "1997",
+   "maxCap": 16.8,
+   "minCap": 16.8,
+   "first": 2.85,
+   "last": 9.82,
+   "font": "16.2px \"Special Elite\""
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "we",
+   "maxCap": 52.8
+  },
+  {
+   "text": "DEEP DIVE · Everything Looks at Everything",
+   "maxCap": 23.8
+  },
+  {
+   "text": "crossed",
+   "maxCap": 40.8
+  },
+  {
+   "text": "the",
+   "maxCap": 33.2
+  },
+  {
+   "text": "LANGUAGE MUST BE",
+   "maxCap": 22.5
+  },
+  {
+   "text": "READ IN ORDER",
+   "maxCap": 22.5
+  },
+  {
+   "text": "× 1.0",
+   "maxCap": 22.1
+  },
+  {
+   "text": "LANGUAGE MUST BE READ",
+   "maxCap": 26
+  },
+  {
+   "text": "IN ORDER",
+   "maxCap": 26
+  },
+  {
+   "text": "lit 1997 · still burning",
+   "maxCap": 22
+  },
+  {
+   "text": "river",
+   "maxCap": 28
+  },
+  {
+   "text": "bank",
+   "maxCap": 24.2
+  }
+ ]
+}

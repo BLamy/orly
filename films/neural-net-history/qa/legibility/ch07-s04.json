@@ -1,0 +1,27 @@
+{
+ "shot": "ch07-s04",
+ "at": "2026-10-12T18:37:24.715Z",
+ "minCapPx": 22,
+ "sampled": 22,
+ "texts": 4,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "GRAPHICS CARDS · 2006–2010",
+   "maxCap": 22.1
+  },
+  {
+   "text": "up to ≈ 70× faster",
+   "maxCap": 23.6
+  },
+  {
+   "text": "weeks → about a day (2009)",
+   "maxCap": 23.6
+  },
+  {
+   "text": "0.35% error · no warm-up · IDSIA, 2010",
+   "maxCap": 23.6
+  }
+ ]
+}

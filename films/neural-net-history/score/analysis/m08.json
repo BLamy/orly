@@ -1,0 +1,18 @@
+{
+ "id": "m08",
+ "start": 624.52,
+ "end": 776.97,
+ "file": "films/neural-net-history/score/renders/m08.wav",
+ "duration": 158.45,
+ "I": -22.1,
+ "LRA": 12.2,
+ "TP": -5.6,
+ "expected": 158.45,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/neural-net-history/score/analysis/m08.png",
+ "cueSeconds": 152.45,
+ "cps": 0.275,
+ "lastStrikeLocal": 147.86,
+ "lastStrike": 772.38
+}

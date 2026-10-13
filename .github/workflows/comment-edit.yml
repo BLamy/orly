@@ -12,7 +12,6 @@ permissions:
   contents: write
   pull-requests: write
   actions: write # to dispatch preview.yml after pushing the edit
-  id-token: write # OIDC token for anthropics/claude-code-action
 
 jobs:
   edit:
@@ -66,36 +65,37 @@ jobs:
           sudo apt-get update -qq
           sudo apt-get install -y blender
 
-      - name: Plan the edit and model with Astra
-        uses: openai/codex-action@v1
-        with:
-          openai-api-key: ${{ secrets.OPENAI_API_KEY }}
-          model: gpt-6-astra
-          effort: high
-          sandbox: workspace-write
-          codex-args: '["-c", "sandbox_workspace_write.network_access=true"]'
-          output-file: .orly-work/astra-result.md
-          prompt: |
-            Read docs/authoring-models.md and .claude/commands/tweak-book.md.
-            Plan only the requested change to these books: ${{ steps.slugs.outputs.slugs }}.
-            User request: ${{ github.event.comment.body }}
-            Ignore the leading @claude mention. Do not run git/gh or publish.
-            Astra owns planning and any Blender/Three.js work; do not author D3/SVG.
-            Write .orly-work/visual-plan.md and .orly-work/fable-assignment.md.
-            The Fable assignment must preserve the request, source anchors, fixed
-            captions where applicable, allowed files, minimal regeneration commands
-            and verification. Build any required 3D assets; Blender is installed.
-            Fable handles D3/SVG implementation and verification, not replanning.
-            For a change with no D3 edits, assign only the remaining integration checks.
+      # The comment body and slugs reach the planner only as files written from env —
+      # never interpolated into a prompt or a shell command.
+      - name: Write the edit request to files
+        env:
+          COMMENT_BODY: ${{ github.event.comment.body }}
+          SLUGS: ${{ steps.slugs.outputs.slugs }}
+        run: |
+          printf '%s\n' "$COMMENT_BODY" > .orly-work/edit-request.md
+          printf '%s\n' "$SLUGS" > .orly-work/edit-slugs.txt
 
-      - name: Apply D3 edits with latest Claude CLI and Fable 5.1
+      - name: Plan the edit with Opus 5.5
+        run: >-
+          node generator/run-opus.mjs --role planning
+          --prompt-file .github/prompts/plan-edit.md
+          --output .orly-work/plan-result.jsonl
+          --provenance .orly-work/plan-provenance.json --max-turns 150
+        env:
+          CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
+
+      - name: Apply the edit with Opus 5.5
         id: edit
         continue-on-error: true
-        run: node generator/run-fable.mjs --prompt-file .orly-work/fable-assignment.md --output .orly-work/fable-result.json --max-turns 250
+        run: >-
+          node generator/run-opus.mjs --role animation2d
+          --prompt-file .orly-work/author-assignment.md
+          --output .orly-work/author-result.jsonl
+          --provenance .orly-work/author-provenance.json --max-turns 250
         env:
           CLAUDE_CODE_OAUTH_TOKEN: ${{ secrets.CLAUDE_CODE_OAUTH_TOKEN }}
           ELEVENLABS_API_KEY: ${{ secrets.ELEVENLABS_API_KEY }}
-          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }}
+          OPENAI_API_KEY: ${{ secrets.OPENAI_API_KEY }} # gpt-image cover only (not authoring)
           NOUN_PROJECT_KEY: ${{ secrets.NOUN_PROJECT_KEY }}
           NOUN_PROJECT_SECRET: ${{ secrets.NOUN_PROJECT_SECRET }}
 
@@ -115,7 +115,7 @@ jobs:
             [ "$EDIT_OUTCOME" = "success" ] && exit 0 || exit 1
           fi
           git commit -m "tweak via @claude (#${{ github.event.issue.number }})"
-          # checkout's persisted token is gone after claude-code-action — push via an
+          # checkout's persisted token may be gone after the authoring step — push via an
           # explicitly-authenticated URL (GITHUB_TOKEN is masked in logs).
           BR=$(git rev-parse --abbrev-ref HEAD)
           git push "https://x-access-token:${GH_TOKEN}@github.com/${REPO}.git" "HEAD:refs/heads/$BR"

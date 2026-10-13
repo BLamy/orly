@@ -1,0 +1,80 @@
+{
+ "shot": "ch05-s03",
+ "at": "2026-10-12T08:20:10.362Z",
+ "minCapPx": 22,
+ "sampled": 21,
+ "texts": 15,
+ "offenders": [
+  {
+   "text": "MANY-LAYERED NETS ARE",
+   "maxCap": 18.3,
+   "minCap": 17.9,
+   "first": 1.55,
+   "last": 3.55,
+   "font": "25.1407px \"Special Elite\""
+  },
+  {
+   "text": "A STERILE EXTENSION",
+   "maxCap": 18.3,
+   "minCap": 17.9,
+   "first": 1.55,
+   "last": 3.55,
+   "font": "25.1407px \"Special Elite\""
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "lit 1969 · still burning",
+   "maxCap": 22
+  },
+  {
+   "text": "geoffrey hinton",
+   "maxCap": 25.9
+  },
+  {
+   "text": "20",
+   "maxCap": 40.9
+  },
+  {
+   "text": "PITTS",
+   "maxCap": 22
+  },
+  {
+   "text": "PITTSBURGH ·",
+   "maxCap": 22
+  },
+  {
+   "text": "Boltzmann machine · with Sejnowski & Ackley · 1985",
+   "maxCap": 29.4
+  },
+  {
+   "text": "PITTSBURGH · 1982",
+   "maxCap": 22
+  },
+  {
+   "text": "15",
+   "maxCap": 41.9
+  },
+  {
+   "text": "12",
+   "maxCap": 42.3
+  },
+  {
+   "text": "10",
+   "maxCap": 41.9
+  },
+  {
+   "text": "TORON",
+   "maxCap": 22
+  },
+  {
+   "text": "TORONTO · 1",
+   "maxCap": 22
+  },
+  {
+   "text": "TORONTO · 1987",
+   "maxCap": 22
+  }
+ ]
+}

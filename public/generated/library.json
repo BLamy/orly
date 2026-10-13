@@ -1,6 +1,137 @@
 {
   "books": [
     {
+      "slug": "neural-net-history",
+      "title": "Who Taught the Machine?",
+      "subtitle": "A case history of neural networks, 1943–2026",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b0277a",
+      "href": "?film=neural-net-history",
+      "kind": "film",
+      "runtime": 2139.54,
+      "vhs": {
+        "subject": "Computer Science",
+        "theme": "sunset",
+        "icons": [
+          "neuron",
+          "magnifier",
+          "lightbulb",
+          "chip"
+        ],
+        "tagline": "Crack the case of the thinking machine!"
+      },
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Wonder in the Dark Room",
+          "duration": 75.5
+        },
+        {
+          "number": 2,
+          "title": "Clue One: A Switch That Fires",
+          "duration": 119.833
+        },
+        {
+          "number": 3,
+          "title": "Clue Two: A Knob That Turns",
+          "duration": 125.75
+        },
+        {
+          "number": 4,
+          "title": "The Cold Case",
+          "duration": 129.542
+        },
+        {
+          "number": 5,
+          "title": "Clue Three: The Messenger Who Runs Backward",
+          "duration": 176.042
+        },
+        {
+          "number": 6,
+          "title": "The Quiet Years",
+          "duration": 149.125
+        },
+        {
+          "number": 7,
+          "title": "Two Accomplices: Data and Fire",
+          "duration": 95.208
+        },
+        {
+          "number": 8,
+          "title": "DEEP DIVE — The Night in Florence",
+          "duration": 257.708
+        },
+        {
+          "number": 9,
+          "title": "The Gold Rush",
+          "duration": 96.625
+        },
+        {
+          "number": 10,
+          "title": "DEEP DIVE — Everything Looks at Everything",
+          "duration": 209.75
+        },
+        {
+          "number": 11,
+          "title": "Read Everything",
+          "duration": 105.042
+        },
+        {
+          "number": 12,
+          "title": "The Last Accomplice, and the Return to the Scene",
+          "duration": 114.292
+        },
+        {
+          "number": 13,
+          "title": "The Case Reopened",
+          "duration": 98.917
+        },
+        {
+          "number": 14,
+          "title": "Two Shores",
+          "duration": 141.75
+        },
+        {
+          "number": 15,
+          "title": "Case Status: Open",
+          "duration": 244.458
+        }
+      ],
+      "createdAt": "2026-10-08T01:04:44.878Z",
+      "sources": "generated/neural-net-history/sources/"
+    },
+    {
+      "slug": "perceptron-short",
+      "title": "The Machine That Learned to See",
+      "subtitle": "a one-minute silhouette short",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#a01f3c",
+      "href": "?film=perceptron-short",
+      "kind": "film",
+      "runtime": 67.75,
+      "vhs": {
+        "subject": "Computer Science",
+        "theme": "cosmos",
+        "icons": [
+          "crt",
+          "lightbulb",
+          "neuron",
+          "gear"
+        ],
+        "tagline": "Watch a machine learn to see!"
+      },
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The Machine That Learned to See",
+          "duration": 67.75
+        }
+      ],
+      "createdAt": "2026-10-05T15:42:41.793Z"
+    },
+    {
       "slug": "confidence-before-words",
       "title": "Confidence Before Words",
       "subtitle": "Three signals, four routes, and the limits of confidence",

@@ -4,7 +4,7 @@ description: Edit or fine-tune an existing book on the shelf (one targeted chang
 
 # /tweak-book — fine-tune an existing book
 
-Read [the authoring model workflow](../../docs/authoring-models.md) first. **Astra plans and models in Blender; Fable 5.1 authors D3/SVG animations through `npx --yes @anthropic-ai/claude-code@latest`.** A Fable worker consumes Astra's written plan; it does not replace the planner. Preserve provider provenance and stop that role on a provider limit without substitution.
+Read [the authoring model workflow](../../docs/authoring-models.md) first. **Claude Opus 5.5 (`claude-opus-5-5`, effort high) plans, writes and codes every part of the book** (visual plan, narration, D3/SVG/Canvas/Three.js scenes, Blender Python). Headless sub-sessions run through `node generator/run-opus.mjs --role <role>` (latest CLI via `npx --yes @anthropic-ai/claude-code@latest`, pinned model aliases, strict provenance). A fresh authoring session consumes the written plan; it does not re-plan. Preserve provider provenance and stop on a provider limit without substituting another model.
 
 
 Make the change a follow-up issue asks for to a book that's already published,

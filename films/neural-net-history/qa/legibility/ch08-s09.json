@@ -1,0 +1,27 @@
+{
+ "shot": "ch08-s09",
+ "at": "2026-10-12T17:53:48.057Z",
+ "minCapPx": 22,
+ "sampled": 23,
+ "texts": 4,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "largely color-agnostic",
+   "maxCap": 29.4
+  },
+  {
+   "text": "— KRIZHEVSKY ET AL., 2012",
+   "maxCap": 22
+  },
+  {
+   "text": "ILLUSTRATIVE",
+   "maxCap": 22.1
+  },
+  {
+   "text": "largely color-specific",
+   "maxCap": 29.4
+  }
+ ]
+}

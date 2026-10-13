@@ -1,0 +1,124 @@
+{
+ "shot": "ch03-s09",
+ "at": "2026-10-12T08:05:17.947Z",
+ "minCapPx": 22,
+ "sampled": 21,
+ "texts": 18,
+ "offenders": [
+  {
+   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
+   "maxCap": 14.4,
+   "minCap": 13,
+   "first": 0.55,
+   "last": 6.55,
+   "font": "15.12px \"Special Elite\""
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 17.8,
+   "minCap": 5.7,
+   "first": 7.18,
+   "last": 15.55,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 17.8,
+   "minCap": 5.7,
+   "first": 7.18,
+   "last": 15.55,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 17.8,
+   "minCap": 5.7,
+   "first": 7.18,
+   "last": 15.55,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 20.9,
+   "minCap": 6.7,
+   "first": 7.18,
+   "last": 15.55,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 20.9,
+   "minCap": 6.7,
+   "first": 7.18,
+   "last": 15.55,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 20.9,
+   "minCap": 6.7,
+   "first": 7.18,
+   "last": 15.55,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 20.9,
+   "minCap": 6.7,
+   "first": 7.18,
+   "last": 15.55,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 21.3,
+   "minCap": 6.8,
+   "first": 7.18,
+   "last": 15.55,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 21.3,
+   "minCap": 6.8,
+   "first": 7.18,
+   "last": 15.55,
+   "font": "9.5px \"Special Elite\""
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "1958",
+   "maxCap": 24.6
+  },
+  {
+   "text": "1958 – c. 1965 · about 7 years",
+   "maxCap": 23.5
+  },
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 42.6
+  },
+  {
+   "text": "IT?",
+   "maxCap": 42.6
+  },
+  {
+   "text": "RULES",
+   "maxCap": 24.6
+  },
+  {
+   "text": "1943",
+   "maxCap": 24.6
+  },
+  {
+   "text": "AND IF NO STRAIGHT LINE",
+   "maxCap": 24.6
+  },
+  {
+   "text": "EXISTS?",
+   "maxCap": 24.6
+  }
+ ]
+}

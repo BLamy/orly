@@ -7,7 +7,7 @@ description: "Edit or fine-tune an existing book on the shelf (one targeted chan
 
 ## Model responsibilities
 
-Read [the project authoring workflow](../../../docs/authoring-models.md). Astra (`gpt-6-astra`) plans and builds Blender/Three.js 3D assets; Fable 5.1 (`claude-fable-5-1`) authors and revises D3/SVG choreography. Invoke Fable through `npx --yes @anthropic-ai/claude-code@latest`. Preserve fixed captions and record actual provider provenance. Do not substitute models on a rate limit; continue independent work for the available role.
+Read [the project authoring workflow](../../../docs/authoring-models.md). Claude Opus 5.5 (`claude-opus-5-5`, effort high) plans, builds Blender/Three.js assets, and authors and revises D3/SVG/Canvas choreography. Headless runs use `node generator/run-opus.mjs --role <role>` (latest CLI, pinned aliases, strict provenance). Preserve fixed captions and record actual provider provenance. Do not substitute models on a rate limit; save the assignment and progress, and stop.
 
 
 Use this skill when the user asks to run the migrated source command `tweak-book`.
@@ -48,14 +48,14 @@ full-size `animal.png` is a gitignored local artifact), and `previews/`.
   edit small and re-run the build.)
 - **Visual-only change (no caption text touched)** → edit the scene and re-run
   with `--no-tts` — existing MP3s and cues stay; only the manifest rewrites.
-- **Cover** → when Codex built-in ImageGen is available, always use it instead
-  of the API generator. Preserve the requested animal concept, use a uniform
+- **Cover** → regenerate with the `cover.mjs` path (gpt-image-1 plus its vision
+  QA loop), or prepare the animal another way (for example an Opus-drawn SVG
+  rasterized to PNG/WebP). Preserve the requested animal concept, use a uniform
   pure-white (`#FFFFFF`) field with no tan/cream/ivory cast, texture, vignette,
   scene, or lettering, visually inspect it, then replace `animal.png` and the
   committed 512px-wide `animal.webp`. Run
   `node generator/video.mjs --slug <slug> --title "…" --no-tts --no-cover`
-  only if the manifest/library also needs rebuilding. Use the API cover path
-  only when built-in ImageGen is unavailable.
+  only if the manifest/library also needs rebuilding.
 - **Shelf metadata (title/subtitle/color)** → library.json via video.mjs flags.
 
 ## Blog-only live viz sections

@@ -1,0 +1,19 @@
+{
+ "shot": "ch04-s04",
+ "at": "2026-10-12T08:22:24.235Z",
+ "minCapPx": 22,
+ "sampled": 12,
+ "texts": 2,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "Walter Pitts · 1923–1969",
+   "maxCap": 25.9
+  },
+  {
+   "text": "Warren McCulloch · 1898–1969",
+   "maxCap": 25.9
+  }
+ ]
+}

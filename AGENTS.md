@@ -7,20 +7,30 @@ as an **O'RLY‑parody** O'Reilly‑style book. The shelf deploys to Cloudflare 
 
 ## Authoring model routing
 
-Use **GPT-6 Astra (`gpt-6-astra`) for planning and Blender 3D modeling** and
-**Claude Fable 5.1 (`claude-fable-5-1`) for D3/SVG animations**. Follow
-[the authoring model workflow](docs/authoring-models.md) for handoffs, provider
-provenance and hybrid scene verification. Always launch Claude with
-`npx --yes @anthropic-ai/claude-code@latest`, never the installed global CLI.
-Keep the exact requested model; save progress on a provider limit rather than
-silently substituting. Astra may continue independent 3D/integration work.
+**Claude Opus 5.5 (`claude-opus-5-5`) at high reasoning effort authors everything
+that is code or story**: research plans, scripts and narration, visual plans,
+D3/SVG and Canvas scenes, Three.js, Blender Python, music (Strudel code),
+pipeline code and revisions. No other model may write code or story — never
+`gpt-6-astra`, never `claude-fable-5-1`, never a silent fallback. In Workflow
+scripts pin it explicitly: `agent(prompt, { model: 'claude-opus-5-5', effort: 'high' })`.
+Headless CLI runs use `npx --yes @anthropic-ai/claude-code@latest --model claude-opus-5-5`.
+Cover art may still use an image model (it is neither code nor story).
+See [the authoring model workflow](docs/authoring-models.md).
 
 ## The main thing you do here
 **Create a new book** when asked: run **`/new-book <repo> | <subsystem> | <title>`**
-(see `.claude/commands/new-book.md`). It digests the repo, Astra writes the visual plan and Fable authors D3 scenes,
-then the pipeline narrates it (ElevenLabs), generates an O'RLY cover (Codex
-built-in ImageGen when available; API fallback otherwise), adds Noun Project
-icons, and you commit + push to redeploy.
+(see `.claude/commands/new-book.md`). It digests the repo, Opus 5.5 writes the visual plan and authors the scenes,
+then the pipeline narrates it (ElevenLabs), generates an O'RLY cover (gpt-image via
+`cover.mjs`), adds Noun Project icons, and you commit + push to redeploy.
+
+## Films
+**Films** are the long-form level above books: 20–40 minute, art-directed (silhouette /
+paper-cut), narrated and scored documentaries rendered frame-exactly in JavaScript.
+Start with **[docs/film/ARCHITECTURE.md](docs/film/ARCHITECTURE.md)** (stages, timing
+model, engine, routing). Make one with **`/new-film`** (`.claude/commands/new-film.md`);
+the stages run as saved workflows in `.claude/workflows/film-*.js` (`/film-research`,
+`/film-story`, … `/film-loop`). Film code lives in `apps/bookshelf/src/viz/film/`,
+`generator/film/`, `tools/film/`; each film's sources and provenance live in `films/<slug>/`.
 
 ## Architecture
 - `generator/` — the pipeline (run via `npm run explain`):
@@ -51,16 +61,17 @@ icons, and you commit + push to redeploy.
 - **Never** render the real publisher **"O'Reilly"** — only the parody **"O'RLY?"**.
   Covers are composited in‑browser (text is under our control); cover art must
   contain no lettering.
-- **Always use Codex built-in ImageGen for cover animals when it is available.**
-  Generate only the animal on a uniform pure-white (`#FFFFFF`) field—never tan,
-  cream, ivory, textured paper, a vignette, or a scene—and visually reject any
-  lettering before creating the committed `animal.webp`. Run `video.mjs` with
-  `--no-cover` when that asset is already prepared. Use the `cover.mjs` API path
-  only when built-in ImageGen is unavailable.
+- **Cover animals** come from `cover.mjs` (gpt-image-1 + vision QA; image
+  generation is the one non-authoring model use) or an Opus-drawn SVG rasterized
+  to PNG/WebP. Either way: only the animal on a uniform pure-white (`#FFFFFF`)
+  field—never tan, cream, ivory, textured paper, a vignette, or a scene—and
+  visually reject any lettering before creating the committed `animal.webp`. Run
+  `video.mjs` with `--no-cover` when that asset is already prepared.
 - **Ground everything in real code** — no invented components/files/flows. The
   storyboard system prompt (`generator/prompts/storyboard.txt`) enforces this.
 - Keys live in a **gitignored `.env`** (ElevenLabs, OpenAI, Noun Project). Never
-  commit secrets. Planning uses Astra; D3 authoring uses the signed-in latest Claude CLI.
+  commit secrets. All planning and authoring runs Opus 5.5 at high effort through the
+  signed-in latest Claude CLI (`generator/run-opus.mjs`).
   See docs/authoring-models.md for CI credentials.
 
 ## Blog posts are live Docstream viz sections
@@ -111,7 +122,7 @@ icons, and you commit + push to redeploy.
 `npm run dev` → http://localhost:5173/ (shelf). Deploy is automatic on push to
 `main` via `.github/workflows/deploy.yml` (`npm run build`, base `/`, then
 `wrangler deploy` to the **`orly`** Worker). Book PRs get a Cloudflare **preview**
-(`preview.yml`) and stay open; reply **@Codex** on a book PR to revise it
+(`preview.yml`) and stay open; reply **@claude** on a book PR to revise it
 (`comment-edit.yml`); merging redeploys production.
 
 ## Reusable 3D math models
@@ -121,5 +132,5 @@ Before building new mathematical or neural-network geometry, consult
 neurons, connections, receptive fields, surfaces, vectors and probability bars.
 Compose examples with the shared sampled-clock viewer and subject-focused camera.
 Keep true tensor shapes distinct from display sampling; label illustrative data.
-The Storybook `3D Library/Compositions` group is the reference gallery. Astra owns
-these Three.js primitives; Fable 5.1 remains responsible for new D3/SVG choreography.
+The Storybook `3D Library/Compositions` group is the reference gallery. Opus 5.5 owns
+these Three.js primitives and all D3/SVG choreography.

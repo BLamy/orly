@@ -1,0 +1,91 @@
+{
+ "shot": "ch10-s09",
+ "at": "2026-10-12T20:44:57.890Z",
+ "minCapPx": 22,
+ "sampled": 18,
+ "texts": 20,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "0.58",
+   "maxCap": 31.6
+  },
+  {
+   "text": "· hand-set weights",
+   "maxCap": 22
+  },
+  {
+   "text": "ILLUSTRATIVE",
+   "maxCap": 22
+  },
+  {
+   "text": "I",
+   "maxCap": 30.3
+  },
+  {
+   "text": "arrived",
+   "maxCap": 30.3
+  },
+  {
+   "text": "at",
+   "maxCap": 30.3
+  },
+  {
+   "text": "the",
+   "maxCap": 30.3
+  },
+  {
+   "text": "bank",
+   "maxCap": 30.3
+  },
+  {
+   "text": "after",
+   "maxCap": 30.3
+  },
+  {
+   "text": "crossing",
+   "maxCap": 30.3
+  },
+  {
+   "text": "river",
+   "maxCap": 30.3
+  },
+  {
+   "text": "8 heads × 64 numbers each  (4 shown)",
+   "maxCap": 27.5
+  },
+  {
+   "text": "what am I?",
+   "maxCap": 22
+  },
+  {
+   "text": "what came just before?",
+   "maxCap": 22
+  },
+  {
+   "text": "what was done?",
+   "maxCap": 22
+  },
+  {
+   "text": "who did it?",
+   "maxCap": 22
+  },
+  {
+   "text": "position = sines and cosines, fast to slow",
+   "maxCap": 28.4
+  },
+  {
+   "text": "fast",
+   "maxCap": 28.7
+  },
+  {
+   "text": "slower",
+   "maxCap": 28
+  },
+  {
+   "text": "slowest",
+   "maxCap": 28
+  }
+ ]
+}

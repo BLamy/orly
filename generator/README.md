@@ -1,7 +1,7 @@
-> New books use Astra planning/3D modeling and Fable 5.1 D3 authoring. Read
+> New books use Claude Opus 5.5 (high effort) for planning and authoring. Read
 > [the shared workflow](../docs/authoring-models.md) and use the scene-native book commands.
-> The v2 CLI below requires a supplied Astra-authored `--storyboard`; automatic
-> legacy Anthropic planning is disabled.
+> The v2 CLI below requires a supplied Opus-authored `--storyboard`; automatic
+> legacy planning is disabled.
 
 # repo → narrated D3 explainer
 
@@ -10,7 +10,7 @@ a multi‑chapter, **audio‑narrated, animated** data‑flow explainer that pla
 existing D3 player (chapters on the left, the "video" on the right, mobile‑friendly).
 
 ```bash
-ANTHROPIC_API_KEY=…  ELEVENLABS_API_KEY=…  \
+ELEVENLABS_API_KEY=…  \
   npm run explain -- --repo https://github.com/koajs/koa \
                      --prompt "how a request flows through the middleware onion" \
                      --open
@@ -26,7 +26,7 @@ launch Chrome (it starts the dev server if needed).
   │
   ├─ repo.mjs        clone (shallow, sanitized) or local path → rank files with
   │                  ripgrep against the prompt → bounded source "digest"
-  ├─ storyboard.mjs  retired automatic planner; use an Astra-authored fixture →
+  ├─ storyboard.mjs  retired automatic planner; use an Opus-authored fixture →
   │                  3–6 chapters { nodes, edges, steps{ spoken, displayNarration } },
   │                  grounded in real code, with a validate→repair loop (validate.mjs)
   ├─ tts.mjs         per chapter: concat each step's `spoken` → ElevenLabs
@@ -55,7 +55,7 @@ player:  App.tsx reads ?bundle=<slug> → fetches the manifest → LearnPage ren
 
 ## Keys
 
-- `ANTHROPIC_API_KEY` — not used by the supported authoring workflow.
+- `ANTHROPIC_API_KEY` — not used; `run-opus.mjs` strips it from the CLI env unless `ORLY_ALLOW_API_KEY=1`.
 - `ELEVENLABS_API_KEY` — narration (skip with `--no-tts`).
 
 ## Notes

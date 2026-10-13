@@ -49,7 +49,9 @@ export function sortSeriesBooks<T extends SeriesSortable>(series: string, books:
 }
 
 export function openBook(b: BookMeta) {
-  window.location.href = ASSET_BASE + String(b.href).replace(/^\//, '');
+  // films play in the film player (a tape goes in the VCR), whatever href an older entry carries
+  const href = b.kind === 'film' ? `?film=${encodeURIComponent(b.slug)}` : String(b.href);
+  window.location.href = ASSET_BASE + href.replace(/^\//, '');
 }
 
 // Some books (mostly the Nostr Implementation Possibilities and Buzz —
@@ -85,9 +87,12 @@ export interface Shelves {
   seriesRows: [string, BookMeta[]][]; // numbered series in order; chronological series newest first
   loops: BookMeta[];
   more: BookMeta[];
+  films: BookMeta[]; // VHS tapes: the video library case, newest first
 }
 
-export function buildShelves(books: BookMeta[]): Shelves {
+export function buildShelves(all: BookMeta[]): Shelves {
+  const films = all.filter((b) => b.kind === 'film').sort((a, c) => (c.createdAt ?? '').localeCompare(a.createdAt ?? ''));
+  const books = all.filter((b) => b.kind !== 'film');
   const byRecency = [...books]
     .filter((b) => !isDailyPapersSeries(b.series))
     .sort((a, c) => (c.createdAt ?? '').localeCompare(a.createdAt ?? ''));
@@ -125,7 +130,7 @@ export function buildShelves(books: BookMeta[]): Shelves {
     .sort((a, c) => (a.slug === PINNED_SLUG ? -1 : c.slug === PINNED_SLUG ? 1 : 0));
   const more = standalone.filter((b) => !/loop/.test(b.slug));
 
-  return { featured, recent, seriesRows: restRows, loops, more };
+  return { featured, recent, seriesRows: restRows, loops, more, films };
 }
 
 // One searchable haystack per book: title, subtitle, series, chapter titles.

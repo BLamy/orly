@@ -1,0 +1,59 @@
+{
+ "shot": "ch07-s03",
+ "at": "2026-10-12T18:37:23.982Z",
+ "minCapPx": 22,
+ "sampled": 30,
+ "texts": 12,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "fei-fei li",
+   "maxCap": 22
+  },
+  {
+   "text": "with Kai Li · Princeton",
+   "maxCap": 22
+  },
+  {
+   "text": "PRINCETON · 2007",
+   "maxCap": 22.1
+  },
+  {
+   "text": "…do something more useful",
+   "maxCap": 23.6
+  },
+  {
+   "text": "for my tenure…",
+   "maxCap": 23.6
+  },
+  {
+   "text": "Fei-Fei Li, TED 2015",
+   "maxCap": 23.5
+  },
+  {
+   "text": "2",
+   "maxCap": 62.9
+  },
+  {
+   "text": "13",
+   "maxCap": 62.9
+  },
+  {
+   "text": "19",
+   "maxCap": 62.9
+  },
+  {
+   "text": "ImageNet",
+   "maxCap": 22.5
+  },
+  {
+   "text": "≈ 50,000 workers · 167 countries",
+   "maxCap": 23.5
+  },
+  {
+   "text": "contest: 1,000 categories",
+   "maxCap": 23.5
+  }
+ ]
+}

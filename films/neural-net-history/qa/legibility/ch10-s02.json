@@ -1,0 +1,83 @@
+{
+ "shot": "ch10-s02",
+ "at": "2026-10-12T20:38:38.590Z",
+ "minCapPx": 22,
+ "sampled": 17,
+ "texts": 18,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "the",
+   "maxCap": 23.3
+  },
+  {
+   "text": "agreement",
+   "maxCap": 23.3
+  },
+  {
+   "text": "on",
+   "maxCap": 23.3
+  },
+  {
+   "text": "European",
+   "maxCap": 23.3
+  },
+  {
+   "text": "Economic",
+   "maxCap": 23.3
+  },
+  {
+   "text": "Area",
+   "maxCap": 23.3
+  },
+  {
+   "text": "2014",
+   "maxCap": 23.2
+  },
+  {
+   "text": "…a fixed-length",
+   "maxCap": 23.2
+  },
+  {
+   "text": "vector is a",
+   "maxCap": 23.2
+  },
+  {
+   "text": "bottleneck…”",
+   "maxCap": 23.2
+  },
+  {
+   "text": "Bahdanau, Cho & Bengio",
+   "maxCap": 23.2
+  },
+  {
+   "text": "l'",
+   "maxCap": 23.3
+  },
+  {
+   "text": "accord",
+   "maxCap": 23.3
+  },
+  {
+   "text": "sur",
+   "maxCap": 23.3
+  },
+  {
+   "text": "la",
+   "maxCap": 23.3
+  },
+  {
+   "text": "zone",
+   "maxCap": 23.3
+  },
+  {
+   "text": "économique",
+   "maxCap": 23.3
+  },
+  {
+   "text": "européenne",
+   "maxCap": 23.3
+  }
+ ]
+}

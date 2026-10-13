@@ -1,0 +1,376 @@
+{
+ "shot": "ch06-s04",
+ "at": "2026-10-12T09:08:05.976Z",
+ "minCapPx": 22,
+ "sampled": 26,
+ "texts": 55,
+ "offenders": [
+  {
+   "text": "KELLEY 1960 … LE CUN 1985",
+   "maxCap": 14.4,
+   "minCap": 12.6,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "7.26819px \"Special Elite\""
+  },
+  {
+   "text": "DUE 1968",
+   "maxCap": 15.1,
+   "minCap": 13.1,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "7.6px \"Special Elite\""
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 15.8,
+   "minCap": 13.7,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 15.8,
+   "minCap": 13.7,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 15.8,
+   "minCap": 13.7,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 16,
+   "minCap": 14,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "SIMON & NEWELL · 1958",
+   "maxCap": 16,
+   "minCap": 14,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "ROSENBLATT · 1961",
+   "maxCap": 16,
+   "minCap": 14,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "Linguistic capability,",
+   "maxCap": 16,
+   "minCap": 14,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "related to perceptual",
+   "maxCap": 16,
+   "minCap": 14,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "experience, is of the",
+   "maxCap": 16,
+   "minCap": 14,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "essence…",
+   "maxCap": 16,
+   "minCap": 14,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "THE BRAIN IS A LOGIC MACHINE",
+   "maxCap": 16.7,
+   "minCap": 14.5,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "8.4px \"Special Elite\""
+  },
+  {
+   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
+   "maxCap": 16.7,
+   "minCap": 14.5,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "8.4px \"Special Elite\""
+  },
+  {
+   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
+   "maxCap": 16.7,
+   "minCap": 14.5,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "8.4px \"Special Elite\""
+  },
+  {
+   "text": "NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY",
+   "maxCap": 16.7,
+   "minCap": 14.5,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "8.4px \"Special Elite\""
+  },
+  {
+   "text": "INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND",
+   "maxCap": 17.7,
+   "minCap": 15.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "11px VT323"
+  },
+  {
+   "text": "c. 1980",
+   "maxCap": 17.9,
+   "minCap": 15.6,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "1984",
+   "maxCap": 17.9,
+   "minCap": 15.6,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 18.5,
+   "minCap": 16.2,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 18.5,
+   "minCap": 16.2,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 18.5,
+   "minCap": 16.2,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 18.5,
+   "minCap": 16.2,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 18.8,
+   "minCap": 16.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 18.8,
+   "minCap": 16.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 18.8,
+   "minCap": 16.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "SIMON & NEWELL ·",
+   "maxCap": 18.8,
+   "minCap": 16.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "CHESS CHAMPION BY",
+   "maxCap": 18.8,
+   "minCap": 16.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "1968",
+   "maxCap": 18.8,
+   "minCap": 16.4,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "RULES",
+   "maxCap": 21.8,
+   "minCap": 19,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "1943",
+   "maxCap": 21.8,
+   "minCap": 15.6,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "1958",
+   "maxCap": 21.8,
+   "minCap": 15.6,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "1969",
+   "maxCap": 21.8,
+   "minCap": 15.6,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "HELSINKI ·",
+   "maxCap": 21.8,
+   "minCap": 19,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "1970",
+   "maxCap": 21.8,
+   "minCap": 19,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "1986",
+   "maxCap": 21.8,
+   "minCap": 19,
+   "first": 0.25,
+   "last": 2.25,
+   "font": "11px \"Special Elite\""
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 37.7
+  },
+  {
+   "text": "IT?",
+   "maxCap": 37.7
+  },
+  {
+   "text": "MID-1990s",
+   "maxCap": 71.8
+  },
+  {
+   "text": "NEURAL NETS ARE",
+   "maxCap": 26
+  },
+  {
+   "text": "FIDDLY, AND BEATEN",
+   "maxCap": 26
+  },
+  {
+   "text": "ANYWAY",
+   "maxCap": 26
+  },
+  {
+   "text": "lit MID-1990s · out c. 2012 · 16 years",
+   "maxCap": 22
+  },
+  {
+   "text": "NEURAL NETS ARE FIDDLY,",
+   "maxCap": 31.4
+  },
+  {
+   "text": "AND BEATEN ANYWAY",
+   "maxCap": 31.4
+  },
+  {
+   "text": "TORONTO",
+   "maxCap": 23
+  },
+  {
+   "text": "geoffrey hinton",
+   "maxCap": 22.1
+  },
+  {
+   "text": "Toronto",
+   "maxCap": 22.3
+  },
+  {
+   "text": "HOLMDEL / NEW YORK",
+   "maxCap": 23
+  },
+  {
+   "text": "yann lecun",
+   "maxCap": 22.1
+  },
+  {
+   "text": "Bell Labs, then NYU",
+   "maxCap": 22.3
+  },
+  {
+   "text": "MONTRÉAL",
+   "maxCap": 23
+  },
+  {
+   "text": "yoshua bengio",
+   "maxCap": 22.1
+  },
+  {
+   "text": "Montréal",
+   "maxCap": 22.3
+  },
+  {
+   "text": "2004 · CIFAR NCAP · Hinton, Bengio, others",
+   "maxCap": 22
+  }
+ ]
+}

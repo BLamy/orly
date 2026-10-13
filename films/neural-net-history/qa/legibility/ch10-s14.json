@@ -1,0 +1,79 @@
+{
+ "shot": "ch10-s14",
+ "at": "2026-10-12T20:23:28.214Z",
+ "minCapPx": 22,
+ "sampled": 28,
+ "texts": 17,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "× 6",
+   "maxCap": 24.2
+  },
+  {
+   "text": "the",
+   "maxCap": 22.1
+  },
+  {
+   "text": "cat",
+   "maxCap": 22.1
+  },
+  {
+   "text": "sat",
+   "maxCap": 22.1
+  },
+  {
+   "text": "on",
+   "maxCap": 22.1
+  },
+  {
+   "text": "mat",
+   "maxCap": 22.1
+  },
+  {
+   "text": "die",
+   "maxCap": 29.8
+  },
+  {
+   "text": "Katze",
+   "maxCap": 29.8
+  },
+  {
+   "text": "saß",
+   "maxCap": 29.8
+  },
+  {
+   "text": "auf",
+   "maxCap": 29.8
+  },
+  {
+   "text": "der",
+   "maxCap": 29.8
+  },
+  {
+   "text": "decoder only",
+   "maxCap": 35.2
+  },
+  {
+   "text": "Liu",
+   "maxCap": 22.1
+  },
+  {
+   "text": "Liu et al., Google · Jan 2018",
+   "maxCap": 22.1
+  },
+  {
+   "text": "OpenAI GPT · June",
+   "maxCap": 22.1
+  },
+  {
+   "text": "OpenAI GPT · June 2018",
+   "maxCap": 22.1
+  },
+  {
+   "text": "GPT",
+   "maxCap": 22.1
+  }
+ ]
+}

@@ -1,0 +1,18 @@
+{
+ "id": "m06",
+ "start": 448.477,
+ "end": 555.65,
+ "file": "films/neural-net-history/score/renders/m06.wav",
+ "duration": 113.173,
+ "I": -23,
+ "LRA": 13.3,
+ "TP": -6.2,
+ "expected": 113.173,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/neural-net-history/score/analysis/m06.png",
+ "cueSeconds": 107.173,
+ "cps": 1,
+ "lastStrikeLocal": 96.28,
+ "lastStrike": 544.757
+}

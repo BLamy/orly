@@ -1,0 +1,55 @@
+{
+ "shot": "ch06-s03",
+ "at": "2026-10-12T09:08:04.144Z",
+ "minCapPx": 22,
+ "sampled": 33,
+ "texts": 13,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "vladimir vapnik",
+   "maxCap": 22
+  },
+  {
+   "text": "with Corinna Cortes, Isabelle Guyon, Bernhard Boser · Bell Labs",
+   "maxCap": 22
+  },
+  {
+   "text": "widest street:",
+   "maxCap": 22.1
+  },
+  {
+   "text": "min",
+   "maxCap": 33
+  },
+  {
+   "text": "w",
+   "maxCap": 33
+  },
+  {
+   "text": "subject to",
+   "maxCap": 22.1
+  },
+  {
+   "text": "y",
+   "maxCap": 33
+  },
+  {
+   "text": "x",
+   "maxCap": 33
+  },
+  {
+   "text": "b",
+   "maxCap": 33
+  },
+  {
+   "text": "1",
+   "maxCap": 33
+  },
+  {
+   "text": "convex: one global optimum",
+   "maxCap": 24.5
+  }
+ ]
+}

@@ -12,7 +12,7 @@ description: >
 
 ## Model responsibilities
 
-Read [the project authoring workflow](../../../docs/authoring-models.md). Astra (`gpt-6-astra`) plans and builds Blender/Three.js 3D assets; Fable 5.1 (`claude-fable-5-1`) authors and revises D3/SVG choreography. Invoke Fable through `npx --yes @anthropic-ai/claude-code@latest`. Preserve fixed captions and record actual provider provenance. Do not substitute models on a rate limit; continue independent work for the available role.
+Read [the project authoring workflow](../../../docs/authoring-models.md). Claude Opus 5.5 (`claude-opus-5-5`, effort high) plans, builds Blender/Three.js assets, and authors and revises D3/SVG/Canvas choreography. Headless runs use `node generator/run-opus.mjs --role <role>` (latest CLI, pinned aliases, strict provenance). Preserve fixed captions and record actual provider provenance. Do not substitute models on a rate limit; save the assignment and progress, and stop.
 
 
 `apps/bookshelf/src/viz/` is a scrubbable animation suite: one `Timeline` holds every value as

@@ -1,0 +1,60 @@
+{
+ "shot": "ch14-s03",
+ "at": "2026-10-08T02:42:42.382Z",
+ "minCapPx": 22,
+ "sampled": 25,
+ "texts": 8,
+ "offenders": [
+  {
+   "text": "EXCLUDES PRIOR RESEARCH",
+   "maxCap": 19.4,
+   "minCap": 19.4,
+   "first": 13.13,
+   "last": 19.25,
+   "font": "500 18.5px \"IBM Plex Mono\""
+  },
+  {
+   "text": "THE REPORT’S CAVEAT",
+   "maxCap": 19.4,
+   "minCap": 19.4,
+   "first": 13.13,
+   "last": 19.25,
+   "font": "500 18.5px \"IBM Plex Mono\""
+  },
+  {
+   "text": "~50,000 CHIPS",
+   "maxCap": 19.4,
+   "minCap": 19.4,
+   "first": 14.69,
+   "last": 19.25,
+   "font": "500 18.5px \"IBM Plex Mono\""
+  },
+  {
+   "text": "(SEMIANALYSIS EST.)",
+   "maxCap": 19.4,
+   "minCap": 19.4,
+   "first": 14.69,
+   "last": 19.25,
+   "font": "500 18.5px \"IBM Plex Mono\""
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "$5.576M",
+   "maxCap": 42.1
+  },
+  {
+   "text": "26 DECEMBER 2024 · DEEPSEEK V3 TECHNICAL REPORT",
+   "maxCap": 22.1
+  },
+  {
+   "text": "FINAL RUN ONLY",
+   "maxCap": 27.5
+  },
+  {
+   "text": "AT RENTAL PRICES",
+   "maxCap": 27.5
+  }
+ ]
+}

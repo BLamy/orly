@@ -1,0 +1,35 @@
+{
+ "shot": "ch12-s02",
+ "at": "2026-10-12T21:21:56.507Z",
+ "minCapPx": 22,
+ "sampled": 20,
+ "texts": 6,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "175B",
+   "maxCap": 31
+  },
+  {
+   "text": "1.3B",
+   "maxCap": 29.4
+  },
+  {
+   "text": "1.3B InstructGPT preferred to 175B GPT-3",
+   "maxCap": 26.4
+  },
+  {
+   "text": "Ouyang et al. (OpenAI) · March 2022",
+   "maxCap": 26.9
+  },
+  {
+   "text": "labellers agreed with each other",
+   "maxCap": 26.4
+  },
+  {
+   "text": "about 73% of the time",
+   "maxCap": 26.4
+  }
+ ]
+}

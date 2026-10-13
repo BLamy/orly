@@ -1,0 +1,111 @@
+{
+  "id": "us-china-ai-race",
+  "checked": 62,
+  "confirmed": 50,
+  "corrected": 10,
+  "unverifiable": 2,
+  "corrections": [
+    {
+      "original": "Beijing approved H200 purchases only in March 2026 (key claim 6)",
+      "verdict": "corrected",
+      "fix": "Reuters reported on 28 Jan 2026 that Beijing had given conditional, preliminary approval for ByteDance, Alibaba and Tencent to buy more than 400,000 H200s, during Huang's China visit. In March 2026 Nvidia said it had licences for 'many customers'.",
+      "sources": [
+        "https://www.hl.co.uk/shares/stock-market-news/company--news/archive/china-gives-ok-for-bytedance,-alibaba-and-tencent-to-buy-nvidias-h200-chips-reports",
+        "https://www.businessday.co.za/world/international-companies/2026-03-18-nvidia-cracks-beijings-nod-for-h200-chip-sales/"
+      ]
+    },
+    {
+      "original": "BIS case-by-case review from 15 Jan 2026; Chinese customs said 'not permitted' within a day / the next day",
+      "verdict": "corrected",
+      "fix": "BIS issued the rule on 13 Jan 2026, and it was published and took effect on 15 Jan. Reuters reported the customs 'not permitted' instruction on 14 Jan, the day after issue and before the rule took effect.",
+      "sources": [
+        "https://www.cov.com/news-and-insights/insights/2026/01/us-commerce-department-revises-license-review-policy-for-exports-of-certain-advanced-computing-commodities-to-china-and-macau",
+        "https://www.thestandard.com.hk/china/article/321575/Chinas-customs-agents-told-Nvidias-H200-chips-are-not-permitted-sources-say"
+      ]
+    },
+    {
+      "original": "Commerce approved some H200 sales by May; actual deliveries remained small through mid-2026 (WEAK)",
+      "verdict": "corrected",
+      "fix": "Reuters, 14 May 2026: about 10 Chinese firms had US approval, but not a single H200 had been delivered.",
+      "sources": [
+        "https://www.khaleejtimes.com/business/tech/us-clears-nvidias-h200-chip-sales-to-10-china-firms",
+        "https://triviumchina.com/2026/05/14/us-approves-chinese-firms-to-buy-nvidia-h200s/"
+      ]
+    },
+    {
+      "original": "Liang Wenfeng quote: 'The problem has never been money; the problem is the bans on shipments of advanced chips.'",
+      "verdict": "corrected",
+      "fix": "Verbatim ChinaTalk translation: 'Money has never been the problem for us; bans on shipments of advanced chips are the problem.' ChinaTalk published it on 27 Nov 2024; the interview ran in 36Kr/Waves in July 2024.",
+      "sources": [
+        "https://www.chinatalk.media/p/deepseek-ceo-interview-with-chinas"
+      ]
+    },
+    {
+      "original": "Raimondo said the rules would likely be updated 'at least annually' [cited to BIS 17 Oct 2023 release]",
+      "verdict": "corrected",
+      "fix": "The phrase is not in the BIS release. Raimondo said it on a press call on 16 Oct 2023, as reported by Export Compliance Daily. The release's 'close loopholes ... durable' sentence is BIS narrative text, not a named official's words.",
+      "sources": [
+        "https://www.bis.gov/press-release/commerce-strengthens-restrictions-advanced-computing-semiconductors-semiconductor-manufacturing-equipment",
+        "https://exportcompliancedaily.com/article/2023/10/17/bis-releases-texts-of-new-chip-export-control-rules-2310170009"
+      ]
+    },
+    {
+      "original": "Oct 2023 rules took effect 17 November 2023",
+      "verdict": "corrected",
+      "fix": "17 Nov was the scheduled date. On 23 Oct 2023 the US government told Nvidia the licence requirement was 'effective immediately' for the A100, A800, H100, H800 and L40S (Nvidia 8-K, 24 Oct 2023).",
+      "sources": [
+        "https://www.sec.gov/Archives/edgar/data/1045810/000104581023000221/nvda-20231023.htm"
+      ]
+    },
+    {
+      "original": "Hassabis on CNBC (Jan 2026): 'only a matter of months behind' and called the DeepSeek panic a 'massive overreaction'",
+      "verdict": "corrected",
+      "fix": "Two separate interviews: CNBC 'The Tech Download' (16 Jan 2026) gave 'only a matter of months', and Bloomberg at Davos (20 Jan 2026) gave about six months and 'massive overreaction'.",
+      "sources": [
+        "https://dataconomy.com/2026/01/16/google-deepmind-ceo-claims-china-trails-western-ai-by-only-months/",
+        "https://news.bgov.com/artificial-intelligence/deepmind-ceo-says-chinese-ai-firms-are-6-months-behind-the-west"
+      ]
+    },
+    {
+      "original": "IDAIS-Beijing hook: 'including two Turing laureates'",
+      "verdict": "corrected",
+      "fix": "Three Turing laureates attended and signed: Andrew Yao, Geoffrey Hinton and Yoshua Bengio.",
+      "sources": [
+        "https://idais.ai/"
+      ]
+    },
+    {
+      "original": "Bengio, Hinton, Russell: 'Western IDAIS conveners'",
+      "verdict": "corrected",
+      "fix": "IDAIS-Oxford was convened by Bengio, Yao, Russell and Zhang Ya-Qin. Hinton was not a convener: he attended Beijing and Shanghai and signed the Beijing and Venice statements.",
+      "sources": [
+        "https://idais.ai/"
+      ]
+    },
+    {
+      "original": "Huang (BG2, Sep 2025): China 'nanoseconds behind' in AI",
+      "verdict": "corrected",
+      "fix": "On BG2 (posted 26 Sep 2025) Huang said China was 'nanoseconds behind us' in chip development and manufacturing. The AI-specific wording ('nanoseconds behind America in AI') is from Nvidia's November 2025 statement.",
+      "sources": [
+        "https://www.scmp.com/tech/big-tech/article/3327138/china-nanoseconds-behind-us-chips-says-nvidias-jensen-huang",
+        "https://www.techspot.com/news/109664-nvidia-boss-calls-china-nanoseconds-behind-chips-urges.html"
+      ]
+    },
+    {
+      "original": "Hassabis quote: 'Maybe they're only a matter of months behind at this point.'",
+      "verdict": "unverifiable",
+      "fix": "Only the fragment 'only a matter of months' is confirmed across outlets. The full sentence was not found verbatim, so it is demoted to UNVERIFIED — do not use as a quote.",
+      "sources": [
+        "https://dataconomy.com/2026/01/16/google-deepmind-ceo-claims-china-trails-western-ai-by-only-months/"
+      ]
+    },
+    {
+      "original": "Xi Jinping, Sep 2026, on keeping AI 'under human control'",
+      "verdict": "unverifiable",
+      "fix": "A full quoted sentence circulates only in secondary aggregators and was not found in a primary or wire transcript. It stays a paraphrase and is listed as UNVERIFIED — do not use as a quote.",
+      "sources": [
+        "https://thenextweb.com/news/us-china-super-intelligence-dialogue-ai-incident-channel"
+      ]
+    }
+  ]
+}

@@ -1,0 +1,272 @@
+{
+ "shot": "ch07-s01",
+ "at": "2026-10-12T18:27:29.782Z",
+ "minCapPx": 22,
+ "sampled": 25,
+ "texts": 48,
+ "offenders": [
+  {
+   "text": "INTELLIGENCE IS KNOWLEDGE, TYPED IN BY HAND",
+   "maxCap": 13.8,
+   "minCap": 10.7,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "11px VT323"
+  },
+  {
+   "text": "07",
+   "maxCap": 15.6,
+   "minCap": 15.6,
+   "first": 0.55,
+   "last": 3.55,
+   "font": "17.1px \"Special Elite\""
+  },
+  {
+   "text": "NEURAL NETS ARE FIDDLY, AND BEATEN ANYWAY",
+   "maxCap": 16.6,
+   "minCap": 12.8,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "8.4px \"IBM Plex Mono\""
+  },
+  {
+   "text": "KELLEY 1960 … LE CUN 1985",
+   "maxCap": 17.1,
+   "minCap": 13.2,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "7.26819px \"Special Elite\""
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 18.7,
+   "minCap": 14.4,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 18.7,
+   "minCap": 14.4,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 18.7,
+   "minCap": 14.4,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 19,
+   "minCap": 14.6,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "ROSENBLATT · 1961",
+   "maxCap": 19,
+   "minCap": 14.6,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "Linguistic capability,",
+   "maxCap": 19,
+   "minCap": 14.6,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "related to perceptual",
+   "maxCap": 19,
+   "minCap": 14.6,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "experience, is of the",
+   "maxCap": 19,
+   "minCap": 14.6,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "essence…",
+   "maxCap": 19,
+   "minCap": 14.6,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "THE BRAIN IS A LOGIC MACHINE",
+   "maxCap": 19.8,
+   "minCap": 15.2,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "8.4px \"Special Elite\""
+  },
+  {
+   "text": "A MACHINE THAT LEARNS WILL SOON SEE, TALK AND THINK",
+   "maxCap": 19.8,
+   "minCap": 15.2,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "8.4px \"Special Elite\""
+  },
+  {
+   "text": "MANY-LAYERED NETS ARE A STERILE EXTENSION",
+   "maxCap": 19.8,
+   "minCap": 15.2,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "8.4px \"Special Elite\""
+  },
+  {
+   "text": "c. 1980",
+   "maxCap": 21.2,
+   "minCap": 16.3,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "1984",
+   "maxCap": 21.2,
+   "minCap": 16.3,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "9px \"Special Elite\""
+  },
+  {
+   "text": "MID-1990s",
+   "maxCap": 21.2,
+   "minCap": 16.3,
+   "first": 0.55,
+   "last": 19.55,
+   "font": "9px \"Special Elite\""
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "WHY WOULD ANYONE",
+   "maxCap": 25.9
+  },
+  {
+   "text": "CHOOSE THE FOG?",
+   "maxCap": 25.9
+  },
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 44.7
+  },
+  {
+   "text": "IT?",
+   "maxCap": 44.7
+  },
+  {
+   "text": "RULES",
+   "maxCap": 25.9
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 22.4
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 22.4
+  },
+  {
+   "text": "1943",
+   "maxCap": 25.9
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 22
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 22
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 22
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 22
+  },
+  {
+   "text": "1958",
+   "maxCap": 25.9
+  },
+  {
+   "text": "1969",
+   "maxCap": 25.9
+  },
+  {
+   "text": "HELSINKI ·",
+   "maxCap": 25.9
+  },
+  {
+   "text": "1970",
+   "maxCap": 25.9
+  },
+  {
+   "text": "1986",
+   "maxCap": 25.9
+  },
+  {
+   "text": "1989",
+   "maxCap": 25.9
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 22.4
+  },
+  {
+   "text": "WHO PAID FOR DINNER?",
+   "maxCap": 25.9
+  },
+  {
+   "text": "Two Accomplices: Data and Fire",
+   "maxCap": 23.7
+  },
+  {
+   "text": "JACKEL: BY 2000,",
+   "maxCap": 29
+  },
+  {
+   "text": "NETS EXPLAINED",
+   "maxCap": 29
+  },
+  {
+   "text": "VAPNIK: BY 2005,",
+   "maxCap": 29
+  },
+  {
+   "text": "NETS UNUSED",
+   "maxCap": 29
+  },
+  {
+   "text": "JACKEL, 2000: LOST",
+   "maxCap": 32.5
+  },
+  {
+   "text": "VAPNIK, 2005: LOST",
+   "maxCap": 32.5
+  }
+ ]
+}

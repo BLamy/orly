@@ -1,0 +1,179 @@
+{
+ "shot": "ch10-s07",
+ "at": "2026-10-12T20:44:51.315Z",
+ "minCapPx": 22,
+ "sampled": 24,
+ "texts": 44,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "crossed",
+   "maxCap": 30.7
+  },
+  {
+   "text": "0.20",
+   "maxCap": 24.6
+  },
+  {
+   "text": "action",
+   "maxCap": 24.5
+  },
+  {
+   "text": "the",
+   "maxCap": 30.7
+  },
+  {
+   "text": "0.07",
+   "maxCap": 24.6
+  },
+  {
+   "text": "river",
+   "maxCap": 30.7
+  },
+  {
+   "text": "0.53",
+   "maxCap": 24.6
+  },
+  {
+   "text": "water",
+   "maxCap": 24.5
+  },
+  {
+   "text": "bank",
+   "maxCap": 30.7
+  },
+  {
+   "text": "money",
+   "maxCap": 24.5
+  },
+  {
+   "text": "ILLUSTRATIVE",
+   "maxCap": 22
+  },
+  {
+   "text": "bank now means",
+   "maxCap": 26.6
+  },
+  {
+   "text": "water  0.53",
+   "maxCap": 25.2
+  },
+  {
+   "text": "action  0.20",
+   "maxCap": 24.6
+  },
+  {
+   "text": "money  0.20",
+   "maxCap": 24.6
+  },
+  {
+   "text": "2 · 0 · 4 · 2",
+   "maxCap": 43.8
+  },
+  {
+   "text": "÷ √4",
+   "maxCap": 43.8
+  },
+  {
+   "text": "→   1 · 0 · 2 · 1",
+   "maxCap": 43.8
+  },
+  {
+   "text": "UNSCALED",
+   "maxCap": 30.3
+  },
+  {
+   "text": "64 numbers",
+   "maxCap": 28.5
+  },
+  {
+   "text": "on every card",
+   "maxCap": 28.5
+  },
+  {
+   "text": "8",
+   "maxCap": 46.1
+  },
+  {
+   "text": "0",
+   "maxCap": 46.1
+  },
+  {
+   "text": "−8",
+   "maxCap": 46.1
+  },
+  {
+   "text": "1.00",
+   "maxCap": 25.4
+  },
+  {
+   "text": "0.00",
+   "maxCap": 25.4
+  },
+  {
+   "text": "learning freezes",
+   "maxCap": 33.5
+  },
+  {
+   "text": "÷ 8   ( 8 = √64 )",
+   "maxCap": 32.5
+  },
+  {
+   "text": "1",
+   "maxCap": 44.3
+  },
+  {
+   "text": "−1",
+   "maxCap": 44.3
+  },
+  {
+   "text": "Attention(",
+   "maxCap": 34.5
+  },
+  {
+   "text": "Q",
+   "maxCap": 34.4
+  },
+  {
+   "text": "K",
+   "maxCap": 34.4
+  },
+  {
+   "text": "V",
+   "maxCap": 34.4
+  },
+  {
+   "text": ")  =  softmax(",
+   "maxCap": 34.5
+  },
+  {
+   "text": "QK",
+   "maxCap": 34.4
+  },
+  {
+   "text": "d",
+   "maxCap": 34.4
+  },
+  {
+   "text": "learning flows",
+   "maxCap": 28.4
+  },
+  {
+   "text": "0.67",
+   "maxCap": 24.4
+  },
+  {
+   "text": "0.24",
+   "maxCap": 24.4
+  },
+  {
+   "text": "0.09",
+   "maxCap": 24.4
+  },
+  {
+   "text": "our toy · 4 numbers",
+   "maxCap": 24.3
+  }
+ ]
+}

@@ -1,0 +1,119 @@
+{
+ "shot": "ch10-s06",
+ "at": "2026-10-12T20:44:46.679Z",
+ "minCapPx": 22,
+ "sampled": 37,
+ "texts": 27,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "ILLUSTRATIVE",
+   "maxCap": 23.8
+  },
+  {
+   "text": "crossed",
+   "maxCap": 37.3
+  },
+  {
+   "text": "the",
+   "maxCap": 37.3
+  },
+  {
+   "text": "river",
+   "maxCap": 37.3
+  },
+  {
+   "text": "bank",
+   "maxCap": 37.3
+  },
+  {
+   "text": "label",
+   "maxCap": 34.8
+  },
+  {
+   "text": "0",
+   "maxCap": 53.2
+  },
+  {
+   "text": "1",
+   "maxCap": 40.9
+  },
+  {
+   "text": "2",
+   "maxCap": 53.4
+  },
+  {
+   "text": "question",
+   "maxCap": 34.8
+  },
+  {
+   "text": "multiply, add",
+   "maxCap": 33.7
+  },
+  {
+   "text": "score",
+   "maxCap": 30.8
+  },
+  {
+   "text": "4",
+   "maxCap": 49.4
+  },
+  {
+   "text": "÷ √4",
+   "maxCap": 30.8
+  },
+  {
+   "text": "2 · 0 · 4 · 2   ÷ √4   →   1 · 0 · 2 · 1",
+   "maxCap": 30.8
+  },
+  {
+   "text": "SOFTMAX",
+   "maxCap": 22.1
+  },
+  {
+   "text": "the jug of light: shares that sum to one",
+   "maxCap": 22
+  },
+  {
+   "text": "0.20",
+   "maxCap": 24.6
+  },
+  {
+   "text": "0.07",
+   "maxCap": 24.6
+  },
+  {
+   "text": "0.53",
+   "maxCap": 24.6
+  },
+  {
+   "text": "action",
+   "maxCap": 24.6
+  },
+  {
+   "text": "water",
+   "maxCap": 24.6
+  },
+  {
+   "text": "money",
+   "maxCap": 24.6
+  },
+  {
+   "text": "bank now means",
+   "maxCap": 26.6
+  },
+  {
+   "text": "water  0.53",
+   "maxCap": 25.1
+  },
+  {
+   "text": "action  0.20",
+   "maxCap": 24.6
+  },
+  {
+   "text": "money  0.20",
+   "maxCap": 24.6
+  }
+ ]
+}

@@ -1,0 +1,121 @@
+{
+ "id": "expert-systems-second-winter",
+ "checked": 40,
+ "confirmed": 27,
+ "corrected": 8,
+ "unverifiable": 3,
+ "contested": 2,
+ "corrections": [
+  {
+   "original": "R1/XCON, written by John McDermott at CMU in OPS5 ... grew from ~500 rules (July 1980)",
+   "verdict": "corrected",
+   "fix": "Begun Dec 1978 in OPS4 (250 rules Apr 1979, 750 Oct 1979); used at DEC since Jan 1980; rewritten in OPS5 from Apr 1980 (500 rules), 850 end-1980, ~2,000 mid-1982, ~3,300 Nov 1983; 6,200 in 1987 with ~50% changing yearly confirmed.",
+   "sources": [
+    "https://ojs.aaai.org/aimagazine/index.php/aimagazine/article/download/445/381",
+    "https://cdn.aaai.org/AAAI/1987/AAAI87-148.pdf"
+   ]
+  },
+  {
+   "original": "In 1987 Jack Schwartz became head of DARPA's IPTO",
+   "verdict": "corrected",
+   "fix": "Office was ISTO (IPTO's successor); start year contested (1986 per his biography, 1987 per AI-winter article citing McCorduck). 'Clever programming' / 'deeply and brutally' remain secondary, attributed paraphrase of McCorduck.",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Jacob_T._Schwartz",
+    "https://en.wikipedia.org/wiki/AI_winter"
+   ]
+  },
+  {
+   "original": "Weizenbaum ... calling the Japanese ambition 'as absurd today as it was twenty-five years ago'",
+   "verdict": "corrected",
+   "fix": "Quote verbatim and date 27 Oct 1983 confirmed, but 'That ambition' is Simon & Newell's 1958 forecast (which he links to Fifth Generation claims); 'solution looking for problems' concerns schools.",
+   "sources": [
+    "https://www.nybooks.com/articles/1983/10/27/the-computer-in-your-future/"
+   ]
+  },
+  {
+   "original": "Q20 Dreyfus, 'Alchemy and AI' (RAND 1965): 'exhibits a recurrent pattern: early, dramatic success...'",
+   "verdict": "corrected",
+   "fix": "Verified wording is 'recurring pattern' in What Computers Can't Do (1972, reprinted 1992); RAND 1965 wording unverified - do not quote as from the RAND paper.",
+   "sources": [
+    "https://archive.org/details/dreyfus-what-computers-still-cant-do-a-critique-of-artificial-reason"
+   ]
+  },
+  {
+   "original": "Fifth Generation ran 1982 to 1992 ... about ¥54 billion",
+   "verdict": "contested",
+   "fix": "IPSJ: ~¥54bn over 11 years, 1982-1992; Wikipedia: 1982-1994 incl. follow-on, <¥57bn (~US$320M); IPSJ Fuchi page says finished 1993 (fiscal). Five PIM models, PIM/p 512 processors confirmed. Use 'about ¥54 billion over the main project, 1982-1992'.",
+   "sources": [
+    "https://museum.ipsj.or.jp/en/computer/other/0002.html",
+    "https://en.wikipedia.org/wiki/Fifth_Generation_Computer_Systems",
+    "https://museum.ipsj.or.jp/en/pioneer/fuchi.html"
+   ]
+  },
+  {
+   "original": "UK Alvey Programme (from 1983; £350M proposed) ... evaluators judged commercial impact disappointing",
+   "verdict": "contested",
+   "fix": "Hansard: accepted April 1983, director in post 1 June 1983, £200M government + £150M industry; Wikipedia says 1984-1990. Commercial-impact verdict could not be re-read (sources unreachable) - keep as secondary.",
+   "sources": [
+    "https://api.parliament.uk/historic-hansard/lords/1984/jan/18/information-technology-the-alvey-report",
+    "https://en.wikipedia.org/wiki/Alvey_Programme"
+   ]
+  },
+  {
+   "original": "MCC ... stopped research in 2000",
+   "verdict": "corrected",
+   "fix": "MCC ceased operations in 2000 (board voted to dissolve June 2000) and was formally dissolved in 2004.",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Microelectronics_and_Computer_Technology_Corporation"
+   ]
+  },
+  {
+   "original": "Hochreiter diploma thesis dated 15 Jun 1991",
+   "verdict": "unverifiable",
+   "fix": "Year 1991 confirmed; exact day not found in Schmidhuber's pages - use '1991'.",
+   "sources": [
+    "https://people.idsia.ch/~juergen/fundamentaldeeplearningproblem.html"
+   ]
+  },
+  {
+   "original": "ALV work cancelled in April 1988; none of the SCI flagships delivered in promised form",
+   "verdict": "unverifiable",
+   "fix": "April 1988 only via Paleofuture blog citing Roland & Shiman; Project MUSE review blocked. Keep as secondary; 1983-1993 and ~$1bn confirmed.",
+   "sources": [
+    "https://paleofuture.com/blog/2013/4/30/darpa-spent-1-billion-trying-to-build-a-real-life-skynet-in-the-1980s",
+    "https://en.wikipedia.org/wiki/Strategic_Computing_Initiative"
+   ]
+  },
+  {
+   "original": "R1: two earlier DEC attempts in FORTRAN and BASIC had failed",
+   "verdict": "unverifiable",
+   "fix": "Not found in Wikipedia XCON or Bachant & McDermott 1984; marked UNVERIFIED.",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Xcon"
+   ]
+  },
+  {
+   "original": "MYCIN hardware 'PDP-10-class (SUMEX-AIM)' (check)",
+   "verdict": "corrected",
+   "fix": "Wikipedia: written in Lisp, ran on a DEC KI10 PDP-10 time-sharing machine over ARPANET; never used in practice. JAMA authors are Yu et al. (Shortliffe not an author).",
+   "sources": [
+    "https://en.wikipedia.org/wiki/Mycin",
+    "https://jamanetwork.com/journals/jama/article-abstract/366606"
+   ]
+  },
+  {
+   "original": "Q10 Lenat & Feigenbaum 'Their reasoning components are weak; in their knowledge bases lies their power.' [SECONDARY]",
+   "verdict": "corrected",
+   "fix": "Upgraded to verified primary: wording confirmed in IJCAI-87 paper.",
+   "sources": [
+    "https://www.ijcai.org/Proceedings/87-2/Papers/122.pdf"
+   ]
+  },
+  {
+   "original": "Q21 Dreyfus 1992 'degenerating research program' [SECONDARY]",
+   "verdict": "corrected",
+   "fix": "Upgraded to verified primary (p. ix); companion line reads 'neural-net revolutionaries' (hyphenated).",
+   "sources": [
+    "https://archive.org/details/dreyfus-what-computers-still-cant-do-a-critique-of-artificial-reason"
+   ]
+  }
+ ]
+}

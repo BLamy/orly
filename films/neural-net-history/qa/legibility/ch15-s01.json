@@ -1,0 +1,67 @@
+{
+ "shot": "ch15-s01",
+ "at": "2026-10-13T00:00:47.480Z",
+ "minCapPx": 22,
+ "sampled": 51,
+ "texts": 14,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "Case Status: Open",
+   "maxCap": 22.8
+  },
+  {
+   "text": "CALIFORNIA · 8 OCTOBER 2024",
+   "maxCap": 22.1
+  },
+  {
+   "text": "geoffrey hinton",
+   "maxCap": 22
+  },
+  {
+   "text": "“for foundational discoveries and inventions that enable",
+   "maxCap": 22
+  },
+  {
+   "text": "machine learning with artificial neural networks”",
+   "maxCap": 22
+  },
+  {
+   "text": "nobel prize in physics, 2024",
+   "maxCap": 22
+  },
+  {
+   "text": "john hopfield",
+   "maxCap": 22
+  },
+  {
+   "text": "physicist · aged 91",
+   "maxCap": 22
+  },
+  {
+   "text": "…it does seem a bit of",
+   "maxCap": 31.3
+  },
+  {
+   "text": "a stretch.”",
+   "maxCap": 31.3
+  },
+  {
+   "text": "dame wendy hall",
+   "maxCap": 22
+  },
+  {
+   "text": "2024",
+   "maxCap": 22
+  },
+  {
+   "text": "demis hassabis · john jumper",
+   "maxCap": 22
+  },
+  {
+   "text": "DeepMind",
+   "maxCap": 22
+  }
+ ]
+}

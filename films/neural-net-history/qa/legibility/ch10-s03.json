@@ -1,0 +1,43 @@
+{
+ "shot": "ch10-s03",
+ "at": "2026-10-12T20:38:42.054Z",
+ "minCapPx": 22,
+ "sampled": 19,
+ "texts": 8,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "GOOGLE · 2016",
+   "maxCap": 22.1
+  },
+  {
+   "text": "jakob uszkoreit",
+   "maxCap": 22
+  },
+  {
+   "text": "Google",
+   "maxCap": 22
+  },
+  {
+   "text": "illia polosukhin",
+   "maxCap": 22
+  },
+  {
+   "text": "…the biggest incorrect",
+   "maxCap": 29.4
+  },
+  {
+   "text": "prediction of my life”",
+   "maxCap": 29.4
+  },
+  {
+   "text": "mat kelcey",
+   "maxCap": 22
+  },
+  {
+   "text": "2024",
+   "maxCap": 22
+  }
+ ]
+}

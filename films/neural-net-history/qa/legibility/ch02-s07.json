@@ -1,0 +1,147 @@
+{
+ "shot": "ch02-s07",
+ "at": "2026-10-12T08:04:48.635Z",
+ "minCapPx": 22,
+ "sampled": 37,
+ "texts": 34,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "D",
+   "maxCap": 22
+  },
+  {
+   "text": "A",
+   "maxCap": 33.1
+  },
+  {
+   "text": "R",
+   "maxCap": 32.2
+  },
+  {
+   "text": "T",
+   "maxCap": 31.6
+  },
+  {
+   "text": "M",
+   "maxCap": 22
+  },
+  {
+   "text": "O",
+   "maxCap": 22
+  },
+  {
+   "text": "U",
+   "maxCap": 22
+  },
+  {
+   "text": "H",
+   "maxCap": 22
+  },
+  {
+   "text": "S",
+   "maxCap": 22
+  },
+  {
+   "text": "E",
+   "maxCap": 27.6
+  },
+  {
+   "text": "1",
+   "maxCap": 22
+  },
+  {
+   "text": "9",
+   "maxCap": 22
+  },
+  {
+   "text": "5",
+   "maxCap": 22
+  },
+  {
+   "text": "6",
+   "maxCap": 22
+  },
+  {
+   "text": "I",
+   "maxCap": 33.5
+  },
+  {
+   "text": "F",
+   "maxCap": 33.1
+  },
+  {
+   "text": "C",
+   "maxCap": 31.3
+  },
+  {
+   "text": "L",
+   "maxCap": 33
+  },
+  {
+   "text": "john mccarthy",
+   "maxCap": 22
+  },
+  {
+   "text": "named the field",
+   "maxCap": 22
+  },
+  {
+   "text": "ARTIFICIAL INTELLIGENCE",
+   "maxCap": 22.1
+  },
+  {
+   "text": "named in the proposal, August 1955",
+   "maxCap": 22
+  },
+  {
+   "text": "N",
+   "maxCap": 27.9
+  },
+  {
+   "text": "G",
+   "maxCap": 27.7
+  },
+  {
+   "text": "marvin minsky",
+   "maxCap": 22
+  },
+  {
+   "text": "built SNARC, 1951",
+   "maxCap": 22
+  },
+  {
+   "text": "IF  A ∧ B  →  C",
+   "maxCap": 22.3
+  },
+  {
+   "text": "∀x  P(x) → Q(x)",
+   "maxCap": 22.3
+  },
+  {
+   "text": "¬Q  ∴  ¬P",
+   "maxCap": 22.3
+  },
+  {
+   "text": "bernard widrow",
+   "maxCap": 22
+  },
+  {
+   "text": "engineer",
+   "maxCap": 22
+  },
+  {
+   "text": "I was so taken by this that I",
+   "maxCap": 24.5
+  },
+  {
+   "text": "never got over it.”",
+   "maxCap": 24.5
+  },
+  {
+   "text": "recalling it in 2005",
+   "maxCap": 22
+  }
+ ]
+}

@@ -1,0 +1,412 @@
+{
+ "shot": "ch12-s01",
+ "at": "2026-10-12T21:17:05.203Z",
+ "minCapPx": 22,
+ "sampled": 13,
+ "texts": 54,
+ "offenders": [
+  {
+   "text": "KRIZHEVSKY, SUTSKEVER & HINTON · 2012",
+   "maxCap": 8.2,
+   "minCap": 7.6,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "5.3923px \"Special Elite\""
+  },
+  {
+   "text": "KELLEY 1960 … LE CUN 1985",
+   "maxCap": 11,
+   "minCap": 10.3,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "7.26819px \"Special Elite\""
+  },
+  {
+   "text": "DUE 2024",
+   "maxCap": 11.5,
+   "minCap": 10.8,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "7.6px \"Special Elite\""
+  },
+  {
+   "text": "BACK-PROPAGATING",
+   "maxCap": 12,
+   "minCap": 11.3,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "ERROR-CORRECTION",
+   "maxCap": 12,
+   "minCap": 11.3,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "EXPERIMENTS · 1961 ?",
+   "maxCap": 12,
+   "minCap": 11.3,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "GENERATING",
+   "maxCap": 12,
+   "minCap": 11.3,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "WIKIPEDIA ·",
+   "maxCap": 12,
+   "minCap": 11.3,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "2018 · GPT",
+   "maxCap": 12,
+   "minCap": 11.3,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "7.9475px \"Special Elite\""
+  },
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 12.2,
+   "minCap": 11.5,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "ROSENBLATT · 1961",
+   "maxCap": 12.2,
+   "minCap": 11.5,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "Linguistic capability,",
+   "maxCap": 12.2,
+   "minCap": 11.5,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "related to perceptual",
+   "maxCap": 12.2,
+   "minCap": 11.5,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "experience, is of the",
+   "maxCap": 12.2,
+   "minCap": 11.5,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "essence…",
+   "maxCap": 12.2,
+   "minCap": 11.5,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "COULOM · MAY 2014",
+   "maxCap": 12.2,
+   "minCap": 11.5,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "HINTON · SEPT 2017",
+   "maxCap": 12.2,
+   "minCap": 11.5,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "…some graduate student",
+   "maxCap": 12.2,
+   "minCap": 11.5,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "who is deeply suspicious",
+   "maxCap": 12.2,
+   "minCap": 11.5,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "of everything I have",
+   "maxCap": 12.2,
+   "minCap": 11.5,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "said.",
+   "maxCap": 12.2,
+   "minCap": 11.5,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "OPENAI · 11 DEC 2015",
+   "maxCap": 12.4,
+   "minCap": 11.6,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "8.2px \"Special Elite\""
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 14.2,
+   "minCap": 13.3,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 14.2,
+   "minCap": 13.3,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 14.2,
+   "minCap": 13.3,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 14.2,
+   "minCap": 13.3,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 14.4,
+   "minCap": 13.5,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 14.4,
+   "minCap": 13.5,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 14.4,
+   "minCap": 13.5,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "…simply by waiting",
+   "maxCap": 14.4,
+   "minCap": 13.5,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "for faster GPUs and",
+   "maxCap": 14.4,
+   "minCap": 13.5,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "bigger datasets…",
+   "maxCap": 14.4,
+   "minCap": 13.5,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "I think maybe ten",
+   "maxCap": 14.4,
+   "minCap": 13.5,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "years",
+   "maxCap": 14.4,
+   "minCap": 13.5,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "RULES",
+   "maxCap": 16.7,
+   "minCap": 15.6,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "1943",
+   "maxCap": 16.7,
+   "minCap": 15.6,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "1958",
+   "maxCap": 16.7,
+   "minCap": 15.6,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "1969",
+   "maxCap": 16.7,
+   "minCap": 15.6,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "HELSINKI ·",
+   "maxCap": 16.7,
+   "minCap": 15.6,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "1970",
+   "maxCap": 16.7,
+   "minCap": 15.6,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "1986",
+   "maxCap": 16.7,
+   "minCap": 15.6,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "1989",
+   "maxCap": 16.7,
+   "minCap": 15.6,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "DATA",
+   "maxCap": 16.7,
+   "minCap": 15.6,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "FIRE",
+   "maxCap": 16.7,
+   "minCap": 15.6,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "2012",
+   "maxCap": 16.7,
+   "minCap": 15.6,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "2017",
+   "maxCap": 16.7,
+   "minCap": 15.6,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "2018",
+   "maxCap": 16.7,
+   "minCap": 15.6,
+   "first": 0.25,
+   "last": 1.4,
+   "font": "11px \"Special Elite\""
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 28.8
+  },
+  {
+   "text": "IT?",
+   "maxCap": 28.8
+  },
+  {
+   "text": "The Last Accomplice,",
+   "maxCap": 23.3
+  },
+  {
+   "text": "and the Return to the Scene",
+   "maxCap": 23.3
+  },
+  {
+   "text": "JUNE 2017",
+   "maxCap": 23
+  },
+  {
+   "text": "Christiano et al. · OpenAI and DeepMind",
+   "maxCap": 22
+  }
+ ]
+}

@@ -1,0 +1,31 @@
+{
+ "shot": "ch08-s08",
+ "at": "2026-10-12T17:53:40.154Z",
+ "minCapPx": 22,
+ "sampled": 23,
+ "texts": 5,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "vs ≈ 60,000,000 weights",
+   "maxCap": 22
+  },
+  {
+   "text": "1.2 million labels × ≈ 10 bits ≈ 12 million",
+   "maxCap": 22
+  },
+  {
+   "text": "OVERFITTING",
+   "maxCap": 22.1
+  },
+  {
+   "text": "memorising the photos, not learning to see",
+   "maxCap": 22
+  },
+  {
+   "text": "crops and mirrors: × 2048",
+   "maxCap": 25.1
+  }
+ ]
+}

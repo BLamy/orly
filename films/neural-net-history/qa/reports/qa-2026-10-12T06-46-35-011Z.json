@@ -1,0 +1,52 @@
+{
+ "slug": "neural-net-history",
+ "at": "2026-10-12T06:46:35.011Z",
+ "summary": {
+  "pass": 1,
+  "warn": 0,
+  "fail": 3,
+  "skip": 0
+ },
+ "checks": [
+  {
+   "stage": "score",
+   "id": "renders",
+   "status": "fail",
+   "detail": "m21: window 2039.417..2139.667 outside 0..2139.5417",
+   "problems": [
+    "m21: window 2039.417..2139.667 outside 0..2139.5417"
+   ],
+   "warns": []
+  },
+  {
+   "stage": "score",
+   "id": "analysisSummary",
+   "status": "fail",
+   "detail": "films/neural-net-history/score/analysis/summary.json is stale (measured on a 2121.4167 s clock, timeline is 2139.5417 s): re-run film:score analyze --slug neural-net-history",
+   "problems": [
+    "measured on a 2121.4167 s clock, timeline is 2139.5417 s"
+   ]
+  },
+  {
+   "stage": "score",
+   "id": "cueJoins",
+   "status": "fail",
+   "detail": "cue changes under narration (move the incoming cue earlier, or the clock needs a head-hold): m06→m07 554.27–555.55 s under L0512; m08→m09 767.11–776.97 s under L0616; m09→m10 859.01–871.08 s under L0707,L0710; m12→m13 1220.89–1222.39 s under L0910; tight: m11→m12 1128.39–1131.68 s: 0.23 s before L0901",
+   "under": [
+    "m06→m07 554.27–555.55 s under L0512",
+    "m08→m09 767.11–776.97 s under L0616",
+    "m09→m10 859.01–871.08 s under L0707,L0710",
+    "m12→m13 1220.89–1222.39 s under L0910"
+   ],
+   "tight": [
+    "m11→m12 1128.39–1131.68 s: 0.23 s before L0901"
+   ]
+  },
+  {
+   "stage": "score",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "35.8 min of music over 35.7 min (100%)"
+  }
+ ]
+}

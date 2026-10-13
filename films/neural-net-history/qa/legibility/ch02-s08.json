@@ -1,0 +1,140 @@
+{
+ "shot": "ch02-s08",
+ "at": "2026-10-12T08:13:21.533Z",
+ "minCapPx": 22,
+ "sampled": 30,
+ "texts": 23,
+ "offenders": [
+  {
+   "text": "TURING · DUE 2000",
+   "maxCap": 14.5,
+   "minCap": 7.5,
+   "first": 12.55,
+   "last": 20.5,
+   "font": "8.075px \"Special Elite\""
+  },
+  {
+   "text": "THE STRUCTURE OF",
+   "maxCap": 16.7,
+   "minCap": 8.7,
+   "first": 12.55,
+   "last": 20.5,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "THE NET DOES NOT",
+   "maxCap": 16.7,
+   "minCap": 8.7,
+   "first": 12.55,
+   "last": 20.5,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "CHANGE WITH",
+   "maxCap": 16.7,
+   "minCap": 8.7,
+   "first": 12.55,
+   "last": 20.5,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "TIME.",
+   "maxCap": 16.7,
+   "minCap": 8.7,
+   "first": 12.55,
+   "last": 20.5,
+   "font": "9.35px \"Special Elite\""
+  },
+  {
+   "text": "KNOWLEDGE",
+   "maxCap": 17,
+   "minCap": 8.8,
+   "first": 12.55,
+   "last": 20.5,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "LEARNING",
+   "maxCap": 17,
+   "minCap": 8.8,
+   "first": 12.55,
+   "last": 20.5,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "3 in 10 fooled",
+   "maxCap": 17,
+   "minCap": 8.8,
+   "first": 12.55,
+   "last": 20.5,
+   "font": "9.5px \"Special Elite\""
+  },
+  {
+   "text": "1943",
+   "maxCap": 18.2,
+   "minCap": 8.3,
+   "first": 0.55,
+   "last": 20.5,
+   "font": "18.9px \"Special Elite\""
+  },
+  {
+   "text": "RULES",
+   "maxCap": 19.7,
+   "minCap": 10.2,
+   "first": 12.55,
+   "last": 20.5,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "How could a net rewire",
+   "maxCap": 19.7,
+   "minCap": 10.2,
+   "first": 12.55,
+   "last": 20.5,
+   "font": "11px \"Special Elite\""
+  },
+  {
+   "text": "itself?",
+   "maxCap": 19.7,
+   "minCap": 10.2,
+   "first": 12.55,
+   "last": 20.5,
+   "font": "11px \"Special Elite\""
+  }
+ ],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "THE BRAIN IS A LOGIC MACHINE",
+   "maxCap": 22.1
+  },
+  {
+   "text": "Lettvin, Maturana, McCulloch & Pitts · 1959",
+   "maxCap": 22
+  },
+  {
+   "text": "WHO TAUGHT",
+   "maxCap": 34
+  },
+  {
+   "text": "IT?",
+   "maxCap": 34
+  },
+  {
+   "text": "1943–1959 · 16",
+   "maxCap": 22
+  },
+  {
+   "text": "Lettvin, Maturana,",
+   "maxCap": 22
+  },
+  {
+   "text": "McCulloch & Pitts · 1959",
+   "maxCap": 22
+  },
+  {
+   "text": "Pitts",
+   "maxCap": 22
+  }
+ ]
+}

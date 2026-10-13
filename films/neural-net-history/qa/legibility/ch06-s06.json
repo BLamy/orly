@@ -1,0 +1,95 @@
+{
+ "shot": "ch06-s06",
+ "at": "2026-10-13T01:32:25.870Z",
+ "minCapPx": 22,
+ "sampled": 21,
+ "texts": 21,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "word",
+   "maxCap": 25.6
+  },
+  {
+   "text": "by",
+   "maxCap": 25.6
+  },
+  {
+   "text": "0.5",
+   "maxCap": 23
+  },
+  {
+   "text": "1",
+   "maxCap": 23
+  },
+  {
+   "text": "× 0.5",
+   "maxCap": 24.8
+  },
+  {
+   "text": "illustrative",
+   "maxCap": 22.1
+  },
+  {
+   "text": "0.031",
+   "maxCap": 23
+  },
+  {
+   "text": "0.0625",
+   "maxCap": 23
+  },
+  {
+   "text": "0.125",
+   "maxCap": 23
+  },
+  {
+   "text": "0.25",
+   "maxCap": 23
+  },
+  {
+   "text": "≈ 0.0005",
+   "maxCap": 23
+  },
+  {
+   "text": "vanishing gradients",
+   "maxCap": 31.3
+  },
+  {
+   "text": "Hochreiter 1991  ·  Bengio, Simard & Frasconi 1994",
+   "maxCap": 23
+  },
+  {
+   "text": "sepp hochreiter & jürgen schmidhuber",
+   "maxCap": 22
+  },
+  {
+   "text": "LSTM, 1997",
+   "maxCap": 22
+  },
+  {
+   "text": "× 1.0",
+   "maxCap": 23
+  },
+  {
+   "text": "LSTM  ·  × 1.0 loop  ·  input gate  ·  output gate",
+   "maxCap": 26.4
+  },
+  {
+   "text": "step",
+   "maxCap": 23.5
+  },
+  {
+   "text": "43",
+   "maxCap": 28.3
+  },
+  {
+   "text": "218",
+   "maxCap": 28.3
+  },
+  {
+   "text": "1,019",
+   "maxCap": 28.3
+  }
+ ]
+}

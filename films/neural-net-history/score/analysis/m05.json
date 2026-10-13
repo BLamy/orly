@@ -1,0 +1,18 @@
+{
+ "id": "m05",
+ "start": 365,
+ "end": 450.31,
+ "file": "films/neural-net-history/score/renders/m05.wav",
+ "duration": 91.31,
+ "I": -22.2,
+ "LRA": 16.4,
+ "TP": -8.5,
+ "expected": 91.31,
+ "lengthErrorMs": 0,
+ "lengthOk": true,
+ "spectrogram": "films/neural-net-history/score/analysis/m05.png",
+ "cueSeconds": 85.31,
+ "cps": 1,
+ "lastStrikeLocal": 79.84,
+ "lastStrike": 444.84
+}

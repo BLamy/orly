@@ -1,0 +1,107 @@
+{
+ "shot": "ch03-s04",
+ "at": "2026-10-12T08:08:37.915Z",
+ "minCapPx": 22,
+ "sampled": 29,
+ "texts": 36,
+ "offenders": [],
+ "textureTexts": 0,
+ "ok": [
+  {
+   "text": "MARK I",
+   "maxCap": 22.6
+  },
+  {
+   "text": "PERCEPTRON",
+   "maxCap": 24
+  },
+  {
+   "text": "RETINA · 20 × 20 PHOTOCELLS",
+   "maxCap": 29.1
+  },
+  {
+   "text": "ASSOCIATION UNITS · WEIGHTS AS KNOBS",
+   "maxCap": 29.1
+  },
+  {
+   "text": "VERTICAL",
+   "maxCap": 29.1
+  },
+  {
+   "text": "HORIZONTAL",
+   "maxCap": 29.1
+  },
+  {
+   "text": "RESPONSE UNIT",
+   "maxCap": 29.1
+  },
+  {
+   "text": "knob = weight",
+   "maxCap": 23.2
+  },
+  {
+   "text": "how strongly one wire counts",
+   "maxCap": 27.4
+  },
+  {
+   "text": "presentation 2",
+   "maxCap": 23.5
+  },
+  {
+   "text": "Σ w·a = +3",
+   "maxCap": 22.8
+  },
+  {
+   "text": "said “horizontal”",
+   "maxCap": 23.5
+  },
+  {
+   "text": "wrong: the knobs turn",
+   "maxCap": 23.5
+  },
+  {
+   "text": "said “horizontal” — wrong: the knobs turn",
+   "maxCap": 22.1
+  },
+  {
+   "text": "illustration: the perceptron rule, run for real",
+   "maxCap": 23.5
+  },
+  {
+   "text": "Σ w·a = +8",
+   "maxCap": 22.9
+  },
+  {
+   "text": "said “horizontal” — correct",
+   "maxCap": 22.4
+  },
+  {
+   "text": "presentation 37   ·   mistakes in the last 20: 2",
+   "maxCap": 23.5
+  },
+  {
+   "text": "correct",
+   "maxCap": 23.5
+  },
+  {
+   "text": "Σ w·a = +2",
+   "maxCap": 23
+  },
+  {
+   "text": "presentation 77   ·   mistakes in the last 20: 2",
+   "maxCap": 23.5
+  },
+  {
+   "text": "Σ w·a = −6",
+   "maxCap": 23.2
+  },
+  {
+   "text": "Σ w·a = 0",
+   "maxCap": 23.4
+  },
+  {
+   "text": "said “vertical” — wrong: the knobs turn",
+   "maxCap": 22.7
+  }
+ ]
+}
