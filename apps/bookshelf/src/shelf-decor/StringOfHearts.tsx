@@ -206,32 +206,8 @@ function buildStrand(
   return { group, phase: rng() * Math.PI * 2, freq: 0.7 + rng() * 0.5, amp: 0.06 + rng() * 0.05 };
 }
 
-const cordMat = new THREE.MeshStandardMaterial({ color: 0xcbb994, roughness: 0.9 });
-cordMat.userData.shared = true;
-const knotMat = new THREE.MeshStandardMaterial({ color: 0x8a7452, roughness: 0.8 });
-knotMat.userData.shared = true;
-
-/** Cylinders, not THREE.Line — WebGL ignores `linewidth`, so a line renders
- *  one pixel wide regardless of scale and wouldn't read as a cord. */
-function cordBetween(a: THREE.Vector3, b: THREE.Vector3, radius: number): THREE.Mesh {
-  const dir = new THREE.Vector3().subVectors(b, a);
-  const mesh = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, dir.length(), 6), cordMat);
-  mesh.position.copy(a).addScaledVector(dir, 0.5);
-  mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.clone().normalize());
-  return mesh;
-}
-
 function buildStringOfHearts(potGroup: THREE.Group, rng: () => number): Sway[] {
   buildPot(potGroup, rng);
-
-  const apex = new THREE.Vector3(0, 0.58, 0);
-  for (let i = 0; i < 3; i++) {
-    const a = (i / 3) * Math.PI * 2 + Math.PI / 5;
-    potGroup.add(cordBetween(new THREE.Vector3(Math.sin(a) * 0.33, 0.2, Math.cos(a) * 0.33), apex, 0.011));
-  }
-  const knot = new THREE.Mesh(new THREE.SphereGeometry(0.032, 8, 8), knotMat);
-  knot.position.copy(apex);
-  potGroup.add(knot);
 
   // Many more strands than the pothos gets vines — density is what sells this
   // plant, and each strand is thin enough that a dozen still reads as airy.
@@ -243,7 +219,7 @@ function buildStringOfHearts(potGroup: THREE.Group, rng: () => number): Sway[] {
     const angle = (i / (strandCount - 1) - 0.5) * Math.PI * 1.15 + (rng() - 0.5) * 0.4;
     // Widely varied lengths: this plant's silhouette is a ragged taper, a few
     // long strands well ahead of the rest.
-    const drop = 0.5 + rng() * rng() * 1.0;
+    const drop = 0.4 + rng() * rng() * 0.7;
     const startR = 0.05 + rng() * 0.13;
     const drift = (0.01 + rng() * 0.05) * (i % 2 === 0 ? 1 : -1);
     const tint = Math.floor(rng() * LEAF_TINTS.length);
@@ -271,23 +247,11 @@ function buildStringOfHearts(potGroup: THREE.Group, rng: () => number): Sway[] {
   return sway;
 }
 
-/** A hanging string of hearts (Ceropegia woodii): a suspended planter with a
- *  dozen thread-thin strands falling nearly plumb, each strung with paired
+/** A string of hearts (Ceropegia woodii): a pot with a dozen thread-thin
+ *  strands spilling over the board's edge, each strung with paired
  *  silver-marbled hearts and the odd aerial tuber. Sways on its own and
  *  catches a breeze when the page scrolls. Desktop shelf only — see
  *  DesktopShelf's placement logic in Library.tsx. */
 export function StringOfHearts({ width, height, seed = 0 }: { width: number; height: number; seed?: number }) {
-  // Hung high (and lifted off the board like the pothos) because everything
-  // interesting about this plant happens below the pot.
-  return (
-    <PlantCanvas
-      width={width}
-      height={height}
-      seed={seed}
-      potY={0.4}
-      lift={30}
-      spread={0.55}
-      build={buildStringOfHearts}
-    />
-  );
+  return <PlantCanvas width={width} height={height} seed={seed} trail={100} spread={0.55} build={buildStringOfHearts} />;
 }

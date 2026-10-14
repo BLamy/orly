@@ -134,11 +134,6 @@ function leafMaterial(variant: number, tint: number): THREE.MeshStandardMaterial
 const runnerMat = new THREE.MeshStandardMaterial({ color: 0x9aa845, roughness: 0.75 });
 runnerMat.userData.shared = true;
 
-const cordMat = new THREE.MeshStandardMaterial({ color: 0xcbb994, roughness: 0.9 });
-cordMat.userData.shared = true;
-const knotMat = new THREE.MeshStandardMaterial({ color: 0x8a7452, roughness: 0.8 });
-knotMat.userData.shared = true;
-
 // ---------------------------------------------------------------------------
 // Build
 // ---------------------------------------------------------------------------
@@ -242,29 +237,8 @@ function buildRunner(rng: () => number, drop: number, tint: number): Sway {
   return { group, phase: rng() * Math.PI * 2, freq: 0.34 + rng() * 0.22, amp: 0.05 + rng() * 0.04 };
 }
 
-/** A thin cylinder between two points — a plain THREE.Line renders razor-thin
- *  in WebGL regardless of `linewidth`, so it wouldn't read as a cord. */
-function cordBetween(a: THREE.Vector3, b: THREE.Vector3, radius: number): THREE.Mesh {
-  const dir = new THREE.Vector3().subVectors(b, a);
-  const mesh = new THREE.Mesh(new THREE.CylinderGeometry(radius, radius, dir.length(), 6), cordMat);
-  mesh.position.copy(a).addScaledVector(dir, 0.5);
-  mesh.quaternion.setFromUnitVectors(new THREE.Vector3(0, 1, 0), dir.clone().normalize());
-  return mesh;
-}
-
 function buildSpiderPlant(potGroup: THREE.Group, rng: () => number): Sway[] {
   buildPot(potGroup, rng);
-
-  // Hung, not stood: without a visible hanger a pot floating mid-frame with
-  // babies dangling under it just looks unsupported.
-  const apex = new THREE.Vector3(0, 0.62, 0);
-  for (let i = 0; i < 3; i++) {
-    const a = (i / 3) * Math.PI * 2 + Math.PI / 5;
-    potGroup.add(cordBetween(new THREE.Vector3(Math.sin(a) * 0.32, 0.2, Math.cos(a) * 0.32), apex, 0.012));
-  }
-  const knot = new THREE.Mesh(new THREE.SphereGeometry(0.033, 8, 8), knotMat);
-  knot.position.copy(apex);
-  potGroup.add(knot);
 
   const sway: Sway[] = [];
 
@@ -288,7 +262,7 @@ function buildSpiderPlant(potGroup: THREE.Group, rng: () => number): Sway[] {
   const runnerCount = 2 + Math.floor(rng() * 2);
   for (let i = 0; i < runnerCount; i++) {
     const angle = (i / Math.max(1, runnerCount - 1) - 0.5) * Math.PI * 0.9 + (rng() - 0.5) * 0.4;
-    const runner = buildRunner(rng, 0.55 + rng() * 0.45, tint);
+    const runner = buildRunner(rng, 0.25 + rng() * 0.3, tint);
     runner.group.position.set(Math.sin(angle) * 0.05, POT_CROWN_Y, Math.cos(angle) * 0.05);
     runner.group.rotation.y = angle;
     potGroup.add(runner.group);
@@ -298,22 +272,10 @@ function buildSpiderPlant(potGroup: THREE.Group, rng: () => number): Sway[] {
   return sway;
 }
 
-/** A hanging spider plant (Chlorophytum comosum) — a fountaining rosette of
- *  cream-striped strap leaves that arch out and fall back down, with runners
- *  dangling baby plantlets below the pot. Desktop shelf only — see
- *  DesktopShelf's placement logic in Library.tsx. */
+/** A spider plant (Chlorophytum comosum) on the shelf — a fountaining rosette
+ *  of cream-striped strap leaves that arch out and fall back down, with runners
+ *  dangling baby plantlets over the board's front edge. Desktop shelf only —
+ *  see DesktopShelf's placement logic in Library.tsx. */
 export function SpiderPlant({ width, height, seed = 0 }: { width: number; height: number; seed?: number }) {
-  // High potY plus `lift` off the shelf board: like the pothos this one is
-  // suspended, and everything interesting about it happens BELOW the pot.
-  return (
-    <PlantCanvas
-      width={width}
-      height={height}
-      seed={seed}
-      potY={0.36}
-      lift={30}
-      spread={0.8}
-      build={buildSpiderPlant}
-    />
-  );
+  return <PlantCanvas width={width} height={height} seed={seed} trail={100} spread={0.8} build={buildSpiderPlant} />;
 }

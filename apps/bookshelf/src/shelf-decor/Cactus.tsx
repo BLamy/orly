@@ -90,5 +90,5 @@ export function Cactus({ width, height, seed = 0 }: { width: number; height: num
   // (~-1.0, matching the container's bottom edge — see PlantCanvas — which
   // is also where a spine book's bottom lands), so it reads as standing on
   // the shelf board like the books beside it, not floating mid-frame.
-  return <PlantCanvas width={width} height={height} seed={seed} potY={-0.78} build={buildCactus} />;
+  return <PlantCanvas width={width} height={height} seed={seed}build={buildCactus} />;
 }

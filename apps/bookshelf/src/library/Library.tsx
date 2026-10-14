@@ -338,7 +338,7 @@ function useRowWidth(): [number, React.RefObject<HTMLDivElement>] {
     const el = probeRef.current;
     if (!el) return;
     let t: number | undefined;
-    const measure = () => setWidth(el.getBoundingClientRect().width);
+    const measure = () => setWidth(el.clientWidth);
     measure();
     const ro = new ResizeObserver(() => {
       window.clearTimeout(t);
@@ -383,7 +383,7 @@ const TAPE_SLOT = 40; // .lib-tape's width in library.css
 // Ordered so the two big hangers never land next to each other and the
 // standing plants break up the trailing ones.
 const PLANT_KINDS: PlantKind[] = ['pothos', 'monstera', 'hearts', 'cactus', 'spider', 'snake'];
-const DIVIDER_WIDTHS = [110, 140, 125, 160];
+const DIVIDER_WIDTHS = [170, 200, 185, 215];
 
 /** A block is what packing treats as indivisible: one whole series (or
  *  standalone group), or the plant that separates it from the next one. A

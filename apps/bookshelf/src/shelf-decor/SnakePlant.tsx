@@ -88,5 +88,5 @@ export function SnakePlant({ width, height, seed = 0 }: { width: number; height:
   // potY sits the pot's own bottom right at the bottom of the frustum — see
   // the matching comment in Cactus.tsx — so it stands on the shelf board
   // like the books beside it instead of floating mid-frame.
-  return <PlantCanvas width={width} height={height} seed={seed} potY={-0.78} build={buildSnakePlant} />;
+  return <PlantCanvas width={width} height={height} seed={seed}build={buildSnakePlant} />;
 }

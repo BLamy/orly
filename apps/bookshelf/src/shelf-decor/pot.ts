@@ -72,14 +72,83 @@ function profile(style: PotStyle): THREE.Vector2[] {
 // shelf, so sharing here matters. userData.shared keeps PlantCanvas's teardown
 // from disposing them out from under the other live plants.
 const potMatCache = new Map<string, THREE.MeshStandardMaterial>();
+
+/** Deterministic noise for the shared textures below (they're cached forever,
+ *  so they can't take a plant's rng). */
+function noise(seed: number): () => number {
+  let s = seed;
+  return () => {
+    s = (s * 1103515245 + 12345) & 0x7fffffff;
+    return s / 0x7fffffff;
+  };
+}
+
+let potSkin: THREE.CanvasTexture | null = null;
+/** A grey "skin" multiplied over every pot colour: fired-clay mottling, faint
+ *  throwing rings, and a darkening toward the foot where the pot sits in its
+ *  own shade. v runs bottom → rim along the lathe, u around. Without it a pot
+ *  is one flat shade of paint, which is most of what read as plastic. */
+function potSkinTexture(): THREE.CanvasTexture {
+  if (potSkin) return potSkin;
+  const w = 128;
+  const h = 128;
+  const c = document.createElement('canvas');
+  c.width = w;
+  c.height = h;
+  const g = c.getContext('2d')!;
+  const rnd = noise(4242);
+  // canvas y runs top → bottom; v = 1 - y/h, so the rim is at y = 0
+  const grad = g.createLinearGradient(0, 0, 0, h);
+  grad.addColorStop(0, '#ffffff');
+  grad.addColorStop(0.55, '#e9e9e9');
+  grad.addColorStop(1, '#8c8c8c');
+  g.fillStyle = grad;
+  g.fillRect(0, 0, w, h);
+  // throwing rings
+  for (let y = 0; y < h; y += 3) {
+    g.fillStyle = `rgba(0,0,0,${0.02 + rnd() * 0.04})`;
+    g.fillRect(0, y, w, 1);
+  }
+  // clay mottling: soft blotches that wrap (draw twice, offset by w)
+  for (let i = 0; i < 90; i++) {
+    const x = rnd() * w;
+    const y = rnd() * h;
+    const r = 4 + rnd() * 14;
+    const dark = rnd() < 0.55;
+    for (const dx of [0, -w]) {
+      const rg = g.createRadialGradient(x + dx, y, 0, x + dx, y, r);
+      rg.addColorStop(0, dark ? 'rgba(0,0,0,0.10)' : 'rgba(255,255,255,0.12)');
+      rg.addColorStop(1, 'rgba(0,0,0,0)');
+      g.fillStyle = rg;
+      g.fillRect(x + dx - r, y - r, r * 2, r * 2);
+    }
+  }
+  // fine grain
+  const img = g.getImageData(0, 0, w, h);
+  for (let i = 0; i < img.data.length; i += 4) {
+    const n = (rnd() - 0.5) * 22;
+    img.data[i] += n;
+    img.data[i + 1] += n;
+    img.data[i + 2] += n;
+  }
+  g.putImageData(img, 0, 0);
+  potSkin = new THREE.CanvasTexture(c);
+  potSkin.wrapS = THREE.RepeatWrapping;
+  potSkin.colorSpace = THREE.SRGBColorSpace;
+  return potSkin;
+}
+
 function potMaterial(color: number, glossy: boolean): THREE.MeshStandardMaterial {
   const key = `${color}:${glossy}`;
   let mat = potMatCache.get(key);
   if (!mat) {
     mat = new THREE.MeshStandardMaterial({
       color,
-      roughness: glossy ? 0.35 : 0.78,
-      metalness: glossy ? 0.06 : 0,
+      map: potSkinTexture(),
+      // Matte ceramic and raw clay barely shine; glazed ones get a broad,
+      // low-contrast sheen rather than a hot spot.
+      roughness: glossy ? 0.4 : 0.88,
+      metalness: 0,
       side: THREE.DoubleSide,
     });
     mat.userData.shared = true;
@@ -88,8 +157,43 @@ function potMaterial(color: number, glossy: boolean): THREE.MeshStandardMaterial
   return mat;
 }
 
-const soilMat = new THREE.MeshStandardMaterial({ color: 0x241a12, roughness: 1 });
-soilMat.userData.shared = true;
+let soilTex: THREE.CanvasTexture | null = null;
+/** Potting mix seen from above: dark crumb with lighter flecks (perlite, bark)
+ *  — a flat dark disc is the single giveaway of a toy plant once the camera
+ *  looks down into the pot. */
+function soilTexture(): THREE.CanvasTexture {
+  if (soilTex) return soilTex;
+  const s = 128;
+  const c = document.createElement('canvas');
+  c.width = s;
+  c.height = s;
+  const g = c.getContext('2d')!;
+  const rnd = noise(77);
+  g.fillStyle = '#2b1f16';
+  g.fillRect(0, 0, s, s);
+  for (let i = 0; i < 700; i++) {
+    const x = rnd() * s;
+    const y = rnd() * s;
+    const r = 0.8 + rnd() * 2.4;
+    const v = rnd();
+    g.fillStyle = v < 0.6 ? `rgba(12,8,5,${0.35 + rnd() * 0.4})` : v < 0.9 ? `rgba(92,68,46,${0.25 + rnd() * 0.35})` : `rgba(205,196,176,${0.4 + rnd() * 0.4})`;
+    g.beginPath();
+    g.arc(x, y, r, 0, Math.PI * 2);
+    g.fill();
+  }
+  soilTex = new THREE.CanvasTexture(c);
+  soilTex.colorSpace = THREE.SRGBColorSpace;
+  return soilTex;
+}
+
+let soilMatShared: THREE.MeshStandardMaterial | null = null;
+function soilMaterial(): THREE.MeshStandardMaterial {
+  if (!soilMatShared) {
+    soilMatShared = new THREE.MeshStandardMaterial({ map: soilTexture(), roughness: 1 });
+    soilMatShared.userData.shared = true;
+  }
+  return soilMatShared;
+}
 
 export type PotOptions = {
   style?: PotStyle;
@@ -149,9 +253,13 @@ export function buildPot(potGroup: THREE.Group, opts: PotOptions | (() => number
   const pts = profile(style);
   const mouthR = pts[pts.length - 1].x;
   const soil = new THREE.Mesh(
-    new THREE.CylinderGeometry(mouthR * 0.9, mouthR * 0.9, 0.04, 22),
-    soilMat,
+    new THREE.CylinderGeometry(mouthR * 0.93, mouthR * 0.93, 0.04, 22),
+    soilMaterial(),
   );
   soil.position.y = POT_RIM_Y - 0.02;
   potGroup.add(soil);
+
+  // How far below the pot's origin its foot is — PlantCanvas stands this on
+  // the shelf board (the footed style sits lower than the rest).
+  potGroup.userData.baseY = pts[0].y;
 }

@@ -146,22 +146,18 @@ export function PlantCanvas({
   width,
   height,
   seed = 0,
-  potY = 0.55,
-  lift = 0,
+  trail = 0,
   spread = 0.55,
   build,
 }: {
   width: number;
   height: number;
   seed?: number;
-  /** Vertical placement of the pot within the ~2.1-world-unit-tall frustum
-   *  (see below) — trailing plants (pothos) want it high, leaving room below
-   *  for vines to drop; upright plants (snake plant, cactus) want it lower,
-   *  leaving room above for growth instead. Defaults to the pothos framing. */
-  potY?: number;
-  /** CSS pixels to raise the whole canvas off the shelf board — a hanging
-   *  planter isn't standing on the shelf, it's suspended above it. */
-  lift?: number;
+  /** CSS pixels the canvas extends BELOW the shelf board's surface, for plants
+   *  whose vines hang over the front edge. The pot always stands on the board
+   *  (the bottom of the nominal `height` box); this extra area is overflow —
+   *  the canvas's layout height stays `height`, so rows don't grow. */
+  trail?: number;
   /** How far the plant reaches sideways from the pot's axis, in world units.
    *  Plant slots on the shelf are narrow and vary in width, so this is used to
    *  shrink the whole plant until its widest growth fits inside the frustum —
@@ -178,8 +174,11 @@ export function PlantCanvas({
     if (!el || width < 40 || height < 60) return;
 
     const ratio = dpr();
+    // The canvas is `height` tall in layout but `trail` px taller in pixels:
+    // the extra hangs below the board, where trailing vines fall.
+    const totalH = height + trail;
     el.width = Math.ceil(width * ratio);
-    el.height = Math.ceil(height * ratio);
+    el.height = Math.ceil(totalH * ratio);
     const ctx = el.getContext('2d');
     if (!ctx) return;
 
@@ -199,32 +198,53 @@ export function PlantCanvas({
     // thing is visible with no need to overflow its container (which would get
     // clipped anyway: .lib-series-row's overflow-x:auto forces overflow-y to
     // auto too, per the CSS overflow spec).
-    const camera = new THREE.PerspectiveCamera(28, width / height, 0.1, 20);
-    camera.position.set(0, 0, 4.2);
-    camera.lookAt(0, 0, 0);
+    // Scale is fixed by the nominal `height`; a taller canvas (trail) widens the
+    // vertical field of view, it doesn't shrink the plant. The camera sits a
+    // little above the pot and looks slightly down, so the rim, soil and the
+    // upper faces of leaves show — a plant seen at eye level with the shelf
+    // below it reads as a diagram, one seen from above reads as a plant.
+    const NOMINAL = 2 * 4.2 * Math.tan((14 * Math.PI) / 180);
+    const ppu = height / NOMINAL; // pixels per world unit
+    const fov = (2 * Math.atan(totalH / ppu / 2 / 4.2) * 180) / Math.PI;
+    const camera = new THREE.PerspectiveCamera(fov, width / totalH, 0.1, 20);
+    const cy = -trail / ppu / 2; // centre of the (taller) view
+    camera.position.set(0, cy + 0.5, 4.2);
+    camera.lookAt(0, cy, 0);
 
-    scene.add(new THREE.AmbientLight(0xfff8ef, 0.6));
-    const dir = new THREE.DirectionalLight(0xfff3e0, 0.95);
-    dir.position.set(1.5, 2.2, 2.4);
+    // Soft sky-and-floor ambience instead of a flat ambient: leaf undersides
+    // pick up the warm bounce from the board, tops catch the cool-white sky.
+    scene.add(new THREE.HemisphereLight(0xfff6e6, 0x6b4a2e, 1.5));
+    // Key: warm, high and to the left — the same side the cabinet's shadows
+    // fall away from (see .lib-board in library.css).
+    const dir = new THREE.DirectionalLight(0xfff0d6, 2.5);
+    dir.position.set(-1.6, 2.8, 2.4);
     scene.add(dir);
-    const fill = new THREE.DirectionalLight(0xdce8ff, 0.28);
-    fill.position.set(-1.5, 0.5, 1);
+    const fill = new THREE.DirectionalLight(0xdce8ff, 0.7);
+    fill.position.set(1.8, 0.4, 1.5);
     scene.add(fill);
-    // A dim light from below-behind separates the foliage from the dark shelf
-    // instead of letting the underside of every leaf sink into the boards.
-    const rim = new THREE.DirectionalLight(0xbfe0a8, 0.22);
-    rim.position.set(-0.5, -1.5, -1.5);
+    // A dim light from below-behind separates the foliage from the back panel
+    // instead of letting the underside of every leaf sink into it.
+    const rim = new THREE.DirectionalLight(0xcfe8b0, 0.6);
+    rim.position.set(0.5, 1.2, -2);
     scene.add(rim);
 
     const potGroup = new THREE.Group();
-    potGroup.position.set(0, potY, 0);
     // The frustum is ~2.1 world units tall at the origin, so half its width is
     // 1.05 * aspect. Shrink the plant if its spread wouldn't fit that.
-    potGroup.scale.setScalar(Math.min(1, (1.05 * (width / height)) / spread));
+    // Plants may grow past their authored size (1.0) when the slot is wide —
+    // a houseplant should fill its spot on the board, not sit lost in it.
+    const fit = Math.min(1.3, (1.05 * (width / height)) / spread);
+    potGroup.scale.setScalar(fit);
     scene.add(potGroup);
 
     const sway = buildRef.current(potGroup, rng);
-    ensureBuffer(width, height);
+    // Stand the pot on the board: its base (buildPot records how far below its
+    // origin that is) goes at the bottom of the nominal box, a few pixels up so
+    // the near edge of the base — which the downward camera shows slightly
+    // lower — still touches the board instead of dipping into it.
+    const baseY = (potGroup.userData.baseY as number | undefined) ?? -0.2;
+    potGroup.position.y = -NOMINAL / 2 + 6 / ppu - fit * baseY;
+    ensureBuffer(width, totalH);
 
     const inst: Instance = {
       scene,
@@ -232,7 +252,7 @@ export function PlantCanvas({
       ctx,
       el,
       w: width,
-      h: height,
+      h: totalH,
       sway,
       visible: true,
       painted: false,
@@ -267,13 +287,13 @@ export function PlantCanvas({
         }
       });
     };
-  }, [width, height, seed, potY, spread]);
+  }, [width, height, seed, trail, spread]);
 
   return (
     <canvas
       ref={canvasRef}
       className="shelf-pothos"
-      style={{ width, height, marginBottom: lift, opacity: 0 }}
+      style={{ width, height: height + trail, marginBottom: -trail, opacity: 0 }}
       aria-hidden="true"
     />
   );

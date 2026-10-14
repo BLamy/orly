@@ -34,16 +34,103 @@
   inset: 0;
   z-index: -1;
   pointer-events: none;
+  /* The room the bookcase stands in: a painted wall with a warm pool of light
+     near the top and a soft vignette, no pattern to tile or tear. */
   background:
-    radial-gradient(1200px 600px at 50% -10%, var(--wood-grain-light) 0%, transparent 70%),
-    repeating-linear-gradient(
-      90deg,
-      var(--wood-grain) 0px,
-      transparent 2px,
-      transparent 34px,
-      var(--wood-grain) 36px
-    ),
-    linear-gradient(180deg, var(--wood-bg-1) 0%, var(--wood-bg-2) 100%);
+    radial-gradient(1100px 620px at 50% -8%, var(--case-glow) 0%, transparent 72%),
+    radial-gradient(ellipse 120% 90% at 50% 40%, transparent 55%, var(--case-vignette) 100%),
+    linear-gradient(180deg, var(--wall-1) 0%, var(--wall-2) 100%);
+}
+
+/* ---- the bookcase's materials, per finish ----
+   --wall-*        the room behind the case
+   --case-wood*    the cabinet's carcass and boards (lit top → shaded)
+   --case-back     the back panel the books stand against
+   --case-glow     warm light spilling from above
+   Dark finishes are stained/painted hardwood on a deeper wall; the light ones
+   (oak, pine) are pale timber against a cream wall. */
+.lib {
+  --wall-1: #2c2014;
+  --wall-2: #1a120a;
+  --case-glow: rgba(255, 210, 150, 0.14);
+  --case-vignette: rgba(0, 0, 0, 0.45);
+  --case-hi: #9a7144;
+  --case-wood: #704c2a;
+  --case-lo: #3f2916;
+  --case-edge: #84603a;
+  --case-back: #33230f;
+  --case-back-hi: #4a3419;
+  --case-grain: rgba(0, 0, 0, 0.16);
+  --case-lit: rgba(255, 226, 180, 0.18);
+  --case-shadow: 0, 0, 0;
+  --case-ao: 0.5;
+}
+:root[data-theme='mahogany'] .lib {
+  --wall-1: #2b1511;
+  --wall-2: #190b09;
+  --case-glow: rgba(255, 180, 140, 0.13);
+  --case-hi: #a9573e;
+  --case-wood: #7e3b2a;
+  --case-lo: #461f18;
+  --case-edge: #924832;
+  --case-back: #3a1a14;
+  --case-back-hi: #55271c;
+}
+:root[data-theme='indigo'] .lib {
+  --wall-1: #17202f;
+  --wall-2: #0c121d;
+  --case-glow: rgba(160, 190, 255, 0.12);
+  --case-hi: #5775a6;
+  --case-wood: #3a5280;
+  --case-lo: #1d2b48;
+  --case-edge: #4a679a;
+  --case-back: #1a2842;
+  --case-back-hi: #2a3d62;
+  --case-grain: rgba(0, 0, 0, 0.12);
+  --case-lit: rgba(190, 210, 255, 0.2);
+}
+:root[data-theme='charcoal'] .lib {
+  --wall-1: #1d1c1b;
+  --wall-2: #0f0e0e;
+  --case-glow: rgba(255, 240, 220, 0.09);
+  --case-hi: #6b6561;
+  --case-wood: #4a4643;
+  --case-lo: #272524;
+  --case-edge: #5d5855;
+  --case-back: #232120;
+  --case-back-hi: #35322f;
+}
+:root[data-theme='oak'] .lib {
+  --wall-1: #efe3cb;
+  --wall-2: #ddc9a4;
+  --case-glow: rgba(255, 250, 235, 0.7);
+  --case-vignette: rgba(120, 84, 36, 0.2);
+  --case-hi: #e3bf83;
+  --case-wood: #c79a58;
+  --case-lo: #94683a;
+  --case-edge: #d8b072;
+  --case-back: #a9824b;
+  --case-back-hi: #bd965d;
+  --case-grain: rgba(110, 70, 20, 0.2);
+  --case-lit: rgba(255, 248, 225, 0.5);
+  --case-shadow: 70, 40, 10;
+  --case-ao: 0.42;
+}
+:root[data-theme='pine'] .lib {
+  --wall-1: #f6f0e3;
+  --wall-2: #e7dcc4;
+  --case-glow: rgba(255, 255, 250, 0.8);
+  --case-vignette: rgba(120, 90, 40, 0.16);
+  --case-hi: #f0dfba;
+  --case-wood: #e0c796;
+  --case-lo: #b89960;
+  --case-edge: #ead7ac;
+  --case-back: #cdb78a;
+  --case-back-hi: #dac59a;
+  --case-grain: rgba(120, 85, 30, 0.18);
+  --case-lit: rgba(255, 252, 238, 0.6);
+  --case-shadow: 80, 52, 16;
+  --case-ao: 0.36;
 }
 
 .lib *,
@@ -189,41 +276,164 @@
   flex: none;
   align-self: flex-end;
   pointer-events: none;
+  /* above the books and the board's front edge: trailing vines hang over it */
+  position: relative;
+  z-index: 3;
+}
+/* contact shadow: the pot's base pressing a soft dark ellipse into the board */
+.lib-row-plant::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: 50%;
+  bottom: -5px;
+  width: 78%;
+  max-width: 120px;
+  height: 14px;
+  transform: translateX(-50%);
+  background: radial-gradient(ellipse at center, rgba(var(--case-shadow), 0.7) 0%, rgba(var(--case-shadow), 0.35) 45%, transparent 72%);
 }
 .lib-row-plant-lead {
   margin-right: 6px;
 }
 
-/* ---- the continuous desktop wall: boards stacked one under another, every
-   book spine-out, series separated by a plant rather than by a heading ---- */
+/* ---- the bookcase: a carcass (uprights, crown rail, plinth) around a back
+   panel, with solid boards stacked inside it. Every book stands spine-out,
+   series separated by a plant rather than by a heading. ---- */
 .lib-wall {
-  max-width: 1280px;
-  margin: 0 auto 40px;
-  padding: 0 8px;
+  --upright: 30px;
+  --crown: 30px;
+  --plinth: 40px;
+  position: relative;
+  isolation: isolate;
+  max-width: calc(1280px + 2 * var(--upright));
+  margin: 0 auto 56px;
+  padding: var(--crown) var(--upright) var(--plinth);
+  background:
+    /* crown rail: lit top lip, then a moulded face, then a shadow line */
+    linear-gradient(180deg, var(--case-lit) 0, var(--case-lit) 1px, var(--case-hi) 1px, var(--case-wood) 55%, var(--case-lo) 100%)
+      0 0 / 100% var(--crown) no-repeat,
+    /* plinth: a plain kick board */
+    linear-gradient(180deg, var(--case-hi) 0, var(--case-wood) 14%, var(--case-lo) 100%)
+      0 100% / 100% var(--plinth) no-repeat,
+    /* side uprights: lit on the inside edge, rolling into shade */
+    linear-gradient(90deg, var(--case-lo) 0, var(--case-wood) 22%, var(--case-hi) 72%, var(--case-edge) 88%, var(--case-lo) 100%)
+      0 0 / var(--upright) 100% no-repeat,
+    linear-gradient(270deg, var(--case-lo) 0, var(--case-wood) 22%, var(--case-hi) 72%, var(--case-edge) 88%, var(--case-lo) 100%)
+      100% 0 / var(--upright) 100% no-repeat,
+    /* back panel: tongue-and-groove planks with a pool of light at the top */
+    radial-gradient(ellipse 75% 220px at 50% var(--crown), var(--case-back-hi), transparent),
+    repeating-linear-gradient(90deg, rgba(0, 0, 0, 0.22) 0 1px, rgba(255, 255, 255, 0.025) 1px 3px, transparent 3px 71px),
+    var(--case-back);
+  border-radius: 5px 5px 2px 2px;
+  box-shadow:
+    0 2px 0 rgba(var(--case-shadow), 0.25),
+    0 26px 46px -12px rgba(var(--case-shadow), 0.65),
+    0 6px 14px rgba(var(--case-shadow), 0.4);
+}
+/* wood grain over the carcass pieces — long, faint streaks that follow the
+   grain direction of each part (vertical on the uprights, horizontal on the
+   rails), painted on one overlay so the back panel stays clean */
+.lib-wall::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background:
+    repeating-linear-gradient(90deg, var(--case-grain) 0 1px, transparent 1px 5px, var(--case-grain) 5px 6px, transparent 6px 13px) 0 0 / var(--upright) 100% no-repeat,
+    repeating-linear-gradient(90deg, var(--case-grain) 0 1px, transparent 1px 7px, var(--case-grain) 7px 8px, transparent 8px 11px) 100% 0 / var(--upright) 100% no-repeat,
+    repeating-linear-gradient(0deg, var(--case-grain) 0 1px, transparent 1px 5px, var(--case-grain) 5px 6px, transparent 6px 8px) 0 0 / 100% var(--crown) no-repeat,
+    repeating-linear-gradient(0deg, var(--case-grain) 0 1px, transparent 1px 4px, var(--case-grain) 4px 5px, transparent 5px 9px) 0 100% / 100% var(--plinth) no-repeat;
+}
+/* the inside of the case: shadow where the back panel meets the uprights and
+   the crown rail, so the books read as standing in a recess */
+.lib-wall::after {
+  content: '';
+  position: absolute;
+  top: var(--crown);
+  bottom: var(--plinth);
+  left: var(--upright);
+  right: var(--upright);
+  z-index: -1;
+  pointer-events: none;
+  box-shadow:
+    inset 0 18px 22px -10px rgba(var(--case-shadow), calc(var(--case-ao) + 0.15)),
+    inset 20px 0 24px -12px rgba(var(--case-shadow), var(--case-ao)),
+    inset -20px 0 24px -12px rgba(var(--case-shadow), var(--case-ao));
 }
 .lib-board {
   /* Packed to width in JS (see packRows), so unlike the old per-series rows
      these never need to scroll sideways — anything that doesn't fit is on the
      next board down. Letting them scroll would also re-clip the plants. */
   overflow-x: visible;
-  margin-bottom: 26px;
-  /* Spread the board's contents across its full width instead of stacking
-     them at the left with dead wood at the right. The justified units are
-     whole blocks — a slipcase, a plant, an unbroken run of standalone books
-     (see groupRow) — never individual books, so a series stays tight and a
-     plant sharing a board with one ends up at the opposite end of it.
-     The right-hand padding inherited from .is-spines is the cover-turn
-     headroom, so the last block still has room to swing open. */
-  justify-content: space-between;
-  gap: 10px;
+  margin-bottom: 0;
+  /* Units stand side by side in the order they were packed, like books on a
+     real shelf: a slipcase, a plant, an unbroken run of standalone books (see
+     groupRow). The right-hand padding inherited from .is-spines is the
+     cover-turn headroom, so the last block still has room to swing open. */
+  justify-content: flex-start;
+  gap: 22px;
+  position: relative;
 }
-/* An unbroken run of standalone books: they keep their own even spacing and
-   move as one unit when the board justifies. */
+/* Headroom above the books is where a plant on the board above lets its
+   vines drop; the bottom padding is the thickness of THIS board's top
+   surface the books stand on (the rest of its depth is the front edge). */
+.lib-series-row.lib-board {
+  padding: 70px 16px 21px 10px;
+  background: none;
+  border-radius: 0;
+}
+/* The board itself: a plank seen from slightly above — a lit top surface the
+   books stand on, a rounded front edge, and grain along its length. It sits
+   behind the books (z -1 inside .lib-wall's own stacking context) so books
+   and plants overlap its top surface rather than being cut off by it. */
+.lib-board::after {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 28px;
+  background:
+    repeating-linear-gradient(0deg, var(--case-grain) 0 1px, transparent 1px 3px, var(--case-grain) 3px 4px, transparent 4px 7px),
+    repeating-linear-gradient(90deg, transparent 0 97px, rgba(0, 0, 0, 0.07) 97px 98px, transparent 98px 211px, rgba(255, 255, 255, 0.05) 211px 213px),
+    linear-gradient(180deg,
+      var(--case-lit) 0, var(--case-hi) 1px, var(--case-wood) 11px,
+      var(--case-edge) 11px, var(--case-edge) 12px, var(--case-wood) 14px,
+      var(--case-wood) 60%, var(--case-lo) 100%);
+  box-shadow:
+    0 1px 0 rgba(var(--case-shadow), 0.55),
+    0 7px 12px -3px rgba(var(--case-shadow), 0.55);
+}
+/* shadow the board above throws down the back panel */
+.lib-board::before {
+  content: '';
+  position: absolute;
+  z-index: -1;
+  left: 0;
+  right: 0;
+  top: 0;
+  height: 78px;
+  pointer-events: none;
+  background: linear-gradient(180deg, rgba(var(--case-shadow), calc(var(--case-ao) * 0.9)) 0, rgba(var(--case-shadow), calc(var(--case-ao) * 0.35)) 38%, transparent 100%);
+}
+/* An unbroken run of standalone books: they keep their own spacing and
+   move as one unit. Shoulder to shoulder, like books actually stand. */
 .lib-run {
   display: flex;
   align-items: flex-end;
   flex: 0 0 auto;
-  gap: 10px;
+  gap: 3px;
+}
+/* Everything standing on a board shades the board beneath it (contact shadow)
+   and the back panel behind it (cast shadow, light from the upper left). */
+.lib-run,
+.lib-sleeve {
+  box-shadow:
+    0 5px 6px -3px rgba(var(--case-shadow), 0.65),
+    9px 0 18px -6px rgba(var(--case-shadow), 0.5);
 }
 /* the plant canvas itself — fades in on its first painted frame (see
    PlantCanvas) rather than snapping into existence mid-scroll */
@@ -234,9 +444,13 @@
 
 /* invisible probe with the same width as a shelf row (fronts-vs-spines fit test) */
 .lib-row-probe {
-  max-width: 1280px;
+  max-width: calc(1280px + 60px);
   margin: 0 auto;
   height: 0;
+  /* the bookcase's uprights: the probe is measured by clientWidth, which stops
+     at the padding box, so the row width it reports is the shelf's inside width */
+  border: 0 solid transparent;
+  border-width: 0 30px;
 }
 
 /* a series bound together as one boxed set */
@@ -1572,12 +1786,12 @@
   display: flex;
   align-items: flex-end;
   gap: 0; /* the point: no daylight between books of one series */
-  padding: 10px 0 8px 26px;
+  padding: 10px 0 0 26px;
   background: linear-gradient(180deg, var(--wood-panel), var(--wood-panel-strong));
   border: 1px solid var(--wood-border);
   border-right: 0;
-  border-bottom: 5px solid var(--wood-shelf-board);
-  border-radius: 6px 0 0 3px;
+  border-bottom: 0; /* the case stands on the board like everything else */
+  border-radius: 6px 0 0 0;
 }
 .lib-sleeve-plaque {
   position: absolute;
@@ -1606,14 +1820,14 @@
   content: '';
   position: absolute;
   top: -1px;
-  bottom: -5px;
+  bottom: 0;
   left: 100%;
   width: 0;
   background: linear-gradient(180deg, var(--wood-panel), var(--wood-panel-strong));
   border: 1px solid var(--wood-border);
   border-left: 0;
-  border-bottom: 5px solid var(--wood-shelf-board);
-  border-radius: 0 6px 3px 0;
+  border-bottom: 0;
+  border-radius: 0 6px 0 0;
   transition: width 300ms cubic-bezier(0.165, 0.84, 0.44, 1);
   pointer-events: none;
 }
