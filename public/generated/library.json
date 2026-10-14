@@ -1,6 +1,79 @@
 {
   "books": [
     {
+      "slug": "groundingpi-speaking-in-coordinates",
+      "title": "Speaking in Coordinates",
+      "subtitle": "How GroundingPI turns images and phrases into structured visual primitives",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#1f6fb2",
+      "animal": "generated/groundingpi-speaking-in-coordinates/animal.webp",
+      "href": "?bundle=groundingpi-speaking-in-coordinates",
+      "series": "Daily Papers by Hugging Face — October 2026",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "The thousand-step ruler",
+          "duration": 52.802
+        },
+        {
+          "number": 2,
+          "title": "An image becomes a sentence",
+          "duration": 56.657
+        },
+        {
+          "number": 3,
+          "title": "A box must survive the parser",
+          "duration": 54.613
+        }
+      ],
+      "createdAt": "2026-10-14T11:20:20.905Z",
+      "paper": {
+        "title": "GroundingPI: A Grounding Foundation Model towards Physical Intelligence with Visual Primitives",
+        "authors": [
+          "Qize Yu",
+          "Lianrui Fan",
+          "Boyu Chen",
+          "Jiaqi Liang",
+          "Xini Ding",
+          "Yue Chen",
+          "Zetian Song",
+          "Yuran Wang",
+          "Yi Zou",
+          "Kaixuan Wang",
+          "Tianxing Chen",
+          "Wenxuan Song",
+          "Bohan Zhou",
+          "Mingleyang Li",
+          "Siqiao Huang",
+          "Yuqi Ye",
+          "Caigao Jiang",
+          "Wei Wei",
+          "Ruihai Wu",
+          "Hang Zhang",
+          "Yixiao Ge",
+          "Shuchang Zhou",
+          "Shilong Liu",
+          "Xianming Liu",
+          "Ping Luo",
+          "Shiyu Huang"
+        ],
+        "arxivId": "2609.39601",
+        "version": "2609.39601v1",
+        "doi": "10.48550/arXiv.2609.39601",
+        "huggingFaceUrl": "https://huggingface.co/papers/2609.39601",
+        "canonicalUrl": "https://arxiv.org/abs/2609.39601",
+        "pdfUrl": "https://arxiv.org/pdf/2609.39601",
+        "officialRepository": "https://github.com/groundingpi/GroundingPI",
+        "repositoryCommit": "0047d4510e201fecfd77126f6036088638aa85d2",
+        "rankingDate": "2026-10-13",
+        "ranking": 1,
+        "observedUpvotes": 259,
+        "rankingEvidenceUrl": "https://huggingface.co/papers/date/2026-10-13",
+        "selectedAt": "2026-10-14T10:04:51.591467+00:00"
+      }
+    },
+    {
       "slug": "neural-net-history",
       "title": "Who Taught the Machine?",
       "subtitle": "A case history of neural networks, 1943–2026",
