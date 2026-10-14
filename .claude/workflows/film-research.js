@@ -19,7 +19,8 @@ if (!A.asOf) throw new Error('film-research needs args.asOf (YYYY-MM-DD): the da
 const REPO = A.repo || '/Users/blamy/Documents/Codex/orly-2'
 const FILM = `${REPO}/films/${A.slug}`
 const RES = `${FILM}/research`
-const MAX_TOPICS = A.maxTopics || 14
+const PROMO = A.look === 'promo'
+const MAX_TOPICS = A.maxTopics || (PROMO ? 6 : 14)
 const MAX_GAP_ROUNDS = A.maxGapRounds ?? 2
 const CONCURRENCY = A.concurrency || 4
 // Opus 5.5 at high effort writes everything that becomes story (project rule, CLAUDE.md).
@@ -35,7 +36,13 @@ Standards (non-negotiable):
 - Mark contested claims as contested, with both sides sourced.
 - Load WebSearch/WebFetch via ToolSearch if they are deferred. Write files with the Write tool.
 - Be economical: draft from your own knowledge first, then spend web calls on VERIFYING the specific claims, dates, numbers and quotes the film is likely to use (aim for 10-20 targeted searches/fetches, not a browsing tour).
-- RESUMABLE: if your output file already exists (an interrupted earlier run), read it and continue from it rather than starting over.`
+- RESUMABLE: if your output file already exists (an interrupted earlier run), read it and continue from it rather than starting over.${PROMO ? `
+
+THIS FILM IS A PRODUCT PROMO (look "promo"), NOT A HISTORY DOCUMENTARY. This overrides the history framing elsewhere in these instructions:
+- Research the PRODUCT named in brief.md. Primary sources, in this order: ${FILM}/research/sources/ (the vendor's docs saved as text, llms.txt, openapi.json, and account-digest.json = redacted facts from the requester's OWN account: counts, settings, environment schedules, the featured bug reports), ${FILM}/capture/clean/*.json marks (what the screen recordings show), the existing book about the product if one exists (${REPO}/public/generated/<product-slug>/manifest.json), then the vendor's public site and docs on the web. A local file path (repo-relative) is a valid source ref.
+- Topics are capabilities and proof points, not eras: plan at most ${MAX_TOPICS}. Set "era" to "product, as of ${A.asOf}". People, beliefs-of-the-age and dissent do not apply; quotes.json may be empty (on-screen product copy is quoted from the recordings, not from people).
+- Numbers are sacred: every count, duration and threshold the film may show (e.g. a bug's request count, a commit's milliseconds, the account's totals) is copied exactly from its source with the source ref.
+- NEVER copy credentials, tokens, login variables or e-mail addresses into any research file. The raw API dumps in capture/api/ are off limits: use account-digest.json.` : ''}`
 
 // ---------------------------------------------------------------------------
 // Schemas

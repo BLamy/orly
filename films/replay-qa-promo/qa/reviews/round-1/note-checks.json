@@ -1,0 +1,55 @@
+{
+  "ch05-s03": {
+    "present": [
+      "all 27 renders"
+    ],
+    "absent": []
+  },
+  "ch05-s04": {
+    "present": [
+      "illustration"
+    ],
+    "absent": [],
+    "files": [
+      "sets/ch05-s04-sync.ts"
+    ]
+  },
+  "ch05-s05": {
+    "present": [
+      "illustration"
+    ],
+    "absent": [],
+    "files": [
+      "sets/ch05-s05-pair.ts"
+    ]
+  },
+  "ch05-s02": {
+    "present": [
+      "background refresh"
+    ],
+    "absent": [],
+    "files": [
+      "sets/ch05-s02-bug.tsx"
+    ]
+  },
+  "ch03-s01": {
+    "present": [
+      "MARKS.explore",
+      "1151 journeys"
+    ],
+    "absent": []
+  },
+  "ch06-s02": {
+    "present": [
+      "only exist in time",
+      "qa.replay.io"
+    ],
+    "absent": []
+  },
+  "ch04-s01": {
+    "present": [],
+    "absent": [
+      "y: 73, w: 245"
+    ]
+  }
+}

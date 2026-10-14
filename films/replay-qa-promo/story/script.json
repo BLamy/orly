@@ -1,0 +1,1639 @@
+{
+  "slug": "replay-qa-promo",
+  "look": "promo",
+  "title": "Replay QA: { fully managed }",
+  "subtitle": "End-to-end testing that explores, runs and records on its own",
+  "logline": "You give Replay QA one URL. It explores your app, turns what it finds into journeys and runs them on a schedule, against staging, a preview or localhost, and on every pull request, recording every run. So when a bug only exists in time (a 67 ms commit nobody clicked, one list fetched 258 times), it arrives with a recording and its root cause.",
+  "runtimeTargetSec": 90,
+  "vhs": {
+    "subject": "Software Testing",
+    "theme": "grid",
+    "icons": [
+      "magnifier",
+      "crt",
+      "robot",
+      "gear"
+    ],
+    "tagline": "Catch the bugs that hide in time!"
+  },
+  "runtimeCeilingSec": 100,
+  "cast": [],
+  "chapters": [
+    {
+      "id": "ch01",
+      "number": 1,
+      "title": "{ introducing }",
+      "blurb": "A dawn haze and a half-finished thought: end-to-end tests you never write, or remember to run. On the blur the braces part and dots slide in to frame { intro▢▢▢ducing }, which flickers three stamps of the product in its gap and closes into the Replay mark and Replay QA.",
+      "shots": [
+        {
+          "id": "ch01-s01",
+          "kind": "plate",
+          "setting": "an abstract studio haze, no place; 2026; dawn light (lilac → peach, a rose glow low in frame)",
+          "era": "product, as of 2026-10-14",
+          "mood": "dawnGold",
+          "lines": [
+            {
+              "id": "L0101",
+              "text": "Imagine end-to-end tests you never write. Or remember to run.",
+              "direction": "an invitation, warm and close; 'end-to-end' said plainly as one easy word, then a small lift and a breath on 'write', then let 'Or remember to run' land easy, almost a smile"
+            }
+          ],
+          "leadIn": 0.3,
+          "holdAfter": 1,
+          "visual": "The reference's opening frame without its figure. Kit haze preset 'dawn' fills the stage (lilac at the top falling to peach, a rose glow breathing upward from y0 ≈ 0.75, drift slow), four or five kit hairlines drifting horizontally across the frame at different speeds, light grain. Nothing else for the first half second: the haze breathes up and brightens (u 0.2 → 0.6). Then kit kinetic carries L0101 word by word, each word blurring in on the narrator's word time (0.1 s early), centred at x 640, y ≈ 288 (40 % height), Promo Sans light, size ≈ 40, white on the haze, slightly tight tracking, two lines at this size, breaking after 'write.' (line one 'Imagine end-to-end tests you never write.', line two 'Or remember to run.'; each line inside 1100 px). On 'remember' the kinetic grad sweep starts on the tail: 'Or remember to run.' runs white → peach → orange, the sweep finishing as 'run' lands. Hold the full line ≈ 1.0 s after the last word (it has been read as it was spoken), the hairlines still drifting and the rose glow cresting into the blur dissolve to ch01-s03. No product, no logo, no cursor.",
+          "beats": [
+            {
+              "id": "haze",
+              "at": {
+                "shotTime": 0
+              },
+              "what": "dawn haze already breathing; hairlines drifting; glow begins to rise"
+            },
+            {
+              "id": "line",
+              "at": {
+                "line": "L0101",
+                "word": "Imagine",
+                "offset": -0.1
+              },
+              "what": "kinetic line begins: 'Imagine' blurs in, then each word on its own word time"
+            },
+            {
+              "id": "write",
+              "at": {
+                "line": "L0101",
+                "word": "write"
+              },
+              "what": "'write.' lands; a hair of space before the tail"
+            },
+            {
+              "id": "sweep",
+              "at": {
+                "line": "L0101",
+                "word": "remember",
+                "offset": -0.1
+              },
+              "what": "colour sweep (white → peach → orange) starts over 'Or remember to run.'"
+            },
+            {
+              "id": "landed",
+              "at": {
+                "line": "L0101",
+                "edge": "end"
+              },
+              "what": "'run.' lands; sweep complete; the M1 swell crests toward the cut"
+            }
+          ],
+          "props": [
+            "kit haze 'dawn'",
+            "kit hairlines",
+            "kit kinetic (grad sweep)"
+          ],
+          "onScreenText": [
+            {
+              "kind": "title",
+              "text": "Imagine end-to-end tests you never write. Or remember to run.",
+              "beat": "line"
+            }
+          ],
+          "music": {
+            "cue": "M1 haze",
+            "note": "Pads only and a filtered arpeggio, no kick, low intensity (0.2): air and anticipation. The filter opens slowly with the colour sweep; a rising swell crests into the blur cut."
+          },
+          "transitionIn": "cut",
+          "claims": [
+            "SET-08",
+            "LOOP-03",
+            "CONT-19",
+            "SET-15",
+            "SET-16"
+          ]
+        },
+        {
+          "id": "ch01-s03",
+          "kind": "card",
+          "setting": "studio paper (#e9e8ea), no place; 2026; flat, shadowless light",
+          "era": "product, as of 2026-10-14",
+          "mood": "parchment",
+          "lines": [
+            {
+              "id": "L0102",
+              "text": "Introducing Replay QA.",
+              "direction": "confident, unhurried; a short, real pause after 'Introducing', then the name said plainly with pride, not announced",
+              "insertGaps": {
+                "Introducing": 0.3
+              }
+            }
+          ],
+          "leadIn": 0.5,
+          "holdAfter": 0.7,
+          "visual": "The reference's '{ introducing }' card. A blur dissolve from ch01-s01's haze lands on kit paper (the brace device of the cut '{ on their own }' card folds in here). At 0 s four kit squareDots sit wide at the corners of an invisible box (≈ 620 × 170 px, centred) around a bare pair of braces '{   }'; at 0.05 s the braces part (kit bracket u 0 → 1 over 0.45 s, ease-out) and '{ introducing }' blurs in inside them, while the four dots slide inward (dots 'wide' → 'corners') and stop at the brace corners on the M1 swell's crest. The card is fully there ≈ 0.1 s before the voice (≈ 0.5 s of type and music before 'Introducing'; the voice then says the word the eye is reading). Centred at y ≈ 330, Promo Sans light ≈ 46 px: '{ intro' set solid, 'ducing }' (the braces are the kit bracket glyphs; the word to read is 'introducing'). DIRECTOR'S NOTE (2026-10-14): NO product stills, stamps or screenshots inside or around the word: type, braces and dots only. On 'Replay' the gap closes (the halves slide together), the braces close in on the word, and the type cross-dissolves (blur, 0.3 s) into the Replay mark (kit replayMark, h ≈ 56) with 'Replay QA' beside it in Promo Sans regular ≈ 44 px: the lock-up is legible from mid-dissolve, as the voice says 'Replay', and fully landed on 'QA'. The four corner dots hold around the lock-up. Hold ≈ 0.7 s on the lock-up (it has been legible since mid-dissolve on Replay), then the film's one whip out to ch02.",
+          "beats": [
+            {
+              "id": "word",
+              "at": {
+                "shotTime": 0
+              },
+              "what": "blur lands on bare braces with four wide dots; at 0.05 s the braces part, '{ intro   ducing }' blurs in with an empty gap and the dots slide in to the brace corners"
+            },
+            {
+              "id": "close",
+              "at": {
+                "line": "L0102",
+                "word": "Replay",
+                "offset": -0.1
+              },
+              "what": "the gap closes, the braces close in, the type cross-dissolves into the Replay mark and 'Replay QA' (legible mid-dissolve)"
+            },
+            {
+              "id": "mark",
+              "at": {
+                "line": "L0102",
+                "word": "QA"
+              },
+              "what": "Replay mark + 'Replay QA' fully landed; corner dots frame the lock-up; sub drop"
+            }
+          ],
+          "props": [
+            "kit paper",
+            "kit bracket",
+            "kit squareDots",
+            "kit replayMark",
+            "RrwebScreen stills (cursor off, ≈1.45:1 crops): runs @3668, schedule @11458, bug-react @3100"
+          ],
+          "onScreenText": [
+            {
+              "kind": "title",
+              "text": "introducing",
+              "beat": "word",
+              "until": "mark"
+            },
+            {
+              "kind": "title",
+              "text": "Replay QA",
+              "beat": "close"
+            }
+          ],
+          "music": {
+            "cue": "M1 haze",
+            "note": "The M1 pad swell crests into the blur as the braces part (the arpeggio steps up one register, still no kick); a muted downbeat lands on 'Introducing' with a tight filtered tick per stamp (a clack, not a chime); a sub drop under 'Replay QA'; the pad holds through the whip, which the kick of M2 answers."
+          },
+          "transitionIn": "blur",
+          "claims": [
+            "SET-15",
+            "SET-16",
+            "CONT-19"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ch02",
+      "number": 2,
+      "title": "One URL",
+      "blurb": "One address is the whole setup. The URL is typed full-frame over a blurred ghost of the real input (the kick enters on the caret's arrival as the whip lands), then pulls back into Replay QA's real New project page: braces on the input, the cursor hovering Start setup, just a quick chat.",
+      "shots": [
+        {
+          "id": "ch02-s01",
+          "kind": "scene",
+          "setting": "qa.replay.io New project page, seen as an enormous blurred ghost behind a dawn haze; 2026-10-14; dawn light",
+          "era": "product, as of 2026-10-14",
+          "mood": "dawnGold",
+          "lines": [
+            {
+              "id": "L0201",
+              "text": "Point it at your app.",
+              "direction": "five easy words, simple and sure; a beat of air after 'app' for the kick"
+            }
+          ],
+          "leadIn": 0.5,
+          "holdAfter": 1.5,
+          "visual": "The reference's giant typed prompt ('neo goth|'). Three planes, back to front, in the renderer's real stacking order (canvas, then DOM, then SVG overlay). BACK (canvas): kit haze 'dawn' (u ≈ 0.55) with kit hairlines drifting; this is what the whip moves in. MIDDLE (DOM): an RrwebScreen ghost of take new-project, chrome 'none', cropped tight to the chat input row ≈ {x: 500, y: 290, w: 680, h: 80} (the input sits at recording x 528-1148, y 301-363) and scaled to overfill the stage (≈ 1500 px wide), with style {filter: 'blur(16px)'} and opacity ramping 0 → 0.25 over ≈ 0.3 s only AFTER the 0.45 s whip has landed (it is never on screen during the whip, so it never crossfades in place); at 0.25 the haze reads through it as the tint. The crop never includes the sidebar (owner name, x < 234) or the heading (y < 205). Tape: held at mark typing 1100 until the first key, then run at real speed (1000 ms per s) to mark typed 2966 and held there; the ghost's own text grows in step with ours. FRONT (shot.overlay(), SVG above the DOM): the typed URL and its caret, an SVG twin of kit typed (route to the shots stage if the kit lacks one): Promo Sans regular ≈ 78 px (sized so the whole 28-character URL fits inside ≈ 1180 px, never running off), near-white with a faint drop shadow, vertically centred, text-anchor 'end' at ≈ 50 px in from the right edge so the line slides left as it grows (as the reference's '· a clothin|' does). The caret arrives with the whip's landing (0.45 s) and holds solid for a breath; then 'https://staging.your-app.dev' types at the recording's own rate (cps ≈ 14.4, so ≈ 1.9 s), first key on 'Point'; by the end 'https://staging.your-app.dev▌' spans the frame edge to edge, all of it inside the margins. The caret blinks on through the 1.5 s hold, so the whole address is on screen long enough to read. The URL is the illustrative placeholder the take really typed, never presented as a tested app; the narrator never reads it.",
+          "beats": [
+            {
+              "id": "caret",
+              "at": {
+                "shotTime": 0.45
+              },
+              "what": "the whip has landed: the caret arrives, alone, full-frame over the haze; the ghost begins to ramp up; the M2 kick enters on it"
+            },
+            {
+              "id": "keys",
+              "at": {
+                "line": "L0201",
+                "word": "Point"
+              },
+              "what": "typing starts (ours and the ghost's tape 1100 → 2966 at real speed)"
+            },
+            {
+              "id": "app",
+              "at": {
+                "line": "L0201",
+                "word": "app"
+              },
+              "what": "'staging.your-app' is landing; the line has slid left"
+            },
+            {
+              "id": "typed",
+              "at": {
+                "line": "L0201",
+                "edge": "end",
+                "offset": 0.3
+              },
+              "what": "'.dev' complete (tape held at typed 2966); caret blinks on"
+            }
+          ],
+          "props": [
+            "SVG typed line + caret in shot.overlay() (twin of kit typed)",
+            "kit haze 'dawn'",
+            "kit hairlines",
+            "RrwebScreen ghost (blur 16 px, opacity 0.25): new-project 1100 → 2966"
+          ],
+          "onScreenText": [
+            {
+              "kind": "label",
+              "text": "https://staging.your-app.dev",
+              "beat": "caret"
+            }
+          ],
+          "music": {
+            "cue": "M2 build",
+            "note": "The kick enters on the caret's arrival as the whip lands (shot time 0.45 s): four-on-the-floor, soft, round; intensity 0.45. Typed keys ride as tiny muted clicks under the voice; the pad from M1 carries over, brighter."
+          },
+          "transitionIn": "whip",
+          "claims": [
+            "SET-01",
+            "SET-04",
+            "SET-05"
+          ]
+        },
+        {
+          "id": "ch02-s02",
+          "kind": "scene",
+          "setting": "qa.replay.io New project page ('Set up QA for your app') on a floating screen over studio paper; 2026-10-14; flat daylight",
+          "era": "product, as of 2026-10-14",
+          "mood": "parchment",
+          "lines": [
+            {
+              "id": "L0202",
+              "text": "No test suite needed. Just a quick chat.",
+              "direction": "easy, almost amused; a light beat after 'needed', and 'a quick chat' said like it really is NARRATION (2026-10-14): take ran 235 wpm; insertGaps opens the beat after needed the direction asks for.",
+              "pauseAfter": 0.3,
+              "insertGaps": {
+                "needed": 0.4
+              }
+            }
+          ],
+          "leadIn": 0.45,
+          "holdAfter": 0.6,
+          "visual": "The pull-back, as the reference pulls from the giant prompt to the small search bar. SCREEN (DOM): a floating RrwebScreen (take new-project, chrome 'browser' with 'qa.replay.io' in the URL bar (director's note 2026-10-14), radius 14, soft shadow) on kit paper, its tilt {x: 14, y: -10} settling flat by 'needed'. Cropped to ≈ {x: 470, y: 70, w: 760, h: 420} (the 'NEW PROJECT' eyebrow, the heading 'Set up QA for your app', its two-line sub-copy ending 'quick chat.' at recording ≈ x 797-880, y 245-268, the input at x 528-1148, y 301-363 reading https://staging.your-app.dev, the black Start setup button, and the 'Want your coding agent to handle it?' / 'Get the prompt' callout at y 396-460), shown ≈ 980 stage px wide, centred a little high. Tape runs from mark typed 2966 at real speed: the drawn cursor (from the take) drifts to Start setup and arrives at mark hover-start 4737 on 'chat', then the tape holds at 4737 to the cut (it never clicks; the cut comes long before end 5537). From 'chat', a slow screen zoom 1.0 → 1.25 centred on ≈ recording (838, 320), which keeps the whole input, the sub-copy's 'quick chat.' and the callout in frame, the callout unzoomed and unremarked: a quiet setup for the agent pair later. OVERLAY (shot.overlay(), SVG above the DOM; every mark on footage lives here, never on the canvas, which sits under the screen): (1) Opening 0.6 s: ch02-s01's full-frame typed line is redrawn here at its s01 size and place, then shrinks and drifts down toward the input's settled position, fading out over its last 0.25 s as it arrives, so the take's own typed URL (already in the input at tape 2966) takes over; no canvas text ever slides under the screen. (2) On 'Just', after the tilt has settled: braces snap around the input field, an SVG bracketRect (dots none; the kit bracket wraps its own text and cannot frame a rectangle, so route an SVG bracketRect twin to the shots stage), its rectangle mapped from the recording box (528, 301, 620, 62) through the screen's crop and zoom every frame. (3) On 'quick chat': a thin red-pink SVG underline draws under 'quick chat.' at the end of the page's own sub-copy (the narration echoes the page's real words), mapped the same way so it rides the zoom. CANVAS: kit paper, and under the screen from 0.05 s a small grey caption in Promo Sans ≈ 20 px: 'Complements an existing test suite.' (the vendor's own nuance [SET-08]; it does not repeat the line, and keeps the film from implying Replay QA replaces a suite). No sidebar, owner name, chat column, credit meter or header URL ever enters the crop.",
+          "beats": [
+            {
+              "id": "pullback",
+              "at": {
+                "shotTime": 0
+              },
+              "what": "the giant typed line (overlay) shrinks toward the real input and fades as it arrives; the floating screen tilts in"
+            },
+            {
+              "id": "caption",
+              "at": {
+                "shotTime": 0.05
+              },
+              "what": "grey caption fades up under the screen"
+            },
+            {
+              "id": "settle",
+              "at": {
+                "line": "L0202",
+                "word": "needed"
+              },
+              "what": "the screen's tilt settles flat"
+            },
+            {
+              "id": "url",
+              "at": {
+                "line": "L0202",
+                "word": "Just",
+                "offset": -0.1
+              },
+              "what": "SVG braces snap around the input on the downbeat (tilt already settled)"
+            },
+            {
+              "id": "chat",
+              "at": {
+                "line": "L0202",
+                "word": "chat",
+                "offset": -0.15
+              },
+              "what": "SVG underline under the sub-copy's 'quick chat.'; cursor arrives on Start setup (hover-start 4737, held); slow zoom on the input begins"
+            }
+          ],
+          "props": [
+            "RrwebScreen: new-project 2966 → 4737 (held)",
+            "drawn cursor from the take",
+            "SVG typed line handoff (overlay)",
+            "SVG bracketRect (overlay)",
+            "red-pink SVG underline (overlay)",
+            "kit paper"
+          ],
+          "onScreenText": [
+            {
+              "kind": "label",
+              "text": "Complements an existing test suite.",
+              "beat": "caption"
+            }
+          ],
+          "music": {
+            "cue": "M2 build",
+            "note": "Hats enter on the shot's first downbeat (≈ 15.0 s film time); a soft clap on 2 and 4; intensity 0.5, bright and forward. A small filtered stab with the brace snap on 'Just'."
+          },
+          "transitionIn": "cut",
+          "claims": [
+            "SET-01",
+            "SET-02",
+            "SET-03",
+            "SET-04",
+            "SET-08"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ch03",
+      "number": 3,
+      "title": "The loop",
+      "blurb": "The reference's 'Building Image' step list becomes 'Testing your app': the replay.io home page's three steps, verbatim (Explore / Test & Record / Investigate & Report), each green check clacking in as the narration names the mechanism while 'Working' shimmers and turns to 'Done', with one small grey line of Insights proof (89 explorations, 1151 journeys). Then the rows break into square registration dots that clear to bare paper, and the cut lands straight into ch04 on M3's first downbeat. 'Recorded' is first said aloud in ch04 and 'root cause' in ch06's closing triplet.",
+      "shots": [
+        {
+          "id": "ch03-s01",
+          "kind": "card",
+          "setting": "studio paper (#e9e8ea), no haze · 2026 · even, timeless studio light; kit steps on a hairline spine, faint drifting hairlines",
+          "era": "product, as of 2026-10-14",
+          "mood": "parchment",
+          "leadIn": 0.3,
+          "holdAfter": 0.7,
+          "lines": [
+            {
+              "id": "L0301",
+              "text": "It explores your app in a real browser.",
+              "pauseAfter": 0.25,
+              "direction": "easy and assured, a friend pointing at the first row; a small lift on 'explores' NARRATION (2026-10-14): take ran 240 wpm; solo re-take at speed 0.98 with a comma breath (text unchanged), plus insertGaps on app (the solo take still ran 216 wpm).",
+              "spoken": "It explores your app, in a real browser.",
+              "tts": {
+                "solo": true,
+                "speed": 0.98
+              },
+              "insertGaps": {
+                "app": 0.2
+              }
+            },
+            {
+              "id": "L0302",
+              "text": "Turns what it finds into user journeys, and runs them.",
+              "direction": "a gentle roll forward through 'user journeys', then settle; 'runs' takes the last stress and 'them' falls away, a quiet full stop, the mechanism in one breath NARRATION (2026-10-14): take ran 201 wpm; a slightly longer breath after journeys.",
+              "insertGaps": {
+                "journeys": 0.1
+              }
+            }
+          ],
+          "visual": "The reference's 'Building Image' step list, re-made for Replay QA. A blur dissolve from ch02's floating new-project screen lands on bare studio paper (#e9e8ea), lots of negative space, two hairlines drifting slowly across the frame. Composition: the whole list (title, rows, proof line, Working/Done) sits in the LEFT TWO-THIRDS of the frame only, top-left anchored like the reference; the right third stays bare paper. At the top left the title 'Testing your app' (Promo Sans regular, 46 px, slightly tight tracking, sentence case) resolves from a 12 px blur to sharp over 0.5 s. Under it a thin vertical hairline spine draws downward (kit steps) and three step rows arrive one after another, 0.15 s apart, each sliding up 8 px and un-blurring: a small line icon in a pale circle (map / film strip / bug), the label in near-black Promo Sans regular 32 px, and under it a grey detail line at 22 px (never smaller: row three's meaning rides on its detail line). These are the replay.io home page's three steps VERBATIM (Explore · Test & Record · Investigate & Report); never mix them with the docs' five-step list. Grey details: 'an AI agent drives your app in a real browser' / 'every journey run, a Replay recording' / 'root cause for every bug'. As the first check lands, one small grey proof line (Promo Sans, 20 px, tabular figures, unspoken) fades in under the list, left-aligned to the labels: 'Insights: 89 explorations · 1151 journeys' (the exact figures on the Insights take's tiles; keep the 'Insights:' source tag, never 'in the account'). Bottom left, small, a shimmering 'Working' (a soft light sweep running through the word, as in the reference) sits until the last check. As each step is named, its pale circle fills and a green (#1f9d63) check mark draws itself over the icon in 0.18 s, the row's label darkens a notch, and the music lands one muted percussive clack (machines clack, never chime): on 'explores' row one; on 'journeys' row two (its film-strip icon advances one frame as the check draws); and row three on 'runs', the line's last stressed word (no word of its own: its grey detail line already reads 'root cause for every bug'). On that third check 'Working' stops shimmering and swaps to 'Done' in green, held still and readable through the end of the line and the hold. From 0.5 s after the line ends, the three resolved rows and the proof line break up from their right edges into a grid of small square registration dots (the look's squareDots) that scatter and clear to bare studio paper, 'Done' last; M2's one-bar fill runs under that hold, and the cut into ch04-s01 (also bare studio paper) lands on the bar line so M3's first downbeat arrives with it. No product footage in this shot or chapter, no quotation marks, and no numbers other than the one grey Insights line. Never show more steps than these three.",
+          "beats": [
+            {
+              "id": "b-title",
+              "at": {
+                "shotTime": 0.1
+              },
+              "what": "'Testing your app' resolves from a blur, top left; M2 bar line"
+            },
+            {
+              "id": "b-rows",
+              "at": {
+                "shotTime": 0.4
+              },
+              "what": "the hairline spine draws down; the three step rows arrive 0.15 s apart, sliding up and un-blurring"
+            },
+            {
+              "id": "b-working",
+              "at": {
+                "shotTime": 0.7
+              },
+              "what": "'Working' fades in bottom left with its shimmer sweep"
+            },
+            {
+              "id": "b-check1",
+              "at": {
+                "line": "L0301",
+                "word": "explores"
+              },
+              "what": "green check draws over the Explore icon; row darkens; clack; the grey Insights proof line fades in under the list"
+            },
+            {
+              "id": "b-check2",
+              "at": {
+                "line": "L0302",
+                "word": "journeys"
+              },
+              "what": "green check over Test & Record; its film-strip icon advances one frame; clack"
+            },
+            {
+              "id": "b-check3",
+              "at": {
+                "line": "L0302",
+                "word": "runs"
+              },
+              "what": "green check over Investigate & Report on the last stressed word; clack; Working becomes Done in green"
+            },
+            {
+              "id": "b-dots",
+              "at": {
+                "line": "L0302",
+                "edge": "end",
+                "offset": 0.5
+              },
+              "what": "the resolved rows and the proof line break into square registration dots from their right edges and clear to bare paper, Done last; M2 fill into the cut to ch04"
+            }
+          ],
+          "props": [
+            "kit steps (hairline spine, three rows, icons map / film / bug)",
+            "grey Insights proof line (89 explorations · 1151 journeys)",
+            "green check marks",
+            "shimmering Working → Done",
+            "drifting hairlines",
+            "square registration dots"
+          ],
+          "onScreenText": [
+            {
+              "kind": "title",
+              "text": "Testing your app",
+              "beat": "b-title"
+            },
+            {
+              "kind": "label",
+              "text": "Explore · an AI agent drives your app in a real browser",
+              "beat": "b-rows"
+            },
+            {
+              "kind": "label",
+              "text": "Test & Record · every journey run, a Replay recording",
+              "beat": "b-rows"
+            },
+            {
+              "kind": "label",
+              "text": "Investigate & Report · root cause for every bug",
+              "beat": "b-rows"
+            },
+            {
+              "kind": "label",
+              "text": "Insights: 89 explorations · 1151 journeys",
+              "beat": "b-check1"
+            },
+            {
+              "kind": "label",
+              "text": "Working",
+              "beat": "b-working",
+              "until": "b-check3"
+            },
+            {
+              "kind": "label",
+              "text": "Done",
+              "beat": "b-check3"
+            }
+          ],
+          "music": {
+            "cue": "M2 build",
+            "note": "M2 build continues, bright and rhythmic: kick, hats, soft clap on 2 and 4, warm pad underneath. Intensity ≈ 0.55 → 0.65. Each green check is one muted percussive clack placed on the beat nearest its cue (on 'explores', on 'journeys', and the third on 'runs', the line's last stressed word; never a chime or bell); the clacks are the shot's only accents. Under the closing hold a one-bar drum fill (snare and tom roll, filtered hats), so the cut into ch04 and M3's first downbeat coincide."
+          },
+          "transitionIn": "blur",
+          "claims": [
+            "LOOP-01",
+            "LOOP-02",
+            "LOOP-03",
+            "LOOP-05",
+            "LOOP-07",
+            "PROOF-01",
+            "PROOF-02",
+            "SET-16",
+            "LOOP-13",
+            "PROOF-13"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ch04",
+      "number": 4,
+      "title": "Always on",
+      "blurb": "One rhythmic triplet, each proof landing on a downbeat with a filtered stab and a brace snap. 'Then it runs on Replay's browsers': the real 'Tue at 3:00 AM · America/New_York' chip lifts under a large thin 3:00 AM like a name tag, a 'hosted by Replay' pill lands on 'browsers', and six ticks mark the six Tuesdays it really fired. Three environment words lift off the real Add environment row as pills and light red-pink as they are said. The Reminders · CI runs table, braces on the first blue PR #3 badge, an 'a test run for every PR' pill, and a ▶ recording chip popping out of every visible run row as each run is recorded, then reviewed, for what's slow as well as what breaks.",
+      "shots": [
+        {
+          "id": "ch04-s01",
+          "kind": "scene",
+          "setting": "studio paper (#e9e8ea), drifting hairlines · 2026 · even studio light; a large thin '3:00 AM' with the real schedule chip as its name tag",
+          "era": "product, as of 2026-10-14",
+          "mood": "parchment",
+          "leadIn": 0.3,
+          "holdAfter": 0.9,
+          "lines": [
+            {
+              "id": "L0401",
+              "text": "Then it runs on Replay's browsers. On a schedule, while you sleep.",
+              "direction": "picks up straight off 'runs them' with forward momentum, the second 'runs' an answer to 'where?': 'on Replay's browsers' plain and sure, the quiet 'you don't have to host anything' of the film; then the first tap of the triplet on 'On a schedule', and softer and warmer, almost a smile, on 'while you sleep' NARRATION (2026-10-14): take ran 216 wpm; breaths at the full stop and the comma.",
+              "insertGaps": {
+                "browsers": 0.15,
+                "schedule": 0.15
+              }
+            }
+          ],
+          "visual": "ALL DRAWN, NO PRODUCT FOOTAGE (director's note 2026-10-14). Studio paper, two hairlines drifting. A large thin '3:00 AM' (Promo Sans light ≈ 128 px) blurs in at the top. On 'Then' a row of five small ABSTRACT browsers (sets/abstract browserWindow: title bar, skeleton page, red-pink recording dot) rises under it; on 'runs' each starts a run (skeleton lighting, progress hairline). On 'browsers' a 'hosted by Replay' pill (server icon) lands under the row, joined to it by a hairline bracket. On 'schedule' the real schedule 'Tue · America/New_York' (the account's Production environment) blurs in under the time with the red-pink underline, and six weekly ticks draw (Sep 1 → Oct 6, 'every Tuesday'). On 'sleep' a crescent moon rises beside the time, the time dims, the paper cools a touch from the top, and the runs finish one by one with green ✓s.",
+          "beats": [
+            {
+              "id": "b-time",
+              "at": {
+                "shotTime": 0.05
+              },
+              "what": "large thin '3:00 AM' fades up"
+            },
+            {
+              "id": "b-tag",
+              "at": {
+                "line": "L0401",
+                "word": "Then"
+              },
+              "what": "downbeat + filtered stab: the Tue at 3:00 AM chip lifts under the time like a name tag"
+            },
+            {
+              "id": "b-hosted",
+              "at": {
+                "line": "L0401",
+                "word": "browsers"
+              },
+              "what": "the 'hosted by Replay' pill with the server icon slides in at the lower right, where the strip will end"
+            },
+            {
+              "id": "b-schedule",
+              "at": {
+                "line": "L0401",
+                "word": "schedule"
+              },
+              "what": "brace halves snap at the chip's measured ends with corner dots; red-pink underline runs under 'Tue at 3:00 AM'"
+            },
+            {
+              "id": "b-strip",
+              "at": {
+                "line": "L0401",
+                "word": "schedule",
+                "offset": 0.3
+              },
+              "what": "0.3 s after the braces, six ticks draw themselves left to right (~0.2 s each), left of the pill; only the ends are labelled 'Sep 1' and 'Oct 6'"
+            },
+            {
+              "id": "b-sleep",
+              "at": {
+                "line": "L0401",
+                "word": "sleep"
+              },
+              "what": "the big 3:00 AM dims slightly; the chip stays bright"
+            }
+          ],
+          "props": [
+            "RrwebScreen take schedule frozen @ 11458, no cursor (crop: schedule chip {1050,166,245,32})",
+            "brace halves at the chip's measured ends + squareDots",
+            "red-pink underline",
+            "six-tick date strip, ends labelled",
+            "kit pill 'hosted by Replay' + kit icon 'server'"
+          ],
+          "onScreenText": [
+            {
+              "kind": "title",
+              "text": "3:00 AM",
+              "beat": "b-time"
+            },
+            {
+              "kind": "label",
+              "text": "Tue at 3:00 AM · America/New_York",
+              "beat": "b-tag"
+            },
+            {
+              "kind": "label",
+              "text": "hosted by Replay",
+              "beat": "b-hosted"
+            },
+            {
+              "kind": "date",
+              "text": "Sep 1 – Oct 6",
+              "beat": "b-strip"
+            }
+          ],
+          "music": {
+            "cue": "M3 drive",
+            "note": "M3 drive starts on 'Then': full groove, round bass, warm pad, intensity ≈ 0.75. Proof one of the triplet: a filtered stab on the downbeat as the name tag lifts; a small muted pluck as the 'hosted by Replay' pill lands on 'browsers'; a short brace-snap transient on 'schedule'; a soft tick per date tick on the strip riding the hats. No chimes."
+          },
+          "transitionIn": "cut",
+          "claims": [
+            "CONT-02",
+            "CONT-03",
+            "CONT-04",
+            "CONT-05",
+            "CONT-19"
+          ]
+        },
+        {
+          "id": "ch04-s02",
+          "kind": "scene",
+          "setting": "studio paper (#e9e8ea) · 2026 · even studio light; a floating settings row and three environment pills",
+          "era": "product, as of 2026-10-14",
+          "mood": "parchment",
+          "leadIn": 0.3,
+          "holdAfter": 0.6,
+          "lines": [
+            {
+              "id": "L0402",
+              "text": "Against staging, a preview, even localhost.",
+              "direction": "three quick taps, rising; a small delighted lift on 'localhost', said as 'local host'. Hold the -st of 'Against' whole: a short break (about 0.1-0.15 s) before 'staging' so the two /st/ sounds do not fuse. NARRATION (2026-10-14, round-1 review): STT heard two takes as 'Again, staging'; re-take solo at 0.98 with the comma break, keep the take only if STT returns 'Against' (qa.expect). If it still fuses, the fallback text is 'Run it against staging, a preview, even localhost.' (same claim, CONT-01; the beats are word-anchored and refit to it). Human ear sign-off still pending for 'Against' and 'localhost' (voice.json listening).",
+              "tts": {
+                "solo": true,
+                "speed": 0.98
+              },
+              "spoken": "Against, staging, a preview, even localhost.",
+              "qa": {
+                "stt": "required",
+                "expect": [
+                  "Against"
+                ]
+              }
+            }
+          ],
+          "visual": "ALL DRAWN, NO PRODUCT FOOTAGE (director's note 2026-10-14). Same paper and hairlines. An abstract browser address bar (sets/abstract addressBar) floats in at the top reading https://staging.your-app.dev; it rolls to https://pr-42.preview.your-app.dev on 'preview' and http://localhost:3000 on 'localhost'. Three outlined pills (staging · preview · local) drop out of it into a row; braces and corner dots part round the row on 'Against'; each pill fills Replay red-pink as it is said ('local' with a small pop).",
+          "beats": [
+            {
+              "id": "b-row",
+              "at": {
+                "shotTime": 0.05
+              },
+              "what": "the Add environment row floats in and settles flat (tape 11000 → 11458)"
+            },
+            {
+              "id": "b-lift",
+              "at": {
+                "shotTime": 0.1
+              },
+              "what": "staging · preview · local lift off the grey line as outlined pills"
+            },
+            {
+              "id": "b-brace",
+              "at": {
+                "line": "L0402",
+                "word": "Against"
+              },
+              "what": "downbeat + stab + brace halves snap at the pill row's measured ends"
+            },
+            {
+              "id": "b-staging",
+              "at": {
+                "line": "L0402",
+                "word": "staging"
+              },
+              "what": "'staging' pill fills red-pink; underline runs under it"
+            },
+            {
+              "id": "b-preview",
+              "at": {
+                "line": "L0402",
+                "word": "preview"
+              },
+              "what": "'preview' pill fills red-pink"
+            },
+            {
+              "id": "b-local",
+              "at": {
+                "line": "L0402",
+                "word": "localhost"
+              },
+              "what": "'local' pill fills red-pink with a small pop"
+            }
+          ],
+          "props": [
+            "RrwebScreen take schedule 11000 → 11458, no cursor (crop {300,266,420,54}: Add environment label + grey line)",
+            "three kit pills",
+            "red-pink underline",
+            "brace glyph halves at the pill row's measured ends + squareDots"
+          ],
+          "onScreenText": [
+            {
+              "kind": "label",
+              "text": "staging · preview · local",
+              "beat": "b-lift"
+            }
+          ],
+          "music": {
+            "cue": "M3 drive",
+            "note": "Proof two of the triplet: a filtered stab and brace-snap transient on the downbeat ('Against'); three rising plucked accents under staging, preview, localhost; groove steady at ≈ 0.75."
+          },
+          "transitionIn": "cut",
+          "claims": [
+            "CONT-01",
+            "CONT-14",
+            "SET-05",
+            "SET-06"
+          ]
+        },
+        {
+          "id": "ch04-s03",
+          "kind": "scene",
+          "setting": "studio paper (#e9e8ea) · 2026 · even studio light; the floating Test Runs table of 'Reminders · CI', a check pill, a stack of ▶ recording chips",
+          "era": "product, as of 2026-10-14",
+          "mood": "parchment",
+          "leadIn": 0.3,
+          "holdAfter": 0.9,
+          "lines": [
+            {
+              "id": "L0403",
+              "text": "And on every pull request.",
+              "pauseAfter": 0.3,
+              "direction": "the third tap of the triplet, confident and complete; 'pull request' lands on the brace snap"
+            },
+            {
+              "id": "L0404",
+              "text": "Each run is recorded, then reviewed. For what breaks, and what's slow.",
+              "direction": "even and certain, two clean taps on 'recorded' and 'reviewed' (the first time the film says it aloud: every run is a recording); then 'For what breaks,' plain, and a small beat before a quiet, knowing 'and what's slow.' that hands off to the next register"
+            }
+          ],
+          "visual": "Third of the triplet. A floating RrwebScreen (no chrome, NO cursor, soft shadow, tilt {x: 5, y: -12} settling flat by 0.6 s), ~1000 stage px wide, left of centre: take 'runs' from tape 2900 to mark list (3668) at real speed, then held (no scroll: it moves only 27.5 px). Crop ≈ {x: 500, y: 112, w: 940, h: 458} (verified on the rr-sheet frame at 3668): the 'Test Runs' heading and eight full rows of the 'Reminders · CI' table, columns Created / Description / Environment / Status / Bugs (PR #3, PR #1 and Project default runs, status pills Completed / Cancelled); NO chat column (x < 500), no tab strip (y 70-108), no localhost header. On 'pull' (downbeat, filtered stab) the zoom eases 1.0 → 1.6 toward recording (1015, 300) and kit bracket braces with corner dots snap around the first blue 'PR #3' badge (recording ≈ x 1015, y 224); the red-pink underline runs under it. On 'request' a kit pill slides in from the right beside the table, clear of it: 'a test run for every PR' (what the footage shows: PR-linked test runs from CI; no check or PR comment is depicted). Between 'request' and 'recorded' the zoom eases back 1.6 → 1.0 over 0.4 s (braces and underline fade with it), so all eight rows are in frame again. On 'recorded' a small rounded '▶ recording' chip pops out of each of the eight visible run rows in a quick cascade (≈ 0.1 s apart, top to bottom), each chip flying right and stacking neatly beside the pill: a chip per row, each standing for that run's recordings (a run records every journey it runs, so a many-journey run holds many recordings). On 'reviewed' a small green ✓ ticks onto the top chip of the stack. On 'For' a fresh, anonymous ninth chip (from no row) slides onto the bottom end of the stack, still neutral, with a tiny grey 'illustration' tag beside it (the same tag ch05 uses); on 'slow' it tints Replay red-pink: an illustration of a recording reviewed for slowness, not footage, and not a finding about any of these runs; the hint ch05 pays off. At the end of L0404 the stack settles. In the last 0.6 s a tape-stop: the frame's motion slows, the screen desaturates slightly and the stack of chips stays crisp (it is carried into ch05-s01's frame ribbon).",
+          "beats": [
+            {
+              "id": "b-table",
+              "at": {
+                "shotTime": 0.05
+              },
+              "what": "runs table floats in and settles flat (tape 2900 → 3668)"
+            },
+            {
+              "id": "b-pr",
+              "at": {
+                "line": "L0403",
+                "word": "pull"
+              },
+              "what": "downbeat + stab: zoom 1.0 → 1.6 toward (1015, 300); braces snap around the first blue PR #3 badge; red-pink underline"
+            },
+            {
+              "id": "b-pill",
+              "at": {
+                "line": "L0403",
+                "word": "request"
+              },
+              "what": "the 'a test run for every PR' pill slides in beside the table, clear of it; then the zoom eases back to 1.0 over 0.4 s"
+            },
+            {
+              "id": "b-chips",
+              "at": {
+                "line": "L0404",
+                "word": "recorded"
+              },
+              "what": "a ▶ recording chip pops out of each of the eight visible run rows in a cascade, one soft clack per off-beat"
+            },
+            {
+              "id": "b-check",
+              "at": {
+                "line": "L0404",
+                "word": "reviewed"
+              },
+              "what": "a small green ✓ ticks onto the top chip"
+            },
+            {
+              "id": "b-fresh",
+              "at": {
+                "line": "L0404",
+                "word": "For"
+              },
+              "what": "a fresh anonymous chip (from no row) slides onto the end of the stack, a tiny grey 'illustration' tag beside it"
+            },
+            {
+              "id": "b-slow",
+              "at": {
+                "line": "L0404",
+                "word": "slow"
+              },
+              "what": "the fresh chip tints red-pink: a recording reviewed for slowness (illustration)"
+            },
+            {
+              "id": "b-stack",
+              "at": {
+                "line": "L0404",
+                "edge": "end"
+              },
+              "what": "the chips settle into a neat stack to the right"
+            },
+            {
+              "id": "b-tapestop",
+              "at": {
+                "line": "L0404",
+                "edge": "end",
+                "offset": 0.4
+              },
+              "what": "tape-stop: motion slows, screen desaturates; the chip stack stays crisp for ch05"
+            }
+          ],
+          "props": [
+            "RrwebScreen take runs 2900 → 3668, no cursor (crop {500,112,940,458}: Test Runs table)",
+            "kit bracket + squareDots",
+            "red-pink underline",
+            "kit pill 'a test run for every PR'",
+            "▶ recording chips (the film's recurring object), green ✓, one fresh anonymous red-pink chip with a grey 'illustration' tag"
+          ],
+          "onScreenText": [
+            {
+              "kind": "label",
+              "text": "a test run for every PR",
+              "beat": "b-pill"
+            },
+            {
+              "kind": "label",
+              "text": "▶ recording",
+              "beat": "b-chips"
+            },
+            {
+              "kind": "label",
+              "text": "illustration",
+              "beat": "b-fresh"
+            }
+          ],
+          "music": {
+            "cue": "M3 drive",
+            "note": "Proof three of the triplet: filtered stab and brace-snap transient on the downbeat at 'pull request'; a soft off-beat clack per popping chip (muted, percussive, never a chime); a small muted tick on the ✓; then a tape-stop pitch-down over the last half second into the blur to ch05's half-time M4."
+          },
+          "transitionIn": "cut",
+          "claims": [
+            "CONT-05",
+            "CONT-07",
+            "CONT-15",
+            "LOOP-07",
+            "LOOP-08",
+            "LOOP-12",
+            "TIME-06",
+            "TIME-07",
+            "TIME-C1"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ch05",
+      "number": 5,
+      "title": "Bugs that only exist in time",
+      "blurb": "The one plum register: a 67 ms commit nobody clicked on Replay QA's own Projects page, where 25 of 27 renders changed nothing a screen recording could see; a sync loop that fetched one pull-request list 258 times in under three minutes because it never saved its place; and, in a corner, a developer handing a recording to a critic until it says good.",
+      "shots": [
+        {
+          "id": "ch05-s01",
+          "kind": "plate",
+          "setting": "the brand haze (deep plum, Replay red-pink, violet), an abstract studio, 2026, no time of day: the film's one dark register",
+          "era": "product, as of 2026-10-14",
+          "mood": "duskRose",
+          "lines": [
+            {
+              "id": "L0501",
+              "text": "Some bugs only exist in time.",
+              "direction": "slower and lower than everything before it; the room has gone dark. Let 'in time' sit a fraction apart, not dramatic, just certain NARRATION (2026-10-14): take ran 235 wpm against 'slower and lower'; solo re-take at 0.98, the ellipsis sets 'in time' a fraction apart (text unchanged).",
+              "spoken": "Some bugs only exist... in time.",
+              "tts": {
+                "solo": true,
+                "speed": 0.98
+              }
+            }
+          ],
+          "leadIn": 0.3,
+          "holdAfter": 0.5,
+          "visual": "Blur dissolve out of ch04's paper into kit haze 'brand' (deep plum, a red-pink glow low left, violet high right), kit hairlines drifting slowly across at 8 % opacity. The stack of small dark '▶ recording' chips that ch04-s03 popped out of the run rows enters from the left edge at 50 % height, still stacked, and on the first beat flattens sideways into a horizontal FRAME RIBBON: a hairline track 1100 stage px wide at 62 % height, made of thin evenly spaced white ticks (each chip becomes a run of ticks). A bright red-pink hairline playhead (the rewind scrubber, kit icon 'rewind' as its tiny handle) enters at the right end and runs BACKWARDS, right to left, the ticks motion-blurring as it passes and settling sharp behind it. Above the ribbon, centred at 40 % height, kit kinetic type in Promo Sans light 64 px, white: 'Some bugs only exist' arrives word by word, blurring in on the spoken words; on 'only' the kit bracket braces open as an empty pair '{   }' after the line; on 'in' the words 'in time' arrive inside them and a red-pink colour sweep runs across 'in time' on 'time'; kit squareDots sit wide at the four corners of the bracket. The playhead reaches the left end exactly on 'time' and stops; the ribbon holds. Nothing product here: this is the turn.",
+          "beats": [
+            {
+              "id": "chips",
+              "at": {
+                "shotTime": 0.1
+              },
+              "what": "the ▶ recording chip stack slides in from the left and flattens into the frame ribbon of ticks"
+            },
+            {
+              "id": "rewind",
+              "at": {
+                "line": "L0501",
+                "word": "Some",
+                "offset": -0.15
+              },
+              "what": "the red-pink rewind playhead enters at the right and starts running backwards along the ribbon"
+            },
+            {
+              "id": "line",
+              "at": {
+                "line": "L0501",
+                "word": "Some",
+                "offset": -0.1
+              },
+              "what": "kinetic words begin arriving: 'Some bugs only exist'"
+            },
+            {
+              "id": "braces",
+              "at": {
+                "line": "L0501",
+                "word": "only",
+                "offset": -0.2
+              },
+              "what": "the bracket braces open as an empty pair after the line, corner dots wide"
+            },
+            {
+              "id": "intime",
+              "at": {
+                "line": "L0501",
+                "word": "time"
+              },
+              "what": "'in time' lands inside the braces with the red-pink sweep; the playhead reaches the left end and stops"
+            }
+          ],
+          "props": [
+            "recordingChipStack",
+            "frameRibbon",
+            "rewindScrubber"
+          ],
+          "onScreenText": [
+            {
+              "kind": "title",
+              "text": "Some bugs only exist",
+              "beat": "line"
+            },
+            {
+              "kind": "title",
+              "text": "{ in time }",
+              "beat": "braces"
+            }
+          ],
+          "music": {
+            "cue": "M4 rewind",
+            "note": "tape-stop from M3 lands on the cut; M4 enters half time: a reversed pad swell that crests on 'time', a muffled kick on the downbeat, a soft frame clack per tick as the playhead runs back; intensity 0.4 and dark"
+          },
+          "transitionIn": "blur",
+          "claims": [
+            "TIME-05",
+            "TIME-01"
+          ]
+        },
+        {
+          "id": "ch05-s02",
+          "kind": "scene",
+          "setting": "Replay QA's bug page for the 67 ms commit (project Electric Forest PR 4650 Preview), floating in the brand haze; filed Sep 23, 2026, 5:56 PM",
+          "era": "product, as of 2026-10-14",
+          "mood": "duskRose",
+          "lines": [
+            {
+              "id": "L0502",
+              "text": "Replay QA caught one in its own app.",
+              "direction": "a small, pleased reveal; the irony is gentle, not a joke; a touch of weight on 'own' NARRATION (2026-10-14): first take ran 224 wpm; solo re-takes at 0.98 with a comma and then a full stop both ran the beat in (225/217 wpm) and STT split 'Replay QA' unreliably (ReplayQ A / ReplayQA); the ellipsis take came back 'Replay cue A' (the seeded opening was identical across takes), so this take writes the letters as Q.A. for crisper letter-names, with the ellipsis beat before the reveal (text unchanged).",
+              "pauseAfter": 0.3,
+              "spoken": "Replay Q.A. caught one... in its own app.",
+              "tts": {
+                "solo": true,
+                "speed": 0.98
+              }
+            },
+            {
+              "id": "L0503",
+              "text": "One update. Sixty-seven milliseconds. Four dropped frames.",
+              "direction": "'One update.' sets the subject, light and quick; then two plain facts, evenly weighted; then stop and let the silence play"
+            },
+            {
+              "id": "L0504",
+              "text": "No click. A background refresh re-rendered the project list.",
+              "preGap": 0.7,
+              "direction": "'No click.' quiet and a little amazed; the rest matter-of-fact, 'project list' plain (the ear's first and only mention of which list)"
+            }
+          ],
+          "leadIn": 0.3,
+          "holdAfter": 0.3,
+          "visual": "Still in the brand haze. The bug page tilts in as a floating RrwebScreen (no browser chrome, radius 14, soft plum shadow; tilt {x: 8, y: -10} settling flat by 'own'; NO cursor prop: the take's idle cursor sits at ≈ (830, 828) and must never be drawn). Take bug-react, mark open/report (3032) is NEVER shown: tape seeks to 3040 and runs to 3200 at real speed, then holds there (the chips row 'Open · Medium · React Rendering · Project default', the real title '67ms React commit at T=383.2s drops 4 frames on the Projects page: RTK-Query updates …' and the 'Replay' player card; never past ≈ 3217, where the player turns white). Crop {x: 500, y: 80, w: 940, h: 680} (recording px; excludes the left chat column with the masked login line, the header and the idle cursor below y 760); box ≈ 900 stage px wide (≈ 650 tall), centred, so it fits the 720 px stage with margin; zoom stays 1.0 for the whole shot (the title already reads at ≈ 30 stage px). No provenance label of ours on this page. THE PLAYER PLATE (verified on bug-react/003200.png: the dark player at recording ≈ {x: 558, y: 315, w: 820, h: 445} reads 'Loading replay…' at its centre, ≈ (968, 546)): from shot time 0 it is NEVER visible. From the first frame of the tilt, a matching dark plate (#121218, square corners, the player's own rounded top corners) is drawn INSIDE the same screen box, tilting with it, covering that rect through the crop; once the tilt has settled on 'own' it hands over to OUR SVG overlay plate at the same rect, flat, with a still, dim ribbon of 16.7 ms frame slots on it (thin rounded rectangles, white at 15 %). No loading text, spinner or player timestamp is ever drawn. On 'update' kit bracket braces snap around '67ms' in the title, drawn in OUR SVG overlay (not a zoom), and a hand-drawn red-pink underline runs under it. On 'Sixty-seven' the ribbon brightens to white at 30 % and starts sliding left at a steady rate, one soft clack per slot, and a small grey caption of ours appears under it: 'illustration · 16.7 ms frame budget'. On 'Four' a solid red-pink bar labelled '67 ms' drops across the ribbon covering exactly four slots, and those four slots go HOLLOW, outlined in coral, one per beat while the music is silent; the ribbon itself stops sliding during the silence: the ribbon with its four hollow slots alone carries 'Four dropped frames' (the braces stay on '67ms'). On 'No click.' the ribbon resumes sliding and a drawn cursor glyph appears on clear haze in the right margin beside the page (never over the screenshot), greyed, struck through with a red-pink hairline; it never moves. On 'background refresh' a faint pulse runs along the whole ribbon from left to right (the refresh nobody asked for); nothing else moves. The 'Open' chip stays visible at the top of the crop throughout: this bug is open.",
+          "beats": [
+            {
+              "id": "tilt",
+              "at": {
+                "shotTime": 0.05
+              },
+              "what": "bug page tilts in from the haze at tape 3040; a dark plate inside the screen box already covers the player rect (no 'Loading replay…' ever shows)"
+            },
+            {
+              "id": "settle",
+              "at": {
+                "line": "L0502",
+                "word": "own"
+              },
+              "what": "the screen settles flat; our overlay plate takes over the player rect with a still, dim 16.7 ms slot ribbon; title and chips readable at zoom 1.0"
+            },
+            {
+              "id": "ms67",
+              "at": {
+                "line": "L0503",
+                "word": "update"
+              },
+              "what": "overlay braces snap around '67ms' in the title; red-pink underline runs under it"
+            },
+            {
+              "id": "ribbon",
+              "at": {
+                "line": "L0503",
+                "word": "Sixty-seven"
+              },
+              "what": "the dim ribbon brightens and starts sliding, a clack per slot; the illustration caption appears"
+            },
+            {
+              "id": "four",
+              "at": {
+                "line": "L0503",
+                "word": "Four"
+              },
+              "what": "the red-pink 67 ms bar lands across four slots; music stops dead"
+            },
+            {
+              "id": "hollow",
+              "at": {
+                "line": "L0503",
+                "edge": "end"
+              },
+              "what": "the four slots go hollow coral, one per beat of silence; the ribbon is frozen"
+            },
+            {
+              "id": "noclick",
+              "at": {
+                "line": "L0504",
+                "word": "No"
+              },
+              "what": "the struck-through cursor glyph appears on clear haze beside the page; the ribbon resumes sliding; the kick returns"
+            },
+            {
+              "id": "refresh",
+              "at": {
+                "line": "L0504",
+                "word": "background"
+              },
+              "what": "a faint pulse runs along the whole ribbon (the background refresh)"
+            }
+          ],
+          "props": [
+            "rrweb:bug-react",
+            "playerPlate",
+            "frameRibbon",
+            "budgetBar67ms",
+            "struckCursor",
+            "bracketMagnifier",
+            "redPinkUnderline"
+          ],
+          "onScreenText": [
+            {
+              "kind": "label",
+              "text": "illustration · 16.7 ms frame budget",
+              "beat": "ribbon"
+            }
+          ],
+          "music": {
+            "cue": "M4 rewind",
+            "note": "half-time groove, muffled kick; a soft frame clack on every beat once the ribbon starts sliding on 'Sixty-seven'; on 'Four' the music STOPS for exactly four beats (2.0 s at 120 BPM, spanning 'Four dropped frames' and the 0.7 s breath after it): the dropped frames are heard as missing time; the kick returns on 'No click.' at intensity 0.45"
+          },
+          "transitionIn": "cut",
+          "claims": [
+            "TIME-08",
+            "TIME-09",
+            "TIME-15",
+            "TIME-18",
+            "PROOF-16"
+          ]
+        },
+        {
+          "id": "ch05-s03",
+          "kind": "scene",
+          "setting": "the same bug page in the brand haze, 2026: our 27-render overlay, then a match cut down the page to its real Root Cause",
+          "era": "product, as of 2026-10-14",
+          "mood": "duskRose",
+          "lines": [
+            {
+              "id": "L0505",
+              "text": "Twenty-five of twenty-seven renders changed nothing on screen.",
+              "direction": "spoken over the shatter, plain and a little quieter; 'nothing' carries it. A slight hold on 'changed' so its final -d is heard before 'nothing'. NARRATION (2026-10-14, round-1 review): STT heard 'renders change nothing'; re-take solo at 0.96 with a 0.07 s editorial break after 'changed', keep the take only if STT returns 'changed' (qa.expect).",
+              "tts": {
+                "solo": true,
+                "speed": 0.96
+              },
+              "insertGaps": {
+                "changed": 0.07
+              },
+              "qa": {
+                "stt": "required",
+                "expect": [
+                  "changed"
+                ]
+              }
+            },
+            {
+              "id": "L0506",
+              "text": "A screen recording can't see that. A time-travel recording can.",
+              "direction": "the pivot of the film: first sentence hushed and plain; then warm and sure on 'time-travel recording', a small smile on the last 'can'. Generic on purpose: no competitor named",
+              "preGap": 0.3
+            }
+          ],
+          "leadIn": 0.3,
+          "holdAfter": 0.5,
+          "visual": "Continuous with ch05-s02 (same crop, zoom 1.0, OUR player plate still covering the dark player rect ≈ {x: 558, y: 315, w: 820, h: 445}, so 'Loading replay…' never shows). TWO IDEAS ONLY: the grid, then the root cause. (1) At 0.1 s the red-pink 67 ms bar SHATTERS into 27 small squares (the renders), which fly into a neat 9 × 3 grid on the plate. On 'Twenty-five' twenty-five of them drain to hollow grey outlines and two stay solid red-pink, and a kinetic caption in Promo Sans, white, blurs in under the grid: '25 of 27 renders changed nothing' (a reported count [TIME-08]; the grid draws exactly that count, so no extra tag); on 'nothing' the hollow ones dim further. These are counts of renders, never a share of time: no pie, no percentages. On 'screen' a small pale VIDEO-FRAME outline (rounded rectangle, a tiny ▶ glyph at its lower left, a thin progress hairline along its bottom) drops over the grid: inside it only the 2 solid squares show; the 25 hollow renders leave no trace in it (a screen recording only keeps what changed on screen); it fades on 'that'. (2) Just before the second sentence ('A time-travel recording can.', cued on its first word so the label gets ≈ 2.7 s) a MATCH CUT down the same page to take bug-react FROZEN at tape 11300 (never run on: from ≈ 11400 the page scrolls and by 11736 the heading is behind the header; verified on bug-react/011300.png). Two RrwebScreens of that one frozen frame, no cursor prop, no chrome, on clear haze: an eyebrow crop of the real heading 'ROOT CAUSE' {x: 548, y: 102, w: 100, h: 22} shown ≈ 300 stage px wide (≈ 40 px letters) at upper left; under it the clause crop {x: 921, y: 130, w: 274, h: 24} (\"`SidebarProjectList` trees are not memoized\", the first body line of the real Root Cause) shown ≈ 1000 stage px wide (≈ 45 px text), centred. Kit bracket braces in OUR overlay snap around 'are not memoized' only (recording x ≈ 1090-1192 inside that crop). With the match cut a kinetic label in Promo Sans 44 px blurs in above: '{ root cause }', its colour sweep landing on the last 'can', and holds to the cut (≈ 2.2 s, so it reads): the film points at the root-cause analysis without claiming Replay QA fixed anything. This bug is open; no 'fixed' stamp ever touches it (its 'Open' chip was on screen through ch05-s02).",
+          "beats": [
+            {
+              "id": "shatter",
+              "at": {
+                "shotTime": 0.1
+              },
+              "what": "the 67 ms bar shatters into 27 squares that form a 9 × 3 grid on our player plate"
+            },
+            {
+              "id": "hollow25",
+              "at": {
+                "line": "L0505",
+                "word": "Twenty-five"
+              },
+              "what": "25 squares drain to hollow grey; 2 stay solid red-pink; the count caption blurs in"
+            },
+            {
+              "id": "nothing",
+              "at": {
+                "line": "L0505",
+                "word": "nothing"
+              },
+              "what": "the hollow squares dim further"
+            },
+            {
+              "id": "screenrec",
+              "at": {
+                "line": "L0506",
+                "word": "screen"
+              },
+              "what": "a small ▶ video-frame outline drops over the grid and shows only the 2 solid squares; music hushes"
+            },
+            {
+              "id": "recfade",
+              "at": {
+                "line": "L0506",
+                "word": "that"
+              },
+              "what": "the video frame fades"
+            },
+            {
+              "id": "matchcut",
+              "at": {
+                "line": "L0506",
+                "word": 6,
+                "offset": -0.25
+              },
+              "what": "on the second sentence's first word ('A time-travel…'), match cut to the real Root Cause, frozen at tape 11300: 'ROOT CAUSE' eyebrow crop over the clause crop; overlay braces snap around 'are not memoized'; '{ root cause }' blurs in above"
+            },
+            {
+              "id": "rootcause",
+              "at": {
+                "line": "L0506",
+                "word": "can",
+                "edge": "end",
+                "offset": -0.3
+              },
+              "what": "the colour sweep lands on '{ root cause }'; the kick and a warm bass note return"
+            }
+          ],
+          "props": [
+            "rrweb:bug-react",
+            "playerPlate",
+            "fiberGrid27",
+            "videoFrameOutline",
+            "bracketMagnifier"
+          ],
+          "onScreenText": [
+            {
+              "kind": "label",
+              "text": "25 of 27 renders changed nothing",
+              "beat": "hollow25",
+              "until": "matchcut"
+            },
+            {
+              "kind": "title",
+              "text": "{ root cause }",
+              "beat": "matchcut"
+            }
+          ],
+          "music": {
+            "cue": "M4 rewind",
+            "note": "a light glassy scatter as the bar shatters (no chime: a soft percussive clatter); pads only, low, under L0505 and 'A screen recording can't see that'; the kick and a warm bass note return with the match cut on 'A time-travel' with the match cut and lift on the last 'can', intensity 0.5"
+          },
+          "transitionIn": "cut",
+          "claims": [
+            "TIME-08",
+            "TIME-17",
+            "TIME-01",
+            "SET-16",
+            "LOOP-19",
+            "PROOF-01",
+            "PROOF-02"
+          ]
+        },
+        {
+          "id": "ch05-s04",
+          "kind": "scene",
+          "setting": "Replay QA's bug page for the live-sync loop (project Electric Forest, Local environment), floating in the brand haze; filed Sep 4, 2026, 2:16 AM",
+          "era": "product, as of 2026-10-14",
+          "mood": "duskRose",
+          "lines": [
+            {
+              "id": "L0507",
+              "text": "Another bug: one list, fetched two hundred fifty-eight times in under three minutes.",
+              "direction": "'Another bug:' a quick turn of the page ('bug' tells the ear this is a second bug, not another recording); 'one list' plain; the number said plainly, a little weight on 'fifty-eight'; 'in under three minutes' quicker, matter-of-fact: the time is the bug"
+            },
+            {
+              "id": "L0508",
+              "text": "It never saved its place, so it kept starting over.",
+              "preGap": 0.25,
+              "direction": "deadpan and even; 'It' is the list's sync loop; a small beat on 'place', then 'kept starting over' a touch wry, then let the snap-backs and the brightening play NARRATION (2026-10-14): take ran 258 wpm and ran through the comma; solo re-take at 0.98, the ellipsis is the beat on 'place' (text unchanged).",
+              "spoken": "It never saved its place... so it kept starting over.",
+              "tts": {
+                "solo": true,
+                "speed": 0.98
+              }
+            }
+          ],
+          "leadIn": 0.2,
+          "holdAfter": 0.8,
+          "visual": "Cut to a new floating RrwebScreen tilting in (tilt {x: 6, y: 10} settling flat by 'list'): take bug-sync, tape 1300 → report mark 1603 at real speed, then held; no cursor prop. Crop the TOP of the page only, ≈ {x: 520, y: 80, w: 900, h: 120} (recording px): the chips 'Fixed · Medium · Network Performance · Local' and the real title 'Live-sync loop re-fetches /api/repos/maple/reading-room/pulls 258 times with checkpoint never advancing past -1'; this strip sits in the upper third of the frame, ≈ 1100 stage px wide. On 'fifty-eight' zoom 1.0 → 1.6 about recording (1335, 137) (verified on bug-sync/001603.png: '258' sits at x ≈ 1255-1300 and 'times' runs to ≈ 1370 at y ≈ 137; the zoom keeps that point fixed, so the visible window is x ≈ 826-1388 and '258 times' stays whole), then eases back to 1.0 by 'never'. The title strip and chips stay pinned in the upper third for the whole shot. No Actual card and no provenance label in this shot. LOWER TWO-THIRDS, OUR OVERLAY: from 'fetched' a ribbon of tiny vertical request bars, one per tick, appears left to right fast as a counter (kit counter, Promo Sans 72 px, white) races 0 → 258; pinned above the ribbon, a small dark tag 'checkpoint −1' that NEVER moves or changes. On 'fifty-eight' the counter lands on 258 and stops dead, all 258 bars in place. On 'minutes' a drawn cursor glyph, greyed and struck through with a red-pink hairline (the same glyph as ch05-s02), appears on clear haze beside the ribbon with a small grey label of ours, '≈ 160 s · 2 clicks · no keypresses' (the requests ran for about 160 s; the take records 2 clicks, so nothing claims nobody touched it). On 'never' a small red-pink bookmark flag on the 'checkpoint −1' tag tries to step forward along the ribbon and snaps back to −1, three quick tries (the rewind playhead of ch05-s01 is NOT reused here: it means time travel, this means a loop that cannot keep its place), and the tag does not budge; on 'place' a red-pink underline runs under the 'checkpoint −1' tag (the place it never saved); on 'starting' every one of the 258 bars flashes back to its base and brightens at once (each request asked for everything since −1); hold on that through the 0.8 s tail so the snap-backs and the brightening register. Never the words 'reading-room app'; the 258 here never shares a frame with the Insights 258.",
+          "beats": [
+            {
+              "id": "tilt",
+              "at": {
+                "shotTime": 0.05
+              },
+              "what": "bug-sync title strip tilts in"
+            },
+            {
+              "id": "settle",
+              "at": {
+                "line": "L0507",
+                "word": "list"
+              },
+              "what": "the title strip settles flat in the upper third"
+            },
+            {
+              "id": "counter",
+              "at": {
+                "line": "L0507",
+                "word": "fetched"
+              },
+              "what": "our request ribbon and counter race 0 → 258 over 16th-note hats; 'checkpoint −1' tag pinned above"
+            },
+            {
+              "id": "u258",
+              "at": {
+                "line": "L0507",
+                "word": "fifty-eight"
+              },
+              "what": "zoom 1.6 about (1335, 137) on '258 times' in the title; the counter lands on 258 and stops dead; hats stop with it"
+            },
+            {
+              "id": "nobody",
+              "at": {
+                "line": "L0507",
+                "word": "minutes"
+              },
+              "what": "the struck-through cursor glyph and '≈ 160 s · 2 clicks · no keypresses' appear beside the ribbon; the zoom begins easing back"
+            },
+            {
+              "id": "snapback",
+              "at": {
+                "line": "L0508",
+                "word": "never"
+              },
+              "what": "a red-pink bookmark flag on the 'checkpoint −1' tag tries to step forward and snaps back to −1, three quick tries; the tag does not move"
+            },
+            {
+              "id": "place",
+              "at": {
+                "line": "L0508",
+                "word": "place"
+              },
+              "what": "red-pink underline under the 'checkpoint −1' tag"
+            },
+            {
+              "id": "over",
+              "at": {
+                "line": "L0508",
+                "word": "starting"
+              },
+              "what": "all 258 bars flash back to their base and brighten at once; hold through the tail"
+            }
+          ],
+          "props": [
+            "rrweb:bug-sync",
+            "requestRibbon258",
+            "counter",
+            "checkpointTag",
+            "struckCursor",
+            "bookmarkFlag",
+            "redPinkUnderline"
+          ],
+          "onScreenText": [
+            {
+              "kind": "label",
+              "text": "checkpoint −1",
+              "beat": "counter"
+            },
+            {
+              "kind": "label",
+              "text": "258",
+              "beat": "u258"
+            },
+            {
+              "kind": "label",
+              "text": "≈ 160 s · 2 clicks · no keypresses",
+              "beat": "nobody"
+            }
+          ],
+          "music": {
+            "cue": "M4 rewind",
+            "note": "a 16th-note closed-hat pulse starts with the counter on 'fetched' and STOPS DEAD when it lands on 258 on 'fifty-eight'; under it a muted pluck stuck on one note, one length, repeating like the stuck checkpoint; three short muted plucks ride the bookmark's snap-backs on 'never' and settle on 'place'; the pluck restarts once on 'starting'; intensity 0.45"
+          },
+          "transitionIn": "cut",
+          "claims": [
+            "TIME-11",
+            "TIME-13",
+            "TIME-16",
+            "PROOF-16"
+          ]
+        }
+      ]
+    },
+    {
+      "id": "ch06",
+      "number": 6,
+      "title": "{ fully managed · always on }",
+      "blurb": "A collage of four real product tiles with the line to remember woven between them in three even rows, then the ember end card: Replay QA, end-to-end testing, fully managed; catch bugs that only exist in time.",
+      "shots": [
+        {
+          "id": "ch06-s01",
+          "kind": "montage",
+          "setting": "light-grey studio paper (#e9e8ea), an abstract studio, 2026, no time of day; frozen product tiles fanned at different depths",
+          "era": "product, as of 2026-10-14",
+          "mood": "parchment",
+          "lines": [
+            {
+              "id": "L0601",
+              "text": "Every run, a recording. Every bug, a root cause. Every fix, rerun to confirm.",
+              "direction": "the line to remember: three even steps, each landing on a downbeat; warm, a touch brighter on 'confirm'. NARRATION (2026-10-14, round-1 review): the take ran 194 wpm with the steps running together; re-take solo at speed 0.94 with a clear breath (about 0.35 s in all) after 'recording' and after 'cause', aiming for about 165 wpm.",
+              "tts": {
+                "solo": true,
+                "speed": 0.94
+              },
+              "insertGaps": {
+                "recording": 0.25,
+                "cause": 0.25
+              }
+            }
+          ],
+          "leadIn": 0.3,
+          "holdAfter": 1.6,
+          "visual": "The reference's fanned photo collage, made of real product. A cut from ch05-s04's bug-sync strip: it becomes tile (D) as FOUR frozen RrwebScreen tiles (all cursor={false}) on paper at three depths (soft shadows, tilts between -12 and +12 deg about y, a slow 3 % push-in across the shot, the tiles drifting apart a few px), each cropped to one readable detail and never showing the chat column, the project tab strip, the owner's sidebar footer, the credit meter or the budget. READING PATH: the woven words sit on THREE ROWS in reading order, one step of the line per row: the 'every X' phrase in the LEFT lane (left edge ≈ x 90) and its answer in the RIGHT lane (left edge ≈ x 700) on the SAME baseline: row 1 baseline y ≈ 200, row 2 y ≈ 370, row 3 y ≈ 540, so the line reads as three parallel steps, top to bottom, left then right. The tiles sit only in the gaps between rows, never under or over a word (layout on the 1280 x 720 stage). TOP BAND (above row 1): (A) left ≈ x 70-590, y 85-145: take insights frozen at stats mark 2926, crop ≈ {x: 330, y: 160, w: 860, h: 100}, the Insights stat tiles exactly as recorded (50 Projects · 711 Total Bugs · 29% Resolution Rate · 1151 Journeys · 89 Explorations), with a small grey 'Insights' label on the card (unspoken; the Discovery Source card is never in crop; cursor={false}, since at 2926 the recorded cursor sits on 'TOTAL BUGS'); (B) right ≈ x 660-1100, y 36-167: take runs frozen at list mark 3668, crop {x: 500, y: 112, w: 940, h: 280} (as ch04-s03: it starts below the project tab strip, so no half-cut tabs or count badge along its top edge), the Test Runs table's Description / Environment / Status columns with the purple 'PR #3' badge. MIDDLE BAND (between rows 1 and 2, y ≈ 230-325): (C) left ≈ x 70-560: take bug-react frozen at 3150, chips row + title with the 'Open' chip (the crop holds only the chips and title; the player panel is never in crop), with a small grey 'Replay QA's own Projects page' label on the card's top-left corner; (D) right ≈ x 680-1170: take bug-sync frozen at report mark 1603, chips row + title with the 'Fixed' chip. The band between rows 2 and 3 and the strip below row 3 stay open paper with kit hairlines, so the fix row has no tile beside or above it and never reads as a caption on the bug-sync 'Fixed' tile (row 2 and a band of paper separate them). The kinetic words are drawn in the DOM/SVG overlay ABOVE the tiles (never on the canvas under them): Promo Sans regular 44 px, ink on paper, each blurring in on its spoken word with the white → peach → orange colour sweep on its tail: row 1 'every run' (left) · 'a recording' (right, under the runs tile); row 2 'every bug' (left, under the bug-react tile) · 'a root cause' (right, under the bug-sync tile); row 3 'every fix' (left) · 'rerun to confirm' (right, the largest, 52 px, ≈ x 700-1130). On 'Every' in rows 1 and 2 the two tiles just above that row lift a few px toward camera (transform on the tile's wrapper); on row 3 the runs tile lifts once more. In the last second a small '▶ recording' chip drifts out of the runs tile down through the open band toward frame centre (it will settle beside the Replay mark on the end card), and the whole collage begins to blur and sink: the DOM tiles blur and sink through their own style filter: blur() and transform, since the canvas blur transition does not reach DOM layers. THE SUBTLE BEAT (moved here on the director's note, 2026-10-14: the standalone ch05-s05 agent shot was cut): under the woven words, in the open paper strip BELOW row 3 (y ≈ 600-700, never touching a word or a tile), the developer ↔ critic agent pair (sets/ch05-s05-pair.ts, the existing local pair) plays small and quiet (scale ≈ 0.5, centred near x ≈ 640, about 40 % opacity rising to 70 %) while the narrator talks about other things: it is never named, never the headline. It eases in on 'Every' (w1); exchange 1 (a '▶ replay recording' chip slides developer → critic) on 'recording', the critic answers '✕ not yet'; exchange 2 on 'fix', the critic answers '✓ good' landing on or just before 'confirm', so the pair quietly illustrates 'rerun to confirm'. It fades with the collage at the end. No 'illustration' tag needed at this size; nothing implies the agents fixed a specific bug (the 'Fixed' tile D sits well above it).",
+          "beats": [
+            {
+              "id": "fan",
+              "at": {
+                "shotTime": 0.05
+              },
+              "what": "the four tiles finish fanning out and settle at their depths"
+            },
+            {
+              "id": "w1",
+              "at": {
+                "line": "L0601",
+                "word": 0
+              },
+              "what": "row 1, left: 'every run' blurs in under the Insights tile; the two top tiles lift"
+            },
+            {
+              "id": "w2",
+              "at": {
+                "line": "L0601",
+                "word": 2
+              },
+              "what": "row 1, right: 'a recording' lands on the same baseline, under the runs tile"
+            },
+            {
+              "id": "w3",
+              "at": {
+                "line": "L0601",
+                "word": 4
+              },
+              "what": "row 2, left: 'every bug' blurs in under the bug-react tile; the two bug tiles lift"
+            },
+            {
+              "id": "w4",
+              "at": {
+                "line": "L0601",
+                "word": 6
+              },
+              "what": "row 2, right: 'a root cause' lands on the same baseline, under the bug-sync tile"
+            },
+            {
+              "id": "w5",
+              "at": {
+                "line": "L0601",
+                "word": 9
+              },
+              "what": "row 3, left: 'every fix' blurs in on open paper, a full row below the bug tiles; the runs tile lifts once more"
+            },
+            {
+              "id": "w6",
+              "at": {
+                "line": "L0601",
+                "word": 11
+              },
+              "what": "row 3, right: 'rerun to confirm' lands on the same baseline, largest, with the colour sweep on 'confirm'"
+            },
+            {
+              "id": "chip",
+              "at": {
+                "line": "L0601",
+                "edge": "end",
+                "offset": 0.3
+              },
+              "what": "a ▶ recording chip drifts out of the runs tile down through the open band toward centre; the collage (DOM tiles included, via style filter and transform) starts to blur and sink"
+            },
+            {
+              "id": "pair",
+              "at": {
+                "line": "L0601",
+                "word": 0
+              },
+              "what": "the agent pair eases in, small, in the open strip below row 3"
+            }
+          ],
+          "props": [
+            "rrweb:insights",
+            "rrweb:runs",
+            "rrweb:bug-react",
+            "rrweb:bug-sync",
+            "collageTiles",
+            "recordingChip"
+          ],
+          "onScreenText": [
+            {
+              "kind": "label",
+              "text": "Insights",
+              "beat": "fan"
+            },
+            {
+              "kind": "label",
+              "text": "Replay QA's own Projects page",
+              "beat": "fan"
+            },
+            {
+              "kind": "title",
+              "text": "every run",
+              "beat": "w1"
+            },
+            {
+              "kind": "title",
+              "text": "a recording",
+              "beat": "w2"
+            },
+            {
+              "kind": "title",
+              "text": "every bug",
+              "beat": "w3"
+            },
+            {
+              "kind": "title",
+              "text": "a root cause",
+              "beat": "w4"
+            },
+            {
+              "kind": "title",
+              "text": "every fix",
+              "beat": "w5"
+            },
+            {
+              "kind": "title",
+              "text": "rerun to confirm",
+              "beat": "w6"
+            }
+          ],
+          "music": {
+            "cue": "M5 lift",
+            "note": "full band, the brightest voicing of the film: round bass, four-on-the-floor kick, warm pads with the lydian lift; a filtered stab on the downbeat under each woven word, refit to the slower L0601 re-take (its two breaths after 'recording' and 'cause' move every later stab); a short riser through the hold into the end card; intensity 0.85"
+          },
+          "transitionIn": "cut",
+          "claims": [
+            "PROOF-01",
+            "PROOF-07",
+            "PROOF-08",
+            "PROOF-09",
+            "PROOF-13",
+            "LOOP-07",
+            "LOOP-12",
+            "LOOP-13",
+            "TIME-08",
+            "TIME-11",
+            "TIME-14"
+          ]
+        },
+        {
+          "id": "ch06-s02",
+          "kind": "card",
+          "setting": "the ember haze (grey paper over a coral, orange and pink glow rising from the bottom), an abstract studio, 2026: the end card",
+          "era": "product, as of 2026-10-14",
+          "mood": "emberRed",
+          "lines": [
+            {
+              "id": "L0602",
+              "text": "Replay QA. End-to-end testing, fully managed. Catch bugs that only exist in time.",
+              "direction": "the sign-off in three short beats, each landing on a cut of the type: the name, then a breath; the tagline, warm and sure; then the promise, unhurried, a small lift on 'Catch', 'in time' echoing the turn in chapter five, softer"
+            }
+          ],
+          "leadIn": 0.4,
+          "holdAfter": 3.3,
+          "visual": "Blur dissolve: the collage sinks into kit haze 'ember' (light-grey paper over a coral / orange / pink fire rising from the bottom edge), kit hairlines drifting. One tagline, as in the reference's end card. On 'Replay' (the first word) the Replay mark (kit replayMark, 56 px) and 'Replay QA' in Promo Sans medium 40 px rise into place at 58 % height from 8 px below, and the small dark '▶ recording' chip (the one that drifted out of the collage) settles to the right of the mark. On 'End-to-end' the tagline grows in above it, centred at 42 % height, kit bracket in Promo Sans light 54 px with kit squareDots at its four corners: '{ End-to-end testing }', the braces parting as the words arrive; on 'fully' the braces part wider and '· fully managed' arrives inside them, the corner dots sliding out to the new width, so the type reads in the voice's order: '{ End-to-end testing · fully managed }'. On 'Catch' 'qa.replay.io' types in under the lock-up in Promo Sans regular ≈ 34 px, ink at 80 % (above the 22 px floor), at the recorded rate (kit typed, ≈ 14 cps) with the caret from ch02-s01; the caret blinks twice and stops. Nothing else: no subline, no other company's logo, no credits, no prices. Everything holds still for the last 0.8 s.",
+          "beats": [
+            {
+              "id": "mark",
+              "at": {
+                "line": "L0602",
+                "word": 0
+              },
+              "what": "the Replay mark and 'Replay QA' rise into place; the ▶ recording chip settles beside the mark"
+            },
+            {
+              "id": "tag1",
+              "at": {
+                "line": "L0602",
+                "word": 2
+              },
+              "what": "'{ End-to-end testing }' grows in above the lock-up with corner dots"
+            },
+            {
+              "id": "grow",
+              "at": {
+                "line": "L0602",
+                "word": 4
+              },
+              "what": "the braces part wider and '· fully managed' arrives inside them; the corner dots slide out"
+            },
+            {
+              "id": "url",
+              "at": {
+                "line": "L0602",
+                "word": 6
+              },
+              "what": "on 'Catch', 'qa.replay.io' types in (Promo Sans regular ≈ 34 px, ink at 80 %) with the caret"
+            },
+            {
+              "id": "caret",
+              "at": {
+                "line": "L0602",
+                "edge": "end",
+                "offset": 0.4
+              },
+              "what": "the caret blinks twice and stops; the card holds"
+            }
+          ],
+          "props": [
+            "replayMark",
+            "recordingChip",
+            "caret",
+            "squareDots"
+          ],
+          "onScreenText": [
+            {
+              "kind": "title",
+              "text": "Replay QA",
+              "beat": "mark"
+            },
+            {
+              "kind": "title",
+              "text": "{ End-to-end testing · fully managed }",
+              "beat": "tag1"
+            },
+            {
+              "kind": "label",
+              "text": "qa.replay.io",
+              "beat": "url"
+            }
+          ],
+          "music": {
+            "cue": "M5 lift",
+            "note": "the band resolves to the tonic as the tagline completes on 'managed'; the drums drop out after 'time' and a warm pad chord rings out for at least 1.0 s after the last word (and on under the fade); no chime"
+          },
+          "transitionIn": "blur",
+          "claims": [
+            "SET-15",
+            "SET-16",
+            "CONT-19",
+            "LOOP-07",
+            "TIME-08",
+            "TIME-11"
+          ]
+        }
+      ]
+    }
+  ]
+}

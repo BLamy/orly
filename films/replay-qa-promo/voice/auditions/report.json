@@ -1,0 +1,84 @@
+{
+ "sample": {
+  "text": "Imagine end-to-end tests you never write. Or remember to run. Introducing Replay Q A. Point it at your app. No test suite needed. Just a quick chat. It explores your app in a real browser. Turns what it finds into user journeys, and runs them. Then it runs on Replay's browsers. On a schedule, while you sleep. Against staging, a preview, even local host. And on every pull request. Each run is recorded, then reviewed. For what breaks, and what's slow. Some bugs only exist in time. Replay Q A caught one in its own app. One update. Sixty-seven milliseconds. Four dropped frames.",
+  "chars": 580,
+  "words": 103
+ },
+ "results": {
+  "cjVigY5qzO86Huf0OWal|eleven_multilingual_v2|1": {
+   "voice": "cjVigY5qzO86Huf0OWal",
+   "label": "Eric",
+   "model": "eleven_multilingual_v2",
+   "speed": 1,
+   "file": "films/replay-qa-promo/voice/auditions/cjVigY5qzO86Huf0OWal-eleven_multilingual_v2-s1.mp3",
+   "duration": 41.889,
+   "speech": 41.889,
+   "words": 103,
+   "wpm": 147.5,
+   "I": -24.2,
+   "TP": -5.7,
+   "LRA": 2.5,
+   "cost": 255
+  },
+  "iP95p4xoKVk53GoZ742B|eleven_multilingual_v2|1": {
+   "voice": "iP95p4xoKVk53GoZ742B",
+   "label": "Chris",
+   "model": "eleven_multilingual_v2",
+   "speed": 1,
+   "file": "films/replay-qa-promo/voice/auditions/iP95p4xoKVk53GoZ742B-eleven_multilingual_v2-s1.mp3",
+   "duration": 42.585,
+   "speech": 42.586,
+   "words": 103,
+   "wpm": 145.1,
+   "I": -23.3,
+   "TP": -3.5,
+   "LRA": 3.1,
+   "cost": 255
+  },
+  "XrExE9yKIg1WjnnlVkGX|eleven_multilingual_v2|1": {
+   "voice": "XrExE9yKIg1WjnnlVkGX",
+   "label": "Matilda",
+   "model": "eleven_multilingual_v2",
+   "speed": 1,
+   "file": "films/replay-qa-promo/voice/auditions/XrExE9yKIg1WjnnlVkGX-eleven_multilingual_v2-s1.mp3",
+   "duration": 46.393,
+   "speech": 46.394,
+   "words": 103,
+   "wpm": 133.2,
+   "I": -22.7,
+   "TP": -3,
+   "LRA": 1.7,
+   "cost": 255
+  },
+  "Xb7hH8MSUJpSbSDYk0k2|eleven_multilingual_v2|1": {
+   "voice": "Xb7hH8MSUJpSbSDYk0k2",
+   "label": "Alice",
+   "model": "eleven_multilingual_v2",
+   "speed": 1,
+   "file": "films/replay-qa-promo/voice/auditions/Xb7hH8MSUJpSbSDYk0k2-eleven_multilingual_v2-s1.mp3",
+   "duration": 45.279,
+   "speech": 45.279,
+   "words": 103,
+   "wpm": 136.5,
+   "I": -22.5,
+   "TP": -1.6,
+   "LRA": 1.7,
+   "cost": 255
+  },
+  "JBFqnCBsd6RMkjVDRZzb|eleven_multilingual_v2|1": {
+   "voice": "JBFqnCBsd6RMkjVDRZzb",
+   "label": "George",
+   "model": "eleven_multilingual_v2",
+   "speed": 1,
+   "file": "films/replay-qa-promo/voice/auditions/JBFqnCBsd6RMkjVDRZzb-eleven_multilingual_v2-s1.mp3",
+   "duration": 42.632,
+   "speech": 42.632,
+   "words": 103,
+   "wpm": 145,
+   "I": -23.6,
+   "TP": -4,
+   "LRA": 2.3,
+   "cost": 255
+  }
+ }
+}

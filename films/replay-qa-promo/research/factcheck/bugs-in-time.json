@@ -1,0 +1,63 @@
+{
+  "id": "bugs-in-time",
+  "checked": 28,
+  "confirmed": 19,
+  "corrected": 7,
+  "unverifiable": 1,
+  "corrections": [
+    {
+      "original": "bug-react report mark 3032 ms shows the Open/Medium/React Rendering chips, the title and a dark 'Loading replay…' player",
+      "verdict": "corrected",
+      "fix": "At exactly 3032 ms the right panel is a grey loading skeleton. The chips, title and dark 'Loading replay…' player are applied from 3033 ms. The dark player lasts only until about 3217 ms, then it is white and empty with '--:--' controls, and 'No recorded judge actions available.' appears by about 3483 ms. Seek 3040-3200 ms for the dark-player look.",
+      "sources": ["capture/clean/bug-react.json (rrweb mutations at 3032 and 3217 ms)", "tools/promo/rr-sheet.mjs frames 3032/3033/3300/3483 ms"]
+    },
+    {
+      "original": "56 ms bug (bug-muemtceb-we4e): the project it was filed under is not in the digest; same PR 4650 run is an unverified inference",
+      "verdict": "corrected",
+      "fix": "It is filed in Electric Forest PR 4650 Preview. Its row appears in that project's Bugs list in the bug-react take (about 1956 ms), and account-digest.mjs picks it from the PR-4650 bug set. Same test run as the 67 ms bug: still unverified.",
+      "sources": ["capture/clean/bug-react.json (frame 1956 ms)", "tools/promo/account-digest.mjs line 46"]
+    },
+    {
+      "original": "The 67 ms bug was found during a run whose chat reports 71 journeys and 68 bugs filed",
+      "verdict": "unverifiable",
+      "fix": "The project (Electric Forest PR 4650 Preview) and its chat line (71 journeys, 68 bugs filed) are confirmed. The bug's source is 'Test Run #run-muek', and nothing available links that ID to the Initial Test Run. Do not say the bug came from that run.",
+      "sources": ["capture/clean/bug-react.json (chat column; details sidebar 'Source Test Run #run-muek')"]
+    },
+    {
+      "original": "Tasks of 50 ms or more are browser 'long tasks', and both 67 ms and 56 ms commits exceed that",
+      "verdict": "contested",
+      "fix": "The frame-budget part is confirmed (web.dev: 16 ms per frame; the product uses 16.7 ms). Do not call the commits long tasks. MDN defines a long task as uninterrupted main-thread work of 50 ms or more. The 56 ms is 38.6 ms of commit plus 19.4 ms of passive effects, which React usually flushes in a later task. The 67 ms report has no phase split.",
+      "sources": ["https://developer.mozilla.org/en-US/docs/Web/API/PerformanceLongTaskTiming", "https://web.dev/articles/rail", "research/sources/account-digest.json (navigation_commit_56ms description)"]
+    },
+    {
+      "original": "Replay keeps hundreds of forked browser processes, never more than 100 ms from any point",
+      "verdict": "corrected",
+      "fix": "The source says the session interacts with 'potentially hundreds' of browser processes, and that 'there's never a point more than 100ms away from a browser process'.",
+      "sources": ["https://docs.replay.io/reference/time-travel/how-does-time-travel-work"]
+    },
+    {
+      "original": "2026-08-31 to 2026-09-01: Electric Forest project chat logs exploration and test rounds",
+      "verdict": "corrected",
+      "fix": "The chat in the bug-sync take has timestamps from 2026-08-01T19:47Z to 2026-09-30T23:13Z.",
+      "sources": ["capture/clean/bug-sync.json (datetime attributes)"]
+    },
+    {
+      "original": "The credit meter in the takes is hidden by the clean CSS and hideByText",
+      "verdict": "corrected",
+      "fix": "In bug-react, the header shows the credit meter ('8807.5 of 500 credits') and an Admin chip while the Bugs list is up (frame 1956 ms). Crop the header out of 0-3032 ms.",
+      "sources": ["capture/clean/bug-react.json (frame 1956 ms)"]
+    },
+    {
+      "original": "bug-react start mark (0 ms) shows the Bugs list of Electric Forest PR 4650 Preview (Bugs 49)",
+      "verdict": "corrected",
+      "fix": "At 0 ms the frame is a blank loading shell. The Bugs list has rendered by about 1742-1956 ms.",
+      "sources": ["capture/clean/bug-react.json (frames 0 and 1956 ms)"]
+    },
+    {
+      "original": "Electric Forest scorecard: 126 bugs, 126 resolved, 100% (in the context of the network bugs being fixed)",
+      "verdict": "corrected",
+      "fix": "'Resolved' covers 101 fixed + 24 invalid + 1 wontfix (digest), so never say '126 bugs fixed'. Also, Insights shows 50 projects while the digest's projects_total is 20 (a different API count). Use 50 on screen.",
+      "sources": ["research/sources/account-digest.json (projects.Electric Forest.bugs; projects_total)", "capture/clean/insights.json (Project Scorecard)"]
+    }
+  ]
+}

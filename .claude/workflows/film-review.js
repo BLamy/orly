@@ -55,7 +55,13 @@ const VERDICT = {
   required: ['pass', 'scores', 'mean', 'fixes', 'summary', 'dimensionNotes'],
 }
 
-const LENSES = [
+const LENSES = A.look === 'promo' ? [
+  { id: 'historian', lens: 'ACCURACY & SAFETY (promo): every narrated claim, number and on-screen text against claims.json and the account digest; every product shot shows only what its rrweb take really contains; NO secrets, tokens, login variables or e-mails anywhere on screen (check the stills of every product shot); no invented capability.' },
+  { id: 'teacher', lens: 'MESSAGE & CLARITY (promo): after one viewing, does a first-time viewer know what Replay QA is (fully managed e2e testing that explores, builds journeys, runs on a schedule, against staging and on every PR, with a recording and root cause for every bug)? Are the time-travel performance bugs concrete and convincing? Is the developer/critic agent beat present but subtle? Is all product footage legible at 1080p?' },
+  { id: 'story', lens: 'STORY & CURIOSITY (promo): hook in the first seconds, rhythm over ~90 s, one idea per beat, payoff, a clear end card and call to action; would a buyer want to try it?' },
+  { id: 'art', lens: `VISUALS & MOTION (promo): craft against the reference promo (${FILM}/reference/contact-sheet.jpg and look.md): airy composition, hazes, bracketed kinetic type, product footage framing/zoom, consistency, legibility, cuts and type hits on words and downbeats; flag placeholders, broken or blank screens, loading spinners, clutter.` },
+  { id: 'sound', lens: 'SOUND (promo): narrator delivery and pacing, music fit (bright, rhythmic, cuts on the grid, the rewind moment), mix loudness and ducking, the ending.' },
+] : [
   { id: 'historian', lens: 'ACCURACY & FAIRNESS: every narrated fact and on-screen text against claims.json/quotes.json; depiction of real people; even-handedness on contested matters, geopolitics and every lab.' },
   { id: 'teacher', lens: 'CLARITY & DEPTH: would a curious 15-year-old follow it and an expert respect it? Are AlexNet and the transformer explained in real depth, step by step, in sync with the pictures? Does each era show what people believed, who dissented, and for how long?' },
   { id: 'story', lens: 'STORY & CURIOSITY: arc, stakes, emotion, pacing across the whole runtime, memorable images, questions planted and paid off; does it feel like a new way to learn?' },

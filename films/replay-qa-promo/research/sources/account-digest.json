@@ -1,0 +1,150 @@
+{
+  "source": "Replay QA account of the requester (qa.replay.io), read through the signed-in web app API on 2026-10-14; redacted",
+  "insights": {
+    "url": "https://qa.replay.io/insights",
+    "projects": 50,
+    "total_bugs": 711,
+    "open_bugs": 389,
+    "resolution_rate": "29%",
+    "journeys": 1151,
+    "explorations": 89,
+    "severity": {
+      "critical": 4,
+      "high": 238,
+      "medium": 369,
+      "low": 100
+    },
+    "discovery_source": {
+      "journey_testing": {
+        "bugs": 258,
+        "share": "36%"
+      },
+      "polish_analysis": {
+        "bugs": 453,
+        "share": "64%"
+      }
+    }
+  },
+  "projects_total": 20,
+  "per_pull_request_projects": [],
+  "projects": {
+    "Electric Forest": {
+      "project": {
+        "id": "proj-electric-forest-ms8w0nv1",
+        "name": "Electric Forest",
+        "target_url": "http://127.0.0.1:61787",
+        "status": "paused"
+      },
+      "bugs": {
+        "fixed": 101,
+        "invalid": 24,
+        "wontfix": 1
+      },
+      "journeys": {
+        "total": 160
+      },
+      "test_runs": {
+        "failed": 56,
+        "infra-failed": 49,
+        "completed": 106,
+        "incomplete": 50,
+        "cancelled": 394,
+        "blocked": 137
+      },
+      "explorations": {
+        "blocked": 4,
+        "cancelled": 2,
+        "completed": 2,
+        "failed": 1
+      }
+    }
+  },
+  "settings_page_facts": {
+    "url_example": "https://qa.replay.io/projects/<id>/settings",
+    "header": "How this project is configured. Edit settings and environment schedules here, or ask QA in the chat — both make the same change.",
+    "polish_passes": "Network Performance, React Rendering, Layout Shift, Glitches, User Experience, Accessibility, UI Details (7 enabled)",
+    "environments_example": "Production · https://collaborative-ai-editor.brett-lamy.workers.dev/ · Tue at 3:00 AM · America/New_York",
+    "add_environment": "Add production, staging, development, preview, or local configuration.",
+    "integrations": [
+      "Vercel preview access",
+      "GitHub",
+      "Issue tracker",
+      "Logins & variables"
+    ],
+    "other": [
+      "Project status: Active — Running test loops automatically.",
+      "Budget: credits QA may spend before the project pauses",
+      "Processing concurrency: containers running QA at once (5 max)",
+      "Security testing: probe for injection, access-control and data-exposure bugs"
+    ]
+  },
+  "new_project_page": {
+    "heading": "Set up QA for your app",
+    "sub": "Enter your app's URL and I'll walk you through the rest in a quick chat.",
+    "agent_prompt": "Use Replay QA to test and fix this app. Start at https://docs.replay.io/llms.txt and follow it."
+  },
+  "bug_statuses_seen": [
+    "fixed",
+    "invalid",
+    "wontfix",
+    "open"
+  ],
+  "featured_bugs": {
+    "react_commit_67ms": {
+      "id": "bug-muen719p-vdmh",
+      "title": "67ms React commit at T=383.2s drops 4 frames on the Projects page: RTK-Query updates re-render Projects and SidebarProjectList wholesale, wasting 34ms re-rendering memo-less react-router Link components",
+      "status": "open",
+      "severity": "medium",
+      "polish_category": "react-rendering",
+      "discovered_at": "2026-09-23T21:56:06.418Z",
+      "description": "While viewing the Replay QA Projects page, a pair of RTK-Query cache updates (`projectDataApi/internalSubscriptions/subscriptionsUpdated` plus two `projectDataApi/executeQuery/pending` dispatches) trigger direct store re-renders of the `Projects` page component and the `SidebarProjectList` sidebar component in a single 67ms React commit. Because the react-router `Link` components rendered inside these trees are not memoized, the whole subtree re-renders via parent-propagation even though nothing they render changed: 25 of the 27 fibers rendered in the commit produced no DOM mutations (50% of the 67ms render time, ~34ms, was pure waste). The commit blocks the main thread long enough to drop 4 frames (~67ms vs the 16.7ms frame budget), which the user perceives as a brief visual stutter/jank while the page is otherwise idle. Trigger conditions: the Projects page is open (sidebar project list + project cards grid both mounted) when a background project-data subscription/refresh fires.",
+      "actual_behavior": "The commit at T=383.2s took 67ms (3.3ms of its 33.7ms productive render time + 33.7ms wasted), rendered 27 fibers of which 25 were wasted (no DOM mutations), and blocked the main thread for 4+ frames — an estimated 4 dropped frames, a brief visible stutter. Two cascades account for all the waste: `Projects` (direct store-rerender) propagated to 19 descendant fibers at 100% waste (22.8ms), and `SidebarProjectList` (direct store-rerender) propagated to 6 fibers at 100% waste (10.9ms). The worst single offender is react-router's `Link`: 4 wasted renders totaling 19.0ms, all caused by parent-propagation.",
+      "expected_behavior": "A background RTK-Query cache update on the Projects page should be cheap: only components whose rendered output actually changed should re-render, keeping the commit well within the 16.7ms frame budget so the page stays at 60fps with no dropped frames. Unchanged UI (sidebar nav links, project-card links, icons) should be skipped via memoization, producing no DOM mutations and no visible stutter.",
+      "replay_recording_id": "066912b6-ed99-4681-ba3b-2d50df1e56c1"
+    },
+    "navigation_commit_56ms": {
+      "id": "bug-muemtceb-we4e",
+      "title": "Click on project card triggers 56ms navigation commit (86-component re-render from BrowserRouter) that drops 3 frames",
+      "status": "open",
+      "severity": "medium",
+      "polish_category": "react-rendering",
+      "discovered_at": "2026-09-23T21:45:27.722Z",
+      "description": "On the Projects list page, clicking a project card (example.com) at t≈140.5s navigates to the project's Overview tab. The navigation commit at t=140.586s renders 87 fibers in 55.9ms — 38.6ms commit phase plus 19.4ms passive effects — blocking the main thread for more than three 16ms frame budgets. The user sees a brief visual stutter (3 estimated dropped frames) as the Overview page mounts. The commit was triggered by a click that fired usePrefetchProjectData (projectDataApi.ts:1232-1239), dispatching projectDataApi/executeQuery/pending ×2, projectDataApi/internalSubscriptions/subscriptionsUpdated and projectDataApi/executeQuery/fulfilled ×2 into the same batch as the route change. Only 2.3ms (4.1%) of the render was wasted; the cost is overwhelmingly productive re-render of the whole app tree, dominated by ProjectOverview (17.6ms), ProjectChat (9.6ms), AppShell (4.9ms), Routes (3.9ms) and CreditMeter (3.0ms).",
+      "actual_behavior": "56ms commit blocks main thread for 3+ frames. 3 frames dropped — brief visual stutter Commit at T=140.6s took 56ms (87 fibers rendered). Triggered by: `redux: projectDataApi/executeQuery/pending (×2) + projectDataApi/internalSubscriptions/subscriptionsUpdated + projectDataApi/executeQuery/fulfilled (×2) (click)`. Root cause: `setState` in `BrowserRouter` cascaded to 86 descendant components (100% of commit cost, 5 levels deep). Suggested action: This commit's render work is mostly productive. Profile the most expensive components to find optimization opportunities in their render logic.",
+      "expected_behavior": "Navigating from the Projects list to a project's Overview page should keep the main thread responsive: the route-change commit should complete within the ~16ms frame budget (or be split across frames via concurrent rendering / memoized subtrees), so that no frames are dropped and the user perceives a smooth transition into the Overview skeletons and their loaded content.",
+      "replay_recording_id": "3eddb1ff-5fc6-4016-b84f-920077d0644b"
+    },
+    "live_sync_258": {
+      "id": "bug-mtmk9vtr-21c2",
+      "title": "Live-sync loop re-fetches /api/repos/maple/reading-room/pulls 258 times with checkpoint never advancing past -1",
+      "status": "fixed",
+      "severity": "medium",
+      "polish_category": "network-performance",
+      "discovered_at": "2026-09-04T06:16:47.397Z",
+      "description": "The reading-room PR list view runs a continuous long-poll loop against /api/repos/maple/reading-room/pulls?projection=1&reducer=pr-index&live=1&checkpoint=-1&waitMs=500. The checkpoint query parameter is pinned at -1 for the entire session, so every round re-requests the full projection from the beginning instead of resuming from the last checkpoint. Over the ~160s recording the same endpoint was hit 258 times (257 x 200, avg ~631ms each), one request immediately after the previous one finishes — a steady ~600–750ms poll cadence with no user activity driving it (only 2 clicks in the whole recording, no keypresses).",
+      "actual_behavior": "The client sends checkpoint=-1 on every round for the whole session: 258 sequential GET requests to /api/repos/maple/reading-room/pulls (257 x HTTP 200, 1 no-response), each ~575–760ms, back-to-back with ~600–750ms between request starts, re-downloading/re-processing the same projection continuously while the user does nothing.",
+      "expected_behavior": "A checkpoint-based live sync should send the most recently received checkpoint on each round so the server returns only new data since that checkpoint (or holds the request until there is new data). Once the projection is loaded, the client should reuse it and only fetch deltas, keeping network activity near zero while nothing changes.",
+      "replay_recording_id": "b9048c2d-5f11-4e69-ae9c-46f5923a3358"
+    },
+    "board_poll_105": {
+      "id": "bug-mtmjva2o-pah7",
+      "title": "Board live-poll re-requests /api/repos/maple/reading-room/board every ~800ms with waitMs=500 — 105 identical empty responses in ~70s",
+      "status": "fixed",
+      "severity": "low",
+      "polish_category": "network-performance",
+      "discovered_at": "2026-09-04T06:05:26.069Z",
+      "description": "The reading-room issue-board's live sync loop re-issues GET /api/repos/maple/reading-room/board?projection=1&reducer=issue-board@1&live=1&checkpoint=...&waitMs=500 back-to-back every ~700-900ms. 105 such requests were recorded between 35802ms and the end of the session, all 200, every one returning the identical body {\"ok\":true,\"events\":[],\"checkpoint\":\"0000000000000000_0000000000000000\",...} — i.e. no new events, unchanged checkpoint. The repetition is not driven by user activity (only 2 clicks in the whole recording): it is the board's live-update poll loop, whose 500ms server-side wait (waitMs=500) makes each request return almost immediately, so the loop spins. The same session's other live streams (/registry/me, /api/chat/maple) used ~10s waits and needed only ~5 requests each, and the shared URL builder in the bundle defaults waitMs to 10000. (Corrects the original 'per keystroke' hypothesis: the measured driver is the live-poll loop, not typing.)",
+      "actual_behavior": "From 35802ms onward the client re-issued GET /api/repos/maple/reading-room/board?projection=1&reducer=issue-board%401&live=1&checkpoint=0000000000000000_0000000000000000&waitMs=500 every ~700-900ms with no gap — 105 requests in total (filter 'api/repos/maple/reading-room/board' matches 105 of 160 API calls), all status 200, each returning the identical body with events:[] and checkpoint 0000000000000000_0000000000000000, adding no new data.",
+      "expected_behavior": "The board's live subscription should hold each long-poll request for the shared default of 10000ms (waitMs=10000) — as the sibling /registry/me and /api/chat/maple streams in this same session do — or use the SSE transport (live=sse) that already exists in the bundle, so an idle board generates roughly one request per 10 seconds instead of ~75 per minute of identical empty-event responses.",
+      "replay_recording_id": "fdfe8abf-1584-47b9-9b49-80cde46389e3"
+    }
+  },
+  "electric_forest_bug_categories": {
+    "network-performance": 33,
+    "journey": 39,
+    "glitches": 20,
+    "accessibility": 26,
+    "user-experience": 5,
+    "layout-shift": 3
+  }
+}

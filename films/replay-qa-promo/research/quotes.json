@@ -1,0 +1,306 @@
+[
+  {
+    "id": "Q01",
+    "text": "Set up QA for your app",
+    "speaker": "Replay QA (on-screen product copy)",
+    "date": "2026-10-14",
+    "source": "https://qa.replay.io/ (signed in, 2026-10-14); films/replay-qa-promo/capture/clean/new-project.json; films/replay-qa-promo/research/sources/account-digest.json",
+    "context": "New Project page heading"
+  },
+  {
+    "id": "Q02",
+    "text": "Enter your app's URL and I'll walk you through the rest in a quick chat.",
+    "speaker": "Replay QA (on-screen product copy)",
+    "date": "2026-10-14",
+    "source": "https://qa.replay.io/ (signed in, 2026-10-14); films/replay-qa-promo/capture/clean/new-project.json; films/replay-qa-promo/research/sources/account-digest.json",
+    "context": "New Project page sub-copy, first person"
+  },
+  {
+    "id": "Q03",
+    "text": "Start setup",
+    "speaker": "Replay QA (on-screen product copy)",
+    "date": "2026-10-14",
+    "source": "films/replay-qa-promo/capture/clean/new-project.json (hover-start 4737 ms)",
+    "context": "Label of the chat input's send button (accessible name 'Send message'); hovered, never clicked, in the take"
+  },
+  {
+    "id": "Q04",
+    "text": "Want your coding agent to handle it?",
+    "speaker": "Replay QA (on-screen product copy)",
+    "date": "2026-10-14",
+    "source": "https://qa.replay.io/ (signed in, 2026-10-14); films/replay-qa-promo/capture/clean/new-project.json; films/replay-qa-promo/research/sources/account-digest.json",
+    "context": "New Project callout; followed by the button text 'Get the prompt'"
+  },
+  {
+    "id": "Q05",
+    "text": "Use Replay QA to test and fix this app. Start at https://docs.replay.io/llms.txt and follow it.",
+    "speaker": "Replay documentation (docs.replay.io)",
+    "date": "2026-10-14",
+    "source": "https://docs.replay.io/basics/replay-qa/agent-integration; films/replay-qa-promo/research/sources/account-digest.json (new_project_page.agent_prompt)",
+    "context": "The one-sentence prompt for a coding agent"
+  },
+  {
+    "id": "Q06",
+    "text": "You do not need an existing test suite or a list of reproduction steps.",
+    "speaker": "Replay documentation (docs.replay.io)",
+    "date": "2026-10-14",
+    "source": "https://docs.replay.io/basics/replay-qa/overview",
+    "context": "Overview; continues 'Replay QA can start from an application URL and guidance about what the product should do.'"
+  },
+  {
+    "id": "Q07",
+    "text": "No. Replay QA explores the app and creates its own reusable journeys. It complements an existing test suite but does not require one.",
+    "speaker": "Replay documentation (docs.replay.io)",
+    "date": "2026-10-14",
+    "source": "https://docs.replay.io/basics/replay-qa/overview (FAQ)",
+    "context": "Answer to 'Do I need an existing test suite?'"
+  },
+  {
+    "id": "Q08",
+    "text": "Replay QA works without configuration: give it a URL and it explores.",
+    "speaker": "Replay documentation (docs.replay.io)",
+    "date": "2026-10-14",
+    "source": "https://docs.replay.io/basics/replay-qa/getting-good-results",
+    "context": "Opening of the getting-good-results guide; the guide then explains that guidance sharpens results"
+  },
+  {
+    "id": "Q09",
+    "text": "Replay QA judges findings against it, so it is the fastest way to stop reports about deliberate behavior.",
+    "speaker": "Replay documentation (docs.replay.io)",
+    "date": "2026-10-14",
+    "source": "https://docs.replay.io/basics/replay-qa/getting-good-results",
+    "context": "About the project's design document"
+  },
+  {
+    "id": "Q10",
+    "text": "Explore the app to get journeys. Run the journeys to get recordings.",
+    "speaker": "Replay documentation (docs.replay.io)",
+    "date": "2026-10-14",
+    "source": "https://docs.replay.io/basics/replay-qa/concepts",
+    "context": "Opening of the section 'The loop'"
+  },
+  {
+    "id": "Q11",
+    "text": "Each journey run produces a Replay recording.",
+    "speaker": "Replay documentation (docs.replay.io)",
+    "date": "2026-10-14",
+    "source": "https://docs.replay.io/basics/replay-qa/concepts",
+    "context": "Definition of a test run"
+  },
+  {
+    "id": "Q12",
+    "text": "⚠️ I stopped exploring because the app requires a sign-in I couldn't complete, so signed-in areas couldn't be tested.",
+    "speaker": "Replay QA (on-screen product copy)",
+    "date": "2026-08-30",
+    "source": "films/replay-qa-promo/capture/clean/explore.json @ 0 ms (Electric Forest project chat)",
+    "context": "A blocked exploration reporting what it needs; it sits in the chat column"
+  },
+  {
+    "id": "Q13",
+    "text": "Starting the exploration of the Electric Forest app. I'll begin with the public home page's in-page navigation: clicking 'Features' to see that section of the landing page.",
+    "speaker": "Replay QA (on-screen product copy)",
+    "date": "2026-10-14",
+    "source": "films/replay-qa-promo/capture/clean/explore.json (added at 6868 ms)",
+    "context": "Exploration player subtitle: the agent's own commentary"
+  },
+  {
+    "id": "Q14",
+    "text": "Running test loops automatically.",
+    "speaker": "Replay QA (on-screen product copy)",
+    "date": "2026-10-14",
+    "source": "films/replay-qa-promo/capture/clean/schedule.json; films/replay-qa-promo/research/sources/account-digest.json",
+    "context": "Settings, Project status row, beside the 'Active' status"
+  },
+  {
+    "id": "Q15",
+    "text": "Tue at 3:00 AM · America/New_York",
+    "speaker": "Replay QA (on-screen product copy)",
+    "date": "2026-10-14",
+    "source": "films/replay-qa-promo/capture/clean/schedule.json @ 8808 ms",
+    "context": "Schedule chip on the Production environment (weekly cadence)"
+  },
+  {
+    "id": "Q16",
+    "text": "Add production, staging, development, preview, or local configuration.",
+    "speaker": "Replay QA (on-screen product copy)",
+    "date": "2026-10-14",
+    "source": "films/replay-qa-promo/capture/clean/schedule.json @ 11458 ms",
+    "context": "Add environment row"
+  },
+  {
+    "id": "Q17",
+    "text": "How this project is configured. Edit settings and environment schedules here, or ask QA in the chat — both make the same change.",
+    "speaker": "Replay QA (on-screen product copy)",
+    "date": "2026-10-14",
+    "source": "films/replay-qa-promo/capture/clean/schedule.json; films/replay-qa-promo/research/sources/account-digest.json",
+    "context": "Settings page header (the take continues 'Provider authentication, members, and logins hand off to the chat.')"
+  },
+  {
+    "id": "Q18",
+    "text": "Another push supersedes the running round. Closing the pull request cancels it.",
+    "speaker": "Replay documentation (docs.replay.io)",
+    "date": "2026-10-14",
+    "source": "https://docs.replay.io/basics/replay-qa/github",
+    "context": "Continuous QA from GitHub, pull-request flow"
+  },
+  {
+    "id": "Q19",
+    "text": "Yes. You can configure daily or weekly scheduled runs in project settings.",
+    "speaker": "Replay marketing site (replay.io)",
+    "date": "2026-10-14",
+    "source": "https://www.replay.io/pricing (FAQ)",
+    "context": "Answer to 'Can I schedule Replay QA to run on a set cadence?'; continues 'Great for teams who want a nightly batch of fresh issues ready when the workday starts.'"
+  },
+  {
+    "id": "Q20",
+    "text": "A Replay recording removes the reproduction step.",
+    "speaker": "Replay documentation (docs.replay.io)",
+    "date": "2026-10-14",
+    "source": "https://docs.replay.io/reference/time-travel/how-does-time-travel-work",
+    "context": "Section 'Why time travel?'"
+  },
+  {
+    "id": "Q21",
+    "text": "Session Replay tools replay the DOM and Runtime Replay tools re-run the runtime",
+    "speaker": "Replay documentation (docs.replay.io)",
+    "date": "2026-10-14",
+    "source": "https://docs.replay.io/reference/time-travel/how-does-time-travel-work",
+    "context": "Section 'Runtime Replay versus Session Replay'; the sentence continues 'so that you can inspect the session with browser DevTools'"
+  },
+  {
+    "id": "Q22",
+    "text": "If anything user-visible happens in a different order, you have failed.",
+    "speaker": "Replay documentation (docs.replay.io)",
+    "date": "2026-10-14",
+    "source": "https://docs.replay.io/reference/time-travel/how-does-time-travel-work",
+    "context": "The determinism contract in 'How Runtime Replay works'"
+  },
+  {
+    "id": "Q23",
+    "text": "Functional testing asks \"does the journey work?\"; polish passes ask \"is it slow, inaccessible, visually broken, or unsafe?\"",
+    "speaker": "Replay documentation (docs.replay.io)",
+    "date": "2026-10-14",
+    "source": "https://docs.replay.io/reference/replay-qa/polish-passes",
+    "context": "Polish passes intro"
+  },
+  {
+    "id": "Q24",
+    "text": "every DOM mutation, every network call, every JavaScript frame",
+    "speaker": "Replay marketing site (replay.io)",
+    "date": "2026-10-14",
+    "source": "https://www.replay.io/how-it-works",
+    "context": "Section 03 Testing: what each journey test records"
+  },
+  {
+    "id": "Q25",
+    "text": "Every bug Replay QA files is backed by a Replay recording of the run that found it.",
+    "speaker": "Replay documentation (docs.replay.io)",
+    "date": "2026-10-14",
+    "source": "https://docs.replay.io/reference/replay-qa/bug-reports",
+    "context": "Opening sentence of the bug-reports reference"
+  },
+  {
+    "id": "Q26",
+    "text": "Replay QA does not generate a code patch; a developer or coding agent applies the fix from the root cause.",
+    "speaker": "Replay documentation (docs.replay.io)",
+    "date": "2026-10-14",
+    "source": "https://docs.replay.io/reference/replay-qa/bug-reports",
+    "context": "Under 'What a report contains'"
+  },
+  {
+    "id": "Q27",
+    "text": "A bug is only filed after Replay QA has confirmed it against the recording and checked that it is not a duplicate of an existing bug.",
+    "speaker": "Replay documentation (docs.replay.io)",
+    "date": "2026-10-14",
+    "source": "https://docs.replay.io/basics/replay-qa/concepts",
+    "context": "Definition of a bug"
+  },
+  {
+    "id": "Q28",
+    "text": "Markdown for Claude Code, Cursor, and other coding agents",
+    "speaker": "Replay QA (on-screen product copy)",
+    "date": "2026-10-14",
+    "source": "films/replay-qa-promo/capture/clean/bug-sync.json (rootcause 8154 ms); films/replay-qa-promo/capture/clean/bug-react.json",
+    "context": "Label under 'Full Bug Report' on bug pages"
+  },
+  {
+    "id": "Q29",
+    "text": "Cross-project analytics for your autonomous QA pipeline — bug trends, severity breakdowns, and resolution tracking.",
+    "speaker": "Replay QA (on-screen product copy)",
+    "date": "2026-10-14",
+    "source": "films/replay-qa-promo/capture/clean/insights.json",
+    "context": "Insights page subtitle"
+  },
+  {
+    "id": "Q30",
+    "text": "Mark each fix. Replay QA reruns the affected journey to confirm it.",
+    "speaker": "Replay documentation (docs.replay.io)",
+    "date": "2026-10-14",
+    "source": "https://docs.replay.io/basics/replay-qa/agent-integration",
+    "context": "Step 4 of the agent loop"
+  },
+  {
+    "id": "Q31",
+    "text": "Loop until no open bugs remain.",
+    "speaker": "Replay documentation (docs.replay.io)",
+    "date": "2026-10-14",
+    "source": "https://docs.replay.io/basics/replay-qa/agent-integration",
+    "context": "Step 5 of the agent loop"
+  },
+  {
+    "id": "Q32",
+    "text": "The agent does not need to debug; it reads the root cause and writes the fix.",
+    "speaker": "Replay documentation (docs.replay.io)",
+    "date": "2026-10-14",
+    "source": "https://docs.replay.io/basics/replay-qa/agent-integration",
+    "context": "Read-the-bugs step"
+  },
+  {
+    "id": "Q33",
+    "text": "If the bug report is not enough, the agent can open the linked recording with Replay MCP and inspect the failure directly.",
+    "speaker": "Replay documentation (docs.replay.io)",
+    "date": "2026-10-14",
+    "source": "https://docs.replay.io/basics/replay-qa/agent-integration",
+    "context": "Hand-off from the bug report to Replay MCP"
+  },
+  {
+    "id": "Q34",
+    "text": "Verify the report against its evidence and the source before applying a fix.",
+    "speaker": "Replay QA API description (openapi.json)",
+    "date": "2026-10-14",
+    "source": "https://qa.replay.io/api/v1/openapi.json (info.description); films/replay-qa-promo/research/sources/openapi.json",
+    "context": "Instruction to coding agents"
+  },
+  {
+    "id": "Q35",
+    "text": "No, and that's deliberate. Replay QA finds the bug, works out the root cause, and writes a suggested fix, but applying it stays with your team.",
+    "speaker": "Replay marketing site (replay.io)",
+    "date": "2026-10-14",
+    "source": "https://www.replay.io/ (FAQ)",
+    "context": "Answer to 'Does Replay QA also fix the bugs it finds?'"
+  },
+  {
+    "id": "Q36",
+    "text": "Writing code got faster. Verifying it didn't, and it's still the part your team does by hand.",
+    "speaker": "Replay marketing site (replay.io)",
+    "date": "2026-10-14",
+    "source": "https://www.replay.io/",
+    "context": "Home page positioning line"
+  },
+  {
+    "id": "Q37",
+    "text": "Generation was never the hard part.",
+    "speaker": "Replay blog (company post, by-line Thomas Daly; do not depict the author)",
+    "date": "2026-10-06",
+    "source": "https://www.replay.io/blog/what-our-experimental-self-healing-software-loop-shipped-in-two-weeks",
+    "context": "Vendor's thesis in its post on a two-week self-healing loop pilot (vendor-reported)"
+  },
+  {
+    "id": "Q38",
+    "text": "No recorded judge actions available.",
+    "speaker": "Replay QA (on-screen product copy)",
+    "date": "2026-10-14",
+    "source": "films/replay-qa-promo/capture/clean/bug-react.json (4452 ms)",
+    "context": "Bug-filing provenance panel on the 67 ms bug page; function of the judges is undocumented, do not narrate"
+  }
+]

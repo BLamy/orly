@@ -1,0 +1,135 @@
+{
+  "format": 3,
+  "kind": "film",
+  "slug": "replay-qa-promo",
+  "title": "Replay QA: { fully managed }",
+  "subtitle": "End-to-end testing that explores, runs and records on its own",
+  "accent": "#b0277a",
+  "film": {
+    "runtime": 82.7083,
+    "fps": 24,
+    "width": 1920,
+    "height": 1080,
+    "timing": "locked",
+    "master": null,
+    "captions": "film.vtt",
+    "voice": {
+      "name": "Eric (premade library voice cjVigY5qzO86Huf0OWal) - smooth, trustworthy, mid-life American; plain, friendly product-promo read",
+      "voiceId": "cjVigY5qzO86Huf0OWal",
+      "model": "eleven_multilingual_v2"
+    },
+    "score": {
+      "engine": "strudel",
+      "cues": 1,
+      "musicSeconds": 82.7
+    },
+    "loudness": {
+      "I": -16,
+      "TP": -1.9,
+      "LRA": 2.7
+    },
+    "audio": {
+      "stems": "audio/film-audio.json",
+      "clock": 82.7083
+    },
+    "logline": "You give Replay QA one URL. It explores your app, turns what it finds into journeys and runs them on a schedule, against staging, a preview or localhost, and on every pull request, recording every run. So when a bug only exists in time (a 67 ms commit nobody clicked, one list fetched 258 times), it arrives with a recording and its root cause.",
+    "vhs": {
+      "subject": "Software Testing",
+      "theme": "grid",
+      "icons": [
+        "magnifier",
+        "crt",
+        "robot",
+        "gear"
+      ],
+      "tagline": "Catch the bugs that hide in time!"
+    },
+    "sources": "sources/",
+    "sourcesData": "sources.json",
+    "credits": "credits.json",
+    "review": "review.json",
+    "sourcesUrl": "https://orly.brett-lamy.workers.dev/generated/replay-qa-promo/sources/"
+  },
+  "chapters": [
+    {
+      "number": 1,
+      "title": "{ introducing }",
+      "blurb": "A dawn haze and a half-finished thought: end-to-end tests you never write, or remember to run. On the blur the braces part and dots slide in to frame { intro▢▢▢ducing }, which flickers three stamps of the product in its gap and closes into the Replay mark and Replay QA.",
+      "scene": "films/replay-qa-promo",
+      "cues": [
+        0.3,
+        5.083
+      ],
+      "duration": 7.5,
+      "filmStart": 0
+    },
+    {
+      "number": 2,
+      "title": "One URL",
+      "blurb": "One address is the whole setup. The URL is typed full-frame over a blurred ghost of the real input (the kick enters on the caret's arrival as the whip lands), then pulls back into Replay QA's real New project page: braces on the input, the cursor hovering Start setup, just a quick chat.",
+      "scene": "films/replay-qa-promo",
+      "cues": [
+        0.5,
+        3.367
+      ],
+      "duration": 6.417,
+      "filmStart": 7.5
+    },
+    {
+      "number": 3,
+      "title": "The loop",
+      "blurb": "The reference's 'Building Image' step list becomes 'Testing your app': the replay.io home page's three steps, verbatim (Explore / Test & Record / Investigate & Report), each green check clacking in as the narration names the mechanism while 'Working' shimmers and turns to 'Done', with one small grey line of Insights proof (89 explorations, 1151 journeys). Then the rows break into square registration dots that clear to bare paper, and the cut lands straight into ch04 on M3's first downbeat. 'Recorded' is first said aloud in ch04 and 'root cause' in ch06's closing triplet.",
+      "scene": "films/replay-qa-promo",
+      "cues": [
+        0.3,
+        2.968
+      ],
+      "duration": 6.792,
+      "filmStart": 13.9167
+    },
+    {
+      "number": 4,
+      "title": "Always on",
+      "blurb": "One rhythmic triplet, each proof landing on a downbeat with a filtered stab and a brace snap. 'Then it runs on Replay's browsers': the real 'Tue at 3:00 AM · America/New_York' chip lifts under a large thin 3:00 AM like a name tag, a 'hosted by Replay' pill lands on 'browsers', and six ticks mark the six Tuesdays it really fired. Three environment words lift off the real Add environment row as pills and light red-pink as they are said. The Reminders · CI runs table, braces on the first blue PR #3 badge, an 'a test run for every PR' pill, and a ▶ recording chip popping out of every visible run row as each run is recorded, then reviewed, for what's slow as well as what breaks.",
+      "scene": "films/replay-qa-promo",
+      "cues": [
+        0.3,
+        5.133,
+        8.55,
+        10.406
+      ],
+      "duration": 15.667,
+      "filmStart": 20.7083
+    },
+    {
+      "number": 5,
+      "title": "Bugs that only exist in time",
+      "blurb": "The one plum register: a 67 ms commit nobody clicked on Replay QA's own Projects page, where 25 of 27 renders changed nothing a screen recording could see; a sync loop that fetched one pull-request list 258 times in under three minutes because it never saved its place; and, in a corner, a developer handing a recording to a critic until it says good.",
+      "scene": "films/replay-qa-promo",
+      "cues": [
+        0.3,
+        3.092,
+        6.155,
+        10.466,
+        14.425,
+        17.918,
+        22.158,
+        26.843
+      ],
+      "duration": 30.708,
+      "filmStart": 36.375
+    },
+    {
+      "number": 6,
+      "title": "{ fully managed · always on }",
+      "blurb": "A collage of four real product tiles with the line to remember woven between them in three even rows, then the ember end card: Replay QA, end-to-end testing, fully managed; catch bugs that only exist in time.",
+      "scene": "films/replay-qa-promo",
+      "cues": [
+        0.3,
+        7.233
+      ],
+      "duration": 15.625,
+      "filmStart": 67.0833
+    }
+  ]
+}

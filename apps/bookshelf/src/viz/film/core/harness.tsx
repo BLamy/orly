@@ -9,13 +9,14 @@
  *
  * Also exports useFilm(slug, w, h) (shared loader for the studio) and FilmStack (the DOM stack).
  */
-import { useEffect, useMemo, useRef, useState, type CSSProperties, type MutableRefObject } from 'react';
+import { Component, useEffect, useMemo, useRef, useState, type CSSProperties, type MutableRefObject, type ReactNode } from 'react';
 import { flushSync } from 'react-dom';
 import { FILM_H, FILM_W } from '../contracts';
 import { frameCacheStats, lastFrameDepth } from './frame';
 import { fontSpecs } from './registry';
 import { filmFontsReady } from '../setup';
 import { createReel, type Reel, type ReelOverlay, type ReelRenderInfo } from './reel';
+import { pendingCount, settlePending } from './pending';
 import { loadShotModules, loadTimeline } from './shot';
 
 export interface FilmFrameInfo {
@@ -98,6 +99,21 @@ export function useFilm(slug: string, width: number, height: number, opts?: { fi
   return st;
 }
 
+/** a shot's DOM layer failing must not blank the frame: it logs once and renders a visible error label instead */
+class DomBoundary extends Component<{ id: string; children: ReactNode }, { err: string | null }> {
+  state = { err: null as string | null };
+  static getDerivedStateFromError(e: unknown) {
+    return { err: String((e as Error)?.message ?? e) };
+  }
+  componentDidCatch(e: unknown) {
+    console.error(`[film] shot ${this.props.id} dom() failed`, e);
+  }
+  render() {
+    if (this.state.err) return <div style={{ position: 'absolute', left: 20, bottom: 20, font: '14px ui-monospace, monospace', color: '#f44', background: 'rgba(0,0,0,.6)', padding: 6 }}>{`dom() ${this.props.id}: ${this.state.err}`}</div>;
+    return this.props.children;
+  }
+}
+
 /** scene canvas + SVG overlay + finish canvas, absolutely stacked at `width`×`height` device px, CSS-scaled by `display`. */
 export function FilmStack(props: {
   width: number;
@@ -112,8 +128,19 @@ export function FilmStack(props: {
   return (
     <div style={{ position: 'relative', width, height, overflow: 'hidden', background: '#000', ...props.style }}>
       <canvas ref={props.sceneRef} width={width} height={height} style={abs} />
+      {overlays.some((o) => o.layer === 'dom') && (
+        <div style={{ position: 'absolute', left: 0, top: 0, width: FILM_W, height: FILM_H, transform: `scale(${width / FILM_W})`, transformOrigin: '0 0', pointerEvents: 'none' }}>
+          {overlays
+            .filter((o) => o.layer === 'dom')
+            .map((o) => (
+              <div key={o.id} style={{ position: 'absolute', inset: 0, opacity: o.opacity }}>
+                <DomBoundary id={o.id}>{o.node}</DomBoundary>
+              </div>
+            ))}
+        </div>
+      )}
       <svg viewBox={`0 0 ${FILM_W} ${FILM_H}`} style={{ ...abs, pointerEvents: 'none' }}>
-        {overlays.map((o) => (
+        {overlays.filter((o) => o.layer !== 'dom').map((o) => (
           <g key={o.id} opacity={o.opacity}>
             {o.node}
           </g>
@@ -194,6 +221,11 @@ export function FilmHarness({ slug }: { slug: string }) {
         await document.fonts.ready;
         const info = paint(t);
         flushSync(() => setOverlays(info?.overlays ?? []));
+        // DOM footage (rrweb screens) may still be loading fonts/images for this frame
+        if (pendingCount()) {
+          await settlePending();
+          await raf2();
+        }
         await raf2();
       },
       frameInfo() {

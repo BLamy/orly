@@ -17,3 +17,6 @@ registerFonts(...FILM_FONTS);
 
 /** Resolves once the film webfonts' stylesheet is injected and every face is loaded. */
 export const filmFontsReady: Promise<void> = typeof document === 'undefined' ? Promise.resolve() : loadFilmFonts();
+
+// the promo kit (look 'promo'): blur/whip transitions, the promo finish and fonts
+import './promo';

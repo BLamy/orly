@@ -38,7 +38,7 @@ export function onsets(channels, sr, { from = 0, to = Infinity } = {}) {
     if (E[k] < peak - FLOOR_BELOW_PEAK_DB) continue;
     let mn = Infinity;
     for (let j = Math.max(0, k - look); j < k; j++) mn = Math.min(mn, E[j]);
-    if (E[k] - mn >= RISE_DB && t - last > 0.1) {
+    if (E[k] - mn >= RISE_DB && t - last > 0.1 + 1e-6) { // (epsilon: k*FRAME float error counted one strike twice, 100 ms apart)
       out.push(+t.toFixed(3));
       last = t;
     }

@@ -1,0 +1,2285 @@
+{
+  "openapi": "3.0.3",
+  "info": {
+    "title": "Replay QA API",
+    "version": "1.0.0",
+    "description": "AI-powered QA testing platform. Create projects, manage bugs, run explorations, and inspect test results.\n\n## Continuous QA workflow\n\nThe intended loop for a coding agent keeping an app bug-free:\n\n1. **Create a project** (`POST /projects`) for the running app — pass its `target_url` and a short `instructions` note on the key flows to focus on. Optionally include a `design_document` describing the features it should have.\n2. **Let QA run.** Poll `GET /projects/{project_id}/status` until explorations and test runs finish. QA drives exploration and testing itself — do NOT start your own explorations or test runs while it is running. If you created the project with `start_exploration: false`, it stays active for session processing without initial base-site QA; use POST /projects/{project_id}/explorations when the user opts in.\n3. **Read the bugs.** List open bugs (`GET /projects/{project_id}/bugs?status=open`) and fetch each one (`GET /bugs/{bug_id}`). Every bug ships with a full investigation: reproduction steps, expected vs. actual behavior, a screenshot chronology, and a root-cause analysis traced through the Replay recording (app.replay.io/recording/<id>) down to the responsible code. Verify the report against its evidence and the source before applying a fix. For GitHub issues, fetch the fix-qa-bug skill below.\n4. **Mark each fix** (`PATCH /bugs/{bug_id}` with `{\"status\":\"fixed\"}`) — this automatically retries the affected journey to confirm the fix. Choose the status using the lifecycle guidance below.\nopen: an unresolved issue; match recurring findings to this report. fixed: a fix was applied and the issue should not recur; ignore this report during deduplication and assess any recurrence as a fresh report. invalid: the report has a problem and is discarded; keep it as a duplicate candidate so the same invalid claim is not filed again. A genuinely different defect needs its own evidence and report. wontfix: the issue is acknowledged and will recur, but new bugs should not be filed for it; match recurring findings to this report. Open, wontfix and invalid are duplicate candidates. Wontfix and invalid both suppress repeat filings; neither means a fix was applied.\n5. **Loop.** After marking a bug fixed, go back to polling status and keep going until no open bugs remain.\n\n### Resolving QA-reported GitHub issues\n\nFetch `GET /api/v1/skills/fix-qa-bug/SKILL.md` without credentials. Read it directly, or save it as `fix-qa-bug/SKILL.md` in your agent’s skill directory. The skill verifies evidence, closes false positives and duplicates covered by open PRs in both GitHub and QA, or creates a tested fix PR with a `Fixes <qa-bug-url>` declaration.\n\n### GitHub App (PR and main-branch QA)\n\nFetch `GET /api/v1/skills/github-app/SKILL.md` without credentials: the canonical reference for installing the Replay QA GitHub App, linking a repository (`github` on `PATCH /projects/{project_id}`), every configuration parameter including the repository's `.github/replay-qa.yml` (`ignorePaths`), check results, and linking bugs to pull requests.\n\n### Apps only reachable from your machine (reverse proxy)\n\nIf `target_url` is reachable only from your own machine (e.g. http://localhost:3000) and not the public internet, create the project with `use_reverse_proxy: true`. It then starts gated and will not run tests until you connect an outbound-only tunnel. The create response includes `reverse_proxy_setup_url`; run `replayqa proxy --project <project_id>` on a machine that can reach the app. The old copy-paste setup runbook remains available from `GET /projects/{project_id}/reverse-proxy` as an advanced fallback.\n\n## Missing a capability?\n\nIf this API lacks something you or your agent need, contact the Replay team (see `info.contact`).\n\n## Authentication\n\nBug and project endpoints require a Bearer token. The OpenAPI document and published skills are public. Which credential to use and how to get it: https://docs.replay.io/reference/api-keys",
+    "contact": {
+      "name": "Replay team",
+      "url": "https://www.replay.io/discord"
+    }
+  },
+  "externalDocs": {
+    "description": "Replay QA docs for coding agents",
+    "url": "https://docs.replay.io/llms.txt"
+  },
+  "servers": [
+    {
+      "url": "https://qa.replay.io"
+    }
+  ],
+  "security": [
+    {
+      "bearerAuth": []
+    }
+  ],
+  "components": {
+    "securitySchemes": {
+      "bearerAuth": {
+        "type": "http",
+        "scheme": "bearer",
+        "description": "See https://docs.replay.io/reference/api-keys"
+      }
+    }
+  },
+  "paths": {
+    "/api/v1/projects/{project_id}/chat/messages": {
+      "parameters": [
+        {
+          "name": "project_id",
+          "in": "path",
+          "required": true,
+          "schema": {
+            "type": "string"
+          }
+        }
+      ],
+      "post": {
+        "operationId": "sendProjectChatMessage",
+        "summary": "Send a message to the project assistant. Saves the user message in the shared project chat and starts an asynchronous reply using server-loaded history. Returns turnId; poll get_project_chat_turn until done. The assistant can perform project actions requested by the message. Requires project membership; task credentials are not supported.",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "message": {
+                    "type": "string",
+                    "minLength": 1,
+                    "maxLength": 24000
+                  },
+                  "timezone": {
+                    "type": "string"
+                  }
+                },
+                "required": [
+                  "message"
+                ],
+                "additionalProperties": false
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Reply queued. Returns turnId, messageId, userMessageId, status, and pollMs. Poll the chat turn endpoint."
+          },
+          "400": {
+            "description": "Invalid message or timezone"
+          },
+          "403": {
+            "description": "Project access required"
+          },
+          "503": {
+            "description": "Worker could not start; returns turnId and userMessageId"
+          }
+        }
+      },
+      "get": {
+        "operationId": "getProjectChatMessages",
+        "summary": "Read the shared project chat transcript, oldest first, optionally after an ISO timestamp. Requires project membership.",
+        "parameters": [
+          {
+            "name": "since",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Shared transcript as { messages: [...] }"
+          },
+          "403": {
+            "description": "Project access required"
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/chat/turns/{turn_id}": {
+      "get": {
+        "operationId": "getProjectChatTurn",
+        "summary": "Poll a project assistant reply started by your account. Returns accumulated text, events after the supplied cursor, the next cursor, status, and done. Inline UI events may require opening the project in the web app. Poll at the returned pollMs interval until done, including error or timeout.",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "turn_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "after",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Accumulated text, events, cursor, status, error, done, and pollMs. Use cursor as after on the next poll."
+          },
+          "403": {
+            "description": "Project access required"
+          },
+          "404": {
+            "description": "Turn not found for this account and project"
+          }
+        }
+      }
+    },
+    "/api/v1/skills/fix-qa-bug/SKILL.md": {
+      "get": {
+        "operationId": "getFixQaBugSkill",
+        "summary": "Fetch the skill for resolving QA-reported GitHub issues",
+        "description": "Public, self-contained SKILL.md. Served as a static deploy asset; save in your agent skill directory or read directly. Bug reads and updates still require authentication.",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Installable Markdown skill with YAML frontmatter",
+            "content": {
+              "text/markdown": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/skills/github-app/SKILL.md": {
+      "get": {
+        "operationId": "getGithubAppSkill",
+        "summary": "Fetch the Replay QA GitHub App reference",
+        "description": "Public, self-contained SKILL.md: setup, all configuration parameters, PR and main-branch behavior, check results, bug linking, troubleshooting. Served as a static deploy asset.",
+        "security": [],
+        "responses": {
+          "200": {
+            "description": "Installable Markdown skill with YAML frontmatter",
+            "content": {
+              "text/markdown": {
+                "schema": {
+                  "type": "string"
+                }
+              }
+            }
+          }
+        }
+      }
+    },
+    "/api/v1/project-emails": {
+      "post": {
+        "operationId": "reserveProjectEmail",
+        "summary": "Reserve an email for a future QA project",
+        "description": "Returns a unique receiving address without creating a project or starting QA. Pass project_email to POST /api/v1/projects using the same account. Each address can be assigned once and does not expire. Task credentials are not accepted.",
+        "security": [
+          {
+            "bearerAuth": []
+          }
+        ],
+        "responses": {
+          "201": {
+            "description": "Reserved project email",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "project_email"
+                  ],
+                  "properties": {
+                    "project_email": {
+                      "type": "string",
+                      "format": "email"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required"
+          },
+          "403": {
+            "description": "Task credentials cannot reserve emails"
+          },
+          "503": {
+            "description": "Email inbox is not configured"
+          }
+        }
+      }
+    },
+    "/api/v1/projects": {
+      "get": {
+        "operationId": "listProjects",
+        "summary": "List all projects you have access to",
+        "parameters": [
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "active",
+                "paused",
+                "all"
+              ],
+              "default": "all"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of projects"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createProject",
+        "summary": "Create a new QA project, optionally starting automated exploration",
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name",
+                  "target_url"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Project name"
+                  },
+                  "target_url": {
+                    "type": "string",
+                    "description": "URL of the application to test"
+                  },
+                  "webhook_url": {
+                    "type": "string",
+                    "description": "URL to receive bug report notifications. Payload: { body, referrer, callback_url, bug_id, title, severity, description, reproduction_steps, expected_behavior, actual_behavior, replay_recording_id, analysis, polish_category }"
+                  },
+                  "project_email": {
+                    "type": "string",
+                    "format": "email",
+                    "description": "An unused email returned by POST /api/v1/project-emails for this account. Assigned before QA starts and used for the project inbox and default login identity. Explicit login credentials retain precedence. Omit to use the automatically derived inbox. Invalid, foreign, or already assigned emails return 400."
+                  },
+                  "finished_webhook_url": {
+                    "type": "string",
+                    "description": "URL to receive a notification when QA on this project finishes and has nothing left to do (no queued/running tasks or in-progress test runs, explorations, polish passes, or guidance updates). Fires once per idle transition. Payload: { event: \"qa.finished\", referrer, project_id, project_name, project_url, bug_count, open_bug_count, resolved_bug_count, finished_at }"
+                  },
+                  "backend_recording_url": {
+                    "type": "string",
+                    "description": "Endpoint for creating Replay recordings of backend requests. Agents POST { requestId } to trigger, GET ?requestId=<id> to poll."
+                  },
+                  "backend_log_url": {
+                    "type": "string",
+                    "description": "Endpoint for fetching backend/database logs. Agents GET ?start=<ISO>&end=<ISO> to retrieve logs."
+                  },
+                  "logins": {
+                    "type": "array",
+                    "description": "Login credentials for the app under test",
+                    "items": {
+                      "type": "object",
+                      "required": [
+                        "email",
+                        "password"
+                      ],
+                      "properties": {
+                        "email": {
+                          "type": "string"
+                        },
+                        "password": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  },
+                  "design_document": {
+                    "type": "string",
+                    "description": "Markdown document describing expected app features. When provided, it is given to the app exploration as additional context for planning test journeys (the exploration still browses and records the app)."
+                  },
+                  "start_exploration": {
+                    "type": "boolean",
+                    "default": true,
+                    "description": "Set false to create an active project without the initial exploration or smoke-test journey/runs. Session ingestion, reviews, reports, and session-driven reproductions remain enabled. Start base-site QA later with POST /api/v1/projects/{project_id}/explorations. This is a creation-time option, not a project pause or a restriction on explicitly requested work."
+                  },
+                  "instructions": {
+                    "type": "string",
+                    "description": "Instructions for the initial AI exploration",
+                    "default": "Explore the app and test the main features"
+                  },
+                  "recording_id": {
+                    "type": "string",
+                    "pattern": "^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$",
+                    "description": "Replay recording UUID to analyze for bugs. When provided, the project analyzes this single recording instead of exploring the target URL. target_url is not required when recording_id is set."
+                  },
+                  "use_reverse_proxy": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Set to true when target_url is only reachable from your own machine (e.g. http://localhost:3000) and not from the public internet. The project starts gated — it will not run tests until you connect a reverse-proxy tunnel. After creating the project, run `replayqa proxy --project <project_id>` on a machine that can reach target_url. The old setup instructions remain available from GET /api/v1/projects/{project_id}/reverse-proxy as `instructions`."
+                  },
+                  "enabled_polish_passes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "network-performance",
+                        "react-rendering",
+                        "layout-shift",
+                        "accessibility",
+                        "glitches",
+                        "user-experience",
+                        "seo",
+                        "ui-details",
+                        "security"
+                      ]
+                    },
+                    "default": [
+                      "network-performance",
+                      "react-rendering",
+                      "layout-shift",
+                      "glitches",
+                      "user-experience",
+                      "accessibility",
+                      "seo",
+                      "ui-details"
+                    ],
+                    "description": "Which polish passes run against the project's test runs. Replaces the default set entirely, so include every pass you want enabled. Prefer add_polish_passes / remove_polish_passes unless you really mean to pin the whole set — a hardcoded copy of the defaults goes stale when the defaults change. Unknown pass names are rejected with a 400."
+                  },
+                  "add_polish_passes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "network-performance",
+                        "react-rendering",
+                        "layout-shift",
+                        "accessibility",
+                        "glitches",
+                        "user-experience",
+                        "seo",
+                        "ui-details",
+                        "security"
+                      ]
+                    },
+                    "description": "Polish passes to enable ON TOP of the default set (or on top of enabled_polish_passes when that is sent too). Use this to turn on a pass that is off by default — e.g. [\"seo\"] runs the defaults plus the SEO pass — without restating the defaults. Unknown pass names are rejected with a 400."
+                  },
+                  "remove_polish_passes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "network-performance",
+                        "react-rendering",
+                        "layout-shift",
+                        "accessibility",
+                        "glitches",
+                        "user-experience",
+                        "seo",
+                        "ui-details",
+                        "security"
+                      ]
+                    },
+                    "description": "Polish passes to disable from the default set (or from enabled_polish_passes when that is sent too). Naming a pass in both add_polish_passes and remove_polish_passes is rejected with a 400."
+                  },
+                  "time_limit_minutes": {
+                    "type": "integer",
+                    "nullable": true,
+                    "minimum": 1,
+                    "maximum": 10080,
+                    "description": "Wall-clock limit in minutes for each new test run, including queueing, retries and recording analysis. Omit or send null for no limit. Each run snapshots its deadline when created; changing this setting affects future runs only. When a deadline expires, the project is paused, all remaining project work is cancelled and eligible unfinished work is refunded. Finished results are preserved. Running containers are stopped by the next deadline sweep (every minute in production; previews use the five-minute reap sweep)."
+                  },
+                  "budget": {
+                    "type": "number",
+                    "minimum": 0,
+                    "description": "Credit budget cap for this project — the maximum number of credits QA may spend on it. QA pauses once this cap is reached (raise it later to resume). Rough guide: ~10 = smoke test, 20–50 = thorough, 50+ = broad coverage. Off by default: omit it to leave the project with no per-project cap (QA is bounded only by your account balance)."
+                  },
+                  "security_ownership_exempt": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "Waive the security pass's ownership check for this project. Active security probing normally refuses to send any request until the target origin echoes a nonce placed at /.well-known/replay-qa-security-nonce, proving you control it; set this when the target is an app you deploy and that check is not workable. RESTRICTED: a request that sets this field from an account without the entitlement is rejected with a 403 (ask an admin to grant it). The waiver skips only the nonce fetch — a cloned/emulated target is still never probed, and only origins on the target site's own registrable domain are ever contacted."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created project with exploration_id (null when start_exploration is false) and url (link to the project dashboard). When use_reverse_proxy is true the response also includes reverse_proxy_setup_url — poll it for the tunnel setup instructions."
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/reverse-proxy": {
+      "post": {
+        "operationId": "ensureReverseProxySetup",
+        "summary": "Enable reverse proxy and ensure the matching project environment",
+        "description": "Idempotently creates or updates the Local environment for an interactive client or the Preview environment for CI, enables reverse proxy, and returns tunnel status.",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "target_url"
+                ],
+                "properties": {
+                  "target_url": {
+                    "type": "string",
+                    "description": "Local or private-network app URL reachable from the frpc client, for example http://localhost:3000."
+                  },
+                  "connection_purpose": {
+                    "type": "string",
+                    "enum": [
+                      "interactive",
+                      "ci"
+                    ],
+                    "default": "interactive",
+                    "description": "Interactive clients create Local; CI clients create Preview and retain their PR through run provenance."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Reverse-proxy status plus the ensured Local or Preview environment."
+          },
+          "400": {
+            "description": "The first reverse-proxy setup requires a valid target_url."
+          }
+        }
+      },
+      "get": {
+        "operationId": "getReverseProxySetup",
+        "summary": "Get reverse-proxy tunnel status and the setup instructions to connect it",
+        "description": "For reverse-proxy projects. Legacy projects without a named Local environment get one automatically\nfrom their existing target URL. Existing public projects should first POST a local target URL here.\nReturns the tunnel status plus a self-contained,\ncopy-paste runbook (the `instructions` field) that an agent runs on a machine that can reach target_url:\ninstall frpc, build a small allowlist-restricted local forward proxy, write the config, and run — all\noutbound-only, no inbound ports.\n\nThe tunnel is provisioned lazily on the first call, so `instructions` is null for the first minute or two\nwhile it spins up — keep polling until it is non-null. Once frpc connects, `ready` flips to true, the\nproject gate opens, and QA starts automatically (no further action). Restrict the forward proxy to the\napp's host plus any backend/auth/CDN hosts it calls during testing.",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Reverse-proxy status. Fields: enabled, state (provisioning|active|error|ended|unconfigured), ready (true once frpc is connected and replayqa proxy reports a healthy local data path), frpc_connected, client_health, reverse_proxy_status (pending|ready), cli_command, instructions (advanced fallback setup runbook, or null while provisioning), tunnel (connection details, or null)."
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/integrations/fullstory": {
+      "post": {
+        "operationId": "setupFullStoryIntegration",
+        "summary": "Rotate the session registration credential",
+        "description": "EXPERIMENTAL: This API may change without notice.\n\nCreates or rotates the project-scoped, write-only session registration token.\nReturns the credential and registration endpoint as structured data for API clients.\nThe token is shown only in this response, and calling this operation again immediately invalidates the\nprevious token. Call it only when you intend to install or rotate the integration.",
+        "x-experimental": true,
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Session registration credential. The token is shown once.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "integration",
+                    "experimental",
+                    "warning",
+                    "registration_token",
+                    "registration_endpoint"
+                  ],
+                  "properties": {
+                    "integration": {
+                      "type": "string",
+                      "enum": [
+                        "fullstory"
+                      ]
+                    },
+                    "experimental": {
+                      "type": "boolean",
+                      "enum": [
+                        true
+                      ]
+                    },
+                    "warning": {
+                      "type": "string",
+                      "description": "Notice that the integration and API are experimental and may change."
+                    },
+                    "registration_token": {
+                      "type": "string",
+                      "description": "Write-only session registration bearer token. Store server-side; returned once."
+                    },
+                    "registration_endpoint": {
+                      "type": "string",
+                      "format": "uri",
+                      "description": "POST captured session artifacts here with the registration bearer token."
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "403": {
+            "description": "The API client does not have edit access to the project."
+          },
+          "404": {
+            "description": "Project not found."
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/email": {
+      "get": {
+        "operationId": "getProjectEmail",
+        "summary": "Get the QA project email address",
+        "description": "Returns the stable production inbox address QA uses for signup when no login credentials are supplied. Available before QA runs; does not provision an inbox or fetch messages. Supplied login credentials take precedence, and journeys may use plus-address variants of this address.",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "The project’s production inbox address.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "address"
+                  ],
+                  "properties": {
+                    "address": {
+                      "type": "string",
+                      "format": "email",
+                      "example": "qa-proj-example@inbox.example.com"
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "401": {
+            "description": "Authentication required."
+          },
+          "403": {
+            "description": "Access denied to this project."
+          },
+          "404": {
+            "description": "Project not found."
+          },
+          "503": {
+            "description": "The production email inbox is not configured."
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/usage": {
+      "get": {
+        "operationId": "getProjectUsage",
+        "summary": "Get gross, refunded, and net credit usage for a project",
+        "description": "Returns authoritative credit-ledger totals. Run, recording, check, and finding counts are not billing records.",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project credit usage summary, including debit/refund counts and no-debit test runs."
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/usage/events": {
+      "get": {
+        "operationId": "listProjectUsageEvents",
+        "summary": "List project credit debit and refund events",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "from",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "to",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "format": "date-time"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Chronological ledger events correlated to tasks, test runs, explorations, and terminal status."
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/tasks": {
+      "get": {
+        "operationId": "listProjectTasks",
+        "summary": "List project execution tasks with billing disposition",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "default": 1
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 100,
+              "default": 50
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Tasks with lifecycle timestamps, resource links, and scheduled/debited/refunded/net credits."
+          }
+        }
+      }
+    },
+    "/api/v1/tasks/{task_id}": {
+      "get": {
+        "operationId": "getTask",
+        "summary": "Get an execution task with billing disposition",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Task lifecycle and billing details."
+          },
+          "404": {
+            "description": "Task not found."
+          }
+        }
+      }
+    },
+    "/api/v1/tasks/{task_id}/errors": {
+      "get": {
+        "operationId": "listTaskErrors",
+        "summary": "List structured errors recorded for a task",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Chronological task errors with source, kind, message, severity, and recording correlation."
+          }
+        }
+      }
+    },
+    "/api/v1/tasks/{task_id}/events": {
+      "get": {
+        "operationId": "listTaskEvents",
+        "summary": "List task execution events",
+        "parameters": [
+          {
+            "name": "task_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "after_seq",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": -1,
+              "default": -1
+            }
+          },
+          {
+            "name": "event_type",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 1000,
+              "default": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Events in ascending task sequence order with a next_after_seq cursor."
+          }
+        }
+      }
+    },
+    "/api/v1/test-runs/{test_run_id}/notices": {
+      "get": {
+        "operationId": "listTestRunNotices",
+        "summary": "List the run episode notices associated with a test run",
+        "parameters": [
+          {
+            "name": "test_run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Started, findings, coverage, and legacy finished notices for the run episode."
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}": {
+      "get": {
+        "operationId": "getProject",
+        "summary": "Get detailed information about a project",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project details"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateProject",
+        "summary": "Update a project's configuration",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "enabled_polish_passes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "network-performance",
+                        "react-rendering",
+                        "layout-shift",
+                        "accessibility",
+                        "glitches",
+                        "user-experience",
+                        "seo",
+                        "ui-details",
+                        "security"
+                      ]
+                    },
+                    "description": "Which polish passes run against the project's test runs. Replaces the enabled set entirely, so include every pass you want enabled; pass [] to disable all. Unknown pass names are rejected with a 400."
+                  },
+                  "add_polish_passes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "network-performance",
+                        "react-rendering",
+                        "layout-shift",
+                        "accessibility",
+                        "glitches",
+                        "user-experience",
+                        "seo",
+                        "ui-details",
+                        "security"
+                      ]
+                    },
+                    "description": "Polish passes to enable, applied to the project's CURRENT set (or to enabled_polish_passes when that is sent too). Lets you turn one pass on without reading the current set first. Unknown pass names are rejected with a 400."
+                  },
+                  "remove_polish_passes": {
+                    "type": "array",
+                    "items": {
+                      "type": "string",
+                      "enum": [
+                        "network-performance",
+                        "react-rendering",
+                        "layout-shift",
+                        "accessibility",
+                        "glitches",
+                        "user-experience",
+                        "seo",
+                        "ui-details",
+                        "security"
+                      ]
+                    },
+                    "description": "Polish passes to disable, applied to the project's CURRENT set (or to enabled_polish_passes when that is sent too). Naming a pass in both add_polish_passes and remove_polish_passes is rejected with a 400. One of enabled_polish_passes, add_polish_passes, remove_polish_passes, security_ownership_exempt, github, status, target_url, or time_limit_minutes is required."
+                  },
+                  "security_ownership_exempt": {
+                    "type": "boolean",
+                    "description": "Waive the security pass's ownership check for this project. Active security probing normally refuses to send any request until the target origin echoes a nonce placed at /.well-known/replay-qa-security-nonce, proving you control it; set this when the target is an app you deploy and that check is not workable. RESTRICTED: a request that sets this field from an account without the entitlement is rejected with a 403 (ask an admin to grant it). The waiver skips only the nonce fetch — a cloned/emulated target is still never probed, and only origins on the target site's own registrable domain are ever contacted."
+                  },
+                  "github": {
+                    "type": "object",
+                    "nullable": true,
+                    "required": [
+                      "repoUrl"
+                    ],
+                    "description": "GitHub App connection settings. Send null to disconnect the project. Sending an object replaces the public settings; any existing server-side access token is preserved. Full reference: GET /api/v1/skills/github-app/SKILL.md.",
+                    "properties": {
+                      "repoUrl": {
+                        "type": "string",
+                        "format": "uri",
+                        "description": "Canonical GitHub repository URL, for example https://github.com/owner/repo."
+                      },
+                      "mainBranch": {
+                        "type": "string",
+                        "default": "main",
+                        "description": "Branch treated as the repository main branch."
+                      },
+                      "mainBranchTesting": {
+                        "type": "string",
+                        "enum": [
+                          "none",
+                          "detect",
+                          "events",
+                          "environment"
+                        ],
+                        "default": "detect"
+                      },
+                      "mainBranchDeploymentUrl": {
+                        "type": "string",
+                        "format": "uri",
+                        "nullable": true,
+                        "description": "Deployment URL polled when mainBranchTesting is detect."
+                      },
+                      "prTesting": {
+                        "type": "string",
+                        "enum": [
+                          "none",
+                          "events",
+                          "environment"
+                        ],
+                        "default": "none"
+                      },
+                      "fileIssues": {
+                        "type": "boolean",
+                        "default": false,
+                        "description": "File confirmed bugs as GitHub issues."
+                      },
+                      "prPreview": {
+                        "type": "object",
+                        "nullable": true,
+                        "description": "How the pull-request preview URL is discovered. Only needed for hosts other than *.netlify.app / *.vercel.app or deploys not reported via GitHub deployments/statuses.",
+                        "properties": {
+                          "target_url_pattern": {
+                            "type": "string",
+                            "nullable": true,
+                            "description": "Full-URL pattern the preview URL must match; * matches anything, case-insensitive."
+                          },
+                          "completion_check_name": {
+                            "type": "string",
+                            "description": "Check-run name of the job that finishes the preview deploy; its success triggers scraping the URL from PR comments."
+                          },
+                          "workflow_path": {
+                            "type": "string",
+                            "description": "Workflow file that deploys the preview. Informational."
+                          },
+                          "workflow_name": {
+                            "type": "string",
+                            "description": "Name of that workflow. Informational."
+                          }
+                        }
+                      },
+                      "accessTokenSet": {
+                        "type": "boolean",
+                        "readOnly": true,
+                        "description": "Whether a personal access token is stored. Ignored on write."
+                      }
+                    }
+                  },
+                  "target_url": {
+                    "type": "string",
+                    "description": "Replace the project default app URL for future QA runs. Must be a nonempty HTTP(S) URL. Environment and run overrides still take precedence."
+                  },
+                  "time_limit_minutes": {
+                    "type": "integer",
+                    "nullable": true,
+                    "minimum": 1,
+                    "maximum": 10080,
+                    "description": "Wall-clock limit in minutes for each new test run, including queueing, retries and recording analysis. Omit or send null for no limit. Each run snapshots its deadline when created; changing this setting affects future runs only. When a deadline expires, the project is paused, all remaining project work is cancelled and eligible unfinished work is refunded. Finished results are preserved. Running containers are stopped by the next deadline sweep (every minute in production; previews use the five-minute reap sweep)."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "active",
+                      "paused"
+                    ],
+                    "description": "Pause or resume all QA work for the project. Pausing prevents queued work from starting; resuming starts processing the existing queue again."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated project"
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/test-runs/{test_run_id}/cancel": {
+      "post": {
+        "operationId": "cancelTestRun",
+        "summary": "Cancel an active test run without deleting its history",
+        "description": "Stops active and queued work belonging to this test-run session while preserving its runs, recordings, explorations, and findings. The test_run_id is the session id returned by the project test-runs collection.",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "test_run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Cancellation result and preserved journey-run/exploration counts."
+          },
+          "404": {
+            "description": "Test run not found in this project."
+          },
+          "409": {
+            "description": "Test run is already terminal."
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/journey-queue": {
+      "patch": {
+        "operationId": "editJourneyQueue",
+        "summary": "Reorder, expedite, or skip pending journey test runs",
+        "description": "Edits journey work that is still queued. Use move with neighbouring task ids to place one item precisely, run-next to move selected items to the front of their priority class, or skip to cancel selected pending runs without deleting their history. Queue task ids are returned with queued journeys and test runs.",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "oneOf": [
+                  {
+                    "type": "object",
+                    "required": [
+                      "action",
+                      "task_id"
+                    ],
+                    "properties": {
+                      "action": {
+                        "type": "string",
+                        "enum": [
+                          "move"
+                        ]
+                      },
+                      "task_id": {
+                        "type": "string"
+                      },
+                      "before_task_id": {
+                        "type": "string",
+                        "nullable": true
+                      },
+                      "after_task_id": {
+                        "type": "string",
+                        "nullable": true
+                      }
+                    }
+                  },
+                  {
+                    "type": "object",
+                    "required": [
+                      "action",
+                      "task_ids"
+                    ],
+                    "properties": {
+                      "action": {
+                        "type": "string",
+                        "enum": [
+                          "run-next",
+                          "skip"
+                        ]
+                      },
+                      "task_ids": {
+                        "type": "array",
+                        "minItems": 1,
+                        "maxItems": 200,
+                        "uniqueItems": true,
+                        "items": {
+                          "type": "string"
+                        }
+                      }
+                    }
+                  }
+                ]
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "The moved task or affected task ids."
+          },
+          "409": {
+            "description": "The queue changed before the edit could be applied."
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/status": {
+      "get": {
+        "operationId": "getProjectStatus",
+        "summary": "Get project summary with counts of explorations, journeys, test runs, and bugs",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project status summary"
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/timing": {
+      "get": {
+        "operationId": "getProjectTiming",
+        "summary": "Get a project's key timing milestones as absolute, comparable timestamps",
+        "description": "Returns the project's timing milestones on a single server clock, so a consumer can measure\nhow long QA took to start producing activity and to finish without draining event streams.\n\nFields:\n- `created_at` — when the project was created (ISO 8601 UTC).\n- `started_at` — when work actually began (earliest task start), or null if none has started yet.\n- `first_event_at` — server-side arrival time of the earliest rrweb event across ALL of the\n  project's recordings (explorations + test runs); null if no events yet.\n- `finished_at` — when the project last went idle; null while QA is still running.\n- `time_to_first_event_ms` / `time_to_complete_ms` — deltas measured from `created_at`\n  (null when the corresponding timestamp is null).",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Project timing milestones"
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/failure-analyses": {
+      "get": {
+        "summary": "List Playwright test analyses and project processing counts",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "offset",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 0,
+              "default": 0
+            }
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 20,
+              "default": 20
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Newest-first analyses with submitted test context and reports, plus total, processing, completed and failed counts."
+          }
+        }
+      },
+      "post": {
+        "summary": "Analyze an uploaded Replay recording of a failed Playwright attempt",
+        "description": "Queues a recording-only investigation in an active project. Repeated submissions for the same CI run, test, retry and recording reuse the analysis. Costs one task credit. Does not explore the live target or automatically file findings as bugs.",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "recording_id",
+                  "ci_run_url",
+                  "commit_sha",
+                  "test_id",
+                  "title",
+                  "retry",
+                  "error",
+                  "source",
+                  "mocked_services"
+                ],
+                "properties": {
+                  "recording_id": {
+                    "type": "string",
+                    "format": "uuid"
+                  },
+                  "ci_run_url": {
+                    "type": "string",
+                    "format": "uri"
+                  },
+                  "commit_sha": {
+                    "type": "string",
+                    "pattern": "^[a-f0-9]{40}$"
+                  },
+                  "test_id": {
+                    "type": "string"
+                  },
+                  "title": {
+                    "type": "string"
+                  },
+                  "retry": {
+                    "type": "integer",
+                    "minimum": 0
+                  },
+                  "error": {
+                    "type": "string",
+                    "maxLength": 30000
+                  },
+                  "source": {
+                    "type": "string",
+                    "maxLength": 100000
+                  },
+                  "mocked_services": {
+                    "type": "boolean"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "202": {
+            "description": "Analysis ID and relative status_url; poll for the report."
+          },
+          "400": {
+            "description": "Invalid failure input"
+          },
+          "403": {
+            "description": "Project membership required"
+          },
+          "409": {
+            "description": "Project is not active"
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/failure-analyses/{analysis_id}": {
+      "get": {
+        "summary": "Read failure-analysis progress and its report",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "analysis_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "status, input recording_id, driver_recording_id, and report (null until available). Report contains classification, explanation, root_cause, evidence, next_step, and limitations."
+          },
+          "404": {
+            "description": "Analysis not found in this project"
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/recording-events": {
+      "get": {
+        "operationId": "getRecordingEvents",
+        "summary": "Stream the rrweb recording and narration events used by the replay player",
+        "description": "Returns the ordered player event rows for one task, test run, exploration, or Replay recording.\nThe stream contains rrweb DOM events plus the thought, note, error, and system events shown as\nreplay subtitles. It excludes injected diagnostic streams such as network-exchange and layout-geometry.\n\n## Rendering the rrweb stream\n\n1. Fetch pages in order. When `next_cursor` is non-null, make the same request again with its\n   `after_task_id` and `after_seq`; stop when `next_cursor` is null.\n2. Reassemble `rrweb-chunk` rows before rendering. Each chunk payload is\n   `{ chunk_id, index, total, data }`. Group by `chunk_id`, order all `total` pieces by `index`,\n   concatenate `data`, and `JSON.parse` the result. Treat the completed row as `event_type: \"rrweb\"`.\n   Keep the incomplete-chunk map across page requests because one event can span pages.\n3. Select rows whose `event_type` is `rrweb`, in their returned order, and pass their `payload` values\n   to rrweb. The array must include rrweb Meta and FullSnapshot events before it can render:\n\n```js\nimport { Replayer } from 'rrweb'\nimport 'rrweb/dist/style.css'\n\nconst events = joinedRows.filter(row => row.event_type === 'rrweb').map(row => row.payload)\nconst replayer = new Replayer(events, { root: document.querySelector(\"#replay\") })\nreplayer.play()\n```\n\nFor a recording that is still running, retain the Replayer and call `replayer.addEvent(row.payload)` for\nnew rrweb rows instead of rebuilding it. Sort by `payload.timestamp` only if events were accumulated from\nmultiple live polls that may have arrived out of timestamp order.\n\n## Rendering narration\n\n`thought`, `note`, `error`, and `system` rows are subtitles, not rrweb events. Use `client_ts` as the\nsubtitle timestamp, falling back to `Date.parse(created_at)` when it is null. Their text is normally in\n`payload.text` or `payload.message`; `note` payloads with `kind: \"step\"` also carry the action and step index.",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "task_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Exactly one source identifier is required."
+          },
+          {
+            "name": "test_run_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Exactly one source identifier is required."
+          },
+          {
+            "name": "exploration_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Exactly one source identifier is required."
+          },
+          {
+            "name": "recording_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Exactly one source identifier is required."
+          },
+          {
+            "name": "after_task_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            },
+            "description": "Opaque task cursor returned by next_cursor."
+          },
+          {
+            "name": "after_seq",
+            "in": "query",
+            "schema": {
+              "type": "integer"
+            },
+            "description": "Sequence cursor returned by next_cursor."
+          },
+          {
+            "name": "limit",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "minimum": 1,
+              "maximum": 10000,
+              "default": 10000
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "A byte-bounded page containing events and next_cursor.",
+            "content": {
+              "application/json": {
+                "schema": {
+                  "type": "object",
+                  "required": [
+                    "source",
+                    "count",
+                    "events",
+                    "next_cursor"
+                  ],
+                  "properties": {
+                    "source": {
+                      "type": "object",
+                      "description": "The source identifier supplied in the request."
+                    },
+                    "count": {
+                      "type": "integer"
+                    },
+                    "events": {
+                      "type": "array",
+                      "items": {
+                        "type": "object",
+                        "required": [
+                          "id",
+                          "task_id",
+                          "seq",
+                          "event_type",
+                          "payload",
+                          "created_at"
+                        ],
+                        "properties": {
+                          "id": {
+                            "type": "string"
+                          },
+                          "task_id": {
+                            "type": "string"
+                          },
+                          "seq": {
+                            "type": "integer"
+                          },
+                          "event_type": {
+                            "type": "string",
+                            "enum": [
+                              "rrweb",
+                              "rrweb-chunk",
+                              "thought",
+                              "note",
+                              "error",
+                              "system"
+                            ]
+                          },
+                          "client_ts": {
+                            "type": "integer",
+                            "nullable": true,
+                            "description": "Browser capture time in Unix milliseconds."
+                          },
+                          "payload": {
+                            "description": "An rrweb event, chunk descriptor, or narration payload."
+                          },
+                          "created_at": {
+                            "type": "string",
+                            "format": "date-time"
+                          }
+                        }
+                      }
+                    },
+                    "next_cursor": {
+                      "nullable": true,
+                      "type": "object",
+                      "required": [
+                        "after_task_id",
+                        "after_seq"
+                      ],
+                      "properties": {
+                        "after_task_id": {
+                          "type": "string"
+                        },
+                        "after_seq": {
+                          "type": "integer"
+                        }
+                      }
+                    }
+                  }
+                }
+              }
+            }
+          },
+          "400": {
+            "description": "Invalid source or cursor parameters."
+          },
+          "403": {
+            "description": "The caller cannot access this project."
+          },
+          "404": {
+            "description": "The source does not exist in this project."
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/bugs": {
+      "get": {
+        "operationId": "listBugs",
+        "summary": "List bugs found in a project",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "status",
+            "in": "query",
+            "schema": {
+              "type": "string",
+              "enum": [
+                "open",
+                "fixed",
+                "wontfix",
+                "invalid"
+              ]
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of bugs"
+          }
+        }
+      }
+    },
+    "/api/v1/bugs/{bug_id}": {
+      "get": {
+        "operationId": "getBug",
+        "summary": "Get detailed bug info with analysis, evidence, and reproduction steps",
+        "description": "Returns the full investigation Replay QA already performed: reproduction steps, expected vs. actual behavior, a screenshot chronology, and a root-cause analysis traced through the Replay recording (app.replay.io/recording/<id>) down to the responsible code. You do not need to debug — apply the fix the analysis points to, then mark the bug fixed.",
+        "parameters": [
+          {
+            "name": "bug_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Bug details"
+          }
+        }
+      },
+      "patch": {
+        "operationId": "updateBugStatus",
+        "summary": "Update a bug's status — e.g. mark it fixed after applying a fix in your codebase",
+        "parameters": [
+          {
+            "name": "bug_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "status"
+                ],
+                "properties": {
+                  "wontfix_reason": {
+                    "type": "string",
+                    "nullable": true,
+                    "minLength": 1,
+                    "description": "Optional explanation, only with status \"wontfix\". Trimmed and must be nonblank. Omit to preserve an existing wontfix reason; null clears it. Changing to another status clears it. Returned as wontfix_reason on the bug."
+                  },
+                  "status": {
+                    "type": "string",
+                    "enum": [
+                      "open",
+                      "fixed",
+                      "wontfix",
+                      "invalid"
+                    ],
+                    "description": "open: an unresolved issue; match recurring findings to this report. fixed: a fix was applied and the issue should not recur; ignore this report during deduplication and assess any recurrence as a fresh report. invalid: the report has a problem and is discarded; keep it as a duplicate candidate so the same invalid claim is not filed again. A genuinely different defect needs its own evidence and report. wontfix: the issue is acknowledged and will recur, but new bugs should not be filed for it; match recurring findings to this report. Open, wontfix and invalid are duplicate candidates. Wontfix and invalid both suppress repeat filings; neither means a fix was applied."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Updated bug"
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/journeys": {
+      "get": {
+        "operationId": "listJourneys",
+        "summary": "List test journeys (user flows) defined for a project",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of journeys"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createJourney",
+        "summary": "Create an unstepped (agent-driven) test journey",
+        "description": "Creates an unstepped journey — one with no scripted steps. An AI agent reads the\njourney name, description, and instructions, then drives the app with Playwright to\ncarry out the flow, recording the session and filing any bugs it finds.\n\nIf the project is active, the journey is scheduled to run immediately. Use `target_url`\nto point this journey at a URL different from the project's base URL (e.g. a deep link\nor a different environment) — that URL is where the recording is created. Set `polish`\nto also run the project's enabled polish passes against the resulting recording.",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "name"
+                ],
+                "properties": {
+                  "name": {
+                    "type": "string",
+                    "description": "Short name for the journey (the flow under test)."
+                  },
+                  "description": {
+                    "type": "string",
+                    "description": "What the agent should do — the scenario to carry out in the app."
+                  },
+                  "instructions": {
+                    "type": "string",
+                    "description": "Optional extra guidance / post-run checks for the agent."
+                  },
+                  "target_url": {
+                    "type": "string",
+                    "description": "Optional URL to record this journey against, overriding the project's base URL. When omitted, the project's URL is used."
+                  },
+                  "polish": {
+                    "type": "boolean",
+                    "default": false,
+                    "description": "When true, the project's enabled polish passes also run against this journey's recording."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created journey"
+          }
+        }
+      }
+    },
+    "/api/v1/journeys/{journey_id}": {
+      "get": {
+        "operationId": "getJourney",
+        "summary": "Get a journey with its versions and the bugs associated with it",
+        "description": "Returns the journey (including its target_url override, if any, and version history) plus `bugs`: every bug filed by this journey's test runs.",
+        "parameters": [
+          {
+            "name": "journey_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Journey detail with associated bugs"
+          }
+        }
+      }
+    },
+    "/api/v1/explorations/{exploration_id}": {
+      "get": {
+        "operationId": "getExploration",
+        "summary": "Get an exploration with the journeys it discovered and the bugs associated with it",
+        "description": "Returns the exploration plus `journeys` (the journeys it created/updated) and `bugs` (polish-pass findings against the exploration's own recording). Each discovered journey's own bugs are available via GET /journeys/{journey_id}.",
+        "parameters": [
+          {
+            "name": "exploration_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Exploration detail with discovered journeys and associated bugs"
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/test-runs": {
+      "get": {
+        "operationId": "listTestRuns",
+        "summary": "List test runs for a project",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "journey_id",
+            "in": "query",
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of test runs"
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/test-runs/{test_run_id}/summaries": {
+      "get": {
+        "operationId": "getTestRunSummaries",
+        "summary": "Get the initial description, findings summary, and coverage summary for a test run",
+        "description": "The test_run_id is the round-level test session id (`ts-…`). Older runs created before findings and coverage were separated return their combined text as `findings_summary` and a null `coverage_summary`.",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "test_run_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Test-run summaries"
+          },
+          "404": {
+            "description": "Test run not found"
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/explorations": {
+      "get": {
+        "operationId": "listExplorations",
+        "summary": "List AI explorations for a project",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of explorations"
+          }
+        }
+      },
+      "post": {
+        "operationId": "startExploration",
+        "summary": "Start a new AI exploration to discover user journeys",
+        "description": "Also starts base-site QA for a project created with start_exploration: false. Discovered journeys are tested normally. Supply prompt here to customize the exploration.",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "properties": {
+                  "prompt": {
+                    "type": "string",
+                    "description": "What the AI agent should explore",
+                    "default": "Explore the app and test the main features"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Created exploration"
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/ci-runs": {
+      "post": {
+        "operationId": "startCiPrRun",
+        "summary": "Replace the active CI run for a GitHub pull request and start a new one",
+        "description": "Cancels queued or running Replay work for the same repository and pull request, then creates a version-backed exploration linked to that PR. GitHub Actions remains responsible for the visible check result.",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "prompt",
+                  "repository",
+                  "pr_number",
+                  "head_sha",
+                  "branch",
+                  "workflow_run_id"
+                ],
+                "properties": {
+                  "prompt": {
+                    "type": "string",
+                    "description": "What the CI exploration should exercise."
+                  },
+                  "repository": {
+                    "type": "string",
+                    "description": "GitHub repository in owner/name form."
+                  },
+                  "pr_number": {
+                    "type": "integer",
+                    "description": "GitHub pull request number."
+                  },
+                  "head_sha": {
+                    "type": "string",
+                    "description": "The pull request head commit SHA."
+                  },
+                  "branch": {
+                    "type": "string",
+                    "description": "The pull request head branch."
+                  },
+                  "workflow_run_id": {
+                    "type": "string",
+                    "description": "The GitHub Actions run id that owns this revision."
+                  },
+                  "change_description": {
+                    "type": "string",
+                    "description": "Optional human-readable PR description."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Started CI PR run and returned its exploration/version identity."
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/ci-runs/cancel": {
+      "post": {
+        "operationId": "cancelCiPrRun",
+        "summary": "Cancel the active CI run for a GitHub pull request",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "repository",
+                  "pr_number",
+                  "head_sha",
+                  "branch",
+                  "workflow_run_id"
+                ],
+                "properties": {
+                  "repository": {
+                    "type": "string"
+                  },
+                  "pr_number": {
+                    "type": "integer"
+                  },
+                  "head_sha": {
+                    "type": "string"
+                  },
+                  "branch": {
+                    "type": "string"
+                  },
+                  "workflow_run_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Cancelled active CI PR runs, if any."
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/ci-runs/status": {
+      "post": {
+        "operationId": "getCiPrRunStatus",
+        "summary": "Get the workflow-owned Replay QA run status for a GitHub pull request",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "repository",
+                  "pr_number",
+                  "head_sha",
+                  "branch",
+                  "workflow_run_id"
+                ],
+                "properties": {
+                  "repository": {
+                    "type": "string"
+                  },
+                  "pr_number": {
+                    "type": "integer"
+                  },
+                  "head_sha": {
+                    "type": "string"
+                  },
+                  "branch": {
+                    "type": "string"
+                  },
+                  "workflow_run_id": {
+                    "type": "string"
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "200": {
+            "description": "Current CI PR run status and whether it is terminal."
+          },
+          "404": {
+            "description": "No run exists for this workflow execution."
+          }
+        }
+      }
+    },
+    "/api/v1/projects/{project_id}/versions": {
+      "get": {
+        "operationId": "listVersions",
+        "summary": "List app versions for a project",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          },
+          {
+            "name": "page",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 1
+            }
+          },
+          {
+            "name": "page_size",
+            "in": "query",
+            "schema": {
+              "type": "integer",
+              "default": 20,
+              "maximum": 100
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "List of versions"
+          }
+        }
+      },
+      "post": {
+        "operationId": "createVersion",
+        "summary": "Record a new app version and trigger a version-added task",
+        "description": "Records a new deployed version of the app (git SHA, branch, timestamp, deployed URL,\noptional change description). Adding a version kicks off a version-added task that reviews\nthe change and keeps the project's journeys in sync — it adds new journeys, and for\nmain-branch versions may update/delete existing ones, then triggers test runs for the\nnew/changed journeys. Requires the project to have a GitHub link and main branch configured\nin its settings.",
+        "parameters": [
+          {
+            "name": "project_id",
+            "in": "path",
+            "required": true,
+            "schema": {
+              "type": "string"
+            }
+          }
+        ],
+        "requestBody": {
+          "required": true,
+          "content": {
+            "application/json": {
+              "schema": {
+                "type": "object",
+                "required": [
+                  "git_sha",
+                  "branch_name"
+                ],
+                "properties": {
+                  "git_sha": {
+                    "type": "string",
+                    "description": "Git commit SHA for this version."
+                  },
+                  "branch_name": {
+                    "type": "string",
+                    "description": "Git branch name the version was deployed from."
+                  },
+                  "deployed_url": {
+                    "type": "string",
+                    "description": "URL where this version is deployed (defaults to the project URL)."
+                  },
+                  "timestamp": {
+                    "type": "string",
+                    "description": "ISO 8601 deployment time (defaults to now)."
+                  },
+                  "change_description": {
+                    "type": "string",
+                    "description": "Human-readable summary of what changed in this version."
+                  }
+                }
+              }
+            }
+          }
+        },
+        "responses": {
+          "201": {
+            "description": "Created version (its version-added task is queued)."
+          }
+        }
+      }
+    }
+  }
+}

@@ -1,7 +1,7 @@
 export const meta = {
   name: 'film-loop',
   description: 'Produce a film end to end (research → story → narration → score + shots → assemble) and loop review → routed fixes until the excellence gate passes',
-  whenToUse: 'The production loop. One film: /film-loop {"slug":"<slug>"} (needs films/<slug>/brief.md). Queue mode: /film-loop {"queue":true} takes the next film from films/queue.json; run it under /loop to keep producing films. Resumable: every stage skips finished work. Args: {slug?, queue?, asOf?, runtimeTargetMin?, maxRounds?, preview?, budgetCredits?, stopAfter?, publish? (false = skip the shelf publish step), applyVerdict? (act on the last review on disk instead of re-reviewing first), revoice? (after re-casting voice.json: re-narrate everything and re-fit every shot and cue in the first fix round)}',
+  whenToUse: 'The production loop. One film: /film-loop {"slug":"<slug>"} (needs films/<slug>/brief.md). Queue mode: /film-loop {"queue":true} takes the next film from films/queue.json; run it under /loop to keep producing films. Resumable: every stage skips finished work. Args: {slug?, queue?, asOf?, runtimeTargetMin?, maxRounds?, preview?, budgetCredits?, stopAfter?, publish? (false = skip the shelf publish step), look? ("promo" = a product promo: every stage uses films/<slug>/look.md and the film-promo skill instead of the silhouette documentary defaults), applyVerdict? (act on the last review on disk instead of re-reviewing first), revoice? (after re-casting voice.json: re-narrate everything and re-fit every shot and cue in the first fix round)}',
   phases: [
     { title: 'Status', detail: 'pick the film, inspect what already exists' },
     { title: 'Produce', detail: 'research, story, narration, then score and shots in parallel' },
@@ -43,7 +43,8 @@ log(`film ${slug}: research=${st.research} story=${st.story} narration=${st.narr
 const stopped = (stage, detail) => ({ slug, status: 'stopped', stage, detail, resume: `/film-loop ${JSON.stringify({ slug })}` })
 const run = async (name, a) => {
   // by file path, not registry name: the registry can be momentarily empty while it reloads
-  const r = await workflow({ scriptPath: `${REPO}/.claude/workflows/${name}.js` }, { repo: REPO, ...a })
+  // look ('promo' = product promo, films/<slug>/look.md) rides along to every stage
+  const r = await workflow({ scriptPath: `${REPO}/.claude/workflows/${name}.js` }, { repo: REPO, ...(A.look ? { look: A.look } : {}), ...a })
   if (!r) throw new Error(`${name} returned nothing`)
   return r
 }

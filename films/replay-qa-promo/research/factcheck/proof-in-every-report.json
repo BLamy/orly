@@ -1,0 +1,27 @@
+{
+  "id": "proof-in-every-report",
+  "checked": 24,
+  "confirmed": 21,
+  "corrected": 2,
+  "unverifiable": 0,
+  "corrections": [
+    {
+      "original": "Timeline lists the 06:05:26Z and 06:16:47Z polish bugs before the bug-limit chat dated only '2026-09-04 (Sep 4, 12:41 AM local)'",
+      "verdict": "corrected",
+      "fix": "The UI's local offset is UTC-4 (258 bug 06:16:47Z shows '2:16 AM'; 67 ms bug 21:56:06Z shows '5:56 PM'), so the chat at 12:41 AM local is about 04:41 UTC and comes before both polish bugs. Row moved up, and the 12:42 AM 'Bug cap raised to 150' reply added.",
+      "sources": ["films/replay-qa-promo/capture/clean/bug-sync.json", "films/replay-qa-promo/research/sources/account-digest.json"]
+    },
+    {
+      "original": "judge panel lists \"Acceptance judge | Requirements judge | Evidence judge\"",
+      "verdict": "corrected",
+      "fix": "On-screen (DOM) order is \"Requirements judge | Evidence judge | Acceptance judge\".",
+      "sources": ["films/replay-qa-promo/capture/clean/bug-sync.json"]
+    },
+    {
+      "original": "Setting a bug to fixed reruns the journey; a recurrence is filed as a new bug (bug-reports, OpenAPI) / the bug reopens (concepts, overview, getting-good-results)",
+      "verdict": "contested",
+      "fix": "Both wordings re-verified live in the vendor docs; they genuinely disagree. Narrate only 'reruns the journey to confirm'. Quote 3 ('A fixed bug stays fixed…') is verbatim but flagged not for on-screen use.",
+      "sources": ["https://docs.replay.io/reference/replay-qa/bug-reports", "https://docs.replay.io/basics/replay-qa/concepts", "https://docs.replay.io/basics/replay-qa/overview", "https://qa.replay.io/api/v1/openapi.json"]
+    }
+  ]
+}

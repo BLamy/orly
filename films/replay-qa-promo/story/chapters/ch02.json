@@ -1,0 +1,172 @@
+{
+  "id": "ch02",
+  "number": 2,
+  "title": "One URL",
+  "blurb": "One address is the whole setup. The URL is typed full-frame over a blurred ghost of the real input (the kick enters on the caret's arrival as the whip lands), then pulls back into Replay QA's real New project page: braces on the input, the cursor hovering Start setup, just a quick chat.",
+  "shots": [
+    {
+      "id": "ch02-s01",
+      "kind": "scene",
+      "setting": "qa.replay.io New project page, seen as an enormous blurred ghost behind a dawn haze; 2026-10-14; dawn light",
+      "era": "product, as of 2026-10-14",
+      "mood": "dawnGold",
+      "lines": [
+        {
+          "id": "L0201",
+          "text": "Point it at your app.",
+          "direction": "five easy words, simple and sure; a beat of air after 'app' for the kick"
+        }
+      ],
+      "leadIn": 0.5,
+      "holdAfter": 1.5,
+      "visual": "The reference's giant typed prompt ('neo goth|'). Three planes, back to front, in the renderer's real stacking order (canvas, then DOM, then SVG overlay). BACK (canvas): kit haze 'dawn' (u ≈ 0.55) with kit hairlines drifting; this is what the whip moves in. MIDDLE (DOM): an RrwebScreen ghost of take new-project, chrome 'none', cropped tight to the chat input row ≈ {x: 500, y: 290, w: 680, h: 80} (the input sits at recording x 528-1148, y 301-363) and scaled to overfill the stage (≈ 1500 px wide), with style {filter: 'blur(16px)'} and opacity ramping 0 → 0.25 over ≈ 0.3 s only AFTER the 0.45 s whip has landed (it is never on screen during the whip, so it never crossfades in place); at 0.25 the haze reads through it as the tint. The crop never includes the sidebar (owner name, x < 234) or the heading (y < 205). Tape: held at mark typing 1100 until the first key, then run at real speed (1000 ms per s) to mark typed 2966 and held there; the ghost's own text grows in step with ours. FRONT (shot.overlay(), SVG above the DOM): the typed URL and its caret, an SVG twin of kit typed (route to the shots stage if the kit lacks one): Promo Sans regular ≈ 78 px (sized so the whole 28-character URL fits inside ≈ 1180 px, never running off), near-white with a faint drop shadow, vertically centred, text-anchor 'end' at ≈ 50 px in from the right edge so the line slides left as it grows (as the reference's '· a clothin|' does). The caret arrives with the whip's landing (0.45 s) and holds solid for a breath; then 'https://staging.your-app.dev' types at the recording's own rate (cps ≈ 14.4, so ≈ 1.9 s), first key on 'Point'; by the end 'https://staging.your-app.dev▌' spans the frame edge to edge, all of it inside the margins. The caret blinks on through the 1.5 s hold, so the whole address is on screen long enough to read. The URL is the illustrative placeholder the take really typed, never presented as a tested app; the narrator never reads it.",
+      "beats": [
+        {
+          "id": "caret",
+          "at": {
+            "shotTime": 0.45
+          },
+          "what": "the whip has landed: the caret arrives, alone, full-frame over the haze; the ghost begins to ramp up; the M2 kick enters on it"
+        },
+        {
+          "id": "keys",
+          "at": {
+            "line": "L0201",
+            "word": "Point"
+          },
+          "what": "typing starts (ours and the ghost's tape 1100 → 2966 at real speed)"
+        },
+        {
+          "id": "app",
+          "at": {
+            "line": "L0201",
+            "word": "app"
+          },
+          "what": "'staging.your-app' is landing; the line has slid left"
+        },
+        {
+          "id": "typed",
+          "at": {
+            "line": "L0201",
+            "edge": "end",
+            "offset": 0.3
+          },
+          "what": "'.dev' complete (tape held at typed 2966); caret blinks on"
+        }
+      ],
+      "props": [
+        "SVG typed line + caret in shot.overlay() (twin of kit typed)",
+        "kit haze 'dawn'",
+        "kit hairlines",
+        "RrwebScreen ghost (blur 16 px, opacity 0.25): new-project 1100 → 2966"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "https://staging.your-app.dev",
+          "beat": "caret"
+        }
+      ],
+      "music": {
+        "cue": "M2 build",
+        "note": "The kick enters on the caret's arrival as the whip lands (shot time 0.45 s): four-on-the-floor, soft, round; intensity 0.45. Typed keys ride as tiny muted clicks under the voice; the pad from M1 carries over, brighter."
+      },
+      "transitionIn": "whip",
+      "claims": [
+        "SET-01",
+        "SET-04",
+        "SET-05"
+      ]
+    },
+    {
+      "id": "ch02-s02",
+      "kind": "scene",
+      "setting": "qa.replay.io New project page ('Set up QA for your app') on a floating screen over studio paper; 2026-10-14; flat daylight",
+      "era": "product, as of 2026-10-14",
+      "mood": "parchment",
+      "lines": [
+        {
+          "id": "L0202",
+          "text": "No test suite needed. Just a quick chat.",
+          "direction": "easy, almost amused; a light beat after 'needed', and 'a quick chat' said like it really is NARRATION (2026-10-14): take ran 235 wpm; insertGaps opens the beat after needed the direction asks for.",
+          "pauseAfter": 0.3,
+          "insertGaps": {
+            "needed": 0.4
+          }
+        }
+      ],
+      "leadIn": 0.45,
+      "holdAfter": 0.6,
+      "visual": "The pull-back, as the reference pulls from the giant prompt to the small search bar. SCREEN (DOM): a floating RrwebScreen (take new-project, chrome 'browser' with 'qa.replay.io' in the URL bar (director's note 2026-10-14), radius 14, soft shadow) on kit paper, its tilt {x: 14, y: -10} settling flat by 'needed'. Cropped to ≈ {x: 470, y: 70, w: 760, h: 420} (the 'NEW PROJECT' eyebrow, the heading 'Set up QA for your app', its two-line sub-copy ending 'quick chat.' at recording ≈ x 797-880, y 245-268, the input at x 528-1148, y 301-363 reading https://staging.your-app.dev, the black Start setup button, and the 'Want your coding agent to handle it?' / 'Get the prompt' callout at y 396-460), shown ≈ 980 stage px wide, centred a little high. Tape runs from mark typed 2966 at real speed: the drawn cursor (from the take) drifts to Start setup and arrives at mark hover-start 4737 on 'chat', then the tape holds at 4737 to the cut (it never clicks; the cut comes long before end 5537). From 'chat', a slow screen zoom 1.0 → 1.25 centred on ≈ recording (838, 320), which keeps the whole input, the sub-copy's 'quick chat.' and the callout in frame, the callout unzoomed and unremarked: a quiet setup for the agent pair later. OVERLAY (shot.overlay(), SVG above the DOM; every mark on footage lives here, never on the canvas, which sits under the screen): (1) Opening 0.6 s: ch02-s01's full-frame typed line is redrawn here at its s01 size and place, then shrinks and drifts down toward the input's settled position, fading out over its last 0.25 s as it arrives, so the take's own typed URL (already in the input at tape 2966) takes over; no canvas text ever slides under the screen. (2) On 'Just', after the tilt has settled: braces snap around the input field, an SVG bracketRect (dots none; the kit bracket wraps its own text and cannot frame a rectangle, so route an SVG bracketRect twin to the shots stage), its rectangle mapped from the recording box (528, 301, 620, 62) through the screen's crop and zoom every frame. (3) On 'quick chat': a thin red-pink SVG underline draws under 'quick chat.' at the end of the page's own sub-copy (the narration echoes the page's real words), mapped the same way so it rides the zoom. CANVAS: kit paper, and under the screen from 0.05 s a small grey caption in Promo Sans ≈ 20 px: 'Complements an existing test suite.' (the vendor's own nuance [SET-08]; it does not repeat the line, and keeps the film from implying Replay QA replaces a suite). No sidebar, owner name, chat column, credit meter or header URL ever enters the crop.",
+      "beats": [
+        {
+          "id": "pullback",
+          "at": {
+            "shotTime": 0
+          },
+          "what": "the giant typed line (overlay) shrinks toward the real input and fades as it arrives; the floating screen tilts in"
+        },
+        {
+          "id": "caption",
+          "at": {
+            "shotTime": 0.05
+          },
+          "what": "grey caption fades up under the screen"
+        },
+        {
+          "id": "settle",
+          "at": {
+            "line": "L0202",
+            "word": "needed"
+          },
+          "what": "the screen's tilt settles flat"
+        },
+        {
+          "id": "url",
+          "at": {
+            "line": "L0202",
+            "word": "Just",
+            "offset": -0.1
+          },
+          "what": "SVG braces snap around the input on the downbeat (tilt already settled)"
+        },
+        {
+          "id": "chat",
+          "at": {
+            "line": "L0202",
+            "word": "chat",
+            "offset": -0.15
+          },
+          "what": "SVG underline under the sub-copy's 'quick chat.'; cursor arrives on Start setup (hover-start 4737, held); slow zoom on the input begins"
+        }
+      ],
+      "props": [
+        "RrwebScreen: new-project 2966 → 4737 (held)",
+        "drawn cursor from the take",
+        "SVG typed line handoff (overlay)",
+        "SVG bracketRect (overlay)",
+        "red-pink SVG underline (overlay)",
+        "kit paper"
+      ],
+      "onScreenText": [
+        {
+          "kind": "label",
+          "text": "Complements an existing test suite.",
+          "beat": "caption"
+        }
+      ],
+      "music": {
+        "cue": "M2 build",
+        "note": "Hats enter on the shot's first downbeat (≈ 15.0 s film time); a soft clap on 2 and 4; intensity 0.5, bright and forward. A small filtered stab with the brace snap on 'Just'."
+      },
+      "transitionIn": "cut",
+      "claims": [
+        "SET-01",
+        "SET-02",
+        "SET-03",
+        "SET-04",
+        "SET-08"
+      ]
+    }
+  ]
+}

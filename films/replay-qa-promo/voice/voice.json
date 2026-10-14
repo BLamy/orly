@@ -1,0 +1,59 @@
+{
+  "voiceId": "cjVigY5qzO86Huf0OWal",
+  "name": "Eric (premade library voice cjVigY5qzO86Huf0OWal) - smooth, trustworthy, mid-life American; plain, friendly product-promo read",
+  "model": "eleven_multilingual_v2",
+  "settings": {
+    "stability": 0.6,
+    "similarity_boost": 0.8,
+    "style": 0.05,
+    "use_speaker_boost": true,
+    "speed": 1
+  },
+  "seed": 1016863915,
+  "format": "mp3_44100_192",
+  "wpm": 147.5,
+  "lockedAt": "2026-10-14T19:15:28.253Z",
+  "notes": "Library voice chosen by audition; not a clone or imitation of any real person.",
+  "listening": [
+    {
+      "term": "QA",
+      "line": "L0102",
+      "expect": "'Replay Q-A': the two letters, evenly stressed, never 'kwah'",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": "lexicon QA -> 'Q A'; audition read it as letters in 0.50 s; confirm by ear after narration"
+    },
+    {
+      "term": "localhost",
+      "line": "L0402",
+      "expect": "'local host': two plain words, a small lift on 'host'",
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "note": "lexicon localhost -> 'local host'; confirm by ear after narration"
+    },
+    {
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "term": "Against",
+      "line": "L0402",
+      "expect": "'Against staging': both words whole, the -st of Against heard before staging",
+      "note": "two takes both came back from STT as 'Again, staging'; the word alignment gives Against 0.35 s, so it is likely the /st/+/st/ join; confirm by ear, re-take if it really says 'again'"
+    },
+    {
+      "status": "pending",
+      "by": null,
+      "at": null,
+      "clipSig": null,
+      "term": "QA",
+      "line": "L0502",
+      "expect": "'Replay Q-A caught one... in its own app': Q and A as two letters, not 'cue A'",
+      "note": "this line speaks QA as 'Q.A.' (explicit spoken form) after takes came back 'ReplayQ A', 'ReplayQA' and 'Replay cue A'; the current take transcribed 'Replay QA'"
+    }
+  ]
+}

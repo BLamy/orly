@@ -1,6 +1,62 @@
 {
   "books": [
     {
+      "slug": "replay-qa-promo",
+      "title": "Replay QA: { fully managed }",
+      "subtitle": "End-to-end testing that explores, runs and records on its own",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#b0277a",
+      "href": "?film=replay-qa-promo",
+      "sources": "generated/replay-qa-promo/sources/",
+      "kind": "film",
+      "runtime": 82.71,
+      "vhs": {
+        "subject": "Software Testing",
+        "theme": "grid",
+        "icons": [
+          "magnifier",
+          "crt",
+          "robot",
+          "gear"
+        ],
+        "tagline": "Catch the bugs that hide in time!"
+      },
+      "chapters": [
+        {
+          "number": 1,
+          "title": "{ introducing }",
+          "duration": 7.5
+        },
+        {
+          "number": 2,
+          "title": "One URL",
+          "duration": 6.417
+        },
+        {
+          "number": 3,
+          "title": "The loop",
+          "duration": 6.792
+        },
+        {
+          "number": 4,
+          "title": "Always on",
+          "duration": 15.667
+        },
+        {
+          "number": 5,
+          "title": "Bugs that only exist in time",
+          "duration": 30.708
+        },
+        {
+          "number": 6,
+          "title": "{ fully managed · always on }",
+          "duration": 15.625
+        }
+      ],
+      "createdAt": "2026-10-14T21:11:13.945Z"
+    },
+    {
       "slug": "groundingpi-speaking-in-coordinates",
       "title": "Speaking in Coordinates",
       "subtitle": "How GroundingPI turns images and phrases into structured visual primitives",

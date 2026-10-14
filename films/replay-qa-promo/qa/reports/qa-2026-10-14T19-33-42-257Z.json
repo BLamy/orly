@@ -1,0 +1,48 @@
+{
+ "slug": "replay-qa-promo",
+ "at": "2026-10-14T19:33:42.257Z",
+ "summary": {
+  "pass": 3,
+  "warn": 0,
+  "fail": 2,
+  "skip": 0
+ },
+ "checks": [
+  {
+   "stage": "score",
+   "id": "renders",
+   "status": "fail",
+   "detail": "m01: not rendered",
+   "problems": [
+    "m01: not rendered"
+   ],
+   "warns": []
+  },
+  {
+   "stage": "score",
+   "id": "analysisSummary",
+   "status": "fail",
+   "detail": "missing films/replay-qa-promo/score/analysis/summary.json: run film:score analyze --slug replay-qa-promo"
+  },
+  {
+   "stage": "score",
+   "id": "cueJoins",
+   "status": "pass",
+   "detail": "0 cue changes, each in the clear before the next line",
+   "under": [],
+   "tight": []
+  },
+  {
+   "stage": "score",
+   "id": "notesClock",
+   "status": "pass",
+   "detail": "every cue-note body is on the current clock (anchored times match their anchors; no bare absolute times)"
+  },
+  {
+   "stage": "score",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "1.4 min of music over 1.4 min (100%)"
+  }
+ ]
+}

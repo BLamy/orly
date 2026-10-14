@@ -55,3 +55,6 @@ films/*/qa/legibility/*.png
 /.txt
 /lm-m14/
 *.tsbuildinfo
+# promo captures: raw rrweb + API dumps may hold secrets; only capture/clean/ is committed
+films/*/capture/raw/
+films/*/capture/api/

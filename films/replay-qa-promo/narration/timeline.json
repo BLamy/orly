@@ -1,0 +1,1366 @@
+{
+ "slug": "replay-qa-promo",
+ "fps": 24,
+ "duration": 82.7083,
+ "chapters": [
+  {
+   "id": "ch01",
+   "number": 1,
+   "title": "{ introducing }",
+   "start": 0,
+   "end": 7.5
+  },
+  {
+   "id": "ch02",
+   "number": 2,
+   "title": "One URL",
+   "start": 7.5,
+   "end": 13.9167
+  },
+  {
+   "id": "ch03",
+   "number": 3,
+   "title": "The loop",
+   "start": 13.9167,
+   "end": 20.7083
+  },
+  {
+   "id": "ch04",
+   "number": 4,
+   "title": "Always on",
+   "start": 20.7083,
+   "end": 36.375
+  },
+  {
+   "id": "ch05",
+   "number": 5,
+   "title": "Bugs that only exist in time",
+   "start": 36.375,
+   "end": 67.0833
+  },
+  {
+   "id": "ch06",
+   "number": 6,
+   "title": "{ fully managed · always on }",
+   "start": 67.0833,
+   "end": 82.7083
+  }
+ ],
+ "shots": [
+  {
+   "id": "ch01-s01",
+   "chapter": "ch01",
+   "start": 0,
+   "end": 4.5833,
+   "lines": [
+    {
+     "id": "L0101",
+     "text": "Imagine end-to-end tests you never write. Or remember to run.",
+     "start": 0.3,
+     "end": 3.562,
+     "words": [
+      {
+       "w": "Imagine",
+       "start": 0.3,
+       "end": 0.811
+      },
+      {
+       "w": "end-to-end",
+       "start": 0.88,
+       "end": 1.461
+      },
+      {
+       "w": "tests",
+       "start": 1.519,
+       "end": 1.821
+      },
+      {
+       "w": "you",
+       "start": 1.856,
+       "end": 1.937
+      },
+      {
+       "w": "never",
+       "start": 2.007,
+       "end": 2.181
+      },
+      {
+       "w": "write",
+       "start": 2.227,
+       "end": 2.529
+      },
+      {
+       "w": "Or",
+       "start": 2.738,
+       "end": 2.877
+      },
+      {
+       "w": "remember",
+       "start": 2.924,
+       "end": 3.214
+      },
+      {
+       "w": "to",
+       "start": 3.249,
+       "end": 3.295
+      },
+      {
+       "w": "run",
+       "start": 3.353,
+       "end": 3.562
+      }
+     ]
+    }
+   ],
+   "beats": {
+    "haze": 0,
+    "line": 0.2,
+    "write": 2.227,
+    "sweep": 2.824,
+    "landed": 3.562
+   },
+   "transitionIn": "cut",
+   "transitionDur": 0,
+   "mood": "dawnGold"
+  },
+  {
+   "id": "ch01-s03",
+   "chapter": "ch01",
+   "start": 4.5833,
+   "end": 7.5,
+   "lines": [
+    {
+     "id": "L0102",
+     "text": "Introducing Replay QA.",
+     "start": 0.5,
+     "end": 2.216,
+     "words": [
+      {
+       "w": "Introducing",
+       "start": 0.5,
+       "end": 1.057
+      },
+      {
+       "w": "Replay",
+       "start": 1.427,
+       "end": 1.729
+      },
+      {
+       "w": "QA",
+       "start": 1.787,
+       "end": 2.216
+      }
+     ]
+    }
+   ],
+   "beats": {
+    "word": 0,
+    "close": 1.327,
+    "mark": 1.787
+   },
+   "transitionIn": "blur",
+   "transitionDur": 1,
+   "mood": "parchment"
+  },
+  {
+   "id": "ch02-s01",
+   "chapter": "ch02",
+   "start": 7.5,
+   "end": 10.4167,
+   "lines": [
+    {
+     "id": "L0201",
+     "text": "Point it at your app.",
+     "start": 0.5,
+     "end": 1.406,
+     "words": [
+      {
+       "w": "Point",
+       "start": 0.5,
+       "end": 0.767
+      },
+      {
+       "w": "it",
+       "start": 0.802,
+       "end": 0.872
+      },
+      {
+       "w": "at",
+       "start": 0.918,
+       "end": 0.999
+      },
+      {
+       "w": "your",
+       "start": 1.046,
+       "end": 1.162
+      },
+      {
+       "w": "app",
+       "start": 1.22,
+       "end": 1.406
+      }
+     ]
+    }
+   ],
+   "beats": {
+    "caret": 0.45,
+    "keys": 0.5,
+    "app": 1.22,
+    "typed": 1.706
+   },
+   "transitionIn": "whip",
+   "transitionDur": 1,
+   "mood": "dawnGold"
+  },
+  {
+   "id": "ch02-s02",
+   "chapter": "ch02",
+   "start": 10.4167,
+   "end": 13.9167,
+   "lines": [
+    {
+     "id": "L0202",
+     "text": "No test suite needed. Just a quick chat.",
+     "start": 0.45,
+     "end": 2.893,
+     "words": [
+      {
+       "w": "No",
+       "start": 0.45,
+       "end": 0.636
+      },
+      {
+       "w": "test",
+       "start": 0.705,
+       "end": 0.938
+      },
+      {
+       "w": "suite",
+       "start": 0.961,
+       "end": 1.216
+      },
+      {
+       "w": "needed",
+       "start": 1.251,
+       "end": 1.553
+      },
+      {
+       "w": "Just",
+       "start": 2.127,
+       "end": 2.301
+      },
+      {
+       "w": "a",
+       "start": 2.336,
+       "end": 2.359
+      },
+      {
+       "w": "quick",
+       "start": 2.406,
+       "end": 2.568
+      },
+      {
+       "w": "chat",
+       "start": 2.615,
+       "end": 2.893
+      }
+     ]
+    }
+   ],
+   "beats": {
+    "pullback": 0,
+    "caption": 0.05,
+    "settle": 1.251,
+    "url": 2.027,
+    "chat": 2.465
+   },
+   "transitionIn": "cut",
+   "transitionDur": 0,
+   "mood": "parchment"
+  },
+  {
+   "id": "ch03-s01",
+   "chapter": "ch03",
+   "start": 13.9167,
+   "end": 20.7083,
+   "lines": [
+    {
+     "id": "L0301",
+     "text": "It explores your app in a real browser.",
+     "start": 0.3,
+     "end": 2.718,
+     "words": [
+      {
+       "w": "It",
+       "start": 0.3,
+       "end": 0.451
+      },
+      {
+       "w": "explores",
+       "start": 0.497,
+       "end": 0.927
+      },
+      {
+       "w": "your",
+       "start": 0.962,
+       "end": 1.078
+      },
+      {
+       "w": "app",
+       "start": 1.148,
+       "end": 1.357
+      },
+      {
+       "w": "in",
+       "start": 1.847,
+       "end": 1.963
+      },
+      {
+       "w": "a",
+       "start": 1.998,
+       "end": 2.021
+      },
+      {
+       "w": "real",
+       "start": 2.079,
+       "end": 2.241
+      },
+      {
+       "w": "browser",
+       "start": 2.288,
+       "end": 2.718
+      }
+     ]
+    },
+    {
+     "id": "L0302",
+     "text": "Turns what it finds into user journeys, and runs them.",
+     "start": 2.968,
+     "end": 6.052,
+     "words": [
+      {
+       "w": "Turns",
+       "start": 2.968,
+       "end": 3.27
+      },
+      {
+       "w": "what",
+       "start": 3.305,
+       "end": 3.433
+      },
+      {
+       "w": "it",
+       "start": 3.467,
+       "end": 3.525
+      },
+      {
+       "w": "finds",
+       "start": 3.584,
+       "end": 3.874
+      },
+      {
+       "w": "into",
+       "start": 3.909,
+       "end": 4.036
+      },
+      {
+       "w": "user",
+       "start": 4.118,
+       "end": 4.385
+      },
+      {
+       "w": "journeys",
+       "start": 4.443,
+       "end": 4.895
+      },
+      {
+       "w": "and",
+       "start": 5.321,
+       "end": 5.495
+      },
+      {
+       "w": "runs",
+       "start": 5.576,
+       "end": 5.843
+      },
+      {
+       "w": "them",
+       "start": 5.889,
+       "end": 6.052
+      }
+     ]
+    }
+   ],
+   "beats": {
+    "b-title": 0.1,
+    "b-rows": 0.4,
+    "b-working": 0.7,
+    "b-check1": 0.497,
+    "b-check2": 4.443,
+    "b-check3": 5.576,
+    "b-dots": 6.552
+   },
+   "transitionIn": "blur",
+   "transitionDur": 1,
+   "mood": "parchment"
+  },
+  {
+   "id": "ch04-s01",
+   "chapter": "ch04",
+   "start": 20.7083,
+   "end": 25.5417,
+   "lines": [
+    {
+     "id": "L0401",
+     "text": "Then it runs on Replay's browsers. On a schedule, while you sleep.",
+     "start": 0.3,
+     "end": 3.932,
+     "words": [
+      {
+       "w": "Then",
+       "start": 0.3,
+       "end": 0.509
+      },
+      {
+       "w": "it",
+       "start": 0.555,
+       "end": 0.625
+      },
+      {
+       "w": "runs",
+       "start": 0.672,
+       "end": 0.95
+      },
+      {
+       "w": "on",
+       "start": 0.997,
+       "end": 1.089
+      },
+      {
+       "w": "Replay's",
+       "start": 1.148,
+       "end": 1.519
+      },
+      {
+       "w": "browsers",
+       "start": 1.554,
+       "end": 2.065
+      },
+      {
+       "w": "On",
+       "start": 2.47,
+       "end": 2.609
+      },
+      {
+       "w": "a",
+       "start": 2.644,
+       "end": 2.668
+      },
+      {
+       "w": "schedule",
+       "start": 2.702,
+       "end": 3.144
+      },
+      {
+       "w": "while",
+       "start": 3.34,
+       "end": 3.514
+      },
+      {
+       "w": "you",
+       "start": 3.549,
+       "end": 3.619
+      },
+      {
+       "w": "sleep",
+       "start": 3.653,
+       "end": 3.932
+      }
+     ]
+    }
+   ],
+   "beats": {
+    "b-time": 0.05,
+    "b-tag": 0.3,
+    "b-hosted": 1.554,
+    "b-schedule": 2.702,
+    "b-strip": 3.002,
+    "b-sleep": 3.653
+   },
+   "transitionIn": "cut",
+   "transitionDur": 0,
+   "mood": "parchment"
+  },
+  {
+   "id": "ch04-s02",
+   "chapter": "ch04",
+   "start": 25.5417,
+   "end": 28.9583,
+   "lines": [
+    {
+     "id": "L0402",
+     "text": "Against staging, a preview, even localhost.",
+     "start": 0.3,
+     "end": 2.785,
+     "words": [
+      {
+       "w": "Against",
+       "start": 0.3,
+       "end": 0.799
+      },
+      {
+       "w": "staging",
+       "start": 0.985,
+       "end": 1.449
+      },
+      {
+       "w": "a",
+       "start": 1.507,
+       "end": 1.531
+      },
+      {
+       "w": "preview",
+       "start": 1.577,
+       "end": 1.949
+      },
+      {
+       "w": "even",
+       "start": 2.007,
+       "end": 2.169
+      },
+      {
+       "w": "localhost",
+       "start": 2.227,
+       "end": 2.785
+      }
+     ]
+    }
+   ],
+   "beats": {
+    "b-row": 0.05,
+    "b-lift": 0.1,
+    "b-brace": 0.3,
+    "b-staging": 0.985,
+    "b-preview": 1.577,
+    "b-local": 2.227
+   },
+   "transitionIn": "cut",
+   "transitionDur": 0,
+   "mood": "parchment"
+  },
+  {
+   "id": "ch04-s03",
+   "chapter": "ch04",
+   "start": 28.9583,
+   "end": 36.375,
+   "lines": [
+    {
+     "id": "L0403",
+     "text": "And on every pull request.",
+     "start": 0.3,
+     "end": 1.856,
+     "words": [
+      {
+       "w": "And",
+       "start": 0.3,
+       "end": 0.497
+      },
+      {
+       "w": "on",
+       "start": 0.567,
+       "end": 0.66
+      },
+      {
+       "w": "every",
+       "start": 0.776,
+       "end": 1.078
+      },
+      {
+       "w": "pull",
+       "start": 1.124,
+       "end": 1.322
+      },
+      {
+       "w": "request",
+       "start": 1.391,
+       "end": 1.856
+      }
+     ]
+    },
+    {
+     "id": "L0404",
+     "text": "Each run is recorded, then reviewed. For what breaks, and what's slow.",
+     "start": 2.156,
+     "end": 6.486,
+     "words": [
+      {
+       "w": "Each",
+       "start": 2.156,
+       "end": 2.365
+      },
+      {
+       "w": "run",
+       "start": 2.411,
+       "end": 2.539
+      },
+      {
+       "w": "is",
+       "start": 2.585,
+       "end": 2.655
+      },
+      {
+       "w": "recorded",
+       "start": 2.725,
+       "end": 3.201
+      },
+      {
+       "w": "then",
+       "start": 3.491,
+       "end": 3.653
+      },
+      {
+       "w": "reviewed",
+       "start": 3.735,
+       "end": 4.129
+      },
+      {
+       "w": "For",
+       "start": 4.687,
+       "end": 4.838
+      },
+      {
+       "w": "what",
+       "start": 4.884,
+       "end": 5.023
+      },
+      {
+       "w": "breaks",
+       "start": 5.07,
+       "end": 5.453
+      },
+      {
+       "w": "and",
+       "start": 5.755,
+       "end": 5.906
+      },
+      {
+       "w": "what's",
+       "start": 5.952,
+       "end": 6.161
+      },
+      {
+       "w": "slow",
+       "start": 6.184,
+       "end": 6.486
+      }
+     ]
+    }
+   ],
+   "beats": {
+    "b-table": 0.05,
+    "b-pr": 1.124,
+    "b-pill": 1.391,
+    "b-chips": 2.725,
+    "b-check": 3.735,
+    "b-fresh": 4.687,
+    "b-slow": 6.184,
+    "b-stack": 6.486,
+    "b-tapestop": 6.886
+   },
+   "transitionIn": "cut",
+   "transitionDur": 0,
+   "mood": "parchment"
+  },
+  {
+   "id": "ch05-s01",
+   "chapter": "ch05",
+   "start": 36.375,
+   "end": 39.1667,
+   "lines": [
+    {
+     "id": "L0501",
+     "text": "Some bugs only exist in time.",
+     "start": 0.3,
+     "end": 2.262,
+     "words": [
+      {
+       "w": "Some",
+       "start": 0.3,
+       "end": 0.532
+      },
+      {
+       "w": "bugs",
+       "start": 0.555,
+       "end": 0.811
+      },
+      {
+       "w": "only",
+       "start": 0.869,
+       "end": 1.055
+      },
+      {
+       "w": "exist",
+       "start": 1.113,
+       "end": 1.531
+      },
+      {
+       "w": "in",
+       "start": 1.74,
+       "end": 1.879
+      },
+      {
+       "w": "time",
+       "start": 1.949,
+       "end": 2.262
+      }
+     ]
+    }
+   ],
+   "beats": {
+    "chips": 0.1,
+    "rewind": 0.15,
+    "line": 0.2,
+    "braces": 0.669,
+    "intime": 1.949
+   },
+   "transitionIn": "blur",
+   "transitionDur": 1,
+   "mood": "duskRose"
+  },
+  {
+   "id": "ch05-s02",
+   "chapter": "ch05",
+   "start": 39.1667,
+   "end": 50.5,
+   "lines": [
+    {
+     "id": "L0502",
+     "text": "Replay QA caught one in its own app.",
+     "start": 0.3,
+     "end": 3.063,
+     "words": [
+      {
+       "w": "Replay",
+       "start": 0.3,
+       "end": 0.73
+      },
+      {
+       "w": "QA",
+       "start": 0.811,
+       "end": 1.38
+      },
+      {
+       "w": "caught",
+       "start": 1.461,
+       "end": 1.705
+      },
+      {
+       "w": "one",
+       "start": 1.774,
+       "end": 2.053
+      },
+      {
+       "w": "in",
+       "start": 2.343,
+       "end": 2.471
+      },
+      {
+       "w": "its",
+       "start": 2.518,
+       "end": 2.634
+      },
+      {
+       "w": "own",
+       "start": 2.68,
+       "end": 2.819
+      },
+      {
+       "w": "app",
+       "start": 2.866,
+       "end": 3.063
+      }
+     ]
+    },
+    {
+     "id": "L0503",
+     "text": "One update. Sixty-seven milliseconds. Four dropped frames.",
+     "start": 3.363,
+     "end": 6.974,
+     "words": [
+      {
+       "w": "One",
+       "start": 3.363,
+       "end": 3.549
+      },
+      {
+       "w": "update",
+       "start": 3.572,
+       "end": 3.99
+      },
+      {
+       "w": "Sixty-seven",
+       "start": 4.303,
+       "end": 4.907
+      },
+      {
+       "w": "milliseconds",
+       "start": 4.953,
+       "end": 5.569
+      },
+      {
+       "w": "Four",
+       "start": 5.929,
+       "end": 6.149
+      },
+      {
+       "w": "dropped",
+       "start": 6.207,
+       "end": 6.509
+      },
+      {
+       "w": "frames",
+       "start": 6.544,
+       "end": 6.974
+      }
+     ]
+    },
+    {
+     "id": "L0504",
+     "text": "No click. A background refresh re-rendered the project list.",
+     "start": 7.674,
+     "end": 11.017,
+     "words": [
+      {
+       "w": "No",
+       "start": 7.674,
+       "end": 7.824
+      },
+      {
+       "w": "click",
+       "start": 7.894,
+       "end": 8.184
+      },
+      {
+       "w": "A",
+       "start": 8.509,
+       "end": 8.591
+      },
+      {
+       "w": "background",
+       "start": 8.684,
+       "end": 9.113
+      },
+      {
+       "w": "refresh",
+       "start": 9.183,
+       "end": 9.636
+      },
+      {
+       "w": "re-rendered",
+       "start": 9.705,
+       "end": 10.181
+      },
+      {
+       "w": "the",
+       "start": 10.216,
+       "end": 10.286
+      },
+      {
+       "w": "project",
+       "start": 10.321,
+       "end": 10.692
+      },
+      {
+       "w": "list",
+       "start": 10.739,
+       "end": 11.017
+      }
+     ]
+    }
+   ],
+   "beats": {
+    "tilt": 0.05,
+    "settle": 2.68,
+    "ms67": 3.572,
+    "ribbon": 4.303,
+    "four": 5.929,
+    "hollow": 6.974,
+    "noclick": 7.674,
+    "refresh": 8.684
+   },
+   "transitionIn": "cut",
+   "transitionDur": 0,
+   "mood": "duskRose"
+  },
+  {
+   "id": "ch05-s03",
+   "chapter": "ch05",
+   "start": 50.5,
+   "end": 58.3333,
+   "lines": [
+    {
+     "id": "L0505",
+     "text": "Twenty-five of twenty-seven renders changed nothing on screen.",
+     "start": 0.3,
+     "end": 3.493,
+     "words": [
+      {
+       "w": "Twenty-five",
+       "start": 0.3,
+       "end": 1.089
+      },
+      {
+       "w": "of",
+       "start": 1.136,
+       "end": 1.194
+      },
+      {
+       "w": "twenty-seven",
+       "start": 1.264,
+       "end": 1.774
+      },
+      {
+       "w": "renders",
+       "start": 1.833,
+       "end": 2.181
+      },
+      {
+       "w": "changed",
+       "start": 2.239,
+       "end": 2.564
+      },
+      {
+       "w": "nothing",
+       "start": 2.692,
+       "end": 2.959
+      },
+      {
+       "w": "on",
+       "start": 3.017,
+       "end": 3.11
+      },
+      {
+       "w": "screen",
+       "start": 3.156,
+       "end": 3.493
+      }
+     ]
+    },
+    {
+     "id": "L0506",
+     "text": "A screen recording can't see that. A time-travel recording can.",
+     "start": 3.793,
+     "end": 7.31,
+     "words": [
+      {
+       "w": "A",
+       "start": 3.793,
+       "end": 3.862
+      },
+      {
+       "w": "screen",
+       "start": 3.932,
+       "end": 4.152
+      },
+      {
+       "w": "recording",
+       "start": 4.211,
+       "end": 4.559
+      },
+      {
+       "w": "can't",
+       "start": 4.605,
+       "end": 4.826
+      },
+      {
+       "w": "see",
+       "start": 4.872,
+       "end": 5.046
+      },
+      {
+       "w": "that",
+       "start": 5.081,
+       "end": 5.348
+      },
+      {
+       "w": "A",
+       "start": 5.789,
+       "end": 5.859
+      },
+      {
+       "w": "time-travel",
+       "start": 5.94,
+       "end": 6.451
+      },
+      {
+       "w": "recording",
+       "start": 6.533,
+       "end": 6.916
+      },
+      {
+       "w": "can",
+       "start": 6.974,
+       "end": 7.31
+      }
+     ]
+    }
+   ],
+   "beats": {
+    "shatter": 0.1,
+    "hollow25": 0.3,
+    "nothing": 2.692,
+    "screenrec": 3.932,
+    "recfade": 5.081,
+    "matchcut": 5.539,
+    "rootcause": 7.01
+   },
+   "transitionIn": "cut",
+   "transitionDur": 0,
+   "mood": "duskRose"
+  },
+  {
+   "id": "ch05-s04",
+   "chapter": "ch05",
+   "start": 58.3333,
+   "end": 67.0833,
+   "lines": [
+    {
+     "id": "L0507",
+     "text": "Another bug: one list, fetched two hundred fifty-eight times in under three minutes.",
+     "start": 0.2,
+     "end": 4.635,
+     "words": [
+      {
+       "w": "Another",
+       "start": 0.2,
+       "end": 0.595
+      },
+      {
+       "w": "bug",
+       "start": 0.653,
+       "end": 0.989
+      },
+      {
+       "w": "one",
+       "start": 1.245,
+       "end": 1.477
+      },
+      {
+       "w": "list",
+       "start": 1.535,
+       "end": 1.883
+      },
+      {
+       "w": "fetched",
+       "start": 2.046,
+       "end": 2.348
+      },
+      {
+       "w": "two",
+       "start": 2.394,
+       "end": 2.568
+      },
+      {
+       "w": "hundred",
+       "start": 2.615,
+       "end": 2.835
+      },
+      {
+       "w": "fifty-eight",
+       "start": 2.882,
+       "end": 3.323
+      },
+      {
+       "w": "times",
+       "start": 3.346,
+       "end": 3.706
+      },
+      {
+       "w": "in",
+       "start": 3.741,
+       "end": 3.799
+      },
+      {
+       "w": "under",
+       "start": 3.857,
+       "end": 4.02
+      },
+      {
+       "w": "three",
+       "start": 4.066,
+       "end": 4.263
+      },
+      {
+       "w": "minutes",
+       "start": 4.298,
+       "end": 4.635
+      }
+     ]
+    },
+    {
+     "id": "L0508",
+     "text": "It never saved its place, so it kept starting over.",
+     "start": 4.885,
+     "end": 7.927,
+     "words": [
+      {
+       "w": "It",
+       "start": 4.885,
+       "end": 5.036
+      },
+      {
+       "w": "never",
+       "start": 5.071,
+       "end": 5.245
+      },
+      {
+       "w": "saved",
+       "start": 5.291,
+       "end": 5.524
+      },
+      {
+       "w": "its",
+       "start": 5.558,
+       "end": 5.663
+      },
+      {
+       "w": "place",
+       "start": 5.698,
+       "end": 6.116
+      },
+      {
+       "w": "so",
+       "start": 6.592,
+       "end": 6.777
+      },
+      {
+       "w": "it",
+       "start": 6.859,
+       "end": 6.928
+      },
+      {
+       "w": "kept",
+       "start": 6.986,
+       "end": 7.184
+      },
+      {
+       "w": "starting",
+       "start": 7.23,
+       "end": 7.579
+      },
+      {
+       "w": "over",
+       "start": 7.648,
+       "end": 7.927
+      }
+     ]
+    }
+   ],
+   "beats": {
+    "tilt": 0.05,
+    "settle": 1.535,
+    "counter": 2.046,
+    "u258": 2.882,
+    "nobody": 4.298,
+    "snapback": 5.071,
+    "place": 5.698,
+    "over": 7.23
+   },
+   "transitionIn": "cut",
+   "transitionDur": 0,
+   "mood": "duskRose"
+  },
+  {
+   "id": "ch06-s01",
+   "chapter": "ch06",
+   "start": 67.0833,
+   "end": 73.9167,
+   "lines": [
+    {
+     "id": "L0601",
+     "text": "Every run, a recording. Every bug, a root cause. Every fix, rerun to confirm.",
+     "start": 0.3,
+     "end": 5.2,
+     "words": [
+      {
+       "w": "Every",
+       "start": 0.3,
+       "end": 0.579
+      },
+      {
+       "w": "run",
+       "start": 0.648,
+       "end": 0.985
+      },
+      {
+       "w": "a",
+       "start": 1.171,
+       "end": 1.24
+      },
+      {
+       "w": "recording",
+       "start": 1.322,
+       "end": 1.786
+      },
+      {
+       "w": "Every",
+       "start": 2.141,
+       "end": 2.361
+      },
+      {
+       "w": "bug",
+       "start": 2.408,
+       "end": 2.663
+      },
+      {
+       "w": "a",
+       "start": 2.709,
+       "end": 2.733
+      },
+      {
+       "w": "root",
+       "start": 2.791,
+       "end": 2.953
+      },
+      {
+       "w": "cause",
+       "start": 3,
+       "end": 3.348
+      },
+      {
+       "w": "Every",
+       "start": 3.656,
+       "end": 3.877
+      },
+      {
+       "w": "fix",
+       "start": 3.946,
+       "end": 4.202
+      },
+      {
+       "w": "rerun",
+       "start": 4.271,
+       "end": 4.573
+      },
+      {
+       "w": "to",
+       "start": 4.62,
+       "end": 4.666
+      },
+      {
+       "w": "confirm",
+       "start": 4.713,
+       "end": 5.2
+      }
+     ]
+    }
+   ],
+   "beats": {
+    "fan": 0.05,
+    "w1": 0.3,
+    "w2": 1.171,
+    "w3": 2.141,
+    "w4": 2.709,
+    "w5": 3.656,
+    "w6": 4.271,
+    "chip": 5.5,
+    "pair": 0.3
+   },
+   "transitionIn": "cut",
+   "transitionDur": 0,
+   "mood": "parchment"
+  },
+  {
+   "id": "ch06-s02",
+   "chapter": "ch06",
+   "start": 73.9167,
+   "end": 82.7083,
+   "lines": [
+    {
+     "id": "L0602",
+     "text": "Replay QA. End-to-end testing, fully managed. Catch bugs that only exist in time.",
+     "start": 0.4,
+     "end": 5.474,
+     "words": [
+      {
+       "w": "Replay",
+       "start": 0.4,
+       "end": 0.853
+      },
+      {
+       "w": "QA",
+       "start": 0.934,
+       "end": 1.573
+      },
+      {
+       "w": "End-to-end",
+       "start": 1.665,
+       "end": 2.13
+      },
+      {
+       "w": "testing",
+       "start": 2.176,
+       "end": 2.583
+      },
+      {
+       "w": "fully",
+       "start": 2.652,
+       "end": 2.908
+      },
+      {
+       "w": "managed",
+       "start": 2.954,
+       "end": 3.337
+      },
+      {
+       "w": "Catch",
+       "start": 3.628,
+       "end": 3.906
+      },
+      {
+       "w": "bugs",
+       "start": 3.953,
+       "end": 4.196
+      },
+      {
+       "w": "that",
+       "start": 4.231,
+       "end": 4.359
+      },
+      {
+       "w": "only",
+       "start": 4.417,
+       "end": 4.638
+      },
+      {
+       "w": "exist",
+       "start": 4.684,
+       "end": 4.986
+      },
+      {
+       "w": "in",
+       "start": 5.032,
+       "end": 5.102
+      },
+      {
+       "w": "time",
+       "start": 5.16,
+       "end": 5.474
+      }
+     ]
+    }
+   ],
+   "beats": {
+    "mark": 0.4,
+    "tag1": 1.665,
+    "grow": 2.652,
+    "url": 3.628,
+    "caret": 5.874
+   },
+   "transitionIn": "blur",
+   "transitionDur": 1,
+   "mood": "emberRed"
+  }
+ ],
+ "look": "promo"
+}

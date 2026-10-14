@@ -100,6 +100,8 @@ async function main() {
   stageStart(P, 'timeline', { args: process.argv.slice(2) });
   const { timeline, placements, warnings, draftLines } = assembleTimeline(script, clips, { fps, draftWpm: a.draft ? num(a.wpm, 110) : 0, hint: `--slug ${a.slug}` });
   for (const w of warnings) console.warn(`  warn: ${w}`);
+  // the film's look (script.json `look`, e.g. 'promo') rides along so the reel can pick its finish
+  if (script.look && !timeline.look) Object.assign(timeline, { look: script.look });
 
   // ---- narration stem
   let stem = null;

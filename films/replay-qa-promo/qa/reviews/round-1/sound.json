@@ -1,0 +1,80 @@
+{
+  "reviewer": "sound",
+  "lens": "SOUND (promo): narrator delivery and pacing, music fit, mix loudness and ducking, the ending",
+  "round": 1,
+  "at": "2026-10-14",
+  "method": "No audio playback was possible. I measured EBU R128 momentary and short-term loudness every 0.5 s on mix/master.wav, narration/narration.wav and score/renders/m01.wav, and compared them against absolute word times from narration/timeline.json. I read mix/loudness.json (duck, musicEq, lineMasking, fade), qa/reports/latest.json, score/cues.json, score/motifs.md (tempo map), the m01 spectrogram, the m01.strudel instrument list (no bell, chime or celesta patches; 909, saws, sine, square, felt piano), voice/voice.json, lexicon.json and narration/stt.json. I also checked the contact sheets for ch04-s02, ch05-s01, ch05-s02, ch05-s03, ch05-s05, ch06-s01 and ch06-s02 against the score's anchors. This is round 1: there are no earlier reviews and the stages.fixes ledger in film.json is empty, so there was nothing to verify.",
+  "scores": { "accuracy": 8, "depth": 7, "clarity": 7, "story": 7.5, "visual": 7.5, "sync": 8, "sound": 7, "curiosity": 7.5 },
+  "summary": "The mix meets every technical target. It measures -16.0 LUFS I, -1.9 dBTP and LRA 3.4, with no limiting, a calibrated 4.4 dB duck and a keyed low band. Line levels sit within 1 dB of each other. The score suits the brief: bright 122 BPM D-major electronica with no chimes, on a tempo map that puts every cut on a bar line. It also has three sound-led moments a promo rarely gets: a tape-stop right after 'what's slow', a four-beat hole in the music on 'Four dropped frames', and the critic's verdict played as an open Asus2 on 'not yet' and a full D on 'good'. Four things keep the sound below excellent. (1) The ending is clipped: the last strike lands on 'managed', in the middle of the tagline, and the fade starts under the word 'time'. The film then ends 0.82 s after the last word, so the hook line gets no musical button and the end card gets no hold. (2) L0402 'Against staging' came back from speech-to-text as 'Again, staging' on both takes. (3) L0601, the three-part payoff line, is the most masked line in the film (8 dB) and one of the fastest (194 wpm), because it sits under the loudest, brightest section and a high pluck arpeggio in the consonant band. (4) Pacing is wall-to-wall: 178 wpm overall, seven lines at 190-199 wpm, and narration over 68% of the runtime. That leaves 5.75 s unused under the 90 s target, which could go to breaths and the end hold.",
+  "issues": [
+    {
+      "owner": "cue",
+      "id": "m01",
+      "severity": "major",
+      "problem": "The ending has no musical button and runs out of time. The last strike (D6/9) is at 80.912 on 'managed', in the middle of L0602. 'Catch bugs that only exist in time' then rides a decaying pad (music M -15.7 at 81.0, then -25.8 at 83.5). The 1.2 s fade starts at 83.05, under 'time' (83.12-83.43). The film ends at 84.25, 0.82 s after the last word, while the render still rings to about 86.5 s, so the tail is cut off. The core hook line gets no punctuation, and the end card is not held after the tagline.",
+      "fix": "Keep the D6/9 resolve on 'managed' as a downbeat. Then add one soft final button on the first 16th after 'time' ends (about 83.45): sub D1, a muted filtered-saw pluck on D5/F#5 and one dry 909 rim clack, with no new harmony, landing with the qa.replay.io caret settle. Let it ring at least 2.5 s before a 1.5 s fade. This needs the clock extended (see the global issue). Re-run the fadeAfterStrike check against the new last strike."
+    },
+    {
+      "owner": "global",
+      "severity": "major",
+      "problem": "The film is 84.25 s against a 90 s target (ceiling 100 s), but it spends none of that headroom on air. There are 0.82 s after the final word, 0.25 s of music before the first word, and gaps under 0.3 s between sentences in L0301→L0302, L0505→L0506 and L0507→L0508. The look calls for type holds of at least 1.2 s after the last word lands, and the end card cannot meet that.",
+      "fix": "Extend ch06-s02 by about 2.5 s, so the end card holds about 3.3 s after 'time' with the logo and qa.replay.io settled. Optionally extend ch01-s01 by about 1 bar (0.5-1.0 s) so the haze pad and sub establish before 'Imagine'. Rebuild timeline.json, then re-fit m01's tempo map (regenerate BARS; don't nudge it), ch06-s02 and ch01-s01. The total stays near 88 s, inside the 90 s target."
+    },
+    {
+      "owner": "line",
+      "id": "L0402",
+      "severity": "major",
+      "problem": "Both takes of 'Against staging, a preview, even localhost' came back from STT as 'Again, staging…'. The /st/+/st/ join swallows the end of 'Against', and the voice.json listening sign-off for 'Against' is still pending. Heard as 'Again', the line loses its meaning, which is environments you run against.",
+      "fix": "Re-take with a 100-150 ms break after 'Against' (or 'Against… staging' with a respelling that holds the t), and keep the take only if STT returns 'Against'. If it still fuses, reword to 'Run it against staging, a preview, even localhost.' and re-fit ch04-s02's b-staging/b-preview/b-local beats to the new word times."
+    },
+    {
+      "owner": "cue",
+      "id": "m01",
+      "severity": "major",
+      "problem": "L0601 ('Every run, a recording. Every bug, a root cause. Every fix, rerun to confirm.') is the film's payoff, but it has the lowest speech-over-music margin in the film: 8 dB (mix lineMasking warn). It is also spoken at 194 wpm. It sits in bars 42-44, the loudest section (music S about -17 LUFS, master S -14.3 to -15.0). There the high 16th pluck arpeggio (hpf 2500) and the white-noise air put steady energy into the 2.5-5 kHz consonant band, which the spectrogram shows as solid from 72.8 to 81 s.",
+      "fix": "In bars 42-44, keep the pluck arpeggio and stabs out from under the words. Play the arpeggio only in the gaps between the three phrases (about 74.0-74.6 and 75.6-75.9) or move its high-pass up to 6 kHz while he speaks. Hold the woven-word stabs to transients, and bring the lift's full brightness in under 'confirm' and into the end-card cut. Target at least 11 dB margin on L0601 without lowering the section's S level between phrases."
+    },
+    {
+      "owner": "line",
+      "id": "L0601",
+      "severity": "minor",
+      "problem": "The triad is delivered at 194 wpm with gaps of about 0.3 s between 'Every run, a recording', 'Every bug, a root cause' and 'Every fix, rerun to confirm'. The three claims run together where a promo would land each one as its own beat, and ch06-s01's woven words (w1-w6) have no room to settle between them.",
+      "fix": "Re-take at speed 0.94 with explicit 0.35 s breaks after 'recording' and 'cause', aiming for about 165 wpm. Extend ch06-s01 by the gained time (about 0.7 s) and move w3-w6 and m01's stabs to the new word times."
+    },
+    {
+      "owner": "cue",
+      "id": "m01",
+      "severity": "minor",
+      "problem": "Most of the time chapter and the verdict run without the groove, from 35.8 to 72.8 s (37 s, 44% of a 'bright, rhythmic' promo). The longest drop is the pads-only stretch under L0505/L0506 (50.5-55.4 s): the music render sits at -28 LUFS M, more than 9 dB under the drive. The verdict sags again to about -24 M (68.5-70.0 s) between 'not yet' and 'good'. Each dip works as contrast, but back to back they read as the music thinning out before the finale.",
+      "fix": "Keep the pull-back under L0505, but give it a half-time pulse: a muffled kick on 1 and a filtered rim on 3 at low velocity, so the rhythmic thread survives. In the verdict, carry the soft rim tick and a quiet sub pulse through 68.4-70.0 so the space between 'not yet' and 'good' has some forward motion. Leave the four-beat hole and the tape-stop exactly as they are."
+    },
+    {
+      "owner": "line",
+      "id": "L0505",
+      "severity": "minor",
+      "problem": "STT returned 'renders change nothing' (WER 0.125): the -d of 'changed' is swallowed before 'nothing', which leaves the tense ambiguous on the one line that states a measured result.",
+      "fix": "Re-take with a slight hold on 'changed' (or a 60-80 ms break before 'nothing'), keep it only if STT returns 'changed', then re-fit ch05-s03's 'nothing' beat."
+    },
+    {
+      "owner": "global",
+      "severity": "minor",
+      "problem": "The four human listening sign-offs in voice/voice.json are still pending: QA in L0102, localhost and 'Against' in L0402, and QA in L0502. L0502 needed several re-takes after 'Replay cue A' and 'ReplayQ A' readings, and the product name must be said cleanly as 'Q-A' every time.",
+      "fix": "A person listens to L0102, L0402, L0502 and L0602 in the master and runs 'film:voice signoff --slug replay-qa-promo --term <term> --by <name>' for each. Any take that drifts toward 'kwah' or 'cue A' is re-taken before publish."
+    },
+    {
+      "owner": "cue",
+      "id": "m01",
+      "severity": "minor",
+      "problem": "The opening is cold: the music fades in over 0.25 s and the narrator starts at 0.30 s, while the music is still at about -38 LUFS M (render) and only reaches -25 by 2.0 s. The promo starts on a voice with no musical bed, which undercuts the airy haze opening.",
+      "fix": "If ch01-s01 is lengthened (see the global issue), give the haze one bar alone: the pad at full haze level from 0, a soft sine-sub swell and the white-noise air, with the first M1 note on the downbeat where 'Imagine' starts. If the clock is not changed, at least start the pad at full haze level by 0.3 s instead of fading in."
+    }
+  ],
+  "best_moments": [
+    "A four-beat hole in the music on 'Four' (44.51-46.48 s), measured at -95 dBFS in the cue, lands exactly as the four 67 ms frames turn red in ch05-s02. The dropped frames are heard as missing time, and the kick returns on 'click'.",
+    "The tape-stop (35.55-35.79 s) starts 0.4 s after 'what's slow' and falls into the blur cut to 'Some bugs only exist in time'. The music performs the slowdown the line names and hands off to half-time B minor.",
+    "The critic's verdict in ch05-s05 is played rather than spoken: an open Asus2 on felt piano on 'not yet' (67.77 s) and a fuller D on 'good' (70.0 s), with the master jumping to -16 M on the D. That keeps the agent pair subtle, as the brief asks, and still easy to read.",
+    "The tempo map (117-126 BPM, every phrase starting on a cut) puts every scene change on a bar line, so cuts and type hits land on downbeats throughout without the score sounding stretched.",
+    "The kick and warm B1 bass return on the match cut into the { root cause } card (55.4 s), which lifts the music from -28 to -18 LUFS M as the answer appears.",
+    "The mix is clean: -16.0 LUFS I, -1.9 dBTP, no master limiting, a narration stem at -19 with only 1.6 dB compressor gain reduction, line levels within 1 dB and a 0.7 s pocket of room tone after 'frames'."
+  ]
+}

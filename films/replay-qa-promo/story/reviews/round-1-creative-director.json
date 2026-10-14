@@ -1,0 +1,91 @@
+{
+  "reviewer": "creative-director",
+  "round": 1,
+  "lens": "visual direction: drawable promo ideas in the look.md register, product footage cropped and zoomed to legibility, type on words and downbeats, feasibility with the promo kit and the real takes",
+  "runtimeCheck": "script.mjs assemble --check: 0 errors, 23 warnings; estimated 98.8 s (157 words at 140 wpm) against the 90 s target, inside the 100 s hard ceiling. Not critical, but there are only 1.2 s left before the ceiling, and 20 of the 23 warnings are on-screen text short of reading time. The visual fixes below therefore have to cut or simplify, not add time.",
+  "method": "Checked every crop the script names against the take stills in .orly-work/promo/sheets/<take>/<ms>.png (crops re-extracted at the exact boxes). Checked kit feasibility against apps/bookshelf/src/viz/film/promo/{look.ts,index.ts,RrwebScreen.tsx} and the layer order in core/reel.ts and core/harness.tsx: the scene canvas sits under the DOM footage, and the SVG overlay sits above it. During transitions, DOM layers only crossfade or cut.",
+  "scores": { "accuracy": 7, "depth": 7, "clarity": 6, "story": 7, "curiosity": 7, "visual": 6, "voice": 7 },
+  "critical": [
+    "ch04-s02: the Add environment crop is wrong and breaks the no-owner-data guardrail. In take schedule at 11458 (and at 11000), crop {x: 300, y: 150, w: 1140, h: 90} shows the green Production badge, the owner-named project URL 'https://collaborative-ai-editor.brett-lamy.workers.dev/', the 'Delete environment' button and the schedule chip. It does NOT show the 'Add environment' row, which sits at y ≈ 270-315. Verified by extracting that exact box from schedule/011458.png. Fix: crop ≈ {x: 300, y: 266, w: 420, h: 54} (the 'Add environment' label and its grey line, which is ellipsized in the take as 'Add production, staging, development, preview, or local co…'). Show it at ≈ 1000 stage px wide (×2.4). Let the five pills carry the full words. Do not include y < 250 anywhere in this shot.",
+    "ch05-s02: the floating bug page cannot fit the frame as written. Crop {x: 500, y: 80, w: 940, h: 760} shown '≈ 1000 stage px wide' is 1000 × 809 px on a 1280 × 720 stage. The script also asks for two things on the word 'Four' that cannot be on screen together. It wants the title zoomed ×2.0 with the braces jumping to 'drops 4 frames', and it wants the 67 ms bar dropping into the player ribbon, which needs zoom 1.2. At zoom 2.0 around (700, 150), the visible title runs only from ≈ x 465 to 935 in recording px, so 'drops 4 frames' (≈ x 915-1090) is off-frame anyway. Fix: box w ≈ 790 (≈ 640 tall) centred, or crop h ≤ 680. Drop the ×2.0 title zoom: at ×1.0 the 28 px title already renders ≈ 30 stage px. Let the title read during L0502, with braces on '67ms' on 'Sixty-seven' drawn in the SVG overlay. Then let the player ribbon, the 67 ms bar and the four hollow slots carry 'Four dropped frames' with no braces on the title."
+  ],
+  "issues": [
+    {
+      "where": "all shots with marks on footage (ch02-s02, ch04-s01, ch04-s03, ch05-s02, ch05-s03, ch05-s04, ch06-s01)",
+      "problem": "The script asks for 'kit bracket braces snap around' a chip, an input, a PR #3 badge, '67ms' and a Root Cause clause, plus red-pink underlines and highlights on product text. Every kit painter (bracket, kinetic, pill, typed, underline strokes) draws on the scene canvas, and the canvas sits UNDER the DOM RrwebScreen. These marks would be hidden behind the footage. Also, kit bracket wraps its own text; it cannot frame an arbitrary rectangle.",
+      "fix": "Add one line to the script's shared notes. Every mark that sits on product footage (braces around a rect, underline, highlight wipe, ribbon plates over the player, the screenshot frame) is drawn in shot.overlay() (SVG, above the DOM), positioned in recording px through the screen's crop and zoom, and lands only after the tilt has settled flat. Route a kit need to the shots stage: an SVG bracketRect / underline twin of the canvas painters."
+    },
+    {
+      "where": "ch02-s01",
+      "problem": "The plane order is inverted by the engine. The 'back plane' ghost is a DOM RrwebScreen, so it renders ABOVE the canvas haze tint and ABOVE the 104 px kit typed URL, which the script calls the 'front plane'. The URL would sit behind a 35 % ghost and the haze would not tint it. The film's one whip also only moves the canvas: the DOM ghost crossfades in place while the frame whips.",
+      "fix": "Give the ghost CSS style {filter: 'blur(16px)', opacity: 0.25}, and draw the typed URL and the haze tint in shot.overlay() (SVG text with an SVG caret), or replace the ghost with a canvas-drawn input bar. Start the ghost's opacity at 0 and ramp it in only after the 0.45 s whip has landed."
+    },
+    {
+      "where": "ch02-s02 (pull-back and caption)",
+      "problem": "The full-frame typed line 'shrinks and drifts down into the real input' runs from canvas into a DOM screen, so the text disappears behind the screen as it arrives. The grey caption 'No test suite required. Complements the one you have.' (53 chars, 4.4 s of the 5.9 s it needs) nearly repeats L0202 and competes with the real page copy. The register is one idea per beat.",
+      "fix": "Do the shrink in the SVG overlay and fade it out as the take's own typed URL appears (tape 2966). Cut the caption to 'No test suite required.' or drop it: the page's real 'quick chat' sub-copy plus the underline already makes the point."
+    },
+    {
+      "where": "ch04-s01",
+      "problem": "This shot is overloaded for a ~5 s triplet beat. It has a 150 px '3:00 AM', two footage crops (badge and chip), a six-tick date strip with six '3:00 AM' captions, braces, an underline, and a third footage crop (the Project status row). The check confirms it: the date strip has 4.3 s of the 5.5 s it needs, and the status label has 2.4 s of 4.3 s. Crop details: the chip box {1050, 166, 245, 24} clips the chip's lower edge (the chip spans y ≈ 171-194). In the take at 8808, the drawn cursor sits exactly on the chip, covering 'Am' of America.",
+      "fix": "Keep '3:00 AM', the chip name tag, braces and underline, and the six ticks without per-tick captions. Cut the status row; it already lives in ch01-s02's paraphrase. Chip crop {x: 1052, y: 167, w: 240, h: 31}. Badge crop {x: 310, y: 158, w: 95, h: 28}. Set cursor={false} explicitly on every frozen schedule crop."
+    },
+    {
+      "where": "ch04-s03",
+      "problem": "Crop {x: 500, y: 90, w: 940, h: 560} starts mid-way through the tab strip (tabs at y ≈ 70-108), so a sliced row of tabs shows at the top edge. At ≈ 1.06× the table text is ≈ 15 stage px before the zoom. 'Every recording gets reviewed' has no image of review: the chips just stack.",
+      "fix": "Crop {x: 500, y: 112, w: 940, h: 470} (the Test Runs heading through the PR #1 rows). Zoom ×1.6 toward (1015, 300) on 'pull'. On 'reviewed', a tiny green ✓ ticks onto the top chip of the stack (green is allowed only for ✓), which also foreshadows the critic."
+    },
+    {
+      "where": "ch05-s03",
+      "problem": "Tape 11600 → 12008 scrolls the 'ROOT CAUSE' heading off the top. At 12008 the crop {500, 60, 940, 260} is a dense, unlabelled 7-line 13 px paragraph, shown ≈ 1.06× (≈ 14 stage px), with braces around a clause that wraps across two lines. At 11736 the heading 'ROOT CAUSE' is at y ≈ 82 with the clause starting right under it.",
+      "fix": "Run tape 11300 → 11736 and hold there. Crop {x: 540, y: 70, w: 820, h: 70} (the heading plus the first line 'React-router `Link` components in the `Projects` page…'), shown ≥ 1000 stage px. Put braces in the overlay around 'are not memoized' only, on line 1 at x ≈ 1150-1240. The heading names it a root cause on screen, so the narration doesn't have to."
+    },
+    {
+      "where": "ch05-s04",
+      "problem": "In ~7 s the shot stacks: a title strip with ×1.8 zoom, the Discovered label, the Actual Behavior card with a highlight wipe, then a 258-bar ribbon with a racing counter, a checkpoint tag, a backwards playhead sweep and a −1 underline. That is two complete visual ideas and too much reading for a promo beat. The Actual crop {540, 130, 860, 180} also takes in the EXPECTED BEHAVIOR column (x ≥ 968), and at ≈ 1.1× its 13 px text is below the skill's 22 px legibility rule.",
+      "fix": "Choose one idea for the lower two-thirds. Keep the counter, ribbon and stuck 'checkpoint −1' tag, the film's own time device, and drop the Actual Behavior card and the Discovered label (the title chips already say Local). If the card stays, crop {x: 545, y: 140, w: 420, h: 160} (Actual only) at ≥ 900 stage px. Zoom the title around (1300, 135), where '258' actually sits, not (1180, 135)."
+    },
+    {
+      "where": "ch05-s02 (overlay density)",
+      "problem": "Beyond the fit problem in critical, the shot also carries a Discovered label, a 69-char 'illustration · 67 ms commit · 16.7 ms frame budget · 4 dropped frames' caption (6.9 s of the 7.3 s it needs), a struck-through cursor glyph, a refresh pulse and a bar flash. The ribbon with four hollow slots and the music stop is a superb, drawable idea; the extras bury it.",
+      "fix": "Keep the ribbon, the bar, the four hollow slots and the silence. Shorten the caption to 'illustration · 16.7 ms frames'. Drop the Discovered label, or move it to ch06's bug tile. Keep the struck cursor only if it sits in clear paper, not over the dark player."
+    },
+    {
+      "where": "ch05-s05 (the subtle beat)",
+      "problem": "The agent pair is on screen from 0.3 s to its fade at ≈ 5.4-5.6 s, about 5 s, below the brief's 6-8 s. It overlaps the pull-back (4.8 s) and the unreadable root-cause chain (≈ 1.16×), so three ideas compete in 6.4 s.",
+      "fix": "Either drop the chain screen to a quiet frozen tile (the 'Fixed' chips row only) or give the shot minDuration ≈ 7.5 s. Pay for that with ch03-s02 (below). Start the pull-back at 6.4 s, so the pair runs 0.3 → 6.6 s with its two exchanges at 0.6 s and 3.4 s."
+    },
+    {
+      "where": "ch03-s02",
+      "problem": "This is the weakest product shot. The exploration player's picture area is empty in the take, so the script covers it with a paper plate. What remains is an empty box with one subtitle, zoomed ×1.9, for 2.2 s, while runtime sits at 98.8 / 100 s and most shots fall short of reading time.",
+      "fix": "Cut it, and let the dot-matrix dissolve of ch03-s01 cut straight into ch04-s01 on M3's downbeat. Give the 2.2 s to ch05-s05 and to the holds below. If it must stay, crop to the subtitle bubble only, ≈ {x: 740, y: 740, w: 460, h: 70}, at ≥ 1000 stage px, so no empty plate shows."
+    },
+    {
+      "where": "ch06-s01 (collage)",
+      "problem": "Six simultaneous live rrweb Replayers is a render-time risk. Three tiles are slivers or noise: the chip tile is a 245 × 26 strip (about 9:1), the projects sidebar tile is twelve truncated 'ExampleApps PR #9 - …' rows, and the bug tiles repeat ch05. The kinetic words are canvas, so any word that 'weaves between' tiles is hidden wherever a DOM tile overlaps it. The reference collage is 4-6 big, legible images.",
+      "fix": "Use four tiles: Insights stats (the strongest, legible numbers), runs (PR #3 rows), bug-react title with 'Open', and bug-sync title with 'Fixed'. Drop the projects-sidebar and chip slivers. Give the six woven words reserved paper lanes that no tile crosses, or draw them in the overlay. Set cursor={false} on the insights tile: at 2926 the take's cursor sits on 'TOTAL BUGS'. Blur and sink the tiles with style filter and transform, because the blur transition does not blur DOM."
+    },
+    {
+      "where": "ch06-s02 (end card)",
+      "problem": "The reference end card is one bracketed tagline. This card stacks a tagline that morphs, the mark plus 'Replay QA', a chip, a subline 'on a schedule · on every PR · every run a recording' and a typed URL. The subline repeats ch06-s01 and pushes the card toward a slide. The tagline has 2.4 s of the 3.3 s it needs.",
+      "fix": "Drop the subline. Let '{ End-to-end testing }' → '{ fully managed · always on }', the lock-up and 'qa.replay.io' carry it, and give the saved time to the tagline's hold."
+    },
+    {
+      "where": "holds (ch01-s01 1.0, ch01-s03 0.9, ch02-s01 0.9, ch02-s02 0.7, ch03-s01 0.8, ch04-s02 0.8, ch04-s03 0.9, ch05-s01 0.4, ch05-s02 0.3, ch05-s03 0.4, ch05-s04 0.4, ch06-s01 0.8)",
+      "problem": "look.md requires type to hold ≥ 1.2 s after the last word lands. Twelve of the fifteen narrated shots hold less, and ch05's run of 0.3-0.4 s holds leaves no room for the 'in time' and '258' type to land.",
+      "fix": "With the cuts above (ch03-s02 2.2 s, the ch04-s01 status row, the ch05-s04 card, the ch06-s02 subline), raise holdAfter to ≥ 1.2 on ch01-s01, ch05-s01, ch05-s04 and ch06-s01 at least, and keep the total at or under ≈ 95 s."
+    },
+    {
+      "where": "ch01-s03",
+      "problem": "Three live Replayers for 0.75 s of postage-stamp texture is costly. Stamp (2), schedule {1030, 156, 290, 46}, also catches the left edge of the 'Edit' button at x ≈ 1297.",
+      "fix": "Keep the stamps but crop stamp (2) to {x: 1052, y: 167, w: 240, h: 31}. Mount each stamp's RrwebScreen only inside its own 0.25 s window, so no more than one Replayer is live at a time."
+    }
+  ],
+  "strengths": [
+    "Every product shot names its take, its tape window and its marks, and stays inside what the recording really contains. For example, bug-react is held at 3040-3200 to avoid the 3032 jump and the white player at ≈ 3217, and the empty exploration player is honestly plated rather than faked.",
+    "The film translates the reference's devices faithfully, and each device has a Replay QA subject: the dawn kinetic line, '{ intro▢▢▢ducing }' with product stamps, the giant typed URL with its caret, the resolving step list, the fanned collage, and the ember end card.",
+    "ch05-s02's frame ribbon is the best visual idea in the script: a 67 ms bar covering exactly four 16.7 ms slots, which go hollow while the music stops for four beats. It makes 'dropped frames' felt as missing time, which is the brief's time-only bug made visible.",
+    "Type is tied to words and downbeats through beats anchored on narration words, with clear motion vocabulary (blur-in, colour sweep, brace part and snap). The one dark brand register is held back for the time-travel turn, as look.md asks.",
+    "The subtle agent beat is correctly small (scale 0.6, bottom-right, unnarrated), generic and grounded. It uses the same ▶ recording chip object that runs through the film, from the run rows to the frame ribbon to the agent hand-off to the end card."
+  ]
+}

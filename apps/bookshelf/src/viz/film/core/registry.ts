@@ -51,6 +51,8 @@ const DEFAULT_DUR: Record<TransitionKind, number> = {
   inkBleed: 2.0,
   paperWipe: 1.2,
   lampChange: 3.0,
+  blur: 0.6,
+  whip: 0.45,
 };
 
 export function defaultTransitionDur(kind: TransitionKind | string | undefined): number {
@@ -61,13 +63,20 @@ export function defaultTransitionDur(kind: TransitionKind | string | undefined):
 export function setFinish(fn: FinishFn | null): void {
   finish = fn;
 }
-export function getFinish(): FinishFn | null {
+/** a film's look (timeline.json `look`, e.g. 'promo') may bring its own finish; null = no finish pass */
+const lookFinish = new Map<string, { finish: FinishFn | null; overlay: FinishFn | null }>();
+export function setLookFinish(look: string, fn: FinishFn | null, overlay: FinishFn | null = null): void {
+  lookFinish.set(look, { finish: fn, overlay });
+}
+export function getFinish(look?: string): FinishFn | null {
+  if (look && lookFinish.has(look)) return lookFinish.get(look)!.finish;
   return finish;
 }
 export function setFinishOverlay(fn: FinishFn | null): void {
   finishOverlay = fn;
 }
-export function getFinishOverlay(): FinishFn | null {
+export function getFinishOverlay(look?: string): FinishFn | null {
+  if (look && lookFinish.has(look)) return lookFinish.get(look)!.overlay;
   return finishOverlay;
 }
 

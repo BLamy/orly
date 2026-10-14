@@ -1,0 +1,57 @@
+{
+  "ch05-s03": {
+    "present": [
+      "all 27 renders",
+      "React-router"
+    ],
+    "absent": []
+  },
+  "ch05-s02": {
+    "present": [
+      "no user action"
+    ],
+    "absent": [],
+    "files": [
+      "sets/ch05-s02-bug.tsx"
+    ]
+  },
+  "ch05-s04": {
+    "present": [
+      "illustration"
+    ],
+    "absent": [],
+    "files": [
+      "sets/ch05-s04-sync.ts"
+    ]
+  },
+  "ch03-s01": {
+    "present": [
+      "MARKS.explore"
+    ],
+    "absent": []
+  },
+  "ch06-s02": {
+    "present": [
+      "Catch bugs that only exist"
+    ],
+    "absent": []
+  },
+  "ch06-s01": {
+    "present": [
+      "illustration"
+    ],
+    "absent": [],
+    "files": [
+      "sets/agent-pair.ts",
+      "sets/ch06-s01-chip.tsx"
+    ]
+  },
+  "ch04-s01": {
+    "present": [
+      "Tue at 3:00 AM"
+    ],
+    "absent": [
+      "Tue · America/New_York"
+    ]
+  }
+}

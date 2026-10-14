@@ -1,0 +1,20 @@
+{
+  "slug": "replay-qa-promo",
+  "look": "promo",
+  "title": "Replay QA: { fully managed }",
+  "subtitle": "End-to-end testing that explores, runs and records on its own",
+  "logline": "You give Replay QA one URL. It explores your app, turns what it finds into journeys and runs them on a schedule, against staging, a preview or localhost, and on every pull request, recording every run. So when a bug only exists in time (a 67 ms commit nobody clicked, one list fetched 258 times), it arrives with a recording and its root cause.",
+  "runtimeTargetSec": 90,
+  "vhs": {
+    "subject": "Software Testing",
+    "theme": "grid",
+    "icons": [
+      "magnifier",
+      "crt",
+      "robot",
+      "gear"
+    ],
+    "tagline": "Catch the bugs that hide in time!"
+  },
+  "runtimeCeilingSec": 100
+}

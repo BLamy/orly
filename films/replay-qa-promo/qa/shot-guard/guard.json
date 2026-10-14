@@ -1,0 +1,757 @@
+{
+ "shots": {
+  "ch01-s01": {
+   "latest": {
+    "sha": "7ef37b3c0ae7",
+    "owner": "reviser:ch01-s01+ch01-s03:r1",
+    "at": "2026-10-14T20:06:10Z"
+   },
+   "views": {
+    "author:ch01-s01+ch01-s03": {
+     "sha": "869b58ba780b",
+     "at": "2026-10-14T20:01:27Z"
+    },
+    "critic-r1-ch01": {
+     "sha": "869b58ba780b",
+     "at": "2026-10-14T20:03:14Z"
+    },
+    "reviser:ch01-s01+ch01-s03:r1": {
+     "sha": "7ef37b3c0ae7",
+     "at": "2026-10-14T20:06:10Z"
+    }
+   },
+   "history": [
+    {
+     "sha": "db04d597f13d",
+     "owner": "author:ch01-s01+ch01-s03",
+     "at": "2026-10-14T19:29:39Z",
+     "base": null
+    },
+    {
+     "sha": "76958713adef",
+     "owner": "author:ch01-s01+ch01-s03",
+     "at": "2026-10-14T19:30:21Z",
+     "base": "db04d597f13d"
+    },
+    {
+     "sha": "203cd84ed197",
+     "owner": "author:ch01-s01+ch01-s03",
+     "at": "2026-10-14T19:30:35Z",
+     "base": "76958713adef"
+    },
+    {
+     "sha": "869b58ba780b",
+     "owner": "author:ch01-s01+ch01-s03",
+     "at": "2026-10-14T20:01:27Z",
+     "base": "203cd84ed197"
+    },
+    {
+     "sha": "1421ec3347a6",
+     "owner": "reviser:ch01-s01+ch01-s03:r1",
+     "at": "2026-10-14T20:06:04Z",
+     "base": "869b58ba780b"
+    },
+    {
+     "sha": "7ef37b3c0ae7",
+     "owner": "reviser:ch01-s01+ch01-s03:r1",
+     "at": "2026-10-14T20:06:10Z",
+     "base": "1421ec3347a6"
+    }
+   ]
+  },
+  "ch01-s03": {
+   "latest": {
+    "sha": "c53dfdbfbf8a",
+    "owner": "reviser:ch01-s01+ch01-s03:r1",
+    "at": "2026-10-14T20:08:58Z"
+   },
+   "views": {
+    "author:ch01-s01+ch01-s03": {
+     "sha": "510c07fa192d",
+     "at": "2026-10-14T19:59:52Z"
+    },
+    "critic-r1-ch01": {
+     "sha": "510c07fa192d",
+     "at": "2026-10-14T20:03:15Z"
+    },
+    "reviser:ch01-s01+ch01-s03:r1": {
+     "sha": "c53dfdbfbf8a",
+     "at": "2026-10-14T20:08:58Z"
+    }
+   },
+   "history": [
+    {
+     "sha": "850937354f0a",
+     "owner": "author:ch01-s01+ch01-s03",
+     "at": "2026-10-14T19:31:34Z",
+     "base": null
+    },
+    {
+     "sha": "510c07fa192d",
+     "owner": "author:ch01-s01+ch01-s03",
+     "at": "2026-10-14T19:34:45Z",
+     "base": "850937354f0a"
+    },
+    {
+     "sha": "1acdac2a970a",
+     "owner": "reviser:ch01-s01+ch01-s03:r1",
+     "at": "2026-10-14T20:06:30Z",
+     "base": "510c07fa192d"
+    },
+    {
+     "sha": "1a70ce72c1cf",
+     "owner": "reviser:ch01-s01+ch01-s03:r1",
+     "at": "2026-10-14T20:08:17Z",
+     "base": "1acdac2a970a"
+    },
+    {
+     "sha": "c53dfdbfbf8a",
+     "owner": "reviser:ch01-s01+ch01-s03:r1",
+     "at": "2026-10-14T20:08:58Z",
+     "base": "1a70ce72c1cf"
+    }
+   ]
+  },
+  "ch03-s01": {
+   "latest": {
+    "sha": "7c045a797745",
+    "owner": "reviser:ch03-s01:r1",
+    "at": "2026-10-14T20:02:04Z"
+   },
+   "views": {
+    "author:ch03-s01": {
+     "sha": "5115424a5c31",
+     "at": "2026-10-14T19:31:24Z"
+    },
+    "critic-r1-ch03": {
+     "sha": "5115424a5c31",
+     "at": "2026-10-14T19:32:40Z"
+    },
+    "reviser:ch03-s01:r1": {
+     "sha": "7c045a797745",
+     "at": "2026-10-14T20:02:04Z"
+    },
+    "critic-r1": {
+     "sha": "5115424a5c31",
+     "at": "2026-10-14T19:59:56Z"
+    }
+   },
+   "history": [
+    {
+     "sha": "325fe4af0343",
+     "owner": "author:ch03-s01",
+     "at": "2026-10-14T19:29:48Z",
+     "base": null
+    },
+    {
+     "sha": "5115424a5c31",
+     "owner": "author:ch03-s01",
+     "at": "2026-10-14T19:31:24Z",
+     "base": "325fe4af0343"
+    },
+    {
+     "sha": "7c045a797745",
+     "owner": "reviser:ch03-s01:r1",
+     "at": "2026-10-14T20:02:04Z",
+     "base": "5115424a5c31"
+    }
+   ]
+  },
+  "ch02-s01": {
+   "latest": {
+    "sha": "6c2f4f6c0d75",
+    "owner": "author:ch02-s01+ch02-s02",
+    "at": "2026-10-14T20:03:24Z"
+   },
+   "views": {
+    "author:ch02-s01+ch02-s02": {
+     "sha": "6c2f4f6c0d75",
+     "at": "2026-10-14T20:03:24Z"
+    },
+    "critic-r1": {
+     "sha": "6c2f4f6c0d75",
+     "at": "2026-10-14T20:06:48Z"
+    }
+   },
+   "history": [
+    {
+     "sha": "1190c18e3d8c",
+     "owner": "author:ch02-s01+ch02-s02",
+     "at": "2026-10-14T19:30:34Z",
+     "base": null
+    },
+    {
+     "sha": "25cf1a1a496b",
+     "owner": "author:ch02-s01+ch02-s02",
+     "at": "2026-10-14T19:33:41Z",
+     "base": "1190c18e3d8c"
+    },
+    {
+     "sha": "6c2f4f6c0d75",
+     "owner": "author:ch02-s01+ch02-s02",
+     "at": "2026-10-14T20:03:24Z",
+     "base": "25cf1a1a496b"
+    }
+   ]
+  },
+  "ch02-s02": {
+   "latest": {
+    "sha": "ae3c8e520ba8",
+    "owner": "author:ch02-s01+ch02-s02",
+    "at": "2026-10-14T20:05:34Z"
+   },
+   "views": {
+    "author:ch02-s01+ch02-s02": {
+     "sha": "ae3c8e520ba8",
+     "at": "2026-10-14T20:05:34Z"
+    },
+    "critic-r1": {
+     "sha": "ae3c8e520ba8",
+     "at": "2026-10-14T20:06:48Z"
+    }
+   },
+   "history": [
+    {
+     "sha": "afd0bb2b56f3",
+     "owner": "author:ch02-s01+ch02-s02",
+     "at": "2026-10-14T19:31:41Z",
+     "base": null
+    },
+    {
+     "sha": "1c361c3d04e4",
+     "owner": "author:ch02-s01+ch02-s02",
+     "at": "2026-10-14T19:33:41Z",
+     "base": "afd0bb2b56f3"
+    },
+    {
+     "sha": "acd2cc476bea",
+     "owner": "author:ch02-s01+ch02-s02",
+     "at": "2026-10-14T19:34:10Z",
+     "base": "1c361c3d04e4"
+    },
+    {
+     "sha": "26c8caaf7e4e",
+     "owner": "author:ch02-s01+ch02-s02",
+     "at": "2026-10-14T20:04:22Z",
+     "base": "acd2cc476bea"
+    },
+    {
+     "sha": "9e5a30791103",
+     "owner": "author:ch02-s01+ch02-s02",
+     "at": "2026-10-14T20:05:17Z",
+     "base": "26c8caaf7e4e"
+    },
+    {
+     "sha": "ae3c8e520ba8",
+     "owner": "author:ch02-s01+ch02-s02",
+     "at": "2026-10-14T20:05:34Z",
+     "base": "9e5a30791103"
+    }
+   ]
+  },
+  "ch04-s01": {
+   "latest": {
+    "sha": "745a955ba59b",
+    "owner": "reviser:ch04-s01+ch04-s02+ch04-s03:r1",
+    "at": "2026-10-14T20:18:19Z"
+   },
+   "views": {
+    "author:ch04-s01+ch04-s02+ch04-s03": {
+     "sha": "d930ade8cd85",
+     "at": "2026-10-14T20:08:27Z"
+    },
+    "reviser:ch04-s01+ch04-s02+ch04-s03:r1": {
+     "sha": "745a955ba59b",
+     "at": "2026-10-14T20:18:19Z"
+    }
+   },
+   "history": [
+    {
+     "sha": "0dababc44a49",
+     "owner": "author:ch04-s01+ch04-s02+ch04-s03",
+     "at": "2026-10-14T19:31:21Z",
+     "base": null
+    },
+    {
+     "sha": "8b36c71e15da",
+     "owner": "author:ch04-s01+ch04-s02+ch04-s03",
+     "at": "2026-10-14T19:34:04Z",
+     "base": "0dababc44a49"
+    },
+    {
+     "sha": "d930ade8cd85",
+     "owner": "author:ch04-s01+ch04-s02+ch04-s03",
+     "at": "2026-10-14T20:08:27Z",
+     "base": "8b36c71e15da"
+    },
+    {
+     "sha": "2aac0c7bb1d2",
+     "owner": "reviser:ch04-s01+ch04-s02+ch04-s03:r1",
+     "at": "2026-10-14T20:14:44Z",
+     "base": "d930ade8cd85"
+    },
+    {
+     "sha": "745a955ba59b",
+     "owner": "reviser:ch04-s01+ch04-s02+ch04-s03:r1",
+     "at": "2026-10-14T20:18:19Z",
+     "base": "2aac0c7bb1d2"
+    }
+   ]
+  },
+  "ch04-s02": {
+   "latest": {
+    "sha": "d183256458b2",
+    "owner": "reviser:ch04-s01+ch04-s02+ch04-s03:r1",
+    "at": "2026-10-14T20:15:30Z"
+   },
+   "views": {
+    "author:ch04-s01+ch04-s02+ch04-s03": {
+     "sha": "098316b097f5",
+     "at": "2026-10-14T20:08:27Z"
+    },
+    "reviser:ch04-s01+ch04-s02+ch04-s03:r1": {
+     "sha": "d183256458b2",
+     "at": "2026-10-14T20:15:30Z"
+    }
+   },
+   "history": [
+    {
+     "sha": "48f809a3c0e7",
+     "owner": "author:ch04-s01+ch04-s02+ch04-s03",
+     "at": "2026-10-14T20:04:39Z",
+     "base": null
+    },
+    {
+     "sha": "10c349575b05",
+     "owner": "author:ch04-s01+ch04-s02+ch04-s03",
+     "at": "2026-10-14T20:05:13Z",
+     "base": "48f809a3c0e7"
+    },
+    {
+     "sha": "098316b097f5",
+     "owner": "author:ch04-s01+ch04-s02+ch04-s03",
+     "at": "2026-10-14T20:08:27Z",
+     "base": "10c349575b05"
+    },
+    {
+     "sha": "6008174f49e0",
+     "owner": "reviser:ch04-s01+ch04-s02+ch04-s03:r1",
+     "at": "2026-10-14T20:15:25Z",
+     "base": "098316b097f5"
+    },
+    {
+     "sha": "d183256458b2",
+     "owner": "reviser:ch04-s01+ch04-s02+ch04-s03:r1",
+     "at": "2026-10-14T20:15:30Z",
+     "base": "6008174f49e0"
+    }
+   ]
+  },
+  "ch04-s03": {
+   "latest": {
+    "sha": "4ef31ccdff74",
+    "owner": "reviser:ch04-s01+ch04-s02+ch04-s03:r1",
+    "at": "2026-10-14T20:19:42Z"
+   },
+   "views": {
+    "author:ch04-s01+ch04-s02+ch04-s03": {
+     "sha": "80fdd4465298",
+     "at": "2026-10-14T20:10:24Z"
+    },
+    "reviser:ch04-s01+ch04-s02+ch04-s03:r1": {
+     "sha": "4ef31ccdff74",
+     "at": "2026-10-14T20:19:42Z"
+    }
+   },
+   "history": [
+    {
+     "sha": "b2180be8aab1",
+     "owner": "author:ch04-s01+ch04-s02+ch04-s03",
+     "at": "2026-10-14T20:06:22Z",
+     "base": null
+    },
+    {
+     "sha": "42420c9c317d",
+     "owner": "author:ch04-s01+ch04-s02+ch04-s03",
+     "at": "2026-10-14T20:07:03Z",
+     "base": "b2180be8aab1"
+    },
+    {
+     "sha": "eefd8aa307e0",
+     "owner": "author:ch04-s01+ch04-s02+ch04-s03",
+     "at": "2026-10-14T20:08:14Z",
+     "base": "42420c9c317d"
+    },
+    {
+     "sha": "d28787b136d2",
+     "owner": "author:ch04-s01+ch04-s02+ch04-s03",
+     "at": "2026-10-14T20:09:42Z",
+     "base": "eefd8aa307e0"
+    },
+    {
+     "sha": "708fd4af58b8",
+     "owner": "author:ch04-s01+ch04-s02+ch04-s03",
+     "at": "2026-10-14T20:09:48Z",
+     "base": "d28787b136d2"
+    },
+    {
+     "sha": "80fdd4465298",
+     "owner": "author:ch04-s01+ch04-s02+ch04-s03",
+     "at": "2026-10-14T20:10:24Z",
+     "base": "708fd4af58b8"
+    },
+    {
+     "sha": "e37cb9d54c4f",
+     "owner": "reviser:ch04-s01+ch04-s02+ch04-s03:r1",
+     "at": "2026-10-14T20:17:17Z",
+     "base": "80fdd4465298"
+    },
+    {
+     "sha": "6d880b0595a0",
+     "owner": "reviser:ch04-s01+ch04-s02+ch04-s03:r1",
+     "at": "2026-10-14T20:18:56Z",
+     "base": "e37cb9d54c4f"
+    },
+    {
+     "sha": "4ef31ccdff74",
+     "owner": "reviser:ch04-s01+ch04-s02+ch04-s03:r1",
+     "at": "2026-10-14T20:19:42Z",
+     "base": "6d880b0595a0"
+    }
+   ]
+  },
+  "ch06-s01": {
+   "latest": {
+    "sha": "a987c213cde0",
+    "owner": "reviser:ch06-s01:r1",
+    "at": "2026-10-14T20:41:59Z"
+   },
+   "views": {
+    "author:ch06-s01+ch06-s02": {
+     "sha": "a31f895b72d0",
+     "at": "2026-10-14T20:32:09Z"
+    },
+    "critic-r1-ch06": {
+     "sha": "a31f895b72d0",
+     "at": "2026-10-14T20:32:47Z"
+    },
+    "reviser:ch06-s01:r1": {
+     "sha": "a987c213cde0",
+     "at": "2026-10-14T20:41:59Z"
+    }
+   },
+   "history": [
+    {
+     "sha": "93fd1054eb13",
+     "owner": "author:ch06-s01+ch06-s02",
+     "at": "2026-10-14T20:24:32Z",
+     "base": null
+    },
+    {
+     "sha": "9149cb5f3991",
+     "owner": "author:ch06-s01+ch06-s02",
+     "at": "2026-10-14T20:26:07Z",
+     "base": "93fd1054eb13"
+    },
+    {
+     "sha": "056cc9548adc",
+     "owner": "author:ch06-s01+ch06-s02",
+     "at": "2026-10-14T20:26:54Z",
+     "base": "9149cb5f3991"
+    },
+    {
+     "sha": "a31f895b72d0",
+     "owner": "author:ch06-s01+ch06-s02",
+     "at": "2026-10-14T20:30:44Z",
+     "base": "056cc9548adc"
+    },
+    {
+     "sha": "a31f895b72d0",
+     "owner": "author:ch06-s01+ch06-s02",
+     "at": "2026-10-14T20:32:09Z",
+     "base": "a31f895b72d0"
+    },
+    {
+     "sha": "b59fbce6349b",
+     "owner": "reviser:ch06-s01:r1",
+     "at": "2026-10-14T20:40:56Z",
+     "base": "a31f895b72d0"
+    },
+    {
+     "sha": "a987c213cde0",
+     "owner": "reviser:ch06-s01:r1",
+     "at": "2026-10-14T20:41:59Z",
+     "base": "b59fbce6349b"
+    }
+   ]
+  },
+  "ch06-s02": {
+   "latest": {
+    "sha": "51d38d56af5d",
+    "owner": "author:ch06-s01+ch06-s02",
+    "at": "2026-10-14T20:30:44Z"
+   },
+   "views": {
+    "author:ch06-s01+ch06-s02": {
+     "sha": "51d38d56af5d",
+     "at": "2026-10-14T20:30:44Z"
+    },
+    "critic-r1-ch06": {
+     "sha": "51d38d56af5d",
+     "at": "2026-10-14T20:32:47Z"
+    }
+   },
+   "history": [
+    {
+     "sha": "563cf37b9dd0",
+     "owner": "author:ch06-s01+ch06-s02",
+     "at": "2026-10-14T20:27:38Z",
+     "base": null
+    },
+    {
+     "sha": "538e68598a0a",
+     "owner": "author:ch06-s01+ch06-s02",
+     "at": "2026-10-14T20:28:34Z",
+     "base": "563cf37b9dd0"
+    },
+    {
+     "sha": "51d38d56af5d",
+     "owner": "author:ch06-s01+ch06-s02",
+     "at": "2026-10-14T20:30:44Z",
+     "base": "538e68598a0a"
+    }
+   ]
+  },
+  "ch05-s01": {
+   "latest": {
+    "sha": "dddff38931ec",
+    "owner": "author:ch05-s01+ch05-s02+ch05-s03+ch05-s04+ch05-s05",
+    "at": "2026-10-14T20:32:35Z"
+   },
+   "views": {
+    "author:ch05-s01+ch05-s02+ch05-s03+ch05-s04+ch05-s05": {
+     "sha": "dddff38931ec",
+     "at": "2026-10-14T20:32:35Z"
+    }
+   },
+   "history": [
+    {
+     "sha": "2983a676e0de",
+     "owner": "author:ch05-s01+ch05-s02+ch05-s03+ch05-s04+ch05-s05",
+     "at": "2026-10-14T20:29:43Z",
+     "base": null
+    },
+    {
+     "sha": "dddff38931ec",
+     "owner": "author:ch05-s01+ch05-s02+ch05-s03+ch05-s04+ch05-s05",
+     "at": "2026-10-14T20:32:35Z",
+     "base": "2983a676e0de"
+    }
+   ]
+  },
+  "ch05-s02": {
+   "latest": {
+    "sha": "182a022a4889",
+    "owner": "reviser:ch05-s02+ch05-s04+ch05-s05:r1",
+    "at": "2026-10-14T21:01:23Z"
+   },
+   "views": {
+    "author:ch05-s01+ch05-s02+ch05-s03+ch05-s04+ch05-s05": {
+     "sha": "8d49dff603f7",
+     "at": "2026-10-14T20:41:07Z"
+    },
+    "reviser:ch05-s02+ch05-s04+ch05-s05:r1": {
+     "sha": "182a022a4889",
+     "at": "2026-10-14T21:01:23Z"
+    }
+   },
+   "history": [
+    {
+     "sha": null,
+     "owner": "author:ch05-s01+ch05-s02+ch05-s03+ch05-s04+ch05-s05",
+     "at": "2026-10-14T20:21:49Z",
+     "base": null
+    },
+    {
+     "sha": "7d01f1950d17",
+     "owner": "author:ch05-s01+ch05-s02+ch05-s03+ch05-s04+ch05-s05",
+     "at": "2026-10-14T20:30:32Z",
+     "base": "b3edf320d15d"
+    },
+    {
+     "sha": "27635e907480",
+     "owner": "author:ch05-s01+ch05-s02+ch05-s03+ch05-s04+ch05-s05",
+     "at": "2026-10-14T20:31:31Z",
+     "base": "7d01f1950d17"
+    },
+    {
+     "sha": "d813df0355d8",
+     "owner": "author:ch05-s01+ch05-s02+ch05-s03+ch05-s04+ch05-s05",
+     "at": "2026-10-14T20:32:19Z",
+     "base": "27635e907480"
+    },
+    {
+     "sha": "8d49dff603f7",
+     "owner": "author:ch05-s01+ch05-s02+ch05-s03+ch05-s04+ch05-s05",
+     "at": "2026-10-14T20:41:07Z",
+     "base": "d813df0355d8"
+    },
+    {
+     "sha": "29e14265f85e",
+     "owner": "reviser:ch05-s02+ch05-s04+ch05-s05:r1",
+     "at": "2026-10-14T21:00:33Z",
+     "base": "8d49dff603f7"
+    },
+    {
+     "sha": "182a022a4889",
+     "owner": "reviser:ch05-s02+ch05-s04+ch05-s05:r1",
+     "at": "2026-10-14T21:01:23Z",
+     "base": "29e14265f85e"
+    }
+   ]
+  },
+  "ch05-s03": {
+   "latest": {
+    "sha": "235d666fd411",
+    "owner": "author:ch05-s01+ch05-s02+ch05-s03+ch05-s04+ch05-s05",
+    "at": "2026-10-14T20:48:58Z"
+   },
+   "views": {
+    "author:ch05-s01+ch05-s02+ch05-s03+ch05-s04+ch05-s05": {
+     "sha": "235d666fd411",
+     "at": "2026-10-14T20:48:58Z"
+    }
+   },
+   "history": [
+    {
+     "sha": null,
+     "owner": "author:ch05-s01+ch05-s02+ch05-s03+ch05-s04+ch05-s05",
+     "at": "2026-10-14T20:21:49Z",
+     "base": null
+    },
+    {
+     "sha": "b93328812c54",
+     "owner": "author:ch05-s01+ch05-s02+ch05-s03+ch05-s04+ch05-s05",
+     "at": "2026-10-14T20:34:48Z",
+     "base": "e58e58f93692"
+    },
+    {
+     "sha": "4e0c3104ec63",
+     "owner": "author:ch05-s01+ch05-s02+ch05-s03+ch05-s04+ch05-s05",
+     "at": "2026-10-14T20:38:45Z",
+     "base": "b93328812c54"
+    },
+    {
+     "sha": "9ef29ec095ee",
+     "owner": "author:ch05-s01+ch05-s02+ch05-s03+ch05-s04+ch05-s05",
+     "at": "2026-10-14T20:41:07Z",
+     "base": "4e0c3104ec63"
+    },
+    {
+     "sha": "53c3b3f86360",
+     "owner": "author:ch05-s01+ch05-s02+ch05-s03+ch05-s04+ch05-s05",
+     "at": "2026-10-14T20:41:29Z",
+     "base": "9ef29ec095ee"
+    },
+    {
+     "sha": "235d666fd411",
+     "owner": "author:ch05-s01+ch05-s02+ch05-s03+ch05-s04+ch05-s05",
+     "at": "2026-10-14T20:48:58Z",
+     "base": "53c3b3f86360"
+    }
+   ]
+  },
+  "ch05-s04": {
+   "latest": {
+    "sha": "242995ef4460",
+    "owner": "reviser:ch05-s02+ch05-s04+ch05-s05:r1",
+    "at": "2026-10-14T21:03:02Z"
+   },
+   "views": {
+    "author:ch05-s01+ch05-s02+ch05-s03+ch05-s04+ch05-s05": {
+     "sha": "461af258e7b0",
+     "at": "2026-10-14T20:42:56Z"
+    },
+    "reviser:ch05-s02+ch05-s04+ch05-s05:r1": {
+     "sha": "242995ef4460",
+     "at": "2026-10-14T21:03:02Z"
+    }
+   },
+   "history": [
+    {
+     "sha": null,
+     "owner": "author:ch05-s01+ch05-s02+ch05-s03+ch05-s04+ch05-s05",
+     "at": "2026-10-14T20:21:49Z",
+     "base": null
+    },
+    {
+     "sha": "461af258e7b0",
+     "owner": "author:ch05-s01+ch05-s02+ch05-s03+ch05-s04+ch05-s05",
+     "at": "2026-10-14T20:42:56Z",
+     "base": "660e3c033d7d"
+    },
+    {
+     "sha": "242995ef4460",
+     "owner": "reviser:ch05-s02+ch05-s04+ch05-s05:r1",
+     "at": "2026-10-14T21:03:02Z",
+     "base": "461af258e7b0"
+    }
+   ]
+  },
+  "ch05-s05": {
+   "latest": {
+    "sha": "850842837f41",
+    "owner": "reviser:ch05-s02+ch05-s04+ch05-s05:r1",
+    "at": "2026-10-14T21:06:09Z"
+   },
+   "views": {
+    "author:ch05-s01+ch05-s02+ch05-s03+ch05-s04+ch05-s05": {
+     "sha": "31b258188c50",
+     "at": "2026-10-14T20:47:07Z"
+    },
+    "reviser:ch05-s02+ch05-s04+ch05-s05:r1": {
+     "sha": "850842837f41",
+     "at": "2026-10-14T21:06:09Z"
+    }
+   },
+   "history": [
+    {
+     "sha": "e0ea2abfe35b",
+     "owner": "author:ch05-s01+ch05-s02+ch05-s03+ch05-s04+ch05-s05",
+     "at": "2026-10-14T20:37:26Z",
+     "base": null
+    },
+    {
+     "sha": "657a914f6d4c",
+     "owner": "author:ch05-s01+ch05-s02+ch05-s03+ch05-s04+ch05-s05",
+     "at": "2026-10-14T20:40:02Z",
+     "base": "e0ea2abfe35b"
+    },
+    {
+     "sha": "c350f4c33fe4",
+     "owner": "author:ch05-s01+ch05-s02+ch05-s03+ch05-s04+ch05-s05",
+     "at": "2026-10-14T20:44:58Z",
+     "base": "657a914f6d4c"
+    },
+    {
+     "sha": "f2a2fa799817",
+     "owner": "author:ch05-s01+ch05-s02+ch05-s03+ch05-s04+ch05-s05",
+     "at": "2026-10-14T20:45:46Z",
+     "base": "c350f4c33fe4"
+    },
+    {
+     "sha": "31b258188c50",
+     "owner": "author:ch05-s01+ch05-s02+ch05-s03+ch05-s04+ch05-s05",
+     "at": "2026-10-14T20:47:07Z",
+     "base": "f2a2fa799817"
+    },
+    {
+     "sha": "850842837f41",
+     "owner": "reviser:ch05-s02+ch05-s04+ch05-s05:r1",
+     "at": "2026-10-14T21:06:09Z",
+     "base": "31b258188c50"
+    }
+   ]
+  }
+ }
+}

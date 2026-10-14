@@ -1,0 +1,35 @@
+{
+  "shared": {
+    "maxGapMs": 650,
+    "emailAllow": [],
+    "hideByText": [
+      "^Admin$",
+      "of \\d+(\\.\\d+)? credits",
+      "^\\d+(\\.\\d+)? of \\d+ credits$"
+    ],
+    "replace": [],
+    "css": "body { -webkit-font-smoothing: antialiased; }",
+    "hide": [
+      "[data-testid=\"credit-meter-trigger\"]",
+      "[data-testid=\"chat-topbar-admin\"]",
+      "[class*=\"task-replay__placeholder\"]"
+    ]
+  },
+  "takes": {
+    "new-project": {
+      "maxGapMs": 500,
+      "startMark": "typing",
+      "startOffsetMs": -1100,
+      "autoStart": false
+    },
+    "bug-react": {
+      "cuts": [
+        [
+          "open",
+          "report"
+        ]
+      ]
+    },
+    "bug-sync": {}
+  }
+}

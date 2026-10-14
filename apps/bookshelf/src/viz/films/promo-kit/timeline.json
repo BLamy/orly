@@ -1,0 +1,11 @@
+{
+  "slug": "promo-kit",
+  "look": "promo",
+  "fps": 24,
+  "duration": 13,
+  "chapters": [{ "id": "ch01", "number": 1, "title": "Promo kit smoke test", "start": 0, "end": 13 }],
+  "shots": [
+    { "id": "ch01-s01", "chapter": "ch01", "start": 0, "end": 5.5, "lines": [], "beats": {} },
+    { "id": "ch01-s02", "chapter": "ch01", "start": 5.5, "end": 13, "lines": [], "beats": {}, "transitionIn": "blur", "transitionDur": 0.6 }
+  ]
+}

@@ -1,0 +1,53 @@
+## Driving Replay QA from a coding agent
+Hand your coding agent one link so it can create Replay QA projects, read bug reports, and confirm fixes without opening the web app.
+
+Your coding agent (Claude Code, Cursor, Codex, …) can do everything you can do in the Replay QA web app. You do not need to learn the API yourself. Give your agent this prompt:
+
+Use Replay QA to test and fix this app. Start at https://docs.replay.io/llms.txt and follow it.
+
+llms.txt is the entry point for agents. It links the Replay QA CLI workflow, the REST API (OpenAPI spec), the MCP server, the published agent skills, and these docs. Each of those describes itself, so the agent always reads the current version.
+
+Which credential?
+
+Your agent signs in with your Replay login, an lqa_ Replay QA API token, or
+MCP OAuth sign-in, depending on how it connects. See API keys and
+tokens.
+
+## The continuous QA loop
+
+What the agent does with it:
+
+- Create a project for the running app, with a short note on the flows that matter most. Optionally include a design document describing what the app should do.
+
+- Let QA run. Replay QA drives exploration and testing itself; the agent waits until it finishes.
+
+- Read the bugs. Every bug report includes reproduction steps, expected versus actual behavior, a screenshot chronology, and a root-cause analysis traced through the Replay recording down to the responsible code. The agent does not need to debug; it reads the root cause and writes the fix.
+
+- Mark each fix. Replay QA reruns the affected journey to confirm it.
+
+- Loop until no open bugs remain.
+
+If the bug report is not enough, the agent can open the linked recording with Replay MCP and inspect the failure directly.
+
+## Connect an MCP client
+
+Agents that prefer tools over HTTP calls can add the Replay QA MCP server. Most agents can run this setup themselves.
+
+- Claude Code (sign-in)
+- Claude Code (token)
+- Cursor / VS Code
+- Other
+The server supports OAuth sign-in, so you can add it by URL without a token. Your client opens a browser sign-in the first time, and the connection then covers every project you have access to.
+
+Terminal
+claude mcp add --transport http replay-qa https://qa.replay.io/api/mcp
+
+The server lists its tools through MCP tools/list.
+
+## Apps only reachable from your machine
+
+For an app on localhost or a private network, the agent connects it through the Replay QA CLI's reverse proxy. Testing a localhost app explains the proxy. For CI builds, see GitHub Actions or CircleCI.
+
+## Missing something?
+
+If Replay QA lacks something you or your agent need, tell us on Discord.

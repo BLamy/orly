@@ -7,8 +7,8 @@ import { room, street, ROOM_WINDOWS } from './atmosphere.gallery';
 
 // All transitions at u = t / 4 in a grid (or ?k=<kind> full frame). A = dusk room, B = winter street.
 const Q = typeof location !== 'undefined' ? new URLSearchParams(location.search) : new URLSearchParams();
-const SOLO = Q.get('k') as TransitionKind | null;
-const KINDS: TransitionKind[] = ['crossfade', 'iris', 'inkBleed', 'paperWipe', 'fadeBlack', 'lampChange', 'cut'];
+const SOLO = Q.get('k') as Exclude<TransitionKind, 'blur' | 'whip'> | null;
+const KINDS: Exclude<TransitionKind, 'blur' | 'whip'>[] = ['crossfade', 'iris', 'inkBleed', 'paperWipe', 'fadeBlack', 'lampChange', 'cut'];
 const irisOnCandle = makeIris({ closeAt: { x: 470, y: 440 }, openAt: { x: 1000, y: 470 } });
 
 function frameA(c: CanvasRenderingContext2D, t: number) {

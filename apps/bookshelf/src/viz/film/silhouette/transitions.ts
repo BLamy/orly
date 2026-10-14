@@ -405,7 +405,7 @@ export const iris: TransitionFn = makeIris();
 export const inkBleed: TransitionFn = makeInkBleed();
 export const paperWipe: TransitionFn = makePaperWipe();
 
-export const TRANSITIONS: Record<TransitionKind, TransitionFn> = {
+export const TRANSITIONS: Record<Exclude<TransitionKind, 'blur' | 'whip'>, TransitionFn> = {
   cut,
   crossfade,
   iris,
@@ -416,7 +416,7 @@ export const TRANSITIONS: Record<TransitionKind, TransitionFn> = {
 };
 
 /** suggested durations (seconds) per kind, from the style bible */
-export const TRANSITION_DUR: Record<TransitionKind, number> = {
+export const TRANSITION_DUR: Record<Exclude<TransitionKind, 'blur' | 'whip'>, number> = {
   cut: 0,
   crossfade: 1.2,
   iris: 2.2,

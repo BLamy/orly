@@ -1,0 +1,64 @@
+{
+  "reviewer": "story-editor",
+  "round": 2,
+  "lens": "story, curiosity and voice for a 90-second promo",
+  "runtimeCheck": "script.mjs assemble --check: 0 errors, 7 warnings; 165 words, est. 96.1 s at 140 wpm against a 90 s target. That is inside the brief's 100 s hard ceiling with 3.9 s of headroom, so it is not critical.",
+  "scores": { "accuracy": 8, "depth": 6, "clarity": 7, "story": 7, "curiosity": 6, "visual": 8, "voice": 7 },
+  "critical": [],
+  "issues": [
+    {
+      "where": "ch05-s05 (agent pair → pull-back, visual timing)",
+      "problem": "The critic's green '✓ good' lands at 3.8 s. The bug-sync tile then reveals its real 'Fixed' chip from 5.4 s, while the agent pair is still on screen (it fades only at 5.9 s). The viewer reads 'good → Fixed' as cause and effect: the depicted agents fixed this bug. The shot's own note forbids that link ('never linked to any specific bug').",
+      "fix": "Hold the chips row and the 'Fixed' chip out of frame until the agent pair has fully faded (≥ 6.0 s), or reveal them only after the cut in ch06-s01. Also move the bug-sync title card away from the pair, out of the lower-right quadrant, while they share the frame."
+    },
+    {
+      "where": "ch04-s01 / L0401",
+      "problem": "The triplet's first member is bloated and breaks the parallel structure: 'On a schedule, while you sleep, Replay runs the browsers.' / 'Against staging, a preview, even localhost.' / 'And on every pull request.' The tail 'Replay runs the browsers' is clunky by ear and gives the listener no reason to care. It also introduces the bare brand 'Replay' a beat after the film named the product 'Replay QA', so the listener may think it is a second product. The primary message, fully managed, is still not voiced before the last line.",
+      "fix": "Say the autonomy and drop the hosting tail, which the 'hosted by Replay' pill already carries [CONT-19]. For example: 'Then it runs on its own. On a schedule, while you sleep.' ('Running test loops automatically.' [CONT-19]; weekly 3:00 AM [CONT-02/03]). The triplet then reads schedule / staging / pull request, three clean taps."
+    },
+    {
+      "where": "ch04-s03 / L0404",
+      "problem": "'Not just for broken. For slow.' is the right setup for the turn, but 'reviewed… for broken' uses an adjective as a noun. A warm narrator will make it sound like a typo, not a style.",
+      "fix": "'Each run is recorded, then reviewed. Not just for what breaks. For what's slow.' This is grounded in TIME-07 ('is it slow, inaccessible…'), adds one word and keeps the 'For slow' hand-off to ch05-s01."
+    },
+    {
+      "where": "ch06-s02 / L0602",
+      "problem": "'End-to-end testing, fully managed. Down to the bugs that only exist in time.' The logic of 'managed down to the bugs' is muddy, and the last beat states a quality instead of making a promise. A promo end card wants the line people remember, and the film's own VHS tagline (meta.json) is already a sharper version.",
+      "fix": "'Replay QA. End-to-end testing, fully managed. Catch the bugs that only exist in time.' The beats, type order and the 'in time' echo stay the same, and the ending turns into a call."
+    },
+    {
+      "where": "ch01-s01 / L0101 and ch01-ch04 (structure)",
+      "problem": "The hook is clean and well paced, but it is generic: nothing in the first 40 s opens a question that ch05 answers. Curiosity switches on only with L0404's 'For slow.' Round 1's setup/payoff suggestion (plant the screenshot or passing-test idea early) was only partly taken.",
+      "fix": "Keep L0101. Plant once more, cheaply: in ch03-s01 L0302 → 'Turns what it finds into journeys, and runs them. Every one, recorded.' Or, if the fact-checker clears it against TIME-C1, in L0404 → 'Each run is recorded, then reviewed. Even when it passes.' (all four featured bugs are polish findings from journeys that worked). Then 'A screenshot can't see that' in ch05-s03 lands as a payoff."
+    },
+    {
+      "where": "ch03-s01 / L0302",
+      "problem": "'journeys' is product jargon that a promo audience hears with no explanation. The on-screen step list never uses the word either, so the ear gets nothing to hold on to.",
+      "fix": "'Turns what it finds into user journeys, and runs them.' One word, and the phrase explains itself."
+    },
+    {
+      "where": "ch05-s03 / L0506",
+      "problem": "'Replay's time-travel recording can.' is the film's thesis, but its five syllables of brand and compound noun make it the hardest phrase in the film to land warmly, and 'Replay' again drifts from 'Replay QA'.",
+      "fix": "Keep the differentiator and make it easier to say: 'A screenshot can't see that. A time-travel recording can.' The match cut to the real Replay QA Root Cause carries the brand."
+    },
+    {
+      "where": "ch05-s04 / L0507-L0508 → ch05-s05",
+      "problem": "The second bug ends on 'It never saved its place.' and then the film goes straight into an unnarrated agent beat. Ch05 now holds two bugs, a root cause, a rewind and the agent pair in about 35 s. The 258 bug never gets its own 'and Replay saw it' moment, so it plays as a second example and not as an escalation.",
+      "fix": "Do not add words. Lengthen the hold after L0508 by about 0.4 s (holdAfter 0.7 → 1.1) so the backward sweep and the brightening of all 258 bars register as the punchline before the agents arrive, and take the time from ch05-s05 minDuration (6.2 → 5.8; both exchanges still fit at 0.5 s and 3.0 s)."
+    },
+    {
+      "where": "on-screen reading warnings (ch01-s01, ch01-s03, ch02-s01, ch03-s01 'Done', ch04-s02)",
+      "problem": "Seven reading-time warnings remain. Most are narrated text the viewer reads as it is heard, which is acceptable. The 'Done' swap (1.1 s of 1.8 s) and the 'staging · preview · local' row (3.5 s of 3.6 s) are pure type beats, which the look wants held for at least 1.2 s after landing.",
+      "fix": "In ch03-s01, land the third check and the 'Done' swap 0.4 s earlier (on the last stressed word of L0302, not after the line) so 'Done' gets about 1.5 s before the dot scatter. In ch04-s02, raise holdAfter from 0.75 to 0.85. Together these cost under 0.2 s of runtime."
+    }
+  ],
+  "strengths": [
+    "Round 1's fixes landed. 'Imagine tests you never write. Or remember to run.' is now two short beats that each take a type hit. The ch03 payoff words ('recording', 'root cause') are saved for the closing triplet. The second bug is signposted ('Another bug: a loop…'), and the end line is split into three beats in the same order as the type.",
+    "'It never saved its place.' is a big improvement on the checkpoint jargon: five plain words a listener feels, with the exact 'checkpoint −1' kept on screen.",
+    "The turn is still the best thing in the film. 'For slow.' leads into 'Some bugs only exist in time.' and then 'Replay QA caught one in its own app.' It is grounded (TIME-09: a PR preview of Replay QA itself) and a real surprise.",
+    "'Sixty-seven milliseconds. Four dropped frames.' over a four-beat music stop, with the dropped frames heard as missing time, is a superb promo moment of sound and picture.",
+    "'Every run, a recording. Every bug, a root cause. Every fix, rerun to confirm.' is now a real resolution, not a repeat. It is memorable and stays within the bible's 'reruns to confirm' wording (AGENT-02, bible guardrail 4).",
+    "The developer and critic beat is the right size: unnarrated, small, about 6 s, with a felt-piano 'not yet' / 'good' answer and no chimes. It is subtle, as the brief asks.",
+    "Narration is written for the ear: numbers are spoken naturally, the URL is never read aloud, there are no acronym lists, and 'Complements an existing test suite' keeps 'No test suite needed' honest (SET-08)."
+  ]
+}

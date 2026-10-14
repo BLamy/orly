@@ -1,0 +1,336 @@
+## Testing a pull request build in GitHub Actions
+Set up the Replay QA CLI in GitHub Actions to test a pull request build that only exists inside a CI job.
+
+Use this integration when a pull request build only exists inside CI—for example, an app started on 127.0.0.1:3000 in a GitHub Actions runner. The Replay QA CLI opens an authenticated reverse-proxy tunnel to that runner, starts a test run associated with the pull request, and keeps the tunnel alive until Replay QA finishes.
+
+This is different from connecting the Replay QA GitHub App to a publicly deployed preview. Use the CLI tunnel when Replay QA cannot reach the pull request build at a public URL. For CircleCI, see Testing a pull request build in CircleCI.
+
+## How the workflow works
+
+- GitHub Actions checks out and builds the pull request.
+
+- The workflow starts the app on a local port.
+
+- replayqa proxy --ci --json opens the reverse-proxy tunnel. The workflow waits for a JSON heartbeat event with ready: true.
+
+- replayqa ci replaces any older in-flight run for the same pull request and creates a PR-linked test run for the current commit.
+
+- The workflow polls that run while leaving the app and tunnel processes alive.
+
+- When Replay QA reaches a terminal state, or GitHub cancels the workflow, cleanup closes the tunnel and cancels only the matching in-flight CI run.
+
+The tunnel must remain connected for the entire test run. Do not stop the app or proxy after Replay QA accepts the request.
+
+## Prerequisites
+
+- A Replay QA reverse-proxy project for this CI integration
+
+- The app can start on a known local port in CI
+
+- A Replay QA API token with access to the project
+
+- A GitHub Actions workflow running on same-repository pull requests
+
+GitHub does not expose Actions secrets to workflows from forks. Restrict this secret-backed job to pull requests whose head repository matches the base repository.
+
+## Configure GitHub Actions
+
+1
+
+## Create a reverse-proxy project
+Create a durable Replay QA API token in Replay QA Settings → API, then use it to create a project for the build's local URL. This creates the project once; the workflow reuses its ID on later runs.
+
+Terminal
+export REPLAY_QA_API_KEY="lqa_your_token"
+
+npx --yes replayqa@0.2.4 create-project \
+
+  --name "My app · GitHub Actions" \
+
+  --target-url http://127.0.0.1:3000 \
+
+  --reverse-proxy \
+
+  --instructions "Test the app's important user flows."
+
+Use the port and instructions that match your app. If you also use the CircleCI example, create a separate reverse-proxy project for that integration so its proxy has its own project.
+
+## Add repository secrets
+Add these Actions secrets in the repository that runs the workflow:
+SecretValue
+REPLAY_QA_API_KEYA durable Replay QA API token for CI authentication
+REPLAY_QA_PROJECT_IDThe project ID returned by create-project
+Keep both values in GitHub Secrets. Do not commit them to .replay/config.json or the workflow.
+
+## Add a CI runner script
+The runner script owns the app-to-Replay tunnel for the full lifetime of the test. It should:
+
+- start replayqa proxy with --ci --json
+
+- wait for {"event":"heartbeat","ready":true} before starting QA
+
+- call replayqa ci with the current repository, PR number, head SHA, branch, and workflow run ID
+
+- poll /projects/{project_id}/ci-runs/status until terminal is true
+
+- call replayqa ci-cancel from SIGINT/SIGTERM cleanup so a superseded GitHub job does not leave work running
+
+- keep the app and proxy alive until QA is terminal
+
+The reference repository has a complete pull request workflow and runner at scripts/run-replayqa-ci.mjs. Copy the runner into your project, then add this package script:
+
+package.json
+{
+
+  "scripts": {
+
+    "qa:ci": "node scripts/run-replayqa-ci.mjs"
+
+  }
+
+}
+
+## Add the pull request workflow
+The following workflow runs only when a pull request is ready for review, cancels an older workflow for the same PR, gives Replay QA up to one hour to finish, and keeps the production deployment workflow separate.
+
+.github/workflows/replayqa.yml
+name: Replay QA · PR
+
+on:
+
+  pull_request:
+
+    types: [opened, synchronize, reopened, ready_for_review, converted_to_draft]
+
+permissions:
+
+  contents: read
+
+concurrency:
+
+  group: replayqa-pr-${{ github.event.pull_request.number || github.ref }}
+
+  cancel-in-progress: true
+
+jobs:
+
+  replayqa:
+
+    if: >-
+
+      ${{ github.event.pull_request.draft == false
+
+          && github.event.pull_request.head.repo.full_name == github.repository }}
+
+    runs-on: ubuntu-latest
+
+    timeout-minutes: 75
+
+    env:
+
+      REPLAYQA_CLI_VERSION: '0.2.4'
+
+      REPLAYQA_PROXY_TIMEOUT_MS: '300000'
+
+      REPLAYQA_PROXY_PORT: '18888'
+
+      REPLAYQA_RUN_TIMEOUT_MS: '3600000'
+
+      REPLAYQA_RUN_MARKER: pr-${{ github.event.pull_request.number }}
+
+      REPLAYQA_GITHUB_REPOSITORY: ${{ github.repository }}
+
+      REPLAYQA_GITHUB_PR_NUMBER: ${{ github.event.pull_request.number }}
+
+      REPLAYQA_GITHUB_HEAD_SHA: ${{ github.event.pull_request.head.sha }}
+
+      REPLAYQA_GITHUB_HEAD_REF: ${{ github.event.pull_request.head.ref }}
+
+      REPLAYQA_GITHUB_RUN_ID: ${{ github.run_id }}
+
+      REPLAY_QA_PROJECT_ID: ${{ secrets.REPLAY_QA_PROJECT_ID }}
+
+      REPLAY_QA_API_KEY: ${{ secrets.REPLAY_QA_API_KEY }}
+
+    steps:
+
+      - uses: actions/checkout@v7
+
+      - uses: actions/setup-node@v7
+
+        with:
+
+          node-version: 22
+
+          cache: npm
+
+      - name: Install app dependencies
+
+        run: npm ci
+
+      - name: Install Replay QA CLI
+
+        run: npx --yes replayqa@${REPLAYQA_CLI_VERSION} --version
+
+      - name: Validate Replay QA configuration
+
+        run: |
+
+          test -n "$REPLAY_QA_PROJECT_ID"
+
+          test -n "$REPLAY_QA_API_KEY"
+
+          npx --yes replayqa@${REPLAYQA_CLI_VERSION} project \
+
+            --ignore-config --project "$REPLAY_QA_PROJECT_ID" >/dev/null
+
+      - name: Check and build the app
+
+        run: npm run check
+
+      - name: Start the app
+
+        run: |
+
+          nohup npm run start -- --hostname 127.0.0.1 --port 3000 \
+
+            >"${RUNNER_TEMP}/app.log" 2>&1 &
+
+          for attempt in {1..60}; do
+
+            curl --fail --silent http://127.0.0.1:3000 >/dev/null && exit 0
+
+            sleep 1
+
+          done
+
+          cat "${RUNNER_TEMP}/app.log"
+
+          exit 1
+
+      - name: Test the pull request with Replay QA
+
+        env:
+
+          REPLAYQA_PROXY_LOG: ${{ runner.temp }}/replayqa-proxy.jsonl
+
+        run: npm run qa:ci
+
+      - name: Upload Replay QA logs
+
+        if: always()
+
+        uses: actions/upload-artifact@v7
+
+        with:
+
+          name: replayqa-ci-logs
+
+          if-no-files-found: ignore
+
+          path: |
+
+            ${{ runner.temp }}/replayqa-proxy.jsonl
+
+            ${{ runner.temp }}/app.log
+
+Pin REPLAYQA_CLI_VERSION to a version you have validated. Update the pin deliberately when adopting a newer CLI release.
+
+## Customize the app command and test goal
+Change the build command, start command, local port, and readiness URL to match your app. The reference runner reads REPLAYQA_PROMPT; set it in the workflow when Replay QA should concentrate on particular flows:
+
+env:
+
+  REPLAYQA_PROMPT: >-
+
+    Test sign in, create a project, edit its settings, and verify keyboard navigation.
+
+## Required CLI behavior
+
+The runner uses these commands under the hood.
+
+## Connect the CI tunnel
+
+Terminal
+npx --yes replayqa@0.2.4 proxy \
+
+  --project "$REPLAY_QA_PROJECT_ID" \
+
+  --local-port 18888 \
+
+  --ci \
+
+  --json
+
+--ci is important: it identifies this as a workflow-owned connection so opening the tunnel does not start the project's ordinary manual journey backlog. The JSON heartbeat is the readiness contract; a connected tunnel by itself does not prove the local app is reachable.
+
+## Start the PR-linked run
+
+Terminal
+npx --yes replayqa@0.2.4 ci \
+
+  --project "$REPLAY_QA_PROJECT_ID" \
+
+  --repository "$GITHUB_REPOSITORY" \
+
+  --pr-number "$PR_NUMBER" \
+
+  --head-sha "$HEAD_SHA" \
+
+  --branch "$HEAD_REF" \
+
+  --workflow-run-id "$GITHUB_RUN_ID" \
+
+  --prompt "Test the critical user flows"
+
+These fields associate the run with the pull request and identify the exact GitHub workflow that owns it. A newer workflow for the same PR supersedes the previous run instead of creating parallel work.
+
+## Wait for Replay QA
+
+Poll the workflow-owned status endpoint every 15 seconds while the proxy remains alive:
+
+Terminal
+npx --yes replayqa@0.2.4 api POST \
+
+  "/projects/$REPLAY_QA_PROJECT_ID/ci-runs/status" \
+
+  --data "$PR_METADATA_JSON"
+
+Stop waiting only when the response contains "terminal": true. Treat a terminal status other than completed as a failed CI job.
+
+## Verify the integration
+
+Open or update a ready-for-review pull request and confirm all of the following:
+
+- the Actions job stays running while Replay QA is testing
+
+- the proxy log reports a heartbeat with ready: true
+
+- Replay QA shows one run with source GitHub Actions
+
+- the run's Pull request column links to the correct repository and PR number
+
+- no additional Manual run is created when the reverse-proxy tunnel connects
+
+- pushing another commit cancels the old workflow and supersedes its Replay QA run
+
+For a complete working Next.js example, see replayio/replayqa-cli-in-ci.
+
+## Run QA after a production deployment
+
+The same example has a separate production workflow and runner. This path uses a normal Replay QA project configured with the public production URL, rather than the reverse-proxy project used for the private pull request build. Set REPLAY_QA_API_KEY to a Replay QA API token and create that project with the CLI:
+
+Terminal
+export REPLAY_QA_API_KEY="lqa_your_token"
+
+npx --yes replayqa@0.2.4 create-project \
+
+  --name "My app · Production" \
+
+  --target-url https://app.example.com \
+
+  --instructions "Smoke-test the important production flows."
+
+Give the API token access to both projects and add the production project ID as the REPLAY_QA_PRODUCTION_PROJECT_ID Actions secret.
+
+The reference workflow starts after GitHub reports a successful deployment to the Production environment. It takes the URL from that deployment event, waits for it to respond, then uses replayqa start-exploration to request a run against the production project's configured URL. A successful Actions job means the request was accepted; it does not report whether the QA run found bugs. Review the run in Replay QA. Adapt the deployment trigger if your host does not publish successful production deployment events to GitHub.

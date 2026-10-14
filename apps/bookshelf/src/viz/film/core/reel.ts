@@ -62,6 +62,8 @@ export interface ReelOverlay {
   id: string;
   node: ReactNode;
   opacity: number;
+  /** 'svg' (default): inside the stage <svg>; 'dom': the HTML layer between the scene canvas and the svg */
+  layer?: 'svg' | 'dom';
 }
 
 export interface ReelRenderInfo {
@@ -144,7 +146,7 @@ function reelShots(data: FilmTimelineData, modules: Record<string, ShotModule>, 
   });
 }
 
-type ShotPainter = (s: ReelShot, local: number, c: CanvasRenderingContext2D, t: number, pxScale: number) => { overlay: ReactNode; placeholder: boolean };
+type ShotPainter = (s: ReelShot, local: number, c: CanvasRenderingContext2D, t: number, pxScale: number) => { overlay: ReactNode; dom?: ReactNode; placeholder: boolean };
 
 /** The per-shot paint shared by the reel and the editor's shot source: one shot at shot-local `local` into a
  *  device-res context at `pxScale` device px per stage px. `t` is film/timeline time (grain/weave/frame seeds).
@@ -183,11 +185,13 @@ function createShotPainter(fps: number, weave?: number): ShotPainter {
         }
         let overlay: ReactNode = null;
         if (s.mod.overlay) overlay = s.mod.overlay(st, scene, s.ctx);
+        let dom: ReactNode = null;
+        if (s.mod.dom) dom = s.mod.dom(st, scene, s.ctx);
         c.setTransform(1, 0, 0, 1, 0, 0);
         c.globalAlpha = 1;
         c.globalCompositeOperation = 'source-over';
         c.filter = 'none';
-        return { overlay, placeholder: false };
+        return { overlay, dom, placeholder: false };
       } catch (e) {
         const msg = String((e as Error)?.message ?? e);
         if (!errorLogged.has(s.id + msg)) {
@@ -264,6 +268,7 @@ export function createReel(o: CreateReelOpts): Reel {
     if (!A.b || A.u == null) {
       const r = paintShot(A.a, A.la, scene, tt);
       placeholder = r.placeholder;
+      if (r.dom) overlays.push({ id: A.a.id, node: r.dom, opacity: 1, layer: 'dom' });
       if (r.overlay) overlays.push({ id: A.a.id, node: r.overlay, opacity: 1 });
     } else {
       if (!bufA || bufA.canvas.width !== width || bufA.canvas.height !== height) {
@@ -286,6 +291,8 @@ export function createReel(o: CreateReelOpts): Reel {
         frame,
         mood: shotMood(A.b),
       });
+      if (ra.dom) overlays.push({ id: A.a.id, node: ra.dom, opacity: A.kind === 'cut' ? +(u < 0.5) : 1 - u, layer: 'dom' });
+      if (rb.dom) overlays.push({ id: A.b.id, node: rb.dom, opacity: A.kind === 'cut' ? +(u >= 0.5) : u, layer: 'dom' });
       if (ra.overlay) overlays.push({ id: A.a.id, node: ra.overlay, opacity: A.kind === 'cut' ? +(u < 0.5) : 1 - u });
       if (rb.overlay) overlays.push({ id: A.b.id, node: rb.overlay, opacity: A.kind === 'cut' ? +(u >= 0.5) : u });
     }
@@ -304,7 +311,7 @@ export function createReel(o: CreateReelOpts): Reel {
     }
     const fenv = { W: FILM_W, H: FILM_H, pxScale, frame, t: tt, seed: seedOf(data.slug), mood: shotMood(cur) };
     if (o.finish !== false) {
-      const fin = getFinish();
+      const fin = getFinish(data.look);
       if (fin) {
         scene.setTransform(pxScale, 0, 0, pxScale, 0, 0);
         scene.globalAlpha = 1;
@@ -318,7 +325,7 @@ export function createReel(o: CreateReelOpts): Reel {
         }
         finishCtx.setTransform(1, 0, 0, 1, 0, 0);
         finishCtx.clearRect(0, 0, width, height);
-        const fo = getFinishOverlay();
+        const fo = getFinishOverlay(data.look);
         if (fo) {
           finishCtx.setTransform(pxScale, 0, 0, pxScale, 0, 0);
           fo(finishCtx, fenv);

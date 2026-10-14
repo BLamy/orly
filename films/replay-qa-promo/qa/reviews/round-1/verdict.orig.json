@@ -1,0 +1,184 @@
+{
+  "round": 1,
+  "film": "replay-qa-promo",
+  "at": "2026-10-14T21:18:35Z",
+  "pass": false,
+  "bar": 8.5,
+  "mean": 6.82,
+  "scores": {
+    "accuracy": 6.83,
+    "depth": 6.83,
+    "clarity": 6.33,
+    "story": 7.08,
+    "visual": 6.25,
+    "sync": 7.17,
+    "sound": 7.0,
+    "curiosity": 7.08
+  },
+  "weighting": "Mean across five reviewers, the owning lens counted double: accuracy=historian; depth, clarity=teacher; story, curiosity=story; visual, sync=art; sound=sound.",
+  "reviewerScores": {
+    "historian": {
+      "accuracy": 6,
+      "depth": 6,
+      "clarity": 7,
+      "story": 7,
+      "visual": 6,
+      "sync": 7,
+      "sound": 7,
+      "curiosity": 7
+    },
+    "teacher": {
+      "accuracy": 7,
+      "depth": 7,
+      "clarity": 6,
+      "story": 7,
+      "visual": 6,
+      "sync": 7,
+      "sound": 7,
+      "curiosity": 7
+    },
+    "story": {
+      "accuracy": 7,
+      "depth": 7,
+      "clarity": 6,
+      "story": 7,
+      "visual": 6,
+      "sync": 7,
+      "sound": 7,
+      "curiosity": 7
+    },
+    "art": {
+      "accuracy": 7,
+      "depth": 7,
+      "clarity": 6,
+      "story": 7,
+      "visual": 6,
+      "sync": 7,
+      "sound": 7,
+      "curiosity": 7
+    },
+    "sound": {
+      "accuracy": 8,
+      "depth": 7,
+      "clarity": 7,
+      "story": 7.5,
+      "visual": 7.5,
+      "sync": 8,
+      "sound": 7,
+      "curiosity": 7.5
+    }
+  },
+  "criticalRemaining": [
+    {
+      "owner": "global",
+      "id": "rrweb-seek-determinism"
+    },
+    {
+      "owner": "shot",
+      "id": "ch04-s02"
+    },
+    {
+      "owner": "shot",
+      "id": "ch04-s01"
+    }
+  ],
+  "ledgerCheck": "Round 1: film.json stages.fixes is empty and no earlier reviews exist, so there were no fixed / partial / skipped ids to confirm.",
+  "showrunnerCheck": "Confirmed on the contact sheets: ch04-s02 shows 'https://collaborative-ai-editor.brett-lamy.workers.dev/', a clipped 'Production' badge, 'Delete environment' and three empty pink sockets for the whole shot; ch04-s01 shows a sliced 'est Runs … Playwri' strip with the underline under 'Test Runs'.",
+  "fixes": {
+    "shots": {
+      "ch04-s02": "CRITICAL (safety + accuracy). The strip shows the Production environment card with the owner-named URL 'https://collaborative-ai-editor.brett-lamy.workers.dev/', a clipped 'Production' badge and a clipped 'Delete environment' button for the whole shot, under the line 'Against staging…'. Three empty pink 'socket' rectangles sit on the URL row. Fix: after the global seek fix, crop to the 'Add environment' label and its grey line 'Add production, staging, development, preview, or local co…' (sets/takes CROPS.scheduleAddEnv {x:300,y:266,w:420,h:54} is the rr-sheet-verified box), as it appears in the RENDERED frame. Lift the staging / preview / local pills from those words in that line, or drop the sockets entirely. No URL, Production badge or Delete button may be visible at any frame. Verify on frames pulled from render/film.mp4 at 25.6, 25.7, 26.2, 27.4 and 27.9 s.",
+      "ch04-s01": "The 'name tag' under 3:00 AM is a sliced tab strip ('est Runs … Playwri') instead of the real 'Tue at 3:00 AM · America/New_York' chip (CONT-02), and the b-schedule underline sits under 'Test Runs'. Fix: after the global seek fix, crop the whole green chip (CROPS.scheduleChip {x:1050,y:166,w:245,h:32} is the rr-sheet box; CHIP_CROP y 73 is the harness-probe value that misses), with padding, no cursor, no URL. Keep braces round the chip and run the underline under 'Tue at 3:00 AM' on 'schedule' (b-schedule 2.70). Verify on render frames at 21.5, 23.4 and 24.6 s.",
+      "ch05-s03": "Two fixes. (1) The USP payoff is told, not shown: on 'A time-travel recording can' (about +5.5 to +6.6 s, T.word('L0506','time-travel')), fade the screen-recording frame, sweep the kit rewind playhead back across the grid and re-light all 27 squares (the 25 hollow ones fill as outlined ghosts, the 2 red stay red) with a small label of ours 'all 27 renders', then match-cut to the root-cause card on 'can'; raise holdAfter so '{ root cause }' reads at least 1.5 s. (2) The root-cause crop cuts the real sentence mid-clause ('`SidebarProjectList` trees { are not memoized }'), which changes the subject (the product says the react-router Link components are not memoized). Re-crop so the subject is intact (bracket 'Link' and 'not memoized' on the full first line, or two crops with a visible ellipsis) and avoid a crop that starts on the literal backticks. Do not edit product text. Verify at 55.4, 56.7 and 57.5 s.",
+      "ch05-s04": "Two fixes. (1) L0508 'It never saved its place, so it kept starting over' is static from +5.0 to +7.9 s (identical frames). Make the bookmark flag at least 28 px, give each of its three tries at least 80 px of forward travel before snapping back to 'checkpoint −1' (pulse the flag on each snap, on 'never', 'place' and 'starting'), and on 'starting' snap the counter 258 → 0 and race it back up in about 0.5 s while the bars redraw from the left, so 'starting over' is literal. (2) The 258 bar heights are pseudo-random, but the real requests sat in a narrow 575–760 ms band (TIME-11): derive heights from that band on a zero-based axis or add the small grey 'illustration' tag (same style as ch05-s02). Also replace the struck-through cursor next to '≈ 160 s · 2 clicks' with a struck keyboard glyph (matching 'no keypresses') or an unstruck cursor. Verify at +5.2, +5.6, +7.3 and +7.6 s.",
+      "ch05-s05": "The unnarrated developer/critic beat is too small to carry meaning and is untagged. Scale the pair to about 0.8 and nudge it toward the lower-right (x ≥ 0.6 W). Draw the '▶ replay recording' chip ABOVE both cards with text ≥ 20 px, travel clear of card edges, and pause it about 0.5 s mid-path fully readable. Verdict pills ≥ 20 px, each held ≥ 1.0 s. Add the kit's small grey 'illustration' tag under the pair (AGENT-15: no documented critic agent), unnarrated. Remove the stray clipped green ✓ at the right frame edge at +6.12 s (pairout). Verify at +0.8, +1.5, +3.0, +3.8 and +6.1 s.",
+      "ch05-s02": "11.3 s on one barely-moving composition with a large empty black player plate. Bring the frame ribbon (or a faint plum time ruler) onto the plate as the screen settles so it is never empty; on 'Sixty-seven' (b-ms67) zoom 1.0 → 1.5 onto the ribbon so the 67 ms bar and the four hollow frames fill the middle, lighting each dropped frame on 'Four dropped frames'; ease back on 'No click'. On 'background' make the refresh visible: a small tag 'background refresh · no user action' rides the existing refresh band into the ribbon and re-triggers the long 67 ms block. Put the struck cursor fully inside the plate near the ribbon (it now straddles the card edge). Keep the title's '67ms' underline visible during the zoom.",
+      "ch03-s01": "'It explores your app in a real browser' has no exploration on screen, the right two-thirds of the frame is empty paper for 6.8 s, and the captured explore take (LOOP-10) is used nowhere. Put the explore take (MARKS.explore, from 'play') as a floating RrwebScreen on the right two-thirds, cropped to the exploration player and its subtitle line; check the crop on rendered frames for no owner sidebar, header URL or login line. Keep the step list on the left, ticking 'Explore' as the subtitle appears. On 'journeys' (L0302) lift '1151 journeys' off the Insights line as a legible kit pill (same style as 'hosted by Replay' in ch04-s01), number exact.",
+      "ch06-s02": "The end card shows a brand and a URL but never prints the hook the narrator closes on. On 'Catch' grow a second, smaller line under '{ End-to-end testing · fully managed }': 'Catch bugs that only exist in time.' (with '{ in time }' braces parting as in ch05-s01), then type qa.replay.io into a typed-prompt field with caret (echoing ch02-s01) after the line ends. Retire the black '▶ recording' chip from the lock-up once it lands (fade it out before the URL types). With the global clock extension, hold the settled card at least 3 s after 'time'.",
+      "ch04-s03": "On 'pull request' the braces and corner dots land on the 'Environment' column header and the red underline strikes through it; they belong on the first purple 'PR #3' badge, about 90 recording px lower in the rendered frame. After the global seek fix, re-anchor the braces and underline on the PR #3 badge column, and tighten the crop top to start at the 'Test Runs' heading so the clipped tab strip is excluded. Verify at 29.9–30.3 s in film.mp4.",
+      "ch01-s03": "The three product stamps in the gap of '{ intro▢ducing }' read as blank light-grey cards (one shows a faint '…st Runs'). Use three high-contrast, instantly readable crops at about 100×60 stage px from CROPS: the red '67ms React commit' title with the Open chip, a green Completed / PR #3 runs row, and the '258' bug title strip. Cut each on the stamp ticks (0.40 / ~0.70 / ~1.00 s).",
+      "ch01-s01": "Plant the film's real hook early (story found the differentiator arrives only at 43%): in the hold after 'run.', turn one drifting hairline into a faint frame ribbon with the red-pink rewind playhead running backwards across it for about 0.6 s (the object ch05-s01 pays off). Also fix contrast: end the colour sweep on 'remember to' at a deeper orange (about #f06a3c) or add a soft shadow, and land 'run.' so it holds at least 1.2 s before the blur (sweep 0.2 s earlier or blur 0.2 s later). If the global clock adds a lead-in bar, start the type on that downbeat.",
+      "ch02-s01": "The typed URL grows leftward from the right frame edge (caret about 80 px from the edge). Anchor the caret at about 0.78 W or centre the finished 'https://staging.your-app.dev' so it types left-to-right with ≥ 120 px safe margin; remove the blurred ghost line at the left or make it the blurred New-project page.",
+      "ch06-s01": "Refit to the re-taken L0601 word times (see line note) and give each 'every …' pair at least 1.2 s of landed hold: 'every fix · rerun to confirm' now blurs out about 0.7 s after landing. Keep all collage tiles inside the frame with ≥ 40 px margin (the runs tile is cut by the top edge at 76.5 s) and give them more overlap at three depths."
+    },
+    "cues": {
+      "m01": "Four changes, keep the tape-stop, the four-beat hole on 'Four dropped frames' and the Asus2→D verdict exactly as they are. (1) ENDING: keep the D6/9 resolve on 'managed', then add one soft final button on the first 16th after 'time' ends (sub D1, muted filtered-saw pluck D5/F#5, one dry 909 rim clack; no bells or chimes), landing with the qa.replay.io caret settle; ring at least 2.5 s before a 1.5 s fade (needs the global clock extension; re-run the fadeAfterStrike check). (2) L0601 MASKING: in bars 42-44 play the 16th pluck arpeggio only in the gaps between the three phrases, or raise its high-pass to about 6 kHz while he speaks; keep the stabs to transients; bring the lift's full brightness in under 'confirm' and into the end-card cut. Target ≥ 10-11 dB line-over-music on L0601 and L0602 (lineMasking currently warns at 8 dB). (3) OPENING: if ch01-s01 gets a lead-in bar, give the haze that bar alone (pad at full level from 0, sine-sub swell, white-noise air) with M1's first note on the downbeat where 'Imagine' starts; otherwise have the pad at full haze level by 0.3 s instead of fading in. (4) Under L0505/L0506 (50.5-55.4 s) keep the pull-back but add a half-time pulse (muffled kick on 1, filtered rim on 3, low velocity), and carry a soft rim tick and quiet sub through 68.4-70.0 between 'not yet' and 'good'. Regenerate the tempo map BARS from the new clock; don't nudge."
+    },
+    "lines": {
+      "L0402": "STT heard both takes as 'Again, staging…'; the /st/+/st/ join swallows the t of 'Against'. Re-take with a 100-150 ms break after 'Against' (or a respelling that holds the t) and keep it only if STT returns 'Against'. If it still fuses, use 'Run it against staging, a preview, even localhost.' (same claim, CONT-01) and refit ch04-s02's b-staging / b-preview / b-local beats to the new word times. Also get the pending human sign-off for 'Against' and 'localhost'.",
+      "L0601": "The payoff triad runs together at 194 wpm with about 0.3 s gaps. Re-take same text at speed about 0.94 with explicit ~0.35 s breaks after 'recording' and 'cause' (aim ~165 wpm), then refit ch06-s01's woven words and m01's stabs to the new word times.",
+      "L0505": "STT returned 'renders change nothing': the -d of 'changed' is swallowed, blurring the measured result. Re-take with a slight hold on 'changed' (or a 60-80 ms break before 'nothing'); keep it only if STT returns 'changed'; then refit ch05-s03's 'changed'/'nothing' beats."
+    },
+    "global": [
+      "CRITICAL (owner: RrwebScreen / film harness, apps/bookshelf/src/viz/film/promo). Frozen rrweb seeks render a different scroll state in the final render than the one shot authors probed in the harness (ch04-s01 notes 'sheet scroller sits at scrollTop 700', about 93 recording px off the rr-sheet frames). This breaks ch04-s01, ch04-s02 and ch04-s03 and probably the ch01-s03 stamp. Make seeks deterministic across harness, contact sheet and render: replay scroll events sequentially up to `at`, or pin a per-mark scrollTop in rr-clean for the schedule and runs takes. Then re-verify EVERY product crop and overlay on frames pulled from render/film.mp4 with ffmpeg, never on a harness DOM probe. Hand-off: ch04-s01/02/03 and ch01-s03 shot fixes depend on this landing first.",
+      "Crop gate (owner: film-assemble QA). The automated QA passed a crop whose target text was missing and one that exposed the owner's workers.dev URL. Add a check that OCRs each product crop on the rendered frame and asserts its expected string ('Tue at 3:00 AM', 'Add production', 'PR #3', bug titles) is present and unclipped, and fails on any '*.workers.dev', e-mail or 'Delete environment' text.",
+      "Clock (owner: film-narrate timeline). The film is 84.25 s against a 90 s target and spends none of that on air: the end card holds 0.82 s after the last word. Extend ch06-s02 by about 2.5-3 s so the settled end card holds ≥ 3 s after 'time'; optionally add one bar (~0.5 s) of lead-in at the head of ch01-s01 so the haze and pad establish before 'Imagine'; add about +0.3 s holdAfter on ch04-s03 so 'and what's slow' lands before the tape-stop. Rebuild timeline.json with the re-taken lines (L0402, L0505, L0601), then refit every affected shot and m01's tempo map. Target total ≈ 88-90 s.",
+      "Listening sign-off (owner: a person). voice/voice.json still has four pending sign-offs: 'QA' in L0102 and L0502, 'Against' and 'localhost' in L0402. Listen to L0102, L0402, L0502 and L0602 in the master and run film:voice signoff for each term; re-take any 'cue A' / 'kwah' drift before publish."
+    ]
+  },
+  "fixChecks": {
+    "ch05-s03": {
+      "present": [
+        "all 27 renders"
+      ],
+      "absent": []
+    },
+    "ch05-s04": {
+      "present": [
+        "illustration"
+      ],
+      "absent": [],
+      "files": [
+        "sets/ch05-s04-sync.ts"
+      ]
+    },
+    "ch05-s05": {
+      "present": [
+        "illustration"
+      ],
+      "absent": [],
+      "files": [
+        "sets/ch05-s05-pair.ts"
+      ]
+    },
+    "ch05-s02": {
+      "present": [
+        "background refresh"
+      ],
+      "absent": [],
+      "files": [
+        "sets/ch05-s02-bug.tsx"
+      ]
+    },
+    "ch03-s01": {
+      "present": [
+        "MARKS.explore",
+        "1151 journeys"
+      ],
+      "absent": []
+    },
+    "ch06-s02": {
+      "present": [
+        "only exist in time",
+        "qa.replay.io"
+      ],
+      "absent": []
+    },
+    "ch04-s01": {
+      "present": [],
+      "absent": [
+        "y: 73, w: 245"
+      ]
+    }
+  },
+  "dimensionNotes": {
+    "accuracy": "Every narrated number checks out against the research (67 ms, 4 frames, 25 of 27, 258 fetches, checkpoint -1). Two product crops are wrong on screen: one shows the owner's personal project URL under a line about staging, and another crops the root cause mid-sentence so it names the wrong component.",
+    "depth": "The two time-travel bugs are concrete and real, and the 258-request counter is convincing proof. The 'explores' and 'runs on a schedule, against staging' claims rely on narration and kinetic type only, because the explore footage is unused and two schedule crops show the wrong part of the page.",
+    "clarity": "A first-time viewer clearly gets 'records every run and finds timing bugs with a root cause'. Key beats fall short: the film says a time-travel recording can see what video can't but never shows it, 'kept starting over' has no motion, and the silent agent beat is too small to read.",
+    "story": "The arc works: a promise, the product, a fast feature run, a tape-stop turn into 'some bugs only exist in time', two real bugs, then a triad payoff. The differentiator only arrives 43% of the way in, and the end card never prints the closing hook or a clear next step.",
+    "visual": "The hazes, bracketed type and the ch05-s01 rewind turn match the reference well. Broken product crops (a sliced tab bar, a clipped Production card with empty pink placeholders), near-blank intro stamps and a long, mostly empty black player plate in the first bug shot pull it down.",
+    "sync": "Cuts land on bar lines and most type hits land on the spoken word ('67ms' on 'Sixty-seven', the counter stopping dead on 'fifty-eight'). Several beats have nothing to land on: 'background refresh', 'starting over' and 'a time-travel recording can' pass with a static frame.",
+    "sound": "The mix is technically clean (-16 LUFS, a calibrated duck), and the tape-stop, the four-beat hole for 'Four dropped frames' and the played verdict are inspired. The ending has no musical button and is cut 0.8 s after the last word, the payoff line is the most masked in the film, and 'Against staging' is heard as 'Again, staging'.",
+    "curiosity": "The 258 counter and the 25-of-27 ghost renders make you want to see what else time travel catches. The opening sells only convenience, though, and the closing card offers a URL without an invitation, so the pull to try it is softer than the bugs deserve."
+  },
+  "summary": "Round 1 FAILS the gate (mean 6.82; every dimension below 8; critical issues remain). The narration is accurate and the time-chapter ideas (tape-stop turn, four-beat hole, 258 counter, 25-of-27 grid) are the film's strength. The blocking problem is one root cause: rrweb seeks render a different scroll state in the final render than in the harness, so ch04-s01/02/03 crop the wrong UI; ch04-s02 shows the owner's personal workers.dev URL (critical safety). Fix order: (1) global seek determinism + render-frame crop verification, then ch04-s01/02/03 and ch01-s03; (2) re-take L0402, L0505, L0601 and extend the clock (end-card hold, optional lead-in), then refit ch06-s01/s02 and m01; (3) show the USP and the bug mechanics: ch05-s03 time-travel re-light, ch05-s04 'starting over', ch05-s02 zoom and refresh tag, ch05-s05 legible tagged agent beat, ch03-s01 explore footage; (4) ch06-s02 closing hook on the end card, ch01-s01 early hook seed and contrast, ch02-s01 caret anchoring."
+}

@@ -1,0 +1,58 @@
+{
+  "reviewer": "fact-checker",
+  "round": 3,
+  "lens": "accuracy and safety",
+  "runtimeCheck": "script.mjs assemble --check: 0 errors, 11 warnings (10 on-screen reading-time, 1 runtime). The estimate is 99.4 s at the locked 140 wpm for 177 words, 15 shots and 20 lines. That is against a 90 s target and sits 0.6 s inside the brief's 100 s hard ceiling. No narration is recorded yet. Not critical, but there is almost no headroom.",
+  "method": "I checked each of the 20 narrated lines and every on-screen string against research/claims.json and the bible. Then I cut the rendered rr-sheet frames (made after the takes' last clean) to every recording-px box the script names and read them: bug-react 3100 / 3200 / 11300, schedule 11000 / 11458, runs 3668, bug-sync 1603, insights 2926 and new-project 4737.",
+  "scores": { "accuracy": 8, "depth": 7, "clarity": 8, "story": 7, "curiosity": 8, "visual": 8, "voice": 8 },
+  "critical": [],
+  "issues": [
+    {
+      "where": "ch05-s03 (clause crop {x: 921, y: 130, w: 274, h: 24} at bug-react 11300)",
+      "problem": "The crop starts in the middle of the real Root Cause sentence. The full first line, verified on bug-react/011300.png, reads 'React-router `Link` components in the `Projects` page and `SidebarProjectList` trees are not memoized'. The crop shows only '`SidebarProjectList` trees are not memoized', and the braces sit on 'are not memoized'. Out of context, the product's text then says the SidebarProjectList trees are the thing not memoized. The report actually says the react-router Link components inside those trees are (TIME-08: 'memo-less react-router Link components'). Real product text is cropped so that it says something it does not say.",
+      "fix": "Crop the whole first line instead: {x: 552, y: 130, w: 644, h: 24}, frozen at 11300 and shown at about 1160 stage px wide (about 24 px text). I checked it: it holds exactly 'React-router `Link` components … trees are not memoized', with no partial glyphs. Keep the braces on 'are not memoized' (recording x about 1100-1192). Optionally add a thin underline under '`Link` components' (x about 620-760) so the subject is marked as well."
+    },
+    {
+      "where": "runtime (assemble --check)",
+      "problem": "The estimate is 99.4 s, which leaves 0.6 s under the brief's 100 s hard ceiling and runs 9.4 s over the 90 s target. That is up from 96.1 s in round 2, because of the 12 new words: 'Then it runs on Replay's browsers', 'in under three minutes' and 'It never saved its place, so it kept starting over'. Any slower real delivery from ElevenLabs, or any shot that grows to clear the 10 reading-time warnings, will push the film past 100 s.",
+      "fix": "Win back at least 3 s before narrating. Trim the holds that carry no words rather than any fact: the ch01-s03 lock-up hold (0.7 s → 0.4 s), ch03-s01's closing dot-scatter plus drum fill (start the scatter on the line's end, not 0.5 s after), and ch01-s01's 1.0 s hold after 'run' (→ 0.6 s). Do not cut ch05-s05 below 6 s. After narration, re-run --check against the measured clock."
+    },
+    {
+      "where": "ch04-s01 (L0401 'Then it runs on Replay's browsers' and the 'hosted by Replay' pill), shot.claims",
+      "problem": "The line is supported, but not by the claims the shot lists (CONT-02/03/04/05/19). 'Replay's browsers' traces to LOOP-07 (a test run is 'One round of executing journeys in Replay Browser'). The hosted, parallel nature traces to CONT-24 ('spins up a swarm of agents that runs all of the mapped journeys in parallel, in a browser') and CONT-19 ('Containers running QA at once'). SET-05 and SET-06 add that the test browser has to reach your app, through a tunnel for localhost. Only CONT-19 is cited, and it alone does not say the browsers are Replay's.",
+      "fix": "Add LOOP-07, CONT-24 and SET-05 to ch04-s01's claims. No text change is needed. Keep the pill 'hosted by Replay' and never 'zero setup'."
+    },
+    {
+      "where": "ch04 chapter summary (line 'braces on the first blue PR #3 badge') and ch04-s03 visual ('the first blue 'PR #3' badge')",
+      "problem": "Round 2 flagged this and it is still there. On runs/003668.png the PR #3 and PR #1 badges are purple/violet, not blue. ch01-s03 and ch06-s01 now say purple correctly.",
+      "fix": "Change 'blue' to 'purple' in both places so the shots author does not recolour the brace target."
+    },
+    {
+      "where": "ch04-s03 (crop {x: 500, y: 112, w: 940, h: 458} at runs 3668)",
+      "problem": "The visual lists the columns as Created / Description / Environment / Status / Bugs. At x 1440 the crop also takes in a cut-off sliver of the Journeys column: a half 'Journeys' header and the counts 1, 2, 5, 7, 29, 1, 12, 1. This is harmless, but it is a half-cut column on a hero product shot, and the visual does not mention it.",
+      "fix": "Narrow to {x: 500, y: 112, w: 880, h: 458}, ending right after the Bugs column, so no half column shows. Or widen past 1440 if the recording allows, so 'Journeys' is whole (the 29- and 12-journey counts would back the 'a run records every journey' note)."
+    },
+    {
+      "where": "ch05-s04 visual (zoom note)",
+      "problem": "The note says '258' sits at x about 1255-1300. On bug-sync/001603.png, '258' sits at about x 1296-1330 and 'times' ends at about 1369, both at y about 138. The chosen zoom centre (1335, 137) at 1.6x still gives a window of about 826-1388, so '258 times' stays whole. Only the note's coordinates are off.",
+      "fix": "Correct the note to ''258' at x ≈ 1296-1330' so a later re-centre does not cut the number. No change to the zoom itself."
+    },
+    {
+      "where": "ch05-s03 (video-frame overlay on 'screen')",
+      "problem": "Inside the drawn 'screen recording' frame, only the 2 solid renders 'show'. That implies the 2 non-wasted renders made a change you could see on screen. TIME-08 says only that they had DOM mutations; whether those were visible is not established. It sits inside our illustration, so the risk is small.",
+      "fix": "Either show the frame as empty of all 27 squares and let L0505 carry the 25, or keep the 2 solid squares dim, unlabelled and not glowing. Do not caption them as 'visible'."
+    },
+    {
+      "where": "ch05-s05 (agent pair timing, brief requirement 6-8 s)",
+      "problem": "The pair is on screen from 0.1 s to 6.15 s, about 6.05 s counting the fade. It is fully visible for only about 5.8 s. The brief's floor is met on paper but not in practice.",
+      "fix": "Hold the pair to about 6.3 s and finish the fade by about 6.5 s, then start the pull-back at about 6.55 s with minDuration about 6.8 s. Recover the 0.4 s from the unnarrated holds listed under runtime, not from this beat."
+    }
+  ],
+  "strengths": [
+    "All three of round 2's must-fix items are closed and verified on the frames. ch05-s03 now freezes at 11300, with the 'ROOT CAUSE' heading crop {548, 102, 100, 22} whole and sharp. ch01-s03 stamp 2 moved to 11458, where the cursor is off the chip, and its crop holds no URL, badge or Edit text. ch06 tile B starts below the tab strip at y 112. ch04-s03's red-pink 'slow' chip is now an anonymous ninth chip tagged 'illustration', so no real Reminders · CI run is implied to have a performance finding.",
+    "The new narration is exact and stays inside the facts. 'In under three minutes' is true: TIME-11's requests run from 15292 to 175614 ms, about 160 s, and the on-screen '≈ 160 s · 2 clicks · no keypresses' agrees. 'It never saved its place, so it kept starting over' is a fair ear-friendly gloss of 'checkpoint never advancing past -1', where each request carried checkpoint=-1 instead of the last one received. 'Then it runs on Replay's browsers' matches LOOP-07 and CONT-24.",
+    "Every number is said without rounding and matches its claim: 67 milliseconds and four dropped frames against the 16.7 ms budget (TIME-08); twenty-five of twenty-seven renders (a count, never a share); 258 fetches; the Tue 3:00 AM America/New_York chip over six real Tuesdays, Sep 1 to Oct 6 (CONT-02/03; Sep 1 2026 is a Tuesday); and 'Insights: 89 explorations · 1151 journeys' with its source tag (PROOF-13).",
+    "Safety holds on every crop I checked. No e-mail, owner name, project URL, credit meter, chat column or idle cursor appears in any crop: the new-project crop shows only the placeholder https://staging.your-app.dev and the page's own copy, and 'Add environment' shows only its grey line. The bug-react 3040-3200 window gets our plate over 'Loading replay…', and the Insights tile hides the recorded cursor on 'TOTAL BUGS'.",
+    "The contested traps are handled. 'Fixed' never shares a frame with the agent pair (AGENT-15). 'Every fix, rerun to confirm' stays at PROOF-07 level (PROOF-C1). 'Each run is recorded, then reviewed' takes TIME-C1's safe wording. 'A screen recording can't see that' is confined to wasted renders (TIME-17), with no competitor named (TIME-C2). 'Complements an existing test suite.' balances 'No test suite needed' (SET-08). Nothing appears in quotation marks, so quote integrity is not at risk, and assemble reports no quote errors."
+  ]
+}

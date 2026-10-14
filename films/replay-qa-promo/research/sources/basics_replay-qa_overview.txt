@@ -1,0 +1,140 @@
+Replay QA
+
+## Replay QA overview
+Explore web apps, build reusable journeys, run tests in Replay Browser, and report bugs with runtime evidence and root cause analysis.
+
+Replay QA is an autonomous QA service for web apps. Give it a running application and it explores the product like a user, turns important flows into reusable journeys, tests those journeys in Replay Browser, and reports bugs with the evidence needed to reproduce and fix them.
+
+You do not need an existing test suite or a list of reproduction steps. Replay QA can start from an application URL and guidance about what the product should do.
+Launch Replay QA
+
+New here? Read how Replay QA models your app for the vocabulary, then Getting good results for what to tell it before the first run.
+
+## How Replay QA works
+
+- Explore the app. An AI agent drives the application in a real browser to discover its screens, actions, and important workflows.
+
+- Create journeys. Replay QA saves meaningful flows—such as signing up, searching, or checking out—as journeys that can be tested again.
+
+- Run the journeys. Test runs exercise those journeys in Replay Browser and capture a deterministic runtime recording of what happened.
+
+- Investigate findings. When a run uncovers a problem, Replay QA uses the recording to trace the symptom back to its root cause.
+
+- Report actionable bugs. Each confirmed bug includes the observed behavior, evidence, and a root cause analysis that points at the responsible code.
+
+The project remains useful after its first pass. Start another exploration to expand coverage, rerun journeys after a change, or connect GitHub to test new deployments continuously.
+
+## Connect the application
+
+Replay QA needs a running version of the application that its test browser can reach.
+
+## Public URL
+
+For a deployed app or preview with a public URL, create a project and enter that URL. Replay QA can begin exploring without a tunnel or CI configuration.
+
+## Localhost or a private network
+
+For an app that only runs on your computer, use the managed reverse proxy. The outbound tunnel lets Replay QA reach the local app without deploying it or publishing it directly to the internet.
+
+Test an app running on localhost →
+
+The same setup can reach internal hostnames and services available through your computer's VPN or private DNS.
+
+## A build inside CI
+
+If the application only exists inside a CI runner, the Replay QA CLI can open a tunnel from the runner and keep the app reachable for the complete test run. Follow the setup for GitHub Actions or CircleCI.
+
+## Build useful coverage
+
+You can shape what Replay QA tests without writing browser automation.
+
+- Instructions focus exploration on the workflows, roles, and outcomes that matter most.
+
+- A design document gives QA a source of truth for intended behavior.
+
+- Test logins and variables let journeys cover authenticated areas without putting credentials into test steps or bug reports.
+
+- Additional explorations discover new journeys as the product grows.
+
+- Polish passes review each run for focused classes of issues, including accessibility, layout stability, visual glitches, network performance, React rendering, SEO, and security. See the list of polish passes.
+
+## Review test results
+
+A Replay QA project organizes its output around the work it performed:
+
+- Overview summarizes current QA activity, open bugs, recent test runs, and explored journeys.
+
+- Bugs collects confirmed findings with their severity, evidence, and root cause analysis.
+
+- Test Runs shows each round of journey execution and the result of every journey it exercised.
+
+- User Sessions captures submitted sessions when a project is configured to accept them.
+
+Bug reports can be copied or downloaded as Markdown for a coding agent. After applying a fix, mark the bug fixed; Replay QA reruns the affected journey to verify it and reopens the bug if the problem is still there. The bug report reference describes each field, severity level, and status.
+
+When a bug includes a Replay recording of the failing run, you can hand that recording to a coding agent through Replay MCP to inspect the console, code, and network traffic from the actual failure.
+
+## Drive Replay QA from a coding agent
+
+The whole loop is available without the web app: a coding agent can create a project, wait for QA to finish, read each bug report, apply the fix, and mark the bug fixed so QA confirms it. Use the REST API from scripts and CI, or connect Claude Code, Cursor, or another MCP client to the Replay QA MCP server.
+
+Driving Replay QA from a coding agent →
+
+To connect Replay QA to Obvious with OAuth, follow Using Replay QA in Obvious →.
+
+## Test changes from GitHub
+
+Connect a repository with the Replay QA GitHub App to run QA when new application builds become available.
+
+- Main branch: test a known deployment URL when a new main-branch deployment goes live.
+
+- Pull requests: test preview deployments reported by GitHub and post the result back to the pull request.
+
+Bugs can also be filed to GitHub Issues, Linear, or Jira as they are confirmed.
+
+Continuous QA from GitHub →
+
+GitHub is optional. A project can test a public URL or a reverse-proxied local app without connecting a repository.
+
+## Get better root cause analysis
+
+Replay QA works with any browser-based web app, with especially deep runtime analysis for React applications. Publish production source maps so reports can map compiled code back to the original source files and line numbers.
+
+Publish your app with source maps →
+
+## FAQ
+
+## Do I need an existing test suite?
+
+## Can Replay QA test an app on localhost?
+
+## Can it test signed-in areas?
+
+## What does a bug report include?
+
+## Does Replay QA write a fix for me?
+
+## Why did Replay QA report something that is intended behavior?
+
+## Replay QA stopped and is asking me for something. What now?
+
+## A journey broke after I changed the UI. What should I do?
+
+## Do I have to connect GitHub?
+
+## What uses credits?
+
+Get started
+Choose how Replay QA will reach the application you want to test.
+
+## Launch Replay QA
+Create a project for a running web application.
+
+## Test a localhost app
+Connect an application running on your development computer.
+
+## Test a GitHub Actions build
+Keep a private pull request build reachable for Replay QA.
+
+## Test a CircleCI build
+Run Replay QA against a private pull request build in CircleCI.

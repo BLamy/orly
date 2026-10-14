@@ -1,0 +1,29 @@
+{
+ "round": 2,
+ "at": "2026-10-14T22:25:29Z",
+ "pass": false,
+ "mean": 6.84,
+ "bar": 8.5,
+ "floor": 8,
+ "scores": {
+  "accuracy": 7,
+  "depth": 6.83,
+  "clarity": 6.5,
+  "story": 7.08,
+  "visual": 6.42,
+  "sync": 6.67,
+  "sound": 7.17,
+  "curiosity": 7.08
+ },
+ "notes": {
+  "accuracy": "Narration is clean and every number checks against the bible, and the round-1 owner-URL exposure is gone. It is held back by the root-cause card, which names 'SidebarProjectList trees' as the unmemoized thing when the real subject is the react-router Link components, and by an unlabelled 'critic agent' the product does not document.",
+  "depth": "The two time-only bugs (a 67 ms commit that drops four frames, a sync loop that refetches 258 times) are real and specific. But the film never shows the recording actually seeing all 27 renders, so the 'only visible in time' idea is asserted more than demonstrated.",
+  "clarity": "The redrawn schedule and environment beats read in a second. Elsewhere key moments point at the wrong thing: the 'every pull request' braces strike through a column header, the explore beat leaves two-thirds of the frame empty, and 'kept starting over' plays over a frozen frame.",
+  "story": "The turn into 'some bugs only exist in time' still lands, but the hook sells only convenience and plants nothing for that turn. The end card never echoes the closing promise, so the film finishes on a brand plate rather than a payoff.",
+  "visual": "The kinetic type, bracket marks and drawn 3:00 AM and URL-bar shots are confident and on brand. Misplaced overlays, clipped product crops, chips sliding over words, empty plates and skeleton-looking cards keep it from looking finished, and the film renders some crops differently from what QA checked.",
+  "sync": "Spoken words light their marks on time in the redrawn shots. The USP visual fires before 'time-travel' and cuts away as the word starts, the root-cause card leaves early, and several shots hold static through whole sentences.",
+  "sound": "The mix is clean (-16 LUFS, a well-judged duck) and the time chapter's silence on 'No click' and the D landing on the final act are strong. The ending deflates into near silence with only a faint button, and the music crowds 'Against staging, a preview, even localhost'.",
+  "curiosity": "The 258-request counter and the shattered 67 ms block are memorable and make you want to see more. Because the time-travel payoff is told rather than shown and the end card gives no next step, a buyer leaves curious but not yet convinced to try it."
+ },
+ "summary": "Round 2 fails the gate (mean 6.84, every dimension below 8, two criticals). The director's round-1 work landed: the owner-URL safety failure is closed by redrawing ch04-s01/02, the agent beat is cut down and moved, and the payoff triad now clears the music. But the per-shot fix pass never ran, so almost every round-1 shot note is still open, and the render places some rrweb crops differently from the sheets QA checked (ch04-s03 still strikes through a header in the film). This round: fix the render/sheet divergence first, then run film-shots on twelve routed shots with a round2-shots ledger (priority: ch04-s03, ch05-s03 time-travel payoff and root-cause subject, ch05-s02, ch05-s04, ch03-s01, ch06-s02 end card), give m01 a real sonic-logo ending and clear L0402, and publish after every verdict so the shelf shows the current score. Pacing air is deferred until the shots stabilise."
+}

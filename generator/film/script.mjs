@@ -19,7 +19,7 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '../..')
 export const MOODS = ['duskRose', 'candleAmber', 'winterBlue', 'labGreen', 'dawnGold', 'serverCyan', 'emberRed', 'parchment'];
 const KINDS = ['scene', 'card', 'plate', 'montage'];
 const TEXT_KINDS = ['title', 'date', 'place', 'quote', 'label', 'equation', 'nameCard', 'term'];
-const TRANSITIONS = ['cut', 'crossfade', 'iris', 'inkBleed', 'paperWipe', 'fadeBlack', 'lampChange'];
+const TRANSITIONS = ['cut', 'crossfade', 'iris', 'inkBleed', 'paperWipe', 'fadeBlack', 'lampChange', 'blur', 'whip'];
 export const DEFAULTS = { leadIn: 0.6, pauseAfter: 0.45, holdAfter: 0.8 };
 // House narrator pace (a measured mid-life voice); a locked voice.json wpm overrides it.
 export const DEFAULT_WPM = 140;

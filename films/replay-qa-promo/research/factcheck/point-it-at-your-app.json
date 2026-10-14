@@ -1,0 +1,53 @@
+{
+  "id": "point-it-at-your-app",
+  "checked": 16,
+  "confirmed": 14,
+  "corrected": 2,
+  "unverifiable": 0,
+  "corrections": [
+    {
+      "original": "Claim 3 / dossier sections 1 and 10: the page has a chat input with a send arrow ('Send message') and, below the card, a separate 'Start setup' button.",
+      "verdict": "corrected",
+      "fix": "'Start setup' IS the chat input's send button (button.chat-input__send, data-testid chat-send-btn, aria-label 'Send message') at the right end of the input bar. It is disabled until the first keystroke (disabled removed at 1103 ms). 'Want your coding agent to handle it? / Get the prompt' is a separate callout button (np-agentcta). The single input, the placeholder https://your-app.com and the button text are confirmed live.",
+      "sources": [
+        "films/replay-qa-promo/capture/clean/new-project.json (rrweb nodes 103, 105, 108; cursor samples (756,330) click and (1054,328) hover)",
+        "https://qa.replay.io/ (signed in, read-only via Claude in Chrome, 2026-10-14)"
+      ]
+    },
+    {
+      "original": "Claim 5 / dossier: the URL is typed 'at 13 characters per second' ('an even 13 cps, about 60 to 70 ms per character').",
+      "verdict": "corrected",
+      "fix": "13 cps is the take script's nominal setting. The recorded keystrokes for the 27-character URL run from 1103 ms to 2908 ms: 26 intervals, mean about 69 ms (range 59 to 102 ms), which is about 14.4 cps. 13 cps would be about 77 ms per character. The URL https://staging.your-app.dev is confirmed as an illustrative placeholder with no credentials or e-mails (0 redactions, 1 click).",
+      "sources": [
+        "films/replay-qa-promo/capture/takes/new-project.mjs",
+        "films/replay-qa-promo/capture/clean/new-project.json"
+      ]
+    },
+    {
+      "original": "Claim 11: localhost is reached via 'an outbound authenticated tunnel ... without deploying the app or publishing it to the internet' (quoted as the overview).",
+      "verdict": "contested",
+      "fix": "Substance confirmed, wording mixed across two pages. The overview says 'outbound tunnel ... without deploying it or publishing it directly to the internet'. The localhost page says 'replayqa proxy opens an authenticated tunnel' and 'without deploying it or exposing it directly to the public internet'. Each wording is now attributed to its own page. VPN/private DNS and npx --yes replayqa proxy are confirmed.",
+      "sources": [
+        "https://docs.replay.io/basics/replay-qa/overview",
+        "https://docs.replay.io/basics/replay-qa/localhost"
+      ]
+    },
+    {
+      "original": "Dossier 5a: toasts and Intercom are hidden via capture/clean.json shared.hide / hideByText.",
+      "verdict": "corrected",
+      "fix": "clean.json hides only the credit meter, the admin chip and the task-replay placeholder (plus the credits/Admin text rules). Toasts and Intercom are hidden by the cleaner's built-in CSS, recorded in new-project.json css.",
+      "sources": [
+        "films/replay-qa-promo/capture/clean.json",
+        "films/replay-qa-promo/capture/clean/new-project.json"
+      ]
+    },
+    {
+      "original": "Curiosity hook 5: 'A new push replaces \"any older in-flight run for the same pull request\".'",
+      "verdict": "corrected",
+      "fix": "The doc says 'replayqa ci replaces any older in-flight run for the same pull request and creates a PR-linked test run for the current commit'. The CLI step does the replacing; the doc does not say 'a new push'.",
+      "sources": [
+        "https://docs.replay.io/basics/replay-qa/frpc-ci"
+      ]
+    }
+  ]
+}

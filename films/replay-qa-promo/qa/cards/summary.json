@@ -1,0 +1,122 @@
+{
+ "shots": {
+  "ch01-s01": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-10-14T21:10:49.813Z"
+  },
+  "ch01-s03": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-10-14T21:10:51.289Z"
+  },
+  "ch02-s01": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-10-14T21:10:52.333Z"
+  },
+  "ch02-s02": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-10-14T21:10:53.178Z"
+  },
+  "ch03-s01": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-10-14T21:10:54.693Z"
+  },
+  "ch04-s01": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-10-14T21:10:55.738Z"
+  },
+  "ch04-s02": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-10-14T21:10:56.446Z"
+  },
+  "ch04-s03": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-10-14T21:10:57.854Z"
+  },
+  "ch05-s01": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-10-14T21:10:59.906Z"
+  },
+  "ch05-s02": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-10-14T21:11:02.237Z"
+  },
+  "ch05-s03": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-10-14T21:11:04.079Z"
+  },
+  "ch05-s04": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-10-14T21:11:06.119Z"
+  },
+  "ch05-s05": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-10-14T21:11:07.779Z"
+  },
+  "ch06-s01": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "probed": 0,
+   "at": "2026-10-14T21:11:08.995Z"
+  },
+  "ch06-s02": {
+   "fails": [],
+   "suspects": [],
+   "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 0,
+   "at": "2026-10-14T21:11:11.314Z"
+  }
+ },
+ "at": "2026-10-14T21:11:11.346Z",
+ "rule": "review round 3: no card shows paper > 50% with text < 20% for more than 0.3 s (probed cards fail, unprobed paper warns)",
+ "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s"
+}

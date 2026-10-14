@@ -1,0 +1,347 @@
+{
+ "version": 1,
+ "lines": {
+  "L0102": {
+   "lineId": "L0102",
+   "model": "scribe_v1",
+   "transcript": "Introducing Replay QA",
+   "expectedTerms": [
+    {
+     "term": "QA",
+     "accept": [
+      "QA",
+      "Q A"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "d3346daae143",
+   "lineSig": "0137594f72e9",
+   "clip": "narration/clips/L0102.wav",
+   "wer": 0.5,
+   "requestId": null,
+   "at": "2026-10-14T19:16:53.995Z"
+  },
+  "L0402": {
+   "lineId": "L0402",
+   "model": "scribe_v1",
+   "transcript": "Against staging, a preview, even local host",
+   "expectedTerms": [
+    {
+     "term": "localhost",
+     "accept": [
+      "localhost",
+      "local host"
+     ],
+     "found": true,
+     "from": "lexicon"
+    },
+    {
+     "term": "Against",
+     "accept": [
+      "Against"
+     ],
+     "found": true,
+     "from": "qa"
+    }
+   ],
+   "pass": 2,
+   "sig": "513359570174",
+   "lineSig": "09edaa9858a5",
+   "clip": "narration/clips/L0402.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-14T21:23:31.081Z"
+  },
+  "L0502": {
+   "lineId": "L0502",
+   "model": "scribe_v1",
+   "transcript": "Replay QA caught one in its own app",
+   "expectedTerms": [
+    {
+     "term": "QA",
+     "accept": [
+      "QA",
+      "Q A"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "cb367fafd4ff",
+   "lineSig": "3edcabeb6faf",
+   "clip": "narration/clips/L0502.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-14T19:20:47.044Z"
+  },
+  "L0503": {
+   "lineId": "L0503",
+   "model": "scribe_v1",
+   "transcript": "One update, 67 milliseconds, four dropped frames",
+   "expectedTerms": [
+    {
+     "term": "67",
+     "accept": [
+      "67",
+      "sixty-seven"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "f80ea0bf379a",
+   "lineSig": "e2c262480286",
+   "clip": "narration/clips/L0503.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-14T19:16:56.052Z"
+  },
+  "L0602": {
+   "lineId": "L0602",
+   "model": "scribe_v1",
+   "transcript": "Replay QA end-to-end testing, fully managed. Catch bugs that only exist in time",
+   "expectedTerms": [
+    {
+     "term": "QA",
+     "accept": [
+      "QA",
+      "Q A"
+     ],
+     "found": true,
+     "from": "lexicon"
+    }
+   ],
+   "pass": 1,
+   "sig": "21b18d18797b",
+   "lineSig": "b2821011b3ca",
+   "clip": "narration/clips/L0602.wav",
+   "wer": 0.125,
+   "requestId": null,
+   "at": "2026-10-14T19:16:56.803Z"
+  },
+  "L0101": {
+   "lineId": "L0101",
+   "model": "scribe_v1",
+   "transcript": "Imagine end-to-end tests you never write or remember to run.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "ebef63b33b91",
+   "lineSig": "053a76394fa9",
+   "clip": "narration/clips/L0101.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-14T19:16:57.361Z"
+  },
+  "L0201": {
+   "lineId": "L0201",
+   "model": "scribe_v1",
+   "transcript": "Point it at your app.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "1321623c061a",
+   "lineSig": "4f74a9e3aa2b",
+   "clip": "narration/clips/L0201.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-14T19:16:57.893Z"
+  },
+  "L0202": {
+   "lineId": "L0202",
+   "model": "scribe_v1",
+   "transcript": "No test suite needed just a quick chat",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "00b0c6bc056a",
+   "lineSig": "be9cc47e1e70",
+   "clip": "narration/clips/L0202.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-14T19:19:02.199Z"
+  },
+  "L0301": {
+   "lineId": "L0301",
+   "model": "scribe_v1",
+   "transcript": "It explores your app in a real browser",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "195074db5659",
+   "lineSig": "114226db03f5",
+   "clip": "narration/clips/L0301.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-14T19:19:31.997Z"
+  },
+  "L0302": {
+   "lineId": "L0302",
+   "model": "scribe_v1",
+   "transcript": "turns what it finds into user journeys and runs them",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "eca4562dfffe",
+   "lineSig": "e255dc37e97c",
+   "clip": "narration/clips/L0302.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-14T19:19:03.429Z"
+  },
+  "L0401": {
+   "lineId": "L0401",
+   "model": "scribe_v1",
+   "transcript": "Then it runs on Replay's browsers on a schedule while you sleep",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "74a60abdae88",
+   "lineSig": "c2d7c0d9f2dc",
+   "clip": "narration/clips/L0401.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-14T19:19:04.211Z"
+  },
+  "L0403": {
+   "lineId": "L0403",
+   "model": "scribe_v1",
+   "transcript": "And on every pull request",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "3ec457767c93",
+   "lineSig": "95f5f0e80fef",
+   "clip": "narration/clips/L0403.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-14T19:17:00.633Z"
+  },
+  "L0404": {
+   "lineId": "L0404",
+   "model": "scribe_v1",
+   "transcript": "Each run is recorded, then reviewed for what breaks and what's slow.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "329d478eb01a",
+   "lineSig": "db82ee365170",
+   "clip": "narration/clips/L0404.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-14T19:17:01.132Z"
+  },
+  "L0501": {
+   "lineId": "L0501",
+   "model": "scribe_v1",
+   "transcript": "Some bugs only exist in time.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "5464998d9bae",
+   "lineSig": "3829659ee3e1",
+   "clip": "narration/clips/L0501.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-14T19:19:04.729Z"
+  },
+  "L0504": {
+   "lineId": "L0504",
+   "model": "scribe_v1",
+   "transcript": "No click. A background refresh re-rendered the project list.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "7aa1a89d606a",
+   "lineSig": "13f27bd4bda6",
+   "clip": "narration/clips/L0504.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-14T19:17:02.393Z"
+  },
+  "L0505": {
+   "lineId": "L0505",
+   "model": "scribe_v1",
+   "transcript": "25 of 27 renders changed nothing on screen.",
+   "expectedTerms": [
+    {
+     "term": "changed",
+     "accept": [
+      "changed"
+     ],
+     "found": true,
+     "from": "qa"
+    }
+   ],
+   "pass": 1,
+   "sig": "34d6e8d8f681",
+   "lineSig": "20b2c5d0fc2d",
+   "clip": "narration/clips/L0505.wav",
+   "wer": 0,
+   "requestId": null,
+   "at": "2026-10-14T21:23:31.987Z"
+  },
+  "L0506": {
+   "lineId": "L0506",
+   "model": "scribe_v1",
+   "transcript": "A screen recording can't see that. A time travel recording can",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "0b01d0855269",
+   "lineSig": "20c3e4c1e19d",
+   "clip": "narration/clips/L0506.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-14T19:17:03.653Z"
+  },
+  "L0507": {
+   "lineId": "L0507",
+   "model": "scribe_v1",
+   "transcript": "Another bug, one list fetched 258 times in under three minutes",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "78997463a278",
+   "lineSig": "134439a78368",
+   "clip": "narration/clips/L0507.wav",
+   "wer": 0.231,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-14T19:17:04.248Z"
+  },
+  "L0508": {
+   "lineId": "L0508",
+   "model": "scribe_v1",
+   "transcript": "It never saved its place so it kept starting over.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "b9d9a54c7dde",
+   "lineSig": "805622121e4a",
+   "clip": "narration/clips/L0508.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-14T19:19:05.254Z"
+  },
+  "L0601": {
+   "lineId": "L0601",
+   "model": "scribe_v1",
+   "transcript": "Every run, a recording. Every bug, a root cause. Every fix, rerun to confirm.",
+   "expectedTerms": [],
+   "pass": true,
+   "sig": "8d27a2c4580d",
+   "lineSig": "fb1fb7837feb",
+   "clip": "narration/clips/L0601.wav",
+   "wer": 0,
+   "scope": "renarrated",
+   "requestId": null,
+   "at": "2026-10-14T21:23:32.721Z"
+  }
+ },
+ "updatedAt": "2026-10-14T21:23:32.723Z"
+}

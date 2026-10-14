@@ -193,6 +193,8 @@ export interface ShotTimingData {
 }
 export interface FilmTimelineData {
   slug: string;
+  /** the film's look: absent = silhouette documentary; 'promo' = product promo (film/promo kit, clean finish) */
+  look?: string;
   fps: number;
   duration: number;
   chapters: { id: string; number: number; title: string; start: number; end: number }[];
@@ -217,7 +219,8 @@ export interface ShotTiming {
 // ---------------------------------------------------------------------------
 // Shots and the reel
 // ---------------------------------------------------------------------------
-export type TransitionKind = 'cut' | 'crossfade' | 'iris' | 'inkBleed' | 'paperWipe' | 'fadeBlack' | 'lampChange';
+/** 'blur' and 'whip' are the promo look's transitions (film/promo) */
+export type TransitionKind = 'cut' | 'crossfade' | 'iris' | 'inkBleed' | 'paperWipe' | 'fadeBlack' | 'lampChange' | 'blur' | 'whip';
 
 export interface ShotContext {
   timing: ShotTiming;
@@ -240,6 +243,13 @@ export interface ShotModule<S extends ShotScene = ShotScene> {
   paint(f: Frame, s: SceneState, scene: S, ctx: ShotContext): void;
   /** optional SVG overlay in stage coordinates (diagram plates, KaTeX). Rendered above the canvas, below finish. */
   overlay?(s: SceneState, scene: S, ctx: ShotContext): ReactNode;
+  /**
+   * optional HTML layer in stage coordinates (a 1280×720 box scaled to the output), above the scene canvas and
+   * below the SVG overlay: live DOM footage such as cleaned rrweb screen recordings (film/promo RrwebScreen).
+   * Must be a pure function of the sampled state; anything that loads asynchronously registers with
+   * core/pending trackPending() so the frame-exact harness waits for it before a frame is captured.
+   */
+  dom?(s: SceneState, scene: S, ctx: ShotContext): ReactNode;
 }
 
 /** Transition compositor: draw the blend of two already-rendered frames. u: 0 (all a) -> 1 (all b). */
@@ -426,6 +436,8 @@ export interface ScriptChapter {
 }
 export interface FilmScript {
   slug: string;
+  /** the film's look, copied into timeline.json: absent = silhouette documentary; 'promo' = product promo */
+  look?: string;
   title: string;
   subtitle?: string;
   logline: string;

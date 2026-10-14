@@ -573,18 +573,15 @@
     },
     "qa": {
       "status": "done",
-      "at": "2026-10-14T22:15:05.813Z",
+      "at": "2026-10-14T22:18:16.388Z",
       "summary": {
-        "pass": 5,
-        "warn": 0,
+        "pass": 38,
+        "warn": 7,
         "fail": 0,
         "skip": 0
       },
-      "report": "films/replay-qa-promo/qa/reports/latest-partial.json",
-      "updatedAt": "2026-10-14T22:15:05.814Z",
-      "partial": [
-        "score"
-      ]
+      "report": "films/replay-qa-promo/qa/reports/latest.json",
+      "updatedAt": "2026-10-14T22:18:16.389Z"
     },
     "shots": {
       "ch03-s01": {
@@ -698,7 +695,7 @@
     },
     "mix": {
       "status": "done",
-      "startedAt": "2026-10-14T21:08:57.271Z",
+      "startedAt": "2026-10-14T22:15:25.988Z",
       "tool": "generator/film/mix.mjs",
       "error": null,
       "resume": null,
@@ -706,8 +703,8 @@
         "--slug",
         "replay-qa-promo"
       ],
-      "updatedAt": "2026-10-14T21:09:05.542Z",
-      "finishedAt": "2026-10-14T21:09:05.541Z",
+      "updatedAt": "2026-10-14T22:15:36.007Z",
+      "finishedAt": "2026-10-14T22:15:36.007Z",
       "ok": true,
       "checks": {
         "loudness": true,
@@ -721,12 +718,12 @@
       },
       "master": {
         "file": "films/replay-qa-promo/mix/master.wav",
-        "duration": 84.25,
+        "duration": 82.7083,
         "I": -16,
-        "LRA": 3.4,
+        "LRA": 2.7,
         "TP": -1.9
       },
-      "duckDb": 4.37,
+      "duckDb": 4.21,
       "outputs": [
         "films/replay-qa-promo/mix/master.wav",
         "films/replay-qa-promo/mix/loudness.json",
@@ -740,7 +737,7 @@
     },
     "render": {
       "status": "done",
-      "startedAt": "2026-10-14T21:09:13.494Z",
+      "startedAt": "2026-10-14T22:28:32.913Z",
       "tool": "generator/film/render.mjs",
       "error": null,
       "resume": null,
@@ -748,12 +745,12 @@
         "--slug",
         "replay-qa-promo"
       ],
-      "updatedAt": "2026-10-14T21:10:07.782Z",
-      "finishedAt": "2026-10-14T21:10:07.781Z",
+      "updatedAt": "2026-10-14T22:29:00.449Z",
+      "finishedAt": "2026-10-14T22:29:00.448Z",
       "ok": true,
       "out": "films/replay-qa-promo/render/film.mp4",
       "preview": false,
-      "frames": 2022,
+      "frames": 1985,
       "fps": 24,
       "checks": {
         "frames": true,
@@ -769,25 +766,25 @@
     },
     "publish": {
       "status": "done",
-      "finishedAt": "2026-10-14T21:11:16.124Z",
+      "finishedAt": "2026-10-14T22:29:05.255Z",
       "createdAt": "2026-10-14T21:11:13.945Z",
       "manifest": "public/generated/replay-qa-promo/manifest.json",
       "sources": {
         "page": "public/generated/replay-qa-promo/sources/index.html",
         "url": "https://orly.brett-lamy.workers.dev/generated/replay-qa-promo/sources/",
-        "claims": 51,
+        "claims": 48,
         "quotes": 0,
-        "sources": 47
+        "sources": 43
       },
       "chapters": 6,
       "stems": {
         "lines": 20,
         "cues": 1,
-        "mb": 2.5
+        "mb": 2.4
       },
       "chapterSlices": 0,
       "deployed": false,
-      "updatedAt": "2026-10-14T21:11:16.125Z"
+      "updatedAt": "2026-10-14T22:29:05.255Z"
     },
     "assemble": {
       "status": "done",
@@ -795,20 +792,20 @@
       "summary": "Clock fresh (84.25 s, 97 beats). Mix: master -16 LUFS, -1.9 dBTP, LRA 3.4, no master limiting; 1 cue (m01) ducked 4.37 dB (target 4); fade 83.05-84.25 s, 2.14 s after lastStrike 80.912; floor -58 LUFS; 6 chapter slices. Render: film.mp4 2022 frames = round(84.25x24), 1920x1080@24, video 84.250 s / audio 84.250 s, 6 chapters + mov_text captions, film.vtt; 54 s wall, 6 workers. Sheets: all 15 shots re-sheeted (--all). Cards: 0 blank probed cards, 0 ghost text, 5/5 transitions audited. Published locally (manifest, 20 line stems + 1 cue stem, captions, library entry). QA 42 pass / 3 warn / 0 fail; warns: narration.pacing (178 wpm overall, 7 lines 190-199 wpm), narration.listening (4 stress sign-offs pending: QA, localhost, Against, QA), mix.lineMasking (score problem: L0601 8 dB, L0403 9.6, L0602 9.8, L0402 9.9 speech-to-music)."
     },
     "review": {
-      "round": 1,
+      "round": 2,
       "pass": false,
-      "mean": 6.82,
+      "mean": 6.84,
       "scores": {
-        "accuracy": 6.83,
+        "accuracy": 7,
         "depth": 6.83,
-        "clarity": 6.33,
+        "clarity": 6.5,
         "story": 7.08,
-        "visual": 6.25,
-        "sync": 7.17,
-        "sound": 7,
+        "visual": 6.42,
+        "sync": 6.67,
+        "sound": 7.17,
         "curiosity": 7.08
       },
-      "at": "2026-10-14T21:18:35Z"
+      "at": "2026-10-14T22:25:29Z"
     }
   }
 }

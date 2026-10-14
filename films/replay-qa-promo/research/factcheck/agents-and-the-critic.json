@@ -1,0 +1,48 @@
+{
+  "id": "agents-and-the-critic",
+  "checked": 34,
+  "confirmed": 29,
+  "corrected": 3,
+  "unverifiable": 2,
+  "key_claims": {
+    "1": "confirmed", "2": "confirmed", "3": "confirmed",
+    "4": "corrected (can be added by URL without a token; a token setup also exists)",
+    "5": "confirmed", "6": "confirmed (30 tools counted; ProfileSampling profiles the Replay runtime)",
+    "7": "confirmed (quote is the overview's, conditioned on a bug having a recording; 'not enough' wording is the agent-integration doc's)",
+    "8": "confirmed", "9": "confirmed labels and DOM order; function UNVERIFIED", "10": "confirmed",
+    "11": "confirmed", "12": "confirmed", "13": "confirmed (vendor-reported)", "14": "confirmed",
+    "15": "confirmed CONTESTED", "16": "confirmed"
+  },
+  "corrections": [
+    {
+      "original": "It supports OAuth sign-in, so it needs no token. / The Replay QA MCP server needs no token.",
+      "verdict": "corrected",
+      "fix": "The server supports OAuth sign-in, so it \"can be added by URL without a token\"; the client opens a browser sign-in the first time. A token-based setup (\"Claude Code (token)\" tab) is also documented.",
+      "sources": ["https://docs.replay.io/basics/replay-qa/agent-integration", "films/replay-qa-promo/research/sources/basics_replay-qa_agent-integration.txt"]
+    },
+    {
+      "original": "Profiling: ProfileStatements, ProfileGraph, ExecutionDelay, ProfileSampling (listed as app performance profiling)",
+      "verdict": "corrected",
+      "fix": "ProfileSampling profiles \"the Replay runtime, not the recorded application\"; caveat added.",
+      "sources": ["https://docs.replay.io/reference/replay-mcp/tools"]
+    },
+    {
+      "original": "The only nearby wording is that Replay QA \"judges findings against\" the design document.",
+      "verdict": "corrected",
+      "fix": "Also: the bug-reports reference says adding intended behavior to the design document makes \"future runs judge against it\". Neither describes the three judge links.",
+      "sources": ["https://docs.replay.io/reference/replay-qa/bug-reports", "films/replay-qa-promo/research/sources/reference_replay-qa_bug-reports.txt"]
+    },
+    {
+      "original": "Requirements judge / Evidence judge / Acceptance judge: what they do",
+      "verdict": "unverifiable",
+      "fix": "Labels verified on screen (bug-sync, nav \"Bug filing provenance\"); their function is undocumented in any public page. Do not narrate them as a critic of fixes.",
+      "sources": ["films/replay-qa-promo/capture/clean/bug-sync.json", "films/replay-qa-promo/capture/clean/bug-react.json"]
+    },
+    {
+      "original": "\"A verifier deploys to an isolated instance, exercises the affected behavior, and posts inspectable proof — logs, screenshots, a replayable trace.\" (Chris Kelly, LeadDev, 10 Sep 2026)",
+      "verdict": "unverifiable",
+      "fix": "Seen only as quoted in the Replay blog (which gives his title as Head of Developer Experience at Augment); original LeadDev article not checked. UNVERIFIED — do not use as a quote.",
+      "sources": ["https://www.replay.io/blog/what-our-experimental-self-healing-software-loop-shipped-in-two-weeks"]
+    }
+  ]
+}

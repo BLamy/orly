@@ -1,0 +1,357 @@
+{
+ "slug": "replay-qa-promo",
+ "at": "2026-10-14T21:23:45.288Z",
+ "summary": {
+  "pass": 18,
+  "warn": 4,
+  "fail": 1,
+  "skip": 0
+ },
+ "checks": [
+  {
+   "stage": "narration",
+   "id": "coverage",
+   "status": "pass",
+   "detail": "20 lines narrated and current",
+   "missing": [],
+   "stale": []
+  },
+  {
+   "stage": "narration",
+   "id": "pacing",
+   "status": "warn",
+   "detail": "175 wpm overall; fast: L0202 196, L0301 199, L0302 195, L0401 198, L0508 197",
+   "wpm": 175.1,
+   "tooFast": [],
+   "fast": [
+    "L0202 196",
+    "L0301 199",
+    "L0302 195",
+    "L0401 198",
+    "L0508 197"
+   ],
+   "perShot": {
+    "ch01-s01": 183.9,
+    "ch01-s03": 139.9,
+    "ch02-s01": 331.1,
+    "ch02-s02": 196.5,
+    "ch03-s01": 196.3,
+    "ch04-s01": 198.2,
+    "ch04-s02": 169,
+    "ch04-s03": 173.3,
+    "ch05-s01": 183.5,
+    "ch05-s02": 148.2,
+    "ch05-s03": 161,
+    "ch05-s04": 184.6,
+    "ch06-s01": 171.4,
+    "ch06-s02": 165.5
+   }
+  },
+  {
+   "stage": "narration",
+   "id": "clipEdges",
+   "status": "pass",
+   "detail": "all 8 cut edges under -50 dBFS",
+   "loud": [],
+   "warm": [],
+   "dirty": []
+  },
+  {
+   "stage": "narration",
+   "id": "stem",
+   "status": "pass",
+   "detail": "stem -19 LUFS (target -19), TP -2.7 dBTP, limiter 0 dB, compressor 1.66 dB GR, line rides ≤ 3.0 dB"
+  },
+  {
+   "stage": "narration",
+   "id": "stt",
+   "status": "pass",
+   "detail": "20 lines round-tripped on the current takes (scribe_v1; terms heard literally): L0102 (QA); L0402 (localhost, Against); L0502 (QA); L0503 (67); L0505 (changed); L0602 (QA); L0101 (re-take, WER 0); L0201 (re-take, WER 0); L0202 (re-take, WER 0); L0301 (re-take, WER 0); L0302 (re-take, WER 0); L0401 (re-take, WER 0); L0403 (re-take, WER 0); L0404 (re-take, WER 0); L0501 (re-take, WER 0); L0504 (re-take, WER 0); L0506 (re-take, WER 0); L0507 (re-take, WER 0.231); L0508 (re-take, WER 0); L0601 (re-take, WER 0)",
+   "targets": [
+    "L0102",
+    "L0402",
+    "L0502",
+    "L0503",
+    "L0505",
+    "L0602"
+   ],
+   "bad": []
+  },
+  {
+   "stage": "narration",
+   "id": "listening",
+   "status": "warn",
+   "detail": "QA pending; localhost pending; Against pending; QA pending — a human listens and runs film:voice signoff --slug replay-qa-promo --term <term> --by <name>"
+  },
+  {
+   "stage": "mix",
+   "id": "loudness",
+   "status": "pass",
+   "detail": "-16 LUFS (target -16), LRA 3.4, linear normalization"
+  },
+  {
+   "stage": "mix",
+   "id": "truePeak",
+   "status": "pass",
+   "detail": "-1.9 dBTP (ceiling -1.5)"
+  },
+  {
+   "stage": "mix",
+   "id": "length",
+   "status": "fail",
+   "detail": "84.25s vs film 85.2083s"
+  },
+  {
+   "stage": "mix",
+   "id": "duck",
+   "status": "pass",
+   "detail": "music ducks 4.37 dB (target 4, ceiling; warn beyond ±1.5) under 57.7s of narration; calibrated to threshold -26.04 dBFS, ratio 4"
+  },
+  {
+   "stage": "mix",
+   "id": "moments",
+   "status": "pass",
+   "detail": "L0101 peaks -13.1 LUFS momentary; loudest music-only windows: -15.4 LUFS @ 70.3s, -15.6 LUFS @ 73.1s, -16 LUFS @ 35.8s"
+  },
+  {
+   "stage": "mix",
+   "id": "preLimit",
+   "status": "pass",
+   "detail": "no master limiting (constant gain only)",
+   "reductionDb": 0
+  },
+  {
+   "stage": "mix",
+   "id": "stemLimit",
+   "status": "pass",
+   "detail": "narration stem limiter 0 dB; speech compressor 1.63 dB GR"
+  },
+  {
+   "stage": "mix",
+   "id": "lineLevels",
+   "status": "pass",
+   "detail": "spread of the rest -1.08..0.06 dB",
+   "lines": {
+    "L0101": {
+     "M": -19.04,
+     "offsetDb": -0.41,
+     "requestedDb": 0,
+     "errorDb": -0.41,
+     "driftDb": -0.41
+    },
+    "L0102": {
+     "M": -19.01,
+     "offsetDb": -0.38,
+     "requestedDb": 0,
+     "errorDb": -0.38,
+     "driftDb": -0.38
+    },
+    "L0201": {
+     "M": -18.63,
+     "offsetDb": 0.05,
+     "requestedDb": 0,
+     "errorDb": 0.05,
+     "driftDb": 0.05
+    },
+    "L0202": {
+     "M": -19.71,
+     "offsetDb": -1.08,
+     "requestedDb": 0,
+     "errorDb": -1.08,
+     "driftDb": -1.08
+    },
+    "L0301": {
+     "M": -18.62,
+     "offsetDb": 0.06,
+     "requestedDb": 0,
+     "errorDb": 0.06,
+     "driftDb": 0.06
+    },
+    "L0302": {
+     "M": -18.63,
+     "offsetDb": 0.05,
+     "requestedDb": 0,
+     "errorDb": 0.05,
+     "driftDb": 0.05
+    },
+    "L0401": {
+     "M": -18.63,
+     "offsetDb": 0.05,
+     "requestedDb": 0,
+     "errorDb": 0.05,
+     "driftDb": 0.05
+    },
+    "L0402": {
+     "M": -18.62,
+     "offsetDb": 0.06,
+     "requestedDb": 0,
+     "errorDb": 0.06,
+     "driftDb": 0.06
+    },
+    "L0403": {
+     "M": -18.92,
+     "offsetDb": -0.29,
+     "requestedDb": 0,
+     "errorDb": -0.29,
+     "driftDb": -0.29
+    },
+    "L0404": {
+     "M": -18.68,
+     "offsetDb": -0.05,
+     "requestedDb": 0,
+     "errorDb": -0.05,
+     "driftDb": -0.05
+    },
+    "L0501": {
+     "M": -18.62,
+     "offsetDb": 0.06,
+     "requestedDb": 0,
+     "errorDb": 0.06,
+     "driftDb": 0.06
+    },
+    "L0502": {
+     "M": -18.62,
+     "offsetDb": 0.06,
+     "requestedDb": 0,
+     "errorDb": 0.06,
+     "driftDb": 0.06
+    },
+    "L0503": {
+     "M": -19.09,
+     "offsetDb": -0.46,
+     "requestedDb": 0,
+     "errorDb": -0.46,
+     "driftDb": -0.46
+    },
+    "L0504": {
+     "M": -19.34,
+     "offsetDb": -0.71,
+     "requestedDb": 0,
+     "errorDb": -0.71,
+     "driftDb": -0.71
+    },
+    "L0505": {
+     "M": -18.63,
+     "offsetDb": 0.05,
+     "requestedDb": 0,
+     "errorDb": 0.05,
+     "driftDb": 0.05
+    },
+    "L0506": {
+     "M": -18.63,
+     "offsetDb": 0.05,
+     "requestedDb": 0,
+     "errorDb": 0.05,
+     "driftDb": 0.05
+    },
+    "L0507": {
+     "M": -18.81,
+     "offsetDb": -0.18,
+     "requestedDb": 0,
+     "errorDb": -0.18,
+     "driftDb": -0.18
+    },
+    "L0508": {
+     "M": -18.9,
+     "offsetDb": -0.27,
+     "requestedDb": 0,
+     "errorDb": -0.27,
+     "driftDb": -0.27
+    },
+    "L0601": {
+     "M": -18.63,
+     "offsetDb": 0.05,
+     "requestedDb": 0,
+     "errorDb": 0.05,
+     "driftDb": 0.05
+    },
+    "L0602": {
+     "M": -18.76,
+     "offsetDb": -0.13,
+     "requestedDb": 0,
+     "errorDb": -0.13,
+     "driftDb": -0.13
+    }
+   }
+  },
+  {
+   "stage": "mix",
+   "id": "linePeaks",
+   "status": "pass",
+   "detail": "narration momentary peaks: median -12.8 LUFS, p95 -12.3, max -12.3 (none over median + 2 dB)",
+   "median": -12.8,
+   "p95": -12.3,
+   "hot": []
+  },
+  {
+   "stage": "mix",
+   "id": "foley",
+   "status": "pass",
+   "detail": "no score/foley.json (no foley bus)"
+  },
+  {
+   "stage": "mix",
+   "id": "swells",
+   "status": "pass",
+   "detail": "music-only ceiling -18.32 LUFS M (line p50 -16.32 − 2); 0 swells trimmed"
+  },
+  {
+   "stage": "mix",
+   "id": "fadeAfterStrike",
+   "status": "pass",
+   "detail": "m01: fade 83.05–84.25 s starts 2.138 s after the last strike (80.912 s; min 1.6)"
+  },
+  {
+   "stage": "mix",
+   "id": "floor",
+   "status": "pass",
+   "detail": "room tone -58 LUFS (target -58); quietest 400 ms of the master -57.7 LUFS"
+  },
+  {
+   "stage": "mix",
+   "id": "musicEq",
+   "status": "pass",
+   "detail": "music bus: 35 Hz high-pass (24 dB/oct), low band under 120 Hz keyed down 1.93 dB more under speech"
+  },
+  {
+   "stage": "mix",
+   "id": "lineMasking",
+   "status": "warn",
+   "detail": "under 10 dB: L0601 8, L0403 9.6, L0602 9.8, L0402 9.9",
+   "lines": {
+    "L0101": 99,
+    "L0102": 14,
+    "L0201": 12.8,
+    "L0202": 99,
+    "L0301": 99,
+    "L0302": 14.3,
+    "L0401": 13.3,
+    "L0402": 9.9,
+    "L0403": 9.6,
+    "L0404": 13.5,
+    "L0501": 12.3,
+    "L0502": 14,
+    "L0503": 99,
+    "L0504": 13.5,
+    "L0505": 18.6,
+    "L0506": 21.6,
+    "L0507": 11.6,
+    "L0508": 99,
+    "L0601": 8,
+    "L0602": 9.8
+   }
+  },
+  {
+   "stage": "mix",
+   "id": "chapters",
+   "status": "pass",
+   "detail": "6 slices"
+  },
+  {
+   "stage": "mix",
+   "id": "fresh",
+   "status": "warn",
+   "detail": "master is older than narration.wav, cues.json or a cue render — re-run film:mix"
+  }
+ ]
+}

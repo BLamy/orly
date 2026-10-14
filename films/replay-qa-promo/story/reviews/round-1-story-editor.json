@@ -1,0 +1,74 @@
+{
+  "reviewer": "story-editor",
+  "round": 1,
+  "lens": "story, curiosity and voice for a 90-second promo",
+  "runtimeCheck": "script.mjs assemble --check: 0 errors, 23 warnings; 157 words, est. 98.8 s at 140 wpm against a 90 s target (inside the brief's 100 s hard ceiling, so not critical, but only 1.2 s of headroom)",
+  "scores": { "accuracy": 8, "depth": 6, "clarity": 6, "story": 6, "curiosity": 6, "visual": 7, "voice": 7 },
+  "critical": [],
+  "issues": [
+    {
+      "where": "ch01-s01 / L0101",
+      "problem": "The hook in the first 5 s is generic. 'Imagine end-to-end tests you never had to write, or remember to run.' borrows the reference's 'Imagine…' frame, poses no tension and sets up nothing the film pays off. The brief names bugs-in-time as THE hook, but it arrives at about 45 s. The line is also 12 words and 68 on-screen characters (the check wants 7.2 s of reading time and the shot has about 6.2 s).",
+      "fix": "Shorten it and plant the setup the film already pays off. Option A (keeps the structure): 'Imagine tests you never write. Or remember to run.' (two short beats that each land on a type hit). Option B (stronger): plant the screenshot assumption from bible §2b here or at L0404 (see below) so 'A screenshot can't see that' in ch05-s03 becomes a payoff and not a one-off."
+    },
+    {
+      "where": "ch03-s01 / L0302-L0303 vs ch06-s01 / L0601",
+      "problem": "ch03 spends the payoff early. 'Turns what it finds into journeys, and records every run. / And every bug, with its root cause.' is heard about 50 s before 'Every run, a recording. Every bug, a root cause. Every fix, rerun to confirm.', so the closing triplet sounds like a repeat and not a resolution. L0303 is also a dangling fragment: by ear it reads as 'records… every bug, with its root cause'.",
+      "fix": "Keep ch03 about the mechanism and save the words 'recording' and 'root cause' for the end. L0302 → 'Turns what it finds into journeys, and runs them.' Cut L0303 (the step list's 'Investigate & Report · root cause for every bug' label still shows it). That saves about 2.5 s of runtime and gives the ch06 triplet its first full statement."
+    },
+    {
+      "where": "ch04-s03 / L0404",
+      "problem": "'Every recording gets reviewed.' is a limp passive line in the bridge slot, right before the film's turn. It gives the ear no reason to lean in, and the turn ('Some bugs only exist in time.') arrives without a setup.",
+      "fix": "Make L0404 the setup of the turn, grounded in TIME-07 or bible §2b. For example: 'Every recording gets a second look. Not just pass or fail.', or the setup/payoff version: 'The run passes. The screenshot looks fine.' Then ch05-s01 L0501 → 'But some bugs only exist in time.' Then 'A screenshot can't see that' (L0506) closes the loop the film opened."
+    },
+    {
+      "where": "ch05-s04 / L0507",
+      "problem": "'Another list, fetched two hundred fifty-eight times.' comes straight after 're-rendered the whole list', so the ear hears it as the same list. Nothing signals a second bug, and the line has no subject.",
+      "fix": "'Another bug: one list, fetched two hundred and fifty-eight times.' (or 'And another: a list fetched…'). Keep 258 exact, and keep it away from the account's 258 bug count (TIME-14)."
+    },
+    {
+      "where": "ch05-s04 / L0508",
+      "problem": "'The bookmark never moved past minus one.' is cryptic by ear. 'The bookmark' has no antecedent, and 'minus one' means nothing to a listener without the checkpoint idea. It is the punchline of the second bug and it does not land.",
+      "fix": "Use the bible's own intuition (§5.4 item 3) and say the consequence: 'Its bookmark never moved. So every time, it asked for everything.' Keep 'checkpoint −1' as the exact on-screen label."
+    },
+    {
+      "where": "ch06-s02 / L0602",
+      "problem": "The end line is the longest sentence in the film (14 words) and has the weakest rhythm. 'end-to-end testing, even for bugs' is awkward by ear, and 'even' hedges the closer. Picture and sound are also out of order: the type shows '{ End-to-end testing }' while the voice says 'Fully managed', then the type turns to '{ fully managed · always on }' while the voice says 'testing'. Four type events (mark, subline, tagline swap, URL) are cued inside one sentence. The reference's end card is a single tagline.",
+      "fix": "Split it into beats that land on the cut: 'Replay QA.' (mark) / 'End-to-end testing, fully managed.' (tagline grows, in the same order as the voice) / 'Down to the bugs that only exist in time.' (URL types). Cut the grey subline 'on a schedule · on every PR · every run a recording' (ch06-s01 just said it) so the card has one tagline, the mark and the URL."
+    },
+    {
+      "where": "ch01-s01 through ch04-s03 (structure)",
+      "problem": "The first half (about 45 s) is a feature sequence (URL, chat, explore, schedule, environments, PR) with no question or stakes. Curiosity only switches on at ch05. 'Fully managed', the primary message, is never spoken until the last line, so the first half shows managed-ness without naming it.",
+      "fix": "Give the first half one thread of tension (the screenshot/pass setup above) and name the promise once early. For example, ch04-s01 L0401 → 'Then it keeps going, on its own. On a schedule, while you sleep.' (CONT-19 'Running test loops automatically.')."
+    },
+    {
+      "where": "runtime (whole script)",
+      "problem": "The estimate is 98.8 s against a 90 s target, with 1.2 s of headroom under the 100 s ceiling, and the script is already under its word target (157 of 177). The overrun is in holds and card time. Any slower take from the narrator breaks the ceiling.",
+      "fix": "Trim about 7 s: cut L0303 (about 2.5 s); shorten ch05-s05 minDuration from 6.4 to about 5.5 (the agent pair still gets both exchanges); trim ch06-s02 holdAfter from 1.6 to 1.2; ch01-s03 leadIn from 0.7 to 0.4; ch03-s02 minDuration from 2.2 to 1.8 (land the fill on the next bar line). Re-run the check and aim for 90 to 93 s."
+    },
+    {
+      "where": "ch04-s01 (on-screen text)",
+      "problem": "One idea per beat is broken. In about 5 s the frame stacks '3:00 AM', the schedule chip, a six-date strip with per-tick captions and the status row. The check flags the date strip (4.3 of 5.5 s) and the chip (2.4 of 4.3 s) as unreadable.",
+      "fix": "Keep '3:00 AM' and the real chip, and let the date strip be ticks only, with the dates dropped or shown for a single beat. Drop the status row here (it can be a collage tile in ch06-s01 instead)."
+    },
+    {
+      "where": "ch05-s02 / ch05-s03 (on-screen labels)",
+      "problem": "The grey illustration captions are long ('illustration · 67 ms commit · 16.7 ms frame budget · 4 dropped frames', 69 chars; '… 25 of 27 renders · no DOM change', 47 chars). They sit under narration that is saying the same numbers, they compete with the bug title, and they fail the reading-time check.",
+      "fix": "Shorten them to 'illustration · 16.7 ms frame budget' and 'illustration · 25 of 27 renders changed nothing'. The voice already carries '67 ms' and 'four dropped frames'."
+    },
+    {
+      "where": "ch01-s02 / ch01-s03 (pacing)",
+      "problem": "The check flags both cards as short of reading time: '{ running on their own }' gets 1.9 of 3.5 s and '{ introducing }' gets 1.4 of 2.8 s. The braces-part gag needs a beat to read.",
+      "fix": "Pay for these holds out of the runtime trims above. Give ch01-s02 about 2.6 s (one full bar) so the dots land on the downbeat, and start ch01-s03's word 0.3 s earlier."
+    }
+  ],
+  "strengths": [
+    "The turn is excellent: 'Some bugs only exist in time.' → 'Replay QA caught one in its own app.' is a real surprise. It is grounded (TIME-08, TIME-09), and the self-catch makes the curiosity personal.",
+    "'Sixty-seven milliseconds. Four dropped frames.' over a four-beat music stop is the best moment of the film: short and concrete, timed to the cut and to the silence.",
+    "'A screenshot can't see that. A Replay recording can.' is a clean two-beat contrast that a warm narrator can land. Plant a setup and it becomes the film's thesis.",
+    "'Point it at your app.' and 'No test suite needed. Just a quick chat.' are textbook promo lines: short, confident, on the cut, and true to SET-08's nuance (the caption 'Complements the one you have').",
+    "The ch04 triplet (schedule / staging, preview, localhost / every pull request) has a good escalating rhythm, and each line is backed by real footage (the Tue 3:00 AM chip, the PR #1 and PR #3 rows).",
+    "The developer and critic beat is handled as the brief asks: unnarrated, small, about 6 s, framed as a depiction of fix-and-rerun and never as the judge links. The 'not yet' / 'good' piano answer is a subtle, smart musical device.",
+    "Accuracy discipline is strong: exact numbers, 'about 800 ms' traps avoided, 'Every night' kept away from the weekly chip, no 'fixes your bugs' overclaim, and 258 kept apart from the account's bug count."
+  ]
+}
