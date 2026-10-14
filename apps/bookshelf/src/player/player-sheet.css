@@ -17,19 +17,24 @@
   border-top: 1px solid rgba(148, 163, 184, 0.18);
   box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.45);
 }
+/* FloatingSheet's body is the fully grown height with overflow hidden (only its top shows at rest): the tabs stay
+   put at the top and the content below them is the scroller */
 .ps-body {
   display: flex;
   flex-direction: column;
-  min-height: 100%;
-  padding: 0 14px calc(10px + env(safe-area-inset-bottom, 0px));
+  height: 100%;
   color: var(--text, #f2f6fc);
 }
 .ps-tabs {
-  position: sticky;
-  top: 0;
-  z-index: 1;
-  background: var(--card);
+  flex: none;
+  margin: 0 14px;
 }
 .ps-content {
+  flex: 1;
+  min-height: 0;
   min-width: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+  padding: 0 14px calc(16px + env(safe-area-inset-bottom, 0px));
 }

@@ -264,7 +264,16 @@ export function BookPlayer({
   const drawerListRef = useRef<HTMLUListElement | null>(null);
   useEffect(() => {
     const el = (drawerable ? drawerListRef.current : sideListRef.current)?.querySelector('.active');
-    el?.scrollIntoView({ behavior: 'smooth', block: 'center' });
+    // scroll only the list's own scroller (scrollIntoView also moves overflow-hidden ancestors, which pushed the
+    // bottom sheet's tabs under its handle): top-aligned in the sheet, whose upper part is what shows at rest;
+    // centred in the desktop sidebar
+    const box = el?.closest('.ps-content, .bp-side') as HTMLElement | null;
+    if (el && box) {
+      const r = el.getBoundingClientRect();
+      const b = box.getBoundingClientRect();
+      const inSheet = box.classList.contains('ps-content');
+      box.scrollTo({ top: box.scrollTop + (r.top - b.top) - (inSheet ? 8 : (b.height - r.height) / 2), behavior: 'smooth' });
+    }
   }, [current, manifest, seriesGroups, drawerable]);
 
   // Keep the URL in sync with the chapter being watched, so it's shareable
