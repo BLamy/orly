@@ -66,10 +66,10 @@ const SCREW_TARGETS = [
 ];
 const BAD_SCREW = { x: FRONT_LEN * 0.3 };
 
-const CAM_WIDE: CameraState = { x: 640, y: 340, k: 0.95 };
+const CAM_WIDE: CameraState = { x: 640, y: 390, k: 1.2 };
 const CAM_FACE: CameraState = { x: 640, y: 400, k: 1.32 };
 const CAM_XRAY: CameraState = { x: 560, y: 380, k: 1.7 };
-const CAM_RACK: CameraState = { x: 640, y: 350, k: 1.05 };
+const CAM_RACK: CameraState = { x: 640, y: 360, k: 1.3 };
 
 export interface Scene {
   tl: Timeline;
@@ -331,6 +331,11 @@ export function Render({ s }: { s: SceneState }) {
                   opacity={0.28 * xrayU}
                 />
               ))}
+            {xrayU > 0 && (
+              <text x={X(FRONT_LEN / 2)} y={Y(FRONT_Y + THICK) + 20} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={600} opacity={xrayU * (1 - lockU)}>
+                stringer: solid wood
+              </text>
+            )}
           </g>
 
           {/* ---- the purchased board, cut in half ---- */}
@@ -348,7 +353,7 @@ export function Render({ s }: { s: SceneState }) {
                   stroke="#2a1f13"
                 />
               ))}
-              <text x={X(FRONT_LEN + 16)} y={Y(-19)} fill={colors.MUTED} fontSize={12.5}>
+              <text x={X(FRONT_LEN + 16)} y={Y(-19)} fill={colors.MUTED} fontSize={14}>
                 the one board bought · cut in half
               </text>
             </g>
@@ -388,7 +393,7 @@ export function Render({ s }: { s: SceneState }) {
                 stroke="#2a1f13"
                 strokeWidth={1.4}
               />
-              <text x={X(FRONT_LEN / 2)} y={topY - drop + TOP_DEEP * PX * 0.55} textAnchor="middle" fill="#2a1f13" fontSize={14} fontWeight={700} opacity={0.75}>
+              <text x={X(FRONT_LEN / 2)} y={topY - drop + TOP_DEEP * PX * 0.55} textAnchor="middle" fill="#2a1f13" fontSize={14} fontWeight={700} opacity={0.75 * (1 - xrayU)}>
                 65 × 17.5 in shelf
               </text>
             </g>
@@ -420,7 +425,7 @@ export function Render({ s }: { s: SceneState }) {
                   fill={colors.POSITIVE}
                   fontSize={22}
                   fontWeight={700}
-                  opacity={sumU}
+                  opacity={sumU * (1 - kneeU)}
                 >
                   4 + 5 + 37 + 5 + 4 = 65 in
                 </text>
@@ -452,7 +457,7 @@ export function Render({ s }: { s: SceneState }) {
                   <line x1={X(x)} y1={Y(FRONT_Y + THICK + OVER_FRONT + 7) - 13} x2={X(x)} y2={Y(FRONT_Y + THICK) + 4} stroke={colors.SECONDARY} strokeWidth={2.2} strokeDasharray="4 4" />
                 </g>
               ))}
-              <text x={X(FRONT_LEN / 2)} y={Y(FRONT_Y + THICK + OVER_FRONT + 20) + 14} textAnchor="middle" fill={colors.SECONDARY} fontSize={13.5}>
+              <text x={X(FRONT_LEN * 0.7) + 24} y={Y(FRONT_Y + THICK + OVER_FRONT + 7) + 5} fill={colors.SECONDARY} fontSize={14}>
                 stools pull in under the overhang
               </text>
             </g>
@@ -460,10 +465,10 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* ---- screw placement ---- */}
           {badU > 0 && (
-            <g opacity={badU}>
+            <g opacity={badU * Math.max(0, 1 - lockU * 3)}>
               <circle cx={X(BAD_SCREW.x)} cy={Y(FRONT_Y + THICK / 2)} r={5.5} fill="none" stroke={colors.NEGATIVE} strokeWidth={2.4} />
               <line x1={X(BAD_SCREW.x) - 7} y1={Y(FRONT_Y + THICK / 2) - 7} x2={X(BAD_SCREW.x) + 7} y2={Y(FRONT_Y + THICK / 2) + 7} stroke={colors.NEGATIVE} strokeWidth={2.4} />
-              <text x={X(BAD_SCREW.x)} y={Y(FRONT_Y) - 14} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontWeight={600}>
+              <text x={X(BAD_SCREW.x)} y={Y(FRONT_Y) - 14} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={600} opacity={Math.max(0, 1 - lockU * 3)}>
                 into a gap
               </text>
             </g>
@@ -479,7 +484,7 @@ export function Render({ s }: { s: SceneState }) {
               );
             })}
           {goodU > 0.7 && (
-            <text x={X(FRONT_LEN)} y={Y(FRONT_Y) - 14} fill={colors.POSITIVE} fontSize={13} fontWeight={600} opacity={clamp01(goodU * 3 - 2.1)}>
+            <text x={X(FRONT_LEN)} y={Y(FRONT_Y) - 14} fill={colors.POSITIVE} fontSize={14} fontWeight={600} opacity={clamp01(goodU * 3 - 2.1) * Math.max(0, 1 - lockU * 3)}>
               into solid wood
             </text>
           )}

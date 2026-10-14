@@ -18,7 +18,7 @@
 //  1 one page → two lenses over the same observation
 //  2 person lens: history → a suggested target, goal unknown
 //  3 agent lens: the same "most common" ranking re-sorts under a stated task
-//  4 lenses rejoin; four shared layers draw in under both products
+//  4 lenses rejoin; each card shows one worked example; four shared layers draw in
 //  5 different evidence: acceptance tally vs. outcome checklist (both empty)
 //  6 current work is the bottom tier; the rest is destination
 //  7 a marker climbs the charter milestones, each leaving something inspectable
@@ -71,7 +71,7 @@ const CARD_L: Rect = { x: 60, y: 60, w: 380, h: 220 };
 const CARD_R: Rect = { x: 840, y: 60, w: 380, h: 220 };
 const STRATA = { x: 340, w: 600, y0: 300, step: 42, h: 36 };
 const FOUND: Rect = { x: 340, y: 486, w: 600, h: 84 };
-const RISER = { x: 990, w: 230, h: 46, y0: 548, step: 58 };
+const RISER = { x: 990, w: 270, h: 46, y0: 548, step: 58 };
 
 const mixPlace = (a: PagePlacement, b: PagePlacement, u: number): PagePlacement => ({ x: lerp(a.x, b.x, u), y: lerp(a.y, b.y, u), scale: lerp(a.scale, b.scale, u) });
 const mixRect = (a: Rect, b: Rect, u: number): Rect => ({ x: lerp(a.x, b.x, u), y: lerp(a.y, b.y, u), w: lerp(a.w, b.w, u), h: lerp(a.h, b.h, u) });
@@ -153,6 +153,8 @@ export function buildScene() {
   const towerU = tl.channel('towerU', 0);
   const linksU = tl.channel('linksU', 0);
   const strataU = tl.channel('strataU', 0);
+  const exU = tl.channel('exU', 0);
+  const stepU = tl.channel('stepU', 0);
   const evidLU = tl.channel('evidLU', 0);
   const evidRU = tl.channel('evidRU', 0);
   const neqU = tl.channel('neqU', 0);
@@ -183,16 +185,18 @@ export function buildScene() {
   tl.tween(haloU, 1, { at: b + 4.8, dur: 0.7, ease: ease.enter });
   tl.tween(goalU, 1, { at: b + 7.0, dur: 0.6, ease: ease.pop });
 
-  /* — beat 3 · the agent lens: a stated task re-sorts the same ranking — */
+  /* — beat 3 · the agent lens: a stated task re-sorts the same ranking —
+     the chip and bars settle first, then the re-sort finishes early in the
+     caption, so the rows are never mid-swap when the caption is read */
   b = AT[2];
   tl.tween(cam, CAM_RIGHT, { at: b + 0.2, dur: 1.5, ease: ease.move });
-  tl.tween(rBarsU, 1, { at: b + 1.0, dur: 1.0, ease: ease.enter });
-  tl.tween(taskU, 1, { at: b + 3.2, dur: 0.7, ease: ease.enter });
-  tl.tween(condU, 1, { at: b + 4.4, dur: 2.0, ease: ease.move });
-  tl.tween(bracketU, 1, { at: b + 6.2, dur: 0.6, ease: ease.pop });
-  tl.tween(flagU, 1, { at: b + 7.4, dur: 0.6, ease: ease.pop });
+  tl.tween(rBarsU, 1, { at: b + 0.2, dur: 0.8, ease: ease.enter });
+  tl.tween(taskU, 1, { at: b + 0.6, dur: 0.7, ease: ease.enter });
+  tl.tween(condU, 1, { at: b + 1.6, dur: 1.6, ease: ease.move });
+  tl.tween(bracketU, 1, { at: b + 3.4, dur: 0.6, ease: ease.pop });
+  tl.tween(flagU, 1, { at: b + 4.2, dur: 0.6, ease: ease.pop });
 
-  /* — beat 4 · rejoin over a shared foundation — */
+  /* — beat 4 · rejoin over a shared foundation; each card gets one worked example — */
   b = AT[3];
   tl.tween(cam, CAM_HOME, { at: b + 0.2, dur: 1.5, ease: ease.move });
   tl.tween(overlayU, 0, { at: b + 0.1, dur: 0.6, ease: ease.enter });
@@ -201,12 +205,15 @@ export function buildScene() {
   tl.tween(towerU, 1, { at: b + 0.7, dur: 1.8, ease: ease.move });
   tl.tween(linksU, 1, { at: b + 2.4, dur: 1.2, ease: ease.draw });
   tl.tween(strataU, 4, { at: b + 3.0, dur: 5.4, ease: ease.linear });
+  tl.tween(exU, 1, { at: b + 2.6, dur: 1.0, ease: ease.enter });
+  tl.tween(stepU, 3, { at: b + 3.4, dur: 1.6, ease: ease.linear });
 
-  /* — beat 5 · different evidence of success — */
+  /* — beat 5 · different evidence of success; the examples make way for empty instruments — */
   b = AT[4];
   tl.tween(cam, CAM_TOP, { at: b + 0.2, dur: 1.4, ease: ease.move });
-  tl.tween(evidLU, 1, { at: b + 3.0, dur: 1.0, ease: ease.enter });
-  tl.tween(evidRU, 1, { at: b + 7.0, dur: 1.0, ease: ease.enter });
+  tl.tween(exU, 0, { at: b + 0.1, dur: 0.6, ease: ease.enter });
+  tl.tween(evidLU, 1, { at: b + 1.2, dur: 1.0, ease: ease.enter });
+  tl.tween(evidRU, 1, { at: b + 2.6, dur: 1.0, ease: ease.enter });
   tl.tween(neqU, 1, { at: b + 1.2, dur: 0.6, ease: ease.pop });
 
   /* — beat 6 · current work is the bottom tier — */
@@ -237,7 +244,7 @@ export function buildScene() {
 
   return {
     tl, cam, phase, pageU, splitU, frameU, syncU, overlayU, histU, lBarsU, haloU, goalU, rBarsU, taskU, condU, bracketU,
-    flagU, towerU, linksU, strataU, evidLU, evidRU, neqU, foundU, hereU, destU, climbU, riserU, dimU, openU, insideU,
+    flagU, towerU, linksU, strataU, exU, stepU, evidLU, evidRU, neqU, foundU, hereU, destU, climbU, riserU, dimU, openU, insideU,
   };
 }
 
@@ -251,10 +258,10 @@ function RankBars({ x, y, u, mix, title, color, flag }: { x: number; y: number; 
   if (o <= 0.002) return null;
   return (
     <g transform={`translate(${x} ${y})`} opacity={o}>
-      <text x={0} y={-8} fill={color} fontSize={10.5} fontFamily={MONO}>
+      <text x={0} y={-8} fill={color} fontSize={12} fontFamily={MONO}>
         {title}
       </text>
-      <text x={BAR.dx + 262} y={-8} textAnchor="end" fill={ROLE.PENDING} fontSize={9.5} fontFamily={MONO}>
+      <text x={BAR.dx + 262} y={-8} textAnchor="end" fill={ROLE.PENDING} fontSize={11.5} fontFamily={MONO}>
         illustrative · not measured
       </text>
       {TARGETS.map((name, i) => {
@@ -263,12 +270,12 @@ function RankBars({ x, y, u, mix, title, color, flag }: { x: number; y: number; 
         const top = lerp(RANK_HIST[i], RANK_TASK[i], mix) < 0.5;
         return (
           <g key={name} transform={`translate(0 ${ry})`}>
-            <text x={BAR.dx - 8} y={11} textAnchor="end" fill={top ? colors.TEXT : colors.MUTED} fontSize={10.5}>
+            <text x={BAR.dx - 8} y={11} textAnchor="end" fill={top ? colors.TEXT : colors.MUTED} fontSize={12}>
               {name}
             </text>
             <rect x={BAR.dx} y={2} width={barW(v) * o} height={11} rx={3} fill={color} opacity={top ? 0.95 : 0.45} />
             {i === 0 && flag > 0.002 && (
-              <text x={BAR.dx + barW(v) + 8} y={11} fill={ROLE.INVALID} fontSize={9.5} fontFamily={MONO} opacity={flag}>
+              <text x={BAR.dx + barW(v) + 8} y={11} fill={ROLE.INVALID} fontSize={11.5} fontFamily={MONO} opacity={flag}>
                 ✕ most common ≠ advances the task
               </text>
             )}
@@ -292,7 +299,7 @@ function ChosenBrackets({ rect, u }: { rect: Rect; u: number }) {
   return (
     <g opacity={o}>
       <path d={`M${x0} ${y0 + c}V${y0}H${x0 + c}M${x1 - c} ${y0}H${x1}V${y0 + c}M${x1} ${y1 - c}V${y1}H${x1 - c}M${x0 + c} ${y1}H${x0}V${y1 - c}`} fill="none" stroke={ROLE.OBSERVE} strokeWidth={2.6} />
-      <text x={x1} y={y0 - 6} textAnchor="end" fill={ROLE.OBSERVE} fontSize={10} fontFamily={MONO}>
+      <text x={x1} y={y0 - 6} textAnchor="end" fill={ROLE.OBSERVE} fontSize={11.5} fontFamily={MONO}>
         chosen target · still to be checked
       </text>
     </g>
@@ -308,7 +315,7 @@ function LensFrame({ rect, u, title, sub, color }: { rect: Rect; u: number; titl
       <text x={rect.x + 20} y={rect.y + 26} fill={color} fontSize={13} fontFamily={MONO} letterSpacing={1.2} fontWeight={700}>
         {title}
       </text>
-      <text x={rect.x + 20} y={rect.y + 43} fill={colors.MUTED} fontSize={11.5}>
+      <text x={rect.x + 20} y={rect.y + 43} fill={colors.MUTED} fontSize={12.5}>
         {sub}
       </text>
       <ProposedTag x={rect.x + rect.w - 96} y={rect.y + 13} u={1} />
@@ -330,6 +337,8 @@ export function Render({ s }: { s: SceneState }) {
   const climbU = s.get(scene.climbU);
   const openU = s.get(scene.openU);
   const insideU = s.get(scene.insideU);
+  const exU = s.get(scene.exU);
+  const stepU = s.get(scene.stepU);
   const evidLU = s.get(scene.evidLU);
   const evidRU = s.get(scene.evidRU);
   const syncU = s.get(scene.syncU);
@@ -363,19 +372,19 @@ export function Render({ s }: { s: SceneState }) {
               <text x={STRATA.x + 22} y={y + 23} fill={colors.TEXT} fontSize={14} fontWeight={650}>
                 {l.t}
               </text>
-              <text x={STRATA.x + STRATA.w - 16} y={y + 23} textAnchor="end" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+              <text x={STRATA.x + STRATA.w - 16} y={y + 23} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 {l.d}
               </text>
             </g>
           );
         })}
-        <text x={STRATA.x} y={STRATA.y0 - 8} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO} letterSpacing={1} opacity={clamp01(strataU)}>
+        <text x={STRATA.x} y={STRATA.y0 - 8} fill={colors.MUTED} fontSize={12} fontFamily={MONO} letterSpacing={1} opacity={clamp01(strataU)}>
           SHARED BY BOTH EXPERIENCES
         </text>
         {destU > 0.002 && (
           <g opacity={destU}>
-            <path d={`M${STRATA.x - 18} ${STRATA.y0 + 4 * STRATA.step - 8}V${P_TOWER.y}`} fill="none" stroke={ROLE.PENDING} strokeWidth={1.8} strokeDasharray="6 4" />
-            <text transform={`translate(${STRATA.x - 28} ${STRATA.y0 + 150}) rotate(-90)`} fill={ROLE.PENDING} fontSize={11} fontFamily={MONO} letterSpacing={1}>
+            <path d={`M${STRATA.x - 18} ${STRATA.y0 + 4 * STRATA.step - 8}V${CARD_L.y + CARD_L.h + 6}`} fill="none" stroke={ROLE.PENDING} strokeWidth={1.8} strokeDasharray="6 4" />
+            <text transform={`translate(${STRATA.x - 28} ${STRATA.y0 + 150}) rotate(-90)`} fill={ROLE.PENDING} fontSize={12} fontFamily={MONO} letterSpacing={1}>
               DESTINATION · PROPOSED · E7–E13
             </text>
           </g>
@@ -397,10 +406,10 @@ export function Render({ s }: { s: SceneState }) {
             <text x={640} y={304.5} textAnchor="middle" fill={ROLE.OBSERVE} fontSize={13} fontWeight={800}>
               =
             </text>
-            <text x={640} y={336} textAnchor="middle" fill={ROLE.OBSERVE} fontSize={9.5} fontFamily={MONO}>
+            <text x={640} y={336} textAnchor="middle" fill={ROLE.OBSERVE} fontSize={12} fontFamily={MONO}>
               same page
             </text>
-            <text x={640} y={349} textAnchor="middle" fill={ROLE.OBSERVE} fontSize={9.5} fontFamily={MONO}>
+            <text x={640} y={351} textAnchor="middle" fill={ROLE.OBSERVE} fontSize={12} fontFamily={MONO}>
               same focus
             </text>
           </g>
@@ -412,14 +421,14 @@ export function Render({ s }: { s: SceneState }) {
             {HIST_PATHS.map((d, i) => (
               <path key={i} d={d} fill="none" stroke="#f1f5f9" strokeWidth={1.4} strokeDasharray="0.012 0.02" pathLength={1} opacity={0.5 * clamp01(s.get(scene.histU) * 3 - i)} />
             ))}
-            <text x={P_LEFT.x + 24} y={P_LEFT.y + (PAGE.h - 30) * P_LEFT.scale} fill={colors.MUTED} fontSize={10} fontFamily={MONO} opacity={clamp01(s.get(scene.histU) * 2 - 1)}>
+            <text x={P_LEFT.x + 24} y={P_LEFT.y + (PAGE.h - 30) * P_LEFT.scale} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={clamp01(s.get(scene.histU) * 2 - 1)}>
               ⋯ this person’s earlier sessions (synthetic)
             </text>
             <SuggestHalo rect={L_EMAIL} u={s.get(scene.haloU)} phase={phase} label="suggestion" />
-            <RankBars x={LENS_L.x + 70} y={BARS_Y} u={s.get(scene.lBarsU)} mix={0} title="likely next target · from history" color={ROLE.MODEL} flag={0} />
+            <RankBars x={LENS_L.x + 70} y={BARS_Y} u={s.get(scene.lBarsU)} mix={0} title="likely next · from history" color={ROLE.MODEL} flag={0} />
             <g opacity={s.get(scene.goalU)}>
-              <rect x={LENS_L.x + 290} y={LENS_L.y + CHIP_DY} width={250} height={22} rx={11} fill="#1a1405" stroke={ROLE.PENDING} strokeDasharray="5 3" />
-              <text x={LENS_L.x + 415} y={LENS_L.y + CHIP_DY + 15} textAnchor="middle" fill={ROLE.PENDING} fontSize={10.5} fontFamily={MONO}>
+              <rect x={LENS_L.x + 280} y={LENS_L.y + CHIP_DY} width={270} height={24} rx={12} fill="#1a1405" stroke={ROLE.PENDING} strokeDasharray="5 3" />
+              <text x={LENS_L.x + 415} y={LENS_L.y + CHIP_DY + 16} textAnchor="middle" fill={ROLE.PENDING} fontSize={11.5} fontFamily={MONO}>
                 ? goal: unknown — and stays unknown
               </text>
             </g>
@@ -434,12 +443,52 @@ export function Render({ s }: { s: SceneState }) {
               flag={s.get(scene.flagU)}
             />
             <g opacity={s.get(scene.taskU)} transform={`translate(0 ${(1 - s.get(scene.taskU)) * -8})`}>
-              <rect x={LENS_R.x + 262} y={LENS_R.y + CHIP_DY} width={282} height={22} rx={11} fill="#171335" stroke={ROLE.MODEL} />
-              <text x={LENS_R.x + 403} y={LENS_R.y + CHIP_DY + 15} textAnchor="middle" fill={colors.TEXT} fontSize={10.5} fontFamily={MONO}>
+              <rect x={LENS_R.x + 240} y={LENS_R.y + CHIP_DY} width={300} height={24} rx={12} fill="#171335" stroke={ROLE.MODEL} />
+              <text x={LENS_R.x + 390} y={LENS_R.y + CHIP_DY + 16} textAnchor="middle" fill={colors.TEXT} fontSize={11.5} fontFamily={MONO}>
                 task: “{TASK_TEXT}”
               </text>
             </g>
             <ChosenBrackets rect={R_NAME} u={s.get(scene.bracketU)} />
+          </g>
+        )}
+
+        {/* beat 4 — one worked example per card, so both products are legible before the instruments */}
+        {exU > 0.002 && (
+          <g opacity={exU}>
+            <g transform={`translate(${CARD_L.x + 20} ${CARD_L.y + 62})`}>
+              <rect width={300} height={24} rx={12} fill="#0f2233" stroke={ROLE.MODEL} />
+              <text x={150} y={16} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
+                history → likely next: Email
+              </text>
+              <rect x={0} y={42} width={340} height={34} rx={8} fill="none" stroke={ROLE.MODEL} strokeWidth={1.4} strokeDasharray="5 3" />
+              <text x={12} y={63} fill={colors.TEXT} fontSize={12.5}>
+                suggestion: Email · shown as a hint
+              </text>
+              <text y={112} fill={colors.MUTED} fontSize={12.5}>
+                the person decides whether to use it
+              </text>
+              <text y={130} fill={colors.MUTED} fontSize={12.5}>
+                it can help without a stated goal
+              </text>
+            </g>
+            <g transform={`translate(${CARD_R.x + 20} ${CARD_R.y + 62})`}>
+              <rect width={340} height={24} rx={12} fill="#171335" stroke={ROLE.MODEL} />
+              <text x={170} y={16} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
+                task: “{TASK_TEXT}”
+              </text>
+              {['open the Profile ▾ menu', 'set Display name to “Brett”', 'save · page shows “Brett”'].map((t, i) => (
+                <g key={t} transform={`translate(0 ${44 + i * 24})`}>
+                  <rect width={16} height={16} rx={3} fill="none" stroke={ROLE.CHECKED} strokeWidth={1.5} />
+                  <path d="M3.5 8.5L6.8 11.8L12.5 4.8" fill="none" stroke={ROLE.CHECKED} strokeWidth={2} strokeLinecap="round" opacity={clamp01(stepU - i)} />
+                  <text x={26} y={13} fill={colors.TEXT} fontSize={12.5} opacity={clamp01(stepU - i)}>
+                    {t}
+                  </text>
+                </g>
+              ))}
+              <text y={130} fill={colors.MUTED} fontSize={12.5}>
+                each step is checked against the live page
+              </text>
+            </g>
           </g>
         )}
 
@@ -452,10 +501,10 @@ export function Render({ s }: { s: SceneState }) {
             {Array.from({ length: 10 }, (_, i) => (
               <rect key={i} x={i * 33} y={16} width={26} height={26} rx={13} fill="none" stroke={ROLE.MODEL} strokeWidth={1.3} strokeDasharray="4 3" opacity={clamp01(evidLU * 10 - i)} />
             ))}
-            <text y={66} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+            <text y={66} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               each slot: accepted ✓ · dismissed ✕ · ignored –
             </text>
-            <text y={96} fill={ROLE.PENDING} fontSize={10.5} fontFamily={MONO}>
+            <text y={96} fill={ROLE.PENDING} fontSize={12} fontFamily={MONO}>
               acceptance tally · empty · no results yet
             </text>
           </g>
@@ -468,12 +517,12 @@ export function Render({ s }: { s: SceneState }) {
             {['display name reads “Brett” on the page', 'task finished · no wrong action taken'].map((t, i) => (
               <g key={t} transform={`translate(0 ${18 + i * 26})`} opacity={clamp01(evidRU * 2 - i * 0.7)}>
                 <rect width={16} height={16} rx={3} fill="none" stroke={ROLE.CHECKED} strokeWidth={1.5} />
-                <text x={26} y={13} fill={colors.MUTED} fontSize={12}>
+                <text x={26} y={13} fill={colors.MUTED} fontSize={12.5}>
                   {t}
                 </text>
               </g>
             ))}
-            <text y={96} fill={ROLE.PENDING} fontSize={10.5} fontFamily={MONO}>
+            <text y={96} fill={ROLE.PENDING} fontSize={12} fontFamily={MONO}>
               outcome checklist · unchecked · no results yet
             </text>
           </g>
@@ -489,8 +538,11 @@ export function Render({ s }: { s: SceneState }) {
         {/* beat 7 — the charter's milestones, climbed one at a time */}
         {s.get(scene.riserU) > 0.002 && (
           <g opacity={s.get(scene.riserU)}>
-            <text x={RISER.x} y={306} fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>
-              also: E9 models · E11 integration · E13 release
+            <text x={RISER.x} y={290} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              also: E9 models · E11 integration
+            </text>
+            <text x={RISER.x} y={305} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              E13 release
             </text>
             <path d={`M${RISER.x - 16} ${RISER.y0 + RISER.h}V${RISER.y0 - 4 * RISER.step}`} stroke="#33415f" strokeWidth={2} />
             {STEPS.map((st, i) => {
@@ -503,7 +555,7 @@ export function Render({ s }: { s: SceneState }) {
                   <text x={RISER.x + 12} y={y + 19} fill={colors.TEXT} fontSize={12.5} fontWeight={650}>
                     {st.t}
                   </text>
-                  <text x={RISER.x + 12} y={y + 36} fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>
+                  <text x={RISER.x + 12} y={y + 36} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                     {st.d}
                   </text>
                   {/* inspectable artifact: a magnifier pops when the step is reached */}
@@ -511,7 +563,7 @@ export function Render({ s }: { s: SceneState }) {
                     <circle r={6.5} fill="none" stroke={c} strokeWidth={1.8} />
                     <path d="M4.8 4.8L10 10" stroke={c} strokeWidth={2} strokeLinecap="round" />
                   </g>
-                  <text x={RISER.x + RISER.w - 34} y={y + 19} textAnchor="end" fill={c} fontSize={9} fontFamily={MONO} opacity={i === 0 ? 1 : lit}>
+                  <text x={RISER.x + RISER.w - 34} y={y + 19} textAnchor="end" fill={c} fontSize={12} fontFamily={MONO} opacity={i === 0 ? 1 : lit}>
                     {i === 0 ? 'current' : 'proposed'}
                   </text>
                 </g>
@@ -524,11 +576,11 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={destU} transform="translate(40 330)">
           <rect width={244} height={86} rx={12} fill="#0b1120" stroke="#2a3754" />
           <line x1={16} y1={28} x2={56} y2={28} stroke={ROLE.OBSERVE} strokeWidth={2.4} />
-          <text x={68} y={32} fill={colors.TEXT} fontSize={11.5}>
+          <text x={68} y={33} fill={colors.TEXT} fontSize={12}>
             solid — current work
           </text>
           <line x1={16} y1={58} x2={56} y2={58} stroke={ROLE.PENDING} strokeWidth={2.4} strokeDasharray="6 4" />
-          <text x={68} y={62} fill={colors.TEXT} fontSize={11.5}>
+          <text x={68} y={63} fill={colors.TEXT} fontSize={12}>
             dashed — proposed, not built
           </text>
         </g>
@@ -537,14 +589,14 @@ export function Render({ s }: { s: SceneState }) {
       {/* the foundation tier — never dimmed; it is where the book is heading */}
       {s.get(scene.foundU) > 0.002 && (
         <g opacity={s.get(scene.foundU)}>
-          <text x={FOUND.x} y={FOUND.y - 7} fill={ROLE.OBSERVE} fontSize={10.5} fontFamily={MONO} letterSpacing={1}>
+          <text x={FOUND.x} y={FOUND.y - 7} fill={ROLE.OBSERVE} fontSize={12} fontFamily={MONO} letterSpacing={1}>
             CURRENT WORK · E0–E6 FOUNDATION
           </text>
           {/* inside — revealed when the front opens */}
           <rect x={FOUND.x} y={FOUND.y} width={FOUND.w} height={FOUND.h} rx={12} fill="#070b16" stroke={ROLE.OBSERVE} strokeWidth={2} />
           <g opacity={insideU}>
             <rect x={FOUND.x + 170} y={FOUND.y + 34} width={96} height={14} rx={4} fill={ROLE.MODEL} opacity={0.8} />
-            <text x={FOUND.x + 218} y={FOUND.y + 28} textAnchor="middle" fill={colors.MUTED} fontSize={7.5} fontFamily={MONO}>
+            <text x={FOUND.x + 218} y={FOUND.y + 28} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
               shared context
             </text>
             {[0, 1].map((r) => (
@@ -555,8 +607,11 @@ export function Render({ s }: { s: SceneState }) {
                 ))}
               </g>
             ))}
-            <text x={FOUND.x + 300} y={FOUND.y + 76} textAnchor="middle" fill={ROLE.PENDING} fontSize={7.5} fontFamily={MONO}>
-              schematic · next book: how a decision is produced
+            <text x={FOUND.x + 300} y={FOUND.y + 12} textAnchor="middle" fill={ROLE.PENDING} fontSize={11.5} fontFamily={MONO}>
+              schematic
+            </text>
+            <text x={FOUND.x + 300} y={FOUND.y + 76} textAnchor="middle" fill={ROLE.PENDING} fontSize={11.5} fontFamily={MONO}>
+              next book: how a decision is produced
             </text>
           </g>
           {/* the two front halves slide apart */}
@@ -568,10 +623,10 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={side} opacity={1 - 0.15 * openU}>
                 <rect x={x} y={FOUND.y} width={shown} height={FOUND.h} rx={12} fill="#0d1a2e" stroke={ROLE.OBSERVE} strokeWidth={2} />
-                <text x={x + shown / 2} y={FOUND.y + 38} textAnchor="middle" fill={colors.TEXT} fontSize={lerp(17, 11, openU)} fontWeight={700}>
+                <text x={x + shown / 2} y={FOUND.y + 38} textAnchor="middle" fill={colors.TEXT} fontSize={lerp(17, 12, openU)} fontWeight={700}>
                   {side < 0 ? 'Qwen2.5 1.5B' : 'decision engine'}
                 </text>
-                <text x={x + shown / 2} y={FOUND.y + 60} textAnchor="middle" fill={colors.MUTED} fontSize={lerp(11, 8, openU)} fontFamily={MONO}>
+                <text x={x + shown / 2} y={FOUND.y + 60} textAnchor="middle" fill={colors.MUTED} fontSize={lerp(12, 11, openU)} fontFamily={MONO}>
                   {side < 0 ? 'the model' : 'constrained choices'}
                 </text>
               </g>
@@ -580,7 +635,7 @@ export function Render({ s }: { s: SceneState }) {
           {s.get(scene.hereU) > 0.002 && (
             <g opacity={s.get(scene.hereU)} transform={`translate(${FOUND.x - 150} ${FOUND.y + 28})`}>
               <rect width={128} height={28} rx={14} fill="#082f49" stroke={ROLE.OBSERVE} />
-              <text x={64} y={18.5} textAnchor="middle" fill={ROLE.OBSERVE} fontSize={11.5} fontFamily={MONO}>
+              <text x={64} y={18.5} textAnchor="middle" fill={ROLE.OBSERVE} fontSize={12} fontFamily={MONO}>
                 we start here ▶
               </text>
             </g>

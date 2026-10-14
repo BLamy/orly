@@ -49,9 +49,10 @@ const READS = Array.from({ length: N_READS }, (_, i) => ({
   toReplica: Math.floor(rand() * 2),
 }));
 
-const CAM_DB: CameraState = { x: 950, y: 330, k: 1.25 };
-const CAM_CACHE: CameraState = { x: 680, y: 300, k: 1.3 };
-const CAM_WEB: CameraState = { x: 420, y: 360, k: 1.25 };
+// Each push keeps its subject inside the stage and above the caption band (y < 630).
+const CAM_DB: CameraState = { x: 700, y: 340, k: 1.2 };
+const CAM_CACHE: CameraState = { x: 690, y: 340, k: 1.2 };
+const CAM_WEB: CameraState = { x: 560, y: 360, k: 1.1 };
 
 export interface Scene {
   tl: Timeline;
@@ -66,6 +67,7 @@ export interface Scene {
   splitU: ChannelRef<number>;
   calmU: ChannelRef<number>;
   closeU: ChannelRef<number>;
+  tuneU: ChannelRef<number>;
 }
 
 export function buildScene(): Scene {
@@ -81,6 +83,7 @@ export function buildScene(): Scene {
   const splitU = tl.channel('splitU', 0); // read/write split labels
   const calmU = tl.channel('calmU', 0); // master health recovers
   const closeU = tl.channel('closeU', 0);
+  const tuneU = tl.channel('tuneU', 0); // "tune the DB first" note, beat 3 only
 
   // — Beat 1 · the ratio —
   tl.caption({
@@ -108,6 +111,8 @@ export function buildScene(): Scene {
     dur: 5.5,
     text: 'Discipline first: before buying anything, tune the database and its own internal cache. Sometimes that alone relieves the bottleneck. Here, it is not enough.',
   });
+  tl.tween(tuneU, 1, { at: 15.6, dur: 0.8, ease: ease.enter });
+  tl.tween(tuneU, 0, { at: 19.8, dur: 0.8, ease: ease.move });
   tl.hold(20.5, 0.5);
 
   // — Beat 4 · the memory cache —
@@ -162,7 +167,7 @@ export function buildScene(): Scene {
   tl.tween(closeU, 1, { at: 51.3, dur: 1.4, ease: ease.move });
   tl.hold(57.5, 1.5);
 
-  return { tl, cam, rigU, floodU, hpU, cacheU, absorbU, sessU, replU, splitU, calmU, closeU };
+  return { tl, cam, rigU, floodU, hpU, cacheU, absorbU, sessU, replU, splitU, calmU, closeU, tuneU };
 }
 
 const scene = buildScene();
@@ -177,11 +182,11 @@ function Node({ x, y, w = 150, h = 56, title, sub, stroke = colors.GRID, opacity
   return (
     <g opacity={opacity}>
       <rect x={x - w / 2} y={y - h / 2} width={w} height={h} rx={10} fill={colors.PANEL} stroke={stroke} strokeWidth={1.3} />
-      <text x={x} y={y - 1} textAnchor="middle" fill={colors.TEXT} fontSize={12}>
+      <text x={x} y={y - 1} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
         {title}
       </text>
       {sub && (
-        <text x={x} y={y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={9} fontFamily="ui-monospace, monospace">
+        <text x={x} y={y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
           {sub}
         </text>
       )}
@@ -201,8 +206,9 @@ export function Render({ s }: { s: SceneState }) {
   const splitU = s.get(scene.splitU);
   const calmU = s.get(scene.calmU);
   const closeU = s.get(scene.closeU);
+  const tuneU = s.get(scene.tuneU);
 
-  const dimAll = 1 - closeU * 0.88;
+  const dimAll = 1 - closeU * 0.92;
   const health = clamp01(1 - hpU * 0.8 + calmU * 0.75);
 
   return (
@@ -212,17 +218,17 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- web fleet ---- */}
         {WEB.map((w, i) => (
           <g key={i} opacity={rigU * dimAll}>
-            <Node x={w.x} y={w.y} w={170} h={70} title={sessU > 0.9 ? 'Web Server · stateless' : 'Web Server'} sub={sessU > 0.9 ? 'identical, disposable' : 'holds sessions'} stroke={sessU > 0.9 ? colors.POSITIVE : colors.TEXT} />
-            {/* session chip inside until it flies out */}
+            <Node x={w.x} y={w.y} w={200} h={96} title={sessU > 0.9 ? 'Web Server · stateless' : 'Web Server'} sub={sessU > 0.9 ? 'identical, disposable' : 'holds sessions'} stroke={sessU > 0.9 ? colors.POSITIVE : colors.TEXT} />
+            {/* session chip inside (bottom strip) until it flies out to the cache */}
             {(() => {
               const u = clamp01(sessU * 2 - i * 0.4);
               if (u >= 1) return null;
-              const x = lerp(w.x + 55, CACHE.x - 40, u);
-              const y = lerp(w.y - 18, CACHE.y + 20, u) - Math.sin(u * Math.PI) * 30;
+              const x = lerp(w.x, CACHE.x - 40, u);
+              const y = lerp(w.y + 32, CACHE.y + 20, u) - Math.sin(u * Math.PI) * 30;
               return (
                 <g opacity={dimAll}>
-                  <rect x={x - 30} y={y - 10} width={60} height={20} rx={5} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.1} />
-                  <text x={x} y={y + 4} textAnchor="middle" fill={colors.SECONDARY} fontSize={8.5} fontFamily="ui-monospace, monospace">
+                  <rect x={x - 38} y={y - 11} width={76} height={22} rx={5} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.1} />
+                  <text x={x} y={y + 4} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily="ui-monospace, monospace">
                     session
                   </text>
                 </g>
@@ -230,6 +236,14 @@ export function Render({ s }: { s: SceneState }) {
             })()}
           </g>
         ))}
+
+        {/* ---- beat 3: the DB-side tuning note, shown while the master stays red ---- */}
+        <g opacity={tuneU * dimAll}>
+          <rect x={MASTER.x - 130} y={MASTER.y + 84} width={260} height={24} rx={6} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.1} strokeDasharray="4 4" />
+          <text x={MASTER.x} y={MASTER.y + 100} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="ui-monospace, monospace">
+            tune the DB first: still saturated
+          </text>
+        </g>
 
         {/* ---- the memory cache ---- */}
         <g opacity={cacheU * dimAll}>
@@ -251,10 +265,10 @@ export function Render({ s }: { s: SceneState }) {
         ))}
         {splitU > 0.05 && (
           <g opacity={splitU * dimAll}>
-            <text x={MASTER.x} y={MASTER.y - 74} textAnchor="middle" fill={colors.ACCENT} fontSize={11} fontFamily="ui-monospace, monospace">
+            <text x={MASTER.x} y={MASTER.y - 74} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily="ui-monospace, monospace">
               writes → master
             </text>
-            <text x={(REPLICAS[0].x + REPLICAS[1].x) / 2} y={REPLICAS[0].y + 48} textAnchor="middle" fill={colors.WARM} fontSize={11} fontFamily="ui-monospace, monospace">
+            <text x={(REPLICAS[0].x + REPLICAS[1].x) / 2} y={REPLICAS[0].y + 48} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="ui-monospace, monospace">
               reads → replicas
             </text>
           </g>
@@ -279,7 +293,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* the thin write line, always calm */}
         <g opacity={rigU * dimAll * 0.9}>
           <line x1={WEB[1].x + 85} y1={WEB[1].y + 22} x2={MASTER.x - 90} y2={MASTER.y + 22} stroke={colors.POSITIVE} strokeWidth={1.4} strokeDasharray="4 8" />
-          <text x={640} y={430} textAnchor="middle" fill={colors.POSITIVE} fontSize={10} fontFamily="ui-monospace, monospace" opacity={0.8}>
+          <text x={640} y={430} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily="ui-monospace, monospace" opacity={0.8}>
             1 write per 100 reads
           </text>
         </g>

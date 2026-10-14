@@ -15,10 +15,10 @@ const BASE_ITEMS = ['CODEOWNERS', '.claude/agents/**', '.codex/agents/**', '.ope
 
 const LANE_X = 140;
 const LANE_W = 1000;
-const BASE_Y = 130;
-const BASE_H = 170;
-const BOUNDARY_Y = 340;
-const HEAD_Y = 400;
+const BASE_Y = 110;
+const BASE_H = 160;
+const BOUNDARY_Y = 320;
+const HEAD_Y = 350;
 const HEAD_H = 150;
 
 export function buildScene() {
@@ -37,22 +37,22 @@ export function buildScene() {
   let t = 0.5;
   t = tl.caption({ at: t, dur: 5.6, text: "This is the security critical asymmetry of the whole design: two clocks, one boundary between them." });
   tl.tween(laneU, 1, { at: 0.7, dur: 1.4, ease: ease.enter });
-  tl.tween(cam, { x: 640, y: 260, k: 1.0 }, { at: 0.9, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 300, k: 1.0 }, { at: 0.9, dur: 1.3, ease: ease.move });
   t = tl.hold(t, 0);
 
   t = tl.caption({ at: t, dur: 6.6, text: 'The ownership file, and every agent definition in every harness, are read from the base branch — the state of the repository before this pull request.' });
   tl.tween(baseItemsU, 1, { at: t - 5.8, dur: 1.8, ease: ease.enter });
-  tl.tween(cam, { x: 640, y: BASE_Y + BASE_H / 2, k: 1.15 }, { at: t - 5.6, dur: 1.4, ease: ease.move });
+  tl.tween(cam, { x: 640, y: BASE_Y + BASE_H / 2, k: 1.1 }, { at: t - 5.6, dur: 1.4, ease: ease.move });
   t = tl.hold(t, 0);
 
   t = tl.caption({ at: t, dur: 5.8, text: "Only the code and the diff being reviewed are read from the pull request's own head — the commit actually under review." });
   tl.tween(headU, 1, { at: t - 5.0, dur: 1.4, ease: ease.enter });
-  tl.tween(cam, { x: 640, y: 360, k: 1.0 }, { at: t - 4.8, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 400, k: 1.0 }, { at: t - 4.8, dur: 1.3, ease: ease.move });
   t = tl.hold(t, 0);
 
   t = tl.caption({ at: t, dur: 7.0, text: 'Say a pull request edits its own reviewer, telling the database review agent to always approve every migration from now on.' });
   tl.tween(editU, 1, { at: t - 6.2, dur: 1.4, ease: ease.enter });
-  tl.tween(cam, { x: 640, y: HEAD_Y + HEAD_H / 2, k: 1.2 }, { at: t - 6.0, dur: 1.4, ease: ease.move });
+  tl.tween(cam, { x: 640, y: HEAD_Y + HEAD_H / 2, k: 1.1 }, { at: t - 6.0, dur: 1.4, ease: ease.move });
   t = tl.hold(t, 0);
 
   t = tl.caption({ at: t, dur: 6.8, text: 'It tries to reach up into the very check that is reviewing it — but that check already loaded its configuration from the base, before this diff existed.' });
@@ -63,13 +63,13 @@ export function buildScene() {
 
   t = tl.caption({ at: t, dur: 7.0, text: 'The edit has no effect here. It only takes effect on a future pull request, after it has itself been reviewed and merged through the normal process.' });
   tl.tween(futureU, 1, { at: t - 6.2, dur: 1.8, ease: ease.enter });
-  tl.tween(cam, { x: 900, y: 300, k: 1.0 }, { at: t - 6.0, dur: 1.5, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 370, k: 1.0 }, { at: t - 6.0, dur: 1.5, ease: ease.move });
   tl.tween(editU, 0.25, { at: t - 6.0, dur: 1.0, ease: ease.move });
   t = tl.hold(t, 0);
 
   t = tl.caption({ at: t, dur: 6.4, text: "This isn't a new rule. The platform already resolves pull request ownership from the base branch's ownership file — the design just mirrors that." });
   tl.tween(mirrorU, 1, { at: t - 5.6, dur: 1.4, ease: ease.enter });
-  tl.tween(cam, { x: 640, y: 260, k: 0.95 }, { at: t - 5.4, dur: 1.4, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 340, k: 0.95 }, { at: t - 5.4, dur: 1.4, ease: ease.move });
   t = tl.hold(t, 0);
 
   t = tl.caption({ at: t, dur: 6.2, text: 'Configuration comes from the base. Code comes from the head. That one line is what keeps a reviewer trustworthy.' });
@@ -114,7 +114,7 @@ export function Render({ s }: { s: SceneState }) {
 
         <path d={`M ${LANE_X} ${BOUNDARY_Y} L ${LANE_X + LANE_W} ${BOUNDARY_Y}`} stroke={colors.WARM} strokeWidth={2}
           strokeDasharray="10 6" opacity={0.7} />
-        <text x={LANE_X + LANE_W - 10} y={BOUNDARY_Y - 8} textAnchor="end" fill={colors.WARM} fontSize={11} fontFamily={mono}>trust boundary</text>
+        <text x={LANE_X + LANE_W - 10} y={BOUNDARY_Y - 8} textAnchor="end" fill={colors.WARM} fontSize={12} fontFamily={mono}>trust boundary</text>
 
         <rect x={LANE_X} y={HEAD_Y} width={LANE_W} height={HEAD_H} rx={18} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2} />
         <text x={LANE_X + 24} y={HEAD_Y + 30} fill={colors.ACCENT} fontSize={15} fontWeight={750} fontFamily={mono}>head SHA · code under review</text>
@@ -127,18 +127,18 @@ export function Render({ s }: { s: SceneState }) {
           return <g key={item} opacity={u} transform={`translate(${LANE_X + 30 + i * 240} ${BASE_Y + 70})`}>
             <rect width={220} height={62} rx={12} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.4} opacity={0.9} />
             <text x={110} y={28} textAnchor="middle" fill={colors.TEXT} fontSize={12.5} fontFamily={mono}>{item}</text>
-            <text x={110} y={48} textAnchor="middle" fill={colors.POSITIVE} fontSize={10} fontFamily={mono}>locked · pre-diff</text>
+            <text x={110} y={48} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={mono}>locked · pre-diff</text>
           </g>;
         })}
       </g>
 
       {/* head diff */}
       <g opacity={headU * dim}>
-        <text x={LANE_X + 24} y={HEAD_Y + 60} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>src/components/EventStatus.tsx · migration.sql · …</text>
+        <text x={LANE_X + 24} y={HEAD_Y + 60} fill={colors.MUTED} fontSize={12} fontFamily={mono}>src/components/EventStatus.tsx · migration.sql · …</text>
         <g opacity={editU}>
           <rect x={LANE_X + 24} y={HEAD_Y + 78} width={620} height={54} rx={10} fill={colors.NEGATIVE} fillOpacity={0.1} stroke={colors.NEGATIVE} strokeWidth={1.6} />
-          <text x={LANE_X + 40} y={HEAD_Y + 100} fill={colors.NEGATIVE} fontSize={12} fontFamily={mono}>.claude/agents/db-review.md · edited in this diff</text>
-          <text x={LANE_X + 40} y={HEAD_Y + 120} fill={colors.NEGATIVE} fontSize={11} fontFamily={mono}>"always approve every migration"</text>
+          <text x={LANE_X + 40} y={HEAD_Y + 100} fill={colors.NEGATIVE} fontSize={13} fontFamily={mono}>.claude/agents/db-review.md · edited in this diff</text>
+          <text x={LANE_X + 40} y={HEAD_Y + 120} fill={colors.NEGATIVE} fontSize={12} fontFamily={mono}>"always approve every migration"</text>
         </g>
       </g>
 
@@ -152,12 +152,12 @@ export function Render({ s }: { s: SceneState }) {
       </g>}
 
       {/* future PR ghost card */}
-      {futureU > 0 && <g opacity={futureU * dim} transform={`translate(${840 - 840} 0)`}>
-        <g transform="translate(80 500)" opacity={futureU}>
-          <rect width={1040} height={90} rx={16} fill={colors.PANEL} stroke={colors.MUTED} strokeWidth={1.4} strokeDasharray="6 5" />
-          <text x={24} y={30} fill={colors.MUTED} fontSize={12} fontFamily={mono}>a later pull request, after this edit merges</text>
-          <text x={24} y={56} fill={colors.POSITIVE} fontSize={13} fontFamily={mono}>its own base SHA now includes the edited db-review.md</text>
-          <text x={24} y={76} fill={colors.MUTED} fontSize={10.5} fontFamily={mono}>only then does the new instruction take effect</text>
+      {futureU > 0 && <g opacity={futureU * dim}>
+        <g transform="translate(140 520)" opacity={futureU}>
+          <rect width={1000} height={84} rx={16} fill={colors.PANEL} stroke={colors.MUTED} strokeWidth={1.4} strokeDasharray="6 5" />
+          <text x={24} y={28} fill={colors.MUTED} fontSize={12} fontFamily={mono}>a later pull request, after this edit merges</text>
+          <text x={24} y={52} fill={colors.POSITIVE} fontSize={13} fontFamily={mono}>its own base SHA now includes the edited db-review.md</text>
+          <text x={24} y={72} fill={colors.MUTED} fontSize={12} fontFamily={mono}>only then does the new instruction take effect</text>
         </g>
       </g>}
 

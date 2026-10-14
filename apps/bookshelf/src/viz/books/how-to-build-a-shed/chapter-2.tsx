@@ -81,10 +81,18 @@ const planPt = (u: number, v: number, squareU: number): { x: number; y: number }
   y: PLAN.y0 + v * PLAN.h,
 });
 
-const CAM_WIDE: CameraState = { x: 560, y: 400, k: 1.14 };
+const CAM_WIDE: CameraState = { x: 560, y: 400, k: 1.3 };
 const CAM_UPHILL: CameraState = { x: 330, y: 450, k: 1.7 };
 const CAM_DOWNHILL: CameraState = { x: 760, y: 460, k: 1.7 };
-const CAM_PLAN: CameraState = { x: 950, y: 300, k: 1.3 };
+const CAM_PLAN: CameraState = { x: 1015, y: 280, k: 1.3 }; // centres the plan inset
+
+// how much of a label's world point sits inside the stage, clear of the caption
+// band: 1 when comfortably inside, 0 when off-stage (so it fades rather than clips)
+const inFrame = (cam: CameraState, wx: number, wy: number): number => {
+  const sx = (wx - cam.x) * cam.k + STAGE_W / 2;
+  const sy = (wy - cam.y) * cam.k + STAGE_H / 2;
+  return clamp01(Math.min(sx - 30, STAGE_W - 30 - sx, sy - 30, 600 - sy) / 40);
+};
 
 export interface Scene {
   tl: Timeline;
@@ -158,6 +166,7 @@ export function buildScene(): Scene {
     text: 'The fix is a handful of solid, level contact points: one under each corner, and one at the midpoint of every wall. Masonry, not soil, decides where this shed stands.',
   });
   tl.tween(cam, CAM_PLAN, { at: 13.9, dur: 1.5, ease: ease.move });
+  tl.tween(dimAll, 0, { at: 13.9, dur: 1.0, ease: ease.move });
   tl.tween(planU, 1, { at: 14.3, dur: 1.0, ease: ease.draw });
   tl.tween(dotsU, 1, { at: 15.5, dur: 2.2, ease: ease.move });
   tl.hold(20.3, 0.5);
@@ -169,7 +178,8 @@ export function buildScene(): Scene {
     text: 'On the uphill half, chunky twelve-by-eight garden blocks sit just below the sod — each one leveled, and tamped onto firm, compacted ground. It is backbreaking work, and worth every minute.',
   });
   tl.tween(cam, CAM_UPHILL, { at: 21.0, dur: 1.6, ease: ease.move });
-  tl.tween(planDim, 0.08, { at: 21.0, dur: 1.2, ease: ease.move });
+  tl.tween(planDim, 0, { at: 21.0, dur: 1.2, ease: ease.move });
+  tl.tween(dimAll, 1, { at: 21.0, dur: 1.2, ease: ease.move });
   tl.tween(blockU, 1, { at: 22.0, dur: 1.2, ease: ease.move });
   tl.tween(midU, 1, { at: 24.4, dur: 1.2, ease: ease.move });
   tl.hold(27.6, 0.5);
@@ -192,6 +202,7 @@ export function buildScene(): Scene {
     text: 'Piers have to land exactly where the floor frame will. So a temporary frame — a throwaway rectangle built to the exact footprint — is set over the layout to mark every spot.',
   });
   tl.tween(cam, CAM_PLAN, { at: 35.6, dur: 1.6, ease: ease.move });
+  tl.tween(dimAll, 0, { at: 35.8, dur: 1.0, ease: ease.move });
   tl.tween(planDim, 1, { at: 35.8, dur: 1.0, ease: ease.move });
   tl.tween(ghostU, 1, { at: 36.6, dur: 1.4, ease: ease.draw });
   tl.hold(41.6, 0.4);
@@ -213,6 +224,8 @@ export function buildScene(): Scene {
     text: 'Support by support, every top rises to meet one line. A bead of landscaping adhesive will lock the frame to the masonry — and the slope has been argued flat.',
   });
   tl.tween(cam, CAM_WIDE, { at: 49.3, dur: 1.7, ease: ease.move });
+  tl.tween(planDim, 0, { at: 49.3, dur: 1.0, ease: ease.move });
+  tl.tween(dimAll, 1, { at: 49.3, dur: 1.2, ease: ease.move });
   tl.tween(meetU, 1, { at: 50.5, dur: 1.6, ease: ease.draw });
   tl.tween(glueU, 1, { at: 52.6, dur: 0.8, ease: ease.enter });
   tl.tween(wedgeU, 0.25, { at: 50.5, dur: 1.4, ease: ease.move });
@@ -258,9 +271,10 @@ const scene = buildScene();
 // Render
 // ---------------------------------------------------------------------------
 
-function GardenBlock({ x, top, u, label }: { x: number; top: number; u: number; label?: string }) {
+function GardenBlock({ cam, x, top, u, label }: { cam: CameraState; x: number; top: number; u: number; label?: string }) {
   if (u <= 0) return null;
   const drop = (1 - u) * 46;
+  const labelOp = label ? inFrame(cam, x, top - drop - 8) : 0;
   return (
     <g opacity={u}>
       <rect
@@ -281,8 +295,8 @@ function GardenBlock({ x, top, u, label }: { x: number; top: number; u: number; 
         strokeWidth={1.2}
         opacity={0.5}
       />
-      {label && (
-        <text x={x} y={top - drop - 8} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+      {labelOp > 0.05 && (
+        <text x={x} y={top - drop - 8} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={labelOp}>
           {label}
         </text>
       )}
@@ -334,6 +348,7 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* ---- cross-section ---- */}
+        {dimAll > 0.02 && (
         <g opacity={dimAll}>
           <g opacity={terrainU}>
             <path d={soil} fill="#233042" opacity={0.55} />
@@ -345,7 +360,7 @@ export function Render({ s }: { s: SceneState }) {
             <polygon points={wedge} fill={colors.NEGATIVE} opacity={0.13 * wedgeU} />
           )}
 
-          {/* the level line */}
+          {/* the level line — label sits mid-span, clear of the glue label and in view on every push */}
           {levelU > 0 && (
             <g>
               <line
@@ -360,9 +375,11 @@ export function Render({ s }: { s: SceneState }) {
                 strokeDashoffset={0}
                 opacity={levelU * 0.9}
               />
-              <text x={EX(8.75)} y={LEVEL_Y - 10} fill={colors.ACCENT} fontSize={13} opacity={levelU}>
-                level
-              </text>
+              {levelU * inFrame(cam, EX(5.4), LEVEL_Y - 10) > 0.05 && (
+                <text x={EX(5.4)} y={LEVEL_Y - 10} fill={colors.ACCENT} fontSize={14} opacity={levelU * inFrame(cam, EX(5.4), LEVEL_Y - 10)}>
+                  level
+                </text>
+              )}
             </g>
           )}
 
@@ -370,17 +387,26 @@ export function Render({ s }: { s: SceneState }) {
           {dropU > 0 && (
             <g opacity={dropU}>
               <line x1={EX(8.5)} y1={LEVEL_Y + BLOCK_H} x2={EX(8.5)} y2={groundY(8.5)} stroke={colors.NEGATIVE} strokeWidth={2} />
-              <text x={EX(8.5) + 10} y={(LEVEL_Y + BLOCK_H + groundY(8.5)) / 2 + 4} fill={colors.NEGATIVE} fontSize={14} fontWeight={600}>
-                ~12 in
-              </text>
+              {inFrame(cam, EX(8.5) + 10, (LEVEL_Y + BLOCK_H + groundY(8.5)) / 2) > 0.05 && (
+                <text
+                  x={EX(8.5) + 10}
+                  y={(LEVEL_Y + BLOCK_H + groundY(8.5)) / 2 + 4}
+                  fill={colors.NEGATIVE}
+                  fontSize={14}
+                  fontWeight={600}
+                  opacity={inFrame(cam, EX(8.5) + 10, (LEVEL_Y + BLOCK_H + groundY(8.5)) / 2)}
+                >
+                  ~12 in
+                </text>
+              )}
             </g>
           )}
 
           {/* uphill: corner garden block, buried just below the sod */}
-          <GardenBlock x={SUPPORTS.corner0.x} top={LEVEL_Y} u={blockU} label="garden block · 12×8" />
+          <GardenBlock cam={cam} x={SUPPORTS.corner0.x} top={LEVEL_Y} u={blockU} label="garden block · 12×8" />
           {/* midpoint: stacked blocks partway down the slope */}
-          <GardenBlock x={SUPPORTS.mid.x} top={LEVEL_Y} u={midU} />
-          <GardenBlock x={SUPPORTS.mid.x} top={LEVEL_Y + BLOCK_H} u={clamp01(midU * 1.4 - 0.2)} />
+          <GardenBlock cam={cam} x={SUPPORTS.mid.x} top={LEVEL_Y} u={midU} />
+          <GardenBlock cam={cam} x={SUPPORTS.mid.x} top={LEVEL_Y + BLOCK_H} u={clamp01(midU * 1.4 - 0.2)} />
 
           {/* downhill: pier block + bolted riser */}
           {pierU > 0 && (
@@ -401,10 +427,11 @@ export function Render({ s }: { s: SceneState }) {
                 opacity={0.8}
                 stroke={colors.GRID}
               />
-              <text x={SUPPORTS.corner8.x + 44} y={PIER_TOP - 12} fill={colors.WARM} fontSize={11.5}>
+              {/* riser label sits mid-riser so it clears the ~12 in drop label below it */}
+              <text x={SUPPORTS.corner8.x + 44} y={LEVEL_Y + riserH * 0.35} fill={colors.WARM} fontSize={14}>
                 riser — 4x6 PT
               </text>
-              <text x={SUPPORTS.corner8.x - 44} y={PIER_TOP + 34} textAnchor="end" fill={colors.MUTED} fontSize={11.5}>
+              <text x={SUPPORTS.corner8.x - 44} y={PIER_TOP + 34} textAnchor="end" fill={colors.MUTED} fontSize={13}>
                 pier block
               </text>
             </g>
@@ -413,7 +440,7 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={boltU}>
               <circle cx={SUPPORTS.corner8.x} cy={PIER_TOP - 10} r={3.5} fill={colors.ACCENT} />
               <circle cx={SUPPORTS.corner8.x} cy={PIER_TOP - 26} r={3.5} fill={colors.ACCENT} />
-              <text x={SUPPORTS.corner8.x - 26} y={PIER_TOP - 16} textAnchor="end" fill={colors.ACCENT} fontSize={11.5}>
+              <text x={SUPPORTS.corner8.x - 26} y={PIER_TOP - 16} textAnchor="end" fill={colors.ACCENT} fontSize={13}>
                 bolted
               </text>
             </g>
@@ -433,17 +460,19 @@ export function Render({ s }: { s: SceneState }) {
               {[SUPPORTS.corner0.x, SUPPORTS.mid.x].map((x, i) => (
                 <ellipse key={i} cx={x} cy={LEVEL_Y - 3} rx={16} ry={4} fill={colors.SECONDARY} opacity={0.8} />
               ))}
-              <text x={SUPPORTS.mid.x} y={LEVEL_Y - 16} textAnchor="middle" fill={colors.SECONDARY} fontSize={11.5}>
+              <text x={SUPPORTS.mid.x} y={LEVEL_Y - 16} textAnchor="middle" fill={colors.SECONDARY} fontSize={13}>
                 landscaping adhesive
               </text>
             </g>
           )}
         </g>
+        )}
 
         {/* ---- plan-view inset ---- */}
-        <g opacity={planU * planDim * dimAll}>
+        {planU * planDim > 0.02 && (
+        <g opacity={planU * planDim}>
           <rect x={PLAN.x0 - 40} y={PLAN.y0 - 60} width={PLAN.w + 80} height={PLAN.h + 110} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={PLAN.x0 + PLAN.w / 2} y={PLAN.y0 - 34} textAnchor="middle" fill={colors.TEXT} fontSize={13.5}>
+          <text x={PLAN.x0 + PLAN.w / 2} y={PLAN.y0 - 34} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
             footprint, from above — 8 × 8 ft
           </text>
 
@@ -487,6 +516,7 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           )}
         </g>
+        )}
 
         {/* ---- closing panel ---- */}
         {closeU > 0 && (

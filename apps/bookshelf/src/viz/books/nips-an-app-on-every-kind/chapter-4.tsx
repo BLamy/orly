@@ -57,7 +57,9 @@ const COLONIES: Colony[] = [
 ];
 
 const CAM_WIDE: CameraState = { x: 640, y: 300, k: 1.0 };
-const CAM_GIT: CameraState = { x: 290, y: 300, k: 1.35 };
+// Pushed in just far enough to read the forge's kinds, but wide enough that the
+// live-stream card stays on stage while the camera rests on the forge.
+const CAM_GIT: CameraState = { x: 560, y: 300, k: 1.2 };
 
 export function buildScene() {
   const tl = new Timeline();
@@ -159,6 +161,8 @@ export function Render({ s }: { s: SceneState }) {
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
+      {/* once the closing panel is fully opaque the scene beneath is unmounted, not just faded */}
+      {closeU < 1 && (
       <g opacity={mainOp}>
         <Camera {...cam}>
           {COLONIES.map((col, ci) => {
@@ -188,14 +192,14 @@ export function Render({ s }: { s: SceneState }) {
                         <text x={x - 46} y={y - 4} fill={col.color} fontSize={14} fontWeight={700} fontFamily="monospace">
                           {kd.k}
                         </text>
-                        <text x={x - 46} y={y + 15} fill={colors.TEXT} fontSize={12}>
+                        <text x={x - 46} y={y + 15} fill={colors.TEXT} fontSize={14}>
                           {kd.label}
                         </text>
-                        {/* a reaction landing on one kind per colony */}
+                        {/* a reaction landing on one kind per colony, badged on the box corner */}
                         {reactU > 0 && ki === (ci === 0 ? 2 : ci === 1 ? 2 : 1) && (
                           <g opacity={clamp01(reactU * 3 - ci)}>
-                            <circle cx={x + 52} cy={y - 20} r={13} fill={colors.WARM} opacity={0.9} />
-                            <text x={x + 52} y={y - 15} textAnchor="middle" fill={colors.BG} fontSize={13} fontWeight={700}>
+                            <circle cx={x + 60} cy={y - 24} r={14} fill={colors.WARM} opacity={0.95} />
+                            <text x={x + 60} y={y - 18} textAnchor="middle" fill={colors.BG} fontSize={18} fontWeight={700}>
                               +
                             </text>
                           </g>
@@ -214,6 +218,7 @@ export function Render({ s }: { s: SceneState }) {
           )}
         </Camera>
       </g>
+      )}
 
       {closeU > 0 && (
         <g opacity={closeU}>
@@ -224,7 +229,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={350} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             forge, calendar, live stream — interoperable because they never split
           </text>
-          <text x={640} y={388} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={388} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             NIP-34 git · NIP-52 calendar · NIP-53 live
           </text>
         </g>

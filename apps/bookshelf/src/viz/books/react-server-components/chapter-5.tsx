@@ -63,10 +63,10 @@ const CLIENTFN_ERR = [
 
 // camera marks
 const CAM_OPEN: CameraState = { x: 640, y: 340, k: 1.05 };
-const CAM_SERVER: CameraState = { x: 330, y: 300, k: 1.32 };
+const CAM_SERVER: CameraState = { x: 240, y: 300, k: 1.32 };
 const CAM_CLIENT: CameraState = { x: 960, y: 300, k: 1.3 };
-const CAM_GATE: CameraState = { x: 640, y: 320, k: 1.35 };
-const CAM_FORM: CameraState = { x: 900, y: 400, k: 1.28 };
+const CAM_GATE: CameraState = { x: 640, y: 330, k: 1.12 };
+const CAM_FORM: CameraState = { x: 680, y: 360, k: 1.0 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 // the recap: the book's four machines
@@ -316,10 +316,10 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={stageU}>
             <line x1={SERVER.x + SERVER.w} y1={WIRE_Y} x2={CLIENT.x} y2={WIRE_Y} stroke={colors.GRID} strokeWidth={2} strokeDasharray="3 6" />
             {/* the direction arrow that flips */}
-            <g transform={`translate(${GATE_X},${WIRE_Y - 44}) scale(${1 - 2 * flipU},1)`}>
+            <g transform={`translate(${GATE_X},${WIRE_Y - 66}) scale(${1 - 2 * flipU},1)`}>
               <path d="M -50 0 h 88 l -14 -9 v 18 l 14 -9" fill={flipU > 0.5 ? colors.WARM : colors.MUTED} opacity={0.9} />
             </g>
-            <text x={GATE_X} y={WIRE_Y - 60} textAnchor="middle" fill={flipU > 0.5 ? colors.WARM : colors.MUTED} fontSize={11}>
+            <text x={GATE_X} y={WIRE_Y - 84} textAnchor="middle" fill={flipU > 0.5 ? colors.WARM : colors.MUTED} fontSize={12}>
               {flipU > 0.5 ? 'now: client → server' : 'so far: server → client'}
             </text>
           </g>
@@ -330,7 +330,7 @@ export function Render({ s }: { s: SceneState }) {
               'use server'
             </text>
             {['export async function increment(n) {', '  return n + 1', '}'].map((l, i) => (
-              <text key={i} x={ACTIONS.x + 20} y={ACTIONS.y + 52 + i * 18} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+              <text key={i} x={ACTIONS.x + 20} y={ACTIONS.y + 52 + i * 18} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 {l}
               </text>
             ))}
@@ -349,7 +349,7 @@ export function Render({ s }: { s: SceneState }) {
             )}
           </Card>
           {actU > 0.5 && (
-            <text x={ACTIONS.x + 4} y={ACTIONS.y + ACTIONS.h + 18} fill={colors.MUTED} fontSize={9.5} fontFamily={MONO} opacity={stampU * (1 - 0.7 * dimU)}>
+            <text x={ACTIONS.x + 4} y={ACTIONS.y + ACTIONS.h + 18} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO} opacity={stampU * (1 - 0.7 * dimU)}>
               registerServerReference — ReactFlightWebpackNodeRegister.js
             </text>
           )}
@@ -380,7 +380,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* the stub */}
           <Card x={STUB.x} y={STUB.y} w={STUB.w} h={STUB.h} u={stubU} stroke={colors.ACCENT} title="increment — a stub" titleColor={colors.TEXT}>
             {['callServer(', '  "./src/actions.js#increment",', '  [42])'].map((l, i) => (
-              <text key={i} x={STUB.x + 20} y={STUB.y + 48 + i * 17} fill={colors.ACCENT} fontSize={11} fontFamily={MONO}>
+              <text key={i} x={STUB.x + 20} y={STUB.y + 48 + i * 17} fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>
                 {l}
               </text>
             ))}
@@ -389,12 +389,12 @@ export function Render({ s }: { s: SceneState }) {
           {/* the reverse gate on the wire */}
           {gateU > 0.02 && (
             <g opacity={gateU}>
-              <rect x={GATE_X - 26} y={WIRE_Y - 96} width={12} height={112} rx={4} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.3} />
-              <rect x={GATE_X + 14} y={WIRE_Y - 96} width={12} height={112} rx={4} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.3} />
-              <text x={GATE_X} y={WIRE_Y - 106} textAnchor="middle" fill={colors.WARM} fontSize={10}>
+              <rect x={GATE_X - 26} y={WIRE_Y - 46} width={12} height={92} rx={4} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.3} />
+              <rect x={GATE_X + 14} y={WIRE_Y - 46} width={12} height={92} rx={4} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.3} />
+              <text x={GATE_X} y={WIRE_Y + 64} textAnchor="middle" fill={colors.WARM} fontSize={11}>
                 the same gate, reversed
               </text>
-              <text x={GATE_X} y={WIRE_Y + 34} textAnchor="middle" fill={colors.MUTED} fontSize={9} fontFamily={MONO}>
+              <text x={GATE_X} y={WIRE_Y + 82} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={MONO}>
                 processReply → decodeReply
               </text>
             </g>
@@ -453,21 +453,21 @@ export function Render({ s }: { s: SceneState }) {
               return <circle key={i} cx={lerp(SERVER.x + SERVER.w, CLIENT.x, u)} cy={WIRE_Y + 12 + ((i % 3) - 1) * 8} r={3} fill={colors.WARM} opacity={0.95} />;
             })}
           {backU > 0.2 && backU < 1 && (
-            <text x={GATE_X} y={WIRE_Y + 56} textAnchor="middle" fill={colors.WARM} fontSize={10.5} opacity={0.9}>
+            <text x={GATE_X} y={WIRE_Y + 118} textAnchor="middle" fill={colors.WARM} fontSize={11} opacity={0.9}>
               another Flight tape — the return value rides home
             </text>
           )}
 
           {/* the no-scripting form */}
           <Card x={FORM.x} y={FORM.y} w={FORM.w} h={FORM.h} u={formU} stroke={colors.TEAL ?? colors.POSITIVE} title="the same button, scripting off" titleColor={colors.TEXT}>
-            <text x={FORM.x + 20} y={FORM.y + 46} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+            <text x={FORM.x + 20} y={FORM.y + 46} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               {'<form> POST — hidden field name:'}
             </text>
             <rect x={FORM.x + 16} y={FORM.y + 56} width={FORM.w - 32} height={22} rx={6} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.2} />
-            <text x={FORM.x + 26} y={FORM.y + 71} fill={colors.POSITIVE} fontSize={9.5} fontFamily={MONO}>
+            <text x={FORM.x + 26} y={FORM.y + 71} fill={colors.POSITIVE} fontSize={11} fontFamily={MONO}>
               $ACTION_ID_./src/actions.js#increment
             </text>
-            <text x={FORM.x + 20} y={FORM.y + 98} fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>
+            <text x={FORM.x + 20} y={FORM.y + 98} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
               decodeAction — ReactFlightActionServer.js
             </text>
           </Card>
@@ -476,9 +476,12 @@ export function Render({ s }: { s: SceneState }) {
         {/* recap */}
         {recapU > 0.02 && (
           <g>
-            <text x={640} y={150} textAnchor="middle" fill={colors.TEXT} fontSize={23} fontWeight={700} opacity={recapU}>
-              One program. Two computers. One contract.
-            </text>
+            <g opacity={recapU}>
+              <rect x={300} y={116} width={680} height={56} rx={10} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.2} />
+              <text x={640} y={151} textAnchor="middle" fill={colors.TEXT} fontSize={23} fontWeight={700}>
+                One program. Two computers. One contract.
+              </text>
+            </g>
             {RECAP.map((r, i) => {
               const u = win(recapU, RECAP.length, i, 2.0);
               if (u <= 0) return null;
@@ -492,7 +495,7 @@ export function Render({ s }: { s: SceneState }) {
                   <text x={0} y={4} textAnchor="middle" fill={colors.TEXT} fontSize={15.5} fontWeight={650}>
                     {r.t}
                   </text>
-                  <text x={0} y={30} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+                  <text x={0} y={30} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                     {r.s}
                   </text>
                 </g>
@@ -501,9 +504,12 @@ export function Render({ s }: { s: SceneState }) {
           </g>
         )}
         {endU > 0.02 && (
-          <text x={640} y={444} textAnchor="middle" fill={colors.ACCENT} fontSize={17} fontWeight={650} opacity={endU}>
-            React for two computers.
-          </text>
+          <g opacity={endU}>
+            <rect x={440} y={418} width={400} height={42} rx={10} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.2} />
+            <text x={640} y={446} textAnchor="middle" fill={colors.ACCENT} fontSize={17} fontWeight={650}>
+              React for two computers.
+            </text>
+          </g>
         )}
       </Camera>
     </>

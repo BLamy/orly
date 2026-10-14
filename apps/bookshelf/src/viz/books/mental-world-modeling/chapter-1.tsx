@@ -91,14 +91,14 @@ function Place({ x, label, color }: { x: number; label: string; color: string })
   </g>;
 }
 
-function SearchDot({ fromX, toX, u, y, color, label }: { fromX: number; toX: number; u: number; y: number; color: string; label: string }) {
+function SearchDot({ fromX, toX, u, y, color, label, alpha = 1 }: { fromX: number; toX: number; u: number; y: number; color: string; label: string; alpha?: number }) {
   const uu = clamp01(u);
   if (uu <= 0.002) return null;
   const x = lerp(fromX, toX, uu);
-  return <g opacity={uu > 0 ? 1 : 0}>
+  return <g opacity={alpha}>
     <circle cx={x} cy={y} r={12} fill={color} />
     <circle cx={x} cy={y} r={21} fill="none" stroke={color} opacity={0.3} />
-    <text x={x} y={y - 28} textAnchor="middle" fill={color} fontSize={12} fontFamily={MONO}>{label}</text>
+    <text x={x} y={y - 28} textAnchor="middle" fill={color} fontSize={14} fontFamily={MONO}>{label}</text>
   </g>;
 }
 
@@ -126,43 +126,43 @@ export function Render({ s }: { s: SceneState }) {
           <circle cy={-28} r={21} fill={colors.POSITIVE} />
           <path d="M0 -5 V58 M0 12 L-32 38 M0 12 L32 38 M0 58 L-24 92 M0 58 L24 92" stroke={colors.POSITIVE} strokeWidth={9} strokeLinecap="round" />
           <path d={`M-4 -30 L${Math.cos((targetAngle * Math.PI) / 180) * 42} ${-30 + Math.sin((targetAngle * Math.PI) / 180) * 42}`} stroke={colors.TEXT} strokeWidth={3} strokeLinecap="round" />
-          <text y={124} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>target agent</text>
+          <text y={124} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>target agent</text>
         </g>
 
         <g transform="translate(140 448)">
           <rect width={1000} height={62} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2} />
-          <text x={22} y={24} fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>physical_state</text>
+          <text x={22} y={24} fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>physical_state</text>
           <text x={22} y={46} fill={colors.TEXT} fontSize={14}>mug position</text>
           <line x1={240} y1={36} x2={834} y2={36} stroke={colors.GRID} strokeWidth={5} strokeLinecap="round" />
           <circle cx={lerp(300, 790, move)} cy={36} r={10} fill={colors.ACCENT} />
-          <text x={300} y={22} textAnchor="middle" fill={colors.MUTED} fontSize={11}>desk</text>
-          <text x={790} y={22} textAnchor="middle" fill={colors.MUTED} fontSize={11}>cabinet</text>
+          <text x={300} y={18} textAnchor="middle" fill={colors.MUTED} fontSize={12}>desk</text>
+          <text x={790} y={18} textAnchor="middle" fill={colors.MUTED} fontSize={12}>cabinet</text>
         </g>
 
         <g transform="translate(140 528)" opacity={mentalU}>
           <rect width={1000} height={62} rx={16} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={2 + s.get(scene.beliefPulse) * 1.5} />
-          <text x={22} y={24} fill={colors.WARM} fontSize={12} fontFamily={MONO}>mental_state</text>
+          <text x={22} y={24} fill={colors.WARM} fontSize={14} fontFamily={MONO}>mental_state</text>
           <text x={22} y={46} fill={colors.TEXT} fontSize={14}>target belief</text>
           <line x1={240} y1={36} x2={834} y2={36} stroke={colors.GRID} strokeWidth={5} strokeLinecap="round" />
           <circle cx={300} cy={36} r={10 + s.get(scene.beliefPulse) * 4} fill={colors.WARM} />
-          <text x={300} y={22} textAnchor="middle" fill={colors.MUTED} fontSize={11}>desk</text>
-          <text x={790} y={22} textAnchor="middle" fill={colors.MUTED} fontSize={11}>cabinet</text>
+          <text x={300} y={18} textAnchor="middle" fill={colors.MUTED} fontSize={12}>desk</text>
+          <text x={790} y={18} textAnchor="middle" fill={colors.MUTED} fontSize={12}>cabinet</text>
         </g>
 
         <path d="M134 478 C95 500 95 538 134 560" fill="none" stroke={colors.POSITIVE} strokeWidth={3} opacity={s.get(scene.coupledU)} />
-        <text x={70} y={523} textAnchor="middle" fill={colors.POSITIVE} fontSize={11} fontFamily={MONO} opacity={s.get(scene.coupledU)}>WorldState</text>
+        <text x={70} y={523} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO} opacity={s.get(scene.coupledU)}>WorldState</text>
 
-        <SearchDot fromX={640} toX={920} y={188} u={s.get(scene.physicalGuess)} color={colors.NEGATIVE} label="physical-only guess" />
+        <SearchDot fromX={640} toX={920} y={188} u={s.get(scene.physicalGuess)} color={colors.NEGATIVE} label="physical-only guess" alpha={1 - s.get(scene.coupledU)} />
         <SearchDot fromX={640} toX={340} y={188} u={s.get(scene.beliefGuess)} color={colors.POSITIVE} label="belief-grounded guess" />
-        <g opacity={s.get(scene.physicalFail)} transform="translate(920 150)">
+        <g opacity={s.get(scene.physicalFail)} transform="translate(920 188)">
           <circle r={25} fill={colors.NEGATIVE} opacity={0.2} />
           <path d="M-10 -10 L10 10 M10 -10 L-10 10" stroke={colors.NEGATIVE} strokeWidth={5} strokeLinecap="round" />
         </g>
 
-        <g opacity={s.get(scene.schemaU)} transform="translate(388 102)">
-          <rect width={504} height={58} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={252} y={23} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>mentis/schema.py</text>
-          <text x={252} y={44} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>WorldState(physical_state, mental_state)</text>
+        <g opacity={s.get(scene.schemaU)} transform="translate(388 96)">
+          <rect width={504} height={46} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={252} y={18} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>mentis/schema.py</text>
+          <text x={252} y={38} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>WorldState(physical_state, mental_state)</text>
         </g>
       </g>
     </Camera>

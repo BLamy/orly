@@ -35,12 +35,13 @@ const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 // Layout + precomputed table rows (seeded, deterministic).
 // ---------------------------------------------------------------------------
 
-const CLIENT = { x: 120, y: 300 } as const;
-const WEB = { x: 330, y: 300 } as const;
-const WRITE = { x: 555, y: 300 } as const;
-const STORE = { x: 1060, y: 170 } as const;
+const CLIENT = { x: 150, y: 260 } as const;
+const WEB = { x: 370, y: 260 } as const;
+const WRITE = { x: 590, y: 260 } as const;
+const STORE = { x: 1040, y: 190 } as const;
 
-const TABLE = { x: 760, y: 392, w: 460, rowH: 26, rows: 7 } as const;
+const TABLE = { x: 740, y: 340, w: 460, rowH: 26, rows: 7 } as const;
+const SCHEMA_Y = 340;
 const SHORTLINK = 'dSUUsvo';
 const ALPHA62 = '0123456789abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ';
 const rand = mulberry32(7462);
@@ -68,9 +69,10 @@ const rowY = (i: number): number => TABLE.y + 60 + i * TABLE.rowH;
 const SCAN_DUR = 1; // in raceU units, scan uses the whole window
 const HOPS = [0, 6, 3, 4]; // binary-search style hops ending on the new row
 
-const CAM_FLOW: CameraState = { x: 430, y: 300, k: 1.35 };
-const CAM_SPLIT: CameraState = { x: 820, y: 330, k: 1.15 };
-const CAM_TABLE: CameraState = { x: 940, y: 440, k: 1.35 };
+// Framings keep every labelled node and table row inside the stage.
+const CAM_FLOW: CameraState = { x: 400, y: 280, k: 1.2 };
+const CAM_SPLIT: CameraState = { x: 640, y: 350, k: 1.05 };
+const CAM_TABLE: CameraState = { x: 650, y: 380, k: 1.05 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {
@@ -240,7 +242,7 @@ export function Render({ s }: { s: SceneState }) {
 
   // the paste card floats beside the write service, then splits
   const cardX = 620;
-  const cardY = 150;
+  const cardY = 120;
   // the content slab travels from the card into the object store
   const slabX = cardX + (STORE.x - 60 - cardX) * slabU;
   const slabY = cardY + 46 + (STORE.y - 10 - cardY - 46) * slabU;
@@ -267,7 +269,7 @@ export function Render({ s }: { s: SceneState }) {
             glow={mintU * (1 - slabU)}
           />
           <Connection from={{ x: CLIENT.x + 46, y: CLIENT.y }} to={{ x: WEB.x - 56, y: WEB.y }} u={nodesU} arrow />
-          <Connection from={{ x: WEB.x + 56, y: WEB.y }} to={{ x: WRITE.x - 56, y: WRITE.y }} u={clamp01(nodesU * 1.5 - 0.4)} arrow label="POST /paste" labelSize={10} />
+          <Connection from={{ x: WEB.x + 56, y: WEB.y }} to={{ x: WRITE.x - 56, y: WRITE.y }} u={clamp01(nodesU * 1.5 - 0.4)} arrow label="POST /paste" labelSize={12} />
           <RequestFlow
             path={[
               { x: CLIENT.x, y: CLIENT.y },
@@ -345,25 +347,39 @@ export function Render({ s }: { s: SceneState }) {
         {tableU > 0 && (
           <g opacity={tableU * dim}>
             <rect x={TABLE.x} y={TABLE.y} width={TABLE.w} height={70 + TABLE.rows * TABLE.rowH} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={TABLE.x + 14} y={TABLE.y + 22} fill={colors.TEXT} fontSize={13} fontFamily="monospace">
+            <text x={TABLE.x + 14} y={TABLE.y + 22} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
               pastes
             </text>
-            <text x={TABLE.x + TABLE.w - 14} y={TABLE.y + 22} textAnchor="end" fill={colors.MUTED} fontSize={10.5}>
+            <text x={TABLE.x + TABLE.w - 14} y={TABLE.y + 22} textAnchor="end" fill={colors.MUTED} fontSize={12}>
               SQL Database · … 360,000,000 rows
             </text>
             {/* header */}
-            <text x={TABLE.x + 16} y={TABLE.y + 52} fill={colors.MUTED} fontSize={10} fontFamily="monospace">
+            <text x={TABLE.x + 16} y={TABLE.y + 52} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
               shortlink
             </text>
-            <text x={TABLE.x + 130} y={TABLE.y + 52} fill={colors.MUTED} fontSize={10} fontFamily="monospace">
+            <text x={TABLE.x + 130} y={TABLE.y + 52} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
               expiration
             </text>
-            <text x={TABLE.x + 230} y={TABLE.y + 52} fill={colors.MUTED} fontSize={10} fontFamily="monospace">
+            <text x={TABLE.x + 230} y={TABLE.y + 52} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
               created_at
             </text>
-            <text x={TABLE.x + 340} y={TABLE.y + 52} fill={colors.MUTED} fontSize={10} fontFamily="monospace">
+            <text x={TABLE.x + 340} y={TABLE.y + 52} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
               paste_path
             </text>
+            {/* empty slot where the new row will land */}
+            {rowU < 1 && (
+              <rect
+                x={TABLE.x + 8}
+                y={rowY(NEW_ROW_AT)}
+                width={TABLE.w - 16}
+                height={TABLE.rowH - 4}
+                rx={4}
+                fill="none"
+                stroke={colors.TEAL}
+                strokeDasharray="4 3"
+                opacity={0.5 * (1 - rowU)}
+              />
+            )}
             {/* rows */}
             {ROW_LINKS.map((link, i) => {
               const isNew = i === NEW_ROW_AT;
@@ -383,16 +399,16 @@ export function Render({ s }: { s: SceneState }) {
                     fill={isNew ? colors.TEAL : colors.BG}
                     opacity={isNew ? 0.25 : 0.6}
                   />
-                  <text x={TABLE.x + 16} y={y + 15} fill={isNew ? colors.TEAL : colors.TEXT} fontSize={11} fontFamily="monospace" fontWeight={isNew ? 700 : 400}>
+                  <text x={TABLE.x + 16} y={y + 15} fill={isNew ? colors.TEAL : colors.TEXT} fontSize={12} fontFamily="monospace" fontWeight={isNew ? 700 : 400}>
                     {link}
                   </text>
-                  <text x={TABLE.x + 130} y={y + 15} fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+                  <text x={TABLE.x + 130} y={y + 15} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                     {isNew ? '60' : '—'}
                   </text>
-                  <text x={TABLE.x + 230} y={y + 15} fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+                  <text x={TABLE.x + 230} y={y + 15} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                     {isNew ? '2016-07-07' : '…'}
                   </text>
-                  <text x={TABLE.x + 340} y={y + 15} fill={isNew ? colors.ACCENT : colors.MUTED} fontSize={11} fontFamily="monospace">
+                  <text x={TABLE.x + 340} y={y + 15} fill={isNew ? colors.ACCENT : colors.MUTED} fontSize={12} fontFamily="monospace">
                     {isNew ? `/pastes/${SHORTLINK}` : '…'}
                   </text>
                   {/* race pointers */}
@@ -413,7 +429,7 @@ export function Render({ s }: { s: SceneState }) {
               </g>
             )}
             {raceU > 0.6 && (
-              <MathLabel tex={'\\log_2(360\\,\\mathrm{M}) \\approx 28\\ \\text{hops}'} x={TABLE.x + TABLE.w - 150} y={TABLE.y - 24} fontSize={16} color={colors.POSITIVE} opacity={clamp01(raceU * 4 - 2.6)} />
+              <MathLabel tex={'\\log_2(360\\,\\mathrm{M}) \\approx 28\\ \\text{hops}'} x={TABLE.x + 130} y={TABLE.y - 24} fontSize={16} color={colors.POSITIVE} opacity={clamp01(raceU * 4 - 2.6)} />
             )}
           </g>
         )}
@@ -421,15 +437,15 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- schema panel ---- */}
         {schemaU > 0 && (
           <g opacity={clamp01(schemaU * 2) * dim}>
-            <rect x={430} y={430} width={300} height={126} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
+            <rect x={392} y={SCHEMA_Y} width={300} height={126} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
             {SCHEMA.map((f, i) => {
               const u = clamp01(schemaU * 5 - i * 1.0);
               return (
                 <g key={f.field} opacity={u}>
-                  <text x={444} y={456 + i * 26} fill={colors.TEAL} fontSize={11} fontFamily="monospace">
+                  <text x={406} y={SCHEMA_Y + 30 + i * 26} fill={colors.TEAL} fontSize={12} fontFamily="monospace">
                     {f.field}
                   </text>
-                  <text x={716} y={456 + i * 26} textAnchor="end" fill={colors.MUTED} fontSize={10} fontFamily="monospace">
+                  <text x={678} y={SCHEMA_Y + 30 + i * 26} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                     {f.type}
                   </text>
                 </g>
@@ -442,8 +458,8 @@ export function Render({ s }: { s: SceneState }) {
         {threadU > 0 && (
           <g opacity={dim}>
             <Connection
-              from={{ x: TABLE.x + TABLE.w - 40, y: rowY(NEW_ROW_AT) + 10 }}
-              to={{ x: STORE.x, y: STORE.y + 40 }}
+              from={{ x: TABLE.x + TABLE.w + 10, y: rowY(NEW_ROW_AT) + 10 }}
+              to={{ x: STORE.x + 56, y: STORE.y + 30 }}
               elbow="v"
               u={threadU}
               color={colors.ACCENT}
@@ -466,7 +482,6 @@ export function Render({ s }: { s: SceneState }) {
               ]}
               u={respU}
               color={colors.POSITIVE}
-              label="201"
               hold={false}
             />
             <g opacity={clamp01(respU * 3 - 1.8)}>
@@ -481,11 +496,11 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- quiet close: the easy half ---- */}
         {meterU > 0 && (
           <g opacity={meterU}>
-            <rect x={390} y={240} width={500} height={130} rx={16} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.5} />
-            <text x={640} y={288} textAnchor="middle" fill={colors.WARM} fontSize={26} fontWeight={700}>
+            <rect x={390} y={250} width={500} height={130} rx={16} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.5} />
+            <text x={640} y={298} textAnchor="middle" fill={colors.WARM} fontSize={26} fontWeight={700}>
               4 writes / second
             </text>
-            <text x={640} y={324} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+            <text x={640} y={334} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
               one SQL write master + standby handles it
             </text>
           </g>

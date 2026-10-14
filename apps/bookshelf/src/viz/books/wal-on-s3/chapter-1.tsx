@@ -293,9 +293,9 @@ function EtagChip({ u }: { u: number }) {
   if (u <= 0.01) return null;
   return (
     <g opacity={u}>
-      <rect x={938} y={128} width={266} height={72} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.4} />
-      <text x={958} y={154} fill={colors.MUTED} fontSize={11} letterSpacing="0.11em">THE ONE ATOMIC PRIMITIVE</text>
-      <text x={958} y={182} fill={colors.POSITIVE} fontFamily={MONO} fontSize={16}>If-Match: ETag</text>
+      <rect x={836} y={128} width={266} height={72} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.4} />
+      <text x={856} y={154} fill={colors.MUTED} fontSize={12} letterSpacing="0.11em">THE ONE ATOMIC PRIMITIVE</text>
+      <text x={856} y={182} fill={colors.POSITIVE} fontFamily={MONO} fontSize={16}>If-Match: ETag</text>
     </g>
   );
 }
@@ -310,20 +310,21 @@ function Fragments({ u, pathU }: { u: number; pathU: number }) {
         return (
           <g key={f} opacity={fu}>
             <rect x={x} y={FRAG_Y} width={FRAG_W} height={116} rx={10} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.3} />
-            <text x={x + 14} y={FRAG_Y + 24} fill={colors.MUTED} fontFamily={MONO} fontSize={12}>
+            <text x={x + 14} y={FRAG_Y + 24} fill={colors.MUTED} fontFamily={MONO} fontSize={13}>
               {`FragmentSeqNo=${String(f).padStart(4, '0')}`}
             </text>
-            <text x={x + 14} y={FRAG_Y + 108} fill={colors.POSITIVE} fontFamily={MONO} fontSize={11} opacity={0.85}>
+            <text x={x + 14} y={FRAG_Y + 108} fill={colors.POSITIVE} fontFamily={MONO} fontSize={12} opacity={0.85}>
               immutable
             </text>
           </g>
         );
       })}
-      <text x={116} y={FRAG_Y - 18} fill={colors.MUTED} fontSize={12} letterSpacing="0.12em" opacity={u}>
+      {/* Below the row, not above it: the manifest links fan in from above and would cross this label. */}
+      <text x={116} y={FRAG_Y + 134} fill={colors.MUTED} fontSize={12} letterSpacing="0.12em" opacity={u}>
         FRAGMENTS · WRITTEN ONCE
       </text>
       {pathU > 0.02 && (
-        <text x={116} y={FRAG_Y + 148} fill={colors.MUTED} fontFamily={MONO} fontSize={12} opacity={pathU * 0.9}>
+        <text x={116} y={FRAG_Y + 156} fill={colors.MUTED} fontFamily={MONO} fontSize={12} opacity={pathU * 0.9}>
           log/Bucket=0000000000000000/FragmentSeqNo=0000000000000001.parquet
         </text>
       )}
@@ -336,7 +337,7 @@ function ManifestCard({ u, linkU, pathU }: { u: number; linkU: number; pathU: nu
   return (
     <g opacity={u}>
       <rect x={392} y={196} width={496} height={122} rx={14} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.8} />
-      <text x={414} y={224} fill={colors.MUTED} fontSize={11} letterSpacing="0.11em">THE AUTHORITY RECORD</text>
+      <text x={414} y={224} fill={colors.MUTED} fontSize={12} letterSpacing="0.11em">THE AUTHORITY RECORD</text>
       <text x={414} y={256} fill={colors.ACCENT} fontFamily={MONO} fontSize={17}>Manifest</text>
       <text x={414} y={284} fill={colors.TEXT} fontFamily={MONO} fontSize={13}>fragments · snapshots · setsum</text>
       {pathU > 0.02 && (
@@ -372,7 +373,8 @@ function ManifestCard({ u, linkU, pathU }: { u: number; linkU: number; pathU: nu
 
 export function Render({ s }: { s: SceneState }) {
   const endDim = s.get(scene.endDim);
-  const dim = 1 - endDim * 0.92;
+  // Fully clear the body under the closing card so no half-faded boxes peek out around it.
+  const dim = 1 - endDim;
   const endU = s.get(scene.endU);
 
   return (

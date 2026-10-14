@@ -110,7 +110,9 @@ export function Render({ s }: { s: SceneState }) {
   const searchU = s.get(scene.searchU);
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
-  const mainOp = 1 - 0.85 * dimU;
+  // the thread dims for the closing card, then clears completely so the card
+  // never sits on top of half-faded rows
+  const mainOp = (1 - 0.85 * dimU) * (1 - closeU);
 
   const headOp = branchU * (1 - becomeU);
   const chanOp = becomeU;
@@ -131,7 +133,7 @@ export function Render({ s }: { s: SceneState }) {
               <text x={640} y={116} textAnchor="middle" fill={colors.ACCENT} fontSize={16} fontWeight={600} fontFamily="monospace">
                 # auth-refresh
               </text>
-              <text x={640} y={136} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace" opacity={tagU}>
+              <text x={640} y={136} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={tagU}>
                 h = {CH}
               </text>
             </g>
@@ -148,10 +150,10 @@ export function Render({ s }: { s: SceneState }) {
                 <rect x={THREAD_X} y={y} width={5} height={ROW_H - 12} rx={2} fill={r.color} />
                 <text x={THREAD_X + 20} y={y + 26} fill={r.color} fontSize={12} fontWeight={600} fontFamily="monospace">{r.kind}</text>
                 <text x={THREAD_X + 20} y={y + 47} fill={colors.TEXT} fontSize={13}>{r.text}</text>
-                <text x={THREAD_X + THREAD_W - 16} y={y + 26} textAnchor="end" fill={colors.MUTED} fontSize={11} fontFamily="monospace">{r.who}</text>
+                <text x={THREAD_X + THREAD_W - 16} y={y + 26} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily="monospace">{r.who}</text>
                 {/* the shared h tag chip */}
                 {tagU > 0 && (
-                  <text x={THREAD_X + THREAD_W - 16} y={y + 47} textAnchor="end" fill={r.color} fontSize={10} fontFamily="monospace" opacity={tagU}>
+                  <text x={THREAD_X + THREAD_W - 16} y={y + 47} textAnchor="end" fill={r.color} fontSize={12} fontFamily="monospace" opacity={tagU}>
                     ["h", …4a1c]
                   </text>
                 )}

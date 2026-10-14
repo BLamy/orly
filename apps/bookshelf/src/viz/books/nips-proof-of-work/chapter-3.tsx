@@ -48,7 +48,7 @@ for (const d of ACHIEVED) COUNTS.set(d, (COUNTS.get(d) ?? 0) + 1);
 
 // histogram layout: difficulty 6..14 → columns of dots packed 4-wide so the
 // 59-deep six-bit column stays on stage
-const HIST = { x: 250, y0: 520, colW: 84, dot: 5.5, pitch: 13.5 };
+const HIST = { x: 250, y0: 470, colW: 84, dot: 5.5, pitch: 13.5 };
 const histX = (d: number) => HIST.x + (d - TARGET) * HIST.colW;
 // dot index within its column, per event, in arrival order
 const columnSlot: number[] = (() => {
@@ -70,7 +70,8 @@ const dotPos = (i: number) => {
 const GATE = { x: 1020, y: 300 };
 
 const CAM_FARM: CameraState = { x: 560, y: 330, k: 1.15 };
-const CAM_GATE: CameraState = { x: 860, y: 330, k: 1.15 };
+// framed so the six-bit column stays on stage while the gate comes in
+const CAM_GATE: CameraState = { x: 700, y: 330, k: 1.15 };
 
 interface Scene {
   tl: Timeline;
@@ -186,7 +187,7 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  const mainOp = 1 - 0.92 * dimU;
 
   return (
     <>
@@ -194,7 +195,7 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={mainOp}>
           {/* the farm */}
           {farmU > 0 && (
-            <g opacity={farmU}>
+            <g opacity={farmU * (1 - gateU)}>
               <rect x={96} y={150} width={220} height={92} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} />
               <text x={120} y={186} fill={colors.NEGATIVE} fontSize={15} fontWeight={600}>
                 spam farm
@@ -202,6 +203,15 @@ export function Render({ s }: { s: SceneState }) {
               <text x={120} y={210} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                 target: {TARGET} bits · ~2⁶ hashes/note
               </text>
+              {/* the price of one note: six zero bits, one pip each */}
+              <g opacity={clamp01(1 - rainU * 4)}>
+                {[0, 1, 2, 3, 4, 5].map((j) => (
+                  <circle key={j} cx={120 + j * 32} cy={266} r={9} fill={colors.NEGATIVE} opacity={0.85} />
+                ))}
+                <text x={120} y={298} fill={colors.MUTED} fontSize={12}>
+                  6 zero bits per note
+                </text>
+              </g>
             </g>
           )}
 
@@ -211,11 +221,11 @@ export function Render({ s }: { s: SceneState }) {
               {/* axis */}
               <line x1={histX(TARGET) - 40} y1={HIST.y0 + 18} x2={histX(14) + 40} y2={HIST.y0 + 18} stroke={colors.GRID} strokeWidth={1.5} opacity={Math.min(1, rainU * 3)} />
               {[6, 7, 8, 9, 10, 11, 12, 13].map((d) => (
-                <text key={d} x={histX(d)} y={HIST.y0 + 40} textAnchor="middle" fill={d >= STRICT ? colors.WARM : colors.MUTED} fontSize={12} fontFamily="monospace" opacity={Math.min(1, rainU * 3)}>
+                <text key={d} x={histX(d)} y={HIST.y0 + 40} textAnchor="middle" fill={d >= STRICT ? colors.WARM : colors.MUTED} fontSize={13} fontFamily="monospace" opacity={Math.min(1, rainU * 3)}>
                   {d}
                 </text>
               ))}
-              <text x={histX(9) + 40} y={HIST.y0 + 62} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} opacity={Math.min(1, rainU * 3)}>
+              <text x={histX(9) + 40} y={HIST.y0 + 62} textAnchor="middle" fill={colors.MUTED} fontSize={12} opacity={Math.min(1, rainU * 3)}>
                 achieved difficulty, 120 genuinely mined notes
               </text>
               {ACHIEVED.map((d, i) => {
@@ -224,10 +234,12 @@ export function Render({ s }: { s: SceneState }) {
                 const p = dotPos(i);
                 const lucky = d >= STRICT;
                 const gone = lucky && bounceU >= 1;
-                // lucky dots drift toward the gate during the slip beat, then return on bounce
+                // lucky dots drift toward the gate during the slip beat, then return on bounce;
+                // each gets its own lane so the three stay separate
                 const drift = lucky ? clamp01(slipU) * (1 - clamp01(bounceU)) : 0;
+                const lane = GATE.y - 40 + LUCKY.indexOf(i) * 40;
                 const x = p.x + (GATE.x - 90 - p.x) * drift;
-                const y = p.y - 260 * (1 - u) + (GATE.y - p.y) * drift;
+                const y = p.y - 260 * (1 - u) + (lane - p.y) * drift;
                 return (
                   <g key={i} opacity={u * (gone ? 0.35 : 1)}>
                     <circle
@@ -239,18 +251,18 @@ export function Render({ s }: { s: SceneState }) {
                       stroke={lucky && luckyU > 0 ? colors.WARM : 'none'}
                       strokeWidth={2}
                     />
-                    {lucky && luckyU > 0 && drift === 0 && (
-                      <text x={x} y={y - 14} textAnchor="middle" fill={colors.WARM} fontSize={11} opacity={luckyU}>
-                        {d} bits
-                      </text>
-                    )}
                   </g>
                 );
               })}
               {luckyU > 0 && (
-                <text x={histX(13)} y={HIST.y0 - 120} textAnchor="middle" fill={colors.WARM} fontSize={13} fontWeight={600} opacity={luckyU * (1 - slipU)}>
-                  {LUCKY.length} lucky hits
-                </text>
+                <g opacity={luckyU * (1 - clamp01(slipU * 4))}>
+                  <text x={histX(13)} y={HIST.y0 - 124} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={600}>
+                    {LUCKY.length} lucky hits
+                  </text>
+                  <text x={histX(13)} y={HIST.y0 - 102} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="monospace">
+                    13 bits = 2⁷ × the work of 6
+                  </text>
+                </g>
               )}
             </g>
           )}
@@ -262,7 +274,7 @@ export function Render({ s }: { s: SceneState }) {
               <text x={GATE.x + 15} y={GATE.y - 88} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={600}>
                 strict relay
               </text>
-              <text x={GATE.x + 15} y={GATE.y - 66} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily="monospace">
+              <text x={GATE.x + 15} y={GATE.y - 66} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                 require ≥ {STRICT} bits
               </text>
               {/* judgment line: flips from hash-only to commitment */}
@@ -294,7 +306,7 @@ export function Render({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             Judged by what you aimed at
           </text>

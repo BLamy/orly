@@ -66,7 +66,8 @@ const GATE_DY = 105;
 const gateY = (g: number) => GATE_Y0 + g * GATE_DY;
 const TRAY = { x: 980, y: 430 };
 
-const CAM_GATES: CameraState = { x: 660, y: 340, k: 1.1 };
+// pulled a little left so the JSON document keeps its margin from the stage edge
+const CAM_GATES: CameraState = { x: 620, y: 340, k: 1.1 };
 
 const cardLabel = (c: Cand) =>
   `k${c.kind} · ${c.author} · ${c.t ? '#' + c.t : 'no tag'}`;
@@ -214,7 +215,8 @@ function Render_({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the closing panel takes over the stage: the body fades out beneath it
+  const mainOp = (1 - 0.85 * dimU) * (1 - closeU);
   const authorsFocused = focusG > 0;
 
   return (
@@ -244,7 +246,7 @@ function Render_({ s }: { s: SceneState }) {
                   {g.label}
                 </text>
                 {gi < GATES.length - 1 && (
-                  <text x={GATE_X - 160} y={y + GATE_DY / 2 + 4} fill={colors.MUTED} fontSize={11} opacity={0.7}>
+                  <text x={GATE_X - 160} y={y + GATE_DY / 2 + 4} fill={colors.MUTED} fontSize={12} opacity={0.7}>
                     AND
                   </text>
                 )}
@@ -277,23 +279,24 @@ function Render_({ s }: { s: SceneState }) {
                 results — newest first · limit {FILTER.limit}
               </text>
               {orderU > 0 && (
-                <text x={TRAY.x} y={TRAY.y - 16} textAnchor="middle" fill={colors.WARM} fontSize={11} fontFamily="monospace" opacity={orderU}>
+                <text x={TRAY.x} y={TRAY.y - 20} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="monospace" opacity={orderU}>
                   created_at ↓
                 </text>
               )}
             </g>
           )}
 
-          {/* multiple filters = OR */}
+          {/* multiple filters = OR: two stacked copies of the whole filter, outlined
+              around the JSON so they never sit on top of a value */}
           {multiU > 0 && (
             <g opacity={multiU}>
               {[0, 1].map((k) => (
                 <g key={k} opacity={0.5}>
-                  <rect x={330 + k * 26} y={190 + k * 18} width={110} height={130} rx={10}
+                  <rect x={76 + k * 14} y={158 + k * 14} width={372 + k * 14} height={196 + k * 14} rx={10}
                     fill="none" stroke={colors.SECONDARY} strokeWidth={1.4} strokeDasharray="5 4" />
                 </g>
               ))}
-              <text x={412} y={352} textAnchor="middle" fill={colors.SECONDARY} fontSize={12}>
+              <text x={262} y={398} textAnchor="middle" fill={colors.SECONDARY} fontSize={13}>
                 filter ‖ filter — OR
               </text>
             </g>

@@ -13,7 +13,6 @@
 // two halves visibly compute at once, then the circuit repeats layer after
 // layer as a pulse counter.
 import {
-  CAMERA_HOME,
   Camera,
   STAGE_H,
   STAGE_W,
@@ -51,9 +50,9 @@ const COLD = [
 const COMBINE = { x: 400, y: 430 } as const;
 const BRIDGE_Y = 250;
 
-const CAM_GPU: CameraState = { x: 300, y: 300, k: 1.4 };
-const CAM_CPU: CameraState = { x: 940, y: 280, k: 1.35 };
-const CAM_WIDE: CameraState = { x: 640, y: 330, k: 1.02 };
+// One framing for the whole chapter. Both zones, their outer experts and the
+// layer counter stay on stage; a push toward either zone would crop the other.
+const FRAME: CameraState = { x: 640, y: 330, k: 1.04 };
 
 export interface Scene {
   tl: Timeline;
@@ -76,7 +75,7 @@ export interface Scene {
 
 export function buildScene(): Scene {
   const tl = new Timeline();
-  const cam = tl.channel<CameraState>('cam', CAMERA_HOME, cameraInterp);
+  const cam = tl.channel<CameraState>('cam', FRAME, cameraInterp);
   const zonesU = tl.channel('zonesU', 0); // the two silicon zones
   const attnU = tl.channel('attnU', 0); // attention + router + experts
   const tokIn = tl.channel('tokIn', 0); // token → attention
@@ -108,7 +107,6 @@ export function buildScene(): Scene {
     dur: 5.5,
     text: 'A token arrives. Attention runs where it always runs — on the card, dense, fast, no surprises.',
   });
-  tl.tween(cam, CAM_GPU, { at: 7.2, dur: 1.3, ease: ease.move });
   tl.tween(tokIn, 1, { at: 7.8, dur: 1.6, ease: ease.linear });
   tl.hold(12.5, 0.5);
 
@@ -138,7 +136,6 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'On the processor side a wrapper object owns the experts. It fans the work across thread pools — one per memory domain — so every socket chews on its own slice.',
   });
-  tl.tween(cam, CAM_CPU, { at: 27.2, dur: 1.4, ease: ease.move });
   tl.tween(poolU, 1, { at: 28.2, dur: 1.4, ease: ease.enter });
   tl.hold(33.5, 0.5);
 
@@ -148,7 +145,6 @@ export function buildScene(): Scene {
     dur: 6.0,
     text: 'And here is the whole trick: both neighborhoods compute at the same time. The card is never waiting politely for the processor, or the other way around.',
   });
-  tl.tween(cam, CAM_WIDE, { at: 34.2, dur: 1.4, ease: ease.move });
   tl.tween(bothU, 1, { at: 35.2, dur: 2.6, ease: ease.linear });
   tl.hold(40.0, 0.5);
 
@@ -198,7 +194,7 @@ const scene = buildScene();
 // Render
 // ---------------------------------------------------------------------------
 
-function Box({ x, y, w = 130, h = 52, label, sub, color, u, glow = 0 }: { x: number; y: number; w?: number; h?: number; label: string; sub?: string; color: string; u: number; glow?: number }) {
+function Box({ x, y, w = 150, h = 52, label, sub, color, u, glow = 0 }: { x: number; y: number; w?: number; h?: number; label: string; sub?: string; color: string; u: number; glow?: number }) {
   if (u <= 0.01) return null;
   return (
     <g opacity={u}>
@@ -208,7 +204,7 @@ function Box({ x, y, w = 130, h = 52, label, sub, color, u, glow = 0 }: { x: num
         {label}
       </text>
       {sub && (
-        <text x={x} y={y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily="ui-monospace, monospace">
+        <text x={x} y={y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
           {sub}
         </text>
       )}
@@ -248,7 +244,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* PCIe bridge */}
           <g opacity={zonesU}>
             <line x1={GPUZ.x + GPUZ.w} y1={BRIDGE_Y} x2={CPUZ.x} y2={BRIDGE_Y} stroke={colors.GRID} strokeWidth={10} opacity={0.5} strokeLinecap="round" />
-            <text x={(GPUZ.x + GPUZ.w + CPUZ.x) / 2} y={BRIDGE_Y - 14} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+            <text x={(GPUZ.x + GPUZ.w + CPUZ.x) / 2} y={BRIDGE_Y - 14} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               PCIe
             </text>
           </g>
@@ -270,7 +266,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={CPUZ.x + CPUZ.w / 2} y={394} textAnchor="middle" fill={colors.TEXT} fontSize={12}>
               KTMoEWrapper.forward
             </text>
-            <text x={CPUZ.x + CPUZ.w / 2} y={414} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily="ui-monospace, monospace">
+            <text x={CPUZ.x + CPUZ.w / 2} y={414} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
               cpuinfer_threads: 64 · threadpool_count: 2 (NUMA)
             </text>
           </g>
@@ -316,7 +312,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* deferral chip */}
           <g opacity={deferU}>
             <rect x={556} y={540} width={330} height={30} rx={8} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.2} />
-            <text x={721} y={560} textAnchor="middle" fill={colors.SECONDARY} fontSize={11.5} fontFamily="ui-monospace, monospace">
+            <text x={721} y={560} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily="ui-monospace, monospace">
               --kt-max-deferred-experts-per-token 2
             </text>
           </g>

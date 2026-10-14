@@ -62,8 +62,9 @@ const REQS: Req[] = Array.from({ length: N_REQ }, (_, i) => ({
 const LOADS = [0.35, 0.85, 0.4, 0.3] as const;
 
 const CAM_LB: CameraState = { x: 660, y: 360, k: 1.15 };
-const CAM_SICK: CameraState = { x: 880, y: 300, k: 1.3 };
-const CAM_SSL: CameraState = { x: 480, y: 360, k: 1.4 };
+// framings keep every server card on the stage and clear of the caption band
+const CAM_SICK: CameraState = { x: 700, y: 372, k: 1.2 };
+const CAM_SSL: CameraState = { x: 600, y: 370, k: 1.2 };
 
 export interface Scene {
   tl: Timeline;
@@ -219,7 +220,7 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...cam}>
         {/* ---- incoming stream ---- */}
         <g opacity={rigU * dimAll}>
-          <text x={90} y={330} fill={colors.MUTED} fontSize={12} fontStyle="italic">
+          <text x={200} y={235} fill={colors.MUTED} fontSize={13} fontStyle="italic">
             requests
           </text>
         </g>
@@ -230,7 +231,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={LB.x} y={LB.y - 46} textAnchor="middle" fill={colors.ACCENT} fontSize={14.5}>
             Load Balancer
           </text>
-          <text x={LB.x} y={LB.y - 26} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily="ui-monospace, monospace">
+          <text x={LB.x} y={LB.y - 26} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
             HAProxy / hardware
           </text>
           {/* the routing dial */}
@@ -243,13 +244,13 @@ export function Render({ s }: { s: SceneState }) {
             stroke={colors.WARM}
             strokeWidth={2.5}
           />
-          <text x={LB.x} y={LB.y + 62} textAnchor="middle" fill={colors.WARM} fontSize={10} fontFamily="ui-monospace, monospace">
+          <text x={LB.x} y={LB.y + 62} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="ui-monospace, monospace">
             {dial === 0 ? 'round robin' : 'least loaded'}
           </text>
           {/* passive twin */}
           <g opacity={pairU}>
             <rect x={LB.x - 85 + 14} y={LB.y - 75 + 14} width={170} height={150} rx={14} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.4} opacity={0.9} />
-            <text x={LB.x + 14} y={LB.y + 92} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+            <text x={LB.x + 14} y={LB.y + 92} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               active–passive failover
             </text>
           </g>
@@ -275,7 +276,7 @@ export function Render({ s }: { s: SceneState }) {
               {stickU > 0.05 && i === 2 && (
                 <g opacity={stickU}>
                   <circle cx={sv.x + 58} cy={sv.y - 18} r={8} fill={colors.WARM} opacity={0.9} />
-                  <text x={sv.x + 58} y={sv.y + 40 + 14} textAnchor="middle" fill={colors.WARM} fontSize={9.5} fontFamily="ui-monospace, monospace">
+                  <text x={sv.x + 58} y={sv.y + 40 + 14} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="ui-monospace, monospace">
                     session cookie → always here
                   </text>
                 </g>
@@ -302,14 +303,14 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- ssl inset ---- */}
         <g opacity={sslU * dimAll}>
-          <rect x={250} y={470} width={230} height={110} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.3} />
-          <text x={365} y={498} textAnchor="middle" fill={colors.WARM} fontSize={12.5}>
+          <rect x={190} y={455} width={260} height={106} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.3} />
+          <text x={320} y={483} textAnchor="middle" fill={colors.WARM} fontSize={14}>
             SSL termination
           </text>
-          <text x={365} y={522} textAnchor="middle" fill={colors.TEXT} fontSize={10.5} fontFamily="ui-monospace, monospace">
+          <text x={320} y={507} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily="ui-monospace, monospace">
             encrypted → [decrypt] → plain
           </text>
-          <text x={365} y={546} textAnchor="middle" fill={colors.MUTED} fontSize={10}>
+          <text x={320} y={531} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
             certificates live here, once
           </text>
         </g>

@@ -84,7 +84,7 @@ const GRID = { x: 300, y: 150, cell: 34, gap: 5 } as const;
 const gridW = COLS * (GRID.cell + GRID.gap);
 const gridH = ROWS * (GRID.cell + GRID.gap);
 
-const CAM_GRID: CameraState = { x: 640, y: 320, k: 1.22 };
+const CAM_GRID: CameraState = { x: 660, y: 320, k: 1.22 };
 const CAM_WIDE: CameraState = { x: 640, y: 330, k: 1.02 };
 
 export interface Scene {
@@ -220,7 +220,7 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={dimAll}>
           {/* strategy selector rail */}
           <g opacity={selU}>
-            <text x={GRID.x - 4} y={84} fill={colors.MUTED} fontSize={11} fontFamily="ui-monospace, monospace">
+            <text x={GRID.x - 4} y={84} fill={colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
               --kt-expert-placement-strategy
             </text>
             {STRATS.map((st, k) => {
@@ -228,7 +228,7 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={st.key}>
                   <rect x={GRID.x - 4 + k * 158} y={94} width={146} height={30} rx={8} fill={on > 0.5 ? colors.PANEL : colors.BG} stroke={on > 0.5 ? st.color : colors.GRID} strokeWidth={on > 0.5 ? 1.6 : 1} />
-                  <text x={GRID.x + 69 + k * 158} y={114} textAnchor="middle" fill={on > 0.5 ? st.color : colors.MUTED} fontSize={11.5} fontFamily="ui-monospace, monospace">
+                  <text x={GRID.x + 69 + k * 158} y={114} textAnchor="middle" fill={on > 0.5 ? st.color : colors.MUTED} fontSize={14} fontFamily="ui-monospace, monospace">
                     {st.key}
                   </text>
                 </g>
@@ -255,24 +255,24 @@ export function Render({ s }: { s: SceneState }) {
                     opacity={0.1 + 0.6 * v}
                   />
                   {m > 0.02 && (
-                    <rect x={x} y={y} width={GRID.cell} height={GRID.cell} rx={5} fill="none" stroke={STRATS[liveColorK].color} strokeWidth={2} opacity={m} />
+                    <rect x={x} y={y} width={GRID.cell} height={GRID.cell} rx={5} fill="none" stroke={colors.TEXT} strokeWidth={2} opacity={m} />
                   )}
                 </g>
               );
             }),
           )}
           <g opacity={gridU}>
-            <text x={GRID.x - 18} y={GRID.y + 10} textAnchor="end" fill={colors.MUTED} fontSize={10.5}>
+            <text x={GRID.x - 18} y={GRID.y + 10} textAnchor="end" fill={colors.MUTED} fontSize={12}>
               layers
             </text>
-            <text x={GRID.x + gridW / 2} y={GRID.y + gridH + 18} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
-              outlined = seated on the GPU (budget: 4 per layer)
+            <text x={GRID.x + gridW / 2} y={GRID.y + gridH + 18} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+              brighter = hotter expert · outlined = seated on the GPU (4 per layer)
             </text>
           </g>
 
           {/* strategy description line */}
           <g opacity={selU}>
-            <text x={GRID.x + gridW / 2} y={GRID.y + gridH + 44} textAnchor="middle" fill={STRATS[liveColorK].color} fontSize={12.5}>
+            <text x={GRID.x + gridW / 2} y={GRID.y + gridH + 44} textAnchor="middle" fill={STRATS[liveColorK].color} fontSize={14}>
               {STRATS[liveColorK].key}: {STRATS[liveColorK].desc}
             </text>
           </g>
@@ -280,24 +280,28 @@ export function Render({ s }: { s: SceneState }) {
           {/* stats-file chip (frequency) */}
           <g opacity={statsU}>
             <rect x={GRID.x + gridW + 22} y={GRID.y + 6} width={214} height={52} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.3} />
-            <text x={GRID.x + gridW + 129} y={GRID.y + 28} textAnchor="middle" fill={colors.WARM} fontSize={10.5} fontFamily="ui-monospace, monospace">
+            <text x={GRID.x + gridW + 129} y={GRID.y + 28} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="ui-monospace, monospace">
               --init-expert-location
             </text>
-            <text x={GRID.x + gridW + 129} y={GRID.y + 46} textAnchor="middle" fill={colors.MUTED} fontSize={10}>
+            <text x={GRID.x + gridW + 129} y={GRID.y + 46} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               activation_stats.pt
             </text>
           </g>
 
-          {/* coverage meter */}
+          {/* coverage meter: live strategy vs the uniform baseline */}
           <g opacity={scoreU}>
-            <rect x={GRID.x + gridW + 22} y={GRID.y + 78} width={214} height={84} rx={10} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
-            <text x={GRID.x + gridW + 129} y={GRID.y + 100} textAnchor="middle" fill={colors.TEXT} fontSize={11.5}>
+            <rect x={GRID.x + gridW + 22} y={GRID.y + 78} width={214} height={112} rx={10} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
+            <text x={GRID.x + gridW + 129} y={GRID.y + 98} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
               heat captured on the card
             </text>
-            <rect x={GRID.x + gridW + 42} y={GRID.y + 114} width={174} height={14} rx={5} fill={colors.BG} stroke={colors.GRID} />
-            <rect x={GRID.x + gridW + 42} y={GRID.y + 114} width={174 * liveCoverage} height={14} rx={5} fill={STRATS[liveColorK].color} opacity={0.9} />
-            <text x={GRID.x + gridW + 129} y={GRID.y + 150} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily="ui-monospace, monospace">
+            <rect x={GRID.x + gridW + 42} y={GRID.y + 108} width={174} height={16} rx={5} fill={colors.BG} stroke={colors.GRID} />
+            <rect x={GRID.x + gridW + 42} y={GRID.y + 108} width={174 * liveCoverage} height={16} rx={5} fill={STRATS[liveColorK].color} opacity={0.9} />
+            <text x={GRID.x + gridW + 129} y={GRID.y + 146} textAnchor="middle" fill={STRATS[liveColorK].color} fontSize={15} fontFamily="ui-monospace, monospace">
               {(liveCoverage * 100).toFixed(0)}%
+            </text>
+            <rect x={GRID.x + gridW + 42} y={GRID.y + 158} width={174 * coverage[0]} height={5} rx={2} fill={colors.MUTED} opacity={0.8} />
+            <text x={GRID.x + gridW + 42} y={GRID.y + 180} textAnchor="start" fill={colors.MUTED} fontSize={12}>
+              uniform baseline: {(coverage[0] * 100).toFixed(0)}%
             </text>
           </g>
         </g>
@@ -308,13 +312,13 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={286} textAnchor="middle" fill={colors.TEXT} fontSize={18}>
             four deals, one flag
           </text>
-          <text x={640} y={324} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+          <text x={640} y={324} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
             uniform when you know nothing · frequency when you have receipts
           </text>
-          <text x={640} y={346} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+          <text x={640} y={350} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
             all of them decided at boot — next: a schedule that moves at runtime
           </text>
-          <text x={640} y={400} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+          <text x={640} y={400} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
             uniform · frequency · front-loading · random (seed 42)
           </text>
         </g>

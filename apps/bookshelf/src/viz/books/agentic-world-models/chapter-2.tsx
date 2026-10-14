@@ -279,12 +279,12 @@ function Chip({
   x: number; y: number; text: string; color: string; u: number; anchor?: 'middle' | 'start';
 }) {
   if (u <= 0.01) return null;
-  const w = text.length * 7.2 + 24;
+  const w = text.length * 8.1 + 24;
   const x0 = anchor === 'middle' ? x - w / 2 : x;
   return (
     <g opacity={u}>
       <rect x={x0} y={y - 15} width={w} height={28} rx={8} fill={colors.BG} stroke={color} strokeOpacity={0.75} />
-      <text x={x0 + w / 2} y={y + 5} textAnchor="middle" fill={color} fontSize={12.5} fontFamily={MONO}>
+      <text x={x0 + w / 2} y={y + 5} textAnchor="middle" fill={color} fontSize={14} fontFamily={MONO}>
         {text}
       </text>
     </g>
@@ -375,17 +375,28 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* "one loss" unifying label */}
         {unifyLblU > 0.01 && (
-          <text
-            x={STAGE_W / 2}
-            y={TOKEN_Y - 62}
-            textAnchor="middle"
-            fill={colors.WARM}
-            fontSize={16}
-            fontStyle="italic"
-            opacity={unifyLblU * fade}
-          >
-            one loss, one mask
-          </text>
+          <g opacity={unifyLblU * fade}>
+            <text
+              x={STAGE_W / 2}
+              y={TOKEN_Y - 62}
+              textAnchor="middle"
+              fill={colors.WARM}
+              fontSize={16}
+              fontStyle="italic"
+            >
+              one loss, one mask
+            </text>
+            <text
+              x={STAGE_W / 2}
+              y={TOKEN_Y + 72}
+              textAnchor="middle"
+              fill={colors.TEXT}
+              fontSize={13}
+              opacity={0.7}
+            >
+              read as an interpretation of the loss (ECHO and Wolfe's essay), not a settled fact
+            </text>
+          </g>
         )}
 
         {/* ---------------- the two rivers ---------------- */}
@@ -449,7 +460,7 @@ export function Render({ s }: { s: SceneState }) {
         {convergeLblU > 0.01 && (
           <text
             x={BASIN.x}
-            y={BASIN.y + 44}
+            y={BASIN.y + 34}
             textAnchor="middle"
             fill={colors.WARM}
             fontSize={14}
@@ -462,12 +473,12 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---------------- the formula ---------------- */}
         {formulaU > 0.01 && (
-          <g opacity={formulaU * fade}>
+          <g opacity={formulaU * fade * (1 - 0.7 * basinU)}>
             <rect
               x={STAGE_W / 2 - 340}
               y={330}
               width={680}
-              height={92}
+              height={124}
               rx={14}
               fill={colors.PANEL}
               stroke={colors.WARM}
@@ -476,15 +487,25 @@ export function Render({ s }: { s: SceneState }) {
             <MathLabel
               tex={'\\mathcal{L} = m_{\\text{action}}\\!\\cdot\\!\\mathcal{L}_{\\text{GRPO}} \\;+\\; m_{\\text{obs}}\\!\\cdot\\!w_{\\text{sup}}'}
               x={STAGE_W / 2}
-              y={376}
+              y={370}
               fontSize={26}
               color={colors.TEXT}
               display
             />
+            <text
+              x={STAGE_W / 2}
+              y={426}
+              textAnchor="middle"
+              fill={colors.TEXT}
+              fontSize={14}
+              opacity={0.85}
+            >
+              mask m: 1 where the agent wrote the token, 0 where it was read in from the environment
+            </text>
           </g>
         )}
 
-        <Chip x={STAGE_W / 2} y={608} text="no new value network — selective log-prob + masking only" color={colors.POSITIVE} u={cheapChipU * fade} />
+        <Chip x={STAGE_W / 2} y={608} text="no new value network: one mask over the same per-token scores" color={colors.POSITIVE} u={cheapChipU * fade} />
       </Camera>
 
       {/* closing panel */}

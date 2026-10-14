@@ -56,9 +56,11 @@ const HELLO_LINES = [
 
 // camera marks
 const CAM_CODE: CameraState = { x: 330, y: 330, k: 1.5 };
-const CAM_SERVER: CameraState = { x: 810, y: 380, k: 1.12 };
-const CAM_FUSE: CameraState = { x: 560, y: 400, k: 1.5 };
-const CAM_CORE: CameraState = { x: 800, y: 385, k: 1.55 };
+// wide enough that the client, the code card and the ring stay on stage,
+// and high enough that the bottom labels clear the caption band
+const CAM_SERVER: CameraState = { x: 610, y: 375, k: 1.05 };
+const CAM_FUSE: CameraState = { x: 560, y: 400, k: 1.2 };
+const CAM_CORE: CameraState = { x: 600, y: 410, k: 1.3 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {
@@ -163,6 +165,7 @@ export function buildScene(): Scene {
     text: 'Now the descent. The context dives into the outermost ring — the logger from the readme. It notes the time, then calls await next, which passes the request one layer deeper.',
   });
   tl.tween(cam, CAM_CORE, { at: 35.2, dur: 1.8, ease: ease.move });
+  tl.tween(codeDim, 0, { at: 35.2, dur: 1.0, ease: ease.move }); // the source card leaves the frame
   tl.tween(descendU, 0.5, { at: 35.8, dur: 1.4, ease: ease.move });
   tl.tween(clockU, 1, { at: 37.4, dur: 22, ease: ease.linear }); // the clock runs until the log prints
   tl.tween(descendU, 1, { at: 39.4, dur: 1.4, ease: ease.move });
@@ -193,7 +196,7 @@ export function buildScene(): Scene {
     text: "On the way back out, the logger's second half runs. It reads the clock it started earlier and prints the method, the path, and the elapsed milliseconds.",
   });
   tl.tween(climbU, 1, { at: 53.8, dur: 2.4, ease: ease.move });
-  tl.tween(cam, { x: 700, y: 400, k: 1.3 }, { at: 54.0, dur: 1.8, ease: ease.move });
+  tl.tween(cam, CAM_CORE, { at: 54.0, dur: 1.8, ease: ease.move });
   tl.tween(logU, 1, { at: 56.6, dur: 0.7, ease: ease.enter });
   tl.hold(59.4, 0.5);
 
@@ -214,7 +217,7 @@ export function buildScene(): Scene {
     text: "That's the shape of everything in this book: down through the rings, turn at the core, and back out the same way. The next chapters slow each part of that journey down.",
   });
   tl.tween(cam, CAM_WIDE, { at: 66.6, dur: 1.8, ease: ease.move });
-  tl.tween(stageDim, 0.15, { at: 66.8, dur: 1.4, ease: ease.move });
+  tl.tween(stageDim, 0.1, { at: 66.8, dur: 1.4, ease: ease.move });
   tl.tween(traceU, 1, { at: 67.6, dur: 2.6, ease: ease.draw });
   tl.tween(closeU, 1, { at: 70.6, dur: 0.9, ease: ease.enter });
   tl.hold(73.4, 1.6);
@@ -357,7 +360,7 @@ export function Render({ s }: { s: SceneState }) {
             stroke={colors.GRID}
             strokeDasharray="8 8"
           />
-          <text x={ONION.x} y={ONION.y - R_OUTER - 54} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+          <text x={ONION.x} y={ONION.y - R_OUTER - 20} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
             http.createServer(app.callback())
           </text>
         </g>
@@ -412,10 +415,10 @@ export function Render({ s }: { s: SceneState }) {
           </g>
         )}
         {fuseU > 0.4 && (
-          <CodeChip x={X_EDGE - 40} y={ONION.y + 66} text="createContext(req, res)" u={clamp01(fuseU * 2 - 0.8) * stageDim} />
+          <CodeChip x={X_EDGE - 90} y={ONION.y + 66} text="createContext(req, res)" u={clamp01(fuseU * 2 - 0.8) * stageDim} />
         )}
         {stampU > 0 && stampU < 1.01 && fuseU > 0.9 && (
-          <CodeChip x={X_EDGE - 40} y={ONION.y - 62} text="res.statusCode = 404" u={stampU * stageDim} color={colors.NEGATIVE} />
+          <CodeChip x={X_EDGE - 90} y={ONION.y - 62} text="res.statusCode = 404" u={stampU * stageDim} color={colors.NEGATIVE} />
         )}
 
         {/* ---- the ctx chip on its journey ---- */}
@@ -434,8 +437,8 @@ export function Render({ s }: { s: SceneState }) {
         {/* the printed log line */}
         {logU > 0 && (
           <g opacity={logU * stageDim}>
-            <rect x={480} y={586} width={250} height={30} rx={6} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={494} y={606} fill={colors.POSITIVE} fontSize={13} fontFamily="monospace">
+            <rect x={430} y={586} width={150} height={30} rx={6} fill={colors.PANEL} stroke={colors.GRID} />
+            <text x={444} y={606} fill={colors.POSITIVE} fontSize={13} fontFamily="monospace">
               GET / — 2ms
             </text>
           </g>
@@ -443,7 +446,7 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* respond writes the body */}
         {respondU > 0 && (
-          <CodeChip x={X_EDGE - 60} y={ONION.y + 104} text="respond(ctx) → res.end(body)" u={respondU * stageDim} color={colors.POSITIVE} />
+          <CodeChip x={X_EDGE - 100} y={ONION.y + 112} text="respond(ctx) → res.end(body)" u={respondU * stageDim} color={colors.POSITIVE} />
         )}
         {exitU > 0 && exitU < 1 && (
           <text x={pos.x} y={pos.y - 34} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily="monospace">

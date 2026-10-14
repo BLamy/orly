@@ -38,7 +38,7 @@ const TRACE = Array.from({ length: 52 }, (_, i) => ({
 }));
 
 const CAM_PLAN: CameraState = { x: 640, y: 285, k: 1.08 };
-const CAM_TRACE: CameraState = { x: 720, y: 465, k: 1.2 };
+const CAM_TRACE: CameraState = { x: 660, y: 425, k: 1.1 };
 const CAM_SPLIT: CameraState = { x: 640, y: 330, k: 1.02 };
 
 interface Scene {
@@ -194,7 +194,7 @@ function RuntimeCard({ u, pointer, curU, dim }: { u: number; pointer: number; cu
   return (
     <g opacity={u * dim} transform={`translate(0 ${lerp(16, 0, u)}) scale(${pop})`}>
       <rect x={385} y={238} width={510} height={142} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
-      <text x={412} y={268} fill={colors.MUTED} fontSize={11} letterSpacing="0.11em">PER-RUN STATE · .statem/runs/demo/state.json</text>
+      <text x={412} y={268} fill={colors.MUTED} fontSize={12} letterSpacing="0.11em">PER-RUN STATE · .statem/runs/demo/state.json</text>
       <text x={420} y={306} fill={colors.MUTED} fontFamily={MONO} fontSize={14}>current</text>
       <text x={610} y={306} fill={colors.ACCENT} fontFamily={MONO} fontSize={17}>{phase}</text>
       <text x={420} y={334} fill={colors.MUTED} fontFamily={MONO} fontSize={14}>current_entry_id</text>
@@ -253,8 +253,8 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={clamp01(ambigU)}>
               {['execute?', 'repair?', 'verify?'].map((label, i) => (
                 <g key={label} transform={`translate(${500 + i * 145} ${568 + (i % 2) * 10}) scale(${0.9 + 0.1 * clamp01(ambigU)})`}>
-                  <rect x={-56} y={-17} width={112} height={34} rx={17} fill={colors.PANEL} stroke={i === 1 ? colors.WARM : colors.NEGATIVE} strokeWidth={1.2} />
-                  <text y={5} textAnchor="middle" fill={i === 1 ? colors.WARM : colors.NEGATIVE} fontFamily={MONO} fontSize={13}>{label}</text>
+                  <rect x={-62} y={-17} width={124} height={34} rx={17} fill={colors.PANEL} stroke={i === 1 ? colors.WARM : colors.NEGATIVE} strokeWidth={1.2} />
+                  <text y={5} textAnchor="middle" fill={i === 1 ? colors.WARM : colors.NEGATIVE} fontFamily={MONO} fontSize={14}>{label}</text>
                 </g>
               ))}
             </g>
@@ -271,14 +271,15 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={clamp01(curU) * dim}>
             <rect x={930} y={248} width={245} height={124} rx={14} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.4} />
             <text x={952} y={275} fill={colors.POSITIVE} fontFamily={MONO} fontSize={14}>statem cur --json</text>
-            <text x={952} y={307} fill={colors.TEXT} fontSize={13}>prompt · verify the candidate</text>
-            <text x={952} y={333} fill={colors.TEXT} fontSize={13}>before_transfer · 2 checks</text>
-            <text x={952} y={359} fill={colors.TEXT} fontSize={13}>next · handoff or repair</text>
+            <text x={952} y={307} fill={colors.TEXT} fontSize={14}>prompt · verify the candidate</text>
+            <text x={952} y={333} fill={colors.TEXT} fontSize={14}>before_transfer · 2 checks</text>
+            <text x={952} y={359} fill={colors.TEXT} fontSize={14}>next · handoff or repair</text>
           </g>
         )}
 
         {endU > 0 && (
           <g opacity={endU}>
+            <rect x={-1000} y={-1000} width={STAGE_W + 2000} height={STAGE_H + 2000} fill={colors.BG} opacity={0.88} />
             <rect x={250} y={215} width={780} height={250} rx={24} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.6} />
             <text x={640} y={290} textAnchor="middle" fill={colors.ACCENT} fontSize={22} fontWeight={700}>THE RUN HAS AN AUTHORITATIVE PLACE</text>
             <text x={640} y={338} textAnchor="middle" fill={colors.TEXT} fontSize={18}>broad autonomy inside the phase</text>

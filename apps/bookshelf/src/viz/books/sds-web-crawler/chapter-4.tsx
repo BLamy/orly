@@ -53,9 +53,12 @@ const CURVE: string = Array.from({ length: 60 }, (_, i) => {
   return `${i ? 'L' : 'M'}${plotX(c).toFixed(1)} ${plotY(ideal(c)).toFixed(1)}`;
 }).join('');
 
-const CAM_CELL: CameraState = { x: 260, y: 280, k: 1.55 };
-const CAM_TOP: CameraState = { x: 400, y: 220, k: 1.3 };
-const CAM_PLOT: CameraState = { x: 960, y: 420, k: 1.25 };
+// Framings keep the whole grid (labels, week clock, row timers) inside the
+// stage and above the caption band (y < 630), so nothing is cropped.
+const CAM_CELL: CameraState = { x: 413, y: 309, k: 1.15 };
+const CAM_TOP: CameraState = { x: 413, y: 309, k: 1.12 };
+const CAM_PLOT: CameraState = { x: 900, y: 400, k: 1.25 };
+const CAM_NOTE: CameraState = { x: 900, y: 330, k: 1 };
 
 // ---------------------------------------------------------------------------
 // Timeline
@@ -176,6 +179,7 @@ export function buildScene(): Scene {
     dur: 5,
     text: 'One simplification keeps the bookkeeping honest: a changed page is simply counted as a new page.',
   });
+  tl.tween(cam, CAM_NOTE, { at: 53.9, dur: 1.2, ease: ease.move });
   tl.tween(noteU, 1, { at: 54.2, dur: 0.7, ease: ease.enter });
   tl.hold(58.6, 0.4);
 
@@ -223,6 +227,10 @@ export function Render({ s }: { s: SceneState }) {
 
   const dimAll = 1 - closeU * 0.86;
   const clockU = modeU < 0.5 ? 1 - fract(wkA) : 1 - fract(wkB / 1); // the week dial
+  // while the mined-rhythm plot takes focus, the grid becomes a faint backdrop
+  // and its text labels step aside (so they never sit off-stage)
+  const gridBack = 1 - plotU * 0.7;
+  const gridLabelU = gridU * (1 - plotU);
 
   return (
     <>
@@ -230,15 +238,15 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...cam}>
         <g opacity={dimAll}>
           {/* ---- the stored copies ---- */}
-          <text x={GRID.x0 - 20} y={104} fill={colors.TEXT} fontSize={15} opacity={gridU}>
+          <text x={GRID.x0 - 20} y={104} fill={colors.TEXT} fontSize={15} opacity={gridLabelU}>
             your stored copies
           </text>
-          <text x={GRID.x0 - 20} y={124} fill={colors.MUTED} fontSize={12} fontStyle="italic" opacity={gridU}>
+          <text x={GRID.x0 - 20} y={124} fill={colors.MUTED} fontSize={12} fontStyle="italic" opacity={gridLabelU}>
             each dot one page · rows ranked by popularity · brightness = freshness
           </text>
           {Array.from({ length: ROWS }, (_, r) =>
             Array.from({ length: COLS }, (_, c) => {
-              const appear = clamp01(gridU * 1.7 - (r * COLS + c) / (ROWS * COLS) * 0.7);
+              const appear = clamp01(gridU * 1.7 - (r * COLS + c) / (ROWS * COLS) * 0.7) * gridBack;
               // weekly policy: everyone ages together, refresh wave sweeps by column
               const ageA = fract(wkA - c * 0.014);
               // rank-aware: each row on its own clock
@@ -271,26 +279,26 @@ export function Render({ s }: { s: SceneState }) {
           {/* row labels + rank-aware per-row timers */}
           {Array.from({ length: ROWS }, (_, r) => (
             <g key={`row${r}`}>
-              <text x={GRID.x0 - 34} y={cellY(r) + 4} textAnchor="end" fill={colors.MUTED} fontSize={11} opacity={gridU * 0.9}>
+              <text x={GRID.x0 - 34} y={cellY(r) + 4} textAnchor="end" fill={colors.MUTED} fontSize={12} opacity={gridLabelU * 0.9}>
                 {r === 0 ? 'popular' : r === ROWS - 1 ? 'quiet' : ''}
               </text>
-              <g opacity={modeU * gridU}>
+              <g opacity={modeU * gridU * gridBack}>
                 <TimerArc cx={cellX(COLS - 1) + 54} cy={cellY(r)} r={11} u={1 - fract((wkB + 0.001) / INTERVAL[r])} color={colors.POSITIVE} width={2.5} />
               </g>
             </g>
           ))}
 
-          {/* the week clock */}
-          <g opacity={gridU}>
-            <TimerArc cx={776} cy={150} r={40} u={clockU} color={colors.WARM} width={5} />
-            <text x={776} y={155} textAnchor="middle" fill={colors.WARM} fontSize={12.5}>
+          {/* the week clock (clear of the note chips and the row timers) */}
+          <g opacity={gridLabelU}>
+            <TimerArc cx={740} cy={150} r={40} u={clockU} color={colors.WARM} width={5} />
+            <text x={740} y={155} textAnchor="middle" fill={colors.WARM} fontSize={13}>
               {modeU < 0.5 ? 'one week' : 'per rank'}
             </text>
           </g>
 
           {/* the timestamp inspection */}
           <g opacity={stampU}>
-            <rect x={cellX(1) + 20} y={cellY(1) - 64} width={210} height={46} rx={9} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.3} />
+            <rect x={cellX(1) + 20} y={cellY(1) - 64} width={250} height={46} rx={9} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.3} />
             <text x={cellX(1) + 34} y={cellY(1) - 45} fill={colors.WARM} fontSize={12} fontFamily="ui-monospace, monospace">
               timestamp
             </text>
@@ -316,14 +324,11 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={plotU}>
             <line x1={PLOT.x0} y1={PLOT.y0} x2={PLOT.x1} y2={PLOT.y0} stroke={colors.GRID} strokeWidth={1.4} />
             <line x1={PLOT.x0} y1={PLOT.y0} x2={PLOT.x0} y2={PLOT.y1 - 16} stroke={colors.GRID} strokeWidth={1.4} />
-            <text x={(PLOT.x0 + PLOT.x1) / 2} y={PLOT.y0 + 26} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+            <text x={(PLOT.x0 + PLOT.x1) / 2} y={PLOT.y0 + 26} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               how often the page changes →
             </text>
-            <text x={PLOT.x0 - 10} y={PLOT.y1 - 26} fill={colors.MUTED} fontSize={11.5}>
-              re-crawl interval
-            </text>
-            <text x={PLOT.x1} y={PLOT.y1 - 26} textAnchor="end" fill={colors.SECONDARY} fontSize={11} fontStyle="italic">
-              mean time before update
+            <text x={PLOT.x0 - 10} y={PLOT.y1 - 26} fill={colors.MUTED} fontSize={12}>
+              re-crawl interval ≈ mean time before update
             </text>
             <path d={CURVE} fill="none" stroke={colors.SECONDARY} strokeWidth={2} opacity={0.35 + 0.65 * fitU} strokeDasharray={fitU > 0.98 ? undefined : '5 5'} />
             {RATE.map((c, r) => {
@@ -334,7 +339,7 @@ export function Render({ s }: { s: SceneState }) {
                 </g>
               );
             })}
-            <text x={plotX(RATE[0]) - 6} y={lerp(plotY(1), plotY(ideal(RATE[0])), fitU) - 14} fill={colors.MUTED} fontSize={10.5}>
+            <text x={plotX(RATE[0]) - 6} y={lerp(plotY(1), plotY(ideal(RATE[0])), fitU) - 14} fill={colors.MUTED} fontSize={12}>
               popular
             </text>
           </g>

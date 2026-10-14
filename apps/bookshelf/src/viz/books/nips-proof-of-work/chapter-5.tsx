@@ -5,7 +5,7 @@
 // document), which is how a relay actually publishes its price. All curve
 // values are the exact powers of two.
 import {
-  CAMERA_HOME, Camera, MathLabel, Timeline, cameraInterp, colors, ease,
+  CAMERA_HOME, Camera, Timeline, cameraInterp, colors, ease,
 } from '../../core';
 import type { CameraState, ChannelRef, SceneState } from '../../core';
 
@@ -29,7 +29,8 @@ const fmtHashes = (d: number): string => {
 const SPAM_NOTES = 10000;
 
 const CAM_PLOT: CameraState = { x: 520, y: 320, k: 1.18 };
-const CAM_BILLS: CameraState = { x: 900, y: 330, k: 1.12 };
+// frames the plot and both bills together (plot left edge through the bills' right edge)
+const CAM_BILLS: CameraState = { x: 695, y: 340, k: 1.08 };
 
 interface Scene {
   tl: Timeline;
@@ -42,6 +43,7 @@ interface Scene {
   seriesU: ChannelRef<number>;
   dimU: ChannelRef<number>;
   closeU: ChannelRef<number>;
+  tailU: ChannelRef<number>;
 }
 
 export function buildScene(): Scene {
@@ -55,6 +57,7 @@ export function buildScene(): Scene {
   const seriesU = tl.channel('seriesU', 0);
   const dimU = tl.channel('dimU', 0);
   const closeU = tl.channel('closeU', 0);
+  const tailU = tl.channel('tailU', 0);
 
   // Beat 1 — the price curve.
   tl.caption({
@@ -121,9 +124,11 @@ export function buildScene(): Scene {
   tl.tween(cam, CAMERA_HOME, { at: 42.2, dur: 1.4, ease: ease.move });
   tl.tween(dimU, 1, { at: 42.4, dur: 1.2, ease: ease.move });
   tl.tween(closeU, 1, { at: 43.4, dur: 1.0, ease: ease.enter });
+  // the closing chain reveals over the caption's tail so the last seconds keep moving
+  tl.tween(tailU, 1, { at: 44.6, dur: 3.2, ease: ease.move });
   tl.hold(48.2, 1.4);
 
-  return { tl, cam, axesU, curveU, dialD, billsU, knobU, seriesU, dimU, closeU };
+  return { tl, cam, axesU, curveU, dialD, billsU, knobU, seriesU, dimU, closeU, tailU };
 }
 
 const scene = buildScene();
@@ -138,8 +143,10 @@ export function Render({ s }: { s: SceneState }) {
   const seriesU = s.get(scene.seriesU);
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
+  const tailU = s.get(scene.tailU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the old chart fades to a ghost (under the opaque closing panel)
+  const mainOp = 1 - 0.9 * dimU;
   const d = Math.round(clamp01(dialD / 20) * 20);
   const dialOn = dialD > 0;
 
@@ -156,7 +163,7 @@ export function Render({ s }: { s: SceneState }) {
                 difficulty — leading zero bits
               </text>
               <text x={PLOT.x - 10} y={PLOT.y - 12} fill={colors.MUTED} fontSize={12.5} opacity={axesU * (1 - clamp01(billsU * 1.25))}>
-                hashes per note (each step = ×2)
+                log₂ hashes per note — each step up doubles
               </text>
               {curveU > 0 && (
                 <>
@@ -169,14 +176,26 @@ export function Render({ s }: { s: SceneState }) {
                     stroke={colors.WARM}
                     strokeWidth={2.5}
                   />
-                  {[4, 8, 12, 16, 20, 24].map((dd) => (
+                  {[4, 8, 12, 16, 20, 24].map((dd) => {
+                    // labels sit above-left of the curve (the empty side); 2^4 goes
+                    // below-right because above-left would run into the y-axis
+                    const below = dd === 4;
+                    return (
                     <g key={dd} opacity={clamp01(curveU * D_MAX - dd) * 0.9}>
                       <circle cx={px(dd)} cy={py(dd)} r={4} fill={colors.WARM} />
-                      <text x={px(dd) + 10} y={py(dd) - 8} fill={colors.MUTED} fontSize={11.5} fontFamily="monospace">
+                      <text
+                        x={below ? px(dd) + 10 : px(dd) - 10}
+                        y={below ? py(dd) + 18 : py(dd) - 10}
+                        textAnchor={below ? 'start' : 'end'}
+                        fill={colors.MUTED}
+                        fontSize={12}
+                        fontFamily="monospace"
+                      >
                         2^{dd} = {fmtHashes(dd)}
                       </text>
                     </g>
-                  ))}
+                    );
+                  })}
                 </>
               )}
               {/* the dial */}
@@ -184,10 +203,11 @@ export function Render({ s }: { s: SceneState }) {
                 <g>
                   <line x1={px(d)} y1={PLOT.y + PLOT.h} x2={px(d)} y2={py(d)} stroke={colors.ACCENT} strokeWidth={1.5} strokeDasharray="4 4" />
                   <circle cx={px(d)} cy={py(d)} r={7} fill={colors.ACCENT} />
+                  {/* callout sits below-right of the dial point: the empty side of the curve */}
                   <g>
-                    <rect x={px(d) - 92} y={py(d) - 58} width={184} height={36} rx={8} fill={colors.PANEL} stroke={colors.ACCENT} opacity={0.95} />
-                    <text x={px(d)} y={py(d) - 34} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily="monospace">
-                      d = {d} → {fmtHashes(d)} hashes
+                    <rect x={px(d) + 12} y={py(d) + 22} width={160} height={36} rx={8} fill={colors.PANEL} stroke={colors.ACCENT} opacity={0.95} />
+                    <text x={px(d) + 92} y={py(d) + 45} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily="monospace">
+                      d = {d} → {fmtHashes(d)}
                     </text>
                   </g>
                 </g>
@@ -239,7 +259,9 @@ export function Render({ s }: { s: SceneState }) {
 
           {seriesU > 0 && (
             <g opacity={seriesU}>
-              <MathLabel tex={'\\text{gate} = 2^{d}\\ \\text{hashes; no permission required}'} x={250} y={540} />
+              <text x={480} y={540} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontFamily="monospace">
+                gate = 2<tspan dy={-6} fontSize={11}>d</tspan><tspan dy={6}> hashes · no permission required</tspan>
+              </text>
             </g>
           )}
         </g>
@@ -254,7 +276,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={339} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             a flat tax that people never notice and volume cannot survive
           </text>
-          <text x={640} y={379} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={379} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace" opacity={tailU}>
             NIP-13 proof of work · zeros → mining → commitment → delegation → economics
           </text>
         </g>

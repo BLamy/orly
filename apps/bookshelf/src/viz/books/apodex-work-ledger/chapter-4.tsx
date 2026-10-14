@@ -33,14 +33,14 @@ export function buildScene() {
 
   tl.caption({ at: 7.0, dur: 6.2, text: 'A publishing assignment names exact output paths, and that manifest itself becomes the grant.' });
   tl.tween(manifestU, 1, { at: 7.7, dur: 1.3, ease: ease.enter });
-  tl.tween(cam, { x: 650, y: 332, k: 1.16 }, { at: 9.6, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 332, k: 1.1 }, { at: 9.6, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 13.6, dur: 6.2, text: 'A run-scoped lease gives commit authority to at most one active publisher at a time.' });
   tl.tween(leaseU, 1, { at: 14.3, dur: 0.7, ease: ease.pop });
 
   tl.caption({ at: 20.2, dur: 6.3, text: 'If a second publisher races toward the same deliverable, the lock refuses it before dispatch.' });
   tl.tween(raceU, 1, { at: 20.9, dur: 1.5, ease: ease.move });
-  tl.tween(cam, { x: 500, y: 300, k: 1.12 }, { at: 23.1, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 300, k: 1.1 }, { at: 23.1, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 26.9, dur: 6.3, text: 'Even the lease holder can write only declared paths. An undeclared output bounces at the aperture.' });
   tl.tween(bounceU, 1, { at: 27.6, dur: 1.7, ease: ease.move });
@@ -97,12 +97,12 @@ export function Render({ s }: { s: SceneState }) {
       <g opacity={s.get(scene.namespaceU) * workspaceQuiet}>
         <rect x="70" y="124" width="390" height="442" rx="32" fill="#0d1526" stroke={colors.ACCENT} strokeWidth="3" strokeDasharray="9 8" />
         <text x="265" y="160" textAnchor="middle" fill={colors.ACCENT} fontSize="17" fontFamily={colors.font.mono}>/workspace</text>
-        <text x="265" y="184" textAnchor="middle" fill={colors.MUTED} fontSize="13">candidate production</text>
+        <text x="265" y="184" textAnchor="middle" fill={colors.MUTED} fontSize="14">candidate production</text>
       </g>
       <g opacity={s.get(scene.namespaceU)}>
         <rect x="872" y="124" width="338" height="442" rx="32" fill="#0d1526" stroke={colors.POSITIVE} strokeWidth="3" strokeDasharray="9 8" />
         <text x="1041" y="160" textAnchor="middle" fill={colors.POSITIVE} fontSize="17" fontFamily={colors.font.mono}>/outputs</text>
-        <text x="1041" y="184" textAnchor="middle" fill={colors.MUTED} fontSize="13">final collection</text>
+        <text x="1041" y="184" textAnchor="middle" fill={colors.MUTED} fontSize="14">final collection</text>
       </g>
 
       {[0, 1, 2, 3].map((i) => {
@@ -119,24 +119,24 @@ export function Render({ s }: { s: SceneState }) {
         <text x="666" y="311" textAnchor="middle" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>/outputs/answer.md</text>
         <path d="M666 360 V472" stroke={colors.SECONDARY} strokeWidth="16" strokeLinecap="round" />
         <path d="M638 416 H694" stroke={colors.BG} strokeWidth="7" strokeLinecap="round" />
-        <text x="666" y="500" textAnchor="middle" fill={colors.MUTED} fontSize="13">declared paths only</text>
+        <text x="666" y="500" textAnchor="middle" fill={colors.MUTED} fontSize="14">declared paths only</text>
       </g>
 
       <g opacity={s.get(scene.leaseU)}>
         <circle cx={584 + transfer * 164} cy="142" r="28" fill={colors.WARM} />
         <text x={584 + transfer * 164} y="148" textAnchor="middle" fill="#151006" fontSize="16" fontWeight="900">LEASE</text>
-        <text x="666" y="110" textAnchor="middle" fill={colors.WARM} fontSize="13">one active publisher</text>
+        <text x="666" y="110" textAnchor="middle" fill={colors.WARM} fontSize="14">one active publisher</text>
       </g>
 
       <g opacity={s.get(scene.raceU) * workspaceQuiet}>
         <path d="M280 330 C410 330 450 250 538 250" fill="none" stroke={colors.ACCENT} strokeWidth="5" />
         <path d="M280 386 C420 386 452 442 538 442" fill="none" stroke={colors.NEGATIVE} strokeWidth="5" strokeDasharray={`${Math.max(1, s.get(scene.raceU) * 270)} 290`} />
         <path d="M500 420 l34 22 -38 12" fill="none" stroke={colors.NEGATIVE} strokeWidth="5" />
-        <text x="410" y="468" textAnchor="middle" fill={colors.NEGATIVE} fontSize="13">second publisher refused</text>
+        <text x="265" y="506" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14">second publisher refused</text>
       </g>
 
       <g opacity={bounce * workspaceQuiet}>
-        <Artifact x={420 + 126 * Math.sin(bounce * Math.PI)} y={540 - 128 * bounce} label="undeclared" color={colors.NEGATIVE} />
+        <Artifact x={436 + 40 * Math.sin(bounce * Math.PI)} y={540 - 128 * bounce} label="undeclared" color={colors.NEGATIVE} />
         <path d="M522 392 l26 20 -32 12" fill="none" stroke={colors.NEGATIVE} strokeWidth="5" />
       </g>
 
@@ -148,12 +148,17 @@ export function Render({ s }: { s: SceneState }) {
       </g>
 
       <g opacity={transfer}>
-        <text x="666" y="586" textAnchor="middle" fill={colors.WARM} fontSize="13">lease transfer: incumbent capped or gone</text>
+        <text x="666" y="586" textAnchor="middle" fill={colors.WARM} fontSize="14">lease transfer: incumbent capped or gone</text>
       </g>
 
       <g opacity={clamp01(admit)}>
         <Artifact x={786 + clamp01(admit - 1) * 250} y={390} label="answer.md" color={colors.POSITIVE} />
         <path d="M792 390 H1004" stroke={colors.POSITIVE} strokeWidth="5" strokeDasharray={`${Math.max(1, clamp01(admit - 1) * 215)} 230`} />
+        <text x="910" y="446" textAnchor="middle" fill={colors.MUTED} fontSize="14">declared path</text>
+      </g>
+      <g opacity={s.get(scene.namespaceU)}>
+        <rect x="998" y="360" width="76" height="60" rx="8" fill="none" stroke={colors.POSITIVE} strokeWidth="2" strokeDasharray="6 6" />
+        <text x="1041" y="470" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontFamily={colors.font.mono}>answer.md slot</text>
       </g>
 
       <g opacity={clamp01(recap)}>
@@ -163,7 +168,7 @@ export function Render({ s }: { s: SceneState }) {
           const x = 270 + i * 246;
           return <g key={stage.label} opacity={u}>
             <circle cx={x} cy="595" r="13" fill={stage.color} />
-            <text x={x + 22} y="600" fill={stage.color} fontSize="13" fontWeight="700">{stage.label}</text>
+            <text x={x + 22} y="600" fill={stage.color} fontSize="14" fontWeight="700">{stage.label}</text>
           </g>;
         })}
       </g>

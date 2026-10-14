@@ -43,6 +43,9 @@ const PIPE_X1 = BROWSER.x - 78;
 
 const BILL = { x: 640, y: 76 } as const;
 
+// tokens ride the wire between the endpoint boxes, inset so they never sit under a box
+const PIPE_INSET = 24;
+
 const TAPE = { x0: 330, y: 452, cellW: 47, cellH: 42, n: 14 } as const;
 const TAPE_ZONE = { x: 280, y: 396, w: 760, h: 150 } as const;
 const cellX = (i: number): number => TAPE.x0 + i * TAPE.cellW;
@@ -58,8 +61,10 @@ const READ_BOOKMARK = 8; // cells the reader has consumed when it vanishes
 
 // camera marks
 const CAM_PIPE: CameraState = { x: 640, y: 210, k: 1.22 };
-const CAM_BREAK: CameraState = { x: 640, y: 220, k: 1.55 };
-const CAM_TAPE: CameraState = { x: 655, y: 400, k: 1.18 };
+// k is held at 1.18 so both endpoint boxes stay inside the stage
+const CAM_BREAK: CameraState = { x: 640, y: 215, k: 1.18 };
+// frames the bill (top) down to the tape's offset readout (bottom)
+const CAM_TAPE: CameraState = { x: 640, y: 310, k: 1.18 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 // ---------------------------------------------------------------------------
@@ -211,7 +216,7 @@ const scene = buildScene();
 /** Position of token i on the direct pipe for a wave driver p. */
 function pipePos(p: number, i: number): { u: number; x: number; y: number } {
   const u = win(p, N, i, 3.2);
-  return { u, x: PIPE_X0 + (PIPE_X1 - PIPE_X0) * u, y: PIPE_Y };
+  return { u, x: PIPE_X0 + PIPE_INSET + (PIPE_X1 - PIPE_X0 - 2 * PIPE_INSET) * u, y: PIPE_Y };
 }
 
 export function Render({ s }: { s: SceneState }) {
@@ -236,8 +241,9 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const cardU = s.get(scene.cardU);
 
-  const machineOp = 1 - 0.88 * dimU;
-  const pipeLayerOp = (1 - 0.92 * phaseU) * machineOp;
+  const machineOp = 1 - 0.95 * dimU;
+  // the direct pipe is fully gone once the tape takes over (no ghost chips)
+  const pipeLayerOp = (1 - phaseU) * machineOp;
 
   // ---- billing meter: wave 1 departures + the re-run pays for everything again
   const departed1 = Math.min(N, Math.floor(flow1U * (N + 3.2)));
@@ -319,7 +325,8 @@ export function Render({ s }: { s: SceneState }) {
             const inFlight = p.u > 0.02 && p.u < 0.98;
             const dropped = snapU > 0.5 && inFlight;
             const dy = dropped ? fallU * fallU * 320 : 0;
-            const op = dropped ? Math.max(0, 1 - fallU * 1.1) : p.u >= 0.98 ? 0.85 : 1;
+            // delivered tokens fade into the browser instead of piling up on its edge
+            const op = dropped ? Math.max(0, 1 - fallU * 1.1) : Math.min(1, (1 - p.u) * 12);
             if (op <= 0) return null;
             return (
               <g key={i} opacity={op}>
@@ -386,7 +393,8 @@ export function Render({ s }: { s: SceneState }) {
             const u = i < CELLS_A ? win(appendU, CELLS_A, i, 1.6) : win(append2U, CELLS_B, i - CELLS_A, 1.6);
             if (u <= 0) return null;
             const x = cellX(i) - TAPE.cellW / 2 + 2;
-            const drop = (1 - u) * (1 - u) * 60;
+            // a short settle, so the landing cell stays clear of the zone label
+            const drop = (1 - u) * (1 - u) * 22;
             const replayed = catchU > 0 && i >= READ_BOOKMARK && headCell >= i;
             const consumed = i < readPos || replayed;
             return (
@@ -401,11 +409,11 @@ export function Render({ s }: { s: SceneState }) {
                   stroke={replayed ? colors.WARM : i < CELLS_A ? colors.ACCENT : colors.SECONDARY}
                   strokeWidth={replayed ? 2 : 1.2}
                 />
-                <text x={x + (TAPE.cellW - 5) / 2} y={TAPE.y + 4 - drop} textAnchor="middle" fill={colors.TEXT} fontSize={10.5} fontFamily={MONO}>
+                <text x={x + (TAPE.cellW - 5) / 2} y={TAPE.y + 4 - drop} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
                   {tok}
                 </text>
                 {/* offset tick — positions are numbered, opaque tokens on the wire */}
-                <text x={x + (TAPE.cellW - 5) / 2} y={TAPE.y + TAPE.cellH / 2 + 26} textAnchor="middle" fill={u >= 1 ? colors.MUTED : colors.GRID} fontSize={9.5} fontFamily={MONO}>
+                <text x={x + (TAPE.cellW - 5) / 2} y={TAPE.y + TAPE.cellH / 2 + 26} textAnchor="middle" fill={u >= 1 ? colors.MUTED : colors.GRID} fontSize={12} fontFamily={MONO}>
                   {`…${String(i).padStart(2, '0')}`}
                 </text>
               </g>

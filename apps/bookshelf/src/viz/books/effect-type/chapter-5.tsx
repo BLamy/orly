@@ -36,6 +36,11 @@ const lerp = (a: number, b: number, u: number): number => a + (b - a) * u;
 const P_LANE = { chipX: 100, chipY: 148, trackY: 196, serverX: 970 } as const;
 const E_LANE = { cardX: 100, cardY: 366, trackY: 440, serverX: 970 } as const;
 const SERVER_W = 92;
+// timeout race: the request's track runs from the card to the server, and a
+// clock bar above it drains at the same pace the request advances
+const RACE_X0 = E_LANE.cardX + 262;
+const RACE_X1 = E_LANE.serverX - 12;
+const RACE_Y = E_LANE.trackY - 88;
 
 // attempt dot: out (0..0.5) and, on failure, back (0.5..1)
 const attemptPos = (u: number, fromX: number, toX: number, bounce: boolean): number => {
@@ -55,15 +60,17 @@ const RECAP_W = 184;
 const RECAP_H = 120;
 
 // camera marks
-const CAM_P: CameraState = { x: 560, y: 210, k: 1.3 };
-const CAM_P_SETTLE: CameraState = { x: 620, y: 250, k: 1.4 };
-const CAM_E: CameraState = { x: 560, y: 440, k: 1.3 };
+// visible x-range is x ± 640/k: keep the promise chip (x 100) and the server (x ~1062) in frame
+const CAM_P: CameraState = { x: 570, y: 210, k: 1.25 };
+const CAM_P_SETTLE: CameraState = { x: 590, y: 250, k: 1.2 };
+const CAM_E: CameraState = { x: 580, y: 350, k: 1.2 };
 const CAM_LANES: CameraState = { x: 640, y: 340, k: 1.1 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {
   tl: Timeline;
   cam: ChannelRef<CameraState>;
+  hookU: ChannelRef<number>;
   pU: ChannelRef<number>;
   pFuse: ChannelRef<number>;
   pSettle: ChannelRef<number>;
@@ -84,6 +91,7 @@ export interface Scene {
 export function buildScene(): Scene {
   const tl = new Timeline();
   const cam = tl.channel<CameraState>('cam', { x: 640, y: 330, k: 1.06 }, cameraInterp);
+  const hookU = tl.channel('hookU', 0);
   const pU = tl.channel('pU', 0);
   const pFuse = tl.channel('pFuse', 0);
   const pSettle = tl.channel('pSettle', 0);
@@ -107,6 +115,8 @@ export function buildScene(): Scene {
     text: 'Time to settle an old rivalry. The language already has a way to talk about the future: the promise. So why does Effect insist on lazy descriptions?',
   });
   tl.tween(cam, CAM_LANES, { at: 0.8, dur: 2.0, ease: ease.move });
+  tl.tween(hookU, 1, { at: 0.8, dur: 1.4, ease: ease.enter });
+  tl.tween(hookU, 0, { at: 6.4, dur: 0.6, ease: ease.move });
   tl.hold(6.5, 0.5);
 
   // — Beat 2 · a promise is born running —
@@ -167,7 +177,7 @@ export function buildScene(): Scene {
     dur: 7.2,
     text: 'Timeout is the same trick: race the description against a clock. If time runs out, the runtime interrupts the fiber, and the abort signal reaches down to cancel the real request.',
   });
-  tl.tween(cutRun, 0.5, { at: 43.2, dur: 1.2, ease: ease.linear });
+  tl.tween(cutRun, 0.3, { at: 43.2, dur: 1.2, ease: ease.linear });
   tl.tween(cutU, 1, { at: 44.8, dur: 0.7, ease: ease.pop });
   tl.hold(49.2, 0.4);
 
@@ -199,11 +209,13 @@ export function buildScene(): Scene {
     text: 'And because nothing runs until you say so, you get retry, timeout, and interruption almost for free. Those are the good parts. This is book one. The series continues from here.',
   });
   tl.tween(closeU, 1, { at: 66.0, dur: 0.9, ease: ease.enter });
+  tl.tween(laneDim, 0, { at: 66.0, dur: 0.9, ease: ease.enter });
   tl.hold(71.6, 1.6);
 
   return {
     tl,
     cam,
+    hookU,
     pU,
     pFuse,
     pSettle,
@@ -258,6 +270,7 @@ function AttemptDot({ u, n }: { u: number; n: number }) {
 
 export function Render({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
+  const hookU = s.get(scene.hookU);
   const pU = s.get(scene.pU);
   const pFuse = s.get(scene.pFuse);
   const pSettle = s.get(scene.pSettle);
@@ -282,6 +295,20 @@ export function Render({ s }: { s: SceneState }) {
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
+        {/* ================= hook: the two words the chapter will unpack ================= */}
+        {hookU > 0.01 && (
+          <g opacity={hookU}>
+            <rect x={440} y={250} width={400} height={56} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.6} />
+            <text x={640} y={285} textAnchor="middle" fill={colors.WARM} fontSize={18} fontFamily="monospace">
+              Promise&lt;Response&gt;
+            </text>
+            <rect x={440} y={336} width={400} height={56} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.6} />
+            <text x={640} y={371} textAnchor="middle" fill={colors.ACCENT} fontSize={18} fontFamily="monospace">
+              Effect&lt;A, E, R&gt;
+            </text>
+          </g>
+        )}
+
         {/* ================= promise lane ================= */}
         {pU > 0.01 && (
           <g opacity={pU * laneDim}>
@@ -405,25 +432,27 @@ export function Render({ s }: { s: SceneState }) {
               </g>
             )}
 
-            {/* timeout: the clock, the cut, the abort wire */}
-            {cutU > 0.01 && (
-              <g opacity={cutU}>
-                {/* clock over the track */}
-                <circle cx={cutX + 60} cy={E_LANE.trackY - 60} r={18} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.6} />
-                <line x1={cutX + 60} y1={E_LANE.trackY - 60} x2={cutX + 60} y2={E_LANE.trackY - 72} stroke={colors.WARM} strokeWidth={2} />
-                <line x1={cutX + 60} y1={E_LANE.trackY - 60} x2={cutX + 70} y2={E_LANE.trackY - 56} stroke={colors.WARM} strokeWidth={2} />
-                <text x={cutX + 88} y={E_LANE.trackY - 66} fill={colors.WARM} fontSize={11.5} fontFamily="monospace">
+            {/* timeout race: the request advances while the clock bar drains; the cut lands when it runs out */}
+            {cutRun > 0.01 && (
+              <g>
+                <text x={RACE_X0} y={RACE_Y - 8} fill={colors.WARM} fontSize={12.5} fontFamily="monospace">
                   Effect.timeout
                 </text>
-                {/* the cut */}
+                <rect x={RACE_X0} y={RACE_Y} width={RACE_X1 - RACE_X0} height={8} rx={4} fill={colors.GRID} />
+                <rect x={RACE_X0} y={RACE_Y} width={(RACE_X1 - RACE_X0) * clamp01(1 - cutRun * 2)} height={8} rx={4} fill={colors.WARM} />
+                {cutU < 0.5 && <circle cx={cutX} cy={E_LANE.trackY} r={9} fill={colors.ACCENT} />}
+              </g>
+            )}
+            {/* timeout: the cut, and the abort wire racing ahead to the server */}
+            {cutU > 0.01 && (
+              <g opacity={cutU}>
                 <line x1={cutX - 9} y1={E_LANE.trackY - 13} x2={cutX + 9} y2={E_LANE.trackY + 13} stroke={colors.NEGATIVE} strokeWidth={2.5} />
                 <line x1={cutX + 9} y1={E_LANE.trackY - 13} x2={cutX - 9} y2={E_LANE.trackY + 13} stroke={colors.NEGATIVE} strokeWidth={2.5} />
-                <text x={cutX} y={E_LANE.trackY + 32} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11.5}>
+                <text x={cutX} y={E_LANE.trackY + 32} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12}>
                   fiber interrupted
                 </text>
-                {/* abort wire racing ahead to the server */}
                 <line x1={cutX + 14} y1={E_LANE.trackY - 4} x2={E_LANE.serverX - 6} y2={E_LANE.trackY - 4} stroke={colors.NEGATIVE} strokeWidth={1.4} strokeDasharray="4 5" opacity={0.9} />
-                <text x={E_LANE.serverX - 16} y={E_LANE.trackY + 30} textAnchor="end" fill={colors.NEGATIVE} fontSize={11} fontStyle="italic">
+                <text x={cutX + 20} y={E_LANE.trackY - 26} fill={colors.NEGATIVE} fontSize={12} fontStyle="italic">
                   abort signal cancels the real request
                 </text>
               </g>

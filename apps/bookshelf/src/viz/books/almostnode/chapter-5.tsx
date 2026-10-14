@@ -58,7 +58,7 @@ const BRIDGE: Pt = { x: 235, y: 400 };
 const SNIFF = { x: 505, y: 322, w: 210, h: 54 } as const;
 const CHIP302 = { x: 872, y: 236, w: 168, h: 34 } as const;
 const PRESS = { x: 872, y: 410, w: 150, h: 58 } as const;
-const CLOUD: Pt = { x: 1118, y: 410 };
+const CLOUD: Pt = { x: 1030, y: 410 };
 
 // lane paths
 const P_VIRTUAL: Pt[] = [DROP, GATE_C, { x: 640, y: 200 }, { x: BRIDGE.x + 40, y: BRIDGE.y - 26 }];
@@ -93,13 +93,14 @@ const RECAP = [
   { x: 1105, label: 'VirtualFS', sub: 'ch 2 · the tree', color: colors.POSITIVE },
 ] as const;
 const RECAP_Y = 330;
-const RECAP_PATH: Pt[] = RECAP.map((r) => ({ x: r.x, y: RECAP_Y }));
+// the request runs on a bus just below the badges, so its '200' never sits on a badge
+const RECAP_PATH: Pt[] = RECAP.map((r) => ({ x: r.x, y: RECAP_Y + 46 }));
 
-// camera marks
+// camera marks — each frame keeps its subject fully inside the 1280×720 stage
 const CAM_WIDE: CameraState = CAMERA_HOME;
 const CAM_GATE: CameraState = { x: 640, y: 200, k: 1.25 };
-const CAM_PRESS: CameraState = { x: 850, y: 430, k: 1.28 };
-const CAM_CHAN: CameraState = { x: 430, y: 400, k: 1.2 };
+const CAM_PRESS: CameraState = { x: 680, y: 360, k: 1.1 };
+const CAM_CHAN: CameraState = { x: 520, y: 390, k: 1.1 };
 
 // ---------------------------------------------------------------------------
 // Timeline (~96s, twelve beats).
@@ -368,7 +369,7 @@ export function Render({ s }: { s: SceneState }) {
   const gateStroke = deadU > 0.3 ? colors.MUTED : gateGlow > 0.1 || regexHot > 0.1 ? colors.WARM : colors.GRID;
 
   // the stalled card path: drop → gate (stops short at 0.32) → bridge
-  const P_STALL: Pt[] = [DROP, { x: 640, y: 96 }, GATE_C, { x: 640, y: 200 }, { x: BRIDGE.x + 40, y: BRIDGE.y - 26 }];
+  const P_STALL: Pt[] = [DROP, { x: 640, y: 60 }, GATE_C, { x: 640, y: 200 }, { x: BRIDGE.x + 40, y: BRIDGE.y - 26 }];
 
   return (
     <>
@@ -385,7 +386,7 @@ export function Render({ s }: { s: SceneState }) {
               {regexHot > 0.1 ? "/__virtual__/(\\d+)/ → port 3000" : "addEventListener('fetch', …)"}
             </text>
             {deadU > 0.3 && (
-              <text x={GATE_C.x} y={GATE.y - 12} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12.5}>
+              <text x={GATE.x + GATE.w + 14} y={GATE.y + 44} fill={colors.NEGATIVE} fontSize={13}>
                 terminated — idle ~30 s
               </text>
             )}
@@ -420,7 +421,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={PRESS.x} y={PRESS.y + 24} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontWeight={600}>
               header press
             </text>
-            <text x={PRESS.x} y={PRESS.y + 44} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+            <text x={PRESS.x} y={PRESS.y + 44} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               on every response
             </text>
           </g>
@@ -432,7 +433,7 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={t} opacity={u}>
                 <rect x={STAMP_X} y={STAMP_Y0 + i * 30 - 4 * (1 - u)} width={192} height={26} rx={7} fill={colors.BG} stroke={colors.POSITIVE} />
-                <text x={STAMP_X + 96} y={STAMP_Y0 + i * 30 + 13} textAnchor="middle" fill={colors.POSITIVE} fontSize={11.5} fontFamily={MONO}>
+                <text x={STAMP_X + 96} y={STAMP_Y0 + i * 30 + 13} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
                   {t}
                 </text>
               </g>
@@ -440,7 +441,7 @@ export function Render({ s }: { s: SceneState }) {
           })}
           <g opacity={clamp01(xfoU * 2)}>
             <rect x={STAMP_X} y={XFO_Y} width={192} height={26} rx={7} fill={colors.BG} stroke={colors.NEGATIVE} opacity={0.8} />
-            <text x={STAMP_X + 96} y={XFO_Y + 17} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+            <text x={STAMP_X + 96} y={XFO_Y + 17} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               X-Frame-Options
             </text>
             <line x1={STAMP_X + 8} y1={XFO_Y + 13} x2={STAMP_X + 8 + 176 * xfoU} y2={XFO_Y + 13} stroke={colors.NEGATIVE} strokeWidth={2} />
@@ -478,7 +479,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* the fresh channel */}
           <line x1={CHAN_A.x - 14} y1={CHAN_A.y} x2={CHAN_B.x - 14} y2={CHAN_B.y} stroke={colors.POSITIVE} strokeWidth={2.2} strokeDasharray="7 5" opacity={freshU} />
           <g opacity={s.get(scene.chanU)}>
-            <text x={KA_POS.x - 44} y={KA_POS.y + 42} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+            <text x={KA_POS.x - 44} y={KA_POS.y + 42} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               MessageChannel
             </text>
           </g>
@@ -531,10 +532,12 @@ export function Render({ s }: { s: SceneState }) {
           <RequestFlow path={RECAP_PATH} u={recapFlow} roundTrip label="GET /" responseLabel="200" color={colors.ACCENT} responseColor={colors.POSITIVE} />
         )}
         <g opacity={closeU}>
+          {/* opaque panel so the closing words never sit on the faded machine */}
+          <rect x={360} y={436} width={560} height={78} rx={12} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.2} />
           <text x={640} y={470} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={700}>
             One tab. Almost Node.
           </text>
-          <text x={640} y={500} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
+          <text x={640} y={498} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
             zero servers · zero disks · one service worker
           </text>
         </g>

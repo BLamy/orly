@@ -39,11 +39,11 @@ const FIELDS = [
 const TOTAL_BYTES = FIELDS.reduce((n, f) => n + f.bytes, 0); // 91
 const STRIP = { x: 120, y: 300, w: 1040, h: 46 };
 
-const GRID = { x: 470, y: 130, cell: 12, gap: 3 };
+const GRID = { x: 640, y: 130, cell: 12, gap: 3 };
 const GRID_W = 16 * (GRID.cell + GRID.gap) - GRID.gap;
 
 const CAM_WIDE: CameraState = CAMERA_HOME;
-const CAM_KEY: CameraState = { x: 520, y: 250, k: 1.12 };
+const CAM_KEY: CameraState = { x: 640, y: 250, k: 1.12 };
 const CAM_STRIP: CameraState = { x: 640, y: 320, k: 1.05 };
 
 interface Scene {
@@ -158,7 +158,8 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the closing panel takes the stage: old content fades out entirely behind it
+  const mainOp = (1 - 0.85 * dimU) * (1 - clamp01(closeU));
 
   // strip byte→px scale
   const pxPerByte = STRIP.w / TOTAL_BYTES;
@@ -190,7 +191,7 @@ export function Render({ s }: { s: SceneState }) {
                 scrypt(log_n={LOG_N}, r=8, p=1)
               </text>
               <rect x={355} y={178} width={110 * clamp01(scryptU)} height={5} rx={2} fill={colors.WARM} opacity={0.8} />
-              <text x={355} y={202} fill={colors.MUTED} fontSize={10.5} fontStyle="italic">
+              <text x={355} y={202} fill={colors.MUTED} fontSize={12} fontStyle="italic">
                 (grind — illustrative)
               </text>
             </g>
@@ -198,7 +199,7 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* derived key bits — recede once the byte strip takes the stage */}
           {keyU > 0 && (
-            <g opacity={keyU * (1 - 0.86 * clamp01(stripU * 1.6))}>
+            <g opacity={keyU * (1 - 0.92 * clamp01(stripU * 4))}>
               <text x={GRID.x} y={GRID.y - 14} fill={colors.MUTED} fontSize={11.5} fontFamily="monospace">
                 derived 32-byte key
               </text>
@@ -242,12 +243,12 @@ export function Render({ s }: { s: SceneState }) {
                         <text x={x + w / 2} y={STRIP.y + 22} textAnchor="middle" fill={f.color} fontSize={12} fontFamily="monospace">
                           {f.label}
                         </text>
-                        <text x={x + w / 2} y={STRIP.y + 38} textAnchor="middle" fill={colors.MUTED} fontSize={10}>
+                        <text x={x + w / 2} y={STRIP.y + 38} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                           {f.note}
                         </text>
                       </>
                     )}
-                    <text x={x + w / 2} y={STRIP.y + STRIP.h + 16} textAnchor="middle" fill={colors.MUTED} fontSize={narrow ? 9 : 10}>
+                    <text x={x + w / 2} y={STRIP.y + STRIP.h + 16} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
                       {f.bytes}B
                     </text>
                   </g>

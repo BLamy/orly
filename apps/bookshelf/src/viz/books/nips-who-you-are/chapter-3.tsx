@@ -158,23 +158,25 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the main diagram dims, then cross-fades into the closing panel
+  const mainOp = (1 - 0.85 * dimU) * (1 - closeU);
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
+      {mainOp > 0 && (
       <g opacity={mainOp}>
         <Camera {...cam}>
-          {/* the identifier */}
-          {nameU > 0 && (
-            <g opacity={nameU * (1 - 0.7 * clamp01(matchU))}>
-              <text x={400} y={100} fontSize={26} fontFamily="monospace">
+          {/* the identifier: it clears the stage as the client and server come in */}
+          {nameU > 0 && nodesU < 1 && (
+            <g opacity={nameU * (1 - clamp01(nodesU))}>
+              <text x={640} y={100} textAnchor="middle" fontSize={26} fontFamily="monospace">
                 <tspan fill={colors.POSITIVE} fontWeight={600}>bob</tspan>
                 <tspan fill={colors.MUTED}>@</tspan>
                 <tspan fill={colors.ACCENT} fontWeight={600}>bob.example</tspan>
               </text>
-              <text x={400} y={126} fill={colors.MUTED} fontSize={12}>
+              <text x={640} y={126} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 local part · domain — NIP-05 identifier
               </text>
             </g>
@@ -197,8 +199,9 @@ function Frame({ s }: { s: SceneState }) {
           )}
 
           {/* response document */}
-          {respU > 0 && (
-            <g opacity={1 - 0.8 * clamp01(swingU * 2)}>
+          {/* the document leaves the stage once the swing begins */}
+          {respU > 0 && swingU <= 0 && (
+            <g>
               <text x={RESP_LAYOUT.x} y={286} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={respU}>
                 200 OK — nostr.json
               </text>
@@ -207,14 +210,14 @@ function Frame({ s }: { s: SceneState }) {
           )}
 
           {/* the match */}
-          {matchU > 0 && (
+          {matchU > 0 && swingU <= 0 && (
             <g>
               <g opacity={Math.min(1, matchU * 2)}>
                 <rect x={180 + matchU * 120} y={470} width={310} height={40} rx={9} fill={colors.PANEL} stroke={colors.ACCENT} />
-                <text x={196 + matchU * 120} y={488} fill={colors.MUTED} fontSize={10.5} fontFamily="monospace">from the domain</text>
+                <text x={196 + matchU * 120} y={488} fill={colors.MUTED} fontSize={12} fontFamily="monospace">from the domain</text>
                 <text x={196 + matchU * 120} y={503} fill={colors.ACCENT} fontSize={13} fontFamily="monospace">{shortHex(PUBKEY, 14, 6)}</text>
                 <rect x={790 - matchU * 120} y={470} width={310} height={40} rx={9} fill={colors.PANEL} stroke={colors.WARM} />
-                <text x={806 - matchU * 120} y={488} fill={colors.MUTED} fontSize={10.5} fontFamily="monospace">from the signed profile</text>
+                <text x={806 - matchU * 120} y={488} fill={colors.MUTED} fontSize={12} fontFamily="monospace">from the signed profile</text>
                 <text x={806 - matchU * 120} y={503} fill={colors.WARM} fontSize={13} fontFamily="monospace">{shortHex(PUBKEY, 14, 6)}</text>
               </g>
               {checkU > 0 && (
@@ -252,15 +255,16 @@ function Frame({ s }: { s: SceneState }) {
               {(() => {
                 const ang = swingU; // 0 → old key, 1 → new key
                 const y2 = 270 + (400 - 270) * ang;
-                return <line x1={520} y1={324} x2={812} y2={y2} stroke={colors.MUTED} strokeWidth={2} strokeDasharray="7 5" />;
+                return <line x1={385} y1={324} x2={812} y2={y2} stroke={colors.MUTED} strokeWidth={2} strokeDasharray="7 5" />;
               })()}
-              <text x={560} y={470} fill={colors.MUTED} fontSize={13} opacity={clamp01(swingU * 2 - 1)}>
+              <text x={560} y={520} fill={colors.MUTED} fontSize={14} opacity={clamp01(swingU * 2 - 1)}>
                 the domain re-pointed the name — the old key didn’t change, the claim did
               </text>
             </g>
           )}
         </Camera>
       </g>
+      )}
 
       {closeU > 0 && (
         <g opacity={closeU}>

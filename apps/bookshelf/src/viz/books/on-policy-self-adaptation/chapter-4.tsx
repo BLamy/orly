@@ -33,7 +33,7 @@ export function buildScene() {
 
   tl.caption({ at: 6.5, dur: 5.8, text: 'The current Megatron actor recomputes sampled-token log probabilities and, in entropy mode, actor entropy.' });
   tl.tween(scanP, 1.8, { at: 7.1, dur: 3.6, ease: ease.linear });
-  tl.tween(cam, { x: 540, y: 360, k: 1.08 }, { at: 9.2, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 360, k: 1.04 }, { at: 9.2, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 12.6, dur: 5.8, text: 'With context parallelism, those response values are gathered before one local packed-batch selection runs.' });
   tl.tween(scanP, 3.5, { at: 13.2, dur: 3.0, ease: ease.linear });
@@ -53,7 +53,7 @@ export function buildScene() {
 
   tl.caption({ at: 37.0, dur: 5.8, text: 'For the one-point-seven-billion-parameter model, the manuscript reports large gains on three mathematical reasoning benchmarks.' });
   tl.tween(resultU, 1, { at: 37.6, dur: 2.0, ease: ease.move });
-  tl.tween(cam, { x: 760, y: 360, k: 1.08 }, { at: 39.8, dur: 1.2, ease: ease.move });
+  tl.tween(cam, CAMERA_HOME, { at: 39.8, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 43.1, dur: 5.8, text: 'The open-source cleanup validates the selector and launchers with processor and command-line checks, but it does not claim a fresh end-to-end training reproduction.' });
   tl.tween(cautionU, 1, { at: 43.7, dur: 1.1, ease: ease.pop });
@@ -84,12 +84,12 @@ export function Render({ s }: { s: SceneState }) {
           const hot = Math.max(0, 1 - Math.abs(scan * 20 - i) / 8);
           return <rect key={i} x={38 + col * 52} y={68 + row * 36} width="42" height="26" rx="7" fill={chosen && selected ? colors.NEGATIVE : colors.ACCENT} opacity={u * (chosen && selected ? 0.92 : 0.18 + hot * 0.55)} stroke={chosen && selected ? colors.WARM : 'none'} strokeWidth="2" />;
         })}
-        <g opacity={s.get(scene.lossU)} transform="translate(300 360)">
-          <rect x="-190" y="-24" width="380" height="48" rx="18" fill="#102a22" stroke={colors.POSITIVE} />
-          <text y="7" textAnchor="middle" fill={colors.POSITIVE} fontSize="13" fontFamily={colors.font.mono}>policy loss uses opsa_loss_mask</text>
+        <g opacity={s.get(scene.lossU)} transform="translate(300 366)">
+          <rect x="-190" y="-15" width="380" height="30" rx="12" fill="#102a22" stroke={colors.POSITIVE} />
+          <text y="5" textAnchor="middle" fill={colors.POSITIVE} fontSize="13" fontFamily={colors.font.mono}>policy loss uses opsa_loss_mask</text>
         </g>
       </g>
-      <g transform="translate(704 118)" opacity={s.get(scene.stageU)}>
+      <g transform="translate(704 118)" opacity={s.get(scene.stageU) * (1 - result)}>
         {STAGES.map((label, i) => {
           const active = scan >= i * 0.72;
           return <g key={label} transform={`translate(0 ${i * 62})`}>
@@ -101,21 +101,23 @@ export function Render({ s }: { s: SceneState }) {
         <path d="M440 403 C505 403 505 16 440 16" fill="none" stroke={colors.WARM} strokeWidth="5" strokeDasharray="10 8" opacity={s.get(scene.loopU)} />
         <polygon points="440,16 462,5 462,27" fill={colors.WARM} opacity={s.get(scene.loopU)} />
       </g>
-      <g opacity={s.get(scene.launcherU)} transform="translate(286 510)">
+      <g opacity={s.get(scene.launcherU)} transform="translate(132 560)">
         {[0, 1, 2, 3].map((i) => <rect key={`a${i}`} x={i * 54} y="-22" width="44" height="44" rx="10" fill="#14243a" stroke={colors.ACCENT} />)}
         {[0, 1, 2, 3].map((i) => <rect key={`r${i}`} x={254 + i * 54} y="-22" width="44" height="44" rx="10" fill="#241d38" stroke={colors.SECONDARY} />)}
-        <text x="82" y="43" textAnchor="middle" fill={colors.ACCENT} fontSize="12">4 actor GPUs</text>
-        <text x="336" y="43" textAnchor="middle" fill={colors.SECONDARY} fontSize="12">4 rollout GPUs</text>
+        <text x="82" y="44" textAnchor="middle" fill={colors.ACCENT} fontSize="13">4 actor GPUs</text>
+        <text x="336" y="44" textAnchor="middle" fill={colors.SECONDARY} fontSize="13">4 rollout GPUs</text>
       </g>
       <g opacity={result} transform="translate(690 132)">
         <rect width="480" height="430" rx="30" fill="#0f1728" stroke={colors.POSITIVE} strokeWidth="3" />
         <text x="240" y="42" textAnchor="middle" fill={colors.POSITIVE} fontSize="14">Qwen3-1.7B · manuscript results</text>
-        {RESULTS.map((item, i) => <g key={item.label} transform={`translate(28 ${86 + i * 78})`}>
-          <text x="0" y="0" fill={colors.TEXT} fontSize="12">{item.label}</text>
+        <text x="240" y="70" textAnchor="middle" fill={colors.TEXT} fontSize="20" fontWeight="800">AIME24 Avg@32: 13.44 → 48.85</text>
+        <text x="240" y="94" textAnchor="middle" fill={colors.MUTED} fontSize="12">paper figures from the manuscript, not a fresh run</text>
+        {RESULTS.map((item, i) => <g key={item.label} transform={`translate(28 ${118 + i * 66})`}>
+          <text x="0" y="0" fill={colors.TEXT} fontSize="13">{item.label}</text>
           <rect x="0" y="12" width={item.base * 3.8 * result} height="16" rx="8" fill={colors.MUTED} />
           <rect x="0" y="34" width={item.opsa * 3.8 * result} height="16" rx="8" fill={colors.POSITIVE} />
-          <text x="420" y="27" textAnchor="end" fill={colors.MUTED} fontSize="10">{item.base.toFixed(2)}</text>
-          <text x="420" y="50" textAnchor="end" fill={colors.POSITIVE} fontSize="10">{item.opsa.toFixed(2)}</text>
+          <text x="420" y="25" textAnchor="end" fill={colors.MUTED} fontSize="12">{item.base.toFixed(2)}</text>
+          <text x="420" y="47" textAnchor="end" fill={colors.POSITIVE} fontSize="12">{item.opsa.toFixed(2)}</text>
         </g>)}
         <g opacity={s.get(scene.cautionU)} transform="translate(240 398)"><rect x="-210" y="-24" width="420" height="48" rx="18" fill="#2d2117" stroke={colors.WARM} /><text y="6" textAnchor="middle" fill={colors.WARM} fontSize="12">CPU/CLI validated · not a fresh GPU reproduction</text></g>
       </g>

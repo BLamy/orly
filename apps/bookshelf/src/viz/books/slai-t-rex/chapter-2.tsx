@@ -85,7 +85,7 @@ export function Render({ s }: { s: SceneState }) {
   const shuffleU = s.get(scene.shuffleU);
   const releaseU = s.get(scene.releaseU);
   const mainOpacity = 1 - 0.86 * s.get(scene.dimU);
-  const tapeY = 330;
+  const tapeY = 372;
 
   return (
     <>
@@ -99,17 +99,23 @@ export function Render({ s }: { s: SceneState }) {
             const u = clamp01(readersU * 6 - i / 3);
             const angle = (i / 16) * Math.PI * 2;
             const baseX = 640 + Math.cos(angle) * 420;
-            const baseY = 205 + Math.sin(angle) * 82;
-            const targetX = 640 + (i - 7.5) * 42;
+            const baseY = 244 + Math.sin(angle) * 68;
+            // Row slot follows the node's left-to-right ring position, so nodes slide without crossing.
+            const rank = Array.from({ length: 16 }, (_, j) => j).filter(j => {
+              const x = Math.cos((j / 16) * Math.PI * 2);
+              const own = Math.cos(angle);
+              return x < own || (x === own && j < i);
+            }).length;
+            const targetX = 640 + (rank - 7.5) * 42;
             const targetY = 535;
             const x = baseX + (targetX - baseX) * releaseU;
             const y = baseY + (targetY - baseY) * releaseU;
             const waiting = builderU > 0 && i !== 0;
             return (
               <g key={i} opacity={u} transform={`translate(${x} ${y})`}>
-                <circle r={i === 0 && builderU > 0 ? 17 : 11} fill={i === 0 && builderU > 0 ? colors.ACCENT : colors.SECONDARY} opacity={0.22 + 0.38 * u} stroke={i === 0 ? colors.ACCENT : colors.SECONDARY} />
-                <text y={4} textAnchor="middle" fill={colors.TEXT} fontSize={8.5} fontFamily={MONO}>{i}</text>
-                {waiting && <text y={29} textAnchor="middle" fill={colors.MUTED} fontSize={8}>wait</text>}
+                <circle r={i === 0 && builderU > 0 ? 17 : 13} fill={i === 0 && builderU > 0 ? colors.ACCENT : colors.SECONDARY} opacity={0.22 + 0.38 * u} stroke={i === 0 ? colors.ACCENT : colors.SECONDARY} />
+                <text y={4} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>{i}</text>
+                {waiting && releaseU < 0.5 && <text y={34} textAnchor="middle" fill={colors.MUTED} fontSize={12}>wait</text>}
                 {raceU > 0 && builderU < 0.2 && (
                   <line x1={0} y1={10} x2={(640 - baseX) * raceU * 0.45} y2={(tapeY - baseY) * raceU * 0.45} stroke={colors.NEGATIVE} strokeDasharray="3 5" opacity={0.45} />
                 )}
@@ -119,20 +125,20 @@ export function Render({ s }: { s: SceneState }) {
 
           {builderU > 0 && (
             <g opacity={builderU}>
-              <path d="M 1060 205 C 1040 255 980 276 900 298" fill="none" stroke={colors.ACCENT} strokeWidth={2} strokeDasharray="5 6" />
-              <text x={1060} y={183} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontWeight={700}>node 0 builds</text>
+              <path d="M 1050 258 C 1030 300 990 330 930 350" fill="none" stroke={colors.ACCENT} strokeWidth={2} strokeDasharray="5 6" />
+              <text x={1088} y={249} textAnchor="start" fill={colors.ACCENT} fontSize={14} fontWeight={700}>node 0 builds</text>
             </g>
           )}
 
           {s.get(scene.formulaU) > 0 && (
             <g opacity={s.get(scene.formulaU)}>
-              <rect x={370} y={132} width={540} height={54} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={640} y={164} textAnchor="middle" fill={colors.WARM} fontSize={16} fontFamily={MONO}>num_samples = train_iters × global_batch_size</text>
+              <rect x={370} y={110} width={540} height={40} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
+              <text x={640} y={135} textAnchor="middle" fill={colors.WARM} fontSize={16} fontFamily={MONO}>num_samples = train_iters × global_batch_size</text>
             </g>
           )}
 
-          {tapeU > 0 && (
-            <g>
+          {tapeU > 0 && releaseU < 0.6 && (
+            <g opacity={1 - 0.5 * releaseU}>
               <rect x={175} y={tapeY - 16} width={930 * tapeU} height={72} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
               {IDS.map((id, i) => {
                 const order = shuffleU > 0.5 ? IDS[(i * 7 + 3) % IDS.length] : id;
@@ -140,32 +146,32 @@ export function Render({ s }: { s: SceneState }) {
                 return (
                   <g key={i} opacity={u} transform={`translate(${195 + i * 44} ${tapeY})`}>
                     <rect width={36} height={36} rx={7} fill={i % 2 ? colors.ACCENT : colors.SECONDARY} opacity={0.18} stroke={i % 2 ? colors.ACCENT : colors.SECONDARY} />
-                    <text x={18} y={23} textAnchor="middle" fill={colors.TEXT} fontSize={11} fontFamily={MONO}>{order}</text>
+                    <text x={18} y={23} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={MONO}>{order}</text>
                   </g>
                 );
               })}
-              <text x={640} y={tapeY + 82} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+              <text x={640} y={tapeY + 80} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 train_indexmap_*_1234s_shuffle_decoder_packed_idx.npy
               </text>
             </g>
           )}
 
-          {s.get(scene.tempU) > 0 && (
-            <g opacity={s.get(scene.tempU)} transform={`translate(${260 + 300 * s.get(scene.replaceU)} 440)`}>
+          {s.get(scene.tempU) > 0 && releaseU < 0.6 && (
+            <g opacity={s.get(scene.tempU) * (1 - s.get(scene.replaceU)) * (1 - 0.5 * releaseU)} transform={`translate(${260 + 430 * s.get(scene.replaceU)} 472)`}>
               <rect width={330} height={42} rx={9} fill={colors.WARM} opacity={0.16} stroke={colors.WARM} />
-              <text x={165} y={26} textAnchor="middle" fill={colors.WARM} fontSize={11} fontFamily={MONO}>.tmp.&lt;pid&gt;.npy</text>
+              <text x={165} y={26} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>.tmp.&lt;pid&gt;.npy</text>
             </g>
           )}
-          {s.get(scene.replaceU) > 0 && (
-            <g opacity={s.get(scene.replaceU)} transform="translate(690 440)">
+          {s.get(scene.replaceU) > 0 && releaseU < 0.6 && (
+            <g opacity={s.get(scene.replaceU) * (1 - 0.5 * releaseU)} transform="translate(690 472)">
               <rect width={330} height={42} rx={9} fill={colors.POSITIVE} opacity={0.16} stroke={colors.POSITIVE} />
-              <text x={165} y={26} textAnchor="middle" fill={colors.POSITIVE} fontSize={11} fontFamily={MONO}>os.replace → final index</text>
+              <text x={165} y={26} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>os.replace → final index</text>
             </g>
           )}
-          {s.get(scene.readyU) > 0 && (
-            <g opacity={s.get(scene.readyU)} transform="translate(820 493)">
-              <rect width={200} height={38} rx={19} fill={colors.POSITIVE} opacity={0.2} stroke={colors.POSITIVE} />
-              <text x={100} y={24} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>.npy.ready ✓</text>
+          {s.get(scene.readyU) > 0 && releaseU < 0.6 && (
+            <g opacity={s.get(scene.readyU) * (1 - 0.5 * releaseU)} transform="translate(1036 472)">
+              <rect width={160} height={38} rx={19} fill={colors.POSITIVE} opacity={0.2} stroke={colors.POSITIVE} />
+              <text x={80} y={24} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>.npy.ready ✓</text>
             </g>
           )}
         </g>
@@ -175,7 +181,7 @@ export function Render({ s }: { s: SceneState }) {
           <rect x={250} y={250} width={780} height={166} rx={18} fill={colors.PANEL} stroke={colors.POSITIVE} />
           <text x={640} y={311} textAnchor="middle" fill={colors.TEXT} fontSize={27} fontWeight={700}>One shuffle. Every node agrees.</text>
           <text x={640} y={351} textAnchor="middle" fill={colors.MUTED} fontSize={16}>temporary write → atomic replace → ready marker → validity check</text>
-          <text x={640} y={386} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>wait_until_ready(path, min_samples, timeout)</text>
+          <text x={640} y={386} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>wait_until_ready(path, min_samples, timeout)</text>
         </g>
       )}
     </>

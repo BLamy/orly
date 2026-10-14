@@ -55,8 +55,10 @@ const TRAY_ROWS: Array<{ label: string; verdict: Verdict }> = [
   { label: 'todo 7 +', verdict: 'insert' },
 ];
 // The synced store also holds todo 6, which the snapshot no longer contains.
+// Store rows the diff leaves alone (the 'only deltas move' beat dims these).
+const PLANE_UNCHANGED = [0, 1, 3, 4];
 
-const DIFF = { x: 566, y: 330, w: 158, h: 84 } as const;
+const DIFF = { x: 540, y: 330, w: 184, h: 84 } as const;
 
 // The collection plane (single, flat — this chapter is about the base).
 const PLANE = { x: 96, y: 288, w: 306, h: 168 } as const;
@@ -74,10 +76,24 @@ const GATE_X = 968;
 const SHELF_Y = 540;
 const ADAPTERS = ['query', 'electric', 'trailbase', 'rxdb', 'powersync', 'local storage', 'local only'];
 
-const CAM_CFG: CameraState = { x: 420, y: 220, k: 1.3 };
-const CAM_DIFF: CameraState = { x: 620, y: 340, k: 1.32 };
-const CAM_WRITE: CameraState = { x: 520, y: 260, k: 1.3 };
-const CAM_SHELF: CameraState = { x: 640, y: 470, k: 1.2 };
+// Each camera frames its beat's subject inside the safe area above the caption band.
+const CAM_CFG: CameraState = { x: 250, y: 306, k: 1.3 };
+const CAM_DIFF: CameraState = { x: 523, y: 347, k: 1.25 };
+const CAM_WRITE: CameraState = { x: 650, y: 300, k: 1.05 };
+const CAM_SHELF: CameraState = { x: 639, y: 520, k: 1.15 };
+
+// Screen-space safe area (stage px) and the feather width for leaving it.
+const SAFE = { l: 24, t: 24, r: 1256, b: 616 } as const;
+const FEATHER = 40;
+
+// How much of a world-space box is inside the safe area under this camera:
+// 1 when comfortably framed, sliding to 0 as it reaches the edge.
+function inFrame(cam: CameraState, x: number, y: number, w: number, h: number): number {
+  const sx = (x - cam.x) * cam.k + STAGE_W / 2;
+  const sy = (y - cam.y) * cam.k + STAGE_H / 2;
+  const margin = Math.min(sx - SAFE.l, SAFE.r - (sx + w * cam.k), sy - SAFE.t, SAFE.b - (sy + h * cam.k));
+  return clamp01(margin / FEATHER);
+}
 
 // ---------------------------------------------------------------------------
 // Timeline
@@ -89,6 +105,7 @@ export interface Scene {
   srvU: ChannelRef<number>;
   planeU: ChannelRef<number>;
   cfgU: ChannelRef<number>;
+  ctxU: ChannelRef<number>;
   fetchU: ChannelRef<number>;
   trayU: ChannelRef<number>;
   diffU: ChannelRef<number>;
@@ -96,6 +113,7 @@ export interface Scene {
   dUpd: ChannelRef<number>;
   dIns: ChannelRef<number>;
   dDel: ChannelRef<number>;
+  focusU: ChannelRef<number>;
   wInsU: ChannelRef<number>;
   wReqU: ChannelRef<number>;
   gateU: ChannelRef<number>;
@@ -112,6 +130,7 @@ export function buildScene(): Scene {
   const srvU = tl.channel('srvU', 0);
   const planeU = tl.channel('planeU', 0); // the collection + its six rows
   const cfgU = tl.channel('cfgU', 0); // config code lines
+  const ctxU = tl.channel('ctxU', 0); // config card steps back once the diff starts
   const fetchU = tl.channel('fetchU', 0); // queryFn round trip
   const trayU = tl.channel('trayU', 0); // snapshot rows stagger in
   const diffU = tl.channel('diffU', 0); // the differ box
@@ -119,6 +138,7 @@ export function buildScene(): Scene {
   const dUpd = tl.channel('dUpd', 0); // update delta flight
   const dIns = tl.channel('dIns', 0); // insert delta flight
   const dDel = tl.channel('dDel', 0); // delete marker on todo 6
+  const focusU = tl.channel('focusU', 0); // unchanged rows recede: only deltas remain
   const wInsU = tl.channel('wInsU', 0); // write: chip lands on the strip
   const wReqU = tl.channel('wReqU', 0); // write: post to backend
   const gateU = tl.channel('gateU', 0); // the deferDataRefresh gate + held chip
@@ -166,6 +186,7 @@ export function buildScene(): Scene {
     text: 'Here is the clever part: the collection does not replace its contents. It runs a diff — every incoming row is compared against the synced store.',
   });
   tl.tween(cam, CAM_DIFF, { at: 20.7, dur: 1.4, ease: ease.move });
+  tl.tween(ctxU, 1, { at: 20.6, dur: 0.8, ease: ease.enter });
   tl.tween(diffU, 1, { at: 21.4, dur: 0.8, ease: ease.enter });
   tl.hold(26.5, 0.5);
 
@@ -187,6 +208,7 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'Only those deltas enter the store, so only those deltas ride the live query pipelines to your screens. A refetch that changes nothing repaints nothing.',
   });
+  tl.tween(focusU, 1, { at: 35.6, dur: 0.8, ease: ease.enter });
   tl.hold(42.0, 0.5);
 
   // — Beat 7 · the write path —
@@ -246,6 +268,7 @@ export function buildScene(): Scene {
     srvU,
     planeU,
     cfgU,
+    ctxU,
     fetchU,
     trayU,
     diffU,
@@ -253,6 +276,7 @@ export function buildScene(): Scene {
     dUpd,
     dIns,
     dDel,
+    focusU,
     wInsU,
     wReqU,
     gateU,
@@ -281,6 +305,7 @@ export function Render({ s }: { s: SceneState }) {
   const srvU = s.get(scene.srvU);
   const planeU = s.get(scene.planeU);
   const cfgU = s.get(scene.cfgU);
+  const ctxU = s.get(scene.ctxU);
   const fetchU = s.get(scene.fetchU);
   const trayU = s.get(scene.trayU);
   const diffU = s.get(scene.diffU);
@@ -288,6 +313,7 @@ export function Render({ s }: { s: SceneState }) {
   const dUpd = s.get(scene.dUpd);
   const dIns = s.get(scene.dIns);
   const dDel = s.get(scene.dDel);
+  const focusU = s.get(scene.focusU);
   const wInsU = s.get(scene.wInsU);
   const wReqU = s.get(scene.wReqU);
   const gateU = s.get(scene.gateU);
@@ -298,6 +324,8 @@ export function Render({ s }: { s: SceneState }) {
   const closeU = s.get(scene.closeU);
 
   const dimAll = 1 - closeU * 0.86;
+  // The shelf beat pushes the earlier machinery back so the adapters read first.
+  const dimCtx = dimAll * (1 - 0.65 * clamp01(shelfU * 2));
   const diffCx = DIFF.x + DIFF.w / 2;
   const diffCy = DIFF.y + DIFF.h / 2;
 
@@ -306,24 +334,24 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* ---- backend ---- */}
-        <g opacity={dimAll}>
+        <g opacity={dimCtx * inFrame(cam, SERVER.x - 79, SERVER.y - 30, 158, 60)}>
           <ServiceNode x={SERVER.x} y={SERVER.y} kind="server" label="your backend" sublabel="GET /api/todos" w={158} u={srvU} />
         </g>
 
         {/* ---- config card ---- */}
-        <g opacity={dimAll * clamp01(cfgU)}>
+        <g opacity={dimCtx * clamp01(cfgU) * (1 - ctxU) * inFrame(cam, CFG.x, CFG.y, CFG.w, CFG.h)}>
           <rect x={CFG.x} y={CFG.y} width={CFG.w} height={CFG.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
           {CFG_LINES.map((line, i) => (
-            <text key={i} x={CFG.x + 18} y={CFG.y + 30 + i * 20} fill={i === 0 || i === CFG_LINES.length - 1 ? colors.ACCENT : colors.TEXT} fontSize={12} fontFamily="ui-monospace, monospace" opacity={clamp01(cfgU - i)}>
+            <text key={i} x={CFG.x + 18} y={CFG.y + 30 + i * 20} fill={i === 0 || i === CFG_LINES.length - 1 ? colors.ACCENT : colors.TEXT} fontSize={13} fontFamily="ui-monospace, monospace" opacity={clamp01(cfgU - i)}>
               {line}
             </text>
           ))}
         </g>
 
         {/* ---- the collection plane ---- */}
-        <g opacity={dimAll * planeU}>
+        <g opacity={dimCtx * planeU}>
           <rect x={PLANE.x} y={PLANE.y} width={PLANE.w} height={PLANE.h} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} />
-          <text x={PLANE.x + 6} y={PLANE.y + PLANE.h + 22} fill={colors.ACCENT} fontSize={12} fontFamily="ui-monospace, monospace">
+          <text x={PLANE.x + 6} y={PLANE.y + PLANE.h + 22} fill={colors.ACCENT} fontSize={13} fontFamily="ui-monospace, monospace">
             syncedData — the synced store
           </text>
           {[0, 1, 2, 3, 4, 5].map((i) => {
@@ -332,10 +360,11 @@ export function Render({ s }: { s: SceneState }) {
             const gone = i === 5 ? dDel : 0;
             // todo 3 (index 2) re-colors when the update lands
             const updated = i === 2 && dUpd >= 1;
+            const quiet = PLANE_UNCHANGED.includes(i) ? 1 - 0.6 * focusU : 1;
             return (
-              <g key={i} opacity={clamp01(planeU * 6 - i) * (1 - gone * 0.75)}>
+              <g key={i} opacity={clamp01(planeU * 6 - i) * (1 - gone * 0.75) * quiet}>
                 <rect x={p.x} y={p.y} width={84} height={30} rx={7} fill={colors.BG} stroke={updated ? colors.WARM : gone > 0.3 ? colors.NEGATIVE : colors.GRID} strokeWidth={updated || gone > 0.3 ? 1.6 : 1.1} strokeDasharray={gone > 0.3 ? '4 3' : undefined} />
-                <text x={p.x + 42} y={p.y + 19} textAnchor="middle" fill={gone > 0.3 ? colors.NEGATIVE : colors.TEXT} fontSize={10.5} fontFamily="ui-monospace, monospace">
+                <text x={p.x + 42} y={p.y + 19} textAnchor="middle" fill={gone > 0.3 ? colors.NEGATIVE : colors.TEXT} fontSize={12.5} fontFamily="ui-monospace, monospace">
                   {i === 2 && updated ? 'todo 3 *' : `todo ${i + 1}`}
                 </text>
               </g>
@@ -345,7 +374,7 @@ export function Render({ s }: { s: SceneState }) {
           {dIns >= 1 && (
             <g>
               <rect x={PLANE.x + 20} y={PLANE.y + 130} width={84} height={30} rx={7} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.5} />
-              <text x={PLANE.x + 62} y={PLANE.y + 149} textAnchor="middle" fill={colors.POSITIVE} fontSize={10.5} fontFamily="ui-monospace, monospace">
+              <text x={PLANE.x + 62} y={PLANE.y + 149} textAnchor="middle" fill={colors.POSITIVE} fontSize={12.5} fontFamily="ui-monospace, monospace">
                 todo 7 +
               </text>
             </g>
@@ -354,7 +383,7 @@ export function Render({ s }: { s: SceneState }) {
           {refetchU >= 1 && (
             <g opacity={confirmU}>
               <rect x={PLANE.x + 20 + 96} y={PLANE.y + 26 + 104} width={84} height={30} rx={7} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.5} />
-              <text x={PLANE.x + 62 + 96} y={PLANE.y + 45 + 104} textAnchor="middle" fill={colors.POSITIVE} fontSize={10.5} fontFamily="ui-monospace, monospace">
+              <text x={PLANE.x + 62 + 96} y={PLANE.y + 45 + 104} textAnchor="middle" fill={colors.POSITIVE} fontSize={12.5} fontFamily="ui-monospace, monospace">
                 todo 8 ✓
               </text>
             </g>
@@ -362,14 +391,14 @@ export function Render({ s }: { s: SceneState }) {
         </g>
 
         {/* ---- the optimistic strip (write path) ---- */}
-        <g opacity={dimAll * clamp01(wInsU * 1.6)}>
+        <g opacity={dimCtx * clamp01(wInsU * 1.6)}>
           <rect x={STRIP.x} y={STRIP.y} width={STRIP.w} height={STRIP.h} rx={9} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.2} opacity={0.75} />
-          <text x={STRIP.x + 6} y={STRIP.y - 8} fill={colors.WARM} fontSize={11} fontFamily="ui-monospace, monospace">
+          <text x={STRIP.x + 6} y={STRIP.y - 8} fill={colors.WARM} fontSize={12} fontFamily="ui-monospace, monospace">
             optimistic layer
           </text>
           <g opacity={wInsU * (1 - confirmU)}>
             <rect x={STRIP.x + 110} y={STRIP.y + 6} width={84} height={28} rx={7} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.5} />
-            <text x={STRIP.x + 152} y={STRIP.y + 24} textAnchor="middle" fill={colors.WARM} fontSize={10.5} fontFamily="ui-monospace, monospace">
+            <text x={STRIP.x + 152} y={STRIP.y + 24} textAnchor="middle" fill={colors.WARM} fontSize={12.5} fontFamily="ui-monospace, monospace">
               todo 8
             </text>
           </g>
@@ -395,7 +424,7 @@ export function Render({ s }: { s: SceneState }) {
           <RequestFlow
             path={[
               { x: STRIP.x + STRIP.w, y: STRIP.y + 20 },
-              { x: SERVER.x - 79, y: SERVER.y + 16 },
+              { x: SERVER.x - 79 - 48, y: SERVER.y + 16 },
             ]}
             u={wReqU}
             roundTrip
@@ -420,9 +449,9 @@ export function Render({ s }: { s: SceneState }) {
         )}
 
         {/* ---- snapshot tray ---- */}
-        <g opacity={dimAll}>
+        <g opacity={dimCtx}>
           {trayU > 0.02 && (
-            <text x={TRAY.x + TRAY.w / 2} y={TRAY.y0 - 14} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} opacity={clamp01(trayU)}>
+            <text x={TRAY.x + TRAY.w / 2} y={TRAY.y0 - 14} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} opacity={clamp01(trayU)}>
               the snapshot — a plain array
             </text>
           )}
@@ -435,11 +464,11 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={i} opacity={u * faded}>
                 <rect x={TRAY.x} y={TRAY.y0 + i * TRAY.rowH} width={TRAY.w} height={TRAY.rowH - 7} rx={7} fill={colors.PANEL} stroke={active ? colors.ACCENT : c} strokeWidth={active ? 1.8 : 1.2} />
-                <text x={TRAY.x + 14} y={TRAY.y0 + i * TRAY.rowH + 18} fill={colors.TEXT} fontSize={11} fontFamily="ui-monospace, monospace">
+                <text x={TRAY.x + 14} y={TRAY.y0 + i * TRAY.rowH + 18} fill={colors.TEXT} fontSize={13} fontFamily="ui-monospace, monospace">
                   {r.label}
                 </text>
                 {scanned && r.verdict !== 'same' && (
-                  <text x={TRAY.x + TRAY.w - 12} y={TRAY.y0 + i * TRAY.rowH + 18} textAnchor="end" fill={c} fontSize={10} fontFamily="ui-monospace, monospace">
+                  <text x={TRAY.x + TRAY.w - 12} y={TRAY.y0 + i * TRAY.rowH + 18} textAnchor="end" fill={c} fontSize={12} fontFamily="ui-monospace, monospace">
                     {r.verdict}
                   </text>
                 )}
@@ -447,24 +476,24 @@ export function Render({ s }: { s: SceneState }) {
             );
           })}
           {scanU >= TRAY_ROWS.length && dDel > 0.02 && (
-            <text x={TRAY.x + TRAY.w / 2} y={TRAY.y0 + TRAY_ROWS.length * TRAY.rowH + 12} textAnchor="middle" fill={colors.NEGATIVE} fontSize={10.5} fontFamily="ui-monospace, monospace" opacity={dDel}>
+            <text x={TRAY.x + TRAY.w / 2} y={TRAY.y0 + TRAY_ROWS.length * TRAY.rowH + 12} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily="ui-monospace, monospace" opacity={dDel}>
               todo 6 missing → delete
             </text>
           )}
         </g>
 
         {/* ---- the differ ---- */}
-        <g opacity={diffU * dimAll}>
+        <g opacity={diffU * dimCtx}>
           <rect x={DIFF.x} y={DIFF.y} width={DIFF.w} height={DIFF.h} rx={12} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.5} />
           <text x={diffCx} y={diffCy - 8} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
             the diff
           </text>
-          <text x={diffCx} y={diffCy + 12} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily="ui-monospace, monospace">
+          <text x={diffCx} y={diffCy + 12} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
             snapshot vs synced store
           </text>
           <line x1={TRAY.x - 6} y1={TRAY.y0 + 90} x2={DIFF.x + DIFF.w + 4} y2={diffCy} stroke={colors.GRID} strokeWidth={1.2} opacity={0.9} />
           <line x1={DIFF.x - 4} y1={diffCy} x2={PLANE.x + PLANE.w + 6} y2={PLANE.y + 80} stroke={colors.GRID} strokeWidth={1.2} opacity={0.9} />
-          <text x={diffCx} y={DIFF.y + DIFF.h + 20} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily="ui-monospace, monospace">
+          <text x={diffCx} y={DIFF.y + DIFF.h + 20} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
             begin · write · commit
           </text>
         </g>
@@ -474,21 +503,21 @@ export function Render({ s }: { s: SceneState }) {
         <Packet from={{ x: diffCx - DIFF.w / 2, y: diffCy }} to={{ x: PLANE.x + 62, y: PLANE.y + 145 }} u={dIns} r={7} color={colors.POSITIVE} label="insert" />
 
         {/* ---- the deferDataRefresh gate ---- */}
-        <g opacity={gateU * dimAll}>
+        <g opacity={gateU * dimCtx * inFrame(cam, GATE_X - 150, SERVER.y + 40, 276, 110)}>
           <line x1={GATE_X} y1={SERVER.y + 44} x2={GATE_X} y2={SERVER.y + 124} stroke={colors.NEGATIVE} strokeWidth={2.4} strokeDasharray={gateOpenU > 0.3 ? '2 10' : undefined} opacity={1 - gateOpenU * 0.7} />
-          <text x={GATE_X} y={SERVER.y + 144} textAnchor="middle" fill={gateOpenU > 0.5 ? colors.POSITIVE : colors.NEGATIVE} fontSize={10} fontFamily="ui-monospace, monospace">
+          <text x={GATE_X + 8} y={SERVER.y + 144} fill={gateOpenU > 0.5 ? colors.POSITIVE : colors.NEGATIVE} fontSize={12} fontFamily="ui-monospace, monospace">
             deferDataRefresh
           </text>
           {/* the held snapshot chip */}
           <g opacity={1 - gateOpenU}>
-            <rect x={GATE_X + 14} y={SERVER.y + 72} width={92} height={26} rx={7} fill={colors.PANEL} stroke={colors.MUTED} strokeWidth={1.2} />
-            <text x={GATE_X + 60} y={SERVER.y + 89} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily="ui-monospace, monospace">
+            <rect x={GATE_X + 14} y={SERVER.y + 56} width={112} height={26} rx={7} fill={colors.PANEL} stroke={colors.MUTED} strokeWidth={1.2} />
+            <text x={GATE_X + 70} y={SERVER.y + 73} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
               stale refresh
             </text>
           </g>
           <g opacity={gateOpenU > 0.02 ? gateOpenU : 0}>
-            <rect x={lerp(GATE_X + 14, GATE_X - 150, gateOpenU)} y={SERVER.y + 72} width={92} height={26} rx={7} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.2} />
-            <text x={lerp(GATE_X + 60, GATE_X - 104, gateOpenU)} y={SERVER.y + 89} textAnchor="middle" fill={colors.POSITIVE} fontSize={9.5} fontFamily="ui-monospace, monospace">
+            <rect x={lerp(GATE_X + 14, GATE_X - 150, gateOpenU)} y={SERVER.y + 56} width={112} height={26} rx={7} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.2} />
+            <text x={lerp(GATE_X + 70, GATE_X - 94, gateOpenU)} y={SERVER.y + 73} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily="ui-monospace, monospace">
               fresh again
             </text>
           </g>
@@ -497,7 +526,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- adapter shelf ---- */}
         <g opacity={dimAll}>
           {shelfU > 0.02 && (
-            <text x={640} y={SHELF_Y - 16} textAnchor="middle" fill={colors.TEXT} fontSize={13.5} opacity={clamp01(shelfU)}>
+            <text x={640} y={SHELF_Y - 16} textAnchor="middle" fill={colors.TEXT} fontSize={14} opacity={clamp01(shelfU)}>
               same collection, different sync engine
             </text>
           )}
@@ -507,7 +536,7 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={a} opacity={u}>
                 <rect x={x} y={SHELF_Y} width={142} height={46} rx={9} fill={colors.PANEL} stroke={i === 0 ? colors.ACCENT : i === 1 ? colors.POSITIVE : colors.GRID} strokeWidth={i <= 1 ? 1.5 : 1.1} />
-                <text x={x + 71} y={SHELF_Y + 28} textAnchor="middle" fill={colors.TEXT} fontSize={12.5}>
+                <text x={x + 71} y={SHELF_Y + 28} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                   {a}
                 </text>
               </g>
@@ -530,7 +559,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={358} textAnchor="middle" fill={colors.MUTED} fontSize={13.5}>
             the loader is a plug — swap it without touching queries
           </text>
-          <text x={640} y={404} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily="ui-monospace, monospace">
+          <text x={640} y={404} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
             @tanstack/query-db-collection · begin/write/commit · markReady
           </text>
         </g>

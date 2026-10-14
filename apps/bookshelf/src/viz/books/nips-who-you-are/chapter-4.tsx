@@ -42,8 +42,26 @@ const NODE_POS = [
   { x: 880, y: 520 },
 ];
 
+// Direction from "you" to a person, plus an arrowhead tip just outside the person's circle.
+function edgeTo(p: { x: number; y: number }) {
+  const dx = p.x - YOU.x;
+  const dy = p.y - YOU.y;
+  const len = Math.hypot(dx, dy);
+  const ux = dx / len;
+  const uy = dy / len;
+  const nx = -uy;
+  const ny = ux;
+  const tipX = p.x - ux * 28;
+  const tipY = p.y - uy * 28;
+  const baseX = p.x - ux * 40;
+  const baseY = p.y - uy * 40;
+  const head = `M${tipX},${tipY} L${baseX + nx * 6},${baseY + ny * 6} L${baseX - nx * 6},${baseY - ny * 6} Z`;
+  return { ux, uy, head };
+}
+
 const CAM_JSON: CameraState = { x: 330, y: 300, k: 1.3 };
-const CAM_GRAPH: CameraState = { x: 900, y: 330, k: 1.15 };
+// Graph framing keeps the JSON, the graph and the bottom labels all on-stage and above the caption pill.
+const CAM_GRAPH: CameraState = { x: 640, y: 345, k: 1 };
 
 interface Scene {
   tl: Timeline;
@@ -176,7 +194,8 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // The graph dims for the close, then fades out entirely under the closing panel.
+  const mainOp = (1 - 0.85 * dimU) * (1 - clamp01(closeU * 1.2));
 
   return (
     <>
@@ -199,6 +218,7 @@ function Frame({ s }: { s: SceneState }) {
             const a = LAYOUT.anchor(`tags[${i}][1]`);
             const u = clamp01(outU * FOLLOWS.length - i);
             const p = NODE_POS[i];
+            const edge = edgeTo(p);
             if (u <= 0) return null;
             return (
               <g key={f.key}>
@@ -209,21 +229,22 @@ function Frame({ s }: { s: SceneState }) {
                   text={shortHex(f.key, 6, 2)}
                   fill={colors.ACCENT}
                   fontSize={12}
-                  lift={70}
+                  lift={i === 1 ? 150 : 70}
                   fadeOut
                 />
                 <PersonNode x={p.x} y={p.y} label={petU > 0 ? f.pet : shortHex(f.key, 6, 2)} color={colors.ACCENT} u={clamp01(u * 2 - 1)} />
                 {clamp01(u * 2 - 1) > 0 && (
-                  <line
-                    x1={YOU.x + 24}
-                    y1={YOU.y}
-                    x2={p.x - 24}
-                    y2={p.y}
-                    stroke={colors.MUTED}
-                    strokeWidth={1.6}
-                    opacity={0.7 * clamp01(u * 2 - 1)}
-                    markerEnd="none"
-                  />
+                  <g opacity={0.7 * clamp01(u * 2 - 1)}>
+                    <line
+                      x1={YOU.x + edge.ux * 26}
+                      y1={YOU.y + edge.uy * 26}
+                      x2={p.x - edge.ux * 38}
+                      y2={p.y - edge.uy * 38}
+                      stroke={colors.MUTED}
+                      strokeWidth={1.6}
+                    />
+                    <path d={edge.head} fill={colors.MUTED} />
+                  </g>
                 )}
               </g>
             );
@@ -231,19 +252,19 @@ function Frame({ s }: { s: SceneState }) {
 
           {/* petname note */}
           {petU > 0 && chainU <= 0 && swapU <= 0 && (
-            <text x={760} y={120} fill={colors.MUTED} fontSize={12.5} opacity={petU}>
+            <text x={760} y={120} fill={colors.MUTED} fontSize={13} opacity={petU}>
               ["p", key, relay, <tspan fill={colors.POSITIVE}>petname</tspan>] — your word, not theirs
             </text>
           )}
 
-          {/* the wholesale swap */}
+          {/* the wholesale swap — clear of the alice node */}
           {swapU > 0 && chainU <= 0 && (
             <g opacity={Math.min(1, swapU * 1.5) * (1 - clamp01(chainU * 2))}>
-              <rect x={700} y={90} width={430} height={64} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} />
-              <text x={718} y={116} fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace">
+              <rect x={640} y={84} width={430} height={64} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} />
+              <text x={658} y={110} fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace">
                 new kind 3 = the ENTIRE list, again
               </text>
-              <text x={718} y={138} fill={colors.MUTED} fontSize={12}>
+              <text x={658} y={132} fill={colors.MUTED} fontSize={12}>
                 publish it missing alice → alice is unfollowed
               </text>
             </g>

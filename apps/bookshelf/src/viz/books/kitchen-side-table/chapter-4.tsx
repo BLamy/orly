@@ -44,17 +44,19 @@ const TOP = { x: 640, y: 214, w: 400, h: 240 } as const;
 // Stage C — a button in its slot, holding the top down but not still.
 // ---------------------------------------------------------------------------
 
-const BTN = { x: 700, y: 520 } as const;
+const BTN = { x: 700, y: 486 } as const;
 
 const OAK = '#8a6a43';
 const OAK_LIT = '#b08a55';
 
-const CAM_FRAME: CameraState = { x: 360, y: 336, k: 1.2 };
+const CAM_FRAME: CameraState = { x: 360, y: 380, k: 1.2 };
 const CAM_TOP: CameraState = { x: 820, y: 300, k: 1.16 };
 const CAM_CORNER: CameraState = { x: 928, y: 262, k: 1.62 };
 const CAM_DENT: CameraState = { x: 780, y: 330, k: 1.5 };
-const CAM_BUTTON: CameraState = { x: 760, y: 500, k: 1.6 };
-const CAM_WIDE: CameraState = { x: 620, y: 340, k: 0.9 };
+// one framing for the top and its section, so the top label and the apron label both stay on the stage
+const CAM_BUTTON: CameraState = { x: 800, y: 390, k: 1.2 };
+const CAM_WIDE: CameraState = { x: 800, y: 390, k: 1.2 };
+const CAM_CLOSE: CameraState = { x: 640, y: 340, k: 1.0 };
 
 export interface Scene {
   tl: Timeline;
@@ -144,7 +146,7 @@ export function buildScene(): Scene {
     dur: 6.35,
     text: 'Now the top gets its edges rounded over, and the order of the cuts matters again. A router bit blows out a little chip where it exits the end of a cut, and end grain splits out worst of all.',
   });
-  tl.tween(frameDim, 0.1, { at: 27.9, dur: 1.2, ease: ease.move });
+  tl.tween(frameDim, 0, { at: 27.9, dur: 1.2, ease: ease.move });
   tl.tween(cam, CAM_TOP, { at: 27.9, dur: 1.6, ease: ease.move });
   tl.tween(topU, 1, { at: 28.6, dur: 1.2, ease: ease.enter });
   tl.hold(33.5, 0.6);
@@ -226,6 +228,7 @@ export function buildScene(): Scene {
     dur: 5.8,
     text: 'Marked, glued up wide, mortised in one setting and proved square at every step. Four builds, one shelf, and every one of them the same idea: decide the order before you start.',
   });
+  tl.tween(cam, CAM_CLOSE, { at: 80.1, dur: 1.2, ease: ease.move });
   tl.tween(dimAll, 0.13, { at: 80.1, dur: 1.2, ease: ease.move });
   tl.tween(closeU, 1, { at: 81.2, dur: 0.9, ease: ease.enter });
   tl.hold(85.5, 1.6);
@@ -338,7 +341,7 @@ export function Render({ s }: { s: SceneState }) {
                 const u = clamp01(orderU * 3 - i * 0.7);
                 if (u <= 0) return null;
                 const x = FR.x - 10 + i * 190;
-                const y = FR.y + FR.h + 84;
+                const y = FR.y + FR.h + 56;
                 return (
                   <g key={label} opacity={u}>
                     <rect x={x} y={y} width={158} height={44} rx={8} fill={colors.PANEL} stroke={colors.POSITIVE} />
@@ -351,7 +354,7 @@ export function Render({ s }: { s: SceneState }) {
                   </g>
                 );
               })}
-              <text x={FR.x + 270} y={FR.y + FR.h + 152} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={700}>
+              <text x={FR.x + 270} y={FR.y - 56} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={700}>
                 square at every step, not at the end
               </text>
             </g>
@@ -388,7 +391,8 @@ export function Render({ s }: { s: SceneState }) {
                 points={`${TOP.x + TOP.w},${TOP.y} ${TOP.x + TOP.w - 26},${TOP.y - 4} ${TOP.x + TOP.w - 8},${TOP.y + 22}`}
                 fill={colors.NEGATIVE}
               />
-              <text x={TOP.x + TOP.w - 34} y={TOP.y + 48} textAnchor="end" fill={colors.NEGATIVE} fontSize={14} fontWeight={700}>
+              <rect x={TOP.x + TOP.w - 180} y={TOP.y + 36} width={152} height={20} rx={4} fill={colors.PANEL} />
+              <text x={TOP.x + TOP.w - 34} y={TOP.y + 51} textAnchor="end" fill={colors.NEGATIVE} fontSize={14} fontWeight={700}>
                 blown-out corner
               </text>
             </g>
@@ -436,15 +440,19 @@ export function Render({ s }: { s: SceneState }) {
               {ironU > 0 && ironU < 1 && (
                 <g>
                   <rect x={TOP.x + 118} y={TOP.y + 108} width={64} height={34} rx={6} fill={colors.NEGATIVE} opacity={0.8} />
+                  <rect x={TOP.x + 70} y={TOP.y + 87} width={160} height={18} rx={4} fill={colors.PANEL} />
                   <text x={TOP.x + 150} y={TOP.y + 100} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12.5}>
                     damp rag + hot iron
                   </text>
                 </g>
               )}
               {ironU > 0.9 && (
-                <text x={TOP.x + 150} y={TOP.y + 190} textAnchor="middle" fill={colors.POSITIVE} fontSize={13.5} fontWeight={700}>
-                  the fibres swell back up
-                </text>
+                <g>
+                  <rect x={TOP.x + 150 - 100} y={TOP.y + 190 - 15} width={200} height={20} rx={4} fill={colors.PANEL} />
+                  <text x={TOP.x + 150} y={TOP.y + 190} textAnchor="middle" fill={colors.POSITIVE} fontSize={13.5} fontWeight={700}>
+                    the fibres swell back up
+                  </text>
+                </g>
               )}
             </g>
           )}
@@ -453,7 +461,7 @@ export function Render({ s }: { s: SceneState }) {
               {sandU < 1 && (
                 <circle cx={TOP.x + 40 + sandU * (TOP.w - 80)} cy={TOP.y + TOP.h / 2} r={24} fill={colors.SECONDARY} opacity={0.75} />
               )}
-              <text x={TOP.x + TOP.w / 2} y={TOP.y + TOP.h + 34} textAnchor="middle" fill={colors.MUTED} fontSize={13.5}>
+              <text x={TOP.x + TOP.w / 2} y={TOP.y + TOP.h - 14} textAnchor="middle" fill="#2f2415" fontSize={13.5} fontWeight={700}>
                 final sanding — 220 grit
               </text>
             </g>
@@ -477,9 +485,9 @@ export function Render({ s }: { s: SceneState }) {
         {buttonU > 0 && (
           <g opacity={buttonU * dimAll}>
             {/* the apron, in section, with its 10 mm slot */}
-            <rect x={BTN.x - 130} y={BTN.y} width={60} height={110} rx={3} fill={OAK} stroke="#2f2415" strokeWidth={1.3} />
+            <rect x={BTN.x - 130} y={BTN.y} width={60} height={86} rx={3} fill={OAK} stroke="#2f2415" strokeWidth={1.3} />
             <rect x={BTN.x - 82} y={BTN.y + 26} width={14} height={16} fill={colors.BG} stroke={colors.GRID} />
-            <text x={BTN.x - 100} y={BTN.y + 128} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+            <text x={BTN.x - 100} y={BTN.y + 100} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
               apron, in section
             </text>
             {/* the top above */}
@@ -502,9 +510,9 @@ export function Render({ s }: { s: SceneState }) {
             })()}
             {moveU > 0.5 && (
               <g opacity={clamp01(moveU * 2 - 1)}>
-                <line x1={BTN.x + 40} y1={BTN.y - 50} x2={BTN.x + 96} y2={BTN.y - 50} stroke={colors.POSITIVE} strokeWidth={2.4} />
-                <polygon points={`${BTN.x + 100},${BTN.y - 50} ${BTN.x + 88},${BTN.y - 56} ${BTN.x + 88},${BTN.y - 44}`} fill={colors.POSITIVE} />
-                <text x={BTN.x + 106} y={BTN.y - 45} fill={colors.POSITIVE} fontSize={13.5}>
+                <line x1={BTN.x + 40} y1={BTN.y + 74} x2={BTN.x + 96} y2={BTN.y + 74} stroke={colors.POSITIVE} strokeWidth={2.4} />
+                <polygon points={`${BTN.x + 100},${BTN.y + 74} ${BTN.x + 88},${BTN.y + 68} ${BTN.x + 88},${BTN.y + 80}`} fill={colors.POSITIVE} />
+                <text x={BTN.x + 106} y={BTN.y + 79} fill={colors.POSITIVE} fontSize={13.5}>
                   the top may move with the seasons
                 </text>
               </g>
@@ -514,9 +522,9 @@ export function Render({ s }: { s: SceneState }) {
 
         {closeU > 0 && (
           <g opacity={closeU}>
-            <rect x={310} y={250} width={660} height={144} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
-            <text x={640} y={304} textAnchor="middle" fill={colors.TEXT} fontSize={21}>
-              equal diagonals · ends before sides · steam before sanding
+            <rect x={230} y={250} width={820} height={144} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
+            <text x={640} y={304} textAnchor="middle" fill={colors.TEXT} fontSize={19}>
+              the side table: equal diagonals · ends before sides · steam before sanding
             </text>
             <text x={640} y={348} textAnchor="middle" fill={colors.ACCENT} fontSize={22} fontWeight={700}>
               decide the order before you start

@@ -30,11 +30,14 @@ const CARD = { x: 340, y: 108, w: 600, h: 64 } as const;
 const BAD_TEXT = 'Then registerSlot() fires again.';
 const GOOD_TEXT = 'Then registering the slot fires again.';
 
-/** Where the exact identifier lands when it moves out of the voice line. */
-const CODE_SLOT = { x: 985, y: 120, w: 200, h: 46 } as const;
+/** Where the exact identifier lands when it moves out of the voice line: just below the card, clear of its border. */
+const CODE_SLOT = { x: 1000, y: 212, w: 200, h: 46 } as const;
 
 // ---- the waveform, precomputed at module scope ----------------------------
 const WAVE = { x: 170, y: 470, w: 940, bars: 220, amp: 64 } as const;
+/** Cue pins ride from just under the panel header down onto the waveform, so they never sit on the title. */
+const PIN_TOP = 412;
+const PIN_Y = 428;
 /** Paragraph-break silences between the three spoken lines. */
 const GAPS: Array<[number, number]> = [
   [68, 78],
@@ -59,8 +62,10 @@ const barX = (i: number) => WAVE.x + (i / (WAVE.bars - 1)) * WAVE.w;
 
 // camera marks
 const CAM_RAIL: CameraState = { x: 640, y: 226, k: 1.3 };
-const CAM_BOUNCE: CameraState = { x: gateX(3), y: 250, k: 1.55 };
-const CAM_WAVE: CameraState = { x: 640, y: 440, k: 1.3 };
+// Bounce pushes in while keeping the whole gauntlet (`url` .. `acronym`) on stage.
+const CAM_BOUNCE: CameraState = { x: 640, y: 250, k: 1.35 };
+// Wave pulls back just enough that the whole panel (x 140..1140) stays in frame.
+const CAM_WAVE: CameraState = { x: 640, y: 440, k: 1.2 };
 
 // ---------------------------------------------------------------------------
 // Timeline
@@ -275,8 +280,9 @@ export function Render({ s }: { s: SceneState }) {
   const cardStroke = rewriteU > 0.5 ? colors.POSITIVE : exitU > 0.3 ? colors.NEGATIVE : colors.GRID;
 
   // the identifier chip slides from inside the card to the on-screen slot
-  const chipX0 = CARD.x + 120;
-  const chipY0 = CARD.y + CARD.h + 10;
+  // starts on the identifier's own spot in the spoken line, then slides out
+  const chipX0 = CARD.x + 135;
+  const chipY0 = CARD.y + 48;
   const chipX = chipX0 + (CODE_SLOT.x - chipX0) * codeMove;
   const chipY = chipY0 + (CODE_SLOT.y + 12 - chipY0) * codeMove;
 
@@ -291,7 +297,7 @@ export function Render({ s }: { s: SceneState }) {
           {cardU > 0 && (
             <g opacity={cardU}>
               <rect x={CARD.x} y={CARD.y} width={CARD.w} height={CARD.h} rx={12} fill={colors.PANEL} stroke={cardStroke} strokeWidth={1.6} />
-              <text x={CARD.x + 20} y={CARD.y + 26} fill={colors.MUTED} fontSize={11.5}>
+              <text x={CARD.x + 20} y={CARD.y + 26} fill={colors.MUTED} fontSize={12}>
                 spoken line
               </text>
               <text x={CARD.x + 20} y={CARD.y + 48} fill={colors.TEXT} fontSize={16} fontFamily={rewriteU > 0.5 ? undefined : MONO}>
@@ -307,7 +313,7 @@ export function Render({ s }: { s: SceneState }) {
                 </g>
               )}
               {codeMove > 0.8 && (
-                <text x={CODE_SLOT.x} y={CODE_SLOT.y - 22} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontStyle="italic" opacity={(codeMove - 0.8) * 5}>
+                <text x={CODE_SLOT.x} y={CODE_SLOT.y - 22} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic" opacity={(codeMove - 0.8) * 5}>
                   on-screen label — where code belongs
                 </text>
               )}
@@ -353,10 +359,6 @@ export function Render({ s }: { s: SceneState }) {
               <text x={WAVE.x} y={394} fill={colors.TEXT} fontSize={13.5} fontWeight={700}>
                 one chapter, one recording
               </text>
-              <text x={WAVE.x + WAVE.w} y={394} textAnchor="end" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
-                convertWithTimestamps · generator/tts.mjs
-              </text>
-
               {/* bars */}
               {barH.map((h, i) => {
                 const u = clamp01(waveU * (WAVE.bars + 30) - i);
@@ -382,7 +384,7 @@ export function Render({ s }: { s: SceneState }) {
               {/* paragraph-break markers */}
               {waveU > 0.6 &&
                 GAPS.map(([a, b], k) => (
-                  <text key={k} x={(barX(a) + barX(b)) / 2} y={WAVE.y - WAVE.amp - 10} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO} opacity={(waveU - 0.6) * 2.5}>
+                  <text key={k} x={(barX(a) + barX(b)) / 2} y={WAVE.y - WAVE.amp - 10} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={(waveU - 0.6) * 2.5}>
                     ¶
                   </text>
                 ))}
@@ -396,8 +398,11 @@ export function Render({ s }: { s: SceneState }) {
                     const x = WAVE.x + (i / 109) * WAVE.w;
                     return <line key={i} x1={x} y1={WAVE.y + WAVE.amp + 12} x2={x} y2={WAVE.y + WAVE.amp + 18} stroke={colors.SECONDARY} strokeWidth={1.2} opacity={0.35 + 0.5 * u} />;
                   })}
-                  <text x={WAVE.x} y={WAVE.y + WAVE.amp + 36} fill={colors.SECONDARY} fontSize={11} fontFamily={MONO} opacity={clamp01(alignU * 3)}>
+                  <text x={WAVE.x} y={WAVE.y + WAVE.amp + 36} fill={colors.SECONDARY} fontSize={12} fontFamily={MONO} opacity={clamp01(alignU * 3)}>
                     characterStartTimesSeconds
+                  </text>
+                  <text x={WAVE.x + WAVE.w} y={WAVE.y + WAVE.amp + 36} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={clamp01(alignU * 3)}>
+                    convertWithTimestamps · generator/tts.mjs
                   </text>
                 </g>
               )}
@@ -407,8 +412,7 @@ export function Render({ s }: { s: SceneState }) {
                 const u = clamp01(pinU * (CUE_BARS.length + 0.5) - i);
                 if (u <= 0) return null;
                 const x = barX(b);
-                const yTop = 402;
-                const y = yTop + (WAVE.y - WAVE.amp - 14 - yTop) * u;
+                const y = PIN_TOP + (PIN_Y - PIN_TOP) * u;
                 return (
                   <g key={i}>
                     <line x1={x} y1={y} x2={x} y2={WAVE.y + WAVE.amp * barH[b]} stroke={colors.WARM} strokeWidth={1.5} strokeDasharray="2 4" opacity={0.8 * u} />
@@ -417,7 +421,7 @@ export function Render({ s }: { s: SceneState }) {
                       {i + 1}
                     </text>
                     {u > 0.8 && (
-                      <text x={x + 16} y={y + 4} fill={colors.WARM} fontSize={11.5} fontFamily={MONO} opacity={(u - 0.8) * 5}>
+                      <text x={x + 16} y={y + 4} fill={colors.WARM} fontSize={12} fontFamily={MONO} opacity={(u - 0.8) * 5}>
                         {CUE_LABELS[i]}
                       </text>
                     )}
@@ -439,7 +443,7 @@ export function Render({ s }: { s: SceneState }) {
               {trimU > 0 && (
                 <g opacity={clamp01(trimU * 2)}>
                   <line x1={trimBarX} y1={WAVE.y - WAVE.amp - 16} x2={trimBarX} y2={WAVE.y + WAVE.amp + 8} stroke={colors.NEGATIVE} strokeWidth={2} strokeDasharray="5 4" />
-                  <text x={trimBarX + 6} y={WAVE.y - WAVE.amp - 4} fill={colors.NEGATIVE} fontSize={11} fontFamily={MONO}>
+                  <text x={trimBarX + 6} y={WAVE.y - WAVE.amp - 4} fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
                     ✂ audio end
                   </text>
                 </g>

@@ -192,7 +192,7 @@ function Frame({ s }: { s: SceneState }) {
               <rect x={NOTE.x - 110} y={NOTE.y - 44} width={220} height={88} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.6} />
               <text x={NOTE.x - 94} y={NOTE.y - 18} fill={colors.ACCENT} fontSize={13} fontWeight={600}>alice · kind 1</text>
               <text x={NOTE.x - 94} y={NOTE.y + 4} fill={colors.TEXT} fontSize={13}>just set up my nostr</text>
-              <text x={NOTE.x - 94} y={NOTE.y + 27} fill={colors.MUTED} fontSize={10.5} fontFamily="monospace">id {shortHex(NOTE_ID, 8, 4)}</text>
+              <text x={NOTE.x - 94} y={NOTE.y + 27} fill={colors.MUTED} fontSize={12} fontFamily="monospace">id {shortHex(NOTE_ID, 8, 4)}</text>
             </g>
           )}
 
@@ -222,29 +222,29 @@ function Frame({ s }: { s: SceneState }) {
                 ).map(([t, v], i) => (
                   <g key={t}>
                     <rect x={92} y={128 + i * 36} width={150} height={28} rx={6} fill={colors.PANEL} stroke={colors.SECONDARY} />
-                    <text x={104} y={146 + i * 36} fill={colors.SECONDARY} fontSize={11} fontFamily="monospace">
+                    <text x={104} y={146 + i * 36} fill={colors.SECONDARY} fontSize={12} fontFamily="monospace">
                       {t} {v}
                     </text>
                   </g>
                 ))}
-                <text x={92} y={116} fill={colors.MUTED} fontSize={11} fontFamily="monospace">inside one kind-7 event</text>
+                <text x={92} y={116} fill={colors.MUTED} fontSize={12} fontFamily="monospace">inside one kind-7 event</text>
               </g>
             )}
             {/* tallies */}
             {tallyU > 0 && (
               <g opacity={tallyU}>
                 {TALLY.map((t, i) => {
-                  const w = 30 * t.n * clamp01(tallyU * 3 - i);
-                  const y = 470 + i * 34;
+                  const w = 18 * t.n * clamp01(tallyU * 3 - i);
+                  const y = 420 + i * 32;
                   return (
                     <g key={t.label}>
                       <text x={168} y={y + 14} textAnchor="end" fill={t.color} fontSize={14}>{t.label}</text>
                       <rect x={180} y={y} width={Math.max(2, w)} height={18} rx={4} fill={t.color} opacity={0.65} />
-                      <text x={188 + w} y={y + 14} fill={t.color} fontSize={13} fontFamily="monospace">{t.n}</text>
+                      <text x={188 + w} y={y + 14} fill={t.color} fontSize={14} fontFamily="monospace">{t.n}</text>
                     </g>
                   );
                 })}
-                <text x={92} y={452} fill={colors.MUTED} fontSize={11} fontFamily="monospace">tallied by YOUR client</text>
+                <text x={92} y={398} fill={colors.MUTED} fontSize={12} fontFamily="monospace">tallied by YOUR client</text>
               </g>
             )}
           </g>
@@ -261,15 +261,15 @@ function Frame({ s }: { s: SceneState }) {
           {/* the repost: note shrinks into a kind-6 envelope and travels */}
           {repostU > 0 && (() => {
             const p = flightPos({ x: NOTE.x, y: NOTE.y }, REPOST_DEST, repostU, 120);
-            const sc = 1 - 0.45 * repostU;
+            const sc = 1 - 0.2 * repostU;
             return (
               <g transform={`translate(${p.x}, ${p.y}) scale(${sc})`} opacity={Math.min(1, repostU * 2)}>
                 <rect x={-118} y={-64} width={236} height={128} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2} />
-                <text x={-100} y={-40} fill={colors.POSITIVE} fontSize={13} fontWeight={600}>bob · kind 6 repost</text>
-                <rect x={-100} y={-26} width={200} height={58} rx={8} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1} opacity={0.9} />
-                <text x={-88} y={-6} fill={colors.MUTED} fontSize={10} fontFamily="monospace">content = the whole note,</text>
-                <text x={-88} y={10} fill={colors.MUTED} fontSize={10} fontFamily="monospace">stringified</text>
-                <text x={-100} y={52} fill={colors.MUTED} fontSize={10} fontFamily="monospace">
+                <text x={-100} y={-40} fill={colors.POSITIVE} fontSize={14} fontWeight={600}>bob · kind 6 repost</text>
+                <rect x={-100} y={-28} width={200} height={60} rx={8} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1} opacity={0.9} />
+                <text x={-88} y={-7} fill={colors.MUTED} fontSize={12} fontFamily="monospace">content = the whole note,</text>
+                <text x={-88} y={10} fill={colors.MUTED} fontSize={12} fontFamily="monospace">stringified</text>
+                <text x={-100} y={52} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                   e {shortHex(NOTE_ID, 6, 2)} wss://relay…
                 </text>
               </g>
@@ -277,33 +277,33 @@ function Frame({ s }: { s: SceneState }) {
           })()}
           {kindsU > 0 && (
             <g opacity={kindsU}>
-              <rect x={LANE_X - 92} y={340} width={184} height={44} rx={9} fill={colors.PANEL} stroke={colors.WARM} />
-              <text x={LANE_X} y={358} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontFamily="monospace">kind 16 — anything else</text>
-              <text x={LANE_X} y={375} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily="monospace">k "30023"</text>
+              <rect x={LANE_X - 110} y={340} width={220} height={48} rx={9} fill={colors.PANEL} stroke={colors.WARM} />
+              <text x={LANE_X} y={360} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily="monospace">kind 16 — anything else</text>
+              <text x={LANE_X} y={378} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">k "30023"</text>
             </g>
           )}
 
-          {/* the quote */}
+          {/* the quote: sits mid-stage, clear of the caption band */}
           {quoteU > 0 && (
             <g opacity={quoteU}>
-              <rect x={92} y={548} width={340} height={96} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.6} />
-              <text x={108} y={572} fill={colors.SECONDARY} fontSize={12} fontWeight={600}>carol · kind 1 quote</text>
-              <text x={108} y={592} fill={colors.TEXT} fontSize={11.5}>this is why onboarding matters →</text>
-              <rect x={108} y={600} width={180} height={34} rx={6} fill={colors.BG} stroke={colors.ACCENT} opacity={0.9} />
-              <text x={118} y={621} fill={colors.MUTED} fontSize={9.5} fontFamily="monospace">alice’s note, embedded</text>
-              <rect x={302} y={600} width={116} height={34} rx={6} fill={colors.BG} stroke={colors.SECONDARY} />
-              <text x={310} y={621} fill={colors.SECONDARY} fontSize={9.5} fontFamily="monospace">q {shortHex(NOTE_ID, 4, 2)}</text>
+              <rect x={540} y={440} width={340} height={102} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.6} />
+              <text x={556} y={464} fill={colors.SECONDARY} fontSize={14} fontWeight={600}>carol · kind 1 quote</text>
+              <text x={556} y={486} fill={colors.TEXT} fontSize={13}>this is why onboarding matters →</text>
+              <rect x={556} y={496} width={190} height={34} rx={6} fill={colors.BG} stroke={colors.ACCENT} opacity={0.9} />
+              <text x={566} y={518} fill={colors.MUTED} fontSize={12} fontFamily="monospace">alice’s note, embedded</text>
+              <rect x={756} y={496} width={110} height={34} rx={6} fill={colors.BG} stroke={colors.SECONDARY} />
+              <text x={764} y={518} fill={colors.SECONDARY} fontSize={12} fontFamily="monospace">q {shortHex(NOTE_ID, 4, 2)}</text>
             </g>
           )}
           {gateU > 0 && (
             <g opacity={gateU}>
               <path
-                d={`M${430},${586} Q ${520},${560} ${560},${470}`}
+                d="M 630,440 Q 622,426 608,414"
                 fill="none" stroke={colors.SECONDARY} strokeWidth={1.6} strokeDasharray="5 5"
               />
-              <line x1={548} y1={492} x2={584} y2={452} stroke={colors.NEGATIVE} strokeWidth={2.4} />
-              <line x1={584} y1={492} x2={548} y2={452} stroke={colors.NEGATIVE} strokeWidth={2.4} />
-              <text x={604} y={470} fill={colors.NEGATIVE} fontSize={11.5}>
+              <line x1={582} y1={378} x2={618} y2={414} stroke={colors.NEGATIVE} strokeWidth={2.4} />
+              <line x1={618} y1={378} x2={582} y2={414} stroke={colors.NEGATIVE} strokeWidth={2.4} />
+              <text x={632} y={404} fill={colors.NEGATIVE} fontSize={14}>
                 q ≠ e — never enters the thread
               </text>
             </g>
@@ -320,7 +320,7 @@ function Frame({ s }: { s: SceneState }) {
           <text x={640} y={344} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             like · boost · quote — all just events pointing at events
           </text>
-          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             NIP-25 kind 7 · NIP-18 kinds 6/16 · q tag
           </text>
         </g>

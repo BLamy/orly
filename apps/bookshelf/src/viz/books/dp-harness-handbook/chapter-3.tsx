@@ -28,12 +28,14 @@ const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 
 // Overall win-rate data (Fig. 3a), %.
 const BARS = [
-  { label: 'Codex', kind: 'base', v: 28.4, gx: 360 },
-  { label: 'Codex', kind: 'hand', v: 38.4, gx: 360 },
-  { label: 'Terminus', kind: 'base', v: 27.0, gx: 760 },
-  { label: 'Terminus', kind: 'hand', v: 45.9, gx: 760 },
+  { label: 'Codex', kind: 'base', v: 28.4, gx: 330 },
+  { label: 'Codex', kind: 'hand', v: 38.4, gx: 330 },
+  { label: 'Terminus', kind: 'base', v: 27.0, gx: 560 },
+  { label: 'Terminus', kind: 'hand', v: 45.9, gx: 560 },
 ] as const;
-const AXIS = { x0: 250, x1: 1030, yBase: 560, top: 170, max: 50 };
+// Chart sits left of x=700 so the real Fig. 3 inset (x≥740) never covers a bar.
+const AXIS = { x0: 190, x1: 700, yBase: 560, top: 170, max: 50 };
+const FIG3 = { x: 740, y: 170, w: 500, h: 109 };
 const yOf = (v: number) => AXIS.yBase - (v / AXIS.max) * (AXIS.yBase - AXIS.top);
 
 const CAM_PIPE: CameraState = { x: 640, y: 240, k: 1.0 };
@@ -170,6 +172,12 @@ export function Render({ s }: { s: SceneState }) {
   // Phase spotlight: dim the two non-active thirds of the real Fig. 2.
   const PIPE = { x: 100, y: 96, w: 1080, h: 276 };
   const third = PIPE.w / 3;
+  const PHASE_NAMES = ['Phase I → Program Graph', 'Phase II → Behavioral Mapping', 'Phase III → Handbook'];
+  // Chip sits above the figure: the camera keeps it on-stage, and it clears the caption pill.
+  const chipX = phase >= 1 ? PIPE.x + (phase - 0.5) * third : PIPE.x + PIPE.w / 2;
+  const chipText = phase >= 1 ? PHASE_NAMES[phase - 1] : 'Fig. 2 — construction pipeline';
+  // Placeholder bars for the "who plans better" question: a fixed height and a "?" until the bars grow.
+  const unknownU = barsInU * (1 - clamp01(growU * 2));
 
   return (
     <>
@@ -178,6 +186,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- Phase pipeline: the authors' real Fig. 2 ---- */}
         {pipeU > 0.01 && (
           <>
+            {/* no Figure caption: it is left-anchored at the figure edge and gets cropped by the zoomed camera */}
             <Figure
               src="/generated/dp-harness-handbook/figures/fig-02.png"
               x={PIPE.x}
@@ -186,10 +195,9 @@ export function Render({ s }: { s: SceneState }) {
               h={PIPE.h}
               reveal={pipeU}
               opacity={pipeU}
-              caption="Fig. 2 — construction pipeline: extract facts → organize behavior → synthesize"
               accent={colors.TEAL}
             />
-            {/* spotlight the active phase by dimming the other two thirds */}
+            {/* spotlight the active phase by dimming the other two thirds (lighter, so the figures stay readable) */}
             {phase >= 1 &&
               [0, 1, 2].map((i) => {
                 const active = phase - 1 === i;
@@ -201,22 +209,26 @@ export function Render({ s }: { s: SceneState }) {
                     width={third}
                     height={PIPE.h}
                     fill={colors.BG}
-                    opacity={active ? 0 : 0.62 * pipeU}
+                    opacity={active ? 0 : 0.5 * pipeU}
                   />
                 );
               })}
-            {phase >= 1 && (
-              <text
-                x={PIPE.x + (phase - 0.5) * third}
-                y={PIPE.y + PIPE.h + 54}
-                textAnchor="middle"
-                fill={colors.TEAL}
-                fontSize={15}
-                opacity={pipeU}
-              >
-                {['Phase I → Program Graph', 'Phase II → Behavioral Mapping', 'Phase III → Handbook'][phase - 1]}
+            <g opacity={pipeU}>
+              <rect
+                x={chipX - 165}
+                y={PIPE.y - 42}
+                width={330}
+                height={30}
+                rx={15}
+                fill={colors.PANEL}
+                stroke={colors.TEAL}
+                strokeOpacity={0.6}
+                strokeWidth={1.2}
+              />
+              <text x={chipX} y={PIPE.y - 22} textAnchor="middle" fill={colors.TEAL} fontSize={15}>
+                {chipText}
               </text>
-            )}
+            </g>
           </>
         )}
 
@@ -236,7 +248,30 @@ export function Render({ s }: { s: SceneState }) {
           <text x={AXIS.x0 - 40} y={AXIS.top - 14} fill={colors.MUTED} fontSize={12}>
             win rate (%)
           </text>
+          <text x={AXIS.x0} y={AXIS.top - 40} fill={colors.TEXT} fontSize={15}>
+            The authors' reported win rates (Fig. 3a)
+          </text>
         </g>
+
+        {/* "?" placeholders while the question is posed: same slots, fixed height, no answer shown */}
+        {[330, 560].map((gx) => (
+          <g key={gx} opacity={unknownU * dimAll}>
+            <rect
+              x={gx - 106}
+              y={AXIS.yBase - 0.5 * (AXIS.yBase - AXIS.top)}
+              width={92 * 2 + 28}
+              height={0.5 * (AXIS.yBase - AXIS.top)}
+              rx={8}
+              fill="none"
+              stroke={colors.MUTED}
+              strokeDasharray="6 6"
+              strokeWidth={1.2}
+            />
+            <text x={gx} y={AXIS.yBase - 0.25 * (AXIS.yBase - AXIS.top) + 8} textAnchor="middle" fill={colors.MUTED} fontSize={30}>
+              ?
+            </text>
+          </g>
+        ))}
 
         {/* bars */}
         {BARS.map((b, i) => {
@@ -253,7 +288,7 @@ export function Render({ s }: { s: SceneState }) {
                 {b.v.toFixed(1)}
               </text>
               {isHand && (
-                <text x={bx + bw / 2} y={AXIS.yBase + 24} textAnchor="middle" fill={colors.TEXT} fontSize={15} opacity={barsInU}>
+                <text x={b.gx} y={AXIS.yBase + 26} textAnchor="middle" fill={colors.TEXT} fontSize={15} opacity={barsInU}>
                   {b.label}
                 </text>
               )}
@@ -263,8 +298,8 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* +10.0 / +18.9 delta callouts */}
         {[
-          { gx: 360, delta: '+10.0', v: 38.4 },
-          { gx: 760, delta: '+18.9', v: 45.9 },
+          { gx: 330, delta: '+10.0', v: 38.4 },
+          { gx: 560, delta: '+18.9', v: 45.9 },
         ].map((d, i) => (
           <g key={i} opacity={deltaU * dimAll}>
             <text x={d.gx + 60} y={yOf(d.v) - 34} textAnchor="middle" fill={colors.POSITIVE} fontSize={22} fontWeight={700}>
@@ -273,14 +308,14 @@ export function Render({ s }: { s: SceneState }) {
           </g>
         ))}
 
-        {/* legend */}
+        {/* legend: under the Fig. 3 inset, clear of every bar */}
         <g opacity={barsInU * dimAll}>
-          <rect x={470} y={AXIS.top - 8} width={14} height={14} rx={3} fill={colors.NEGATIVE} opacity={0.9} />
-          <text x={492} y={AXIS.top + 4} fill={colors.MUTED} fontSize={13}>
+          <rect x={FIG3.x} y={346} width={14} height={14} rx={3} fill={colors.NEGATIVE} opacity={0.9} />
+          <text x={FIG3.x + 22} y={358} fill={colors.MUTED} fontSize={14}>
             Baseline
           </text>
-          <rect x={600} y={AXIS.top - 8} width={14} height={14} rx={3} fill={colors.ACCENT} opacity={0.9} />
-          <text x={622} y={AXIS.top + 4} fill={colors.MUTED} fontSize={13}>
+          <rect x={FIG3.x + 120} y={346} width={14} height={14} rx={3} fill={colors.ACCENT} opacity={0.9} />
+          <text x={FIG3.x + 142} y={358} fill={colors.MUTED} fontSize={14}>
             Handbook-Assisted
           </text>
         </g>
@@ -295,10 +330,10 @@ export function Render({ s }: { s: SceneState }) {
         {/* the authors' real Fig. 3, small, as evidence */}
         <Figure
           src="/generated/dp-harness-handbook/figures/fig-03.png"
-          x={735}
-          y={150}
-          w={470}
-          h={102}
+          x={FIG3.x}
+          y={FIG3.y}
+          w={FIG3.w}
+          h={FIG3.h}
           reveal={figU}
           opacity={figU}
           caption="Fig. 3 — win rate & token cost, Baseline vs Handbook-Assisted"
@@ -315,7 +350,7 @@ export function Render({ s }: { s: SceneState }) {
             The Harness Handbook · arXiv:2607.13285
           </text>
           <text x={640} y={372} textAnchor="middle" fill={colors.ACCENT} fontSize={14}>
-            Daily Papers by Hugging Face · #1 this week
+            Source: Hugging Face Daily Papers (weekly ranking)
           </text>
         </g>
       </Camera>

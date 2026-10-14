@@ -20,7 +20,6 @@
 // fold into the 72-example grid.
 import {
   Camera,
-  MathLabel,
   Timeline,
   cameraInterp,
   colors,
@@ -220,7 +219,7 @@ export function buildScene() {
   // 7 — three named benchmarks, nine blank fields
   to(dotsO, 0.3, B(7));
   to(gridLbl, 0.3, B(7));
-  look({ x: 625, y: 470, k: 1.35 }, B(7));
+  look({ x: 600, y: 390, k: 1.05 }, B(7));
   to(tableU, 1, B(7) + 1.2, 3.0, ease.linear);
   tl.hold(B(7) + DUR, 1.2);
 
@@ -260,18 +259,21 @@ const scene = buildScene();
 // Render — pure function of the sampled state
 // ---------------------------------------------------------------------------
 
-function CostCompare({ a, b, o, x, tex, note }: { a: number; b: number; o: number; x: number; tex: string; note: string }) {
+// Plain SVG text instead of KaTeX: the MathLabel markup doubled up on screen.
+function CostCompare({ a, b, o, x, expr, result, note }: { a: number; b: number; o: number; x: number; expr: string; result: string; note: string }) {
   if (o <= 0) return null;
   const ya = CH.base - (REL_COST[a] / 4.5) * H;
   const yb = CH.base - (REL_COST[b] / 4.5) * H;
+  const ty = ya < yb ? 250 : 380;
   return (
     <g opacity={o}>
       <line x1={BAR_CX[a]} y1={ya} x2={x + 14} y2={ya} stroke={TEXT} strokeWidth={1} strokeDasharray="4 4" />
       <line x1={x - 14} y1={yb} x2={BAR_CX[b]} y2={yb} stroke={TEXT} strokeWidth={1} strokeDasharray="4 4" />
       <line x1={x} y1={ya} x2={x} y2={yb} stroke={WARM} strokeWidth={2} />
       <path d={`M${x - 5},${yb + (ya < yb ? -7 : 7)} L${x},${yb} L${x + 5},${yb + (ya < yb ? -7 : 7)}`} fill="none" stroke={WARM} strokeWidth={2} />
-      <MathLabel tex={tex} x={SIDE_X} y={ya < yb ? 250 : 380} fontSize={18} anchor="start" boxWidth={300} />
-      <Label x={SIDE_X} y={(ya < yb ? 250 : 380) + 36} text={note} size={12} color={WARM} />
+      <text x={SIDE_X} y={ty} fill={TEXT} fontFamily={font.mono} fontSize={16}>{expr}</text>
+      <text x={SIDE_X} y={ty + 30} fill={TEXT} fontFamily={font.mono} fontSize={22}>{result}</text>
+      <Label x={SIDE_X} y={ty + 60} text={note} size={12} color={WARM} />
     </g>
   );
 }
@@ -312,7 +314,7 @@ export function Render({ s }: { s: SceneState }) {
                 return (
                   <g key={`${k}-${v}`} opacity={set.o * axesU}>
                     <line x1={CH.x0} y1={y} x2={CH.x1} y2={y} stroke={ink.grid} strokeWidth={1} />
-                    <Label x={CH.x0 - 10} y={y + 4} text={k === 1 ? `${v}×` : v.toFixed(2)} anchor="end" size={11} />
+                    <Label x={CH.x0 - 10} y={y + 4} text={k === 1 ? `${v}×` : v.toFixed(2)} anchor="end" size={12} />
                   </g>
                 );
               }),
@@ -321,9 +323,9 @@ export function Render({ s }: { s: SceneState }) {
             <Note x={CH.x0} y={CH.top - 38} text="F1 score" size={18} weight={600} o={axesU * (1 - ablU) * (1 - costU)} />
             <Note x={CH.x0} y={CH.top - 38} text="F1 score · ablation, one signal at a time" size={18} weight={600} o={ablU * (1 - costU)} />
             <Note x={CH.x0} y={CH.top - 38} text="Relative cost · baseline = 1×" size={18} weight={600} o={costU} />
-            <Tag x={CH.x1} y={CH.top - 38} text="Paper-reported" anchor="end" size={11} o={axesU} />
+            <Tag x={CH.x1} y={CH.top - 38} text="Paper-reported" anchor="end" size={12} o={axesU} />
             <Label x={CH.x1} y={CH.top - 16} text={isCost ? 'Table I · relative units, not dollars' : ablU > 0.5 ? 'Table II' : 'Table I'}
-              anchor="end" size={10} o={axesU} />
+              anchor="end" size={12} o={axesU} />
 
             {BAR_CX.map((cx, i) => {
               const h = Math.max(0, (vals[i] / axisMax) * H);
@@ -348,17 +350,17 @@ export function Render({ s }: { s: SceneState }) {
               <text x={SIDE_X} y={288} fill={NEGATIVE} fontFamily={font.mono} fontSize={44}>{FALSE_POSITIVE.toFixed(2)}</text>
               <rect x={SIDE_X} y={312} width={260} height={8} rx={4} fill={ink.faint} />
               <rect x={SIDE_X} y={312} width={260 * FALSE_POSITIVE * g(scene.fpU)} height={8} rx={4} fill={NEGATIVE} />
-              <Label x={SIDE_X} y={338} text="0" size={10} />
-              <Label x={SIDE_X + 260} y={338} text="1" size={10} anchor="end" />
-              <Label x={SIDE_X} y={366} text="proposed method · nonzero" size={11} color={TEXT} />
-              <Tag x={SIDE_X} y={396} text="Paper-reported" size={10} />
+              <Label x={SIDE_X} y={338} text="0" size={12} />
+              <Label x={SIDE_X + 260} y={338} text="1" size={12} anchor="end" />
+              <Label x={SIDE_X} y={366} text="proposed method · nonzero" size={12} color={TEXT} />
+              <Tag x={SIDE_X} y={396} text="Paper-reported" size={12} />
             </g>
 
             {/* beat 5 — percentages derived from the reported relative costs */}
             <CostCompare a={2} b={3} o={g(scene.cmpA)} x={740}
-              tex={`\\dfrac{2.8-1.6}{2.8}\\approx ${PCT_BELOW_RAG}\\%`} note="lower than always-RAG" />
+              expr="(2.8 − 1.6) ÷ 2.8" result={`≈ ${PCT_BELOW_RAG}%`} note="lower than always-RAG" />
             <CostCompare a={0} b={3} o={g(scene.cmpB)} x={560}
-              tex={`\\dfrac{1.6-1.0}{1.0}= ${PCT_ABOVE_BASE}\\%`} note="higher than the baseline" />
+              expr="(1.6 − 1.0) ÷ 1.0" result={`= ${PCT_ABOVE_BASE}%`} note="higher than the baseline" />
           </g>
         ) : null}
 
@@ -374,19 +376,19 @@ export function Render({ s }: { s: SceneState }) {
         ) : null}
         <g opacity={gridLbl}>
           <Note x={BLOCK_X[0]} y={196} text={`${N_TRAIN} confidence-training examples`} size={18} weight={600} />
-          <Tag x={BLOCK_X[2] + 6 * PITCH} y={196} text="Paper-reported" anchor="end" size={11} />
+          <Tag x={BLOCK_X[2] + 6 * PITCH} y={196} text="Paper-reported" anchor="end" size={12} />
           {GROUPS.map((grp, b) => (
             <Label key={grp.name} x={BLOCK_X[b]} y={BLOCK_Y + 6 * PITCH + 20} text={`${grp.n} ${grp.name}`} size={12} color={grp.color} />
           ))}
           <Label x={BLOCK_X[0]} y={BLOCK_Y + 6 * PITCH + 44} text="local model: SmolLM2-360M-Instruct · training set, not the evaluation sample"
-            size={11} color={TEXT} />
+            size={12} color={TEXT} />
         </g>
 
         {/* beat 7 — named benchmarks, blank fields */}
         {tableU > 0 ? (
           <g opacity={g(scene.tableO)}>
             {MISSING.map((m, c) => (
-              <Label key={m} x={TABLE.cols[c]} y={TABLE.y} text={m} anchor="middle" size={11} o={seg(tableU, 0, 0.15)} />
+              <Label key={m} x={TABLE.cols[c]} y={TABLE.y} text={m} anchor="middle" size={12} o={seg(tableU, 0, 0.15)} />
             ))}
             {BENCHMARKS.map((name, r) => {
               const y = TABLE.y + 34 + r * TABLE.rowH;
@@ -396,7 +398,7 @@ export function Render({ s }: { s: SceneState }) {
                   {TABLE.cols.map((cx, c) => (
                     <g key={c} opacity={seg(tableU, r * 0.25 + 0.1 + c * 0.08, r * 0.25 + 0.3 + c * 0.08)}>
                       <rect x={cx - 66} y={y - 13} width={132} height={26} rx={5} fill="none" stroke={MUTED} strokeOpacity={0.7} strokeDasharray="4 4" />
-                      <Label x={cx} y={y + 4} text="— not reported" anchor="middle" size={10} />
+                      <Label x={cx} y={y + 4} text="— not reported" anchor="middle" size={12} />
                     </g>
                   ))}
                 </g>
@@ -430,7 +432,7 @@ export function Render({ s }: { s: SceneState }) {
         {recapO > 0 ? (
           <g opacity={recapO}>
             <ActivationRibbon {...RIB} lit={g(scene.recapLit)} color={ACCENT} />
-            <Label x={RIB.x} y={RIB.y + RIB.h + 26} text="the question's internal signals" size={11} />
+            <Label x={RIB.x} y={RIB.y + RIB.h + 26} text="the question's internal signals" size={12} />
             {[0, 1, 2].map((i) => {
               const gy = GLYPH.y + i * 86 + 32;
               const u = seg(g(scene.glyphU), i / 3, (i + 1) / 3);
@@ -445,9 +447,9 @@ export function Render({ s }: { s: SceneState }) {
             })}
             <InstrumentGlyphs x={GLYPH.x} y={GLYPH.y} u={g(scene.glyphU)} />
             <RouteRail geom={RAIL} reveal={g(scene.railU)} trackU={seg(g(scene.railU), 0.4, 1)} score={score} beadO={g(scene.beadO)}
-              whisper={1} size={10} stationLabels beadLabel={`C = ${score.toFixed(2)}`} />
-            <Tag x={RAIL.x + RAIL.w} y={RAIL.y - 52} text="Illustrative score" anchor="end" size={10} o={g(scene.beadO)} />
-            <Label x={RAIL.x + RAIL.w} y={RAIL.y + RAIL.trackH + 50} text="lower confidence → more help" anchor="end" size={11}
+              whisper={1} size={12} stationLabels beadLabel={`C = ${score.toFixed(2)}`} />
+            <Tag x={RAIL.x + RAIL.w} y={RAIL.y - 52} text="Illustrative score" anchor="end" size={12} o={g(scene.beadO)} />
+            <Label x={RAIL.x + RAIL.w} y={RAIL.y + RAIL.trackH + 50} text="lower confidence → more help" anchor="end" size={12}
               color={TEXT} o={g(scene.beadO)} />
             {pktU >= 0 ? (() => {
               const p = RAIL.tracks[routeIndex(score)].point(clamp01(pktU));

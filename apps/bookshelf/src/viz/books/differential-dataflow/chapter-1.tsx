@@ -109,14 +109,13 @@ const BAR_H = 118; // height of multiplicity 1
 const CAM_GRAPH: CameraState = { x: 650, y: 245, k: 1.5 };
 const CAM_TAPE: CameraState = { x: 640, y: 330, k: 1.06 };
 
-// tau mapping for the playhead: logical time 0..3.4 across the tape
-const tauToX = (tau: number) => {
-  // playhead slides across chips in ledger order; chip i covers tau in
-  // [time_i - 1 + frac, ...] — simpler: linear in tau over [0, 3.4]
-  return TAPE_X0 - 24 + (tau / 3.4) * (LEDGER.length * (CHIP_W + CHIP_GAP) + 24);
-};
-/** logical tau at which chip i has "happened" for the playhead sweep */
-const chipTau = (i: number) => ((chipX(i) + CHIP_W / 2 - TAPE_X0 + 24) / (LEDGER.length * (CHIP_W + CHIP_GAP) + 24)) * 3.4;
+// tau mapping for the playhead: logical time 0..3.4 across the tape. The run
+// ends at x=1200 so the τ label stays on stage at the tape camera's zoom.
+const PLAY_X0 = TAPE_X0;
+const PLAY_X1 = 1200;
+const tauToX = (tau: number) => PLAY_X0 + (tau / 3.4) * (PLAY_X1 - PLAY_X0);
+/** logical tau at which chip i is crossed by the playhead */
+const chipTau = (i: number) => ((chipX(i) - PLAY_X0) / (PLAY_X1 - PLAY_X0)) * 3.4;
 
 /** Bar height source during the sweep: sum of diffs of chips the playhead
  *  has crossed — bars tick exactly when the cursor crosses an entry. */
@@ -196,6 +195,8 @@ export function buildScene() {
     text: 'The collection itself is a multiset: every edge has a multiplicity — the running sum of its diffs. Draw one bar per edge.',
   });
   tl.tween(rackU, 1, { at: 28.6, dur: 1.6, ease: ease.enter });
+  // settle the cursor at round one so the rack opens on bars, not zeros
+  tl.tween(tau, 1.0, { at: 28.6, dur: 1.6, ease: ease.move });
 
   // — beat 5 · sweep tau forward —
   tl.caption({
@@ -288,7 +289,8 @@ export function Render({ s }: { s: SceneState }) {
   const closeU = s.get(scene.closeU);
   const stageDim = s.get(scene.stageDim);
 
-  const stageOp = 1 - 0.85 * stageDim;
+  // the closing panel is drawn alone: the old tape and rack fade out fully
+  const stageOp = 1 - stageDim;
 
   return (
     <>
@@ -367,12 +369,21 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* ---------------- beat 3: the ledger tape ---------------- */}
           {tripleU > 0.01 && (
-            <text x={640} y={140} textAnchor="middle" fill={colors.TEXT} fontSize={22} fontFamily={MONO} opacity={tripleU * stageOp}>
+            <text x={640} y={112} textAnchor="middle" fill={colors.TEXT} fontSize={22} fontFamily={MONO} opacity={tripleU * stageOp}>
               (data, time, diff)
             </text>
           )}
           {tapeU > 0.01 && (
             <g>
+              {/* the tau playhead runs beneath the chips so it never cuts through their text */}
+              {headU > 0.01 && (
+                <g opacity={headU}>
+                  <line x1={tauToX(tau)} y1={TAPE_Y - 34} x2={tauToX(tau)} y2={RACK_Y - BAR_H - 28} stroke={colors.WARM} strokeWidth={2} strokeDasharray="5 5" />
+                  <text x={tauToX(tau)} y={TAPE_Y - 42} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>
+                    τ = {tau.toFixed(1)}
+                  </text>
+                </g>
+              )}
               {LEDGER.map((u, i) => {
                 const cu = win(tapeU, LEDGER.length, i, 3);
                 if (cu <= 0.01) return null;
@@ -477,15 +488,6 @@ export function Render({ s }: { s: SceneState }) {
                   </g>
                 );
               })}
-              {/* the tau playhead riding the tape */}
-              {headU > 0.01 && (
-                <g opacity={headU}>
-                  <line x1={tauToX(tau)} y1={TAPE_Y - 34} x2={tauToX(tau)} y2={RACK_Y - BAR_H - 28} stroke={colors.WARM} strokeWidth={2} strokeDasharray="5 5" />
-                  <text x={tauToX(tau)} y={TAPE_Y - 42} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>
-                    τ = {tau.toFixed(1)}
-                  </text>
-                </g>
-              )}
             </g>
           )}
         </g>

@@ -393,12 +393,8 @@ export function Render({ s }: { s: SceneState }) {
             <line x1={RULER.x0} y1={RULER.y} x2={lerp(RULER.x0, RULER.x1, clamp01(axis * 1.3))} y2={RULER.y}
               stroke={colors.ink.axis} strokeWidth={2} />
             {Array.from({ length: TOTAL_BYTES + 1 }, (_, i) => (
-              <g key={i} opacity={clamp01(axis * (TOTAL_BYTES + 3) - i - 1)}>
-                <line x1={bx(i)} y1={RULER.y - 5} x2={bx(i)} y2={RULER.y + 5} stroke={colors.ink.axis} strokeWidth={1.4} />
-                <Txt x={bx(i)} y={RULER.y + (i % 2 === 0 ? 22 : -12)} size={16} anchor="middle" fill={INK.muted} mono>
-                  {String(i)}
-                </Txt>
-              </g>
+              <line key={i} x1={bx(i)} y1={RULER.y - 5} x2={bx(i)} y2={RULER.y + 5} stroke={colors.ink.axis} strokeWidth={1.4}
+                opacity={clamp01(axis * (TOTAL_BYTES + 3) - i - 1)} />
             ))}
             <Txt x={RULER.x0} y={NOTE_Y} size={18} fill={INK.muted} opacity={win(b, 1, 2) * (1 - c)}>
               byte ruler · UTF-8 offsets of the same response
@@ -492,6 +488,16 @@ export function Render({ s }: { s: SceneState }) {
             );
           })}
 
+          {/* byte numerals sit above the group hatching so 3, 5, 7 stay legible */}
+          <g opacity={axis}>
+            {Array.from({ length: TOTAL_BYTES + 1 }, (_, i) => (
+              <Txt key={i} x={bx(i)} y={RULER.y + (i % 2 === 0 ? 22 : -12)} size={16} anchor="middle" fill={INK.muted} mono
+                opacity={clamp01(axis * (TOTAL_BYTES + 3) - i - 1)}>
+                {String(i)}
+              </Txt>
+            ))}
+          </g>
+
           {/* sweep cursor */}
           {sweeping > 0.003 && (
             <g opacity={sweeping}>
@@ -535,7 +541,7 @@ export function Render({ s }: { s: SceneState }) {
         </g>
 
         {/* code label for the ruler (sits in tape space but not scaled) */}
-        <Txt x={cmp(RULER.x1, NOTE_Y, c).x} y={cmp(RULER.x1, NOTE_Y, c).y} size={18} anchor="end" mono fill={INK.student} opacity={on(b, 1) * (1 - fade)}>
+        <Txt x={cmp(RULER.x0 + 500, NOTE_Y, c).x} y={cmp(RULER.x0 + 500, NOTE_Y, c).y} size={18} mono fill={INK.student} opacity={on(b, 1) * (1 - fade)}>
           align_byte_spans_1to1
         </Txt>
 

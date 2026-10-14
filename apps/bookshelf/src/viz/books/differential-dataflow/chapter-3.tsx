@@ -81,7 +81,8 @@ const READERS = [
   { label: 'distinct', x: 1040, y: 330 },
 ];
 
-const CAM_STAGE: CameraState = { x: 500, y: 300, k: 1.16 };
+// y=325 lifts the shelf labels above the caption band at the wide framing
+const CAM_STAGE: CameraState = { x: 500, y: 325, k: 1.16 };
 const CAM_BRICK: CameraState = { x: B1.x + B1.w / 2, y: SHELF_Y - 10, k: 1.85 };
 const CAM_WIDE: CameraState = { x: 660, y: 360, k: 1.02 };
 
@@ -109,6 +110,7 @@ export function buildScene() {
   const pastDim = tl.channel('pastDim', 0);
 
   const arrU = tl.channel('arrU', 0); // arrange node + lane headers
+  const indexU = tl.channel('indexU', 0); // sorted key listing inside the zoomed batch
   const rain1U = tl.channel('rain1U', 0); // wave 1 chips rain + sort
   const pulse1U = tl.channel('pulse1U', 0); // frontier pulse sweeps staging
   const seal1U = tl.channel('seal1U', 0); // chips → brick 1
@@ -167,7 +169,11 @@ export function buildScene() {
     text: 'Look inside. A batch is not a log — it is an index. Every update for key A, then key B, then key C, in order.',
   });
   tl.tween(cam, CAM_BRICK, { at: 28.6, dur: 1.3, ease: ease.move });
+  tl.tween(arrU, 0, { at: 28.6, dur: 0.8, ease: ease.move });
+  tl.tween(indexU, 1, { at: 29.6, dur: 1.0, ease: ease.enter });
   tl.hold(33.6, 0.6);
+  tl.tween(indexU, 0, { at: 34.4, dur: 0.5, ease: ease.enter });
+  tl.tween(arrU, 1, { at: 34.6, dur: 0.6, ease: ease.enter });
 
   // — beat 5 · the trace: batches, edge to edge —
   tl.caption({
@@ -229,6 +235,7 @@ export function buildScene() {
     scanU,
     pastDim,
     arrU,
+    indexU,
     rain1U,
     pulse1U,
     seal1U,
@@ -283,17 +290,17 @@ function Brick({
         return (
           <g key={k}>
             <rect x={lx} y={SHELF_Y - BRICK_H + 22} width={Math.max(2, lw)} height={BRICK_H - 34} rx={4} fill={KEY_COLOR[k]} opacity={0.42} />
-            <text x={lx + Math.max(2, lw) / 2} y={SHELF_Y - 18} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
+            <text x={lx + Math.max(2, lw) / 2} y={SHELF_Y - 18} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
               {k}×{laneCounts[i]}
             </text>
           </g>
         );
       })}
-      <text x={x + w / 2} y={SHELF_Y - BRICK_H + 15} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+      <text x={x + w / 2} y={SHELF_Y - BRICK_H + 15} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
         {label}
       </text>
       {timesLabel && (
-        <text x={x + w / 2} y={SHELF_Y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+        <text x={x + w / 2} y={SHELF_Y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
           {timesLabel}
         </text>
       )}
@@ -307,6 +314,7 @@ export function Render({ s }: { s: SceneState }) {
   const scanU = s.get(scene.scanU);
   const pastDim = s.get(scene.pastDim);
   const arrU = s.get(scene.arrU);
+  const indexU = s.get(scene.indexU);
   const rain1U = s.get(scene.rain1U);
   const pulse1U = s.get(scene.pulse1U);
   const seal1U = s.get(scene.seal1U);
@@ -326,8 +334,9 @@ export function Render({ s }: { s: SceneState }) {
   // brick positions under merge: b1 and b2 slide toward BM, merged fades in
   const b1x = lerp(B1.x, BM.x, mergeU);
   const b2x = lerp(B2.x, BM.x + BM.w - B2.w, mergeU);
-  const smallOp = 1 - clamp01(mergeU * 1.6 - 0.5);
-  const mergedOp = clamp01(mergeU * 1.8 - 0.8);
+  // quick crossfade so the small bricks' labels never sit on the merged brick's
+  const smallOp = 1 - clamp01(mergeU * 3 - 0.2);
+  const mergedOp = clamp01(mergeU * 2.5 - 0.9);
 
   const renderWave = (wave: Upd[], slots: number[], rainU: number, sealU: number, brickX: number, brickW: number) =>
     wave.map((u, i) => {
@@ -366,6 +375,10 @@ export function Render({ s }: { s: SceneState }) {
               <text x={640} y={96} textAnchor="middle" fill={colors.TEXT} fontSize={15}>
                 the entire input stream, so far
               </text>
+              <rect x={540} y={222} width={200} height={34} rx={8} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.6} />
+              <text x={640} y={244} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>
+                fresh: (b, t=now, +1)
+              </text>
               {Array.from({ length: 26 }, (_, i) => {
                 const x = 130 + i * 40;
                 const flash = scanU > 0 ? clamp01(1 - Math.abs(scanU * 27 - (i + 1)) / 1.4) : 0;
@@ -389,6 +402,21 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           )}
 
+          {/* the zoomed batch read as an index: each key's updates, in key order */}
+          {indexU > 0.01 && (
+            <g opacity={indexU}>
+              <text x={400} y={560} fill={KEY_COLOR.a} fontSize={14} fontFamily={MONO}>
+                a → (t=0, +1) (t=1, −1)
+              </text>
+              <text x={400} y={582} fill={KEY_COLOR.b} fontSize={14} fontFamily={MONO}>
+                b → (t=0, +1)
+              </text>
+              <text x={400} y={604} fill={KEY_COLOR.c} fontSize={14} fontFamily={MONO}>
+                c → (t=1, +1)
+              </text>
+            </g>
+          )}
+
           {/* ---------------- arrange + staging lanes ---------------- */}
           {arrU > 0.01 && (
             <g opacity={arrU}>
@@ -396,7 +424,7 @@ export function Render({ s }: { s: SceneState }) {
               <text x={ARR.x} y={ARR.y - 2} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontWeight={600}>
                 arrange
               </text>
-              <text x={ARR.x} y={ARR.y + 17} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+              <text x={ARR.x} y={ARR.y + 17} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 partition by key
               </text>
               {(['a', 'b', 'c'] as Key[]).map((k) => (
@@ -462,7 +490,8 @@ export function Render({ s }: { s: SceneState }) {
           {kissU > 0.01 && (
             <g opacity={kissU}>
               <line x1={B2.x} y1={SHELF_Y - BRICK_H - 12} x2={B2.x} y2={SHELF_Y + 8} stroke={colors.POSITIVE} strokeWidth={2} strokeDasharray="4 4" />
-              <text x={B2.x} y={SHELF_Y - BRICK_H - 22} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
+              <rect x={B2.x - 132} y={SHELF_Y - BRICK_H - 48} width={264} height={26} rx={7} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.4} />
+              <text x={B2.x} y={SHELF_Y - BRICK_H - 30} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
                 assert!(upper == batch.lower())
               </text>
             </g>

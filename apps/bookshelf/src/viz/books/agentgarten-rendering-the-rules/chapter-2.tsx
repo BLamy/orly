@@ -404,19 +404,19 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={g(scene.depLbl)}>
           <Note x={blockCx(3)} y={U_Y - 40} text="block 3 reads…" color={WARM} size={13} anchor="middle" />
           <Note x={blockCx(1)} y={U_Y - 40} text="…how block 1 was encoded" color={WARM} size={13} anchor="middle" />
-          <Note x={C0_X + TILE / 2} y={FILM_Y + 40} text="C0 reference" size={11} anchor="middle" />
-          <Note x={640} y={FILM_Y + 92} text="next-prediction loss alone never asks about this step" size={12} anchor="middle" />
+          <Note x={C0_X + TILE / 2} y={FILM_Y + 40} text="C0 reference" size={12} anchor="middle" />
+          <Note x={640} y={FILM_Y + 92} text="next-prediction loss alone never asks about this step" size={13} anchor="middle" />
         </g>
 
         {/* ---------------- beat 2 labels + the absent gradient lane ---------------- */}
         <g opacity={g(scene.laneO)}>
           <line x1={C0_X} y1={430} x2={1100} y2={430} stroke={MUTED} strokeOpacity={0.4} strokeDasharray="3 7" />
-          <Note x={C0_X} y={452} text="gradient lane — empty: pass 1 keeps no graph" size={11} />
+          <Note x={C0_X} y={452} text="gradient lane — empty: pass 1 keeps no graph" size={13} />
         </g>
         <g opacity={g(scene.rollLbl)}>
-          <Code x={C0_X} y={U_Y - 48} text="@torch.no_grad()  _rollout" color={NEGATIVE} size={12} />
-          <Code x={C0_X} y={U_Y - 32} text="noisy_blocks.append(current)  →  U_b  (final noisy input)" color={MUTED} size={11} />
-          <Code x={C0_X} y={FILM_Y + 72} text="clean_blocks.append(clean)  →  Z_b  (clean output, committed)" color={MUTED} size={11} />
+          <Code x={C0_X} y={U_Y - 48} text="@torch.no_grad()  _rollout" color={NEGATIVE} size={13} />
+          <Code x={C0_X} y={U_Y - 32} text="noisy_blocks.append(current)  →  U_b  (final noisy input)" color={MUTED} size={12} />
+          <Code x={C0_X} y={FILM_Y + 72} text="clean_blocks.append(clean)  →  Z_b  (clean output, committed)" color={MUTED} size={12} />
           <Note x={1100} y={U_Y} text="U" color={NEGATIVE} anchor="end" />
           <Note x={1100} y={FILM_Y + 4} text="Z" color={ACCENT} anchor="end" />
         </g>
@@ -433,14 +433,14 @@ export function Render({ s }: { s: SceneState }) {
           {[1, 2, 3].map((b) => (
             <g key={b}>
               <line x1={blockX0(b) - 7} y1={FILM_Y - TILE / 2 - 2} x2={blockX0(b) - 7} y2={FILM_Y + TILE / 2 + 2} stroke={NEGATIVE} strokeWidth={3} />
-              <Code x={blockX0(b) - 7} y={FILM_Y + TILE / 2 + 16} text="detached" color={NEGATIVE} size={9} anchor="middle" />
+              <Code x={blockX0(b) - 7} y={FILM_Y + TILE / 2 + 16} text="detached" color={NEGATIVE} size={12} anchor="middle" />
             </g>
           ))}
         </g>
         <g opacity={g(scene.replayLbl)}>
           <Note x={C0_X} y={KV_Y + 36} text="recorded latents: fixed" color={NEGATIVE} size={12} />
           <Note x={C0_X + 190} y={KV_Y + 36} text="history encodings (K/V): recomputed with gradients" color={SECONDARY} size={12} />
-          <Code x={C0_X} y={KV_Y + 56} text="geometry embedded per chunk → same GEMM row counts as the cached rollout" color={MUTED} size={10} />
+          <Code x={C0_X} y={KV_Y + 56} text="geometry embedded per chunk → same GEMM row counts as the cached rollout" color={MUTED} size={12} />
         </g>
 
         {/* ---------------- the stencil ---------------- */}
@@ -452,18 +452,18 @@ export function Render({ s }: { s: SceneState }) {
               <Code key={row.id} x={ST.x - 14} y={rowY(r) + 4} text={row.id} color={row.kind === 'U' ? NEGATIVE : row.kind === 'Z' ? ACCENT : POSITIVE}
                 size={12} anchor="end" o={clamp01(stencilU * 3)} />
             ))}
-            <Note x={ST.x - 14} y={ST.y - 6} text="queries ↓" size={10} anchor="end" o={clamp01(stencilU * 3)} />
+            <Note x={ST.x - 14} y={ST.y - 6} text="queries ↓" size={12} anchor="end" o={clamp01(stencilU * 3)} />
             <Code x={colX(0)} y={HEADER_Y + 4} text="text" color={MUTED} size={11} anchor="middle" o={clamp01(stencilU * 3)} />
             <Note x={colX(COLS.length - 1) + 30} y={HEADER_Y + 4} text="← keys" size={10} anchor="start" o={clamp01(stencilU * 3)} />
             {/* U / Z row stripes */}
             {CHUNKS.map((row, r) =>
               row.kind === 'U' ? (
-                <Note key={`t${r}`} x={OUT_X + 12} y={rowY(r) + 4} text="noisy query" color={NEGATIVE} size={10} o={clamp01(stencilU * 3) * (1 - lossU)} />
+                <Note key={`t${r}`} x={OUT_X + 12} y={rowY(r) + 4} text="noisy query" color={NEGATIVE} size={12} o={clamp01(stencilU * 3) * (1 - lossU)} />
               ) : row.kind === 'Z' ? (
-                <Note key={`t${r}`} x={OUT_X + 12} y={rowY(r) + 4} text="clean publication" color={ACCENT} size={10} o={clamp01(stencilU * 3) * (1 - lossU)} />
+                <Note key={`t${r}`} x={OUT_X + 12} y={rowY(r) + 4} text="clean publication" color={ACCENT} size={12} o={clamp01(stencilU * 3) * (1 - lossU)} />
               ) : null,
             )}
-            <Note x={ST.x} y={rowY(CHUNKS.length - 1) + ST.cell / 2 + 18} text="3-block illustration; each block = 4 latent frames · exact Boolean toy adjacency" size={11} />
+            <Note x={ST.x} y={rowY(CHUNKS.length - 1) + ST.cell / 2 + 18} text="3-block illustration; each block = 4 latent frames · exact Boolean toy adjacency" size={12} />
 
             {/* beat 4 scan */}
             {scanU > 0 && (
@@ -490,8 +490,10 @@ export function Render({ s }: { s: SceneState }) {
                       {/* replay: the same prefix, U_b and Z_b attended as the block's two chunks — shown offset until aligned */}
                       <rect x={ST.x - 4 + off} y={rowY(rU) - ST.cell / 2 - 2 - off * 0.5} width={COLS.length * ST.cell + 8} height={2 * ST.cell + 4} rx={7}
                         fill="none" stroke={SECONDARY} strokeWidth={1.5} />
-                      <Code x={ST.x - 4 + off} y={rowY(rZ) + ST.cell / 2 - 6 - off * 0.5} text={alignU > 0.5 ? `block ${b}: same prefix, same K/V order` : `block ${b}`}
-                        color={SECONDARY} size={9} o={alignU > 0.5 ? alignU : 0.8} />
+                      <rect x={ST.x - 4 + off + 4} y={rowY(rZ) + ST.cell / 2 - 26 - off * 0.5} width={alignU > 0.5 ? 196 : 58} height={20} rx={5}
+                        fill={PANEL} stroke={SECONDARY} strokeOpacity={0.5} opacity={alignU > 0.5 ? alignU : 0.8} />
+                      <Code x={ST.x - 4 + off + 12} y={rowY(rZ) + ST.cell / 2 - 11 - off * 0.5} text={alignU > 0.5 ? `block ${b} · same K/V order` : `block ${b}`}
+                        color={SECONDARY} size={12} o={alignU > 0.5 ? alignU : 0.8} />
                     </g>
                   );
                 })}
@@ -504,8 +506,8 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={g(scene.alignLbl)}>
               <Code x={ST.x} y={LBL_Y} text="BlockCausalAttention · _attend_block(query, prefix, key, value)" color={SECONDARY} size={12} />
               <Note x={ST.x} y={LBL_Y + 18} text="blockwise calls · key/value order · projection grouping — same execution structure" color={TEXT} size={11} />
-              <Code x={OUT_X + 12} y={rowY(0) + 4} text="metrics/student/sgf_recovery_max_abs" color={MUTED} size={9} />
-              <Note x={OUT_X + 12} y={rowY(0) + 18} text="(diagnostic; no value claimed here)" size={9} />
+              <Code x={OUT_X + 12} y={rowY(0) + 4} text="metrics/student/sgf_recovery_max_abs" color={MUTED} size={12} />
+              <Note x={OUT_X + 12} y={rowY(0) + 20} text="(diagnostic; no value claimed here)" size={12} />
             </g>
 
             {/* beat 7: backward highlight + stop bar */}
@@ -513,16 +515,15 @@ export function Render({ s }: { s: SceneState }) {
               <g>
                 <path d={BACK_PATH} fill="none" stroke={NEGATIVE} strokeWidth={4} strokeLinecap="round" strokeLinejoin="round"
                   pathLength={1} strokeDasharray={1} strokeDashoffset={1 - backU} opacity={0.9} />
-                <circle cx={OUT_X} cy={rowY(Q_LAST)} r={9} fill={PANEL} stroke={NEGATIVE} strokeWidth={2} opacity={clamp01(backU * 4)} />
-                <Code x={OUT_X} y={rowY(Q_LAST) + 4} text="L" color={NEGATIVE} size={10} anchor="middle" o={clamp01(backU * 4)} />
+                <circle cx={OUT_X} cy={rowY(Q_LAST)} r={9} fill={PANEL} stroke={NEGATIVE} strokeWidth={2} opacity={clamp01(backU * 4) * (1 - lossU)} />
+                <Code x={OUT_X} y={rowY(Q_LAST) + 4} text="L" color={NEGATIVE} size={12} anchor="middle" o={clamp01(backU * 4) * (1 - lossU)} />
               </g>
             )}
             {stopU > 0 && (
               <g opacity={stopU}>
                 <rect x={colX(Z1_COL) - ST.cell / 2 + 2} y={HEADER_Y - 2} width={ST.cell - 4} height={5} rx={2} fill={NEGATIVE} />
-                <Code x={colX(Z1_COL)} y={HEADER_Y - 22} text="stop · detached Z1" color={NEGATIVE} size={10} anchor="middle" />
-                <circle cx={colX(Z1_COL)} cy={HEADER_Y + 30} r={8} fill="none" stroke={SECONDARY} strokeWidth={2} />
-                <MathLabel tex={'\\tfrac{\\partial L}{\\partial \\theta_{K,V}} \\neq 0 \\text{ reaches here}'} x={colX(Z1_COL) + 14} y={HEADER_Y + 31}
+                <Code x={colX(Z1_COL) - 8} y={HEADER_Y - 20} text="stop · detached Z1" color={NEGATIVE} size={12} anchor="end" />
+                <MathLabel tex={'\\tfrac{\\partial L}{\\partial \\theta_{K,V}} \\neq 0 \\text{ reaches here}'} x={colX(Z1_COL) + 8} y={HEADER_Y - 20}
                   fontSize={12} color={SECONDARY} anchor="start" boxWidth={240} />
               </g>
             )}
@@ -547,7 +548,7 @@ export function Render({ s }: { s: SceneState }) {
             )}
             <g opacity={g(scene.lossLbl)}>
               <Code x={ST.x} y={LBL_Y} text="_student_loss · x0 = rf_x0(rollout.noisy, rollout.sigma, velocity)" color={WARM} size={12} />
-              <Note x={ST.x} y={LBL_Y + 18} text="pass-1 sampling trajectory: never retained, not differentiated through" color={MUTED} size={11} />
+              <Note x={ST.x} y={LBL_Y + 18} text="pass-1 sampling trajectory: never retained, not differentiated through" color={MUTED} size={12} />
             </g>
           </g>
         )}

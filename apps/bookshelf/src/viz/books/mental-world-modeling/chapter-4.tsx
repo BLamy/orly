@@ -91,10 +91,16 @@ function blendValues(mode: number): number[] {
   return ABLATIONS.map((v, i) => lerp(v, ORACLES[i], clamp01(mode - 1)));
 }
 
-function labelsFor(mode: number): string[] {
-  if (mode < 0.5) return LADDER_LABELS;
-  if (mode < 1.5) return ABLATION_LABELS;
-  return ORACLE_LABELS;
+// Category labels cross-fade between the two views instead of swapping at a single frame.
+function labelsAt(mode: number): [string[], string[], number] {
+  if (mode <= 1) return [LADDER_LABELS, ABLATION_LABELS, clamp01(mode)];
+  return [ABLATION_LABELS, ORACLE_LABELS, clamp01(mode - 1)];
+}
+
+// The ablation view has no content for S4-S6, so those bars fade out there and back in for the oracle view.
+function presenceOf(i: number, mode: number): number {
+  const ablationHas = ABLATION_LABELS[i] ? 1 : 0;
+  return mode <= 1 ? lerp(1, ablationHas, clamp01(mode)) : lerp(ablationHas, 1, clamp01(mode - 1));
 }
 
 export function Render({ s }: { s: SceneState }) {
@@ -102,7 +108,7 @@ export function Render({ s }: { s: SceneState }) {
   const barsU = s.get(scene.barsU);
   const mode = s.get(scene.mode);
   const values = blendValues(mode);
-  const labels = labelsFor(mode);
+  const [labelA, labelB, labelU] = labelsAt(mode);
   const focus = Math.round(s.get(scene.focus));
   const dim = 1 - 0.9 * s.get(scene.dimU);
   const baseY = 570;
@@ -130,9 +136,9 @@ export function Render({ s }: { s: SceneState }) {
             const w = (d.n / 320) * 276;
             return <g key={d.label}>
               <text x={36} y={y} fill={d.color} fontSize={14} fontFamily={MONO}>{d.label}</text>
+              <text x={324} y={y} textAnchor="end" fill={colors.TEXT} fontSize={14} fontWeight={750}>{d.n}</text>
               <rect x={36} y={y + 16} width={276} height={30} rx={8} fill={colors.BG} stroke={colors.GRID} />
               <rect x={36} y={y + 16} width={w} height={30} rx={8} fill={d.color} opacity={0.78} />
-              <text x={324} y={y + 38} textAnchor="end" fill={colors.TEXT} fontSize={14} fontWeight={750}>{d.n}</text>
             </g>;
           })}
         </g>
@@ -152,35 +158,42 @@ export function Render({ s }: { s: SceneState }) {
             const x = x0 + i * step;
             const isFocus = i === focus;
             const color = mode < 0.5 ? (i === 6 ? colors.POSITIVE : colors.ACCENT) : mode < 1.5 ? (i === 0 ? colors.POSITIVE : colors.NEGATIVE) : (i === 4 ? colors.WARM : i === 6 ? colors.POSITIVE : colors.ACCENT);
-            return <g key={i} opacity={labels[i] ? 1 : 0.08}>
+            const labelAOpacity = labelA[i] ? 1 - labelU : 0;
+            const labelBOpacity = labelB[i] ? labelU : 0;
+            return <g key={i} opacity={presenceOf(i, mode)}>
               {isFocus && <rect x={x - 48} y={baseY - h - 28} width={96} height={h + 54} rx={16} fill={color} opacity={0.09} />}
               <rect x={x - 32} y={baseY - h} width={64} height={h} rx={9} fill={color} opacity={isFocus ? 1 : 0.66} />
               <text x={x} y={baseY - h - 12} textAnchor="middle" fill={isFocus ? color : colors.TEXT} fontSize={isFocus ? 18 : 14} fontWeight={800}>{value.toFixed(1)}</text>
-              <text x={x} y={baseY + 26} textAnchor="middle" fill={isFocus ? color : colors.MUTED} fontSize={11} fontFamily={MONO}>{labels[i]}</text>
+              <text x={x} y={baseY + 26} textAnchor="middle" fill={isFocus ? color : colors.MUTED} fontSize={14} fontFamily={MONO} opacity={labelAOpacity}>{labelA[i]}</text>
+              <text x={x} y={baseY + 26} textAnchor="middle" fill={isFocus ? color : colors.MUTED} fontSize={14} fontFamily={MONO} opacity={labelBOpacity}>{labelB[i]}</text>
             </g>;
           })}
 
-          {mode > 0.8 && mode < 1.55 && <g opacity={clamp01(1 - Math.abs(mode - 1) * 2.5)}>
-            <text x={900} y={128} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>ablation cost vs full</text>
-            <text x={900} y={152} fill={colors.NEGATIVE} fontSize={14}>mental −12.1 · physical −16.5 · decoupled −6.4</text>
-          </g>}
-          {mode > 1.55 && <g opacity={clamp01((mode - 1.55) * 3)}>
-            <text x={790} y={126} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>oracle gain over predictive S6</text>
-            <text x={790} y={151} fill={colors.WARM} fontSize={14}>transition +3.5 · state +2.8 · observation +1.7 · action +0.7</text>
-          </g>}
-
           <g opacity={s.get(scene.gapU)}>
-            <path d={`M${x0} ${baseY - (90.7 / 100) * maxH - 40} H${x0 + step * 6}`} stroke={colors.NEGATIVE} strokeWidth={2} strokeDasharray="7 7" />
-            <text x={x0 + step * 3} y={baseY - (94 / 100) * maxH - 38} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>7.8-point predictive gap to human</text>
+            <path d={`M${x0 - 32} ${baseY - (90.7 / 100) * maxH} H${x0 + step * 6 + 32}`} stroke={colors.NEGATIVE} strokeWidth={2} strokeDasharray="7 7" />
           </g>
         </g>
 
         <g opacity={s.get(scene.limitU)} transform="translate(280 592)">
-          <text x={360} y={0} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>prompt sensitivity · schema failures · error propagation · one-step options</text>
+          <text x={360} y={0} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>prompt sensitivity · schema failures · error propagation · one-step options</text>
         </g>
       </g>
     </Camera>
+    <g opacity={dim}>
+      {mode > 0.8 && mode < 1.55 && <g opacity={clamp01(1 - Math.abs(mode - 1) * 2.5)}>
+        <text x={640} y={112} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>ablation cost vs full</text>
+        <text x={640} y={138} textAnchor="middle" fill={colors.NEGATIVE} fontSize={16}>mental −12.1 · physical −16.5 · decoupled −6.4</text>
+      </g>}
+      {mode > 1.55 && <g opacity={clamp01((mode - 1.55) * 3)}>
+        <text x={640} y={112} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>oracle gain over predictive S6</text>
+        <text x={640} y={138} textAnchor="middle" fill={colors.WARM} fontSize={16}>transition +3.5 · state +2.8 · observation +1.7 · action +0.7</text>
+      </g>}
+      <g opacity={s.get(scene.gapU)}>
+        <text x={640} y={164} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>dashed line: strongest predictive run 90.7 · human 98.5 · gap 7.8</text>
+      </g>
+    </g>
     <g opacity={s.get(scene.endU)}>
+      <rect x={172} y={226} width={936} height={220} rx={26} fill={colors.BG} />
       <rect x={172} y={226} width={936} height={220} rx={26} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={2.5} />
       <text x={640} y={296} textAnchor="middle" fill={colors.TEXT} fontSize={34} fontWeight={850}>The structure works. The transition still leaks.</text>
       <text x={640} y={346} textAnchor="middle" fill={colors.WARM} fontSize={19}>largest oracle gain: transition simulation</text>

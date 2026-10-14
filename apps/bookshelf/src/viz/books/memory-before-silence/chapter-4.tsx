@@ -43,11 +43,11 @@ export function buildScene() {
 
   tl.caption({ at: 26.2, dur: 7.2, text: 'At the paper’s reported operating point, that ribbon uses four hundred thirty memory tokens and retrieval takes one hundred thirty-four milliseconds.' });
   tl.tween(metricsU, 1, { at: 26.8, dur: 0.7, ease: ease.pop });
-  tl.tween(cam, { x: 720, y: 360, k: 1.05 }, { at: 28.8, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 620, y: 360, k: 1.05 }, { at: 28.8, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 32.9, dur: 7.2, text: 'The upper graph manages routing and streaming, while the lower memory engine remains replaceable.' });
   tl.tween(cartridgeU, 1, { at: 33.5, dur: 1.5, ease: ease.move });
-  tl.tween(cam, { x: 600, y: 390, k: 1.05 }, { at: 35.4, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 600, y: 360, k: 1.05 }, { at: 35.4, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 39.5, dur: 6.5, text: 'That compact context reaches the speech model before turn confirmation, carrying both what happened and why it matters to this person.' });
   tl.tween(replyU, 1, { at: 40.1, dur: 2.0, ease: ease.move });
@@ -67,8 +67,9 @@ const scene = buildScene();
 
 function RailItem({ x, y, text, color, u }: { x: number; y: number; text: string; color: string; u: number }) {
   return <g opacity={u} transform={`translate(${x - (1 - u) * 24} ${y})`}>
+    <rect x="-58" y="-20" width="116" height="40" rx="12" fill={colors.BG} />
     <rect x="-58" y="-20" width="116" height="40" rx="12" fill={color} fillOpacity="0.15" stroke={color} strokeWidth="2" />
-    <text y="5" textAnchor="middle" fill={color} fontSize="13" fontWeight="760">{text}</text>
+    <text y="5" textAnchor="middle" fill={color} fontSize="14" fontWeight="760">{text}</text>
   </g>;
 }
 
@@ -85,7 +86,7 @@ export function Render({ s }: { s: SceneState }) {
 
   return <Camera {...s.get(scene.cam)}>
     <g opacity={1 - close}>
-      <text x="640" y="58" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="850">Two rails feed one compact reply</text>
+      <text x="640" y="58" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="850" opacity={1 - clamp01(recap * 4)}>Two rails feed one compact reply</text>
 
       <g opacity={s.get(scene.queryU)}>
         <rect x="64" y="122" width="236" height="92" rx="24" fill="#12243a" stroke={colors.ACCENT} strokeWidth="3" />
@@ -102,7 +103,7 @@ export function Render({ s }: { s: SceneState }) {
         <circle cx={pulseX} cy="414" r="12" fill={colors.SECONDARY} />
       </g>
 
-      {LEFT.map((item, i) => <RailItem key={item} x={572 + i * 118} y={270} text={item} color={colors.ACCENT} u={clamp01(s.get(scene.leftP) - i)} />)}
+      {LEFT.map((item, i) => <RailItem key={item} x={548 + i * 118}y={270} text={item} color={colors.ACCENT} u={clamp01(s.get(scene.leftP) - i)} />)}
       {RIGHT.map((item, i) => <RailItem key={item} x={632 + i * 148} y={414} text={item} color={colors.SECONDARY} u={clamp01(s.get(scene.rightP) - i)} />)}
 
       <g opacity={merge}>
@@ -125,18 +126,18 @@ export function Render({ s }: { s: SceneState }) {
           const u = clamp01(gateP - i);
           return <rect key={i} x={462 + i * 67} y={542 - (1 - u) * 22} width="48" height="42" rx="10" fill={i < 3 ? colors.ACCENT : colors.SECONDARY} opacity={0.18 + 0.82 * u} />;
         })}
-        <g opacity={metrics} transform="translate(990 548)">
+        <g opacity={metrics} transform="translate(170 556)">
           <rect x="-140" y="-58" width="280" height="116" rx="25" fill="#10251f" stroke={colors.POSITIVE} strokeWidth="3" />
           <text x="-88" y="-12" textAnchor="middle" fill={colors.POSITIVE} fontSize="26" fontWeight="850">91.2</text>
           <text x="0" y="-12" textAnchor="middle" fill={colors.WARM} fontSize="26" fontWeight="850">430</text>
           <text x="92" y="-12" textAnchor="middle" fill={colors.ACCENT} fontSize="26" fontWeight="850">134</text>
-          <text x="-88" y="18" textAnchor="middle" fill={colors.MUTED} fontSize="11">LoCoMo</text>
-          <text x="0" y="18" textAnchor="middle" fill={colors.MUTED} fontSize="11">tokens</text>
-          <text x="92" y="18" textAnchor="middle" fill={colors.MUTED} fontSize="11">ms</text>
+          <text x="-88" y="18" textAnchor="middle" fill={colors.MUTED} fontSize="12">LoCoMo</text>
+          <text x="0" y="18" textAnchor="middle" fill={colors.MUTED} fontSize="12">tokens</text>
+          <text x="92" y="18" textAnchor="middle" fill={colors.MUTED} fontSize="12">ms</text>
         </g>
       </g>
 
-      <g opacity={cartridge} transform={`translate(${430 + cartridge * 120} 468)`}>
+      <g opacity={cartridge} transform={`translate(${430 + cartridge * 120} 474)`}>
         <rect x="-124" y="-34" width="248" height="68" rx="18" fill="#2a210d" stroke={colors.WARM} strokeWidth="3" />
         <text y="-6" textAnchor="middle" fill={colors.WARM} fontSize="13" fontFamily={colors.font.mono}>memory_engine override</text>
         <text y="19" textAnchor="middle" fill={colors.MUTED} fontSize="12">replaceable lower layer</text>

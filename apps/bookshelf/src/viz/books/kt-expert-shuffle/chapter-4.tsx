@@ -40,7 +40,7 @@ const SERIES = [
 ] as const;
 
 // plot geometry
-const PLOT = { x: 170, y: 150, w: 700, h: 380 } as const;
+const PLOT = { x: 170, y: 150, w: 600, h: 380 } as const;
 const X = (r: number): number => PLOT.x + (r / 100) * PLOT.w;
 const Y = (v: number): number => PLOT.y + PLOT.h - ((v - 40) / (120 - 40)) * PLOT.h;
 const pathOf = (vals: readonly number[], reveal: number): string => {
@@ -56,10 +56,14 @@ const SEATS = 12;
 const BEFORE_HOT = [0, 3, 4, 8]; // seated experts before stats
 const AFTER_HOT = [1, 2, 5, 8]; // reseated by observed routing
 
-const CAM_PLOT: CameraState = { x: 560, y: 330, k: 1.2 };
-const CAM_LOW: CameraState = { x: 360, y: 400, k: 1.55 };
-const CAM_INSET: CameraState = { x: 1010, y: 260, k: 1.5 };
-const CAM_WIDE: CameraState = { x: 640, y: 330, k: 1.02 };
+// Each push keeps every label inside the stage and clear of the caption band (y > 630).
+const CAM_PLOT: CameraState = { x: 458, y: 383, k: 1.25 };
+const CAM_LOW: CameraState = { x: 480, y: 382, k: 1.3 };
+const CAM_INSET: CameraState = { x: 693, y: 380, k: 1.1 };
+const CAM_WIDE: CameraState = { x: 693, y: 349, k: 1.0 };
+
+// series end-labels, staggered so the four names never stack (order matches SERIES)
+const LABEL_Y = [204, 220, 172, 188] as const;
 
 export interface Scene {
   tl: Timeline;
@@ -201,30 +205,30 @@ export function Render({ s }: { s: SceneState }) {
             <line x1={PLOT.x} y1={PLOT.y + PLOT.h} x2={PLOT.x + PLOT.w} y2={PLOT.y + PLOT.h} stroke={colors.GRID} strokeWidth={1.4} />
             <line x1={PLOT.x} y1={PLOT.y} x2={PLOT.x} y2={PLOT.y + PLOT.h} stroke={colors.GRID} strokeWidth={1.4} />
             {RATIOS.filter((r) => r % 20 === 0).map((r) => (
-              <text key={r} x={X(r)} y={PLOT.y + PLOT.h + 20} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+              <text key={r} x={X(r)} y={PLOT.y + PLOT.h + 20} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                 {r}%
               </text>
             ))}
             {[60, 80, 100].map((v) => (
               <g key={v}>
                 <line x1={PLOT.x} y1={Y(v)} x2={PLOT.x + PLOT.w} y2={Y(v)} stroke={colors.GRID} strokeWidth={0.6} opacity={0.5} />
-                <text x={PLOT.x - 10} y={Y(v) + 4} textAnchor="end" fill={colors.MUTED} fontSize={10.5}>
+                <text x={PLOT.x - 10} y={Y(v) + 4} textAnchor="end" fill={colors.MUTED} fontSize={12}>
                   {v}
                 </text>
               </g>
             ))}
-            <text x={X(50)} y={PLOT.y + PLOT.h + 42} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+            <text x={X(50)} y={PLOT.y + PLOT.h + 42} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
               GPU expert ratio
             </text>
-            <text x={PLOT.x - 44} y={PLOT.y - 16} fill={colors.MUTED} fontSize={11.5}>
+            <text x={PLOT.x - 44} y={PLOT.y - 16} fill={colors.MUTED} fontSize={12.5}>
               tokens/s
             </text>
           </g>
 
           {/* reported stamp */}
           <g opacity={repU}>
-            <rect x={PLOT.x + PLOT.w - 268} y={PLOT.y - 34} width={268} height={26} rx={7} fill={colors.BG} stroke={colors.GRID} strokeWidth={1} />
-            <text x={PLOT.x + PLOT.w - 134} y={PLOT.y - 16} textAnchor="middle" fill={colors.MUTED} fontSize={10}>
+            <rect x={PLOT.x + PLOT.w - 380} y={PLOT.y - 34} width={380} height={26} rx={7} fill={colors.BG} stroke={colors.GRID} strokeWidth={1} />
+            <text x={PLOT.x + PLOT.w - 190} y={PLOT.y - 16} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               reported · Qwen3-Next-80B-A3B-FP8 · 4× RTX 4090 · ShareGPT
             </text>
           </g>
@@ -234,31 +238,33 @@ export function Render({ s }: { s: SceneState }) {
             <g key={sr.key}>
               <path d={line[k] > 0.01 ? pathOf(sr.vals, line[k]) : ''} fill="none" stroke={sr.color} strokeWidth={k === 3 ? 3 : 2} opacity={k === 3 ? 1 : 0.8} />
               {line[k] >= 1 && (
-                <text x={X(100) + 8} y={Y(sr.vals[10]) + (k === 0 ? 12 : k === 1 ? 24 : k === 2 ? -6 : 4)} fill={sr.color} fontSize={10.5} fontFamily="ui-monospace, monospace">
+                <text x={X(100) + 8} y={LABEL_Y[k]} fill={sr.color} fontSize={12} fontFamily="ui-monospace, monospace">
                   {sr.key}
                 </text>
               )}
             </g>
           ))}
 
-          {/* low-ratio spotlight */}
+          {/* low-ratio spotlight: the callout sits in empty space above the curves, with a leader down to the point */}
           <g opacity={lowU}>
-            <circle cx={X(10)} cy={Y(70.22)} r={10} fill="none" stroke={colors.POSITIVE} strokeWidth={2} />
-            <text x={X(10) + 16} y={Y(70.22) - 10} fill={colors.POSITIVE} fontSize={11.5}>
+            <line x1={X(10)} y1={Y(70.22) - 150} x2={X(10)} y2={Y(70.22) - 12} stroke={colors.POSITIVE} strokeWidth={1.2} strokeDasharray="3 3" />
+            <rect x={X(2)} y={Y(70.22) - 186} width={262} height={26} rx={6} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1} />
+            <text x={X(2) + 12} y={Y(70.22) - 168} fill={colors.POSITIVE} fontSize={12}>
               70.22 t/s at 10% · statics: ~56–58
             </text>
+            <circle cx={X(10)} cy={Y(70.22)} r={10} fill="none" stroke={colors.POSITIVE} strokeWidth={2} />
           </g>
 
           {/* mechanism inset */}
           <g opacity={insetU}>
-            <rect x={900} y={140} width={286} height={250} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.3} />
-            <text x={1043} y={166} textAnchor="middle" fill={colors.TEXT} fontSize={12}>
+            <rect x={950} y={140} width={310} height={250} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.3} />
+            <text x={1105} y={166} textAnchor="middle" fill={colors.TEXT} fontSize={12}>
               during layerwise prefill
             </text>
             {/* the routing counter sweep */}
-            <rect x={922} y={182} width={242} height={16} rx={5} fill={colors.BG} stroke={colors.GRID} />
-            <rect x={922} y={182} width={242 * statsU} height={16} rx={5} fill={colors.SECONDARY} opacity={0.8} />
-            <text x={1043} y={216} textAnchor="middle" fill={colors.MUTED} fontSize={9.5}>
+            <rect x={966} y={182} width={278} height={16} rx={5} fill={colors.BG} stroke={colors.GRID} />
+            <rect x={966} y={182} width={278 * statsU} height={16} rx={5} fill={colors.SECONDARY} opacity={0.8} />
+            <text x={1105} y={216} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               routing statistics collected live
             </text>
             {/* seat strip before/after */}
@@ -269,9 +275,9 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <rect
                   key={j}
-                  x={922 + j * 20.5}
+                  x={966 + j * 23.5}
                   y={236}
-                  width={16}
+                  width={17}
                   height={26}
                   rx={4}
                   fill={on > 0.5 ? colors.POSITIVE : colors.MUTED}
@@ -279,12 +285,12 @@ export function Render({ s }: { s: SceneState }) {
                 />
               );
             })}
-            <text x={1043} y={286} textAnchor="middle" fill={colors.MUTED} fontSize={9.5}>
+            <text x={1105} y={286} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               GPU seats redistributed mid-flight
             </text>
             <g opacity={condU}>
               {['--kt-enable-dynamic-expert-update', '--kt-gpu-prefill-token-threshold 512', 'prefill length ≥ threshold'].map((t, i) => (
-                <text key={t} x={922} y={314 + i * 20} fill={i === 2 ? colors.MUTED : colors.WARM} fontSize={9.5} fontFamily="ui-monospace, monospace">
+                <text key={t} x={966} y={314 + i * 20} fill={i === 2 ? colors.MUTED : colors.WARM} fontSize={12} fontFamily="ui-monospace, monospace">
                   ✓ {t}
                 </text>
               ))}

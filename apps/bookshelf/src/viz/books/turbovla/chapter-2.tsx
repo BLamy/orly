@@ -54,7 +54,7 @@ export function buildScene() {
 
   tl.caption({ at: 32.0, dur: 5.7, text: 'That two-way exchange repeats through six fusion layers, each followed by a text feed-forward update.' });
   tl.tween(layerP, 6, { at: 32.5, dur: 4.0, ease: ease.linear });
-  tl.tween(cam, { x: 995, y: 340, k: 1.18 }, { at: 33.0, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 700, y: 360, k: 1.04 }, { at: 33.0, dur: 1.3, ease: ease.move });
   tl.hold(37.7, 0.6);
 
   tl.caption({ at: 38.3, dur: 6.0, text: 'The ablation matters: concatenation reaches ninety five point two percent, one-way attention reaches ninety six point one and ninety six point five.' });
@@ -85,13 +85,13 @@ export function Render({ s }: { s: SceneState }) {
     <rect width={1280} height={720} fill={colors.BG} />
     <g opacity={mainOpacity}>
       <text x={640} y={50} textAnchor="middle" fill={colors.TEXT} fontSize={27} fontWeight={760}>Make the tokens look at each other</text>
-      <text x={640} y={76} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>BiAttentionBlock · 6 stacked fusion layers</text>
+      <text x={640} y={76} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>BiAttentionBlock · 6 stacked fusion layers</text>
     </g>
     <Camera {...s.get(scene.cam)}>
       <g opacity={mainOpacity}>
         <g transform="translate(128 132)" opacity={visionU}>
           {[0, 1].map((view) => <g key={view} transform={`translate(${view * 198} 0)`}>
-            <text x={72} y={-14} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>view_embed[{view}]</text>
+            <text x={72} y={-14} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>view_embed[{view}]</text>
             {Array.from({ length: 16 }, (_, i) => {
               const x = (i % 4) * 35; const y = Math.floor(i / 4) * 35;
               const hot = view === 0 ? [5, 6, 9, 10].includes(i) : [6, 7, 10, 11].includes(i);
@@ -111,18 +111,20 @@ export function Render({ s }: { s: SceneState }) {
 
         {s.get(scene.matrixU) > 0 && <g opacity={s.get(scene.matrixU)}>
           <MatrixGrid x={610} y={182} values={HEAT} cell={24} gap={3} cellU={(i, j) => clamp01(s.get(scene.matrixU) * 48 - (i * 6 + j))} highlight={{ cell: [4, 3], color: colors.WARM, u: s.get(scene.residualU) }} />
-          <text x={676} y={164} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>attention weights · nimg × ntxt</text>
+          <text x={676} y={164} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>attention weights · nimg × ntxt</text>
+          <text x={610 + 3 * 27 + 12} y={414} textAnchor="middle" fill={colors.WARM} fontSize={13} fontWeight={700} fontFamily={MONO}>bowls</text>
+          <text x={610 + 6 * 27 + 8} y={306} fill={colors.WARM} fontSize={12} fontFamily={MONO}>← bowl patches</text>
         </g>}
 
         {l2vU > 0 && <g opacity={l2vU}>
           <path d="M435 470 C560 470 520 332 620 332" fill="none" stroke={colors.WARM} strokeWidth={3} />
           <circle cx={435 + l2vU * 185} cy={470 - Math.sin(l2vU * Math.PI / 2) * 138} r={8} fill={colors.WARM} />
-          <text x={535} y={408} fill={colors.WARM} fontSize={11} fontFamily={MONO}>instruction → visual</text>
+          <text x={535} y={408} fill={colors.WARM} fontSize={12} fontFamily={MONO}>instruction → visual</text>
         </g>}
         {v2lU > 0 && <g opacity={v2lU}>
           <path d="M610 286 C520 330 565 438 420 448" fill="none" stroke={colors.ACCENT} strokeWidth={3} />
           <circle cx={610 - v2lU * 190} cy={286 + v2lU * 162} r={8} fill={colors.ACCENT} />
-          <text x={500} y={350} fill={colors.ACCENT} fontSize={11} fontFamily={MONO}>visual → instruction</text>
+          <text x={500} y={350} fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>visual → instruction</text>
         </g>}
 
         <g transform="translate(928 120)">
@@ -136,15 +138,18 @@ export function Render({ s }: { s: SceneState }) {
           })}
         </g>
 
-        {ablationU > 0 && <g transform="translate(170 552)" opacity={ablationU}>
-          {[['concat', 95.2, colors.MUTED], ['L→V', 96.1, colors.ACCENT], ['V→L', 96.5, colors.WARM], ['both', 97.7, colors.POSITIVE]].map(([label, value, color], i) => {
-            const v = Number(value); const h = (v - 94) * 23;
-            return <g key={String(label)} transform={`translate(${i * 160} 0)`}>
-              <rect x={0} y={-h} width={92} height={h} rx={7} fill={String(color)} opacity={0.78} />
-              <text x={46} y={-h - 9} textAnchor="middle" fill={String(color)} fontSize={15} fontWeight={760}>{v.toFixed(1)}</text>
-              <text x={46} y={22} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>{String(label)}</text>
-            </g>;
-          })}
+        {ablationU > 0 && <g opacity={ablationU}>
+          <text x={680} y={470} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>ablation · LIBERO success %</text>
+          <g transform="translate(480 600)">
+            {[['concat', 95.2, colors.MUTED], ['L→V', 96.1, colors.ACCENT], ['V→L', 96.5, colors.WARM], ['both', 97.7, colors.POSITIVE]].map(([label, value, color], i) => {
+              const v = Number(value); const h = (v - 94) * 24;
+              return <g key={String(label)} transform={`translate(${i * 120} 0)`}>
+                <rect x={0} y={-h} width={92} height={h} rx={7} fill={String(color)} opacity={0.78} />
+                <text x={46} y={-h - 9} textAnchor="middle" fill={String(color)} fontSize={15} fontWeight={760}>{v.toFixed(1)}</text>
+                <text x={46} y={22} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>{String(label)}</text>
+              </g>;
+            })}
+          </g>
         </g>}
       </g>
     </Camera>

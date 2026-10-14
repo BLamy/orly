@@ -35,7 +35,7 @@ export function buildScene() {
 
   tl.caption({ at: 13.3, dur: 5.8, text: 'In the paper’s comparison, that route takes ninety three point six milliseconds, so the next control ticks arrive before the first one finishes.' });
   tl.tween(legacyRace, 1, { at: 13.8, dur: 4.2, ease: ease.linear });
-  tl.tween(cam, { x: 640, y: 318, k: 1.12 }, { at: 14.2, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 620, y: 318, k: 1.12 }, { at: 14.2, dur: 1.3, ease: ease.move });
   tl.hold(19.1, 0.6);
 
   tl.caption({ at: 19.7, dur: 5.7, text: 'Turbo V L A removes that central detour. Vision and instruction features meet directly, then flow into a compact action decoder.' });
@@ -51,7 +51,7 @@ export function buildScene() {
 
   tl.caption({ at: 32.3, dur: 5.6, text: 'The whole policy is two hundred million parameters, with nine tenths of a gigabyte of measured inference memory on the tested graphics card.' });
   tl.tween(resourceU, 1, { at: 32.8, dur: 1.5, ease: ease.enter });
-  tl.tween(cam, { x: 905, y: 360, k: 1.18 }, { at: 33.2, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 360, k: 1.06 }, { at: 33.2, dur: 1.3, ease: ease.move });
   tl.hold(37.9, 0.6);
 
   tl.caption({ at: 38.5, dur: 5.8, text: 'The repository makes the shortcut literal: visual tokens, text tokens, and two state tokens become one decoder memory.' });
@@ -72,8 +72,8 @@ const scene = buildScene();
 function Token({ x, y, label, color, u }: { x: number; y: number; label: string; color: string; u: number }) {
   const uu = clamp01(u);
   return <g opacity={uu} transform={`translate(${x} ${y}) scale(${0.82 + uu * 0.18})`}>
-    <rect x={-58} y={-25} width={116} height={50} rx={14} fill={colors.PANEL} stroke={color} strokeWidth={2} />
-    <text y={5} textAnchor="middle" fill={color} fontSize={13} fontFamily={MONO}>{label}</text>
+    <rect x={-66} y={-25} width={132} height={50} rx={14} fill={colors.PANEL} stroke={color} strokeWidth={2} />
+    <text y={5} textAnchor="middle" fill={color} fontSize={14} fontFamily={MONO}>{label}</text>
   </g>;
 }
 
@@ -98,7 +98,7 @@ export function Render({ s }: { s: SceneState }) {
     <rect width={1280} height={720} fill={colors.BG} />
     <g opacity={mainOpacity}>
       <text x={640} y={52} textAnchor="middle" fill={colors.TEXT} fontSize={27} fontWeight={760}>Remove the language-model bottleneck</text>
-      <text x={640} y={78} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>V → LLM → A  versus  V + L → A</text>
+      <text x={640} y={78} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>V → LLM → A  versus  V + L → A</text>
     </g>
     <Camera {...s.get(scene.cam)}>
       <g opacity={mainOpacity}>
@@ -106,8 +106,8 @@ export function Render({ s }: { s: SceneState }) {
         <Token x={130} y={438} label="instruction" color={colors.WARM} u={inputU} />
 
         <g opacity={legacyU}>
-          <path d="M190 252 C300 252 300 318 410 318" fill="none" stroke={colors.MUTED} strokeWidth={3} strokeDasharray="7 7" />
-          <path d="M190 438 C300 438 300 382 410 382" fill="none" stroke={colors.MUTED} strokeWidth={3} strokeDasharray="7 7" />
+          <path d="M198 252 C300 252 300 318 410 318" fill="none" stroke={colors.MUTED} strokeWidth={3} strokeDasharray="7 7" />
+          <path d="M198 438 C300 438 300 382 410 382" fill="none" stroke={colors.MUTED} strokeWidth={3} strokeDasharray="7 7" />
           <circle cx={510} cy={350} r={104} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={3} />
           <circle cx={510} cy={350} r={72} fill="none" stroke={colors.NEGATIVE} strokeWidth={2} strokeDasharray="12 8" transform={`rotate(${legacyAngle * 18} 510 350)`} />
           <text x={510} y={342} textAnchor="middle" fill={colors.TEXT} fontSize={22} fontWeight={750}>large language</text>
@@ -116,18 +116,19 @@ export function Render({ s }: { s: SceneState }) {
           <Token x={900} y={350} label="action" color={colors.NEGATIVE} u={legacyU} />
           <RoutePacket x0={200} x1={810} y={350} u={s.get(scene.legacyRace)} color={colors.NEGATIVE} />
           <text x={510} y={492} textAnchor="middle" fill={colors.NEGATIVE} fontSize={16} fontFamily={MONO}>93.6 ms · about 11 Hz</text>
+          <text x={510} y={514} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>illustrated pi-0.5 comparison</text>
         </g>
 
         <g opacity={directU}>
-          <path d="M190 252 C320 252 320 314 445 314" fill="none" stroke={colors.ACCENT} strokeWidth={4} />
-          <path d="M190 438 C320 438 320 386 445 386" fill="none" stroke={colors.WARM} strokeWidth={4} />
+          <path d="M198 252 C320 252 320 314 445 314" fill="none" stroke={colors.ACCENT} strokeWidth={4} />
+          <path d="M198 438 C320 438 320 386 445 386" fill="none" stroke={colors.WARM} strokeWidth={4} />
           <rect x={445} y={288} width={260} height={124} rx={28} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={3} />
           <text x={575} y={338} textAnchor="middle" fill={colors.TEXT} fontSize={22} fontWeight={760}>direct V–L interaction</text>
           <text x={575} y={371} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>feature_enhancer</text>
           <path d="M705 350 H820" fill="none" stroke={colors.POSITIVE} strokeWidth={4} />
           <Token x={900} y={350} label="12 × 7 actions" color={colors.POSITIVE} u={directU} />
           <RoutePacket x0={200} x1={810} y={350} u={s.get(scene.directRace)} color={colors.POSITIVE} />
-          <text x={575} y={492} textAnchor="middle" fill={colors.POSITIVE} fontSize={16} fontFamily={MONO}>31.2 ms · 32 Hz</text>
+          <text x={575} y={272} textAnchor="middle" fill={colors.POSITIVE} fontSize={16} fontFamily={MONO}>31.2 ms · 32 Hz</text>
         </g>
 
         {clockU > 0 && <g transform="translate(1060 212)" opacity={clockU}>
@@ -141,17 +142,17 @@ export function Render({ s }: { s: SceneState }) {
 
         {resourceU > 0 && <g transform="translate(984 360)" opacity={resourceU}>
           <rect x={0} y={0} width={220} height={180} rx={20} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={110} y={33} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>COMPLETE ONLINE POLICY</text>
+          <text x={110} y={33} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>COMPLETE ONLINE POLICY</text>
           <text x={24} y={78} fill={colors.ACCENT} fontSize={28} fontWeight={800}>0.2B</text>
-          <text x={24} y={100} fill={colors.MUTED} fontSize={12}>parameters</text>
+          <text x={24} y={100} fill={colors.MUTED} fontSize={14}>parameters</text>
           <text x={24} y={142} fill={colors.WARM} fontSize={28} fontWeight={800}>0.9 GB</text>
-          <text x={24} y={164} fill={colors.MUTED} fontSize={12}>inference VRAM</text>
+          <text x={24} y={164} fill={colors.MUTED} fontSize={14}>inference VRAM</text>
         </g>}
 
         {s.get(scene.codeU) > 0 && <g opacity={s.get(scene.codeU)} transform="translate(274 548)">
           <rect width={732} height={58} rx={15} fill={colors.PANEL} stroke={colors.ACCENT} />
-          <text x={366} y={24} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>GroundingDINOVLA.forward</text>
-          <text x={366} y={46} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={MONO}>cat([visual_tokens, text_tokens, state_tokens]) → action_policy</text>
+          <text x={366} y={24} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>GroundingDINOVLA.forward</text>
+          <text x={366} y={46} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>cat([visual_tokens, text_tokens, state_tokens]) → action_policy</text>
         </g>}
       </g>
     </Camera>

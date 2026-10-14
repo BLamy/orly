@@ -155,7 +155,7 @@ export function buildScene() {
   tl.hold(B(1) + 6.8, 1.2);
 
   // 2 — dependency lattice + long-history schematic
-  tl.tween(cam, { x: 600, y: 330, k: 1.15 }, { at: B(2), dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 330, k: 1.1 }, { at: B(2), dur: 1.2, ease: ease.move });
   to(titleLbl, 0, B(2));
   to(latO, 1, B(2) + 0.6);
   to(coneU, 1, B(2) + 1.2, 1.6, ease.draw);
@@ -163,7 +163,7 @@ export function buildScene() {
   tl.hold(B(2) + 6.8, 1.2);
 
   // 3 — bracket sweeps to [32, 159]; the cone is cropped
-  tl.tween(cam, { x: 520, y: 325, k: 1.3 }, { at: B(3), dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 620, y: 325, k: 1.05 }, { at: B(3), dur: 1.2, ease: ease.move });
   to(schemO, 0.15, B(3));
   to(brU, 1, B(3) + 1.2, 1.4, ease.move);
   to(cropU, 1, B(3) + 2.8, 1.2, ease.move);
@@ -194,7 +194,7 @@ export function buildScene() {
   tl.hold(B(6) + 6.8, 1.2);
 
   // 7 — decoder replay: bracket moves to the whole prompt's tail
-  tl.tween(cam, { x: 820, y: 325, k: 1.2 }, { at: B(7), dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 660, y: 325, k: 1.05 }, { at: B(7), dur: 1.2, ease: ease.move });
   to(sufLbl, 0, B(7));
   to(ringLbl, 0, B(7));
   to(lockO, 0, B(7));
@@ -335,9 +335,9 @@ export function Render({ s }: { s: SceneState }) {
           {suf > 0 && (
             <rect x={X(PREFIX) + 2} y={TAPE_Y - 7} width={Math.max(0, X(sufEnd) - X(PREFIX) - 2)} height={14} rx={3} fill={ACCENT} fillOpacity={0.3} stroke={ACCENT} />
           )}
-          <Note x={X(0)} y={TAPE_Y + 26} text="0" size={10} anchor="middle" />
-          <Note x={X(PREFIX)} y={TAPE_Y + 26} text="160" size={10} anchor="middle" />
-          <Note x={X(PROMPT)} y={TAPE_Y + 26} text="192" size={10} anchor="middle" o={clamp01(suf * 4)} />
+          <Note x={X(0)} y={TAPE_Y + 26} text="0" size={12} anchor="middle" />
+          <Note x={X(PREFIX)} y={TAPE_Y + 26} text="160" size={12} anchor="middle" />
+          <Note x={X(PROMPT)} y={TAPE_Y + 26} text="192" size={12} anchor="middle" o={clamp01(suf * 4)} />
           <Note x={X(70)} y={TAPE_Y + 40} text="cached prefix 0…159" size={11} anchor="middle" />
 
           {/* local ring */}
@@ -348,9 +348,9 @@ export function Render({ s }: { s: SceneState }) {
               <line key={k} x1={sg.x0} y1={sg.y0} x2={sg.x1} y2={sg.y1} stroke={ACCENT} strokeWidth={7} strokeOpacity={0.85} />
             ) : null,
           )}
-          <Note x={RING.x} y={RING.y - 2} text="local" size={11} color={ACCENT} anchor="middle" />
-          <Note x={RING.x} y={RING.y + 13} text={fill > 0.02 ? 'approx.' : 'empty'} size={11} color={ACCENT} anchor="middle" />
-          <Note x={RING.x} y={RING.y + RING.r + 28} text="rebuilt local memory" size={11} anchor="middle" o={g(scene.ringLbl)} />
+          <Note x={RING.x} y={RING.y - 2} text="local" size={12} color={ACCENT} anchor="middle" />
+          <Note x={RING.x} y={RING.y + 14} text={fill > 0.02 ? 'approx.' : 'empty'} size={12} color={ACCENT} anchor="middle" />
+          <Note x={RING.x} y={RING.y + RING.r + 28} text="rebuilt local memory" size={12} anchor="middle" o={g(scene.ringLbl)} />
         </g>
         <Code x={X(0)} y={330} text="Encoder SWA Bounded Replay" size={20} color={TEXT} o={g(scene.titleLbl)} />
 
@@ -370,12 +370,11 @@ export function Render({ s }: { s: SceneState }) {
                 <path d={CONE_FULL} fill={ACCENT} fillOpacity={0.16} stroke={ACCENT} strokeOpacity={0.8} pathLength={1}
                   strokeDasharray={1} strokeDashoffset={1 - g(scene.coneU)} />
               </g>
-              <Note x={X(PREFIX) + 8} y={LAT.y0 + 4} text="top layer" size={10} />
-              <Note x={X(PREFIX) + 8} y={LAT.y1 + 4} text="layer 0" size={10} />
+              <Note x={X(PREFIX) + 8} y={LAT.y0 + 4} text="top layer" size={12} />
+              <Note x={X(PREFIX) + 8} y={LAT.y1 + 4} text="layer 0" size={12} />
             </g>
             <g opacity={dec * g(scene.decLbl)}>
-              <Note x={X(PROMPT) + 8} y={LAT.y0 + 60} text="20 decoder" size={10} color={POSITIVE} />
-              <Note x={X(PROMPT) + 8} y={LAT.y0 + 74} text="layers" size={10} color={POSITIVE} />
+              <Note x={X(PROMPT)} y={LAT.y0 - 10} text="20 decoder layers" size={12} color={POSITIVE} anchor="end" />
             </g>
           </g>
         )}
@@ -451,10 +450,10 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={g(scene.decLbl)}>
           <Code x={X(64)} y={RAIL_Y + 34} text="Decoder SWA Bounded Replay" size={14} color={TEXT} />
           <Code x={X(128)} y={TAPE_Y + 44} text="final encoder hidden states" size={12} color={POSITIVE} anchor="middle" />
-          <MathLabel tex={'(L/2)\\times W = 2560 \\;\\text{vs}\\; 128'} x={X(64) + 430} y={RAIL_Y + 30} fontSize={14} anchor="start" color={MUTED} />
+          <Note x={X(64) + 220} y={RAIL_Y + 30} text="(L/2) × W = 2560 vs W = 128" size={13} color={MUTED} />
         </g>
         <g opacity={g(scene.approxO)}>
-          <MathLabel tex={'\\text{approximate} \\neq \\text{exact}'} x={RING.x - 20} y={RING.y + RING.r + 34} fontSize={18} color={NEGATIVE} />
+          <Note x={RING.x} y={RING.y - RING.r - 40} text="approximate ≠ exact" size={16} color={NEGATIVE} anchor="middle" />
         </g>
 
         {/* persistent storage ribbon (beat 9) */}

@@ -30,7 +30,7 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 /* ---------------------------------------------------------------- layout */
 const CELL = { x: 400, y: 170, w: 620, h: 250 };
 const LANE = { x: CELL.x + 40, y: CELL.y + 165, w: CELL.w - 80 };
-const DB = { x: 470, y: 462, w: 480, h: 128 };
+const DB = { x: 430, y: 440, w: 560, h: 104 };
 
 const CAM_FIELD: CameraState = { ...CAMERA_HOME };
 const CAM_CELL: CameraState = { x: 700, y: 330, k: 1.22 };
@@ -193,19 +193,29 @@ export function buildScene(): Scene {
 const scene = buildScene();
 
 /* -------------------------------------------------- local subcomponents */
-function CellField({ u, wide, dim }: { u: number; wide: number; dim: number }) {
+function CellField({ u, wide, dim, cellU }: { u: number; wide: number; dim: number; cellU: number }) {
   if (u <= 0) return null;
+  // Labels sit above each dot. Zoomed into one cell they would run off the
+  // stage, and in the pull-back they would land on the room and db card, so
+  // a label is drawn only where it can be read.
+  const onFrame = (c: { x: number; y: number }) =>
+    c.x > CELL.x - 40 && c.x < CELL.x + CELL.w + 40 && c.y > CELL.y - 60 && c.y < DB.y + DB.h + 20;
+  const showLabel = (c: { x: number; y: number }) => cellU < 0.5 || (wide > 0.5 && !onFrame(c));
   return (
     <g opacity={1 - 0.85 * dim}>
       {FIELD.map((c, i) => {
         const p = clamp01(u * FIELD.length * 0.7 - i * 0.5);
         if (p <= 0) return null;
+        // In the pull-back the cell's room and db card take the centre of the field.
+        if (wide > 0.5 && onFrame(c)) return null;
         return (
           <g key={i} transform={`translate(${c.x}, ${c.y})`} opacity={p * 0.9}>
             <circle r={c.r * p} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.2} opacity={0.8} />
-            <text y={4} textAnchor="middle" fill={colors.MUTED} fontSize={8.5} fontFamily={MONO}>
-              {c.label}
-            </text>
+            {showLabel(c) && (
+              <text y={-c.r - 6} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                {c.label}
+              </text>
+            )}
             {wide > 0 && (
               <g opacity={clamp01(wide * FIELD.length * 0.5 - i * 0.4)}>
                 <rect x={-8} y={c.r + 4} width={16} height={10} rx={2} fill="none" stroke={colors.POSITIVE} strokeWidth={1.2} />
@@ -216,7 +226,7 @@ function CellField({ u, wide, dim }: { u: number; wide: number; dim: number }) {
         );
       })}
       {wide > 0.6 && (
-        <text x={640} y={92} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} opacity={(wide - 0.6) * 2.5}>
+        <text x={640} y={48} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} opacity={(wide - 0.6) * 2.5}>
           every cell: its own database · nothing shared
         </text>
       )}
@@ -272,20 +282,20 @@ function CellRoom({
           />
         )}
         {iso > 0.5 && (
-          <text x={CELL.x + CELL.w - 8} y={CELL.y - 24} textAnchor="end" fill={colors.SECONDARY} fontSize={11} fontFamily={MONO} opacity={(iso - 0.5) * 2}>
+          <text x={CELL.x + CELL.w - 8} y={CELL.y - 24} textAnchor="end" fill={colors.SECONDARY} fontSize={12} fontFamily={MONO} opacity={(iso - 0.5) * 2}>
             one isolate per cell · env.NS.get(id) · js.rs
           </text>
         )}
         <text x={CELL.x + 22} y={CELL.y + 32} fill={colors.TEXT} fontSize={16} fontWeight={700}>
           cell · room-7
         </text>
-        <text x={CELL.x + 22} y={CELL.y + 54} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+        <text x={CELL.x + 22} y={CELL.y + 54} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
           a Durable Object: named, single-threaded, stateful
         </text>
 
         {/* the single execution lane */}
         <line x1={LANE.x} y1={LANE.y} x2={LANE.x + LANE.w} y2={LANE.y} stroke={colors.GRID} strokeWidth={5} strokeLinecap="round" />
-        <text x={LANE.x} y={LANE.y + 28} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+        <text x={LANE.x} y={LANE.y + 28} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
           one thread — the only place this cell&apos;s code runs
         </text>
 
@@ -302,7 +312,7 @@ function CellRoom({
         {/* the await gap marker */}
         {runA >= RUN1_END - 0.001 && (
           <g opacity={clamp01((runA - RUN1_END + 0.02) * 30 + (runB > 0 ? 1 : 0))}>
-            <text x={laneAt(RUN1_END)} y={LANE.y - 34} textAnchor="middle" fill={colors.ACCENT} fontSize={10.5} fontFamily={MONO}>
+            <text x={laneAt(RUN1_END)} y={LANE.y - 36} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>
               await fetch — A parks
             </text>
             <line x1={laneAt(RUN1_END)} y1={LANE.y - 26} x2={laneAt(RUN1_END)} y2={LANE.y - 12} stroke={colors.ACCENT} strokeWidth={1.2} strokeDasharray="2 3" />
@@ -327,7 +337,7 @@ function CellRoom({
               opacity={0.95}
             />
             {store > 0.35 && (
-              <text x={laneAt((RUN2_END + STORE_END) / 2)} y={LANE.y - 20} textAnchor="middle" fill={colors.POSITIVE} fontSize={10.5} fontFamily={MONO} opacity={(store - 0.35) * 2}>
+              <text x={LANE.x + LANE.w} y={LANE.y - 20} textAnchor="end" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO} opacity={(store - 0.35) * 2}>
                 storage op · synchronous · nothing interleaves
               </text>
             )}
@@ -346,7 +356,7 @@ function RequestPill({ label, color, u, slot, started }: { label: string; color:
   return (
     <g transform={`translate(${x}, ${LANE.y})`} opacity={Math.min(1, u * 4)}>
       <rect x={-32} y={-14} width={64} height={28} rx={14} fill={colors.PANEL} stroke={color} strokeWidth={1.5} />
-      <text y={4} textAnchor="middle" fill={color} fontSize={11} fontFamily={MONO}>
+      <text y={4} textAnchor="middle" fill={color} fontSize={12} fontFamily={MONO}>
         {label}
       </text>
     </g>
@@ -366,18 +376,18 @@ function DbCard({ u, rows, sync, dim }: { u: number; rows: number; sync: number;
         const p = clamp01(rows * 3.2 - i);
         if (p <= 0) return null;
         return (
-          <text key={row} x={22} y={50 + i * 22} fill={colors.TEXT} fontSize={11.5} fontFamily={MONO} opacity={p * 0.9}>
+          <text key={row} x={22} y={50 + i * 22} fill={colors.TEXT} fontSize={12} fontFamily={MONO} opacity={p * 0.9}>
             {row}
           </text>
         );
       })}
       {sync > 0 && (
         <g opacity={sync}>
-          <rect x={DB.w - 218} y={38} width={202} height={70} rx={9} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.2} />
-          <text x={DB.w - 117} y={60} textAnchor="middle" fill={colors.ACCENT} fontSize={10.5} fontFamily={MONO}>
+          <rect x={DB.w - 262} y={40} width={246} height={58} rx={9} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.2} />
+          <text x={DB.w - 139} y={62} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>
             ctx.storage.put() — async in JS
           </text>
-          <text x={DB.w - 117} y={80} textAnchor="middle" fill={colors.POSITIVE} fontSize={10.5} fontFamily={MONO}>
+          <text x={DB.w - 139} y={81} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
             sync Rust op underneath
           </text>
         </g>
@@ -395,13 +405,13 @@ function ClosingCard({ u }: { u: number }) {
       <text y={-40} textAnchor="middle" fill={colors.TEXT} fontSize={22} fontWeight={750}>
         One cell. One thread. One database.
       </text>
-      <text y={-2} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
+      <text y={-2} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
         requests interleave only at await · storage never does
       </text>
-      <text y={30} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>
+      <text y={30} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>
         each cell: its own isolate + its own SQLite file
       </text>
-      <text y={61} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+      <text y={61} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
         next: how a fleet decides who runs it
       </text>
     </g>
@@ -413,26 +423,32 @@ export function Render({ s }: { s: SceneState }) {
   const dim = clamp01(s.get(scene.dimU));
   const cellU = s.get(scene.cellU);
   const wide = clamp01(s.get(scene.wideU));
+  // Fade the whole scene out behind the closing card so no old label sits under its text.
+  const bg = 1 - clamp01(s.get(scene.closeU));
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...s.get(scene.cam)}>
-        <CellField u={s.get(scene.fieldU) * (1 - clamp01(cellU) * 0.88 * (1 - wide))} wide={wide} dim={dim} />
-        <CellRoom
-          u={cellU}
-          queue={s.get(scene.queueU)}
-          runA={s.get(scene.runAU)}
-          runB={s.get(scene.runBU)}
-          store={s.get(scene.storeU)}
-          iso={s.get(scene.isoU)}
-          dim={Math.max(dim, s.get(scene.wideU) * 0.7)}
-        />
-        <DbCard
-          u={s.get(scene.dbU)}
-          rows={s.get(scene.storeU)}
-          sync={s.get(scene.syncU)}
-          dim={Math.max(dim, s.get(scene.wideU) * 0.7)}
-        />
+        {bg > 0 && (
+          <g opacity={bg}>
+            <CellField u={s.get(scene.fieldU) * (1 - clamp01(cellU) * 0.88 * (1 - wide))} wide={wide} dim={dim} cellU={cellU} />
+            <CellRoom
+              u={cellU}
+              queue={s.get(scene.queueU)}
+              runA={s.get(scene.runAU)}
+              runB={s.get(scene.runBU)}
+              store={s.get(scene.storeU)}
+              iso={s.get(scene.isoU)}
+              dim={Math.max(dim, s.get(scene.wideU) * 0.7)}
+            />
+            <DbCard
+              u={s.get(scene.dbU)}
+              rows={s.get(scene.storeU)}
+              sync={s.get(scene.syncU)}
+              dim={Math.max(dim, s.get(scene.wideU) * 0.7)}
+            />
+          </g>
+        )}
         <ClosingCard u={s.get(scene.closeU)} />
       </Camera>
     </>

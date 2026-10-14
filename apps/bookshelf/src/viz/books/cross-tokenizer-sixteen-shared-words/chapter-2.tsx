@@ -373,7 +373,7 @@ export function Render({ s }: { s: SceneState }) {
               )}
               <Txt x={c.x} y={COMB.yS + 26} size={15} anchor="middle" mono fill={isSel ? INK.text : INK.muted}>{`v${c.j + 1}`}</Txt>
               {c.unpaired && (
-                <Txt x={c.x} y={COMB.yS + 26} size={18} anchor="middle" fill={INK.bad} opacity={mask * 2}>×</Txt>
+                <Txt x={c.x} y={hasS ? COMB.yT + 16 : COMB.yS - 6} size={18} anchor="middle" fill={INK.bad} opacity={mask * 2}>×</Txt>
               )}
               {/* student rank badge on the chosen sixteen */}
               {isSel && (
@@ -427,11 +427,14 @@ export function Render({ s }: { s: SceneState }) {
         <Chip x={680} y={COMB.yT + COMB.hMax + 60} text="teacher_logits.gather(-1, topk_indices)" color={INK.strict} opacity={win(b, 3, 3) * clamp01(rail * 3)} />
 
         {/* beat 4 — renormalization */}
-        <MathLabel tex={'p_S(v)=\\frac{e^{z_S(v)}}{\\sum_{u\\in K}e^{z_S(u)}},\\qquad p_T(v)=\\frac{e^{z_T(v)}}{\\sum_{u\\in K}e^{z_T(u)}}'} x={510} y={160}
-          fontSize={26} boxWidth={740} opacity={win(b, 4, 4) * clamp01(norm * 3)} />
-        {/* badges sit beneath the fixed header (y 65) and right of the math box (ends x ≈ 880) */}
-        <Chip x={1180} y={118} text="log_softmax · dtype float32" color={INK.text} size={14} anchor="end" opacity={win(b, 4, 5) * clamp01(norm * 3)} />
-        <Chip x={1180} y={152} text={`Renormalized support · K = ${K}`} color={INK.strict} size={14} anchor="end" opacity={win(b, 4, 5) * clamp01(norm * 3)} />
+        <MathLabel tex={'p_S(v)=\\frac{e^{z_S(v)}}{\\sum_{u\\in K}e^{z_S(u)}}\\quad\\text{same for }p_T'} x={480} y={160}
+          fontSize={22} boxWidth={820} opacity={win(b, 4, 4) * clamp01(norm * 3)} />
+        {/* badges sit beneath the fixed header (y 65) and right of the math box (ends x ≈ 810); they leave with the formula */}
+        <Chip x={1180} y={118} text="log_softmax · dtype float32" color={INK.text} size={14} anchor="end" opacity={win(b, 4, 4) * clamp01(norm * 3)} />
+        <Chip x={1180} y={152} text="renormalized: rescaled to sum to 1" color={INK.strict} size={14} anchor="end" opacity={win(b, 4, 4) * clamp01(norm * 3)} />
+        <Txt x={COMB.x0} y={STRIP_Y + 30} size={16} fill={INK.muted} opacity={win(b, 4, 4) * clamp01(norm * 3)}>
+          K = 16 kept entries · each row is rescaled so its kept values add up to one
+        </Txt>
         <Txt x={COMB.x1 + 14} y={COMB.yS - 10} size={20} mono fill={INK.student} opacity={on(b, 4) * clamp01(norm * 2 - 1) * (1 - fade)}>
           {`Σ = ${sumS.toFixed(3)}`}
         </Txt>
@@ -440,8 +443,8 @@ export function Render({ s }: { s: SceneState }) {
         </Txt>
 
         {/* beat 5 — reverse KL */}
-        <MathLabel tex={'D_{KL}(p_S\\Vert p_T)=\\sum_{v\\in K}p_S(v)\\log\\frac{p_S(v)}{p_T(v)}'} x={510} y={160}
-          fontSize={28} boxWidth={700} opacity={win(b, 5, 5)} />
+        <MathLabel tex={'D_{KL}(p_S\\Vert p_T)=\\sum_{v\\in K}p_S(v)\\log\\frac{p_S(v)}{p_T(v)}'} x={480} y={160}
+          fontSize={24} boxWidth={860} opacity={win(b, 5, 5)} />
         <g opacity={clamp01(rkl * 4) * (1 - fade) * combDim}>
           <line x1={COMB.x0} y1={STRIP_Y} x2={COMB.x1} y2={STRIP_Y} stroke={colors.ink.axis} strokeWidth={1.2} />
           <Txt x={COMB.x0 - 10} y={STRIP_Y + 5} size={16} anchor="end" fill={INK.muted}>terms</Txt>
@@ -450,7 +453,7 @@ export function Render({ s }: { s: SceneState }) {
             {RKL.toFixed(4)}
           </Txt>
           <Txt x={COMB.x0} y={STRIP_Y + 44} size={15} fill={INK.muted} opacity={win(b, 5, 5)}>
-            green terms positive, rose terms negative · the sum is never negative
+            log-ratio sum: each term is p_S · log(p_S / p_T) · green positive, rose negative · the total is never negative
           </Txt>
         </g>
 

@@ -57,7 +57,6 @@ export function buildScene() {
 
   tl.caption({ at: 44.9, dur: 6.0, text: 'The measured horizon sweep peaks at twelve steps: shorter chunks lose temporal reach, while fifteen steps are harder to predict.' });
   tl.tween(horizonU, 1, { at: 45.4, dur: 1.8, ease: ease.enter });
-  tl.tween(cam, { x: 1000, y: 350, k: 1.16 }, { at: 46.0, dur: 1.3, ease: ease.move });
   tl.hold(50.9, 0.6);
 
   tl.caption({ at: 51.5, dur: 6.2, text: 'One control tick therefore ends with twelve coordinated moves, not twelve rounds of sequential generation.' });
@@ -84,20 +83,20 @@ export function Render({ s }: { s: SceneState }) {
     <rect width={1280} height={720} fill={colors.BG} />
     <g opacity={mainOpacity}>
       <text x={640} y={50} textAnchor="middle" fill={colors.TEXT} fontSize={27} fontWeight={760}>Ask for twelve moves at once</text>
-      <text x={640} y={76} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>ACTActionDecoder · chunk_size = 12 · action_dim = 7</text>
+      <text x={640} y={76} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>ACTActionDecoder · chunk_size = 12 · action_dim = 7</text>
     </g>
     <Camera {...s.get(scene.cam)}>
       <g opacity={mainOpacity}>
         <g opacity={memoryU}>
           <rect x={80} y={406} width={835} height={82} rx={18} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={2} />
           {Array.from({ length: 25 }, (_, i) => <rect key={i} x={100 + i * 31} y={426} width={24} height={38} rx={5} fill={i < 14 ? colors.ACCENT : colors.WARM} opacity={0.35 + 0.45 * clamp01(memoryU * 25 - i)} />)}
-          <text x={497} y={516} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>act_memory = [visual_tokens ; text_tokens ; state_tokens]</text>
+          <text x={497} y={516} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>act_memory = [visual_tokens ; text_tokens ; state_tokens]</text>
         </g>
         {s.get(scene.stateU) > 0 && <g opacity={s.get(scene.stateU)}>
           {[0, 1].map((i) => <g key={i} transform={`translate(${860 + i * 34} 445)`}>
             <rect x={-13} y={-19} width={26} height={38} rx={6} fill={colors.POSITIVE} />
           </g>)}
-          <text x={878} y={396} textAnchor="middle" fill={colors.POSITIVE} fontSize={11} fontFamily={MONO}>2 state tokens</text>
+          <text x={878} y={392} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>2 state tokens</text>
         </g>}
 
         <g opacity={queryU}>
@@ -105,14 +104,14 @@ export function Render({ s }: { s: SceneState }) {
             const u = clamp01(queryU * 12 - i);
             return <g key={i} opacity={u} transform={`translate(${xOf(i)} 188) scale(${0.8 + 0.2 * u})`}>
               <circle r={19} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={2} />
-              <text y={5} textAnchor="middle" fill={colors.SECONDARY} fontSize={11} fontFamily={MONO}>q{i + 1}</text>
+              <text y={5} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>q{i + 1}</text>
               <line x1={0} y1={24} x2={0} y2={212} stroke={colors.SECONDARY} opacity={0.18 + 0.45 * decodeU} strokeDasharray="5 6" />
               {decodeU > 0 && <circle cx={0} cy={24 + decodeU * 188} r={5} fill={colors.SECONDARY} />}
             </g>;
           })}
           <rect x={78} y={238} width={806} height={92} rx={18} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={2} />
           <text x={481} y={282} textAnchor="middle" fill={colors.TEXT} fontSize={19} fontWeight={720}>transformer decoder</text>
-          <text x={481} y={307} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>tgt = action_queries · memory = act_memory</text>
+          <text x={481} y={307} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>tgt = action_queries · memory = act_memory</text>
         </g>
 
         {vectorU > 0 && <g opacity={vectorU}>
@@ -127,6 +126,8 @@ export function Render({ s }: { s: SceneState }) {
         </g>}
 
         {ribbonU > 0 && <g opacity={ribbonU}>
+          <rect x={100} y={362} width={520} height={24} rx={6} fill={colors.BG} opacity={0.9} />
+          <text x={112} y={379} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>tanh keeps values in [-1, 1] · denormalize → robot units</text>
           <path d={ACTIONS.map((vals, i) => `${i === 0 ? 'M' : 'L'} ${xOf(i)} ${584 - vals[0] * 30}`).join(' ')} fill="none" stroke={colors.POSITIVE} strokeWidth={7} strokeLinecap="round" strokeLinejoin="round" strokeDasharray={820} strokeDashoffset={820 * (1 - ribbonU)} />
           {executeU > 0 && <circle cx={xOf(Math.min(11, Math.floor(executeU * 11)))} cy={584 - ACTIONS[Math.min(11, Math.floor(executeU * 11))][0] * 30} r={10} fill={colors.WARM} />}
         </g>}
@@ -136,16 +137,17 @@ export function Render({ s }: { s: SceneState }) {
           <text x={135} y={34} textAnchor="middle" fill={colors.TEXT} fontSize={17} fontWeight={700}>action horizon sweep</text>
           <line x1={40} y1={240} x2={235} y2={240} stroke={colors.GRID} />
           <line x1={40} y1={70} x2={40} y2={240} stroke={colors.GRID} />
-          <polyline points={HORIZON.map((p, i) => `${64 + i * 54},${222 - (p.score - 95) * 62}`).join(' ')} fill="none" stroke={colors.POSITIVE} strokeWidth={3} />
+          <polyline points={HORIZON.map((p, i) => `${64 + i * 54},${220 - (p.score - 95) * 50}`).join(' ')} fill="none" stroke={colors.POSITIVE} strokeWidth={3} />
           {HORIZON.map((p, i) => <g key={p.h}>
-            <circle cx={64 + i * 54} cy={222 - (p.score - 95) * 62} r={p.h === 12 ? 9 : 6} fill={p.h === 12 ? colors.WARM : colors.POSITIVE} />
-            <text x={64 + i * 54} y={262} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>H={p.h}</text>
-            <text x={64 + i * 54} y={210 - (p.score - 95) * 62} textAnchor="middle" fill={p.h === 12 ? colors.WARM : colors.TEXT} fontSize={11}>{p.score}</text>
+            <circle cx={64 + i * 54} cy={220 - (p.score - 95) * 50} r={p.h === 12 ? 9 : 6} fill={p.h === 12 ? colors.WARM : colors.POSITIVE} />
+            <text x={64 + i * 54} y={262} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>H={p.h}</text>
+            <text x={64 + i * 54} y={200 - (p.score - 95) * 50} textAnchor="middle" fill={p.h === 12 ? colors.WARM : colors.TEXT} fontSize={14} fontWeight={p.h === 12 ? 760 : 500}>{p.score}</text>
           </g>)}
         </g>}
       </g>
     </Camera>
     {s.get(scene.endU) > 0 && <g opacity={s.get(scene.endU)}>
+      <rect x={200} y={234} width={880} height={198} rx={24} fill={colors.BG} />
       <rect x={200} y={234} width={880} height={198} rx={24} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2.5} />
       <text x={640} y={298} textAnchor="middle" fill={colors.TEXT} fontSize={33} fontWeight={800}>One pass. Twelve moves.</text>
       <text x={640} y={346} textAnchor="middle" fill={colors.SECONDARY} fontSize={18}>12 learned queries decode in parallel</text>

@@ -32,7 +32,7 @@
   background: var(--wood-panel);
   font-size: 13px;
 }
-.grades-dims li { display: grid; grid-template-columns: 72px 1fr 38px; align-items: center; gap: 8px; }
+.grades-dims li { display: grid; grid-template-columns: 72px 1fr 92px; align-items: center; gap: 8px; }
 .grades-bar { position: relative; height: 8px; border-radius: 4px; background: color-mix(in srgb, currentColor 10%, transparent); }
 .grades-bar i { position: absolute; inset: 0 auto 0 0; border-radius: 4px; }
 .grades-bar i.is-good { background: #3fb950; }
@@ -175,3 +175,8 @@ td.is-weak { background: var(--g-weak); }
   td.g-title { min-width: 0; }
   .g-detail-inner { padding-left: 14px; }
 }
+
+.g-delta { font-size: 11px; font-weight: 600; opacity: 0.85; white-space: nowrap; }
+.g-delta.is-up { color: #3fb950; }
+.g-delta.is-down { color: #f85149; }
+td.g-mean .g-delta { display: block; }

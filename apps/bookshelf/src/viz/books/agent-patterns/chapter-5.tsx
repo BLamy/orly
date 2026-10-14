@@ -47,6 +47,14 @@ const Q = [
   { x: 895, y: 482, name: 'dispatcher', color: colors.SECONDARY, phrase: '“classify and route”', resume: 'status still waiting — resume the child' },
 ] as const;
 
+// one trade-off per pattern for the closing lockup: its failure mode, and when the simple rule is wrong
+const TRADE = [
+  'one failed child: the manager must retry it · wrong when roles come from the data',
+  'one failed chunk: the reduce stalls or runs on partials · wrong when chunks depend on each other',
+  'one failed stage stops everything after it · wrong when the stages are independent',
+  'a wrong route sends work to the wrong specialist · wrong when a request needs two',
+] as const;
+
 const TAPE_W = 172;
 
 const CAM_CRASH: CameraState = { x: 640, y: 340, k: 1.12 };
@@ -273,10 +281,10 @@ export function Render({ s }: { s: SceneState }) {
           {div1U > 0.01 && (
             <g>
               <line x1={CX - 560 * div1U} y1={CY} x2={CX + 560 * div1U} y2={CY} stroke={colors.GRID} strokeWidth={1.5} strokeDasharray="7 7" />
-              <text x={72} y={126} fill={colors.MUTED} fontSize={14} fontStyle="italic" opacity={clamp01(div1U * 2 - 1)}>
+              <text x={110} y={126} fill={colors.TEXT} fontSize={15} fontWeight={500} opacity={0.85 * clamp01(div1U * 2 - 1)}>
                 all at once
               </text>
-              <text x={72} y={600} fill={colors.MUTED} fontSize={14} fontStyle="italic" opacity={clamp01(div1U * 2 - 1)}>
+              <text x={90} y={540} fill={colors.TEXT} fontSize={15} fontWeight={500} opacity={0.85 * clamp01(div1U * 2 - 1)}>
                 one after another
               </text>
             </g>
@@ -284,10 +292,10 @@ export function Render({ s }: { s: SceneState }) {
           {div2U > 0.01 && (
             <g>
               <line x1={CX} y1={CY - 290 * div2U} x2={CX} y2={CY + 290 * div2U} stroke={colors.GRID} strokeWidth={1.5} strokeDasharray="7 7" />
-              <text x={CX - 24} y={68} textAnchor="end" fill={colors.MUTED} fontSize={14} fontStyle="italic" opacity={clamp01(div2U * 2 - 1)}>
+              <text x={CX - 24} y={68} textAnchor="end" fill={colors.TEXT} fontSize={15} fontWeight={500} opacity={0.85 * clamp01(div2U * 2 - 1)}>
                 a fixed set
               </text>
-              <text x={CX + 24} y={68} fill={colors.MUTED} fontSize={14} fontStyle="italic" opacity={clamp01(div2U * 2 - 1)}>
+              <text x={CX + 24} y={68} fill={colors.TEXT} fontSize={15} fontWeight={500} opacity={0.85 * clamp01(div2U * 2 - 1)}>
                 decided by the input
               </text>
             </g>
@@ -304,9 +312,9 @@ export function Render({ s }: { s: SceneState }) {
           return (
             <g key={q.name} opacity={frameDim}>
               <rect
-                x={q.x - 130}
+                x={q.x - 150}
                 y={q.y - 78}
-                width={260}
+                width={300}
                 height={156}
                 rx={14}
                 fill={colors.PANEL}
@@ -328,14 +336,14 @@ export function Render({ s }: { s: SceneState }) {
                   fill={colors.TEXT}
                   fontSize={12.5}
                   fontStyle="italic"
-                  opacity={win(phrasesU, 4, i, 1.8) * (1 - 0.8 * crashU * (1 - resumeU))}
+                  opacity={win(phrasesU, 4, i, 1.8) * (1 - 0.8 * crashU * (1 - resumeU)) * (1 - resumeU)}
                 >
                   {q.phrase}
                 </text>
               )}
-              {/* the resume receipt */}
+              {/* the resume receipt replaces the phrase on the same line */}
               {resumeU > 0.01 && (
-                <text x={q.x} y={q.y + 72} textAnchor="middle" fill={colors.POSITIVE} fontSize={11.5} fontFamily={MONO} opacity={resumeU}>
+                <text x={q.x} y={q.y + 72} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO} opacity={resumeU}>
                   {q.resume}
                 </text>
               )}
@@ -358,22 +366,19 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---------------- closing lockup ---------------- */}
         {closeU > 0.01 && (
           <g opacity={closeU}>
-            <rect x={CX - 330} y={CY - 74} width={660} height={148} rx={18} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.5} />
-            <text x={CX} y={CY - 30} textAnchor="middle" fill={colors.TEXT} fontSize={22} fontWeight={600}>
+            <rect x={CX - 470} y={CY - 130} width={940} height={260} rx={18} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.5} />
+            <text x={CX} y={CY - 90} textAnchor="middle" fill={colors.TEXT} fontSize={22} fontWeight={600}>
               two questions → four shapes
             </text>
-            <text x={CX} y={CY + 4} textAnchor="middle" fill={colors.MUTED} fontSize={14.5}>
+            <text x={CX} y={CY - 62} textAnchor="middle" fill={colors.MUTED} fontSize={14.5}>
               all at once or one after another · fixed or decided by the input
             </text>
-            <text x={CX} y={CY + 42} textAnchor="middle" fontSize={14.5}>
-              <tspan fill={Q[0].color}>manager-worker</tspan>
-              <tspan fill={colors.MUTED}> · </tspan>
-              <tspan fill={Q[1].color}>map-reduce</tspan>
-              <tspan fill={colors.MUTED}> · </tspan>
-              <tspan fill={Q[2].color}>pipeline</tspan>
-              <tspan fill={colors.MUTED}> · </tspan>
-              <tspan fill={Q[3].color}>dispatcher</tspan>
-            </text>
+            {Q.map((q, i) => (
+              <text key={q.name} x={CX} y={CY - 10 + i * 36} textAnchor="middle" fontSize={13.5}>
+                <tspan fill={q.color} fontWeight={600}>{q.name}</tspan>
+                <tspan fill={colors.MUTED}>{`  ·  ${TRADE[i]}`}</tspan>
+              </text>
+            ))}
           </g>
         )}
       </Camera>

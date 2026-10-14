@@ -209,17 +209,22 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* ---- stage labels ---- */}
+        {/* the source column leaves the frame once the camera moves to the leaderboards */}
         <g opacity={dimAll}>
-          <text x={SRC.x} y={SRC.y0 - 36} fill={colors.TEXT} fontSize={15} opacity={srcU}>
-            the receipts
-          </text>
-          <text x={SRC.x} y={SRC.y0 - 16} fill={colors.MUTED} fontSize={11} fontFamily="ui-monospace, monospace" opacity={srcU}>
-            Sales API log · one line per sale
-          </text>
+          {sortU < 0.5 && (
+            <>
+              <text x={SRC.x} y={SRC.y0 - 36} fill={colors.TEXT} fontSize={15} opacity={srcU}>
+                the receipts
+              </text>
+              <text x={SRC.x} y={SRC.y0 - 16} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace" opacity={srcU}>
+                Sales API log · one line per sale
+              </text>
+            </>
+          )}
           <text x={MID.x} y={MID.y0 - 36} fill={colors.TEXT} fontSize={15} opacity={clamp01(mapU * 3)}>
             {flipU > 0.5 ? 'after mapper_sort' : sumU > 0.5 ? 'after reducer' : 'after mapper'}
           </text>
-          <text x={MID.x} y={MID.y0 - 16} fill={colors.ACCENT} fontSize={11} fontFamily="ui-monospace, monospace" opacity={clamp01(mapU * 3)}>
+          <text x={MID.x} y={MID.y0 - 16} fill={colors.ACCENT} fontSize={12} fontFamily="ui-monospace, monospace" opacity={clamp01(mapU * 3)}>
             {flipU > 0.5
               ? 'yield (category_id, quantity), product_id'
               : sumU > 0.5
@@ -228,21 +233,47 @@ export function Render({ s }: { s: SceneState }) {
           </text>
         </g>
 
-        {/* ---- the week gate ---- */}
-        <g opacity={gateU * dimAll * (1 - sortU)}>
-          <line x1={SRC.x + SRC.w + 18} y1={SRC.y0 - 20} x2={SRC.x + SRC.w + 18} y2={SRC.y0 + 7.6 * SRC.rowH} stroke={colors.WARM} strokeWidth={2} strokeDasharray="7 5" />
-          <text x={SRC.x + SRC.w + 18} y={SRC.y0 + 7.6 * SRC.rowH + 22} textAnchor="middle" fill={colors.WARM} fontSize={10.5} fontFamily="ui-monospace, monospace">
-            within_past_week(timestamp)
-          </text>
-        </g>
+        {/* ---- the week gate: a vertical bar in the gap, label rotated so it stays on stage ---- */}
+        {sortU < 0.5 && (
+          <g opacity={gateU * dimAll}>
+            <line x1={SRC.x + SRC.w + 18} y1={SRC.y0 - 20} x2={SRC.x + SRC.w + 18} y2={SRC.y0 + 7.6 * SRC.rowH} stroke={colors.WARM} strokeWidth={2} strokeDasharray="7 5" />
+            <text
+              x={SRC.x + SRC.w + 34}
+              y={(SRC.y0 - 20 + SRC.y0 + 7.6 * SRC.rowH) / 2}
+              transform={`rotate(-90 ${SRC.x + SRC.w + 34} ${(SRC.y0 - 20 + SRC.y0 + 7.6 * SRC.rowH) / 2})`}
+              textAnchor="middle"
+              fill={colors.WARM}
+              fontSize={12}
+              fontFamily="ui-monospace, monospace"
+            >
+              within_past_week(timestamp)
+            </text>
+          </g>
+        )}
+
+        {/* ---- empty log slots: each receipt was read, the log itself still has them ---- */}
+        {sortU < 0.5 && (
+          <g opacity={srcU * dimAll * 0.5}>
+            {CHIPS.map((_, i) => {
+              const p = srcPos(i);
+              return <rect key={i} x={p.x} y={p.y} width={SRC.w} height={SRC.rowH - 14} rx={8} fill="none" stroke={colors.GRID} strokeWidth={1} strokeDasharray="4 4" />;
+            })}
+          </g>
+        )}
 
         {/* ---- the rejected old receipt ---- */}
         <g opacity={srcU * (1 - clamp01(rejectU * 1.4)) * dimAll}>
-          <rect x={SRC.x} y={SRC.y0 + 6 * SRC.rowH + rejectU * 90} width={SRC.w + 40} height={SRC.rowH - 14} rx={8} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.2} />
-          <text x={SRC.x + 12} y={SRC.y0 + 6 * SRC.rowH + 26 + rejectU * 90} fill={colors.NEGATIVE} fontSize={10.5} fontFamily="ui-monospace, monospace">
+          <rect x={SRC.x} y={SRC.y0 + 6 * SRC.rowH + rejectU * 90} width={SRC.w + 60} height={SRC.rowH - 14} rx={8} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.2} />
+          <text x={SRC.x + 12} y={SRC.y0 + 6 * SRC.rowH + 26 + rejectU * 90} fill={colors.NEGATIVE} fontSize={12} fontFamily="ui-monospace, monospace">
             {OLD_ROW}
           </text>
         </g>
+        {/* the bouncer's verdict, once the old row has been turned away */}
+        {sortU < 0.5 && (
+          <text x={SRC.x + 12} y={SRC.y0 + 6 * SRC.rowH + 26} fill={colors.NEGATIVE} fontSize={12} fontFamily="ui-monospace, monospace" opacity={clamp01((rejectU - 0.7) * 3.3) * dimAll}>
+            rejected at the gate · not counted
+          </text>
+        )}
 
         {/* ---- the six chips ---- */}
         {CHIPS.map((c, i) => {
@@ -286,7 +317,7 @@ export function Render({ s }: { s: SceneState }) {
           return (
             <g key={i} opacity={op}>
               <rect x={x} y={y} width={SRC.w} height={SRC.rowH - 14} rx={8} fill={colors.PANEL} stroke={keyed ? catColor : colors.GRID} strokeWidth={keyed ? 1.5 : 1.1} />
-              <text x={x + 12} y={y + 26} fill={keyed ? colors.TEXT : colors.MUTED} fontSize={11} fontFamily="ui-monospace, monospace">
+              <text x={x + 12} y={y + 26} fill={keyed ? colors.TEXT : colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
                 {text}
               </text>
               {/* the flip pulse */}
@@ -297,12 +328,24 @@ export function Render({ s }: { s: SceneState }) {
           );
         })}
 
+        {/* ---- the reducer's arithmetic beside the merged row: two receipts, one total ---- */}
+        <text
+          x={MID.x + SRC.w + 14}
+          y={midPos(1).y + 26}
+          fill={colors.WARM}
+          fontSize={12}
+          fontFamily="ui-monospace, monospace"
+          opacity={clamp01((sumU - 0.5) * 3) * (1 - clamp01(ladU * 6)) * dimAll}
+        >
+          2 + 1 = 3 (two receipts)
+        </text>
+
         {/* ---- the leaderboards ---- */}
         <g opacity={ladU * dimAll}>
           {LAD.map((l, li) => (
             <g key={li}>
               <rect x={l.x - 16} y={l.y0} width={LAD_W + 32} height={l.rows * LAD_ROW_H + 52} rx={12} fill="none" stroke={li === 0 ? colors.ACCENT : colors.SECONDARY} strokeWidth={1.4} />
-              <text x={l.x} y={l.y0 + 26} fill={li === 0 ? colors.ACCENT : colors.SECONDARY} fontSize={13.5} fontFamily="ui-monospace, monospace">
+              <text x={l.x} y={l.y0 + 26} fill={li === 0 ? colors.ACCENT : colors.SECONDARY} fontSize={14} fontFamily="ui-monospace, monospace">
                 {l.label} — sorted by quantity
               </text>
             </g>
@@ -321,15 +364,15 @@ export function Render({ s }: { s: SceneState }) {
             ['every hour', 'rerun over the sliding week → fresh leaderboards'],
           ].map(([k, v], i) => (
             <g key={k}>
-              <text x={420} y={306 + i * 42} textAnchor="end" fill={colors.WARM} fontSize={13.5} fontFamily="ui-monospace, monospace">
+              <text x={420} y={306 + i * 42} textAnchor="end" fill={colors.WARM} fontSize={14} fontFamily="ui-monospace, monospace">
                 {k}
               </text>
-              <text x={448} y={306 + i * 42} fill={colors.MUTED} fontSize={12.5} fontFamily="ui-monospace, monospace">
+              <text x={448} y={306 + i * 42} fill={colors.MUTED} fontSize={13.5} fontFamily="ui-monospace, monospace">
                 {v}
               </text>
             </g>
           ))}
-          <text x={640} y={432} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic">
+          <text x={640} y={432} textAnchor="middle" fill={colors.MUTED} fontSize={13.5} fontStyle="italic">
             SalesRanker, from sales_rank_mapreduce.py — run by the Sales Rank Service
           </text>
         </g>

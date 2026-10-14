@@ -4,8 +4,9 @@ import { CAMERA_HOME, Camera, Timeline, cameraInterp, colors, ease } from '../..
 import type { CameraState, SceneState } from '../../core';
 import { Chip, Panel, ResearchTitle, clamp01, mono } from '../../book-components/research';
 
-const KNOWN = ['differences', 'linear masks', 'integrals', 'meet in middle', 'equation solving'];
-const CANDIDATES = ['group orbits', 'metrics', 'information', 'spectra', 'graphs', 'codes', 'representations', 'moments', 'proof gaps'];
+const KNOWN = ['differences', 'linear correlations', 'structured sums', 'meet-in-the-middle', 'equation solving'];
+const CANDIDATES = ['group orbits', 'distances', 'information', 'spectra', 'graphs', 'codes', 'representations', 'moments', 'gaps in a proof'];
+const SURVEY = ['aes128.c', 'oracle.c', 'table.md', 'confirmed-lemmas.md'];
 
 export function buildScene() {
   const tl = new Timeline();
@@ -36,7 +37,7 @@ export function buildScene() {
   tl.tween(surveyU, 1, { at: t - 5.2, dur: 1.4, ease: ease.draw });
   t = tl.hold(t, 0.5);
   t = tl.caption({ at: t, dur: 6.0, text: 'Most candidates fail a concrete test: the object vanishes too early, needs hidden state, or survives without depending on the key.' });
-  tl.tween(rejectN, 8, { at: t - 5.4, dur: 2.4, ease: ease.move });
+  tl.tween(rejectN, 9, { at: t - 5.4, dur: 2.4, ease: ease.move });
   t = tl.hold(t, 0.5);
   t = tl.caption({ at: t, dur: 5.8, text: 'One object remains because it is transparent to both translation and inversion: the cross-ratio of four field elements.' });
   tl.tween(focusU, 1, { at: t - 5.2, dur: 1.0, ease: ease.pop });
@@ -50,39 +51,51 @@ export function Render({ s }: { s: SceneState }) {
   const cn = s.get(scene.candidateN);
   const rn = s.get(scene.rejectN);
   const focus = s.get(scene.focusU);
+  const objectU = s.get(scene.objectU);
+  const thread = Array.from({ length: 6 }, (_, r) => 530 + r * 44);
   return (
-    <Camera {...s.get(scene.cam)}>
+    <>
       <ResearchTitle kicker="Finding the Bridge · 1" title="Invent a new object" />
-      <Panel x={470} y={170} w={340} h={300} opacity={s.get(scene.targetU)} accent={colors.WARM}>
-        <circle cx={640} cy={320} r={94} fill={colors.WARM} fillOpacity={0.08} stroke={colors.WARM} strokeWidth={2} />
-        <text x={640} y={305} textAnchor="middle" fill={colors.TEXT} fontSize={20} fontWeight={750}>6-round AES</text>
-        <text x={640} y={340} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={mono}>find family F</text>
-      </Panel>
-      {KNOWN.map((k, i) => {
-        const u = clamp01(kn - i);
-        return <Chip key={k} x={160 + i * 240} y={520} text={k} opacity={u * (1 - 0.8 * s.get(scene.objectU))} color={colors.NEGATIVE} width={180} />;
-      })}
-      {CANDIDATES.map((c, i) => {
-        const a = (i / CANDIDATES.length) * Math.PI * 2 - Math.PI / 2;
-        const x = 640 + Math.cos(a) * 430;
-        const y = 330 + Math.sin(a) * 205;
-        const u = clamp01(cn - i);
-        const rejected = clamp01(rn - i);
-        const chosen = i === 0 ? focus : 0;
-        return (
-          <g key={c} opacity={u * (1 - 0.82 * rejected) + chosen * 0.82}>
-            <circle cx={x} cy={y} r={26 + chosen * 10} fill={chosen ? colors.POSITIVE : colors.SECONDARY} fillOpacity={0.15} stroke={chosen ? colors.POSITIVE : colors.SECONDARY} />
-            <text x={x} y={y + 45} textAnchor="middle" fill={chosen ? colors.POSITIVE : colors.MUTED} fontSize={11} fontFamily={mono}>{i === 0 && chosen ? 'cross-ratio' : c}</text>
-            {rejected > 0 && i > 0 && <line x1={x - 22} y1={y - 22} x2={x + 22} y2={y + 22} stroke={colors.NEGATIVE} strokeWidth={3} opacity={rejected} />}
+      <Camera {...s.get(scene.cam)}>
+        <Panel x={470} y={195} w={340} h={260} opacity={s.get(scene.targetU)} accent={colors.WARM}>
+          <circle cx={640} cy={306} r={76} fill={colors.WARM} fillOpacity={0.08} stroke={colors.WARM} strokeWidth={2} />
+          <text x={640} y={293} textAnchor="middle" fill={colors.TEXT} fontSize={20} fontWeight={750}>6-round AES</text>
+          <text x={640} y={326} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={mono}>find family F</text>
+          <g opacity={objectU}>
+            <polyline points={thread.map((x) => `${x},422`).join(' ')} fill="none" stroke={colors.WARM} strokeWidth={2} />
+            {thread.map((x) => (
+              <circle key={x} cx={x} cy={422} r={6} fill={colors.WARM} />
+            ))}
+            <text x={640} y={446} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={mono}>object tracked through 6 rounds</text>
           </g>
-        );
-      })}
-      <g opacity={s.get(scene.surveyU)}>
-        {['aes128.c', 'oracle.c', 'table.md', 'confirmed-lemmas.md'].map((f, i) => (
-          <text key={f} x={490} y={590 + i * 18} fill={colors.ACCENT} fontSize={10.5} fontFamily={mono}>{f}</text>
-        ))}
-      </g>
-    </Camera>
+        </Panel>
+        {KNOWN.map((k, i) => {
+          const u = clamp01(kn - i);
+          return <Chip key={k} x={240 + i * 200} y={575} text={k} opacity={u * (1 - 0.88 * objectU)} color={colors.NEGATIVE} width={170} />;
+        })}
+        {CANDIDATES.map((c, i) => {
+          const a = (i / CANDIDATES.length) * Math.PI * 2 - Math.PI / 2;
+          const x = 640 + Math.cos(a) * 430;
+          const y = 320 + Math.sin(a) * 178;
+          const u = clamp01(cn - i);
+          const rejected = i === 0 ? 0 : clamp01(rn - i);
+          const chosen = i === 0 ? focus : 0;
+          return (
+            <g key={c} opacity={Math.min(1, u * (1 - 0.88 * rejected) + chosen)}>
+              <circle cx={x} cy={y} r={26 + chosen * 10} fill={chosen ? colors.POSITIVE : colors.SECONDARY} fillOpacity={0.15} stroke={chosen ? colors.POSITIVE : colors.SECONDARY} />
+              <text x={x} y={y + 45} textAnchor="middle" fill={chosen ? colors.POSITIVE : colors.MUTED} fontSize={14} fontFamily={mono}>{i === 0 && chosen ? 'cross-ratio' : c}</text>
+              {rejected > 0 && <line x1={x - 22} y1={y - 22} x2={x + 22} y2={y + 22} stroke={colors.NEGATIVE} strokeWidth={3} opacity={rejected} />}
+            </g>
+          );
+        })}
+        <g opacity={s.get(scene.surveyU)}>
+          <text x={150} y={180} fill={colors.MUTED} fontSize={12} fontFamily={mono}>reads</text>
+          {SURVEY.map((f, i) => (
+            <text key={f} x={150} y={198 + i * 18} fill={colors.ACCENT} fontSize={12} fontFamily={mono}>{f}</text>
+          ))}
+        </g>
+      </Camera>
+    </>
   );
 }
 export const vizScene = () => scene;

@@ -40,10 +40,10 @@ const PROVIDER = { x: 1010, y: 400 };
 const HALF_W = 84;
 const HALF_H = 28;
 
-const GRID = { x: PROVIDER.x - 100, y: 462, cell: 8.5, gap: 1.8 };
+const GRID = { x: PROVIDER.x - 100, y: 440, cell: 8.5, gap: 1.8 };
 const GRID_W = 16 * (GRID.cell + GRID.gap) - GRID.gap;
 
-const CAM_STRIP: CameraState = { x: 640, y: 240, k: 1.2 };
+const CAM_STRIP: CameraState = { x: 640, y: 270, k: 1.1 };
 const CAM_WIRE: CameraState = { x: 620, y: 400, k: 1.1 };
 
 interface Scene {
@@ -56,6 +56,7 @@ interface Scene {
   sendU: ChannelRef<number>;
   grindU: ChannelRef<number>;
   returnU: ChannelRef<number>;
+  verifyU: ChannelRef<number>;
   signU: ChannelRef<number>;
   dimU: ChannelRef<number>;
   closeU: ChannelRef<number>;
@@ -71,6 +72,7 @@ export function buildScene(): Scene {
   const sendU = tl.channel('sendU', 0);
   const grindU = tl.channel('grindU', 0);
   const returnU = tl.channel('returnU', 0);
+  const verifyU = tl.channel('verifyU', 0);
   const signU = tl.channel('signU', 0);
   const dimU = tl.channel('dimU', 0);
   const closeU = tl.channel('closeU', 0);
@@ -123,6 +125,7 @@ export function buildScene(): Scene {
     text: 'Back comes the draft — same author, same words, now wearing a heavy id and its nonce tag. The provider could not have impersonated the phone: it never held the key.',
   });
   tl.tween(returnU, 1, { at: 28.6, dur: 2.0, ease: ease.linear });
+  tl.tween(verifyU, 1, { at: 31.2, dur: 1.0, ease: ease.enter });
   tl.hold(33.9, 0.7);
 
   // Beat 6 — the phone signs.
@@ -147,7 +150,7 @@ export function buildScene(): Scene {
 
   return {
     tl, cam, phoneU, batteryU, stripU, sigGapU, sendU, grindU,
-    returnU, signU, dimU, closeU,
+    returnU, verifyU, signU, dimU, closeU,
   };
 }
 
@@ -162,11 +165,13 @@ export function Render({ s }: { s: SceneState }) {
   const sendU = s.get(scene.sendU);
   const grindU = s.get(scene.grindU);
   const returnU = s.get(scene.returnU);
+  const verifyU = s.get(scene.verifyU);
   const signU = s.get(scene.signU);
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the closing panel replaces the diagram: fade the diagram out under it
+  const mainOp = (1 - 0.85 * dimU) * (1 - closeU);
   // the traveling draft chip
   const outbound = clamp01(sendU);
   const inbound = clamp01(returnU);
@@ -214,11 +219,14 @@ export function Render({ s }: { s: SceneState }) {
           {phoneU > 0 && (
             <g>
               <ServiceNode x={PHONE.x} y={PHONE.y} kind="mobile" label="phone" sublabel="holds nsec" u={phoneU} glow={signU} />
+              <text x={PHONE.x} y={PHONE.y - 64} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={phoneU * (1 - clamp01(stripU * 4))}>
+                relay asks: 20 bits · ~1M hashes
+              </text>
               {batteryU > 0 && (
                 <g opacity={batteryU}>
                   <rect x={PHONE.x - 44} y={PHONE.y + 44} width={88} height={14} rx={4} fill="none" stroke={colors.MUTED} />
                   <rect x={PHONE.x - 42} y={PHONE.y + 46} width={84 * 0.18} height={10} rx={3} fill={colors.NEGATIVE} opacity={0.85} />
-                  <text x={PHONE.x} y={PHONE.y + 78} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+                  <text x={PHONE.x} y={PHONE.y + 78} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                     2²⁰ hashes? not on this battery
                   </text>
                 </g>
@@ -271,10 +279,23 @@ export function Render({ s }: { s: SceneState }) {
                 seed={47}
               />
               {grindU >= 1 && (
-                <text x={GRID.x + GRID_W / 2} y={GRID.y + GRID_W + 20} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontFamily="monospace">
+                <text x={GRID.x + GRID_W / 2} y={GRID.y + GRID_W + 20} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="monospace">
                   {shortHex(MINED_ID, 10, 4)} · {TARGET} bits
                 </text>
               )}
+            </g>
+          )}
+
+          {/* the phone checks the returned draft against what it sent */}
+          {verifyU > 0 && signU < 1 && (
+            <g opacity={verifyU * (1 - signU)}>
+              <rect x={PHONE.x - 100} y={PHONE.y + 96} width={200} height={52} rx={9} fill={colors.PANEL} stroke={colors.MUTED} />
+              <text x={PHONE.x} y={PHONE.y + 116} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                check vs. the draft it sent
+              </text>
+              <text x={PHONE.x} y={PHONE.y + 136} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily="monospace">
+                author · words · tags ✓
+              </text>
             </g>
           )}
 

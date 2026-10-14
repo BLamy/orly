@@ -43,17 +43,20 @@ const RING = [
   { label: 'review' },
   { label: 'policy' },
 ] as const;
+const RING_CY = 256;
 const ringPos = (cx: number, i: number) => {
   const a = -Math.PI / 2 + (i * 2 * Math.PI) / RING.length;
-  return { x: cx + 128 * Math.cos(a), y: 300 + 118 * Math.sin(a) };
+  return { x: cx + 128 * Math.cos(a), y: RING_CY + 104 * Math.sin(a) };
 };
 
 const HEALTHY_CX = 400;
 const REGIME_CX = 928;
 
-const CAM_RAIL: CameraState = { x: 640, y: 560, k: 1.25 };
-const CAM_HEALTHY: CameraState = { x: 420, y: 320, k: 1.28 };
-const CAM_REGIME: CameraState = { x: 910, y: 320, k: 1.28 };
+// The rail sits on a plain frame: the rigs and the rail together fill the
+// stage, and nothing is pushed past the caption pill's top edge.
+const CAM_RAIL: CameraState = { x: 640, y: 360, k: 1 };
+const CAM_HEALTHY: CameraState = { x: 400, y: 290, k: 1.3 };
+const CAM_REGIME: CameraState = { x: 928, y: 290, k: 1.28 };
 
 export interface Scene {
   tl: Timeline;
@@ -197,12 +200,17 @@ function WorkflowRing({
   const a = ringPos(cx, seg);
   const b = ringPos(cx, (seg + 1) % RING.length);
   const pulse = { x: lerp(a.x, b.x, su), y: lerp(a.y, b.y, su) };
+  // the pulse label sits just inside the ring, clear of the node circles
+  const inX = cx - pulse.x;
+  const inY = RING_CY - pulse.y;
+  const inLen = Math.hypot(inX, inY) || 1;
+  const tag = { x: pulse.x + (inX / inLen) * 52, y: pulse.y + (inY / inLen) * 52 };
   const done = runU > 0.96;
   const accent = regime ? colors.NEGATIVE : colors.POSITIVE;
   return (
     <g opacity={reveal}>
-      <rect x={cx - 250} y={128} width={500} height={392} rx={24} fill={colors.PANEL} stroke={colors.GRID} />
-      <text x={cx - 226} y={162} fill={colors.TEXT} fontSize={15.5} fontWeight={700}>
+      <rect x={cx - 250} y={100} width={500} height={348} rx={24} fill={colors.PANEL} stroke={colors.GRID} />
+      <text x={cx - 226} y={128} fill={colors.TEXT} fontSize={15.5} fontWeight={700}>
         {title}
       </text>
       {/* ring edges */}
@@ -231,7 +239,7 @@ function WorkflowRing({
         return (
           <g key={node.label}>
             <circle cx={p.x} cy={p.y} r={30} fill={colors.BG} stroke={visited ? accent : colors.GRID} strokeWidth={visited ? 2.4 : 1.4} />
-            <text x={p.x} y={p.y - 38} textAnchor="middle" fill={visited ? colors.TEXT : colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+            <text x={p.x} y={p.y - 38} textAnchor="middle" fill={visited ? colors.TEXT : colors.MUTED} fontSize={13} fontFamily={MONO}>
               {fixed ? 'revised record' : node.label}
             </text>
             <text x={p.x} y={p.y + 5} textAnchor="middle" fontSize={15}>
@@ -243,18 +251,18 @@ function WorkflowRing({
       {/* the injected correction pulse */}
       {runU > 0.02 && !done && <circle cx={pulse.x} cy={pulse.y} r={8} fill={accent} />}
       {runU > 0.02 && !done && (
-        <text x={pulse.x} y={pulse.y - 14} textAnchor="middle" fill={accent} fontSize={10.5} fontFamily={MONO}>
+        <text x={tag.x} y={tag.y + 4} textAnchor="middle" fill={accent} fontSize={12.5} fontFamily={MONO}>
           {regime && t > 2 ? 'the override' : 'the correction'}
         </text>
       )}
       {/* verdict */}
       {done && (
         <g>
-          <rect x={cx - 210} y={448} width={420} height={52} rx={12} fill={colors.BG} stroke={accent} strokeWidth={2} />
-          <text x={cx} y={470} textAnchor="middle" fill={accent} fontSize={12.5} fontFamily={MONO} fontWeight={700}>
+          <rect x={cx - 210} y={400} width={420} height={44} rx={12} fill={colors.BG} stroke={accent} strokeWidth={2} />
+          <text x={cx} y={420} textAnchor="middle" fill={accent} fontSize={13.5} fontFamily={MONO} fontWeight={700}>
             {regime ? 'absorbed — returned as policy' : 'propagated — record revised'}
           </text>
-          <text x={cx} y={490} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+          <text x={cx} y={437} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
             {regime ? 'distortion recirculates into authority' : 'correction remains live and scalable'}
           </text>
         </g>
@@ -273,6 +281,15 @@ export function Render({ s }: { s: SceneState }) {
   const tableU = s.get(scene.tableU);
   const dim = 1 - 0.88 * s.get(scene.dimU);
   const close = s.get(scene.closeU);
+  const camX = s.get(scene.cam).x;
+  // Each rig fades as the camera pans away from it, so an off-camera rig never
+  // shows clipped labels at the frame edge.
+  const healthyDim = 1 - clamp01((camX - 640) / 200);
+  const regimeDim = 1 - clamp01((640 - camX) / 220);
+  // The paper's table takes over the frame; the rigs step aside, then the table
+  // settles to a faint backdrop while the closing sentence lands.
+  const rigFade = 1 - clamp01((tableU - 0.25) / 0.25);
+  const figFade = tableU >= 0.25 ? 0.1 + (0.9 * (tableU - 0.25)) / 0.75 : 0.6 * tableU;
 
   return (
     <>
@@ -285,42 +302,7 @@ export function Render({ s }: { s: SceneState }) {
       </text>
       <Camera {...s.get(scene.cam)}>
         <g opacity={dim}>
-          {/* ---- the two experiment rigs (the off-camera rig dims while the
-                    camera is parked on the other, so no half-clipped labels) ---- */}
-          <g opacity={1 - tableU * 0.8}>
-            <WorkflowRing
-              cx={HEALTHY_CX}
-              title="below threshold"
-              reveal={ringsU * (1 - 0.85 * clamp01(regimeU * 4) * (1 - tableU))}
-              runU={healthyU}
-              regime={false}
-            />
-            <WorkflowRing cx={REGIME_CX} title="under the regime" reveal={clamp01(ringsU * 1.2 - 0.15)} runU={regimeU} regime />
-          </g>
-
-          {/* ---- the five-question rail ---- */}
-          {railU > 0 && (
-            <g opacity={railU * (1 - tableU * 0.8) * (1 - clamp01(Math.max(healthyU, regimeU) * 4) * (1 - tableU))}>
-              <rect x={170} y={540} width={940} height={158} rx={18} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={200} y={568} fill={colors.TEXT} fontSize={13.5} fontWeight={700}>
-                the field test
-              </text>
-              {QUESTIONS.map((q, i) => {
-                const active = i === row && focusU > 0.05;
-                const y = 590 + i * 21;
-                return (
-                  <g key={q} opacity={clamp01(railU * 6 - i)}>
-                    <circle cx={210} cy={y - 4} r={5} fill={i === 4 ? colors.WARM : colors.ACCENT} />
-                    <text x={226} y={y} fill={active ? colors.WARM : colors.TEXT} fontSize={11.5} fontWeight={active ? 700 : 400}>
-                      {i + 1}. {q}
-                    </text>
-                  </g>
-                );
-              })}
-            </g>
-          )}
-
-          {/* ---- the paper's real Table 2 ---- */}
+          {/* ---- the paper's real Table 2 (drawn first, so the rigs sit on top of it) ---- */}
           <Figure
             src="/generated/coherence-theater/figures/table2-boundary.png"
             x={278}
@@ -328,9 +310,43 @@ export function Render({ s }: { s: SceneState }) {
             w={724}
             h={442}
             reveal={tableU}
-            opacity={tableU}
+            opacity={figFade}
             caption="paper Table 2 · boundary cases: observed configurations"
           />
+
+          {/* ---- the two experiment rigs ---- */}
+          <g opacity={rigFade}>
+            <WorkflowRing
+              cx={HEALTHY_CX}
+              title="below threshold"
+              reveal={ringsU * healthyDim}
+              runU={healthyU}
+              regime={false}
+            />
+            <WorkflowRing cx={REGIME_CX} title="under the regime" reveal={clamp01(ringsU * 1.2 - 0.15) * regimeDim} runU={regimeU} regime />
+          </g>
+
+          {/* ---- the five-question rail, clear of the caption pill ---- */}
+          {railU > 0 && (
+            <g opacity={railU * (1 - clamp01(tableU * 6)) * (1 - clamp01(Math.max(healthyU, regimeU) * 4))}>
+              <rect x={170} y={458} width={940} height={138} rx={18} fill={colors.PANEL} stroke={colors.GRID} />
+              <text x={200} y={480} fill={colors.TEXT} fontSize={14} fontWeight={700}>
+                the field test
+              </text>
+              {QUESTIONS.map((q, i) => {
+                const active = i === row && focusU > 0.05;
+                const y = 502 + i * 19;
+                return (
+                  <g key={q} opacity={clamp01(railU * 6 - i)}>
+                    <circle cx={210} cy={y - 4} r={5} fill={i === 4 ? colors.WARM : colors.ACCENT} />
+                    <text x={226} y={y} fill={active ? colors.WARM : colors.TEXT} fontSize={13} fontWeight={active ? 700 : 400}>
+                      {i + 1}. {q}
+                    </text>
+                  </g>
+                );
+              })}
+            </g>
+          )}
         </g>
       </Camera>
       <g opacity={close}>

@@ -39,12 +39,12 @@ export function buildScene() {
   tl.caption({ at: 0.4, dur: 6.0, text: 'Some apps never get a public preview. They boot inside the CI job, and only that runner can reach them.' });
   tl.tween(runnerU, 1, { at: 0.8, dur: 0.9, ease: ease.enter });
   tl.tween(appU, 1, { at: 1.6, dur: 0.7, ease: ease.enter });
-  tl.tween(noPreviewU, 1, { at: 3.4, dur: 0.6, ease: ease.pop });
+  tl.tween(noPreviewU, 1, { at: 2.4, dur: 0.6, ease: ease.pop });
 
   // BEAT 2 — the runner runs the proxy
   tl.caption({ at: 6.8, dur: 6.4, text: 'So the runner brings the app to QA instead. It runs the Replay QA command line proxy, with a connection purpose of CI.' });
   tl.tween(noPreviewU, 0, { at: 7.0, dur: 0.5, ease: ease.enter });
-  tl.tween(cam, { x: 330, y: 360, k: 1.22 }, { at: 7.0, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 330, y: 326, k: 1.22 }, { at: 7.0, dur: 1.2, ease: ease.move });
   tl.tween(cmdU, 1, { at: 7.6, dur: 0.9, ease: ease.enter });
 
   // BEAT 3 — forward proxy with allowlist
@@ -101,52 +101,53 @@ export function Render({ s }: { s: SceneState }) {
   const result = s.get(scene.resultU);
   const close = s.get(scene.close);
 
-  return <Camera {...s.get(scene.cam)}>
-    <g opacity={1 - close * 0.9}>
-      <text x="640" y="64" textAnchor="middle" fill={colors.TEXT} fontSize="32" fontWeight="850">Bring CI into the tunnel</text>
-
+  return <>
+    {/* Title sits outside the camera so the push never crops or shifts it */}
+    <text x="640" y="64" textAnchor="middle" fill={colors.TEXT} fontSize="32" fontWeight="850" opacity={clamp01(1 - close * 1.6)}>Bring CI into the tunnel</text>
+    <Camera {...s.get(scene.cam)}>
+    <g opacity={clamp01(1 - close * 1.6)}>
       {/* CI runner */}
       <g opacity={runner}>
         <rect x={RUNNER.x} y={RUNNER.y} width={RUNNER.w} height={RUNNER.h} rx="22" fill="#0d1727" stroke={colors.MUTED} strokeWidth="2" strokeDasharray="8 6" />
-        <text x={RUNNER.x + 20} y={RUNNER.y + 28} fill={colors.MUTED} fontSize="11" fontWeight="700" letterSpacing="1.5">CI RUNNER · pull request job</text>
+        <text x={RUNNER.x + 20} y={RUNNER.y + 28} fill={colors.MUTED} fontSize="12" fontWeight="700" letterSpacing="1.5">CI RUNNER · pull request job</text>
       </g>
       <g opacity={app} transform={`translate(${APP.x} ${APP.y})`}>
         <rect x="-70" y="-30" width="140" height="60" rx="14" fill="#102033" stroke={colors.POSITIVE} strokeWidth="2.5" />
         <text x="0" y="-6" textAnchor="middle" fill={colors.POSITIVE} fontSize="12" fontWeight="700">the app</text>
-        <text x="0" y="14" textAnchor="middle" fill={colors.MUTED} fontSize="10" fontFamily={colors.font.mono}>localhost:3000</text>
+        <text x="0" y="14" textAnchor="middle" fill={colors.MUTED} fontSize="11" fontFamily={colors.font.mono}>localhost:3000</text>
       </g>
       <g opacity={noPreview} transform={`translate(${APP.x - 80} ${APP.y + 48})`}>
         <rect width="200" height="44" rx="12" fill="#1a0f18" stroke={colors.NEGATIVE} strokeWidth="2" />
         <text x="100" y="19" textAnchor="middle" fill={colors.NEGATIVE} fontSize="11" fontWeight="700">no public preview URL</text>
-        <text x="100" y="35" textAnchor="middle" fill={colors.MUTED} fontSize="10">nothing outside can reach it</text>
+        <text x="100" y="35" textAnchor="middle" fill={colors.MUTED} fontSize="11">nothing outside can reach it</text>
       </g>
 
       {/* The command */}
       <g opacity={cmd} transform={`translate(${RUNNER.x + 20} ${RUNNER.y + RUNNER.h - 92 + (1 - cmd) * 10})`}>
         <rect width={RUNNER.w - 40} height="74" rx="12" fill="#0a0e1a" stroke={colors.GRID} strokeWidth="1.5" />
-        <text x="14" y="22" fill={colors.MUTED} fontSize="10" fontFamily={colors.font.mono}>$ npx --yes replayqa proxy --project prj_7c1 \</text>
-        <text x="14" y="40" fill={colors.TEXT} fontSize="10" fontFamily={colors.font.mono}>    --qa-url https://qa.replay.io \</text>
-        <text x="14" y="58" fill={colors.WARM} fontSize="10" fontFamily={colors.font.mono}>    --allow "app.example.com,api.example.com"</text>
+        <text x="14" y="22" fill={colors.MUTED} fontSize="11" fontFamily={colors.font.mono}>$ npx --yes replayqa proxy --project prj_7c1 \</text>
+        <text x="14" y="40" fill={colors.TEXT} fontSize="11" fontFamily={colors.font.mono}>    --qa-url https://qa.replay.io \</text>
+        <text x="14" y="58" fill={colors.WARM} fontSize="11" fontFamily={colors.font.mono}>    --allow "app.example.com,api.example.com"</text>
       </g>
 
       {/* Forward proxy with allowlist */}
       <g opacity={fwd} transform={`translate(${FWD.x} ${FWD.y})`}>
         <rect x="-70" y="-34" width="140" height="68" rx="14" fill="#13233a" stroke={colors.ACCENT} strokeWidth="2.5" />
         <text y="-10" textAnchor="middle" fill={colors.ACCENT} fontSize="12" fontWeight="700">forward proxy</text>
-        <text y="8" textAnchor="middle" fill={colors.MUTED} fontSize="10" fontFamily={colors.font.mono}>tunnel client · frpc</text>
-        <text y="24" textAnchor="middle" fill={colors.WARM} fontSize="10" fontFamily={colors.font.mono}>allow: 2 hosts</text>
+        <text y="8" textAnchor="middle" fill={colors.MUTED} fontSize="11" fontFamily={colors.font.mono}>tunnel client · frpc</text>
+        <text y="24" textAnchor="middle" fill={colors.WARM} fontSize="11" fontFamily={colors.font.mono}>allow: 2 hosts</text>
       </g>
       <g opacity={fwd}>
         <Connection from={{ x: FWD.x - 70, y: FWD.y }} to={{ x: APP.x + 70, y: APP.y }} u={fwd} color={colors.POSITIVE} />
-        <text x={(FWD.x - 70 + APP.x + 70) / 2} y={FWD.y - 44} textAnchor="middle" fill={colors.POSITIVE} fontSize="10" fontFamily={colors.font.mono}>only allowlisted hosts</text>
+        <text x={(FWD.x - 70 + APP.x + 70) / 2} y={FWD.y - 44} textAnchor="middle" fill={colors.POSITIVE} fontSize="11" fontFamily={colors.font.mono}>only allowlisted hosts</text>
       </g>
 
       {/* Tunnel server */}
       <g opacity={frps} transform={`translate(${FRPS.x} ${FRPS.y})`}>
         <rect x="-90" y="-40" width="180" height="80" rx="16" fill="#221c35" stroke={colors.SECONDARY} strokeWidth="2.5" />
         <text y="-14" textAnchor="middle" fill={colors.SECONDARY} fontSize="12" fontWeight="700">tunnel server</text>
-        <text y="6" textAnchor="middle" fill={colors.MUTED} fontSize="10" fontFamily={colors.font.mono}>one per connection</text>
-        <text y="24" textAnchor="middle" fill={colors.MUTED} fontSize="10" fontFamily={colors.font.mono}>public :7000 · private :6000</text>
+        <text y="6" textAnchor="middle" fill={colors.MUTED} fontSize="11" fontFamily={colors.font.mono}>one per connection</text>
+        <text y="24" textAnchor="middle" fill={colors.MUTED} fontSize="11" fontFamily={colors.font.mono}>public :7000 · private :6000</text>
       </g>
       {/* Tunnel */}
       <g opacity={tunnel}>
@@ -157,7 +158,7 @@ export function Render({ s }: { s: SceneState }) {
       {BROWSERS.map((b, i) => <g key={i} opacity={clamp01(browsers * 3 - i)} transform={`translate(${b.x} ${b.y})`}>
         <rect x="-40" y="-22" width="150" height="44" rx="10" fill="#102033" stroke={colors.ACCENT} strokeWidth="2" />
         <text x="35" y="-3" textAnchor="middle" fill={colors.ACCENT} fontSize="11" fontWeight="700">QA browser {i + 1}</text>
-        <text x="35" y="13" textAnchor="middle" fill={colors.MUTED} fontSize="9" fontFamily={colors.font.mono}>proxy → tunnel</text>
+        <text x="35" y="13" textAnchor="middle" fill={colors.MUTED} fontSize="11" fontFamily={colors.font.mono}>proxy → tunnel</text>
       </g>)}
       {browsers > 0 && [0, 2].map((i) => <line key={i} x1={BROWSERS[i]!.x - 40} y1={BROWSERS[i]!.y} x2={FRPS.x + 90} y2={FRPS.y} stroke={colors.GRID} strokeWidth="1.5" opacity={browsers} />)}
       {req > 0 && <RequestFlow path={PATH} u={req % 1} roundTrip color={colors.ACCENT} responseColor={colors.POSITIVE} opacity={browsers} />}
@@ -189,19 +190,20 @@ export function Render({ s }: { s: SceneState }) {
     {/* Closing */}
     <g opacity={close}>
       <rect x="200" y="140" width="880" height="400" rx="40" fill="#0a0e1a" stroke={colors.SECONDARY} strokeWidth="3" />
-      <text x="640" y="220" textAnchor="middle" fill={colors.TEXT} fontSize="36" fontWeight="850">no public deployment required</text>
-      <g transform="translate(640 380)">
-        <circle r="120" fill="none" stroke={colors.POSITIVE} strokeWidth="4" opacity="0.4" />
-        <circle r="84" fill="none" stroke={colors.WARM} strokeWidth="4" opacity="0.5" />
-        <circle r="54" fill="none" stroke={colors.TEAL} strokeWidth="4" opacity="0.7" />
-        <circle r={32 * clamp01(close * 1.4 - 0.3)} fill="none" stroke={colors.SECONDARY} strokeWidth="4" />
-        <text y="-132" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontFamily={colors.font.mono}>production · weekly</text>
-        <text y="-94" textAnchor="middle" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>staging · nightly</text>
-        <text y="-64" textAnchor="middle" fill={colors.TEAL} fontSize="14" fontFamily={colors.font.mono}>preview · per PR</text>
-        <text y="6" textAnchor="middle" fill={colors.SECONDARY} fontSize="14" fontFamily={colors.font.mono} opacity={clamp01(close * 2 - 1)}>CI tunnel</text>
+      <text x="640" y="206" textAnchor="middle" fill={colors.TEXT} fontSize="36" fontWeight="850">no public deployment required</text>
+      <text x="420" y="256" textAnchor="middle" fill={colors.POSITIVE} fontSize="15" fontFamily={colors.font.mono}>production · weekly</text>
+      <text x="640" y="256" textAnchor="middle" fill={colors.WARM} fontSize="15" fontFamily={colors.font.mono}>staging · nightly</text>
+      <text x="860" y="256" textAnchor="middle" fill={colors.TEAL} fontSize="15" fontWeight="700" fontFamily={colors.font.mono}>preview · per PR</text>
+      <g transform="translate(640 400)">
+        <circle r="110" fill="none" stroke={colors.POSITIVE} strokeWidth="4" opacity="0.4" />
+        <circle r="80" fill="none" stroke={colors.WARM} strokeWidth="4" opacity="0.5" />
+        <circle r="50" fill="none" stroke={colors.TEAL} strokeWidth="4" opacity="0.7" />
+        <circle r={38 * clamp01(close * 1.4 - 0.3)} fill="none" stroke={colors.SECONDARY} strokeWidth="4" />
+        <text y="5" textAnchor="middle" fill={colors.SECONDARY} fontSize="12" fontFamily={colors.font.mono} opacity={clamp01(close * 2 - 1)}>CI tunnel</text>
       </g>
     </g>
-  </Camera>;
+    </Camera>
+  </>;
 }
 
 export const vizScene = () => scene;

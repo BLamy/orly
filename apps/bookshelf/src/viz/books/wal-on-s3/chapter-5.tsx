@@ -34,22 +34,23 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 // ---------------------------------------------------------------- geometry
 const PIVOT_X = 640;
-const PIVOT_Y = 252;
+const PIVOT_Y = 200;
 const ARM = 258;
 const PAN_DROP = 76;
 
 const FRAG_N = 10;
 const FRAG_LABELS = ['A', 'B', 'C', 'D', 'E', 'F', 'G', 'H', 'I', 'J'];
-const FRAG_Y = 522;
+const FRAG_Y = 466;
 const FRAG_W = 92;
 const FRAG_GAP = 10;
 const fragX = (i: number) => 118 + i * (FRAG_W + FRAG_GAP);
 const COMPACTED = 4; // A through D fold into one snapshot
 
-const CAM_BEAM: CameraState = { x: 640, y: 268, k: 1.14 };
-const CAM_ROW: CameraState = { x: 620, y: 496, k: 1.2 };
+// Every camera keeps the fragment row (bottom edge ~y 556) above the caption band.
+const CAM_BEAM: CameraState = { x: 640, y: 340, k: 1.14 };
+const CAM_ROW: CameraState = { x: 620, y: 440, k: 1.2 };
 const CAM_WIDE: CameraState = { x: 640, y: 376, k: 1.0 };
-const CAM_TIP: CameraState = { x: 700, y: 268, k: 1.2 };
+const CAM_TIP: CameraState = { x: 660, y: 340, k: 1.05 };
 
 interface Scene {
   tl: Timeline;
@@ -313,7 +314,7 @@ function FragmentRow({ rowU, compactU, lossU }: { rowU: number; compactU: number
               strokeDasharray={missing > 0.3 ? '5 5' : undefined}
             />
             <text x={fragX(i) + FRAG_W / 2} y={y + 28} textAnchor="middle" fill={colors.TEXT} fontFamily={MONO} fontSize={15}>{label}</text>
-            <text x={fragX(i) + FRAG_W / 2} y={y + 48} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={10}>setsum</text>
+            <text x={fragX(i) + FRAG_W / 2} y={y + 48} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={12}>setsum</text>
           </g>
         );
       })}
@@ -377,7 +378,7 @@ export function Render({ s }: { s: SceneState }) {
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...s.get(scene.cam)}>
-        <g opacity={dim}>
+        <g opacity={dim * (1 - clamp01(endU))}>
           {e2eU < 0.05 && (
             <FragmentRow rowU={s.get(scene.rowU)} compactU={s.get(scene.compactU)} lossU={s.get(scene.lossU)} />
           )}
@@ -394,7 +395,7 @@ export function Render({ s }: { s: SceneState }) {
             <MathLabel
               tex={'\\mathrm{setsum}(A..J) = \\mathrm{setsum}(A..D) + \\mathrm{setsum}(E..J)'}
               x={640}
-              y={88}
+              y={56}
               fontSize={22}
               opacity={clamp01(algebraU) * 0.95}
             />

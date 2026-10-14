@@ -19,7 +19,7 @@ function FilmFrame({ x, y, u, real, label }: { x: number; y: number; u: number; 
     <rect x={-42} y={-25} width={84} height={50} rx={7} fill={colors.PANEL} stroke={color} strokeWidth={real ? 2.4 : 1.4} />
     <path d="M-31 12 L-12 -7 L1 4 L18 -15 L33 12 Z" fill={color} opacity={0.35} />
     <circle cx={20} cy={-10} r={5} fill={colors.WARM} opacity={0.8} />
-    {label && <text y={43} textAnchor="middle" fill={color} fontSize={11} fontFamily={MONO}>{label}</text>}
+    {label && <text y={43} textAnchor="middle" fill={color} fontSize={12} fontFamily={MONO}>{label}</text>}
   </g>;
 }
 
@@ -73,17 +73,18 @@ export function Render({ s }: { s: SceneState }) {
   return <Camera {...s.get(scene.cam)}>
     <g opacity={dim}>
       <text x={72} y={74} fill={colors.TEXT} fontSize={26} fontWeight={700}>one real anchor</text>
+      <text x={72} y={112} fill={colors.MUTED} fontSize={18} opacity={clamp01(sourceP)}>Which source fools people most?</text>
       <FilmFrame x={168} y={340} u={s.get(scene.anchorU)} real label="real::norm_clip_id" />
       <g opacity={s.get(scene.idU)}>
         <rect x={72} y={418} width={192} height={32} rx={8} fill={colors.PANEL} stroke={colors.POSITIVE} />
-        <text x={168} y={439} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>norm_clip_id</text>
+        <text x={168} y={439} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>norm_clip_id</text>
       </g>
       {SOURCES.map((name, i) => {
         const x = GRID.x + i * (GRID.w + GRID.gap);
         const u = clamp01(sourceP - i);
         return <g key={name} opacity={u}>
           <path d={`M210 340 C250 340 ${x} 178 ${x} 205`} fill="none" stroke={colors.MUTED} strokeWidth={1.3} opacity={s.get(scene.railsU) * 0.55} />
-          <text x={x} y={162} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={MONO}>{name}</text>
+          <text x={x} y={162} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>{name}</text>
           {Array.from({ length: 5 }, (_, row) => <FilmFrame key={row} x={x} y={GRID.y + row * 70} u={clamp01(gridP - i - row * 0.14)} />)}
         </g>;
       })}
@@ -91,7 +92,7 @@ export function Render({ s }: { s: SceneState }) {
         {CATEGORIES.map((name, i) => {
           const u = clamp01(s.get(scene.categoryP) - i);
           return <g key={name} opacity={u} transform={`translate(${330 + (i % 5) * 160} ${590 + Math.floor(i / 5) * 28})`}>
-            <circle r={4} fill={colors.WARM} /><text x={10} y={4} fill={colors.MUTED} fontSize={11}>{name}</text>
+            <circle r={4} fill={colors.WARM} /><text x={10} y={4} fill={colors.MUTED} fontSize={12}>{name}</text>
           </g>;
         })}
       </g>

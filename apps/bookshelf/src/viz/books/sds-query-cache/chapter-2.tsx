@@ -52,18 +52,20 @@ const STATES: number[][] = [
   [1, 0, 3, 2], // S3 after get("weather nyc") → move_to_front
 ];
 
-const LIST = { x0: 330, y: 330, slotW: 225, w: 200, h: 74 } as const;
+// The whole machine fits the 1280-wide stage at one shared framing (CAM_FRAME),
+// so no camera move ever pushes a car or label off the edge. `lift` is how far
+// a car arcs over (or under) its neighbour while it changes slots.
+const LIST = { x0: 292, y: 300, slotW: 228, w: 210, h: 74, lift: 40 } as const;
 const slotX = (i: number): number => LIST.x0 + i * LIST.slotW;
 
 // hash table rows, fixed vertical order (by fake bucket)
-const TBL = { x: 60, y0: 150, w: 208, rowH: 58 } as const;
+const TBL = { x: 40, y0: 150, w: 220, rowH: 58 } as const;
 const TBL_ORDER = [2, 4, 1, 0, 3]; // query id per row
 const tblRowOf = (q: number): number => TBL_ORDER.indexOf(q);
 
-const CAM_TABLE: CameraState = { x: 330, y: 300, k: 1.35 };
-const CAM_LIST: CameraState = { x: 700, y: 330, k: 1.18 };
-const CAM_TAIL: CameraState = { x: 980, y: 380, k: 1.35 };
-const CAM_HEAD: CameraState = { x: 460, y: 320, k: 1.3 };
+// One gentle push-in that frames the table and the full list together.
+// Content spans x 40…1186 and y 116…520; this view covers x 19…1207.
+const CAM_FRAME: CameraState = { x: 613, y: 330, k: 1.08 };
 
 export interface Scene {
   tl: Timeline;
@@ -110,7 +112,7 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'The list has a geography. New and recently used entries live at the head, on the left. The longer an entry goes unused, the further it drifts toward the tail.',
   });
-  tl.tween(cam, CAM_LIST, { at: 8.2, dur: 1.4, ease: ease.move });
+  tl.tween(cam, CAM_FRAME, { at: 8.2, dur: 1.4, ease: ease.move });
   tl.tween(heatU, 1, { at: 9.0, dur: 1.6, ease: ease.move });
   tl.hold(14.5, 0.5);
 
@@ -120,7 +122,6 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'A query about the world cup arrives. The hash table jumps straight to its node, no walking the list, and the results come back immediately.',
   });
-  tl.tween(cam, CAM_TABLE, { at: 15.2, dur: 1.3, ease: ease.move });
   tl.tween(jump1, 1, { at: 16.4, dur: 1.6, ease: ease.linear });
   tl.hold(21.5, 0.5);
 
@@ -130,7 +131,6 @@ export function buildScene(): Scene {
     dur: 6,
     text: 'But the get does one more thing. The node it touched rides to the front of the list. Being used is what keeps an entry alive.',
   });
-  tl.tween(cam, CAM_LIST, { at: 22.2, dur: 1.3, ease: ease.move });
   tl.tween(stateF, 1, { at: 23.2, dur: 1.6, ease: ease.move });
   tl.tween(jump1, 0, { at: 24.8, dur: 0.8, ease: ease.move });
   tl.hold(28.0, 0.5);
@@ -141,7 +141,6 @@ export function buildScene(): Scene {
     dur: 5.5,
     text: 'Now a brand new query, best coffee in San Francisco. The hash table has no entry for it. The get returns nothing, a miss.',
   });
-  tl.tween(cam, CAM_TABLE, { at: 28.7, dur: 1.3, ease: ease.move });
   tl.tween(missU, 1, { at: 30.0, dur: 0.7, ease: ease.pop });
   tl.tween(missU, 0, { at: 32.4, dur: 0.9, ease: ease.move });
   tl.hold(34.0, 0.5);
@@ -152,7 +151,6 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'The backend computes the answer, and the cache stores it. But the cache is at its maximum size. Before anything goes in, something must go.',
   });
-  tl.tween(cam, CAM_TAIL, { at: 35.0, dur: 1.4, ease: ease.move });
   tl.hold(41.0, 0.3);
 
   tl.caption({
@@ -169,7 +167,6 @@ export function buildScene(): Scene {
     dur: 6,
     text: 'Then the new entry is appended at the head, and the hash table learns its key. The freshest answer in the cache is the one that just cost us a trip to the backend.',
   });
-  tl.tween(cam, CAM_HEAD, { at: 48.0, dur: 1.4, ease: ease.move });
   tl.tween(insertU, 1, { at: 48.8, dur: 1.4, ease: ease.move });
   tl.tween(stateF, 2, { at: 48.8, dur: 1.4, ease: ease.move });
   tl.hold(54.0, 0.5);
@@ -180,7 +177,6 @@ export function buildScene(): Scene {
     dur: 6,
     text: 'One more hit, and you can feel the rhythm. Weather in New York gets asked again, and rides to the front. Hot queries circulate near the head. Cold ones drift off the end.',
   });
-  tl.tween(cam, CAM_LIST, { at: 54.7, dur: 1.4, ease: ease.move });
   tl.tween(jump2, 1, { at: 55.6, dur: 1.0, ease: ease.linear });
   tl.tween(stateF, 3, { at: 56.8, dur: 1.5, ease: ease.move });
   tl.tween(jump2, 0, { at: 58.5, dur: 0.8, ease: ease.move });
@@ -225,6 +221,16 @@ function slotOf(q: number, f: number): number | null {
   return lerp(a, b, u);
 }
 
+/** vertical arc of a car that is swapping slots: it rises when moving left, dips when moving right */
+function arcOf(q: number, f: number): number {
+  const k = Math.min(STATES.length - 2, Math.max(0, Math.floor(f)));
+  const u = clamp01(f - k);
+  const a = STATES[k].indexOf(q);
+  const b = STATES[k + 1].indexOf(q);
+  if (a < 0 || b < 0 || a === b) return 0;
+  return Math.sin(Math.PI * u) * LIST.lift * (b > a ? 1 : -1);
+}
+
 export function Render({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
   const tableU = s.get(scene.tableU);
@@ -255,17 +261,18 @@ export function Render({ s }: { s: SceneState }) {
     if (q === 4 && evictU > 0) {
       // tail car falls off
       x = slotX(3);
-      y = LIST.y + evictU * 150;
+      y = LIST.y + evictU * 110;
       op = 1 - evictU;
-    } else if (q === 0) {
-      // new car drops in at the head
+    } else if (q === 0 && insertU < 1) {
+      // new car drops in at the head (then it lives in the slot path below)
       x = slotX(0);
-      y = LIST.y - (1 - insertU) * 130;
+      y = LIST.y - (1 - insertU) * 40;
       op = insertU;
     } else {
       const sl = slotOf(q, stateF);
       if (sl === null) return null;
       x = slotX(sl);
+      y = LIST.y + arcOf(q, stateF);
     }
     return { q, x, y, op };
   }).filter((n): n is { q: number; x: number; y: number; op: number } => n !== null);
@@ -283,10 +290,10 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...cam}>
         {/* ---- the lookup hash table ---- */}
         <g opacity={tableU * dimAll}>
-          <text x={TBL.x} y={TBL.y0 - 34} fill={colors.TEXT} fontSize={16}>
+          <text x={TBL.x} y={TBL.y0 - 34} fill={colors.TEXT} fontSize={18}>
             the hash table
           </text>
-          <text x={TBL.x} y={TBL.y0 - 14} fill={colors.ACCENT} fontSize={12} fontFamily="ui-monospace, monospace">
+          <text x={TBL.x} y={TBL.y0 - 14} fill={colors.ACCENT} fontSize={13} fontFamily="ui-monospace, monospace">
             lookup — key: query, value: node
           </text>
           {TBL_ORDER.map((q, r) => {
@@ -306,10 +313,10 @@ export function Render({ s }: { s: SceneState }) {
                   stroke={flash > 0.05 ? (isMissRow ? colors.NEGATIVE : colors.ACCENT) : colors.GRID}
                   strokeWidth={flash > 0.05 ? 2 : 1.1}
                 />
-                <text x={TBL.x + 12} y={y + 20} fill={colors.TEXT} fontSize={10.5} fontFamily="ui-monospace, monospace">
+                <text x={TBL.x + 12} y={y + 20} fill={colors.TEXT} fontSize={13} fontFamily="ui-monospace, monospace">
                   {present ? QUERIES[q] : isMissRow && missU > 0.05 ? QUERIES[q] : '—'}
                 </text>
-                <text x={TBL.x + 12} y={y + 37} fill={isMissRow ? colors.NEGATIVE : colors.MUTED} fontSize={10} fontFamily="ui-monospace, monospace">
+                <text x={TBL.x + 12} y={y + 37} fill={isMissRow ? colors.NEGATIVE : colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
                   {present ? '→ node' : isMissRow && missU > 0.05 ? '→ None (miss)' : ''}
                 </text>
               </g>
@@ -336,18 +343,18 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- the doubly linked list ---- */}
         <g opacity={listU * dimAll}>
-          <text x={slotX(0)} y={LIST.y - 66} fill={colors.TEXT} fontSize={16}>
+          <text x={slotX(0)} y={LIST.y - 66} fill={colors.TEXT} fontSize={18}>
             the doubly linked list
           </text>
-          <text x={slotX(0)} y={LIST.y - 46} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+          <text x={slotX(0)} y={LIST.y - 46} fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
             MAX_SIZE = 4 · head ⇄ … ⇄ tail
           </text>
           {/* heat gradient labels */}
           <g opacity={heatU}>
-            <text x={slotX(0)} y={LIST.y + LIST.h + 34} fill={colors.POSITIVE} fontSize={13}>
+            <text x={slotX(0)} y={LIST.y + LIST.h + 34} fill={colors.POSITIVE} fontSize={14}>
               head — recently used
             </text>
-            <text x={slotX(3) + LIST.w} y={LIST.y + LIST.h + 34} textAnchor="end" fill={colors.NEGATIVE} fontSize={13}>
+            <text x={slotX(3) + LIST.w} y={LIST.y + LIST.h + 34} textAnchor="end" fill={colors.NEGATIVE} fontSize={14}>
               tail — next to go
             </text>
           </g>
@@ -378,10 +385,10 @@ export function Render({ s }: { s: SceneState }) {
                 strokeWidth={flash > 0.05 || isEvict || n.q === 0 ? 2 : 1.2}
               />
               <rect x={n.x} y={n.y} width={5} height={LIST.h} rx={2.5} fill={colors.POSITIVE} opacity={0.15 + heat * 0.75} />
-              <text x={n.x + 16} y={n.y + 30} fill={colors.TEXT} fontSize={11.5} fontFamily="ui-monospace, monospace">
+              <text x={n.x + 16} y={n.y + 30} fill={colors.TEXT} fontSize={13} fontFamily="ui-monospace, monospace">
                 {QUERIES[n.q]}
               </text>
-              <text x={n.x + 16} y={n.y + 52} fill={colors.MUTED} fontSize={10.5}>
+              <text x={n.x + 16} y={n.y + 54} fill={colors.MUTED} fontSize={12.5}>
                 results · title + snippet
               </text>
             </g>
@@ -390,39 +397,39 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* op labels near the action */}
         {jump1 > 0.15 && jump1 < 1 && stateF < 1 && (
-          <text x={TBL.x + TBL.w + 20} y={TBL.y0 - 14} fill={colors.ACCENT} fontSize={12} fontFamily="ui-monospace, monospace" opacity={dimAll}>
+          <text x={TBL.x + TBL.w + 60} y={TBL.y0 - 34} fill={colors.ACCENT} fontSize={13} fontFamily="ui-monospace, monospace" opacity={dimAll}>
             get(query) → move_to_front(node)
           </text>
         )}
         {missU > 0.15 && (
-          <text x={TBL.x + TBL.w + 20} y={TBL.y0 - 14} fill={colors.NEGATIVE} fontSize={12} fontFamily="ui-monospace, monospace" opacity={dimAll}>
+          <text x={TBL.x + TBL.w + 60} y={TBL.y0 - 34} fill={colors.NEGATIVE} fontSize={13} fontFamily="ui-monospace, monospace" opacity={dimAll}>
             get(query) → None
           </text>
         )}
         {evictU > 0.1 && evictU < 1 && (
-          <text x={slotX(3)} y={LIST.y + LIST.h + 96} fill={colors.NEGATIVE} fontSize={12} fontFamily="ui-monospace, monospace" opacity={dimAll}>
+          <text x={slotX(3) + LIST.w} y={LIST.y + LIST.h + 146} textAnchor="end" fill={colors.NEGATIVE} fontSize={13} fontFamily="ui-monospace, monospace" opacity={dimAll}>
             remove_from_tail() · lookup.pop(tail.query)
           </text>
         )}
         {insertU > 0.1 && insertU < 1 && (
-          <text x={slotX(0)} y={LIST.y - 96} fill={colors.POSITIVE} fontSize={12} fontFamily="ui-monospace, monospace" opacity={dimAll}>
+          <text x={slotX(0)} y={LIST.y - 96} fill={colors.POSITIVE} fontSize={13} fontFamily="ui-monospace, monospace" opacity={dimAll}>
             append_to_front(new_node) · lookup[query] = new_node
           </text>
         )}
 
         {/* ---- closing panel ---- */}
         <g opacity={closeU}>
-          <rect x={290} y={215} width={700} height={240} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-          <text x={640} y={264} textAnchor="middle" fill={colors.TEXT} fontSize={19}>
+          <rect x={263} y={215} width={700} height={240} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
+          <text x={613} y={264} textAnchor="middle" fill={colors.TEXT} fontSize={20}>
             least recently used, in two structures
           </text>
-          <text x={640} y={316} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily="ui-monospace, monospace">
+          <text x={613} y={316} textAnchor="middle" fill={colors.ACCENT} fontSize={15} fontFamily="ui-monospace, monospace">
             lookup[query] → node · O(1) find
           </text>
-          <text x={640} y={348} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily="ui-monospace, monospace">
+          <text x={613} y={348} textAnchor="middle" fill={colors.POSITIVE} fontSize={15} fontFamily="ui-monospace, monospace">
             move_to_front · append_to_front · remove_from_tail · O(1) each
           </text>
-          <text x={640} y={402} textAnchor="middle" fill={colors.MUTED} fontSize={13.5} fontStyle="italic">
+          <text x={613} y={402} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
             touch it and it lives — ignore it and it drifts to the tail
           </text>
         </g>

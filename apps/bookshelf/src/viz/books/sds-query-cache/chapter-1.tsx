@@ -66,12 +66,16 @@ const P = {
   api: { x: 680, y: 360 },
   idx: { x: 1020, y: 250 },
   doc: { x: 1020, y: 470 },
-  cache: { x: 850, y: 360 },
+  cache: { x: 820, y: 360 },
 } as const;
 
+// Query API is wider than the other boxes so its sub-line fits inside it.
+const API_HW = 110;
+
+// Each camera keeps the whole pipeline it talks about on stage, Client included.
 const CAM_PIPE: CameraState = { x: 620, y: 360, k: 1.12 };
-const CAM_PARSE: CameraState = { x: 680, y: 300, k: 1.35 };
-const CAM_BACK: CameraState = { x: 880, y: 360, k: 1.25 };
+const CAM_PARSE: CameraState = { x: 600, y: 330, k: 1.25 };
+const CAM_BACK: CameraState = { x: 654, y: 360, k: 1.15 };
 
 export interface Scene {
   tl: Timeline;
@@ -87,6 +91,7 @@ export interface Scene {
   cacheU: ChannelRef<number>;
   hitU: ChannelRef<number>;
   closeU: ChannelRef<number>;
+  budgetU: ChannelRef<number>;
 }
 
 export function buildScene(): Scene {
@@ -103,6 +108,7 @@ export function buildScene(): Scene {
   const cacheU = tl.channel('cacheU', 0); // memory cache slots in
   const hitU = tl.channel('hitU', 0); // a hit bounces off the cache
   const closeU = tl.channel('closeU', 0); // closing panel
+  const budgetU = tl.channel('budgetU', 0); // the byte budget under the cache
 
   // — Beat 1 · the rain —
   tl.caption({
@@ -191,6 +197,7 @@ export function buildScene(): Scene {
     dur: 7,
     text: 'Each cached entry is tiny: the query, a title, a snippet, about two hundred seventy bytes. But ten billion unique queries would need nearly three terabytes a month, and memory is limited.',
   });
+  tl.tween(budgetU, 1, { at: 60.6, dur: 1.2, ease: ease.move });
   tl.hold(67.0, 0.5);
 
   // — Beat 10 · quiet close —
@@ -203,7 +210,7 @@ export function buildScene(): Scene {
   tl.tween(closeU, 1, { at: 68.1, dur: 1.4, ease: ease.move });
   tl.hold(74.5, 1.5);
 
-  return { tl, cam, rainU, statsU, pipeU, qU, parseK, backU, fanU, raceU, cacheU, hitU, closeU };
+  return { tl, cam, rainU, statsU, pipeU, qU, parseK, backU, fanU, raceU, cacheU, hitU, closeU, budgetU };
 }
 
 const scene = buildScene();
@@ -222,7 +229,7 @@ function NodeBox({ x, y, w = 150, h = 60, title, sub, stroke = colors.GRID, opac
         {title}
       </text>
       {sub && (
-        <text x={x} y={y + 18} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily="ui-monospace, monospace">
+        <text x={x} y={y + 18} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily="ui-monospace, monospace">
           {sub}
         </text>
       )}
@@ -245,6 +252,7 @@ export function Render({ s }: { s: SceneState }) {
   const cacheU = s.get(scene.cacheU);
   const hitU = s.get(scene.hitU);
   const closeU = s.get(scene.closeU);
+  const budgetU = s.get(scene.budgetU);
 
   const dimAll = 1 - closeU * 0.88;
   const stage = Math.min(5, Math.floor(parseK + 0.001));
@@ -254,56 +262,73 @@ export function Render({ s }: { s: SceneState }) {
   const fanOut = clamp01(fanU * 2);
   const fanBack = clamp01(fanU * 2 - 1);
 
+  // The latency race owns the top of the stage: the number chips and the
+  // parse panel step aside for it (and stay gone once the cache is in), and the
+  // backend boxes wait until the bars are long.
+  const raceOn = Math.max(clamp01(raceU * 4), cacheU);
+  const backFade = clamp01((raceU - 0.25) * 4);
+  const statsOp = statsU * dimAll * (1 - pipeU * 0.85) * (1 - raceOn);
+  const rainTextOp = rainU * (1 - statsU * 0.4) * (1 - pipeU);
+  const parseOp = dimAll * (1 - backU * 0.85) * (1 - raceOn);
+  const backOp = backU * dimAll * (1 - backFade);
+
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
+      {/* the rain's caption sits on the screen, not the camera, so no camera move can crop it */}
+      {rainTextOp > 0.01 && (
+        <text x={STAGE_W / 2} y={70} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic" opacity={rainTextOp}>
+          search queries, all day, every day
+        </text>
+      )}
       <Camera {...cam}>
         {/* ---- the rain of queries ---- */}
-        <g opacity={dimAll * (1 - pipeU * 0.75)}>
+        <g opacity={dimAll * (1 - pipeU * 0.85)}>
           {DROPS.map((d, i) => {
             const u = clamp01((rainU - d.delay) * d.speed * 2.2);
             if (u <= 0) return null;
             const y = 40 + u * 250;
             return <circle key={i} cx={d.x} cy={y} r={d.r} fill={colors.ACCENT} opacity={0.55 * (1 - u * 0.55)} />;
           })}
-          <text x={STAGE_W / 2} y={70} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic" opacity={rainU * (1 - statsU * 0.4)}>
-            search queries, all day, every day
-          </text>
         </g>
 
         {/* ---- the numbers ---- */}
-        <g opacity={statsU * dimAll * (1 - pipeU * 0.6)}>
-          {[
-            { t: '10 million users', c: colors.TEXT },
-            { t: '10 billion queries / month', c: colors.ACCENT },
-            { t: '4,000 requests / s', c: colors.WARM },
-          ].map((chip, i) => (
-            <g key={i}>
-              <rect x={340 + i * 210} y={128} width={196} height={34} rx={9} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={438 + i * 210} y={150} textAnchor="middle" fill={chip.c} fontSize={13}>
-                {chip.t}
-              </text>
-            </g>
-          ))}
-        </g>
+        {statsOp > 0.01 && (
+          <g opacity={statsOp}>
+            {[
+              { t: '10 million users', c: colors.TEXT },
+              { t: '10 billion queries / month', c: colors.ACCENT },
+              { t: '4,000 requests / s', c: colors.WARM },
+            ].map((chip, i) => (
+              <g key={i}>
+                <rect x={340 + i * 210} y={128} width={196} height={34} rx={9} fill={colors.PANEL} stroke={colors.GRID} />
+                <text x={438 + i * 210} y={150} textAnchor="middle" fill={chip.c} fontSize={13}>
+                  {chip.t}
+                </text>
+              </g>
+            ))}
+          </g>
+        )}
 
-        {/* ---- the pipeline ---- */}
-        <g opacity={pipeU * dimAll}>
-          <line x1={P.client.x + 60} y1={P.client.y} x2={P.web.x - 75} y2={P.web.y} stroke={colors.GRID} strokeWidth={1.5} />
-          <line x1={P.web.x + 75} y1={P.web.y} x2={P.api.x - 75} y2={P.api.y} stroke={colors.GRID} strokeWidth={1.5} />
-          <NodeBox x={P.client.x} y={P.client.y} w={110} title="Client" />
-          <NodeBox x={P.web.x} y={P.web.y} title="Web Server" sub="reverse proxy" />
-          <NodeBox x={P.api.x} y={P.api.y} title="Query API" sub="parse_query · process_query" stroke={colors.ACCENT} />
-        </g>
+        {/* our query, drawn under the boxes so it passes behind them, not over their labels */}
         {qU > 0 && qU < 1 && pipeU > 0.5 && (
           <circle cx={qx} cy={P.client.y} r={7} fill={colors.ACCENT} opacity={dimAll} />
         )}
 
+        {/* ---- the pipeline ---- */}
+        <g opacity={pipeU * dimAll}>
+          <line x1={P.client.x + 60} y1={P.client.y} x2={P.web.x - 75} y2={P.web.y} stroke={colors.GRID} strokeWidth={1.5} />
+          <line x1={P.web.x + 75} y1={P.web.y} x2={P.api.x - API_HW} y2={P.api.y} stroke={colors.GRID} strokeWidth={1.5} />
+          <NodeBox x={P.client.x} y={P.client.y} w={110} title="Client" />
+          <NodeBox x={P.web.x} y={P.web.y} title="Web Server" sub="reverse proxy" />
+          <NodeBox x={P.api.x} y={P.api.y} w={API_HW * 2} title="Query API" sub="parse_query · process_query" stroke={colors.ACCENT} />
+        </g>
+
         {/* ---- parse_query stages ---- */}
-        {pipeU > 0.9 && qU >= 1 && (
-          <g opacity={dimAll * (1 - backU * 0.15)}>
+        {parseOp > 0.01 && pipeU > 0.9 && qU >= 1 && (
+          <g opacity={parseOp}>
             <rect x={P.api.x - 210} y={168} width={420} height={78} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
-            <text x={P.api.x} y={192} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily="ui-monospace, monospace">
+            <text x={P.api.x} y={192} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily="ui-monospace, monospace">
               parse_query · {PARSE_STAGES[stage].label}
             </text>
             <text x={P.api.x} y={222} textAnchor="middle" fill={stage === 5 ? colors.POSITIVE : colors.TEXT} fontSize={16} fontFamily="ui-monospace, monospace">
@@ -313,27 +338,29 @@ export function Render({ s }: { s: SceneState }) {
         )}
 
         {/* ---- the backends ---- */}
-        <g opacity={backU * dimAll}>
-          <line x1={P.api.x + 75} y1={P.api.y - 12} x2={P.idx.x - 95} y2={P.idx.y} stroke={colors.GRID} strokeWidth={1.4} />
-          <line x1={P.api.x + 75} y1={P.api.y + 12} x2={P.doc.x - 95} y2={P.doc.y} stroke={colors.GRID} strokeWidth={1.4} />
-          <NodeBox x={P.idx.x} y={P.idx.y} w={190} title="Reverse Index Service" sub="find + rank matches" stroke={colors.WARM} />
-          <NodeBox x={P.doc.x} y={P.doc.y} w={190} title="Document Service" sub="titles + snippets" stroke={colors.WARM} />
-        </g>
+        {backOp > 0.01 && (
+          <g opacity={backOp}>
+            <line x1={P.api.x + API_HW} y1={P.api.y - 12} x2={P.idx.x - 95} y2={P.idx.y} stroke={colors.GRID} strokeWidth={1.4} />
+            <line x1={P.api.x + API_HW} y1={P.api.y + 12} x2={P.doc.x - 95} y2={P.doc.y} stroke={colors.GRID} strokeWidth={1.4} />
+            <NodeBox x={P.idx.x} y={P.idx.y} w={190} title="Reverse Index Service" sub="find + rank matches" stroke={colors.WARM} />
+            <NodeBox x={P.doc.x} y={P.doc.y} w={190} title="Document Service" sub="titles + snippets" stroke={colors.WARM} />
+          </g>
+        )}
         {fanOut > 0 && fanOut < 1 && (
           <>
-            <Packet from={{ x: P.api.x + 75, y: P.api.y - 12 }} to={{ x: P.idx.x - 95, y: P.idx.y }} u={fanOut} r={6} color={colors.WARM} />
-            <Packet from={{ x: P.api.x + 75, y: P.api.y + 12 }} to={{ x: P.doc.x - 95, y: P.doc.y }} u={fanOut} r={6} color={colors.WARM} />
+            <Packet from={{ x: P.api.x + API_HW, y: P.api.y - 12 }} to={{ x: P.idx.x - 95, y: P.idx.y }} u={fanOut} r={6} color={colors.WARM} />
+            <Packet from={{ x: P.api.x + API_HW, y: P.api.y + 12 }} to={{ x: P.doc.x - 95, y: P.doc.y }} u={fanOut} r={6} color={colors.WARM} />
           </>
         )}
         {fanBack > 0 && fanBack < 1 && (
           <>
-            <Packet from={{ x: P.idx.x - 95, y: P.idx.y }} to={{ x: P.api.x + 75, y: P.api.y - 12 }} u={fanBack} r={6} color={colors.POSITIVE} />
-            <Packet from={{ x: P.doc.x - 95, y: P.doc.y }} to={{ x: P.api.x + 75, y: P.api.y + 12 }} u={fanBack} r={6} color={colors.POSITIVE} />
+            <Packet from={{ x: P.idx.x - 95, y: P.idx.y }} to={{ x: P.api.x + API_HW, y: P.api.y - 12 }} u={fanBack} r={6} color={colors.POSITIVE} />
+            <Packet from={{ x: P.doc.x - 95, y: P.doc.y }} to={{ x: P.api.x + API_HW, y: P.api.y + 12 }} u={fanBack} r={6} color={colors.POSITIVE} />
           </>
         )}
 
         {/* ---- the latency race ---- */}
-        <g opacity={clamp01(raceU * 4) * dimAll * (1 - cacheU * 0.85)}>
+        <g opacity={clamp01(raceU * 4) * dimAll * (1 - cacheU)}>
           <text x={200} y={112} fill={colors.TEXT} fontSize={15}>
             reading 1 MB, sequentially
           </text>
@@ -342,12 +369,12 @@ export function Render({ s }: { s: SceneState }) {
             const y = 140 + i * 44;
             return (
               <g key={r.name}>
-                <text x={190} y={y + 15} textAnchor="end" fill={colors.MUTED} fontSize={12.5}>
+                <text x={190} y={y + 15} textAnchor="end" fill={colors.MUTED} fontSize={13}>
                   {r.name}
                 </text>
                 <rect x={200} y={y} width={Math.max(2, r.len * u)} height={20} rx={5} fill={r.color} opacity={0.8} />
                 {u > 0.97 && (
-                  <text x={210 + r.len} y={y + 15} fill={r.color} fontSize={12} fontFamily="ui-monospace, monospace">
+                  <text x={210 + r.len} y={y + 15} fill={r.color} fontSize={13} fontFamily="ui-monospace, monospace">
                     ~{r.us.toLocaleString('en-US')} µs
                   </text>
                 )}
@@ -357,16 +384,23 @@ export function Render({ s }: { s: SceneState }) {
         </g>
 
         {/* ---- the memory cache slots in ---- */}
-        <g opacity={cacheU * dimAll}>
-          <rect x={P.cache.x - 70} y={P.cache.y + 78} width={140} height={54} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.8} />
-          <text x={P.cache.x} y={P.cache.y + 100} textAnchor="middle" fill={colors.POSITIVE} fontSize={13.5}>
-            Memory Cache
+        {cacheU * dimAll > 0.01 && (
+          <g opacity={cacheU * dimAll}>
+            <rect x={P.cache.x - 70} y={P.cache.y + 78} width={140} height={54} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.8} />
+            <text x={P.cache.x} y={P.cache.y + 100} textAnchor="middle" fill={colors.POSITIVE} fontSize={13.5}>
+              Memory Cache
+            </text>
+            <text x={P.cache.x} y={P.cache.y + 118} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily="ui-monospace, monospace">
+              Redis or Memcached
+            </text>
+            <line x1={P.api.x + 40} y1={P.api.y + 30} x2={P.cache.x - 30} y2={P.cache.y + 78} stroke={colors.POSITIVE} strokeWidth={1.3} opacity={0.8} />
+          </g>
+        )}
+        {budgetU > 0.01 && (
+          <text x={P.cache.x} y={530} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="ui-monospace, monospace" opacity={budgetU * (1 - closeU)}>
+            10B × 270 bytes ≈ 2.7 TB / month
           </text>
-          <text x={P.cache.x} y={P.cache.y + 118} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily="ui-monospace, monospace">
-            Redis or Memcached
-          </text>
-          <line x1={P.api.x + 40} y1={P.api.y + 30} x2={P.cache.x - 30} y2={P.cache.y + 78} stroke={colors.POSITIVE} strokeWidth={1.3} opacity={0.8} />
-        </g>
+        )}
         {hitU > 0 && hitU < 1 && (
           <Packet
             from={{ x: P.api.x + 40, y: P.api.y + 30 }}

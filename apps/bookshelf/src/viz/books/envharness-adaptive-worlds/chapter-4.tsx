@@ -36,12 +36,12 @@ export function buildScene() {
   tl.tween(baselineP, 5, { at: 1.6, dur: 3.8, ease: ease.enter });
 
   tl.caption({ at: 7.1, dur: 6.4, text: 'Successes and failures form a capability fingerprint. One verdict would hide the pattern.' });
-  tl.tween(cam, { x: 460, y: 360, k: 1.12 }, { at: 7.8, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 480, y: 360, k: 1.08 }, { at: 7.8, dur: 1.2, ease: ease.move });
   tl.tween(wheelU, 1.8, { at: 9.0, dur: 3.6, ease: ease.linear });
 
   tl.caption({ at: 13.9, dur: 6.5, text: 'The diagnosis names a behavior it can target: an action loop, a missed constraint, or an observation too long to parse.' });
   tl.tween(diagnoseU, 1, { at: 14.5, dur: 0.9, ease: ease.enter });
-  tl.tween(cam, { x: 690, y: 360, k: 1.08 }, { at: 17.0, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 360, k: 1.08 }, { at: 17.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 20.8, dur: 6.6, text: 'The harness agent writes the layer itself: generated Rules code and, when needed, Setup actions.' });
   tl.tween(codeU, 1, { at: 21.4, dur: 1.0, ease: ease.enter });
@@ -49,7 +49,7 @@ export function buildScene() {
 
   tl.caption({ at: 27.8, dur: 6.5, text: 'The runner builds Rules around Setup around the base world, then gives each fresh rollout its own process.' });
   tl.tween(capsulesP, 5, { at: 28.4, dur: 3.2, ease: ease.enter });
-  tl.tween(cam, { x: 850, y: 360, k: 1.1 }, { at: 29.0, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 662, y: 360, k: 1.04 }, { at: 29.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 34.7, dur: 6.5, text: 'Malformed generated code becomes an error trace before the expensive benchmark starts. One bad mutation cannot kill the search.' });
   tl.tween(errorU, 1, { at: 35.3, dur: 0.6, ease: ease.pop });
@@ -82,7 +82,7 @@ function TracePath({ values, index, reveal }: { values: number[]; index: number;
   return <g opacity={reveal}>
     <polyline points={points} fill="none" stroke={OUTCOMES[index] ? colors.POSITIVE : colors.NEGATIVE} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
     <circle cx={x0 + 6 * 48} cy={y0 + (0.5 - values[6]) * 42} r="9" fill={OUTCOMES[index] ? colors.POSITIVE : colors.NEGATIVE} />
-    <text x="130" y={y0 + 6} textAnchor="end" fill={colors.MUTED} fontSize="13">rollout {index + 1}</text>
+    <text x="130" y={y0 + 6} textAnchor="end" fill={colors.MUTED} fontSize="14">rollout {index + 1}</text>
   </g>;
 }
 
@@ -94,9 +94,17 @@ export function Render({ s }: { s: SceneState }) {
   const aggregateX = 320 + (466 - 320) * decisionStage;
   const aggregateY = 275 + (150 - 275) * decisionStage;
   const wheelAngle = (s.get(scene.wheelU) - 1) * 80;
-  return <Camera {...s.get(scene.cam)}>
+  const legendOpacity = clamp01(s.get(scene.baselineP)) * (1 - clamp01(s.get(scene.capsulesP) * 4));
+  return <g>
+    <text x="640" y="70" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="700" opacity={quiet}>The diagnostic lathe</text>
+    <Camera {...s.get(scene.cam)}>
     <g opacity={quiet}>
-      <text x="640" y="70" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="700">The diagnostic lathe</text>
+      <g opacity={legendOpacity}>
+        <path d="M930 160 H966" fill="none" stroke={colors.POSITIVE} strokeWidth="4" strokeLinecap="round" />
+        <text x="978" y="166" fill={colors.TEXT} fontSize="15">success</text>
+        <path d="M930 196 H966" fill="none" stroke={colors.NEGATIVE} strokeWidth="4" strokeLinecap="round" />
+        <text x="978" y="202" fill={colors.TEXT} fontSize="15">failure</text>
+      </g>
 
       <g opacity={1 - evidenceStage}>
       <g transform={`rotate(${wheelAngle} 330 350)`} opacity={clamp01(s.get(scene.wheelU))}>
@@ -124,8 +132,8 @@ export function Render({ s }: { s: SceneState }) {
       </g>
 
       <g opacity={s.get(scene.stackU)}>
-        <path d="M730 304 V360 H820" fill="none" stroke={colors.WARM} strokeWidth="4" strokeDasharray="8 7" />
-        {['base env', 'Setup', 'Rules'].map((v, i) => <g key={v} transform={`translate(${770 + i * 42} ${420 - i * 30})`}>
+        <path d="M800 304 V343" fill="none" stroke={colors.WARM} strokeWidth="4" strokeDasharray="8 7" />
+        {['base env', 'Setup', 'Rules'].map((v, i) => <g key={v} transform={`translate(800 ${534 - i * 82})`}>
           <rect x="-70" y="-27" width="140" height="54" rx="14" fill="#111827" stroke={i === 0 ? colors.ACCENT : i === 1 ? colors.SECONDARY : colors.WARM} strokeWidth="3" />
           <text y="6" textAnchor="middle" fill={colors.TEXT} fontSize="15">{v}</text>
         </g>)}
@@ -141,9 +149,14 @@ export function Render({ s }: { s: SceneState }) {
             <rect x="930" y={y - 26} width="264" height="52" rx="26" fill={failed ? '#351421' : '#102033'} stroke={failed ? colors.NEGATIVE : OUTCOMES[i] ? colors.POSITIVE : colors.ACCENT} strokeWidth="3" />
             <circle cx="964" cy={y} r="12" fill={failed ? colors.NEGATIVE : OUTCOMES[i] ? colors.POSITIVE : colors.ACCENT} />
             <text x="994" y={y + 5} fill={colors.TEXT} fontSize="15">process {i + 1}</text>
-            <text x="1178" y={y + 5} textAnchor="end" fill={failed ? colors.NEGATIVE : colors.MUTED} fontSize={failed ? 12 : 13}>{failed ? 'RulesCodeError' : 'fresh rollout'}</text>
+            <text x="1178" y={y + 5} textAnchor="end" fill={failed ? colors.NEGATIVE : colors.MUTED} fontSize={14}>{failed ? 'RulesCodeError' : 'fresh rollout'}</text>
           </g>;
         })}
+      </g>
+
+      <g opacity={s.get(scene.aggregateU) * (1 - decisionStage)}>
+        <path d="M928 295 H676" fill="none" stroke={colors.TEAL} strokeWidth="4" strokeLinecap="round" />
+        <path d="M690 285 L674 295 L690 305" fill="none" stroke={colors.TEAL} strokeWidth="4" strokeLinecap="round" strokeLinejoin="round" />
       </g>
 
       <g opacity={s.get(scene.aggregateU)}>
@@ -154,22 +167,24 @@ export function Render({ s }: { s: SceneState }) {
 
       <g>
         {[
-          { label: 'ACCEPT', color: colors.POSITIVE, x: 390 },
-          { label: 'REFINE', color: colors.WARM, x: 640 },
-          { label: 'REJECT', color: colors.NEGATIVE, x: 890 },
+          { label: 'ACCEPT', color: colors.POSITIVE, x: 390, sub: 'keep candidate' },
+          { label: 'REFINE', color: colors.WARM, x: 640, sub: 'send traces back to writing' },
+          { label: 'REJECT', color: colors.NEGATIVE, x: 890, sub: 'ask for a different proposal' },
         ].map((d, i) => {
           const u = clamp01(s.get(scene.decisionP) - i);
           return <g key={d.label} opacity={u}>
             <rect x={d.x - 90} y="330" width="180" height="64" rx="20" fill="#111827" stroke={d.color} strokeWidth="3" />
             <text x={d.x} y="369" textAnchor="middle" fill={d.color} fontSize="18" fontWeight="800">{d.label}</text>
+            <text x={d.x} y="416" textAnchor="middle" fill={colors.MUTED} fontSize="14">{d.sub}</text>
           </g>;
         })}
         <path d="M640 330 C735 290 735 238 640 214" fill="none" stroke={colors.WARM} strokeWidth="4" strokeDasharray={`${Math.max(1, s.get(scene.cycleU) * 360)} 380`} />
+        <text x="752" y="282" fill={colors.WARM} fontSize="14" fontWeight="700" opacity={s.get(scene.cycleU)}>back to writing</text>
       </g>
 
       <g opacity={s.get(scene.acceptedU)}>
         <rect x="292" y="322" width="196" height="80" rx="26" fill="none" stroke={colors.POSITIVE} strokeWidth="7" />
-        <text x="390" y="438" textAnchor="middle" fill={colors.POSITIVE} fontSize="16" fontWeight="700">persist accepted component</text>
+        <text x="390" y="446" textAnchor="middle" fill={colors.POSITIVE} fontSize="16" fontWeight="700">persist accepted component</text>
       </g>
     </g>
 
@@ -178,7 +193,8 @@ export function Render({ s }: { s: SceneState }) {
       <text x="640" y="205" textAnchor="middle" fill={colors.TEXT} fontSize="32" fontWeight="800">Observe → Diagnose → Write → Validate</text>
       <circle cx="355" cy="340" r="78" fill="#111827" stroke={colors.ACCENT} strokeWidth="4" />
       <text x="355" y="334" textAnchor="middle" fill={colors.ACCENT} fontSize="27" fontWeight="800">five</text>
-      <text x="355" y="368" textAnchor="middle" fill={colors.TEXT} fontSize="18">baseline rollouts</text>
+      <text x="355" y="364" textAnchor="middle" fill={colors.TEXT} fontSize="16">baseline</text>
+      <text x="355" y="384" textAnchor="middle" fill={colors.TEXT} fontSize="16">rollouts</text>
       <path d="M445 340 H820" stroke={colors.WARM} strokeWidth="8" strokeLinecap="round" />
       <path d="M795 324 l28 16 -28 16" fill="none" stroke={colors.WARM} strokeWidth="8" />
       <circle cx="915" cy="340" r="78" fill="#0b211c" stroke={colors.POSITIVE} strokeWidth="4" />
@@ -186,7 +202,8 @@ export function Render({ s }: { s: SceneState }) {
       <text x="915" y="368" textAnchor="middle" fill={colors.TEXT} fontSize="18">new lesson</text>
       <text x="640" y="465" textAnchor="middle" fill={colors.MUTED} fontSize="23">fresh evidence decides what survives</text>
     </g>
-  </Camera>;
+    </Camera>
+  </g>;
 }
 
 export const vizScene = () => scene;

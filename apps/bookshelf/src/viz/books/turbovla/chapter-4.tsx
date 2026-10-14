@@ -24,6 +24,21 @@ const METHODS = [
 const SUITES = [{ name: 'spatial', v: 99.2 }, { name: 'object', v: 99.8 }, { name: 'goal', v: 97.4 }, { name: 'long', v: 94.2 }];
 const sx = scaleLinear([20, 220], [130, 830]);
 const sy = scaleLinear([74, 100], [540, 120]);
+// Label anchors in plot space. Crowded cluster labels fan out above the
+// points with leader lines so none of them sit on top of each other.
+const LABEL: Record<string, { x: number; y: number; anchor?: 'start' | 'middle' | 'end'; lead?: boolean }> = {
+  'TurboVLA': { x: 196, y: 150, anchor: 'start' },
+  'VLA-Adapter': { x: 330, y: 124, anchor: 'end', lead: true },
+  'π0.5': { x: 382, y: 110, anchor: 'start', lead: true },
+  'VLA-JEPA': { x: 420, y: 134, anchor: 'end', lead: true },
+  'CogVLA': { x: 500, y: 110, anchor: 'start', lead: true },
+  'DDVLA': { x: 261, y: 222, anchor: 'middle' },
+  'π0': { x: 355, y: 250, anchor: 'middle' },
+  'Evo-1': { x: 556, y: 208, anchor: 'start' },
+  'Mantis': { x: 786, y: 178, anchor: 'start' },
+  'OpenVLA': { x: 796, y: 504, anchor: 'start' },
+};
+const RECIPE = ['semantic text', '6 × bidirectional', '12-step chunk', 'masked L1 loss'];
 
 export function buildScene() {
   const tl = new Timeline();
@@ -46,7 +61,7 @@ export function buildScene() {
 
   tl.caption({ at: 7.0, dur: 5.8, text: 'On latency versus average Libero success, Turbo V L A lands at thirty one point two milliseconds and ninety seven point seven percent.' });
   tl.tween(turboU, 1, { at: 7.5, dur: 1.0, ease: ease.pop });
-  tl.tween(cam, { x: sx(31.2), y: sy(97.7), k: 1.38 }, { at: 8.0, dur: 1.4, ease: ease.move });
+  tl.tween(cam, { x: 500, y: 310, k: 1.3 }, { at: 8.0, dur: 1.4, ease: ease.move });
   tl.hold(12.8, 0.6);
 
   tl.caption({ at: 13.4, dur: 5.7, text: 'Now let point size show parameter count. The highlighted policy stays smallest at two hundred million parameters.' });
@@ -60,7 +75,6 @@ export function buildScene() {
 
   tl.caption({ at: 26.0, dur: 5.9, text: 'Its average comes from ninety nine point two spatial, ninety nine point eight object, ninety seven point four goal, and ninety four point two long-horizon success.' });
   tl.tween(suitesU, 1, { at: 26.5, dur: 1.7, ease: ease.enter });
-  tl.tween(cam, { x: 1020, y: 350, k: 1.14 }, { at: 27.0, dur: 1.3, ease: ease.move });
   tl.hold(31.9, 0.6);
 
   tl.caption({ at: 32.5, dur: 5.9, text: 'This is not a language-free policy. Removing language drops the average to seventy point eight and the goal suite to eleven point six.' });
@@ -99,15 +113,15 @@ export function Render({ s }: { s: SceneState }) {
     <rect width={1280} height={720} fill={colors.BG} />
     <g opacity={mainOpacity}>
       <text x={640} y={50} textAnchor="middle" fill={colors.TEXT} fontSize={27} fontWeight={760}>Put speed on the same plot as success</text>
-      <text x={640} y={76} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>paper Table 1 · RTX 4090 · batch size 1</text>
+      <text x={640} y={76} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>paper Table 1 · RTX 4090 · batch size 1</text>
     </g>
     <Camera {...camera}>
       <g opacity={mainOpacity}>
         <g opacity={axesOpacity}>
           <line x1={110} y1={560} x2={860} y2={560} stroke={colors.GRID} strokeWidth={2} />
           <line x1={110} y1={560} x2={110} y2={100} stroke={colors.GRID} strokeWidth={2} />
-          {[50, 100, 150, 200].map((v) => <g key={v}><line x1={sx(v)} y1={552} x2={sx(v)} y2={568} stroke={colors.GRID} /><text x={sx(v)} y={590} textAnchor="middle" fill={colors.MUTED} fontSize={11}>{v}</text></g>)}
-          {[80, 85, 90, 95, 100].map((v) => <g key={v}><line x1={102} y1={sy(v)} x2={118} y2={sy(v)} stroke={colors.GRID} /><text x={92} y={sy(v) + 4} textAnchor="end" fill={colors.MUTED} fontSize={11}>{v}</text></g>)}
+          {[50, 100, 150, 200].map((v) => <g key={v}><line x1={sx(v)} y1={552} x2={sx(v)} y2={568} stroke={colors.GRID} /><text x={sx(v)} y={590} textAnchor="middle" fill={colors.MUTED} fontSize={12}>{v}</text></g>)}
+          {[80, 85, 90, 95, 100].map((v) => <g key={v}><line x1={102} y1={sy(v)} x2={118} y2={sy(v)} stroke={colors.GRID} /><text x={92} y={sy(v) + 4} textAnchor="end" fill={colors.MUTED} fontSize={12}>{v}</text></g>)}
           <text x={485} y={608} textAnchor="middle" fill={colors.MUTED} fontSize={12}>latency in milliseconds → lower is better</text>
           <text x={30} y={332} transform="rotate(-90 30 332)" textAnchor="middle" fill={colors.MUTED} fontSize={12}>average success → higher is better</text>
         </g>
@@ -116,10 +130,14 @@ export function Render({ s }: { s: SceneState }) {
           const u = clamp01(pointsU * METHODS.length - i);
           const isTurbo = m.name === 'TurboVLA';
           const r = 7 + sizeU * Math.sqrt(m.params) * 5;
+          const cx = sx(m.latency);
+          const cy = sy(m.success);
+          const lab = LABEL[m.name];
           return <g key={m.name} opacity={u}>
-            {vramU > 0 && <circle cx={sx(m.latency)} cy={sy(m.success)} r={r + m.vram * 0.7} fill="none" stroke={isTurbo ? colors.POSITIVE : colors.SECONDARY} strokeWidth={1.5} opacity={0.12 + 0.35 * vramU} />}
-            <circle cx={sx(m.latency)} cy={sy(m.success)} r={isTurbo ? r + turboU * 7 : r} fill={isTurbo ? colors.POSITIVE : colors.ACCENT} opacity={isTurbo ? 0.95 : 0.48} stroke={isTurbo ? colors.WARM : colors.ACCENT} strokeWidth={isTurbo ? 3 : 1} />
-            <text x={sx(m.latency) + 10} y={sy(m.success) - 10} fill={isTurbo ? colors.POSITIVE : colors.MUTED} fontSize={isTurbo ? 13 : 9} fontWeight={isTurbo ? 800 : 500}>{m.name}</text>
+            {vramU > 0 && <circle cx={cx} cy={cy} r={r + m.vram * 0.4} fill="none" stroke={isTurbo ? colors.POSITIVE : colors.SECONDARY} strokeWidth={1.5} opacity={0.12 + 0.35 * vramU} />}
+            {lab.lead && <line x1={cx} y1={cy} x2={lab.x} y2={lab.y + 2} stroke={colors.MUTED} strokeWidth={1} opacity={0.6} />}
+            <circle cx={cx} cy={cy} r={isTurbo ? r + turboU * 7 : r} fill={isTurbo ? colors.POSITIVE : colors.ACCENT} opacity={isTurbo ? 0.95 : 0.48} stroke={isTurbo ? colors.WARM : colors.ACCENT} strokeWidth={isTurbo ? 3 : 1} />
+            <text x={lab.x} y={lab.y} textAnchor={lab.anchor ?? 'start'} fill={isTurbo ? colors.POSITIVE : colors.MUTED} fontSize={isTurbo ? 14 : 12} fontWeight={isTurbo ? 800 : 500}>{m.name}</text>
           </g>;
         })}
 
@@ -129,9 +147,9 @@ export function Render({ s }: { s: SceneState }) {
           {SUITES.map((d, i) => {
             const w = (d.v - 90) * 17;
             return <g key={d.name} transform={`translate(28 ${65 + i * 43})`}>
-              <text x={0} y={14} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>{d.name}</text>
+              <text x={0} y={14} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>{d.name}</text>
               <rect x={74} y={0} width={w} height={18} rx={9} fill={colors.POSITIVE} opacity={0.78} />
-              <text x={82 + w} y={14} fill={colors.TEXT} fontSize={11}>{d.v}</text>
+              <text x={82 + w} y={14} fill={colors.TEXT} fontSize={12}>{d.v}</text>
             </g>;
           })}
         </g>
@@ -139,21 +157,24 @@ export function Render({ s }: { s: SceneState }) {
         {languageU > 0 && <g transform="translate(920 404)" opacity={languageU}>
           <rect width={260} height={160} rx={20} fill={colors.PANEL} stroke={colors.NEGATIVE} />
           <text x={130} y={32} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontWeight={700}>language ablation</text>
-          <text x={24} y={73} fill={colors.MUTED} fontSize={11}>average</text>
+          <text x={24} y={73} fill={colors.MUTED} fontSize={12}>average</text>
           <rect x={86} y={58} width={languageU * 126} height={18} rx={9} fill={colors.NEGATIVE} />
           <text x={220} y={72} fill={colors.NEGATIVE} fontSize={12}>70.8</text>
-          <text x={24} y={117} fill={colors.MUTED} fontSize={11}>goal</text>
+          <text x={24} y={117} fill={colors.MUTED} fontSize={12}>goal</text>
           <rect x={86} y={102} width={languageU * 21} height={18} rx={9} fill={colors.NEGATIVE} />
           <text x={116} y={116} fill={colors.NEGATIVE} fontSize={12}>11.6</text>
-          <text x={130} y={145} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={MONO}>w/o Language</text>
+          <text x={130} y={145} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>w/o Language</text>
         </g>}
 
-        {recipeU > 0 && <g transform="translate(170 102)" opacity={recipeU}>
-          <rect x={0} y={0} width={660} height={54} rx={17} fill={colors.PANEL} stroke={colors.WARM} />
-          {['semantic text', '6 × bidirectional', '12-step chunk', 'masked L1 loss'].map((label, i) => <g key={label} transform={`translate(${18 + i * 160} 11)`}>
-            <rect width={145} height={32} rx={16} fill={i === 1 ? colors.SECONDARY : i === 2 ? colors.POSITIVE : colors.BG} stroke={i === 1 ? colors.SECONDARY : i === 2 ? colors.POSITIVE : colors.GRID} />
-            <text x={72} y={21} textAnchor="middle" fill={colors.TEXT} fontSize={10.5} fontFamily={MONO}>{label}</text>
-          </g>)}
+        {recipeU > 0 && <g opacity={recipeU}>
+          <text x={160} y={392} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>working recipe</text>
+          <g transform="translate(160 400)">
+            <rect x={0} y={0} width={580} height={46} rx={23} fill={colors.PANEL} stroke={colors.WARM} />
+            {RECIPE.map((label, i) => <g key={label} transform={`translate(${12 + i * 140} 8)`}>
+              <rect width={130} height={30} rx={15} fill={i === 1 ? colors.SECONDARY : i === 2 ? colors.POSITIVE : colors.BG} stroke={i === 1 ? colors.SECONDARY : i === 2 ? colors.POSITIVE : colors.GRID} />
+              <text x={65} y={20} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>{label}</text>
+            </g>)}
+          </g>
         </g>}
       </g>
     </Camera>

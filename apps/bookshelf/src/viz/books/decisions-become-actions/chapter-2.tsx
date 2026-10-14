@@ -60,7 +60,7 @@ const SVC = { x: 470, y: 190, w: 180, h: 150 };
 const LANE = { x: 720, w: 520, h: 96, y0: 100, pitch: 118 };
 // illustrative probabilities — each lane sums to 1
 const LANES = [
-  { key: 'operation', cond: 'what to do next', color: colors.TEXT, cw: 84, cands: [['CLICK', 0.06], ['TYPE_TEXT', 0.88], ['SELECT', 0.04], ['WAIT', 0.01], ['DONE', 0.0], ['BLOCKED', 0.01]] as [string, number][], pick: 1 },
+  { key: 'operation', cond: 'what to do next', color: colors.TEXT, cw: 80, cands: [['CLICK', 0.06], ['TYPE_TEXT', 0.88], ['SELECT', 0.04], ['WAIT', 0.01], ['DONE', 0.0], ['BLOCKED', 0.01]] as [string, number][], pick: 1 },
   { key: 'type_text_target', cond: 'IF TYPE_TEXT → which field?', color: ROLE.MODEL, cw: 160, cands: [['[1] From', 0.08], ['[2] To', 0.92]] as [string, number][], pick: 1 },
   { key: 'click_target', cond: 'IF CLICK → which control?', color: ROLE.OBSERVE, cw: 160, cands: [['[1] Open From', 0.1], ['[2] Open To', 0.25], ['[4] Search', 0.65]] as [string, number][], pick: 2 },
   { key: 'select_target', cond: 'IF SELECT → which pair?', color: ROLE.PENDING, cw: 160, cands: [['3:1 One way', 0.95], ['3:2 Multi-city', 0.05]] as [string, number][], pick: 0 },
@@ -174,6 +174,7 @@ export function buildScene() {
   /* — beat 6 · validate the selected answer — */
   b = AT[5];
   tl.tween(focus, 5, { at: b + 0.2, dur: 0.7, ease: ease.enter });
+  tl.tween(svcOff, 1, { at: b + 0.2, dur: 0.5, ease: ease.enter });
   tl.tween(armU, 0, { at: b + 0.2, dur: 0.5, ease: ease.enter });
   tl.tween(cam, CAM_VALID, { at: b + 0.3, dur: 1.3, ease: ease.move });
   tl.tween(checkVis, 1, { at: b + 1.0, dur: 0.6, ease: ease.enter });
@@ -256,7 +257,7 @@ export function Render({ s }: { s: SceneState }) {
     <Camera {...s.get(scene.cam)}>
       {/* THE STATE — what chapter 1 built, carried in every request */}
       {stateU > 0.002 && (
-        <g opacity={stateU * (1 - 0.85 * stateDim)}>
+        <g opacity={stateU * (1 - stateDim)}>
           <rect x={ST.x} y={ST.y} width={ST.w} height={ST.h} rx={14} fill="#0a1020" stroke="#22304d" strokeWidth={1.5} />
           <Txt x={ST.x + 16} y={ST.y + 26} text="state · this observation" size={14} color={ROLE.OBSERVE} mono weight={700} />
           {STATE_ROWS.map((r, i) => {
@@ -353,7 +354,7 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={label}>
                   <rect x={cx} y={y + 38} width={lane.cw} height={48} rx={7} fill={picked ? '#1a1633' : '#0d1526'} stroke={picked ? lane.color : '#2a3754'} strokeWidth={picked ? 2.2 : 1} />
-                  <Txt x={cx + lane.cw / 2} y={y + 58} text={label} size={i === 0 ? 12.5 : 14} mono anchor="middle" weight={picked ? 800 : 500} />
+                  <Txt x={cx + lane.cw / 2} y={y + 58} text={label} size={i === 0 ? 13 : 14} mono anchor="middle" weight={picked ? 800 : 500} />
                   <rect x={cx + 8} y={y + 68} width={(lane.cw - 16) * p * ans} height={7} rx={3} fill={lane.color} opacity={0.9} />
                   {i > 0 && <Txt x={cx + lane.cw - 8} y={y + 82} text={p.toFixed(2)} size={12} mono anchor="end" color={colors.MUTED} u={ans} />}
                 </g>
@@ -364,8 +365,6 @@ export function Render({ s }: { s: SceneState }) {
       })}
       <Txt x={LANE.x + 346} y={laneY(1) + 58} text="answerable without" size={13.5} color={ROLE.MODEL} weight={650} u={tri(focus, 1) * clamp01(lanesU - 3)} />
       <Txt x={LANE.x + 346} y={laneY(1) + 77} text="the operation result" size={13.5} color={ROLE.MODEL} weight={650} u={tri(focus, 1) * clamp01(lanesU - 3)} />
-
-      <Txt x={LANE.x + LANE.w} y={88} text="illustrative probabilities · not a captured run" size={12.5} mono anchor="end" color={colors.MUTED} u={clamp01(lanesU)} />
 
       {/* beat 5 — the operation answer picks its lane */}
       {armU > 0.002 && (
@@ -425,7 +424,7 @@ export function Render({ s }: { s: SceneState }) {
         <line x1={LANE.x + 296} x2={LANE.x + 470} y1={367} y2={367} stroke={ROLE.INVALID} strokeWidth={2} />
         <Txt x={LANE.x} y={408} text="operation + target, together" size={16} weight={700} />
         <Txt x={LANE.x + 300} y={408} text="1 request" size={16} mono weight={800} color={ROLE.CHECKED} />
-        <Txt x={LANE.x} y={444} text="a count of calls · no timing is claimed here" size={13} mono color={colors.MUTED} />
+        <Txt x={LANE.x} y={444} text="a count of calls · latency is not measured here" size={13} mono color={colors.MUTED} />
       </g>
     </Camera>
       {/* goal + honesty label — fixed stage coordinates, outside the camera, so a focus move never clips them */}

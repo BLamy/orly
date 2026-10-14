@@ -53,7 +53,7 @@ export function buildScene() {
 
   tl.caption({ at: 12.2, dur: 5.2, text: 'The paper gives the model a learned context-update tool, invoked when the research state meaningfully changes.' });
   tl.tween(semanticU, 1, { at: 12.8, dur: 1.0, ease: ease.enter });
-  tl.tween(cam, { x: 650, y: 350, k: 1.15 }, { at: 13.0, dur: 1.4, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 350, k: 1.08 }, { at: 13.0, dur: 1.4, ease: ease.move });
   tl.hold(17.4, 0.5);
 
   tl.caption({ at: 17.9, dur: 5.1, text: 'The ribbon folds by meaning, not by message age. Verified findings and source identifiers stay together.' });
@@ -107,25 +107,25 @@ export function Render({ s }: { s: SceneState }) {
               const u = clamp01(rawU * 8 - i / 2.4);
               const row = Math.floor(i / 6);
               const col = i % 6;
-              const x = 105 + col * 178;
+              const x = 87 + col * 186;
               const y = 155 + row * 110;
               const dropping = fate === 'drop';
               const fall = dropping ? Math.max(0, noiseU - 1) * (70 + (i % 3) * 24) : 0;
               return (
                 <g key={i} transform={`translate(${x} ${y + fall})`} opacity={u * (dropping ? 1 - Math.max(0, noiseU - 1) : 1)}>
-                  <rect width={156} height={74} rx={11} fill={colors.PANEL} stroke={dropping ? colors.NEGATIVE : colors.POSITIVE} strokeOpacity={0.65} />
-                  <text x={13} y={27} fill={colors.TEXT} fontSize={10.5} fontFamily={MONO}>{label}</text>
-                  <text x={13} y={51} fill={dropping ? colors.NEGATIVE : colors.POSITIVE} fontSize={8.5} fontFamily={MONO}>{dropping ? 'superseded / redundant' : 'decision-relevant'}</text>
+                  <rect width={176} height={74} rx={11} fill={colors.PANEL} stroke={dropping ? colors.NEGATIVE : colors.POSITIVE} strokeOpacity={0.65} />
+                  <text x={13} y={27} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>{label}</text>
+                  <text x={13} y={52} fill={dropping ? colors.NEGATIVE : colors.POSITIVE} fontSize={12} fontFamily={MONO}>{dropping ? 'superseded / redundant' : 'decision-relevant'}</text>
                 </g>
               );
             })}
           </g>
 
           {s.get(scene.semanticU) > 0 && (
-            <g opacity={s.get(scene.semanticU) * (1 - foldU * 0.6)}>
+            <g opacity={s.get(scene.semanticU) * (1 - foldU)}>
               <rect x={425} y={500} width={430} height={58} rx={16} fill={colors.SECONDARY} fillOpacity={0.1} stroke={colors.SECONDARY} />
-              <text x={640} y={526} textAnchor="middle" fill={colors.TEXT} fontSize={12}>triggered by semantic progress</text>
-              <text x={640} y={547} textAnchor="middle" fill={colors.SECONDARY} fontSize={9.5} fontFamily={MONO}>not a fixed token threshold</text>
+              <text x={640} y={526} textAnchor="middle" fill={colors.TEXT} fontSize={14}>triggered by semantic progress</text>
+              <text x={640} y={547} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>not a fixed token threshold</text>
             </g>
           )}
 
@@ -134,14 +134,15 @@ export function Render({ s }: { s: SceneState }) {
               <path d={`M 170 355 C 310 ${470 - foldU * 180} 360 ${315 + foldU * 20} 475 250`} fill="none" stroke={colors.ACCENT} strokeWidth={3} strokeDasharray="8 7" />
               <path d={`M 1110 355 C 970 ${470 - foldU * 180} 920 ${315 + foldU * 20} 805 250`} fill="none" stroke={colors.ACCENT} strokeWidth={3} strokeDasharray="8 7" />
               <rect x={455} y={135} width={370} height={390} rx={18} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2} />
-              <text x={640} y={171} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontWeight={700} fontFamily={MONO}>refreshed research state</text>
+              <text x={640} y={171} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontWeight={700} fontFamily={MONO}>ribbon → refreshed context state</text>
               {STATE.map((item, i) => {
-                const u = clamp01(stateU - i);
+                // The first state item rides the fold itself, so the panel is never empty mid-fold.
+                const u = i === 0 ? Math.max(clamp01(stateU), foldU) : clamp01(stateU - i);
                 return (
                   <g key={item.label} transform={`translate(483 ${198 + i * 48})`} opacity={u}>
                     <rect width={314} height={34} rx={8} fill={item.color} fillOpacity={0.09} stroke={item.color} strokeOpacity={0.7} />
                     <circle cx={17} cy={17} r={5} fill={item.color} />
-                    <text x={32} y={21} fill={colors.TEXT} fontSize={10.5} fontFamily={MONO}>{item.label}</text>
+                    <text x={32} y={22} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>{item.label}</text>
                   </g>
                 );
               })}
@@ -153,9 +154,9 @@ export function Render({ s }: { s: SceneState }) {
               <path d="M 825 468 C 900 468 920 468 980 468" fill="none" stroke={colors.POSITIVE} strokeWidth={2.5} strokeDasharray="7 6" />
               {[0, 1, 2].map((i) => (
                 <g key={i} transform={`translate(${982 + i * 76} 438)`}>
-                  <rect width={64} height={60} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} />
-                  <text x={32} y={26} textAnchor="middle" fill={colors.POSITIVE} fontSize={8.5} fontFamily={MONO}>{['action', 'observe', 'plan'][i]}</text>
-                  <text x={32} y={44} textAnchor="middle" fill={colors.MUTED} fontSize={8}>fresh</text>
+                  <rect width={70} height={60} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} />
+                  <text x={35} y={27} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>{['action', 'observe', 'plan'][i]}</text>
+                  <text x={35} y={46} textAnchor="middle" fill={colors.MUTED} fontSize={12}>fresh</text>
                 </g>
               ))}
             </g>
@@ -165,14 +166,14 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={s.get(scene.repeatU)}>
               <path d="M 1115 415 C 1195 345 1195 245 1115 180" fill="none" stroke={colors.WARM} strokeWidth={2.5} strokeDasharray="7 6" />
               <path d="M 1115 180 l 7 16 l -18 -4 z" fill={colors.WARM} />
-              <text x={1180} y={300} textAnchor="middle" fill={colors.WARM} fontSize={9.5} fontFamily={MONO} transform="rotate(-90 1180 300)">invoke again when state changes</text>
+              <text x={1208} y={300} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO} transform="rotate(-90 1208 300)">invoke again when state changes</text>
             </g>
           )}
 
           {s.get(scene.boundaryU) > 0 && (
             <g opacity={s.get(scene.boundaryU)}>
               <rect x={95} y={565} width={1090} height={42} rx={10} fill={colors.NEGATIVE} fillOpacity={0.07} stroke={colors.NEGATIVE} strokeOpacity={0.55} />
-              <text x={640} y={591} textAnchor="middle" fill={colors.TEXT} fontSize={10.5} fontFamily={MONO}>paper update_context ≠ public quickstart EXTRACTOR_PROMPT page summary</text>
+              <text x={640} y={591} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>paper update_context ≠ public quickstart EXTRACTOR_PROMPT page summary</text>
             </g>
           )}
         </g>
@@ -182,8 +183,8 @@ export function Render({ s }: { s: SceneState }) {
           <rect x={225} y={235} width={830} height={202} rx={20} fill={colors.PANEL} stroke={colors.ACCENT} />
           <text x={640} y={296} textAnchor="middle" fill={colors.TEXT} fontSize={29} fontWeight={700}>Keep the state, lose the clutter</text>
           <text x={640} y={343} textAnchor="middle" fill={colors.MUTED} fontSize={16}>verified evidence · unresolved constraints · next plan</text>
-          <text x={640} y={382} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>paper §2.2.1 · autonomous context updating</text>
-          <text x={640} y={408} textAnchor="middle" fill={colors.NEGATIVE} fontSize={10.5}>paper mechanism; not included in the released quickstart</text>
+          <text x={640} y={382} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>paper §2.2.1 · autonomous context updating</text>
+          <text x={640} y={408} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13}>paper mechanism; not included in the released quickstart</text>
         </g>
       )}
     </>

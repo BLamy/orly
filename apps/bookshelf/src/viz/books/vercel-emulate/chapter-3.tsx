@@ -31,39 +31,49 @@ const lerp = (a: number, b: number, t: number): number => a + (b - a) * t;
 
 // ---------------------------------------------------------------------------
 // Layout — URL bar on top, the two gates on the left, the picker on the right.
+// Everything sits inside the 1280×720 stage with a 60px margin, and the caption
+// band (y > 630) stays clear. Each camera push frames its subject in full; the
+// context it leaves behind is faded (see ghost opacities in Render), not cropped.
 // ---------------------------------------------------------------------------
 
-const BAR = { x: 120, y: 78, w: 1040, h: 46 } as const;
+const BAR = { x: 60, y: 60, w: 1160, h: 50 } as const;
 const PARAMS = [
   { key: 'client_id', val: 'emu_github_client_id' },
   { key: 'redirect_uri', val: '…/api/auth/callback/github' },
   { key: 'scope', val: 'user repo' },
   { key: 'state', val: 'random nonce' },
 ] as const;
-const PARAM_W = 252;
-const PARAM_Y = 148;
+const PARAM_W = 270;
+const PARAM_Y = 132;
 
-const GATE1 = { x: 120, y: 226, w: 400, h: 140 } as const;
-const GATE2 = { x: 120, y: 386, w: 400, h: 140 } as const;
+// the emulator card the browser lands on (beat 3 only)
+const EMU = { x: 380, y: 252, w: 520, h: 88 } as const;
 
-const PICKER = { x: 620, y: 226, w: 440, h: 336 } as const;
-const BTN_H = 86;
+const GATE1 = { x: 60, y: 212, w: 520, h: 124 } as const;
+const GATE2 = { x: 60, y: 352, w: 520, h: 124 } as const;
+
+const PICKER = { x: 660, y: 212, w: 560, h: 308 } as const;
+const BTN_H = 80;
 const btnY = (i: number): number => PICKER.y + 118 + i * (BTN_H + 14);
 const USERS = [
   { login: 'octocat', name: 'The Octocat', email: 'octocat@github.com' },
   { login: 'developer', name: 'Developer', email: 'dev@example.com' },
 ] as const;
 
-const TESTCHIP = { x: 120, y: 546, w: 400, h: 56 } as const;
+// the POST slot under the picker: the test's line of code shows here first,
+// then the posted choice replaces it
+const POST_Y = PICKER.y + PICKER.h + 36;
+const TESTCHIP = { x: PICKER.x + 24, y: POST_Y, w: PICKER.w - 48, h: 56 } as const;
 
 // the Playwright cursor's glide: off-stage → hover over the octocat button
 const CURSOR_FROM = { x: 1250, y: 640 };
 const CURSOR_TO = { x: PICKER.x + PICKER.w / 2 + 60, y: btnY(0) + BTN_H / 2 + 6 };
 
+// every camera frames its subject fully inside the stage
 const CAM_WIDE: CameraState = CAMERA_HOME;
-const CAM_BAR: CameraState = { x: 640, y: 170, k: 1.24 };
-const CAM_GATES: CameraState = { x: 380, y: 360, k: 1.3 };
-const CAM_PICKER: CameraState = { x: 800, y: 380, k: 1.22 };
+const CAM_BAR: CameraState = { x: 640, y: 150, k: 1.06 };
+const CAM_GATES: CameraState = { x: 320, y: 382, k: 1.5 };
+const CAM_PICKER: CameraState = { x: 940, y: 412, k: 1.4 };
 
 // ---------------------------------------------------------------------------
 // Timeline (~80s, ten beats).
@@ -209,6 +219,9 @@ export function Render({ s }: { s: SceneState }) {
   const teaseU = s.get(scene.teaseU);
 
   const floorOp = 1 - 0.87 * dimU;
+  // context fades to a ghost once the gates take over, then again for the picker
+  const ghostGates = 1 - 0.88 * gate1U;
+  const ghostPicker = 1 - 0.88 * pickerU;
   const cx = lerp(CURSOR_FROM.x, CURSOR_TO.x, cursorU);
   const cy = lerp(CURSOR_FROM.y, CURSOR_TO.y, cursorU) - 40 * Math.sin(Math.PI * cursorU);
 
@@ -217,23 +230,23 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* the authorize URL bar */}
-        <g opacity={barU * floorOp}>
+        <g opacity={barU * floorOp * ghostGates}>
           <rect x={BAR.x} y={BAR.y} width={BAR.w} height={BAR.h} rx={12} fill={colors.PANEL} stroke={arriveU > 0.4 ? colors.ACCENT : colors.GRID} strokeWidth={1.4} />
           <circle cx={BAR.x + 24} cy={BAR.y + 23} r={6} fill="none" stroke={colors.MUTED} strokeWidth={1.5} />
           <text x={BAR.x + 44} y={BAR.y + 29} fill={colors.TEXT} fontSize={15} fontFamily={MONO}>
             http://localhost:4001/login/oauth/authorize
           </text>
-          <text x={BAR.x + 480} y={BAR.y + 29} fill={colors.ACCENT} fontSize={15} fontFamily={MONO} opacity={clamp01(paramU * 3)}>
+          <text x={BAR.x + 470} y={BAR.y + 29} fill={colors.ACCENT} fontSize={15} fontFamily={MONO} opacity={clamp01(paramU * 3)}>
             ?client_id=…&redirect_uri=…&scope=…&state=…
           </text>
         </g>
 
         {/* the param cars snapping on */}
-        <g opacity={floorOp}>
+        <g opacity={floorOp * ghostGates}>
           {PARAMS.map((p, i) => {
             const u = win(paramU, PARAMS.length, i, 1.6);
             if (u <= 0) return null;
-            const x = lerp(STAGE_W + 40, BAR.x + 10 + i * (PARAM_W + 10), u);
+            const x = lerp(STAGE_W + 40, BAR.x + 16 + i * (PARAM_W + 16), u);
             return (
               <g key={p.key} opacity={u}>
                 <rect x={x} y={PARAM_Y} width={PARAM_W} height={52} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.2} />
@@ -248,8 +261,20 @@ export function Render({ s }: { s: SceneState }) {
           })}
         </g>
 
+        {/* the emulator the browser lands on — it steps aside when the gates arrive */}
+        <g opacity={arriveU * (1 - gate1U) * floorOp}>
+          <line x1={640} y1={BAR.y + BAR.h} x2={640} y2={EMU.y} stroke={colors.ACCENT} strokeWidth={1.5} strokeDasharray="5 5" />
+          <rect x={EMU.x} y={EMU.y} width={EMU.w} height={EMU.h} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} />
+          <text x={640} y={EMU.y + 38} textAnchor="middle" fill={colors.TEXT} fontSize={18} fontWeight={600}>
+            localhost:4001 — the emulator
+          </text>
+          <text x={640} y={EMU.y + 64} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+            listening on its local port
+          </text>
+        </g>
+
         {/* gate one: known client */}
-        <g opacity={Math.max(gate1U, 0) * floorOp}>
+        <g opacity={Math.max(gate1U, 0) * floorOp * ghostPicker}>
           <rect x={GATE1.x} y={GATE1.y} width={GATE1.w} height={GATE1.h} rx={12} fill={colors.PANEL} stroke={gate1U > 0.8 ? colors.POSITIVE : colors.GRID} strokeWidth={1.4} />
           <text x={GATE1.x + 18} y={GATE1.y + 28} fill={colors.MUTED} fontSize={13} fontStyle="italic">
             gate one — is the client registered?
@@ -266,7 +291,7 @@ export function Render({ s }: { s: SceneState }) {
         </g>
 
         {/* gate two: registered return address */}
-        <g opacity={Math.max(gate2U, 0) * floorOp}>
+        <g opacity={Math.max(gate2U, 0) * floorOp * ghostPicker}>
           <rect x={GATE2.x} y={GATE2.y} width={GATE2.w} height={GATE2.h} rx={12} fill={colors.PANEL} stroke={gate2U > 0.8 ? colors.POSITIVE : colors.GRID} strokeWidth={1.4} />
           <text x={GATE2.x + 18} y={GATE2.y + 28} fill={colors.MUTED} fontSize={13} fontStyle="italic">
             gate two — is the return address registered?
@@ -316,14 +341,14 @@ export function Render({ s }: { s: SceneState }) {
                 <text x={PICKER.x + 94} y={btnY(i) + 52} fill={colors.MUTED} fontSize={12.5}>
                   {u.name}
                 </text>
-                <text x={PICKER.x + 94} y={btnY(i) + 70} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+                <text x={PICKER.x + 94} y={btnY(i) + 70} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                   {u.email}
                 </text>
               </g>
             );
           })}
           {/* the missing password field */}
-          <text x={PICKER.x + PICKER.w / 2} y={PICKER.y + PICKER.h + 26} textAnchor="middle" fill={colors.SECONDARY} fontSize={13.5} opacity={noPassU}>
+          <text x={PICKER.x + PICKER.w / 2} y={PICKER.y + PICKER.h + 24} textAnchor="middle" fill={colors.SECONDARY} fontSize={13.5} opacity={noPassU}>
             no password field — identity is a choice, not a proof
           </text>
         </g>
@@ -343,10 +368,10 @@ export function Render({ s }: { s: SceneState }) {
           </g>
         )}
 
-        {/* the test's line of code */}
-        <g opacity={clamp01(cursorU * 2) * floorOp}>
+        {/* the test's line of code — it gives way to the POST below */}
+        <g opacity={clamp01(cursorU * 2) * floorOp * (1 - postU)}>
           <rect x={TESTCHIP.x} y={TESTCHIP.y} width={TESTCHIP.w} height={TESTCHIP.h} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={TESTCHIP.x + 16} y={TESTCHIP.y + 24} fill={colors.MUTED} fontSize={11.5} fontStyle="italic">
+          <text x={TESTCHIP.x + 16} y={TESTCHIP.y + 24} fill={colors.MUTED} fontSize={12.5} fontStyle="italic">
             your Playwright test
           </text>
           <text x={TESTCHIP.x + 16} y={TESTCHIP.y + 44} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
@@ -356,11 +381,11 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* the choice posting back */}
         <g opacity={postU * floorOp}>
-          <rect x={PICKER.x + 24} y={PICKER.y + PICKER.h + 40} width={PICKER.w - 48} height={54} rx={10} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.3} />
-          <text x={PICKER.x + 40} y={PICKER.y + PICKER.h + 62} fill={colors.WARM} fontSize={12.5} fontFamily={MONO}>
+          <rect x={PICKER.x + 24} y={POST_Y} width={PICKER.w - 48} height={56} rx={10} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.3} />
+          <text x={PICKER.x + 40} y={POST_Y + 24} fill={colors.WARM} fontSize={12.5} fontFamily={MONO}>
             POST /login/oauth/callback
           </text>
-          <text x={PICKER.x + 40} y={PICKER.y + PICKER.h + 82} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+          <text x={PICKER.x + 40} y={POST_Y + 44} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
             login=octocat · redirect_uri · scope · state · client_id
           </text>
         </g>

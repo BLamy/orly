@@ -109,7 +109,8 @@ const NOTES = [
   'paper Appendix C.7 · docs/pipeline.md',
 ] as const;
 
-const CAM_PROBE: CameraState = { x: 800, y: 310, k: 1.15 };
+// the hero tape spans x 98–1170, so every hero frame keeps k ≤ 1.1 and x ≈ 634 to stay on stage
+const CAM_PROBE: CameraState = { x: 634, y: 330, k: 1.1 };
 
 export function buildScene() {
   const tl = new Timeline();
@@ -156,16 +157,16 @@ export function buildScene() {
   t = beatAt(3);
   tl.tween(heroU, 1, { at: t - 0.3, dur: 1.2, ease: ease.move });
   tl.tween(tapesU, 0, { at: t - 0.3, dur: 0.8, ease: ease.linear });
-  tl.tween(cam, { x: 430, y: 310, k: 1.15 }, { at: t - 0.5, dur: 1.4, ease: ease.move });
+  tl.tween(cam, { x: 634, y: 310, k: 1.1 }, { at: t - 0.5, dur: 1.4, ease: ease.move });
   tl.tween(textO, 1, { at: t + 0.4, dur: 0.6, ease: ease.enter });
-  tl.tween(cam, { x: 850, y: 310, k: 1.15 }, { at: t + 1.3, dur: 5.4, ease: ease.move });
+  tl.tween(cam, { x: 644, y: 310, k: 1.1 }, { at: t + 1.3, dur: 5.4, ease: ease.move });
   tl.tween(rewriteU, 1, { at: t + 1.5, dur: 2.2, ease: ease.move });
   tl.tween(textO, 0.15, { at: t + 4.2, dur: 1.4, ease: ease.draw });
 
   // BEAT 4 — the probe is the same keyed mark, extracted
   t = beatAt(4);
   tl.tween(textO, 0, { at: t, dur: 0.6, ease: ease.enter });
-  tl.tween(cam, { x: 930, y: 335, k: 1.45 }, { at: t - 0.3, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 335, k: 1.1 }, { at: t - 0.3, dur: 1.3, ease: ease.move });
   tl.tween(extractU, 1, { at: t + 1.3, dur: 1.2, ease: ease.move });
 
   // BEAT 5 — the future goes dark
@@ -176,7 +177,7 @@ export function buildScene() {
 
   // BEAT 6 — two cited turns lift into separate slots
   t = beatAt(6);
-  tl.tween(cam, { x: 610, y: 335, k: 1.15 }, { at: t - 0.3, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 634, y: 335, k: 1.1 }, { at: t - 0.3, dur: 1.3, ease: ease.move });
   tl.tween(liftRecent, 1, { at: t + 0.8, dur: 1.2, ease: ease.move });
   tl.tween(liftDistant, 1, { at: t + 2.2, dur: 1.2, ease: ease.move });
 
@@ -225,7 +226,7 @@ function TenTapes({ u, align, axis, counts }: { u: number; align: number; axis: 
             {i < 9 && (
               <rect x={x} y={rowY(i) - 5} width={Math.max(LEN[i], 2)} height={10} rx={2} fill={INK.thread} opacity={0.6} />
             )}
-            <Txt x={x + LEN[i] + 8} y={rowY(i) + 4} size={10.5} mono fill={INK.muted} opacity={counts}>
+            <Txt x={x + LEN[i] + 8} y={rowY(i) + 4} size={12} mono fill={INK.muted} opacity={counts}>
               {fmt(MESSAGES[i])}
             </Txt>
           </g>
@@ -236,12 +237,12 @@ function TenTapes({ u, align, axis, counts }: { u: number; align: number; axis: 
         {[0, 5000, 10000].map((v) => (
           <g key={v} opacity={clamp01(axis * 3 - v / 5000)}>
             <line x1={AX.x0 + px(v)} y1={AX.y} x2={AX.x0 + px(v)} y2={AX.y + 6} stroke={colors.ink.axis} />
-            <Txt x={AX.x0 + px(v)} y={AX.y + 20} size={11} anchor="middle" fill={INK.muted}>
+            <Txt x={AX.x0 + px(v)} y={AX.y + 20} size={12} anchor="middle" fill={INK.muted}>
               {fmt(v)}
             </Txt>
           </g>
         ))}
-        <Txt x={AX.x1} y={AX.y + 38} size={11} anchor="end" fill={INK.muted} opacity={axis}>
+        <Txt x={AX.x1} y={AX.y + 38} size={12} anchor="end" fill={INK.muted} opacity={axis}>
           messages per subject (length is message count, not calendar span)
         </Txt>
       </g>
@@ -311,9 +312,9 @@ export function Render({ s }: { s: SceneState }) {
           height={g.h}
           rx={lerp(2, 6, hero)}
           fill={INK.thread}
-          fillOpacity={lerp(0.6, 0.06, hero) * clamp01(tapes + hero)}
+          fillOpacity={lerp(0.6, 0.16, hero) * clamp01(tapes + hero)}
           stroke={INK.thread}
-          strokeOpacity={0.35 * hero + 0.6 * boundO}
+          strokeOpacity={0.5 * hero + 0.6 * boundO}
           strokeWidth={1 + boundO}
         />
         <g opacity={hero}>
@@ -331,7 +332,7 @@ export function Render({ s }: { s: SceneState }) {
                 height={g.h * 0.64}
                 rx={1.5}
                 fill={k ?? INK.thread}
-                opacity={o * (k ? 1 : j % 2 === 0 ? 0.42 : 0.24)}
+                opacity={o * (k ? 1 : j % 2 === 0 ? 0.7 : 0.45)}
               />
             );
           })}
@@ -367,7 +368,7 @@ export function Render({ s }: { s: SceneState }) {
             )}
           </g>
         )}
-        <Txt x={560} y={292} size={11} fill={INK.muted} opacity={hero * (1 - on(b, 5)) * clamp01(reveal * 4)}>
+        <Txt x={560} y={292} size={12} fill={INK.muted} opacity={hero * (1 - on(b, 5)) * clamp01(reveal * 4)}>
           Each mark summarizes turns
         </Txt>
 
@@ -383,13 +384,13 @@ export function Render({ s }: { s: SceneState }) {
         </Txt>
 
         {/* identifiers stay with their marks */}
-        <Txt x={X_DISTANT} y={346} size={11} anchor="middle" mono fill={INK.distant} opacity={idsO * (1 - liftD)}>
+        <Txt x={X_DISTANT} y={346} size={12} anchor="middle" mono fill={INK.distant} opacity={idsO * (1 - liftD)}>
           day7-50
         </Txt>
-        <Txt x={X_RECENT + 3} y={346} size={11} anchor="end" mono fill={INK.thread} opacity={idsO * (1 - liftR)}>
+        <Txt x={X_RECENT + 3} y={346} size={12} anchor="end" mono fill={INK.thread} opacity={idsO * (1 - liftR)}>
           day8-150
         </Txt>
-        <Txt x={X_PROBE + 2} y={346} size={11} mono fill={INK.text} opacity={idsO * (1 - extract)}>
+        <Txt x={X_PROBE + 2} y={346} size={12} mono fill={INK.text} opacity={idsO * (1 - extract)}>
           day8-151
         </Txt>
 
@@ -404,7 +405,7 @@ export function Render({ s }: { s: SceneState }) {
             opacity={0.8}
           />
         )}
-        <Txt x={1062} y={346} size={11} anchor="middle" fill={INK.muted} opacity={win(b, 5, 6) * clamp01(shadow * 2 - 1)}>
+        <Txt x={1062} y={346} size={12} anchor="middle" fill={INK.muted} opacity={win(b, 5, 6) * clamp01(shadow * 2 - 1)}>
           not given to the system
         </Txt>
         <Brace
@@ -455,7 +456,7 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           );
         })}
-        <Txt x={HERO.x0} y={346 + 82} size={11} fill={INK.muted} opacity={win(b, 7, 8)}>
+        <Txt x={HERO.x0} y={346 + 82} size={12} fill={INK.muted} opacity={win(b, 7, 8)}>
           Overlay marks are schematic
         </Txt>
 
@@ -468,6 +469,9 @@ export function Render({ s }: { s: SceneState }) {
       </Camera>
 
       {/* screen-fixed overlays */}
+      <Txt x={640} y={232} size={18} anchor="middle" fill={INK.muted} opacity={1 - on(b, 1)}>
+        U10 · one released conversation · 12,627 messages
+      </Txt>
       <Txt x={640} y={150} size={19} anchor="middle" weight={600} opacity={win(b, 3, 3)}>
         Released, rewritten conversations
       </Txt>

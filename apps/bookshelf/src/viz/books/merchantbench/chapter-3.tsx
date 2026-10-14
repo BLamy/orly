@@ -79,10 +79,10 @@ const scene = buildScene();
 function ToolGroup({ x, group, u, glow }: { x: number; group: typeof GROUPS[number]; u: number; glow: number }) {
   return <g opacity={clamp01(u)}>
     <rect x={x} y={138} width={266} height={314} rx={20} fill={colors.PANEL} stroke={group.color} strokeWidth={1.5 + glow * 2.5} />
-    <text x={x + 133} y={169} textAnchor="middle" fill={group.color} fontSize={11} fontWeight={800} letterSpacing="0.08em">{group.title}</text>
+    <text x={x + 133} y={169} textAnchor="middle" fill={group.color} fontSize={12} fontWeight={800} letterSpacing="0.08em">{group.title}</text>
     {group.tools.map((tool, i) => <g key={tool} opacity={clamp01(u * group.tools.length - i)}>
       <rect x={x + 18} y={187 + i * 30} width={230} height={23} rx={8} fill={group.color} opacity={0.08 + glow * 0.12} />
-      <text x={x + 30} y={203 + i * 30} fill={glow > 0.3 ? group.color : colors.TEXT} fontSize={9.5} fontFamily={MONO}>{tool}</text>
+      <text x={x + 28} y={203 + i * 30} fill={glow > 0.3 ? group.color : colors.TEXT} fontSize={12} fontFamily={MONO}>{tool}</text>
     </g>)}
   </g>;
 }
@@ -99,48 +99,48 @@ export function Render({ s }: { s: SceneState }) {
     <Camera {...s.get(scene.cam)}>
       <g opacity={dim * s.get(scene.frameU)}>
         <rect x={62} y={101} width={1156} height={504} rx={28} fill="none" stroke={colors.GRID} strokeWidth={2} />
-        <text x={94} y={126} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>agent decision window · every 12 hours</text>
+        <text x={94} y={126} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>agent decision window · every 12 hours</text>
       </g>
       <g opacity={dim}>
         {GROUPS.map((group, i) => <ToolGroup key={group.title} x={76 + i * 286} group={group} u={clamp01(toolsU * 4 - i)} glow={[s.get(scene.sourceU), s.get(scene.shelfU), s.get(scene.financeU), s.get(scene.memoryU)][i]} />)}
 
         <g opacity={s.get(scene.denyU)} transform="translate(446 92)">
           <rect width={388} height={35} rx={17} fill={colors.PANEL} stroke={colors.NEGATIVE} />
-          <text x={194} y={23} textAnchor="middle" fill={colors.NEGATIVE} fontSize={10.5} fontFamily={MONO}>denylist: market_brief · hot_search_terms</text>
+          <text x={194} y={23} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>denylist: market_brief · hot_search_terms</text>
         </g>
 
-        <g opacity={s.get(scene.shelfU)} transform="translate(92 478)">
-          <text x={0} y={-12} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>max_active_listings: 50</text>
+        <g opacity={s.get(scene.shelfU)} transform="translate(76 478)">
+          <text x={0} y={-12} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>max_active_listings: 50</text>
           {Array.from({ length: 50 }, (_, i) => {
             const active = i < 37 + Math.round(s.get(scene.shelfU) * 13);
-            return <rect key={i} x={(i % 25) * 42} y={Math.floor(i / 25) * 39} width={34} height={30} rx={5} fill={active ? colors.SECONDARY : colors.GRID} opacity={active ? 0.55 + (i % 5) * 0.07 : 0.3} />;
+            return <rect key={i} x={(i % 25) * 19.5} y={Math.floor(i / 25) * 39} width={16} height={30} rx={4} fill={active ? colors.SECONDARY : colors.GRID} opacity={active ? 0.55 + (i % 5) * 0.07 : 0.3} />;
           })}
         </g>
 
-        <g opacity={s.get(scene.financeU)} transform="translate(732 478)">
+        <g opacity={s.get(scene.financeU)} transform="translate(600 478)">
           {['available cash', 'funds in transit', 'receivables'].map((label, i) => <g key={label} transform={`translate(0 ${i * 34})`}>
-            <text x={0} y={18} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>{label}</text>
-            <rect x={128} y={5} width={300} height={16} rx={8} fill={colors.GRID} />
-            <rect x={128} y={5} width={[210, 132, 178][i] * s.get(scene.financeU)} height={16} rx={8} fill={[colors.POSITIVE, colors.WARM, colors.ACCENT][i]} />
+            <text x={0} y={18} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>{label}</text>
+            <rect x={124} y={5} width={200} height={16} rx={8} fill={colors.GRID} />
+            <rect x={124} y={5} width={[190, 120, 160][i] * s.get(scene.financeU)} height={16} rx={8} fill={[colors.POSITIVE, colors.WARM, colors.ACCENT][i]} />
           </g>)}
         </g>
 
-        <g opacity={s.get(scene.memoryU)} transform="translate(964 310)">
-          <rect width={214} height={102} rx={16} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={2} />
-          <text x={107} y={25} textAnchor="middle" fill={colors.POSITIVE} fontSize={10.5} fontFamily={MONO}>memory_doc</text>
-          <text x={18} y={52} fill={colors.TEXT} fontSize={11}>lesson persists</text>
-          <text x={18} y={75} fill={colors.NEGATIVE} fontSize={11}>truth not guaranteed</text>
+        <g opacity={s.get(scene.memoryU)} transform="translate(950 478)">
+          <rect width={250} height={92} rx={16} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={2} />
+          <text x={125} y={24} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>memory_doc</text>
+          <text x={18} y={50} fill={colors.TEXT} fontSize={12}>lesson persists</text>
+          <text x={18} y={72} fill={colors.NEGATIVE} fontSize={12}>truth not guaranteed</text>
         </g>
 
         <g opacity={s.get(scene.loopU)}>
           <path d="M215 590 C215 620 1065 620 1065 590" fill="none" stroke={colors.ACCENT} strokeWidth={4} strokeDasharray="10 9" />
           <circle cx={215 + 850 * s.get(scene.loopU)} cy={615} r={9} fill={colors.ACCENT} />
-          <text x={640} y={603} textAnchor="middle" fill={colors.ACCENT} fontSize={11} fontFamily={MONO}>next hour</text>
+          <text x={640} y={603} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>next hour</text>
         </g>
-        <g opacity={s.get(scene.closeU)} transform="translate(1004 435)">
-          <circle cx={72} cy={42} r={36} fill={colors.POSITIVE} opacity={0.16} />
-          <path d="M52 42 L67 57 L94 27" fill="none" stroke={colors.POSITIVE} strokeWidth={7} strokeLinecap="round" strokeLinejoin="round" />
-          <text x={72} y={94} textAnchor="middle" fill={colors.POSITIVE} fontSize={10.5} fontFamily={MONO}>end_of_step</text>
+        <g opacity={s.get(scene.closeU)} transform="translate(1000 80)">
+          <circle cx={22} cy={24} r={18} fill={colors.POSITIVE} opacity={0.16} />
+          <path d="M12 24 L19 31 L32 17" fill="none" stroke={colors.POSITIVE} strokeWidth={4} strokeLinecap="round" strokeLinejoin="round" />
+          <text x={48} y={29} fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>end_of_step</text>
         </g>
       </g>
     </Camera>

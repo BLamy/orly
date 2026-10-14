@@ -45,28 +45,30 @@ const TAPE_POINTS: RecordingPoint[] = [
 
 /** The six attack arms of verify-task.js, in its own order. */
 const ARMS = [
-  { label: 'falsify', sub: 'predict, then look — own inputs' },
-  { label: 'coverage', sub: 'did every hunk run in the evidence?' },
+  { label: 'falsify', sub: 'predict first · own inputs' },
+  { label: 'coverage', sub: 'every hunk ran in evidence?' },
   { label: 'mock & env hunt', sub: 'cold clone · scrubbed env' },
-  { label: 'sabotage', sub: 'break it in a worktree — tests must go red' },
-  { label: 'own attacks + fuzz', sub: 'malformed events · concurrent writers' },
+  { label: 'sabotage', sub: 'break it · tests go red' },
+  { label: 'own attacks + fuzz', sub: 'malformed events · races' },
   { label: 'replay interrogation', sub: 'through the Replay MCP' },
 ];
 
 /** The recap frames — the book, re-traced. */
 const RECAP = [
   { label: 'the claim', sub: 'evidence, not satisfaction' },
-  { label: 'the workshop', sub: 'work/ scratch · evidence/ committed' },
+  { label: 'the workshop', sub: 'scratch · committed evidence' },
   { label: 'the attack', sub: 'six arms, in parallel' },
   { label: 'the budget', sub: 'rounds of 3 · judge · cap 10' },
   { label: 'the verdict', sub: 'only the critic sets verified' },
 ];
 const RECAP_Y = 300;
+const RECAP_W = 212;
 const recapX = (i: number) => 640 + (i - 2) * 226;
 
-const CAM_LEFT: CameraState = { x: 330, y: 300, k: 1.28 };
-const CAM_RIGHT: CameraState = { x: 950, y: 300, k: 1.28 };
-const CAM_SPLIT: CameraState = { x: 640, y: 300, k: 1.05 };
+// Each camera keeps its card's bottom edge above the caption pill (stage y < 630).
+const CAM_LEFT: CameraState = { x: 330, y: 340, k: 1.28 };
+const CAM_RIGHT: CameraState = { x: 950, y: 340, k: 1.28 };
+const CAM_SPLIT: CameraState = { x: 640, y: 320, k: 1.05 };
 const CAM_WIDE: CameraState = { x: 640, y: 340, k: 1.0 };
 
 /* -------------------------------------------------------------- timeline */
@@ -83,6 +85,7 @@ export interface Scene {
   findU: ChannelRef<number>; // a finding lands, cited to a point
   xcheckU: ChannelRef<number>; // cross-examination chip
   leftDim: ChannelRef<number>;
+  leftOut: ChannelRef<number>; // the reviewer card leaves the frame while the critic is in focus
   dimU: ChannelRef<number>;
   recapU: ChannelRef<number>;
   closeU: ChannelRef<number>;
@@ -100,6 +103,7 @@ export function buildScene(): Scene {
   const findU = tl.channel('findU', 0);
   const xcheckU = tl.channel('xcheckU', 0);
   const leftDim = tl.channel('leftDim', 0);
+  const leftOut = tl.channel('leftOut', 0);
   const dimU = tl.channel('dimU', 0);
   const recapU = tl.channel('recapU', 0);
   const closeU = tl.channel('closeU', 0);
@@ -131,6 +135,7 @@ export function buildScene(): Scene {
     text: 'The reviewer cannot see the run. It cannot see the hunk the evidence never exercised, the test feeding on its own golden values, or the stream server left warm from development. None of that is in the text.',
   });
   tl.hold(21.5, 0.5);
+  tl.tween(leftOut, 1, { at: 21.6, dur: 0.8, ease: ease.move });
 
   // — Beat 4 · the critic holds the session —
   tl.caption({
@@ -177,6 +182,7 @@ export function buildScene(): Scene {
     text: 'That is the whole argument. A passive reviewer grades the story of the change. An adversarial critic re-executes the change and tries to break it — and only one of those catches the defect the diff never mentions.',
   });
   tl.tween(cam, CAM_SPLIT, { at: 53.2, dur: 1.5, ease: ease.move });
+  tl.tween(leftOut, 0, { at: 53.2, dur: 1.2, ease: ease.move });
   tl.tween(leftDim, 1, { at: 54.7, dur: 1.4, ease: ease.move });
   tl.hold(59.5, 0.5);
 
@@ -202,7 +208,7 @@ export function buildScene(): Scene {
 
   return {
     tl, cam, leftU, eyeU, stampU, rightU, sweepU, armsU, findU,
-    xcheckU, leftDim, dimU, recapU, closeU,
+    xcheckU, leftDim, leftOut, dimU, recapU, closeU,
   };
 }
 
@@ -221,11 +227,13 @@ export function Render({ s }: { s: SceneState }) {
   const findU = s.get(scene.findU);
   const xcheckU = s.get(scene.xcheckU);
   const leftDim = s.get(scene.leftDim);
+  const leftOut = s.get(scene.leftOut);
   const dimU = s.get(scene.dimU);
   const recapU = s.get(scene.recapU);
   const closeU = s.get(scene.closeU);
 
-  const worldOp = 1 - 0.88 * dimU;
+  // the dimmed critic world clears completely behind the closing panel
+  const worldOp = (1 - 0.88 * dimU) * (1 - 0.9 * closeU);
   const eyeY = LEFT.y + 96 + eyeU * (DIFF_LINES.length - 1) * 30;
 
   return (
@@ -235,12 +243,12 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={worldOp}>
           {/* ---- LEFT: the passive reviewer ---- */}
           {leftU > 0 && (
-            <g opacity={Math.min(1, leftU * 2) * (1 - 0.8 * leftDim)}>
+            <g opacity={Math.min(1, leftU * 2) * (1 - 0.8 * leftDim) * (1 - leftOut)}>
               <rect x={LEFT.x} y={LEFT.y} width={LEFT.w} height={LEFT.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
               <text x={LEFT.x + 20} y={LEFT.y + 34} fill={colors.TEXT} fontSize={15} fontWeight={700}>
                 passive review
               </text>
-              <text x={LEFT.x + 20} y={LEFT.y + 56} fill={colors.MUTED} fontSize={11.5}>
+              <text x={LEFT.x + 20} y={LEFT.y + 56} fill={colors.MUTED} fontSize={12}>
                 reads the diff — the story of the change
               </text>
               {DIFF_LINES.map((l, i) => {
@@ -265,12 +273,12 @@ export function Render({ s }: { s: SceneState }) {
                 </g>
               )}
               {stampU > 0 && (
-                <g opacity={stampU} transform={`translate(${LEFT.x + LEFT.w / 2} ${LEFT.y + LEFT.h - 62}) rotate(-8)`}>
-                  <rect x={-110} y={-22} width={220} height={44} rx={9} fill="none" stroke={colors.WARM} strokeWidth={2} />
-                  <text y={-1} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={700}>
+                <g opacity={stampU} transform={`translate(${LEFT.x + LEFT.w / 2} ${LEFT.y + LEFT.h - 70}) rotate(-4)`}>
+                  <rect x={-120} y={-34} width={240} height={74} rx={9} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={2} />
+                  <text y={-8} textAnchor="middle" fill={colors.WARM} fontSize={15} fontWeight={700}>
                     “looks good to me”
                   </text>
-                  <text y={16} textAnchor="middle" fill={colors.MUTED} fontSize={10}>
+                  <text y={24} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                     agree / disagree — with the story
                   </text>
                 </g>
@@ -285,12 +293,12 @@ export function Render({ s }: { s: SceneState }) {
               <text x={RIGHT.x + 20} y={RIGHT.y + 34} fill={colors.TEXT} fontSize={15} fontWeight={700}>
                 adversarial verification
               </text>
-              <text x={RIGHT.x + 20} y={RIGHT.y + 56} fill={colors.MUTED} fontSize={11.5}>
+              <text x={RIGHT.x + 20} y={RIGHT.y + 56} fill={colors.MUTED} fontSize={12}>
                 holds the session — and tries to break the claim
               </text>
               <RecordingStrip
                 x={RIGHT.x + 24}
-                y={RIGHT.y + 80}
+                y={RIGHT.y + 104}
                 w={RIGHT.w - 48}
                 h={26}
                 points={TAPE_POINTS}
@@ -298,8 +306,8 @@ export function Render({ s }: { s: SceneState }) {
                 u={sweepU}
                 title="Replay recording — watch it, or query it, at any moment"
               />
-              <text x={RIGHT.x + 24} y={RIGHT.y + 138} fill={colors.MUTED} fontSize={10} fontFamily={MONO} opacity={sweepU > 0.2 ? 1 : 0}>
-                + durable-stream event logs · digests (the deterministic layer)
+              <text x={RIGHT.x + 24} y={RIGHT.y + 150} fill={colors.MUTED} fontSize={11} fontFamily={MONO} opacity={sweepU > 0.2 ? 1 : 0}>
+                + durable-stream logs · digests (deterministic)
               </text>
               {/* the six attack arms */}
               {armsU > 0 &&
@@ -309,14 +317,14 @@ export function Render({ s }: { s: SceneState }) {
                   const col = i % 2;
                   const row = Math.floor(i / 2);
                   const x = RIGHT.x + 24 + col * 222;
-                  const y = RIGHT.y + 156 + row * 62;
+                  const y = RIGHT.y + 170 + row * 62;
                   return (
                     <g key={a.label} opacity={u} transform={`translate(0 ${(1 - u) * 8})`}>
                       <rect x={x} y={y} width={210} height={52} rx={10} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.2} opacity={0.9} />
-                      <text x={x + 12} y={y + 21} fill={colors.NEGATIVE} fontSize={11.5} fontWeight={700}>
+                      <text x={x + 12} y={y + 21} fill={colors.NEGATIVE} fontSize={13} fontWeight={700}>
                         {a.label}
                       </text>
-                      <text x={x + 12} y={y + 38} fill={colors.MUTED} fontSize={9} fontFamily={MONO}>
+                      <text x={x + 12} y={y + 38} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
                         {a.sub}
                       </text>
                     </g>
@@ -347,15 +355,15 @@ export function Render({ s }: { s: SceneState }) {
               const x = recapX(i);
               return (
                 <g key={r.label} opacity={u} transform={`translate(0 ${(1 - u) * 16})`}>
-                  <rect x={x - 100} y={RECAP_Y - 44} width={200} height={88} rx={12} fill={colors.PANEL} stroke={i === RECAP.length - 1 && recapU > 0.95 ? colors.POSITIVE : colors.GRID} strokeWidth={i === RECAP.length - 1 && recapU > 0.95 ? 1.8 : 1} />
-                  <text x={x} y={RECAP_Y - 12} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={700}>
+                  <rect x={x - RECAP_W / 2} y={RECAP_Y - 44} width={RECAP_W} height={88} rx={12} fill={colors.PANEL} stroke={i === RECAP.length - 1 && recapU > 0.95 ? colors.POSITIVE : colors.GRID} strokeWidth={i === RECAP.length - 1 && recapU > 0.95 ? 1.8 : 1} />
+                  <text x={x} y={RECAP_Y - 12} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontWeight={700}>
                     {r.label}
                   </text>
-                  <text x={x} y={RECAP_Y + 12} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={MONO}>
+                  <text x={x} y={RECAP_Y + 12} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
                     {r.sub}
                   </text>
                   {i < RECAP.length - 1 && u > 0.9 && (
-                    <path d={`M ${x + 104} ${RECAP_Y} l 14 0 m -5 -5 l 5 5 l -5 5`} stroke={colors.MUTED} strokeWidth={1.6} fill="none" opacity={(u - 0.9) * 10} />
+                    <path d={`M ${x + RECAP_W / 2 + 3} ${RECAP_Y} l 9 0 m -4 -4 l 4 4 l -4 4`} stroke={colors.MUTED} strokeWidth={1.6} fill="none" opacity={(u - 0.9) * 10} />
                   )}
                 </g>
               );

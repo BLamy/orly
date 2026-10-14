@@ -33,7 +33,7 @@ export function buildScene() {
 
   tl.caption({ at: 12.6, dur: 5.8, text: 'Now the same rows become Type Two Strict Success Rates, with one fixed Worker and Reporter behind every Controller.' });
   tl.tween(mode, 1, { at: 13.2, dur: 1.5, ease: ease.move });
-  tl.tween(cam, { x: 670, y: 330, k: 1.05 }, { at: 15.0, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 670, y: 345, k: 1.05 }, { at: 15.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 18.7, dur: 5.8, text: 'Switch to complete Type Three tasks and the Controller range collapses to sixteen point zero five through twenty four point six nine percent.' });
   tl.tween(mode, 2, { at: 19.3, dur: 1.5, ease: ease.move });
@@ -51,7 +51,7 @@ export function buildScene() {
   tl.tween(rankU, 1, { at: 37.6, dur: 2.4, ease: ease.draw });
 
   tl.caption({ at: 43.1, dur: 5.8, text: 'But correlation is not completion. The strongest observed full task result still succeeds on fewer than one run in four.' });
-  tl.tween(cam, { x: 855, y: 240, k: 1.28 }, { at: 43.7, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 720, y: 350, k: 1.12 }, { at: 43.7, dur: 1.2, ease: ease.move });
   tl.tween(ceilingU, 1.5, { at: 45.1, dur: 0.6, ease: ease.pop });
 
   tl.caption({ at: 49.2, dur: 6.2, text: 'Task, evidence, Contract, evaluator. Loop Arena makes runtime control measurable, while its own results show how much remains unsolved.' });
@@ -80,11 +80,11 @@ export function Render({ s }: { s: SceneState }) {
       <text x="640" y="62" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="850">strict success is the expensive claim</text>
       <g opacity={s.get(scene.protocolU)} transform="translate(110 88)">
         <rect width="1060" height="48" rx="24" fill="#102a22" stroke={colors.POSITIVE} strokeWidth="2" />
-        <text x="530" y="30" textAnchor="middle" fill={colors.POSITIVE} fontSize="13" fontFamily={colors.font.mono}>evaluator pass  AND  protocol valid  AND  3 repeats per task</text>
+        <text x="530" y="31" textAnchor="middle" fill={colors.POSITIVE} fontSize="15" fontFamily={colors.font.mono}>evaluator pass  AND  protocol valid  AND  3 repeats per task</text>
       </g>
       <text x="180" y="180" fill={colors.MUTED} fontSize="13" fontFamily={colors.font.mono}>{setting}</text>
       <line x1="390" y1="470" x2="1080" y2="470" stroke={colors.GRID} strokeWidth="2" />
-      {[0, 25, 50, 75, 100].map((v) => <g key={v}><line x1={390 + v * 6.7} y1="168" x2={390 + v * 6.7} y2="470" stroke={colors.GRID} strokeWidth="1" opacity="0.45" /><text x={390 + v * 6.7} y="492" textAnchor="middle" fill={colors.MUTED} fontSize="10">{v}%</text></g>)}
+      {[0, 25, 50, 75, 100].map((v) => <g key={v}><line x1={390 + v * 6.7} y1="168" x2={390 + v * 6.7} y2="470" stroke={colors.GRID} strokeWidth="1" opacity="0.45" /><text x={390 + v * 6.7} y="492" textAnchor="middle" fill={colors.MUTED} fontSize="12">{v}%</text></g>)}
       {METHODS.map((method, i) => {
         const u = clamp01(s.get(scene.rowsU) - i);
         const y = 198 + i * 60;
@@ -94,20 +94,35 @@ export function Render({ s }: { s: SceneState }) {
           <text x="365" y={y + 7} textAnchor="end" fill={top ? colors.WARM : colors.TEXT} fontSize="12" fontFamily={colors.font.mono}>{method}</text>
           <rect x="390" y={y - 17} width={val * 6.7} height="34" rx="9" fill={top ? colors.WARM : i % 2 ? colors.SECONDARY : colors.ACCENT} opacity="0.78" />
           <text x={405 + val * 6.7} y={y + 6} fill={top ? colors.WARM : colors.TEXT} fontSize="12" fontWeight="800">{val.toFixed(2)}%</text>
-          {cost > 0 && <g opacity={cost}><rect x="390" y={y + 22} width={COST3[i] * 24} height="7" rx="3.5" fill={colors.NEGATIVE} opacity="0.28" /><rect x="390" y={y + 22} width={COST2[i] * 24} height="7" rx="3.5" fill={colors.POSITIVE} /><text x="1080" y={y + 29} textAnchor="end" fill={colors.MUTED} fontSize="9" fontFamily={colors.font.mono}>{`$${COST2[i].toFixed(2)} / $${COST3[i].toFixed(2)}`}</text></g>}
+          {cost > 0 && <g opacity={cost}><rect x="390" y={y + 22} width={COST3[i] * 24} height="7" rx="3.5" fill={colors.NEGATIVE} opacity="0.28" /><rect x="390" y={y + 22} width={COST2[i] * 24} height="7" rx="3.5" fill={colors.POSITIVE} /><text x="1070" y={y + 29} textAnchor="end" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>{`$${COST2[i].toFixed(2)} / $${COST3[i].toFixed(2)}`}</text></g>}
         </g>;
       })}
-      <g opacity={s.get(scene.refsU) * (1 - 0.85 * cost)} transform="translate(900 380)">
-        <rect width="270" height="82" rx="18" fill="#151d2f" stroke={colors.MUTED} />
-        <text x="18" y="27" fill={colors.MUTED} fontSize="11" fontFamily={colors.font.mono}>Type II  fixed 46.91 · none 39.51</text>
-        <text x="18" y="55" fill={colors.WARM} fontSize="11" fontFamily={colors.font.mono}>Type III fixed 18.52 · none 18.52</text>
+      <g opacity={s.get(scene.refsU)} transform="translate(0 498)">
+        <text x="180" y="12" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>RESTATEMENT BASELINES · same 0–100% scale</text>
+        {[
+          { label: 'Type II slice · fixed', v: 46.91, c: colors.POSITIVE, row: 0 },
+          { label: 'Type II slice · none', v: 39.51, c: colors.MUTED, row: 1 },
+          { label: 'Type III full · fixed', v: 18.52, c: colors.POSITIVE, row: 2 },
+          { label: 'Type III full · none', v: 18.52, c: colors.MUTED, row: 3 },
+        ].map((b) => {
+          const by = 22 + b.row * 19;
+          return <g key={b.label}>
+            <text x="375" y={by + 11} textAnchor="end" fill={colors.TEXT} fontSize="12" fontFamily={colors.font.mono}>{b.label}</text>
+            <rect x="390" y={by} width={b.v * 6.7} height="14" rx="5" fill={b.c} opacity={b.c === colors.MUTED ? 0.6 : 0.85} />
+            <text x={398 + b.v * 6.7} y={by + 11} fill={colors.TEXT} fontSize="12" fontWeight="800">{`${b.v.toFixed(2)}%`}</text>
+          </g>;
+        })}
       </g>
-      <g opacity={s.get(scene.savingU)} transform="translate(1090 178)"><circle r="58" fill="#102a22" stroke={colors.POSITIVE} strokeWidth="4" /><text y="-2" textAnchor="middle" fill={colors.POSITIVE} fontSize="22" fontWeight="900">−64.4%</text><text y="22" textAnchor="middle" fill={colors.MUTED} fontSize="9">paired cost</text></g>
+      <g opacity={s.get(scene.savingU)} transform="translate(1190 200)"><circle r="50" fill="#102a22" stroke={colors.POSITIVE} strokeWidth="4" /><text y="-2" textAnchor="middle" fill={colors.POSITIVE} fontSize="22" fontWeight="900">−64.4%</text><text y="20" textAnchor="middle" fill={colors.MUTED} fontSize="12">paired cost</text></g>
       <g opacity={s.get(scene.rankU)}>
-        <path d="M916 220 C990 245 930 276 865 288 S990 338 916 356 S990 410 865 424 S990 470 916 492" fill="none" stroke={colors.SECONDARY} strokeWidth="4" strokeDasharray="10 7" />
-        <rect x="1010" y="360" width="168" height="56" rx="18" fill="#221c35" stroke={colors.SECONDARY} /><text x="1094" y="385" textAnchor="middle" fill={colors.SECONDARY} fontSize="17" fontWeight="850">ρ = 0.9747</text><text x="1094" y="404" textAnchor="middle" fill={colors.MUTED} fontSize="9">Controller ranks only</text>
+        <path d="M1100 262 C1130 288 1084 318 1104 340 S1130 368 1100 384" fill="none" stroke={colors.SECONDARY} strokeWidth="4" strokeDasharray="10 7" />
+        <rect x="1084" y="396" width="180" height="88" rx="18" fill="#221c35" stroke={colors.SECONDARY} />
+        <text x="1174" y="422" textAnchor="middle" fill={colors.SECONDARY} fontSize="17" fontWeight="850">ρ = 0.9747</text>
+        <text x="1174" y="440" textAnchor="middle" fill={colors.TEXT} fontSize="12" fontWeight="700">Spearman rank correlation</text>
+        <text x="1174" y="457" textAnchor="middle" fill={colors.MUTED} fontSize="12">how closely the Controller</text>
+        <text x="1174" y="473" textAnchor="middle" fill={colors.MUTED} fontSize="12">ordering matches full tasks</text>
       </g>
-      <g opacity={s.get(scene.ceilingU)} transform="translate(910 158)"><rect x="-94" y="-25" width="188" height="50" rx="16" fill="#2b2415" stroke={colors.WARM} strokeWidth="3" /><text y="6" textAnchor="middle" fill={colors.WARM} fontSize="16" fontWeight="900">best Type III: 24.69%</text></g>
+      <g opacity={s.get(scene.ceilingU)} transform="translate(930 166)"><rect x="-105" y="-25" width="210" height="50" rx="16" fill="#2b2415" stroke={colors.WARM} strokeWidth="3" /><text y="6" textAnchor="middle" fill={colors.WARM} fontSize="16" fontWeight="900">best Type III: 24.69%</text></g>
     </g>
     <g opacity={close}>
       <rect x="156" y="118" width="968" height="446" rx="44" fill={colors.BG} stroke={colors.POSITIVE} strokeWidth="4" />

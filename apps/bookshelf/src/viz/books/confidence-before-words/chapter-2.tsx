@@ -59,12 +59,14 @@ export const CAPTIONS = [
 
 // ---------------------------------------------------------------------------
 // Layout. Captions own y ≥ 633; the machine lives in y = 60…600.
+// The rail is centred on the stage (x 240…1040) so every camera setting keeps the
+// rail, its end labels and the local-model card inside the visible frame.
 // ---------------------------------------------------------------------------
 
-const GEOM = railGeom(160, 230, 960, 170);
+const GEOM = railGeom(240, 230, 800, 170);
 const ST = { w: 200, h: 100, y: GEOM.y + GEOM.trackH + 6 };
 const MARK_Y = ST.y + ST.h + 44;
-const BANDS_TEX = ['C < 0.35', '0.35 \\le C < 0.55', '0.55 \\le C < 0.75', 'C \\ge 0.75'];
+const BANDS_TXT = ['C < 0.35', '0.35 ≤ C < 0.55', '0.55 ≤ C < 0.75', 'C ≥ 0.75'];
 
 // beat-6 magnifier: the rail from 0.545 to 0.555, one hundred times larger
 const MAG = { x: 508, w: 360, y: 330, lo: 0.545, hi: 0.555 };
@@ -73,7 +75,7 @@ const BOUNDARY = THRESHOLDS[1]; // 0.55
 const JUST_BELOW = 0.549;
 
 // beat-9 recap: ribbon → estimate → rail
-const RIB = { x: 160, y: 62, w: 300, h: 60 };
+const RIB = { x: 240, y: 62, w: 300, h: 60 };
 const EST = { x: 600, y: 92 };
 const RECAP_SCORE = 0.65;
 
@@ -89,7 +91,7 @@ const truncated = (score: number, places: number) => {
 
 export function buildScene() {
   const tl = new Timeline();
-  const cam = tl.channel<CameraState>('cam', { x: 640, y: 230, k: 1.6 }, cameraInterp);
+  const cam = tl.channel<CameraState>('cam', { x: 640, y: 230, k: 1.25 }, cameraInterp);
   const n = (k: string, v = 0) => tl.channel(k, v);
   const to = (ch: ChannelRef<number>, v: number, at: number, dur = 0.7, e = ease.enter) =>
     tl.tween(ch, v, { at, dur, ease: e });
@@ -108,6 +110,7 @@ export function buildScene() {
   const pkt2U = n('pkt2U');
   const st = [n('stHuman'), n('stLarge'), n('stRag'), n('stLocal')];
   const magO = n('magO');
+  const railFade = n('railFade', 1);
   const edgeO = n('edgeO');
   const lockU = n('lockU');
   const lockO = n('lockO', 1);
@@ -129,18 +132,18 @@ export function buildScene() {
   tl.hold(B(1) + DUR, 1.2);
 
   // 2…5 — one illustrative score per band; the selected route lights, the rest whisper
-  const visits: { beat: number; value: number; camX: number }[] = [
-    { beat: 2, value: 0.85, camX: 747 },
-    { beat: 3, value: 0.65, camX: 740 },
-    { beat: 4, value: 0.45, camX: 540 },
-    { beat: 5, value: 0.2, camX: 533 },
+  const visits: { beat: number; value: number }[] = [
+    { beat: 2, value: 0.85 },
+    { beat: 3, value: 0.65 },
+    { beat: 4, value: 0.45 },
+    { beat: 5, value: 0.2 },
   ];
-  visits.forEach(({ beat, value, camX }, k) => {
+  visits.forEach(({ beat, value }, k) => {
     const at = B(beat);
     const idx = routeIndex(value);
     if (k > 0) to(st[routeIndex(visits[k - 1].value)], 0, at, 0.5);
     tl.set(pktU, -1, at);
-    look({ x: camX, y: 340, k: 1.2 }, at, 1.4);
+    look({ x: 640, y: 340, k: 1.1 }, at, 1.4);
     to(whisper, 1, at, 0.8);
     to(score, value, at + 0.4, 1.2, ease.move);
     tl.set(pktU, 0, at + 1.8);
@@ -155,7 +158,8 @@ export function buildScene() {
   look({ x: 688, y: 322, k: 2.4 }, B(6), 1.6);
   to(score, JUST_BELOW, B(6) + 0.2, 1.4, ease.move);
   tl.set(precise, 1, B(6) + 1.6);
-  to(stationsO, 0, B(6) + 0.2, 0.6); // stations sit under the caption strip at this zoom
+  to(stationsO, 0, B(6) + 0.2, 0.6);
+  to(railFade, 0, B(6) + 0.8, 0.6); // the full rail leaves; the magnifier carries the boundary alone
   to(magO, 1, B(6) + 1.6);
   to(edgeO, 1, B(6) + 2.2);
   to(score, BOUNDARY, B(6) + 4.0, 2.4, ease.linear);
@@ -163,6 +167,7 @@ export function buildScene() {
 
   // 7 — pull back; the thresholds lock
   to(magO, 0, B(7), 0.5);
+  to(railFade, 1, B(7), 0.5);
   to(stationsO, 1, B(7) + 0.6);
   tl.set(precise, 0, B(7) + 0.5);
   look(CAMERA_HOME, B(7), 1.5);
@@ -203,7 +208,7 @@ export function buildScene() {
   tl.hold(B(9) + DUR, 1.6);
 
   return {
-    tl, cam, railU, trackU, stationsO, score, beadO, whisper, precise, pktU, pkt2U, st, magO, edgeO,
+    tl, cam, railU, trackU, stationsO, score, beadO, whisper, precise, pktU, pkt2U, st, magO, railFade, edgeO,
     lockU, lockO, marksO, recapO, recapLit, estU, step,
   };
 }
@@ -228,8 +233,8 @@ function Station({ i, u }: { i: number; u: number }) {
   return (
     <g>
       <rect x={x} y={y} width={ST.w} height={ST.h} rx={10} fill={PANEL} stroke={color} strokeOpacity={0.6} />
-      <text x={x + 12} y={y + 20} fill={color} fontFamily={font.ui} fontSize={13} fontWeight={600}>{ROUTES[i].label}</text>
-      <MathLabel tex={BANDS_TEX[i]} x={x + 12} y={y + 38} fontSize={11} color={MUTED} anchor="start" boxWidth={160} />
+      <text x={x + 12} y={y + 22} fill={color} fontFamily={font.ui} fontSize={14} fontWeight={600}>{ROUTES[i].label}</text>
+      <Label x={x + 12} y={y + 42} text={BANDS_TXT[i]} size={12} color={MUTED} />
       {i === 3 ? (
         <g>{dots(3, x + 130, y + 52, 14, u)}</g>
       ) : i === 2 ? (
@@ -247,7 +252,7 @@ function Station({ i, u }: { i: number; u: number }) {
             );
           })}
           <circle cx={x + 70} cy={y + 66} r={6} fill={WARM} opacity={u > 0 ? 1 : 0.25} />
-          <Label x={x + 12} y={y + 90} text="query + external documents" size={9} o={seg(u, 0.6, 1)} />
+          <Label x={x + 12} y={y + 90} text="query + documents" size={12} o={seg(u, 0.6, 1)} />
         </g>
       ) : i === 1 ? (
         <g>{dots(6, x + 106, y + 46, 9, u)}</g>
@@ -257,7 +262,7 @@ function Station({ i, u }: { i: number; u: number }) {
           <rect x={x + 112} y={lerp(y + 30, y + 52, clamp01(u * 1.5))} width={50} height={24} rx={3} fill={PANEL} stroke={TEXT}
             strokeOpacity={0.8} opacity={clamp01(u * 2)} />
           <circle cx={x + 137} cy={lerp(y + 42, y + 64, clamp01(u * 1.5))} r={4} fill={WARM} opacity={clamp01(u * 2)} />
-          <Label x={x + 12} y={y + 90} text="status: pending · not solved" size={9} color={TEXT} o={seg(u, 0.6, 1)} />
+          <Label x={x + 12} y={y + 90} text="pending · not solved" size={12} color={TEXT} o={seg(u, 0.6, 1)} />
         </g>
       )}
     </g>
@@ -297,14 +302,15 @@ export function Render({ s }: { s: SceneState }) {
   const pkt = pktU >= 0 ? track.point(clamp01(pktU)) : null;
   const beadX = GEOM.sx(RECAP_SCORE);
   const stepO = (k: number) => (step === k ? 1 : step > k ? 0.45 : 0.2);
+  const railFade = g(scene.railFade);
 
   return (
     <g>
       <Camera {...g(scene.cam)}>
-        <Note x={GEOM.x + GEOM.w} y={GEOM.y - 46} text="confidence score C" anchor="end" size={13} color={MUTED} o={g(scene.railU) * (1 - recapO)} />
+        <Note x={GEOM.x + GEOM.w} y={GEOM.y - 46} text="confidence score C" anchor="end" size={14} color={MUTED} o={g(scene.railU) * (1 - recapO) * railFade} />
 
         <RouteRail geom={GEOM} reveal={g(scene.railU)} trackU={g(scene.trackU)} score={score} beadO={beadO}
-          whisper={whisper} edgeMarks={g(scene.edgeO)} size={12}
+          whisper={whisper} edgeMarks={g(scene.edgeO)} size={12} o={railFade}
           beadLabel={`C = ${truncated(score, precise ? 4 : 2)}`}>
           {/* stations ride the same selection emphasis as their tracks */}
           {ROUTES.map((r, i) => {
@@ -318,7 +324,7 @@ export function Render({ s }: { s: SceneState }) {
                   <line x1={GEOM.tracks[i].stationX} y1={ST.y + ST.h} x2={GEOM.tracks[i].stationX} y2={MARK_Y - 10}
                     stroke={r.color} strokeWidth={1.4} strokeDasharray="3 4" />
                   <path d={`M${GEOM.tracks[i].stationX},${MARK_Y - 8} l8,8 l-8,8 l-8,-8 z`} fill={PANEL} stroke={TEXT} strokeWidth={1.4} />
-                  <Label x={GEOM.tracks[i].stationX + 16} y={MARK_Y + 4} text="answer · unverified" size={10} color={TEXT} />
+                  <Label x={GEOM.tracks[i].stationX + 16} y={MARK_Y + 4} text="answer · unverified" size={12} color={TEXT} />
                 </g>
               </g>
             ) : null;
@@ -336,9 +342,9 @@ export function Render({ s }: { s: SceneState }) {
           {THRESHOLDS.map((th, i) => (
             <Lock key={th} x={GEOM.sx(th)} y={GEOM.y - 62} u={seg(lockU, i * 0.15, 0.7 + i * 0.15)} />
           ))}
-          <Label x={640} y={GEOM.y - 96} text="thresholds fixed after validation · for this reported setup" anchor="middle" size={12}
+          <Label x={640} y={GEOM.y - 96} text="thresholds fixed after validation · for this reported setup" anchor="middle" size={14}
             color={TEXT} o={seg(lockU, 0.6, 1)} />
-          <Tag x={640} y={GEOM.y - 116} text="Paper-reported" anchor="middle" size={10} o={seg(lockU, 0.6, 1)} />
+          <Tag x={640} y={GEOM.y - 116} text="Paper-reported" anchor="middle" size={12} o={seg(lockU, 0.6, 1)} />
         </g>
 
         {/* beat 6 — ×100 magnifier over the 0.55 boundary */}
@@ -346,24 +352,26 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={magO}>
             <path d={`M${GEOM.sx(MAG.lo)},${GEOM.y + 6} L${MAG.x},${MAG.y - 28} M${GEOM.sx(MAG.hi)},${GEOM.y + 6} L${MAG.x + MAG.w},${MAG.y - 28}`}
               stroke={MUTED} strokeWidth={0.8} strokeDasharray="3 3" fill="none" />
+            {/* source segment on the (now hidden) rail, so the leader lines have an origin */}
+            <rect x={GEOM.sx(MAG.lo)} y={GEOM.y - 4} width={GEOM.sx(BOUNDARY) - GEOM.sx(MAG.lo)} height={8} fill={ROUTES[1].color} />
+            <rect x={GEOM.sx(BOUNDARY)} y={GEOM.y - 4} width={GEOM.sx(MAG.hi) - GEOM.sx(BOUNDARY)} height={8} fill={ROUTES[2].color} />
             <rect x={MAG.x - 20} y={MAG.y - 40} width={MAG.w + 40} height={104} rx={10} fill={PANEL} stroke={MUTED} strokeOpacity={0.6} />
-            <Label x={MAG.x - 8} y={MAG.y - 24} text="rail magnified ×100 · Illustrative score" size={8} />
+            <Label x={MAG.x - 8} y={MAG.y - 22} text="rail magnified ×100 · Illustrative score" size={12} />
             <rect x={MAG.x} y={MAG.y - 3} width={MAG.w / 2} height={6} fill={ROUTES[1].color} fillOpacity={sel === 1 ? 0.95 : 0.3} />
             <rect x={MAG.x + MAG.w / 2} y={MAG.y - 3} width={MAG.w / 2} height={6} fill={ROUTES[2].color} fillOpacity={sel === 2 ? 0.95 : 0.3} />
             {[0.546, 0.548, 0.55, 0.552, 0.554].map((v) => (
               <g key={v}>
                 <line x1={magX(v)} y1={MAG.y - (v === BOUNDARY ? 12 : 6)} x2={magX(v)} y2={MAG.y + (v === BOUNDARY ? 12 : 6)}
                   stroke={TEXT} strokeWidth={v === BOUNDARY ? 1.6 : 0.8} />
-                <Label x={magX(v)} y={MAG.y + 24} text={v.toFixed(3)} anchor="middle" size={8} color={v === BOUNDARY ? TEXT : MUTED} />
+                <Label x={magX(v)} y={MAG.y + 26} text={v.toFixed(3)} anchor="middle" size={12} color={v === BOUNDARY ? TEXT : MUTED} />
               </g>
             ))}
             {/* closed end belongs to retrieval; the larger-model band stops just short */}
             <circle cx={magX(BOUNDARY) - 7} cy={MAG.y} r={3.4} fill={PANEL} stroke={ROUTES[1].color} strokeWidth={1.4} opacity={g(scene.edgeO)} />
             <circle cx={magX(BOUNDARY) + 7} cy={MAG.y} r={3.4} fill={ROUTES[2].color} stroke={TEXT} strokeWidth={0.8} opacity={g(scene.edgeO)} />
             <circle cx={magX(clamp01(score) < MAG.lo ? MAG.lo : score)} cy={MAG.y} r={5.5} fill={PANEL} stroke={ROUTES[sel].color} strokeWidth={2.4} />
-            <Label x={MAG.x - 8} y={MAG.y + 50} text={`C = ${truncated(score, 4)}  →  ${ROUTES[sel].label}`} size={10} color={ROUTES[sel].color} />
-            <MathLabel tex={'0.55 \\le C < 0.75'} x={MAG.x + MAG.w + 8} y={MAG.y + 46} fontSize={10} anchor="end" boxWidth={160}
-              color={ROUTES[2].color} opacity={g(scene.edgeO)} />
+            <Label x={MAG.x - 8} y={MAG.y + 50} text={`C = ${truncated(score, 4)}  →  ${ROUTES[sel].label}`} size={12} color={ROUTES[sel].color} />
+            <Label x={MAG.x + MAG.w + 8} y={MAG.y + 50} text={BANDS_TXT[2]} size={12} anchor="end" color={ROUTES[2].color} o={g(scene.edgeO)} />
           </g>
         ) : null}
 
@@ -371,17 +379,18 @@ export function Render({ s }: { s: SceneState }) {
         {recapO > 0 ? (
           <g opacity={recapO}>
             <ActivationRibbon {...RIB} lit={g(scene.recapLit)} color={ACCENT} />
-            <Label x={RIB.x + RIB.w / 2} y={RIB.y + RIB.h + 28} text="1 · process the query" anchor="middle" size={12} color={TEXT} o={stepO(1)} />
+            <Label x={RIB.x + RIB.w / 2} y={RIB.y + RIB.h + 28} text="1 · process the query" anchor="middle" size={14} color={TEXT} o={stepO(1)} />
             <line x1={RIB.x + RIB.w + 10} y1={EST.y} x2={EST.x - 26} y2={EST.y} stroke={MUTED} strokeWidth={1.4}
               strokeDasharray="4 5" opacity={stepO(2)} />
             <g opacity={stepO(2)}>
               <circle cx={EST.x} cy={EST.y} r={22} fill={PANEL} stroke={TEXT} strokeWidth={1.6} />
               <MathLabel tex={'C'} x={EST.x} y={EST.y} fontSize={16} boxWidth={50} />
-              <Label x={EST.x + 34} y={EST.y + 4} text="2 · estimate confidence" size={12} color={TEXT} />
+              <Label x={EST.x + 34} y={EST.y + 5} text="2 · estimate confidence" size={14} color={TEXT} />
               <path d={`M${EST.x},${EST.y + 24} C${EST.x},${EST.y + 84} ${beadX},${GEOM.y - 100} ${beadX},${GEOM.y - 36}`} fill="none"
                 stroke={TEXT} strokeWidth={1.4} pathLength={1} strokeDasharray={1} strokeDashoffset={1 - clamp01(estU)} />
             </g>
-            <Label x={GEOM.x + GEOM.w} y={GEOM.y + 70} text="3 · choose the response pathway" anchor="end" size={12} color={TEXT} o={stepO(3)} />
+            {/* top-left, clear of the local-model track that drops from the right end of the rail */}
+            <Label x={GEOM.x} y={GEOM.y - 46} text="3 · choose the response pathway" anchor="start" size={14} color={TEXT} o={stepO(3)} />
           </g>
         ) : null}
       </Camera>

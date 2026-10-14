@@ -76,12 +76,14 @@ const MEET_X = 2.6;
 const A_HOPS = [-1.72, -0.4, 1.3, MEET_X];
 const B_HOPS = [-1.72, 0.7, 1.9, MEET_X];
 
-const GRID_A = { x: 150, y: 430, cell: 8, gap: 2 };
-const GRID_B = { x: 780, y: 430, cell: 8, gap: 2 };
-const GRID_W = 16 * 10 - 2;
+// the two grids sit symmetrically either side of the centre line (x = 640)
+const GRID_A = { x: 340, y: 480, cell: 7, gap: 2 };
+const GRID_B = { x: 798, y: 480, cell: 7, gap: 2 };
+const GRID_W = 16 * 9 - 2;
 
 const CAM_CURVE: CameraState = { x: 650, y: 260, k: 1.2 };
-const CAM_GRIDS: CameraState = { x: 640, y: 430, k: 1.1 };
+// framed so the shared point (top) and the grids (bottom) both stay on stage
+const CAM_GRIDS: CameraState = { x: 640, y: 352, k: 1.1 };
 
 interface Scene {
   tl: Timeline;
@@ -277,18 +279,19 @@ function Frame({ s }: { s: SceneState }) {
           )}
 
           {/* x-coordinate → HKDF-extract */}
+          {/* elbow: drop from the shared point, run left to the centre line, feed HKDF */}
           {xU > 0 && (
             <g opacity={xU}>
-              <line x1={meet.x} y1={meet.y} x2={meet.x} y2={392} stroke={colors.WARM} strokeWidth={1.4} strokeDasharray="5 4" />
-              <text x={640} y={410} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="monospace">
+              <path d={`M${meet.x},${meet.y + 10} V400 H640 V412`} fill="none" stroke={colors.WARM} strokeWidth={1.4} strokeDasharray="5 4" />
+              <text x={880} y={392} textAnchor="end" fill={colors.WARM} fontSize={13} fontFamily="monospace">
                 shared_x = {shortHex(hex(SHARED_X), 8, 4)} (illustrative point, real pipeline from here)
               </text>
             </g>
           )}
           {hkdfU > 0 && (
             <g opacity={hkdfU}>
-              <rect x={470} y={425} width={340} height={36} rx={8} fill={colors.PANEL} stroke={colors.SECONDARY} />
-              <text x={640} y={448} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+              <rect x={470} y={412} width={340} height={36} rx={8} fill={colors.PANEL} stroke={colors.SECONDARY} />
+              <text x={640} y={435} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
                 hkdf_extract(salt "nip44-v2", shared_x)
               </text>
             </g>
@@ -306,7 +309,7 @@ function Frame({ s }: { s: SceneState }) {
               </text>
               <BitField bits={CONV_BITS} x={GRID_B.x} y={GRID_B.y} cell={GRID_B.cell} gap={GRID_B.gap} reveal={gridU} settle={settleU} seed={22} />
               {settleU >= 1 && (
-                <text x={640} y={530} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={gridU}>
+                <text x={640} y={540} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={gridU}>
                   conversation_key = {shortHex(CONV_KEY_HEX, 10, 6)}
                 </text>
               )}
@@ -314,7 +317,7 @@ function Frame({ s }: { s: SceneState }) {
           )}
           {sameU > 0 && (
             <g opacity={sameU}>
-              <text x={640} y={558} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={600}>
+              <text x={640} y={566} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={600}>
                 0 of 256 bits differ
               </text>
             </g>
@@ -324,14 +327,15 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
-          <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
+          {/* panel sits above the faded grids so no closing text overlaps them */}
+          <rect x={220} y={170} width={840} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <text x={640} y={240} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             One secret, never sent
           </text>
-          <text x={640} y={344} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
+          <text x={640} y={284} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             ECDH meets in the middle · HKDF-extract, salted "nip44-v2"
           </text>
-          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={324} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
             NIP-44 v2 · conversation_key = hkdf_extract(salt, shared_x)
           </text>
         </g>

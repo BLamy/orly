@@ -2,10 +2,24 @@
 // Persistent object: a 256-message delta set is peeled toward the four-round core.
 import { CAMERA_HOME, Camera, Timeline, cameraInterp, colors, ease } from '../../core';
 import type { CameraState, SceneState } from '../../core';
-import { Arrow, Chip, Panel, ResearchTitle, clamp01, mono } from '../../book-components/research';
+import { Arrow, Panel, ResearchTitle, clamp01, mono } from '../../book-components/research';
 
 const CORE = { x: 470, y: 190, w: 340, h: 300 };
 const GUESSES = ['k−1[0]', 'k−1[5]', 'k−1[10]', 'k−1[15]', 'u6[0]', 'u6[7]', 'u6[10]', 'u6[13]', 'u5[0]'];
+const SOURCE = 'Source: aes_mobius_bridge.pdf, sections 2–3';
+
+// Guess labels at 14px so they read on a laptop; the shared Chip is 12px.
+function GuessChip({ x, y, text, color }: { x: number; y: number; text: string; color: string }) {
+  const w = text.length * 8.4 + 24;
+  return (
+    <g transform={`translate(${x},${y})`}>
+      <rect x={-w / 2} y={-16} width={w} height={32} rx={16} fill={color} fillOpacity={0.13} stroke={color} />
+      <text textAnchor="middle" y={5} fill={color} fontSize={14} fontWeight={700} fontFamily={mono}>
+        {text}
+      </text>
+    </g>
+  );
+}
 
 export function buildScene() {
   const tl = new Timeline();
@@ -34,7 +48,7 @@ export function buildScene() {
   t = tl.hold(t, 0.5);
   t = tl.caption({ at: t, dur: 5.7, text: 'Derbez, Fouque, and Jean need nine guessed bytes around the core. Each byte multiplies the candidate space by two hundred fifty-six.' });
   tl.tween(guessesN, 9, { at: t - 5.2, dur: 2.0, ease: ease.enter });
-  tl.tween(cam, { x: 640, y: 360, k: 1.18 }, { at: t - 5.0, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 340, k: 1.08 }, { at: t - 5.0, dur: 1.2, ease: ease.move });
   t = tl.hold(t, 0.4);
   t = tl.caption({ at: t, dur: 5.8, text: 'An older multiset trick already erases one input-side byte, because reordering two hundred fifty-six values cannot change their frequency table.' });
   tl.tween(eraseU, 1, { at: t - 5.0, dur: 1.2, ease: ease.move });
@@ -56,7 +70,7 @@ function RoundRail({ u, peel }: { u: number; peel: number }) {
         return (
           <g key={label} transform={`translate(${x},135)`} opacity={outer ? 1 - 0.8 * peel : 1}>
             <rect x={-42} y={-22} width={84} height={44} rx={10} fill={outer ? colors.WARM : colors.PANEL} fillOpacity={0.16} stroke={outer ? colors.WARM : colors.GRID} />
-            <text textAnchor="middle" y={5} fill={colors.TEXT} fontSize={13} fontFamily={mono}>{label}</text>
+            <text textAnchor="middle" y={5} fill={colors.TEXT} fontSize={14} fontFamily={mono}>{label}</text>
           </g>
         );
       })}
@@ -70,43 +84,48 @@ export function Render({ s }: { s: SceneState }) {
   const erase = s.get(scene.eraseU);
   const meet = s.get(scene.collisionU);
   return (
-    <Camera {...s.get(scene.cam)}>
+    <>
       <ResearchTitle kicker="The Möbius Bridge · 1" title="Nine guesses at the middle" />
-      <RoundRail u={s.get(scene.roundsU)} peel={peel} />
-      <Panel x={CORE.x} y={CORE.y} w={CORE.w} h={CORE.h} opacity={peel} accent={colors.ACCENT}>
-        <text x={640} y={225} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={mono}>four-round core</text>
-        {Array.from({ length: 16 }, (_, i) => {
-          const x = 535 + (i % 4) * 70;
-          const y = 270 + Math.floor(i / 4) * 48;
-          return <rect key={i} x={x} y={y} width={46} height={30} rx={5} fill={colors.ACCENT} opacity={0.08 + 0.34 * ((i % 5) / 4)} />;
-        })}
-        <text x={640} y={470} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={mono}>precomputed family T</text>
-      </Panel>
-      <g opacity={s.get(scene.setU)}>
-        {Array.from({ length: 32 }, (_, i) => {
-          const a = (i / 32) * Math.PI * 2;
-          return <circle key={i} cx={250 + Math.cos(a) * 82} cy={340 + Math.sin(a) * 82} r={4} fill={colors.SECONDARY} />;
-        })}
-        <text x={250} y={344} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={mono}>256 texts</text>
-      </g>
-      <Arrow x1={340} y1={340} x2={470} y2={340} reveal={peel} color={colors.SECONDARY} />
-      <Arrow x1={1010} y1={340} x2={810} y2={340} reveal={peel} color={colors.WARM} />
-      <circle cx={340 + (470 - 340) * meet} cy={340} r={7} fill={colors.SECONDARY} opacity={peel} />
-      <circle cx={1010 + (810 - 1010) * meet} cy={340} r={7} fill={colors.WARM} opacity={peel} />
-      <g>
-        {GUESSES.map((g, i) => {
-          const u = clamp01(n - i);
-          const gone = i === 0 ? erase : 0;
-          const x = 160 + i * 118;
-          return (
-            <g key={g} opacity={u * (1 - gone)} transform={`translate(0,${gone * -24})`}>
-              <Chip x={x} y={555} text={g} color={i < 4 ? colors.SECONDARY : colors.WARM} />
-              {i === 0 && <line x1={x - 35} y1={540} x2={x + 35} y2={570} stroke={colors.NEGATIVE} strokeWidth={3} opacity={erase} />}
-            </g>
-          );
-        })}
-      </g>
-    </Camera>
+      <text x={1216} y={54} textAnchor="end" fill={colors.MUTED} fontSize={13} fontFamily={mono}>
+        {SOURCE}
+      </text>
+      <Camera {...s.get(scene.cam)}>
+        <RoundRail u={s.get(scene.roundsU)} peel={peel} />
+        <Panel x={CORE.x} y={CORE.y} w={CORE.w} h={CORE.h} opacity={peel} accent={colors.ACCENT}>
+          <text x={640} y={225} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={mono}>four-round core</text>
+          {Array.from({ length: 16 }, (_, i) => {
+            const x = 535 + (i % 4) * 70;
+            const y = 270 + Math.floor(i / 4) * 48;
+            return <rect key={i} x={x} y={y} width={46} height={30} rx={5} fill={colors.ACCENT} opacity={0.08 + 0.34 * ((i % 5) / 4)} />;
+          })}
+          <text x={640} y={470} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={mono}>precomputed family T</text>
+        </Panel>
+        <g opacity={s.get(scene.setU)}>
+          {Array.from({ length: 32 }, (_, i) => {
+            const a = (i / 32) * Math.PI * 2;
+            return <circle key={i} cx={250 + Math.cos(a) * 82} cy={340 + Math.sin(a) * 82} r={4} fill={colors.SECONDARY} />;
+          })}
+          <text x={250} y={344} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={mono}>256 texts</text>
+        </g>
+        <Arrow x1={340} y1={340} x2={470} y2={340} reveal={peel} color={colors.SECONDARY} />
+        <Arrow x1={1010} y1={340} x2={810} y2={340} reveal={peel} color={colors.WARM} />
+        <circle cx={340 + (470 - 340) * meet} cy={340} r={7} fill={colors.SECONDARY} opacity={peel} />
+        <circle cx={1010 + (810 - 1010) * meet} cy={340} r={7} fill={colors.WARM} opacity={peel} />
+        <g>
+          {GUESSES.map((g, i) => {
+            const u = clamp01(n - i);
+            const gone = i === 0 ? erase : 0;
+            const x = 160 + i * 118;
+            return (
+              <g key={g} opacity={u * (1 - gone)} transform={`translate(0,${gone * -24})`}>
+                <GuessChip x={x} y={555} text={g} color={i < 4 ? colors.SECONDARY : colors.WARM} />
+                {i === 0 && <line x1={x - 42} y1={540} x2={x + 42} y2={570} stroke={colors.NEGATIVE} strokeWidth={3} opacity={erase} />}
+              </g>
+            );
+          })}
+        </g>
+      </Camera>
+    </>
   );
 }
 export const vizScene = () => scene;

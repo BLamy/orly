@@ -48,9 +48,10 @@ const PROV = { x: 340, y: 200, w: 600, h: 240 };
 
 const CAM_HOME: CameraState = CAMERA_HOME;
 const CAM_SHEETS: CameraState = { x: 360, y: 280, k: 1.1 };
-const CAM_SPL: CameraState = { x: 900, y: 300, k: 1.05 };
-const CAM_XV: CameraState = { x: 900, y: 420, k: 1.02 };
-const CAM_LADDER: CameraState = { x: 400, y: 280, k: 1.06 };
+// framed so the faded left column (sheet labels from x = 70) stays on the stage
+const CAM_SPL: CameraState = { x: 635, y: 300, k: 1.0 };
+const CAM_XV: CameraState = { x: 635, y: 352, k: 0.98 };
+const CAM_LADDER: CameraState = { x: 320, y: 217, k: 1.06 };
 const CAM_WIDE: CameraState = { x: 640, y: 360, k: 0.96 };
 
 const FALLS: [string, string][] = [
@@ -158,6 +159,8 @@ export function buildScene() {
     text: 'The damage list. Keller’s conjecture: false in dimension three, and false in every higher dimension — just pad the map with coordinates it never touches.',
   });
   tl.tween(leftOff, 1, { at: t - 6.0, dur: 0.8, ease: ease.move });
+  tl.tween(splU, 0, { at: t - 6.0, dur: 0.8, ease: ease.move }); // the drive and honest-coordinate panels leave for the ladder
+  tl.tween(xvU, 0, { at: t - 6.0, dur: 0.8, ease: ease.move });
   tl.tween(cam, CAM_LADDER, { at: t - 5.8, dur: 1.4, ease: ease.move });
   tl.tween(ladderN, 1, { at: t - 4.4, dur: 0.7, ease: ease.move });
   t = tl.hold(t, 0.4);
@@ -198,6 +201,7 @@ export function buildScene() {
     text: 'It was announced on the day of the World Cup final, in a post short enough to fit in a caption, and every claim in it checks by hand. Some eras end with a treatise. This one ended with a tweet.',
   });
   tl.tween(provU, 1, { at: t - 6.2, dur: 1.0, ease: ease.enter });
+  tl.tween(dimU, 1, { at: t - 6.2, dur: 1.0, ease: ease.move }); // clear the faded ladder under the closing card
   tl.hold(t, 1.2);
 
   return { tl, cam, sheetsU, topoU, splU, driveT, xvU, survU, deltaU, leftDim, leftOff, ladderN, dimU, recapN, provU };
@@ -232,14 +236,14 @@ function SheetStack({ u, off, ldim, dim }: { u: number; off: number; ldim: numbe
               strokeDasharray={String(w * 1.2)}
               strokeDashoffset={w * 1.2 * (1 - d)}
             />
-            <text x={x + w + 10} y={sy + 2} fill={sheetC[i]} fontSize={11.5} fontFamily={mono}>
+            <text x={x + w + 10} y={sy + 2} fill={sheetC[i]} fontSize={12} fontFamily={mono}>
               sheet {i + 1}
             </text>
           </g>
         );
       })}
       <line x1={x} y1={baseY} x2={x + w} y2={baseY} stroke={colors.MUTED} strokeWidth={2} />
-      <text x={x} y={baseY + 22} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+      <text x={x} y={baseY + 22} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
         the target space ℂ³ — every loop shrinks to a point
       </text>
       {[0.28, 0.55, 0.8].map((f) => (
@@ -258,14 +262,14 @@ function TopologyCard({ u, off, ldim, dim }: { u: number; off: number; ldim: num
   return (
     <g opacity={a} transform={`translate(${TOPO.x}, ${TOPO.y + (1 - uu) * 10})`}>
       <rect width={TOPO.w} height={TOPO.h} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.8} />
-      <MathLabel anchor="start" tex={'\\pi_1(\\mathbb{C}^3) = 1'} x={22} y={16} fontSize={17} color={colors.WARM} opacity={a} />
+      <MathLabel anchor="start" tex={'\\pi_1(\\mathbb{C}^3) = 1'} x={22} y={28} fontSize={17} color={colors.WARM} opacity={a} />
       <text x={190} y={40} fill={colors.TEXT} fontSize={12.5} fontFamily={mono}>
         proper étale + simply connected base
       </text>
       <text x={190} y={62} fill={colors.TEXT} fontSize={12.5} fontFamily={mono}>
         ⇒ one sheet only. so… how?
       </text>
-      <text x={22} y={92} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+      <text x={22} y={92} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
         the assumption to attack: “proper” — sheets that never run away
       </text>
     </g>
@@ -305,7 +309,7 @@ function EscapeDrive({ u, tau, dlt, dim }: { u: number; tau: number; dlt: number
       <line x1={SP_CX} y1={SPL.y + 40} x2={SP_CX} y2={SPL.y + SPL.h - 16} stroke={colors.GRID} strokeWidth={1} />
       {/* the doorway to infinity */}
       <circle cx={SP_CX} cy={SP_CY} r={9} fill="none" stroke={colors.NEGATIVE} strokeWidth={1.6} strokeDasharray="3 4" />
-      <text x={SP_CX + 14} y={SP_CY - 10} fill={colors.NEGATIVE} fontSize={11} fontFamily={mono} opacity={0.85}>
+      <text x={SP_CX + 14} y={SP_CY - 10} fill={colors.NEGATIVE} fontSize={12} fontFamily={mono} opacity={0.85}>
         x = ∞
       </text>
       {roots.map((r, i) => (
@@ -323,19 +327,25 @@ function EscapeDrive({ u, tau, dlt, dim }: { u: number; tau: number; dlt: number
       {/* the escape surface card */}
       {dlt > 0 && (
         <g opacity={clamp01(dlt)}>
-          <rect x={SPL.x + 296} y={SPL.y + 40} width={240} height={62} rx={8} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.5} />
-          <text x={SPL.x + 310} y={SPL.y + 60} fill={colors.NEGATIVE} fontSize={11} fontWeight={700} fontFamily={mono}>
+          <rect x={SPL.x + 290} y={SPL.y + 40} width={250} height={128} rx={8} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.5} />
+          <text x={SPL.x + 304} y={SPL.y + 64} fill={colors.NEGATIVE} fontSize={12} fontWeight={700} fontFamily={mono}>
             Δ = 0 — the escape surface
           </text>
           <MathLabel anchor="start"
             tex={'\\Delta = b^2\\!-\\!16a+18abc-27a^2c^2-b^3c'}
-            x={SPL.x + 310}
-            y={SPL.y + 66}
-            fontSize={10}
+            x={SPL.x + 304}
+            y={SPL.y + 92}
+            fontSize={13}
             color={colors.NEGATIVE}
             opacity={clamp01(dlt) * a}
-            boxWidth={220}
+            boxWidth={230}
           />
+          <text x={SPL.x + 304} y={SPL.y + 128} fill={colors.TEXT} fontSize={12} fontFamily={mono}>
+            proper: sheets cannot leave
+          </text>
+          <text x={SPL.x + 304} y={SPL.y + 146} fill={colors.TEXT} fontSize={12} fontFamily={mono}>
+            through infinity
+          </text>
         </g>
       )}
     </g>
@@ -401,7 +411,7 @@ function HonestView({ u, tau, surv, dim }: { u: number; tau: number; surv: numbe
 /** What falls, what survives. */
 function Aftermath({ n, dim }: { n: number; dim: number }) {
   if (n <= 0) return null;
-  const a = 1 - 0.85 * clamp01(dim);
+  const a = 1 - clamp01(dim);
   return (
     <g opacity={a}>
       <text x={LADDER.x} y={LADDER.y - 18} fill={colors.MUTED} fontSize={12.5} fontWeight={700} fontFamily={mono}>
@@ -441,10 +451,10 @@ function RecapStrip({ n }: { n: number }) {
         return (
           <g key={i} transform={`translate(${rx}, ${RECAP.y + (1 - u) * 8})`} opacity={u}>
             <rect width={RECAP.w} height={RECAP.h} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} />
-            <text x={14} y={22} fill={colors.ACCENT} fontSize={11} fontWeight={700} fontFamily={mono}>
+            <text x={14} y={22} fill={colors.ACCENT} fontSize={12} fontWeight={700} fontFamily={mono}>
               step {i + 1}
             </text>
-            <text x={14} y={40} fill={colors.TEXT} fontSize={11.5} fontFamily={mono}>
+            <text x={14} y={40} fill={colors.TEXT} fontSize={12} fontFamily={mono}>
               {label}
             </text>
           </g>

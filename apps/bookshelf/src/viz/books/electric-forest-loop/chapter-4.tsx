@@ -35,7 +35,7 @@ const STOPS = [
 ];
 
 // the budget ledger: rounds of three, a judge gate after each full round
-const LEDGER = { x: 690, y: 128, w: 500, rowH: 58 };
+const LEDGER = { x: 690, y: 128, w: 500, rowH: 50 };
 const PIP_DX = 52;
 const ROWS = [
   { pips: 3, judge: true }, // attempts 1–3 → judge
@@ -43,11 +43,15 @@ const ROWS = [
   { pips: 3, judge: true }, // attempts 7–9 → judge
   { pips: 1, judge: false }, // attempt 10 — the hard cap
 ];
-const STATE = { x: 700, y: 408, w: 480, h: 186 };
+const JUDGE = { y: 320, w: 520, h: 60 };
+const THRASH_Y = 396;
+const STATE = { x: 700, y: 424, w: 480, h: 166 };
+const HUMAN = { x: 400, y: 600 };
 
+// one framing for the whole right-hand story: the ring keeps its labels in view
 const CAM_RING: CameraState = { x: 430, y: 330, k: 1.2 };
-const CAM_LEDGER: CameraState = { x: 900, y: 250, k: 1.28 };
-const CAM_STATE: CameraState = { x: 900, y: 440, k: 1.3 };
+const CAM_LEDGER: CameraState = { x: 700, y: 380, k: 1.12 };
+const CAM_STATE: CameraState = { x: 700, y: 380, k: 1.12 };
 const CAM_WIDE: CameraState = { x: 640, y: 360, k: 1.0 };
 
 /* -------------------------------------------------------------- timeline */
@@ -223,7 +227,8 @@ export function Render({ s }: { s: SceneState }) {
   const endDim = s.get(scene.endDim);
   const endU = s.get(scene.endU);
 
-  const worldOp = 1 - 0.85 * endDim;
+  // the closing card owns the frame: the old world fades out completely under it
+  const worldOp = 1 - endDim;
 
   return (
     <>
@@ -243,7 +248,7 @@ export function Render({ s }: { s: SceneState }) {
             labelSize={13}
           />
           {ringU > 0.9 && (
-            <text x={RING.cx} y={RING.cy + 6} textAnchor="middle" fill={ringDim > 0.5 ? colors.NEGATIVE : colors.MUTED} fontSize={12.5} fontFamily={MONO} opacity={0.9}>
+            <text x={RING.cx} y={RING.cy + 6} textAnchor="middle" fill={ringDim > 0.5 ? colors.NEGATIVE : colors.MUTED} fontSize={13} fontFamily={MONO} opacity={0.9}>
               {ringDim > 0.5 ? 'loop frozen' : 'work-queue — the gauntlet, looped'}
             </text>
           )}
@@ -251,10 +256,10 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---- the rework ledger: rounds of 3, judge gates, the cap ---- */}
           {ledgerU > 0 && (
             <g opacity={ledgerU * (1 - 0.5 * ringDim)}>
-              <text x={LEDGER.x} y={LEDGER.y - 22} fill={colors.MUTED} fontSize={12}>
+              <text x={LEDGER.x} y={LEDGER.y - 22} fill={colors.MUTED} fontSize={14}>
                 rework budget
               </text>
-              <text x={LEDGER.x + 116} y={LEDGER.y - 22} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+              <text x={LEDGER.x + 150} y={LEDGER.y - 22} fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
                 roundSize: 3 · maxAttempts: 10
               </text>
               {ROWS.map((row, r) => {
@@ -265,7 +270,7 @@ export function Render({ s }: { s: SceneState }) {
                 const judgeHalts = r === 1 && judge2U > 0.5;
                 return (
                   <g key={r} opacity={rowU}>
-                    <text x={LEDGER.x - 4} y={y + 13} fill={colors.MUTED} fontSize={10} fontFamily={MONO} textAnchor="end" opacity={0.8}>
+                    <text x={LEDGER.x - 6} y={y + 13} fill={colors.MUTED} fontSize={12.5} fontFamily={MONO} textAnchor="end" opacity={0.9}>
                       {r < 3 ? `r${r + 1}` : 'cap'}
                     </text>
                     {Array.from({ length: row.pips }, (_, c) => {
@@ -283,7 +288,7 @@ export function Render({ s }: { s: SceneState }) {
                             </g>
                           )}
                           {isCap && capU > 0.3 && (
-                            <text x={20} y={4.5} fill={colors.WARM} fontSize={11} fontFamily={MONO} opacity={capU}>
+                            <text x={20} y={4.5} fill={colors.WARM} fontSize={13} fontFamily={MONO} opacity={capU}>
                               attempt 10 — no eleventh
                             </text>
                           )}
@@ -294,7 +299,7 @@ export function Render({ s }: { s: SceneState }) {
                     {row.judge && (
                       <g transform={`translate(${LEDGER.x + 16 + 3 * PIP_DX + 26} ${y + 8})`}>
                         <path d="M 0 -12 L 12 0 L 0 12 L -12 0 Z" fill={judgeHalts ? colors.NEGATIVE : judgeRuled > 0.5 ? colors.POSITIVE : colors.PANEL} stroke={judgeHalts ? colors.NEGATIVE : judgeRuled > 0.5 ? colors.POSITIVE : colors.GRID} strokeWidth={1.6} opacity={judgeRuled > 0.5 ? 0.9 : 0.8} />
-                        <text x={22} y={4.5} fill={judgeHalts ? colors.NEGATIVE : judgeRuled > 0.5 ? colors.POSITIVE : colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+                        <text x={22} y={4.5} fill={judgeHalts ? colors.NEGATIVE : judgeRuled > 0.5 ? colors.POSITIVE : colors.MUTED} fontSize={13} fontFamily={MONO}>
                           {judgeHalts ? 'judge: circling — halt' : judgeRuled > 0.5 ? 'judge: progressing' : `judge @ ${(r + 1) * 3}`}
                         </text>
                       </g>
@@ -308,11 +313,11 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---- the progress judge panel ---- */}
           {judge1U > 0 && (
             <g opacity={judge1U * (1 - 0.5 * ringDim)}>
-              <rect x={LEDGER.x} y={LEDGER.y + 4 * LEDGER.rowH + 4} width={LEDGER.w} height={64} rx={12} fill={colors.PANEL} stroke={judge2U > 0.5 ? colors.NEGATIVE : colors.GRID} strokeWidth={1.5} />
-              <text x={LEDGER.x + 16} y={LEDGER.y + 4 * LEDGER.rowH + 28} fill={colors.TEXT} fontSize={12.5} fontWeight={700}>
+              <rect x={LEDGER.x} y={JUDGE.y} width={JUDGE.w} height={JUDGE.h} rx={12} fill={colors.PANEL} stroke={judge2U > 0.5 ? colors.NEGATIVE : colors.GRID} strokeWidth={1.5} />
+              <text x={LEDGER.x + 16} y={JUDGE.y + 26} fill={colors.TEXT} fontSize={14} fontWeight={700}>
                 the progress judge — a third critic, fresh eyes
               </text>
-              <text x={LEDGER.x + 16} y={LEDGER.y + 4 * LEDGER.rowH + 48} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+              <text x={LEDGER.x + 16} y={JUDGE.y + 47} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 reads successive verdicts · rules ONLY on convergence · fixes nothing
               </text>
             </g>
@@ -320,9 +325,9 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* ---- the thrash tripwire ---- */}
           {thrashU > 0 && (
-            <g opacity={thrashU * (1 - 0.5 * ringDim)} transform={`translate(${LEDGER.x} ${LEDGER.y + 4 * LEDGER.rowH + 84})`}>
+            <g opacity={thrashU * (1 - 0.5 * ringDim)} transform={`translate(${LEDGER.x} ${THRASH_Y})`}>
               <path d="M 8 4 l 6 10 h -12 Z" fill={colors.NEGATIVE} opacity={0.9} />
-              <text x={24} y={13} fill={colors.TEXT} fontSize={11.5}>
+              <text x={24} y={13} fill={colors.TEXT} fontSize={13}>
                 identical finding set refuted twice → invalid loop, no judge needed
               </text>
             </g>
@@ -332,14 +337,14 @@ export function Render({ s }: { s: SceneState }) {
           {stateU > 0 && (
             <g opacity={stateU}>
               <rect x={STATE.x} y={STATE.y} width={STATE.w} height={STATE.h} rx={14} fill={colors.PANEL} stroke={flipU > 0.5 ? colors.NEGATIVE : colors.GRID} strokeWidth={flipU > 0.5 ? 2 : 1.5} />
-              <text x={STATE.x + 18} y={STATE.y + 26} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+              <text x={STATE.x + 18} y={STATE.y + 26} fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
                 .eforest/project.json — status
               </text>
               {STATES.map((st, i) => {
                 const active = flipU > 0.5 ? st === 'invalid_loop' : st === 'building';
                 const color = st === 'invalid_loop' ? colors.NEGATIVE : st === 'complete' ? colors.POSITIVE : st === 'paused' ? colors.WARM : colors.ACCENT;
                 return (
-                  <g key={st} transform={`translate(${STATE.x + 18 + (i % 2) * 224} ${STATE.y + 44 + Math.floor(i / 2) * 42})`}>
+                  <g key={st} transform={`translate(${STATE.x + 18 + (i % 2) * 224} ${STATE.y + 40 + Math.floor(i / 2) * 38})`}>
                     <rect width={206} height={32} rx={9} fill={active ? color : 'none'} opacity={active ? 0.16 : 1} stroke={active ? color : colors.GRID} strokeWidth={active ? 1.8 : 1} />
                     <circle cx={18} cy={16} r={5} fill={active ? color : colors.GRID} />
                     <text x={34} y={21} fill={active ? colors.TEXT : colors.MUTED} fontSize={12.5} fontFamily={MONO} fontWeight={active ? 700 : 400}>
@@ -349,11 +354,11 @@ export function Render({ s }: { s: SceneState }) {
                 );
               })}
               {flipU > 0.5 && (
-                <text x={STATE.x + 18} y={STATE.y + 148} fill={colors.NEGATIVE} fontSize={10.5} fontFamily={MONO} opacity={flipU}>
+                <text x={STATE.x + 18} y={STATE.y + 128} fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO} opacity={flipU}>
                   statusReason: “progress judge halted rework after 6 attempt(s)”
                 </text>
               )}
-              <text x={STATE.x + 18} y={STATE.y + 170} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO} opacity={flipU}>
+              <text x={STATE.x + 18} y={STATE.y + 150} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={flipU}>
                 committed — the stop is part of the history
               </text>
             </g>
@@ -361,9 +366,9 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* ---- the human ---- */}
           {humanU > 0 && (
-            <g opacity={humanU} transform={`translate(640 ${610 - (1 - humanU) * 10})`}>
+            <g opacity={humanU} transform={`translate(${HUMAN.x} ${HUMAN.y - (1 - humanU) * 10})`}>
               <rect x={-260} y={-24} width={520} height={40} rx={20} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.6} />
-              <text y={2} textAnchor="middle" fill={colors.WARM} fontSize={13.5} fontWeight={700}>
+              <text y={2} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={700}>
                 only a human flips it back to building
               </text>
             </g>

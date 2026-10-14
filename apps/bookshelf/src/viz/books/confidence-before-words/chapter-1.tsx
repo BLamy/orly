@@ -141,7 +141,7 @@ const TRACE_D = TRACES.map(
   (tr) => 'M' + tr.map((v, l) => `${TR.x + l * TR.dx},${(BOX_CY[1] + v * TR.amp).toFixed(2)}`).join(' L'),
 );
 // instrument C
-const HEAD_X = [570, 626, 682];
+const HEAD_X = [548, 600, 652];
 const headY = (layer: number, i: number) => BOX_CY[2] + (i - (HEAD[layer] - 1) / 2) * 22;
 const COL = { x: 494, w: 18 };
 
@@ -198,6 +198,8 @@ export function buildScene() {
   const adapterO = n('adapterO');
   const routeLbl = n('routeLbl');
   const laneU = n('laneU');
+  // zoomed-in beats hide the labels that sit outside the frame (ribbon caption, gate, words)
+  const offO = n('offO', 1);
 
   CAPTIONS.forEach((text, i) => tl.caption({ at: B(i + 1), dur: DUR, text }));
 
@@ -214,6 +216,7 @@ export function buildScene() {
   to(lit, LAYERS, B(2) + 1.2, 5.6, ease.linear);
   look({ x: 330, y: MID_Y, k: 2.1 }, B(2) + 1.4, 5.4);
   to(scopeLbl, 1, B(2) + 3.0);
+  to(offO, 0, B(2) + 0.2, 0.5);
   tl.hold(B(2) + DUR, 1.2);
 
   // 3 — instrument one: two directions from a shared origin, eq. 1
@@ -235,7 +238,7 @@ export function buildScene() {
   tl.hold(B(4) + DUR, 1.2);
 
   // 5 — instrument two: the ribbon fans into traces that narrow, eq. 2
-  to(boxA, 0.15, B(5));
+  to(boxA, 0.1, B(5));
   look({ x: 600, y: BOX_CY[1], k: 1.9 }, B(5), 1.5);
   to(fanB, 1, B(5) + 0.4, 1.0, ease.draw);
   to(boxB, 1, B(5) + 0.8);
@@ -245,7 +248,7 @@ export function buildScene() {
   tl.hold(B(5) + DUR, 1.2);
 
   // 6 — instrument three: the final column enters a small learned head, eq. 3
-  to(boxB, 0.15, B(6));
+  to(boxB, 0.1, B(6));
   look({ x: 650, y: BOX_CY[2] - 6, k: 2.2 }, B(6), 1.5);
   to(fanC, 1, B(6) + 0.4, 1.0, ease.draw);
   to(boxC, 1, B(6) + 0.8);
@@ -266,10 +269,10 @@ export function buildScene() {
   tl.hold(B(7) + DUR, 1.2);
 
   // 8 — mismatched rulers meet an outlined '?' adapter
-  to(boxA, 0.15, B(8));
-  to(boxB, 0.15, B(8));
-  to(boxC, 0.15, B(8));
-  to(eq4, 0.15, B(8));
+  to(boxA, 0.1, B(8));
+  to(boxB, 0.1, B(8));
+  to(boxC, 0.1, B(8));
+  to(eq4, 0.1, B(8));
   look({ x: 900, y: 250, k: 1.35 }, B(8), 1.5);
   to(rulerO, 1, B(8) + 1.0);
   to(adapterO, 1, B(8) + 2.6);
@@ -283,6 +286,7 @@ export function buildScene() {
   to(joinU, 1, B(9), 0.1);
   to(wordsO, 0, B(9), 0.6);
   look(CAMERA_HOME, B(9), 1.6);
+  to(offO, 1, B(9) + 0.2, 0.8);
   to(routeLbl, 1, B(9) + 1.6);
   to(laneU, 1, B(9) + 3.0, 1.6, ease.draw);
   tl.hold(B(9) + DUR, 1.4);
@@ -290,7 +294,7 @@ export function buildScene() {
   return {
     tl, cam, ribO, tokenIn, gateO, wordsO, guideU, guideO, lit, scopeLbl, boxA, boxB, boxC, fanA, fanB,
     fanC, vecU, mapLbl, eq1, theta, arcO, caveatA, traceU, bandU, eq2, colU, headU, eq3, joinU, pktU,
-    dialO, dialV, eq4, eqDim, rulerO, approachU, adapterO, routeLbl, laneU,
+    dialO, dialV, eq4, eqDim, rulerO, approachU, adapterO, routeLbl, laneU, offO,
   };
 }
 
@@ -305,7 +309,7 @@ function Frame({ i, title }: { i: number; title: string }) {
   return (
     <g>
       <rect x={BOX.x} y={cy - BOX.h / 2} width={BOX.w} height={BOX.h} rx={10} fill={PANEL} stroke={TINTS[i]} strokeOpacity={0.55} />
-      <text x={BOX.x + BOX.w - 10} y={cy - BOX.h / 2 + 16} fill={TINTS[i]} fontFamily={font.mono} fontSize={9} textAnchor="end">
+      <text x={BOX.x + BOX.w - 10} y={cy - BOX.h / 2 + 16} fill={TINTS[i]} fontFamily={font.mono} fontSize={12} textAnchor="end">
         {title}
       </text>
     </g>
@@ -360,13 +364,13 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={g(scene.guideO)}>
           <line x1={RIB.x + RIB.w + 8} y1={MID_Y} x2={lerp(RIB.x + RIB.w + 8, GATE.x - 8, g(scene.guideU))} y2={MID_Y}
             stroke={MUTED} strokeWidth={1.4} strokeDasharray="5 7" strokeOpacity={0.6} />
-          <Label x={730} y={MID_Y - 12} text="answer path · paused" o={seg(g(scene.guideU), 0.6, 1)} anchor="middle" size={11} />
+          <Label x={730} y={MID_Y - 12} text="answer path · paused" o={seg(g(scene.guideU), 0.6, 1) * g(scene.offO)} anchor="middle" size={12} />
         </g>
 
         {/* the persistent activation ribbon */}
         <ActivationRibbon {...RIB} lit={lit} o={g(scene.ribO)} color={ACCENT} />
-        <Label x={RIB.x} y={RIB.y + RIB.h + 24} text={`${LAYERS} layers shown · illustrative activations`} o={g(scene.ribO) * 0.9} size={10} />
-        <Label x={RIB.x + RIB.w / 2} y={RIB.y - 44} text="prompt forward pass runs · no answer token yet" o={g(scene.scopeLbl)} anchor="middle" size={9} color={TEXT} />
+        <Label x={RIB.x} y={RIB.y + RIB.h + 24} text={`${LAYERS} layers shown · illustrative activations`} o={g(scene.ribO) * 0.9 * g(scene.offO)} size={12} />
+        <Label x={RIB.x + RIB.w / 2} y={RIB.y - 44} text="prompt forward pass runs · no answer token yet" o={g(scene.scopeLbl)} anchor="middle" size={12} color={TEXT} />
         <g opacity={g(scene.ribO)}>
           <circle cx={tokX} cy={tokY} r={lit > 0 ? 6 : 11} fill={WARM} />
           {lit <= 0 ? <Label x={tokX} y={MID_Y - 20} text="query" anchor="middle" color={WARM} size={12} /> : null}
@@ -387,16 +391,16 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={g(scene.mapLbl)}>
             <MathLabel tex={'P\\,h_L'} x={modTip.x + 4} y={modTip.y - 10} fontSize={10} color={ACCENT} boxWidth={80} />
             <MathLabel tex={'e_{\\text{ref}}'} x={refTip.x - 6} y={refTip.y + 16} fontSize={10} color={MUTED} boxWidth={80} />
-            <Label x={678} y={150} text="P : model state → 384-d" size={8} color={TEXT} />
-            <Label x={678} y={162} text="reference space (all-MiniLM-L6-v2)" size={8} />
+            <Label x={664} y={146} text="P: state → 384-d" size={12} color={TEXT} />
+            <Label x={664} y={162} text="ref: all-MiniLM-L6-v2" size={12} />
           </g>
-          <MathLabel tex={'s_{\\text{sem}}=\\cos\\!\\big(P\\,h_L,\\;e_{\\text{ref}}\\big)'} x={748} y={92} fontSize={12}
-            opacity={g(scene.eq1) * eqDim} boxWidth={220} />
+          <MathLabel tex={'s_{\\text{sem}}=\\cos\\!\\big(P\\,h_L,\\;e_{\\text{ref}}\\big)'} x={748} y={92} fontSize={11}
+            opacity={g(scene.eq1) * eqDim} boxWidth={200} />
           <g opacity={g(scene.arcO)}>
-            <Label x={678} y={126} text={`cos θ = ${cosv >= 0 ? '+' : '−'}${Math.abs(cosv).toFixed(2)}`} size={11} color={WARM} />
+            <Label x={664} y={122} text={`cos θ = ${cosv >= 0 ? '+' : '−'}${Math.abs(cosv).toFixed(2)}`} size={12} color={WARM} />
           </g>
-          <Tag x={678} y={196} text="Illustrative geometry" size={8} o={g(scene.mapLbl)} />
-          <Label x={678} y={180} text="alignment ≠ verified truth" size={8} color={TEXT} o={g(scene.caveatA)} />
+          <Label x={664} y={180} text="alignment ≠ truth" size={12} color={TEXT} o={g(scene.caveatA)} />
+          <Tag x={822} y={200} text="Illustrative geometry" size={12} anchor="end" o={g(scene.mapLbl)} />
         </g>
 
         {/* instrument B — layer convergence (eq. 2) */}
@@ -409,19 +413,21 @@ export function Render({ s }: { s: SceneState }) {
               <g key={b.name} opacity={clamp01(bandU * 2)}>
                 <rect x={TR.x + b.l0 * TR.dx - 4} y={BOX_CY[1] - hh} width={(HALF - 1) * TR.dx + 8} height={hh * 2} rx={3}
                   fill={WARM} fillOpacity={0.14} stroke={WARM} strokeOpacity={0.6} strokeWidth={0.8} />
-                <Label x={TR.x + (b.l0 + (HALF - 1) / 2) * TR.dx} y={BOX_CY[1] + 76} text={`${b.name} layers`} anchor="middle" size={8} color={WARM} />
+                <Label x={TR.x + (b.l0 + (HALF - 1) / 2) * TR.dx} y={BOX_CY[1] + 76} text={`${b.name} layers`} anchor="middle" size={12} color={WARM} />
               </g>
             );
           })}
+          <Label x={486} y={262} text="spread = variance" size={12} color={WARM} o={clamp01(g(scene.traceU) * 2)} />
           {TRACE_D.map((d, j) => (
             <path key={j} d={d} fill="none" stroke={WARM} strokeOpacity={0.85} strokeWidth={1.2} {...draw(g(scene.traceU))} />
           ))}
-          <MathLabel tex={'s_{\\text{conv}}=\\dfrac{\\sigma^2_{\\text{early}}}{\\sigma^2_{\\text{late}}+\\epsilon}'} x={752} y={298} fontSize={12}
+          <MathLabel tex={'s_{\\text{conv}}=\\dfrac{\\sigma^2_{\\text{early}}}{\\sigma^2_{\\text{late}}+\\epsilon}'} x={746} y={298} fontSize={11}
             opacity={g(scene.eq2) * eqDim} boxWidth={200} />
           <g opacity={g(scene.eq2)}>
-            <Label x={752} y={352} text={`ratio ≈ ${VAR_RATIO.toFixed(1)}  (can exceed 1)`} size={9} color={WARM} anchor="middle" />
+            <Label x={664} y={352} text={`ratio ≈ ${VAR_RATIO.toFixed(1)}`} size={12} color={WARM} />
+            <Label x={664} y={368} text="(can exceed 1)" size={12} />
           </g>
-          <Tag x={752} y={396} text="Illustrative geometry" size={8} anchor="middle" o={clamp01(g(scene.traceU) * 2)} />
+          <Tag x={822} y={396} text="Illustrative geometry" size={12} anchor="end" o={clamp01(g(scene.traceU) * 2)} />
         </g>
 
         {/* instrument C — learned head (eq. 3) */}
@@ -449,12 +455,12 @@ export function Render({ s }: { s: SceneState }) {
             }),
           )}
           <line x1={COL.x + COL.w + 4} y1={BOX_CY[2]} x2={HEAD_X[0] - 8} y2={BOX_CY[2]} stroke={SECONDARY} strokeOpacity={0.5} strokeWidth={1} />
-          <MathLabel tex={'s_{\\text{learn}}'} x={HEAD_X[2] + 30} y={BOX_CY[2]} fontSize={10} color={TEXT} opacity={seg(headU, 0.85, 1)} boxWidth={70} />
-          <MathLabel tex={'s_{\\text{learn}}=f_{\\phi}(h_L)'} x={764} y={486} fontSize={12} opacity={g(scene.eq3) * eqDim} boxWidth={200} />
-          <Label x={COL.x + COL.w / 2} y={BOX_CY[2] + 66} text="final state" anchor="middle" size={8} />
-          <Label x={764} y={560} text="Paper-reported: 72 training" size={8} anchor="middle" o={g(scene.eq3)} color={TEXT} />
-          <Label x={764} y={572} text="examples · 30 epochs" size={8} anchor="middle" o={g(scene.eq3)} color={TEXT} />
-          <Tag x={764} y={600} text="Illustrative geometry" size={8} anchor="middle" />
+          <MathLabel tex={'s_{\\text{learn}}'} x={HEAD_X[2] + 44} y={BOX_CY[2]} fontSize={12} color={TEXT} opacity={seg(headU, 0.85, 1)} boxWidth={70} />
+          <MathLabel tex={'s_{\\text{learn}}=f_{\\phi}(h_L)'} x={746} y={486} fontSize={11} opacity={g(scene.eq3) * eqDim} boxWidth={200} />
+          <Label x={COL.x} y={BOX_CY[2] + 66} text="final state" size={12} />
+          <Label x={664} y={556} text="Paper-reported:" size={12} o={g(scene.eq3)} color={TEXT} />
+          <Label x={664} y={572} text="72 examples, 30 epochs" size={12} o={g(scene.eq3)} color={TEXT} />
+          <Tag x={822} y={600} text="Illustrative geometry" size={12} anchor="end" />
         </g>
         {/* the ribbon's final column, carried into the head */}
         {colU > 0 ? (
@@ -478,7 +484,7 @@ export function Render({ s }: { s: SceneState }) {
         })}
         <MathLabel tex={'C = w_1\\,s_{\\text{sem}} + w_2\\,s_{\\text{conv}} + w_3\\,s_{\\text{learn}}'} x={990} y={436} fontSize={14}
           opacity={g(scene.eq4)} boxWidth={320} />
-        <Label x={990} y={464} text="weights: learned on labeled validation data · symbolic here" size={9} anchor="middle"
+        <Label x={990} y={464} text="weights: learned, symbolic here" size={12} anchor="middle"
           o={g(scene.eq4)} />
 
         <g opacity={g(scene.dialO)}>
@@ -496,34 +502,34 @@ export function Render({ s }: { s: SceneState }) {
           })}
           <line x1={DIAL.x} y1={DIAL.y} x2={needle.x} y2={needle.y} stroke={TEXT} strokeWidth={2.6} strokeLinecap="round" />
           <circle cx={DIAL.x} cy={DIAL.y} r={4.5} fill={TEXT} />
-          <Label x={DIAL.x - DIAL.r} y={DIAL.y + 16} text="0" anchor="middle" size={10} />
-          <Label x={DIAL.x + DIAL.r} y={DIAL.y + 16} text="1" anchor="middle" size={10} />
+          <Label x={DIAL.x - DIAL.r} y={DIAL.y + 16} text="0" anchor="middle" size={12} />
+          <Label x={DIAL.x + DIAL.r} y={DIAL.y + 16} text="1" anchor="middle" size={12} />
           <MathLabel tex={'C'} x={DIAL.x} y={DIAL.y + 20} fontSize={14} opacity={1 - routeLbl} boxWidth={60} />
           <Note x={DIAL.x} y={DIAL.y + 26} text="routing score" anchor="middle" size={14} weight={600} o={routeLbl} />
-          <Label x={DIAL.x} y={DIAL.y + 42} text="not a calibrated probability" anchor="middle" size={9} o={routeLbl} />
-          <Tag x={DIAL.x} y={DIAL.y - DIAL.r - 12} text="Illustrative score" size={9} anchor="middle" o={seg(dialV, 0.1, 0.4)} />
+          <Label x={DIAL.x} y={DIAL.y + 42} text="not a calibrated probability" anchor="middle" size={12} o={routeLbl} />
+          <Tag x={DIAL.x} y={DIAL.y - DIAL.r - 12} text="Illustrative score" size={12} anchor="middle" o={seg(dialV, 0.1, 0.4)} />
         </g>
 
         {/* beat 8 — mismatched rulers and the unspecified adapter */}
         <g opacity={g(scene.rulerO)}>
           <g transform={`translate(${sh}, 0)`}>
-            <Label x={860} y={88} text="raw cosine" size={10} color={ACCENT} />
+            <Label x={860} y={88} text="raw cosine" size={12} color={ACCENT} />
             <line x1={860} y1={108} x2={1010} y2={108} stroke={ACCENT} strokeWidth={1.6} />
             {[-1, 0, 1].map((v) => (
               <g key={v}>
                 <line x1={935 + v * 75} y1={102} x2={935 + v * 75} y2={114} stroke={ACCENT} strokeWidth={1.4} />
-                <Label x={935 + v * 75} y={128} text={v === -1 ? '−1' : String(v)} anchor="middle" size={9} />
+                <Label x={935 + v * 75} y={128} text={v === -1 ? '−1' : String(v)} anchor="middle" size={12} />
               </g>
             ))}
-            <Label x={860} y={160} text="variance ratio" size={10} color={WARM} />
+            <Label x={860} y={160} text="variance ratio" size={12} color={WARM} />
             <Vec x1={860} y1={180} x2={1036} y2={180} color={WARM} width={1.6} head={7} />
             {[0, 1].map((v) => (
               <g key={v}>
                 <line x1={860 + v * 100} y1={174} x2={860 + v * 100} y2={186} stroke={WARM} strokeWidth={1.4} />
-                <Label x={860 + v * 100} y={200} text={String(v)} anchor="middle" size={9} />
+                <Label x={860 + v * 100} y={200} text={String(v)} anchor="middle" size={12} />
               </g>
             ))}
-            <Label x={1016} y={200} text="> 1" anchor="middle" size={9} color={WARM} />
+            <Label x={1016} y={200} text="> 1" anchor="middle" size={12} color={WARM} />
           </g>
         </g>
         <g opacity={g(scene.adapterO)}>
@@ -531,10 +537,11 @@ export function Render({ s }: { s: SceneState }) {
           <Note x={1109} y={154} text="?" anchor="middle" size={30} weight={600} />
           <line x1={1136} y1={144} x2={1166} y2={144} stroke={MUTED} strokeWidth={1.2} strokeDasharray="3 4" />
           <line x1={1170} y1={144} x2={1250} y2={144} stroke={TEXT} strokeWidth={2} />
-          <Label x={1170} y={164} text="0" anchor="middle" size={9} />
-          <Label x={1250} y={164} text="1" anchor="middle" size={9} />
-          <Label x={1210} y={130} text="bounded score" anchor="middle" size={9} />
-          <Label x={1109} y={222} text="normalization: not fully specified in the paper" anchor="middle" size={9} color={TEXT} />
+          <Label x={1170} y={164} text="0" anchor="middle" size={12} />
+          <Label x={1250} y={164} text="1" anchor="middle" size={12} />
+          <Label x={1210} y={130} text="bounded score" anchor="middle" size={12} />
+          <Label x={1109} y={224} text="normalization:" anchor="middle" size={12} color={TEXT} />
+          <Label x={1109} y={240} text="not specified in paper" anchor="middle" size={12} color={TEXT} />
         </g>
 
         {/* the closed answer gate, with uncommitted answer slots behind it */}
@@ -542,14 +549,14 @@ export function Render({ s }: { s: SceneState }) {
           <line x1={GATE.x} y1={GATE.y0} x2={GATE.x} y2={GATE.y1} stroke={TEXT} strokeWidth={5} strokeLinecap="round" />
           <line x1={GATE.x - 8} y1={GATE.y0} x2={GATE.x + 8} y2={GATE.y0} stroke={TEXT} strokeWidth={2} />
           <line x1={GATE.x - 8} y1={GATE.y1} x2={GATE.x + 8} y2={GATE.y1} stroke={TEXT} strokeWidth={2} />
-          <Label x={GATE.x} y={GATE.y0 - 12} text="answer gate · closed" anchor="middle" size={10} color={TEXT} />
+          <Label x={GATE.x} y={GATE.y1 + 26} text="answer gate · closed" anchor="middle" size={12} color={TEXT} o={g(scene.offO)} />
         </g>
         <g opacity={g(scene.wordsO)}>
           {[0, 1, 2].map((i) => (
             <rect key={i} x={1066 + i * 64} y={MID_Y - 13} width={52} height={26} rx={6} fill="none" stroke={MUTED}
               strokeOpacity={0.7 - i * 0.18} strokeDasharray="4 4" />
           ))}
-          <Label x={1156} y={MID_Y + 36} text="answer words · uncommitted" anchor="middle" size={10} />
+          <Label x={1156} y={MID_Y + 36} text="answer words · uncommitted" anchor="middle" size={12} o={g(scene.offO)} />
         </g>
         {/* beat 9 — lanes beyond the gate; the routing score picks one */}
         {laneU > 0
@@ -559,7 +566,7 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={r.key} opacity={on ? 1 : 0.15}>
                   <path d={d} fill="none" stroke={r.color} strokeWidth={on ? 2.6 : 1.6} {...draw(laneU)} />
-                  <Label x={GATE.x + 94} y={LANE_Y[i] + 4} text={r.label} size={11} color={r.color} o={seg(laneU, 0.6, 1)} />
+                  <Label x={GATE.x + 94} y={LANE_Y[i] + 4} text={r.label} size={12} color={r.color} o={seg(laneU, 0.6, 1)} />
                 </g>
               );
             })

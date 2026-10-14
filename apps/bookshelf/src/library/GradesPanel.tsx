@@ -18,11 +18,16 @@ interface GradeEntry {
   bestMoment?: string;
   confidence?: string;
   gradedBy?: string;
+  /** the same book in the previous grading run */
+  prev?: { mean: number; scores: Record<string, number> };
 }
 interface GradesDoc {
   date: string;
   rubric: string;
   graders: string;
+  /** what changed since the previous run, and when that run was */
+  note?: string;
+  prevDate?: string;
   bar: number;
   floor: number;
   dims: string[];
@@ -43,6 +48,12 @@ const LABEL: Record<string, string> = {
   curiosity: 'Curiosity',
 };
 const tier = (v: number, floor: number) => (v >= floor ? 'is-good' : v >= floor - 1 ? 'is-ok' : 'is-weak');
+const delta = (now: number, was?: number) => {
+  if (was == null) return null;
+  const d = now - was;
+  if (Math.abs(d) < 0.005) return <span className="g-delta">±0</span>;
+  return <span className={`g-delta ${d > 0 ? 'is-up' : 'is-down'}`}>{d > 0 ? '▲' : '▼'}{Math.abs(d).toFixed(2)}</span>;
+};
 const avg = (xs: number[]) => (xs.length ? xs.reduce((a, b) => a + b, 0) / xs.length : 0);
 
 /** The Grades tab — every book scored on the film excellence gate's eight dimensions (docs/book-quality.md §4),
@@ -107,6 +118,7 @@ export function GradesPanel() {
           </span>
           <span>
             book mean <b>{avg(books.map((b) => b.mean)).toFixed(2)}</b>
+            {doc.prevDate && books.some((b) => b.prev) && <> (was {avg(books.filter((b) => b.prev).map((b) => b.prev!.mean)).toFixed(2)} on {doc.prevDate})</>}
           </span>
           {doc.entries
             .filter((e) => e.kind === 'film')
@@ -116,6 +128,7 @@ export function GradesPanel() {
               </span>
             ))}
         </div>
+        {doc.note && <p className="grades-note">{doc.note}</p>}
         <ul className="grades-dims" aria-label="Book average per dimension">
           {doc.dims.map((d) => {
             const v = avg(books.map((b) => b.scores[d]));
@@ -126,7 +139,9 @@ export function GradesPanel() {
                   <i className={tier(v, doc.floor)} style={{ width: `${v * 10}%` }} />
                   <b style={{ left: `${doc.floor * 10}%` }} />
                 </span>
-                <span className="grades-num">{v.toFixed(2)}</span>
+                <span className="grades-num">
+                  {v.toFixed(2)} {delta(v, books.some((b) => b.prev) ? avg(books.filter((b) => b.prev).map((b) => b.prev!.scores[d])) : undefined)}
+                </span>
               </li>
             );
           })}
@@ -191,7 +206,10 @@ export function GradesPanel() {
                         </span>
                       </span>
                     </td>
-                    <td className={`g-mean ${tier(e.mean, doc.floor)}`}>{e.mean.toFixed(2)}</td>
+                    <td className={`g-mean ${tier(e.mean, doc.floor)}`}>
+                      {e.mean.toFixed(2)}
+                      {e.prev && <div>{delta(e.mean, e.prev.mean)}</div>}
+                    </td>
                     {doc.dims.map((d) => (
                       <td key={d} className={`g-dim ${tier(e.scores[d], doc.floor)}`}>
                         {Number.isInteger(e.scores[d]) ? e.scores[d] : e.scores[d].toFixed(1)}
@@ -212,6 +230,7 @@ export function GradesPanel() {
                                 <li key={d}>
                                   <span className={`g-chip ${tier(e.scores[d], doc.floor)}`}>
                                     {LABEL[d]} {e.scores[d]}
+                                    {e.prev && e.prev.scores[d] !== e.scores[d] ? ` (was ${e.prev.scores[d]})` : ''}
                                   </span>
                                   {e.notes[d]}
                                 </li>

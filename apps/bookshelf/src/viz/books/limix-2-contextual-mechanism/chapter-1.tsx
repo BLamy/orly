@@ -6,8 +6,10 @@ import type { CameraState, SceneState } from '../../core';
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 const ROWS = 5;
 const COLS = 7;
+// Grid centred on the stage (640) so camera pushes keep the whole table in frame.
+const GRID_X = 262;
 const CELLS = Array.from({ length: ROWS * COLS }, (_, i) => ({
-  row: Math.floor(i / COLS), col: i % COLS, x: 192 + (i % COLS) * 126, y: 174 + Math.floor(i / COLS) * 82,
+  row: Math.floor(i / COLS), col: i % COLS, x: GRID_X + (i % COLS) * 126, y: 174 + Math.floor(i / COLS) * 82,
 }));
 const MASK = 24;
 const COL_LABELS = ['age', 'income', 'city', 'balance', 'visits', 'risk', 'y'];
@@ -38,7 +40,7 @@ export function buildScene() {
 
   tl.caption({ at: 18.4, dur: 5.5, text: 'When a value is missing, its contents vanish into one shared learned embedding. The blank itself carries no column name.' });
   tl.tween(maskU, 1, { at: 19.0, dur: 1.0, ease: ease.pop });
-  tl.tween(cam, { x: CELLS[MASK].x, y: CELLS[MASK].y, k: 1.55 }, { at: 19.2, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 312, k: 1.2 }, { at: 19.2, dur: 1.3, ease: ease.move });
 
   tl.caption({ at: 24.4, dur: 5.5, text: 'So discriminative feature encoding adds identity separately: a compact code, one quarter of the token width, projected into the embedding space.' });
   tl.tween(codeU, 1, { at: 25.0, dur: 1.5, ease: ease.draw });
@@ -73,8 +75,8 @@ export function Render({ s }: { s: SceneState }) {
     <g opacity={1 - close}>
       <text x="640" y="76" textAnchor="middle" fill={colors.TEXT} fontSize="35" fontWeight="850">a table of cells, not rows</text>
       {COL_LABELS.map((label, c) => {
-        const x = 192 + c * 126 + (c === 1 ? permute * 252 : c === 3 ? -permute * 252 : 0);
-        return <text key={label} x={x} y="130" textAnchor="middle" fill={c === 3 ? colors.WARM : colors.MUTED} fontSize="13" fontFamily={colors.font.mono} opacity={table}>{label}</text>;
+        const x = GRID_X + c * 126 + (c === 1 ? permute * 252 : c === 3 ? -permute * 252 : 0);
+        return <text key={label} x={x} y="130" textAnchor="middle" fill={c === 3 ? colors.WARM : colors.MUTED} fontSize="14" fontFamily={colors.font.mono} opacity={table}>{label}</text>;
       })}
       {CELLS.map((cell, i) => {
         const swap = cell.col === 1 ? permute * 252 : cell.col === 3 ? -permute * 252 : 0;
@@ -85,24 +87,25 @@ export function Render({ s }: { s: SceneState }) {
         const color = isMask ? colors.WARM : colors.ACCENT;
         return <g key={i} transform={`translate(${x} ${cell.y - lift * 10})`} opacity={u}>
           <rect x="-48" y="-28" width="96" height="56" rx="14" fill={isMask ? '#2b2513' : '#101827'} stroke={color} strokeWidth={isMask ? 3 : 1.5} />
-          <text y="5" textAnchor="middle" fill={isMask ? colors.WARM : colors.TEXT} fontSize="13" fontFamily={colors.font.mono}>{value}</text>
+          <text y="5" textAnchor="middle" fill={isMask ? colors.WARM : colors.TEXT} fontSize="14" fontFamily={colors.font.mono}>{value}</text>
           {lift > 0 && <rect x="-43" y={31 + (1 - lift) * 16} width="86" height="8" rx="4" fill={color} opacity={0.18 + 0.55 * lift} />}
         </g>;
       })}
       <g opacity={s.get(scene.rowCollapseU)}>
         {Array.from({ length: ROWS }, (_, r) => <g key={r}>
-          <path d={`M1050 ${174 + r * 82} H1130`} stroke={colors.NEGATIVE} strokeWidth="3" />
-          <circle cx="1160" cy={174 + r * 82} r="23" fill="#281821" stroke={colors.NEGATIVE} strokeWidth="2" />
+          <path d={`M1090 ${174 + r * 82} H1147`} stroke={colors.NEGATIVE} strokeWidth="3" />
+          <circle cx="1170" cy={174 + r * 82} r="23" fill="#281821" stroke={colors.NEGATIVE} strokeWidth="2" />
         </g>)}
-        <text x="1110" y="610" textAnchor="middle" fill={colors.NEGATIVE} fontSize="13">row compression</text>
+        <text x="1170" y="132" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14">row compression</text>
       </g>
       <g opacity={code}>
-        <path d={`M${CELLS[MASK].x} ${CELLS[MASK].y - 44} C780 110 900 110 986 184`} fill="none" stroke={colors.SECONDARY} strokeWidth="4" strokeDasharray="10 8" />
-        <rect x="892" y="164" width="220" height="88" rx="22" fill="#18172d" stroke={colors.SECONDARY} strokeWidth="3" />
-        <text x="1002" y="196" textAnchor="middle" fill={colors.SECONDARY} fontSize="14" fontFamily={colors.font.mono}>DFE: u_j → E u_j</text>
-        <text x="1002" y="226" textAnchor="middle" fill={colors.MUTED} fontSize="12">column identity</text>
+        {/* Dashed route runs through the gap between rows 2 and 3, so it never crosses a cell. */}
+        <path d={`M${CELLS[MASK].x - permute * 252} ${CELLS[MASK].y - 28} V379 H1096`} fill="none" stroke={colors.SECONDARY} strokeWidth="4" strokeDasharray="10 8" />
+        <rect x="1096" y="335" width="170" height="88" rx="22" fill="#18172d" stroke={colors.SECONDARY} strokeWidth="3" />
+        <text x="1181" y="371" textAnchor="middle" fill={colors.SECONDARY} fontSize="14" fontFamily={colors.font.mono}>u_j → E u_j</text>
+        <text x="1181" y="401" textAnchor="middle" fill={colors.MUTED} fontSize="14">column code</text>
       </g>
-      <MathLabel tex={'d=256 \\qquad s=d/4'} x={1060} y={112} fontSize={21} opacity={s.get(scene.dimsU)} />
+      <MathLabel tex={'d=256 \\qquad s=d/4'} x={1250} y={104} fontSize={21} anchor="end" opacity={s.get(scene.dimsU)} />
     </g>
     <g opacity={close}>
       <rect x="170" y="126" width="940" height="430" rx="58" fill={colors.BG} stroke={colors.WARM} strokeWidth="4" />

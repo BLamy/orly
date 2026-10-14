@@ -37,23 +37,25 @@ const TAU = Math.PI * 2;
 // Layout
 // ---------------------------------------------------------------------------
 
-const FRAME = { x: 140, y: 200, w: 1000, h: 390 } as const; // the scope bracket
+// Everything sits inside x 180..1100, y 138..590 so the camera pushes below
+// never crop a card and nothing reaches the caption band (y > 630).
+const FRAME = { x: 180, y: 150, w: 920, h: 370 } as const; // the scope bracket
 
-const MAILER = { x: 196, y: 252, w: 300, h: 86 } as const;
-const SMTP = { x: 196, y: 396, w: 300, h: 104 } as const;
+const MAILER = { x: 230, y: 200, w: 290, h: 86 } as const;
+const SMTP = { x: 230, y: 340, w: 290, h: 104 } as const;
 
-const STACK_X = 856;
-const STACK_W = 250;
-const STACK_Y0 = 508; // bottom plate
+const STACK_X = 800;
+const STACK_W = 280;
+const STACK_Y0 = 440; // bottom plate
 const PLATE_H = 40;
 
-const DOOR = { cx: 660, y: FRAME.y + FRAME.h } as const;
+const DOOR = { cx: 640, y: FRAME.y + FRAME.h } as const;
 
-const RING = { cx: 600, cy: 318, r: 46 } as const;
+const RING = { cx: 660, cy: 300, r: 62 } as const;
 
 const POOLS = [
-  { label: 'DatabasePool · acme', x: 220 },
-  { label: 'DatabasePool · globex', x: 500 },
+  { label: 'DatabasePool · acme', x: 230 },
+  { label: 'DatabasePool · globex', x: 520 },
 ] as const;
 const POOL_Y = 300;
 
@@ -61,11 +63,11 @@ const RECAP = { x: 280, y: 268, w: 720, h: 96 } as const;
 const RECAP_CY = RECAP.y + 44;
 
 const CAM_OPEN: CameraState = { x: 640, y: 330, k: 1.22 };
-const CAM_SCOPE: CameraState = { x: 640, y: 392, k: 1.02 };
-const CAM_STACK: CameraState = { x: 850, y: 430, k: 1.24 };
-const CAM_DOOR: CameraState = { x: 660, y: 470, k: 1.2 };
-const CAM_RING: CameraState = { x: 620, y: 350, k: 1.26 };
-const CAM_POOLS: CameraState = { x: 480, y: 350, k: 1.22 };
+const CAM_SCOPE: CameraState = { x: 640, y: 360, k: 1.08 };
+const CAM_STACK: CameraState = { x: 760, y: 380, k: 1.12 };
+const CAM_DOOR: CameraState = { x: 640, y: 420, k: 1.14 };
+const CAM_RING: CameraState = { x: 640, y: 330, k: 1.12 };
+const CAM_POOLS: CameraState = { x: 540, y: 340, k: 1.12 };
 const CAM_RECAP: CameraState = { x: 640, y: 330, k: 1.28 };
 
 // ---------------------------------------------------------------------------
@@ -110,7 +112,7 @@ export function buildScene() {
   });
   tl.tween(cam, CAM_SCOPE, { at: 8.0, dur: 1.4, ease: ease.move });
   tl.tween(scopeU, 1, { at: 8.4, dur: 1.6, ease: ease.draw });
-  tl.tween(acq1U, 1, { at: 11.2, dur: 1.6, ease: ease.move });
+  tl.tween(acq1U, 1, { at: 9.4, dur: 1.6, ease: ease.move });
 
   // — beat 3 · the stack remembers —
   tl.caption({
@@ -218,9 +220,9 @@ function Plate({ i, label, u, popped }: { i: number; label: string; u: number; p
   const y = STACK_Y0 - i * (PLATE_H + 8);
   const fly = popped;
   return (
-    <g opacity={u * (1 - 0.75 * fly)} transform={`translate(${140 * fly} ${-26 * fly})`}>
+    <g opacity={u * (1 - 0.4 * fly)} transform={`translate(0 ${-18 * fly})`}>
       <rect x={STACK_X} y={y} width={STACK_W} height={PLATE_H} rx={9} fill={colors.BG} stroke={fly > 0.2 ? colors.POSITIVE : colors.WARM} strokeWidth={1.6} />
-      <text x={STACK_X + STACK_W / 2} y={y + 25} textAnchor="middle" fill={fly > 0.2 ? colors.POSITIVE : colors.WARM} fontSize={11.5} fontFamily={MONO}>
+      <text x={STACK_X + STACK_W / 2} y={y + 25} textAnchor="middle" fill={fly > 0.2 ? colors.POSITIVE : colors.WARM} fontSize={12} fontFamily={MONO}>
         {fly > 0.2 ? '✓ ' + label : label}
       </text>
     </g>
@@ -249,7 +251,7 @@ function ResourceCard({
       <text x={box.x + 18} y={box.y + 28} fill={dead > 0.5 ? colors.MUTED : colors.TEXT} fontSize={13} fontFamily={MONO} fontWeight={600}>
         {title}
       </text>
-      <text x={box.x + 18} y={box.y + 52} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+      <text x={box.x + 18} y={box.y + 52} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
         {sub}
       </text>
       <circle cx={box.x + box.w - 22} cy={box.y + 24} r={6} fill={dead > 0.5 ? colors.GRID : colors.POSITIVE} opacity={0.9} />
@@ -281,10 +283,16 @@ export function Render({ s }: { s: SceneState }) {
   const recapS = s.get(scene.recapS);
 
   const introDim = clamp01(scopeU * 1.4); // the leak vignette yields the stage
-  const cardsDim = clamp01(ringU + poolU + recapU); // Smtp/Mailer quiet down late
-  const stackDim = clamp01(poolU * 0.7 + recapU); // plates stay through the ring beat
+  const cardsDim = clamp01(ringU * 0.5 + poolU + recapU); // Smtp/Mailer quiet down late
+  const stackDim = clamp01(poolU + recapU); // plates stay through the ring beat, then yield to the pools
   const machineDim = clamp01(recapU); // EVERYTHING fades for the recap
   const ringDim = clamp01(poolU + recapU);
+  // Ghosts at ~0.15 opacity still read as clutter behind the pools and the
+  // recap chip, so the machinery is removed outright once it has yielded.
+  const machineGone = machineDim > 0.9;
+  const cardsGone = cardsDim > 0.9;
+  const ringGone = ringDim > 0.9;
+  const stackGone = stackDim > 0.9;
   const poolDim = machineDim;
 
   // LIFO pops: plate 2 (mailer, on top) first, then plate 1
@@ -310,7 +318,7 @@ export function Render({ s }: { s: SceneState }) {
                 <g key={i} opacity={u}>
                   <circle cx={x} cy={300} r={13} fill="none" stroke={orphan ? colors.NEGATIVE : colors.POSITIVE} strokeWidth={2} />
                   <circle cx={x} cy={300} r={6} fill={orphan ? colors.NEGATIVE : colors.POSITIVE} opacity={orphan ? 0.6 + 0.4 * Math.sin(TAU * crashU) : 0.9} />
-                  <text x={x} y={336} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+                  <text x={x} y={336} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
                     {['connection', 'transporter', 'heartbeat'][i]}
                   </text>
                 </g>
@@ -331,7 +339,7 @@ export function Render({ s }: { s: SceneState }) {
         )}
 
         {/* ---------------- the scope bracket ---------------- */}
-        {scopeU > 0.01 && (
+        {scopeU > 0.01 && !machineGone && (
           <g opacity={1 - 0.92 * machineDim}>
             <rect
               x={FRAME.x}
@@ -351,40 +359,42 @@ export function Render({ s }: { s: SceneState }) {
               Scope
             </text>
             {/* stack rail */}
-            <g opacity={clamp01(acq1U * 2) * (1 - 0.8 * stackDim)}>
-              <line x1={STACK_X - 18} y1={STACK_Y0 + PLATE_H + 6} x2={STACK_X + STACK_W + 18} y2={STACK_Y0 + PLATE_H + 6} stroke={colors.GRID} strokeWidth={2} />
-              <text x={STACK_X + STACK_W / 2} y={STACK_Y0 + PLATE_H + 26} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
-                finalizers · last in, first out
-              </text>
-            </g>
+            {!stackGone && (
+              <g opacity={clamp01(acq1U * 2) * (1 - 0.8 * stackDim)}>
+                <line x1={STACK_X - 18} y1={STACK_Y0 + PLATE_H + 6} x2={STACK_X + STACK_W + 18} y2={STACK_Y0 + PLATE_H + 6} stroke={colors.GRID} strokeWidth={2} />
+                <text x={STACK_X + STACK_W / 2} y={STACK_Y0 + PLATE_H + 26} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+                  finalizers · last in, first out
+                </text>
+              </g>
+            )}
             {/* the exit door */}
-            {exitU > 0.01 && (
+            {exitU > 0.01 && !stackGone && (
               <g opacity={clamp01(exitU * 2) * (1 - 0.85 * clamp01(ringDim + stackDim))}>
                 <rect x={DOOR.cx - 46} y={DOOR.y - 14} width={92} height={28} rx={8} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.6} />
-                <text x={DOOR.cx} y={DOOR.y + 5} textAnchor="middle" fill={colors.WARM} fontSize={10.5} fontFamily={MONO}>
+                <text x={DOOR.cx} y={DOOR.y + 5} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontFamily={MONO}>
                   exit
                 </text>
-                <text x={DOOR.cx} y={DOOR.y + 34} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+                <text x={DOOR.cx} y={DOOR.y + 34} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
                   Scope.addFinalizerExit((exit) =&gt; …)
                 </text>
                 {(
                   [
-                    { label: 'succeed', color: colors.POSITIVE, x0: 480 },
-                    { label: 'fail', color: colors.NEGATIVE, x0: 640 },
-                    { label: 'interrupt', color: colors.WARM, x0: 800 },
+                    { label: 'succeed', color: colors.POSITIVE, x0: 580 },
+                    { label: 'fail', color: colors.NEGATIVE, x0: 660 },
+                    { label: 'interrupt', color: colors.WARM, x0: 740 },
                   ] as const
                 ).map((e, i) => {
                   const u = clamp01(exitU * 2 - i * 0.32);
                   if (u <= 0) return null;
                   return (
                     <g key={e.label} opacity={1 - 0.6 * clamp01(u * 3 - 2.4)}>
-                      <circle cx={lerp(e.x0, DOOR.cx, u)} cy={lerp(258, DOOR.y - 20, u)} r={9} fill={e.color} opacity={0.9} />
+                      <circle cx={lerp(e.x0, DOOR.cx, u)} cy={lerp(250, DOOR.y - 20, u)} r={9} fill={e.color} opacity={0.9} />
                       <text
                         x={lerp(e.x0, DOOR.cx, u)}
-                        y={lerp(258, DOOR.y - 20, u) - 15}
+                        y={lerp(250, DOOR.y - 20, u) - 15}
                         textAnchor="middle"
                         fill={e.color}
-                        fontSize={10.5}
+                        fontSize={11.5}
                         fontFamily={MONO}
                         opacity={1 - clamp01(u * 1.6 - 0.55)}
                       >
@@ -399,34 +409,40 @@ export function Render({ s }: { s: SceneState }) {
         )}
 
         {/* ---------------- the two acquired services ---------------- */}
-        <ResourceCard
-          box={SMTP}
-          title="Smtp.layer"
-          sub="acquireRelease(createTransport, close)"
-          u={acq1U}
-          dead={pop1}
-          dim={cardsDim}
-        />
-        <ResourceCard
-          box={MAILER}
-          title="Mailer"
-          sub="sendWelcomeEmail — depends on Smtp"
-          u={acq2U}
-          dead={pop2}
-          dim={cardsDim}
-        />
-        {acq2U > 0.5 && cardsDim < 0.9 && (
+        {!cardsGone && (
+          <>
+            <ResourceCard
+              box={SMTP}
+              title="Smtp.layer"
+              sub="acquireRelease(createTransport, close)"
+              u={acq1U}
+              dead={pop1}
+              dim={cardsDim}
+            />
+            <ResourceCard
+              box={MAILER}
+              title="Mailer"
+              sub="sendWelcomeEmail — depends on Smtp"
+              u={acq2U}
+              dead={pop2}
+              dim={cardsDim}
+            />
+          </>
+        )}
+        {acq2U > 0.5 && !cardsGone && (
           <line x1={MAILER.x + 150} y1={MAILER.y + MAILER.h} x2={SMTP.x + 150} y2={SMTP.y} stroke={colors.GRID} strokeWidth={2} strokeDasharray="3 5" opacity={(1 - cardsDim) * acq2U} />
         )}
 
         {/* ---------------- the finalizer plates ---------------- */}
-        <g opacity={1 - 0.85 * stackDim}>
-          <Plate i={0} label="close the transporter" u={clamp01(acq1U * 2 - 0.8)} popped={pop1} />
-          <Plate i={1} label="release the mailer" u={clamp01(acq2U * 2 - 0.8)} popped={pop2} />
-        </g>
+        {!stackGone && (
+          <g opacity={1 - 0.85 * stackDim}>
+            <Plate i={0} label="close the transporter" u={clamp01(acq1U * 2 - 0.8)} popped={pop1} />
+            <Plate i={1} label="release the mailer" u={clamp01(acq2U * 2 - 0.8)} popped={pop2} />
+          </g>
+        )}
 
         {/* ---------------- beat 6: the heartbeat ring ---------------- */}
-        {ringU > 0.01 && (
+        {ringU > 0.01 && !ringGone && !machineGone && (
           <g opacity={ringU * (1 - 0.88 * ringDim)}>
             <circle
               cx={RING.cx}
@@ -439,17 +455,17 @@ export function Render({ s }: { s: SceneState }) {
               strokeDashoffset={-spinU * 48}
               opacity={cutU > 0.5 ? 0.5 : 0.95}
             />
-            <text x={RING.cx} y={RING.cy - 4} textAnchor="middle" fill={cutU > 0.5 ? colors.MUTED : colors.TEAL} fontSize={11} fontFamily={MONO}>
+            <text x={RING.cx} y={RING.cy - 6} textAnchor="middle" fill={cutU > 0.5 ? colors.MUTED : colors.TEAL} fontSize={12} fontFamily={MONO}>
               Effect.forkScoped
             </text>
-            <text x={RING.cx} y={RING.cy + 14} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={MONO}>
+            <text x={RING.cx} y={RING.cy + 12} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
               sleep 5s · log · repeat
             </text>
             {cutU > 0.02 && (
               <g opacity={cutU}>
                 <circle cx={RING.cx} cy={RING.cy} r={RING.r + 16 * cutU} fill="none" stroke={colors.NEGATIVE} strokeWidth={2} opacity={1 - 0.6 * cutU} />
                 <path d={`M${RING.cx - 14} ${RING.cy - RING.r - 10} l28 20 m0 -20 l-28 20`} stroke={colors.NEGATIVE} strokeWidth={2.5} fill="none" />
-                <text x={RING.cx} y={RING.cy + RING.r + 28} textAnchor="middle" fill={colors.NEGATIVE} fontSize={10.5} fontFamily={MONO}>
+                <text x={RING.cx - 60} y={RING.cy + RING.r + 22} fill={colors.NEGATIVE} fontSize={11} fontFamily={MONO}>
                   Background task interrupted: layer scope closed
                 </text>
               </g>
@@ -458,12 +474,12 @@ export function Render({ s }: { s: SceneState }) {
         )}
 
         {/* ---------------- beat 7: tenant pools with idle timers ---------------- */}
-        {poolU > 0.01 && (
+        {poolU > 0.01 && !machineGone && (
           <g opacity={poolU * (1 - 0.9 * poolDim)}>
-            <text x={220} y={POOL_Y - 42} fill={colors.TEXT} fontSize={13} fontFamily={MONO} fontWeight={600}>
+            <text x={230} y={POOL_Y - 42} fill={colors.TEXT} fontSize={13} fontFamily={MONO} fontWeight={600}>
               LayerMap · app/PoolMap
             </text>
-            <text x={220} y={POOL_Y - 22} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+            <text x={230} y={POOL_Y - 22} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
               idleTimeToLive: &quot;1 minute&quot;
             </text>
             {POOLS.map((p, i) => {
@@ -476,7 +492,7 @@ export function Render({ s }: { s: SceneState }) {
                   <text x={p.x + 16} y={POOL_Y + 28} fill={gone > 0.3 ? colors.MUTED : colors.TEXT} fontSize={11.5} fontFamily={MONO}>
                     {p.label}
                   </text>
-                  <text x={p.x + 16} y={POOL_Y + 50} fill={colors.MUTED} fontSize={10} fontFamily={MONO}>
+                  <text x={p.x + 16} y={POOL_Y + 50} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
                     own child scope
                   </text>
                   {/* idle dial */}
@@ -495,7 +511,7 @@ export function Render({ s }: { s: SceneState }) {
               );
             })}
             {poolGone > 0.3 && (
-              <text x={500} y={POOL_Y + 100} fill={colors.POSITIVE} fontSize={10.5} fontFamily={MONO} opacity={poolGone}>
+              <text x={520} y={POOL_Y + 100} fill={colors.POSITIVE} fontSize={11.5} fontFamily={MONO} opacity={poolGone}>
                 ✓ Closing tenant pool globex
               </text>
             )}

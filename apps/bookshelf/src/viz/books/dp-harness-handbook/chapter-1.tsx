@@ -37,7 +37,7 @@ const FILES = [
   { name: 'parser.py', y: 470 },
 ] as const;
 const FILE_X = 300;
-const PLANNER = { x: 880, y: 310 };
+const PLANNER = { x: 760, y: 310 };
 
 // Precompute a scatter of attention rays from the planner to every file — the
 // baseline "read everything" behavior. Seeded → scrub-exact.
@@ -49,8 +49,8 @@ const RAYS = Array.from({ length: 54 }, (_, i) => ({
 }));
 
 const CAM_WALL: CameraState = { x: 560, y: 320, k: 1.12 };
-const CAM_SCATTER: CameraState = { x: 620, y: 320, k: 1.05 };
-const CAM_TARGET: CameraState = { x: 360, y: 342, k: 1.5 };
+const CAM_SCATTER: CameraState = { x: 640, y: 320, k: 1.05 };
+const CAM_TARGET: CameraState = { x: 470, y: 330, k: 1.3 };
 
 export interface Scene {
   tl: Timeline;
@@ -117,10 +117,17 @@ export function buildScene(): Scene {
     dur: 6.2,
     text: "The change lived in one place all along — the memory module. The trouble was never the edit. It was finding the edit inside a system that had no readable map of its own behavior.",
   });
-  tl.tween(scatterU, 0.12, { at: 28.8, dur: 1.0, ease: ease.move });
+  tl.tween(scatterU, 0, { at: 28.8, dur: 1.0, ease: ease.move });
   tl.tween(lostU, 0.1, { at: 28.8, dur: 1.0, ease: ease.move });
   tl.tween(cam, CAM_TARGET, { at: 29.0, dur: 1.5, ease: ease.move });
   tl.tween(targetU, 1, { at: 30.0, dur: 1.0, ease: ease.pop });
+  // the true target keeps pulsing (chained tweens, deterministic)
+  tl.tween(targetU, 0.35, { at: 31.0, dur: 0.5, ease: ease.move });
+  tl.tween(targetU, 1, { at: 31.5, dur: 0.5, ease: ease.move });
+  tl.tween(targetU, 0.35, { at: 32.0, dur: 0.5, ease: ease.move });
+  tl.tween(targetU, 1, { at: 32.5, dur: 0.5, ease: ease.move });
+  tl.tween(targetU, 0.35, { at: 33.0, dur: 0.5, ease: ease.move });
+  tl.tween(targetU, 1, { at: 33.5, dur: 0.5, ease: ease.move });
   tl.hold(34.8, 0.6);
 
   // — Beat 6 · close / the promise —
@@ -162,6 +169,20 @@ export function Render({ s }: { s: SceneState }) {
           const stroke = pulse > 0.05 ? colors.ACCENT : colors.GRID;
           return (
             <g key={i} opacity={u * dimAll} transform={`translate(${lerp(-40, 0, u)} 0)`}>
+              {isTarget && pulse > 0.05 && (
+                <rect
+                  x={FILE_X - 142}
+                  y={f.y - 36}
+                  width={284}
+                  height={72}
+                  rx={14}
+                  fill={colors.ACCENT}
+                  fillOpacity={0.12 * pulse}
+                  stroke={colors.ACCENT}
+                  strokeWidth={2}
+                  opacity={pulse * 0.8}
+                />
+              )}
               <rect
                 x={FILE_X - 130}
                 y={f.y - 24}
@@ -183,7 +204,7 @@ export function Render({ s }: { s: SceneState }) {
                 {f.name}
               </text>
               {isTarget && pulse > 0.05 && (
-                <text x={FILE_X + 150} y={f.y + 6} fill={colors.ACCENT} fontSize={13} opacity={pulse}>
+                <text x={FILE_X + 152} y={f.y + 6} fill={colors.ACCENT} fontSize={14} opacity={pulse}>
                   ← the behavior lived here
                 </text>
               )}
@@ -197,37 +218,51 @@ export function Render({ s }: { s: SceneState }) {
           <text x={PLANNER.x} y={PLANNER.y - 12} textAnchor="middle" fill={colors.SECONDARY} fontSize={15}>
             planner
           </text>
-          <text x={PLANNER.x} y={PLANNER.y + 12} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+          <text x={PLANNER.x} y={PLANNER.y + 12} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
             "where do I edit?"
           </text>
           {/* the modification request card */}
           <g opacity={clamp01(reqU * 1.4)} transform={`translate(${PLANNER.x - 92} ${PLANNER.y - 118})`}>
             <rect x={0} y={0} width={184} height={54} rx={9} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.4} />
-            <text x={92} y={22} textAnchor="middle" fill={colors.WARM} fontSize={12}>
+            <text x={92} y={22} textAnchor="middle" fill={colors.WARM} fontSize={13}>
               modification request
             </text>
-            <text x={92} y={40} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+            <text x={92} y={40} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               "change how memory is kept"
             </text>
           </g>
         </g>
 
-        {/* ---- attention scatter (the baseline: read everything) ---- */}
+        {/* ---- attention fan (the baseline: read everything) ---- */}
+        {/* a visible line from the planner to EVERY file, then the rays travel along them */}
+        {scatterU > 0 &&
+          FILES.map((f, i) => (
+            <line
+              key={`fan-${i}`}
+              x1={PLANNER.x - 92}
+              y1={PLANNER.y}
+              x2={FILE_X + 130}
+              y2={f.y}
+              stroke={colors.SECONDARY}
+              strokeWidth={1.4}
+              opacity={clamp01(scatterU * 3) * 0.5}
+            />
+          ))}
         {scatterU > 0 &&
           RAYS.map((ray, i) => {
             const u = clamp01((scatterU - ray.delay * 0.7) * 2.6);
             if (u <= 0 || u >= 1) return null;
             const f = FILES[ray.file];
             const tx = FILE_X + 130;
-            const ty = f.y + ray.jitter;
+            const ty = f.y + ray.jitter * 0.3;
             return (
               <circle
                 key={i}
                 cx={lerp(PLANNER.x - 92, tx, u)}
                 cy={lerp(PLANNER.y, ty, u)}
-                r={3}
+                r={4.5}
                 fill={colors.SECONDARY}
-                opacity={0.5 * (1 - u) + 0.15}
+                opacity={0.9 * (1 - u) + 0.1}
               />
             );
           })}
@@ -244,6 +279,7 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- closing line ---- */}
         <g opacity={closeU}>
+          <rect x={340} y={292} width={600} height={110} rx={12} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.2} />
           <text x={640} y={330} textAnchor="middle" fill={colors.TEXT} fontSize={26}>
             behavior localization
           </text>

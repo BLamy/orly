@@ -155,8 +155,8 @@ export function Render({ s }: { s: SceneState }) {
               <rect x={145} y={32} width={90} height={22} rx={6} fill={colors.SECONDARY} opacity={0.35} />
               <text x={73} y={78} textAnchor="middle" fill={colors.ACCENT} fontSize={11} fontFamily={MONO}>KDA state</text>
               <text x={190} y={78} textAnchor="middle" fill={colors.SECONDARY} fontSize={11} fontFamily={MONO}>MLA KV</text>
-              <path d="M73 92 C100 116 165 116 190 92" fill="none" stroke={colors.POSITIVE} strokeWidth={2} />
-              <text x={132} y={116} textAnchor="middle" fill={colors.POSITIVE} fontSize={10}>one lifecycle</text>
+              <path d="M73 88 C100 108 165 108 190 88" fill="none" stroke={colors.POSITIVE} strokeWidth={2} />
+              <text x={132} y={122} textAnchor="middle" fill={colors.POSITIVE} fontSize={12}>one lifecycle</text>
             </g>
           )}
 
@@ -164,8 +164,8 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={s.get(scene.throttleU) * detailOpacity} transform="translate(500 455)">
               <rect width={265} height={120} rx={16} fill={colors.PANEL} stroke={colors.WARM} />
               <text x={132} y={31} textAnchor="middle" fill={colors.WARM} fontSize={12} fontWeight={700}>AUTO-THROTTLING</text>
-              {[0.25, 0.55, 0.82].map((v, i) => <rect key={i} x={28} y={52 + i * 20} width={205 * v} height={9} rx={4} fill={i === 2 ? colors.NEGATIVE : colors.WARM} opacity={0.65} />)}
-              <text x={238} y={95} textAnchor="end" fill={colors.MUTED} fontSize={9}>KV pressure ↑</text>
+              {[0.25, 0.55, 0.82].map((v, i) => <rect key={i} x={28} y={50 + i * 18} width={205 * v} height={9} rx={4} fill={i === 2 ? colors.NEGATIVE : colors.WARM} opacity={0.65} />)}
+              <text x={238} y={114} textAnchor="end" fill={colors.MUTED} fontSize={12}>KV pressure ↑</text>
             </g>
           )}
 
@@ -179,9 +179,9 @@ export function Render({ s }: { s: SceneState }) {
               {s.get(scene.pauseU) > 0 && (
                 <g opacity={s.get(scene.pauseU)}>
                   <text x={76} y={213} textAnchor="middle" fill={colors.WARM} fontSize={11} fontWeight={700}>CHECKPOINT</text>
-                  <text x={76} y={235} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={MONO}>133 ms</text>
+                  <text x={76} y={235} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>133 ms</text>
                   <text x={210} y={213} textAnchor="middle" fill={colors.ACCENT} fontSize={11} fontWeight={700}>RESUME</text>
-                  <text x={210} y={235} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={MONO}>49 ms</text>
+                  <text x={210} y={235} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>49 ms</text>
                 </g>
               )}
             </g>
@@ -189,10 +189,10 @@ export function Render({ s }: { s: SceneState }) {
 
           {forkU > 0 && (
             <g opacity={forkU * detailOpacity}>
-              <path d="M1135 395 C1200 395 1200 505 1160 530" fill="none" stroke={colors.WARM} strokeWidth={3} />
-              <rect x={1030} y={520} width={190} height={70} rx={13} fill={colors.PANEL} stroke={colors.WARM} />
-              <text x={1125} y={549} textAnchor="middle" fill={colors.WARM} fontSize={11} fontWeight={700}>FORK FOR JUDGING</text>
-              <text x={1125} y={572} textAnchor="middle" fill={colors.MUTED} fontSize={10}>original stays running</text>
+              <path d="M1135 395 C1205 395 1205 515 1190 548" fill="none" stroke={colors.WARM} strokeWidth={3} />
+              <rect x={1040} y={548} width={190} height={70} rx={13} fill={colors.PANEL} stroke={colors.WARM} />
+              <text x={1135} y={577} textAnchor="middle" fill={colors.WARM} fontSize={12} fontWeight={700}>FORK FOR JUDGING</text>
+              <text x={1135} y={600} textAnchor="middle" fill={colors.MUTED} fontSize={12}>original stays running</text>
             </g>
           )}
 

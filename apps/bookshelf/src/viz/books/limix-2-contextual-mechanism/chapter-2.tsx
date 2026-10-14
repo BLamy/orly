@@ -30,7 +30,7 @@ export function buildScene() {
 
   tl.caption({ at: 6.4, dur: 5.5, text: 'Sample-axis attention moves down each feature, letting query rows borrow the distribution encoded by context rows.' });
   tl.tween(sampleSweep, 1, { at: 7.0, dur: 2.6, ease: ease.linear });
-  tl.tween(cam, { x: 500, y: 360, k: 1.12 }, { at: 7.2, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 500, y: 330, k: 1.12 }, { at: 7.2, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 12.4, dur: 5.5, text: 'The gate is deliberate: context sees context, while each query can attend only upward into context, never sideways into another query.' });
   tl.tween(queryGate, 1, { at: 13.0, dur: 1.5, ease: ease.enter });
@@ -41,7 +41,7 @@ export function buildScene() {
 
   tl.caption({ at: 24.4, dur: 5.5, text: 'The target is not one overloaded token. Version two splits it into four task slots, then flattens them only where the task path needs a joint readout.' });
   tl.tween(slotsU, 1, { at: 25.0, dur: 1.6, ease: ease.pop });
-  tl.tween(cam, { x: 1010, y: 350, k: 1.28 }, { at: 25.0, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 668, y: 318, k: 1.2 }, { at: 25.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 30.4, dur: 5.5, text: 'Asymmetric feature attention gives the task slots keys and values from features. The task reads structure without becoming another ordinary column.' });
   tl.tween(asymU, 1, { at: 31.0, dur: 2.0, ease: ease.draw });
@@ -72,8 +72,8 @@ export function Render({ s }: { s: SceneState }) {
   return <Camera {...s.get(scene.cam)}>
     <g opacity={1 - close}>
       <text x="640" y="70" textAnchor="middle" fill={colors.TEXT} fontSize="35" fontWeight="850">the dual-axis loom</text>
-      <text x="128" y="246" fill={colors.ACCENT} fontSize="13" fontWeight="800">CONTEXT</text>
-      <text x="128" y="486" fill={colors.WARM} fontSize="13" fontWeight="800">QUERY</text>
+      <text x="150" y="246" fill={colors.ACCENT} fontSize="13" fontWeight="800">CONTEXT</text>
+      <text x="150" y="486" fill={colors.WARM} fontSize="13" fontWeight="800">QUERY</text>
       <line x1="172" y1="416" x2="1020" y2="416" stroke={gate ? colors.WARM : colors.GRID} strokeWidth={2 + gate * 2} strokeDasharray="10 8" opacity={grid} />
       {Array.from({ length: R * C }, (_, i) => {
         const r = Math.floor(i / C), c = i % C;
@@ -85,18 +85,19 @@ export function Render({ s }: { s: SceneState }) {
         const glow = Math.max(sampleGlow, featGlow);
         return <g key={i} opacity={u}>
           <rect x={x - 38} y={y - 22} width="76" height="44" rx="12" fill={query ? '#2b2513' : '#101827'} stroke={glow > 0.1 ? colors.POSITIVE : query ? colors.WARM : colors.ACCENT} strokeWidth={1.5 + glow * 4} />
-          <text x={x} y={y + 5} textAnchor="middle" fill={query ? colors.WARM : colors.MUTED} fontSize="11" fontFamily={colors.font.mono}>{`x${r + 1},${c + 1}`}</text>
+          <text x={x} y={y + 5} textAnchor="middle" fill={query ? colors.WARM : colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>{`x${r + 1},${c + 1}`}</text>
         </g>;
       })}
       {gate > 0 && [0, 1, 2].map((i) => <path key={i} d={`M${GX + i * 2 * DX} 493 C${GX + i * 2 * DX + 40} 420 ${GX + i * 2 * DX + 20} 340 ${GX + i * 2 * DX} 315`} fill="none" stroke={colors.WARM} strokeWidth="3" markerEnd="url(#none)" opacity={gate} />)}
       <g opacity={slots}>
         <text x="1058" y="172" textAnchor="middle" fill={colors.SECONDARY} fontSize="13" fontFamily={colors.font.mono}>K = 4 task slots</text>
         {[0, 1, 2, 3].map((i) => <rect key={i} x={1007} y={205 + i * 70} width="102" height="48" rx="14" fill="#18172d" stroke={colors.SECONDARY} strokeWidth="3" opacity={clamp01(slots * 5 - i)} />)}
-        <text x="1058" y="510" textAnchor="middle" fill={colors.MUTED} fontSize="11">flatten → Kd</text>
+        <text x="1058" y="510" textAnchor="middle" fill={colors.MUTED} fontSize="12">flatten → Kd</text>
       </g>
       <g opacity={s.get(scene.asymU)}>
         {[1, 2, 3, 4].map((r) => <path key={r} d={`M${GX + 5 * DX + 40} ${GY + r * DY} C930 ${GY + r * DY} 940 ${280 + (r - 1) * 34} 1004 ${280 + (r - 1) * 34}`} fill="none" stroke={colors.POSITIVE} strokeWidth="2.5" />)}
-        <text x="935" y="540" textAnchor="middle" fill={colors.POSITIVE} fontSize="12">features → task readout</text>
+        <text x="948" y="484" textAnchor="middle" fill={colors.POSITIVE} fontSize="12">features →</text>
+        <text x="948" y="500" textAnchor="middle" fill={colors.POSITIVE} fontSize="12">task readout</text>
       </g>
       <g opacity={s.get(scene.ffnU)}>
         <rect x="246" y="575" width="310" height="42" rx="15" fill="#10261f" stroke={colors.POSITIVE} strokeWidth="2" />
@@ -105,8 +106,8 @@ export function Render({ s }: { s: SceneState }) {
         <text x="859" y="601" textAnchor="middle" fill={colors.SECONDARY} fontSize="12" fontFamily={colors.font.mono}>SeparateXYFFN · Y SwiGLU</text>
       </g>
       <g opacity={depth}>
-        {Array.from({ length: 8 }, (_, i) => <rect key={i} x={210 + i * 8} y={110 - i * 5} width="760" height="470" rx="28" fill="none" stroke={colors.ACCENT} strokeWidth="1.5" opacity={0.12 + i * 0.06} />)}
-        <text x="238" y="104" fill={colors.ACCENT} fontSize="14" fontWeight="800">24 × transformer blocks</text>
+        {Array.from({ length: 8 }, (_, i) => <rect key={i} x={210 + i * 8} y={130 - i * 4} width="700" height="440" rx="28" fill="none" stroke={colors.ACCENT} strokeWidth="1.5" opacity={0.12 + i * 0.06} />)}
+        <text x="238" y="96" fill={colors.ACCENT} fontSize="14" fontWeight="800">24 × transformer blocks</text>
       </g>
     </g>
     <g opacity={close}>

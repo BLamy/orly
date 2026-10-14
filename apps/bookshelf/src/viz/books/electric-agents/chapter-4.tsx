@@ -278,7 +278,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- the tape ---- */}
         <g opacity={dimU}>
           <line x1={TAPE.x0} y1={TAPE.y} x2={TAPE.x0 + (TAPE.x1 - TAPE.x0) * tapeU} y2={TAPE.y} stroke={colors.GRID} strokeWidth={2} />
-          <text x={TAPE.x0} y={TAPE.y - 42} fill={colors.MUTED} fontSize={11.5} opacity={tapeU}>
+          <text x={SLOT(0) - 8} y={TAPE.y - 42} fill={colors.MUTED} fontSize={13} opacity={tapeU}>
             the entity&apos;s durable stream
           </text>
 
@@ -302,16 +302,16 @@ export function Render({ s }: { s: SceneState }) {
           {offU > 0 && (
             <g opacity={offU}>
               {[0, 3, 6, 9, 12].map((i) => (
-                <text key={i} x={SLOT(i)} y={TAPE.y + 34} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily={mono}>
+                <text key={i} x={SLOT(i)} y={TAPE.y + 34} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={mono}>
                   {String(i + 18).padStart(4, '0')}
                 </text>
               ))}
-              <text x={SLOT(13) + 40} y={TAPE.y + 34} fill={colors.MUTED} fontSize={9.5} fontFamily={mono}>
+              <text x={SLOT(13) + 40} y={TAPE.y + 34} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
                 → offsets only grow
               </text>
               {/* this runner's persisted read position */}
               <path d={`M ${SLOT(11) - 7} ${TAPE.y + 48} L ${SLOT(11) + 7} ${TAPE.y + 48} L ${SLOT(11)} ${TAPE.y + 38} Z`} fill={colors.TEAL} />
-              <text x={SLOT(11)} y={TAPE.y + 62} textAnchor="middle" fill={colors.TEAL} fontSize={9.5} fontFamily={mono}>
+              <text x={SLOT(11)} y={TAPE.y + 64} textAnchor="middle" fill={colors.TEAL} fontSize={12} fontFamily={mono}>
                 reader offset — kept by the reader
               </text>
             </g>
@@ -332,14 +332,14 @@ export function Render({ s }: { s: SceneState }) {
         {runnerU > 0 && crashU < 1 && (
           <g opacity={runnerU * (1 - crashU) * dimU}>
             <rect x={RUNNER.x} y={RUNNER.y} width={RUNNER.w} height={RUNNER.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-            <text x={RUNNER.x + 14} y={RUNNER.y + 24} fill={colors.TEXT} fontSize={12.5}>
+            <text x={RUNNER.x + 14} y={RUNNER.y + 24} fill={colors.TEXT} fontSize={14}>
               runner — your laptop
             </text>
             <rect x={RUNNER.x + 14} y={RUNNER.y + 38} width={168} height={22} rx={11} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.1} />
-            <text x={RUNNER.x + 98} y={RUNNER.y + 53} textAnchor="middle" fill={colors.WARM} fontSize={10.5} fontFamily={mono}>
+            <text x={RUNNER.x + 98} y={RUNNER.y + 53} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={mono}>
               web_search · executing
             </text>
-            <text x={RUNNER.x + 14} y={RUNNER.y + 82} fill={colors.MUTED} fontSize={10.5}>
+            <text x={RUNNER.x + 14} y={RUNNER.y + 82} fill={colors.MUTED} fontSize={12}>
               reads · thinks · appends
             </text>
             {/* read head riding the tip */}
@@ -384,11 +384,11 @@ export function Render({ s }: { s: SceneState }) {
             <rect x={RUNNER2.x} y={RUNNER2.y} width={RUNNER2.w} height={RUNNER2.h} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.5} />
             {/* little cloud glyph */}
             <path d={`M ${RUNNER2.x + 30} ${RUNNER2.y + 26} a 8 8 0 0 1 14 -6 a 9 9 0 0 1 16 4 a 7 7 0 0 1 -3 13 l -22 0 a 7 7 0 0 1 -5 -11`} fill="none" stroke={colors.MUTED} strokeWidth={1.4} />
-            <text x={RUNNER2.x + 70} y={RUNNER2.y + 32} fill={colors.TEXT} fontSize={12.5}>
+            <text x={RUNNER2.x + 70} y={RUNNER2.y + 32} fill={colors.TEXT} fontSize={13}>
               new runner — elsewhere
             </text>
             <rect x={RUNNER2.x + 14} y={RUNNER2.y + 46} width={168} height={22} rx={11} fill={colors.BG} stroke={toolDone ? colors.POSITIVE : colors.WARM} strokeWidth={1.1} opacity={panelU} />
-            <text x={RUNNER2.x + 98} y={RUNNER2.y + 61} textAnchor="middle" fill={toolDone ? colors.POSITIVE : colors.WARM} fontSize={10.5} fontFamily={mono} opacity={panelU}>
+            <text x={RUNNER2.x + 98} y={RUNNER2.y + 61} textAnchor="middle" fill={toolDone ? colors.POSITIVE : colors.WARM} fontSize={12} fontFamily={mono} opacity={panelU}>
               {toolDone ? 'web_search · completed' : 'web_search · executing'}
             </text>
             {/* its read head: sweeps during replay, rides the tip during resume */}
@@ -399,7 +399,7 @@ export function Render({ s }: { s: SceneState }) {
                   <line x1={hx} y1={RUNNER2.y + RUNNER2.h} x2={hx} y2={TAPE.y - 16} stroke={colors.POSITIVE} strokeWidth={1.5} strokeDasharray="3 4" />
                   <path d={`M ${hx - 7} ${TAPE.y - 22} L ${hx + 7} ${TAPE.y - 22} L ${hx} ${TAPE.y - 10} Z`} fill={colors.POSITIVE} />
                   {replayU > 0.05 && replayU < 0.98 && (
-                    <text x={hx} y={TAPE.y - 32} textAnchor="middle" fill={colors.POSITIVE} fontSize={10.5}>
+                    <text x={hx + 12} y={TAPE.y - 30} fill={colors.POSITIVE} fontSize={12}>
                       replaying
                     </text>
                   )}
@@ -413,7 +413,7 @@ export function Render({ s }: { s: SceneState }) {
         {askU > 0 && (
           <g opacity={askU * dimU}>
             <rect x={RUNNER2.x - 260} y={RUNNER2.y + 20} width={244} height={30} rx={15} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.2} />
-            <text x={RUNNER2.x - 138} y={RUNNER2.y + 40} textAnchor="middle" fill={colors.ACCENT} fontSize={11} fontFamily={mono}>
+            <text x={RUNNER2.x - 138} y={RUNNER2.y + 40} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={mono}>
               everything after offset 0017
             </text>
           </g>
@@ -423,7 +423,7 @@ export function Render({ s }: { s: SceneState }) {
         {panelU > 0 && (
           <g opacity={panelU * dimU}>
             <rect x={PANEL.x} y={PANEL.y} width={PANEL.w} height={PANEL.h} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={PANEL.x + 14} y={PANEL.y + 22} fill={colors.MUTED} fontSize={11}>
+            <text x={PANEL.x + 14} y={PANEL.y + 22} fill={colors.MUTED} fontSize={13}>
               projections — rebuilt from replay
             </text>
             {[
@@ -436,10 +436,10 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={r.name} opacity={u}>
                   <rect x={PANEL.x + 12} y={PANEL.y + 34 + i * 28} width={PANEL.w - 24} height={22} rx={5} fill={colors.BG} stroke={colors.GRID} />
-                  <text x={PANEL.x + 22} y={PANEL.y + 49 + i * 28} fill={colors.MUTED} fontSize={10.5} fontFamily={mono}>
+                  <text x={PANEL.x + 22} y={PANEL.y + 49 + i * 28} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
                     {r.name}
                   </text>
-                  <text x={PANEL.x + PANEL.w - 22} y={PANEL.y + 49 + i * 28} textAnchor="end" fill={i === 2 ? (toolDone ? colors.POSITIVE : colors.WARM) : colors.TEXT} fontSize={10.5} fontFamily={mono}>
+                  <text x={PANEL.x + PANEL.w - 22} y={PANEL.y + 49 + i * 28} textAnchor="end" fill={i === 2 ? (toolDone ? colors.POSITIVE : colors.WARM) : colors.TEXT} fontSize={12} fontFamily={mono}>
                     {r.v}
                   </text>
                 </g>
@@ -453,12 +453,12 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={phoneU * dimU}>
             <rect x={1010} y={468} width={40} height={70} rx={7} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.4} />
             <circle cx={1030} cy={526} r={3} fill="none" stroke={colors.GRID} />
-            <text x={1030} y={556} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+            <text x={1030} y={556} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               your phone
             </text>
             <line x1={1030} y1={468} x2={SLOT(16) + 20} y2={TAPE.y + 16} stroke={colors.GRID} strokeWidth={1.2} strokeDasharray="3 4" />
             <path d={`M ${SLOT(16) + 13} ${TAPE.y + 20} L ${SLOT(16) + 27} ${TAPE.y + 20} L ${SLOT(16) + 20} ${TAPE.y + 8} Z`} fill={colors.TEAL} />
-            <text x={SLOT(16) + 20} y={TAPE.y + 38} textAnchor="middle" fill={colors.TEAL} fontSize={9.5} fontFamily={mono}>
+            <text x={SLOT(16) + 32} y={TAPE.y + 22} fill={colors.TEAL} fontSize={12} fontFamily={mono}>
               same offset
             </text>
           </g>

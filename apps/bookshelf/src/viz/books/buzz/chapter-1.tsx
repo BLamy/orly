@@ -19,13 +19,17 @@ const SILOS = [
   { key: 'ci', label: 'CI', sub: 'pipelines', x: 680 },
   { key: 'agents', label: 'agents', sub: 'ever-changing tools', x: 960 },
 ];
-const SILO_Y = 150;
+const SILO_Y = 200;
 const SILO_W = 200;
 const SILO_H = 150;
+const AGENT_Y = SILO_Y + SILO_H + 150;
 
-const CAM_ROW: CameraState = { x: 640, y: 250, k: 1.05 };
-const CAM_AGENT: CameraState = { x: 1060, y: 300, k: 1.2 };
-const CAM_MERGE: CameraState = { x: 640, y: 380, k: 1.1 };
+// the camera frames the content: the row, the agent's blind spot, the merged box
+const CAM_ROW: CameraState = { x: 640, y: 275, k: 1.05 };
+const CAM_AGENT: CameraState = { x: 700, y: 350, k: 1.05 };
+const CAM_MERGE: CameraState = { x: 640, y: 295, k: 1.15 };
+// the merged box slides up and dims, leaving room for the closing card below it
+const CAM_CLOSE: CameraState = { x: 640, y: 461, k: 1.15 };
 
 export function buildScene() {
   const tl = new Timeline();
@@ -81,6 +85,7 @@ export function buildScene() {
     dur: 6.0,
     text: 'One workspace. One context. Built, in Block’s words, to reduce a team’s dependence on Slack and Github — and to let agents finally see the whole picture instead of a slice of it.',
   });
+  tl.tween(cam, CAM_CLOSE, { at: 29.3, dur: 1.2, ease: ease.move });
   tl.tween(dimU, 1, { at: 29.3, dur: 1.2, ease: ease.move });
   tl.tween(closeU, 1, { at: 30.3, dur: 1.0, ease: ease.enter });
   tl.hold(34.9, 1.2);
@@ -93,15 +98,16 @@ const scene = buildScene();
 function Silo({ i, u, collapse }: { i: number; u: number; collapse: number }) {
   const s = SILOS[i];
   if (u <= 0) return null;
-  // collapse: slide the four silos toward one centered box
-  const targetX = 440;
+  // collapse: slide the four silos toward the centre of the merged box and fade them out
+  const targetX = 540;
   const x = s.x + (targetX - s.x) * collapse;
-  const op = u * (1 - 0.55 * collapse);
+  const op = u * clamp01((1 - collapse) * 2);
+  if (op <= 0.01) return null;
   return (
     <g opacity={op}>
       <rect x={x} y={SILO_Y} width={SILO_W} height={SILO_H} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
       <text x={x + SILO_W / 2} y={SILO_Y + 34} textAnchor="middle" fill={colors.TEXT} fontSize={17} fontWeight={600}>{s.label}</text>
-      <text x={x + SILO_W / 2} y={SILO_Y + 58} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">{s.sub}</text>
+      <text x={x + SILO_W / 2} y={SILO_Y + 58} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">{s.sub}</text>
     </g>
   );
 }
@@ -137,17 +143,17 @@ export function Render({ s }: { s: SceneState }) {
           {seamU > 0 && collapseU < 0.1 && (
             <>
               {[0, 1, 2].map((g) => {
-                const x = (fragBounds[g] + fragBounds[g + 1]) / 2 - 20;
+                const x = (fragBounds[g] + fragBounds[g + 1]) / 2;
                 return (
-                  <text key={g} x={x} y={SILO_Y + SILO_H + 34} fill={colors.NEGATIVE} fontSize={22} opacity={0.5}>⌄</text>
+                  <text key={g} x={x} y={SILO_Y + SILO_H + 34} textAnchor="middle" fill={colors.NEGATIVE} fontSize={22} opacity={0.5}>⌄</text>
                 );
               })}
               <g opacity={fragFade}>
                 <rect x={fragX - 44} y={SILO_Y + SILO_H + 18} width={88} height={26} rx={6} fill={colors.WARM} opacity={0.22} />
-                <text x={fragX} y={SILO_Y + SILO_H + 36} textAnchor="middle" fill={colors.WARM} fontSize={12}>context</text>
+                <text x={fragX} y={SILO_Y + SILO_H + 36} textAnchor="middle" fill={colors.WARM} fontSize={13}>context</text>
               </g>
               {seamU > 0.9 && (
-                <text x={fragBounds[fragBounds.length - 1]} y={SILO_Y + SILO_H + 36} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} opacity={(seamU - 0.9) * 8}>
+                <text x={fragBounds[fragBounds.length - 1]} y={SILO_Y + SILO_H + 36} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} opacity={(seamU - 0.9) * 8}>
                   …lost
                 </text>
               )}
@@ -156,19 +162,25 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* the agent, blind across seams */}
           {agentU > 0 && collapseU < 0.1 && (
-            <g opacity={agentU} transform={`translate(${fragBounds[3]}, ${SILO_Y + SILO_H + 90})`}>
-              <circle cx={0} cy={0} r={20} fill="none" stroke={colors.SECONDARY} strokeWidth={2} />
-              <circle cx={0} cy={0} r={7} fill={colors.SECONDARY} />
-              <text x={0} y={44} textAnchor="middle" fill={colors.SECONDARY} fontSize={13}>agent</text>
+            <g opacity={agentU} transform={`translate(${fragBounds[3]}, ${AGENT_Y})`}>
               {blindU > 0 && (
                 <>
-                  {[-3, -2, -1].map((k) => (
-                    <line key={k} x1={0} y1={0} x2={k * 190} y2={-40} stroke={colors.NEGATIVE} strokeWidth={1.4} strokeDasharray="4 6" opacity={0.4 * blindU} />
-                  ))}
-                  <text x={0} y={64} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} opacity={blindU}>
-                    can’t see across the seams
-                  </text>
+                  {/* each dashed probe starts at the agent's rim and stops short of a seam */}
+                  {[0, 1, 2].map((g) => {
+                    const gapX = (fragBounds[g] + fragBounds[g + 1]) / 2 - fragBounds[3];
+                    return (
+                      <line key={g} x1={0} y1={-22} x2={gapX} y2={SILO_Y + SILO_H + 52 - AGENT_Y} stroke={colors.NEGATIVE} strokeWidth={1.4} strokeDasharray="4 6" opacity={0.4 * blindU} />
+                    );
+                  })}
                 </>
+              )}
+              <circle cx={0} cy={0} r={20} fill="none" stroke={colors.SECONDARY} strokeWidth={2} />
+              <circle cx={0} cy={0} r={7} fill={colors.SECONDARY} />
+              <text x={0} y={44} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>agent</text>
+              {blindU > 0 && (
+                <text x={0} y={64} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} opacity={blindU}>
+                  can’t see across the seams
+                </text>
               )}
             </g>
           )}
@@ -177,9 +189,9 @@ export function Render({ s }: { s: SceneState }) {
           {oneU > 0 && (
             <g opacity={oneU}>
               <rect x={360} y={SILO_Y} width={560} height={SILO_H + 40} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.6} />
-              <text x={640} y={SILO_Y + 44} textAnchor="middle" fill={colors.ACCENT} fontSize={18} fontWeight={600}>one workspace</text>
-              <text x={640} y={SILO_Y + 76} textAnchor="middle" fill={colors.TEXT} fontSize={14}>people · agents · conversations · code</text>
-              <text x={640} y={SILO_Y + 104} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">behind one identity · one shared record</text>
+              <text x={640} y={SILO_Y + 56} textAnchor="middle" fill={colors.ACCENT} fontSize={18} fontWeight={600}>one workspace</text>
+              <text x={640} y={SILO_Y + 92} textAnchor="middle" fill={colors.TEXT} fontSize={15}>people · agents · conversations · code</text>
+              <text x={640} y={SILO_Y + 128} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="monospace">behind one identity · one shared record</text>
             </g>
           )}
         </Camera>
@@ -187,10 +199,10 @@ export function Render({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={240} width={840} height={180} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
-          <text x={640} y={306} textAnchor="middle" fill={colors.TEXT} fontSize={23} fontWeight={600}>The problem is context, not chat</text>
-          <text x={640} y={348} textAnchor="middle" fill={colors.MUTED} fontSize={16}>every seam between tools loses information — and agents feel it most</text>
-          <text x={640} y={388} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">Buzz · one surface, one identity, one record · buzz.xyz</text>
+          <rect x={220} y={300} width={840} height={188} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <text x={640} y={366} textAnchor="middle" fill={colors.TEXT} fontSize={23} fontWeight={600}>The problem is context, not chat</text>
+          <text x={640} y={408} textAnchor="middle" fill={colors.MUTED} fontSize={16}>every seam between tools loses information — and agents feel it most</text>
+          <text x={640} y={448} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">Buzz · one surface, one identity, one record · buzz.xyz</text>
         </g>
       )}
     </>

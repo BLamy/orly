@@ -9,7 +9,8 @@ const POLICY = Array.from({ length: 8 }, (_, i) => ({
   y: 264 + Math.floor(i / 4) * 154,
   label: `o${i + 1}`,
 }));
-const ORACLE = { x: 1008, y: 495 };
+const ORACLE = { x: 1008, y: 516 };
+const ORACLE_START = { x: 222, y: 474 };
 
 export function buildScene() {
   const tl = new Timeline();
@@ -30,11 +31,11 @@ export function buildScene() {
 
   tl.caption({ at: 6.8, dur: 6.1, text: 'The model still samples eight answers, preserving the full on-policy comparison.' });
   tl.tween(policyP, 8, { at: 7.5, dur: 3.6, ease: ease.enter });
-  tl.tween(cam, { x: 730, y: 352, k: 1.08 }, { at: 10.8, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 580, y: 300, k: 1.1 }, { at: 10.8, dur: 1.3, ease: ease.move });
 
   tl.caption({ at: 13.3, dur: 6.2, text: 'The method gives the annotation a second job: serialize it into the model’s own response format.' });
   tl.tween(serializeU, 1, { at: 14.0, dur: 1.4, ease: ease.move });
-  tl.tween(cam, { x: 318, y: 396, k: 1.18 }, { at: 15.9, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 560, y: 320, k: 1.12 }, { at: 15.9, dur: 1.3, ease: ease.move });
 
   tl.caption({ at: 19.9, dur: 6.2, text: 'That known-correct response is appended as an oracle rollout. None of the eight sampled answers is replaced.' });
   tl.tween(oracleJoinU, 1, { at: 20.6, dur: 2.0, ease: ease.move });
@@ -45,7 +46,7 @@ export function buildScene() {
 
   tl.caption({ at: 33.1, dur: 6.0, text: 'The batch marks exactly one row as the oracle, while every row keeps the same group identity.' });
   tl.tween(oracleMarkU, 1, { at: 33.8, dur: 0.6, ease: ease.pop });
-  tl.tween(cam, { x: 1002, y: 472, k: 1.25 }, { at: 35.2, dur: 1.3, ease: ease.move });
+  tl.tween(cam, CAMERA_HOME, { at: 35.2, dur: 1.3, ease: ease.move });
 
   tl.caption({ at: 39.5, dur: 6.2, text: 'The oracle is not another model sample. It is a detached optimization target derived from ground truth.' });
   tl.tween(splitU, 1, { at: 40.2, dur: 1.2, ease: ease.move });
@@ -60,8 +61,8 @@ export function buildScene() {
 
 const scene = buildScene();
 
-function ResponseCard({ x, y, label, u, oracle = false, dim = 0 }: { x: number; y: number; label: string; u: number; oracle?: boolean; dim?: number }) {
-  const color = oracle ? colors.WARM : colors.ACCENT;
+function ResponseCard({ x, y, label, u, oracle = false, dim = 0, lit = 0 }: { x: number; y: number; label: string; u: number; oracle?: boolean; dim?: number; lit?: number }) {
+  const color = lit > 0.5 ? colors.POSITIVE : oracle ? colors.WARM : colors.ACCENT;
   return <g opacity={u * (1 - dim * 0.78)} transform={`translate(${x} ${y + (1 - u) * 18}) scale(${0.86 + u * 0.14})`}>
     <rect x="-70" y="-42" width="140" height="84" rx="18" fill="#101a2d" stroke={color} strokeWidth={oracle ? 3 : 2} />
     <text y="-12" textAnchor="middle" fill={color} fontSize="14" fontWeight="800" fontFamily={colors.font.mono}>{label}</text>
@@ -77,9 +78,13 @@ export function Render({ s }: { s: SceneState }) {
   const serializeU = s.get(scene.serializeU);
   const oracleJoin = s.get(scene.oracleJoinU);
   const split = s.get(scene.splitU);
-  const oracleX = 258 + (ORACLE.x - 258) * oracleJoin;
-  const oracleY = 466 + (ORACLE.y - 466) * oracleJoin;
+  const oracleX = ORACLE_START.x + (ORACLE.x - ORACLE_START.x) * oracleJoin;
+  const oracleY = ORACLE_START.y + (ORACLE.y - ORACLE_START.y) * oracleJoin;
   const sweep = s.get(scene.rewardSweep);
+  // The reward line is drawn behind the cards and only spans the two rows; each card lights up as it passes.
+  const sweepFade = sweep > 0 ? clamp01(sweep * 5) * (1 - clamp01((sweep - 0.94) * 16)) : 0;
+  const sweepX = 444 + sweep * 714;
+  const litAt = (cx: number) => sweepFade * clamp01(1 - Math.abs(sweepX - cx) / 60);
 
   return <Camera {...s.get(scene.cam)}>
     <g opacity={quiet}>
@@ -96,30 +101,31 @@ export function Render({ s }: { s: SceneState }) {
       </g>
 
       <g opacity={annotationU * (1 - oracleJoin * 0.7)}>
-        <rect x="82" y="286" width="352" height="132" rx="24" fill="#171526" stroke={colors.WARM} strokeWidth="3" />
+        <rect x="82" y="286" width="280" height="140" rx="24" fill="#171526" stroke={colors.WARM} strokeWidth="3" />
         <text x="108" y="324" fill={colors.WARM} fontSize="15" fontWeight="800" fontFamily={colors.font.mono}>ground_truth</text>
         <text x="108" y="356" fill={colors.TEXT} fontSize="18">annotation y</text>
         <g opacity={serializeU}>
-          <path d="M108 380 H390" stroke={colors.GRID} strokeWidth="2" />
-          <text x="249" y="404" textAnchor="middle" fill={colors.POSITIVE} fontSize="13" fontFamily={colors.font.mono}>build_oracle_response_from_ground_truth</text>
+          <path d="M108 376 H336" stroke={colors.GRID} strokeWidth="2" />
+          <text x="222" y="398" textAnchor="middle" fill={colors.POSITIVE} fontSize="13" fontFamily={colors.font.mono}>build_oracle_response_</text>
+          <text x="222" y="416" textAnchor="middle" fill={colors.POSITIVE} fontSize="13" fontFamily={colors.font.mono}>from_ground_truth</text>
         </g>
       </g>
 
+      {sweepFade > 0 && <g opacity={sweepFade}>
+        <line x1={sweepX} y1="196" x2={sweepX} y2="476" stroke={colors.POSITIVE} strokeWidth="5" strokeLinecap="round" />
+        <rect x={476 + sweep * 620} y="164" width="214" height="34" rx="17" fill="#0d2c25" stroke={colors.POSITIVE} />
+        <text x={583 + sweep * 620} y="186" textAnchor="middle" fill={colors.POSITIVE} fontSize="12" fontFamily={colors.font.mono}>RewardAdapter.compute_reward</text>
+      </g>}
+
       <g>
-        <text x="456" y="126" fill={colors.MUTED} fontSize="14" fontWeight="700">on-policy rollouts Oop</text>
-        {POLICY.map((p, i) => <ResponseCard key={p.label} {...p} u={clamp01(s.get(scene.policyP) - i)} dim={split} />)}
-        <ResponseCard x={oracleX} y={oracleY} label="ogt = Ttask(y)" u={serializeU} oracle />
-        <g opacity={s.get(scene.oracleMarkU)} transform={`translate(${ORACLE.x + 58} ${ORACLE.y - 54})`}>
+        <text x="456" y="126" fill={colors.MUTED} fontSize="14" fontWeight="700">on-policy rollouts O<tspan baselineShift="sub" fontSize="11">op</tspan></text>
+        {POLICY.map((p, i) => <ResponseCard key={p.label} {...p} u={clamp01(s.get(scene.policyP) - i)} dim={split} lit={litAt(p.x)} />)}
+        <ResponseCard x={oracleX} y={oracleY} label="ogt = Ttask(y)" u={serializeU} oracle lit={litAt(oracleX)} />
+        <g opacity={s.get(scene.oracleMarkU)} transform={`translate(${ORACLE.x - 160} ${ORACLE.y})`}>
           <rect x="-72" y="-15" width="144" height="30" rx="15" fill="#2d240e" stroke={colors.WARM} />
           <text y="5" textAnchor="middle" fill={colors.WARM} fontSize="12" fontWeight="800" fontFamily={colors.font.mono}>is_oracle_row = true</text>
         </g>
       </g>
-
-      {sweep > 0 && <g opacity={clamp01(sweep * 5) * (1 - clamp01((sweep - 0.94) * 16))}>
-        <line x1={444 + sweep * 714} y1="184" x2={444 + sweep * 714} y2="560" stroke={colors.POSITIVE} strokeWidth="5" strokeLinecap="round" />
-        <rect x={476 + sweep * 620} y="164" width="214" height="34" rx="17" fill="#0d2c25" stroke={colors.POSITIVE} />
-        <text x={583 + sweep * 620} y="186" textAnchor="middle" fill={colors.POSITIVE} fontSize="12" fontFamily={colors.font.mono}>RewardAdapter.compute_reward</text>
-      </g>}
 
       <g opacity={split}>
         <path d="M445 586 H927" stroke={colors.ACCENT} strokeWidth="5" strokeLinecap="round" />

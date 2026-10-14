@@ -55,7 +55,7 @@ export function buildScene() {
 
   tl.caption({ at: 41.0, dur: 5.5, text: 'Each example keeps historical context and the current user turn in one causal sequence.' });
   tl.tween(tokenU, 1, { at: 41.6, dur: 2.2, ease: ease.draw });
-  tl.tween(cam, { x: 640, y: 475, k: 1.08 }, { at: 42.4, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 425, k: 1.08 }, { at: 42.4, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 46.8, dur: 5.5, text: 'Prediction loss lands only on current-turn assistant spans; prompts, tools, results, history, and padding carry a zero mask.' });
   tl.tween(maskU, 1, { at: 47.4, dur: 1.6, ease: ease.move });
@@ -79,9 +79,10 @@ export function Render({ s }: { s: SceneState }) {
   const reserve = s.get(scene.reserveU);
   const mask = s.get(scene.maskU);
   const sortedPos = new Map(SORTED.map((item, rank) => [item.index, rank]));
-  return <Camera {...s.get(scene.cam)}>
+  return <>
+    <text x="640" y="70" textAnchor="middle" fill={colors.TEXT} fontSize="35" fontWeight="850" opacity={(1 - close) * (1 - s.get(scene.tokenU))}>routing turns demand into order</text>
+  <Camera {...s.get(scene.cam)}>
     <g opacity={1 - close}>
-      <text x="640" y="70" textAnchor="middle" fill={colors.TEXT} fontSize="35" fontWeight="850">routing turns demand into order</text>
       <g opacity={s.get(scene.cardsU)}>
         {SCORES.map((score, i) => {
           const startX = 100 + (i % 4) * 145;
@@ -95,51 +96,53 @@ export function Render({ s }: { s: SceneState }) {
           const color = [colors.POSITIVE, colors.ACCENT, colors.WARM, colors.SECONDARY][tier];
           return <g key={i} transform={`translate(${x} ${y})`}>
             <rect width="118" height="56" rx="16" fill="#142238" stroke={color} strokeWidth="2.5" />
-            <text x="16" y="24" fill={color} fontSize="11" fontFamily={colors.font.mono}>{`turn ${i + 1}`}</text>
-            <text x="16" y="43" fill={colors.TEXT} fontSize="12" fontFamily={colors.font.mono}>{score.toFixed(2)}</text>
+            <text x="16" y="24" fill={color} fontSize="13" fontFamily={colors.font.mono}>{`turn ${i + 1}`}</text>
+            <text x="102" y="24" textAnchor="end" fill={color} fontSize="12" fontFamily={colors.font.mono}>{`T${tier}`}</text>
+            <text x="16" y="45" fill={colors.TEXT} fontSize="14" fontFamily={colors.font.mono}>{score.toFixed(2)}</text>
             <rect x="75" y="37" width={35 * s.get(scene.supportU)} height="5" rx="3" fill={color} />
           </g>;
         })}
       </g>
 
       <g opacity={s.get(scene.scoreU)}>
-        <rect x="690" y="112" width="480" height="112" rx="28" fill="#171a2c" stroke={colors.SECONDARY} strokeWidth="3" />
-        <text x="930" y="145" textAnchor="middle" fill={colors.SECONDARY} fontSize="13" fontFamily={colors.font.mono}>soft routing score</text>
-        <MathLabel tex={String.raw`s_i=\sum_{k=0}^{3}k\,\pi_{i,k}`} x={930} y={186} fontSize={28} opacity={1} />
+        <rect x="690" y="112" width="480" height="128" rx="28" fill="#171a2c" stroke={colors.SECONDARY} strokeWidth="3" />
+        <text x="930" y="140" textAnchor="middle" fill={colors.SECONDARY} fontSize="14" fontFamily={colors.font.mono}>soft order · weighted tier mean</text>
+        <MathLabel tex={String.raw`s_i=\sum_{k=0}^{3}k\,\pi_{i,k}`} x={930} y={182} fontSize={28} opacity={1} />
+        <text x="930" y="222" textAnchor="middle" fill={colors.POSITIVE} fontSize="13" fontFamily={colors.font.mono}>hard order · assigned tier T0–T3</text>
       </g>
 
       <g opacity={stages}>
         {STAGES.map((indices, stage) => <g key={stage} transform={`translate(${690 + stage * 166} 258)`}>
-          <rect width="142" height="238" rx="26" fill="#101a2a" stroke={[colors.POSITIVE, colors.ACCENT, colors.SECONDARY][stage]} strokeWidth="3" />
-          <text x="71" y="34" textAnchor="middle" fill={[colors.POSITIVE, colors.ACCENT, colors.SECONDARY][stage]} fontSize="13" fontFamily={colors.font.mono}>{`STAGE ${stage + 1}`}</text>
+          <rect width="150" height="238" rx="26" fill="#101a2a" stroke={[colors.POSITIVE, colors.ACCENT, colors.SECONDARY][stage]} strokeWidth="3" />
+          <text x="75" y="34" textAnchor="middle" fill={[colors.POSITIVE, colors.ACCENT, colors.SECONDARY][stage]} fontSize="14" fontFamily={colors.font.mono}>{`STAGE ${stage + 1}`}</text>
           {indices.map((idx, j) => {
             const lowReserved = reserve > 0 && stage > 0 && SCORES[idx] < 0.5;
-            return <g key={idx} transform={`translate(18 ${58 + j * 40})`}>
-              <rect width="106" height="30" rx="10" fill={lowReserved ? '#2f2611' : '#18253a'} stroke={lowReserved ? colors.WARM : colors.MUTED} />
-              <text x="12" y="20" fill={lowReserved ? colors.WARM : colors.TEXT} fontSize="10" fontFamily={colors.font.mono}>{`turn ${idx + 1} · ${SCORES[idx].toFixed(2)}`}</text>
+            return <g key={idx} transform={`translate(11 ${58 + j * 40})`}>
+              <rect width="128" height="30" rx="10" fill={lowReserved ? '#2f2611' : '#18253a'} stroke={lowReserved ? colors.WARM : colors.MUTED} />
+              <text x="64" y="20" textAnchor="middle" fill={lowReserved ? colors.WARM : colors.TEXT} fontSize="12" fontFamily={colors.font.mono}>{`turn ${idx + 1} · ${SCORES[idx].toFixed(2)}`}</text>
             </g>;
           })}
-          {stage < 2 && <path d="M148 118 H164" stroke={colors.MUTED} strokeWidth="4" />}
+          {stage < 2 && <path d="M150 118 H166" stroke={colors.MUTED} strokeWidth="4" />}
         </g>)}
-        <g opacity={s.get(scene.passU)} transform="translate(930 525)">
+        <g opacity={s.get(scene.passU)} transform="translate(930 512)">
           <path d="M-220 0 C-120 55 120 55 220 0" fill="none" stroke={colors.POSITIVE} strokeWidth="4" />
-          <text y="58" textAnchor="middle" fill={colors.POSITIVE} fontSize="12" fontFamily={colors.font.mono}>one pass · no optimizer reset</text>
+          <text y="66" textAnchor="middle" fill={colors.POSITIVE} fontSize="13" fontFamily={colors.font.mono}>one pass · no optimizer reset</text>
         </g>
       </g>
 
-      <g opacity={s.get(scene.tokenU)} transform="translate(96 438)">
-        <text x="0" y="-20" fill={colors.ACCENT} fontSize="12" fontFamily={colors.font.mono}>serialized user turn</text>
+      <g opacity={s.get(scene.tokenU)} transform="translate(96 430)">
+        <text x="0" y="-16" fill={colors.ACCENT} fontSize="13" fontFamily={colors.font.mono}>serialized user turn, left to right</text>
         {TOKENS.map(([role, label], i) => {
           const assistant = role === 'assistant';
           const u = clamp01(s.get(scene.tokenU) * TOKENS.length - i);
-          return <g key={`${role}-${label}`} transform={`translate(${i * 67} 0)`} opacity={u}>
-            <rect width="59" height="58" rx="12" fill={assistant ? '#231f3a' : '#162033'} stroke={assistant ? colors.SECONDARY : colors.MUTED} strokeWidth={1.5 + mask * (assistant ? 2 : 0)} />
-            <text x="29.5" y="24" textAnchor="middle" fill={assistant ? colors.SECONDARY : colors.MUTED} fontSize="8" fontFamily={colors.font.mono}>{role}</text>
-            <text x="29.5" y="42" textAnchor="middle" fill={colors.TEXT} fontSize="8">{label}</text>
-            <rect x="5" y="51" width={49 * mask} height="4" rx="2" fill={assistant ? colors.POSITIVE : colors.NEGATIVE} opacity={mask} />
+          return <g key={`${role}-${label}`} transform={`translate(${(i % 4) * 134} ${Math.floor(i / 4) * 64})`} opacity={u}>
+            <rect width="126" height="54" rx="12" fill={assistant ? '#231f3a' : '#162033'} stroke={assistant ? colors.SECONDARY : colors.MUTED} strokeWidth={1.5 + mask * (assistant ? 2 : 0)} />
+            <text x="63" y="22" textAnchor="middle" fill={assistant ? colors.SECONDARY : colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>{role}</text>
+            <text x="63" y="41" textAnchor="middle" fill={colors.TEXT} fontSize="13">{label}</text>
+            <rect x="8" y="48" width={110 * mask} height="4" rx="2" fill={assistant ? colors.POSITIVE : colors.NEGATIVE} opacity={mask} />
           </g>;
         })}
-        <text x="265" y="84" textAnchor="middle" fill={colors.POSITIVE} fontSize="11" fontFamily={colors.font.mono} opacity={mask}>loss mask = 1 only on current assistant targets</text>
+        <text x="264" y="172" textAnchor="middle" fill={colors.POSITIVE} fontSize="13" fontFamily={colors.font.mono} opacity={mask}>loss mask = 1 only on current assistant targets</text>
       </g>
     </g>
     <g opacity={close}>
@@ -156,7 +159,8 @@ export function Render({ s }: { s: SceneState }) {
       </g>
       <text x="640" y="492" textAnchor="middle" fill={colors.SECONDARY} fontSize="19">presentation changes; recorded targets do not</text>
     </g>
-  </Camera>;
+  </Camera>
+  </>;
 }
 
 export const vizScene = () => scene;

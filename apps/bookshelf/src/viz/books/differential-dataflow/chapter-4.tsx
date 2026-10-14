@@ -18,7 +18,6 @@
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   STAGE_H,
   STAGE_W,
   Timeline,
@@ -185,7 +184,7 @@ export function buildScene() {
     dur: 7.2,
     text: 'This is what decides when output commits: the frontier tells every operator which part of history is finished — so you can trust an answer you never recomputed.',
   });
-  tl.tween(latticeU, 0.22, { at: 66.0, dur: 0.9, ease: ease.move });
+  tl.tween(latticeU, 0, { at: 66.0, dur: 0.9, ease: ease.move });
   tl.tween(closeU, 1, { at: 66.6, dur: 0.9, ease: ease.enter });
   tl.hold(72.8, 1.2);
 
@@ -330,9 +329,9 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* held-output pen */}
           {penU > 0.01 && (
-            <g opacity={penU}>
+            <g opacity={penU * (1 - riverDim)}>
               <rect x={PEN.x - 96} y={PEN.y - 34} width={192} height={104} rx={11} fill={colors.PANEL} stroke={colors.GRID} strokeDasharray="6 5" />
-              <text x={PEN.x} y={PEN.y - 14} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontStyle="italic">
+              <text x={PEN.x} y={PEN.y - 14} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic">
                 held until complete
               </text>
               {HELD.map((h, i) => {
@@ -356,15 +355,15 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* probe code */}
           {probeU > 0.01 && (
-            <g opacity={probeU}>
-              <rect x={438} y={480} width={404} height={104} rx={11} fill={colors.PANEL} stroke={colors.GRID} />
+            <g opacity={probeU * (1 - riverDim)}>
+              <rect x={438} y={480} width={520} height={104} rx={11} fill={colors.PANEL} stroke={colors.GRID} />
               {PROBE_CODE.map((line, i) => (
                 <text key={i} x={458} y={504 + i * 19} fill={i >= 2 ? colors.ACCENT : colors.TEXT} fontSize={13} fontFamily={MONO}>
                   {line}
                 </text>
               ))}
-              <text x={862} y={508} fill={front >= 4 ? colors.POSITIVE : colors.WARM} fontSize={13} fontFamily={MONO} opacity={probeU}>
-                {front >= 4 ? '→ complete ✓' : '→ stepping…'}
+              <text x={938} y={504} textAnchor="end" fill={front >= 4 ? colors.POSITIVE : colors.WARM} fontSize={13} fontFamily={MONO}>
+                {front >= 4 ? 'less_than → false · done ✓' : 'less_than → true · stepping…'}
               </text>
             </g>
           )}
@@ -376,7 +375,9 @@ export function Render({ s }: { s: SceneState }) {
             <text x={latX(1.5)} y={LAT.y0 - 62} textAnchor="middle" fill={colors.TEXT} fontSize={16}>
               time as a pair
             </text>
-            <MathLabel tex={'(\\text{round}, \\text{iteration})'} x={latX(1.5) - 78} y={LAT.y0 - 48} fontSize={15} color={colors.MUTED} opacity={latticeU} />
+            <text x={latX(1.5)} y={LAT.y0 - 30} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
+              (round, iteration)
+            </text>
             {Array.from({ length: LAT.n }, (_, r) =>
               Array.from({ length: LAT.n }, (_, i) => {
                 const done = clamp01((kf - (r + i)) * 1.6);
@@ -390,7 +391,7 @@ export function Render({ s }: { s: SceneState }) {
                       fill={done > 0.5 ? colors.POSITIVE : colors.WARM}
                       opacity={0.3 + 0.55 * done + 0.3 * onFront}
                     />
-                    <text x={latX(r)} y={latY(i) + 30} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={MONO} opacity={0.75}>
+                    <text x={latX(r)} y={latY(i) + 30} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={0.75}>
                       ({r},{i})
                     </text>
                   </g>
@@ -417,7 +418,7 @@ export function Render({ s }: { s: SceneState }) {
                 opacity={0.9}
               />
             )}
-            <text x={latX(0) - 10} y={latY(0) - 34} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic">
+            <text x={latX(0) - 24} y={latY(0) + 4} textAnchor="end" fill={colors.MUTED} fontSize={12} fontStyle="italic">
               settled
             </text>
             <text x={latX(LAT.n - 1) + 14} y={latY(LAT.n - 1) + 52} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic">
@@ -426,17 +427,20 @@ export function Render({ s }: { s: SceneState }) {
             <text x={latX(1.5)} y={latY(LAT.n - 1) + 88} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
               frontier = Antichain of incomparable times
             </text>
+            <text x={latX(1.5)} y={latY(LAT.n - 1) + 112} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={0.85}>
+              partial order: (r,i) ≤ (r′,i′) iff r ≤ r′ and i ≤ i′
+            </text>
           </g>
         )}
 
         {/* ---------------- closing panel ---------------- */}
         {closeU > 0.01 && (
           <g opacity={closeU}>
-            <rect x={280} y={470} width={720} height={130} rx={16} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.5} />
-            <text x={640} y={520} textAnchor="middle" fill={colors.TEXT} fontSize={23} fontWeight={650}>
+            <rect x={280} y={412} width={720} height={120} rx={16} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.5} />
+            <text x={640} y={452} textAnchor="middle" fill={colors.TEXT} fontSize={23} fontWeight={650}>
               The frontier decides when output commits.
             </text>
-            <text x={640} y={558} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
+            <text x={640} y={488} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
               behind it, history is sealed — trust without recomputing
             </text>
           </g>

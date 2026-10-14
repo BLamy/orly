@@ -1,7 +1,7 @@
 // One Big Hash Table: the first answer
 //
 // Grounding: solutions/object_oriented_design/hash_table/hash_map.py (the
-// primer's own HashTable: _hash_function(key) = key % self.size, set, get)
+// primer's own HashTable: _hash_function(key) = hash(key) % self.size, set, get)
 // and README.md "Key-value store" (#key-value-store): "Abstraction: hash
 // table", O(1) reads and writes, backed by memory or SSD.
 //
@@ -12,7 +12,6 @@
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   STAGE_H,
   STAGE_W,
   Timeline,
@@ -47,7 +46,8 @@ const METER = { x: 1050, y: 150 } as const;
 
 // camera marks
 const CAM_CARD: CameraState = { x: 430, y: 270, k: 1.3 };
-const CAM_TABLE: CameraState = { x: 660, y: 330, k: 1.18 };
+// The table view sits high enough that the whole table clears the caption pill.
+const CAM_TABLE: CameraState = { x: 660, y: 356, k: 1.12 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 // ---------------------------------------------------------------------------
@@ -160,6 +160,7 @@ export function buildScene() {
     text: 'The primer answers with a data structure before it answers with servers. A key-value store is, at heart, a hash table — this exact class from the solutions folder.',
   });
   tl.tween(cam, CAM_TABLE, { at: 7.4, dur: 1.4, ease: ease.move });
+  tl.tween(qU, 0, { at: 7.4, dur: 0.9, ease: ease.move }); // card leaves frame as the table takes over
   tl.tween(tableU, 1, { at: 7.8, dur: 1.6, ease: ease.draw });
 
   // — beat 3 · our key drops through the gate —
@@ -199,6 +200,7 @@ export function buildScene() {
     text: 'But the interview is never about small scale. Turn up the traffic: millions of keys, thousands of requests a second, all aimed at this one box.',
   });
   tl.tween(cam, CAM_WIDE, { at: 33.8, dur: 1.5, ease: ease.move });
+  tl.tween(qU, 0.35, { at: 33.8, dur: 1.5, ease: ease.move }); // faint card: the source the rain falls from
   tl.tween(rainU, 1, { at: 34.6, dur: 8.5, ease: ease.linear });
   tl.tween(rpsU, 1, { at: 34.6, dur: 11, ease: ease.linear });
 
@@ -345,7 +347,7 @@ export function Render({ s }: { s: SceneState }) {
               _hash_function(key)
             </text>
             <text x={GATE.x + 14} y={GATE.y + 54} fill={colors.MUTED} fontSize={13.5} fontFamily={MONO}>
-              return key % self.size
+              return hash(key) % self.size
             </text>
 
             {/* the buckets */}
@@ -368,22 +370,34 @@ export function Render({ s }: { s: SceneState }) {
             ))}
           </g>
 
-          {/* the "% 8 → 6" computation chip */}
+          {/* the "hash % 8 → 6" computation chip, inside the gate's top-right corner */}
           <g opacity={calcU}>
-            <rect x={GATE.x + GATE.w - 120} y={GATE.y - 18} width={132} height={30} rx={8} fill={colors.BG} stroke={colors.WARM} />
-            <text x={GATE.x + GATE.w - 54} y={GATE.y + 2} textAnchor="middle" fill={colors.WARM} fontSize={13.5} fontFamily={MONO}>
-              {'% 8 → [6]'}
+            <rect x={GATE.x + GATE.w - 148} y={GATE.y + 8} width={140} height={30} rx={8} fill={colors.BG} stroke={colors.WARM} />
+            <text x={GATE.x + GATE.w - 78} y={GATE.y + 28} textAnchor="middle" fill={colors.WARM} fontSize={13.5} fontFamily={MONO}>
+              {'hash % 8 → [6]'}
             </text>
           </g>
 
-          {/* O(1) */}
-          <MathLabel tex={'O(1)'} x={TABLE.x + TABLE.w + 46} y={rowY(OUR.bucket) - 10} fontSize={26} color={colors.POSITIVE} opacity={bigOU * (1 - dimU)} />
+          {/* O(1) — left of the table, clear of the memory bar */}
+          <text
+            x={TABLE.x - 70}
+            y={rowY(OUR.bucket) + 9}
+            textAnchor="end"
+            fill={colors.POSITIVE}
+            fontSize={26}
+            fontStyle="italic"
+            fontFamily="Georgia, 'Times New Roman', serif"
+            opacity={bigOU * (1 - dimU)}
+          >
+            O(1)
+          </text>
 
           {/* our key — the throughline */}
           {keyU > 0 && (
             <g>
               <circle cx={ourPos.x} cy={ourPos.y} r={8} fill={colors.WARM} stroke={colors.BG} strokeWidth={1.5} />
-              <text x={ourPos.x} y={ourPos.y - 14} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
+              {/* the name only appears once the key has landed, so it never prints over the gate text */}
+              <text x={ourPos.x} y={ourPos.y - 14} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO} opacity={clamp01((keyU - 0.9) * 10)}>
                 user:42
               </text>
             </g>

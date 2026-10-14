@@ -69,21 +69,23 @@ const BARS = Array.from({ length: 14 }, (_, i) => 1 / (1 + i * 0.9));
 const SHELF_A0 = ['x7Rq2Lp', 'dSUUsvo', 'aB93kQz', 'M4nv0Yt', 'pE6sW1c'];
 const SHELF_A1 = ['M4nv0Yt', 'x7Rq2Lp', 'dSUUsvo', 'aB93kQz', 'pE6sW1c']; // M4nv0Yt hit → front
 const SHELF_B1 = ['Zk82hFw', 'M4nv0Yt', 'x7Rq2Lp', 'dSUUsvo', 'aB93kQz']; // insert; pE6sW1c evicted
-const SHELF = { x0: 420, y: 96, cell: 118, gap: 10, h: 40 } as const;
+const SHELF = { x0: 420, y: 150, cell: 118, gap: 10, h: 40 } as const;
 const shelfX = (i: number): number => SHELF.x0 + i * (SHELF.cell + SHELF.gap);
 
 // latency race — memory 250 µs, SSD ×4, disk ×80 (log-ish lane speeds)
-const RACE = { x0: 430, x1: 1150, y0: 470, dy: 44 } as const;
+const RACE = { x0: 680, x1: 1150, y0: 462, dy: 36 } as const;
 const RACE_LANES = [
   { label: 'memory', time: '250 µs', speed: 1, color: colors.POSITIVE },
   { label: 'SSD', time: '×4', speed: 1 / 4, color: colors.WARM },
   { label: 'disk', time: '×80', speed: 1 / 80, color: colors.NEGATIVE },
 ] as const;
 
-const CAM_FUNNEL: CameraState = { x: 660, y: 310, k: 1.12 };
-const CAM_HIST: CameraState = { x: 420, y: 470, k: 1.4 };
-const CAM_RACE: CameraState = { x: 790, y: 500, k: 1.3 };
-const CAM_SHELF: CameraState = { x: 730, y: 170, k: 1.35 };
+// Frames keep the readers node and the plain-path nodes in view, and keep
+// everything above the caption band (screen y < 632).
+const CAM_FUNNEL: CameraState = { x: 640, y: 300, k: 1.0 };
+const CAM_HIST: CameraState = { x: 640, y: 400, k: 1.1 };
+const CAM_RACE: CameraState = { x: 640, y: 400, k: 1.1 };
+const CAM_SHELF: CameraState = { x: 640, y: 150, k: 1.1 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {
@@ -346,7 +348,7 @@ export function Render({ s }: { s: SceneState }) {
                 <text x={l.x} y={392} textAnchor="middle" fill={colors.TEXT} fontSize={17} fontWeight={700}>
                   {l.share}
                 </text>
-                <text x={l.x} y={410} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+                <text x={l.x} y={410} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                   absorbed here
                 </text>
               </g>
@@ -356,22 +358,22 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- hot-link histogram ---- */}
         {histU > 0 && (
-          <g opacity={clamp01(histU * 2) * panelDim * (1 - countsU)}>
-            <rect x={210} y={430} width={420} height={160} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={228} y={456} fill={colors.TEXT} fontSize={13}>
+          <g opacity={clamp01(histU * 2) * panelDim * (1 - countsU) * (1 - lruU)}>
+            <rect x={210} y={430} width={420} height={142} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
+            <text x={228} y={454} fill={colors.TEXT} fontSize={14}>
               reads per link
             </text>
-            <text x={612} y={456} textAnchor="end" fill={colors.MUTED} fontSize={11} fontStyle="italic">
+            <text x={612} y={454} textAnchor="end" fill={colors.MUTED} fontSize={12} fontStyle="italic">
               a few links get almost everything
             </text>
             {BARS.map((b, i) => {
               const u = clamp01(histU * 3 - i * 0.15);
-              const h = 106 * b * u;
+              const h = 88 * b * u;
               return (
                 <rect
                   key={i}
                   x={230 + i * 27}
-                  y={576 - h}
+                  y={556 - h}
                   width={19}
                   height={h}
                   rx={3}
@@ -385,9 +387,9 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- the latency race ---- */}
         {raceU > 0 && (
-          <g opacity={raceU * panelDim * (1 - countsU)}>
-            <rect x={RACE.x0 - 20} y={RACE.y0 - 34} width={RACE.x1 - RACE.x0 + 40} height={176} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={RACE.x0} y={RACE.y0 - 10} fill={colors.TEXT} fontSize={13}>
+          <g opacity={raceU * panelDim * (1 - countsU) * (1 - lruU)}>
+            <rect x={RACE.x0 - 20} y={RACE.y0 - 32} width={RACE.x1 - RACE.x0 + 40} height={142} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
+            <text x={RACE.x0} y={RACE.y0 - 10} fill={colors.TEXT} fontSize={14}>
               read 1 MB, sequentially
             </text>
             {RACE_LANES.map((lane, i) => {
@@ -397,10 +399,10 @@ export function Render({ s }: { s: SceneState }) {
                 <g key={lane.label}>
                   <line x1={RACE.x0} y1={y} x2={RACE.x1 - 90} y2={y} stroke={colors.GRID} strokeWidth={1} />
                   <circle cx={RACE.x0 + (RACE.x1 - 90 - RACE.x0) * u} cy={y} r={7} fill={lane.color} />
-                  <text x={RACE.x0} y={y - 12} fill={lane.color} fontSize={12}>
+                  <text x={RACE.x0} y={y - 12} fill={lane.color} fontSize={14}>
                     {lane.label}
                   </text>
-                  <text x={RACE.x1 - 10} y={y + 4} textAnchor="end" fill={u >= 1 ? lane.color : colors.MUTED} fontSize={12} fontFamily="monospace">
+                  <text x={RACE.x1 - 10} y={y + 4} textAnchor="end" fill={u >= 1 ? lane.color : colors.MUTED} fontSize={13} fontFamily="monospace">
                     {lane.time}
                   </text>
                 </g>
@@ -411,11 +413,11 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- the LRU shelf ---- */}
         {lruU > 0 && (
-          <g opacity={lruU * panelDim * (1 - countsU)}>
-            <text x={SHELF.x0} y={SHELF.y - 26} fill={colors.TEXT} fontSize={13}>
+          <g opacity={lruU * panelDim * (1 - countsU) * (1 - repliU)}>
+            <text x={SHELF.x0} y={SHELF.y - 60} fill={colors.TEXT} fontSize={14}>
               the cache, as a linked list — front is safety
             </text>
-            <text x={SHELF.x0} y={SHELF.y - 8} fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+            <text x={SHELF.x0} y={SHELF.y - 42} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
               {insU > 0.2 ? 'remove_from_tail() · append_to_front(node)' : hitU > 0.4 ? 'move_to_front(node)' : 'lookup = {query: node}'}
             </text>
             {['x7Rq2Lp', 'dSUUsvo', 'aB93kQz', 'M4nv0Yt', 'pE6sW1c', 'Zk82hFw'].map((link) => {
@@ -446,19 +448,21 @@ export function Render({ s }: { s: SceneState }) {
                 if (link === 'M4nv0Yt' && hitU > 0 && hitU < 1) stroke = colors.ACCENT;
               }
               if (alpha <= 0) return null;
+              // the entry being hit lifts over the row while it travels, so it never sits on its neighbours
+              const lift = link === 'M4nv0Yt' && hitU > 0 && hitU < 1 ? 50 * Math.sin(Math.PI * hitU) : 0;
               return (
-                <g key={link} opacity={alpha}>
+                <g key={link} opacity={alpha} transform={`translate(0, ${-lift})`}>
                   <rect x={x} y={SHELF.y} width={SHELF.cell} height={SHELF.h} rx={8} fill={colors.PANEL} stroke={stroke} strokeWidth={stroke === colors.GRID ? 1 : 1.8} />
-                  <text x={x + SHELF.cell / 2} y={SHELF.y + 25} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily="monospace">
+                  <text x={x + SHELF.cell / 2} y={SHELF.y + 25} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace">
                     {link}
                   </text>
                 </g>
               );
             })}
-            <text x={shelfX(0)} y={SHELF.y + SHELF.h + 18} fill={colors.MUTED} fontSize={10.5}>
+            <text x={shelfX(0)} y={SHELF.y + SHELF.h + 18} fill={colors.MUTED} fontSize={12}>
               front — most recent
             </text>
-            <text x={shelfX(4) + SHELF.cell} y={SHELF.y + SHELF.h + 18} textAnchor="end" fill={colors.MUTED} fontSize={10.5}>
+            <text x={shelfX(4) + SHELF.cell} y={SHELF.y + SHELF.h + 18} textAnchor="end" fill={colors.MUTED} fontSize={12}>
               tail — next to go
             </text>
           </g>

@@ -31,7 +31,7 @@ const mono = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 /* ---------------------------------------------------------------- layout */
 /** Stage is 1280×720; the caption strip owns y ≳ 630 — nothing lives there. */
-const TAPE = { x: 120, y: 545, w: 1040, h: 46 };
+const TAPE = { x: 120, y: 510, w: 1040, h: 46 };
 const CARD = { x: 84, y: 84, w: 500 };
 const PAYLOAD = { x: 664, y: 92, w: 512 };
 const DEDUP = { x: 664, y: 300, w: 512, h: 200 };
@@ -42,8 +42,8 @@ const MOMENTS = [
   { u: 0.1, kind: 'nav', label: 'GET /products' },
   { u: 0.3, kind: 'click', label: 'click “Add to cart”' },
   { u: 0.52, kind: 'nav', label: 'GET /checkout' },
-  { u: 0.72, kind: 'net', label: 'POST /api/checkout → 500' },
-  { u: 0.84, kind: 'console', label: 'console.error: payment failed' },
+  { u: 0.72, kind: 'net', label: 'POST → 500' },
+  { u: 0.84, kind: 'console', label: 'console.error' },
 ] as const;
 
 /** Numbered repro steps, each anchored to a tape moment (by MOMENTS index). */
@@ -72,9 +72,11 @@ const CANDIDATES = [
 ] as const;
 
 /* ------------------------------------------------------------- cameras */
-const CAM_CARD: CameraState = { x: 560, y: 330, k: 1.1 };
+const CAM_CARD: CameraState = { x: 580, y: 330, k: 1.1 };
 const momentX = (u: number) => TAPE.x + u * TAPE.w;
-const CAM_MOMENT: CameraState = { x: momentX(MOMENTS[3].u), y: 468, k: 1.9 };
+/* Dive toward the 500 moment, but keep the card's steps on stage. */
+const CAM_MOMENT: CameraState = { x: 580, y: 350, k: 1.15 };
+const CARD_BOTTOM = CARD.y + 112 + STEPS.length * 34 + 16;
 const CAM_CLOSE: CameraState = { x: 590, y: 335, k: 1.16 };
 
 /* -------------------------------------------------------------- timeline */
@@ -244,8 +246,8 @@ function TapeStrip({
           </g>
         );
       })}
-      <text x={x} y={y - 10} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
-        replay_recording_id: rec-7f3a…
+      <text x={x} y={y - 10} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+        rec-7f3a…
       </text>
       {MOMENTS.map((m, i) => {
         const mu = clamp01(moments - i);
@@ -260,6 +262,9 @@ function TapeStrip({
             )}
             <line x1={mx} y1={y + 12} x2={mx} y2={y + h - 12} stroke={c} strokeWidth={hot > 0 ? 3 : 2} />
             <circle cx={mx} cy={y + h / 2} r={3.4 + 1.6 * hot} fill={c} />
+            <text x={mx + 12} y={y + h / 2 + 4} fill={c} fontSize={12} fontWeight={600} fontFamily={mono}>
+              {m.label}
+            </text>
           </g>
         );
       })}
@@ -274,18 +279,17 @@ function FindingCard({
   const uu = clamp01(u);
   if (uu <= 0) return null;
   const { x, y, w } = CARD;
-  const stepY = (i: number) => y + 112 + i * 34;
   return (
     <g opacity={uu}>
       <g transform={`translate(${x}, ${y + (1 - uu) * 12})`}>
         <rect width={w} height={112 + STEPS.length * 34 + 16} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.4} />
-        <text x={20} y={30} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+        <text x={20} y={30} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
           bug-002 · discovered by run-004
         </text>
         {clamp01(sev) > 0 && (
           <g opacity={clamp01(sev)} transform={`scale(${0.9 + 0.1 * clamp01(sev)})`}>
             <rect x={20} y={44} width={78} height={24} rx={12} fill={colors.NEGATIVE} opacity={0.2} />
-            <text x={59} y={61} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11.5} fontWeight={700} fontFamily={mono}>
+            <text x={59} y={61} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontWeight={700} fontFamily={mono}>
               critical
             </text>
           </g>
@@ -293,7 +297,7 @@ function FindingCard({
         {clamp01(open) > 0 && (
           <g opacity={clamp01(open)}>
             <rect x={108} y={44} width={58} height={24} rx={12} fill={colors.POSITIVE} opacity={0.2} />
-            <text x={137} y={61} textAnchor="middle" fill={colors.POSITIVE} fontSize={11.5} fontWeight={700} fontFamily={mono}>
+            <text x={137} y={61} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontWeight={700} fontFamily={mono}>
               open
             </text>
           </g>
@@ -301,42 +305,41 @@ function FindingCard({
         <text x={20} y={92} fill={colors.TEXT} fontSize={15.5} fontWeight={700}>
           Checkout fails with 500 on payment submission
         </text>
-        <text x={20} y={112 + STEPS.length * 34 + 2} fill={clamp01(glow) > 0.5 ? colors.ACCENT : colors.MUTED} fontSize={11.5} fontFamily={mono} opacity={0.4 + 0.6 * clamp01(glow)}>
+        <text x={20} y={112 + STEPS.length * 34 + 2} fill={clamp01(glow) > 0.5 ? colors.ACCENT : colors.MUTED} fontSize={12} fontFamily={mono} opacity={0.4 + 0.6 * clamp01(glow)}>
           ▶ open recording rec-7f3a…
         </text>
         {STEPS.map((st, i) => {
           const su = clamp01(steps - i);
           if (su <= 0) return null;
           return (
-            <text key={i} x={20} y={130 + i * 34} fill={colors.TEXT} fontSize={13} fontFamily={mono} opacity={su}>
-              {st.text}
-            </text>
+            <g key={i} opacity={su}>
+              <circle cx={11} cy={126 + i * 34} r={4} fill={MOMENT_COLOR[MOMENTS[st.anchor].kind]} />
+              <text x={24} y={130 + i * 34} fill={colors.TEXT} fontSize={14} fontFamily={mono}>
+                {st.text}
+              </text>
+            </g>
           );
         })}
       </g>
-      {/* anchor lines: step → tape moment (drawn in stage space) */}
+      {/* anchor lines: drop from under the card to the tape moment. They run
+          below the card, so they never cross its text; the number marks the step. */}
       {STEPS.map((st, i) => {
         const su = clamp01(steps - i);
         if (su <= 0.3) return null;
         const au = clamp01((su - 0.3) / 0.7);
-        const sx = x + w + 2;
-        const sy = stepY(i) + (1 - clamp01(u)) * 12 + 12;
+        const top = CARD_BOTTOM + (1 - clamp01(u)) * 12;
         const mx = momentX(MOMENTS[st.anchor].u);
-        const my = TAPE.y + 6;
+        const my = TAPE.y - 2;
         const c = MOMENT_COLOR[MOMENTS[st.anchor].kind];
-        // simple elbow: out from the step, down to just above the moment
-        const midX = sx + (mx - sx) * au;
-        const dropY = sy + (my - sy) * au;
         return (
-          <g key={i} opacity={(0.25 + 0.55 * (i === 2 || i === 3 ? 1 : 0.5)) * clamp01(tapeFade)}>
-            <path
-              d={`M ${sx} ${sy} L ${midX} ${sy} L ${midX} ${dropY}`}
-              fill="none"
-              stroke={c}
-              strokeWidth={1.4}
-              strokeDasharray="5 4"
-            />
-            {au >= 1 && <circle cx={mx} cy={my - 2} r={3} fill={c} />}
+          <g key={i} opacity={(0.45 + 0.4 * (i === 2 || i === 3 ? 1 : 0.5)) * clamp01(tapeFade)}>
+            <line x1={mx} y1={top} x2={mx} y2={top + (my - top) * au} stroke={c} strokeWidth={1.6} strokeDasharray="5 4" />
+            {au >= 1 && <circle cx={mx} cy={my} r={3} fill={c} />}
+            {au >= 1 && (
+              <text x={mx + 6} y={top + 16} fill={c} fontSize={12} fontWeight={700} fontFamily={mono}>
+                {i + 1}
+              </text>
+            )}
           </g>
         );
       })}
@@ -355,13 +358,13 @@ function MomentInset({ u }: { u: number }) {
       <line x1={0} y1={72} x2={0} y2={92} stroke={colors.NEGATIVE} strokeWidth={1.2} />
       <rect x={-158} y={-2} width={316} height={74} rx={8} fill={colors.BG} opacity={0.94} />
       <rect x={-158} y={-2} width={316} height={74} rx={8} fill="none" stroke={colors.NEGATIVE} strokeWidth={1.3} />
-      <text x={-144} y={20} fill={colors.TEXT} fontSize={11} fontFamily={mono}>
+      <text x={-144} y={20} fill={colors.TEXT} fontSize={12} fontFamily={mono}>
         POST /api/checkout
       </text>
-      <text x={-144} y={40} fill={colors.NEGATIVE} fontSize={11} fontWeight={700} fontFamily={mono}>
+      <text x={-144} y={40} fill={colors.NEGATIVE} fontSize={12} fontWeight={700} fontFamily={mono}>
         ← 500 Internal Server Error
       </text>
-      <text x={-144} y={60} fill={colors.WARM} fontSize={10.5} fontFamily={mono}>
+      <text x={-144} y={60} fill={colors.WARM} fontSize={12} fontFamily={mono}>
         console.error: payment failed
       </text>
     </g>
@@ -383,7 +386,7 @@ function PayloadPanel({ u, rows, fade }: { u: number; rows: number; fade: number
         const ru = clamp01(rows - i);
         if (ru <= 0) return null;
         return (
-          <text key={i} x={26} y={52 + i * 26} fill={i >= 2 ? colors.ACCENT : colors.TEXT} fontSize={11.5} fontFamily={mono} opacity={ru}>
+          <text key={i} x={26} y={52 + i * 26} fill={i >= 2 ? colors.ACCENT : colors.TEXT} fontSize={13} fontFamily={mono} opacity={ru}>
             {k}
           </text>
         );
@@ -409,7 +412,7 @@ function DedupPanel({ u, scan, verdict, fade }: { u: number; scan: number; verdi
         const yy = 48 + i * 28;
         return (
           <g key={i} opacity={0.25 + 0.75 * cu}>
-            <text x={16} y={yy + 4} fill={colors.TEXT} fontSize={10.5} fontFamily={mono}>
+            <text x={16} y={yy + 4} fill={colors.TEXT} fontSize={12} fontFamily={mono}>
               {c.label}
             </text>
             <rect x={w - 130} y={yy - 6} width={110} height={10} rx={5} fill={colors.GRID} opacity={0.5} />

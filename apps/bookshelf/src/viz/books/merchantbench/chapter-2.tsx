@@ -36,7 +36,7 @@ export function buildScene() {
   tl.tween(railU, 1, { at: 0.9, dur: 1.5, ease: ease.draw });
   tl.tween(orderU, 0, { at: 1.4, dur: 0.8, ease: ease.enter });
   tl.tween(cashU, 1, { at: 2.1, dur: 1.2, ease: ease.move });
-  tl.tween(cam, { x: 300, y: 330, k: 1.12 }, { at: 2.3, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 600, y: 360, k: 1 }, { at: 2.3, dur: 1.3, ease: ease.move });
   tl.hold(6.5, 0.8);
 
   tl.caption({ at: 7.3, dur: 6.0, text: 'The simulator auto-purchases the order from the chosen listing, and the lifecycle begins in the ordered state.' });
@@ -46,19 +46,19 @@ export function buildScene() {
   tl.caption({ at: 14.1, dur: 6.2, text: 'If dispatch misses the forty-eight-hour promise, the order turns late, pays a penalty, and still keeps moving.' });
   tl.tween(promiseU, 1, { at: 14.6, dur: 1.1, ease: ease.draw });
   tl.tween(orderU, 0.42, { at: 16.0, dur: 2.0, ease: ease.linear });
-  tl.tween(cam, { x: 420, y: 330, k: 1.16 }, { at: 16.2, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 560, y: 360, k: 1 }, { at: 16.2, dur: 1.3, ease: ease.move });
   tl.hold(20.3, 0.8);
 
   tl.caption({ at: 21.1, dur: 6.8, text: 'Supplier dispatch moves it to shipped, then logistics carries the same order to delivered.' });
   tl.tween(orderU, 0.78, { at: 21.6, dur: 3.6, ease: ease.linear });
   tl.tween(transitU, 1, { at: 22.0, dur: 2.8, ease: ease.draw });
-  tl.tween(cam, { x: 720, y: 330, k: 1.08 }, { at: 22.4, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 700, y: 360, k: 1 }, { at: 22.4, dur: 1.3, ease: ease.move });
   tl.hold(27.2, 0.8);
 
   tl.caption({ at: 28.0, dur: 6.3, text: 'A normal delivery still waits through a seven-day settlement delay before revenue returns to the ledger.' });
   tl.tween(delayU, 1, { at: 28.5, dur: 3.2, ease: ease.linear });
   tl.tween(orderU, 1, { at: 31.0, dur: 1.8, ease: ease.move });
-  tl.tween(cam, { x: 965, y: 330, k: 1.12 }, { at: 29.2, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 700, y: 360, k: 1 }, { at: 29.2, dur: 1.3, ease: ease.move });
   tl.hold(34.3, 0.8);
 
   tl.caption({ at: 35.1, dur: 6.5, text: 'But the hidden outcome can surface later as a bad review, a refund, or a returnless refund.' });
@@ -85,7 +85,7 @@ function OrderPacket({ x, y, u }: { x: number; y: number; u: number }) {
   return <g transform={`translate(${x} ${y}) scale(${0.86 + 0.14 * clamp01(u)})`} opacity={clamp01(u * 5)}>
     <rect x={-42} y={-30} width={84} height={60} rx={14} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={2.5} />
     <path d="M-19 -9 H19 M-19 2 H10 M-19 13 H16" stroke={colors.TEXT} strokeWidth={4} strokeLinecap="round" />
-    <text y={50} textAnchor="middle" fill={colors.WARM} fontSize={11} fontFamily={MONO}>order_id</text>
+    <text y={-40} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>order_id</text>
   </g>;
 }
 
@@ -108,28 +108,28 @@ export function Render({ s }: { s: SceneState }) {
         </g>)}
         <OrderPacket x={x} y={320} u={s.get(scene.railU)} />
 
-        <g opacity={s.get(scene.cashU)} transform="translate(120 134)">
-          <rect width={320} height={94} rx={18} fill={colors.PANEL} stroke={colors.NEGATIVE} />
-          <text x={20} y={30} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>Cash.balance</text>
-          <text x={20} y={64} fill={colors.NEGATIVE} fontSize={25} fontWeight={800}>procurement cost exits now</text>
-          <path d="M278 72 L360 120" stroke={colors.NEGATIVE} strokeWidth={4} strokeLinecap="round" />
+        <g opacity={s.get(scene.cashU)} transform="translate(150 96)">
+          <rect width={520} height={84} rx={18} fill={colors.PANEL} stroke={colors.NEGATIVE} />
+          <text x={20} y={28} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>Cash.balance</text>
+          <text x={20} y={63} fill={colors.NEGATIVE} fontSize={25} fontWeight={800}>procurement cost exits now</text>
+          <path d="M180 84 L42 204" stroke={colors.NEGATIVE} strokeWidth={4} strokeLinecap="round" />
         </g>
 
         <g opacity={s.get(scene.promiseU)}>
           <line x1={405} y1={222} x2={405} y2={420} stroke={colors.NEGATIVE} strokeWidth={2.5} strokeDasharray="7 7" />
           <rect x={318} y={188} width={174} height={34} rx={17} fill={colors.PANEL} stroke={colors.NEGATIVE} />
-          <text x={405} y={210} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11} fontFamily={MONO}>48h promised ship</text>
+          <text x={405} y={210} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>48h promised ship</text>
           <text x={405} y={440} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12}>timeout penalty: 3</text>
         </g>
 
         <g opacity={s.get(scene.transitU)}>
           <path d="M632 250 C700 210 790 210 859 250" fill="none" stroke={colors.SECONDARY} strokeWidth={3} />
-          <text x={746} y={207} textAnchor="middle" fill={colors.SECONDARY} fontSize={11} fontFamily={MONO}>supplier_ship_hours + logistics_hours</text>
+          <text x={746} y={207} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>supplier_ship_hours + logistics_hours</text>
         </g>
 
-        <g opacity={s.get(scene.delayU)} transform="translate(820 128)">
+        <g opacity={s.get(scene.delayU)} transform="translate(900 96)">
           <rect width={310} height={82} rx={18} fill={colors.PANEL} stroke={colors.WARM} />
-          <text x={155} y={29} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>normal_delay_hours</text>
+          <text x={155} y={29} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>normal_delay_hours</text>
           <text x={155} y={58} textAnchor="middle" fill={colors.WARM} fontSize={23} fontWeight={800}>168 hours</text>
           <rect x={20} y={69} width={270 * s.get(scene.delayU)} height={5} rx={3} fill={colors.WARM} />
         </g>
@@ -143,15 +143,15 @@ export function Render({ s }: { s: SceneState }) {
           ].map((b, i) => <g key={b.label} opacity={clamp01(s.get(scene.branchesU) * 3 - i)}>
             <rect x={b.x - 82} y={498} width={164} height={76} rx={15} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={2} />
             <text x={b.x} y={526} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>{b.label}</text>
-            <text x={b.x} y={552} textAnchor="middle" fill={colors.MUTED} fontSize={10}>{b.penalty}</text>
+            <text x={b.x} y={552} textAnchor="middle" fill={colors.MUTED} fontSize={12}>{b.penalty}</text>
           </g>)}
         </g>
 
         <g opacity={s.get(scene.feedbackU)} transform="translate(96 480)">
           <rect width={390} height={94} rx={18} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2.5} />
-          <text x={20} y={29} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>realized evidence</text>
+          <text x={20} y={29} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>realized evidence</text>
           <text x={20} y={59} fill={colors.TEXT} fontSize={15}>revenue · penalty · rating</text>
-          <path d="M360 47 C430 47 430 -34 500 -34" fill="none" stroke={colors.POSITIVE} strokeWidth={3} />
+          <path d="M390 47 C420 47 430 56 457 56" fill="none" stroke={colors.POSITIVE} strokeWidth={3} />
         </g>
         {s.get(scene.outcomeU) > 0 && <circle cx={1086} cy={320} r={30 + 12 * s.get(scene.outcomeU)} fill="none" stroke={colors.POSITIVE} strokeWidth={4} opacity={s.get(scene.outcomeU)} />}
       </g>

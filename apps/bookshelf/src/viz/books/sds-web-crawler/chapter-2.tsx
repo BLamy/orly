@@ -34,10 +34,10 @@ const FOO = { x: 985, y: 235 } as const;
 
 // the frontier's six same-host links (paths are on-screen labels only)
 const PATHS = ['/index', '/news', '/prices', '/jobs', '/blog', '/about'];
-const LAD = { x: 84, y0: 128, w: 240, rowH: 44 } as const;
+const LAD = { x: 150, y0: 128, w: 220, rowH: 44 } as const;
 
-// the fetch time-strip
-const STRIP = { x0: 390, x1: 1200, y: 566 } as const;
+// the fetch time-strip (label sits above the line, clear of the caption band)
+const STRIP = { x0: 390, x1: 1200, y: 500 } as const;
 const burstDotX = (i: number): number => STRIP.x0 + 26 + i * 22;
 const dripDotX = (i: number): number => STRIP.x0 + 26 + i * 152;
 
@@ -45,16 +45,18 @@ const dripDotX = (i: number): number => STRIP.x0 + 26 + i * 152;
 const rand = mulberry32(20260716);
 const HOSTS = Array.from({ length: 12 }, (_, i) => ({
   x: 800 + (i % 4) * 128,
-  y: 110 + Math.floor(i / 4) * 128,
+  y: 80 + Math.floor(i / 4) * 120,
   label: i === 1 ? 'foo' : i === 6 ? 'bar' : i === 8 ? 'baz' : '',
   phase: rand(),
 }));
 
+// every preset keeps the frontier (x 150..370) and foo.com in frame, and keeps
+// the strip's labels above the caption band (screen y < 630)
 const CAM_SETUP: CameraState = { x: 520, y: 320, k: 1.12 };
-const CAM_HOST: CameraState = { x: 880, y: 300, k: 1.25 };
-const CAM_ROBOTS: CameraState = { x: 950, y: 250, k: 1.35 };
-const CAM_DRIP: CameraState = { x: 830, y: 400, k: 1.1 };
-const CAM_DNS: CameraState = { x: 560, y: 400, k: 1.22 };
+const CAM_HOST: CameraState = { x: 610, y: 300, k: 1.25 };
+const CAM_ROBOTS: CameraState = { x: 630, y: 300, k: 1.2 };
+const CAM_DRIP: CameraState = { x: 660, y: 380, k: 1.2 };
+const CAM_DNS: CameraState = { x: 600, y: 360, k: 1.05 };
 
 // ---------------------------------------------------------------------------
 // Timeline
@@ -163,7 +165,7 @@ export function buildScene(): Scene {
     text: 'Per host you are deliberately slow. The crawler stays fast the other way: thousands of hosts, each politely dripped, all in parallel.',
   });
   tl.tween(cam, CAMERA_HOME, { at: 46.2, dur: 1.6, ease: ease.move });
-  tl.tween(robotsU, 0.15, { at: 46.4, dur: 1.0, ease: ease.move });
+  tl.tween(robotsU, 0, { at: 46.4, dur: 1.0, ease: ease.move });
   tl.tween(hostsU, 1, { at: 47.0, dur: 1.6, ease: ease.enter });
   tl.tween(poolPhase, 6, { at: 47.0, dur: 24, ease: ease.linear });
   tl.hold(53.2, 0.4);
@@ -241,9 +243,9 @@ export function Render({ s }: { s: SceneState }) {
   const status: 'ok' | 'warn' | 'down' = health > 1.5 ? 'down' : health > 0.5 ? 'warn' : 'ok';
   const burstGone = 1 - rewindU;
   const dripping = dripP > 0 && dripP < 6;
-  const dimAll = 1 - closeU * 0.85;
+  const dimAll = 1 - closeU * 0.92;
   // lattice fades the single-host story back
-  const soloOp = clamp01(1 - hostsU * 0.9);
+  const soloOp = clamp01(1 - hostsU);
 
   return (
     <>
@@ -309,8 +311,8 @@ export function Render({ s }: { s: SceneState }) {
               />
               <g opacity={soloOp}>
                 <TimerArc cx={FOO.x - 120} cy={FOO.y - 70} r={20} u={1 - fract(dripP)} color={colors.POSITIVE} />
-                <text x={FOO.x - 120} y={FOO.y - 102} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
-                  wait before next visit
+                <text x={FOO.x - 120} y={FOO.y - 102} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                  per-host timer = Crawl-delay
                 </text>
               </g>
             </>
@@ -318,11 +320,14 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* robots.txt — the pact */}
           <g opacity={robotsU}>
-            <rect x={FOO.x - 128} y={FOO.y + 62} width={256 } height={64} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
+            <rect x={FOO.x - 128} y={FOO.y + 62} width={256} height={84} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
             <text x={FOO.x} y={FOO.y + 88} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="ui-monospace, monospace">
               robots.txt
             </text>
-            <text x={FOO.x} y={FOO.y + 108} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+            <text x={FOO.x} y={FOO.y + 110} textAnchor="middle" fill={colors.TEXT} fontSize={12.5} fontFamily="ui-monospace, monospace">
+              Crawl-delay: 10 s
+            </text>
+            <text x={FOO.x} y={FOO.y + 130} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
               webmaster-controlled crawl frequency
             </text>
           </g>
@@ -333,7 +338,7 @@ export function Render({ s }: { s: SceneState }) {
             {Array.from({ length: 12 }, (_, i) => (
               <line key={i} x1={STRIP.x0 + 26 + i * 76} y1={STRIP.y - 4} x2={STRIP.x0 + 26 + i * 76} y2={STRIP.y + 4} stroke={colors.GRID} strokeWidth={1} />
             ))}
-            <text x={STRIP.x0} y={STRIP.y + 24} fill={colors.MUTED} fontSize={12} fontStyle="italic">
+            <text x={STRIP.x0} y={STRIP.y - 30} fill={colors.MUTED} fontSize={12} fontStyle="italic">
               fetches on the clock →
             </text>
             {/* burst dots: clustered — a flood */}
@@ -377,14 +382,14 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* the DNS cache */}
           <g opacity={dnsU}>
-            <rect x={400} y={430} width={220} height={62} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} />
-            <text x={510} y={456} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily="ui-monospace, monospace">
+            <rect x={400} y={372} width={220} height={62} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} />
+            <text x={510} y={398} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily="ui-monospace, monospace">
               DNS cache
             </text>
-            <text x={510} y={476} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+            <text x={510} y={418} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
               own lookups · refreshed periodically
             </text>
-            <line x1={CRAWLER.x} y1={CRAWLER.y + 42} x2={510} y2={430} stroke={colors.ACCENT} strokeWidth={1.2} opacity={0.5} />
+            <line x1={CRAWLER.x} y1={CRAWLER.y + 42} x2={510} y2={372} stroke={colors.ACCENT} strokeWidth={1.2} opacity={0.5} />
           </g>
         </g>
 

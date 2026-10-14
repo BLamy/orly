@@ -154,8 +154,8 @@ function TagChip({ x, y, label, color, u }: { x: number; y: number; label: strin
   if (u <= 0) return null;
   return (
     <g opacity={u}>
-      <rect x={x} y={y} width={128} height={24} rx={5} fill={colors.PANEL} stroke={color} />
-      <text x={x + 8} y={y + 16} fill={color} fontSize={10} fontFamily="monospace">{label}</text>
+      <rect x={x} y={y} width={168} height={24} rx={5} fill={colors.PANEL} stroke={color} />
+      <text x={x + 8} y={y + 16} fill={color} fontSize={11} fontFamily="monospace">{label}</text>
     </g>
   );
 }
@@ -174,7 +174,8 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the old thread fades out entirely so the closing panel sits on bare stage
+  const mainOp = 1 - dimU;
   const decoded = decodeU >= 1;
   // the mention story yields the stage when the camera parks on the article —
   // otherwise its left-edge labels sit half-clipped in the post framing
@@ -215,7 +216,7 @@ function Frame({ s }: { s: SceneState }) {
                 for the relay tips
               </text>
               {decoded && (
-                <text x={NOTE_BOX.x + 20} y={NOTE_BOX.y + NOTE_BOX.h - 12} fill={colors.MUTED} fontSize={10.5} fontFamily="monospace" opacity={decodeU}>
+                <text x={NOTE_BOX.x + 20} y={NOTE_BOX.y + NOTE_BOX.h - 12} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={decodeU}>
                   decoded → pubkey {shortHex(DEREK_PK, 8, 4)}
                 </text>
               )}
@@ -237,13 +238,13 @@ function Frame({ s }: { s: SceneState }) {
           {pFlyU >= 1 && (
             <g>
               <rect x={CHIP_POS.x - 92} y={CHIP_POS.y - 18} width={184} height={30} rx={7} fill="none" stroke={colors.POSITIVE} opacity={0.7} />
-              <text x={CHIP_POS.x} y={CHIP_POS.y + 32} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+              <text x={CHIP_POS.x} y={CHIP_POS.y + 32} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                 tagged → he gets notified
               </text>
             </g>
           )}
           {whisperU > 0 && (
-            <text x={CHIP_POS.x} y={CHIP_POS.y + 56} textAnchor="middle" fill={colors.MUTED} fontSize={11} opacity={whisperU}>
+            <text x={CHIP_POS.x} y={CHIP_POS.y + 56} textAnchor="middle" fill={colors.MUTED} fontSize={12} opacity={whisperU}>
               omit the tag → a silent mention
             </text>
           )}
@@ -260,7 +261,7 @@ function Frame({ s }: { s: SceneState }) {
               <text x={POST.x - 112} y={POST.y + 2} fill={colors.TEXT} fontSize={12.5}>
                 “running your own relay”
               </text>
-              <text x={POST.x - 112} y={POST.y + 26} fill={colors.MUTED} fontSize={10} fontFamily="monospace">
+              <text x={POST.x - 112} y={POST.y + 26} fill={colors.MUTED} fontSize={11} fontFamily="monospace">
                 addr 30023:{shortHex(POST_PK, 4, 2)}:relay-guide
               </text>
             </g>
@@ -284,7 +285,7 @@ function Frame({ s }: { s: SceneState }) {
               <TagChip x={C1.x + 150} y={C1.y - 14} label={'P ' + shortHex(POST_PK, 4, 2)} color={colors.WARM} u={clamp01(c1TagU * 3 - 1.5)} />
               <TagChip x={C1.x + 150} y={C1.y + 16} label={'a/k/p → the article'} color={colors.POSITIVE} u={clamp01(c1TagU * 3 - 2)} />
               {clamp01(c1TagU * 3 - 1) > 0 && (
-                <text x={C1.x + 150} y={C1.y - 54} fill={colors.MUTED} fontSize={10.5} opacity={clamp01(c1TagU * 3 - 1)}>
+                <text x={C1.x + 150} y={C1.y - 54} fill={colors.MUTED} fontSize={12} opacity={clamp01(c1TagU * 3 - 1)}>
                   root scope (capitals)
                 </text>
               )}
@@ -305,13 +306,14 @@ function Frame({ s }: { s: SceneState }) {
           {/* the kind-1 guard */}
           {guardU > 0 && (
             <g opacity={guardU}>
-              <rect x={600} y={560} width={330} height={54} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.6} />
-              <line x1={614} y1={574} x2={638} y2={598} stroke={colors.NEGATIVE} strokeWidth={2.6} />
-              <line x1={638} y1={574} x2={614} y2={598} stroke={colors.NEGATIVE} strokeWidth={2.6} />
-              <text x={652} y={582} fill={colors.TEXT} fontSize={12.5}>
+              {/* sits left of the reply stack so the camera push keeps it clear of the caption */}
+              <rect x={440} y={470} width={320} height={54} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.6} />
+              <line x1={454} y1={484} x2={478} y2={508} stroke={colors.NEGATIVE} strokeWidth={2.6} />
+              <line x1={478} y1={484} x2={454} y2={508} stroke={colors.NEGATIVE} strokeWidth={2.6} />
+              <text x={492} y={492} fill={colors.TEXT} fontSize={13}>
                 kind 1111 on a kind-1 note: forbidden
               </text>
-              <text x={652} y={600} fill={colors.MUTED} fontSize={11}>
+              <text x={492} y={512} fill={colors.MUTED} fontSize={12}>
                 plain notes thread with marked e tags
               </text>
             </g>
@@ -321,7 +323,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             The event carries its whole ancestry
           </text>
@@ -329,7 +331,7 @@ function Frame({ s }: { s: SceneState }) {
             mentions ride inside the words · capitals pin the room, lowercase the chair
           </text>
           <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
-            NIP-27 nostr: URIs · NIP-22 kind 1111 A/K/P vs a/k/p
+            NIP-27 nostr: URIs · NIP-22 kind 1111 · A/K/P root (E if an event), a/k/p parent
           </text>
         </g>
       )}

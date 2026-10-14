@@ -105,7 +105,7 @@ const RULES = [
 ] as const;
 
 const CAM_CLUTTER: CameraState = { x: 400, y: 300, k: 1.32 };
-const CAM_CUBE: CameraState = { x: 560, y: 340, k: 1.1 };
+const CAM_CUBE: CameraState = { x: 640, y: 340, k: 1.1 };
 const CAM_RULES: CameraState = { x: 780, y: 330, k: 1.14 };
 const CAM_SLOPE: CameraState = { x: 620, y: 400, k: 1.16 };
 
@@ -291,8 +291,9 @@ export function Render({ s }: { s: SceneState }) {
   const digU = s.get(scene.digU);
   const groundU = s.get(scene.groundU);
   const gapU = s.get(scene.gapU);
-  const sideDim = s.get(scene.sideDim);
   const closeU = s.get(scene.closeU);
+  // the side column fades out behind the closing panel
+  const sideFade = s.get(scene.sideDim) * (1 - closeU);
 
   const dimLabel = (a: P3, b: P3, dx: number, dy: number, text: string) => {
     const p = iso(...a);
@@ -316,6 +317,8 @@ export function Render({ s }: { s: SceneState }) {
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
+        {/* the diagram steps back once the closing panel arrives */}
+        <g opacity={1 - 0.75 * closeU}>
         {/* ---- the lawn, arriving late ---- */}
         {groundU > 0 && (
           <g opacity={groundU}>
@@ -389,17 +392,12 @@ export function Render({ s }: { s: SceneState }) {
           );
         })}
         {sheetU > 0.5 && (
-          <text
-            x={iso(4, 0, 6).X}
-            y={iso(4, 0, 6).Y + 5}
-            textAnchor="middle"
-            fill={colors.SECONDARY}
-            fontSize={13}
-            fontWeight={600}
-            opacity={clamp01(sheetU * 2 - 1)}
-          >
-            two 4×8 sheets — zero cuts
-          </text>
+          <g opacity={clamp01(sheetU * 2 - 1)}>
+            <line x1={698} y1={528} x2={iso(6, 0, 6).X} y2={iso(6, 0, 6).Y} stroke={colors.SECONDARY} strokeWidth={1.2} opacity={0.7} />
+            <text x={704} y={533} fill={colors.SECONDARY} fontSize={14} fontWeight={600}>
+              two 4×8 sheets — zero cuts
+            </text>
+          </g>
         )}
 
         {/* boards slide onto the front edges */}
@@ -432,17 +430,12 @@ export function Render({ s }: { s: SceneState }) {
           );
         })}
         {boardU > 0.6 && (
-          <text
-            x={iso(4, 0, 8).X - 10}
-            y={iso(4, 0, 8).Y + 30}
-            textAnchor="middle"
-            fill={colors.WARM}
-            fontSize={13}
-            fontWeight={600}
-            opacity={clamp01(boardU * 2 - 1) * Math.min(1, boardU)}
-          >
-            8-ft boards, uncut
-          </text>
+          <g opacity={clamp01(boardU * 2 - 1) * Math.min(1, boardU)}>
+            <line x1={382} y1={534} x2={iso(4, 0, 8).X - 6} y2={iso(4, 0, 8).Y + 7} stroke={colors.WARM} strokeWidth={1.2} opacity={0.7} />
+            <text x={236} y={540} fill={colors.WARM} fontSize={14} fontWeight={600}>
+              8-ft boards, uncut
+            </text>
+          </g>
         )}
 
         {/* dimension labels */}
@@ -450,6 +443,7 @@ export function Render({ s }: { s: SceneState }) {
           {dimLabel([0, 0, 0], [8, 0, 0], 0, -14, '8 ft')}
           {dimLabel([8, 0, 0], [8, 8, 0], 34, 0, '8 ft')}
           {dimLabel([0, 0, 0], [0, 0, 8], -34, 0, '8 ft')}
+        </g>
         </g>
 
         {/* ---- the clutter chips ---- */}
@@ -472,30 +466,30 @@ export function Render({ s }: { s: SceneState }) {
         })}
 
         {/* ---- right column: budget, rules, dig note ---- */}
-        <g opacity={costU * sideDim}>
-          <rect x={870} y={128} width={330} height={64} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={892} y={156} fill={colors.TEXT} fontSize={15}>
+        <g opacity={costU * sideFade}>
+          <rect x={760} y={128} width={330} height={64} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={782} y={156} fill={colors.TEXT} fontSize={15}>
             all-in materials
           </text>
-          <text x={1178} y={160} textAnchor="end" fill={colors.WARM} fontSize={22} fontWeight={700}>
+          <text x={1068} y={160} textAnchor="end" fill={colors.WARM} fontSize={22} fontWeight={700}>
             ≈ $1,200
           </text>
-          <text x={892} y={178} fill={colors.MUTED} fontSize={11.5}>
+          <text x={782} y={178} fill={colors.MUTED} fontSize={12}>
             2015 prices · scrap pile: nearly empty
           </text>
         </g>
-        <g opacity={rulesU * sideDim}>
-          <rect x={870} y={214} width={330} height={170} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={892} y={244} fill={colors.TEXT} fontSize={15} fontWeight={600}>
-            accessory structure — no permit
+        <g opacity={rulesU * sideFade}>
+          <rect x={760} y={214} width={330} height={170} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={782} y={244} fill={colors.TEXT} fontSize={15} fontWeight={600}>
+            accessory structure — local code
           </text>
           {RULES.map((r, i) => {
             const u = clamp01(rulesU * 3 - i * 0.8);
             return (
               <g key={r.rule} opacity={u}>
-                <circle cx={902} cy={274 + i * 34} r={9} fill="none" stroke={colors.POSITIVE} strokeWidth={2} />
+                <circle cx={792} cy={274 + i * 34} r={9} fill="none" stroke={colors.POSITIVE} strokeWidth={2} />
                 <path
-                  d={`M ${897} ${274 + i * 34} l 4 4.5 l 7 -8`}
+                  d={`M ${787} ${274 + i * 34} l 4 4.5 l 7 -8`}
                   fill="none"
                   stroke={colors.POSITIVE}
                   strokeWidth={2.2}
@@ -503,23 +497,26 @@ export function Render({ s }: { s: SceneState }) {
                   strokeDasharray={1}
                   strokeDashoffset={1 - u}
                 />
-                <text x={922} y={278 + i * 34} fill={colors.TEXT} fontSize={13.5}>
+                <text x={812} y={278 + i * 34} fill={colors.TEXT} fontSize={14}>
                   {r.rule}
                 </text>
-                <text x={1178} y={278 + i * 34} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+                <text x={1068} y={278 + i * 34} textAnchor="end" fill={colors.MUTED} fontSize={13}>
                   {r.fact}
                 </text>
               </g>
             );
           })}
         </g>
-        <g opacity={digU * sideDim}>
-          <rect x={870} y={404} width={330} height={54} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeOpacity={0.5} />
-          <text x={892} y={427} fill={colors.WARM} fontSize={13.5} fontWeight={600}>
+        <g opacity={digU * sideFade}>
+          <rect x={760} y={404} width={330} height={54} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeOpacity={0.5} />
+          <text x={782} y={427} fill={colors.WARM} fontSize={14} fontWeight={600}>
             digging? call before you dig
           </text>
-          <text x={892} y={446} fill={colors.MUTED} fontSize={11.5}>
+          <text x={782} y={446} fill={colors.MUTED} fontSize={12}>
             utility locates are free — and required
+          </text>
+          <text x={782} y={484} fill={colors.MUTED} fontSize={12}>
+            source: Instructables, “Build a Simple Shed”
           </text>
         </g>
 

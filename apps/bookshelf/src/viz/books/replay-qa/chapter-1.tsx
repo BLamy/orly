@@ -30,8 +30,10 @@ const TAPE = { x: 720, y: 452, w: 460, rows: 3, pitch: 4.6, rowGap: 9 };
 const PROJ_CARD = { x: 110, y: 430, w: 400, h: 118 };
 const CHIP = { x: 950, y: 530 };
 
-const CAM_BROKEN: CameraState = { x: 410, y: 300, k: 1.22 };
-const CAM_WORKS: CameraState = { x: 880, y: 300, k: 1.18 };
+// Both claim cards must stay on stage at every rest position: at k=1.1 the
+// visible world width is ~1164, so cx in [588, 692] keeps x 110..1170 in frame.
+const CAM_BROKEN: CameraState = { x: 600, y: 300, k: 1.1 };
+const CAM_WORKS: CameraState = { x: 680, y: 300, k: 1.1 };
 const CAM_WIDE: CameraState = { x: 640, y: 356, k: 1.0 };
 const CAM_CLOSE: CameraState = { x: 660, y: 380, k: 1.04 };
 

@@ -30,7 +30,7 @@ const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 // Layout — the ring and its four stations.
 // ---------------------------------------------------------------------------
 
-const RING = { cx: 500, cy: 320, r: 190 } as const;
+const RING = { cx: 400, cy: 330, r: 230 } as const;
 const angleOf = (k: number): number => -Math.PI / 2 + (k * Math.PI) / 2; // top, right, bottom, left
 const stationPos = (k: number): { x: number; y: number } => ({
   x: RING.cx + Math.cos(angleOf(k)) * RING.r,
@@ -49,11 +49,13 @@ const SPEED = [
   { key: 'Unsloth · 14B', val: 455.37, color: colors.SECONDARY },
   { key: 'KTransformers · 14B', val: 530.38, color: colors.POSITIVE },
 ] as const;
-const BENCH = { x: 860, y: 150, w: 300 } as const;
+const BENCH = { x: 790, y: 170, w: 320 } as const;
 
-const CAM_RING: CameraState = { x: 520, y: 330, k: 1.25 };
-const CAM_BENCH: CameraState = { x: 950, y: 300, k: 1.35 };
-const CAM_WIDE: CameraState = { x: 640, y: 330, k: 1.02 };
+// Camera centers are chosen so the whole ring (x 62..1150, y 68..592) stays
+// inside the frame and nothing sits under the caption pill (y > 630).
+const CAM_RING: CameraState = { x: 606, y: 345, k: 1.05 };
+const CAM_BENCH: CameraState = { x: 760, y: 300, k: 1.3 };
+const CAM_WIDE: CameraState = { x: 640, y: 350, k: 1.0 };
 
 export interface Scene {
   tl: Timeline;
@@ -181,7 +183,10 @@ export function Render({ s }: { s: SceneState }) {
   const loopU = s.get(scene.loopU);
   const closeU = s.get(scene.closeU);
 
-  const dimAll = 1 - closeU * 0.86;
+  const dimAll = 1 - closeU * 0.9;
+  // during the receipts the ring steps back: only the training rig stays put
+  // beside the bench; the other cards leave the frame until the loop beat
+  const recede = speedU * (1 - loopU);
   // the traveling pulse
   const pulseA = angleOf(0) + arcU * Math.PI * 2;
   const px = RING.cx + Math.cos(pulseA) * RING.r;
@@ -208,69 +213,69 @@ export function Render({ s }: { s: SceneState }) {
           {/* second-lap glow */}
           <circle cx={RING.cx} cy={RING.cy} r={RING.r} fill="none" stroke={colors.POSITIVE} strokeWidth={2.2} opacity={loopU * 0.5} />
 
+          {/* the pulse — under the cards so it never covers their text */}
+          {arcU > 0 && <circle cx={px} cy={py} r={8} fill={colors.WARM} opacity={0.95} />}
+
           {/* stations */}
           {STATIONS.map((stn, k) => {
             const p = stationPos(k);
-            const u = st[k];
+            const u = st[k] * (k === 1 ? 1 : 1 - recede);
             if (u <= 0.01) return null;
             return (
               <g key={stn.label} opacity={u}>
-                <rect x={p.x - 92} y={p.y - 32} width={184} height={64} rx={11} fill={colors.PANEL} stroke={stn.color} strokeWidth={1.5} />
-                <text x={p.x} y={p.y - 4} textAnchor="middle" fill={colors.TEXT} fontSize={12.5}>
+                <rect x={p.x - 108} y={p.y - 32} width={216} height={64} rx={11} fill={colors.PANEL} stroke={stn.color} strokeWidth={1.5} />
+                <text x={p.x} y={p.y - 4} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                   {stn.label}
                 </text>
-                <text x={p.x} y={p.y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={9} fontFamily="ui-monospace, monospace">
+                <text x={p.x} y={p.y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
                   {stn.sub}
                 </text>
               </g>
             );
           })}
 
-          {/* the pulse */}
-          {arcU > 0 && <circle cx={px} cy={py} r={8} fill={colors.WARM} opacity={0.95} />}
-
           {/* step-time chip */}
           <g opacity={stepU}>
-            <rect x={RING.cx - 110} y={RING.cy - 30} width={220} height={60} rx={11} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.3} />
-            <text x={RING.cx} y={RING.cy - 6} textAnchor="middle" fill={colors.TEXT} fontSize={12.5}>
+            <rect x={RING.cx - 104} y={RING.cy - 30} width={208} height={60} rx={11} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.3} />
+            <text x={RING.cx} y={RING.cy - 6} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
               671B · step_time 203 s
             </text>
-            <text x={RING.cx} y={RING.cy + 16} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+            <text x={RING.cx} y={RING.cy + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               → 40.35 token/s (measured)
             </text>
           </g>
 
           {/* speed bars */}
           <g opacity={speedU}>
-            <text x={BENCH.x} y={BENCH.y - 14} fill={colors.TEXT} fontSize={12.5}>
+            <text x={BENCH.x} y={BENCH.y - 14} fill={colors.TEXT} fontSize={14}>
               LoRA fine-tune throughput · token/s
             </text>
             {SPEED.map((b, i) => {
               const w = (b.val / 560) * BENCH.w * speedU;
               return (
                 <g key={b.key}>
-                  <text x={BENCH.x} y={BENCH.y + 18 + i * 46} fill={colors.MUTED} fontSize={10}>
+                  <text x={BENCH.x} y={BENCH.y + 18 + i * 46} fill={colors.MUTED} fontSize={12}>
                     {b.key}
                   </text>
                   <rect x={BENCH.x} y={BENCH.y + 24 + i * 46} width={w} height={15} rx={5} fill={b.color} opacity={0.88} />
-                  <text x={BENCH.x + w + 8} y={BENCH.y + 36 + i * 46} fill={b.color} fontSize={10.5} fontFamily="ui-monospace, monospace">
+                  <text x={BENCH.x + w + 8} y={BENCH.y + 37 + i * 46} fill={b.color} fontSize={13} fontFamily="ui-monospace, monospace">
                     {b.val}
                   </text>
                 </g>
               );
             })}
-            <text x={BENCH.x} y={BENCH.y + 160} fill={colors.MUTED} fontSize={9.5}>
+            <text x={BENCH.x} y={BENCH.y + 160} fill={colors.MUTED} fontSize={12}>
               671B: HF cannot run · KT 40.35 (measured)
             </text>
           </g>
 
           {/* quality chip */}
           <g opacity={qualU}>
-            <rect x={BENCH.x} y={BENCH.y + 186} width={300} height={70} rx={11} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.3} />
-            <text x={BENCH.x + 150} y={BENCH.y + 212} textAnchor="middle" fill={colors.TEXT} fontSize={12}>
+            <rect x={BENCH.x} y={BENCH.y + 186} width={BENCH.w} height={70} rx={11} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.3} />
+            <text x={BENCH.x + BENCH.w / 2} y={BENCH.y + 212} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
               AfriMed multiple choice · V3
             </text>
-            <text x={BENCH.x + 150} y={BENCH.y + 236} textAnchor="middle" fill={colors.WARM} fontSize={13.5} fontFamily="ui-monospace, monospace">
+            <text x={BENCH.x + BENCH.w / 2} y={BENCH.y + 238} textAnchor="middle" fill={colors.WARM} fontSize={16} fontFamily="ui-monospace, monospace">
               0.5833 → 0.7930
             </text>
           </g>
@@ -278,8 +283,8 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* close — the series recap */}
         <g opacity={closeU}>
-          <rect x={270} y={186} width={740} height={288} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-          <text x={640} y={232} textAnchor="middle" fill={colors.TEXT} fontSize={19}>
+          <rect x={260} y={186} width={760} height={288} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
+          <text x={640} y={232} textAnchor="middle" fill={colors.TEXT} fontSize={20}>
             the K Transformers series, complete
           </text>
           {[
@@ -289,21 +294,21 @@ export function Render({ s }: { s: SceneState }) {
             ['№4', 'the loop', 'LoRA at home:\ntrain, load, chat', colors.POSITIVE],
           ].map(([no, head, sub, c], i) => (
             <g key={String(head)}>
-              <rect x={302 + i * 174} y={262} width={160} height={124} rx={10} fill={colors.BG} stroke={c} strokeWidth={1.4} />
-              <text x={382 + i * 174} y={288} textAnchor="middle" fill={colors.MUTED} fontSize={10}>
+              <rect x={282 + i * 182} y={262} width={170} height={124} rx={10} fill={colors.BG} stroke={c} strokeWidth={1.4} />
+              <text x={367 + i * 182} y={288} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                 {no}
               </text>
-              <text x={382 + i * 174} y={310} textAnchor="middle" fill={colors.TEXT} fontSize={13.5}>
+              <text x={367 + i * 182} y={310} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                 {head}
               </text>
               {String(sub).split('\n').map((line, k) => (
-                <text key={k} x={382 + i * 174} y={334 + k * 15} textAnchor="middle" fill={colors.MUTED} fontSize={10}>
+                <text key={k} x={367 + i * 182} y={334 + k * 17} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                   {line}
                 </text>
               ))}
             </g>
           ))}
-          <text x={640} y={430} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+          <text x={640} y={432} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
             kvcache-ai/ktransformers · kt run · sglang-kt · ktransformers[sft]
           </text>
         </g>

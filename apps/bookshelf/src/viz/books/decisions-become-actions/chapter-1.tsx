@@ -70,13 +70,14 @@ const ROWS: { key: 'from' | 'to' | 'ticket' | 'search'; role: string; label: str
 ];
 const CHIP = { x: 476, w: 350, h: 32 };
 // observed actions, in snapshot order (ids are e1…; wait has no element)
-const TILES: { id: string; kind: string; row: number; slot: number; op: Op | null }[] = [
+// e6 takes slot 1 so it does not stack on e5; the option pairs later replace it in that slot
+const TILES: { id: string; kind: string; row: number; slot: number; op: Op | null; label?: string }[] = [
   { id: 'e1', kind: 'fill', row: 0, slot: 0, op: 'TYPE_TEXT' },
   { id: 'e2', kind: 'click', row: 0, slot: 1, op: 'CLICK' },
   { id: 'e3', kind: 'fill', row: 1, slot: 0, op: 'TYPE_TEXT' },
   { id: 'e4', kind: 'click', row: 1, slot: 1, op: 'CLICK' },
   { id: 'e5', kind: 'select', row: 2, slot: 0, op: 'SELECT' },
-  { id: 'e6', kind: 'select', row: 2, slot: 0, op: 'SELECT' },
+  { id: 'e6', kind: 'select', row: 2, slot: 1, op: 'SELECT', label: 'e6 select' },
   { id: 'e7', kind: 'click', row: 3, slot: 0, op: 'CLICK' },
   { id: 'wait', kind: '', row: -1, slot: 0, op: null },
 ];
@@ -89,17 +90,19 @@ const TABS = OPS.map((op, i) => ({ op, x: TB.x + i * 180, key: `${op.toLowerCase
 // sits directly under the page so its lowest line stays above the caption-safe y=570
 const REG = { x: 40, y: 498, w: 420, h: 66 };
 const REQ = { x: 520, y: 440, w: 720, h: 128 };
+// same order as the caption: goal, then visible page text, then recent actions
 const REQ_SLOTS = [
+  { text: 'goal', to: { x: 1004, y: 512 }, from: { x: 40, y: 30 }, color: ROLE.PENDING },
   { text: 'page.text', to: { x: 548, y: 512 }, from: { x: 64, y: 452 }, color: ROLE.OBSERVE },
   { text: 'elements ×4', to: { x: 690, y: 512 }, from: { x: 800, y: 250 }, color: ROLE.OBSERVE },
   { text: 'recent_actions', to: { x: 832, y: 512 }, from: { x: 832, y: 470 }, color: ROLE.CHECKED },
-  { text: 'goal', to: { x: 1004, y: 512 }, from: { x: 40, y: 30 }, color: ROLE.PENDING },
 ];
 
 const CAM_PAGE: CameraState = { x: 420, y: 290, k: 1.25 };
 const CAM_SCAN: CameraState = { x: 400, y: 300, k: 1.3 };
 const CAM_HOME: CameraState = { x: 640, y: 360, k: 1 };
-const CAM_TABLE: CameraState = { x: 860, y: 300, k: 1.18 };
+// wide enough that the dimmed page's labels stay on stage while the table is in focus
+const CAM_TABLE: CameraState = { x: 650, y: 300, k: 1.06 };
 const CAM_END: CameraState = { x: 640, y: 330, k: 1.04 };
 
 /* -------------------------------------------------------------- timeline */
@@ -233,7 +236,7 @@ function FlightPage({ opacity, toText, sugU, found, nodeU, hot }: { opacity: num
   const field = (key: 'from' | 'to' | 'ticket', label: string, value: string, caret = false) => {
     const c = CTRL[key];
     return (
-      <g key={key}>
+      <g key={key} opacity={key === 'ticket' ? 1 - 0.6 * sugU : 1}>
         <Txt x={c.x} y={c.y - 9} text={label} size={13} color={colors.MUTED} u={key === 'ticket' ? 1 - sugU : 1} />
         <rect x={c.x} y={c.y} width={c.w} height={c.h} rx={8} fill="#0d1526" stroke="#2a3754" strokeWidth={1.4} />
         <Txt x={c.x + 14} y={c.y + 28} text={value || (caret ? '' : 'City or airport')} size={17} color={value ? colors.TEXT : '#4b5b78'} weight={value ? 650 : 400} />
@@ -430,10 +433,13 @@ export function Render({ s }: { s: SceneState }) {
           const color = t.op ? OP_COLOR[t.op] : colors.MUTED;
           const focus = 1 - 0.85 * opVis * (1 - opWeight(t.op));
           const rowLit = t.row < 0 ? stripU : 1;
+          // e6 hands its slot to the option pair once the pairs appear
+          const handoff = t.id === 'e6' ? 1 - pairsU : 1;
+          const label = t.label ?? (u > 0.5 && t.op ? t.op : `${t.id} ${t.kind}`.trim());
           return (
-            <g key={t.id} transform={`translate(${x} ${y})`} opacity={clamp01(tilesU * 4 - i * 0.3) * focus * rowLit * (1 - 0.85 * valU)}>
+            <g key={t.id} transform={`translate(${x} ${y})`} opacity={clamp01(tilesU * 4 - i * 0.3) * focus * rowLit * (1 - 0.85 * valU) * handoff}>
               <rect width={TILE.w} height={TILE.h} rx={7} fill="#0b1324" stroke={color} strokeWidth={1.4} strokeDasharray={t.op ? undefined : '4 3'} />
-              <Txt x={TILE.w / 2} y={21} text={u > 0.5 && t.op ? t.op : `${t.id} ${t.kind}`.trim()} size={12.5} mono anchor="middle" color={color} weight={700} />
+              <Txt x={TILE.w / 2} y={21} text={label} size={12.5} mono anchor="middle" color={color} weight={700} />
             </g>
           );
         })}
@@ -475,9 +481,10 @@ export function Render({ s }: { s: SceneState }) {
           <Txt x={1116} y={533} text="+ rules" size={13} color={colors.MUTED} mono />
           {REQ_SLOTS.map((q, i) => {
             const u = ease.move(clamp01(reqFill - i));
-            return <Chip key={q.text} x={lerp(q.from.x, q.to.x, u)} y={lerp(q.from.y, q.to.y, u)} text={q.text} color={q.color} size={12.5} u={clamp01((reqFill - i) * 5)} />;
+            // a chip appears only after it has left its start point, so the goal chip never sits on the top banner
+            return <Chip key={q.text} x={lerp(q.from.x, q.to.x, u)} y={lerp(q.from.y, q.to.y, u)} text={q.text} color={q.color} size={12.5} u={clamp01((reqFill - i) * 5) * clamp01((u - 0.2) * 4)} />;
           })}
-          <Txt x={548} y={550} text="[] on the first step · last 10 later" size={11.5} color={colors.MUTED} mono u={clamp01(reqFill - 2.6)} />
+          <Txt x={548} y={550} text="[] on the first step · last 10 later" size={12} color={colors.MUTED} mono u={clamp01(reqFill - 2.6)} />
         </g>
       )}
 

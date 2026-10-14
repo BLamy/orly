@@ -65,9 +65,10 @@ const TC_SLOTS = [4, 5, 7, 9]; // tape indices of the four tool_call events
 const TC_STATUS = ['started', 'args_complete', 'executing', 'completed'] as const;
 
 // ---- the three projection tables ----
-const T_TOOL = { x: 130, y: 400, w: 440, h: 148 } as const;
-const T_MSG = { x: 610, y: 400, w: 280, h: 148 } as const;
-const T_NOTE = { x: 930, y: 400, w: 220, h: 148 } as const;
+// Tables sit inside the x-span the tool-focus camera can show without cropping.
+const T_TOOL = { x: 130, y: 400, w: 410, h: 148 } as const;
+const T_MSG = { x: 566, y: 400, w: 260, h: 148 } as const;
+const T_NOTE = { x: 852, y: 400, w: 220, h: 148 } as const;
 
 // the 20 built-in collections, verbatim from the reference
 const TWENTY = [
@@ -78,8 +79,8 @@ const TWENTY = [
 ] as const;
 
 // camera marks
-const CAM_TAPE: CameraState = { x: 640, y: 240, k: 1.3 };
-const CAM_TOOL: CameraState = { x: 420, y: 380, k: 1.42 };
+const CAM_TAPE: CameraState = { x: 640, y: 200, k: 1.2 };
+const CAM_TOOL: CameraState = { x: 600, y: 380, k: 1.25 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {
@@ -194,7 +195,7 @@ export function buildScene(): Scene {
     text: 'Messages and state work identically. An inbox event becomes a message row. Your own collections, declared on the entity definition, become state rows.',
   });
   tl.tween(cam, CAM_WIDE, { at: 56.4, dur: 1.5, ease: ease.move });
-  tl.tween(msgU, 1, { at: 57.0, dur: 1.4, ease: ease.move });
+  tl.tween(msgU, 1, { at: 30.0, dur: 1.4, ease: ease.move });
   tl.tween(noteU, 1, { at: 59.0, dur: 1.4, ease: ease.move });
   tl.hold(63.3, 0.5);
 
@@ -238,10 +239,13 @@ const scene = buildScene();
 // Render helpers — every panel is a pure function of the sampled channels.
 // ---------------------------------------------------------------------------
 
-function TablePanel({ box, title, u }: {
+// `filled` (0..1) is how much of the table's row has landed; the empty-state
+// hint fades out as it does, so an empty card reads as "waiting", not "broken".
+function TablePanel({ box, title, u, filled }: {
   box: { x: number; y: number; w: number; h: number };
   title: string;
   u: number;
+  filled: number;
 }) {
   if (u <= 0) return null;
   return (
@@ -251,6 +255,9 @@ function TablePanel({ box, title, u }: {
         {title}
       </text>
       <line x1={box.x + 10} y1={box.y + 34} x2={box.x + box.w - 10} y2={box.y + 34} stroke={colors.GRID} strokeWidth={1} />
+      <text x={box.x + box.w / 2} y={box.y + 84} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic" opacity={0.6 * clamp01(1 - filled * 3)}>
+        no rows yet
+      </text>
     </g>
   );
 }
@@ -285,6 +292,11 @@ export function Render({ s }: { s: SceneState }) {
     ? Math.max(0, Math.min(3, TC_SLOTS.filter((sl) => replayX > SLOT(sl)).length - 1))
     : tcStage - 1;
 
+  // how much of each table's row is present (drives the empty-state hints)
+  const toolFilled = clamp01(tcU) * alive(TC_SLOTS[0]);
+  const msgFilled = msgU * alive(6);
+  const noteFilled = noteU * alive(8);
+
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
@@ -295,7 +307,7 @@ export function Render({ s }: { s: SceneState }) {
           the entity&apos;s durable stream
         </text>
         {tapeU > 0.95 && (
-          <text x={TAPE.x1} y={TAPE.y + 24} textAnchor="end" fill={colors.MUTED} fontSize={10.5}>
+          <text x={TAPE.x1 - 40} y={TAPE.y + 24} textAnchor="end" fill={colors.MUTED} fontSize={12}>
             offsets →
           </text>
         )}
@@ -310,7 +322,7 @@ export function Render({ s }: { s: SceneState }) {
             <g key={i} opacity={u}>
               <rect x={x - 9} y={y - 12} width={18} height={24} rx={3} fill={FAM_COLOR[e.fam]} opacity={0.55 + 0.45 * u} />
               {e.label && (
-                <text x={x} y={TAPE.y - 22} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily={mono}>
+                <text x={x} y={TAPE.y - 22} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={mono}>
                   {e.label}
                 </text>
               )}
@@ -320,7 +332,7 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* rake lines: type+key routing, from event families to their tables */}
         {rakeU > 0 && (
-          <g opacity={rakeU * 0.75 * (1 - stackU * 0.85)}>
+          <g opacity={rakeU * 0.75 * (1 - stackU * 0.85) * (1 - gridU * 0.9)}>
             {[
               { from: SLOT(4), to: T_TOOL.x + T_TOOL.w / 2, c: FAM_COLOR.tool_call },
               { from: SLOT(6), to: T_MSG.x + T_MSG.w / 2, c: FAM_COLOR.inbox },
@@ -343,34 +355,34 @@ export function Render({ s }: { s: SceneState }) {
         )}
 
         {/* ---- projection tables ---- */}
-        <TablePanel box={T_TOOL} title="toolCalls" u={tablesU} />
-        <TablePanel box={T_MSG} title="inbox" u={tablesU} />
-        <TablePanel box={T_NOTE} title="state: notes" u={tablesU} />
+        <TablePanel box={T_TOOL} title="toolCalls" u={tablesU} filled={toolFilled} />
+        <TablePanel box={T_MSG} title="inbox" u={tablesU} filled={msgFilled} />
+        <TablePanel box={T_NOTE} title="state: notes" u={tablesU} filled={noteFilled} />
 
         {/* toolCalls — the one row, updated in place */}
         {tablesU > 0 && (tcStage > 0 || (wipeU > 0 && replayU > 0)) && (() => {
-          const rowU = Math.max(clamp01(tcU), 0) * alive(TC_SLOTS[0]);
+          const rowU = toolFilled;
           if (rowU <= 0 || statusIdx < 0) return null;
           const st = TC_STATUS[Math.min(statusIdx, 3)];
           const stColor = st === 'completed' ? colors.POSITIVE : colors.WARM;
           return (
             <g opacity={rowU}>
               <rect x={T_TOOL.x + 10} y={T_TOOL.y + 46} width={T_TOOL.w - 20} height={30} rx={5} fill={colors.BG} stroke={colors.GRID} />
-              <text x={T_TOOL.x + 20} y={T_TOOL.y + 66} fill={colors.MUTED} fontSize={11} fontFamily={mono}>
+              <text x={T_TOOL.x + 20} y={T_TOOL.y + 66} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
                 key tc_01
               </text>
-              <text x={T_TOOL.x + 110} y={T_TOOL.y + 66} fill={colors.TEXT} fontSize={11} fontFamily={mono}>
+              <text x={T_TOOL.x + 110} y={T_TOOL.y + 66} fill={colors.TEXT} fontSize={12} fontFamily={mono}>
                 web_search
               </text>
               <rect x={T_TOOL.x + 218} y={T_TOOL.y + 50} width={124} height={21} rx={10} fill={colors.BG} stroke={stColor} strokeWidth={1.2} />
-              <text x={T_TOOL.x + 280} y={T_TOOL.y + 65} textAnchor="middle" fill={stColor} fontSize={10.5} fontFamily={mono}>
+              <text x={T_TOOL.x + 280} y={T_TOOL.y + 65} textAnchor="middle" fill={stColor} fontSize={11.5} fontFamily={mono}>
                 {st}
               </text>
-              <text x={T_TOOL.x + T_TOOL.w - 18} y={T_TOOL.y + 66} textAnchor="end" fill={colors.MUTED} fontSize={11} fontFamily={mono} opacity={st === 'completed' ? 1 : 0.25}>
+              <text x={T_TOOL.x + T_TOOL.w - 18} y={T_TOOL.y + 66} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={mono} opacity={st === 'completed' ? 1 : 0.25}>
                 {st === 'completed' ? '1.2 s' : '…'}
               </text>
               {/* column hint */}
-              <text x={T_TOOL.x + 14} y={T_TOOL.y + 100} fill={colors.MUTED} fontSize={10} opacity={0.8}>
+              <text x={T_TOOL.x + 14} y={T_TOOL.y + 100} fill={colors.MUTED} fontSize={11.5} opacity={0.8}>
                 four events · same key · one row
               </text>
             </g>
@@ -397,10 +409,10 @@ export function Render({ s }: { s: SceneState }) {
           return (
             <g opacity={u}>
               <rect x={T_MSG.x + 10} y={T_MSG.y + 46} width={T_MSG.w - 20} height={30} rx={5} fill={colors.BG} stroke={colors.GRID} />
-              <text x={T_MSG.x + 20} y={T_MSG.y + 66} fill={FAM_COLOR.inbox} fontSize={11} fontFamily={mono}>
+              <text x={T_MSG.x + 20} y={T_MSG.y + 66} fill={FAM_COLOR.inbox} fontSize={12} fontFamily={mono}>
                 from /horton/main
               </text>
-              <text x={T_MSG.x + 14} y={T_MSG.y + 100} fill={colors.MUTED} fontSize={10} opacity={0.8}>
+              <text x={T_MSG.x + 14} y={T_MSG.y + 100} fill={colors.MUTED} fontSize={11.5} opacity={0.8}>
                 one inbox event → one message row
               </text>
             </g>
@@ -414,10 +426,10 @@ export function Render({ s }: { s: SceneState }) {
           return (
             <g opacity={u}>
               <rect x={T_NOTE.x + 10} y={T_NOTE.y + 46} width={T_NOTE.w - 20} height={30} rx={5} fill={colors.BG} stroke={colors.GRID} />
-              <text x={T_NOTE.x + 20} y={T_NOTE.y + 66} fill={FAM_COLOR.state} fontSize={11} fontFamily={mono}>
+              <text x={T_NOTE.x + 20} y={T_NOTE.y + 66} fill={FAM_COLOR.state} fontSize={12} fontFamily={mono}>
                 notes · plan v2
               </text>
-              <text x={T_NOTE.x + 14} y={T_NOTE.y + 100} fill={colors.MUTED} fontSize={10} opacity={0.8}>
+              <text x={T_NOTE.x + 14} y={T_NOTE.y + 100} fill={colors.MUTED} fontSize={11.5} opacity={0.8}>
                 declared in state
               </text>
             </g>
@@ -438,7 +450,7 @@ export function Render({ s }: { s: SceneState }) {
                   x={250 + col * 172}
                   y={282 + row * 26}
                   fill={i === 4 || i === 8 || i === 0 ? colors.WARM : colors.MUTED}
-                  fontSize={11.5}
+                  fontSize={12.5}
                   fontFamily={mono}
                   opacity={u}
                 >
@@ -464,7 +476,7 @@ export function Render({ s }: { s: SceneState }) {
                 </text>
               </g>
             ))}
-            <text x={900} y={330} fill={colors.MUTED} fontSize={11} fontStyle="italic" opacity={clamp01(stackU * 2 - 1)}>
+            <text x={408} y={330} textAnchor="end" fill={colors.MUTED} fontSize={12} fontStyle="italic" opacity={clamp01(stackU * 2 - 1)}>
               each layer: a view of the one below
             </text>
           </g>

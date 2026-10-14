@@ -163,7 +163,8 @@ export function buildScene() {
   tl.hold(B(1) + 7, 0.8);
 
   // 2 — s = 1: the clean reference bead enters at the permanent left end
-  tl.tween(cam, { x: 330, y: 330, k: 1.6 }, { at: B(2), dur: 1.2, ease: ease.move });
+  // a gentle push that keeps the whole tray, both ruler names and the sink end in frame
+  tl.tween(cam, { x: 610, y: 330, k: 1.2 }, { at: B(2), dur: 1.2, ease: ease.move });
   to(beadO, 1, B(2) + 0.6, 0.8);
   to(startLbl, 1, B(2) + 1.8);
   to(legendO, 1, B(2) + 2.8);
@@ -214,7 +215,7 @@ export function buildScene() {
   to(trimLbl, 0, B(7));
   to(capLbl, 0, B(7));
   to(braceU, 0, B(7), 0.6);
-  tl.tween(cam, { x: 860, y: 344, k: 1.4 }, { at: B(7), dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 610, y: 330, k: 1.2 }, { at: B(7), dur: 1.3, ease: ease.move });
   to(rulerLblO, 1, B(7) + 0.6);
   to(horizonLbl, 1, B(7) + 1.2);
   to(phase, 4, B(7) + 2.4, 1.7, ease.move);
@@ -222,7 +223,7 @@ export function buildScene() {
 
   // 8 — close on the boundary: keys re-rotate, values translate, content IDs keep counting
   to(horizonLbl, 0, B(8));
-  tl.tween(cam, { x: 925, y: 338, k: 1.5 }, { at: B(8), dur: 1.3, ease: ease.move });
+  // the beat-7 framing holds: the boundary stays at the right, the sink end stays in frame
   to(badgeO, 1, B(8) + 1.0);
   to(phase, 5, B(8) + 1.8, 1.7, ease.move);
   to(rotLbl, 1, B(8) + 3.0);
@@ -357,6 +358,12 @@ export function Render({ s }: { s: SceneState }) {
 
   // ruler labels (true IDs above, rotary positions below) at the labelled slots
   const diverged = sNow + POLICY.block_frames > POLICY.train_frames;
+  // beat-8 badges: width follows the text so the label never spills out of its box
+  const badgeTop = `content: frames ${sNow}…${sNow + 3}`;
+  const badgeBot = `positions ${rotaryPos(sNow, sNow)}…${rotaryPos(sNow + 3, sNow)}`;
+  const badgeTopW = badgeTop.length * 7.6 + 20;
+  const badgeBotW = badgeBot.length * 7.6 + 20;
+  const badgeRight = CUR.x1 + 2;
 
   return (
     <g>
@@ -385,8 +392,8 @@ export function Render({ s }: { s: SceneState }) {
             <line x1={TRAY.x0} y1={RULER_UP} x2={lerp(TRAY.x0, CUR.x1, trayU)} y2={RULER_UP} stroke={MUTED} strokeOpacity={0.7} />
             <line x1={TRAY.x0} y1={RULER_DN} x2={lerp(TRAY.x0, CUR.x1, trayU)} y2={RULER_DN} stroke={MUTED} strokeOpacity={0.7} />
             {/* ruler names sit at the right end (visible in every close-up), clear of the tick numbers */}
-            <Code x={CUR.x1} y={RULER_UP + 18} text="true simulation frame ID · frame_ids" color={MUTED} size={11} anchor="end" o={clamp01(trayU * 2 - 1)} />
-            <Code x={CUR.x1} y={RULER_DN + 32} text="rotary position · StreamPolicy.positions (TOP_ALIGNED)" color={MUTED} size={11} anchor="end" o={clamp01(trayU * 2 - 1)} />
+            <Code x={CUR.x1} y={RULER_UP + 18} text="true simulation frame ID · frame_ids" color={MUTED} size={12} anchor="end" o={clamp01(trayU * 2 - 1)} />
+            <Code x={CUR.x1} y={RULER_DN + 32} text="rotary position · StreamPolicy.positions (TOP_ALIGNED)" color={MUTED} size={12} anchor="end" o={clamp01(trayU * 2 - 1)} />
             {LABEL_SLOTS.map((slot) => {
               const f = frameAtSlot(slot, sNow);
               const x = slotX(slot) + BEAD_W / 2;
@@ -399,9 +406,9 @@ export function Render({ s }: { s: SceneState }) {
                   <line x1={x} y1={RULER_DN - 4} x2={x} y2={RULER_DN + 4} stroke={MUTED} />
                   {shown && (
                     <>
-                      <Code x={x} y={RULER_UP - 8 + (slot === 4 || slot === 48 || slot === 52 ? 0 : 0)} text={`${f}`} color={slot >= CAPACITY ? POSITIVE : TEXT} size={10} anchor="middle"
-                        o={0.4 + 0.6 * rulerLblO} />
-                      <Code x={x} y={RULER_DN + 14} text={`${pos}`} color={differs ? WARM : TEXT} size={10} anchor="middle" o={0.4 + 0.6 * rulerLblO} />
+                      <Code x={x} y={RULER_UP - 8} text={`${f}`} color={slot >= CAPACITY ? POSITIVE : TEXT} size={12} anchor="middle"
+                        o={0.8 + 0.2 * rulerLblO} />
+                      <Code x={x} y={RULER_DN + 16} text={`${pos}`} color={differs ? WARM : TEXT} size={12} anchor="middle" o={0.8 + 0.2 * rulerLblO} />
                     </>
                   )}
                 </g>
@@ -417,7 +424,7 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={g(scene.startLbl)}>
           <Code x={X0} y={TAPE_Y - 112} text="Cosmos3Stream.start(anchor, condition)  · record=True, reference=True" color={POSITIVE} size={12} />
           <Note x={X0 + BEAD_W / 2} y={TAPE_Y + 48} text="C0" color={WARM} size={12} anchor="middle" />
-          <Note x={X0 + 30} y={TAPE_Y + 48} text="frame 0 — permanent left end" size={11} />
+          <Note x={X0 + 30} y={TAPE_Y + 48} text="frame 0 — permanent left end" size={12} />
         </g>
         <g opacity={g(scene.legendO)}>
           {/* legend rows sit between the start() line and the upper ruler, right of the "0" tick label */}
@@ -432,18 +439,19 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---------------- beat 3 ---------------- */}
         <g opacity={g(scene.denoiseLbl)}>
           <Code x={CUR.x0 - 20} y={TAPE_Y - 98} text="denoise(noisy, sigma, condition) · record=False" color={POSITIVE} size={12} anchor="end" />
-          <Note x={CUR.x0 - 20} y={TAPE_Y - 80} text="reads the completed history; writes nothing into it" size={11} anchor="end" />
-          <Note x={CUR.x1} y={TAPE_Y + 48} text="4 latent frames · outside the cache" color={POSITIVE} size={11} anchor="end" />
+          <Note x={CUR.x0 - 20} y={TAPE_Y - 80} text="reads the completed history; writes nothing into it" size={12} anchor="end" />
+          <Note x={CUR.x1} y={TAPE_Y + 48} text="4 latent frames · outside the cache" color={POSITIVE} size={12} anchor="end" />
         </g>
+        {/* count chip sits in the gap between the tape and the lower ruler, clear of its tick labels */}
         <g opacity={g(scene.countO)}>
-          <rect x={CUR.x1 - 150} y={TAPE_Y + 60} width={150} height={24} rx={6} fill={PANEL} stroke={ACCENT} strokeOpacity={0.6} />
-          <Code x={CUR.x1 - 75} y={TAPE_Y + 76} text={`retained frames: ${retainedCount}`} color={ACCENT} size={10} anchor="middle" />
+          <rect x={640 - 90} y={TAPE_Y + 20} width={180} height={22} rx={6} fill={PANEL} stroke={ACCENT} strokeOpacity={0.6} />
+          <Code x={640} y={TAPE_Y + 35} text={`retained frames: ${retainedCount}`} color={ACCENT} size={12} anchor="middle" />
         </g>
 
         {/* ---------------- beat 4 ---------------- */}
         <g opacity={g(scene.commitLbl)}>
           <Code x={X0} y={TAPE_Y - 84} text="commit(clean, condition) · record=True → frame_ids += 1…4; _trim" color={ACCENT} size={12} />
-          <Note x={X0} y={TAPE_Y + 48} text="R and G keys/values of the clean block become history for the next block" size={11} />
+          <Note x={X0} y={TAPE_Y + 48} text="R and G keys/values of the clean block become history for the next block" size={12} />
         </g>
 
         {/* ---------------- beat 5 ---------------- */}
@@ -451,23 +459,23 @@ export function Render({ s }: { s: SceneState }) {
         {braceU > 0 && (
           <g>
             {/* shallow braces so their labels end above the lower ruler line (y = 392) */}
-            <Brace x0={slotX(0)} x1={slotX(4) + BEAD_W} y={TAPE_Y + 28} depth={9} below u={braceU} color={WARM} label="sink · 5" fontSize={11} />
-            <Brace x0={slotX(5)} x1={slotX(48) + BEAD_W} y={TAPE_Y + 28} depth={9} below u={braceU} color={ACCENT} label="recent · 44" fontSize={11} />
-            <Brace x0={slotX(49)} x1={slotX(52) + BEAD_W} y={TAPE_Y + 28} depth={9} below u={braceU} color={POSITIVE} label="current · 4" fontSize={11} />
+            <Brace x0={slotX(0)} x1={slotX(4) + BEAD_W} y={TAPE_Y + 28} depth={9} below u={braceU} color={WARM} label="sink · 5" fontSize={12} />
+            <Brace x0={slotX(5)} x1={slotX(48) + BEAD_W} y={TAPE_Y + 28} depth={9} below u={braceU} color={ACCENT} label="recent · 44" fontSize={12} />
+            <Brace x0={slotX(49)} x1={slotX(52) + BEAD_W} y={TAPE_Y + 28} depth={9} below u={braceU} color={POSITIVE} label="current · 4" fontSize={12} />
           </g>
         )}
         <g opacity={g(scene.capLbl)}>
           <MathLabel tex={'\\text{capacity} = \\text{sink\\_frames} + \\text{history\\_frames} = 5 + 44 = 49'} x={X0} y={TAPE_Y + 118} fontSize={15} color={TEXT}
             anchor="start" boxWidth={620} />
           <Code x={X0} y={TAPE_Y + 152} text="StreamPolicy(block_frames=4, sink_frames=5, history_frames=44, train_frames=61)" color={MUTED} size={11} />
-          <Note x={CUR.x1} y={TAPE_Y + 122} text="current block: outside the retained budget" color={POSITIVE} size={11} anchor="end" />
+          <Note x={CUR.x1} y={TAPE_Y + 122} text="current block: outside the retained budget" color={POSITIVE} size={12} anchor="end" />
         </g>
 
         {/* ---------------- beat 6 ---------------- */}
         <g opacity={g(scene.trimLbl)}>
           <Code x={X0} y={TAPE_Y - 84} text={`_trim: kept = range(5) + range(${sNow - 44}, ${sNow}) · frame-major retain of R and G together`} color={ACCENT} size={12} />
-          <Note x={slotX(5)} y={TAPE_Y + 48} text={`oldest recent (${sNow - 48}…${sNow - 45}) left with their geometry tokens`} color={NEGATIVE} size={11} />
-          <Note x={slotX(0)} y={TAPE_Y - 40} text="sink stays" color={WARM} size={11} />
+          <Note x={slotX(5)} y={TAPE_Y + 48} text={`oldest recent (${sNow - 48}…${sNow - 45}) left with their geometry tokens`} color={NEGATIVE} size={12} />
+          <Note x={slotX(0)} y={TAPE_Y - 40} text="sink stays" color={WARM} size={12} />
         </g>
 
         {/* ---------------- beat 7 ---------------- */}
@@ -477,34 +485,35 @@ export function Render({ s }: { s: SceneState }) {
           <Code x={700} y={TAPE_Y + 152} text="shift = max(0, next_frame + block_frames − train_frames)" color={MUTED} size={11} />
           <Code x={700} y={TAPE_Y - 110} text={`true start s: ${sNow}`} color={TEXT} size={12} />
           <Code x={700} y={TAPE_Y - 92} text={`rotary start: ${Math.min(sNow, POLICY.train_frames - POLICY.block_frames)}`} color={diverged ? WARM : TEXT} size={12} />
-          <Note x={900} y={TAPE_Y - 110} text="57 → 61 → 65" size={11} />
-          <Note x={900} y={TAPE_Y - 92} text="57 → 57 → 57" color={WARM} size={11} />
-          <Note x={slotX(5)} y={TAPE_Y + 48} text={diverged ? `recent IDs ${sNow - 44}…${sNow - 1} → positions 13…56` : 'positions = frame IDs until the horizon'} color={WARM} size={11} />
+          <Note x={900} y={TAPE_Y - 110} text="57 → 61 → 65" size={12} />
+          <Note x={900} y={TAPE_Y - 92} text="57 → 57 → 57" color={WARM} size={12} />
+          <Note x={slotX(5)} y={TAPE_Y + 48} text={diverged ? `recent IDs ${sNow - 44}…${sNow - 1} → positions 13…56` : 'positions = frame IDs until the horizon'} color={WARM} size={12} />
         </g>
 
         {/* ---------------- beat 8 ---------------- */}
         <g opacity={badgeO}>
-          {/* badges sit clear of both rulers' tick numbers: above the upper ruler, below the lower one */}
-          <rect x={CUR.x0 - 2} y={TAPE_Y - 126} width={CUR.x1 - CUR.x0 + 4} height={22} rx={6} fill={PANEL} stroke={POSITIVE} strokeOpacity={0.8} />
-          <Code x={(CUR.x0 + CUR.x1) / 2} y={TAPE_Y - 111} text={`content: frames ${sNow}…${sNow + 3}`} color={POSITIVE} size={9} anchor="middle" />
-          <rect x={CUR.x0 - 2} y={TAPE_Y + 104} width={CUR.x1 - CUR.x0 + 4} height={22} rx={6} fill={PANEL} stroke={WARM} strokeOpacity={0.8} />
-          <Code x={(CUR.x0 + CUR.x1) / 2} y={TAPE_Y + 119} text={`positions ${rotaryPos(sNow, sNow)}…${rotaryPos(sNow + 3, sNow)}`} color={WARM} size={9} anchor="middle" />
+          {/* badges are sized to their text and sit clear of both rulers: above the upper ruler, below the lower one */}
+          <rect x={badgeRight - badgeTopW} y={TAPE_Y - 126} width={badgeTopW} height={24} rx={6} fill={PANEL} stroke={POSITIVE} strokeOpacity={0.8} />
+          <Code x={badgeRight - badgeTopW / 2} y={TAPE_Y - 110} text={badgeTop} color={POSITIVE} size={12} anchor="middle" />
+          <rect x={badgeRight - badgeBotW} y={TAPE_Y + 104} width={badgeBotW} height={24} rx={6} fill={PANEL} stroke={WARM} strokeOpacity={0.8} />
+          <Code x={badgeRight - badgeBotW / 2} y={TAPE_Y + 120} text={badgeBot} color={WARM} size={12} anchor="middle" />
         </g>
         <g opacity={g(scene.rotLbl)}>
-          <Note x={slotX(40)} y={TAPE_Y - 56} text="keys: re-rotated to new coordinates (glyph turns)" color={TEXT} size={10} />
-          <Note x={slotX(40)} y={TAPE_Y + 56} text="values: translated, never rotated (dot slides)" color={TEXT} size={10} />
-          <Note x={CUR.x1} y={TAPE_Y + 146} text="geometry content follows the true frame ID — the world does not rewind" color={POSITIVE} size={10} anchor="end" />
+          {/* both notes sit in clear bands: keys between the upper ruler and the tape, values between the tape and the lower ruler */}
+          <Note x={slotX(20)} y={TAPE_Y - 36} text="keys: re-rotated to new coordinates (glyph turns)" color={TEXT} size={12} />
+          <Note x={slotX(20)} y={TAPE_Y + 50} text="values: translated, never rotated (dot slides)" color={TEXT} size={12} />
+          <Note x={CUR.x1} y={TAPE_Y + 146} text="geometry content follows the true frame ID — the world does not rewind" color={POSITIVE} size={12} anchor="end" />
         </g>
 
         {/* ---------------- beat 9 ---------------- */}
         {g(scene.finalO) > 0 && (
           <g opacity={g(scene.finalO)}>
             <rect x={160} y={470} width={290} height={34} rx={8} fill={PANEL} stroke={SECONDARY} strokeOpacity={0.7} />
-            <Code x={305} y={492} text="geometry → what the frame depicts" color={SECONDARY} size={11} anchor="middle" />
+            <Code x={305} y={492} text="geometry → what the frame depicts" color={SECONDARY} size={12} anchor="middle" />
             <rect x={495} y={470} width={290} height={34} rx={8} fill={PANEL} stroke={NEGATIVE} strokeOpacity={0.7} />
-            <Code x={640} y={492} text="replay → trains the history encoding" color={NEGATIVE} size={11} anchor="middle" />
+            <Code x={640} y={492} text="replay → trains the history encoding" color={NEGATIVE} size={12} anchor="middle" />
             <rect x={830} y={470} width={290} height={34} rx={8} fill={PANEL} stroke={ACCENT} strokeOpacity={0.7} />
-            <Code x={975} y={492} text="bounded cache → carries it forward" color={ACCENT} size={11} anchor="middle" />
+            <Code x={975} y={492} text="bounded cache → carries it forward" color={ACCENT} size={12} anchor="middle" />
             <Note x={640} y={540} text="5 sink + 44 recent + 4 current, rendering continues · no promise of perfect consistency" size={12} anchor="middle" />
           </g>
         )}

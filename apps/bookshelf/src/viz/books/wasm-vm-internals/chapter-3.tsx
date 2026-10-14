@@ -55,6 +55,10 @@ const SECTIONS: Section[] = [
 const RIBBON_X = 190;
 const RIBBON_Y = 300;
 const RIBBON_H = 46;
+// Shared row for the lower panels (store, boot decision, live sources), so
+// each one takes the same slot in turn and never stacks on another.
+const ROW_Y = RIBBON_Y + 230;
+const STORE_Y = RIBBON_Y + 162;
 const sectionX = (i: number): number =>
   RIBBON_X + SECTIONS.slice(0, i).reduce((s, x) => s + x.w + 4, 0);
 const RIBBON_W = sectionX(SECTIONS.length) - RIBBON_X;
@@ -90,10 +94,12 @@ const DECISIONS = [
 const BOOT_SECONDS = 40;
 const RESTORE_SECONDS = 1;
 
+// Camera framing: each push keeps the whole ribbon (x 190..906) and every
+// element of the beat on screen, with nothing in the caption band.
 const CAM_MACHINE: CameraState = { x: 600, y: 300, k: 1.06 };
-const CAM_RAM: CameraState = { x: 470, y: 322, k: 1.6 };
-const CAM_HEADER: CameraState = { x: 560, y: 210, k: 1.34 };
-const CAM_STORE: CameraState = { x: 620, y: 430, k: 1.16 };
+const CAM_RAM: CameraState = { x: 520, y: 330, k: 1.4 };
+const CAM_HEADER: CameraState = { x: 548, y: 250, k: 1.2 };
+const CAM_STORE: CameraState = { x: 548, y: 380, k: 1.15 };
 const CAM_RACE: CameraState = { x: 640, y: 400, k: 1.05 };
 const CAM_WIDE: CameraState = { x: 620, y: 330, k: 0.92 };
 
@@ -304,11 +310,19 @@ export function Render({ s }: { s: SceneState }) {
   const ramX = sectionX(ramIdx);
   const ramW = SECTIONS[ramIdx].w;
 
+  // The race owns the stage while it plays: the machine steps back so the two
+  // bars are not drawn over the header and ribbon labels.
+  const raceFocus = raceU * (1 - liveU);
+  const back = 1 - 0.9 * raceFocus;
+  // The lower rows share one slot; the live sources and the portability fan-out
+  // take over from them.
+  const rowsFade = 1 - Math.max(liveU, portU);
+
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
-        <g opacity={dimAll}>
+        <g opacity={dimAll * back}>
           {/* ---- the container, once collapsed ---- */}
           {collapseU > 0.15 && (
             <g opacity={clamp01(collapseU * 2 - 0.3)}>
@@ -349,16 +363,18 @@ export function Render({ s }: { s: SceneState }) {
                 {(() => {
                   // Narrow sections alternate above/below the ribbon so their
                   // labels never collide once everything is packed together.
+                  // Below-the-bar labels tilt down-right so they clear the bar.
                   const packed = collapseU > 0.55;
                   const below = packed && sec.w < 60 && i % 2 === 1;
+                  const ly = below ? sy + h + 18 : sy - 8;
                   return (
                     <text
                       x={sx + w / 2}
-                      y={packed ? (below ? sy + h + 16 : sy - 8) : sy + h / 2 + 5}
+                      y={packed ? ly : sy + h / 2 + 5}
                       textAnchor={packed ? 'start' : 'middle'}
-                      transform={packed ? `rotate(-42, ${sx + w / 2}, ${below ? sy + h + 16 : sy - 8})` : undefined}
+                      transform={packed ? `rotate(${below ? 42 : -42}, ${sx + w / 2}, ${ly})` : undefined}
                       fill={sec.color}
-                      fontSize={packed ? 11.5 : 14}
+                      fontSize={packed ? 12 : 14}
                       fontFamily="monospace"
                     >
                       {sec.name}
@@ -372,7 +388,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* zero-elision: the written form of RAM */}
           {elideU > 0 && (
             <g opacity={elideU}>
-              <text x={ramX} y={RIBBON_Y + RIBBON_H + 30} fill={colors.MUTED} fontSize={12.5} fontFamily="monospace">
+              <text x={ramX} y={RIBBON_Y + RIBBON_H + 30} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
                 zero runs → [kind 0][len] — no payload
               </text>
               {(() => {
@@ -426,18 +442,18 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* ---- streaming into the browser store ---- */}
           {storeU > 0 && (
-            <g opacity={storeU}>
-              <text x={RIBBON_X} y={RIBBON_Y + 132} fill={colors.MUTED} fontSize={13}>
+            <g opacity={storeU * rowsFade}>
+              <text x={RIBBON_X} y={STORE_Y} fill={colors.MUTED} fontSize={13}>
                 streamed to IndexedDB in {CHUNK_MIB} MiB chunks — never a second whole copy
               </text>
               {Array.from({ length: 11 }, (_, k) => {
                 const u = clamp01(storeU * 11 - k);
                 if (u <= 0) return null;
                 return (
-                  <rect key={k} x={RIBBON_X + k * 54} y={RIBBON_Y + 146} width={46} height={30} rx={4} fill={colors.ACCENT} opacity={0.35 + 0.5 * u} />
+                  <rect key={k} x={RIBBON_X + k * 54} y={STORE_Y + 10} width={46} height={30} rx={4} fill={colors.ACCENT} opacity={0.35 + 0.5 * u} />
                 );
               })}
-              <text x={RIBBON_X + 11 * 54 + 14} y={RIBBON_Y + 168} fill={colors.ACCENT} fontSize={14} fontWeight={700}>
+              <text x={RIBBON_X + 11 * 54 + 14} y={STORE_Y + 32} fill={colors.ACCENT} fontSize={14} fontWeight={700}>
                 {Math.round(storeU * 11)} / 11 MB
               </text>
             </g>
@@ -445,17 +461,17 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* ---- the three-way decision ---- */}
           {decideU > 0 && (
-            <g opacity={decideU}>
+            <g opacity={decideU * rowsFade}>
               {DECISIONS.map((d, i) => {
                 const u = clamp01(decideU * 3 - i * 0.6);
                 if (u <= 0) return null;
                 return (
                   <g key={d.key} opacity={u}>
-                    <rect x={RIBBON_X + i * 250} y={RIBBON_Y + 208} width={232} height={46} rx={8} fill={colors.PANEL} stroke={d.color} strokeWidth={i === 1 ? 2.2 : 1.3} />
-                    <text x={RIBBON_X + 16 + i * 250} y={RIBBON_Y + 230} fill={d.color} fontSize={13} fontFamily="monospace">
+                    <rect x={RIBBON_X + i * 250} y={ROW_Y} width={232} height={46} rx={8} fill={colors.PANEL} stroke={d.color} strokeWidth={i === 1 ? 2.2 : 1.3} />
+                    <text x={RIBBON_X + 16 + i * 250} y={ROW_Y + 22} fill={d.color} fontSize={13} fontFamily="monospace">
                       {d.key}
                     </text>
-                    <text x={RIBBON_X + 16 + i * 250} y={RIBBON_Y + 247} fill={colors.MUTED} fontSize={12}>
+                    <text x={RIBBON_X + 16 + i * 250} y={ROW_Y + 39} fill={colors.MUTED} fontSize={12}>
                       {d.label}
                     </text>
                   </g>
@@ -464,33 +480,16 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           )}
 
-          {/* ---- the race: boot vs restore ---- */}
-          {raceU > 0 && (
-            <g opacity={raceU}>
-              <rect x={250} y={150} width={780} height={44} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
-              <rect x={252} y={152} width={776 * clamp01(bootBar)} height={40} rx={7} fill={colors.NEGATIVE} opacity={0.75} />
-              <text x={266} y={178} fill={colors.TEXT} fontSize={15} fontWeight={700}>
-                cold boot — {(BOOT_SECONDS * clamp01(bootBar)).toFixed(0)}s of kernel
-              </text>
-
-              <rect x={250} y={214} width={780} height={44} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
-              <rect x={252} y={216} width={776 * (RESTORE_SECONDS / BOOT_SECONDS) * clamp01(restoreBar)} height={40} rx={7} fill={colors.POSITIVE} />
-              <text x={266} y={242} fill={colors.TEXT} fontSize={15} fontWeight={700}>
-                restore — {RESTORE_SECONDS}s, no Linux boot at all
-              </text>
-            </g>
-          )}
-
           {/* ---- live sources ---- */}
           {liveU > 0 && (
-            <g opacity={liveU}>
+            <g opacity={liveU * (1 - portU)}>
               {['wall clock', 'entropy', 'DHCP lease'].map((n, i) => {
                 const u = clamp01(liveU * 3 - i * 0.5);
                 if (u <= 0) return null;
                 return (
                   <g key={n} opacity={u}>
-                    <rect x={330 + i * 220} y={300} width={196} height={40} rx={8} fill={colors.BG} stroke={colors.WARM} />
-                    <text x={428 + i * 220} y={325} textAnchor="middle" fill={colors.WARM} fontSize={13.5}>
+                    <rect x={RIBBON_X + i * 250} y={ROW_Y} width={232} height={46} rx={8} fill={colors.BG} stroke={colors.WARM} />
+                    <text x={RIBBON_X + 116 + i * 250} y={ROW_Y + 28} textAnchor="middle" fill={colors.WARM} fontSize={14}>
                       {n} — read live
                     </text>
                   </g>
@@ -526,6 +525,23 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           )}
         </g>
+
+        {/* ---- the race: boot vs restore ---- */}
+        {raceU > 0 && (
+          <g opacity={raceFocus}>
+            <rect x={250} y={150} width={780} height={44} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
+            <rect x={252} y={152} width={776 * clamp01(bootBar)} height={40} rx={7} fill={colors.NEGATIVE} opacity={0.75} />
+            <text x={266} y={178} fill={colors.TEXT} fontSize={15} fontWeight={700}>
+              cold boot — {(BOOT_SECONDS * clamp01(bootBar)).toFixed(0)}s of kernel
+            </text>
+
+            <rect x={250} y={214} width={780} height={44} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
+            <rect x={252} y={216} width={776 * (RESTORE_SECONDS / BOOT_SECONDS) * clamp01(restoreBar)} height={40} rx={7} fill={colors.POSITIVE} />
+            <text x={266} y={242} fill={colors.TEXT} fontSize={15} fontWeight={700}>
+              restore — {RESTORE_SECONDS}s, no Linux boot at all
+            </text>
+          </g>
+        )}
 
         {closeU > 0 && (
           <g opacity={closeU}>

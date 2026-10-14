@@ -29,17 +29,18 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 const TAU = Math.PI * 2;
 
 /* ---------------------------------------------------------------- layout */
-const BUCKET = { x: 640, y: 330, r: 118 };
+const BUCKET = { x: 640, y: 330, r: 136 };
+const NODE_HALF_W = 66;
 const NODES = [
   { id: 'node-a', x: 250, y: 170, color: colors.ACCENT },
   { id: 'node-b', x: 1030, y: 170, color: colors.WARM },
-  { id: 'node-c', x: 640, y: 585 - 45, color: colors.SECONDARY },
+  { id: 'node-c', x: 640, y: 520, color: colors.SECONDARY },
 ] as const;
 const RECORD = { x: BUCKET.x, y: BUCKET.y + 8 };
 
 const CAM_RING: CameraState = { ...CAMERA_HOME };
-const CAM_RECORD: CameraState = { x: 640, y: 320, k: 1.3 };
-const CAM_LEASE: CameraState = { x: 470, y: 250, k: 1.24 };
+const CAM_RECORD: CameraState = { x: 640, y: 330, k: 1.25 };
+const CAM_LEASE: CameraState = { x: 560, y: 300, k: 1.12 };
 const CAM_WIDE: CameraState = { x: 640, y: 340, k: 1.0 };
 
 const bez = (a: { x: number; y: number }, b: { x: number; y: number }, u: number) => {
@@ -197,11 +198,14 @@ function BucketRing({ u, dim }: { u: number; dim: number }) {
         strokeDashoffset={dash * (1 - uu)}
         opacity={0.96}
       />
-      <text x={BUCKET.x} y={BUCKET.y - BUCKET.r - 16} textAnchor="middle" fill={colors.TEAL} fontSize={13.5} fontWeight={700} opacity={uu}>
+      <text x={BUCKET.x} y={BUCKET.y - BUCKET.r - 26} textAnchor="middle" fill={colors.TEAL} fontSize={13.5} fontWeight={700} opacity={uu}>
         the fleet bucket · S3-compatible · you own it
       </text>
-      <text x={BUCKET.x} y={BUCKET.y - 66} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO} opacity={uu}>
-        deployments/ · cells/ · wake/ · fleet/
+      <text x={BUCKET.x} y={BUCKET.y - 98} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={uu}>
+        deployments/ · cells/
+      </text>
+      <text x={BUCKET.x} y={BUCKET.y - 80} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={uu}>
+        wake/ · fleet/
       </text>
     </g>
   );
@@ -233,11 +237,11 @@ function Nodes({
         const dash = TAU * leaseR;
         return (
           <g key={n.id} transform={`translate(${n.x}, ${n.y})`} opacity={p * (1 - dead * 0.75)}>
-            <rect x={-58} y={-34} width={116} height={68} rx={12} fill={colors.PANEL} stroke={dead > 0.3 ? colors.NEGATIVE : n.color} strokeWidth={1.8} />
+            <rect x={-NODE_HALF_W} y={-34} width={NODE_HALF_W * 2} height={68} rx={12} fill={colors.PANEL} stroke={dead > 0.3 ? colors.NEGATIVE : n.color} strokeWidth={1.8} />
             <text y={-6} textAnchor="middle" fill={colors.TEXT} fontSize={13.5} fontWeight={700}>
               {n.id}
             </text>
-            <text y={16} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>
+            <text y={16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               celld · embeds V8
             </text>
             {lease > 0 && (
@@ -254,7 +258,7 @@ function Nodes({
               </g>
             )}
             {dead > 0.3 && (
-              <text y={54} textAnchor="middle" fill={colors.NEGATIVE} fontSize={10.5} fontFamily={MONO} opacity={(dead - 0.3) * 2}>
+              <text y={54} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO} opacity={(dead - 0.3) * 2}>
                 lease expired · fenced
               </text>
             )}
@@ -262,7 +266,7 @@ function Nodes({
         );
       })}
       {lease > 0.15 && lease < 1 && fence < 0.4 && (
-        <text x={250} y={262} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={MONO} opacity={clamp01(lease * 4)}>
+        <text x={250} y={262} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={clamp01(lease * 4)}>
           NodeLeaseRenew → NodeLeaseFence
         </text>
       )}
@@ -291,7 +295,7 @@ function OwnerRecord({
   return (
     <g transform={`translate(${RECORD.x}, ${RECORD.y + (1 - uu) * 10})`} opacity={(1 - 0.8 * dim) * uu}>
       <rect x={-104} y={-52} width={208} height={104} rx={12} fill={colors.BG} stroke={flipped ? colors.SECONDARY : owned ? colors.ACCENT : colors.GRID} strokeWidth={1.8 + glow * 2} />
-      <text y={-30} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+      <text y={-30} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
         cells/room-7/owner
       </text>
       <text y={-4} textAnchor="middle" fill={owned ? colors.TEXT : colors.MUTED} fontSize={13} fontFamily={MONO} opacity={fields > 0 ? 1 : 0.85}>
@@ -301,12 +305,12 @@ function OwnerRecord({
         {owned ? (flipped ? 'epoch: 4' : 'epoch: 3') : 'epoch: —'}
       </text>
       {fields > 0 && !flipped && (
-        <text y={44} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} opacity={fields}>
+        <text y={44} textAnchor="middle" fill={colors.MUTED} fontSize={12} opacity={fields}>
           epoch counts every handoff
         </text>
       )}
       {flipped && (
-        <text y={44} textAnchor="middle" fill={colors.SECONDARY} fontSize={9.5} opacity={clamp01((takeover - 0.62) * 4)}>
+        <text y={44} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} opacity={clamp01((takeover - 0.62) * 4)}>
           handoff: the epoch just advanced
         </text>
       )}
@@ -323,31 +327,34 @@ function CasRace({ u, dim }: { u: number; dim: number }) {
   const wu = clamp01(u / 0.55);
   const luRaw = clamp01(u / 0.6);
   const bounce = clamp01((u - 0.6) / 0.4);
-  const wp = bez({ x: a.x + 58, y: a.y }, target, ease.linear(wu));
+  const wp = bez({ x: a.x + NODE_HALF_W, y: a.y }, target, ease.linear(wu));
   const lp =
     bounce <= 0
-      ? bez({ x: b.x - 58, y: b.y }, target, luRaw * 0.92)
-      : bez({ x: b.x - 58, y: b.y }, target, 0.92 * (1 - ease.move(bounce)));
+      ? bez({ x: b.x - NODE_HALF_W, y: b.y }, target, luRaw * 0.92)
+      : bez({ x: b.x - NODE_HALF_W, y: b.y }, target, 0.92 * (1 - ease.move(bounce)));
   return (
     <g opacity={1 - 0.85 * dim}>
+      <text x={BUCKET.x} y={136} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO} opacity={clamp01(u * 5) * clamp01((1 - u) * 4)}>
+        compare-and-swap · write only if nobody changed it since I read it
+      </text>
       {wu < 1 && (
         <g transform={`translate(${wp.x}, ${wp.y})`}>
-          <rect x={-44} y={-13} width={88} height={26} rx={13} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
-          <text y={4} textAnchor="middle" fill={colors.ACCENT} fontSize={10.5} fontFamily={MONO}>
+          <rect x={-52} y={-13} width={104} height={26} rx={13} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
+          <text y={4} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>
             put-if-none
           </text>
         </g>
       )}
       {u > 0.05 && (
         <g transform={`translate(${lp.x}, ${lp.y})`} opacity={bounce > 0.8 ? (1 - bounce) * 5 : 1}>
-          <rect x={-44} y={-13} width={88} height={26} rx={13} fill={colors.PANEL} stroke={bounce > 0 ? colors.NEGATIVE : colors.WARM} strokeWidth={1.5} />
-          <text y={4} textAnchor="middle" fill={bounce > 0 ? colors.NEGATIVE : colors.WARM} fontSize={10.5} fontFamily={MONO}>
+          <rect x={-52} y={-13} width={104} height={26} rx={13} fill={colors.PANEL} stroke={bounce > 0 ? colors.NEGATIVE : colors.WARM} strokeWidth={1.5} />
+          <text y={4} textAnchor="middle" fill={bounce > 0 ? colors.NEGATIVE : colors.WARM} fontSize={12} fontFamily={MONO}>
             {bounce > 0 ? 'rejected 412' : 'put-if-none'}
           </text>
         </g>
       )}
       {bounce > 0.1 && bounce < 0.9 && (
-        <text x={BUCKET.x + 165} y={BUCKET.y - 118} textAnchor="middle" fill={colors.NEGATIVE} fontSize={10} fontFamily={MONO} opacity={Math.sin(bounce * Math.PI)}>
+        <text x={880} y={250} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO} opacity={Math.sin(bounce * Math.PI)}>
           clean rejection — the only safe “no”
         </text>
       )}
@@ -361,15 +368,15 @@ function ProxyPath({ u, dim }: { u: number; dim: number }) {
   const a = NODES[0];
   const b = NODES[1];
   const pu = ease.linear(clamp01(uu * 1.25));
-  const x = b.x - 58 + (a.x + 58 - (b.x - 58)) * pu;
+  const x = b.x - NODE_HALF_W + (a.x + NODE_HALF_W - (b.x - NODE_HALF_W)) * pu;
   const y = a.y - 62;
   return (
     <g opacity={1 - 0.85 * dim}>
-      <line x1={b.x - 58} y1={y} x2={a.x + 58} y2={y} stroke={colors.GRID} strokeWidth={1.4} strokeDasharray="4 6" opacity={uu} />
+      <line x1={b.x - NODE_HALF_W} y1={y} x2={a.x + NODE_HALF_W} y2={y} stroke={colors.GRID} strokeWidth={1.4} strokeDasharray="4 6" opacity={uu} />
       {pu > 0 && pu < 1 && (
         <g transform={`translate(${x}, ${y})`}>
           <circle r={9} fill={colors.WARM} />
-          <text y={-14} textAnchor="middle" fill={colors.WARM} fontSize={10} fontFamily={MONO}>
+          <text y={-14} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
             proxied to owner
           </text>
         </g>
@@ -386,7 +393,7 @@ function ReqPacket({ u, dim }: { u: number; dim: number }) {
   return (
     <g transform={`translate(${p.x}, ${p.y})`} opacity={(1 - 0.85 * dim) * Math.min(1, u * 5, (1 - u) * 5 + 0.4)}>
       <circle r={10} fill={colors.POSITIVE} />
-      <text y={-15} textAnchor="middle" fill={colors.POSITIVE} fontSize={10.5} fontFamily={MONO}>
+      <text y={-15} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
         req → room-7
       </text>
     </g>
@@ -400,8 +407,8 @@ function TakeoverCas({ u, dim }: { u: number; dim: number }) {
   const p = bez({ x: c.x, y: c.y - 34 }, target, ease.linear(clamp01((u - 0.1) / 0.5)));
   return (
     <g transform={`translate(${p.x}, ${p.y})`} opacity={1 - 0.85 * dim}>
-      <rect x={-58} y={-13} width={116} height={26} rx={13} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.5} />
-      <text y={4} textAnchor="middle" fill={colors.SECONDARY} fontSize={10.5} fontFamily={MONO}>
+      <rect x={-64} y={-13} width={128} height={26} rx={13} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.5} />
+      <text y={4} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>
         swap owner · e4
       </text>
     </g>
@@ -433,29 +440,36 @@ function ClosingCard({ u }: { u: number }) {
 /* ------------------------------------------------------------ the frame */
 export function Render({ s }: { s: SceneState }) {
   const dim = clamp01(s.get(scene.dimU));
+  // once the closing card takes over, drop the faded diagram entirely so no
+  // ghost labels sit under the card
+  const faded = dim >= 1;
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...s.get(scene.cam)}>
-        <BucketRing u={s.get(scene.bucketU)} dim={dim} />
-        <Nodes
-          u={s.get(scene.nodesU)}
-          lease={s.get(scene.leaseU)}
-          fence={s.get(scene.fenceU)}
-          takeover={s.get(scene.takeoverU)}
-          dim={dim}
-        />
-        <ReqPacket u={s.get(scene.reqU)} dim={dim} />
-        <OwnerRecord
-          u={s.get(scene.recordU)}
-          fields={s.get(scene.fieldsU)}
-          race={s.get(scene.raceU)}
-          takeover={s.get(scene.takeoverU)}
-          dim={dim}
-        />
-        <CasRace u={s.get(scene.raceU)} dim={dim} />
-        <ProxyPath u={s.get(scene.proxyU)} dim={dim} />
-        <TakeoverCas u={s.get(scene.takeoverU)} dim={dim} />
+        {!faded && <BucketRing u={s.get(scene.bucketU)} dim={dim} />}
+        {!faded && (
+          <Nodes
+            u={s.get(scene.nodesU)}
+            lease={s.get(scene.leaseU)}
+            fence={s.get(scene.fenceU)}
+            takeover={s.get(scene.takeoverU)}
+            dim={dim}
+          />
+        )}
+        {!faded && <ReqPacket u={s.get(scene.reqU)} dim={dim} />}
+        {!faded && (
+          <OwnerRecord
+            u={s.get(scene.recordU)}
+            fields={s.get(scene.fieldsU)}
+            race={s.get(scene.raceU)}
+            takeover={s.get(scene.takeoverU)}
+            dim={dim}
+          />
+        )}
+        {!faded && <CasRace u={s.get(scene.raceU)} dim={dim} />}
+        {!faded && <ProxyPath u={s.get(scene.proxyU)} dim={dim} />}
+        {!faded && <TakeoverCas u={s.get(scene.takeoverU)} dim={dim} />}
         <ClosingCard u={s.get(scene.closeU)} />
       </Camera>
     </>

@@ -40,7 +40,7 @@ export function buildScene() {
 
   tl.caption({ at: 0.5, dur: 5.7, text: 'A long source document enters the construction skill with one strict promise: every chunk will be accounted for.' });
   tl.tween(docU, 1, { at: 0.8, dur: 1.4, ease: ease.draw });
-  tl.tween(cam, { x: 410, y: 320, k: 1.18 }, { at: 1.1, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 410, y: 300, k: 1.18 }, { at: 1.1, dur: 1.3, ease: ease.move });
   tl.hold(6.2, 0.5);
 
   tl.caption({ at: 6.7, dur: 5.5, text: 'Heading boundaries cut the document into section-aware pieces, then long paragraphs split again at a character limit.' });
@@ -49,7 +49,7 @@ export function buildScene() {
 
   tl.caption({ at: 12.7, dur: 5.8, text: 'Each useful piece can teach a concept, a reasoning process, or a source-grounded case. Those are three different jobs.' });
   tl.tween(formsU, 1, { at: 13.2, dur: 1.6, ease: ease.enter });
-  tl.tween(cam, { x: 690, y: 320, k: 1.08 }, { at: 13.4, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 680, y: 320, k: 1.08 }, { at: 13.4, dur: 1.3, ease: ease.move });
   tl.hold(18.5, 0.5);
 
   tl.caption({ at: 19.0, dur: 5.5, text: 'A quality rubric rejects document trivia, unsupported leaps, and questions that only make sense beside the source.' });
@@ -66,7 +66,7 @@ export function buildScene() {
 
   tl.caption({ at: 37.0, dur: 5.7, text: 'Validation checks required fields, accepted sample types, source anchoring, and suspicious placeholder language.' });
   tl.tween(validateU, 1, { at: 37.5, dur: 1.2, ease: ease.move });
-  tl.tween(cam, { x: 835, y: 390, k: 1.24 }, { at: 37.7, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 660, y: 340, k: 1.08 }, { at: 37.7, dur: 1.3, ease: ease.move });
   tl.hold(42.7, 0.5);
 
   tl.caption({ at: 43.2, dur: 5.5, text: 'Then the coverage sweep crosses the whole manifest. Completion means zero unprocessed chunks and no sample without a status.' });
@@ -86,19 +86,19 @@ const scene = buildScene();
 
 function ChunkCard({ i, u, statusU }: { i: number; u: number; statusU: number }) {
   const c = CHUNKS[i];
-  const x = 510 + (i % 2) * 230;
-  const y = 126 + Math.floor(i / 2) * 145;
+  const x = 470 + (i % 2) * 190;
+  const y = 168 + Math.floor(i / 2) * 130;
   const uu = clamp01(u * 8 - i);
   const kept = i !== 3;
   return (
     <g transform={`translate(${x} ${y + (1 - uu) * 18})`} opacity={uu}>
-      <rect x={-94} y={-48} width={188} height={96} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
+      <rect x={-88} y={-48} width={176} height={96} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
       <text x={-78} y={-25} fill={colors.TEXT} fontSize={12} fontFamily={MONO}>{c.title}</text>
       {Array.from({ length: c.lines }, (_, j) => <rect key={j} x={-78} y={-10 + j * 12} width={122 - j * 9} height={4} rx={2} fill={colors.MUTED} opacity={0.42} />)}
       {statusU > 0 && (
         <g opacity={statusU}>
-          <rect x={33} y={19} width={50} height={20} rx={10} fill={kept ? colors.POSITIVE : colors.NEGATIVE} opacity={0.18} />
-          <text x={58} y={33} textAnchor="middle" fill={kept ? colors.POSITIVE : colors.NEGATIVE} fontSize={9} fontWeight={700}>{kept ? 'KEPT' : 'SKIP'}</text>
+          <rect x={22} y={20} width={56} height={20} rx={10} fill={kept ? colors.POSITIVE : colors.NEGATIVE} opacity={0.18} />
+          <text x={50} y={34} textAnchor="middle" fill={kept ? colors.POSITIVE : colors.NEGATIVE} fontSize={12} fontWeight={700}>{kept ? 'KEPT' : 'SKIP'}</text>
         </g>
       )}
     </g>
@@ -115,11 +115,11 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={1280} height={720} fill={colors.BG} />
       <Camera {...s.get(scene.cam)}>
         <g opacity={mainOpacity}>
-          <text x={640} y={62} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={700}>Full coverage is a machine, not a promise</text>
-          <text x={640} y={88} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>split_markdown_book.py → chunk_status.jsonl → validate_qa_jsonl.py</text>
+          <text x={640} y={34} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>split_markdown_book.py → chunk_status.jsonl → validate_qa_jsonl.py</text>
+          <text x={640} y={74} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={700}>Full coverage is a machine, not a promise</text>
 
           <g opacity={s.get(scene.docU)}>
-            <rect x={108} y={112} width={250} height={438} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
+            <rect x={108} y={112} width={250} height={408} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
             <text x={132} y={148} fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>source_book.md</text>
             {Array.from({ length: 24 }, (_, i) => {
               const heading = [0, 4, 9, 13, 17, 21].includes(i);
@@ -132,7 +132,7 @@ export function Render({ s }: { s: SceneState }) {
 
           <g opacity={formsU}>
             {FORMS.map((f, i) => (
-              <g key={f.label} transform={`translate(${930} ${158 + i * 118})`}>
+              <g key={f.label} transform={`translate(${980} ${168 + i * 130})`}>
                 <rect x={-112} y={-34} width={224} height={68} rx={12} fill={colors.PANEL} stroke={f.color} strokeWidth={1.4} />
                 <circle cx={-80} cy={0} r={13} fill={f.color} opacity={0.2} />
                 <text x={-80} y={5} textAnchor="middle" fill={f.color} fontSize={13} fontWeight={700}>{i + 1}</text>
@@ -142,32 +142,34 @@ export function Render({ s }: { s: SceneState }) {
           </g>
 
           {s.get(scene.rubricU) > 0 && (
-            <g opacity={s.get(scene.rubricU)} transform="translate(930 520)">
+            <g opacity={s.get(scene.rubricU)} transform="translate(980 530)">
               <rect x={-118} y={-36} width={236} height={72} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} />
               <text x={0} y={-8} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontWeight={700}>QUALITY RUBRIC</text>
-              <text x={0} y={15} textAnchor="middle" fill={colors.MUTED} fontSize={10}>standalone · supported · distinct</text>
+              <text x={0} y={15} textAnchor="middle" fill={colors.MUTED} fontSize={12}>standalone · supported · distinct</text>
             </g>
           )}
 
           {s.get(scene.ledgerU) > 0 && (
             <g opacity={s.get(scene.ledgerU)}>
-              <rect x={410} y={566} width={530} height={44} rx={9} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={428} y={592} fill={colors.POSITIVE} fontSize={11} fontFamily={MONO}>chunk_status.jsonl</text>
-              <text x={590} y={592} fill={colors.MUTED} fontSize={10} fontFamily={MONO}>kept · kept · kept · skipped · kept · kept</text>
+              <rect x={382} y={500} width={464} height={44} rx={9} fill={colors.PANEL} stroke={colors.GRID} />
+              <text x={396} y={527} fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>chunk_status.jsonl</text>
+              <text x={530} y={527} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>kept · kept · kept · skipped · kept · kept</text>
             </g>
           )}
 
           {s.get(scene.validateU) > 0 && (
             <g opacity={s.get(scene.validateU)}>
-              <circle cx={1075} cy={570} r={31} fill={colors.POSITIVE} opacity={0.14} stroke={colors.POSITIVE} />
-              <path d="M1059 570 l10 10 l22 -24" fill="none" stroke={colors.POSITIVE} strokeWidth={4} strokeLinecap="round" />
+              <g transform="translate(1170 530)">
+                <circle cx={0} cy={0} r={31} fill={colors.POSITIVE} opacity={0.14} stroke={colors.POSITIVE} />
+                <path d="M-16 0 l10 10 l22 -24" fill="none" stroke={colors.POSITIVE} strokeWidth={4} strokeLinecap="round" />
+              </g>
             </g>
           )}
 
           {sweepU > 0 && (
             <g>
-              <line x1={390 + 700 * sweepU} x2={390 + 700 * sweepU} y1={104} y2={612} stroke={colors.WARM} strokeWidth={3} opacity={0.8} />
-              <text x={390 + 700 * sweepU} y={104} textAnchor="middle" fill={colors.WARM} fontSize={10} fontFamily={MONO}>coverage</text>
+              <line x1={370 + 390 * sweepU} x2={370 + 390 * sweepU} y1={106} y2={480} stroke={colors.WARM} strokeWidth={3} opacity={0.8} />
+              <text x={370 + 390 * sweepU} y={104} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>coverage</text>
             </g>
           )}
         </g>

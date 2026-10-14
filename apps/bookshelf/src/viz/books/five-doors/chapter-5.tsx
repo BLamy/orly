@@ -57,7 +57,7 @@ export function buildScene() {
 
   // BEAT 3 — run the command, connect
   tl.caption({ at: 12.6, dur: 6.6, text: 'Run the proxy command from the machine that hosts the app. It connects, the project sees your local computer, and QA can start.' });
-  tl.tween(cam, { x: 420, y: 380, k: 1.2 }, { at: 12.8, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 600, y: 360, k: 1.08 }, { at: 12.8, dur: 1.2, ease: ease.move });
   tl.tween(cmdU, 1, { at: 13.2, dur: 0.8, ease: ease.enter });
   tl.tween(tunnelU, 1, { at: 14.6, dur: 1.4, ease: ease.draw });
   tl.tween(connectedU, 1, { at: 16.2, dur: 0.6, ease: ease.pop });
@@ -139,21 +139,21 @@ export function Render({ s }: { s: SceneState }) {
         <text x="0" y="-74" textAnchor="middle" fill={colors.MUTED} fontSize="11" fontWeight="700" letterSpacing="1.5">YOUR LAPTOP</text>
         <rect x="-130" y="-58" width="260" height="46" rx="10" fill="#102033" stroke={colors.POSITIVE} strokeWidth="2" />
         <text x="0" y="-38" textAnchor="middle" fill={colors.POSITIVE} fontSize="12" fontWeight="700">the app · working copy</text>
-        <text x="0" y="-21" textAnchor="middle" fill={colors.MUTED} fontSize="10" fontFamily={colors.font.mono}>http://localhost:3000</text>
+        <text x="0" y="-21" textAnchor="middle" fill={colors.MUTED} fontSize="11" fontFamily={colors.font.mono}>http://localhost:3000</text>
         <g opacity={cmd}>
           <rect x="-130" y="0" width="260" height="80" rx="10" fill="#0a0e1a" stroke={colors.GRID} strokeWidth="1.5" />
-          <text x="-118" y="18" fill={colors.MUTED} fontSize="9.5" fontFamily={colors.font.mono}>$ npx --yes replayqa proxy \</text>
-          <text x="-118" y="33" fill={colors.TEXT} fontSize="9.5" fontFamily={colors.font.mono}>    --project prj_7c1 \</text>
-          <text x="-118" y="48" fill={colors.TEXT} fontSize="9.5" fontFamily={colors.font.mono}>    --qa-url https://qa.replay.io</text>
-          <text x="-118" y="68" fill={connected > 0 ? colors.POSITIVE : colors.WARM} fontSize="9.5" fontFamily={colors.font.mono}>{connected > 0 ? '✓ tunnel ready · leave this running' : 'waiting for the tunnel…'}</text>
+          <text x="-118" y="18" fill={colors.MUTED} fontSize="11" fontFamily={colors.font.mono}>$ npx --yes replayqa proxy \</text>
+          <text x="-118" y="34" fill={colors.TEXT} fontSize="11" fontFamily={colors.font.mono}>    --project prj_7c1 \</text>
+          <text x="-118" y="50" fill={colors.TEXT} fontSize="11" fontFamily={colors.font.mono}>    --qa-url https://qa.replay.io</text>
+          <text x="-118" y="69" fill={connected > 0 ? colors.POSITIVE : colors.WARM} fontSize="11" fontFamily={colors.font.mono}>{connected > 0 ? '✓ tunnel ready · leave this running' : 'waiting for the tunnel…'}</text>
         </g>
       </g>
 
       {/* Fix lands on the laptop */}
-      <g opacity={fix} transform={`translate(${LAPTOP.x - 130} ${LAPTOP.y + 126 + (1 - fix) * 10})`}>
-        <rect width="300" height="52" rx="10" fill="#102a22" stroke={colors.POSITIVE} strokeWidth="2" />
-        <text x="12" y="20" fill={colors.NEGATIVE} fontSize="9.5" fontFamily={colors.font.mono}>- const total = cart.total.toFixed(2)</text>
-        <text x="12" y="38" fill={colors.POSITIVE} fontSize="9.5" fontFamily={colors.font.mono}>+ const total = (cart.total ?? 0).toFixed(2)</text>
+      <g opacity={fix} transform={`translate(${LAPTOP.x - 170} ${LAPTOP.y + 126 + (1 - fix) * 10})`}>
+        <rect width="340" height="52" rx="10" fill="#102a22" stroke={colors.POSITIVE} strokeWidth="2" />
+        <text x="12" y="20" fill={colors.NEGATIVE} fontSize="11" fontFamily={colors.font.mono}>- const total = cart.total.toFixed(2)</text>
+        <text x="12" y="40" fill={colors.POSITIVE} fontSize="11" fontFamily={colors.font.mono}>+ const total = (cart.total ?? 0).toFixed(2)</text>
       </g>
 
       {/* QA side: project card */}
@@ -161,21 +161,23 @@ export function Render({ s }: { s: SceneState }) {
         <rect x="-160" y="-100" width="320" height="200" rx="18" fill="#0d1727" stroke={colors.ACCENT} strokeWidth="2.5" />
         <text x="0" y="-74" textAnchor="middle" fill={colors.ACCENT} fontSize="11" fontWeight="700" letterSpacing="1.5">REPLAY QA · PROJECT</text>
         <g opacity={paused}>
-          <rect x="-130" y="-56" width="260" height="40" rx="10" fill="#1b2a44" stroke={colors.MUTED} strokeWidth="1.5" />
-          <text x="-118" y="-32" fill={colors.MUTED} fontSize="12"><tspan fontWeight="700">Awaiting start</tspan> · connect your local computer</text>
+          <rect x="-130" y="-60" width="260" height="56" rx="10" fill="#1b2a44" stroke={colors.MUTED} strokeWidth="1.5" />
+          <text x="-118" y="-38" fill={colors.MUTED} fontSize="13" fontWeight="700">Awaiting start</text>
+          <text x="-118" y="-19" fill={colors.MUTED} fontSize="12">connect your local computer</text>
         </g>
         <g opacity={connected}>
-          <rect x="-130" y="-56" width="260" height="40" rx="10" fill="#102a22" stroke={colors.POSITIVE} strokeWidth="2" />
-          <text x="-118" y="-32" fill={colors.POSITIVE} fontSize="12" fontWeight="700">Local computer connected</text>
+          <rect x="-130" y="-60" width="260" height="56" rx="10" fill="#102a22" stroke={colors.POSITIVE} strokeWidth="2" />
+          <text x="-118" y="-38" fill={colors.POSITIVE} fontSize="13" fontWeight="700">Local computer connected</text>
+          <text x="-118" y="-19" fill={colors.TEXT} fontSize="12">QA can reach your app</text>
         </g>
         <g opacity={start} transform={`translate(0 ${(1 - start) * 8})`}>
-          <rect x="-70" y="-6" width="140" height="34" rx="17" fill={colors.ACCENT} />
-          <text x="0" y="16" textAnchor="middle" fill="#0a0e1a" fontSize="13" fontWeight="800">Start QA</text>
+          <rect x="-70" y="4" width="140" height="34" rx="17" fill={colors.ACCENT} />
+          <text x="0" y="25" textAnchor="middle" fill="#0a0e1a" fontSize="13" fontWeight="800">Start QA</text>
         </g>
-        <g opacity={localEnv} transform={`translate(-130 ${44 + (1 - localEnv) * 8})`}>
-          <rect width="260" height="42" rx="10" fill="#102033" stroke={colors.ACCENT} strokeWidth="2" />
-          <text x="12" y="17" fill={colors.ACCENT} fontSize="10" fontWeight="700" letterSpacing="1.5">LOCAL</text>
-          <text x="12" y="33" fill={colors.MUTED} fontSize="10" fontFamily={colors.font.mono}>kind: local · trigger: manual</text>
+        <g opacity={localEnv} transform={`translate(-130 ${48 + (1 - localEnv) * 8})`}>
+          <rect width="260" height="44" rx="10" fill="#102033" stroke={colors.ACCENT} strokeWidth="2" />
+          <text x="12" y="17" fill={colors.ACCENT} fontSize="11" fontWeight="700" letterSpacing="1.5">LOCAL</text>
+          <text x="12" y="35" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>kind: local · trigger: manual</text>
         </g>
       </g>
 
@@ -196,16 +198,18 @@ export function Render({ s }: { s: SceneState }) {
         <text x="0" y="0" fill={colors.MUTED} fontSize="11" fontWeight="700" letterSpacing="1.5">{rerun > 0 ? 'GUEST CHECKOUT · RERUN' : 'GUEST CHECKOUT · RUN 1'}</text>
         <StepRail x={0} y={16} u={railU} failAt={2} fail={fail} pass={pass} />
       </g>
-      <g opacity={clamp01(fail * 2) * (1 - fix * 0.6)} transform="translate(760 430)">
-        <rect width="330" height="90" rx="12" fill="#1a0f18" stroke={colors.NEGATIVE} strokeWidth="2" />
-        <text x="14" y="22" fill={colors.NEGATIVE} fontSize="11" fontWeight="700" letterSpacing="1.5">BUG · LOCAL</text>
-        <text x="14" y="42" fill={colors.TEXT} fontSize="12">Coupon step throws before the total renders</text>
-        <RecordingStrip x={14} y={52} w={300} h={26} points={REC_POINTS} u={rec} title="recording" />
+      {/* Bug card and rerun card share one footprint; the bug card stays up through the rerun and the rerun card covers it once it passes */}
+      <g opacity={clamp01(fail * 2 + rerun * 4) * (1 - fix * 0.6) * (1 - pass)} transform="translate(760 452)">
+        <rect width="340" height="140" rx="12" fill="#1a0f18" stroke={colors.NEGATIVE} strokeWidth="2" />
+        <text x="14" y="24" fill={colors.NEGATIVE} fontSize="12" fontWeight="700" letterSpacing="1.5">BUG · LOCAL</text>
+        <text x="14" y="50" fill={colors.TEXT} fontSize="13">Coupon step throws before the total renders</text>
+        <RecordingStrip x={14} y={84} w={312} h={26} points={REC_POINTS} u={rec} title="recording" />
       </g>
-      <g opacity={pass} transform="translate(760 430)">
-        <rect width="330" height="60" rx="12" fill="#102a22" stroke={colors.POSITIVE} strokeWidth="2.5" />
-        <text x="14" y="24" fill={colors.POSITIVE} fontSize="11" fontWeight="700" letterSpacing="1.5">RERUN · PASSED</text>
-        <text x="14" y="46" fill={colors.TEXT} fontSize="12">4 of 4 steps · the fix held, on the recording</text>
+      <g opacity={pass} transform="translate(760 452)">
+        <rect width="340" height="140" rx="12" fill="#102a22" stroke={colors.POSITIVE} strokeWidth="2.5" />
+        <text x="14" y="24" fill={colors.POSITIVE} fontSize="12" fontWeight="700" letterSpacing="1.5">RERUN · PASSED</text>
+        <text x="14" y="50" fill={colors.TEXT} fontSize="13">4 of 4 steps · the fix held, on the recording</text>
+        <RecordingStrip x={14} y={84} w={312} h={26} points={REC_POINTS.filter((p) => p.kind !== 'exception')} u={pass} title="rerun" />
       </g>
     </g>
 

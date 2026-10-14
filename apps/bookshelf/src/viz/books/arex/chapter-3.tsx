@@ -10,10 +10,12 @@ import type { CameraState, SceneState } from '../../core';
 
 const clamp01 = (u: number) => Math.max(0, Math.min(1, u));
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
+// Gate threshold τ = 72 on the 0–100 confidence scale (the gauge's 0.72 mark).
+const ROUTE_END = 1010;
 const TRACKS = [
-  { name: 'ACCEPT', y: 215, color: colors.POSITIVE, note: 's ≥ τ' },
-  { name: 'REFINE', y: 360, color: colors.WARM, note: 's < τ  ∧  v = 1' },
-  { name: 'RESTART', y: 505, color: colors.NEGATIVE, note: 's < τ  ∧  v = 0' },
+  { name: 'ACCEPT', y: 215, color: colors.POSITIVE, note: 's ≥ τ', range: 's ∈ [72, 100]' },
+  { name: 'REFINE', y: 360, color: colors.WARM, note: 's < τ  ∧  v = 1', range: 's ∈ [0, 72)' },
+  { name: 'RESTART', y: 505, color: colors.NEGATIVE, note: 's < τ  ∧  v = 0', range: 's ∈ [0, 72)' },
 ];
 
 export function buildScene() {
@@ -81,26 +83,26 @@ function AnswerCard({ u, evidenceU }: { u: number; evidenceU: number }) {
   return (
     <g transform={`translate(105 ${205 + (1 - u) * 20})`} opacity={u}>
       <rect width={355} height={280} rx={18} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2} />
-      <text x={24} y={38} fill={colors.ACCENT} fontSize={12} fontWeight={700} fontFamily={MONO}>structured finish</text>
+      <text x={24} y={38} fill={colors.ACCENT} fontSize={14} fontWeight={700} fontFamily={MONO}>structured finish</text>
       <rect x={24} y={62} width={307} height={62} rx={10} fill={colors.ACCENT} fillOpacity={0.09} stroke={colors.GRID} />
-      <text x={40} y={88} fill={colors.TEXT} fontSize={11}>provisional answer</text>
-      <text x={40} y={108} fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>y⁽ᵏ⁾</text>
+      <text x={40} y={88} fill={colors.TEXT} fontSize={14}>provisional answer</text>
+      <text x={40} y={110} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>y⁽ᵏ⁾</text>
       <g opacity={evidenceU}>
         {[0, 1, 2].map((i) => (
           <g key={i}>
             <rect x={24} y={145 + i * 31} width={307} height={23} rx={6} fill={i === 2 ? colors.WARM : colors.POSITIVE} fillOpacity={0.08} />
             <circle cx={40} cy={157 + i * 31} r={4} fill={i === 2 ? colors.WARM : colors.POSITIVE} />
-            <text x={52} y={161 + i * 31} fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>{i === 2 ? 'unresolved constraint' : `source id ${i + 1}`}</text>
+            <text x={52} y={161 + i * 31} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>{i === 2 ? 'unresolved constraint' : `source id ${i + 1}`}</text>
           </g>
         ))}
       </g>
-      <text x={24} y={261} fill={colors.MUTED} fontSize={10} fontFamily={MONO}>r⁽ᵏ⁾ = (y⁽ᵏ⁾, E⁽ᵏ⁾, s⁽ᵏ⁾)</text>
+      <text x={24} y={261} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>r⁽ᵏ⁾ = (y⁽ᵏ⁾, E⁽ᵏ⁾, s⁽ᵏ⁾)</text>
     </g>
   );
 }
 
 function movingPoint(p: number, y: number) {
-  return { x: 565 + clamp01(p) * 560, y };
+  return { x: 565 + clamp01(p) * (ROUTE_END - 565), y };
 }
 
 export function Render({ s }: { s: SceneState }) {
@@ -122,23 +124,24 @@ export function Render({ s }: { s: SceneState }) {
 
           {s.get(scene.gateU) > 0 && (
             <g opacity={s.get(scene.gateU)}>
-              <rect x={gaugeX} y={122} width={gaugeW} height={34} rx={17} fill={colors.PANEL} stroke={colors.GRID} />
-              <rect x={gaugeX} y={122} width={gaugeW * confidence} height={34} rx={17} fill={confidence >= 0.72 ? colors.POSITIVE : colors.WARM} opacity={0.55} />
-              <line x1={thresholdX} y1={112} x2={thresholdX} y2={168} stroke={colors.TEXT} strokeWidth={2} />
-              <text x={thresholdX} y={103} textAnchor="middle" fill={colors.TEXT} fontSize={10} fontFamily={MONO}>τ</text>
-              <circle cx={markerX} cy={139} r={7} fill={confidence >= 0.72 ? colors.POSITIVE : colors.WARM} />
-              <text x={1125} y={183} textAnchor="end" fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>s⁽ᵏ⁾ ∈ [0, 100]</text>
+              <rect x={gaugeX} y={118} width={gaugeW} height={40} rx={20} fill={colors.PANEL} stroke={colors.GRID} />
+              <rect x={gaugeX} y={118} width={gaugeW * confidence} height={40} rx={20} fill={confidence >= 0.72 ? colors.POSITIVE : colors.WARM} opacity={0.55} />
+              <line x1={thresholdX} y1={110} x2={thresholdX} y2={166} stroke={colors.TEXT} strokeWidth={2} />
+              <text x={thresholdX} y={104} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={700} fontFamily={MONO}>τ = 72</text>
+              <circle cx={markerX} cy={138} r={8} fill={confidence >= 0.72 ? colors.POSITIVE : colors.WARM} />
+              <text x={gaugeX} y={186} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>s⁽ᵏ⁾ ∈ [0, 100]</text>
             </g>
           )}
 
           {TRACKS.map((track, i) => (
             <g key={track.name} opacity={s.get(scene.gateU)}>
-              <path d={`M 565 ${track.y} C 745 ${track.y - 24} 915 ${track.y + 24} 1125 ${track.y}`} fill="none" stroke={track.color} strokeWidth={2} strokeOpacity={0.5} />
-              <rect x={1025} y={track.y - 25} width={120} height={50} rx={12} fill={track.color} fillOpacity={0.1} stroke={track.color} />
-              <text x={1085} y={track.y - 3} textAnchor="middle" fill={track.color} fontSize={12} fontWeight={700}>{track.name}</text>
-              <text x={1085} y={track.y + 15} textAnchor="middle" fill={colors.MUTED} fontSize={8.5} fontFamily={MONO}>{track.note}</text>
+              <path d={`M 565 ${track.y} C 735 ${track.y - 24} 880 ${track.y + 24} ${ROUTE_END} ${track.y}`} fill="none" stroke={track.color} strokeWidth={2.5} strokeOpacity={0.6} />
+              <rect x={ROUTE_END} y={track.y - 42} width={230} height={84} rx={14} fill={track.color} fillOpacity={0.1} stroke={track.color} strokeWidth={1.5} />
+              <text x={ROUTE_END + 115} y={track.y - 8} textAnchor="middle" fill={track.color} fontSize={18} fontWeight={700}>{track.name}</text>
+              <text x={ROUTE_END + 115} y={track.y + 18} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>{track.note}</text>
+              <text x={600} y={track.y + 32} fill={track.color} fontSize={13} fontFamily={MONO}>{track.range}</text>
               {i === 1 && s.get(scene.rewindU) > 0 && (
-                <text x={750} y={track.y - 28} fill={colors.WARM} fontSize={9.5} fontFamily={MONO}>preserve P⁽ᵏ⁾ · investigate I⁽ᵏ⁾</text>
+                <text x={690} y={track.y - 30} fill={colors.WARM} fontSize={13} fontFamily={MONO}>preserve P⁽ᵏ⁾ · investigate I⁽ᵏ⁾</text>
               )}
             </g>
           ))}

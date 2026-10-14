@@ -248,7 +248,7 @@ function Illustration({ kind, o, flag }: { kind: 'C' | 'D' | 'S' | 'U'; o: numbe
       {kind === 'U' && (
         <g>
           <rect x={952} y={MINI.y - 31} width={98} height={20} rx={4} fill="none" stroke={INK.claim} />
-          <Txt x={1001} y={MINI.y - 17} size={10.5} mono anchor="middle" fill={INK.claim}>
+          <Txt x={1001} y={MINI.y - 17} size={11.5} mono anchor="middle" fill={INK.claim}>
             locus: episode
           </Txt>
           {[0, 1, 2].map((i) => (
@@ -260,7 +260,7 @@ function Illustration({ kind, o, flag }: { kind: 'C' | 'D' | 'S' | 'U'; o: numbe
           <rect x={947} y={MINI.y - 37} width={252} height={32} rx={7} fill="none" stroke={INK.bad} opacity={flag * 0.8} />
         </g>
       )}
-      <Txt x={M.x + 14} y={MINI.y + 34} size={10.5} fill={INK.muted}>
+      <Txt x={M.x + 14} y={MINI.y + 34} size={11.5} fill={INK.muted}>
         {tail}
       </Txt>
     </g>
@@ -302,7 +302,9 @@ export function Render({ s }: { s: SceneState }) {
   return (
     <g>
       <Camera {...s.get(scene.cam)}>
-        <LedgerRow st={st} />
+        <g opacity={lerp(1, 0.1, close)}>
+          <LedgerRow st={st} />
+        </g>
 
         {/* gate C — the scanning ruler pins each cited identifier */}
         <g opacity={gC}>
@@ -324,12 +326,12 @@ export function Render({ s }: { s: SceneState }) {
           <line x1={X_DISTANT} y1={TAPE_Y - 14} x2={orderX} y2={TAPE_Y - 14} stroke={INK.ok} strokeWidth={1.6} />
           <path d={`M${orderX - 6} ${TAPE_Y - 18}l6 4l-6 4`} fill="none" stroke={INK.ok} strokeWidth={1.6} />
           <circle cx={X_DISTANT} cy={TAPE_Y - 14} r={3} fill={INK.ok} />
-          <Txt x={(X_DISTANT + X_RECENT) / 2} y={TAPE_Y - 20} size={10} anchor="middle" fill={INK.ok} opacity={clamp01(order * 3 - 1)}>
+          <Txt x={(X_DISTANT + X_RECENT) / 2} y={TAPE_Y - 20} size={11.5} anchor="middle" fill={INK.ok} opacity={clamp01(order * 3 - 1)}>
             precedes the probe
           </Txt>
           <g opacity={clamp01(order * 4 - 3)}>
             <path d={`M${X_RECENT - 9} ${TAPE_Y - 13}v-6h18v6`} fill="none" stroke={INK.thread} strokeWidth={1.5} />
-            <Txt x={X_PROBE + 12} y={TAPE_Y - 16} size={10} fill={INK.thread}>
+            <Txt x={X_PROBE + 12} y={TAPE_Y - 16} size={11.5} fill={INK.thread}>
               recent window
             </Txt>
           </g>
@@ -339,7 +341,7 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={gS}>
           <rect x={168} y={SOCKET_Y - 6} width={LEDGER.cx1 - 168 + 6} height={SOCKET_H + 12} rx={9} fill="none" stroke={INK.ok} strokeDasharray="6 4" />
           <rect x={X_PROBE - 11} y={TAPE_Y - 14} width={22} height={28} rx={6} fill="none" stroke={INK.ok} strokeDasharray="4 3" />
-          <Txt x={LEDGER.cx1} y={440} size={10.5} anchor="end" fill={INK.ok}>
+          <Txt x={LEDGER.cx1} y={440} size={11.5} anchor="end" fill={INK.ok}>
             declared context, plus the probe
           </Txt>
           <line x1={dotFrom.x} y1={dotFrom.y} x2={lerp(dotFrom.x, dotTo.x, dot)} y2={lerp(dotFrom.y, dotTo.y, dot)} stroke={INK.distant} strokeWidth={1.3} opacity={0.6} />
@@ -363,7 +365,7 @@ export function Render({ s }: { s: SceneState }) {
           return (
             <g key={l} opacity={o}>
               <rect x={LEDGER.x1 - 1} y={notchY(i) - 5} width={10} height={10} rx={2} fill={amber ? color : INK.bg} fillOpacity={amber ? 0.85 : 1} stroke={color} strokeWidth={1.2} strokeDasharray={VACUOUS.has(l) ? '2 2' : undefined} />
-              <Txt x={LEDGER.x1 + 15} y={notchY(i) + 4} size={10.5} mono fill={color}>
+              <Txt x={LEDGER.x1 + 15} y={notchY(i) + 4} size={11.5} mono fill={color}>
                 {l}
               </Txt>
             </g>
@@ -375,8 +377,15 @@ export function Render({ s }: { s: SceneState }) {
           <Txt x={M.x} y={120} size={11.5} mono fill={INK.text}>
             manifest/realcompanion_manifest.json
           </Txt>
-          <Txt x={M.x} y={138} size={10.5} fill={INK.muted}>
+          <Txt x={M.x} y={138} size={11.5} fill={INK.muted}>
             identifiers, order, labels, list membership
+          </Txt>
+        </g>
+
+        {/* every gate is checked against the one probe from chapter 3 */}
+        <g opacity={win(b, 2, 7) * lerp(1, 0.5, on(b, 9))}>
+          <Txt x={M.x} y={162} size={11.5} mono fill={INK.thread}>
+            each gate reads the probe day8-151
           </Txt>
         </g>
 
@@ -390,11 +399,11 @@ export function Render({ s }: { s: SceneState }) {
                 {f.head}
               </Txt>
               {f.lines.map((line, i) => (
-                <Txt key={i} x={M.x} y={202 + i * 15} size={10.5} fill={INK.text}>
+                <Txt key={i} x={M.x} y={202 + i * 15} size={11.5} fill={INK.text}>
                   {line}
                 </Txt>
               ))}
-              <Txt x={M.x} y={242} size={10.5} mono fill={INK.muted}>
+              <Txt x={M.x} y={242} size={11.5} mono fill={INK.muted}>
                 count: 0 on this manifest
               </Txt>
             </g>
@@ -430,10 +439,10 @@ export function Render({ s }: { s: SceneState }) {
               </g>
             );
           })}
-          <Txt x={M.x + 14} y={PANEL.y + 96} size={10.5} mono fill={INK.claim}>
+          <Txt x={M.x + 14} y={PANEL.y + 96} size={11.5} mono fill={INK.claim}>
             trace.A.locus — original claim, kept
           </Txt>
-          <Txt x={M.x + 14} y={PANEL.y + 112} size={10.5} mono fill={INK.thread}>
+          <Txt x={M.x + 14} y={PANEL.y + 112} size={11.5} mono fill={INK.thread}>
             trace.B.locus — corrected
           </Txt>
           <Txt x={M.x + 14} y={PANEL.y + 131} size={12.5} mono weight={600} fill={INK.text} opacity={clamp01(repairN - REPAIR.total + 1)}>
@@ -452,17 +461,17 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={sr.key}>
                 <rect x={x} y={PANEL.y + 40} width={w * strata} height={16} rx={3} fill={control ? 'none' : i === 0 ? INK.thread : INK.distant} fillOpacity={0.5} stroke={control ? INK.muted : 'none'} strokeDasharray={control ? '3 3' : undefined} />
-                <Txt x={i === 2 ? x + w : x} y={PANEL.y + 74 + (i === 1 ? 14 : 0)} size={10} mono anchor={i === 2 ? 'end' : 'start'} fill={INK.muted} opacity={strata}>
+                <Txt x={i === 2 ? x + w : x} y={PANEL.y + 74 + (i === 1 ? 14 : 0)} size={11.5} mono anchor={i === 2 ? 'end' : 'start'} fill={INK.muted} opacity={strata}>
                   {sr.key}
                 </Txt>
               </g>
             );
           })}
           <line x1={SEAM_X} y1={PANEL.y + 34} x2={SEAM_X} y2={PANEL.y + 62} stroke={INK.bad} strokeWidth={1.4} strokeDasharray="4 3" opacity={strata} />
-          <Txt x={M.x + 14} y={PANEL.y + 112} size={10.5} mono fill={INK.text} opacity={strata}>
+          <Txt x={M.x + 14} y={PANEL.y + 112} size={11.5} mono fill={INK.text} opacity={strata}>
             rows: 2,034 = 1,227 + 373 + 434
           </Txt>
-          <Txt x={M.x + 14} y={PANEL.y + 129} size={10.5} fill={INK.muted} opacity={strata}>
+          <Txt x={M.x + 14} y={PANEL.y + 129} size={11.5} fill={INK.muted} opacity={strata}>
             no control row inside a sampled stratum
           </Txt>
         </g>
@@ -476,13 +485,13 @@ export function Render({ s }: { s: SceneState }) {
             4 need text: A, L, N, Q
           </Txt>
           <g opacity={clamp01(notch * 3 - 2) * lerp(1, 0.6, on(b, 9))}>
-            <Txt x={M.x} y={252} size={10.5} fill={INK.muted}>
+            <Txt x={M.x} y={252} size={11.5} fill={INK.muted}>
               A: identifiers/senders checked;
             </Txt>
-            <Txt x={M.x} y={267} size={10.5} fill={INK.muted}>
+            <Txt x={M.x} y={267} size={11.5} fill={INK.muted}>
               verbatim needs text
             </Txt>
-            <Txt x={M.x} y={292} size={10.5} fill={INK.muted}>
+            <Txt x={M.x} y={292} size={11.5} fill={INK.muted}>
               B, Z: nothing to test on this release
             </Txt>
           </g>

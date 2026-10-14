@@ -21,14 +21,14 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 /* ---------------------------------------------------------------- layout */
 // Stage 1280×720; bottom ~12% (y ≳ 630) stays clear for the CC pill.
-const CLAIM = { x: 470, y: 120, w: 340, h: 88 };
-const REVIEWER = { x: 150, y: 130 };
-const TAPE = { x: 150, y: 420, w: 980, h: 30 };
+const CLAIM = { x: 420, y: 150, w: 440, h: 120 };
+const REVIEWER = { x: 110, y: 130 };
+const TAPE = { x: 150, y: 420, w: 980, h: 40 };
 const BUILDER = { x: 250, y: 560 };
 const CRITIC = { x: 1030, y: 560 };
 
-const CAM_CLAIM: CameraState = { x: 640, y: 210, k: 1.35 };
-const CAM_REVIEW: CameraState = { x: 430, y: 190, k: 1.3 };
+const CAM_CLAIM: CameraState = { x: 640, y: 210, k: 1.6 };
+const CAM_REVIEW: CameraState = { x: 470, y: 200, k: 1.25 };
 const CAM_TAPE: CameraState = { x: 640, y: 400, k: 1.15 };
 const CAM_WIDE: CameraState = { x: 640, y: 380, k: 1.0 };
 
@@ -203,7 +203,7 @@ function AgentBadge({ x, y, label, sub, color, u }: { x: number; y: number; labe
       <text x={x} y={y + 46} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={700}>
         {label}
       </text>
-      <text x={x} y={y + 64} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+      <text x={x} y={y + 64} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
         {sub}
       </text>
     </g>
@@ -240,6 +240,8 @@ export function Render({ s }: { s: SceneState }) {
   const links: RecordingLink[] = [{ at: 0.72, label: 'point at 41 s', pop: linkPop }];
 
   const worldOp = 1 - 0.85 * endDim;
+  // the rule banner clears out as the closing panel comes in
+  const ruleOp = ruleU * (1 - endDim);
 
   return (
     <>
@@ -260,10 +262,10 @@ export function Render({ s }: { s: SceneState }) {
                 strokeWidth={1.8}
                 strokeDasharray={tetherU > 0.3 ? undefined : '6 6'}
               />
-              <text x={CLAIM.x + 18} y={claimY + 26} fill={colors.SECONDARY} fontSize={11.5} fontFamily={MONO}>
+              <text x={CLAIM.x + 18} y={claimY + 28} fill={colors.SECONDARY} fontSize={13} fontFamily={MONO}>
                 builder
               </text>
-              <text x={cx0} y={claimY + 56} textAnchor="middle" fill={colors.TEXT} fontSize={22} fontWeight={700}>
+              <text x={cx0} y={claimY + 74} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={700}>
                 “it works”
               </text>
               {tetherU < 0.3 && claimU > 0.9 && (
@@ -284,12 +286,12 @@ export function Render({ s }: { s: SceneState }) {
                 <text y={48} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                   passive review
                 </text>
-                <text y={66} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+                <text y={66} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                   reads the diff
                 </text>
               </g>
               {/* the diff it reads */}
-              <g transform={`translate(${REVIEWER.x + 90} ${REVIEWER.y + 96})`}>
+              <g transform={`translate(${REVIEWER.x + 80} ${REVIEWER.y + 96})`}>
                 <rect x={0} y={0} width={220} height={92} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
                 {[0, 1, 2].map((i) => (
                   <g key={i}>
@@ -329,19 +331,6 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           )}
 
-          {/* ---- the one rule banner ---- */}
-          {ruleU > 0 && (
-            <g opacity={ruleU}>
-              <rect x={280} y={286} width={720} height={64} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.6} />
-              <text x={640} y={312} textAnchor="middle" fill={colors.TEXT} fontSize={15.5} fontWeight={700}>
-                satisfaction is a claim · a recording is evidence
-              </text>
-              <text x={640} y={334} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
-                AGENTS.md — “The one rule” · .eforest/loop.md
-              </text>
-            </g>
-          )}
-
           {/* ---- the recording tape ---- */}
           <RecordingStrip
             x={TAPE.x}
@@ -368,6 +357,19 @@ export function Render({ s }: { s: SceneState }) {
                 strokeDasharray="5 5"
               />
               {tetherU >= 0.99 && <circle cx={px} cy={py} r={5} fill={colors.POSITIVE} />}
+            </g>
+          )}
+
+          {/* ---- the one rule banner (drawn over the tether so the line passes behind its text) ---- */}
+          {ruleOp > 0 && (
+            <g opacity={ruleOp}>
+              <rect x={280} y={286} width={720} height={64} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.6} />
+              <text x={640} y={312} textAnchor="middle" fill={colors.TEXT} fontSize={15.5} fontWeight={700}>
+                satisfaction is a claim · a recording is evidence
+              </text>
+              <text x={640} y={334} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                AGENTS.md — “The one rule” · .eforest/loop.md
+              </text>
             </g>
           )}
 

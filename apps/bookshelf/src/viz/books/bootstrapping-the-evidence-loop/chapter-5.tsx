@@ -325,10 +325,10 @@ function EvidenceRequirement({
         strokeLinecap="round"
         strokeLinejoin="round"
       />
-      <text x={PROOF.x + 18} y={y - 2} fill={colors.TEXT} fontSize={13} fontWeight={700}>
+      <text x={PROOF.x + 18} y={y - 2} fill={colors.TEXT} fontSize={14} fontWeight={700}>
         {label}
       </text>
-      <text x={PROOF.x + 18} y={y + 15} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+      <text x={PROOF.x + 18} y={y + 16} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
         {detail}
       </text>
     </g>
@@ -387,10 +387,10 @@ export function Render({ s }: { s: SceneState }) {
           <g
             transform={`translate(${matrixCenterX} ${matrixCenterY}) scale(${matrixScale}) translate(${-matrixCenterX} ${-matrixCenterY})`}
           >
-            <text x={MATRIX.x - 168} y={88} fill={colors.TEXT} fontSize={22} fontWeight={750} opacity={matrixU}>
+            <text x={MATRIX.x - 120} y={60} fill={colors.TEXT} fontSize={22} fontWeight={750} opacity={matrixU}>
               regression catalog
             </text>
-            <text x={MATRIX.x - 168} y={108} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO} opacity={matrixU}>
+            <text x={MATRIX.x - 120} y={80} fill={colors.MUTED} fontSize={12.5} fontFamily={MONO} opacity={matrixU}>
               named journey × exact code head
             </text>
 
@@ -400,9 +400,8 @@ export function Render({ s }: { s: SceneState }) {
               values={EMPTY_VALUES}
               cell={MATRIX.cell}
               gap={MATRIX.gap}
-              rowLabels={[...ROWS]}
-              colLabels={[...COLS]}
-              labelSize={11.5}
+              colLabels={COLS.slice(0, 4)}
+              labelSize={13}
               cellU={scaffoldU}
               fill={() => '#151c2d'}
               opacity={0.85}
@@ -448,11 +447,62 @@ export function Render({ s }: { s: SceneState }) {
                   strokeDasharray={SPIRAL_LENGTH}
                   strokeDashoffset={SPIRAL_LENGTH * (1 - explorationU)}
                 />
-                <text x={232} y={578} fill={colors.SECONDARY} fontSize={11.5} fontFamily={MONO}>
+                <text x={318} y={552} fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>
                   fresh exploration · same epic head
                 </text>
               </g>
             )}
+
+            {/* Row and column labels sit above the spiral, with a halo so its path passes behind the text. */}
+            {ROWS.map((label, row) => {
+              const u = scaffoldU(row, 0);
+              if (u <= 0) return null;
+              return (
+                <text
+                  key={`row-${row}`}
+                  x={MATRIX.x - 12}
+                  y={MATRIX.y + row * PITCH + MATRIX.cell / 2 + 13 / 3}
+                  textAnchor="end"
+                  fill={colors.MUTED}
+                  fontSize={13}
+                  opacity={u}
+                  stroke={colors.BG}
+                  strokeWidth={5}
+                  strokeLinejoin="round"
+                  paintOrder="stroke"
+                >
+                  {label}
+                </text>
+              );
+            })}
+            {[4, 5].map((col) => {
+              const u = scaffoldU(0, col);
+              if (u <= 0) return null;
+              const cx = MATRIX.x + col * PITCH + MATRIX.cell / 2;
+              const lines = col === 5 ? ['EPIC', 'HEAD'] : ['EXPLORE'];
+              const color = col === 5 && headU > 0 ? colors.WARM : colors.MUTED;
+              return (
+                <g key={`col-${col}`} opacity={u}>
+                  {lines.map((line, i) => (
+                    <text
+                      key={line}
+                      x={cx}
+                      y={MATRIX.y - 12 - (lines.length - 1 - i) * 14}
+                      textAnchor="middle"
+                      fill={color}
+                      fontSize={13}
+                      fontWeight={col === 5 ? 700 : 400}
+                      stroke={colors.BG}
+                      strokeWidth={5}
+                      strokeLinejoin="round"
+                      paintOrder="stroke"
+                    >
+                      {line}
+                    </text>
+                  ))}
+                </g>
+              );
+            })}
 
             {/* Version chips show that exploration updates definitions, not just executions. */}
             {EXPLORE_CELLS.map(([row, col], index) => {
@@ -461,9 +511,9 @@ export function Render({ s }: { s: SceneState }) {
               if (u <= 0) return null;
               const version = row < 6 ? 'v2' : 'v1';
               return (
-                <g key={`version-${row}`} opacity={u} transform={`translate(${p.x + 15} ${p.y - 17}) scale(${0.75 + 0.25 * u})`}>
-                  <circle r={10} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.5} />
-                  <text y={3.3} textAnchor="middle" fill={colors.SECONDARY} fontSize={8.5} fontWeight={750} fontFamily={MONO}>
+                <g key={`version-${row}`} opacity={u} transform={`translate(${p.x + 17} ${p.y - 17}) scale(${0.75 + 0.25 * u})`}>
+                  <circle r={12} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.5} />
+                  <text y={4.3} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontWeight={750} fontFamily={MONO}>
                     {version}
                   </text>
                 </g>
@@ -505,36 +555,23 @@ export function Render({ s }: { s: SceneState }) {
               );
             })}
 
-            {headU > 0 && (
-              <g opacity={headU}>
-                <path
-                  d={`M ${cellCenter(0, 5).x - 26} 91 h 52`}
-                  stroke={colors.WARM}
-                  strokeWidth={3}
-                  strokeLinecap="round"
-                />
-                <text x={cellCenter(0, 5).x} y={72} textAnchor="middle" fill={colors.WARM} fontSize={11} fontFamily={MONO}>
-                  exact epic head
-                </text>
-              </g>
-            )}
           </g>
 
           {/* The missing shortcut stays beside the catalog, never over it. */}
           {limitationU > 0 && (
             <g opacity={limitationU} transform={`translate(${(1 - limitationU) * 18} 0)`}>
               <path d="M 752 112 h 438" stroke={colors.NEGATIVE} strokeWidth={1.3} opacity={0.45} />
-              <text x={770} y={141} fill={colors.NEGATIVE} fontSize={12} fontWeight={750}>
+              <text x={770} y={141} fill={colors.NEGATIVE} fontSize={14} fontWeight={750}>
                 no public MCP run-all today
               </text>
-              <text x={770} y={164} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+              <text x={770} y={164} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 full-qa → eligible work, not forced reruns
               </text>
-              <text x={770} y={184} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+              <text x={770} y={184} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 queue → never-run · repaired · infra-failed
               </text>
               {enumerateU > 0 && (
-                <text x={770} y={211} fill={colors.WARM} fontSize={10.5} fontWeight={700} fontFamily={MONO} opacity={enumerateU}>
+                <text x={770} y={211} fill={colors.WARM} fontSize={12} fontWeight={700} fontFamily={MONO} opacity={enumerateU}>
                   list → retrigger each → await terminal
                 </text>
               )}
@@ -564,10 +601,11 @@ export function Render({ s }: { s: SceneState }) {
                 stroke={colors.TEXT}
                 strokeWidth={2}
               />
-              <text x={GATE.x} y={GATE.y + 47} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontWeight={750}>
+              <text x={GATE.x} y={GATE.y + 44} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={750}>
                 critic gate
               </text>
-              <text x={GATE.x} y={GATE.y + 65} textAnchor="middle" fill={gateOpenU > 0.5 ? colors.POSITIVE : colors.NEGATIVE} fontSize={10.5} fontFamily={MONO}>
+              {/* Status sits under the ring so it never spills past the circle's edge. */}
+              <text x={GATE.x} y={GATE.y + GATE.r + 22} textAnchor="middle" fill={gateOpenU > 0.5 ? colors.POSITIVE : colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
                 {gateOpenU > 0.5 ? 'verified · catalog promoted' : 'attacking composed epic'}
               </text>
               {gateOpenU > 0 && (
@@ -582,10 +620,10 @@ export function Render({ s }: { s: SceneState }) {
           {/* The payoff names the compounding memory without replacing the matrix. */}
           {growU > 0 && (
             <g opacity={growU}>
-              <text x={640} y={598} textAnchor="middle" fill={colors.POSITIVE} fontSize={16} fontWeight={750}>
+              <text x={640} y={586} textAnchor="middle" fill={colors.POSITIVE} fontSize={16} fontWeight={750}>
                 six inherited journeys → eight standing journeys · refreshed versions · one verified epic head
               </text>
-              <text x={640} y={619} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+              <text x={640} y={607} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 the next loop begins with more memory than this one inherited
               </text>
             </g>
@@ -595,8 +633,8 @@ export function Render({ s }: { s: SceneState }) {
         {/* Clean ending: prior content is dimmed behind an opaque recap panel. */}
         {endU > 0 && (
           <g opacity={endU}>
-            <rect x={205} y={235} width={870} height={210} rx={24} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2.2} />
-            <text x={640} y={294} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+            <rect x={165} y={235} width={950} height={210} rx={24} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2.2} />
+            <text x={640} y={294} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
               EVERY EPIC WIDENS THE NET
             </text>
             <text x={640} y={342} textAnchor="middle" fill={colors.TEXT} fontSize={27} fontWeight={780}>

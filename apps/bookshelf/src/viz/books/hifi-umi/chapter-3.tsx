@@ -14,14 +14,14 @@ const DOTS = Array.from({ length: 100 }, (_, i) => i);
 const META = ['6-view video', 'trajectory', 'gripper state', 'language', 'subtask bounds', 'QC history'];
 
 function startPos(i: number) {
-  return { x: 125 + (i % 20) * 15, y: 235 + Math.floor(i / 20) * 18 };
+  return { x: 125 + (i % 20) * 13, y: 290 + Math.floor(i / 20) * 18 };
 }
 function lanePos(i: number, x0: number) {
   return { x: x0 + (i % 14) * 12, y: 205 + Math.floor(i / 14) * 16 };
 }
 function ringPos(i: number) {
   const a = (i / 96) * Math.PI * 2 - Math.PI / 2;
-  return { x: 865 + Math.cos(a) * 142, y: 375 + Math.sin(a) * 142 };
+  return { x: 862 + Math.cos(a) * 130, y: 375 + Math.sin(a) * 130 };
 }
 function lerp(a: number, b: number, u: number) { return a + (b - a) * u; }
 
@@ -89,7 +89,7 @@ function Gate({ x, label, value, u, color }: { x: number; label: string; value: 
   return (
     <g opacity={u}>
       <path d={`M${x} 170 L${x + 34} 210 L${x + 34} 480 L${x} 520 L${x - 34} 480 L${x - 34} 210 Z`} fill={colors.PANEL} stroke={color} strokeWidth={2} />
-      <text x={x} y={245} textAnchor="middle" fill={color} fontSize={11} fontWeight={700} fontFamily={MONO} transform={`rotate(-90 ${x} 245)`}>{label}</text>
+      <text x={x} y={245} textAnchor="middle" fill={color} fontSize={13} fontWeight={700} fontFamily={MONO} transform={`rotate(-90 ${x} 245)`}>{label}</text>
       <text x={x} y={455} textAnchor="middle" fill={color} fontSize={18} fontWeight={800}>{value}</text>
     </g>
   );
@@ -108,7 +108,7 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={1280} height={720} fill={colors.BG} />
       <g opacity={mainOpacity}>
         <text x={640} y={54} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={750}>Replay before training</text>
-        <text x={640} y={80} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>reconstruct 98% · replay 98% · cumulative basic validity ≈ 96%</text>
+        <text x={640} y={80} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>reconstruct 98% · replay 98% · cumulative basic validity ≈ 96%</text>
       </g>
       <Camera {...s.get(scene.cam)}>
         <g opacity={mainOpacity}>
@@ -138,20 +138,20 @@ export function Render({ s }: { s: SceneState }) {
 
           <Figure
             src="/generated/hifi-umi/figures/fig-04.png"
-            x={130}
-            y={120}
-            w={310}
-            h={190}
+            x={40}
+            y={100}
+            w={250}
+            h={150}
             reveal={s.get(scene.figureU)}
-            opacity={0.95 * (1 - yieldU)}
+            opacity={0.95 * (1 - yieldU) * (1 - clamp01(replayP * 2))}
             caption="Paper Fig. 4 · data flywheel"
             accent={colors.WARM}
           />
 
           {yieldU > 0 && (
             <g opacity={yieldU}>
-              <text x={865} y={365} textAnchor="middle" fill={colors.POSITIVE} fontSize={32} fontWeight={850}>≈96%</text>
-              <text x={865} y={393} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>98% × 98%</text>
+              <text x={862} y={365} textAnchor="middle" fill={colors.POSITIVE} fontSize={32} fontWeight={850}>≈96%</text>
+              <text x={862} y={393} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>98% × 98%</text>
             </g>
           )}
 
@@ -160,18 +160,18 @@ export function Render({ s }: { s: SceneState }) {
             const col = i % 2;
             const row = Math.floor(i / 2);
             return (
-              <g key={label} opacity={u} transform={`translate(${975 + col * 135} ${245 + row * 70})`}>
-                <rect x={-58} y={-17} width={116} height={34} rx={17} fill={colors.PANEL} stroke={i < 2 ? colors.ACCENT : colors.WARM} />
-                <text y={4} textAnchor="middle" fill={colors.TEXT} fontSize={10} fontFamily={MONO}>{label}</text>
+              <g key={label} opacity={u} transform={`translate(${1055 + col * 130} ${245 + row * 70})`}>
+                <rect x={-60} y={-17} width={120} height={34} rx={17} fill={colors.PANEL} stroke={i < 2 ? colors.ACCENT : colors.WARM} />
+                <text y={4} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>{label}</text>
               </g>
             );
           })}
 
           {s.get(scene.humanU) > 0 && (
-            <g opacity={s.get(scene.humanU)} transform="translate(1035 485)">
+            <g opacity={s.get(scene.humanU)} transform="translate(1055 485)">
               <circle cx={0} cy={-22} r={16} fill={colors.SECONDARY} />
               <path d="M-28 32 Q0 -6 28 32" fill={colors.SECONDARY} opacity={0.7} />
-              <text x={0} y={58} textAnchor="middle" fill={colors.SECONDARY} fontSize={10} fontFamily={MONO}>review flags + uncertainty</text>
+              <text x={0} y={58} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>review flags + uncertainty</text>
             </g>
           )}
         </g>

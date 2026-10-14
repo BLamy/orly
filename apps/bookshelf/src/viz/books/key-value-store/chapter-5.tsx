@@ -15,7 +15,6 @@
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   STAGE_H,
   STAGE_W,
   Timeline,
@@ -73,7 +72,7 @@ const P_B = ringPt(NODE_S.B);
 const P_C = ringPt(NODE_S.C);
 const P_D = ringPt(NODE_S.D);
 const P_E = ringPt(NODE_S.E);
-const POCKET = { x: 800, y: 470, w: 150, h: 60 } as const;
+const POCKET = { x: 880, y: 500, w: 150, h: 60 } as const;
 
 // the recap rail
 const CHIP_W = 196;
@@ -89,8 +88,9 @@ const RECAP = [
 ] as const;
 
 // camera marks
-const CAM_C: CameraState = { x: 740, y: 250, k: 1.35 };
-const CAM_E: CameraState = { x: 740, y: 460, k: 1.3 };
+// both marks keep the whole ring, the coordinator and the pocket inside the stage
+const CAM_C: CameraState = { x: 460, y: 354, k: 1.2 };
+const CAM_E: CameraState = { x: 550, y: 354, k: 1.2 };
 
 // ---------------------------------------------------------------------------
 // Timeline (~82s, twelve beats).
@@ -301,7 +301,8 @@ export function Render({ s }: { s: SceneState }) {
     }
     return base;
   })();
-  const doomedVisible = writeU > 0.05 && !(rerouteU >= 1 && pocketU > 0.5);
+  // once the hinted write leaves the pocket for C, its copy is gone from E
+  const doomedVisible = writeU > 0.05 && !(rerouteU >= 1 && (pocketU > 0.5 || handU > 0));
 
   // the key dot riding the recap rail
   const railP = { x: chipX(0) + 10 + (chipX(4) + CHIP_W - 20 - chipX(0) - 10) * keyRunU, y: CHIP_Y - 26 };
@@ -369,7 +370,7 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           )}
           {/* B's ack */}
-          {ack1U > 0 && ack1U < 1 && <Packet from={P_B} to={COORD} u={ack1U} r={5} color={colors.SECONDARY} label="ack 1" />}
+          {ack1U > 0 && ack1U < 1 && <Packet from={P_B} to={COORD} u={ack1U} r={5} color={colors.SECONDARY} />}
 
           {/* the doomed copy: flight, thud, reroute — one continuous life */}
           {doomedVisible && (
@@ -485,7 +486,9 @@ export function Render({ s }: { s: SceneState }) {
               </g>
             )}
             <g opacity={clamp01(recapU * 3 - 2)}>
-              <MathLabel tex={'\\text{partition} \\;\\to\\; \\text{replicate} \\;\\to\\; W + R > N \\;\\to\\; \\text{survive}'} x={640} y={196} fontSize={19} color={colors.TEXT} anchor="middle" />
+              <text x={640} y={196} textAnchor="middle" fill={colors.TEXT} fontSize={19} fontFamily="Georgia, 'Times New Roman', serif">
+                partition → replicate → W + R &gt; N → survive
+              </text>
             </g>
           </g>
         )}

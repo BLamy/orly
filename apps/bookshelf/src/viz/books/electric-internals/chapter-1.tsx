@@ -71,7 +71,7 @@ const TICKS: Array<{ i: number; label: string }> = [
 
 const CAM_WIRE: CameraState = { x: 640, y: 250, k: 1.12 };
 const CAM_TAPE: CameraState = { x: 640, y: 400, k: 1.16 };
-const CAM_CURSOR: CameraState = { x: 560, y: 430, k: 1.34 };
+const CAM_CURSOR: CameraState = { x: 600, y: 430, k: 1.2 }; // wide enough to keep the whole tape in frame
 
 // ---------------------------------------------------------------------------
 // Timeline — ~78s, 12 captions.
@@ -117,7 +117,7 @@ export function buildScene() {
     dur: 5.6,
     text: 'Kill the tab, drop the network, and the wire snaps. Whatever was in flight is just gone.',
   });
-  tl.tween(cam, { x: 640, y: 210, k: 1.3 }, { at: 6.8, dur: 1.0, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 210, k: 1.2 }, { at: 6.8, dur: 1.0, ease: ease.move });
   tl.tween(cutU, 1, { at: 7.6, dur: 0.5, ease: ease.pop });
   tl.tween(fallU, 1, { at: 7.9, dur: 1.6, ease: ease.move });
 
@@ -286,7 +286,8 @@ export function Render({ s }: { s: SceneState }) {
   const mapU = s.get(scene.mapU);
   const quietU = s.get(scene.quietU);
 
-  const wireWorldOp = wireU * (1 - wireOutU * 0.94); // fades to a whisper
+  // the wire world leaves entirely once the tape takes over, so the endpoints never compete with it
+  const wireWorldOp = wireU * (1 - wireOutU) * (1 - mapU);
   const gap = cutU * 34; // snap gap around CUT_X
   const nCells = cellCount(growU, grow2U, grow3U);
   const liveEdge = cellX(nCells) - CELL_W / 2 + 16;
@@ -341,10 +342,10 @@ export function Render({ s }: { s: SceneState }) {
         {/* ================= the tape ================= */}
         {tapeU > 0.01 && (
           <g opacity={tapeOp}>
-            {/* URL chip */}
+            {/* URL chip — sits under the tape so it never meets the bookmark chip */}
             <g opacity={tapeU * (1 - quietU * 0.5)}>
-              <rect x={470} y={332} width={340} height={32} rx={9} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={640} y={353} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
+              <rect x={470} y={574} width={340} height={32} rx={9} fill={colors.PANEL} stroke={colors.GRID} />
+              <text x={640} y={595} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                 POST /v1/stream/hello
               </text>
             </g>
@@ -383,8 +384,10 @@ export function Render({ s }: { s: SceneState }) {
               <path
                 d={`M${liveEdge} ${TAPE_Y - CELL_H / 2 - 20} l -8 -12 l 16 0 z`}
                 fill={colors.ACCENT}
+                opacity={1 - sentU * 0.8}
               />
-              <text x={liveEdge} y={TAPE_Y - CELL_H / 2 - 38} textAnchor="middle" fill={colors.ACCENT} fontSize={12.5} fontFamily={MONO}>
+              {/* label sits beside the head, so the offset=now sentinel can own the space above the tail */}
+              <text x={liveEdge - 14} y={TAPE_Y - CELL_H / 2 - 16} textAnchor="end" fill={colors.ACCENT} fontSize={12.5} fontFamily={MONO}>
                 append
               </text>
             </g>
@@ -396,7 +399,7 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={label} opacity={u * (1 - quietU * 0.55)}>
                   <line x1={x} y1={TAPE_Y + CELL_H / 2 + 8} x2={x} y2={TAPE_Y + CELL_H / 2 + 16} stroke={colors.MUTED} strokeWidth={1.5} />
-                  <text x={x} y={TAPE_Y + CELL_H / 2 + 32} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+                  <text x={x} y={TAPE_Y + CELL_H / 2 + 32} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                     {label}
                   </text>
                 </g>
@@ -445,7 +448,7 @@ export function Render({ s }: { s: SceneState }) {
                     <text x={g0.x} y={TAPE_Y - CELL_H / 2 - 40} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily={MONO}>
                       {g0.label}
                     </text>
-                    <text x={g0.x} y={TAPE_Y - CELL_H / 2 - 58} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontStyle="italic">
+                    <text x={g0.x} y={TAPE_Y - CELL_H / 2 - 58} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic">
                       {g0.sub}
                     </text>
                   </g>

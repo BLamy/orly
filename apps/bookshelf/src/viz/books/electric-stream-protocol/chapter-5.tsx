@@ -33,10 +33,10 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 const GIT = { x: 180, y: 250 } as const;
 const HOOK = { x: 420, y: 250 } as const;
-const STREAM = { x: 680, y: 340 } as const;
-const PEER_A = { x: 1015, y: 195 } as const;
-const PEER_B = { x: 1015, y: 340 } as const;
-const PEER_C = { x: 1015, y: 485 } as const;
+const STREAM = { x: 780, y: 340 } as const;
+const PEER_A = { x: 1090, y: 195 } as const;
+const PEER_B = { x: 1090, y: 340 } as const;
+const PEER_C = { x: 1090, y: 485 } as const;
 
 export function buildScene() {
   const tl = new Timeline();
@@ -75,7 +75,7 @@ export function buildScene() {
     dur: 6.8,
     text: 'From then on, a Git-origin change is not a special side channel. The bridge turns it into the same validated event that every other writer uses.',
   });
-  tl.tween(cam, { x: 560, y: 305, k: 1.12 }, { at: 14.0, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 370, k: 1.04 }, { at: 14.0, dur: 1.2, ease: ease.move });
   tl.tween(eventU, 1, { at: 15.0, dur: 1.5, ease: ease.draw });
   tl.set(phase, 2, 17.2);
 
@@ -100,7 +100,7 @@ export function buildScene() {
     dur: 7.0,
     text: 'But those exports are mirrors, not the authority. The stream keeps the mutation history, the evidence, and the convergence protocol even when a Git snapshot is moving between systems.',
   });
-  tl.tween(cam, { x: 780, y: 370, k: 1.1 }, { at: 34.2, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 360, k: 1.04 }, { at: 34.2, dur: 1.2, ease: ease.move });
   tl.tween(exportU, 1, { at: 35.2, dur: 1.0, ease: ease.linear });
 
   tl.caption({
@@ -139,45 +139,45 @@ export function Render({ s }: { s: SceneState }) {
           x={58}
           y={44}
           w={1164}
-          h={632}
+          h={580}
           label="git at the edge / stream underneath"
           rightLabel="active bridge"
           footer="Git is a compatibility substrate · the stream is authority"
           u={frameU}
         >
-          <circle cx={1172} cy={78} r={4} fill={GREEN} opacity={0.28 + protocolPulse * 0.62} />
+          <circle cx={1172} cy={60} r={4} fill={GREEN} opacity={0.28 + protocolPulse * 0.62} />
           <ArchitectureEdge from={{ x: GIT.x + 92, y: GIT.y }} to={{ x: HOOK.x - 92, y: HOOK.y }} tone="coral" label="clone" flow={cloneU} u={cloneU} />
-          <ArchitectureEdge from={{ x: HOOK.x + 92, y: HOOK.y }} to={{ x: STREAM.x - 142, y: STREAM.y }} via={[{ x: 520, y: HOOK.y }, { x: 560, y: STREAM.y }]} tone="amber" label="activate" flow={handshakeU} u={hookU} />
-          <ArchitectureEdge from={{ x: HOOK.x + 92, y: HOOK.y }} to={{ x: STREAM.x - 142, y: STREAM.y }} via={[{ x: 520, y: HOOK.y + 30 }, { x: 560, y: STREAM.y + 30 }]} tone="coral" label="append event" flow={eventU} u={eventU} />
-          <ArchitectureEdge from={{ x: STREAM.x + 142, y: STREAM.y }} to={{ x: PEER_A.x - 106, y: PEER_A.y }} via={[{ x: 830, y: STREAM.y }, { x: 880, y: PEER_A.y }]} tone="green" label="replay" flow={peerU} u={peerU} />
-          <ArchitectureEdge from={{ x: STREAM.x + 142, y: STREAM.y }} to={{ x: PEER_B.x - 106, y: PEER_B.y }} via={[{ x: 840, y: STREAM.y }]} tone="green" label="digest" flow={peerU} u={peerU} />
-          <ArchitectureEdge from={{ x: STREAM.x + 142, y: STREAM.y }} to={{ x: PEER_C.x - 106, y: PEER_C.y }} via={[{ x: 830, y: STREAM.y }, { x: 880, y: PEER_C.y }]} tone="green" label="catch up" flow={peerU} u={peerU} />
-          <ArchitectureEdge from={{ x: STREAM.x - 142, y: STREAM.y + 46 }} to={{ x: GIT.x + 92, y: 548 }} via={[{ x: 560, y: 520 }, { x: 320, y: 548 }]} tone="violet" label="export / mirror" flow={exportU} u={exportU} />
+          <ArchitectureEdge from={{ x: HOOK.x + 92, y: HOOK.y + 20 }} to={{ x: STREAM.x - 142, y: STREAM.y - 24 }} via={[{ x: 560, y: HOOK.y + 20 }, { x: 560, y: STREAM.y - 24 }]} tone="amber" label="activate" flow={handshakeU} u={hookU} />
+          <ArchitectureEdge from={{ x: HOOK.x + 92, y: HOOK.y - 4 }} to={{ x: STREAM.x - 142, y: STREAM.y - 4 }} via={[{ x: 590, y: HOOK.y - 4 }, { x: 590, y: STREAM.y - 4 }]} tone="coral" label="append event" flow={eventU} u={eventU} />
+          <ArchitectureEdge from={{ x: STREAM.x + 142, y: STREAM.y }} to={{ x: PEER_A.x - 106, y: PEER_A.y }} via={[{ x: 955, y: STREAM.y }, { x: 955, y: PEER_A.y }]} tone="green" label="replay" flow={peerU} u={peerU} />
+          <ArchitectureEdge from={{ x: STREAM.x + 142, y: STREAM.y }} to={{ x: PEER_B.x - 106, y: PEER_B.y }} tone="green" label="digest" flow={peerU} u={peerU} />
+          <ArchitectureEdge from={{ x: STREAM.x + 142, y: STREAM.y }} to={{ x: PEER_C.x - 106, y: PEER_C.y }} via={[{ x: 955, y: STREAM.y }, { x: 955, y: PEER_C.y }]} tone="green" label="catch up" flow={peerU} u={peerU} />
+          <ArchitectureEdge from={{ x: STREAM.x - 100, y: STREAM.y + 62 }} to={{ x: GIT.x + 92, y: 485 }} via={[{ x: STREAM.x - 100, y: 485 }]} tone="violet" label="export / mirror" flow={exportU} u={exportU} />
 
           <ArchitectureCard x={GIT.x} y={GIT.y} w={184} h={84} label="git clone" meta="ordinary working tree" badge="EDGE" tone="coral" u={cloneU} status="ready" />
           <ArchitectureCard x={HOOK.x} y={HOOK.y} w={184} h={84} label="activation" meta="post-clone hook" badge="HOOK" tone="amber" u={hookU} status={handshakeU > 0.5 ? 'ready' : undefined} />
-          <ArchitectureCard x={STREAM.x} y={STREAM.y} w={284} h={116} label="authoritative stream" meta="events · offsets · digests" badge="LIVE" tone="blue" u={eventU} status="ready">
-            <text x={-126} y={10} fill={MUTED} fontSize={11} fontFamily={MONO}>/streams/project-main</text>
-            <text x={-126} y={32} fill={BLUE} fontSize={11.5} fontWeight={800} fontFamily={MONO}>bridge → normal dispatch door</text>
+          <ArchitectureCard x={STREAM.x} y={STREAM.y} w={284} h={124} label="authoritative stream" meta="events · offsets · digests" badge="LIVE" tone="blue" u={eventU} status="ready">
+            <text x={-124} y={40} fill={MUTED} fontSize={11} fontFamily={MONO}>/streams/project-main</text>
+            <text x={-124} y={56} fill={BLUE} fontSize={11.5} fontWeight={800} fontFamily={MONO}>bridge → normal dispatch door</text>
           </ArchitectureCard>
 
           <ArchitectureCard x={PEER_A.x} y={PEER_A.y} w={212} h={70} label="peer A" meta="reduced · digest 7a19" badge="SYNC" tone="green" u={peerU} status="ready" />
           <ArchitectureCard x={PEER_B.x} y={PEER_B.y} w={212} h={70} label="peer B" meta="reduced · offset 0043" badge="SYNC" tone="green" u={peerU} status="ready" />
           <ArchitectureCard x={PEER_C.x} y={PEER_C.y} w={212} h={70} label="peer C" meta="reduced · evidence attached" badge="PROVE" tone="green" u={peerU} status="ready" />
 
-          <ArchitectureCard x={GIT.x} y={548} w={184} h={66} label="git mirror" meta="snapshot / review / escape" badge="EXPORT" tone="violet" u={exportU} status="ready" />
-          <ArchitecturePhaseRail x={150} y={624} w={980} phases={['clone', 'activate', 'append', 'converge']} active={Math.min(3, Math.max(0, phase))} u={castU} />
+          <ArchitectureCard x={GIT.x} y={485} w={184} h={66} label="git mirror" meta="snapshot / review / escape" badge="EXPORT" tone="violet" u={exportU} status="ready" />
+          <ArchitecturePhaseRail x={150} y={566} w={640} phases={['clone', 'activate', 'append', 'converge']} active={Math.min(3, Math.max(0, phase))} u={castU} />
 
-          {handshakeU > 0.02 && (
-            <g opacity={handshakeU}>
+          {handshakeU > 0.02 && closeU < 1 && (
+            <g opacity={handshakeU * (1 - closeU)}>
               <rect x={295} y={132} width={520} height={48} rx={9} fill={PAPER} stroke={AMBER} strokeWidth={1.4} />
               <text x={555} y={162} textAnchor="middle" fill={INK} fontSize={14} fontWeight={800} fontFamily={MONO}>stream identity discovered · bridge installed</text>
             </g>
           )}
           {closeU > 0.02 && (
             <g opacity={closeU}>
-              <rect x={315} y={235} width={650} height={58} rx={10} fill={PAPER} stroke={BLUE} strokeWidth={1.5} />
-              <text x={640} y={271} textAnchor="middle" fill={INK} fontSize={16} fontWeight={800}>familiar commands at the edge · electric history underneath</text>
+              <rect x={315} y={116} width={650} height={58} rx={10} fill={PAPER} stroke={BLUE} strokeWidth={1.5} />
+              <text x={640} y={152} textAnchor="middle" fill={INK} fontSize={16} fontWeight={800}>familiar commands at the edge · electric history underneath</text>
             </g>
           )}
         </ArchitectureFrame>

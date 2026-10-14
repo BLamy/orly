@@ -24,6 +24,15 @@ import { Figure } from '../../primitives';
 
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 
+// a level card stays fully visible while its edges sit inside the stage (with a
+// margin); as the camera drills in, the cards it crops fade out instead of hanging off the edge
+const focusOf = (cam: CameraState, x: number): number => {
+  const left = (x - CARD_W / 2 - cam.x) * cam.k + STAGE_W / 2;
+  const right = (x + CARD_W / 2 - cam.x) * cam.k + STAGE_W / 2;
+  const inset = Math.min(left - 40, STAGE_W - 40 - right);
+  return clamp01(1 + inset / 60);
+};
+
 const LEVELS = [
   {
     tag: 'L1',
@@ -45,13 +54,16 @@ const LEVELS = [
   },
 ] as const;
 const CARD_W = 300;
+const CARD_H = 262;
 const CARD_TOP = 168;
+// the persistent spine sits in screen space, under the cards at every zoom
+const SPINE_Y = 540;
 
 const CAM_FIG: CameraState = { x: 640, y: 300, k: 1.0 };
 const CAM_SPINE: CameraState = { x: 640, y: 360, k: 1.02 };
 const CAM_L1: CameraState = { x: 260, y: 340, k: 1.5 };
-const CAM_L2: CameraState = { x: 620, y: 340, k: 1.5 };
-const CAM_L3: CameraState = { x: 980, y: 340, k: 1.5 };
+const CAM_L2: CameraState = { x: 570, y: 340, k: 1.3 };
+const CAM_L3: CameraState = { x: 930, y: 340, k: 1.3 };
 
 export interface Scene {
   tl: Timeline;
@@ -91,8 +103,11 @@ export function buildScene(): Scene {
     dur: 6.0,
     text: "The idea is progressive disclosure. The same system, described shallow to deep, so a reader travels only as far down as the question in front of them demands.",
   });
-  tl.tween(figU, 0.16, { at: 7.6, dur: 1.0, ease: ease.move });
+  tl.tween(figU, 0, { at: 7.6, dur: 1.0, ease: ease.move });
   tl.tween(cam, CAM_SPINE, { at: 7.6, dur: 1.3, ease: ease.move });
+  tl.tween(l1U, 1, { at: 8.0, dur: 1.0, ease: ease.enter });
+  tl.tween(l2U, 1, { at: 8.3, dur: 1.0, ease: ease.enter });
+  tl.tween(l3U, 1, { at: 8.6, dur: 1.0, ease: ease.enter });
   tl.tween(spineU, 1, { at: 8.2, dur: 1.4, ease: ease.draw });
   tl.tween(depthU, 1, { at: 8.6, dur: 3.6, ease: ease.linear });
   tl.hold(13.4, 0.5);
@@ -156,7 +171,7 @@ function LevelCard({ i, u }: { i: number; u: number }) {
   const depthTint = [colors.ACCENT, colors.TEAL, colors.SECONDARY][i];
   return (
     <g opacity={u} transform={`translate(0 ${(1 - u) * 14})`}>
-      <rect x={L.x - CARD_W / 2} y={CARD_TOP} width={CARD_W} height={300} rx={14} fill={colors.PANEL} stroke={depthTint} strokeWidth={1.6} />
+      <rect x={L.x - CARD_W / 2} y={CARD_TOP} width={CARD_W} height={CARD_H} rx={14} fill={colors.PANEL} stroke={depthTint} strokeWidth={1.6} />
       <rect x={L.x - CARD_W / 2 + 18} y={CARD_TOP + 20} width={40} height={26} rx={6} fill={depthTint} />
       <text x={L.x - CARD_W / 2 + 38} y={CARD_TOP + 38} textAnchor="middle" fill={colors.BG} fontSize={15} fontWeight={700}>
         {L.tag}
@@ -189,35 +204,41 @@ export function Render({ s }: { s: SceneState }) {
   const depthU = s.get(scene.depthU);
   const closeU = s.get(scene.closeU);
 
-  const dimAll = 1 - closeU * 0.9;
+  const dimAll = 1 - closeU;
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
-      <Camera {...cam}>
-        {/* ---- the shallow → deep spine ---- */}
-        <g opacity={spineU * dimAll}>
-          <defs>
-            <linearGradient id="hh-depth" x1="0" y1="0" x2="1" y2="0">
-              <stop offset="0%" stopColor={colors.POSITIVE} />
-              <stop offset="50%" stopColor={colors.TEAL} />
-              <stop offset="100%" stopColor={colors.SECONDARY} />
-            </linearGradient>
-          </defs>
-          <rect x={110} y={506} width={1060 * clamp01(depthU)} height={8} rx={4} fill="url(#hh-depth)" opacity={0.9} />
-          <text x={116} y={540} fill={colors.MUTED} fontSize={13}>
-            shallow · high-level
-          </text>
-          <text x={1170} y={540} textAnchor="end" fill={colors.MUTED} fontSize={13}>
-            deep · implementation
-          </text>
-        </g>
+      {/* ---- the shallow → deep spine: screen-fixed, so zoom never pushes its labels off stage ---- */}
+      <g opacity={spineU * dimAll}>
+        <defs>
+          <linearGradient id="hh-depth" x1="0" y1="0" x2="1" y2="0">
+            <stop offset="0%" stopColor={colors.POSITIVE} />
+            <stop offset="50%" stopColor={colors.TEAL} />
+            <stop offset="100%" stopColor={colors.SECONDARY} />
+          </linearGradient>
+        </defs>
+        <rect x={110} y={SPINE_Y} width={1060 * clamp01(depthU)} height={8} rx={4} fill="url(#hh-depth)" opacity={0.9} />
+        <text x={110} y={SPINE_Y + 26} fill={colors.MUTED} fontSize={13}>
+          shallow · high-level
+        </text>
+        <text x={1170} y={SPINE_Y + 26} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+          deep · implementation
+        </text>
+      </g>
 
+      <Camera {...cam}>
         {/* ---- the three animated levels ---- */}
         <g opacity={dimAll}>
-          <LevelCard i={0} u={l1U} />
-          <LevelCard i={1} u={l2U} />
-          <LevelCard i={2} u={l3U} />
+          <g opacity={focusOf(cam, LEVELS[0].x)}>
+            <LevelCard i={0} u={l1U} />
+          </g>
+          <g opacity={focusOf(cam, LEVELS[1].x)}>
+            <LevelCard i={1} u={l2U} />
+          </g>
+          <g opacity={focusOf(cam, LEVELS[2].x)}>
+            <LevelCard i={2} u={l3U} />
+          </g>
         </g>
         {/* connectors between levels */}
         {[0, 1].map((i) => {
@@ -226,7 +247,7 @@ export function Render({ s }: { s: SceneState }) {
           const x1 = LEVELS[i].x + CARD_W / 2;
           const x2 = LEVELS[i + 1].x - CARD_W / 2;
           return (
-            <g key={i} opacity={u * dimAll}>
+            <g key={i} opacity={u * dimAll * Math.min(focusOf(cam, LEVELS[i].x), focusOf(cam, LEVELS[i + 1].x))}>
               <line x1={x1} y1={CARD_TOP + 34} x2={x2} y2={CARD_TOP + 34} stroke={colors.GRID} strokeWidth={1.4} />
               <path d={`M ${x2 - 12} ${CARD_TOP + 29} L ${x2} ${CARD_TOP + 34} L ${x2 - 12} ${CARD_TOP + 39} Z`} fill={colors.GRID} />
             </g>
@@ -236,10 +257,10 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- the authors' real Fig. 1 ---- */}
         <Figure
           src="/generated/dp-harness-handbook/figures/fig-01.png"
-          x={330}
-          y={96}
-          w={620}
-          h={349}
+          x={230}
+          y={72}
+          w={820}
+          h={461}
           reveal={figU}
           opacity={figU}
           caption="Fig. 1 — the Harness Handbook: progressive disclosure, L1 → L3"

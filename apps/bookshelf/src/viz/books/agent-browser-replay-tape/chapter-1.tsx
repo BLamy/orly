@@ -53,6 +53,7 @@ export function buildScene() {
   const recDot = tl.channel('recDot', 0); // permanent recording light
   const envU = tl.channel('envU', 0);
   const dimU = tl.channel('dimU', 0);
+  const ghostU = tl.channel('ghostU', 0); // the session that closes: 0 hidden, →1 open, →2 closed
 
   /* — beat 1 · the stakes — */
   let t = 0.4;
@@ -61,6 +62,8 @@ export function buildScene() {
     dur: 6.4,
     text: 'Once an agent closes its browser, that session is gone — unless something caught it on the way out. Agent browser makes sure something always does.',
   });
+  tl.tween(ghostU, 1, { at: t - 5.6, dur: 1.0, ease: ease.enter });
+  tl.tween(ghostU, 2, { at: t - 2.6, dur: 0.9, ease: ease.move });
   t = tl.hold(t, 0.6);
 
   /* — beat 2 · launch attempt, gates appear — */
@@ -154,7 +157,7 @@ export function buildScene() {
   tl.tween(dimU, 1, { at: t - 4.2, dur: 1.0, ease: ease.move });
   tl.hold(t, 1.0);
 
-  return { tl, cam, railU, g0, g1, g2, tokenU, arcU, bannerU, browserU, recDot, envU, dimU };
+  return { tl, cam, railU, g0, g1, g2, tokenU, arcU, bannerU, browserU, recDot, envU, dimU, ghostU };
 }
 
 const scene = buildScene();
@@ -188,15 +191,44 @@ function ReplayRequiredBanner({ u }: { u: number }) {
   );
 }
 
+/** Gate 3's platform rule, set under the rail so the Windows case is visible too. */
+function PlatformNote({ u }: { u: number }) {
+  const o = clamp01(u);
+  if (o <= 0) return null;
+  const gateX = RAIL.x + RAIL.w;
+  return (
+    <text x={gateX} y={RAIL.y + 66} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={mono} opacity={o}>
+      supported: macOS · Linux — Windows: agent-browser install
+    </text>
+  );
+}
+
+/** The stakes beat: an agent's browser opens, then closes and its session is gone. */
+function GhostSession({ u }: { u: number }) {
+  const e = clamp01(u);
+  const c = clamp01(u - 1);
+  if (e <= 0 || c >= 1) return null;
+  const { x, y, w, h } = BROWSER;
+  return (
+    <g transform={`translate(${x}, ${y + (1 - e) * 12})`} opacity={e * (1 - c)}>
+      <rect width={w} height={h} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} strokeDasharray={c > 0.5 ? '4 6' : undefined} />
+      <rect x={14} y={12} width={w - 28} height={26} rx={13} fill={colors.BG} opacity={0.6} />
+      <text x={44} y={30} fill={colors.MUTED} fontSize={12.5} fontFamily={mono}>
+        {c > 0.5 ? 'session closed' : 'agent browser'}
+      </text>
+    </g>
+  );
+}
+
 /** The launched browser — an env stamp and a recording light that never turns off. */
-function LaunchedBrowser({ enter, envU, rec, dim }: { enter: number; envU: number; rec: number; dim: number }) {
+function LaunchedBrowser({ enter, envU, rec }: { enter: number; envU: number; rec: number }) {
   const e = clamp01(enter);
   if (e <= 0) return null;
   const { x, y, w, h } = BROWSER;
   const ev = clamp01(envU);
   const r = clamp01(rec);
   return (
-    <g transform={`translate(${x}, ${y + (1 - e) * 12})`} opacity={e * (1 - 0.85 * clamp01(dim))}>
+    <g transform={`translate(${x}, ${y + (1 - e) * 12})`} opacity={e}>
       <rect width={w} height={h} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
       <rect x={14} y={12} width={w - 28} height={26} rx={13} fill={colors.BG} opacity={0.6} />
       {r > 0 && (
@@ -247,8 +279,10 @@ function renderFrame(s: SceneState) {
         arcFrom={2}
         dim={dim}
       />
+      <PlatformNote u={s.get(scene.railU)} />
+      <GhostSession u={s.get(scene.ghostU)} />
       <ReplayRequiredBanner u={s.get(scene.bannerU)} />
-      <LaunchedBrowser enter={s.get(scene.browserU)} envU={s.get(scene.envU)} rec={s.get(scene.recDot)} dim={dim} />
+      <LaunchedBrowser enter={s.get(scene.browserU)} envU={s.get(scene.envU)} rec={s.get(scene.recDot)} />
     </>
   );
 }

@@ -40,6 +40,7 @@ const slotX = (pos: number): number => RACK_X1 - pos * SLOT_DX;
 
 const DEMO_Y = 168;
 const LANE_Y = [382, 472, 562] as const;
+const LABEL_X = PROD_X - 60 - 58; // left edge of the producer chip
 
 const BALL_COLORS = [
   colors.ACCENT,
@@ -211,11 +212,13 @@ function demoBallPos(u: number, consY: number): { x: number; y: number; a: numbe
 }
 
 // camera marks
+// Lane cams stay wide enough (x 128–1112) that the lane headers at x = 182 and
+// the consumer chips' right edge (1070) are never cropped.
 const CAM_DEMO: CameraState = { x: 620, y: 195, k: 1.35 };
 const CAM_LANES: CameraState = { x: 620, y: 450, k: 1.22 };
-const CAM_L1: CameraState = { x: 620, y: 392, k: 1.42 };
-const CAM_L2: CameraState = { x: 620, y: 462, k: 1.42 };
-const CAM_L3: CameraState = { x: 620, y: 540, k: 1.42 };
+const CAM_L1: CameraState = { x: 620, y: 392, k: 1.3 };
+const CAM_L2: CameraState = { x: 620, y: 462, k: 1.3 };
+const CAM_L3: CameraState = { x: 620, y: 540, k: 1.3 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {
@@ -415,16 +418,17 @@ function FiberChip({ x, y, label, u, parked, done }: {
   return (
     <g opacity={u}>
       <rect x={x - 58} y={y - 20} width={116} height={40} rx={10} fill={colors.PANEL} stroke={stroke} strokeWidth={parked || done ? 2 : 1} />
-      <text x={x} y={y + 4} textAnchor="middle" fill={colors.TEXT} fontSize={12}>
+      <text x={x} y={y + 4} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
         {label}
       </text>
+      {/* status notes sit under the chip so they never collide with lane headers */}
       {parked && (
-        <text x={x} y={y - 27} textAnchor="middle" fill={colors.WARM} fontSize={10.5}>
+        <text x={x} y={y + 36} textAnchor="middle" fill={colors.WARM} fontSize={12}>
           ⏸ parked — offer suspended
         </text>
       )}
       {done && (
-        <text x={x} y={y - 27} textAnchor="middle" fill={colors.POSITIVE} fontSize={10.5}>
+        <text x={x} y={y + 36} textAnchor="middle" fill={colors.POSITIVE} fontSize={12}>
           ✓ done
         </text>
       )}
@@ -463,10 +467,10 @@ function Lane({ y, simT, sim, code, note, u, verdict, verdictU, endGate }: {
   const gateOn = endGate && simT >= 6.6;
   return (
     <g opacity={u * (started ? 1 : 0.45)}>
-      <text x={92} y={y - 6} fill={colors.TEXT} fontSize={13} fontFamily="monospace">
+      <text x={LABEL_X} y={y - 46} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
         {code}
       </text>
-      <text x={92} y={y + 14} fill={colors.MUTED} fontSize={10.5}>
+      <text x={LABEL_X} y={y - 31} fill={colors.MUTED} fontSize={12}>
         {note}
       </text>
       <Rack y={y} u={1} hot={started} />
@@ -479,13 +483,13 @@ function Lane({ y, simT, sim, code, note, u, verdict, verdictU, endGate }: {
       {gateOn && (
         <g>
           <line x1={ENTRY_X + 18} y1={y - 26} x2={ENTRY_X + 18} y2={y + 26} stroke={colors.WARM} strokeWidth={3} />
-          <text x={ENTRY_X + 18} y={y - 34} textAnchor="middle" fill={colors.WARM} fontSize={10.5} fontFamily="monospace">
+          <text x={ENTRY_X + 18} y={y - 34} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="monospace">
             Queue.end
           </text>
         </g>
       )}
       {verdictU > 0 && (
-        <text x={1158} y={y + 4} textAnchor="end" fill={colors.WARM} fontSize={12} opacity={verdictU} fontStyle="italic">
+        <text x={CONS_X + 118} y={y - 34} textAnchor="end" fill={colors.WARM} fontSize={14} opacity={verdictU} fontStyle="italic">
           {verdict}
         </text>
       )}
@@ -520,12 +524,13 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         <g opacity={stageDim}>
-          {/* ---- demo rack ---- */}
+          {/* ---- demo rack (unmounted once faded, so it can't clutter the lanes) ---- */}
+          {demoDim > 0.2 && (
           <g opacity={demoDim}>
-            <text x={92} y={DEMO_Y - 52} fill={colors.TEXT} fontSize={14} fontFamily="monospace" opacity={rackU}>
+            <text x={LABEL_X} y={DEMO_Y - 52} fill={colors.TEXT} fontSize={14} fontFamily="monospace" opacity={rackU}>
               Queue.bounded(4)
             </text>
-            <text x={92} y={DEMO_Y - 32} fill={colors.MUTED} fontSize={11} opacity={rackU}>
+            <text x={LABEL_X} y={DEMO_Y - 32} fill={colors.MUTED} fontSize={12} opacity={rackU}>
               offer ⟶ four slots ⟶ take
             </text>
             <Rack y={DEMO_Y} u={rackU} />
@@ -536,13 +541,14 @@ export function Render({ s }: { s: SceneState }) {
             <Ball {...b2} t={0} value={2} color={colors.POSITIVE} />
             <Ball {...b3} t={0} value={3} color={colors.SECONDARY} />
             {/* offer / take labels around the rack */}
-            <text x={ENTRY_X - 4} y={DEMO_Y + 40} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily="monospace" opacity={rackU}>
+            <text x={ENTRY_X - 4} y={DEMO_Y + 40} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={rackU}>
               Queue.offer
             </text>
-            <text x={slotX(0) + 30} y={DEMO_Y + 40} fill={colors.MUTED} fontSize={10.5} fontFamily="monospace" opacity={rackU}>
+            <text x={slotX(0) + 30} y={DEMO_Y + 40} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={rackU}>
               Queue.take
             </text>
           </g>
+          )}
 
           {/* ---- the pressure lab ---- */}
           {lanesU > 0 && (

@@ -29,7 +29,7 @@ export const AUTH_EVENT = {
 
 const LAYOUT = layoutJson(AUTH_EVENT, {
   x: 92,
-  y: 210,
+  y: 180,
   fontSize: 14.5,
   inlineArrayMax: 60,
   abbrev: (_p, raw) => (raw.length > 30 ? shortHex(raw, 8, 4) : raw),
@@ -38,10 +38,13 @@ const LAYOUT = layoutJson(AUTH_EVENT, {
 const CLIENT = { x: 200, y: 110 };
 const RELAY = { x: 1040, y: 110 };
 const WIRE_Y = 110;
+// request lane (client → relay) sits above the wire, reply lane (relay → client) below
+const UP_Y = WIRE_Y - 44;
+const DOWN_Y = WIRE_Y + 46;
 
-// frames traveling on the wire: [label, y-offset used for stacking replies]
-const CAM_DOC: CameraState = { x: 330, y: 340, k: 1.25 };
-const CAM_WIRE: CameraState = { x: 640, y: 200, k: 1.15 };
+// both framings keep the whole chain (client, JSON, relay) inside the 1280 stage
+const CAM_DOC: CameraState = { x: 607, y: 340, k: 1.05 };
+const CAM_WIRE: CameraState = { x: 600, y: 200, k: 1.15 };
 
 interface Scene {
   tl: Timeline;
@@ -167,8 +170,8 @@ function Frame({ label, u, dir, y, color }: { label: string; u: number; dir: 1 |
   const x = from + (to - from) * clamp01(u);
   return (
     <g opacity={Math.min(1, u * 4)}>
-      <rect x={x - 128} y={y - 15} width={256} height={26} rx={7} fill={colors.PANEL} stroke={color} opacity={0.95} />
-      <text x={x} y={y + 3} textAnchor="middle" fill={color} fontSize={11.5} fontFamily="ui-monospace, Menlo, monospace">
+      <rect x={x - 146} y={y - 15} width={292} height={26} rx={7} fill={colors.PANEL} stroke={color} opacity={0.95} />
+      <text x={x} y={y + 3} textAnchor="middle" fill={color} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
         {label}
       </text>
     </g>
@@ -190,7 +193,8 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // main scene dims for the recap, then is removed once the closing panel is fully in
+  const mainOp = (1 - 0.85 * dimU) * (1 - closeU);
   const focus = tagsU > 0 && clockU <= 0 ? ['tags'] : clockU > 0 && sendU <= 0 ? ['created_at'] : undefined;
   const focusU = tagsU > 0 && clockU <= 0 ? tagsU : clockU > 0 && sendU <= 0 ? clockU : 0;
 
@@ -207,18 +211,19 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           )}
 
-          <Frame label='["REQ", "dms", {"kinds":[1059]}]' u={denyU * 2} dir={1} y={WIRE_Y - 34} color={colors.MUTED} />
-          <Frame label='["CLOSED","dms","auth-required: …"]' u={denyU * 2 - 1} dir={-1} y={WIRE_Y + 36} color={colors.NEGATIVE} />
-          <Frame label={`["AUTH", "${CHALLENGE}"]`} u={challU} dir={-1} y={WIRE_Y + 36} color={colors.WARM} />
-          <Frame label='["AUTH", {kind: 22242, …}]' u={sendU} dir={1} y={WIRE_Y - 34} color={colors.ACCENT} />
-          <Frame label='["OK", "…", true, ""]' u={okU} dir={-1} y={WIRE_Y + 36} color={colors.POSITIVE} />
+          {/* each frame leaves the stage once the next one takes its lane, so lanes never stack */}
+          <Frame label='["REQ", "dms", {"kinds":[1059]}]' u={challU > 0 ? 0 : denyU * 2} dir={1} y={UP_Y} color={colors.MUTED} />
+          <Frame label='["CLOSED","dms","auth-required: …"]' u={challU > 0 ? 0 : denyU * 2 - 1} dir={-1} y={DOWN_Y} color={colors.NEGATIVE} />
+          <Frame label={`["AUTH", "${CHALLENGE}"]`} u={okU > 0 ? 0 : challU} dir={-1} y={DOWN_Y} color={colors.WARM} />
+          <Frame label='["AUTH", {kind: 22242, …}]' u={sendU} dir={1} y={UP_Y} color={colors.ACCENT} />
+          <Frame label='["OK", "…", true, ""]' u={okU} dir={-1} y={DOWN_Y} color={colors.POSITIVE} />
 
           <JsonDoc layout={LAYOUT} reveal={buildU} focus={focus} focusU={focusU} />
 
           {/* challenge echo: string flies from the wire frame into the tag slot */}
           {buildU >= 1 && tagsU > 0 && tagsU < 1 && (
             <TokenFlight
-              from={{ x: 640, y: WIRE_Y + 36 }}
+              from={{ x: CLIENT.x + 90, y: DOWN_Y }}
               to={{ x: LAYOUT.anchor('tags[1][1]').cx, y: LAYOUT.anchor('tags[1][1]').cy + 5 }}
               u={tagsU}
               text={CHALLENGE}
@@ -230,14 +235,14 @@ export function Render({ s }: { s: SceneState }) {
           )}
 
           {/* created_at tolerance window */}
-          {clockU > 0 && (
-            <g opacity={clockU}>
+          {clockU > 0 && restrictU < 1 && (
+            <g opacity={clockU * (1 - restrictU)}>
               <line x1={620} y1={330} x2={980} y2={330} stroke={colors.GRID} strokeWidth={1.5} />
               <rect x={740} y={318} width={120} height={24} rx={6} fill={colors.WARM} opacity={0.18} />
               <line x1={800} y1={316} x2={800} y2={344} stroke={colors.WARM} strokeWidth={2} />
               <text x={800} y={306} textAnchor="middle" fill={colors.WARM} fontSize={12}>now</text>
-              <text x={740} y={362} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>−10 min</text>
-              <text x={860} y={362} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>+10 min</text>
+              <text x={740} y={362} textAnchor="middle" fill={colors.MUTED} fontSize={12}>−10 min</text>
+              <text x={860} y={362} textAnchor="middle" fill={colors.MUTED} fontSize={12}>+10 min</text>
               <text x={800} y={388} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                 created_at must land in the window
               </text>
@@ -249,9 +254,9 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={checkU}>
               {['relay tag matches', 'challenge echoes', 'clock in window · sig valid'].map((c, i) => (
                 <g key={c}>
-                  <circle cx={952} cy={210 + i * 34} r={9} fill="none" stroke={colors.POSITIVE} strokeWidth={2} />
-                  <path d={`M${946} ${210 + i * 34} l4 4 l7 -8`} fill="none" stroke={colors.POSITIVE} strokeWidth={2} strokeLinecap="round" />
-                  <text x={972} y={215 + i * 34} fill={colors.TEXT} fontSize={12.5}>{c}</text>
+                  <circle cx={930} cy={210 + i * 34} r={9} fill="none" stroke={colors.POSITIVE} strokeWidth={2} />
+                  <path d={`M${924} ${210 + i * 34} l4 4 l7 -8`} fill="none" stroke={colors.POSITIVE} strokeWidth={2} strokeLinecap="round" />
+                  <text x={950} y={215 + i * 34} fill={colors.TEXT} fontSize={13}>{c}</text>
                 </g>
               ))}
             </g>
@@ -259,11 +264,11 @@ export function Render({ s }: { s: SceneState }) {
 
           {restrictU > 0 && (
             <g opacity={restrictU}>
-              <rect x={620} y={430} width={470} height={58} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} />
-              <text x={640} y={454} fill={colors.NEGATIVE} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
+              <rect x={620} y={352} width={470} height={58} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} />
+              <text x={640} y={376} fill={colors.NEGATIVE} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
                 ["CLOSED", "vip", "restricted: not a member"]
               </text>
-              <text x={640} y={476} fill={colors.MUTED} fontSize={12}>
+              <text x={640} y={398} fill={colors.MUTED} fontSize={13}>
                 authenticated ≠ authorized
               </text>
             </g>
@@ -273,7 +278,7 @@ export function Render({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={235} width={840} height={185} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={220} y={235} width={840} height={185} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={303} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             The keypair is the session
           </text>

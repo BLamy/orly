@@ -52,7 +52,7 @@ export const WRAPPED_EVENT = {
   content: PAYLOAD_B64,
   tags: [['p', '6b0d4a8c…']],
 };
-const LAYOUT = layoutJson(WRAPPED_EVENT, { x: 860, y: 420, fontSize: 13 });
+const LAYOUT = layoutJson(WRAPPED_EVENT, { x: 860, y: 440, fontSize: 13 });
 
 // ---------------------------------------------------------------------------
 // Layout — the factory line, top to bottom.
@@ -66,12 +66,12 @@ const CUTS = [
   { from: 44, to: 76, label: 'hmac_key · 32', color: colors.WARM },
 ];
 const STREAM_Y = 360;
-const PAY = { x: 90, y: 480, h: 40 };
+const PAY = { x: 90, y: 480, h: 46 };
 const PAY_CELLS = [
-  { label: '0x02', w: 52, color: colors.MUTED, note: 'version' },
-  { label: b64ish(NONCE, 8), w: 130, color: colors.SECONDARY, note: 'nonce · 32' },
-  { label: b64ish(CIPHER_BYTES, 10), w: 170, color: colors.ACCENT, note: 'ciphertext' },
-  { label: shortHex(hex(MAC), 6, 0), w: 120, color: colors.WARM, note: 'mac · 32' },
+  { label: '0x02', w: 60, color: colors.MUTED, note: 'version' },
+  { label: b64ish(NONCE, 8), w: 140, color: colors.SECONDARY, note: 'nonce · 32' },
+  { label: b64ish(CIPHER_BYTES, 10), w: 180, color: colors.ACCENT, note: 'ciphertext' },
+  { label: b64ish(MAC, 8), w: 140, color: colors.WARM, note: 'mac · 32' },
 ];
 
 const CAM_TOP: CameraState = { x: 560, y: 240, k: 1.2 };
@@ -234,6 +234,8 @@ function Frame({ s }: { s: SceneState }) {
   const mainOp = 1 - 0.85 * dimU;
   const streamN = 34;
   const contentAnchor = LAYOUT.anchor('content');
+  // the inputs scroll out of the camera once padding starts: fade them to a ghost
+  const inOp = inU * (1 - 0.85 * padU);
 
   return (
     <>
@@ -243,7 +245,7 @@ function Frame({ s }: { s: SceneState }) {
         <Camera {...cam}>
           {/* inputs */}
           {inU > 0 && (
-            <g opacity={inU}>
+            <g opacity={inOp}>
               <rect x={CONV.x} y={CONV.y} width={CONV.w} height={CONV.h} rx={9} fill={colors.PANEL} stroke={colors.POSITIVE} />
               <text x={CONV.x + CONV.w / 2} y={CONV.y + 25} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily="monospace">
                 conversation_key
@@ -277,7 +279,7 @@ function Frame({ s }: { s: SceneState }) {
                   return seg.color;
                 }}
               />
-              <text x={RIB.x} y={RIB.y - 10} fill={colors.MUTED} fontSize={11} fontFamily="monospace" opacity={ribbonU}>
+              <text x={RIB.x} y={RIB.y - 10} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={ribbonU}>
                 76 real bytes: {shortHex(hex(RIBBON), 12, 6)}
               </text>
               {/* cut markers + labels */}
@@ -302,11 +304,11 @@ function Frame({ s }: { s: SceneState }) {
           {/* pad + stream */}
           {padU > 0 && (
             <g opacity={padU}>
-              <text x={90} y={STREAM_Y - 16} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
-                "{PLAINTEXT}"
+              <text x={90} y={STREAM_Y - 46} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+                2-byte length + padding → {PADDED_LEN + 2} bytes
               </text>
-              <text x={250} y={STREAM_Y - 16} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
-                → 2-byte length + padding → {PADDED_LEN + 2} bytes
+              <text x={90} y={STREAM_Y - 18} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
+                "{PLAINTEXT}"
               </text>
             </g>
           )}
@@ -333,8 +335,8 @@ function Frame({ s }: { s: SceneState }) {
               })}
               {streamU > 0 && streamU < 1 && (
                 <g>
-                  <circle cx={90 + clamp01(streamU) * streamN * 24} cy={STREAM_Y - 14} r={6} fill={colors.SECONDARY} />
-                  <text x={90 + clamp01(streamU) * streamN * 24 + 12} y={STREAM_Y - 9} fill={colors.SECONDARY} fontSize={11} fontFamily="monospace">
+                  <circle cx={90 + clamp01(streamU) * streamN * 24} cy={STREAM_Y - 8} r={6} fill={colors.SECONDARY} />
+                  <text x={90 + clamp01(streamU) * streamN * 24 + 12} y={STREAM_Y - 4} fill={colors.SECONDARY} fontSize={12} fontFamily="monospace">
                     keystream
                   </text>
                 </g>
@@ -346,7 +348,7 @@ function Frame({ s }: { s: SceneState }) {
           {macU > 0 && (
             <g opacity={macU}>
               <path d={`M120,${STREAM_Y + 40} h700`} stroke={colors.WARM} strokeWidth={1.2} strokeDasharray="4 4" fill="none" />
-              <text x={640} y={STREAM_Y + 62} fill={colors.WARM} fontSize={12} fontFamily="monospace">
+              <text x={120} y={STREAM_Y + 62} fill={colors.WARM} fontSize={12} fontFamily="monospace">
                 mac = hmac_sha256(hmac_key, nonce ‖ ciphertext) = {shortHex(hex(MAC), 8, 4)}
               </text>
             </g>
@@ -362,10 +364,10 @@ function Frame({ s }: { s: SceneState }) {
                   const cell = (
                     <g key={c.label + i} opacity={Math.max(0.001, u)}>
                       <rect x={px} y={PAY.y} width={c.w} height={PAY.h} rx={7} fill={colors.PANEL} stroke={c.color} opacity={0.5 + 0.5 * u} />
-                      <text x={px + c.w / 2} y={PAY.y + 20} textAnchor="middle" fill={c.color} fontSize={11} fontFamily="monospace">
+                      <text x={px + c.w / 2} y={PAY.y + 20} textAnchor="middle" fill={c.color} fontSize={12} fontFamily="monospace">
                         {c.label}
                       </text>
-                      <text x={px + c.w / 2} y={PAY.y + 34} textAnchor="middle" fill={colors.MUTED} fontSize={9}>
+                      <text x={px + c.w / 2} y={PAY.y + 37} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                         {c.note}
                       </text>
                     </g>
@@ -374,7 +376,7 @@ function Frame({ s }: { s: SceneState }) {
                   return cell;
                 });
               })()}
-              <text x={PAY.x} y={PAY.y - 12} fill={colors.MUTED} fontSize={11} fontFamily="monospace" opacity={payU}>
+              <text x={PAY.x} y={PAY.y - 12} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={payU}>
                 payload = version ‖ nonce ‖ ciphertext ‖ mac (min 99 bytes)
               </text>
             </g>

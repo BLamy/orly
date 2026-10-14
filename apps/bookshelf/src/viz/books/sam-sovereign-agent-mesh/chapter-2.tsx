@@ -36,11 +36,11 @@ function Chip({
   w?: number;
   h?: number;
 }) {
-  const width = w ?? Math.max(60, text.length * 6.8 + 18);
+  const width = w ?? Math.max(60, text.length * 7.4 + 18);
   return (
     <g opacity={clamp01(opacity)}>
       <rect x={x - width / 2} y={y - h / 2} width={width} height={h} rx={h / 2} fill={colors.PANEL} stroke={color} strokeWidth={1.2} />
-      <text x={x} y={y + 4} textAnchor="middle" fill={colors.TEXT} fontSize={11} fontFamily={MONO}>{text}</text>
+      <text x={x} y={y + 4} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>{text}</text>
     </g>
   );
 }
@@ -167,7 +167,7 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={1280} height={720} fill={colors.BG} />
       <g opacity={mainOpacity}>
         <text x={640} y={48} textAnchor="middle" fill={colors.TEXT} fontSize={28} fontWeight={760}>The gate before the road</text>
-        <text x={640} y={75} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>AuthFrame · HandleAuthHandshake · authenticatedPeers · relayACL</text>
+        <text x={640} y={75} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>AuthFrame · HandleAuthHandshake · authenticatedPeers · relayACL</text>
 
         <Connection from={{ x: 260, y: NODE.y }} to={{ x: 520, y: NODE.y }} u={s.get(scene.directU)} dim={1 - directOpacity} color={colors.MUTED} dashed label="direct address" />
         <Connection from={{ x: 760, y: ROUTER.y }} to={{ x: 1050, y: REMOTE.y }} u={s.get(scene.relayU)} flow={s.get(scene.routeU)} color={colors.POSITIVE} label="/p2p-circuit" />
@@ -185,8 +185,8 @@ export function Render({ s }: { s: SceneState }) {
         <RequestFlow path={[NODE, ROUTER, REMOTE]} u={s.get(scene.routeU)} roundTrip color={colors.ACCENT} responseColor={colors.POSITIVE} label="request" responseLabel="response" hold />
 
         <g opacity={s.get(scene.verifyU)}>
-          <Chip x={430} y={192} text="VerifyBiscuit" color={colors.WARM} w={132} />
-          <Chip x={850} y={192} text="trusted public keys" color={colors.SECONDARY} w={158} />
+          <Chip x={430} y={140} text="VerifyBiscuit" color={colors.WARM} w={132} />
+          <Chip x={850} y={140} text="trusted public keys" color={colors.SECONDARY} w={158} />
         </g>
         <g opacity={s.get(scene.deniedU)}>
           <line x1={444} y1={418} x2={520} y2={490} stroke={colors.NEGATIVE} strokeWidth={3} />

@@ -62,7 +62,7 @@ export function buildScene() {
 
   t = tl.caption({ at: t, dur: 6.4, text: 'When both gates are satisfied — the human owner, and the check — the merge opens. Neither one alone is enough.' });
   tl.tween(mergeU, 1, { at: t - 5.6, dur: 1.4, ease: ease.pop });
-  tl.tween(cam, { x: 640, y: 460, k: 1.0 }, { at: t - 5.4, dur: 1.4, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 330, k: 0.92 }, { at: t - 5.4, dur: 1.4, ease: ease.move });
   t = tl.hold(t, 0);
 
   t = tl.caption({ at: t, dur: 6.6, text: 'One stable check, additive to human ownership, fronting a roster of agents that can keep growing underneath it.' });
@@ -102,24 +102,22 @@ export function Render({ s }: { s: SceneState }) {
 
       {/* it never impersonates a human review state */}
       {impersonateU > 0 && <g opacity={impersonateU * dim}>
-        <rect x={420} y={160} width={440} height={40} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.4} opacity={0.7} />
-        <text x={640} y={185} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11.5} fontFamily={mono}>✕ approve / request changes — never submitted</text>
+        <rect x={400} y={160} width={480} height={40} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.4} opacity={0.7} />
+        <text x={640} y={185} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={mono}>✕ approve / request changes — never submitted</text>
       </g>}
 
       {/* agent roster feeding the one check */}
       <g opacity={rosterU * dim}>
         {AGENTS_NOW.map((a, i) => {
           const u = clamp01(rosterU * 5 - i * 0.7);
-          return <g key={a.name} opacity={u} transform={`translate(${290 + i * 250} 230)`}>
-            <rect width={220} height={44} rx={12} fill={colors.BG} stroke={a.color} strokeWidth={1.6} />
-            <text x={110} y={27} textAnchor="middle" fill={a.color} fontSize={11.5} fontFamily={mono}>{a.name}</text>
-            <path d={`M 110 44 L 110 90`} stroke={a.color} strokeWidth={1.2} strokeOpacity={0.5} strokeDasharray="3 4" />
+          return <g key={a.name} opacity={u} transform={`translate(${220 + i * 290} 230)`}>
+            <rect width={260} height={44} rx={12} fill={colors.BG} stroke={a.color} strokeWidth={1.6} />
+            <text x={130} y={28} textAnchor="middle" fill={a.color} fontSize={14} fontFamily={mono}>{a.name}</text>
           </g>;
         })}
-        {laterU > 0 && <g opacity={laterU} transform="translate(150 300)">
+        {laterU > 0 && <g opacity={laterU} transform="translate(150 288)">
           <rect width={980} height={44} rx={12} fill={colors.BG} stroke={AGENT_LATER.color} strokeWidth={1.6} strokeDasharray="5 4" />
-          <text x={490} y={27} textAnchor="middle" fill={AGENT_LATER.color} fontSize={11.5} fontFamily={mono}>{AGENT_LATER.name} · joins the roster</text>
-          <text x={490} y={70} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={mono}>the branch ruleset itself never changes</text>
+          <text x={490} y={28} textAnchor="middle" fill={AGENT_LATER.color} fontSize={14} fontFamily={mono}>{AGENT_LATER.name} · joins the roster · the branch ruleset never changes</text>
         </g>}
       </g>
 
@@ -127,13 +125,13 @@ export function Render({ s }: { s: SceneState }) {
       <g opacity={gatesU * dim}>
         <g transform="translate(200 340)">
           <rect width={360} height={70} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.8} />
-          <text x={180} y={30} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={mono} fontWeight={700}>Human CODEOWNER approval</text>
-          <text x={180} y={52} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={mono}>unchanged · same as today</text>
+          <text x={180} y={30} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={mono} fontWeight={700}>Human CODEOWNER approval</text>
+          <text x={180} y={52} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={mono}>unchanged · same as today</text>
         </g>
         <g transform="translate(720 340)">
           <rect width={360} height={70} rx={16} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.8} />
-          <text x={180} y={30} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={mono} fontWeight={700}>Agent Code Review status check</text>
-          <text x={180} y={52} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={mono}>additive · not a substitute</text>
+          <text x={180} y={30} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={mono} fontWeight={700}>Agent Code Review status check</text>
+          <text x={180} y={52} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={mono}>additive · not a substitute</text>
         </g>
         <text x={640} y={382} textAnchor="middle" fill={colors.WARM} fontSize={20} fontWeight={800}>+</text>
       </g>
@@ -141,7 +139,7 @@ export function Render({ s }: { s: SceneState }) {
       {/* no stuck "changes requested" state */}
       {stuckU > 0 && <g opacity={stuckU * dim}>
         <rect x={720} y={430} width={360} height={44} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.2} opacity={0.5} strokeDasharray="4 5" />
-        <text x={900} y={456} textAnchor="middle" fill={colors.NEGATIVE} fontSize={10.5} fontFamily={mono}>✕ no stuck review to manually dismiss</text>
+        <text x={900} y={456} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={mono}>✕ no stuck review to manually dismiss</text>
       </g>}
 
       {/* merge gate */}

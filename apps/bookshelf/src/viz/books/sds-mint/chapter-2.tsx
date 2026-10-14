@@ -45,8 +45,13 @@ const CATS = [
 const BIN_X0 = 300;
 const BIN_W = 190;
 const BIN_GAP = 30;
-const BIN_Y = 480;
+const BIN_Y = 440;
+const BIN_H = 120;
 const binX = (i: number): number => BIN_X0 + i * (BIN_W + BIN_GAP);
+// two stacking slots per bin, so a second transaction never lands on the first
+const SLOT_A = BIN_Y + 60;
+const SLOT_B = BIN_Y + 98;
+const CHIP_W = 160;
 
 // the known transactions (seller → seeded category)
 const KNOWN = [
@@ -59,11 +64,13 @@ const KNOWN = [
 const UNKNOWN = { seller: 'Joes Diner', amount: '$18', cat: 1 } as const;
 
 const FUNNEL = { x: 640, y: 130 } as const;
-const HEAP = { x: 1040, y: 300 } as const;
+const HEAP = { x: 1040, y: 230 } as const;
 
-const CAM_FUNNEL: CameraState = { x: 640, y: 260, k: 1.2 };
-const CAM_HEAP: CameraState = { x: 950, y: 300, k: 1.35 };
-const CAM_BINS: CameraState = { x: 640, y: 430, k: 1.18 };
+// Each shot keeps the bins above the caption band (world y ≈ cam.y + 270/k) and
+// keeps the dictionary, funnel label and heap inside the stage.
+const CAM_FUNNEL: CameraState = { x: 640, y: 330, k: 1.1 };
+const CAM_HEAP: CameraState = { x: 690, y: 320, k: 1.1 };
+const CAM_BINS: CameraState = { x: 640, y: 360, k: 1.1 };
 
 export interface Scene {
   tl: Timeline;
@@ -215,17 +222,21 @@ export function Render({ s }: { s: SceneState }) {
           <text x={FUNNEL.x} y={FUNNEL.y - 60} textAnchor="middle" fill={colors.TEXT} fontSize={15}>
             transactions, straight from the banks
           </text>
-          <text x={FUNNEL.x} y={FUNNEL.y - 40} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily="ui-monospace, monospace">
+          <text x={FUNNEL.x} y={FUNNEL.y - 40} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
             created_at · seller · amount
           </text>
-          {/* funnel walls */}
-          <line x1={FUNNEL.x - 130} y1={FUNNEL.y - 20} x2={FUNNEL.x - 30} y2={FUNNEL.y + 70} stroke={colors.GRID} strokeWidth={2} />
-          <line x1={FUNNEL.x + 130} y1={FUNNEL.y - 20} x2={FUNNEL.x + 30} y2={FUNNEL.y + 70} stroke={colors.GRID} strokeWidth={2} />
+          {/* funnel: a closed hopper with a spout, so it reads as one machine */}
+          <path
+            d={`M ${FUNNEL.x - 130} ${FUNNEL.y - 20} L ${FUNNEL.x + 130} ${FUNNEL.y - 20} L ${FUNNEL.x + 26} ${FUNNEL.y + 70} L ${FUNNEL.x - 26} ${FUNNEL.y + 70} Z`}
+            fill={colors.PANEL}
+            stroke={colors.GRID}
+            strokeWidth={2}
+          />
           {/* bins */}
           {CATS.map((c, i) => (
             <g key={c.name}>
-              <rect x={binX(i)} y={BIN_Y} width={BIN_W} height={90} rx={10} fill={colors.PANEL} stroke={c.color} strokeWidth={1.4} />
-              <text x={binX(i) + BIN_W / 2} y={BIN_Y + 26} textAnchor="middle" fill={c.color} fontSize={12.5} fontFamily="ui-monospace, monospace">
+              <rect x={binX(i)} y={BIN_Y} width={BIN_W} height={BIN_H} rx={10} fill={colors.PANEL} stroke={c.color} strokeWidth={1.4} />
+              <text x={binX(i) + BIN_W / 2} y={BIN_Y + 26} textAnchor="middle" fill={c.color} fontSize={14} fontFamily="ui-monospace, monospace">
                 {c.name}
               </text>
             </g>
@@ -235,21 +246,21 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- the dictionary panel ---- */}
         <g opacity={mapU * dimAll}>
           <rect x={120} y={200} width={280} height={140} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.3} />
-          <text x={140} y={228} fill={colors.ACCENT} fontSize={12} fontFamily="ui-monospace, monospace">
+          <text x={140} y={228} fill={colors.ACCENT} fontSize={13} fontFamily="ui-monospace, monospace">
             seller_category_map
           </text>
-          <text x={140} y={254} fill={colors.TEXT} fontSize={11} fontFamily="ui-monospace, monospace">
+          <text x={140} y={254} fill={colors.TEXT} fontSize={12.5} fontFamily="ui-monospace, monospace">
             'Exxon' → GAS
           </text>
-          <text x={140} y={276} fill={colors.TEXT} fontSize={11} fontFamily="ui-monospace, monospace">
+          <text x={140} y={276} fill={colors.TEXT} fontSize={12.5} fontFamily="ui-monospace, monospace">
             'Target' → SHOPPING
           </text>
           <g opacity={learnU}>
-            <text x={140} y={298} fill={colors.POSITIVE} fontSize={11} fontFamily="ui-monospace, monospace">
+            <text x={140} y={298} fill={colors.POSITIVE} fontSize={12.5} fontFamily="ui-monospace, monospace">
               'Joes Diner' → FOOD   (learned)
             </text>
           </g>
-          <text x={140} y={326} fill={colors.MUTED} fontSize={10}>
+          <text x={140} y={326} fill={colors.MUTED} fontSize={12}>
             50,000 sellers · ~12 MB · in memory
           </text>
         </g>
@@ -259,14 +270,14 @@ export function Render({ s }: { s: SceneState }) {
           const u = clamp01(dropK - i);
           if (u <= 0) return null;
           const from = { x: FUNNEL.x, y: FUNNEL.y + 40 };
-          const to = { x: binX(k.cat) + BIN_W / 2, y: BIN_Y + 54 };
+          const to = { x: binX(k.cat) + BIN_W / 2, y: SLOT_A };
           const x = lerp(from.x, to.x, u);
           const y = from.y + (to.y - from.y) * (u * u); // gravity-ish
           const done = u >= 1;
           return (
             <g key={i} opacity={dimAll * (done ? 0.85 : 1)}>
-              <rect x={x - 56} y={y - 15} width={112} height={30} rx={7} fill={colors.BG} stroke={CATS[k.cat].color} strokeWidth={1.3} />
-              <text x={x} y={y + 4} textAnchor="middle" fill={colors.TEXT} fontSize={9.5} fontFamily="ui-monospace, monospace">
+              <rect x={x - CHIP_W / 2} y={y - 15} width={CHIP_W} height={30} rx={7} fill={colors.BG} stroke={CATS[k.cat].color} strokeWidth={1.3} />
+              <text x={x} y={y + 4} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily="ui-monospace, monospace">
                 {k.seller} · {k.amount}
               </text>
             </g>
@@ -276,17 +287,17 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- the unknown transaction ---- */}
         {unkU > 0 && (() => {
           const hang = { x: FUNNEL.x + 120, y: 300 };
-          const to = { x: binX(UNKNOWN.cat) + BIN_W / 2, y: BIN_Y + 54 };
+          const to = { x: binX(UNKNOWN.cat) + BIN_W / 2, y: SLOT_B };
           const x = landU > 0 ? lerp(hang.x, to.x, landU) : lerp(FUNNEL.x, hang.x, unkU);
           const y = landU > 0 ? lerp(hang.y, to.y, landU * landU) : lerp(FUNNEL.y + 40, hang.y, unkU);
           return (
             <g opacity={dimAll}>
-              <rect x={x - 56} y={y - 15} width={112} height={30} rx={7} fill={colors.BG} stroke={landU > 0.8 ? CATS[1].color : colors.NEGATIVE} strokeWidth={1.5} />
-              <text x={x} y={y + 4} textAnchor="middle" fill={colors.TEXT} fontSize={9.5} fontFamily="ui-monospace, monospace">
+              <rect x={x - CHIP_W / 2} y={y - 15} width={CHIP_W} height={30} rx={7} fill={colors.BG} stroke={landU > 0.8 ? CATS[1].color : colors.NEGATIVE} strokeWidth={1.5} />
+              <text x={x} y={y + 4} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily="ui-monospace, monospace">
                 {UNKNOWN.seller} · {UNKNOWN.amount}
               </text>
               {landU < 0.2 && unkU > 0.9 && (
-                <text x={x} y={y - 24} textAnchor="middle" fill={colors.NEGATIVE} fontSize={10.5} fontFamily="ui-monospace, monospace">
+                <text x={x} y={y - 24} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily="ui-monospace, monospace">
                   not in seller_category_map
                 </text>
               )}
@@ -296,8 +307,8 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- the overrides heap ---- */}
         <g opacity={heapU * dimAll}>
-          <rect x={HEAP.x - 130} y={HEAP.y - 90} width={260} height={190} rx={12} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.3} />
-          <text x={HEAP.x} y={HEAP.y - 64} textAnchor="middle" fill={colors.SECONDARY} fontSize={11.5} fontFamily="ui-monospace, monospace">
+          <rect x={HEAP.x - 130} y={HEAP.y - 90} width={260} height={205} rx={12} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.3} />
+          <text x={HEAP.x} y={HEAP.y - 64} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily="ui-monospace, monospace">
             crowd_overrides['Joes Diner']
           </text>
           {/* tiny heap triangle */}
@@ -309,13 +320,16 @@ export function Render({ s }: { s: SceneState }) {
             <g key={i}>
               {i > 0 && <line x1={HEAP.x} y1={HEAP.y - 20} x2={n.x} y2={n.y - 10} stroke={colors.GRID} strokeWidth={1.2} />}
               <rect x={n.x - 52} y={n.y - 12} width={104} height={26} rx={6} fill={colors.BG} stroke={n.top && peekU > 0.05 ? colors.POSITIVE : colors.GRID} strokeWidth={n.top && peekU > 0.05 ? 2 : 1.1} />
-              <text x={n.x} y={n.y + 5} textAnchor="middle" fill={n.top ? colors.TEXT : colors.MUTED} fontSize={9.5} fontFamily="ui-monospace, monospace">
+              <text x={n.x} y={n.y + 5} textAnchor="middle" fill={n.top ? colors.TEXT : colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
                 {n.t}
               </text>
             </g>
           ))}
-          <text x={HEAP.x} y={HEAP.y + 68} textAnchor="middle" fill={peekU > 0.05 ? colors.POSITIVE : colors.MUTED} fontSize={10.5} fontFamily="ui-monospace, monospace">
+          <text x={HEAP.x} y={HEAP.y + 68} textAnchor="middle" fill={peekU > 0.05 ? colors.POSITIVE : colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
             peek_min() · O(1)
+          </text>
+          <text x={HEAP.x} y={HEAP.y + 96} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+            heap: most-voted answer on top
           </text>
         </g>
 
@@ -326,7 +340,7 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={c.name}>
                 <rect x={binX(i) + 24} y={BIN_Y - 16 - h} width={BIN_W - 48} height={h} rx={6} fill={c.color} opacity={0.4} />
-                <text x={binX(i) + BIN_W / 2} y={BIN_Y - 24 - h} textAnchor="middle" fill={c.color} fontSize={11.5} fontFamily="ui-monospace, monospace">
+                <text x={binX(i) + BIN_W / 2} y={BIN_Y - 24 - h} textAnchor="middle" fill={c.color} fontSize={12} fontFamily="ui-monospace, monospace">
                   income × .{Math.round(c.share * 10)}
                 </text>
               </g>
@@ -339,14 +353,14 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- closing panel ---- */}
         <g opacity={closeU}>
-          <rect x={290} y={220} width={700} height={230} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-          <text x={640} y={270} textAnchor="middle" fill={colors.TEXT} fontSize={19}>
+          <rect x={290} y={210} width={700} height={200} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
+          <text x={640} y={260} textAnchor="middle" fill={colors.TEXT} fontSize={19}>
             how a transaction learns its name
           </text>
-          <text x={640} y={322} textAnchor="middle" fill={colors.ACCENT} fontSize={13.5} fontFamily="ui-monospace, monospace">
+          <text x={640} y={312} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily="ui-monospace, monospace">
             seller_category_map → crowd overrides heap → None
           </text>
-          <text x={640} y={372} textAnchor="middle" fill={colors.MUTED} fontSize={13.5} fontStyle="italic">
+          <text x={640} y={362} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
             defaults are computed, exceptions are stored
           </text>
         </g>

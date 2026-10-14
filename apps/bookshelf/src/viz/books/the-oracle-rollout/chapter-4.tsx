@@ -32,7 +32,7 @@ export function buildScene() {
 
   tl.caption({ at: 6.8, dur: 6.2, text: 'The inline contract carries frame tensors, metadata, and the original paths for traceability.' });
   tl.tween(contractU, 1, { at: 7.5, dur: 1.2, ease: ease.move });
-  tl.tween(cam, { x: 640, y: 276, k: 1.18 }, { at: 9.5, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 500, y: 250, k: 1.2 }, { at: 9.5, dur: 1.3, ease: ease.move });
 
   tl.caption({ at: 13.4, dur: 6.2, text: 'The rollout worker hands those tensors to the video model without sampling or resizing the frames again.' });
   tl.tween(reuseP, 3, { at: 14.1, dur: 2.4, ease: ease.enter });
@@ -44,7 +44,7 @@ export function buildScene() {
 
   tl.caption({ at: 26.7, dur: 6.1, text: 'Reward computation overlaps with old policy probability work, so the two branches meet without waiting in series.' });
   tl.tween(overlapU, 1, { at: 27.4, dur: 1.3, ease: ease.move });
-  tl.tween(cam, { x: 640, y: 420, k: 1.1 }, { at: 29.4, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 583, y: 420, k: 1.1 }, { at: 29.4, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 33.2, dur: 6.2, text: 'The driver constructs advantages, applies the detached anchor, and runs sign-balanced selection.' });
   tl.tween(advantagesU, 1, { at: 33.9, dur: 1.1, ease: ease.draw });
@@ -81,28 +81,35 @@ export function Render({ s }: { s: SceneState }) {
   const select = s.get(scene.selectU);
   const actor = s.get(scene.actorU);
   const compare = s.get(scene.compareU);
+  // The title sits outside the camera so it never crops, but it must step aside while the camera is pushed in.
+  const titleU = clamp01((1.06 - s.get(scene.cam).k) / 0.02);
 
-  return <Camera {...s.get(scene.cam)}>
+  return <>
+    <text x="640" y="58" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="850" opacity={quiet * (1 - compare) * titleU}>Decode once, update four</text>
+  <Camera {...s.get(scene.cam)}>
     <g opacity={quiet * (1 - compare)}>
-      <text x="640" y="58" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="850">Decode once, update four</text>
-
       <g opacity={s.get(scene.videoU)}>
-        <rect x="72" y="104" width="160" height="82" rx="22" fill="#171526" stroke={colors.WARM} strokeWidth="3" />
-        <circle cx="112" cy="145" r="22" fill={colors.WARM} opacity="0.28" />
-        <path d="M106 132 L126 145 L106 158 Z" fill={colors.WARM} />
-        <text x="158" y="141" textAnchor="middle" fill={colors.TEXT} fontSize="15" fontWeight="800">video path</text>
-        <text x="158" y="163" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>source_type: path</text>
+        <rect x="64" y="98" width="176" height="94" rx="22" fill="#171526" stroke={colors.WARM} strokeWidth="3" />
+        <circle cx="100" cy="128" r="18" fill={colors.WARM} opacity="0.28" />
+        <path d="M96 120 L113 128 L96 136 Z" fill={colors.WARM} />
+        <text x="130" y="134" textAnchor="start" fill={colors.TEXT} fontSize="15" fontWeight="800">video path</text>
+        <text x="152" y="168" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>source_type: path</text>
       </g>
-      <path d={`M236 145 H${Math.max(236, 286 + clamp01(s.get(scene.decodeP) / 8) * 78)}`} stroke={colors.ACCENT} strokeWidth="4" strokeDasharray="8 7" />
+      <path d={`M244 145 H${Math.max(244, 294 + clamp01(s.get(scene.decodeP) / 8) * 78)}`} stroke={colors.ACCENT} strokeWidth="4" strokeDasharray="8 7" />
       {Array.from({ length: 8 }, (_, i) => <MiniFrame key={i} x={330 + i * 92} y={145} i={i} u={clamp01(s.get(scene.decodeP) - i)} />)}
       <text x="654" y="204" textAnchor="middle" fill={colors.ACCENT} fontSize="13" opacity={clamp01(s.get(scene.decodeP) / 8)}>decoded tensors + frames_indices</text>
 
       <g opacity={contract} transform={`translate(0 ${(1 - contract) * 24})`}>
         <rect x="348" y="236" width="584" height="94" rx="26" fill="#10263a" stroke={colors.ACCENT} strokeWidth="3" />
         <text x="640" y="267" textAnchor="middle" fill={colors.ACCENT} fontSize="15" fontWeight="800" fontFamily={colors.font.mono}>multi_modal_data['video']</text>
-        {['source_type: inline', 'frames', 'metadatas', 'paths'].map((label, i) => <g key={label} transform={`translate(${448 + i * 128} 301)`}>
-          <rect x="-56" y="-15" width="112" height="30" rx="15" fill="#08131f" stroke={i === 0 ? colors.POSITIVE : colors.MUTED} />
-          <text y="5" textAnchor="middle" fill={i === 0 ? colors.POSITIVE : colors.MUTED} fontSize="11" fontFamily={colors.font.mono}>{label}</text>
+        {[
+          { label: 'source_type: inline', w: 150, cx: 497 },
+          { label: 'frames', w: 72, cx: 622 },
+          { label: 'metadatas', w: 100, cx: 722 },
+          { label: 'paths', w: 72, cx: 822 },
+        ].map(({ label, w, cx }, i) => <g key={label} transform={`translate(${cx} 301)`}>
+          <rect x={-w / 2} y="-15" width={w} height="30" rx="15" fill="#08131f" stroke={i === 0 ? colors.POSITIVE : colors.MUTED} />
+          <text y="5" textAnchor="middle" fill={i === 0 ? colors.POSITIVE : colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>{label}</text>
         </g>)}
       </g>
 
@@ -129,7 +136,7 @@ export function Render({ s }: { s: SceneState }) {
           const color = row.oracle ? colors.WARM : keep ? colors.POSITIVE : colors.ACCENT;
           return <g key={i} opacity={u * (1 - dim)} transform={`translate(${x} ${y}) scale(${0.82 + u * 0.18})`}>
             <circle r={keep && select > 0 ? 22 : 17} fill={color} stroke="#07101d" strokeWidth="3" />
-            <text y="5" textAnchor="middle" fill="#07101d" fontSize="11" fontWeight="900">{row.oracle ? 'GT' : i + 1}</text>
+            <text y="5" textAnchor="middle" fill="#07101d" fontSize="12" fontWeight="900">{row.oracle ? 'GT' : i + 1}</text>
             {keep && select > 0 && <circle r="29" fill="none" stroke={colors.WARM} strokeWidth="2" strokeDasharray="6 5" />}
           </g>;
         })}
@@ -137,19 +144,19 @@ export function Render({ s }: { s: SceneState }) {
       </g>
 
       <g opacity={s.get(scene.overlapU)}>
-        <path d="M260 430 C330 382 420 382 492 430" fill="none" stroke={colors.POSITIVE} strokeWidth="4" />
-        <path d="M788 430 C860 382 950 382 1020 430" fill="none" stroke={colors.SECONDARY} strokeWidth="4" />
-        <text x="376" y="374" textAnchor="middle" fill={colors.POSITIVE} fontSize="13">reward future</text>
-        <text x="904" y="374" textAnchor="middle" fill={colors.SECONDARY} fontSize="13">old log probabilities</text>
+        <path d="M360 418 C300 426 200 426 174 438" fill="none" stroke={colors.POSITIVE} strokeWidth="4" />
+        <path d="M880 418 C950 426 1040 426 1102 438" fill="none" stroke={colors.SECONDARY} strokeWidth="4" />
+        <text x="326" y="404" textAnchor="end" fill={colors.POSITIVE} fontSize="13">reward future</text>
+        <text x="954" y="404" textAnchor="start" fill={colors.SECONDARY} fontSize="13">old log probabilities</text>
       </g>
 
       <g opacity={s.get(scene.advantagesU)}>
         <path d="M244 512 H1036" stroke={colors.WARM} strokeWidth="4" strokeDasharray="9 7" />
-        <text x="640" y="548" textAnchor="middle" fill={colors.WARM} fontSize="13" fontFamily={colors.font.mono}>driver: advantages → detached anchor → selection</text>
+        <text x="640" y="562" textAnchor="middle" fill={colors.WARM} fontSize="13" fontFamily={colors.font.mono}>driver: advantages → detached anchor → selection</text>
       </g>
       <g opacity={actor}>
-        <rect x="458" y="562" width="364" height="54" rx="24" fill="#0d2a23" stroke={colors.POSITIVE} strokeWidth="3" />
-        <text x="640" y="595" textAnchor="middle" fill={colors.POSITIVE} fontSize="16" fontWeight="850">actor update · 4 retained rows</text>
+        <rect x="458" y="576" width="364" height="46" rx="23" fill="#0d2a23" stroke={colors.POSITIVE} strokeWidth="3" />
+        <text x="640" y="605" textAnchor="middle" fill={colors.POSITIVE} fontSize="16" fontWeight="850">actor update · 4 retained rows</text>
       </g>
     </g>
 
@@ -184,7 +191,8 @@ export function Render({ s }: { s: SceneState }) {
       </g>)}
       <text x="640" y="478" textAnchor="middle" fill={colors.MUTED} fontSize="20">nine evaluated · four updated · one video decode</text>
     </g>
-  </Camera>;
+  </Camera>
+  </>;
 }
 
 export const vizScene = () => scene;

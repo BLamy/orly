@@ -50,9 +50,11 @@ const OFFS = MSGS.map((_, i) => `01JQXK5V0${i}`);
 const N = MSGS.length;
 const CHUNK = 5; // cells returned by the first catch-up GET
 
-const CAM_URL: CameraState = { x: 640, y: 250, k: 1.3 };
-const CAM_TAPE: CameraState = { x: 640, y: 340, k: 1.12 };
-const CAM_MAG: CameraState = { x: cellX(4), y: 400, k: 1.7 };
+// k stays low enough that the writer and reader nodes (168 wide, centred at
+// x 150 and 1130) remain inside the 1280-wide stage.
+const CAM_URL: CameraState = { x: 640, y: 250, k: 1.1 };
+const CAM_TAPE: CameraState = { x: 640, y: 340, k: 1.1 };
+const CAM_MAG: CameraState = { x: cellX(4), y: 380, k: 1.5 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 // ---------------------------------------------------------------------------
@@ -270,7 +272,8 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* the URL — the whole address of the stream */}
-        <g opacity={urlU * machineOp}>
+        {/* fades out while the magnifier camera is on the tape, so it never sits off-stage */}
+        <g opacity={urlU * machineOp * (1 - magU)}>
           <rect x={URLCHIP.x - 240} y={URLCHIP.y - 26} width={480} height={52} rx={12} fill={colors.PANEL} stroke={createdU > 0.2 ? colors.TEAL : colors.GRID} strokeWidth={1.5} />
           <text x={URLCHIP.x} y={URLCHIP.y + 6} textAnchor="middle" fill={colors.TEXT} fontSize={17} fontFamily={MONO}>
             https://streams.example.com/v1/stream/chat
@@ -284,14 +287,16 @@ export function Render({ s }: { s: SceneState }) {
         </g>
 
         {/* writer + reader */}
-        <g opacity={machineOp}>
+        {/* the magnifier beat zooms past the writer, so it fades for that beat */}
+        <g opacity={machineOp * (1 - magU)}>
           <ServiceNode x={WRITER.x} y={WRITER.y} kind="server" label="writer" sublabel="appends" u={writerU} />
           <ServiceNode x={READER.x} y={READER.y} kind="client" label="reader" sublabel="replays" u={readerNU} />
         </g>
 
         {/* the tape */}
         <g opacity={machineOp}>
-          <Zone x={TAPE.x0 - 60} y={TAPE.y - 78} w={railX1 - TAPE.x0 + 96} h={190} label="the durable stream — append-only" kind="group" u={createdU} color={colors.TEAL} />
+          {/* the zone is tall enough that the playhead chips sit inside it, below the label */}
+          <Zone x={TAPE.x0 - 60} y={TAPE.y - 130} w={railX1 - TAPE.x0 + 140} h={240} label="the durable stream — append-only" kind="group" u={createdU} color={colors.TEAL} />
           <line x1={TAPE.x0 - TAPE.cellW / 2} y1={TAPE.y + TAPE.cellH / 2 + 12} x2={railX1} y2={TAPE.y + TAPE.cellH / 2 + 12} stroke={colors.GRID} strokeWidth={1.5} opacity={createdU} />
 
           {/* cells + offset ticks */}
@@ -315,10 +320,10 @@ export function Render({ s }: { s: SceneState }) {
                   stroke={swept ? colors.WARM : inChunk ? colors.POSITIVE : colors.ACCENT}
                   strokeWidth={stone ? 2.2 : swept || inChunk ? 2 : 1.2}
                 />
-                <text x={x + (TAPE.cellW - 6) / 2} y={TAPE.y + 4 - drop} textAnchor="middle" fill={colors.TEXT} fontSize={11.5} fontFamily={MONO}>
+                <text x={x + (TAPE.cellW - 6) / 2} y={TAPE.y + 4 - drop} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
                   {m}
                 </text>
-                <text x={x + (TAPE.cellW - 6) / 2} y={TAPE.y + TAPE.cellH / 2 + 28} textAnchor="middle" fill={u >= 1 ? colors.MUTED : colors.GRID} fontSize={9.5} fontFamily={MONO}>
+                <text x={x + (TAPE.cellW - 6) / 2} y={TAPE.y + TAPE.cellH / 2 + 28} textAnchor="middle" fill={u >= 1 ? colors.MUTED : colors.GRID} fontSize={12} fontFamily={MONO}>
                   {`…V0${i}`}
                 </text>
               </g>
@@ -326,18 +331,19 @@ export function Render({ s }: { s: SceneState }) {
           })}
 
           {/* forward-only arrow under the ticks */}
-          <g opacity={arrowU * machineOp}>
+          <g opacity={arrowU * machineOp * (1 - magU)}>
             <line x1={cellX(0)} y1={TAPE.y + TAPE.cellH / 2 + 44} x2={cellX(0) + (cellX(N - 1) - cellX(0)) * arrowU} y2={TAPE.y + TAPE.cellH / 2 + 44} stroke={colors.SECONDARY} strokeWidth={2} />
             <path d={`M ${cellX(0) + (cellX(N - 1) - cellX(0)) * arrowU} ${TAPE.y + TAPE.cellH / 2 + 44} l -10 -5 l 0 10 Z`} fill={colors.SECONDARY} />
-            <text x={cellX(4)} y={TAPE.y + TAPE.cellH / 2 + 66} textAnchor="middle" fill={colors.SECONDARY} fontSize={12.5}>
+            {/* starts right of the magnifier ring so the ring never crosses the words */}
+            <text x={cellX(5)} y={TAPE.y + TAPE.cellH / 2 + 66} fill={colors.SECONDARY} fontSize={13}>
               offsets only ever move forward — sorted, never reused
             </text>
           </g>
 
           {/* Stream-Next-Offset response chip */}
-          <g opacity={ackU * (1 - 0.3 * dimU)}>
-            <rect x={TAPE.x0 - 40} y={TAPE.y - 118} width={330} height={30} rx={8} fill={colors.BG} stroke={colors.WARM} />
-            <text x={TAPE.x0 + 125} y={TAPE.y - 98} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
+          <g opacity={ackU * (1 - 0.3 * dimU) * (1 - magU)}>
+            <rect x={TAPE.x0 - 40} y={TAPE.y - 170} width={330} height={30} rx={8} fill={colors.BG} stroke={colors.WARM} />
+            <text x={TAPE.x0 + 125} y={TAPE.y - 150} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
               {`Stream-Next-Offset: ${OFFS[Math.max(0, Math.min(N - 1, landed - 1))]}`}
             </text>
           </g>
@@ -350,7 +356,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={cellX(4)} y={TAPE.y + TAPE.cellH / 2 + 115} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
               01JQXK5V04
             </text>
-            <text x={cellX(4)} y={TAPE.y + TAPE.cellH / 2 + 136} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+            <text x={cellX(4)} y={TAPE.y + TAPE.cellH / 2 + 136} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               opaque — remember it, hand it back
             </text>
           </g>
@@ -376,7 +382,7 @@ export function Render({ s }: { s: SceneState }) {
               {hopFrac > 0 && (
                 <g>
                   <rect x={headX - 92} y={TAPE.y - TAPE.cellH / 2 - 66} width={184} height={26} rx={8} fill={colors.BG} stroke={hopFrac < 0.5 ? colors.ACCENT : colors.WARM} />
-                  <text x={headX} y={TAPE.y - TAPE.cellH / 2 - 48} textAnchor="middle" fill={hopFrac < 0.5 ? colors.ACCENT : colors.WARM} fontSize={11.5} fontFamily={MONO}>
+                  <text x={headX} y={TAPE.y - TAPE.cellH / 2 - 48} textAnchor="middle" fill={hopFrac < 0.5 ? colors.ACCENT : colors.WARM} fontSize={13} fontFamily={MONO}>
                     {hopFrac < 0.5 ? 'GET ?offset=…' : 'data + next offset'}
                   </text>
                 </g>
@@ -385,7 +391,7 @@ export function Render({ s }: { s: SceneState }) {
               {sweepU > 0 && sweepU < 1 && (
                 <g>
                   <rect x={headX - 66} y={TAPE.y - TAPE.cellH / 2 - 66} width={132} height={26} rx={8} fill={colors.BG} stroke={colors.WARM} />
-                  <text x={headX} y={TAPE.y - TAPE.cellH / 2 - 48} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontFamily={MONO}>
+                  <text x={headX} y={TAPE.y - TAPE.cellH / 2 - 48} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
                     GET ?offset=-1
                   </text>
                 </g>
@@ -397,11 +403,11 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={nowU * machineOp}>
             <path d={`M ${railX1 - 6} ${TAPE.y - TAPE.cellH / 2 - 18} l 9 -14 l -18 0 Z`} fill={colors.WARM} />
             <rect x={railX1 - 78} y={TAPE.y - TAPE.cellH / 2 - 66} width={148} height={26} rx={8} fill={colors.BG} stroke={colors.WARM} />
-            <text x={railX1 - 4} y={TAPE.y - TAPE.cellH / 2 - 48} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontFamily={MONO}>
+            <text x={railX1 - 4} y={TAPE.y - TAPE.cellH / 2 - 48} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
               GET ?offset=now
             </text>
             <rect x={railX1 + 8} y={TAPE.y - TAPE.cellH / 2} width={TAPE.cellW - 6} height={TAPE.cellH} rx={7} fill="none" stroke={colors.GRID} strokeDasharray="5 4" />
-            <text x={railX1 + 8 + (TAPE.cellW - 6) / 2} y={TAPE.y + 4} textAnchor="middle" fill={colors.MUTED} fontSize={10}>
+            <text x={railX1 + 8 + (TAPE.cellW - 6) / 2} y={TAPE.y + 4} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               future
             </text>
           </g>
@@ -431,7 +437,7 @@ export function Render({ s }: { s: SceneState }) {
           {bounceU > 0 && bounceU < 1 && (
             <g>
               <circle cx={bounceP.x} cy={bounceP.y} r={9} fill={colors.NEGATIVE} />
-              <text x={bounceP.x + 16} y={bounceP.y - 8} fill={colors.NEGATIVE} fontSize={11.5} fontFamily={MONO}>
+              <text x={bounceP.x + 16} y={bounceP.y - 8} fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
                 overwrite? no.
               </text>
             </g>

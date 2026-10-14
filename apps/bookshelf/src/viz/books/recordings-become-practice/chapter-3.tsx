@@ -19,6 +19,10 @@ const features=[[1,0,.2],[1,1,.1],[1,.2,.7]];
 const train=(()=>{let w=[0,0,0];const frames:number[][]=[];for(let i=0;i<18;i++){frames.push([...w]);const scores=features.map(f=>f.reduce((v,x,j)=>v+x*w[j],0)),ex=scores.map(Math.exp),sum=ex.reduce((a,b)=>a+b,0),prob=ex.map(v=>v/sum);w=w.map((v,j)=>v-.35*features.reduce((g,f,k)=>g+(prob[k]-(k===1?1:0))*f[j],0));}return frames;})();
 const bar=scaleLinear().domain([-1,3]).range([0,370]);
 const curve=line<[number,number]>().x(d=>d[0]).y(d=>d[1]);
+// Probability the model assigns to the reviewed target (candidate 2) at each training step.
+const pTarget=train.map(w=>{const sc=features.map(f=>f.reduce((v,x,j)=>v+x*w[j],0)),ex=sc.map(Math.exp),sum=ex.reduce((a,b)=>a+b,0);return ex[1]/sum;});
+const probY=scaleLinear().domain([0,1]).range([520,462]);
+const probX=(i:number)=>82+i*(470/(train.length-1));
 export function buildScene(){return chapter(CAPTIONS);}const scene=buildScene();
 export function Render({s}:{s:SceneState}){
   const p=s.get(scene.phase),update=on(p,2),review=on(p,4),distinction=on(p,5),exportU=on(p,6),u=clamp((p-2)/2),pos=u*(train.length-1),idx=Math.floor(pos),weights=train[idx].map((v,j)=>lerp(v,train[Math.min(idx+1,train.length-1)][j],pos-idx));
@@ -31,13 +35,13 @@ export function Render({s}:{s:SceneState}){
       {weights.map((w,i)=><g key={i}><Label x={678} y={184+i*53} size={15}>feature {i+1}</Label><line x1={815} x2={1150} y1={179+i*53} y2={179+i*53} stroke={C.muted}/><circle cx={lerp(820,1138,(w+1)/4)} cy={179+i*53} r={8} fill={C.model}/></g>)}
       <Label x={678} y={367} size={14} color={C.pending}>Held-out mistake stays outside weight updates</Label>
     </Panel>
-    <g opacity={update*(1-exportU)}><path d={curve(train.map((w,i)=>[82+i*23,490-30*w[1]] as [number,number]))!} stroke={C.model} fill='none' strokeWidth={3}/><Label x={82} y={525} size={14} color={C.muted}>schematic training progression · ranking scores</Label></g>
+    <g opacity={update*(1-exportU)}><Label x={82} y={436} size={14} color={C.muted}>P(reviewed target) per training step · dashed = chance (1 of 3)</Label><line x1={82} x2={552} y1={probY(1/3)} y2={probY(1/3)} stroke={C.muted} strokeDasharray='4 4'/><path d={curve(pTarget.slice(0,idx+1).map((v,i)=>[probX(i),probY(v)] as [number,number]))!} stroke={C.model} fill='none' strokeWidth={3}/><circle cx={probX(idx)} cy={probY(pTarget[idx])} r={5} fill={C.model}/></g>
     <g opacity={review*(1-exportU)}><Chip x={676} y={437} w={529} text='Teacher proposal → audit → training target' color={C.pending}/></g>
-    <g opacity={distinction*(1-exportU)}><Label x={678} y={513} color={C.good} size={16}>Training changes weights</Label><Label x={678} y={542} color={C.observation} size={16}>Decoding changes the answering procedure</Label></g>
+    <g opacity={distinction*(1-exportU)}><Label x={678} y={485} color={C.good} size={16}>Training changes weights</Label><Label x={678} y={513} color={C.observation} size={16}>Decoding changes the answering procedure</Label></g>
     <Panel x={295} y={218} w={690} h={185} title='Native checkpoint → browser artifact' color={C.good} opacity={exportU}>
-      <Chip x={326} y={284} w={215} text='small trained ranker' color={C.model}/><Arrow x1={558} y1={300} x2={690} y2={300} opacity={exportU}/><Chip x={708} y={284} w={243} text='local browser inference' color={C.good}/><Label x={640} y={366} anchor='middle' size={17}>Compare decisions after export before deployment</Label>
+      <Chip x={326} y={270} w={215} text='small trained ranker' color={C.model}/><Arrow x1={558} y1={286} x2={690} y2={286} opacity={exportU}/><Chip x={708} y={270} w={243} text='local browser inference' color={C.good}/><Label x={640} y={344} anchor='middle' size={17}>Compare decisions after export before deployment</Label>
     </Panel>
-    <Label x={640} y={560} anchor='middle' size={16} color={C.muted}>{exportU>.5?'One useful ranking task is the initial goal':'Counts and a linear baseline establish whether learning is useful'}</Label>
+    <Label x={640} y={560} anchor='middle' size={16} color={C.muted}>{exportU>.5?'The first win: a small policy that ranks one task well':'Counts and a linear baseline establish whether learning is useful'}</Label>
   </Camera></>;
 }
 export const vizScene=()=>scene;

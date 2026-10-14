@@ -79,7 +79,7 @@ const DOCKS = [
 const BADGES = ['persistent', 'addressable', 'observable', 'resumable', 'forkable'] as const;
 
 // camera marks
-const CAM_BOX: CameraState = { x: 400, y: 300, k: 1.42 };
+const CAM_BOX: CameraState = { x: 400, y: 300, k: 1.3 };
 const CAM_PHONE: CameraState = { x: 620, y: 300, k: 1.22 };
 const CAM_TAPE: CameraState = { x: 650, y: 440, k: 1.24 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
@@ -283,13 +283,18 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  // the sealed-session dashes dim under the lid, glow for the Kleppmann beat
-  const innerAlpha = (0.45 + 0.55 * klU) * (1 - 0.75 * lidU);
+  // the sealed-session dashes stay visible under the closed lid (dimmed, not gone),
+  // glow for the Kleppmann beat
+  const innerAlpha = (0.6 + 0.4 * klU) * (1 - 0.3 * lidU);
+
+  // the agent box empties as its events leave for the tape, then returns as the
+  // subscriber chip when chipU rises (no empty outline left floating in beats 6-8)
+  const boxAlpha = Math.max(1 - invU, chipU);
 
   // the agent box morphs into the subscriber chip as chipU rises
   const bx = BOX.x + (560 - BOX.x) * chipU;
   const by = BOX.y + (392 - BOX.y) * chipU;
-  const bw = BOX.w - (BOX.w - 150) * chipU;
+  const bw = BOX.w - (BOX.w - 180) * chipU;
   const bh = BOX.h - (BOX.h - 34) * chipU;
 
   // phone → padlock packet path (bounces back when pktU retreats)
@@ -311,7 +316,7 @@ export function Render({ s }: { s: SceneState }) {
             </text>
           </g>
           {/* the box itself → later the subscriber chip */}
-          <rect x={bx} y={by} width={bw} height={bh} rx={10} fill={colors.PANEL} stroke={chipU > 0.5 ? colors.ACCENT : colors.GRID} strokeWidth={1.5} />
+          <rect x={bx} y={by} width={bw} height={bh} rx={10} fill={colors.PANEL} stroke={chipU > 0.5 ? colors.ACCENT : colors.GRID} strokeWidth={1.5} opacity={boxAlpha} />
           {chipU > 0.55 && (
             <text x={bx + bw / 2} y={by + bh / 2 + 4} textAnchor="middle" fill={colors.ACCENT} fontSize={12.5} opacity={(chipU - 0.55) / 0.45}>
               the model — a subscriber
@@ -335,13 +340,13 @@ export function Render({ s }: { s: SceneState }) {
           const u = clamp01(invU * 1.55 - i * 0.05);
           const x = from.x + (SLOT(i) - from.x) * u;
           const y = from.y + (TAPE.y - from.y) * u;
-          const preAlpha = boxU * innerAlpha * (1 - 0.85 * lidU);
+          const preAlpha = boxU * innerAlpha * (1 - 0.2 * lidU);
           const alpha = (preAlpha + (1 - preAlpha) * u) * dimU;
           return (
             <g key={i}>
               <EventDash x={x} y={y} color={EVENT_COLOR[e.type]} alpha={alpha} w={26 - 8 * u} h={10 + 8 * u} />
               {e.label && u > 0.92 && (
-                <text x={x} y={TAPE.y + (i % 2 === 0 ? 30 : -22)} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={mono} opacity={(u - 0.92) / 0.08 * dimU}>
+                <text x={x} y={TAPE.y + (i % 2 === 0 ? 30 : -22)} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={mono} opacity={(u - 0.92) / 0.08 * dimU}>
                   {e.label}
                 </text>
               )}
@@ -362,7 +367,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* padlock at the box edge */}
           <rect x={BOX.x + BOX.w + 2} y={294} width={26} height={20} rx={4} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.5} />
           <path d={`M ${BOX.x + BOX.w + 7} 294 v -7 a 8 8 0 0 1 16 0 v 7`} fill="none" stroke={colors.NEGATIVE} strokeWidth={2} />
-          <text x={BOX.x + BOX.w + 15} y={332} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11.5}>
+          <text x={BOX.x + BOX.w + 15} y={332} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12}>
             not addressable
           </text>
         </g>
@@ -376,7 +381,7 @@ export function Render({ s }: { s: SceneState }) {
               {Array.from({ length: 19 }, (_, k) => (
                 <line key={k} x1={TAPE.x0 + 15 + k * 50} y1={TAPE.y + 12} x2={TAPE.x0 + 15 + k * 50} y2={TAPE.y + 17} stroke={colors.GRID} strokeWidth={1} opacity={0.7 * (tapeU - 0.9) * 10} />
               ))}
-              <text x={TAPE.x1} y={TAPE.y + 32} textAnchor="end" fill={colors.MUTED} fontSize={10.5} opacity={(tapeU - 0.9) * 10}>
+              <text x={TAPE.x1} y={TAPE.y + 32} textAnchor="end" fill={colors.MUTED} fontSize={12} opacity={(tapeU - 0.9) * 10}>
                 append-only → offsets grow this way
               </text>
             </>
@@ -384,8 +389,8 @@ export function Render({ s }: { s: SceneState }) {
           {/* URL chip */}
           {urlU > 0 && (
             <g opacity={urlU}>
-              <rect x={TAPE.x0 - 6} y={TAPE.y - 56} width={252} height={26} rx={13} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.2} />
-              <text x={TAPE.x0 + 120} y={TAPE.y - 39} textAnchor="middle" fill={colors.ACCENT} fontSize={12.5} fontFamily={mono}>
+              <rect x={TAPE.x0 - 6} y={TAPE.y - 70} width={252} height={26} rx={13} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.2} />
+              <text x={TAPE.x0 + 120} y={TAPE.y - 53} textAnchor="middle" fill={colors.ACCENT} fontSize={12.5} fontFamily={mono}>
                 /coder/landing-page-build
               </text>
             </g>

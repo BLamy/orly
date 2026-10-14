@@ -26,9 +26,9 @@ const mono = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 /** Stage 1280×720; the bottom ~12% (y ≳ 630) stays clear for captions. */
 const TAPE = { x: 120, y: 140, w: 1040, h: 26 };
 const MEMO = { x: 400, y: 250, w: 480, h: 110 };
-const GRID = { x: 306, y: 268, cell: 56, gap: 5 };
-const DETAIL = { x: 986, y: 300 };
-const BUG_CARD = { x: 830, y: 470, w: 330, h: 118 };
+const GRID = { x: 216, y: 278, cell: 50, gap: 5 };
+const DETAIL = { x: 900, y: 290 };
+const BUG_CARD = { x: 900, y: 396, w: 330, h: 140 };
 
 const COLS = 12;
 const ROWS = 4;
@@ -39,12 +39,10 @@ const COL_LABELS = Array.from({ length: COLS }, (_, j) => `${j * 20}s`);
 /** The hot cell: the payment POST that came back 500 (network, near the end). */
 const HOT: [number, number] = [1, 10];
 
-const CAM_GRID: CameraState = { x: 640, y: 380, k: 1.04 };
-const CAM_HOT: CameraState = {
-  x: GRID.x + HOT[1] * (GRID.cell + GRID.gap) + GRID.cell / 2,
-  y: GRID.y + HOT[0] * (GRID.cell + GRID.gap) + GRID.cell / 2 + 30,
-  k: 1.55,
-};
+/* Camera frames keep the row labels, the hot cell and its detail readable:
+ * the tape stays on stage above the grid while the push is in. */
+const CAM_GRID: CameraState = { x: 530, y: 370, k: 1.1 };
+const CAM_HOT: CameraState = { x: 615, y: 365, k: 1.25 };
 const CAM_CLOSE: CameraState = { x: 640, y: 350, k: 0.98 };
 
 /* ------------------------------------------------------------------ data */
@@ -208,7 +206,7 @@ function MemoryCard({ u }: { u: number }) {
   return (
     <g transform={`translate(${x}, ${y + (1 - uu) * 10})`} opacity={uu}>
       <rect width={w} height={h} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} strokeDasharray="6 5" />
-      <text x={20} y={30} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+      <text x={20} y={30} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
         agent memory
       </text>
       <text x={20} y={60} fill={colors.TEXT} fontSize={16} fontStyle="italic" opacity={0.85}>
@@ -231,7 +229,7 @@ function DetailLabel({ u }: { u: number }) {
       <rect x={-12} y={-24} width={214} height={82} rx={9} fill={colors.BG} opacity={0.85} />
       <rect x={-12} y={-24} width={214} height={82} rx={9} fill="none" stroke={colors.NEGATIVE} strokeWidth={1.5} />
       {lines.map((ln, i) => (
-        <text key={ln} y={i * 22 - 4} fill={i === 1 ? colors.NEGATIVE : colors.TEXT} fontSize={12.5} fontFamily={mono} fontWeight={i === 1 ? 700 : 400}>
+        <text key={ln} y={i * 22 - 4} fill={i === 1 ? colors.NEGATIVE : colors.TEXT} fontSize={13} fontFamily={mono} fontWeight={i === 1 ? 700 : 400}>
           {ln}
         </text>
       ))}
@@ -247,20 +245,23 @@ function BugCard({ u, dim }: { u: number; dim: number }) {
   return (
     <g transform={`translate(${x}, ${y + (1 - uu) * 12})`} opacity={uu * (1 - 0.3 * dim)}>
       <rect width={w} height={h} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.5} />
-      <text x={18} y={26} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+      <text x={18} y={26} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
         bugs
       </text>
-      <text x={18} y={50} fill={colors.NEGATIVE} fontSize={13} fontWeight={800} fontFamily={mono}>
+      <text x={18} y={50} fill={colors.NEGATIVE} fontSize={14} fontWeight={800} fontFamily={mono}>
         bug-002 · severity: critical
       </text>
-      <text x={18} y={74} fill={colors.TEXT} fontSize={12.5}>
+      <text x={18} y={76} fill={colors.TEXT} fontSize={14}>
         Checkout fails with 500 error on
       </text>
-      <text x={18} y={92} fill={colors.TEXT} fontSize={12.5}>
+      <text x={18} y={96} fill={colors.TEXT} fontSize={14}>
         payment submission
       </text>
-      <text x={18} y={110} fill={colors.SECONDARY} fontSize={10.5} fontFamily={mono}>
-        replay_recording_id: b5f2a3c1… · test_run_id: run-001
+      <text x={18} y={120} fill={colors.SECONDARY} fontSize={12} fontFamily={mono}>
+        replay_recording_id: b5f2a3c1…
+      </text>
+      <text x={18} y={136} fill={colors.SECONDARY} fontSize={12} fontFamily={mono}>
+        test_run_id: run-001
       </text>
     </g>
   );
@@ -304,9 +305,9 @@ function renderFrame(s: SceneState) {
             colLabels={COL_LABELS}
             emphasize={0.9}
             highlight={{ cell: HOT, color: colors.NEGATIVE, u: spot }}
-            labelSize={11.5}
+            labelSize={14}
           />
-          <text x={GRID.x} y={GRID.y - 34} fill={colors.MUTED} fontSize={12}>
+          <text x={GRID.x} y={GRID.y - 34} fill={colors.MUTED} fontSize={13}>
             what each moment contains — signals × time
           </text>
         </g>

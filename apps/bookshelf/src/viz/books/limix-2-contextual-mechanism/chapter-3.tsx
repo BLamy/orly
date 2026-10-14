@@ -33,14 +33,14 @@ export function buildScene() {
 
   tl.caption({ at: 6.4, dur: 5.5, text: 'Each episode divides one table into context rows that keep their observations and query rows that must infer what is hidden.' });
   tl.tween(splitU, 1, { at: 7.0, dur: 1.4, ease: ease.enter });
-  tl.tween(cam, { x: 500, y: 372, k: 1.12 }, { at: 7.2, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 357, k: 1.08 }, { at: 7.2, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 12.4, dur: 5.5, text: 'First, hide one entry. Its value becomes the shared missing embedding, while its column code still says what kind of evidence belongs there.' });
   tl.tween(maskU, 1, { at: 13.0, dur: 1.0, ease: ease.pop });
 
   tl.caption({ at: 18.4, dur: 5.5, text: 'Then hide an entire query column. The same network must use the remaining variables and the context table to reconstruct every blank.' });
   tl.tween(maskMode, 1, { at: 19.0, dur: 1.2, ease: ease.move });
-  tl.tween(cam, { x: 560, y: 410, k: 1.18 }, { at: 19.0, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 357, k: 1.08 }, { at: 19.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 24.4, dur: 5.5, text: 'Finally, hide a block. Mixing entry, column, and block masks prevents the model from specializing to one easy reconstruction pattern.' });
   tl.tween(maskMode, 2, { at: 25.0, dur: 1.2, ease: ease.move });
@@ -85,7 +85,7 @@ export function Render({ s }: { s: SceneState }) {
         const restored = m0 && reconstruct > 0.15;
         return <g key={i} opacity={u}>
           <rect x={x} y={y} width="48" height="48" rx="10" fill={m0 && mask > 0.1 ? '#2b2513' : '#101827'} stroke={m0 && mask > 0.1 ? restored ? colors.POSITIVE : colors.WARM : r >= 5 ? colors.SECONDARY : colors.ACCENT} strokeWidth={m0 && mask > 0.1 ? 3 : 1.3} />
-          <text x={x + 24} y={y + 29} textAnchor="middle" fill={m0 && mask > 0.1 ? restored ? colors.POSITIVE : colors.WARM : colors.MUTED} fontSize="10" fontFamily={colors.font.mono}>{m0 && mask > 0.1 ? restored ? `x${r}${c}` : 'MASK' : `${(r * 3 + c * 5) % 19}`}</text>
+          <text x={x + 24} y={y + 29} textAnchor="middle" fill={m0 && mask > 0.1 ? restored ? colors.POSITIVE : colors.WARM : colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>{m0 && mask > 0.1 ? restored ? `x${r}${c}` : 'MASK' : `${(r * 3 + c * 5) % 19}`}</text>
         </g>;
       })}
       <g opacity={split}>
@@ -95,22 +95,23 @@ export function Render({ s }: { s: SceneState }) {
       </g>
       <g opacity={mask}>
         <rect x="812" y="145" width="330" height="170" rx="30" fill="#141c2b" stroke={colors.WARM} strokeWidth="2.5" />
-        <text x="977" y="181" textAnchor="middle" fill={colors.WARM} fontSize="15" fontWeight="800">three mask patterns</text>
+        <text x="977" y="181" textAnchor="middle" fill={colors.WARM} fontSize="16" fontWeight="800">three mask patterns</text>
         {['individual entries', 'query columns', 'entry blocks'].map((label, i) => <g key={label} opacity={Math.max(0.16, 1 - Math.abs(mode - i))}>
-          <circle cx="860" cy={220 + i * 35} r="7" fill={colors.WARM} />
-          <text x="880" y={225 + i * 35} fill={colors.TEXT} fontSize="13">{label}</text>
+          <circle cx="850" cy={220 + i * 35} r="7" fill={colors.WARM} />
+          <text x="870" y={225 + i * 35} fill={colors.TEXT} fontSize="14">{label}</text>
         </g>)}
       </g>
       <MathLabel tex={'q_\\theta(x_{i,j} \\mid x_{i,-\\pi_i}, X_{ct}, y_{ct})'} x={976} y={360} fontSize={20} opacity={s.get(scene.targetU)} />
       <g opacity={s.get(scene.invariantU)}>
         <rect x="804" y="402" width="346" height="78" rx="24" fill="#10261f" stroke={colors.POSITIVE} strokeWidth="2.5" />
-        <text x="977" y="432" textAnchor="middle" fill={colors.POSITIVE} fontSize="13" fontWeight="800">query-batch invariant</text>
-        <text x="977" y="458" textAnchor="middle" fill={colors.MUTED} fontSize="12">query → context · never query → query</text>
+        <text x="977" y="432" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontWeight="800">query-batch invariant</text>
+        <text x="977" y="458" textAnchor="middle" fill={colors.MUTED} fontSize="13">query → context · never query → query</text>
       </g>
       <g opacity={outcomes}>
-        {['class probabilities', 'regression value', 'imputed matrix'].map((label, i) => <g key={label} transform={`translate(${830 + i * 140} 548)`}>
-          <circle r="49" fill="#101827" stroke={[colors.ACCENT, colors.SECONDARY, colors.POSITIVE][i]} strokeWidth="3" />
-          <text y="4" textAnchor="middle" fill={colors.TEXT} fontSize="10">{label}</text>
+        {[['class', 'probabilities'], ['regression', 'value'], ['imputed', 'matrix']].map(([a, b], i) => <g key={a} transform={`translate(${830 + i * 140} 542)`}>
+          <circle r="54" fill="#101827" stroke={[colors.ACCENT, colors.SECONDARY, colors.POSITIVE][i]} strokeWidth="3" />
+          <text y="-2" textAnchor="middle" fill={colors.TEXT} fontSize="13">{a}</text>
+          <text y="15" textAnchor="middle" fill={colors.TEXT} fontSize="13">{b}</text>
         </g>)}
       </g>
     </g>

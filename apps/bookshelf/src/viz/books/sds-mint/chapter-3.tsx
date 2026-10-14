@@ -54,14 +54,17 @@ const METERS = [
   { name: 'gas', budget: 100, total: 50, color: colors.WARM },
 ] as const;
 
-const SRC = { x: 90, y0: 180, rowH: 54, w: 330 } as const;
-const MID = { x: 480, y0: 180, rowH: 54, w: 330 } as const;
-const MET = { x: 900, y0: 170, w: 300, h: 92, gap: 40 } as const;
-const NOTIF = { qx: 900, qy: 470, px: 1140, py: 470 } as const;
+// Columns sit inside the stage at home (k = 1) so every camera push below keeps
+// its subject on screen: raw log → mapper → meters → notification.
+const SRC = { x: 70, y0: 190, rowH: 60, w: 320 } as const;
+const MID = { x: 440, y0: 190, rowH: 60, w: 320 } as const;
+const MET = { x: 860, y0: 170, w: 270, h: 92, gap: 40 } as const;
+const NOTIF = { qx: 1000, qy: 470, px: 1190, py: 470 } as const;
+const METERS_ROW = [MET.y0, MET.y0 + MET.h + MET.gap] as const; // top of each meter bar's row
 
-const CAM_SRC: CameraState = { x: 420, y: 300, k: 1.25 };
-const CAM_MET: CameraState = { x: 960, y: 260, k: 1.3 };
-const CAM_NOTIF: CameraState = { x: 990, y: 420, k: 1.3 };
+const CAM_SRC: CameraState = { x: 415, y: 320, k: 1.25 };
+const CAM_MET: CameraState = { x: 825, y: 280, k: 1.2 };
+const CAM_NOTIF: CameraState = { x: 1050, y: 360, k: 1.2 };
 
 export interface Scene {
   tl: Timeline;
@@ -199,11 +202,12 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* ---- raw log lines ---- */}
-        <g opacity={srcU * dimAll}>
+        {/* the raw column hands over to the meters: it fades out as they fill */}
+        <g opacity={srcU * dimAll * (1 - meterU)}>
           <text x={SRC.x} y={SRC.y0 - 36} fill={colors.TEXT} fontSize={15}>
             the raw month
           </text>
-          <text x={SRC.x} y={SRC.y0 - 16} fill={colors.MUTED} fontSize={10.5} fontFamily="ui-monospace, monospace">
+          <text x={SRC.x} y={SRC.y0 - 16} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
             user_id · timestamp · seller · amount
           </text>
           {LOGS.map((l, i) => {
@@ -212,14 +216,14 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={i} opacity={appear * (1 - fall)}>
                 <rect x={SRC.x} y={SRC.y0 + i * SRC.rowH + fall * 80} width={SRC.w} height={SRC.rowH - 14} rx={8} fill={colors.PANEL} stroke={l.keep ? colors.GRID : colors.NEGATIVE} strokeWidth={1.1} />
-                <text x={SRC.x + 12} y={SRC.y0 + i * SRC.rowH + 25 + fall * 80} fill={l.keep ? colors.MUTED : colors.NEGATIVE} fontSize={10.5} fontFamily="ui-monospace, monospace">
+                <text x={SRC.x + 12} y={SRC.y0 + i * SRC.rowH + 25 + fall * 80} fill={l.keep ? colors.MUTED : colors.NEGATIVE} fontSize={12.5} fontFamily="ui-monospace, monospace">
                   {l.line}
                 </text>
               </g>
             );
           })}
-          {dropU > 0.15 && dropU < 1 && (
-            <text x={SRC.x + SRC.w / 2} y={SRC.y0 + 4 * SRC.rowH + 60} textAnchor="middle" fill={colors.NEGATIVE} fontSize={10.5} fontFamily="ui-monospace, monospace">
+          {dropU > 0.15 && (
+            <text x={SRC.x + SRC.w / 2} y={SRC.y0 + 3 * SRC.rowH + 66} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily="ui-monospace, monospace" opacity={clamp01(dropU * 2)}>
               period != current_year_month → skipped
             </text>
           )}
@@ -230,20 +234,27 @@ export function Render({ s }: { s: SceneState }) {
           {KEYED.map((k, i) => {
             const u = clamp01(mapU * 2.4 - i * 0.55);
             if (u <= 0) return null;
-            const x = lerp(SRC.x + SRC.w, MID.x, u);
+            // each pair drifts toward the meters as its amount pours in, then dissolves
+            const pour = fillU;
+            const x = lerp(lerp(SRC.x + SRC.w, MID.x, u), MID.x + 110, pour);
             const y = SRC.y0 + i * MID.rowH;
             return (
-              <g key={i} opacity={u}>
+              <g key={i} opacity={u * (1 - clamp01(pour / 0.6))}>
                 <rect x={x} y={y} width={MID.w} height={MID.rowH - 14} rx={8} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.3} />
-                <text x={x + 12} y={y + 25} fill={colors.TEXT} fontSize={10.5} fontFamily="ui-monospace, monospace">
+                <text x={x + 12} y={y + 25} fill={colors.TEXT} fontSize={12.5} fontFamily="ui-monospace, monospace">
                   {k}
                 </text>
               </g>
             );
           })}
           {mapU > 0.3 && (
-            <text x={MID.x} y={SRC.y0 - 16} fill={colors.ACCENT} fontSize={10.5} fontFamily="ui-monospace, monospace" opacity={clamp01(mapU * 2)}>
+            <text x={MID.x} y={SRC.y0 - 16} fill={colors.ACCENT} fontSize={12} fontFamily="ui-monospace, monospace" opacity={clamp01(mapU * 2) * (1 - meterU)}>
               mapper: categorize(seller) · keep current_year_month
+            </text>
+          )}
+          {mapU > 0.3 && (
+            <text x={MID.x} y={SRC.y0 + 3 * MID.rowH + 14} fill={colors.ACCENT} fontSize={12.5} opacity={clamp01(mapU * 2) * (1 - meterU)}>
+              mapper: one line in, one keyed pair out
             </text>
           )}
         </g>
@@ -254,38 +265,41 @@ export function Render({ s }: { s: SceneState }) {
             monthly spending vs budget
           </text>
           {METERS.map((m, i) => {
-            const y = MET.y0 + i * (MET.h + MET.gap);
+            const y = METERS_ROW[i];
             const frac = clamp01((m.total * fillU) / (m.budget * 1.4));
             const over = m.total * fillU > m.budget;
             return (
               <g key={m.name}>
-                <text x={MET.x} y={y - 8} fill={m.color} fontSize={12} fontFamily="ui-monospace, monospace">
+                <text x={MET.x} y={y - 8} fill={m.color} fontSize={13} fontFamily="ui-monospace, monospace">
                   {m.name}
                 </text>
                 <rect x={MET.x} y={y} width={MET.w} height={30} rx={8} fill={colors.BG} stroke={colors.GRID} />
                 <rect x={MET.x} y={y} width={MET.w * frac} height={30} rx={8} fill={m.color} opacity={0.7} />
                 {/* budget line */}
                 <line x1={MET.x + MET.w * (m.budget / (m.budget * 1.4))} y1={y - 8} x2={MET.x + MET.w * (m.budget / (m.budget * 1.4))} y2={y + 38} stroke={over && alarmU > 0.3 ? colors.NEGATIVE : colors.TEXT} strokeWidth={2} strokeDasharray="5 4" />
-                <text x={MET.x + MET.w + 12} y={y + 20} fill={over && alarmU > 0.3 ? colors.NEGATIVE : colors.MUTED} fontSize={11.5} fontFamily="ui-monospace, monospace">
+                <text x={MET.x + MET.w + 12} y={y + 20} fill={over && alarmU > 0.3 ? colors.NEGATIVE : colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
                   {Math.round(m.total * fillU)} / {m.budget}
                 </text>
                 {over && alarmU > 0.3 && (
-                  <text x={MET.x + MET.w * 0.5} y={y + 52} fill={colors.NEGATIVE} fontSize={10.5} fontFamily="ui-monospace, monospace" opacity={alarmU}>
+                  <text x={MET.x + MET.w / 2} y={y + 56} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily="ui-monospace, monospace" opacity={alarmU}>
                     handle_budget_notifications(key, total)
                   </text>
                 )}
               </g>
             );
           })}
+          <text x={MET.x} y={METERS_ROW[1] + 46} fill={colors.MUTED} fontSize={12.5} opacity={clamp01(fillU * 2)}>
+            reducer: same key in, one sum out
+          </text>
         </g>
 
         {/* ---- notification queue + phone ---- */}
         <g opacity={clamp01(queueU * 4) * dimAll}>
           <rect x={NOTIF.qx - 90} y={NOTIF.qy - 24} width={180} height={48} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.3} />
-          <text x={NOTIF.qx} y={NOTIF.qy - 2} textAnchor="middle" fill={colors.SECONDARY} fontSize={11.5}>
+          <text x={NOTIF.qx} y={NOTIF.qy - 2} textAnchor="middle" fill={colors.SECONDARY} fontSize={13}>
             Notification Service
           </text>
-          <text x={NOTIF.qx} y={NOTIF.qy + 15} textAnchor="middle" fill={colors.MUTED} fontSize={9} fontFamily="ui-monospace, monospace">
+          <text x={NOTIF.qx} y={NOTIF.qy + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
             queue · async
           </text>
         </g>
@@ -293,15 +307,18 @@ export function Render({ s }: { s: SceneState }) {
           <Packet from={{ x: MET.x + 120, y: MET.y0 + 40 }} to={{ x: NOTIF.qx, y: NOTIF.qy - 26 }} u={queueU} r={6.5} color={colors.NEGATIVE} />
         )}
         <g opacity={buzzU * dimAll}>
-          <rect x={NOTIF.px - 34} y={NOTIF.py - 56} width={68} height={112} rx={12} fill={colors.PANEL} stroke={colors.TEXT} strokeWidth={1.5} />
-          <rect x={NOTIF.px - 26} y={NOTIF.py - 40} width={52} height={34} rx={5} fill={colors.NEGATIVE} opacity={0.85} />
-          <text x={NOTIF.px} y={NOTIF.py - 26} textAnchor="middle" fill={colors.BG} fontSize={7.5} fontFamily="ui-monospace, monospace">
-            shopping budget
+          <rect x={NOTIF.px - 55} y={NOTIF.py - 56} width={110} height={112} rx={12} fill={colors.PANEL} stroke={colors.TEXT} strokeWidth={1.5} />
+          <rect x={NOTIF.px - 46} y={NOTIF.py - 46} width={92} height={56} rx={5} fill={colors.NEGATIVE} opacity={0.85} />
+          <text x={NOTIF.px} y={NOTIF.py - 26} textAnchor="middle" fill={colors.BG} fontSize={12} fontFamily="ui-monospace, monospace">
+            shopping
           </text>
-          <text x={NOTIF.px} y={NOTIF.py - 16} textAnchor="middle" fill={colors.BG} fontSize={7.5} fontFamily="ui-monospace, monospace">
+          <text x={NOTIF.px} y={NOTIF.py - 10} textAnchor="middle" fill={colors.BG} fontSize={12} fontFamily="ui-monospace, monospace">
+            budget
+          </text>
+          <text x={NOTIF.px} y={NOTIF.py + 6} textAnchor="middle" fill={colors.BG} fontSize={12} fontFamily="ui-monospace, monospace">
             exceeded
           </text>
-          <text x={NOTIF.px} y={NOTIF.py + 74} textAnchor="middle" fill={colors.MUTED} fontSize={10}>
+          <text x={NOTIF.px} y={NOTIF.py + 74} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
             text / email
           </text>
         </g>
@@ -309,13 +326,13 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- monthly_spending stamp ---- */}
         <g opacity={tblU * dimAll}>
           <rect x={520} y={470} width={300} height={78} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.3} />
-          <text x={670} y={496} textAnchor="middle" fill={colors.POSITIVE} fontSize={11.5} fontFamily="ui-monospace, monospace">
+          <text x={670} y={496} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily="ui-monospace, monospace">
             monthly_spending
           </text>
-          <text x={670} y={516} textAnchor="middle" fill={colors.TEXT} fontSize={10} fontFamily="ui-monospace, monospace">
+          <text x={670} y={516} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily="ui-monospace, monospace">
             2016-01 · shopping · 125
           </text>
-          <text x={670} y={534} textAnchor="middle" fill={colors.TEXT} fontSize={10} fontFamily="ui-monospace, monospace">
+          <text x={670} y={534} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily="ui-monospace, monospace">
             2016-01 · gas · 50
           </text>
         </g>

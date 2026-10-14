@@ -30,10 +30,11 @@ const BROWSER = { x: 100, y: 84, w: 520, h: 306 };
 const JOURNEY = { x: 680, y: 148, w: 300 };
 const TAPE = { x: 100, y: 540, w: 1080, h: 24 };
 const LEGEND = { x: 100, y: 478 };
-const RUN_CARD = { x: 820, y: 388, w: 360, h: 104 };
+const RUN_CARD = { x: 820, y: 330, w: 360, h: 104 };
 
-const CAM_BROWSER: CameraState = { x: 430, y: 262, k: 1.26 };
-const CAM_TAPE: CameraState = { x: 640, y: 432, k: 1.12 };
+// Camera keyframes keep the browser's URL bar and the journey card on stage.
+const CAM_BROWSER: CameraState = { x: 500, y: 240, k: 1.2 };
+const CAM_TAPE: CameraState = { x: 640, y: 330, k: 1.04 };
 const CAM_WIDE: CameraState = { x: 640, y: 360, k: 0.98 };
 
 /* ------------------------------------------------------------------ data */
@@ -324,7 +325,7 @@ function JourneyCard({ enter, steps, fail, dim }: { enter: number; steps: number
   return (
     <g transform={`translate(${x}, ${y + (1 - e) * 12})`} opacity={e * (1 - 0.85 * dim)}>
       <rect x={-16} y={-58} width={w + 32} height={STEPS.length * 32 + 82} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-      <text y={-36} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+      <text y={-36} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
         journey-acme-cart
       </text>
       <text y={-16} fill={colors.TEXT} fontSize={13} fontWeight={600}>
@@ -385,7 +386,7 @@ function RunCard({ u }: { u: number }) {
   return (
     <g transform={`translate(${x}, ${y + (1 - uu) * 12})`} opacity={uu}>
       <rect width={w} height={RUN_CARD.h} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.5} />
-      <text x={20} y={28} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+      <text x={20} y={28} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
         test_runs
       </text>
       <text x={20} y={52} fill={colors.TEXT} fontSize={15} fontWeight={700} fontFamily={mono}>

@@ -46,7 +46,7 @@ export function buildScene() {
   tl.caption({ at: 34.5, dur: 6.5, text: 'Now B resets. Its first observation may receive a bounded tail from A, announcing the new task without exposing hidden state.' });
   tl.tween(contextU, 1, { at: 35.1, dur: 0.8, ease: ease.enter });
   tl.tween(handoff, 1, { at: 36.0, dur: 2.4, ease: ease.linear });
-  tl.tween(cam, { x: 840, y: 335, k: 1.15 }, { at: 37.2, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 335, k: 1.05 }, { at: 37.2, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 41.4, dur: 6.4, text: 'The same policy keeps acting while the second reel lengthens the goal it must remember.' });
   tl.tween(bProgress, 1, { at: 42.0, dur: 4.8, ease: ease.linear });
@@ -130,6 +130,7 @@ export function Render({ s }: { s: SceneState }) {
       <g opacity={s.get(scene.evidenceU)}>
         <rect x="310" y="175" width="660" height="260" rx="34" fill="#111827" stroke={colors.WARM} strokeWidth="4" />
         <text x="640" y="235" textAnchor="middle" fill={colors.WARM} fontSize="23" fontWeight="700">Stage + Contract + Chain skills</text>
+        <text x="640" y="268" textAnchor="middle" fill={colors.MUTED} fontSize="16">Chain = one goal stitched across A and B by Link</text>
         <text x="500" y="325" textAnchor="middle" fill={colors.POSITIVE} fontSize="42" fontWeight="800">54.30%</text>
         <text x="500" y="362" textAnchor="middle" fill={colors.MUTED} fontSize="16">success rate</text>
         <path d="M640 275 V385" stroke={colors.GRID} strokeWidth="3" />

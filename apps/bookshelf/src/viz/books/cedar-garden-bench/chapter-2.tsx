@@ -59,8 +59,8 @@ const HIDDEN = [
 ];
 
 const CAM_WIDE: CameraState = { x: 620, y: 336, k: 1.0 };
-const CAM_JOINT: CameraState = { x: LEFT + 70, y: 300, k: 1.7 };
-const CAM_LEVEL: CameraState = { x: 620, y: 250, k: 1.35 };
+const CAM_JOINT: CameraState = { x: LEFT + 120, y: 330, k: 1.5 };
+const CAM_LEVEL: CameraState = { x: 620, y: 256, k: 1.2 };
 const CAM_FACES: CameraState = { x: 620, y: 340, k: 1.15 };
 const CAM_CLOCK: CameraState = { x: 700, y: 350, k: 1.05 };
 
@@ -232,6 +232,23 @@ export function Render({ s }: { s: SceneState }) {
   const proud = (errU - fixU) * 0.125 * PXI * 6;
   const bubbleX = CX + (1 - bubbleU) * 40;
 
+  // One status line under the drawing, in screen space, so it never sits on
+  // the parts, never collides with another label, and stays clear of the caption.
+  const status: { text: string; fill: string } | null = (() => {
+    if (closeU > 0) return null;
+    if (clockU > 0) return { text: 'clamps stay on for 24 hours', fill: colors.WARM };
+    if (glueU > 0 || screwU > 0) return { text: 'glue, clamps, and 2 in pressure-treated screws', fill: colors.ACCENT };
+    if (facesU > 0.8) {
+      return sandU > 0.6
+        ? { text: 'sanded while you can still reach them', fill: colors.POSITIVE }
+        : { text: 'unreachable once assembled', fill: colors.NEGATIVE };
+    }
+    if (levelU > 0) return { text: 'check level, and keep checking', fill: colors.WARM };
+    if (fixU > 0.6) return { text: 'caught while it is still free', fill: colors.POSITIVE };
+    if (clampU > 0.7) return { text: 'dry assembly — clamps only, no glue', fill: colors.SECONDARY };
+    return null;
+  })();
+
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
@@ -266,7 +283,7 @@ export function Render({ s }: { s: SceneState }) {
           />
           {partsU > 0.5 && (
             <>
-              <text x={CX} y={RAIL_Y - 14} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontWeight={700} opacity={partsU}>
+              <text x={LEFT + RAIL_W * 0.15} y={RAIL_Y - 14} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontWeight={700} opacity={partsU}>
                 48 in
               </text>
               <text x={LEFT - 16} y={RAIL_Y + RAIL_H + LEG_H / 2} textAnchor="end" fill={colors.SECONDARY} fontSize={14} fontWeight={700} opacity={partsU}>
@@ -279,12 +296,6 @@ export function Render({ s }: { s: SceneState }) {
           {CLAMPS.map((c, i) => (
             <Clamp key={i} x={c.x} y={c.y} u={clamp01(clampU * 3 - i * 0.5)} />
           ))}
-          {clampU > 0.7 && glueU < 0.2 && (
-            <text x={CX} y={RAIL_Y + RAIL_H + LEG_H + 42} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} opacity={clamp01(clampU * 2 - 1.4)}>
-              dry assembly — clamps only, no glue
-            </text>
-          )}
-
           {/* the caught error */}
           {errU > 0 && fixU < 1 && (
             <g opacity={errU * (1 - fixU)}>
@@ -293,11 +304,6 @@ export function Render({ s }: { s: SceneState }) {
                 ⅛ in proud
               </text>
             </g>
-          )}
-          {fixU > 0.6 && (
-            <text x={LEFT + LEG_W / 2} y={RAIL_Y + RAIL_H + LEG_H + 28} textAnchor="middle" fill={colors.POSITIVE} fontSize={13.5} fontWeight={700} opacity={clamp01(fixU * 3 - 1.8)}>
-              caught while it is still free
-            </text>
           )}
 
           {/* the level */}
@@ -319,18 +325,13 @@ export function Render({ s }: { s: SceneState }) {
                 <g key={i} opacity={u}>
                   <rect x={h.x} y={h.y} width={h.w} height={h.h} fill={colors.NEGATIVE} opacity={0.45 * (1 - sandU * 0.75)} />
                   {h.label && (
-                    <text x={h.x + h.w + 12} y={h.y + h.h / 2} fill={colors.NEGATIVE} fontSize={13} opacity={1 - sandU * 0.6}>
+                    <text x={h.x + h.w + 12} y={h.y + h.h / 2} fill={colors.NEGATIVE} fontSize={14} opacity={Math.max(0, 1 - sandU * 0.35 - clockU)}>
                       {h.label}
                     </text>
                   )}
                 </g>
               );
             })}
-          {facesU > 0.8 && (
-            <text x={CX} y={RAIL_Y + RAIL_H + LEG_H + 66} textAnchor="middle" fill={sandU > 0.6 ? colors.POSITIVE : colors.NEGATIVE} fontSize={14} fontWeight={700}>
-              {sandU > 0.6 ? 'sanded while you can still reach them' : 'unreachable once assembled'}
-            </text>
-          )}
           {/* the sanding pass */}
           {sandU > 0 && sandU < 1 && (
             <rect x={LEFT + sandU * (RAIL_W - 60)} y={RAIL_Y + RAIL_H + 6} width={60} height={26} rx={5} fill={colors.SECONDARY} opacity={0.85} />
@@ -354,9 +355,6 @@ export function Render({ s }: { s: SceneState }) {
               {[LEFT + LEG_W / 2, LEFT + RAIL_W - LEG_W / 2].map((x, i) => (
                 <circle key={i} cx={x} cy={RAIL_Y + RAIL_H / 2} r={5} fill={colors.ACCENT} stroke={colors.BG} />
               ))}
-              <text x={CX} y={RAIL_Y + RAIL_H + LEG_H + 42} textAnchor="middle" fill={colors.ACCENT} fontSize={13.5}>
-                glue, clamps, and 2 in pressure-treated screws
-              </text>
             </g>
           )}
 
@@ -404,6 +402,14 @@ export function Render({ s }: { s: SceneState }) {
           </g>
         )}
       </Camera>
+      {status && (
+        <g opacity={1 - closeU}>
+          <rect x={640 - (status.text.length * 8 + 28) / 2} y={580} width={status.text.length * 8 + 28} height={28} rx={6} fill={colors.PANEL} opacity={0.9} />
+          <text x={640} y={599} textAnchor="middle" fill={status.fill} fontSize={15} fontWeight={600}>
+            {status.text}
+          </text>
+        </g>
+      )}
     </>
   );
 }

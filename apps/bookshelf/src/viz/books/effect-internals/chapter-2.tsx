@@ -34,7 +34,7 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 // Layout — code, the machine (current slot + stack), the exit tray.
 // ---------------------------------------------------------------------------
 
-const CODE = { x: 48, y: 104, w: 320, h: 196 } as const;
+const CODE = { x: 80, y: 104, w: 320, h: 196 } as const;
 const CODE_LINES = [
   'const program = load.pipe(',
   '  Effect.flatMap((n) =>',
@@ -52,11 +52,11 @@ const STACK_W = 144;
 const STACK_H = 48;
 const stackY = (i: number): number => 500 - i * 56; // i=0 bottom
 const OPS = { x: PANEL.x + 32, y: PANEL.y + 442 } as const;
-const TRAY = { x: 930, y: 150, w: 280 } as const;
+const TRAY = { x: 900, y: 150, w: 280 } as const;
 
 const CAM_WIDE: CameraState = { x: 640, y: 355, k: 1.02 };
-const CAM_MACHINE: CameraState = { x: 660, y: 330, k: 1.22 };
-const CAM_STACK: CameraState = { x: 760, y: 360, k: 1.32 };
+const CAM_MACHINE: CameraState = { x: 640, y: 330, k: 1.12 };
+const CAM_STACK: CameraState = { x: 760, y: 350, k: 1.25 };
 
 // current-slot contents, stepped through with tl.set on curIdx
 const CUR: Array<{ label: string; sub: string; color: string }> = [
@@ -293,27 +293,32 @@ function Frame({
 }) {
   const f = FRAMES[i];
   const vis = present * (1 - Math.max(popT, skipT));
-  if (vis <= 0.01) return null;
-  const dx = -popT * 200 + skipT * 240;
+  const dx = -popT * 200 + skipT * 120;
   const y = stackY(i);
+  // the ✕ is drawn apart from the frame so it stays on the slot after the frame is discarded
+  const cross = clamp01(skipT * 4);
   return (
-    <g opacity={vis} transform={`translate(${dx} ${(1 - present) * 16})`}>
-      <rect x={STACK_X} y={y} width={STACK_W} height={STACK_H} rx={9} fill={colors.PANEL} stroke={ask > 0.5 ? colors.WARM : colors.GRID} strokeWidth={ask > 0.5 ? 2 : 1.2} />
-      <text x={STACK_X + 12} y={y + 20} fill={colors.TEXT} fontSize={12} fontFamily={MONO} fontWeight={600}>
-        {f.name}
-      </text>
-      <text x={STACK_X + 12} y={y + 37} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
-        {f.tag}
-      </text>
-      {/* continuation ports: green = success, red = failure */}
-      {f.portA && <circle cx={STACK_X + STACK_W - 14} cy={y + 15} r={5.5} fill={colors.POSITIVE} />}
-      {f.portE && <circle cx={STACK_X + STACK_W - 14} cy={y + 33} r={5.5} fill={colors.NEGATIVE} />}
-      {skipT > 0.15 && (
-        <text x={STACK_X + STACK_W + 14} y={y + 30} fill={colors.NEGATIVE} fontSize={17} fontWeight={700}>
+    <>
+      {vis > 0.01 && (
+        <g opacity={vis} transform={`translate(${dx} ${(1 - present) * 16})`}>
+          <rect x={STACK_X} y={y} width={STACK_W} height={STACK_H} rx={9} fill={colors.PANEL} stroke={ask > 0.5 ? colors.WARM : colors.GRID} strokeWidth={ask > 0.5 ? 2 : 1.2} />
+          <text x={STACK_X + 12} y={y + 20} fill={colors.TEXT} fontSize={12} fontFamily={MONO} fontWeight={600}>
+            {f.name}
+          </text>
+          <text x={STACK_X + 12} y={y + 37} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            {f.tag}
+          </text>
+          {/* continuation ports: green = success, red = failure */}
+          {f.portA && <circle cx={STACK_X + STACK_W - 14} cy={y + 15} r={5.5} fill={colors.POSITIVE} />}
+          {f.portE && <circle cx={STACK_X + STACK_W - 14} cy={y + 33} r={5.5} fill={colors.NEGATIVE} />}
+        </g>
+      )}
+      {cross > 0 && (
+        <text x={STACK_X + 104} y={y + 31} opacity={cross} fill={colors.NEGATIVE} fontSize={17} fontWeight={700} fontFamily={MONO}>
           ✕
         </text>
       )}
-    </g>
+    </>
   );
 }
 
@@ -353,6 +358,8 @@ export function Render({ s }: { s: SceneState }) {
   const cur = CUR[Math.min(curIdx, CUR.length - 1)];
   const runB = rewindU > 0.5;
   const machineOp = 1 - 0.85 * dimU;
+  // the program sits off to the left; let it step aside as the camera pushes in on the stack
+  const codeFocus = clamp01((1.17 - cam.k) / 0.03);
 
   // per-frame state (i: 0=catch bottom, 1=fmt, 2=×21 top)
   const frameState = (i: number) => {
@@ -370,14 +377,14 @@ export function Render({ s }: { s: SceneState }) {
   // orbiting loop dot around the current slot
   const ang = spinU * Math.PI * 2;
   const dotX = SLOT_C.x + 138 * Math.cos(ang);
-  const dotY = SLOT_C.y + 58 * Math.sin(ang);
+  const dotY = SLOT_C.y + 54 * Math.sin(ang);
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* the program */}
-        <g opacity={(1 - 0.86 * dimU) * codeU}>
+        <g opacity={(1 - 0.86 * dimU) * codeU * codeFocus}>
           <rect x={CODE.x} y={CODE.y} width={CODE.w} height={CODE.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           {CODE_LINES.map((line, i) => (
             <text key={i} x={CODE.x + 18} y={CODE.y + 34 + i * 24} fill={colors.TEXT} fontSize={12} fontFamily={MONO} opacity={win(codeU, CODE_LINES.length, i, 1.8)}>
@@ -403,10 +410,10 @@ export function Render({ s }: { s: SceneState }) {
           </text>
 
           {/* current slot */}
-          <ellipse cx={SLOT_C.x} cy={SLOT_C.y} rx={138} ry={58} fill="none" stroke={colors.GRID} strokeDasharray="3 6" />
+          <ellipse cx={SLOT_C.x} cy={SLOT_C.y} rx={138} ry={54} fill="none" stroke={colors.GRID} strokeDasharray="3 6" />
           <circle cx={dotX} cy={dotY} r={5} fill={colors.SECONDARY} />
           <rect x={SLOT.x} y={SLOT.y} width={SLOT.w} height={SLOT.h} rx={10} fill={colors.BG} stroke={cur.label ? cur.color : colors.MUTED} strokeWidth={1.8} />
-          <text x={SLOT.x + SLOT.w / 2} y={SLOT.y - 10} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+          <text x={SLOT.x + SLOT.w / 2} y={SLOT.y - 26} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
             current
           </text>
           {cur.label ? (
@@ -424,7 +431,7 @@ export function Render({ s }: { s: SceneState }) {
             </text>
           )}
           {/* evaluate arrow into the slot */}
-          <text x={SLOT.x + SLOT.w / 2} y={SLOT.y + SLOT.h + 26} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+          <text x={SLOT.x + SLOT.w / 2} y={SLOT.y + SLOT.h + 34} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
             current[evaluate](fiber)
           </text>
 
@@ -491,7 +498,7 @@ export function Render({ s }: { s: SceneState }) {
                   <circle cx={TRAY.x + TRAY.w + 42} cy={y - 18 + j * 36} r={7} fill="none" stroke={colors.WARM} strokeWidth={1.8} />
                 </g>
               ))}
-              <text x={TRAY.x + TRAY.w + 12} y={y + 52} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+              <text x={TRAY.x + TRAY.w + 12} y={y + 52} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 _observers
               </text>
             </g>

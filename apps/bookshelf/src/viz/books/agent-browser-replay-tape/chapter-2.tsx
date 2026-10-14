@@ -19,12 +19,13 @@ const clamp01 = (u: number) => (u < 0 ? 0 : u > 1 ? 1 : u);
 const mono = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 /* ---------------------------------------------------------------- layout */
-const CONSOLE = { x: 100, y: 96, w: 560, h: 330 };
+const CONSOLE = { x: 100, y: 96, w: 560, h: 364 };
 const TAPE = { x: 100, y: 540, w: 1080, h: 24 };
 const LEGEND = { x: 100, y: 478 };
 
 const CAM_CONSOLE: CameraState = { x: 380, y: 262, k: 1.24 };
-const CAM_TAPE: CameraState = { x: 640, y: 432, k: 1.12 };
+// Pushed toward the tape but still framing the console's top edge (y 96).
+const CAM_TAPE: CameraState = { x: 640, y: 380, k: 1.1 };
 const CAM_WIDE: CameraState = { x: 640, y: 340, k: 0.98 };
 
 /* ------------------------------------------------------------------ data */
@@ -73,6 +74,7 @@ export function buildScene() {
   const cam = tl.channel<CameraState>('cam', CAMERA_HOME, cameraInterp);
   const consoleE = tl.channel('consoleE', 0);
   const runP = tl.channel('runP', 0); // console line reveal + tape reveal, one clock
+  const cmdP = tl.channel('cmdP', 0); // early console reveal, so beat 1 shows real commands
   const legendU = tl.channel('legendU', 0);
   const dimU = tl.channel('dimU', 0);
 
@@ -84,6 +86,7 @@ export function buildScene() {
     text: 'This is what an agent actually sends: one command line at a time — open, snapshot, click, fill.',
   });
   tl.tween(consoleE, 1, { at: t - 4.8, dur: 0.7, ease: ease.enter });
+  tl.tween(cmdP, 0.16, { at: t - 4.2, dur: 3.6, ease: ease.linear });
   tl.tween(cam, CAM_CONSOLE, { at: t - 4.4, dur: 1.3, ease: ease.move });
   t = tl.hold(t, 0.5);
 
@@ -144,7 +147,7 @@ export function buildScene() {
   tl.tween(dimU, 1, { at: t - 5.2, dur: 1.2, ease: ease.move });
   tl.hold(t, 1.0);
 
-  return { tl, cam, consoleE, runP, legendU, dimU };
+  return { tl, cam, consoleE, runP, cmdP, legendU, dimU };
 }
 
 const scene = buildScene();
@@ -165,7 +168,7 @@ function computeParticles(s: SceneState): ParticlePoint[] {
     if (u <= 0 || u >= 1) continue;
     const uu = ease.move(clamp01(u));
     const fx = CONSOLE.x + CONSOLE.w - 24;
-    const fy = CONSOLE.y + 44 + i * 20;
+    const fy = CONSOLE.y + 56 + i * 20;
     const tx = TAPE.x + c.at * TAPE.w;
     const ty = TAPE.y + TAPE.h / 2;
     const mx = (fx + tx) / 2 + 30;
@@ -214,6 +217,13 @@ function Console({ enter, runP, dim }: { enter: number; runP: number; dim: numbe
           </text>
         );
       })}
+      {CMDS.slice(0, shown).map((c, i) =>
+        c.kind === 'exception' ? (
+          <text key={`note-${i}`} x={228} y={62 + i * 20} fill={colors.NEGATIVE} fontSize={12} fontFamily={mono} opacity={clamp01((runP - c.emit) * 20)}>
+            ← the one failure
+          </text>
+        ) : null,
+      )}
     </g>
   );
 }
@@ -229,7 +239,7 @@ function Legend({ u, dim }: { u: number; dim: number }) {
         return (
           <g key={r.kind} transform={`translate(${i * 260}, 0)`} opacity={ru}>
             <circle cx={6} cy={-4} r={5} fill={POINT_COLOR[r.kind]} />
-            <text x={18} y={0} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+            <text x={18} y={0} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
               {r.label}
             </text>
           </g>
@@ -243,9 +253,11 @@ function Legend({ u, dim }: { u: number; dim: number }) {
 function renderFrame(s: SceneState) {
   const dim = clamp01(s.get(scene.dimU));
   const runP = s.get(scene.runP);
+  // Console lines follow the early beat-1 reveal, then the tape clock.
+  const consoleP = Math.max(runP, s.get(scene.cmdP));
   return (
     <>
-      <Console enter={s.get(scene.consoleE)} runP={runP} dim={dim} />
+      <Console enter={s.get(scene.consoleE)} runP={consoleP} dim={dim} />
       <Legend u={s.get(scene.legendU)} dim={dim} />
 
       <ParticleCloud state={s} compute={computeParticles} />

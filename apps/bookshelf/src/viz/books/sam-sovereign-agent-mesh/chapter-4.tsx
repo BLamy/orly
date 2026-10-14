@@ -18,6 +18,9 @@ const SIDECAR: Pt = { x: 162, y: 356 };
 const GATE: Pt = { x: 640, y: 356 };
 const TARGET: Pt = { x: 1114, y: 356 };
 const STAGES = ['call_remote_tool', 'SplitToolName', 'AuthFrame', 'session.CallTool'];
+// where the call packet leaves the sidecar: clear of the node box, so its labels never sit on it
+const CALL_START: Pt = { x: 280, y: 356 };
+const CALL_PATH: Pt[] = [CALL_START, { x: GATE.x - 114, y: GATE.y }, { x: TARGET.x - 104, y: TARGET.y }];
 
 function Chip({ x, y, text, color = colors.MUTED, opacity = 1, w, h = 26, fontSize = 11, fill = colors.PANEL }: { x: number; y: number; text: string; color?: string; opacity?: number; w?: number; h?: number; fontSize?: number; fill?: string }) {
   const width = w ?? Math.max(62, text.length * fontSize * 0.62 + 18);
@@ -35,15 +38,15 @@ function CallCard({ u, split, labels, opacity = 1 }: { u: number; split: number;
   const ss = clamp01(split);
   return (
     <g opacity={uu * opacity}>
-      <rect x={24} y={180} width={278} height={144} rx={18} fill={colors.PANEL} stroke={ss > 0.5 ? colors.WARM : colors.ACCENT} strokeWidth={ss > 0.5 ? 2.2 : 1.4} />
-      <text x={163} y={210} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontWeight={740}>CallRemoteToolParams</text>
-      <Chip x={92} y={245} text="peer_id" color={colors.ACCENT} w={88} />
-      <Chip x={226} y={245} text="tool_name" color={colors.SECONDARY} w={102} />
-      <Chip x={92} y={282} text="arguments" color={colors.POSITIVE} w={102} />
-      <Chip x={226} y={282} text="required_labels" color={colors.WARM} w={128} fontSize={10} />
-      {ss > 0.2 && <path d="M310 252h92M310 278h92" stroke={colors.WARM} strokeWidth={2.2} strokeDasharray="6 5" opacity={ss} />}
-      {ss > 0.2 && <g opacity={ss}><Chip x={474} y={244} text="mcp://code-reviewer" color={colors.SECONDARY} w={174} fontSize={10} /><Chip x={474} y={282} text="review_pr" color={colors.POSITIVE} w={108} /></g>}
-      {labels > 0.2 && <Chip x={163} y={349} text="labels checked before call" color={colors.WARM} w={182} fontSize={10} />}
+      <rect x={24} y={156} width={278} height={150} rx={18} fill={colors.PANEL} stroke={ss > 0.5 ? colors.WARM : colors.ACCENT} strokeWidth={ss > 0.5 ? 2.2 : 1.4} />
+      <text x={163} y={186} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontWeight={740}>CallRemoteToolParams</text>
+      <Chip x={92} y={222} text="peer_id" color={colors.ACCENT} w={88} />
+      <Chip x={226} y={222} text="tool_name" color={colors.SECONDARY} w={102} />
+      <Chip x={92} y={258} text="arguments" color={colors.POSITIVE} w={102} />
+      <Chip x={226} y={258} text="required_labels" color={colors.WARM} w={128} fontSize={12} />
+      {ss > 0.2 && <path d="M310 228h42M310 254h48" stroke={colors.WARM} strokeWidth={2.2} strokeDasharray="6 5" opacity={ss} />}
+      {ss > 0.2 && <g opacity={ss}><Chip x={430} y={222} text="mcp://code-reviewer" color={colors.SECONDARY} w={150} fontSize={12} /><Chip x={412} y={258} text="review_pr" color={colors.POSITIVE} w={108} fontSize={12} /></g>}
+      {labels > 0.2 && <Chip x={163} y={288} text="labels checked before call" color={colors.WARM} w={200} fontSize={12} />}
     </g>
   );
 }
@@ -70,7 +73,7 @@ function CallRibbon({ u, opacity = 1 }: { u: number; opacity?: number }) {
   const uu = clamp01(u);
   if (uu <= 0 || opacity <= 0) return null;
   const x0 = 340;
-  const y = 108;
+  const y = 122;
   const w = 600;
   const segment = w / STAGES.length;
   const current = Math.min(STAGES.length - 1, Math.floor(uu * STAGES.length));
@@ -84,7 +87,7 @@ function CallRibbon({ u, opacity = 1 }: { u: number; opacity?: number }) {
         return (
           <g key={stage}>
             <circle cx={cx} cy={y} r={on ? 14 : 10} fill={on ? (i === STAGES.length - 1 ? colors.POSITIVE : colors.ACCENT) : colors.PANEL} stroke={on ? colors.ACCENT : colors.GRID} strokeWidth={2} />
-            <text x={cx} y={y - 26} textAnchor="middle" fill={on ? colors.TEXT : colors.MUTED} fontSize={10} fontFamily={MONO}>{stage}</text>
+            <text x={cx} y={y - 24} textAnchor="middle" fill={on ? colors.TEXT : colors.MUTED} fontSize={12} fontFamily={MONO}>{stage}</text>
           </g>
         );
       })}
@@ -195,7 +198,7 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={1280} height={720} fill={colors.BG} />
       <g opacity={mainOpacity}>
         <text x={640} y={48} textAnchor="middle" fill={colors.TEXT} fontSize={28} fontWeight={760}>One call, many proofs</text>
-        <text x={640} y={75} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>StartSidecarServer · ConnectMCPSession · WithBiscuitAuth · HandleMCPStream</text>
+        <text x={640} y={74} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>StartSidecarServer · ConnectMCPSession · WithBiscuitAuth · HandleMCPStream</text>
 
         <CallRibbon u={s.get(scene.callU)} />
         <Connection from={{ x: SIDECAR.x + 90, y: SIDECAR.y }} to={{ x: GATE.x - 114, y: GATE.y }} u={s.get(scene.streamU)} flow={s.get(scene.callU)} color={colors.ACCENT} label="MCPProtocolID" />
@@ -206,9 +209,15 @@ export function Render({ s }: { s: SceneState }) {
         <SessionGate u={s.get(scene.streamU)} auth={s.get(scene.authU)} ack={s.get(scene.ackU)} />
         <CallCard u={s.get(scene.requestU)} split={s.get(scene.splitU)} labels={s.get(scene.labelsU)} />
 
-        <Packet from={SIDECAR} to={{ x: GATE.x - 122, y: GATE.y }} u={s.get(scene.authU)} color={colors.WARM} r={6} label="AuthFrame" />
+        <Packet from={CALL_START} to={{ x: GATE.x - 122, y: GATE.y }} u={s.get(scene.authU)} color={colors.WARM} r={6} label="AuthFrame" />
         <Packet from={{ x: GATE.x + 122, y: GATE.y }} to={TARGET} u={s.get(scene.ackU)} color={colors.POSITIVE} r={5} label="AuthResponse" />
-        <RequestFlow path={[SIDECAR, GATE, TARGET]} u={s.get(scene.callU)} roundTrip color={colors.ACCENT} responseColor={colors.POSITIVE} label="tool call" responseLabel="result" hold />
+        <RequestFlow path={CALL_PATH} u={s.get(scene.callU)} roundTrip color={colors.ACCENT} responseColor={colors.POSITIVE} hold />
+        <g opacity={s.get(scene.callU)}>
+          <text x={820} y={390} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>tool call →</text>
+        </g>
+        <g opacity={s.get(scene.resultU)}>
+          <text x={820} y={408} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>← result</text>
+        </g>
 
         <g opacity={s.get(scene.resultU)}>
           <rect x={968} y={470} width={292} height={86} rx={18} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2} />
@@ -217,8 +226,8 @@ export function Render({ s }: { s: SceneState }) {
         </g>
         <EgressRibbon u={s.get(scene.egressU)} />
         <g opacity={s.get(scene.labelsU)}>
-          <Chip x={388} y={390} text="required_labels" color={colors.WARM} w={132} fontSize={10} />
-          <Chip x={540} y={390} text="checkPeerLabels" color={colors.WARM} w={134} fontSize={10} />
+          <Chip x={318} y={420} text="required_labels" color={colors.WARM} w={132} fontSize={12} />
+          <Chip x={452} y={420} text="checkPeerLabels" color={colors.WARM} w={134} fontSize={12} />
         </g>
       </g>
 

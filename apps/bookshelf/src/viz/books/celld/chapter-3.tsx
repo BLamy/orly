@@ -29,16 +29,19 @@ const clamp01 = (u: number) => (u < 0 ? 0 : u > 1 ? 1 : u);
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 /* ---------------------------------------------------------------- layout */
-const BUCKET = { x: 320, y: 120, w: 640, h: 96 };
-const TAPE = { x: 180, y: 400, w: 700, h: 34 };
+// Bucket, tape and dead lane share one centre line (x = 640) so the stack reads
+// as a single column instead of hugging the left edge.
+const BUCKET = { x: 320, y: 186, w: 640, h: 100 };
+const TAPE = { x: 340, y: 400, w: 600, h: 34 };
 const GATE = { x: 985, y: 400 };
-const DEAD = { x: 180, y: 520, w: 700, h: 26 };
-const RESTORE = { x: 1070, y: 260 };
+const DEAD = { x: 340, y: 520, w: 600, h: 26 };
+const RESTORE = { x: 1120, y: 262 };
+const LAND_Y = BUCKET.y + BUCKET.h - 34; // where a synced page settles inside the bucket
 
 const CAM_TOP: CameraState = { ...CAMERA_HOME };
-const CAM_TAPE: CameraState = { x: 620, y: 380, k: 1.22 };
+const CAM_TAPE: CameraState = { x: 640, y: 380, k: 1.22 };
 const CAM_GATE: CameraState = { x: 745, y: 355, k: 1.12 };
-const CAM_FENCE: CameraState = { x: 620, y: 440, k: 1.14 };
+const CAM_FENCE: CameraState = { x: 640, y: 440, k: 1.14 };
 const CAM_WIDE: CameraState = { x: 660, y: 340, k: 1.0 };
 
 const PAGES = 8; // committed WAL pages on the tape
@@ -168,16 +171,16 @@ function BucketShelf({ u, sync, fence, dim }: { u: number; sync: number; fence: 
   const uu = clamp01(u);
   if (uu <= 0) return null;
   return (
-    <g opacity={(1 - 0.8 * dim) * uu}>
+    <g opacity={(1 - dim) * uu}>
       <rect x={BUCKET.x} y={BUCKET.y} width={BUCKET.w} height={BUCKET.h} rx={14} fill={colors.PANEL} stroke={colors.TEAL} strokeWidth={2} />
-      <text x={BUCKET.x + 18} y={BUCKET.y + 26} fill={colors.TEAL} fontSize={13} fontWeight={700}>
+      <text x={BUCKET.x + 18} y={BUCKET.y + 28} fill={colors.TEAL} fontSize={14} fontWeight={700}>
         the fleet bucket — durable source of truth
       </text>
-      <text x={BUCKET.x + 18} y={BUCKET.y + 52} fill={colors.ACCENT} fontSize={11.5} fontFamily={MONO}>
+      <text x={BUCKET.x + 18} y={BUCKET.y + 54} fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
         cells/room-7/ltx/e3/ — the live prefix
       </text>
       {fence > 0.3 && (
-        <text x={BUCKET.x + 18} y={BUCKET.y + 76} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO} opacity={(fence - 0.3) * 2}>
+        <text x={BUCKET.x + 18} y={BUCKET.y + 80} fill={colors.MUTED} fontSize={13} fontFamily={MONO} opacity={(fence - 0.3) * 2}>
           cells/room-7/ltx/e2/ — dead. nobody will ever read it
         </text>
       )}
@@ -205,11 +208,11 @@ function WalTape({
   if (uu <= 0) return null;
   const committed = Math.round(uu * PAGES);
   return (
-    <g opacity={1 - 0.85 * dim}>
-      <text x={TAPE.x} y={TAPE.y - 42} fill={colors.TEXT} fontSize={13.5} fontWeight={700}>
+    <g opacity={1 - dim}>
+      <text x={TAPE.x} y={TAPE.y - 42} fill={colors.TEXT} fontSize={15} fontWeight={700}>
         room-7 · write-ahead log
       </text>
-      <text x={TAPE.x} y={TAPE.y - 22} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+      <text x={TAPE.x} y={TAPE.y - 20} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
         local db.sqlite · shadowed by celld_ltx::Db (ltx_repl.rs)
       </text>
       <rect x={TAPE.x} y={TAPE.y} width={TAPE.w} height={TAPE.h} rx={8} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.4} />
@@ -218,7 +221,7 @@ function WalTape({
         if (p <= 0) return null;
         // pages 0..3 upload in the first sync; 4..7 in the batched one
         const flight = i < 4 ? clamp01(sync * 1.4 - i * 0.12) : clamp01(batch * 1.5 - (i - 4) * 0.12);
-        const fy = TAPE.y + 6 - flight * (TAPE.y - BUCKET.y - BUCKET.h + 16);
+        const fy = TAPE.y + 6 - flight * (TAPE.y + 6 - LAND_Y);
         return (
           <g key={i}>
             <rect x={pageX(i)} y={TAPE.y + 6} width={PAGE_W} height={TAPE.h - 12} rx={4} fill={colors.ACCENT} opacity={0.25 + 0.5 * p} />
@@ -242,12 +245,12 @@ function WalTape({
             strokeWidth={2.5}
             strokeLinecap="round"
           />
-          <text x={TAPE.x} y={TAPE.y + TAPE.h + 32} fill={colors.SECONDARY} fontSize={10} fontFamily={MONO}>
+          <text x={TAPE.x} y={TAPE.y + TAPE.h + 34} fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>
             replica shadow — captures committed pages, in process
           </text>
         </g>
       )}
-      <text x={TAPE.x + TAPE.w * 0.5} y={TAPE.y - 42} fill={colors.MUTED} fontSize={10} fontFamily={MONO} opacity={committed > 0 ? 0.9 : 0}>
+      <text x={580} y={TAPE.y - 42} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={committed > 0 ? 0.9 : 0}>
         committed: {committed} pages
       </text>
     </g>
@@ -275,45 +278,45 @@ function OutputGate({
   // second ticket rides the batch
   const t2 = clamp01(batch * 1.3 - 0.15);
   return (
-    <g opacity={1 - 0.85 * dim}>
+    <g opacity={1 - dim}>
       {/* gate posts + bar */}
       <line x1={GATE.x} y1={GATE.y - 52} x2={GATE.x} y2={GATE.y + 30} stroke={colors.GRID} strokeWidth={3} />
       <rect x={GATE.x - 5} y={GATE.y - 40 - barLift} width={10} height={64} rx={5} fill={openU > 0.5 ? colors.POSITIVE : colors.WARM} />
-      <text x={GATE.x} y={GATE.y + 52} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={MONO}>
+      <text x={GATE.x + 12} y={GATE.y + 52} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
         output gate · js.rs
       </text>
-      {/* the waiting / released response */}
+      {/* the waiting / released response (sits just above the tape, clear of its pages) */}
       {openU < 0.4 ? (
-        <g transform={`translate(${arriveX}, ${GATE.y - 10})`}>
-          <rect x={-52} y={-14} width={104} height={28} rx={14} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.5} />
-          <text y={4} textAnchor="middle" fill={colors.WARM} fontSize={10.5} fontFamily={MONO}>
+        <g transform={`translate(${arriveX}, ${GATE.y - 16})`}>
+          <rect x={-60} y={-14} width={120} height={28} rx={14} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.5} />
+          <text y={4} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
             resp · ticket 7
           </text>
         </g>
       ) : (
-        <g transform={`translate(${exitX}, ${GATE.y - 10})`} opacity={Math.max(0, 1 - (exitX - GATE.x - 120) / 90)}>
-          <rect x={-52} y={-14} width={104} height={28} rx={14} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.5} />
-          <text y={4} textAnchor="middle" fill={colors.POSITIVE} fontSize={10.5} fontFamily={MONO}>
+        <g transform={`translate(${exitX}, ${GATE.y - 16})`} opacity={Math.max(0, 1 - (exitX - GATE.x - 120) / 90)}>
+          <rect x={-60} y={-14} width={120} height={28} rx={14} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.5} />
+          <text y={4} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
             acknowledged
           </text>
         </g>
       )}
       {tu > 0.6 && openU < 0.4 && (
-        <text x={GATE.x - 86} y={GATE.y - 42} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>
+        <text x={GATE.x - 86} y={GATE.y - 42} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
           waits: synced_seq ≥ 7
         </text>
       )}
       {/* batched second ticket */}
       {t2 > 0 && (
-        <g transform={`translate(${GATE.x - 64}, ${GATE.y + 26})`} opacity={t2 < 0.75 ? Math.min(1, t2 * 4) : (1 - t2) * 4}>
-          <rect x={-52} y={-13} width={104} height={26} rx={13} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
-          <text y={4} textAnchor="middle" fill={colors.WARM} fontSize={10} fontFamily={MONO}>
+        <g transform={`translate(${GATE.x - 64}, ${GATE.y + 66})`} opacity={t2 < 0.75 ? Math.min(1, t2 * 4) : (1 - t2) * 4}>
+          <rect x={-60} y={-13} width={120} height={26} rx={13} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
+          <text y={4} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
             resp · ticket 8
           </text>
         </g>
       )}
       {batch > 0.8 && (
-        <text x={GATE.x - 20} y={GATE.y + 74} textAnchor="middle" fill={colors.POSITIVE} fontSize={10} fontFamily={MONO} opacity={(batch - 0.8) * 5}>
+        <text x={GATE.x - 20} y={GATE.y + 100} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO} opacity={(batch - 0.8) * 5}>
           two tickets · one upload
         </text>
       )}
@@ -326,9 +329,9 @@ function DeadLane({ u, dim }: { u: number; dim: number }) {
   if (uu <= 0) return null;
   const pu = clamp01(uu * 1.6 - 0.4); // a page tries to sync and dies
   return (
-    <g opacity={(1 - 0.85 * dim) * Math.min(1, uu * 3)}>
+    <g opacity={(1 - dim) * Math.min(1, uu * 3)}>
       <rect x={DEAD.x} y={DEAD.y} width={DEAD.w} height={DEAD.h} rx={7} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.2} strokeDasharray="5 6" opacity={0.7} />
-      <text x={DEAD.x} y={DEAD.y - 10} fill={colors.NEGATIVE} fontSize={10.5} fontFamily={MONO} opacity={0.85}>
+      <text x={DEAD.x} y={DEAD.y - 10} fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO} opacity={0.9}>
         stale owner · still epoch 2 · writes go to cells/room-7/ltx/e2/
       </text>
       {Array.from({ length: 4 }, (_, i) => {
@@ -339,7 +342,7 @@ function DeadLane({ u, dim }: { u: number; dim: number }) {
         );
       })}
       {pu > 0 && (
-        <text x={DEAD.x + DEAD.w - 8} y={DEAD.y + 18} textAnchor="end" fill={colors.NEGATIVE} fontSize={10.5} fontFamily={MONO} opacity={Math.min(1, pu * 3)}>
+        <text x={DEAD.x + DEAD.w - 8} y={DEAD.y + 18} textAnchor="end" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO} opacity={Math.min(1, pu * 3)}>
           a dead prefix — the fence is the path
         </text>
       )}
@@ -354,20 +357,20 @@ function RestoreFlow({ u, dim }: { u: number; dim: number }) {
   const x = BUCKET.x + BUCKET.w - 40 + (RESTORE.x - (BUCKET.x + BUCKET.w - 40)) * p;
   const y = BUCKET.y + 60 + (RESTORE.y - BUCKET.y - 60) * p;
   return (
-    <g opacity={1 - 0.85 * dim}>
+    <g opacity={1 - dim}>
       <g opacity={Math.min(1, uu * 3)}>
-        <rect x={RESTORE.x - 62} y={RESTORE.y + 24} width={124} height={54} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.6} />
-        <text x={RESTORE.x} y={RESTORE.y + 46} textAnchor="middle" fill={colors.TEXT} fontSize={11.5} fontWeight={700}>
+        <rect x={RESTORE.x - 85} y={RESTORE.y + 24} width={170} height={58} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.6} />
+        <text x={RESTORE.x} y={RESTORE.y + 46} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={700}>
           new owner
         </text>
-        <text x={RESTORE.x} y={RESTORE.y + 66} textAnchor="middle" fill={colors.MUTED} fontSize={9} fontFamily={MONO}>
+        <text x={RESTORE.x} y={RESTORE.y + 68} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
           restore → resume · e4
         </text>
       </g>
       {p > 0 && p < 1 && (
         <g transform={`translate(${x}, ${y})`}>
-          <rect x={-30} y={-12} width={60} height={24} rx={5} fill={colors.ACCENT} opacity={0.9} />
-          <text y={4} textAnchor="middle" fill={colors.BG} fontSize={9.5} fontFamily={MONO}>
+          <rect x={-38} y={-12} width={76} height={24} rx={5} fill={colors.ACCENT} opacity={0.9} />
+          <text y={4} textAnchor="middle" fill={colors.BG} fontSize={12} fontFamily={MONO}>
             db pages
           </text>
         </g>
@@ -391,7 +394,7 @@ function ClosingCard({ u }: { u: number }) {
       <text y={30} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
         cells/room-7/ltx/e3/ — the epoch in the path is the fence
       </text>
-      <text y={61} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+      <text y={61} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
         lose any node · every acknowledged write survives
       </text>
     </g>

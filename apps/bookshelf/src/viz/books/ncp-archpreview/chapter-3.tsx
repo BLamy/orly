@@ -27,16 +27,16 @@ export function buildScene() {
 
   tl.caption({ at: 0.4, dur: 5.9, text: 'The concept module reads only concepts made from completed token chunks.' });
   tl.tween(historyU, 1, { at: 0.8, dur: 1.6, ease: ease.draw });
-  tl.tween(cam, { x: 330, y: 230, k: 1.10 }, { at: 2.0, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 560, y: 330, k: 1.08 }, { at: 2.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 6.4, dur: 5.9, text: 'Eight transformer layers process that shorter history and predict the next concept at the slower clock rate.' });
   tl.tween(moduleU, 1, { at: 6.9, dur: 1.8, ease: ease.enter });
   tl.tween(predictU, 1, { at: 8.2, dur: 2.4, ease: ease.move });
-  tl.tween(cam, { x: 650, y: 240, k: 1.10 }, { at: 8.2, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 300, k: 1.06 }, { at: 8.2, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 12.4, dur: 5.9, text: 'One predicted concept must guide token positions again, so the model repeats it four times.' });
   tl.tween(expandU, 1, { at: 12.9, dur: 2.0, ease: ease.enter });
-  tl.tween(cam, { x: 905, y: 355, k: 1.08 }, { at: 13.4, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 660, y: 330, k: 1.06 }, { at: 13.4, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 18.4, dur: 5.9, text: 'But copying is not enough. Without a delay, a concept could leak information from the very tokens it is supposed to predict.' });
   tl.tween(gateU, 1, { at: 18.9, dur: 1.2, ease: ease.draw });
@@ -104,28 +104,28 @@ export function Render({ s }: { s: SceneState }) {
       <text x="640" y="62" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="850">one chunk behind</text>
 
       <g opacity={pipelineFade}>
-        <text x="232" y="112" textAnchor="middle" fill={colors.MUTED} fontSize="12">completed concept history</text>
+        <text x="232" y="112" textAnchor="middle" fill={colors.MUTED} fontSize="14">completed concept history</text>
         {[0, 1, 2].map((i) => <ConceptBead key={i} x={122 + i * 110} y={166} label={`c${i + 1}`} color={GROUP_COLORS[i]} u={clamp01(history * 4 - i)} />)}
         <path d="M390 166 H510" stroke={colors.MUTED} strokeWidth="3" strokeDasharray="9 7" opacity={history} />
 
         <g opacity={module}>
           <rect x="505" y="108" width="260" height="150" rx="32" fill="#15152a" stroke={colors.SECONDARY} strokeWidth="3" />
-          <text x="635" y="138" textAnchor="middle" fill={colors.SECONDARY} fontSize="13" fontFamily={colors.font.mono}>Concept Module · 8 layers</text>
+          <text x="635" y="138" textAnchor="middle" fill={colors.SECONDARY} fontSize="14" fontFamily={colors.font.mono}>Concept Module · 8 layers</text>
           {Array.from({ length: 8 }, (_, i) => <circle key={i} cx={544 + i * 26} cy="186" r="13" fill={i % 2 ? '#2a2040' : '#15233b'} stroke={colors.SECONDARY} opacity={clamp01(module * 10 - i)} />)}
           <path d="M535 224 H738" stroke={colors.SECONDARY} strokeWidth="4" strokeDasharray="10 8" strokeDashoffset={-pulse * 120} />
         </g>
 
         <ConceptBead x={790 + 112 * predict} y={166 + 120 * predict} label="ĉ4" color={colors.WARM} u={predict} glow={predict} />
-        <text x="930" y="250" textAnchor="middle" fill={colors.WARM} fontSize="12" opacity={predict}>weighted codeword prediction</text>
+        <text x="950" y="292" textAnchor="start" fill={colors.WARM} fontSize="14" opacity={predict}>weighted codeword prediction</text>
 
         <g opacity={expand}>
-          <text x="936" y="318" textAnchor="middle" fill={colors.MUTED} fontSize="12">repeat k = 4</text>
-          {[0, 1, 2, 3].map((i) => <ConceptBead key={i} x={828 + i * 72} y={365} label="ĉ4" color={colors.WARM} u={clamp01(expand * 5 - i)} />)}
+          <text x="936" y="344" textAnchor="middle" fill={colors.MUTED} fontSize="14">repeat k = 4</text>
+          {[0, 1, 2, 3].map((i) => <ConceptBead key={i} x={828 + i * 72} y={384} label="ĉ4" color={colors.WARM} u={clamp01(expand * 5 - i)} />)}
         </g>
 
         <g opacity={s.get(scene.gateU)}>
-          <rect x="598" y="298" width="74" height="190" rx="24" fill="#301b22" stroke={colors.NEGATIVE} strokeWidth="3" />
-          <text x="635" y="390" textAnchor="middle" fill={colors.NEGATIVE} fontSize="13" transform="rotate(-90 635 390)">causal shift · Δ = k</text>
+          <rect x="598" y="290" width="74" height="162" rx="24" fill="#301b22" stroke={colors.NEGATIVE} strokeWidth="3" />
+          <text x="635" y="371" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14" transform="rotate(-90 635 371)">causal shift · Δ = k</text>
         </g>
 
         <g>
@@ -134,14 +134,14 @@ export function Render({ s }: { s: SceneState }) {
             const afterShift = i < 4 ? '0' : i < 8 ? 'ĉ2' : 'ĉ3';
             const color = i < 4 ? colors.MUTED : GROUP_COLORS[Math.floor(i / 4)];
             const u = clamp01(shift * 14 - i);
-            return <g key={i} transform={`translate(${x} 520)`} opacity={history}>
+            return <g key={i} transform={`translate(${x} 496)`} opacity={history}>
               <rect x="-29" y="-27" width="58" height="54" rx="14" fill="#111c2c" stroke={color} strokeWidth={u > 0 ? 3 : 1.5} />
-              <text y="-5" textAnchor="middle" fill={colors.TEXT} fontSize="11" fontFamily={colors.font.mono}>{`h${i + 1}`}</text>
+              <text y="-5" textAnchor="middle" fill={colors.TEXT} fontSize="12" fontFamily={colors.font.mono}>{`h${i + 1}`}</text>
               <text y="15" textAnchor="middle" fill={u > 0 ? color : colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>{u > 0 ? `+ ${afterShift}` : ''}</text>
             </g>;
           })}
-          <text x="640" y="548" textAnchor="middle" fill={colors.MUTED} fontSize="12" opacity={fuse}>shifted concept signal enters the Token Decoder · 16 layers</text>
-          <rect x="112" y="560" width={1056 * fuse} height="16" rx="8" fill={colors.POSITIVE} opacity={0.55 + 0.3 * Math.sin(pulse * Math.PI * 16) ** 2} />
+          <text x="640" y="560" textAnchor="middle" fill={colors.MUTED} fontSize="14" opacity={fuse}>shifted concept signal enters the Token Decoder · 16 layers</text>
+          <rect x="112" y="576" width={1056 * fuse} height="14" rx="7" fill={colors.POSITIVE} opacity={0.55 + 0.3 * Math.sin(pulse * Math.PI * 16) ** 2} />
         </g>
       </g>
 
@@ -158,10 +158,10 @@ export function Render({ s }: { s: SceneState }) {
           <rect x="928" y={192 + i * 38} width="210" height="20" rx="10" fill={colors.WARM} opacity={0.12 + 0.07 * i} />
         </g>)}
         {[0, 1, 2, 3].map((i) => <Vec key={`irc${i}`} x1={155} y1={230 + i * 62} x2={340} y2={264 + i * 62} color={colors.ACCENT} grow={clamp01(routes * 7 - i)} opacity={0.62} />)}
-        <Vec x1={352} y1={286} x2={536} y2={316} color={colors.SECONDARY} grow={clamp01(routes * 3 - 1)} label="CRC" labelSize={12} />
-        <Vec x1={352} y1={410} x2={928} y2={442} color={colors.POSITIVE} grow={clamp01(routes * 3 - 1.5)} label="CRC" labelSize={12} />
-        <Vec x1={744} y1={330} x2={928} y2={318} color={colors.WARM} grow={clamp01(routes * 3 - 2)} label="CRC" labelSize={12} />
-        <text x="640" y="552" textAnchor="middle" fill={colors.MUTED} fontSize="12">dynamic dense connections choose useful depths</text>
+        <Vec x1={352} y1={286} x2={536} y2={316} color={colors.SECONDARY} grow={clamp01(routes * 3 - 1)} label="CRC" labelSize={14} />
+        <Vec x1={352} y1={410} x2={928} y2={442} color={colors.POSITIVE} grow={clamp01(routes * 3 - 1.5)} label="CRC" labelSize={14} />
+        <Vec x1={744} y1={330} x2={928} y2={318} color={colors.WARM} grow={clamp01(routes * 3 - 2)} label="CRC" labelSize={14} />
+        <text x="640" y="552" textAnchor="middle" fill={colors.MUTED} fontSize="14">dynamic dense connections choose useful depths</text>
       </g>
 
       <g opacity={clamp01(losses) * lossFade}>

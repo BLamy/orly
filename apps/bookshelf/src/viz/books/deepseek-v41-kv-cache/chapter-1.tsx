@@ -290,11 +290,11 @@ function Note({ x, y, text, o = 1, color = MUTED, size = 13, anchor = 'start' }:
 
 function Chip({ x, text, o, color = MUTED }: { x: number; text: string; o: number; color?: string }) {
   if (o <= 0) return null;
-  const w = text.length * 6.7 + 18;
+  const w = text.length * 7.4 + 18;
   return (
     <g opacity={o}>
       <rect x={x} y={88} width={w} height={24} rx={12} fill={PANEL} stroke={color} strokeOpacity={0.6} />
-      <text x={x + w / 2} y={104} fill={color} fontFamily={font.mono} fontSize={11} textAnchor="middle">
+      <text x={x + w / 2} y={104} fill={color} fontFamily={font.mono} fontSize={12} textAnchor="middle">
         {text}
       </text>
     </g>
@@ -365,8 +365,8 @@ export function Render({ s }: { s: SceneState }) {
         </g>
         <g opacity={g(scene.winLbl)}>
           <Code x={RING.x} y={RING.y - 8} text="window_size = 128" color={ACCENT} anchor="middle" />
-          <Code x={RING.x} y={RING.y + 12} text="window_kv_cache" color={MUTED} size={12} anchor="middle" />
-          <Note x={RING.x} y={RING.y + 32} text={`live window [${LIVE_WINDOW[0]}, ${LIVE_WINDOW[1]}]`} size={11} anchor="middle" />
+          <Code x={RING.x} y={RING.y + 12} text="window_kv_cache" color={TEXT} size={12} anchor="middle" />
+          <Note x={RING.x} y={RING.y + 32} text={`live window [${LIVE_WINDOW[0]}, ${LIVE_WINDOW[1]}]`} color={TEXT} size={12} anchor="middle" />
         </g>
 
         {/* expanded slots 8…23 */}
@@ -383,19 +383,19 @@ export function Render({ s }: { s: SceneState }) {
                     strokeWidth={isTok ? 1 + over : 1} />
                   {isTok ? (
                     <>
-                      <text x={x + DETAIL.w / 2} y={DETAIL.y + 15} fill={MUTED} opacity={1 - over} fontSize={9}
+                      <text x={x + DETAIL.w / 2} y={DETAIL.y + 15} fill={TEXT} opacity={1 - over} fontSize={11}
                         fontFamily={font.mono} textAnchor="middle">{BEFORE[slot]}</text>
-                      <text x={x + DETAIL.w / 2} y={DETAIL.y + 15} fill={WARM} opacity={over} fontSize={9}
+                      <text x={x + DETAIL.w / 2} y={DETAIL.y + 15} fill={WARM} opacity={over} fontSize={11}
                         fontFamily={font.mono} textAnchor="middle">{AFTER[slot]}</text>
                     </>
                   ) : (
-                    <text x={x + DETAIL.w / 2} y={DETAIL.y + 15} fill={MUTED} fontSize={9} fontFamily={font.mono}
+                    <text x={x + DETAIL.w / 2} y={DETAIL.y + 15} fill={TEXT} fontSize={11} fontFamily={font.mono}
                       textAnchor="middle">{AFTER[slot]}</text>
                   )}
                 </g>
               );
             })}
-            <Note x={DETAIL.x} y={DETAIL.y - 6} text="slots 8…23, position held" size={10} />
+            <Note x={DETAIL.x} y={DETAIL.y - 6} text="slots 8…23, position held" size={12} />
           </g>
         )}
         <g opacity={g(scene.modLbl)}>
@@ -443,8 +443,8 @@ export function Render({ s }: { s: SceneState }) {
             })}
           </g>
         )}
-        <Code x={RAIL.x} y={RAIL.y - 12} text="compress_kv_cache" o={g(scene.railLbl)} color={SECONDARY} />
-        <Code x={RAIL.x + RAIL.dx * RAIL.n} y={RAIL.y - 12} text="shared_attn.compress_kv" o={g(scene.fanLbl)} color={SECONDARY} anchor="end" />
+        <Note x={RAIL.x} y={RAIL.y - 12} text="global memory" o={g(scene.railLbl)} color={SECONDARY} size={14} />
+        <Note x={RAIL.x + RAIL.dx * RAIL.n} y={RAIL.y - 12} text="shared across layers" o={g(scene.fanLbl)} color={SECONDARY} size={14} anchor="end" />
         <g opacity={g(scene.contrastLbl)}>
           <Note x={RING.x} y={478} text="local: overwritten, fixed size" color={ACCENT} anchor="middle" />
           <Note x={RAIL.x + (RAIL.dx * RAIL.n) / 2} y={372} text="global: retained beyond the window" color={SECONDARY} anchor="middle" />
@@ -486,12 +486,12 @@ export function Render({ s }: { s: SceneState }) {
                   strokeOpacity={local ? 1 : 0.55} opacity={u} />
               );
             })}
-            <Note x={RULER.x} y={RULER.y + 34} text="layer 0" size={11} anchor="middle" />
-            <Note x={RULER.x + RULER.dx * 39} y={RULER.y + 34} text="39" size={11} anchor="middle" />
+            <Note x={RULER.x} y={RULER.y + 34} text="layer 0" size={12} anchor="middle" />
+            <Note x={RULER.x + RULER.dx * 39} y={RULER.y + 34} text="39" size={12} anchor="middle" />
             <g opacity={g(scene.tick01)}>
               <Code x={RULER.x - 6} y={RULER.y - 24} text="compress_ratios[0:2] = [0, 0]" color={ACCENT} />
-              <Note x={RULER.x + RULER.dx * 2 + 6} y={RULER.y + 34} text="window only" color={ACCENT} size={11} />
-              <Note x={RULER.x + RULER.dx * 20} y={RULER.y + 34} text="later layers: window + global branch" color={SECONDARY} size={11} anchor="middle" />
+              <Note x={RULER.x + RULER.dx * 2 + 6} y={RULER.y + 34} text="window only" color={ACCENT} size={12} />
+              <Note x={RULER.x + RULER.dx * 20} y={RULER.y + 34} text="later layers: window + global branch" color={SECONDARY} size={12} anchor="middle" />
             </g>
           </g>
         )}
@@ -516,8 +516,8 @@ export function Render({ s }: { s: SceneState }) {
       {/* HUD — outside the camera transform */}
       <text x={48} y={64} fill={TEXT} fontFamily={font.ui} fontSize={24} fontWeight={600}>One Token, Two Memories</text>
       <Chip x={48} text="Illustrative token position: 143" o={g(scene.chipTok)} color={WARM} />
-      <Chip x={300} text="128 slots; grouped display" o={g(scene.chipSlots)} color={ACCENT} />
-      <Chip x={510} text="Illustrative sparse reads" o={g(scene.chipSparse)} color={POSITIVE} />
+      <Chip x={324} text="128 slots; grouped display" o={g(scene.chipSlots)} color={ACCENT} />
+      <Chip x={566} text="Illustrative sparse reads" o={g(scene.chipSparse)} color={POSITIVE} />
       <Takeaway text="Local window + shared global memory" o={g(scene.takeO)} />
     </g>
   );

@@ -35,7 +35,7 @@ const fieldY = (i: number) => FORM.y + 64 + i * (FIELD_H + 8);
 const TOKEN = { w: 168, h: 44, y: 330 } as const;
 const TOKEN_START = { x: FORM.x + FORM.w / 2, y: 320 };
 const TOKEN_WAIT_X = 700; // in front of the gate
-const TOKEN_DONE_X = 1005; // inside the Actions panel
+const TOKEN_DONE_X = 895; // parked in the Actions lane, clear of the panel edge
 
 /** The toll gate: pillar + swinging arm across the token lane. */
 const GATE = { x: 800, top: 240, bot: 425, armLen: 150 } as const;
@@ -43,12 +43,12 @@ const GATE = { x: 800, top: 240, bot: 425, armLen: 150 } as const;
 /** Stranger lane: same rail, later in time. */
 const STRANGER_WAIT_X = 682;
 
-const ACTIONS = { x: 930, y: 168, w: 312, h: 340 } as const;
+const ACTIONS = { x: 990, y: 168, w: 270, h: 340 } as const;
 
-// camera marks
-const CAM_FORM: CameraState = { x: 336, y: 316, k: 1.45 };
+// camera marks — each frame keeps its subject above the caption band (y ≲ 630)
+const CAM_FORM: CameraState = { x: 336, y: 345, k: 1.2 };
 const CAM_GATE: CameraState = { x: 700, y: 330, k: 1.5 };
-const CAM_ACT: CameraState = { x: 1010, y: 330, k: 1.45 };
+const CAM_ACT: CameraState = { x: 1040, y: 330, k: 1.4 };
 
 // ---------------------------------------------------------------------------
 // Timeline
@@ -274,9 +274,10 @@ export function Render({ s }: { s: SceneState }) {
 
   const open = Math.max(gateOpen, gateOpen2);
   const armAngle = -78 * open; // degrees; 0 = barring the lane
-  const worldOp = 1 - 0.88 * dimU;
+  const worldOp = 1 - 0.92 * dimU;
 
-  const strangerFinalX = strangerX + strangerPass * (TOKEN_DONE_X - 60 - STRANGER_WAIT_X);
+  // the stranger queues in the lane below the owner's token once through the gate
+  const strangerFinalX = strangerX + strangerPass * (TOKEN_DONE_X - STRANGER_WAIT_X);
   // the build chip falls from above onto the stranger token
   const chipY = -40 + buildDrop * 74;
 
@@ -323,10 +324,10 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---- the stranger's token + falling build label ---- */}
           {strangerX > -100 && (
             <g>
-              <BookToken x={strangerFinalX} y={TOKEN.y + 58 - strangerPass * 58} gray label="issue #79" labelU={0} />
+              <BookToken x={strangerFinalX} y={TOKEN.y + 58} gray label="issue #79" labelU={0} />
               <text
                 x={strangerFinalX}
-                y={TOKEN.y + 96 - strangerPass * 58}
+                y={TOKEN.y + 96}
                 textAnchor="middle"
                 fill={colors.MUTED}
                 fontSize={12}
@@ -364,7 +365,7 @@ export function Render({ s }: { s: SceneState }) {
               </g>
               <line x1={GATE.x} y1={GATE.bot} x2={GATE.x} y2={GATE.bot + 40} stroke={colors.GRID} strokeWidth={3} strokeLinecap="round" opacity={0.9} />
               <text x={GATE.x} y={GATE.top - 54} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
-                author_association: OWNER | COLLABORATOR
+                author_association: OWNER | MEMBER | COLLABORATOR
               </text>
               <text x={GATE.x} y={GATE.bot + 62} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic">
                 the collaborator gate
@@ -431,7 +432,7 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* lane hint */}
           {gateU > 0 && (
-            <line x1={560} y1={TOKEN.y} x2={920} y2={TOKEN.y} stroke={colors.GRID} strokeWidth={1} strokeDasharray="2 8" opacity={0.5 * gateU * (1 - dimU)} />
+            <line x1={560} y1={TOKEN.y} x2={ACTIONS.x - 12} y2={TOKEN.y} stroke={colors.GRID} strokeWidth={1} strokeDasharray="2 8" opacity={0.5 * gateU * (1 - dimU)} />
           )}
         </g>
 

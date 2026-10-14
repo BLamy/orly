@@ -85,8 +85,8 @@ function CosineMatrix({ x, y, morph, opacity, collision }: { x: number; y: numbe
   const cell = 54;
   return <g opacity={opacity}>
     <text x={x + 108} y={y - 42} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontWeight={750}>pairwise cosine</text>
-    {TASKS.map((t, i) => <text key={`c${t}`} x={x + i * cell + cell / 2} y={y - 14} textAnchor="middle" fill={C[i]} fontSize={10} fontFamily={MONO}>{t.slice(0, 1)}</text>)}
-    {TASKS.map((t, i) => <text key={`r${t}`} x={x - 12} y={y + i * cell + 34} textAnchor="end" fill={C[i]} fontSize={10} fontFamily={MONO}>{t.slice(0, 1)}</text>)}
+    {TASKS.map((t, i) => <text key={`c${t}`} x={x + i * cell + cell / 2} y={y - 14} textAnchor="middle" fill={C[i]} fontSize={14} fontFamily={MONO}>{t.slice(0, 1)}</text>)}
+    {TASKS.map((t, i) => <text key={`r${t}`} x={x - 12} y={y + i * cell + 34} textAnchor="end" fill={C[i]} fontSize={14} fontFamily={MONO}>{t.slice(0, 1)}</text>)}
     {SFT_COS.map((row, i) => row.map((_, j) => {
       const v = lerp(SFT_COS[i][j], RL_COS[i][j], morph);
       const mag = Math.abs(v);
@@ -94,7 +94,7 @@ function CosineMatrix({ x, y, morph, opacity, collision }: { x: number; y: numbe
       const hit = collision * ((i === 0 && j === 3) || (i === 3 && j === 0) ? 1 : 0);
       return <g key={`${i}-${j}`}>
         <rect x={x + j * cell} y={y + i * cell} width={cell - 5} height={cell - 5} rx={7} fill={v < 0 ? colors.NEGATIVE : colors.ACCENT} opacity={i === j ? 0.32 : hot} stroke={hit ? colors.WARM : 'none'} strokeWidth={hit ? 4 : 0} />
-        <text x={x + j * cell + (cell - 5) / 2} y={y + i * cell + 30} textAnchor="middle" fill={colors.TEXT} fontSize={9} fontFamily={MONO}>{i === j ? '—' : (Math.abs(v) < .001 ? v.toExponential(0) : v.toFixed(2))}</text>
+        <text x={x + j * cell + (cell - 5) / 2} y={y + i * cell + 30} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>{i === j ? '—' : (Math.abs(v) < .001 ? v.toExponential(0) : v.toFixed(2))}</text>
       </g>;
     }))}
   </g>;
@@ -123,19 +123,28 @@ export function Render({ s }: { s: SceneState }) {
         {TASKS.map((task, i) => {
           const angle = lerp(SFT_ANGLES[i], RL_ANGLES[i], morph);
           const rawLen = lerp(44 + SFT_NORMS[i] * 26, 18 + RL_NORMS[i] * 360, morph);
-          const len = lerp(rawLen, 190, normU);
-          return <Vec key={task} x1={390} y1={350} x2={390 + Math.cos(angle) * len} y2={350 + Math.sin(angle) * len} grow={s.get(scene.vectorU) * s.get(scene.deltaU)} color={C[i]} width={4} label={task} labelAt="tip" opacity={1} />;
+          const len = lerp(rawLen, 150, normU);
+          // Math draws first (the "one task's update vector" beat); the rest arrive with "do this for all four".
+          const grow = i === 0 ? s.get(scene.deltaU) : s.get(scene.vectorU);
+          // Labels sit on a fixed ring so tiny RL arrows don't pile their names on top of each other.
+          const lr = Math.max(len + 16, 70);
+          const cx = Math.cos(angle);
+          const sy = Math.sin(angle);
+          return <g key={task}>
+            <Vec x1={390} y1={350} x2={390 + cx * len} y2={350 + sy * len} grow={grow} color={C[i]} width={4} opacity={1} />
+            <text x={390 + cx * lr} y={350 + sy * lr + (sy > 0.7 ? 16 : 5)} textAnchor={cx > 0.3 ? 'start' : cx < -0.3 ? 'end' : 'middle'} fill={C[i]} fontSize={16} fontWeight={650} opacity={grow}>{task}</text>
+          </g>;
         })}
         <circle cx={390} cy={350} r={250} fill="none" stroke={colors.GRID} opacity={0.28 * normU} strokeDasharray="5 10" />
-        <text x={390} y={616} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO} opacity={normU}>direction-only view · vectors normalized</text>
+        <text x={390} y={616} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={normU}>direction-only view · vectors normalized</text>
         <CosineMatrix x={820} y={212} morph={morph} opacity={s.get(scene.matrixU)} collision={s.get(scene.collisionU)} />
         <g opacity={s.get(scene.sparseU)}>
           <rect x={784} y={474} width={298} height={106} rx={18} fill={colors.PANEL} stroke={colors.POSITIVE} />
           <text x={933} y={508} textAnchor="middle" fill={colors.POSITIVE} fontSize={16} fontWeight={800}>parameters above 10⁻⁵</text>
           <text x={855} y={550} textAnchor="middle" fill={colors.NEGATIVE} fontSize={27} fontFamily={MONO}>93%</text>
           <text x={1010} y={550} textAnchor="middle" fill={colors.POSITIVE} fontSize={27} fontFamily={MONO}>20%</text>
-          <text x={855} y={568} textAnchor="middle" fill={colors.MUTED} fontSize={10}>SFT</text>
-          <text x={1010} y={568} textAnchor="middle" fill={colors.MUTED} fontSize={10}>RL</text>
+          <text x={855} y={568} textAnchor="middle" fill={colors.MUTED} fontSize={12}>SFT</text>
+          <text x={1010} y={568} textAnchor="middle" fill={colors.MUTED} fontSize={12}>RL</text>
         </g>
         <MathLabel tex={'\\Delta W_i = W_i - W_{base}'} x={390} y={132} fontSize={22} opacity={s.get(scene.deltaU) * (1 - s.get(scene.loraU))} />
       </g>

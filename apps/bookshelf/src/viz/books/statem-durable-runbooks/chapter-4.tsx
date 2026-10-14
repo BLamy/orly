@@ -42,7 +42,7 @@ const PRACTICES = [
 ] as const;
 
 const CAM_MATRIX: CameraState = { x: 640, y: 360, k: 1.02 };
-const CAM_PROVIDER: CameraState = { x: 640, y: 430, k: 1.08 };
+const CAM_PROVIDER: CameraState = { x: 655, y: 430, k: 1.04 };
 const CAM_SIEVE: CameraState = { x: 640, y: 355, k: 1.05 };
 
 interface Scene {
@@ -187,7 +187,7 @@ function ScoreCell({ x, y, value, label, color, u, active }: { x: number; y: num
     <g opacity={u} transform={`translate(0 ${lerp(10, 0, u)})`}>
       <rect x={x - 82} y={y - 28} width={164} height={56} rx={10} fill={colors.PANEL} stroke={active ? color : colors.GRID} strokeWidth={active ? 2.2 : 1.1} />
       <text x={x} y={y - 2} textAnchor="middle" fill={color} fontFamily={MONO} fontSize={19} fontWeight={700}>{value}</text>
-      <text x={x} y={y + 18} textAnchor="middle" fill={colors.MUTED} fontSize={10}>{label}</text>
+      <text x={x} y={y + 18} textAnchor="middle" fill={colors.MUTED} fontSize={12}>{label}</text>
     </g>
   );
 }
@@ -215,17 +215,17 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...s.get(scene.cam)}>
         <g opacity={frameU * matrixOpacity}>
-          <text x={78} y={95} fill={colors.MUTED} fontSize={12} letterSpacing="0.12em">TERMINAL-BENCH 2.1 · TRIAL SUCCESS RATE (%)</text>
-          <text x={440} y={145} textAnchor="middle" fill={colors.MUTED} fontSize={12}>reference / baseline</text>
-          <text x={705} y={145} textAnchor="middle" fill={colors.ACCENT} fontSize={12}>StateM profile</text>
-          <text x={970} y={145} textAnchor="middle" fill={colors.WARM} fontSize={12}>adapted profile</text>
+          <text x={100} y={120} fill={colors.MUTED} fontSize={12} letterSpacing="0.12em">TERMINAL-BENCH 2.1 · TRIAL SUCCESS RATE (%)</text>
+          <text x={440} y={165} textAnchor="middle" fill={colors.MUTED} fontSize={12}>reference / baseline</text>
+          <text x={705} y={165} textAnchor="middle" fill={colors.ACCENT} fontSize={12}>StateM profile</text>
+          <text x={970} y={165} textAnchor="middle" fill={colors.WARM} fontSize={12}>adapted profile</text>
           {ROWS.map((row, i) => {
             const rowU = clamp01(rowsU - i);
             const active = Math.abs(activeRow - i) < 0.55;
             return (
               <g key={row.model} opacity={rowU}>
                 <text x={72} y={ROW_Y[i] - 4} fill={active ? colors.TEXT : colors.MUTED} fontFamily={MONO} fontSize={13}>{row.model}</text>
-                <text x={72} y={ROW_Y[i] + 17} fill={colors.MUTED} fontSize={10}>{row.note}</text>
+                <text x={72} y={ROW_Y[i] + 19} fill={colors.MUTED} fontSize={12}>{row.note}</text>
                 <ScoreCell x={440} y={ROW_Y[i]} value={row.base} label={i === 3 ? 'baseline' : 'reference'} color={colors.MUTED} u={rowU} active={active && i === 3 && providerU > 0} />
                 <ScoreCell x={705} y={ROW_Y[i]} value={row.profile} label={i === 0 ? 'developed' : 'frozen GPT profile'} color={i === 3 ? colors.NEGATIVE : colors.ACCENT} u={rowU} active={active} />
                 {i === 3 && <ScoreCell x={970} y={ROW_Y[i]} value={row.adapted} label="standard timeouts" color={colors.POSITIVE} u={rowU * adaptU} active={adaptU > 0.5} />}
@@ -248,7 +248,7 @@ export function Render({ s }: { s: SceneState }) {
         </g>
 
         {sieveU > 0 && (
-          <g opacity={clamp01(sieveU) * dim}>
+          <g opacity={clamp01(sieveU) * dim * (1 - 0.85 * businessU)}>
             <text x={640} y={115} textAnchor="middle" fill={colors.TEXT} fontSize={19} fontWeight={700}>TRANSFER DISTANCE FILTERS PROCEDURE</text>
             <line x1={640} y1={165} x2={640} y2={535} stroke={colors.SECONDARY} strokeWidth={5} />
             <path d="M 620 185 L 660 205 L 620 225 M 620 315 L 660 335 L 620 355 M 620 445 L 660 465 L 620 485" fill="none" stroke={colors.SECONDARY} strokeWidth={3} />
@@ -259,14 +259,16 @@ export function Render({ s }: { s: SceneState }) {
               const pass = practice.outcome !== 'drop';
               const reshape = practice.outcome === 'reshape';
               const x0 = 325;
-              const x1 = pass ? 940 : 610;
+              const x1 = pass ? 940 : 470;
               const x = lerp(x0, x1, u);
               const w = 210;
+              // A dropped practice stops on the far side of the filter and ghosts out.
+              const fade = pass ? 1 : 1 - 0.6 * clamp01((sieveU - 0.5) * 2);
               return (
-                <g key={practice.label} transform={`translate(${x} ${practice.y})`} opacity={u}>
+                <g key={practice.label} transform={`translate(${x} ${practice.y})`} opacity={u * fade}>
                   <rect x={-w / 2} y={-20} width={w} height={40} rx={10} fill={colors.PANEL} stroke={practice.color} strokeWidth={1.4} />
                   <text y={5} textAnchor="middle" fill={practice.color} fontFamily={MONO} fontSize={12}>{practice.label}</text>
-                  {u > 0.92 && <text x={w / 2 + 18} y={5} fill={practice.color} fontSize={11}>{reshape ? 'adapt' : practice.outcome}</text>}
+                  {u > 0.92 && <text y={36} textAnchor="middle" fill={practice.color} fontSize={12}>{reshape ? 'adapt' : practice.outcome}</text>}
                 </g>
               );
             })}
@@ -296,24 +298,25 @@ export function Render({ s }: { s: SceneState }) {
               <g opacity={practiceU}>
                 <path d="M 650 410 C 600 450, 520 470, 430 490" fill="none" stroke={colors.WARM} strokeWidth={3} />
                 <path d="M 650 410 C 700 450, 780 470, 870 490" fill="none" stroke={colors.WARM} strokeWidth={3} />
-                <text x={650} y={430} textAnchor="middle" fill={colors.WARM} fontSize={13}>revise · remove · narrow</text>
+                <text x={640} y={590} textAnchor="middle" fill={colors.WARM} fontSize={13}>revise · remove · narrow</text>
               </g>
             )}
           </g>
         )}
 
         {recapU > 0 && (
-          <g opacity={recapU * dim}>
+          <g opacity={recapU * dim * (1 - endU)}>
             {[
-              { x: 190, label: 'DURABLE PHASE', color: colors.ACCENT },
-              { x: 490, label: 'CHECKED GATE', color: colors.POSITIVE },
-              { x: 790, label: 'RUN LEDGER', color: colors.SECONDARY },
-              { x: 1090, label: 'SELECTED PRACTICE', color: colors.WARM },
+              { x: 190, lines: ['DURABLE', 'PHASE'], color: colors.ACCENT },
+              { x: 490, lines: ['CHECKED', 'GATE'], color: colors.POSITIVE },
+              { x: 790, lines: ['RUN', 'LEDGER'], color: colors.SECONDARY },
+              { x: 1090, lines: ['SELECTED', 'PRACTICE'], color: colors.WARM },
             ].map((item, i, all) => (
-              <g key={item.label} opacity={clamp01(recapU * 5 - i)}>
-                {i < all.length - 1 && <line x1={item.x + 58} y1={350} x2={all[i + 1].x - 58} y2={350} stroke={colors.GRID} strokeWidth={3} />}
-                <circle cx={item.x} cy={350} r={54} fill={colors.PANEL} stroke={item.color} strokeWidth={2.2} />
-                <text x={item.x} y={355} textAnchor="middle" fill={item.color} fontSize={11} fontWeight={700}>{item.label}</text>
+              <g key={item.lines[0]} opacity={clamp01(recapU * 5 - i)}>
+                {i < all.length - 1 && <line x1={item.x + 60} y1={350} x2={all[i + 1].x - 60} y2={350} stroke={colors.GRID} strokeWidth={3} />}
+                <circle cx={item.x} cy={350} r={60} fill={colors.PANEL} stroke={item.color} strokeWidth={2.2} />
+                <text x={item.x} y={346} textAnchor="middle" fill={item.color} fontSize={12} fontWeight={700}>{item.lines[0]}</text>
+                <text x={item.x} y={364} textAnchor="middle" fill={item.color} fontSize={12} fontWeight={700}>{item.lines[1]}</text>
               </g>
             ))}
             <text x={640} y={205} textAnchor="middle" fill={colors.TEXT} fontSize={22} fontWeight={700}>THE RUNBOOK REMEMBERS THE RUN</text>

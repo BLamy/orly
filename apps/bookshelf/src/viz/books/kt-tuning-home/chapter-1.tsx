@@ -44,8 +44,9 @@ const CARDS = [0, 1, 2, 3];
 const CARD = { x: 760, y: 210, w: 92, h: 54, gap: 14 } as const;
 const RAM = { x: 760, y: 452, w: 410, h: 88 } as const;
 
-const CAM_TOWER: CameraState = { x: 390, y: 340, k: 1.35 };
-const CAM_RIG: CameraState = { x: 950, y: 340, k: 1.3 };
+// Both framings keep the tower's base label and the 14B note above the caption band.
+const CAM_TOWER: CameraState = { x: 500, y: 370, k: 1.2 };
+const CAM_RIG: CameraState = { x: 740, y: 378, k: 1.2 };
 const CAM_WIDE: CameraState = { x: 640, y: 330, k: 1.02 };
 
 export interface Scene {
@@ -216,9 +217,9 @@ export function Render({ s }: { s: SceneState }) {
             </text>
           )}
           {/* veto stamp */}
-          <g opacity={vetoU} transform="rotate(-9 390 300)">
-            <rect x={280} y={276} width={220} height={46} rx={9} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={2.2} />
-            <text x={390} y={306} textAnchor="middle" fill={colors.NEGATIVE} fontSize={15} fontWeight={700}>
+          <g opacity={vetoU} transform="rotate(-9 565 300)">
+            <rect x={455} y={276} width={220} height={46} rx={9} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={2.2} />
+            <text x={565} y={306} textAnchor="middle" fill={colors.NEGATIVE} fontSize={15} fontWeight={700}>
               “Too Huge to run”
             </text>
           </g>
@@ -233,7 +234,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={TOWER.x + TOWER.w + 48} y={TOWER.base - 22} fill={colors.WARM} fontSize={11} fontFamily="ui-monospace, monospace">
               LoRA adapters · lora_rank: 8
             </text>
-            <text x={TOWER.x + TOWER.w + 48} y={TOWER.base - 6} fill={colors.MUTED} fontSize={9.5}>
+            <text x={TOWER.x + TOWER.w + 48} y={TOWER.base - 6} fill={colors.MUTED} fontSize={11}>
               the only trainable state
             </text>
           </g>
@@ -249,7 +250,7 @@ export function Render({ s }: { s: SceneState }) {
                 <text x={CARD.x + k * (CARD.w + CARD.gap) + CARD.w / 2} y={CARD.y + 24} textAnchor="middle" fill={colors.ACCENT} fontSize={10.5}>
                   RTX 4090
                 </text>
-                <text x={CARD.x + k * (CARD.w + CARD.gap) + CARD.w / 2} y={CARD.y + 42} textAnchor="middle" fill={colors.MUTED} fontSize={9}>
+                <text x={CARD.x + k * (CARD.w + CARD.gap) + CARD.w / 2} y={CARD.y + 42} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
                   24 GB
                 </text>
               </g>

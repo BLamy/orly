@@ -56,6 +56,8 @@ const LAYOUT = layoutJson(EVENT, {
   abbrev: (_p, raw) => (raw.length > 26 ? shortHex(raw) : raw),
 });
 const NONCE_ANCHOR = LAYOUT.anchor('tags[0][1]');
+// the live counter sits in the empty gap under the blanked slot (the `],` row is short)
+const COUNTER_W = LAYOUT.charW * 17 + 8;
 
 const GRID = { x: 812, y: 128, cell: 15, gap: 3 };
 const GRID_W = 16 * (GRID.cell + GRID.gap) - GRID.gap;
@@ -65,7 +67,8 @@ const LADDER_X = GRID.x - 46;
 const ladderY = (d: number) => GRID.y + GRID_W - (d / TARGET) * GRID_W;
 
 const CAM_JSON: CameraState = { x: 330, y: 310, k: 1.26 };
-const CAM_MINE: CameraState = { x: 800, y: 320, k: 1.1 };
+// Mining shot: wide enough that the event JSON (left) and the bit rig (right) share the frame.
+const CAM_MINE: CameraState = { x: 600, y: 350, k: 1.05 };
 
 interface Scene {
   tl: Timeline;
@@ -209,12 +212,12 @@ export function Render({ s }: { s: SceneState }) {
             focusU={tagU * 0.9}
             hidden={started ? ['tags[0][1]'] : undefined}
           />
-          {/* live nonce odometer riding the hidden slot */}
+          {/* live nonce counter, tucked under the blanked slot it fills */}
           {started && (
             <g>
-              <rect x={NONCE_ANCHOR.x - 4} y={NONCE_ANCHOR.y} width={NONCE_ANCHOR.w + 60} height={NONCE_ANCHOR.h} rx={4} fill={colors.PANEL} stroke={colors.WARM} opacity={0.9} />
-              <text x={NONCE_ANCHOR.x + 4} y={NONCE_ANCHOR.y + NONCE_ANCHOR.h - 7} fill={colors.WARM} fontSize={14} fontFamily="monospace" fontWeight={600}>
-                {shownNonce.toLocaleString('en-US')}
+              <rect x={NONCE_ANCHOR.x - 4} y={NONCE_ANCHOR.y + NONCE_ANCHOR.h + 1} width={COUNTER_W} height={NONCE_ANCHOR.h - 2} rx={4} fill={colors.PANEL} stroke={colors.WARM} opacity={0.9} />
+              <text x={NONCE_ANCHOR.x} y={NONCE_ANCHOR.y + 2 * NONCE_ANCHOR.h - 6} fill={colors.WARM} fontSize={14} fontFamily="monospace" fontWeight={600}>
+                ↑ counter {shownNonce.toLocaleString('en-US')}
               </text>
             </g>
           )}
@@ -222,10 +225,10 @@ export function Render({ s }: { s: SceneState }) {
           {/* the mining rig */}
           {gridU > 0 && (
             <g>
-              <text x={GRID.x} y={GRID.y - 40} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={gridU}>
+              <text x={GRID.x} y={GRID.y - 40} fill={colors.MUTED} fontSize={13} fontFamily="monospace" opacity={gridU}>
                 id = SHA-256(serialization with nonce {shownNonce.toLocaleString('en-US')})
               </text>
-              <text x={GRID.x} y={GRID.y - 20} fill={winU > 0 ? colors.POSITIVE : colors.ACCENT} fontSize={12} fontFamily="monospace" opacity={gridU}>
+              <text x={GRID.x} y={GRID.y - 20} fill={winU > 0 ? colors.POSITIVE : colors.ACCENT} fontSize={13} fontFamily="monospace" opacity={gridU}>
                 {shortHex(started ? MILE_IDS[mi] : MILE_IDS[0], 14, 6)}
               </text>
               <BitField
@@ -253,7 +256,7 @@ export function Render({ s }: { s: SceneState }) {
                   {best}
                 </text>
               </g>
-              <text x={LADDER_X} y={ladderY(TARGET) - 12} textAnchor="middle" fill={colors.MUTED} fontSize={11} opacity={gridU}>
+              <text x={LADDER_X} y={ladderY(TARGET) - 12} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={gridU}>
                 target {TARGET}
               </text>
 

@@ -198,7 +198,7 @@ export function Render({ s }: { s: SceneState }) {
       {/* the shared tape — and its ghost pressing down into the matrix */}
       <g opacity={1 - 0.85 * longU}>
         {PIECES.map((p, i) => (
-          <Cell key={i} x={X(i)!} y={TRUNK.tapeY} w={BW} h={TRUNK.tapeH} text={p} size={10.5} u={clamp01(tapeU * (NC + 2) - i)} tone={ROLE.OBSERVE} fill="#0b1a2b" />
+          <Cell key={i} x={X(i)!} y={TRUNK.tapeY} w={BW} h={TRUNK.tapeH} text={p} size={12} u={clamp01(tapeU * (NC + 2) - i)} tone={ROLE.OBSERVE} fill="#0b1a2b" />
         ))}
       </g>
       {dropU > 0.002 && dropU < 0.998 &&
@@ -260,9 +260,9 @@ export function Render({ s }: { s: SceneState }) {
         })}
       {range(LAYERS).map((l) => (
         <g key={l} opacity={clamp01(prefillU * LAYERS - l)}>
-          <Label x={72} y={layerY(l) + 22} anchor="end" text={`L${l + 1}`} size={13} color={colors.MUTED} mono />
-          <Label x={93} y={layerY(l) + 12} anchor="end" text="K" size={11} color={ROLE.MODEL} mono />
-          <Label x={93} y={layerY(l) + 29} anchor="end" text="V" size={11} color={ROLE.MODEL} mono />
+          <Label x={70} y={layerY(l) + 22} anchor="end" text={`L${l + 1}`} size={14} color={colors.MUTED} mono />
+          <Label x={93} y={layerY(l) + 12} anchor="end" text="K" size={12} color={ROLE.MODEL} mono />
+          <Label x={93} y={layerY(l) + 29} anchor="end" text="V" size={12} color={ROLE.MODEL} mono />
         </g>
       ))}
       {prefillU > 0.002 && prefillU < 0.998 && (
@@ -297,7 +297,7 @@ export function Render({ s }: { s: SceneState }) {
           <g key={br.name}>
             <Label x={SUF.slabX} y={br.y - 12} text={`${br.name} question · ${br.pieces.length} pieces`} u={u} size={15} weight={650} />
             {br.pieces.map((p, i) => (
-              <Cell key={i} x={SUF.x + i * SUF.step} y={br.y} w={SUF.w} h={38} text={p} size={11} u={clamp01(u * 3 - i * 0.4)} />
+              <Cell key={i} x={SUF.x + i * SUF.step} y={br.y} w={SUF.w} h={38} text={p} size={12} u={clamp01(u * 3 - i * 0.4)} />
             ))}
             {/* the branch's own continuation state */}
             {br.pieces.map((_, i) =>
@@ -331,7 +331,7 @@ export function Render({ s }: { s: SceneState }) {
         </g>
       )}
 
-      <StatusTag x={TRUNK.x0} y={540} kind="INTENDED" text="one logical shared prefill, then field questions" u={s.get(scene.intendedU) * (1 - barsU)} />
+      <StatusTag x={TRUNK.x0} y={540} kind="INTENDED" text="design calls for one shared prefill, then field questions" u={s.get(scene.intendedU) * (1 - barsU)} />
       <StatusTag x={700} y={540} kind="REFERENCE" text="native engine broadcasts cache rows" u={s.get(scene.refU)} />
 
       {/* beat 8 — closing on an opaque panel */}

@@ -12,10 +12,14 @@ const N = 16;
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 const clamp01 = (u: number) => Math.max(0, Math.min(1, u));
 const lerp = (a: number, b: number, u: number) => a + (b - a) * u;
+// The bouquet is centred on the group mean (MEAN_X, MEAN_Y) from the prompt origin.
+const S = 1.35;
+const MEAN_X = 138;
+const MEAN_Y = -28;
 const ROLLOUTS = Array.from({ length: N }, (_, i) => {
   const a = (i / N) * Math.PI * 2;
-  const r = 28 + (i % 4) * 9;
-  return { x: Math.cos(a) * r + 138, y: Math.sin(a) * r - 28, reward: i % 3 === 0 ? 1 : 0 };
+  const r = (28 + (i % 4) * 9) * S;
+  return { x: Math.cos(a) * r + MEAN_X, y: Math.sin(a) * r + MEAN_Y, reward: i % 3 === 0 ? 1 : 0 };
 });
 
 export function buildScene() {
@@ -85,13 +89,13 @@ function Bouquet({ cx, cy, u, residual, color, opacity = 1 }: { cx: number; cy: 
       const stagger = clamp01(u * 1.8 - i / N * 0.8);
       const fullX = cx + p.x;
       const fullY = cy + p.y;
-      const residualX = cx + (p.x - 138) * 1.15;
-      const residualY = cy + (p.y + 28) * 1.15;
+      const residualX = cx + (p.x - MEAN_X) * 1.15;
+      const residualY = cy + (p.y - MEAN_Y) * 1.15;
       const x = lerp(fullX, residualX, residual);
       const y = lerp(fullY, residualY, residual);
       return <g key={i} opacity={stagger}>
         <line x1={cx} y1={cy} x2={x} y2={y} stroke={p.reward ? colors.POSITIVE : colors.NEGATIVE} strokeWidth={2} opacity={0.28 + residual * 0.32} />
-        <circle cx={x} cy={y} r={5 + p.reward * 2} fill={p.reward ? colors.POSITIVE : color} />
+        <circle cx={x} cy={y} r={6 + p.reward * 2} fill={p.reward ? colors.POSITIVE : color} />
       </g>;
     })}
     <circle cx={cx} cy={cy} r={9} fill={color} />
@@ -103,49 +107,51 @@ export function Render({ s }: { s: SceneState }) {
   const sep = clamp01(s.get(scene.separateU));
   const dim = 1 - 0.9 * s.get(scene.dimU);
   const mathX = lerp(430, 350, sep);
-  const scienceX = lerp(430, 710, sep);
+  const scienceX = lerp(430, 700, sep);
   return <>
     <rect width={1280} height={720} fill={colors.BG} />
     <g opacity={dim}>
       <text x={640} y={50} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={850}>Advantage leaves only the residual</text>
-      <text x={640} y={78} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>score_function_stats.py · num_rollouts: 16</text>
+      <text x={640} y={78} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>score_function_stats.py · num_rollouts: 16</text>
     </g>
     <Camera {...s.get(scene.cam)}>
       <g opacity={dim}>
         <g opacity={s.get(scene.promptU)}>
           <rect x={90} y={286} width={154} height={112} rx={20} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2} />
-          <text x={167} y={328} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>one prompt group</text>
+          <text x={167} y={328} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>one prompt group</text>
           <text x={167} y={362} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={800}>16 rollouts</text>
         </g>
         <Bouquet cx={mathX} cy={350} u={s.get(scene.rolloutsU)} residual={residual} color={colors.ACCENT} />
-        <text x={mathX} y={508} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>math score vectors</text>
-        <Vec x1={mathX} y1={350} x2={mathX + lerp(138, 0, residual)} y2={350 + lerp(-28, 0, residual)} grow={s.get(scene.meanU)} color={colors.WARM} width={5} label="group mean" />
+        <text x={mathX} y={508} textAnchor="middle" fill={colors.ACCENT} fontSize={15} fontFamily={MONO}>math score vectors</text>
+        <Vec x1={mathX} y1={350} x2={mathX + lerp(MEAN_X, 0, residual)} y2={350 + lerp(MEAN_Y, 0, residual)} grow={s.get(scene.meanU)} color={colors.WARM} width={5} />
+        <text x={mathX + MEAN_X} y={232} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO} opacity={s.get(scene.meanU) * (1 - residual)}>group mean</text>
         <g opacity={s.get(scene.secondTaskU)}>
           <Bouquet cx={scienceX} cy={350} u={1} residual={residual} color={colors.SECONDARY} opacity={0.9} />
-          <text x={scienceX} y={508} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>science score vectors</text>
+          <text x={scienceX} y={508} textAnchor="middle" fill={colors.SECONDARY} fontSize={15} fontFamily={MONO}>science score vectors</text>
         </g>
         <g opacity={s.get(scene.boundsU)}>
           <rect x={790} y={160} width={400} height={238} rx={22} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={990} y={198} textAnchor="middle" fill={colors.TEXT} fontSize={17} fontWeight={800}>interference upper bounds</text>
-          <MathLabel tex={'|I_{SFT}(i,j)| \\le M_i M_j'} x={990} y={252} fontSize={24} color={colors.NEGATIVE} boxWidth={360} />
-          <MathLabel tex={'|I_{RL}(i,j)| \\le V_i V_j'} x={990} y={326} fontSize={24} color={colors.POSITIVE} boxWidth={360} />
-          <text x={990} y={372} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>absolute norm vs. within-group variance</text>
+          <MathLabel tex={'|I_{SFT}(i,j)| \\le M_i M_j'} x={990} y={252} fontSize={20} color={colors.NEGATIVE} boxWidth={380} />
+          <MathLabel tex={'|I_{RL}(i,j)| \\le V_i V_j'} x={990} y={326} fontSize={20} color={colors.POSITIVE} boxWidth={380} />
+          <text x={990} y={372} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>absolute norm vs. within-group variance</text>
         </g>
         <g opacity={s.get(scene.normU)}>
           <rect x={805} y={432} width={168} height={112} rx={18} fill={colors.NEGATIVE} opacity={0.13} />
-          <text x={889} y={468} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>SFT ‖S‖₂</text>
+          <text x={889} y={468} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>SFT ‖S‖₂</text>
           <text x={889} y={516} textAnchor="middle" fill={colors.NEGATIVE} fontSize={34} fontFamily={MONO}>≈ 7.1</text>
           <rect x={991} y={432} width={168} height={112} rx={18} fill={colors.POSITIVE} opacity={0.13} />
-          <text x={1075} y={468} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>RL ‖δS‖₂</text>
+          <text x={1075} y={468} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>RL ‖δS‖₂</text>
           <text x={1075} y={516} textAnchor="middle" fill={colors.POSITIVE} fontSize={34} fontFamily={MONO}>≈ 10⁻²</text>
         </g>
         <g opacity={s.get(scene.warningU)}>
-          <rect x={816} y={572} width={344} height={48} rx={14} fill={colors.WARM} opacity={0.14} />
-          <text x={988} y={602} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>task selection still matters · Appendix D</text>
+          <rect x={790} y={572} width={400} height={48} rx={14} fill={colors.WARM} opacity={0.14} />
+          <text x={990} y={602} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>task selection still matters · Appendix D</text>
         </g>
       </g>
     </Camera>
     <g opacity={s.get(scene.endU)}>
+      <rect x={170} y={224} width={940} height={216} rx={28} fill={colors.BG} />
       <rect x={170} y={224} width={940} height={216} rx={28} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2.5} />
       <text x={640} y={294} textAnchor="middle" fill={colors.TEXT} fontSize={36} fontWeight={850}>Subtract the shared direction</text>
       <text x={640} y={348} textAnchor="middle" fill={colors.POSITIVE} fontSize={21}>optimize the small within-group residual</text>

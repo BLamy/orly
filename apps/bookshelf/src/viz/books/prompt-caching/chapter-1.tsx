@@ -11,7 +11,6 @@
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   STAGE_H,
   STAGE_W,
   Timeline,
@@ -62,7 +61,7 @@ const CUM = PROMPTS.reduce<number[]>((acc, p) => [...acc, (acc[acc.length - 1] ?
 
 const CELL_W = 15;
 const CELL_PITCH = 16.5;
-const CELL_H = 26;
+const CELL_H = 56;
 const TAPE_X = 118;
 const TAPE_Y = 262;
 const cellX = (i: number): number => TAPE_X + i * CELL_PITCH;
@@ -105,13 +104,14 @@ function billedCells(s1: number, s2: number, p: number): number {
 }
 
 // the staircase chart
-const CHART = { x: 700, y: 356, w: 420, h: 224 } as const;
+const CHART = { x: 700, y: 404, w: 420, h: 204 } as const;
 const BAR_MAX = PROMPTS[TURNS - 1];
 
-// camera marks
-const CAM_TAPE: CameraState = { x: 470, y: 300, k: 1.28 };
+// camera marks — a gentle 1.1× push keeps the odometer (x 1120) and the tape's
+// left edge (x 118) both on stage, so nothing is cropped mid-beat
+const CAM_TAPE: CameraState = { x: 620, y: 300, k: 1.1 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
-const CAM_CHART: CameraState = { x: 800, y: 400, k: 1.25 };
+const CAM_CHART: CameraState = { x: 640, y: 372, k: 1.1 };
 
 // ---------------------------------------------------------------------------
 // Timeline (~74s, ten beats).
@@ -373,20 +373,40 @@ export function Render({ s }: { s: SceneState }) {
                 ['assistant', 'model replies'],
               ] as const
             ).map(([role, label], i) => (
-              <g key={role} transform={`translate(${TAPE_X + i * 150}, ${TAPE_Y + 52})`}>
+              <g key={role} transform={`translate(${TAPE_X + i * 150}, ${TAPE_Y + CELL_H + 22})`}>
                 <rect width={10} height={10} rx={2} fill={ROLE_FILL[role]} opacity={0.7} />
-                <text x={16} y={9} fill={colors.MUTED} fontSize={11.5}>
+                <text x={16} y={9} fill={colors.MUTED} fontSize={12}>
                   {label}
                 </text>
               </g>
             ))}
           </g>
 
+          {/* per-turn input counter: the prompt each turn re-reads, under its boundary */}
+          {PROMPTS.map((p, i) => {
+            const vis = clamp01(nVisible - p + 1);
+            if (vis <= 0) return null;
+            return (
+              <text
+                key={i}
+                x={cellX(p)}
+                y={TAPE_Y + CELL_H + 66}
+                textAnchor="middle"
+                fill={colors.MUTED}
+                fontSize={12}
+                fontFamily={MONO}
+                opacity={vis}
+              >
+                {`turn ${i + 1} · ${((p * TOKENS_PER_CELL) / 1000).toFixed(1)}k`}
+              </text>
+            );
+          })}
+
           {/* the read head */}
           {headOn > 0 && headCell >= 0 && (
             <g>
               <rect x={cellX(headCell) - 2} y={TAPE_Y - 16} width={5} height={CELL_H + 32} rx={2} fill={colors.WARM} />
-              <text x={cellX(headCell) + 2} y={TAPE_Y - 24} textAnchor="middle" fill={colors.WARM} fontSize={11} fontFamily={MONO}>
+              <text x={cellX(headCell) + 2} y={TAPE_Y - 24} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
                 read
               </text>
             </g>
@@ -394,8 +414,8 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* the ×6 tally over the system prefix */}
           <g opacity={sysU}>
-            <rect x={cellX(0)} y={TAPE_Y - 58} width={SYS_CELLS * CELL_PITCH - 2} height={26} rx={8} fill={colors.BG} stroke={colors.WARM} />
-            <text x={cellX(0) + (SYS_CELLS * CELL_PITCH) / 2} y={TAPE_Y - 40} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
+            <rect x={74} y={TAPE_Y - 58} width={220} height={26} rx={8} fill={colors.BG} stroke={colors.WARM} />
+            <text x={184} y={TAPE_Y - 40} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
               same bytes — read 6 times
             </text>
           </g>
@@ -415,7 +435,7 @@ export function Render({ s }: { s: SceneState }) {
         </g>
 
         {/* the staircase: input per turn, area = the bill */}
-        <g opacity={chartU * machineOp}>
+        <g opacity={chartU * machineOp * (1 - closeU)}>
           <rect x={CHART.x} y={CHART.y} width={CHART.w} height={CHART.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={CHART.x + 18} y={CHART.y + 26} fill={colors.TEXT} fontSize={14} fontWeight={600}>
             input tokens per turn
@@ -424,7 +444,8 @@ export function Render({ s }: { s: SceneState }) {
             const u = clamp01(barsU * (TURNS + 1.5) - i * 1.0);
             if (u <= 0) return null;
             const bw = (CHART.w - 60) / TURNS;
-            const bh = (p / BAR_MAX) * (CHART.h - 70) * u;
+            // tallest bar tops out below the title row and the bill label
+            const bh = (p / BAR_MAX) * (CHART.h - 110) * u;
             return (
               <g key={i}>
                 <rect
@@ -441,7 +462,7 @@ export function Render({ s }: { s: SceneState }) {
                   y={CHART.y + CHART.h - 8}
                   textAnchor="middle"
                   fill={colors.MUTED}
-                  fontSize={10.5}
+                  fontSize={12}
                   fontFamily={MONO}
                 >
                   {(p * TOKENS_PER_CELL / 1000).toFixed(1)}k
@@ -449,14 +470,9 @@ export function Render({ s }: { s: SceneState }) {
               </g>
             );
           })}
-          <MathLabel
-            tex={'\\text{bill} \\;\\propto\\; n^2'}
-            x={CHART.x + CHART.w - 118}
-            y={CHART.y + 44}
-            fontSize={20}
-            color={colors.WARM}
-            opacity={areaU}
-          />
+          <text x={CHART.x + CHART.w - 18} y={CHART.y + 44} textAnchor="end" fill={colors.WARM} fontSize={18} fontFamily={MONO} opacity={areaU}>
+            bill ∝ n<tspan baseline-shift="super" fontSize={12}>2</tspan>
+          </text>
         </g>
 
         {/* closing card + the cache-shelf tease */}

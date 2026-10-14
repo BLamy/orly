@@ -68,7 +68,7 @@ const DOWEL = '#d9b184';
 const CAM_SECTION: CameraState = { x: 470, y: 292, k: 1.24 };
 const CAM_BORE: CameraState = { x: 452, y: 300, k: 1.42 };
 const CAM_FACE: CameraState = { x: 640, y: 400, k: 1.06 };
-const CAM_MARK: CameraState = { x: 400, y: 420, k: 1.5 };
+const CAM_MARK: CameraState = { x: 530, y: 420, k: 1.5 };
 const CAM_FINAL: CameraState = { x: 640, y: 380, k: 0.95 };
 
 export interface Scene {
@@ -181,7 +181,7 @@ export function buildScene(): Scene {
     dur: 7.15,
     text: 'Now pull back and look at the whole outer face, because that single detail is about to become the design. On the legs the holes sit three inches down from the top and three up from the bottom.',
   });
-  tl.tween(secDim, 0.1, { at: 46.1, dur: 1.2, ease: ease.move });
+  tl.tween(secDim, 0, { at: 46.1, dur: 1.2, ease: ease.move });
   tl.tween(cam, CAM_FACE, { at: 46.1, dur: 1.8, ease: ease.move });
   tl.tween(faceU, 1, { at: 46.8, dur: 1.4, ease: ease.enter });
   tl.tween(legDotsU, 1, { at: 48.4, dur: 1.6, ease: ease.pop });
@@ -261,7 +261,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* ================= one hole, in section ================= */}
         <g opacity={secU * secDim * dimAll}>
           {secText && (
-            <text x={FACE_X + 40} y={SEC_Y - 26} fill={colors.MUTED} fontSize={13}>
+            <text x={FACE_X + 40} y={SEC_Y - 70} fill={colors.MUTED} fontSize={14}>
               one hole, in section — the outer face is on the left
             </text>
           )}
@@ -276,7 +276,7 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={screwU}>
               <rect x={FACE_X + BORE_DEEP} y={BORE_Y - 6} width={190 * screwU} height={12} rx={3} fill={colors.ACCENT} opacity={0.9} />
               {secText && (
-                <text x={FACE_X + 190} y={SEC_Y + SEC_H + 34} fill={colors.ACCENT} fontSize={13.5}>
+                <text x={FACE_X + 190} y={SEC_Y + SEC_H + 34} fill={colors.ACCENT} fontSize={14}>
                   the screw starts ½ in deeper than it looks
                 </text>
               )}
@@ -299,7 +299,7 @@ export function Render({ s }: { s: SceneState }) {
           {sawU > 0 && sawU < 1 && (
             <g>
               <rect x={FACE_X - 70 + sawU * 90} y={BORE_Y - 90} width={150} height={5} rx={2} fill={colors.SECONDARY} transform={`rotate(90, ${FACE_X - 4}, ${BORE_Y})`} />
-              <text x={FACE_X - 30} y={SEC_Y - 6} textAnchor="end" fill={colors.SECONDARY} fontSize={13}>
+              <text x={FACE_X - 30} y={SEC_Y - 6} textAnchor="end" fill={colors.SECONDARY} fontSize={14}>
                 Japanese saw — cuts on the pull
               </text>
             </g>
@@ -316,7 +316,8 @@ export function Render({ s }: { s: SceneState }) {
           {boreU > 0.6 && (
             <g opacity={clamp01(boreU * 2 - 1.2) * (1 - dowelU * 0.7)}>
               <line x1={FACE_X} y1={BORE_Y + BORE_D / 2 + 16} x2={FACE_X + BORE_DEEP} y2={BORE_Y + BORE_D / 2 + 16} stroke={colors.POSITIVE} strokeWidth={2.4} />
-              <text x={FACE_X + BORE_DEEP / 2} y={BORE_Y + BORE_D / 2 + 36} textAnchor="middle" fill={colors.POSITIVE} fontSize={13.5} fontWeight={700}>
+              <rect x={FACE_X + BORE_DEEP / 2 - 96} y={BORE_Y + BORE_D / 2 + 20} width={192} height={26} rx={5} fill={colors.BG} opacity={0.9} />
+              <text x={FACE_X + BORE_DEEP / 2} y={BORE_Y + BORE_D / 2 + 38} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={700}>
                 ⅜ in wide · ½ in deep
               </text>
             </g>
@@ -363,7 +364,7 @@ export function Render({ s }: { s: SceneState }) {
           {legDotsU > 0.7 && (
             <g opacity={clamp01(legDotsU * 3 - 2.1)}>
               <line x1={FX(-2.4)} y1={FY(LEG_H)} x2={FX(-2.4)} y2={FY(LEG_H - 3)} stroke={colors.WARM} strokeWidth={2.2} />
-              <text x={FX(-3.2)} y={FY(LEG_H - 1.5)} textAnchor="end" fill={colors.WARM} fontSize={13} fontWeight={700}>
+              <text x={FX(-3.2)} y={FY(LEG_H - 1.5)} textAnchor="end" fill={colors.WARM} fontSize={14} fontWeight={700}>
                 3 in
               </text>
             </g>
@@ -373,6 +374,7 @@ export function Render({ s }: { s: SceneState }) {
           {halfU > 0 && (
             <g opacity={halfU}>
               <line x1={FX(6)} y1={FY(LEG_H + STOCK_W)} x2={FX(6)} y2={FY(LEG_H + STOCK_W) + STOCK_W * FPX * halfU} stroke={colors.ACCENT} strokeWidth={2.4} />
+              <rect x={FX(7) - 5} y={FY(LEG_H + HALF) - 13} width={58} height={24} rx={5} fill={colors.BG} opacity={0.9} />
               <text x={FX(7)} y={FY(LEG_H + HALF) + 5} fill={colors.ACCENT} fontSize={14} fontWeight={700}>
                 1¾ in
               </text>

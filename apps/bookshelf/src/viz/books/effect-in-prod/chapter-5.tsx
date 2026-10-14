@@ -81,6 +81,7 @@ export function buildScene() {
   const disposeU = tl.channel('disposeU', 0); // reverse teardown
   const miniU = tl.channel('miniU', 0); // recap miniatures
   const finalU = tl.channel('finalU', 0); // closing title
+  const reqU = tl.channel('reqU', 0); // opening request stream
 
   // — beat 1 · a million requests —
   tl.caption({
@@ -88,6 +89,7 @@ export function buildScene() {
     dur: 6.0,
     text: "Everything so far was one request's story. A service is that story told a million times — and every telling needs the same wiring: a database, a repository, a tracer.",
   });
+  tl.tween(reqU, 1, { at: 0.8, dur: 6.0, ease: ease.linear });
 
   // — beat 2 · a service is a typed key —
   tl.caption({
@@ -201,6 +203,7 @@ export function buildScene() {
     disposeU,
     miniU,
     finalU,
+    reqU,
   };
 }
 
@@ -301,7 +304,7 @@ function Mini({ i, x, u }: { i: number; x: number; u: number }) {
           <path d={`M${x - 35} ${y + 18} h55`} opacity={0.7} />
         </g>
       )}
-      <text x={x} y={y + 38} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+      <text x={x} y={y + 38} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
         {MINIS[i].label}
       </text>
     </g>
@@ -323,6 +326,7 @@ export function Render({ s }: { s: SceneState }) {
   const disposeU = s.get(scene.disposeU);
   const miniU = s.get(scene.miniU);
   const finalU = s.get(scene.finalU);
+  const reqU = s.get(scene.reqU);
 
   const sqlB = sqlBuilt(sweepU);
   const repoB = repoBuilt(sweepU);
@@ -331,11 +335,30 @@ export function Render({ s }: { s: SceneState }) {
   const graphDim = 1 - miniU * 0.9;
   const portY = REPO.y + REPO.h / 2;
   const flowing = flowU > 0.01 && disposeU < 0.05;
+  const reqFade = clamp01((1 - reqU) * 8);
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
+        {/* opening beat: requests arriving before the service exists */}
+        {reqFade > 0.01 && (
+          <g opacity={reqFade}>
+            {[0, 1, 2].map((k) => (
+              <Packet
+                key={k}
+                from={{ x: 120, y: 340 }}
+                to={{ x: 560, y: 340 }}
+                u={(reqU * 2 + k * 0.33) % 1}
+                r={6}
+                color={colors.WARM}
+              />
+            ))}
+            <text x={120} y={316} fill={colors.MUTED} fontSize={14}>
+              requests
+            </text>
+          </g>
+        )}
         <g opacity={graphDim}>
           {/* ---------------- the graph ---------------- */}
           {/* wiring repo → sql */}
@@ -367,13 +390,13 @@ export function Render({ s }: { s: SceneState }) {
               />
               <Connection
                 from={{ x: APP.x + 130, y: APP.y + APP.h / 2 }}
-                via={[{ x: 1010, y: 400 }]}
+                via={[{ x: 1100, y: 520 }]}
                 to={{ x: SQL.x + SQL.w / 2, y: SQL.y - 14 }}
                 u={appU}
                 flow={flowing ? flowU * 2 : 0}
                 color={colors.GRID}
                 label={mergeU > 0.3 ? 'Layer.provideMerge → SqlClient exposed too' : undefined}
-                labelSize={11}
+                labelSize={12}
               />
             </g>
           )}
@@ -385,8 +408,18 @@ export function Render({ s }: { s: SceneState }) {
               <text x={APP.x} y={APP.y - 4} textAnchor="middle" fill={colors.TEXT} fontSize={14.5} fontFamily={MONO}>
                 your program
               </text>
-              <text x={APP.x} y={APP.y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+              <text x={APP.x} y={APP.y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 runtime.runPromise(handle(req))
+              </text>
+            </g>
+          )}
+
+          {/* build sweep — drawn under the cards so the line never cuts through card text */}
+          {sweepU > 0.005 && sweepU < 0.995 && (
+            <g>
+              <line x1={90} y1={sweepY(sweepU)} x2={1190} y2={sweepY(sweepU)} stroke={colors.POSITIVE} strokeWidth={2} opacity={0.7} strokeDasharray="10 7" />
+              <text x={1186} y={sweepY(sweepU) - 8} textAnchor="end" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>
+                ManagedRuntime.make(UserRepository.layer)
               </text>
             </g>
           )}
@@ -416,7 +449,7 @@ export function Render({ s }: { s: SceneState }) {
                 strokeWidth={2.2}
                 strokeDasharray={wireU > 0.6 ? undefined : '4 3'}
               />
-              <text x={REPO.x + 20} y={portY + 5} fill={wireU > 0.6 ? colors.TEAL : colors.NEGATIVE} fontSize={12.5} fontFamily={MONO}>
+              <text x={REPO.x + 22} y={portY + 26} fill={wireU > 0.6 ? colors.TEAL : colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
                 {wireU > 0.6 ? 'sealed' : 'needs: SqlClient.SqlClient'}
               </text>
             </g>
@@ -438,20 +471,10 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* memo flag */}
           {memoU > 0.01 && (
-            <g opacity={memoU * (1 - disposeU)}>
-              <rect x={SQL.x + SQL.w / 2 - 10} y={SQL.y - 66} width={190} height={36} rx={9} fill={colors.BG} stroke={colors.POSITIVE} />
-              <text x={SQL.x + SQL.w / 2 + 85} y={SQL.y - 43} textAnchor="middle" fill={colors.POSITIVE} fontSize={12.5} fontFamily={MONO}>
+            <g opacity={memoU * clamp01(1 - disposeU * 3)}>
+              <rect x={SQL.x + 40} y={SQL.y - 100} width={190} height={36} rx={9} fill={colors.BG} stroke={colors.POSITIVE} />
+              <text x={SQL.x + 135} y={SQL.y - 77} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>
                 memoized · built once
-              </text>
-            </g>
-          )}
-
-          {/* build sweep */}
-          {sweepU > 0.005 && sweepU < 0.995 && (
-            <g>
-              <line x1={90} y1={sweepY(sweepU)} x2={1190} y2={sweepY(sweepU)} stroke={colors.POSITIVE} strokeWidth={2} opacity={0.7} strokeDasharray="10 7" />
-              <text x={1186} y={sweepY(sweepU) - 8} textAnchor="end" fill={colors.POSITIVE} fontSize={12.5} fontFamily={MONO}>
-                ManagedRuntime.make(UserRepository.layer)
               </text>
             </g>
           )}
@@ -509,7 +532,7 @@ export function Render({ s }: { s: SceneState }) {
                   Effect in Prod
                 </text>
                 <text x={640} y={248} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
-                  fork it · cancel it safely · retry it with jitter · trace it · build it once
+                  the service outlives the request
                 </text>
               </g>
             )}

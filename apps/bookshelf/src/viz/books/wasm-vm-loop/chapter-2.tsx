@@ -35,7 +35,7 @@ const PUFFS = [
   { x: 880, y: 455, label: 'one more run' },
 ];
 
-const TAPE = { x: 240, y: 430, w: 800, h: 32 } as const;
+const TAPE = { x: 240, y: 340, w: 800, h: 32 } as const;
 const TAPE_POINTS: RecordingPoint[] = [
   { at: 0.06, kind: 'interaction', label: 'boot' },
   { at: 0.2, kind: 'render' },
@@ -54,15 +54,16 @@ const EVIDENCE_LINES = [
   'state sha256=d45f529a…e8ace1',
   'outcome=Exited(0)',
 ];
-const EV = { x: 800, y: 300, w: 340, h: 150 } as const;
+// The two result cards share one row under the tape, so nothing stacks on it.
+const EV = { x: 680, y: 440, w: 340, h: 170 } as const;
 
 /** The claim, written into the task file's Verification log. */
-const LOG = { x: 150, y: 290, w: 480, h: 170 } as const;
+const LOG = { x: 120, y: 440, w: 480, h: 170 } as const;
 
 const CAM_RAIL: CameraState = { x: 640, y: 220, k: 1.22 };
 const CAM_PUFFS: CameraState = { x: 620, y: 400, k: 1.25 };
-const CAM_TAPE: CameraState = { x: 640, y: 430, k: 1.2 };
-const CAM_LOG: CameraState = { x: 560, y: 370, k: 1.28 };
+const CAM_TAPE: CameraState = { x: 640, y: 330, k: 1.2 };
+const CAM_LOG: CameraState = { x: 600, y: 420, k: 1.15 };
 const CAM_WIDE: CameraState = { x: 640, y: 360, k: 1.02 };
 
 // ---------------------------------------------------------------------------
@@ -83,6 +84,7 @@ export interface Scene {
   puffFade: ChannelRef<number>;
   recU: ChannelRef<number>;
   sweepU: ChannelRef<number>;
+  diffU: ChannelRef<number>;
   evU: ChannelRef<number>;
   logU: ChannelRef<number>;
   statusU: ChannelRef<number>;
@@ -104,6 +106,7 @@ export function buildScene(): Scene {
   const puffFade = tl.channel('puffFade', 0);
   const recU = tl.channel('recU', 0);
   const sweepU = tl.channel('sweepU', 0);
+  const diffU = tl.channel('diffU', 0);
   const evU = tl.channel('evU', 0);
   const logU = tl.channel('logU', 0);
   const statusU = tl.channel('statusU', 0);
@@ -180,6 +183,7 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'And the recorded run has to count. Every behavior the diff changes should actually execute during it, because the critic will hold this tape against the diff, line by line.',
   });
+  tl.tween(diffU, 1, { at: 38.0, dur: 1.2, ease: ease.move });
   tl.hold(44.1, 0.5);
 
   // — Beat 7 · the evidence freezes —
@@ -215,7 +219,7 @@ export function buildScene(): Scene {
 
   return {
     tl, cam, railU, tokU, g0, g1, g2, g3, arcU, puffsU, puffFade,
-    recU, sweepU, evU, logU, statusU, dimU, closeU,
+    recU, sweepU, diffU, evU, logU, statusU, dimU, closeU,
   };
 }
 
@@ -235,6 +239,7 @@ export function Render({ s }: { s: SceneState }) {
   const puffFade = s.get(scene.puffFade);
   const recU = s.get(scene.recU);
   const sweepU = s.get(scene.sweepU);
+  const diffU = s.get(scene.diffU);
   const evU = s.get(scene.evU);
   const logU = s.get(scene.logU);
   const statusU = s.get(scene.statusU);
@@ -243,6 +248,8 @@ export function Render({ s }: { s: SceneState }) {
 
   const worldOp = 1 - 0.86 * dimU;
   const puffAlive = puffsU > 0 && puffFade < 1;
+  // the stamp takes over the puffs' spot as they evaporate, then clears for the tape
+  const stampOp = puffFade * (1 - Math.min(1, recU * 3));
 
   return (
     <>
@@ -255,7 +262,7 @@ export function Render({ s }: { s: SceneState }) {
               <text x={RAIL.x} y={RAIL.y - 58} fill={colors.TEXT} fontSize={15} fontWeight={700}>
                 gates in ascending cost
               </text>
-              <text x={RAIL.x} y={RAIL.y - 38} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+              <text x={RAIL.x} y={RAIL.y - 38} fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
                 AGENTS.md worker protocol — any failure returns to the top
               </text>
               <GauntletRail
@@ -282,30 +289,35 @@ export function Render({ s }: { s: SceneState }) {
                   <g key={p.label} opacity={u} transform={`translate(${p.x} ${p.y - puffFade * 26}) scale(${grow})`}>
                     <circle r={26} fill={colors.SECONDARY} opacity={0.14} />
                     <circle r={16} fill="none" stroke={colors.SECONDARY} strokeWidth={1.4} strokeDasharray="3 4" />
-                    <text y={4} textAnchor="middle" fill={colors.SECONDARY} fontSize={10.5} fontFamily={MONO}>
+                    <text y={4} textAnchor="middle" fill={colors.SECONDARY} fontSize={12.5} fontFamily={MONO}>
                       run
                     </text>
-                    <text y={44} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+                    <text y={44} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
                       {p.label}
                     </text>
                   </g>
                 );
               })}
-              {puffsU > 0.9 && puffFade < 0.4 && (
-                <text x={620} y={520} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontStyle="italic">
+              {puffsU > 0.9 && (
+                <text x={620} y={520} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic" opacity={1 - puffFade}>
                   self-validate freely — nothing here is evidence
                 </text>
               )}
             </g>
           )}
+          {stampOp > 0.001 && (
+            <text x={620} y={520} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={700} opacity={stampOp}>
+              uncounted — never reaches the verifier
+            </text>
+          )}
 
           {/* ---- the recording ---- */}
           {recU > 0 && (
             <g opacity={Math.min(1, recU * 3) * (evU > 0.5 ? 0.4 : 1)}>
-              <text x={TAPE.x} y={TAPE.y - 40} fill={colors.TEXT} fontSize={15} fontWeight={700}>
+              <text x={TAPE.x} y={TAPE.y - 56} fill={colors.TEXT} fontSize={15} fontWeight={700}>
                 the final happy run — recorded
               </text>
-              <text x={TAPE.x} y={TAPE.y - 20} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+              <text x={TAPE.x} y={TAPE.y - 34} fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
                 tools/rr/record-test.sh → rr-traces/ · guest trace + state digests
               </text>
               <RecordingStrip
@@ -318,6 +330,23 @@ export function Render({ s }: { s: SceneState }) {
                 u={sweepU}
                 title="one deterministic tape of the whole process"
               />
+              {/* the diff's behaviors, bracketed on the tape */}
+              <g opacity={diffU}>
+                <rect
+                  x={TAPE.x + TAPE.w * 0.18}
+                  y={TAPE.y - 6}
+                  width={TAPE.w * 0.44}
+                  height={TAPE.h + 12}
+                  rx={9}
+                  fill="none"
+                  stroke={colors.WARM}
+                  strokeWidth={1.5}
+                  strokeDasharray="4 4"
+                />
+                <text x={TAPE.x + TAPE.w * 0.4} y={TAPE.y + 60} textAnchor="middle" fill={colors.WARM} fontSize={12.5}>
+                  the lines the diff changes must execute here
+                </text>
+              </g>
             </g>
           )}
 
@@ -325,14 +354,14 @@ export function Render({ s }: { s: SceneState }) {
           {evU > 0 && (
             <g opacity={Math.min(1, evU * 2)}>
               <rect x={EV.x} y={EV.y} width={EV.w} height={EV.h} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.5} />
-              <text x={EV.x + 16} y={EV.y + 26} fill={colors.TEXT} fontSize={13} fontWeight={700}>
+              <text x={EV.x + 16} y={EV.y + 30} fill={colors.TEXT} fontSize={14} fontWeight={700}>
                 evidence/e3-t15
               </text>
               {EVIDENCE_LINES.map((line, i) => {
                 const u = clamp01(evU * (EVIDENCE_LINES.length + 1) - (i + 1));
                 if (u <= 0) return null;
                 return (
-                  <text key={line} x={EV.x + 16} y={EV.y + 52 + i * 24} fill={colors.POSITIVE} fontSize={11.5} fontFamily={MONO} opacity={u}>
+                  <text key={line} x={EV.x + 16} y={EV.y + 64 + i * 26} fill={colors.POSITIVE} fontSize={12.5} fontFamily={MONO} opacity={u}>
                     {line}
                   </text>
                 );
@@ -344,14 +373,14 @@ export function Render({ s }: { s: SceneState }) {
           {logU > 0 && (
             <g opacity={Math.min(1, logU * 2)}>
               <rect x={LOG.x} y={LOG.y} width={LOG.w} height={LOG.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={LOG.x + 16} y={LOG.y + 28} fill={colors.TEXT} fontSize={13} fontWeight={700}>
+              <text x={LOG.x + 16} y={LOG.y + 30} fill={colors.TEXT} fontSize={14} fontWeight={700}>
                 Verification log — the claim
               </text>
               {['commit hash + exact commands run', 'evidence paths: trace dirs, digest files', 'one paragraph: what the recording demonstrates'].map((line, i) => {
                 const u = clamp01(logU * 4 - (i + 1));
                 if (u <= 0) return null;
                 return (
-                  <text key={line} x={LOG.x + 16} y={LOG.y + 58 + i * 26} fill={colors.MUTED} fontSize={12} opacity={u}>
+                  <text key={line} x={LOG.x + 16} y={LOG.y + 64 + i * 26} fill={colors.MUTED} fontSize={13} opacity={u}>
                     · {line}
                   </text>
                 );
@@ -359,7 +388,7 @@ export function Render({ s }: { s: SceneState }) {
               {statusU > 0 && (
                 <g opacity={statusU}>
                   <rect x={LOG.x + 16} y={LOG.y + LOG.h - 40} width={210} height={26} rx={7} fill="none" stroke={colors.WARM} strokeWidth={1.5} />
-                  <text x={LOG.x + 26} y={LOG.y + LOG.h - 22} fill={colors.WARM} fontSize={12} fontFamily={MONO}>
+                  <text x={LOG.x + 26} y={LOG.y + LOG.h - 22} fill={colors.WARM} fontSize={12.5} fontFamily={MONO}>
                     status: implemented
                   </text>
                 </g>

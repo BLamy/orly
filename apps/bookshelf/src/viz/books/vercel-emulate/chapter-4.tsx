@@ -33,19 +33,23 @@ const lerp = (a: number, b: number, t: number): number => a + (b - a) * t;
 
 // ---------------------------------------------------------------------------
 // Layout — emulator mint on the left, the app on the right, one corridor.
+// Both zones stay inside the stage with the camera held wide: a push would
+// crop the tall emulator zone, so emphasis comes from dimming, not zoom.
 // ---------------------------------------------------------------------------
 
 const EMU = { x: 60, y: 92, w: 520, h: 476 } as const;
 const APP = { x: 700, y: 92, w: 520, h: 476 } as const;
 
 const TRAY = { x: 96, y: 136, w: 300, h: 104 } as const;
+const CHIP = { x: TRAY.x + 16, y: TRAY.y + 42, w: 232, h: 40 } as const;
 const TIMER = { cx: 470, cy: 188, r: 30 } as const;
 const SECRET = { x: 96, y: 272, w: 448, h: 116 } as const;
 const TOKMAP = { x: 96, y: 420, w: 448, h: 120 } as const;
 
 const CB = { x: 736, y: 136, w: 448, h: 62 } as const;
-const PROFILE = { x: 736, y: 250, w: 360, h: 152 } as const;
+const PROFILE = { x: 736, y: 250, w: 380, h: 152 } as const;
 const COOKIE = { x: 756, y: 460, w: 408, h: 48 } as const;
+const BADGE = { x: 1016, y: 520, w: 148, h: 34 } as const;
 
 // corridors (stage coords)
 const CARRY_PATH = [
@@ -65,9 +69,6 @@ const COIN_PATH = [
 ] as const;
 
 const CAM_WIDE: CameraState = CAMERA_HOME;
-const CAM_TRAY: CameraState = { x: 330, y: 210, k: 1.3 };
-const CAM_SECRET: CameraState = { x: 360, y: 340, k: 1.3 };
-const CAM_APP: CameraState = { x: 900, y: 330, k: 1.2 };
 
 function along(pts: readonly { x: number; y: number }[], u: number): { x: number; y: number } {
   const f = clamp01(u) * (pts.length - 1);
@@ -85,7 +86,7 @@ function along(pts: readonly { x: number; y: number }[], u: number): { x: number
 
 export function buildScene() {
   const tl = new Timeline();
-  const cam = tl.channel<CameraState>('cam', CAM_TRAY, cameraInterp);
+  const cam = tl.channel<CameraState>('cam', CAM_WIDE, cameraInterp);
 
   const zonesU = tl.channel('zonesU', 0); // both party zones
   const codeU = tl.channel('codeU', 0); // code stamped into the tray
@@ -127,7 +128,6 @@ export function buildScene() {
     dur: 5.8,
     text: 'The browser is bounced back to your app’s callback address, carrying the code and the state it left with.',
   });
-  tl.tween(cam, CAM_WIDE, { at: 13.9, dur: 1.3, ease: ease.move });
   tl.tween(carryU, 1, { at: 14.9, dur: 2.2, ease: ease.move });
   tl.tween(timerU, 0.955, { at: 13.7, dur: 5.4, ease: ease.linear });
   tl.hold(19.5, 0.5);
@@ -147,7 +147,6 @@ export function buildScene() {
     dur: 6.4,
     text: 'First the emulator checks the client secret — compared in constant time, the same defensive habit real providers have.',
   });
-  tl.tween(cam, CAM_SECRET, { at: 26.5, dur: 1.2, ease: ease.move });
   tl.tween(secretU, 1, { at: 27.5, dur: 2.4, ease: ease.move });
   tl.hold(32.7, 0.6);
 
@@ -157,7 +156,6 @@ export function buildScene() {
     dur: 6.4,
     text: 'Then the code is looked up and destroyed. One code, one use. Replay it and you get the same error text the real provider would send you.',
   });
-  tl.tween(cam, CAM_TRAY, { at: 33.5, dur: 1.2, ease: ease.move });
   tl.tween(burnU, 1, { at: 35.0, dur: 1.4, ease: ease.move });
   tl.hold(39.7, 0.5);
 
@@ -167,7 +165,6 @@ export function buildScene() {
     dur: 6.6,
     text: 'In its place a fresh access token is struck — and written into the token map, pointing at octocat, carrying the scopes the request asked for.',
   });
-  tl.tween(cam, CAM_WIDE, { at: 40.4, dur: 1.3, ease: ease.move });
   tl.tween(coinU, 1, { at: 41.6, dur: 1.6, ease: ease.move });
   tl.hold(46.8, 0.5);
 
@@ -185,7 +182,6 @@ export function buildScene() {
     dur: 6.4,
     text: 'Your app spends the token once on the user endpoint. The middleware looks it up in the map, and the seeded profile comes back as plain data.',
   });
-  tl.tween(cam, CAM_APP, { at: 54.1, dur: 1.3, ease: ease.move });
   tl.tween(spendU, 1, { at: 54.9, dur: 1.8, ease: ease.move });
   tl.tween(profileU, 1, { at: 57.1, dur: 1.4, ease: ease.move });
   tl.hold(60.3, 0.5);
@@ -207,7 +203,6 @@ export function buildScene() {
     text: 'And that is the whole injection: a seed entry became a picker button, the button became a code, the code became a token, and the token became a session. The dashboard greets octocat.',
   });
   tl.tween(dimU, 1, { at: 68.6, dur: 1.2, ease: ease.move });
-  tl.tween(cam, CAM_WIDE, { at: 68.6, dur: 1.4, ease: ease.move });
   tl.tween(recapU, 1, { at: 70.0, dur: 2.8, ease: ease.move });
   tl.hold(75.8, 1.6);
 
@@ -278,23 +273,23 @@ export function Render({ s }: { s: SceneState }) {
           {/* the pending-codes tray */}
           <g opacity={clamp01(zonesU * 1.4 - 0.3)}>
             <rect x={TRAY.x} y={TRAY.y} width={TRAY.w} height={TRAY.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={TRAY.x + 16} y={TRAY.y + 26} fill={colors.MUTED} fontSize={12.5} fontStyle="italic">
+            <text x={TRAY.x + 16} y={TRAY.y + 26} fill={colors.MUTED} fontSize={14} fontStyle="italic">
               pending codes — one use each
             </text>
             {/* the code chip; burns on use */}
             <g opacity={codeOp}>
-              <rect x={TRAY.x + 16} y={TRAY.y + 42} width={200} height={40} rx={9} fill={colors.BG} stroke={burnU > 0.05 ? colors.NEGATIVE : colors.WARM} strokeWidth={1.5} />
-              <text x={TRAY.x + 32} y={TRAY.y + 67} fill={burnU > 0.05 ? colors.NEGATIVE : colors.WARM} fontSize={13.5} fontFamily={MONO}>
+              <rect x={CHIP.x} y={CHIP.y} width={CHIP.w} height={CHIP.h} rx={9} fill={colors.BG} stroke={burnU > 0.05 ? colors.NEGATIVE : colors.WARM} strokeWidth={1.5} />
+              <text x={CHIP.x + 16} y={CHIP.y + 26} fill={burnU > 0.05 ? colors.NEGATIVE : colors.WARM} fontSize={14} fontFamily={MONO}>
                 code 3f9a1c… → octocat
               </text>
             </g>
             {burnU > 0.05 && burnU < 1 && (
-              <text x={TRAY.x + 116} y={TRAY.y + 67} textAnchor="middle" fill={colors.NEGATIVE} fontSize={15} fontWeight={700} opacity={Math.sin(Math.PI * burnU)}>
+              <text x={CHIP.x + CHIP.w / 2} y={CHIP.y + 26} textAnchor="middle" fill={colors.NEGATIVE} fontSize={15} fontWeight={700} opacity={Math.sin(Math.PI * burnU)}>
                 consumed
               </text>
             )}
             {burnU > 0.9 && (
-              <text x={TRAY.x + 16} y={TRAY.y + 67} fill={colors.MUTED} fontSize={12.5} fontFamily={MONO} opacity={burnU}>
+              <text x={CHIP.x + 16} y={CHIP.y + 26} fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO} opacity={burnU}>
                 (empty — replay gets an error)
               </text>
             )}
@@ -303,10 +298,10 @@ export function Render({ s }: { s: SceneState }) {
           {/* the ten-minute clock */}
           <g opacity={codeU}>
             <TimerArc cx={TIMER.cx} cy={TIMER.cy} r={TIMER.r} u={timerU} color={colors.WARM} />
-            <text x={TIMER.cx} y={TIMER.cy + 5} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontFamily={MONO}>
+            <text x={TIMER.cx} y={TIMER.cy + 5} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
               10 min
             </text>
-            <text x={TIMER.cx} y={TIMER.cy + TIMER.r + 18} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+            <text x={TIMER.cx} y={TIMER.cy + TIMER.r + 18} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               then it expires
             </text>
           </g>
@@ -314,20 +309,20 @@ export function Render({ s }: { s: SceneState }) {
           {/* the secret check */}
           <g opacity={clamp01(secretU * 2.5)}>
             <rect x={SECRET.x} y={SECRET.y} width={SECRET.w} height={SECRET.h} rx={12} fill={colors.PANEL} stroke={verdict > 0.5 ? colors.POSITIVE : colors.GRID} strokeWidth={1.4} />
-            <text x={SECRET.x + 16} y={SECRET.y + 26} fill={colors.MUTED} fontSize={12.5} fontStyle="italic">
+            <text x={SECRET.x + 16} y={SECRET.y + 26} fill={colors.MUTED} fontSize={14} fontStyle="italic">
               client secret — compared in constant time
             </text>
-            <text x={SECRET.x + 16} y={SECRET.y + 52} fill={colors.TEXT} fontSize={11.5} fontFamily={MONO}>
+            <text x={SECRET.x + 16} y={SECRET.y + 52} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
               sent
             </text>
             <rect x={SECRET.x + 70} y={SECRET.y + 40} width={330} height={14} rx={4} fill={colors.BG} stroke={colors.GRID} />
             <rect x={SECRET.x + 70} y={SECRET.y + 40} width={330 * barFill} height={14} rx={4} fill={colors.SECONDARY} opacity={0.85} />
-            <text x={SECRET.x + 16} y={SECRET.y + 80} fill={colors.TEXT} fontSize={11.5} fontFamily={MONO}>
+            <text x={SECRET.x + 16} y={SECRET.y + 80} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
               seeded
             </text>
             <rect x={SECRET.x + 70} y={SECRET.y + 68} width={330} height={14} rx={4} fill={colors.BG} stroke={colors.GRID} />
             <rect x={SECRET.x + 70} y={SECRET.y + 68} width={330 * barFill} height={14} rx={4} fill={colors.SECONDARY} opacity={0.85} />
-            <text x={SECRET.x + 16} y={SECRET.y + 104} fill={verdict > 0.5 ? colors.POSITIVE : colors.MUTED} fontSize={13} fontWeight={700} opacity={Math.max(0.3, verdict)}>
+            <text x={SECRET.x + 16} y={SECRET.y + 104} fill={verdict > 0.5 ? colors.POSITIVE : colors.MUTED} fontSize={14} fontWeight={700} opacity={Math.max(0.3, verdict)}>
               {verdict > 0.5 ? '✓ constantTimeSecretEqual — every byte, every time' : 'comparing every byte, no early exit…'}
             </text>
           </g>
@@ -335,20 +330,20 @@ export function Render({ s }: { s: SceneState }) {
           {/* the token map — the injection point */}
           <g opacity={clamp01(zonesU * 1.4 - 0.4)}>
             <rect x={TOKMAP.x} y={TOKMAP.y} width={TOKMAP.w} height={TOKMAP.h} rx={12} fill={colors.PANEL} stroke={coinU > 0.5 ? colors.WARM : colors.GRID} strokeWidth={1.3} />
-            <text x={TOKMAP.x + 16} y={TOKMAP.y + 26} fill={colors.MUTED} fontSize={12.5} fontStyle="italic">
+            <text x={TOKMAP.x + 16} y={TOKMAP.y + 26} fill={colors.MUTED} fontSize={14} fontStyle="italic">
               token map — token → identity
             </text>
-            <text x={TOKMAP.x + 16} y={TOKMAP.y + 52} fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
+            <text x={TOKMAP.x + 16} y={TOKMAP.y + 52} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
               gho_test_token_admin → admin
             </text>
             {/* the freshly struck row */}
             <g opacity={clamp01(coinU * 2 - 0.6)}>
               <rect x={TOKMAP.x + 10} y={TOKMAP.y + 64} width={TOKMAP.w - 20} height={30} rx={7} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.4} />
-              <text x={TOKMAP.x + 20} y={TOKMAP.y + 84} fill={colors.WARM} fontSize={12.5} fontFamily={MONO}>
+              <text x={TOKMAP.x + 20} y={TOKMAP.y + 84} fill={colors.WARM} fontSize={14} fontFamily={MONO}>
                 gho_Zk4… → octocat · user repo
               </text>
             </g>
-            <text x={TOKMAP.x + 16} y={TOKMAP.y + 112} fill={colors.MUTED} fontSize={11}>
+            <text x={TOKMAP.x + 16} y={TOKMAP.y + 112} fill={colors.MUTED} fontSize={12}>
               fresh mint — meaningless outside, authoritative inside
             </text>
           </g>
@@ -356,10 +351,10 @@ export function Render({ s }: { s: SceneState }) {
           {/* the app: callback route */}
           <g opacity={clamp01(zonesU * 1.4 - 0.3)}>
             <rect x={CB.x} y={CB.y} width={CB.w} height={CB.h} rx={12} fill={colors.PANEL} stroke={carryU > 0.9 ? colors.ACCENT : colors.GRID} strokeWidth={1.3} />
-            <text x={CB.x + 16} y={CB.y + 26} fill={colors.MUTED} fontSize={12} fontStyle="italic">
+            <text x={CB.x + 16} y={CB.y + 26} fill={colors.MUTED} fontSize={14} fontStyle="italic">
               callback route
             </text>
-            <text x={CB.x + 16} y={CB.y + 48} fill={colors.TEXT} fontSize={12.5} fontFamily={MONO}>
+            <text x={CB.x + 16} y={CB.y + 50} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
               GET /api/auth/callback/github?code=…&state=…
             </text>
           </g>
@@ -370,16 +365,16 @@ export function Render({ s }: { s: SceneState }) {
             <text x={PROFILE.x + 16} y={PROFILE.y + 26} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               GET /user · Authorization: Bearer gho_Zk4…
             </text>
-            <text x={PROFILE.x + 16} y={PROFILE.y + 54} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
+            <text x={PROFILE.x + 16} y={PROFILE.y + 54} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
               {'{ "login": "octocat",'}
             </text>
-            <text x={PROFILE.x + 16} y={PROFILE.y + 78} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
+            <text x={PROFILE.x + 16} y={PROFILE.y + 78} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
               {'  "name": "The Octocat",'}
             </text>
-            <text x={PROFILE.x + 16} y={PROFILE.y + 102} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
+            <text x={PROFILE.x + 16} y={PROFILE.y + 102} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
               {'  "email": "octocat@github.com" }'}
             </text>
-            <text x={PROFILE.x + 16} y={PROFILE.y + 132} fill={colors.POSITIVE} fontSize={11.5}>
+            <text x={PROFILE.x + 16} y={PROFILE.y + 132} fill={colors.POSITIVE} fontSize={12.5}>
               straight from the seed — via the middleware lookup
             </text>
           </g>
@@ -387,10 +382,10 @@ export function Render({ s }: { s: SceneState }) {
           {/* the cookie the profile folds into */}
           <g opacity={clamp01(foldU * 1.6)}>
             <rect x={COOKIE.x} y={COOKIE.y} width={COOKIE.w} height={COOKIE.h} rx={12} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.5} />
-            <text x={COOKIE.x + 16} y={COOKIE.y + 20} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+            <text x={COOKIE.x + 16} y={COOKIE.y + 18} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               Set-Cookie (encoded profile, base sixty-four)
             </text>
-            <text x={COOKIE.x + 16} y={COOKIE.y + 38} fill={colors.POSITIVE} fontSize={12.5} fontFamily={MONO}>
+            <text x={COOKIE.x + 16} y={COOKIE.y + 38} fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>
               session=eyJwcm92aWRlciI6ImdpdGh1YiIs…
             </text>
           </g>
@@ -409,10 +404,10 @@ export function Render({ s }: { s: SceneState }) {
             />
           )}
 
-          {/* dashboard verdict */}
+          {/* dashboard verdict — below the callback route, clear of its text */}
           <g opacity={dashU}>
-            <rect x={CB.x + 300} y={CB.y - 4} width={148} height={34} rx={9} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.4} />
-            <text x={CB.x + 374} y={CB.y + 18} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontWeight={700}>
+            <rect x={BADGE.x} y={BADGE.y} width={BADGE.w} height={BADGE.h} rx={9} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.4} />
+            <text x={BADGE.x + BADGE.w / 2} y={BADGE.y + 23} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={700}>
               dashboard ✓
             </text>
           </g>
@@ -421,7 +416,7 @@ export function Render({ s }: { s: SceneState }) {
           {carryU > 0.01 && carryU < 1 && (
             <g>
               <circle cx={pc.x} cy={pc.y} r={8} fill={colors.WARM} stroke={colors.BG} strokeWidth={1.5} />
-              <text x={pc.x} y={pc.y - 14} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontFamily={MONO}>
+              <text x={pc.x} y={pc.y - 14} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
                 ?code&state
               </text>
             </g>
@@ -429,7 +424,7 @@ export function Render({ s }: { s: SceneState }) {
           {xchgU > 0.01 && xchgU < 1 && (
             <g>
               <circle cx={px.x} cy={px.y} r={8} fill={colors.SECONDARY} stroke={colors.BG} strokeWidth={1.5} />
-              <text x={px.x} y={px.y - 14} textAnchor="middle" fill={colors.SECONDARY} fontSize={11.5} fontFamily={MONO}>
+              <text x={px.x} y={px.y - 14} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily={MONO}>
                 POST /login/oauth/access_token
               </text>
             </g>
@@ -437,7 +432,7 @@ export function Render({ s }: { s: SceneState }) {
           {spendU > 0.01 && spendU < 1 && (
             <g>
               <circle cx={pk.x} cy={pk.y} r={9} fill={colors.WARM} stroke={colors.BG} strokeWidth={1.5} />
-              <text x={pk.x} y={pk.y + 22} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontFamily={MONO}>
+              <text x={pk.x} y={pk.y + 22} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
                 Bearer gho_Zk4…
               </text>
             </g>
@@ -456,7 +451,7 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={step} opacity={u}>
                 <rect x={x - 62} y={322} width={124} height={40} rx={9} fill={colors.BG} stroke={colors.ACCENT} />
-                <text x={x} y={347} textAnchor="middle" fill={colors.TEXT} fontSize={12}>
+                <text x={x} y={347} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                   {step}
                 </text>
                 {i < RECAP.length - 1 && (

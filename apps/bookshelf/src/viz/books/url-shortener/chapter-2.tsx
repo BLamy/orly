@@ -73,13 +73,13 @@ const NEED_DOTS = Array.from({ length: 70 }, () => {
 
 // layout
 const PLATE = { x: 445, y: 96, slot: 56, gap: 8 } as const; // 7 slots, centered on 640
-const STRIP = { x0: 128, x1: 1152, y: 388 } as const;
+const STRIP = { x0: 160, x1: 1120, y: 388 } as const;
 const glyphX = (i: number): number => STRIP.x0 + (i / 61) * (STRIP.x1 - STRIP.x0);
 const TAPE = { x0: 240, y: 470, cell: 38, gap: 4 } as const; // 21 cells
 const tapeX = (k: number): number => TAPE.x0 + k * (TAPE.cell + TAPE.gap);
 
 const CAM_PLATE: CameraState = { x: 640, y: 220, k: 1.3 };
-const CAM_MACHINE: CameraState = { x: 640, y: 430, k: 1.22 };
+const CAM_MACHINE: CameraState = { x: 640, y: 362, k: 1.1 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 const groupColor = (i: number): string =>
@@ -229,6 +229,7 @@ export function buildScene(): Scene {
   });
   tl.tween(dupU, 0, { at: 68.3, dur: 0.8, ease: ease.move });
   tl.tween(cam, CAM_PLATE, { at: 68.5, dur: 1.6, ease: ease.move });
+  tl.tween(machineDim, 0, { at: 68.5, dur: 1.2, ease: ease.move });
   tl.tween(closeU, 1, { at: 69.6, dur: 0.9, ease: ease.enter });
   tl.hold(73.0, 1.5);
 
@@ -354,11 +355,11 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- the rejected counter ---- */}
         {counterU > 0 && counterDim > 0 && (
           <g opacity={counterU * counterDim}>
-            <rect x={500} y={220} width={280} height={70} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.5} />
+            <rect x={460} y={220} width={360} height={70} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.5} />
             <text x={640} y={258} textAnchor="middle" fill={colors.NEGATIVE} fontSize={26} fontFamily="monospace">
               {counterVal}
             </text>
-            <text x={640} y={280} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+            <text x={640} y={280} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               sequential → guessable · one owner → bottleneck
             </text>
           </g>
@@ -366,27 +367,31 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- input → hash ---- */}
         <g opacity={inputU * machineDim}>
-          <rect x={128} y={224} width={200} height={34} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={228} y={246} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily="monospace">
+          <rect x={170} y={224} width={200} height={34} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={270} y={246} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace">
             ip {IP}
           </text>
-          <rect x={128} y={266} width={200} height={34} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={228} y={288} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily="monospace">
+          <rect x={170} y={266} width={200} height={34} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={270} y={288} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace">
             t {TS}
           </text>
-          <text x={356} y={272} fill={colors.MUTED} fontSize={16}>
+          <text x={398} y={272} fill={colors.MUTED} fontSize={16}>
             →
           </text>
-          <text x={392} y={252} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+          <text x={434} y={252} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
             md5(ip_address + timestamp)
           </text>
         </g>
         <g opacity={hashU * machineDim}>
-          <rect x={390} y={262} width={498 * hashU} height={38} rx={8} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.5} />
-          <text x={402} y={287} fill={colors.SECONDARY} fontSize={16} fontFamily="monospace" opacity={hashU}>
-            {MD5_HEX.slice(0, Math.max(1, Math.round(32 * hashU)))}
-          </text>
-          <text x={890} y={252} textAnchor="end" fill={colors.MUTED} fontSize={11} fontStyle="italic" opacity={clamp01(hashU * 2 - 1)}>
+          {hashU > 0 && (
+            <>
+              <rect x={432} y={262} width={498 * hashU} height={38} rx={8} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.5} />
+              <text x={444} y={287} fill={colors.SECONDARY} fontSize={16} fontFamily="monospace" opacity={hashU}>
+                {MD5_HEX.slice(0, Math.max(1, Math.round(32 * hashU)))}
+              </text>
+            </>
+          )}
+          <text x={932} y={252} textAnchor="end" fill={colors.MUTED} fontSize={12} fontStyle="italic" opacity={clamp01(hashU * 2 - 1)}>
             128 bits, uniformly distributed
           </text>
         </g>
@@ -415,13 +420,13 @@ export function Render({ s }: { s: SceneState }) {
           })}
           {stripU > 0.9 && (
             <g opacity={clamp01(stripU * 4 - 3.4)}>
-              <text x={glyphX(4)} y={STRIP.y + 24} textAnchor="middle" fill={colors.ACCENT} fontSize={10}>
+              <text x={glyphX(4)} y={STRIP.y + 24} textAnchor="middle" fill={colors.ACCENT} fontSize={12}>
                 0–9
               </text>
-              <text x={glyphX(22)} y={STRIP.y + 24} textAnchor="middle" fill={colors.TEAL} fontSize={10}>
+              <text x={glyphX(22)} y={STRIP.y + 24} textAnchor="middle" fill={colors.TEAL} fontSize={12}>
                 a–z
               </text>
-              <text x={glyphX(48)} y={STRIP.y + 24} textAnchor="middle" fill={colors.SECONDARY} fontSize={10}>
+              <text x={glyphX(48)} y={STRIP.y + 24} textAnchor="middle" fill={colors.SECONDARY} fontSize={12}>
                 A–Z
               </text>
             </g>
@@ -435,7 +440,7 @@ export function Render({ s }: { s: SceneState }) {
               <text x={1126} y={STRIP.y + 42 + 26 * b64U} textAnchor="middle" fill={colors.NEGATIVE} fontSize={20} fontFamily="monospace">
                 /
               </text>
-              <text x={1030} y={STRIP.y + 46} textAnchor="end" fill={colors.NEGATIVE} fontSize={10}>
+              <text x={1030} y={STRIP.y + 46} textAnchor="end" fill={colors.NEGATIVE} fontSize={12}>
                 base 64 extras — need escaping →
               </text>
             </g>
@@ -475,7 +480,7 @@ export function Render({ s }: { s: SceneState }) {
           </g>
         )}
         {running && (
-          <text x={640} y={630} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace" opacity={machineDim}>
+          <text x={640} y={604} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={machineDim}>
             base_encode(num, base=62) — O(k), k = 7
           </text>
         )}
@@ -548,7 +553,7 @@ export function Render({ s }: { s: SceneState }) {
         {closeU > 0 && (
           <g opacity={closeU}>
             <rect x={400} y={210} width={480} height={92} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
-            <text x={640} y={248} textAnchor="middle" fill={colors.TEXT} fontSize={16}>
+            <text x={640} y={248} textAnchor="middle" fill={colors.TEXT} fontSize={18}>
               minted from a hash, spelled in base 62
             </text>
             <text x={640} y={280} textAnchor="middle" fill={colors.ACCENT} fontSize={20} fontFamily="monospace" fontWeight={700}>

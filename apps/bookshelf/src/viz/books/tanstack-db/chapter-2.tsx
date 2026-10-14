@@ -56,9 +56,9 @@ const PIPE_ORDER: PipeKey[] = ['source', 'filter', 'join', 'select', 'result'];
 const NODE_H = 58;
 
 // In the un-optimized draft the filter sits AFTER the join; optimizeQuery
-// slides it upstream (predicate pushdown). We animate that slide.
-const FILTER_X_DRAFT = 730;
-const FILTER_X_PUSHED = PIPE.filter.x;
+// swaps the two (predicate pushdown). The nodes trade places in an arc.
+const JOIN_X_DRAFT = 425;
+const FILTER_X_DRAFT = 630;
 
 // The sleeping multitude: a field of source rows below the pipeline.
 const FIELD = { x0: 120, y0: 470, x1: 700, y1: 600 } as const;
@@ -69,6 +69,8 @@ const SLEEPERS = Array.from({ length: N_SLEEP }, () => ({
   y: FIELD.y0 + rand() * (FIELD.y1 - FIELD.y0),
   r: 1.6 + rand() * 1.6,
 }));
+// The row that gets checked off: a sleeper high enough that its label stays above the caption band.
+const PICK = SLEEPERS.find((p) => p.y > 500 && p.y < 540) ?? SLEEPERS[0];
 
 // Result list rows (the component's view).
 const LIST = { x: 980, y0: 452, w: 220, rowH: 30 } as const;
@@ -79,9 +81,10 @@ const hopPath = (a: PipeKey, b: PipeKey) => ({
   to: { x: PIPE[b].x - PIPE[b].w / 2, y: PIPE_Y },
 });
 
-const CAM_PIPE: CameraState = { x: 640, y: 330, k: 1.22 };
-const CAM_JOIN: CameraState = { x: 660, y: 360, k: 1.55 };
-const CAM_RESULT: CameraState = { x: 1010, y: 400, k: 1.35 };
+// Each framing keeps every label it names inside the 1280×720 stage.
+const CAM_PIPE: CameraState = { x: 660, y: 330, k: 1.1 };
+const CAM_JOIN: CameraState = { x: 690, y: 380, k: 1.2 };
+const CAM_RESULT: CameraState = { x: 740, y: 380, k: 1.1 };
 
 // ---------------------------------------------------------------------------
 // Timeline
@@ -107,6 +110,7 @@ export interface Scene {
   d2plus: ChannelRef<number>[];
   derivedU: ChannelRef<number>;
   closeU: ChannelRef<number>;
+  pickU: ChannelRef<number>;
 }
 
 export function buildScene(): Scene {
@@ -134,6 +138,7 @@ export function buildScene(): Scene {
   const d2plus = [0, 1, 2, 3].map((i) => tl.channel(`d2p${i}`, 0)); // re-insert
   const derivedU = tl.channel('derivedU', 0); // a second query chained off results
   const closeU = tl.channel('closeU', 0);
+  const pickU = tl.channel('pickU', 0); // ring on the one todo that changes
 
   // — Beat 1 · hook —
   tl.caption({
@@ -189,6 +194,8 @@ export function buildScene(): Scene {
     dur: 5.5,
     text: 'Now the interesting part. One todo gets checked off. One row, out of ten thousand.',
   });
+  tl.tween(pickU, 1, { at: 35.2, dur: 0.6, ease: ease.enter });
+  tl.tween(pickU, 0, { at: 40.6, dur: 0.4, ease: ease.enter });
   tl.hold(40.0, 0.5);
 
   // — Beat 7 · the delta rides —
@@ -289,6 +296,7 @@ export function buildScene(): Scene {
     d2plus,
     derivedU,
     closeU,
+    pickU,
   };
 }
 
@@ -298,34 +306,36 @@ const scene = buildScene();
 // Render
 // ---------------------------------------------------------------------------
 
-function OpNode({ x, w, label, sub, u, glowV, color }: { x: number; w: number; label: string; sub: string; u: number; glowV: number; color: string }) {
+function OpNode({ x, w, label, sub, u, glowV, color, dy = 0 }: { x: number; w: number; label: string; sub: string; u: number; glowV: number; color: string; dy?: number }) {
   if (u <= 0.01) return null;
+  const top = PIPE_Y - NODE_H / 2 + dy;
   return (
     <g opacity={u}>
-      {glowV > 0.02 && <rect x={x - w / 2 - 7} y={PIPE_Y - NODE_H / 2 - 7} width={w + 14} height={NODE_H + 14} rx={14} fill={color} opacity={0.22 * glowV} />}
-      <rect x={x - w / 2} y={PIPE_Y - NODE_H / 2} width={w} height={NODE_H} rx={10} fill={colors.PANEL} stroke={color} strokeWidth={1.4} />
-      <text x={x} y={PIPE_Y - 4} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
+      {glowV > 0.02 && <rect x={x - w / 2 - 7} y={top - 7} width={w + 14} height={NODE_H + 14} rx={14} fill={color} opacity={0.22 * glowV} />}
+      <rect x={x - w / 2} y={top} width={w} height={NODE_H} rx={10} fill={colors.PANEL} stroke={color} strokeWidth={1.4} />
+      <text x={x} y={top + 26} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
         {label}
       </text>
-      <text x={x} y={PIPE_Y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily="ui-monospace, monospace">
+      <text x={x} y={top + 44} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
         {sub}
       </text>
     </g>
   );
 }
 
-/** A ±1 delta chip riding a hop. */
-function Delta({ a, b, u, minus, text }: { a: PipeKey; b: PipeKey; u: number; minus?: boolean; text?: string }) {
+/** A ±1 delta chip riding a hop. `minus` rides above the pipe, `below` rides under it. */
+function Delta({ a, b, u, minus, below, text }: { a: PipeKey; b: PipeKey; u: number; minus?: boolean; below?: boolean; text?: string }) {
   if (u <= 0 || u >= 1) return null;
   const { from, to } = hopPath(a, b);
   const x = lerp(from.x, to.x, u);
-  const y = PIPE_Y - 2 + (minus ? -11 : 0);
+  const y = PIPE_Y - 2 + (minus ? -14 : below ? 14 : 0);
   const c = minus ? colors.NEGATIVE : colors.POSITIVE;
   const label = text ?? (minus ? '(row, −1)' : '(row, +1)');
+  const w = Math.max(70, label.length * 7.4 + 18);
   return (
     <g>
-      <rect x={x - 34} y={y - 11} width={68} height={20} rx={10} fill={colors.BG} stroke={c} strokeWidth={1.3} />
-      <text x={x} y={y + 3.5} textAnchor="middle" fill={c} fontSize={10.5} fontFamily="ui-monospace, monospace">
+      <rect x={x - w / 2} y={y - 11} width={w} height={22} rx={11} fill={colors.BG} stroke={c} strokeWidth={1.3} />
+      <text x={x} y={y + 4} textAnchor="middle" fill={c} fontSize={12} fontFamily="ui-monospace, monospace">
         {label}
       </text>
     </g>
@@ -354,17 +364,23 @@ export function Render({ s }: { s: SceneState }) {
   const d2p = scene.d2plus.map((c) => s.get(c));
   const derivedU = s.get(scene.derivedU);
   const closeU = s.get(scene.closeU);
+  const pickU = s.get(scene.pickU);
 
   const dimAll = 1 - closeU * 0.86;
-  const filterX = lerp(FILTER_X_DRAFT, FILTER_X_PUSHED, pushU);
-  // node x positions accounting for the pushdown slide (join shifts right a touch)
+  // Annotations that name a far-left node fade out once the camera has panned past them.
+  const viewLeft = cam.x - STAGE_W / 2 / cam.k;
+  const noteU = clamp01((140 - viewLeft) / 20);
+  // The filter and join trade places in an arc during pushdown (they lift apart mid-swap).
+  const swapLift = Math.sin(Math.PI * pushU) * 34;
+  // node x positions accounting for the pushdown swap
   const nodeX: Record<PipeKey, number> = {
     source: PIPE.source.x,
-    filter: filterX,
-    join: lerp(PIPE.join.x - 55, PIPE.join.x, pushU),
+    filter: lerp(FILTER_X_DRAFT, PIPE.filter.x, pushU),
+    join: lerp(JOIN_X_DRAFT, PIPE.join.x, pushU),
     select: PIPE.select.x,
     result: PIPE.result.x,
   };
+  const liftOf: Record<PipeKey, number> = { source: 0, filter: -swapLift, join: swapLift, select: 0, result: 0 };
   const glowOf: Record<PipeKey, number> = { source: 0, filter: gFilter, join: gJoin, select: gSelect, result: gResult };
   const colorOf: Record<PipeKey, string> = {
     source: colors.ACCENT,
@@ -382,8 +398,8 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={dimAll}>
           {CLAUSES.map((cl, i) => {
             const appear = clamp01(chipsU - i);
-            // fold: chips 1..3 sink toward their operator nodes and fade
-            const sink = i === 0 ? 0 : foldU;
+            // fold: every chip sinks toward its operator node and fades
+            const sink = foldU;
             const y = CHIP_Y0 + i * CHIP_GAP + sink * 60;
             return (
               <g key={i} opacity={appear * (1 - sink)}>
@@ -397,14 +413,14 @@ export function Render({ s }: { s: SceneState }) {
           <text x={CHIP_X} y={CHIP_Y0 - 18} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace" opacity={clamp01(chipsU) * (1 - foldU)}>
             createLiveQueryCollection((q) =&gt; q
           </text>
-          {/* compile arrow + label */}
-          <g opacity={foldU * (1 - pushU * 0.0)}>
+          {/* compile + optimizer annotations (hidden while the camera has panned past them) */}
+          <g opacity={foldU * noteU * (1 - pushU * 0.0)}>
             <text x={150} y={PIPE_Y - 74} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
               compileQuery → a dataflow graph
             </text>
           </g>
-          <g opacity={pushU}>
-            <text x={425} y={PIPE_Y - 74} fill={colors.SECONDARY} fontSize={11.5} fontFamily="ui-monospace, monospace">
+          <g opacity={pushU * noteU}>
+            <text x={425} y={PIPE_Y - 74} fill={colors.SECONDARY} fontSize={12} fontFamily="ui-monospace, monospace">
               optimizeQuery: predicate pushdown
             </text>
           </g>
@@ -412,14 +428,12 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- pipeline ---- */}
         <g opacity={dimAll}>
-          {/* edges */}
-          {PIPE_ORDER.slice(0, -1).map((k, i) => {
-            const a = nodeX[k] + PIPE[k].w / 2;
-            const b = nodeX[PIPE_ORDER[i + 1]] - PIPE[PIPE_ORDER[i + 1]].w / 2;
-            return (
-              <line key={k} x1={a} y1={PIPE_Y} x2={a + (b - a) * pipeU} y2={PIPE_Y} stroke={colors.GRID} strokeWidth={1.6} opacity={0.9} />
-            );
-          })}
+          {/* one bus under the nodes: it draws left → right and reads the same whatever order the nodes are in */}
+          {(() => {
+            const a = PIPE.source.x + PIPE.source.w / 2;
+            const b = PIPE.result.x - PIPE.result.w / 2;
+            return <line x1={a} y1={PIPE_Y} x2={a + (b - a) * pipeU} y2={PIPE_Y} stroke={colors.GRID} strokeWidth={1.6} opacity={0.9} />;
+          })()}
           {/* initial fill: a stream of dots washing left → right */}
           {fillU > 0 && fillU < 1 && (
             <g>
@@ -441,6 +455,7 @@ export function Render({ s }: { s: SceneState }) {
               u={k === 'source' || k === 'result' ? clamp01(foldU * 1.5) : foldU}
               glowV={glowOf[k]}
               color={colorOf[k]}
+              dy={liftOf[k]}
             />
           ))}
 
@@ -451,8 +466,8 @@ export function Render({ s }: { s: SceneState }) {
             </text>
           </g>
           <g opacity={timerU}>
-            <rect x={PIPE.result.x - 62} y={PIPE_Y + 42} width={124} height={26} rx={7} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.2} />
-            <text x={PIPE.result.x} y={PIPE_Y + 60} textAnchor="middle" fill={colors.POSITIVE} fontSize={12.5}>
+            <rect x={PIPE.result.x - 70} y={PIPE_Y + 42} width={140} height={28} rx={7} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.2} />
+            <text x={PIPE.result.x} y={PIPE_Y + 61} textAnchor="middle" fill={colors.POSITIVE} fontSize={13}>
               update: ~0.3 ms
             </text>
           </g>
@@ -469,22 +484,22 @@ export function Render({ s }: { s: SceneState }) {
         <Delta a="filter" b="join" u={d2m[1]} minus text="(old, −1)" />
         <Delta a="join" b="select" u={d2m[2]} minus text="(old, −1)" />
         <Delta a="select" b="result" u={d2m[3]} minus text="(old, −1)" />
-        <Delta a="source" b="filter" u={d2p[0]} text="(new, +1)" />
-        <Delta a="filter" b="join" u={d2p[1]} text="(new, +1)" />
-        <Delta a="join" b="select" u={d2p[2]} text="(new, +1)" />
-        <Delta a="select" b="result" u={d2p[3]} text="(new, +1)" />
+        <Delta a="source" b="filter" u={d2p[0]} below text="(new, +1)" />
+        <Delta a="filter" b="join" u={d2p[1]} below text="(new, +1)" />
+        <Delta a="join" b="select" u={d2p[2]} below text="(new, +1)" />
+        <Delta a="select" b="result" u={d2p[3]} below text="(new, +1)" />
 
         {/* ---- the join's arrangement/index card ---- */}
         <g opacity={arrU * dimAll}>
-          <line x1={nodeX.join} y1={PIPE_Y + NODE_H / 2} x2={nodeX.join} y2={PIPE_Y + 96} stroke={colors.WARM} strokeWidth={1.2} strokeDasharray="4 4" />
-          <rect x={nodeX.join - 92} y={PIPE_Y + 96} width={184} height={72} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.3} />
-          <text x={nodeX.join} y={PIPE_Y + 118} textAnchor="middle" fill={colors.WARM} fontSize={11.5}>
+          <line x1={nodeX.join} y1={PIPE_Y + NODE_H / 2 + liftOf.join} x2={nodeX.join} y2={PIPE_Y + 96} stroke={colors.WARM} strokeWidth={1.2} strokeDasharray="4 4" />
+          <rect x={nodeX.join - 92} y={PIPE_Y + 96} width={184} height={80} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.3} />
+          <text x={nodeX.join} y={PIPE_Y + 118} textAnchor="middle" fill={colors.WARM} fontSize={13}>
             the join&apos;s index
           </text>
-          <text x={nodeX.join} y={PIPE_Y + 136} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily="ui-monospace, monospace">
+          <text x={nodeX.join} y={PIPE_Y + 139} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
             every row seen, keyed
           </text>
-          <text x={nodeX.join} y={PIPE_Y + 152} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily="ui-monospace, monospace">
+          <text x={nodeX.join} y={PIPE_Y + 160} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
             lookup, not re-scan
           </text>
         </g>
@@ -497,11 +512,18 @@ export function Render({ s }: { s: SceneState }) {
           <text x={(FIELD.x0 + FIELD.x1) / 2} y={FIELD.y0 - 12} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic">
             9,999 rows, fast asleep
           </text>
+          {/* the one todo that changes: ringed, then it leaves the field as a delta */}
+          <g opacity={pickU}>
+            <circle cx={PICK.x} cy={PICK.y} r={9} fill="none" stroke={colors.POSITIVE} strokeWidth={1.6} />
+            <text x={PICK.x + 14} y={PICK.y + 4} fill={colors.POSITIVE} fontSize={12}>
+              checked off
+            </text>
+          </g>
         </g>
 
         {/* ---- the component's list ---- */}
         <g opacity={listU * dimAll}>
-          <text x={LIST.x} y={LIST.y0 - 12} fill={colors.MUTED} fontSize={11.5} fontFamily="ui-monospace, monospace">
+          <text x={LIST.x} y={LIST.y0 - 12} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
             useLiveQuery → the screen
           </text>
           {[0, 1, 2, 3].map((i) => (
@@ -520,7 +542,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={PIPE.result.x + 74} y={PIPE_Y - 116} textAnchor="middle" fill={colors.TEXT} fontSize={12.5}>
             another live query
           </text>
-          <text x={PIPE.result.x + 74} y={PIPE_Y - 98} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily="ui-monospace, monospace">
+          <text x={PIPE.result.x + 74} y={PIPE_Y - 98} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
             .from(activeUsers)
           </text>
         </g>

@@ -103,8 +103,13 @@ const rowY = (r: number): number => GRID_Y0 + r * ROW_H;
 // anatomy card (beat 3)
 const CARD = { x: 330, y: 400 } as const;
 
-const CAM_CARD: CameraState = { x: 400, y: 380, k: 1.4 };
-const CAM_GRID: CameraState = { x: 800, y: 330, k: 1.22 };
+// Framings keep the tape (x 116–810, y 79–175) and the grid (x 711–1199,
+// y 214–540) inside the 1280×720 stage, so neither push crops the subject.
+const CAM_CARD: CameraState = { x: 400, y: 330, k: 1.3 };
+const CAM_GRID: CameraState = { x: 660, y: 325, k: 1.1 };
+
+// raw JSON bytes shown on the gray tape before it is typed (beat 1)
+const RAW = '{"type":"user","key":"1","value":{"name":"Alice"}}';
 
 // ---------------------------------------------------------------------------
 // Timeline — ~74s, 10 captions.
@@ -255,14 +260,15 @@ export function Render({ s }: { s: SceneState }) {
   const nMain = N_EVT * clamp01(tapeU); // main cells shown
   const gridWipe = clamp01(resetU * 1.8 - 0.5); // reset sweep 0..1
   const foldCount = Math.floor(evtCount);
-  const dim = quietU * 0.55;
+  // finale: fade tape and grid to ≤ 0.15 so the closing panel reads on its own
+  const fade = 1 - quietU * 0.85;
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* ================= the tape ================= */}
-        <g opacity={1 - dim * 0.4}>
+        <g opacity={fade}>
           <line
             x1={TAPE_X0 - 12}
             y1={TAPE_Y + CELL_H / 2 + 8}
@@ -296,13 +302,19 @@ export function Render({ s }: { s: SceneState }) {
                   stroke={color}
                   strokeWidth={typed > 0.4 ? 1.8 + lanePulse : 1.1}
                 />
+                {typed <= 0.4 && (
+                  // beat 1: the tape is just bytes
+                  <text x={cellX(i) + (CELL_W - 6) / 2} y={TAPE_Y + 6 - lanePulse * 8} textAnchor="middle" fill={colors.MUTED} fontSize={15} fontFamily={MONO}>
+                    {RAW[(i * 7) % RAW.length]}
+                  </text>
+                )}
                 {typed > 0.4 && (
                   <>
                     <text x={cellX(i) + (CELL_W - 6) / 2} y={TAPE_Y - 2 - lanePulse * 8} textAnchor="middle" fill={color} fontSize={17} fontWeight={700}>
                       {OP_GLYPH[e.op]}
                     </text>
-                    <text x={cellX(i) + (CELL_W - 6) / 2} y={TAPE_Y + 16 - lanePulse * 8} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>
-                      {e.type.slice(0, 4)}:{e.key}
+                    <text x={cellX(i) + (CELL_W - 6) / 2} y={TAPE_Y + 16 - lanePulse * 8} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                      {e.type[0]}:{e.key}
                     </text>
                   </>
                 )}
@@ -327,8 +339,8 @@ export function Render({ s }: { s: SceneState }) {
               );
             })}
           {snapU > 0.6 && (
-            <g opacity={clamp01((snapU - 0.6) * 3) * (1 - dim)}>
-              <text x={cellX(N_EVT) + (N_SNAP * CELL_W) / 2 - 3} y={TAPE_Y - CELL_H / 2 - 14} textAnchor="middle" fill={colors.TEAL} fontSize={11} fontFamily={MONO}>
+            <g opacity={clamp01((snapU - 0.6) * 3)}>
+              <text x={cellX(N_EVT) + (N_SNAP * CELL_W) / 2 - 3} y={TAPE_Y - CELL_H / 2 - 14} textAnchor="middle" fill={colors.TEAL} fontSize={12} fontFamily={MONO}>
                 snapshot-start … snapshot-end
               </text>
             </g>
@@ -340,11 +352,25 @@ export function Render({ s }: { s: SceneState }) {
               <text x={cellX(N_EVT + N_SNAP) + (CELL_W - 6) / 2} y={TAPE_Y + 6} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={700}>
                 ⟲
               </text>
-              <text x={cellX(N_EVT + N_SNAP) + (CELL_W - 6) / 2} y={TAPE_Y - CELL_H / 2 - 14} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11} fontFamily={MONO}>
+              <text x={cellX(N_EVT + N_SNAP) + (CELL_W - 6) / 2} y={TAPE_Y - CELL_H / 2 - 14} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
                 reset
               </text>
             </g>
           )}
+          {/* type legend: the colors the grid rows reuse (beat 4) */}
+          <g opacity={clamp01(laneU * 3) * (1 - clamp01(replayU * 4))}>
+            {(['user', 'message', 'reaction'] as const).map((t, k) => {
+              const lx = TAPE_X0 + [0, 96, 206][k];
+              return (
+                <g key={t}>
+                  <circle cx={lx} cy={TAPE_Y + CELL_H / 2 + 46} r={6} fill={TYPE_COLOR[t]} />
+                  <text x={lx + 12} y={TAPE_Y + CELL_H / 2 + 51} fill={TYPE_COLOR[t]} fontSize={13} fontFamily={MONO}>
+                    {t}
+                  </text>
+                </g>
+              );
+            })}
+          </g>
         </g>
 
         {/* ================= anatomy card ================= */}
@@ -378,13 +404,23 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ================= the materialized grid ================= */}
         {gridU > 0.01 && (
-          <g opacity={gridU * (1 - dim)}>
+          <g opacity={gridU * fade}>
             <rect x={GRID_X - 24} y={GRID_Y0 - 54} width={GRID_W + 48} height={ROW_IDS.length * ROW_H + 86} rx={14} fill={colors.PANEL} stroke={colors.GRID} opacity={0.85} />
             <text x={GRID_X} y={GRID_Y0 - 26} fill={colors.TEXT} fontSize={14.5} fontWeight={700}>
               MaterializedState
             </text>
-            <text x={GRID_X + GRID_W - 6} y={GRID_Y0 - 26} textAnchor="end" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+            <text x={GRID_X + GRID_W - 6} y={GRID_Y0 - 26} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               get(type, key) → value
+            </text>
+            {/* one framing for the map: derived from the tape, rebuildable, safe to drop */}
+            <text
+              x={GRID_X + GRID_W / 2 - 4}
+              y={GRID_Y0 + ROW_IDS.length * ROW_H + 24}
+              textAnchor="middle"
+              fill={gridWipe > 0.95 ? colors.NEGATIVE : colors.MUTED}
+              fontSize={12.5}
+            >
+              {gridWipe > 0.95 ? 'map cleared — refold from offset 0 to rebuild' : 'derived from the tape · rebuilt by folding it · safe to discard'}
             </text>
             {ROW_IDS.map((r, row) => {
               const st = rowStateAt(row, foldCount);
@@ -443,7 +479,7 @@ export function Render({ s }: { s: SceneState }) {
               d={`M${TAPE_X0 + clamp01(replayU) * (cellX(N_EVT) - TAPE_X0)} ${TAPE_Y + CELL_H / 2 + 26} l -8 12 l 16 0 z`}
               fill={colors.TEAL}
             />
-            <text x={TAPE_X0 + clamp01(replayU) * (cellX(N_EVT) - TAPE_X0)} y={TAPE_Y + CELL_H / 2 + 56} textAnchor="middle" fill={colors.TEAL} fontSize={11.5}>
+            <text x={TAPE_X0 + clamp01(replayU) * (cellX(N_EVT) - TAPE_X0)} y={TAPE_Y + CELL_H / 2 + 56} textAnchor="middle" fill={colors.TEAL} fontSize={12}>
               reader 2 · offset=-1
             </text>
             {/* twin mini-grid */}
@@ -454,7 +490,7 @@ export function Render({ s }: { s: SceneState }) {
                 const seen = ROW_HISTORY[row][0].step < clamp01(replayU) * N_EVT;
                 if (!seen) return null;
                 return (
-                  <text key={row} x={200} y={GRID_Y0 + 16 + row * 26} fill={mini.exists ? colors.TEXT : colors.MUTED} fontSize={11} fontFamily={MONO} opacity={mini.exists ? 0.95 : 0.4}>
+                  <text key={row} x={200} y={GRID_Y0 + 16 + row * 26} fill={mini.exists ? colors.TEXT : colors.MUTED} fontSize={12} fontFamily={MONO} opacity={mini.exists ? 0.95 : 0.4}>
                     {r.type}:{r.key} {mini.exists ? `→ ${mini.val}` : '(deleted)'}
                   </text>
                 );
@@ -477,7 +513,7 @@ export function Render({ s }: { s: SceneState }) {
               state = fold(events on the tape)
             </text>
             <text x={640} y={416} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
-              the map is a cache · the stream is the truth · next: StreamDB makes the fold reactive
+              the map is derived · the stream is the truth · next: StreamDB makes the fold reactive
             </text>
           </g>
         )}

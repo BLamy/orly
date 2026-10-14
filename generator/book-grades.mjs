@@ -18,6 +18,10 @@ const from = argv.includes('--from')
   ? join(ROOT, argv[argv.indexOf('--from') + 1])
   : join(runsDir, readdirSync(runsDir).filter((f) => f.endsWith('.json')).sort().at(-1));
 const run = JSON.parse(readFileSync(from, 'utf8'));
+// the run before this one (by file name), for before/after deltas in the tab
+const older = readdirSync(runsDir).filter((f) => f.endsWith('.json') && join(runsDir, f) < from).sort().at(-1);
+const prevRun = older ? JSON.parse(readFileSync(join(runsDir, older), 'utf8')) : null;
+const PREV = new Map((prevRun?.books || []).map((g) => [g.slug, g]));
 const lib = JSON.parse(readFileSync(join(ROOT, 'public', 'generated', 'library.json'), 'utf8')).books;
 const meta = new Map(lib.map((b) => [b.slug, b]));
 const DIMS = ['accuracy', 'depth', 'clarity', 'story', 'visual', 'sync', 'sound', 'curiosity'];
@@ -63,6 +67,7 @@ const books = run.books
       bestMoment: g.bestMoment,
       confidence: g.confidence,
       gradedBy: g.gradedBy,
+      ...(PREV.has(g.slug) ? { prev: { mean: round2(DIMS.reduce((n, k) => n + PREV.get(g.slug).scores[k], 0) / DIMS.length), scores: PREV.get(g.slug).scores } } : {}),
     };
   })
   .sort((a, b) => b.mean - a.mean);
@@ -73,6 +78,8 @@ const out = {
   date: run.date,
   rubric: run.rubric,
   graders: run.graders,
+  ...(prevRun ? { prevDate: prevRun.date, prevNote: prevRun.note } : {}),
+  ...(run.note ? { note: run.note } : {}),
   bar: 8.5,
   floor: 8,
   dims: DIMS,

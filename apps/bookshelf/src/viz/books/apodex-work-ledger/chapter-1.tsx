@@ -31,22 +31,22 @@ export function buildScene() {
 
   tl.caption({ at: 6.9, dur: 6.2, text: 'Tool results arrive, messages accumulate, and eventually old context must be compacted.' });
   tl.tween(historyCompress, 1, { at: 7.7, dur: 2.0, ease: ease.move });
-  tl.tween(cam, { x: 410, y: 330, k: 1.16 }, { at: 9.6, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 420, y: 330, k: 1.15 }, { at: 9.6, dur: 1.3, ease: ease.move });
 
   tl.caption({ at: 13.5, dur: 6.3, text: 'Agent Team moves the plan into a run-scoped task board outside that message history.' });
   tl.tween(boardP, 4, { at: 14.2, dur: 2.5, ease: ease.enter });
-  tl.tween(cam, CAMERA_HOME, { at: 17.1, dur: 1.3, ease: ease.move });
+  tl.tween(cam, CAMERA_HOME, { at: 13.4, dur: 1.3, ease: ease.move });
 
   tl.caption({ at: 20.2, dur: 6.3, text: 'Every item gets a stable identifier, a concrete description, owners, a group, and a resolution.' });
   tl.tween(fieldsP, 4, { at: 20.9, dur: 2.2, ease: ease.enter });
-  tl.tween(cam, { x: 690, y: 330, k: 1.1 }, { at: 23.4, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 330, k: 1.1 }, { at: 23.4, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 26.9, dur: 6.4, text: 'The coordinator owns semantic resolution. The runtime separately owns whether an execution is queued, running, or reported.' });
   tl.tween(runtimeU, 1, { at: 27.6, dur: 1.2, ease: ease.enter });
 
   tl.caption({ at: 33.7, dur: 6.2, text: 'Planning mode keeps dispatch and file mutation locked until the board is ready.' });
   tl.tween(phaseU, 1, { at: 34.4, dur: 1.2, ease: ease.move });
-  tl.tween(cam, { x: 640, y: 410, k: 1.15 }, { at: 36.2, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 362, k: 1.05 }, { at: 36.2, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 40.3, dur: 6.2, text: 'Finishing planning opens execution, while the same board can still absorb new subquestions.' });
   tl.tween(phaseU, 2, { at: 41.0, dur: 1.3, ease: ease.pop });
@@ -70,14 +70,15 @@ const scene = buildScene();
 
 function HistoryTape({ reveal, compact }: { reveal: number; compact: number }) {
   const count = Math.max(1, Math.round(8 - compact * 5));
+  const boxH = Math.max(64, count * 34 + 16);
   return <g opacity={reveal}>
-    <text x="148" y="148" fill={colors.MUTED} fontSize="15" fontWeight="700">model message history</text>
+    <text x="92" y="190" fill={colors.MUTED} fontSize="15" fontWeight="700">model message history</text>
     {Array.from({ length: count }, (_, i) => {
       const w = 170 - i * 8;
-      return <rect key={i} x={92} y={174 + i * 34} width={w} height="20" rx="10" fill={i % 2 ? colors.SECONDARY : colors.ACCENT} opacity={0.18 + i * 0.035} />;
+      return <rect key={i} x={92} y={212 + i * 34} width={w} height="20" rx="10" fill={i % 2 ? colors.SECONDARY : colors.ACCENT} opacity={0.18 + i * 0.035} />;
     })}
-    <rect x="88" y="166" width="188" height={Math.max(64, count * 34 + 16)} rx="20" fill="none" stroke={colors.GRID} strokeWidth="2" strokeDasharray="7 7" />
-    <text x="182" y={206 + count * 34} textAnchor="middle" fill={colors.WARM} fontSize="14" opacity={compact}>compact old bodies</text>
+    <rect x="88" y="198" width="188" height={boxH} rx="20" fill="none" stroke={colors.GRID} strokeWidth="2" strokeDasharray="7 7" />
+    <text x="182" y={198 + boxH + 24} textAnchor="middle" fill={colors.WARM} fontSize="14" opacity={compact}>compact old bodies</text>
   </g>;
 }
 
@@ -92,9 +93,9 @@ export function Render({ s }: { s: SceneState }) {
   return <Camera {...s.get(scene.cam)}>
     <g opacity={quiet}>
       <text x="640" y="68" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="800">The board outside the conversation</text>
-      <path d="M82 106 C290 92 330 120 356 178" fill="none" stroke={colors.WARM} strokeWidth="8" strokeLinecap="round" strokeDasharray={`${Math.max(1, s.get(scene.objectiveU) * 310)} 330`} />
-      <circle cx="82" cy="106" r="16" fill={colors.WARM} opacity={s.get(scene.objectiveU)} />
-      <text x="112" y="112" fill={colors.WARM} fontSize="16" fontWeight="700" opacity={s.get(scene.objectiveU)}>objective</text>
+      <path d="M74 112 C 170 92 240 150 322 176" fill="none" stroke={colors.WARM} strokeWidth="8" strokeLinecap="round" strokeDasharray={`${Math.max(1, s.get(scene.objectiveU) * 300)} 320`} />
+      <circle cx="74" cy="112" r="16" fill={colors.WARM} opacity={s.get(scene.objectiveU)} />
+      <text x="96" y="88" fill={colors.WARM} fontSize="16" fontWeight="700" opacity={s.get(scene.objectiveU)}>objective</text>
       <HistoryTape reveal={s.get(scene.historyU)} compact={s.get(scene.historyCompress) % 1} />
 
       <g>
@@ -125,7 +126,7 @@ export function Render({ s }: { s: SceneState }) {
             const u = clamp01(fieldsP - i);
             return <g key={field} opacity={u} transform={`translate(${430 + i * 178} 514)`}>
               <rect x="-72" y="-16" width="144" height="32" rx="16" fill="#08101e" stroke={colors.MUTED} />
-              <text y="5" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>{field}</text>
+              <text y="5" textAnchor="middle" fill={colors.MUTED} fontSize="13" fontFamily={colors.font.mono}>{field}</text>
             </g>;
           })}
         </g>

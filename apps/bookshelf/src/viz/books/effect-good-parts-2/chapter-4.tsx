@@ -177,22 +177,28 @@ interface BlockSpec {
   accent?: string;
 }
 
+// Lug width for a label at 13px mono (about 8px per glyph).
+const lugW = (s: string): number => 24 + s.length * 8;
+
 function Block({ x, y, w, h, title, sub, outs, ins, err, op, scale = 1, accent = colors.ACCENT }: BlockSpec) {
   if (op <= 0.01) return null;
   const cx = x + w / 2;
   const cy = y + h / 2;
   const errRisky = err !== 'never';
+  // lugs sit side by side, each one starting after the previous lug plus a gap
+  const outX = outs.reduce<number[]>((acc, o, i) => [...acc, i === 0 ? x + 24 : acc[i - 1] + lugW(outs[i - 1]) + 12], []);
+  const inX = ins.reduce<number[]>((acc, n, i) => [...acc, i === 0 ? x + 40 : acc[i - 1] + lugW(ins[i - 1]) + 12], []);
   return (
     <g opacity={op} transform={scale === 1 ? undefined : `translate(${cx * (1 - scale)} ${cy * (1 - scale)}) scale(${scale})`}>
       <rect x={x} y={y} width={w} height={h} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
       {/* output lugs (top edge, solid) */}
       {outs.map((o, i) => {
-        const lw = 24 + o.length * 7;
-        const lx = x + 28 + i * (w / Math.max(outs.length, 1)) * 0.52;
+        const lw = lugW(o);
+        const lx = outX[i];
         return (
           <g key={o}>
-            <rect x={lx} y={y - 22} width={lw} height={26} rx={7} fill={colors.BG} stroke={accent} strokeWidth={1.6} />
-            <text x={lx + lw / 2} y={y - 4} textAnchor="middle" fill={accent} fontSize={11} fontFamily={MONO}>
+            <rect x={lx} y={y - 24} width={lw} height={28} rx={7} fill={colors.BG} stroke={accent} strokeWidth={1.6} />
+            <text x={lx + lw / 2} y={y - 5} textAnchor="middle" fill={accent} fontSize={13} fontFamily={MONO}>
               {o}
             </text>
           </g>
@@ -200,29 +206,37 @@ function Block({ x, y, w, h, title, sub, outs, ins, err, op, scale = 1, accent =
       })}
       {/* input notches (bottom edge, dashed) */}
       {ins.map((nIn, i) => {
-        const lw = 24 + nIn.length * 7;
-        const lx = x + 40 + i * (w * 0.46);
+        const lw = lugW(nIn);
+        const lx = inX[i];
         return (
           <g key={nIn}>
-            <rect x={lx} y={y + h - 4} width={lw} height={26} rx={7} fill={colors.BG} stroke={accent} strokeWidth={1.6} strokeDasharray="5 4" />
-            <text x={lx + lw / 2} y={y + h + 14} textAnchor="middle" fill={accent} fontSize={11} fontFamily={MONO} opacity={0.85}>
+            <rect x={lx} y={y + h - 4} width={lw} height={28} rx={7} fill={colors.BG} stroke={accent} strokeWidth={1.6} strokeDasharray="5 4" />
+            <text x={lx + lw / 2} y={y + h + 14} textAnchor="middle" fill={accent} fontSize={13} fontFamily={MONO} opacity={0.85}>
               {nIn}
             </text>
           </g>
         );
       })}
-      {/* risk tag */}
-      <text x={x + w - 14} y={y + 24} textAnchor="end" fill={errRisky ? colors.NEGATIVE : colors.MUTED} fontSize={10.5} fontFamily={MONO} opacity={errRisky ? 1 : 0.7}>
-        {err}
-      </text>
-      <text x={x + 20} y={y + 30} fill={colors.TEXT} fontSize={13.5} fontFamily={MONO} fontWeight={600}>
+      <text x={x + 20} y={y + 30} fill={colors.TEXT} fontSize={15} fontFamily={MONO} fontWeight={600}>
         {title}
       </text>
       {sub && (
-        <text x={x + 20} y={y + 54} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+        <text x={x + 20} y={y + 54} fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
           {sub}
         </text>
       )}
+      {/* risk tag: bottom row, moved right when a notch sits bottom-left */}
+      <text
+        x={ins.length ? x + w - 20 : x + 20}
+        y={y + h - 14}
+        textAnchor={ins.length ? 'end' : 'start'}
+        fill={errRisky ? colors.NEGATIVE : colors.MUTED}
+        fontSize={12.5}
+        fontFamily={MONO}
+        opacity={errRisky ? 1 : 0.7}
+      >
+        {err}
+      </text>
     </g>
   );
 }
@@ -243,15 +257,19 @@ export function Render({ s }: { s: SceneState }) {
   const appU = s.get(scene.appU);
   const teaseU = s.get(scene.teaseU);
 
-  const leftDim = clamp01(storeU + appU); // provide diagram quiets later
+  const leftDim = clamp01(storeU + appU); // later beats take the stage over
   const mergeDim = clamp01(storeU + appU);
+  // the provide diagram hands the stage to provideMerge, so it fades out as the merge opens
+  const leftOut = clamp01(mergeU * 1.6 - 0.2);
+  const leftOp = (1 - leftOut) * (1 - leftDim);
   const provided = provU > 0.6;
 
-  // the sliding client block (provide)
+  // the sliding client block (provide): it shrinks into a readable chip inside the repository
   const slide = clamp01(provU);
   const sqlX = SQL.x + (REPO.x + 34 - SQL.x) * slide;
   const sqlY = SQL.y + (REPO.y + 58 - SQL.y) * slide;
-  const sqlScale = lerp(1, 0.5, slide);
+  const sqlScale = lerp(1, 0.6, slide);
+  const chipU = clamp01(slide * 2 - 1); // 0 while sliding, 1 once the client is inside
 
   // unwrap faces: flipU 0..1 → in-memory face, 1..2 → remote face
   const faceMem = flipU <= 1 ? clamp01(flipU * 2 - 0.8) : clamp01(1 - (flipU - 1) * 2);
@@ -274,9 +292,19 @@ export function Render({ s }: { s: SceneState }) {
               sub="a recipe for building services"
               outs={['what it provides']}
               ins={['what it needs']}
-              err="how it can fail"
+              err=""
               op={1}
             />
+            {/* the three parts, named the same way the narration names them */}
+            <text x={LEGEND.x + 20} y={LEGEND.y + 98} fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
+              Out — what it builds
+            </text>
+            <text x={LEGEND.x + 20} y={LEGEND.y + 120} fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
+              Err — how the building can fail
+            </text>
+            <text x={LEGEND.x + 20} y={LEGEND.y + 142} fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
+              In — what it needs to start
+            </text>
             <text x={640} y={LEGEND.y + LEGEND.h + 74} textAnchor="middle" fill={colors.TEXT} fontSize={17} fontFamily={MONO}>
               Layer&lt;
               <tspan fill={colors.ACCENT}>Out</tspan>, <tspan fill={colors.NEGATIVE}>Err</tspan>, <tspan fill={colors.ACCENT}>In</tspan>
@@ -286,51 +314,62 @@ export function Render({ s }: { s: SceneState }) {
         )}
 
         {/* ---------------- beats 2–4: provide (left diagram) ---------------- */}
-        <g opacity={1 - 0.87 * leftDim}>
-          <Block
-            x={REPO.x}
-            y={REPO.y}
-            w={REPO.w}
-            h={REPO.h}
-            title={provided ? 'UserRepository.layer' : 'UserRepository.layerNoDeps'}
-            sub={provided ? 'Layer.provide(SqlClientLayer)' : 'maps SqlError → UserRespositoryError'}
-            outs={['UserRepository']}
-            ins={provided ? [] : ['SqlClient']}
-            err={provided ? 'ConfigError | SqlError' : 'never'}
-            op={repoU}
-          />
-          {/* the client block — standalone, then sliding inside */}
-          {sqlU > 0.01 && (
-            <g opacity={slide > 0.9 ? 0.45 : 1}>
-              <Block
-                x={sqlX}
-                y={sqlY}
-                w={SQL.w}
-                h={SQL.h}
-                title="SqlClientLayer"
-                sub={'url: Config.redacted("DATABASE_URL")'}
-                outs={slide > 0.5 ? ['SqlClient'] : ['PgClient', 'SqlClient']}
-                ins={[]}
-                err="ConfigError | SqlError"
-                op={sqlU}
-                scale={sqlScale}
-              />
-            </g>
-          )}
-          {/* the wire from client lug to repository notch, pre-provide */}
-          {repoU > 0.5 && slide < 0.05 && (
-            <line x1={SQL.x + 80} y1={SQL.y - 22} x2={REPO.x + 80} y2={REPO.y + REPO.h + 24} stroke={colors.ACCENT} strokeWidth={1.6} strokeDasharray="3 6" opacity={repoU * 0.7} />
-          )}
-          {slide > 0.6 && (
-            <text x={REPO.x + REPO.w / 2} y={REPO.y + REPO.h + 44} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO} opacity={clamp01(slide * 3 - 2)}>
-              Layer.provide — hidden inside
-            </text>
-          )}
-        </g>
+        {leftOp > 0.01 && (
+          <g opacity={leftOp}>
+            <Block
+              x={REPO.x}
+              y={REPO.y}
+              w={REPO.w}
+              h={REPO.h}
+              title={provided ? 'UserRepository.layer' : 'UserRepository.layerNoDeps'}
+              sub={provided ? 'Layer.provide(SqlClientLayer)' : 'maps SqlError → UserRespositoryError'}
+              outs={['UserRepository']}
+              ins={provided ? [] : ['SqlClient']}
+              err={provided ? 'ConfigError | SqlError' : 'never'}
+              op={repoU}
+            />
+            {/* the client chip, visible once the client is inside the repository */}
+            {chipU > 0.01 && (
+              <g opacity={chipU}>
+                <rect x={REPO.x + 20} y={REPO.y + 66} width={300} height={34} rx={9} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.4} />
+                <text x={REPO.x + 34} y={REPO.y + 88} fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
+                  SqlClientLayer · hidden
+                </text>
+              </g>
+            )}
+            {/* the client block — standalone, then sliding inside */}
+            {sqlU > 0.01 && (
+              <g opacity={sqlU * (1 - chipU)}>
+                <Block
+                  x={sqlX}
+                  y={sqlY}
+                  w={SQL.w}
+                  h={SQL.h}
+                  title="SqlClientLayer"
+                  sub={'url: Config.redacted("DATABASE_URL")'}
+                  outs={slide > 0.5 ? ['SqlClient'] : ['PgClient', 'SqlClient']}
+                  ins={[]}
+                  err="ConfigError | SqlError"
+                  op={1}
+                  scale={sqlScale}
+                />
+              </g>
+            )}
+            {/* the wire from client lug to repository notch, pre-provide */}
+            {repoU > 0.5 && slide < 0.05 && (
+              <line x1={SQL.x + 80} y1={SQL.y - 22} x2={REPO.x + 80} y2={REPO.y + REPO.h + 24} stroke={colors.ACCENT} strokeWidth={1.6} strokeDasharray="3 6" opacity={repoU * 0.7} />
+            )}
+            {slide > 0.6 && (
+              <text x={REPO.x + REPO.w / 2} y={REPO.y + REPO.h + 44} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={MONO} opacity={clamp01(slide * 3 - 2)}>
+                Layer.provide — hidden inside
+              </text>
+            )}
+          </g>
+        )}
 
         {/* ---------------- beat 5: provideMerge (right diagram) ---------------- */}
-        {mergeU > 0.01 && (
-          <g opacity={mergeU * (1 - 0.87 * mergeDim)}>
+        {mergeU > 0.01 && leftDim < 0.99 && (
+          <g opacity={mergeU * (1 - mergeDim)}>
             <rect x={MERGE.x - 16} y={MERGE.y - 44} width={MERGE.w + 32} height={MERGE.h + 88} rx={18} fill="none" stroke={colors.GRID} strokeDasharray="6 6" />
             <Block
               x={MERGE.x}
@@ -356,7 +395,7 @@ export function Render({ s }: { s: SceneState }) {
             />
             {/* the internal weld */}
             <line x1={MERGE.x + 244} y1={MERGE.y + MERGE.h / 2} x2={MERGE.x + 268} y2={MERGE.y + MERGE.h / 2} stroke={colors.ACCENT} strokeWidth={3} />
-            <text x={MERGE.x + MERGE.w / 2} y={MERGE.y + MERGE.h + 66} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>
+            <text x={MERGE.x + MERGE.w / 2} y={MERGE.y + MERGE.h + 66} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
               Layer.provideMerge — both surfaces exposed
             </text>
           </g>
@@ -371,35 +410,35 @@ export function Render({ s }: { s: SceneState }) {
             </text>
             {/* the config switch */}
             <g>
-              <text x={STORE.x + 22} y={STORE.y + 64} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+              <text x={STORE.x + 22} y={STORE.y + 64} fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
                 MESSAGE_STORE_IN_MEMORY
               </text>
-              <rect x={STORE.x + 232} y={STORE.y + 52} width={52} height={20} rx={10} fill={switchOn ? colors.POSITIVE : colors.GRID} opacity={0.85} />
-              <circle cx={STORE.x + 232 + (switchOn ? 40 : 12)} cy={STORE.y + 62} r={8} fill={colors.TEXT} />
-              <text x={STORE.x + 296} y={STORE.y + 66} fill={switchOn ? colors.POSITIVE : colors.MUTED} fontSize={11} fontFamily={MONO}>
+              <rect x={STORE.x + 292} y={STORE.y + 52} width={52} height={20} rx={10} fill={switchOn ? colors.POSITIVE : colors.GRID} opacity={0.85} />
+              <circle cx={STORE.x + 292 + (switchOn ? 40 : 12)} cy={STORE.y + 62} r={8} fill={colors.TEXT} />
+              <text x={STORE.x + 356} y={STORE.y + 66} fill={switchOn ? colors.POSITIVE : colors.MUTED} fontSize={12.5} fontFamily={MONO}>
                 {switchOn ? 'true' : 'false'}
               </text>
             </g>
             {/* the two faces */}
             <g opacity={Math.max(0.12, faceMem)}>
               <rect x={STORE.x + 24} y={STORE.y + 92} width={200} height={72} rx={12} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={faceMem > 0.5 ? 2 : 1} />
-              <text x={STORE.x + 124} y={STORE.y + 122} textAnchor="middle" fill={colors.POSITIVE} fontSize={12.5} fontFamily={MONO}>
+              <text x={STORE.x + 124} y={STORE.y + 122} textAnchor="middle" fill={colors.POSITIVE} fontSize={13.5} fontFamily={MONO}>
                 layerInMemory
               </text>
-              <text x={STORE.x + 124} y={STORE.y + 144} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontStyle="italic">
+              <text x={STORE.x + 124} y={STORE.y + 146} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontStyle="italic">
                 fast, for tests
               </text>
             </g>
             <g opacity={Math.max(0.12, flipU < 0.5 ? 0.5 : faceRemote)}>
               <rect x={STORE.x + 252} y={STORE.y + 92} width={200} height={72} rx={12} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={faceRemote > 0.5 ? 2 : 1} />
-              <text x={STORE.x + 352} y={STORE.y + 122} textAnchor="middle" fill={colors.SECONDARY} fontSize={12.5} fontFamily={MONO}>
+              <text x={STORE.x + 352} y={STORE.y + 122} textAnchor="middle" fill={colors.SECONDARY} fontSize={13.5} fontFamily={MONO}>
                 layerRemote(url)
               </text>
-              <text x={STORE.x + 352} y={STORE.y + 144} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontStyle="italic">
+              <text x={STORE.x + 352} y={STORE.y + 146} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontStyle="italic">
                 MESSAGE_STORE_URL
               </text>
             </g>
-            <text x={STORE.x + STORE.w / 2} y={STORE.y + STORE.h - 8} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+            <text x={STORE.x + STORE.w / 2} y={STORE.y + STORE.h - 8} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
               one effect decides which recipe is built
             </text>
           </g>
@@ -421,7 +460,7 @@ export function Render({ s }: { s: SceneState }) {
                 return (
                   <g key={f.label} opacity={1 - clamp01(u * 1.2 - 0.4)}>
                     <rect x={lerp(f.from.x, 640, u) - 90} y={lerp(f.from.y, APP.y + APP.h / 2, u) - 18} width={180} height={36} rx={9} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.2} />
-                    <text x={lerp(f.from.x, 640, u)} y={lerp(f.from.y, APP.y + APP.h / 2, u) + 4} textAnchor="middle" fill={colors.TEXT} fontSize={10.5} fontFamily={MONO}>
+                    <text x={lerp(f.from.x, 640, u)} y={lerp(f.from.y, APP.y + APP.h / 2, u) + 4} textAnchor="middle" fill={colors.TEXT} fontSize={12.5} fontFamily={MONO}>
                       {f.label}
                     </text>
                   </g>

@@ -32,7 +32,7 @@
 // which node the training loop's packet visits (real fades, twin fades in,
 // the loop keeps moving) versus a failed swap into a generic model (the loop
 // stalls into jitter). Closes on a quiet recap of the book's five chapters.
-import { CAMERA_HOME, Camera, MathLabel, STAGE_H, STAGE_W, Timeline, cameraInterp, colors, ease, mulberry32 } from '../../core';
+import { CAMERA_HOME, Camera, STAGE_H, STAGE_W, Timeline, cameraInterp, colors, ease, mulberry32 } from '../../core';
 import type { CameraState, SceneState } from '../../core';
 import { ParticleCloud } from '../../primitives';
 import type { ParticlePoint } from '../../primitives';
@@ -129,7 +129,7 @@ function loopPoint(t: number): { x: number; y: number } {
   return { x, y };
 }
 
-const CAM_RING: CameraState = { x: 430, y: 300, k: 1.32 };
+const CAM_RING: CameraState = { x: 430, y: 340, k: 1.12 }; // lower frame edge stays above the caption pill
 const CAM_LOOP: CameraState = { x: 940, y: 460, k: 1.4 };
 const CAM_RECAP: CameraState = CAMERA_HOME;
 
@@ -448,11 +448,11 @@ export function Render({ s }: { s: SceneState }) {
   const r5U = s.get(scene.r5U);
 
   const ringDim = 1 - recapU; // ring/rail dims for both loop-scene and recap
-  const ringOpacity = ringDim * (1 - 0.85 * ringToLoopU);
+  const ringOpacity = ringDim * (1 - ringToLoopU); // fully hand off to the loop scene
   const loopOpacity = ringToLoopU * ringDim;
 
   // donut geometry for the 9:1 blend
-  const donutC = { x: 700, y: 300, r: 46 };
+  const donutC = { x: 700, y: 300, r: 58 };
   const CIRC = TAU * donutC.r;
   const rubricFrac = 0.9;
   const p = loopPoint(loopT);
@@ -463,7 +463,7 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* ---------------- ring scene ---------------- */}
-        <g opacity={ringOpacity}>
+        {ringOpacity > 0.01 && <g opacity={ringOpacity}>
           {/* three-phase rail */}
           {railU > 0.01 && (
             <g opacity={railU}>
@@ -501,7 +501,7 @@ export function Render({ s }: { s: SceneState }) {
 
           {twinLabelU > 0.01 && (
             <g opacity={twinLabelU}>
-              <text x={RING.x} y={RING.y - RING.r - 30} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              <text x={RING.x} y={RING.y - 10} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                 the real environment
               </text>
               <text x={RING.x} y={RING.y + RING.r + 46} textAnchor="middle" fill={colors.ACCENT} fontSize={13}>
@@ -530,7 +530,7 @@ export function Render({ s }: { s: SceneState }) {
               );
             })}
           {domainLabelU > 0.01 && (
-            <text x={RING.x} y={RING.y} textAnchor="middle" fill={colors.MUTED} fontSize={11} opacity={domainLabelU * 0.85}>
+            <text x={RING.x} y={RING.y + 12} textAnchor="middle" fill={colors.MUTED} fontSize={12} opacity={domainLabelU * 0.85}>
               + four more domains
             </text>
           )}
@@ -563,13 +563,14 @@ export function Render({ s }: { s: SceneState }) {
               <text y={-6} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={600}>
                 9 : 1
               </text>
-              <text y={14} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+              <text y={donutC.r + 22} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                 rubric : executable
               </text>
             </g>
           )}
-          <Chip x={donutC.x} y={donutC.y + 90} text="exact match (deterministic) vs structural match (run-varying)" color={colors.WARM} u={matchChipU} />
-          <Chip x={donutC.x} y={donutC.y + 122} text="+ injected errors, pagination" color={colors.NEGATIVE} u={perturbU} />
+          <Chip x={donutC.x} y={donutC.y + 100} text="exact match · deterministic" color={colors.WARM} u={matchChipU} />
+          <Chip x={donutC.x} y={donutC.y + 132} text="structural match · run-varying" color={colors.WARM} u={matchChipU} />
+          <Chip x={donutC.x} y={donutC.y + 164} text="+ injected errors, pagination" color={colors.NEGATIVE} u={perturbU} />
 
           {benchU > 0.01 && (
             <g opacity={benchU}>
@@ -577,12 +578,12 @@ export function Render({ s }: { s: SceneState }) {
               <text x={RING.x} y={RING.y + RING.r + 94} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontWeight={600}>
                 AgentWorldBench
               </text>
-              <text x={RING.x} y={RING.y + RING.r + 112} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+              <text x={RING.x} y={RING.y + RING.r + 112} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 2,170 trajectories · 7 domains
               </text>
             </g>
           )}
-        </g>
+        </g>}
 
         {/* ---------------- SimRL loop scene ---------------- */}
         <g opacity={loopOpacity}>
@@ -704,7 +705,9 @@ export function Render({ s }: { s: SceneState }) {
         {recapU > 0.01 && (
           <g>
             <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} opacity={recapU * 0.94} />
-            <MathLabel tex={'\\text{sparse reward} \\to \\text{mask} \\to \\text{ECHO} \\to \\text{PaW} \\to \\text{twin}'} x={STAGE_W / 2} y={200} fontSize={22} opacity={recapU * 0.55} color={colors.MUTED} />
+            <text x={STAGE_W / 2} y={200} textAnchor="middle" fill={colors.MUTED} fontSize={22} fontFamily={MONO} opacity={recapU * 0.55}>
+              sparse reward → mask → ECHO → PaW → twin
+            </text>
             <RecapLine y={300} text="Sparse reward made looking ahead too costly to learn." u={r1U * recapU} />
             <RecapLine y={340} text="A mask folded that foresight into the policy's own loss." u={r2U * recapU} />
             <RecapLine y={380} text="Echo showed the gain was real — if you watched for overfitting." u={r3U * recapU} />

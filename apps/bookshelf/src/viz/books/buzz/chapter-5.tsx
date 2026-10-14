@@ -116,7 +116,8 @@ export function Render({ s }: { s: SceneState }) {
   const fedU = s.get(scene.fedU);
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
-  const mainOp = 1 - 0.85 * dimU;
+  // the diagram dims for the thesis, then gives way entirely to the closing panel
+  const mainOp = (1 - 0.85 * dimU) * (1 - closeU);
   const relayCx = RELAY.x + RELAY.w / 2;
   const relayCy = RELAY.y + RELAY.h / 2;
 
@@ -130,9 +131,9 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={relayU}>
               <rect x={RELAY.x} y={RELAY.y} width={RELAY.w} height={RELAY.h} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.8} />
               <text x={relayCx} y={RELAY.y + 38} textAnchor="middle" fill={colors.ACCENT} fontSize={16} fontWeight={600}>your relay</text>
-              <text x={relayCx} y={RELAY.y + 62} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace">one signed record</text>
+              <text x={relayCx} y={RELAY.y + 62} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">one signed record</text>
               {ownU > 0 && (
-                <text x={relayCx} y={RELAY.y + 84} textAnchor="middle" fill={colors.POSITIVE} fontSize={11} opacity={ownU} fontFamily="monospace">self-hosted 🏠</text>
+                <text x={relayCx} y={RELAY.y + 84} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} opacity={ownU} fontFamily="monospace">self-hosted 🏠</text>
               )}
             </g>
           )}
@@ -149,7 +150,7 @@ export function Render({ s }: { s: SceneState }) {
                 <circle cx={m.x} cy={m.y} r={18} fill="none" stroke={m.color} strokeWidth={2} />
                 <circle cx={m.x} cy={m.y} r={6} fill={m.color} />
                 <text x={m.x} y={m.y + 36} textAnchor="middle" fill={m.color} fontSize={13}>{m.name}</text>
-                <text x={m.x} y={m.y + 52} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily="monospace">{isAgent ? 'agent' : 'person'}</text>
+                <text x={m.x} y={m.y + 52} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">{isAgent ? 'agent' : 'person'}</text>
                 {/* a signed event travelling in */}
                 <TokenFlight from={{ x: m.x, y: m.y }} to={{ x: relayCx, y: relayCy }} u={phase} text="●" fill={m.color} fontSize={12} lift={26} fadeOut />
               </g>
@@ -158,14 +159,14 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* principles */}
           {princU > 0 && (
-            <g opacity={princU} transform="translate(0, 470)">
+            <g opacity={princU} transform="translate(0, 70)">
               {PRINCIPLES.map((p, i) => {
                 const u = clamp01(princU * PRINCIPLES.length - i);
                 if (u <= 0) return null;
                 return (
                   <g key={p.k} opacity={u}>
-                    <text x={150} y={i * 26} fill={colors.ACCENT} fontSize={13} fontWeight={600} fontFamily="monospace">{p.k}</text>
-                    <text x={330} y={i * 26} fill={colors.TEXT} fontSize={13}>{p.v}</text>
+                    <text x={60} y={i * 26} fill={colors.ACCENT} fontSize={13} fontWeight={600} fontFamily="monospace">{p.k}</text>
+                    <text x={240} y={i * 26} fill={colors.TEXT} fontSize={13}>{p.v}</text>
                   </g>
                 );
               })}
@@ -175,10 +176,10 @@ export function Render({ s }: { s: SceneState }) {
           {/* today / coming status */}
           {statusU > 0 && (
             <g opacity={statusU}>
-              <text x={150} y={556} fill={colors.POSITIVE} fontSize={12} fontWeight={600}>works today</text>
-              <text x={150} y={576} fill={colors.MUTED} fontSize={11} fontFamily="monospace">{TODAY.join(' · ')}</text>
-              <text x={150} y={602} fill={colors.WARM} fontSize={12} fontWeight={600}>coming</text>
-              <text x={150} y={622} fill={colors.MUTED} fontSize={11} fontFamily="monospace">{COMING.join(' · ')}</text>
+              <text x={60} y={500} fill={colors.POSITIVE} fontSize={13} fontWeight={600}>works today</text>
+              <text x={60} y={519} fill={colors.MUTED} fontSize={12} fontFamily="monospace">{TODAY.join(' · ')}</text>
+              <text x={60} y={550} fill={colors.WARM} fontSize={13} fontWeight={600}>coming</text>
+              <text x={60} y={569} fill={colors.MUTED} fontSize={12} fontFamily="monospace">{COMING.join(' · ')}</text>
             </g>
           )}
 
@@ -188,7 +189,7 @@ export function Render({ s }: { s: SceneState }) {
               <circle cx={relayCx + 210} cy={relayCy} r={16} fill="none" stroke={colors.SECONDARY} strokeDasharray="4 4" strokeWidth={1.6} />
               <circle cx={relayCx + 260} cy={relayCy - 40} r={14} fill="none" stroke={colors.SECONDARY} strokeDasharray="4 4" strokeWidth={1.4} opacity={0.7} />
               <line x1={RELAY.x + RELAY.w} y1={relayCy} x2={relayCx + 194} y2={relayCy} stroke={colors.SECONDARY} strokeDasharray="3 5" strokeWidth={1.4} />
-              <text x={relayCx + 232} y={relayCy + 44} textAnchor="middle" fill={colors.SECONDARY} fontSize={11} fontFamily="monospace">federation → coming</text>
+              <text x={relayCx + 232} y={relayCy + 44} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily="monospace">federation → coming</text>
             </g>
           )}
         </Camera>
@@ -196,7 +197,7 @@ export function Render({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={200} y={225} width={880} height={210} rx={14} fill={colors.PANEL} opacity={0.97} stroke={colors.ACCENT} />
+          <rect x={200} y={225} width={880} height={210} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} />
           <text x={640} y={286} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>Truly social AI</text>
           <text x={640} y={328} textAnchor="middle" fill={colors.MUTED} fontSize={16}>people and agents as equal members of one network, doing work together</text>
           <text x={640} y={356} textAnchor="middle" fill={colors.MUTED} fontSize={15}>on a signed record you host yourself and no one can quietly rewrite</text>

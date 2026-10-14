@@ -65,16 +65,16 @@ function pulseAt(t: number): number {
 }
 
 // layout
-const LANE_X = 150;
-const BAR_W = 640;
+const LANE_X = 130;
+const BAR_W = 600;
 const BAR_H = 30;
 const TOP_Y = 224;
 const BOT_Y = 434;
-const ODO_X = 1140;
+const ODO_X = 960; // inside the 1.25× lane camera frame, so the odometers never leave it
 
 // camera marks
 const CAM_WIDE: CameraState = CAMERA_HOME;
-const CAM_TOP: CameraState = { x: 560, y: 250, k: 1.25 };
+const CAM_TOP: CameraState = { x: 560, y: 290, k: 1.25 }; // y 290 keeps the bottom odometer label above the caption pill
 const CAM_BOT: CameraState = { x: 560, y: 440, k: 1.25 };
 
 // ---------------------------------------------------------------------------
@@ -145,7 +145,8 @@ export function buildScene() {
     dur: 6.0,
     text: 'By turn ten, the uncached run has billed one hundred seventy five thousand token units of input. The cached run: about fifty three thousand.',
   });
-  tl.tween(turnU, 10, { at: 35.0, dur: 5.0, ease: ease.linear });
+  // lands on turn 10 before the caption's midpoint, so the odometers show the narrated totals
+  tl.tween(turnU, 10, { at: 35.0, dur: 2.6, ease: ease.linear });
 
   // — beat 7 · seventy percent —
   tl.caption({
@@ -208,7 +209,7 @@ function Odometer({ x, y, value, label, color, opacity }: { x: number; y: number
       <text x={x} y={y} textAnchor="end" fill={color} fontSize={30} fontFamily={MONO} fontWeight={600}>
         {Math.round(value).toLocaleString('en-US')}
       </text>
-      <text x={x} y={y + 20} textAnchor="end" fill={colors.MUTED} fontSize={11.5}>
+      <text x={x} y={y + 20} textAnchor="end" fill={colors.MUTED} fontSize={12}>
         {label}
       </text>
     </g>
@@ -226,7 +227,8 @@ export function Render({ s }: { s: SceneState }) {
   const recapU = s.get(scene.recapU);
   const glyphsU = s.get(scene.glyphsU);
 
-  const machineOp = lanesU * (1 - 0.88 * dimU);
+  // the machine fades fully under the recap card, so no stray odometer shows around its edges
+  const machineOp = lanesU * (1 - dimU);
   const completed = Math.min(TURNS, Math.floor(turnU + 1e-6));
   const frac = clamp01(turnU - completed >= 0 ? turnU - completed : 0);
   const historyTokens = PER_TURN * (completed + clamp01((frac - 0.75) / 0.25));
@@ -241,13 +243,14 @@ export function Render({ s }: { s: SceneState }) {
   const promptW = (Math.min(promptTokens, CAPACITY) / CAPACITY) * BAR_W;
   const suffixW = (PER_TURN / CAPACITY) * BAR_W;
 
+  // short in-bar labels: the 64px system segment fits "system", not "system + tools"
   const topSegments = [
-    { label: 'system + tools', value: BASE, color: colors.SECONDARY },
+    { label: 'system', value: BASE, color: colors.SECONDARY },
     { label: 'transcript', value: historyTokens, color: colors.MUTED },
   ];
   const botSegments = [
-    { label: 'system + tools', value: BASE, color: colors.SECONDARY },
-    { label: 'transcript — cached', value: historyTokens, color: colors.ACCENT },
+    { label: 'system', value: BASE, color: colors.SECONDARY },
+    { label: 'transcript', value: historyTokens, color: colors.ACCENT },
   ];
 
   return (
@@ -255,11 +258,11 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         <g opacity={machineOp}>
-          {/* shared clock */}
-          <text x={640} y={120} textAnchor="middle" fill={colors.TEXT} fontSize={17} fontFamily={MONO}>
+          {/* shared clock, parked between the two lanes so both camera pushes keep it in frame */}
+          <text x={640} y={330} textAnchor="middle" fill={colors.TEXT} fontSize={17} fontFamily={MONO}>
             turn {Math.max(1, turnLabel)} of {TURNS}
           </text>
-          <text x={640} y={142} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+          <text x={640} y={352} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
             same agent, same ten turns — two billing meters
           </text>
 
@@ -271,7 +274,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* full-width read flash: every token at full price */}
           <rect x={LANE_X} y={TOP_Y} width={promptW} height={BAR_H} rx={6} fill={colors.NEGATIVE} opacity={0.5 * pulse} />
           {pulse > 0.05 && (
-            <text x={LANE_X + promptW + 10} y={TOP_Y + BAR_H / 2 + 4} fill={colors.NEGATIVE} fontSize={11.5} fontFamily={MONO} opacity={pulse}>
+            <text x={LANE_X + promptW} y={TOP_Y + BAR_H + 18} textAnchor="end" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO} opacity={pulse}>
               × 1.0 all of it
             </text>
           )}
@@ -286,7 +289,7 @@ export function Render({ s }: { s: SceneState }) {
           <rect x={LANE_X} y={BOT_Y} width={Math.max(0, promptW - suffixW)} height={BAR_H} rx={6} fill={colors.ACCENT} opacity={0.35 * pulse} />
           <rect x={LANE_X + Math.max(0, promptW - suffixW)} y={BOT_Y} width={Math.min(suffixW, promptW)} height={BAR_H} rx={3} fill={colors.WARM} opacity={0.6 * pulse} />
           {pulse > 0.05 && (
-            <text x={LANE_X + promptW + 10} y={BOT_Y + BAR_H / 2 + 4} fill={colors.ACCENT} fontSize={11.5} fontFamily={MONO} opacity={pulse}>
+            <text x={LANE_X + promptW} y={BOT_Y + BAR_H + 18} textAnchor="end" fill={colors.ACCENT} fontSize={12} fontFamily={MONO} opacity={pulse}>
               × 0.1 prefix · × 1.25 new
             </text>
           )}
@@ -302,11 +305,11 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* the ~70% chip */}
           <g opacity={ratioU}>
-            <rect x={880} y={300} width={260} height={64} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.5} />
-            <text x={1010} y={328} textAnchor="middle" fill={colors.POSITIVE} fontSize={20} fontWeight={700}>
+            <rect x={830} y={300} width={260} height={64} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.5} />
+            <text x={960} y={328} textAnchor="middle" fill={colors.POSITIVE} fontSize={20} fontWeight={700}>
               ≈ 70% saved
             </text>
-            <text x={1010} y={350} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+            <text x={960} y={350} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               53,150 vs 175,000
             </text>
           </g>
@@ -336,10 +339,11 @@ export function Render({ s }: { s: SceneState }) {
             ] as const
           ).map((g2, i) => {
             const u = clamp01(glyphsU * 4 - i);
-            const gx = 320 + i * 168;
+            const gx = 310 + i * 170;
             return (
               <g key={i} opacity={u} transform={`translate(${gx}, 280)`}>
-                <rect width={130} height={96} rx={12} fill={colors.BG} stroke={colors.GRID} />
+                <rect width={150} height={96} rx={12} fill={colors.BG} stroke={colors.GRID} />
+                <g transform="translate(10, 0)">
                 {i === 0 && (
                   <g>
                     {[0, 1, 2, 3, 4].map((j) => (
@@ -371,7 +375,8 @@ export function Render({ s }: { s: SceneState }) {
                     <line x1={14} y1={50} x2={116} y2={40} stroke={colors.POSITIVE} strokeWidth={2.5} />
                   </g>
                 )}
-                <text x={65} y={80} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+                </g>
+                <text x={75} y={82} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                   {g2.label}
                 </text>
               </g>

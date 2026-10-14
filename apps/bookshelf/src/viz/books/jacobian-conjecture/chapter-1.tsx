@@ -16,13 +16,15 @@ const mono = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 /* ---------------------------------------------------------------- layout */
 const PANEL = { x: 80, y: 110, w: 500, h: 470 }; // the warping grid
 const CARD = { x: 640, y: 120, w: 540, h: 170 }; // Keller's question
-const LADDER = { x: 640, y: 310, w: 540, rowH: 44, gap: 8 };
+const LADDER = { x: 640, y: 300, w: 540, rowH: 40, gap: 6 };
 const TWEET = { x: 320, y: 170, w: 640, h: 300 };
 
+// Each camera keeps the grid's label (x ≈ 84) and the card's right edge (x ≈ 1180)
+// on the 1280×720 stage whenever it is the subject, and the ladder clears the caption band.
 const CAM_HOME: CameraState = CAMERA_HOME;
 const CAM_GRID: CameraState = { x: 400, y: 340, k: 1.12 };
-const CAM_CARD: CameraState = { x: 800, y: 300, k: 1.05 };
-const CAM_LADDER: CameraState = { x: 840, y: 420, k: 1.08 };
+const CAM_CARD: CameraState = { x: 630, y: 330, k: 1.1 };
+const CAM_LADDER: CameraState = { x: 700, y: 360, k: 1.0 };
 const CAM_TWEET: CameraState = { x: 640, y: 330, k: 1.06 };
 
 /* ------------------------------------------------- the planar Keller warp */
@@ -70,6 +72,13 @@ const HISTORY: [string, string, string][] = [
   ['1983', 'Moh: the plane, through degree one hundred', colors.TEXT],
   ['1994', 'Pinchuk: the REAL analogue falls', colors.WARM],
   ['1998', 'Smale lists it: problem sixteen', colors.TEXT],
+];
+// Bibliographic sources for the ladder (cited from the original papers, not from the book metadata).
+const SOURCES = [
+  'Sources: Keller, Monatsh. Math. Phys. 47 (1939)',
+  'Wang, J. Algebra 65 (1980) · Moh, J. reine angew. Math. 340 (1983)',
+  'Bass, Connell & Wright, Bull. AMS 7 (1982) · Pinchuk, Math. Z. 217 (1994)',
+  'Smale, Math. Intelligencer 20 (1998)',
 ];
 
 /* -------------------------------------------------------------- timeline */
@@ -171,7 +180,7 @@ export function buildScene() {
     dur: 7.0,
     text: 'Then, on the day of the twenty twenty-six World Cup final, a three-line map of complex three-space appeared, with a constant determinant and a very short story to tell.',
   });
-  tl.tween(dimU, 0.9, { at: t - 6.6, dur: 1.0, ease: ease.move });
+  tl.tween(dimU, 1, { at: t - 6.6, dur: 1.0, ease: ease.move }); // full fade: old content at 0.12 opacity
   tl.tween(cam, CAM_TWEET, { at: t - 6.6, dur: 1.5, ease: ease.move });
   tl.tween(tweetU, 1, { at: t - 5.4, dur: 1.0, ease: ease.enter });
   t = tl.hold(t, 0.5);
@@ -206,7 +215,7 @@ function WarpGrid({ u, w, cells, area, dim }: { u: number; w: number; cells: num
         <rect x={PANEL.x} y={PANEL.y} width={PANEL.w} height={PANEL.h} />
       </clipPath>
       <rect x={PANEL.x} y={PANEL.y} width={PANEL.w} height={PANEL.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} opacity={0.7} />
-      <text x={PANEL.x + 4} y={PANEL.y - 12} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+      <text x={PANEL.x + 4} y={PANEL.y - 12} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
         det ≡ 1 everywhere — the local test at its best
       </text>
       <g clipPath="url(#jc1-clip)">
@@ -269,6 +278,7 @@ function QuestionCard({ u, dim }: { u: number; dim: number }) {
 function HistoryLadder({ n, dim }: { n: number; dim: number }) {
   if (n <= 0) return null;
   const a = 1 - 0.88 * clamp01(dim);
+  const src = clamp01(n - 5); // the sources strip arrives with the last row
   return (
     <g opacity={a}>
       {HISTORY.map(([year, line, c], i) => {
@@ -287,6 +297,15 @@ function HistoryLadder({ n, dim }: { n: number; dim: number }) {
           </g>
         );
       })}
+      {src > 0 && (
+        <g opacity={src} fontFamily={mono} fontSize={12} fill={colors.MUTED}>
+          {SOURCES.map((line, j) => (
+            <text key={j} x={LADDER.x} y={LADDER.y + 284 + j * 14}>
+              {line}
+            </text>
+          ))}
+        </g>
+      )}
     </g>
   );
 }

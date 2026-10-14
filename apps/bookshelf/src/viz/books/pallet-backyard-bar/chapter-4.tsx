@@ -297,7 +297,7 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...cam}>
         {/* ================= the magnified surface ================= */}
         <g opacity={sliceU * sliceDim * dimAll}>
-          <text x={SLICE.x} y={SLICE.y - 96} fill={colors.MUTED} fontSize={13}>
+          <text x={SLICE.x} y={SLICE.y - 96} fill={colors.MUTED} fontSize={14}>
             the bar top, greatly magnified
           </text>
 
@@ -350,7 +350,7 @@ export function Render({ s }: { s: SceneState }) {
                 opacity={0.42}
               />
               <line x1={SLICE.x} y1={SLICE.y - 11} x2={SLICE.x + SLICE.w * filmU} y2={SLICE.y - 11} stroke={colors.ACCENT} strokeWidth={2} />
-              <text x={SLICE.x} y={SLICE.y - 24} fill={colors.ACCENT} fontSize={13.5} opacity={filmU}>
+              <text x={SLICE.x} y={SLICE.y - 24} fill={colors.ACCENT} fontSize={14} opacity={filmU}>
                 Varathane — a film on top, not in the grain
               </text>
             </g>
@@ -471,7 +471,7 @@ export function Render({ s }: { s: SceneState }) {
                       r={5}
                       fill={levelU > 0.9 ? colors.POSITIVE : colors.WARM}
                     />
-                    <text x={BAR.cx} y={BAR.groundY + digDepth + 26} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                    <text x={BAR.cx - BAR.w / 2 - 66} y={BAR.groundY + digDepth - 6} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                       dug, levelled, laid on stone
                     </text>
                   </g>
@@ -498,7 +498,7 @@ export function Render({ s }: { s: SceneState }) {
                 {openerU > 0 && (
                   <g opacity={openerU}>
                     <rect x={BAR.cx + BAR.w / 2 - 40} y={topY + 40} width={16} height={26} rx={3} fill={colors.WARM} />
-                    <text x={BAR.cx + BAR.w / 2 - 52} y={topY + 34} textAnchor="end" fill={colors.WARM} fontSize={13}>
+                    <text x={BAR.cx + BAR.w / 2 - 52} y={topY + 34} textAnchor="end" fill={colors.WARM} fontSize={14}>
                       bottle opener
                     </text>
                   </g>
@@ -513,10 +513,10 @@ export function Render({ s }: { s: SceneState }) {
               <line x1={300} y1={230} x2={980} y2={230} stroke={colors.GRID} strokeWidth={2} />
               <line x1={300} y1={230} x2={300 + 680 * yearU} y2={230} stroke={colors.WARM} strokeWidth={3} />
               <circle cx={980} cy={230} r={6} fill={colors.WARM} opacity={clamp01(yearU * 4 - 3)} />
-              <text x={300} y={214} fill={colors.MUTED} fontSize={13}>
+              <text x={300} y={214} fill={colors.MUTED} fontSize={14}>
                 fresh
               </text>
-              <text x={980} y={214} textAnchor="end" fill={colors.WARM} fontSize={13.5} fontWeight={700}>
+              <text x={980} y={214} textAnchor="end" fill={colors.WARM} fontSize={14} fontWeight={700}>
                 one year later — recoat
               </text>
             </g>
@@ -531,7 +531,7 @@ export function Render({ s }: { s: SceneState }) {
               three coats of stain · a sealed top · level stone underneath
             </text>
             <text x={640} y={342} textAnchor="middle" fill={colors.ACCENT} fontSize={22} fontWeight={700}>
-              a bar made almost entirely of other people&apos;s pallets
+              the pallet that measured up: 47 × 40 inches
             </text>
           </g>
         )}

@@ -48,10 +48,10 @@ const CHIPS = [
   { pre: 'Authorization: Bearer sk-…', post: 'Upstream-Authorization: Bearer sk-…' },
 ] as const;
 
-const CAM_CHIPS: CameraState = { x: 420, y: 235, k: 1.35 };
-const CAM_GATE: CameraState = { x: 620, y: 215, k: 1.45 };
-const CAM_BUCKET: CameraState = { x: 800, y: 300, k: 1.4 };
-const CAM_TAPE: CameraState = { x: 640, y: 420, k: 1.18 };
+const CAM_CHIPS: CameraState = { x: 600, y: 225, k: 1.1 }; // client → proxy, with the upstream box still on stage
+const CAM_GATE: CameraState = { x: 610, y: 215, k: 1.08 }; // wide enough to keep client + upstream in frame
+const CAM_BUCKET: CameraState = { x: 640, y: 330, k: 1.08 }; // whole fork in view: client, bucket, upstream, tape
+const CAM_TAPE: CameraState = { x: 610, y: 420, k: 1.1 }; // keeps the client and its ticket on stage
 
 // token flow: upstream → proxy (arrives continuously through the chapter)
 function upstreamTokenPos(p: number, i: number, n: number): { x: number; y: number; u: number } {
@@ -85,6 +85,7 @@ export function buildScene() {
   const resumeU = tl.channel('resumeU', 0); // requestId resume
   const closedU = tl.channel('closedU', 0); // Stream-Closed cap
   const quietU = tl.channel('quietU', 0); // finale dim
+  const forkNoteU = tl.channel('forkNoteU', 0); // batching trade-off note, fork beat only
 
   // — beat 1 · the cast —
   tl.caption({
@@ -140,6 +141,8 @@ export function buildScene() {
   tl.tween(pumpU, 0.45, { at: 34.4, dur: 6.4, ease: ease.linear });
   tl.tween(fill1U, 3, { at: 34.8, dur: 6.0, ease: ease.linear }); // 3 fill+flush cycles
   tl.tween(batchN, 6, { at: 35.4, dur: 5.4, ease: ease.linear });
+  tl.tween(forkNoteU, 1, { at: 34.4, dur: 1.0, ease: ease.enter });
+  tl.tween(forkNoteU, 0, { at: 41.0, dur: 0.8, ease: ease.enter });
 
   // — beat 7 · the client reads the tape —
   tl.caption({
@@ -216,6 +219,7 @@ export function buildScene() {
     resumeU,
     closedU,
     quietU,
+    forkNoteU,
   };
 }
 
@@ -243,6 +247,7 @@ export function Render({ s }: { s: SceneState }) {
   const resumeU = s.get(scene.resumeU);
   const closedU = s.get(scene.closedU);
   const quietU = s.get(scene.quietU);
+  const forkNoteU = s.get(scene.forkNoteU);
 
   const fillFrac = fill1U > 0 ? fill1U % 1 : 0; // sawtooth: bucket fills, flushes
   const flushing = fillFrac < 0.18 && fill1U > 0.5; // brief flash right after flush
@@ -257,7 +262,7 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* ================= cast ================= */}
-        <g opacity={1 - dimBg * 0.75}>
+        <g opacity={(1 - dimBg * 0.75) * (1 - quietU)}>
           <ServiceNode x={CLIENT.x} y={CLIENT.y} kind="browser" label="client" sublabel="createDurableFetch()" u={castU} dim={clientDim} glow={resumeU * (1 - quietU)} />
           <ServiceNode x={PROXY.x} y={PROXY.y} kind="gateway" label="durable proxy" sublabel="POST /v1/proxy" u={castU} />
           <ServiceNode x={UPSTREAM.x} y={UPSTREAM.y} kind="external" label="api.openai.com" sublabel="chat/completions" u={castU} />
@@ -278,8 +283,8 @@ export function Render({ s }: { s: SceneState }) {
               const text = relabeled ? chip.post : chip.pre;
               return (
                 <g key={i} opacity={clamp01(u * 4) * clamp01((1.65 - u) * 3)}>
-                  <rect x={x - 4} y={y - 13} width={text.length * 6.6 + 14} height={24} rx={7} fill={colors.BG} stroke={relabeled ? colors.WARM : colors.ACCENT} strokeWidth={1.4} />
-                  <text x={x + 3} y={y + 3} fill={relabeled ? colors.WARM : colors.ACCENT} fontSize={11} fontFamily={MONO}>
+                  <rect x={x - 4} y={y - 13} width={text.length * 7.4 + 14} height={24} rx={7} fill={colors.BG} stroke={relabeled ? colors.WARM : colors.ACCENT} strokeWidth={1.4} />
+                  <text x={x + 3} y={y + 3} fill={relabeled ? colors.WARM : colors.ACCENT} fontSize={12.5} fontFamily={MONO}>
                     {text}
                   </text>
                 </g>
@@ -310,8 +315,8 @@ export function Render({ s }: { s: SceneState }) {
               const y = PROXY.y + 58;
               return (
                 <g opacity={clamp01(t * 5) * clamp01((1 - t) * 3.2)}>
-                  <rect x={x - 4} y={y - 13} width={172} height={24} rx={7} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.4} />
-                  <text x={x + 4} y={y + 3} fill={colors.NEGATIVE} fontSize={11} fontFamily={MONO}>
+                  <rect x={x - 4} y={y - 13} width={190} height={24} rx={7} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.4} />
+                  <text x={x + 4} y={y + 3} fill={colors.NEGATIVE} fontSize={12.5} fontFamily={MONO}>
                     evil.example.com → 403
                   </text>
                 </g>
@@ -331,11 +336,11 @@ export function Render({ s }: { s: SceneState }) {
               color={colors.GRID}
               dim={dimBg}
               label="PUT /v1/streams/{id}"
-              labelSize={10.5}
+              labelSize={12}
             />
             <g opacity={1 - dimBg * 0.3}>
               <line x1={TAPE_X0 - 14} y1={TAPE_Y + CELL_H / 2 + 8} x2={TAPE_X0 + (cellX(N_CELLS) - TAPE_X0 + 20) * mintU} y2={TAPE_Y + CELL_H / 2 + 8} stroke={colors.GRID} strokeWidth={2} />
-              <text x={TAPE_X0 - 22} y={TAPE_Y + 5} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={mintU}>
+              <text x={TAPE_X0 - 22} y={TAPE_Y + 5} textAnchor="end" fill={colors.MUTED} fontSize={13.5} fontFamily={MONO} opacity={mintU}>
                 durable stream
               </text>
               {Array.from({ length: N_CELLS }, (_, i) => {
@@ -364,7 +369,7 @@ export function Render({ s }: { s: SceneState }) {
               {closedU > 0.01 && (
                 <g opacity={closedU}>
                   <rect x={cellX(N_CELLS) + 2} y={TAPE_Y - CELL_H / 2} width={12} height={CELL_H} rx={3} fill={colors.WARM} />
-                  <text x={cellX(N_CELLS) + 26} y={TAPE_Y - 16} fill={colors.WARM} fontSize={11.5} fontFamily={MONO}>
+                  <text x={cellX(N_CELLS) + 26} y={TAPE_Y - 16} fill={colors.WARM} fontSize={13} fontFamily={MONO}>
                     Stream-Closed: true
                   </text>
                 </g>
@@ -378,12 +383,13 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={(1 - dimBg) * (ticketU < 1 ? 1 : 1)}>
             {(() => {
               const t = ticketU;
-              const x = PROXY.x - 80 - t * (PROXY.x - 80 - CLIENT.x - 8);
+              // ends under the client (not past its left edge) so the box stays on stage
+              const x = PROXY.x - 80 - t * (PROXY.x - 80 - CLIENT.x - 60);
               const y = PROXY.y + 88 - t * 30;
               return (
                 <g opacity={clamp01(t * 4)}>
-                  <rect x={x - 108} y={y - 15} width={262} height={30} rx={8} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.5} />
-                  <text x={x + 23} y={y + 4} textAnchor="middle" fill={colors.SECONDARY} fontSize={11} fontFamily={MONO}>
+                  <rect x={x - 130} y={y - 15} width={300} height={30} rx={8} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.5} />
+                  <text x={x + 20} y={y + 4} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>
                     201 · Location: /v1/proxy/{'{id}'}?expires=…
                   </text>
                 </g>
@@ -404,15 +410,24 @@ export function Render({ s }: { s: SceneState }) {
             <g>
               <rect x={BUCKET.x - 34} y={BUCKET.y - 58} width={68} height={92} rx={9} fill={colors.PANEL} stroke={flushing ? colors.ACCENT : colors.GRID} strokeWidth={flushing ? 2.4 : 1.4} />
               <rect x={BUCKET.x - 28} y={BUCKET.y + 28 - fillFrac * 78} width={56} height={fillFrac * 78} rx={4} fill={colors.ACCENT} opacity={0.55} />
-              <text x={BUCKET.x} y={BUCKET.y - 70} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+              <text x={BUCKET.x} y={BUCKET.y - 70} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
                 pipeUpstreamBody()
               </text>
-              <text x={BUCKET.x + 46} y={BUCKET.y - 34} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+              <text x={BUCKET.x + 46} y={BUCKET.y - 34} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 flush ≥ 4096 B
               </text>
-              <text x={BUCKET.x + 46} y={BUCKET.y - 18} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+              <text x={BUCKET.x + 46} y={BUCKET.y - 18} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 or 50 ms
               </text>
+              {/* the trade-off: small flushes = low lag, many appends; big ones = fewer appends, more lag */}
+              <g opacity={forkNoteU * (1 - dimBg)}>
+                <text x={BUCKET.x + 46} y={BUCKET.y + 8} fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
+                  bigger batch → fewer appends
+                </text>
+                <text x={BUCKET.x + 46} y={BUCKET.y + 24} fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
+                  but more lag per byte
+                </text>
+              </g>
               {/* flush pipe down to the tape's write head */}
               <path
                 d={`M${BUCKET.x} ${BUCKET.y + 36} C ${BUCKET.x} ${TAPE_Y - 90}, ${liveEdge} ${TAPE_Y - 130}, ${liveEdge} ${TAPE_Y - CELL_H / 2 - 30}`}
@@ -433,11 +448,11 @@ export function Render({ s }: { s: SceneState }) {
               <circle cx={cursorX} cy={TAPE_Y + CELL_H / 2 + 48} r={14 + 16 * (1 - resumeU)} fill="none" stroke={colors.POSITIVE} strokeWidth={2} opacity={1 - resumeU} />
             )}
             <path d={`M${cursorX} ${TAPE_Y + CELL_H / 2 + 40} l -9 14 l 18 0 z`} fill={killU > 0.4 ? colors.MUTED : colors.POSITIVE} />
-            <text x={cursorX} y={TAPE_Y + CELL_H / 2 + 72} textAnchor="middle" fill={killU > 0.4 ? colors.MUTED : colors.POSITIVE} fontSize={12} fontWeight={600}>
+            <text x={cursorX} y={TAPE_Y + CELL_H / 2 + 72} textAnchor="middle" fill={killU > 0.4 ? colors.MUTED : colors.POSITIVE} fontSize={13.5} fontWeight={600}>
               {killU > 0.4 ? 'tab closed' : 'client reads the tape'}
             </text>
             {resumeU > 0.3 && quietU < 0.5 && (
-              <text x={cursorX} y={TAPE_Y + CELL_H / 2 + 90} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO} opacity={resumeU * (1 - quietU * 2)}>
+              <text x={cursorX} y={TAPE_Y + CELL_H / 2 + 90} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={resumeU * (1 - quietU * 2)}>
                 requestId: conversation-123
               </text>
             )}

@@ -24,13 +24,15 @@ const mono = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 /* ---------------------------------------------------------------- layout */
 const LOG = { x: 70, y: 120, w: 350 };
 const FOLD = { x: 70, y: 396 };
-const REC = { x: 70, y: 490, w: 350 };
-const GRID_POS = { x: 560, y: 150 };
-const CHUNKS = { x: 560, y: 470, w: 620 };
+const REC = { x: 70, y: 462, w: 350 };
+const GRID_POS = { x: 560, y: 130 };
+const CHUNKS = { x: 760, y: 250, w: 620 };
 
+// Each camera keeps the index column (x 70–420) in frame when it can, so no
+// box is sliced by the stage edge.
 const CAM_LOG: CameraState = { x: 300, y: 330, k: 1.3 };
-const CAM_GRID: CameraState = { x: 810, y: 320, k: 1.22 };
-const CAM_CHUNK: CameraState = { x: 860, y: 430, k: 1.24 };
+const CAM_GRID: CameraState = { x: 400, y: 340, k: 1.1 };
+const CAM_CHUNK: CameraState = { x: 660, y: 340, k: 1.06 };
 const CAM_WIDE: CameraState = { x: 640, y: 352, k: 1.0 };
 
 /* ------------------------------------------------------------------ data */
@@ -84,6 +86,7 @@ export function buildScene() {
   const chunkU = tl.channel('chunkU', 0); // chunk cards enter
   const flattenU = tl.channel('flattenU', 0); // chunks flatten to one tape
   const dimU = tl.channel('dimU', 0);
+  const oldU = tl.channel('oldU', 0); // older beats fade back while the chunks take over
   const closeU = tl.channel('closeU', 0);
 
   /* — beat 1 · setup — */
@@ -94,6 +97,7 @@ export function buildScene() {
     text: 'One recording, seven streams. This chapter is about their shape — because the shape is what makes the whole dashboard cheap to build.',
   });
   tl.tween(cam, CAM_LOG, { at: t - 4.6, dur: 1.4, ease: ease.move });
+  tl.tween(recU, 1, { at: t - 5.0, dur: 1.2, ease: ease.enter }); // the stream row is on screen from the start
   t = tl.hold(t, 0.5);
 
   /* — beat 2 · the index is append-only — */
@@ -130,7 +134,6 @@ export function buildScene() {
     dur: 6.0,
     text: 'For the recording data itself, idempotency is blunter: on re-upload, each per recording stream is deleted and recreated from scratch, then the fresh index entry lands.',
   });
-  tl.tween(recU, 1, { at: t - 5.4, dur: 1.0, ease: ease.enter });
   tl.tween(wipeU, 1, { at: t - 3.6, dur: 2.4, ease: ease.move });
   t = tl.hold(t, 0.5);
 
@@ -169,6 +172,7 @@ export function buildScene() {
     text: 'The line trace and the sampled stacks are too long for single messages, so they ship as chunks of up to a thousand entries. Reading them back is just flattening.',
   });
   tl.tween(cam, CAM_CHUNK, { at: t - 5.4, dur: 1.4, ease: ease.move });
+  tl.tween(oldU, 1, { at: t - 5.4, dur: 1.2, ease: ease.move });
   tl.tween(chunkU, 1, { at: t - 4.6, dur: 1.2, ease: ease.enter });
   tl.tween(flattenU, 1, { at: t - 2.8, dur: 2.0, ease: ease.move });
   t = tl.hold(t, 0.5);
@@ -184,7 +188,7 @@ export function buildScene() {
   tl.tween(closeU, 1, { at: t - 4.0, dur: 0.8, ease: ease.enter });
   tl.hold(t, 1.2);
 
-  return { tl, cam, logU, foldU, tombU, recU, wipeU, gridP, hotU, pointU, chunkU, flattenU, dimU, closeU };
+  return { tl, cam, logU, foldU, tombU, recU, wipeU, gridP, hotU, pointU, chunkU, flattenU, dimU, oldU, closeU };
 }
 
 const scene = buildScene();
@@ -221,14 +225,14 @@ function IndexLog({ logU, foldU, tombU, dim }: { logU: number; foldU: number; to
             <text x={14} y={20} fill={colors.TEXT} fontSize={12.5} fontFamily={mono}>
               {e.id}
             </text>
-            <text x={14} y={37} fill={e.tomb ? colors.NEGATIVE : colors.MUTED} fontSize={11} fontFamily={mono}>
+            <text x={14} y={37} fill={e.tomb ? colors.NEGATIVE : colors.MUTED} fontSize={12} fontFamily={mono}>
               {e.note}
             </text>
             {shadow > 0.3 && (
               <line x1={10} y1={23} x2={LOG.w - 10} y2={23} stroke={colors.MUTED} strokeWidth={1.6} opacity={shadow} />
             )}
             {tombed > 0.3 && (
-              <text x={LOG.w - 14} y={29} textAnchor="end" fill={colors.NEGATIVE} fontSize={11} fontFamily={mono} opacity={tombed}>
+              <text x={LOG.w - 14} y={29} textAnchor="end" fill={colors.NEGATIVE} fontSize={12} fontFamily={mono} opacity={tombed}>
                 ⌫ hidden by fold
               </text>
             )}
@@ -273,7 +277,7 @@ function RecStreams({ u, wipe, dim }: { u: number; wipe: number; dim: number }) 
           <g key={name} transform={`translate(${i * 58}, 0)`}>
             <rect width={52} height={30} rx={6} fill={colors.BG} stroke={colors.GRID} strokeWidth={1} />
             <rect x={3} y={3} width={46 * (wp > 0 ? width : 1)} height={24} rx={4} fill={colors.ACCENT} opacity={0.35} />
-            <text x={26} y={48} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily={mono}>
+            <text x={26} y={48} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={mono}>
               {name}
             </text>
           </g>
@@ -297,7 +301,7 @@ function PointChip({ u }: { u: number }) {
       <line x1={cx + CELL * 0.75} y1={cy} x2={cx + 74} y2={cy} stroke={colors.WARM} strokeWidth={1.4} strokeDasharray="3 3" />
       <g transform={`translate(${cx + 78}, ${cy - 26 + (1 - e) * 8})`}>
         <rect width={230} height={52} rx={9} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.5} />
-        <text x={12} y={21} fill={colors.MUTED} fontSize={11} fontFamily={mono}>
+        <text x={12} y={21} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
           rec/…/points · line 41
         </text>
         <text x={12} y={40} fill={colors.WARM} fontSize={12.5} fontFamily={mono}>
@@ -314,7 +318,7 @@ function ChunkRibbon({ u, flatten, dim }: { u: number; flatten: number; dim: num
   if (e <= 0) return null;
   const f = ease.move(clamp01(flatten));
   const n = 5;
-  const cw = 96;
+  const cw = 90;
   return (
     <g transform={`translate(${CHUNKS.x}, ${CHUNKS.y})`} opacity={e * (1 - 0.85 * dim)}>
       <text y={-14} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
@@ -323,7 +327,7 @@ function ChunkRibbon({ u, flatten, dim }: { u: number; flatten: number; dim: num
       {Array.from({ length: n }, (_, i) => {
         const cu = clamp01(e * (n + 1) - i);
         // scattered card → its slot on one continuous tape
-        const x0 = i * (cw + 18);
+        const x0 = i * (cw + 8);
         const y0 = (i % 2 === 0 ? 0 : 26) + 8;
         const x1 = i * (cw + 2);
         const y1 = 44;
@@ -333,14 +337,14 @@ function ChunkRibbon({ u, flatten, dim }: { u: number; flatten: number; dim: num
           <g key={i} transform={`translate(${x}, ${y})`} opacity={cu}>
             <rect width={cw} height={22} rx={f > 0.9 ? 2 : 6} fill={colors.ACCENT} opacity={0.3} />
             <rect width={cw} height={22} rx={f > 0.9 ? 2 : 6} fill="none" stroke={colors.ACCENT} strokeWidth={1.3} />
-            <text x={cw / 2} y={15} textAnchor="middle" fill={colors.TEXT} fontSize={10} fontFamily={mono}>
+            <text x={cw / 2} y={15} textAnchor="middle" fill={colors.TEXT} fontSize={11} fontFamily={mono}>
               {i < n - 1 ? '1000 entries' : '…'}
             </text>
           </g>
         );
       })}
       {f > 0.9 && (
-        <text x={(n * (cw + 2)) / 2} y={92} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={mono} opacity={(f - 0.9) * 10}>
+        <text x={(n * (cw + 2)) / 2} y={92} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={mono} opacity={(f - 0.9) * 10}>
           one seq-ordered linetrace · readers flatten
         </text>
       )}
@@ -353,13 +357,17 @@ function CloseCard({ u }: { u: number }) {
   const e = clamp01(u);
   if (e <= 0) return null;
   return (
-    <g transform={`translate(640, ${310 + (1 - e) * 10})`} opacity={e}>
-      <rect x={-340} y={-56} width={680} height={112} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
-      <text y={-12} textAnchor="middle" fill={colors.TEXT} fontSize={19} fontWeight={700}>
+    // Sits in the empty lower-right band, clear of the faded grid and chunks.
+    <g transform={`translate(960, ${450 + (1 - e) * 10})`} opacity={e}>
+      <rect x={-260} y={-56} width={520} height={112} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
+      <text y={-14} textAnchor="middle" fill={colors.TEXT} fontSize={19} fontWeight={700}>
         the whole storage engine
       </text>
-      <text y={24} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={mono}>
-        append-only index · latest-per-id fold · tombstones · chunked streams
+      <text y={14} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={mono}>
+        append-only index · latest-per-id fold
+      </text>
+      <text y={34} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={mono}>
+        tombstones · chunked streams
       </text>
     </g>
   );
@@ -368,17 +376,19 @@ function CloseCard({ u }: { u: number }) {
 /* ------------------------------------------------------------ the frame */
 export function Render({ s }: { s: SceneState }) {
   const dim = clamp01(s.get(scene.dimU));
+  // the older layers (index, streams, grid) fade back for the chunk beat and the close
+  const fade = Math.max(dim, clamp01(s.get(scene.oldU)));
   const gp = s.get(scene.gridP);
   const total = HIT_ROWS.length * 2;
   const hot = clamp01(s.get(scene.hotU));
   return (
     <Camera {...s.get(scene.cam)}>
-      <IndexLog logU={s.get(scene.logU)} foldU={s.get(scene.foldU)} tombU={s.get(scene.tombU)} dim={dim} />
-      <RecStreams u={s.get(scene.recU)} wipe={s.get(scene.wipeU)} dim={dim} />
+      <IndexLog logU={s.get(scene.logU)} foldU={s.get(scene.foldU)} tombU={s.get(scene.tombU)} dim={fade} />
+      <RecStreams u={s.get(scene.recU)} wipe={s.get(scene.wipeU)} dim={fade} />
       {gp > 0 && (
-        <g opacity={1 - 0.85 * dim}>
-          <text x={GRID_POS.x} y={GRID_POS.y - 18} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
-            rec/…/hits · {'{ sourceId, line, hits }'}
+        <g opacity={1 - 0.85 * fade}>
+          <text x={GRID_POS.x} y={GRID_POS.y - 34} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+            rec/…/hits · {'{ sourceId, line, hits }'} · main.rs | lru.rs
           </text>
           <MatrixGrid
             x={GRID_POS.x + 44}
@@ -388,7 +398,7 @@ export function Render({ s }: { s: SceneState }) {
             gap={3}
             cellU={(i, j) => clamp01(gp * (total + 2) - (i * 2 + j))}
             rowLabels={ROW_LABELS}
-            colLabels={['main.rs', 'lru.rs']}
+            colLabels={['main', 'lru']}
             showValues={false}
             highlight={hot > 0 ? { cell: [6, 0], color: colors.WARM, u: hot } : undefined}
           />
@@ -404,7 +414,7 @@ export function Render({ s }: { s: SceneState }) {
                   y={GRID_POS.y + i * (CELL + 3) + CELL / 2 + 4}
                   textAnchor="middle"
                   fill={norm(h) > 0.75 ? colors.BG : colors.TEXT}
-                  fontSize={10.5}
+                  fontSize={11}
                   fontFamily={mono}
                   opacity={cu}
                 >
@@ -415,7 +425,7 @@ export function Render({ s }: { s: SceneState }) {
           )}
         </g>
       )}
-      <PointChip u={s.get(scene.pointU) * (1 - 0.9 * dim)} />
+      <PointChip u={s.get(scene.pointU) * (1 - 0.9 * fade)} />
       <ChunkRibbon u={s.get(scene.chunkU)} flatten={s.get(scene.flattenU)} dim={dim} />
       <CloseCard u={s.get(scene.closeU)} />
     </Camera>

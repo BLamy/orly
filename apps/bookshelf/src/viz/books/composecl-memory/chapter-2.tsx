@@ -5,11 +5,15 @@ import { CAMERA_HOME, Camera, MathLabel, Timeline, cameraInterp, colors, ease } 
 import type { CameraState, SceneState } from '../../core';
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
-const PARAMS = Array.from({ length: 18 }, (_, i) => ({
-  x: 498 + (i % 6) * 58,
-  y: 246 + Math.floor(i / 6) * 58,
-  important: [1, 4, 6, 9, 11, 14, 16].includes(i),
-}));
+// Parameters sit on a ring around the learner, so the dots never cover its name.
+const PARAMS = Array.from({ length: 18 }, (_, i) => {
+  const angle = -Math.PI / 2 + (i / 18) * Math.PI * 2;
+  return {
+    ax: Math.cos(angle) * 172,
+    ay: Math.sin(angle) * 172,
+    important: [1, 4, 6, 9, 11, 14, 16].includes(i),
+  };
+});
 
 export function buildScene() {
   const tl = new Timeline();
@@ -42,7 +46,7 @@ export function buildScene() {
   tl.caption({ at: 12.4, dur: 5.5, text: 'The data anchor asks the previous model to generate replay examples from a dedicated seed token.' });
   tl.tween(replayU, 1, { at: 12.9, dur: 1.2, ease: ease.enter });
   tl.tween(replayP, 1, { at: 14.1, dur: 2.3, ease: ease.linear });
-  tl.tween(cam, { x: 420, y: 340, k: 1.08 }, { at: 13.2, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 500, y: 340, k: 1.08 }, { at: 13.2, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 18.4, dur: 5.5, text: 'Those generated prompts carry soft targets from the frozen teacher, so rehearsal needs no stored examples from earlier tasks.' });
   tl.tween(replayP, 2, { at: 18.9, dur: 2.4, ease: ease.linear });
@@ -50,7 +54,7 @@ export function buildScene() {
   tl.caption({ at: 24.4, dur: 5.5, text: 'The function anchor keeps a frozen previous-state adapter and compares its full output distribution with the student.' });
   tl.tween(functionU, 1, { at: 24.9, dur: 1.2, ease: ease.enter });
   tl.tween(logitsU, 1, { at: 26.0, dur: 2.0, ease: ease.draw });
-  tl.tween(cam, { x: 860, y: 330, k: 1.08 }, { at: 25.2, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 680, y: 340, k: 1.08 }, { at: 25.2, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 30.4, dur: 5.5, text: 'Forward Kullback-Leibler divergence penalizes changed predictions on the current inputs, preserving behavior rather than examples.' });
   tl.tween(logitsU, 1.8, { at: 30.9, dur: 1.6, ease: ease.move });
@@ -103,6 +107,8 @@ export function Render({ s }: { s: SceneState }) {
   const springs = s.get(scene.springU);
   const update = s.get(scene.updateU);
   const survive = s.get(scene.surviveU);
+  const coreX = 640 + update * 34;
+  const coreY = 340 - update * 18;
 
   return <Camera {...s.get(scene.cam)}>
     <g opacity={1 - close}>
@@ -110,12 +116,13 @@ export function Render({ s }: { s: SceneState }) {
 
       <g opacity={s.get(scene.coreU)}>
         <circle cx="640" cy="340" r="128" fill="#111c2c" stroke={colors.GRID} strokeWidth="4" />
-        <circle cx={640 + update * 34} cy={340 - update * 18} r="72" fill="#15253a" stroke={survive > 0 ? colors.POSITIVE : colors.ACCENT} strokeWidth={3 + survive * 3} />
-        <text x={640 + update * 34} y={332 - update * 18} textAnchor="middle" fill={colors.TEXT} fontSize="18" fontWeight="800">Qwen3-4B-Base</text>
-        <text x={640 + update * 34} y={360 - update * 18} textAnchor="middle" fill={colors.MUTED} fontSize="12">current learner</text>
+        <circle cx={coreX} cy={coreY} r="72" fill="#15253a" stroke={survive > 0 ? colors.POSITIVE : colors.ACCENT} strokeWidth={3 + survive * 3} />
+        <rect x={coreX - 84} y={coreY - 24} width="168" height="26" rx="8" fill="#15253a" />
+        <text x={coreX} y={coreY - 6} textAnchor="middle" fill={colors.TEXT} fontSize="16" fontWeight="800">Qwen3-4B-Base</text>
+        <text x={coreX} y={coreY + 20} textAnchor="middle" fill={colors.MUTED} fontSize="12">current learner</text>
         <g opacity={s.get(scene.memoryU)} transform={`translate(${640 + update * 25} ${420 - update * 8})`}>
           <rect x="-96" y="-20" width="192" height="40" rx="16" fill="#2b2513" stroke={survive > 0 ? colors.POSITIVE : colors.WARM} strokeWidth="2.5" />
-          <text y="5" textAnchor="middle" fill={survive > 0 ? colors.POSITIVE : colors.WARM} fontSize="12" fontFamily={colors.font.mono}>oHBvRP → OIvG</text>
+          <text y="5" textAnchor="middle" fill={survive > 0 ? colors.POSITIVE : colors.WARM} fontSize="14" fontWeight="700">old association</text>
         </g>
       </g>
 
@@ -150,24 +157,26 @@ export function Render({ s }: { s: SceneState }) {
 
       <g opacity={weights * (1 - compose * 0.72)}>
         {PARAMS.map((p, i) => {
+          const px = coreX + p.ax;
+          const py = coreY + p.ay;
           const dx = (i % 2 === 0 ? -1 : 1) * drift * (p.important ? 14 : 42);
           const dy = ((i % 3) - 1) * drift * (p.important ? 10 : 30);
           return <g key={i}>
-            {p.important && springs > 0 && <line x1={p.x} y1={p.y} x2={p.x + dx} y2={p.y + dy} stroke={colors.WARM} strokeWidth={2 + springs * 2} opacity={springs} />}
-            <circle cx={p.x + dx} cy={p.y + dy} r={p.important ? 11 : 8} fill={p.important ? colors.WARM : colors.MUTED} opacity={p.important ? 0.95 : 0.46} />
+            {p.important && springs > 0 && <line x1={px} y1={py} x2={px + dx} y2={py + dy} stroke={colors.WARM} strokeWidth={2 + springs * 2} opacity={springs} />}
+            <circle cx={px + dx} cy={py + dy} r={p.important ? 11 : 8} fill={p.important ? colors.WARM : colors.MUTED} opacity={p.important ? 0.95 : 0.46} />
           </g>;
         })}
-        <text x="640" y="520" textAnchor="middle" fill={colors.WARM} fontSize="13" fontFamily={colors.font.mono}>SynapticIntelligence · importance · saved parameters</text>
+        <text x="640" y="538" textAnchor="middle" fill={colors.WARM} fontSize="13" fontFamily={colors.font.mono}>SynapticIntelligence · importance · saved parameters</text>
       </g>
 
       <g opacity={compose}>
         <Anchor x={230} y={250} color={colors.ACCENT} label="data" u={clamp01(compose * 4)} />
-        <Anchor x={640} y={150} color={colors.SECONDARY} label="function" u={clamp01(compose * 4 - 1)} />
+        <Anchor x={640} y={176} color={colors.SECONDARY} label="function" u={clamp01(compose * 4 - 1)} />
         <Anchor x={1050} y={250} color={colors.WARM} label="weight" u={clamp01(compose * 4 - 2)} />
-        <path d="M280 272 C390 420 500 436 570 388 M640 220 V270 M1000 272 C890 420 780 436 710 388" fill="none" stroke={colors.POSITIVE} strokeWidth="4" opacity={clamp01(compose * 4 - 3)} />
+        <path d="M280 272 C390 420 500 436 570 388 M640 230 V270 M1000 272 C890 420 780 436 710 388" fill="none" stroke={colors.POSITIVE} strokeWidth="4" opacity={clamp01(compose * 4 - 3)} />
         <g opacity={s.get(scene.lossU)}>
-          <rect x="356" y="520" width="568" height="62" rx="22" fill="#12291f" stroke={colors.POSITIVE} strokeWidth="3" />
-          <MathLabel tex={'L=(1-w)L_{current}+wL_{replay}+L_{SD}+L_{SI}'} x={640} y={558} fontSize={22} opacity={1} />
+          <rect x="200" y="556" width="880" height="58" rx="22" fill="#12291f" stroke={colors.POSITIVE} strokeWidth="3" />
+          <MathLabel tex={'L=(1-w)L_{current}+wL_{replay}+L_{SD}+L_{SI}'} x={640} y={585} fontSize={20} opacity={1} />
         </g>
       </g>
     </g>

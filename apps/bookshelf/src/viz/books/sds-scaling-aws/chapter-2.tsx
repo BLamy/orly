@@ -31,20 +31,25 @@ import type { CameraState, ChannelRef, SceneState } from '../../core';
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 const lerp = (a: number, b: number, u: number): number => a + (b - a) * u;
 
-const BOX = { x: 560, y: 340 } as const;
-const S3 = { x: 1060, y: 170 } as const;
-const RDS = { x: 1060, y: 420 } as const;
-const LB = { x: 320, y: 340 } as const;
-const CDN = { x: 320, y: 130 } as const;
+// VPC fence: public subnet (web tier) on the left, private subnet (data tier) on the right
+const VPC = { x: 270, y: 165, w: 960, h: 400 } as const;
+const PUB = { x: 300, y: 200, w: 420, h: 345 } as const;
+const PRIV = { x: 750, y: 200, w: 460, h: 345 } as const;
+
+const BOX = { x: 600, y: 380 } as const;
+const S3 = { x: 1090, y: 100 } as const; // regional service, outside the VPC
+const RDS = { x: 980, y: 300 } as const;
+const LB = { x: 390, y: 380 } as const;
+const CDN = { x: 250, y: 100 } as const; // edge, outside the VPC
 
 // static assets that fly to S3
 const ASSETS = ['user files', 'JS', 'CSS', 'images', 'videos'] as const;
 
 // the web server fleet after horizontal scaling
 const FLEET = [
-  { x: 560, y: 230, az: 'az-1' },
-  { x: 560, y: 340, az: 'az-1' },
-  { x: 560, y: 450, az: 'az-2' },
+  { x: 600, y: 255, az: 'az-1' },
+  { x: 600, y: 375, az: 'az-1' },
+  { x: 600, y: 495, az: 'az-2' },
 ] as const;
 
 const rand = mulberry32(20260721);
@@ -55,9 +60,9 @@ const REQS = Array.from({ length: N_REQ }, (_, i) => ({
   cdn: rand() < 0.4,
 }));
 
-const CAM_BOX: CameraState = { x: 640, y: 340, k: 1.2 };
-const CAM_S3: CameraState = { x: 880, y: 280, k: 1.2 };
-const CAM_LB: CameraState = { x: 480, y: 330, k: 1.2 };
+const CAM_BOX: CameraState = { x: 600, y: 360, k: 1.15 };
+const CAM_S3: CameraState = { x: 760, y: 300, k: 1 };
+const CAM_LB: CameraState = { x: 640, y: 340, k: 1.05 };
 
 export interface Scene {
   tl: Timeline;
@@ -73,6 +78,7 @@ export interface Scene {
   cdnU: ChannelRef<number>;
   trafU: ChannelRef<number>;
   closeU: ChannelRef<number>;
+  strainU: ChannelRef<number>;
 }
 
 export function buildScene(): Scene {
@@ -89,6 +95,7 @@ export function buildScene(): Scene {
   const cdnU = tl.channel('cdnU', 0); // cloudfront
   const trafU = tl.channel('trafU', 0); // traffic through lb + cdn
   const closeU = tl.channel('closeU', 0);
+  const strainU = tl.channel('strainU', 0); // load on the lone box, climbing to timeouts
 
   // — Beat 1 · the diagnosis —
   tl.caption({
@@ -134,6 +141,7 @@ export function buildScene(): Scene {
     dur: 6,
     text: 'Growth continues, and now the load tests show the lone web server buckling at peak hours. Slow responses. Some outright downtime. Vertical scaling already had its turn.',
   });
+  tl.tween(strainU, 1, { at: 29.4, dur: 3.4, ease: ease.linear });
   tl.hold(35.0, 0.5);
 
   // — Beat 6 · horizontal scaling —
@@ -177,7 +185,7 @@ export function buildScene(): Scene {
   tl.tween(closeU, 1, { at: 58.3, dur: 1.4, ease: ease.move });
   tl.hold(64.0, 1.5);
 
-  return { tl, cam, boxU, flyU, rdsU, vpcU, lbU, fleetU, msU, splitU, cdnU, trafU, closeU };
+  return { tl, cam, boxU, flyU, rdsU, vpcU, lbU, fleetU, msU, splitU, cdnU, trafU, closeU, strainU };
 }
 
 const scene = buildScene();
@@ -192,11 +200,11 @@ function Node({ x, y, w = 150, h = 56, title, sub, stroke = colors.GRID, opacity
   return (
     <g opacity={opacity}>
       <rect x={x - w / 2} y={y - h / 2} width={w} height={h} rx={10} fill={colors.PANEL} stroke={stroke} strokeWidth={1.3} />
-      <text x={x} y={y - 1} textAnchor="middle" fill={colors.TEXT} fontSize={12}>
+      <text x={x} y={y - 1} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
         {title}
       </text>
       {sub && (
-        <text x={x} y={y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={9} fontFamily="ui-monospace, monospace">
+        <text x={x} y={y + 17} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="ui-monospace, monospace">
           {sub}
         </text>
       )}
@@ -217,6 +225,7 @@ export function Render({ s }: { s: SceneState }) {
   const cdnU = s.get(scene.cdnU);
   const trafU = s.get(scene.trafU);
   const closeU = s.get(scene.closeU);
+  const strainU = s.get(scene.strainU);
 
   const dimAll = 1 - closeU * 0.88;
   const single = 1 - fleetU;
@@ -225,28 +234,45 @@ export function Render({ s }: { s: SceneState }) {
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
-        {/* ---- vpc fence ---- */}
+        {/* ---- vpc fence + subnets ---- */}
         <g opacity={vpcU * dimAll}>
-          <rect x={430} y={100} width={780} height={480} rx={18} fill="none" stroke={colors.SECONDARY} strokeWidth={1.6} strokeDasharray="10 7" />
-          <text x={450} y={126} fill={colors.SECONDARY} fontSize={11.5} fontFamily="ui-monospace, monospace">
-            VPC · public subnet: web · private subnet: everything else
+          <rect x={VPC.x} y={VPC.y} width={VPC.w} height={VPC.h} rx={18} fill="none" stroke={colors.SECONDARY} strokeWidth={1.6} strokeDasharray="10 7" />
+          <text x={VPC.x + 20} y={VPC.y + 26} fill={colors.SECONDARY} fontSize={13} fontFamily="ui-monospace, monospace">
+            VPC
+          </text>
+          <rect x={PUB.x} y={PUB.y} width={PUB.w} height={PUB.h} rx={12} fill={colors.SECONDARY} fillOpacity={0.05} stroke={colors.SECONDARY} strokeWidth={1} strokeOpacity={0.6} />
+          <text x={PUB.x + 16} y={PUB.y + 26} fill={colors.SECONDARY} fontSize={12} fontFamily="ui-monospace, monospace">
+            public subnet · web
+          </text>
+          <rect x={PRIV.x} y={PRIV.y} width={PRIV.w} height={PRIV.h} rx={12} fill={colors.POSITIVE} fillOpacity={0.05} stroke={colors.POSITIVE} strokeWidth={1} strokeOpacity={0.6} />
+          <text x={PRIV.x + 16} y={PRIV.y + 26} fill={colors.POSITIVE} fontSize={12} fontFamily="ui-monospace, monospace">
+            private subnet · everything else
           </text>
         </g>
 
         {/* ---- the (single) box ---- */}
         <g opacity={boxU * single * dimAll}>
-          <Node x={BOX.x} y={BOX.y} w={220} h={120} title="" stroke={colors.TEXT} />
-          <text x={BOX.x} y={BOX.y - 36} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily="ui-monospace, monospace">
+          <Node x={BOX.x} y={BOX.y} w={220} h={140} title="" stroke={colors.TEXT} />
+          <text x={BOX.x} y={BOX.y - 44} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
             the one box
           </text>
-          <text x={BOX.x} y={BOX.y - 8} textAnchor="middle" fill={colors.ACCENT} fontSize={12.5}>
+          <text x={BOX.x} y={BOX.y - 14} textAnchor="middle" fill={colors.ACCENT} fontSize={14}>
             Web Server
           </text>
           <g opacity={1 - rdsU}>
-            <text x={BOX.x} y={BOX.y + 22} textAnchor="middle" fill={colors.POSITIVE} fontSize={12.5}>
+            <text x={BOX.x} y={BOX.y + 16} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
               MySQL
             </text>
           </g>
+          {/* load gauge: fills as peak traffic arrives */}
+          <rect x={BOX.x - 80} y={BOX.y + 40} width={160} height={8} rx={4} fill={colors.GRID} />
+          <rect x={BOX.x - 80} y={BOX.y + 40} width={160 * strainU} height={8} rx={4} fill={colors.WARM} />
+        </g>
+        {/* timeout tag once the box starts failing */}
+        <g opacity={clamp01((strainU - 0.5) * 4) * single * dimAll}>
+          <text x={BOX.x} y={BOX.y - 88} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="ui-monospace, monospace">
+            503 · timeout
+          </text>
         </g>
 
         {/* ---- assets flying to S3 ---- */}
@@ -258,8 +284,8 @@ export function Render({ s }: { s: SceneState }) {
             const y = lerp(BOX.y - 20, S3.y, u) - Math.sin(u * Math.PI) * 40;
             return (
               <g key={a}>
-                <rect x={x - 38} y={y - 12} width={76} height={24} rx={6} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.1} />
-                <text x={x} y={y + 4} textAnchor="middle" fill={colors.WARM} fontSize={9} fontFamily="ui-monospace, monospace">
+                <rect x={x - 42} y={y - 12} width={84} height={24} rx={6} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.1} />
+                <text x={x} y={y + 4} textAnchor="middle" fill={colors.WARM} fontSize={11} fontFamily="ui-monospace, monospace">
                   {a}
                 </text>
               </g>
@@ -267,7 +293,7 @@ export function Render({ s }: { s: SceneState }) {
           })}
         </g>
         <g opacity={clamp01(flyU * 3) * dimAll}>
-          <Node x={S3.x} y={S3.y} w={170} title="Object Store" sub="S3 · static content" stroke={colors.WARM} />
+          <Node x={S3.x} y={S3.y} w={190} h={60} title="Object Store" sub="S3 · static content" stroke={colors.WARM} />
         </g>
 
         {/* ---- RDS ---- */}
@@ -276,11 +302,11 @@ export function Render({ s }: { s: SceneState }) {
           const y = lerp(BOX.y + 22, RDS.y, rdsU);
           return (
             <g opacity={dimAll}>
-              <Node x={x} y={y} w={170} h={60} title="MySQL · RDS" sub="multi availability zone" stroke={colors.POSITIVE} />
+              <Node x={x} y={y} w={190} h={64} title="MySQL · RDS" sub="multi availability zone" stroke={colors.POSITIVE} />
               {msU > 0 && (
                 <g opacity={msU}>
-                  <Node x={x} y={y + 84} w={170} h={48} title="Failover replica" sub="master-slave" stroke={colors.GRID} />
-                  <line x1={x} y1={y + 30} x2={x} y2={y + 60} stroke={colors.GRID} strokeWidth={1.4} />
+                  <line x1={x} y1={y + 32} x2={x} y2={y + 110} stroke={colors.GRID} strokeWidth={1.4} />
+                  <Node x={x} y={y + 136} w={190} h={52} title="Failover replica" sub="master-slave" stroke={colors.GRID} />
                 </g>
               )}
             </g>
@@ -289,16 +315,16 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- the load balancer + fleet ---- */}
         <g opacity={lbU * dimAll}>
-          <Node x={LB.x} y={LB.y} w={140} h={70} title="Load Balancer" sub="ELB · SSL ends here" stroke={colors.ACCENT} />
+          <Node x={LB.x} y={LB.y} w={150} h={70} title="Load Balancer" sub="ELB · SSL ends here" stroke={colors.ACCENT} />
         </g>
         {FLEET.map((f, i) => {
           const u = clamp01(fleetU * 2 - i * 0.4);
           if (u <= 0) return null;
           return (
             <g key={i} opacity={u * dimAll}>
-              <Node x={f.x} y={f.y} w={190} h={64} title={splitU > 0.5 ? 'Web + App Server' : 'Web Server'} sub={`${f.az}${splitU > 0.5 ? ' · reverse proxy → api' : ''}`} stroke={colors.TEXT} />
-              <line x1={LB.x + 70} y1={LB.y} x2={f.x - 95} y2={f.y} stroke={colors.GRID} strokeWidth={1.2} opacity={0.7} />
-              {rdsU > 0.9 && <line x1={f.x + 95} y1={f.y} x2={RDS.x - 85} y2={RDS.y} stroke={colors.GRID} strokeWidth={1} opacity={0.5} />}
+              <Node x={f.x} y={f.y} w={200} h={64} title={splitU > 0.5 ? 'Web + App Server' : 'Web Server'} sub={`${f.az}${splitU > 0.5 ? ' · reverse proxy → api' : ''}`} stroke={colors.TEXT} />
+              <line x1={LB.x + 75} y1={LB.y} x2={f.x - 100} y2={f.y} stroke={colors.GRID} strokeWidth={1.2} opacity={0.7} />
+              {rdsU > 0.9 && <line x1={f.x + 100} y1={f.y} x2={RDS.x - 95} y2={RDS.y} stroke={colors.GRID} strokeWidth={1} opacity={0.5} />}
             </g>
           );
         })}
@@ -309,20 +335,24 @@ export function Render({ s }: { s: SceneState }) {
           if (u <= 0 || u >= 1) return null;
           const viaCdn = r.cdn && cdnU > 0.5;
           const target = viaCdn ? CDN : FLEET[r.lane];
-          const from = { x: 90, y: viaCdn ? 140 : 340 };
+          const from = { x: 90, y: viaCdn ? CDN.y : LB.y };
           const mid = viaCdn ? CDN : LB;
+          const edgeX = mid.x - 75;
           const p = u < 0.5
-            ? { x: lerp(from.x, mid.x - 70, u * 2), y: lerp(from.y, mid.y, u * 2) }
+            ? { x: lerp(from.x, edgeX, u * 2), y: lerp(from.y, mid.y, u * 2) }
             : viaCdn
-              ? { x: mid.x - 70, y: mid.y }
-              : { x: lerp(mid.x + 70, target.x - 95, u * 2 - 1), y: lerp(mid.y, target.y, u * 2 - 1) };
+              ? { x: edgeX, y: mid.y }
+              : { x: lerp(mid.x + 75, target.x - 100, u * 2 - 1), y: lerp(mid.y, target.y, u * 2 - 1) };
           return <circle key={i} cx={p.x} cy={p.y} r={4.5} fill={viaCdn ? colors.WARM : colors.ACCENT} opacity={0.8} />;
         })}
+        <text x={90} y={430} textAnchor="middle" fill={colors.MUTED} fontSize={12} opacity={trafU > 0 ? 1 : 0}>
+          users
+        </text>
 
         {/* ---- CDN ---- */}
         <g opacity={cdnU * dimAll}>
-          <Node x={CDN.x} y={CDN.y} w={150} h={60} title="CDN" sub="CloudFront · edges" stroke={colors.WARM} />
-          <line x1={CDN.x + 75} y1={CDN.y} x2={S3.x - 85} y2={S3.y - 8} stroke={colors.WARM} strokeWidth={1.2} strokeDasharray="6 5" opacity={0.7} />
+          <Node x={CDN.x} y={CDN.y} w={170} h={60} title="CDN" sub="CloudFront · edges" stroke={colors.WARM} />
+          <line x1={CDN.x + 85} y1={CDN.y} x2={S3.x - 95} y2={S3.y} stroke={colors.WARM} strokeWidth={1.2} strokeDasharray="6 5" opacity={0.7} />
         </g>
 
         {/* ---- closing panel ---- */}

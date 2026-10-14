@@ -56,10 +56,13 @@ const GATES = [
   { key: 'limitation.auth_required', label: 'auth lock', val: 'open' },
 ];
 
-const CAM_DOC: CameraState = { x: 330, y: 300, k: 1.28 };
+// the document frame also keeps the relay node and its Accept header on
+// screen (x ≈ 1090), so the request and the document read as one picture
+const CAM_DOC: CameraState = { x: 560, y: 300, k: 1.15 };
 // wide enough that the document (x ≈ 96) AND the badge/gate column (→ ≈ 1178)
-// are both on screen — the flights read better when takeoff and landing show
-const CAM_RIGHT: CameraState = { x: 726, y: 300, k: 1.05 };
+// are both on screen — the flights read better when takeoff and landing show.
+// Centred on x ≈ 637 so the left-most JSON key stays inside the canvas.
+const CAM_RIGHT: CameraState = { x: 637, y: 300, k: 1.0 };
 
 interface Scene {
   tl: Timeline;
@@ -248,7 +251,7 @@ export function Render({ s }: { s: SceneState }) {
           {GATES.map((gate, i) => {
             const u = clamp01(gatesU * GATES.length - i);
             if (u <= 0) return null;
-            const y = 430 + i * 40;
+            const y = 400 + i * 40;
             return (
               <g key={gate.key} opacity={u}>
                 <rect x={848} y={y - 18} width={330} height={32} rx={8} fill={colors.PANEL} stroke={colors.GRID} />

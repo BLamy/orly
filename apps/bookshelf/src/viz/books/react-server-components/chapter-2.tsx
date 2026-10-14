@@ -69,6 +69,21 @@ const tokX = (row: FlightRow, token: string): number =>
   TAPE.x + PAD + row.full.indexOf(token) * CW;
 const tokW = (token: string): number => token.length * CW;
 
+/** split a row into colored runs: the id, plain text, and reference tokens */
+const rowRuns = (r: FlightRow) => {
+  const runs: Array<{ s: number; e: number; ref: boolean }> = [{ s: 0, e: 2, ref: false }];
+  let at = 2;
+  for (const tok of r.refs) {
+    const s = r.full.indexOf(tok);
+    if (s < 0) continue;
+    if (s > at) runs.push({ s: at, e: s, ref: false });
+    runs.push({ s, e: s + tok.length, ref: true });
+    at = s + tok.length;
+  }
+  if (at < r.full.length) runs.push({ s: at, e: r.full.length, ref: false });
+  return runs;
+};
+
 // where each reference points: token -> target row index
 const REF_TARGETS: Array<{ row: number; token: string; target: number }> = [
   { row: 1, token: '"$L2"', target: 0 },
@@ -111,8 +126,10 @@ const treeXY = (n: { fx: number; fy: number }) => ({
 
 // camera marks
 const CAM_TAPE: CameraState = { x: 560, y: 300, k: 1.14 };
-const CAM_ROW0: CameraState = { x: TAPE.x + 330, y: rowY(1) - 10, k: 2.0 };
-const CAM_TUPLE: CameraState = { x: TAPE.x + 330, y: rowY(1) - 6, k: 1.85 };
+// row zero runs ~690px wide; at k=1.6 the view is 800px wide, centred on the
+// tape, so the whole row, its newline and the tape edges stay in frame
+const CAM_ROW0: CameraState = { x: TAPE.x + TAPE.w / 2, y: rowY(1) - 10, k: 1.6 };
+const CAM_TUPLE: CameraState = { x: TAPE.x + TAPE.w / 2, y: rowY(1) - 6, k: 1.6 };
 const CAM_GRAPH: CameraState = { x: 700, y: 330, k: 1.02 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
@@ -308,7 +325,6 @@ export function Render({ s }: { s: SceneState }) {
             if (u <= 0) return null;
             const y = rowY(i);
             const chars = Math.round(r.full.length * clamp01(u * 1.15));
-            const shown = r.full.slice(0, chars);
             const isImport = i === 0;
             const spot = isImport ? impU : 0;
             const anatDim = anatU > 0 && i !== 1 ? 1 - 0.8 * anatU : 1;
@@ -326,26 +342,24 @@ export function Render({ s }: { s: SceneState }) {
                   strokeWidth={1 + spot}
                   opacity={0.85}
                 />
-                {/* row id colored */}
-                <text x={TAPE.x + PAD} y={y + 5} fill={colors.WARM} fontSize={FS} fontFamily={MONO}>
-                  {shown.slice(0, Math.min(chars, 2))}
+                {/* each run is drawn once: row id, plain text, reference tokens */}
+                <text x={TAPE.x + PAD} y={y + 5} fontSize={FS} fontFamily={MONO}>
+                  {rowRuns(r).map(
+                    (run) =>
+                      run.s < chars && (
+                        <tspan
+                          key={run.s}
+                          fill={run.s < 2 ? colors.WARM : run.ref && u >= 1 ? colors.ACCENT : colors.TEXT}
+                          fontWeight={run.ref && u >= 1 ? 700 : 400}
+                        >
+                          {r.full.slice(run.s, Math.min(run.e, chars))}
+                        </tspan>
+                      ),
+                  )}
                 </text>
-                {/* rest of the row */}
-                {chars > 2 && (
-                  <text x={TAPE.x + PAD + 2 * CW} y={y + 5} fill={colors.TEXT} fontSize={FS} fontFamily={MONO}>
-                    {shown.slice(2)}
-                  </text>
-                )}
-                {/* reference tokens re-inked in accent */}
-                {u >= 1 &&
-                  r.refs.map((tok) => (
-                    <text key={tok} x={tokX(r, tok)} y={y + 5} fill={colors.ACCENT} fontSize={FS} fontFamily={MONO} fontWeight={700}>
-                      {tok}
-                    </text>
-                  ))}
                 {/* the newline glyph at the end of a finished row */}
                 {u >= 1 && (
-                  <text x={TAPE.x + PAD + r.full.length * CW + 5} y={y + 5} fill={colors.MUTED} fontSize={FS - 1} fontFamily={MONO} opacity={0.7}>
+                  <text x={TAPE.x + PAD + r.full.length * CW + 5} y={y + 5} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={0.7}>
                     ⏎
                   </text>
                 )}
@@ -367,32 +381,36 @@ export function Render({ s }: { s: SceneState }) {
           {anatU > 0.02 &&
             (() => {
               const y = rowY(1);
+              // labels sit in the gaps between rows: above row one, or below it
               const items = [
-                { x: TAPE.x + PAD + 0.5 * CW, t: 'row id (hex)', c: colors.WARM, dy: -26 },
-                { x: TAPE.x + PAD + 12 * CW, t: 'body — one line of text', c: colors.TEXT, dy: 26 },
-                { x: TAPE.x + PAD + ROWS[1].full.length * CW + 8, t: 'newline ends the row', c: colors.MUTED, dy: -26 },
+                { x: TAPE.x + PAD + 0.5 * CW, t: 'row id (hex)', c: colors.WARM, anchor: 'start', above: true },
+                { x: TAPE.x + PAD + 22 * CW, t: 'body — one line of text', c: colors.TEXT, anchor: 'start', above: false },
+                { x: TAPE.x + PAD + ROWS[1].full.length * CW, t: 'newline ends the row', c: colors.MUTED, anchor: 'end', above: true },
               ];
               return (
                 <g opacity={anatU}>
-                  {items.map((it) => (
-                    <g key={it.t}>
-                      <line x1={it.x} y1={y + (it.dy < 0 ? -14 : 8)} x2={it.x} y2={y + it.dy - (it.dy < 0 ? -4 : 8)} stroke={it.c} strokeWidth={1} opacity={0.7} />
-                      <text x={it.x} y={y + it.dy} textAnchor={it.dy < 0 ? 'start' : 'middle'} fill={it.c} fontSize={8.5}>
-                        {it.t}
-                      </text>
-                    </g>
-                  ))}
+                  {items.map((it) => {
+                    const ly = it.above ? y - 26 : y + 32;
+                    return (
+                      <g key={it.t}>
+                        <line x1={it.x} y1={it.above ? ly + 4 : ly - 12} x2={it.x} y2={it.above ? y - 14 : y + 18} stroke={it.c} strokeWidth={1} opacity={0.7} />
+                        <text x={it.x} y={ly} textAnchor={it.anchor as 'start' | 'end'} fill={it.c} fontSize={12}>
+                          {it.t}
+                        </text>
+                      </g>
+                    );
+                  })}
                   {/* the tag callout points at the I on the row above */}
                   <g>
-                    <line x1={TAPE.x + PAD + 2.5 * CW} y1={rowY(0) + 10} x2={TAPE.x + PAD + 8 * CW} y2={rowY(0) + 22} stroke={colors.SECONDARY} strokeWidth={1} opacity={0.7} />
-                    <text x={TAPE.x + PAD + 9 * CW} y={rowY(0) + 26} fill={colors.SECONDARY} fontSize={8.5}>
+                    <line x1={TAPE.x + PAD + 2.5 * CW} y1={rowY(0) + 18} x2={340} y2={rowY(0) + 28} stroke={colors.SECONDARY} strokeWidth={1} opacity={0.7} />
+                    <text x={342} y={rowY(0) + 32} fill={colors.SECONDARY} fontSize={12}>
                       optional tag — this one is I, an import
                     </text>
                   </g>
-                  {/* serializeRowHeader chip */}
-                  <g transform={`translate(${TAPE.x + 330},${y + 44})`}>
-                    <rect x={-128} y={-11} width={256} height={22} rx={6} fill={colors.BG} stroke={colors.GRID} />
-                    <text x={0} y={4} textAnchor="middle" fill={colors.MUTED} fontSize={8.5} fontFamily={MONO}>
+                  {/* serializeRowHeader chip, above the tape */}
+                  <g transform={`translate(${TAPE.x + 354},${TAPE.y - 22})`}>
+                    <rect x={-190} y={-12} width={380} height={24} rx={6} fill={colors.BG} stroke={colors.GRID} />
+                    <text x={0} y={4} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                       {"serializeRowHeader: id.toString(16) + ':' + tag"}
                     </text>
                   </g>
@@ -410,11 +428,11 @@ export function Render({ s }: { s: SceneState }) {
                     const x = tokX(R1, t.token);
                     const w = t.token === '{"children"' ? 24 * CW : tokW(t.token);
                     const flip = i % 2 === 0 ? -1 : 1;
-                    const ly = y + (flip < 0 ? -24 : 30);
+                    const ly = y + (flip < 0 ? -22 : 32);
                     return (
                       <g key={t.label}>
                         <rect x={x - 2} y={y - 13} width={w + 4} height={26} rx={4} fill="none" stroke={t.color} strokeWidth={1.2} opacity={0.85} />
-                        <text x={x + w / 2} y={ly} textAnchor="middle" fill={t.color} fontSize={9} fontWeight={650}>
+                        <text x={x + w / 2} y={ly} textAnchor="middle" fill={t.color} fontSize={12} fontWeight={650}>
                           {t.label}
                         </text>
                       </g>
@@ -453,7 +471,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* mini tree standing up on the right */}
           {treeU > 0.02 && (
             <g>
-              <text x={TREE.x + 110} y={TREE.y - 34} textAnchor="middle" fill={colors.MUTED} fontSize={12} opacity={clamp01(treeU * 2)}>
+              <text x={TREE.x + 110} y={TREE.y - 34} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={clamp01(treeU * 2)}>
                 what the client sees
               </text>
               {TREE_NODES.map((n, i) => {
@@ -468,28 +486,28 @@ export function Render({ s }: { s: SceneState }) {
                     {parent && (
                       (() => {
                         const p = treeXY(parent);
-                        return <line x1={p.x} y1={p.y + 13} x2={x} y2={y - 13} stroke={colors.GRID} strokeWidth={1.2} />;
+                        return <line x1={p.x} y1={p.y + 15} x2={x} y2={y - 15} stroke={colors.GRID} strokeWidth={1.2} />;
                       })()
                     )}
                     <rect
-                      x={x - 34}
-                      y={y - 13}
-                      width={68}
-                      height={26}
+                      x={x - 40}
+                      y={y - 15}
+                      width={80}
+                      height={30}
                       rx={7}
                       fill={holeFilled ? colors.PANEL : 'none'}
                       stroke={isCounter ? colors.ACCENT : colors.SECONDARY}
                       strokeWidth={1.3}
                       strokeDasharray={holeFilled ? undefined : '4 4'}
                     />
-                    <text x={x} y={y + 4} textAnchor="middle" fill={isCounter ? colors.ACCENT : colors.TEXT} fontSize={10.5} fontFamily={MONO}>
+                    <text x={x} y={y + 5} textAnchor="middle" fill={isCounter ? colors.ACCENT : colors.TEXT} fontSize={14} fontFamily={MONO}>
                       {n.name}
                     </text>
                     {/* the promise-fed prop pops when row 5 lands */}
                     {isCounter && lateU > 0.4 && (
                       <g opacity={clamp01((lateU - 0.4) / 0.6)}>
-                        <rect x={x - 22} y={y + 18} width={44} height={18} rx={5} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.1} />
-                        <text x={x} y={y + 31} textAnchor="middle" fill={colors.POSITIVE} fontSize={9.5} fontFamily={MONO}>
+                        <rect x={x - 26} y={y + 20} width={52} height={20} rx={5} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.1} />
+                        <text x={x} y={y + 34} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
                           n = 42
                         </text>
                       </g>
@@ -518,7 +536,7 @@ export function Render({ s }: { s: SceneState }) {
                     return (
                       <g key={p.label}>
                         <rect x={x - 2} y={y - 13} width={w + 4} height={26} rx={4} fill="none" stroke={p.color} strokeWidth={1.2} opacity={0.9} />
-                        <text x={x + w / 2} y={y - 22} textAnchor="middle" fill={p.color} fontSize={9.5} fontWeight={650}>
+                        <text x={x + w / 2} y={y + 30} textAnchor="middle" fill={p.color} fontSize={12} fontWeight={650}>
                           {p.label}
                         </text>
                       </g>
@@ -531,17 +549,23 @@ export function Render({ s }: { s: SceneState }) {
           {/* tag gallery */}
           {galU > 0.02 && (
             <g opacity={galU}>
+              {/* recap of the row-prefix table: the letter after the colon */}
+              <text x={170} y={484} fill={colors.MUTED} fontSize={14}>
+                row tags — the letter after the colon (model rows have none)
+              </text>
               {TAGS.map((t, i) => {
                 const u = win(galU, TAGS.length, i, 1.8);
-                const y = 486 + 0; // single row of chips under the tape
-                const x = 170 + i * 200;
+                // two columns, so each description has room to run
+                const col = i < 3 ? 0 : 1;
+                const y = 516 + (i % 3) * 42;
+                const x = col === 0 ? 194 : 600;
                 return (
                   <g key={t.t} opacity={u} transform={`translate(${x},${y + 8 * (1 - u)})`}>
-                    <rect x={-24} y={-16} width={48} height={32} rx={8} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.3} />
+                    <rect x={-28} y={-16} width={56} height={32} rx={8} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.3} />
                     <text x={0} y={6} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily={MONO} fontWeight={700}>
                       {t.t}
                     </text>
-                    <text x={32} y={5} fill={colors.MUTED} fontSize={10.5}>
+                    <text x={40} y={5} fill={colors.MUTED} fontSize={14}>
                       {t.d}
                     </text>
                   </g>
@@ -562,7 +586,7 @@ export function Render({ s }: { s: SceneState }) {
                 strokeWidth={1.6}
                 opacity={0.8}
               />
-              <text x={TAPE.x + TAPE.w - 8} y={rowY(0) - 28 + playU * (rowY(5) - rowY(0) + 30)} textAnchor="end" fill={colors.POSITIVE} fontSize={10}>
+              <text x={TAPE.x + TAPE.w - 8} y={rowY(0) - 28 + playU * (rowY(5) - rowY(0) + 30)} textAnchor="end" fill={colors.POSITIVE} fontSize={12}>
                 client reads here
               </text>
             </g>
@@ -571,21 +595,22 @@ export function Render({ s }: { s: SceneState }) {
           {/* dedup: two mentions, one row */}
           {dedupU > 0.02 &&
             (() => {
-              const target = { x: TAPE.x + 30, y: rowY(4) };
+              // the two mentions sit in the empty space right of rows two and three
+              const target = { x: TAPE.x + 150, y: rowY(4) - 6 };
               const chips = [
-                { x: TAPE.x + 520, y: rowY(1) - 34 },
-                { x: TAPE.x + 620, y: rowY(2) - 30 },
+                { x: TAPE.x + 440, y: rowY(2) },
+                { x: TAPE.x + 580, y: rowY(3) },
               ];
               return (
                 <g opacity={dedupU}>
                   {chips.map((c, i) => (
                     <g key={i}>
-                      <rect x={c.x - 22} y={c.y - 12} width={44} height={22} rx={6} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.2} />
-                      <text x={c.x} y={c.y + 4} textAnchor="middle" fill={colors.WARM} fontSize={10.5} fontFamily={MONO}>
+                      <rect x={c.x - 24} y={c.y - 12} width={48} height={24} rx={6} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.2} />
+                      <text x={c.x} y={c.y + 5} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={MONO}>
                         "$4"
                       </text>
                       <path
-                        d={`M ${c.x - 22} ${c.y} C ${c.x - 120} ${c.y + 20}, ${target.x + 120} ${target.y - 30}, ${target.x + 30} ${target.y - 14}`}
+                        d={`M ${c.x - 24} ${c.y} C ${c.x - 90} ${c.y + 30}, ${target.x + 170} ${target.y - 40}, ${target.x + 16} ${target.y}`}
                         fill="none"
                         stroke={colors.WARM}
                         strokeWidth={1.1}
@@ -594,7 +619,7 @@ export function Render({ s }: { s: SceneState }) {
                       />
                     </g>
                   ))}
-                  <text x={target.x + 200} y={target.y + 26} fill={colors.MUTED} fontSize={10}>
+                  <text x={target.x + 120} y={target.y + 34} fill={colors.MUTED} fontSize={14}>
                     writtenObjects — written once, referenced forever
                   </text>
                 </g>

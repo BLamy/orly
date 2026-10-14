@@ -22,14 +22,14 @@ const clamp01 = (u: number) => (u < 0 ? 0 : u > 1 ? 1 : u);
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 /* ---------------------------------------------------------------- layout */
-const LEDGER = { x: 110, y: 130, w: 360, rowH: 34 };
-const GATE = { x: 620, y: 210, w: 300, h: 96 };
-const CLOUD = { x: 1060, y: 180 };
-const JSON_CARD = { x: 560, y: 360, w: 560, h: 210 };
+const LEDGER = { x: 150, y: 130, w: 360, rowH: 34 };
+const GATE = { x: 620, y: 240, w: 300, h: 96 };
+const CLOUD = { x: 1100, y: 180 };
+const JSON_CARD = { x: 560, y: 372, w: 560, h: 210 };
 
-const CAM_LEDGER: CameraState = { x: 340, y: 300, k: 1.28 };
-const CAM_GATE: CameraState = { x: 690, y: 280, k: 1.22 };
-const CAM_JSON: CameraState = { x: 780, y: 400, k: 1.16 };
+const CAM_LEDGER: CameraState = { x: 330, y: 300, k: 1.28 };
+const CAM_GATE: CameraState = { x: 600, y: 260, k: 1.16 };
+const CAM_JSON: CameraState = { x: 640, y: 380, k: 1.12 };
 const CAM_WIDE: CameraState = { x: 640, y: 340, k: 0.98 };
 
 /* ------------------------------------------------------------------ data */
@@ -65,6 +65,8 @@ export function buildScene() {
     text: 'Here is a quiet failure mode: the test passes, you grab a recording, and it turns out to be last week’s. Stale evidence is worse than none, because it convinces you.',
   });
   tl.tween(cam, CAM_LEDGER, { at: t - 5.4, dur: 1.4, ease: ease.move });
+  // the old recordings are already on the ledger while the failure mode is described
+  tl.tween(ledgerU, 1, { at: t - 5.0, dur: 1.4, ease: ease.enter });
   t = tl.hold(t, 0.5);
 
   /* — beat 2 · snapshot before — */
@@ -73,7 +75,6 @@ export function buildScene() {
     dur: 5.8,
     text: 'So before anything runs, the script lists every recording already on this machine and remembers their identifiers. This is the before set — the world as it was.',
   });
-  tl.tween(ledgerU, 1, { at: t - 5.2, dur: 1.4, ease: ease.enter });
   tl.tween(snapU, 1, { at: t - 2.6, dur: 1.0, ease: ease.draw });
   t = tl.hold(t, 0.5);
 
@@ -175,7 +176,7 @@ function Ledger({
   const { x, y, w, rowH } = LEDGER;
   const total = OLD_ROWS.length + NEW_ROWS.length;
   return (
-    <g transform={`translate(${x}, ${y})`} opacity={1 - 0.8 * clamp01(dim)}>
+    <g transform={`translate(${x}, ${y})`} opacity={1 - 0.92 * clamp01(dim)}>
       <text y={-32} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
         replayio list --json
       </text>
@@ -188,7 +189,7 @@ function Ledger({
             stroke={colors.MUTED}
             strokeWidth={1.6}
           />
-          <text x={-30} y={(OLD_ROWS.length * rowH) / 2} textAnchor="end" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+          <text x={-30} y={(OLD_ROWS.length * rowH) / 2} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
             before
           </text>
         </g>
@@ -204,7 +205,7 @@ function Ledger({
               {id}
             </text>
             {dimmed > 0.5 && (
-              <text x={w - 12} y={17} textAnchor="end" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+              <text x={w - 12} y={17} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 in before set
               </text>
             )}
@@ -218,7 +219,8 @@ function Ledger({
         const lit = clamp01(diff * 2 - 0.6 - i * 0.2);
         // upload travel: row slides toward the cloud as its turn comes
         const tu = ease.move(clamp01(upload - i));
-        const tx = tu * (CLOUD.x - 130 - (LEDGER.x + w));
+        // stop short of the service node so the upload label fits between them
+        const tx = tu * (CLOUD.x - 220 - (LEDGER.x + w));
         const ty = tu * (CLOUD.y + (i - 0.5) * 26 - (LEDGER.y + idx * rowH));
         const col = lit > 0.5 ? colors.POSITIVE : colors.TEXT;
         return (
@@ -235,12 +237,12 @@ function Ledger({
             <text x={12} y={17} fill={col} fontSize={12} fontFamily={MONO}>
               {r.id}
             </text>
-            <text x={w - 12} y={17} textAnchor="end" fill={lit > 0.5 ? colors.POSITIVE : colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+            <text x={w - 12} y={17} textAnchor="end" fill={lit > 0.5 ? colors.POSITIVE : colors.MUTED} fontSize={12} fontFamily={MONO}>
               {lit > 0.5 ? 'CREATED' : r.who.split(' ')[0]}
             </text>
             {tu > 0.05 && tu < 0.98 && (
-              <text x={w + 10} y={17} fill={colors.WARM} fontSize={10.5} fontFamily={MONO}>
-                replayio upload {r.id.slice(0, 8)}
+              <text x={w + 10} y={17} fill={colors.WARM} fontSize={12} fontFamily={MONO}>
+                upload {r.id.slice(0, 8)}
               </text>
             )}
           </g>
@@ -259,16 +261,16 @@ function GateCard({ u, red, pass, dim }: { u: number; red: number; pass: number;
   const { x, y, w, h } = GATE;
   const border = p > 0.5 ? colors.POSITIVE : r > 0.5 ? colors.NEGATIVE : colors.GRID;
   return (
-    <g transform={`translate(${x}, ${y + (1 - uu) * 10})`} opacity={uu * (1 - 0.8 * clamp01(dim))}>
+    <g transform={`translate(${x}, ${y + (1 - uu) * 10})`} opacity={uu * (1 - 0.92 * clamp01(dim))}>
       <rect width={w} height={h} rx={12} fill={colors.PANEL} stroke={border} strokeWidth={1.8} />
-      <text x={18} y={28} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+      <text x={18} y={28} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
         the gate
       </text>
       <text x={18} y={54} fill={colors.TEXT} fontSize={15} fontFamily={MONO} fontWeight={700}>
         created.length &gt;= 2
       </text>
       {r > 0.05 && p < 0.5 && (
-        <text x={18} y={78} fill={colors.NEGATIVE} fontSize={11.5} fontFamily={MONO} opacity={r}>
+        <text x={18} y={78} fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO} opacity={r}>
           else: throw "Expected at least 2 new…"
         </text>
       )}
@@ -297,7 +299,7 @@ function LatestJson({ u, urls, dim }: { u: number; urls: number; dim: number }) 
     ['}', 0],
   ];
   return (
-    <g transform={`translate(${x}, ${y + (1 - uu) * 12})`} opacity={uu * (1 - 0.3 * clamp01(dim))}>
+    <g transform={`translate(${x}, ${y + (1 - uu) * 12})`} opacity={uu * (1 - 0.92 * clamp01(dim))}>
       <text y={-10} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
         recordings/latest.json — the run's receipt
       </text>
@@ -312,7 +314,7 @@ function LatestJson({ u, urls, dim }: { u: number; urls: number; dim: number }) 
             x={18}
             y={26 + i * 20}
             fill={isUrl ? colors.ACCENT : colors.MUTED}
-            fontSize={11.5}
+            fontSize={12.5}
             fontFamily={MONO}
             opacity={lu}
             fontWeight={isUrl ? 700 : 400}
@@ -355,16 +357,18 @@ function renderFrame(s: SceneState) {
         dim={dim}
       />
       <GateCard u={s.get(scene.gateU)} red={s.get(scene.gateRed)} pass={s.get(scene.gatePass)} dim={dim} />
-      <ServiceNode
-        x={CLOUD.x}
-        y={CLOUD.y}
-        kind="external"
-        label="app.replay.io"
-        sublabel="replayio upload <id>"
-        u={clamp01(s.get(scene.uploadU) * 3)}
-        glow={clamp01(s.get(scene.uploadU) - 1.6)}
-        dim={0.6 * dim}
-      />
+      <g opacity={1 - 0.92 * dim}>
+        <ServiceNode
+          x={CLOUD.x}
+          y={CLOUD.y}
+          kind="external"
+          label="app.replay.io"
+          sublabel="replayio upload <id>"
+          u={clamp01(s.get(scene.uploadU) * 3)}
+          glow={clamp01(s.get(scene.uploadU) - 1.6)}
+          dim={0.6 * dim}
+        />
+      </g>
       <LatestJson u={s.get(scene.jsonU)} urls={s.get(scene.urlU)} dim={dim} />
       <ClosingCard u={s.get(scene.closeU)} />
     </>

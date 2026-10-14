@@ -39,7 +39,7 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 const TAPE = { x: 44, y: 128, w: 296, h: 332 } as const;
 const tapeRowY = (i: number): number => TAPE.y + 40 + i * 41;
-const CELL = { x0: 396, y: 142, w: 100, h: 82, dx: 116 } as const;
+const CELL = { x0: 384, y: 142, w: 108, h: 82, dx: 120 } as const;
 const cellX = (i: number): number => CELL.x0 + i * CELL.dx;
 const BROWSER = { x: 452, y: 306, w: 480, h: 296 } as const;
 const DL = { x: 1006, y: 306, w: 218 } as const;
@@ -63,9 +63,11 @@ const LEGEND = [
 ] as const;
 
 // camera marks
-const CAM_OPEN: CameraState = { x: 600, y: 340, k: 1.06 };
-const CAM_TABLE: CameraState = { x: 720, y: 240, k: 1.22 };
-const CAM_BROWSER: CameraState = { x: 692, y: 400, k: 1.24 };
+// Pushes are gentle on purpose: the tape (x 44), all seven cells (to x 1212)
+// and the browser's bottom edge (y 602) must stay inside the frame.
+const CAM_OPEN: CameraState = { x: 600, y: 360, k: 1.06 };
+const CAM_TABLE: CameraState = { x: 640, y: 365, k: 1.05 };
+const CAM_BROWSER: CameraState = { x: 628, y: 390, k: 1.06 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 // ---------------------------------------------------------------------------
@@ -262,7 +264,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* tape panel */}
         <g opacity={tapeU}>
           <rect x={TAPE.x} y={TAPE.y} width={TAPE.w} height={TAPE.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.3} />
-          <text x={TAPE.x + 14} y={TAPE.y + 22} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+          <text x={TAPE.x + 14} y={TAPE.y + 22} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
             the tape, arriving
           </text>
           {TAPE_ROWS.map((r, i) => {
@@ -271,7 +273,7 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={r.id} opacity={clamp01(u * 1.4)}>
                 <rect x={TAPE.x + 10} y={tapeRowY(i) - 14} width={TAPE.w - 20} height={30} rx={6} fill={colors.BG} stroke={i === 6 && errU > 0.5 ? colors.NEGATIVE : colors.GRID} opacity={0.9} />
-                <text x={TAPE.x + 20} y={tapeRowY(i) + 5} fill={i === 6 ? colors.NEGATIVE : colors.TEXT} fontSize={9.5} fontFamily={MONO}>
+                <text x={TAPE.x + 20} y={tapeRowY(i) + 5} fill={i === 6 ? colors.NEGATIVE : colors.TEXT} fontSize={11} fontFamily={MONO}>
                   {r.txt.slice(0, Math.round(r.txt.length * clamp01(u * 1.2)))}
                 </text>
               </g>
@@ -284,7 +286,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={cellX(0)} y={CELL.y - 22} fill={colors.MUTED} fontSize={12}>
             the chunk table — one promise-like cell per row id
           </text>
-          <text x={cellX(6) + CELL.w} y={CELL.y - 22} textAnchor="end" fill={colors.MUTED} fontSize={10} fontFamily={MONO}>
+          <text x={cellX(6) + CELL.w} y={CELL.y - 22} textAnchor="end" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
             ReactFlightClient.js
           </text>
           {cells.map((c, i) => {
@@ -307,24 +309,24 @@ export function Render({ s }: { s: SceneState }) {
                 <text x={x + CELL.w / 2} y={CELL.y + 34} textAnchor="middle" fill={c.stroke} fontSize={20} fontFamily={MONO} fontWeight={700}>
                   {i}
                 </text>
-                <text x={x + CELL.w / 2} y={CELL.y + 58} textAnchor="middle" fill={c.stroke} fontSize={8.5} fontFamily={MONO}>
+                <text x={x + CELL.w / 2} y={CELL.y + 58} textAnchor="middle" fill={c.stroke} fontSize={12}>
                   {c.label}
                 </text>
               </g>
             );
           })}
-          {/* legend */}
-          <g opacity={clamp01(tableU * 1.2) * 0.95}>
+          {/* legend — fades back while the recap threads run through it */}
+          <g opacity={clamp01(tableU * 1.2) * 0.95 * (1 - 0.7 * clamp01(linkU * 2))}>
             {LEGEND.map((l, i) => (
               <g key={l.t}>
                 <circle cx={402 + i * 168} cy={CELL.y + CELL.h + 26} r={4} fill={l.c} />
-                <text x={412 + i * 168} y={CELL.y + CELL.h + 30} fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>
+                <text x={412 + i * 168} y={CELL.y + CELL.h + 31} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
                   {l.t}
                 </text>
               </g>
             ))}
           </g>
-          <text x={cellX(0)} y={CELL.y + CELL.h + 50} fill={colors.MUTED} fontSize={10} fontFamily={MONO} opacity={tableU * 0.9}>
+          <text x={cellX(0)} y={CELL.y + CELL.h + 52} fill={colors.MUTED} fontSize={11} fontFamily={MONO} opacity={tableU * 0.9 * (1 - 0.7 * clamp01(linkU * 2))}>
             ReactPromise — "We subclass Promise.prototype so that we get other methods like .catch"
           </text>
         </g>
@@ -359,7 +361,7 @@ export function Render({ s }: { s: SceneState }) {
                   {!mounted ? (
                     <>
                       <circle cx={x + 95} cy={y + 27} r={9} fill="none" stroke={colors.MUTED} strokeWidth={2} strokeDasharray="10 32" transform={`rotate(${dlU * 540 + readU * 120} ${x + 95} ${y + 27})`} />
-                      <text x={x + 95} y={y + 70} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>
+                      <text x={x + 95} y={y + 70} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                         Suspense fallback
                       </text>
                     </>
@@ -386,10 +388,10 @@ export function Render({ s }: { s: SceneState }) {
                   <rect x={x} y={y} width={BROWSER.w - 68} height={64} rx={10} fill={on ? colors.BG : 'none'} stroke={on ? colors.SECONDARY : colors.GRID} strokeWidth={1.3} strokeDasharray={on ? undefined : '6 5'} />
                   {on && (
                     <g opacity={clamp01((rowsBU - 0.9) / 0.1)}>
-                      <text x={x + 20} y={y + 27} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+                      <text x={x + 20} y={y + 27} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                         section
                       </text>
-                      <text x={x + 20} y={y + 48} fill={colors.TEXT} fontSize={14}>
+                      <text x={x + 20} y={y + 48} fill={colors.TEXT} fontSize={15}>
                         Hello from server
                       </text>
                     </g>
@@ -401,12 +403,15 @@ export function Render({ s }: { s: SceneState }) {
           {/* error toast */}
           {errU > 0.5 && (
             <g opacity={clamp01((errU - 0.5) / 0.5)}>
-              <rect x={BROWSER.x + 260} y={BROWSER.y + 110} width={196} height={48} rx={9} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.4} />
-              <text x={BROWSER.x + 274} y={BROWSER.y + 130} fill={colors.NEGATIVE} fontSize={10.5} fontWeight={650}>
+              <rect x={BROWSER.x + 244} y={BROWSER.y + 110} width={200} height={64} rx={9} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.4} />
+              <text x={BROWSER.x + 258} y={BROWSER.y + 129} fill={colors.NEGATIVE} fontSize={12} fontWeight={650}>
                 error boundary caught it
               </text>
-              <text x={BROWSER.x + 274} y={BROWSER.y + 147} fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>
-                digest: "1f8a" — see server logs
+              <text x={BROWSER.x + 258} y={BROWSER.y + 147} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+                digest: "1f8a"
+              </text>
+              <text x={BROWSER.x + 258} y={BROWSER.y + 163} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+                see server logs
               </text>
             </g>
           )}
@@ -415,12 +420,12 @@ export function Render({ s }: { s: SceneState }) {
         {/* download bar */}
         {dlU > 0.02 && reqU < 0.95 && (
           <g opacity={clamp01(dlU * 3) * (1 - clamp01((reqU - 0.7) / 0.25))}>
-            <text x={DL.x} y={DL.y + 6} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+            <text x={DL.x} y={DL.y + 6} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               chunk-c3.js
             </text>
             <rect x={DL.x} y={DL.y + 14} width={DL.w} height={12} rx={6} fill={colors.BG} stroke={colors.GRID} />
             <rect x={DL.x + 2} y={DL.y + 16} width={(DL.w - 4) * dlU} height={8} rx={4} fill={colors.SECONDARY} opacity={0.9} />
-            <text x={DL.x} y={DL.y + 46} fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>
+            <text x={DL.x} y={DL.y + 46} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
               {dlU >= 1 ? 'loaded — requireModule on first read' : 'preloadModule — fetching early'}
             </text>
           </g>
@@ -451,9 +456,10 @@ export function Render({ s }: { s: SceneState }) {
             const y0 = tapeRowY(l.row);
             const x1 = cellX(l.cell) + CELL.w / 2;
             const y1 = CELL.y + CELL.h;
+            // row → dips below the table → rises into the cell's bottom edge → page
             return (
               <g key={i} opacity={u * 0.75}>
-                <path d={`M ${x0} ${y0} C ${x0 + 60} ${y0}, ${x1 - 80} ${CELL.y + 40}, ${x1 - CELL.w / 2} ${CELL.y + 40}`} fill="none" stroke={colors.WARM} strokeWidth={1.2} />
+                <path d={`M ${x0} ${y0} C ${x0 + 26} ${y0 + 50}, ${x1 - 40} ${y1 + 40}, ${x1} ${y1}`} fill="none" stroke={colors.WARM} strokeWidth={1.2} />
                 <path d={`M ${x1} ${y1} C ${x1} ${y1 + 40}, ${l.tx} ${l.ty - 40}, ${l.tx} ${l.ty}`} fill="none" stroke={colors.WARM} strokeWidth={1.2} />
               </g>
             );

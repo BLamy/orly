@@ -73,7 +73,7 @@ export function buildScene() {
   tl.tween(g4, 1, { at: t - 6.4, dur: 1.2, ease: ease.linear });
   tl.tween(winnerU, 1, { at: t - 5.0, dur: 1.0, ease: ease.pop });
   tl.tween(supersedeU, 1, { at: t - 4.6, dur: 1.2, ease: ease.move });
-  tl.tween(cam, { x: 750, y: LIST_Y + WINNER * ROW_H + 20, k: 1.28 }, { at: t - 4.6, dur: 1.4, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 380, k: 1.1 }, { at: t - 4.6, dur: 1.4, ease: ease.move });
   t = tl.hold(t, 0);
 
   t = tl.caption({ at: t, dur: 6.6, text: 'So this line wins. Before the hash mark is what the platform actually sees: a human owner, the database team.' });
@@ -83,7 +83,7 @@ export function buildScene() {
 
   t = tl.caption({ at: t, dur: 7.2, text: "After the hash mark is a comment the platform ignores completely — but it's exactly what one small automated workflow is watching for." });
   tl.tween(agentU, 1, { at: t - 6.2, dur: 1.6, ease: ease.move });
-  tl.tween(cam, { x: 850, y: LIST_Y + WINNER * ROW_H, k: 1.15 }, { at: t - 6.0, dur: 1.5, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 380, k: 1.1 }, { at: t - 6.0, dur: 1.5, ease: ease.move });
   t = tl.hold(t, 0);
 
   t = tl.caption({ at: t, dur: 6.8, text: 'One file, one winning pattern, two readers: the platform assigns the human owner, and the workflow reads the agent.' });
@@ -119,7 +119,7 @@ export function Render({ s }: { s: SceneState }) {
       {/* changed file card */}
       <g opacity={fileU * dim}>
         <rect x={140} y={92} width={1000} height={54} rx={14} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.8} />
-        <text x={166} y={112} fill={colors.MUTED} fontSize={10.5} fontFamily={mono}>changed file</text>
+        <text x={166} y={112} fill={colors.MUTED} fontSize={13} fontFamily={mono}>changed file</text>
         <text x={166} y={132} fill={colors.WARM} fontSize={14} fontFamily={mono}>{CHANGED_FILE}</text>
       </g>
 
@@ -140,10 +140,10 @@ export function Render({ s }: { s: SceneState }) {
             <rect x={LIST_X} y={y} width={ROW_W} height={ROW_H - 10} rx={10}
               fill={won > 0 ? colors.POSITIVE : colors.BG} fillOpacity={won > 0 ? 0.08 + 0.06 * won : 0}
               stroke={strokeColor} strokeOpacity={strokeOp} strokeWidth={won > 0 ? 2.2 : 1.4} />
-            <text x={LIST_X + 20} y={y + 28} fill={superseded > 0.4 ? colors.MUTED : colors.TEXT} fontSize={13} fontFamily={mono}>{row.pattern}</text>
-            <text x={LIST_X + 260} y={y + 28} fill={superseded > 0.4 ? colors.MUTED : colors.ACCENT} fontSize={12.5} fontFamily={mono}>{row.owner}</text>
-            {row.agents && <text x={LIST_X + 520} y={y + 28} fill={superseded > 0.4 ? colors.MUTED : colors.SECONDARY} fontSize={12.5} fontFamily={mono} opacity={0.5 + 0.5 * seen}># agents:{row.agents}</text>}
-            {seen > 0.3 && !row.match && <text x={LIST_X + ROW_W - 26} y={y + 28} textAnchor="end" fill={colors.NEGATIVE} fontSize={13} opacity={clamp01((seen - 0.3) * 3)}>✕</text>}
+            <text x={LIST_X + 20} y={y + 28} fill={superseded > 0.4 ? colors.MUTED : colors.TEXT} fontSize={14} fontFamily={mono}>{row.pattern}</text>
+            <text x={LIST_X + 260} y={y + 28} fill={superseded > 0.4 ? colors.MUTED : colors.ACCENT} fontSize={13} fontFamily={mono}>{row.owner}</text>
+            {row.agents && <text x={LIST_X + 520} y={y + 28} fill={superseded > 0.4 ? colors.MUTED : colors.SECONDARY} fontSize={13} fontFamily={mono} opacity={0.5 + 0.5 * seen}># agents:{row.agents}</text>}
+            {seen > 0.3 && !row.match && <text x={LIST_X + ROW_W - 26} y={y + 28} textAnchor="end" fill={colors.NEGATIVE} fontSize={14} opacity={clamp01((seen - 0.3) * 3)}>✕</text>}
             {won >= 1 && <text x={LIST_X + ROW_W - 26} y={y + 28} textAnchor="end" fill={colors.POSITIVE} fontSize={13} fontWeight={800} opacity={won}>← last match wins</text>}
           </g>;
         })}
@@ -154,21 +154,22 @@ export function Render({ s }: { s: SceneState }) {
         {(() => {
           const y = LIST_Y + WINNER * ROW_H + (ROW_H - 10) / 2;
           const hashX = LIST_X + 480;
+          const boxY = y + 116;
           return <>
-            <path d={`M ${hashX} ${y} L ${hashX} ${y + 70}`} stroke={colors.MUTED} strokeWidth={1.4} strokeDasharray="4 4" opacity={0.5} />
+            <path d={`M ${hashX} ${y} L ${hashX} ${y + 64}`} stroke={colors.MUTED} strokeWidth={1.4} strokeDasharray="4 4" opacity={0.5} />
             <g opacity={humanU}>
-              <path d={`M ${hashX - 40} ${y + 70} L ${LIST_X + 140} ${y + 130}`} fill="none" stroke={colors.ACCENT} strokeWidth={2}
+              <path d={`M ${hashX - 40} ${y + 64} L ${LIST_X + 140} ${boxY}`} fill="none" stroke={colors.ACCENT} strokeWidth={2}
                 strokeDasharray="200" strokeDashoffset={200 * (1 - humanU)} />
-              <rect x={LIST_X + 30} y={y + 130} width={230} height={56} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.8} />
-              <text x={LIST_X + 145} y={y + 154} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={mono}>GitHub sees</text>
-              <text x={LIST_X + 145} y={y + 174} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={mono}>@our-org/database</text>
+              <rect x={LIST_X + 30} y={boxY} width={230} height={56} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.8} />
+              <text x={LIST_X + 145} y={boxY + 24} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={mono}>GitHub sees</text>
+              <text x={LIST_X + 145} y={boxY + 44} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={mono}>@our-org/database</text>
             </g>
             <g opacity={agentU}>
-              <path d={`M ${hashX + 40} ${y + 70} L ${LIST_X + 780} ${y + 130}`} fill="none" stroke={colors.SECONDARY} strokeWidth={2}
+              <path d={`M ${hashX + 40} ${y + 64} L ${LIST_X + 780} ${boxY}`} fill="none" stroke={colors.SECONDARY} strokeWidth={2}
                 strokeDasharray="360" strokeDashoffset={360 * (1 - agentU)} />
-              <rect x={LIST_X + 660} y={y + 130} width={280} height={56} rx={14} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.8} />
-              <text x={LIST_X + 800} y={y + 154} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={mono}>the action reads</text>
-              <text x={LIST_X + 800} y={y + 174} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily={mono}>@claude/db-review</text>
+              <rect x={LIST_X + 660} y={boxY} width={280} height={56} rx={14} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.8} />
+              <text x={LIST_X + 800} y={boxY + 24} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={mono}>the action reads</text>
+              <text x={LIST_X + 800} y={boxY + 44} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily={mono}>@claude/db-review</text>
             </g>
           </>;
         })()}

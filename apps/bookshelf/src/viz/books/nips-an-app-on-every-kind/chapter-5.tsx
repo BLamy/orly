@@ -20,11 +20,14 @@ import { JsonDoc, layoutJson, shortHex } from '../../primitives';
 
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 
+// the minted kind — an example number, not yet checked against the NIP registry
+const NEW_KIND = 30777;
+
 const EVENT = {
   id: 'a9f81d2c…10da',
   pubkey: '8e0d3d3e…5e0ed7',
   created_at: 1700900000,
-  kind: 30402,
+  kind: NEW_KIND,
   tags: [['d', 'your-new-thing']],
   content: '…',
   sig: 'c1d7…',
@@ -41,7 +44,6 @@ const PROOFS = [
 
 // mini namespace strip for the mint beat
 const STRIP_KINDS = [1, 7, 9735, 30023, 30311, 31990];
-const NEW_KIND = 30402;
 
 const CAM_EVENT: CameraState = { x: 640, y: 300, k: 1.1 };
 const CAM_MINT: CameraState = { x: 640, y: 360, k: 1.0 };
@@ -144,17 +146,19 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the dim stays readable; the whole main scene fades out behind the closing card
+  const mainOp = (1 - 0.85 * dimU) * (1 - closeU);
   const focus = proofF >= 0 && proofF < PROOFS.length ? [PROOFS[proofF].key === 'relays' ? 'kind' : PROOFS[proofF].key] : undefined;
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
+      {mainOp > 0.02 && (
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* the event */}
-          <JsonDoc layout={EVENT_LAYOUT} reveal={eventU} focus={mintU > 0 ? ['kind'] : focus} focusU={mintU > 0 ? mintU : proofF >= 0 ? 1 : 0} />
+          <JsonDoc layout={EVENT_LAYOUT} reveal={eventU} focus={mintU > 0 ? ['kind'] : focus} focusU={mintU > 0 ? mintU : proofF >= 0 ? 1 : 0} dim={0.5} />
 
           {/* the four proofs */}
           {PROOFS.map((p, i) => {
@@ -166,9 +170,15 @@ export function Render({ s }: { s: SceneState }) {
                 <text x={p.x - 6} y={p.y - 5} fill={lit ? p.color : colors.MUTED} fontSize={13.5} fontWeight={600}>
                   {p.label}
                 </text>
-                <text x={p.x - 6} y={p.y + 14} fill={colors.MUTED} fontSize={11.5}>
+                <text x={p.x - 6} y={p.y + 14} fill={colors.MUTED} fontSize={12.5}>
                   {p.sub}
                 </text>
+                {/* beat 3: three are fixed for everyone, the kind is the open one */}
+                {stripU > 0 && (
+                  <text x={p.x + 224} y={p.y + 14} textAnchor="end" fill={p.key === 'kind' ? colors.SECONDARY : colors.MUTED} fontSize={12.5} fontWeight={600} opacity={stripU}>
+                    {p.key === 'kind' ? 'open' : 'fixed'}
+                  </text>
+                )}
               </g>
             );
           })}
@@ -193,7 +203,7 @@ export function Render({ s }: { s: SceneState }) {
                   <text x={300 + STRIP_KINDS.length * 116 + 48} y={525} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={700} fontFamily="monospace">
                     {NEW_KIND}
                   </text>
-                  <text x={300 + STRIP_KINDS.length * 116 + 48} y={560} textAnchor="middle" fill={colors.WARM} fontSize={11} opacity={mintU}>
+                  <text x={300 + STRIP_KINDS.length * 116 + 48} y={560} textAnchor="middle" fill={colors.WARM} fontSize={12} opacity={mintU}>
                     minted
                   </text>
                 </g>
@@ -212,7 +222,7 @@ export function Render({ s }: { s: SceneState }) {
                   <g key={w} opacity={u}>
                     <circle cx={x} cy={600} r={7} fill="none" stroke={colors.POSITIVE} strokeWidth={1.8} />
                     <path d={`M${x - 4} 600 l3 3 l6 -7`} fill="none" stroke={colors.POSITIVE} strokeWidth={2} strokeLinecap="round" />
-                    <text x={x + 16} y={605} fill={colors.POSITIVE} fontSize={13}>
+                    <text x={x + 16} y={605} fill={colors.POSITIVE} fontSize={14}>
                       {w}
                     </text>
                   </g>
@@ -222,6 +232,7 @@ export function Render({ s }: { s: SceneState }) {
           )}
         </Camera>
       </g>
+      )}
 
       {closeU > 0 && (
         <g opacity={closeU}>

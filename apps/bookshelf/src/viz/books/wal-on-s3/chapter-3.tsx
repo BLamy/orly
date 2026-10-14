@@ -34,7 +34,7 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 // ---------------------------------------------------------------- geometry
 const RAIL_N = 16;
 const RAIL_X0 = 96;
-const RAIL_W = 64;
+const RAIL_W = 56;
 const RAIL_GAP = 8;
 const RAIL_Y = 362;
 const railX = (i: number) => RAIL_X0 + i * (RAIL_W + RAIL_GAP);
@@ -45,10 +45,12 @@ const CURSOR_COMPACTION = 5;
 const CURSOR_HELD = 3;
 const CUTOFF_I = Math.min(CURSOR_COMPACTION, CURSOR_HELD);
 
-const CAM_RAIL: CameraState = { x: 620, y: 380, k: 1.1 };
-const CAM_PINS: CameraState = { x: 400, y: 356, k: 1.32 };
-const CAM_GARBAGE: CameraState = { x: 640, y: 420, k: 1.06 };
-const CAM_TAIL: CameraState = { x: 820, y: 380, k: 1.16 };
+// The full 16-tile rail is ~1016 wide, so every rail-level camera keeps both
+// ends on stage (tile 00 and tile 15 both visible), even the pin close-up.
+const CAM_RAIL: CameraState = { x: 600, y: 380, k: 1.1 };
+const CAM_PINS: CameraState = { x: 610, y: 356, k: 1.2 };
+const CAM_GARBAGE: CameraState = { x: 600, y: 420, k: 1.1 };
+const CAM_TAIL: CameraState = { x: 600, y: 380, k: 1.1 };
 
 interface Scene {
   tl: Timeline;
@@ -213,16 +215,19 @@ const scene = buildScene();
 
 // ------------------------------------------------------------------ render
 
-function Pin({ x, u, label, sub, color }: { x: number; u: number; label: string; sub: string; color: string }) {
+// `lift` stacks a label above the default row so two pins close together
+// on the rail do not print their labels on top of each other.
+function Pin({ x, u, label, sub, color, lift = 0 }: { x: number; u: number; label: string; sub: string; color: string; lift?: number }) {
   if (u <= 0.02) return null;
   const drop = lerp(-26, 0, clamp01(u));
+  const top = 196 - lift;
   return (
     <g opacity={clamp01(u)} transform={`translate(${x} ${drop})`}>
-      <line x1={0} y1={252} x2={0} y2={RAIL_Y} stroke={color} strokeWidth={1.8} />
+      <line x1={0} y1={lift > 0 ? top + 46 : 252} x2={0} y2={RAIL_Y} stroke={color} strokeWidth={1.8} />
       <circle cx={0} cy={250} r={7} fill={color} />
-      <rect x={-96} y={196} width={192} height={46} rx={10} fill={colors.PANEL} stroke={color} strokeWidth={1.3} />
-      <text x={0} y={216} textAnchor="middle" fill={color} fontFamily={MONO} fontSize={12}>{label}</text>
-      <text x={0} y={234} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={11}>{sub}</text>
+      <rect x={-96} y={top} width={192} height={46} rx={10} fill={colors.PANEL} stroke={color} strokeWidth={1.3} />
+      <text x={0} y={top + 20} textAnchor="middle" fill={color} fontFamily={MONO} fontSize={12}>{label}</text>
+      <text x={0} y={top + 38} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={12}>{sub}</text>
     </g>
   );
 }
@@ -355,6 +360,7 @@ export function Render({ s }: { s: SceneState }) {
             label="cursor/emergency.json"
             sub="held by a long read"
             color={colors.SECONDARY}
+            lift={58}
           />
           <GarbageFile
             u={s.get(scene.garbU)}
@@ -366,7 +372,7 @@ export function Render({ s }: { s: SceneState }) {
           <CrashMark u={s.get(scene.crashU)} />
 
           {manifestU > 0.05 && (
-            <text x={RAIL_X0} y={288} fill={colors.POSITIVE} fontFamily={MONO} fontSize={13} opacity={clamp01(manifestU)}>
+            <text x={RAIL_X0} y={604} fill={colors.POSITIVE} fontFamily={MONO} fontSize={13} opacity={clamp01(manifestU)}>
               manifest/MANIFEST no longer references the doomed range
             </text>
           )}

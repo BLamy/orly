@@ -99,7 +99,7 @@ const ENTRY_POINTS = ['Replay QA UI', 'REST', 'project chat', 'local Replay QA M
 
 const CAM_TRAIL: CameraState = { x: 640, y: 320, k: 1.08 };
 const CAM_CATALOG: CameraState = { x: 640, y: 340, k: 0.97 };
-const CAM_RUNS: CameraState = { x: 780, y: 342, k: 1.08 };
+const CAM_RUNS: CameraState = { x: 640, y: 342, k: 1.06 };
 const CAM_HISTORY: CameraState = { x: 640, y: 340, k: 1.0 };
 const CAM_ENTRY: CameraState = { x: 640, y: 315, k: 1.04 };
 
@@ -331,11 +331,11 @@ function MemoryRibbon({ reveal, discoveries, crystal, dim }: { reveal: number; d
         const u = clamp01(discoveries * 4.4 - i * 0.9) * (1 - c);
         if (u <= 0) return null;
         const point = points[item.index];
-        const w = item.label.length * 7 + 22;
+        const w = item.label.length * 7.4 + 22;
         return (
           <g key={item.label} transform={`translate(${point.x}, ${point.y + 30 + (1 - u) * 8})`} opacity={u}>
             <rect x={-w / 2} y={-13} width={w} height={26} rx={13} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.1} />
-            <text y={4} textAnchor="middle" fill={colors.TEXT} fontSize={10.5} fontFamily={MONO}>
+            <text y={4} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
               {item.label}
             </text>
           </g>
@@ -354,7 +354,7 @@ function NotCertified({ u }: { u: number }) {
       <text y={-5} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO} fontWeight={800} letterSpacing={1.1}>
         EXPLORATION DISCOVERS · IT DOES NOT CERTIFY
       </text>
-      <text y={18} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+      <text y={18} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
         origin recording ≠ repeatable journey-run proof
       </text>
     </g>
@@ -369,7 +369,7 @@ function JourneyCatalog({ catalog, versions, update, dim }: { catalog: number; v
       <text x={90} y={140} fill={colors.SECONDARY} fontSize={12.5} fontFamily={MONO} fontWeight={800} opacity={headU}>
         journey_versions
       </text>
-      <text x={628} y={140} textAnchor="end" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO} opacity={headU}>
+      <text x={628} y={140} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={headU}>
         immutable saved specifications
       </text>
       {JOURNEYS.map((journey, i) => {
@@ -382,7 +382,7 @@ function JourneyCatalog({ catalog, versions, update, dim }: { catalog: number; v
             <text x={18} y={28} fill={colors.TEXT} fontSize={14} fontWeight={750}>
               {journey.label}
             </text>
-            <text x={18} y={49} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+            <text x={18} y={49} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               {journey.id}
             </text>
             <g transform={`translate(188, 34) scale(${0.82 + 0.18 * vu})`} opacity={vu}>
@@ -399,7 +399,7 @@ function JourneyCatalog({ catalog, versions, update, dim }: { catalog: number; v
                 <text y={4} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontFamily={MONO} fontWeight={800}>
                   v2
                 </text>
-                <text x={45} y={4} fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>
+                <text x={45} y={4} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
                   appended · v1 retained
                 </text>
               </g>
@@ -426,9 +426,12 @@ function ScheduleLinks({ u, dim }: { u: number; dim: number }) {
   return (
     <g opacity={1 - 0.8 * dim}>
       <g transform="translate(714, 126)" opacity={clamp01(u * 2)}>
-        <rect x={-70} y={-13} width={140} height={26} rx={13} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.1} />
-        <text y={4} textAnchor="middle" fill={colors.WARM} fontSize={9.7} fontFamily={MONO}>
-          auto-schedule exact version
+        <rect x={-60} y={-20} width={120} height={40} rx={14} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.1} />
+        <text y={-2} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
+          auto-schedule
+        </text>
+        <text y={14} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
+          exact version
         </text>
       </g>
       {RUNS.map((run, i) => {
@@ -463,14 +466,14 @@ function TestRunCatalog({ u, dim }: { u: number; dim: number }) {
         return (
           <g key={run.id} transform={`translate(782, ${run.y + (1 - p) * 10}) scale(${0.96 + 0.04 * p})`} opacity={p}>
             <rect width={410} height={68} rx={11} fill={colors.PANEL} stroke={i === 3 ? colors.WARM : colors.POSITIVE} strokeWidth={1.3} />
-            <text x={15} y={24} fill={i === 3 ? colors.WARM : colors.POSITIVE} fontSize={11.2} fontFamily={MONO} fontWeight={750}>
+            <text x={15} y={25} fill={i === 3 ? colors.WARM : colors.POSITIVE} fontSize={12} fontFamily={MONO} fontWeight={750}>
               {run.id} · {run.version}
             </text>
-            <text x={15} y={48} fill={colors.MUTED} fontSize={10.2} fontFamily={MONO}>
+            <text x={15} y={49} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
               replay_recording_id · {run.recording}
             </text>
-            <rect x={330} y={20} width={62} height={24} rx={12} fill={colors.POSITIVE} opacity={0.12} />
-            <text x={361} y={36} textAnchor="middle" fill={colors.POSITIVE} fontSize={9.5} fontFamily={MONO}>
+            <rect x={318} y={20} width={74} height={24} rx={12} fill={colors.POSITIVE} opacity={0.12} />
+            <text x={355} y={36} textAnchor="middle" fill={colors.POSITIVE} fontSize={11} fontFamily={MONO}>
               recorded
             </text>
           </g>
@@ -481,7 +484,8 @@ function TestRunCatalog({ u, dim }: { u: number; dim: number }) {
 }
 
 function RunTape({ reveal, sweep, provenance, dim }: { reveal: number; sweep: number; provenance: number; dim: number }) {
-  if (reveal <= 0) return null;
+  // Fully dimmed under the entry panel, so skip it rather than leave faint labels under the caption band.
+  if (reveal <= 0 || dim >= 1) return null;
   return (
     <g opacity={1 - 0.78 * dim}>
       <RecordingStrip
@@ -495,9 +499,9 @@ function RunTape({ reveal, sweep, provenance, dim }: { reveal: number; sweep: nu
         title="journey run · send-message@v1 · execution proof"
       />
       {provenance > 0 && (
-        <g transform={`translate(650, 92) scale(${0.9 + 0.1 * provenance})`} opacity={provenance}>
-          <rect x={-87} y={-14} width={174} height={28} rx={14} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.2} />
-          <text y={4} textAnchor="middle" fill={colors.ACCENT} fontSize={10} fontFamily={MONO}>
+        <g transform={`translate(760, 88) scale(${0.9 + 0.1 * provenance})`} opacity={provenance}>
+          <rect x={-108} y={-14} width={216} height={28} rx={14} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.2} />
+          <text y={4} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>
             origin, not certification
           </text>
         </g>
@@ -520,7 +524,7 @@ function ExplorationEntrypoints({ u, boundary, dim }: { u: number; boundary: num
         const p = clamp01(uu * 4.5 - i * 0.85);
         if (p <= 0) return null;
         const x = 260 + i * 252;
-        const w = Math.max(128, label.length * 7.1 + 28);
+        const w = Math.max(128, label.length * 7.6 + 30);
         const from = { x, y: 256 };
         const path = `M ${from.x} ${from.y + 18} C ${from.x} 330, ${target.x} 338, ${target.x} ${target.y - 27}`;
         return (
@@ -528,7 +532,7 @@ function ExplorationEntrypoints({ u, boundary, dim }: { u: number; boundary: num
             <path d={path} fill="none" stroke={colors.SECONDARY} strokeWidth={1.4} pathLength={1} strokeDasharray={1} strokeDashoffset={1 - p} opacity={0.55} />
             <g transform={`translate(${x}, ${256 + (1 - p) * -9})`} opacity={p}>
               <rect x={-w / 2} y={-18} width={w} height={36} rx={18} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.3} />
-              <text y={4.5} textAnchor="middle" fill={colors.TEXT} fontSize={11.2} fontFamily={MONO}>
+              <text y={4.5} textAnchor="middle" fill={colors.TEXT} fontSize={12.5} fontFamily={MONO}>
                 {label}
               </text>
             </g>
@@ -544,10 +548,10 @@ function ExplorationEntrypoints({ u, boundary, dim }: { u: number; boundary: num
       {boundary > 0 && (
         <g transform={`translate(640, ${507 + (1 - boundary) * 10})`} opacity={boundary}>
           <rect x={-364} y={-30} width={728} height={60} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.5} />
-          <text y={-6} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontFamily={MONO} fontWeight={750}>
+          <text y={-6} textAnchor="middle" fill={colors.WARM} fontSize={12.5} fontFamily={MONO} fontWeight={750}>
             public LoopQA MCP tool list → inspect the catalog
           </text>
-          <text y={17} textAnchor="middle" fill={colors.MUTED} fontSize={11.2} fontFamily={MONO}>
+          <text y={17} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
             start exploration → UI / REST / project chat / local Replay QA MCP UI
           </text>
         </g>
@@ -565,13 +569,13 @@ function ClosingCard({ u }: { u: number }) {
       <text y={-58} textAnchor="middle" fill={colors.TEXT} fontSize={27} fontWeight={780}>
         The Catalog Remembers
       </text>
-      <text y={-13} textAnchor="middle" fill={colors.ACCENT} fontSize={12.5} fontFamily={MONO}>
+      <text y={-13} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
         explorations → where the journey came from
       </text>
-      <text y={22} textAnchor="middle" fill={colors.POSITIVE} fontSize={12.5} fontFamily={MONO}>
+      <text y={22} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>
         journey_versions + test_runs → what exact contract executed
       </text>
-      <text y={61} textAnchor="middle" fill={colors.WARM} fontSize={13} fontWeight={700}>
+      <text y={61} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={700}>
         every version stays · every recording remains addressable
       </text>
     </g>

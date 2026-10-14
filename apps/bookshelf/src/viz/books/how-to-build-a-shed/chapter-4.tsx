@@ -55,9 +55,11 @@ const SHEAR_PX = 46; // how far the side wall racks before the panel arrives
 const NL = { x: 700, w: 34 } as const;
 const PLATFORM_IN = 6.375;
 
+// Framings keep every label above the caption band (screen y < 632).
 const CAM_TABLE: CameraState = { x: 470, y: 390, k: 1.22 };
-const CAM_HEIGHT: CameraState = { x: 680, y: 380, k: 1.3 };
-const CAM_CORNER: CameraState = { x: 960, y: 260, k: 1.3 };
+const CAM_HEIGHT: CameraState = { x: 500, y: 400, k: 1.2 };
+const CAM_CORNER: CameraState = { x: 705, y: 380, k: 1.2 };
+const CAM_RACK: CameraState = { x: 420, y: 415, k: 1.4 };
 const CAM_TRUSS: CameraState = { x: 640, y: 350, k: 1.16 };
 
 export interface Scene {
@@ -82,6 +84,7 @@ export interface Scene {
   fiveU: ChannelRef<number>;
   dimAll: ChannelRef<number>;
   closeU: ChannelRef<number>;
+  oldU: ChannelRef<number>;
 }
 
 export function buildScene(): Scene {
@@ -106,6 +109,7 @@ export function buildScene(): Scene {
   const fiveU = tl.channel('fiveU', 0);
   const dimAll = tl.channel('dimAll', 1);
   const closeU = tl.channel('closeU', 0);
+  const oldU = tl.channel('oldU', 1);
 
   // — Beat 1 · the work table —
   tl.caption({
@@ -162,9 +166,10 @@ export function buildScene(): Scene {
     dur: 7.0,
     text: 'Now the trick that makes it all work: a bare frame can rack into a parallelogram, but a factory-cut panel is perfectly square. Nail the panel on, and it pulls the whole frame true.',
   });
-  tl.tween(cam, CAM_TABLE, { at: 37.8, dur: 1.5, ease: ease.move });
+  tl.tween(cam, CAM_RACK, { at: 37.8, dur: 1.5, ease: ease.move });
   tl.tween(endDim, 0.15, { at: 37.8, dur: 1.2, ease: ease.move });
   tl.tween(cornerU, 0, { at: 37.8, dur: 1.0, ease: ease.move });
+  tl.tween(oldU, 0, { at: 37.8, dur: 1.2, ease: ease.move });
   tl.tween(rackU, 1, { at: 38.4, dur: 1.2, ease: ease.move });
   tl.tween(panelU, 1, { at: 40.6, dur: 1.6, ease: ease.move });
   tl.tween(trueU, 1, { at: 42.4, dur: 1.4, ease: ease.move });
@@ -241,6 +246,7 @@ export function buildScene(): Scene {
     fiveU,
     dimAll,
     closeU,
+    oldU,
   };
 }
 
@@ -274,6 +280,7 @@ export function Render({ s }: { s: SceneState }) {
   const fiveU = s.get(scene.fiveU);
   const dimAll = s.get(scene.dimAll);
   const closeU = s.get(scene.closeU);
+  const oldU = s.get(scene.oldU);
 
   // side wall: sheared by rack, restored by true
   const shear = SHEAR_PX * rackU * (1 - trueU);
@@ -294,11 +301,11 @@ export function Render({ s }: { s: SceneState }) {
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
-        <g opacity={dimAll}>
+        <g opacity={dimAll * (1 - closeU)}>
           {/* ---- the platform / work table ---- */}
           <g opacity={tableU * wallsDim}>
             <rect x={wx(-4)} y={WBOT + 10} width={104 * IN} height={PLATFORM_IN * IN * 2} rx={3} fill={colors.SECONDARY} opacity={0.25} stroke={colors.SECONDARY} strokeWidth={1} />
-            <text x={wx(48)} y={WBOT + 42} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+            <text x={wx(48)} y={WBOT + 42} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
               the platform — now a work table
             </text>
           </g>
@@ -335,43 +342,45 @@ export function Render({ s }: { s: SceneState }) {
               );
             })}
             {/* 24-in dimension */}
+            {/* dimension sits inside the first bay, clear of the platform label */}
             <g opacity={dim24U}>
-              <line x1={wx(24)} y1={wy(-4)} x2={wx(48)} y2={wy(-4)} stroke={colors.ACCENT} strokeWidth={1.4} />
-              <text x={wx(36)} y={wy(-8)} textAnchor="middle" fill={colors.ACCENT} fontSize={12.5}>
+              <line x1={wx(24)} y1={wy(9)} x2={wx(48)} y2={wy(9)} stroke={colors.ACCENT} strokeWidth={1.4} />
+              <line x1={wx(24)} y1={wy(9) - 6} x2={wx(24)} y2={wy(9) + 6} stroke={colors.ACCENT} strokeWidth={1.4} />
+              <line x1={wx(48)} y1={wy(9) - 6} x2={wx(48)} y2={wy(9) + 6} stroke={colors.ACCENT} strokeWidth={1.4} />
+              <text x={wx(36)} y={wy(9) - 10} textAnchor="middle" fill={colors.ACCENT} fontSize={14}>
                 24 in o.c.
               </text>
-              <text x={wx(48)} y={wy(PEAK) - 14} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+              <text x={wx(48)} y={wy(PEAK) - 14} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 end wall — full 8 ft wide
               </text>
             </g>
           </g>
 
           {/* ---- height number line: panel = wall + platform ---- */}
-          <g opacity={heightU * wallsDim}>
+          <g opacity={heightU * wallsDim * oldU}>
             <rect x={NL.x} y={wy(96 - PLATFORM_IN)} width={NL.w} height={(96 - PLATFORM_IN) * IN} fill={colors.ACCENT} opacity={0.3} stroke={colors.ACCENT} />
             <rect x={NL.x} y={wy(0)} width={NL.w} height={PLATFORM_IN * IN} fill={colors.POSITIVE} opacity={0.45} stroke={colors.POSITIVE} />
-            <line x1={NL.x + NL.w + 12} y1={wy(96 - PLATFORM_IN)} x2={NL.x + NL.w + 12} y2={wy(-PLATFORM_IN) - PLATFORM_IN * IN} stroke={colors.TEXT} strokeWidth={1.2} opacity={0} />
-            <text x={NL.x + NL.w + 14} y={wy(45)} fill={colors.ACCENT} fontSize={12.5}>
+            <text x={NL.x + NL.w + 14} y={wy(45)} fill={colors.ACCENT} fontSize={14}>
               wall
             </text>
-            <text x={NL.x + NL.w + 14} y={wy(0) + PLATFORM_IN * IN / 2 + 4} fill={colors.POSITIVE} fontSize={12.5}>
+            <text x={NL.x + NL.w + 14} y={wy(0) + PLATFORM_IN * IN / 2 + 5} fill={colors.POSITIVE} fontSize={14}>
               platform
             </text>
-            <text x={NL.x + NL.w / 2} y={wy(96 - PLATFORM_IN) - 12} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontWeight={600}>
+            <text x={NL.x + NL.w / 2} y={wy(96 - PLATFORM_IN) - 12} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={600}>
               one 8-ft panel covers both
             </text>
           </g>
           {/* paper vs tape */}
-          <g opacity={tapeU * wallsDim}>
-            <rect x={780} y={430} width={224 * 1.0} height={92} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={800} y={460} fill={colors.MUTED} fontSize={13}>
+          <g opacity={tapeU * wallsDim * oldU}>
+            <rect x={780} y={430} width={224} height={100} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
+            <text x={800} y={458} fill={colors.MUTED} fontSize={14}>
               paper: 6 1/4 in
             </text>
-            <line x1={798} y1={456} x2={902} y2={456} stroke={colors.NEGATIVE} strokeWidth={1.6} opacity={0.9} />
-            <text x={800} y={488} fill={colors.POSITIVE} fontSize={14} fontWeight={700}>
+            <line x1={798} y1={454} x2={912} y2={454} stroke={colors.NEGATIVE} strokeWidth={1.6} opacity={0.9} />
+            <text x={800} y={488} fill={colors.POSITIVE} fontSize={15} fontWeight={700}>
               tape: 6 3/8 in ✓
             </text>
-            <text x={800} y={508} fill={colors.MUTED} fontSize={11}>
+            <text x={800} y={510} fill={colors.MUTED} fontSize={13}>
               build to the tape
             </text>
           </g>
@@ -379,23 +388,23 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---- corner detail, from above ---- */}
           <g opacity={cornerU * wallsDim}>
             <rect x={840} y={130} width={360 * 1.0} height={250} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={862} y={162} fill={colors.TEXT} fontSize={13.5}>
+            <text x={862} y={162} fill={colors.TEXT} fontSize={14}>
               one corner, from above
             </text>
             {/* end wall frame runs full width */}
-            <rect x={880} y={200} width={220} height={22} fill={FRAME} opacity={0.85} />
-            <text x={1108} y={215} fill={colors.MUTED} fontSize={11.5}>
+            <rect x={880} y={200} width={180} height={22} fill={FRAME} opacity={0.85} />
+            <text x={1070} y={216} fill={colors.MUTED} fontSize={13}>
               end wall frame
             </text>
             {/* side wall frame tucks behind, 3.5 in back */}
             <rect x={880} y={222} width={22} height={110} fill={FRAME} opacity={0.65} />
-            <text x={910} y={295} fill={colors.MUTED} fontSize={11.5}>
+            <text x={910} y={300} fill={colors.MUTED} fontSize={13}>
               side wall — held back 3 1/2 in
             </text>
             {/* side panel wraps the corner */}
             <rect x={862} y={196} width={10} height={150} fill={PANEL_C} opacity={0.8} />
             <rect x={862} y={186} width={248} height={10} fill={PANEL_C} opacity={0.45} />
-            <text x={862} y={366} fill={PANEL_C} fontSize={11.5}>
+            <text x={862} y={370} fill={PANEL_C} fontSize={13}>
               panels stay full width — the corner disappears
             </text>
           </g>
@@ -418,56 +427,59 @@ export function Render({ s }: { s: SceneState }) {
                 <line key={sx} x1={sk(sx, 1.5).x} y1={sk(sx, 1.5).y} x2={sk(sx, EAVE - 1.5).x} y2={sk(sx, EAVE - 1.5).y} stroke={FRAME} strokeWidth={PLY * 0.85} opacity={0.85} />
               ))}
               {/* rack angle callout */}
-              {trueU < 0.6 && rackU > 0.5 && (
-                <text x={sk(44, EAVE + 6).x} y={sk(44, EAVE + 6).y} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} opacity={(1 - trueU) * rackU}>
+              {rackU > 0.5 && trueU < 0.6 && (
+                <text x={sk(44, EAVE + 6).x} y={sk(44, EAVE + 6).y - 20} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={700} opacity={(1 - trueU) * rackU}>
                   racked — not square
                 </text>
               )}
-              {/* the factory-square panel descends */}
+              {trueU > 0.5 && (
+                <text x={sk(44, EAVE + 6).x} y={sk(44, EAVE + 6).y - 20} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={700} opacity={trueU}>
+                  pulled true
+                </text>
+              )}
+              {/* the factory-square panel drops onto the wall; its bottom skirts the floor frame */}
               {panelU > 0 && (
                 <g opacity={Math.min(1, panelU * 1.4)}>
                   <rect
                     x={wx(-3.5)}
-                    y={wy(EAVE) - panelDrop - skirtU * PLATFORM_IN * IN}
+                    y={wy(EAVE) - panelDrop}
                     width={96 * IN}
-                    height={96 * IN * 0.72}
+                    height={wy(0) + skirtU * PLATFORM_IN * IN - (wy(EAVE) - panelDrop)}
                     fill={PANEL_C}
                     opacity={0.3}
                     stroke={PANEL_C}
                     strokeWidth={2}
                   />
-                  <text x={wx(44.5)} y={wy(EAVE) - panelDrop - 12} textAnchor="middle" fill={PANEL_C} fontSize={12.5}>
+                  <text x={wx(44.5)} y={wy(EAVE) - 12} textAnchor="middle" fill={PANEL_C} fontSize={14}>
                     factory-cut panel — perfectly square
                   </text>
                 </g>
               )}
-              {trueU > 0.5 && (
-                <text x={sk(44, EAVE + 6).x} y={sk(44, EAVE + 6).y - 20} textAnchor="middle" fill={colors.POSITIVE} fontSize={13.5} fontWeight={700} opacity={trueU}>
-                  pulled true
-                </text>
-              )}
               {/* skirt label */}
               {skirtU > 0.3 && (
-                <text x={wx(100)} y={WBOT + 24} fill={PANEL_C} fontSize={12} opacity={skirtU}>
+                <text x={wx(96)} y={WBOT + 22} fill={PANEL_C} fontSize={13.5} opacity={skirtU}>
                   panel skirts the floor frame
                 </text>
               )}
               {/* window + door openings once the wall is true */}
               {openU > 0 && (
                 <g opacity={openU * trueU}>
-                  <rect x={wx(10)} y={wy(52)} width={16 * IN} height={20 * IN} fill={colors.BG} opacity={0.85} stroke={colors.ACCENT} strokeWidth={1.6} />
-                  <text x={wx(18)} y={wy(56)} textAnchor="middle" fill={colors.ACCENT} fontSize={11.5}>
+                  {/* window: framed in with a header and a sill */}
+                  <rect x={wx(4)} y={wy(52)} width={14 * IN} height={20 * IN} fill={colors.BG} opacity={0.85} stroke={colors.ACCENT} strokeWidth={1.6} />
+                  <rect x={wx(3)} y={wy(52) - PLY / 2} width={16 * IN} height={PLY} fill={FRAME} />
+                  <rect x={wx(3)} y={wy(32) - PLY / 2} width={16 * IN} height={PLY} fill={FRAME} />
+                  <text x={wx(11)} y={wy(52) - 12} textAnchor="middle" fill={colors.ACCENT} fontSize={14}>
                     window
                   </text>
-                  <rect x={wx(56)} y={wy(0) - 2} width={26 * IN} height={-(wy(0) - wy(58)) * 0 + (wy(0) - wy(58))} fill="none" stroke={colors.WARM} strokeWidth={1.6} strokeDasharray="6 5" transform={`translate(0, ${wy(58) - wy(0) + 2})`} />
-                  <g>
-                    <text x={wx(69)} y={wy(50)} textAnchor="middle" fill={colors.WARM} fontSize={11.5}>
-                      door — framed
-                    </text>
-                    <text x={wx(69)} y={wy(44)} textAnchor="middle" fill={colors.WARM} fontSize={11} opacity={0.9}>
-                      panel stays on for stiffness
-                    </text>
-                  </g>
+                  {/* door: framed opening, panel left on */}
+                  <rect x={wx(56)} y={wy(58)} width={26 * IN} height={wy(0) - wy(58)} fill="none" stroke={colors.WARM} strokeWidth={1.6} strokeDasharray="6 5" />
+                  <rect x={wx(69) - 92} y={wy(58) - 38} width={184} height={36} rx={6} fill={colors.BG} opacity={0.9} />
+                  <text x={wx(69)} y={wy(58) - 24} textAnchor="middle" fill={colors.WARM} fontSize={13.5} fontWeight={600}>
+                    door — framed
+                  </text>
+                  <text x={wx(69)} y={wy(58) - 9} textAnchor="middle" fill={colors.WARM} fontSize={12.5}>
+                    panel stays on for stiffness
+                  </text>
                 </g>
               )}
             </g>
@@ -476,7 +488,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---- the 22.5° truss ---- */}
           {trussU > 0 && (
             <g opacity={trussU}>
-              <rect x={TX - HALF - 70} y={TY - T_RISE - 90} width={(HALF + 70) * 2} height={T_RISE + 200} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+              <rect x={TX - HALF - 70} y={TY - T_RISE - 90} width={(HALF + 70) * 2} height={T_RISE + 200 + fiveU * 90} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
               {/* bottom chord */}
               <line x1={TX - HALF} y1={TY + 40} x2={TX - HALF + 2 * HALF * clamp01(trussU * 1.4)} y2={TY + 40} stroke={FRAME} strokeWidth={9} strokeLinecap="round" />
               {/* rafters at 22.5° */}
@@ -494,9 +506,10 @@ export function Render({ s }: { s: SceneState }) {
                     strokeDasharray={1}
                     strokeDashoffset={1 - protU}
                   />
-                  <MathLabel tex={'22.5^{\\circ}'} x={TX - HALF + 108} y={TY + 14} color={colors.ACCENT} fontSize={19} opacity={protU} />
-                  <MathLabel tex={'22.5^{\\circ}'} x={TX + HALF - 148} y={TY + 14} color={colors.ACCENT} fontSize={19} opacity={clamp01(protU * 2 - 1)} />
-                  <text x={TX} y={TY - T_RISE - 4} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+                  {/* angle labels sit inside each wedge, below the rafter */}
+                  <MathLabel tex={'22.5^{\\circ}'} x={TX - HALF + 125} y={TY + 24} color={colors.ACCENT} fontSize={19} opacity={protU} />
+                  <MathLabel tex={'22.5^{\\circ}'} x={TX + HALF - 125} y={TY + 24} color={colors.ACCENT} fontSize={19} opacity={clamp01(protU * 2 - 1)} />
+                  <text x={TX} y={TY - T_RISE - 4} textAnchor="middle" fill={colors.MUTED} fontSize={13.5}>
                     every cut, the same angle — mating pieces match by construction
                   </text>
                 </g>
@@ -508,10 +521,11 @@ export function Render({ s }: { s: SceneState }) {
                     const u = clamp01(fiveU * 3 - i * 0.45);
                     if (u <= 0) return null;
                     const mx = TX - 176 + i * 88;
+                    const H = 40; // half-span of each small truss
                     return (
                       <g key={i} opacity={u}>
                         <path
-                          d={`M ${mx - 34} ${TY + 128} L ${mx + 34} ${TY + 128} L ${mx} ${TY + 128 - 34 * Math.tan(Math.PI / 8) * 2}`}
+                          d={`M ${mx - H} ${TY + 128} L ${mx + H} ${TY + 128} L ${mx} ${TY + 128 - H * Math.tan(Math.PI / 8)}`}
                           fill="none"
                           stroke={FRAME}
                           strokeWidth={4}
@@ -520,11 +534,11 @@ export function Render({ s }: { s: SceneState }) {
                       </g>
                     );
                   })}
-                  <line x1={TX - 176} y1={TY + 148} x2={TX - 88} y2={TY + 148} stroke={colors.ACCENT} strokeWidth={1.2} />
-                  <text x={TX - 132} y={TY + 164} textAnchor="middle" fill={colors.ACCENT} fontSize={11.5}>
+                  <line x1={TX - 176} y1={TY + 152} x2={TX - 88} y2={TY + 152} stroke={colors.ACCENT} strokeWidth={1.2} />
+                  <text x={TX - 132} y={TY + 170} textAnchor="middle" fill={colors.ACCENT} fontSize={13.5}>
                     24 in
                   </text>
-                  <text x={TX + 110} y={TY + 164} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+                  <text x={TX + 110} y={TY + 170} textAnchor="middle" fill={colors.MUTED} fontSize={13.5}>
                     five trusses, one template
                   </text>
                 </g>

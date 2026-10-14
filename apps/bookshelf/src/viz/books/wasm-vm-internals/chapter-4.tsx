@@ -87,9 +87,9 @@ const LEDGER: { have: boolean; text: string }[] = [
 const LED = { x: 250, y: 150 } as const;
 
 const CAM_MATH: CameraState = { x: 620, y: 230, k: 1.12 };
-const CAM_FUNC: CameraState = { x: 620, y: 250, k: 1.16 };
+const CAM_FUNC: CameraState = { x: 620, y: 290, k: 1.0 };
 const CAM_TIMELINE: CameraState = { x: 640, y: 390, k: 1.08 };
-const CAM_SEEK: CameraState = { x: 470, y: 396, k: 1.5 };
+const CAM_SEEK: CameraState = { x: 600, y: 396, k: 1.2 };
 const CAM_LEDGER: CameraState = { x: 620, y: 330, k: 1.02 };
 const CAM_WIDE: CameraState = { x: 620, y: 340, k: 0.92 };
 
@@ -459,6 +459,15 @@ export function Render({ s }: { s: SceneState }) {
               <text x={TL.x + TL.w} y={TL.y + 46} textAnchor="end" fill={colors.MUTED} fontSize={13}>
                 instruction 4,102,338,915
               </text>
+              {/* billion-instruction ticks: the timebase is a place, so mark the places */}
+              {[0.25, 0.5, 0.75].map((u, i) => (
+                <g key={u} opacity={clamp01(tlU * 2 - 0.6) * (1 - clamp01(headU * 2 - 0.4))}>
+                  <line x1={tlX(u)} y1={TL.y + 4} x2={tlX(u)} y2={TL.y + 14} stroke={colors.MUTED} strokeWidth={1.2} />
+                  <text x={tlX(u)} y={TL.y + 46} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                    {`${i + 1} billion`}
+                  </text>
+                </g>
+              ))}
 
               {/* the log: one tick per recorded input */}
               {logU > 0 &&
@@ -566,11 +575,11 @@ export function Render({ s }: { s: SceneState }) {
                 if (u <= 0) return null;
                 return (
                   <g key={m.title} opacity={u}>
-                    <rect x={330 + i * 320} y={520} width={290} height={72} rx={10} fill={colors.PANEL} stroke={m.color} strokeWidth={1.7} />
-                    <text x={475 + i * 320} y={548} textAnchor="middle" fill={m.color} fontSize={15} fontWeight={700}>
+                    <rect x={330 + i * 320} y={536} width={290} height={72} rx={10} fill={colors.PANEL} stroke={m.color} strokeWidth={1.7} />
+                    <text x={475 + i * 320} y={564} textAnchor="middle" fill={m.color} fontSize={15} fontWeight={700}>
                       {m.title}
                     </text>
-                    <text x={475 + i * 320} y={572} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+                    <text x={475 + i * 320} y={588} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
                       {m.line}
                     </text>
                   </g>
@@ -618,8 +627,8 @@ export function Render({ s }: { s: SceneState }) {
                 the durable stream — append-only, replicated, the machine itself
               </text>
               <g opacity={clamp01(streamU * 2 - 1)}>
-                <rect x={TL.x + TL.w - 116} y={TL.y - 60} width={132} height={30} rx={7} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
-                <text x={TL.x + TL.w - 50} y={TL.y - 40} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontWeight={700}>
+                <rect x={TL.x + TL.w + 34 - 200} y={TL.y - 100} width={200} height={24} rx={7} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
+                <text x={TL.x + TL.w + 34 - 100} y={TL.y - 83} textAnchor="middle" fill={colors.WARM} fontSize={12.5} fontWeight={700}>
                   ⏸ suspended = stop appending
                 </text>
               </g>
@@ -645,7 +654,7 @@ export function Render({ s }: { s: SceneState }) {
           {replU > 0 && (
             <g opacity={replU}>
               {['your laptop', 'teammate tab', 'home desktop'].map((n, k) => {
-                const x = 320 + k * 240;
+                const x = 650 + k * 190;
                 return (
                   <g key={n} opacity={clamp01(replU * 2 - k * 0.3)}>
                     <line x1={tlX(0.25 + k * 0.25)} y1={TL.y + 74} x2={x + 70} y2={TL.y + 118} stroke={colors.TEAL} strokeWidth={1.2} strokeDasharray="4 4" opacity={0.55} />

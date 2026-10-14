@@ -170,10 +170,12 @@ function Chip({
     op *= 1 - replaceOut;
   }
   if (op <= 0) return null;
+  // size the chip to its label (13px monospace ≈ 7.8px per glyph) so text stays inside the box
+  const w = Math.max(112, Math.round(label.length * 7.8 + 24));
   return (
     <g opacity={op}>
-      <rect x={x - 56} y={y - 14} width={112} height={28} rx={7} fill={colors.PANEL} stroke={color} strokeWidth={1.4} />
-      <text x={x} y={y + 4} textAnchor="middle" fill={color} fontSize={11} fontFamily="monospace">
+      <rect x={x - w / 2} y={y - 14} width={w} height={28} rx={7} fill={colors.PANEL} stroke={color} strokeWidth={1.4} />
+      <text x={x} y={y + 5} textAnchor="middle" fill={color} fontSize={13} fontFamily="monospace">
         {label}
       </text>
     </g>
@@ -215,7 +217,7 @@ function Render_({ s }: { s: SceneState }) {
                 <text x={seg.x + 12} y={BAND_Y + 22} fill={seg.color} fontSize={14} fontWeight={600}>
                   {seg.label}
                 </text>
-                <text x={seg.x + 2} y={BAND_Y - 10} fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+                <text x={seg.x + 2} y={BAND_Y - 10} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                   {seg.range}
                 </text>
               </g>
@@ -243,7 +245,7 @@ function Render_({ s }: { s: SceneState }) {
             replaceOut={clamp01(rep2U * 1.4)} color={colors.WARM} />
           <Chip seg={1} u={rep2U} label="kind 0 · profile v2" slotX={zoneX(1)} slotY={SHELF_Y} color={colors.WARM} />
           {rep2U >= 1 && (
-            <text x={zoneX(1)} y={SHELF_Y + 28} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily="monospace" opacity={0.85}>
+            <text x={zoneX(1)} y={SHELF_Y + 28} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={0.85}>
               latest per (pubkey, kind)
             </text>
           )}
@@ -252,7 +254,7 @@ function Render_({ s }: { s: SceneState }) {
           <Chip seg={2} u={ephU} label="kind 20001" slotX={zoneX(2)} slotY={SHELF_Y}
             evaporate color={colors.NEGATIVE} />
           {ephU >= 1 && (
-            <text x={zoneX(2)} y={SHELF_Y} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11} opacity={0.8}>
+            <text x={zoneX(2)} y={SHELF_Y + 28} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} opacity={0.9}>
               never stored
             </text>
           )}
@@ -263,7 +265,7 @@ function Render_({ s }: { s: SceneState }) {
           <Chip seg={3} u={addr2U} label={'30023 · d:"post-a" v2'} slotX={zoneX(3) - 20} slotY={SHELF_Y} color={colors.SECONDARY} />
           <Chip seg={3} u={addr3U} label={'30023 · d:"post-b"'} slotX={zoneX(3) - 20} slotY={SHELF_Y - 34} color={colors.SECONDARY} />
           {addr2U >= 1 && (
-            <text x={zoneX(3) - 20} y={SHELF_Y + 28} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily="monospace" opacity={0.85}>
+            <text x={zoneX(3) - 20} y={SHELF_Y + 28} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={0.85}>
               latest per (kind, pubkey, d)
             </text>
           )}

@@ -34,12 +34,13 @@ export function buildScene() {
   tl.tween(wordsP, 6, { at: 7.2, dur: 1.5, ease: ease.linear });
   tl.tween(thresholdU, 1, { at: 8.4, dur: 0.6, ease: ease.pop });
   tl.tween(specU, 1, { at: 9.2, dur: 1.3, ease: ease.move });
-  tl.tween(cam, { x: 560, y: 360, k: 1.05 }, { at: 10.4, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 360, k: 1.04 }, { at: 10.4, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 13.2, dur: 6.4, text: 'If another word arrives, the stale task is canceled and a fresher search takes its place.' });
   tl.tween(wordsP, 7, { at: 13.7, dur: 0.8, ease: ease.linear });
   tl.tween(replaceU, 1, { at: 14.5, dur: 1.1, ease: ease.move });
   tl.tween(cam, CAMERA_HOME, { at: 16.7, dur: 1.2, ease: ease.move });
+  tl.tween(replaceU, 0, { at: 26.0, dur: 0.6, ease: ease.move });
 
   tl.caption({ at: 19.6, dur: 6.4, text: 'At two hundred milliseconds of silence, the system wagers that the turn is probably finished.' });
   tl.tween(silenceU, 0.67, { at: 20.2, dur: 2.8, ease: ease.linear });
@@ -49,7 +50,7 @@ export function buildScene() {
   tl.tween(silenceU, 1, { at: 26.5, dur: 2.0, ease: ease.linear });
   tl.tween(searchP, 1, { at: 26.4, dur: 1.6, ease: ease.linear });
   tl.tween(memoryP, 5, { at: 27.2, dur: 1.6, ease: ease.enter });
-  tl.tween(cam, { x: 700, y: 360, k: 1.05 }, { at: 28.4, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 360, k: 1.04 }, { at: 28.4, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 32.5, dur: 6.4, text: 'If the speaker resumes, barge-in throws away the wager. Only a cheap local search was wasted.' });
   tl.tween(cancelU, 1, { at: 33.0, dur: 0.6, ease: ease.pop });
@@ -59,6 +60,7 @@ export function buildScene() {
   tl.tween(cam, CAMERA_HOME, { at: 36.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 38.9, dur: 6.4, text: 'On the clean path, the wager survives. The retrieval tray fills before the three-hundred-millisecond mark.' });
+  tl.tween(cancelU, 0, { at: 38.9, dur: 0.4, ease: ease.move });
   tl.tween(replayU, 1, { at: 39.4, dur: 0.5, ease: ease.pop });
   tl.tween(silenceU, 1, { at: 39.6, dur: 2.7, ease: ease.linear });
   tl.tween(searchP, 1, { at: 40.8, dur: 1.2, ease: ease.linear });
@@ -97,26 +99,26 @@ export function Render({ s }: { s: SceneState }) {
       <g>
         {WORDS.map((word, i) => {
           const u = clamp01(wordsP - i);
-          return <g key={word} opacity={u} transform={`translate(${124 + i * 142} 286) translate(0 ${(1 - u) * 18})`}>
+          return <g key={word} opacity={u} transform={`translate(${150 + i * 128} 286) translate(0 ${(1 - u) * 18})`}>
             <rect x="-54" y="-24" width="108" height="48" rx="14" fill="#13243b" stroke={i >= 5 ? colors.WARM : colors.ACCENT} strokeWidth="2" />
             <text y="7" textAnchor="middle" fill={colors.TEXT} fontSize="17" fontWeight="720">{word}</text>
           </g>;
         })}
         <g opacity={s.get(scene.thresholdU)}>
-          <path d="M86 326 H928" stroke={colors.WARM} strokeWidth="4" strokeLinecap="round" />
-          <text x="507" y="350" textAnchor="middle" fill={colors.WARM} fontSize="13" fontFamily={colors.font.mono}>spec_min_chars = 6</text>
+          <path d="M96 326 H880" stroke={colors.WARM} strokeWidth="4" strokeLinecap="round" />
+          <text x="488" y="352" textAnchor="middle" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>spec_min_chars = 6</text>
         </g>
       </g>
 
       <g opacity={s.get(scene.specU)}>
         <rect x="94" y="398" width="312" height="82" rx="22" fill="#111d31" stroke={cancel ? colors.NEGATIVE : colors.SECONDARY} strokeWidth="3" />
         <text x="250" y="430" textAnchor="middle" fill={colors.SECONDARY} fontSize="15" fontFamily={colors.font.mono}>classify → search</text>
-        <text x="250" y="458" textAnchor="middle" fill={colors.MUTED} fontSize="13">local embedding · no network</text>
+        <text x="250" y="458" textAnchor="middle" fill={colors.MUTED} fontSize="14">local embedding · no network</text>
         <circle cx={runnerX} cy="439" r="14" fill={cancel ? colors.NEGATIVE : colors.POSITIVE} opacity={1 - cancel * 0.7} />
         <path d={`M406 439 H${runnerX}`} stroke={colors.POSITIVE} strokeWidth="5" strokeLinecap="round" opacity={0.45} />
         <g opacity={s.get(scene.replaceU)} transform="translate(410 378)">
-          <rect x="-106" y="-17" width="212" height="34" rx="17" fill="#2a1d0c" stroke={colors.WARM} />
-          <text y="5" textAnchor="middle" fill={colors.WARM} fontSize="12" fontFamily={colors.font.mono}>cancel stale asyncio task</text>
+          <rect x="-124" y="-17" width="248" height="34" rx="17" fill="#2a1d0c" stroke={colors.WARM} />
+          <text y="5" textAnchor="middle" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>cancel stale asyncio task</text>
         </g>
       </g>
 
@@ -125,9 +127,9 @@ export function Render({ s }: { s: SceneState }) {
         <rect x="94" y="526" width={876 * silence} height="42" rx="21" fill={silence < 0.67 ? colors.ACCENT : colors.WARM} opacity="0.32" />
         <line x1="678" y1="516" x2="678" y2="580" stroke={colors.WARM} strokeWidth="3" />
         <line x1="970" y1="516" x2="970" y2="580" stroke={colors.POSITIVE} strokeWidth="3" />
-        <text x="94" y="602" fill={colors.MUTED} fontSize="13">0 ms</text>
-        <text x="678" y="602" textAnchor="middle" fill={colors.WARM} fontSize="13">200 ms · gamble</text>
-        <text x="970" y="602" textAnchor="middle" fill={colors.POSITIVE} fontSize="13">300 ms · confirm</text>
+        <text x="94" y="602" fill={colors.MUTED} fontSize="14">0 ms</text>
+        <text x="678" y="602" textAnchor="middle" fill={colors.WARM} fontSize="14">200 ms · gamble</text>
+        <text x="970" y="602" textAnchor="middle" fill={colors.POSITIVE} fontSize="14">300 ms · confirm</text>
       </g>
 
       <g transform="translate(1006 390)">
@@ -137,7 +139,7 @@ export function Render({ s }: { s: SceneState }) {
           const u = clamp01(memoryP - i);
           return <rect key={i} x={-82 + i * 34} y={18 + (1 - u) * 28} width="24" height="58" rx="7" fill={i % 2 ? colors.SECONDARY : colors.ACCENT} opacity={0.2 + u * 0.8} />;
         })}
-        <text y="94" textAnchor="middle" fill={colors.MUTED} fontSize="12">top five ready</text>
+        <text y="94" textAnchor="middle" fill={colors.MUTED} fontSize="14">top five ready</text>
       </g>
 
       <g opacity={cancel} transform="translate(706 406)">

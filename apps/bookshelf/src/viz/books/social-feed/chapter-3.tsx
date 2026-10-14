@@ -75,11 +75,13 @@ const ROWS = [
 const rowY = (i: number): number => FEED.y + i * (FEED.rowH + FEED.gap);
 
 // camera marks
+// The real path is ~1,150 wide (client at x 130 to the strip's end at 1215), so
+// the path cameras stay near k 1.1 to keep every node and its label on stage.
 const CAM_NAIVE: CameraState = { x: 560, y: 340, k: 1.12 };
 const CAM_JAM: CameraState = { x: 360, y: 340, k: 1.45 };
-const CAM_PATH: CameraState = { x: 560, y: 160, k: 1.3 };
-const CAM_GRAB: CameraState = { x: 940, y: 170, k: 1.45 };
-const CAM_FEED: CameraState = { x: 880, y: 380, k: 1.2 };
+const CAM_PATH: CameraState = { x: 660, y: 160, k: 1.1 };
+const CAM_GRAB: CameraState = { x: 632, y: 170, k: 1.08 };
+const CAM_FEED: CameraState = { x: 664, y: 340, k: 1.08 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 // ---------------------------------------------------------------------------
@@ -226,7 +228,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* ============ the naive plan — fan-out on read ============ */}
         {naiveOp > 0.01 && (
           <g opacity={naiveOp} transform={`translate(${-sweep * 950}, 0)`}>
-            <text x={640} y={70} textAnchor="middle" fill={colors.MUTED} fontSize={15} fontStyle="italic">
+            <text x={430} y={110} textAnchor="middle" fill={colors.MUTED} fontSize={15} fontStyle="italic">
               fan-out on read — build the feed on demand
             </text>
             {FOLLOWEES.map((f, i) => {
@@ -246,6 +248,10 @@ export function Render({ s }: { s: SceneState }) {
               </text>
             </g>
             <ServiceNode {...READER} kind="mobile" label="you" sublabel="pull to refresh" u={naiveU} status={jamU > 0.5 ? 'down' : 'ok'} glow={jamU * 0.5} />
+            {/* the crowd behind the one reader, before the fan-out starts */}
+            <text x={READER.x} y={READER.y + 56} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={clamp01(naiveU * 2) * (1 - jamU)}>
+              100,000 people, this second
+            </text>
             {/* the latency clock drains as the plan jams */}
             <g opacity={jamU}>
               <TimerArc cx={READER.x - 80} cy={READER.y - 70} r={22} u={1 - 0.9 * jamU} color={colors.NEGATIVE} />
@@ -262,7 +268,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* ============ the real read path ============ */}
         {laneU > 0.01 && (
           <g>
-            <Connection from={N_CLIENT} to={N_WEB} u={laneU} arrow label="GET home_timeline" labelSize={10} />
+            <Connection from={N_CLIENT} to={N_WEB} u={laneU} arrow label="GET home_timeline" labelSize={12} />
             <Connection from={N_WEB} to={N_READ} u={laneU} arrow />
             <Connection from={N_READ} to={N_TLSVC} u={laneU} arrow />
             <Connection from={N_TLSVC} to={N_CACHE} u={laneU} arrow />
@@ -285,7 +291,7 @@ export function Render({ s }: { s: SceneState }) {
 
             {/* your home-timeline list — precomputed in chapter two */}
             <g opacity={stripU}>
-              <text x={STRIP.x - 10} y={STRIP.y + STRIP.h / 2 + 4} textAnchor="end" fill={colors.MUTED} fontSize={11} fontFamily="ui-monospace, monospace">
+              <text x={STRIP.x - 10} y={STRIP.y + STRIP.h / 2 + 4} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
                 your list
               </text>
               <rect x={STRIP.x} y={STRIP.y} width={STRIP.w} height={STRIP.h} rx={7} fill={colors.PANEL} stroke={gotU > 0.5 ? colors.POSITIVE : colors.GRID} strokeWidth={1 + gotU} />
@@ -305,14 +311,15 @@ export function Render({ s }: { s: SceneState }) {
                   />
                 );
               })}
-              <text x={STRIP.x + CELL_W / 2} y={STRIP.y + STRIP.h / 2 + 4} textAnchor="middle" fill={colors.BG} fontSize={11} fontWeight={700} fontFamily="ui-monospace, monospace">
+              <text x={STRIP.x + CELL_W / 2} y={STRIP.y + STRIP.h / 2 + 4} textAnchor="middle" fill={colors.BG} fontSize={12} fontWeight={700} fontFamily="ui-monospace, monospace">
                 987
               </text>
-              <MathLabel tex="O(1)" x={STRIP.x + STRIP.w + 34} y={STRIP.y + STRIP.h / 2} fontSize={16} color={colors.POSITIVE} opacity={gotU} anchor="middle" />
+              {/* O(1) sits under the strip, inside the frame (the strip's end is at the stage edge) */}
+              <MathLabel tex="O(1)" x={STRIP.x + STRIP.w / 2} y={STRIP.y + STRIP.h + 14} fontSize={16} color={colors.POSITIVE} opacity={gotU} anchor="middle" />
               {/* the trim — several hundred, no more */}
               <g opacity={trimU}>
                 <line x1={STRIP.x + keep * CELL_W} y1={STRIP.y - 6} x2={STRIP.x + keep * CELL_W} y2={STRIP.y + STRIP.h + 6} stroke={colors.WARM} strokeWidth={2} strokeDasharray="4 4" />
-                <text x={STRIP.x + keep * CELL_W + 8} y={STRIP.y - 12} fill={colors.WARM} fontSize={11}>
+                <text x={STRIP.x + keep * CELL_W + 8} y={STRIP.y - 12} fill={colors.WARM} fontSize={12}>
                   keep several hundred, no more
                 </text>
               </g>
@@ -320,14 +327,14 @@ export function Render({ s }: { s: SceneState }) {
 
             {/* the dormant user's strip — evicted, rebuilt on return */}
             <g opacity={trimU}>
-              <text x={DORM.x - 10} y={DORM.y + DORM.h / 2 + 4} textAnchor="end" fill={colors.MUTED} fontSize={10} fontFamily="ui-monospace, monospace" opacity={1 - 0.6 * dormU}>
+              <text x={DORM.x - 10} y={DORM.y + DORM.h / 2 + 4} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace" opacity={1 - 0.6 * dormU}>
                 inactive 30 days
               </text>
               <rect x={DORM.x} y={DORM.y} width={DORM.w} height={DORM.h} rx={6} fill={colors.PANEL} stroke={colors.GRID} opacity={1 - 0.65 * dormU} strokeDasharray="5 4" />
               {dormU > 0 && (
                 <>
-                  <ServiceNode {...N_SQL} kind="db" label="SQL Database" u={clamp01(dormU * 3)} labelSize={10} w={120} h={46} />
-                  <Packet from={{ x: N_SQL.x + 64, y: N_SQL.y }} to={{ x: DORM.x + 40, y: DORM.y + DORM.h / 2 }} u={clamp01(dormU * 1.6 - 0.4)} r={4.5} color={colors.SECONDARY} label="rebuild" labelSize={9} />
+                  <ServiceNode {...N_SQL} kind="db" label="SQL Database" u={clamp01(dormU * 3)} labelSize={12} w={120} h={46} />
+                  <Packet from={{ x: N_SQL.x + 64, y: N_SQL.y }} to={{ x: DORM.x + 40, y: DORM.y + DORM.h / 2 }} u={clamp01(dormU * 1.6 - 0.4)} r={4.5} color={colors.SECONDARY} label="rebuild" labelSize={12} />
                 </>
               )}
             </g>
@@ -354,7 +361,7 @@ export function Render({ s }: { s: SceneState }) {
                         <text x={FEED.x + 48} y={y + 38} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
                           “{r.status}”
                         </text>
-                        <text x={FEED.x + FEED.w - 12} y={y + 21} textAnchor="end" fill={colors.MUTED} fontSize={10} fontFamily="ui-monospace, monospace">
+                        <text x={FEED.x + FEED.w - 12} y={y + 21} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
                           {r.tweet}
                         </text>
                       </g>
@@ -367,13 +374,13 @@ export function Render({ s }: { s: SceneState }) {
             {/* the two batched multigets */}
             {mgU > 0 && mgU < 1 && (
               <>
-                <RequestFlow path={[{ x: FEED.x, y: rowY(1) + 20 }, N_TWEETINFO]} u={mgU} roundTrip color={colors.ACCENT} responseColor={colors.POSITIVE} label="MGET tweet ids" responseLabel="text" labelSize={10} />
-                <RequestFlow path={[{ x: FEED.x, y: rowY(2) + 20 }, N_USERINFO]} u={clamp01(mgU * 1.25 - 0.25)} roundTrip color={colors.SECONDARY} responseColor={colors.POSITIVE} label="MGET user ids" responseLabel="names" labelSize={10} />
+                <RequestFlow path={[{ x: FEED.x, y: rowY(1) + 20 }, N_TWEETINFO]} u={mgU} roundTrip color={colors.ACCENT} responseColor={colors.POSITIVE} label="MGET tweet ids" responseLabel="text" labelSize={12} />
+                <RequestFlow path={[{ x: FEED.x, y: rowY(2) + 20 }, N_USERINFO]} u={clamp01(mgU * 1.25 - 0.25)} roundTrip color={colors.SECONDARY} responseColor={colors.POSITIVE} label="MGET user ids" responseLabel="names" labelSize={12} />
               </>
             )}
             <g opacity={clamp01(mgU * 3) * feedU}>
-              <ServiceNode {...N_TWEETINFO} kind="cache" label="Tweet Info Service" u={clamp01(mgU * 3)} labelSize={11} />
-              <ServiceNode {...N_USERINFO} kind="cache" label="User Info Service" u={clamp01(mgU * 3)} labelSize={11} />
+              <ServiceNode {...N_TWEETINFO} kind="cache" label="Tweet Info Service" u={clamp01(mgU * 3)} labelSize={12} />
+              <ServiceNode {...N_USERINFO} kind="cache" label="User Info Service" u={clamp01(mgU * 3)} labelSize={12} />
             </g>
 
             {/* the trade chip */}

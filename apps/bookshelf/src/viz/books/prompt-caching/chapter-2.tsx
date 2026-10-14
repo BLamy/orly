@@ -74,7 +74,7 @@ const BRACKETS: { label: string; from: number; to: number }[] = [
 // camera marks
 const CAM_WIDE: CameraState = CAMERA_HOME;
 const CAM_TAPES: CameraState = { x: 560, y: 280, k: 1.22 };
-const CAM_MISS_A: CameraState = { x: 380, y: 280, k: 1.45 };
+const CAM_MISS_A: CameraState = { x: 440, y: 280, k: 1.3 };
 const CAM_CHIP: CameraState = { x: 700, y: 380, k: 1.15 };
 
 // ---------------------------------------------------------------------------
@@ -287,7 +287,7 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...cam}>
         <g opacity={machineOp}>
           {/* labels */}
-          <text x={TAPE_X} y={TOP_Y - 40} fill={colors.MUTED} fontSize={13}>
+          <text x={TAPE_X} y={TOP_Y - 62} fill={colors.MUTED} fontSize={13}>
             what the cache remembers — your previous request
           </text>
           <text x={TAPE_X} y={BOT_Y + CELL_H + 34} fill={colors.MUTED} fontSize={13}>
@@ -305,7 +305,7 @@ export function Render({ s }: { s: SceneState }) {
               {Array.from({ length: sc.appended }, (_, j) => (
                 <rect key={j} x={cellX(N + j)} y={BOT_Y} width={CELL_W} height={CELL_H} rx={3} fill={colors.POSITIVE} opacity={0.65} />
               ))}
-              <text x={cellX(N)} y={BOT_Y - 10} fill={colors.POSITIVE} fontSize={11.5} fontFamily={MONO}>
+              <text x={cellX(N)} y={BOT_Y - 10} fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
                 new suffix — the only new work
               </text>
             </g>
@@ -347,7 +347,7 @@ export function Render({ s }: { s: SceneState }) {
           {scan > 0 && scan < N - 0.01 && flare < 0.5 && (
             <g opacity={swapU}>
               <line x1={scanX} y1={TOP_Y - 14} x2={scanX} y2={BOT_Y + CELL_H + 14} stroke={colors.TEXT} strokeWidth={2} opacity={0.85} />
-              <text x={scanX} y={TOP_Y - 22} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+              <text x={scanX + 6} y={TOP_Y - 14} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 compare
               </text>
             </g>
@@ -366,8 +366,8 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* full-match celebration (scenario C) */}
           <g opacity={hitU}>
-            <rect x={TAPE_X} y={TOP_Y - 70} width={N * PITCH - 2} height={3} rx={1.5} fill={colors.POSITIVE} opacity={0.8} />
-            <text x={TAPE_X + (N * PITCH) / 2} y={TOP_Y - 80} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={600}>
+            <rect x={TAPE_X} y={TOP_Y - 98} width={N * PITCH - 2} height={3} rx={1.5} fill={colors.POSITIVE} opacity={0.8} />
+            <text x={TAPE_X + (N * PITCH) / 2} y={TOP_Y - 108} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={600}>
               prefix reused, end to end
             </text>
           </g>
@@ -392,14 +392,15 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* "exact, not approximate" chip */}
         <g opacity={exactU * (1 - 0.88 * dimU)}>
-          <rect x={430} y={470} width={420} height={54} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
-          <text x={640} y={503} textAnchor="middle" fill={colors.WARM} fontSize={16} fontWeight={600}>
+          <rect x={430} y={410} width={420} height={54} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
+          <text x={640} y={443} textAnchor="middle" fill={colors.WARM} fontSize={16} fontWeight={600}>
             99% identical is still a miss
           </text>
         </g>
 
         {/* the closing discipline card */}
         <g opacity={moralU}>
+          <rect x={290} y={230} width={700} height={180} rx={16} fill={colors.BG} />
           <rect x={290} y={230} width={700} height={180} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
           <text x={640} y={286} textAnchor="middle" fill={colors.TEXT} fontSize={21} fontWeight={600}>
             The prefix is the cache key.

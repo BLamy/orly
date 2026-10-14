@@ -173,3 +173,11 @@ Mean of means 7.13; range 5.94-7.81. Cross-check: on 54 books also graded by an 
 | 152 | explained-mech-interp | 6.44 | sync 4.5 |
 | 153 | recordings-become-practice | 6.38 | depth 6 |
 | 154 | electric-stream-protocol | 5.94 | sound 4.5 |
+
+## 2026-10-14 — after the Haiku visual polish pass
+
+Claude Haiku 5.5 reworked the visuals of 460 book chapters (one agent per chapter, captions and timing locked; see
+`generator/scene-sheet.mjs` for the layout checks it worked against). Measured layout problems fell from 9,912 to 128.
+Regraded on the same rubric ([2026-10-14-haiku.json](2026-10-14-haiku.json)): **visual 6.60 → 6.78**, book mean 7.13 → 7.13
+(78 books up, 57 down, 19 flat); the non-visual dimensions moved by ±0.05, which is the graders' noise, since only the
+pictures changed. Still 0 books pass. The Grades tab shows each book's change against the 2026-10-13 run.

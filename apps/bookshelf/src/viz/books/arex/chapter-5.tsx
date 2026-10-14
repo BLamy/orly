@@ -38,7 +38,7 @@ export function buildScene() {
 
   tl.caption({ at: 0.4, dur: 5.7, text: 'Training starts with long teacher trajectories: actions, tool calls, observations, analysis, and a structured answer.' });
   tl.tween(trajU, 1, { at: 0.9, dur: 2.2, ease: ease.draw });
-  tl.tween(cam, { x: 640, y: 340, k: 1.08 }, { at: 1.2, dur: 1.4, ease: ease.move });
+  tl.tween(cam, { x: 644, y: 340, k: 1.06 }, { at: 1.2, dur: 1.4, ease: ease.move });
   tl.hold(6.1, 0.5);
 
   tl.caption({ at: 6.6, dur: 5.2, text: 'The pipeline removes runs with invalid tools, ignored observations, unsupported claims, or answers that the evidence cannot reconstruct.' });
@@ -51,7 +51,7 @@ export function buildScene() {
   tl.hold(17.4, 0.5);
 
   tl.caption({ at: 17.9, dur: 5.3, text: 'But that flat signal cannot say which turn found decisive evidence or corrected a bad direction.' });
-  tl.tween(cam, { x: 685, y: 345, k: 1.16 }, { at: 18.3, dur: 1.4, ease: ease.move });
+  tl.tween(cam, { x: 632, y: 345, k: 1.08 }, { at: 18.3, dur: 1.4, ease: ease.move });
   tl.tween(keyU, 1, { at: 18.6, dur: 1.6, ease: ease.enter });
   tl.hold(23.2, 0.5);
 
@@ -88,11 +88,13 @@ export function Render({ s }: { s: SceneState }) {
   const qcU = s.get(scene.qcU);
   const keyU = s.get(scene.keyU);
   const shapeU = s.get(scene.shapeU);
+  const modelsU = s.get(scene.modelsU);
   const mainOpacity = 1 - 0.86 * s.get(scene.dimU);
-  const startX = 95;
-  const stepW = 42;
-  const gap = 5;
+  const startX = 40;
+  const stepW = 44;
+  const gap = 3;
   const baseY = 405;
+  const rowEnd = startX + (STEPS.length - 1) * (stepW + gap) + stepW;
 
   return (
     <>
@@ -102,7 +104,11 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={68} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={700}>Credit for a long trajectory</text>
           <text x={640} y={95} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>teacher trajectory → quality control → mid-training → reinforcement learning</text>
 
-          <path d={`M ${startX} ${baseY + 26} L 1185 ${baseY + 26}`} stroke={colors.GRID} strokeWidth={3} />
+          {trajU > 0 && (
+            <text x={startX} y={352} fill={colors.MUTED} fontSize={14} opacity={trajU}>one teacher trajectory · 24 steps</text>
+          )}
+
+          <path d={`M ${startX} ${baseY + 26} L ${rowEnd} ${baseY + 26}`} stroke={colors.GRID} strokeWidth={3} />
           {STEPS.map((step, i) => {
             const u = clamp01(trajU * STEPS.length - i);
             const x = startX + i * (stepW + gap);
@@ -111,14 +117,14 @@ export function Render({ s }: { s: SceneState }) {
             const color = rejected ? colors.NEGATIVE : step.key && keyU > 0 ? colors.WARM : colors.ACCENT;
             return (
               <g key={i} transform={`translate(${x} ${baseY - bonus})`} opacity={u * (rejected ? 1 - 0.72 * qcU : 1)}>
-                <rect width={stepW} height={52 + bonus} y={-bonus} rx={8} fill={color} fillOpacity={0.1 + (step.key ? 0.08 * keyU : 0)} stroke={color} strokeOpacity={0.65} />
-                <text x={stepW / 2} y={30} textAnchor="middle" fill={colors.TEXT} fontSize={7.8} fontFamily={MONO}>{step.kind}</text>
-                <text x={stepW / 2} y={45} textAnchor="middle" fill={colors.MUTED} fontSize={7.5}>{i + 1}</text>
+                <rect width={stepW} height={52 + bonus} y={0} rx={8} fill={color} fillOpacity={0.1 + (step.key ? 0.08 * keyU : 0)} stroke={color} strokeOpacity={0.65} />
+                <text x={stepW / 2} y={30} textAnchor="middle" fill={colors.TEXT} fontSize={12}>{step.kind}</text>
+                <text x={stepW / 2} y={46} textAnchor="middle" fill={colors.MUTED} fontSize={12}>{i + 1}</text>
                 {rejected && <text x={stepW / 2} y={-7} textAnchor="middle" fill={colors.NEGATIVE} fontSize={15}>×</text>}
                 {step.key && keyU > 0 && (
                   <g opacity={keyU}>
-                    <circle cx={stepW / 2} cy={-bonus - 14} r={6} fill={colors.WARM} />
-                    <text x={stepW / 2} y={-bonus - 27} textAnchor="middle" fill={colors.WARM} fontSize={7.8}>{KEY_LABELS[i]}</text>
+                    <circle cx={stepW / 2} cy={-14} r={6} fill={colors.WARM} />
+                    <text x={stepW / 2} y={-27} textAnchor="middle" fill={colors.WARM} fontSize={12}>{KEY_LABELS[i]}</text>
                   </g>
                 )}
               </g>
@@ -127,38 +133,38 @@ export function Render({ s }: { s: SceneState }) {
 
           {s.get(scene.outcomeU) > 0 && (
             <g opacity={s.get(scene.outcomeU)}>
-              <circle cx={1195} cy={baseY + 26} r={34} fill={colors.POSITIVE} opacity={0.16} stroke={colors.POSITIVE} />
-              <text x={1195} y={baseY + 30} textAnchor="middle" fill={colors.POSITIVE} fontSize={11} fontWeight={700}>valid</text>
+              <circle cx={rowEnd - 22} cy={baseY + 85} r={26} fill={colors.POSITIVE} opacity={0.16} stroke={colors.POSITIVE} />
+              <text x={rowEnd - 22} y={baseY + 91} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={700}>valid</text>
             </g>
           )}
 
           {s.get(scene.flatU) > 0 && (
             <g opacity={s.get(scene.flatU)}>
-              <path d={`M ${startX} 300 L 1190 300`} stroke={colors.SECONDARY} strokeWidth={4} strokeLinecap="round" />
-              <text x={640} y={280} textAnchor="middle" fill={colors.SECONDARY} fontSize={11} fontFamily={MONO}>same outcome advantage across every step</text>
+              <path d={`M ${startX} 300 L ${rowEnd} 300`} stroke={colors.SECONDARY} strokeWidth={4} strokeLinecap="round" />
+              <text x={640} y={262} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>same outcome advantage across every step</text>
             </g>
           )}
 
-          {shapeU > 0 && (
-            <MathLabel tex={'A_{i,j}=A^{out}_i+\\lambda_{key}\\,\\widetilde B_{i,j}'} x={640} y={170} color={colors.WARM} fontSize={26} opacity={shapeU} />
+          {shapeU > 0 && modelsU < 1 && (
+            <MathLabel tex={'A_{i,j}=A^{out}_i+\\lambda_{key}\\,\\widetilde B_{i,j}'} x={640} y={170} color={colors.WARM} fontSize={26} opacity={shapeU * (1 - modelsU)} />
           )}
 
           {s.get(scene.normalizeU) > 0 && (
             <g opacity={s.get(scene.normalizeU)}>
               <rect x={330} y={510} width={620} height={58} rx={13} fill={colors.PANEL} stroke={colors.ACCENT} />
-              <text x={640} y={535} textAnchor="middle" fill={colors.TEXT} fontSize={11}>hierarchical step-balanced normalization</text>
-              <text x={640} y={556} textAnchor="middle" fill={colors.ACCENT} fontSize={9.5} fontFamily={MONO}>mean within trajectory → mean across rollout group</text>
+              <text x={640} y={533} textAnchor="middle" fill={colors.TEXT} fontSize={14}>hierarchical step-balanced normalization</text>
+              <text x={640} y={556} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>mean within trajectory → mean across rollout group</text>
             </g>
           )}
 
           {s.get(scene.modelsU) > 0 && (
             <g opacity={s.get(scene.modelsU)}>
               <rect x={205} y={145} width={340} height={90} rx={15} fill={colors.ACCENT} fillOpacity={0.09} stroke={colors.ACCENT} />
-              <text x={375} y={178} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontWeight={700}>AREX-Turbo</text>
-              <text x={375} y={205} textAnchor="middle" fill={colors.TEXT} fontSize={11}>dense · 4B parameters</text>
+              <text x={375} y={178} textAnchor="middle" fill={colors.ACCENT} fontSize={16} fontWeight={700}>AREX-Turbo</text>
+              <text x={375} y={205} textAnchor="middle" fill={colors.TEXT} fontSize={14}>dense · 4B parameters</text>
               <rect x={735} y={145} width={340} height={90} rx={15} fill={colors.SECONDARY} fillOpacity={0.09} stroke={colors.SECONDARY} />
-              <text x={905} y={178} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontWeight={700}>AREX-Base</text>
-              <text x={905} y={205} textAnchor="middle" fill={colors.TEXT} fontSize={11}>122B total · 10B active experts</text>
+              <text x={905} y={178} textAnchor="middle" fill={colors.SECONDARY} fontSize={16} fontWeight={700}>AREX-Base</text>
+              <text x={905} y={205} textAnchor="middle" fill={colors.TEXT} fontSize={14}>122B total · 10B active experts</text>
             </g>
           )}
 
@@ -170,7 +176,7 @@ export function Render({ s }: { s: SceneState }) {
                 return (
                   <g key={label} opacity={u}>
                     <circle cx={x} cy={595} r={18} fill={i === 4 ? colors.WARM : colors.ACCENT} opacity={0.2} stroke={i === 4 ? colors.WARM : colors.ACCENT} />
-                    <text x={x} y={625} textAnchor="middle" fill={colors.TEXT} fontSize={10.5}>{label}</text>
+                    <text x={x} y={626} textAnchor="middle" fill={colors.TEXT} fontSize={14}>{label}</text>
                     {i < 4 && <path d={`M ${x + 24} 595 L ${x + 202} 595`} stroke={colors.GRID} strokeWidth={2} />}
                   </g>
                 );
@@ -185,7 +191,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={286} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={700}>The answer audits itself</text>
           <text x={640} y={333} textAnchor="middle" fill={colors.MUTED} fontSize={16}>discover → gather → verify → preserve → improve</text>
           <text x={640} y={373} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>key-step shaping keeps final correctness primary</text>
-          <text x={640} y={405} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>arXiv:2607.21461 · official code: VectorSpaceLab/arex-model</text>
+          <text x={640} y={405} textAnchor="middle" fill={colors.MUTED} fontSize={12}>arXiv:2607.21461 · official code: VectorSpaceLab/arex-model</text>
         </g>
       )}
     </>

@@ -52,9 +52,10 @@ const FLOORS = [
 ] as const;
 
 // camera marks
-const CAM_LINE: CameraState = { x: 640, y: 280, k: 1.12 };
-const CAM_WIRE: CameraState = { x: 700, y: 310, k: 1.3 };
-const CAM_TOWER: CameraState = { x: 640, y: 460, k: 1.32 };
+// gentle pushes only: every station stays inside the 1280×720 stage
+const CAM_LINE: CameraState = { x: 640, y: 300, k: 1.05 };
+const CAM_WIRE: CameraState = { x: 640, y: 300, k: 1.08 };
+const CAM_TOWER: CameraState = { x: 640, y: 440, k: 1.12 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {
@@ -231,18 +232,22 @@ const scene = buildScene();
 // Render — pure function of the sampled state.
 // ---------------------------------------------------------------------------
 
-function Station({ x, w, title, code, u, glow }: {
+function Station({ x, w, title, role, code, u, glow }: {
   x: number;
   w: number;
   title: string;
-  code: string;
+  role: string;
+  code: readonly string[];
   u: number;
   glow?: number;
 }) {
   if (u <= 0) return null;
-  const h = 74;
+  const h = 84;
   return (
     <g opacity={u}>
+      <text x={x} y={RAIL_Y - h / 2 - 12} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic">
+        {role}
+      </text>
       <rect
         x={x - w / 2}
         y={RAIL_Y - h / 2}
@@ -253,12 +258,14 @@ function Station({ x, w, title, code, u, glow }: {
         stroke={glow && glow > 0.05 ? colors.ACCENT : colors.GRID}
         strokeWidth={glow && glow > 0.05 ? 2.5 : 1}
       />
-      <text x={x} y={RAIL_Y - 10} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontWeight={600}>
+      <text x={x} y={RAIL_Y - 16} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontWeight={600}>
         {title}
       </text>
-      <text x={x} y={RAIL_Y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily="monospace">
-        {code}
-      </text>
+      {code.map((line, i) => (
+        <text key={i} x={x} y={RAIL_Y + 6 + i * 18} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+          {line}
+        </text>
+      ))}
     </g>
   );
 }
@@ -312,7 +319,7 @@ function Pulse({ u }: { u: number }) {
     <g>
       <circle cx={x} cy={WIRE_Y} r={7} fill={colors.WARM} opacity={0.95} />
       <circle cx={x} cy={WIRE_Y} r={13} fill="none" stroke={colors.WARM} strokeWidth={1.5} opacity={0.5} />
-      <text x={x} y={WIRE_Y + 28} textAnchor="middle" fill={colors.WARM} fontSize={10} fontFamily="monospace">
+      <text x={x} y={WIRE_Y + 30} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="monospace">
         pull
       </text>
     </g>
@@ -365,24 +372,31 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={pipeU}>
             <line x1={railX0} y1={RAIL_Y} x2={lerp(railX0, railX1, pipeU)} y2={RAIL_Y} stroke={colors.GRID} strokeWidth={2} />
             <line x1={railX1} y1={WIRE_Y} x2={lerp(railX1, railX0, pipeU)} y2={WIRE_Y} stroke={colors.GRID} strokeWidth={1} strokeDasharray="3 7" />
-            <text x={railX0 + 8} y={RAIL_Y - 28} fill={colors.MUTED} fontSize={10.5}>
+            <text x={railX0 + 8} y={RAIL_Y - 10} fill={colors.MUTED} fontSize={12}>
               chunks ⟶
             </text>
-            <text x={railX1 - 8} y={WIRE_Y + 24} textAnchor="end" fill={colors.MUTED} fontSize={10.5}>
+            <text x={RUN.x - RUN.w / 2 - 16} y={WIRE_Y - 10} textAnchor="end" fill={colors.MUTED} fontSize={12}>
               ⟵ demand
             </text>
           </g>
 
           {/* stations */}
-          <Station x={SRC.x} w={SRC.w} title="source" code="Stream.fromIterable([1, 2, 3, 4, 5])" u={pipeU} />
-          <Station x={MAP.x} w={MAP.w} title="map" code="Stream.map((n) => n * 10)" u={pipeU} glow={mapGlow} />
-          <Station x={RUN.x} w={RUN.w} title="consumer" code="Stream.runCollect" u={runU} />
+          <Station
+            x={SRC.x}
+            w={SRC.w}
+            title="source"
+            role="makes the values"
+            code={['Stream.fromIterable', '([1, 2, 3, 4, 5])']}
+            u={pipeU}
+          />
+          <Station x={MAP.x} w={MAP.w} title="map" role="changes each value" code={['Stream.map((n) => n * 10)']} u={pipeU} glow={mapGlow} />
+          <Station x={RUN.x} w={RUN.w} title="consumer" role="asks, then collects" code={['Stream.runCollect']} u={runU} />
 
           {/* busy chip on the consumer */}
           {busyU > 0 && (
             <g opacity={busyU}>
-              <rect x={RUN.x - 52} y={RAIL_Y - 68} width={104} height={22} rx={11} fill={colors.BG} stroke={colors.WARM} />
-              <text x={RUN.x} y={RAIL_Y - 53} textAnchor="middle" fill={colors.WARM} fontSize={11}>
+              <rect x={RUN.x - 70} y={RAIL_Y - 72} width={140} height={24} rx={12} fill={colors.BG} stroke={colors.WARM} />
+              <text x={RUN.x} y={RAIL_Y - 55} textAnchor="middle" fill={colors.WARM} fontSize={12}>
                 busy — not asking
               </text>
             </g>
@@ -415,7 +429,7 @@ export function Render({ s }: { s: SceneState }) {
                 y={RAIL_Y + 4}
                 textAnchor="middle"
                 fill={colors.WARM}
-                fontSize={11}
+                fontSize={12}
                 fontFamily="monospace"
                 fontWeight={700}
               >
@@ -441,7 +455,7 @@ export function Render({ s }: { s: SceneState }) {
                 {collected.length ? `[${collected.join(', ')}]` : '[ ]'}
               </text>
               {sealU > 0 && (
-                <text x={RUN.x} y={RAIL_Y + 122} textAnchor="middle" fill={colors.POSITIVE} fontSize={11} opacity={sealU}>
+                <text x={RUN.x} y={RAIL_Y + 122} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} opacity={sealU}>
                   ✓ complete
                 </text>
               )}
@@ -451,7 +465,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* the cross-section tower */}
           {towerU > 0 && (
             <g opacity={towerU}>
-              <text x={TOWER.x} y={TOWER.y - 14} fill={colors.MUTED} fontSize={12} fontStyle="italic">
+              <text x={TOWER.x} y={TOWER.y - 14} fill={colors.MUTED} fontSize={13} fontStyle="italic">
                 inside the machine
               </text>
               {FLOORS.map((f, i) => {
@@ -473,7 +487,7 @@ export function Render({ s }: { s: SceneState }) {
                     <text x={TOWER.x + 18} y={y + 24} fill={hi ? colors.ACCENT : colors.TEXT} fontSize={12.5} fontFamily="monospace">
                       {f.code}
                     </text>
-                    <text x={TOWER.x + 18} y={y + 43} fill={colors.MUTED} fontSize={11}>
+                    <text x={TOWER.x + 18} y={y + 43} fill={colors.MUTED} fontSize={12}>
                       {f.note}
                     </text>
                   </g>
@@ -482,11 +496,11 @@ export function Render({ s }: { s: SceneState }) {
               {/* done-in-the-error-channel callout on the Pull floor */}
               {Math.round(floorHi) === 3 && (
                 <g>
-                  <rect x={TOWER.x + TOWER.w + 14} y={TOWER.y + 2 * (TOWER.floorH + TOWER.gap) + 6} width={150} height={44} rx={8} fill={colors.BG} stroke={colors.WARM} />
-                  <text x={TOWER.x + TOWER.w + 89} y={TOWER.y + 2 * (TOWER.floorH + TOWER.gap) + 24} textAnchor="middle" fill={colors.WARM} fontSize={11} fontFamily="monospace">
+                  <rect x={TOWER.x + TOWER.w + 14} y={TOWER.y + 2 * (TOWER.floorH + TOWER.gap) + 6} width={176} height={50} rx={8} fill={colors.BG} stroke={colors.WARM} />
+                  <text x={TOWER.x + TOWER.w + 102} y={TOWER.y + 2 * (TOWER.floorH + TOWER.gap) + 25} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="monospace">
                     Cause.Done
                   </text>
-                  <text x={TOWER.x + TOWER.w + 89} y={TOWER.y + 2 * (TOWER.floorH + TOWER.gap) + 40} textAnchor="middle" fill={colors.MUTED} fontSize={10}>
+                  <text x={TOWER.x + TOWER.w + 102} y={TOWER.y + 2 * (TOWER.floorH + TOWER.gap) + 43} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                     end rides the error rail
                   </text>
                 </g>

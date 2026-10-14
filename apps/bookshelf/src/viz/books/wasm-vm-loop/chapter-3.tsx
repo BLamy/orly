@@ -13,7 +13,7 @@
 // the recording hunk by hunk, hit counts as ground truth.
 import { CAMERA_HOME, Camera, STAGE_H, STAGE_W, Timeline, cameraInterp, colors, ease } from '../../core';
 import type { CameraState, ChannelRef, SceneState } from '../../core';
-import { DiffLanes, PredictionCard, RecordingStrip } from '../../agent';
+import { DiffLanes, PredictionCard, RecordingStrip, predictionCardHeight } from '../../agent';
 import type { RecordingPoint } from '../../agent';
 
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
@@ -42,12 +42,16 @@ const TAPE_POINTS: RecordingPoint[] = [
 const CITE_AT = 0.68;
 
 const PRED = { x: 170, y: 330, w: 450 } as const;
-const DIFF = { x: 700, y: 360, w: 440 } as const;
+const PREDICTION_TEXT = 'after the addiw, x5 = 0xffff_ffff_ffff_ff00 (sign-extended from bit 31)';
+// wide enough that the hunk label clears the hit badge and tag
+const DIFF = { x: 650, y: 360, w: 540 } as const;
 
 const CAM_SESSIONS: CameraState = { x: 640, y: 150, k: 1.25 };
 const CAM_TAPE: CameraState = { x: 640, y: 270, k: 1.2 };
-const CAM_PRED: CameraState = { x: 430, y: 350, k: 1.3 };
-const CAM_DIFF: CameraState = { x: 880, y: 400, k: 1.25 };
+// wide enough to keep the verifier session in frame beside the prediction
+const CAM_PRED: CameraState = { x: 600, y: 330, k: 1.15 };
+// prediction and coverage audit share the frame, sessions kept just in view
+const CAM_DIFF: CameraState = { x: 680, y: 295, k: 1.2 };
 const CAM_WIDE: CameraState = { x: 640, y: 360, k: 1.02 };
 
 // ---------------------------------------------------------------------------
@@ -161,7 +165,6 @@ export function buildScene(): Scene {
     text: 'Attack two: sufficiency. Hold the recording against the diff, hunk by hunk, and count how many times each changed line actually executed. Hit counts are ground truth.',
   });
   tl.tween(cam, CAM_DIFF, { at: 44.3, dur: 1.4, ease: ease.move });
-  tl.tween(predU, 0.15, { at: 44.5, dur: 0.9, ease: ease.move });
   tl.tween(diffU, 1, { at: 45.0, dur: 2.2, ease: ease.draw });
   tl.tween(hitsU, 1, { at: 47.4, dur: 2.6, ease: ease.linear });
   tl.hold(51.6, 0.5);
@@ -208,7 +211,7 @@ function SessionNode({ x, y, label, sub, color, u }: { x: number; y: number; lab
       <text x={x} y={y + 56} textAnchor="middle" fill={colors.TEXT} fontSize={13.5} fontWeight={700}>
         {label}
       </text>
-      <text x={x} y={y + 74} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+      <text x={x} y={y + 74} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
         {sub}
       </text>
     </g>
@@ -249,15 +252,18 @@ export function Render({ s }: { s: SceneState }) {
           {wallU > 0 && (
             <g opacity={wallU}>
               <line x1={WALL_X} y1={60} x2={WALL_X} y2={60 + 130 * wallU} stroke={colors.GRID} strokeWidth={3} strokeDasharray="8 6" />
-              <text x={WALL_X} y={48} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
-                no shared memory
-              </text>
+              {/* the label fades as the camera leaves the sessions; the wall stays */}
+              {diffU < 1 && (
+                <text x={WALL_X} y={48} textAnchor="middle" fill={colors.MUTED} fontSize={12} opacity={1 - diffU}>
+                  no shared memory
+                </text>
+              )}
             </g>
           )}
           {handU > 0 && handU < 1 && (
             <g transform={`translate(${parcelX} ${parcelY})`}>
-              <rect x={-26} y={-9} width={52} height={18} rx={5} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.4} />
-              <text y={4} textAnchor="middle" fill={colors.POSITIVE} fontSize={9.5} fontFamily={MONO}>
+              <rect x={-34} y={-11} width={68} height={22} rx={5} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.4} />
+              <text y={4.5} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
                 the tape
               </text>
             </g>
@@ -286,18 +292,29 @@ export function Render({ s }: { s: SceneState }) {
               x={PRED.x}
               y={PRED.y}
               w={PRED.w}
-              text="after the addiw, x5 = 0xffff_ffff_ffff_ff00 (sign-extended from bit 31)"
+              text={PREDICTION_TEXT}
               stamp="predicted — before looking"
               stampU={stampU}
               u={predU}
               observed="observed: x5 = 0x0000_0000_ffff_ff00"
               observedU={obsU}
-              verdictKind="failed"
-              verdictU={verdU}
               link="rr replay -g 48123"
               linkU={linkU}
               dim={diffU > 0.3 ? 0.6 : 0}
             />
+          )}
+          {/* the FAILED stamp hangs off the card's bottom edge, clear of the observed value */}
+          {verdU > 0 && (
+            <g
+              transform={`translate(${PRED.x + PRED.w - 70}, ${PRED.y + predictionCardHeight(PREDICTION_TEXT, PRED.w, true) + 12}) rotate(-8) scale(${0.7 + 0.3 * verdU})`}
+              opacity={verdU}
+            >
+              <rect x={-68} y={-19} width={136} height={38} rx={7} fill={colors.BG} opacity={0.5} />
+              <rect x={-68} y={-19} width={136} height={38} rx={7} fill="none" stroke={colors.NEGATIVE} strokeWidth={3} />
+              <text y={7.5} textAnchor="middle" fill={colors.NEGATIVE} fontSize={21} fontWeight={800} letterSpacing={2.5} fontFamily={MONO}>
+                FAILED
+              </text>
+            </g>
           )}
 
           {/* ---- attack two: the sufficiency audit ---- */}
@@ -317,7 +334,7 @@ export function Render({ s }: { s: SceneState }) {
                     classU: clamp01(classU * 3),
                   },
                   {
-                    label: 'src/bus.rs:141-158 — misaligned SD path',
+                    label: 'src/bus.rs:141-158 misaligned SD',
                     kind: 'needs-proof',
                     hits: 0,
                     u: clamp01(diffU * 3 - 1),

@@ -50,6 +50,10 @@ const N = {
   cdn: { x: 360, y: 110 },
 } as const;
 
+// default ServiceNode is 168 wide; arrows stop one gap outside the box edge
+const HW = 84;
+const GAP = 5;
+
 // the MapReduce fold — real shape from the HitCounts MRJob in the README
 const LOG_LINES = [
   'GET /dSUUsvo 200',
@@ -80,7 +84,7 @@ const EXP_ROWS = [
 const ESCALATION = ['Federation', 'Sharding', 'Denormalization', 'SQL Tuning'] as const;
 
 const CAM_DIAL: CameraState = { x: 420, y: 260, k: 1.3 };
-const CAM_ARCH: CameraState = { x: 700, y: 270, k: 1.12 };
+const CAM_ARCH: CameraState = { x: 640, y: 270, k: 1.12 };
 const CAM_PANEL: CameraState = { x: 640, y: 500, k: 1.3 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
@@ -206,6 +210,7 @@ export function buildScene(): Scene {
     text: "And the object store? Twelve point seven gigabytes of new content a month barely registers. Some parts of a design simply refuse to be the bottleneck.",
   });
   tl.tween(expU, 0, { at: 46.6, dur: 0.8, ease: ease.move });
+  tl.tween(cam, CAM_ARCH, { at: 46.4, dur: 1.6, ease: ease.move });
   tl.tween(storeU, 1, { at: 47.4, dur: 1.0, ease: ease.pop });
 
   // — Beat 9 · the whole answer —
@@ -226,7 +231,7 @@ export function buildScene(): Scene {
     dur: 6.6,
     text: "That's the URL shortener, solved. Interviewers aren't asking you to memorize boxes — they want exactly this: size the load, split the data, cache the reads, and know what breaks first.",
   });
-  tl.tween(archDim, 0.13, { at: 60.4, dur: 1.4, ease: ease.move });
+  tl.tween(archDim, 0.06, { at: 60.4, dur: 1.4, ease: ease.move });
   tl.tween(closeU, 1, { at: 61.8, dur: 1.0, ease: ease.enter });
   tl.hold(66.6, 1.6);
 
@@ -315,7 +320,7 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- the traffic dial ---- */}
         {archU > 0 && (
-          <g opacity={archU * archDim * (1 - panelOff * 0.5)}>
+          <g opacity={archU * archDim * (1 - panelOff * 0.5) * (1 - Math.max(mrU, expU))}>
             <circle cx={170} cy={110} r={52} fill={colors.PANEL} stroke={colors.GRID} />
             <line
               x1={170}
@@ -334,7 +339,7 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- the architecture ---- */}
         {archU > 0 && (
-          <g opacity={archDim}>
+          <g opacity={archDim * (1 - Math.max(mrU, expU))}>
             <ServiceNode x={N.client.x} y={N.client.y} kind="client" label="Client" u={archU} />
             <ServiceNode x={N.cdn.x} y={N.cdn.y} kind="cdn" label="CDN" u={clamp01(archU * 1.4 - 0.2)} />
             {lbU > 0 && <ServiceNode x={N.lb.x} y={N.lb.y} kind="lb" label="Load Balancer" u={lbU} />}
@@ -359,22 +364,32 @@ export function Render({ s }: { s: SceneState }) {
               kind="db"
               label="SQL Master-Slave"
               sublabel="4 writes / s"
+              w={200}
               u={clamp01(archU * 1.4 - 0.5)}
             />
             <ServiceNode x={N.store.x} y={N.store.y} kind="storage" label="Object Store" sublabel="12.7 GB / mo" u={clamp01(archU * 1.4 - 0.5)} glow={storeU} />
             <ServiceNode x={N.analytics.x} y={N.analytics.y} kind="db" label="Analytics" sublabel="warehouse" u={clamp01(archU * 1.4 - 0.6)} />
 
             {/* wiring */}
-            <Connection from={{ x: N.client.x + 46, y: N.client.y }} to={{ x: (lbU > 0 ? N.lb.x : N.web.x) - 56, y: N.web.y }} u={archU} arrow />
-            <Connection from={{ x: N.client.x + 20, y: N.client.y - 34 }} to={{ x: N.cdn.x - 50, y: N.cdn.y }} elbow="v" u={clamp01(archU * 1.4 - 0.2)} arrow dashed />
-            {lbU > 0 && <Connection from={{ x: N.lb.x + 52, y: N.lb.y }} to={{ x: N.web.x - 56, y: N.web.y }} u={lbU} arrow />}
-            <Connection from={{ x: N.web.x + 56, y: N.web.y - 12 }} to={{ x: N.readApi.x - 56, y: N.readApi.y }} elbow="h" u={clamp01(archU * 1.4 - 0.3)} arrow />
-            <Connection from={{ x: N.web.x + 56, y: N.web.y + 12 }} to={{ x: N.writeApi.x - 56, y: N.writeApi.y }} elbow="h" u={clamp01(archU * 1.4 - 0.3)} arrow />
-            <Connection from={{ x: N.readApi.x + 56, y: N.readApi.y - 10 }} to={{ x: N.cache.x - 62, y: N.cache.y }} elbow="h" u={clamp01(archU * 1.4 - 0.4)} arrow />
-            <Connection from={{ x: N.readApi.x + 56, y: N.readApi.y + 8 }} to={{ x: N.replicas.x - 62, y: N.replicas.y }} elbow="h" u={clamp01(archU * 1.4 - 0.4)} arrow />
-            <Connection from={{ x: N.writeApi.x + 56, y: N.writeApi.y - 8 }} to={{ x: N.master.x - 62, y: N.master.y }} elbow="h" u={clamp01(archU * 1.4 - 0.5)} arrow />
-            <Connection from={{ x: N.writeApi.x + 56, y: N.writeApi.y + 10 }} to={{ x: N.store.x - 62, y: N.store.y }} elbow="h" u={clamp01(archU * 1.4 - 0.5)} arrow />
-            <Connection from={{ x: N.analytics.x, y: N.analytics.y - 34 }} to={{ x: N.web.x, y: N.web.y + 34 }} elbow="v" u={clamp01(archU * 1.4 - 0.6)} dashed arrow label="logs" labelSize={9} />
+            <Connection from={{ x: N.client.x + HW + GAP, y: N.client.y }} to={{ x: (lbU > 0 ? N.lb.x : N.web.x) - HW - GAP, y: N.web.y }} u={archU} arrow />
+            <Connection from={{ x: N.client.x + 20, y: N.client.y - 34 }} to={{ x: N.cdn.x - HW - GAP, y: N.cdn.y }} elbow="v" u={clamp01(archU * 1.4 - 0.2)} arrow dashed />
+            {lbU > 0 && <Connection from={{ x: N.lb.x + HW + GAP, y: N.lb.y }} to={{ x: N.web.x - HW - GAP, y: N.web.y }} u={lbU} arrow />}
+            <Connection from={{ x: N.web.x + HW + GAP, y: N.web.y - 12 }} to={{ x: N.readApi.x - HW - GAP, y: N.readApi.y }} elbow="h" u={clamp01(archU * 1.4 - 0.3)} arrow />
+            <Connection from={{ x: N.web.x + HW + GAP, y: N.web.y + 12 }} to={{ x: N.writeApi.x - HW - GAP, y: N.writeApi.y }} elbow="h" u={clamp01(archU * 1.4 - 0.3)} arrow />
+            <Connection from={{ x: N.readApi.x + HW + GAP, y: N.readApi.y - 10 }} to={{ x: N.cache.x - HW - GAP, y: N.cache.y }} elbow="h" u={clamp01(archU * 1.4 - 0.4)} arrow />
+            <Connection from={{ x: N.readApi.x + HW + GAP, y: N.readApi.y + 8 }} to={{ x: N.replicas.x - HW - GAP, y: N.replicas.y }} elbow="h" u={clamp01(archU * 1.4 - 0.4)} arrow />
+            <Connection from={{ x: N.writeApi.x + HW + GAP, y: N.writeApi.y - 8 }} to={{ x: N.master.x - 100 - GAP, y: N.master.y }} elbow="h" u={clamp01(archU * 1.4 - 0.5)} arrow />
+            <Connection from={{ x: N.writeApi.x + HW + GAP, y: N.writeApi.y + 10 }} to={{ x: N.store.x - HW - GAP, y: N.store.y }} elbow="h" u={clamp01(archU * 1.4 - 0.5)} arrow />
+            <Connection
+              from={{ x: N.web.x, y: N.web.y + 28 + GAP }}
+              via={[{ x: N.web.x, y: N.analytics.y }]}
+              to={{ x: N.analytics.x - HW - GAP, y: N.analytics.y }}
+              u={clamp01(archU * 1.4 - 0.6)}
+              dashed
+              arrow
+              label="logs"
+              labelSize={12}
+            />
           </g>
         )}
 
@@ -386,14 +401,14 @@ export function Render({ s }: { s: SceneState }) {
               if (u <= 0) return null;
               return (
                 <g key={e} opacity={u}>
-                  <rect x={1090} y={250 + i * 34} width={150} height={26} rx={7} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.2} />
-                  <text x={1165} y={268 + i * 34} textAnchor="middle" fill={colors.SECONDARY} fontSize={11.5}>
+                  <rect x={1064} y={250 + i * 34} width={140} height={26} rx={7} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.2} />
+                  <text x={1134} y={268 + i * 34} textAnchor="middle" fill={colors.SECONDARY} fontSize={13}>
                     {e}
                   </text>
                 </g>
               );
             })}
-            <text x={1165} y={240} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontStyle="italic" opacity={clamp01(escU * 2)}>
+            <text x={1134} y={240} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic" opacity={clamp01(escU * 2)}>
               if writes ever grow
             </text>
           </g>
@@ -404,17 +419,17 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={mrU}>
             <rect x={330} y={430} width={620} height={180} rx={12} fill={colors.BG} />
             <rect x={330} y={430} width={620} height={180} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={348} y={456} fill={colors.TEXT} fontSize={13}>
+            <text x={348} y={456} fill={colors.TEXT} fontSize={15}>
               MapReduce over the raw logs
             </text>
-            <text x={932} y={456} textAnchor="end" fill={colors.MUTED} fontSize={10.5} fontFamily="monospace">
+            <text x={932} y={456} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
               class HitCounts(MRJob)
             </text>
             {/* raw log lines */}
             {LOG_LINES.map((line, i) => {
               const gone = clamp01(mrFold * 2.2 - i * 0.25);
               return (
-                <text key={i} x={348} y={482 + i * 22} fill={colors.MUTED} fontSize={11} fontFamily="monospace" opacity={1 - gone * 0.75}>
+                <text key={i} x={348} y={484 + i * 22} fill={colors.MUTED} fontSize={13} fontFamily="monospace" opacity={1 - gone * 0.75}>
                   {line}
                 </text>
               );
@@ -424,7 +439,7 @@ export function Render({ s }: { s: SceneState }) {
               const u = clamp01(mrFold * 2.2 - i * 0.25 - 0.3);
               const folded = clamp01(mrFold * 2 - 1.2);
               return (
-                <text key={i} x={560} y={482 + i * 22} fill={colors.TEAL} fontSize={11} fontFamily="monospace" opacity={u * (1 - folded * 0.7)}>
+                <text key={i} x={520} y={484 + i * 22} fill={colors.TEAL} fontSize={13} fontFamily="monospace" opacity={u * (1 - folded * 0.7)}>
                   {line}
                 </text>
               );
@@ -433,15 +448,15 @@ export function Render({ s }: { s: SceneState }) {
             {REDUCED.map((line, i) => {
               const u = clamp01(mrFold * 3 - 1.8 - i * 0.3);
               return (
-                <text key={i} x={790} y={490 + i * 24} fill={colors.POSITIVE} fontSize={12} fontFamily="monospace" fontWeight={700} opacity={u}>
+                <text key={i} x={756} y={484 + i * 26} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace" fontWeight={700} opacity={u}>
                   {line}
                 </text>
               );
             })}
-            <text x={560} y={594} fill={colors.MUTED} fontSize={10}>
+            <text x={520} y={598} fill={colors.MUTED} fontSize={12}>
               mapper — (month, url), 1
             </text>
-            <text x={790} y={594} fill={colors.MUTED} fontSize={10}>
+            <text x={756} y={598} fill={colors.MUTED} fontSize={12}>
               reducer — sum per key
             </text>
           </g>
@@ -452,23 +467,23 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={expU}>
             <rect x={390} y={430} width={500} height={176} rx={12} fill={colors.BG} />
             <rect x={390} y={430} width={500} height={176} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={408} y={456} fill={colors.TEXT} fontSize={13}>
+            <text x={408} y={456} fill={colors.TEXT} fontSize={15}>
               the janitor — delete where expired
             </text>
-            <text x={872} y={456} textAnchor="end" fill={colors.MUTED} fontSize={10.5} fontFamily="monospace">
+            <text x={872} y={456} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
               created_at + expiration &lt; now
             </text>
             {EXP_ROWS.map((r, i) => {
-              const y = 474 + i * 30;
+              const y = 474 + i * 32;
               const swept = sweepU > (i + 0.5) / EXP_ROWS.length;
               const dying = r.dead && swept;
               return (
                 <g key={r.link} opacity={dying ? 0.25 : 1}>
-                  <rect x={408} y={y} width={464} height={24} rx={5} fill={colors.BG} stroke={dying ? colors.NEGATIVE : colors.GRID} strokeWidth={dying ? 1.4 : 1} />
-                  <text x={422} y={y + 16} fill={dying ? colors.NEGATIVE : colors.TEXT} fontSize={11.5} fontFamily="monospace" textDecoration={dying ? 'line-through' : undefined}>
+                  <rect x={408} y={y} width={464} height={26} rx={5} fill={colors.BG} stroke={dying ? colors.NEGATIVE : colors.GRID} strokeWidth={dying ? 1.4 : 1} />
+                  <text x={422} y={y + 18} fill={dying ? colors.NEGATIVE : colors.TEXT} fontSize={14} fontFamily="monospace" textDecoration={dying ? 'line-through' : undefined}>
                     {r.link}
                   </text>
-                  <text x={858} y={y + 16} textAnchor="end" fill={dying ? colors.NEGATIVE : colors.MUTED} fontSize={11} fontFamily="monospace">
+                  <text x={858} y={y + 18} textAnchor="end" fill={dying ? colors.NEGATIVE : colors.MUTED} fontSize={13} fontFamily="monospace">
                     {r.exp}
                   </text>
                 </g>
@@ -476,7 +491,7 @@ export function Render({ s }: { s: SceneState }) {
             })}
             {/* the sweep beam */}
             {sweepU > 0 && sweepU < 1 && (
-              <line x1={408} y1={474 + sweepU * 118} x2={872} y2={474 + sweepU * 118} stroke={colors.WARM} strokeWidth={2} opacity={0.8} />
+              <line x1={408} y1={474 + sweepU * 122} x2={872} y2={474 + sweepU * 122} stroke={colors.WARM} strokeWidth={2} opacity={0.8} />
             )}
           </g>
         )}
@@ -484,6 +499,9 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- the recap: one link's whole life ---- */}
         {recapU > 0 && (
           <g opacity={archDim}>
+            <text x={640} y={36} textAnchor="middle" fill={colors.ACCENT} fontSize={16} fontFamily="monospace">
+              one link&apos;s whole life · dSUUsvo
+            </text>
             <RequestFlow
               path={[
                 { x: N.client.x, y: N.client.y },
@@ -498,8 +516,6 @@ export function Render({ s }: { s: SceneState }) {
               ]}
               u={recapU}
               color={colors.ACCENT}
-              label="dSUUsvo"
-              labelSize={11}
               hold={false}
             />
           </g>
@@ -515,7 +531,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={640} y={318} textAnchor="middle" fill={colors.ACCENT} fontSize={19} fontWeight={700}>
               know what breaks first
             </text>
-            <text x={640} y={368} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic">
+            <text x={640} y={368} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
               System Design, Solved · №1 — the URL shortener
             </text>
           </g>

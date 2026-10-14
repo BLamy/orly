@@ -34,9 +34,11 @@ const SPINE_BOT = 430;
 const TAPE_Y = 520;
 const TAPE_H = 20;
 
-const CAM_ADA: CameraState = { x: 320, y: 280, k: 1.24 };
-const CAM_SPINE: CameraState = { x: 640, y: 300, k: 1.14 };
-const CAM_TAPES: CameraState = { x: 640, y: 440, k: 1.1 };
+// Every camera keeps both panes (x 70..1210) and the pane tops (y 96) on stage,
+// so no pane is cropped mid-beat.
+const CAM_PANES: CameraState = { x: 640, y: 300, k: 1 };
+const CAM_SPINE: CameraState = { x: 640, y: 280, k: 1.04 };
+const CAM_TAPES: CameraState = { x: 640, y: 400, k: 1.1 };
 const CAM_WIDE: CameraState = { x: 640, y: 340, k: 0.98 };
 
 /* ------------------------------------------------------------------ data */
@@ -109,7 +111,7 @@ export function buildScene() {
     dur: 6.2,
     text: 'Each browser lands on the chat route, gets bounced to a login form, and signs in against the local auth emulator from chapter one — seeded accounts, seeded password, nothing real.',
   });
-  tl.tween(cam, CAM_ADA, { at: t - 5.8, dur: 1.4, ease: ease.move });
+  tl.tween(cam, CAM_PANES, { at: t - 5.8, dur: 1.4, ease: ease.move });
   tl.tween(loginU, 1, { at: t - 4.8, dur: 2.6, ease: ease.move });
   t = tl.hold(t, 0.5);
 
@@ -255,39 +257,39 @@ function ChatPane({
   const y = ADA.y;
   const authed = lg >= 0.999;
   return (
-    <g transform={`translate(${x}, ${y + (1 - e) * 14})`} opacity={e * (1 - 0.85 * dim)}>
+    <g transform={`translate(${x}, ${y + (1 - e) * 14})`} opacity={e * (1 - 0.9 * dim)}>
       <rect width={PANE_W} height={PANE_H} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
       {/* worker chrome */}
       <rect x={12} y={10} width={PANE_W - 24} height={24} rx={12} fill={colors.BG} opacity={0.6} />
       <circle cx={26} cy={22} r={4} fill={colors.NEGATIVE} opacity={0.9} />
-      <text x={40} y={26} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
-        Replay Chromium · worker {persona === 'Ada' ? '1' : '2'} · 127.0.0.1:5175/app?room=…
+      <text x={40} y={26} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+        Replay Chromium · worker {persona === 'Ada' ? '1' : '2'} · /app?room=…
       </text>
       {/* login form → auth header */}
       {!authed && (
         <g opacity={1 - lg}>
-          <text x={20} y={64} fill={colors.TEXT} fontSize={14} fontWeight={700}>
+          <text x={20} y={64} fill={colors.TEXT} fontSize={15} fontWeight={700}>
             Sign in
           </text>
           <rect x={20} y={78} width={PANE_W - 40} height={26} rx={6} fill={colors.BG} stroke={colors.GRID} />
-          <text x={30} y={95} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+          <text x={30} y={95} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
             {lg > 0.25 ? email : ''}
           </text>
           <rect x={20} y={112} width={PANE_W - 40} height={26} rx={6} fill={colors.BG} stroke={colors.GRID} />
-          <text x={30} y={129} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+          <text x={30} y={129} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
             {lg > 0.55 ? 'DemoPass123' : ''}
           </text>
-          <text x={20} y={162} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+          <text x={20} y={162} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
             auth0-emulator-url: http://127.0.0.1:4101
           </text>
         </g>
       )}
       {authed && (
         <g>
-          <text x={20} y={58} fill={colors.TEXT} fontSize={13.5} fontWeight={700}>
+          <text x={20} y={58} fill={colors.TEXT} fontSize={15} fontWeight={700}>
             {displayName}
           </text>
-          <text x={20} y={74} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+          <text x={20} y={76} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
             auth-user: {email} · Auth0 emulator · live
           </text>
           {/* transcript */}
@@ -307,11 +309,11 @@ function ChatPane({
                   fill={sentByMe ? colors.ACCENT : colors.SECONDARY}
                   opacity={0.1}
                 />
-                <text x={10} y={15} fill={sentByMe ? colors.ACCENT : colors.SECONDARY} fontSize={10.5} fontFamily={MONO} fontWeight={700}>
+                <text x={10} y={15} fill={sentByMe ? colors.ACCENT : colors.SECONDARY} fontSize={12} fontFamily={MONO} fontWeight={700}>
                   {m.from === 'Ada' ? 'Ada Lovelace' : 'Linus Torvalds'} · {m.delay}
                 </text>
-                <text x={10} y={30} fill={colors.TEXT} fontSize={10.5}>
-                  {m.text.length > 62 ? `${m.text.slice(0, 62)}…` : m.text}
+                <text x={10} y={31} fill={colors.TEXT} fontSize={12}>
+                  {m.text.length > 50 ? `${m.text.slice(0, 50)}…` : m.text}
                 </text>
                 {checked > 0 && (
                   <g transform={`translate(${PANE_W - 58}, 19)`} opacity={checked}>
@@ -323,7 +325,7 @@ function ChatPane({
             );
           })}
           {clamp01(assert) > 0.8 && (
-            <text x={20} y={PANE_H - 14} fill={colors.POSITIVE} fontSize={10.5} fontFamily={MONO} opacity={clamp01(assert)}>
+            <text x={20} y={PANE_H - 14} fill={colors.POSITIVE} fontSize={12} fontFamily={MONO} opacity={clamp01(assert)}>
               expect getByText(message) toBeVisible — all 4 ✓
             </text>
           )}
@@ -334,11 +336,11 @@ function ChatPane({
 }
 
 /** The durable stream between the panes — an append-only spine. */
-function StreamSpine({ u, convo, dim }: { u: number; convo: number; dim: number }) {
+function StreamSpine({ u, convo, dim, close }: { u: number; convo: number; dim: number; close: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
   return (
-    <g opacity={1 - 0.85 * dim}>
+    <g opacity={(1 - 0.9 * dim) * (1 - clamp01(close))}>
       <line
         x1={SPINE_X}
         y1={SPINE_TOP}
@@ -349,9 +351,14 @@ function StreamSpine({ u, convo, dim }: { u: number; convo: number; dim: number 
         strokeLinecap="round"
       />
       {uu >= 0.999 && (
-        <text x={SPINE_X} y={SPINE_TOP - 12} textAnchor="middle" fill={colors.TEAL} fontSize={10.5} fontFamily={MONO}>
-          /rooms/&lt;room&gt;/messages
-        </text>
+        <g>
+          <text x={SPINE_X} y={SPINE_TOP - 12} textAnchor="middle" fill={colors.TEAL} fontSize={13} fontFamily={MONO}>
+            /rooms/&lt;room&gt;/messages
+          </text>
+          <text x={SPINE_X} y={SPINE_BOT + 26} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            append-only log · readers track an offset
+          </text>
+        </g>
       )}
       {/* appended entries tick down the spine as messages land */}
       {CONVO.map((m, i) => {
@@ -361,8 +368,8 @@ function StreamSpine({ u, convo, dim }: { u: number; convo: number; dim: number 
         return (
           <g key={i} opacity={au}>
             <circle cx={SPINE_X} cy={y} r={5} fill={colors.TEAL} />
-            <text x={SPINE_X + 12} y={y + 4} fill={colors.MUTED} fontSize={10} fontFamily={MONO}>
-              offset {i}
+            <text x={SPINE_X + 12} y={y + 4} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              offset {i} · {m.from}
             </text>
           </g>
         );
@@ -409,7 +416,7 @@ function renderFrame(s: SceneState) {
   const tape = s.get(scene.tapeU);
   return (
     <>
-      <StreamSpine u={s.get(scene.spineU)} convo={convo} dim={dim} />
+      <StreamSpine u={s.get(scene.spineU)} convo={convo} dim={dim} close={s.get(scene.closeU)} />
       <ChatPane
         x={ADA.x}
         persona="Ada"

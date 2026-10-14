@@ -41,7 +41,7 @@ export function buildScene() {
   tl.caption({ at: 14.9, dur: 6.8, text: 'With supervised fine-tuning, the final profile sinks. Logic falls from thirty-one percent to nine.' });
   tl.tween(sftU, 1, { at: 15.5, dur: 2.2, ease: ease.move });
   tl.tween(sftFocus, 1, { at: 18.0, dur: 0.6, ease: ease.pop });
-  tl.tween(cam, { x: 690, y: 386, k: 1.18 }, { at: 18.1, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 340, k: 1.16 }, { at: 18.1, dur: 1.3, ease: ease.move });
   tl.hold(21.7, 0.8);
 
   tl.caption({ at: 22.5, dur: 6.5, text: 'The paper calls this conflict: learning the current task can overwrite abilities the model already had.' });
@@ -90,7 +90,7 @@ function Rail({ task, index, value, baseline, opacity, focus }: { task: string; 
     <line x1={scale(baseline)} y1={y - 18} x2={scale(baseline)} y2={y + 18} stroke={colors.TEXT} strokeWidth={2} opacity={0.7} />
     <circle cx={scale(value)} cy={y} r={10 + focus * 5} fill={color} />
     <text x={scale(value)} y={y - 23} textAnchor="middle" fill={color} fontSize={14} fontFamily={MONO}>{value.toFixed(1)}</text>
-    <text x={scale(baseline)} y={y + 34} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={MONO}>base {baseline.toFixed(1)}</text>
+    <text x={scale(baseline)} y={y + 34} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>base {baseline.toFixed(1)}</text>
   </g>;
 }
 
@@ -101,12 +101,15 @@ export function Render({ s }: { s: SceneState }) {
   const dim = 1 - 0.9 * s.get(scene.dimU);
   const cursor = clamp01(s.get(scene.stageCursor) / 4);
   const cursorX = 250 + cursor * 760;
+  // Closing card: the chart fades to a faint backdrop so the panel reads cleanly.
+  const fade = 1 - 0.88 * s.get(scene.endU);
   return <>
     <rect width={1280} height={720} fill={colors.BG} />
-    <g opacity={dim}>
+    <g opacity={dim * fade}>
       <text x={640} y={54} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={850}>One checkpoint, four capabilities</text>
       <text x={640} y={82} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>Table 1 · DeepSeek-R1-Distill-Qwen-1.5B</text>
     </g>
+    <g opacity={fade}>
     <Camera {...s.get(scene.cam)}>
       <g opacity={dim * s.get(scene.railsU)}>
         <line x1={250} y1={142} x2={1010} y2={142} stroke={colors.GRID} strokeWidth={3} />
@@ -121,7 +124,9 @@ export function Render({ s }: { s: SceneState }) {
         </g>
       </g>
     </Camera>
+    </g>
     <g opacity={s.get(scene.endU)}>
+      <rect x={180} y={220} width={920} height={224} rx={28} fill={colors.BG} />
       <rect x={180} y={220} width={920} height={224} rx={28} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2.5} />
       <text x={640} y={292} textAnchor="middle" fill={colors.TEXT} fontSize={36} fontWeight={850}>Same tasks. Different geometry.</text>
       <text x={640} y={346} textAnchor="middle" fill={colors.NEGATIVE} fontSize={20}>supervision collides</text>

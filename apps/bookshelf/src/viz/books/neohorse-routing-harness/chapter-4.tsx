@@ -1,5 +1,5 @@
 // Grounding: arXiv:2609.08183 Sections 3.5, 4.3, and 5; Equations 3–4; official NeoHorse README.md.
-import { CAMERA_HOME, Camera, MathLabel, Timeline, cameraInterp, colors, ease } from '../../core';
+import { CAMERA_HOME, Camera, Timeline, cameraInterp, colors, ease } from '../../core';
 import type { CameraState, SceneState } from '../../core';
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
@@ -57,7 +57,7 @@ export function buildScene() {
 
   tl.caption({ at: 41.0, dur: 5.5, text: 'Evaluation then builds a deficiency profile across attributes, quality dimensions, outcomes, and routing tiers.' });
   tl.tween(profileU, 1, { at: 41.6, dur: 2.4, ease: ease.draw });
-  tl.tween(cam, { x: 850, y: 350, k: 1.04 }, { at: 42.4, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 690, y: 350, k: 1.04 }, { at: 42.4, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 46.8, dur: 5.5, text: 'The next training mixture shifts toward underperforming regions while preserving broad coverage and adding new harness trajectories.' });
   tl.tween(allocateU, 1, { at: 47.4, dur: 1.6, ease: ease.move });
@@ -77,10 +77,10 @@ const scene = buildScene();
 
 function bars(values: number[], x: number, y: number, u: number, color: string, label: string) {
   return <g transform={`translate(${x} ${y})`} opacity={clamp01(u)}>
-    <text x="126" y="-108" textAnchor="middle" fill={color} fontSize="12" fontFamily={colors.font.mono}>{label}</text>
+    <text x="126" y="-108" textAnchor="middle" fill={color} fontSize="14" fontFamily={colors.font.mono}>{label}</text>
     {values.map((p, i) => <g key={i} transform={`translate(${i * 43} 0)`}>
       <rect y={-p * 260 * clamp01(u)} width="30" height={p * 260 * clamp01(u)} rx="8" fill={color} opacity={0.82} />
-      <text x="15" y="20" textAnchor="middle" fill={colors.MUTED} fontSize="9">{i === 5 ? 'other' : i + 1}</text>
+      <text x="15" y="20" textAnchor="middle" fill={colors.MUTED} fontSize="12">{i === 5 ? 'other' : i + 1}</text>
     </g>)}
   </g>;
 }
@@ -93,14 +93,17 @@ export function Render({ s }: { s: SceneState }) {
   const workingOpacity = 1 - result * 0.9;
   const studentValues = STUDENT.map((p, i) => p + (UPDATED[i] - p) * update);
   const alloc = s.get(scene.allocateU);
-  return <Camera {...s.get(scene.cam)}>
+  return <>
     <g opacity={1 - close}>
       <text x="640" y="70" textAnchor="middle" fill={colors.TEXT} fontSize="35" fontWeight="850">the student walks; the teacher measures</text>
+    </g>
+    <Camera {...s.get(scene.cam)}>
+    <g opacity={1 - close}>
       <g opacity={s.get(scene.contextU) * workingOpacity} transform="translate(78 116)">
         {[0, 1, 2].map((stage) => <g key={stage} transform={`translate(0 ${stage * 75})`}>
           <rect width="220" height="56" rx="18" fill="#142238" stroke={[colors.POSITIVE, colors.ACCENT, colors.SECONDARY][stage]} strokeWidth="2.5" />
-          <text x="18" y="25" fill={[colors.POSITIVE, colors.ACCENT, colors.SECONDARY][stage]} fontSize="11" fontFamily={colors.font.mono}>{`context stage ${stage + 1}`}</text>
-          <text x="18" y="43" fill={colors.MUTED} fontSize="10">pre-response state</text>
+          <text x="18" y="25" fill={[colors.POSITIVE, colors.ACCENT, colors.SECONDARY][stage]} fontSize="12" fontFamily={colors.font.mono}>{`context stage ${stage + 1}`}</text>
+          <text x="18" y="43" fill={colors.MUTED} fontSize="12">pre-response state</text>
         </g>)}
         <path d="M225 103 H340" stroke={colors.ACCENT} strokeWidth="5" strokeDasharray="12 8" strokeDashoffset={-36 * s.get(scene.flow)} />
       </g>
@@ -112,7 +115,7 @@ export function Render({ s }: { s: SceneState }) {
           const u = clamp01(generated * 2.3 - i * 0.34);
           return <g key={token} transform={`translate(${30 + i * 67} 92)`} opacity={u}>
             <rect width="54" height="86" rx="15" fill="#192742" stroke={i === 2 ? colors.POSITIVE : colors.ACCENT} />
-            <text x="27" y="48" textAnchor="middle" fill={colors.TEXT} fontSize="10" transform="rotate(-90 27 48)">{token}</text>
+            <text x="27" y="48" textAnchor="middle" fill={colors.TEXT} fontSize="12" transform="rotate(-90 27 48)">{token}</text>
           </g>;
         })}
         <circle cx="276" cy="210" r={12 + s.get(scene.refreshU) * 7} fill={colors.POSITIVE} opacity={s.get(scene.refreshU)} />
@@ -122,18 +125,20 @@ export function Render({ s }: { s: SceneState }) {
         {bars(studentValues, 0, 116, s.get(scene.teacherU), colors.ACCENT, 'student P')}
         {bars(TEACHER, 286, 116, s.get(scene.teacherU), colors.SECONDARY, 'fixed teacher Q')}
         <g opacity={s.get(scene.binsU)}>
-          <path d="M18 136 H534" stroke={colors.WARM} strokeWidth="3" strokeDasharray="8 7" />
-          <text x="276" y="160" textAnchor="middle" fill={colors.WARM} fontSize="11" fontFamily={colors.font.mono}>shared top-K candidates + other</text>
+          <path d="M18 146 H534" stroke={colors.WARM} strokeWidth="3" strokeDasharray="8 7" />
+          <text x="276" y="170" textAnchor="middle" fill={colors.WARM} fontSize="13" fontFamily={colors.font.mono}>shared top-K candidates + other</text>
         </g>
         <g opacity={s.get(scene.divergenceU)}>
-          <rect x="147" y="-48" width="245" height="52" rx="18" fill="#2a1f35" stroke={colors.SECONDARY} strokeWidth="2" />
-          <MathLabel tex={String.raw`D_{\mathrm{KL}}(P\,\|\,Q)`} x={270} y={-20} fontSize={23} opacity={1} />
+          <rect x="196" y="-62" width="252" height="44" rx="18" fill="#2a1f35" stroke={colors.SECONDARY} strokeWidth="2" />
+          <text x="322" y="-34" textAnchor="middle" fill={colors.TEXT} fontSize="22" fontFamily={colors.font.mono}>
+            {'D'}<tspan baselineShift="sub" fontSize="15">KL</tspan>{'(P || Q)'}
+          </text>
         </g>
       </g>
 
       <g opacity={s.get(scene.profileU) * workingOpacity} transform="translate(720 390)">
         <rect width="448" height="198" rx="28" fill="#111a2b" stroke={colors.WARM} strokeWidth="3" />
-        <text x="224" y="32" textAnchor="middle" fill={colors.WARM} fontSize="13" fontFamily={colors.font.mono}>model deficiency profile</text>
+        <text x="224" y="32" textAnchor="middle" fill={colors.WARM} fontSize="13" fontFamily={colors.font.mono}>model deficiency profile: where it is weak</text>
         {DEFICIENCY.map((row, r) => row.map((v, c) => {
           const u = clamp01(s.get(scene.profileU) * 2.4 - (r * 4 + c) * 0.08);
           const hot = v > 0.65;
@@ -143,39 +148,41 @@ export function Render({ s }: { s: SceneState }) {
           </g>;
         }))}
         <g opacity={alloc}>
-          <path d="M406 70 C470 70 470 168 406 168" fill="none" stroke={colors.POSITIVE} strokeWidth="5" />
-          <polygon points="405,168 425,156 425,180" fill={colors.POSITIVE} />
-          <text x="390" y="188" textAnchor="end" fill={colors.POSITIVE} fontSize="10">rebalance next mixture</text>
+          <path d="M414 70 C456 70 456 168 414 168" fill="none" stroke={colors.POSITIVE} strokeWidth="5" />
+          <polygon points="413,168 433,156 433,180" fill={colors.POSITIVE} />
+          <text x="396" y="190" textAnchor="end" fill={colors.POSITIVE} fontSize="12">rebalance next mixture</text>
         </g>
       </g>
 
       <g opacity={result} transform="translate(360 286)">
         <rect width="560" height="176" rx="28" fill="#111a2a" stroke={colors.POSITIVE} strokeWidth="3" />
-        <text x="280" y="34" textAnchor="middle" fill={colors.POSITIVE} fontSize="13" fontFamily={colors.font.mono}>reported ten-benchmark macro average</text>
+        <text x="280" y="34" textAnchor="middle" fill={colors.POSITIVE} fontSize="13" fontFamily={colors.font.mono}>macro average: mean score across ten benchmarks</text>
         {[['4B', 58.94, 64.87, colors.ACCENT], ['9B', 65.60, 69.04, colors.SECONDARY]].map(([label, before, after, color], i) => <g key={String(label)} transform={`translate(46 ${64 + i * 54})`}>
-          <text x="0" y="17" fill={String(color)} fontSize="13" fontFamily={colors.font.mono}>{String(label)}</text>
-          <rect x="48" width={Number(before) * 5.6} height="18" rx="9" fill="#263246" />
-          <rect x="48" width={Number(after) * 5.6 * s.get(scene.resultU)} height="18" rx="9" fill={String(color)} />
-          <text x="446" y="15" fill={colors.TEXT} fontSize="11" fontFamily={colors.font.mono}>{`${Number(before).toFixed(2)} → ${Number(after).toFixed(2)}`}</text>
+          <text x="0" y="17" fill={String(color)} fontSize="14" fontFamily={colors.font.mono}>{String(label)}</text>
+          <rect x="48" width={Number(before) * 4.8} height="18" rx="9" fill="#263246" />
+          <rect x="48" width={Number(after) * 4.8 * s.get(scene.resultU)} height="18" rx="9" fill={String(color)} />
+          <text x="384" y="15" fill={colors.TEXT} fontSize="12" fontFamily={colors.font.mono}>{`${Number(before).toFixed(2)} → ${Number(after).toFixed(2)}`}</text>
         </g>)}
       </g>
     </g>
     <g opacity={close}>
       <rect x="195" y="112" width="890" height="448" rx="50" fill={colors.BG} stroke={colors.POSITIVE} strokeWidth="4" />
       <text x="640" y="165" textAnchor="middle" fill={colors.TEXT} fontSize="40" fontWeight="850">one loop closes</text>
+      <text x="640" y="208" textAnchor="middle" fill={colors.MUTED} fontSize="18">on-policy distillation: the student writes its own answer, the teacher scores it</text>
+      <path d="M705 300 C880 310 900 380 795 440 C665 515 435 480 420 375 C405 305 520 290 575 300" fill="none" stroke={colors.POSITIVE} strokeWidth="6" strokeDasharray="16 10" strokeDashoffset={-52 * s.get(scene.flow)} />
       {['HARNESS', 'EVALUATE', 'ALLOCATE', 'UPDATE'].map((label, i) => {
         const a = -Math.PI / 2 + i * Math.PI / 2;
         const x = 640 + Math.cos(a) * 220;
         const y = 370 + Math.sin(a) * 70;
         return <g key={label} transform={`translate(${x} ${y})`}>
           <circle r="60" fill={colors.PANEL} stroke={[colors.ACCENT, colors.WARM, colors.SECONDARY, colors.POSITIVE][i]} strokeWidth="4" />
-          <text y="5" textAnchor="middle" fill={[colors.ACCENT, colors.WARM, colors.SECONDARY, colors.POSITIVE][i]} fontSize="12" fontFamily={colors.font.mono}>{label}</text>
+          <text y="5" textAnchor="middle" fill={[colors.ACCENT, colors.WARM, colors.SECONDARY, colors.POSITIVE][i]} fontSize="14" fontFamily={colors.font.mono}>{label}</text>
         </g>;
       })}
-      <path d="M705 300 C880 310 900 380 795 440 C665 515 435 480 420 375 C405 305 520 290 575 300" fill="none" stroke={colors.POSITIVE} strokeWidth="6" strokeDasharray="16 10" strokeDashoffset={-52 * s.get(scene.flow)} />
       <text x="640" y="530" textAnchor="middle" fill={colors.WARM} fontSize="18">successive iterations remain the next experiment</text>
     </g>
-  </Camera>;
+    </Camera>
+  </>;
 }
 
 export const vizScene = () => scene;

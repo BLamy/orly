@@ -235,7 +235,7 @@ export function Render({ s }: { s: SceneState }) {
               <g opacity={Math.min(1, framesU * 2)}>
                 <rect x={LP.x} y={LP.y} width={LP.w} height={LP.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
                 <text x={LP.x + 20} y={LP.y + 32} fill={colors.TEXT} fontSize={14.5} fontWeight={700}>no cap, no judge</text>
-                <text x={LP.x + 20} y={LP.y + 52} fill={colors.MUTED} fontSize={10.5}>failure becomes spend</text>
+                <text x={LP.x + 20} y={LP.y + 52} fill={colors.MUTED} fontSize={12}>failure becomes spend</text>
                 {orbitU > 0 && (
                   <g>
                     <path d={pathThrough(ORBIT, orbitU)} fill="none" stroke={colors.NEGATIVE} strokeWidth={2} opacity={0.8} />
@@ -248,11 +248,11 @@ export function Render({ s }: { s: SceneState }) {
                   <g>
                     <line x1={LP.x + 336} y1={LP.y + 256} x2={LP.x + 490} y2={LP.y + 256} stroke={colors.GRID} strokeWidth={1.4} />
                     <path d={pathThrough(SPEND, spendU)} fill="none" stroke={colors.WARM} strokeWidth={2.2} opacity={0.9} />
-                    <text x={LP.x + 336} y={LP.y + 82} fill={colors.WARM} fontSize={10.5} fontFamily={MONO} opacity={clamp01(spendU / 3)}>
+                    <text x={LP.x + 336} y={LP.y + 82} fill={colors.WARM} fontSize={12} fontFamily={MONO} opacity={clamp01(spendU / 3)}>
                       tokens spent →
                     </text>
                     {spendU > 10.5 && (
-                      <text x={LP.x + 490} y={LP.y + 96} textAnchor="end" fill={colors.WARM} fontSize={11} fontWeight={700} opacity={(spendU - 10.5) * 2}>
+                      <text x={LP.x + 490} y={LP.y + 276} textAnchor="end" fill={colors.WARM} fontSize={12} fontWeight={700} opacity={(spendU - 10.5) * 2}>
                         no landing
                       </text>
                     )}
@@ -266,11 +266,11 @@ export function Render({ s }: { s: SceneState }) {
               <g opacity={Math.min(1, framesU * 2 - 0.4)}>
                 <rect x={RP.x} y={RP.y} width={RP.w} height={RP.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
                 <text x={RP.x + 20} y={RP.y + 32} fill={colors.TEXT} fontSize={14.5} fontWeight={700}>a cap, but no judge</text>
-                <text x={RP.x + 20} y={RP.y + 52} fill={colors.MUTED} fontSize={10.5}>the safe cap is a low cap — and the low cap kills converging work</text>
+                <text x={RP.x + 20} y={RP.y + 52} fill={colors.MUTED} fontSize={12}>low caps kill converging work</text>
                 {spiralU > 0 && (
                   <g>
                     <circle cx={SPIRAL_O.x} cy={SPIRAL_O.y} r={6} fill={colors.POSITIVE} opacity={0.9} />
-                    <text x={SPIRAL_O.x + 12} y={SPIRAL_O.y + 16} fill={colors.POSITIVE} fontSize={9.5} fontFamily={MONO}>verified</text>
+                    <text x={SPIRAL_O.x + 12} y={SPIRAL_O.y + 16} fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>verified</text>
                     <path d={pathThrough(SPIRAL, spiralU)} fill="none" stroke={colors.POSITIVE} strokeWidth={2} opacity={0.85} />
                     {SPIRAL.map((p, k) => (
                       <circle key={k} cx={p.x} cy={p.y} r={k === 8 ? 0 : 4.5} fill={colors.POSITIVE} opacity={clamp01(spiralU - k + 0.5)} />
@@ -281,13 +281,13 @@ export function Render({ s }: { s: SceneState }) {
                 {chopU > 0 && (
                   <g opacity={chopU * (1 - 0.75 * judgeU)}>
                     <line x1={capX} y1={RP.y + 66} x2={capX} y2={RP.y + LP.h - 24} stroke={colors.NEGATIVE} strokeWidth={2.4} strokeDasharray="7 5" />
-                    <text x={capX - 8} y={RP.y + 84} textAnchor="end" fill={colors.NEGATIVE} fontSize={10.5} fontFamily={MONO}>
+                    <text x={capX - 8} y={RP.y + 84} textAnchor="end" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
                       cap: {BARE_CAP} — killed here
                     </text>
                   </g>
                 )}
                 {judgeU > 0.5 && spiralU > 7.5 && (
-                  <text x={RP.x + RP.w - 24} y={RP.y + LP.h - 30} textAnchor="end" fill={colors.POSITIVE} fontSize={11} fontWeight={700} opacity={(spiralU - 7.5) * 2}>
+                  <text x={RP.x + RP.w - 24} y={RP.y + LP.h - 30} textAnchor="end" fill={colors.POSITIVE} fontSize={12} fontWeight={700} opacity={(spiralU - 7.5) * 2}>
                     lands at attempt eight
                   </text>
                 )}
@@ -297,17 +297,23 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* ---- the judge between the panels ---- */}
           {judgeU > 0 && (
-            <g opacity={judgeU * panelOp} transform={`translate(640 ${LP.y + 150})`}>
-              <path d="M 0 -30 L 26 0 L 0 30 L -26 0 Z" fill={colors.PANEL} stroke={colors.WARM} strokeWidth={2} />
-              <text y={5} textAnchor="middle" fill={colors.WARM} fontSize={10} fontFamily={MONO}>judge</text>
-              <text y={52} textAnchor="middle" fill={colors.MUTED} fontSize={10}>circling stopped at three</text>
-              <text y={68} textAnchor="middle" fill={colors.MUTED} fontSize={10}>converging runs to ten</text>
+            <g opacity={judgeU * (1 - panelDim)}>
+              <line x1={640} y1={LP.y + 180} x2={640} y2={432} stroke={colors.WARM} strokeWidth={1.4} strokeDasharray="4 4" />
+              <g transform={`translate(640 ${LP.y + 150})`}>
+                <path d="M 0 -30 L 26 0 L 0 30 L -26 0 Z" fill={colors.PANEL} stroke={colors.WARM} strokeWidth={2} />
+                <text y={4} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>judge</text>
+              </g>
+              <g transform="translate(640 432)">
+                <rect x={-150} y={0} width={300} height={56} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.2} />
+                <text y={24} textAnchor="middle" fill={colors.TEXT} fontSize={14}>circling stopped at three</text>
+                <text y={44} textAnchor="middle" fill={colors.TEXT} fontSize={14}>converging runs to ten</text>
+              </g>
             </g>
           )}
 
           {/* ---- the numbers ---- */}
           {numbersU > 0 && (
-            <g opacity={numbersU * panelOp} transform="translate(640 470)">
+            <g opacity={numbersU * (1 - panelDim)} transform="translate(640 530)">
               <rect x={-330} y={-26} width={660} height={48} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.4} />
               <text y={4} textAnchor="middle" fill={colors.TEXT} fontSize={12.5} fontFamily={MONO}>
                 roundSize: 3 · judge @ 3, 6, 9 · maxAttempts: 10
@@ -327,7 +333,7 @@ export function Render({ s }: { s: SceneState }) {
                     <rect x={x - 172} y={CRIT_Y - 54} width={344} height={108} rx={13} fill={colors.PANEL} stroke={c.color} strokeWidth={1.6} />
                     <text x={x} y={CRIT_Y - 24} textAnchor="middle" fill={colors.TEXT} fontSize={15} fontWeight={700}>{c.name}</text>
                     <text x={x} y={CRIT_Y} textAnchor="middle" fill={c.color} fontSize={12.5} fontWeight={700}>{c.sees}</text>
-                    <text x={x} y={CRIT_Y + 26} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={MONO}>{c.code}</text>
+                    <text x={x} y={CRIT_Y + 26} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>{c.code}</text>
                     {i < 2 && u > 0.9 && (
                       <path d={`M ${x + 178} ${CRIT_Y} l 14 0 m -5 -5 l 5 5 l -5 5`} stroke={colors.MUTED} strokeWidth={1.6} fill="none" opacity={(u - 0.9) * 10} />
                     )}

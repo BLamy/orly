@@ -39,18 +39,18 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 type GNode = { id: string; x: number; y: number; layer: number };
 // layer = BFS depth from the root; -1 = unreachable until the new edge lands.
 const NODES: GNode[] = [
-  { id: 'root', x: 128, y: 322, layer: 0 },
-  { id: 'a', x: 268, y: 196, layer: 1 },
-  { id: 'b', x: 272, y: 330, layer: 1 },
-  { id: 'c', x: 264, y: 458, layer: 1 },
-  { id: 'd', x: 416, y: 150, layer: 2 },
-  { id: 'e', x: 420, y: 274, layer: 2 },
-  { id: 'f', x: 424, y: 392, layer: 2 },
-  { id: 'g', x: 412, y: 500, layer: 2 },
-  { id: 'h', x: 564, y: 210, layer: 3 },
-  { id: 'i', x: 568, y: 452, layer: 3 },
-  { id: 'u', x: 660, y: 120, layer: -1 }, // reachable only after the new edge
-  { id: 'v', x: 776, y: 176, layer: -2 }, // one hop past u
+  { id: 'root', x: 110, y: 290, layer: 0 },
+  { id: 'a', x: 230, y: 200, layer: 1 },
+  { id: 'b', x: 232, y: 290, layer: 1 },
+  { id: 'c', x: 228, y: 390, layer: 1 },
+  { id: 'd', x: 350, y: 160, layer: 2 },
+  { id: 'e', x: 352, y: 250, layer: 2 },
+  { id: 'f', x: 354, y: 340, layer: 2 },
+  { id: 'g', x: 346, y: 430, layer: 2 },
+  { id: 'h', x: 470, y: 200, layer: 3 },
+  { id: 'i', x: 474, y: 380, layer: 3 },
+  { id: 'u', x: 590, y: 120, layer: -1 }, // reachable only after the new edge
+  { id: 'v', x: 690, y: 180, layer: -2 }, // one hop past u
 ];
 const N = Object.fromEntries(NODES.map((n) => [n.id, n])) as Record<string, GNode>;
 
@@ -73,21 +73,22 @@ const DELTAS_1 = [3, 4, 2, 0];
 const DELTAS_2 = [1, 1, 0];
 
 // the iterate ring
-const RING = { x: 1010, y: 268, r: 118 };
+const RING = { x: 1000, y: 260, r: 110 };
 const RING_STOPS = ['enter', 'semijoin', 'map', 'concat', 'distinct'];
 const ringPt = (frac: number, roff = 0) => ({
   x: RING.x + (RING.r + roff) * Math.cos(-Math.PI / 2 + frac * 2 * Math.PI),
   y: RING.y + (RING.r + roff) * Math.sin(-Math.PI / 2 + frac * 2 * Math.PI),
 });
 
-// the delta meter (persistent across both phases)
-const METER = { x0: 130, y: 596, w: 44, gap: 30, unit: 17 };
-const meterX = (j: number) => METER.x0 + j * (METER.w + METER.gap) + METER.w / 2;
+// the delta meter: a fixed panel in stage space, so camera pushes never crop it
+const METER = { x0: 760, y: 598, w: 38, gap: 24, split: 30, unit: 17 };
+const meterX = (j: number) => METER.x0 + j * (METER.w + METER.gap) + (j >= 4 ? METER.split : 0) + METER.w / 2;
 const METER_LABELS = ['lap 1', 'lap 2', 'lap 3', 'lap 4', 'lap 1', 'lap 2', 'lap 3'];
 
-const CAM_GRAPH: CameraState = { x: 520, y: 330, k: 1.14 };
-const CAM_RING: CameraState = { x: 940, y: 300, k: 1.3 };
-const CAM_EDGE: CameraState = { x: 620, y: 220, k: 1.5 };
+// every frame keeps the graph's left edge, the ring's labels and all nodes above the caption band
+const CAM_GRAPH: CameraState = { x: 640, y: 300, k: 1.06 };
+const CAM_RING: CameraState = { x: 630, y: 290, k: 1.1 };
+const CAM_EDGE: CameraState = { x: 520, y: 240, k: 1.3 };
 
 // node light-up time (in lapU units) — reachable layer L lights as lap L ends
 const litAt = (layer: number) => layer - 0.2;
@@ -111,6 +112,7 @@ export function buildScene() {
   const contrastU = tl.channel('contrastU', 0); // batch-vs-diff chip
   const dimU = tl.channel('dimU', 0);
   const recapU = tl.channel('recapU', 0); // the five-tile recap
+  const focusU = tl.channel('focusU', 0); // 1 while the camera sits on the new edge (ring steps aside)
 
   // — beat 1 · queries that feed on themselves —
   tl.caption({
@@ -164,6 +166,7 @@ export function buildScene() {
     text: 'Now the moment this whole book was building toward. Long after the loop went quiet, one edge is added to the graph — from a settled node to one nobody could reach.',
   });
   tl.tween(cam, CAM_EDGE, { at: 38.8, dur: 1.4, ease: ease.move });
+  tl.tween(focusU, 1, { at: 38.8, dur: 1.0, ease: ease.move });
   tl.tween(codeU, 0, { at: 38.8, dur: 0.7, ease: ease.enter });
   tl.tween(quietU, 0, { at: 39.0, dur: 0.6, ease: ease.enter });
   tl.tween(newEdgeU, 1, { at: 41.6, dur: 0.9, ease: ease.pop });
@@ -175,6 +178,7 @@ export function buildScene() {
     text: 'That single difference drops into the settled loop. One lap finds one node. The next finds one more. Then — quiet again. The fixed point simply absorbed the change.',
   });
   tl.tween(cam, CAM_GRAPH, { at: 46.0, dur: 1.3, ease: ease.move });
+  tl.tween(focusU, 0, { at: 46.0, dur: 1.0, ease: ease.move });
   tl.tween(lap2U, 3, { at: 47.2, dur: 5.2, ease: ease.linear });
 
   // — beat 8 · where it crushes batch —
@@ -215,6 +219,7 @@ export function buildScene() {
     contrastU,
     dimU,
     recapU,
+    focusU,
   };
 }
 
@@ -253,6 +258,7 @@ export function Render({ s }: { s: SceneState }) {
   const contrastU = s.get(scene.contrastU);
   const dimU = s.get(scene.dimU);
   const recapU = s.get(scene.recapU);
+  const focusU = s.get(scene.focusU);
 
   const stageOp = 1 - 0.87 * dimU;
 
@@ -334,23 +340,27 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* ---------------- the iterate ring ---------------- */}
           {ringU > 0.01 && (
-            <g opacity={ringU}>
+            <g opacity={ringU * (1 - focusU)}>
               <circle cx={RING.x} cy={RING.y} r={RING.r} fill="none" stroke={colors.GRID} strokeWidth={2} strokeDasharray={`${2 * Math.PI * RING.r * clamp01(ringU)} ${2 * Math.PI * RING.r}`} transform={`rotate(-90 ${RING.x} ${RING.y})`} />
               <text x={RING.x} y={RING.y - 6} textAnchor="middle" fill={colors.TEXT} fontSize={18} fontWeight={650}>
                 iterate
               </text>
-              <text x={RING.x} y={RING.y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+              <text x={RING.x} y={RING.y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
                 nested scope
               </text>
               {RING_STOPS.map((st, i) => {
                 const p = ringPt(i / RING_STOPS.length);
+                const lp = ringPt(i / RING_STOPS.length, 22);
+                // labels grow outward from the ring: right-side stops start, left-side stops end
+                const side = Math.cos(-Math.PI / 2 + (i / RING_STOPS.length) * 2 * Math.PI);
+                const anchor = side > 0.3 ? 'start' : side < -0.3 ? 'end' : 'middle';
                 return (
                   <g key={st}>
                     <circle cx={p.x} cy={p.y} r={7} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.6} />
                     <text
-                      x={ringPt(i / RING_STOPS.length, 26).x}
-                      y={ringPt(i / RING_STOPS.length, 26).y + 4}
-                      textAnchor="middle"
+                      x={lp.x}
+                      y={lp.y + 4}
+                      textAnchor={anchor}
                       fill={colors.SECONDARY}
                       fontSize={12.5}
                       fontFamily={MONO}
@@ -377,64 +387,27 @@ export function Render({ s }: { s: SceneState }) {
           )}
           {codeU > 0.01 && (
             <g opacity={codeU}>
-              <rect x={764} y={452} width={492} height={54} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={784} y={474} fill={colors.ACCENT} fontSize={11.5} fontFamily={MONO}>
+              <rect x={740} y={20} width={440} height={80} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
+              <text x={760} y={40} fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
                 {'roots.iterate(|scope, reach| edges.enter(scope)'}
               </text>
-              <text x={784} y={492} fill={colors.ACCENT} fontSize={11.5} fontFamily={MONO}>
-                {'  .semijoin(reach).map(|(src, dst)| dst).concat(reach).distinct())'}
+              <text x={760} y={59} fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
+                {'  .semijoin(reach).map(|(src, dst)| dst)'}
               </text>
-            </g>
-          )}
-
-          {/* ---------------- the delta meter ---------------- */}
-          {meterU > 0.01 && (
-            <g opacity={meterU}>
-              <line x1={METER.x0 - 20} y1={METER.y} x2={METER.x0 + 7 * (METER.w + METER.gap)} y2={METER.y} stroke={colors.GRID} strokeWidth={2} />
-              <text x={METER.x0 - 20} y={METER.y - 78} fill={colors.MUTED} fontSize={13} fontStyle="italic">
-                differences circulated, per lap
+              <text x={760} y={78} fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
+                {'  .concat(reach).distinct())'}
               </text>
-              {METER_LABELS.map((lb, j) => {
-                const { v, u } = barVal(j);
-                if (u <= 0.01) return null;
-                const h = Math.max(3, v * METER.unit) * u;
-                const isZero = v === 0;
-                return (
-                  <g key={j} opacity={u}>
-                    <rect
-                      x={meterX(j) - METER.w / 2}
-                      y={METER.y - h}
-                      width={METER.w}
-                      height={h}
-                      rx={4}
-                      fill={isZero ? colors.MUTED : j < 4 ? colors.ACCENT : colors.WARM}
-                      opacity={isZero ? 0.45 : 0.85}
-                    />
-                    <text x={meterX(j)} y={METER.y - h - 7} textAnchor="middle" fill={isZero ? colors.POSITIVE : colors.MUTED} fontSize={12.5} fontFamily={MONO}>
-                      {v}
-                    </text>
-                    <text x={meterX(j)} y={METER.y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
-                      {lb}
-                    </text>
-                  </g>
-                );
-              })}
-              {lap2U > 0.05 && (
-                <text x={meterX(4) - METER.w / 2 - 8} y={METER.y - 62} fill={colors.WARM} fontSize={11.5} fontStyle="italic" opacity={clamp01(lap2U * 2)}>
-                  + one edge
-                </text>
-              )}
             </g>
           )}
 
           {/* ---------------- batch vs differential ---------------- */}
           {contrastU > 0.01 && (
             <g opacity={contrastU}>
-              <rect x={806} y={80} width={368} height={78} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={830} y={112} fill={colors.NEGATIVE} fontSize={14.5} fontWeight={600}>
+              <rect x={120} y={28} width={368} height={78} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
+              <text x={144} y={60} fill={colors.NEGATIVE} fontSize={14.5} fontWeight={600}>
                 batch: re-flood all 12 nodes
               </text>
-              <text x={830} y={140} fill={colors.POSITIVE} fontSize={14.5} fontWeight={600}>
+              <text x={144} y={88} fill={colors.POSITIVE} fontSize={14.5} fontWeight={600}>
                 differential: 2 touched, 2 laps
               </text>
             </g>
@@ -458,7 +431,7 @@ export function Render({ s }: { s: SceneState }) {
                   <text x={x} y={342 - (1 - u) * 14} textAnchor="middle" fill={colors.ACCENT} fontSize={17} fontWeight={650}>
                     {r.title}
                   </text>
-                  <text x={x} y={372 - (1 - u) * 14} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+                  <text x={x} y={372 - (1 - u) * 14} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
                     {r.sub}
                   </text>
                   {i < 4 && (
@@ -475,6 +448,46 @@ export function Render({ s }: { s: SceneState }) {
           </g>
         )}
       </Camera>
+
+      {/* ---------------- the delta meter (stage space, bottom-right) ---------------- */}
+      {meterU > 0.01 && (
+        <g opacity={meterU * (1 - dimU)}>
+          <line x1={METER.x0 - 20} y1={METER.y} x2={METER.x0 + 7 * (METER.w + METER.gap) + METER.split} y2={METER.y} stroke={colors.GRID} strokeWidth={2} />
+          <text x={METER.x0 - 20} y={METER.y - 92} fill={colors.MUTED} fontSize={13.5} fontStyle="italic">
+            differences circulated, per lap
+          </text>
+          {METER_LABELS.map((lb, j) => {
+            const { v, u } = barVal(j);
+            if (u <= 0.01) return null;
+            const h = Math.max(3, v * METER.unit) * u;
+            const isZero = v === 0;
+            return (
+              <g key={j} opacity={u}>
+                <rect
+                  x={meterX(j) - METER.w / 2}
+                  y={METER.y - h}
+                  width={METER.w}
+                  height={h}
+                  rx={4}
+                  fill={isZero ? colors.MUTED : j < 4 ? colors.ACCENT : colors.WARM}
+                  opacity={isZero ? 0.45 : 0.85}
+                />
+                <text x={meterX(j)} y={METER.y - h - 7} textAnchor="middle" fill={isZero ? colors.POSITIVE : colors.MUTED} fontSize={13} fontFamily={MONO}>
+                  {v}
+                </text>
+                <text x={meterX(j)} y={METER.y + 18} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+                  {lb}
+                </text>
+              </g>
+            );
+          })}
+          {lap2U > 0.05 && (
+            <text x={meterX(5) - METER.w / 2} y={METER.y - 46} fill={colors.WARM} fontSize={12.5} fontStyle="italic" opacity={clamp01(lap2U * 2)}>
+              + one edge
+            </text>
+          )}
+        </g>
+      )}
       <defs>
         <marker id="dd5-arrow" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto-start-reverse">
           <path d="M 0 1 L 9 5 L 0 9 z" fill={colors.GRID} />

@@ -51,7 +51,7 @@ export function buildScene() {
 
   tl.caption({ at: 38.9, dur: 6.4, text: 'Long-horizon attribution can consolidate that evidence into a trait while retaining the memory links that support it.' });
   tl.tween(traitU, 1, { at: 39.5, dur: 1.5, ease: ease.move });
-  tl.tween(cam, { x: 700, y: 360, k: 1.05 }, { at: 41.4, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 660, y: 360, k: 1.05 }, { at: 41.4, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 45.3, dur: 6.5, text: 'At query time, the partial transcript activates both person-level tendencies and feelings connected to the current entity.' });
   tl.tween(queryU, 1, { at: 45.9, dur: 2.2, ease: ease.linear });
@@ -70,7 +70,7 @@ function Node({ x, y, r, color, label, sub, u = 1 }: { x: number; y: number; r: 
   return <g opacity={u} transform={`translate(${x} ${y + (1 - u) * 20}) scale(${0.82 + u * 0.18})`}>
     <circle r={r} fill={color} fillOpacity="0.13" stroke={color} strokeWidth="3" />
     <text y="-4" textAnchor="middle" fill={color} fontSize="15" fontWeight="820">{label}</text>
-    <text y="19" textAnchor="middle" fill={colors.MUTED} fontSize="11">{sub}</text>
+    <text y="19" textAnchor="middle" fill={colors.MUTED} fontSize="13">{sub}</text>
   </g>;
 }
 
@@ -92,7 +92,7 @@ export function Render({ s }: { s: SceneState }) {
         <line x1="112" y1="505" x2="548" y2="505" stroke={colors.GRID} strokeWidth="3" />
         <line x1="112" y1="505" x2="112" y2="152" stroke={colors.GRID} strokeWidth="3" />
         <text x="548" y="534" textAnchor="end" fill={colors.MUTED} fontSize="13">valence</text>
-        <text x="96" y="158" textAnchor="end" fill={colors.MUTED} fontSize="13" transform="rotate(-90 96 158)">arousal</text>
+        <text x="122" y="146" fill={colors.MUTED} fontSize="13">arousal</text>
         <line x1="330" y1="152" x2="330" y2="505" stroke={colors.GRID} strokeDasharray="7 8" />
         <line x1="112" y1="329" x2="548" y2="329" stroke={colors.GRID} strokeDasharray="7 8" />
         <text x="330" y="584" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>emotion_episodes</text>
@@ -100,17 +100,17 @@ export function Render({ s }: { s: SceneState }) {
 
       {EPISODES.map((ep, i) => {
         const u = clamp01(s.get(scene.episodeP) - i);
-        const x = ep.x + split * (i - 1.5) * 22;
+        const x = ep.x + split * (i - 1.5) * 40;
         const y = ep.y + split * 56;
         return <g key={ep.label} opacity={u} transform={`translate(${x} ${y}) scale(${0.78 + u * 0.22})`}>
           <circle r={18 + i * 2} fill={colors.NEGATIVE} fillOpacity="0.22" stroke={colors.NEGATIVE} strokeWidth="3" />
           <circle r={30 + i * 4} fill="none" stroke={colors.NEGATIVE} strokeOpacity="0.2" />
-          <text y={48 + i * 2} textAnchor="middle" fill={colors.MUTED} fontSize="11">{ep.label}</text>
+          <text y={48 + i * 2} textAnchor="middle" fill={colors.MUTED} fontSize="13" stroke={colors.BG} strokeWidth="5" paintOrder="stroke">{ep.label}</text>
         </g>;
       })}
 
       <g>
-        <Node x={782} y={214} r={82 + trait * 10} color={colors.SECONDARY} label="guarded with advice" sub="independent persona node" u={indep} />
+        <Node x={782} y={214} r={82 + trait * 10} color={colors.SECONDARY} label="guarded with advice" sub="independent node" u={indep} />
         <Node x={1060} y={430} r={68} color={colors.ACCENT} label="café" sub="left-brain entity" u={s.get(scene.leftEntityU)} />
         <Node x={790} y={450} r={76} color={colors.WARM} label="uneasy in cafés" sub="cross-entity node" u={cross} />
         <path d={`M${856} 438 C930 388 972 402 994 420`} fill="none" stroke={colors.WARM} strokeWidth={2 + cross * 5} strokeDasharray="10 8" opacity={cross} />
@@ -123,13 +123,19 @@ export function Render({ s }: { s: SceneState }) {
         {Array.from({ length: 4 }, (_, i) => {
           const u = clamp01(evidenceP - i);
           const x = 642 + i * 52;
-          const y = 530 - (i % 2) * 22;
+          const y = 572 - (i % 2) * 22;
+          // end each link on the node's rim so it never crosses the node's labels
+          const dx = 790 - x;
+          const dy = 450 - y;
+          const len = Math.hypot(dx, dy);
+          const ex = dx - (dx / len) * 80;
+          const ey = dy - (dy / len) * 80;
           return <g key={i} opacity={u} transform={`translate(${x} ${y + (1 - u) * 18})`}>
             <circle r="13" fill={colors.NEGATIVE} />
-            <path d={`M13 0 C42 -4 60 -26 ${790 - x - 66} ${450 - y}`} fill="none" stroke={colors.NEGATIVE} strokeWidth="2" opacity="0.45" />
+            <path d={`M13 0 Q${(13 + ex) / 2} 0 ${ex} ${ey}`} fill="none" stroke={colors.NEGATIVE} strokeWidth="2" opacity="0.45" />
           </g>;
         })}
-        <text x="694" y="584" textAnchor="middle" fill={colors.MUTED} fontSize="12">linked evidence</text>
+        <text x="626" y="578" textAnchor="end" fill={colors.MUTED} fontSize="13">linked evidence</text>
       </g>
 
       <g opacity={query}>

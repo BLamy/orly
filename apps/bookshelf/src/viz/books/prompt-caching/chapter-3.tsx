@@ -67,8 +67,10 @@ const FLAG_SLOTS = [N_TOOLS, N_TOOLS + N_SYS, N_TOOLS + N_SYS + 6, N];
 // camera marks
 const CAM_WIDE: CameraState = CAMERA_HOME;
 const CAM_TAPE: CameraState = { x: 520, y: 420, k: 1.3 };
-const CAM_SHELF: CameraState = { x: 560, y: 240, k: 1.25 };
-const CAM_HOUR: CameraState = { x: 900, y: 380, k: 1.35 };
+// Framed so the shelf, the fuse and the tape all sit above the caption band
+// (screen y ≈ 632+): the tape's bottom edge lands near y 600 on screen.
+const CAM_SHELF: CameraState = { x: 543, y: 347, k: 1.15 };
+const CAM_HOUR: CameraState = { x: 690, y: 330, k: 1.2 };
 
 function fmtClock(frac: number, totalSec: number): string {
   const t = Math.max(0, Math.round(frac * totalSec));
@@ -121,6 +123,7 @@ export function buildScene() {
     text: 'On the wire it is one tiny field, type ephemeral, sitting on the last block of the prefix you want remembered.',
   });
   tl.tween(codeU, 1, { at: 8.4, dur: 0.7, ease: ease.enter });
+  tl.tween(codeU, 0, { at: 13.6, dur: 0.5, ease: ease.enter }); // clear the tape for beat 9's note
 
   // — beat 3 · the write —
   tl.caption({
@@ -191,6 +194,7 @@ export function buildScene() {
     text: 'You can pin up to four markers in one request — after the tools, after the system prompt, deep in the history — so a late change still reuses everything before the last surviving marker.',
   });
   tl.tween(cam, CAM_TAPE, { at: 54.8, dur: 1.3, ease: ease.move });
+  tl.tween(hourU, 0, { at: 53.6, dur: 0.6, ease: ease.enter }); // the 1h panel leaves before the tape camera returns
   tl.tween(coldU, 0, { at: 54.8, dur: 0.5, ease: ease.enter });
   tl.tween(flagsU, 1, { at: 55.6, dur: 1.8, ease: ease.move });
 
@@ -279,8 +283,8 @@ export function Render({ s }: { s: SceneState }) {
           {/* the cache_control flag on the last prefix block */}
           <g opacity={flagU} transform={`translate(${flagX}, ${TAPE_Y - 26 * flagU})`}>
             <line x1={0} y1={26} x2={0} y2={CELL_H + 26} stroke={colors.POSITIVE} strokeWidth={2.5} />
-            <path d={'M 0 26 h 64 l -10 11 l 10 11 h -64 z'} fill={colors.POSITIVE} opacity={0.9} />
-            <text x={6} y={41} fill={colors.BG} fontSize={10.5} fontFamily={MONO} fontWeight={700}>
+            <path d={'M 0 26 h 80 l -10 11 l 10 11 h -80 z'} fill={colors.POSITIVE} opacity={0.9} />
+            <text x={6} y={41} fill={colors.BG} fontSize={12} fontFamily={MONO} fontWeight={700}>
               breakpoint
             </text>
           </g>
@@ -348,7 +352,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={ARC.cx} y={ARC.cy + 5} textAnchor="middle" fill={fuse < 0.25 ? colors.NEGATIVE : colors.TEXT} fontSize={13} fontFamily={MONO}>
               {fmtClock(fuse, 300)}
             </text>
-            <text x={ARC.cx} y={ARC.cy + ARC.r + 18} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+            <text x={ARC.cx} y={ARC.cy + ARC.r + 18} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               ttl: '5m'
             </text>
           </g>
@@ -356,8 +360,8 @@ export function Render({ s }: { s: SceneState }) {
           {/* hit packets: a request flies in and lands on the shelf */}
           {hits.map((u, i) => (
             <g key={i}>
-              <circle cx={lerp(1150, SHELF.x + SHELF.w - 30, u)} cy={lerp(560, SHELF.y + SHELF.h - 14, u)} r={8} fill={colors.ACCENT} />
-              <text x={lerp(1150, SHELF.x + SHELF.w - 30, u)} y={lerp(560, SHELF.y + SHELF.h - 14, u) - 14} textAnchor="middle" fill={colors.ACCENT} fontSize={11} fontFamily={MONO}>
+              <circle cx={lerp(1010, SHELF.x + SHELF.w - 30, u)} cy={lerp(300, SHELF.y + SHELF.h - 14, u)} r={8} fill={colors.ACCENT} />
+              <text x={lerp(1010, SHELF.x + SHELF.w - 30, u)} y={lerp(300, SHELF.y + SHELF.h - 14, u) - 14} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>
                 request
               </text>
             </g>
@@ -365,8 +369,8 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* expiry aftermath */}
           <g opacity={coldU}>
-            <rect x={SHELF.x + 120} y={SHELF.y + 24} width={SHELF.w - 240} height={44} rx={10} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.4} />
-            <text x={SHELF.x + SHELF.w / 2} y={SHELF.y + 52} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>
+            <rect x={SHELF.x + 100} y={SHELF.y + 30} width={SHELF.w - 200} height={40} rx={10} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.4} />
+            <text x={SHELF.x + SHELF.w / 2} y={SHELF.y + 55} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
               expired — next request pays the write again
             </text>
           </g>
@@ -378,7 +382,7 @@ export function Render({ s }: { s: SceneState }) {
               the patient tier
             </text>
             <TimerArc cx={HOUR.x + 52} cy={HOUR.y + 86} r={24} u={hourFuse} color={colors.SECONDARY} width={4.5} />
-            <text x={HOUR.x + 52} y={HOUR.y + 91} textAnchor="middle" fill={colors.TEXT} fontSize={11} fontFamily={MONO}>
+            <text x={HOUR.x + 52} y={HOUR.y + 91} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
               {fmtClock(hourFuse, 3600)}
             </text>
             <text x={HOUR.x + 96} y={HOUR.y + 76} fill={colors.SECONDARY} fontSize={12.5} fontFamily={MONO}>

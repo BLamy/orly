@@ -28,16 +28,16 @@ const clamp01 = (u: number) => (u < 0 ? 0 : u > 1 ? 1 : u);
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 /* ---------------------------------------------------------------- layout */
-const CONFIG = { x: 90, y: 175, w: 330, h: 190 };
-const PROJECT = { x: 710, y: 300 };
-const EXPLORE = { x: 465, y: 488, w: 520, h: 24 };
-const STREAM = { x: 120, y: 575, w: 1040 };
+const CONFIG = { x: 80, y: 160, w: 420, h: 226 };
+const PROJECT = { x: 760, y: 290, r: 104, ring: 175 };
+const EXPLORE = { x: 440, y: 500, w: 640, h: 26 };
+const STREAM = { x: 120, y: 596, w: 1040 };
 
-const CAM_CONFIG: CameraState = { x: 360, y: 275, k: 1.24 };
-const CAM_PROJECT: CameraState = { x: 690, y: 285, k: 1.18 };
-const CAM_CATALOG: CameraState = { x: 690, y: 340, k: 1.0 };
-const CAM_SPLIT: CameraState = { x: 640, y: 405, k: 0.97 };
-const CAM_CLOSE: CameraState = { x: 640, y: 350, k: 1.0 };
+const CAM_CONFIG: CameraState = { x: 380, y: 270, k: 1.1 };
+const CAM_PROJECT: CameraState = { x: 640, y: 290, k: 1.0 };
+const CAM_CATALOG: CameraState = { x: 690, y: 300, k: 1.0 };
+const CAM_SPLIT: CameraState = { x: 640, y: 420, k: 1.1 };
+const CAM_CLOSE: CameraState = { x: 640, y: 360, k: 1.0 };
 
 const RECORDING_POINTS: RecordingPoint[] = [
   { at: 0.08, kind: 'interaction', label: 'open' },
@@ -56,9 +56,9 @@ const CATALOG_ITEMS = [
 ] as const;
 
 const INPUTS = [
-  { label: 'target_url', x: 1050, y: 145, color: colors.ACCENT },
-  { label: 'instructions', x: 1070, y: 255, color: colors.WARM },
-  { label: 'design_document', x: 1035, y: 365, color: colors.SECONDARY },
+  { label: 'target_url', x: 1130, y: 170, color: colors.ACCENT },
+  { label: 'instructions', x: 1130, y: 270, color: colors.WARM },
+  { label: 'design_document', x: 1130, y: 370, color: colors.SECONDARY },
 ] as const;
 
 /* -------------------------------------------------------------- timeline */
@@ -224,26 +224,26 @@ function ConfigCard({ u }: { u: number }) {
   return (
     <g transform={`translate(${CONFIG.x}, ${CONFIG.y + (1 - uu) * 14})`} opacity={uu}>
       <rect width={CONFIG.w} height={CONFIG.h} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.6} />
-      <rect x={0} y={0} width={CONFIG.w} height={38} rx={14} fill={colors.ACCENT} opacity={0.09} />
-      <text x={18} y={25} fill={colors.TEXT} fontSize={13} fontFamily={MONO} fontWeight={700}>
+      <rect x={0} y={0} width={CONFIG.w} height={42} rx={14} fill={colors.ACCENT} opacity={0.09} />
+      <text x={22} y={27} fill={colors.TEXT} fontSize={16} fontFamily={MONO} fontWeight={700}>
         .replay/config.json
       </text>
-      <text x={22} y={76} fill={colors.MUTED} fontSize={15} fontFamily={MONO}>
+      <text x={24} y={88} fill={colors.MUTED} fontSize={20} fontFamily={MONO}>
         {'{'}
       </text>
-      <text x={42} y={108} fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
+      <text x={48} y={122} fill={colors.ACCENT} fontSize={17} fontFamily={MONO}>
         &quot;qa-project-id&quot;
       </text>
-      <text x={184} y={108} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
+      <text x={246} y={122} fill={colors.MUTED} fontSize={17} fontFamily={MONO}>
         :
       </text>
-      <text x={202} y={108} fill={colors.TEXT} fontSize={12.5} fontFamily={MONO}>
+      <text x={268} y={122} fill={colors.TEXT} fontSize={16} fontFamily={MONO}>
         &quot;proj-slack…&quot;
       </text>
-      <text x={22} y={140} fill={colors.MUTED} fontSize={15} fontFamily={MONO}>
+      <text x={24} y={156} fill={colors.MUTED} fontSize={20} fontFamily={MONO}>
         {'}'}
       </text>
-      <text x={18} y={171} fill={colors.MUTED} fontSize={11.5}>
+      <text x={22} y={196} fill={colors.MUTED} fontSize={15}>
         one bookmark into the Replay QA catalog
       </text>
     </g>
@@ -252,18 +252,18 @@ function ConfigCard({ u }: { u: number }) {
 
 function InputFlights({ u, dim }: { u: number; dim: number }) {
   return (
-    <g opacity={1 - 0.8 * dim}>
+    <g opacity={1 - 0.9 * dim}>
       {INPUTS.map((item, i) => {
         const p = clamp01(u - i);
         if (p <= 0 || p >= 1) return null;
         const q = ease.move(p);
         const x = item.x + (PROJECT.x - item.x) * q;
         const y = item.y + (PROJECT.y - item.y) * q;
-        const w = item.label.length * 8 + 24;
+        const w = item.label.length * 8.6 + 28;
         return (
           <g key={item.label} transform={`translate(${x}, ${y})`} opacity={Math.min(1, p * 5, (1 - p) * 5)}>
             <rect x={-w / 2} y={-15} width={w} height={30} rx={15} fill={colors.PANEL} stroke={item.color} strokeWidth={1.5} />
-            <text y={5} textAnchor="middle" fill={item.color} fontSize={12} fontFamily={MONO}>
+            <text y={5} textAnchor="middle" fill={item.color} fontSize={14} fontFamily={MONO}>
               {item.label}
             </text>
           </g>
@@ -291,25 +291,25 @@ function ProjectMachine({
   const du = clamp01(duplicate);
   const incoming = du < 0.56 ? du / 0.56 : 1 - (du - 0.56) / 0.44;
   const bounce = clamp01(incoming);
-  const dx = 1050 + (PROJECT.x + 112 - 1050) * ease.move(bounce);
+  const dx = INPUTS[0].x + (PROJECT.x + PROJECT.r + 8 - INPUTS[0].x) * ease.move(bounce);
   const glow = du > 0.43 && du < 0.75 ? Math.sin(((du - 0.43) / 0.32) * Math.PI) : 0;
 
   return (
-    <g opacity={1 - 0.82 * dim}>
+    <g opacity={1 - 0.9 * dim}>
       <g transform={`translate(${PROJECT.x}, ${PROJECT.y}) scale(${0.82 + uu * 0.18})`} opacity={uu}>
-        <circle r={145} fill="none" stroke={colors.GRID} strokeWidth={1.2} strokeDasharray="3 8" />
-        <circle r={92} fill={colors.PANEL} stroke={glow > 0 ? colors.NEGATIVE : colors.ACCENT} strokeWidth={2 + glow * 2} />
-        <circle r={72} fill="none" stroke={colors.ACCENT} strokeWidth={1.2} opacity={0.25 + 0.45 * catalog} />
-        <text y={-20} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+        <circle r={PROJECT.ring} fill="none" stroke={colors.GRID} strokeWidth={1.2} strokeDasharray="3 8" />
+        <circle r={PROJECT.r} fill={colors.PANEL} stroke={glow > 0 ? colors.NEGATIVE : colors.ACCENT} strokeWidth={2 + glow * 2} />
+        <circle r={PROJECT.r - 20} fill="none" stroke={colors.ACCENT} strokeWidth={1.2} opacity={0.25 + 0.45 * catalog} />
+        <text y={-30} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
           LOOPQA PROJECT
         </text>
-        <text y={8} textAnchor="middle" fill={colors.TEXT} fontSize={18} fontWeight={700}>
+        <text y={4} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={700}>
           Slack Clone
         </text>
-        <text y={31} textAnchor="middle" fill={colors.ACCENT} fontSize={11.5} fontFamily={MONO}>
+        <text y={34} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
           qa-project-id
         </text>
-        <text y={52} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+        <text y={58} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
           target_url fingerprint
         </text>
 
@@ -317,12 +317,13 @@ function ProjectMachine({
           const reveal = clamp01((Math.max(queue * 0.55, catalog) * 4.8) - i * 0.9);
           if (reveal <= 0) return null;
           const a = (item.angle * Math.PI) / 180;
-          const x = Math.cos(a) * 145;
-          const y = Math.sin(a) * 145;
+          const x = Math.cos(a) * PROJECT.ring;
+          const y = Math.sin(a) * PROJECT.ring;
+          const pw = item.label.length * 7.8 + 24;
           return (
             <g key={item.label} transform={`translate(${x}, ${y + (1 - reveal) * 10})`} opacity={reveal}>
-              <circle r={28} fill={colors.PANEL} stroke={item.color} strokeWidth={1.6} />
-              <text y={4} textAnchor="middle" fill={item.color} fontSize={10.5} fontWeight={700}>
+              <rect x={-pw / 2} y={-15} width={pw} height={30} rx={15} fill={colors.PANEL} stroke={item.color} strokeWidth={1.6} />
+              <text y={5} textAnchor="middle" fill={item.color} fontSize={14} fontWeight={700}>
                 {item.label}
               </text>
             </g>
@@ -331,17 +332,17 @@ function ProjectMachine({
       </g>
 
       {du > 0 && du < 1 && (
-        <g transform={`translate(${dx}, ${PROJECT.y - 92})`} opacity={Math.min(1, du * 5, (1 - du) * 5)}>
-          <rect x={-78} y={-17} width={156} height={34} rx={17} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.6} />
-          <text y={5} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11.5} fontFamily={MONO}>
+        <g transform={`translate(${dx}, ${PROJECT.y - 150})`} opacity={Math.min(1, du * 5, (1 - du) * 5)}>
+          <rect x={-88} y={-17} width={176} height={34} rx={17} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.6} />
+          <text y={5} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>
             same target_url
           </text>
         </g>
       )}
       {glow > 0.2 && (
-        <g transform={`translate(${PROJECT.x + 192}, ${PROJECT.y - 95})`} opacity={glow}>
-          <rect x={-116} y={-22} width={232} height={44} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} />
-          <text y={5} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11.5} fontFamily={MONO}>
+        <g transform={`translate(${PROJECT.x}, ${PROJECT.y - 215})`} opacity={glow}>
+          <rect x={-170} y={-22} width={340} height={44} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} />
+          <text y={5} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>
             duplicate refused · reuse existing ID
           </text>
         </g>
@@ -354,11 +355,11 @@ function ConfigKey({ u, dim }: { u: number; dim: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
   const x1 = CONFIG.x + CONFIG.w;
-  const y1 = CONFIG.y + 102;
-  const x2 = PROJECT.x - 90;
+  const y1 = CONFIG.y + 122;
+  const x2 = PROJECT.x - PROJECT.r;
   const y2 = PROJECT.y;
   return (
-    <g opacity={(1 - 0.8 * dim) * uu}>
+    <g opacity={(1 - 0.9 * dim) * uu}>
       <path
         d={`M ${x1} ${y1} C ${x1 + 90} ${y1}, ${x2 - 80} ${y2}, ${x1 + (x2 - x1) * uu} ${y1 + (y2 - y1) * uu}`}
         fill="none"
@@ -367,7 +368,7 @@ function ConfigKey({ u, dim }: { u: number; dim: number }) {
         strokeDasharray="5 6"
       />
       {uu > 0.85 && (
-        <text x={(x1 + x2) / 2} y={(y1 + y2) / 2 - 14} textAnchor="middle" fill={colors.ACCENT} fontSize={10.5} fontFamily={MONO}>
+        <text x={(x1 + x2) / 2} y={(y1 + y2) / 2 - 14} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
           stable project key
         </text>
       )}
@@ -384,8 +385,8 @@ function StreamLedger({ u, dim }: { u: number; dim: number }) {
     { at: 0.78, label: 'offset 130 · agent.replied' },
   ];
   return (
-    <g opacity={(1 - 0.38 * dim) * uu}>
-      <text x={STREAM.x} y={STREAM.y - 18} fill={colors.TEAL} fontSize={12.5} fontWeight={700}>
+    <g opacity={(1 - 0.1 * dim) * uu}>
+      <text x={STREAM.x} y={STREAM.y - 18} fill={colors.TEAL} fontSize={15} fontWeight={700}>
         Slack app authority · Durable Streams
       </text>
       <line
@@ -397,14 +398,14 @@ function StreamLedger({ u, dim }: { u: number; dim: number }) {
         strokeWidth={4}
         strokeLinecap="round"
       />
-      {entries.map((entry, i) => {
+      {entries.map((entry) => {
         const e = clamp01((uu - entry.at) * 7);
         if (e <= 0) return null;
         const x = STREAM.x + STREAM.w * entry.at;
         return (
           <g key={entry.label} opacity={e} transform={`translate(${x}, ${STREAM.y})`}>
             <circle r={7} fill={colors.TEAL} />
-            <text y={27 + (i % 2) * 14} textAnchor="middle" fill={colors.MUTED} fontSize={9.8} fontFamily={MONO}>
+            <text y={28} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
               {entry.label}
             </text>
           </g>
@@ -418,18 +419,18 @@ function ClosingCard({ u }: { u: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
   return (
-    <g transform={`translate(640, ${328 + (1 - uu) * 14})`} opacity={uu}>
-      <rect x={-355} y={-92} width={710} height={184} rx={18} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.7} />
-      <text y={-43} textAnchor="middle" fill={colors.TEXT} fontSize={22} fontWeight={750}>
+    <g transform={`translate(640, ${300 + (1 - uu) * 14})`} opacity={uu}>
+      <rect x={-380} y={-100} width={760} height={200} rx={18} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.7} />
+      <text y={-48} textAnchor="middle" fill={colors.TEXT} fontSize={28} fontWeight={750}>
         Initialize one witness. Preserve two truths.
       </text>
-      <text y={-3} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
+      <text y={-8} textAnchor="middle" fill={colors.ACCENT} fontSize={16} fontFamily={MONO}>
         qa-project-id → Replay QA catalog + deterministic recording
       </text>
-      <text y={29} textAnchor="middle" fill={colors.TEAL} fontSize={13} fontFamily={MONO}>
+      <text y={28} textAnchor="middle" fill={colors.TEAL} fontSize={16} fontFamily={MONO}>
         stream offsets + digests → Slack event-sourced state
       </text>
-      <text y={62} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+      <text y={66} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
         correlated in ticket evidence · never conflated as one database
       </text>
     </g>
@@ -444,7 +445,7 @@ export function Render({ s }: { s: SceneState }) {
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...s.get(scene.cam)}>
-        <ConfigCard u={s.get(scene.configU) * (1 - 0.8 * dim)} />
+        <ConfigCard u={s.get(scene.configU) * (1 - 0.9 * dim)} />
         <ConfigKey u={s.get(scene.keyU)} dim={dim} />
         <InputFlights u={s.get(scene.inputsU)} dim={dim} />
         <ProjectMachine
@@ -455,7 +456,7 @@ export function Render({ s }: { s: SceneState }) {
           dim={dim}
         />
 
-        <g opacity={1 - 0.82 * dim}>
+        <g opacity={1 - 0.9 * dim}>
           <RecordingStrip
             x={EXPLORE.x}
             y={EXPLORE.y}
@@ -467,7 +468,7 @@ export function Render({ s }: { s: SceneState }) {
             title="initial exploration · Replay recording"
           />
           {s.get(scene.queueU) > 0 && (
-            <text x={PROJECT.x} y={448} textAnchor="middle" fill={colors.WARM} fontSize={10.5} fontFamily={MONO} opacity={s.get(scene.queueU)}>
+            <text x={PROJECT.x} y={472} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO} opacity={s.get(scene.queueU)}>
               queueJourneyTasksForProject() · triggerSpawnForProject()
             </text>
           )}
@@ -475,18 +476,18 @@ export function Render({ s }: { s: SceneState }) {
 
         <StreamLedger u={s.get(scene.streamU)} dim={dim} />
         {correlation > 0 && (
-          <g opacity={correlation * (1 - 0.75 * dim)}>
+          <g opacity={correlation * (1 - 0.9 * dim)}>
             <line
-              x1={PROJECT.x - 45}
-              y1={EXPLORE.y + 33}
-              x2={PROJECT.x - 45}
-              y2={STREAM.y - 28}
+              x1={900}
+              y1={EXPLORE.y + EXPLORE.h + 4}
+              x2={900}
+              y2={STREAM.y - 6}
               stroke={colors.WARM}
               strokeWidth={1.6}
               strokeDasharray="3 5"
             />
-            <rect x={PROJECT.x - 153} y={526} width={216} height={30} rx={15} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.2} />
-            <text x={PROJECT.x - 45} y={546} textAnchor="middle" fill={colors.WARM} fontSize={10.5} fontFamily={MONO}>
+            <rect x={770} y={556} width={260} height={28} rx={14} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.2} />
+            <text x={900} y={575} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
               ticket evidence correlates both
             </text>
           </g>

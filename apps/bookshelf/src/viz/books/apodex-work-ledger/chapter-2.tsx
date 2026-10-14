@@ -10,6 +10,17 @@ const AGENTS = [
   { name: 'publisher', x: 830, y: 520, color: colors.WARM },
 ];
 const WORK = Array.from({ length: 8 }, (_, i) => ({ id: `t${i + 1}`, color: AGENTS[i % 4].color }));
+// Gentle push that keeps the whole board (title, work column, cards) inside the stage.
+const PUSH = { x: 660, y: 366, k: 1.04 };
+// Where each specialist's first item lands: on the card's hub-facing edge.
+const ARRIVE = [
+  { x: 840, y: 172 },
+  { x: 1008, y: 292 },
+  { x: 943, y: 472 },
+  { x: 830, y: 470 },
+];
+// Second-wave items queue just outside the first item so the two beads never stack.
+const QUEUED = ARRIVE.map((p, i) => (i === 3 ? { x: p.x, y: p.y - 44 } : { x: p.x - 44, y: p.y }));
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 
 export function buildScene() {
@@ -31,11 +42,11 @@ export function buildScene() {
 
   tl.caption({ at: 6.9, dur: 6.2, text: 'Agent Team first registers persistent sessions, so each specialist can receive a serial stream of follow-up work.' });
   tl.tween(sessionsP, 4, { at: 7.6, dur: 2.4, ease: ease.enter });
-  tl.tween(cam, { x: 944, y: 332, k: 1.12 }, { at: 9.7, dur: 1.2, ease: ease.move });
+  tl.tween(cam, PUSH, { at: 9.7, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 13.5, dur: 6.4, text: 'Before any item runs, the spawn guard checks depth and reserves its estimated token budget.' });
   tl.tween(precheckU, 1, { at: 14.2, dur: 1.4, ease: ease.draw });
-  tl.tween(cam, { x: 620, y: 330, k: 1.08 }, { at: 16.4, dur: 1.2, ease: ease.move });
+  tl.tween(cam, PUSH, { at: 16.4, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 20.3, dur: 6.4, text: 'A semaphore then opens only the allowed number of parallel slots. Extra work queues instead of disappearing.' });
   tl.tween(slotsU, 1, { at: 21.0, dur: 1.0, ease: ease.pop });
@@ -47,7 +58,7 @@ export function buildScene() {
 
   tl.caption({ at: 33.8, dur: 6.2, text: 'If a session is already busy, its next assignment waits first in, first out behind the current task.' });
   tl.tween(queueU, 1, { at: 34.5, dur: 1.1, ease: ease.enter });
-  tl.tween(cam, { x: 910, y: 500, k: 1.14 }, { at: 36.4, dur: 1.2, ease: ease.move });
+  tl.tween(cam, PUSH, { at: 36.4, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 40.4, dur: 6.4, text: 'A failed worker still returns its reservation in a finally block, so one exception cannot leak a slot.' });
   tl.tween(failureU, 1, { at: 41.1, dur: 0.55, ease: ease.pop });
@@ -55,7 +66,7 @@ export function buildScene() {
 
   tl.caption({ at: 47.2, dur: 6.4, text: 'Persistent sessions stop accepting new assignments after five tasks, before stale history can dominate fresh work.' });
   tl.tween(capP, 5, { at: 47.9, dur: 2.8, ease: ease.enter });
-  tl.tween(cam, { x: 1034, y: 305, k: 1.08 }, { at: 50.6, dur: 1.2, ease: ease.move });
+  tl.tween(cam, PUSH, { at: 50.6, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 54.0, dur: 6.5, text: 'This is coordination scaling with limits: more work can proceed together, but depth, tokens, time, and parallelism remain finite.' });
   tl.tween(cam, CAMERA_HOME, { at: 53.6, dur: 1.0, ease: ease.move });
@@ -88,19 +99,19 @@ export function Render({ s }: { s: SceneState }) {
       <text x="640" y="66" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="800">Fan out through a finite gate</text>
 
       <g>
-        <text x="112" y="134" fill={colors.WARM} fontSize="15" fontWeight="700">board work items</text>
+        <text x="112" y="170" fill={colors.WARM} fontSize="15" fontWeight="700">board work items</text>
         {WORK.map((item, i) => {
           const u = clamp01(workP - i);
           const lane = i % 4;
           const travel = clamp01(dispatch - i);
           const sx = 112 + (i % 2) * 54;
-          const sy = 178 + Math.floor(i / 2) * 76;
+          const sy = 194 + Math.floor(i / 2) * 76;
           const tx = 640 + Math.cos(-Math.PI / 2 + lane * Math.PI / 2) * 84;
           const ty = 326 + Math.sin(-Math.PI / 2 + lane * Math.PI / 2) * 84;
-          const agent = AGENTS[lane];
+          const dest = i < 4 ? ARRIVE[lane] : QUEUED[lane];
           const second = clamp01((travel - 0.45) / 0.55);
-          const x = travel < 0.5 ? sx + (tx - sx) * travel * 2 : tx + (agent.x - tx) * second;
-          const y = travel < 0.5 ? sy + (ty - sy) * travel * 2 : ty + (agent.y - ty) * second;
+          const x = travel < 0.5 ? sx + (tx - sx) * travel * 2 : tx + (dest.x - tx) * second;
+          const y = travel < 0.5 ? sy + (ty - sy) * travel * 2 : ty + (dest.y - ty) * second;
           return <WorkBead key={item.id} x={x} y={y} label={item.id} color={item.color} opacity={u} />;
         })}
       </g>
@@ -124,7 +135,7 @@ export function Render({ s }: { s: SceneState }) {
           </g>;
         })}
         <text x="640" y="332" textAnchor="middle" fill={colors.TEXT} fontSize="14" fontWeight="800">4 slots</text>
-        <text x="640" y="447" textAnchor="middle" fill={colors.ACCENT} fontSize="14" fontFamily={colors.font.mono}>acquire_slot()</text>
+        <text x="640" y="482" textAnchor="middle" fill={colors.ACCENT} fontSize="14" fontFamily={colors.font.mono}>acquire_slot()</text>
       </g>
 
       {AGENTS.map((agent, i) => {
@@ -137,15 +148,15 @@ export function Render({ s }: { s: SceneState }) {
       })}
 
       <g opacity={s.get(scene.queueU)}>
-        <path d="M764 538 H1012" stroke={colors.GRID} strokeWidth="8" strokeLinecap="round" />
-        <text x="888" y="590" textAnchor="middle" fill={colors.MUTED} fontSize="14">pending_tasks · FIFO</text>
-        <WorkBead x={846} y={538} label="t7" color={colors.POSITIVE} />
-        <WorkBead x={912} y={538} label="t8" color={colors.WARM} />
+        <path d="M764 590 H1012" stroke={colors.GRID} strokeWidth="8" strokeLinecap="round" />
+        <text x="748" y="596" textAnchor="end" fill={colors.MUTED} fontSize="14">pending_tasks · FIFO</text>
+        <WorkBead x={846} y={590} label="t7" color={colors.POSITIVE} />
+        <WorkBead x={912} y={590} label="t8" color={colors.WARM} />
       </g>
 
       <g opacity={release}>
-        <path d="M1100 258 C1040 180 850 125 708 240" fill="none" stroke={colors.POSITIVE} strokeWidth="5" strokeDasharray={`${Math.max(1, release * 430)} 450`} />
-        <text x="897" y="128" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontFamily={colors.font.mono}>finally: release(job_id)</text>
+        <path d="M1026 300 C960 262 800 262 712 300" fill="none" stroke={colors.POSITIVE} strokeWidth="5" strokeDasharray={`${Math.max(1, release * 340)} 360`} />
+        <text x="898" y="250" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontFamily={colors.font.mono}>finally: release(job_id)</text>
       </g>
 
       <g opacity={clamp01(s.get(scene.capP))}>

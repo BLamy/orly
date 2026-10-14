@@ -49,9 +49,10 @@ const SSE_X = 900; // the held-open pipe
 const SSE_READER = { x: 960, y: 556 } as const;
 const RULER = { x0: 430, x1: 760, y: 470 } as const; // cursor interval ruler
 
-const CAM_TAIL: CameraState = { x: 640, y: 260, k: 1.2 };
-const CAM_LP: CameraState = { x: 480, y: 400, k: 1.3 };
-const CAM_SSE: CameraState = { x: 930, y: 380, k: 1.28 };
+// Each push keeps its subject inside the stage and above the caption band.
+const CAM_TAIL: CameraState = { x: 600, y: 350, k: 1.1 };
+const CAM_LP: CameraState = { x: 440, y: 400, k: 1.15 };
+const CAM_SSE: CameraState = { x: 760, y: 374, k: 1.2 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 // ---------------------------------------------------------------------------
@@ -250,6 +251,8 @@ export function Render({ s }: { s: SceneState }) {
 
   const machineOp = 1 - 0.88 * dimU;
   const railX1 = TAIL_X + 30;
+  // the SSE pipe clears while the crowd and the cursor ruler take the stage
+  const quiet = Math.max(crowdU, rulerU);
 
   // live appends land at cells NB, NB+1, NB+2
   const liveU = [app1U, app2U, app3U];
@@ -284,7 +287,7 @@ export function Render({ s }: { s: SceneState }) {
           {BASE.map((m, i) => (
             <g key={i} opacity={tapeU}>
               <rect x={cellX(i) - TAPE.cellW / 2 + 3} y={TAPE.y - TAPE.cellH / 2} width={TAPE.cellW - 6} height={TAPE.cellH} rx={7} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.2} opacity={0.75} />
-              <text x={cellX(i)} y={TAPE.y + 4} textAnchor="middle" fill={colors.TEXT} fontSize={11.5} fontFamily={MONO}>
+              <text x={cellX(i)} y={TAPE.y + 5} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
                 {m}
               </text>
             </g>
@@ -297,25 +300,25 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={`l${i}`} opacity={u}>
                 <rect x={x} y={TAPE.y - TAPE.cellH / 2 - drop} width={TAPE.cellW - 6} height={TAPE.cellH} rx={7} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.8} />
-                <text x={x + (TAPE.cellW - 6) / 2} y={TAPE.y + 4 - drop} textAnchor="middle" fill={colors.TEXT} fontSize={11.5} fontFamily={MONO}>
+                <text x={x + (TAPE.cellW - 6) / 2} y={TAPE.y + 5 - drop} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
                   {m}
                 </text>
               </g>
             );
           })}
-          {/* the reader's tail playhead + up-to-date chip */}
+          {/* the reader's tail playhead + up-to-date chip, inside the frame under the tape */}
           <g opacity={upU * machineOp}>
-            <path d={`M ${cellX(NB) - TAPE.cellW / 2} ${TAPE.y - TAPE.cellH / 2 - 14} l 9 -14 l -18 0 Z`} fill={colors.POSITIVE} opacity={1 - clamp01(app1U * 2)} />
-            <rect x={cellX(NB) - 130} y={TAPE.y - TAPE.cellH / 2 - 62} width={228} height={26} rx={8} fill={colors.BG} stroke={colors.POSITIVE} opacity={1 - clamp01(crowdU * 2)} />
-            <text x={cellX(NB) - 16} y={TAPE.y - TAPE.cellH / 2 - 44} textAnchor="middle" fill={colors.POSITIVE} fontSize={11.5} fontFamily={MONO} opacity={1 - clamp01(crowdU * 2)}>
+            <path d={`M ${cellX(NB) - TAPE.cellW / 2 - 7} 247 L ${cellX(NB) - TAPE.cellW / 2} 236 L ${cellX(NB) - TAPE.cellW / 2 + 7} 247 Z`} fill={colors.POSITIVE} opacity={1 - clamp01(app1U * 2)} />
+            <rect x={cellX(NB) - 126} y={246} width={252} height={26} rx={8} fill={colors.BG} stroke={colors.POSITIVE} opacity={1 - clamp01(crowdU * 2)} />
+            <text x={cellX(NB)} y={264} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO} opacity={1 - clamp01(crowdU * 2)}>
               Stream-Up-To-Date: true
             </text>
           </g>
-          {/* closure end-cap */}
+          {/* closure end-cap + its status chip, inside the frame */}
           <g opacity={closeU * machineOp}>
             <rect x={cellX(NB + 2) + TAPE.cellW / 2 + 6} y={TAPE.y - TAPE.cellH / 2 - 8} width={7} height={TAPE.cellH + 16} rx={3} fill={colors.NEGATIVE} />
-            <rect x={cellX(NB + 2) - 60} y={TAPE.y - TAPE.cellH / 2 - 62} width={196} height={26} rx={8} fill={colors.BG} stroke={colors.NEGATIVE} />
-            <text x={cellX(NB + 2) + 38} y={TAPE.y - TAPE.cellH / 2 - 44} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11.5} fontFamily={MONO}>
+            <rect x={cellX(NB + 2) - 98} y={246} width={196} height={26} rx={8} fill={colors.BG} stroke={colors.NEGATIVE} />
+            <text x={cellX(NB + 2)} y={264} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>
               Stream-Closed: true
             </text>
           </g>
@@ -327,14 +330,14 @@ export function Render({ s }: { s: SceneState }) {
           {/* the parking bracket */}
           <g opacity={clamp01(park1U * 3 + pollU * 3)}>
             <path d={`M ${GATE.x - 26} ${GATE.y - 20} l 0 40 M ${GATE.x + 26} ${GATE.y - 20} l 0 40`} stroke={colors.MUTED} strokeWidth={2.5} fill="none" />
-            <text x={GATE.x} y={GATE.y + 42} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+            <text x={GATE.x} y={GATE.y + 42} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               held open
             </text>
           </g>
           {/* naive polling hail + counter */}
           {hail.map((h) => h && <circle key={h.i} cx={h.p.x} cy={h.p.y} r={5} fill={h.back ? 'none' : colors.ACCENT} stroke={colors.MUTED} strokeWidth={1.5} opacity={0.8} />)}
           <g opacity={pollU > 0.05 && park1U < 0.2 ? 1 : 0}>
-            <text x={LP_READER.x + 120} y={LP_READER.y - 70} fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
+            <text x={LP_READER.x + 120} y={LP_READER.y - 70} fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>
               {`empty answers: ${Math.max(0, Math.min(8, emptyAnswers))}`}
             </text>
           </g>
@@ -346,7 +349,7 @@ export function Render({ s }: { s: SceneState }) {
               ) : (
                 <g>
                   <circle cx={resp1.x} cy={resp1.y} r={9} fill={colors.WARM} />
-                  <text x={resp1.x + 14} y={resp1.y - 8} fill={colors.WARM} fontSize={11.5} fontFamily={MONO}>
+                  <text x={resp1.x + 14} y={resp1.y - 8} fill={colors.WARM} fontSize={14} fontFamily={MONO}>
                     200 + ship
                   </text>
                 </g>
@@ -362,7 +365,7 @@ export function Render({ s }: { s: SceneState }) {
               ) : (
                 <g>
                   <circle cx={resp2.x} cy={resp2.y} r={8} fill="none" stroke={colors.MUTED} strokeWidth={2} />
-                  <text x={resp2.x + 14} y={resp2.y - 8} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+                  <text x={resp2.x + 14} y={resp2.y - 8} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
                     204 — ask again
                   </text>
                 </g>
@@ -377,23 +380,23 @@ export function Render({ s }: { s: SceneState }) {
           <ServiceNode x={SSE_READER.x} y={SSE_READER.y} kind="client" label="reader B" sublabel="live=sse" u={pipeU} />
           <g opacity={pipeU}>
             <line x1={SSE_X} y1={300} x2={SSE_X} y2={SSE_READER.y - 52} stroke={colors.SECONDARY} strokeWidth={2.5} strokeDasharray="1 0" opacity={0.9 * (1 - 0.7 * closeU)} />
-            <text x={SSE_X + 12} y={318} fill={colors.SECONDARY} fontSize={11.5} fontFamily={MONO}>
+            <text x={SSE_X + 12} y={318} fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>
               one held-open response
             </text>
           </g>
           {/* data event then control event slide down the pipe */}
           {ev1U > 0 && (
-            <g opacity={Math.min(1, ev1U * 3) * (1 - 0.85 * closeU)}>
-              <rect x={SSE_X - 132} y={evY(ev1U) - 13} width={120} height={26} rx={8} fill={colors.PANEL} stroke={colors.ACCENT} />
-              <text x={SSE_X - 72} y={evY(ev1U) + 5} textAnchor="middle" fill={colors.ACCENT} fontSize={11.5} fontFamily={MONO}>
+            <g opacity={Math.min(1, ev1U * 3) * (1 - 0.85 * closeU) * (1 - quiet)}>
+              <rect x={SSE_X - 136} y={evY(ev1U) - 14} width={128} height={28} rx={8} fill={colors.PANEL} stroke={colors.ACCENT} />
+              <text x={SSE_X - 72} y={evY(ev1U) + 5} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
                 event: data
               </text>
             </g>
           )}
           {ev2U > 0 && (
-            <g opacity={Math.min(1, ev2U * 3) * (1 - 0.85 * closeU)}>
-              <rect x={SSE_X - 148} y={evY(ev2U * 0.82) - 13} width={136} height={26} rx={8} fill={colors.PANEL} stroke={ctlU > 0.4 ? colors.WARM : colors.MUTED} strokeWidth={ctlU > 0.4 ? 2 : 1.2} />
-              <text x={SSE_X - 80} y={evY(ev2U * 0.82) + 5} textAnchor="middle" fill={ctlU > 0.4 ? colors.WARM : colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+            <g opacity={Math.min(1, ev2U * 3) * (1 - 0.85 * closeU) * (1 - quiet)}>
+              <rect x={SSE_X - 152} y={evY(ev2U * 0.82) - 14} width={144} height={28} rx={8} fill={colors.PANEL} stroke={ctlU > 0.4 ? colors.WARM : colors.MUTED} strokeWidth={ctlU > 0.4 ? 2 : 1.2} />
+              <text x={SSE_X - 80} y={evY(ev2U * 0.82) + 5} textAnchor="middle" fill={ctlU > 0.4 ? colors.WARM : colors.MUTED} fontSize={14} fontFamily={MONO}>
                 event: control
               </text>
             </g>
@@ -401,17 +404,17 @@ export function Render({ s }: { s: SceneState }) {
           {/* the control payload, spotlit */}
           <g opacity={ctlU}>
             <rect x={SSE_X + 26} y={396} width={286} height={64} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.5} />
-            <text x={SSE_X + 42} y={422} fill={colors.TEXT} fontSize={12.5} fontFamily={MONO}>
+            <text x={SSE_X + 42} y={422} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
               {'{"streamNextOffset":'}
             </text>
-            <text x={SSE_X + 42} y={444} fill={colors.WARM} fontSize={12.5} fontFamily={MONO}>
+            <text x={SSE_X + 42} y={444} fill={colors.WARM} fontSize={14} fontFamily={MONO}>
               {'  "01JQXK5V08", …}'}
             </text>
           </g>
           {/* closed control event */}
           <g opacity={closeU}>
-            <rect x={SSE_X - 160} y={evY(0.5) - 13} width={186} height={26} rx={8} fill={colors.PANEL} stroke={colors.NEGATIVE} />
-            <text x={SSE_X - 67} y={evY(0.5) + 5} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11.5} fontFamily={MONO}>
+            <rect x={SSE_X - 170} y={evY(0.5) - 14} width={206} height={28} rx={8} fill={colors.PANEL} stroke={colors.NEGATIVE} />
+            <text x={SSE_X - 67} y={evY(0.5) + 5} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>
               {'{"streamClosed":true}'}
             </text>
           </g>
@@ -425,12 +428,16 @@ export function Render({ s }: { s: SceneState }) {
               <circle cx={c.x} cy={c.y} r={7} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} />
             </g>
           ))}
-          <text x={393} y={600} fill={colors.MUTED} fontSize={13}>
-            …a thousand parked readers
+          <text x={684} y={606} fill={colors.MUTED} fontSize={14}>
+            …a thousand readers
           </text>
-          <rect x={GATE.x + 46} y={GATE.y - 14} width={252} height={28} rx={8} fill={colors.BG} stroke={colors.POSITIVE} />
-          <text x={GATE.x + 172} y={GATE.y + 5} textAnchor="middle" fill={colors.POSITIVE} fontSize={12.5} fontFamily={MONO}>
+          <rect x={GATE.x + 46} y={GATE.y - 14} width={296} height={28} rx={8} fill={colors.BG} stroke={colors.POSITIVE} />
+          <text x={GATE.x + 194} y={GATE.y + 5} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>
             collapsed: 1 request to origin
+          </text>
+          {/* the condition the claim rests on, stated on the picture */}
+          <text x={GATE.x + 46} y={GATE.y + 36} fill={colors.MUTED} fontSize={13}>
+            only if the CDN collapses identical requests
           </text>
         </g>
 
@@ -443,14 +450,14 @@ export function Render({ s }: { s: SceneState }) {
               <g key={i}>
                 <line x1={x} y1={RULER.y - 6} x2={x} y2={RULER.y + 6} stroke={colors.MUTED} strokeWidth={1.5} />
                 {i < 3 && (
-                  <text x={x + (RULER.x1 - RULER.x0) / 6} y={RULER.y + 22} textAnchor="middle" fill={i === 1 ? colors.WARM : colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+                  <text x={x + (RULER.x1 - RULER.x0) / 6} y={RULER.y + 22} textAnchor="middle" fill={i === 1 ? colors.WARM : colors.MUTED} fontSize={14} fontFamily={MONO}>
                     {`cursor=${1042 + i}`}
                   </text>
                 )}
               </g>
             );
           })}
-          <text x={(RULER.x0 + RULER.x1) / 2} y={RULER.y - 14} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+          <text x={(RULER.x0 + RULER.x1) / 2} y={RULER.y - 14} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
             time, in twenty-second buckets — same bucket, same cache key
           </text>
         </g>
@@ -458,7 +465,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* closing card */}
         <g opacity={cardU}>
           <rect x={310} y={240} width={660} height={170} rx={16} fill={colors.PANEL} stroke={colors.TEAL} strokeWidth={1.5} />
-          <text x={640} y={296} textAnchor="middle" fill={colors.TEXT} fontSize={21} fontWeight={700}>
+          <text x={640} y={296} textAnchor="middle" fill={colors.TEXT} fontSize={22} fontWeight={700}>
             Live in every direction
           </text>
           <text x={640} y={332} textAnchor="middle" fill={colors.MUTED} fontSize={15}>

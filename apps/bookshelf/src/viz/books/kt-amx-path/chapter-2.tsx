@@ -42,18 +42,24 @@ const Craw = A.map((row, i) => row.map((_, j) => A[i].reduce((acc, _, k) => acc 
 const cMax = Math.max(...Craw.flat());
 const C: number[][] = Craw.map((r) => r.map((v) => v / cMax));
 
-const TILE_A = { x: 250, y: 180 } as const;
-const TILE_B = { x: 250, y: 400 } as const;
-const TILE_C = { x: 760, y: 290 } as const;
-const CELL = 26;
+// Layout: everything sits inside the core frame (x 120–1160, y 90–610), which
+// stays clear of the caption band (y > 630). Cameras only push as far as that
+// frame, so no label is cropped at the stage edge.
+const TILE_A = { x: 200, y: 230 } as const;
+const TILE_B = { x: 200, y: 440 } as const;
+const TILE_C = { x: 720, y: 320 } as const;
+const CELL = 24;
 const GAP = 3;
 const tileW = N * (CELL + GAP);
+const SPAN = (N - 1) * (CELL + GAP) + CELL; // visible width of one grid
+const COUNT_X = TILE_C.x + SPAN + 28; // ops counter sits right of tile C
+const COUNT_Y = TILE_C.y + 40;
 
 const REGS = ['tmm0', 'tmm1', 'tmm2', 'tmm3', 'tmm4', 'tmm5', 'tmm6', 'tmm7'];
 
-const CAM_TILES: CameraState = { x: 560, y: 330, k: 1.3 };
-const CAM_C: CameraState = { x: 800, y: 350, k: 1.5 };
-const CAM_WIDE: CameraState = { x: 640, y: 330, k: 1.02 };
+const CAM_TILES: CameraState = { x: 540, y: 360, k: 1.15 };
+const CAM_C: CameraState = { x: 590, y: 400, k: 1.15 };
+const CAM_WIDE: CameraState = { x: 640, y: 360, k: 1 };
 
 export interface Scene {
   tl: Timeline;
@@ -193,8 +199,8 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={dimAll}>
           {/* core boundary */}
           <g opacity={coreU}>
-            <rect x={120} y={90} width={1040} height={470} rx={18} fill="none" stroke={colors.GRID} strokeWidth={1.4} />
-            <text x={148} y={120} fill={colors.MUTED} fontSize={12.5}>
+            <rect x={120} y={90} width={1040} height={520} rx={18} fill="none" stroke={colors.GRID} strokeWidth={1.4} />
+            <text x={148} y={118} fill={colors.MUTED} fontSize={13}>
               one CPU core · Sapphire Rapids (Xeon 4th gen)
             </text>
           </g>
@@ -206,29 +212,52 @@ export function Render({ s }: { s: SceneState }) {
               const used = i <= 2;
               return (
                 <g key={r} opacity={u}>
-                  <rect x={148 + i * 62} y={140} width={54} height={26} rx={6} fill={used ? colors.PANEL : colors.BG} stroke={used ? colors.ACCENT : colors.GRID} strokeWidth={used ? 1.4 : 0.9} />
-                  <text x={175 + i * 62} y={158} textAnchor="middle" fill={used ? colors.ACCENT : colors.MUTED} fontSize={10.5} fontFamily="ui-monospace, monospace">
+                  <rect x={148 + i * 62} y={134} width={54} height={26} rx={6} fill={used ? colors.PANEL : colors.BG} stroke={used ? colors.ACCENT : colors.GRID} strokeWidth={used ? 1.4 : 0.9} />
+                  <text x={175 + i * 62} y={152} textAnchor="middle" fill={used ? colors.ACCENT : colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
                     {r}
                   </text>
                 </g>
               );
             })}
-            <text x={660} y={158} fill={colors.MUTED} fontSize={10.5}>
+            <text x={648} y={152} fill={colors.MUTED} fontSize={12}>
               8 tile registers · 16 rows × 64 bytes each · TILECFG
             </text>
           </g>
 
+          {/* empty tile slots: the tiles are parked here until data arrives */}
+          {(
+            [
+              [TILE_A, loadA],
+              [TILE_B, loadB],
+              [TILE_C, accU],
+            ] as const
+          ).map(([t, filled], k) => (
+            <rect
+              key={k}
+              x={t.x - 6}
+              y={t.y - 6}
+              width={SPAN + 12}
+              height={SPAN + 12}
+              rx={8}
+              fill="none"
+              stroke={colors.GRID}
+              strokeWidth={1.2}
+              strokeDasharray="4 4"
+              opacity={regsU * (1 - filled)}
+            />
+          ))}
+
           {/* tile A (activations) */}
           <g opacity={loadA}>
             <MatrixGrid x={TILE_A.x} y={TILE_A.y} values={A} cell={CELL} gap={GAP} cellU={(i, j) => clamp01(loadA * N * N * 1.3 - (i * N + j))} />
-            <text x={TILE_A.x} y={TILE_A.y - 12} fill={colors.ACCENT} fontSize={11.5} fontFamily="ui-monospace, monospace">
+            <text x={TILE_A.x} y={TILE_A.y - 12} fill={colors.ACCENT} fontSize={13} fontFamily="ui-monospace, monospace">
               tmm0 ← TILELOADD activations
             </text>
           </g>
           {/* tile B (weights) */}
           <g opacity={loadB}>
             <MatrixGrid x={TILE_B.x} y={TILE_B.y} values={B} cell={CELL} gap={GAP} cellU={(i, j) => clamp01(loadB * N * N * 1.3 - (i * N + j))} />
-            <text x={TILE_B.x} y={TILE_B.y - 12} fill={colors.SECONDARY} fontSize={11.5} fontFamily="ui-monospace, monospace">
+            <text x={TILE_B.x} y={TILE_B.y - 12} fill={colors.SECONDARY} fontSize={13} fontFamily="ui-monospace, monospace">
               tmm1 ← TILELOADD expert weights
             </text>
           </g>
@@ -252,8 +281,8 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           )}
           <g opacity={fireU}>
-            <rect x={520} y={272} width={170} height={34} rx={9} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.5} />
-            <text x={605} y={294} textAnchor="middle" fill={colors.WARM} fontSize={12.5} fontFamily="ui-monospace, monospace">
+            <rect x={460} y={274} width={170} height={34} rx={9} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.5} />
+            <text x={545} y={296} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="ui-monospace, monospace">
               TDPBSSD tmm2
             </text>
           </g>
@@ -261,42 +290,42 @@ export function Render({ s }: { s: SceneState }) {
           {/* tile C (accumulator) */}
           <g opacity={accU > 0 ? 1 : 0}>
             <MatrixGrid x={TILE_C.x} y={TILE_C.y} values={C} cell={CELL} gap={GAP} cellU={(i, j) => clamp01(accU * N * N * 1.3 - (i * N + j))} emphasize={0.75} />
-            <text x={TILE_C.x} y={TILE_C.y - 12} fill={colors.POSITIVE} fontSize={11.5} fontFamily="ui-monospace, monospace" opacity={Math.min(1, accU * 3)}>
+            <text x={TILE_C.x} y={TILE_C.y - 12} fill={colors.POSITIVE} fontSize={13} fontFamily="ui-monospace, monospace" opacity={Math.min(1, accU * 3)}>
               tmm2 += tmm0 × tmm1
             </text>
           </g>
 
           {/* ops counter */}
           <g opacity={countU > 0 ? 1 : 0}>
-            <rect x={TILE_C.x - 10} y={TILE_C.y + tileW + 22} width={230} height={54} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.3} opacity={Math.min(1, countU * 3)} />
-            <text x={TILE_C.x + 105} y={TILE_C.y + tileW + 46} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="ui-monospace, monospace" opacity={Math.min(1, countU * 3)}>
+            <rect x={COUNT_X} y={COUNT_Y} width={230} height={54} rx={10} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.3} opacity={Math.min(1, countU * 3)} />
+            <text x={COUNT_X + 115} y={COUNT_Y + 24} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="ui-monospace, monospace" opacity={Math.min(1, countU * 3)}>
               {ops.toLocaleString('en-US')} mul-adds
             </text>
-            <text x={TILE_C.x + 105} y={TILE_C.y + tileW + 66} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} opacity={Math.min(1, countU * 3)}>
+            <text x={COUNT_X + 115} y={COUNT_Y + 44} textAnchor="middle" fill={colors.MUTED} fontSize={12} opacity={Math.min(1, countU * 3)}>
               1 instruction · 16 cycles
             </text>
           </g>
 
-          {/* AVX-512 duel */}
+          {/* AVX-512 duel: bars share one scale, so AMX reads as 8× the vector unit */}
           <g opacity={cmpU}>
-            <text x={200} y={506} fill={colors.TEXT} fontSize={12}>
+            <text x={720} y={520} fill={colors.TEXT} fontSize={13}>
               ops per cycle, one core:
             </text>
-            <rect x={400} y={490} width={cmpU * 512 * 0.9} height={16} rx={5} fill={colors.POSITIVE} opacity={0.9} />
-            <text x={400 + cmpU * 512 * 0.9 + 8} y={503} fill={colors.POSITIVE} fontSize={11.5} fontFamily="ui-monospace, monospace">
+            <rect x={720} y={530} width={cmpU * 512 * 0.6} height={16} rx={5} fill={colors.POSITIVE} opacity={0.9} />
+            <text x={720 + cmpU * 512 * 0.6 + 8} y={543} fill={colors.POSITIVE} fontSize={13} fontFamily="ui-monospace, monospace">
               AMX · 2048
             </text>
-            <rect x={400} y={516} width={cmpU * 64 * 0.9} height={16} rx={5} fill={colors.MUTED} opacity={0.8} />
-            <text x={400 + cmpU * 64 * 0.9 + 8} y={529} fill={colors.MUTED} fontSize={11.5} fontFamily="ui-monospace, monospace">
+            <rect x={720} y={552} width={cmpU * 64 * 0.6} height={16} rx={5} fill={colors.MUTED} opacity={0.8} />
+            <text x={720 + cmpU * 64 * 0.6 + 8} y={565} fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
               AVX-512 · 256 (int8)
             </text>
           </g>
           <g opacity={topsU}>
-            <rect x={920} y={492} width={220} height={44} rx={10} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.4} />
-            <text x={1030} y={512} textAnchor="middle" fill={colors.WARM} fontSize={13}>
+            <rect x={960} y={552} width={200} height={44} rx={10} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.4} />
+            <text x={1060} y={572} textAnchor="middle" fill={colors.WARM} fontSize={13}>
               ≈ 4 TOPS per core
             </text>
-            <text x={1030} y={528} textAnchor="middle" fill={colors.MUTED} fontSize={9.5}>
+            <text x={1060} y={588} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               theoretical · Xeon 4 · int8
             </text>
           </g>

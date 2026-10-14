@@ -162,7 +162,9 @@ const DEMO_KEYS: number[] = NODES3.map((nd) => {
 
 // camera marks
 const CAM_STRAW: CameraState = { x: 640, y: 300, k: 1.18 };
-const CAM_OUR: CameraState = { x: 505, y: 305, k: 1.55 };
+// full ring stays on stage (A's label and D clear the caption band), B and the
+// user:42 label stay in frame
+const CAM_OUR: CameraState = { x: 560, y: 352, k: 1.25 };
 
 // ---------------------------------------------------------------------------
 // Timeline (~68s, nine beats).

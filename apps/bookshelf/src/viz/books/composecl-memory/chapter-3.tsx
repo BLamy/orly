@@ -1,6 +1,6 @@
 // Grounding: arXiv:2609.06986 Section 3; official source train.py lines
 // implementing --merge_lora_per_task and experiments/methods.py.
-import { CAMERA_HOME, Camera, MathLabel, Timeline, cameraInterp, colors, ease } from '../../core';
+import { CAMERA_HOME, Camera, Timeline, cameraInterp, colors, ease } from '../../core';
 import type { CameraState, SceneState } from '../../core';
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
@@ -23,6 +23,7 @@ export function buildScene() {
   const fresh2U = tl.channel('second fresh adapter', 0);
   const merge3U = tl.channel('third merge', 0);
   const constantU = tl.channel('constant learner state', 0);
+  const ghostU = tl.channel('retained adapters', 0);
   const codeU = tl.channel('implementation handoff', 0);
   const memoryU = tl.channel('anchored memory survives', 0);
   const closeU = tl.channel('closing fold loop', 0);
@@ -35,7 +36,7 @@ export function buildScene() {
   tl.caption({ at: 6.4, dur: 5.5, text: 'With one shared adapter, every task writes into the same narrow slot. Later gradients can repaint the path that earlier tasks used.' });
   tl.tween(sharedU, 1, { at: 6.9, dur: 1.0, ease: ease.enter });
   tl.tween(sharedP, 3, { at: 7.9, dur: 3.0, ease: ease.linear });
-  tl.tween(cam, { x: 400, y: 350, k: 1.08 }, { at: 7.0, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 612, y: 350, k: 1.08 }, { at: 7.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 12.4, dur: 5.5, text: 'Merged low-rank adaptation changes the boundary. Train one rank-thirty-two update, then multiply its two factors into a weight delta.' });
   tl.tween(sharedU, 0, { at: 12.7, dur: 0.6, ease: ease.enter });
@@ -63,10 +64,12 @@ export function buildScene() {
 
   tl.caption({ at: 42.4, dur: 5.5, text: 'Unlike methods whose retained adapters grow with the task count, this merged learner keeps one fixed-size active adapter.' });
   tl.tween(constantU, 1, { at: 42.9, dur: 1.3, ease: ease.enter });
+  tl.tween(ghostU, 1, { at: 43.4, dur: 1.0, ease: ease.enter });
+  tl.tween(ghostU, 0, { at: 47.6, dur: 0.8, ease: ease.move });
 
   tl.caption({ at: 48.4, dur: 5.5, text: 'The released loop makes the handoff explicit: merge and unload, save the merged checkpoint, then create the next adapter.' });
   tl.tween(codeU, 1, { at: 49.0, dur: 1.4, ease: ease.enter });
-  tl.tween(cam, { x: 640, y: 360, k: 1.08 }, { at: 49.0, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 350, k: 1.08 }, { at: 49.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 54.4, dur: 5.5, text: 'The anchors still constrain the update while it trains. Merging only decides where that protected update is retained.' });
   tl.tween(memoryU, 1, { at: 55.0, dur: 1.0, ease: ease.pop });
@@ -79,7 +82,7 @@ export function buildScene() {
   tl.tween(closeU, 1, { at: 67.0, dur: 1.3, ease: ease.move });
   tl.hold(72.2, 1.0);
 
-  return { tl, cam, matrixU, sharedU, sharedP, factorU, multiplyU, merge1U, fresh1U, merge2U, fresh2U, merge3U, constantU, codeU, memoryU, closeU };
+  return { tl, cam, matrixU, sharedU, sharedP, factorU, multiplyU, merge1U, fresh1U, merge2U, fresh2U, merge3U, constantU, ghostU, codeU, memoryU, closeU };
 }
 
 const scene = buildScene();
@@ -104,7 +107,7 @@ function Factors({ u, task }: { u: number; task: number }) {
     <rect x="966" y="274" width="190" height="74" rx="18" fill="#101827" stroke={color} strokeWidth="3" />
     {Array.from({ length: 6 }, (_, i) => <line key={i} x1={878 + i * 9} y1="238" x2={878 + i * 9} y2="418" stroke={color} strokeWidth="4" opacity={0.25 + i * 0.1} />)}
     {Array.from({ length: 6 }, (_, i) => <line key={i} x1="990" y1={290 + i * 7} x2="1132" y2={290 + i * 7} stroke={color} strokeWidth="3" opacity={0.25 + i * 0.1} />)}
-    <MathLabel tex={'B_tA_t=\Delta W_t'} x={1008} y={482} fontSize={22} opacity={u} />
+    <text x="1008" y="482" textAnchor="middle" fill={colors.TEXT} fontSize="22" fontStyle="italic">B<tspan baselineShift="sub" fontSize="15">t</tspan>A<tspan baselineShift="sub" fontSize="15">t</tspan> = ΔW<tspan baselineShift="sub" fontSize="15">t</tspan></text>
     <text x="1008" y="512" textAnchor="middle" fill={color} fontSize="12">rank 32 · task {task + 1}</text>
   </g>;
 }
@@ -147,6 +150,13 @@ export function Render({ s }: { s: SceneState }) {
         <text x="324" y="378" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontWeight="800">ACTIVE LEARNER STATE</text>
         {Array.from({ length: 8 }, (_, i) => <rect key={i} x={448 + i * 52} y="352" width="38" height="36" rx="8" fill={i < 4 ? colors.ACCENT : colors.SECONDARY} opacity="0.75" />)}
         <text x="962" y="378" textAnchor="middle" fill={colors.TEXT} fontSize="14">constant across tasks</text>
+        <g opacity={s.get(scene.ghostU)}>
+          <text x="640" y="252" textAnchor="middle" fill={colors.MUTED} fontSize="16">retained adapters grow with the task count</text>
+          {[0, 1, 2].map((i) => <g key={i} transform={`translate(${520 + i * 120} 268)`}>
+            <rect width="104" height="40" rx="12" fill="none" stroke={colors.MUTED} strokeWidth="2" strokeDasharray="6 6" />
+            <text x="52" y="25" textAnchor="middle" fill={colors.MUTED} fontSize="14">task {i + 1}</text>
+          </g>)}
+        </g>
       </g>
 
       <g opacity={s.get(scene.codeU)}>

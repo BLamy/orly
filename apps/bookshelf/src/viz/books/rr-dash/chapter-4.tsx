@@ -17,7 +17,7 @@
 // mints the copyable replay command, the timeline scrubs and the highlighted
 // line follows, the flame drawer stands up — then a recap re-traces the
 // whole journey on a quiet stage.
-import { CAMERA_HOME, Camera, Timeline, cameraInterp, colors, ease } from '../../core';
+import { Camera, Timeline, cameraInterp, colors, ease } from '../../core';
 import type { CameraState, SceneState } from '../../core';
 import { RecordingStrip } from '../../agent';
 import type { RecordingPoint } from '../../agent';
@@ -32,11 +32,16 @@ const STRIP = { x: 250, y: 470, w: 930, h: 24 };
 const POPOVER = { x: 840, y: 150 };
 const FLAME = { x: 860, y: 300, w: 320, h: 130 };
 
-const CAM_GUTTER: CameraState = { x: 430, y: 260, k: 1.35 };
-const CAM_POP: CameraState = { x: 820, y: 230, k: 1.3 };
-const CAM_STRIP: CameraState = { x: 700, y: 430, k: 1.2 };
-const CAM_FLAME: CameraState = { x: 940, y: 340, k: 1.3 };
+// Each camera keeps every label on the 1280×720 stage: visible half-width is 640/k.
+const CAM_OPEN: CameraState = { x: 530, y: 250, k: 1.15 }; // the source file, framed from the start
+const CAM_GUTTER: CameraState = { x: 530, y: 250, k: 1.35 }; // the source pane, pushed in on the gutter
+const CAM_POP: CameraState = { x: 625, y: 260, k: 1.15 }; // source line 41 + its popover
+const CAM_STRIP: CameraState = { x: 640, y: 350, k: 1.1 }; // the execution timeline
+const CAM_FLAME: CameraState = { x: 640, y: 340, k: 1.1 }; // the flame drawer
 const CAM_WIDE: CameraState = { x: 640, y: 340, k: 1.0 };
+
+/** How far the old stage fades when the recap takes over (opacity 0.1 — below the readable floor). */
+const FADE = 0.9;
 
 /* ------------------------------------------------------------------ data */
 /** lru.rs lines 33–42 (fixture sources.json) with real hit counts. */
@@ -83,14 +88,14 @@ const FLAME_ROWS = [
   { label: 'main', w: 1.0, depth: 0 },
   { label: 'run_workload', w: 0.86, depth: 1 },
   { label: 'LruCache::get', w: 0.52, depth: 2 },
-  { label: 'LruCache::evict_oldest', w: 0.3, depth: 2, x: 0.56 },
+  { label: 'evict_oldest', w: 0.3, depth: 2, x: 0.56 },
   { label: '<std>', w: 0.18, depth: 3, x: 0.1 },
 ];
 
 /* -------------------------------------------------------------- timeline */
 export function buildScene() {
   const tl = new Timeline();
-  const cam = tl.channel<CameraState>('cam', CAMERA_HOME, cameraInterp);
+  const cam = tl.channel<CameraState>('cam', CAM_OPEN, cameraInterp);
   const shellU = tl.channel('shellU', 0);
   const chipsU = tl.channel('chipsU', 0); // gutter chips stagger in
   const popU = tl.channel('popU', 0);
@@ -149,7 +154,7 @@ export function buildScene() {
     text: 'Along the bottom runs the execution timeline: every line firing in order, with markers for system calls, standard output, and the exit.',
   });
   tl.tween(cam, CAM_STRIP, { at: t - 5.2, dur: 1.5, ease: ease.move });
-  tl.tween(popU, 0.12, { at: t - 5.4, dur: 0.8, ease: ease.move });
+  tl.tween(popU, 0, { at: t - 5.4, dur: 0.8, ease: ease.move });
   tl.tween(stripU, 1, { at: t - 4.4, dur: 1.4, ease: ease.draw });
   t = tl.hold(t, 0.4);
 
@@ -179,7 +184,7 @@ export function buildScene() {
     text: 'Pull open the flame drawer and the sampled stacks stand up as a flame chart — bottom up, standard library collapsed — and each frame carries the locals it was holding when sampled.',
   });
   tl.tween(cam, CAM_FLAME, { at: t - 5.4, dur: 1.4, ease: ease.move });
-  tl.tween(eventsU, 0.12, { at: t - 5.5, dur: 0.7, ease: ease.move });
+  tl.tween(eventsU, 0, { at: t - 5.5, dur: 0.7, ease: ease.move });
   tl.tween(flameU, 1, { at: t - 4.4, dur: 1.6, ease: ease.move });
   t = tl.hold(t, 0.5);
 
@@ -224,11 +229,11 @@ function SourcePane({ shell, chips, scrub, stripOn, dim }: { shell: number; chip
   if (e <= 0) return null;
   const hl = stripOn > 0.5 && scrub > 0.01 ? SCRUB_LINE(scrub) : -1;
   return (
-    <g opacity={1 - 0.85 * dim}>
+    <g opacity={1 - FADE * dim}>
       {/* file list */}
       <g transform={`translate(${FILES.x}, ${FILES.y + (1 - e) * 12})`} opacity={e}>
         <rect width={FILES.w} height={FILES.h} rx={10} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.4} />
-        <text x={14} y={24} fill={colors.MUTED} fontSize={10.5} fontFamily={mono}>
+        <text x={14} y={24} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
           SOURCES
         </text>
         <text x={14} y={52} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
@@ -242,7 +247,7 @@ function SourcePane({ shell, chips, scrub, stripOn, dim }: { shell: number; chip
       {/* source pane */}
       <g transform={`translate(${SRC.x}, ${SRC.y + (1 - e) * 12})`} opacity={e}>
         <rect width={SRC.w} height={SRC.h} rx={10} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.4} />
-        <text x={16} y={22} fill={colors.MUTED} fontSize={11} fontFamily={mono}>
+        <text x={16} y={22} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
           src/lru.rs · cachesim — LRU eviction panic
         </text>
         {LINES.map((l, i) => {
@@ -252,14 +257,14 @@ function SourcePane({ shell, chips, scrub, stripOn, dim }: { shell: number; chip
           return (
             <g key={l.no} transform={`translate(0, ${40 + i * LINE_H})`}>
               {lit && <rect x={4} y={-4} width={SRC.w - 8} height={LINE_H - 4} rx={4} fill={colors.WARM} opacity={0.14} />}
-              <text x={20} y={14} fill={colors.MUTED} fontSize={11.5} fontFamily={mono} opacity={0.6}>
+              <text x={20} y={14} fill={colors.MUTED} fontSize={12} fontFamily={mono} opacity={0.6}>
                 {l.no}
               </text>
               {/* the hit chip — log-scaled brightness, like HitChipMarker */}
               {l.hits > 0 && cu > 0 && (
                 <g opacity={cu}>
                   <rect x={44} y={-1} width={40} height={19} rx={5} fill={`rgba(59, 130, 246, ${(0.12 + 0.5 * t0).toFixed(3)})`} />
-                  <text x={64} y={13} textAnchor="middle" fill={t0 > 0.6 ? '#eaf2ff' : '#8fb4f5'} fontSize={11} fontFamily={mono}>
+                  <text x={64} y={13} textAnchor="middle" fill={t0 > 0.6 ? '#eaf2ff' : '#8fb4f5'} fontSize={12} fontFamily={mono}>
                     {l.hits}
                   </text>
                 </g>
@@ -282,27 +287,27 @@ function Popover({ u, cmd, dim }: { u: number; cmd: number; dim: number }) {
   const c = clamp01(cmd);
   const y0 = SRC.y + 40 + POP_LINE_IDX * LINE_H;
   return (
-    <g opacity={e * (1 - 0.85 * dim)}>
+    <g opacity={e * (1 - FADE * dim)}>
       <line x1={SRC.x + 350} y1={y0 + 8} x2={POPOVER.x - 6} y2={POPOVER.y + 40} stroke={colors.WARM} strokeWidth={1.3} strokeDasharray="3 3" />
       <g transform={`translate(${POPOVER.x}, ${POPOVER.y + (1 - e) * 10})`}>
         <rect width={330} height={c > 0.05 ? 128 : 92} rx={11} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.5} />
-        <text x={16} y={26} fill={colors.MUTED} fontSize={11} fontFamily={mono}>
+        <text x={16} y={26} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
           line 41 · first execution
         </text>
-        <text x={16} y={50} fill={colors.TEXT} fontSize={13.5} fontFamily={mono} fontWeight={700}>
+        <text x={16} y={50} fill={colors.TEXT} fontSize={14} fontFamily={mono} fontWeight={700}>
           event 5120 · ticks 481,937
         </text>
-        <text x={16} y={74} fill={colors.MUTED} fontSize={11} fontFamily={mono}>
+        <text x={16} y={74} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
           ◀ prev · 83 firings · next ▶
         </text>
         {c > 0.05 && (
-          <g transform={`translate(16, ${92 + (1 - c) * 6})`} opacity={c}>
-            <rect x={-4} y={-14} width={230} height={26} rx={6} fill={colors.WARM} opacity={0.14} />
-            <rect x={-4} y={-14} width={230} height={26} rx={6} fill="none" stroke={colors.WARM} strokeWidth={1.3} />
-            <text y={4} fill={colors.WARM} fontSize={12.5} fontFamily={mono} fontWeight={700}>
+          <g transform={`translate(16, ${104 + (1 - c) * 6})`} opacity={c}>
+            <rect x={-4} y={-14} width={290} height={28} rx={6} fill={colors.WARM} opacity={0.14} />
+            <rect x={-4} y={-14} width={290} height={28} rx={6} fill="none" stroke={colors.WARM} strokeWidth={1.3} />
+            <text y={4} fill={colors.WARM} fontSize={14} fontFamily={mono} fontWeight={700}>
               rr replay -g 5120
             </text>
-            <text x={236} y={4} fill={colors.MUTED} fontSize={10.5} fontFamily={mono}>
+            <text x={236} y={4} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
               ⧉ copy
             </text>
           </g>
@@ -323,16 +328,16 @@ function EventsPanel({ u, dim }: { u: number; dim: number }) {
     ['exit', 'process exited with status 101'],
   ];
   return (
-    <g transform={`translate(${SRC.x}, ${540 + (1 - e) * 10})`} opacity={e * (1 - 0.85 * dim)}>
-      <rect width={930} height={78} rx={10} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.4} />
-      <text x={14} y={18} fill={colors.MUTED} fontSize={10.5} fontFamily={mono}>
+    <g transform={`translate(${SRC.x}, ${512 + (1 - e) * 10})`} opacity={e * (1 - FADE * dim)}>
+      <rect width={930} height={92} rx={10} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.4} />
+      <text x={14} y={20} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
         EVENTS · syscalls | stdout | signals | exit
       </text>
       {rows.map(([kind, text], i) => {
         const ru = clamp01(e * 5 - i);
         return (
-          <g key={i} transform={`translate(14, ${32 + i * 12})`} opacity={ru}>
-            <text fill={kind === 'exit' ? colors.NEGATIVE : kind === 'stdout' ? colors.POSITIVE : colors.MUTED} fontSize={9.5} fontFamily={mono}>
+          <g key={i} transform={`translate(14, ${38 + i * 14})`} opacity={ru}>
+            <text fill={kind === 'exit' ? colors.NEGATIVE : kind === 'stdout' ? colors.POSITIVE : colors.MUTED} fontSize={12} fontFamily={mono}>
               {kind.padEnd(8, ' ')} {text}
             </text>
           </g>
@@ -348,9 +353,9 @@ function FlameDrawer({ u, dim }: { u: number; dim: number }) {
   if (e <= 0) return null;
   const rowH = 22;
   return (
-    <g transform={`translate(${FLAME.x}, ${FLAME.y + (1 - ease.enter(e)) * 16})`} opacity={Math.min(1, e * 2) * (1 - 0.85 * dim)}>
-      <rect x={-14} y={-30} width={FLAME.w + 28} height={FLAME.h + 44} rx={11} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.4} />
-      <text x={0} y={-10} fill={colors.MUTED} fontSize={10.5} fontFamily={mono}>
+    <g transform={`translate(${FLAME.x}, ${FLAME.y + (1 - ease.enter(e)) * 16})`} opacity={Math.min(1, e * 2) * (1 - FADE * dim)}>
+      <rect x={-14} y={-30} width={FLAME.w + 28} height={FLAME.h + 62} rx={11} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.4} />
+      <text x={0} y={-10} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
         FLAME · rec/…/stacks · bottom-up · &lt;std&gt; collapsed
       </text>
       {FLAME_ROWS.map((r, i) => {
@@ -364,7 +369,7 @@ function FlameDrawer({ u, dim }: { u: number; dim: number }) {
             <rect width={w} height={rowH} rx={4} fill={col} opacity={0.4} />
             <rect width={w} height={rowH} rx={4} fill="none" stroke={col} strokeWidth={1.2} />
             {w > 70 && (
-              <text x={8} y={15} fill={colors.TEXT} fontSize={10.5} fontFamily={mono}>
+              <text x={8} y={15} fill={colors.TEXT} fontSize={12} fontFamily={mono}>
                 {r.label}
               </text>
             )}
@@ -372,7 +377,7 @@ function FlameDrawer({ u, dim }: { u: number; dim: number }) {
         );
       })}
       {e > 0.85 && (
-        <text x={0} y={FLAME.h + 4} fill={colors.WARM} fontSize={10} fontFamily={mono} opacity={(e - 0.85) / 0.15}>
+        <text x={0} y={FLAME.h + 18} fill={colors.WARM} fontSize={12} fontFamily={mono} opacity={(e - 0.85) / 0.15}>
           frames[].vars — sampled locals (v3+)
         </text>
       )}
@@ -385,27 +390,27 @@ function AnalystChip({ u, dim }: { u: number; dim: number }) {
   const e = clamp01(u);
   if (e <= 0) return null;
   return (
-    <g transform={`translate(${FILES.x}, ${470 + (1 - e) * 10})`} opacity={e * (1 - 0.85 * dim)}>
-      <rect width={160} height={148} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.4} />
-      <text x={14} y={24} fill={colors.SECONDARY} fontSize={11} fontFamily={mono}>
+    <g transform={`translate(${FILES.x}, ${440 + (1 - e) * 10})`} opacity={e * (1 - FADE * dim)}>
+      <rect width={160} height={170} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.4} />
+      <text x={14} y={24} fill={colors.SECONDARY} fontSize={12} fontFamily={mono}>
         AI analyst
       </text>
-      <text x={14} y={46} fill={colors.MUTED} fontSize={10} fontFamily={mono}>
+      <text x={14} y={48} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
         trace-mcp · tools
       </text>
-      <text x={14} y={70} fill={colors.TEXT} fontSize={10} fontFamily={mono}>
+      <text x={14} y={78} fill={colors.TEXT} fontSize={12} fontFamily={mono}>
         "the hot line is
       </text>
-      <text x={14} y={84} fill={colors.TEXT} fontSize={10} fontFamily={mono}>
+      <text x={14} y={96} fill={colors.TEXT} fontSize={12} fontFamily={mono}>
         thirty six —
       </text>
-      <text x={14} y={98} fill={colors.TEXT} fontSize={10} fontFamily={mono}>
+      <text x={14} y={114} fill={colors.TEXT} fontSize={12} fontFamily={mono}>
         reopen:
       </text>
-      <text x={14} y={116} fill={colors.WARM} fontSize={10} fontFamily={mono}>
+      <text x={14} y={134} fill={colors.WARM} fontSize={12} fontFamily={mono}>
         rr replay -g 2101
       </text>
-      <text x={14} y={136} fill={colors.MUTED} fontSize={9.5} fontFamily={mono}>
+      <text x={14} y={156} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
         claims cite points
       </text>
     </g>
@@ -416,7 +421,7 @@ function AnalystChip({ u, dim }: { u: number; dim: number }) {
 function RecapCard({ u }: { u: number }) {
   const e = clamp01(u);
   if (e <= 0) return null;
-  const steps = ['trace.tar.zst', 'streams', 'fold', 'devtools', 'rr replay -g'];
+  const steps = ['trace.tar.zst', 'streams', 'fold', 'devtools face', 'rr replay -g'];
   return (
     <g transform={`translate(640, ${300 + (1 - e) * 10})`} opacity={e}>
       <rect x={-390} y={-70} width={780} height={140} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
@@ -430,7 +435,7 @@ function RecapCard({ u }: { u: number }) {
           <g key={label} opacity={su}>
             <rect x={x} y={-2} width={130} height={32} rx={8} fill={colors.ACCENT} opacity={0.12} />
             <rect x={x} y={-2} width={130} height={32} rx={8} fill="none" stroke={colors.ACCENT} strokeWidth={1.2} />
-            <text x={x + 65} y={18} textAnchor="middle" fill={colors.TEXT} fontSize={11} fontFamily={mono}>
+            <text x={x + 65} y={18} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={mono}>
               {label}
             </text>
             {i < steps.length - 1 && (
@@ -454,7 +459,7 @@ export function Render({ s }: { s: SceneState }) {
     <Camera {...s.get(scene.cam)}>
       <SourcePane shell={s.get(scene.shellU)} chips={s.get(scene.chipsU)} scrub={scrub} stripOn={stripU} dim={dim} />
       <Popover u={s.get(scene.popU)} cmd={s.get(scene.cmdU)} dim={dim} />
-      <g opacity={1 - 0.85 * dim}>
+      <g opacity={1 - FADE * dim}>
         <RecordingStrip
           x={STRIP.x}
           y={STRIP.y}

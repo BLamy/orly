@@ -17,8 +17,8 @@ const mono = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 /* ---------------------------------------------------------------- layout */
 const SRC = { x: 70, y: 120, w: 480, h: 430 };
 const TGT = { x: 730, y: 120, w: 480, h: 430 };
-const WS = { x: 330, y: 140, w: 620, h: 360 };
-const VERDICT = { x: 370, y: 190, w: 540, h: 240 };
+const WS = { x: 560, y: 140, w: 620, h: 360 };
+const VERDICT = { x: 340, y: 190, w: 600, h: 240 };
 
 const P1 = { x: 300, y: 445, label: '(0, 0, −1/4)', c: colors.ACCENT };
 const P2 = { x: 470, y: 220, label: '(1, −3/2, 13/2)', c: colors.SECONDARY };
@@ -30,7 +30,7 @@ const CAM_HOME: CameraState = CAMERA_HOME;
 const CAM_SRC: CameraState = { x: 350, y: 340, k: 1.12 };
 const CAM_WS: CameraState = { x: 640, y: 330, k: 1.1 };
 const CAM_BOTH: CameraState = { x: 640, y: 340, k: 1.0 };
-const CAM_TGT: CameraState = { x: 900, y: 340, k: 1.1 };
+const CAM_TGT: CameraState = { x: 690, y: 340, k: 1.05 };
 
 // the P2 worksheet: exact fractions, line by line (verified)
 const WS_LINES: [string, boolean][] = [
@@ -155,7 +155,7 @@ export function buildScene() {
     dur: 7.0,
     text: 'Constant determinant minus two. Three points, one image. Together those two facts end an eighty-seven year conjecture. What remains is to understand how the map gets away with it.',
   });
-  tl.tween(dimU, 0.9, { at: t - 6.4, dur: 1.0, ease: ease.move });
+  tl.tween(dimU, 1, { at: t - 6.4, dur: 1.0, ease: ease.move });
   tl.tween(cam, CAM_HOME, { at: t - 6.4, dur: 1.5, ease: ease.move });
   tl.tween(verdictU, 1, { at: t - 5.2, dur: 0.9, ease: ease.enter });
   tl.hold(t, 1.0);
@@ -174,7 +174,7 @@ function SpacePanel({ u, title, x, w, dim }: { u: number; title: string; x: numb
   return (
     <g opacity={a}>
       <rect x={x} y={SRC.y} width={w} height={SRC.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} opacity={0.75} />
-      <text x={x + 18} y={SRC.y + 28} fill={colors.MUTED} fontSize={12.5} fontWeight={700} fontFamily={mono}>
+      <text x={x + 18} y={SRC.y + 28} fill={colors.MUTED} fontSize={14} fontWeight={700} fontFamily={mono}>
         {title}
       </text>
       {/* a light axes triad so the panel reads as a space, not a slide */}
@@ -196,8 +196,8 @@ function SourcePoints({ n, mirror, dim }: { n: number; mirror: number; dim: numb
     <g opacity={a}>
       {m > 0 && (
         <g opacity={m}>
-          <line x1={MIRROR_X} y1={SRC.y + 40} x2={MIRROR_X} y2={SRC.y + SRC.h - 20} stroke={colors.WARM} strokeWidth={1.6} strokeDasharray="6 6" />
-          <text x={MIRROR_X} y={SRC.y + 56} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontFamily={mono}>
+          <line x1={MIRROR_X} y1={SRC.y + 40} x2={MIRROR_X} y2={P1.y - 24} stroke={colors.WARM} strokeWidth={1.6} strokeDasharray="6 6" />
+          <text x={MIRROR_X} y={SRC.y + 26} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={mono}>
             σ : (x, y, z) ↦ (−x, −y, z)
           </text>
           <path
@@ -217,7 +217,7 @@ function SourcePoints({ n, mirror, dim }: { n: number; mirror: number; dim: numb
           <g key={i} opacity={u}>
             <circle cx={p.x} cy={p.y} r={8} fill={p.c} />
             <circle cx={p.x} cy={p.y} r={13} fill={p.c} opacity={0.22} />
-            <text x={p.x} y={p.y + (i === 0 ? 28 : -18)} textAnchor="middle" fill={p.c} fontSize={12.5} fontWeight={700} fontFamily={mono}>
+            <text x={p.x} y={p.y + (i === 0 ? 28 : -18)} textAnchor="middle" fill={p.c} fontSize={14} fontWeight={700} fontFamily={mono}>
               {p.label}
             </text>
           </g>
@@ -230,18 +230,18 @@ function SourcePoints({ n, mirror, dim }: { n: number; mirror: number; dim: numb
 function TargetPoint({ u, hit, dim }: { u: number; hit: number; dim: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
-  const a = uu * (1 - 0.6 * clamp01(dim));
+  const a = uu * (1 - 0.88 * clamp01(dim));
   const h = clamp01(hit);
   return (
     <g opacity={a}>
       <circle cx={Q.x} cy={Q.y} r={9} fill={colors.NEGATIVE} />
       <circle cx={Q.x} cy={Q.y} r={16 + 18 * h} fill={colors.NEGATIVE} opacity={0.3 * (1 - 0.5 * h)} />
       {h > 0 && <circle cx={Q.x} cy={Q.y} r={30 + 26 * h} fill="none" stroke={colors.NEGATIVE} strokeWidth={2 * (1 - h)} opacity={1 - h} />}
-      <text x={Q.x} y={Q.y + 34} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontWeight={700} fontFamily={mono}>
+      <text x={Q.x} y={Q.y + 34} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={700} fontFamily={mono}>
         {Q.label}
       </text>
       {h > 0.5 && (
-        <text x={Q.x} y={Q.y - 30} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={mono} opacity={(h - 0.5) * 2}>
+        <text x={Q.x + 60} y={Q.y + 5} textAnchor="start" fill={colors.NEGATIVE} fontSize={13} fontFamily={mono} opacity={(h - 0.5) * 2}>
           three arrivals, one address
         </text>
       )}
@@ -285,7 +285,7 @@ function Worksheet({ u, n, dim }: { u: number; n: number; dim: number }) {
   return (
     <g opacity={a} transform={`translate(${WS.x}, ${WS.y + (1 - uu) * 12})`}>
       <rect width={WS.w} height={WS.h} rx={14} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={2} />
-      <text x={22} y={34} fill={colors.SECONDARY} fontSize={13.5} fontWeight={700} fontFamily={mono}>
+      <text x={22} y={34} fill={colors.SECONDARY} fontSize={14} fontWeight={700} fontFamily={mono}>
         checking the second point — exact fractions only
       </text>
       {WS_LINES.map(([tex, hasCheck], i) => {
@@ -327,13 +327,13 @@ function VerdictCard({ u }: { u: number }) {
   return (
     <g transform={`translate(${VERDICT.x}, ${VERDICT.y + (1 - uu) * 12})`} opacity={uu}>
       <rect width={VERDICT.w} height={VERDICT.h} rx={14} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.5} />
-      <text x={24} y={38} fill={colors.ACCENT} fontSize={13} fontWeight={700} fontFamily={mono}>
+      <text x={24} y={38} fill={colors.ACCENT} fontSize={14} fontWeight={700} fontFamily={mono}>
         the Jacobian conjecture · Keller 1939
       </text>
-      <MathLabel anchor="start" tex={'\\det DF \\equiv \\text{const} \\neq 0 \\ \\Longrightarrow\\ F \\ \\text{injective}'} x={24} y={64} fontSize={16} color={colors.TEXT} opacity={uu} />
-      <MathLabel anchor="start" tex={'\\det DF = -2, \\qquad F(p_1) = F(p_2) = F(p_3)'} x={24} y={110} fontSize={16} color={colors.TEXT} opacity={uu} />
+      <MathLabel anchor="start" tex={'\\det DF \\equiv \\text{const} \\neq 0 \\ \\Longrightarrow\\ F \\ \\text{injective}'} x={24} y={64} fontSize={16} color={colors.TEXT} opacity={uu} boxWidth={VERDICT.w - 48} />
+      <MathLabel anchor="start" tex={'\\det DF = -2, \\quad F(p_1) = F(p_2) = F(p_3)'} x={24} y={110} fontSize={15} color={colors.TEXT} opacity={uu} boxWidth={VERDICT.w - 48} />
       {stamp > 0 && (
-        <g transform={`translate(${VERDICT.w - 170}, ${150}) rotate(-9) scale(${1.6 - 0.6 * stamp})`} opacity={stamp}>
+        <g transform={`translate(${VERDICT.w - 150}, ${186}) rotate(-9) scale(${1.6 - 0.6 * stamp})`} opacity={stamp}>
           <rect x={-78} y={-30} width={156} height={60} rx={8} fill="none" stroke={colors.NEGATIVE} strokeWidth={4} />
           <text textAnchor="middle" y={12} fill={colors.NEGATIVE} fontSize={34} fontWeight={900} fontFamily={mono} letterSpacing={4}>
             FALSE

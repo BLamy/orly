@@ -38,7 +38,7 @@ const TIERS = [
   { key: 'L2 (per core)', sub: 'one weight block + partials', y: 298, w: 500, color: colors.ACCENT },
   { key: 'L1 + tiles', sub: 'tmm registers', y: 212, w: 300, color: colors.POSITIVE },
 ] as const;
-const TIER_H = 64;
+const TIER_H = 76;
 const CX = 560;
 
 // bricks: messy GGUF order → tile-aligned order
@@ -46,10 +46,11 @@ const BRICKS = 14;
 const messyX = (k: number): number => CX - 420 + ((k * 137) % 840);
 const neatX = (k: number): number => CX - 420 + k * 60;
 
-const SCHED = { x: 1030, y: 180, w: 190 } as const;
+const SCHED = { x: 1000, y: 180, w: 230 } as const;
 
 const CAM_PYR: CameraState = { x: 560, y: 350, k: 1.22 };
-const CAM_TOP: CameraState = { x: 560, y: 250, k: 1.55 };
+// frames L2 → DRAM so the "touched once" stamp and the floors below L2 stay in view
+const CAM_TOP: CameraState = { x: 560, y: 330, k: 1.25 };
 const CAM_WIDE: CameraState = { x: 640, y: 330, k: 1.02 };
 
 export interface Scene {
@@ -195,10 +196,10 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={t.key} opacity={u}>
                 <rect x={CX - t.w / 2} y={t.y} width={t.w} height={TIER_H} rx={11} fill={colors.PANEL} stroke={t.color} strokeWidth={1.3} opacity={0.9} />
-                <text x={CX - t.w / 2 + 16} y={t.y + 26} fill={t.color} fontSize={12.5} fontFamily="ui-monospace, monospace">
+                <text x={CX - t.w / 2 + 16} y={t.y + 26} fill={t.color} fontSize={14} fontFamily="ui-monospace, monospace">
                   {t.key}
                 </text>
-                <text x={CX - t.w / 2 + 16} y={t.y + 46} fill={colors.MUTED} fontSize={10.5}>
+                <text x={CX - t.w / 2 + 16} y={t.y + 48} fill={colors.MUTED} fontSize={12.5}>
                   {t.sub}
                 </text>
               </g>
@@ -211,17 +212,18 @@ export function Render({ s }: { s: SceneState }) {
             const x = messyX(k) + (neatX(k) - messyX(k)) * sortU;
             return (
               <g key={k} opacity={u}>
-                <rect x={x} y={TIERS[0].y + 40} width={sortU > 0.5 ? 48 : 34 + ((k * 29) % 26)} height={16} rx={4} fill={colors.WARM} opacity={0.35 + 0.5 * sortU} stroke={sortU > 0.7 ? colors.WARM : 'none'} strokeWidth={0.8} />
+                <rect x={x} y={TIERS[0].y + 56} width={sortU > 0.5 ? 48 : 34 + ((k * 29) % 26)} height={13} rx={4} fill={colors.WARM} opacity={0.35 + 0.5 * sortU} stroke={sortU > 0.7 ? colors.WARM : 'none'} strokeWidth={0.8} />
               </g>
             );
           })}
+          {/* layout annotations: DRAM header row, right side, clear of the bricks */}
           <g opacity={sortU}>
-            <text x={CX + 452} y={TIERS[0].y + 30} textAnchor="end" fill={colors.WARM} fontSize={10.5} fontFamily="ui-monospace, monospace">
+            <text x={CX + 450} y={TIERS[0].y + 26} textAnchor="end" fill={colors.WARM} fontSize={12} fontFamily="ui-monospace, monospace">
               tile-aligned · 64-byte starts
             </text>
           </g>
           <g opacity={brickU * (1 - sortU)}>
-            <text x={CX + 452} y={TIERS[0].y + 30} textAnchor="end" fill={colors.MUTED} fontSize={10.5}>
+            <text x={CX + 450} y={TIERS[0].y + 26} textAnchor="end" fill={colors.MUTED} fontSize={12}>
               file order (as loaded)
             </text>
           </g>
@@ -236,19 +238,20 @@ export function Render({ s }: { s: SceneState }) {
                 const f = ti - lo;
                 const y = TIERS[lo].y * (1 - f) + TIERS[hi].y * f;
                 return (
-                  <rect x={CX - 70} y={y + 8} width={140} height={TIER_H - 16} rx={9} fill="none" stroke={colors.TEXT} strokeWidth={2} strokeDasharray="7 5" opacity={0.9} />
+                  <rect x={CX - 20} y={y + 10} width={140} height={TIER_H - 20} rx={9} fill="none" stroke={colors.TEXT} strokeWidth={2} strokeDasharray="7 5" opacity={0.9} />
                 );
               })()}
             </g>
           )}
           <g opacity={holdU}>
-            <text x={CX} y={TIERS[3].y - 14} textAnchor="middle" fill={colors.POSITIVE} fontSize={11.5}>
+            <text x={CX} y={TIERS[3].y - 14} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
               computes in place — partials never leave L2
             </text>
           </g>
+          {/* stamp sits on the DRAM header row, above the caption band */}
           <g opacity={onceU}>
-            <rect x={CX - 130} y={548} width={260} height={30} rx={8} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.3} />
-            <text x={CX} y={568} textAnchor="middle" fill={colors.POSITIVE} fontSize={11.5}>
+            <rect x={CX - 20} y={TIERS[0].y + 12} width={250} height={28} rx={8} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.3} />
+            <text x={CX + 105} y={TIERS[0].y + 31} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
               DRAM touched once per weight
             </text>
           </g>
@@ -256,13 +259,13 @@ export function Render({ s }: { s: SceneState }) {
           {/* scheduler strip */}
           <g opacity={fuseU}>
             <rect x={SCHED.x} y={SCHED.y} width={SCHED.w} height={230} rx={12} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.2} />
-            <text x={SCHED.x + SCHED.w / 2} y={SCHED.y + 24} textAnchor="middle" fill={colors.SECONDARY} fontSize={11.5}>
+            <text x={SCHED.x + SCHED.w / 2} y={SCHED.y + 26} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>
               dynamic scheduler
             </text>
-            <text x={SCHED.x + SCHED.w / 2} y={SCHED.y + 48} textAnchor="middle" fill={colors.TEXT} fontSize={10.5}>
+            <text x={SCHED.x + SCHED.w / 2} y={SCHED.y + 50} textAnchor="middle" fill={colors.TEXT} fontSize={12.5}>
               Gate + Up fused
             </text>
-            <text x={SCHED.x + SCHED.w / 2} y={SCHED.y + 64} textAnchor="middle" fill={colors.MUTED} fontSize={9.5}>
+            <text x={SCHED.x + SCHED.w / 2} y={SCHED.y + 68} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               all experts → 2 tasks / layer
             </text>
             {/* two thread bars: one finishes, steals from the other */}
@@ -271,16 +274,16 @@ export function Render({ s }: { s: SceneState }) {
               const done = th === 0 ? clamp01(stealU * 1.6) : clamp01(stealU * 1.1);
               return (
                 <g key={th}>
-                  <rect x={SCHED.x + 20} y={SCHED.y + 90 + th * 44} width={SCHED.w - 40} height={14} rx={5} fill={colors.BG} stroke={colors.GRID} />
-                  <rect x={SCHED.x + 20} y={SCHED.y + 90 + th * 44} width={(SCHED.w - 40) * full * done} height={14} rx={5} fill={colors.SECONDARY} opacity={0.85} />
-                  <text x={SCHED.x + 20} y={SCHED.y + 84 + th * 44} fill={colors.MUTED} fontSize={9}>
+                  <rect x={SCHED.x + 20} y={SCHED.y + 100 + th * 44} width={SCHED.w - 40} height={14} rx={5} fill={colors.BG} stroke={colors.GRID} />
+                  <rect x={SCHED.x + 20} y={SCHED.y + 100 + th * 44} width={(SCHED.w - 40) * full * done} height={14} rx={5} fill={colors.SECONDARY} opacity={0.85} />
+                  <text x={SCHED.x + 20} y={SCHED.y + 94 + th * 44} fill={colors.MUTED} fontSize={12}>
                     thread {th + 1}
                   </text>
                 </g>
               );
             })}
             <g opacity={clamp01(stealU * 2 - 1)}>
-              <text x={SCHED.x + SCHED.w / 2} y={SCHED.y + 196} textAnchor="middle" fill={colors.WARM} fontSize={10}>
+              <text x={SCHED.x + SCHED.w / 2} y={SCHED.y + 206} textAnchor="middle" fill={colors.WARM} fontSize={12}>
                 idle thread steals sub-tasks
               </text>
             </g>
@@ -288,14 +291,14 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* mode needle */}
           <g opacity={modeU > 0 ? 1 : 0}>
-            <rect x={120} y={124} width={330} height={54} rx={11} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} opacity={Math.min(1, modeU * 4)} />
-            <text x={150} y={146} fill={colors.POSITIVE} fontSize={11.5} opacity={1 - modeU * 0.6}>
-              AMX · prefill (≥ 4 tokens/expert)
+            <rect x={120} y={116} width={430} height={66} rx={11} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} opacity={Math.min(1, modeU * 4)} />
+            <text x={150} y={140} fill={colors.POSITIVE} fontSize={14} opacity={1 - modeU * 0.6}>
+              AMX · prefill (more than 4 tokens/expert on average)
             </text>
-            <text x={150} y={166} fill={colors.ACCENT} fontSize={11.5} opacity={0.4 + modeU * 0.6}>
+            <text x={150} y={166} fill={colors.ACCENT} fontSize={14} opacity={0.4 + modeU * 0.6}>
               AVX-512 · decode (1 token)
             </text>
-            <circle cx={134} cy={142 + modeU * 20} r={4.5} fill={colors.WARM} opacity={Math.min(1, modeU * 4)} />
+            <circle cx={134} cy={134 + modeU * 26} r={4.5} fill={colors.WARM} opacity={Math.min(1, modeU * 4)} />
           </g>
         </g>
 

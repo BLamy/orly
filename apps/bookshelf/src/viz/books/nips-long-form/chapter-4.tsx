@@ -47,7 +47,8 @@ const VARIANTS = [
 ];
 
 const CAM_NOTE: CameraState = { x: 500, y: 240, k: 1.15 };
-const CAM_CARD: CameraState = { x: 310, y: 400, k: 1.2 };
+// frames the card AND the imeta panel so neither is cropped at the stage edge
+const CAM_CARD: CameraState = { x: 540, y: 350, k: 1.08 };
 const CAM_VIDEO: CameraState = { x: 720, y: 300, k: 1.15 };
 
 export function buildScene() {
@@ -141,22 +142,24 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the old content fades out completely behind the closing panel, so nothing sits under the title
+  const mainOp = (1 - 0.85 * dimU) * (1 - clamp01(closeU));
   const urlOp = noteU * (1 - 0.9 * clamp01(cardU)); // url fades as the card takes over
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
+      {mainOp > 0.02 && (
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* the note with a bare url */}
           {noteU > 0 && videoU < 0.5 && (
             <g opacity={noteU}>
               <rect x={NOTE.x} y={NOTE.y} width={NOTE.w} height={NOTE.h} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={NOTE.x + 16} y={NOTE.y + 30} fill={colors.MUTED} fontSize={12} fontFamily="monospace">content</text>
-              <text x={NOTE.x + 16} y={NOTE.y + 58} fill={colors.TEXT} fontSize={13}>look at this sunset</text>
-              <text x={NOTE.x + 16} y={NOTE.y + 84} fill={colors.ACCENT} fontSize={12} fontFamily="monospace" opacity={urlOp}>
+              <text x={NOTE.x + 16} y={NOTE.y + 30} fill={colors.MUTED} fontSize={13} fontFamily="monospace">content</text>
+              <text x={NOTE.x + 16} y={NOTE.y + 58} fill={colors.TEXT} fontSize={14}>look at this sunset</text>
+              <text x={NOTE.x + 16} y={NOTE.y + 84} fill={colors.ACCENT} fontSize={13} fontFamily="monospace" opacity={urlOp}>
                 {URL_TEXT}
               </text>
               {bindU > 0 && (
@@ -211,7 +214,7 @@ export function Render({ s }: { s: SceneState }) {
                   <path d={`M${CARD.x + 20} ${CARD.y + CARD.h - 62} L ${CARD.x + 120} ${CARD.y + CARD.h - 120} L ${CARD.x + 200} ${CARD.y + CARD.h - 62} Z`} fill={colors.ACCENT} opacity={0.7} />
                 </g>
               )}
-              <text x={CARD.x + 16} y={CARD.y + CARD.h - 18} fill={colors.MUTED} fontSize={12}>
+              <text x={CARD.x + 16} y={CARD.y + CARD.h - 18} fill={colors.MUTED} fontSize={13}>
                 alt: sun setting over water
               </text>
             </g>
@@ -229,9 +232,9 @@ export function Render({ s }: { s: SceneState }) {
                   <g key={v.label} opacity={u}>
                     <rect x={620} y={v.y} width={360} height={70} rx={10} fill={colors.PANEL} stroke={chosen ? colors.POSITIVE : colors.GRID} strokeWidth={chosen ? 2 : 1.4} />
                     <text x={640} y={v.y + 30} fill={chosen ? colors.POSITIVE : colors.TEXT} fontSize={15} fontWeight={600}>{v.label}</text>
-                    <text x={640} y={v.y + 52} fill={colors.MUTED} fontSize={12} fontFamily="monospace">{v.m} · {v.dim}</text>
+                    <text x={640} y={v.y + 52} fill={colors.MUTED} fontSize={13} fontFamily="monospace">{v.m} · {v.dim}</text>
                     {chosen && pickU >= 1 && (
-                      <text x={960} y={v.y + 40} textAnchor="end" fill={colors.POSITIVE} fontSize={12}>← chosen for this connection</text>
+                      <text x={960} y={v.y + 40} textAnchor="end" fill={colors.POSITIVE} fontSize={13}>← chosen for this connection</text>
                     )}
                   </g>
                 );
@@ -240,6 +243,7 @@ export function Render({ s }: { s: SceneState }) {
           )}
         </Camera>
       </g>
+      )}
 
       {closeU > 0 && (
         <g opacity={closeU}>

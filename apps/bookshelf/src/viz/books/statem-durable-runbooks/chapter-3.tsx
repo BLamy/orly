@@ -147,6 +147,8 @@ export function buildScene(): Scene {
     text: 'A host stop hook uses the same record. Terminal or explicitly blocked runs may stop; unfinished runs return their phase and obligations to the agent.',
   });
   tl.tween(cam, CAMERA_HOME, { at: 49.3, dur: 1.4, ease: ease.move });
+  tl.tween(curU, 0, { at: 49.3, dur: 1.0, ease: ease.move });
+  tl.tween(resumeU, 0, { at: 49.3, dur: 1.0, ease: ease.move });
   tl.tween(stopU, 1, { at: 49.8, dur: 1.4, ease: ease.enter });
   tl.hold(55.5, 0.6);
 
@@ -155,6 +157,7 @@ export function buildScene(): Scene {
     dur: 6.8,
     text: 'Recovery has a precise boundary. The runtime restores recorded control state, not work that was never saved and not arbitrary effects outside the runtime.',
   });
+  tl.tween(stopU, 0, { at: 56.2, dur: 0.8, ease: ease.move });
   tl.tween(scopeU, 1, { at: 56.5, dur: 1.2, ease: ease.enter });
   tl.hold(62.9, 0.6);
 
@@ -179,7 +182,7 @@ function RunbookStencil({ u, dim }: { u: number; dim: number }) {
       {PHASES.map((phase, i) => (
         <g key={phase} opacity={clamp01(u * 5 - i)}>
           <rect x={PHASE_X[i] - 54} y={101} width={108} height={48} rx={10} fill="none" stroke={colors.SECONDARY} strokeWidth={1.4} strokeDasharray="5 5" />
-          <text x={PHASE_X[i]} y={130} textAnchor="middle" fill={colors.SECONDARY} fontFamily={MONO} fontSize={12}>{phase}</text>
+          <text x={PHASE_X[i]} y={130} textAnchor="middle" fill={colors.SECONDARY} fontFamily={MONO} fontSize={13}>{phase}</text>
         </g>
       ))}
       <text x={100} y={72} fill={colors.MUTED} fontSize={12} letterSpacing="0.12em">STATIC SPEC · SHARED AND VERSIONED</text>
@@ -199,8 +202,8 @@ function LedgerLane({ y, label, u, phase, active, historyU, dim }: { y: number; 
         return (
           <g key={phaseName}>
             <rect x={PHASE_X[i] - 46} y={y - 25} width={92} height={50} rx={10} fill={reached ? colors.PANEL : colors.BG} stroke={current ? colors.ACCENT : reached ? colors.POSITIVE : colors.GRID} strokeWidth={current ? 2.4 : 1.2} opacity={reached ? 1 : 0.35} />
-            <text x={PHASE_X[i]} y={y + 5} textAnchor="middle" fill={current ? colors.ACCENT : reached ? colors.TEXT : colors.MUTED} fontFamily={MONO} fontSize={11}>{phaseName}</text>
-            {reached && <text x={PHASE_X[i]} y={y + 42} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={9}>{`entry-${i + 1}${active ? 'a' : 'b'}`}</text>}
+            <text x={PHASE_X[i]} y={y + 5} textAnchor="middle" fill={current ? colors.ACCENT : reached ? colors.TEXT : colors.MUTED} fontFamily={MONO} fontSize={13}>{phaseName}</text>
+            {reached && <text x={PHASE_X[i]} y={y + 42} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={13}>{`entry-${i + 1}${active ? 'a' : 'b'}`}</text>}
           </g>
         );
       })}
@@ -210,7 +213,7 @@ function LedgerLane({ y, label, u, phase, active, historyU, dim }: { y: number; 
             const eu = clamp01(historyU - i);
             return <rect key={i} x={165 + i * 19} y={y + 64} width={12} height={8} rx={2} fill={i === 12 ? colors.POSITIVE : colors.MUTED} opacity={eu * 0.8} />;
           })}
-          <text x={165} y={y + 92} fill={colors.MUTED} fontSize={10} fontFamily={MONO}>history events</text>
+          <text x={165} y={y + 92} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>history events</text>
         </g>
       )}
     </g>
@@ -245,67 +248,69 @@ export function Render({ s }: { s: SceneState }) {
         {activeU > 0 && (
           <g opacity={activeU * dim}>
             <path d="M 1080 230 L 1145 260 L 1080 290" fill="none" stroke={colors.ACCENT} strokeWidth={3} />
-            <text x={1160} y={255} fill={colors.ACCENT} fontFamily={MONO} fontSize={12}>active_run</text>
-            <text x={1160} y={273} fill={colors.TEXT} fontFamily={MONO} fontSize={12}>run-a7</text>
+            <text x={1160} y={255} fill={colors.ACCENT} fontFamily={MONO} fontSize={13}>active_run</text>
+            <text x={1160} y={273} fill={colors.TEXT} fontFamily={MONO} fontSize={13}>run-a7</text>
           </g>
         )}
 
         <g opacity={contextU * dim}>
           {CONTEXT_LINES.map((line, i) => <rect key={i} x={line.x} y={line.y} width={line.w} height={9} rx={3} fill={line.color} opacity={0.25 + (i % 3) * 0.14} />)}
-          <text x={100} y={488} fill={colors.MUTED} fontSize={11} letterSpacing="0.1em">TRANSIENT TERMINAL AND MODEL CONTEXT</text>
+          <text x={100} y={488} fill={colors.MUTED} fontSize={12} letterSpacing="0.1em">TRANSIENT TERMINAL AND MODEL CONTEXT</text>
         </g>
 
         {crashU > 0.05 && (
           <g opacity={clamp01(crashU) * dim}>
             <path d="M 620 475 L 655 520 L 632 550 L 688 610" fill="none" stroke={colors.NEGATIVE} strokeWidth={5} strokeLinecap="round" />
-            <text x={710} y={540} fill={colors.NEGATIVE} fontSize={17} fontWeight={700}>context lost</text>
+            <text x={712} y={590} fill={colors.NEGATIVE} fontSize={17} fontWeight={700}>context lost</text>
           </g>
         )}
 
         {resumeU > 0 && (
           <g opacity={resumeU * dim} transform={`translate(0 ${lerp(12, 0, resumeU)})`}>
-            <rect x={700} y={425} width={490} height={70} rx={14} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.4} />
-            <text x={725} y={453} fill={colors.POSITIVE} fontFamily={MONO} fontSize={12}>statem start runbook.yaml --run-id run-a7</text>
-            <text x={725} y={479} fill={colors.TEXT} fontFamily={MONO} fontSize={11}>refresh spec identity · append resume event · current ← review</text>
+            <rect x={700} y={462} width={490} height={84} rx={14} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.4} />
+            <text x={725} y={490} fill={colors.POSITIVE} fontFamily={MONO} fontSize={14}>statem start runbook.yaml --run-id run-a7</text>
+            <text x={725} y={514} fill={colors.TEXT} fontSize={13}>refresh spec identity · append resume event</text>
+            <text x={725} y={534} fill={colors.TEXT} fontSize={13}>current {'←'} review</text>
           </g>
         )}
 
         {curU > 0 && (
           <g opacity={curU * dim}>
-            <rect x={90} y={425} width={490} height={70} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} />
-            <text x={115} y={453} fill={colors.ACCENT} fontFamily={MONO} fontSize={12}>statem cur · statem history</text>
-            <text x={115} y={479} fill={colors.TEXT} fontSize={11}>prompt · pending checks · legal next states · recent history</text>
+            <rect x={90} y={462} width={490} height={84} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} />
+            <text x={115} y={490} fill={colors.ACCENT} fontFamily={MONO} fontSize={14}>statem cur · statem history</text>
+            <text x={115} y={514} fill={colors.TEXT} fontSize={13}>prompt · pending checks</text>
+            <text x={115} y={534} fill={colors.TEXT} fontSize={13}>legal next states · recent history</text>
           </g>
         )}
 
         {hookU > 0 && (
           <g opacity={hookU * dim}>
             <path d="M 725 245 C 725 205, 985 205, 985 245" fill="none" stroke={colors.WARM} strokeWidth={3} strokeDasharray="7 6" />
-            <text x={855} y={197} textAnchor="middle" fill={colors.WARM} fontFamily={MONO} fontSize={12}>in_hook · reload progress.md</text>
+            <text x={855} y={197} textAnchor="middle" fill={colors.WARM} fontFamily={MONO} fontSize={13}>in_hook · reload progress.md</text>
           </g>
         )}
 
         {stopU > 0 && (
           <g opacity={stopU * dim}>
-            <rect x={430} y={486} width={420} height={108} rx={54} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.4} />
-            <circle cx={484} cy={540} r={28} fill={colors.NEGATIVE} opacity={0.85} />
-            <text x={484} y={546} textAnchor="middle" fill={colors.BG} fontWeight={800} fontSize={16}>STOP</text>
-            <path d="M 525 540 L 710 540" stroke={colors.GRID} strokeWidth={3} />
-            <path d="M 690 530 L 710 540 L 690 550" fill="none" stroke={colors.GRID} strokeWidth={3} />
-            <text x={735} y={526} fill={colors.ACCENT} fontFamily={MONO} fontSize={12}>review</text>
-            <text x={735} y={549} fill={colors.TEXT} fontSize={12}>unfinished</text>
-            <text x={735} y={571} fill={colors.POSITIVE} fontSize={12}>continue the run</text>
+            <rect x={400} y={486} width={470} height={108} rx={54} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.4} />
+            <circle cx={454} cy={540} r={28} fill={colors.NEGATIVE} opacity={0.85} />
+            <text x={454} y={546} textAnchor="middle" fill={colors.BG} fontWeight={800} fontSize={16}>STOP</text>
+            <path d="M 495 540 L 690 540" stroke={colors.GRID} strokeWidth={3} />
+            <path d="M 670 530 L 690 540 L 670 550" fill="none" stroke={colors.GRID} strokeWidth={3} />
+            <text x={715} y={526} fill={colors.ACCENT} fontFamily={MONO} fontSize={14}>review</text>
+            <text x={715} y={549} fill={colors.TEXT} fontSize={14}>unfinished</text>
+            <text x={715} y={571} fill={colors.POSITIVE} fontSize={14}>continue the run</text>
           </g>
         )}
 
         {scopeU > 0 && (
           <g opacity={scopeU * dim}>
             <rect x={110} y={480} width={470} height={116} rx={14} fill={colors.PANEL} stroke={colors.POSITIVE} />
-            <text x={135} y={514} fill={colors.POSITIVE} fontSize={14}>RECORDED CONTROL STATE</text>
-            <text x={135} y={546} fill={colors.TEXT} fontSize={12}>current · entries · results · history</text>
+            <text x={135} y={514} fill={colors.POSITIVE} fontSize={15} fontWeight={700}>RECORDED CONTROL STATE</text>
+            <text x={135} y={546} fill={colors.TEXT} fontSize={14}>current · entries · results · history</text>
             <rect x={700} y={480} width={470} height={116} rx={14} fill={colors.PANEL} stroke={colors.NEGATIVE} />
-            <text x={725} y={514} fill={colors.NEGATIVE} fontSize={14}>NOT RECOVERED AUTOMATICALLY</text>
-            <text x={725} y={546} fill={colors.TEXT} fontSize={12}>unsaved work · hidden context · external side effects</text>
+            <text x={725} y={514} fill={colors.NEGATIVE} fontSize={15} fontWeight={700}>NOT RECOVERED AUTOMATICALLY</text>
+            <text x={725} y={546} fill={colors.TEXT} fontSize={14}>unsaved work · hidden context · external effects</text>
           </g>
         )}
 

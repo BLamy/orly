@@ -113,7 +113,8 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={1280} height={720} fill={colors.BG} />
       <g opacity={mainOpacity}>
         <text x={640} y={54} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={750}>Six views, one instant</text>
-        <text x={640} y={80} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>6 cameras · shared GPIO trigger · cross-sensor offset &lt; 40 μs</text>
+        <text x={640} y={80} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>UMI = Universal Manipulation Interface · high fidelity = several synced views of the same motion</text>
+        <text x={640} y={100} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>6 cameras · shared GPIO trigger · cross-sensor offset &lt; 40 μs</text>
       </g>
       <Camera {...s.get(scene.cam)}>
         <g opacity={mainOpacity}>
@@ -140,10 +141,10 @@ export function Render({ s }: { s: SceneState }) {
 
           <Figure
             src="/generated/hifi-umi/figures/fig-03.png"
-            x={760}
-            y={105}
-            w={405}
-            h={235}
+            x={846}
+            y={118}
+            w={320}
+            h={186}
             reveal={s.get(scene.figureU)}
             opacity={s.get(scene.figureU)}
             caption="Paper Fig. 3 · capture device"
@@ -157,26 +158,29 @@ export function Render({ s }: { s: SceneState }) {
                 const offset = sensor.offset * (1 - syncU);
                 return (
                   <g key={sensor.label}>
-                    <text x={0} y={y + 5} fill={sensor.color} fontSize={10} fontFamily={MONO}>{sensor.label}</text>
+                    <text x={0} y={y + 5} fill={sensor.color} fontSize={12} fontFamily={MONO}>{sensor.label}</text>
                     <line x1={190} y1={y} x2={980} y2={y} stroke={colors.GRID} />
                     {Array.from({ length: 8 }, (_, j) => <circle key={j} cx={220 + j * 100 + offset} cy={y} r={4} fill={sensor.color} />)}
                   </g>
                 );
               })}
               <line x1={220 + pulseU * 700} y1={-18} x2={220 + pulseU * 700} y2={176} stroke={colors.POSITIVE} strokeWidth={3} opacity={pulseU > 0 ? 1 : 0} />
-              <text x={1010} y={88} fill={syncU > 0.5 ? colors.POSITIVE : colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
-                {syncU > 0.5 ? '< 40 μs' : 'misaligned'}
-              </text>
+              <text x={1010} y={88} fill={colors.POSITIVE} fontSize={12} fontFamily={MONO} opacity={syncU > 0.5 ? 1 : 0}>&lt; 40 μs</text>
+              {/* The worst-offset row (left_hand_down, index 3) carries the misaligned tag, tied to it by a leader line. */}
+              <g opacity={syncU > 0.5 ? 0 : 1 - syncU}>
+                <line x1={984} y1={93} x2={1004} y2={93} stroke={colors.NEGATIVE} strokeWidth={1.5} />
+                <text x={1010} y={97} fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>misaligned</text>
+              </g>
             </g>
           )}
 
           {qcU > 0 && (
-            <g opacity={qcU} transform="translate(255 545)">
+            <g opacity={qcU} transform="translate(255 590)">
               {['underexposure', 'motion blur', 'fast motion', 'tracking risk'].map((label, i) => (
                 <g key={label} transform={`translate(${i * 205} 0)`}>
                   <rect width={180} height={38} rx={19} fill={colors.PANEL} stroke={colors.WARM} />
                   <circle cx={19} cy={19} r={6} fill={colors.WARM} />
-                  <text x={34} y={24} fill={colors.TEXT} fontSize={11} fontFamily={MONO}>{label}</text>
+                  <text x={34} y={24} fill={colors.TEXT} fontSize={12} fontFamily={MONO}>{label}</text>
                 </g>
               ))}
             </g>

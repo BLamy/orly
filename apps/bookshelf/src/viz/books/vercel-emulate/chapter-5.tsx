@@ -44,13 +44,16 @@ const STATIONS = [
 ] as const;
 
 // difference badges: (above the real lane, below the emulated lane)
-const D1 = { x: STATIONS[0].x, topY: 106, botY: 566 } as const;
-const D2 = { x: STATIONS[2].x, topY: 106, botY: 566 } as const;
-const D3 = { x: STATIONS[3].x + 40, topY: 106, botY: 566 } as const;
+// badges sit inside the band above the caption pill (world y <= 600 at k 1.05)
+const D1 = { x: STATIONS[0].x, topY: 90, botY: 540 } as const;
+const D2 = { x: STATIONS[2].x, topY: 90, botY: 540 } as const;
+const D3 = { x: STATIONS[3].x + 40, topY: 90, botY: 540 } as const;
 
+// the push stays centred: at k 1.05 the whole two-lane span and every badge
+// remain on stage (a push off-centre cropped the lane labels and station 4)
 const CAM_WIDE: CameraState = CAMERA_HOME;
-const CAM_D1: CameraState = { x: 470, y: 356, k: 1.1 };
-const CAM_D2: CameraState = { x: 860, y: 356, k: 1.1 };
+const CAM_D1: CameraState = { x: 640, y: 360, k: 1.05 };
+const CAM_D2: CameraState = { x: 640, y: 360, k: 1.05 };
 
 /** packet x for a lockstep step value 0..4 (0 = at the app, i = at station i-1) */
 function packetX(stepU: number): number {
@@ -205,7 +208,7 @@ function Lane({
   return (
     <g opacity={(1 - 0.85 * dim) * lanesU}>
       <line x1={APP.x + 70} y1={y} x2={1180} y2={y} stroke={colors.GRID} strokeWidth={1.5} strokeDasharray="1 0" opacity={0.8} />
-      <text x={APP.x + 70} y={y - 46} fill={color} fontSize={13.5} fontWeight={600}>
+      <text x={APP.x + 70} y={y - 46} fill={color} fontSize={14} fontWeight={600}>
         {label}
       </text>
       {STATIONS.map((st, i) => {
@@ -213,10 +216,10 @@ function Lane({
         return (
           <g key={st.label}>
             <circle cx={st.x} cy={y} r={9} fill={passed ? colors.POSITIVE : colors.BG} stroke={passed ? colors.POSITIVE : colors.GRID} strokeWidth={1.6} />
-            <text x={st.x} y={y - 20} textAnchor="middle" fill={passed ? colors.TEXT : colors.MUTED} fontSize={13}>
+            <text x={st.x} y={y - 20} textAnchor="middle" fill={passed ? colors.TEXT : colors.MUTED} fontSize={14}>
               {st.label}
             </text>
-            <text x={st.x} y={y + 28} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO} opacity={passed ? 0.9 : 0.45}>
+            <text x={st.x} y={y + 28} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={passed ? 0.9 : 0.45}>
               {st.sub}
             </text>
           </g>
@@ -266,11 +269,11 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* the quirk chip at the token station */}
         <g opacity={quirkU * floorOp}>
-          <rect x={STATIONS[2].x - 150} y={340} width={300} height={44} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.2} />
-          <text x={STATIONS[2].x} y={358} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+          <rect x={STATIONS[2].x - 200} y={336} width={400} height={52} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.2} />
+          <text x={STATIONS[2].x} y={357} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
             Accept: application/x-www-form-urlencoded
           </text>
-          <text x={STATIONS[2].x} y={376} textAnchor="middle" fill={colors.SECONDARY} fontSize={11.5} fontFamily={MONO}>
+          <text x={STATIONS[2].x} y={378} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily={MONO}>
             access_token=…&token_type=bearer — both lanes
           </text>
         </g>
@@ -281,14 +284,14 @@ export function Render({ s }: { s: SceneState }) {
           <text x={D1.x} y={D1.topY + 24} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12.5} fontWeight={600}>
             password + second factor
           </text>
-          <text x={D1.x} y={D1.topY + 42} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+          <text x={D1.x} y={D1.topY + 42} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
             a human proves who they are
           </text>
           <rect x={D1.x - 130} y={D1.botY} width={260} height={56} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.3} />
           <text x={D1.x} y={D1.botY + 24} textAnchor="middle" fill={colors.ACCENT} fontSize={12.5} fontWeight={600}>
             one-click user picker
           </text>
-          <text x={D1.x} y={D1.botY + 42} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+          <text x={D1.x} y={D1.botY + 42} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
             a test chooses who it is
           </text>
         </g>
@@ -299,14 +302,14 @@ export function Render({ s }: { s: SceneState }) {
           <text x={D2.x} y={D2.topY + 24} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12.5} fontWeight={600}>
             account database — datacenter
           </text>
-          <text x={D2.x} y={D2.topY + 42} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+          <text x={D2.x} y={D2.topY + 42} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
             opaque, remote, rate-limited
           </text>
           <rect x={D2.x - 130} y={D2.botY} width={260} height={56} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.3} />
           <text x={D2.x} y={D2.botY + 24} textAnchor="middle" fill={colors.ACCENT} fontSize={12.5} fontWeight={600}>
             in-memory store
           </text>
-          <text x={D2.x} y={D2.botY + 42} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+          <text x={D2.x} y={D2.botY + 42} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
             boots from your seed in milliseconds
           </text>
         </g>
@@ -317,15 +320,15 @@ export function Render({ s }: { s: SceneState }) {
           <text x={D3.x} y={D3.topY + 24} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12.5} fontWeight={600}>
             state lives forever
           </text>
-          <text x={D3.x} y={D3.topY + 42} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+          <text x={D3.x} y={D3.topY + 42} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
             yesterday leaks into today
           </text>
           <rect x={D3.x - 110} y={D3.botY} width={220} height={56} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.3} />
           <text x={D3.x} y={D3.botY + 24} textAnchor="middle" fill={colors.ACCENT} fontSize={12.5} fontWeight={600}>
             reset() → back to the seed
           </text>
-          <text x={D3.x} y={D3.botY + 42} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
-            every test starts at the same instant
+          <text x={D3.x} y={D3.botY + 42} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+            same starting point, every run
           </text>
         </g>
 
@@ -341,7 +344,7 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={step} opacity={u}>
                 <rect x={x - 62} y={316} width={124} height={40} rx={9} fill={colors.BG} stroke={colors.ACCENT} />
-                <text x={x} y={341} textAnchor="middle" fill={colors.TEXT} fontSize={12}>
+                <text x={x} y={341} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
                   {step}
                 </text>
                 {i < RECAP.length - 1 && (

@@ -37,7 +37,7 @@ const lerp = (a: number, b: number, u: number): number => a + (b - a) * u;
 // ---------------------------------------------------------------------------
 
 const NODE = { w: 260, h: 78 } as const;
-const TREE_X = 130;
+const TREE_X = 200;
 const ROOT_Y = 130;
 const MID_Y = 254;
 const LEAF_Y = 378;
@@ -56,7 +56,7 @@ const DOOR_X = [85, 465, 845] as const;
 // camera marks
 const CAM_TREE: CameraState = { x: 330, y: 300, k: 1.3 };
 const CAM_MACH: CameraState = { x: 640, y: 330, k: 1.18 };
-const CAM_EXIT: CameraState = { x: 950, y: 300, k: 1.34 };
+const CAM_EXIT: CameraState = { x: 962, y: 340, k: 1.3 };
 const CAM_DOORS: CameraState = { x: 640, y: 330, k: 1.04 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
@@ -227,7 +227,7 @@ function TreeNode({ y, tag, line1, line2, u, hot }: {
         {line1}
       </text>
       {line2 && (
-        <text x={TREE_X + 16} y={y + 66} fill={colors.MUTED} fontSize={10.5} fontFamily="monospace">
+        <text x={TREE_X + 16} y={y + 66} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
           {line2}
         </text>
       )}
@@ -240,7 +240,7 @@ function StackChip({ y, label, u }: { y: number; label: string; u: number }) {
   return (
     <g opacity={u}>
       <rect x={SLOT.x} y={y} width={SLOT.w} height={SLOT.h} rx={8} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.4} />
-      <text x={SLOT.x + SLOT.w / 2} y={y + 27} textAnchor="middle" fill={colors.SECONDARY} fontSize={11} fontFamily="monospace">
+      <text x={SLOT.x + SLOT.w / 2} y={y + 27} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily="monospace">
         {label}
       </text>
     </g>
@@ -286,7 +286,8 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...cam}>
         {/* ================= ACT 1 · the machine at work ================= */}
         <g opacity={dim1 * dimU}>
-          {/* the description tree */}
+          {/* the description tree — gone once the Exit takes the camera */}
+          {exitU < 0.5 && (<>
           <g opacity={treeU}>
             <text x={TREE_X} y={ROOT_Y - 40} fill={colors.MUTED} fontSize={13}>
               the description, as the runtime sees it
@@ -297,12 +298,13 @@ export function Render({ s }: { s: SceneState }) {
           <TreeNode y={ROOT_Y} tag={'op: "OnSuccess"'} line1={'cont: (amount) =>'} line2={'  applyDiscount(amount, 5)'} u={clamp01(treeU * 3)} hot={ptrIdx === 0 && (walk > 0 || pops > 0.9) ? 1 : 0} />
           <TreeNode y={MID_Y} tag={'op: "OnSuccess"'} line1={'cont: (amount) =>'} line2={'  amount * 2'} u={clamp01(treeU * 3 - 1)} hot={ptrIdx === 1 ? 1 : 0} />
           <TreeNode y={LEAF_Y} tag={'_tag: "Success"'} line1={'value: 100'} u={clamp01(treeU * 3 - 2)} hot={ptrIdx === 2 ? 1 : 0} />
+          </>)}
 
           {/* the current pointer */}
           {(walk > 0.01 || machU > 0.5) && pops < 0.98 && (
             <g opacity={machU}>
               <path d={`M ${TREE_X - 58} ${ptrY} l 34 0 l -10 -7 m 10 7 l -10 7`} stroke={colors.WARM} strokeWidth={2.5} fill="none" />
-              <text x={TREE_X - 62} y={ptrY + 4} textAnchor="end" fill={colors.WARM} fontSize={12} fontFamily="monospace">
+              <text x={TREE_X - 41} y={ptrY - 14} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="monospace">
                 current
               </text>
             </g>
@@ -315,18 +317,18 @@ export function Render({ s }: { s: SceneState }) {
               <text x={MACH.x + MACH.w / 2} y={MACH.y + 30} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>
                 the fiber — a stack machine
               </text>
-              <text x={MACH.x + MACH.w / 2} y={MACH.y + 56} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily="monospace">
+              <text x={MACH.x + MACH.w / 2} y={MACH.y + 56} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                 {'while (true)'}
               </text>
-              <text x={MACH.x + MACH.w / 2} y={MACH.y + 72} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily="monospace">
+              <text x={MACH.x + MACH.w / 2} y={MACH.y + 74} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                 {'  current = current[evaluate](fiber)'}
               </text>
-              <text x={MACH.x + 24} y={MACH.y + 104} fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+              <text x={MACH.x + 24} y={MACH.y + 104} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                 ops: {opCount}
               </text>
               {/* the stack well */}
               <rect x={SLOT.x - 8} y={MACH.y + 120} width={SLOT.w + 16} height={MACH.h - 150} rx={10} fill={colors.BG} stroke={colors.GRID} />
-              <text x={SLOT.x + SLOT.w / 2} y={MACH.y + 142} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+              <text x={SLOT.x + SLOT.w / 2} y={MACH.y + 142} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                 _stack
               </text>
               <StackChip y={SLOT0_Y} label={'OnSuccess · applyDiscount'} u={chip1U} />
@@ -357,7 +359,7 @@ export function Render({ s }: { s: SceneState }) {
               <text x={EXIT_CARD.x + 22} y={EXIT_CARD.y + 70} fill={colors.POSITIVE} fontSize={13} fontFamily="monospace">
                 value: 190
               </text>
-              <text x={EXIT_CARD.x + 22} y={EXIT_CARD.y + 102} fill={colors.MUTED} fontSize={10.5} fontFamily="monospace">
+              <text x={EXIT_CARD.x + 22} y={EXIT_CARD.y + 102} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                 or Failure — cause: ...
               </text>
             </g>
@@ -383,13 +385,13 @@ export function Render({ s }: { s: SceneState }) {
               {syncErrU > 0.01 && (
                 <g opacity={syncErrU}>
                   <rect x={DOOR_X[0] + 20} y={DOOR.y + 134} width={DOOR.w - 40} height={94} rx={8} fill="#180a10" stroke={colors.NEGATIVE} />
-                  <text x={DOOR_X[0] + 32} y={DOOR.y + 158} fill={colors.NEGATIVE} fontSize={10.5} fontFamily="monospace">
+                  <text x={DOOR_X[0] + 32} y={DOOR.y + 158} fill={colors.NEGATIVE} fontSize={12} fontFamily="monospace">
                     (FiberFailure) AsyncFiberException:
                   </text>
-                  <text x={DOOR_X[0] + 32} y={DOOR.y + 176} fill={colors.NEGATIVE} fontSize={10.5} fontFamily="monospace">
+                  <text x={DOOR_X[0] + 32} y={DOOR.y + 176} fill={colors.NEGATIVE} fontSize={12} fontFamily="monospace">
                     Fiber #0 cannot be resolved
                   </text>
-                  <text x={DOOR_X[0] + 32} y={DOOR.y + 194} fill={colors.NEGATIVE} fontSize={10.5} fontFamily="monospace">
+                  <text x={DOOR_X[0] + 32} y={DOOR.y + 194} fill={colors.NEGATIVE} fontSize={12} fontFamily="monospace">
                     synchronously — async work inside
                   </text>
                 </g>
@@ -432,7 +434,7 @@ export function Render({ s }: { s: SceneState }) {
                 return (
                   <g key={ms} opacity={on ? 1 : 0.15}>
                     <circle cx={x} cy={DOOR.y + 140} r={7} fill={on ? colors.POSITIVE : colors.GRID} />
-                    <text x={x} y={DOOR.y + 122} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily="monospace">
+                    <text x={x} y={DOOR.y + 122} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                       {ms} ms
                     </text>
                   </g>
@@ -453,7 +455,7 @@ export function Render({ s }: { s: SceneState }) {
                   <text x={DOOR_X[2] + 20} y={DOOR.y + 190} fill={colors.NEGATIVE} fontSize={11.5} fontFamily="monospace">
                     Effect.runFork(Fiber.interrupt(fiber))
                   </text>
-                  <text x={DOOR_X[2] + 20} y={DOOR.y + 212} fill={colors.MUTED} fontSize={11}>
+                  <text x={DOOR_X[2] + 20} y={DOOR.y + 212} fill={colors.MUTED} fontSize={12}>
                     interrupted — cleanly, at 500 ms
                   </text>
                 </g>

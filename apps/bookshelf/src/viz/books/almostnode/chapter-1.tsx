@@ -61,6 +61,18 @@ const U_AT_SW = 0.144;
 const U_AT_BRIDGE = 0.315;
 const U_AT_VITE = 0.5;
 
+// The request label rides under whichever node the packet is at, instead of
+// sitting on the packet (where it collided with the node titles).
+const REQ_LABELS = [
+  { to: 0.23, node: SW, text: 'GET /', color: colors.ACCENT },
+  { to: 0.4, node: BRIDGE, text: 'GET /', color: colors.ACCENT },
+  { to: 0.6, node: VITE, text: 'GET /', color: colors.ACCENT },
+  { to: 0.75, node: BRIDGE, text: '200 · base64', color: colors.POSITIVE },
+  { to: 0.95, node: SW, text: '200 · base64', color: colors.POSITIVE },
+  { to: 1, node: IFR, text: '200 · base64', color: colors.POSITIVE },
+] as const;
+const requestLabel = (u: number) => (u <= 0 || u >= 1 ? null : REQ_LABELS.find((l) => u < l.to) ?? null);
+
 // mini page that paints inside the preview iframe when the response lands
 const PAINT = { x: 898, y: 372, w: 230, h: 168 } as const;
 
@@ -79,8 +91,10 @@ const LAYERS_Y = 300;
 // camera marks
 const CAM_WIDE: CameraState = CAMERA_HOME;
 const CAM_TERM: CameraState = { x: 640, y: 260, k: 1.35 };
-const CAM_RIGHT: CameraState = { x: 880, y: 320, k: 1.22 };
-const CAM_LEFT: CameraState = { x: 430, y: 350, k: 1.22 };
+// The hop camera only pushes as far as the whole layout (x 100–1185) still fits
+// the 1280 stage, so every node and zone label stays in frame on every hop.
+const CAM_RIGHT: CameraState = { x: 672, y: 330, k: 1.08 };
+const CAM_LEFT: CameraState = { x: 612, y: 330, k: 1.08 };
 
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
@@ -310,6 +324,7 @@ export function Render({ s }: { s: SceneState }) {
   const tabGlow = s.get(scene.tabGlow);
 
   const cmdShown = CMD.slice(0, Math.round(typeU * CMD.length));
+  const reqLabel = requestLabel(reqU);
 
   return (
     <>
@@ -330,7 +345,7 @@ export function Render({ s }: { s: SceneState }) {
           <circle cx={TAB.x + 24} cy={TAB.y + 20} r={5} fill={colors.NEGATIVE} opacity={0.7} />
           <circle cx={TAB.x + 44} cy={TAB.y + 20} r={5} fill={colors.WARM} opacity={0.7} />
           <circle cx={TAB.x + 64} cy={TAB.y + 20} r={5} fill={colors.POSITIVE} opacity={0.7} />
-          <text x={TAB.x + 90} y={TAB.y + 25} fill={colors.MUTED} fontSize={13}>
+          <text x={STAGE_W / 2} y={TAB.y + 25} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
             one browser tab
           </text>
         </g>
@@ -491,11 +506,33 @@ export function Render({ s }: { s: SceneState }) {
             path={REQ_PATH}
             u={reqU}
             roundTrip
-            label="GET /"
-            responseLabel="200 · base64"
             color={colors.ACCENT}
             responseColor={colors.POSITIVE}
           />
+          {reqLabel && (
+            <g>
+              <rect
+                x={reqLabel.node.x - (reqLabel.text.length * 7.8 + 16) / 2}
+                y={reqLabel.node.y + 35}
+                width={reqLabel.text.length * 7.8 + 16}
+                height={22}
+                rx={6}
+                fill={colors.BG}
+                stroke={reqLabel.color}
+                strokeWidth={1}
+              />
+              <text
+                x={reqLabel.node.x}
+                y={reqLabel.node.y + 50}
+                textAnchor="middle"
+                fill={reqLabel.color}
+                fontSize={13}
+                fontFamily={MONO}
+              >
+                {reqLabel.text}
+              </text>
+            </g>
+          )}
 
           {/* the page paints */}
           <g opacity={paintU}>

@@ -139,14 +139,14 @@ const LSTATES: Row[][] = [];
 // ---------------------------------------------------------------------------
 
 const LAD = { x: 815, y0: 132, w: 386, rowH: 46 } as const;
-const LED = { x: 815, y0: 492, w: 386, rowH: 34 } as const;
+const LED = { x: 815, y0: 452, w: 386, rowH: 34 } as const;
 
 const ladderRowY = (i: number): number => LAD.y0 + i * LAD.rowH;
 
-const CAM_LADDER: CameraState = { x: 985, y: 255, k: 1.42 };
-const CAM_FETCH: CameraState = { x: NODES[0].x + 160, y: NODES[0].y, k: 1.3 };
-const CAM_LEDGER: CameraState = { x: 985, y: 520, k: 1.5 };
-const CAM_MID: CameraState = { x: 700, y: 340, k: 1.08 };
+// One machine, one frame: the web, the ladder and the ledger all stay on stage
+// (k 1.1 keeps every label inside the 1280×720 stage and above the caption band).
+// The packet animations carry the eye between the three parts, so the camera holds.
+const CAM_MACHINE: CameraState = { x: 640, y: 372, k: 1.1 };
 
 // ---------------------------------------------------------------------------
 // Timeline
@@ -206,7 +206,7 @@ export function buildScene(): Scene {
     dur: 7.5,
     text: 'The design starts with one list: links to crawl, ranked by overall site popularity. This ranked list is the frontier, everything the crawler still owes a visit.',
   });
-  tl.tween(cam, { x: 900, y: 320, k: 1.18 }, { at: 8.2, dur: 1.5, ease: ease.move });
+  tl.tween(cam, CAM_MACHINE, { at: 8.2, dur: 1.5, ease: ease.move });
   tl.tween(ladderU, 1, { at: 8.8, dur: 1.2, ease: ease.enter });
   tl.hold(15.5, 0.5);
 
@@ -216,7 +216,6 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'You can seed it with big portals that link outward, and keep it in a sorted set, so the most promising link is always sitting on top.',
   });
-  tl.tween(cam, CAM_LADDER, { at: 16.2, dur: 1.4, ease: ease.move });
   tl.hold(22.5, 0.5);
 
   // — Beat 4 · pop —
@@ -235,7 +234,6 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'It fetches that page and reads two things out of it: the content itself, and every child link the page points to.',
   });
-  tl.tween(cam, CAM_FETCH, { at: 29.2, dur: 1.4, ease: ease.move });
   tl.hold(35.5, 0.5);
 
   // — Beat 6 · children join —
@@ -247,7 +245,6 @@ export function buildScene(): Scene {
   tl.tween(kids0, 1, { at: 36.4, dur: 2.6, ease: ease.linear });
   tl.set(ladderK, 2, 39.0); // A0 — children slotted in by rank
   tl.tween(glow0, 1, { at: 39.0, dur: 0.3, ease: ease.enter });
-  tl.tween(cam, CAM_LADDER, { at: 37.2, dur: 1.4, ease: ease.move });
   tl.tween(glow0, 0, { at: 41.2, dur: 1.2, ease: ease.move });
   tl.hold(42.0, 0.5);
 
@@ -257,7 +254,6 @@ export function buildScene(): Scene {
     dur: 7,
     text: 'Then the bookkeeping: the link comes off the to do list, and the page is stamped into a second table, crawled links, together with a signature of its content.',
   });
-  tl.tween(cam, CAM_LEDGER, { at: 42.7, dur: 1.4, ease: ease.move });
   tl.tween(ledgerU, 1, { at: 43.0, dur: 1.0, ease: ease.enter });
   tl.tween(stamp0, 1, { at: 44.2, dur: 1.2, ease: ease.move });
   tl.hold(49.5, 0.3);
@@ -274,7 +270,6 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'And the loop repeats. Pop the next winner, fetch it, harvest the children, stamp the record.',
   });
-  tl.tween(cam, CAM_MID, { at: 54.2, dur: 1.5, ease: ease.move });
   tl.tween(pop1, 1, { at: 55.0, dur: 1.4, ease: ease.move });
   tl.set(ladderK, 3, 56.4); // P1
   tl.tween(kids1, 1, { at: 56.6, dur: 1.8, ease: ease.linear });
@@ -288,7 +283,6 @@ export function buildScene(): Scene {
     dur: 5.0,
     text: 'From here the machine takes over. Watch the frontier churn as the graph lights up.',
   });
-  tl.tween(cam, CAMERA_HOME, { at: 60.7, dur: 1.6, ease: ease.move });
   tl.tween(montIdx, N_FETCH, { at: 61.5, dur: 10.5, ease: ease.linear });
 
   // — Beat 11 · no route was planned —
@@ -463,7 +457,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={LAD.x} y={LAD.y0 - 30} fill={colors.TEXT} fontSize={16}>
             the frontier
           </text>
-          <text x={LAD.x} y={LAD.y0 - 10} fill={colors.ACCENT} fontSize={12.5} fontFamily="ui-monospace, monospace">
+          <text x={LAD.x} y={LAD.y0 - 10} fill={colors.ACCENT} fontSize={13} fontFamily="ui-monospace, monospace">
             links_to_crawl · Redis sorted set
           </text>
           {ladderRows.map((row, i) => {
@@ -490,7 +484,7 @@ export function Render({ s }: { s: SceneState }) {
               </g>
             );
           })}
-          <text x={LAD.x + 200} y={LAD.y0 + LADDER_ROWS * LAD.rowH + 2} fill={colors.MUTED} fontSize={11.5} fontFamily="ui-monospace, monospace" opacity={0.85}>
+          <text x={LAD.x + 200} y={LAD.y0 + LADDER_ROWS * LAD.rowH + 2} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace" opacity={0.85}>
             extract_max_priority_page()
           </text>
         </g>
@@ -542,14 +536,14 @@ export function Render({ s }: { s: SceneState }) {
             />
           ))}
         {(kids0 > 0.05 || kids1 > 0.05) && kids0 < 1 && (
-          <text x={LAD.x + 30} y={ladderRowY(1) - 14} fill={colors.POSITIVE} fontSize={11.5} fontFamily="ui-monospace, monospace" opacity={Math.max(kids0 > 0 && kids0 < 1 ? 1 : 0, kids1 > 0 && kids1 < 1 ? 1 : 0)}>
+          <text x={LAD.x + 30} y={ladderRowY(1) - 14} fill={colors.POSITIVE} fontSize={12} fontFamily="ui-monospace, monospace" opacity={Math.max(kids0 > 0 && kids0 < 1 ? 1 : 0, kids1 > 0 && kids1 < 1 ? 1 : 0)}>
             add_link_to_crawl(url)
           </text>
         )}
 
         {/* ---- the ledger: crawled_links ---- */}
         <g opacity={ledgerU * dimAll}>
-          <text x={LED.x} y={LED.y0 - 12} fill={colors.WARM} fontSize={12.5} fontFamily="ui-monospace, monospace">
+          <text x={LED.x} y={LED.y0 - 12} fill={colors.WARM} fontSize={13} fontFamily="ui-monospace, monospace">
             crawled_links · url + signature
           </text>
           {Array.from({ length: Math.min(3, crawledN) }, (_, r) => {
@@ -559,7 +553,7 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={`${crawledN}-${r}`} opacity={u * (1 - r * 0.28)}>
                 <rect x={LED.x} y={y + (1 - u) * -16} width={LED.w} height={LED.rowH - 6} rx={7} fill={colors.PANEL} stroke={r === 0 && sigGlow > 0.02 ? colors.WARM : colors.GRID} strokeWidth={r === 0 && sigGlow > 0.02 ? 2 : 1} />
-                <text x={LED.x + 12} y={y + 19} fill={colors.TEXT} fontSize={12.5}>
+                <text x={LED.x + 12} y={y + 19} fill={colors.TEXT} fontSize={13}>
                   {NODES[f.node].label}
                 </text>
                 <Barcode x={LED.x + LED.w - 64} y={y + 7} bars={NODES[f.node].bars} opacity={0.55 + 0.45 * (r === 0 ? sigGlow : 0)} />
@@ -575,12 +569,12 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- scale stats ---- */}
         <g opacity={statsU * dimAll}>
-          <rect x={200} y={606} width={230} height={30} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={315} y={626} textAnchor="middle" fill={colors.ACCENT} fontSize={14}>
+          <rect x={200} y={575} width={230} height={30} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={315} y={595} textAnchor="middle" fill={colors.ACCENT} fontSize={14}>
             1,600 write requests / s
           </text>
-          <rect x={450} y={606} width={230} height={30} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={565} y={626} textAnchor="middle" fill={colors.WARM} fontSize={14}>
+          <rect x={450} y={575} width={230} height={30} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={565} y={595} textAnchor="middle" fill={colors.WARM} fontSize={14}>
             4 billion links / month
           </text>
         </g>
@@ -592,10 +586,10 @@ export function Render({ s }: { s: SceneState }) {
             the crawl loop
           </text>
           <rect x={330} y={300} width={180} height={54} rx={10} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.4} />
-          <text x={420} y={323} textAnchor="middle" fill={colors.ACCENT} fontSize={12.5} fontFamily="ui-monospace, monospace">
+          <text x={420} y={323} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily="ui-monospace, monospace">
             links_to_crawl
           </text>
-          <text x={420} y={341} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+          <text x={420} y={341} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
             ranked frontier
           </text>
           <line x1={510} y1={327} x2={560} y2={327} stroke={colors.MUTED} strokeWidth={1.5} />
@@ -603,15 +597,15 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={321} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
             Crawler Service
           </text>
-          <text x={640} y={341} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="ui-monospace, monospace">
+          <text x={640} y={341} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
             crawl_page(page)
           </text>
           <line x1={720} y1={327} x2={770} y2={327} stroke={colors.MUTED} strokeWidth={1.5} />
           <rect x={770} y={300} width={180} height={54} rx={10} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.4} />
-          <text x={860} y={323} textAnchor="middle" fill={colors.WARM} fontSize={12.5} fontFamily="ui-monospace, monospace">
+          <text x={860} y={323} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="ui-monospace, monospace">
             crawled_links
           </text>
-          <text x={860} y={341} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+          <text x={860} y={341} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
             url + signature
           </text>
           <text x={640} y={412} textAnchor="middle" fill={colors.MUTED} fontSize={13.5} fontStyle="italic">

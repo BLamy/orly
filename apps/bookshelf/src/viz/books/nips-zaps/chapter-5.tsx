@@ -35,7 +35,13 @@ const RES_LAYOUT = layoutJson(PAY_RESPONSE, { x: 820, y: 400, fontSize: 13.5 });
 const CLIENT = { x: 250, y: 250 };
 const RELAY = { x: 640, y: 150 };
 const WALLETSVC = { x: 1030, y: 250 };
-const HALF_W = 84;
+// Node boxes sized to their labels: the relay host name needs a wider box.
+const NODE_W = 184;
+const RELAY_W = 232;
+const HALF_W = NODE_W / 2;
+const RELAY_HALF_W = RELAY_W / 2;
+const URI_CHAR_W = 9.6; // 16px monospace advance
+const URI_GAP = 14;
 
 const CAM_URI: CameraState = { x: 640, y: 380, k: 1.15 };
 
@@ -158,11 +164,12 @@ export function Render({ s }: { s: SceneState }) {
 
   const mainOp = 1 - 0.85 * dimU;
 
-  // URI parts laid out as one long monospace string with per-part highlight
-  let uriX = 180;
+  // URI parts laid out as one long monospace string, centred in its box, with a gap between parts
+  const uriTotal = URI_PARTS.reduce((sum, p) => sum + p.text.length * URI_CHAR_W, 0) + URI_GAP * (URI_PARTS.length - 1);
+  let uriX = 640 - uriTotal / 2;
   const uriSpans = URI_PARTS.map((p, i) => {
     const x = uriX;
-    uriX += p.text.length * 8.4;
+    uriX += p.text.length * URI_CHAR_W + URI_GAP;
     return { ...p, x, i };
   });
 
@@ -175,12 +182,12 @@ export function Render({ s }: { s: SceneState }) {
           {/* pairing URI */}
           {uriU > 0 && (
             <g opacity={uriU}>
-              <rect x={150} y={330} width={1000} height={54} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
+              <rect x={140} y={330} width={1000} height={54} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
               {uriSpans.map((p) => {
                 const active = uriF === p.i;
                 return (
                   <g key={p.i}>
-                    <text x={p.x} y={363} fill={p.color} fontSize={14} fontFamily="ui-monospace, Menlo, monospace" opacity={uriF < 0 || active ? 1 : 0.45} fontWeight={active ? 700 : 400}>
+                    <text x={p.x} y={363} fill={p.color} fontSize={16} fontFamily="ui-monospace, Menlo, monospace" opacity={uriF < 0 || active ? 1 : 0.45} fontWeight={active ? 700 : 400}>
                       {p.text}
                     </text>
                     {active && (
@@ -197,17 +204,18 @@ export function Render({ s }: { s: SceneState }) {
           {/* topology */}
           {nodesU > 0 && (
             <g opacity={nodesU}>
-              <ServiceNode x={CLIENT.x} y={CLIENT.y} kind="client" label="nostr client" sublabel="holds the secret" u={nodesU} />
-              <ServiceNode x={RELAY.x} y={RELAY.y} kind="server" label="relay.getalby.com" sublabel="the meeting point" u={nodesU} />
-              <ServiceNode x={WALLETSVC.x} y={WALLETSVC.y} kind="server" label="wallet service" sublabel="holds the sats" u={nodesU} />
-              <Connection from={{ x: CLIENT.x + HALF_W, y: CLIENT.y - 20 }} to={{ x: RELAY.x - HALF_W, y: RELAY.y + 10 }} u={nodesU} color={colors.GRID} arrow={false} />
-              <Connection from={{ x: RELAY.x + HALF_W, y: RELAY.y + 10 }} to={{ x: WALLETSVC.x - HALF_W, y: WALLETSVC.y - 20 }} u={nodesU} color={colors.GRID} arrow={false} />
+              <ServiceNode x={CLIENT.x} y={CLIENT.y} w={NODE_W} kind="client" label="nostr client" sublabel="holds the secret" labelSize={16} u={nodesU} />
+              <ServiceNode x={RELAY.x} y={RELAY.y} w={RELAY_W} kind="server" label="relay.getalby.com" sublabel="the meeting point" labelSize={16} u={nodesU} />
+              <ServiceNode x={WALLETSVC.x} y={WALLETSVC.y} w={NODE_W} kind="server" label="wallet service" sublabel="holds the sats" labelSize={16} u={nodesU} />
+              <Connection from={{ x: CLIENT.x + HALF_W, y: CLIENT.y - 20 }} to={{ x: RELAY.x - RELAY_HALF_W, y: RELAY.y + 10 }} u={nodesU} color={colors.GRID} arrow={false} />
+              <Connection from={{ x: RELAY.x + RELAY_HALF_W, y: RELAY.y + 10 }} to={{ x: WALLETSVC.x - HALF_W, y: WALLETSVC.y - 20 }} u={nodesU} color={colors.GRID} arrow={false} />
             </g>
           )}
           {infoU > 0 && (
             <g opacity={infoU}>
-              <rect x={930} y={320} width={230} height={40} rx={8} fill={colors.PANEL} stroke={colors.SECONDARY} opacity={0.95} />
-              <text x={948} y={345} fill={colors.SECONDARY} fontSize={12.5} fontFamily="ui-monospace, Menlo, monospace">
+              <Connection from={{ x: WALLETSVC.x, y: WALLETSVC.y + 28 }} to={{ x: WALLETSVC.x, y: 330 }} u={infoU} color={colors.SECONDARY} arrow={false} />
+              <rect x={WALLETSVC.x - 130} y={330} width={260} height={36} rx={8} fill={colors.PANEL} stroke={colors.SECONDARY} opacity={0.95} />
+              <text x={WALLETSVC.x} y={353} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
                 13194: pay_invoice, get_balance
               </text>
             </g>
@@ -236,7 +244,7 @@ export function Render({ s }: { s: SceneState }) {
           )}
           {sealU >= 0.7 && resU < 0.3 && (
             <Connection
-              from={{ x: RELAY.x + HALF_W, y: RELAY.y + 10 }}
+              from={{ x: RELAY.x + RELAY_HALF_W, y: RELAY.y + 10 }}
               to={{ x: WALLETSVC.x - HALF_W, y: WALLETSVC.y - 20 }}
               u={1}
               flow={sealU * 3}

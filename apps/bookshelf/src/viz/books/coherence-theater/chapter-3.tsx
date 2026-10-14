@@ -36,18 +36,24 @@ const STOPS = [
   { label: 'audit', vector: 'recursive oversight capture', note: 'review reads the summary too' },
 ] as const;
 
-// Journey geometry: a gentle left-to-right wave.
-const SX = 150;
-const EX = 1130;
+// Journey geometry: a gentle left-to-right wave. Stops are spaced so every
+// label, stamp and the artifact card stay inside the panel at the home camera.
+const SX = 160;
+const EX = 1100;
 const stopX = (i: number) => SX + (i * (EX - SX)) / (STOPS.length - 1);
-const stopY = (i: number) => (i % 2 === 0 ? 396 : 312);
+const stopY = (i: number) => (i % 2 === 0 ? 450 : 340);
+const PANEL = { x: 96, y: 124, w: 1096, h: 460 };
+// Artifact rides a fixed rail above the wave so it never sits on a label.
+const RAIL_Y = 204;
 
 // Provenance: how much of the original record's grounding survives per stop.
 const PROVENANCE = [1.0, 0.72, 0.5, 0.32, 0.18, 0.1];
 
+// The journey stays fully framed: the home view is the only one that fits the
+// whole six-stop chain on the 1280-wide stage, so the chain beats hold on it.
 const CAM_TABLE: CameraState = { x: 400, y: 330, k: 1.2 };
-const CAM_EARLY: CameraState = { x: 400, y: 360, k: 1.22 };
-const CAM_LATE: CameraState = { x: 900, y: 360, k: 1.22 };
+const CAM_EARLY: CameraState = { x: 640, y: 360, k: 1 };
+const CAM_LATE: CameraState = { x: 640, y: 360, k: 1 };
 
 export interface Scene {
   tl: Timeline;
@@ -193,10 +199,10 @@ export function Render({ s }: { s: SceneState }) {
   const seg = Math.min(STOPS.length - 2, Math.floor(t));
   const su = t - seg;
   const ax = lerp(stopX(seg), stopX(seg + 1), su);
-  const ay = lerp(stopY(seg), stopY(seg + 1), su);
   const reached = Math.round(t);
   const provenance = lerp(PROVENANCE[seg], PROVENANCE[Math.min(seg + 1, 5)], su);
   const hardened = travelU > 0.55;
+  const cardX = Math.max(180, Math.min(1108, ax));
 
   return (
     <>
@@ -222,12 +228,12 @@ export function Render({ s }: { s: SceneState }) {
           />
 
           {/* ---- the journey ---- */}
-          <g opacity={laneU * (1 - figU * 0.8)}>
-            <rect x={110} y={214} width={1060} height={382} rx={24} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={146} y={250} fill={colors.TEXT} fontSize={16} fontWeight={700}>
+          <g opacity={laneU * (1 - figU * 0.9)}>
+            <rect x={PANEL.x} y={PANEL.y} width={PANEL.w} height={PANEL.h} rx={24} fill={colors.PANEL} stroke={colors.GRID} />
+            <text x={120} y={150} fill={colors.TEXT} fontSize={16} fontWeight={700}>
               the scenario
             </text>
-            <text x={146} y={272} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+            <text x={120} y={170} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               a record summarizer, introduced honestly, framed as advisory
             </text>
 
@@ -253,17 +259,17 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={stop.label}>
                   <circle cx={stopX(i)} cy={stopY(i)} r={arrived ? 10 : 7} fill={arrived ? color : colors.GRID} />
-                  <text x={stopX(i)} y={stopY(i) + (i % 2 === 0 ? 34 : -46)} textAnchor="middle" fill={arrived ? colors.TEXT : colors.MUTED} fontSize={12.5} fontFamily={MONO} fontWeight={arrived ? 700 : 400}>
+                  <text x={stopX(i)} y={stopY(i) + (i % 2 === 0 ? 30 : -46)} textAnchor="middle" fill={arrived ? colors.TEXT : colors.MUTED} fontSize={14} fontFamily={MONO} fontWeight={arrived ? 700 : 400}>
                     {stop.label}
                   </text>
-                  <text x={stopX(i)} y={stopY(i) + (i % 2 === 0 ? 52 : -28)} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} opacity={arrived ? 0.9 : 0.4}>
+                  <text x={stopX(i)} y={stopY(i) + (i % 2 === 0 ? 48 : -28)} textAnchor="middle" fill={colors.MUTED} fontSize={12} opacity={arrived ? 0.9 : 0.4}>
                     {stop.note}
                   </text>
                   {/* the vector stamp, once the artifact has passed */}
                   {stop.vector && arrived && (
                     <g opacity={clamp01((travelU * (STOPS.length - 1) - i + 0.02) * 3)}>
-                      <rect x={stopX(i) - 86} y={stopY(i) + (i % 2 === 0 ? 62 : -100)} width={172} height={26} rx={7} fill={colors.BG} stroke={i >= 4 ? colors.NEGATIVE : colors.WARM} strokeWidth={1.4} />
-                      <text x={stopX(i)} y={stopY(i) + (i % 2 === 0 ? 79 : -83)} textAnchor="middle" fill={i >= 4 ? colors.NEGATIVE : colors.WARM} fontSize={10} fontFamily={MONO}>
+                      <rect x={Math.max(198, Math.min(1088, stopX(i))) - 102} y={stopY(i) + (i % 2 === 0 ? 60 : -100)} width={204} height={26} rx={7} fill={colors.BG} stroke={i >= 4 ? colors.NEGATIVE : colors.WARM} strokeWidth={1.4} />
+                      <text x={Math.max(198, Math.min(1088, stopX(i)))} y={stopY(i) + (i % 2 === 0 ? 77 : -83)} textAnchor="middle" fill={i >= 4 ? colors.NEGATIVE : colors.WARM} fontSize={12} fontFamily={MONO}>
                         {stop.vector}
                       </text>
                     </g>
@@ -274,42 +280,42 @@ export function Render({ s }: { s: SceneState }) {
 
             {/* the artifact */}
             {travelU > 0.01 && (
-              <g transform={`translate(${ax} ${ay - 58})`}>
+              <g transform={`translate(${cardX} ${RAIL_Y})`}>
                 <rect x={-74} y={-28} width={148} height={52} rx={11} fill={colors.PANEL} stroke={hardened ? colors.NEGATIVE : colors.ACCENT} strokeWidth={2.5 + (hardened ? 1.5 : 0)} />
-                <text y={-6} textAnchor="middle" fill={hardened ? colors.NEGATIVE : colors.ACCENT} fontSize={11.5} fontFamily={MONO}>
+                <text y={-6} textAnchor="middle" fill={hardened ? colors.NEGATIVE : colors.ACCENT} fontSize={13} fontFamily={MONO}>
                   the summary
                 </text>
-                <text y={14} textAnchor="middle" fill={colors.TEXT} fontSize={10.5}>
+                <text y={14} textAnchor="middle" fill={colors.TEXT} fontSize={12}>
                   {hardened ? 'treated as settled fact' : 'plausible · helpful'}
                 </text>
               </g>
             )}
 
-            {/* refusal suppression, at the summary stop */}
+            {/* refusal suppression, at the summary stop: sits inside the V under the summary */}
             {refusalU > 0.05 && (
               <g opacity={refusalU}>
-                <rect x={stopX(1) - 108} y={stopY(1) + 88} width={216} height={48} rx={10} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.6} />
-                <text x={stopX(1)} y={stopY(1) + 108} textAnchor="middle" fill={colors.NEGATIVE} fontSize={10.5} fontFamily={MONO}>
+                <rect x={212} y={426} width={272} height={40} rx={10} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.6} />
+                <text x={stopX(1)} y={442} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
                   “insufficient confidence” → friction
                 </text>
-                <text x={stopX(1)} y={stopY(1) + 126} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
-                  plausible answer → throughput · refusal is suppressed
+                <text x={stopX(1)} y={459} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                  plausible answer keeps throughput
                 </text>
               </g>
             )}
 
-            {/* the provenance meter */}
+            {/* the provenance meter, kept clear of the caption band */}
             <g opacity={clamp01(travelU * 6)}>
-              <text x={146} y={566} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+              <text x={120} y={569} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 grounding in the source record
               </text>
-              <rect x={420} y={554} width={430} height={16} rx={8} fill="#101827" stroke={colors.GRID} />
-              <rect x={420} y={554} width={430 * provenance} height={16} rx={8} fill={provenance > 0.45 ? colors.POSITIVE : colors.NEGATIVE} opacity={0.85} />
-              <text x={866} y={567} fill={provenance > 0.45 ? colors.POSITIVE : colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
+              <rect x={364} y={556} width={480} height={16} rx={8} fill="#101827" stroke={colors.GRID} />
+              <rect x={364} y={556} width={480 * provenance} height={16} rx={8} fill={provenance > 0.45 ? colors.POSITIVE : colors.NEGATIVE} opacity={0.85} />
+              <text x={856} y={569} fill={provenance > 0.45 ? colors.POSITIVE : colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
                 {Math.round(provenance * 100)}%
               </text>
               {reached >= 5 && (
-                <text x={1134} y={567} textAnchor="end" fill={colors.NEGATIVE} fontSize={11.5} fontFamily={MONO}>
+                <text x={1168} y={569} textAnchor="end" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
                   the audit reads this too
                 </text>
               )}
@@ -330,7 +336,7 @@ export function Render({ s }: { s: SceneState }) {
         </g>
       </Camera>
       <g opacity={close}>
-        <rect x={158} y={228} width={964} height={220} rx={28} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={2.5} />
+        <rect x={158} y={228} width={964} height={220} rx={28} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={2.5} />
         <text x={640} y={292} textAnchor="middle" fill={colors.TEXT} fontSize={33} fontWeight={800}>
           No villain required
         </text>

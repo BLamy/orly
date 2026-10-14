@@ -53,12 +53,14 @@ const win = (p: number, n: number, i: number, span: number): number =>
 // Terminal panel — full-frame bounds (act 1) and lane-1 bounds (act 2). The
 // SAME panel morphs between these two rects as the camera pulls back.
 // ---------------------------------------------------------------------------
-const TERM_FULL = { x: 190, y: 128, w: 900, h: 300 };
+const TERM_FULL = { x: 190, y: 120, w: 900, h: 270 };
 const LANE_X = 260;
 const LANE_W = 760;
-const LANE1 = { x: LANE_X, y: 186, w: LANE_W, h: 108 };
-const LANE2 = { x: LANE_X, y: 340, w: LANE_W, h: 108 };
-const LANE3 = { x: LANE_X, y: 494, w: LANE_W, h: 108 };
+// Lanes share one pitch (156) so each lane's title sits clear of the lane above's x-ticks.
+const LANE1 = { x: LANE_X, y: 178, w: LANE_W, h: 96 };
+const LANE2 = { x: LANE_X, y: 334, w: LANE_W, h: 96 };
+const LANE3 = { x: LANE_X, y: 490, w: LANE_W, h: 96 };
+const LANE_TITLE_DY = 26; // lane title baseline sits this far above the plot top
 
 interface TermLine {
   cmd: string;
@@ -357,9 +359,16 @@ function LanePlot({
   return (
     <g opacity={reveal}>
       <rect x={bounds.x - 14} y={bounds.y - 14} width={bounds.w + 28} height={bounds.h + 30} rx={12} fill={colors.PANEL} opacity={0.55} />
-      <Axes x={xs} y={ys} reveal={reveal} xTicks={4} yTicks={2} fontSize={10} color={colors.MUTED} />
+      <Axes x={xs} y={ys} reveal={reveal} xTicks={4} yTicks={2} fontSize={12} color={colors.MUTED} />
       <FunctionPlot x={xs} y={ys} f={f} domain={[0, 1000]} reveal={reveal} color={color} width={3} />
-      <text x={bounds.x - 4} y={bounds.y - 20} fill={color} fontSize={13} fontWeight={600}>
+      {/* axis titles: y = reward (top-left, clear of the rising curve), x = steps (right of the axis) */}
+      <text x={bounds.x + 6} y={bounds.y + 14} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+        reward
+      </text>
+      <text x={bounds.x + bounds.w + 10} y={ys(0) - 2} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+        steps
+      </text>
+      <text x={bounds.x - 4} y={bounds.y - LANE_TITLE_DY} fill={color} fontSize={13} fontWeight={600}>
         {label}
       </text>
       {markX !== undefined && markU !== undefined && markU > 0.01 && (
@@ -373,7 +382,7 @@ function LanePlot({
             strokeWidth={1.6}
             strokeDasharray="5 5"
           />
-          <text x={xs(markX)} y={ys(1) - 8} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11} fontFamily={MONO}>
+          <text x={xs(markX)} y={ys(1) - 8} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
             {markLabel}
           </text>
         </g>
@@ -401,7 +410,8 @@ export function Render({ s }: { s: SceneState }) {
   const tokensChipU = s.get(scene.tokensChipU);
   const endU = s.get(scene.endU);
 
-  const dim = 1 - 0.85 * endU;
+  // Fully clear the old content under the closing card so the card reads alone.
+  const dim = 1 - endU;
   const panel = rectAt(TERM_FULL, LANE1, pullU);
   const termOpacity = introU * (1 - pullU);
   const passRate0 = 42; // baseline pass-rate bar height, arbitrary units
@@ -447,13 +457,13 @@ export function Render({ s }: { s: SceneState }) {
                         <text x={panel.x + 22} y={rowY + 20} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                           {ln.out}
                         </text>
-                        <circle cx={panel.x + panel.w - 26} cy={rowY - 5} r={7} fill={ln.pass ? colors.POSITIVE : colors.NEGATIVE} />
+                        <circle cx={panel.x + panel.w - 26} cy={rowY - 5} r={9} fill={ln.pass ? colors.POSITIVE : colors.NEGATIVE} />
                         <text
                           x={panel.x + panel.w - 26}
                           y={rowY - 1}
                           textAnchor="middle"
                           fill={colors.BG}
-                          fontSize={9}
+                          fontSize={12}
                           fontWeight={700}
                         >
                           {ln.pass ? '✓' : '✗'}
@@ -466,49 +476,42 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           )}
 
-          <Chip x={950} y={98} text="ECHO: GRPO on actions + cross-entropy on outputs" color={colors.SECONDARY} u={echoChipU * termOpacity} anchor="start" />
+          <Chip x={740} y={98} text="ECHO: GRPO on actions + cross-entropy on outputs" color={colors.SECONDARY} u={echoChipU * termOpacity} anchor="start" />
 
-          {/* ---------------- pass-rate bars: plain RL vs ECHO ---------------- */}
+          {/* ---------------- pass-rate bars: plain RL vs ECHO (inside the panel, clear of the pass/fail badges) ---------------- */}
           {gaugeU > 0.01 && (
-            <g opacity={gaugeU * termOpacity} transform="translate(1010 0)">
-              <text x={0} y={130} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+            <g opacity={gaugeU * termOpacity} transform="translate(960 0)">
+              <text x={0} y={250} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 pass rate
               </text>
-              <rect x={-46} y={380 - passRate0} width={38} height={passRate0} rx={4} fill={colors.MUTED} opacity={0.5} />
-              <text x={-27} y={396} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={MONO}>
+              <rect x={-46} y={360 - passRate0} width={38} height={passRate0} rx={4} fill={colors.MUTED} opacity={0.5} />
+              <text x={-27} y={376} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 plain RL
               </text>
-              <rect x={8} y={380 - passRate1} width={38} height={passRate1} rx={4} fill={colors.POSITIVE} />
-              <text x={27} y={396} textAnchor="middle" fill={colors.POSITIVE} fontSize={10} fontFamily={MONO}>
+              <rect x={8} y={360 - passRate1} width={38} height={passRate1} rx={4} fill={colors.POSITIVE} />
+              <text x={27} y={376} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
                 ECHO
               </text>
-              <text x={27} y={380 - passRate1 - 10} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontWeight={700}>
+              <text x={27} y={360 - passRate1 - 8} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontWeight={700}>
                 {gaugeU > 0.5 ? '~2x' : ''}
               </text>
             </g>
           )}
 
-          {/* ---------------- step-to-ceiling race ---------------- */}
+          {/* ---------------- step-to-ceiling race (track sits above the caption band) ---------------- */}
           {stepRaceU > 0.01 && (
             <g opacity={stepRaceU * termOpacity}>
-              <text x={panel.x} y={460} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              <text x={panel.x} y={412} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 steps to plain-GRPO&apos;s ceiling
               </text>
-              <rect x={panel.x} y={472} width={panel.w} height={12} rx={6} fill={colors.GRID} />
-              <rect x={panel.x} y={472} width={panel.w * Math.min(1, stepRaceU)} height={12} rx={6} fill={colors.MUTED} opacity={0.55} />
-              <rect x={panel.x} y={492} width={panel.w} height={12} rx={6} fill={colors.GRID} />
-              <rect
-                x={panel.x}
-                y={492}
-                width={panel.w * Math.min(1, stepRaceU * 1.9)}
-                height={12}
-                rx={6}
-                fill={colors.POSITIVE}
-              />
-              <text x={panel.x + panel.w + 10} y={481} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+              <rect x={panel.x} y={418} width={700} height={10} rx={5} fill={colors.GRID} />
+              <rect x={panel.x} y={418} width={700 * Math.min(1, stepRaceU)} height={10} rx={5} fill={colors.MUTED} opacity={0.55} />
+              <rect x={panel.x} y={432} width={700} height={10} rx={5} fill={colors.GRID} />
+              <rect x={panel.x} y={432} width={700 * Math.min(1, stepRaceU * 1.9)} height={10} rx={5} fill={colors.POSITIVE} />
+              <text x={panel.x + 712} y={428} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 plain GRPO
               </text>
-              <text x={panel.x + panel.w + 10} y={501} fill={colors.POSITIVE} fontSize={11} fontFamily={MONO}>
+              <text x={panel.x + 712} y={446} fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
                 ECHO — 1.5–2.3x fewer steps
               </text>
             </g>
@@ -517,10 +520,10 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---------------- timeout percentage ---------------- */}
           {timeoutU > 0.01 && (
             <g opacity={timeoutU * termOpacity}>
-              <text x={panel.x} y={548} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+              <text x={panel.x} y={466} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 timeout rate
               </text>
-              <text x={panel.x + 150} y={552} fill={colors.WARM} fontSize={22} fontWeight={700} fontFamily={MONO}>
+              <text x={panel.x + 130} y={470} fill={colors.WARM} fontSize={22} fontWeight={700} fontFamily={MONO}>
                 {timeoutPct.toFixed(1)}%
               </text>
             </g>
@@ -569,15 +572,16 @@ export function Render({ s }: { s: SceneState }) {
                 color={colors.MUTED}
                 width={2}
               />
-              <text x={LANE2.x + LANE2.w - 4} y={LANE2.y - 20} textAnchor="end" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+              <text x={LANE2.x + LANE2.w - 4} y={LANE2.y - LANE_TITLE_DY} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 training on every observation type — worse
               </text>
             </g>
           )}
 
+          {/* token-share chip sits above the lanes, clear of the lane-3 x-ticks and the caption band */}
           <Chip
             x={640}
-            y={618}
+            y={112}
             text="more tokens per trajectory, smaller share model-generated"
             color={colors.SECONDARY}
             u={tokensChipU * pullU}

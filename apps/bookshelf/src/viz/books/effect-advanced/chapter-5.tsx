@@ -56,7 +56,7 @@ const RECAP = [
 
 // camera marks
 const CAM_REPO: CameraState = { x: 430, y: 240, k: 1.4 };
-const CAM_PAIR: CameraState = { x: 560, y: 250, k: 1.18 };
+const CAM_PAIR: CameraState = { x: 700, y: 240, k: 1.05 };
 const CAM_GRAPH: CameraState = { x: 640, y: 230, k: 1.1 };
 const CAM_SMTP: CameraState = { x: 720, y: 300, k: 1.3 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
@@ -274,7 +274,7 @@ function ServiceBox({ x, y, title, code, u, power = 0, ghost, sealedWith }: {
           x={x - BOX_W / 2 - 14}
           y={y - BOX_H / 2 - 18}
           width={BOX_W + 28}
-          height={BOX_H * 2 + 66}
+          height={BOX_H * 2 + 96}
           rx={16}
           fill="none"
           stroke={colors.ACCENT}
@@ -385,7 +385,7 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           )}
           {provideU > 0.3 && (
-            <text x={REPO.x} y={sqlY + BOX_H / 2 + 34} textAnchor="middle" fill={colors.ACCENT} fontSize={10.5} fontFamily="monospace" opacity={clamp01((provideU - 0.3) / 0.4) * (graphU > 0 ? 0.35 : 1)}>
+            <text x={REPO.x} y={sqlY + BOX_H / 2 + 34} textAnchor="middle" fill={colors.ACCENT} fontSize={10.5} fontFamily="monospace" opacity={clamp01((provideU - 0.3) / 0.4) * (graphU > 0 ? 0.35 : 1) * (1 - clamp01((memoU - 0.5) / 0.3))}>
               layerNoDeps.pipe(Layer.provide(SqlClientLayer))
             </text>
           )}

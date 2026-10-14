@@ -61,10 +61,10 @@ const N = CARDS.length;
 const LAST = N - 1;
 const OBS_IDX = CARDS.map((c, i) => (c.kind === 'observation' ? i : -1)).filter((i) => i >= 0);
 
-const CARD_W = 96;
-const CARD_H = 88;
-const STEP = 122;
-const X0 = 132;
+const CARD_W = 124;
+const CARD_H = 92;
+const STEP = 138;
+const X0 = 26;
 const TAPE_Y = 400;
 const xAt = (i: number): number => X0 + i * STEP;
 const cxAt = (i: number): number => xAt(i) + CARD_W / 2;
@@ -96,9 +96,11 @@ const BURST_PTS = Array.from({ length: BURST_N }, () => ({
 }));
 
 // camera marks
-const CAM_WIDE: CameraState = { x: 660, y: 330, k: 0.95 };
-const CAM_FINAL: CameraState = { x: cxAt(LAST) - 30, y: TAPE_Y + 10, k: 2.1 };
-const CAM_REPLAY: CameraState = { x: 660, y: 300, k: 1.05 };
+// The tape spans x 26..1254, so no camera mark may crop it: the final "push"
+// is a gentle lean toward the last card, and the dimming does the emphasis.
+const CAM_WIDE: CameraState = { x: 640, y: 330, k: 0.95 };
+const CAM_FINAL: CameraState = { x: 640, y: TAPE_Y + 30, k: 1.03 };
+const CAM_REPLAY: CameraState = { x: 640, y: 300, k: 1 };
 const CAM_EQ: CameraState = { x: 640, y: 360, k: 1 };
 
 // ---------------------------------------------------------------------------
@@ -290,10 +292,10 @@ function TapeCard({
         strokeWidth={1.6}
         strokeOpacity={0.4 + 0.6 * Math.max(lit, isLast ? finalFlash : 0)}
       />
-      <text x={cxAt(i)} y={TAPE_Y + 24} textAnchor="middle" fill={color} fontSize={10.5} fontFamily={MONO}>
+      <text x={cxAt(i)} y={TAPE_Y + 30} textAnchor="middle" fill={color} fontSize={13} fontFamily={MONO}>
         {card.kind}
       </text>
-      <text x={cxAt(i)} y={TAPE_Y + 52} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontWeight={600}>
+      <text x={cxAt(i)} y={TAPE_Y + 60} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={600}>
         {card.label}
       </text>
     </g>
@@ -363,16 +365,18 @@ export function Render({ s }: { s: SceneState }) {
         </g>
 
         {/* the combined loss */}
-        {eqU > 0.01 && (
-          <g opacity={eqU}>
-            <rect x={280} y={470} width={720} height={96} rx={16} fill={colors.PANEL} stroke={colors.WARM} strokeOpacity={0.7} />
+        {/* sits below the tape (tape bottom ≈ y 492) on an opaque panel */}
+        {eqU > 0.01 && endU < 0.99 && (
+          <g opacity={eqU * (1 - endU)}>
+            <rect x={200} y={506} width={880} height={96} rx={16} fill={colors.PANEL} stroke={colors.WARM} strokeOpacity={0.7} />
             <MathLabel
-              tex={'\\mathcal{L} = m_{\\text{action}} \\cdot \\mathcal{L}_{\\text{GRPO}} + m_{\\text{obs}} \\cdot \\mathcal{L}_{\\text{supervised}}'}
+              tex={'\\mathcal{L} = m_{\\text{action}}\\,\\mathcal{L}_{\\text{GRPO}} + m_{\\text{obs}}\\,\\mathcal{L}_{\\text{supervised}}'}
               x={640}
-              y={510}
-              fontSize={26}
+              y={546}
+              fontSize={22}
+              boxWidth={860}
             />
-            <text x={640} y={548} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
+            <text x={640} y={586} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
               one loss, two masks: reinforcement on actions, supervision on observations
             </text>
           </g>

@@ -73,12 +73,15 @@ export function Render({ s }: { s: SceneState }) {
   const close = s.get(scene.closeU);
   const gains = s.get(scene.gainU);
   const route = s.get(scene.routeU);
+  // The bar chart and its title leave the stage before the route panel opens, so nothing sits under it.
+  const chart = clamp01(1 - route * 2);
   return <Camera {...s.get(scene.cam)}>
     <g opacity={1 - close}>
+      <g opacity={chart}>
       <text x="640" y="66" textAnchor="middle" fill={colors.TEXT} fontSize="35" fontWeight="850">hold everything else still</text>
       <g opacity={s.get(scene.lockU)}>
         <rect x="118" y="92" width="1044" height="74" rx="22" fill={colors.PANEL} stroke={colors.WARM} strokeWidth="3" />
-        {['GPT-5.5 backbone', 'Codex harness', 'downstream budget'].map((label, i) => <g key={label} transform={`translate(${300 + i * 340} 130)`}>
+        {['version 5.5 backbone', 'Codex harness', 'downstream budget'].map((label, i) => <g key={label} transform={`translate(${300 + i * 340} 130)`}>
           <circle cx="-92" r="11" fill={colors.WARM} />
           <path d="M-98 -2 v-8 a6 6 0 0 1 12 0 v8" fill="none" stroke={colors.WARM} strokeWidth="3" />
           <text x="-70" y="6" fill={colors.TEXT} fontSize="15" fontWeight="700">{label}</text>
@@ -89,8 +92,8 @@ export function Render({ s }: { s: SceneState }) {
         <path d="M770 194 H1150" stroke={colors.POSITIVE} strokeWidth="6" strokeLinecap="round" />
         <text x="320" y="218" textAnchor="middle" fill={colors.SECONDARY} fontSize="13">construction · before execution</text>
         <text x="960" y="218" textAnchor="middle" fill={colors.POSITIVE} fontSize="13">running · matched downstream budget</text>
-        <path d="M610 184 h60 v20 h-60 z" fill={colors.PANEL} stroke={colors.WARM} strokeWidth="2" />
-        <text x="640" y="199" textAnchor="middle" fill={colors.WARM} fontSize="11">freeze</text>
+        <path d="M530 184 h220 v20 h-220 z" fill={colors.PANEL} stroke={colors.WARM} strokeWidth="2" />
+        <text x="640" y="198" textAnchor="middle" fill={colors.WARM} fontSize="12" fontWeight="700">held fixed in both arms</text>
       </g>
 
       <g transform="translate(124 252)">
@@ -100,13 +103,13 @@ export function Render({ s }: { s: SceneState }) {
           const skillW = 690 * (r.skill / r.max) * s.get(scene.skillU[i]);
           return <g key={r.name} transform={`translate(0 ${y})`}>
             <text x="0" y="8" fill={colors.TEXT} fontSize="16" fontWeight="800">{r.name}</text>
-            <text x="0" y="29" fill={colors.MUTED} fontSize="11">{r.metric}</text>
+            <text x="0" y="29" fill={colors.MUTED} fontSize="12">{r.metric}</text>
             <line x1="165" y1="0" x2="855" y2="0" stroke={colors.GRID} strokeWidth="16" strokeLinecap="round" />
             <line x1="165" y1="-10" x2={165 + baseW} y2="-10" stroke={colors.MUTED} strokeWidth="12" strokeLinecap="round" />
             <line x1="165" y1="10" x2={165 + skillW} y2="10" stroke={colors.POSITIVE} strokeWidth="12" strokeLinecap="round" />
-            <text x={180 + baseW} y="-6" fill={colors.MUTED} fontSize="13" fontFamily={colors.font.mono}>{r.base}</text>
-            <text x={180 + skillW} y="15" fill={colors.POSITIVE} fontSize="13" fontFamily={colors.font.mono}>{r.skill}</text>
-            <g opacity={gains} transform="translate(930 0)">
+            <text x="876" y="-4" fill={colors.MUTED} fontSize="13" fontFamily={colors.font.mono}>{r.base}</text>
+            <text x="876" y="14" fill={colors.POSITIVE} fontSize="13" fontFamily={colors.font.mono}>{r.skill}</text>
+            <g opacity={gains} transform="translate(1000 0)">
               <rect x="-55" y="-24" width="110" height="48" rx="16" fill="#102a22" stroke={colors.POSITIVE} />
               <text y="6" textAnchor="middle" fill={colors.POSITIVE} fontSize="16" fontWeight="850">{r.gain}</text>
             </g>
@@ -123,9 +126,10 @@ export function Render({ s }: { s: SceneState }) {
         <text y="-5" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14" fontWeight="800">2 OF 20 PAPERBENCH TASKS REGRESS</text>
         <text y="18" textAnchor="middle" fill={colors.MUTED} fontSize="12">retrieval precision remains a failure mode</text>
       </g>
+      </g>
 
       <g opacity={route}>
-        <rect x="90" y="240" width="1100" height="350" rx="36" fill={colors.BG} opacity={0.96} stroke={colors.ACCENT} strokeWidth="3" />
+        <rect x="90" y="240" width="1100" height="350" rx="36" fill={colors.BG} stroke={colors.ACCENT} strokeWidth="3" />
         <text x="640" y="304" textAnchor="middle" fill={colors.TEXT} fontSize="30" fontWeight="850">the mechanism, end to end</text>
         {ROUTE.map((label, i) => {
           const u = clamp01(route * ROUTE.length - i);

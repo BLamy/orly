@@ -25,9 +25,12 @@ const WIRE_X0 = CLIENT.x + 90;
 const WIRE_X1 = RELAY.x - 90;
 const DB = { x: RELAY.x, y: 470 };
 
-// a frame's x position along the wire; dir +1 = client→relay
-const frameX = (u: number, dir: 1 | -1) =>
-  dir > 0 ? WIRE_X0 + (WIRE_X1 - WIRE_X0) * u : WIRE_X1 - (WIRE_X1 - WIRE_X0) * u;
+// Frames sit between the two service boxes: each one starts and lands just
+// outside a node's edge, so it never sits on top of a label.
+const NODE_HALF = 84; // ServiceNode is 168 wide
+const NODE_GAP = 10;
+const FRAME_FONT = 14;
+const CHAR_W = 8.4; // monospace advance at FRAME_FONT
 
 interface FrameSpec {
   text: string;
@@ -38,16 +41,31 @@ interface FrameSpec {
   w: number;
 }
 
-const F_EVENT: FrameSpec = { text: '["EVENT", {…}]', color: colors.ACCENT, dir: 1, lane: -26, w: 150 };
-const F_OK: FrameSpec = { text: '["OK", "a9f8…", true, ""]', color: colors.POSITIVE, dir: -1, lane: 26, w: 210 };
-const F_BAD: FrameSpec = { text: '["EVENT", {…}]', color: colors.ACCENT, dir: 1, lane: -26, w: 150 };
-const F_BADOK: FrameSpec = { text: '["OK", "7c2d…", false, "invalid: bad signature"]', color: colors.NEGATIVE, dir: -1, lane: 26, w: 350 };
-const F_REQ: FrameSpec = { text: '["REQ", "sub1", {"kinds":[1],"limit":3}]', color: colors.WARM, dir: 1, lane: -26, w: 320 };
-const F_EOSE: FrameSpec = { text: '["EOSE", "sub1"]', color: colors.MUTED, dir: -1, lane: 26, w: 150 };
-const F_CLOSE: FrameSpec = { text: '["CLOSE", "sub1"]', color: colors.MUTED, dir: 1, lane: -26, w: 160 };
-const STREAM: FrameSpec[] = [0, 1, 2].map(() => ({
-  text: '["EVENT", "sub1", {…}]', color: colors.SECONDARY, dir: -1, lane: 26, w: 200,
-}));
+const frame = (text: string, color: string, dir: 1 | -1, lane: number): FrameSpec => ({
+  text, color, dir, lane, w: Math.ceil(text.length * CHAR_W + 24),
+});
+
+// a frame's x centre along the wire; dir +1 = client→relay
+const frameX = (u: number, spec: FrameSpec) => {
+  const half = spec.w / 2;
+  const left = CLIENT.x + NODE_HALF + NODE_GAP + half;
+  const right = RELAY.x - NODE_HALF - NODE_GAP - half;
+  const [from, to] = spec.dir > 0 ? [left, right] : [right, left];
+  return from + (to - from) * u;
+};
+
+const F_EVENT = frame('["EVENT", {…}]', colors.ACCENT, 1, -26);
+const F_OK = frame('["OK", "a9f8…", true, ""]', colors.POSITIVE, -1, 26);
+const F_BAD = frame('["EVENT", {…}]', colors.ACCENT, 1, -26);
+const F_BADOK = frame('["OK", "7c2d…", false, "invalid: bad signature"]', colors.NEGATIVE, -1, 26);
+const F_REQ = frame('["REQ", "sub1", {"kinds":[1],"limit":3}]', colors.WARM, 1, -26);
+const F_EOSE = frame('["EOSE", "sub1"]', colors.MUTED, -1, 26);
+const F_CLOSE = frame('["CLOSE", "sub1"]', colors.MUTED, 1, -26);
+const F_LIVE = frame('["EVENT", "sub1", {…}]', colors.SECONDARY, -1, 26);
+const STREAM: FrameSpec[] = [0, 1, 2].map(() => F_LIVE);
+
+// a superseded frame fades from its resting opacity to nothing, so the next beat's frames read clearly
+const fadeOut = (from: number, to: number, u: number) => from + (to - from) * clamp01(u);
 
 const CAM_WIRE: CameraState = { x: 630, y: 330, k: 1.12 };
 
@@ -189,18 +207,18 @@ const MOTION = {
   slug: 'books/nips-the-event/chapter-3',
 };
 
-function Frame_({ spec, u, hold = true }: { spec: FrameSpec; u: number; hold?: boolean }) {
+function Frame_({ spec, u, hold = true, rest = 0.35 }: { spec: FrameSpec; u: number; hold?: boolean; rest?: number }) {
   const t = clamp01(u);
   if (t <= 0) return null;
   if (t >= 1 && !hold) return null;
-  const x = frameX(t, spec.dir);
-  const fade = t >= 1 ? 0.35 : 1;
+  const x = frameX(t, spec);
+  const fade = t >= 1 ? rest : 1;
   return (
     <g opacity={fade}>
       <rect x={x - spec.w / 2} y={WIRE_Y + spec.lane - 15} width={spec.w} height={30} rx={7}
         fill={colors.PANEL} stroke={spec.color} strokeWidth={1.5} />
       <text x={x} y={WIRE_Y + spec.lane + 5} textAnchor="middle" fill={spec.color}
-        fontSize={12} fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace">
+        fontSize={FRAME_FONT} fontFamily="ui-monospace, SFMono-Regular, Menlo, monospace">
         {spec.text}
       </text>
     </g>
@@ -242,7 +260,7 @@ function Render_({ s }: { s: SceneState }) {
               <g opacity={stageU}>
                 <ellipse cx={DB.x} cy={DB.y - 26} rx={44} ry={12} fill={colors.PANEL} stroke={colors.GRID} />
                 <path d={`M${DB.x - 44},${DB.y - 26} v40 a44,12 0 0 0 88,0 v-40`} fill={colors.PANEL} stroke={colors.GRID} />
-                <text x={DB.x} y={DB.y + 44} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                <text x={DB.x} y={DB.y + 44} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                   stored events
                 </text>
               </g>
@@ -258,13 +276,14 @@ function Render_({ s }: { s: SceneState }) {
               <path d={`M${RELAY.x + 56} ${RELAY.y - 24} l4 4 l8 -9`} fill="none" stroke={colors.POSITIVE} strokeWidth={2} strokeLinecap="round" />
             </g>
           )}
-          <Frame_ spec={F_OK} u={okU} />
+          {/* the OK from beat 2 steps back once the rejection starts */}
+          <Frame_ spec={F_OK} u={okU} rest={fadeOut(0.35, 0, badU)} />
 
-          {/* beat 3: rejected EVENT */}
+          {/* beat 3: rejected EVENT; its OK replaces the earlier one at the same spot */}
           <Frame_ spec={F_BAD} u={badU} hold={false} />
-          <Frame_ spec={F_BADOK} u={badOkU} />
+          <Frame_ spec={F_BADOK} u={badOkU} rest={fadeOut(0.35, 0, reqU)} />
           {badOkU >= 1 && (
-            <text x={frameX(1, -1) + 40} y={WIRE_Y + 66} fill={colors.NEGATIVE} fontSize={12} fontFamily="monospace" opacity={0.9 * (1 - reqU)}>
+            <text x={640} y={WIRE_Y + 66} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily="monospace" opacity={0.9 * (1 - reqU)}>
               prefix: invalid | blocked | rate-limited | pow | duplicate | …
             </text>
           )}
@@ -275,7 +294,7 @@ function Render_({ s }: { s: SceneState }) {
             <g opacity={subU}>
               <rect x={RELAY.x - 84} y={RELAY.y - 96} width={168} height={34} rx={8}
                 fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.5} />
-              <text x={RELAY.x} y={RELAY.y - 74} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="monospace">
+              <text x={RELAY.x} y={RELAY.y - 74} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="monospace">
                 sub1: kinds [1] · limit 3
               </text>
             </g>
@@ -287,9 +306,9 @@ function Render_({ s }: { s: SceneState }) {
           ))}
 
           {/* beat 6: EOSE */}
-          <Frame_ spec={F_EOSE} u={eoseU} />
+          <Frame_ spec={F_EOSE} u={eoseU} rest={fadeOut(0.35, 0, liveU)} />
           {eoseU >= 1 && liveU < 1 && (
-            <text x={630} y={WIRE_Y + 66} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={0.9}>
+            <text x={640} y={WIRE_Y + 66} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={0.9}>
               ← history · live →
             </text>
           )}
@@ -299,10 +318,10 @@ function Render_({ s }: { s: SceneState }) {
             <g>
               <g opacity={Math.min(1, liveU * 3)}>
                 <circle cx={RELAY.x + 10} cy={150} r={16} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.5} />
-                <text x={RELAY.x + 10} y={155} textAnchor="middle" fill={colors.SECONDARY} fontSize={11}>✍</text>
+                <text x={RELAY.x + 10} y={155} textAnchor="middle" fill={colors.SECONDARY} fontSize={13}>✍</text>
                 <line x1={RELAY.x + 10} y1={166} x2={RELAY.x + 4} y2={RELAY.y - 100 + 60 * clamp01(liveU * 2)} stroke={colors.SECONDARY} strokeWidth={1.5} strokeDasharray="3 4" />
               </g>
-              <Frame_ spec={{ text: '["EVENT", "sub1", {…}]', color: colors.SECONDARY, dir: -1, lane: 26, w: 200 }} u={clamp01(liveU * 2 - 1)} />
+              <Frame_ spec={F_LIVE} u={clamp01(liveU * 2 - 1)} />
             </g>
           )}
 
@@ -313,7 +332,7 @@ function Render_({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={200} y={218} width={880} height={214} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={108} y={218} width={1064} height={214} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={278} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             Three words up, five words down
           </text>

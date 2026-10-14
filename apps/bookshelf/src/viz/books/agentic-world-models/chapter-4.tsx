@@ -34,7 +34,6 @@ import { scaleLinear } from 'd3';
 import {
   CAMERA_HOME,
   Camera,
-  MathLabel,
   STAGE_H,
   STAGE_W,
   Timeline,
@@ -95,7 +94,7 @@ function arcPath(r: number, a0: number, a1: number): string {
 }
 
 // camera marks
-const CAM_ENTROPY: CameraState = { x: 500, y: 300, k: 1.55 };
+const CAM_ENTROPY: CameraState = { x: 628, y: 300, k: 1.34 };
 const CAM_LOSS: CameraState = { x: 420, y: 450, k: 1.55 };
 const CAM_DIAL: CameraState = { x: 950, y: 430, k: 1.5 };
 
@@ -112,8 +111,10 @@ export function buildScene() {
   const threshU = tl.channel('threshU', 0); // threshold sweep line
   const keepU = tl.channel('keepU', 0); // dim the dropped bottom 25%
   const policyNoteU = tl.channel('policyNoteU', 0); // "policy loss: every action" chip
+  const stationAU = tl.channel('stationAU', 1); // entropy row, cleared before the dial
 
   const axesU = tl.channel('axesU', 0);
+  const stationBU = tl.channel('stationBU', 1); // loss plot, cleared before the dial
   const ceU = tl.channel('ceU', 0); // cross-entropy curve reveal
   const morphU = tl.channel('morphU', 0); // CE -> clipped MAE
   const rhoLineU = tl.channel('rhoLineU', 0); // rho threshold marker
@@ -179,6 +180,7 @@ export function buildScene() {
     dur: 6.8,
     text: 'The second intervention changes the shape of that supervision itself, swapping plain cross-entropy for a clipped loss.',
   });
+  tl.tween(stationAU, 0, { at: 38.0, dur: 0.6, ease: ease.enter });
   tl.tween(cam, CAM_LOSS, { at: 38.8, dur: 1.6, ease: ease.move });
   tl.tween(axesU, 1, { at: 39.6, dur: 1.0, ease: ease.draw });
   tl.tween(ceU, 1, { at: 40.4, dur: 2.0, ease: ease.draw });
@@ -208,6 +210,7 @@ export function buildScene() {
     dur: 5.8,
     text: 'The third intervention is a dial, not a filter — one that turns per group of rollouts.',
   });
+  tl.tween(stationBU, 0, { at: 61.8, dur: 0.8, ease: ease.enter });
   tl.tween(cam, CAM_DIAL, { at: 62.8, dur: 1.6, ease: ease.move });
   tl.tween(dialU, 1, { at: 63.6, dur: 1.4, ease: ease.draw });
   tl.hold(68.6, 0.5);
@@ -271,7 +274,9 @@ export function buildScene() {
     threshU,
     keepU,
     policyNoteU,
+    stationAU,
     axesU,
+    stationBU,
     ceU,
     morphU,
     rhoLineU,
@@ -306,12 +311,12 @@ function Chip({
   anchor?: 'middle' | 'start';
 }) {
   if (u <= 0.01) return null;
-  const w = text.length * 7.2 + 24;
+  const w = text.length * 8.4 + 24;
   const x0 = anchor === 'middle' ? x - w / 2 : x;
   return (
     <g opacity={u}>
-      <rect x={x0} y={y - 15} width={w} height={28} rx={8} fill={colors.BG} stroke={color} strokeOpacity={0.7} />
-      <text x={x0 + w / 2} y={y + 5} textAnchor="middle" fill={color} fontSize={12} fontFamily={MONO}>
+      <rect x={x0} y={y - 16} width={w} height={30} rx={8} fill={colors.BG} stroke={color} strokeOpacity={0.7} />
+      <text x={x0 + w / 2} y={y + 5} textAnchor="middle" fill={color} fontSize={14} fontFamily={MONO}>
         {text}
       </text>
     </g>
@@ -325,7 +330,9 @@ export function Render({ s }: { s: SceneState }) {
   const threshU = s.get(scene.threshU);
   const keepU = s.get(scene.keepU);
   const policyNoteU = s.get(scene.policyNoteU);
+  const stationAU = s.get(scene.stationAU);
   const axesU = s.get(scene.axesU);
+  const stationBU = s.get(scene.stationBU);
   const ceU = s.get(scene.ceU);
   const morphU = s.get(scene.morphU);
   const rhoLineU = s.get(scene.rhoLineU);
@@ -356,14 +363,11 @@ export function Render({ s }: { s: SceneState }) {
             stroke={colors.GRID}
             strokeWidth={1.6}
           />
-          <text x={PANEL.x + 24} y={PANEL.y + 34} fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
-            PaW — policy and world-modeling co-training
-          </text>
         </g>
 
         {/* ---------------- station A: action-entropy selection ---------------- */}
-        <g opacity={fade}>
-          <text x={TOK_X0} y={TOK_BASE_Y - 118} fill={colors.MUTED} fontSize={13} opacity={entropyU}>
+        <g opacity={fade * stationAU}>
+          <text x={TOK_X0} y={TOK_BASE_Y - 118} fill={colors.MUTED} fontSize={14} opacity={entropyU}>
             action-token entropy
           </text>
           {ENTROPY.map((e, i) => {
@@ -395,7 +399,7 @@ export function Render({ s }: { s: SceneState }) {
                   stroke={color}
                   strokeOpacity={0.6 * dim}
                 />
-                <text x={x} y={TOK_BASE_Y + 16} textAnchor="middle" fill={color} fontSize={10.5} fontFamily={MONO} opacity={dim}>
+                <text x={x} y={TOK_BASE_Y + 16} textAnchor="middle" fill={color} fontSize={12} fontFamily={MONO} opacity={dim}>
                   a{i + 1}
                 </text>
                 {keepU > 0.4 && !kept && (
@@ -424,8 +428,8 @@ export function Render({ s }: { s: SceneState }) {
                 strokeWidth={2}
                 strokeDasharray="6 5"
               />
-              <text x={TOK_X0 - 40} y={threshY - 10} fill={colors.WARM} fontSize={12} fontFamily={MONO}>
-                keep top 75% (α = 0.75)
+              <text x={TOK_X0 + (N_TOK - 1) * TOK_DX + 26} y={threshY - 10} fill={colors.WARM} fontSize={14} fontFamily={MONO}>
+                keep top 75%
               </text>
             </g>
           )}
@@ -439,8 +443,23 @@ export function Render({ s }: { s: SceneState }) {
         </g>
 
         {/* ---------------- station B: the clipped loss curve ---------------- */}
-        <g opacity={fade}>
-          <Axes x={LOSS_X} y={LOSS_Y} reveal={axesU} xLabel="predicted probability" yLabel="observation-prediction loss" xTicks={5} yTicks={4} />
+        <g opacity={fade * stationBU}>
+          <Axes x={LOSS_X} y={LOSS_Y} reveal={axesU} xTicks={5} yTicks={4} fontSize={15} />
+          <text x={(LOSS_X.range()[0] + LOSS_X.range()[1]) / 2} y={LOSS_Y.range()[0] + 48} textAnchor="middle" fill={colors.MUTED} fontSize={15} fontFamily={MONO} opacity={axesU}>
+            predicted probability of the observed token
+          </text>
+          <text
+            x={LOSS_X.range()[0] - 62}
+            y={(LOSS_Y.range()[0] + LOSS_Y.range()[1]) / 2}
+            textAnchor="middle"
+            transform={`rotate(-90 ${LOSS_X.range()[0] - 62} ${(LOSS_Y.range()[0] + LOSS_Y.range()[1]) / 2})`}
+            fill={colors.MUTED}
+            fontSize={15}
+            fontFamily={MONO}
+            opacity={axesU}
+          >
+            loss on the next observation
+          </text>
           <FunctionPlot
             x={LOSS_X}
             y={LOSS_Y}
@@ -461,14 +480,16 @@ export function Render({ s }: { s: SceneState }) {
                 strokeWidth={1.6}
                 strokeDasharray="5 5"
               />
-              <MathLabel tex={'\\rho = 0.2'} x={LOSS_X(0.8) + 14} y={LOSS_Y(2.5)} fontSize={18} color={colors.WARM} anchor="start" />
+              <text x={LOSS_X(0.8) + 12} y={LOSS_Y(2.7)} fill={colors.WARM} fontSize={18} fontFamily={MONO}>
+                ρ = 0.2
+              </text>
             </g>
           )}
-          <text x={LOSS_X(0.32)} y={LOSS_Y(1.7)} fill={colors.MUTED} fontSize={11} opacity={ceU * (1 - morphU)} fontStyle="italic">
-            cross-entropy: unbounded near p → 0
+          <text x={LOSS_X(0.2)} y={LOSS_Y(2.2)} fill={colors.MUTED} fontSize={14} opacity={ceU * (1 - morphU)} fontStyle="italic">
+            cross-entropy: unbounded
           </text>
-          <text x={LOSS_X(0.32)} y={LOSS_Y(1.7)} fill={colors.MUTED} fontSize={11} opacity={morphU} fontStyle="italic">
-            clipped MAE: bounded, no blow-up
+          <text x={LOSS_X(0.2)} y={LOSS_Y(2.2)} fill={colors.MUTED} fontSize={14} opacity={morphU} fontStyle="italic">
+            clipped: bounded, no blow-up
           </text>
         </g>
 
@@ -491,36 +512,44 @@ export function Render({ s }: { s: SceneState }) {
             strokeLinecap="round"
             opacity={0.5}
           />
-          <text x={needlePoint(ANGLE_RW, DIAL.r + 32).x} y={needlePoint(ANGLE_RW, DIAL.r + 32).y} textAnchor="middle" fill={colors.POSITIVE} fontSize={13}>
+          <text x={needlePoint(ANGLE_RW, DIAL.r + 32).x} y={needlePoint(ANGLE_RW, DIAL.r + 32).y} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
             trust the reward
           </text>
-          <text x={needlePoint(ANGLE_WM, DIAL.r + 32).x} y={needlePoint(ANGLE_WM, DIAL.r + 32).y} textAnchor="middle" fill={colors.SECONDARY} fontSize={13}>
+          <text x={needlePoint(ANGLE_WM, DIAL.r + 32).x} y={needlePoint(ANGLE_WM, DIAL.r + 32).y} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>
             trust the world model
           </text>
           <circle cx={DIAL.x} cy={DIAL.y} r={7} fill={colors.TEXT} />
           <line x1={DIAL.x} y1={DIAL.y} x2={needlePt.x} y2={needlePt.y} stroke={colors.WARM} strokeWidth={3.5} strokeLinecap="round" />
-          <text x={DIAL.x} y={DIAL.y + 46} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+          <text x={DIAL.x} y={DIAL.y + 46} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
             λ per rollout group
           </text>
-          <Chip x={DIAL.x} y={DIAL.y - 150} text="group A: high reward → λ_wm down" color={colors.POSITIVE} u={groupAU} />
-          <Chip x={DIAL.x} y={DIAL.y - 150} text="group B: low/zero reward → λ_wm up" color={colors.SECONDARY} u={groupBU} />
+          <Chip x={DIAL.x} y={DIAL.y + 84} text="group A: high reward → λ_wm down" color={colors.POSITIVE} u={groupAU} />
+          <Chip x={DIAL.x} y={DIAL.y + 84} text="group B: low/zero reward → λ_wm up" color={colors.SECONDARY} u={groupBU} />
         </g>
 
         {/* ---------------- generalization strip ---------------- */}
         {genU > 0.01 && (
           <g opacity={genU * fade}>
-            <rect x={PANEL.x + 24} y={PANEL.y + PANEL.h - 56} width={520} height={36} rx={8} fill={colors.BG} stroke={colors.GRID} />
-            <text x={PANEL.x + 44} y={PANEL.y + PANEL.h - 32} fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
-              GRPO · GIGPO · multiple model families · strongest under sparse reward
+            <rect x={DIAL.x - 220} y={PANEL.y + PANEL.h - 70} width={440} height={58} rx={8} fill={colors.BG} stroke={colors.GRID} />
+            <text x={DIAL.x} y={PANEL.y + PANEL.h - 46} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
+              GRPO · GIGPO · multiple model families
+            </text>
+            <text x={DIAL.x} y={PANEL.y + PANEL.h - 24} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
+              strongest under sparse reward
             </text>
           </g>
         )}
       </Camera>
 
+      {/* title sits in stage space, above the camera, so a push never crops or dims it */}
+      <text x={PANEL.x} y={PANEL.y - 22} fill={colors.MUTED} fontSize={15} fontFamily={MONO} opacity={panelU * (1 - endU)}>
+        PaW — policy and world-modeling co-training
+      </text>
+
       {/* ---------------- closing card ---------------- */}
       {endU > 0.01 && (
         <g opacity={endU}>
-          <rect x={0} y={0} width={STAGE_W} height={STAGE_H} fill={colors.BG} opacity={0.86 * endU} />
+          <rect x={0} y={0} width={STAGE_W} height={STAGE_H} fill={colors.BG} />
           <text x={STAGE_W / 2} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={28} fontWeight={600}>
             select · clip · dial
           </text>

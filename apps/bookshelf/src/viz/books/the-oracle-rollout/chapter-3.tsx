@@ -21,6 +21,9 @@ const SELECTED_RMS = Math.sqrt(CENTERED.reduce((sum, v) => sum + v * v, 0) / CEN
 const RMS_SCALE = Math.min(1, Math.max(0.25, PRE_POLICY_RMS / SELECTED_RMS));
 const CORRECTED = CENTERED.map((v) => v * RMS_SCALE);
 
+const AXIS_Y = 330;
+const BAR_PX = 140;
+
 const startPos = (i: number) => ({ x: 172 + i * 188, y: 188 });
 const lanePos = (row: typeof ROWS[number]) => {
   if (row.oracle) return { x: 1090, y: 322 };
@@ -48,11 +51,11 @@ export function buildScene() {
 
   tl.caption({ at: 6.8, dur: 6.1, text: 'The method computes every advantage first, then sends the rows through a sign-balanced sorter.' });
   tl.tween(splitU, 1, { at: 7.5, dur: 2.0, ease: ease.move });
-  tl.tween(cam, { x: 620, y: 380, k: 1.08 }, { at: 9.8, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 352, k: 1.08 }, { at: 9.8, dur: 1.3, ease: ease.move });
 
   tl.caption({ at: 13.3, dur: 6.1, text: 'The annotation-derived oracle is force-kept as the positive anchor.' });
   tl.tween(oracleKeepU, 1, { at: 14.0, dur: 0.6, ease: ease.pop });
-  tl.tween(cam, { x: 1010, y: 322, k: 1.12 }, { at: 15.2, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 671, y: 352, k: 1.08 }, { at: 15.2, dur: 1.3, ease: ease.move });
 
   tl.caption({ at: 19.8, dur: 6.3, text: 'The configured budget then keeps one strongest positive policy row and two strongest negative rows.' });
   tl.tween(selectP, 4, { at: 20.5, dur: 2.4, ease: ease.enter });
@@ -66,7 +69,7 @@ export function buildScene() {
 
   tl.caption({ at: 39.7, dur: 6.1, text: 'But selection changes the retained mean and scale, because large magnitudes and the positive oracle are favored.' });
   tl.tween(distortionU, 1, { at: 40.4, dur: 1.4, ease: ease.move });
-  tl.tween(cam, { x: 640, y: 446, k: 1.13 }, { at: 42.4, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 340, k: 1.06 }, { at: 42.4, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 46.2, dur: 6.4, text: 'Post-selection correction recenters the group, prevents a negative oracle, and only downscales the root-mean-square size.' });
   tl.tween(correctionU, 1, { at: 46.9, dur: 1.5, ease: ease.move });
@@ -92,7 +95,7 @@ function RowBead({ row, x, y, u, selected, drop, oracleKeep }: { row: typeof ROW
     <circle r={halo > 0 ? 29 : 23} fill={color} opacity={0.22 + halo * 0.16} />
     <circle r="20" fill={color} stroke="#07101d" strokeWidth="3" />
     <text y="5" textAnchor="middle" fill="#07101d" fontSize="12" fontWeight="900">{row.oracle ? 'GT' : row.id}</text>
-    <text y="-34" textAnchor="middle" fill={color} fontSize="13" fontFamily={colors.font.mono}>{row.score > 0 ? '+' : ''}{row.score.toFixed(1)}</text>
+    <text y="-46" textAnchor="middle" fill={color} fontSize="13" fontFamily={colors.font.mono}>{row.score > 0 ? '+' : ''}{row.score.toFixed(1)}</text>
   </g>;
 }
 
@@ -106,8 +109,10 @@ export function Render({ s }: { s: SceneState }) {
   const selectedProgress = s.get(scene.selectP);
 
   return <Camera {...s.get(scene.cam)}>
-    <g opacity={quiet * (1 - distortion * 0.92)}>
+    <g opacity={quiet * (1 - distortion)}>
       <text x="640" y="62" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="850">A sorter that keeps both directions</text>
+      <text x="640" y="94" textAnchor="middle" fill={colors.MUTED} fontSize="16">advantage = how much better a rollout did than the group average</text>
+      <text x="640" y="124" textAnchor="middle" fill={colors.SECONDARY} fontSize="16">keep the best rows of each sign, so both learning directions survive</text>
 
       <g opacity={split}>
         <rect x="198" y="270" width="318" height="104" rx="26" fill="#0d2a23" stroke={colors.POSITIVE} strokeWidth="2" />
@@ -134,7 +139,7 @@ export function Render({ s }: { s: SceneState }) {
           const u = clamp01(selectedProgress - i);
           return <g key={row.id} opacity={u}>
             <circle cx={pos.x} cy={pos.y} r="35" fill="none" stroke={colors.WARM} strokeWidth="3" strokeDasharray="7 6" />
-            <text x={pos.x} y={pos.y + 62} textAnchor="middle" fill={colors.WARM} fontSize="12" fontWeight="800">keep</text>
+            <text x={pos.x} y={pos.y + 62} textAnchor="middle" fill={colors.WARM} fontSize="13" fontWeight="800">keep</text>
           </g>;
         })}
       </g>
@@ -148,25 +153,25 @@ export function Render({ s }: { s: SceneState }) {
     <g opacity={distortion * quiet}>
       <text x="640" y="78" textAnchor="middle" fill={colors.TEXT} fontSize="32" fontWeight="850">Correct the retained moments</text>
       <text x="640" y="112" textAnchor="middle" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>selected row IDs [0, 2, 3, 5]</text>
-      <line x1="198" y1="360" x2="1082" y2="360" stroke={colors.GRID} strokeWidth="4" />
+      <line x1="198" y1={AXIS_Y} x2="1082" y2={AXIS_Y} stroke={colors.GRID} strokeWidth="4" />
       {KEPT.map((row, i) => {
         const x = 314 + i * 218;
         const before = row.score;
         const after = CORRECTED[i];
         const value = before + (after - before) * correction;
-        const top = 360 - value * 180;
+        const top = AXIS_Y - value * BAR_PX;
         const color = row.oracle ? colors.WARM : value >= 0 ? colors.POSITIVE : colors.NEGATIVE;
         return <g key={row.id}>
-          <rect x={x - 42} y={Math.min(360, top)} width="84" height={Math.max(3, Math.abs(360 - top))} rx="12" fill={color} opacity="0.8" />
+          <rect x={x - 42} y={Math.min(AXIS_Y, top)} width="84" height={Math.max(3, Math.abs(AXIS_Y - top))} rx="12" fill={color} opacity="0.8" />
           <circle cx={x} cy={top} r={s.get(scene.updateU) > 0 ? 16 : 10} fill={color} />
-          <text x={x} y="410" textAnchor="middle" fill={color} fontSize="14" fontWeight="800">{row.oracle ? 'oracle' : `row ${row.id}`}</text>
-          <text x={x} y="438" textAnchor="middle" fill={colors.MUTED} fontSize="13" fontFamily={colors.font.mono}>{value >= 0 ? '+' : ''}{value.toFixed(2)}</text>
+          <text x={x} y="478" textAnchor="middle" fill={color} fontSize="14" fontWeight="800">{row.oracle ? 'oracle' : `row ${row.id}`}</text>
+          <text x={x} y="500" textAnchor="middle" fill={colors.MUTED} fontSize="13" fontFamily={colors.font.mono}>{value >= 0 ? '+' : ''}{value.toFixed(2)}</text>
         </g>;
       })}
       <g opacity={correction}>
-        <rect x="314" y="492" width="652" height="72" rx="24" fill="#101a2d" stroke={colors.SECONDARY} strokeWidth="2" />
-        <text x="640" y="520" textAnchor="middle" fill={colors.SECONDARY} fontSize="14" fontFamily={colors.font.mono}>Σ Â = 0 · Âgt ≥ 0 · λ = {RMS_SCALE.toFixed(2)}</text>
-        <text x="640" y="546" textAnchor="middle" fill={colors.MUTED} fontSize="14">recenter · protect oracle sign · RMS downscale only</text>
+        <rect x="314" y="516" width="652" height="60" rx="24" fill="#101a2d" stroke={colors.SECONDARY} strokeWidth="2" />
+        <text x="640" y="541" textAnchor="middle" fill={colors.SECONDARY} fontSize="14" fontFamily={colors.font.mono}>Σ Â = 0 · Âgt ≥ 0 · λ = {RMS_SCALE.toFixed(2)}</text>
+        <text x="640" y="562" textAnchor="middle" fill={colors.MUTED} fontSize="14">recenter the mean to 0 · oracle stays ≥ 0 · λ = size ratio, shrink only</text>
       </g>
     </g>
 
@@ -181,6 +186,7 @@ export function Render({ s }: { s: SceneState }) {
       ].map((item, i) => <g key={i} transform={`translate(${370 + i * 180} 350)`}>
         <circle r="58" fill="#101a2d" stroke={item.color} strokeWidth="5" />
         <text y="6" textAnchor="middle" fill={item.color} fontSize="17" fontWeight="850">{item.label}</text>
+        <text y="84" textAnchor="middle" fill={colors.MUTED} fontSize="15">{['success', 'failure', 'failure', 'anchor'][i]}</text>
       </g>)}
       <text x="640" y="472" textAnchor="middle" fill={colors.MUTED} fontSize="21">reinforce what worked · suppress what failed</text>
     </g>

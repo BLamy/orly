@@ -16,6 +16,7 @@ export function buildScene() {
   const shortU = tl.channel('shortU', 0);
   const reduceU = tl.channel('reduceU', 0);
   const dimensionU = tl.channel('dimensionU', 0);
+  const scaleU = tl.channel('scaleU', 0);
   let t = 0.4;
   t = tl.caption({ at: t, dur: 6.2, text: 'A generic rank-n lattice would still be hard. This one belongs to a special isometry class that the public key hides but the proof reveals.' });
   tl.tween(latticeU, 1, { at: 0.8, dur: 1.4, ease: ease.enter });
@@ -28,6 +29,7 @@ export function buildScene() {
   tl.tween(cubeU, 1, { at: t - 5.3, dur: 1.5, ease: ease.move });
   tl.tween(blocksU, 1, { at: t - 3.5, dur: 1.0, ease: ease.enter });
   t = tl.hold(t, 0);
+  tl.tween(scaleU, 1, { at: t + 1.2, dur: 1.0, ease: ease.pop });
   t = tl.caption({ at: t, dur: 6.3, text: 'The first block is scaled by the square root of n over four. The second is longer by a square root of two.' });
   t = tl.hold(t, 0);
   t = tl.caption({ at: t, dur: 6.3, text: 'Exactly two times n over two plus one shortest vectors live in the shorter block, including plus and minus the secret cocycle.' });
@@ -39,7 +41,7 @@ export function buildScene() {
   t = tl.caption({ at: t, dur: 5.8, text: 'So a rank-n key problem exposes its decisive vectors through dimension n over two plus one. The involution has cut the expensive dimension nearly in half.' });
   tl.tween(dimensionU, 1, { at: t - 5.2, dur: 1.0, ease: ease.pop });
   tl.tween(cam, CAMERA_HOME, { at: t - 2.0, dur: 1.2, ease: ease.move });
-  return { tl, cam, latticeU, secretMapU, cubeU, blocksU, shortU, reduceU, dimensionU };
+  return { tl, cam, latticeU, secretMapU, cubeU, blocksU, shortU, reduceU, dimensionU, scaleU };
 }
 const scene = buildScene();
 
@@ -63,23 +65,27 @@ export function Render({ s }: { s: SceneState }) {
         </g>
         <g opacity={s.get(scene.blocksU)}>
           <rect x={110} y={285} width={600} height={130} rx={16} fill={colors.ACCENT} fillOpacity={0.06} stroke={colors.ACCENT} />
-          <text x={730} y={355} fill={colors.ACCENT} fontFamily={mono} fontSize={12}>p = n/2 + 1</text>
-          <text x={730} y={485} fill={colors.MUTED} fontFamily={mono} fontSize={12}>q = n/2 − 1</text>
+          <text x={730} y={355} fill={colors.ACCENT} fontFamily={mono} fontSize={14}>p = n/2 + 1</text>
+          <text x={730} y={485} fill={colors.MUTED} fontFamily={mono} fontSize={14}>q = n/2 − 1</text>
         </g>
         <g opacity={short}>
           {[-2, -1, 0, 1, 2].map((x) => <circle key={x} cx={410 + x * 52} cy={350} r={14} fill={colors.POSITIVE} fillOpacity={0.25} stroke={colors.POSITIVE} />)}
         </g>
       </Panel>
-      <Panel x={875} y={135} w={335} h={440} opacity={0.15 + 0.85 * s.get(scene.reduceU)} accent={colors.WARM}>
-        <MathLabel tex={'\\sqrt{n/4}\\,\\mathbb Z^{n/2+1}'} x={1015} y={230} opacity={s.get(scene.blocksU)} />
-        <MathLabel tex={'\\oplus\\sqrt{n/2}\\,\\mathbb Z^{n/2-1}'} x={1015} y={305} opacity={s.get(scene.blocksU)} />
+      <Panel x={875} y={135} w={335} h={440} opacity={0.35 + 0.65 * Math.max(s.get(scene.blocksU), s.get(scene.reduceU))} accent={colors.WARM}>
+        <text x={1042} y={180} textAnchor="middle" fill={colors.MUTED} fontFamily={mono} fontSize={14}>scaled basis</text>
+        <MathLabel tex={'\\sqrt{n/4}\\,\\mathbb Z^{n/2+1}'} x={1042} y={230} boxWidth={320} fontSize={24} opacity={s.get(scene.blocksU)} />
+        <text x={1042} y={268} textAnchor="middle" fill={colors.ACCENT} fontFamily={mono} fontSize={14} opacity={s.get(scene.blocksU)}>p-block</text>
+        <MathLabel tex={'\\oplus\\sqrt{n/2}\\,\\mathbb Z^{n/2-1}'} x={1042} y={305} boxWidth={320} fontSize={24} opacity={s.get(scene.blocksU)} />
+        <text x={1042} y={343} textAnchor="middle" fill={colors.MUTED} fontFamily={mono} fontSize={14} opacity={s.get(scene.blocksU)}>q-block, √2 longer</text>
+        <Chip x={1042} y={400} text="scale = √(n/4)" color={colors.ACCENT} width={210} opacity={s.get(scene.scaleU) * (1 - s.get(scene.reduceU))} />
         <g opacity={s.get(scene.reduceU)}>
-          {Array.from({ length: 6 }, (_, i) => <rect key={i} x={930 + i * 34} y={385 - i * 16} width={26} height={115 + i * 16} rx={6} fill={colors.WARM} opacity={0.25 + i * 0.1} />)}
+          {Array.from({ length: 6 }, (_, i) => <rect key={i} x={930 + i * 34} y={490 - (44 + i * 16)} width={26} height={44 + i * 16} rx={6} fill={colors.WARM} opacity={0.25 + i * 0.1} />)}
           <Chip x={1040} y={510} text="exact SVP · dim p" color={colors.POSITIVE} width={190} />
         </g>
       </Panel>
       <g opacity={s.get(scene.dimensionU)}>
-        <text x={640} y={620} textAnchor="middle" fill={colors.POSITIVE} fontSize={24} fontWeight={800}>rank n → oracle dimension n/2 + 1</text>
+        <text x={640} y={600}textAnchor="middle" fill={colors.POSITIVE} fontSize={24} fontWeight={800}>rank n → oracle dimension n/2 + 1</text>
       </g>
     </Camera>
   );

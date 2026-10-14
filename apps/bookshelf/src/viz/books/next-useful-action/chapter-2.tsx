@@ -18,8 +18,8 @@
 //  3 spotlight open·menu, focus·name; the disabled Save tile is ejected
 //  4 context cards arrive; the explicit task re-pours the dots, page unchanged
 //  5 text ribbon vs one menu id; an empty gauge: faster? to be measured
-//  6 legal-but-wrong (Sign out) versus legal-and-useful (Display name)
-//  7 an unsure tile; the useful target goes missing → coverage gap
+//  6 worked failure: Sign out is legal, enabled and ranked first; Display name is the useful one
+//  7 a near tie between the two routes → unsure tile catches it; the useful target goes missing → coverage gap
 //  8 short path to a decision, plus an amber escape route
 import { arc, easeCubicInOut, hierarchy, linkHorizontal, scaleLinear, tree } from 'd3';
 import { Camera, Timeline, cameraInterp, colors, ease } from '../../core';
@@ -58,9 +58,10 @@ const END = PLAN.end + 1.0;
 const PLACE: PagePlacement = { x: 40, y: 74, scale: 0.86 };
 const TILE = { x: 610, w: 268, h: 50, y0: 100, step: 70 };
 const LANE_X = 900;
-const DOT_STEP = 13;
+const DOT_STEP = 8.5;
 const PER_ROW = 22;
 const POOL = { x: 1204, y: 112 };
+const VERDICT_X = 1100; // verdict badges sit just right of the dot lane
 const rowY = (j: number) => TILE.y0 + j * TILE.step + TILE.h / 2;
 
 const CAM_TREE: CameraState = { x: 820, y: 270, k: 1.12 };
@@ -142,7 +143,10 @@ function menuFormation(counts: number[]): XY[] {
 const COUNTS = {
   pageOnly: [18, 14, 14, 20, 0],
   withTask: [8, 44, 6, 8, 0],
-  withUnsure: [7, 38, 6, 7, 8],
+  // worked failure: the legal, enabled Sign out link wins the ranking
+  wrongTop: [8, 14, 6, 38, 0],
+  // near tie between the two real routes → the unsure route takes dots
+  withUnsure: [6, 22, 6, 22, 10],
   missingTarget: [10, 0, 8, 10, 38],
   promise: [6, 42, 5, 6, 7],
 };
@@ -151,6 +155,7 @@ const FORMS: XY[][] = [
   Array.from({ length: N }, (_, i) => ({ x: POOL.x + (i % 3) * 12, y: POOL.y + Math.floor(i / 3) * 14.4 })),
   menuFormation(COUNTS.pageOnly),
   menuFormation(COUNTS.withTask),
+  menuFormation(COUNTS.wrongTop),
   menuFormation(COUNTS.withUnsure),
   menuFormation(COUNTS.missingTarget),
   menuFormation(COUNTS.promise),
@@ -158,9 +163,10 @@ const FORMS: XY[][] = [
 const F_POOL = 1;
 const F_PAGE = 2;
 const F_TASK = 3;
-const F_UNSURE = 4;
-const F_MISSING = 5;
-const F_PROMISE = 6;
+const F_WRONG = 4;
+const F_UNSURE = 5;
+const F_MISSING = 6;
+const F_PROMISE = 7;
 
 function dotAt(i: number, formP: number): XY & { lift: number } {
   const a = Math.min(FORMS.length - 2, Math.max(0, Math.floor(formP)));
@@ -182,7 +188,7 @@ const GAUGE_ARC = arc()({ innerRadius: 34, outerRadius: 42, startAngle: -Math.PI
 const CTX = [
   { x: 600, w: 180, head: 'PAGE', body: 'observation v12' },
   { x: 792, w: 190, head: 'RECENT', body: 'opened Profile menu' },
-  { x: 994, w: 250, head: 'TASK', body: '' },
+  { x: 994, w: 260, head: 'TASK', body: '' },
 ];
 
 /* -------------------------------------------------------------- timeline */
@@ -212,7 +218,6 @@ export function buildScene() {
   const stripU = tl.channel('stripU', 0);
   const strip2U = tl.channel('strip2U', 0);
   const gaugeU = tl.channel('gaugeU', 0);
-  const dotsDim = tl.channel('dotsDim', 1);
   const wrongU = tl.channel('wrongU', 0);
   const wrongBadgeU = tl.channel('wrongBadgeU', 0);
   const rightU = tl.channel('rightU', 0);
@@ -279,7 +284,7 @@ export function buildScene() {
   tl.tween(strip2U, 0, { at: b + 0.1, dur: 0.6, ease: ease.enter });
   tl.tween(gaugeU, 0, { at: b + 0.1, dur: 0.6, ease: ease.enter });
   tl.tween(cam, CAM_TRAY, { at: b + 0.2, dur: 1.3, ease: ease.move });
-  tl.tween(dotsDim, 0.22, { at: b + 0.3, dur: 0.7, ease: ease.move });
+  tl.tween(formP, F_WRONG, { at: b + 0.4, dur: 1.8, ease: ease.linear });
   tl.tween(wrongU, 1, { at: b + 0.8, dur: 0.6, ease: ease.enter });
   tl.tween(wrongBadgeU, 1, { at: b + 3.2, dur: 0.5, ease: ease.pop });
   tl.tween(wrongU, 0.4, { at: b + 6.0, dur: 0.6, ease: ease.move });
@@ -290,7 +295,6 @@ export function buildScene() {
   tl.tween(wrongU, 0, { at: b + 0.1, dur: 0.5, ease: ease.enter });
   tl.tween(wrongBadgeU, 0, { at: b + 0.1, dur: 0.5, ease: ease.enter });
   tl.tween(rightU, 0, { at: b + 0.1, dur: 0.5, ease: ease.enter });
-  tl.tween(dotsDim, 1, { at: b + 0.3, dur: 0.6, ease: ease.move });
   tl.tween(cam, CAM_HOME, { at: b + 0.2, dur: 1.3, ease: ease.move });
   tl.tween(unsureU, 1, { at: b + 0.5, dur: 0.7, ease: ease.enter });
   tl.tween(formP, F_UNSURE, { at: b + 1.4, dur: 1.8, ease: ease.linear });
@@ -311,7 +315,7 @@ export function buildScene() {
 
   return {
     tl, cam, phase, pageU, growU, treeU, marksU, countU, formP, poolLblU, tileU, tetherU, laneHeadU, hi0, hi1, rejectU,
-    ejectU, ctxU, taskFlipU, sameU, stripU, strip2U, gaugeU, dotsDim, wrongU, wrongBadgeU, rightU, unsureU, missingU,
+    ejectU, ctxU, taskFlipU, sameU, stripU, strip2U, gaugeU, wrongU, wrongBadgeU, rightU, unsureU, missingU,
     gapChipU, routeU, haloU, escapeU, takeU,
   };
 }
@@ -331,7 +335,7 @@ function JointTile({ spec, row, u, emphasis, ghost = 0, tone = ROLE.OBSERVE }: {
       <rect width={TILE.w} height={TILE.h} rx={10} fill="#0b1324" stroke={g > 0.5 ? ROLE.PENDING : tone} strokeWidth={1.3 + emphasis * 1.6} strokeDasharray={g > 0.5 ? '6 4' : undefined} />
       <g opacity={1 - 0.75 * g}>
         <rect x={7} y={15} width={28} height={20} rx={5} fill="#082f49" />
-        <text x={21} y={29} textAnchor="middle" fill={tone} fontSize={10.5} fontFamily={MONO}>
+        <text x={21} y={29} textAnchor="middle" fill={tone} fontSize={12} fontFamily={MONO}>
           {spec.id}
         </text>
         <rect x={42} y={9} width={66} height={32} rx={7} fill={tone} opacity={0.16} />
@@ -341,10 +345,10 @@ function JointTile({ spec, row, u, emphasis, ghost = 0, tone = ROLE.OBSERVE }: {
         {/* the clasp */}
         <circle cx={114} cy={25} r={6} fill="#0b1324" stroke={tone} strokeWidth={1.6} />
         <circle cx={114} cy={25} r={2} fill={tone} />
-        <text x={128} y={23} fill={colors.TEXT} fontSize={13.5} fontWeight={650}>
+        <text x={128} y={23} fill={colors.TEXT} fontSize={14} fontWeight={650}>
           {spec.target}
         </text>
-        <text x={128} y={39} fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>
+        <text x={128} y={39} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
           {spec.role} · obs v12
         </text>
       </g>
@@ -355,11 +359,29 @@ function JointTile({ spec, row, u, emphasis, ghost = 0, tone = ROLE.OBSERVE }: {
 function Badge({ x, y, text, color, fill, u }: { x: number; y: number; text: string; color: string; fill: string; u: number }) {
   const o = clamp01(u);
   if (o <= 0.002) return null;
-  const w = text.length * 6.5 + 20;
+  const w = text.length * 7.4 + 20;
   return (
     <g transform={`translate(${x} ${y - 11}) scale(${0.9 + 0.1 * o})`} opacity={o}>
       <rect width={w} height={22} rx={6} fill={fill} stroke={color} strokeWidth={1.3} />
-      <text x={w / 2} y={15} textAnchor="middle" fill={color} fontSize={10.5} fontFamily={MONO}>
+      <text x={w / 2} y={15} textAnchor="middle" fill={color} fontSize={12} fontFamily={MONO}>
+        {text}
+      </text>
+    </g>
+  );
+}
+
+/** A control's id as a 12px pill, placed clear of the shared field labels. */
+function MarkPill({ id, text, color, u, side }: { id: ControlId; text: string; color: string; u: number; side: 'left' | 'top' | 'inside' }) {
+  const o = clamp01(u);
+  if (o <= 0.002) return null;
+  const r = controlRect(id, PLACE);
+  const w = text.length * 7.2 + 12;
+  const x = side === 'left' ? r.x - w - 6 : side === 'inside' ? r.x + r.w - w - 8 : r.x + r.w - w + 4;
+  const y = side === 'top' ? r.y - 16 : r.y + r.h / 2 - 9;
+  return (
+    <g opacity={o}>
+      <rect x={x} y={y} width={w} height={18} rx={5} fill="#0b1324" stroke={color} strokeWidth={1.2} />
+      <text x={x + w / 2} y={y + 13} textAnchor="middle" fill={color} fontSize={12} fontFamily={MONO}>
         {text}
       </text>
     </g>
@@ -392,7 +414,6 @@ export function Render({ s }: { s: SceneState }) {
   const routeU = s.get(scene.routeU);
   const escapeU = s.get(scene.escapeU);
   const takeU = s.get(scene.takeU);
-  const dotsDim = s.get(scene.dotsDim);
 
   // spotlight discipline: one tile up, the rest a whisper
   const hi = [hi0, Math.max(hi1, rightU, routeU), 0, wrongU, escapeU];
@@ -406,16 +427,23 @@ export function Render({ s }: { s: SceneState }) {
       u: clamp01(marksU * 5 - j) * tileO(j),
       color: markColor(j),
       dashed: (j === 3 && wrongU > 0.5) || (j === 1 && missingU > 0.5),
-      tag: j === 1 && missingU > 0.5 ? 'not in inventory ?' : t.id,
     })),
-    { id: 'save-button' as ControlId, u: clamp01(marksU * 5 - 4), color: rejectU > 0.5 ? ROLE.INVALID : colors.MUTED, dashed: true, tag: 'disabled' },
+    { id: 'save-button' as ControlId, u: clamp01(marksU * 5 - 4), color: rejectU > 0.5 ? ROLE.INVALID : colors.MUTED, dashed: true },
   ];
   const nameRect = controlRect('display-name-field', PLACE);
 
   return (
     <Camera {...s.get(scene.cam)}>
+      {/* everything before the closing line fades to 15% so the takeaway reads on a clean stage */}
+      <g opacity={1 - 0.85 * takeU}>
       {/* the live page: the anchor that never leaves */}
       <ProfilePage place={PLACE} opacity={s.get(scene.pageU)} marks={marks} obsLabel="observation v12" obsU={marksU} />
+      {/* id pills: 12px, placed clear of the shared field labels */}
+      <MarkPill id="profile-menu" text="c1" color={markColor(0)} u={marks[0].u} side="left" />
+      <MarkPill id="display-name-field" text={missingU > 0.5 ? 'not in inventory ?' : 'c2'} color={markColor(1)} u={marks[1].u} side="inside" />
+      <MarkPill id="email-field" text="c3" color={markColor(2)} u={marks[2].u} side="inside" />
+      <MarkPill id="sign-out-link" text="c4" color={markColor(3)} u={marks[3].u} side="left" />
+      <MarkPill id="save-button" text="disabled" color={rejectU > 0.5 ? ROLE.INVALID : colors.MUTED} u={marks[4].u} side="top" />
       <Badge x={PLACE.x + 70} y={PLACE.y + 440 * PLACE.scale + 22} text="this page, this moment: 5 controls · 4 ready" color={ROLE.OBSERVE} fill="#082f49" u={s.get(scene.countU)} />
       <Badge x={PLACE.x + 96} y={PLACE.y + 440 * PLACE.scale + 22} text="same page · same buttons · new ranking" color={ROLE.OBSERVE} fill="#082f49" u={sameU} />
 
@@ -425,7 +453,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={TREE_BOX.x - 10} y={50} fill={colors.TEXT} fontSize={15} fontWeight={650} opacity={clamp01(growU * 4)}>
             what a language model could write next
           </text>
-          <text x={TREE_BOX.x - 10} y={68} fill={ROLE.PENDING} fontSize={10.5} fontFamily={MONO} opacity={clamp01(growU * 4)}>
+          <text x={TREE_BOX.x - 10} y={68} fill={ROLE.PENDING} fontSize={12} fontFamily={MONO} opacity={clamp01(growU * 4)}>
             schematic words · not real tokenization
           </text>
           {TREE_LINKS.map((l, i) => {
@@ -441,7 +469,7 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={i} opacity={u}>
                 {n.data.w && (
-                  <text x={p.x - 6} y={p.y - 7} textAnchor="end" fill={colors.TEXT} fontSize={n.depth === 1 ? 13 : 10.5} fontFamily={MONO} opacity={0.9}>
+                  <text x={p.x - 6} y={p.y - 7} textAnchor="end" fill={colors.TEXT} fontSize={n.depth === 1 ? 14 : 12} fontFamily={MONO} opacity={0.9}>
                     {n.data.w}
                   </text>
                 )}
@@ -460,15 +488,15 @@ export function Render({ s }: { s: SceneState }) {
         <text x={TILE.x} y={68} fill={colors.TEXT} fontSize={14} fontWeight={650}>
           menu of legal choices
         </text>
-        <text x={TILE.x} y={86} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
-          target + action, joined · built from the page
+        <text x={TILE.x} y={86} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+          target + action · from the page
         </text>
       </g>
       <g opacity={s.get(scene.laneHeadU)}>
         <text x={LANE_X} y={70} fill={ROLE.MODEL} fontSize={12} fontFamily={MONO}>
           a model ranks the menu
         </text>
-        <text x={LANE_X} y={86} fill={ROLE.PENDING} fontSize={10} fontFamily={MONO}>
+        <text x={LANE_X} y={86} fill={ROLE.PENDING} fontSize={12} fontFamily={MONO}>
           illustrative ranking scores · not probabilities
         </text>
         <ProposedTag x={LANE_X + 172} y={57} u={1} />
@@ -517,21 +545,20 @@ export function Render({ s }: { s: SceneState }) {
           <text x={24} y={30} textAnchor="middle" fill={ROLE.PENDING} fontSize={15} fontWeight={800}>
             ?
           </text>
-          <text x={46} y={23} fill={colors.TEXT} fontSize={13.5} fontWeight={650}>
+          <text x={46} y={23} fill={colors.TEXT} fontSize={14} fontWeight={650}>
             unsure · abstain
           </text>
-          <text x={46} y={39} fill={ROLE.PENDING} fontSize={9.5} fontFamily={MONO}>
-            an explicit route, never a guess
+          <text x={46} y={39} fill={ROLE.PENDING} fontSize={12} fontFamily={MONO}>
+            explicit route, never a guess
           </text>
         </g>
       )}
-      <g opacity={missingU}>
-        <Badge x={LANE_X} y={rowY(1)} text="? missing from the menu — cannot be chosen" color={ROLE.PENDING} fill="#1a1405" u={missingU} />
-      </g>
+      <Badge x={VERDICT_X} y={rowY(1)} text="? not in the menu" color={ROLE.PENDING} fill="#1a1405" u={missingU} />
+      <Badge x={VERDICT_X} y={rowY(UNSURE_ROW)} text="close call → abstain" color={ROLE.PENDING} fill="#1a1405" u={clamp01(unsureU * 2 - 0.6)} />
       <Badge x={TILE.x} y={470} text="coverage gap: counted separately from ranking mistakes" color={ROLE.PENDING} fill="#1a1405" u={s.get(scene.gapChipU)} />
 
       {/* the 66 dots — tree, pool, and every ranking are the same objects */}
-      <g opacity={dotsDim}>
+      <g>
         {NODES.map((_, i) => {
           const vis = formP < 0.001 ? clamp01(growU * 4.6 - (NODES[i].depth - 1) - 0.5 * (NODES[i].x / TREE_BOX.h) - 0.6) : 1;
           if (vis <= 0.002) return null;
@@ -549,10 +576,10 @@ export function Render({ s }: { s: SceneState }) {
       </g>
 
       {/* beat 6 — two separate verdicts: legal? useful? */}
-      <Badge x={LANE_X} y={rowY(3)} text="✓ legal · enabled" color={ROLE.OBSERVE} fill="#082f49" u={clamp01(wrongU * 2 - 0.6)} />
-      <Badge x={LANE_X + 140} y={rowY(3)} text="✕ wrong for this task" color={ROLE.INVALID} fill="#2a0c14" u={s.get(scene.wrongBadgeU) * clamp01(wrongU * 2 - 0.6)} />
-      <Badge x={LANE_X} y={rowY(1)} text="✓ legal · enabled" color={ROLE.OBSERVE} fill="#082f49" u={rightU} />
-      <Badge x={LANE_X + 140} y={rowY(1)} text="✓ useful for this task" color={ROLE.CHECKED} fill="#062a1e" u={clamp01(rightU * 2 - 0.8)} />
+      <Badge x={VERDICT_X} y={rowY(3) - 13} text="✓ legal" color={ROLE.OBSERVE} fill="#082f49" u={clamp01(wrongU * 2 - 0.6)} />
+      <Badge x={VERDICT_X} y={rowY(3) + 13} text="✕ wrong here" color={ROLE.INVALID} fill="#2a0c14" u={s.get(scene.wrongBadgeU) * clamp01(wrongU * 2 - 0.6)} />
+      <Badge x={VERDICT_X} y={rowY(1) - 13} text="✓ legal" color={ROLE.OBSERVE} fill="#082f49" u={rightU} />
+      <Badge x={VERDICT_X} y={rowY(1) + 13} text="✓ useful here" color={ROLE.CHECKED} fill="#062a1e" u={clamp01(rightU * 2 - 0.8)} />
 
       {/* beat 4 — context feeds the ranking */}
       {ctxU > 0.002 && (
@@ -565,7 +592,7 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={c.head} transform={`translate(${c.x} ${486 + (1 - u) * 12})`} opacity={u}>
                 <rect width={c.w} height={56} rx={10} fill="#171335" stroke={ROLE.MODEL} strokeWidth={1.3 + (i === 2 ? flip * 1.4 : 0)} />
-                <text x={12} y={20} fill={ROLE.MODEL} fontSize={10} fontFamily={MONO} letterSpacing={1}>
+                <text x={12} y={20} fill={ROLE.MODEL} fontSize={12} fontFamily={MONO} letterSpacing={1}>
                   {c.head}
                 </text>
                 {i < 2 ? (
@@ -573,14 +600,15 @@ export function Render({ s }: { s: SceneState }) {
                     {c.body}
                   </text>
                 ) : (
-                  <>
-                    <text x={12} y={41} fill={colors.MUTED} fontSize={13} fontStyle="italic" opacity={1 - flip}>
+                  flip < 0.5 ? (
+                    <text x={12} y={41} fill={colors.MUTED} fontSize={13} fontStyle="italic">
                       none stated
                     </text>
-                    <text x={12} y={41} fill={colors.TEXT} fontSize={12.5} fontWeight={600} opacity={flip}>
+                  ) : (
+                    <text x={12} y={41} fill={colors.TEXT} fontSize={12.5} fontWeight={600}>
                       “{TASK_TEXT}”
                     </text>
-                  </>
+                  )
                 )}
               </g>
             );
@@ -654,6 +682,7 @@ export function Render({ s }: { s: SceneState }) {
           </text>
         </g>
       )}
+      </g>
       {takeU > 0.002 && (
         <g opacity={takeU} transform={`translate(0 ${(1 - takeU) * 10})`}>
           <text x={640} y={502} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={750}>

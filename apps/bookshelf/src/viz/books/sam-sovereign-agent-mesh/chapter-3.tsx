@@ -46,7 +46,7 @@ function InterestBeam({ u, highlight, opacity = 1 }: { u: number; highlight: num
       <path d={`M208 356 C 380 246, 500 466, ${x} 356`} fill="none" stroke={colors.WARM} strokeWidth={2.5} strokeDasharray="8 8" strokeDashoffset={-uu * 80} />
       <circle cx={x} cy={356} r={14 + 7 * clamp01(highlight)} fill={colors.WARM} opacity={0.18} />
       <circle cx={x} cy={356} r={6} fill={colors.WARM} />
-      <text x={x} y={332} textAnchor="middle" fill={colors.WARM} fontSize={11} fontFamily={MONO}>review_pr</text>
+      <text x={x} y={300} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>review_pr</text>
     </g>
   );
 }
@@ -194,7 +194,8 @@ export function Render({ s }: { s: SceneState }) {
         <InterestBeam u={s.get(scene.interestU)} highlight={s.get(scene.highlightU)} />
 
         <Packet from={LOCAL} to={{ x: TABLE_ORIGIN.x + 120, y: 356 }} u={s.get(scene.interestU)} color={colors.WARM} r={6} label="Ensure" />
-        <RequestFlow path={[LOCAL, { x: 640, y: 356 }, PROVIDER]} u={Math.max(fastOpacity, fanOpacity)} roundTrip color={colors.WARM} responseColor={colors.POSITIVE} label={fastOpacity > 0.5 ? 'gossip' : 'catalog'} responseLabel="tool row" hold />
+        <RequestFlow path={[LOCAL, { x: 640, y: 356 }, PROVIDER]} u={Math.max(fastOpacity, fanOpacity)} roundTrip color={colors.WARM} responseColor={colors.POSITIVE} label={fastOpacity > 0.5 ? 'gossip' : 'catalog'} responseLabel="" hold />
+        <text x={PROVIDER.x} y={432} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO} opacity={Math.max(fastOpacity, fanOpacity)}>tool row ↩</text>
 
         <g opacity={fastOpacity}>
           <Chip x={510} y={142} text="gossipToolRows" color={colors.POSITIVE} w={132} />

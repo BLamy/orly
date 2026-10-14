@@ -126,42 +126,46 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={1280} height={720} fill={colors.BG} />
       <g opacity={mainOpacity}>
         <text x={640} y={54} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={750}>Reconstruct both hands in one frame</text>
-        <text x={640} y={80} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>offline stereo-inertial SLAM · fiducial cubes · native relative pose</text>
+        <text x={640} y={80} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>offline stereo-inertial SLAM · fiducial cubes · native relative pose</text>
       </g>
       <Camera {...s.get(scene.cam)}>
         <g opacity={mainOpacity}>
           <rect x={130} y={120} width={1020} height={470} rx={24} fill={colors.PANEL} stroke={colors.GRID} />
-          <polyline points={lerpPoints(0)} fill="none" stroke={colors.NEGATIVE} strokeWidth={3} strokeDasharray="8 7" opacity={rawU * (0.35 + 0.5 * driftU) * (1 - 0.7 * composeU)} />
-          <polyline points={tracePoints} fill="none" stroke={colors.ACCENT} strokeWidth={4} opacity={rawU} />
-          <text x={160} y={565} fill={reconstructed > 0.5 ? colors.ACCENT : colors.NEGATIVE} fontSize={11} fontFamily={MONO}>
+          <text x={160} y={150} fill={reconstructed > 0.5 ? colors.ACCENT : colors.NEGATIVE} fontSize={14} fontFamily={MONO}>
             {reconstructed > 0.5 ? 'globally consistent hand trajectory' : 'independent wrist estimate · drift'}
           </text>
 
-          {s.get(scene.headU) > 0 && (
-            <g opacity={s.get(scene.headU)}>
-              <polyline points={HEAD_PATH.map((p) => `${p.x},${p.y}`).join(' ')} fill="none" stroke={colors.POSITIVE} strokeWidth={3} strokeDasharray="6 5" />
-              <g transform={`translate(${head.x} ${head.y})`}>
-                <rect x={-34} y={-18} width={68} height={36} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2} />
-                <circle cx={-15} cy={0} r={7} fill={colors.POSITIVE} />
-                <circle cx={15} cy={0} r={7} fill={colors.POSITIVE} />
-                <text x={0} y={42} textAnchor="middle" fill={colors.POSITIVE} fontSize={10} fontFamily={MONO}>head stereo + IMU</text>
+          {/* The hand and head layers step back while the paper figure is shown as an inset. */}
+          <g opacity={1 - 0.7 * s.get(scene.figureU)}>
+            <polyline points={lerpPoints(0)} fill="none" stroke={colors.NEGATIVE} strokeWidth={3} strokeDasharray="8 7" opacity={rawU * (0.35 + 0.5 * driftU) * (1 - 0.7 * composeU)} />
+            <polyline points={tracePoints} fill="none" stroke={colors.ACCENT} strokeWidth={4} opacity={rawU} />
+
+            {s.get(scene.headU) > 0 && (
+              <g opacity={s.get(scene.headU)}>
+                <polyline points={HEAD_PATH.map((p) => `${p.x},${p.y}`).join(' ')} fill="none" stroke={colors.POSITIVE} strokeWidth={3} strokeDasharray="6 5" />
+                <g transform={`translate(${head.x} ${head.y})`}>
+                  <rect x={-34} y={-18} width={68} height={36} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2} />
+                  <circle cx={-15} cy={0} r={7} fill={colors.POSITIVE} />
+                  <circle cx={15} cy={0} r={7} fill={colors.POSITIVE} />
+                  <text x={0} y={42} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>head stereo + IMU</text>
+                </g>
+                <path d={`M${head.x - 25} ${head.y + 20} Q470 280 ${left.x} ${left.y}`} fill="none" stroke={colors.SECONDARY} strokeWidth={2} opacity={markersU} />
+                <path d={`M${head.x + 25} ${head.y + 20} Q760 280 ${right.x} ${right.y}`} fill="none" stroke={colors.WARM} strokeWidth={2} opacity={markersU} />
               </g>
-              <path d={`M${head.x - 25} ${head.y + 20} Q470 280 ${left.x} ${left.y}`} fill="none" stroke={colors.SECONDARY} strokeWidth={2} opacity={markersU} />
-              <path d={`M${head.x + 25} ${head.y + 20} Q760 280 ${right.x} ${right.y}`} fill="none" stroke={colors.WARM} strokeWidth={2} opacity={markersU} />
-            </g>
-          )}
+            )}
 
-          <MarkerCube x={left.x} y={left.y} u={markersU} color={colors.SECONDARY} />
-          <MarkerCube x={right.x} y={right.y} u={markersU} color={colors.WARM} />
+            <MarkerCube x={left.x} y={left.y} u={markersU} color={colors.SECONDARY} />
+            <MarkerCube x={right.x} y={right.y} u={markersU} color={colors.WARM} />
 
-          {relativeU > 0 && (
-            <g opacity={relativeU}>
-              <line x1={left.x} y1={left.y - 35} x2={right.x} y2={right.y - 35} stroke={colors.POSITIVE} strokeWidth={3} />
-              <circle cx={left.x} cy={left.y - 35} r={5} fill={colors.POSITIVE} />
-              <circle cx={right.x} cy={right.y - 35} r={5} fill={colors.POSITIVE} />
-              <text x={(left.x + right.x) / 2} y={(left.y + right.y) / 2 - 56} textAnchor="middle" fill={colors.POSITIVE} fontSize={11} fontFamily={MONO}>T_left⁻¹ · T_right · native</text>
-            </g>
-          )}
+            {relativeU > 0 && (
+              <g opacity={relativeU}>
+                <line x1={left.x} y1={left.y - 35} x2={right.x} y2={right.y - 35} stroke={colors.POSITIVE} strokeWidth={3} />
+                <circle cx={left.x} cy={left.y - 35} r={5} fill={colors.POSITIVE} />
+                <circle cx={right.x} cy={right.y - 35} r={5} fill={colors.POSITIVE} />
+                <text x={(left.x + right.x) / 2} y={(left.y + right.y) / 2 - 56} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>T_left⁻¹ · T_right · native</text>
+              </g>
+            )}
+          </g>
 
           <Figure
             src="/generated/hifi-umi/figures/fig-02.png"
@@ -176,10 +180,11 @@ export function Render({ s }: { s: SceneState }) {
           />
 
           {s.get(scene.metricU) > 0 && (
-            <g opacity={s.get(scene.metricU)} transform="translate(445 480)">
-              <rect width={390} height={72} rx={18} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={2} />
-              <text x={195} y={31} textAnchor="middle" fill={colors.POSITIVE} fontSize={26} fontWeight={800}>3 mm</text>
-              <text x={195} y={54} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>mean local end-effector translation error · ~2 m workspace</text>
+            <g opacity={s.get(scene.metricU)} transform="translate(445 470)">
+              <rect width={390} height={96} rx={18} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={2} />
+              <text x={195} y={34} textAnchor="middle" fill={colors.POSITIVE} fontSize={26} fontWeight={800}>3 mm</text>
+              <text x={195} y={60} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>mean local end-effector translation error</text>
+              <text x={195} y={82} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>evaluated ~2 m workspace</text>
             </g>
           )}
         </g>
@@ -189,7 +194,7 @@ export function Render({ s }: { s: SceneState }) {
           <rect x={225} y={242} width={830} height={180} rx={22} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2} />
           <text x={640} y={304} textAnchor="middle" fill={colors.TEXT} fontSize={31} fontWeight={760}>The head frame holds both hands together</text>
           <text x={640} y={352} textAnchor="middle" fill={colors.MUTED} fontSize={16}>offline reconstruction · native relative pose · local precision</text>
-          <text x={640} y={389} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>pixels → calibrated bimanual trajectories</text>
+          <text x={640} y={389} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO}>pixels → calibrated bimanual trajectories</text>
         </g>
       )}
     </>

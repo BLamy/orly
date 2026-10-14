@@ -89,7 +89,7 @@ function AgentBlock({ x, label, sublabel, u, color }: { x: number; label: string
   return <g transform={`translate(${x} 170) scale(${k})`} opacity={clamp01(u)}>
     <rect x="-92" y="-44" width="184" height="88" rx="24" fill={colors.PANEL} stroke={color} strokeWidth="3" />
     <text y="-5" textAnchor="middle" fill={color} fontSize="22" fontWeight="800">{label}</text>
-    <text y="22" textAnchor="middle" fill={colors.MUTED} fontSize="13">{sublabel}</text>
+    <text y="22" textAnchor="middle" fill={colors.MUTED} fontSize="14">{sublabel}</text>
   </g>;
 }
 
@@ -99,6 +99,8 @@ export function Render({ s }: { s: SceneState }) {
   const wander = s.get(scene.wanderU);
   const guided = s.get(scene.guidedU);
   const close = s.get(scene.closeU);
+  const missing = s.get(scene.missingU);
+  const knowledge = s.get(scene.knowledgeU);
   const wp = pointOnPath(UNGUIDED, wander);
   const gp = pointOnPath(GUIDED, guided);
   const guidedPath = GUIDED.map(([x, y]) => `${x},${y}`).join(' ');
@@ -108,27 +110,27 @@ export function Render({ s }: { s: SceneState }) {
       <text x="640" y="90" textAnchor="middle" fill={colors.TEXT} fontSize="35" fontWeight="850">what does the agent know before it starts?</text>
       <AgentBlock x={160} label="Mθ" sublabel="reason · plan · act" u={s.get(scene.stackU)} color={colors.SECONDARY} />
       <AgentBlock x={380} label="H" sublabel="tools · memory · checks" u={s.get(scene.stackU)} color={colors.ACCENT} />
-      <g opacity={s.get(scene.missingU)}>
+      {knowledge < 1 && <g opacity={missing * (1 - knowledge)}>
         <rect x="492" y="126" width="184" height="88" rx="24" fill="#241d10" stroke={colors.WARM} strokeWidth="3" strokeDasharray="8 7" />
         <text x="584" y="165" textAnchor="middle" fill={colors.WARM} fontSize="22" fontWeight="800">K ?</text>
-        <text x="584" y="192" textAnchor="middle" fill={colors.MUTED} fontSize="13">operating context</text>
-      </g>
-      <g opacity={s.get(scene.knowledgeU)}>
+        <text x="584" y="192" textAnchor="middle" fill={colors.MUTED} fontSize="14">operating context</text>
+      </g>}
+      {knowledge > 0 && <g opacity={knowledge}>
         <rect x="492" y="126" width="184" height="88" rx="24" fill="#10251f" stroke={colors.POSITIVE} strokeWidth="3" />
         <text x="584" y="165" textAnchor="middle" fill={colors.POSITIVE} fontSize="22" fontWeight="800">K</text>
-        <text x="584" y="192" textAnchor="middle" fill={colors.TEXT} fontSize="13">capability + usage policy</text>
-      </g>
-      <MathLabel tex={'A=(M_\\theta,H)'} x={830} y={150} fontSize={27} opacity={s.get(scene.stackU) * (1 - s.get(scene.knowledgeU))} />
-      <MathLabel tex={'A_{res}=(M_\\theta,H,K)'} x={865} y={150} fontSize={27} opacity={s.get(scene.knowledgeU)} />
+        <text x="584" y="192" textAnchor="middle" fill={colors.TEXT} fontSize="14">capability + usage policy</text>
+      </g>}
+      <MathLabel tex={'A=(M_\\theta,H)'} x={700} y={140} anchor="start" fontSize={25} opacity={s.get(scene.stackU) * (1 - knowledge)} />
+      <MathLabel tex={'A_{res}=(M_\\theta,H,K)'} x={700} y={140} anchor="start" fontSize={25} opacity={knowledge} />
 
       <g opacity={field}>
         <rect x="190" y="254" width="900" height="270" rx="34" fill={colors.PANEL} stroke={colors.GRID} strokeWidth="2" />
         {FIELD.flatMap((row, r) => row.map((kind, c) => <g key={`${r}-${c}`} opacity={0.25 + unknown * 0.7}>
           <rect x={280 + c * 112} y={282 + r * 58} width="78" height="38" rx="12" fill={kind === 0 ? '#152234' : kind === 1 ? '#2b1c28' : '#25210f'} stroke={kind === 0 ? colors.ACCENT : kind === 1 ? colors.NEGATIVE : colors.WARM} />
-          <text x={319 + c * 112} y={307 + r * 58} textAnchor="middle" fill={colors.TEXT} fontSize="13">{['method', 'package', 'setting'][kind]}</text>
+          <text x={319 + c * 112} y={307 + r * 58} textAnchor="middle" fill={colors.TEXT} fontSize="14">{['method', 'package', 'setting'][kind]}</text>
         </g>))}
-        <text x="218" y="390" fill={colors.ACCENT} fontSize="14" fontFamily={colors.font.mono}>task τ</text>
-        <text x="1058" y="390" textAnchor="end" fill={colors.POSITIVE} fontSize="14" fontFamily={colors.font.mono}>goal g</text>
+        <text x="218" y="422" fill={colors.ACCENT} fontSize="14" fontFamily={colors.font.mono}>task τ</text>
+        <text x="1058" y="434" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontFamily={colors.font.mono}>goal g</text>
         <polyline points={unguidedPath} fill="none" stroke={colors.NEGATIVE} strokeWidth="5" strokeDasharray="9 9" strokeDashoffset={-28 * s.get(scene.flowU)} opacity={wander * (1 - guided) * 0.9} />
         <polyline points={guidedPath} fill="none" stroke={colors.POSITIVE} strokeWidth="7" strokeLinecap="round" strokeDasharray="18 8" strokeDashoffset={-28 * s.get(scene.flowU)} opacity={guided * 0.95} />
         {wander > 0 && guided < 0.01 && <circle cx={wp.x} cy={wp.y} r="13" fill={colors.NEGATIVE} />}
@@ -136,14 +138,14 @@ export function Render({ s }: { s: SceneState }) {
         <g transform="translate(640 548)">
           <rect x="-230" y="-16" width="460" height="24" rx="12" fill="#1b2231" />
           <rect x="-230" y="-16" width={460 * s.get(scene.budget)} height="24" rx="12" fill={s.get(scene.budget) < 0.4 ? colors.NEGATIVE : colors.POSITIVE} />
-          <text y="32" textAnchor="middle" fill={colors.MUTED} fontSize="13" fontFamily={colors.font.mono}>execution budget</text>
+          <text y="32" textAnchor="middle" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>execution budget</text>
         </g>
       </g>
-      <g opacity={s.get(scene.skillU)} transform={`translate(965 215) rotate(${-4 + 4 * s.get(scene.skillU)})`}>
+      <g opacity={s.get(scene.skillU)} transform={`translate(1000 208) rotate(${-4 + 4 * s.get(scene.skillU)})`}>
         <rect x="-105" y="-53" width="210" height="106" rx="18" fill="#13281f" stroke={colors.POSITIVE} strokeWidth="3" />
         <text y="-18" textAnchor="middle" fill={colors.POSITIVE} fontSize="21" fontWeight="800">SKILL.md</text>
-        <text y="10" textAnchor="middle" fill={colors.TEXT} fontSize="13">references/</text>
-        <text y="32" textAnchor="middle" fill={colors.TEXT} fontSize="13">scripts/</text>
+        <text y="10" textAnchor="middle" fill={colors.TEXT} fontSize="14">references/</text>
+        <text y="32" textAnchor="middle" fill={colors.TEXT} fontSize="14">scripts/</text>
       </g>
       <g opacity={s.get(scene.finishU)} transform="translate(1058 384)">
         <circle r={24 + 8 * s.get(scene.finishU)} fill="#102a22" stroke={colors.POSITIVE} strokeWidth="4" />
@@ -160,7 +162,7 @@ export function Render({ s }: { s: SceneState }) {
       ].map(([a, b, c], i) => <g key={a} transform={`translate(${385 + i * 255} 355)`}>
         <circle r="57" fill={colors.PANEL} stroke={c} strokeWidth="3" />
         <text y="-5" textAnchor="middle" fill={c} fontSize="25" fontWeight="800">{a}</text>
-        <text y="25" textAnchor="middle" fill={colors.MUTED} fontSize="12">{b}</text>
+        <text y="84" textAnchor="middle" fill={colors.MUTED} fontSize="14">{b}</text>
       </g>)}
       <text x="640" y="480" textAnchor="middle" fill={colors.WARM} fontSize="21">compare the trajectories</text>
     </g>

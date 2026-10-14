@@ -49,15 +49,16 @@ export function buildScene() {
 
   tl.caption({ at: 33.7, dur: 6.3, text: 'A live follow-up can interrupt the wait and enter history before the next model call, while the workers keep running.' });
   tl.tween(interventionU, 1, { at: 34.4, dur: 1.2, ease: ease.move });
-  tl.tween(cam, { x: 720, y: 225, k: 1.15 }, { at: 36.2, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 600, y: 330, k: 1.1 }, { at: 36.2, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 40.4, dur: 6.4, text: 'As context fills, the cheap compaction tier evicts old tool bodies but preserves protected fan-in reports.' });
+  tl.tween(cam, CAMERA_HOME, { at: 40.8, dur: 1.2, ease: ease.move });
   tl.tween(contextU, 1, { at: 41.1, dur: 1.0, ease: ease.enter });
   tl.tween(compactU, 1, { at: 42.3, dur: 2.0, ease: ease.move });
 
   tl.caption({ at: 47.2, dur: 6.3, text: 'Near the soft deadline, waits shrink to the remaining budget and the active agent is asked to consolidate.' });
   tl.tween(deadlineU, 1, { at: 47.9, dur: 2.4, ease: ease.linear });
-  tl.tween(cam, { x: 950, y: 356, k: 1.1 }, { at: 50.2, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 357, k: 1.08 }, { at: 50.2, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 53.9, dur: 6.4, text: 'A bounded finalization pass recovers useful partial work before hard cancellation becomes the last resort.' });
   tl.tween(consolidateU, 1, { at: 54.6, dur: 1.2, ease: ease.pop });
@@ -72,8 +73,11 @@ export function buildScene() {
 
 const scene = buildScene();
 
+// Each wire lands on its report row inside collect_reports().
+const rowY = (lane: number) => 289 + lane * 42;
+
 function reportPath(y: number, lane: number) {
-  const endY = 250 + lane * 54;
+  const endY = rowY(lane);
   return `M178 ${y} C360 ${y} 420 ${endY} 590 ${endY}`;
 }
 
@@ -95,12 +99,12 @@ export function Render({ s }: { s: SceneState }) {
         return <g key={report.name} opacity={u}>
           <circle cx="118" cy={report.y} r="34" fill="#111827" stroke={report.color} strokeWidth="3" />
           <circle cx="118" cy={report.y} r={8 + done * 12} fill={report.color} opacity={0.3 + 0.7 * done} />
-          <text x="166" y={report.y - 5} fill={report.color} fontSize="14" fontWeight="700">{report.name}</text>
-          <text x="166" y={report.y + 18} fill={colors.MUTED} fontSize="12">{done > 0.8 ? 'report ready' : 'running'}</text>
+          <text x="166" y={report.y - 12} fill={report.color} fontSize="14" fontWeight="700">{report.name}</text>
+          <text x="166" y={report.y + 24} fill={colors.MUTED} fontSize="12">{done > 0.8 ? 'report ready' : 'running'}</text>
           <path d={reportPath(report.y, i)} fill="none" stroke={report.color} strokeWidth={6 + (i === 0 ? s.get(scene.firstU) * 4 : 0)} strokeLinecap="round" strokeDasharray={`${Math.max(1, pathU * 520)} 540`} opacity={0.25 + 0.75 * pathU} />
           {partial && <g opacity={s.get(scene.partialU)}>
-            <rect x="432" y={230 + i * 54} width="124" height="30" rx="15" fill="#301822" stroke={colors.NEGATIVE} />
-            <text x="494" y={250 + i * 54} textAnchor="middle" fill={colors.NEGATIVE} fontSize="12">partial evidence</text>
+            <rect x="432" y={0.11 * report.y + 0.89 * rowY(i) - 15} width="124" height="30" rx="15" fill="#301822" stroke={colors.NEGATIVE} />
+            <text x="494" y={0.11 * report.y + 0.89 * rowY(i) + 5} textAnchor="middle" fill={colors.NEGATIVE} fontSize="12">partial evidence</text>
           </g>}
         </g>;
       })}
@@ -125,9 +129,9 @@ export function Render({ s }: { s: SceneState }) {
       </g>
 
       <g opacity={s.get(scene.interventionU)}>
-        <path d="M752 116 V182" stroke={colors.WARM} strokeWidth="5" strokeDasharray="8 7" />
-        <rect x="642" y="82" width="220" height="44" rx="22" fill="#332214" stroke={colors.WARM} strokeWidth="3" />
-        <text x="752" y="109" textAnchor="middle" fill={colors.WARM} fontSize="14" fontWeight="800">live follow-up wakes wait</text>
+        <path d="M709 116 V182" stroke={colors.WARM} strokeWidth="5" strokeDasharray="8 7" />
+        <rect x="599" y="82" width="220" height="44" rx="22" fill="#332214" stroke={colors.WARM} strokeWidth="3" />
+        <text x="709" y="109" textAnchor="middle" fill={colors.WARM} fontSize="14" fontWeight="800">live follow-up wakes wait</text>
       </g>
 
       <g opacity={s.get(scene.contextU)}>
@@ -139,20 +143,20 @@ export function Render({ s }: { s: SceneState }) {
           const y = 192 + i * 40;
           return <g key={i}>
             <rect x="906" y={y} width={protectedBand ? 252 : 214 - i * 9} height={h} rx={h / 2} fill={protectedBand ? colors.POSITIVE : colors.ACCENT} opacity={protectedBand ? 0.72 : 0.14 + i * 0.025} />
-            {protectedBand && <text x="1032" y={y + 19} textAnchor="middle" fill="#07140f" fontSize="11" fontWeight="800">protected fan-in report</text>}
+            {protectedBand && <text x="1032" y={y + 19} textAnchor="middle" fill="#07140f" fontSize="12" fontWeight="800">protected fan-in report</text>}
           </g>;
         })}
         <text x="1033" y="514" textAnchor="middle" fill={colors.POSITIVE} fontSize="12" fontFamily={colors.font.mono}>PROTECTED_FANIN_TOOLS</text>
       </g>
 
       <g opacity={s.get(scene.deadlineU)}>
-        <path d="M842 552 A76 76 0 0 1 994 552" fill="none" stroke={colors.NEGATIVE} strokeWidth="7" strokeDasharray={`${Math.max(1, s.get(scene.deadlineU) * 240)} 250`} />
-        <text x="918" y="584" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14">soft deadline · clamp waits</text>
+        <path d="M636 556 A76 76 0 0 1 788 556" fill="none" stroke={colors.NEGATIVE} strokeWidth="7" strokeDasharray={`${Math.max(1, s.get(scene.deadlineU) * 240)} 250`} />
+        <text x="712" y="588" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14">soft deadline · clamp waits</text>
       </g>
 
       <g opacity={s.get(scene.consolidateU)}>
-        <rect x="1008" y="548" width="190" height="46" rx="23" fill="#0c2a22" stroke={colors.POSITIVE} strokeWidth="3" />
-        <text x="1103" y="576" textAnchor="middle" fill={colors.POSITIVE} fontSize="13" fontWeight="800">bounded finalization</text>
+        <rect x="830" y="548" width="190" height="46" rx="23" fill="#0c2a22" stroke={colors.POSITIVE} strokeWidth="3" />
+        <text x="925" y="576" textAnchor="middle" fill={colors.POSITIVE} fontSize="13" fontWeight="800">bounded finalization</text>
       </g>
     </g>
 

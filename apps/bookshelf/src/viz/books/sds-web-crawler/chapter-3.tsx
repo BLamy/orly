@@ -81,11 +81,18 @@ const MR_IN = ['foo /a', 'bar /x', 'baz /k', 'bar /x', 'foo /c', 'bar /x', 'page
 const MR_DUP = MR_IN.map((u, i) => MR_IN.indexOf(u) !== i || MR_IN.lastIndexOf(u) !== i);
 const MR = { x0: 96, y0: 140, colW: 165, rowH: 40 } as const;
 
-const CAM_CYCLE: CameraState = { x: 340, y: 300, k: 1.25 };
-const CAM_PRESS: CameraState = { x: 760, y: 280, k: 1.3 };
-const CAM_LEDGER: CameraState = { x: 950, y: 280, k: 1.35 };
-const CAM_SINK: CameraState = { x: 730, y: 420, k: 1.3 };
+// Each push frames its subject whole: the stage must hold every label it
+// shows (and stay above the caption band), so nothing is cropped at the edge.
+const CAM_CYCLE: CameraState = { x: 500, y: 330, k: 1.05 };
+const CAM_PRESS: CameraState = { x: 735, y: 225, k: 1.4 };
+const CAM_LEDGER: CameraState = { x: 912, y: 215, k: 1.6 };
+const CAM_SINK: CameraState = { x: 912, y: 335, k: 1.1 };
 const CAM_MR: CameraState = { x: 380, y: 300, k: 1.2 };
+const CAM_SIM: CameraState = { x: 760, y: 505, k: 1.5 };
+
+// Receded opacity: below the stage's 0.15 "visible" floor, so a faded group
+// reads as gone rather than as clutter behind the subject.
+const RECEDE = 0.1;
 
 // ---------------------------------------------------------------------------
 // Timeline
@@ -108,6 +115,11 @@ export interface Scene {
   mrP: ChannelRef<number>;
   simU: ChannelRef<number>;
   closeU: ChannelRef<number>;
+  cycOp: ChannelRef<number>;
+  pressOp: ChannelRef<number>;
+  ledOp: ChannelRef<number>;
+  frontOp: ChannelRef<number>;
+  mrOp: ChannelRef<number>;
 }
 
 export function buildScene(): Scene {
@@ -127,6 +139,11 @@ export function buildScene(): Scene {
   const mrP = tl.channel('mrP', 0); // chips flowing through the stages
   const simU = tl.channel('simU', 0); // similarity dial beat
   const closeU = tl.channel('closeU', 0);
+  const cycOp = tl.channel('cycOp', 1); // cycle + orbit recede while the press has focus
+  const pressOp = tl.channel('pressOp', 1); // page card recedes once the ledger is the subject
+  const ledOp = tl.channel('ledOp', 1); // crawled_links recedes once the orbit starves
+  const frontOp = tl.channel('frontOp', 1); // frontier recedes for the bulk pass
+  const mrOp = tl.channel('mrOp', 1); // bulk pass recedes for the similarity dial
 
   // — Beat 1 · the cycle —
   tl.caption({
@@ -153,6 +170,7 @@ export function buildScene(): Scene {
     text: 'Repeated addresses are the easy half. The harder half is repeated content: the same page body living at many different addresses.',
   });
   tl.tween(cam, CAM_PRESS, { at: 14.2, dur: 1.5, ease: ease.move });
+  tl.tween(cycOp, RECEDE, { at: 14.2, dur: 1.0, ease: ease.move });
   tl.tween(pressU, 1, { at: 14.9, dur: 0.9, ease: ease.enter });
   tl.hold(20.0, 0.4);
 
@@ -195,6 +213,9 @@ export function buildScene(): Scene {
     text: 'That one demotion is what breaks the cycle. The orbit starves, and the loop moves on.',
   });
   tl.tween(cam, CAM_CYCLE, { at: 41.7, dur: 1.4, ease: ease.move });
+  tl.tween(cycOp, 1, { at: 41.7, dur: 1.0, ease: ease.move });
+  tl.tween(pressOp, RECEDE, { at: 41.7, dur: 1.2, ease: ease.move });
+  tl.tween(ledOp, RECEDE, { at: 41.7, dur: 1.2, ease: ease.move });
   tl.tween(orbitOp, 0, { at: 42.6, dur: 2.2, ease: ease.move });
   tl.hold(46.4, 0.4);
 
@@ -206,6 +227,7 @@ export function buildScene(): Scene {
   });
   tl.tween(cycU, 0.1, { at: 47.1, dur: 1.0, ease: ease.move });
   tl.tween(cam, CAM_MR, { at: 47.1, dur: 1.5, ease: ease.move });
+  tl.tween(frontOp, RECEDE, { at: 47.1, dur: 1.0, ease: ease.move });
   tl.tween(mrU, 1, { at: 47.6, dur: 1.0, ease: ease.enter });
   tl.tween(mrP, 1, { at: 48.8, dur: 4.6, ease: ease.move });
   tl.hold(54.4, 0.4);
@@ -216,7 +238,8 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'For content, similar is a spectrum, so signatures are compared with similarity measures: the Jaccard index, or cosine similarity.',
   });
-  tl.tween(cam, CAM_PRESS, { at: 55.1, dur: 1.5, ease: ease.move });
+  tl.tween(cam, CAM_SIM, { at: 55.1, dur: 1.5, ease: ease.move });
+  tl.tween(mrOp, RECEDE, { at: 55.1, dur: 1.0, ease: ease.move });
   tl.tween(simU, 1, { at: 55.8, dur: 1.0, ease: ease.enter });
   tl.hold(61.4, 0.4);
 
@@ -247,6 +270,11 @@ export function buildScene(): Scene {
     mrP,
     simU,
     closeU,
+    cycOp,
+    pressOp,
+    ledOp,
+    frontOp,
+    mrOp,
   };
 }
 
@@ -285,6 +313,11 @@ export function Render({ s }: { s: SceneState }) {
   const mrP = s.get(scene.mrP);
   const simU = s.get(scene.simU);
   const closeU = s.get(scene.closeU);
+  const cycOp = s.get(scene.cycOp);
+  const pressOp = s.get(scene.pressOp);
+  const ledOp = s.get(scene.ledOp);
+  const frontOp = s.get(scene.frontOp);
+  const mrOp = s.get(scene.mrOp);
 
   const op = orbitPos(orbitP);
   const wasted = Math.floor(orbitP * 3);
@@ -298,7 +331,7 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...cam}>
         <g opacity={dimAll}>
           {/* ---- the cycle ---- */}
-          <g opacity={Math.max(cycU, 0.001)}>
+          <g opacity={Math.max(cycU, 0.001) * cycOp}>
             {CYC.map((a, i) => {
               const b = CYC[(i + 1) % 3];
               const u = clamp01(cycU * 3 - i);
@@ -332,8 +365,8 @@ export function Render({ s }: { s: SceneState }) {
           </g>
 
           {/* the orbiting crawler + wasted-fetch meter */}
-          {orbitP > 0 && orbitOp > 0.01 && (
-            <g opacity={orbitOp}>
+          {orbitP > 0 && orbitOp * cycOp > 0.01 && (
+            <g opacity={orbitOp * cycOp}>
               <circle cx={op.x} cy={op.y} r={13} fill={colors.NEGATIVE} opacity={0.2} />
               <circle cx={op.x} cy={op.y} r={6.5} fill={colors.NEGATIVE} stroke={colors.BG} strokeWidth={1.5} />
               <rect x={230} y={470} width={200} height={34} rx={9} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.2} opacity={0.9} />
@@ -344,7 +377,7 @@ export function Render({ s }: { s: SceneState }) {
           )}
 
           {/* ---- the signature press ---- */}
-          <g opacity={pressU}>
+          <g opacity={pressU * pressOp}>
             <rect x={PAGE.x} y={PAGE.y} width={PAGE.w} height={PAGE.h * (1 - sigU * 0.55)} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
             <text x={PAGE.x + 12} y={PAGE.y + 24} fill={colors.TEXT} fontSize={12.5} fontFamily="ui-monospace, monospace">
               page.contents
@@ -367,14 +400,17 @@ export function Render({ s }: { s: SceneState }) {
             {/* the barcode it presses into */}
             <g opacity={sigU}>
               <Barcode x={PAGE.x + 62} y={PAGE.y + PAGE.h * (1 - sigU * 0.55) + 16} bars={INCOMING} />
-              <text x={PAGE.x + PAGE.w / 2} y={PAGE.y + PAGE.h * (1 - sigU * 0.55) + 56} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontFamily="ui-monospace, monospace">
+              <text x={PAGE.x + PAGE.w / 2} y={PAGE.y + PAGE.h * (1 - sigU * 0.55) + 56} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="ui-monospace, monospace">
                 create_signature · url + contents
+              </text>
+              <text x={PAGE.x + PAGE.w / 2} y={PAGE.y + PAGE.h * (1 - sigU * 0.55) + 74} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic">
+                a hash: same bytes, same signature
               </text>
             </g>
           </g>
 
           {/* ---- the crawled_links ledger of barcodes ---- */}
-          <g opacity={ledgU}>
+          <g opacity={ledgU * ledOp}>
             <text x={LEDGER.x} y={LEDGER.y0 - 60} fill={colors.WARM} fontSize={12.5} fontFamily="ui-monospace, monospace">
               crawled_links
             </text>
@@ -408,7 +444,7 @@ export function Render({ s }: { s: SceneState }) {
           </g>
 
           {/* ---- the frontier stub: the demotion ---- */}
-          <g opacity={frontU}>
+          <g opacity={frontU * frontOp}>
             <text x={FRONT.x} y={FRONT.y0 - 12} fill={colors.ACCENT} fontSize={12} fontFamily="ui-monospace, monospace">
               links_to_crawl
             </text>
@@ -428,13 +464,13 @@ export function Render({ s }: { s: SceneState }) {
                 </g>
               );
             })}
-            <text x={FRONT.x + FRONT.w / 2} y={FRONT.y0 + 3 * FRONT.rowH + 26} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="ui-monospace, monospace" opacity={sinkU}>
+            <text x={FRONT.x + FRONT.w / 2} y={FRONT.y0 + 3 * FRONT.rowH + 26} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace" opacity={sinkU}>
               reduce_priority_link_to_crawl(url)
             </text>
           </g>
 
           {/* ---- MapReduce: RemoveDuplicateUrls ---- */}
-          <g opacity={mrU}>
+          <g opacity={mrU * mrOp}>
             <text x={MR.x0} y={MR.y0 - 34} fill={colors.TEXT} fontSize={14.5}>
               bulk address dedup
             </text>
@@ -442,7 +478,7 @@ export function Render({ s }: { s: SceneState }) {
               class RemoveDuplicateUrls(MRJob)
             </text>
             {['urls in', 'map: yield line, 1', 'reduce: total == 1'].map((h, c) => (
-              <text key={h} x={MR.x0 + c * (MR.colW + 30) + 8} y={MR.y0 + 12} fill={colors.MUTED} fontSize={11}>
+              <text key={h} x={MR.x0 + c * (MR.colW + 30) + 8} y={MR.y0 + 12} fill={colors.MUTED} fontSize={12}>
                 {h}
               </text>
             ))}
@@ -466,16 +502,19 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* ---- similar, not equal ---- */}
           <g opacity={simU}>
+            <text x={760} y={418} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontStyle="italic">
+              near-duplicate, not an exact match
+            </text>
             <rect x={620} y={430} width={280} height={150} rx={12} fill={colors.PANEL} stroke={colors.GRID} opacity={0.96} />
             <Barcode x={648} y={456} bars={INCOMING} w={150} h={22} />
             <Barcode x={648} y={492} bars={NEAR} w={150} h={22} color={colors.SECONDARY} />
             <text x={836} y={488} textAnchor="middle" fill={colors.POSITIVE} fontSize={19}>
               0.92
             </text>
-            <text x={836} y={506} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+            <text x={836} y={508} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               similarity
             </text>
-            <text x={760} y={556} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+            <text x={760} y={556} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               Jaccard index · cosine similarity
             </text>
           </g>

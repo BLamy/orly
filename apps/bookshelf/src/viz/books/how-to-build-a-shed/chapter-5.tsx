@@ -17,7 +17,6 @@
 // about their bottom edges, the saw traces a door out of its own wall, and
 // shingle courses climb to the ridge. The chapter-one clutter finally moves in.
 import {
-  CAMERA_HOME,
   Camera,
   STAGE_H,
   STAGE_W,
@@ -109,10 +108,19 @@ const courseQuad = (i: number): P3[] => {
 const CLUTTER = ['bikes', 'lawnmower', 'wheelbarrow', 'garden tools'] as const;
 const DOOR_TARGET = iso(6, 2, 8.3);
 
-const CAM_SHED: CameraState = { x: 500, y: 370, k: 1.22 };
-const CAM_DOOR: CameraState = { x: 400, y: 430, k: 1.5 };
-const CAM_ROOF: CameraState = { x: 520, y: 250, k: 1.34 };
-const CAM_FINISH: CameraState = { x: 640, y: 340, k: 1.18 };
+// Every framing keeps the whole shed between about y 120 and y 610, clear of
+// the caption pill. The finish and recap cards live in screen space instead.
+const CAM_SHED: CameraState = { x: 490, y: 400, k: 1.25 };
+const CAM_DOOR: CameraState = { x: 400, y: 430, k: 1.35 };
+const CAM_ROOF: CameraState = { x: 490, y: 390, k: 1.25 };
+const CAM_FINISH: CameraState = { x: 490, y: 400, k: 1.25 };
+const CAM_RECAP: CameraState = { x: 490, y: 400, k: 1.2 };
+
+// Annotation slots, in world pixels: a right column for the roof notes and a
+// left column for the door and trim notes. Each note is a leader line to the
+// part it names.
+const SLOT_R = 700;
+const SLOT_L = 240;
 
 export interface Scene {
   tl: Timeline;
@@ -285,7 +293,7 @@ export function buildScene(): Scene {
     dur: 6.8,
     text: 'And that is the whole story: level blocks arguing a slope flat, a floor built like furniture, walls squared by their own siding, and a roof that repeats one friendly angle.',
   });
-  tl.tween(cam, CAMERA_HOME, { at: 73.0, dur: 1.8, ease: ease.move });
+  tl.tween(cam, CAM_RECAP, { at: 73.0, dur: 1.8, ease: ease.move });
   tl.tween(sideDim, 0.15, { at: 73.2, dur: 1.2, ease: ease.move });
   tl.tween(recapU, 1, { at: 74.2, dur: 2.4, ease: ease.move });
   tl.hold(80.1, 0.4);
@@ -334,6 +342,29 @@ const scene = buildScene();
 // Render
 // ---------------------------------------------------------------------------
 
+// A note in a clear slot with a leader line to the part it names. `op` is the
+// note's own opacity; `align` says which side of the slot the text grows from.
+const callout = (
+  text: string,
+  [ax, ay]: [number, number],
+  [lx, ly]: [number, number],
+  color: string,
+  op: number,
+  align: 'start' | 'end' = 'start',
+): ReactNode => {
+  if (op <= 0.01) return null;
+  const edge = align === 'start' ? lx - 4 : lx + 4;
+  return (
+    <g opacity={op}>
+      <line x1={edge} y1={ly - 4} x2={ax} y2={ay} stroke={color} strokeWidth={1} opacity={0.75} />
+      <circle cx={ax} cy={ay} r={2.4} fill={color} />
+      <text x={lx} y={ly} fill={color} fontSize={13} textAnchor={align}>
+        {text}
+      </text>
+    </g>
+  );
+};
+
 export function Render({ s }: { s: SceneState }) {
   const cam = s.get(scene.cam);
   const floorU = s.get(scene.floorU);
@@ -358,6 +389,11 @@ export function Render({ s }: { s: SceneState }) {
   const moveInU = s.get(scene.moveInU);
   const sideDim = s.get(scene.sideDim);
   const closeU = s.get(scene.closeU);
+
+  // model annotations clear before the recap; door and plate notes clear as
+  // the camera leaves the door
+  const ann = 1 - clamp01(recapU * 4);
+  const trussAway = 1 - clamp01(trussU * 3);
 
   // wall fill crossfades to Boston Brick as paint goes on
   const BRICK = '#9c4438';
@@ -405,302 +441,333 @@ export function Render({ s }: { s: SceneState }) {
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
-        {/* ---- the platform ---- */}
-        {floorU > 0 && (
-          <g opacity={floorU}>
-            <polygon points={quad([[0, 0, 0], [8, 0, 0], [8, 0, 8], [0, 0, 8]])} fill={colors.SECONDARY} opacity={0.18} stroke={colors.SECONDARY} strokeWidth={1.4} />
-          </g>
-        )}
+        {/* the whole model dims behind the closing card */}
+        <g opacity={1 - 0.8 * closeU}>
+          {/* ---- the platform ---- */}
+          {floorU > 0 && (
+            <g opacity={floorU}>
+              <polygon points={quad([[0, 0, 0], [8, 0, 0], [8, 0, 8], [0, 0, 8]])} fill={colors.SECONDARY} opacity={0.18} stroke={colors.SECONDARY} strokeWidth={1.4} />
+            </g>
+          )}
 
-        {/* ---- walls, in raising order (painter-friendly: back → sides → front) ---- */}
-        {wall(END_SHAPE, backWall, backA, 'back')}
-        {wall(SIDE_SHAPE, leftWall, sideA, 'left')}
-        {wall(
-          SIDE_SHAPE,
-          rightWall,
-          Math.max(0, sideA - 0.12),
-          'right',
-          sideA > 0.9 ? (
-            <g opacity={clamp01((sideA - 0.9) * 10)}>
-              {/* the secondhand window on the visible side wall */}
+          {/* ---- walls, in raising order (painter-friendly: back → sides → front) ---- */}
+          {wall(END_SHAPE, backWall, backA, 'back')}
+          {wall(SIDE_SHAPE, leftWall, sideA, 'left')}
+          {wall(
+            SIDE_SHAPE,
+            rightWall,
+            Math.max(0, sideA - 0.12),
+            'right',
+            sideA > 0.9 ? (
+              <g opacity={clamp01((sideA - 0.9) * 10)}>
+                {/* the secondhand window on the visible side wall */}
+                <polygon
+                  points={quad([
+                    rightWall(2.2, 3.4, 1),
+                    rightWall(2.2, 5.2, 1),
+                    rightWall(4.0, 5.2, 1),
+                    rightWall(4.0, 3.4, 1),
+                  ])}
+                  fill={colors.ACCENT}
+                  opacity={0.25}
+                  stroke={colors.ACCENT}
+                  strokeWidth={1.4}
+                />
+              </g>
+            ) : null,
+          )}
+          {wall(END_SHAPE, frontWall, frontA, 'front')}
+
+          {/* screws pin the walls down as each lands */}
+          {screwU > 0 &&
+            [
+              [1, 0.1, 0.15], [3, 0.1, 0.1], [5, 0.1, 0.1], [7, 0.1, 0.15],
+              [0.15, 0.1, 2], [0.15, 0.1, 5], [7.85, 0.1, 2], [7.85, 0.1, 5],
+              [1, 0.1, 7.85], [3, 0.1, 7.85], [7, 0.1, 7.85], [5, 0.1, 7.85],
+            ].map(([x, y, z], i) => {
+              const u = clamp01(screwU * 12 - i);
+              if (u <= 0) return null;
+              const p = iso(x, y, z);
+              return <circle key={i} cx={p.X} cy={p.Y} r={2.2} fill={colors.TEXT} opacity={0.8 * u} />;
+            })}
+          {screwU > 0.05 && screwU < 0.4 && (
+            <text x={iso(4, -0.9, 0).X} y={iso(4, -0.9, 0).Y + 26} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              4 in screws, through the floor into the frame
+            </text>
+          )}
+
+          {/* ---- the door, cut from its own wall ---- */}
+          {cutU > 0 && (
+            <path
+              d={doorPath}
+              fill="none"
+              stroke={colors.NEGATIVE}
+              strokeWidth={2.4}
+              strokeDasharray="7 5"
+              pathLength={1}
+              strokeDashoffset={1 - cutU}
+              opacity={0.95 * (1 - doorU * 0.6)}
+            />
+          )}
+          {cutU > 0.15 && cutU < 1 && (
+            <text x={dp(3.2, 6.7).X} y={dp(3.2, 6.7).Y} fill={colors.NEGATIVE} fontSize={13}>
+              reciprocating saw — save the panel
+            </text>
+          )}
+          {doorU > 0 && (
+            <g opacity={Math.min(1, doorU * 1.5)}>
+              <polygon points={doorQuad.map((p) => `${p.X},${p.Y}`).join(' ')} fill={wallFill} opacity={0.5} stroke={colors.WARM} strokeWidth={2} />
+              {callout('the door — a perfect match', [430, 480], [SLOT_L, 455], colors.WARM, trussAway, 'end')}
+              <text x={SLOT_L} y={473} textAnchor="end" fill={colors.WARM} fontSize={13} opacity={trussAway}>
+                for its own hole
+              </text>
+            </g>
+          )}
+          {plateU > 0 && (
+            <g opacity={plateU}>
+              <line
+                x1={dp(DOOR.w0, 0.12).X}
+                y1={dp(DOOR.w0, 0.12).Y}
+                x2={dp(DOOR.w1, 0.12).X}
+                y2={dp(DOOR.w1, 0.12).Y}
+                stroke={colors.BG}
+                strokeWidth={7}
+              />
+              {callout('bottom plate cut away', [dp(5.9, 0.12).X, dp(5.9, 0.12).Y], [522, 604], colors.MUTED, trussAway)}
+            </g>
+          )}
+
+          {/* ---- trusses ---- */}
+          {TRUSS_Z.map((z, i) => {
+            const u = clamp01(trussU * 3.4 - i * 0.5);
+            if (u <= 0) return null;
+            const lift = (1 - u) * 40;
+            const a = iso(0, EAVE, z);
+            const b = iso(4, PEAK, z);
+            const c = iso(8, EAVE, z);
+            return (
+              <g key={z} opacity={u}>
+                <path d={`M ${a.X} ${a.Y - lift} L ${b.X} ${b.Y - lift} L ${c.X} ${c.Y - lift}`} fill="none" stroke="#d9b87c" strokeWidth={4.5} strokeLinejoin="round" />
+              </g>
+            );
+          })}
+          {alignU > 0 && (
+            <g opacity={alignU * (1 - sheathU)}>
+              {[2, 4, 6].map((z) => {
+                const top = iso(8, EAVE, z);
+                const bot = iso(8, 0.2, z);
+                return <line key={z} x1={top.X} y1={top.Y} x2={bot.X} y2={bot.Y} stroke={colors.ACCENT} strokeWidth={1.2} strokeDasharray="4 5" opacity={0.8} />;
+              })}
+              {callout('trusses inline with studs', [iso(8, EAVE, 6).X, iso(8, EAVE, 6).Y], [SLOT_R, 320], colors.ACCENT, ann)}
+            </g>
+          )}
+
+          {/* ---- roof sheathing ---- */}
+          {sheathU > 0 && (
+            <g>
+              {/* left slope */}
               <polygon
                 points={quad([
-                  rightWall(2.2, 3.4, 1),
-                  rightWall(2.2, 5.2, 1),
-                  rightWall(4.0, 5.2, 1),
-                  rightWall(4.0, 3.4, 1),
+                  [4, PEAK, -OVER],
+                  [4, PEAK, 8 + OVER],
+                  [4 - 4 * clamp01(sheathU * 1.3), PEAK - RISE * clamp01(sheathU * 1.3), 8 + OVER],
+                  [4 - 4 * clamp01(sheathU * 1.3), PEAK - RISE * clamp01(sheathU * 1.3), -OVER],
                 ])}
-                fill={colors.ACCENT}
-                opacity={0.25}
-                stroke={colors.ACCENT}
-                strokeWidth={1.4}
+                fill={lerpColor('#8fa3bd', '#4a5568', paperU)}
+                opacity={0.5}
+                stroke={colors.GRID}
               />
+              {/* right slope */}
+              <polygon
+                points={quad([
+                  [4, PEAK, -OVER],
+                  [4, PEAK, 8 + OVER],
+                  [4 + 4 * clamp01(sheathU * 1.3), PEAK - RISE * clamp01(sheathU * 1.3), 8 + OVER],
+                  [4 + 4 * clamp01(sheathU * 1.3), PEAK - RISE * clamp01(sheathU * 1.3), -OVER],
+                ])}
+                fill={lerpColor('#8fa3bd', '#4a5568', paperU)}
+                opacity={0.55}
+                stroke={colors.GRID}
+              />
+              {sheathU > 0.4 && shingleU < 0.3 &&
+                callout(
+                  '7/16 in OSB · screws every 8 in',
+                  [iso(6, EAVE + RISE / 2, 2).X, iso(6, EAVE + RISE / 2, 2).Y],
+                  [SLOT_R, 200],
+                  colors.MUTED,
+                  clamp01(sheathU * 2 - 1) * (1 - clamp01(shingleU * 4)) * ann,
+                )}
             </g>
-          ) : null,
-        )}
-        {wall(END_SHAPE, frontWall, frontA, 'front')}
+          )}
+          {stripU > 0 && shingleU < 0.5 && (
+            <>
+              <g opacity={stripU * (1 - clamp01(shingleU * 2)) * ann}>
+                <polygon points={quad(courseQuad(0))} fill={colors.WARM} opacity={0.35} stroke={colors.WARM} strokeWidth={1} />
+              </g>
+              {callout(
+                '7-inch strips finish the edge',
+                [iso(7.67, EAVE + 0.05, 2).X, iso(7.67, EAVE + 0.05, 2).Y],
+                [SLOT_R, 260],
+                colors.WARM,
+                stripU * (1 - clamp01(shingleU * 2)) * ann,
+              )}
+            </>
+          )}
 
-        {/* screws pin the walls down as each lands */}
-        {screwU > 0 &&
-          [
-            [1, 0.1, 0.15], [3, 0.1, 0.1], [5, 0.1, 0.1], [7, 0.1, 0.15],
-            [0.15, 0.1, 2], [0.15, 0.1, 5], [7.85, 0.1, 2], [7.85, 0.1, 5],
-            [1, 0.1, 7.85], [3, 0.1, 7.85], [7, 0.1, 7.85], [5, 0.1, 7.85],
-          ].map(([x, y, z], i) => {
-            const u = clamp01(screwU * 12 - i);
+          {/* ---- drip edge + shingle courses ---- */}
+          {dripU > 0 && (
+            <g opacity={dripU * ann}>
+              <line x1={iso(8, EAVE, -OVER).X} y1={iso(8, EAVE, -OVER).Y} x2={iso(8, EAVE, 8 + OVER).X} y2={iso(8, EAVE, 8 + OVER).Y} stroke={colors.ACCENT} strokeWidth={2.4} />
+              {callout('aluminum drip edge', [iso(8, EAVE, 4).X, iso(8, EAVE, 4).Y], [SLOT_R, 380], colors.ACCENT, 1)}
+            </g>
+          )}
+          {Array.from({ length: COURSES }, (_, i) => {
+            const u = clamp01(shingleU * (COURSES + 1) - i);
             if (u <= 0) return null;
-            const p = iso(x, y, z);
-            return <circle key={i} cx={p.X} cy={p.Y} r={2.2} fill={colors.TEXT} opacity={0.8 * u} />;
+            const q = courseQuad(i);
+            const [x0, y0] = [q[0][0], q[0][1]];
+            const [x1, y1] = [q[3][0], q[3][1]];
+            // staggered tab slits, so each course reads as shingles, not a slab
+            const tabs: number[] = [];
+            for (let z = (i % 2) * 0.7; z < 8; z += 1.4) tabs.push(z);
+            const lo = iso(...q[0]);
+            const lo2 = iso(...q[1]);
+            return (
+              <g key={i} opacity={u}>
+                <polygon
+                  points={quad(q)}
+                  fill={i % 2 === 0 ? '#5a6472' : '#4e5866'}
+                  opacity={0.9}
+                  stroke="#3a4250"
+                  strokeWidth={1}
+                />
+                {tabs.map((z) => {
+                  const p = iso(x0, y0, z);
+                  const r = iso(x1, y1, z);
+                  return <line key={z} x1={p.X} y1={p.Y} x2={r.X} y2={r.Y} stroke="#2e3541" strokeWidth={1.1} />;
+                })}
+                {/* lit lower edge of each course */}
+                <line x1={lo.X} y1={lo.Y} x2={lo2.X} y2={lo2.Y} stroke="#8a94a3" strokeWidth={1.3} />
+              </g>
+            );
           })}
-        {screwU > 0.05 && screwU < 0.4 && (
-          <text x={iso(4, -0.9, 0).X} y={iso(4, -0.9, 0).Y + 26} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
-            4 in screws, through the floor into the frame
-          </text>
-        )}
-
-        {/* ---- the door, cut from its own wall ---- */}
-        {cutU > 0 && (
-          <path
-            d={doorPath}
-            fill="none"
-            stroke={colors.NEGATIVE}
-            strokeWidth={2.4}
-            strokeDasharray="7 5"
-            pathLength={1}
-            strokeDashoffset={1 - cutU}
-            opacity={0.95 * (1 - doorU * 0.6)}
-          />
-        )}
-        {cutU > 0.15 && cutU < 1 && (
-          <text x={dp(3.2, 6.7).X} y={dp(3.2, 6.7).Y} fill={colors.NEGATIVE} fontSize={12.5}>
-            reciprocating saw — save the panel
-          </text>
-        )}
-        {doorU > 0 && (
-          <g opacity={Math.min(1, doorU * 1.5)}>
-            <polygon points={doorQuad.map((p) => `${p.X},${p.Y}`).join(' ')} fill={wallFill} opacity={0.5} stroke={colors.WARM} strokeWidth={2} />
-            <text x={DOOR_TARGET.X - 40} y={DOOR_TARGET.Y + 60} fill={colors.WARM} fontSize={12.5}>
-              the door — a perfect match for its own hole
-            </text>
-          </g>
-        )}
-        {plateU > 0 && (
-          <g opacity={plateU}>
-            <line
-              x1={dp(DOOR.w0, 0.12).X}
-              y1={dp(DOOR.w0, 0.12).Y}
-              x2={dp(DOOR.w1, 0.12).X}
-              y2={dp(DOOR.w1, 0.12).Y}
-              stroke={colors.BG}
-              strokeWidth={7}
-            />
-            <text x={dp(DOOR.w1 + 0.3, 0.4).X} y={dp(DOOR.w1 + 0.3, 0.4).Y} fill={colors.MUTED} fontSize={11.5}>
-              bottom plate cut away
-            </text>
-          </g>
-        )}
-
-        {/* ---- trusses ---- */}
-        {TRUSS_Z.map((z, i) => {
-          const u = clamp01(trussU * 3.4 - i * 0.5);
-          if (u <= 0) return null;
-          const lift = (1 - u) * 40;
-          const a = iso(0, EAVE, z);
-          const b = iso(4, PEAK, z);
-          const c = iso(8, EAVE, z);
-          return (
-            <g key={z} opacity={u}>
-              <path d={`M ${a.X} ${a.Y - lift} L ${b.X} ${b.Y - lift} L ${c.X} ${c.Y - lift}`} fill="none" stroke="#d9b87c" strokeWidth={4.5} strokeLinejoin="round" />
-            </g>
-          );
-        })}
-        {alignU > 0 && (
-          <g opacity={alignU * (1 - sheathU)}>
-            {[2, 4, 6].map((z) => {
-              const top = iso(8, EAVE, z);
-              const bot = iso(8, 0.2, z);
-              return <line key={z} x1={top.X} y1={top.Y} x2={bot.X} y2={bot.Y} stroke={colors.ACCENT} strokeWidth={1.2} strokeDasharray="4 5" opacity={0.8} />;
-            })}
-            <text x={iso(8, 3.4, 6).X + 12} y={iso(8, 3.4, 6).Y} fill={colors.ACCENT} fontSize={11.5}>
-              trusses inline with studs
-            </text>
-          </g>
-        )}
-
-        {/* ---- roof sheathing ---- */}
-        {sheathU > 0 && (
-          <g>
-            {/* left slope */}
-            <polygon
-              points={quad([
-                [4, PEAK, -OVER],
-                [4, PEAK, 8 + OVER],
-                [4 - 4 * clamp01(sheathU * 1.3), PEAK - RISE * clamp01(sheathU * 1.3), 8 + OVER],
-                [4 - 4 * clamp01(sheathU * 1.3), PEAK - RISE * clamp01(sheathU * 1.3), -OVER],
-              ])}
-              fill={lerpColor('#8fa3bd', '#4a5568', paperU)}
-              opacity={0.5}
-              stroke={colors.GRID}
-            />
-            {/* right slope */}
-            <polygon
-              points={quad([
-                [4, PEAK, -OVER],
-                [4, PEAK, 8 + OVER],
-                [4 + 4 * clamp01(sheathU * 1.3), PEAK - RISE * clamp01(sheathU * 1.3), 8 + OVER],
-                [4 + 4 * clamp01(sheathU * 1.3), PEAK - RISE * clamp01(sheathU * 1.3), -OVER],
-              ])}
-              fill={lerpColor('#8fa3bd', '#4a5568', paperU)}
-              opacity={0.55}
-              stroke={colors.GRID}
-            />
-            {sheathU > 0.4 && shingleU < 0.3 && (
-              <text x={iso(6.2, EAVE + 1.1, -1.2).X} y={iso(6.2, EAVE + 1.1, -1.2).Y} fill={colors.MUTED} fontSize={11.5} opacity={clamp01(sheathU * 2 - 1) * (1 - clamp01(shingleU * 4))}>
-                7/16 in OSB · screws every 8 in
-              </text>
+          {shingleU > 0.85 &&
+            callout(
+              'architectural shingles, to the ridge',
+              [iso(6, EAVE + RISE / 2, 6).X, iso(6, EAVE + RISE / 2, 6).Y],
+              [SLOT_R, 440],
+              colors.MUTED,
+              clamp01(shingleU * 6 - 5) * ann,
             )}
-          </g>
-        )}
-        {stripU > 0 && shingleU < 0.5 && (
-          <g opacity={stripU * (1 - clamp01(shingleU * 2))}>
-            <polygon points={quad(courseQuad(0))} fill={colors.WARM} opacity={0.35} stroke={colors.WARM} strokeWidth={1} />
-            <text x={iso(8.4, EAVE - 0.4, 4).X} y={iso(8.4, EAVE - 0.4, 4).Y + 16} fill={colors.WARM} fontSize={11.5}>
-              7-inch strips finish the edge
-            </text>
-          </g>
-        )}
 
-        {/* ---- drip edge + shingle courses ---- */}
-        {dripU > 0 && (
-          <g opacity={dripU}>
-            <line x1={iso(8, EAVE, -OVER).X} y1={iso(8, EAVE, -OVER).Y} x2={iso(8, EAVE, 8 + OVER).X} y2={iso(8, EAVE, 8 + OVER).Y} stroke={colors.ACCENT} strokeWidth={2.4} />
-            <text x={iso(8, EAVE - 0.9, 8.6).X} y={iso(8, EAVE - 0.9, 8.6).Y} fill={colors.ACCENT} fontSize={11.5}>
-              aluminum drip edge
-            </text>
-          </g>
-        )}
-        {Array.from({ length: COURSES }, (_, i) => {
-          const u = clamp01(shingleU * (COURSES + 1) - i);
-          if (u <= 0) return null;
-          return (
-            <polygon
-              key={i}
-              points={quad(courseQuad(i))}
-              fill={i % 2 === 0 ? '#5a6472' : '#4e5866'}
-              opacity={0.9 * u}
-              stroke="#3a4250"
-              strokeWidth={1}
-            />
-          );
-        })}
-        {shingleU > 0.85 && (
-          <text x={iso(6, PEAK + 0.5, 4).X} y={iso(6, PEAK + 0.5, 4).Y - 10} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} opacity={clamp01(shingleU * 6 - 5)}>
-            architectural shingles, to the ridge
-          </text>
-        )}
+          {/* ---- trim ---- */}
+          {trimU > 0 && (
+            <g opacity={trimU}>
+              <path
+                d={`M ${iso(0, EAVE, 8 + OVER).X} ${iso(0, EAVE, 8 + OVER).Y} L ${iso(4, PEAK, 8 + OVER).X} ${iso(4, PEAK, 8 + OVER).Y} L ${iso(8, EAVE, 8 + OVER).X} ${iso(8, EAVE, 8 + OVER).Y}`}
+                fill="none"
+                stroke="#e8e2d0"
+                strokeWidth={3}
+                pathLength={1}
+                strokeDasharray={1}
+                strokeDashoffset={1 - trimU}
+              />
+              <line x1={iso(8, 0, 8).X} y1={iso(8, 0, 8).Y} x2={iso(8, EAVE * trimU, 8).X} y2={iso(8, EAVE * trimU, 8).Y} stroke="#e8e2d0" strokeWidth={3} />
+            </g>
+          )}
+          {trimU > 0 &&
+            callout(
+              '2x4 roof trim · corners caulked',
+              [iso(4, PEAK, 8 + OVER).X, iso(4, PEAK, 8 + OVER).Y],
+              [SLOT_L, 250],
+              '#e8e2d0',
+              trimU * ann,
+              'end',
+            )}
 
-        {/* ---- trim ---- */}
-        {trimU > 0 && (
-          <g opacity={trimU}>
-            <path
-              d={`M ${iso(0, EAVE, 8 + OVER).X} ${iso(0, EAVE, 8 + OVER).Y} L ${iso(4, PEAK, 8 + OVER).X} ${iso(4, PEAK, 8 + OVER).Y} L ${iso(8, EAVE, 8 + OVER).X} ${iso(8, EAVE, 8 + OVER).Y}`}
-              fill="none"
-              stroke="#e8e2d0"
-              strokeWidth={3}
-              pathLength={1}
-              strokeDasharray={1}
-              strokeDashoffset={1 - trimU}
-            />
-            <line x1={iso(8, 0, 8).X} y1={iso(8, 0, 8).Y} x2={iso(8, EAVE * trimU, 8).X} y2={iso(8, EAVE * trimU, 8).Y} stroke="#e8e2d0" strokeWidth={3} />
-            <text x={iso(4, PEAK + 1.2, 8).X} y={iso(4, PEAK + 1.2, 8).Y} textAnchor="middle" fill="#e8e2d0" fontSize={11.5}>
-              2x4 roof trim · corners caulked
-            </text>
-          </g>
-        )}
-
-        {/* ---- finish chips (right column) ---- */}
-        <g opacity={chipsU * sideDim}>
-          <rect x={950} y={150} width={260} height={168} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-          <circle cx={984} cy={188} r={14} fill={BRICK} />
-          <text x={1010} y={184} fill={colors.TEXT} fontSize={13}>
-            Behr exterior paint
-          </text>
-          <text x={1010} y={201} fill={colors.MUTED} fontSize={11.5}>
-            color: Boston Brick
-          </text>
-          <g opacity={clamp01(chipsU * 2 - 0.4)}>
-            <rect x={972} y={222} width={24} height={16} rx={3} fill="none" stroke={colors.TEXT} strokeWidth={1.5} />
-            {[0, 1, 2].map((i) => (
-              <line key={i} x1={975} y1={226 + i * 4} x2={993} y2={226 + i * 4} stroke={colors.TEXT} strokeWidth={1} />
-            ))}
-            <text x={1010} y={236} fill={colors.TEXT} fontSize={13}>
-              vents × 2 — far wall
-            </text>
-          </g>
-          <g opacity={clamp01(chipsU * 2 - 1)}>
-            <rect x={970} y={258} width={28} height={12} rx={2} fill={colors.POSITIVE} opacity={0.7} />
-            <text x={1010} y={270} fill={colors.TEXT} fontSize={13}>
-              floor: deck paint, 2 coats
-            </text>
-            <text x={1010} y={287} fill={colors.MUTED} fontSize={11.5}>
-              waterproof · one gallon
-            </text>
-          </g>
-        </g>
-
-        {/* ---- recap strip ---- */}
-        {recapU > 0 && (
-          <g opacity={recapU * sideDim}>
-            {(['level blocks', 'a furniture floor', 'walls built flat', 'squared by siding', 'one friendly angle'] as const).map((t, i) => {
-              const u = clamp01(recapU * 3 - i * 0.45);
+          {/* ---- the clutter moves in ---- */}
+          {moveInU > 0 &&
+            CLUTTER.map((label, i) => {
+              const u = clamp01(moveInU * 2.6 - i * 0.4);
               if (u <= 0) return null;
-              const x = 950 + 0;
+              const x0 = 130;
+              const y0 = 160 + i * 60;
+              const x = x0 + (DOOR_TARGET.X - x0) * u;
+              const y = y0 + (DOOR_TARGET.Y - y0) * u;
+              const k = 1 - 0.6 * u;
+              const w = (label.length * 7.5 + 30) * k;
               return (
-                <g key={t} opacity={u}>
-                  <circle cx={x} cy={360 + i * 34} r={4} fill={colors.ACCENT} />
-                  <text x={x + 16} y={364 + i * 34} fill={colors.TEXT} fontSize={13.5}>
-                    {t}
+                <g key={label} opacity={Math.min(1, u * 3) * (1 - u * u * 0.9)}>
+                  <rect x={x - w / 2} y={y - 14 * k} width={w} height={28 * k} rx={14 * k} fill={colors.PANEL} stroke={colors.GRID} />
+                  <text x={x} y={y + 4 * k} textAnchor="middle" fill={colors.TEXT} fontSize={13 * k}>
+                    {label}
                   </text>
                 </g>
               );
             })}
-          </g>
-        )}
+        </g>
+      </Camera>
 
-        {/* ---- the clutter moves in ---- */}
-        {moveInU > 0 &&
-          CLUTTER.map((label, i) => {
-            const u = clamp01(moveInU * 2.6 - i * 0.4);
+      {/* ---- finish chips (right column, screen space) ---- */}
+      <g opacity={chipsU * sideDim}>
+        <rect x={950} y={150} width={260} height={168} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
+        <circle cx={984} cy={188} r={14} fill={BRICK} />
+        <text x={1010} y={184} fill={colors.TEXT} fontSize={13}>
+          Behr exterior paint
+        </text>
+        <text x={1010} y={201} fill={colors.MUTED} fontSize={12.5}>
+          color: Boston Brick
+        </text>
+        <g opacity={clamp01(chipsU * 2 - 0.4)}>
+          <rect x={972} y={222} width={24} height={16} rx={3} fill="none" stroke={colors.TEXT} strokeWidth={1.5} />
+          {[0, 1, 2].map((i) => (
+            <line key={i} x1={975} y1={226 + i * 4} x2={993} y2={226 + i * 4} stroke={colors.TEXT} strokeWidth={1} />
+          ))}
+          <text x={1010} y={236} fill={colors.TEXT} fontSize={13}>
+            vents × 2 — far wall
+          </text>
+        </g>
+        <g opacity={clamp01(chipsU * 2 - 1)}>
+          <rect x={970} y={258} width={28} height={12} rx={2} fill={colors.POSITIVE} opacity={0.7} />
+          <text x={1010} y={270} fill={colors.TEXT} fontSize={13}>
+            floor: deck paint, 2 coats
+          </text>
+          <text x={1010} y={287} fill={colors.MUTED} fontSize={12.5}>
+            waterproof · one gallon
+          </text>
+        </g>
+      </g>
+
+      {/* ---- recap strip (screen space) ---- */}
+      {recapU > 0 && (
+        <g opacity={recapU * sideDim}>
+          {(['level blocks', 'a furniture floor', 'walls built flat', 'squared by siding', 'one friendly angle'] as const).map((t, i) => {
+            const u = clamp01(recapU * 3 - i * 0.45);
             if (u <= 0) return null;
-            const x0 = 130;
-            const y0 = 160 + i * 60;
-            const x = x0 + (DOOR_TARGET.X - x0) * u;
-            const y = y0 + (DOOR_TARGET.Y - y0) * u;
-            const k = 1 - 0.6 * u;
-            const w = (label.length * 7.5 + 30) * k;
             return (
-              <g key={label} opacity={Math.min(1, u * 3) * (1 - u * u * 0.9)}>
-                <rect x={x - w / 2} y={y - 14 * k} width={w} height={28 * k} rx={14 * k} fill={colors.PANEL} stroke={colors.GRID} />
-                <text x={x} y={y + 4 * k} textAnchor="middle" fill={colors.TEXT} fontSize={13 * k}>
-                  {label}
+              <g key={t} opacity={u}>
+                <circle cx={950} cy={360 + i * 34} r={4} fill={colors.ACCENT} />
+                <text x={966} y={364 + i * 34} fill={colors.TEXT} fontSize={13.5}>
+                  {t}
                 </text>
               </g>
             );
           })}
+        </g>
+      )}
 
-        {/* ---- closing panel ---- */}
-        {closeU > 0 && (
-          <g opacity={closeU}>
-            <rect x={330} y={190} width={620} height={140} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
-            <text x={640} y={246} textAnchor="middle" fill={colors.TEXT} fontSize={22}>
-              an 8-ft cube · ≈ $1,200 · a string of weekends
-            </text>
-            <text x={640} y={288} textAnchor="middle" fill={colors.ACCENT} fontSize={22} fontWeight={700}>
-              everything finally has a home
-            </text>
-          </g>
-        )}
-      </Camera>
+      {/* ---- closing panel (screen space, opaque over the dimmed model) ---- */}
+      {closeU > 0 && (
+        <g opacity={closeU}>
+          <rect x={330} y={190} width={620} height={140} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
+          <text x={640} y={246} textAnchor="middle" fill={colors.TEXT} fontSize={22}>
+            an 8-ft cube · ≈ $1,200 · a string of weekends
+          </text>
+          <text x={640} y={288} textAnchor="middle" fill={colors.ACCENT} fontSize={22} fontWeight={700}>
+            everything finally has a home
+          </text>
+        </g>
+      )}
     </>
   );
 }

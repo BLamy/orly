@@ -48,8 +48,9 @@ const SCOPE = { x: 856, y: 110, w: 350, h: 264 } as const;
 const TRAY = { x: 856, y: 410, w: 350, h: 74 } as const;
 
 const CAM_WIDE: CameraState = { x: 640, y: 350, k: 1.02 };
-const CAM_MACHINE: CameraState = { x: 620, y: 320, k: 1.2 };
-const CAM_SCOPE: CameraState = { x: 900, y: 300, k: 1.18 };
+// Both framings keep the fiber panel, the boundary stack, the Scope and the tray on stage.
+const CAM_MACHINE: CameraState = { x: 640, y: 320, k: 1.1 };
+const CAM_SCOPE: CameraState = { x: 782, y: 322, k: 1.3 };
 
 const RESOURCES = ['conn', 'file', 'lock'] as const;
 
@@ -155,6 +156,7 @@ export function buildScene() {
     text: 'Scale it up. Each acquisition files its release into a scope — a map of finalizers, remembered in the order you acquired them.',
   });
   tl.tween(rewindU, 1, { at: 36.8, dur: 0.7, ease: ease.move });
+  tl.tween(maskU, 0, { at: 36.6, dur: 0.6, ease: ease.enter });
   tl.tween(shieldG, 0, { at: 36.8, dur: 0.5, ease: ease.enter });
   tl.tween(cam, CAM_SCOPE, { at: 37.0, dur: 1.4, ease: ease.move });
   tl.tween(scopeU, 1, { at: 37.6, dur: 0.9, ease: ease.enter });
@@ -272,7 +274,7 @@ export function Render({ s }: { s: SceneState }) {
   const recapU = s.get(scene.recapU);
   const dimU = s.get(scene.dimU);
 
-  const mainOp = 1 - 0.88 * dimU;
+  const mainOp = 1 - 0.9 * dimU;
   const cur = CUR[Math.min(curK, CUR.length - 1)];
   const ang = spinU * Math.PI * 2;
   const dotX = SLOT_C.x + 128 * Math.cos(ang);
@@ -312,10 +314,10 @@ export function Render({ s }: { s: SceneState }) {
         {/* acquireUseRelease anatomy */}
         <g opacity={maskU * mainOp}>
           <rect x={MASK.x} y={MASK.y} width={MASK.w} height={MASK.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={MASK.x + 18} y={MASK.y + 28} fill={colors.TEXT} fontSize={13.5} fontWeight={600}>
+          <text x={MASK.x + 18} y={MASK.y + 28} fill={colors.TEXT} fontSize={14} fontWeight={600}>
             acquireUseRelease
           </text>
-          <text x={MASK.x + 18} y={MASK.y + 46} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+          <text x={MASK.x + 18} y={MASK.y + 46} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
             uninterruptibleMask
           </text>
           {(['acquire', 'use', 'release'] as const).map((seg, i) => {
@@ -336,7 +338,7 @@ export function Render({ s }: { s: SceneState }) {
                 <text x={MASK.x + 34} y={MASK.y + 83 + i * 46} fill={masked ? colors.WARM : colors.TEXT} fontSize={12.5} fontFamily={MONO}>
                   {seg}
                 </text>
-                <text x={MASK.x + MASK.w - 32} y={MASK.y + 83 + i * 46} textAnchor="end" fill={masked ? colors.WARM : colors.POSITIVE} fontSize={10.5} fontFamily={MONO}>
+                <text x={MASK.x + MASK.w - 32} y={MASK.y + 83 + i * 46} textAnchor="end" fill={masked ? colors.WARM : colors.POSITIVE} fontSize={12} fontFamily={MONO}>
                   {masked ? 'shielded' : 'restore'}
                 </text>
               </g>
@@ -350,24 +352,24 @@ export function Render({ s }: { s: SceneState }) {
           <text x={PANEL.x + 24} y={PANEL.y + 32} fill={colors.TEXT} fontSize={15.5} fontWeight={700}>
             FiberImpl · runLoop
           </text>
-          <text x={PANEL.x + PANEL.w - 20} y={PANEL.y + 32} textAnchor="end" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+          <text x={PANEL.x + PANEL.w - 20} y={PANEL.y + 32} textAnchor="end" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
             internal/effect.ts
           </text>
           <ellipse cx={SLOT_C.x} cy={SLOT_C.y} rx={126} ry={54} fill="none" stroke={colors.GRID} strokeDasharray="3 6" />
           <circle cx={dotX} cy={dotY} r={5} fill={colors.SECONDARY} />
           <rect x={SLOT.x} y={SLOT.y} width={SLOT.w} height={SLOT.h} rx={10} fill={colors.BG} stroke={cur.color} strokeWidth={1.8} />
-          <text x={SLOT.x + SLOT.w / 2} y={SLOT.y - 10} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+          <text x={SLOT.x + SLOT.w / 2} y={SLOT.y - 10} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
             current
           </text>
           <text x={SLOT.x + 16} y={SLOT.y + 30} fill={cur.color} fontSize={14} fontFamily={MONO} fontWeight={700}>
             {cur.label}
           </text>
-          <text x={SLOT.x + 16} y={SLOT.y + 54} fill={colors.TEXT} fontSize={11.5} fontFamily={MONO}>
+          <text x={SLOT.x + 16} y={SLOT.y + 54} fill={colors.TEXT} fontSize={12.5} fontFamily={MONO}>
             {cur.sub}
           </text>
 
           {/* the stack */}
-          <text x={STACK_X + STACK_W / 2} y={stackY(1) - 16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+          <text x={STACK_X + STACK_W / 2} y={stackY(1) - 16} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
             _stack
           </text>
 
@@ -384,10 +386,10 @@ export function Render({ s }: { s: SceneState }) {
                 stroke={shieldG > 0.3 ? colors.WARM : colors.TEAL}
                 strokeWidth={1.8}
               />
-              <text x={STACK_X + 10} y={stackY(0) + 20} fill={colors.TEAL} fontSize={11} fontFamily={MONO} fontWeight={600}>
+              <text x={STACK_X + 10} y={stackY(0) + 20} fill={colors.TEAL} fontSize={12} fontFamily={MONO} fontWeight={600}>
                 OnExit
               </text>
-              <text x={STACK_X + 10} y={stackY(0) + 36} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+              <text x={STACK_X + 10} y={stackY(0) + 36} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 run finalizer
               </text>
               {/* both ports — it catches everything */}
@@ -396,10 +398,10 @@ export function Render({ s }: { s: SceneState }) {
               {shieldG > 0.02 && (
                 <g opacity={shieldG}>
                   <rect x={STACK_X - 6} y={stackY(0) - 6} width={STACK_W + 12} height={STACK_H + 12} rx={12} fill="none" stroke={colors.WARM} strokeWidth={2} />
-                  <text x={STACK_X + STACK_W + 14} y={stackY(0) + 16} fill={colors.WARM} fontSize={10.5} fontFamily={MONO}>
+                  <text x={STACK_X + STACK_W + 14} y={stackY(0) + 16} fill={colors.WARM} fontSize={12} fontFamily={MONO}>
                     interruptible:
                   </text>
-                  <text x={STACK_X + STACK_W + 14} y={stackY(0) + 31} fill={colors.WARM} fontSize={10.5} fontFamily={MONO}>
+                  <text x={STACK_X + STACK_W + 14} y={stackY(0) + 31} fill={colors.WARM} fontSize={12} fontFamily={MONO}>
                     false while it runs
                   </text>
                 </g>
@@ -422,10 +424,10 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={f.i} opacity={vis} transform={`translate(${skipT * 220} ${(1 - present) * 14})`}>
                   <rect x={STACK_X} y={stackY(f.i)} width={STACK_W} height={STACK_H} rx={9} fill={colors.PANEL} stroke={busy ? colors.WARM : f.i === 0 ? colors.TEAL : colors.GRID} strokeWidth={busy ? 2.2 : 1.4} />
-                  <text x={STACK_X + 10} y={stackY(f.i) + 20} fill={f.i === 0 ? colors.TEAL : colors.TEXT} fontSize={11} fontFamily={MONO} fontWeight={600}>
+                  <text x={STACK_X + 10} y={stackY(f.i) + 20} fill={f.i === 0 ? colors.TEAL : colors.TEXT} fontSize={12} fontFamily={MONO} fontWeight={600}>
                     {f.name}
                   </text>
-                  <text x={STACK_X + 10} y={stackY(f.i) + 36} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+                  <text x={STACK_X + 10} y={stackY(f.i) + 36} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                     {f.tag}
                   </text>
                   {f.i === 0 && (
@@ -453,8 +455,8 @@ export function Render({ s }: { s: SceneState }) {
           {passR > 0.01 && passR < 0.99 && <circle cx={pr.x} cy={pr.y} r={9} fill={colors.NEGATIVE} opacity={0.9} />}
           {relFlash % 1 > 0.05 && relFlash % 1 < 0.95 && relFlash > 0 && relFlash < 2.01 && (
             <g opacity={0.9}>
-              <rect x={STACK_X - 40} y={stackY(0) + STACK_H + 14} width={210} height={28} rx={7} fill={colors.BG} stroke={colors.TEAL} />
-              <text x={STACK_X + 65} y={stackY(0) + STACK_H + 33} textAnchor="middle" fill={colors.TEAL} fontSize={11.5} fontFamily={MONO}>
+              <rect x={STACK_X + 65 - 124} y={stackY(0) + STACK_H + 14} width={248} height={28} rx={7} fill={colors.BG} stroke={colors.TEAL} />
+              <text x={STACK_X + 65} y={stackY(0) + STACK_H + 33} textAnchor="middle" fill={colors.TEAL} fontSize={12.5} fontFamily={MONO}>
                 finalizer ran · exit passed on
               </text>
             </g>
@@ -470,7 +472,7 @@ export function Render({ s }: { s: SceneState }) {
         {climbU > 0.05 && climbU < 2.95 && (
           <g>
             <circle cx={climbPos.x} cy={climbPos.y} r={10} fill={colors.NEGATIVE} opacity={0.95} />
-            <text x={climbPos.x + 18} y={climbPos.y + 4} fill={colors.NEGATIVE} fontSize={11} fontFamily={MONO}>
+            <text x={climbPos.x + 18} y={climbPos.y + 4} fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
               Exit
             </text>
           </g>
@@ -482,10 +484,10 @@ export function Render({ s }: { s: SceneState }) {
           <text x={SCOPE.x + 20} y={SCOPE.y + 30} fill={colors.TEXT} fontSize={15} fontWeight={700}>
             Scope
           </text>
-          <text x={SCOPE.x + SCOPE.w - 18} y={SCOPE.y + 30} textAnchor="end" fill={scopeClosed ? colors.NEGATIVE : colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+          <text x={SCOPE.x + SCOPE.w - 18} y={SCOPE.y + 30} textAnchor="end" fill={scopeClosed ? colors.NEGATIVE : colors.MUTED} fontSize={12.5} fontFamily={MONO}>
             {scopeClosed ? 'state: Closed' : 'state: Open'}
           </text>
-          <text x={SCOPE.x + 20} y={SCOPE.y + 52} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+          <text x={SCOPE.x + 20} y={SCOPE.y + 52} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
             strategy: "sequential" · finalizers: Map
           </text>
           {RESOURCES.map((r, i) => {
@@ -497,10 +499,10 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={r} opacity={vis} transform={`translate(${peel * 60} 0)`}>
                 <rect x={SCOPE.x + 20} y={SCOPE.y + 68 + i * 56} width={SCOPE.w - 40} height={44} rx={9} fill={colors.BG} stroke={peel > 0.05 ? colors.WARM : colors.GRID} />
-                <text x={SCOPE.x + 36} y={SCOPE.y + 87 + i * 56} fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
+                <text x={SCOPE.x + 36} y={SCOPE.y + 87 + i * 56} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
                   key {i + 1} → release {r}
                 </text>
-                <text x={SCOPE.x + 36} y={SCOPE.y + 104 + i * 56} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+                <text x={SCOPE.x + 36} y={SCOPE.y + 104 + i * 56} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                   acquireRelease · filed at acquisition
                 </text>
               </g>
@@ -511,13 +513,13 @@ export function Render({ s }: { s: SceneState }) {
             const peel = clamp01(peelU - (2 - i));
             if (peel < 0.95) return null;
             return (
-              <text key={r} x={SCOPE.x + SCOPE.w - 20} y={SCOPE.y + 96 + i * 56} textAnchor="end" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
+              <text key={r} x={SCOPE.x + SCOPE.w - 20} y={SCOPE.y + 96 + i * 56} textAnchor="end" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>
                 ✓ released
               </text>
             );
           })}
           {peelU > 0.05 && peelU < 3 && (
-            <text x={SCOPE.x + 20} y={SCOPE.y + SCOPE.h - 16} fill={colors.WARM} fontSize={11} fontFamily={MONO}>
+            <text x={SCOPE.x + 20} y={SCOPE.y + SCOPE.h - 16} fill={colors.WARM} fontSize={12} fontFamily={MONO}>
               closing in reverse — scopeCloseUnsafe(exit)
             </text>
           )}
@@ -526,10 +528,10 @@ export function Render({ s }: { s: SceneState }) {
         {/* the exit tray */}
         <g opacity={exitU * mainOp}>
           <rect x={TRAY.x} y={TRAY.y} width={TRAY.w} height={TRAY.h} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.5} />
-          <text x={TRAY.x + 18} y={TRAY.y + 30} fill={colors.NEGATIVE} fontSize={13.5} fontFamily={MONO} fontWeight={700}>
+          <text x={TRAY.x + 18} y={TRAY.y + 30} fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO} fontWeight={700}>
             Exit · Failure · Interrupt
           </text>
-          <text x={TRAY.x + 18} y={TRAY.y + 52} fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
+          <text x={TRAY.x + 18} y={TRAY.y + 52} fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>
             unchanged · resources open: 0
           </text>
         </g>
@@ -547,10 +549,10 @@ export function Render({ s }: { s: SceneState }) {
                   <text x={194 + i * 224} y={306} textAnchor="middle" fill={colors.ACCENT} fontSize={30} fontFamily={MONO} fontWeight={700}>
                     {r.n}
                   </text>
-                  <text x={194 + i * 224} y={344} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+                  <text x={194 + i * 224} y={344} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                     {r.text.split(' ').slice(0, 3).join(' ')}
                   </text>
-                  <text x={194 + i * 224} y={364} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+                  <text x={194 + i * 224} y={364} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                     {r.text.split(' ').slice(3).join(' ')}
                   </text>
                 </g>

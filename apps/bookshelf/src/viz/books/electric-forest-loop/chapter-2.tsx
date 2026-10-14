@@ -34,7 +34,8 @@ const CAM_FOLDER: CameraState = { x: 400, y: 300, k: 1.3 };
 const CAM_WORK: CameraState = { x: 330, y: 330, k: 1.5 };
 const CAM_RAIL: CameraState = { x: 880, y: 230, k: 1.35 };
 const CAM_TAPE: CameraState = { x: 890, y: 360, k: 1.3 };
-const CAM_CLAIM: CameraState = { x: 890, y: 430, k: 1.3 };
+// Wide enough that the evidence/ artifacts and the claim card share one frame.
+const CAM_CLAIM: CameraState = { x: 650, y: 380, k: 1.0 };
 const CAM_WIDE: CameraState = { x: 640, y: 340, k: 1.0 };
 
 /** The real gate order from AGENTS.md step 3. */
@@ -259,43 +260,53 @@ export function Render({ s }: { s: SceneState }) {
   const endDim = s.get(scene.endDim);
   const endU = s.get(scene.endU);
 
-  const worldOp = 1 - 0.85 * endDim;
+  const worldOp = (1 - 0.85 * endDim) * (1 - endU);
+
+  // The task folder sits to the left of the gauntlet. Once the camera has
+  // swung right to the rail, fade it out entirely rather than letting its
+  // labels drift off the stage; it fades back in as the camera returns.
+  const viewLeft = cam.x - STAGE_W / (2 * cam.k);
+  const leftFade = clamp01((230 - viewLeft) / 120);
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
+        {worldOp > 0.02 && (
         <g opacity={worldOp}>
           {/* ---- the task folder ---- */}
-          {folderU > 0 && (
-            <g opacity={folderU}>
+          {folderU * leftFade > 0.01 && (
+            <g opacity={folderU * leftFade}>
               <path
                 d={`M ${FOLDER.x} ${FOLDER.y + 18} l 0 -12 q 0 -6 6 -6 l 120 0 l 16 14 l ${FOLDER.w - 142} 0 q 6 0 6 6 l 0 ${FOLDER.h - 20} q 0 6 -6 6 l ${-FOLDER.w + 12} 0 q -6 0 -6 -6 Z`}
                 fill={colors.PANEL}
                 stroke={colors.ACCENT}
                 strokeWidth={1.6}
               />
-              <text x={FOLDER.x + 16} y={FOLDER.y + 44} fill={colors.TEXT} fontSize={13} fontWeight={700}>
+              <text x={FOLDER.x + 16} y={FOLDER.y + 44} fill={colors.TEXT} fontSize={15} fontWeight={700}>
                 one task, one folder
               </text>
-              <text x={FOLDER.x + 16} y={FOLDER.y + 64} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+              <text x={FOLDER.x + 16} y={FOLDER.y + 64} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 .eforest/tasks/epic-1-the-trunk/E1-T09-…/
               </text>
-              <text x={FOLDER.x + 16} y={FOLDER.y + 82} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+              <text x={FOLDER.x + 16} y={FOLDER.y + 84} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 readme.md · work/ · evidence/
               </text>
             </g>
           )}
 
           {/* ---- work/ (scratch, gitignored) ---- */}
-          {binsU > 0 && (
-            <g opacity={binsU * (1 - 0.75 * ghostU)}>
+          {binsU * leftFade > 0.01 && (
+            <g opacity={binsU * leftFade * (1 - 0.9 * ghostU)}>
               <rect x={WORK.x} y={WORK.y} width={WORK.w} height={WORK.h} rx={12} fill="none" stroke={colors.MUTED} strokeWidth={1.6} strokeDasharray="7 6" />
-              <text x={WORK.x + WORK.w / 2} y={WORK.y + 26} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO} fontWeight={700}>
+              <text x={WORK.x + WORK.w / 2} y={WORK.y + 26} textAnchor="middle" fill={colors.MUTED} fontSize={15} fontFamily={MONO} fontWeight={700}>
                 work/
               </text>
-              <text x={WORK.x + WORK.w / 2} y={WORK.y + WORK.h - 14} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
-                gitignored — “the future’s /tmp”
+              <text x={WORK.x + WORK.w / 2} y={WORK.y + WORK.h - 30} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                gitignored
+              </text>
+              <text x={WORK.x + WORK.w / 2} y={WORK.y + WORK.h - 14} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                the future’s /tmp
               </text>
               {/* flickering probes: each pops in, lingers, fades */}
               {PROBES.map((p) => {
@@ -310,7 +321,7 @@ export function Render({ s }: { s: SceneState }) {
                 );
               })}
               {probesU > 0.4 && ghostU < 0.3 && (
-                <text x={WORK.x + WORK.w / 2} y={WORK.y + 52} textAnchor="middle" fill={colors.SECONDARY} fontSize={11} fontStyle="italic" opacity={0.85}>
+                <text x={WORK.x + WORK.w / 2} y={WORK.y + 52} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontStyle="italic" opacity={0.85}>
                   probes, dead ends, rehearsals
                 </text>
               )}
@@ -318,14 +329,23 @@ export function Render({ s }: { s: SceneState }) {
           )}
 
           {/* ---- evidence/ (durable, committed) ---- */}
-          {binsU > 0 && (
-            <g opacity={binsU}>
+          {binsU * leftFade > 0.01 && (
+            <g opacity={binsU * leftFade}>
               <rect x={EVID.x} y={EVID.y} width={EVID.w} height={EVID.h} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.8} />
-              <text x={EVID.x + EVID.w / 2} y={EVID.y + 26} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO} fontWeight={700}>
+              <text x={EVID.x + EVID.w / 2} y={EVID.y + 26} textAnchor="middle" fill={colors.POSITIVE} fontSize={15} fontFamily={MONO} fontWeight={700}>
                 evidence/
               </text>
-              <text x={EVID.x + EVID.w / 2} y={EVID.y + EVID.h - 14} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
-                committed — citable forever
+              {/* empty until the run lands: say so, so the room reads as waiting */}
+              {artU < 0.25 && (
+                <text x={EVID.x + EVID.w / 2} y={EVID.y + 128} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic" opacity={clamp01(1 - artU * 4)}>
+                  nothing committed yet
+                </text>
+              )}
+              <text x={EVID.x + EVID.w / 2} y={EVID.y + EVID.h - 30} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                committed
+              </text>
+              <text x={EVID.x + EVID.w / 2} y={EVID.y + EVID.h - 14} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                citable forever
               </text>
               {ARTIFACTS.map((a, i) => {
                 const u = clamp01(artU * (ARTIFACTS.length + 1) - i);
@@ -334,7 +354,7 @@ export function Render({ s }: { s: SceneState }) {
                 return (
                   <g key={a} opacity={u} transform={`translate(0 ${(1 - u) * -16})`}>
                     <rect x={EVID.x + 16} y={y} width={EVID.w - 32} height={30} rx={7} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.3} />
-                    <text x={EVID.x + EVID.w / 2} y={y + 19} textAnchor="middle" fill={colors.TEXT} fontSize={11}>
+                    <text x={EVID.x + EVID.w / 2} y={y + 19} textAnchor="middle" fill={colors.TEXT} fontSize={12}>
                       {a}
                     </text>
                   </g>
@@ -356,7 +376,7 @@ export function Render({ s }: { s: SceneState }) {
             tokenColor={colors.SECONDARY}
           />
           {railU > 0.9 && (
-            <text x={RAIL.x + RAIL.w / 2} y={RAIL.y - 66} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO} opacity={railU}>
+            <text x={RAIL.x + RAIL.w / 2} y={RAIL.y - 66} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO} opacity={railU}>
               pnpm format:check && pnpm lint → typecheck → test → build
             </text>
           )}
@@ -375,7 +395,7 @@ export function Render({ s }: { s: SceneState }) {
           {recU > 0.05 && recU < 1 && (
             <g opacity={0.9}>
               <circle cx={TAPE.x - 18} cy={TAPE.y + TAPE.h / 2} r={6} fill={colors.NEGATIVE} opacity={0.55 + 0.45 * Math.sin(recU * Math.PI * 8) ** 2} />
-              <text x={TAPE.x - 30} y={TAPE.y + TAPE.h / 2 + 4} textAnchor="end" fill={colors.NEGATIVE} fontSize={11} fontFamily={MONO}>
+              <text x={TAPE.x - 30} y={TAPE.y + TAPE.h / 2 + 4} textAnchor="end" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
                 REC
               </text>
             </g>
@@ -385,30 +405,31 @@ export function Render({ s }: { s: SceneState }) {
           {claimCardU > 0 && (
             <g opacity={claimCardU} transform={`translate(0 ${(1 - claimCardU) * 14})`}>
               <rect x={CLAIMCARD.x} y={CLAIMCARD.y} width={CLAIMCARD.w} height={CLAIMCARD.h} rx={12} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.6} />
-              <text x={CLAIMCARD.x + 18} y={CLAIMCARD.y + 26} fill={colors.SECONDARY} fontSize={12} fontFamily={MONO} fontWeight={700}>
+              <text x={CLAIMCARD.x + 18} y={CLAIMCARD.y + 26} fill={colors.SECONDARY} fontSize={13} fontFamily={MONO} fontWeight={700}>
                 Verification log — builder — implemented
               </text>
-              <text x={CLAIMCARD.x + 18} y={CLAIMCARD.y + 50} fill={colors.TEXT} fontSize={11.5} fontFamily={MONO}>
+              <text x={CLAIMCARD.x + 18} y={CLAIMCARD.y + 50} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
                 commit 9aee35c · gates rerun from the top
               </text>
-              <text x={CLAIMCARD.x + 18} y={CLAIMCARD.y + 70} fill={colors.TEXT} fontSize={11.5} fontFamily={MONO}>
+              <text x={CLAIMCARD.x + 18} y={CLAIMCARD.y + 70} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>
                 evidence: event log + digests + integration output
               </text>
-              <text x={CLAIMCARD.x + 18} y={CLAIMCARD.y + 90} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+              <text x={CLAIMCARD.x + 18} y={CLAIMCARD.y + 90} fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                 Replay: N/A (protocol/CLI only) + mitigation named
               </text>
             </g>
           )}
         </g>
+        )}
 
         {/* ---- closing panel ---- */}
         {endU > 0 && (
           <g opacity={endU}>
             <rect x={340} y={260} width={600} height={120} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-            <text x={640} y={310} textAnchor="middle" fill={colors.TEXT} fontSize={19} fontWeight={700}>
+            <text x={640} y={310} textAnchor="middle" fill={colors.TEXT} fontSize={20} fontWeight={700}>
               diff + claim + recorded evidence
             </text>
-            <text x={640} y={344} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic">
+            <text x={640} y={344} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
               submitted — and now somebody gets to attack it
             </text>
           </g>

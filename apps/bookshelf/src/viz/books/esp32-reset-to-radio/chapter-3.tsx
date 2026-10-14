@@ -6,6 +6,20 @@ import type { CameraState, SceneState } from '../../core';
 const clamp01 = (u: number) => Math.max(0, Math.min(1, u));
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 const BYTES = [0x45, 0x53, 0x50, 0x33, 0x32, 0x0a];
+// The interrupt route as wire segments: FIFO out, matrix crossing, ISR in.
+const ROUTE: [number, number][] = [[505, 340], [560, 340], [710, 394], [807, 394]];
+function routeAt(f: number): [number, number] {
+  const lens = ROUTE.slice(1).map((p, i) => Math.hypot(p[0] - ROUTE[i][0], p[1] - ROUTE[i][1]));
+  let d = clamp01(f) * lens.reduce((a, b) => a + b, 0);
+  for (let i = 0; i < lens.length; i++) {
+    if (d <= lens[i] || i === lens.length - 1) {
+      const u = clamp01(d / lens[i]), a = ROUTE[i], b = ROUTE[i + 1];
+      return [a[0] + (b[0] - a[0]) * u, a[1] + (b[1] - a[1]) * u];
+    }
+    d -= lens[i];
+  }
+  return ROUTE[ROUTE.length - 1];
+}
 
 export function buildScene() {
   const tl = new Timeline(); const cam = tl.channel<CameraState>('cam', CAMERA_HOME, cameraInterp);
@@ -39,10 +53,12 @@ export function Render({ s }: { s: SceneState }) {
   const main = 1 - 0.9 * s.get(scene.dimU), bytes = s.get(scene.bytesU), drain = s.get(scene.drainU), route = s.get(scene.routeU);
   return <><rect width={1280} height={720} fill={colors.BG} /><g opacity={main}><text x={640} y={54} textAnchor="middle" fill={colors.TEXT} fontSize={30} fontWeight={800}>The interrupt handoff</text><text x={640} y={80} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={12}>peripheral → ISR → queue → task</text></g><Camera {...s.get(scene.cam)}><g opacity={main}>
     <Box x={145} y={340} w={170} label="UART peripheral" color={colors.ACCENT} u={s.get(scene.uartU)} />
-    <g opacity={s.get(scene.fifoU)}><rect x={255} y={292} width={250} height={96} rx={16} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={2.5} /><text x={380} y={278} textAnchor="middle" fill={colors.WARM} fontFamily={MONO} fontSize={12}>RX FIFO</text>{BYTES.map((b, i) => { const p = clamp01(bytes * BYTES.length - i) * (1 - drain); return <g key={i} opacity={p} transform={`translate(${283 + i * 38} 340)`}><rect x={-15} y={-22} width={30} height={44} rx={6} fill={colors.BG} stroke={colors.ACCENT} /><text y={5} textAnchor="middle" fill={colors.ACCENT} fontFamily={MONO} fontSize={10}>{b.toString(16).toUpperCase()}</text></g>; })}</g>
+    <g opacity={s.get(scene.fifoU)}><rect x={255} y={292} width={250} height={96} rx={16} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={2.5} /><text x={380} y={278} textAnchor="middle" fill={colors.WARM} fontFamily={MONO} fontSize={12}>RX FIFO</text></g>
+    {BYTES.map((b, i) => { const raw = clamp01(bytes * BYTES.length - i); return <g key={i} opacity={raw * (1 - drain)} transform={`translate(${283 + i * 38} 340)`}><rect x={-15} y={-22} width={30} height={44} rx={6} fill={colors.BG} stroke={colors.ACCENT} /><text y={5} textAnchor="middle" fill={colors.ACCENT} fontFamily={MONO} fontSize={12}>{b.toString(16).toUpperCase()}</text></g>; })}
     <Box x={635} y={205} w={210} label="esp_intr_alloc()" color={colors.SECONDARY} u={s.get(scene.allocU)} />
-    <g opacity={s.get(scene.allocU)}><rect x={560} y={290} width={150} height={180} rx={18} fill={colors.PANEL} stroke={colors.GRID} /><text x={635} y={320} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={11}>interrupt matrix</text>{[0,1,2].map(i => <line key={i} x1={580} y1={352 + i * 42} x2={690} y2={352 + (2-i) * 42} stroke={i === 1 ? colors.SECONDARY : colors.GRID} strokeWidth={i === 1 ? 4 : 2} />)}</g>
-    {route > 0 && <g><path d="M505 340 H560 M710 394 H790" fill="none" stroke={colors.SECONDARY} strokeWidth={4} /><circle cx={505 + 285 * route} cy={340 + 54 * Math.max(0, (route - 0.2) / 0.8)} r={10} fill={colors.SECONDARY} /></g>}
+    <line x1={635} y1={239} x2={635} y2={288} stroke={colors.SECONDARY} strokeWidth={2} strokeDasharray="6 5" opacity={s.get(scene.allocU)} />
+    <g opacity={s.get(scene.allocU)}><rect x={560} y={290} width={150} height={180} rx={18} fill={colors.PANEL} stroke={colors.GRID} /><text x={635} y={320} textAnchor="middle" fill={colors.MUTED} fontFamily={MONO} fontSize={12}>interrupt matrix</text>{[0,1,2].map(i => <line key={i} x1={580} y1={352 + i * 42} x2={690} y2={352 + (2-i) * 42} stroke={i === 1 ? colors.SECONDARY : colors.GRID} strokeWidth={i === 1 ? 4 : 2} />)}</g>
+    {route > 0 && <g><path d="M505 340 H560 L710 394 H807" fill="none" stroke={colors.SECONDARY} strokeWidth={4} /><circle cx={routeAt(route)[0]} cy={routeAt(route)[1]} r={10} fill={colors.SECONDARY} /></g>}
     <Box x={885} y={394} w={155} label="UART ISR" color={colors.NEGATIVE} u={s.get(scene.isrU)} />
     <g opacity={s.get(scene.queueU)}><path d="M960 394 C1020 394 1010 500 1080 500" fill="none" stroke={colors.POSITIVE} strokeWidth={4} strokeDasharray="8 6" /><rect x={1010} y={470} width={140} height={60} rx={14} fill={colors.PANEL} stroke={colors.POSITIVE} /><text x={1080} y={505} textAnchor="middle" fill={colors.POSITIVE} fontFamily={MONO} fontSize={12}>UART queue</text></g>
     <Box x={1080} y={590} w={180} label="consumer task" color={colors.POSITIVE} u={s.get(scene.taskU)} />

@@ -36,59 +36,59 @@ export function buildScene() {
   let t = 0.5;
   t = tl.caption({ at: t, dur: 6.2, text: "Here's a pull request with four changed files: a new migration, a dependency bump, its lockfile, and one interface component." });
   tl.tween(filesU, 1, { at: 0.7, dur: 1.6, ease: ease.enter });
-  tl.tween(cam, { x: 640, y: 150, k: 1.05 }, { at: 0.9, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 150, k: 1.1 }, { at: 0.9, dur: 1.3, ease: ease.move });
   t = tl.hold(t, 0);
 
   t = tl.caption({ at: t, dur: 6.4, text: 'The ownership file turns that into a plan. The migration goes to database review. The dependency files go to the package file reviewer.' });
   tl.tween(planU, 1, { at: t - 5.6, dur: 1.6, ease: ease.enter });
   tl.tween(asideU, 1, { at: t - 3.6, dur: 1.2, ease: ease.enter });
-  tl.tween(cam, { x: 640, y: 230, k: 1.05 }, { at: t - 5.4, dur: 1.4, ease: ease.move });
+  tl.tween(cam, { x: 620, y: 250, k: 1.1 }, { at: t - 5.4, dur: 1.4, ease: ease.move });
   t = tl.hold(t, 0);
 
   t = tl.caption({ at: t, dur: 6.4, text: 'Each agent runs once, in parallel, seeing only its own matched files and the relevant diff — never the whole repository.' });
   tl.tween(laneU, 1, { at: t - 5.6, dur: 1.4, ease: ease.enter });
   tl.tween(spinU, 1, { at: t - 4.6, dur: 3.4, ease: ease.linear });
-  tl.tween(cam, { x: 640, y: 320, k: 1.05 }, { at: t - 5.4, dur: 1.4, ease: ease.move });
+  tl.tween(cam, { x: 620, y: 300, k: 1.05 }, { at: t - 5.4, dur: 1.4, ease: ease.move });
   t = tl.hold(t, 0);
 
   t = tl.caption({ at: t, dur: 7.0, text: 'Database review finds a blocking problem: a new not null column, with no default, that will break every row already sitting in the table.' });
   tl.tween(claudeStage, 1, { at: t - 6.2, dur: 1.4, ease: ease.enter });
-  tl.tween(cam, { x: 430, y: 400, k: 1.15 }, { at: t - 6.0, dur: 1.4, ease: ease.move });
+  tl.tween(cam, { x: 560, y: 400, k: 1.05 }, { at: t - 6.0, dur: 1.4, ease: ease.move });
   t = tl.hold(t, 0);
 
   t = tl.caption({ at: t, dur: 6.2, text: 'The package file reviewer finds an unused new dependency. Worth a comment, but not risky enough to block anything — it warns, and it passes.' });
   tl.tween(findCodexU, 1, { at: t - 5.4, dur: 1.4, ease: ease.enter });
-  tl.tween(cam, { x: 850, y: 400, k: 1.15 }, { at: t - 5.2, dur: 1.4, ease: ease.move });
+  tl.tween(cam, { x: 680, y: 400, k: 1.05 }, { at: t - 5.2, dur: 1.4, ease: ease.move });
   t = tl.hold(t, 0);
 
   t = tl.caption({ at: t, dur: 6.6, text: 'One blocking finding and one warning collapse into a single sticky comment on the pull request, updated in place on every push.' });
   tl.tween(stickyU, 1, { at: t - 5.8, dur: 1.6, ease: ease.enter });
-  tl.tween(cam, { x: 640, y: 470, k: 1.02 }, { at: t - 5.6, dur: 1.4, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 380, k: 1.0 }, { at: t - 5.6, dur: 1.4, ease: ease.move });
   t = tl.hold(t, 0);
 
   t = tl.caption({ at: t, dur: 6.2, text: 'The one required check, agent code review, fails — because of the blocking migration finding, and only because of it.' });
   tl.tween(checkU, 1, { at: t - 5.4, dur: 1.2, ease: ease.pop });
-  tl.tween(cam, { x: 640, y: 550, k: 1.0 }, { at: t - 5.2, dur: 1.4, ease: ease.move });
+  tl.tween(cam, { x: 580, y: 400, k: 1.05 }, { at: t - 5.2, dur: 1.4, ease: ease.move });
   t = tl.hold(t, 0);
 
   t = tl.caption({ at: t, dur: 6.6, text: 'The author fixes it with the known safe sequence: add the column nullable, backfill the existing rows, then constrain it not null.' });
   tl.tween(claudeStage, 2, { at: t - 5.8, dur: 1.4, ease: ease.enter });
-  tl.tween(cam, { x: 430, y: 400, k: 1.15 }, { at: t - 5.6, dur: 1.4, ease: ease.move });
+  tl.tween(cam, { x: 560, y: 400, k: 1.05 }, { at: t - 5.6, dur: 1.4, ease: ease.move });
   t = tl.hold(t, 0);
 
   t = tl.caption({ at: t, dur: 6.2, text: 'A new commit means a fresh head revision. A new push event cancels the stale run and starts both agents again from scratch.' });
   tl.tween(spinU, 2, { at: t - 5.4, dur: 2.0, ease: ease.linear });
-  tl.tween(cam, { x: 640, y: 320, k: 1.05 }, { at: t - 5.2, dur: 1.4, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 360, k: 1.0 }, { at: t - 5.2, dur: 1.4, ease: ease.move });
   t = tl.hold(t, 0);
 
   t = tl.caption({ at: t, dur: 6.8, text: 'Database review reruns against the fixed migration and finds nothing this time. The sticky comment marks the old finding resolved since the previous push.' });
   tl.tween(claudeStage, 3, { at: t - 6.0, dur: 1.4, ease: ease.enter });
-  tl.tween(cam, { x: 430, y: 400, k: 1.15 }, { at: t - 5.8, dur: 1.4, ease: ease.move });
+  tl.tween(cam, { x: 560, y: 400, k: 1.05 }, { at: t - 5.8, dur: 1.4, ease: ease.move });
   t = tl.hold(t, 0);
 
   t = tl.caption({ at: t, dur: 6.4, text: 'The package file reviewer still warns about the same dependency, but nothing left is blocking. The required check turns green.' });
   tl.tween(checkGreenU, 1, { at: t - 5.6, dur: 1.2, ease: ease.pop });
-  tl.tween(cam, { x: 640, y: 550, k: 1.0 }, { at: t - 5.4, dur: 1.4, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 360, k: 1.0 }, { at: t - 5.4, dur: 1.4, ease: ease.move });
   t = tl.hold(t, 0);
 
   t = tl.caption({ at: t, dur: 6.6, text: 'One blocking finding, one fix, one rerun, one green check — ownership file routing, real agents, real code, start to finish.' });
@@ -131,8 +131,8 @@ export function Render({ s }: { s: SceneState }) {
     <Camera {...s.get(scene.cam)}>
       {/* files */}
       <g opacity={filesU * dim}>
-        {FILES.map((f, i) => <g key={f} opacity={clamp01(filesU * 5 - i * 0.6)} transform={`translate(${140 + (i % 2) * 500} ${90 + Math.floor(i / 2) * 34})`}>
-          <text fill={i === 3 ? colors.MUTED : colors.WARM} fontSize={12} fontFamily={mono}>{f}</text>
+        {FILES.map((f, i) => <g key={f} opacity={clamp01(filesU * 5 - i * 0.6)} transform={`translate(${100 + (i % 2) * 560} ${90 + Math.floor(i / 2) * 36})`}>
+          <text fill={i === 3 ? colors.MUTED : colors.WARM} fontSize={14} fontFamily={mono}>{f}</text>
         </g>)}
       </g>
 
@@ -140,28 +140,28 @@ export function Render({ s }: { s: SceneState }) {
       <g opacity={planU * dim}>
         <g transform="translate(150 150)">
           <rect width={430} height={70} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.8} />
-          <text x={20} y={26} fill={colors.ACCENT} fontSize={13} fontFamily={mono} fontWeight={700}>@claude/db-review</text>
-          <text x={20} y={48} fill={colors.MUTED} fontSize={11} fontFamily={mono}>migration.sql</text>
+          <text x={20} y={26} fill={colors.ACCENT} fontSize={14} fontFamily={mono} fontWeight={700}>@claude/db-review</text>
+          <text x={20} y={48} fill={colors.MUTED} fontSize={12.5} fontFamily={mono}>migration.sql</text>
         </g>
         <g transform="translate(700 150)">
           <rect width={430} height={70} rx={14} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.8} />
-          <text x={20} y={26} fill={colors.WARM} fontSize={13} fontFamily={mono} fontWeight={700}>@codex/package-json-review</text>
-          <text x={20} y={48} fill={colors.MUTED} fontSize={11} fontFamily={mono}>package.json · pnpm-lock.yaml</text>
+          <text x={20} y={26} fill={colors.WARM} fontSize={14} fontFamily={mono} fontWeight={700}>@codex/package-json-review</text>
+          <text x={20} y={48} fill={colors.MUTED} fontSize={12.5} fontFamily={mono}>package.json · pnpm-lock.yaml</text>
         </g>
       </g>
       <g opacity={asideU * dim}>
-        <text x={640} y={244} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>EventStatus.tsx matches no agent rule · normal human review only</text>
+        <text x={640} y={246} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={mono}>EventStatus.tsx matches no agent rule · normal human review only</text>
       </g>
 
       {/* agent lanes running */}
       <g opacity={laneU * dim}>
         <g transform="translate(230 300)">
           <circle r={18} fill="none" stroke={colors.ACCENT} strokeWidth={3} strokeDasharray="70 40" transform={`rotate(${spinAngle})`} opacity={0.85} />
-          <text x={34} y={6} fill={colors.ACCENT} fontSize={12.5} fontFamily={mono}>database review · running</text>
+          <text x={34} y={6} fill={colors.ACCENT} fontSize={14} fontFamily={mono}>database review · running</text>
         </g>
         <g transform="translate(780 300)">
           <circle r={18} fill="none" stroke={colors.WARM} strokeWidth={3} strokeDasharray="70 40" transform={`rotate(${-spinAngle})`} opacity={0.85} />
-          <text x={34} y={6} fill={colors.WARM} fontSize={12.5} fontFamily={mono}>package json review · running</text>
+          <text x={34} y={6} fill={colors.WARM} fontSize={14} fontFamily={mono}>package.json review · running</text>
         </g>
       </g>
 
@@ -170,37 +170,37 @@ export function Render({ s }: { s: SceneState }) {
         <rect width={430} height={110} rx={16} fill={colors.PANEL}
           stroke={resolvedOp > 0.5 ? colors.MUTED : colors.NEGATIVE} strokeWidth={2} opacity={resolvedOp > 0.5 ? 0.5 : 1} />
         <g opacity={findingOp}>
-          <text x={20} y={28} fill={colors.NEGATIVE} fontSize={12.5} fontWeight={750} fontFamily={mono}>blocking</text>
-          <text x={20} y={52} fill={colors.TEXT} fontSize={12} fontFamily={mono}>organization_id UUID NOT NULL</text>
-          <text x={20} y={72} fill={colors.MUTED} fontSize={11} fontFamily={mono}>breaks every existing row</text>
+          <text x={20} y={28} fill={colors.NEGATIVE} fontSize={14} fontWeight={750} fontFamily={mono}>blocking</text>
+          <text x={20} y={54} fill={colors.TEXT} fontSize={13.5} fontFamily={mono}>organization_id UUID NOT NULL</text>
+          <text x={20} y={80} fill={colors.MUTED} fontSize={12.5} fontFamily={mono}>breaks every existing row</text>
         </g>
         <g opacity={fixOp}>
-          <text x={20} y={28} fill={colors.WARM} fontSize={12.5} fontWeight={750} fontFamily={mono}>fix · safe sequence</text>
-          <text x={20} y={52} fill={colors.POSITIVE} fontSize={12} fontFamily={mono}>add nullable → backfill → constrain not null</text>
+          <text x={20} y={28} fill={colors.WARM} fontSize={14} fontWeight={750} fontFamily={mono}>fix · safe sequence</text>
+          <text x={20} y={54} fill={colors.POSITIVE} fontSize={13.5} fontFamily={mono}>add nullable → backfill → constrain not null</text>
         </g>
         <g opacity={resolvedOp}>
-          <text x={20} y={28} fill={colors.MUTED} fontSize={12.5} fontWeight={750} fontFamily={mono}>resolved since the previous push</text>
-          <text x={20} y={52} fill={colors.POSITIVE} fontSize={12} fontFamily={mono}>✓ nothing blocking on rerun</text>
+          <text x={20} y={28} fill={colors.MUTED} fontSize={14} fontWeight={750} fontFamily={mono}>resolved since the previous push</text>
+          <text x={20} y={54} fill={colors.POSITIVE} fontSize={13.5} fontFamily={mono}>✓ nothing blocking on rerun</text>
         </g>
       </g>}
 
       {/* codex finding — warns, always passes */}
       <g opacity={findCodexU * dim} transform="translate(700 370)">
         <rect width={430} height={110} rx={16} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.8} />
-        <text x={20} y={28} fill={colors.WARM} fontSize={12.5} fontWeight={750} fontFamily={mono}>warning</text>
-        <text x={20} y={52} fill={colors.TEXT} fontSize={12} fontFamily={mono}>unused new production dependency</text>
-        <text x={20} y={72} fill={colors.POSITIVE} fontSize={11} fontFamily={mono}>passes</text>
+        <text x={20} y={28} fill={colors.WARM} fontSize={14} fontWeight={750} fontFamily={mono}>warning</text>
+        <text x={20} y={54} fill={colors.TEXT} fontSize={13.5} fontFamily={mono}>unused new production dependency</text>
+        <text x={20} y={80} fill={colors.POSITIVE} fontSize={12.5} fontFamily={mono}>passes</text>
       </g>
 
       {/* sticky comment */}
       <g opacity={stickyU * dim} transform="translate(290 500)">
         <rect width={700} height={62} rx={14} fill={colors.PANEL} stroke={colors.TEXT} strokeOpacity={0.3} />
-        <text x={20} y={26} fill={colors.TEXT} fontSize={12.5} fontFamily={mono}>Agent Code Review · sticky comment</text>
-        <text x={20} y={46} fill={colors.MUTED} fontSize={11} fontFamily={mono}>updates in place on every push · never piles up new comments</text>
+        <text x={20} y={26} fill={colors.TEXT} fontSize={14} fontFamily={mono}>Agent Code Review · sticky comment</text>
+        <text x={20} y={48} fill={colors.MUTED} fontSize={12.5} fontFamily={mono}>updates in place on every push · never piles up new comments</text>
       </g>
 
       {/* required check badge */}
-      {checkU > 0 && <g opacity={checkU * dim} transform="translate(460 560)">
+      {checkU > 0 && <g opacity={checkU * dim} transform="translate(460 582)">
         <rect width={360} height={48} rx={24} fill={colors.PANEL}
           stroke={checkGreenU > 0.5 ? colors.POSITIVE : colors.NEGATIVE}
           strokeWidth={2.2} />

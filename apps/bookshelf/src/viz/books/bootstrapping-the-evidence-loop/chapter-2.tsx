@@ -31,33 +31,33 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 /* ---------------------------------------------------------------- layout */
 const LAPTOP = { x: 55, y: 115, w: 420, h: 395 };
 const AWS = { x: 545, y: 95, w: 675, h: 425 };
-const APP = { x: 150, y: 275 };
-const PROXY = { x: 350, y: 275 };
-const FRPC = { x: 350, y: 420 };
+const APP = { x: 140, y: 275 };
+const PROXY = { x: 360, y: 275 };
+const FRPC = { x: 360, y: 420 };
 const ONBOARD = { x: 655, y: 155 };
 const CONTROL = { x: 935, y: 155 };
 const FRPS = { x: 750, y: 300 };
 const NLB = { x: 1080, y: 300 };
 const BROWSER = { x: 1080, y: 440 };
-const ORCH = { x: 900, y: 440 };
-const PROJECT = { x: 500, y: 575 };
-const MCP = { x: 790, y: 575 };
+const ORCH = { x: 870, y: 440 };
+const PROJECT = { x: 470, y: 575 };
+const MCP = { x: 820, y: 575 };
 const AGENT = { x: 1080, y: 575 };
 
 const CAM_PROJECT: CameraState = { x: 640, y: 350, k: 0.95 };
-const CAM_LOCAL: CameraState = { x: 360, y: 300, k: 1.0 };
-const CAM_CONTROL: CameraState = { x: 650, y: 300, k: 1.04 };
-const CAM_DATA: CameraState = { x: 680, y: 300, k: 0.98 };
+const CAM_LOCAL: CameraState = { x: 560, y: 340, k: 0.9 };
+const CAM_CONTROL: CameraState = { x: 650, y: 335, k: 1.0 };
+const CAM_DATA: CameraState = { x: 680, y: 340, k: 0.98 };
 const CAM_HEALTH: CameraState = { x: 760, y: 335, k: 0.82 };
-const CAM_MCP: CameraState = { x: 820, y: 500, k: 1.08 };
-const CAM_WIDE: CameraState = { x: 640, y: 355, k: 0.95 };
+const CAM_MCP: CameraState = { x: 720, y: 380, k: 0.98 };
+const CAM_WIDE: CameraState = { x: 640, y: 385, k: 0.95 };
 
 const DATA_PATH = [
   { x: BROWSER.x - 92, y: BROWSER.y },
   { x: FRPS.x + 92, y: FRPS.y },
   { x: FRPC.x + 92, y: FRPC.y },
   { x: PROXY.x - 92, y: PROXY.y },
-  { x: APP.x + 92, y: APP.y },
+  { x: APP.x + 75, y: APP.y },
 ];
 
 /* -------------------------------------------------------------- timeline */
@@ -264,11 +264,11 @@ function OnboardingCard({ u, dim }: { u: number; dim: number }) {
   if (uu <= 0) return null;
   return (
     <g opacity={uu * (1 - 0.78 * dim)}>
-      <rect x={520} y={28} width={420} height={54} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.5} />
-      <text x={540} y={52} fill={colors.WARM} fontSize={11.5} fontFamily={MONO} fontWeight={700}>
+      <rect x={480} y={28} width={480} height={54} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.5} />
+      <text x={500} y={52} fill={colors.WARM} fontSize={13} fontFamily={MONO} fontWeight={700}>
         WEB ONBOARDING
       </text>
-      <text x={540} y={70} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+      <text x={500} y={70} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
         POST /api/v1/projects · use_reverse_proxy: true · start_paused
       </text>
       <path
@@ -336,15 +336,14 @@ function ToolFan({ u, dim }: { u: number; dim: number }) {
       {tools.map((tool, i) => {
         const p = clamp01(uu * 4.5 - i * 0.9);
         if (p <= 0) return null;
-        const angle = -145 + i * 38;
-        const a = (angle * Math.PI) / 180;
-        const x = MCP.x + Math.cos(a) * (72 + 52 * p);
-        const y = MCP.y + Math.sin(a) * (72 + 52 * p);
-        const w = tool.length * 6.5 + 20;
+        // a row of tool chips under the MCP server, clear of the readiness rail
+        const x = MCP.x + (i - 1.5) * 150;
+        const y = MCP.y + 44 + (1 - p) * 10;
+        const w = tool.length * 7.4 + 20;
         return (
-          <g key={tool} transform={`translate(${x}, ${y + (1 - p) * 10})`} opacity={p}>
+          <g key={tool} transform={`translate(${x}, ${y})`} opacity={p}>
             <rect x={-w / 2} y={-13} width={w} height={26} rx={13} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.2} />
-            <text y={4} textAnchor="middle" fill={colors.SECONDARY} fontSize={10.2} fontFamily={MONO}>
+            <text y={4} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>
               {tool}
             </text>
           </g>
@@ -370,8 +369,8 @@ function SharedKeySpine({ u, dim }: { u: number; dim: number }) {
       />
       {uu > 0.8 && (
         <g transform="translate(612, 466)">
-          <rect x={-92} y={-14} width={184} height={28} rx={14} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.1} />
-          <text y={4} textAnchor="middle" fill={colors.WARM} fontSize={10.5} fontFamily={MONO}>
+          <rect x={-125} y={-14} width={250} height={28} rx={14} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.1} />
+          <text y={4} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>
             same qa-project-id · not traffic
           </text>
         </g>
@@ -417,24 +416,24 @@ function ReadinessRail({
           <g key={stage.label} transform={`translate(${x}, 0)`}>
             <circle r={11} fill={u > 0.82 ? stage.color : colors.BG} stroke={u > 0.82 ? stage.color : colors.MUTED} strokeWidth={2} />
             {u > 0.82 && <circle r={4} fill={colors.BG} />}
-            <text y={26} textAnchor="middle" fill={u > 0.82 ? stage.color : colors.MUTED} fontSize={9.5} fontFamily={MONO}>
+            <text y={28} textAnchor="middle" fill={u > 0.82 ? stage.color : colors.MUTED} fontSize={12} fontFamily={MONO}>
               {stage.label}
             </text>
           </g>
         );
       })}
       {disconnect > 0.2 && (
-        <g transform="translate(318, -23)" opacity={clamp01(disconnect)}>
-          <rect x={-76} y={-12} width={152} height={24} rx={12} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.2} />
-          <text y={4} textAnchor="middle" fill={colors.NEGATIVE} fontSize={9.5} fontFamily={MONO}>
+        <g transform="translate(318, -22)" opacity={clamp01(disconnect)}>
+          <rect x={-98} y={-13} width={196} height={26} rx={13} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.2} />
+          <text y={4} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
             SUSPENDED · frpc offline
           </text>
         </g>
       )}
       {resume > 0.2 && (
-        <g transform="translate(598, -23)" opacity={clamp01(resume)}>
-          <rect x={-58} y={-12} width={116} height={24} rx={12} fill={colors.BG} stroke={colors.TEAL} strokeWidth={1.2} />
-          <text y={4} textAnchor="middle" fill={colors.TEAL} fontSize={9.5} fontFamily={MONO}>
+        <g transform="translate(598, -22)" opacity={clamp01(resume)}>
+          <rect x={-58} y={-13} width={116} height={26} rx={13} fill={colors.BG} stroke={colors.TEAL} strokeWidth={1.2} />
+          <text y={4} textAnchor="middle" fill={colors.TEAL} fontSize={12} fontFamily={MONO}>
             RESUMED
           </text>
         </g>
@@ -448,12 +447,12 @@ function RecoveryCard({ disconnect, resume, dim }: { disconnect: number; resume:
   if (u <= 0) return null;
   const recovering = resume > disconnect;
   return (
-    <g transform={`translate(1070, ${54 + (1 - u) * 8})`} opacity={u * (1 - 0.72 * dim)}>
-      <rect x={-138} y={-18} width={276} height={36} rx={10} fill={colors.PANEL} stroke={recovering ? colors.TEAL : colors.NEGATIVE} strokeWidth={1.4} />
-      <text y={-1} textAnchor="middle" fill={recovering ? colors.TEAL : colors.NEGATIVE} fontSize={10.5} fontFamily={MONO} fontWeight={700}>
+    <g transform={`translate(1080, ${54 + (1 - u) * 8})`} opacity={u * (1 - 0.72 * dim)}>
+      <rect x={-150} y={-20} width={300} height={40} rx={10} fill={colors.PANEL} stroke={recovering ? colors.TEAL : colors.NEGATIVE} strokeWidth={1.4} />
+      <text y={-3} textAnchor="middle" fill={recovering ? colors.TEAL : colors.NEGATIVE} fontSize={12} fontFamily={MONO} fontWeight={700}>
         {recovering ? 'frpc online · resume run' : 'frpc offline · suspend run'}
       </text>
-      <text y={14} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>
+      <text y={13} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
         same session row · evidence preserved
       </text>
     </g>
@@ -464,12 +463,12 @@ function WarningCard({ u, dim }: { u: number; dim: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
   return (
-    <g transform={`translate(640, ${92 + (1 - uu) * 12})`} opacity={uu * (1 - 0.65 * dim)}>
-      <rect x={-270} y={-34} width={540} height={68} rx={14} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.8} />
-      <text y={-7} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13.5} fontWeight={750}>
+    <g transform={`translate(690, ${48 + (1 - uu) * 12})`} opacity={uu * (1 - 0.65 * dim)}>
+      <rect x={-230} y={-34} width={460} height={68} rx={14} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.8} />
+      <text y={-7} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={750}>
         dead endpoint ≠ a transient wait
       </text>
-      <text y={18} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+      <text y={18} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
         timeout → reap host → reprovision cleanly
       </text>
     </g>
@@ -480,22 +479,35 @@ function ClosingCard({ u }: { u: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
   return (
-    <g transform={`translate(640, ${326 + (1 - uu) * 14})`} opacity={uu}>
+    <g transform={`translate(640, ${350 + (1 - uu) * 14})`} opacity={uu}>
       <rect x={-372} y={-104} width={744} height={208} rx={18} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.6} />
       <text y={-57} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={760}>
         Two roads. One project key.
       </text>
       <line x1={-278} y1={-18} x2={278} y2={-18} stroke={colors.GRID} />
       <circle cx={-286} cy={20} r={8} fill={colors.TEAL} />
-      <text x={-264} y={25} fill={colors.TEAL} fontSize={13} fontFamily={MONO}>
+      <text x={-264} y={25} fill={colors.TEAL} fontSize={14} fontFamily={MONO}>
         browser → private ClusterIP → frps → local :8888 → app
       </text>
       <circle cx={-286} cy={58} r={8} fill={colors.SECONDARY} />
-      <text x={-264} y={63} fill={colors.SECONDARY} fontSize={13} fontFamily={MONO}>
+      <text x={-264} y={63} fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>
         agent → LoopQA MCP → project evidence catalog
       </text>
-      <text y={91} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+      <text y={91} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
         NLB control + DNS gate · suspend/reconnect · correlation by project identifier
+      </text>
+    </g>
+  );
+}
+
+function OutboundNote({ u, dim }: { u: number; dim: number }) {
+  const uu = clamp01(u);
+  if (uu <= 0) return null;
+  return (
+    <g transform="translate(180, 470)" opacity={uu * (1 - 0.7 * dim)}>
+      <rect x={-125} y={-14} width={250} height={28} rx={14} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.2} />
+      <text y={4} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>
+        outbound only · nothing dials in
       </text>
     </g>
   );
@@ -522,24 +534,28 @@ export function Render({ s }: { s: SceneState }) {
   const awsLayerDim = Math.max(dim, upperDim, disconnect * 0.35);
   const projectStageU = project * clamp01(1 - health + mcp + resume * 0.2);
 
+  const closeU = clamp01(s.get(scene.closeU));
+
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
+      {closeU < 1 && (
       <Camera {...s.get(scene.cam)}>
         <g opacity={(1 - 0.82 * dim) * (1 - 0.88 * upperDim)}>
           <Zone x={LAPTOP.x} y={LAPTOP.y} w={LAPTOP.w} h={LAPTOP.h} label="developer laptop" kind="group" u={local * (1 - localDim)} color={colors.ACCENT} dim={localLayerDim} />
           <Zone x={AWS.x} y={AWS.y} w={AWS.w} h={AWS.h} label="AWS / Kubernetes session gateway" kind="provider" u={aws} color={colors.SECONDARY} dim={awsLayerDim} />
 
-          <ServiceNode x={APP.x} y={APP.y} kind="server" label="Slack app" sublabel="private target" w={174} u={managed * (1 - localDim)} dim={localLayerDim} />
-          <ServiceNode x={PROXY.x} y={PROXY.y} kind="gateway" label="forward proxy" sublabel="127.0.0.1:8888 · allowlist" w={205} u={managed * (1 - localDim)} dim={localLayerDim} />
-          <ServiceNode x={FRPC.x} y={FRPC.y} kind="client" label="frpc" sublabel="managed tunnel client" w={186} u={managed * (1 - localDim)} dim={localLayerDim} />
+          <ServiceNode x={APP.x} y={APP.y} kind="server" label="Slack app" sublabel="private target" w={150} labelSize={16} u={managed * (1 - localDim)} dim={localLayerDim} />
+          <ServiceNode x={PROXY.x} y={PROXY.y} kind="gateway" label="forward proxy" sublabel="port 8888 · allowlist" w={190} labelSize={16} u={managed * (1 - localDim)} dim={localLayerDim} />
+          <ServiceNode x={FRPC.x} y={FRPC.y} kind="client" label="frpc" sublabel="managed tunnel" w={186} labelSize={16} u={managed * (1 - localDim)} dim={localLayerDim} />
+          <OutboundNote u={managed} dim={localLayerDim} />
 
-          <ServiceNode x={ONBOARD.x} y={ONBOARD.y} kind="client" label="web onboarding" sublabel="reverse-proxy project setup" w={210} u={s.get(scene.onboardU)} dim={awsLayerDim} />
-          <ServiceNode x={CONTROL.x} y={CONTROL.y} kind="fn" label="AWS gateway" sublabel="provision + lifecycle" w={210} u={aws} dim={awsLayerDim} />
-          <ServiceNode x={FRPS.x} y={FRPS.y} kind="gateway" label="frps pod / host" sublabel="ClusterIP data + admin" w={210} u={aws} glow={controlFlow > 0.8 ? 0.7 : 0} dim={awsLayerDim} />
-          <ServiceNode x={NLB.x} y={NLB.y} kind="gateway" label="session NLB" sublabel="public control hostname" w={190} u={aws * dns} glow={dns > 0.8 ? 0.45 : 0} dim={awsLayerDim} />
-          <ServiceNode x={BROWSER.x} y={BROWSER.y} kind="browser" label="test container" sublabel="Replay Chromium" w={190} u={aws} dim={awsLayerDim} />
-          <ServiceNode x={ORCH.x} y={ORCH.y} kind="fn" label="orchestrator" sublabel="health gate + suspend" w={205} u={aws} dim={awsLayerDim} />
+          <ServiceNode x={ONBOARD.x} y={ONBOARD.y} kind="client" label="web onboarding" sublabel="reverse-proxy setup" w={210} labelSize={16} u={s.get(scene.onboardU)} dim={awsLayerDim} />
+          <ServiceNode x={CONTROL.x} y={CONTROL.y} kind="fn" label="AWS gateway" sublabel="provision + lifecycle" w={210} labelSize={16} u={aws} dim={awsLayerDim} />
+          <ServiceNode x={FRPS.x} y={FRPS.y} kind="gateway" label="frps pod / host" sublabel="ClusterIP data + admin" w={210} labelSize={16} u={aws} glow={controlFlow > 0.8 ? 0.7 : 0} dim={awsLayerDim} />
+          <ServiceNode x={NLB.x} y={NLB.y} kind="gateway" label="session NLB" sublabel="public control host" w={190} labelSize={16} u={aws * dns} glow={dns > 0.8 ? 0.45 : 0} dim={awsLayerDim} />
+          <ServiceNode x={BROWSER.x} y={BROWSER.y} kind="browser" label="test container" sublabel="Replay Chromium" w={190} labelSize={16} u={aws} dim={awsLayerDim} />
+          <ServiceNode x={ORCH.x} y={ORCH.y} kind="fn" label="orchestrator" sublabel="health gate + suspend" w={205} labelSize={16} u={aws} dim={awsLayerDim} />
 
           <Connection
             from={{ x: ONBOARD.x + 100, y: ONBOARD.y }}
@@ -547,7 +563,7 @@ export function Render({ s }: { s: SceneState }) {
             u={s.get(scene.onboardU)}
             color={colors.WARM}
             label="provision session"
-            labelSize={10}
+            labelSize={12}
             dim={awsLayerDim}
           />
           <Connection
@@ -556,7 +572,7 @@ export function Render({ s }: { s: SceneState }) {
             u={aws}
             color={colors.SECONDARY}
             label="gateway API"
-            labelSize={10}
+            labelSize={12}
             dim={awsLayerDim}
           />
           <Connection
@@ -565,7 +581,7 @@ export function Render({ s }: { s: SceneState }) {
             u={aws * dns}
             color={colors.WARM}
             label="allocate NLB hostname"
-            labelSize={9.5}
+            labelSize={12}
             dim={awsLayerDim}
           />
 
@@ -577,7 +593,7 @@ export function Render({ s }: { s: SceneState }) {
             color={colors.ACCENT}
             dashed
             label="outbound control · NLB :7000"
-            labelSize={10.5}
+            labelSize={12}
             dim={Math.max(localLayerDim, awsLayerDim)}
           />
           <Connection
@@ -588,7 +604,7 @@ export function Render({ s }: { s: SceneState }) {
             color={colors.ACCENT}
             dashed
             label="control to frps pod"
-            labelSize={9.5}
+            labelSize={12}
             dim={awsLayerDim}
           />
           <Connection
@@ -596,8 +612,8 @@ export function Render({ s }: { s: SceneState }) {
             to={{ x: FRPS.x + 105, y: FRPS.y }}
             u={clamp01(data * 3)}
             color={colors.TEAL}
-            label="ClusterIP data host · private"
-            labelSize={10}
+            label="ClusterIP data · private"
+            labelSize={12}
             dim={awsLayerDim}
           />
           <Connection
@@ -605,8 +621,8 @@ export function Render({ s }: { s: SceneState }) {
             to={{ x: FRPC.x + 94, y: FRPC.y }}
             u={clamp01(data * 3 - 0.8) * (1 - localDim)}
             color={colors.TEAL}
-            label="frp data over established tunnel"
-            labelSize={10}
+            label="frp data · tunnel"
+            labelSize={12}
             dim={Math.max(localLayerDim, awsLayerDim)}
           />
           <Connection
@@ -615,16 +631,16 @@ export function Render({ s }: { s: SceneState }) {
             u={clamp01(data * 3 - 1.4) * (1 - localDim)}
             color={colors.TEAL}
             label="local"
-            labelSize={10}
+            labelSize={12}
             dim={localLayerDim}
           />
           <Connection
-            from={{ x: PROXY.x - 104, y: PROXY.y }}
-            to={{ x: APP.x + 88, y: APP.y }}
+            from={{ x: PROXY.x - 95, y: PROXY.y }}
+            to={{ x: APP.x + 75, y: APP.y }}
             u={clamp01(data * 3 - 2) * (1 - localDim)}
             color={colors.TEAL}
-            label="allowlisted target"
-            labelSize={10}
+            label="allowlist"
+            labelSize={12}
             dim={localLayerDim}
           />
           <DataPacket u={data * (1 - localDim)} dim={Math.max(localLayerDim, awsLayerDim)} />
@@ -636,8 +652,8 @@ export function Render({ s }: { s: SceneState }) {
             flow={health * 4}
             color={colors.WARM}
             dashed
-            label="ClusterIP admin · frps health"
-            labelSize={10}
+            label="admin · frps health"
+            labelSize={12}
             dim={awsLayerDim}
           />
         </g>
@@ -648,9 +664,9 @@ export function Render({ s }: { s: SceneState }) {
         <ReadinessRail aws={aws} dns={dns} target={target} frp={controlFlow} health={health} disconnect={disconnect} resume={resume} dim={Math.max(dim, upperDim)} />
 
         <g opacity={1 - 0.82 * dim}>
-          <ServiceNode x={PROJECT.x} y={PROJECT.y} kind="db" label="Replay QA project" sublabel="qa-project-id · catalog authority" w={230} u={projectStageU} />
-          <ServiceNode x={MCP.x} y={MCP.y} kind="gateway" label="LoopQA MCP server" sublabel="project / journey / test / exploration" w={238} u={mcp} />
-          <ServiceNode x={AGENT.x} y={AGENT.y} kind="client" label="coding agent" sublabel="catalog control path" w={190} u={mcp} />
+          <ServiceNode x={PROJECT.x} y={PROJECT.y} kind="db" label="Replay QA project" sublabel="qa-project-id · catalog" w={230} labelSize={16} u={projectStageU} />
+          <ServiceNode x={MCP.x} y={MCP.y} kind="gateway" label="LoopQA MCP server" sublabel="project · journey · test" w={238} labelSize={16} u={mcp} />
+          <ServiceNode x={AGENT.x} y={AGENT.y} kind="client" label="coding agent" sublabel="catalog control path" w={190} labelSize={16} u={mcp} />
           <Connection
             from={{ x: AGENT.x - 96, y: AGENT.y }}
             to={{ x: MCP.x + 120, y: MCP.y }}
@@ -658,7 +674,7 @@ export function Render({ s }: { s: SceneState }) {
             flow={mcp * 5}
             color={colors.SECONDARY}
             label="MCP"
-            labelSize={10.5}
+            labelSize={12}
           />
           <Connection
             from={{ x: MCP.x - 120, y: MCP.y }}
@@ -667,15 +683,18 @@ export function Render({ s }: { s: SceneState }) {
             flow={mcp * 5}
             color={colors.SECONDARY}
             label="tool call / result"
-            labelSize={10}
+            labelSize={12}
           />
         </g>
 
         <ToolFan u={s.get(scene.toolsU)} dim={dim} />
         <SharedKeySpine u={s.get(scene.keyU)} dim={dim} />
         <WarningCard u={s.get(scene.warningU)} dim={dim} />
-        <ClosingCard u={s.get(scene.closeU)} />
       </Camera>
+      )}
+      {/* the closing card sits on an opaque backdrop so no faded diagram shows around it */}
+      {closeU > 0 && <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} opacity={0.94 * closeU} />}
+      <ClosingCard u={closeU} />
     </>
   );
 }

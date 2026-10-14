@@ -14,7 +14,7 @@
 // (364 = 52 × 7) and the abstention controls (434 = 62 × 7) are separate
 // ribbons that never enter the natural-rate brace. A single bracket carries
 // the paper's aggregate distance figure — no distribution is drawn.
-import { CAMERA_HOME, Camera, MathLabel, Timeline, cameraInterp, ease } from '../../core';
+import { CAMERA_HOME, Camera, Timeline, cameraInterp, ease } from '../../core';
 import type { CameraState, SceneState } from '../../core';
 import { Brace } from '../../primitives';
 import {
@@ -146,14 +146,14 @@ export function buildScene() {
 
   // BEAT 2 — forty turn violet; push into them
   t = beatAt(2);
-  tl.tween(cam, { x: 400, y: 240, k: 1.3 }, { at: t - 0.3, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 290, y: 236, k: 1.2 }, { at: t - 0.3, dur: 1.3, ease: ease.move });
   tl.tween(violetU, 1, { at: t + 0.9, dur: 1.4, ease: ease.linear });
   tl.tween(peelU, 1, { at: t + 2.5, dur: 1.6, ease: ease.move });
   tl.tween(recEqU, 1, { at: t + 4.2, dur: 0.6, ease: ease.enter });
 
   // BEAT 3 — referent already on screen
   t = beatAt(3);
-  tl.tween(cam, { x: 470, y: 250, k: 1.18 }, { at: t - 0.3, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 300, y: 240, k: 1.25 }, { at: t - 0.3, dur: 1.3, ease: ease.move });
   tl.tween(markU, 1, { at: t + 0.8, dur: 1.6, ease: ease.linear });
 
   // BEAT 4 — the stricter reading
@@ -246,7 +246,7 @@ export function Render({ s }: { s: SceneState }) {
           <Tether x1={MAIN.x} y1={MAIN.y - 3} x2={INSET.x} y2={INSET_BOTTOM + 3} color={INK.distant} opacity={0.35} />
           <Tether x1={MAIN.x + 36} y1={MAIN.y - 3} x2={INSET.x + INSET_W - 5} y2={INSET_BOTTOM + 3} color={INK.distant} opacity={0.35} />
         </g>
-        <Txt x={INSET.x} y={INSET.y - 10} size={11} fill={INK.muted} opacity={clamp01(peel * 2 - 1)}>
+        <Txt x={INSET.x} y={INSET.y - 10} size={12} fill={INK.muted} opacity={clamp01(peel * 2 - 1) * (1 - win(b, 8, 8))}>
           magnified
         </Txt>
         {peel > 0 &&
@@ -269,17 +269,21 @@ export function Render({ s }: { s: SceneState }) {
           })}
 
         {/* the rate: numerator slot, recorded reading, stricter reading */}
-        <rect x={350} y={122} width={180} height={104} rx={8} fill="none" stroke={INK.muted} strokeDasharray="5 5" opacity={0.5 * on(b, 0) * (1 - s.get(scene.recEqU))} />
+        <rect x={330} y={122} width={220} height={104} rx={8} fill="none" stroke={INK.muted} strokeDasharray="5 5" opacity={0.5 * on(b, 0) * (1 - s.get(scene.recEqU))} />
         <g opacity={gone}>
-          <MathLabel tex={`\\frac{${RECORDED}}{1{,}169} = ${pct(RECORDED, SCOREABLE)}\\%`} x={440} y={160} fontSize={24} boxWidth={220} opacity={s.get(scene.recEqU) * lerp(1, 0.45, strict)} />
-          <Txt x={440} y={214} size={13} anchor="middle" fill={INK.distant} opacity={s.get(scene.recEqU) * lerp(1, 0.45, strict)}>
+          <Txt x={440} y={164} size={22} anchor="middle" fill={INK.distant} opacity={s.get(scene.recEqU) * lerp(1, 0.45, strict)}>
+            {`${RECORDED} / ${fmt(SCOREABLE)} = ${pct(RECORDED, SCOREABLE)}%`}
+          </Txt>
+          <Txt x={440} y={206} size={13} anchor="middle" fill={INK.distant} opacity={s.get(scene.recEqU) * lerp(1, 0.45, strict)}>
             recorded reading
           </Txt>
           <Txt x={350} y={258} size={12} mono fill={INK.claim} opacity={win(b, 3, 4) * clamp01(mark * 2)}>
             referent_on_screen: clear
           </Txt>
-          <MathLabel tex={`\\frac{${STRICT}}{1{,}169} = ${pct(STRICT, SCOREABLE)}\\%`} x={680} y={160} fontSize={24} boxWidth={220} opacity={s.get(scene.strEqU)} />
-          <Txt x={680} y={214} size={13} anchor="middle" fill={INK.text} opacity={s.get(scene.strEqU)}>
+          <Txt x={680} y={164} size={22} anchor="middle" fill={INK.text} opacity={s.get(scene.strEqU)}>
+            {`${STRICT} / ${fmt(SCOREABLE)} = ${pct(STRICT, SCOREABLE)}%`}
+          </Txt>
+          <Txt x={680} y={206} size={13} anchor="middle" fill={INK.text} opacity={s.get(scene.strEqU)}>
             clear removed
           </Txt>
         </g>
@@ -316,14 +320,14 @@ export function Render({ s }: { s: SceneState }) {
             })}
           <g opacity={clamp01(abst * 3)}>
             <rect x={726} y={447} width={28} height={28} rx={5} fill="none" stroke={INK.muted} strokeDasharray="4 3" />
-            <Txt x={740} y={490} size={9.5} mono anchor="middle" fill={INK.muted}>
+            <Txt x={740} y={438} size={12} mono anchor="middle" fill={INK.muted}>
               gold empty
             </Txt>
           </g>
           <Txt x={ABS.x} y={504} size={12} mono fill={INK.text} opacity={clamp01(abst * 3 - 2)}>
             abstention: 434
           </Txt>
-          <Txt x={ABS.x + 372} y={504} size={11} anchor="end" fill={INK.muted} opacity={clamp01(abst * 3 - 2)}>
+          <Txt x={ABS.x + 372} y={504} size={12} anchor="end" fill={INK.muted} opacity={clamp01(abst * 3 - 2)}>
             controls, in neither sampled stratum
           </Txt>
         </g>
@@ -337,7 +341,7 @@ export function Render({ s }: { s: SceneState }) {
                 <g key={m}>
                   <line x1={backX(m)} y1={RULER.y - 5} x2={backX(m)} y2={RULER.y + 5} stroke={INK.distant} />
                   {m % 1000 === 0 && (
-                    <Txt x={backX(m)} y={RULER.y + 20} size={10} anchor="middle" fill={INK.muted}>
+                    <Txt x={backX(m)} y={RULER.y + 20} size={12} anchor="middle" fill={INK.muted}>
                       {m === 0 ? 'probe' : `−${fmt(m)}`}
                     </Txt>
                   )}
@@ -349,7 +353,7 @@ export function Render({ s }: { s: SceneState }) {
             <Txt x={RULER.x1 + 4} y={RULER.y - 36} size={14} anchor="end" weight={600} opacity={clamp01(ruler * 3 - 2)}>
               {`median furthest evidence: ${fmt(MEDIAN_DISTANCE)} messages`}
             </Txt>
-            <Txt x={RULER.x1 + 4} y={RULER.y + 44} size={11.5} anchor="end" fill={INK.muted} opacity={clamp01(ruler * 3 - 2)}>
+            <Txt x={RULER.x1 + 4} y={RULER.y + 44} size={12} anchor="end" fill={INK.muted} opacity={clamp01(ruler * 3 - 2)}>
               memory-bearing probes, recorded · Paper §6
             </Txt>
           </g>
@@ -363,6 +367,17 @@ export function Render({ s }: { s: SceneState }) {
           Reach
         </Txt>
       </Camera>
+
+      {/* screen-space glosses: the terms the narration uses, defined where they first matter */}
+      <Txt x={70} y={92} size={14} fill={INK.muted} opacity={win(b, 1, 2)}>
+        probe = one test question about a conversation · scoreable = one the audit can grade
+      </Txt>
+      <Txt x={70} y={92} size={14} fill={INK.muted} opacity={win(b, 6, 6)}>
+        denominator = the scoreable count that ordinary rates divide by
+      </Txt>
+      <Txt x={70} y={92} size={14} fill={INK.muted} opacity={win(b, 7, 7)}>
+        cold openers = probes where the right move is to hold back, not answer
+      </Txt>
 
       <Heading n={2} title="Rare does not mean nearby" />
       <SourceNote beat={b} notes={NOTES} />

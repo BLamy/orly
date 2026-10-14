@@ -108,7 +108,8 @@ export function Render({ s }: { s: SceneState }) {
   const gateU = s.get(scene.gateU);
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
-  const mainOp = 1 - 0.85 * dimU;
+  // the working scene dims, then clears entirely under the closing panel
+  const mainOp = (1 - 0.85 * dimU) * (1 - closeU);
 
   return (
     <>
@@ -121,13 +122,13 @@ export function Render({ s }: { s: SceneState }) {
               <circle cx={AGENT.x + 40} cy={AGENT.y} r={22} fill="none" stroke={colors.SECONDARY} strokeWidth={2} />
               <circle cx={AGENT.x + 40} cy={AGENT.y} r={8} fill={colors.SECONDARY} />
               <text x={AGENT.x + 40} y={AGENT.y + 48} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontWeight={600}>goose</text>
-              <text x={AGENT.x + 40} y={AGENT.y + 68} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="monospace">agent · {shortHex('2f7a1c9e', 6, 2)}</text>
+              <text x={AGENT.x + 40} y={AGENT.y + 68} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">agent · {shortHex('2f7a1c9e', 6, 2)}</text>
             </g>
           )}
 
           {/* audit log receiving signed actions */}
           {logU > 0 && (
-            <text x={LOG.x} y={LOG.y - 18} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={logU}>
+            <text x={LOG.x} y={LOG.y - 18} fill={colors.MUTED} fontSize={13} fontFamily="monospace" opacity={logU}>
               relay audit log — one record, signed
             </text>
           )}
@@ -153,10 +154,10 @@ export function Render({ s }: { s: SceneState }) {
                 {inU >= 1 && (
                   <g>
                     <rect x={LOG.x} y={ly} width={LOG.w} height={LOG.rowH - 10} rx={8} fill={colors.PANEL} stroke={colors.GRID} />
-                    <text x={LOG.x + 16} y={ly + 24} fill={colors.SECONDARY} fontSize={12} fontWeight={600} fontFamily="monospace">{a.verb}</text>
-                    <text x={LOG.x + 16} y={ly + 42} fill={colors.TEXT} fontSize={12}>{a.detail}</text>
+                    <text x={LOG.x + 16} y={ly + 24} fill={colors.SECONDARY} fontSize={13} fontWeight={600} fontFamily="monospace">{a.verb}</text>
+                    <text x={LOG.x + 16} y={ly + 42} fill={colors.TEXT} fontSize={13}>{a.detail}</text>
                     {attrU > 0 && (
-                      <text x={LOG.x + LOG.w - 14} y={ly + 24} textAnchor="end" fill={colors.POSITIVE} fontSize={10} fontFamily="monospace" opacity={attrU}>✓ signed</text>
+                      <text x={LOG.x + LOG.w - 14} y={ly + 24} textAnchor="end" fill={colors.POSITIVE} fontSize={12} fontFamily="monospace" opacity={attrU}>✓ signed</text>
                     )}
                   </g>
                 )}
@@ -171,7 +172,7 @@ export function Render({ s }: { s: SceneState }) {
               {HARNESSES.map((h, i) => (
                 <g key={h}>
                   <rect x={AGENT.x - 6 + i * 108} y={AGENT.y + 122} width={98} height={30} rx={7} fill={colors.PANEL} stroke={colors.SECONDARY} />
-                  <text x={AGENT.x + 43 + i * 108} y={AGENT.y + 142} textAnchor="middle" fill={colors.SECONDARY} fontSize={12}>{h}</text>
+                  <text x={AGENT.x + 43 + i * 108} y={AGENT.y + 142} textAnchor="middle" fill={colors.SECONDARY} fontSize={13}>{h}</text>
                 </g>
               ))}
             </g>
@@ -180,8 +181,8 @@ export function Render({ s }: { s: SceneState }) {
           {/* approval gate honesty */}
           {gateU > 0 && (
             <g opacity={gateU}>
-              <text x={780} y={520} fill={colors.WARM} fontSize={13} fontWeight={600}>approval gates — partially built</text>
-              <text x={780} y={542} fill={colors.MUTED} fontSize={12}>human sign-off on risky steps = another signed event</text>
+              <text x={780} y={520} fill={colors.WARM} fontSize={14} fontWeight={600}>approval gates — partially built</text>
+              <text x={780} y={542} fill={colors.MUTED} fontSize={13}>human sign-off on risky steps = another signed event</text>
             </g>
           )}
         </Camera>
@@ -189,7 +190,7 @@ export function Render({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={240} width={840} height={180} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={220} y={240} width={840} height={180} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={306} textAnchor="middle" fill={colors.TEXT} fontSize={23} fontWeight={600}>An agent that does the work</text>
           <text x={640} y={348} textAnchor="middle" fill={colors.MUTED} fontSize={16}>search · patch · review · run — every action signed and attributable</text>
           <text x={640} y={388} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">harnesses: Goose · Codex · Claude Code · model-agnostic</text>

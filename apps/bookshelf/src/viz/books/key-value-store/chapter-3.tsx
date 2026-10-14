@@ -65,13 +65,14 @@ const NODE_COLOR: Record<NodeId, string> = {
 const NODES: NodeId[] = ['A', 'B', 'C', 'D', 'E'];
 const OUR_S = 0.302; // user:42, home B — as placed in chapter 2
 
-const CLIENT = { x: 128, y: 120 } as const;
+const CLIENT = { x: 176, y: 243 } as const; // left of B, so the write link is short and level
 const P_B = ringPt(NODE_S.B);
 const P_C = ringPt(NODE_S.C);
 
-// camera marks
-const CAM_B: CameraState = { x: 520, y: 270, k: 1.35 };
-const CAM_MATH: CameraState = { x: 760, y: 300, k: 1.08 };
+// camera marks — each frame keeps the whole ring (A and E included) and the
+// caption band (screen y > 630) clear
+const CAM_B: CameraState = { x: 540, y: 370, k: 1.25 };
+const CAM_MATH: CameraState = { x: 645, y: 340, k: 1.05 };
 
 // ---------------------------------------------------------------------------
 // Timeline (~72s, eleven beats).
@@ -266,7 +267,8 @@ export function Render({ s }: { s: SceneState }) {
           {/* nodes */}
           {NODES.map((nd) => {
             const p = ringPt(NODE_S[nd]);
-            const lp = ringPt(NODE_S[nd], -30);
+            // labels sit outside the ring, except the bottom pair, which sit inside so the caption band never covers them
+            const lp = ringPt(NODE_S[nd], nd === 'A' || nd === 'E' ? 30 : -30);
             const dead = nd === 'B' ? bDead : 0;
             const back = nd === 'B' ? backU : 0;
             return (
@@ -327,6 +329,7 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* client */}
           <g opacity={clamp01(writeU * 6 + readU * 6)}>
+            <line x1={CLIENT.x + 58} y1={CLIENT.y} x2={P_B.x - 18} y2={P_B.y} stroke={colors.GRID} strokeWidth={2} strokeDasharray="4 6" />
             <rect x={CLIENT.x - 58} y={CLIENT.y - 26} width={116} height={52} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
             <text x={CLIENT.x} y={CLIENT.y + 5} textAnchor="middle" fill={colors.TEXT} fontSize={15}>
               client
@@ -351,14 +354,14 @@ export function Render({ s }: { s: SceneState }) {
           {/* preference list */}
           <g opacity={prefU * (1 - dimU)}>
             <path d={walkD(OUR_S, NODE_S.D, 1, -60)} fill="none" stroke={colors.MUTED} strokeWidth={1.5} strokeDasharray="1 5" opacity={0.7} />
-            <rect x={64} y={430} width={252} height={112} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={86} y={462} fill={colors.MUTED} fontSize={13} fontStyle="italic">
+            <rect x={64} y={392} width={252} height={112} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
+            <text x={86} y={424} fill={colors.MUTED} fontSize={13} fontStyle="italic">
               preference list — user:42
             </text>
             {(['B', 'C', 'D'] as NodeId[]).map((nd, i) => (
               <g key={nd}>
-                <rect x={86 + i * 72} y={478} width={56} height={40} rx={9} fill="none" stroke={NODE_COLOR[nd]} strokeWidth={1.6} />
-                <text x={114 + i * 72} y={504} textAnchor="middle" fill={NODE_COLOR[nd]} fontSize={17} fontWeight={700}>
+                <rect x={86 + i * 72} y={440} width={56} height={40} rx={9} fill="none" stroke={NODE_COLOR[nd]} strokeWidth={1.6} />
+                <text x={114 + i * 72} y={466} textAnchor="middle" fill={NODE_COLOR[nd]} fontSize={17} fontWeight={700}>
                   {nd}
                 </text>
               </g>
@@ -389,17 +392,17 @@ export function Render({ s }: { s: SceneState }) {
           {/* README quote chip — parked top-left so the CAM_B push keeps it
               fully in frame (visible x ends ≈ 994 while zoomed) */}
           <g opacity={quoteU}>
-            <rect x={64} y={70} width={344} height={122} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={86} y={102} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+            <rect x={64} y={110} width={344} height={122} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
+            <text x={86} y={142} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               README · Availability patterns
             </text>
-            <text x={86} y={130} fill={colors.TEXT} fontSize={14} fontStyle="italic">
+            <text x={86} y={170} fill={colors.TEXT} fontSize={14} fontStyle="italic">
               “…potential for loss of data if the active
             </text>
-            <text x={86} y={152} fill={colors.TEXT} fontSize={14} fontStyle="italic">
+            <text x={86} y={192} fill={colors.TEXT} fontSize={14} fontStyle="italic">
               system fails before newly written data
             </text>
-            <text x={86} y={174} fill={colors.TEXT} fontSize={14} fontStyle="italic">
+            <text x={86} y={214} fill={colors.TEXT} fontSize={14} fontStyle="italic">
               can be replicated…”
             </text>
           </g>
@@ -410,10 +413,10 @@ export function Render({ s }: { s: SceneState }) {
             <text x={950} y={140} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               README · Availability in parallel
             </text>
-            <MathLabel tex={'A_{\\text{node}} = 99.9\\%'} x={950} y={158} fontSize={18} color={colors.TEXT} />
-            <MathLabel tex={'A = 1 - (1 - 0.999)^3'} x={950} y={196} fontSize={18} color={colors.ACCENT} />
+            <MathLabel tex={'A_{\\text{node}} = 99.9\\%'} x={950} y={158} fontSize={18} color={colors.TEXT} anchor="start" boxWidth={280} />
+            <MathLabel tex={'A = 1 - (1 - 0.999)^3'} x={950} y={196} fontSize={18} color={colors.ACCENT} anchor="start" boxWidth={280} />
             <g opacity={math2U}>
-              <MathLabel tex={'= 99.9999999\\%'} x={950} y={238} fontSize={20} color={colors.POSITIVE} />
+              <MathLabel tex={'= 99.9999999\\%'} x={950} y={238} fontSize={20} color={colors.POSITIVE} anchor="start" boxWidth={280} />
             </g>
           </g>
         </g>

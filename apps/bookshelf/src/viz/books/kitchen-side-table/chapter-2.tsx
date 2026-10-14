@@ -49,7 +49,7 @@ const buckleAt = (x: number, amt: number): number => {
 const CAM_WIDE: CameraState = { x: 620, y: 320, k: 1.05 };
 const CAM_EDGE: CameraState = { x: 470, y: 300, k: 1.7 };
 const CAM_BUCKLE: CameraState = { x: 620, y: 268, k: 1.3 };
-const CAM_SQUEEZE: CameraState = { x: 560, y: 292, k: 1.75 };
+const CAM_SQUEEZE: CameraState = { x: 620, y: 292, k: 1.5 };
 
 export interface Scene {
   tl: Timeline;
@@ -230,7 +230,7 @@ export function Render({ s }: { s: SceneState }) {
             );
           })}
           {boardsU > 0.6 && (
-            <text x={CXX} y={PY - 120} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={clamp01(boardsU * 2 - 1.2)}>
+            <text x={CXX} y={PY - 120} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={clamp01(boardsU * 2 - 1.2)}>
               four 1×8 boards, seen end-on
             </text>
           )}
@@ -279,7 +279,7 @@ export function Render({ s }: { s: SceneState }) {
                   );
                 })}
               {padU > 0.5 && (
-                <text x={PX0 - 30} y={PY + BOARD_T + 52} textAnchor="middle" fill={colors.WARM} fontSize={13} opacity={clamp01(padU * 2 - 1)}>
+                <text x={PX0 - 12} y={PY + BOARD_T + 52} textAnchor="middle" fill={colors.WARM} fontSize={14} opacity={clamp01(padU * 2 - 1)}>
                   scrap pads — softwood dents
                 </text>
               )}
@@ -325,7 +325,7 @@ export function Render({ s }: { s: SceneState }) {
           {scrapeU > 0 && scrapeU < 1 && (
             <g>
               <rect x={PX0 + scrapeU * PANEL_W - 24} y={PY - 44} width={48} height={26} rx={3} fill={colors.WARM} />
-              <text x={PX0 + scrapeU * PANEL_W} y={PY - 54} textAnchor="middle" fill={colors.WARM} fontSize={12.5}>
+              <text x={PX0 + scrapeU * PANEL_W} y={PY - 54} textAnchor="middle" fill={colors.WARM} fontSize={14}>
                 chisel &amp; scraper
               </text>
             </g>
@@ -333,6 +333,11 @@ export function Render({ s }: { s: SceneState }) {
           {scrapeU > 0.95 && (
             <text x={CXX} y={PY + BOARD_T + 78} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={700}>
               taken off before it cures to glass
+            </text>
+          )}
+          {scrapeU > 0.95 && (
+            <text x={CXX} y={PY - 88} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontWeight={700} opacity={clamp01(1 - clampU)}>
+              one flat panel, wide enough for a top
             </text>
           )}
         </g>

@@ -69,8 +69,7 @@ const cellHeat = (i: number, j: number, runs: number) =>
 
 /* ------------------------------------------------------------- cameras */
 const CAM_BUG: CameraState = { x: 430, y: 300, k: 1.25 };
-const CAM_RUN: CameraState = { x: 850, y: 380, k: 1.2 };
-const CAM_MOMENT: CameraState = { x: STEP_XS[FIX_STEP], y: 400, k: 1.9 };
+const CAM_RUN: CameraState = { x: 640, y: 380, k: 1.0 };
 const CAM_WIDE: CameraState = { x: 640, y: 340, k: 0.98 };
 
 /* -------------------------------------------------------------- timeline */
@@ -134,7 +133,7 @@ export function buildScene() {
     dur: 6.0,
     text: 'A fresh container spins up and a fresh run begins, with a brand-new Replay recording as its spine — because yesterday’s tape cannot prove today’s claim.',
   });
-  tl.tween(gLeft, 0.15, { at: t - 5.6, dur: 0.9, ease: ease.move });
+  tl.tween(gLeft, 0.35, { at: t - 5.6, dur: 0.9, ease: ease.move });
   tl.tween(cam, CAM_RUN, { at: t - 5.4, dur: 1.5, ease: ease.move });
   tl.tween(pathU, 1, { at: t - 4.2, dur: 1.4, ease: ease.draw });
   t = tl.hold(t, 0.5);
@@ -155,7 +154,6 @@ export function buildScene() {
     dur: 6.6,
     text: 'And at the moment that used to fail, the new tape shows a two hundred where the five hundred lived. That — not the webhook — is what green means here.',
   });
-  tl.tween(cam, CAM_MOMENT, { at: t - 6.2, dur: 1.5, ease: ease.move });
   tl.tween(insetU, 1, { at: t - 4.6, dur: 0.8, ease: ease.enter });
   t = tl.hold(t, 0.7);
 
@@ -165,7 +163,8 @@ export function buildScene() {
     dur: 6.4,
     text: 'If the fresh recording had shown the bug again, the fixed bug would have been reopened as a rediscovery — no arguing, just the tape. It didn’t. This fix has a recording behind it.',
   });
-  tl.tween(provenU, 1, { at: t - 3.2, dur: 0.6, ease: ease.pop });
+  tl.tween(gLeft, 1, { at: t - 6.2, dur: 0.8, ease: ease.move }); // the bug card comes back into focus
+  tl.tween(provenU, 1, { at: t - 4.2, dur: 0.6, ease: ease.pop });
   t = tl.hold(t, 0.6);
 
   /* — beat 8 · pull back: the coverage field enters ———————————————————— */
@@ -260,7 +259,7 @@ function BugCard({ u, post, fixed, doubt, proven, fade }: {
         <circle cx={px} cy={y + 58} r={6} fill={colors.TEAL} opacity={0.95} />
       )}
       {p > 0.15 && (
-        <text x={x + w + 12} y={y + 34} fill={colors.TEAL} fontSize={10.5} fontFamily={mono} opacity={Math.min(1, p * 2) * 0.9}>
+        <text x={x + w + 12} y={y + 34} fill={colors.TEAL} fontSize={12} fontFamily={mono} opacity={Math.min(1, p * 2) * 0.9}>
           POST /api/bug-fixed-webhook/bug-002
         </text>
       )}
@@ -331,12 +330,16 @@ function FreshRun({ path, run, tape, inset, fade }: {
         );
       })}
       {r > 0 && r < 1 && <circle cx={dotX} cy={PATH_Y} r={6.5} fill={colors.ACCENT} />}
+      {/* ring the step that used to fail, so the comparison below points at it */}
+      {iu > 0 && (
+        <circle cx={STEP_XS[FIX_STEP]} cy={PATH_Y} r={13} fill="none" stroke={colors.NEGATIVE} strokeWidth={1.6} opacity={iu} />
+      )}
 
       {/* the fresh tape, growing in lockstep with the run */}
       {clamp01(tape) > 0 && (
-        <g>
+        <g opacity={1 - iu}>
           <rect x={TAPE.x} y={TAPE.y} width={TAPE.w * clamp01(tape)} height={TAPE.h} rx={7} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.3} />
-          <text x={TAPE.x} y={TAPE.y - 8} fill={colors.MUTED} fontSize={11} fontFamily={mono}>
+          <text x={TAPE.x} y={TAPE.y - 8} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
             fresh recording · rec-9c1d… (run-005)
           </text>
           {Array.from({ length: 12 }, (_, i) => {
@@ -347,23 +350,45 @@ function FreshRun({ path, run, tape, inset, fade }: {
         </g>
       )}
 
-      {/* the interrogated moment: 200 where the 500 lived */}
+      {/* the interrogated moment: the old 500 tape beside the fresh 200 tape */}
       {iu > 0 && (
-        <g transform={`translate(${STEP_XS[FIX_STEP]}, ${PATH_Y + 34 + (1 - iu) * 8})`} opacity={iu}>
-          <line x1={0} y1={-24} x2={0} y2={-2} stroke={colors.POSITIVE} strokeWidth={1.2} />
-          <rect x={-150} y={0} width={300} height={58} rx={8} fill={colors.BG} opacity={0.94} />
-          <rect x={-150} y={0} width={300} height={58} rx={8} fill="none" stroke={colors.POSITIVE} strokeWidth={1.4} />
-          <text x={-134} y={22} fill={colors.TEXT} fontSize={11} fontFamily={mono}>
-            POST /api/checkout
+        <g transform={`translate(0, ${(1 - iu) * 8})`} opacity={iu}>
+          <rect x={654} y={344} width={620} height={112} rx={10} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.2} />
+          <text x={670} y={364} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+            POST /api/checkout · the step that used to fail
           </text>
-          <text x={-134} y={44} fill={colors.POSITIVE} fontSize={11.5} fontWeight={800} fontFamily={mono}>
-            ← 200 OK
-          </text>
-          <text x={56} y={44} fill={colors.NEGATIVE} fontSize={10.5} fontFamily={mono} opacity={0.55} textDecoration="line-through">
-            was 500
-          </text>
+          <MomentTape
+            x={668}
+            color={colors.NEGATIVE}
+            label="run-004 · before the fix"
+            status="500 Internal Error"
+            note="recording rec-4a7e… (old tape)"
+            opacity={1}
+          />
+          <MomentTape
+            x={972}
+            color={colors.POSITIVE}
+            label="run-005 · fresh run"
+            status="200 OK"
+            note="recording rec-9c1d… (new tape)"
+            opacity={clamp01((iu - 0.35) / 0.65)}
+          />
         </g>
       )}
+    </g>
+  );
+}
+
+/** One tape in the before/after pair at the payoff: a status label, not a box. */
+function MomentTape({ x, color, label, status, note, opacity }: {
+  x: number; color: string; label: string; status: string; note: string; opacity: number;
+}) {
+  return (
+    <g opacity={opacity}>
+      <rect x={x} y={376} width={288} height={68} rx={8} fill={colors.PANEL} stroke={color} strokeWidth={1.6} />
+      <text x={x + 14} y={394} fill={colors.MUTED} fontSize={12} fontFamily={mono}>{label}</text>
+      <text x={x + 14} y={420} fill={color} fontSize={16} fontWeight={800} fontFamily={mono}>{status}</text>
+      <text x={x + 14} y={437} fill={colors.MUTED} fontSize={12} fontFamily={mono}>{note}</text>
     </g>
   );
 }
@@ -384,6 +409,21 @@ function CoverageField({ enter, runs, counter, finale }: {
       <text x={cx} y={GRID.y - 34} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={mono}>
         Acme Store · pages × journeys
       </text>
+      {/* the unexplored map: every cell drawn empty, so the field never goes blank */}
+      {FIRST_RUN.map((row, i) => row.map((_, j) => (
+        <rect
+          key={`s${i}-${j}`}
+          x={GRID.x + j * (GRID.cell + GRID.gap)}
+          y={GRID.y + i * (GRID.cell + GRID.gap)}
+          width={GRID.cell}
+          height={GRID.cell}
+          rx={6}
+          fill={colors.PANEL}
+          stroke={colors.MUTED}
+          strokeWidth={1}
+          opacity={0.6}
+        />
+      )))}
       <MatrixGrid
         x={GRID.x}
         y={GRID.y}

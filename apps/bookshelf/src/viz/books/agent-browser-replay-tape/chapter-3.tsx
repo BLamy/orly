@@ -21,11 +21,13 @@ const mono = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 /* ---------------------------------------------------------------- layout */
 const RING = { cx: 470, cy: 320, r: 150 };
-const BADGE = { x: 780, y: 240, w: 340 };
-const CMD = { x: 780, y: 420, w: 340 };
+const BADGE = { x: 780, y: 190, w: 340 };
+const CMD = { x: 780, y: 330, w: 340 };
+const FAIL = { x: 780, y: 458, w: 340 };
 
 const CAM_HOME: CameraState = CAMERA_HOME;
-const CAM_RING: CameraState = { x: 500, y: 320, k: 1.05 };
+// Camera x/y is the world point at screen centre: keep the badge column (right edge x=1120) in view.
+const CAM_RING: CameraState = { x: 660, y: 330, k: 1.05 };
 const CAM_BADGE: CameraState = { x: 760, y: 320, k: 1.1 };
 const CAM_WIDE: CameraState = { x: 640, y: 340, k: 0.94 };
 
@@ -63,6 +65,8 @@ export function buildScene() {
   const badgeU = tl.channel('badgeU', 0);
   const cmdU = tl.channel('cmdU', 0);
   const uploadedU = tl.channel('uploadedU', 0);
+  const keyU = tl.channel('keyU', 0);
+  const failU = tl.channel('failU', 0);
   const dimU = tl.channel('dimU', 0);
 
   /* — beat 1 · close triggers it — */
@@ -125,6 +129,7 @@ export function buildScene() {
     text: 'For that to happen without anyone watching — in continuous integration — the environment just needs a Replay access key set.',
   });
   tl.tween(uploadedU, 1, { at: t - 5.4, dur: 0.7, ease: ease.pop });
+  tl.tween(keyU, 1, { at: t - 4.6, dur: 0.6, ease: ease.enter });
   t = tl.hold(t, 0.6);
 
   /* — beat 7 · the honest failure path — */
@@ -134,6 +139,7 @@ export function buildScene() {
     text: 'And if none of the six tries ever comes back ready, agent browser does not shrug — it reports exactly why: still writing, already uploaded, or nothing found.',
   });
   tl.tween(cam, CAM_WIDE, { at: t - 5.6, dur: 1.6, ease: ease.move });
+  tl.tween(failU, 1, { at: t - 5.0, dur: 0.8, ease: ease.enter });
   t = tl.hold(t, 0.7);
 
   /* — beat 8 · close — */
@@ -142,10 +148,11 @@ export function buildScene() {
     dur: 5.4,
     text: 'One recording, safely off the machine. But that is only one of the two witnesses agent browser can leave behind.',
   });
+  tl.tween(failU, 0, { at: t - 4.8, dur: 0.8, ease: ease.move });
   tl.tween(dimU, 1, { at: t - 4.8, dur: 1.2, ease: ease.move });
   tl.hold(t, 1.0);
 
-  return { tl, cam, ringU, lapU, attemptN, badgeU, cmdU, uploadedU, dimU };
+  return { tl, cam, ringU, lapU, attemptN, badgeU, cmdU, uploadedU, keyU, failU, dimU };
 }
 
 const scene = buildScene();
@@ -153,7 +160,19 @@ const scene = buildScene();
 /* -------------------------------------------------- local subcomponents */
 
 /** The recording's classification, as it's re-checked lap over lap. */
-function StatusBadge({ u, attempt, uploaded, dim }: { u: number; attempt: number; uploaded: number; dim: number }) {
+function StatusBadge({
+  u,
+  attempt,
+  uploaded,
+  dim,
+  fail,
+}: {
+  u: number;
+  attempt: number;
+  uploaded: number;
+  dim: number;
+  fail: number;
+}) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
   const idx = Math.max(0, Math.min(ATTEMPT_STATUS.length - 1, Math.round(attempt) - 1));
@@ -161,9 +180,9 @@ function StatusBadge({ u, attempt, uploaded, dim }: { u: number; attempt: number
   const color = STATUS_COLOR[status];
   const { x, y, w } = BADGE;
   return (
-    <g transform={`translate(${x}, ${y})`} opacity={uu * (1 - 0.85 * clamp01(dim))}>
+    <g transform={`translate(${x}, ${y})`} opacity={uu * (1 - 0.85 * Math.max(clamp01(dim), clamp01(fail)))}>
       <rect width={w} height={104} rx={12} fill={colors.PANEL} stroke={color} strokeWidth={1.6} />
-      <text x={20} y={30} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+      <text x={20} y={30} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
         select_most_recent_recording()
       </text>
       <text x={20} y={58} fill={colors.TEXT} fontSize={16} fontWeight={700} fontFamily={mono}>
@@ -177,15 +196,16 @@ function StatusBadge({ u, attempt, uploaded, dim }: { u: number; attempt: number
 }
 
 /** The upload command that runs once the badge reads Ready. */
-function UploadCmd({ u, uploaded, dim }: { u: number; uploaded: number; dim: number }) {
+function UploadCmd({ u, uploaded, envKey, fail }: { u: number; uploaded: number; envKey: number; fail: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
   const up = clamp01(uploaded);
+  const k = clamp01(envKey);
   const { x, y, w } = CMD;
   return (
-    <g transform={`translate(${x}, ${y + (1 - uu) * 10})`} opacity={uu * (1 - 0.85 * clamp01(dim))}>
-      <rect width={w} height={92} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-      <text x={18} y={28} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+    <g transform={`translate(${x}, ${y + (1 - uu) * 10})`} opacity={uu * (1 - 0.85 * clamp01(fail))}>
+      <rect width={w} height={112} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
+      <text x={18} y={28} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
         agent-browser close
       </text>
       <text x={18} y={54} fill={colors.ACCENT} fontSize={14} fontWeight={700} fontFamily={mono}>
@@ -196,6 +216,36 @@ function UploadCmd({ u, uploaded, dim }: { u: number; uploaded: number; dim: num
           ✓ uploaded to Replay
         </text>
       )}
+      {k > 0 && (
+        <text x={18} y={100} fill={colors.SECONDARY} fontSize={12} fontFamily={mono} opacity={k}>
+          env REPLAY_API_KEY set
+        </text>
+      )}
+    </g>
+  );
+}
+
+/** Beat 7: no attempt came back Ready, so the loop names the reason it gave up. */
+function FailPanel({ u }: { u: number }) {
+  const uu = clamp01(u);
+  if (uu <= 0) return null;
+  const { x, y, w } = FAIL;
+  const rows: [string, string][] = [
+    ['NotFinished — still writing', colors.WARM],
+    ['AlreadyUploaded', colors.SECONDARY],
+    ['no recordings found', colors.TEXT],
+  ];
+  return (
+    <g transform={`translate(${x}, ${y + (1 - uu) * 10})`} opacity={uu}>
+      <rect width={w} height={120} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.5} />
+      <text x={20} y={28} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+        no Ready in 6 tries — reports why
+      </text>
+      {rows.map(([label, fill], i) => (
+        <text key={label} x={20} y={56 + i * 22} fill={fill} fontSize={14} fontWeight={700} fontFamily={mono}>
+          {label}
+        </text>
+      ))}
     </g>
   );
 }
@@ -214,8 +264,20 @@ function renderFrame(s: SceneState) {
         reveal={s.get(scene.ringU)}
         dim={dim}
       />
-      <StatusBadge u={s.get(scene.badgeU)} attempt={s.get(scene.attemptN)} uploaded={s.get(scene.uploadedU)} dim={dim} />
-      <UploadCmd u={s.get(scene.cmdU)} uploaded={s.get(scene.uploadedU)} dim={dim} />
+      <StatusBadge
+        u={s.get(scene.badgeU)}
+        attempt={s.get(scene.attemptN)}
+        uploaded={s.get(scene.uploadedU)}
+        dim={dim}
+        fail={s.get(scene.failU)}
+      />
+      <UploadCmd
+        u={s.get(scene.cmdU)}
+        uploaded={s.get(scene.uploadedU)}
+        envKey={s.get(scene.keyU)}
+        fail={s.get(scene.failU)}
+      />
+      <FailPanel u={s.get(scene.failU)} />
     </>
   );
 }

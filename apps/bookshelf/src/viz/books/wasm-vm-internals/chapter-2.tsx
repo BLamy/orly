@@ -52,14 +52,16 @@ const STOPS = [
 const OPS = ['OPEN', 'DATA', 'WINDOW', 'SHUTDOWN_WR', 'CLOSE', 'RST'];
 const INITIAL_WINDOW_KIB = 256;
 
-const TAILNET = { x: 1000, y: 300 } as const;
+const TAILNET = { x: 1000, y: 330, r: 56 } as const;
 
-const CAM_WIDE: CameraState = { x: 600, y: 320, k: 0.96 };
+// Framings keep every label inside the 1280×720 stage: the wide shot spans the
+// guest through the tailnet, the provider shot keeps the slirp band visible.
+const CAM_WIDE: CameraState = { x: 700, y: 340, k: 0.92 };
 const CAM_GUEST: CameraState = { x: 560, y: 170, k: 1.5 };
 const CAM_SLIRP: CameraState = { x: 560, y: 306, k: 1.42 };
-const CAM_PROV: CameraState = { x: 600, y: 452, k: 1.36 };
-const CAM_WINDOW: CameraState = { x: 600, y: 430, k: 1.16 };
-const CAM_TAILNET: CameraState = { x: 880, y: 320, k: 1.1 };
+const CAM_PROV: CameraState = { x: 660, y: 400, k: 1.1 };
+const CAM_WINDOW: CameraState = { x: 640, y: 350, k: 1.1 };
+const CAM_TAILNET: CameraState = { x: 780, y: 330, k: 1.06 };
 
 export interface Scene {
   tl: Timeline;
@@ -238,7 +240,7 @@ function Band({ b, u }: { b: (typeof BANDS)[number]; u: number }) {
       <text x={BAND_X + 16} y={b.y + 26} fill={colors.TEXT} fontSize={15} fontWeight={700}>
         {b.title}
       </text>
-      <text x={BAND_X + 16} y={b.y + 48} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+      <text x={BAND_X + 16} y={b.y + 48} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
         {b.sub}
       </text>
     </g>
@@ -291,10 +293,17 @@ export function Render({ s }: { s: SceneState }) {
               <text x={BAND_X + BAND_W - 104} y={bandOf('guest').y + 44} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontWeight={700}>
                 DHCP lease
               </text>
-              <text x={BAND_X + BAND_W - 104} y={bandOf('guest').y + 64} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily="monospace">
+              <text x={BAND_X + BAND_W - 104} y={bandOf('guest').y + 64} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
                 10.0.2.15/24
               </text>
             </g>
+          )}
+
+          {/* the guest's virtual NIC: raw ethernet leaves it, and only ethernet */}
+          {guestU > 0 && (
+            <text x={BAND_X + 16} y={236} fill={colors.MUTED} fontSize={14} opacity={guestU}>
+              virtual NIC · raw ethernet frames leave the guest here
+            </text>
           )}
 
           {/* the descending connection, renamed at every layer */}
@@ -317,7 +326,7 @@ export function Render({ s }: { s: SceneState }) {
                 return (
                   <g key={op} opacity={u}>
                     <rect x={BAND_X + 16 + i * 112} y={provBand.y + 66} width={104} height={30} rx={5} fill={colors.BG} stroke={colors.WARM} />
-                    <text x={BAND_X + 68 + i * 112} y={provBand.y + 86} textAnchor="middle" fill={colors.WARM} fontSize={12.5} fontFamily="monospace">
+                    <text x={BAND_X + 68 + i * 112} y={provBand.y + 86} textAnchor="middle" fill={colors.WARM} fontSize={13.5} fontFamily="monospace">
                       {op}
                     </text>
                   </g>
@@ -341,44 +350,44 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---- the tailnet ---- */}
           {provU > 0 && (
             <g opacity={provU}>
-              <circle cx={TAILNET.x} cy={TAILNET.y} r={54} fill="none" stroke={colors.SECONDARY} strokeWidth={2} strokeDasharray="7 6" />
-              <text x={TAILNET.x} y={TAILNET.y - 66} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontWeight={700}>
+              <circle cx={TAILNET.x} cy={TAILNET.y} r={TAILNET.r} fill="none" stroke={colors.SECONDARY} strokeWidth={2} strokeDasharray="7 6" />
+              <text x={TAILNET.x} y={TAILNET.y - 80} textAnchor="middle" fill={colors.SECONDARY} fontSize={15} fontWeight={700}>
                 your tailnet
               </text>
               {dnsU > 0 && (
                 <g opacity={dnsU}>
-                  <text x={TAILNET.x} y={TAILNET.y - 4} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily="monospace">
+                  <line x1={BAND_X + BAND_W} y1={bandOf('slirp').y + 58} x2={TAILNET.x - TAILNET.r} y2={TAILNET.y} stroke={colors.SECONDARY} strokeWidth={1.6} strokeDasharray="4 4" />
+                  <text x={TAILNET.x + 72} y={TAILNET.y - 4} fill={colors.TEXT} fontSize={14} fontFamily="monospace">
                     db.tailnet.ts.net
                   </text>
-                  <text x={TAILNET.x} y={TAILNET.y + 16} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily="monospace">
+                  <text x={TAILNET.x + 72} y={TAILNET.y + 18} fill={colors.POSITIVE} fontSize={14} fontFamily="monospace">
                     100.72.19.4
                   </text>
-                  <line x1={BAND_X + BAND_W + 8} y1={bandOf('slirp').y + 58} x2={TAILNET.x - 58} y2={TAILNET.y - 20} stroke={colors.SECONDARY} strokeWidth={1.6} strokeDasharray="4 4" opacity={dnsU} />
-                  <text x={BAND_X + BAND_W + 16} y={bandOf('slirp').y + 46} fill={colors.SECONDARY} fontSize={12.5}>
-                    DNS 10.0.2.3 → MagicDNS
+                  <text x={TAILNET.x + 72} y={TAILNET.y + 40} fill={colors.SECONDARY} fontSize={13.5}>
+                    DNS → MagicDNS
                   </text>
                 </g>
               )}
               {exitU > 0 && (
                 <g opacity={exitU}>
-                  <line x1={TAILNET.x + 54} y1={TAILNET.y + 30} x2={TAILNET.x + 54} y2={TAILNET.y + 96} stroke={colors.WARM} strokeWidth={2} />
-                  <rect x={TAILNET.x - 22} y={TAILNET.y + 96} width={152} height={34} rx={7} fill={colors.BG} stroke={colors.WARM} />
-                  <text x={TAILNET.x + 54} y={TAILNET.y + 118} textAnchor="middle" fill={colors.WARM} fontSize={13}>
+                  <line x1={TAILNET.x} y1={TAILNET.y + TAILNET.r} x2={TAILNET.x} y2={TAILNET.y + 106} stroke={colors.WARM} strokeWidth={2} />
+                  <rect x={TAILNET.x - 76} y={TAILNET.y + 106} width={152} height={34} rx={7} fill={colors.BG} stroke={colors.WARM} />
+                  <text x={TAILNET.x} y={TAILNET.y + 128} textAnchor="middle" fill={colors.WARM} fontSize={14}>
                     exit node → internet
                   </text>
                 </g>
               )}
               {identityU > 0 && (
                 <g opacity={identityU}>
-                  <rect x={TAILNET.x - 78} y={TAILNET.y - 44} width={156} height={30} rx={7} fill={colors.BG} stroke={denyU > 0.5 ? colors.NEGATIVE : colors.POSITIVE} strokeWidth={1.8} />
-                  <text x={TAILNET.x} y={TAILNET.y - 24} textAnchor="middle" fill={denyU > 0.5 ? colors.NEGATIVE : colors.POSITIVE} fontSize={13} fontWeight={700}>
+                  <rect x={TAILNET.x + 72} y={TAILNET.y + 54} width={170} height={30} rx={7} fill={colors.BG} stroke={denyU > 0.5 ? colors.NEGATIVE : colors.POSITIVE} strokeWidth={1.8} />
+                  <text x={TAILNET.x + 157} y={TAILNET.y + 74} textAnchor="middle" fill={denyU > 0.5 ? colors.NEGATIVE : colors.POSITIVE} fontSize={13.5} fontWeight={700}>
                     node: this browser tab
                   </text>
                 </g>
               )}
               {denyU > 0 && (
                 <g opacity={denyU}>
-                  <text x={TAILNET.x} y={TAILNET.y + 168} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={700}>
+                  <text x={TAILNET.x} y={TAILNET.y + 226} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontWeight={700}>
                     ACL: deny this node → the guest connection must fail
                   </text>
                 </g>
@@ -411,7 +420,7 @@ export function Render({ s }: { s: SceneState }) {
 
         {closeU > 0 && (
           <g opacity={closeU}>
-            <rect x={300} y={256} width={680} height={144} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
+            <rect x={260} y={256} width={760} height={144} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
             <text x={640} y={310} textAnchor="middle" fill={colors.TEXT} fontSize={21}>
               slirp terminates the packets · a Worker carries the identity
             </text>

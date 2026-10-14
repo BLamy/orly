@@ -82,6 +82,7 @@ export function buildScene() {
   const badNameU = tl.channel('badNameU', 0);
   const goodNameU = tl.channel('goodNameU', 0);
   const calibU = tl.channel('calibU', 0);
+  const closeU = tl.channel('closeU', 0);
 
   CAPTIONS.forEach((text, i) => tl.caption({ at: AT[i], dur: PLAN.dur[i], text }));
 
@@ -126,12 +127,15 @@ export function buildScene() {
   tl.tween(goodNameU, 1, { at: b + 4.4, dur: 0.6, ease: ease.enter });
   tl.tween(calibU, 1, { at: b + 7.0, dur: 0.6, ease: ease.enter });
 
+  // the payoff, in the gap after the last caption: what to check before trusting a score
+  tl.tween(closeU, 1, { at: PLAN.end - 0.4, dur: 0.4, ease: ease.enter });
+
   // clean ending: hold the scored tree, settled, just past the fifth caption
   tl.hold(PLAN.end, 0.6);
 
   return {
     tl, cam, treeU, mergeU, ambigU, contU, callU, edgeU, endU, resolvedU, rulesU, sumU, texU, pickU, ledgerU, ledgerVis,
-    stateU, noDefaultU, barsU, badNameU, goodNameU, calibU,
+    stateU, noDefaultU, barsU, badNameU, goodNameU, calibU, closeU,
   };
 }
 
@@ -205,12 +209,14 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           ))}
           <Label x={ROOT.x} y={ROOT.y + 46} anchor="middle" text="decision" u={m} size={14} color={colors.MUTED} />
+          {/* defines "shared prefix" on screen once the three rails have merged; gives way to the continuation call */}
+          <Label x={NODE_X} y={236} anchor="middle" text="shared prefix: 17 opens all three" u={clamp01((m - 0.8) * 5) * (1 - clamp01(callU))} size={14} color={ROLE.MODEL} mono weight={650} />
           <Label x={275} y={ROOT.y - 12} anchor="middle" text={fmt(S17)} u={clamp01(edgeU * 3)} size={15} mono color={ROLE.MODEL} />
           <Chip x={440} y={372} anchor="end" text="? first piece is 17 for all three" color={ROLE.PENDING} fill="#1a1405" u={s.get(scene.ambigU)} />
           {callU > 0.002 && (
             <g opacity={callU}>
               <rect x={NODE_X - 44} y={ROOT.y - 34} width={88} height={68} rx={12} fill="none" stroke={colors.TEXT} strokeWidth={2} strokeDasharray="7 5" />
-              <Label x={NODE_X} y={252} anchor="middle" text="continuation call" size={15} weight={650} />
+              <Label x={NODE_X} y={252} anchor="middle" text="continuation = one more model call" size={15} weight={650} />
             </g>
           )}
           <Label x={560} y={140} text="■ A ends here: needs an explicit end rule" u={endU} size={15} color={ROLE.PENDING} weight={650} />
@@ -223,7 +229,7 @@ export function Render({ s }: { s: SceneState }) {
             <Label x={470} y={498} anchor="middle" text="≠" size={24} weight={800} color={ROLE.PENDING} />
             <Chip x={500} y={492} text="complete: score of the whole answer" size={14} color={ROLE.CHECKED} fill="#062a1e" />
           </g>
-          <MathLabel tex={'\\log p(B)=\\log p(17)+\\log p(42\\mid 17)'} x={1020} y={492} fontSize={19} opacity={s.get(scene.texU)} boxWidth={420} />
+          <MathLabel tex={'\\log p(B)=\\log p(17)+\\log p(42\\mid 17)'} x={1060} y={492} fontSize={19} opacity={s.get(scene.texU)} boxWidth={420} />
 
           {/* beat 4 — branch state is owned by its branch */}
           <g opacity={s.get(scene.stateU)}>
@@ -243,6 +249,9 @@ export function Render({ s }: { s: SceneState }) {
           <Chip x={110} y={492} text="? calibration = measured reliability · a separate claim" color={ROLE.PENDING} fill="#1a1405" dashed size={14} u={s.get(scene.calibU)} />
         </g>
       )}
+
+      {/* closing payoff: sits below the tree, clear of every caption band */}
+      <Chip x={110} y={596} text="before trusting a score: name the rule, state the end rule, measure reliability" color={ROLE.CHECKED} fill="#062a1e" size={16} u={s.get(scene.closeU)} />
 
       {/* the ledger: every model call is counted (counts, not time) */}
       <g opacity={s.get(scene.ledgerVis)}>

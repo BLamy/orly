@@ -55,8 +55,11 @@ const RECAP = [
 const RECAP_Y = 300;
 const recapX = (i: number) => 640 + (i - 2) * 226;
 
-const CAM_LEFT: CameraState = { x: 330, y: 300, k: 1.28 };
-const CAM_RIGHT: CameraState = { x: 950, y: 300, k: 1.28 };
+/** Things the reviewer cannot see — the beat-3 caption, made visible. */
+const UNSEEN = ['sign-extend bug in a register', 'buffer that grows unbounded', 'branch that never executed'];
+
+// Panels sit at y 110..530; these framings keep their bottoms clear of the caption pill (y > 630).
+const CAM_LEFT: CameraState = { x: 330, y: 340, k: 1.28 };
 const CAM_SPLIT: CameraState = { x: 640, y: 300, k: 1.05 };
 const CAM_WIDE: CameraState = { x: 640, y: 340, k: 1.0 };
 
@@ -77,6 +80,7 @@ export interface Scene {
   sabotageU: ChannelRef<number>;
   leftDim: ChannelRef<number>;
   dimU: ChannelRef<number>;
+  unseenU: ChannelRef<number>;
   recapU: ChannelRef<number>;
   closeU: ChannelRef<number>;
 }
@@ -94,6 +98,7 @@ export function buildScene(): Scene {
   const sabotageU = tl.channel('sabotageU', 0);
   const leftDim = tl.channel('leftDim', 0);
   const dimU = tl.channel('dimU', 0);
+  const unseenU = tl.channel('unseenU', 0);
   const recapU = tl.channel('recapU', 0);
   const closeU = tl.channel('closeU', 0);
 
@@ -123,6 +128,7 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'The reviewer cannot see the run. It cannot see the register that failed to sign extend, the buffer that grew unbounded, or the branch that never executed. None of that is in the text.',
   });
+  tl.tween(unseenU, 1, { at: 16.0, dur: 2.0, ease: ease.draw });
   tl.hold(21.5, 0.5);
 
   // — Beat 4 · the critic runs —
@@ -131,7 +137,8 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'The critic starts from the other end. It does not read about the run — it holds the run, and replays it to any moment it likes.',
   });
-  tl.tween(cam, CAM_RIGHT, { at: 22.2, dur: 1.4, ease: ease.move });
+  tl.tween(cam, CAM_SPLIT, { at: 22.2, dur: 1.4, ease: ease.move });
+  tl.tween(leftDim, 1, { at: 22.4, dur: 1.4, ease: ease.move });
   tl.tween(rightU, 1, { at: 22.6, dur: 2.0, ease: ease.draw });
   tl.tween(sweepU, 1, { at: 25.0, dur: 3.0, ease: ease.linear });
   tl.hold(28.5, 0.5);
@@ -161,8 +168,6 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'That is the whole argument. A passive reviewer grades the story of the change. An adversarial critic re-executes the change and tries to break it — and only one of those catches the edge case nobody wrote down.',
   });
-  tl.tween(cam, CAM_SPLIT, { at: 44.7, dur: 1.5, ease: ease.move });
-  tl.tween(leftDim, 1, { at: 46.2, dur: 1.4, ease: ease.move });
   tl.hold(51.0, 0.5);
 
   // — Beat 8 · recap —
@@ -188,7 +193,7 @@ export function buildScene(): Scene {
 
   return {
     tl, cam, leftU, eyeU, stampU, rightU, sweepU, chaosU, cloneU,
-    sabotageU, leftDim, dimU, recapU, closeU,
+    sabotageU, leftDim, dimU, unseenU, recapU, closeU,
   };
 }
 
@@ -210,10 +215,11 @@ export function Render({ s }: { s: SceneState }) {
   const sabotageU = s.get(scene.sabotageU);
   const leftDim = s.get(scene.leftDim);
   const dimU = s.get(scene.dimU);
+  const unseenU = s.get(scene.unseenU);
   const recapU = s.get(scene.recapU);
   const closeU = s.get(scene.closeU);
 
-  const worldOp = 1 - 0.88 * dimU;
+  const worldOp = 1 - 0.93 * dimU;
   const eyeY = LEFT.y + 96 + eyeU * (DIFF_LINES.length - 1) * 30;
 
   return (
@@ -225,10 +231,10 @@ export function Render({ s }: { s: SceneState }) {
           {leftU > 0 && (
             <g opacity={Math.min(1, leftU * 2) * (1 - 0.8 * leftDim)}>
               <rect x={LEFT.x} y={LEFT.y} width={LEFT.w} height={LEFT.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={LEFT.x + 20} y={LEFT.y + 34} fill={colors.TEXT} fontSize={15} fontWeight={700}>
+              <text x={LEFT.x + 20} y={LEFT.y + 34} fill={colors.TEXT} fontSize={16} fontWeight={700}>
                 passive review
               </text>
-              <text x={LEFT.x + 20} y={LEFT.y + 56} fill={colors.MUTED} fontSize={11.5}>
+              <text x={LEFT.x + 20} y={LEFT.y + 56} fill={colors.MUTED} fontSize={13}>
                 reads the diff — the story of the change
               </text>
               {DIFF_LINES.map((l, i) => {
@@ -252,13 +258,23 @@ export function Render({ s }: { s: SceneState }) {
                   <circle r={4} fill={colors.ACCENT} />
                 </g>
               )}
+              {unseenU > 0 && (
+                <g opacity={unseenU}>
+                  {UNSEEN.map((t, i) => (
+                    <text key={i} x={LEFT.x + 24} y={LEFT.y + 284 + i * 18} fill={colors.MUTED} fontSize={13}>
+                      <tspan fill={colors.WARM} fontWeight={700}>? </tspan>
+                      {t}
+                    </text>
+                  ))}
+                </g>
+              )}
               {stampU > 0 && (
-                <g opacity={stampU} transform={`translate(${LEFT.x + LEFT.w / 2} ${LEFT.y + LEFT.h - 62}) rotate(-8)`}>
-                  <rect x={-110} y={-22} width={220} height={44} rx={9} fill="none" stroke={colors.WARM} strokeWidth={2} />
-                  <text y={-1} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={700}>
+                <g opacity={stampU} transform={`translate(${LEFT.x + LEFT.w / 2} ${LEFT.y + LEFT.h - 50}) rotate(-3)`}>
+                  <rect x={-120} y={-30} width={240} height={60} rx={9} fill="none" stroke={colors.WARM} strokeWidth={2} />
+                  <text y={-8} textAnchor="middle" fill={colors.WARM} fontSize={15} fontWeight={700}>
                     “looks good to me”
                   </text>
-                  <text y={16} textAnchor="middle" fill={colors.MUTED} fontSize={10}>
+                  <text y={16} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                     agree / disagree — with the story
                   </text>
                 </g>
@@ -270,15 +286,15 @@ export function Render({ s }: { s: SceneState }) {
           {rightU > 0 && (
             <g opacity={Math.min(1, rightU * 2)}>
               <rect x={RIGHT.x} y={RIGHT.y} width={RIGHT.w} height={RIGHT.h} rx={14} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.4} />
-              <text x={RIGHT.x + 20} y={RIGHT.y + 34} fill={colors.TEXT} fontSize={15} fontWeight={700}>
+              <text x={RIGHT.x + 20} y={RIGHT.y + 34} fill={colors.TEXT} fontSize={16} fontWeight={700}>
                 adversarial verification
               </text>
-              <text x={RIGHT.x + 20} y={RIGHT.y + 56} fill={colors.MUTED} fontSize={11.5}>
+              <text x={RIGHT.x + 20} y={RIGHT.y + 56} fill={colors.MUTED} fontSize={13}>
                 re-runs the change — and tries to break it
               </text>
               <RecordingStrip
                 x={RIGHT.x + 24}
-                y={RIGHT.y + 80}
+                y={RIGHT.y + 96}
                 w={RIGHT.w - 48}
                 h={26}
                 points={TAPE_POINTS}
@@ -289,7 +305,7 @@ export function Render({ s }: { s: SceneState }) {
               {/* chaos runs fan out */}
               {chaosU > 0 && (
                 <g>
-                  <text x={RIGHT.x + 24} y={RIGHT.y + 172} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+                  <text x={RIGHT.x + 24} y={RIGHT.y + 172} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                     rr record --chaos ×{CHAOS_N} · its own seeds
                   </text>
                   {Array.from({ length: CHAOS_N }, (_, i) => {
@@ -299,9 +315,9 @@ export function Render({ s }: { s: SceneState }) {
                     const bad = i === 3;
                     return (
                       <g key={i} opacity={u}>
-                        <rect x={RIGHT.x + 24} y={y} width={(RIGHT.w - 48) * u} height={8} rx={4} fill={bad ? colors.NEGATIVE : colors.TEAL} opacity={bad ? 0.9 : 0.45} />
+                        <rect x={RIGHT.x + 24} y={y} width={(RIGHT.w - 48 - 170) * u} height={8} rx={4} fill={bad ? colors.NEGATIVE : colors.TEAL} opacity={bad ? 0.9 : 0.45} />
                         {bad && u > 0.9 && (
-                          <text x={RIGHT.x + RIGHT.w - 24} y={y + 8} textAnchor="end" fill={colors.NEGATIVE} fontSize={9.5} fontFamily={MONO}>
+                          <text x={RIGHT.x + RIGHT.w - 24} y={y + 8} textAnchor="end" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
                             divergence → finding
                           </text>
                         )}
@@ -314,10 +330,10 @@ export function Render({ s }: { s: SceneState }) {
               {cloneU > 0 && (
                 <g opacity={cloneU}>
                   <rect x={RIGHT.x + 24} y={RIGHT.y + 292} width={210} height={54} rx={10} fill={colors.BG} stroke={colors.ACCENT} strokeWidth={1.3} />
-                  <text x={RIGHT.x + 36} y={RIGHT.y + 314} fill={colors.ACCENT} fontSize={11.5} fontWeight={700}>
+                  <text x={RIGHT.x + 36} y={RIGHT.y + 314} fill={colors.ACCENT} fontSize={13} fontWeight={700}>
                     cold clone
                   </text>
-                  <text x={RIGHT.x + 36} y={RIGHT.y + 332} fill={colors.MUTED} fontSize={10} fontFamily={MONO}>
+                  <text x={RIGHT.x + 36} y={RIGHT.y + 332} fill={colors.MUTED} fontSize={12}>
                     scratch dir · env scrubbed
                   </text>
                 </g>
@@ -326,10 +342,10 @@ export function Render({ s }: { s: SceneState }) {
               {sabotageU > 0 && (
                 <g opacity={Math.min(1, sabotageU * 2)}>
                   <rect x={RIGHT.x + 250} y={RIGHT.y + 292} width={206} height={54} rx={10} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.3} />
-                  <text x={RIGHT.x + 262} y={RIGHT.y + 314} fill={colors.NEGATIVE} fontSize={11.5} fontWeight={700}>
+                  <text x={RIGHT.x + 262} y={RIGHT.y + 314} fill={colors.NEGATIVE} fontSize={13} fontWeight={700}>
                     sabotage check
                   </text>
-                  <text x={RIGHT.x + 262} y={RIGHT.y + 332} fill={colors.MUTED} fontSize={10}>
+                  <text x={RIGHT.x + 262} y={RIGHT.y + 332} fill={colors.MUTED} fontSize={12}>
                     break it — tests must go{' '}
                     <tspan fill={colors.NEGATIVE} fontWeight={700} opacity={clamp01(sabotageU * 2 - 1)}>
                       red
@@ -337,7 +353,7 @@ export function Render({ s }: { s: SceneState }) {
                   </text>
                 </g>
               )}
-              <text x={RIGHT.x + 24} y={RIGHT.y + RIGHT.h - 20} fill={colors.MUTED} fontSize={10.5} fontStyle="italic" opacity={cloneU}>
+              <text x={RIGHT.x + 24} y={RIGHT.y + RIGHT.h - 20} fill={colors.MUTED} fontSize={12} fontStyle="italic" opacity={cloneU}>
                 verifier charter — AGENTS.md
               </text>
             </g>
@@ -357,7 +373,7 @@ export function Render({ s }: { s: SceneState }) {
                   <text x={x} y={RECAP_Y - 12} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={700}>
                     {r.label}
                   </text>
-                  <text x={x} y={RECAP_Y + 12} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={MONO}>
+                  <text x={x} y={RECAP_Y + 12} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
                     {r.sub}
                   </text>
                   {i < RECAP.length - 1 && u > 0.9 && (
@@ -376,7 +392,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={640} y={470} textAnchor="middle" fill={colors.TEXT} fontSize={19} fontWeight={700}>
               runs you can replay, not stories you have to trust
             </text>
-            <text x={640} y={502} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
+            <text x={640} y={502} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
               87 / 228 verified · every claim survived an attack
             </text>
           </g>

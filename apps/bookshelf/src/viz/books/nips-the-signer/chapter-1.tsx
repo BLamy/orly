@@ -138,7 +138,8 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // the closing beat fades the working diagram right out, so the panel reads alone
+  const mainOp = 1 - 0.92 * dimU;
   const sigFilled = signU >= 1;
 
   return (
@@ -147,7 +148,8 @@ export function Render({ s }: { s: SceneState }) {
 
       <g opacity={mainOp}>
         <Camera {...cam}>
-          <JsonDoc layout={LAYOUT} reveal={jsonU} hidden={sigFilled ? undefined : ['sig']} />
+          {/* the sig slot stays a dashed empty box until the signature lands in it */}
+          <JsonDoc layout={LAYOUT} reveal={jsonU} hidden={['sig']} />
 
           {/* the nsec vault */}
           {nsecU > 0 && (
@@ -157,7 +159,7 @@ export function Render({ s }: { s: SceneState }) {
                 nsec = 4c96…d1e2
               </text>
               <text x={150} y={420} fill={colors.NEGATIVE} fontSize={12} fontWeight={600}>
-                the secret — never leaves
+                the secret — never leaves · demo key
               </text>
             </g>
           )}
@@ -175,6 +177,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* signature flying into the slot */}
           {signU > 0 && (
             <g opacity={clamp01(signU * 2)}>
+              <rect x={SIG_ANCHOR.x - 4} y={SIG_ANCHOR.y - 2} width={SIG_ANCHOR.w + 8} height={SIG_ANCHOR.h + 4} rx={4} fill={colors.BG} />
               <text x={SIG_ANCHOR.x} y={SIG_ANCHOR.y + SIG_ANCHOR.h - 4} fill={colors.POSITIVE} fontSize={13} fontFamily="monospace" opacity={signU}>
                 "c1d7…9f3a"
               </text>
@@ -186,7 +189,7 @@ export function Render({ s }: { s: SceneState }) {
       {/* leak overlay — screen-fixed so it reads as escaping the app */}
       {copyU > 0 && (
         <g opacity={copyU * mainOp}>
-          <text x={640} y={548} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14}>
+          <text x={640} y={548} textAnchor="middle" fill={colors.NEGATIVE} fontSize={16} fontWeight={600}>
             app holds nsec → app IS you
           </text>
           {leakU > 0 && (
@@ -195,7 +198,7 @@ export function Render({ s }: { s: SceneState }) {
                 const u = clamp01(leakU * 3 - i);
                 const x = 640 + u * (280 + i * 40);
                 return (
-                  <text key={i} x={x} y={578 + i * 6} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily="monospace" opacity={0.7 * (1 - u * 0.5)}>
+                  <text key={i} x={x} y={580 + i * 6} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace" opacity={0.9 * (1 - u * 0.4)}>
                     nsec ⇒
                   </text>
                 );
@@ -207,7 +210,7 @@ export function Render({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             The secret signs. Everything else only asks.
           </text>

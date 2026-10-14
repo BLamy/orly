@@ -5,7 +5,7 @@ import { line, curveMonotoneX } from 'd3';
 import { Camera } from '../../core';
 import type { SceneState } from '../../core';
 import { ProfilePage, SuggestHalo, FocusRing, Keycap, controlRect } from '../next-useful-action/shared/profile-page';
-import { C, chapter, Header, Label, Panel, Chip, on, lerp, clamp } from '../recordings-become-practice/shared/kit';
+import { C, chapter, Header, Label, Panel, Chip, on, clamp } from '../recordings-become-practice/shared/kit';
 const CAPTIONS = [
   "The first useful version should be small enough to understand. Choose a limited site, a few supported workflows, and a simple local ranking baseline.",
   "Run it in shadow mode first. Let it predict without moving anything, and compare its choices with what people actually do in the supported context.",
@@ -16,26 +16,27 @@ const CAPTIONS = [
   "That path joins three ideas: organize inference around bounded decisions, learn useful patterns from eligible recordings, and keep the live browser in the loop.",
   "At the end, the visible experience can be just a quiet suggestion and a press of Tab. The work underneath is what makes that small moment worth trusting."
 ] as const;
-const nodes=[{x:485,y:224,name:'narrow baseline'},{x:630,y:303,name:'shadow mode'},{x:775,y:224,name:'suggestions'},{x:920,y:303,name:'opt-in focus'},{x:1065,y:224,name:'checked runner'}];
+const nodes=[{x:625,y:224,name:'narrow baseline'},{x:765,y:303,name:'shadow mode'},{x:905,y:224,name:'suggestions'},{x:1045,y:303,name:'opt-in focus'},{x:1180,y:224,name:'checked runner'}];
 const ribbon=line<[number,number]>().x(d=>d[0]).y(d=>d[1]).curve(curveMonotoneX);
-const place={x:65,y:125,scale:.65};
+const place={x:40,y:110,scale:.92};
 export function buildScene(){return chapter(CAPTIONS);}const scene=buildScene();
 export function Render({s}:{s:SceneState}){
   const p=s.get(scene.phase),shadow=on(p,1),suggest=on(p,2),tools=on(p,3),runner=on(p,4),gates=on(p,5),join=on(p,6),final=on(p,7);
-  const page={x:place.x,y:place.y,scale:lerp(place.scale,.92,final)};
+  const page={x:place.x,y:place.y,scale:place.scale};
   return <><Header title='The first useful version' tag='PROPOSED PILOT · EVIDENCE GATES REMAIN UNFILLED'/><Camera {...s.get(scene.cam)}>
     <ProfilePage place={page} obsLabel={shadow>.5?'shadow / assist':'limited site'}/>
-    <SuggestHalo rect={controlRect('display-name-field',page)} u={suggest} phase={p} label='a suggestion'/>
+    <SuggestHalo rect={controlRect('display-name-field',page)} u={suggest} phase={p}/>
+    <Chip x={controlRect('display-name-field',page).x+controlRect('display-name-field',page).w+26} y={controlRect('display-name-field',page).y+controlRect('display-name-field',page).h/2-15} w={112} text='a suggestion' color={C.model} opacity={suggest}/>
     <FocusRing rect={controlRect('profile-menu',page)} u={final}/>
     <g opacity={1-final}>
       <path d={ribbon(nodes.map(n=>[n.x,n.y]))!} fill='none' stroke={C.model} strokeWidth={4} opacity={.7}/>
-      {nodes.map((n,i)=><g key={n.name} opacity={i===0?1:clamp(p-i)}><circle cx={n.x} cy={n.y} r={17} fill='#111c33' stroke={i===4?C.good:C.model} strokeWidth={2}/><Label x={n.x} y={n.y+5} anchor='middle' color={C.pending} size={14}>?</Label><Label x={n.x} y={n.y+44} anchor='middle' size={13}>{n.name}</Label></g>)}
-      <Label x={795} y={155} anchor='middle' size={16} color={C.pending}>Advance when independent evidence supports it</Label>
-      <g opacity={tools*(1-join)}><Chip x={477} y={401} w={218} text='Qwen runtime proof' color={C.model}/><Chip x={714} y={401} w={218} text='Record / train / evaluate' color={C.observation}/><Chip x={951} y={401} w={218} text='Explicit hybrid fallback' color={C.pending} opacity={runner}/></g>
-      <Panel x={478} y={460} w={692} h={86} title='Release gate · faster useful tasks at frozen reliability' color={C.pending} opacity={gates*(1-join)}>
-        <Label x={499} y={517} size={15}>Measured success and complete latency must fill this gate</Label>
+      {nodes.map((n,i)=><g key={n.name} opacity={i===0?1:clamp(p-i)}><circle cx={n.x} cy={n.y} r={17} fill='#111c33' stroke={i===4?C.good:C.model} strokeWidth={2}/><Label x={n.x} y={n.y+5} anchor='middle' color={C.pending} size={14}>?</Label><Label x={n.x} y={n.y+44} anchor='middle' size={13}>{n.name}</Label>{i===4&&<Label x={n.x} y={n.y+62} anchor='middle' size={12} color={C.muted}>observed outcomes</Label>}</g>)}
+      <Label x={890} y={155} anchor='middle' size={16} color={C.pending}>Advance when independent evidence supports it</Label>
+      <g opacity={tools*(1-join)}><Chip x={560} y={401} w={218} text='Qwen model engine proof' color={C.model}/><Chip x={797} y={401} w={218} text='Record / train / evaluate' color={C.observation}/><Chip x={1034} y={401} w={218} text='Explicit hybrid fallback' color={C.pending} opacity={runner}/></g>
+      <Panel x={560} y={460} w={692} h={86} title='Release gate · faster useful tasks at frozen reliability' color={C.pending} opacity={gates*(1-join)}>
+        <Label x={581} y={517} size={15}>Measured success and complete latency must fill this gate</Label>
       </Panel>
-      <g opacity={join}>{['Bounded decisions','Eligible recording data','Live browser loop'].map((v,i)=><Chip key={v} x={480+i*230} y={430} w={218} text={v} color={[C.model,C.observation,C.good][i]}/>)}<Label x={825} y={508} anchor='middle' size={16} color={C.muted}>Inspectable foundations support the visible interaction</Label></g>
+      <g opacity={join}>{['Bounded decisions','Eligible recording data','Live browser loop'].map((v,i)=><Chip key={v} x={560+i*230} y={430} w={218} text={v} color={[C.model,C.observation,C.good][i]}/>)}<Label x={899} y={508} anchor='middle' size={16} color={C.muted}>Inspectable foundations support the visible interaction</Label></g>
     </g>
     <Panel x={733} y={162} w={468} h={258} title='A quiet suggestion' color={C.model} opacity={final}>
       <Label x={756} y={226} size={18}>The name field is offered.</Label><Label x={756} y={271} size={18}>The person chooses whether to go.</Label><Keycap x={756} y={307} label='Tab' u={1}/><Label x={832} y={326} size={17} color={C.good}>Accept focus · no activation</Label><Label x={756} y={381} size={16} color={C.muted}>Ordinary navigation remains available</Label>

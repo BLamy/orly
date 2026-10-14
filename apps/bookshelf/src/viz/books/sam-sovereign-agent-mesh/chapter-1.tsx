@@ -15,10 +15,12 @@ const clamp01 = (u: number) => Math.max(0, Math.min(1, u));
 type Pt = { x: number; y: number };
 
 const STORE: Pt = { x: 158, y: 344 };
-const CONTROL: Pt = { x: 640, y: 176 };
+const CONTROL: Pt = { x: 640, y: 112 };
 const ROUTER: Pt = { x: 1120, y: 344 };
-const ENROLL_CARD = { x: 640, y: 452, w: 424, h: 118 };
-const POLICY = { x: 392, y: 238 };
+const ENROLL_CARD = { x: 640, y: 548, w: 424, h: 118 };
+const POLICY = { x: 392, y: 186 };
+const ENVELOPE_START: Pt = { x: 292, y: 262 };
+const ENVELOPE_REQUEST: Pt = { x: 640, y: 412 };
 
 const POLICY_VALUES = [
   [1, 0.72, 0.38],
@@ -106,7 +108,7 @@ function RequestCard({ u, fields, glow, opacity = 1 }: { u: number; fields: numb
       <text x={ENROLL_CARD.x - ENROLL_CARD.w / 2 + 22} y={ENROLL_CARD.y - 34} fill={colors.TEXT} fontSize={16} fontWeight={700} fontFamily={MONO}>EnrollRequest</text>
       <text x={ENROLL_CARD.x + ENROLL_CARD.w / 2 - 22} y={ENROLL_CARD.y - 34} textAnchor="end" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>application/x-protobuf</text>
       {REQUEST_FIELDS.map((field, i) => (
-        <Chip key={field} x={ENROLL_CARD.x - 164 + (i % 3) * 164} y={ENROLL_CARD.y + (i < 3 ? 2 : 35)} text={field} color={i === 0 ? colors.SECONDARY : i === 3 ? colors.WARM : colors.ACCENT} opacity={clamp01(fields * 3 - i * 0.45)} />
+        <Chip key={field} x={ENROLL_CARD.x - 140 + (i % 3) * 140} y={ENROLL_CARD.y + (i < 3 ? 2 : 35)} text={field} color={i === 0 ? colors.SECONDARY : i === 3 ? colors.WARM : colors.ACCENT} opacity={clamp01(fields * 3 - i * 0.45)} />
       ))}
     </g>
   );
@@ -124,8 +126,8 @@ function PolicyBlock({ u, glow, opacity = 1 }: { u: number; glow: number; opacit
         x={POLICY.x + 22}
         y={POLICY.y + 40}
         values={POLICY_VALUES}
-        cell={43}
-        gap={6}
+        cell={40}
+        gap={5}
         cellU={(i, j) => clamp01(uu * 3 - (i * 3 + j) * 0.3)}
         rowLabels={POLICY_ROWS}
         colLabels={POLICY_COLS}
@@ -160,16 +162,16 @@ export function buildScene() {
   tl.tween(storeU, 1, { at: 0.6, dur: 0.8, ease: ease.enter });
   tl.tween(keyU, 1, { at: 1.3, dur: 1.1, ease: ease.pop });
   tl.caption({ at: 5.1, dur: 4.8, text: 'The first run creates a durable key pair; later runs recover the same one from the store.' });
-  tl.tween(identityX, 238, { at: 5.4, dur: 1.1, ease: ease.move });
-  tl.tween(identityY, 304, { at: 5.4, dur: 1.1, ease: ease.move });
+  tl.tween(identityX, ENVELOPE_START.x, { at: 5.4, dur: 1.1, ease: ease.move });
+  tl.tween(identityY, ENVELOPE_START.y, { at: 5.4, dur: 1.1, ease: ease.move });
   tl.hold(10.0, 0.4);
 
   // BEAT 2 — request fields assemble around the same envelope.
   tl.caption({ at: 10.4, dur: 4.8, text: 'The node packs its identity, requested role, and operator labels into one enrollment request.' });
   tl.tween(requestU, 1, { at: 10.7, dur: 0.7, ease: ease.enter });
   tl.tween(fieldU, 1, { at: 11.2, dur: 1.5, ease: ease.draw });
-  tl.tween(identityX, 640, { at: 11.8, dur: 1.4, ease: ease.move });
-  tl.tween(identityY, 382, { at: 11.8, dur: 1.4, ease: ease.move });
+  tl.tween(identityX, ENVELOPE_REQUEST.x, { at: 11.8, dur: 1.4, ease: ease.move });
+  tl.tween(identityY, ENVELOPE_REQUEST.y, { at: 11.8, dur: 1.4, ease: ease.move });
   tl.caption({ at: 15.8, dur: 4.5, text: 'The request crosses the control plane as a compact protobuf message, carrying fields the server can check.' });
   tl.tween(sendU, 1, { at: 16.1, dur: 1.8, ease: ease.linear });
   tl.hold(20.6, 0.4);
@@ -187,7 +189,7 @@ export function buildScene() {
   tl.caption({ at: 31.3, dur: 5.0, text: 'A Biscuit token now binds the peer, its role, its policy facts, and its labels to a signed envelope.' });
   tl.tween(cam, CAMERA_HOME, { at: 31.5, dur: 1.2, ease: ease.move });
   tl.tween(sealU, 1, { at: 32.0, dur: 0.9, ease: ease.pop });
-  tl.tween(identityX, 790, { at: 32.3, dur: 1.1, ease: ease.move });
+  tl.tween(identityX, 820, { at: 32.3, dur: 1.1, ease: ease.move });
   tl.tween(identityY, 186, { at: 32.3, dur: 1.1, ease: ease.move });
   tl.caption({ at: 36.8, dur: 4.8, text: 'The node verifies the required role before saving the token and the mesh configuration.' });
   tl.tween(saveU, 1, { at: 37.1, dur: 1.0, ease: ease.enter });
@@ -221,18 +223,18 @@ export function Render({ s }: { s: SceneState }) {
         <text x={640} y={48} textAnchor="middle" fill={colors.TEXT} fontSize={28} fontWeight={760}>The identity earns a route</text>
         <text x={640} y={75} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>GetOrGenerateKey · EnrollRequest · HandleRegister · MintBiscuitToken</text>
 
-        <Connection from={{ x: 236, y: STORE.y }} to={{ x: 520, y: STORE.y }} u={s.get(scene.storeU)} flow={s.get(scene.sendU)} color={colors.ACCENT} label="POST /register" />
-        <Connection from={{ x: 760, y: CONTROL.y }} to={{ x: 1050, y: ROUTER.y }} via={[{ x: 860, y: CONTROL.y }, { x: 860, y: ROUTER.y }]} u={s.get(scene.routerU)} flow={s.get(scene.sendU)} color={colors.POSITIVE} label="router_addresses" />
+        <Connection from={{ x: 236, y: STORE.y }} to={{ x: 352, y: STORE.y }} u={s.get(scene.storeU)} flow={s.get(scene.sendU)} color={colors.ACCENT} label="POST /register" />
+        <Connection from={{ x: 760, y: CONTROL.y }} to={{ x: 1050, y: ROUTER.y }} via={[{ x: 1000, y: CONTROL.y }, { x: 1000, y: ROUTER.y }]} u={s.get(scene.routerU)} flow={s.get(scene.sendU)} color={colors.POSITIVE} label="router_addresses" />
 
         <NodeBadge x={STORE.x} y={STORE.y} w={176} h={72} label="sam-node" sublabel="Store · local key" color={colors.ACCENT} u={s.get(scene.storeU)} glow={s.get(scene.keyU)} />
-        <NodeBadge x={CONTROL.x} y={CONTROL.y} w={218} h={64} label="sam-control-plane" sublabel="identity registry" color={colors.SECONDARY} u={s.get(scene.policyU)} glow={s.get(scene.policyGlow)} />
+        <NodeBadge x={CONTROL.x} y={CONTROL.y} w={218} h={56} label="sam-control-plane" sublabel="identity registry" color={colors.SECONDARY} u={s.get(scene.policyU)} glow={s.get(scene.policyGlow)} />
         <NodeBadge x={ROUTER.x} y={ROUTER.y} w={168} h={72} label="sam-router" sublabel="first mesh route" color={colors.POSITIVE} u={s.get(scene.routerU)} glow={s.get(scene.routerU)} />
 
         <PolicyBlock u={s.get(scene.policyU)} glow={s.get(scene.policyGlow)} opacity={0.96} />
         <RequestCard u={requestProgress} fields={s.get(scene.fieldU)} glow={s.get(scene.sendU)} />
 
         <IdentityEnvelope x={envelope.x} y={envelope.y} u={Math.max(s.get(scene.keyU), s.get(scene.requestU), s.get(scene.sealU))} seal={s.get(scene.sealU)} glow={Math.max(s.get(scene.keyU), s.get(scene.policyGlow), s.get(scene.routerU))} />
-        <Packet from={{ x: 228, y: 304 }} to={{ x: 512, y: 304 }} u={s.get(scene.sendU)} color={colors.WARM} r={6} label="EnrollRequest" />
+        <Packet from={{ x: 236, y: STORE.y }} to={{ x: 352, y: STORE.y }} u={s.get(scene.sendU)} color={colors.WARM} r={6} />
 
         <g opacity={s.get(scene.saveU)}>
           <Chip x={788} y={274} text="SaveIdentity" color={colors.POSITIVE} w={122} />

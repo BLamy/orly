@@ -87,33 +87,36 @@ export function Render({ s }: { s: SceneState }) {
         <text y={5} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>duplicate item_id</text>
       </g>
       <g opacity={s.get(scene.pairU) * (1 - s.get(scene.countsU) * 0.65)}>
-        <path d="M640 310 C640 352 466 352 466 397" fill="none" stroke={colors.ACCENT} strokeWidth={2} strokeDasharray="6 5" />
-        <path d="M640 310 C640 352 814 352 814 397" fill="none" stroke={colors.POSITIVE} strokeWidth={2} strokeDasharray="6 5" />
-        <rect x={342} y={398} width={248} height={52} rx={13} fill={colors.PANEL} stroke={colors.ACCENT} />
-        <rect x={690} y={398} width={248} height={52} rx={13} fill={colors.PANEL} stroke={colors.POSITIVE} />
-        <text x={466} y={430} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>generated::norm_clip_id</text>
-        <text x={814} y={430} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>real::norm_clip_id</text>
+        <path d="M640 310 C640 326 466 322 466 340" fill="none" stroke={colors.ACCENT} strokeWidth={2} strokeDasharray="6 5" />
+        <path d="M640 310 C640 326 814 322 814 340" fill="none" stroke={colors.POSITIVE} strokeWidth={2} strokeDasharray="6 5" />
+        <rect x={342} y={340} width={248} height={48} rx={13} fill={colors.PANEL} stroke={colors.ACCENT} />
+        <rect x={690} y={340} width={248} height={48} rx={13} fill={colors.PANEL} stroke={colors.POSITIVE} />
+        <text x={466} y={369} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>generated::norm_clip_id</text>
+        <text x={814} y={369} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>real::norm_clip_id</text>
       </g>
       {SOURCES.map(([name, count], i) => {
         const x = 116 + i * 132;
         const u = s.get(scene.countsU);
-        const h = (count / 1830) * 70 * u;
-        const metricH = (METRICS[i] / 80) * 70 * s.get(scene.sourceMetricsU);
+        const h = (count / 1830) * 76 * u;
+        const metricH = (METRICS[i] / 80) * 76 * s.get(scene.sourceMetricsU);
         return <g key={name}>
-          <rect x={x - 34} y={500 - h} width={28} height={h} rx={5} fill={colors.MUTED} opacity={0.4 * u} />
-          <rect x={x + 6} y={500 - metricH} width={28} height={metricH} rx={5} fill={colors.ACCENT} opacity={s.get(scene.sourceMetricsU)} />
-          <text x={x} y={519} textAnchor="middle" fill={colors.MUTED} fontSize={9} fontFamily={MONO} opacity={Math.max(u, s.get(scene.sourceMetricsU))}>{name}</text>
-          <text x={x - 20} y={422} textAnchor="middle" fill={colors.MUTED} fontSize={9} opacity={u}>{count}</text>
+          <rect x={x - 34} y={560 - h} width={28} height={h} rx={5} fill={colors.MUTED} opacity={0.4 * u} />
+          <rect x={x + 6} y={560 - metricH} width={28} height={metricH} rx={5} fill={colors.ACCENT} opacity={s.get(scene.sourceMetricsU)} />
+          <text x={x} y={580} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={Math.max(u, s.get(scene.sourceMetricsU))}>{name}</text>
+          <text x={x} y={598} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={u}>{count}</text>
         </g>;
       })}
-      <g opacity={s.get(scene.poolLean)} transform={`translate(${640 + s.get(scene.poolLean) * 34} 412) rotate(${s.get(scene.poolLean) * 6})`}>
-        <line x1={-210} y1={0} x2={210} y2={0} stroke={colors.NEGATIVE} strokeWidth={5} strokeLinecap="round" />
-        <text y={-16} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14}>pooled clips lean toward larger sources</text>
+      <text x={1206} y={404} textAnchor="end" fontSize={12} fontFamily={MONO} opacity={Math.max(s.get(scene.countsU), s.get(scene.sourceMetricsU))}>
+        <tspan fill={colors.MUTED}>■ clips</tspan><tspan fill={colors.ACCENT}>{'   ■ metric'}</tspan>
+      </text>
+      <g opacity={s.get(scene.poolLean) * (1 - s.get(scene.meanU) * 0.8)} transform={`translate(${640 + s.get(scene.poolLean) * 34} 418)`}>
+        <line x1={-210} y1={0} x2={210} y2={0} stroke={colors.NEGATIVE} strokeWidth={3} strokeLinecap="round" />
+        <text y={-10} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14}>pooled clips lean toward larger sources</text>
       </g>
       <g opacity={s.get(scene.meanU)}>
-        <path d="M105 454 L105 430 L1175 430 L1175 454" fill="none" stroke={colors.WARM} strokeWidth={2} />
-        <rect x={516} y={385} width={248} height={54} rx={15} fill={colors.PANEL} stroke={colors.WARM} />
-        <text x={640} y={418} textAnchor="middle" fill={colors.WARM} fontSize={17} fontFamily={MONO}>mean(source metrics)</text>
+        <path d="M70 480 L70 470 L1210 470 L1210 480" fill="none" stroke={colors.WARM} strokeWidth={2} />
+        <rect x={516} y={428} width={248} height={36} rx={12} fill={colors.PANEL} stroke={colors.WARM} />
+        <text x={640} y={452} textAnchor="middle" fill={colors.WARM} fontSize={17} fontFamily={MONO}>mean(source metrics)</text>
       </g>
       <g opacity={s.get(scene.coverageU)}>
         <rect x={194} y={70} width={892} height={66} rx={16} fill={colors.PANEL} stroke={colors.SECONDARY} />

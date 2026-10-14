@@ -84,7 +84,7 @@ function Txt({
   );
 }
 const monoW = (text: string, size: number): number => text.length * size * 0.602;
-function Chip({ x, y, text, color = INK.muted, opacity = 1, size = 11, anchor = 'middle' }: {
+function Chip({ x, y, text, color = INK.muted, opacity = 1, size = 12, anchor = 'middle' }: {
   x: number; y: number; text: string; color?: string; opacity?: number; size?: number; anchor?: 'start' | 'middle' | 'end';
 }) {
   if (opacity <= 0.003) return null;
@@ -197,12 +197,12 @@ const relativeIn = (deg: number): { x: number; z: number } => {
   return { x: dx * ax.x.dx + dz * ax.x.dy, z: dx * ax.z.dx + dz * ax.z.dy };
 };
 
-const PANEL = { x: 900, y: 150, w: 330 } as const; // sparse vector + decision
+const PANEL = { x: 900, y: 150, w: 330, h: 378 } as const; // sparse vector + decision
 const CELL = { w: 76, h: 40, gap: 10 } as const;
 const cellX = (i: number): number => PANEL.x + 18 + i * (CELL.w + CELL.gap);
 const ROW_SRC = PANEL.y + 85;
 const ROW_ROT = PANEL.y + 170;
-const MINI = { ox: PANEL.x + 230, oy: PANEL.y + 300, s: 28 } as const; // rotated-relation mini frame
+const MINI = { ox: PANEL.x + 260, oy: PANEL.y + 290, s: 28 } as const; // rotated-relation mini frame, clear of the badge
 
 const ROUTE_Y = 556;
 const BAR = { x0: 420, w: 130, gap: 70, base: 520, top: 150 } as const;
@@ -307,7 +307,7 @@ export function buildScene() {
   // BEAT 7 — the measured bars
   t = beatAt(7);
   tl.tween(cam, CAMERA_HOME, { at: t - 0.2, dur: 1.3, ease: ease.move });
-  tl.tween(mapO, 0.1, { at: t - 0.2, dur: 0.8, ease: ease.enter });
+  tl.tween(mapO, 0, { at: t - 0.2, dur: 0.8, ease: ease.enter });
   tl.tween(panelO, 0, { at: t - 0.2, dur: 0.8, ease: ease.enter });
   tl.tween(routeU, 0, { at: t - 0.2, dur: 0.6, ease: ease.enter });
   tl.tween(barsU, 1, { at: t + 0.6, dur: 2.2, ease: ease.move });
@@ -410,8 +410,8 @@ export function Render({ s }: { s: SceneState }) {
             </g>
           ))}
           {/* fixed world axes labels (source frame) */}
-          <Txt x={mx(2) + 10} y={mz(0) + 4} size={11} fill={INK.hx} opacity={1 - clamp01(Math.abs(deg) / 20)}>x right</Txt>
-          <Txt x={mx(0) + 8} y={mz(2) + 16} size={11} fill={INK.dz} opacity={1 - clamp01(Math.abs(deg) / 20)}>z close</Txt>
+          <Txt x={mx(2) + 10} y={mz(0) + 4} size={12} fill={INK.hx} opacity={1 - clamp01(Math.abs(deg) / 20)}>x right</Txt>
+          <Txt x={mx(-2) - 8} y={mz(2) + 4} size={12} anchor="end" fill={INK.dz} opacity={1 - clamp01(Math.abs(deg) / 20)}>z close</Txt>
           {/* objects */}
           <Cup x={mx(B_POS.x)} y={mz(B_POS.z)} r={16} opacity={clamp01(map * 2 - 1)} />
           <Apple x={mx(A_POS.x)} y={mz(A_POS.z)} r={16} opacity={clamp01(map * 2 - 1)} />
@@ -423,8 +423,15 @@ export function Render({ s }: { s: SceneState }) {
           {/* the viewer and its rigid frame gizmo */}
           <Viewer x={viewer.x} y={viewer.y} deg={deg} opacity={clamp01(map * 2 - 1)} />
           <Vec x1={gz.x} y1={gz.y} x2={gz.x + axes.x.dx * 46} y2={gz.y + axes.x.dy * 46} grow={clamp01(map * 2 - 1)} color={INK.hx} width={2.2} head={8} label="x′" labelSize={12} />
-          <Vec x1={gz.x} y1={gz.y} x2={gz.x + axes.z.dx * 46} y2={gz.y + axes.z.dy * 46} grow={clamp01(map * 2 - 1)} color={INK.dz} width={2.2} head={8} label="z′ close" labelSize={12} />
-          <Txt x={viewer.x} y={viewer.y + (deg === 0 ? 34 : 0) + (Math.abs(deg) > 170 ? -28 : 0)} size={11} anchor="middle" fill={INK.viewer} opacity={0.9}>
+          <Vec x1={gz.x} y1={gz.y} x2={gz.x + axes.z.dx * 34} y2={gz.y + axes.z.dy * 34} grow={clamp01(map * 2 - 1)} color={INK.dz} width={2.2} head={8} />
+          {/* z′ label sits beside the shaft, away from the viewer icon */}
+          <Txt x={gz.x + axes.z.dx * 17 - axes.x.dx * 10} y={gz.y + axes.z.dy * 17 - axes.x.dy * 10 + 4}
+            size={12} anchor={Math.abs(axes.x.dx) > 0.5 ? (axes.x.dx > 0 ? 'end' : 'start') : 'middle'}
+            fill={INK.dz} opacity={clamp01(map * 2 - 1)}>z′ close</Txt>
+          {/* viewer label sits outside the viewer, on the far side from the scene */}
+          <Txt x={viewer.x + axes.z.dx * 30} y={viewer.y + axes.z.dy * 30 + 4}
+            size={12} anchor={Math.abs(axes.z.dx) > 0.5 ? (axes.z.dx > 0 ? 'start' : 'end') : 'middle'}
+            fill={INK.viewer} opacity={0.9 * clamp01(map * 2 - 1)}>
             {rotating ? `viewer → ${viewName}` : `viewer · ${viewName}`}
           </Txt>
         </g>
@@ -437,42 +444,42 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- sparse vector + decision panel ---- */}
         <g opacity={panel}>
-          <rect x={PANEL.x} y={PANEL.y} width={PANEL.w} height={400} rx={12} fill={INK.panel} stroke={colors.GRID} />
+          <rect x={PANEL.x} y={PANEL.y} width={PANEL.w} height={PANEL.h} rx={12} fill={INK.panel} stroke={colors.GRID} />
           <Txt x={PANEL.x + 18} y={PANEL.y + 26} size={12} fill={INK.muted}>relation coordinates · A − B · H / V / D</Txt>
-          <Txt x={PANEL.x + 18} y={ROW_SRC - 32} size={11} fill={INK.muted}>source view (front)</Txt>
+          <Txt x={PANEL.x + 18} y={ROW_SRC - 32} size={12} fill={INK.muted}>source view (front)</Txt>
           {['H', 'V', 'D'].map((k, i) => (
-            <Txt key={k} x={cellX(i) + CELL.w / 2} y={ROW_SRC + 34} size={11} anchor="middle" fill={[INK.hx, INK.vy, INK.dz][i]}>{k}</Txt>
+            <Txt key={k} x={cellX(i) + CELL.w / 2} y={ROW_SRC + 34} size={12} anchor="middle" fill={[INK.hx, INK.vy, INK.dz][i]}>{k}</Txt>
           ))}
           <Cell x={cellX(0)} y={ROW_SRC} value={SOURCE[0]} color={INK.hx} hollow={false} opacity={clamp01(packet * 1.5 - 0.5)} />
           <Cell x={cellX(1)} y={ROW_SRC} value={0} color={INK.vy} hollow opacity={zero} />
           <Cell x={cellX(2)} y={ROW_SRC} value={0} color={INK.dz} hollow opacity={zero} />
-          <Txt x={PANEL.x + 18} y={ROW_SRC + 58} size={11} fill={INK.muted} opacity={zero}>unmeasured axes set to zero · not inferred geometry</Txt>
+          <Txt x={PANEL.x + 18} y={ROW_SRC + 58} size={12} fill={INK.muted} opacity={zero}>unmeasured axes set to zero</Txt>
           <Chip x={PANEL.x + 18} y={ROW_SRC + 80} text="source_coordinates" color={INK.muted} anchor="start" opacity={win(b, 1, 2) * zero} />
 
           {/* rotated row */}
           <g opacity={rotRow}>
-            <Txt x={PANEL.x + 18} y={ROW_ROT - 10} size={11} fill={INK.muted}>{`after external rotation · ${viewName} view`}</Txt>
+            <Txt x={PANEL.x + 18} y={ROW_ROT - 10} size={12} fill={INK.muted}>{`after external rotation · ${viewName} view`}</Txt>
             <Cell x={cellX(0)} y={ROW_ROT + 22} value={rotated[0]} color={INK.hx} hollow={Math.abs(rotated[0]) < 0.05} opacity={1} hot={hotH} />
             <Cell x={cellX(1)} y={ROW_ROT + 22} value={0} color={INK.vy} hollow opacity={1} />
             <Cell x={cellX(2)} y={ROW_ROT + 22} value={rotated[2]} color={INK.dz} hollow={Math.abs(rotated[2]) < 0.05} opacity={1} hot={hotD} />
             <MathLabel tex={cur ? cur.formula : ''} x={PANEL.x + 18} y={ROW_ROT + 66} fontSize={15} anchor="start" boxWidth={300} color={INK.text} opacity={cur ? 1 : 0} />
-            <Txt x={PANEL.x + 18} y={ROW_ROT + 92} size={10.5} fill={INK.muted}>x is right · z is close · explicit external rotation</Txt>
+            <Txt x={PANEL.x + 18} y={ROW_ROT + 92} size={12} fill={INK.muted}>x right · z close</Txt>
           </g>
 
           {/* rotated-relation mini frame: x′ across, z′ (close) down */}
           <g opacity={rotRow}>
-            <line x1={MINI.ox - 60} y1={MINI.oy} x2={MINI.ox + 60} y2={MINI.oy} stroke={colors.ink.axis} />
+            <line x1={MINI.ox - 44} y1={MINI.oy} x2={MINI.ox + 44} y2={MINI.oy} stroke={colors.ink.axis} />
             <line x1={MINI.ox} y1={MINI.oy - 66} x2={MINI.ox} y2={MINI.oy + 66} stroke={colors.ink.axis} />
-            <Txt x={MINI.ox + 64} y={MINI.oy + 4} size={10} fill={INK.hx}>x′</Txt>
-            <Txt x={MINI.ox + 6} y={MINI.oy + 72} size={10} fill={INK.dz}>+z′ close</Txt>
-            <Txt x={MINI.ox + 6} y={MINI.oy - 60} size={10} fill={INK.muted}>−z′ far</Txt>
+            <Txt x={MINI.ox + 48} y={MINI.oy + 4} size={12} fill={INK.hx}>x′</Txt>
+            <Txt x={MINI.ox + 6} y={MINI.oy + 72} size={12} fill={INK.dz}>+z′ close</Txt>
+            <Txt x={MINI.ox + 6} y={MINI.oy - 60} size={12} fill={INK.muted}>−z′ far</Txt>
             <Vec x1={MINI.ox} y1={MINI.oy} x2={MINI.ox + rotated[0] * MINI.s} y2={MINI.oy + rotated[2] * MINI.s} grow={1} color={INK.hx} width={2.6} head={9} />
           </g>
 
           {/* decision badge */}
           <g opacity={decision}>
             <rect x={PANEL.x + 18} y={ROW_ROT + 108} width={190} height={62} rx={8} fill={INK.panel} stroke={margin > 0 ? INK.apple : INK.cup} />
-            <Txt x={PANEL.x + 30} y={ROW_ROT + 130} size={11} fill={INK.muted}>{property === 'closer' ? 'closer margin = z′' : 'left margin = −x′'}</Txt>
+            <Txt x={PANEL.x + 30} y={ROW_ROT + 130} size={12} fill={INK.muted}>{property === 'closer' ? 'closer margin = z′' : 'left margin = −x′'}</Txt>
             <Txt x={PANEL.x + 30} y={ROW_ROT + 156} size={16} mono fill={margin > 0 ? INK.apple : INK.cup}>
               {`${fmt(margin, 0)} ${margin > 0 ? '> 0 → A (apple)' : '< 0 → B (cup)'}`}
             </Txt>
@@ -489,7 +496,7 @@ export function Render({ s }: { s: SceneState }) {
             <g key={st.label} opacity={clamp01(route * 3 - i)}>
               <rect x={st.x - 90} y={ROUTE_Y - 16} width={180} height={32} rx={8} fill={INK.panel} stroke={INK.dz} />
               <Txt x={st.x} y={ROUTE_Y + 5} size={13} anchor="middle" fill={INK.dz} weight={600}>{st.label}</Txt>
-              <Txt x={st.x} y={ROUTE_Y + 30} size={10.5} anchor="middle" fill={INK.muted}>{st.sub}</Txt>
+              <Txt x={st.x} y={ROUTE_Y + 30} size={12} anchor="middle" fill={INK.muted}>{st.sub}</Txt>
               {i < 2 && <Vec x1={st.x + 96} y1={ROUTE_Y} x2={st.x + 174} y2={ROUTE_Y} grow={clamp01(route * 3 - i - 0.5)} color={INK.dz} width={2} head={8} />}
             </g>
           ))}
@@ -497,7 +504,7 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={clamp01(route * 3 - 2)}>
             <rect x={960} y={ROUTE_Y - 16} width={240} height={32} rx={8} fill={INK.panel} stroke={INK.muted} strokeDasharray="5 4" />
             <Txt x={1080} y={ROUTE_Y + 5} size={13} anchor="middle" fill={INK.muted}>model-generated answer</Txt>
-            <Txt x={1080} y={ROUTE_Y + 30} size={10.5} anchor="middle" fill={INK.muted}>separate · not shown to rotate internally</Txt>
+            <Txt x={1080} y={ROUTE_Y + 30} size={12} anchor="middle" fill={INK.muted}>separate · no internal rotation</Txt>
             <Txt x={1080} y={ROUTE_Y - 30} size={12} anchor="middle" fill={INK.muted}>versus</Txt>
           </g>
         </g>
@@ -506,11 +513,11 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={bars > 0 ? 1 : 0}>
           <g opacity={clamp01(s.get(scene.barsU) * 3) * s.get(scene.barsO)}>
             <Txt x={BAR.x0} y={BAR.top - 36} size={14} weight={600}>viewpoint benchmark · answer accuracy</Txt>
-            <Txt x={BAR.x0} y={BAR.top - 16} size={11} fill={INK.muted}>Qwen3.6-27B · SpinBench without premise · n = 146 · Table 10</Txt>
+            <Txt x={BAR.x0} y={BAR.top - 16} size={12} fill={INK.muted}>Qwen3.6-27B · SpinBench without premise · n = 146 · Table 10</Txt>
             {[0, 25, 50, 75, 100].map((p) => (
               <g key={p}>
                 <line x1={BAR.x0 - 10} y1={barY(p)} x2={barX(2) + BAR.w + 10} y2={barY(p)} stroke={colors.GRID} />
-                <Txt x={BAR.x0 - 18} y={barY(p) + 4} size={11} anchor="end" fill={INK.muted}>{`${p}%`}</Txt>
+                <Txt x={BAR.x0 - 18} y={barY(p) + 4} size={12} anchor="end" fill={INK.muted}>{`${p}%`}</Txt>
               </g>
             ))}
             <line x1={BAR.x0 - 10} y1={BAR.base} x2={barX(2) + BAR.w + 10} y2={BAR.base} stroke={colors.ink.axis} strokeWidth={1.5} />
@@ -553,8 +560,8 @@ export function Render({ s }: { s: SceneState }) {
             <line x1={900} y1={232} x2={1020} y2={232} stroke={colors.ink.axis} />
             <line x1={960} y1={176} x2={960} y2={288} stroke={colors.ink.axis} />
             <Vec x1={960} y1={232} x2={960} y2={190} grow={1} color={INK.hx} width={2.4} head={8} />
-            <Txt x={1026} y={236} size={10} fill={INK.hx}>x′</Txt>
-            <Txt x={966} y={296} size={10} fill={INK.dz}>+z′</Txt>
+            <Txt x={1026} y={236} size={12} fill={INK.hx}>x′</Txt>
+            <Txt x={966} y={296} size={12} fill={INK.dz}>+z′</Txt>
             <Txt x={960} y={318} size={12} anchor="middle" fill={INK.muted}>turn its coordinates · rotated relation</Txt>
           </g>
         </g>
@@ -572,7 +579,7 @@ export function Render({ s }: { s: SceneState }) {
         <Txt x={164} y={54} size={16} weight={600}>Turn the viewpoint, not the evidence</Txt>
       </g>
       {NOTES.map((n, i) => (
-        <Txt key={i} x={1210} y={578} size={11} anchor="end" fill={INK.muted} opacity={0.85 * clamp01(1 - Math.abs(b - i) * 1.6)}>
+        <Txt key={i} x={70} y={610} size={12} anchor="start" fill={INK.muted} opacity={0.85 * clamp01(1 - Math.abs(b - i) * 1.6)}>
           {`Source: ${n}`}
         </Txt>
       ))}

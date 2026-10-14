@@ -6,16 +6,19 @@ import type { CameraState, SceneState } from '../../core';
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
 const COUNTS = [90, 45, 23, 10];
 const HORIZONS = [10, 20, 50, 100];
+// Gentle centred drift only: every push stays inside the stage at k <= 1.04.
+const DRIFT: CameraState = { x: 640, y: 360, k: 1.04 };
 const CANDIDATES = Array.from({ length: 90 }, (_, i) => ({
   i,
   x: 106 + (i % 15) * 34,
   y: 128 + Math.floor(i / 15) * 34,
   color: [colors.ACCENT, colors.SECONDARY, colors.WARM][i % 3],
 }));
+// Factorial grid sits right of centre so the result cards keep the left column.
 const CELLS = Array.from({ length: 16 }, (_, i) => ({
   i,
-  x: 312 + (i % 4) * 164,
-  y: 176 + Math.floor(i / 4) * 92,
+  x: 470 + (i % 4) * 150,
+  y: 166 + Math.floor(i / 4) * 86,
 }));
 const RESULTS = [
   { label: 'Symbol-QA', value: 18.5, rank: 'rank 2 of 16', color: colors.ACCENT },
@@ -40,7 +43,7 @@ export function buildScene() {
 
   tl.caption({ at: 0.4, dur: 5.5, text: 'Composition creates a search problem. The development sweep begins with ninety anchor and allocation configurations.' });
   tl.tween(cloudU, 1, { at: 0.8, dur: 2.0, ease: ease.enter });
-  tl.tween(cam, { x: 350, y: 270, k: 1.08 }, { at: 2.0, dur: 1.2, ease: ease.move });
+  tl.tween(cam, DRIFT, { at: 2.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 6.4, dur: 5.5, text: 'Task-Level Successive Halving spends the first budget on ten tasks, scores final retention over three seeds, and keeps forty-five.' });
   tl.tween(scoreU, 1, { at: 6.9, dur: 1.0, ease: ease.enter });
@@ -52,7 +55,7 @@ export function buildScene() {
 
   tl.caption({ at: 18.4, dur: 5.5, text: 'At fifty tasks, twenty-three become ten. Only those survivors receive the full one-hundred-task horizon.' });
   tl.tween(funnelP, 3, { at: 18.9, dur: 2.2, ease: ease.move });
-  tl.tween(cam, { x: 934, y: 288, k: 1.1 }, { at: 19.0, dur: 1.2, ease: ease.move });
+  tl.tween(cam, DRIFT, { at: 19.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 24.4, dur: 5.5, text: 'The final experiment then isolates four switches: Synaptic Intelligence, self-distillation, replay, and merged low-rank adaptation.' });
   tl.tween(factorialU, 1, { at: 24.9, dur: 1.2, ease: ease.move });
@@ -64,7 +67,7 @@ export function buildScene() {
 
   tl.caption({ at: 36.4, dur: 5.5, text: 'One fixed composition turns on all three anchors and merged allocation. It is the only cell ranked in the top three on every dataset.' });
   tl.tween(bestU, 1, { at: 36.9, dur: 0.8, ease: ease.pop });
-  tl.tween(cam, { x: 720, y: 360, k: 1.08 }, { at: 37.0, dur: 1.2, ease: ease.move });
+  tl.tween(cam, DRIFT, { at: 37.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 42.4, dur: 5.5, text: 'Its final retention is eighteen point five percent on symbols, forty-one point eight on fictional facts, and forty-four point three on real questions.' });
   tl.tween(resultsU, 3, { at: 42.9, dur: 2.2, ease: ease.enter });
@@ -102,8 +105,9 @@ function CandidateCloud({ u, rung }: { u: number; rung: number }) {
       const survivesNow = c.i < aliveNow;
       const survivesNext = c.i < aliveNext;
       const opacity = survivesNow ? (survivesNext ? 0.88 : 0.88 * (1 - local)) : 0.04;
-      const targetX = 760 + (c.i % 10) * 38;
-      const targetY = 150 + Math.floor(c.i / 10) * 38;
+      // Survivors settle into a compact block above the horizon boxes.
+      const targetX = 780 + (c.i % 10) * 24;
+      const targetY = 132 + Math.floor(c.i / 10) * 24;
       return <circle key={c.i} cx={c.x + (targetX - c.x) * rung / 3} cy={c.y + (targetY - c.y) * rung / 3} r={7.5} fill={c.color} opacity={opacity * clamp01(u * 95 - c.i)} />;
     })}
     <g transform="translate(88 388)">
@@ -127,87 +131,95 @@ export function Render({ s }: { s: SceneState }) {
   const funnelFade = 1 - factorial;
   const gridFade = 1 - recap;
 
-  return <Camera {...s.get(scene.cam)}>
-    <g opacity={1 - close}>
-      <text x="640" y="58" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="850">search the compositions, then test every switch</text>
-      <g opacity={funnelFade}>
-        <CandidateCloud u={s.get(scene.cloudU)} rung={s.get(scene.funnelP)} />
-        <g opacity={s.get(scene.scoreU)}>
-          <rect x="430" y="520" width="420" height="54" rx="19" fill="#151f31" stroke={colors.WARM} />
-          <text x="640" y="553" textAnchor="middle" fill={colors.WARM} fontSize="13" fontFamily={colors.font.mono}>mean final retention · seeds 41, 42, 43</text>
+  return <>
+    {/* Title sits outside the camera so camera drifts never crop it. */}
+    <text x="640" y="58" textAnchor="middle" fill={colors.TEXT} fontSize="32" fontWeight="850" opacity={1 - close}>search the compositions, then test every switch</text>
+    <Camera {...s.get(scene.cam)}>
+      <g opacity={1 - close}>
+        <g opacity={funnelFade}>
+          <CandidateCloud u={s.get(scene.cloudU)} rung={s.get(scene.funnelP)} />
+          <g opacity={s.get(scene.scoreU)}>
+            <rect x="430" y="492" width="420" height="42" rx="19" fill="#151f31" stroke={colors.WARM} />
+            <text x="640" y="519" textAnchor="middle" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>mean final retention · seeds 41, 42, 43</text>
+          </g>
         </g>
-      </g>
 
-      <g opacity={factorial * gridFade}>
-        <text x="640" y="108" textAnchor="middle" fill={colors.MUTED} fontSize="13" fontFamily={colors.font.mono}>2⁴ factorial · FACTORS = si, sd, replay, merge</text>
-        {CELLS.map((cell) => {
-          const u = clamp01(factors * 17 - cell.i);
-          const active = cell.i === 15;
-          return <g key={cell.i} transform={`translate(${cell.x} ${cell.y})`} opacity={u}>
-            <rect width="128" height="66" rx="18" fill={active ? '#193328' : '#101827'} stroke={active ? colors.POSITIVE : colors.GRID} strokeWidth={active ? 4 + best * 2 : 1.5} />
-            {['SI', 'SD', 'R', 'M'].map((label, bit) => {
-              const on = (cell.i & (1 << bit)) !== 0;
-              return <g key={label} transform={`translate(${20 + bit * 29} 22)`}>
-                <circle r="9" fill={on ? [colors.WARM, colors.SECONDARY, colors.ACCENT, colors.POSITIVE][bit] : '#202b3e'} />
-                <text y="31" textAnchor="middle" fill={on ? colors.TEXT : colors.MUTED} fontSize="9">{label}</text>
-              </g>;
-            })}
-          </g>;
-        })}
-
-        <g opacity={results}>
-          {RESULTS.map((r, i) => {
-            const u = clamp01(results - i);
-            return <g key={r.label} transform={`translate(176 ${176 + i * 132})`} opacity={u}>
-              <rect width="170" height="104" rx="24" fill="#101827" stroke={r.color} strokeWidth="3" />
-              <text x="85" y="29" textAnchor="middle" fill={r.color} fontSize="13" fontWeight="800">{r.label}</text>
-              <text x="85" y="66" textAnchor="middle" fill={colors.TEXT} fontSize="30" fontWeight="900">{r.value}%</text>
-              <text x="85" y="89" textAnchor="middle" fill={colors.MUTED} fontSize="11">{r.rank}</text>
+        <g opacity={factorial * gridFade}>
+          <text x="760" y="140" textAnchor="middle" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>2⁴ factorial · FACTORS = si, sd, replay, merge</text>
+          {CELLS.map((cell) => {
+            const u = clamp01(factors * 17 - cell.i);
+            const active = cell.i === 15;
+            return <g key={cell.i} transform={`translate(${cell.x} ${cell.y})`} opacity={u}>
+              <rect width="130" height="70" rx="16" fill={active ? '#193328' : '#101827'} stroke={active ? colors.POSITIVE : colors.GRID} strokeWidth={active ? 4 + best * 2 : 1.5} />
+              {['SI', 'SD', 'R', 'M'].map((label, bit) => {
+                const on = (cell.i & (1 << bit)) !== 0;
+                return <g key={label} transform={`translate(${23 + bit * 28} 22)`}>
+                  <circle r="9" fill={on ? [colors.WARM, colors.SECONDARY, colors.ACCENT, colors.POSITIVE][bit] : '#202b3e'} />
+                  <text y="32" textAnchor="middle" fill={on ? colors.TEXT : colors.MUTED} fontSize="12">{label}</text>
+                </g>;
+              })}
             </g>;
           })}
+
+          <g opacity={results}>
+            {RESULTS.map((r, i) => {
+              const u = clamp01(results - i);
+              return <g key={r.label} transform={`translate(150 ${170 + i * 112})`} opacity={u}>
+                <rect width="170" height="100" rx="24" fill="#101827" stroke={r.color} strokeWidth="3" />
+                <text x="85" y="28" textAnchor="middle" fill={r.color} fontSize="14" fontWeight="800">{r.label}</text>
+                <text x="85" y="66" textAnchor="middle" fill={colors.TEXT} fontSize="30" fontWeight="900">{r.value}%</text>
+                <text x="85" y="87" textAnchor="middle" fill={colors.MUTED} fontSize="12">{r.rank}</text>
+              </g>;
+            })}
+          </g>
+
+          <g opacity={clamp01(compare)}>
+            <rect x="130" y="520" width="360" height="96" rx="26" fill="#101827" stroke={colors.GRID} strokeWidth="2" />
+            <text x="150" y="542" fill={colors.MUTED} fontSize="13">average final retention</text>
+            <text x="150" y="572" fill={colors.NEGATIVE} fontSize="14">naive 1.2%</text>
+            <text x="150" y="608" fill={colors.POSITIVE} fontSize="14">composed 34.9%</text>
+            <rect x="290" y="558" width={5.5 * clamp01(compare)} height="16" rx="8" fill={colors.NEGATIVE} />
+            <rect x="290" y="594" width={160 * clamp01(compare - 1)} height="16" rx="8" fill={colors.POSITIVE} />
+          </g>
+          <g opacity={s.get(scene.interactionU)}>
+            <path d="M540 570 C600 520 920 520 1000 570" fill="none" stroke={colors.WARM} strokeWidth="5" />
+            <circle cx="540" cy="570" r="14" fill={colors.ACCENT} />
+            <circle cx="1000" cy="570" r="14" fill={colors.POSITIVE} />
+            <text x="540" y="602" textAnchor="middle" fill={colors.MUTED} fontSize="13">replay</text>
+            <text x="1000" y="602" textAnchor="middle" fill={colors.MUTED} fontSize="13">merge</text>
+            <circle cx="770" cy="540" r="22" fill={colors.WARM} />
+            <text x="770" y="545" textAnchor="middle" fill={colors.BG} fontSize="12" fontWeight="900">SUPER</text>
+            <text x="770" y="602" textAnchor="middle" fill={colors.MUTED} fontSize="13">replay × merge · all three datasets</text>
+          </g>
         </g>
 
-        <g opacity={clamp01(compare)}>
-          <rect x="848" y="510" width="320" height="96" rx="26" fill="#101827" stroke={colors.GRID} strokeWidth="2" />
-          <rect x="878" y="536" width={7 * clamp01(compare)} height="18" rx="9" fill={colors.NEGATIVE} />
-          <rect x="878" y="566" width={203 * clamp01(compare - 1)} height="18" rx="9" fill={colors.POSITIVE} />
-          <text x="1100" y="551" textAnchor="end" fill={colors.NEGATIVE} fontSize="12">1.2% naive</text>
-          <text x="1100" y="581" textAnchor="end" fill={colors.POSITIVE} fontSize="12">34.9% composed</text>
-        </g>
-        <g opacity={s.get(scene.interactionU)}>
-          <path d="M760 470 C820 420 920 420 990 470" fill="none" stroke={colors.WARM} strokeWidth="5" />
-          <circle cx="760" cy="470" r="18" fill={colors.ACCENT} />
-          <circle cx="990" cy="470" r="18" fill={colors.POSITIVE} />
-          <circle cx="875" cy="425" r="28" fill={colors.WARM} />
-          <text x="875" y="430" textAnchor="middle" fill={colors.BG} fontSize="12" fontWeight="900">SUPER</text>
-          <text x="875" y="496" textAnchor="middle" fill={colors.MUTED} fontSize="12">replay × merge · all three datasets</text>
+        <g opacity={recap}>
+          <path d="M190 342 H1090" stroke={colors.GRID} strokeWidth="8" strokeLinecap="round" />
+          {[{ l: 'data', c: colors.ACCENT }, { l: 'function', c: colors.SECONDARY }, { l: 'weight', c: colors.WARM }, { l: 'merge', c: colors.POSITIVE }].map((item, i) => {
+            const u = clamp01(recap * 5 - i);
+            return <g key={item.l} transform={`translate(${280 + i * 240} 342)`} opacity={u}>
+              <circle r="60" fill="#101827" stroke={item.c} strokeWidth="4" />
+              <text y="5" textAnchor="middle" fill={colors.TEXT} fontSize="14">{item.l}</text>
+            </g>;
+          })}
+          <text x="640" y="490" textAnchor="middle" fill={colors.POSITIVE} fontSize="24" fontWeight="850">34.9% average final retention</text>
         </g>
       </g>
 
-      <g opacity={recap}>
-        <path d="M190 342 H1090" stroke={colors.GRID} strokeWidth="8" strokeLinecap="round" />
-        {[{ l: 'data', c: colors.ACCENT }, { l: 'function', c: colors.SECONDARY }, { l: 'weight', c: colors.WARM }, { l: 'merge', c: colors.POSITIVE }].map((item, i) => {
-          const u = clamp01(recap * 5 - i);
-          return <g key={item.l} transform={`translate(${280 + i * 240} 342)`} opacity={u}>
-            <circle r="60" fill="#101827" stroke={item.c} strokeWidth="4" />
-            <text y="5" textAnchor="middle" fill={colors.TEXT} fontSize="14">{item.l}</text>
-          </g>;
-        })}
-        <text x="640" y="490" textAnchor="middle" fill={colors.POSITIVE} fontSize="24" fontWeight="850">34.9% average final retention</text>
+      <g opacity={close}>
+        <rect x="160" y="108" width="960" height="468" rx="58" fill={colors.BG} stroke={colors.POSITIVE} strokeWidth="4" />
+        <text x="640" y="202" textAnchor="middle" fill={colors.TEXT} fontSize="52" fontWeight="900">The Three Anchors</text>
+        <text x="640" y="246" textAnchor="middle" fill={colors.POSITIVE} fontSize="18">complementary protections compose</text>
+        {/* Same labels as the recap: data, function, weight are the anchors; merge decides allocation. */}
+        {[{ l: 'data', sub: 'replay', c: colors.ACCENT }, { l: 'function', sub: 'self-distill', c: colors.SECONDARY }, { l: 'weight', sub: 'protect', c: colors.WARM }, { l: 'merge', sub: 'low-rank', c: colors.POSITIVE }].map((item, i) => <g key={item.l} transform={`translate(${280 + i * 240} 385)`}>
+          <circle r="60" fill="#101827" stroke={item.c} strokeWidth="4" />
+          <text y="-2" textAnchor="middle" fill={colors.TEXT} fontSize="16" fontWeight="800">{item.l}</text>
+          <text y="18" textAnchor="middle" fill={colors.MUTED} fontSize="12">{item.sub}</text>
+        </g>)}
+        <text x="640" y="510" textAnchor="middle" fill={colors.MUTED} fontSize="16">1.2% → 34.9% after one hundred tasks</text>
       </g>
-    </g>
-
-    <g opacity={close}>
-      <rect x="160" y="108" width="960" height="468" rx="58" fill={colors.BG} stroke={colors.POSITIVE} strokeWidth="4" />
-      <text x="640" y="202" textAnchor="middle" fill={colors.TEXT} fontSize="52" fontWeight="900">The Three Anchors</text>
-      <text x="640" y="246" textAnchor="middle" fill={colors.POSITIVE} fontSize="18">complementary protections compose</text>
-      {[{ l: 'replay', c: colors.ACCENT }, { l: 'distill', c: colors.SECONDARY }, { l: 'protect', c: colors.WARM }, { l: 'merge', c: colors.POSITIVE }].map((item, i) => <g key={item.l} transform={`translate(${280 + i * 240} 385)`}>
-        <circle r="60" fill="#101827" stroke={item.c} strokeWidth="4" />
-        <text y="5" textAnchor="middle" fill={colors.TEXT} fontSize="14">{item.l}</text>
-      </g>)}
-      <text x="640" y="510" textAnchor="middle" fill={colors.MUTED} fontSize="16">1.2% → 34.9% after one hundred tasks</text>
-    </g>
-  </Camera>;
+    </Camera>
+  </>;
 }
 
 export const vizScene = () => scene;

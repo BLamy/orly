@@ -27,13 +27,14 @@ const mono = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 /* ---------------------------------------------------------------- layout */
 const CONTAINER = { x: 60, y: 110, w: 330, h: 300 };
 const TAPE = { x: 90, y: 452, w: 460, h: 26 };
-const TAILER = { x: 470, y: 250 };
+const TAILER = { x: 510, y: 250, w: 220 }; // clears the container's right border (x = 390)
 const STREAM = { x: 640, y: 452, w: 250, h: 26 };
 const PAGE = { x: 720, y: 96, w: 460, h: 300 };
-const TIMER = { cx: 682, cy: 160, r: 22 };
+const LEGEND = { x: 60, y: 36 }; // top-left, clear of the caption band
+const TIMER = { cx: 410, cy: 196, r: 22 }; // page-local: the pump clock sits inside the page
 
-const CAM_EXTRACT: CameraState = { x: 350, y: 300, k: 1.24 };
-const CAM_PAGE: CameraState = { x: 880, y: 260, k: 1.22 };
+const CAM_EXTRACT: CameraState = { x: 420, y: 300, k: 1.24 }; // reaches the rec/<id>/live tape too
+const CAM_PAGE: CameraState = { x: 640, y: 300, k: 1.0 }; // whole chain in frame, tapes not cropped
 const CAM_WIDE: CameraState = { x: 640, y: 340, k: 1.0 };
 
 /* ------------------------------------------------------------------ data */
@@ -211,8 +212,8 @@ function RecordTape({
   const n = Math.floor(clamp01(p) * RECORDS.length + 1e-6);
   const cw = w / RECORDS.length;
   return (
-    <g transform={`translate(${x}, ${y})`} opacity={1 - 0.85 * dim}>
-      <text y={-9} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+    <g transform={`translate(${x}, ${y})`} opacity={1 - 0.95 * dim}>
+      <text y={-9} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
         {title}
       </text>
       <rect width={w} height={26} rx={6} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.2} />
@@ -238,13 +239,13 @@ function RecordLegend({ u, dim }: { u: number; dim: number }) {
     ['done', "k:'done'"],
   ];
   return (
-    <g transform={`translate(90, 520)`} opacity={e * (1 - 0.7 * dim)}>
+    <g transform={`translate(${LEGEND.x}, ${LEGEND.y})`} opacity={e * (1 - 0.7 * dim)}>
       {kinds.map(([k, label], i) => {
         const ku = clamp01(e * 7 - i);
         return (
           <g key={k} transform={`translate(${(i % 3) * 200}, ${Math.floor(i / 3) * 24})`} opacity={ku}>
             <rect width={12} height={12} rx={3} fill={KIND_COLOR[k]} opacity={0.85} />
-            <text x={20} y={11} fill={colors.MUTED} fontSize={11} fontFamily={mono}>
+            <text x={20} y={11} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
               {label}
             </text>
           </g>
@@ -280,7 +281,7 @@ function LivePage({
   const tick = clockP % 1; // 0..1 within the current 1.5s pump window
   const gutter = [stats.hitsMax, Math.round(stats.hitsMax * 0.68), Math.round(stats.hitsMax * 0.32), 1];
   return (
-    <g transform={`translate(${PAGE.x}, ${PAGE.y + (1 - e) * 14})`} opacity={e * (1 - 0.85 * dim)}>
+    <g transform={`translate(${PAGE.x}, ${PAGE.y + (1 - e) * 14})`} opacity={e * (1 - 0.95 * dim)}>
       <rect width={PAGE.w} height={PAGE.h} rx={12} fill={colors.PANEL} stroke={f > 0.5 ? colors.NEGATIVE : colors.GRID} strokeWidth={1.5} />
       <text x={18} y={28} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
         /recordings/trace-demo · LiveTraceView
@@ -289,10 +290,8 @@ function LivePage({
       <g transform={`translate(${PAGE.w - 108}, 12)`}>
         <rect width={90} height={24} rx={12} fill={phaseColor} opacity={0.16} />
         <rect width={90} height={24} rx={12} fill="none" stroke={phaseColor} strokeWidth={1.4} />
-        <circle cx={16} cy={12} r={4} fill={phaseColor}>
-          {phase === 'live' ? null : null}
-        </circle>
-        <text x={28} y={16} fill={phaseColor} fontSize={11} fontFamily={mono}>
+        <circle cx={16} cy={12} r={4} fill={phaseColor} />
+        <text x={28} y={16} fill={phaseColor} fontSize={12} fontFamily={mono}>
           {phase.toUpperCase()}
         </text>
       </g>
@@ -319,16 +318,16 @@ function LivePage({
             <rect x={52} y={4} width={h > 0 ? 120 : 60} height={10} rx={3} fill={colors.GRID} opacity={0.7} />
           </g>
         ))}
-        <text y={126} fill={colors.MUTED} fontSize={10.5} fontFamily={mono}>
+        <text y={126} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
           gutter chips tick up
         </text>
       </g>
       {/* offset cursor line */}
       <g transform={`translate(18, ${PAGE.h - 62})`} fontFamily={mono}>
-        <text fill={colors.MUTED} fontSize={11}>
+        <text fill={colors.MUTED} fontSize={12}>
           GET /api/recordings/…/live?offset=<tspan fill={colors.ACCENT}>{Math.floor(clockP) * 4}</tspan>
         </text>
-        <text y={20} fill={colors.MUTED} fontSize={11}>
+        <text y={20} fill={colors.MUTED} fontSize={12}>
           → {'{ phase, records, offset }'} · pump until empty
         </text>
       </g>
@@ -337,7 +336,7 @@ function LivePage({
         <g opacity={sw}>
           <rect width={PAGE.w} height={PAGE.h} rx={12} fill={colors.POSITIVE} opacity={0.08 * (1 - Math.abs(sw - 0.5) * 2)} />
           <g transform={`translate(${PAGE.w / 2}, ${PAGE.h - 14})`}>
-            <text textAnchor="middle" fill={colors.POSITIVE} fontSize={11.5} fontFamily={mono}>
+            <text textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={mono}>
               fold → canonical streams · count parity ✓
             </text>
           </g>
@@ -348,16 +347,16 @@ function LivePage({
         <g opacity={f}>
           <rect width={PAGE.w} height={PAGE.h} rx={12} fill={colors.NEGATIVE} opacity={0.07} />
           <g transform={`translate(${PAGE.w / 2}, ${PAGE.h - 14})`}>
-            <text textAnchor="middle" fill={colors.NEGATIVE} fontSize={11.5} fontFamily={mono}>
+            <text textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={mono}>
               phase:'failed' — the fold freezes, still viewable
             </text>
           </g>
         </g>
       )}
       {/* the 1.5s pump clock */}
-      <g transform={`translate(${TIMER.cx - PAGE.x}, ${TIMER.cy - PAGE.y})`}>
+      <g transform={`translate(${TIMER.cx}, ${TIMER.cy})`}>
         <TimerArc cx={0} cy={0} r={TIMER.r} u={f > 0.5 ? 0 : 1 - tick} color={phaseColor} />
-        <text y={TIMER.r + 16} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={mono}>
+        <text y={TIMER.r + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={mono}>
           1.5s
         </text>
       </g>
@@ -389,7 +388,7 @@ export function Render({ s }: { s: SceneState }) {
   const tailerU = clamp01(s.get(scene.tailerU));
   return (
     <Camera {...s.get(scene.cam)}>
-      <g opacity={1 - 0.85 * dim}>
+      <g opacity={1 - 0.95 * dim}>
         <Zone x={CONTAINER.x} y={CONTAINER.y} w={CONTAINER.w} h={CONTAINER.h} label="rr-soft container (Docker)" kind="group" u={contU} />
         <ServiceNode
           x={CONTAINER.x + 110}
@@ -411,11 +410,11 @@ export function Render({ s }: { s: SceneState }) {
             arrow
           />
         )}
-        <ServiceNode x={TAILER.x} y={TAILER.y} kind="server" label="live-tailer" sublabel="offset · pump until empty" u={tailerU} />
+        <ServiceNode x={TAILER.x} y={TAILER.y} w={TAILER.w} kind="server" label="live-tailer" sublabel="offset · pump until empty" u={tailerU} />
         {tailerU > 0.3 && (
           <>
-            <Connection from={{ x: CONTAINER.x + 170, y: CONTAINER.y + 230 }} to={{ x: TAILER.x - 66, y: TAILER.y + 20 }} u={tailerU} flow={s.get(scene.pumpP) * 6} color={colors.TEAL} arrow label="tail" />
-            <Connection from={{ x: TAILER.x + 66, y: TAILER.y }} to={{ x: STREAM.x - 10, y: STREAM.y + 13 }} u={tailerU} flow={s.get(scene.pumpP) * 6} color={colors.TEAL} arrow />
+            <Connection from={{ x: CONTAINER.x + 170, y: CONTAINER.y + 230 }} to={{ x: TAILER.x - TAILER.w / 2, y: TAILER.y + 20 }} u={tailerU} flow={s.get(scene.pumpP) * 6} color={colors.TEAL} arrow label="tail" />
+            <Connection from={{ x: TAILER.x + 40, y: TAILER.y + 28 }} to={{ x: STREAM.x - 6, y: STREAM.y + 13 }} u={tailerU} flow={s.get(scene.pumpP) * 6} color={colors.TEAL} arrow />
           </>
         )}
       </g>

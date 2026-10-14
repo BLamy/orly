@@ -32,7 +32,7 @@ const STOPS = [
 const EVIDENCE = { x: 880, y: 150, w: 320, rowH: 84 };
 
 const CAM_RING: CameraState = { x: 430, y: 330, k: 1.14 };
-const CAM_EVIDENCE: CameraState = { x: 880, y: 330, k: 1.16 };
+const CAM_EVIDENCE: CameraState = { x: 720, y: 330, k: 1.0 };
 const CAM_WIDE: CameraState = { x: 640, y: 340, k: 0.98 };
 
 const EVIDENCE_CARDS = [
@@ -131,7 +131,7 @@ function EvidenceCards({ u, dim }: { u: number; dim: number }) {
   if (u <= 0) return null;
   const { x, y, w, rowH } = EVIDENCE;
   return (
-    <g opacity={1 - 0.25 * clamp01(dim)}>
+    <g opacity={1 - 0.85 * clamp01(dim)}>
       <text x={x} y={y - 18} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
         what survives the run
       </text>
@@ -145,7 +145,7 @@ function EvidenceCards({ u, dim }: { u: number; dim: number }) {
             <text x={40} y={28} fill={colors.TEXT} fontSize={13.5} fontWeight={700}>
               {c.title}
             </text>
-            <text x={40} y={48} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+            <text x={40} y={48} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               {c.sub}
             </text>
           </g>
@@ -163,7 +163,7 @@ function FinallyBlock({ u, dim }: { u: number; dim: number }) {
     <g opacity={1 - 0.85 * clamp01(dim)}>
       <g transform={`translate(${RING.cx}, ${640 - 62 + (1 - uu) * 10})`} opacity={uu}>
         <rect x={-230} y={-26} width={460} height={44} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.5} />
-        <text y={2} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12.5} fontFamily={MONO}>
+        <text y={2} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO}>
           finally &#123; stop(app) · stop(emulator) &#125;
         </text>
       </g>
@@ -220,7 +220,7 @@ function renderFrame(s: SceneState) {
         u={s.get(scene.orbitU)}
         reveal={s.get(scene.ringU)}
         dim={dim}
-        labelSize={12.5}
+        labelSize={14}
       />
       <text
         x={RING.cx}

@@ -77,7 +77,6 @@ const RING_NODES = ['observe', 'choose', 'validate', 'act'];
 const SEARCH_NOW = { x: PG.x + CTRL.search.x, y: PG.y + CTRL.search.y + SCROLL, w: CTRL.search.w, h: CTRL.search.h };
 
 const CAM_HOME: CameraState = { x: 640, y: 360, k: 1 };
-const CAM_TILE: CameraState = { x: 860, y: 300, k: 1.15 };
 const CAM_HELP: CameraState = { x: 860, y: 400, k: 1.3 };
 const CAM_CHECK: CameraState = { x: 640, y: 345, k: 1.04 };
 // beat 3 return: tile, helper, return object and every parse condition sit above the caption band (stage y570)
@@ -90,9 +89,9 @@ const CAM_RING: CameraState = { x: 860, y: 350, k: 1.12 };
 /* -------------------------------------------------------------- timeline */
 export function buildScene() {
   const tl = new Timeline();
-  const cam = tl.channel<CameraState>('cam', CAM_TILE, cameraInterp);
+  const cam = tl.channel<CameraState>('cam', CAM_HOME, cameraInterp);
   const pageU = tl.channel('pageU', 0);
-  const pageDim = tl.channel('pageDim', 1);
+  const pageDim = tl.channel('pageDim', 0);
   const tileU = tl.channel('tileU', 0);
   const tileDim = tl.channel('tileDim', 0);
   const tileNext = tl.channel('tileNext', 0);
@@ -143,6 +142,7 @@ export function buildScene() {
   /* — beat 2 · the helper's input and output — */
   b = AT[1];
   tl.tween(cam, CAM_HELP, { at: b + 0.1, dur: 1.3, ease: ease.move });
+  tl.tween(pageDim, 1, { at: b + 0.1, dur: 0.6, ease: ease.enter });
   tl.tween(tileDim, 1, { at: b + 0.1, dur: 0.6, ease: ease.enter });
   tl.tween(ctxU, 4, { at: b + 1.0, dur: 5.0, ease: ease.linear });
   tl.tween(outU, 1, { at: b + 8.2, dur: 0.6, ease: ease.pop });
@@ -380,9 +380,9 @@ export function Render({ s }: { s: SceneState }) {
           {/* helper input */}
           {CTX.map((c, i) => {
             const u = clamp01(ctxU - i);
-            return <Chip key={c} x={lerp(520, 540, ease.move(u))} y={372 + i * 30} text={c} color={i === 0 ? ROLE.PENDING : i === 3 ? ROLE.CHECKED : ROLE.OBSERVE} size={12.5} u={u * 2} />;
+            return <Chip key={c} x={lerp(520, 540, ease.move(u))} y={372 + i * 30} text={c} color={i === 0 ? ROLE.PENDING : i === 3 ? ROLE.CHECKED : ROLE.OBSERVE} size={13} u={u * 2} />;
           })}
-          <Txt x={HELP.x - 16} y={HELP.y + 47} text="→" size={20} anchor="end" color={colors.MUTED} u={clamp01(ctxU)} />
+          <Txt x={HELP.x - 10} y={HELP.y + 47} text="→" size={20} anchor="end" color={colors.MUTED} u={clamp01(ctxU)} />
           {/* helper output */}
           <Chip x={OUT.x} y={OUT.y} text={'{"text": "London"}'} color={ROLE.CHECKED} fill="#062a1e" size={13} u={s.get(scene.outU) * (1 - 0.6 * slotIn)} />
           <Txt x={OUT.x - 10} y={OUT.y + 18} text="→" size={20} anchor="middle" color={colors.MUTED} u={outU} />

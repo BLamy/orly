@@ -41,21 +41,21 @@ const CHECKS = [
 const PANEL_CK = { x: 800, y: 96, w: 384, h: 300 } as const;
 const ckY = (i: number) => PANEL_CK.y + 52 + i * 41;
 
-/** Snapshot pair (the alive check) + the frozen counterexample. */
-const SNAP = { y: 430, w: 170, h: 124, ax: 210, bx: 470 } as const;
+/** Snapshot pair (the alive check) sits under the checklist; beat 6 turns the same pair into the frozen counterexample. */
+const SNAP = { y: 440, w: 160, h: 112, ax: 800, bx: 1010 } as const;
+const SNAP_GAP_X = (SNAP.ax + SNAP.w + SNAP.bx) / 2;
 const PHASE_A = 0.52;
 const PHASE_B = 0.585;
-const FROZEN = { x: 820, y: 430, w: 110, h: 82, gap: 130 } as const;
 
 /** The previews stack the screenshot flies to. */
 const STACK = { x: 1080, y: 480 } as const;
 
-// camera marks
-const CAM_BROWSER: CameraState = { x: 430, y: 316, k: 1.35 };
-const CAM_CHECKS: CameraState = { x: 950, y: 260, k: 1.45 };
-const CAM_SNAP: CameraState = { x: 450, y: 430, k: 1.35 };
-/** Beat 6 pulls back so the frozen counterexample inset is fully in frame. */
-const CAM_FROZEN: CameraState = { x: 600, y: 430, k: 1.15 };
+// camera marks — k is capped so the browser's left edge (x≈110) and the
+// checklist's right edge (x≈1190) both stay in frame; the snapshot labels stay
+// above the caption band (y < ~630 on screen).
+const CAM_BROWSER: CameraState = { x: 640, y: 360, k: 1.1 };
+/** Beat 3 pushes onto the checklist while keeping the browser's left edge in frame. */
+const CAM_CHECKS: CameraState = { x: 648, y: 300, k: 1.18 };
 
 // ---------------------------------------------------------------------------
 // The miniature chapter playing inside the browser — a pure orbit + bar.
@@ -137,8 +137,8 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'So the built shelf is served for real, and a headless browser opens the book the way a reader would — chapter by chapter, every chapter.',
   });
+  tl.tween(browserU, 1, { at: 2.0, dur: 1.2, ease: ease.enter }); // up during beat 1 so the opening frame isn't blank
   tl.tween(cam, CAM_BROWSER, { at: 8.2, dur: 1.4, ease: ease.move });
-  tl.tween(browserU, 1, { at: 8.4, dur: 0.9, ease: ease.enter });
   tl.tween(urlU, 1, { at: 9.4, dur: 1.8, ease: ease.linear });
   tl.tween(playT, 0.2, { at: 11.4, dur: 9, ease: ease.linear });
 
@@ -169,7 +169,6 @@ export function buildScene(): Scene {
     dur: 7,
     text: 'Now the hard question: is it actually animating? Take a snapshot, wait seven hundred milliseconds, take another. If the picture changed, it is alive.',
   });
-  tl.tween(cam, CAM_SNAP, { at: 28.0, dur: 1.4, ease: ease.move });
   tl.tween(browserDim, 0.5, { at: 28.2, dur: 0.8, ease: ease.move });
   tl.tween(snapU, 1, { at: 28.8, dur: 2.2, ease: ease.move });
   tl.tween(checks[3], 1, { at: 33.0, dur: 0.5, ease: ease.pop });
@@ -180,7 +179,6 @@ export function buildScene(): Scene {
     dur: 6,
     text: "A frozen scene fails right here — identical pictures, and a clock that isn't moving. That is exactly the bug this gate exists to catch.",
   });
-  tl.tween(cam, CAM_FROZEN, { at: 35.6, dur: 1.3, ease: ease.move });
   tl.tween(frozenU, 1, { at: 35.8, dur: 1.0, ease: ease.enter });
   tl.hold(41.4, 0.6);
 
@@ -193,7 +191,6 @@ export function buildScene(): Scene {
   tl.tween(frozenU, 0, { at: 42.2, dur: 0.7, ease: ease.move });
   tl.tween(snapU, 0, { at: 42.2, dur: 0.7, ease: ease.move });
   tl.tween(browserDim, 0, { at: 42.4, dur: 0.8, ease: ease.move });
-  tl.tween(cam, CAM_BROWSER, { at: 42.4, dur: 1.3, ease: ease.move });
   tl.tween(ccGlow, 1, { at: 43.6, dur: 0.8, ease: ease.enter });
   tl.tween(checks[4], 1, { at: 44.6, dur: 0.5, ease: ease.pop });
 
@@ -251,7 +248,7 @@ function Polaroid({ x, y, w, h, phase, label, op }: { x: number; y: number; w: n
       <g transform={`translate(${x + w / 2} ${y + h / 2 - 2}) scale(${w / 260}) translate(${-(x + w / 2)} ${-(y + h / 2 - 2)})`}>
         <MiniScene cx={x + w / 2} cy={y + h / 2 - 2} scale={1} phase={phase} />
       </g>
-      <text x={x + w / 2} y={y + h + 14} textAnchor="middle" fill="#333" fontSize={10.5} fontFamily={MONO}>
+      <text x={x + w / 2} y={y + h + 14} textAnchor="middle" fill="#333" fontSize={12} fontFamily={MONO}>
         {label}
       </text>
     </g>
@@ -283,7 +280,7 @@ export function Render({ s }: { s: SceneState }) {
   // screenshot polaroid flight: from viewport center to the previews stack
   const shotX = VIEW.x + VIEW.w / 2 + (STACK.x - VIEW.x - VIEW.w / 2) * shotU;
   const shotY = VIEW.y + VIEW.h / 2 + (STACK.y - VIEW.y - VIEW.h / 2) * shotU;
-  const shotScale = 1 - 0.55 * shotU;
+  const shotScale = 1 - 0.25 * shotU;
 
   return (
     <>
@@ -302,15 +299,18 @@ export function Render({ s }: { s: SceneState }) {
                 <circle key={i} cx={BROWSER.x + 22 + i * 18} cy={BROWSER.y + 22} r={5} fill={colors.GRID} />
               ))}
               <rect x={BROWSER.x + 80} y={BROWSER.y + 10} width={BROWSER.w - 100} height={24} rx={12} fill={colors.BG} stroke={colors.GRID} />
-              <text x={BROWSER.x + 94} y={BROWSER.y + 26} fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+              <text x={BROWSER.x + 94} y={BROWSER.y + 26} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 {urlShown}
                 {urlU > 0 && urlU < 1 ? '▏' : ''}
               </text>
               {/* viewport: the mini chapter */}
               <rect x={VIEW.x} y={VIEW.y} width={VIEW.w} height={VIEW.h} rx={8} fill={colors.BG} />
+              {/* the mini chapter is on screen from the start; the URL finishing is what fades in the CC pill */}
+              <g opacity={clamp01(browserU * 2 - 0.4)}>
+                <MiniScene cx={VIEW.x + VIEW.w / 2} cy={VIEW.y + VIEW.h / 2 - 14} scale={1} phase={phase} />
+              </g>
               {urlU > 0.7 && (
                 <g opacity={clamp01((urlU - 0.7) * 4)}>
-                  <MiniScene cx={VIEW.x + VIEW.w / 2} cy={VIEW.y + VIEW.h / 2 - 14} scale={1} phase={phase} />
                   {/* the CC pill — the captions element the gate looks for */}
                   <rect
                     x={VIEW.x + VIEW.w / 2 - 150}
@@ -322,7 +322,7 @@ export function Render({ s }: { s: SceneState }) {
                     stroke={ccGlow > 0.1 ? colors.WARM : colors.GRID}
                     strokeWidth={ccGlow > 0.1 ? 2 : 1}
                   />
-                  <text x={VIEW.x + VIEW.w / 2} y={VIEW.y + VIEW.h - 23} textAnchor="middle" fill={ccGlow > 0.1 ? colors.TEXT : colors.MUTED} fontSize={11}>
+                  <text x={VIEW.x + VIEW.w / 2} y={VIEW.y + VIEW.h - 23} textAnchor="middle" fill={ccGlow > 0.1 ? colors.TEXT : colors.MUTED} fontSize={12}>
                     the voice needs somewhere to land
                   </text>
                 </g>
@@ -332,7 +332,7 @@ export function Render({ s }: { s: SceneState }) {
               <rect x={VIEW.x + 12} y={BROWSER.y + BROWSER.h - 26} width={(VIEW.w - 24) * clamp01(playT)} height={6} rx={3} fill={colors.ACCENT} />
               <circle cx={VIEW.x + 12 + (VIEW.w - 24) * clamp01(playT)} cy={BROWSER.y + BROWSER.h - 23} r={7} fill={colors.ACCENT} />
               {ck[2] > 0.3 && (
-                <text x={VIEW.x + 12 + (VIEW.w - 24) * 0.5} y={BROWSER.y + BROWSER.h - 34} textAnchor="middle" fill={colors.WARM} fontSize={10.5} fontFamily={MONO} opacity={ck[2]}>
+                <text x={VIEW.x + 12 + (VIEW.w - 24) * 0.5} y={BROWSER.y + BROWSER.h - 34} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO} opacity={ck[2]}>
                   seek 50%
                 </text>
               )}
@@ -364,15 +364,24 @@ export function Render({ s }: { s: SceneState }) {
                         opacity={u}
                       />
                     )}
-                    <text x={PANEL_CK.x + 52} y={ckY(i) + 1} fill={u > 0.3 ? colors.TEXT : colors.MUTED} fontSize={13.5} fontWeight={u > 0.3 ? 700 : 400}>
+                    <text x={PANEL_CK.x + 52} y={ckY(i) + 1} fill={u > 0.3 ? colors.TEXT : colors.MUTED} fontSize={14} fontWeight={u > 0.3 ? 700 : 400}>
                       {c.label}
                     </text>
-                    <text x={PANEL_CK.x + 52} y={ckY(i) + 16} fill={colors.MUTED} fontSize={10} fontFamily={MONO} opacity={0.85}>
+                    <text x={PANEL_CK.x + 52} y={ckY(i) + 16} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={0.85}>
                       {c.detail}
                     </text>
                   </g>
                 );
               })}
+              {/* the evidence stamp: the alive check passes once the second snapshot differs */}
+              {ck[3] > 0.3 && (
+                <g opacity={ck[3]}>
+                  <rect x={PANEL_CK.x + 284} y={ckY(3) - 11} width={64} height={22} rx={5} fill="none" stroke={colors.POSITIVE} strokeWidth={1.6} />
+                  <text x={PANEL_CK.x + 316} y={ckY(3) + 4} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontWeight={700} fontFamily={MONO}>
+                    PASS
+                  </text>
+                </g>
+              )}
             </g>
           )}
 
@@ -387,34 +396,35 @@ export function Render({ s }: { s: SceneState }) {
           )}
 
           {/* ---- the alive check: two snapshots ---- */}
+          {/* ---- the alive check: two snapshots; beat 6 makes the second one identical (frozen → FAIL) ---- */}
           {snapU > 0 && (
             <g>
               <Polaroid x={SNAP.ax} y={SNAP.y} w={SNAP.w} h={SNAP.h} phase={PHASE_A} label="t = 42.1s" op={clamp01(snapU * 2)} />
-              <Polaroid x={SNAP.bx} y={SNAP.y} w={SNAP.w} h={SNAP.h} phase={PHASE_B} label="t = 42.8s · 700ms later" op={clamp01(snapU * 2 - 0.8)} />
-              {snapU > 0.9 && (
-                <g opacity={(snapU - 0.9) * 10}>
-                  <text x={(SNAP.ax + SNAP.bx + SNAP.w) / 2} y={SNAP.y + SNAP.h / 2} textAnchor="middle" fill={colors.POSITIVE} fontSize={30} fontWeight={700}>
-                    ≠
-                  </text>
-                  <text x={(SNAP.ax + SNAP.bx + SNAP.w) / 2} y={SNAP.y + SNAP.h / 2 + 24} textAnchor="middle" fill={colors.POSITIVE} fontSize={12.5}>
-                    alive
-                  </text>
-                </g>
-              )}
-            </g>
-          )}
-
-          {/* ---- the frozen counterexample (dimmed inset) ---- */}
-          {frozenU > 0 && (
-            <g opacity={0.75 * frozenU}>
-              <Polaroid x={FROZEN.x} y={FROZEN.y} w={FROZEN.w} h={FROZEN.h} phase={0.3} label="t" op={1} />
-              <Polaroid x={FROZEN.x + FROZEN.gap} y={FROZEN.y} w={FROZEN.w} h={FROZEN.h} phase={0.3} label="t + 700ms" op={1} />
-              <text x={FROZEN.x + FROZEN.gap - 10} y={FROZEN.y + FROZEN.h / 2 + 4} textAnchor="middle" fill={colors.NEGATIVE} fontSize={22} fontWeight={700}>
-                =
-              </text>
-              <text x={FROZEN.x + FROZEN.gap - 10 + 55} y={FROZEN.y + FROZEN.h + 44} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
-                frozen → FAIL
-              </text>
+              <Polaroid
+                x={SNAP.bx}
+                y={SNAP.y}
+                w={SNAP.w}
+                h={SNAP.h}
+                phase={frozenU > 0.5 ? PHASE_A : PHASE_B}
+                label={frozenU > 0.5 ? 't + 700ms' : 't = 42.8s · +700ms'}
+                op={clamp01(snapU * 2 - 0.8)}
+              />
+              <g opacity={clamp01((snapU - 0.9) * 10) * (1 - frozenU)}>
+                <text x={SNAP_GAP_X} y={SNAP.y + SNAP.h / 2} textAnchor="middle" fill={colors.POSITIVE} fontSize={30} fontWeight={700}>
+                  ≠
+                </text>
+                <text x={SNAP_GAP_X} y={SNAP.y + SNAP.h / 2 + 24} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
+                  alive
+                </text>
+              </g>
+              <g opacity={frozenU}>
+                <text x={SNAP_GAP_X} y={SNAP.y + SNAP.h / 2} textAnchor="middle" fill={colors.NEGATIVE} fontSize={30} fontWeight={700}>
+                  =
+                </text>
+                <text x={SNAP_GAP_X} y={SNAP.y + SNAP.h + 38} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
+                  frozen → FAIL
+                </text>
+              </g>
             </g>
           )}
 
@@ -427,10 +437,14 @@ export function Render({ s }: { s: SceneState }) {
                 <rect x={STACK.x - 40} y={STACK.y - 34} width={84} height={64} rx={5} fill="#e8e8e2" transform={`rotate(4 ${STACK.x} ${STACK.y})`} />
               </g>
               <g transform={`translate(${shotX} ${shotY}) scale(${shotScale}) translate(${-shotX} ${-shotY})`}>
-                <Polaroid x={shotX - 60} y={shotY - 45} w={120} h={86} phase={phase} label="chapter-4.png" op={1} />
+                <Polaroid x={shotX - 60} y={shotY - 45} w={120} h={86} phase={phase} label="" op={1} />
               </g>
+              {/* the file name is drawn outside the shrinking group so it stays readable (>= 12px) */}
+              <text x={shotX} y={shotY + 55 * shotScale} textAnchor="middle" fill="#333" fontSize={12} fontFamily={MONO}>
+                chapter-4.png
+              </text>
               {shotU > 0.9 && (
-                <text x={STACK.x} y={STACK.y + 62} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO} opacity={(shotU - 0.9) * 10}>
+                <text x={STACK.x} y={STACK.y + 62} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={(shotU - 0.9) * 10}>
                   previews/ · ships with the PR
                 </text>
               )}

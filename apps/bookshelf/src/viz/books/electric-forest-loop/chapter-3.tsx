@@ -32,19 +32,19 @@ const ARMS = [
   { label: 'fuzz', color: colors.TEAL },
   { label: 'replay-critic', color: colors.ACCENT },
 ];
-const ARM_SPREAD = 900;
+const ARM_SPREAD = 760;
 const ARM_Y = 196;
 const armX = (i: number) => CRITIC.x - ARM_SPREAD / 2 + (ARM_SPREAD / (ARMS.length - 1)) * i;
 
 const TAPE = { x: 160, y: 300, w: 960, h: 28 };
 const LANES = { x: 240, y: 400, w: 800 };
-const WORKTREE = { x: 330, y: 260, w: 620, h: 260 };
+const WORKTREE = { x: 330, y: 260, w: 620, h: 300 };
 const VERDICT = { x: 320, y: 300, w: 640, h: 150 };
 
 const CAM_CRITIC: CameraState = { x: 640, y: 170, k: 1.3 };
 const CAM_TAPE: CameraState = { x: 640, y: 310, k: 1.25 };
 const CAM_LANES: CameraState = { x: 640, y: 460, k: 1.25 };
-const CAM_TREE: CameraState = { x: 640, y: 390, k: 1.25 };
+const CAM_TREE: CameraState = { x: 640, y: 410, k: 1.25 };
 const CAM_WIDE: CameraState = { x: 640, y: 360, k: 1.0 };
 
 const POINTS: RecordingPoint[] = [
@@ -88,6 +88,7 @@ export interface Scene {
   verdictU: ChannelRef<number>;
   endDim: ChannelRef<number>;
   endU: ChannelRef<number>;
+  critDim: ChannelRef<number>; // critic + arms step back once the recording takes the bench
 }
 
 export function buildScene(): Scene {
@@ -113,6 +114,7 @@ export function buildScene(): Scene {
   const verdictU = tl.channel('verdictU', 0);
   const endDim = tl.channel('endDim', 0);
   const endU = tl.channel('endU', 0);
+  const critDim = tl.channel('critDim', 0);
 
   // — Beat 1 · a fresh session —
   tl.caption({
@@ -162,6 +164,7 @@ export function buildScene(): Scene {
   });
   tl.tween(predU, 0, { at: 31.7, dur: 0.6, ease: ease.move });
   tl.tween(cam, CAM_LANES, { at: 31.8, dur: 1.4, ease: ease.move });
+  tl.tween(critDim, 1, { at: 31.6, dur: 0.8, ease: ease.move });
   tl.tween(lanesU, 1, { at: 32.5, dur: 2.2, ease: ease.draw });
   tl.tween(hitsU, 1, { at: 35.0, dur: 2.4, ease: ease.linear });
   tl.hold(38.9, 0.5);
@@ -231,7 +234,7 @@ export function buildScene(): Scene {
   return {
     tl, cam, criticU, armsU, tapeU, predU, sweepU, linkPop, tapeDim,
     lanesU, hitsU, classU, lanesDim, treeU, mutU, redU, greenBadU, fuzzU,
-    treeDim, verdictU, endDim, endU,
+    treeDim, verdictU, endDim, endU, critDim,
   };
 }
 
@@ -261,8 +264,14 @@ export function Render({ s }: { s: SceneState }) {
   const verdictU = s.get(scene.verdictU);
   const endDim = s.get(scene.endDim);
   const endU = s.get(scene.endU);
+  const critDim = s.get(scene.critDim);
 
-  const worldOp = 1 - 0.85 * endDim;
+  // the world steps out entirely behind the closing panel (no ghost text)
+  const worldOp = 1 - endDim;
+  const critShown = critDim < 0.97;
+  const tapeShown = tapeDim < 0.97;
+  const lanesShown = lanesDim < 0.97;
+  const treeShown = treeDim < 0.97;
   const links: RecordingLink[] = [{ at: 0.9, label: 'evaluated here', pop: linkPop }];
 
   const hunks: DiffHunk[] = HUNKS.map((h, i) => ({
@@ -277,26 +286,27 @@ export function Render({ s }: { s: SceneState }) {
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
+        {worldOp > 0.02 && (
         <g opacity={worldOp}>
           {/* ---- the critic ---- */}
-          {criticU > 0 && (
-            <g opacity={criticU}>
+          {criticU > 0 && critShown && (
+            <g opacity={criticU * (1 - critDim)}>
               <circle cx={CRITIC.x} cy={CRITIC.y} r={28} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={2} />
               <circle cx={CRITIC.x} cy={CRITIC.y - 6} r={7.5} fill="none" stroke={colors.NEGATIVE} strokeWidth={2} />
               <path d={`M ${CRITIC.x - 13} ${CRITIC.y + 15} q 13 -17 26 0`} fill="none" stroke={colors.NEGATIVE} strokeWidth={2} />
               <text x={CRITIC.x + 42} y={CRITIC.y - 2} fill={colors.TEXT} fontSize={14} fontWeight={700}>
                 the critic
               </text>
-              <text x={CRITIC.x + 42} y={CRITIC.y + 16} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+              <text x={CRITIC.x + 42} y={CRITIC.y + 16} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 fresh session · goal: refute
               </text>
             </g>
           )}
 
           {/* ---- the parallel attack arms ---- */}
-          {armsU > 0 &&
+          {armsU > 0 && critShown &&
             ARMS.map((arm, i) => {
-              const u = clamp01(armsU * (ARMS.length + 1.5) - i);
+              const u = clamp01(armsU * (ARMS.length + 1.5) - i) * (1 - critDim);
               if (u <= 0) return null;
               const ax = armX(i);
               return (
@@ -311,26 +321,28 @@ export function Render({ s }: { s: SceneState }) {
                     opacity={0.55}
                   />
                   <rect x={ax - 62} y={ARM_Y - 14} width={124} height={28} rx={14} fill={colors.PANEL} stroke={arm.color} strokeWidth={1.5} />
-                  <text x={ax} y={ARM_Y + 4.5} textAnchor="middle" fill={arm.color} fontSize={11.5} fontFamily={MONO} fontWeight={700}>
+                  <text x={ax} y={ARM_Y + 4.5} textAnchor="middle" fill={arm.color} fontSize={12} fontFamily={MONO} fontWeight={700}>
                     {arm.label}
                   </text>
                 </g>
               );
             })}
 
-          {/* ---- the recording under interrogation ---- */}
-          <RecordingStrip
-            x={TAPE.x}
-            y={TAPE.y}
-            w={TAPE.w}
-            h={TAPE.h}
-            points={POINTS}
-            u={sweepU}
-            reveal={tapeU}
-            links={links}
-            title="the builder’s recording — the session under oath"
-            dim={tapeDim}
-          />
+          {/* ---- the recording under interrogation (leaves the bench for the worktree) ---- */}
+          {tapeShown && (
+            <RecordingStrip
+              x={TAPE.x}
+              y={TAPE.y}
+              w={TAPE.w}
+              h={TAPE.h}
+              points={POINTS}
+              u={sweepU}
+              reveal={tapeU}
+              links={links}
+              title="the builder’s recording — the session under oath"
+              dim={tapeDim}
+            />
+          )}
 
           {/* ---- the prediction card ---- */}
           {predU > 0 && (
@@ -346,69 +358,74 @@ export function Render({ s }: { s: SceneState }) {
           )}
 
           {/* ---- the sufficiency lanes ---- */}
-          {lanesU > 0 && (
+          {lanesU > 0 && lanesShown && (
             <DiffLanes x={LANES.x} y={LANES.y} w={LANES.w} hunks={hunks} title="the diff held against the recording" dim={lanesDim} />
           )}
 
           {/* ---- the sabotage worktree ---- */}
-          {treeU > 0 && (
-            <g opacity={treeU * (1 - 0.85 * treeDim)}>
+          {treeU > 0 && treeShown && (
+            <g opacity={treeU * (1 - treeDim)}>
               <rect x={WORKTREE.x} y={WORKTREE.y} width={WORKTREE.w} height={WORKTREE.h} rx={14} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.6} strokeDasharray="8 6" />
-              <text x={WORKTREE.x + 18} y={WORKTREE.y + 28} fill={colors.NEGATIVE} fontSize={12.5} fontFamily={MONO} fontWeight={700}>
+              <text x={WORKTREE.x + 18} y={WORKTREE.y + 28} fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO} fontWeight={700}>
                 scratch worktree — disposable
               </text>
-              <text x={WORKTREE.x + WORKTREE.w - 18} y={WORKTREE.y + 28} textAnchor="end" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+              <text x={WORKTREE.x + WORKTREE.w - 18} y={WORKTREE.y + 28} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 verify-task · sabotage · isolation: worktree
               </text>
               {/* the mutation */}
-              <g transform={`translate(${WORKTREE.x + 40} ${WORKTREE.y + 62})`}>
+              <g transform={`translate(${WORKTREE.x + 40} ${WORKTREE.y + 56})`}>
                 <rect width={330} height={64} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
-                <text x={14} y={26} fill={mutU > 0.3 ? colors.MUTED : colors.TEXT} fontSize={12.5} fontFamily={MONO} textDecoration={mutU > 0.3 ? 'line-through' : undefined}>
+                <text x={14} y={26} fill={mutU > 0.3 ? colors.MUTED : colors.TEXT} fontSize={13} fontFamily={MONO} textDecoration={mutU > 0.3 ? 'line-through' : undefined}>
                   if (target.head === forkPoint)
                 </text>
                 {mutU > 0.3 && (
-                  <text x={14} y={50} fill={colors.NEGATIVE} fontSize={12.5} fontFamily={MONO} opacity={mutU}>
+                  <text x={14} y={50} fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO} opacity={mutU}>
                     if (target.head !== forkPoint)
                   </text>
                 )}
                 {mutU > 0.5 && (
-                  <text x={344} y={40} fill={colors.NEGATIVE} fontSize={11} fontStyle="italic" opacity={mutU}>
+                  <text x={344} y={40} fill={colors.NEGATIVE} fontSize={12} fontStyle="italic" opacity={mutU}>
                     ← condition inverted
                   </text>
                 )}
               </g>
               {/* tests react */}
               {redU > 0 && (
-                <g transform={`translate(${WORKTREE.x + 40} ${WORKTREE.y + 156})`} opacity={redU}>
+                <g transform={`translate(${WORKTREE.x + 40} ${WORKTREE.y + 160})`} opacity={redU}>
                   <rect width={240} height={44} rx={10} fill={colors.NEGATIVE} opacity={0.14} />
                   <rect width={240} height={44} rx={10} fill="none" stroke={colors.NEGATIVE} strokeWidth={1.6} />
-                  <text x={16} y={27} fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO} fontWeight={700}>
+                  <text x={16} y={27} fill={colors.NEGATIVE} fontSize={14} fontFamily={MONO} fontWeight={700}>
                     tests: 3 failed ✓ good
                   </text>
                 </g>
               )}
               {greenBadU > 0 && (
-                <g transform={`translate(${WORKTREE.x + 310} ${WORKTREE.y + 156})`} opacity={greenBadU}>
+                <g transform={`translate(${WORKTREE.x + 310} ${WORKTREE.y + 160})`} opacity={greenBadU}>
                   <rect width={270} height={44} rx={10} fill="none" stroke={colors.WARM} strokeWidth={1.6} />
-                  <text x={16} y={19} fill={colors.WARM} fontSize={11.5} fontFamily={MONO} fontWeight={700}>
+                  <text x={16} y={19} fill={colors.WARM} fontSize={12} fontFamily={MONO} fontWeight={700}>
                     still green? → finding:
                   </text>
-                  <text x={16} y={36} fill={colors.WARM} fontSize={11.5} fontFamily={MONO}>
+                  <text x={16} y={36} fill={colors.WARM} fontSize={12} fontFamily={MONO}>
                     sabotage-survived
                   </text>
                 </g>
               )}
-              {/* fuzz volley */}
+              {/* fuzz volley: its own rows below the tests, never over the mutation */}
+              {fuzzU > 0 && (
+                <text x={WORKTREE.x + 40} y={WORKTREE.y + 236} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={clamp01(fuzzU * 4)}>
+                  own inputs — never the builder’s
+                </text>
+              )}
               {fuzzU > 0 &&
                 ['malformed event', 'out-of-order append', 'concurrent writers', 'truncated stream'].map((f, i) => {
                   const u = clamp01(fuzzU * 5 - i * 0.9);
                   if (u <= 0) return null;
                   const fx = WORKTREE.x + WORKTREE.w - 30 - u * 180;
-                  const fy = WORKTREE.y + 70 + i * 34;
+                  const fy = WORKTREE.y + 222 + i * 20;
                   return (
                     <g key={f} opacity={Math.min(1, u * 2.5)}>
                       <circle cx={fx} cy={fy} r={4.5} fill={colors.TEAL} />
-                      <text x={fx + 12} y={fy + 4} fill={colors.TEAL} fontSize={10.5} fontFamily={MONO} opacity={0.9}>
+                      <text x={fx + 12} y={fy + 4} fill={colors.TEAL} fontSize={12} fontFamily={MONO} opacity={0.9}>
                         {f}
                       </text>
                     </g>
@@ -433,12 +450,13 @@ export function Render({ s }: { s: SceneState }) {
               <text x={VERDICT.x + 22} y={VERDICT.y + 112} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 demand: record a run that merges past an advanced target
               </text>
-              <text x={VERDICT.x + VERDICT.w - 22} y={VERDICT.y + 34} textAnchor="end" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+              <text x={VERDICT.x + VERDICT.w - 22} y={VERDICT.y + 34} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                 verified | refuted | needs-evidence
               </text>
             </g>
           )}
         </g>
+        )}
 
         {/* ---- closing panel ---- */}
         {endU > 0 && (

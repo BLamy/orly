@@ -99,16 +99,17 @@ const CSS = { x: 250, y: 500, w: 560, h: 92 } as const;
 // The HMR loop (second half) — editor → VFS bell → server → iframe
 // ---------------------------------------------------------------------------
 
-const ED = { x: 100, y: 240, w: 310, h: 190 } as const;
-const VFS_B = { x: 530, y: 336 } as const;
-const SRV_B = { x: 720, y: 336 } as const;
+const ED = { x: 60, y: 240, w: 310, h: 190 } as const;
+const VFS_B = { x: 540, y: 336 } as const;
+const SRV_B = { x: 730, y: 336 } as const;
 const PREV = { x: 880, y: 240, w: 290, h: 210 } as const;
 
-// camera marks
+// camera marks — every mark keeps the whole conveyor (panel + all three
+// stations) or the whole editor-to-preview loop inside the 1280×720 stage
 const CAM_WIDE: CameraState = CAMERA_HOME;
 const CAM_RAIL: CameraState = { x: 640, y: 300, k: 1.12 };
-const CAM_ST = (i: number): CameraState => ({ x: STATIONS[i].x, y: 300, k: 1.28 });
-const CAM_PREV: CameraState = { x: 900, y: 340, k: 1.25 };
+const CAM_ST = (i: number): CameraState => ({ x: 657 + (STATIONS[i].x - 680) * 0.25, y: 300, k: 1.2 });
+const CAM_PREV: CameraState = { x: 615, y: 330, k: 1.15 };
 
 // ---------------------------------------------------------------------------
 // Timeline (~92s, twelve beats).
@@ -323,15 +324,17 @@ function CodeBlend({ from, to, u }: { from: CodeLine[]; to: CodeLine[]; u: numbe
             </text>
           );
         }
+        // changed rows hand over one line at a time (old out, then new in) so
+        // two different lines never sit on top of each other mid-blend
         return (
           <g key={i}>
             {a && (
-              <text x={PANEL.x + 22} y={y} fill={colors.TEXT} fontSize={13.5} fontFamily={MONO} opacity={1 - u}>
+              <text x={PANEL.x + 22} y={y} fill={colors.TEXT} fontSize={13.5} fontFamily={MONO} opacity={clamp01(1 - u * 2)}>
                 {a}
               </text>
             )}
             {b && (
-              <text x={PANEL.x + 22} y={y} fill={to[i]?.hot ? colors.WARM : colors.TEXT} fontSize={13.5} fontFamily={MONO} opacity={u}>
+              <text x={PANEL.x + 22} y={y} fill={to[i]?.hot ? colors.WARM : colors.TEXT} fontSize={13.5} fontFamily={MONO} opacity={clamp01(u * 2 - 1)}>
                 {b}
               </text>
             )}
@@ -406,7 +409,7 @@ export function Render({ s }: { s: SceneState }) {
                 <text x={st.x} y={RAIL_Y - 42} textAnchor="middle" fill={st.color} fontSize={13.5} fontFamily={MONO}>
                   {st.label}
                 </text>
-                <text x={st.x} y={RAIL_Y - 26} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+                <text x={st.x} y={RAIL_Y - 26} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                   {st.sub}
                 </text>
                 <line x1={st.x} y1={RAIL_Y - 16} x2={st.x} y2={RAIL_Y - 4} stroke={st.color} strokeWidth={1.5} opacity={0.7} />
@@ -431,6 +434,10 @@ export function Render({ s }: { s: SceneState }) {
               /src/App.tsx · one file, transformed in place
             </text>
             <CodeBlend from={blend.from} to={blend.to} u={blend.u} />
+            {/* what station three actually does, stated on the file itself */}
+            <text x={PANEL.x + 22} y={PANEL.y + PANEL.h - 14} fill={colors.WARM} fontSize={12.5} fontFamily={MONO} opacity={st3U}>
+              {"bare 'react' → /_npm/react — the service worker routes that path"}
+            </text>
           </g>
 
           {/* the stylesheet aside */}
@@ -484,9 +491,9 @@ export function Render({ s }: { s: SceneState }) {
           </g>
 
           {/* VFS + server badges */}
-          <NodeBadge x={VFS_B.x} y={VFS_B.y} w={124} h={56} label="VirtualFS" sublabel="watch('/src')" color={colors.POSITIVE} u={vfsU} glow={bellU} />
-          <NodeBadge x={SRV_B.x} y={SRV_B.y} w={124} h={56} label="ViteDevServer" sublabel="startWatching" color={colors.ACCENT} u={srvU} />
-          <Connection from={{ x: VFS_B.x + 62, y: VFS_B.y }} to={{ x: SRV_B.x - 62, y: SRV_B.y }} u={Math.min(vfsU, srvU)} color={colors.GRID} />
+          <NodeBadge x={VFS_B.x} y={VFS_B.y} w={150} h={56} label="VirtualFS" sublabel="watch('/src')" color={colors.POSITIVE} u={vfsU} glow={bellU} labelSize={16} />
+          <NodeBadge x={SRV_B.x} y={SRV_B.y} w={150} h={56} label="ViteDevServer" sublabel="startWatching" color={colors.ACCENT} u={srvU} labelSize={16} />
+          <Connection from={{ x: VFS_B.x + 75, y: VFS_B.y }} to={{ x: SRV_B.x - 75, y: SRV_B.y }} u={Math.min(vfsU, srvU)} color={colors.GRID} />
           {bellU > 0.02 && (
             <circle cx={VFS_B.x} cy={VFS_B.y} r={34 + 22 * bellU} fill="none" stroke={colors.WARM} strokeWidth={2} opacity={(1 - bellU) * 0.8} />
           )}
@@ -495,7 +502,8 @@ export function Render({ s }: { s: SceneState }) {
           {writeU > 0 && writeU < 1 && (
             <g>
               <circle cx={writeP.x} cy={writeP.y} r={7} fill={colors.POSITIVE} stroke={colors.BG} strokeWidth={1.5} />
-              <text x={writeP.x} y={writeP.y - 13} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
+              {/* the label sits in the gap between editor and VFS, never on the packet's path */}
+              <text x={(ED.x + ED.w + VFS_B.x - 75) / 2} y={VFS_B.y - 30} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>
                 writeFileSync
               </text>
             </g>

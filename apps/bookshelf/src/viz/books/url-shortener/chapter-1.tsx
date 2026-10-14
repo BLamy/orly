@@ -32,9 +32,9 @@ const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 // `flow` channel, so every frame is a pure function of sampled state.
 // ---------------------------------------------------------------------------
 
-const LANES = { x0: 470, x1: 1210 } as const;
-const WRITE_LANE = { y: 180, band: 26 } as const;
-const READ_LANE = { y: 300, band: 84 } as const;
+const LANES = { x0: 420, x1: 1200 } as const;
+const WRITE_LANE = { y: 150, band: 24 } as const;
+const READ_LANE = { y: 330, band: 90 } as const;
 
 interface Streamer {
   phase: number; // 0..1 offset along the loop
@@ -62,7 +62,7 @@ const ANATOMY = [
 ] as const;
 
 // storage stack — 36 bricks, one per month, 12.7 GB each
-const BRICKS = { cols: 6, rows: 6, w: 34, h: 20, gap: 5, x0: 806, y0: 588 } as const;
+const BRICKS = { cols: 6, rows: 6, w: 34, h: 20, gap: 5, x0: 500, y0: 590 } as const;
 const brickPos = (k: number): { x: number; y: number } => ({
   x: BRICKS.x0 + (k % BRICKS.cols) * (BRICKS.w + BRICKS.gap),
   y: BRICKS.y0 - Math.floor(k / BRICKS.cols) * (BRICKS.h + BRICKS.gap) - BRICKS.h,
@@ -70,8 +70,9 @@ const brickPos = (k: number): { x: number; y: number } => ({
 
 // camera marks
 const CAM_ASK: CameraState = { x: 320, y: 300, k: 1.45 };
-const CAM_LANES: CameraState = { x: 800, y: 260, k: 1.18 };
-const CAM_ENVELOPE: CameraState = { x: 780, y: 460, k: 1.28 };
+// gentle pushes only: the chip (top-left) and the meters (lower-right) stay in frame
+const CAM_LANES: CameraState = { x: 640, y: 360, k: 1.04 };
+const CAM_ENVELOPE: CameraState = { x: 640, y: 400, k: 1.04 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 export interface Scene {
@@ -273,7 +274,7 @@ function Meter({ x, y, value, unit, color, u, flare }: {
       <text x={x} y={y + 1} textAnchor="middle" fill={color} fontSize={f > 0.3 ? 24 : 21} fontWeight={700}>
         {f > 0.3 ? '40+' : value}
       </text>
-      <text x={x} y={y + 20} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+      <text x={x} y={y + 20} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
         {unit}
       </text>
     </g>
@@ -297,10 +298,11 @@ export function Render({ s }: { s: SceneState }) {
   const closeU = s.get(scene.closeU);
 
   // the paste card collapses toward the link chip as shrinkU rises
+  // the card settles into a chip at top-left and stays there as the running example
   const cardW = 260 - 150 * shrinkU;
   const cardH = 200 - 156 * shrinkU;
-  const cardX = 110 + 20 * shrinkU;
-  const cardY = 170 + 60 * shrinkU;
+  const cardX = 110 - 50 * shrinkU;
+  const cardY = 170 - 70 * shrinkU;
 
   const bricksLit = stackU * 36;
 
@@ -352,7 +354,7 @@ export function Render({ s }: { s: SceneState }) {
           />
         </g>
         <g opacity={readU * askDim}>
-          <text x={LANES.x0} y={READ_LANE.y - 54} fill={colors.ACCENT} fontSize={14}>
+          <text x={LANES.x0} y={READ_LANE.y - 64} fill={colors.ACCENT} fontSize={14}>
             reads — 100 million a month
           </text>
           <line
@@ -369,10 +371,10 @@ export function Render({ s }: { s: SceneState }) {
         <ParticleCloud state={s} compute={laneParticles} />
         {ratioU > 0 && (
           <g opacity={ratioU * askDim}>
-            <text x={LANES.x1 - 6} y={READ_LANE.y - 54} textAnchor="end" fill={colors.TEXT} fontSize={22} fontWeight={700}>
+            <text x={LANES.x1} y={104} textAnchor="end" fill={colors.TEXT} fontSize={22} fontWeight={700}>
               10 : 1
             </text>
-            <text x={LANES.x1 - 6} y={READ_LANE.y - 34} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+            <text x={LANES.x1} y={124} textAnchor="end" fill={colors.MUTED} fontSize={12}>
               reads : writes
             </text>
           </g>
@@ -380,13 +382,13 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- the envelope: anatomy → stack → meters ---- */}
         <g opacity={anatU * panelDim}>
-          <rect x={430} y={400} width={330} height={210} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={448} y={428} fill={colors.TEXT} fontSize={14}>
+          <rect x={60} y={410} width={330} height={210} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={78} y={438} fill={colors.TEXT} fontSize={14}>
             one paste
           </text>
           {/* the 1 KB content slab */}
-          <rect x={448} y={440} width={294 * clamp01(chipsU * 2)} height={44} rx={6} fill={colors.ACCENT} opacity={0.35} />
-          <text x={456} y={467} fill={colors.TEXT} fontSize={12} fontFamily="monospace" opacity={clamp01(chipsU * 2)}>
+          <rect x={78} y={452} width={294 * clamp01(chipsU * 2)} height={40} rx={6} fill={colors.ACCENT} opacity={0.35} />
+          <text x={86} y={477} fill={colors.TEXT} fontSize={13} fontFamily="monospace" opacity={clamp01(chipsU * 2)}>
             content — 1 KB
           </text>
           {/* metadata chips */}
@@ -394,17 +396,17 @@ export function Render({ s }: { s: SceneState }) {
             const u = clamp01(chipsU * 4 - i * 0.7 - 0.8);
             return (
               <g key={a.label} opacity={u}>
-                <rect x={448} y={494 + i * 22} width={294} height={18} rx={4} fill={colors.BG} stroke={colors.GRID} />
-                <text x={456} y={507 + i * 22} fill={colors.MUTED} fontSize={10.5} fontFamily="monospace">
+                <rect x={78} y={500 + i * 22} width={294} height={20} rx={4} fill={colors.BG} stroke={colors.GRID} />
+                <text x={86} y={514 + i * 22} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                   {a.label}
                 </text>
-                <text x={734} y={507 + i * 22} textAnchor="end" fill={colors.WARM} fontSize={10.5} fontFamily="monospace">
+                <text x={364} y={514 + i * 22} textAnchor="end" fill={colors.WARM} fontSize={12} fontFamily="monospace">
                   {a.bytes}
                 </text>
               </g>
             );
           })}
-          <text x={595} y={600} textAnchor="middle" fill={colors.TEXT} fontSize={13} opacity={clamp01(chipsU * 3 - 2)}>
+          <text x={225} y={606} textAnchor="middle" fill={colors.TEXT} fontSize={13} opacity={clamp01(chipsU * 3 - 2)}>
             ≈ 1.27 KB per paste
           </text>
         </g>
@@ -430,10 +432,10 @@ export function Render({ s }: { s: SceneState }) {
           })}
           {stackU > 0.1 && (
             <g opacity={clamp01(stackU * 2 - 0.4)}>
-              <text x={922} y={392} textAnchor="middle" fill={colors.SECONDARY} fontSize={13}>
+              <text x={614} y={412} textAnchor="middle" fill={colors.SECONDARY} fontSize={13}>
                 36 months × 12.7 GB
               </text>
-              <text x={922} y={412} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={600}>
+              <text x={614} y={432} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={600}>
                 ≈ 450 GB · 360 M links
               </text>
             </g>
@@ -442,8 +444,8 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* the two per-second meters */}
         <g opacity={panelDim}>
-          <Meter x={1080} y={470} value="4" unit="writes / s" color={colors.WARM} u={metersU} />
-          <Meter x={1080} y={575} value="40" unit="reads / s" color={colors.ACCENT} u={metersU} flare={spikeU} />
+          <Meter x={880} y={500} value="4" unit="writes / s" color={colors.WARM} u={metersU} />
+          <Meter x={1080} y={500} value="40" unit="reads / s" color={colors.ACCENT} u={metersU} flare={spikeU} />
         </g>
 
         {/* ---- closing panel ---- */}

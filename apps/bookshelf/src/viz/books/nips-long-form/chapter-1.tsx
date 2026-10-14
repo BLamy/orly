@@ -76,8 +76,11 @@ const FOLDS = [
   { from: TOPIC_POS[1], path: 'tags[5][1]', text: 'infrastructure', color: colors.POSITIVE },
 ];
 
-const CAM_PAGE: CameraState = { x: 330, y: 330, k: 1.25 };
-const CAM_JSON: CameraState = { x: 800, y: 300, k: 1.2 };
+// a gentler push so the whole page clears the caption pill at the bottom
+const CAM_PAGE: CameraState = { x: 280, y: 335, k: 1.1 };
+// the JSON camera sits a little lower so the MUST callouts clear the event
+// card's last lines and stay above the caption pill
+const CAM_JSON: CameraState = { x: 800, y: 345, k: 1.2 };
 
 export function buildScene() {
   const tl = new Timeline();
@@ -213,17 +216,22 @@ export function Render({ s }: { s: SceneState }) {
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
+      {/* the closing card gets the frame to itself: the content is removed
+          rather than left at low opacity underneath the card */}
+      {closeU < 1 && (
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* the article page */}
-          {pageU > 0 && (
+          {/* once the fold has finished and the MUST demos take over, the page is
+              off-camera and only a ghost; drop it until the unfold rebuilds it */}
+          {pageU > 0 && !(wrapU >= 1 && unfoldU <= 0) && (
             <g opacity={pageU * pageFade}>
               <rect x={PAGE.x} y={PAGE.y} width={PAGE.w} height={PAGE.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
               <text x={TITLE_POS.x} y={TITLE_POS.y} fill={colors.TEXT} fontSize={24} fontWeight={700} opacity={1 - 0.85 * fu(0)}>
                 Why Relays Matter
               </text>
               <rect x={PAGE.x + 24} y={PAGE.y + 70} width={352} height={54} rx={8} fill={colors.GRID} opacity={0.4} />
-              <text x={PAGE.x + 200} y={PAGE.y + 102} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+              <text x={PAGE.x + 200} y={PAGE.y + 102} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                 cover image
               </text>
               <text x={SUMMARY_POS.x} y={SUMMARY_POS.y} fill={colors.MUTED} fontSize={14} fontStyle="italic" opacity={1 - 0.85 * fu(1)}>
@@ -288,19 +296,19 @@ export function Render({ s }: { s: SceneState }) {
           {/* MUST #1 — hard-wrapped text rejected, then reflowed */}
           {wrapU > 0 && (
             <g opacity={wrapU * (1 - 0.9 * clamp01(htmlU * 1.4))}>
-              <rect x={620} y={430} width={470} height={104} rx={10} fill={colors.PANEL} stroke={wrapFixU >= 1 ? colors.POSITIVE : colors.NEGATIVE} />
-              <text x={640} y={456} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+              <rect x={620} y={446} width={470} height={104} rx={10} fill={colors.PANEL} stroke={wrapFixU >= 1 ? colors.POSITIVE : colors.NEGATIVE} />
+              <text x={640} y={472} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                 {wrapFixU >= 1 ? 'one flowing paragraph — wraps per screen' : 'hard-wrapped at column 80 — MUST NOT'}
               </text>
               {wrapFixU < 1 ? (
                 [0, 1, 2].map((i) => (
-                  <rect key={i} x={640} y={470 + i * 18} width={i === 2 ? 180 : 320} height={9} rx={4} fill={colors.NEGATIVE} opacity={0.5} />
+                  <rect key={i} x={640} y={486 + i * 18} width={i === 2 ? 180 : 320} height={9} rx={4} fill={colors.NEGATIVE} opacity={0.5} />
                 ))
               ) : (
-                <rect x={640} y={474} width={430 * clamp01(wrapFixU)} height={9} rx={4} fill={colors.POSITIVE} opacity={0.6} />
+                <rect x={640} y={490} width={430 * clamp01(wrapFixU)} height={9} rx={4} fill={colors.POSITIVE} opacity={0.6} />
               )}
               {wrapFixU < 1 && (
-                <text x={1076} y={460} textAnchor="end" fill={colors.NEGATIVE} fontSize={16} fontWeight={700}>
+                <text x={1076} y={476} textAnchor="end" fill={colors.NEGATIVE} fontSize={16} fontWeight={700}>
                   ✕
                 </text>
               )}
@@ -310,32 +318,42 @@ export function Render({ s }: { s: SceneState }) {
           {/* MUST #2 — HTML bounced */}
           {htmlU > 0 && (
             <g opacity={htmlU}>
-              <rect x={620} y={430} width={470} height={104} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} />
-              <text x={640} y={462} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">
+              <rect x={620} y={446} width={470} height={104} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} />
+              <text x={640} y={478} fill={colors.NEGATIVE} fontSize={14} fontFamily="monospace">
                 {'<div onclick=…>'}
               </text>
-              <text x={640} y={490} fill={colors.MUTED} fontSize={12}>
+              <text x={640} y={506} fill={colors.MUTED} fontSize={12}>
                 markup in markdown — MUST NOT: rendering belongs to the reader
               </text>
-              <line x1={620} y1={430} x2={1090} y2={534} stroke={colors.NEGATIVE} strokeWidth={2} opacity={0.7} />
+              <text x={1076} y={492} textAnchor="end" fill={colors.NEGATIVE} fontSize={16} fontWeight={700}>
+                ✕
+              </text>
             </g>
           )}
 
           {/* two clocks */}
+          {/* each clock label sits beside its own tag line, right of the JSON */}
           {clocksU > 0 && (
             <g opacity={clocksU}>
-              <rect x={120} y={588} width={300} height={30} rx={8} fill="none" stroke={colors.WARM} opacity={0.7} />
-              <text x={136} y={608} fill={colors.WARM} fontSize={12} fontFamily="monospace">
-                published_at 1699000000 — history
+              <rect x={1010} y={135} width={210} height={44} rx={8} fill="none" stroke={colors.ACCENT} opacity={0.7} />
+              <text x={1022} y={153} fill={colors.ACCENT} fontSize={12} fontFamily="monospace">
+                created_at 1700860000
               </text>
-              <rect x={440} y={588} width={296} height={30} rx={8} fill="none" stroke={colors.ACCENT} opacity={0.7} />
-              <text x={456} y={608} fill={colors.ACCENT} fontSize={12} fontFamily="monospace">
-                created_at 1700860000 — freshness
+              <text x={1022} y={171} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+                freshness: every edit
+              </text>
+              <rect x={1010} y={308} width={210} height={44} rx={8} fill="none" stroke={colors.WARM} opacity={0.7} />
+              <text x={1022} y={326} fill={colors.WARM} fontSize={12} fontFamily="monospace">
+                published_at 1699000000
+              </text>
+              <text x={1022} y={344} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+                history: first publication
               </text>
             </g>
           )}
         </Camera>
       </g>
+      )}
 
       {closeU > 0 && (
         <g opacity={closeU}>

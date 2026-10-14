@@ -60,7 +60,7 @@ export function Render({ s }: { s: SceneState }) {
         <line x1={120} y1={190} x2={120} y2={baselineY} stroke={colors.GRID} />
         <path d={path} fill="none" stroke={colors.ACCENT} strokeWidth={4} pathLength={1} strokeDasharray={`${clamp01(reveal)} 1`} />
         {pts.map(([x, y], i) => <circle key={i} cx={x} cy={y} r={8} fill={i < 2 ? colors.POSITIVE : colors.ACCENT} opacity={clamp01(reveal * 7 - i)} />)}
-        {SIGNAL.map((_, i) => <text key={i} x={xAt(i)} y={525} textAnchor="middle" fill={colors.MUTED} fontFamily={mono} fontSize={11}>r{i + 1}</text>)}
+        {SIGNAL.map((_, i) => <text key={i} x={xAt(i)} y={525} textAnchor="middle" fill={colors.MUTED} fontFamily={mono} fontSize={12}>r{i + 1}</text>)}
         <Chip x={300} y={190} text="exact" opacity={s.get(scene.exactU)} color={colors.POSITIVE} />
         <Chip x={600} y={365} text="rank defect" opacity={s.get(scene.defectU)} color={colors.WARM} width={120} />
         <g opacity={s.get(scene.artifactU)}>
@@ -72,15 +72,36 @@ export function Render({ s }: { s: SceneState }) {
           <text x={835} y={420} textAnchor="middle" fill={colors.MUTED} fontFamily={mono} fontSize={12}>random control matches</text>
         </g>
       </Panel>
-      <Panel x={1040} y={135} w={180} h={430} opacity={0.2 + 0.8 * s.get(scene.bridgeU)} accent={colors.SECONDARY}>
+      <Panel x={1040} y={135} w={180} h={430} opacity={1} accent={colors.SECONDARY}>
+        {/* Claim ledger: fills in as each claim is tested; fades before the closing list takes its place. */}
+        <g opacity={1 - clamp01(s.get(scene.closeN))}>
+          <text x={1130} y={180} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={mono}>claim ledger</text>
+          {[
+            { label: 'early identities', verdict: 'exact', color: colors.POSITIVE, u: s.get(scene.exactU) },
+            { label: 'round-3 defect', verdict: 'located', color: colors.WARM, u: s.get(scene.defectU) },
+            { label: 'late correlation', verdict: 'withdrawn', color: colors.NEGATIVE, u: s.get(scene.controlU) },
+          ].map((r, i) => {
+            const y = 230 + i * 90;
+            return (
+              <g key={r.label}>
+                <text x={1130} y={y} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={mono}>{r.label}</text>
+                <text x={1130} y={y + 26} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={mono} opacity={0.5 * (1 - clamp01(r.u))}>pending</text>
+                <text x={1130} y={y + 26} textAnchor="middle" fill={r.color} fontWeight={800} fontSize={14} opacity={clamp01(r.u)}>{r.verdict}</text>
+              </g>
+            );
+          })}
+        </g>
         {['characters', 'kernels', 'spectral lift', 'adaptive tuple'].map((c, i) => {
           const u = clamp01(s.get(scene.closeN) - i);
-          return <g key={c} opacity={u}><text x={1130} y={210 + i * 60} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={mono}>{c}</text><line x1={1080} y1={195 + i * 60} x2={1180} y2={225 + i * 60} stroke={colors.NEGATIVE} strokeWidth={2} /></g>;
+          const y = 215 + i * 60;
+          return <g key={c} opacity={u}><text x={1130} y={y} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={mono}>{c}</text><line x1={1075} y1={y - 4} x2={1185} y2={y - 4} stroke={colors.NEGATIVE} strokeWidth={2} /></g>;
         })}
         <g opacity={s.get(scene.bridgeU)}>
-          <circle cx={1130} cy={475} r={54} fill={colors.POSITIVE} fillOpacity={0.12} stroke={colors.POSITIVE} />
-          <text x={1130} y={470} textAnchor="middle" fill={colors.POSITIVE} fontWeight={800} fontSize={13}>Möbius</text>
-          <text x={1130} y={490} textAnchor="middle" fill={colors.POSITIVE} fontWeight={800} fontSize={13}>Bridge</text>
+          <circle cx={1130} cy={455} r={50} fill={colors.POSITIVE} fillOpacity={0.12} stroke={colors.POSITIVE} />
+          <text x={1130} y={450} textAnchor="middle" fill={colors.POSITIVE} fontWeight={800} fontSize={14}>Möbius</text>
+          <text x={1130} y={470} textAnchor="middle" fill={colors.POSITIVE} fontWeight={800} fontSize={14}>Bridge</text>
+          <text x={1130} y={530} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={mono}>cross-ratio</text>
+          <text x={1130} y={550} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={mono}>what survives</text>
         </g>
       </Panel>
     </Camera>

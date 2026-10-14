@@ -22,8 +22,9 @@ export function buildScene(){return chapter(CAPTIONS);}const scene=buildScene();
 export function Render({s}:{s:SceneState}){
   const p=s.get(scene.phase),short=on(p,1),access=on(p,2),inspect=on(p,3),fork=on(p,5),end=on(p,7);
   return <><Header title='Can constrained decoding scale up?' tag='CONDITIONAL FEASIBILITY · SCHEMATIC COMPUTE · NO PERFORMANCE RESULT'/><Camera {...s.get(scene.cam)}>
-    <Panel x={60} y={119} w={300} h={135} title='Hosted output contract' color={C.observation} opacity={1-fork}>
-      <Label x={80} y={181} size={16}>schema or answer list</Label><Label x={80} y={220} size={14} color={C.muted}>Useful constrained baseline</Label>
+    <Panel x={60} y={119} w={300} h={165} title='Hosted output contract' color={C.observation} opacity={1-fork}>
+      <Label x={80} y={181} size={16}>schema or answer list</Label><Label x={80} y={214} size={14} color={C.muted}>Useful constrained baseline</Label>
+      <Label x={80} y={244} size={14} color={C.observation}>Constrained decoding: output is</Label><Label x={80} y={264} size={14} color={C.observation}>limited to legal choices</Label>
     </Panel>
     <Panel x={911} y={119} w={299} h={272} title='Low-level runtime controls' color={C.pending} opacity={access*(1-fork)}>
       {gates.map((g,i)=><g key={g}><circle cx={934} cy={181+i*41} r={10} fill='#171a2e' stroke={C.pending}/><Label x={934} y={186+i*41} anchor='middle' size={14} color={C.pending}>?</Label><Label x={954} y={186+i*41} size={15}>{g}</Label></g>)}
@@ -31,8 +32,10 @@ export function Render({s}:{s:SceneState}){
     <g opacity={1-.85*fork}>
       {grid.map((v,i)=><g key={i}>{i%12<11&&<line x1={v.x} y1={v.y} x2={v.x+44} y2={v.y} stroke={C.model} opacity={.2}/>}<rect x={v.x-6} y={v.y-6} width={12} height={12} rx={3} fill={C.model} opacity={.55+((i%5)/5)*.35}/></g>)}
       <Label x={590} y={194} anchor='middle' color={C.model} size={17}>Large-model computation remains</Label>
+      <rect x={376} y={210} width={516} height={172} rx={8} fill='none' stroke={C.model} strokeDasharray='5 4' opacity={.7}/>
     </g>
-    <g opacity={1-fork}>{Array.from({length:6},(_,i)=><g key={i} opacity={i<2?1:1-short}><rect x={interpolateNumber(outputX(i),566+i*72)(short)} y={425} width={62} height={31} rx={6} fill='#111c33' stroke={C.observation}/><Label x={interpolateNumber(outputX(i),566+i*72)(short)+31} y={446} anchor='middle' size={12}>{i<2?'choice':'output'}</Label></g>)}<Label x={630} y={490} anchor='middle' size={15} color={C.muted}>Shorter output does not remove neural computation</Label></g>
+    <g opacity={1-fork}><Label x={634} y={402} anchor='middle' size={14} color={C.model}>Shared prefix: one computed context, reused by every branch</Label></g>
+    <g opacity={1-fork}>{Array.from({length:6},(_,i)=><g key={i} opacity={i<2?1:1-short}><rect x={interpolateNumber(outputX(i),566+i*72)(short)} y={425} width={70} height={31} rx={6} fill='#111c33' stroke={C.observation}/><Label x={interpolateNumber(outputX(i),566+i*72)(short)+35} y={446} anchor='middle' size={14}>{i<2?'choice':'output'}</Label></g>)}<Label x={630} y={490} anchor='middle' size={15} color={C.muted}>Shorter output does not remove neural computation</Label></g>
     <g opacity={inspect*(1-fork)}><Chip x={374} y={126} w={505} text='Concurrent hosted requests ≠ proven shared prefill' color={C.pending}/></g>
     <g opacity={fork}>
       {grid.map((v,i)=>{

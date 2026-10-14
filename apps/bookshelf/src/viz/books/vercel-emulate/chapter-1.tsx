@@ -58,8 +58,10 @@ const RETURN_PATH = [
 ] as const;
 
 const CAM_WIDE: CameraState = CAMERA_HOME;
-const CAM_WALL: CameraState = { x: 940, y: 280, k: 1.32 };
-const CAM_CFG: CameraState = { x: 420, y: 430, k: 1.28 };
+// wall push: framed so the test card, the browser and the provider all stay in view
+const CAM_WALL: CameraState = { x: 622, y: 272, k: 1.1 };
+// config push: the test card is faded out here (see beat 7), so the framing can close in
+const CAM_CFG: CameraState = { x: 593, y: 440, k: 1.14 };
 const CAM_FLOOR: CameraState = { x: 640, y: 360, k: 1.06 };
 
 /** Piecewise-linear travel along waypoints, u in 0..1. */
@@ -164,6 +166,7 @@ export function buildScene() {
     dur: 7.6,
     text: 'And your app changes almost nothing. Three addresses in its provider config — authorize, token, and user info — now point at localhost instead of the real thing.',
   });
+  tl.tween(testU, 0, { at: 44.6, dur: 0.8, ease: ease.move }); // clear the test card so the config push frames the providers
   tl.tween(cam, CAM_CFG, { at: 45.8, dur: 1.3, ease: ease.move });
   tl.tween(cfgU, 1, { at: 46.6, dur: 0.9, ease: ease.enter });
   tl.tween(cfgSwapU, 1, { at: 49.4, dur: 1.6, ease: ease.move });
@@ -175,6 +178,7 @@ export function buildScene() {
     dur: 6.6,
     text: 'Run the dance again. Same redirect, same three parties — but this time the provider is yours, and there is no wall.',
   });
+  tl.tween(testU, 1, { at: 54.2, dur: 1.0, ease: ease.move });
   tl.tween(cam, CAM_FLOOR, { at: 54.2, dur: 1.4, ease: ease.move });
   tl.tween(legU2, 1, { at: 55.4, dur: 4.0, ease: ease.move });
   tl.hold(60.6, 0.5);
@@ -245,7 +249,7 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const teaseU = s.get(scene.teaseU);
 
-  const floorOp = 1 - 0.87 * dimU;
+  const floorOp = 1 - 0.92 * dimU;
   const p1 = along(DANCE_PATH, legU);
   const p2 = along(DANCE_PATH, legU2);
   const pr = along(RETURN_PATH, retU);
@@ -313,7 +317,7 @@ export function Render({ s }: { s: SceneState }) {
             x={BROWSER.x}
             y={BROWSER.y}
             kind="browser"
-            label="Playwright browser"
+            label="Playwright"
             sublabel="the test's hands"
             u={stationsU}
             glow={clamp01(dashU)}
@@ -417,25 +421,25 @@ export function Render({ s }: { s: SceneState }) {
               <g key={row}>
                 <rect
                   x={WALL.x + 20}
-                  y={WALL.y + 46 + i * 46}
+                  y={WALL.y + 44 + i * 42}
                   width={WALL.w - 40}
-                  height={36}
+                  height={32}
                   rx={8}
                   fill={colors.BG}
                   stroke={stamped > 0.5 ? colors.NEGATIVE : colors.GRID}
                 />
-                <text x={WALL.x + 36} y={WALL.y + 70 + i * 46} fill={colors.TEXT} fontSize={14.5} fontFamily={MONO}>
+                <text x={WALL.x + 36} y={WALL.y + 65 + i * 42} fill={colors.TEXT} fontSize={14.5} fontFamily={MONO}>
                   {row}
                 </text>
                 {stamped > 0 && (
                   <text
                     x={WALL.x + WALL.w - 44}
-                    y={WALL.y + 72 + i * 46}
+                    y={WALL.y + 66 + i * 42}
                     fill={colors.NEGATIVE}
                     fontSize={20}
                     fontWeight={700}
                     opacity={stamped}
-                    transform={`rotate(${-8 + 8 * stamped} ${WALL.x + WALL.w - 44} ${WALL.y + 72 + i * 46})`}
+                    transform={`rotate(${-8 + 8 * stamped} ${WALL.x + WALL.w - 44} ${WALL.y + 66 + i * 42})`}
                   >
                     ✕
                   </text>
@@ -443,7 +447,7 @@ export function Render({ s }: { s: SceneState }) {
               </g>
             );
           })}
-          <text x={WALL.x + 20} y={WALL.y + WALL.h - 14} fill={colors.NEGATIVE} fontSize={12.5} opacity={clamp01(stampU - 2.5)}>
+          <text x={WALL.x + 20} y={WALL.y + WALL.h - 14} fill={colors.NEGATIVE} fontSize={13} opacity={clamp01(stampU - 2.5)}>
             a robot can do none of these
           </text>
         </g>

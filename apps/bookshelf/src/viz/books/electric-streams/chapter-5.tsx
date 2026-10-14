@@ -52,14 +52,18 @@ const HEADS = [
   { name: 'dashboard', color: colors.SECONDARY, at: 3.4 },
 ] as const;
 
+// The cake stacks above the tape zone (which starts at y 284): slab 2 sits on
+// the tape's top edge, the label for layer 1 sits in the gap below slab 2.
 const SLABS = [
-  { label: '2 · JSON mode — messages, boundaries preserved', y: 268 },
-  { label: '3 · Durable State — insert · update · delete → live state', y: 212 },
-  { label: '4 · StreamDB — a reactive database, live queries', y: 156 },
+  { label: '2 · JSON mode — messages, boundaries preserved', y: 206 },
+  { label: '3 · Durable State — insert · update · delete → live state', y: 150 },
+  { label: '4 · StreamDB — a reactive database, live queries', y: 94 },
 ] as const;
 const SLAB_X = 320;
 const SLAB_W = 640;
 const SLAB_H = 44;
+const LAYER1_LABEL_Y = 270;
+const SERIES_Y = 36;
 
 const CAM_TAPE: CameraState = { x: 640, y: 360, k: 1.16 };
 const CAM_FORK: CameraState = { x: 640, y: 430, k: 1.24 };
@@ -313,10 +317,10 @@ export function Render({ s }: { s: SceneState }) {
           {/* headers chip — above the inherited cells, inside the camera frame */}
           <g opacity={forkU}>
             <rect x={140} y={FORK_Y - 78} width={300} height={52} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.4} />
-            <text x={154} y={FORK_Y - 57} fill={colors.SECONDARY} fontSize={11} fontFamily={MONO}>
+            <text x={154} y={FORK_Y - 57} fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>
               Stream-Forked-From: /v1/stream/chat
             </text>
-            <text x={154} y={FORK_Y - 37} fill={colors.SECONDARY} fontSize={11} fontFamily={MONO}>
+            <text x={154} y={FORK_Y - 37} fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>
               Stream-Fork-Offset: 01JQXK5V05
             </text>
           </g>
@@ -352,7 +356,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* the seam */}
           <g opacity={clamp01(stitchU * 2) * forkU}>
             <line x1={seamX} y1={FORK_Y - TAPE.cellH / 2 - 8} x2={seamX} y2={FORK_Y + TAPE.cellH / 2 + 8} stroke={colors.WARM} strokeWidth={1.5} strokeDasharray="3 3" />
-            <text x={seamX + 66} y={FORK_Y - TAPE.cellH / 2 - 14} textAnchor="middle" fill={colors.WARM} fontSize={10.5}>
+            <text x={seamX + 66} y={FORK_Y - TAPE.cellH / 2 - 14} textAnchor="middle" fill={colors.WARM} fontSize={12}>
               the seam — invisible to readers
             </text>
           </g>
@@ -380,13 +384,13 @@ export function Render({ s }: { s: SceneState }) {
             );
           })}
           {layer1U > 0 && (
-            <text x={SLAB_X + 20} y={TAPE.y - 88} fill={colors.TEAL} fontSize={14} fontFamily={MONO} opacity={layer1U}>
+            <text x={SLAB_X + 20} y={LAYER1_LABEL_Y} fill={colors.TEAL} fontSize={14} fontFamily={MONO} opacity={layer1U}>
               1 · Electric Streams — bytes at offsets, replayable
             </text>
           )}
           <g opacity={seriesU}>
-            <rect x={SLAB_X} y={100} width={SLAB_W} height={SLAB_H - 4} rx={10} fill="none" stroke={colors.SECONDARY} strokeWidth={1.4} strokeDasharray="7 5" />
-            <text x={SLAB_X + 20} y={126} fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>
+            <rect x={SLAB_X} y={SERIES_Y} width={SLAB_W} height={SLAB_H - 4} rx={10} fill="none" stroke={colors.SECONDARY} strokeWidth={1.4} strokeDasharray="7 5" />
+            <text x={SLAB_X + 20} y={SERIES_Y + 26} fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>
               5 · the agents — books two through five of this series
             </text>
           </g>

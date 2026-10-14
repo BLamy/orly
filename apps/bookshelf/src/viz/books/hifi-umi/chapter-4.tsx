@@ -100,7 +100,7 @@ function Balance({ u, anchorU }: { u: number; anchorU: number }) {
       <text x={45} y={67} textAnchor="middle" fill={colors.BG} fontSize={11} fontWeight={800}>UMI</text>
       <g opacity={anchorU} transform={`translate(285 ${92 + (1 - anchorU) * 85})`}>
         <path d="M0 -32 C28 -32 28 8 0 8 C-28 8 -28 -32 0 -32 Z M0 8 L0 42" fill="none" stroke={colors.NEGATIVE} strokeWidth={12} strokeLinecap="round" />
-        <text y={67} textAnchor="middle" fill={colors.NEGATIVE} fontSize={10} fontFamily={MONO}>teleop anchor</text>
+        <text y={67} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>teleop anchor</text>
       </g>
     </g>
   );
@@ -108,9 +108,14 @@ function Balance({ u, anchorU }: { u: number; anchorU: number }) {
 
 export function Render({ s }: { s: SceneState }) {
   const barsU = s.get(scene.barsU);
-  const curveU = s.get(scene.curveU);
   const transferU = s.get(scene.transferU);
-  const mainOpacity = 1 - 0.88 * s.get(scene.dimU);
+  const curveU = s.get(scene.curveU);
+  const limitsU = s.get(scene.limitsU);
+  const mainOpacity = 1 - 0.92 * s.get(scene.dimU);
+  // Bars give way to the curve panel once the next claim starts.
+  const barsFade = clamp01(barsU) * (1 - clamp01(curveU * 4));
+  // The curve and transfer panels give way to the "does not establish" card.
+  const curveFade = curveU * (1 - limitsU);
   const shown = Math.ceil(barsU);
 
   return (
@@ -130,35 +135,43 @@ export function Render({ s }: { s: SceneState }) {
                 <g key={label} transform={`translate(0 ${i * 54})`}>
                   <rect width={310} height={38} rx={19} fill={colors.PANEL} stroke={colors.POSITIVE} />
                   <circle cx={20} cy={19} r={7} fill={colors.POSITIVE} />
-                  <text x={40} y={24} fill={colors.TEXT} fontSize={11} fontFamily={MONO}>{label} · held fixed</text>
+                  <text x={40} y={24} fill={colors.TEXT} fontSize={12} fontFamily={MONO}>{label} · held fixed</text>
                 </g>
               ))}
               <path d="M340 12 L500 12 L500 230 L340 230" fill="none" stroke={colors.ACCENT} strokeWidth={3} />
-              <text x={420} y={258} textAnchor="middle" fill={colors.ACCENT} fontSize={11} fontFamily={MONO}>only data source changes</text>
+              <text x={420} y={258} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>only data source changes</text>
             </g>
           )}
 
-          {barsU > 0 && (
-            <g transform="translate(120 130)">
+          {barsFade > 0 && (
+            <g transform="translate(120 130)" opacity={barsFade}>
+              <g transform="translate(0 -8)">
+                <rect width={14} height={14} rx={3} fill={colors.ACCENT} opacity={0.78} />
+                <text x={22} y={12} fill={colors.TEXT} fontSize={12} fontFamily={MONO}>UMI post-training</text>
+                <rect x={170} width={14} height={14} rx={3} fill={colors.NEGATIVE} opacity={0.62} />
+                <text x={192} y={12} fill={colors.TEXT} fontSize={12} fontFamily={MONO}>teleop post-training</text>
+                <text x={360} y={12} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>gap = UMI − teleop</text>
+              </g>
               <line x1={0} y1={380} x2={720} y2={380} stroke={colors.GRID} />
               {RESULTS.map((r, i) => {
                 const u = clamp01(barsU - i);
                 const x = i * 235 + 55;
                 const hUmi = r.umi * 3.6 * u;
                 const hTele = r.tele * 3.6 * u;
+                const gap = Number(r.diff.replace('−', '-'));
                 return (
                   <g key={r.name} opacity={u}>
                     <rect x={x} y={380 - hUmi} width={58} height={hUmi} rx={7} fill={colors.ACCENT} opacity={0.78} />
                     <rect x={x + 68} y={380 - hTele} width={58} height={hTele} rx={7} fill={colors.NEGATIVE} opacity={0.62} />
-                    <text x={x + 29} y={370 - hUmi} textAnchor="middle" fill={colors.ACCENT} fontSize={11} fontFamily={MONO}>{r.umi}%</text>
-                    <text x={x + 97} y={370 - hTele} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11} fontFamily={MONO}>{r.tele}%</text>
-                    <text x={x + 63} y={405} textAnchor="middle" fill={colors.TEXT} fontSize={11} fontFamily={MONO}>{r.name}</text>
-                    <text x={x + 63} y={430} textAnchor="middle" fill={Math.abs(Number(r.diff.replace('−', '-'))) < 3.2 ? colors.POSITIVE : colors.WARM} fontSize={15} fontWeight={800}>{r.diff} pts</text>
+                    <text x={x + 29} y={370 - hUmi} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>{r.umi}%</text>
+                    <text x={x + 97} y={370 - hTele} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>{r.tele}%</text>
+                    <text x={x + 63} y={405} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>{r.name}</text>
+                    <text x={x + 63} y={430} textAnchor="middle" fill={gap > 0 ? colors.POSITIVE : colors.WARM} fontSize={15} fontWeight={800}>{`UMI ${r.diff} pts`}</text>
                   </g>
                 );
               })}
               <rect x={535} y={-8} width={170} height={34} rx={17} fill={colors.PANEL} stroke={colors.POSITIVE} opacity={s.get(scene.parityU)} />
-              <text x={620} y={14} textAnchor="middle" fill={colors.POSITIVE} fontSize={11} fontFamily={MONO} opacity={s.get(scene.parityU)}>approximate parity</text>
+              <text x={620} y={14} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO} opacity={s.get(scene.parityU)}>approximate parity</text>
             </g>
           )}
 
@@ -174,8 +187,8 @@ export function Render({ s }: { s: SceneState }) {
             accent={colors.ACCENT}
           />
 
-          {curveU > 0 && (
-            <g opacity={curveU}>
+          {curveFade > 0.01 && (
+            <g opacity={curveFade}>
               <rect x={120} y={270} width={600} height={300} rx={18} fill={colors.PANEL} stroke={colors.GRID} />
               <line x1={190} y1={535} x2={675} y2={535} stroke={colors.MUTED} />
               <line x1={190} y1={320} x2={190} y2={535} stroke={colors.MUTED} />
@@ -185,16 +198,18 @@ export function Render({ s }: { s: SceneState }) {
                 stroke={colors.POSITIVE}
                 strokeWidth={4}
               />
-              <text x={430} y={562} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>pre-training exposure · 4,000 h mixture</text>
-              <text x={150} y={300} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>mean OOD action error</text>
+              <text x={430} y={562} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>pre-training exposure · 4,000 h mixture</text>
+              <text x={150} y={300} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>mean OOD action error</text>
               <text x={608} y={355} fill={colors.POSITIVE} fontSize={26} fontWeight={800}>−41%</text>
               {transferU > 0 && (
                 <g opacity={transferU} transform="translate(790 400)">
                   <rect width={360} height={136} rx={19} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={2} />
-                  <rect x={34} y={78} width={118} height={22} rx={11} fill={colors.MUTED} opacity={0.42} />
-                  <rect x={34} y={48} width={118 + 118 * transferU} height={22} rx={11} fill={colors.WARM} opacity={0.82} />
-                  <text x={178} y={65} fill={colors.WARM} fontSize={25} fontWeight={850}>+18.1 pts</text>
-                  <text x={178} y={94} fill={colors.MUTED} fontSize={10} fontFamily={MONO}>aggregate real-robot success</text>
+                  <text x={34} y={44} fill={colors.WARM} fontSize={25} fontWeight={850}>+18.1 pts</text>
+                  <text x={34} y={62} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>aggregate real-robot success</text>
+                  <rect x={34} y={76} width={100} height={18} rx={9} fill={colors.MUTED} opacity={0.42} />
+                  <text x={144} y={90} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>baseline init</text>
+                  <rect x={34} y={102} width={100 + 100 * transferU} height={18} rx={9} fill={colors.WARM} opacity={0.82} />
+                  <text x={144 + 100 * transferU} y={116} fill={colors.WARM} fontSize={12} fontFamily={MONO}>UMI init</text>
                 </g>
               )}
             </g>

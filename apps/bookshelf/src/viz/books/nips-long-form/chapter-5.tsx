@@ -26,12 +26,13 @@ const COORD = `30023:${shortHex(PUBKEY, 6, 4)}:why-relays`;
 const HIGHLIGHT_TEXT = 'A relay is a dumb pipe; the durability lives in the words.';
 
 // article page (left)
-const PAGE = { x: 110, y: 130, w: 420, h: 440 };
+const PAGE = { x: 90, y: 120, w: 380, h: 440 };
 const BODY_ROWS = 11;
 const HL_ROW = 5; // the highlighted line
 
 // the 9802 event (right)
-const EV = { x: 660, y: 150, w: 470 };
+const EV = { x: 540, y: 170, w: 580 };
+const VALUE_CHARS = 62; // monospace values that fit the card's value column
 const EV_FIELDS = [
   { k: 'kind', v: '9802', color: colors.WARM },
   { k: 'content', v: `"${HIGHLIGHT_TEXT}"`, color: colors.POSITIVE },
@@ -41,10 +42,11 @@ const EV_FIELDS = [
 ];
 
 // address plate (recalled from ch2) — the a-tag target
-const PLATE = { x: 660, y: 470, w: 470, h: 56 };
+const PLATE = { x: 540, y: 480, w: 580, h: 56 };
 
-const CAM_PAGE: CameraState = { x: 330, y: 340, k: 1.2 };
-const CAM_EVENT: CameraState = { x: 830, y: 300, k: 1.12 };
+// Both frames keep every label inside the stage and above the caption band.
+const CAM_PAGE: CameraState = { x: 280, y: 360, k: 1.25 };
+const CAM_EVENT: CameraState = { x: 605, y: 330, k: 1.15 };
 
 export function buildScene() {
   const tl = new Timeline();
@@ -137,13 +139,14 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  const mainOp = 1 - dimU;
   const hlY = PAGE.y + 64 + HL_ROW * 30;
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
+      {mainOp > 0.01 && (
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* article page */}
@@ -200,9 +203,9 @@ export function Render({ s }: { s: SceneState }) {
                 if (u <= 0) return null;
                 return (
                   <g key={f.k} opacity={u}>
-                    <text x={EV.x + 16} y={EV.y + 34 + i * 34} fill={f.color} fontSize={13} fontFamily="monospace" fontWeight={600}>{f.k}</text>
+                    <text x={EV.x + 16} y={EV.y + 34 + i * 34} fill={f.color} fontSize={14} fontFamily="monospace" fontWeight={600}>{f.k}</text>
                     <text x={EV.x + 96} y={EV.y + 34 + i * 34} fill={colors.TEXT} fontSize={12} fontFamily="monospace">
-                      {f.v.length > 44 ? `${f.v.slice(0, 43)}…` : f.v}
+                      {f.v.length > VALUE_CHARS ? `${f.v.slice(0, VALUE_CHARS - 1)}…` : f.v}
                     </text>
                   </g>
                 );
@@ -215,10 +218,10 @@ export function Render({ s }: { s: SceneState }) {
             <g opacity={plateU}>
               <rect x={PLATE.x} y={PLATE.y} width={PLATE.w} height={PLATE.h} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} />
               <text x={PLATE.x + 16} y={PLATE.y + 24} fill={colors.ACCENT} fontSize={12} fontFamily="monospace">{COORD}</text>
-              <text x={PLATE.x + 16} y={PLATE.y + 44} fill={colors.MUTED} fontSize={11}>the article's address — a living pointer</text>
+              <text x={PLATE.x + 16} y={PLATE.y + 44} fill={colors.MUTED} fontSize={12}>the article's address — a living pointer</text>
               {aU > 0 && (
                 <path
-                  d={`M${EV.x + 40} ${EV.y + 34 + 2 * 34 + 6} L ${PLATE.x + 40} ${PLATE.y - 4}`}
+                  d={`M${EV.x + EV.w - 30} ${EV.y + 34 + 2 * 34 + 6} L ${PLATE.x + PLATE.w - 30} ${PLATE.y - 4}`}
                   fill="none" stroke={colors.ACCENT} strokeWidth={1.8} strokeDasharray="5 4" opacity={aU}
                 />
               )}
@@ -231,12 +234,12 @@ export function Render({ s }: { s: SceneState }) {
               {['reply', 'react', 're-highlight'].map((lbl, i) => {
                 const u = clamp01(socialU * 3 - i);
                 if (u <= 0) return null;
-                const ang = -0.5 + i * 0.6;
-                const cx = EV.x + 230 + Math.cos(ang) * 250;
-                const cy = EV.y + 90 + Math.sin(ang) * 150;
+                // fan the reactions out above the card, so they never cross its rows
+                const cx = EV.x + 120 + i * 170;
+                const cy = EV.y - 70 - (i === 1 ? 26 : 0);
                 return (
                   <g key={lbl} opacity={u}>
-                    <line x1={EV.x + 230} y1={EV.y + 90} x2={cx} y2={cy} stroke={colors.GRID} strokeWidth={1} opacity={0.5} />
+                    <line x1={EV.x + 290} y1={EV.y} x2={cx} y2={cy} stroke={colors.GRID} strokeWidth={1} opacity={0.5} />
                     <circle cx={cx} cy={cy} r={7} fill={colors.SECONDARY} opacity={0.85} />
                     <text x={cx} y={cy - 14} textAnchor="middle" fill={colors.MUTED} fontSize={12}>{lbl}</text>
                   </g>
@@ -246,17 +249,18 @@ export function Render({ s }: { s: SceneState }) {
           )}
         </Camera>
       </g>
+      )}
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={200} y={230} width={880} height={200} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={200} y={230} width={880} height={200} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={298} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             Everything is the same small thing
           </text>
           <text x={640} y={342} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             article · edits · files · inline media · highlights — all signed events
           </text>
-          <text x={640} y={382} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={382} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             NIP-84 · kind 9802 · content = the quote, a = the source address
           </text>
         </g>

@@ -44,7 +44,7 @@ export function buildScene() {
 
   tl.caption({ at: 19.4, dur: 6.4, text: 'A fuzzy entity match then cuts through that band, focusing the pool on the people or things actually named.' });
   tl.tween(entityU, 1, { at: 19.9, dur: 1.4, ease: ease.move });
-  tl.tween(cam, { x: 700, y: 360, k: 1.05 }, { at: 22.0, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 620, y: 360, k: 1.05 }, { at: 22.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 25.8, dur: 6.4, text: 'One-hop neighbors join at the edge, preserving relationships that a literal name match would miss.' });
   tl.tween(neighborU, 1, { at: 26.3, dur: 1.3, ease: ease.enter });
@@ -83,15 +83,17 @@ export function Render({ s }: { s: SceneState }) {
       <g opacity={s.get(scene.queryU)}>
         <rect x="66" y="124" width="246" height="410" rx="30" fill="#101a2d" stroke={colors.ACCENT} strokeWidth="3" />
         <text x="189" y="164" textAnchor="middle" fill={colors.ACCENT} fontSize="14" fontFamily={colors.font.mono}>QueryClassification</text>
-        <rect x="92" y="198" width="194" height="72" rx="18" fill="#15273d" stroke={colors.SECONDARY} />
-        <text x="189" y="226" textAnchor="middle" fill={colors.MUTED} fontSize="12">schemas</text>
-        <text x="189" y="252" textAnchor="middle" fill={colors.TEXT} fontSize="18">daily_life</text>
-        <rect x="92" y="292" width="194" height="72" rx="18" fill="#251d36" stroke={colors.WARM} />
-        <text x="189" y="320" textAnchor="middle" fill={colors.MUTED} fontSize="12">entities</text>
-        <text x="189" y="346" textAnchor="middle" fill={colors.TEXT} fontSize="18">café</text>
-        <text x="189" y="414" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>SearchCogGraph</text>
-        <text x="189" y="444" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>SearchData</text>
-        <text x="189" y="474" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>Rank(top_k=5)</text>
+        <rect x="92" y="190" width="194" height="92" rx="18" fill="#15273d" stroke={colors.SECONDARY} />
+        <text x="189" y="212" textAnchor="middle" fill={colors.MUTED} fontSize="12">schemas</text>
+        <text x="189" y="238" textAnchor="middle" fill={colors.TEXT} fontSize="18">daily_life</text>
+        <text x="189" y="264" textAnchor="middle" fill={colors.MUTED} fontSize="12">a category of memory</text>
+        <rect x="92" y="300" width="194" height="92" rx="18" fill="#251d36" stroke={colors.WARM} />
+        <text x="189" y="322" textAnchor="middle" fill={colors.MUTED} fontSize="12">entities</text>
+        <text x="189" y="348" textAnchor="middle" fill={colors.TEXT} fontSize="18">café</text>
+        <text x="189" y="374" textAnchor="middle" fill={colors.MUTED} fontSize="12">a named person or thing</text>
+        <text x="189" y="440" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>SearchCogGraph</text>
+        <text x="189" y="466" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>SearchData</text>
+        <text x="189" y="492" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>Rank(top_k=5)</text>
       </g>
 
       <g>
@@ -124,7 +126,7 @@ export function Render({ s }: { s: SceneState }) {
           const lift = isTop ? top * 18 : 0;
           return <g key={cell.i} opacity={opacity * enter} transform={`translate(${xFor(cell.col)} ${yFor(cell.row) - lift}) scale(${0.75 + enter * 0.25 + (isTop ? top * 0.12 : 0)})`}>
             <rect x="-27" y="-24" width="54" height="48" rx="11" fill={fill} opacity="0.22" stroke={fill} strokeWidth={isTop ? 3.5 : 2} />
-            <text y="5" textAnchor="middle" fill={fill} fontSize="11" fontFamily={colors.font.mono}>m{cell.i + 1}</text>
+            <text y="5" textAnchor="middle" fill={fill} fontSize="12" fontFamily={colors.font.mono}>m{cell.i + 1}</text>
           </g>;
         })}
         <g opacity={schema}>

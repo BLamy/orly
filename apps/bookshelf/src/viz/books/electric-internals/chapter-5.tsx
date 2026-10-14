@@ -36,7 +36,7 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 // ---------------------------------------------------------------------------
 const META_Y = 150;
 const META_X0 = 300;
-const CELL_W = 46;
+const CELL_W = 76;
 const CELL_H = 46;
 const cellX = (i: number): number => META_X0 + i * CELL_W;
 
@@ -62,12 +62,13 @@ const CONTENT_RAILS = [
   { y: 316, id: '/_content/c9d2', file: 'docs/spec.md' },
 ] as const;
 
-const AGENT_A = { x: 130, y: 240 } as const;
-const AGENT_B = { x: 1150, y: 240 } as const;
-const TREE_P = { x: 905, y: 420, w: 250, h: 150 } as const;
+const AGENT_A = { x: 170, y: 200 } as const;
+const AGENT_B = { x: 1080, y: 200 } as const;
+const TREE_P = { x: 860, y: 420, w: 250, h: 150 } as const;
 
-const CAM_FILE: CameraState = { x: 560, y: 260, k: 1.28 };
-const CAM_WATCH: CameraState = { x: 860, y: 300, k: 1.25 };
+// both framings keep agent A, the tape labels and agent B inside the stage
+const CAM_FILE: CameraState = { x: 640, y: 270, k: 1.12 };
+const CAM_WATCH: CameraState = { x: 660, y: 300, k: 1.12 };
 const CAM_TOWER: CameraState = { x: 640, y: 380, k: 1.0 };
 
 // the tower (finale) — bottom-up
@@ -168,8 +169,9 @@ export function buildScene() {
     dur: 3.4,
     text: "Now step back, because you've seen the whole machine.",
   });
-  tl.tween(quietU, 1, { at: 41.4, dur: 1.4, ease: ease.enter });
-  tl.tween(cam, CAM_TOWER, { at: 41.6, dur: 1.6, ease: ease.move });
+  // the whole machine stays on screen through the "step back" line, then fades
+  tl.tween(quietU, 1, { at: 43.4, dur: 1.4, ease: ease.enter });
+  tl.tween(cam, CAM_TOWER, { at: 43.4, dur: 1.6, ease: ease.move });
 
   // — beat 8 · the tower —
   tl.caption({
@@ -255,7 +257,7 @@ export function Render({ s }: { s: SceneState }) {
             <ServiceNode x={AGENT_B.x} y={AGENT_B.y} kind="fn" label="agent B" sublabel="fs.watch()" u={railU} glow={chgU > 0.8 ? Math.max(0, Math.sin(Math.PI * clamp01((chgU - 0.8) * 5))) : 0} />
 
             {/* metadata tape */}
-            <text x={META_X0 - 14} y={META_Y + 5} textAnchor="end" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
+            <text x={META_X0 - 14} y={META_Y + 5} textAnchor="end" fill={colors.MUTED} fontSize={14} fontFamily={MONO}>
               /_metadata
             </text>
             <line x1={META_X0 - 8} y1={META_Y + CELL_H / 2 + 8} x2={META_X0 + (cellX(META_EVENTS.length) - META_X0 + 24) * railU} y2={META_Y + CELL_H / 2 + 8} stroke={colors.GRID} strokeWidth={2} />
@@ -264,11 +266,11 @@ export function Render({ s }: { s: SceneState }) {
               if (u <= 0.01) return null;
               return (
                 <g key={i} opacity={0.4 + 0.6 * u}>
-                  <rect x={cellX(i)} y={META_Y - CELL_H / 2 - (1 - u) * 14} width={CELL_W - 6} height={CELL_H} rx={7} fill={colors.PANEL} stroke={e.color} strokeWidth={1.6} />
-                  <text x={cellX(i) + (CELL_W - 6) / 2} y={META_Y - 2} textAnchor="middle" fill={e.color} fontSize={9.5} fontFamily={MONO}>
+                  <rect x={cellX(i)} y={META_Y - CELL_H / 2 - (1 - u) * 14} width={CELL_W - 8} height={CELL_H} rx={7} fill={colors.PANEL} stroke={e.color} strokeWidth={1.6} />
+                  <text x={cellX(i) + (CELL_W - 8) / 2} y={META_Y - 2} textAnchor="middle" fill={e.color} fontSize={14} fontFamily={MONO}>
                     {e.label}
                   </text>
-                  <text x={cellX(i) + (CELL_W - 6) / 2} y={META_Y + 14} textAnchor="middle" fill={colors.MUTED} fontSize={8.5} fontFamily={MONO}>
+                  <text x={cellX(i) + (CELL_W - 8) / 2} y={META_Y + 14} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                     {e.path.split('/').pop()}
                   </text>
                 </g>
@@ -282,7 +284,7 @@ export function Render({ s }: { s: SceneState }) {
               const n = 6 * u;
               return (
                 <g key={rail.id} opacity={clamp01(u * 3)}>
-                  <text x={META_X0 - 14} y={rail.y + 4} textAnchor="end" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+                  <text x={META_X0 - 14} y={rail.y + 4} textAnchor="end" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                     {rail.id}
                   </text>
                   <line x1={META_X0 - 8} y1={rail.y + 14} x2={META_X0 + 6 * 34 + 16} y2={rail.y + 14} stroke={colors.GRID} strokeWidth={1.5} />
@@ -301,8 +303,8 @@ export function Render({ s }: { s: SceneState }) {
             {/* createFile call chip */}
             {cont1U > 0.05 && cont1U < 1 && (
               <g opacity={Math.sin(Math.PI * cont1U)}>
-                <rect x={150} y={330} width={300} height={30} rx={8} fill={colors.BG} stroke={colors.POSITIVE} />
-                <text x={300} y={350} textAnchor="middle" fill={colors.POSITIVE} fontSize={11.5} fontFamily={MONO}>
+                <rect x={130} y={330} width={340} height={30} rx={8} fill={colors.BG} stroke={colors.POSITIVE} />
+                <text x={300} y={350} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontFamily={MONO}>
                   fs.createFile("/notes.md", "# My Notes")
                 </text>
               </g>
@@ -311,7 +313,7 @@ export function Render({ s }: { s: SceneState }) {
             {/* the tree — a fold of the metadata tape */}
             <g opacity={clamp01(metaN)}>
               <rect x={TREE_P.x - TREE_P.w / 2} y={TREE_P.y - TREE_P.h / 2} width={TREE_P.w} height={TREE_P.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={TREE_P.x - TREE_P.w / 2 + 14} y={TREE_P.y - TREE_P.h / 2 + 22} fill={colors.TEXT} fontSize={12.5} fontWeight={700}>
+              <text x={TREE_P.x - TREE_P.w / 2 + 14} y={TREE_P.y - TREE_P.h / 2 + 22} fill={colors.TEXT} fontSize={14} fontWeight={700}>
                 fs.list("/")
               </text>
               {TREE.map((t, i) => {
@@ -319,7 +321,7 @@ export function Render({ s }: { s: SceneState }) {
                 if (!seen) return null;
                 const changed = (t.name === 'notes.md' && (foldCount === 4 || foldCount === 5) && metaN - foldCount < 0.6) ? 1 : 0;
                 return (
-                  <text key={i} x={TREE_P.x - TREE_P.w / 2 + 20 + t.depth * 22} y={TREE_P.y - TREE_P.h / 2 + 50 + i * 24} fill={changed ? colors.WARM : colors.TEXT} fontSize={12.5} fontFamily={MONO}>
+                  <text key={i} x={TREE_P.x - TREE_P.w / 2 + 20 + t.depth * 22} y={TREE_P.y - TREE_P.h / 2 + 50 + i * 24} fill={changed ? colors.WARM : colors.TEXT} fontSize={14} fontFamily={MONO}>
                     {t.depth > 0 ? '└ ' : ''}
                     {t.name}
                   </text>
@@ -332,8 +334,8 @@ export function Render({ s }: { s: SceneState }) {
             {/* stat chip */}
             {statU > 0.01 && (
               <g opacity={statU}>
-                <rect x={TREE_P.x - 118} y={TREE_P.y + TREE_P.h / 2 + 10} width={236} height={30} rx={8} fill={colors.BG} stroke={colors.TEAL} />
-                <text x={TREE_P.x} y={TREE_P.y + TREE_P.h / 2 + 30} textAnchor="middle" fill={colors.TEAL} fontSize={11.5} fontFamily={MONO}>
+                <rect x={TREE_P.x - 150} y={TREE_P.y + TREE_P.h / 2 + 10} width={300} height={30} rx={8} fill={colors.BG} stroke={colors.TEAL} />
+                <text x={TREE_P.x} y={TREE_P.y + TREE_P.h / 2 + 30} textAnchor="middle" fill={colors.TEAL} fontSize={13} fontFamily={MONO}>
                   fs.stat("/notes.md") → from the fold
                 </text>
               </g>
@@ -343,14 +345,14 @@ export function Render({ s }: { s: SceneState }) {
             {watchU > 0.01 && (
               <g opacity={watchU}>
                 <path d={`M${AGENT_B.x - 6} ${AGENT_B.y - 44} C ${AGENT_B.x - 60} ${META_Y + 30}, ${cellX(META_EVENTS.length) + 60} ${META_Y + 20}, ${cellX(META_EVENTS.length) + 6} ${META_Y}`} fill="none" stroke={colors.WARM} strokeWidth={1.6} strokeDasharray="3 5" />
-                <text x={AGENT_B.x - 36} y={META_Y + 44} fill={colors.WARM} fontSize={10.5} fontFamily={MONO}>
+                <text x={1000} y={300} textAnchor="end" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
                   watch({'{ recursive: true }'})
                 </text>
                 {/* received events queue */}
                 {META_EVENTS.slice(0, Math.min(foldCount, 4)).map((e, i) => (
                   <g key={i} opacity={win(watchU, 4, i, 1.5)}>
-                    <rect x={AGENT_B.x - 52} y={AGENT_B.y + 52 + i * 26} width={104} height={21} rx={6} fill={colors.BG} stroke={e.color} strokeOpacity={0.8} />
-                    <text x={AGENT_B.x} y={AGENT_B.y + 67 + i * 26} textAnchor="middle" fill={e.color} fontSize={10} fontFamily={MONO}>
+                    <rect x={AGENT_B.x - 68} y={AGENT_B.y + 50 + i * 30} width={136} height={24} rx={6} fill={colors.BG} stroke={e.color} strokeOpacity={0.8} />
+                    <text x={AGENT_B.x} y={AGENT_B.y + 67 + i * 30} textAnchor="middle" fill={e.color} fontSize={13} fontFamily={MONO}>
                       {e.label} {e.path.split('/').pop()}
                     </text>
                   </g>
@@ -380,7 +382,7 @@ export function Render({ s }: { s: SceneState }) {
                 {confBack > 0.1 && confU < 0.98 && (
                   <g opacity={Math.sin(Math.PI * confBack)}>
                     <rect x={cellX(4) + 40} y={META_Y - 96} width={216} height={28} rx={8} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.5} />
-                    <text x={cellX(4) + 148} y={META_Y - 77} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11} fontFamily={MONO}>
+                    <text x={cellX(4) + 148} y={META_Y - 77} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>
                       PreconditionFailedError
                     </text>
                   </g>
@@ -406,7 +408,7 @@ export function Render({ s }: { s: SceneState }) {
                   <text x={640 - SLAB_W / 2 + 22} y={y + 6} fill={slab.color} fontSize={16} fontWeight={700}>
                     {slab.label}
                   </text>
-                  <text x={640 + SLAB_W / 2 - 22} y={y + 6} textAnchor="end" fill={colors.MUTED} fontSize={12.5}>
+                  <text x={640 + SLAB_W / 2 - 22} y={y + 6} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                     {slab.sub}
                   </text>
                 </g>

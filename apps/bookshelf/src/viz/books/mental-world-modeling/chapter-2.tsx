@@ -108,7 +108,7 @@ function Transfer({ from, to, u, color, label, bounce = false }: { from: { x: nu
   return <g>
     <path d={`M${from.x} ${from.y} Q${(from.x + to.x) / 2} ${Math.min(from.y, to.y) - 72} ${to.x} ${to.y}`} fill="none" stroke={color} strokeWidth={2} strokeDasharray="6 7" opacity={0.35} />
     <circle cx={x} cy={y} r={10} fill={color} />
-    <text x={x} y={y - 19} textAnchor="middle" fill={color} fontSize={10} fontFamily={MONO}>{label}</text>
+    <text x={x} y={y - 19} textAnchor="middle" fill={color} fontSize={12} fontFamily={MONO}>{label}</text>
     {bounce && raw > 0.62 && <path d={`M${to.x - 9} ${to.y - 9} L${to.x + 9} ${to.y + 9} M${to.x + 9} ${to.y - 9} L${to.x - 9} ${to.y + 9}`} stroke={colors.NEGATIVE} strokeWidth={4} strokeLinecap="round" />}
   </g>;
 }
@@ -131,14 +131,14 @@ export function Render({ s }: { s: SceneState }) {
       <g opacity={dim}>
         <rect x={92} y={130} width={430} height={484} rx={24} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={2} opacity={stateU} />
         <text x={307} y={168} textAnchor="middle" fill={colors.TEXT} fontSize={18} fontWeight={750} opacity={stateU}>omniscient WorldState</text>
-        <text x={307} y={190} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO} opacity={stateU}>physical_state + mental_state</text>
+        <text x={307} y={190} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={stateU}>physical_state + mental_state</text>
+        <text x={307} y={146} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO} opacity={lensU}>target-specific lens</text>
         {FACTS.map((fact, i) => <FactCard key={fact.label} fact={fact} u={clamp01(stateU * FACTS.length - i)} dim={lensU > 0 ? (Math.hypot(fact.x - lensX, fact.y - lensY) > 120 ? 1 : 0) : 0} />)}
 
         <g opacity={lensU}>
           <circle cx={lensX} cy={lensY} r={102} fill={colors.ACCENT} opacity={0.07} />
           <circle cx={lensX} cy={lensY} r={102} fill="none" stroke={colors.POSITIVE} strokeWidth={4} strokeDasharray="11 8" />
           <path d={`M${lensX + 72} ${lensY + 72} L${lensX + 128} ${lensY + 128}`} stroke={colors.POSITIVE} strokeWidth={12} strokeLinecap="round" />
-          <text x={lensX} y={lensY - 118} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>target-specific lens</text>
         </g>
 
         <path d="M540 372 H720" stroke={colors.GRID} strokeWidth={4} strokeLinecap="round" opacity={observationU} />
@@ -160,12 +160,12 @@ export function Render({ s }: { s: SceneState }) {
           <text x={808} y={465} fill={colors.TEXT} fontSize={14}>Bob’s goal is to find the gift</text>
         </g>
         <g opacity={s.get(scene.keysU)} transform="translate(790 514)">
-          <text fill={colors.MUTED} fontSize={11} fontFamily={MONO}>normalize_observation(observation.as_dict())</text>
+          <text fill={colors.MUTED} fontSize={12} fontFamily={MONO}>normalize_observation(observation.as_dict())</text>
         </g>
 
-        <Transfer from={{ x: 390, y: 322 }} to={{ x: 820, y: 282 }} u={s.get(scene.physicalP)} color={colors.ACCENT} label="perceived" />
+        <Transfer from={{ x: 390, y: 322 }} to={{ x: 728, y: 282 }} u={s.get(scene.physicalP)} color={colors.ACCENT} label="perceived" />
         <Transfer from={{ x: 210, y: 322 }} to={{ x: 720, y: 326 }} u={s.get(scene.hiddenBounce)} color={colors.NEGATIVE} label="hidden" bounce />
-        <Transfer from={{ x: 210, y: 454 }} to={{ x: 820, y: 434 }} u={s.get(scene.mentalP)} color={colors.WARM} label="own belief" />
+        <Transfer from={{ x: 210, y: 454 }} to={{ x: 728, y: 434 }} u={s.get(scene.mentalP)} color={colors.WARM} label="own belief" />
         <Transfer from={{ x: 390, y: 454 }} to={{ x: 720, y: 468 }} u={s.get(scene.mindReadBounce)} color={colors.NEGATIVE} label="unsupported" bounce />
       </g>
     </Camera>

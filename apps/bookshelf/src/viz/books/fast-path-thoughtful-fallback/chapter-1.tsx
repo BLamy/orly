@@ -25,7 +25,7 @@ export function Render({s}:{s:SceneState}){
   const points=scores.map((v,i)=>[x(i),y(v)] as [number,number]);
   return <><Header title='Learn the familiar, escalate the unfamiliar'/><Camera {...s.get(scene.cam)}>
     <Panel x={65} y={114} w={633} h={104} title='Small local policy · current page and eligible menu' color={C.model}>
-      <Label x={84} y={181} size={17}>{subgoal>.5?'Subgoal: focus the display-name field':'Local features + recent history + task when known'}</Label>
+      <Label x={84} y={181} size={17}>{subgoal>.5?'Subgoal: focus the display-name field':'Example task: set the display name · local features + history'}</Label>
     </Panel>
     <path d={path(points)!} fill='none' stroke={C.model} strokeWidth={4}/>
     {points.map(([px,py],i)=><g key={i}><line x1={px} x2={px} y1={py} y2={460} stroke={C.model} opacity={.35}/><circle cx={px} cy={py} r={12} fill={i===1?C.good:C.model}/><Label x={px} y={492} anchor='middle' size={15}>{targets[i]}</Label></g>)}
@@ -37,7 +37,7 @@ export function Render({s}:{s:SceneState}){
       <Label x={791} y={267} size={16} color={C.pending}>{hybrid>.5?'Hybrid enabled: ask for help':'A separate, explicit deployment'}</Label>
     </Panel>
     <Arrow x1={770} y1={189} x2={698} y2={189} color={C.pending} opacity={span(p,2,3)}/>
-    <Arrow x1={697} y1={330} x2={935} y2={300} color={C.pending} opacity={hybrid}/>
+    <Arrow x1={628} y1={y(.47)} x2={760} y2={342} color={C.pending} opacity={hybrid}/>
     <Chip x={766} y={328} w={444} text='abstain → configured fallback → observe again' color={C.pending} opacity={hybrid}/>
     <g opacity={cost}>{['input','network','compute','observe'].map((v,i)=><Chip key={v} x={775+i*109} y={387} w={100} text={v} color={C.pending}/>)}<Label x={990} y={449} anchor='middle' size={15}>Every fallback cost belongs in task latency</Label></g>
     <Panel x={770} y={328} w={440} h={139} title='Local-only mode' color={C.good} opacity={local}>

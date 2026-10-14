@@ -35,7 +35,7 @@ const CHANNELS = [
   { label: 'verify against source', y: 2 },
 ] as const;
 
-const CAM_PAPER: CameraState = { x: 300, y: 330, k: 1.3 };
+const CAM_PAPER: CameraState = { x: 240, y: 330, k: 1.2 };
 const CAM_MACHINE: CameraState = { x: 850, y: 350, k: 1.18 };
 
 export interface Scene {
@@ -195,7 +195,7 @@ function Channel({
         {label}
       </text>
       {dead && (
-        <text x={1140} y={cy - 12} textAnchor="end" fill={colors.NEGATIVE} fontSize={11.5} fontFamily={MONO}>
+        <text x={1140} y={cy - 12} textAnchor="end" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
           locally irrational
         </text>
       )}
@@ -231,22 +231,22 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---- the real paper (rendered from the PDF, not a mockup) ---- */}
           <Figure
             src="/generated/coherence-theater/figures/title-page.png"
-            x={80}
+            x={104}
             y={100}
-            w={320}
-            h={478}
+            w={272}
+            h={408}
             reveal={paperU}
-            opacity={paperU * (1 - 0.55 * clamp01(machineU))}
+            opacity={paperU * (1 - clamp01(machineU) * (1 - 0.45 * namesU))}
             caption="the paper · title page, from the PDF"
           />
 
           {/* ---- the machine: tidy stream above, correction channels below ---- */}
           <g opacity={machineU}>
-            <rect x={470} y={110} width={710} height={470} rx={24} fill={colors.PANEL} stroke={colors.GRID} />
+            <rect x={470} y={110} width={710} height={430} rx={24} fill={colors.PANEL} stroke={colors.GRID} />
             <text x={506} y={146} fill={colors.TEXT} fontSize={16} fontWeight={700}>
               the visible layer
             </text>
-            <text x={506} y={168} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+            <text x={506} y={168} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               reports · summaries · approvals — always on time
             </text>
 
@@ -286,7 +286,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={506} y={330} fill={colors.TEXT} fontSize={16} fontWeight={700}>
               the correction layer
             </text>
-            <text x={506} y={352} fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+            <text x={506} y={352} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
               what has to stay cheap for the surface to stay honest
             </text>
             {CHANNELS.map((c, k) => (
@@ -297,18 +297,18 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---- the two names ---- */}
           {namesU > 0 && (
             <g opacity={namesU}>
-              <rect x={470} y={596} width={344} height={54} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={2} />
-              <text x={642} y={618} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12.5} fontFamily={MONO} fontWeight={700}>
+              <rect x={470} y={556} width={344} height={46} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={2} />
+              <text x={642} y={575} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO} fontWeight={700}>
                 the regime — adversarial epistemic incoherence
               </text>
-              <text x={642} y={638} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+              <text x={642} y={593} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                 correction degrades before capability does
               </text>
-              <rect x={836} y={596} width={344} height={54} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2} />
-              <text x={1008} y={618} textAnchor="middle" fill={colors.ACCENT} fontSize={12.5} fontFamily={MONO} fontWeight={700}>
+              <rect x={836} y={556} width={344} height={46} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2} />
+              <text x={1008} y={575} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily={MONO} fontWeight={700}>
                 the show — coherence theater
               </text>
-              <text x={1008} y={638} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+              <text x={1008} y={593} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                 the tidy layer the audience is given
               </text>
             </g>
@@ -317,11 +317,11 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---- Section 4's two orders ---- */}
           {ordersU > 0 && (
             <g opacity={ordersU}>
-              <rect x={90} y={596} width={344} height={54} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2} />
-              <text x={262} y={618} textAnchor="middle" fill={colors.POSITIVE} fontSize={12.5} fontFamily={MONO} fontWeight={700}>
+              <rect x={90} y={556} width={344} height={46} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2} />
+              <text x={262} y={575} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={MONO} fontWeight={700}>
                 order that can still be challenged
               </text>
-              <text x={262} y={638} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+              <text x={262} y={593} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                 the only order that stays answerable to reality
               </text>
             </g>

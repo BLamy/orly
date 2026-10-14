@@ -184,8 +184,8 @@ const ROW_H = 330;
 const ROW_DH = 400;
 const ROW_HE = 470;
 
-const COORD = { x: 100, y: 300 } as const;
-const BASIS = { ox: 150, oy: 520, scale: 72 } as const;
+const COORD = { x: 100, y: 322 } as const;
+const BASIS = { ox: 240, oy: 560, scale: 72 } as const;
 
 const PLOT = { x0: 470, x1: 1110, y0: 130, y1: 490 } as const;
 const px = (a: number): number => lerp(PLOT.x0, PLOT.x1, a / 6);
@@ -398,6 +398,8 @@ export function Render({ s }: { s: SceneState }) {
   const ity = lerp(0, INSET.ty, inset);
   const machineO = lerp(1, 0.12, dim) * (1 - 0.9 * clamp01(b - 6));
   const plotO = plot * lerp(1, 0.12, dim);
+  // machine labels fade out as the toy map becomes a corner thumbnail (shapes stay)
+  const tagO = clamp01((1 - inset) * 3);
 
   const marginColor = m >= 0 ? INK.hx : INK.cup;
   const marginWord = m > 0.05 ? 'right' : m < -0.05 ? 'left' : 'tie';
@@ -408,26 +410,26 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- the toy machine: ruler + outputs (shrinks into the corner at beat 6) ---- */}
         <g transform={`translate(${itx}, ${ity}) scale(${isc})`} opacity={machineO}>
           <g opacity={ruler}>
-            <Txt x={RUL.x0} y={RUL.y - 62} size={13} fill={INK.hx} weight={600}>horizontal readout coordinate</Txt>
+            <Txt x={RUL.x0} y={RUL.y - 62} size={14} fill={INK.hx} weight={600} opacity={tagO}>horizontal readout coordinate</Txt>
             <line x1={RUL.x0} y1={RUL.y} x2={lerp(RUL.x0, RUL.x1, ruler)} y2={RUL.y} stroke={colors.ink.axis} strokeWidth={2} />
             {[-1, 0, 1, 2, 3].map((c) => (
               <g key={c} opacity={clamp01(ruler * 5 - (c + 1))}>
                 <line x1={rx(c)} y1={RUL.y - 6} x2={rx(c)} y2={RUL.y + 6} stroke={colors.ink.axis} />
-                <Txt x={rx(c)} y={RUL.y + 24} size={11} anchor="middle" fill={INK.muted}>{fmtPlain(c, 0)}</Txt>
+                <Txt x={rx(c)} y={RUL.y + 24} size={12} anchor="middle" fill={INK.muted} opacity={tagO}>{fmtPlain(c, 0)}</Txt>
               </g>
             ))}
-            <Txt x={RUL.x0} y={RUL.y + 42} size={10.5} fill={INK.muted}>left (−)</Txt>
-            <Txt x={RUL.x1} y={RUL.y + 42} size={10.5} anchor="end" fill={INK.muted}>right (+)</Txt>
+            <Txt x={RUL.x0} y={RUL.y + 42} size={12} fill={INK.muted} opacity={tagO}>left (−)</Txt>
+            <Txt x={RUL.x1} y={RUL.y + 42} size={12} anchor="end" fill={INK.muted} opacity={tagO}>right (+)</Txt>
             {/* objects: apple rides above the line, cup below, so a crossing stays legible */}
             <line x1={rx(aX)} y1={RUL.y - 30} x2={rx(aX)} y2={RUL.y} stroke={INK.apple} strokeWidth={1.2} opacity={0.6} />
             <line x1={rx(cX)} y1={RUL.y + 30} x2={rx(cX)} y2={RUL.y} stroke={INK.cup} strokeWidth={1.2} opacity={0.6} />
             <Apple x={rx(aX)} y={RUL.y - 40} r={12} opacity={clamp01(ruler * 2 - 1)} />
             <Cup x={rx(cX)} y={RUL.y + 44} r={11} opacity={clamp01(ruler * 2 - 1)} />
-            <Txt x={rx(aX) + 18} y={RUL.y - 36} size={13} mono fill={INK.apple}>{fmt(aX)}</Txt>
-            <Txt x={rx(cX) + 18} y={RUL.y + 48} size={13} mono fill={INK.cup}>{fmt(cX)}</Txt>
+            <Txt x={rx(aX) + 18} y={RUL.y - 36} size={14} mono fill={INK.apple} opacity={tagO}>{fmt(aX)}</Txt>
+            <Txt x={rx(cX) + 18} y={RUL.y + 48} size={14} mono fill={INK.cup} opacity={tagO}>{fmt(cX)}</Txt>
             {/* margin bracket (always between the two current positions) */}
             <Brace x0={Math.min(rx(aX), rx(cX))} x1={Math.max(rx(aX), rx(cX))} y={RUL.y + 68} u={ruler} color={marginColor} opacity={0.9} />
-            <Txt x={(rx(aX) + rx(cX)) / 2} y={RUL.y + 102} size={14} anchor="middle" mono fill={marginColor}>
+            <Txt x={(rx(aX) + rx(cX)) / 2} y={RUL.y + 102} size={14} anchor="middle" mono fill={marginColor} opacity={tagO}>
               {`m = ${fmt(aX)} − (${fmt(cX)}) = ${fmt(m)}`}
             </Txt>
           </g>
@@ -435,26 +437,26 @@ export function Render({ s }: { s: SceneState }) {
           {/* outputs: coordinate readout vs generated answer */}
           <g opacity={out}>
             <rect x={OUT.x} y={118} width={OUT.w} height={54} rx={8} fill={INK.panel} stroke={marginColor} strokeOpacity={0.8} />
-            <Txt x={OUT.x + 12} y={138} size={11} fill={INK.muted}>coordinate readout</Txt>
-            <Txt x={OUT.x + 12} y={161} size={16} mono fill={marginColor}>{`m = ${fmt(m)} → ${marginWord}`}</Txt>
+            <Txt x={OUT.x + 12} y={138} size={12} fill={INK.muted} opacity={tagO}>coordinate readout</Txt>
+            <Txt x={OUT.x + 12} y={161} size={16} mono fill={marginColor} opacity={tagO}>{`m = ${fmt(m)} → ${marginWord}`}</Txt>
             <rect x={OUT.x} y={186} width={OUT.w} height={54} rx={8} fill={INK.panel} stroke={INK.muted} strokeDasharray="5 4" />
-            <Txt x={OUT.x + 12} y={206} size={11} fill={INK.muted}>generated answer</Txt>
-            <Txt x={OUT.x + 12} y={229} size={16} fill={INK.text}>?  measured separately</Txt>
-            <Txt x={OUT.x} y={262} size={10.5} fill={INK.muted} opacity={swapU}>coordinate flip ≠ guaranteed answer flip</Txt>
+            <Txt x={OUT.x + 12} y={206} size={12} fill={INK.muted} opacity={tagO}>generated answer</Txt>
+            <Txt x={OUT.x + 12} y={229} size={16} fill={INK.text} opacity={tagO}>?  measured separately</Txt>
+            <Txt x={OUT.x} y={262} size={12} fill={INK.muted} opacity={swapU * tagO}>coordinate flip ≠ guaranteed answer flip</Txt>
           </g>
 
           {/* common-shift readout */}
           <g opacity={shiftU}>
-            <Txt x={RUL.x0} y={RUL.y + 136} size={12} fill={INK.muted}>{`common shift  β = ${fmtPlain(beta, 2)}  (both objects)`}</Txt>
-            <MathLabel tex={"m' = (c_q + \\beta) - (c_r + \\beta) = m"} x={RUL.x0 + 420} y={RUL.y + 132} fontSize={16} boxWidth={360} color={INK.hx} />
-            <Chip x={RUL.x1} y={RUL.y + 160} text="coordinate invariant · relative_common_shift" color={INK.muted} anchor="end" opacity={clamp01(beta * 3)} />
+            <Txt x={RUL.x0} y={RUL.y + 136} size={14} fill={INK.muted} opacity={tagO}>{`common shift  β = ${fmtPlain(beta, 2)}  (both objects)`}</Txt>
+            <MathLabel tex={"m' = (c_q + \\beta) - (c_r + \\beta) = m"} x={RUL.x0 + 420} y={RUL.y + 132} fontSize={16} boxWidth={360} color={INK.hx} opacity={tagO} />
+            <Chip x={RUL.x1} y={RUL.y + 160} text="same margin · relative_common_shift" color={INK.muted} anchor="end" opacity={clamp01(beta * 3) * tagO} />
           </g>
           {/* swap readout */}
           <g opacity={swapU}>
-            <Txt x={RUL.x0} y={RUL.y + 136} size={12} fill={INK.muted}>{`swap strength  α = ${fmtPlain(alpha, 2)}`}</Txt>
-            <MathLabel tex={"c_q' = c_q + \\alpha\\,(c_r - c_q),\\quad c_r' = c_r + \\alpha\\,(c_q - c_r)"} x={RUL.x0 + 420} y={RUL.y + 132} fontSize={15} boxWidth={520} color={INK.hx} />
-            <Chip x={RUL.x1} y={RUL.y + 160} text="relative_swap · α = 1 exchanges the coordinates" color={INK.muted} anchor="end" opacity={clamp01(alpha * 3)} />
-            <Txt x={rx(0.5 + beta)} y={RUL.y + 86} size={10.5} anchor="middle" fill={INK.muted} opacity={clamp01(1 - Math.abs(alpha - 0.5) * 6)}>α = 0.5 · both at +0.5</Txt>
+            <Txt x={RUL.x0} y={RUL.y + 136} size={14} fill={INK.muted} opacity={tagO}>{`swap strength  α = ${fmtPlain(alpha, 2)}`}</Txt>
+            <MathLabel tex={"c_q' = c_q + \\alpha\\,(c_r - c_q),\\quad c_r' = c_r + \\alpha\\,(c_q - c_r)"} x={RUL.x0 + 420} y={RUL.y + 132} fontSize={15} boxWidth={520} color={INK.hx} opacity={tagO} />
+            <Chip x={RUL.x1} y={RUL.y + 160} text="relative_swap · α = 1 exchanges the coordinates" color={INK.muted} anchor="end" opacity={clamp01(alpha * 3) * tagO} />
+            <Txt x={rx(0.5 + beta)} y={RUL.y + 86} size={12} anchor="middle" fill={INK.muted} opacity={clamp01(1 - Math.abs(alpha - 0.5) * 6) * tagO}>α = 0.5 · both at +0.5</Txt>
           </g>
         </g>
 
@@ -486,10 +488,10 @@ export function Render({ s }: { s: SceneState }) {
           <Txt x={RIB.x0} y={ROW_H - 38} size={11} fill={INK.muted}>Illustrative activations · 4 displayed dimensions</Txt>
           <CellRow y={ROW_H} vals={H_APPLE} color={INK.apple} label={'h'} fill={4} opacity={1} />
           <CellRow y={ROW_DH} vals={DELTA_H} color={INK.hx} label={'\\Delta h'} fill={delta} opacity={1} />
-          <Txt x={cellX(1) + RIB.w / 2} y={ROW_DH + 36} size={10.5} anchor="middle" fill={INK.vy} opacity={clamp01(delta - 1.5)}>h₂ correction</Txt>
-          <Txt x={cellX(0) + RIB.w / 2} y={ROW_DH + 36} size={10.5} anchor="middle" fill={INK.hx} opacity={clamp01(delta - 0.5)}>x request</Txt>
+          <Txt x={cellX(1)} y={ROW_DH + 36} size={12} anchor="start" fill={INK.vy} opacity={clamp01(delta - 1.5)}>h₂ correction</Txt>
+          <Txt x={cellX(0) + RIB.w / 2} y={ROW_DH + 36} size={12} anchor="middle" fill={INK.hx} opacity={clamp01(delta - 0.5)}>x request</Txt>
           <CellRow y={ROW_HE} vals={H_EDIT} color={INK.apple} label={"h'"} fill={edit} opacity={1} />
-          <Txt x={cellX(3) + RIB.w / 2} y={ROW_HE + 36} size={10.5} anchor="middle" fill={INK.muted} opacity={clamp01(edit - 3.5)}>unchanged · outside span(V)</Txt>
+          <Txt x={cellX(3) + RIB.w / 2} y={ROW_HE + 36} size={12} anchor="middle" fill={INK.muted} opacity={clamp01(edit - 3.5)}>unchanged · outside span(V)</Txt>
           <Vec x1={cellX(1) + RIB.w / 2} y1={ROW_DH + 42} x2={cellX(1) + RIB.w / 2} y2={ROW_HE - RIB.h / 2 - 4} grow={clamp01(edit)} color={INK.muted} width={1.4} head={7} opacity={0.6} />
           <MathLabel tex={"h' = h + \\Delta h"} x={RIB.x0} y={ROW_HE + 60} fontSize={14} anchor="start" boxWidth={180} color={INK.muted} opacity={clamp01(edit - 3.5)} />
         </g>
@@ -500,14 +502,14 @@ export function Render({ s }: { s: SceneState }) {
           <Vec x1={BASIS.ox} y1={BASIS.oy} x2={BASIS.ox + VX[0] * BASIS.scale * 1.4} y2={BASIS.oy - VX[1] * BASIS.scale * 1.4} grow={basis} color={INK.hx} width={2.6} label="vₓ" labelSize={14} />
           <Vec x1={BASIS.ox} y1={BASIS.oy} x2={BASIS.ox + VY[0] * BASIS.scale * 1.4} y2={BASIS.oy - VY[1] * BASIS.scale * 1.4} grow={basis} color={INK.vy} width={2.6} label="v_y" labelSize={14} />
           <path d={`M${BASIS.ox + 28},${BASIS.oy} A28,28 0 0 0 ${BASIS.ox + 28 * VY[0]},${BASIS.oy - 28 * VY[1]}`} stroke={INK.muted} fill="none" strokeWidth={1.2} />
-          <Txt x={BASIS.ox + 40} y={BASIS.oy - 10} size={10.5} fill={INK.muted}>≠ 90°</Txt>
-          <Txt x={BASIS.ox - 70} y={BASIS.oy + 30} size={11} fill={INK.muted}>not perpendicular · naive VΔc would miss</Txt>
+          <Txt x={BASIS.ox + 40} y={BASIS.oy - 10} size={12} fill={INK.muted}>≠ 90°</Txt>
+          <Txt x={BASIS.ox - 70} y={BASIS.oy + 30} size={12} fill={INK.muted}>not perpendicular · naive VΔc would miss</Txt>
         </g>
 
         {/* ---- formulas (right) ---- */}
         <g opacity={formula} style={{ display: formula <= 0.003 ? 'none' : undefined }}>
           <MathLabel tex={'B = V\\,(V^{\\top}V)^{-1}'} x={960} y={300} fontSize={19} boxWidth={360} />
-          <Txt x={960} y={326} size={10.5} anchor="middle" fill={INK.muted}>right inverse · rank three required</Txt>
+          <Txt x={960} y={326} size={12} anchor="middle" fill={INK.muted}>right inverse · rank three required</Txt>
           <MathLabel tex={'\\Delta h = B\\,\\Delta c'} x={960} y={360} fontSize={19} boxWidth={360} color={INK.hx} />
           <Txt x={960} y={392} size={12} anchor="middle" mono fill={INK.muted} opacity={clamp01(delta)}>
             {`(VᵀV)⁻¹Δc = (${fmtPlain(COEF[0], 3)}, ${fmtPlain(COEF[1], 3)}, ${fmtPlain(COEF[2], 0)})`}
@@ -530,7 +532,7 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={clamp01(check * 2 - 1)}>
             <rect x={870} y={378} width={180} height={30} rx={8} fill={INK.dz} fillOpacity={0.18} stroke={INK.dz} />
             <Txt x={960} y={398} size={13} anchor="middle" weight={600} fill={INK.dz}>{TARGET_ERR < 1e-9 ? 'target reached ✓' : `target reached · err ${TARGET_ERR.toExponential(1)}`}</Txt>
-            <Txt x={960} y={430} size={10.5} anchor="middle" fill={INK.muted}>toy arithmetic check · not a semantic guarantee</Txt>
+            <Txt x={960} y={430} size={12} anchor="middle" fill={INK.muted}>toy arithmetic check · not a semantic guarantee</Txt>
           </g>
           <Chip x={960} y={458} text="CoordinateEditHook._hook" color={INK.muted} />
         </g>
@@ -538,23 +540,23 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- Table 7 retention plot ---- */}
         <g opacity={plotO}>
           <Txt x={PLOT.x0} y={PLOT.y0 - 22} size={14} weight={600}>answer retention vs edit strength</Txt>
-          <Txt x={PLOT.x1} y={PLOT.y0 - 22} size={11} anchor="end" fill={INK.muted}>Table 7 · Molmo2-ER L17 · 800 EmbSpatial examples</Txt>
+          <Txt x={PLOT.x1} y={PLOT.y0 - 22} size={12} anchor="end" fill={INK.muted}>Table 7 · Molmo2-ER L17 · 800 EmbSpatial examples</Txt>
           {[0, 25, 50, 75, 100].map((p) => (
             <g key={p}>
               <line x1={PLOT.x0} y1={py(p)} x2={lerp(PLOT.x0, PLOT.x1, plot)} y2={py(p)} stroke={colors.GRID} />
-              <Txt x={PLOT.x0 - 10} y={py(p) + 4} size={11} anchor="end" fill={INK.muted}>{`${p}%`}</Txt>
+              <Txt x={PLOT.x0 - 10} y={py(p) + 4} size={12} anchor="end" fill={INK.muted}>{`${p}%`}</Txt>
             </g>
           ))}
           {ALPHAS.map((a) => (
             <g key={a} opacity={clamp01(plot * 7 - a)}>
               <line x1={px(a)} y1={PLOT.y1} x2={px(a)} y2={PLOT.y1 + 6} stroke={colors.ink.axis} />
-              <Txt x={px(a)} y={PLOT.y1 + 22} size={11} anchor="middle" fill={INK.muted}>{a}</Txt>
+              <Txt x={px(a)} y={PLOT.y1 + 22} size={12} anchor="middle" fill={INK.muted}>{a}</Txt>
             </g>
           ))}
           <line x1={PLOT.x0} y1={PLOT.y1} x2={lerp(PLOT.x0, PLOT.x1, plot)} y2={PLOT.y1} stroke={colors.ink.axis} strokeWidth={1.5} />
           <line x1={PLOT.x0} y1={PLOT.y1} x2={PLOT.x0} y2={lerp(PLOT.y1, PLOT.y0, plot)} stroke={colors.ink.axis} strokeWidth={1.5} />
           <Txt x={(PLOT.x0 + PLOT.x1) / 2} y={PLOT.y1 + 42} size={12} anchor="middle" fill={INK.muted}>swap strength α (random edits matched in size)</Txt>
-          <Txt x={PLOT.x0 - 10} y={PLOT.y0 - 6} size={10.5} anchor="end" fill={INK.muted}>same answer as unedited</Txt>
+          <Txt x={PLOT.x0 + 10} y={PLOT.y0 - 6} size={12} anchor="start" fill={INK.muted}>same answer as unedited</Txt>
           {/* curves */}
           <path d={tracePath(RANDOM, trace)} stroke={INK.random} strokeWidth={3} fill="none" strokeLinejoin="round" strokeLinecap="round" />
           <path d={tracePath(SWAP, trace)} stroke={INK.hx} strokeWidth={3} fill="none" strokeLinejoin="round" strokeLinecap="round" />
@@ -586,7 +588,23 @@ export function Render({ s }: { s: SceneState }) {
           <circle cx={px(1)} cy={py(SWAP[1])} r={7} fill="none" stroke={INK.hx} strokeWidth={1.6} />
           <line x1={px(1)} y1={py(SWAP[1]) + 8} x2={px(1)} y2={py(SWAP[1]) + 48} stroke={INK.hx} strokeWidth={1} opacity={0.6} />
           <Txt x={px(1)} y={py(SWAP[1]) + 66} size={20} anchor="middle" mono fill={INK.hx}>{`${SWAP[1].toFixed(2)}%`}</Txt>
-          <Txt x={px(1)} y={py(SWAP[1]) + 84} size={12} anchor="middle" fill={INK.muted}>still retained at the exact swap (α = 1)</Txt>
+          <Txt x={px(1) + 10} y={py(SWAP[1]) + 84} size={12} anchor="middle" fill={INK.muted}>still retained at the exact swap (α = 1)</Txt>
+        </g>
+
+        {/* ---- retention bars at α = 6 (the 44% figure, on screen) ---- */}
+        <g opacity={pin * plotO * (1 - close)}>
+          <Txt x={200} y={300} size={14} weight={600}>retained at α = 6</Txt>
+          {[
+            { label: 'swap', pct: SWAP[6], color: INK.hx, y: 336 },
+            { label: 'random · matched size', pct: RANDOM[6], color: INK.random, y: 386 },
+          ].map((bar) => (
+            <g key={bar.label}>
+              <Txt x={200} y={bar.y} size={12} fill={bar.color}>{bar.label}</Txt>
+              <Txt x={410} y={bar.y} size={14} anchor="end" mono weight={600} fill={bar.color}>{`${bar.pct.toFixed(2)}%`}</Txt>
+              <rect x={200} y={bar.y + 8} width={210} height={18} rx={4} fill={colors.GRID} opacity={0.6} />
+              <rect x={200} y={bar.y + 8} width={210 * (bar.pct / 100) * pin} height={18} rx={4} fill={bar.color} />
+            </g>
+          ))}
         </g>
 
         {/* ---- quiet close ---- */}
@@ -603,7 +621,7 @@ export function Render({ s }: { s: SceneState }) {
         <Txt x={164} y={54} size={16} weight={600}>Move the map, test the answer</Txt>
       </g>
       {NOTES.map((n, i) => (
-        <Txt key={i} x={1210} y={578} size={11} anchor="end" fill={INK.muted} opacity={0.85 * clamp01(1 - Math.abs(b - i) * 1.6)}>
+        <Txt key={i} x={1210} y={578} size={12} anchor="end" fill={INK.muted} opacity={0.85 * clamp01(1 - Math.abs(b - i) * 1.6)}>
           {`Source: ${n}`}
         </Txt>
       ))}

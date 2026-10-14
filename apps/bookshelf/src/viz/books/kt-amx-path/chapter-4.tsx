@@ -14,7 +14,6 @@
 // stamped "reported", then the honest caveat: these are the project's own
 // benchmarks. The book closes by tying tiles → menu → layout together.
 import {
-  CAMERA_HOME,
   Camera,
   STAGE_H,
   STAGE_W,
@@ -37,15 +36,15 @@ const KERNEL = [
 ] as const;
 
 const PREFILL = [
-  { key: 'llamafile kernels (before)', val: 91, color: colors.MUTED },
-  { key: 'AMX path (after)', val: 347, color: colors.WARM },
+  { key: 'before AMX', val: 91, color: colors.MUTED },
+  { key: 'AMX path', val: 347, color: colors.WARM },
 ] as const;
 
 const BARS = { x: 260, y0: 480, w: 46, gap: 130, hMax: 260 } as const;
 
-const CAM_KERNEL: CameraState = { x: 420, y: 360, k: 1.4 };
-const CAM_PREFILL: CameraState = { x: 800, y: 360, k: 1.35 };
-const CAM_WIDE: CameraState = { x: 640, y: 330, k: 1.02 };
+// One fixed frame for the whole board: both panels, the chips and the
+// receipts stay inside the stage, so no beat has to pan and crop a label.
+const CAM_BOARD: CameraState = { x: 640, y: 340, k: 1.08 };
 
 export interface Scene {
   tl: Timeline;
@@ -61,7 +60,7 @@ export interface Scene {
 
 export function buildScene(): Scene {
   const tl = new Timeline();
-  const cam = tl.channel<CameraState>('cam', CAMERA_HOME, cameraInterp);
+  const cam = tl.channel<CameraState>('cam', CAM_BOARD, cameraInterp);
   const boardU = tl.channel('boardU', 0);
   const kbar = KERNEL.map((_, i) => tl.channel(`kbar${i}`, 0));
   const fourU = tl.channel('fourU', 0);
@@ -85,7 +84,6 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'First, the raw kernel: twenty one trillion floating point operations per second in sixteen bit, thirty five trillion integer operations in eight bit, on one server processor.',
   });
-  tl.tween(cam, CAM_KERNEL, { at: 6.7, dur: 1.4, ease: ease.move });
   tl.tween(kbar[0], 1, { at: 7.3, dur: 1.6, ease: ease.move });
   tl.tween(kbar[1], 1, { at: 8.3, dur: 1.6, ease: ease.move });
   tl.hold(13.0, 0.5);
@@ -105,7 +103,6 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'Second, what it means for a real model. Before the tile path, Deepseek V three prefill crawled at ninety one tokens per second. With it: three hundred forty seven on a workstation.',
   });
-  tl.tween(cam, CAM_PREFILL, { at: 19.7, dur: 1.4, ease: ease.move });
   tl.tween(pbar[0], 1, { at: 20.3, dur: 1.4, ease: ease.move });
   tl.tween(pbar[1], 1, { at: 21.7, dur: 1.8, ease: ease.move });
   tl.hold(26.0, 0.5);
@@ -116,7 +113,6 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'And end to end — one server processor, one consumer graphics card — four hundred eighteen tokens per second, which the authors describe as close to multi machine, multi card setups.',
   });
-  tl.tween(cam, CAM_WIDE, { at: 26.7, dur: 1.4, ease: ease.move });
   tl.tween(e2eU, 1, { at: 27.5, dur: 1.8, ease: ease.move });
   tl.hold(33.0, 0.5);
 
@@ -165,8 +161,11 @@ function Bar({ x, val, max, u, color, label, unit }: { x: number; val: number; m
           {val} {unit}
         </text>
       )}
-      <text x={x + BARS.w / 2} y={BARS.y0 + 20} textAnchor="middle" fill={colors.MUTED} fontSize={10}>
-        {label.split(' (')[0]}
+      <text x={x + BARS.w / 2} y={BARS.y0 + 20} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+        {label}
+      </text>
+      <text x={x + BARS.w / 2} y={BARS.y0 + 38} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+        reported
       </text>
     </g>
   );
@@ -182,7 +181,7 @@ export function Render({ s }: { s: SceneState }) {
   const capU = s.get(scene.capU);
   const closeU = s.get(scene.closeU);
 
-  const dimAll = 1 - closeU * 0.86;
+  const dimAll = 1 - closeU * 0.94;
 
   return (
     <>
@@ -206,7 +205,7 @@ export function Render({ s }: { s: SceneState }) {
           ))}
           <g opacity={fourU}>
             <rect x={BARS.x - 32} y={186} width={230} height={30} rx={8} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.3} />
-            <text x={BARS.x + 83} y={206} textAnchor="middle" fill={colors.WARM} fontSize={11.5}>
+            <text x={BARS.x + 83} y={206} textAnchor="middle" fill={colors.WARM} fontSize={13}>
               ≈ 4× the stock AMX kernel
             </text>
           </g>
@@ -216,18 +215,18 @@ export function Render({ s }: { s: SceneState }) {
             <Bar key={p.key} x={700 + i * BARS.gap} val={p.val} max={400} u={pbar[i]} color={p.color} label={p.key} unit={''} />
           ))}
           {pbar[1] >= 1 && (
-            <text x={830 + BARS.w / 2} y={BARS.y0 - (347 / 400) * BARS.hMax - 30} textAnchor="middle" fill={colors.WARM} fontSize={10.5}>
+            <text x={830 + BARS.w / 2} y={BARS.y0 - (347 / 400) * BARS.hMax - 30} textAnchor="middle" fill={colors.WARM} fontSize={12.5}>
               3.8× prefill
             </text>
           )}
 
           {/* end-to-end chip */}
           <g opacity={e2eU}>
-            <rect x={430} y={520} width={420} height={56} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.5} />
-            <text x={640} y={544} textAnchor="middle" fill={colors.TEXT} fontSize={14.5}>
+            <rect x={430} y={532} width={420} height={56} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.5} />
+            <text x={640} y={556} textAnchor="middle" fill={colors.TEXT} fontSize={15}>
               418 tokens/s end-to-end
             </text>
-            <text x={640} y={564} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+            <text x={640} y={576} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
               DeepSeek-V3 · 1× Xeon 4 + 1× RTX 4090
             </text>
           </g>
@@ -254,17 +253,17 @@ export function Render({ s }: { s: SceneState }) {
           ].map(([head, sub, c], i) => (
             <g key={head}>
               <rect x={338 + i * 210} y={288} width={190} height={100} rx={10} fill={colors.BG} stroke={c} strokeWidth={1.4} />
-              <text x={433 + i * 210} y={320} textAnchor="middle" fill={colors.TEXT} fontSize={13.5}>
+              <text x={433 + i * 210} y={320} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                 {head}
               </text>
               {String(sub).split('\n').map((line, k) => (
-                <text key={k} x={433 + i * 210} y={344 + k * 15} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+                <text key={k} x={433 + i * 210} y={344 + k * 17} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                   {line}
                 </text>
               ))}
             </g>
           ))}
-          <text x={640} y={432} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+          <text x={640} y={436} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
             next: Tuning at Home — the same rig, fine-tuning the giant
           </text>
         </g>

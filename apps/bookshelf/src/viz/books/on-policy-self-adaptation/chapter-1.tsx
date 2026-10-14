@@ -25,7 +25,7 @@ export function buildScene() {
   tl.tween(teacherU, 1, { at: 2.5, dur: 1.1, ease: ease.enter });
 
   tl.caption({ at: 6.5, dur: 5.8, text: 'But those trajectories are on-policy for the student and off-policy for the teacher, so their token scores can disagree.' });
-  tl.tween(cam, { x: 700, y: 320, k: 1.08 }, { at: 7.1, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 620, y: 360, k: 1.08 }, { at: 7.1, dur: 1.3, ease: ease.move });
   tl.tween(mismatchU, 1, { at: 8.4, dur: 1.4, ease: ease.draw });
   tl.tween(noiseU, 1, { at: 10.0, dur: 1.0, ease: ease.pop });
 
@@ -38,7 +38,7 @@ export function buildScene() {
 
   tl.caption({ at: 24.8, dur: 5.8, text: 'That shifts the question: perhaps the useful signal is not the teacher score at all.' });
   tl.tween(removeU, 1, { at: 25.4, dur: 1.4, ease: ease.move });
-  tl.tween(cam, { x: 700, y: 360, k: 1.08 }, { at: 27.0, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 620, y: 360, k: 1.08 }, { at: 27.0, dur: 1.3, ease: ease.move });
 
   tl.caption({ at: 30.9, dur: 5.8, text: 'Learning concentrates on the student tokens it considered least likely while sampling its own response.' });
   tl.tween(tailU, 1, { at: 31.5, dur: 2.0, ease: ease.draw });
@@ -66,33 +66,37 @@ export function Render({ s }: { s: SceneState }) {
   const noise = s.get(scene.noiseU);
   return <><text x="640" y="76" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="850" opacity={1 - close}>what if the teacher is not the lesson?</text><Camera {...s.get(scene.cam)}>
     <g opacity={1 - close}>
+      <text x="112" y="140" fill={colors.MUTED} fontSize="15" fontFamily={colors.font.mono} opacity={remove}>teacher score removed</text>
       <g opacity={(1 - remove) * s.get(scene.teacherU)}>
-        <text x="112" y="146" fill={colors.SECONDARY} fontSize="15" fontFamily={colors.font.mono}>teacher scores student trajectory</text>
+        <text x="112" y="140" fill={colors.SECONDARY} fontSize="15" fontFamily={colors.font.mono}>teacher scores student trajectory</text>
         {TEACHER.map((p, i) => {
-          const h = p * 920;
+          const h = p * 640;
           return <rect key={i} x={128 + i * 64} y={270 - h} width="34" height={h} rx="8" fill={colors.SECONDARY} opacity={0.35 + 0.25 * Math.sin(noise * 3 + i)} />;
         })}
       </g>
       <g opacity={s.get(scene.ribbonU)}>
-        <text x="112" y="326" fill={colors.ACCENT} fontSize="15" fontFamily={colors.font.mono}>current actor sampled-token probabilities</text>
         {PROBS.map((p, i) => {
           const h = p * 920;
           const selected = i >= 13;
           return <g key={i}>
             <rect x={128 + i * 64} y={542 - h} width="34" height={h} rx="8" fill={selected ? colors.NEGATIVE : colors.ACCENT} opacity={selected ? 0.55 + 0.45 * tail : 0.82 - tail * 0.58} stroke={selected && tail ? colors.WARM : 'none'} strokeWidth="3" />
-            <text x={145 + i * 64} y="568" textAnchor="middle" fill={selected && tail ? colors.WARM : colors.MUTED} fontSize="10" fontFamily={colors.font.mono}>{`y${i + 1}`}</text>
+            <text x={145 + i * 64} y="568" textAnchor="middle" fill={selected && tail ? colors.WARM : colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>{`y${i + 1}`}</text>
           </g>;
         })}
       </g>
       <g opacity={s.get(scene.mismatchU) * (1 - remove)}>
-        {[2, 3, 5, 7, 9, 11, 13, 15].map((i) => <line key={i} x1={145 + i * 64} y1={280 - TEACHER[i] * 920} x2={145 + i * 64} y2={532 - PROBS[i] * 920} stroke={colors.NEGATIVE} strokeWidth="2" strokeDasharray="7 6" />)}
-        <rect x="842" y="214" width="250" height="46" rx="18" fill="#321925" stroke={colors.NEGATIVE} />
-        <text x="967" y="243" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14" fontFamily={colors.font.mono}>off-policy teacher noise</text>
+        {[2, 3, 5, 7, 9, 11, 13, 15].map((i) => <line key={i} x1={145 + i * 64} y1={280 - TEACHER[i] * 640} x2={145 + i * 64} y2={532 - PROBS[i] * 920} stroke={colors.NEGATIVE} strokeWidth="2" strokeDasharray="7 6" />)}
+        <rect x="842" y="148" width="250" height="46" rx="18" fill="#321925" stroke={colors.NEGATIVE} />
+        <text x="967" y="177" textAnchor="middle" fill={colors.NEGATIVE} fontSize="14" fontFamily={colors.font.mono}>off-policy teacher noise</text>
       </g>
-      <g opacity={s.get(scene.insensitiveU) * (1 - remove)} transform="translate(176 596)">
-        <path d="M0 0 C140 -48 240 -10 350 -34 S570 -16 730 -32" fill="none" stroke={colors.MUTED} strokeWidth="4" />
-        <path d="M0 0 C140 -42 240 -8 350 -31 S570 -13 730 -30" fill="none" stroke={colors.POSITIVE} strokeWidth="4" />
-        <text x="760" y="-26" fill={colors.POSITIVE} fontSize="13">similar convergence</text>
+      <g opacity={s.get(scene.ribbonU)}>
+        <rect x="104" y="306" width="392" height="26" rx="8" fill={colors.BG} opacity="0.85" />
+        <text x="112" y="324" fill={colors.ACCENT} fontSize="15" fontFamily={colors.font.mono}>current actor sampled-token probabilities</text>
+      </g>
+      <g opacity={s.get(scene.insensitiveU) * (1 - remove)} transform="translate(176 600)">
+        <path d="M0 0 C140 -10 240 4 350 -4 S570 4 730 -2" fill="none" stroke={colors.MUTED} strokeWidth="4" />
+        <path d="M0 0 C140 -8 240 2 350 -3 S570 3 730 0" fill="none" stroke={colors.POSITIVE} strokeWidth="4" />
+        <text x="760" y="4" fill={colors.POSITIVE} fontSize="14">similar convergence</text>
       </g>
       <g opacity={s.get(scene.fixedU)} transform="translate(826 164)">
         <rect x="-116" y="-32" width="232" height="64" rx="20" fill="#2d2117" stroke={colors.WARM} strokeWidth="3" />
@@ -110,7 +114,7 @@ export function Render({ s }: { s: SceneState }) {
       <text x="640" y="194" textAnchor="middle" fill={colors.TEXT} fontSize="40" fontWeight="850">the policy supplies its own signal</text>
       {['teacher model', 'reward model', 'reference forward pass'].map((label, i) => <g key={label} transform={`translate(${320 + i * 320} 336)`}>
         <circle r="72" fill="#241824" stroke={colors.NEGATIVE} strokeWidth="3" />
-        <text y="5" textAnchor="middle" fill={colors.MUTED} fontSize="14">{label}</text>
+        <text y="108" textAnchor="middle" fill={colors.TEXT} fontSize="15">{label}</text>
         <line x1="-52" y1="-52" x2="52" y2="52" stroke={colors.NEGATIVE} strokeWidth="7" />
       </g>)}
       <text x="640" y="502" textAnchor="middle" fill={colors.POSITIVE} fontSize="18" fontFamily={colors.font.mono}>current actor → selected tail → self-adaptation</text>

@@ -30,13 +30,14 @@ const PINK = '#d94879';
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 
-const COORDINATOR = { x: 240, y: 340 } as const;
+// Layout sits above the caption band (y ≈ 630): frame bottom 612, phase rail 538–580, footer baseline 594.
+const COORDINATOR = { x: 240, y: 304 } as const;
 const PARTICIPANTS = [
-  { x: 1015, y: 145, label: 'client 1' },
-  { x: 1015, y: 260, label: 'client 2' },
-  { x: 1015, y: 375, label: 'client 3' },
-  { x: 1015, y: 490, label: 'client 4' },
-  { x: 1015, y: 605, label: 'client 5' },
+  { x: 1015, y: 176, label: 'client 1' },
+  { x: 1015, y: 240, label: 'client 2' },
+  { x: 1015, y: 304, label: 'client 3' },
+  { x: 1015, y: 368, label: 'client 4' },
+  { x: 1015, y: 432, label: 'client 5' },
 ] as const;
 
 export function buildScene() {
@@ -74,7 +75,7 @@ export function buildScene() {
     dur: 6.8,
     text: 'The coordinator broadcasts a commit. The point is not that one machine is magically correct; the point is that every participant receives the same ordered event from the same stream.',
   });
-  tl.tween(cam, { x: 650, y: 330, k: 1.08 }, { at: 14.0, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 360, k: 1.06 }, { at: 14.0, dur: 1.2, ease: ease.move });
   tl.tween(broadcastU, 1, { at: 15.0, dur: 2.4, ease: ease.draw });
   tl.tween(quorum, 0.8, { at: 16.3, dur: 1.6, ease: ease.linear });
   tl.set(phase, 2, 18.4);
@@ -111,7 +112,7 @@ export function buildScene() {
     text: 'Restore is boring by design: read the durable suffix, reduce it, compare the digest, and return to the live edge. The stream makes recovery a normal read.',
   });
   tl.tween(restoreU, 1, { at: 42.6, dur: 1.5, ease: ease.pop });
-  tl.tween(cam, { x: 850, y: 400, k: 1.08 }, { at: 42.8, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 360, k: 1.06 }, { at: 42.8, dur: 1.2, ease: ease.move });
 
   tl.caption({
     at: 49.4,
@@ -156,7 +157,7 @@ export function Render({ s }: { s: SceneState }) {
           x={58}
           y={32}
           w={1164}
-          h={650}
+          h={580}
           label="convergence / one ordered event"
           rightLabel={`offset 0043 · quorum ${Math.round(quorum * 4)}/5`}
           footer="connected clients converge · offline clients replay the suffix"
@@ -164,12 +165,12 @@ export function Render({ s }: { s: SceneState }) {
         >
           <circle cx={1172} cy={66} r={4} fill={GREEN} opacity={0.28 + protocolPulse * 0.62} />
           <g opacity={castU}>
-            <rect x={390} y={72} width={270} height={34} rx={8} fill={PAPER} stroke={GREEN} strokeWidth={1.4} />
-            <text x={525} y={94} textAnchor="middle" fill={GREEN} fontSize={12} fontWeight={800} fontFamily={MONO}>QUORUM · {Math.round(quorum * 4)}/5</text>
-            <rect x={675} y={72} width={135} height={34} rx={8} fill={PAPER} stroke={MUTED} strokeWidth={1.2} />
-            <text x={742} y={94} textAnchor="middle" fill={INK} fontSize={11.5} fontWeight={800} fontFamily={MONO}>TX #43</text>
-            <rect x={825} y={72} width={160} height={34} rx={8} fill={PAPER} stroke={CORAL} strokeWidth={1.4} />
-            <text x={905} y={94} textAnchor="middle" fill={CORAL} fontSize={11.5} fontWeight={800} fontFamily={MONO}>RESTORE ALL</text>
+            <rect x={390} y={96} width={270} height={34} rx={8} fill={PAPER} stroke={GREEN} strokeWidth={1.4} />
+            <text x={525} y={118} textAnchor="middle" fill={GREEN} fontSize={13} fontWeight={800} fontFamily={MONO}>QUORUM · {Math.round(quorum * 4)}/5</text>
+            <rect x={675} y={96} width={135} height={34} rx={8} fill={PAPER} stroke={MUTED} strokeWidth={1.2} />
+            <text x={742} y={118} textAnchor="middle" fill={INK} fontSize={13} fontWeight={800} fontFamily={MONO}>TX #43</text>
+            <rect x={825} y={96} width={160} height={34} rx={8} fill={PAPER} stroke={CORAL} strokeWidth={1.4} />
+            <text x={905} y={118} textAnchor="middle" fill={CORAL} fontSize={13} fontWeight={800} fontFamily={MONO}>RESTORE ALL</text>
           </g>
 
           {PARTICIPANTS.map((participant, index) => {
@@ -190,14 +191,18 @@ export function Render({ s }: { s: SceneState }) {
             );
           })}
 
-          <ArchitectureCard x={COORDINATOR.x} y={COORDINATOR.y} w={210} h={88} label="coordinator" meta="broadcasting commit" badge="DO COMMIT" tone="green" u={castU} status={broadcastU > 0.5 ? 'ready' : undefined} />
+          <ArchitectureCard x={COORDINATOR.x} y={COORDINATOR.y} w={210} h={88} label="coordinator" meta="broadcasting commit" tone="green" u={castU} status={broadcastU > 0.5 ? 'ready' : undefined}>
+            {/* The engine badge is 34px wide and clips "DO COMMIT", so the tag is drawn inside the top-right corner instead. */}
+            <rect x={36} y={-34} width={68} height={18} rx={9} fill={PAPER} stroke={GREEN} strokeWidth={1} />
+            <text x={70} y={-21} textAnchor="middle" fill={GREEN} fontSize={10} fontWeight={800} fontFamily={MONO}>DO COMMIT</text>
+          </ArchitectureCard>
           {PARTICIPANTS.map((participant, index) => (
             <ArchitectureCard
               key={participant.label}
               x={participant.x}
               y={participant.y}
               w={212}
-              h={72}
+              h={56}
               label={participant.label}
               meta={index === 4 && offlineU > 0.45 ? 'offline · bookmark 0038' : index === 4 && catchupU > 0.35 ? 'catching up · 0039–0043' : index < 4 && broadcastU > 0.5 ? 'committed · digest 7a19' : 'prepared'}
               badge={index === 4 && offlineU > 0.45 ? 'AWAY' : index === 4 && catchupU > 0.35 ? 'CATCH' : index < 4 && broadcastU > 0.5 ? 'READY' : 'PREP'}
@@ -209,17 +214,17 @@ export function Render({ s }: { s: SceneState }) {
             />
           ))}
 
-          <ArchitecturePhaseRail x={142} y={624} w={996} phases={phases} active={Math.min(3, Math.max(0, phase))} u={castU} />
-          {restoreU > 0.02 && (
-            <g opacity={restoreU}>
-              <rect x={420} y={505} width={440} height={46} rx={9} fill={PAPER} stroke={BLUE} strokeWidth={1.5} />
-              <text x={640} y={534} textAnchor="middle" fill={BLUE} fontSize={12} fontWeight={800} fontFamily={MONO}>restore: replay → reduce → digest match</text>
+          <ArchitecturePhaseRail x={142} y={538} w={996} phases={phases} active={Math.min(3, Math.max(0, phase))} u={castU} />
+          {restoreU > 0.02 && closeU < 0.98 && (
+            <g opacity={restoreU * (1 - closeU)}>
+              <rect x={420} y={474} width={440} height={42} rx={9} fill={PAPER} stroke={BLUE} strokeWidth={1.5} />
+              <text x={640} y={500} textAnchor="middle" fill={BLUE} fontSize={13} fontWeight={800} fontFamily={MONO}>restore: replay → reduce → digest match</text>
             </g>
           )}
           {closeU > 0.02 && (
             <g opacity={closeU}>
-              <rect x={365} y={135} width={550} height={52} rx={10} fill={PAPER} stroke={GREEN} strokeWidth={1.4} />
-              <text x={640} y={167} textAnchor="middle" fill={INK} fontSize={16} fontWeight={800}>convergence is a state, not a spinner</text>
+              <rect x={420} y={474} width={440} height={42} rx={9} fill={PAPER} stroke={GREEN} strokeWidth={1.4} />
+              <text x={640} y={500} textAnchor="middle" fill={INK} fontSize={16} fontWeight={800}>convergence is a state, not a spinner</text>
             </g>
           )}
         </ArchitectureFrame>

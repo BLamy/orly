@@ -61,9 +61,10 @@ const bracketPath = (b: { l: number; r: number; top: number; bot: number }): str
 
 // camera marks
 const CAM_WIDE: CameraState = CAMERA_HOME;
-const CAM_LEFT: CameraState = { x: 470, y: 300, k: 1.35 };
-const CAM_FLOOR: CameraState = { x: 700, y: 430, k: 1.5 };
-const CAM_RIGHT: CameraState = { x: 900, y: 300, k: 1.35 };
+// Framed so every label stays on the stage and clears the caption band (y > 630).
+const CAM_LEFT: CameraState = { x: 680, y: 348, k: 1.3 };
+const CAM_FLOOR: CameraState = { x: 700, y: 348, k: 1.3 };
+const CAM_RIGHT: CameraState = { x: 760, y: 348, k: 1.3 };
 
 export interface Scene {
   tl: Timeline;
@@ -264,7 +265,7 @@ function PauseBadge({ x, y, u, resumed }: { x: number; y: number; u: number; res
 function LegLabel({ x, y, text, color, u, anchor }: { x: number; y: number; text: string; color: string; u: number; anchor: 'start' | 'end' }) {
   if (u <= 0) return null;
   return (
-    <text x={x} y={y} textAnchor={anchor} fill={color} fontSize={12.5} fontFamily="monospace" opacity={u}>
+    <text x={x} y={y} textAnchor={anchor} fill={color} fontSize={14} fontFamily="monospace" opacity={u}>
       {text}
     </text>
   );
@@ -356,7 +357,7 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={floorU * stageDim}>
             <circle cx={700} cy={INN.bot} r={34} fill={colors.WARM} opacity={0.14} />
             <circle cx={700} cy={INN.bot} r={34} fill="none" stroke={colors.WARM} strokeWidth={1.6} />
-            <text x={700} y={INN.bot + 56} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="monospace">
+            <text x={700} y={INN.bot + 56} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="monospace">
               i === length → Promise.resolve()
             </text>
           </g>
@@ -364,7 +365,7 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- the ticker tape ---- */}
         <g opacity={Math.max(codeU, clamp01(tapeN)) * stageDim}>
-          <text x={1075} y={92} textAnchor="start" fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+          <text x={1075} y={92} textAnchor="start" fill={colors.MUTED} fontSize={14} fontFamily="monospace">
             calls =
           </text>
           {[1, 2, 3, 4].map((n, i) => {
@@ -380,10 +381,10 @@ export function Render({ s }: { s: SceneState }) {
           })}
           {checkU > 0 && (
             <g opacity={checkU}>
-              <text x={1075} y={172} textAnchor="start" fill={colors.POSITIVE} fontSize={12} fontFamily="monospace">
+              <text x={1075} y={172} textAnchor="start" fill={colors.POSITIVE} fontSize={13} fontFamily="monospace">
                 deepStrictEqual ✓
               </text>
-              <text x={1075} y={190} textAnchor="start" fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+              <text x={1075} y={190} textAnchor="start" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                 [1, 2, 3, 4]
               </text>
             </g>
@@ -395,7 +396,7 @@ export function Render({ s }: { s: SceneState }) {
           <g>
             <circle cx={pos.x} cy={pos.y} r={11} fill={colors.TEXT} />
             <circle cx={pos.x} cy={pos.y} r={11} fill="none" stroke={colors.ACCENT} strokeWidth={2} />
-            <text x={pos.x + 20} y={pos.y + 4} fill={colors.MUTED} fontSize={11} fontFamily="monospace">
+            <text x={pos.x} y={pos.y - 18} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
               ctx
             </text>
           </g>
@@ -405,11 +406,11 @@ export function Render({ s }: { s: SceneState }) {
         {timerU > 0 && (
           <g opacity={stageDim}>
             <TimerArc cx={OUT.l - 60} cy={180} r={18} u={timerU} color={colors.WARM} />
-            <text x={OUT.l - 60} y={148} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontFamily="monospace">
+            <text x={OUT.l - 92} y={185} textAnchor="end" fill={colors.WARM} fontSize={13} fontFamily="monospace">
               const start = Date.now()
             </text>
             {timerU >= 1 && (
-              <text x={OUT.r + 60} y={180} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontFamily="monospace">
+              <text x={OUT.r + 30} y={215} textAnchor="start" fill={colors.WARM} fontSize={13} fontFamily="monospace">
                 ms = Date.now() - start
               </text>
             )}
@@ -424,14 +425,15 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- downstream / upstream arrows ---- */}
         {flowU > 0 && (
           <g opacity={flowU * stageDim}>
-            <line x1={OUT.l - 52} y1={210} x2={OUT.l - 52} y2={lerp(210, 480, flowU)} stroke={colors.ACCENT} strokeWidth={2.5} />
-            <path d={`M ${OUT.l - 58} ${lerp(210, 480, flowU) - 8} L ${OUT.l - 52} ${lerp(210, 480, flowU)} L ${OUT.l - 46} ${lerp(210, 480, flowU) - 8}`} fill="none" stroke={colors.ACCENT} strokeWidth={2.5} />
-            <text x={OUT.l - 70} y={340} textAnchor="middle" fill={colors.ACCENT} fontSize={13} transform={`rotate(-90 ${OUT.l - 70} 340)`}>
+            {/* arrows sit clear of the code column: downstream left of it, upstream right of it */}
+            <line x1={240} y1={210} x2={240} y2={lerp(210, 480, flowU)} stroke={colors.ACCENT} strokeWidth={2.5} />
+            <path d={`M 234 ${lerp(210, 480, flowU) - 8} L 240 ${lerp(210, 480, flowU)} L 246 ${lerp(210, 480, flowU) - 8}`} fill="none" stroke={colors.ACCENT} strokeWidth={2.5} />
+            <text x={222} y={340} textAnchor="middle" fill={colors.ACCENT} fontSize={14} transform={`rotate(-90 222 340)`}>
               downstream — actions
             </text>
-            <line x1={OUT.r + 52} y1={480} x2={OUT.r + 52} y2={lerp(480, 210, flowU)} stroke={colors.POSITIVE} strokeWidth={2.5} />
-            <path d={`M ${OUT.r + 46} ${lerp(480, 210, flowU) + 8} L ${OUT.r + 52} ${lerp(480, 210, flowU)} L ${OUT.r + 58} ${lerp(480, 210, flowU) + 8}`} fill="none" stroke={colors.POSITIVE} strokeWidth={2.5} />
-            <text x={OUT.r + 74} y={340} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} transform={`rotate(90 ${OUT.r + 74} 340)`}>
+            <line x1={1160} y1={480} x2={1160} y2={lerp(480, 280, flowU)} stroke={colors.POSITIVE} strokeWidth={2.5} />
+            <path d={`M 1154 ${lerp(480, 280, flowU) + 8} L 1160 ${lerp(480, 280, flowU)} L 1166 ${lerp(480, 280, flowU) + 8}`} fill="none" stroke={colors.POSITIVE} strokeWidth={2.5} />
+            <text x={1186} y={380} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} transform={`rotate(90 1186 380)`}>
               upstream — filters
             </text>
           </g>

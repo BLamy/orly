@@ -17,17 +17,20 @@ const clamp01 = (u: number) => (u < 0 ? 0 : u > 1 ? 1 : u);
 const mono = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 /* ---------------------------------------------------------------- layout */
-const CMDLOG = { x: 100, y: 110, w: 460 };
-const STRIP = { x: 620, y: 140, w: 300, h: 190 };
-const FILE = { x: 660, y: 400, w: 220 };
-const MSG = { x: 940, y: 380, w: 260 };
+// Everything that stays on screen during a push (console, strip, file, PR
+// comment) sits inside one ~1000px band, so each camera move keeps the console
+// in frame instead of cropping it at the left edge.
+const CMDLOG = { x: 140, y: 110, w: 400 };
+const STRIP = { x: 580, y: 140, w: 280, h: 190 };
+const FILE = { x: 600, y: 400, w: 220 };
+const MSG = { x: 880, y: 380, w: 260 };
 
 const CAM_HOME: CameraState = CAMERA_HOME;
-const CAM_CMD: CameraState = { x: 340, y: 260, k: 1.16 };
-const CAM_STRIP: CameraState = { x: 770, y: 260, k: 1.1 };
-const CAM_FILE: CameraState = { x: 770, y: 420, k: 1.14 };
-const CAM_MSG: CameraState = { x: 900, y: 400, k: 1.1 };
-const CAM_RECAP: CameraState = { x: 640, y: 360, k: 0.9 };
+const CAM_CMD: CameraState = { x: 330, y: 260, k: 1.16 };
+const CAM_STRIP: CameraState = { x: 700, y: 250, k: 1.12 };
+const CAM_FILE: CameraState = { x: 650, y: 300, k: 1.12 };
+const CAM_MSG: CameraState = { x: 660, y: 340, k: 1.12 };
+const CAM_RECAP: CameraState = { x: 640, y: 340, k: 1.05 };
 
 const CMDS = [
   'agent-browser record start ./demo.webm',
@@ -142,9 +145,11 @@ function CmdLog({ enter, line, dim }: { enter: number; line: number; dim: number
   return (
     <g transform={`translate(${x}, ${y + (1 - e) * 12})`} opacity={e * (1 - 0.85 * clamp01(dim))}>
       <rect width={w} height={CMDS.length * 30 + 32} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-      <text x={20} y={26} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+      <text x={20} y={26} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
         agent-browser session
       </text>
+      {/* prompt cursor: waits on the first line until the first command is typed in */}
+      <rect x={20} y={40} width={9} height={16} fill={colors.MUTED} opacity={1 - clamp01(line)} />
       {CMDS.map((c, i) => {
         const ru = clamp01(line - i);
         const isBoundary = i === 0 || i === CMDS.length - 1;
@@ -155,7 +160,7 @@ function CmdLog({ enter, line, dim }: { enter: number; line: number; dim: number
             y={52 + i * 30}
             fill={isBoundary ? colors.ACCENT : colors.TEXT}
             fontWeight={isBoundary ? 700 : 400}
-            fontSize={13}
+            fontSize={14}
             fontFamily={mono}
             opacity={ru}
           >
@@ -176,25 +181,35 @@ function FilmStrip({ enter, frames, dim }: { enter: number; frames: number; dim:
   return (
     <g transform={`translate(${x}, ${y + (1 - e) * 12})`} opacity={e * (1 - 0.85 * clamp01(dim))}>
       <rect width={w} height={h} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-      <text x={16} y={-14} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+      <text x={16} y={-14} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
         ./demo.webm — capturing
       </text>
       {Array.from({ length: N_FRAMES }, (_, i) => {
         const fu = clamp01(frames - i);
         if (fu <= 0) return null;
         return (
-          <rect
-            key={i}
-            x={10 + i * cellW}
-            y={16}
-            width={cellW - 4}
-            height={h - 32}
-            rx={4}
-            fill={colors.BG}
-            stroke={colors.SECONDARY}
-            strokeWidth={1.3}
-            opacity={0.4 + 0.6 * fu}
-          />
+          <g key={i} opacity={0.4 + 0.6 * fu}>
+            <rect
+              x={10 + i * cellW}
+              y={16}
+              width={cellW - 4}
+              height={h - 32}
+              rx={4}
+              fill={colors.BG}
+              stroke={colors.SECONDARY}
+              strokeWidth={1.3}
+            />
+            {/* a page thumbnail inside each captured frame, so a frame reads as a screen */}
+            <rect
+              x={10 + i * cellW + 4}
+              y={40}
+              width={cellW - 12}
+              height={h - 72}
+              rx={2}
+              fill={colors.SECONDARY}
+              opacity={0.22 * fu}
+            />
+          </g>
         );
       })}
     </g>
@@ -209,14 +224,14 @@ function FileCard({ u, dim }: { u: number; dim: number }) {
   return (
     <g transform={`translate(${x}, ${y + (1 - uu) * 10})`} opacity={uu * (1 - 0.85 * clamp01(dim))}>
       <rect width={w} height={92} rx={12} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.6} />
-      <text x={18} y={30} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+      <text x={18} y={30} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
         record stop →
       </text>
       <text x={18} y={56} fill={colors.TEXT} fontSize={15} fontWeight={700} fontFamily={mono}>
         demo.webm
       </text>
-      <text x={18} y={78} fill={colors.SECONDARY} fontSize={12} fontFamily={mono}>
-        VP8/VP9 · plays anywhere
+      <text x={18} y={78} fill={colors.SECONDARY} fontSize={13} fontFamily={mono}>
+        VP8/VP9 WebM
       </text>
     </g>
   );
@@ -228,12 +243,15 @@ function Recap({ u, dim }: { u: number; dim: number }) {
   if (uu <= 0) return null;
   return (
     <g opacity={uu * (1 - 0.3 * clamp01(dim))}>
+      <text x={640} y={262} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontFamily={mono}>
+        one run · two witnesses
+      </text>
       <g transform="translate(360, 300)">
         <rect width={260} height={110} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.6} />
-        <text x={18} y={30} fill={colors.ACCENT} fontSize={13} fontWeight={700} fontFamily={mono}>
+        <text x={18} y={30} fill={colors.ACCENT} fontSize={14} fontWeight={700} fontFamily={mono}>
           Replay recording
         </text>
-        <text x={18} y={56} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+        <text x={18} y={56} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
           uploaded to the cloud
         </text>
         <text x={18} y={78} fill={colors.TEXT} fontSize={12.5}>
@@ -242,11 +260,11 @@ function Recap({ u, dim }: { u: number; dim: number }) {
       </g>
       <g transform="translate(660, 300)">
         <rect width={260} height={110} rx={12} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.6} />
-        <text x={18} y={30} fill={colors.SECONDARY} fontSize={13} fontWeight={700} fontFamily={mono}>
+        <text x={18} y={30} fill={colors.SECONDARY} fontSize={14} fontWeight={700} fontFamily={mono}>
           local WebM
         </text>
-        <text x={18} y={56} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
-          on disk, attach it anywhere
+        <text x={18} y={56} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
+          on disk, easy to attach
         </text>
         <text x={18} y={78} fill={colors.TEXT} fontSize={12.5}>
           for a person — watch it now

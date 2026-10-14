@@ -56,10 +56,12 @@ const REL = { x: 690, y: 330, w: 510, h: 120 };
 
 const CAM_HOME: CameraState = CAMERA_HOME;
 const CAM_MAP: CameraState = { x: 350, y: 240, k: 1.12 };
-const CAM_JAC: CameraState = { x: 380, y: 430, k: 1.1 };
-const CAM_STR: CameraState = { x: 900, y: 300, k: 1.05 };
-const CAM_CORE: CameraState = { x: 880, y: 340, k: 1.0 };
-const CAM_PROBE: CameraState = { x: 880, y: 260, k: 1.06 };
+// framings keep the Jacobian and the map on stage (or fade them out) so no
+// card is cropped at the canvas edge; the caption pill covers y > ~632 on screen
+const CAM_JAC: CameraState = { x: 360, y: 330, k: 1.0 };
+const CAM_STR: CameraState = { x: 700, y: 340, k: 0.96 };
+const CAM_CORE: CameraState = { x: 700, y: 360, k: 0.98 };
+const CAM_PROBE: CameraState = { x: 900, y: 300, k: 1.0 };
 const CAM_WIDE: CameraState = { x: 640, y: 350, k: 0.98 };
 
 // the six permutation products of the naive determinant expansion — real
@@ -122,6 +124,7 @@ export function buildScene() {
   const probeU = tl.channel('probeU', 0);
   const probeT = tl.channel('probeT', 0); // roaming parameter
   const relU = tl.channel('relU', 0); // coupling identity
+  const leftU = tl.channel('leftU', 0); // map + Jacobian step aside for the probe
   const dimU = tl.channel('dimU', 0);
   const closeU = tl.channel('closeU', 0);
 
@@ -192,6 +195,7 @@ export function buildScene() {
     text: 'Not minus two at a few lucky points. Minus two identically. Watch the probe wander the space while the determinant is recomputed from scratch at every step.',
   });
   tl.tween(strandOff, 1, { at: t - 6.2, dur: 0.8, ease: ease.move });
+  tl.tween(leftU, 1, { at: t - 6.2, dur: 0.8, ease: ease.move });
   tl.tween(cam, CAM_PROBE, { at: t - 6.0, dur: 1.4, ease: ease.move });
   tl.tween(probeU, 1, { at: t - 5.4, dur: 0.8, ease: ease.enter });
   tl.tween(probeT, 1, { at: t - 4.8, dur: 4.6, ease: ease.linear });
@@ -217,7 +221,7 @@ export function buildScene() {
   tl.tween(closeU, 1, { at: t - 5.0, dur: 0.9, ease: ease.enter });
   tl.hold(t, 1.0);
 
-  return { tl, cam, mapU, gearU, jacU, rowU, strandN, chipsU, resultU, strandOff, probeU, probeT, relU, dimU, closeU };
+  return { tl, cam, mapU, gearU, jacU, rowU, strandN, chipsU, resultU, strandOff, probeU, probeT, relU, leftU, dimU, closeU };
 }
 
 const scene = buildScene();
@@ -225,10 +229,10 @@ const scene = buildScene();
 /* -------------------------------------------------- local subcomponents */
 
 /** The three formulas; the gear beat recolors every (1+xy) in warm. */
-function MapCard({ u, gear, dim }: { u: number; gear: number; dim: number }) {
+function MapCard({ u, gear, dim, left }: { u: number; gear: number; dim: number; left: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
-  const a = uu * (1 - 0.88 * clamp01(dim));
+  const a = uu * (1 - 0.88 * Math.max(clamp01(dim), clamp01(left)));
   const g = clamp01(gear);
   const U = '\\textcolor{#fbbf24}{(1+xy)}';
   const plain = [
@@ -244,7 +248,7 @@ function MapCard({ u, gear, dim }: { u: number; gear: number; dim: number }) {
   return (
     <g opacity={a}>
       <rect x={MAP.x} y={MAP.y} width={MAP.w} height={MAP.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-      <text x={MAP.x + 20} y={MAP.y + 28} fill={colors.ACCENT} fontSize={13} fontWeight={700} fontFamily={mono}>
+      <text x={MAP.x + 20} y={MAP.y + 28} fill={colors.ACCENT} fontSize={14} fontWeight={700} fontFamily={mono}>
         the map · total degree 7
       </text>
       {plain.map((tex, i) => (
@@ -255,8 +259,8 @@ function MapCard({ u, gear, dim }: { u: number; gear: number; dim: number }) {
       ))}
       {g > 0 && (
         <g opacity={g}>
-          <rect x={MAP.x + 400} y={MAP.y + 12} width={140} height={30} rx={8} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.6} />
-          <MathLabel anchor="start" tex={'u = 1 + xy'} x={MAP.x + 418} y={MAP.y + 16} fontSize={14} color={colors.WARM} opacity={g} />
+          <rect x={MAP.x + 368} y={MAP.y + 12} width={172} height={30} rx={8} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.6} />
+          <MathLabel anchor="start" tex={'u = 1 + xy'} x={MAP.x + 384} y={MAP.y + 16} fontSize={14} color={colors.WARM} opacity={g} />
         </g>
       )}
     </g>
@@ -264,13 +268,14 @@ function MapCard({ u, gear, dim }: { u: number; gear: number; dim: number }) {
 }
 
 /** The 3×3 Jacobian: clean z-column and bottom row in u-form, counts elsewhere. */
-function JacobianPanel({ u, row, dim }: { u: number; row: number; dim: number }) {
+function JacobianPanel({ u, row, dim, left }: { u: number; row: number; dim: number; left: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
-  const a = uu * (1 - 0.88 * clamp01(dim));
-  const cw = 170;
-  const ch = 78;
-  const ox = JAC.x + 32;
+  const a = uu * (1 - 0.88 * Math.max(clamp01(dim), clamp01(left)));
+  // the bottom-left entry is the longest; column widths give it room
+  const colW = [206, 150, 150];
+  const colX = colW.map((_, j) => JAC.x + 21 + colW.slice(0, j).reduce((s, w) => s + w + 6, 0));
+  const ch = 74;
   const oy = JAC.y + 46;
   // compact tex where the entry is short, term-count chips where it is not
   const cellTex: (string | null)[][] = [
@@ -281,15 +286,16 @@ function JacobianPanel({ u, row, dim }: { u: number; row: number; dim: number })
   return (
     <g opacity={a}>
       <rect x={JAC.x} y={JAC.y} width={JAC.w} height={JAC.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-      <text x={JAC.x + 20} y={JAC.y + 28} fill={colors.ACCENT} fontSize={13} fontWeight={700} fontFamily={mono}>
+      <text x={JAC.x + 20} y={JAC.y + 28} fill={colors.ACCENT} fontSize={14} fontWeight={700} fontFamily={mono}>
         the Jacobian matrix J = DF
       </text>
       {[0, 1, 2].map((i) =>
         [0, 1, 2].map((j) => {
           const e = clamp01(uu * 4.5 - (i * 3 + j) * 0.35);
           if (e <= 0) return null;
-          const cx = ox + j * (cw + 8);
+          const cx = colX[j];
           const cy = oy + i * (ch + 6);
+          const cw = colW[j];
           const isBottom = i === 2;
           const hot = isBottom ? clamp01(row) : 0;
           const tex = cellTex[i][j];
@@ -300,10 +306,10 @@ function JacobianPanel({ u, row, dim }: { u: number; row: number; dim: number })
                 <MathLabel anchor="start" tex={tex} x={cx + 14} y={cy + ch / 2 - 14} fontSize={14} color={hot > 0 ? colors.POSITIVE : colors.TEXT} opacity={e} />
               ) : (
                 <>
-                  <text x={cx + 14} y={cy + 30} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+                  <text x={cx + 14} y={cy + 28} fill={colors.MUTED} fontSize={12.5} fontFamily={mono}>
                     {TERMS[i][j]} terms
                   </text>
-                  <text x={cx + 14} y={cy + 52} fill={colors.MUTED} fontSize={11.5} fontFamily={mono} opacity={0.7}>
+                  <text x={cx + 14} y={cy + 50} fill={colors.MUTED} fontSize={12.5} fontFamily={mono} opacity={0.7}>
                     degree {[[6, 6, 6], [5, 5, 4]][i]?.[j] ?? ''}
                   </text>
                 </>
@@ -336,10 +342,10 @@ function Cascade({ n, chips, result, off, dim }: { n: number; chips: number; res
                 <text x={14} y={STR.rowH / 2 + 4.5} fill={sign > 0 ? colors.POSITIVE : colors.NEGATIVE} fontSize={14} fontWeight={700} fontFamily={mono}>
                   {sign > 0 ? '+' : '−'}
                 </text>
-                <text x={36} y={STR.rowH / 2 + 4.5} fill={colors.TEXT} fontSize={12.5} fontFamily={mono}>
+                <text x={36} y={STR.rowH / 2 + 4.5} fill={colors.TEXT} fontSize={14} fontFamily={mono}>
                   {label}
                 </text>
-                <text x={STR.w - 92} y={STR.rowH / 2 + 4.5} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+                <text x={STR.w - 92} y={STR.rowH / 2 + 4.5} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
                   {count} terms
                 </text>
               </g>
@@ -364,7 +370,7 @@ function Cascade({ n, chips, result, off, dim }: { n: number; chips: number; res
                 <g key={i} opacity={fade}>
                   <circle cx={bx} cy={by} r={4} fill={c.positive ? colors.POSITIVE : colors.NEGATIVE} />
                   {c.label && p < 0.75 && (
-                    <text x={bx + 8} y={by + 4} fill={colors.MUTED} fontSize={10.5} fontFamily={mono}>
+                    <text x={bx + 8} y={by + 4} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
                       {c.label}
                     </text>
                   )}
@@ -376,7 +382,7 @@ function Cascade({ n, chips, result, off, dim }: { n: number; chips: number; res
             <g>
               <circle cx={CORE.x} cy={CORE.y} r={24 + 5 * Math.sin(cu * 28)} fill={colors.WARM} opacity={0.22 + 0.1 * cu} />
               <circle cx={CORE.x} cy={CORE.y} r={34 + 4 * Math.sin(cu * 20 + 2)} fill="none" stroke={colors.WARM} strokeWidth={1.4} opacity={0.5} />
-              <text x={CORE.x} y={CORE.y - 58} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontWeight={700} fontFamily={mono}>
+              <text x={CORE.x} y={CORE.y - 58} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={700} fontFamily={mono}>
                 monomials left: {result > 0.5 ? 1 : remaining}
               </text>
             </g>
@@ -385,7 +391,7 @@ function Cascade({ n, chips, result, off, dim }: { n: number; chips: number; res
       )}
       {/* −2 survives even when the strands are cleared */}
       {result > 0 && (
-        <g opacity={clamp01(result) * (1 - 0.4 * clamp01(dim))} transform={`translate(${CORE.x + gone * -180}, ${CORE.y + gone * 60})`}>
+        <g opacity={clamp01(result) * (1 - 0.88 * clamp01(dim))} transform={`translate(${CORE.x + gone * -180}, ${CORE.y + gone * 60})`}>
           <circle r={34} fill={colors.WARM} opacity={0.16} />
           <text y={10} textAnchor="middle" fill={colors.WARM} fontSize={30} fontWeight={800} fontFamily={mono}>
             {'−2'}
@@ -408,7 +414,7 @@ function ProbePanel({ u, pt, dim }: { u: number; pt: number; dim: number }) {
   return (
     <g opacity={a}>
       <rect x={PROBE.x} y={PROBE.y} width={PROBE.w} height={PROBE.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-      <text x={PROBE.x + 18} y={PROBE.y + 26} fill={colors.ACCENT} fontSize={13} fontWeight={700} fontFamily={mono}>
+      <text x={PROBE.x + 18} y={PROBE.y + 26} fill={colors.ACCENT} fontSize={14} fontWeight={700} fontFamily={mono}>
         probe · det recomputed live
       </text>
       <rect x={PROBE.x + 30} y={PROBE.y + 44} width={190} height={124} rx={9} fill={colors.BG} stroke={colors.GRID} strokeWidth={1} />
@@ -420,7 +426,7 @@ function ProbePanel({ u, pt, dim }: { u: number; pt: number; dim: number }) {
       })}
       <circle cx={cx} cy={cy} r={6} fill={colors.ACCENT} />
       <circle cx={cx} cy={cy} r={10} fill={colors.ACCENT} opacity={0.25} />
-      <text x={PROBE.x + 250} y={PROBE.y + 72} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+      <text x={PROBE.x + 250} y={PROBE.y + 72} fill={colors.MUTED} fontSize={13} fontFamily={mono}>
         x = {px.toFixed(2)}   y = {py.toFixed(2)}   z = {pz.toFixed(2)}
       </text>
       <rect x={PROBE.x + 248} y={PROBE.y + 92} width={230} height={44} rx={9} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.6} />
@@ -470,10 +476,11 @@ function CloseCard({ u }: { u: number }) {
 /* ------------------------------------------------------------ the frame */
 function renderFrame(s: SceneState) {
   const dim = clamp01(s.get(scene.dimU));
+  const left = clamp01(s.get(scene.leftU));
   return (
     <>
-      <MapCard u={s.get(scene.mapU)} gear={s.get(scene.gearU)} dim={dim} />
-      <JacobianPanel u={s.get(scene.jacU)} row={s.get(scene.rowU)} dim={dim} />
+      <MapCard u={s.get(scene.mapU)} gear={s.get(scene.gearU)} dim={dim} left={left} />
+      <JacobianPanel u={s.get(scene.jacU)} row={s.get(scene.rowU)} dim={dim} left={left} />
       <Cascade n={s.get(scene.strandN)} chips={s.get(scene.chipsU)} result={s.get(scene.resultU)} off={s.get(scene.strandOff)} dim={dim} />
       <ProbePanel u={s.get(scene.probeU)} pt={s.get(scene.probeT)} dim={dim} />
       <CouplingCard u={s.get(scene.relU)} dim={dim} />

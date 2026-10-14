@@ -31,12 +31,16 @@ const AMBER = '#d19b42';
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 
-const DOOR = { x: 185, y: 330 } as const;
-const VALIDATOR = { x: 405, y: 330 } as const;
-const STREAM = { x: 665, y: 330 } as const;
-const PROJECTION = { x: 1035, y: 190 } as const;
-const AUDIT = { x: 1035, y: 330 } as const;
-const REPLAY = { x: 1035, y: 470 } as const;
+// Cards are 184 wide with 80px gaps between them, so each edge label has room.
+const DOOR = { x: 150, y: 330 } as const;
+const VALIDATOR = { x: 414, y: 330 } as const;
+const STREAM = { x: 728, y: 330 } as const;
+const PROJECTION = { x: 1060, y: 190 } as const;
+const AUDIT = { x: 1060, y: 330 } as const;
+const REPLAY = { x: 1060, y: 470 } as const;
+// Subtle push: keeps the frame labels on stage and lifts the footer and digest
+// box above the caption band.
+const FRAME_PUSH = { x: 640, y: 372, k: 1.1 } as const;
 
 export function buildScene() {
   const tl = new Timeline();
@@ -67,7 +71,7 @@ export function buildScene() {
     dur: 6.4,
     text: 'Validation is not a second source of truth. It is a gate: accept the event, or reject it before it enters the durable history.',
   });
-  tl.tween(cam, { x: 350, y: 325, k: 1.3 }, { at: 7.4, dur: 1.2, ease: ease.move });
+  tl.tween(cam, FRAME_PUSH, { at: 7.4, dur: 1.2, ease: ease.move });
   tl.tween(appendU, 1, { at: 8.2, dur: 1.2, ease: ease.draw });
 
   tl.caption({
@@ -92,7 +96,7 @@ export function buildScene() {
     dur: 6.4,
     text: 'The projections are allowed to be shaped differently because they are disposable views. If one is deleted, the stream still contains the events needed to rebuild it.',
   });
-  tl.tween(cam, { x: 850, y: 335, k: 1.08 }, { at: 29.2, dur: 1.2, ease: ease.move });
+  tl.tween(cam, FRAME_PUSH, { at: 29.2, dur: 1.2, ease: ease.move });
   tl.tween(changeU, 1, { at: 31.0, dur: 1.0, ease: ease.pop });
 
   tl.caption({
@@ -147,7 +151,7 @@ export function Render({ s }: { s: SceneState }) {
           x={58}
           y={44}
           w={1164}
-          h={632}
+          h={590}
           label="one event / many views"
           rightLabel="canonical bytes · offset 0042"
           footer="projections can be rebuilt · the stream cannot be rewritten"
@@ -156,33 +160,33 @@ export function Render({ s }: { s: SceneState }) {
           <circle cx={1172} cy={78} r={4} fill={BLUE} opacity={0.28 + protocolPulse * 0.62} />
           <ArchitectureEdge from={{ x: DOOR.x + 92, y: DOOR.y }} to={{ x: VALIDATOR.x - 92, y: VALIDATOR.y }} tone="coral" label="dispatch" flow={eventU} u={eventU} />
           <ArchitectureEdge from={{ x: VALIDATOR.x + 92, y: VALIDATOR.y }} to={{ x: STREAM.x - 142, y: STREAM.y }} tone="amber" label="accept" flow={appendU} u={validateU} />
-          <ArchitectureEdge from={{ x: STREAM.x + 142, y: STREAM.y }} to={{ x: PROJECTION.x - 94, y: PROJECTION.y }} via={[{ x: 825, y: STREAM.y }, { x: 900, y: PROJECTION.y }]} tone="green" label="reduce" flow={fanU} u={fanU} />
-          <ArchitectureEdge from={{ x: STREAM.x + 142, y: STREAM.y }} to={{ x: AUDIT.x - 94, y: AUDIT.y }} via={[{ x: 860, y: STREAM.y }]} tone="violet" label="record" flow={fanU} u={fanU} />
-          <ArchitectureEdge from={{ x: STREAM.x + 142, y: STREAM.y }} to={{ x: REPLAY.x - 94, y: REPLAY.y }} via={[{ x: 825, y: STREAM.y }, { x: 900, y: REPLAY.y }]} tone="blue" label="replay" flow={digestU} u={fanU} />
+          <ArchitectureEdge from={{ x: STREAM.x + 142, y: STREAM.y }} to={{ x: PROJECTION.x - 94, y: PROJECTION.y }} via={[{ x: 912, y: STREAM.y }, { x: 936, y: PROJECTION.y }]} tone="green" label="reduce" flow={fanU} u={fanU} />
+          <ArchitectureEdge from={{ x: STREAM.x + 142, y: STREAM.y }} to={{ x: AUDIT.x - 94, y: AUDIT.y }} via={[{ x: 918, y: STREAM.y }]} tone="violet" label="record" flow={fanU} u={fanU} />
+          <ArchitectureEdge from={{ x: STREAM.x + 142, y: STREAM.y }} to={{ x: REPLAY.x - 94, y: REPLAY.y }} via={[{ x: 912, y: STREAM.y }, { x: 936, y: REPLAY.y }]} tone="blue" label="replay" flow={digestU} u={fanU} />
 
           <ArchitectureCard x={DOOR.x} y={DOOR.y} w={184} h={72} label="dispatch" meta="user intent" badge="WRITE" tone="coral" u={eventU} status="ready" />
           <ArchitectureCard x={VALIDATOR.x} y={VALIDATOR.y} w={184} h={72} label="validator" meta={changeU > 0.45 ? 'schema · accepted' : 'schema · checked'} badge="GATE" tone="amber" u={validateU} status="ready" />
-          <ArchitectureCard x={STREAM.x} y={STREAM.y} w={284} h={112} label="durable stream" meta="append-only · offset-addressed" badge="0042" tone="blue" u={appendU} status="ready">
-            <text x={-126} y={10} fill={MUTED} fontSize={11} fontFamily={MONO}>event: message.created</text>
-            <text x={-126} y={32} fill={BLUE} fontSize={11.5} fontWeight={800} fontFamily={MONO}>sha-256: 7a19…</text>
+          <ArchitectureCard x={STREAM.x} y={STREAM.y} w={284} h={124} label="durable stream" meta="append-only · offset-addressed" badge="0042" tone="blue" u={appendU} status="ready">
+            <text x={-124} y={40} fill={MUTED} fontSize={11} fontFamily={MONO}>event: message.created</text>
+            <text x={-124} y={58} fill={BLUE} fontSize={11.5} fontWeight={800} fontFamily={MONO}>sha-256: 7a19…</text>
           </ArchitectureCard>
           <ArchitectureCard x={PROJECTION.x} y={PROJECTION.y} w={188} h={72} label="current UI" meta="materialized view" badge="VIEW" tone="green" u={projectionU} status="ready" />
           <ArchitectureCard x={AUDIT.x} y={AUDIT.y} w={188} h={72} label="audit trail" meta="human-readable log" badge="LOG" tone="violet" u={auditU} status="ready" />
           <ArchitectureCard x={REPLAY.x} y={REPLAY.y} w={188} h={72} label="replay" meta="same log · same state" badge="PROVE" tone="blue" u={replayU} status={digestU > 0.5 ? 'ready' : undefined} />
 
-          <ArchitectureGrid x={260} y={500} columns={6} rows={1} cells={eventCells} cellW={92} cellH={42} gap={8} u={appendU} dim={closeU * 0.4} />
-          <text x={550} y={568} textAnchor="middle" fill={MUTED} fontSize={11} fontFamily={MONO}>append-only history · evt-42 is not a UI snapshot</text>
+          <ArchitectureGrid x={430} y={500} columns={6} rows={1} cells={eventCells} cellW={80} cellH={42} gap={6} u={appendU} dim={closeU * 0.4} />
+          <text x={685} y={568} textAnchor="middle" fill={MUTED} fontSize={11} fontFamily={MONO}>append-only history · evt-42 is not a UI snapshot</text>
 
           {digestU > 0.02 && (
             <g opacity={digestU}>
-              <rect x={820} y={560} width={300} height={42} rx={8} fill={PAPER} stroke={GREEN} strokeWidth={1.5} />
-              <text x={970} y={586} textAnchor="middle" fill={GREEN} fontSize={12} fontWeight={800} fontFamily={MONO}>digest A = digest B · 7a19…</text>
+              <rect x={920} y={560} width={280} height={42} rx={8} fill={PAPER} stroke={GREEN} strokeWidth={1.5} />
+              <text x={PROJECTION.x} y={586} textAnchor="middle" fill={GREEN} fontSize={12} fontWeight={800} fontFamily={MONO}>digest A = digest B · 7a19…</text>
             </g>
           )}
           {changeU > 0.02 && (
             <g opacity={changeU}>
-              <circle cx={PROJECTION.x} cy={146} r={6} fill={CORAL} />
-              <text x={PROJECTION.x + 16} y={150} fill={CORAL} fontSize={11.5} fontWeight={800} fontFamily={MONO}>projection may change</text>
+              <circle cx={PROJECTION.x - 80} cy={142} r={6} fill={CORAL} />
+              <text x={PROJECTION.x - 68} y={146} fill={CORAL} fontSize={11.5} fontWeight={800} fontFamily={MONO}>projection may change</text>
             </g>
           )}
           {closeU > 0.02 && (

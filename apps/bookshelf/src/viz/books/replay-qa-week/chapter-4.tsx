@@ -40,9 +40,10 @@ const STAGE_DOTS = Array.from({ length: 46 }, (_, i) => ({
   y: STAGE_LANE.y + 26 + SRAND() * 36,
 }));
 
-const CAM_PR: CameraState = { x: 560, y: 240, k: 1.28 };
+// each framing keeps every label and card inside the 1280×720 stage
+const CAM_PR: CameraState = { x: 690, y: 230, k: 1.28 };
 const CAM_CHECK: CameraState = { x: 950, y: 250, k: 1.5 };
-const CAM_STAGE: CameraState = { x: 640, y: 460, k: 1.16 };
+const CAM_STAGE: CameraState = { x: 640, y: 390, k: 1.1 };
 const CAM_WIDE: CameraState = { x: 640, y: 350, k: 0.94 };
 
 export function buildScene() {
@@ -163,21 +164,21 @@ function BranchRail({ forkU, mergeU, fade }: { forkU: number; mergeU: number; fa
 function PrCard({ u, comment, check, catchP, fade }: { u: number; comment: number; check: number; catchP: number; fade: number }) {
   const e = clamp01(u);
   if (e <= 0) return null;
-  const x = 920;
+  const x = 892;
   const y = PR_Y - 64;
   return (
     <g transform={`translate(${x}, ${y + (1 - e) * 10})`} opacity={e * fade}>
-      <rect width={250} height={128} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-      <text x={16} y={26} fontSize={12.5} fill={colors.TEXT} fontWeight={600}>
+      <rect width={288} height={128} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
+      <text x={16} y={26} fontSize={14} fill={colors.TEXT} fontWeight={600}>
         pull request — “new checkout”
       </text>
-      <text x={16} y={46} fontSize={11} fill={colors.MUTED} fontFamily={mono}>
+      <text x={16} y={46} fontSize={12} fill={colors.MUTED} fontFamily={mono}>
         proposed change · awaiting review
       </text>
       {clamp01(comment) > 0 && (
         <g opacity={clamp01(comment)}>
-          <rect x={12} y={58} width={226} height={30} rx={7} fill="rgba(148,163,184,0.08)" />
-          <text x={20} y={77} fontSize={10.5} fill={colors.MUTED}>
+          <rect x={12} y={58} width={264} height={30} rx={7} fill="rgba(148,163,184,0.08)" />
+          <text x={20} y={77} fontSize={12} fill={colors.MUTED}>
             🤖 walked 6 paths · report + the tape
           </text>
         </g>
@@ -185,7 +186,7 @@ function PrCard({ u, comment, check, catchP, fade }: { u: number; comment: numbe
       {clamp01(check) > 0 && (
         <g opacity={clamp01(check) * (1 - clamp01(catchP))} transform={`translate(16, ${100})`}>
           <circle cx={7} cy={0} r={7} fill={colors.POSITIVE} />
-          <text x={20} y={4} fontSize={11.5} fill={colors.POSITIVE} fontWeight={700}>
+          <text x={20} y={4} fontSize={13} fill={colors.POSITIVE} fontWeight={700}>
             Replay QA — passed
           </text>
         </g>
@@ -193,8 +194,8 @@ function PrCard({ u, comment, check, catchP, fade }: { u: number; comment: numbe
       {clamp01(catchP) > 0 && (
         <g opacity={clamp01(catchP)} transform="translate(16, 100)">
           <circle cx={7} cy={0} r={7} fill={colors.NEGATIVE} />
-          <text x={20} y={4} fontSize={11.5} fill={colors.NEGATIVE} fontWeight={700}>
-            caught on the preview — see the movie
+          <text x={20} y={4} fontSize={13} fill={colors.NEGATIVE} fontWeight={700}>
+            caught on preview — see movie
           </text>
         </g>
       )}
@@ -210,7 +211,7 @@ function PreviewCard({ u, walk, fade }: { u: number; walk: number; fade: number 
   return (
     <g opacity={e * fade}>
       <rect x={PREVIEW.x} y={PREVIEW.y} width={PREVIEW.w} height={PREVIEW.h} rx={12} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.5} strokeDasharray="7 5" />
-      <text x={PREVIEW.x + 14} y={PREVIEW.y + 22} fontSize={11.5} fill={colors.SECONDARY} fontFamily={mono}>
+      <text x={PREVIEW.x + 14} y={PREVIEW.y + 22} fontSize={13} fill={colors.SECONDARY} fontFamily={mono}>
         preview — this change only
       </text>
       {MINI.map((d, i) => {
@@ -229,7 +230,7 @@ function StagingLane({ u, walk, moon, fade }: { u: number; walk: number; moon: n
   return (
     <g opacity={e * fade}>
       <rect x={STAGE_LANE.x} y={STAGE_LANE.y} width={STAGE_LANE.w} height={78} rx={12} fill="rgba(13,19,33,0.6)" stroke={colors.GRID} strokeWidth={1.4} />
-      <text x={STAGE_LANE.x + 14} y={STAGE_LANE.y + 20} fontSize={11.5} fill={colors.MUTED} fontFamily={mono}>
+      <text x={STAGE_LANE.x + 14} y={STAGE_LANE.y + 20} fontSize={13} fill={colors.MUTED} fontFamily={mono}>
         staging — every night, the deep walk
       </text>
       {clamp01(moon) > 0 && (
@@ -255,7 +256,7 @@ export function Render({ s }: { s: SceneState }) {
     <>
       <Camera {...s.get(scene.cam)}>
         <g opacity={fade}>
-          <text x={130} y={MAIN_Y - 14} fontSize={11.5} fill={colors.MUTED} fontFamily={mono}>
+          <text x={560} y={MAIN_Y - 14} fontSize={13} fill={colors.MUTED} fontFamily={mono}>
             main — the version people use
           </text>
         </g>

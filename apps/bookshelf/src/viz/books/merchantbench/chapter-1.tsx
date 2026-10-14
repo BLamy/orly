@@ -34,12 +34,12 @@ export function buildScene() {
   tl.caption({ at: 0.5, dur: 6.3, text: 'This benchmark does not ask for one clever purchase. It asks an agent to keep one store coherent for a simulated year.' });
   tl.tween(storeU, 1, { at: 0.9, dur: 0.8, ease: ease.enter });
   tl.tween(yearU, 1, { at: 1.5, dur: 3.5, ease: ease.draw });
-  tl.tween(cam, { x: 640, y: 350, k: 1.06 }, { at: 2.0, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 344, k: 1.02 }, { at: 2.0, dur: 1.3, ease: ease.move });
   tl.hold(6.8, 0.8);
 
   tl.caption({ at: 7.6, dur: 6.2, text: 'The environment advances one hour at a time, for eight thousand seven hundred sixty control steps.' });
   tl.tween(hourU, 1, { at: 8.1, dur: 4.6, ease: ease.linear });
-  tl.tween(cam, { x: 640, y: 344, k: 1.15 }, { at: 9.0, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 344, k: 1.03 }, { at: 9.0, dur: 1.3, ease: ease.move });
   tl.hold(13.8, 0.8);
 
   tl.caption({ at: 14.6, dur: 6.5, text: 'Demand, suppliers, and orders move every hour, while the agent receives a decision window only once every twelve hours.' });
@@ -49,12 +49,12 @@ export function buildScene() {
 
   tl.caption({ at: 21.9, dur: 6.4, text: 'The state is only partly visible. Future demand, hidden risks, and recovery schedules stay behind the observation boundary.' });
   tl.tween(hiddenU, 1, { at: 22.4, dur: 1.4, ease: ease.draw });
-  tl.tween(cam, { x: 815, y: 350, k: 1.16 }, { at: 23.0, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 720, y: 344, k: 1.03 }, { at: 23.0, dur: 1.3, ease: ease.move });
   tl.hold(28.3, 0.8);
 
   tl.caption({ at: 29.1, dur: 6.4, text: 'An early listing choice changes later demand, so one action leaves a wake through orders, cash, and store rating.' });
   tl.tween(wakeU, 1, { at: 29.6, dur: 3.4, ease: ease.draw });
-  tl.tween(cam, { x: 565, y: 365, k: 1.12 }, { at: 30.5, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 600, y: 344, k: 1.03 }, { at: 30.5, dur: 1.3, ease: ease.move });
   tl.hold(35.5, 0.8);
 
   tl.caption({ at: 36.3, dur: 6.4, text: 'At the year boundary, new demand stops, but unresolved orders keep moving until every terminal settlement lands.' });
@@ -65,7 +65,7 @@ export function buildScene() {
 
   tl.caption({ at: 43.5, dur: 6.1, text: 'The score is not a streak of short wins. It is terminal net assets after the whole ledger closes.' });
   tl.tween(ledgerU, 1, { at: 44.0, dur: 1.4, ease: ease.enter });
-  tl.tween(cam, { x: 640, y: 350, k: 1.10 }, { at: 44.8, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 344, k: 1.02 }, { at: 44.8, dur: 1.3, ease: ease.move });
   tl.hold(49.6, 0.8);
 
   tl.caption({ at: 50.4, dur: 6.5, text: 'That is the benchmark’s wager: a long episode matters only when the past keeps constraining the future.' });
@@ -110,7 +110,7 @@ export function Render({ s }: { s: SceneState }) {
         })}
         {MONTHS.map((m, i) => {
           const a = -Math.PI / 2 + ((i * 30.42 + 15) / 365) * Math.PI * 2;
-          return <text key={m} x={640 + Math.cos(a) * 282} y={350 + Math.sin(a) * 282} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO} opacity={clamp01(yearU * 12 - i)}>{m}</text>;
+          return <text key={m} x={640 + Math.cos(a) * 266} y={344 + Math.sin(a) * 266} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={clamp01(yearU * 12 - i)}>{m}</text>;
         })}
         <Store u={s.get(scene.storeU)} />
         {hourU > 0 && <g>
@@ -121,10 +121,10 @@ export function Render({ s }: { s: SceneState }) {
 
         <g opacity={s.get(scene.hiddenU)}>
           <path d="M732 164 A220 220 0 0 1 880 520" fill="none" stroke={colors.NEGATIVE} strokeWidth={18} opacity={0.14} />
-          <text x={985} y={278} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>hidden</text>
-          <text x={985} y={301} textAnchor="middle" fill={colors.MUTED} fontSize={11}>future demand</text>
-          <text x={985} y={321} textAnchor="middle" fill={colors.MUTED} fontSize={11}>risk parameters</text>
-          <text x={985} y={341} textAnchor="middle" fill={colors.MUTED} fontSize={11}>recovery times</text>
+          <text x={985} y={278} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>hidden</text>
+          <text x={985} y={301} textAnchor="middle" fill={colors.MUTED} fontSize={12}>future demand</text>
+          <text x={985} y={321} textAnchor="middle" fill={colors.MUTED} fontSize={12}>risk parameters</text>
+          <text x={985} y={341} textAnchor="middle" fill={colors.MUTED} fontSize={12}>recovery times</text>
         </g>
 
         {s.get(scene.wakeU) > 0 && Array.from({ length: 8 }, (_, i) => {
@@ -138,18 +138,23 @@ export function Render({ s }: { s: SceneState }) {
 
         <g opacity={s.get(scene.horizonU)}>
           <path d="M510 575 H770" stroke={colors.NEGATIVE} strokeWidth={4} strokeLinecap="round" />
-          <text x={640} y={606} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>control horizon · no new demand</text>
+          <text x={784} y={580} fill={colors.NEGATIVE} fontSize={13} fontFamily={MONO}>control horizon · no new demand</text>
         </g>
         <g opacity={s.get(scene.settleU)}>
           {[0, 1, 2, 3].map((i) => <circle key={i} cx={lerp(430, 850, clamp01(s.get(scene.settleU) * 1.8 - i * 0.22))} cy={575} r={8} fill={i === 3 ? colors.POSITIVE : colors.WARM} />)}
         </g>
-        <g opacity={s.get(scene.ledgerU)} transform="translate(442 495)">
-          <rect width={396} height={82} rx={18} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2.5} />
-          <text x={198} y={30} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>terminal objective</text>
-          <text x={198} y={59} textAnchor="middle" fill={colors.POSITIVE} fontSize={24} fontWeight={850}>final net assets</text>
+        <g opacity={s.get(scene.ledgerU)} transform="translate(490 495)">
+          <rect width={300} height={82} rx={18} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2.5} />
+          <text x={150} y={30} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>terminal objective</text>
+          <text x={150} y={59} textAnchor="middle" fill={colors.POSITIVE} fontSize={24} fontWeight={850}>final net assets</text>
         </g>
       </g>
     </Camera>
+    <g opacity={s.get(scene.windowsU) * dim}>
+      <circle cx={52} cy={326} r={5} fill={colors.ACCENT} />
+      <text x={66} y={331} fill={colors.MUTED} fontSize={14}>decision window</text>
+      <text x={66} y={352} fill={colors.MUTED} fontSize={14}>every twelve hours</text>
+    </g>
     <g opacity={s.get(scene.endU)}>
       <rect x={180} y={230} width={920} height={206} rx={28} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={2.5} />
       <text x={640} y={307} textAnchor="middle" fill={colors.TEXT} fontSize={35} fontWeight={850}>The past stays on the ledger</text>

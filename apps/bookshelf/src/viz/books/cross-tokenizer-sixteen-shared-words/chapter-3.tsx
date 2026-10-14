@@ -250,6 +250,7 @@ export function buildScene() {
 
   // BEAT 0 — the skipped span returns
   let t = CAPTION_AT(0);
+  tl.tween(cam, { x: 640, y: 260, k: 1 }, { at: 0, dur: 1.4, ease: ease.move }); // pan the tape to the vertical middle of the frame
   tl.tween(tapeU, 1, { at: t + 0.2, dur: 1.4, ease: ease.draw });
   tl.tween(spanU, 1, { at: t + 2.0, dur: 0.8, ease: ease.pop });
 
@@ -514,7 +515,7 @@ export function Render({ s }: { s: SceneState }) {
           <Txt x={METER.x0} y={METER.yS - 40} size={16} fill={INK.muted} opacity={clamp01(pS * 3)}>
             {logu < 0.5 ? 'Illustrative path probabilities · bar length = probability of the observed token path' : 'Illustrative path probabilities · bar length = −log q'}
           </Txt>
-          <MathLabel tex={'q_T^{(r)}=\\prod_{j\\in S_r^{T}}\\pi_T(v_j\\mid x,v_{<j})'} x={760} y={METER.yP + 62} fontSize={24} boxWidth={520} opacity={win(b, 1, 1) * clamp01(pT * 2)} />
+          <MathLabel tex={'q_T^{(r)}=\\prod_{j\\in S_r^{T}}\\pi_T(v_j\\mid x,v_{<j})'} x={760} y={METER.yP + 62} fontSize={24} boxWidth={720} opacity={win(b, 1, 1) * clamp01(pT * 2)} />
           {/* beat 2 — the difference and its square */}
           <g opacity={diff}>
             <line x1={sEnd} y1={METER.yS + 16} x2={sEnd} y2={METER.yT1 - 16} stroke={INK.text} strokeWidth={1.5} strokeDasharray="4 3" />
@@ -524,8 +525,8 @@ export function Render({ s }: { s: SceneState }) {
               {`difference ${SPAN_DIFF.toFixed(4)}`}
             </Txt>
           </g>
-          <MathLabel tex={'\\left(\\log q_S^{(r)}-\\log q_T^{(r)}\\right)^2'} x={640} y={METER.yP + 6} fontSize={28} boxWidth={420} opacity={win(b, 2, 3) * diff} />
-          <Txt x={870} y={METER.yP + 12} size={28} mono fill={INK.mismatch} weight={600} opacity={sq}>
+          <MathLabel tex={'\\left(\\log q_S^{(r)}-\\log q_T^{(r)}\\right)^2'} x={620} y={METER.yP + 6} fontSize={26} boxWidth={640} opacity={win(b, 2, 3) * diff} />
+          <Txt x={930} y={METER.yP + 12} size={28} mono fill={INK.mismatch} weight={600} opacity={sq}>
             {`= ${SPAN_MSE.toFixed(5)}`}
           </Txt>
           <Txt x={METER.x0} y={METER.yP + 54} size={16} fill={INK.muted} opacity={win(b, 2, 3) * sq}>
@@ -535,8 +536,8 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ----------------------------------------- the λ dial (beats 3–8) */}
         <Dial lam={lam} opacity={dial * keep} />
-        <MathLabel tex={'\\mathcal{L}_{\\lambda}=\\mathcal{L}_{1:1}+\\lambda\\,\\mathcal{L}_{\\mathrm{span}}'} x={DIAL.cx} y={DIAL.cy - DIAL.r - 62}
-          fontSize={26} boxWidth={340} opacity={dial * keep} />
+        <MathLabel tex={'\\mathcal{L}_{\\lambda}=\\mathcal{L}_{1:1}+\\lambda\\,\\mathcal{L}_{\\mathrm{span}}'} x={1000} y={DIAL.cy - DIAL.r - 62}
+          fontSize={22} boxWidth={440} opacity={dial * keep} />
         <Txt x={DIAL.cx} y={DIAL.cy + 62} size={16} anchor="middle" fill={INK.muted} opacity={win(b, 3, 3) * clamp01(lam * 8)}>
           any λ &gt; 0 supervises every mismatch group
         </Txt>
@@ -548,8 +549,8 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={clamp01(plot * 3) * keep}>
           <Axes x={X} y={Y} reveal={plot} xTicks={6} yTicks={5} fontSize={15} />
           <Txt x={PLOT.x0 - 12} y={PLOT.y1 - 24} size={18} fill={INK.text} weight={600} opacity={clamp01(plot * 2 - 1)}>Full-average accuracy (%)</Txt>
-          {/* x-axis title inside the plot's lower-right corner; the Table 11 chip alone owns the row under the axis */}
-          <Txt x={PLOT.x1 - 6} y={PLOT.y0 - 12} size={18} anchor="end" fill={INK.text} weight={600} opacity={clamp01(plot * 2 - 1)}>span-MSE weight λ</Txt>
+          {/* x-axis title on its own row below the tick labels and the Table 11 chip, clear of the data labels */}
+          <Txt x={PLOT.x1} y={PLOT.y0 + 68} size={18} anchor="end" fill={INK.text} weight={600} opacity={clamp01(plot * 2 - 1)}>span-MSE weight λ</Txt>
           <Chip x={PLOT.x0} y={PLOT.y0 + 40} text="Paper Table 11 · Qwen→Llama · step 100" color={INK.mismatch} size={15} anchor="start" opacity={clamp01(plot * 2 - 1)} />
           <Txt x={PLOT.x0 + 8} y={PLOT.y1 + 2} size={13} fill={INK.muted} opacity={clamp01(plot * 2 - 1)}>
             full = mean of the Math and Code domain means
@@ -564,15 +565,18 @@ export function Render({ s }: { s: SceneState }) {
               {`λ = 0 · ${BASELINE.toFixed(2)}%`}
             </Txt>
           </g>
-          {/* cursor + path + points */}
-          <g opacity={on(b, 5)}>
+          {/* cursor + path + points: the reported points and a faint sweep appear on beat 4; the cursor walks them and the bright path draws from beat 5 */}
+          <g opacity={on(b, 4)}>
+            <path d={`M ${sweepPts.map((p) => `${p.x},${p.y}`).join(' L ')}`} fill="none" stroke={INK.teacher} strokeWidth={2} strokeDasharray="3 5" opacity={0.3} />
             <line x1={curX} y1={PLOT.y0} x2={curX} y2={PLOT.y1} stroke={INK.teacher} strokeWidth={1.2} strokeDasharray="3 4" opacity={0.7} />
-            {pathD && <path d={pathD} fill="none" stroke={INK.teacher} strokeWidth={2.5} strokeLinejoin="round" />}
+            <g opacity={on(b, 5)}>
+              {pathD && <path d={pathD} fill="none" stroke={INK.teacher} strokeWidth={2.5} strokeLinejoin="round" />}
+            </g>
             {sweepPts.map((p, i) => (
-              <g key={i} opacity={p.seen ? 1 : 0}>
+              <g key={i} opacity={p.seen ? 1 : 0.4}>
                 <circle cx={p.x} cy={p.y} r={6.5} fill={i === 0 ? INK.strict : INK.teacher} stroke={INK.bg} strokeWidth={2} />
                 {i > 0 && (
-                  <Txt x={p.x} y={p.y + (FULL_AVG[i] < FULL_AVG[i - 1] ? 26 : -16)} size={14} anchor="middle" mono fill={INK.muted} opacity={i === LAMBDAS.length - 1 ? 0 : 1}>
+                  <Txt x={p.x} y={p.y + (FULL_AVG[i] < FULL_AVG[i - 1] ? 26 : -16)} size={14} anchor="middle" mono fill={INK.muted} opacity={p.seen && i < LAMBDAS.length - 1 ? 1 : 0}>
                     {FULL_AVG[i].toFixed(2)}
                   </Txt>
                 )}
@@ -646,7 +650,7 @@ export function Render({ s }: { s: SceneState }) {
         {recap > 0.003 && (
           <g opacity={recap}>
             {/* tape miniature */}
-            <g transform={`translate(${300 - 150}, ${RECAP_Y})`}>
+            <g transform={`translate(${260 - 150}, ${RECAP_Y})`}>
               {[0, 2, 8, 15, 16].map((bb, i, arr) => i < arr.length - 1 && (
                 <g key={bb}>
                   <rect x={(bb / 16) * 300} y={-24} width={((arr[i + 1] - bb) / 16) * 300 - 3} height={20} rx={3} fill={INK.student} opacity={bb === 2 ? 0.25 : 0.7} />
@@ -656,7 +660,7 @@ export function Render({ s }: { s: SceneState }) {
               ))}
               <rect x={(2 / 16) * 300} y={-24} width={(6 / 16) * 300 - 3} height={48} fill="url(#ctk3-hatch)" opacity={0.6} />
             </g>
-            <Txt x={300} y={RECAP_Y + 62} size={20} anchor="middle" fill={INK.text}>align matching byte spans</Txt>
+            <Txt x={260} y={RECAP_Y + 62} size={18} anchor="middle" fill={INK.text}>align matching byte spans</Txt>
             {/* comb miniature */}
             <g transform={`translate(${640 - 150}, ${RECAP_Y})`}>
               <line x1={0} y1={0} x2={300} y2={0} stroke={colors.ink.axis} />
@@ -667,10 +671,10 @@ export function Render({ s }: { s: SceneState }) {
                 </g>
               ))}
             </g>
-            <Txt x={640} y={RECAP_Y + 62} size={20} anchor="middle" fill={INK.text}>compare sixteen shared predictions</Txt>
+            <Txt x={640} y={RECAP_Y + 62} size={18} anchor="middle" fill={INK.text}>compare sixteen shared predictions</Txt>
             {/* dial miniature */}
-            <Dial lam={0} opacity={1} cx={980} cy={RECAP_Y + 10} r={40} labels={false} />
-            <Txt x={980} y={RECAP_Y + 62} size={20} anchor="middle" fill={INK.text}>judge added supervision by learning</Txt>
+            <Dial lam={0} opacity={1} cx={1030} cy={RECAP_Y + 10} r={40} labels={false} />
+            <Txt x={1030} y={RECAP_Y + 62} size={18} anchor="middle" fill={INK.text}>judge added supervision by learning</Txt>
           </g>
         )}
         <Txt x={640} y={500} size={36} anchor="middle" weight={700} opacity={end}>

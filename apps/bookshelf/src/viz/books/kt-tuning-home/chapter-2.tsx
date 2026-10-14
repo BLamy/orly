@@ -32,9 +32,11 @@ const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 
 // ---------------------------------------------------------------------------
 // Layout — YAML doc left, model silhouette right, launch bar bottom.
+// Everything sits inside x 60..1140 so no camera framing crops it.
 // ---------------------------------------------------------------------------
 
-const DOC = { x: 110, y: 120, w: 430, h: 360 } as const;
+const DOC = { x: 60, y: 140, w: 460, h: 350 } as const;
+const PIP = { x: DOC.x, y: 70, w: DOC.w, h: 52 } as const;
 const YAML_LINES = [
   { t: 'model_name_or_path: DeepSeek-V3-bf16', k: 'plain' },
   { t: 'stage: sft', k: 'plain' },
@@ -48,14 +50,27 @@ const YAML_LINES = [
   { t: 'chunk_size: 8192', k: 'kt' },
 ] as const;
 
-const MODEL = { x: 650, y: 130, w: 420, h: 300 } as const;
-const ENGINE_OLD = { x: MODEL.x + MODEL.w / 2, y: MODEL.y + 208 } as const;
+const MODEL = { x: 620, y: 140, w: 420, h: 300 } as const;
+const MODEL_CX = MODEL.x + MODEL.w / 2;
+// the stack: attention, router, [experts slot], LoRA adapters
+const ROW_X = MODEL.x + 30;
+const ROW_W = MODEL.w - 60;
+const ROW_H = 36;
+const rowY = (i: number): number => MODEL.y + 70 + i * 48;
+const EXPERT_Y = rowY(2);
+const UNTOUCHED = [
+  { t: 'attention (GPU)', row: 0 },
+  { t: 'router (GPU)', row: 1 },
+  { t: 'LoRA adapters (GPU, training)', row: 3 },
+] as const;
+
+const RULE = { x: MODEL.x - 20, y: MODEL.y + MODEL.h + 16, w: MODEL.w + 40, h: 64 } as const;
 
 const LAUNCH = { x: 140, y: 540, w: 1000, h: 40 } as const;
 
-const CAM_DOC: CameraState = { x: 340, y: 320, k: 1.35 };
-const CAM_MODEL: CameraState = { x: 860, y: 300, k: 1.3 };
-const CAM_WIDE: CameraState = { x: 640, y: 330, k: 1.02 };
+const CAM_DOC: CameraState = { x: 290, y: 300, k: 1.35 };
+const CAM_MODEL: CameraState = { x: 580, y: 292, k: 1.2 };
+const CAM_WIDE: CameraState = { x: 600, y: 320, k: 1.05 };
 
 export interface Scene {
   tl: Timeline;
@@ -182,9 +197,10 @@ export function Render({ s }: { s: SceneState }) {
   const closeU = s.get(scene.closeU);
 
   const dimAll = 1 - closeU * 0.86;
-  // engine swap: stock module rises & fades, KT engine slides in from right
-  const oldY = ENGINE_OLD.y - swapU * 120;
-  const newX = MODEL.x + MODEL.w + 120 - swapU * (MODEL.w / 2 + 120);
+  // engine swap: stock module slides up behind the stack and fades;
+  // the KT engine slides in from the right into the same experts slot
+  const stockY = EXPERT_Y - swapU * 84;
+  const ktX = MODEL_CX + (1 - swapU) * 110;
 
   return (
     <>
@@ -193,11 +209,11 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={dimAll}>
           {/* ---- pip chip ---- */}
           <g opacity={pkgU}>
-            <rect x={DOC.x} y={64} width={DOC.w} height={34} rx={9} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.3} />
-            <text x={DOC.x + DOC.w / 2} y={86} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily="ui-monospace, monospace">
+            <rect x={PIP.x} y={PIP.y} width={PIP.w} height={PIP.h} rx={9} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.3} />
+            <text x={PIP.x + PIP.w / 2} y={PIP.y + 22} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily="ui-monospace, monospace">
               pip install "ktransformers[sft]"
             </text>
-            <text x={DOC.x + DOC.w + 14} y={86} fill={colors.MUTED} fontSize={9.5}>
+            <text x={PIP.x + PIP.w / 2} y={PIP.y + 42} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               → kt-kernel · transformers-kt · accelerate-kt
             </text>
           </g>
@@ -205,7 +221,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---- the YAML ---- */}
           <g>
             <rect x={DOC.x} y={DOC.y} width={DOC.w} height={DOC.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} opacity={Math.min(1, docU * 3)} />
-            <text x={DOC.x + 16} y={DOC.y + 26} fill={colors.MUTED} fontSize={11} fontFamily="ui-monospace, monospace" opacity={Math.min(1, docU * 3)}>
+            <text x={DOC.x + 16} y={DOC.y + 26} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace" opacity={Math.min(1, docU * 3)}>
               train_lora/deepseek_v3_lora_sft_kt.yaml
             </text>
             {YAML_LINES.map((ln, i) => {
@@ -215,7 +231,7 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={i} opacity={u}>
                   {glow > 0.3 && <rect x={DOC.x + 10} y={DOC.y + 40 + i * 30} width={DOC.w - 20} height={24} rx={5} fill={colors.WARM} opacity={0.14 * glow} stroke={colors.WARM} strokeWidth={1} />}
-                  <text x={DOC.x + 20} y={DOC.y + 57 + i * 30} fill={isKt && glow > 0.3 ? colors.WARM : ln.k === 'lora' ? colors.ACCENT : colors.MUTED} fontSize={11.5} fontFamily="ui-monospace, monospace">
+                  <text x={DOC.x + 20} y={DOC.y + 57 + i * 30} fill={isKt && glow > 0.3 ? colors.WARM : ln.k === 'lora' ? colors.ACCENT : colors.MUTED} fontSize={12.5} fontFamily="ui-monospace, monospace">
                     {ln.t}
                   </text>
                 </g>
@@ -226,32 +242,32 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---- the model silhouette ---- */}
           <g opacity={modelU}>
             <rect x={MODEL.x} y={MODEL.y} width={MODEL.w} height={MODEL.h} rx={14} fill="none" stroke={colors.GRID} strokeWidth={1.4} />
-            <text x={MODEL.x + 16} y={MODEL.y + 26} fill={colors.MUTED} fontSize={11.5}>
+            <text x={MODEL.x + 16} y={MODEL.y + MODEL.h - 14} fill={colors.MUTED} fontSize={12.5}>
               the loaded model
             </text>
+            {/* the stock experts module: drawn first so the stack covers it as it slides up */}
+            <g opacity={1 - swapU * 0.9}>
+              <rect x={ROW_X} y={stockY} width={ROW_W} height={ROW_H} rx={8} fill={colors.PANEL} stroke={colors.MUTED} strokeWidth={1.1} strokeDasharray={swapU > 0.05 ? '6 4' : undefined} />
+              <text x={MODEL_CX} y={stockY + 23} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+                mlp.experts — stock module
+              </text>
+            </g>
             {/* untouched stack */}
-            {['attention (GPU)', 'router (GPU)', 'LoRA adapters (GPU, training)'].map((t, i) => (
+            {UNTOUCHED.map(({ t, row }) => (
               <g key={t}>
-                <rect x={MODEL.x + 40} y={MODEL.y + 44 + i * 44} width={MODEL.w - 80} height={34} rx={8} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.1} />
-                <text x={MODEL.x + MODEL.w / 2} y={MODEL.y + 66 + i * 44} textAnchor="middle" fill={colors.TEXT} fontSize={11.5}>
+                <rect x={ROW_X} y={rowY(row)} width={ROW_W} height={ROW_H} rx={8} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.1} />
+                <text x={MODEL_CX} y={rowY(row) + 23} textAnchor="middle" fill={colors.TEXT} fontSize={12.5}>
                   {t}
                 </text>
               </g>
             ))}
-            {/* the old experts module, lifting out */}
-            <g opacity={1 - swapU * 0.9}>
-              <rect x={MODEL.x + 40} y={oldY - 17} width={MODEL.w - 80} height={34} rx={8} fill={colors.PANEL} stroke={colors.MUTED} strokeWidth={1.1} strokeDasharray={swapU > 0.05 ? '6 4' : undefined} />
-              <text x={MODEL.x + MODEL.w / 2} y={oldY + 5} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
-                mlp.experts — stock module
-              </text>
-            </g>
             {/* the KT engine, sliding in */}
             <g opacity={Math.min(1, swapU * 2)}>
-              <rect x={newX - (MODEL.w - 80) / 2} y={ENGINE_OLD.y + 26} width={MODEL.w - 80} height={44} rx={8} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.5} />
-              <text x={newX} y={ENGINE_OLD.y + 44} textAnchor="middle" fill={colors.POSITIVE} fontSize={11.5}>
+              <rect x={ktX - ROW_W / 2} y={EXPERT_Y} width={ROW_W} height={44} rx={8} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.5} />
+              <text x={ktX} y={EXPERT_Y + 19} textAnchor="middle" fill={colors.POSITIVE} fontSize={13}>
                 KTransformersExperts
               </text>
-              <text x={newX} y={ENGINE_OLD.y + 62} textAnchor="middle" fill={colors.MUTED} fontSize={9} fontFamily="ui-monospace, monospace">
+              <text x={ktX} y={EXPERT_Y + 36} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily="ui-monospace, monospace">
                 generate_op: KSFTExpertsCPU · out_device: cuda
               </text>
             </g>
@@ -259,11 +275,11 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* injection rule card */}
           <g opacity={ruleU}>
-            <rect x={MODEL.x + 30} y={MODEL.y + MODEL.h + 16} width={MODEL.w - 60} height={64} rx={10} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.2} />
-            <text x={MODEL.x + 46} y={MODEL.y + MODEL.h + 38} fill={colors.SECONDARY} fontSize={9.5} fontFamily="ui-monospace, monospace">
+            <rect x={RULE.x} y={RULE.y} width={RULE.w} height={RULE.h} rx={10} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.2} />
+            <text x={RULE.x + 16} y={RULE.y + 24} fill={colors.SECONDARY} fontSize={11.5} fontFamily="ui-monospace, monospace">
               {'match: name: "^model\\.layers\\..*\\.mlp\\.experts$"'}
             </text>
-            <text x={MODEL.x + 46} y={MODEL.y + MODEL.h + 58} fill={colors.MUTED} fontSize={9.5} fontFamily="ui-monospace, monospace">
+            <text x={RULE.x + 16} y={RULE.y + 46} fill={colors.MUTED} fontSize={11.5} fontFamily="ui-monospace, monospace">
               replace: ktransformers.operators.experts.KTransformersExperts
             </text>
           </g>
@@ -271,11 +287,11 @@ export function Render({ s }: { s: SceneState }) {
           {/* launch bar */}
           <g opacity={launchU}>
             <rect x={LAUNCH.x} y={LAUNCH.y} width={LAUNCH.w} height={LAUNCH.h} rx={10} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
-            <text x={LAUNCH.x + 16} y={LAUNCH.y + 25} fill={colors.TEXT} fontSize={11} fontFamily="ui-monospace, monospace">
+            <text x={LAUNCH.x + 16} y={LAUNCH.y + 25} fill={colors.TEXT} fontSize={12.5} fontFamily="ui-monospace, monospace">
               $ accelerate launch --config_file fsdp2_kt_int8.yaml src/train.py qwen3_5moe_lora_sft_kt.yaml
             </text>
             {runU > 0 && (
-              <text x={LAUNCH.x + LAUNCH.w - 16} y={LAUNCH.y + 25} textAnchor="end" fill={colors.POSITIVE} fontSize={11} fontFamily="ui-monospace, monospace">
+              <text x={LAUNCH.x + LAUNCH.w - 16} y={LAUNCH.y + 25} textAnchor="end" fill={colors.POSITIVE} fontSize={13} fontFamily="ui-monospace, monospace">
                 loss {(2.31 - runU * 0.84).toFixed(2)} ▾
               </text>
             )}

@@ -212,7 +212,7 @@ const ROW_GD = 445;
 const GAUGE = { x0: 800, x1: 1200, y: 150 } as const;
 
 // mean-then-normalize sketch (bottom left)
-const SK = { ox: 170, oy: 468, scale: 115 } as const;
+const SK = { ox: 150, oy: 468, scale: 130 } as const;
 
 // rulers under the ribbons
 const RULER_Y = [458, 504, 550] as const;
@@ -287,7 +287,7 @@ export function buildScene() {
 
   // BEAT 0 — picture, tokens, the rightward relation; camera drifts to the tokens
   tl.tween(picU, 1, { at: 0.5, dur: 1.2, ease: ease.draw });
-  tl.tween(relU, 1, { at: 2.4, dur: 1.0, ease: ease.draw });
+  tl.tween(relU, 1, { at: 1.6, dur: 1.0, ease: ease.draw });
   tl.tween(cam, { x: 640, y: 300, k: 1.18 }, { at: 4.2, dur: 1.5, ease: ease.move });
 
   // BEAT 1 — tokens unfold into ribbons; picture shrinks to the corner
@@ -516,29 +516,30 @@ export function Render({ s }: { s: SceneState }) {
           <Ribbon y={ROW_CUP} h={H_CUP} color={INK.cup} name="cup" unfold={unfold} opacity={clamp01(shrink * 2)}
             highlightCell={hotCell} cellTint={dotLive * (1 - clamp01(step - 11.5))} />
           <Txt x={RIB.x0} y={READ.head} size={11} fill={INK.muted} opacity={unfold}>Illustrative activations · 4 displayed dimensions</Txt>
-          <MathLabel tex={'h \\in \\mathbb{R}^{d_{\\text{model}}}'} x={RIB_RIGHT + 14} y={READ.head} fontSize={15} anchor="start" boxWidth={110} color={INK.muted} opacity={unfold} />
+          <MathLabel tex={'h \\in \\mathbb{R}^{d_{\\text{model}}}'} x={RIB.x0 - 14} y={READ.head} fontSize={15} anchor="end" boxWidth={110} color={INK.muted} opacity={unfold} />
         </g>
 
         {/* ---- answer gauge + sensitivity arrows ---- */}
         <g opacity={gauge}>
-          <Txt x={(GAUGE.x0 + GAUGE.x1) / 2} y={GAUGE.y - 30} size={13} anchor="middle" fill={INK.hx} weight={600}>horizontal answer score</Txt>
-          <MathLabel tex={'s_x = \\text{logit}(\\text{right}) - \\text{logit}(\\text{left})'} x={(GAUGE.x0 + GAUGE.x1) / 2} y={GAUGE.y - 8} fontSize={15} boxWidth={420} />
-          <line x1={GAUGE.x0} y1={GAUGE.y + 18} x2={lerp(GAUGE.x0, GAUGE.x1, gauge)} y2={GAUGE.y + 18} stroke={colors.ink.axis} strokeWidth={2} />
-          <Txt x={GAUGE.x0} y={GAUGE.y + 38} size={11} fill={INK.muted}>left (−)</Txt>
-          <Txt x={GAUGE.x1} y={GAUGE.y + 38} size={11} anchor="end" fill={INK.muted}>right (+)</Txt>
+          <Txt x={(GAUGE.x0 + GAUGE.x1) / 2} y={GAUGE.y - 34} size={14} anchor="middle" fill={INK.hx} weight={600}>horizontal answer score</Txt>
+          <MathLabel tex={'s_x = \\text{logit}(\\text{right}) - \\text{logit}(\\text{left})'} x={(GAUGE.x0 + GAUGE.x1) / 2} y={GAUGE.y - 8} fontSize={16} boxWidth={420} />
+          <line x1={GAUGE.x0} y1={GAUGE.y + 18} x2={GAUGE.x1} y2={GAUGE.y + 18} stroke={colors.ink.axis} strokeWidth={2} />
+          <line x1={lerp(GAUGE.x0, GAUGE.x1, gauge)} y1={GAUGE.y + 18} x2={lerp(GAUGE.x0, GAUGE.x1, gauge)} y2={GAUGE.y + 18} stroke={INK.hx} strokeWidth={3} />
+          <Txt x={GAUGE.x0} y={GAUGE.y + 40} size={12} fill={INK.muted}>left (−)</Txt>
+          <Txt x={GAUGE.x1} y={GAUGE.y + 40} size={12} anchor="end" fill={INK.muted}>right (+)</Txt>
           <line x1={(GAUGE.x0 + GAUGE.x1) / 2} y1={GAUGE.y + 10} x2={(GAUGE.x0 + GAUGE.x1) / 2} y2={GAUGE.y + 26} stroke={INK.muted} />
-          <circle cx={lerp(GAUGE.x0, GAUGE.x1, gaugeNeedle)} cy={GAUGE.y + 18} r={7} fill={INK.hx} />
-          <Txt x={lerp(GAUGE.x0, GAUGE.x1, gaugeNeedle)} y={GAUGE.y + 52} size={11} anchor="middle" fill={INK.hx} opacity={gauge}>which hidden changes raise this?</Txt>
+          <circle cx={lerp(GAUGE.x0, GAUGE.x1, gaugeNeedle)} cy={GAUGE.y + 18} r={8} fill={INK.hx} />
+          <Txt x={lerp(GAUGE.x0, GAUGE.x1, gaugeNeedle)} y={GAUGE.y + 58} size={13} anchor="middle" fill={INK.hx} opacity={gauge}>which hidden changes raise this?</Txt>
         </g>
         {/* sensitivity arrows: from each ribbon's right edge up toward the gauge */}
         <Vec x1={RIB_RIGHT + 10} y1={ROW_APPLE} x2={GAUGE.x0 + 40} y2={GAUGE.y + 40} grow={sens} color={INK.apple} width={2.2} head={9} opacity={clamp01(sens * 3)} />
         <Vec x1={RIB_RIGHT + 10} y1={ROW_CUP} x2={GAUGE.x0 + 60} y2={GAUGE.y + 48} grow={sens} color={INK.cup} width={2.2} head={9} opacity={clamp01(sens * 3)} />
-        <Txt x={RIB_RIGHT + 60} y={ROW_APPLE - 22} size={12} fill={INK.muted} opacity={clamp01(sens * 2 - 1) * (1 - on(b, 3))}>gradient of the score</Txt>
+        <Txt x={800} y={ROW_CUP - 34} size={13} fill={INK.muted} opacity={clamp01(sens * 2 - 1) * (1 - on(b, 3))}>gradient of the score</Txt>
         <Chip x={RIB_RIGHT + 10} y={ROW_CUP + 46} text="LayerwiseFixedContrastGradient.extract" color={INK.muted} anchor="start" opacity={win(b, 2, 3) * clamp01(sens * 3)} />
 
         {/* ---- gradient pair cancellation ---- */}
         <g opacity={grad}>
-          <Txt x={GP.x0} y={ROW_GQ - 36} size={11} fill={INK.muted}>illustrative gradient pair</Txt>
+          <Txt x={GP.x0} y={ROW_GQ - 36} size={12} fill={INK.muted}>gradient pair · score gradients, query and reference</Txt>
           <GradRow y={ROW_GQ} g={G_Q} label="g_q" color={INK.apple} opacity={1} cancel={cancel} />
           <GradRow y={ROW_GR} g={G_R} label="g_r" color={INK.cup} opacity={1} cancel={cancel} />
           <MathLabel tex={'\\tfrac{1}{2}(g_q - g_r)'} x={GP.x0 - 10} y={ROW_GD} fontSize={15} anchor="end" boxWidth={120} color={INK.hx} opacity={clamp01(cancel)} />
@@ -549,15 +550,15 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- mean THEN normalize sketch ---- */}
         <g opacity={sketchO}>
-          <Txt x={SK.ox - 90} y={SK.oy - 112} size={12} fill={INK.muted} opacity={clamp01(sketch * 3)}>per-example differences</Txt>
-          <Txt x={SK.ox - 90} y={SK.oy + 108} size={10.5} fill={INK.muted} opacity={clamp01(sketch * 3)}>examples · templates · original + swapped</Txt>
+          <Txt x={SK.ox - 90} y={SK.oy - 112} size={13} fill={INK.muted} opacity={clamp01(sketch * 3)}>per-example differences</Txt>
+          <Txt x={SK.ox - 90} y={SK.oy + 108} size={12} fill={INK.muted} opacity={clamp01(sketch * 3)}>examples · templates · original + swapped</Txt>
           {SAMPLES.map((p, i) => {
             const g = clamp01(sketch * SAMPLES.length - i);
             const faded = 1 - 0.75 * mean;
             return (
               <g key={i} opacity={g * faded}>
                 <Vec x1={SK.ox} y1={SK.oy} x2={SK.ox + p.x * SK.scale} y2={SK.oy - p.y * SK.scale} grow={g} color={INK.hx} width={1.6} head={7} opacity={0.75} />
-                <Txt x={SK.ox + p.x * SK.scale + 8} y={SK.oy - p.y * SK.scale + 4} size={10} fill={INK.muted} opacity={g}>{p.tag}</Txt>
+                <Txt x={SK.ox + p.x * SK.scale + 8} y={SK.oy - p.y * SK.scale + 4} size={12} fill={INK.text} opacity={g}>{p.tag}</Txt>
               </g>
             );
           })}
@@ -565,10 +566,10 @@ export function Render({ s }: { s: SceneState }) {
           <Vec x1={SK.ox} y1={SK.oy} x2={SK.ox + lerp(MEAN.x, UNIT.x, norm) * SK.scale} y2={SK.oy - lerp(MEAN.y, UNIT.y, norm) * SK.scale}
             grow={mean} color={INK.hx} width={3.4} head={11} opacity={mean} />
           <circle cx={SK.ox} cy={SK.oy} r={3} fill={INK.muted} opacity={clamp01(sketch * 3)} />
-          <Txt x={SK.ox + 30} y={SK.oy + 24} size={12} fill={INK.hx} opacity={mean * (1 - norm)}>{`mean · length ${MEAN_LEN.toFixed(1)}`}</Txt>
-          <Txt x={SK.ox + 30} y={SK.oy + 24} size={12} fill={INK.hx} opacity={norm}>normalized · length 1.0</Txt>
-          <MathLabel tex={'v_x = \\dfrac{\\bar g}{\\lVert \\bar g \\rVert}'} x={SK.ox + 150} y={SK.oy - 60} fontSize={15} boxWidth={160} color={INK.hx} opacity={norm} />
-          <Chip x={SK.ox - 90} y={SK.oy + 128} text="_unit_axes: mean, then L2 normalize" color={INK.muted} anchor="start" opacity={clamp01(mean * 2)} />
+          <Txt x={SK.ox - 90} y={SK.oy + 84} size={13} fill={INK.hx} opacity={mean * (1 - norm)}>{`mean · length ${MEAN_LEN.toFixed(1)}`}</Txt>
+          <Txt x={SK.ox - 90} y={SK.oy + 84} size={13} fill={INK.hx} opacity={norm}>normalized · length 1.0</Txt>
+          <MathLabel tex={'v_x = \\dfrac{\\bar g}{\\lVert \\bar g \\rVert}'} x={SK.ox + 150} y={SK.oy - 60} fontSize={16} boxWidth={160} color={INK.hx} opacity={norm} />
+          <Chip x={SK.ox - 90} y={SK.oy + 130} text="_unit_axes: mean, then L2 normalize" color={INK.muted} size={12} anchor="start" opacity={clamp01(mean * 2)} />
         </g>
 
         {/* ---- three rulers under the ribbons ---- */}
@@ -591,11 +592,12 @@ export function Render({ s }: { s: SceneState }) {
                     </g>
                   );
                 })}
-                <Txt x={RIB_RIGHT + 12} y={y + 4} size={11} fill={r.color}>{`+ ${r.pos} · − ${r.neg}`}</Txt>
+                <Txt x={RIB_RIGHT + 12} y={y + 4} size={12} fill={r.color}>{`+ ${r.pos} · − ${r.neg}`}</Txt>
               </g>
             );
           })}
-          <Txt x={RIB.x0} y={RULER_Y[0] - 30} size={11} fill={INK.muted} opacity={clamp01(ruler)}>implementation signs: right / below / close</Txt>
+          <Txt x={RIB.x0} y={RULER_Y[0] - 30} size={12} fill={INK.muted} opacity={clamp01(ruler)}>implementation signs: right / below / close</Txt>
+          <Txt x={RIB.x0} y={RULER_Y[2] + 46} size={12} fill={INK.muted} opacity={clamp01(ruler - 2)}>each ruler is one readout direction: v · h gives one coordinate</Txt>
           <Chip x={RIB_RIGHT + 40} y={RULER_Y[0] - 34} text="axes fixed" color={INK.muted} anchor="start" opacity={lock} />
         </g>
 
@@ -607,7 +609,7 @@ export function Render({ s }: { s: SceneState }) {
           <Vec x1={BASIS.ox} y1={BASIS.oy} x2={BASIS.ox + VX[0] * BASIS.scale} y2={BASIS.oy - VX[1] * BASIS.scale} grow={basis} color={INK.hx} width={2.6} label="vₓ" labelSize={14} />
           <Vec x1={BASIS.ox} y1={BASIS.oy} x2={BASIS.ox + VY[0] * BASIS.scale} y2={BASIS.oy - VY[1] * BASIS.scale} grow={basis} color={INK.vy} width={2.6} label="v_y" labelSize={14} />
           <Vec x1={BASIS.ox} y1={BASIS.oy} x2={BASIS.ox - 0.5 * BASIS.scale} y2={BASIS.oy - 0.35 * BASIS.scale} grow={basis} color={INK.dz} width={2.6} label="v_z" labelSize={14} />
-          <Txt x={BASIS.ox + 60} y={BASIS.oy + 60} size={10.5} anchor="middle" fill={INK.muted}>symbolic sketch of the four-cell example</Txt>
+          <Txt x={BASIS.ox + 60} y={BASIS.oy + 60} size={12} anchor="middle" fill={INK.muted}>symbolic sketch of the four-cell example</Txt>
         </g>
 
         {/* ---- coordinate readouts (accumulating dot products) ---- */}
@@ -631,12 +633,12 @@ export function Render({ s }: { s: SceneState }) {
               })}
             </g>
           ))}
-          <Txt x={READ.label} y={ROW_CUP + 32} size={11} fill={INK.muted} opacity={clamp01(step - 11)}>forward pass only · no gradients</Txt>
+          <Txt x={READ.label} y={ROW_CUP + 32} size={12} fill={INK.muted} opacity={clamp01(step - 11)}>forward pass only · no gradients</Txt>
         </g>
 
         {/* ---- the horizontal map (number line) ---- */}
         <g opacity={map}>
-          <Txt x={MAP.x0} y={MAP.line - 36} size={12} fill={INK.hx} weight={600}>horizontal readout</Txt>
+          <Txt x={MAP.x0} y={MAP.line - 36} size={13} fill={INK.hx} weight={600}>horizontal readout · margin = apple − cup</Txt>
           <line x1={MAP.x0} y1={MAP.line} x2={lerp(MAP.x0, MAP.x1, map)} y2={MAP.line} stroke={colors.ink.axis} strokeWidth={2} />
           {[-1, 0, 1, 2].map((c) => (
             <g key={c}>
@@ -644,8 +646,8 @@ export function Render({ s }: { s: SceneState }) {
               <Txt x={mapX(c)} y={MAP.line + 22} size={11} anchor="middle" fill={INK.muted}>{fmtPlain(c, 0)}</Txt>
             </g>
           ))}
-          <Txt x={MAP.x0 - 14} y={MAP.line + 22} size={10.5} anchor="end" fill={INK.muted}>left (−)</Txt>
-          <Txt x={MAP.x1 + 14} y={MAP.line + 22} size={10.5} fill={INK.muted}>right (+)</Txt>
+          <Txt x={MAP.x0 - 14} y={MAP.line + 22} size={12} anchor="end" fill={INK.muted}>left (−)</Txt>
+          <Txt x={MAP.x1 + 14} y={MAP.line + 22} size={12} fill={INK.muted}>right (+)</Txt>
           <Cup x={mapX(C_CUP[0])} y={MAP.line} r={11} opacity={clamp01(map * 2 - 1)} />
           <Apple x={mapX(C_APPLE[0])} y={MAP.line} r={11} opacity={clamp01(map * 2 - 1)} />
           <Txt x={mapX(C_CUP[0])} y={MAP.line - 18} size={12} anchor="middle" mono fill={INK.cup}>{fmt(C_CUP[0])}</Txt>
@@ -655,11 +657,11 @@ export function Render({ s }: { s: SceneState }) {
           <Txt x={(mapX(C_CUP[0]) + mapX(C_APPLE[0])) / 2} y={MAP.line + 80} size={15} anchor="middle" mono fill={INK.hx} opacity={margin}>
             {`${fmt(C_APPLE[0])} − (${fmt(C_CUP[0])}) = ${fmt(lerp(0, MARGIN_X, margin))}`}
           </Txt>
-          <MathLabel tex={'m_x = v_x^{\\top}(h_q - h_r)'} x={MAP.x0 + 20} y={MAP.line + 106} fontSize={15} anchor="start" boxWidth={200} color={INK.hx} opacity={margin} />
+          <MathLabel tex={'m_x = v_x^{\\top}(h_q - h_r)'} x={MAP.x0} y={MAP.line + 106} fontSize={14} anchor="start" boxWidth={180} color={INK.hx} opacity={margin} />
           <g opacity={badge}>
             <rect x={MAP.x1 - 70} y={MAP.line + 60} width={92} height={30} rx={8} fill={INK.hx} fillOpacity={0.2} stroke={INK.hx} />
             <Txt x={MAP.x1 - 24} y={MAP.line + 80} size={14} anchor="middle" weight={700} fill={INK.hx}>RIGHT</Txt>
-            <Txt x={MAP.x1 + 22} y={MAP.line + 106} size={10} anchor="end" fill={INK.muted}>readout decision · not generated text</Txt>
+            <Txt x={MAP.x1 + 22} y={MAP.line + 106} size={11} anchor="end" fill={INK.muted}>readout, not text</Txt>
           </g>
         </g>
 
@@ -676,7 +678,7 @@ export function Render({ s }: { s: SceneState }) {
         <Txt x={164} y={54} size={16} weight={600}>Three rulers inside a token</Txt>
       </g>
       {NOTES.map((note, i) => (
-        <Txt key={i} x={1210} y={578} size={11} anchor="end" fill={INK.muted} opacity={0.85 * clamp01(1 - Math.abs(b - i) * 1.6)}>
+        <Txt key={i} x={1210} y={578} size={12} anchor="end" fill={INK.muted} opacity={0.85 * clamp01(1 - Math.abs(b - i) * 1.6)}>
           {`Source: ${note}`}
         </Txt>
       ))}

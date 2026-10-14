@@ -41,7 +41,8 @@ const FORMATS = [
 const sizeGB = (bits: number): number => (671e9 * bits) / 8 / 1e9;
 
 const RULER = { x: 200, y: 210, w: 760, h: 46 } as const;
-const MENU = { x: 120, y: 330 } as const;
+// 1024 wide so the menu sits centred under the camera's 1.25× view.
+const MENU = { x: 128, y: 330 } as const;
 
 const CAM_RULER: CameraState = { x: 640, y: 250, k: 1.35 };
 const CAM_MENU: CameraState = { x: 640, y: 420, k: 1.25 };
@@ -166,7 +167,7 @@ export function Render({ s }: { s: SceneState }) {
   const fitU = s.get(scene.fitU);
   const closeU = s.get(scene.closeU);
 
-  const dimAll = 1 - closeU * 0.86;
+  const dimAll = 1 - closeU * 0.9;
   const kLo = Math.min(4, Math.max(0, Math.floor(fmtK)));
   const kHi = Math.min(4, kLo + 1);
   const kFrac = clamp01(fmtK - kLo);
@@ -221,26 +222,33 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* ---- the menu ---- */}
           <g opacity={menuU}>
+            {/* column headers */}
+            <text x={MENU.x + 16} y={MENU.y - 12} fill={colors.MUTED} fontSize={12}>format</text>
+            <text x={MENU.x + 240} y={MENU.y - 12} fill={colors.MUTED} fontSize={12}>bits</text>
+            <g opacity={reqU}>
+              <text x={MENU.x + 448} y={MENU.y - 12} fill={colors.TEXT} fontSize={12}>hardware it needs</text>
+            </g>
+            <text x={MENU.x + 700} y={MENU.y - 12} fill={colors.MUTED} fontSize={12}>what it trades</text>
             {FORMATS.map((f, i) => {
               const rowU = clamp01(menuU * FORMATS.length * 1.1 - i);
               const live = i === liveK ? 1 : 0;
               return (
                 <g key={f.key} opacity={rowU}>
-                  <rect x={MENU.x} y={MENU.y + i * 44} width={1040} height={38} rx={9} fill={live ? colors.PANEL : 'none'} stroke={live ? f.color : colors.GRID} strokeWidth={live ? 1.6 : 0.9} />
-                  <text x={MENU.x + 16} y={MENU.y + 24 + i * 44} fill={f.color} fontSize={12.5} fontFamily="ui-monospace, monospace">
+                  <rect x={MENU.x} y={MENU.y + i * 44} width={1024} height={38} rx={9} fill={live ? colors.PANEL : 'none'} stroke={live ? f.color : colors.GRID} strokeWidth={live ? 1.6 : 0.9} />
+                  <text x={MENU.x + 16} y={MENU.y + 24 + i * 44} fill={f.color} fontSize={13} fontFamily="ui-monospace, monospace">
                     {f.key}
                   </text>
                   {/* bits bar */}
                   <rect x={MENU.x + 240} y={MENU.y + 10 + i * 44} width={(120 * f.bits) / 16} height={18} rx={5} fill={f.color} opacity={0.7} />
-                  <text x={MENU.x + 372} y={MENU.y + 24 + i * 44} fill={colors.MUTED} fontSize={10.5}>
+                  <text x={MENU.x + 372} y={MENU.y + 24 + i * 44} fill={colors.MUTED} fontSize={13}>
                     {f.bits === 4.5 ? '~4.5' : f.bits} bit
                   </text>
                   <g opacity={reqU}>
-                    <text x={MENU.x + 448} y={MENU.y + 24 + i * 44} fill={colors.TEXT} fontSize={10.5}>
+                    <text x={MENU.x + 448} y={MENU.y + 24 + i * 44} fill={colors.TEXT} fontSize={13}>
                       {f.cpu}
                     </text>
                   </g>
-                  <text x={MENU.x + 700} y={MENU.y + 24 + i * 44} fill={i === 3 && warnU > 0.3 ? colors.NEGATIVE : colors.MUTED} fontSize={10.5}>
+                  <text x={MENU.x + 700} y={MENU.y + 24 + i * 44} fill={i === 3 && warnU > 0.3 ? colors.NEGATIVE : colors.MUTED} fontSize={13}>
                     {f.note}
                   </text>
                 </g>

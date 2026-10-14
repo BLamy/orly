@@ -299,7 +299,7 @@ export function Render({ s }: { s: SceneState }) {
               </g>
             );
           })}
-          <text x={1210} y={64} textAnchor="end" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
+          <text x={1040} y={64} textAnchor="end" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
             spawnCounter: <tspan fill={colors.WARM} fontWeight={700}>{shown}</tspan>
           </text>
           <text x={340} y={64} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
@@ -362,7 +362,7 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={c} opacity={u * (1 - 0.6 * reduceU)}>
                   <rect x={CH_X - CH_W / 2} y={cy - CH_H / 2} width={CH_W} height={CH_H} rx={8} fill={colors.PANEL} stroke={colors.ACCENT} strokeOpacity={0.5} />
-                  <text x={CH_X + CH_W / 2 - 8} y={cy + 4} textAnchor="end" fill={colors.ACCENT} fontSize={10.5} fontFamily={MONO}>
+                  <text x={CH_X + CH_W / 2 - 8} y={cy + 4} textAnchor="end" fill={colors.ACCENT} fontSize={12} fontFamily={MONO}>
                     {c}
                   </text>
                 </g>
@@ -399,7 +399,7 @@ export function Render({ s }: { s: SceneState }) {
               <text x={WK_X} y={cy - 2} textAnchor="middle" fill={colors.TEXT} fontSize={11.5} opacity={working ? 1 : 0.6}>
                 worker
               </text>
-              <text x={WK_X} y={cy + 12} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>
+              <text x={WK_X} y={cy + 12} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
                 chunk-{i}
               </text>
             </g>
@@ -412,12 +412,14 @@ export function Render({ s }: { s: SceneState }) {
           if (a <= 0) return null;
           const fly = clamp01(a * 1.25);
           // fly from the worker's right edge to slot i, then merge downward
-          const x = WK_X + 66 + (RS_X - 55 - (WK_X + 66)) * fly;
-          const y = cy - 16 + (288 - (cy - 16)) * reduceU;
+          const flyX = WK_X + 66 + (RS_X - 55 - (WK_X + 66)) * fly;
+          // on reduce, each result slides into the summary card and fades out
+          const x = flyX + (RS_X + 13 - 55 - flyX) * reduceU;
+          const y = cy - 16 + (304 - (cy - 16)) * reduceU;
           return (
-            <g key={i} opacity={(0.4 + 0.6 * fly) * (1 - 0.55 * reduceU) * dim}>
+            <g key={i} opacity={(0.4 + 0.6 * fly) * clamp01(1 - reduceU * 2) * dim}>
               <rect x={x} y={y} width={110} height={32} rx={7} fill={colors.PANEL} stroke={colors.POSITIVE} strokeOpacity={0.6} />
-              <text x={x + 55} y={y + 20} textAnchor="middle" fill={colors.POSITIVE} fontSize={10.5} fontFamily={MONO}>
+              <text x={x + 55} y={y + 20} textAnchor="middle" fill={colors.POSITIVE} fontSize={11.5} fontFamily={MONO}>
                 result[{i}]
               </text>
             </g>
@@ -430,7 +432,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={RS_X + 13} y={310} textAnchor="middle" fill={colors.WARM} fontSize={14} fontWeight={600}>
               one result
             </text>
-            <text x={RS_X + 13} y={332} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+            <text x={RS_X + 13} y={332} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               eight chunks, merged
             </text>
           </g>
@@ -439,35 +441,38 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---------------- second run inset ---------------- */}
         {run2U > 0.01 && (
           <g opacity={clamp01(run2U * 3) * dim}>
-            <rect x={350} y={150} width={286} height={200} rx={12} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.4} />
-            <text x={493} y={176} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
+            <rect x={30} y={352} width={300} height={178} rx={12} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.4} />
+            <text x={180} y={376} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
               second run — four chunks
             </text>
             {[0, 1, 2, 3].map((i) => {
               const u = win(clamp01(run2U * 1.15), 4, i, 1.6);
               if (u <= 0) return null;
-              const y = 200 + i * 34;
+              const y = 392 + i * 28;
               return (
                 <g key={i} opacity={u}>
-                  <rect x={378} y={y} width={70} height={24} rx={6} fill={colors.PANEL} stroke={colors.ACCENT} strokeOpacity={0.5} />
-                  <line x1={452} y1={y + 12} x2={508} y2={y + 12} stroke={colors.GRID} strokeWidth={1.2} />
-                  <rect x={510} y={y} width={70} height={24} rx={6} fill={colors.PANEL} stroke={colors.ACCENT} strokeOpacity={0.9} />
-                  <text x={545} y={y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>
+                  <rect x={56} y={y} width={100} height={22} rx={6} fill={colors.PANEL} stroke={colors.ACCENT} strokeOpacity={0.5} />
+                  <line x1={156} y1={y + 11} x2={218} y2={y + 11} stroke={colors.GRID} strokeWidth={1.2} />
+                  <rect x={218} y={y} width={100} height={22} rx={6} fill={colors.PANEL} stroke={colors.ACCENT} strokeOpacity={0.9} />
+                  <text x={268} y={y + 15} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
                     chunk-{i}
                   </text>
                 </g>
               );
             })}
-            <text x={493} y={336} textAnchor="middle" fill={colors.WARM} fontSize={11} fontFamily={MONO}>
+            <text x={180} y={520} textAnchor="middle" fill={colors.WARM} fontSize={11} fontFamily={MONO}>
               ids 9…12 — no collision with round one
             </text>
           </g>
         )}
 
         {/* ---------------- chips ---------------- */}
-        <Chip x={640} y={108} text={'id: chunk-${i}-…-${spawnNum}'} color={colors.ACCENT} u={idChipU} />
-        <Chip x={640} y={TAPE_Y - 46} text={'wake: { on: "runFinished", includeResponse: true }'} color={colors.SECONDARY} u={wakeChipU} />
-        <Chip x={940} y={110} text={'Promise.all(children)'} color={colors.POSITIVE} u={paChipU} />
+        <Chip x={420} y={150} text={'id: chunk-${i}-…-${spawnNum}'} color={colors.ACCENT} u={idChipU} />
+        <Chip x={235} y={200} text={'wake: { on: "runFinished", includeResponse: true }'} color={colors.SECONDARY} u={wakeChipU} />
+        {wakeChipU > 0.01 && (
+          <line x1={PARENT.x} y1={215} x2={PARENT.x} y2={PARENT.y - 40} stroke={colors.SECONDARY} strokeWidth={1.4} opacity={wakeChipU} />
+        )}
+        <Chip x={RS_X + 13} y={410} text={'Promise.all(children)'} color={colors.POSITIVE} u={paChipU} />
 
         {/* ---------------- the stream tape ---------------- */}
         <g opacity={rowsU > 0.01 || statusIdx > 0.5 ? 1 : 0}>
@@ -479,10 +484,10 @@ export function Render({ s }: { s: SceneState }) {
           {statusIdx > 0.9 && (
             <g>
               <rect x={TAPE_X0} y={TAPE_Y} width={124} height={38} rx={7} fill={colors.PANEL} stroke={colors.WARM} strokeOpacity={0.6} />
-              <text x={TAPE_X0 + 62} y={TAPE_Y + 16} textAnchor="middle" fill={colors.TEXT} fontSize={10} fontFamily={MONO}>
+              <text x={TAPE_X0 + 62} y={TAPE_Y + 16} textAnchor="middle" fill={colors.TEXT} fontSize={11} fontFamily={MONO}>
                 status_update
               </text>
-              <text x={TAPE_X0 + 62} y={TAPE_Y + 30} textAnchor="middle" fill={colors.WARM} fontSize={10} fontFamily={MONO}>
+              <text x={TAPE_X0 + 62} y={TAPE_Y + 30} textAnchor="middle" fill={colors.WARM} fontSize={11} fontFamily={MONO}>
                 mapping
               </text>
             </g>
@@ -495,10 +500,10 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={i} opacity={u} transform={`translate(0 ${6 * (1 - u)})`}>
                 <rect x={x} y={TAPE_Y} width={56} height={38} rx={7} fill={colors.PANEL} stroke={colors.ACCENT} strokeOpacity={0.55} />
-                <text x={x + 28} y={TAPE_Y + 16} textAnchor="middle" fill={colors.TEXT} fontSize={9} fontFamily={MONO}>
+                <text x={x + 28} y={TAPE_Y + 16} textAnchor="middle" fill={colors.TEXT} fontSize={11} fontFamily={MONO}>
                   insert
                 </text>
-                <text x={x + 28} y={TAPE_Y + 30} textAnchor="middle" fill={colors.ACCENT} fontSize={9.5} fontFamily={MONO}>
+                <text x={x + 28} y={TAPE_Y + 30} textAnchor="middle" fill={colors.ACCENT} fontSize={11} fontFamily={MONO}>
                   ch {i}
                 </text>
               </g>
@@ -508,10 +513,10 @@ export function Render({ s }: { s: SceneState }) {
           {statusIdx > 1.9 && (
             <g>
               <rect x={TAPE_X0 + 636} y={TAPE_Y} width={124} height={38} rx={7} fill={colors.PANEL} stroke={colors.WARM} strokeOpacity={0.6} />
-              <text x={TAPE_X0 + 698} y={TAPE_Y + 16} textAnchor="middle" fill={colors.TEXT} fontSize={10} fontFamily={MONO}>
+              <text x={TAPE_X0 + 698} y={TAPE_Y + 16} textAnchor="middle" fill={colors.TEXT} fontSize={11} fontFamily={MONO}>
                 status_update
               </text>
-              <text x={TAPE_X0 + 698} y={TAPE_Y + 30} textAnchor="middle" fill={colors.WARM} fontSize={10} fontFamily={MONO}>
+              <text x={TAPE_X0 + 698} y={TAPE_Y + 30} textAnchor="middle" fill={colors.WARM} fontSize={11} fontFamily={MONO}>
                 reducing
               </text>
             </g>
@@ -520,10 +525,10 @@ export function Render({ s }: { s: SceneState }) {
           {idleCellU > 0.01 && (
             <g opacity={idleCellU}>
               <rect x={TAPE_X0 + 768} y={TAPE_Y} width={124} height={38} rx={7} fill={colors.PANEL} stroke={colors.POSITIVE} strokeOpacity={0.6} />
-              <text x={TAPE_X0 + 830} y={TAPE_Y + 16} textAnchor="middle" fill={colors.TEXT} fontSize={10} fontFamily={MONO}>
+              <text x={TAPE_X0 + 830} y={TAPE_Y + 16} textAnchor="middle" fill={colors.TEXT} fontSize={11} fontFamily={MONO}>
                 status_update
               </text>
-              <text x={TAPE_X0 + 830} y={TAPE_Y + 30} textAnchor="middle" fill={colors.POSITIVE} fontSize={10} fontFamily={MONO}>
+              <text x={TAPE_X0 + 830} y={TAPE_Y + 30} textAnchor="middle" fill={colors.POSITIVE} fontSize={11} fontFamily={MONO}>
                 idle
               </text>
             </g>

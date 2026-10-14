@@ -29,7 +29,7 @@ export function Render({s}:{s:SceneState}){
     })}
     <g opacity={on(p,1)*(1-checkpoint)}><path d='M392,206 Q640,92 1070,185' fill='none' stroke={C.bad} strokeWidth={2} strokeDasharray='6 5'/><Chip x={533} y={131} w={307} text='× focus is not a positive label' color={C.bad}/></g>
     <Panel x={920} y={131} w={291} h={213} title='Feedback review buffer' color={C.pending}>
-      <Label x={940} y={192} size={16}>{qualify>.5?'Meaningful interaction':'No automatic positives'}</Label><Label x={940} y={231} size={15}>goal / source / outcome</Label><Label x={940} y={273} color={C.pending} size={14}>{caution>.5?'Acceptance can be ambiguous':'Keep event origins distinct'}</Label>
+      <Label x={940} y={192} size={16}>{qualify>.5?'Meaningful interaction':'No automatic positives'}</Label><Label x={940} y={231} size={15}>each label: goal / source / outcome</Label><Label x={940} y={273} color={C.pending} size={14}>{caution>.5?'Acceptance can be ambiguous':'Keep event origins distinct'}</Label>
       <Label x={940} y={315} size={14} color={C.muted}>Versioned · controlled collection</Label>
     </Panel>
     <Arrow x1={866} y1={400} x2={919} y2={296} color={C.good} opacity={qualify*(1-checkpoint)}/>

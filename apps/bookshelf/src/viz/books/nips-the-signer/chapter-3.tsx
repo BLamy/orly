@@ -140,7 +140,7 @@ function KeyChip({ x, y, label, sub, color, u }: { x: number; y: number; label: 
     <g opacity={u}>
       <rect x={x - 78} y={y - 16} width={156} height={38} rx={8} fill={colors.PANEL} stroke={color} strokeWidth={1.4} />
       <text x={x} y={y - 2} textAnchor="middle" fill={color} fontSize={12} fontFamily="monospace">{label}</text>
-      <text x={x} y={y + 14} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>{sub}</text>
+      <text x={x} y={y + 14} textAnchor="middle" fill={colors.MUTED} fontSize={12}>{sub}</text>
     </g>
   );
 }
@@ -204,8 +204,8 @@ export function Render({ s }: { s: SceneState }) {
           {/* request payload chip on the app side */}
           {reqU > 0 && wrapU < 0.05 && (
             <g opacity={reqU}>
-              <rect x={APP.x - 150} y={APP.y - 150} width={300} height={40} rx={8} fill={colors.PANEL} stroke={colors.ACCENT} />
-              <text x={APP.x} y={APP.y - 125} textAnchor="middle" fill={colors.TEXT} fontSize={10.5} fontFamily="monospace">{REQ}</text>
+              <rect x={APP.x - 190} y={APP.y - 150} width={380} height={40} rx={8} fill={colors.PANEL} stroke={colors.ACCENT} />
+              <text x={APP.x} y={APP.y - 125} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily="monospace">{REQ}</text>
             </g>
           )}
 
@@ -237,7 +237,7 @@ export function Render({ s }: { s: SceneState }) {
           {resU > 0 && (
             <>
               <TokenFlight
-                from={{ x: SIGNER.x - 40, y: SIGNER.y + 20 }}
+                from={{ x: SIGNER.x - 40, y: SIGNER.y + 36 }}
                 to={{ x: RELAY.x, y: RELAY.y + 60 }}
                 u={clamp01(resU * 2)}
                 text="🔒 result: id ✓"
@@ -247,7 +247,7 @@ export function Render({ s }: { s: SceneState }) {
               />
               <TokenFlight
                 from={{ x: RELAY.x, y: RELAY.y + 60 }}
-                to={{ x: APP.x + 40, y: APP.y + 20 }}
+                to={{ x: APP.x + 40, y: APP.y + 36 }}
                 u={clamp01(resU * 2 - 1)}
                 text="🔒 result: id ✓"
                 fill={colors.POSITIVE}
@@ -260,11 +260,12 @@ export function Render({ s }: { s: SceneState }) {
           {/* auth_url escape hatch */}
           {authU > 0 && (
             <g opacity={authU}>
-              <rect x={RELAY.x - 150} y={470} width={300} height={54} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
-              <text x={RELAY.x} y={494} textAnchor="middle" fill={colors.WARM} fontSize={12.5} fontFamily="monospace">
+              <path d="M 810 497 Q 900 440 946 336" fill="none" stroke={colors.WARM} strokeWidth={1.4} strokeDasharray="5 5" />
+              <rect x={RELAY.x - 170} y={470} width={340} height={54} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.4} />
+              <text x={RELAY.x} y={494} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="monospace">
                 result: "auth_url"
               </text>
-              <text x={RELAY.x} y={514} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+              <text x={RELAY.x} y={514} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
                 approve on your phone → same request id
               </text>
             </g>
@@ -274,7 +275,7 @@ export function Render({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             A conversation, not a handoff
           </text>

@@ -179,6 +179,10 @@ const ROUTE_B = [
 const blockX = (blocks: { w: number }[], i: number) => LANE.x + blocks.slice(0, i).reduce((a, b) => a + b.w, 0);
 const TOKENS = ['click', ' the', ' “Display', ' name”', ' text', ' box', ' in', ' the', ' profile', ' form'];
 const TILE_CONTROLS: ControlId[] = ['profile-menu', 'display-name-field', 'email-field', 'sign-out-link'];
+const TAGGED: { id: ControlId; tag: string; color: string; dashed?: boolean }[] = [
+  ...TILE_CONTROLS.map((id, i) => ({ id, tag: `c${i + 1}`, color: ROLE.OBSERVE })),
+  { id: 'save-button', tag: 'disabled', color: colors.MUTED, dashed: true },
+];
 const TILE_W = 64;
 const tileX = (i: number) => blockX(ROUTE_B, 1) + 10 + i * (TILE_W + 8);
 const TILE_LINKS = TILE_CONTROLS.map((id, i) => {
@@ -442,12 +446,12 @@ const scene = buildScene();
 function Chip({ x, y, text, color, u, fill = '#0b1324', anchor = 'start' }: { x: number; y: number; text: string; color: string; u: number; fill?: string; anchor?: 'start' | 'middle' }) {
   const o = clamp01(u);
   if (o <= 0.002) return null;
-  const w = text.length * 6.4 + 22;
+  const w = text.length * 7.4 + 22;
   const x0 = anchor === 'middle' ? x - w / 2 : x;
   return (
     <g transform={`translate(${x0} ${y})`} opacity={o}>
-      <rect width={w} height={22} rx={11} fill={fill} stroke={color} strokeWidth={1.2} />
-      <text x={w / 2} y={15} textAnchor="middle" fill={color} fontSize={10.5} fontFamily={MONO}>
+      <rect width={w} height={24} rx={12} fill={fill} stroke={color} strokeWidth={1.2} />
+      <text x={w / 2} y={16} textAnchor="middle" fill={color} fontSize={12} fontFamily={MONO}>
         {text}
       </text>
     </g>
@@ -458,21 +462,21 @@ function Chip({ x, y, text, color, u, fill = '#0b1324', anchor = 'start' }: { x:
 function TaskState({ u, p }: { u: number; p: number }) {
   const o = clamp01(u);
   if (o <= 0.002) return null;
-  const steps = ['name field reached', 'name edited', 'saved'];
+  const steps = ['field reached', 'name edited', 'saved'];
   return (
     <g transform={`translate(${TASK.x} ${TASK.y + 66})`} opacity={o}>
-      <text x={0} y={15} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO} letterSpacing={1}>
+      <text x={0} y={16} fill={colors.MUTED} fontSize={12} fontFamily={MONO} letterSpacing={1}>
         TASK STATE
       </text>
       {steps.map((label, i) => {
         const done = clamp01(p - i);
-        const x = 92 + i * 164;
+        const x = 124 + i * 150;
         return (
           <g key={label} transform={`translate(${x} 0)`}>
-            <rect width={154} height={22} rx={11} fill="#0b1324" stroke={done > 0.5 ? ROLE.CHECKED : '#334155'} strokeWidth={1.2} />
-            <circle cx={13} cy={11} r={5} fill="none" stroke={colors.MUTED} strokeWidth={1.4} opacity={1 - done} />
-            <path d="M8.5 11.2 L12 14.6 L18 7.6" fill="none" stroke={ROLE.CHECKED} strokeWidth={2} opacity={done} />
-            <text x={26} y={15} fill={done > 0.5 ? ROLE.CHECKED : colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+            <rect width={142} height={24} rx={12} fill="#0b1324" stroke={done > 0.5 ? ROLE.CHECKED : '#334155'} strokeWidth={1.2} />
+            <circle cx={13} cy={12} r={5} fill="none" stroke={colors.MUTED} strokeWidth={1.4} opacity={1 - done} />
+            <path d="M8.5 12.2 L12 15.6 L18 8.6" fill="none" stroke={ROLE.CHECKED} strokeWidth={2} opacity={done} />
+            <text x={26} y={16} fill={done > 0.5 ? ROLE.CHECKED : colors.MUTED} fontSize={12} fontFamily={MONO}>
               {label}
             </text>
           </g>
@@ -487,31 +491,31 @@ function FocusLegend({ u }: { u: number }) {
   const o = clamp01(u);
   if (o <= 0.002) return null;
   return (
-    <g transform={`translate(584 150)`} opacity={o}>
-      <rect width={140} height={156} rx={10} fill={colors.BG} stroke="#2a3754" />
+    <g transform={`translate(592 150)`} opacity={o}>
+      <rect width={164} height={168} rx={10} fill={colors.BG} stroke="#2a3754" />
       <rect x={12} y={16} width={26} height={16} rx={5} fill="none" stroke="#f1f5f9" strokeWidth={2.4} />
-      <text x={48} y={24} fill={colors.TEXT} fontSize={10.5} fontFamily={MONO}>
+      <text x={48} y={27} fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
         solid ring
       </text>
-      <text x={48} y={38} fill={colors.MUTED} fontSize={10}>
+      <text x={48} y={42} fill={colors.MUTED} fontSize={12}>
         actual focus
       </text>
       <rect x={12} y={64} width={26} height={16} rx={6} fill="none" stroke={ROLE.MODEL} strokeWidth={2} strokeDasharray="5 4" />
-      <text x={48} y={72} fill={colors.TEXT} fontSize={10.5} fontFamily={MONO}>
+      <text x={48} y={75} fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
         dashed halo
       </text>
-      <text x={48} y={86} fill={colors.MUTED} fontSize={10}>
+      <text x={48} y={90} fill={colors.MUTED} fontSize={12}>
         suggestion only
       </text>
-      <circle cx={25} cy={120} r={9} fill="none" stroke={ROLE.OBSERVE} strokeWidth={2} />
-      <path d="M19 120H31M25 114V126" stroke="#f1f5f9" strokeWidth={1.6} />
-      <text x={48} y={118} fill={colors.TEXT} fontSize={10.5} fontFamily={MONO}>
+      <circle cx={25} cy={122} r={9} fill="none" stroke={ROLE.OBSERVE} strokeWidth={2} />
+      <path d="M19 122H31M25 116V128" stroke="#f1f5f9" strokeWidth={1.6} />
+      <text x={48} y={120} fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
         ripple
       </text>
-      <text x={48} y={132} fill={colors.MUTED} fontSize={10}>
+      <text x={48} y={135} fill={colors.MUTED} fontSize={12}>
         activation —
       </text>
-      <text x={48} y={144} fill={colors.MUTED} fontSize={10}>
+      <text x={48} y={150} fill={colors.MUTED} fontSize={12}>
         never from Tab
       </text>
     </g>
@@ -545,7 +549,7 @@ function WorkRibbon({ s }: { s: SceneState }) {
         <text x={x0} y={y0 - 14} fill={colors.TEXT} fontSize={13} fontWeight={650}>
           work ribbon
         </text>
-        <text x={x0 + 88} y={y0 - 14} fill={ROLE.PENDING} fontSize={10.5} fontFamily={MONO}>
+        <text x={x0 + 96} y={y0 - 14} fill={ROLE.PENDING} fontSize={12} fontFamily={MONO}>
           unscaled · widths are not measurements
         </text>
       </g>
@@ -590,7 +594,7 @@ function WorkRibbon({ s }: { s: SceneState }) {
               y={y0 + h + 16}
               textAnchor="middle"
               fill={isGap ? colors.MUTED : ROLE.OBSERVE}
-              fontSize={isGap ? 11 : 10.5}
+              fontSize={12}
               fontFamily={isGap ? undefined : MONO}
               fontStyle={isGap ? 'italic' : undefined}
               opacity={labelsO * clamp01(vis * 3 - 1.6)}
@@ -601,10 +605,10 @@ function WorkRibbon({ s }: { s: SceneState }) {
         );
       })}
       {/* end labels */}
-      <text x={x0} y={y0 + h + 32} fill={colors.MUTED} fontSize={11} opacity={ru * labelsO}>
+      <text x={x0} y={y0 + h + 32} fill={colors.MUTED} fontSize={12} opacity={ru * labelsO}>
         ● intention
       </text>
-      <text x={x0 + w} y={y0 + h + 32} textAnchor="end" fill={colors.MUTED} fontSize={11} opacity={ru * labelsO * clamp01(trace / TOT_TRACE * 8 - 7)}>
+      <text x={x0 + w} y={y0 + h + 32} textAnchor="end" fill={colors.MUTED} fontSize={12}opacity={ru * labelsO * clamp01(trace / TOT_TRACE * 8 - 7)}>
         task done ●
       </text>
     </g>
@@ -634,10 +638,10 @@ function RouteLane({
     <g opacity={dim}>
       <rect x={frame.x} y={frame.y} width={frame.w} height={frame.h} rx={8} fill="#0d1526" stroke="#33415f" strokeWidth={1.3} />
       <g opacity={r}>
-        <text x={LANE.x} y={y - 26} fill={titleColor} fontSize={12} fontFamily={MONO} letterSpacing={0.8}>
+        <text x={LANE.x} y={y - 26} fill={titleColor} fontSize={13} fontFamily={MONO} letterSpacing={0.8}>
           {title}
         </text>
-        <text x={LANE.x} y={y - 9} fill={colors.MUTED} fontSize={11.5}>
+        <text x={LANE.x} y={y - 9} fill={colors.MUTED} fontSize={12.5}>
           {sub}
         </text>
         {blocks.map((bk, i) => {
@@ -650,7 +654,7 @@ function RouteLane({
               <rect x={x + 2} y={y + 2} width={bk.w - 4} height={LANE.h - 4} rx={6} fill={bk.color} opacity={0.08 + 0.1 * done + 0.2 * active} />
               <rect x={x + 2} y={y + 2} width={bk.w - 4} height={LANE.h - 4} rx={6} fill="none" stroke={bk.color} strokeWidth={1 + active} opacity={0.45 + 0.55 * active} />
               {bk.w < 200 && (
-                <text x={x + bk.w / 2} y={y + LANE.h / 2 + 4} textAnchor="middle" fill={colors.TEXT} fontSize={10.5} opacity={0.75 + 0.25 * active}>
+                <text x={x + bk.w / 2} y={y + LANE.h / 2 + 4} textAnchor="middle" fill={colors.TEXT} fontSize={12} opacity={0.75 + 0.25 * active}>
                   {bk.label}
                 </text>
               )}
@@ -666,7 +670,7 @@ function RouteLane({
 /* ------------------------------------------------------------ the frame */
 export function Render({ s }: { s: SceneState }) {
   const close = s.get(scene.closeU);
-  const quiet = 1 - 0.92 * close; // everything behind the closing panel → a whisper
+  const quiet = 1 - close; // everything behind the closing panel fades out completely
   const phase = s.get(scene.phase);
   const marksU = s.get(scene.marksU);
   const ptrU = s.get(scene.ptrU);
@@ -693,10 +697,9 @@ export function Render({ s }: { s: SceneState }) {
   const gatesU = s.get(scene.gatesU);
   const braceU = s.get(scene.braceU);
 
-  const marks: ControlMark[] = [
-    ...TILE_CONTROLS.map((id, i) => ({ id, u: clamp01(marksU * 5 - i), color: ROLE.OBSERVE, tag: `c${i + 1}` })),
-    { id: 'save-button' as ControlId, u: clamp01(marksU * 5 - 4), color: colors.MUTED, dashed: true, tag: 'disabled' },
-  ];
+  // tags are drawn here, not by the shared kit: right-aligned above each control at 12px,
+  // so they clear the "Display name" / "Email" labels that sit at the left of the same row
+  const marks: ControlMark[] = TAGGED.map((t, i) => ({ id: t.id, u: clamp01(marksU * 5 - i), color: t.color, dashed: t.dashed }));
 
   return (
     <Camera {...s.get(scene.cam)}>
@@ -713,6 +716,15 @@ export function Render({ s }: { s: SceneState }) {
           obsLabel={`observation v${Math.round(s.get(scene.obsV))}`}
           obsU={s.get(scene.obsU)}
         />
+        {marks.map((m, i) => {
+          if (m.u <= 0.002) return null;
+          const r = controlRect(m.id, PLACE);
+          return (
+            <text key={m.id} x={r.x + r.w - 2} y={r.y - 9} textAnchor="end" fill={m.color} fontSize={12} fontFamily={MONO} opacity={m.u}>
+              {TAGGED[i].tag}
+            </text>
+          );
+        })}
         {s.get(scene.obsPop) > 0.002 && (
           <rect
             x={PLACE.x + 400 * PLACE.scale - 4}
@@ -741,7 +753,7 @@ export function Render({ s }: { s: SceneState }) {
             <path d={pathOf(GAZE_TRAIL.filter((d) => d.p <= gazeU)) ?? ''} fill="none" stroke="#f1f5f9" strokeWidth={1.4} strokeDasharray="2 6" strokeLinecap="round" opacity={0.6} />
             <circle cx={GAZE.x(gazeU)} cy={GAZE.y(gazeU)} r={13} fill="#f1f5f9" opacity={0.1} />
             <circle cx={GAZE.x(gazeU)} cy={GAZE.y(gazeU)} r={6} fill="none" stroke="#f1f5f9" strokeWidth={1.8} />
-            <text x={GAZE.x(gazeU) + 16} y={GAZE.y(gazeU) - 10} fill="#f1f5f9" fontSize={11} fontFamily={MONO} opacity={0.85}>
+            <text x={GAZE.x(gazeU) + 16} y={GAZE.y(gazeU) - 10} fill="#f1f5f9" fontSize={12} fontFamily={MONO} opacity={0.85}>
               attention
             </text>
           </g>
@@ -759,7 +771,7 @@ export function Render({ s }: { s: SceneState }) {
           accept → focus here
         </text>
         <Chip x={PLACE.x} y={24} text="person · assistive mode" color={colors.TEXT} u={s.get(scene.personTagU)} />
-        <ProposedTag x={PLACE.x + 178} y={26} u={s.get(scene.personTagU)} />
+        <ProposedTag x={PLACE.x + 206} y={25} u={s.get(scene.personTagU)} />
         <Chip x={PLACE.x + 268} y={24} text="✓ focus moved · nothing activated" color={ROLE.CHECKED} fill="#062a1e" u={s.get(scene.acceptedU)} />
         <FocusLegend u={s.get(scene.personTagU)} />
         <Activation x={C_MENU.x} y={C_MENU.y} u={s.get(scene.act1)} label="click" />
@@ -814,11 +826,11 @@ export function Render({ s }: { s: SceneState }) {
             const on = i < tokN ? 1 : 0;
             return <rect key={i} x={x} y={LANE_A_Y + 9} width={24} height={LANE.h - 18} rx={3} fill={ROLE.MODEL} opacity={0.14 + 0.76 * on} />;
           })}
-          <text x={blockX(ROUTE_A, 1)} y={LANE_A_Y + LANE.h + 18} fill={ROLE.MODEL} fontSize={11.5} fontFamily={MONO}>
+          <text x={blockX(ROUTE_A, 1)} y={LANE_A_Y + LANE.h + 18} fill={ROLE.MODEL} fontSize={12.5} fontFamily={MONO}>
             {TOKENS.slice(0, tokN).join('')}
             {tokN > 0 && tokN < TOKENS.length ? '▍' : ''}
           </text>
-          <text x={blockX(ROUTE_A, 1)} y={LANE_A_Y + LANE.h + 35} fill={colors.MUTED} fontSize={10} fontFamily={MONO} opacity={clamp01(routeA - 1)}>
+          <text x={blockX(ROUTE_A, 1)} y={LANE_A_Y + LANE.h + 35} fill={colors.MUTED} fontSize={12} fontFamily={MONO} opacity={clamp01(routeA - 1)}>
             illustrative output · not real tokenization
           </text>
         </RouteLane>
@@ -838,7 +850,7 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={id}>
                 <rect x={tileX(i)} y={LANE_B_Y + 6} width={TILE_W} height={LANE.h - 12} rx={5} fill={sel > 0.5 ? '#2a1f57' : '#0b1324'} stroke={sel > 0.5 ? ROLE.MODEL : ROLE.OBSERVE} strokeWidth={1.1 + sel * 1.2} />
-                <text x={tileX(i) + TILE_W / 2} y={LANE_B_Y + LANE.h / 2 + 4} textAnchor="middle" fill={colors.TEXT} fontSize={10.5} fontFamily={MONO}>
+                <text x={tileX(i) + TILE_W / 2} y={LANE_B_Y + LANE.h / 2 + 4} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
                   c{i + 1}
                 </text>
               </g>
@@ -852,10 +864,10 @@ export function Render({ s }: { s: SceneState }) {
             strokeWidth={2.4}
             opacity={checkU}
           />
-          <text x={blockX(ROUTE_B, 1)} y={LANE_B_Y + LANE.h + 18} fill={ROLE.MODEL} fontSize={11.5} fontFamily={MONO} opacity={selected}>
+          <text x={blockX(ROUTE_B, 1)} y={LANE_B_Y + LANE.h + 18} fill={ROLE.MODEL} fontSize={12.5} fontFamily={MONO} opacity={selected}>
             {agent > 0.5 ? 'c2 → fill Display name ← “Brett” (from the task)' : 'ranked first: c2 · Display name'}
           </text>
-          <text x={blockX(ROUTE_B, 1)} y={LANE_B_Y + LANE.h + 35} fill={ROLE.CHECKED} fontSize={10.5} fontFamily={MONO} opacity={checkU}>
+          <text x={blockX(ROUTE_B, 1)} y={LANE_B_Y + LANE.h + 35} fill={ROLE.CHECKED} fontSize={12} fontFamily={MONO} opacity={checkU}>
             ✓ checked before acting: unique · present · editable
           </text>
           <ProposedTag x={LANE.x + 250} y={LANE_B_Y - 39} u={1} />
@@ -871,12 +883,12 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={s.get(scene.laneBDim)}>
             <path d={LOOP_PATH} fill="none" stroke={ROLE.OBSERVE} strokeWidth={2} pathLength={1} strokeDasharray={`${s.get(scene.loopU)} 1`} />
             <path d={`M${LANE.x + 45} ${LANE_B_Y + LANE.h + 2}l-6 9h12Z`} fill={ROLE.OBSERVE} opacity={clamp01(s.get(scene.loopU) * 5 - 4)} />
-            <text x={LANE.x + LANE.w / 2} y={LANE_B_Y + LANE.h + 84} textAnchor="middle" fill={ROLE.OBSERVE} fontSize={11.5} fontFamily={MONO} opacity={clamp01(s.get(scene.loopU) * 2 - 0.6)}>
+            <text x={LANE.x + LANE.w / 2} y={LANE_B_Y + LANE.h + 84} textAnchor="middle" fill={ROLE.OBSERVE} fontSize={12.5} fontFamily={MONO} opacity={clamp01(s.get(scene.loopU) * 2 - 0.6)}>
               then a fresh observation — before any next decision
             </text>
           </g>
         )}
-        <text x={LANE.x} y={488} fill={ROLE.PENDING} fontSize={11} fontFamily={MONO} opacity={s.get(scene.noteU)}>
+        <text x={LANE.x} y={488} fill={ROLE.PENDING} fontSize={12} fontFamily={MONO} opacity={s.get(scene.noteU)}>
           unscaled sketch — block widths are not time · nothing here is measured
         </text>
       </g>
@@ -899,7 +911,7 @@ export function Render({ s }: { s: SceneState }) {
                 <text x={18} y={25} fill={colors.TEXT} fontSize={15} fontWeight={650}>
                   {row.t}
                 </text>
-                <text x={212} y={25} fill={colors.MUTED} fontSize={12.5}>
+                <text x={212} y={25} fill={colors.MUTED} fontSize={13}>
                   {row.d}
                 </text>
                 <ProposedTag x={690} y={11} u={1} />
@@ -919,10 +931,10 @@ export function Render({ s }: { s: SceneState }) {
             <text x={640} y={RIB_CLOSE.y - 36} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={650} opacity={clamp01(braceU * 2 - 1)}>
               shorten this distance
             </text>
-            <text x={RIB_CLOSE.x} y={RIB_CLOSE.y + RIB_CLOSE.h + 20} fill={colors.MUTED} fontSize={12}>
+            <text x={RIB_CLOSE.x} y={RIB_CLOSE.y + RIB_CLOSE.h + 20} fill={colors.MUTED} fontSize={13}>
               intention
             </text>
-            <text x={RIB_CLOSE.x + RIB_CLOSE.w} y={RIB_CLOSE.y + RIB_CLOSE.h + 20} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+            <text x={RIB_CLOSE.x + RIB_CLOSE.w} y={RIB_CLOSE.y + RIB_CLOSE.h + 20} textAnchor="end" fill={colors.MUTED} fontSize={13}>
               a useful, verified action
             </text>
           </g>
@@ -938,8 +950,8 @@ export function Render({ s }: { s: SceneState }) {
                 <text x={46} y={30} fill={colors.TEXT} fontSize={14} fontWeight={600}>
                   {g.t}
                 </text>
-                <text x={46} y={54} fill={ROLE.PENDING} fontSize={11} fontFamily={MONO}>
-                  evidence gate · empty · {g.d}
+                <text x={46} y={54} fill={ROLE.PENDING} fontSize={12} fontFamily={MONO}>
+                  evidence gate · {g.d}
                 </text>
               </g>
             );

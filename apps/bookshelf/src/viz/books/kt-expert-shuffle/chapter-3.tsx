@@ -30,7 +30,7 @@ const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 // Layout — the two lanes and the step bars.
 // ---------------------------------------------------------------------------
 
-const LANES = { x: 150, w: 900 } as const;
+const LANES = { x: 170, w: 880 } as const;
 const GPU_Y = 210;
 const CPU_Y = 320;
 const LANE_H = 58;
@@ -43,8 +43,9 @@ const SYNC_STEP = GPU_T + CPU_T; // serialized length of one step
 const UNIT = 82; // px per time unit
 const tX = (t: number): number => LANES.x + t * UNIT;
 
-const CAM_LANES: CameraState = { x: 640, y: 290, k: 1.28 };
-const CAM_DIAL: CameraState = { x: 950, y: 480, k: 1.45 };
+// Each shot is framed so the lane labels (x ≥ 80) and the dial (y ≤ 545) stay on stage.
+const CAM_LANES: CameraState = { x: 575, y: 305, k: 1.28 };
+const CAM_DIAL: CameraState = { x: 575, y: 357, k: 1.2 };
 const CAM_WIDE: CameraState = { x: 640, y: 330, k: 1.02 };
 
 export interface Scene {
@@ -214,15 +215,21 @@ export function Render({ s }: { s: SceneState }) {
             ].map(([label, y, c]) => (
               <g key={String(label)}>
                 <rect x={LANES.x - 8} y={Number(y)} width={LANES.w + 16} height={LANE_H} rx={10} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.1} opacity={0.75} />
-                <text x={LANES.x - 18} y={Number(y) + LANE_H / 2 + 4} textAnchor="end" fill={String(c)} fontSize={12.5}>
+                <text x={LANES.x - 18} y={Number(y) + LANE_H / 2 + 5} textAnchor="end" fill={String(c)} fontSize={14}>
                   {label}
                 </text>
               </g>
             ))}
-            {/* clock axis */}
+            {/* clock axis: one tick per time unit, so the shared clock is visible before any bar runs */}
             <line x1={LANES.x} y1={CPU_Y + LANE_H + 26} x2={LANES.x + LANES.w} y2={CPU_Y + LANE_H + 26} stroke={colors.GRID} strokeWidth={1} />
-            <text x={LANES.x + LANES.w} y={CPU_Y + LANE_H + 44} textAnchor="end" fill={colors.MUTED} fontSize={10.5}>
+            {Array.from({ length: 11 }, (_, t) => (
+              <line key={t} x1={tX(t)} y1={CPU_Y + LANE_H + 21} x2={tX(t)} y2={CPU_Y + LANE_H + 31} stroke={colors.GRID} strokeWidth={1} />
+            ))}
+            <text x={LANES.x + LANES.w} y={CPU_Y + LANE_H + 44} textAnchor="end" fill={colors.MUTED} fontSize={12}>
               time →
+            </text>
+            <text x={LANES.x} y={CPU_Y + LANE_H + 44} fill={colors.MUTED} fontSize={12}>
+              schematic timing: 1 GPU unit, 1.6 CPU units per step
             </text>
           </g>
 
@@ -236,11 +243,11 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={k}>
                 <rect x={gx} y={GPU_Y + 8} width={GPU_T * UNIT * sweep - 4} height={LANE_H - 16} rx={7} fill={c} opacity={0.85} />
-                <text x={gx + 8} y={GPU_Y + LANE_H / 2 + 4} fill={colors.BG} fontSize={11} fontWeight={600}>
+                <text x={gx + 8} y={GPU_Y + LANE_H / 2 + 5} fill={colors.BG} fontSize={13} fontWeight={600}>
                   t{k + 1}
                 </text>
                 <rect x={cx} y={CPU_Y + 8} width={CPU_T * UNIT * sweep - 4} height={LANE_H - 16} rx={7} fill={c} opacity={0.55} />
-                <text x={cx + 8} y={CPU_Y + LANE_H / 2 + 4} fill={colors.TEXT} fontSize={11}>
+                <text x={cx + 8} y={CPU_Y + LANE_H / 2 + 5} fill={colors.TEXT} fontSize={13}>
                   t{k + 1} experts
                 </text>
               </g>
@@ -252,20 +259,21 @@ export function Render({ s }: { s: SceneState }) {
             {Array.from({ length: STEPS - 1 }, (_, k) => (
               <g key={k}>
                 <rect x={tX(k * SYNC_STEP + GPU_T)} y={GPU_Y + 8} width={CPU_T * UNIT - 4} height={LANE_H - 16} rx={7} fill="none" stroke={colors.NEGATIVE} strokeWidth={1.4} strokeDasharray="5 4" />
-                <text x={tX(k * SYNC_STEP + GPU_T) + (CPU_T * UNIT) / 2} y={GPU_Y + LANE_H / 2 + 4} textAnchor="middle" fill={colors.NEGATIVE} fontSize={10.5}>
+                <text x={tX(k * SYNC_STEP + GPU_T) + (CPU_T * UNIT) / 2} y={GPU_Y + LANE_H / 2 + 5} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12}>
                   idle
                 </text>
               </g>
             ))}
-            <text x={tX(0.2)} y={GPU_Y - 14} fill={colors.NEGATIVE} fontSize={12}>
+            <text x={tX(0.2)} y={GPU_Y - 14} fill={colors.NEGATIVE} fontSize={14}>
               the synchronous bubbles
             </text>
           </g>
 
           {/* the late-expert ghost */}
           <g opacity={ghostU * deferK}>
-            <rect x={tX(cpuStart(1) + CPU_T) - 6} y={CPU_Y + 8} width={44} height={LANE_H - 16} rx={7} fill="none" stroke={colors.WARM} strokeWidth={1.5} strokeDasharray="4 3" />
-            <text x={tX(cpuStart(1) + CPU_T) + 16} y={CPU_Y - 8} textAnchor="middle" fill={colors.WARM} fontSize={10.5}>
+            {/* the tail of the t2 experts bar: those answers come back on the next token */}
+            <rect x={tX(cpuStart(1) + CPU_T) - 48} y={CPU_Y + 8} width={48} height={LANE_H - 16} rx={7} fill="none" stroke={colors.WARM} strokeWidth={1.5} strokeDasharray="4 3" />
+            <text x={tX(cpuStart(1) + CPU_T) - 24} y={CPU_Y - 8} textAnchor="middle" fill={colors.WARM} fontSize={13}>
               2 experts land a step late
             </text>
           </g>
@@ -273,34 +281,34 @@ export function Render({ s }: { s: SceneState }) {
           {/* finish line */}
           <g opacity={syncU >= 1 ? 1 : 0}>
             <line x1={tX(finishT)} y1={GPU_Y - 12} x2={tX(finishT)} y2={CPU_Y + LANE_H + 12} stroke={colors.TEXT} strokeWidth={1.6} strokeDasharray="6 4" />
-            <text x={tX(finishT)} y={GPU_Y - 22} textAnchor="middle" fill={colors.TEXT} fontSize={11}>
+            <text x={tX(finishT)} y={GPU_Y - 22} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
               4 steps done
             </text>
           </g>
           <g opacity={gainU}>
-            <rect x={tX(deferTotal) + 12} y={GPU_Y + 40} width={150} height={30} rx={8} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.3} />
-            <text x={tX(deferTotal) + 87} y={GPU_Y + 60} textAnchor="middle" fill={colors.POSITIVE} fontSize={11.5}>
-              ~{Math.round((1 - deferTotal / syncTotal) * 100)}% sooner
+            <rect x={tX(deferTotal) + 12} y={GPU_Y + 40} width={210} height={30} rx={8} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.3} />
+            <text x={tX(deferTotal) + 117} y={GPU_Y + 60} textAnchor="middle" fill={colors.POSITIVE} fontSize={13}>
+              ~{Math.round((1 - deferTotal / syncTotal) * 100)}% sooner (schematic)
             </text>
           </g>
 
           {/* the dial */}
           <g opacity={dialU}>
-            <rect x={766} y={430} width={370} height={104} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
-            <text x={951} y={454} textAnchor="middle" fill={colors.TEXT} fontSize={11} fontFamily="ui-monospace, monospace">
+            <rect x={700} y={440} width={360} height={104} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
+            <text x={880} y={464} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontFamily="ui-monospace, monospace">
               --kt-max-deferred-experts-per-token
             </text>
             {/* dial track 0..7 */}
-            <line x1={800} y1={492} x2={1102} y2={492} stroke={colors.GRID} strokeWidth={3} strokeLinecap="round" />
-            <line x1={800 + (302 * 1) / 7} y1={492} x2={800 + (302 * 4) / 7} y2={492} stroke={colors.POSITIVE} strokeWidth={3} strokeLinecap="round" />
-            <line x1={800 + (302 * 5) / 7} y1={492} x2={1102} y2={492} stroke={colors.NEGATIVE} strokeWidth={3} strokeLinecap="round" />
+            <line x1={724} y1={502} x2={1036} y2={502} stroke={colors.GRID} strokeWidth={3} strokeLinecap="round" />
+            <line x1={724 + (312 * 1) / 7} y1={502} x2={724 + (312 * 4) / 7} y2={502} stroke={colors.POSITIVE} strokeWidth={3} strokeLinecap="round" />
+            <line x1={724 + (312 * 5) / 7} y1={502} x2={1036} y2={502} stroke={colors.NEGATIVE} strokeWidth={3} strokeLinecap="round" />
             {Array.from({ length: 8 }, (_, v) => (
-              <text key={v} x={800 + (302 * v) / 7} y={514} textAnchor="middle" fill={colors.MUTED} fontSize={9.5}>
+              <text key={v} x={724 + (312 * v) / 7} y={524} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                 {v}
               </text>
             ))}
-            <circle cx={800 + (302 * clamp01(dialV / 7) * 7) / 7} cy={492} r={9} fill={riskU > 0.4 ? colors.NEGATIVE : colors.WARM} />
-            <text x={951} y={530} textAnchor="middle" fill={riskU > 0.4 ? colors.NEGATIVE : colors.MUTED} fontSize={9.5}>
+            <circle cx={724 + 312 * clamp01(dialV / 7)} cy={502} r={9} fill={riskU > 0.4 ? colors.WARM : colors.POSITIVE} />
+            <text x={880} y={540} textAnchor="middle" fill={riskU > 0.4 ? colors.WARM : colors.MUTED} fontSize={12}>
               {riskU > 0.4 ? 'accuracy risk: stale expert outputs' : '0 sync · 1–4 recommended · 5–7 risky'}
             </text>
           </g>
@@ -309,16 +317,16 @@ export function Render({ s }: { s: SceneState }) {
         {/* close */}
         <g opacity={closeU}>
           <rect x={340} y={238} width={600} height={186} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-          <text x={640} y={288} textAnchor="middle" fill={colors.TEXT} fontSize={18}>
+          <text x={640} y={288} textAnchor="middle" fill={colors.TEXT} fontSize={20}>
             overlap, purchased with staleness
           </text>
-          <text x={640} y={326} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+          <text x={640} y={326} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
             defer a few experts one step → both lanes stay dense
           </text>
-          <text x={640} y={348} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+          <text x={640} y={352} textAnchor="middle" fill={colors.MUTED} fontSize={15}>
             dial past four and quality starts paying the bill
           </text>
-          <text x={640} y={396} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+          <text x={640} y={398} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
             submit_forward … sync_forward · max_deferred_experts_per_token
           </text>
         </g>

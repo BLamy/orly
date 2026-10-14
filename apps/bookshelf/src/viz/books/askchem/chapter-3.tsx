@@ -89,7 +89,7 @@ function Pill({ x, y, text, color, u, w = 176 }: { x: number; y: number; text: s
   const uu = clamp01(u);
   return <g opacity={uu} transform={`translate(${x} ${y}) scale(${0.84 + uu * 0.16})`}>
     <rect x={-w / 2} y={-19} width={w} height={38} rx={13} fill={colors.PANEL} stroke={color} strokeWidth={1.8} />
-    <text y={5} textAnchor="middle" fill={color} fontSize={11} fontFamily={MONO}>{text}</text>
+    <text y={5} textAnchor="middle" fill={color} fontSize={14} fontFamily={MONO}>{text}</text>
   </g>;
 }
 
@@ -111,45 +111,45 @@ export function Render({ s }: { s: SceneState }) {
     <Camera {...s.get(scene.cam)}>
       <g opacity={mainOpacity * (1 - pullbackU * 0.25)}>
         <g opacity={s.get(scene.claimU)} transform={`translate(${640 + (1 - fanU) * -255} 345)`}>
-          <circle r={42} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={3} />
-          <text y={-3} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontWeight={750}>one claim</text>
-          <text y={17} textAnchor="middle" fill={colors.WARM} fontSize={9} fontFamily={MONO}>source_doi</text>
+          <circle r={46} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={3} />
+          <text y={-3} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={750}>one claim</text>
+          <text y={17} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily={MONO}>source_doi</text>
         </g>
-        {VIEWS.map((view, i) => {
+        {VIEWS.map((view) => {
+          // Views sit on their final ring from the start; the claim slides in and its spokes reach each one.
           const r = 225;
-          const x = 640 + Math.cos(view.angle) * r * fanU;
-          const y = 345 + Math.sin(view.angle) * r * 0.8 * fanU;
+          const x = 640 + Math.cos(view.angle) * r;
+          const y = 345 + Math.sin(view.angle) * r * 0.8;
+          const hubX = 640 + (1 - fanU) * -255;
           return <g key={view.label} opacity={viewOpacity}>
-            <line x1={640} y1={345} x2={x} y2={y} stroke={view.color} strokeWidth={2} opacity={0.28 + fanU * 0.42} />
+            <line x1={hubX} y1={345} x2={x} y2={y} stroke={view.color} strokeWidth={2} opacity={0.28 + fanU * 0.42} />
             <Pill x={x} y={y} text={view.label} color={view.color} u={viewOpacity} w={184} />
           </g>;
         })}
-        {aliasesU > 0 && <g opacity={aliasesU * (1 - treeU * 0.8)}>
+        {aliasesU > 0 && treeU < 1 && <g opacity={aliasesU * (1 - treeU)}>
           <rect x={86} y={151} width={430} height={340} rx={24} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={301} y={187} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>taxonomy_path_aliases.json</text>
+          <text x={301} y={187} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>taxonomy_path_aliases.json</text>
+          {/* Variants stay in their own rows (no stacking); curves funnel each one into the canonical pill below. */}
           {ALIASES.map((alias, i) => {
             const yy = 235 + i * 58;
-            const targetY = 325;
-            const x = 260 + funnelU * (340 - 260);
-            const y = yy + funnelU * (targetY - yy);
             return <g key={alias}>
-              <path d={`M260 ${yy} C300 ${yy} 310 ${targetY} 345 ${targetY}`} fill="none" stroke={colors.NEGATIVE} strokeWidth={1.8} opacity={0.25 + funnelU * 0.5} />
-              <Pill x={x} y={y} text={alias} color={colors.NEGATIVE} u={aliasesU} w={310} />
+              <path d={`M456 ${yy} C500 ${yy} 470 462 423 462`} fill="none" stroke={colors.NEGATIVE} strokeWidth={1.8} opacity={0.25 + funnelU * 0.5} />
+              <Pill x={301} y={yy} text={alias} color={colors.NEGATIVE} u={aliasesU * (1 - funnelU * 0.55)} w={310} />
             </g>;
           })}
-          {funnelU > 0 && <Pill x={401} y={325} text="biomedicine/antimicrobial" color={colors.POSITIVE} u={funnelU} w={245} />}
+          {funnelU > 0 && <Pill x={301} y={462} text="biomedicine/antimicrobial" color={colors.POSITIVE} u={funnelU} w={245} />}
         </g>}
-        {treeU > 0 && <g opacity={treeU * (1 - livingU * 0.88)}>
+        {treeU > 0 && livingU < 1 && <g opacity={treeU * (1 - livingU)}>
           <rect x={690} y={120} width={500} height={440} rx={26} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2} />
-          <text x={940} y={157} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>taxonomy_v2.json · stable L1 / L2 / L3</text>
+          <text x={940} y={157} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>taxonomy_v2.json · stable L1 / L2 / L3</text>
           {[
             { x: 790, y: 220, label: 'by_reaction_type', c: colors.ACCENT },
             { x: 940, y: 330, label: 'coupling', c: colors.WARM },
             { x: 1080, y: 445, label: 'cross_coupling', c: colors.POSITIVE },
           ].map((n, i, a) => <g key={n.label}>
-            {i > 0 && <path d={`M${a[i - 1].x + 80} ${a[i - 1].y} C${a[i - 1].x + 120} ${a[i - 1].y} ${n.x - 120} ${n.y} ${n.x - 80} ${n.y}`} fill="none" stroke={n.c} strokeWidth={3} opacity={clamp01(treeU * 3 - i)} />}
+            {i > 0 && <path d={`M${a[i - 1].x + 90} ${a[i - 1].y} C${a[i - 1].x + 130} ${a[i - 1].y} ${n.x - 130} ${n.y} ${n.x - 90} ${n.y}`} fill="none" stroke={n.c} strokeWidth={3} opacity={clamp01(treeU * 3 - i)} />}
             <Pill x={n.x} y={n.y} text={n.label} color={n.c} u={clamp01(treeU * 3 - i)} w={180} />
-            {diveU > 0 && <circle cx={n.x} cy={n.y} r={27 + i * 5} fill="none" stroke={colors.WARM} strokeWidth={2.5} opacity={clamp01(diveU * 3 - i) * (1 - clamp01(diveU * 3 - i - 1))} />}
+            {diveU > 0 && <rect x={n.x - 98} y={n.y - 27} width={196} height={54} rx={21} fill="none" stroke={colors.WARM} strokeWidth={2.5} opacity={clamp01(diveU * 3 - i) * (1 - clamp01(diveU * 3 - i - 1))} />}
           </g>)}
         </g>}
         {livingU > 0 && <g opacity={livingU}>
@@ -158,7 +158,7 @@ export function Render({ s }: { s: SceneState }) {
             const r = 180 + i * 8;
             return <Pill key={label} x={640 + Math.cos(a) * r} y={345 + Math.sin(a) * r * 0.72} text={label} color={[colors.ACCENT, colors.SECONDARY, colors.WARM, colors.POSITIVE, colors.TEAL][i]} u={livingU} w={132} />;
           })}
-          <text x={640} y={585} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>living taxonomy · exploratory overlay</text>
+          <text x={640} y={585} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>living taxonomy · exploratory overlay</text>
         </g>}
       </g>
     </Camera>

@@ -231,7 +231,7 @@ export function buildScene() {
   // 2 — depth + normals, with text and reference as quiet supports
   to(frameO, 0.15, B(2), 0.8);
   to(scopeLbl, 0, B(2));
-  tl.tween(cam, { x: 420, y: 300, k: 1.25 }, { at: B(2), dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 600, y: 330, k: 1.1 }, { at: B(2), dur: 1.2, ease: ease.move });
   to(normalO, 1, B(2) + 1.0, 0.8);
   to(condLbl, 1, B(2) + 2.6);
   tl.hold(B(2) + 7, 0.8);
@@ -240,7 +240,7 @@ export function buildScene() {
   to(frameO, 0, B(3));
   to(normalO, 0.15, B(3), 0.8);
   to(condLbl, 0, B(3)); // fully hidden: colorize_depth takes over the depth label slot
-  tl.tween(cam, { x: 300, y: 310, k: 1.7 }, { at: B(3), dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 300, y: 330, k: 1.5 }, { at: B(3), dur: 1.2, ease: ease.move });
   to(colorU, 1, B(3) + 1.4, 1.5, ease.move);
   to(colorLbl, 1, B(3) + 3.2);
   tl.hold(B(3) + 7, 0.8);
@@ -259,7 +259,7 @@ export function buildScene() {
   to(encLbl, 0, B(5));
   to(boundaryO, 0.15, B(5));
   to(focusTiles, 1, B(5), 0.8);
-  tl.tween(cam, { x: 840, y: 300, k: 1.55 }, { at: B(5), dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 820, y: 290, k: 1.4 }, { at: B(5), dur: 1.2, ease: ease.move });
   to(mergeU, 1, B(5) + 1.2, 1.3, ease.move);
   to(projO, 1, B(5) + 2.6, 0.6);
   to(embedU, 1, B(5) + 3.4, 1.0, ease.move);
@@ -468,8 +468,11 @@ export function Render({ s }: { s: SceneState }) {
             {g(scene.boundaryO) > 0 && (
               <g opacity={g(scene.boundaryO)}>
                 <line x1={BOUNDARY_X} y1={170} x2={BOUNDARY_X} y2={450} stroke={SECONDARY} strokeWidth={2} strokeDasharray="8 6" />
-                <Code x={BOUNDARY_X} y={160} text="frozen video encoder · codec.encode" color={SECONDARY} size={12} anchor="middle" />
-                <Note x={BOUNDARY_X} y={468} text="pixels → latent patches (schematic values)" size={11} anchor="middle" />
+                <rect x={BOUNDARY_X - 160} y={146} width={320} height={24} rx={6} fill={PANEL} stroke={SECONDARY} strokeOpacity={0.7} />
+                <Code x={BOUNDARY_X} y={163} text="frozen video encoder · codec.encode" color={TEXT} size={14} anchor="middle" />
+                <rect x={BOUNDARY_X - 185} y={456} width={370} height={24} rx={6} fill={PANEL} stroke={SECONDARY} strokeOpacity={0.7} />
+                <Code x={BOUNDARY_X} y={473} text="pixels → latent patches (schematic values)" color={TEXT} size={14} anchor="middle" />
+                <Note x={BOUNDARY_X - 14} y={438} text="frozen = not trained here · latent patches = compact codes per image region" color={MUTED} size={12} anchor="end" o={1 - focusTiles} />
               </g>
             )}
 
@@ -495,9 +498,9 @@ export function Render({ s }: { s: SceneState }) {
                 {/* geometry_modality_embed joins from the right */}
                 {embedU > 0 && (
                   <g opacity={clamp01(embedU * 3)}>
-                    <circle cx={lerp(MERGE_AT.x + 160, MERGE_AT.x + 86, embedU)} cy={MERGE_AT.y + 65} r={9} fill={PANEL} stroke={WARM} strokeWidth={2} />
-                    <Code x={lerp(MERGE_AT.x + 160, MERGE_AT.x + 86, embedU)} y={MERGE_AT.y + 69} text="+" color={WARM} size={12} anchor="middle" />
-                    <Code x={MERGE_AT.x + 104} y={MERGE_AT.y + 69} text="geometry_modality_embed" o={clamp01(embedU * 2 - 1)} color={WARM} size={11} />
+                    <circle cx={lerp(MERGE_AT.x + 170, MERGE_AT.x + 92, embedU)} cy={MERGE_AT.y + 65} r={9} fill={PANEL} stroke={WARM} strokeWidth={2} />
+                    <Code x={lerp(MERGE_AT.x + 170, MERGE_AT.x + 92, embedU)} y={MERGE_AT.y + 69} text="+" color={WARM} size={12} anchor="middle" />
+                    <Code x={MERGE_AT.x + 116} y={MERGE_AT.y + 69} text="geometry_modality_embed" o={clamp01(embedU * 2 - 1)} color={WARM} size={12} />
                   </g>
                 )}
                 {/* the finished geometry token */}
@@ -530,25 +533,26 @@ export function Render({ s }: { s: SceneState }) {
                 <rect key={k} x={DEPTH_AT.x + k * 3.8} y={DEPTH_AT.y + ROWS * CELL + 58} width={3.8} height={12}
                   fill={css(colorizeRGB((k + 0.5) / 70))} />
               ))}
-              <Note x={DEPTH_AT.x} y={DEPTH_AT.y + ROWS * CELL + 86} text="near: u→0 (black)" size={10} />
-              <Note x={DEPTH_AT.x + 266} y={DEPTH_AT.y + ROWS * CELL + 86} text="far: u→1 (white)" size={10} anchor="end" />
+              <Note x={DEPTH_AT.x} y={DEPTH_AT.y + ROWS * CELL + 86} text="near: u→0 (black)" size={12} />
+              <Note x={DEPTH_AT.x + 266} y={DEPTH_AT.y + ROWS * CELL + 86} text="far: u→1 (white)" size={12} anchor="end" />
             </g>
 
             {/* downsample / encode labels (beat 4) */}
             <g opacity={g(scene.encLbl)}>
               <Code x={DEPTH_AT.x} y={DEPTH_AT.y - 16} text="downsample_geometry · avg_pool2d(factor)" color={ACCENT} size={12} />
-              <Note x={DEPTH_AT.x} y={DEPTH_AT.y + ROWS * CELL + 26} text="toy 4×4 pooling of the display field — not model latents" size={11} />
+              <Note x={DEPTH_AT.x} y={DEPTH_AT.y + ROWS * CELL + 26} text="toy 4×4 pooling of the display field — not model latents" size={12} />
               <Code x={720} y={190} text="_encode_geometry → latent patches" color={SECONDARY} size={12} />
-              <Code x={720} y={350} text="depth" color={SECONDARY} size={11} />
-              <Code x={940} y={350} text="normal" color={TEAL} size={11} />
+              <Code x={720} y={350} text="depth" color={SECONDARY} size={12} />
+              <Code x={940} y={350} text="normal" color={TEAL} size={12} />
             </g>
 
             {/* beat 5 formula */}
             <g opacity={g(scene.mergeLbl)}>
-              <MathLabel tex={'G = W_{\\text{in}}\\,\\tfrac{D + N}{2} + e_{\\text{geo}}'} x={MERGE_AT.x - 160} y={MERGE_AT.y - 100} fontSize={18} color={TEXT}
-                anchor="start" boxWidth={360} />
-              <Code x={MERGE_AT.x - 160} y={MERGE_AT.y - 70} text="proj_in(torch.lerp(depth, normal, 0.5)) + geometry_modality_embed" color={MUTED} size={10} />
-              <Note x={MERGE_AT.x - 160} y={MERGE_AT.y - 54} text="illustrative tile values" size={10} />
+              {/* formula band above the tile grids (y ≈ 146), clear of the frozen-encoder badge */}
+              <MathLabel tex={'G = W_{\\text{in}}\\,\\tfrac{D + N}{2} + e_{\\text{geo}}'} x={MERGE_AT.x + 20} y={146} fontSize={18} color={TEXT}
+                anchor="start" boxWidth={300} />
+              <Code x={MERGE_AT.x + 20} y={172} text="proj_in(torch.lerp(depth, normal, 0.5))" color={MUTED} size={12} />
+              <Note x={MERGE_AT.x + 20} y={192} text="proj_in = the shared image projection · tile values illustrative" size={12} />
             </g>
           </g>
         )}
@@ -609,7 +613,7 @@ export function Render({ s }: { s: SceneState }) {
               <Code x={IMG_AT.x} y={IMG_AT.y + GRID_H + 36} text="_grid_positions(temporal, grid, rgb_grid)" color={WARM} size={12} />
               <MathLabel tex={`\\text{row} = (i+\\tfrac12)\\tfrac{${IMG_GRID.rows}}{${GEO_GRID.rows}} - \\tfrac12 = ${FOCUS_POS.row}\\qquad \\text{col} = (j+\\tfrac12)\\tfrac{${IMG_GRID.cols}}{${GEO_GRID.cols}} - \\tfrac12 = ${FOCUS_POS.col}`}
                 x={IMG_AT.x} y={IMG_AT.y + GRID_H + 54} fontSize={14} color={TEXT} anchor="start" boxWidth={520} />
-              <Note x={IMG_AT.x} y={IMG_AT.y + GRID_H + 86} text={`coarse cell (${FOCUS_CELL.i}, ${FOCUS_CELL.j}) · same temporal coordinate as the image tokens of its frame`} size={11} />
+              <Note x={IMG_AT.x} y={IMG_AT.y + GRID_H + 86} text={`coarse cell (${FOCUS_CELL.i}, ${FOCUS_CELL.j}) · same temporal coordinate as the image tokens of its frame`} size={12} />
             </g>
 
             {/* grid labels + braces (beat 6) */}
@@ -634,14 +638,14 @@ export function Render({ s }: { s: SceneState }) {
                 {sweepOn && <rect x={sweepX - 10} y={RIBBON.y - 6} width={20} height={RIBBON.h + 12} rx={4} fill={WARM} fillOpacity={0.45} />}
                 <g opacity={g(scene.ribbonLbl)}>
                   <Code x={RIBBON.x} y={RIBBON.y - 10} text="GeometryFrames.chunk → frame-major [R_f, G_f]" color={TEXT} size={12} />
-                  <Code x={RIBBON.x + (N_IMG * RIBBON.unit) / 2} y={RIBBON.y + RIBBON.h + 18} text={`R_f · ${N_IMG}`} color={ACCENT} size={11} anchor="middle" />
-                  <Code x={RIBBON.x + (N_IMG + N_GEO / 2) * RIBBON.unit} y={RIBBON.y + RIBBON.h + 18} text={`G_f · ${N_GEO}`} color={SECONDARY} size={11} anchor="middle" />
-                  <Note x={RIBBON.x + ribbonW + 16} y={RIBBON.y + 12} text="read together by every layer" size={11} />
-                  <Code x={RIBBON.x + ribbonW + 16} y={RIBBON.y + 28} text="rgb_tokens(hidden) → decode_velocity" color={POSITIVE} size={11} o={cleanU} />
+                  <Code x={RIBBON.x + (N_IMG * RIBBON.unit) / 2} y={RIBBON.y + RIBBON.h + 18} text={`R_f · ${N_IMG}`} color={ACCENT} size={12} anchor="middle" />
+                  <Code x={RIBBON.x + (N_IMG + N_GEO / 2) * RIBBON.unit} y={RIBBON.y + RIBBON.h + 18} text={`G_f · ${N_GEO}`} color={SECONDARY} size={12} anchor="middle" />
+                  <Note x={RIBBON.x + ribbonW} y={RIBBON.y - 10} text="read together by every layer" size={12} anchor="end" />
+                  <Code x={RIBBON.x + ribbonW} y={RIBBON.y + RIBBON.h + 46} text="rgb_tokens(hidden) → decode_velocity" color={POSITIVE} size={12} anchor="end" o={cleanU} />
                 </g>
               </g>
             )}
-            <Code x={IMG_AT.x} y={IMG_AT.y - 14} text="velocity → cleaner frame (schematic)" color={POSITIVE} size={12} o={cleanU * (1 - g(scene.cuesO))} />
+            <Code x={IMG_AT.x} y={IMG_AT.y - 14} text="velocity (update direction) → cleaner frame (schematic)" color={POSITIVE} size={12} o={cleanU * (1 - g(scene.cuesO))} />
 
             {/* beat 9: three cues + the tape toward chapter 2 */}
             {g(scene.cuesO) > 0 && (
@@ -649,11 +653,11 @@ export function Render({ s }: { s: SceneState }) {
                 <Note x={IMG_AT.x + GRID_W / 2} y={IMG_AT.y - 16} text="the frame" color={TEXT} size={14} anchor="middle" />
                 <g>
                   <rect x={530} y={200} width={220} height={30} rx={8} fill={PANEL} stroke={SECONDARY} strokeOpacity={0.7} />
-                  <Code x={640} y={220} text="geometry → what is depicted" color={SECONDARY} size={11} anchor="middle" />
+                  <Code x={640} y={220} text="geometry → what is depicted" color={SECONDARY} size={12} anchor="middle" />
                   <rect x={530} y={246} width={220} height={30} rx={8} fill={PANEL} stroke={POSITIVE} strokeOpacity={0.7} />
-                  <Code x={640} y={266} text="reference C0 → appearance" color={POSITIVE} size={11} anchor="middle" />
+                  <Code x={640} y={266} text="reference C0 → appearance" color={POSITIVE} size={12} anchor="middle" />
                   <rect x={530} y={292} width={220} height={30} rx={8} fill={PANEL} stroke={MUTED} strokeOpacity={0.7} />
-                  <Code x={640} y={312} text="text → appearance" color={MUTED} size={11} anchor="middle" />
+                  <Code x={640} y={312} text="text → appearance" color={MUTED} size={12} anchor="middle" />
                 </g>
                 <Note x={TAPE.x} y={TAPE.y - 12} text="next: remembering earlier frames" color={WARM} size={12} />
               </g>

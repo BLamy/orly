@@ -56,7 +56,8 @@ const DEPRECATED = [
 ];
 
 const CAM_EVT: CameraState = { x: 330, y: 300, k: 1.25 };
-const CAM_PROF: CameraState = { x: 700, y: 300, k: 1.12 };
+// Wide enough that the key event stays on stage beside the profile it unfolds into.
+const CAM_PROF: CameraState = { x: 545, y: 300, k: 1.0 };
 
 interface Scene {
   tl: Timeline;
@@ -166,13 +167,14 @@ const MOTION = {
   slug: 'books/nips-who-you-are/chapter-1',
 };
 
+// Screen-fixed (outside the Camera) so it never pans off the left edge.
 function KeyChip({ u }: { u: number }) {
   if (u <= 0) return null;
   return (
     <g opacity={u}>
-      <rect x={90} y={52} width={330} height={40} rx={9} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.6} />
-      <text x={106} y={70} fill={colors.MUTED} fontSize={11} fontFamily="monospace">the key — 32 bytes, forever</text>
-      <text x={106} y={86} fill={colors.WARM} fontSize={13} fontFamily="monospace">{shortHex(PUBKEY, 16, 8)}</text>
+      <rect x={90} y={44} width={340} height={48} rx={9} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.6} />
+      <text x={106} y={64} fill={colors.MUTED} fontSize={13} fontFamily="monospace">the key — 32 bytes, forever</text>
+      <text x={106} y={84} fill={colors.WARM} fontSize={14} fontFamily="monospace">{shortHex(PUBKEY, 16, 8)}</text>
     </g>
   );
 }
@@ -190,16 +192,17 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // Dimmed to 0.1 (below the 0.15 visibility floor) so the closing panel sits on clean background.
+  const mainOp = 1 - 0.9 * dimU;
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
       <g opacity={mainOp}>
-        <Camera {...cam}>
-          <KeyChip u={keyU} />
+        <KeyChip u={keyU} />
 
+        <Camera {...cam}>
           <JsonDoc
             layout={EVT_LAYOUT}
             reveal={evtU}
@@ -221,7 +224,7 @@ function Frame({ s }: { s: SceneState }) {
             fadeOut
           />
           {profU > 0 && (
-            <g opacity={1 - 0.82 * swapU}>
+            <g opacity={1 - swapU}>
               <text x={PROF_X} y={PROF_Y - 14} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={profU}>
                 content, parsed — profile v1
               </text>
@@ -285,7 +288,7 @@ function Frame({ s }: { s: SceneState }) {
           <text x={640} y={344} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             the key underneath never changes — the coats do
           </text>
-          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             NIP-01 kind 0 · NIP-24 fields
           </text>
         </g>

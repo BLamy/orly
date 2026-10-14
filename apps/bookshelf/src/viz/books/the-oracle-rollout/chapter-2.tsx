@@ -31,7 +31,7 @@ export function buildScene() {
 
   tl.caption({ at: 6.8, dur: 6.1, text: 'Their mean is zero point three. The rollout at zero point four is usefully above average.' });
   tl.tween(policyMeanU, 1, { at: 7.5, dur: 0.7, ease: ease.enter });
-  tl.tween(cam, { x: sx(0.35), y: 330, k: 1.1 }, { at: 9.4, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 340, k: 1.1 }, { at: 9.4, dur: 1.3, ease: ease.move });
 
   tl.caption({ at: 13.3, dur: 6.2, text: 'Now mix in the perfect oracle before normalizing. The baseline slides from zero point three to zero point four four.' });
   tl.tween(oracleU, 1, { at: 14.0, dur: 0.7, ease: ease.pop });
@@ -40,7 +40,7 @@ export function buildScene() {
 
   tl.caption({ at: 19.9, dur: 6.2, text: 'That zero point four rollout still beats the policy mean, yet the mixed baseline assigns it a negative advantage.' });
   tl.tween(inversionU, 1, { at: 20.6, dur: 0.6, ease: ease.pop });
-  tl.tween(cam, { x: sx(0.4), y: 330, k: 1.15 }, { at: 22.1, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 340, k: 1.15 }, { at: 22.1, dur: 1.3, ease: ease.move });
 
   tl.caption({ at: 26.5, dur: 6.2, text: 'This is advantage inversion. The better the oracle is, the wider that misleading interval becomes.' });
   tl.tween(inversionU, 2, { at: 27.2, dur: 1.2, ease: ease.move });
@@ -54,7 +54,7 @@ export function buildScene() {
 
   tl.caption({ at: 46.3, dur: 6.1, text: 'The transformed policy advantages are recentered to zero, preserving a clean relative comparison.' });
   tl.tween(recenterU, 1, { at: 47.0, dur: 1.2, ease: ease.move });
-  tl.tween(cam, { x: 610, y: 478, k: 1.12 }, { at: 49.2, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 350, k: 1.1 }, { at: 49.2, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 52.8, dur: 6.3, text: 'The oracle gets its own detached positive anchor, capped against the strongest useful policy signal.' });
   tl.tween(anchorU, 1, { at: 53.5, dur: 0.8, ease: ease.pop });
@@ -119,8 +119,8 @@ export function Render({ s }: { s: SceneState }) {
       </g>
 
       <g opacity={s.get(scene.policyMeanU)}>
-        {inversion > 0 && <rect x={sx(MU_OP)} y="208" width={sx(MU_AUG) - sx(MU_OP)} height="184" fill={colors.NEGATIVE} opacity={0.08 + inversion * 0.12} />}
-        <line x1={sx(mean)} y1="178" x2={sx(mean)} y2="420" stroke={restore ? colors.POSITIVE : shift > 0 ? colors.NEGATIVE : colors.ACCENT} strokeWidth="4" strokeDasharray="9 8" />
+        {inversion > 0 && <rect x={sx(MU_OP)} y="208" width={sx(MU_AUG) - sx(MU_OP)} height="112" fill={colors.NEGATIVE} opacity={0.08 + inversion * 0.12} />}
+        <line x1={sx(mean)} y1="178" x2={sx(mean)} y2="318" stroke={restore ? colors.POSITIVE : shift > 0 ? colors.NEGATIVE : colors.ACCENT} strokeWidth="4" strokeDasharray="9 8" />
         <rect x={sx(mean) - 92} y="138" width="184" height="34" rx="17" fill="#0d1526" stroke={restore ? colors.POSITIVE : shift > 0 ? colors.NEGATIVE : colors.ACCENT} />
         <text x={sx(mean)} y="160" textAnchor="middle" fill={restore ? colors.POSITIVE : shift > 0 ? colors.NEGATIVE : colors.ACCENT} fontSize="13" fontFamily={colors.font.mono}>
           {restore ? 'μop = 0.30' : shift > 0 ? `μaug = ${mean.toFixed(2)}` : 'μop = 0.30'}

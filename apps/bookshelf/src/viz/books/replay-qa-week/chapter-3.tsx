@@ -58,8 +58,10 @@ const NEW_MOMENTS: Moment[] = [
 const SHARED_U = [0.06, 0.2, 0.34, 0.5, 0.64, CRASH_U];
 
 /* -------------------------------------------------------------- cameras */
+// Tight enough to dive on the crash, wide enough that the bug card, the tape
+// starts and the "order placed" end all stay on the stage.
 const CAM_TAPES: CameraState = { x: 650, y: 360, k: 1.06 };
-const CAM_MOMENT: CameraState = { x: crashX, y: 368, k: 1.85 };
+const CAM_MOMENT: CameraState = { x: 620, y: 335, k: 1.45 };
 const CAM_CLOSE: CameraState = { x: 640, y: 340, k: 1.0 };
 
 /* -------------------------------------------------------------- timeline */
@@ -192,15 +194,48 @@ const MOMENT_COLOR: Record<Moment['kind'], string> = {
   done: colors.POSITIVE,
 };
 
+/** How far a moment has appeared as the tape is drawn past it (0 = hidden). */
+function momentShown(m: Moment, reveal: number, flip: number) {
+  const seen = clamp01((reveal - m.u) * 14);
+  const isVerdict = m.kind === 'ok' || m.kind === 'done';
+  return isVerdict ? seen * clamp01(flip) : seen;
+}
+
 /**
- * One film-strip tape. `reveal` draws it left to right; `focus` glows the
+ * A label on a dark chip. The chip sits above the sweep line in the layer
+ * order, so the read head passes behind the letters instead of through them.
+ */
+function Chip({
+  x, y, text, color, anchor = 'middle', font,
+}: {
+  x: number;
+  y: number;
+  text: string;
+  color: string;
+  anchor?: 'start' | 'middle';
+  font?: string;
+}) {
+  const pad = 5;
+  const w = text.length * 8.2 + pad * 2;
+  const left = anchor === 'middle' ? x - w / 2 : x - pad;
+  return (
+    <g>
+      <rect x={left} y={y - 13} width={w} height={18} rx={4} fill={colors.BG} />
+      <text x={x} y={y} textAnchor={anchor} fill={color} fontSize={14} fontFamily={font}>
+        {text}
+      </text>
+    </g>
+  );
+}
+
+/**
+ * One film-strip tape, body only: it draws left to right; `focus` glows the
  * crash-timestamp moment; `flip` (new tape only) fades the ok/done markers in.
  */
-function Tape({
-  box, title, moments, reveal, focus, flip, fade,
+function TapeBody({
+  box, moments, reveal, focus, flip, fade,
 }: {
   box: { x: number; y: number; w: number; h: number };
-  title: string;
   moments: Moment[];
   reveal: number;
   focus: number;
@@ -213,9 +248,6 @@ function Tape({
   const drawnW = w * r;
   return (
     <g opacity={0.15 + 0.85 * clamp01(fade)}>
-      <text x={x} y={y - 12} fill={colors.MUTED} fontSize={12.5}>
-        {title}
-      </text>
       <rect x={x} y={y} width={drawnW} height={h} rx={8} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.4} />
       {/* sprocket holes — it reads as film */}
       {Array.from({ length: 22 }, (_, i) => {
@@ -230,10 +262,7 @@ function Tape({
       })}
       {moments.map((m, i) => {
         // markers appear as the tape is drawn past them
-        const seen = clamp01((r - m.u) * 14);
-        if (seen <= 0) return null;
-        const isVerdict = m.kind === 'ok' || m.kind === 'done';
-        const mu = isVerdict ? seen * clamp01(flip) : seen;
+        const mu = momentShown(m, r, flip);
         if (mu <= 0) return null;
         const mx = x + m.u * w;
         const cy = y + h / 2;
@@ -247,18 +276,51 @@ function Tape({
                 <line x1={mx - 5} y1={cy - 5} x2={mx + 5} y2={cy + 5} />
                 <line x1={mx - 5} y1={cy + 5} x2={mx + 5} y2={cy - 5} />
               </g>
-            ) : isVerdict ? (
+            ) : m.kind === 'ok' || m.kind === 'done' ? (
               <g stroke={c} strokeWidth={2.6} strokeLinecap="round" strokeLinejoin="round">
                 <path d={`M ${mx - 5.5} ${cy} l 4 4.5 l 7 -8.5`} fill="none" />
               </g>
             ) : (
               <circle cx={mx} cy={cy} r={4.5} fill={c} />
             )}
-            {m.label && (
-              <text x={mx} y={y + h + 16} textAnchor="middle" fill={hot > 0.3 ? c : colors.MUTED} fontSize={10.5} fontFamily={mono}>
-                {m.label}
-              </text>
-            )}
+          </g>
+        );
+      })}
+    </g>
+  );
+}
+
+/** The labels for one tape: its title and each moment's name, on chips. */
+function TapeLabels({
+  box, title, moments, reveal, focus, flip, fade,
+}: {
+  box: { x: number; y: number; w: number; h: number };
+  title: string;
+  moments: Moment[];
+  reveal: number;
+  focus: number;
+  flip: number;
+  fade: number;
+}) {
+  const r = clamp01(reveal);
+  if (r <= 0) return null;
+  const { x, y, w, h } = box;
+  return (
+    <g opacity={0.15 + 0.85 * clamp01(fade)}>
+      <Chip x={x} y={y - 12} text={title} color={colors.MUTED} anchor="start" />
+      {moments.map((m, i) => {
+        const mu = momentShown(m, r, flip);
+        if (mu <= 0 || !m.label) return null;
+        const hot = m.kind === 'crash' ? clamp01(focus) : m.kind === 'ok' ? clamp01(flip) : 0;
+        return (
+          <g key={i} opacity={mu}>
+            <Chip
+              x={x + m.u * w}
+              y={y + h + 16}
+              text={m.label}
+              color={hot > 0.3 ? MOMENT_COLOR[m.kind] : colors.MUTED}
+              font={mono}
+            />
           </g>
         );
       })}
@@ -314,9 +376,8 @@ function Walker({ u }: { u: number }) {
     <g>
       <circle cx={wx} cy={cy} r={8} fill={colors.WARM} opacity={0.25} />
       <circle cx={wx} cy={cy} r={4} fill={colors.WARM} />
-      <text x={wx} y={NEW.y - 12} textAnchor="middle" fill={colors.WARM} fontSize={10.5} fontFamily={mono}>
-        recording
-      </text>
+      {/* sits above the tape title's row, so the two never meet */}
+      <Chip x={wx} y={NEW.y - 30} text="recording" color={colors.WARM} font={mono} />
     </g>
   );
 }
@@ -330,7 +391,7 @@ function BugCard({ u, ship, done, fade }: { u: number; ship: number; done: numbe
   return (
     <g transform={`translate(${x}, ${y + (1 - uu) * 10})`} opacity={uu * (0.15 + 0.85 * clamp01(fade))}>
       <rect width={w} height={h} rx={12} fill={colors.PANEL} stroke={d > 0.5 ? colors.POSITIVE : colors.NEGATIVE} strokeWidth={1.5} />
-      <text x={18} y={26} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>
+      <text x={18} y={26} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
         your bug list
       </text>
       <text x={18} y={52} fill={colors.TEXT} fontSize={15} fontWeight={700}>
@@ -340,7 +401,7 @@ function BugCard({ u, ship, done, fade }: { u: number; ship: number; done: numbe
       {clamp01(ship) > 0 && d < 0.999 && (
         <g opacity={clamp01(ship) * (1 - d)} transform={`scale(${0.92 + 0.08 * clamp01(ship)})`}>
           <rect x={18} y={60} width={164} height={26} rx={13} fill={colors.WARM} opacity={0.18} />
-          <text x={100} y={78} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontWeight={700} fontFamily={mono}>
+          <text x={100} y={78} textAnchor="middle" fill={colors.WARM} fontSize={12} fontWeight={700} fontFamily={mono}>
             fix shipped, unproven
           </text>
         </g>
@@ -348,7 +409,7 @@ function BugCard({ u, ship, done, fade }: { u: number; ship: number; done: numbe
       {d > 0 && (
         <g opacity={d} transform={`scale(${0.92 + 0.08 * d})`}>
           <rect x={18} y={60} width={184} height={26} rx={13} fill={colors.POSITIVE} opacity={0.2} />
-          <text x={110} y={78} textAnchor="middle" fill={colors.POSITIVE} fontSize={11.5} fontWeight={700} fontFamily={mono}>
+          <text x={110} y={78} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontWeight={700} fontFamily={mono}>
             fixed, new movie agrees
           </text>
         </g>
@@ -365,13 +426,13 @@ function ReopenGhost({ u }: { u: number }) {
   return (
     <g transform={`translate(${x}, ${y + (1 - uu) * 8})`} opacity={uu * 0.9}>
       <rect width={w} height={h} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.4} strokeDasharray="6 5" />
-      <text x={16} y={26} fill={colors.NEGATIVE} fontSize={11.5} fontWeight={700} fontFamily={mono}>
+      <text x={16} y={26} fill={colors.NEGATIVE} fontSize={12} fontWeight={700} fontFamily={mono}>
         if it still breaks
       </text>
-      <text x={16} y={48} fill={colors.TEXT} fontSize={12.5}>
+      <text x={16} y={48} fill={colors.TEXT} fontSize={14}>
         the bug reopens on your list
       </text>
-      <text x={16} y={67} fill={colors.MUTED} fontSize={11.5}>
+      <text x={16} y={67} fill={colors.MUTED} fontSize={12}>
         with a fresh movie of the break
       </text>
     </g>
@@ -380,11 +441,30 @@ function ReopenGhost({ u }: { u: number }) {
 
 /* ------------------------------------------------------------ the frame */
 export function Render({ s }: { s: SceneState }) {
-  const fade = 1 - clamp01(s.get(scene.dimU)) * 0.55;
+  // the close fades the machinery all the way down; the bug card stays bright
+  const fade = 1 - clamp01(s.get(scene.dimU));
   return (
     <Camera {...s.get(scene.cam)}>
       <BugCard u={s.get(scene.bugU)} ship={s.get(scene.shipU)} done={s.get(scene.doneU)} fade={1} />
-      <Tape
+      <TapeBody
+        box={OLD}
+        moments={OLD_MOMENTS}
+        reveal={s.get(scene.oldU)}
+        focus={s.get(scene.focusU)}
+        flip={1}
+        fade={fade}
+      />
+      <TapeBody
+        box={NEW}
+        moments={NEW_MOMENTS}
+        reveal={s.get(scene.walkU)}
+        focus={0}
+        flip={s.get(scene.flipU)}
+        fade={fade}
+      />
+      <ComparisonLadder rungs={s.get(scene.rungsU)} sweep={s.get(scene.scanU)} fade={fade} />
+      {/* labels last, on their chips, so the sweep line runs behind the text */}
+      <TapeLabels
         box={OLD}
         title="Tuesday — the movie of the break"
         moments={OLD_MOMENTS}
@@ -393,7 +473,7 @@ export function Render({ s }: { s: SceneState }) {
         flip={1}
         fade={fade}
       />
-      <Tape
+      <TapeLabels
         box={NEW}
         title="today — a fresh movie of the same path"
         moments={NEW_MOMENTS}
@@ -402,7 +482,6 @@ export function Render({ s }: { s: SceneState }) {
         flip={s.get(scene.flipU)}
         fade={fade}
       />
-      <ComparisonLadder rungs={s.get(scene.rungsU)} sweep={s.get(scene.scanU)} fade={fade} />
       <Walker u={s.get(scene.walkU)} />
       <ReopenGhost u={s.get(scene.ghostU)} />
     </Camera>

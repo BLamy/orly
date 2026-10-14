@@ -66,7 +66,7 @@ const DOTS: Dot[] = Array.from({ length: N_DOTS }, () => {
 const FOLLOWER_TARGET = 5000000;
 
 // The reply-race panel.
-const RACE = { x: 430, y: 340, w: 470, h: 210 } as const;
+const RACE = { x: 430, y: 340, w: 470, h: 166 } as const;
 const RACE_FEED_X = RACE.x + RACE.w - 130;
 
 // The merge stage.
@@ -96,8 +96,10 @@ const cellDst = (i: number) => ({ x: FEED.x + FEED.w / 2, y: FEED.y + i * (FEED.
 
 // camera marks
 const CAM_CELEB: CameraState = { x: 430, y: 300, k: 1.25 };
-const CAM_RACE: CameraState = { x: 665, y: 430, k: 1.45 };
-const CAM_MERGE: CameraState = { x: 760, y: 330, k: 1.15 };
+// Race framing keeps the celebrity's timer and counter in view beside the race panel.
+const CAM_RACE: CameraState = { x: 520, y: 340, k: 1.3 };
+// Merge framing keeps the celebrity column and the feed inside the stage, above the caption band.
+const CAM_MERGE: CameraState = { x: 675, y: 340, k: 1.1 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 // ---------------------------------------------------------------------------
@@ -281,7 +283,8 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const recapU = s.get(scene.recapU);
 
-  const faded = 1 - 0.85 * dimU;
+  // Old content fades out fully so the closing recap sits on a clean stage.
+  const faded = 1 - dimU;
   const waveActive = wave > 0 && cancelU < 1;
 
   return (
@@ -291,7 +294,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* the follower murmuration / reader crowd */}
         <ParticleCloud state={s} compute={computeCloud} />
         <g opacity={clamp01(form * 2 - 1) * faded}>
-          <text x={1010} y={620} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic">
+          <text x={1010} y={578} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontStyle="italic">
             the same crowd — now just readers
           </text>
         </g>
@@ -306,7 +309,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={CELEB.x} y={CELEB.y + 44} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
             highly-followed user
           </text>
-          <text x={CELEB.x} y={CELEB.y + 62} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="ui-monospace, monospace">
+          <text x={CELEB.x} y={CELEB.y + 62} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
             followers: 5,000,000
           </text>
         </g>
@@ -322,7 +325,7 @@ export function Render({ s }: { s: SceneState }) {
             <text x={CELEB.x} y={CELEB.y + 108} textAnchor="middle" fill={colors.NEGATIVE} fontSize={15} fontWeight={700} fontFamily="ui-monospace, monospace">
               {fmt(fanN)}
             </text>
-            <text x={CELEB.x} y={CELEB.y + 126} textAnchor="middle" fill={colors.MUTED} fontSize={10}>
+            <text x={CELEB.x} y={CELEB.y + 126} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               inserts… of 5,000,000
             </text>
           </g>
@@ -349,11 +352,11 @@ export function Render({ s }: { s: SceneState }) {
             <Packet from={{ x: RACE.x + 18, y: RACE.y + 138 }} to={{ x: RACE_FEED_X - 20, y: RACE.y + 138 }} u={clamp01(raceRun * 1.9)} r={6} color={colors.ACCENT} />
             {/* one follower's feed: the answer lands above a missing question */}
             <rect x={RACE_FEED_X} y={RACE.y + 56} width={108} height={34} rx={7} fill={clamp01(raceRun * 1.9) >= 1 ? colors.ACCENT : colors.PANEL} opacity={0.9} stroke={colors.GRID} />
-            <text x={RACE_FEED_X + 54} y={RACE.y + 77} textAnchor="middle" fill={clamp01(raceRun * 1.9) >= 1 ? colors.BG : colors.MUTED} fontSize={11} fontWeight={600}>
+            <text x={RACE_FEED_X + 54} y={RACE.y + 77} textAnchor="middle" fill={clamp01(raceRun * 1.9) >= 1 ? colors.BG : colors.MUTED} fontSize={12} fontWeight={600}>
               {clamp01(raceRun * 1.9) >= 1 ? 'the reply' : 'feed slot'}
             </text>
             <rect x={RACE_FEED_X} y={RACE.y + 98} width={108} height={34} rx={7} fill="none" stroke={colors.WARM} strokeDasharray="5 4" opacity={0.8} />
-            <text x={RACE_FEED_X + 54} y={RACE.y + 119} textAnchor="middle" fill={colors.WARM} fontSize={10} fontStyle="italic">
+            <text x={RACE_FEED_X + 54} y={RACE.y + 119} textAnchor="middle" fill={colors.WARM} fontSize={12} fontStyle="italic">
               original… missing
             </text>
             <g opacity={flagU}>
@@ -371,9 +374,26 @@ export function Render({ s }: { s: SceneState }) {
           <text x={595} y={113} textAnchor="middle" fill={colors.POSITIVE} fontSize={13} fontWeight={600}>
             most accounts: fan out on write
           </text>
-          <text x={595} y={130} textAnchor="middle" fill={colors.MUTED} fontSize={10}>
+          <text x={595} y={130} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
             average audience ≈ 10 — cheap, as in chapter two
           </text>
+        </g>
+
+        {/* an ordinary account: ten copies, made at write time */}
+        <g opacity={zoneU * faded * (1 - 0.5 * clamp01(mergeU * 3))}>
+          <text x={230} y={470} textAnchor="middle" fill={colors.TEXT} fontSize={13} fontWeight={600}>
+            an ordinary account
+          </text>
+          <text x={230} y={488} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+            ten copies, made on write
+          </text>
+          {[0, 1, 2, 3, 4, 5, 6, 7, 8, 9].map((i) => (
+            <g key={i}>
+              <line x1={230} y1={546} x2={350} y2={492 + i * 12} stroke={colors.ACCENT} strokeWidth={1} opacity={0.45} />
+              <circle cx={350} cy={492 + i * 12} r={4} fill={colors.ACCENT} />
+            </g>
+          ))}
+          <circle cx={230} cy={546} r={8} fill={colors.ACCENT} />
         </g>
 
         {/* the celebrity's own column — one searchable place */}
@@ -421,7 +441,7 @@ export function Render({ s }: { s: SceneState }) {
                   <text x={x - FEED.w / 2 + 14} y={y + 4} fill={color} fontSize={12} fontFamily="ui-monospace, monospace">
                     {c.from === 'celeb' ? '★ ' : ''}{c.time}
                   </text>
-                  <text x={x + FEED.w / 2 - 14} y={y + 4} textAnchor="end" fill={colors.MUTED} fontSize={10}>
+                  <text x={x + FEED.w / 2 - 14} y={y + 4} textAnchor="end" fill={colors.MUTED} fontSize={12}>
                     {c.from === 'cache' ? 'cached' : 'merged in'}
                   </text>
                 </g>
@@ -432,8 +452,8 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* everyone wins — chips */}
         <g opacity={winU * faded}>
-          <rect x={430} y={560} width={460} height={40} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={660} y={585} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+          <rect x={430} y={420} width={460} height={40} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={660} y={445} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
             writes never stall · reads stay near constant
           </text>
         </g>
@@ -455,7 +475,7 @@ export function Render({ s }: { s: SceneState }) {
           <g transform="translate(400, 420)">
             <rect x={-14} y={-40} width={16} height={40} fill={colors.SECONDARY} opacity={0.8} rx={3} />
             <rect x={10} y={-88} width={16} height={88} fill={colors.ACCENT} opacity={0.8} rx={3} />
-            <text x={6} y={26} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+            <text x={6} y={26} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               reads ≫ writes
             </text>
           </g>
@@ -464,7 +484,7 @@ export function Render({ s }: { s: SceneState }) {
             {[-80, -62, -44, -26, -8].map((y, i) => (
               <line key={i} x1={-24} y1={-44} x2={34} y2={y} stroke={colors.ACCENT} strokeWidth={1.6} opacity={0.7} />
             ))}
-            <text x={0} y={26} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+            <text x={0} y={26} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               fan out on write
             </text>
           </g>
@@ -474,7 +494,7 @@ export function Render({ s }: { s: SceneState }) {
             ))}
             <path d="M -32 -30 L -32 -12 M 0 -30 L 0 -12 M 32 -30 L 32 -12" stroke={colors.MUTED} strokeWidth={1.6} fill="none" />
             <rect x={-52} y={-12} width={104} height={16} rx={6} fill="none" stroke={colors.POSITIVE} strokeWidth={1.4} />
-            <text x={0} y={26} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+            <text x={0} y={26} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               merge at serve time
             </text>
           </g>

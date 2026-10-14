@@ -86,7 +86,8 @@ function DecayCurve({ boundU, riskU }: { boundU: number; riskU: number }) {
       <line x1={170} y1={541} x2={520} y2={541} stroke={colors.NEGATIVE} strokeDasharray="6 6" opacity={boundU} />
       <polyline points={pts} fill="none" stroke={boundU > 0.5 ? colors.ACCENT : colors.NEGATIVE} strokeWidth={4} />
       <text x={190} y={370} fill={colors.TEXT} fontSize={13} fontFamily={MONO}>log-decay g</text>
-      <text x={500} y={514} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>z</text>
+      <text x={440} y={506} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>input z</text>
+      <text x={138} y={614} fill={colors.MUTED} fontSize={13}>log-decay g: how much old state survives each step (g ≤ 0)</text>
       <text x={182} y={535} fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO} opacity={boundU}>g_min = -5</text>
       <text x={348} y={392} textAnchor="middle" fill={boundU > 0.5 ? colors.ACCENT : colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
         {boundU > 0.5 ? 'scaled sigmoid · bounded' : 'negative Softplus · unbounded'}
@@ -110,7 +111,9 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={1280} height={720} fill={colors.BG} />
       <g opacity={mainOpacity}>
         <text x={640} y={58} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={750}>Lower-bounded Kimi Delta Attention</text>
-        <text x={640} y={84} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>3 × KDA → 1 × Gated MLA · g_min=-5 · 16-token tiles</text>
+        <text x={640} y={84} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>3 × KDA → 1 × Gated MLA · g_min=-5 · 16-token tiles</text>
+        <text x={640} y={226} textAnchor="middle" fill={colors.MUTED} fontSize={16} opacity={tapeU * (1 - stateU) * (1 - rhythmU)}>every token × every token = 10⁶ × 10⁶ pairs</text>
+        <text x={640} y={300} textAnchor="middle" fill={colors.ACCENT} fontSize={16} opacity={stateU * Math.max(0, 1 - 4 * chunkU)}>state S: read → forget a little → write new information</text>
       </g>
       <Camera {...s.get(scene.cam)}>
         <g opacity={mainOpacity}>
@@ -124,13 +127,16 @@ export function Render({ s }: { s: SceneState }) {
             {chunkU > 0 && [0, 1, 2].map((i) => (
               <g key={i} opacity={chunkU}>
                 <rect x={i * 352 - 8} y={-12} width={344} height={62} rx={10} fill="none" stroke={colors.SECONDARY} strokeWidth={2} />
-                <text x={i * 352 + 164} y={70} textAnchor="middle" fill={colors.SECONDARY} fontSize={11} fontFamily={MONO}>chunk {i + 1}</text>
+                <text x={i * 352 + 164} y={70} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>chunk {i + 1}</text>
               </g>
             ))}
+            {chunkU > 0 && (
+              <text x={516} y={102} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={chunkU}>a chunk is a block of tokens computed together, in parallel</text>
+            )}
             {stateU > 0 && (
               <g transform={`translate(${cursor * 22 + 8} 19)`}>
                 <circle r={13} fill={colors.WARM} />
-                <text y={4} textAnchor="middle" fill={colors.BG} fontSize={10} fontWeight={800}>S</text>
+                <text y={4} textAnchor="middle" fill={colors.BG} fontSize={12} fontWeight={800}>S</text>
               </g>
             )}
           </g>

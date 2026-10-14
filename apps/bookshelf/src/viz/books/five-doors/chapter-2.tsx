@@ -70,7 +70,7 @@ export function buildScene() {
   tl.caption({ at: 34.6, dur: 6.6, text: 'When staging comes due, every approved journey that is not excluded for it is queued, and the nightly run starts.' });
   tl.tween(sweepH, 21.0, { at: 34.6, dur: 0.6, ease: ease.linear });
   tl.tween(dueU, 1, { at: 35.2, dur: 0.5, ease: ease.pop });
-  tl.tween(cam, { x: 780, y: 380, k: 1.1 }, { at: 35.4, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 680, y: 360, k: 1.06 }, { at: 35.4, dur: 1.2, ease: ease.move });
   tl.tween(queueU, 1, { at: 36.0, dur: 2.8, ease: ease.enter });
 
   // BEAT 7 — exclusions
@@ -97,13 +97,13 @@ const scene = buildScene();
 function EnvCard({ x, y, name, kind, url, trigger, color, u, fields }: { x: number; y: number; name: string; kind: string; url: string; trigger: string; color: string; u: number; fields: number }) {
   if (u <= 0) return null;
   return <g opacity={u} transform={`translate(${x} ${y + (1 - u) * 18})`}>
-    <rect width="230" height={90 + fields * 44} rx="16" fill="#102033" stroke={color} strokeWidth="2.5" />
-    <text x="18" y="28" fill={color} fontSize="12" fontWeight="700" letterSpacing="1.5">{name.toUpperCase()}</text>
-    <text x="18" y="50" fill={colors.MUTED} fontSize="11" fontFamily={colors.font.mono}>kind: {kind}</text>
-    <text x="18" y="70" fill={colors.MUTED} fontSize="11" fontFamily={colors.font.mono}>{url}</text>
+    <rect width="250" height={90 + fields * 44} rx="16" fill="#102033" stroke={color} strokeWidth="2.5" />
+    <text x="18" y="28" fill={color} fontSize="13" fontWeight="700" letterSpacing="1.5">{name.toUpperCase()}</text>
+    <text x="18" y="50" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>kind: {kind}</text>
+    <text x="18" y="70" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>{url}</text>
     <g opacity={fields}>
-      <text x="18" y="96" fill={colors.MUTED} fontSize="11" fontFamily={colors.font.mono}>trigger: {trigger}</text>
-      <text x="18" y="116" fill={colors.MUTED} fontSize="11" fontFamily={colors.font.mono}>testing_guidelines: inherits</text>
+      <text x="18" y="96" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>trigger: {trigger}</text>
+      <text x="18" y="116" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>testing_guidelines: inherits</text>
     </g>
   </g>;
 }
@@ -123,9 +123,11 @@ export function Render({ s }: { s: SceneState }) {
   const hand = onDial(sweepH % 24, DIAL.r - 14);
   const nine = onDial(21, DIAL.r);
 
-  return <Camera {...s.get(scene.cam)}>
+  return <>
+    {/* Title sits outside the camera so the pushes below never crop it */}
+    <text x="640" y="64" textAnchor="middle" fill={colors.TEXT} fontSize="32" fontWeight="850" opacity={1 - close * 0.9}>Add staging, test every night</text>
+  <Camera {...s.get(scene.cam)}>
     <g opacity={1 - close * 0.9}>
-      <text x="640" y="64" textAnchor="middle" fill={colors.TEXT} fontSize="32" fontWeight="850">Add staging, test every night</text>
 
       {/* Environment cards */}
       <g opacity={1 - dial * 0.6}>
@@ -134,22 +136,23 @@ export function Render({ s }: { s: SceneState }) {
       </g>
 
       {/* Variable overlay */}
-      <g opacity={vars * (1 - dial * 0.88)} transform={`translate(340 ${300 + (1 - vars) * 12})`}>
-        <rect width="260" height="118" rx="14" fill="#13233a" stroke={colors.SECONDARY} strokeWidth="2" />
-        <text x="16" y="24" fill={colors.SECONDARY} fontSize="11" fontWeight="700" letterSpacing="1.5">ENVIRONMENT VARIABLES</text>
-        {VARS.map((v, i) => <g key={v.name} transform={`translate(16 ${50 + i * 30})`}>
-          <text fill={colors.MUTED} fontSize="10" fontFamily={colors.font.mono}>{v.name}</text>
-          <text y="14" fill={colors.MUTED} fontSize="10" fontFamily={colors.font.mono} opacity="0.6" textDecoration="line-through">{v.prod}</text>
-          <text x="112" y="14" fill={colors.WARM} fontSize="10" fontFamily={colors.font.mono}>{v.staging}</text>
+      <g opacity={vars * (1 - dial)} transform={`translate(370 ${300 + (1 - vars) * 12})`}>
+        <rect width="290" height="132" rx="14" fill="#13233a" stroke={colors.SECONDARY} strokeWidth="2" />
+        <text x="16" y="24" fill={colors.SECONDARY} fontSize="12" fontWeight="700" letterSpacing="1.5">ENVIRONMENT VARIABLES</text>
+        {VARS.map((v, i) => <g key={v.name} transform={`translate(16 ${50 + i * 36})`}>
+          <text fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>{v.name}</text>
+          <text y="14" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono} opacity="0.6" textDecoration="line-through">{v.prod}</text>
+          <text x="140" y="14" fill={colors.WARM} fontSize="12" fontFamily={colors.font.mono}>{v.staging}</text>
         </g>)}
-        <text x="16" y="110" fill={colors.MUTED} fontSize="10" fontFamily={colors.font.mono}>overlaid on global_variables by name</text>
+        <text x="16" y="120" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>overlaid on global_variables by name</text>
       </g>
 
-      {/* Cron line */}
-      <g opacity={cron * (1 - dial * 0.88)} transform={`translate(340 ${226 + (1 - cron) * 10})`}>
-        <rect width="240" height="56" rx="12" fill="#1b2a44" stroke={colors.WARM} strokeWidth="2" />
-        <text x="16" y="22" fill={colors.MUTED} fontSize="10" fontWeight="700" letterSpacing="1.5">NIGHTLY · WEEKDAYS</text>
-        <text x="16" y="44" fill={colors.WARM} fontSize="15" fontFamily={colors.font.mono} fontWeight="700">0 21 * * 1-5</text>
+      {/* Cron line, with the term defined on the card */}
+      <g opacity={cron * (1 - dial)} transform={`translate(370 ${196 + (1 - cron) * 10})`}>
+        <rect width="240" height="84" rx="12" fill="#1b2a44" stroke={colors.WARM} strokeWidth="2" />
+        <text x="16" y="22" fill={colors.MUTED} fontSize="12" fontWeight="700" letterSpacing="1.5">NIGHTLY · WEEKDAYS</text>
+        <text x="16" y="48" fill={colors.WARM} fontSize="16" fontFamily={colors.font.mono} fontWeight="700">0 21 * * 1-5</text>
+        <text x="16" y="70" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>cron: a schedule in one line</text>
       </g>
 
       {/* The 24-hour dial */}
@@ -160,7 +163,7 @@ export function Render({ s }: { s: SceneState }) {
           return <line key={h} x1={a.x} y1={a.y} x2={b.x} y2={b.y} stroke={h === 21 ? colors.WARM : colors.MUTED} strokeWidth={h === 21 ? 3 : 1.2} opacity={clamp01(dial * 24 - h)} />;
         })}
         {[0, 6, 12, 18].map((h) => { const p = onDial(h, DIAL.r + 22); return <text key={h} x={p.x} y={p.y + 5} textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>{h === 0 ? '00:00' : `${h}:00`}</text>; })}
-        <text x={nine.x + 30} y={nine.y - 10} fill={colors.WARM} fontSize="13" fontWeight="700">21:00</text>
+        <text x={nine.x + 30} y={nine.y - 10} fill={colors.WARM} fontSize="14" fontWeight="700">21:00</text>
         {/* 15-minute sweep ticks trail */}
         {Array.from({ length: 96 }, (_, i) => i / 4).filter((h) => h <= sweepH && h >= 12 && h > sweepH - 9).map((h) => {
           const p = onDial(h % 24, DIAL.r - 40);
@@ -171,20 +174,20 @@ export function Render({ s }: { s: SceneState }) {
         <text x={DIAL.cx} y={DIAL.cy + 60} textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>sweep: every 15 min</text>
         <g opacity={due}>
           <circle cx={nine.x} cy={nine.y} r={16 + due * 6} fill="none" stroke={colors.WARM} strokeWidth="3" />
-          <text x={DIAL.cx} y={DIAL.cy - 40} textAnchor="middle" fill={colors.WARM} fontSize="16" fontWeight="800">staging is due</text>
+          <text x={DIAL.cx} y={DIAL.cy + 92} textAnchor="middle" fill={colors.WARM} fontSize="16" fontWeight="800">staging is due</text>
         </g>
       </g>
 
       {/* Queue */}
       <g opacity={clamp01(queue * 3)} transform="translate(880 190)">
-        <text x="0" y="0" fill={colors.MUTED} fontSize="11" fontWeight="700" letterSpacing="1.5">QUEUED FOR STAGING</text>
+        <text x="0" y="0" fill={colors.MUTED} fontSize="12" fontWeight="700" letterSpacing="1.5">QUEUED FOR STAGING</text>
         {JOURNEYS.map((j, i) => {
           const u = clamp01(queue * JOURNEYS.length - i);
           const ex = j.excluded ? excl : 0;
           return <g key={j.name} opacity={u} transform={`translate(${(1 - u) * 30} ${16 + i * 46})`}>
             <rect width="290" height="36" rx="10" fill={ex > 0 ? '#1a0f18' : '#13233a'} stroke={ex > 0 ? colors.NEGATIVE : colors.ACCENT} strokeWidth="2" strokeDasharray={ex > 0 ? '6 5' : undefined} />
-            <text x="14" y="23" fill={ex > 0 ? colors.MUTED : colors.TEXT} fontSize="13" textDecoration={ex > 0 ? 'line-through' : undefined}>{j.name}</text>
-            {ex > 0 && <text x="278" y="23" textAnchor="end" fill={colors.NEGATIVE} fontSize="10" fontFamily={colors.font.mono}>excluded</text>}
+            <text x="14" y="23" fill={ex > 0 ? colors.MUTED : colors.TEXT} fontSize="14" textDecoration={ex > 0 ? 'line-through' : undefined}>{j.name}</text>
+            {ex > 0 && <text x="278" y="23" textAnchor="end" fill={colors.NEGATIVE} fontSize="12" fontFamily={colors.font.mono}>excluded</text>}
             {ex === 0 && morning > 0 && <circle cx="272" cy="18" r="6" fill={i === 2 ? colors.NEGATIVE : colors.POSITIVE} opacity={morning} />}
           </g>;
         })}
@@ -193,13 +196,14 @@ export function Render({ s }: { s: SceneState }) {
       {/* Morning bug */}
       <g opacity={morning} transform={`translate(880 ${452 + (1 - morning) * 14})`}>
         <rect width="290" height="84" rx="14" fill="#1a0f18" stroke={colors.NEGATIVE} strokeWidth="2.5" />
-        <text x="16" y="24" fill={colors.NEGATIVE} fontSize="11" fontWeight="700" letterSpacing="1.5">BUG · MEDIUM</text>
-        <rect x="200" y="10" width="76" height="20" rx="10" fill="#2a2416" stroke={colors.WARM} />
-        <text x="238" y="24" textAnchor="middle" fill={colors.WARM} fontSize="10" fontWeight="700">Staging</text>
-        <text x="16" y="50" fill={colors.TEXT} fontSize="13" fontWeight="600">Coupon field rejects valid code</text>
-        <text x="16" y="70" fill={colors.MUTED} fontSize="11" fontFamily={colors.font.mono}>found 06:12 · nightly run</text>
+        <text x="16" y="24" fill={colors.NEGATIVE} fontSize="12" fontWeight="700" letterSpacing="1.5">BUG · MEDIUM</text>
+        <rect x="196" y="9" width="80" height="22" rx="11" fill="#2a2416" stroke={colors.WARM} />
+        <text x="236" y="24" textAnchor="middle" fill={colors.WARM} fontSize="12" fontWeight="700">Staging</text>
+        <text x="16" y="50" fill={colors.TEXT} fontSize="14" fontWeight="600">Coupon field rejects valid code</text>
+        <text x="16" y="70" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>found 06:12 · nightly run</text>
       </g>
     </g>
+  </Camera>
 
     {/* Closing */}
     <g opacity={close}>
@@ -212,7 +216,7 @@ export function Render({ s }: { s: SceneState }) {
         <text y="6" textAnchor="middle" fill={colors.WARM} fontSize="15" fontFamily={colors.font.mono} opacity={clamp01(close * 2 - 1)}>staging · nightly</text>
       </g>
     </g>
-  </Camera>;
+  </>;
 }
 
 export const vizScene = () => scene;

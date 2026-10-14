@@ -13,14 +13,17 @@ const clamp01 = (u: number) => Math.max(0, Math.min(1, u));
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 const AXES = ['mode', 'domain', 'structure', 'difficulty', 'data interface', 'answer style'];
 const CANDIDATES = [
-  { x: 420, y: 318, good: true },
-  { x: 500, y: 270, good: false },
-  { x: 575, y: 350, good: true },
-  { x: 652, y: 286, good: false },
-  { x: 730, y: 340, good: true },
+  { x: 700, y: 318, good: true },
+  { x: 820, y: 270, good: false },
+  { x: 895, y: 350, good: true },
+  { x: 990, y: 286, good: false },
+  { x: 1060, y: 340, good: true },
 ];
+const IR_X = 480;
+const IR_Y = 294;
+const IR_R = 80;
 
-function crystalPath(cx: number, cy: number, r: number, u: number): string {
+function hexPath(cx: number, cy: number, r: number, u: number): string {
   return AXES.map((_, i) => {
     const a = -Math.PI / 2 + (i / AXES.length) * Math.PI * 2;
     const rr = r * (0.45 + 0.55 * clamp01(u + (i % 2) * 0.12));
@@ -54,7 +57,7 @@ export function buildScene() {
 
   tl.caption({ at: 12.8, dur: 5.2, text: 'That intermediate representation is the crystal. Controlled generation perturbs its structure into candidate modeling tasks.' });
   tl.tween(synthU, 1, { at: 13.4, dur: 2.2, ease: ease.enter });
-  tl.tween(cam, { x: 640, y: 330, k: 1.08 }, { at: 13.7, dur: 1.4, ease: ease.move });
+  tl.tween(cam, { x: 620, y: 330, k: 1.04 }, { at: 13.7, dur: 1.4, ease: ease.move });
   tl.hold(18.0, 0.5);
 
   tl.caption({ at: 18.5, dur: 5.5, text: 'Each candidate renders into exactly two messages: a user problem and an assistant modeling answer.' });
@@ -108,48 +111,54 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...s.get(scene.cam)}>
         <g opacity={mainOpacity}>
           <text x={640} y={70} textAnchor="middle" fill={colors.TEXT} fontSize={25} fontWeight={700}>The self-filtering SFT flywheel</text>
-          <text x={640} y={96} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>or_data_distill.pipeline</text>
+          <text x={640} y={96} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>or_data_distill.pipeline</text>
 
           {seedU > 0 && (
             <g opacity={seedU}>
-              <rect x={95} y={180} width={260} height={230} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} />
-              <text x={225} y={214} textAnchor="middle" fill={colors.ACCENT} fontSize={15} fontWeight={700}>public_seed_00e524…</text>
-              <text x={118} y={249} fill={colors.TEXT} fontSize={12}>portfolio weights sum to one</text>
-              <text x={118} y={276} fill={colors.TEXT} fontSize={12}>sector minimums and maximums</text>
-              <text x={118} y={303} fill={colors.TEXT} fontSize={12}>minimize total cost</text>
-              <text x={118} y={341} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>EquityFund · BondFund</text>
-              <text x={118} y={361} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>MoneyMarket</text>
-              <path d={`M 355 294 C 390 294 405 294 ${430 * irU} 294`} stroke={colors.GRID} strokeWidth={2} fill="none" />
+              <rect x={40} y={180} width={240} height={230} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} />
+              <text x={160} y={214} textAnchor="middle" fill={colors.ACCENT} fontSize={15} fontWeight={700}>public_seed_00e524…</text>
+              <text x={62} y={249} fill={colors.TEXT} fontSize={13}>portfolio weights sum to one</text>
+              <text x={62} y={276} fill={colors.TEXT} fontSize={13}>sector minimums and maximums</text>
+              <text x={62} y={303} fill={colors.TEXT} fontSize={13}>minimize total cost</text>
+              <text x={62} y={341} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>EquityFund · BondFund</text>
+              <text x={62} y={361} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>MoneyMarket</text>
+              <path d={`M 280 ${IR_Y} L ${280 + (IR_X - IR_R - 280) * irU} ${IR_Y}`} stroke={colors.GRID} strokeWidth={2} fill="none" />
             </g>
           )}
 
           {irU > 0 && (
             <g opacity={irU}>
-              <path d={crystalPath(475, 294, 92, irU)} fill={colors.SECONDARY} fillOpacity={0.15} stroke={colors.SECONDARY} strokeWidth={2} />
+              <path d={hexPath(IR_X, IR_Y, IR_R, irU)} fill={colors.SECONDARY} fillOpacity={0.15} stroke={colors.SECONDARY} strokeWidth={2} />
               {AXES.map((label, i) => {
                 const a = -Math.PI / 2 + (i / AXES.length) * Math.PI * 2;
+                const c = Math.cos(a);
+                const anchor = c > 0.3 ? 'start' : c < -0.3 ? 'end' : 'middle';
+                const lx = IR_X + c * 118;
+                const ly = IR_Y + Math.sin(a) * 104 + (Math.sin(a) > 0 ? 14 : -4);
                 return (
                   <g key={label}>
-                    <line x1={475} y1={294} x2={475 + Math.cos(a) * 92 * irU} y2={294 + Math.sin(a) * 92 * irU} stroke={colors.GRID} />
-                    <text x={475 + Math.cos(a) * 122} y={299 + Math.sin(a) * 112} textAnchor="middle" fill={colors.MUTED} fontSize={9}>{label}</text>
+                    <line x1={IR_X} y1={IR_Y} x2={IR_X + c * IR_R * irU} y2={IR_Y + Math.sin(a) * IR_R * irU} stroke={colors.GRID} />
+                    <text x={lx} y={ly} textAnchor={anchor} fill={colors.MUTED} fontSize={12}>{label}</text>
                   </g>
                 );
               })}
-              <text x={475} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>IR</text>
+              <text x={IR_X} y={IR_Y + 5} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>IR</text>
+              <text x={IR_X} y={440} textAnchor="middle" fill={colors.TEXT} fontSize={13}>intermediate representation (IR)</text>
+              <text x={IR_X} y={460} textAnchor="middle" fill={colors.MUTED} fontSize={12}>one explicit value per dimension</text>
             </g>
           )}
 
           {CANDIDATES.map((c, i) => {
             const u = clamp01(synthU * 6 - i);
             if (u <= 0) return null;
-            const x = c.x + 235;
+            const x = c.x;
             return (
               <g key={i} opacity={u}>
-                <path d={crystalPath(x, c.y, 38, 0.55 + i * 0.08)} fill={c.good ? colors.ACCENT : colors.WARM} fillOpacity={0.12} stroke={c.good ? colors.ACCENT : colors.WARM} />
+                <path d={hexPath(x, c.y, 38, 0.55 + i * 0.08)} fill={c.good ? colors.ACCENT : colors.WARM} fillOpacity={0.12} stroke={c.good ? colors.ACCENT : colors.WARM} />
                 {s.get(scene.renderU) > 0 && (
                   <g opacity={s.get(scene.renderU)}>
-                    <rect x={x - 42} y={405 + (i % 2) * 42} width={84} height={27} rx={6} fill={colors.PANEL} stroke={colors.GRID} />
-                    <text x={x} y={423 + (i % 2) * 42} textAnchor="middle" fill={colors.TEXT} fontSize={8.5}>user → assistant</text>
+                    <rect x={x - 55} y={405 + (i % 2) * 42} width={110} height={30} rx={6} fill={colors.PANEL} stroke={colors.GRID} />
+                    <text x={x} y={425 + (i % 2) * 42} textAnchor="middle" fill={colors.TEXT} fontSize={12}>user → assistant</text>
                   </g>
                 )}
               </g>
@@ -158,31 +167,33 @@ export function Render({ s }: { s: SceneState }) {
 
           {qualityU > 0 && (
             <g opacity={qualityU}>
-              <rect x={612} y={145} width={390} height={43} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} />
-              <text x={807} y={172} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>validate_ir → validate_sft_record</text>
-              <path d="M 710 190 L 710 480" stroke={colors.NEGATIVE} strokeWidth={2} strokeDasharray="7 6" />
-              <text x={688} y={505} textAnchor="end" fill={colors.NEGATIVE} fontSize={11}>rejected.jsonl</text>
+              <rect x={590} y={140} width={340} height={58} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} />
+              <text x={760} y={164} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>validate_ir → validate_sft_record</text>
+              <text x={760} y={186} textAnchor="middle" fill={colors.MUTED} fontSize={12}>checks the IR and the final SFT record</text>
+              <path d="M 760 198 L 760 486" stroke={colors.NEGATIVE} strokeWidth={2} strokeDasharray="7 6" />
             </g>
           )}
 
           {similarityU > 0 && (
             <g opacity={similarityU}>
-              <rect x={850} y={205} width={245} height={72} rx={12} fill={colors.PANEL} stroke={colors.WARM} />
-              <text x={972} y={233} textAnchor="middle" fill={colors.WARM} fontSize={12} fontWeight={700}>similarity gate</text>
-              <text x={972} y={257} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily={MONO}>|tokens ∩ tokens| / |tokens ∪ tokens|</text>
+              <rect x={945} y={140} width={280} height={104} rx={12} fill={colors.PANEL} stroke={colors.WARM} />
+              <text x={1085} y={166} textAnchor="middle" fill={colors.WARM} fontSize={15} fontWeight={700}>similarity gate</text>
+              <text x={1085} y={190} textAnchor="middle" fill={colors.TEXT} fontSize={13}>token-set Jaccard overlap</text>
+              <text x={1085} y={210} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>shared tokens ÷ all tokens</text>
+              <text x={1085} y={230} textAnchor="middle" fill={colors.MUTED} fontSize={12}>near-duplicates score high</text>
             </g>
           )}
 
           {routesU > 0 && (
             <g opacity={routesU}>
               {[
-                { x: 705, c: colors.POSITIVE, label: 'sft.jsonl' },
-                { x: 880, c: colors.NEGATIVE, label: 'rejected.jsonl' },
-                { x: 1055, c: colors.WARM, label: 'surplus_sft.jsonl' },
+                { x: 600, c: colors.POSITIVE, label: 'sft.jsonl' },
+                { x: 760, c: colors.NEGATIVE, label: 'rejected.jsonl' },
+                { x: 920, c: colors.WARM, label: 'surplus_sft.jsonl' },
               ].map((r) => (
                 <g key={r.label}>
-                  <rect x={r.x - 75} y={520} width={150} height={46} rx={10} fill={r.c} fillOpacity={0.12} stroke={r.c} />
-                  <text x={r.x} y={548} textAnchor="middle" fill={r.c} fontSize={10.5} fontFamily={MONO}>{r.label}</text>
+                  <rect x={r.x - 75} y={486} width={150} height={42} rx={10} fill={r.c} fillOpacity={0.12} stroke={r.c} />
+                  <text x={r.x} y={512} textAnchor="middle" fill={r.c} fontSize={12} fontFamily={MONO}>{r.label}</text>
                 </g>
               ))}
             </g>
@@ -190,14 +201,14 @@ export function Render({ s }: { s: SceneState }) {
 
           {poolU > 0 && (
             <g opacity={poolU}>
-              <path d={`M 705 520 C 570 ${610 - 120 * poolU} 505 ${520 - 200 * poolU} 480 360`} fill="none" stroke={colors.POSITIVE} strokeWidth={2.5} strokeDasharray="6 6" />
-              <text x={470} y={487} fill={colors.POSITIVE} fontSize={11} fontFamily={MONO}>accepted_synthetic_pool.jsonl ↺</text>
+              <path d={`M 525 507 C ${430 + 20 * (1 - poolU)} ${520 + 20 * (1 - poolU)} 330 470 270 412`} fill="none" stroke={colors.POSITIVE} strokeWidth={2.5} strokeDasharray="6 6" />
+              <text x={40} y={452} fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>accepted_synthetic_pool.jsonl ↺</text>
             </g>
           )}
           {s.get(scene.countU) > 0 && (
             <g opacity={s.get(scene.countU)}>
-              <rect x={405} y={575} width={470} height={38} rx={9} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={640} y={599} textAnchor="middle" fill={colors.TEXT} fontSize={11} fontFamily={MONO}>accepted_count / accepted_target_count · manifest.json</text>
+              <rect x={405} y={546} width={470} height={30} rx={9} fill={colors.PANEL} stroke={colors.GRID} />
+              <text x={640} y={566} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>accepted_count / accepted_target_count · manifest.json</text>
             </g>
           )}
         </g>

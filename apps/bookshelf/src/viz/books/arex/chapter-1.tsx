@@ -128,7 +128,7 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={c.label} opacity={u}>
                 <ellipse cx={c.x} cy={c.y} rx={c.rx} ry={c.ry} fill={c.color} fillOpacity={0.055} stroke={c.color} strokeWidth={2} strokeDasharray="7 7" />
-                <text x={c.x} y={c.y - c.ry - 9} textAnchor="middle" fill={c.color} fontSize={11} fontFamily={MONO}>{c.label}</text>
+                <text x={c.x} y={c.y - c.ry - 9} textAnchor="middle" fill={c.color} fontSize={14} fontFamily={MONO} stroke={colors.BG} strokeWidth={4} paintOrder="stroke">{c.label}</text>
               </g>
             );
           })}
@@ -137,7 +137,7 @@ export function Render({ s }: { s: SceneState }) {
             <g transform={`translate(${dot.x} ${dot.y})`}>
               <circle r={25} fill={colors.WARM} opacity={0.12} />
               <circle r={8} fill={colors.WARM} />
-              <text x={-22} y={22} textAnchor="end" fill={colors.WARM} fontSize={10} fontFamily={MONO}>candidate</text>
+              <text x={-22} y={22} textAnchor="end" fill={colors.WARM} fontSize={14} fontFamily={MONO} stroke={colors.BG} strokeWidth={4} paintOrder="stroke">candidate</text>
             </g>
           )}
 
@@ -145,12 +145,12 @@ export function Render({ s }: { s: SceneState }) {
             <g transform={`translate(${TARGET.x} ${TARGET.y})`} opacity={s.get(scene.candidateU)}>
               <circle r={34} fill={colors.POSITIVE} opacity={0.16} />
               <circle r={11} fill={colors.POSITIVE} />
-              <text y={62} textAnchor="middle" fill={colors.POSITIVE} fontSize={11} fontFamily={MONO}>provisional answer</text>
+              <text y={62} textAnchor="middle" fill={colors.POSITIVE} fontSize={14} fontFamily={MONO} stroke={colors.BG} strokeWidth={4} paintOrder="stroke">provisional answer</text>
             </g>
           )}
 
           {checksU > 0 && (
-            <g transform="translate(980 180)">
+            <g transform="translate(1004 180)">
               <rect width={205} height={300} rx={16} fill={colors.PANEL} stroke={colors.GRID} />
               <text x={102} y={34} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontWeight={700}>constraint audit</text>
               {CONSTRAINTS.map((c, i) => {
@@ -159,8 +159,8 @@ export function Render({ s }: { s: SceneState }) {
                 return (
                   <g key={c.label} transform={`translate(22 ${68 + i * 53})`} opacity={u}>
                     <rect width={161} height={34} rx={8} fill={done ? colors.POSITIVE : colors.WARM} fillOpacity={0.12} stroke={done ? colors.POSITIVE : colors.WARM} />
-                    <text x={14} y={22} fill={colors.TEXT} fontSize={11} fontFamily={MONO}>{c.label}</text>
-                    <text x={145} y={22} textAnchor="end" fill={done ? colors.POSITIVE : colors.WARM} fontSize={12}>{done ? '✓' : '?'}</text>
+                    <text x={14} y={23} fill={colors.TEXT} fontSize={14} fontFamily={MONO}>{c.label}</text>
+                    <text x={145} y={23} textAnchor="end" fill={done ? colors.POSITIVE : colors.WARM} fontSize={14}>{done ? '✓' : '?'}</text>
                   </g>
                 );
               })}

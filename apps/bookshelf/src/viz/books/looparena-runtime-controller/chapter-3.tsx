@@ -33,7 +33,7 @@ export function buildScene() {
 
   tl.caption({ at: 18.7, dur: 5.8, text: 'Type Two crops the same task to one coherent stage, beginning from a prepared intermediate workspace.' });
   tl.tween(sliceU, 1, { at: 19.3, dur: 1.4, ease: ease.move });
-  tl.tween(cam, { x: 560, y: 350, k: 1.38 }, { at: 20.9, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 600, y: 350, k: 1.2 }, { at: 20.9, dur: 1.3, ease: ease.move });
 
   tl.caption({ at: 24.8, dur: 5.8, text: 'Its evaluator still checks cumulative requirements through that stage, while average Worker turns fall to about fifty one through eighty.' });
   tl.tween(sliceStatsU, 1, { at: 25.4, dur: 0.8, ease: ease.pop });
@@ -68,32 +68,33 @@ export function Render({ s }: { s: SceneState }) {
   const replay = s.get(scene.replayP);
   const fullLayerOpacity = (1 - 0.85 * slice) * (1 - 0.85 * freeze);
   const sliceLayerOpacity = slice * (1 - 0.85 * freeze);
-  return <Camera {...s.get(scene.cam)}>
+  return <>
+    <text x="640" y="68" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="850" opacity={1 - close}>one task at three magnifications</text>
+    <Camera {...s.get(scene.cam)}>
     <g opacity={1 - close}>
-      <text x="640" y="68" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="850">one task at three magnifications</text>
       <g transform="translate(0 58)">
         <line x1="140" y1="325" x2="1140" y2="325" stroke={colors.GRID} strokeWidth="8" strokeLinecap="round" />
         {TASKS.map((task, i) => {
           const u = clamp01(s.get(scene.tasksU) - i);
-          return <g key={i} opacity={u} transform={`translate(${task.x} 325) scale(${0.75 + u * 0.25})`}><circle r="11" fill={task.source === 'SCBench' ? colors.ACCENT : colors.SECONDARY} /><text y="29" textAnchor="middle" fill={colors.MUTED} fontSize="8">{i + 1}</text></g>;
+          return <g key={i} opacity={u} transform={`translate(${task.x} 325) scale(${0.75 + u * 0.25})`}><circle r="11" fill={task.source === 'SCBench' ? colors.ACCENT : colors.SECONDARY} /><text y="29" textAnchor="middle" fill={colors.MUTED} fontSize="12">{i + 1}</text></g>;
         })}
         <text x="155" y="376" fill={colors.ACCENT} fontSize="12" fontFamily={colors.font.mono}>11 SCBench</text>
         <text x="860" y="376" fill={colors.SECONDARY} fontSize="12" fontFamily={colors.font.mono}>16 BeyondSWE</text>
 
         <g opacity={s.get(scene.fullU) * fullLayerOpacity}>
           <rect x="132" y="244" width="1018" height="162" rx="34" fill="none" stroke={colors.POSITIVE} strokeWidth="4" />
-          <text x="640" y="205" textAnchor="middle" fill={colors.POSITIVE} fontSize="17" fontWeight="800">TYPE III · full task from original state</text>
-          <text x="640" y="454" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono} opacity={s.get(scene.fullStatsU)}>139.81–288.90 Worker turns · 8.60–13.46 control cycles</text>
+          <text x="640" y="205" textAnchor="middle" fill={colors.POSITIVE} fontSize="17" fontWeight="800">TYPE III · one full task</text>
+          <text x="640" y="394" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono} opacity={s.get(scene.fullStatsU)}>original state through stop · 139.81–288.90 Worker turns · 8.60–13.46 control cycles</text>
         </g>
         <g opacity={sliceLayerOpacity}>
           <rect x={330 + slice * 70} y="262" width={540 - slice * 130} height="126" rx="28" fill="#2b2415" fillOpacity="0.22" stroke={colors.WARM} strokeWidth="5" />
-          <text x="560" y="238" textAnchor="middle" fill={colors.WARM} fontSize="17" fontWeight="800">TYPE II · prepared task slice</text>
-          <text x="560" y="425" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono} opacity={s.get(scene.sliceStatsU)}>51.38–80.12 Worker turns · cumulative stage checks</text>
+          <text x="560" y="238" textAnchor="middle" fill={colors.WARM} fontSize="17" fontWeight="800">TYPE II · one task slice</text>
+          <text x="560" y="425" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono} opacity={s.get(scene.sliceStatsU)}>prepared workspace through stage · 51.38–80.12 Worker turns · cumulative stage checks</text>
         </g>
         <g transform="translate(888 122)" opacity={s.get(scene.savingU)}>
           <circle r="76" fill="#102a22" stroke={colors.POSITIVE} strokeWidth="4" />
           <text y="-4" textAnchor="middle" fill={colors.POSITIVE} fontSize="28" fontWeight="900">−64.4%</text>
-          <text y="24" textAnchor="middle" fill={colors.MUTED} fontSize="11">mean estimated cost</text>
+          <text y="24" textAnchor="middle" fill={colors.MUTED} fontSize="12">mean estimated cost</text>
         </g>
         <g opacity={freeze}>
           <line x1="760" y1="246" x2="760" y2="404" stroke={colors.NEGATIVE} strokeWidth="6" />
@@ -104,7 +105,7 @@ export function Render({ s }: { s: SceneState }) {
           const u = clamp01(s.get(scene.candidatesU) - i);
           const x = 565 + i * 130;
           const win = i === 1 && s.get(scene.winnerU) > 0;
-          return <g key={label} transform={`translate(${x} 450)`} opacity={u}><rect x="-55" y="-25" width="110" height="50" rx="16" fill={win ? '#102a22' : '#141d2f'} stroke={win ? colors.POSITIVE : colors.MUTED} strokeWidth={win ? 4 : 2} /><text y="5" textAnchor="middle" fill={win ? colors.POSITIVE : colors.TEXT} fontSize="12" fontFamily={colors.font.mono}>{label}</text>{replay > 0 && <g><circle cx="-18" cy="40" r="6" fill={replay >= 0.8 ? colors.POSITIVE : colors.MUTED} /><circle cx="18" cy="40" r="6" fill={replay >= 1.8 ? colors.POSITIVE : colors.MUTED} /></g>}</g>;
+          return <g key={label} transform={`translate(${x} 470)`} opacity={u}><rect x="-55" y="-25" width="110" height="50" rx="16" fill={win ? '#102a22' : '#141d2f'} stroke={win ? colors.POSITIVE : colors.MUTED} strokeWidth={win ? 4 : 2} /><text y="5" textAnchor="middle" fill={win ? colors.POSITIVE : colors.TEXT} fontSize="12" fontFamily={colors.font.mono}>{label}</text>{replay > 0 && <g><circle cx="-18" cy="40" r="6" fill={replay >= 0.8 ? colors.POSITIVE : colors.MUTED} /><circle cx="18" cy="40" r="6" fill={replay >= 1.8 ? colors.POSITIVE : colors.MUTED} /></g>}</g>;
         })}
       </g>
     </g>
@@ -114,7 +115,8 @@ export function Render({ s }: { s: SceneState }) {
       {[{ x: 316, n: '90', t: 'Type I decisions', c: colors.NEGATIVE }, { x: 640, n: '27', t: 'Type II slices', c: colors.WARM }, { x: 964, n: '27', t: 'Type III full tasks', c: colors.POSITIVE }].map((d) => <g key={d.t} transform={`translate(${d.x} 356)`}><circle r="94" fill="#111c2e" stroke={d.c} strokeWidth="5" /><text y="-2" textAnchor="middle" fill={d.c} fontSize="44" fontWeight="900">{d.n}</text><text y="34" textAnchor="middle" fill={colors.TEXT} fontSize="14">{d.t}</text></g>)}
       <text x="640" y="512" textAnchor="middle" fill={colors.MUTED} fontSize="17">decision quality · closed-loop slice · end-to-end control</text>
     </g>
-  </Camera>;
+    </Camera>
+  </>;
 }
 
 export const vizScene = () => scene;

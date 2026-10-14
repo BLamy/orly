@@ -64,7 +64,9 @@ const RAIN = Array.from({ length: RAIN_N }, () => {
 });
 
 const CAM_GRID: CameraState = { x: 640, y: 300, k: 1.25 };
-const CAM_ROW: CameraState = { x: 640, y: 230, k: 1.7 };
+// Frames the row labels (x≈250) through the budget chip (x≈1170) and keeps the
+// bottom row and axis label above the caption pill (y≈630).
+const CAM_ROW: CameraState = { x: 710, y: 270, k: 1.3 };
 const CAM_WIDE: CameraState = { x: 640, y: 330, k: 1.02 };
 
 export interface Scene {
@@ -202,7 +204,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* GPU band above the grid, revealed with the lift */}
           <g opacity={liftU}>
             <rect x={GRID.x - 14} y={62} width={gridW + 22} height={44} rx={10} fill="none" stroke={colors.ACCENT} strokeWidth={1.4} strokeDasharray="6 4" />
-            <text x={GRID.x - 2} y={54} fill={colors.ACCENT} fontSize={11.5}>
+            <text x={GRID.x - 2} y={54} fill={colors.ACCENT} fontSize={13}>
               on the card · 4 experts × every layer
             </text>
           </g>
@@ -238,13 +240,13 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* row/col labels */}
           <g opacity={gridU}>
-            <text x={GRID.x - 20} y={GRID.y + 8} textAnchor="end" fill={colors.MUTED} fontSize={10.5}>
+            <text x={GRID.x - 20} y={GRID.y + 8} textAnchor="end" fill={colors.MUTED} fontSize={13}>
               layer 1
             </text>
-            <text x={GRID.x - 20} y={GRID.y + gridH - 22} textAnchor="end" fill={colors.MUTED} fontSize={10.5}>
+            <text x={GRID.x - 20} y={GRID.y + gridH - 22} textAnchor="end" fill={colors.MUTED} fontSize={13}>
               layer 58
             </text>
-            <text x={GRID.x + gridW / 2} y={GRID.y + gridH + 18} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} opacity={1 - liftU * 0.6}>
+            <text x={GRID.x + gridW / 2} y={GRID.y + gridH + 18} textAnchor="middle" fill={colors.MUTED} fontSize={13} opacity={1 - liftU * 0.6}>
               experts → (256 per layer in DeepSeek-V3; 16 shown)
             </text>
           </g>
@@ -263,10 +265,10 @@ export function Render({ s }: { s: SceneState }) {
           {/* budget chip + per-row cut ticks */}
           <g opacity={budgetU}>
             <rect x={GRID.x + gridW + 26} y={GRID.y + 10} width={200} height={58} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.3} />
-            <text x={GRID.x + gridW + 126} y={GRID.y + 34} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontFamily="ui-monospace, monospace">
+            <text x={GRID.x + gridW + 126} y={GRID.y + 34} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily="ui-monospace, monospace">
               --kt-num-gpu-experts 4
             </text>
-            <text x={GRID.x + gridW + 126} y={GRID.y + 54} textAnchor="middle" fill={colors.MUTED} fontSize={10}>
+            <text x={GRID.x + gridW + 126} y={GRID.y + 54} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               per MoE layer
             </text>
           </g>
@@ -274,15 +276,15 @@ export function Render({ s }: { s: SceneState }) {
           {/* VRAM meter */}
           <g opacity={vramU}>
             <rect x={GRID.x + gridW + 26} y={GRID.y + 96} width={200} height={94} rx={10} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
-            <text x={GRID.x + gridW + 126} y={GRID.y + 118} textAnchor="middle" fill={colors.TEXT} fontSize={11.5}>
+            <text x={GRID.x + gridW + 126} y={GRID.y + 118} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
               video memory
             </text>
             <rect x={GRID.x + gridW + 46} y={GRID.y + 132} width={160} height={13} rx={5} fill={colors.BG} stroke={colors.GRID} />
             <rect x={GRID.x + gridW + 46} y={GRID.y + 132} width={160 * (0.45 + 0.3 * liftU)} height={13} rx={5} fill={colors.ACCENT} opacity={0.85} />
-            <text x={GRID.x + gridW + 126} y={GRID.y + 168} textAnchor="middle" fill={colors.MUTED} fontSize={9.5}>
-              more experts → lower latency,
+            <text x={GRID.x + gridW + 126} y={GRID.y + 166} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+              more experts → lower latency
             </text>
-            <text x={GRID.x + gridW + 126} y={GRID.y + 181} textAnchor="middle" fill={colors.NEGATIVE} fontSize={9.5}>
+            <text x={GRID.x + gridW + 126} y={GRID.y + 182} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12}>
               too many → OOM at boot
             </text>
           </g>
@@ -290,7 +292,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* ratio flag chip */}
           <g opacity={ratioU}>
             <rect x={GRID.x - 14} y={GRID.y + gridH + 34} width={gridW + 22} height={32} rx={9} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.2} />
-            <text x={GRID.x + gridW / 2} y={GRID.y + gridH + 55} textAnchor="middle" fill={colors.SECONDARY} fontSize={11.5} fontFamily="ui-monospace, monospace">
+            <text x={GRID.x + gridW / 2} y={GRID.y + gridH + 55} textAnchor="middle" fill={colors.SECONDARY} fontSize={12.5} fontFamily="ui-monospace, monospace">
               --kt-gpu-experts-ratio 0.1   (10% of all experts, overrides the per-layer count)
             </text>
           </g>

@@ -40,11 +40,13 @@ const DEL_LAYOUT = layoutJson(DELETE_REQ, {
   abbrev: (_p, raw) => (raw.length > 30 ? shortHex(raw, 8, 4) : raw),
 });
 
-const RELAY_A = { x: 880, y: 190 };
-const RELAY_B = { x: 880, y: 430 };
+// relays sit close enough that the note and the relay column share one frame:
+// both camera beats keep the whole diagram on stage, so nothing is cropped
+const RELAY_A = { x: 660, y: 190 };
+const RELAY_B = { x: 660, y: 430 };
 
-const CAM_NOTE: CameraState = { x: 350, y: 260, k: 1.25 };
-const CAM_RELAYS: CameraState = { x: 760, y: 320, k: 1.1 };
+const CAM_NOTE: CameraState = { x: 470, y: 300, k: 1.1 };
+const CAM_RELAYS: CameraState = { x: 580, y: 330, k: 1.1 };
 
 interface Scene {
   tl: Timeline;
@@ -181,7 +183,7 @@ function RelayBox({ x, y, label, sub, u, note, noteOp, extra }: {
       {note && (
         <g opacity={noteOp}>
           <rect x={x + 110} y={y - 16} width={150} height={32} rx={7} fill={colors.PANEL} stroke={colors.ACCENT} opacity={0.9} />
-          <text x={x + 185} y={y + 4} textAnchor="middle" fill={colors.ACCENT} fontSize={11.5} fontFamily="ui-monospace, Menlo, monospace">
+          <text x={x + 185} y={y + 5} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
             "flash sale…"
           </text>
         </g>
@@ -223,10 +225,10 @@ export function Render({ s }: { s: SceneState }) {
           )}
           {swapU > 0 && (
             <g opacity={swapU}>
-              <text x={96} y={128} fill={colors.NEGATIVE} fontSize={13} fontWeight={600}>the deletion request — kind 5</text>
+              <text x={96} y={128} fill={colors.NEGATIVE} fontSize={14} fontWeight={600}>the deletion request — kind 5</text>
               <JsonDoc layout={DEL_LAYOUT} reveal={delU} />
               {delU >= 1 && sweepU < 0.5 && (
-                <text x={96} y={330} fill={colors.MUTED} fontSize={12.5}>
+                <text x={96} y={352} fill={colors.MUTED} fontSize={13}>
                   same pubkey as the note — the one check that matters
                 </text>
               )}
@@ -236,9 +238,9 @@ export function Render({ s }: { s: SceneState }) {
           {/* the countdown */}
           {timerU > 0 && swapU < 0.5 && (
             <g opacity={1 - swapU * 2}>
-              <rect x={340} y={470} width={280 * (1 - timerU)} height={12} rx={6} fill={colors.WARM} opacity={0.8} />
-              <rect x={340} y={470} width={280} height={12} rx={6} fill="none" stroke={colors.GRID} />
-              <text x={340} y={504} fill={timerU >= 1 ? colors.NEGATIVE : colors.MUTED} fontSize={12.5} fontFamily="ui-monospace, Menlo, monospace">
+              <rect x={150} y={470} width={280 * (1 - timerU)} height={12} rx={6} fill={colors.WARM} opacity={0.8} />
+              <rect x={150} y={470} width={280} height={12} rx={6} fill="none" stroke={colors.GRID} />
+              <text x={150} y={504} fill={timerU >= 1 ? colors.NEGATIVE : colors.MUTED} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
                 {timerU >= 1 ? 'expiration reached' : 'time remaining'}
               </text>
             </g>
@@ -251,19 +253,19 @@ export function Render({ s }: { s: SceneState }) {
             extra={
               <>
                 {dropU > 0 && swapU < 0.5 && (
-                  <text x={RELAY_A.x + 110} y={RELAY_A.y + 6} fill={colors.MUTED} fontSize={12} opacity={dropU * (1 - swapU * 2)}>
+                  <text x={RELAY_A.x + 110} y={RELAY_A.y + 6} fill={colors.MUTED} fontSize={13} opacity={dropU * (1 - swapU * 2)}>
                     dropped — not served
                   </text>
                 )}
                 {sweepU >= 1 && (
-                  <text x={RELAY_A.x + 110} y={RELAY_A.y + 6} fill={colors.MUTED} fontSize={12} opacity={sweepU}>
+                  <text x={RELAY_A.x + 110} y={RELAY_A.y + 6} fill={colors.MUTED} fontSize={13} opacity={sweepU}>
                     note gone
                   </text>
                 )}
                 {foreverU > 0 && (
                   <g opacity={foreverU}>
-                    <rect x={RELAY_A.x + 110} y={RELAY_A.y + 22} width={168} height={30} rx={7} fill={colors.PANEL} stroke={colors.NEGATIVE} opacity={0.9} />
-                    <text x={RELAY_A.x + 194} y={RELAY_A.y + 41} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11} fontFamily="ui-monospace, Menlo, monospace">
+                    <rect x={RELAY_A.x + 110} y={RELAY_A.y + 22} width={190} height={30} rx={7} fill={colors.PANEL} stroke={colors.NEGATIVE} opacity={0.9} />
+                    <text x={RELAY_A.x + 205} y={RELAY_A.y + 42} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
                       kind 5 — kept forever
                     </text>
                   </g>
@@ -278,12 +280,12 @@ export function Render({ s }: { s: SceneState }) {
             extra={
               <>
                 {keepU > 0 && (
-                  <text x={RELAY_B.x + 110} y={RELAY_B.y + 40} fill={colors.WARM} fontSize={12} opacity={keepU}>
+                  <text x={RELAY_B.x + 110} y={RELAY_B.y + 40} fill={colors.WARM} fontSize={13} opacity={keepU}>
                     still serving — within the rules
                   </text>
                 )}
                 {ghostU > 0 && (
-                  <text x={RELAY_B.x - 84} y={RELAY_B.y + 78} fill={colors.MUTED} fontSize={12} opacity={ghostU}>
+                  <text x={RELAY_B.x - 84} y={RELAY_B.y + 84} fill={colors.MUTED} fontSize={13} opacity={ghostU}>
                     …and no protocol reaches a screenshot
                   </text>
                 )}
@@ -295,14 +297,17 @@ export function Render({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={235} width={840} height={185} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
-          <text x={640} y={303} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
+          <rect x={200} y={225} width={880} height={215} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
+          <text x={640} y={293} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             Forgetting is a request, not a guarantee
           </text>
-          <text x={640} y={347} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
+          <text x={640} y={337} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             expiration for things meant to fade · kind 5 for regrets · SHOULD, never MUST
           </text>
-          <text x={640} y={387} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="ui-monospace, Menlo, monospace">
+          <text x={640} y={371} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
+            NIP-09: the deletion signer must match the note's pubkey · relays SHOULD keep the request
+          </text>
+          <text x={640} y={407} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="ui-monospace, Menlo, monospace">
             NIP-40 · NIP-09
           </text>
         </g>

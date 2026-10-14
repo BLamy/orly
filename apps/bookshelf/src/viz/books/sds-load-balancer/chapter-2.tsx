@@ -226,7 +226,7 @@ export function Render({ s }: { s: SceneState }) {
   const dutyK = s.get(scene.dutyK);
   const closeU = s.get(scene.closeU);
 
-  const dimAll = 1 - closeU * 0.88;
+  const dimAll = 1 - closeU * 0.94;
   const nDuty = Math.floor(dutyK + 0.001);
 
   return (
@@ -237,24 +237,24 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={envU * dimAll * (1 - proxyU)}>
           {/* layer 4 door */}
           <g opacity={l4U}>
-            <rect x={L4.x - 90} y={L4.y - 60} width={180} height={120} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.6} />
-            <text x={L4.x} y={L4.y - 32} textAnchor="middle" fill={colors.ACCENT} fontSize={13.5}>
+            <rect x={L4.x - 90} y={L4.y - 70} width={180} height={140} rx={12} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.6} />
+            <text x={L4.x} y={L4.y - 40} textAnchor="middle" fill={colors.ACCENT} fontSize={13.5}>
               layer 4
             </text>
-            <text x={L4.x} y={L4.y - 12} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily="ui-monospace, monospace">
+            <text x={L4.x} y={L4.y - 20} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily="ui-monospace, monospace">
               src ip:port → dst ip:port
             </text>
-            <text x={L4.x} y={L4.y + 44} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily="ui-monospace, monospace">
+            <text x={L4.x} y={L4.y + 58} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily="ui-monospace, monospace">
               forwards packets · NAT
             </text>
           </g>
-          {/* the unopened envelope rides through the L4 door */}
+          {/* the unopened envelope rides through the L4 door, below its labels */}
           {(() => {
-            const x = lerp(150, L4_OUT.x, l4Go);
-            return <Envelope x={x} y={L4.y} label="to: 10.0.0.7:443" color={colors.ACCENT} opacity={l4Go < 1 ? 1 : 0.4} />;
+            const x = lerp(150, L4_OUT.x - 60 - 12 - 55, l4Go);
+            return <Envelope x={x} y={L4.y + 10} h={50} label="to: 10.0.0.7:443" color={colors.ACCENT} opacity={l4Go < 1 ? 1 : 0.4} />;
           })()}
           {l4Go > 0.2 && l4Go < 0.9 && (
-            <text x={L4.x} y={L4.y + 78} textAnchor="middle" fill={colors.ACCENT} fontSize={11} fontStyle="italic">
+            <text x={L4.x} y={L4.y + 84} textAnchor="middle" fill={colors.ACCENT} fontSize={11} fontStyle="italic">
               never opened
             </text>
           )}
@@ -272,23 +272,7 @@ export function Render({ s }: { s: SceneState }) {
               terminate → read → reconnect
             </text>
           </g>
-          {/* two letters at the L7 door, opened then routed */}
-          {l7U > 0.5 && (() => {
-            const lanes = [
-              { go: vidGo, lane: LANES[0], tag: 'GET /video' },
-              { go: bilGo, lane: LANES[1], tag: 'POST /billing' },
-            ];
-            return lanes.map((L, i) => {
-              const x = lerp(L7.x + 130, L.lane.x - 90, L.go);
-              const y = lerp(L7.y - 10 + i * 26, L.lane.y, L.go);
-              return (
-                <g key={i}>
-                  <Envelope x={x} y={y} open={openU} label={openU > 0.4 ? L.tag : undefined} color={L.lane.color} w={100} h={58} />
-                </g>
-              );
-            });
-          })()}
-          {/* the lanes */}
+          {/* the lanes (drawn first so the letters ride on top of them) */}
           {LANES.map((l, i) => (
             <g key={i} opacity={l7U}>
               <rect x={l.x - 90} y={l.y - 34} width={200} height={68} rx={10} fill={colors.PANEL} stroke={l.color} strokeWidth={1.4} />
@@ -297,6 +281,22 @@ export function Render({ s }: { s: SceneState }) {
               </text>
             </g>
           ))}
+          {/* two letters at the L7 door, opened then routed; each stops short of its lane */}
+          {l7U > 0.5 && (() => {
+            const lanes = [
+              { go: vidGo, lane: LANES[0], tag: 'GET /video' },
+              { go: bilGo, lane: LANES[1], tag: 'POST /billing' },
+            ];
+            return lanes.map((L, i) => {
+              const x = lerp(L7.x + 150, L.lane.x - 90 - 12 - 50, L.go);
+              const y = lerp(L7.y - 36 + i * 72, L.lane.y, L.go);
+              return (
+                <g key={i}>
+                  <Envelope x={x} y={y} open={openU} label={openU > 0.4 ? L.tag : undefined} color={L.lane.color} w={100} h={58} />
+                </g>
+              );
+            });
+          })()}
           {/* L4 destination */}
           <g opacity={l4U}>
             <rect x={L4_OUT.x - 60} y={L4.y - 26} width={170} height={52} rx={10} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
@@ -304,10 +304,13 @@ export function Render({ s }: { s: SceneState }) {
               upstream server
             </text>
           </g>
-          {/* cost chips */}
+          {/* cost comparison, two short lines inside the camera's view */}
           <g opacity={actsU}>
-            <text x={640} y={104} textAnchor="middle" fill={colors.MUTED} fontSize={12.5}>
-              layer 4: less time, less compute · layer 7: routing by meaning
+            <text x={640} y={344} textAnchor="middle" fill={colors.ACCENT} fontSize={12.5}>
+              layer 4: one connection, no parsing
+            </text>
+            <text x={640} y={368} textAnchor="middle" fill={colors.SECONDARY} fontSize={12.5}>
+              layer 7: two connections, full parse
             </text>
           </g>
         </g>
@@ -327,18 +330,20 @@ export function Render({ s }: { s: SceneState }) {
             one server
           </text>
           <line x1={PROXY.x + 90} y1={PROXY.y} x2={PROXY.x + 240} y2={PROXY.y} stroke={colors.GRID} strokeWidth={1.3} />
-          <line x1={150} y1={PROXY.y} x2={PROXY.x - 90} y2={PROXY.y} stroke={colors.GRID} strokeWidth={1.3} />
-          <text x={150} y={PROXY.y - 14} fill={colors.MUTED} fontSize={11} fontStyle="italic">
+          <line x1={200} y1={PROXY.y} x2={PROXY.x - 90} y2={PROXY.y} stroke={colors.GRID} strokeWidth={1.3} />
+          <text x={200} y={PROXY.y - 14} fill={colors.MUTED} fontSize={11} fontStyle="italic">
             the internet
           </text>
-          {/* duties light up one by one */}
+          {/* duties light up one by one, in a two-column grid under the proxy */}
           {DUTIES.map((d, i) => {
             const on = i < nDuty;
             const flash = i === nDuty - 1;
+            const x = 360 + (i % 2) * 200;
+            const y = 452 + Math.floor(i / 2) * 34;
             return (
               <g key={d} opacity={on ? 1 : 0.15}>
-                <rect x={280} y={120 + i * 38} width={300} height={30} rx={7} fill={colors.PANEL} stroke={flash ? colors.WARM : colors.GRID} strokeWidth={flash ? 1.8 : 1} />
-                <text x={430} y={140 + i * 38} textAnchor="middle" fill={on ? colors.TEXT : colors.MUTED} fontSize={11.5}>
+                <rect x={x} y={y} width={190} height={28} rx={7} fill={colors.PANEL} stroke={flash ? colors.WARM : colors.GRID} strokeWidth={flash ? 1.8 : 1} />
+                <text x={x + 95} y={y + 19} textAnchor="middle" fill={on ? colors.TEXT : colors.MUTED} fontSize={11.5}>
                   {d}
                 </text>
               </g>

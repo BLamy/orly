@@ -55,11 +55,12 @@ const ROWS = [
 const GRAPH = { ax: 880, ay: 420, bx: 1110, by: 420 };
 const EXTRA = [
   { x: 960, y: 530 },
-  { x: 1040, y: 350 },
+  { x: 1040, y: 372 },
 ];
 
 const CAM_JSON: CameraState = { x: 350, y: 320, k: 1.25 };
-const CAM_CARD: CameraState = { x: 830, y: 340, k: 1.12 };
+// wide enough that the JSON values flying to the card stay on stage
+const CAM_CARD: CameraState = { x: 640, y: 340, k: 1.1 };
 
 interface Scene {
   tl: Timeline;
@@ -218,7 +219,7 @@ function Frame({ s }: { s: SceneState }) {
               <text x={CARD.x + 20} y={CARD.y + 32} fill={colors.NEGATIVE} fontSize={15} fontWeight={600} opacity={Math.min(1, metaU * 3)}>
                 eavesdropper’s notebook
               </text>
-              <text x={CARD.x + 20} y={CARD.y + 52} fill={colors.MUTED} fontSize={11} fontFamily="monospace" opacity={Math.min(1, metaU * 3)}>
+              <text x={CARD.x + 20} y={CARD.y + 52} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={Math.min(1, metaU * 3)}>
                 cipher: unbroken · notebook: full
               </text>
               {ROWS.map((r, i) => {
@@ -249,13 +250,15 @@ function Frame({ s }: { s: SceneState }) {
           {/* the metadata graph */}
           {graphU > 0 && (
             <g>
-              {[{ x: GRAPH.ax, y: GRAPH.ay, l: shortHex(ALICE, 4, 0) }, { x: GRAPH.bx, y: GRAPH.by, l: shortHex(BOB, 4, 0) }, ...EXTRA.map((e, i) => ({ ...e, l: `…${i + 1}` }))].map((n, i) => {
+              {[{ x: GRAPH.ax, y: GRAPH.ay, l: shortHex(ALICE, 4, 4) }, { x: GRAPH.bx, y: GRAPH.by, l: shortHex(BOB, 4, 4) }, ...EXTRA.map((e, i) => ({ ...e, l: `…${i + 1}` }))].map((n, i) => {
                 const u = clamp01(graphU * 4 - i);
                 if (u <= 0) return null;
+                // the two named keys get their label underneath; the anonymous nodes keep it inside
+                const named = i < 2;
                 return (
                   <g key={i} opacity={u}>
                     <circle cx={n.x} cy={n.y} r={16} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.5} />
-                    <text x={n.x} y={n.y + 4} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily="monospace">
+                    <text x={n.x} y={named ? n.y + 36 : n.y + 4} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
                       {n.l}
                     </text>
                   </g>
@@ -276,12 +279,12 @@ function Frame({ s }: { s: SceneState }) {
 
           {/* deprecation stamp */}
           {stampU > 0 && (
-            <g opacity={stampU} transform={`rotate(-9, 350, 320)`}>
-              <rect x={160} y={288} width={380} height={62} rx={8} fill="none" stroke={colors.NEGATIVE} strokeWidth={3.5} />
-              <text x={350} y={322} textAnchor="middle" fill={colors.NEGATIVE} fontSize={22} fontWeight={700} letterSpacing={2}>
+            <g opacity={stampU} transform={`rotate(-4, 320, 500)`}>
+              <rect x={140} y={468} width={360} height={80} rx={8} fill="none" stroke={colors.NEGATIVE} strokeWidth={3.5} />
+              <text x={320} y={498} textAnchor="middle" fill={colors.NEGATIVE} fontSize={22} fontWeight={700} letterSpacing={2}>
                 DEPRECATED — kind 4
               </text>
-              <text x={350} y={342} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11} fontFamily="monospace">
+              <text x={320} y={532} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily="monospace">
                 "leaks metadata in the events" → NIP-17
               </text>
             </g>
@@ -291,7 +294,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             The letter was never the leak
           </text>

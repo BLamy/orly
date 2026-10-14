@@ -162,14 +162,15 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // fully clear the body under the closing card so its text does not collide
+  const mainOp = 1 - dimU;
   const uAnchor = AUTH_LAYOUT.anchor('tags[0][1]');
 
   return (
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
 
-      <g opacity={mainOp}>
+      <g opacity={mainOp} display={mainOp > 0 ? undefined : 'none'}>
         <Camera {...cam}>
           {/* NIP-78 app data + sync */}
           {dataU > 0 && (
@@ -178,7 +179,7 @@ export function Render({ s }: { s: SceneState }) {
               {syncU > 0 && (
                 <>
                   <circle cx={RELAY.x} cy={RELAY.y} r={30} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2} opacity={clamp01(syncU * 3)} />
-                  <text x={RELAY.x} y={RELAY.y + 5} textAnchor="middle" fill={colors.ACCENT} fontSize={12} fontFamily="monospace" opacity={clamp01(syncU * 3)}>
+                  <text x={RELAY.x} y={RELAY.y + 5} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily="monospace" opacity={clamp01(syncU * 3)}>
                     relay
                   </text>
                   {DEVICES.map((d, i) => {
@@ -187,10 +188,10 @@ export function Render({ s }: { s: SceneState }) {
                       <g key={d.label}>
                         <line x1={RELAY.x + 30} y1={RELAY.y} x2={d.x - 40} y2={d.y + 30} stroke={colors.GRID} strokeWidth={1.4} opacity={clamp01(syncU * 2) * 0.7} />
                         <rect x={d.x - 40} y={d.y} width={120} height={60} rx={9} fill={colors.PANEL} stroke={u > 0.5 ? colors.POSITIVE : colors.GRID} opacity={0.4 + 0.6 * clamp01(syncU * 2)} />
-                        <text x={d.x + 20} y={d.y + 28} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
+                        <text x={d.x + 20} y={d.y + 28} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                           {d.label}
                         </text>
-                        <text x={d.x + 20} y={d.y + 47} textAnchor="middle" fill={colors.POSITIVE} fontSize={11} opacity={u}>
+                        <text x={d.x + 20} y={d.y + 47} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} opacity={u}>
                           theme: dark · 18
                         </text>
                       </g>
@@ -210,10 +211,10 @@ export function Render({ s }: { s: SceneState }) {
               {headerU > 0 && (
                 <g opacity={clamp01(headerU * 1.5)}>
                   <rect x={SERVER.x} y={SERVER.y} width={SERVER.w} height={70} rx={9} fill={colors.PANEL} stroke={colors.GRID} />
-                  <text x={SERVER.x + 16} y={SERVER.y + 27} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+                  <text x={SERVER.x + 16} y={SERVER.y + 27} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
                     POST /upload
                   </text>
-                  <text x={SERVER.x + 16} y={SERVER.y + 50} fill={colors.WARM} fontSize={12} fontFamily="monospace">
+                  <text x={SERVER.x + 16} y={SERVER.y + 50} fill={colors.WARM} fontSize={13} fontFamily="monospace">
                     Authorization: Nostr {'{event}'}
                   </text>
                   <TokenFlight
@@ -222,7 +223,7 @@ export function Render({ s }: { s: SceneState }) {
                     u={headerU}
                     text="signed 27235"
                     fill={colors.WARM}
-                    fontSize={12}
+                    fontSize={13}
                     lift={70}
                     fadeOut
                   />
@@ -238,7 +239,7 @@ export function Render({ s }: { s: SceneState }) {
                       <g key={c} opacity={passed ? 1 : 0.3}>
                         <circle cx={SERVER.x + 12} cy={SERVER.y + 104 + i * 30} r={7} fill="none" stroke={passed ? colors.POSITIVE : colors.GRID} strokeWidth={1.8} />
                         {passed && <path d={`M${SERVER.x + 8} ${SERVER.y + 104 + i * 30} l3 3 l6 -7`} fill="none" stroke={colors.POSITIVE} strokeWidth={2} strokeLinecap="round" />}
-                        <text x={SERVER.x + 28} y={SERVER.y + 109 + i * 30} fill={passed ? colors.TEXT : colors.MUTED} fontSize={13} fontFamily="monospace">
+                        <text x={SERVER.x + 28} y={SERVER.y + 109 + i * 30} fill={passed ? colors.TEXT : colors.MUTED} fontSize={14} fontFamily="monospace">
                           {c}
                         </text>
                       </g>
@@ -268,7 +269,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={350} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             a relay stores your app data; a signed event logs you in anywhere
           </text>
-          <text x={640} y={388} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={388} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             NIP-78 kind 30078 · NIP-98 kind 27235
           </text>
         </g>

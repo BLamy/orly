@@ -33,12 +33,15 @@ const LAYOUT = layoutJson(EVENT, {
 });
 
 const PLATFORMS = [
-  { name: 'github', detail: 'a gist saying:', y: 130 },
-  { name: 'twitter', detail: 'a tweet saying:', y: 300 },
-  { name: 'mastodon', detail: 'a post saying:', y: 470 },
+  { name: 'github', detail: 'a gist saying:', y: 120 },
+  { name: 'twitter', detail: 'a tweet saying:', y: 290 },
+  { name: 'mastodon', detail: 'a post saying:', y: 460 },
 ];
 const CARD_X = 760;
 const CARD_W = 400;
+const CARD_H = 118;
+// top of the closing stack, centred vertically on the stage
+const STACK_Y = 170;
 
 // the closing stack of layers
 const LAYERS = [
@@ -50,7 +53,8 @@ const LAYERS = [
 ];
 
 const CAM_JSON: CameraState = { x: 330, y: 300, k: 1.3 };
-const CAM_CARDS: CameraState = { x: 780, y: 330, k: 1.12 };
+// wide enough to hold the JSON tags and the three cards together
+const CAM_CARDS: CameraState = { x: 640, y: 350, k: 1 };
 
 interface Scene {
   tl: Timeline;
@@ -184,17 +188,17 @@ function Frame({ s }: { s: SceneState }) {
             return (
               <g key={p.name}>
                 <g opacity={u}>
-                  <rect x={CARD_X} y={p.y} width={CARD_W} height={118} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
-                  <text x={CARD_X + 16} y={p.y + 26} fill={colors.ACCENT} fontSize={13} fontWeight={600} fontFamily="monospace">
+                  <rect x={CARD_X} y={p.y} width={CARD_W} height={CARD_H} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
+                  <text x={CARD_X + 16} y={p.y + 26} fill={colors.ACCENT} fontSize={14} fontWeight={600} fontFamily="monospace">
                     {p.name}
                   </text>
-                  <text x={CARD_X + 16} y={p.y + 50} fill={colors.MUTED} fontSize={12}>
+                  <text x={CARD_X + 16} y={p.y + 50} fill={colors.MUTED} fontSize={13}>
                     {p.detail}
                   </text>
-                  <text x={CARD_X + 16} y={p.y + 72} fill={colors.TEXT} fontSize={11.5} fontStyle="italic">
+                  <text x={CARD_X + 16} y={p.y + 72} fill={colors.TEXT} fontSize={12.5} fontStyle="italic">
                     “Verifying that I control the following
                   </text>
-                  <text x={CARD_X + 16} y={p.y + 90} fill={colors.TEXT} fontSize={11.5} fontStyle="italic">
+                  <text x={CARD_X + 16} y={p.y + 92} fill={colors.TEXT} fontSize={12.5} fontStyle="italic">
                     Nostr public key: <tspan fill={colors.SECONDARY} fontFamily="monospace">{`${NPUB.slice(0, 16)}…`}</tspan>”
                   </text>
                 </g>
@@ -208,7 +212,7 @@ function Frame({ s }: { s: SceneState }) {
                 {/* proof → key arrow back */}
                 {lu >= 1 && (
                   <path
-                    d={`M${CARD_X + 30},${p.y + 112} Q 600,${p.y + 160} ${a.x + 60},${a.cy + 22}`}
+                    d={`M${CARD_X + 30},${p.y + CARD_H} Q 600,${p.y + CARD_H + 40} ${a.x + 60},${a.cy + 22}`}
                     fill="none" stroke={colors.SECONDARY} strokeWidth={1.4} strokeDasharray="3 5" opacity={0.6}
                   />
                 )}
@@ -223,7 +227,7 @@ function Frame({ s }: { s: SceneState }) {
           })}
 
           {cautionU > 0 && (
-            <text x={CARD_X} y={620} fill={colors.WARM} fontSize={13} opacity={cautionU}>
+            <text x={CARD_X} y={612} fill={colors.WARM} fontSize={13} opacity={cautionU}>
               proofs live on other people’s platforms — witnesses, not the identity
             </text>
           )}
@@ -233,10 +237,12 @@ function Frame({ s }: { s: SceneState }) {
       {/* the closing stack — drawn screen-fixed over the dim */}
       {stackU > 0 && (
         <g>
+          {/* opaque-ish wash so the faded claim cards do not show through the stack */}
+          <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} opacity={0.9 * stackU} />
           {LAYERS.map((l, i) => {
             const u = clamp01(stackU * LAYERS.length - i);
             if (u <= 0) return null;
-            const y = 150 + i * 62;
+            const y = STACK_Y + i * 62;
             return (
               <g key={l.label} opacity={u} transform={`translate(0, ${(1 - u) * -12})`}>
                 <rect x={330} y={y} width={620} height={48} rx={10} fill={colors.PANEL} stroke={l.color} strokeWidth={1.6} opacity={0.95} />
@@ -248,11 +254,11 @@ function Frame({ s }: { s: SceneState }) {
           })}
           {keyU > 0 && (
             <g opacity={keyU}>
-              <rect x={330} y={150 + LAYERS.length * 62 + 8} width={620} height={54} rx={10} fill={colors.PANEL} stroke={colors.TEXT} strokeWidth={2} />
-              <text x={640} y={150 + LAYERS.length * 62 + 30} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace" fontWeight={700}>
+              <rect x={330} y={STACK_Y + LAYERS.length * 62 + 8} width={620} height={62} rx={10} fill={colors.PANEL} stroke={colors.TEXT} strokeWidth={2} />
+              <text x={640} y={STACK_Y + LAYERS.length * 62 + 32} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily="monospace" fontWeight={700}>
                 {shortHex(PUBKEY, 20, 12)}
               </text>
-              <text x={640} y={150 + LAYERS.length * 62 + 50} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+              <text x={640} y={STACK_Y + LAYERS.length * 62 + 53} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
                 the key — unchanged since chapter one
               </text>
             </g>

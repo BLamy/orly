@@ -42,9 +42,9 @@ const RAIL_X1 = 1160;
 
 // crowded E-slot chips (beat 1) — squeezed and overlapping
 const CROWD = [
-  { label: 'RateLimitError', x: 496 },
-  { label: 'QuotaExceededError', x: 610 },
-  { label: 'SafetyBlockedError', x: 736 },
+  { label: 'RateLimitError', x: 548 },
+  { label: 'QuotaExceededError', x: 640 },
+  { label: 'SafetyBlockedError', x: 732 },
 ] as const;
 const CROWD_W = 132;
 
@@ -63,9 +63,11 @@ const HTTP = { x: 360, y: 236, w: 560, h: 168 } as const;
 
 const CAM_SIG: CameraState = { x: 640, y: 150, k: 1.5 };
 const CAM_WRAP: CameraState = { x: 640, y: 268, k: 1.24 };
-const CAM_RAIL: CameraState = { x: 560, y: 440, k: 1.22 };
-const CAM_STATION: CameraState = { x: 700, y: 452, k: 1.34 };
-const CAM_CRACK: CameraState = { x: 640, y: 462, k: 1.18 };
+// Rail-level pushes keep the signature bar (top) and the catch station (bottom)
+// inside the stage and above the caption band.
+const CAM_RAIL: CameraState = { x: 560, y: 374, k: 1.15 };
+const CAM_STATION: CameraState = { x: 640, y: 374, k: 1.15 };
+const CAM_CRACK: CameraState = { x: 660, y: 370, k: 1.15 };
 const CAM_HTTP: CameraState = { x: 640, y: 320, k: 1.18 };
 
 // ---------------------------------------------------------------------------
@@ -252,17 +254,17 @@ function Shell({
       <g transform={`translate(${dx} 0) rotate(${8 * split} ${cx} ${cy})`} opacity={halfOp}>
         <path d={`M${cx} ${cy - h / 2} h${w / 2 - 16} a16 16 0 0 1 16 16 v${h - 32} a16 16 0 0 1 -16 16 h${-w / 2 + 16}`} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={2} />
       </g>
-      <text x={cx - w / 2 + 10} y={cy - h / 2 - 6} fill={colors.NEGATIVE} fontSize={11} fontFamily={MONO} opacity={halfOp}>
+      <text x={cx - w / 2 + 10} y={cy - h / 2 - 6} fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO} opacity={halfOp}>
         AiError
       </text>
       {/* the reason window */}
       <g opacity={1 - split}>
         <rect x={cx - 70} y={cy - 16} width={140} height={32} rx={8} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.4} />
-        <text x={cx} y={cy - 3} textAnchor="middle" fill={colors.WARM} fontSize={10.5} fontFamily={MONO}>
+        <text x={cx} y={cy - 3} textAnchor="middle" fill={colors.WARM} fontSize={11.5} fontFamily={MONO}>
           {reason}
         </text>
         {sub && (
-          <text x={cx} y={cy + 11} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>
+          <text x={cx} y={cy + 11} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
             {sub}
           </text>
         )}
@@ -333,17 +335,17 @@ export function Render({ s }: { s: SceneState }) {
             <TagChip
               key={c.label}
               cx={c.x + 8 * Math.sin(i * 2.1)}
-              cy={SIG_CY + (i % 2 === 0 ? -4 : 5)}
+              cy={SIG_CY + (i % 2 === 0 ? -9 : 9)}
               w={CROWD_W}
               label={c.label}
               color={colors.NEGATIVE}
               opacity={eCrowd * clamp01(crowdU * 3 - i)}
-              fs={9.5}
+              fs={11}
             />
           ))}
           <TagChip cx={618} cy={SIG_CY} w={216} label="AiError { reason }" color={colors.NEGATIVE} opacity={Math.max(eWrapped, eFinal)} fs={12.5} />
           {REASONS.map((r, i) => (
-            <TagChip key={r} cx={530 + i * 122} cy={SIG_CY} w={116} label={r} color={colors.NEGATIVE} opacity={eSpilled} fs={8.5} />
+            <TagChip key={r} cx={540 + i * 128} cy={SIG_CY} w={124} label={r} color={colors.NEGATIVE} opacity={eSpilled} fs={10.5} />
           ))}
           <text x={866} y={SIG_CY + 5} fill={colors.MUTED} fontSize={15} fontFamily={MONO}>
             ,
@@ -395,7 +397,7 @@ export function Render({ s }: { s: SceneState }) {
         {railU > 0.01 && (
           <g opacity={1 - 0.88 * railDim}>
             <line x1={RAIL_X0} y1={RAIL_Y} x2={RAIL_X0 + (RAIL_X1 - RAIL_X0) * railU} y2={RAIL_Y} stroke={colors.NEGATIVE} strokeWidth={2.5} opacity={0.65} />
-            <text x={RAIL_X0} y={RAIL_Y - 14} fill={colors.NEGATIVE} fontSize={12.5} opacity={railU}>
+            <text x={1100} y={RAIL_Y - 14} textAnchor="end" fill={colors.NEGATIVE} fontSize={12.5} opacity={railU}>
               error channel
             </text>
             {/* callModel station */}
@@ -424,9 +426,9 @@ export function Render({ s }: { s: SceneState }) {
                   <text x={ST_CATCH.cx} y={RAIL_Y + 58} textAnchor="middle" fill={colors.TEXT} fontSize={13.5} fontFamily={MONO}>
                     Effect.catchReason
                   </text>
-                  <TagChip cx={ST_CATCH.cx - 60} cy={RAIL_Y + 82} w={92} label={'"AiError"'} color={keyGlow > 0.4 ? colors.WARM : colors.MUTED} opacity={1} h={22} fs={9.5} />
-                  <TagChip cx={ST_CATCH.cx + 62} cy={RAIL_Y + 82} w={128} label={'"RateLimitError"'} color={keyGlow > 0.8 ? colors.WARM : colors.MUTED} opacity={1} h={22} fs={9.5} />
-                  <text x={ST_CATCH.cx} y={RAIL_Y + 110} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO} opacity={pluck}>
+                  <TagChip cx={ST_CATCH.cx - 60} cy={RAIL_Y + 82} w={92} label={'"AiError"'} color={keyGlow > 0.4 ? colors.WARM : colors.MUTED} opacity={1} h={22} fs={11} />
+                  <TagChip cx={ST_CATCH.cx + 62} cy={RAIL_Y + 82} w={128} label={'"RateLimitError"'} color={keyGlow > 0.8 ? colors.WARM : colors.MUTED} opacity={1} h={22} fs={11} />
+                  <text x={ST_CATCH.cx} y={RAIL_Y + 110} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO} opacity={pluck}>
                     (reason) =&gt; Effect.succeed(…)
                   </text>
                 </g>
@@ -435,10 +437,10 @@ export function Render({ s }: { s: SceneState }) {
               {sweepU > 0.01 && (
                 <g opacity={clamp01(sweepU * 2)}>
                   <rect x={952} y={RAIL_Y + 34} width={196} height={54} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeDasharray="5 4" />
-                  <text x={1050} y={RAIL_Y + 56} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily={MONO}>
+                  <text x={1050} y={RAIL_Y + 56} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                     catch-all handler
                   </text>
-                  <text x={1050} y={RAIL_Y + 74} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontStyle="italic">
+                  <text x={1050} y={RAIL_Y + 74} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontStyle="italic">
                     every other reason
                   </text>
                   {(['QuotaExceededError', 'SafetyBlockedError'] as const).map((r, i) => {
@@ -447,13 +449,13 @@ export function Render({ s }: { s: SceneState }) {
                       <TagChip
                         key={r}
                         cx={lerp(sh1x + 40, 1050, u)}
-                        cy={lerp(RAIL_Y, RAIL_Y - 26 - i * 30, u)}
-                        w={128}
+                        cy={lerp(RAIL_Y, RAIL_Y - 64 - i * 30, u)}
+                        w={136}
                         label={r}
                         color={colors.MUTED}
                         opacity={0.7 * u * (1 - 0.5 * clamp01(u * 4 - 3))}
                         h={24}
-                        fs={9}
+                        fs={11}
                         dashed
                       />
                     );
@@ -481,12 +483,12 @@ export function Render({ s }: { s: SceneState }) {
                     const u = clamp01(split * 1.5 - i * 0.18);
                     return (
                       <g key={r}>
-                        <TagChip cx={lerp(CRACK_X, SPILL_X[i], u)} cy={RAIL_Y} w={150} label={r} color={colors.NEGATIVE} opacity={u} h={36} fs={10.5} />
+                        <TagChip cx={lerp(CRACK_X, SPILL_X[i], u)} cy={RAIL_Y} w={150} label={r} color={colors.NEGATIVE} opacity={u} h={36} fs={11} />
                         {/* catchTags handler docks */}
                         {tagsU > 0.01 && (
                           <g opacity={clamp01(tagsU * 2.4 - i * 0.55)}>
                             <line x1={SPILL_X[i]} y1={RAIL_Y + 20} x2={SPILL_X[i]} y2={RAIL_Y + 44} stroke={colors.POSITIVE} strokeWidth={1.5} strokeDasharray="2 4" />
-                            <TagChip cx={SPILL_X[i]} cy={RAIL_Y + 62} w={160} label={REASON_HANDLERS[i]} color={colors.POSITIVE} opacity={1} h={30} fs={10} />
+                            <TagChip cx={SPILL_X[i]} cy={RAIL_Y + 62} w={160} label={REASON_HANDLERS[i]} color={colors.POSITIVE} opacity={1} h={30} fs={11} />
                           </g>
                         )}
                       </g>
@@ -513,12 +515,12 @@ export function Render({ s }: { s: SceneState }) {
               reason: Schema.Union([
             </text>
             <g>
-              <TagChip cx={HTTP.x + 170} cy={HTTP.y + 92} w={170} label="UserNotFound" color={colors.WARM} opacity={clamp01(httpU * 2 - 0.3)} h={34} fs={11.5} />
-              <TagChip cx={HTTP.x + 170 + 118} cy={HTTP.y + 92} w={54} label="404" color={colors.NEGATIVE} opacity={clamp01(httpU * 2 - 0.5)} h={24} fs={11} />
-              <TagChip cx={HTTP.x + 170} cy={HTTP.y + 134} w={198} label="SearchQueryTooShort" color={colors.WARM} opacity={clamp01(httpU * 2 - 0.7)} h={34} fs={10.5} />
-              <TagChip cx={HTTP.x + 170 + 132} cy={HTTP.y + 134} w={54} label="422" color={colors.NEGATIVE} opacity={clamp01(httpU * 2 - 0.9)} h={24} fs={11} />
+              <TagChip cx={HTTP.x + 170} cy={HTTP.y + 86} w={170} label="UserNotFound" color={colors.WARM} opacity={clamp01(httpU * 2 - 0.3)} h={34} fs={11.5} />
+              <TagChip cx={HTTP.x + 170 + 118} cy={HTTP.y + 86} w={54} label="404" color={colors.NEGATIVE} opacity={clamp01(httpU * 2 - 0.5)} h={24} fs={11} />
+              <TagChip cx={HTTP.x + 170} cy={HTTP.y + 124} w={198} label="SearchQueryTooShort" color={colors.WARM} opacity={clamp01(httpU * 2 - 0.7)} h={34} fs={11} />
+              <TagChip cx={HTTP.x + 170 + 132} cy={HTTP.y + 124} w={54} label="422" color={colors.NEGATIVE} opacity={clamp01(httpU * 2 - 0.9)} h={24} fs={11} />
             </g>
-            <text x={HTTP.x + HTTP.w - 24} y={HTTP.y + HTTP.h - 16} textAnchor="end" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+            <text x={HTTP.x + HTTP.w - 24} y={HTTP.y + HTTP.h - 16} textAnchor="end" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
               httpApiStatus · one wrapper per surface
             </text>
           </g>

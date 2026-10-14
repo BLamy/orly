@@ -52,8 +52,10 @@ const PACKED = Array.from({ length: APPEND_N }, (_, i) => ({
 
 const CAM_QUEUE: CameraState = { x: 400, y: 440, k: 1.24 };
 const CAM_FRAG: CameraState = { x: 600, y: 430, k: 1.16 };
-const CAM_GATE: CameraState = { x: 930, y: 268, k: 1.3 };
-const CAM_WIDE: CameraState = { x: 640, y: 360, k: 0.98 };
+// The gate shot keeps the fragment and the manifest in one frame, so the
+// fragment's labels stay clear of the caption band.
+const CAM_GATE: CameraState = { x: 800, y: 330, k: 1.1 };
+const CAM_WIDE: CameraState = { x: 640, y: 380, k: 0.98 };
 
 interface Scene {
   tl: Timeline;
@@ -106,7 +108,6 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'It waits in the batch manager with its neighbours. Writing one file per append would be ruinous, so the writer trades a little latency for a lot of throughput.',
   });
-  tl.tween(gateU, 0.35, { at: 8.0, dur: 1.0, ease: ease.enter });
   tl.hold(13.9, 0.6);
 
   // BEAT 3 — the batch becomes a fragment.
@@ -223,9 +224,11 @@ function Appends({ queueU, packU, uploadU }: { queueU: number; packU: number; up
           <rect key={i} x={x - 6} y={y - 5} width={12} height={10} rx={2} fill={colors.ACCENT} opacity={born * (0.5 + 0.4 * packU)} />
         );
       })}
-      <text x={QUEUE_X - 4} y={QUEUE_Y - 34} fill={colors.MUTED} fontSize={12} letterSpacing="0.12em" opacity={clamp01(queueU / 3)}>
-        APPENDS · BatchManager
-      </text>
+      {packU < 0.5 && (
+        <text x={QUEUE_X - 4} y={QUEUE_Y - 34} fill={colors.MUTED} fontSize={12} letterSpacing="0.12em" opacity={clamp01(queueU / 3) * (1 - packU * 2)}>
+          APPENDS · BatchManager
+        </text>
+      )}
     </g>
   );
 }
@@ -246,7 +249,7 @@ function FragmentTile({ packU, uploadU }: { packU: number; uploadU: number }) {
         strokeWidth={1.5}
       />
       <text x={FRAG_X + 16} y={y + 26} fill={colors.MUTED} fontFamily={MONO} fontSize={12}>Fragment</text>
-      <text x={FRAG_X + 16} y={y + 112} fill={colors.MUTED} fontFamily={MONO} fontSize={11}>start · limit · setsum</text>
+      <text x={FRAG_X + 16} y={y + 112} fill={colors.MUTED} fontFamily={MONO} fontSize={12}>start · limit · setsum</text>
       {uploadU > 0.35 && (
         <text x={FRAG_X + 96} y={y - 14} textAnchor="middle" fill={colors.POSITIVE} fontFamily={MONO} fontSize={13} opacity={clamp01(uploadU * 1.6 - 0.5)}>
           PutMode::IfNotExist
@@ -290,15 +293,16 @@ function Rival({ u, bounce, retry }: { u: number; bounce: number; retry: number 
   const x = lerp(MANIFEST_X - 690, MANIFEST_X - 220, clamp01(travel * 1.9));
   return (
     <g opacity={clamp01(u)}>
-      <rect x={x - 92} y={534} width={184} height={62} rx={12} fill={colors.PANEL} stroke={bounce > 0.4 ? colors.NEGATIVE : colors.SECONDARY} strokeWidth={1.5} />
-      <text x={x} y={558} textAnchor="middle" fill={colors.SECONDARY} fontFamily={MONO} fontSize={13}>second writer</text>
-      <text x={x} y={580} textAnchor="middle" fill={bounce > 0.4 ? colors.NEGATIVE : colors.MUTED} fontFamily={MONO} fontSize={12}>
+      {/* sits below the fragment row and above the caption band */}
+      <rect x={x - 92} y={560} width={184} height={50} rx={12} fill={colors.PANEL} stroke={bounce > 0.4 ? colors.NEGATIVE : colors.SECONDARY} strokeWidth={1.5} />
+      <text x={x} y={580} textAnchor="middle" fill={colors.SECONDARY} fontFamily={MONO} fontSize={13}>second writer</text>
+      <text x={x} y={599} textAnchor="middle" fill={bounce > 0.4 ? colors.NEGATIVE : colors.MUTED} fontFamily={MONO} fontSize={12}>
         If-Match: &quot;7f30&quot;
       </text>
       {retry > 0.1 && (
         <g opacity={clamp01(retry)}>
-          <rect x={x - 108} y={604} width={216} height={34} rx={17} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.2} />
-          <text x={x} y={626} textAnchor="middle" fill={colors.NEGATIVE} fontFamily={MONO} fontSize={13}>LogContentionRetry</text>
+          <rect x={x - 108} y={618} width={216} height={26} rx={13} fill={colors.BG} stroke={colors.NEGATIVE} strokeWidth={1.2} />
+          <text x={x} y={636} textAnchor="middle" fill={colors.NEGATIVE} fontFamily={MONO} fontSize={13}>LogContentionRetry</text>
         </g>
       )}
     </g>
@@ -307,9 +311,12 @@ function Rival({ u, bounce, retry }: { u: number; bounce: number; retry: number 
 
 export function Render({ s }: { s: SceneState }) {
   const endDim = s.get(scene.endDim);
-  const dim = 1 - endDim * 0.92;
+  // fully clear the stage for the closing panel, so no faded content shows behind it
+  const dim = 1 - endDim;
   const endU = s.get(scene.endU);
   const loopU = s.get(scene.loopU);
+  // the pointer from fragment to manifest is drawn only when apply_fragment runs
+  const pointU = clamp01(s.get(scene.applyU));
 
   return (
     <>
@@ -321,12 +328,12 @@ export function Render({ s }: { s: SceneState }) {
           <Gate u={s.get(scene.gateU)} swapU={s.get(scene.swapU)} applyU={s.get(scene.applyU)} tagN={s.get(scene.tagN)} />
           <Rival u={s.get(scene.rivalU)} bounce={s.get(scene.bounceU)} retry={s.get(scene.retryU)} />
 
-          {s.get(scene.uploadU) > 0.05 && (
+          {pointU > 0.05 && (
             <line
               x1={FRAG_X + 192}
               y1={FRAG_Y + 40}
-              x2={lerp(FRAG_X + 192, GATE_X, clamp01(s.get(scene.uploadU)))}
-              y2={lerp(FRAG_Y + 40, GATE_Y + 30, clamp01(s.get(scene.uploadU)))}
+              x2={lerp(FRAG_X + 192, GATE_X, pointU)}
+              y2={lerp(FRAG_Y + 40, GATE_Y + 30, pointU)}
               stroke={colors.POSITIVE}
               strokeWidth={1.6}
               opacity={0.7}

@@ -51,9 +51,12 @@ const THUMBS: number[][] = Array.from({ length: N_FRAMES }, () =>
 );
 
 // camera marks
-const CAM_LIST: CameraState = { x: 340, y: 300, k: 1.35 };
-const CAM_TAPE: CameraState = { x: 640, y: 470, k: 1.15 };
-const CAM_CRASH: CameraState = { x: crashX, y: 430, k: 2.0 };
+// Each view is centred on its content (list + steps panel span x 76–850;
+// list + steps + tape span x 76–1140, y 110–576) so nothing is cropped.
+const CAM_LIST: CameraState = { x: 463, y: 300, k: 1.35 };
+const CAM_TAPE: CameraState = { x: 608, y: 343, k: 1.1 };
+// the list and steps panel sit above y 310, so this view leaves them out
+const CAM_CRASH: CameraState = { x: crashX, y: 490, k: 2.0 };
 const CAM_WIDE: CameraState = CAMERA_HOME;
 
 // ---------------------------------------------------------------------------
@@ -124,6 +127,8 @@ export function buildScene(): Scene {
   });
   tl.tween(cam, CAM_TAPE, { at: 20.4, dur: 1.6, ease: ease.move });
   tl.tween(tapeU, 1, { at: 21.0, dur: 1.6, ease: ease.draw });
+  tl.tween(listOp, 0.25, { at: 25.5, dur: 1.0, ease: ease.move }); // the tape takes focus
+  tl.tween(listOp, 0, { at: 29.8, dur: 1.0, ease: ease.move }); // the crash view is framed below the list
   tl.hold(26.2, 0.6);
 
   // — Beat 5 · scrub to the moment —
@@ -200,6 +205,7 @@ export function Render({ s }: { s: SceneState }) {
   const tapeU = s.get(scene.tapeU);
   const scrub = s.get(scene.scrub);
   const breakU = s.get(scene.breakU);
+  const ghostU = s.get(scene.ghostU);
   const stampU = s.get(scene.stampU);
   const closeU = s.get(scene.closeU);
 
@@ -230,7 +236,7 @@ export function Render({ s }: { s: SceneState }) {
               <text x={CARD.x + 50} y={c.y + 37} fill={colors.TEXT} fontSize={16}>
                 {c.title}
               </text>
-              <text x={CARD.x + 50} y={c.y + 64} fill={colors.MUTED} fontSize={13}>
+              <text x={CARD.x + 50} y={c.y + 64} fill={colors.MUTED} fontSize={14}>
                 {c.sub}
               </text>
             </g>
@@ -241,7 +247,7 @@ export function Render({ s }: { s: SceneState }) {
         {stepsU > 0 && (
           <g opacity={Math.max(listOp, 0.12)}>
             <rect x={520} y={110} width={330} height={200} rx={12} fill={colors.PANEL} stroke={colors.GRID} opacity={stepsU} />
-            <text x={544} y={144} fill={colors.MUTED} fontSize={13} opacity={stepsU}>
+            <text x={544} y={144} fill={colors.MUTED} fontSize={14} opacity={stepsU}>
               steps taken
             </text>
             {STEPS.map((step, i) => {
@@ -324,22 +330,33 @@ export function Render({ s }: { s: SceneState }) {
           </g>
         )}
 
+        {/* the old stamp: it appears in the empty band between list and tape, then hands over to the green verdict */}
+        {ghostU * (1 - stampU) > 0 && (
+          <g opacity={ghostU * (1 - stampU)} transform="translate(670 376) rotate(-4)">
+            <rect x={-200} y={-32} width={400} height={64} rx={8} fill="none" stroke={colors.MUTED} strokeWidth={2} strokeDasharray="8 6" />
+            <text x={0} y={8} textAnchor="middle" fill={colors.MUTED} fontSize={24}>
+              cannot reproduce
+            </text>
+          </g>
+        )}
+
         {stampU > 0 && (
-          <g opacity={stampU} transform={`translate(640 300) rotate(-6) scale(${0.85 + 0.15 * stampU})`}>
-            <rect x={-215} y={-38} width={430} height={76} rx={8} fill="rgba(52, 211, 153, 0.08)" stroke={colors.POSITIVE} strokeWidth={3} />
-            <text x={0} y={10} textAnchor="middle" fill={colors.POSITIVE} fontSize={30} fontWeight={700} letterSpacing={2}>
+          <g opacity={stampU} transform={`translate(670 376) rotate(-6) scale(${0.85 + 0.15 * stampU})`}>
+            <rect x={-200} y={-32} width={400} height={64} rx={8} fill="rgba(52, 211, 153, 0.08)" stroke={colors.POSITIVE} strokeWidth={3} />
+            <text x={0} y={8} textAnchor="middle" fill={colors.POSITIVE} fontSize={24} fontWeight={700} letterSpacing={2}>
               ALWAYS REPRODUCIBLE
             </text>
           </g>
         )}
 
-        {/* close — the claim and its receipt */}
+        {/* close — the claim and its receipt, on an opaque panel so the faded list never shows through */}
         {closeU > 0 && (
           <g opacity={closeU}>
-            <text x={640} y={200} textAnchor="middle" fill={colors.TEXT} fontSize={26}>
+            <rect x={340} y={160} width={600} height={120} rx={14} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.2} />
+            <text x={640} y={206} textAnchor="middle" fill={colors.TEXT} fontSize={26}>
               a page broke
             </text>
-            <text x={640} y={238} textAnchor="middle" fill={colors.ACCENT} fontSize={17}>
+            <text x={640} y={244} textAnchor="middle" fill={colors.ACCENT} fontSize={17}>
               → just look at the tape
             </text>
           </g>

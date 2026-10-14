@@ -29,11 +29,12 @@ const loopPath = (tau: number): [number, number, number] => {
 const LOOP_ROOTS = trackRoots(loopPath, LOOP_N);
 
 /* ---------------------------------------------------------------- layout */
-const FACT = { x: 70, y: 76, w: 520, h: 62 };
+const FACT = { x: 70, y: 76, w: 620, h: 62 };
 const SPLANE = { x: 660, y: 168, w: 540, h: 430 };
 const SP_CX = SPLANE.x + SPLANE.w / 2;
-const SP_CY = SPLANE.y + SPLANE.h / 2 + 8;
-const SP_SCALE = 64;
+// the header (title, chip, cubic) sits above the plane so no root can reach it
+const SP_CY = SPLANE.y + 244;
+const SP_SCALE = 50;
 
 // the crush diagram: two source sheets + the target plane (fake-3D quads)
 type Quad = [number, number][];
@@ -228,7 +229,7 @@ function FactorCard({ u, dim }: { u: number; dim: number }) {
   return (
     <g opacity={a} transform={`translate(${FACT.x}, ${FACT.y + (1 - uu) * 10})`}>
       <rect width={FACT.w} height={FACT.h} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.8} />
-      <MathLabel anchor="start" tex={'F_3 \\;=\\; 2x - 3x^2y - x^3z \\;=\\; -\\,x\\,(x^2 z + 3xy - 2)'} x={20} y={14} fontSize={16.5} color={colors.TEXT} opacity={uu} />
+      <MathLabel anchor="start" tex={'F_3 \\;=\\; 2x - 3x^2y - x^3z \\;=\\; -\\,x\\,(x^2 z + 3xy - 2)'} x={20} y={14} fontSize={15} color={colors.TEXT} opacity={uu} />
     </g>
   );
 }
@@ -252,7 +253,7 @@ function CrushDiagram({ u, crush, formula, fiber, dim }: { u: number; crush: num
       <g key={i}>
         <line x1={QPT.x} y1={QPT.y} x2={lerp(QPT.x, from.x, ru)} y2={yTop} stroke={from.c} strokeWidth={1.7} strokeDasharray="5 4" opacity={0.85} />
         <circle cx={from.x} cy={from.y} r={6.5 * ru} fill={from.c} />
-        <text x={from.x + 12} y={from.y + 4} fill={from.c} fontSize={11.5} fontWeight={700} fontFamily={mono} opacity={ru}>
+        <text x={from.x + 12} y={from.y + 4} fill={from.c} fontSize={14} fontWeight={700} fontFamily={mono} opacity={ru}>
           {from.label}
         </text>
       </g>
@@ -262,15 +263,15 @@ function CrushDiagram({ u, crush, formula, fiber, dim }: { u: number; crush: num
     <g opacity={a}>
       {/* target plane */}
       <path d={quadPath(TARGET_Q)} fill={colors.NEGATIVE} fillOpacity={0.10} stroke={colors.NEGATIVE} strokeWidth={1.6} />
-      <text x={TARGET_Q[3][0] + 6} y={TARGET_Q[3][1] + 22} fill={colors.NEGATIVE} fontSize={11.5} fontFamily={mono}>
+      <text x={TARGET_Q[3][0] + 6} y={TARGET_Q[3][1] + 22} fill={colors.NEGATIVE} fontSize={14} fontFamily={mono}>
         targets with third coordinate zero
       </text>
       {/* the curved surface */}
       <path d={surfPath} fill={colors.SECONDARY} fillOpacity={0.16} stroke={colors.SECONDARY} strokeWidth={1.8} />
-      <MathLabel anchor="start" tex={'x^2 z + 3xy = 2'} x={SURF_TOP[0][0] + 8 + cu * 60} y={lerp(SURF_TOP[0][1], SURF_FLAT_TOP[0][1], cu) - 34} fontSize={13} color={colors.SECONDARY} opacity={a} />
+      <MathLabel anchor="start" tex={'x^2 z + 3xy = 2'} x={SURF_TOP[0][0] + 8 + cu * 60} y={lerp(SURF_TOP[0][1], SURF_FLAT_TOP[0][1], cu) - 34} fontSize={14} color={colors.SECONDARY} opacity={a} />
       {/* the plane x = 0 */}
       <path d={quadPath(plane)} fill={colors.ACCENT} fillOpacity={0.16} stroke={colors.ACCENT} strokeWidth={1.8} />
-      <MathLabel anchor="start" tex={'x = 0'} x={plane[0][0] + 10} y={plane[0][1] - 32} fontSize={13} color={colors.ACCENT} opacity={a} />
+      <MathLabel anchor="start" tex={'x = 0'} x={plane[0][0] + 10} y={plane[0][1] - 32} fontSize={14} color={colors.ACCENT} opacity={a} />
       {/* crush motion streaks */}
       {cu > 0.05 && cu < 0.98 && (
         <g opacity={0.5}>
@@ -282,23 +283,23 @@ function CrushDiagram({ u, crush, formula, fiber, dim }: { u: number; crush: num
       {/* per-sheet image formulas */}
       {formula > 0 && (
         <g opacity={clamp01(formula)}>
-          <MathLabel anchor="start" tex={'(0,y,z) \\mapsto (4y^2{+}z,\\ y,\\ 0)'} x={430} y={196} fontSize={13.5} color={colors.ACCENT} opacity={clamp01(formula) * a} />
-          <MathLabel anchor="start" tex={'s = \\tfrac{1}{x}:\\ \\big((y{+}s)(y{+}2s),\\ 4y{+}6s,\\ 0\\big)'} x={430} y={330} fontSize={13.5} color={colors.SECONDARY} opacity={clamp01(formula) * a} />
-          <MathLabel anchor="start" tex={'s^2 = \\tfrac{b^2 - 16a}{4}\\ \\Rightarrow\\ \\text{two } s'} x={430} y={368} fontSize={13.5} color={colors.SECONDARY} opacity={clamp01(formula) * a} />
+          <MathLabel anchor="start" tex={'(0,y,z) \\mapsto (4y^2{+}z,\\ y,\\ 0)'} x={430} y={196} fontSize={14} color={colors.ACCENT} opacity={clamp01(formula) * a} />
+          <MathLabel anchor="start" tex={'s = \\tfrac{1}{x}:\\ \\big((y{+}s)(y{+}2s),\\ 4y{+}6s,\\ 0\\big)'} x={430} y={330} fontSize={14} color={colors.SECONDARY} opacity={clamp01(formula) * a} />
+          <MathLabel anchor="start" tex={'s^2 = \\tfrac{b^2 - 16a}{4}\\ \\Rightarrow\\ \\text{two } s'} x={430} y={368} fontSize={14} color={colors.SECONDARY} opacity={clamp01(formula) * a} />
         </g>
       )}
       {/* fiber assembly over (−1/4, 0, 0) */}
       {fu > 0 && (
         <g>
           <circle cx={QPT.x} cy={QPT.y} r={7} fill={colors.NEGATIVE} />
-          <text x={QPT.x + 12} y={QPT.y + 18} fill={colors.NEGATIVE} fontSize={11.5} fontWeight={700} fontFamily={mono}>
+          <text x={QPT.x + 12} y={QPT.y + 18} fill={colors.NEGATIVE} fontSize={14} fontWeight={700} fontFamily={mono}>
             (−1/4, 0, 0)
           </text>
           {riser(R1, 0)}
           {riser(R2, 1)}
           {riser(R3, 2)}
           {fu > 0.9 && (
-            <text x={QPT.x - 120} y={QPT.y + 46} fill={colors.TEXT} fontSize={13} fontWeight={700} fontFamily={mono} opacity={(fu - 0.9) * 10}>
+            <text x={QPT.x - 120} y={QPT.y + 44} fill={colors.TEXT} fontSize={14} fontWeight={700} fontFamily={mono} opacity={(fu - 0.9) * 10}>
               fiber = 1 + 2 = 3 points
             </text>
           )}
@@ -334,21 +335,21 @@ function RootDance({ u, sub, tau, on, count, dim }: { u: number; sub: number; ta
   return (
     <g opacity={a}>
       <rect x={SPLANE.x} y={SPLANE.y} width={SPLANE.w} height={SPLANE.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} opacity={0.8} />
-      <text x={SPLANE.x + 18} y={SPLANE.y + 26} fill={colors.MUTED} fontSize={12} fontWeight={700} fontFamily={mono}>
+      <text x={SPLANE.x + 18} y={SPLANE.y + 26} fill={colors.MUTED} fontSize={13} fontWeight={700} fontFamily={mono}>
         the complex s plane · one dot per preimage
       </text>
       {/* axes + unit circle */}
       <line x1={SPLANE.x + 24} y1={SP_CY} x2={SPLANE.x + SPLANE.w - 24} y2={SP_CY} stroke={colors.GRID} strokeWidth={1} />
-      <line x1={SP_CX} y1={SPLANE.y + 44} x2={SP_CX} y2={SPLANE.y + SPLANE.h - 20} stroke={colors.GRID} strokeWidth={1} />
+      <line x1={SP_CX} y1={SPLANE.y + 96} x2={SP_CX} y2={SPLANE.y + SPLANE.h - 20} stroke={colors.GRID} strokeWidth={1} />
       <circle cx={SP_CX} cy={SP_CY} r={SP_SCALE} fill="none" stroke={colors.GRID} strokeWidth={1} strokeDasharray="3 5" opacity={0.7} />
-      {/* the fiber cubic */}
+      {/* the fiber cubic: substitution chip on one line, the cubic on the next */}
       {sub > 0 && (
         <g opacity={clamp01(sub)}>
-          <MathLabel anchor="start" tex={'s = \\tfrac{1}{x},\\quad t = xy'} x={SPLANE.x + 18} y={SPLANE.y + 40} fontSize={13.5} color={colors.TEXT} opacity={clamp01(sub) * a} />
+          <MathLabel anchor="start" tex={'s = \\tfrac{1}{x},\\quad t = xy'} x={SPLANE.x + 18} y={SPLANE.y + 52} fontSize={14} color={colors.TEXT} opacity={clamp01(sub) * a} />
           <MathLabel anchor="start"
             tex={'2c\\,s^3 + (3bc - 4)\\,s^2 + \\Delta(a,b,c) = 0'}
-            x={SPLANE.x + 210}
-            y={SPLANE.y + 40}
+            x={SPLANE.x + 18}
+            y={SPLANE.y + 78}
             fontSize={14.5}
             color={colors.TEXT}
             opacity={clamp01(sub) * a}
@@ -359,7 +360,7 @@ function RootDance({ u, sub, tau, on, count, dim }: { u: number; sub: number; ta
       {onU > 0 && (
         <g opacity={onU}>
           <rect x={SPLANE.x + 18} y={SPLANE.y + SPLANE.h - 58} width={280} height={40} rx={8} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.1} />
-          <text x={SPLANE.x + 32} y={SPLANE.y + SPLANE.h - 33} fill={colors.MUTED} fontSize={12} fontFamily={mono}>
+          <text x={SPLANE.x + 32} y={SPLANE.y + SPLANE.h - 33} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
             target ({ta.toFixed(2)}, {tb.toFixed(2)}, {tc.toFixed(0)})
           </text>
           {roots.map((r, i) => (
@@ -375,7 +376,7 @@ function RootDance({ u, sub, tau, on, count, dim }: { u: number; sub: number; ta
       {count > 0 && (
         <g opacity={clamp01(count)} transform={`translate(${SPLANE.x + SPLANE.w - 190}, ${SPLANE.y + SPLANE.h - 58})`}>
           <rect width={172} height={40} rx={8} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.6} />
-          <text x={16} y={25} fill={colors.POSITIVE} fontSize={13.5} fontWeight={800} fontFamily={mono}>
+          <text x={16} y={25} fill={colors.POSITIVE} fontSize={14} fontWeight={800} fontFamily={mono}>
             preimages: 3
           </text>
         </g>
@@ -389,15 +390,15 @@ function TeaseCard({ u }: { u: number }) {
   const uu = clamp01(u);
   if (uu <= 0) return null;
   return (
-    <g transform={`translate(${360}, ${250 + (1 - uu) * 12})`} opacity={uu}>
+    <g transform={`translate(${360}, ${290 + (1 - uu) * 12})`} opacity={uu}>
       <rect width={560} height={140} rx={14} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={2} />
-      <text x={26} y={44} fill={colors.SECONDARY} fontSize={15} fontWeight={700} fontFamily={mono}>
+      <text x={26} y={44} fill={colors.SECONDARY} fontSize={16} fontWeight={700} fontFamily={mono}>
         a 3-sheeted cover of ℂ³ · no folds anywhere
       </text>
-      <text x={26} y={78} fill={colors.TEXT} fontSize={13.5} fontFamily={mono}>
+      <text x={26} y={78} fill={colors.TEXT} fontSize={14} fontFamily={mono}>
         but ℂ³ is simply connected — covers like this cannot exist…
       </text>
-      <text x={26} y={108} fill={colors.MUTED} fontSize={13.5} fontFamily={mono}>
+      <text x={26} y={108} fill={colors.MUTED} fontSize={14} fontFamily={mono}>
         …unless the sheets can leak. next: the escape to infinity
       </text>
     </g>
@@ -407,10 +408,12 @@ function TeaseCard({ u }: { u: number }) {
 /* ------------------------------------------------------------ the frame */
 function renderFrame(s: SceneState) {
   const dim = clamp01(s.get(scene.dimU));
+  // the two-sheet picture recedes to a ghost once the cubic takes over the frame
+  const recede = Math.max(dim, clamp01(s.get(scene.subU)));
   return (
     <>
-      <FactorCard u={s.get(scene.factU)} dim={dim} />
-      <CrushDiagram u={s.get(scene.sheetsU)} crush={s.get(scene.crushU)} formula={s.get(scene.formulaU)} fiber={s.get(scene.fiberU)} dim={dim} />
+      <FactorCard u={s.get(scene.factU)} dim={recede} />
+      <CrushDiagram u={s.get(scene.sheetsU)} crush={s.get(scene.crushU)} formula={s.get(scene.formulaU)} fiber={s.get(scene.fiberU)} dim={recede} />
       <RootDance u={s.get(scene.planeU)} sub={s.get(scene.subU)} tau={s.get(scene.danceT)} on={s.get(scene.danceOn)} count={s.get(scene.countU)} dim={dim} />
       <TeaseCard u={s.get(scene.teaseU)} />
     </>

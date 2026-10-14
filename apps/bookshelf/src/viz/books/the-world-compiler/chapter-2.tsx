@@ -47,7 +47,7 @@ export function buildScene() {
 
   tl.caption({ at: 25.0, dur: 6.2, text: 'Engine-only training misses design intent. Human-only training throws away the cheap, local evidence the engine already produced.' });
   tl.tween(compareU, 0.55, { at: 25.5, dur: 1.4, ease: ease.move });
-  tl.tween(cam, { x: 760, y: 330, k: 1.05 }, { at: 27.2, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 350, k: 1.03 }, { at: 27.2, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 31.2, dur: 6.3, text: 'Reinforcement Learning with Human-Engine Verification combines both signals only after the structural gate passes, then subtracts action cost.' });
   tl.tween(formulaU, 1, { at: 31.7, dur: 0.7, ease: ease.enter });
@@ -91,7 +91,8 @@ export function Render({ s }: { s: SceneState }) {
       <g opacity={gate}>
         <path d="M332 284 H464" stroke={colors.GRID} strokeWidth="8" />
         <rect x="392" y="212" width="22" height="144" rx="11" fill={s.get(scene.rejectU) ? colors.NEGATIVE : colors.POSITIVE} />
-        <text x="403" y="190" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>g(x,a)</text>
+        <text x="403" y="190" textAnchor="middle" fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>g(x,a)</text>
+        <text x="403" y="380" textAnchor="middle" fill={colors.MUTED} fontSize="14">g = 1 if it runs</text>
         <g opacity={s.get(scene.rejectU)}><circle cx="403" cy="284" r="46" fill="#32141c" stroke={colors.NEGATIVE} strokeWidth="4" /><path d="M-16 -16 L16 16 M16 -16 L-16 16" transform="translate(403 284)" stroke={colors.NEGATIVE} strokeWidth="8" strokeLinecap="round" /></g>
       </g>
 
@@ -99,8 +100,8 @@ export function Render({ s }: { s: SceneState }) {
         <rect x="486" y="116" width="280" height="226" rx="28" fill="#112035" stroke={colors.WARM} strokeWidth="3" />
         <text x="626" y="152" textAnchor="middle" fill={colors.WARM} fontSize="18" fontWeight="800">engine diagnostics</text>
         {['collision', 'lighting', 'navigation', 'playability'].map((label, i) => <g key={label} opacity={clamp01(engine * 5 - i)}>
-          <rect x="520" y={178 + i * 35} width={188 - i * 18} height="18" rx="9" fill={i === 0 ? colors.NEGATIVE : colors.WARM} opacity={0.28 + i * 0.08} />
-          <text x="526" y={192 + i * 35} fill={colors.TEXT} fontSize="12" fontFamily={colors.font.mono}>{label}</text>
+          <text x="520" y={180 + i * 35} fill={colors.TEXT} fontSize="14" fontFamily={colors.font.mono}>{label}</text>
+          <rect x="520" y={186 + i * 35} width={188 - i * 18} height="14" rx="7" fill={i === 0 ? colors.NEGATIVE : colors.WARM} opacity={0.5 + i * 0.1} />
         </g>)}
       </g>
 
@@ -108,7 +109,7 @@ export function Render({ s }: { s: SceneState }) {
         <rect x="486" y="374" width="280" height="154" rx="28" fill="#201a31" stroke={colors.SECONDARY} strokeWidth="3" />
         <text x="626" y="410" textAnchor="middle" fill={colors.SECONDARY} fontSize="18" fontWeight="800">developer review</text>
         <g transform="translate(626 462)"><circle r="42" fill="#102a22" stroke={colors.POSITIVE} strokeWidth="4" /><path d="M-20 0 L-5 16 L24 -18" fill="none" stroke={colors.POSITIVE} strokeWidth="8" strokeLinecap="round" /></g>
-        <text x="626" y="516" textAnchor="middle" fill={colors.MUTED} fontSize="12">global acceptance</text>
+        <text x="626" y="516" textAnchor="middle" fill={colors.MUTED} fontSize="14">global acceptance</text>
       </g>
 
       <g opacity={s.get(scene.railsU)}>
@@ -118,30 +119,31 @@ export function Render({ s }: { s: SceneState }) {
         <text x="878" y="306" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontWeight="800">reward</text>
       </g>
 
-      <MathLabel tex={'r_{\\alpha,\\beta}=\\mathbb{I}\\{g=1\\}(\\alpha h+\\beta e)-\\lambda_c c'} x={930} y={118} fontSize={18} opacity={s.get(scene.formulaU)} />
+      <MathLabel tex={'r_{\\alpha,\\beta}=\\mathbb{I}\\{g=1\\}(\\alpha h+\\beta e)-\\lambda_c c'} x={640} y={102} fontSize={16} opacity={s.get(scene.formulaU)} />
+      <text x="1076" y="586" textAnchor="middle" fill={colors.MUTED} fontSize="13" fontFamily={colors.font.mono} opacity={s.get(scene.formulaU)}>h human · e engine · c cost · g gate</text>
 
       <g opacity={bars} transform={`translate(0 ${compare * 12})`}>
-        <rect x="914" y="146" width="296" height="410" rx="28" fill="#0e1829" stroke={colors.GRID} strokeWidth="2" />
-        <text x="1062" y="180" textAnchor="middle" fill={colors.TEXT} fontSize="15" fontWeight="760">UnitySceneBench primary mean</text>
-        <text x="1062" y="202" textAnchor="middle" fill={colors.MUTED} fontSize="11">eight seeds · train budget 720</text>
+        <rect x="936" y="162" width="280" height="400" rx="28" fill="#0e1829" stroke={colors.GRID} strokeWidth="2" />
+        <text x="1076" y="194" textAnchor="middle" fill={colors.TEXT} fontSize="15" fontWeight="760">UnitySceneBench primary mean</text>
+        <text x="1076" y="216" textAnchor="middle" fill={colors.MUTED} fontSize="13">eight seeds · train budget 720</text>
         {METHODS.map((method, i) => {
           const u = clamp01(bars * 6 - i);
-          const width = Math.max(0, (method.value - 0.44) * 2500 * u);
+          const width = Math.max(0, (method.value - 0.44) * 1400 * u);
           return <g key={method.label} opacity={u}>
-            <text x="934" y={242 + i * 58} fill={colors.MUTED} fontSize="11">{method.label}</text>
-            <rect x="934" y={252 + i * 58} width="230" height="22" rx="11" fill={colors.GRID} opacity="0.55" />
-            <rect x="934" y={252 + i * 58} width={width} height="22" rx="11" fill={method.color} opacity="0.82" />
-            <text x="1180" y={268 + i * 58} textAnchor="end" fill={method.color} fontSize="12" fontFamily={colors.font.mono}>{method.value.toFixed(4)}</text>
+            <text x="952" y={256 + i * 58} fill={colors.MUTED} fontSize="13">{method.label}</text>
+            <rect x="952" y={266 + i * 58} width="176" height="20" rx="10" fill={colors.GRID} opacity="0.55" />
+            <rect x="952" y={266 + i * 58} width={width} height="20" rx="10" fill={method.color} opacity="0.85" />
+            <text x="1200" y={281 + i * 58} textAnchor="end" fill={method.color} fontSize="13" fontFamily={colors.font.mono}>{method.value.toFixed(4)}</text>
           </g>;
         })}
       </g>
 
       <g opacity={gen}>
-        <rect x="68" y="432" width="790" height="64" rx="24" fill="#0f241e" stroke={colors.POSITIVE} />
-        <text x="92" y="456" fill={colors.WARM} fontSize="12" fontFamily={colors.font.mono}>engine only</text>
-        <text x="256" y="456" fill={colors.TEXT} fontSize="13">quality 0.7934 · pass 0.9375</text>
-        <text x="92" y="482" fill={colors.POSITIVE} fontSize="12" fontFamily={colors.font.mono}>full RLHEV</text>
-        <text x="256" y="482" fill={colors.TEXT} fontSize="13">quality 0.8197 · pass 0.9688</text>
+        <rect x="68" y="556" width="790" height="64" rx="24" fill="#0f241e" stroke={colors.POSITIVE} />
+        <text x="92" y="580" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>engine only</text>
+        <text x="256" y="580" fill={colors.TEXT} fontSize="14">quality 0.7934 · pass 0.9375</text>
+        <text x="92" y="606" fill={colors.POSITIVE} fontSize="14" fontFamily={colors.font.mono}>full RLHEV</text>
+        <text x="256" y="606" fill={colors.TEXT} fontSize="14">quality 0.8197 · pass 0.9688</text>
       </g>
     </g>
 

@@ -83,10 +83,12 @@ const TALLY: { kind: Cut['kind']; n: number }[] = [
   { kind: 'l35', n: 5 },
 ];
 
+// Once the bench is on screen every shot keeps all seven boards in frame, so
+// no row is cropped at the top or pushed under the caption pill.
 const CAM_WIDE: CameraState = { x: 640, y: 330, k: 0.94 };
-const CAM_FIRST: CameraState = { x: 600, y: 150, k: 1.5 };
-const CAM_STOP: CameraState = { x: 560, y: 250, k: 1.2 };
-const CAM_LAST: CameraState = { x: 620, y: 470, k: 1.28 };
+const CAM_FIRST: CameraState = { x: 520, y: 350, k: 1.3 };
+const CAM_STOP: CameraState = { x: 520, y: 350, k: 1.3 };
+const CAM_LAST: CameraState = { x: 520, y: 350, k: 1.3 };
 const CAM_TALLY: CameraState = { x: 640, y: 380, k: 1.0 };
 
 export interface Scene {
@@ -221,7 +223,8 @@ function BoardRow({ i, u, cutU, trimU }: { i: number; u: number; cutU: number; t
       <rect x={X0} y={y} width={BOARD_IN * PXI} height={BAR_H} rx={2} fill={CEDAR} stroke="#3a2515" strokeWidth={1.2} opacity={0.35} />
       {/* the trimmed end */}
       {trimU > 0 && (
-        <rect x={X0} y={y} width={Math.max(2, TRIM * PXI * trimU)} height={BAR_H} fill={colors.NEGATIVE} opacity={0.85} />
+        // drawn at 4px minimum: a true 1/8 in is under 1px at this scale
+        <rect x={X0} y={y} width={Math.max(4, TRIM * PXI * trimU)} height={BAR_H} fill={colors.NEGATIVE} opacity={0.85} />
       )}
       {/* the parts */}
       {row.map((c, k) => {
@@ -242,11 +245,11 @@ function BoardRow({ i, u, cutU, trimU }: { i: number; u: number; cutU: number; t
       })}
       {/* the offcut ledger */}
       {cutU > 0.9 && (
-        <text x={X0 + BOARD_IN * PXI + 16} y={y + BAR_H / 2 + 5} fill={colors.MUTED} fontSize={12.5}>
+        <text x={X0 + BOARD_IN * PXI + 16} y={y + BAR_H / 2 + 5} fill={colors.MUTED} fontSize={14}>
           {(BOARD_IN - used(row) - TRIM).toFixed(1)} in left
         </text>
       )}
-      <text x={X0 - 16} y={y + BAR_H / 2 + 5} textAnchor="end" fill={colors.MUTED} fontSize={12.5}>
+      <text x={X0 - 16} y={y + BAR_H / 2 + 5} textAnchor="end" fill={colors.MUTED} fontSize={14}>
         board {i + 1}
       </text>
     </g>
@@ -285,16 +288,27 @@ export function Render({ s }: { s: SceneState }) {
           ))}
 
           {/* the stop block, clamped to the fence */}
+          {/* sits left of the board labels, with its callout beside it */}
           {stopU > 0 && (
             <g opacity={stopU}>
-              <rect x={X0 - 34} y={ROW_Y(1) - 22} width={16} height={ROW_Y(4) - ROW_Y(1) + BAR_H + 44} rx={3} fill={colors.SECONDARY} opacity={0.85} />
-              <text x={X0 - 44} y={ROW_Y(2) + BAR_H} textAnchor="end" fill={colors.SECONDARY} fontSize={13.5} fontWeight={600}>
+              <rect x={X0 - 100} y={ROW_Y(1) - 22} width={12} height={ROW_Y(4) - ROW_Y(1) + BAR_H + 44} rx={3} fill={colors.SECONDARY} opacity={0.85} />
+              <text x={X0 - 110} y={ROW_Y(2) + BAR_H - 4} textAnchor="end" fill={colors.SECONDARY} fontSize={14} fontWeight={600}>
                 stop block
               </text>
-              <text x={X0 - 44} y={ROW_Y(2) + BAR_H + 20} textAnchor="end" fill={colors.MUTED} fontSize={12}>
-                set once, cut five
+              <text x={X0 - 110} y={ROW_Y(2) + BAR_H + 16} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+                set once,
+              </text>
+              <text x={X0 - 110} y={ROW_Y(2) + BAR_H + 32} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+                cut five
               </text>
             </g>
+          )}
+
+          {/* the trim, named once it appears */}
+          {trimU > 0 && (
+            <text x={X0} y={ROW_Y(0) - 10} fill={colors.NEGATIVE} fontSize={13} fontWeight={600} opacity={trimU}>
+              ⅛ in trimmed off one end
+            </text>
           )}
 
           {/* the tally */}
@@ -322,10 +336,10 @@ export function Render({ s }: { s: SceneState }) {
           {/* the waste ledger */}
           {wasteU > 0 && (
             <g opacity={wasteU}>
-              <text x={990} y={588} fill={colors.MUTED} fontSize={13.5}>
+              <text x={990} y={588} fill={colors.MUTED} fontSize={14}>
                 28 parts
               </text>
-              <text x={990} y={608} fill={colors.WARM} fontSize={13.5} fontWeight={700}>
+              <text x={990} y={608} fill={colors.WARM} fontSize={14} fontWeight={700}>
                 {totalLeft.toFixed(0)} in of short ends
               </text>
             </g>

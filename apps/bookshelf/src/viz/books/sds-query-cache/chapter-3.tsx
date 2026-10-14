@@ -31,10 +31,11 @@ const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 const lerp = (a: number, b: number, u: number): number => a + (b - a) * u;
 
 // layout
-const API = { x: 190, y: 330 } as const;
-const CACHE = { x: 570, y: 330, w: 300, h: 210 } as const;
-const IDX = { x: 1060, y: 220 } as const;
-const DOC = { x: 1060, y: 440 } as const;
+// act one/two group spans x 85..980, so it fits the stage with room to push in
+const API = { x: 170, y: 330 } as const;
+const CACHE = { x: 520, y: 330, w: 300, h: 210 } as const;
+const IDX = { x: 880, y: 220 } as const;
+const DOC = { x: 880, y: 440 } as const;
 
 const ENTRIES = [
   { q: 'best AND coffee AND sf', ttl: 0.9 },
@@ -58,8 +59,9 @@ const ROUTED = [
   { label: 'hash(q3) % 3 = 1', shard: 1 },
 ] as const;
 
-const CAM_MISS: CameraState = { x: 640, y: 330, k: 1.1 };
-const CAM_CACHE: CameraState = { x: 570, y: 330, k: 1.45 };
+// camera framings keep the whole act one/two group on stage
+const CAM_MISS: CameraState = { x: 532, y: 330, k: 1.15 };
+const CAM_CACHE: CameraState = { x: 520, y: 330, k: 1.25 };
 const CAM_WIDE: CameraState = { x: 640, y: 340, k: 1.05 };
 
 export interface Scene {
@@ -211,11 +213,11 @@ function Box({ x, y, w = 180, h = 62, title, sub, stroke = colors.GRID, opacity 
   return (
     <g opacity={opacity}>
       <rect x={x - w / 2} y={y - h / 2} width={w} height={h} rx={10} fill={colors.PANEL} stroke={stroke} strokeWidth={1.3} />
-      <text x={x} y={y - 2} textAnchor="middle" fill={colors.TEXT} fontSize={13.5}>
+      <text x={x} y={y - 2} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
         {title}
       </text>
       {sub && (
-        <text x={x} y={y + 17} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily="ui-monospace, monospace">
+        <text x={x} y={y + 17} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
           {sub}
         </text>
       )}
@@ -285,7 +287,7 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={i} opacity={entryU * (dead ? 0.18 : 1)}>
                 <rect x={CACHE.x - CACHE.w / 2 + 16 - (1 - entryU) * 60} y={y} width={CACHE.w - 32} height={38} rx={8} fill={colors.BG} stroke={dead ? colors.NEGATIVE : isNew && setU < 1 ? colors.POSITIVE : colors.GRID} strokeWidth={1.2} />
-                <text x={CACHE.x - CACHE.w / 2 + 28} y={y + 24} fill={dead ? colors.NEGATIVE : colors.TEXT} fontSize={10.5} fontFamily="ui-monospace, monospace">
+                <text x={CACHE.x - CACHE.w / 2 + 28} y={y + 24} fill={dead ? colors.NEGATIVE : colors.TEXT} fontSize={12} fontFamily="ui-monospace, monospace">
                   {e.q}
                 </text>
                 {ttlU > 0.02 && (
@@ -295,7 +297,7 @@ export function Render({ s }: { s: SceneState }) {
             );
           })}
           {ttlU > 0.02 && (
-            <text x={CACHE.x} y={CACHE.y + CACHE.h / 2 + 24} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily="ui-monospace, monospace">
+            <text x={CACHE.x} y={CACHE.y + CACHE.h / 2 + 24} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
               TTL — max time an entry may live
             </text>
           )}
@@ -326,7 +328,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* the world-changed pulse */}
           <g opacity={worldU}>
             <circle cx={IDX.x + 88} cy={IDX.y - 40} r={9} fill={colors.NEGATIVE} opacity={0.9} />
-            <text x={IDX.x + 74} y={IDX.y - 56} textAnchor="end" fill={colors.NEGATIVE} fontSize={11.5}>
+            <text x={IDX.x + 74} y={IDX.y - 56} textAnchor="end" fill={colors.NEGATIVE} fontSize={12}>
               page contents changed
             </text>
           </g>
@@ -368,14 +370,14 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={splitU * dimAll}>
           {/* rejected options, whispered */}
           <g opacity={optU}>
-            <text x={640} y={130} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+            <text x={640} y={206} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
               own cache per machine → low hit rate · full copy per machine → wasted memory
             </text>
           </g>
           {SHARDS.map((sh, i) => (
             <g key={i}>
               <rect x={sh.x - 85} y={sh.y - 70} width={170} height={140} rx={12} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.4} />
-              <text x={sh.x} y={sh.y - 46} textAnchor="middle" fill={colors.POSITIVE} fontSize={13}>
+              <text x={sh.x} y={sh.y - 46} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
                 {sh.label}
               </text>
               {[0, 1, 2].map((r) => (
@@ -383,8 +385,12 @@ export function Render({ s }: { s: SceneState }) {
               ))}
             </g>
           ))}
-          <text x={640} y={470} textAnchor="middle" fill={colors.ACCENT} fontSize={13.5} fontFamily="ui-monospace, monospace">
+          <text x={640} y={470} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily="ui-monospace, monospace">
             machine = hash(query) · consistent hashing
+          </text>
+          {/* on-screen note for consistent hashing: resharding moves a small slice */}
+          <text x={640} y={508} textAnchor="middle" fill={colors.TEXT} fontSize={14} opacity={clamp01(routeU * 2)}>
+            add a machine and only about 1/n of the keys move
           </text>
           {/* hash-routed packets from the api position */}
           {ROUTED.map((rt, i) => {
@@ -394,7 +400,7 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={i}>
                 <Packet from={{ x: 150, y: 560 }} to={{ x: target.x, y: target.y + 78 }} u={u} r={7} color={colors.ACCENT} />
-                <text x={150} y={596} fill={colors.MUTED} fontSize={11.5} fontFamily="ui-monospace, monospace">
+                <text x={150} y={596} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
                   {rt.label}
                 </text>
               </g>
@@ -404,7 +410,7 @@ export function Render({ s }: { s: SceneState }) {
 
         {/* ---- closing panel ---- */}
         <g opacity={closeU}>
-          <rect x={250} y={190} width={780} height={290} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
+          <rect x={250} y={190} width={780} height={330} rx={16} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
           <text x={640} y={240} textAnchor="middle" fill={colors.TEXT} fontSize={19}>
             the query cache, complete
           </text>
@@ -419,11 +425,15 @@ export function Render({ s }: { s: SceneState }) {
               <text x={430} y={286 + i * 36} textAnchor="end" fill={colors.ACCENT} fontSize={14} fontFamily="ui-monospace, monospace">
                 {k}
               </text>
-              <text x={460} y={286 + i * 36} fill={colors.MUTED} fontSize={13.5}>
+              <text x={460} y={286 + i * 36} fill={colors.MUTED} fontSize={14}>
                 {v}
               </text>
             </g>
           ))}
+          {/* open question that hands off to the next book */}
+          <text x={640} y={482} textAnchor="middle" fill={colors.ACCENT} fontSize={14.5}>
+            next: what if one query is so hot that its shard overloads?
+          </text>
         </g>
       </Camera>
     </>

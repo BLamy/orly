@@ -6,7 +6,7 @@
 // are precomputed at module scope; every frame is a pure function of one
 // placement channel.
 import {
-  CAMERA_HOME, Camera, Timeline, cameraInterp, colors, ease, mulberry32,
+  CAMERA_HOME, Camera, Timeline, cameraInterp, colors, ease,
 } from '../../core';
 import type { CameraState, ChannelRef, SceneState } from '../../core';
 import { flightPos } from '../../primitives';
@@ -41,15 +41,16 @@ export const NOTES: Note[] = [
 export const ARRIVAL = [4, 2, 9, 0, 7, 1, 6, 3, 8, 5];
 const arrivalIdx = (id: number) => ARRIVAL.indexOf(id);
 
-// scattered start positions (seeded)
-const rand = mulberry32(77);
-const SCATTER = NOTES.map(() => ({
-  x: 140 + rand() * 1000,
-  y: 560 + rand() * 60,
+// scattered start positions: a fixed two-row grid, clear of each other and of
+// the caption band in both the bag and tree camera framings
+const SCATTER = NOTES.map((_, i) => ({
+  x: 240 + (i % 5) * 200 + (i >= 5 ? 100 : 0),
+  y: i >= 5 ? 520 : 455,
 }));
 
 // the orphan: note 9 arrives 3rd but its parent (6) arrives 7th.
-const ORPHAN_WAIT = { x: 150, y: 420 };
+// parked left of the tree, clear of the branches it will later join
+const ORPHAN_WAIT = { x: 170, y: 300 };
 
 const NODE_COLOR = [
   colors.ACCENT, colors.POSITIVE, colors.SECONDARY, colors.POSITIVE, colors.WARM,
@@ -58,7 +59,8 @@ const NODE_COLOR = [
 
 // time-sorted strip (the markerless alternative)
 const SORTED = [...NOTES].sort((a, b) => (a.t < b.t ? -1 : 1));
-const STRIP_Y = 600;
+// stage-space row, kept above the caption band (y > 630 is covered by the pill)
+const STRIP_Y = 560;
 const stripX = (rank: number) => 200 + rank * 98;
 
 const CAM_BAG: CameraState = { x: 640, y: 430, k: 1.15 };
@@ -189,7 +191,8 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // at the close the diagram fades out fully, so the closing panel stands alone
+  const mainOp = 1 - dimU;
   const treeOp = 1 - 0.45 * stripU; // recede slightly while the strip speaks
 
   return (
@@ -229,17 +232,17 @@ function Frame({ s }: { s: SceneState }) {
                 : clamp01(placeU * NOTES.length - k)) >= 1;
               return (
                 <g key={n.id} opacity={appearU}>
-                  <circle cx={pos.x} cy={pos.y} r={15} fill={colors.PANEL} stroke={NODE_COLOR[n.id]} strokeWidth={2} />
-                  <text x={pos.x} y={pos.y + 4} textAnchor="middle" fill={NODE_COLOR[n.id]} fontSize={11} fontFamily="monospace">
+                  <circle cx={pos.x} cy={pos.y} r={16} fill={colors.PANEL} stroke={NODE_COLOR[n.id]} strokeWidth={2} />
+                  <text x={pos.x} y={pos.y + 5} textAnchor="middle" fill={NODE_COLOR[n.id]} fontSize={13} fontFamily="monospace">
                     {n.t.slice(3)}
                   </text>
                   {pos.waiting && (
-                    <text x={pos.x} y={pos.y - 24} textAnchor="middle" fill={colors.NEGATIVE} fontSize={10.5}>
+                    <text x={pos.x} y={pos.y - 26} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13}>
                       parent unseen — waiting
                     </text>
                   )}
                   {snapped && n.parent !== null && n.id !== 9 && (
-                    <text x={pos.x + 20} y={pos.y - 12} fill={colors.MUTED} fontSize={9} fontFamily="monospace" opacity={0.8}>
+                    <text x={pos.x + 20} y={pos.y - 12} fill={colors.MUTED} fontSize={12} fontFamily="monospace" opacity={0.8}>
                       reply
                     </text>
                   )}
@@ -247,7 +250,7 @@ function Frame({ s }: { s: SceneState }) {
               );
             })}
             {clamp01(placeU * NOTES.length - arrivalIdx(0)) >= 1 && (
-              <text x={NOTES[0].x} y={NOTES[0].y - 28} textAnchor="middle" fill={colors.ACCENT} fontSize={11} fontFamily="monospace">
+              <text x={NOTES[0].x} y={NOTES[0].y - 28} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily="monospace">
                 root
               </text>
             )}
@@ -267,31 +270,31 @@ function Frame({ s }: { s: SceneState }) {
               </text>
             </g>
           )}
-
-          {/* the markerless strip */}
-          {stripU > 0 && (
-            <g opacity={stripU}>
-              <text x={200} y={STRIP_Y - 26} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
-                without markers: sort by created_at and hope
-              </text>
-              {SORTED.map((n, rank) => {
-                const u = clamp01(stripU * SORTED.length - rank);
-                if (u <= 0) return null;
-                return (
-                  <g key={n.id} opacity={u}>
-                    <circle cx={stripX(rank)} cy={STRIP_Y} r={13} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
-                    <text x={stripX(rank)} y={STRIP_Y + 4} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily="monospace">
-                      {n.t.slice(3)}
-                    </text>
-                    {rank > 0 && (
-                      <line x1={stripX(rank - 1) + 13} y1={STRIP_Y} x2={stripX(rank) - 13} y2={STRIP_Y} stroke={colors.GRID} strokeWidth={1} opacity={0.6} />
-                    )}
-                  </g>
-                );
-              })}
-            </g>
-          )}
         </Camera>
+
+        {/* the markerless strip — stage space, so it sits above the caption band */}
+        {stripU > 0 && (
+          <g opacity={stripU}>
+            <text x={200} y={STRIP_Y - 26} fill={colors.MUTED} fontSize={13} fontFamily="monospace">
+              without markers: sort by created_at and hope
+            </text>
+            {SORTED.map((n, rank) => {
+              const u = clamp01(stripU * SORTED.length - rank);
+              if (u <= 0) return null;
+              return (
+                <g key={n.id} opacity={u}>
+                  <circle cx={stripX(rank)} cy={STRIP_Y} r={13} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.5} />
+                  <text x={stripX(rank)} y={STRIP_Y + 4} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+                    {n.t.slice(3)}
+                  </text>
+                  {rank > 0 && (
+                    <line x1={stripX(rank - 1) + 13} y1={STRIP_Y} x2={stripX(rank) - 13} y2={STRIP_Y} stroke={colors.GRID} strokeWidth={1} opacity={0.6} />
+                  )}
+                </g>
+              );
+            })}
+          </g>
+        )}
       </g>
 
       {closeU > 0 && (
@@ -303,7 +306,7 @@ function Frame({ s }: { s: SceneState }) {
           <text x={640} y={344} textAnchor="middle" fill={colors.MUTED} fontSize={16}>
             every client rebuilds the same tree from the same tags
           </text>
-          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={13} fontFamily="monospace">
+          <text x={640} y={384} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily="monospace">
             NIP-10 · relays stay dumb, clients stay smart
           </text>
         </g>

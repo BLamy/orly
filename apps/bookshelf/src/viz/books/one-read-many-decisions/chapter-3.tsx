@@ -209,6 +209,8 @@ export function Render({ s }: { s: SceneState }) {
 
   return (
     <Camera {...s.get(scene.cam)}>
+      {/* the closing frame clears the board: everything before it fades to a ghost */}
+      <g opacity={1 - 0.85 * closeU}>
       {/* the shared trunk both rows stand on */}
       <g opacity={clamp01(matU * 3)}>
         {range(6).map((l) => (
@@ -355,7 +357,7 @@ export function Render({ s }: { s: SceneState }) {
             const su = dec ? 0 : clamp01(strikeU * 12 - i);
             return (
               <g key={i} opacity={clamp01(tapeU * 12 - i) * (1 - 0.6 * su)}>
-                <Cell x={TAPE.x + i * TAPE.step} y={TAPE.y} w={TAPE.w} h={TAPE.h} text={p} size={11.5} tone={dec ? ROLE.CHECKED : ROLE.MODEL} dashed={!dec} strong={dec ? 1 : 0} />
+                <Cell x={TAPE.x + i * TAPE.step} y={TAPE.y} w={TAPE.w} h={TAPE.h} text={p} size={12} tone={dec ? ROLE.CHECKED : ROLE.MODEL} dashed={!dec} strong={dec ? 1 : 0} />
                 {su > 0.002 && <line x1={TAPE.x + i * TAPE.step + 4} x2={TAPE.x + i * TAPE.step + 4 + (TAPE.w - 8) * su} y1={TAPE.y + TAPE.h / 2} y2={TAPE.y + TAPE.h / 2} stroke={ROLE.INVALID} strokeWidth={2.4} />}
               </g>
             );
@@ -373,13 +375,14 @@ export function Render({ s }: { s: SceneState }) {
           ) : (
             <Label x={MAT_RIGHT + 35} y={ROWS[0].y + 66} anchor="middle" text="✕" size={22} color={ROLE.INVALID} weight={800} />
           )}
-          <Label x={MAT.x} y={352} text="✓ independent: neither row sees the other's new answer" u={clamp01(indepU * 2 - 1) * (1 - depU)} size={15} color={ROLE.CHECKED} weight={650} />
+          <Label x={MAT.x} y={352} text="✓ independent: neither row sees the other's new answer" u={clamp01(indepU * 2 - 1) * (1 - clamp01(depU * 4))} size={15} color={ROLE.CHECKED} weight={650} />
           <Label x={MAT.x} y={352} text="? if topic changed what urgency may mean: a real dependency" u={depU} size={15} color={ROLE.PENDING} weight={650} />
           <Label x={MAT.x} y={374} text="→ represent it: ask in order, or choose jointly" u={clamp01(depU * 2 - 1)} size={15} />
         </g>
       )}
       <StatusTag x={740} y={362} kind="INTENDED" text="contract, not yet the browser demo" u={clamp01(indepU * 2 - 1) * (1 - closeU)} />
 
+      </g>
       <Panel x={250} y={392} w={780} h={150} u={closeU} stroke={ROLE.PENDING}>
         <text x={640} y={456} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={750}>
           Batch only what is truly independent.

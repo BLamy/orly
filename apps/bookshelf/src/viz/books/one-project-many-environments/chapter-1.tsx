@@ -48,14 +48,14 @@ export function buildScene() {
   t = tl.hold(t, 0.6);
 
   t = tl.caption({ at: t, dur: 5.8, text: 'We do have an escape hatch. A test run can override the target URL at launch time.' });
-  tl.tween(cam, { x: 640, y: 400, k: 1.0 }, { at: t - 5.4, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 330, k: 1.1 }, { at: t - 5.4, dur: 1.3, ease: ease.move });
   tl.tween(ledgerU, 1, { at: t - 4.6, dur: 1.2, ease: ease.enter });
   tl.tween(overrideU, 1, { at: t - 3.2, dur: 1.8, ease: ease.move });
   t = tl.hold(t, 0.6);
 
   t = tl.caption({ at: t, dur: 6.2, text: 'But a URL is just an address. It carries no knowledge of how to test that world: not which login to use, not which steps differ, and no record of which environment it was supposed to be.' });
   tl.tween(mysteryU, 1, { at: t - 5.4, dur: 1.6, ease: ease.enter });
-  tl.tween(cam, { x: 800, y: 430, k: 1.22 }, { at: t - 4.6, dur: 1.4, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 330, k: 1.12 }, { at: t - 4.6, dur: 1.4, ease: ease.move });
   tl.tween(projectU, 0.12, { at: t - 6.2, dur: 0.8, ease: ease.move });
   tl.tween(queueU, 0.05, { at: t - 6.2, dur: 0.8, ease: ease.move });
   t = tl.hold(t, 0.6);
@@ -100,17 +100,17 @@ export function Render({ s }: { s: SceneState }) {
     <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
     <Camera {...s.get(scene.cam)}>
       {/* The project record, with its two single slots */}
-      <g opacity={projectU}>
+      <g opacity={projectU * (1 - 0.85 * closeU)}>
         <rect x={100} y={80} width={470} height={230} rx={22} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={2} />
         <text x={130} y={122} fill={colors.TEXT} fontSize={23} fontWeight={750}>Project · Checkout App</text>
         <text x={130} y={146} fill={colors.MUTED} fontSize={12} fontFamily={mono}>projects · one row</text>
 
         <rect x={130} y={168} width={410} height={52} rx={12} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.6} />
-        <text x={148} y={189} fill={colors.MUTED} fontSize={11} fontFamily={mono}>target_url</text>
+        <text x={148} y={189} fill={colors.MUTED} fontSize={12} fontFamily={mono}>target_url</text>
         <text x={148} y={209} fill={colors.POSITIVE} fontSize={14} fontFamily={mono}>app.example.com</text>
 
         <rect x={130} y={232} width={410} height={52} rx={12} fill={colors.BG} stroke={instrU > 0.05 ? colors.NEGATIVE : colors.MUTED} strokeWidth={1.6} opacity={0.6 + 0.4 * Math.max(projectU, instrU)} />
-        <text x={148} y={253} fill={colors.MUTED} fontSize={11} fontFamily={mono}>test_instructions</text>
+        <text x={148} y={253} fill={colors.MUTED} fontSize={12} fontFamily={mono}>test_instructions</text>
         <text x={148} y={273} fill={colors.TEXT} fontSize={13}>“Sign in as demo user, then…”</text>
       </g>
 
@@ -134,31 +134,31 @@ export function Render({ s }: { s: SceneState }) {
       {rejectU > 0.85 && <text x={620} y={70} fill={colors.NEGATIVE} fontSize={13} fontFamily={mono} opacity={clamp01((rejectU - 0.85) * 6) * clamp01((projectU - 0.12) / 0.88) * (1 - closeU)}>one slot · last write wins</text>}
 
       {/* Run history ledger */}
-      <g opacity={ledgerU}>
-        <text x={110} y={392} fill={colors.TEXT} fontSize={20} fontWeight={750} opacity={1 - 0.9 * mysteryU}>Test run history</text>
-        <text x={340} y={415} fill={colors.MUTED} fontSize={12} fontWeight={700} fontFamily={mono}>url used</text>
-        <text x={700} y={415} fill={colors.MUTED} fontSize={12} fontWeight={700} fontFamily={mono}>source</text>
-        <text x={900} y={415} fill={colors.WARM} fontSize={12} fontWeight={700} fontFamily={mono}>environment?</text>
+      <g opacity={ledgerU * (1 - 0.85 * closeU)}>
+        <text x={110} y={372} fill={colors.TEXT} fontSize={20} fontWeight={750} opacity={1 - 0.9 * mysteryU}>Test run history</text>
+        <text x={340} y={395} fill={colors.MUTED} fontSize={12} fontWeight={700} fontFamily={mono}>url used</text>
+        <text x={700} y={395} fill={colors.MUTED} fontSize={12} fontWeight={700} fontFamily={mono}>source</text>
+        <text x={900} y={395} fill={colors.WARM} fontSize={12} fontWeight={700} fontFamily={mono}>environment?</text>
         {RUNS.map((run, i) => {
           const rowU = i === 0 ? ledgerU : clamp01(overrideU * 2 - (i - 1));
           return <g key={run.id} opacity={rowU} transform={`translate(0 ${(1 - rowU) * 14})`}>
-            <rect x={110} y={428 + i * 56} width={1030} height={46} rx={10} fill={colors.PANEL} stroke={colors.MUTED} strokeOpacity={0.3} />
-            <text x={135} y={457 + i * 56} fill={colors.TEXT} fontSize={13} fontFamily={mono}>{run.id}</text>
-            <text x={340} y={457 + i * 56} fill={i === 0 ? colors.POSITIVE : WANT_URLS[i - 1]!.color} fontSize={13} fontFamily={mono}>{run.url}</text>
-            <text x={700} y={457 + i * 56} fill={colors.MUTED} fontSize={13} fontFamily={mono}>{run.note}</text>
+            <rect x={110} y={412 + i * 52} width={1030} height={44} rx={10} fill={colors.PANEL} stroke={colors.MUTED} strokeOpacity={0.3} />
+            <text x={135} y={439 + i * 52} fill={colors.TEXT} fontSize={13} fontFamily={mono}>{run.id}</text>
+            <text x={340} y={439 + i * 52} fill={i === 0 ? colors.POSITIVE : WANT_URLS[i - 1]!.color} fontSize={13} fontFamily={mono}>{run.url}</text>
+            <text x={700} y={439 + i * 52} fill={colors.MUTED} fontSize={13} fontFamily={mono}>{run.note}</text>
             <g opacity={mysteryU}>
-              <rect x={895} y={438 + i * 56} width={150 + 14 * pulse} height={28} rx={14} fill={colors.WARM} opacity={0.1 + 0.12 * pulse} />
-              <text x={970} y={457 + i * 56} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={mono}>— unknown —</text>
+              <rect x={895} y={418 + i * 52} width={150 + 14 * pulse} height={28} rx={14} fill={colors.WARM} opacity={0.1 + 0.12 * pulse} />
+              <text x={970} y={437 + i * 52} textAnchor="middle" fill={colors.WARM} fontSize={14} fontFamily={mono}>— unknown —</text>
             </g>
           </g>;
         })}
-        <text x={565} y={614} fill={colors.NEGATIVE} fontSize={12.5} fontFamily={mono} opacity={mysteryU * (1 - closeU)}>a url carries no logins · no instructions · no environment</text>
+        <text x={400} y={372} fill={colors.NEGATIVE} fontSize={12.5} fontFamily={mono} opacity={mysteryU * (1 - closeU)}>a url carries no logins · no instructions · no environment</text>
       </g>
 
       {/* Override packet: a URL diving into run 419 */}
       {overrideU > 0 && overrideU < 1 && <g opacity={clamp01(overrideU * 5) * clamp01((1 - overrideU) * 5)}>
-        <circle cx={lerp(760, 400, overrideU)} cy={lerp(180, 512, overrideU)} r={9} fill={colors.WARM} />
-        <text x={lerp(760, 400, overrideU) + 16} y={lerp(180, 512, overrideU) + 4} fill={colors.WARM} fontSize={11} fontFamily={mono}>override url</text>
+        <circle cx={lerp(760, 400, overrideU)} cy={lerp(180, 486, overrideU)} r={9} fill={colors.WARM} />
+        <text x={lerp(760, 400, overrideU) + 16} y={lerp(180, 486, overrideU) + 4} fill={colors.WARM} fontSize={12} fontFamily={mono}>override url</text>
       </g>}
 
       {/* The closing problem statement */}

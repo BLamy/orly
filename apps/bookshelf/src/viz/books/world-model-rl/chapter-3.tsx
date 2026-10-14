@@ -1,7 +1,7 @@
 // Grounding: arXiv:2608.12564 Equation 4 and Appendix D; official WMRL
 // files wmrl/debias.py, ml_research/cluster/train_entry.py, and
 // ml_research/configs/wmrl_9b.yaml.
-import { CAMERA_HOME, Camera, MathLabel, Timeline, cameraInterp, colors, ease } from '../../core';
+import { CAMERA_HOME, Camera, Timeline, cameraInterp, colors, ease } from '../../core';
 import type { CameraState, SceneState } from '../../core';
 
 const clamp01 = (v: number) => Math.max(0, Math.min(1, v));
@@ -33,11 +33,12 @@ export function buildScene() {
   const refitU = tl.channel('refit odometer', 0);
   const recentU = tl.channel('recent buffer', 0);
   const closeU = tl.channel('closing map', 0);
+  const glossU = tl.channel('pool gloss', 0);
 
   tl.caption({ at: 0.4, dur: 5.6, text: 'A predicted score can be consistently wrong even when it ranks two solutions in the right order.' });
   tl.tween(axesU, 1, { at: 0.8, dur: 1.3, ease: ease.draw });
   tl.tween(pairsU, 0.35, { at: 2.0, dur: 2.2, ease: ease.linear });
-  tl.tween(cam, { x: 535, y: 330, k: 1.05 }, { at: 2.4, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 600, y: 330, k: 1.05 }, { at: 2.4, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 6.4, dur: 5.6, text: 'Anchor pairs plot the model prediction against the real execution score. The diagonal is perfect agreement.' });
   tl.tween(pairsU, 0.65, { at: 6.8, dur: 1.8, ease: ease.linear });
@@ -49,19 +50,21 @@ export function buildScene() {
 
   tl.caption({ at: 18.4, dur: 5.6, text: 'It divides predicted scores into ten equal-width bins, then averages the real scores inside each populated bin.' });
   tl.tween(binsU, 1, { at: 18.9, dur: 1.8, ease: ease.enter });
-  tl.tween(cam, { x: 555, y: 340, k: 1.11 }, { at: 20.0, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 620, y: 340, k: 1.05 }, { at: 20.0, dur: 1.3, ease: ease.move });
 
   tl.caption({ at: 24.4, dur: 5.6, text: 'If two neighboring means descend, pool-adjacent-violators merges them until the staircase can only rise.' });
+  tl.tween(glossU, 1, { at: 24.8, dur: 0.8, ease: ease.enter });
   tl.tween(poolU, 1, { at: 25.0, dur: 1.5, ease: ease.move });
 
   tl.caption({ at: 30.4, dur: 5.6, text: 'That monotone staircase becomes a piecewise calibration map from predicted reward to expected real reward.' });
+  tl.tween(glossU, 0, { at: 30.6, dur: 0.8, ease: ease.move });
   tl.tween(cam, CAMERA_HOME, { at: 29.8, dur: 1.2, ease: ease.move });
   tl.tween(mapU, 1, { at: 31.0, dur: 1.5, ease: ease.draw });
   tl.tween(identityU, 0.18, { at: 32.2, dur: 0.8, ease: ease.move });
 
   tl.caption({ at: 36.4, dur: 5.6, text: 'Every cheap score passes through the map before group advantages are formed.' });
   tl.tween(applyU, 1, { at: 37.0, dur: 2.6, ease: ease.linear });
-  tl.tween(cam, { x: 760, y: 345, k: 1.04 }, { at: 38.0, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 700, y: 345, k: 1.04 }, { at: 38.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 42.4, dur: 5.6, text: 'Because the map is monotone, it preserves the ordering the world model got right while correcting the spacing.' });
   tl.tween(rankU, 1, { at: 43.0, dur: 1.3, ease: ease.pop });
@@ -75,7 +78,7 @@ export function buildScene() {
   tl.tween(closeU, 1, { at: 55.0, dur: 1.3, ease: ease.move });
   tl.hold(60.8, 1.2);
 
-  return { tl, cam, axesU, pairsU, identityU, counterU, binsU, poolU, mapU, applyU, rankU, refitU, recentU, closeU };
+  return { tl, cam, axesU, pairsU, identityU, counterU, binsU, poolU, mapU, applyU, rankU, refitU, recentU, closeU, glossU };
 }
 
 const scene = buildScene();
@@ -86,14 +89,15 @@ export function Render({ s }: { s: SceneState }) {
   const pool = s.get(scene.poolU);
   const apply = s.get(scene.applyU);
   const refit = s.get(scene.refitU);
+  const gloss = s.get(scene.glossU);
   return <Camera {...s.get(scene.cam)}>
     <g opacity={1 - close}>
       <text x="640" y="64" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="850">bend the scores back</text>
       <g opacity={s.get(scene.axesU)}>
         <rect x={PLOT.x} y={PLOT.y} width={PLOT.w} height={PLOT.h} rx="18" fill="#101827" stroke={colors.GRID} strokeWidth="2" />
         {[0.2, 0.4, 0.6, 0.8].map((v) => <g key={v} opacity="0.35"><line x1={sx(v)} y1={PLOT.y} x2={sx(v)} y2={PLOT.y + PLOT.h} stroke={colors.GRID} /><line x1={PLOT.x} y1={sy(v)} x2={PLOT.x + PLOT.w} y2={sy(v)} stroke={colors.GRID} /></g>)}
-        <text x={PLOT.x + PLOT.w / 2} y={PLOT.y + PLOT.h + 34} textAnchor="middle" fill={colors.SECONDARY} fontSize="13">world-model score r̂</text>
-        <text x={PLOT.x - 42} y={PLOT.y + PLOT.h / 2} textAnchor="middle" transform={`rotate(-90 ${PLOT.x - 42} ${PLOT.y + PLOT.h / 2})`} fill={colors.WARM} fontSize="13">execution score r</text>
+        <text x={PLOT.x + PLOT.w / 2} y={PLOT.y + PLOT.h + 34} textAnchor="middle" fill={colors.SECONDARY} fontSize="14">world-model score r̂</text>
+        <text x={PLOT.x} y={PLOT.y - 14} fill={colors.WARM} fontSize="14">↑ execution score r</text>
       </g>
 
       <line x1={sx(0)} y1={sy(0)} x2={sx(s.get(scene.identityU))} y2={sy(s.get(scene.identityU))} stroke={colors.MUTED} strokeWidth="2" strokeDasharray="8 7" opacity={s.get(scene.identityU)} />
@@ -105,9 +109,15 @@ export function Render({ s }: { s: SceneState }) {
       })}
 
       <g opacity={s.get(scene.counterU)}>
-        <rect x="954" y="108" width="238" height="72" rx="22" fill="#172236" stroke={colors.ACCENT} />
-        <text x="1073" y="137" textAnchor="middle" fill={colors.MUTED} fontSize="11">anchor-pair threshold</text>
-        <text x="1073" y="164" textAnchor="middle" fill={colors.ACCENT} fontSize="25" fontWeight="850" fontFamily={colors.font.mono}>{Math.round(200 * s.get(scene.counterU))} / 200</text>
+        <rect x="940" y="108" width="220" height="72" rx="22" fill="#172236" stroke={colors.ACCENT} />
+        <text x="1050" y="137" textAnchor="middle" fill={colors.MUTED} fontSize="14">anchor-pair threshold</text>
+        <text x="1050" y="164" textAnchor="middle" fill={colors.ACCENT} fontSize="25" fontWeight="850" fontFamily={colors.font.mono}>{Math.round(200 * s.get(scene.counterU))} / 200</text>
+      </g>
+
+      <g opacity={gloss}>
+        <rect x="212" y="112" width="540" height="66" rx="14" fill="#0c1421" stroke={colors.POSITIVE} strokeWidth="2" />
+        <text x="228" y="136" fill={colors.POSITIVE} fontSize="14" fontWeight="700">pool-adjacent-violators: where a later bin's average is lower</text>
+        <text x="228" y="160" fill={colors.TEXT} fontSize="14">than an earlier one, merge those bins so the staircase only rises.</text>
       </g>
 
       <g opacity={s.get(scene.binsU)}>
@@ -122,27 +132,27 @@ export function Render({ s }: { s: SceneState }) {
         <path d={linePath(MONO)} fill="none" stroke={colors.POSITIVE} strokeWidth="5" opacity={pool} />
       </g>
       <path d={linePath(MONO)} fill="none" stroke={colors.POSITIVE} strokeWidth="6" strokeDasharray={`${760 * s.get(scene.mapU)} 760`} opacity={s.get(scene.mapU)} />
-      <MathLabel tex={'\\hat f = \\operatorname{isotonic}(\\hat r, r)'} x={1048} y={232} fontSize={22} opacity={s.get(scene.mapU)} />
+      <text x="1050" y="238" textAnchor="middle" fill={colors.TEXT} fontSize="22" opacity={s.get(scene.mapU)}>f̂ = isotonic(r̂, r)</text>
 
       <g opacity={apply * (1 - s.get(scene.rankU))}>
         {[0.24, 0.52, 0.78].map((x, i) => <g key={x} transform={`translate(${970 + i * 72} 330)`}>
           <circle cy={60 - 28 * apply} r="13" fill={colors.SECONDARY} />
           <path d="M0 44 V-32" stroke={colors.POSITIVE} strokeWidth="3" markerEnd="url(#wmrl-arrow)" />
-          <text y="86" textAnchor="middle" fill={colors.MUTED} fontSize="10" fontFamily={colors.font.mono}>{x.toFixed(2)}</text>
+          <text y="86" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>{x.toFixed(2)}</text>
         </g>)}
-        <text x="1042" y="438" textAnchor="middle" fill={colors.POSITIVE} fontSize="12">recast before advantages</text>
+        <text x="1042" y="438" textAnchor="middle" fill={colors.POSITIVE} fontSize="14">recast before advantages</text>
       </g>
 
       <g opacity={s.get(scene.rankU)}>
         <rect x="946" y="316" width="270" height="132" rx="24" fill="#12291f" stroke={colors.POSITIVE} />
-        <text x="1081" y="344" textAnchor="middle" fill={colors.POSITIVE} fontSize="12">order preserved</text>
-        {[0, 1, 2].map((i) => <g key={i}><circle cx={1014 + i * 68} cy="384" r={10} fill={colors.ACCENT} /><text x={1014 + i * 68} y="411" textAnchor="middle" fill={colors.MUTED} fontSize="10">{i + 1}</text></g>)}
+        <text x="1081" y="344" textAnchor="middle" fill={colors.POSITIVE} fontSize="14">order preserved</text>
+        {[0, 1, 2].map((i) => <g key={i}><circle cx={1014 + i * 68} cy="384" r={10} fill={colors.ACCENT} /><text x={1014 + i * 68} y="411" textAnchor="middle" fill={colors.MUTED} fontSize="12">{i + 1}</text></g>)}
       </g>
 
       <g opacity={s.get(scene.refitU)}>
         <path d="M965 472 H1178" stroke="#202c40" strokeWidth="14" strokeLinecap="round" />
         <path d="M965 472 H1178" stroke={colors.SECONDARY} strokeWidth="14" strokeLinecap="round" strokeDasharray={`${213 * refit} 213`} />
-        <text x="1072" y="494" textAnchor="middle" fill={colors.SECONDARY} fontSize="11" fontFamily={colors.font.mono}>refit_every: 64 · cap: 5000</text>
+        <text x="1072" y="496" textAnchor="middle" fill={colors.SECONDARY} fontSize="13" fontFamily={colors.font.mono}>refit_every: 64 · cap: 5000</text>
       </g>
       <defs><marker id="wmrl-arrow" markerWidth="8" markerHeight="8" refX="6" refY="3" orient="auto"><path d="M0,0 L0,6 L7,3 z" fill={colors.POSITIVE} /></marker></defs>
     </g>

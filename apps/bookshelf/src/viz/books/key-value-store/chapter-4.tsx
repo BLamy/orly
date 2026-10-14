@@ -49,7 +49,7 @@ const DIAL_W = { x: 600, y: PANEL.y + 46 } as const;
 const DIAL_R = { x: 760, y: PANEL.y + 46 } as const;
 
 // right column ends ≤ 1205: CAM_LANES (k=1.12) shows stage x up to ≈1211
-const README_CHIP = { x: 920, y: 120, w: 282, h: 132 } as const;
+const README_CHIP = { x: 920, y: 180, w: 282, h: 132 } as const; // below the W + R > N box
 const LAT = { x: 920, y: 330, w: 282, h: 130 } as const;
 
 const VERSION_COLOR: Record<string, string> = {
@@ -60,7 +60,8 @@ const VERSION_COLOR: Record<string, string> = {
 
 // camera marks
 const CAM_WIDE: CameraState = CAMERA_HOME;
-const CAM_PANEL: CameraState = { x: 665, y: 220, k: 1.3 };
+// wide enough to keep the coordinator on stage and the D lane above the caption pill
+const CAM_PANEL: CameraState = { x: 590, y: 280, k: 1.22 };
 const CAM_LANES: CameraState = { x: 640, y: 350, k: 1.12 };
 
 // ---------------------------------------------------------------------------
@@ -340,9 +341,10 @@ export function Render({ s }: { s: SceneState }) {
   const wp = [clamp01(write1U * 1.15), clamp01(write1U * 1.05), clamp01(write1U * 0.62)];
   const dDropFade = write1U > 0.9 ? clamp01((1 - write1U) * 10) : 1;
 
-  // latency bars from the dial values (wait-for-slowest grows with the dial)
-  const wLat = 36 + ((wVal - 1) / 2) * 180;
-  const rLat = 36 + ((rVal - 1) / 2) * 180;
+  // latency bars from the dial values (wait-for-slowest grows with the dial);
+  // capped so the longest bar stays inside the latency panel
+  const wLat = 36 + ((wVal - 1) / 2) * 150;
+  const rLat = 36 + ((rVal - 1) / 2) * 150;
 
   return (
     <>
@@ -403,7 +405,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={COORD.x} y={COORD.y - 12} textAnchor="middle" fill={colors.TEXT} fontSize={15}>
             coordinator
           </text>
-          <text x={COORD.x} y={COORD.y + 14} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+          <text x={COORD.x} y={COORD.y + 14} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
             {write1U === 0
               ? 'ready'
               : ok1U > 0.5
@@ -423,7 +425,7 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* control panel with the two dials */}
           <rect x={PANEL.x} y={PANEL.y} width={PANEL.w} height={PANEL.h} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
-          <text x={PANEL.x + 22} y={PANEL.y + 34} fill={colors.MUTED} fontSize={13} fontStyle="italic">
+          <text x={PANEL.x + 22} y={PANEL.y + 34} fill={colors.MUTED} fontSize={14} fontStyle="italic">
             control panel
           </text>
           <text x={PANEL.x + 22} y={PANEL.y + 62} fill={colors.TEXT} fontSize={17} fontFamily={MONO} fontWeight={700}>
@@ -498,14 +500,14 @@ export function Render({ s }: { s: SceneState }) {
           {/* latency bars, driven by the dials */}
           <g opacity={latU}>
             <rect x={LAT.x} y={LAT.y} width={LAT.w} height={LAT.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-            <text x={LAT.x + 20} y={LAT.y + 30} fill={colors.MUTED} fontSize={13} fontStyle="italic">
+            <text x={LAT.x + 20} y={LAT.y + 30} fill={colors.MUTED} fontSize={14} fontStyle="italic">
               latency — wait for the slowest
             </text>
-            <text x={LAT.x + 20} y={LAT.y + 62} fill={colors.TEXT} fontSize={13}>
+            <text x={LAT.x + 20} y={LAT.y + 62} fill={colors.TEXT} fontSize={14}>
               write
             </text>
             <rect x={LAT.x + 66} y={LAT.y + 50} width={wLat} height={14} rx={7} fill={colors.ACCENT} opacity={0.85} />
-            <text x={LAT.x + 20} y={LAT.y + 98} fill={colors.TEXT} fontSize={13}>
+            <text x={LAT.x + 20} y={LAT.y + 98} fill={colors.TEXT} fontSize={14}>
               read
             </text>
             <rect x={LAT.x + 66} y={LAT.y + 86} width={rLat} height={14} rx={7} fill={colors.POSITIVE} opacity={0.85} />

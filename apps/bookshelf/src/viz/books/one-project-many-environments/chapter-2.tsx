@@ -29,10 +29,10 @@ const ENV_COLS = [
 ] as const;
 
 const CARDS = [
-  { key: 'projects', x: 90, y: 96, w: 330, h: 218, color: colors.ACCENT, tag: 'defaults' },
-  { key: 'project_environments', x: 640, y: 96, w: 470, h: 218, color: colors.WARM, tag: 'overlay' },
-  { key: 'test_runs', x: 90, y: 478, w: 460, h: 104, color: colors.SECONDARY, tag: '+ one column' },
-  { key: 'journey_exclusions', x: 640, y: 478, w: 470, h: 104, color: colors.POSITIVE, tag: 'new' },
+  { key: 'projects', x: 90, y: 96, w: 330, h: 250, color: colors.ACCENT, tag: 'defaults' },
+  { key: 'project_environments', x: 640, y: 96, w: 470, h: 250, color: colors.WARM, tag: 'overlay' },
+  { key: 'test_runs', x: 90, y: 478, w: 460, h: 116, color: colors.SECONDARY, tag: '+ one column' },
+  { key: 'journey_exclusions', x: 640, y: 478, w: 470, h: 116, color: colors.POSITIVE, tag: 'new' },
 ] as const;
 
 const ENV_ROWS = [
@@ -63,14 +63,14 @@ export function buildScene() {
   let t = 0.5;
   t = tl.caption({ at: t, dur: 6.4, text: 'Here is the design. The project keeps its target URL, its test instructions, and its global variables — and they take on a clear role: the project wide defaults.' });
   tl.tween(projU, 1, { at: 0.8, dur: 1.4, ease: ease.enter });
-  tl.tween(cam, { x: 430, y: 260, k: 1.22 }, { at: 1.2, dur: 1.4, ease: ease.move });
+  tl.tween(cam, { x: 255, y: 215, k: 1.2 }, { at: 1.2, dur: 1.4, ease: ease.move });
   tl.tween(focus, 1, { at: 1.2, dur: 0.8, ease: ease.move });
   tl.tween(defaultU, 1, { at: 3.4, dur: 1.4, ease: ease.enter });
   t = tl.hold(t, 0.7);
 
   t = tl.caption({ at: t, dur: 6.4, text: 'Next to it, project environments. An environment is an overlay: a name, a kind, a trigger, and three optional fields that shadow the defaults.' });
   tl.tween(focus, 2, { at: t - 6.0, dur: 0.8, ease: ease.move });
-  tl.tween(cam, { x: 750, y: 260, k: 1.16 }, { at: t - 5.8, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 600, y: 360, k: 1.08 }, { at: t - 5.8, dur: 1.3, ease: ease.move });
   tl.tween(envU, 1, { at: t - 5.2, dur: 1.6, ease: ease.draw });
   t = tl.hold(t, 0.6);
 
@@ -81,7 +81,7 @@ export function buildScene() {
 
   t = tl.caption({ at: t, dur: 6.2, text: 'Reading configuration is a fallback chain. If the environment defines a value, it wins. If it does not, the run inherits the project default.' });
   tl.tween(focus, 0, { at: t - 5.8, dur: 0.8, ease: ease.move });
-  tl.tween(cam, { x: 640, y: 320, k: 1.08 }, { at: t - 5.6, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 600, y: 360, k: 1.08 }, { at: t - 5.6, dur: 1.3, ease: ease.move });
   tl.tween(resolveU, 1, { at: t - 4.8, dur: 1.0, ease: ease.enter });
   t = tl.hold(t, 0.6);
 
@@ -96,20 +96,20 @@ export function buildScene() {
 
   t = tl.caption({ at: t, dur: 6.4, text: 'Test runs record which environment they ran in, through one nullable column. Null means the project defaults, which keeps every run we have ever recorded truthful.' });
   tl.tween(focus, 3, { at: t - 6.0, dur: 0.8, ease: ease.move });
-  tl.tween(cam, { x: 460, y: 450, k: 1.16 }, { at: t - 5.8, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 580, y: 400, k: 1.14 }, { at: t - 5.8, dur: 1.3, ease: ease.move });
   tl.tween(runsU, 1, { at: t - 5.0, dur: 1.2, ease: ease.enter });
   t = tl.hold(t, 0.6);
 
   t = tl.caption({ at: t, dur: 6.2, text: 'Journeys get an exclusions table. Empty means a journey runs everywhere. One row keeps stripe checkout out of production.' });
   tl.tween(focus, 4, { at: t - 5.8, dur: 0.8, ease: ease.move });
-  tl.tween(cam, { x: 780, y: 460, k: 1.16 }, { at: t - 5.6, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 620, y: 400, k: 1.14 }, { at: t - 5.6, dur: 1.3, ease: ease.move });
   tl.tween(jeU, 1, { at: t - 4.8, dur: 1.2, ease: ease.enter });
   tl.tween(jeRowU, 1, { at: t - 2.4, dur: 0.8, ease: ease.pop });
   t = tl.hold(t, 0.6);
 
   t = tl.caption({ at: t, dur: 6.4, text: 'Two new tables, one nullable column, and every change is additive. Environments are overlays, and the defaults we already have are the floor they stand on.' });
   tl.tween(focus, 0, { at: t - 6.0, dur: 0.9, ease: ease.move });
-  tl.tween(cam, { x: 640, y: 340, k: 1.0 }, { at: t - 5.8, dur: 1.5, ease: ease.move });
+  tl.tween(cam, { x: 600, y: 360, k: 1.08 }, { at: t - 5.8, dur: 1.5, ease: ease.move });
   tl.tween(footU, 1, { at: t - 4.6, dur: 0.9, ease: ease.enter });
   tl.tween(closeU, 1, { at: t - 2.6, dur: 1.0, ease: ease.enter });
   tl.tween(projU, 0.15, { at: t - 2.8, dur: 1.0, ease: ease.move });
@@ -117,6 +117,7 @@ export function buildScene() {
   tl.tween(runsU, 0.15, { at: t - 2.8, dur: 1.0, ease: ease.move });
   tl.tween(jeU, 0.15, { at: t - 2.8, dur: 1.0, ease: ease.move });
   tl.tween(resolveU, 0.12, { at: t - 2.8, dur: 1.0, ease: ease.move });
+  tl.tween(rowsU, 0, { at: t - 2.8, dur: 1.0, ease: ease.move });
   tl.tween(footU, 0, { at: t - 2.8, dur: 0.8, ease: ease.move });
   tl.hold(t, 1.0);
   return { tl, cam, focus, projU, defaultU, envU, fkU, rowsU, resolveU, look1U, look2U, safeU, runsU, jeU, jeRowU, footU, closeU };
@@ -155,7 +156,7 @@ export function Render({ s }: { s: SceneState }) {
         <rect x={c.x} y={c.y} width={c.w} height={c.h} rx={18} fill={colors.PANEL} stroke={c.color}
           strokeWidth={1.8 + 1.6 * footU} />
         <text x={c.x + 24} y={c.y + 32} fill={colors.TEXT} fontSize={17} fontWeight={750}>{c.key}</text>
-        <text x={c.x + c.w - 24} y={c.y + 30} textAnchor="end" fill={c.color} fontSize={10.5} fontFamily={mono}>{c.tag}</text>
+        <text x={c.x + c.w - 24} y={c.y + 30} textAnchor="end" fill={c.color} fontSize={12} fontFamily={mono}>{c.tag}</text>
       </g>)}
 
       {/* projects — the defaults */}
@@ -165,27 +166,27 @@ export function Render({ s }: { s: SceneState }) {
             fill={col.dfl && defaultU > 0.05 ? colors.POSITIVE : colors.BG}
             fillOpacity={col.dfl && defaultU > 0.05 ? 0.07 + 0.07 * defaultU : 1}
             stroke={col.dfl && defaultU > 0.05 ? colors.POSITIVE : colors.MUTED} strokeOpacity={col.dfl ? 0.75 : 0.3} />
-          <text x={126} y={156 + i * 28} fill={col.dfl && defaultU > 0.05 ? colors.POSITIVE : colors.MUTED} fontSize={11.5} fontFamily={mono}>{col.name}</text>
-          {col.dfl && defaultU > 0.5 && <text x={392} y={156 + i * 28} textAnchor="end" fill={colors.POSITIVE} fontSize={9.5} fontFamily={mono} opacity={(defaultU - 0.5) * 2}>default</text>}
+          <text x={126} y={156 + i * 28} fill={col.dfl && defaultU > 0.05 ? colors.POSITIVE : colors.MUTED} fontSize={13} fontFamily={mono}>{col.name}</text>
+          {col.dfl && defaultU > 0.5 && <text x={392} y={156 + i * 28} textAnchor="end" fill={colors.POSITIVE} fontSize={12} fontFamily={mono} opacity={(defaultU - 0.5) * 2}>default</text>}
         </g>)}
-        {safeU > 0 && <g opacity={safeU} transform="translate(112 322)">
+        {safeU > 0 && <g opacity={safeU} transform="translate(112 312)">
           <rect width={286} height={26} rx={13} fill={colors.POSITIVE} opacity={0.12} />
-          <text x={143} y={17.5} textAnchor="middle" fill={colors.POSITIVE} fontSize={11} fontFamily={mono}>no environments? works like today ✓</text>
+          <text x={143} y={17.5} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily={mono}>no environments? works like today ✓</text>
         </g>}
       </g>
 
       {/* project_environments — the overlay */}
       <g opacity={envU * cardOp(1)}>
         {ENV_COLS.map((col, i) => <g key={col.name} opacity={clamp01(envU * 5 - i * 0.5)}>
-          <text x={666} y={146 + i * 27} fill={i === 0 ? colors.ACCENT : colors.MUTED} fontSize={11.5} fontFamily={mono}>{col.name}</text>
-          {col.opt && <text x={1084} y={146 + i * 27} textAnchor="end" fill={colors.WARM} fontSize={9.5} fontFamily={mono}>optional · shadows default</text>}
+          <text x={666} y={146 + i * 27} fill={i === 0 ? colors.ACCENT : colors.MUTED} fontSize={13} fontFamily={mono}>{col.name}</text>
+          {col.opt && <text x={1084} y={146 + i * 27} textAnchor="end" fill={colors.WARM} fontSize={12} fontFamily={mono}>optional · shadows default</text>}
         </g>)}
         {/* environment chips */}
         {ENV_ROWS.map((row, i) => {
           const u = clamp01(rowsU * 3 - i * 0.7);
-          return <g key={row.name} opacity={u} transform={`translate(${666 + i * 152} ${330 - 10 * (1 - u)})`}>
-            <rect width={140} height={30} rx={15} fill={colors.BG} stroke={row.color} strokeWidth={1.4} />
-            <text x={70} y={20} textAnchor="middle" fill={row.color} fontSize={11} fontFamily={mono}>{row.name}</text>
+          return <g key={row.name} opacity={u} transform={`translate(${666 + i * 144} ${304 - 10 * (1 - u)})`}>
+            <rect width={136} height={30} rx={15} fill={colors.BG} stroke={row.color} strokeWidth={1.4} />
+            <text x={68} y={20} textAnchor="middle" fill={row.color} fontSize={12} fontFamily={mono}>{row.name}</text>
           </g>;
         })}
       </g>
@@ -202,29 +203,30 @@ export function Render({ s }: { s: SceneState }) {
       {/* the fallback chain */}
       {resolveU > 0 && <g opacity={resolveU}>
         <rect x={250} y={382} width={780} height={88} rx={16} fill={colors.PANEL} stroke={colors.TEXT} strokeOpacity={0.25} />
-        <text x={276} y={409} fill={colors.TEXT} fontSize={13.5} fontFamily={mono}>resolve(field) = environment.field <tspan fill={colors.WARM}>??</tspan> project.field</text>
+        <text x={276} y={409} fill={colors.TEXT} fontSize={14} fontFamily={mono}>resolve(field) = environment.field <tspan fill={colors.WARM}>??</tspan> project.field</text>
         <g opacity={look1U}>
-          <text x={276} y={434} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>staging · login_email</text>
-          <text x={560} y={434} fill={colors.WARM} fontSize={11.5} fontFamily={mono}>→ env defines it · overrides ✓</text>
+          <text x={276} y={434} fill={colors.MUTED} fontSize={13} fontFamily={mono}>staging · login_email</text>
+          <text x={560} y={434} fill={colors.WARM} fontSize={13} fontFamily={mono}>→ env defines it · overrides ✓</text>
         </g>
         <g opacity={look2U}>
-          <text x={276} y={456} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>staging · test_instructions</text>
-          <text x={560} y={456} fill={colors.POSITIVE} fontSize={11.5} fontFamily={mono}>→ env unset · inherits the project default ✓</text>
+          <text x={276} y={456} fill={colors.MUTED} fontSize={13} fontFamily={mono}>staging · test_instructions</text>
+          <text x={560} y={456} fill={colors.POSITIVE} fontSize={13} fontFamily={mono}>→ env unset · inherits the project default ✓</text>
         </g>
       </g>}
 
       {/* test_runs: one nullable column */}
       <g opacity={runsU * cardOp(2)}>
-        <text x={114} y={526} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>id · project_id · url</text>
-        <text x={114} y={548} fill={colors.SECONDARY} fontSize={11.5} fontFamily={mono}>+ environment_id → project_environments.id · <tspan fill={colors.MUTED}>nullable</tspan></text>
-        <text x={114} y={570} fill={colors.MUTED} fontSize={10.5} fontFamily={mono}>null = project defaults — every recorded run still reads true</text>
+        <text x={114} y={526} fill={colors.MUTED} fontSize={13} fontFamily={mono}>id · project_id · url</text>
+        <text x={114} y={548} fill={colors.SECONDARY} fontSize={13} fontFamily={mono}>+ environment_id → project_environments.id · <tspan fill={colors.MUTED}>nullable</tspan></text>
+        <text x={114} y={570} fill={colors.MUTED} fontSize={12} fontFamily={mono}>null = project defaults · every old run stays true</text>
       </g>
 
       {/* journey_exclusions */}
       <g opacity={jeU * cardOp(3)}>
-        <text x={664} y={526} fill={colors.MUTED} fontSize={11} fontFamily={mono}>journey_id → journeys.id · environment_id → project_environments.id</text>
-        <text x={664} y={548} fill={colors.POSITIVE} fontSize={11} fontFamily={mono}>empty table → every journey runs everywhere ✓</text>
-        <text x={664} y={570} fill={jeRowU > 0.3 ? colors.NEGATIVE : colors.MUTED} fontSize={11} fontFamily={mono} opacity={0.4 + 0.6 * jeRowU}>exclude: checkout · stripe × production</text>
+        <text x={664} y={526} fill={colors.MUTED} fontSize={13} fontFamily={mono}>journey_id → journeys.id</text>
+        <text x={664} y={546} fill={colors.MUTED} fontSize={13} fontFamily={mono}>environment_id → project_environments.id</text>
+        <text x={664} y={566} fill={colors.POSITIVE} fontSize={13} fontFamily={mono}>empty table → every journey runs everywhere ✓</text>
+        <text x={664} y={586} fill={jeRowU > 0.3 ? colors.NEGATIVE : colors.MUTED} fontSize={13} fontFamily={mono} opacity={0.4 + 0.6 * jeRowU}>exclude: checkout · stripe × production</text>
       </g>
 
       {/* additive footprint line */}

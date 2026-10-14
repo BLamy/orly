@@ -38,12 +38,15 @@ const P = {
   web: { x: 330, y: 250 },
   api: { x: 540, y: 250 },
   db: { x: 790, y: 170 },
-  queue: { x: 720, y: 360 },
-  worker: { x: 980, y: 360 },
-  bank: { x: 980, y: 150 },
-  store: { x: 1140, y: 500 },
+  queue: { x: 700, y: 360 },
+  worker: { x: 1000, y: 360 },
+  bank: { x: 1000, y: 150 },
+  store: { x: 1100, y: 500 },
   tdb: { x: 820, y: 520 },
 } as const;
+
+// the gap between the queue's right edge and the worker's left edge, where a pulled job rides
+const PULL_X = P.queue.x + 122;
 
 const rand = mulberry32(20260719);
 const N_TX = 22;
@@ -60,9 +63,10 @@ const STATS = [
   'write heavy · 10:1 write to read',
 ] as const;
 
-const CAM_LINK: CameraState = { x: 480, y: 240, k: 1.2 };
-const CAM_QUEUE: CameraState = { x: 850, y: 360, k: 1.3 };
-const CAM_DRAIN: CameraState = { x: 960, y: 380, k: 1.15 };
+// modest pushes: each frame keeps every label on the 1280-wide stage
+const CAM_LINK: CameraState = { x: 600, y: 240, k: 1.15 };
+const CAM_QUEUE: CameraState = { x: 620, y: 335, k: 1.2 };
+const CAM_DRAIN: CameraState = { x: 620, y: 350, k: 1.2 };
 
 export interface Scene {
   tl: Timeline;
@@ -183,11 +187,11 @@ function Box({ x, y, w = 150, h = 58, title, sub, stroke = colors.GRID, opacity 
   return (
     <g opacity={opacity}>
       <rect x={x - w / 2} y={y - h / 2} width={w} height={h} rx={10} fill={colors.PANEL} stroke={stroke} strokeWidth={1.3} />
-      <text x={x} y={y - 2} textAnchor="middle" fill={colors.TEXT} fontSize={12.5}>
+      <text x={x} y={y - 2} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
         {title}
       </text>
       {sub && (
-        <text x={x} y={y + 17} textAnchor="middle" fill={colors.MUTED} fontSize={9.5} fontFamily="ui-monospace, monospace">
+        <text x={x} y={y + 17} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
           {sub}
         </text>
       )}
@@ -216,20 +220,20 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- the rig ---- */}
         <g opacity={rigU * dimAll}>
           <line x1={P.client.x + 60} y1={P.client.y} x2={P.web.x - 70} y2={P.web.y} stroke={colors.GRID} strokeWidth={1.4} />
-          <line x1={P.web.x + 70} y1={P.web.y} x2={P.api.x - 75} y2={P.api.y} stroke={colors.GRID} strokeWidth={1.4} />
-          <line x1={P.api.x + 75} y1={P.api.y - 14} x2={P.db.x - 80} y2={P.db.y} stroke={colors.GRID} strokeWidth={1.4} />
+          <line x1={P.web.x + 70} y1={P.web.y} x2={P.api.x - 85} y2={P.api.y} stroke={colors.GRID} strokeWidth={1.4} />
+          <line x1={P.api.x + 85} y1={P.api.y - 14} x2={P.db.x - 80} y2={P.db.y} stroke={colors.GRID} strokeWidth={1.4} />
           <line x1={P.api.x + 60} y1={P.api.y + 24} x2={P.queue.x - 110} y2={P.queue.y} stroke={colors.GRID} strokeWidth={1.4} />
           <Box x={P.client.x} y={P.client.y} w={110} title="Client" />
           <Box x={P.web.x} y={P.web.y} w={130} title="Web Server" />
-          <Box x={P.api.x} y={P.api.y} title="Accounts API" sub="POST /api/v1/account" stroke={colors.ACCENT} />
+          <Box x={P.api.x} y={P.api.y} w={170} title="Accounts API" sub="POST /api/v1/account" stroke={colors.ACCENT} />
           <Box x={P.db.x} y={P.db.y} w={170} title="SQL Database" sub="accounts" stroke={colors.POSITIVE} />
-          <Box x={P.bank.x} y={P.bank.y} w={170} title="Financial Institution" sub="the user's bank" stroke={colors.WARM} />
+          <Box x={P.bank.x} y={P.bank.y} w={190} title="Financial Institution" sub="the user's bank" stroke={colors.WARM} />
         </g>
 
         {/* accounts row + hash note */}
         <g opacity={rowU * dimAll}>
-          <rect x={P.db.x - 105} y={P.db.y + 38} width={230} height={34} rx={7} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.2} />
-          <text x={P.db.x + 10} y={P.db.y + 59} textAnchor="middle" fill={colors.TEXT} fontSize={9.5} fontFamily="ui-monospace, monospace">
+          <rect x={P.db.x - 125} y={P.db.y + 42} width={270} height={34} rx={7} fill={colors.PANEL} stroke={colors.POSITIVE} strokeWidth={1.2} />
+          <text x={P.db.x + 10} y={P.db.y + 63} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily="ui-monospace, monospace">
             account_url · login · password_hash
           </text>
         </g>
@@ -238,8 +242,8 @@ export function Render({ s }: { s: SceneState }) {
         {linkU > 0 && linkU < 1 && (() => {
           const segs = [
             { a: { x: P.client.x + 60, y: P.client.y }, b: { x: P.web.x - 70, y: P.web.y } },
-            { a: { x: P.web.x + 70, y: P.web.y }, b: { x: P.api.x - 75, y: P.api.y } },
-            { a: { x: P.api.x + 75, y: P.api.y - 14 }, b: { x: P.db.x - 80, y: P.db.y } },
+            { a: { x: P.web.x + 70, y: P.web.y }, b: { x: P.api.x - 85, y: P.api.y } },
+            { a: { x: P.api.x + 85, y: P.api.y - 14 }, b: { x: P.db.x - 80, y: P.db.y } },
           ];
           const k = Math.min(2, Math.floor(linkU * 3));
           const u = linkU * 3 - k;
@@ -249,22 +253,23 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---- the queue conveyor ---- */}
         <g opacity={clamp01(jobsU * 4) * dimAll}>
           <rect x={P.queue.x - 110} y={P.queue.y - 26} width={220} height={52} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.4} />
-          <text x={P.queue.x} y={P.queue.y - 36} textAnchor="middle" fill={colors.SECONDARY} fontSize={12.5}>
+          <text x={P.queue.x} y={P.queue.y - 36} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>
             Queue
           </text>
-          <text x={P.queue.x} y={P.queue.y + 44} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily="ui-monospace, monospace">
+          <text x={P.queue.x} y={P.queue.y + 44} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
             Amazon SQS / RabbitMQ
           </text>
           {JOBS.map((j) => {
             const u = clamp01(jobsU * 3.2 - j * 0.9);
             if (u <= 0) return null;
-            // last job slides out toward the worker when pulled
+            // jobs settle onto the belt in place (no drop across the queue label);
+            // the last job slides out toward the worker when pulled
             const pulled = j === 0 ? pullU : 0;
-            const x = lerp(P.queue.x - 88 + j * 62, P.worker.x - 70, pulled);
+            const x = lerp(P.queue.x - 88 + j * 62, PULL_X, pulled);
             return (
               <g key={j} opacity={1}>
-                <rect x={x} y={P.queue.y - 14 - (1 - u) * 60} width={52} height={28} rx={6} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.3} opacity={u} />
-                <text x={x + 26} y={P.queue.y + 5 - (1 - u) * 60} textAnchor="middle" fill={colors.SECONDARY} fontSize={9.5} fontFamily="ui-monospace, monospace" opacity={u}>
+                <rect x={x} y={P.queue.y - 14 - (1 - u) * 14} width={52} height={28} rx={6} fill={colors.BG} stroke={colors.SECONDARY} strokeWidth={1.3} opacity={u} />
+                <text x={x + 26} y={P.queue.y + 5 - (1 - u) * 14} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily="ui-monospace, monospace" opacity={u}>
                   job
                 </text>
               </g>
@@ -277,14 +282,14 @@ export function Render({ s }: { s: SceneState }) {
           <circle cx={P.queue.x - 170} cy={P.queue.y + 90} r={26} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.5} />
           <line x1={P.queue.x - 170} y1={P.queue.y + 90} x2={P.queue.x - 170} y2={P.queue.y + 72} stroke={colors.WARM} strokeWidth={2} />
           <line x1={P.queue.x - 170} y1={P.queue.y + 90} x2={P.queue.x - 158} y2={P.queue.y + 96} stroke={colors.WARM} strokeWidth={2} />
-          <text x={P.queue.x - 170} y={P.queue.y + 136} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+          <text x={P.queue.x - 170} y={P.queue.y + 136} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
             daily · active users only
           </text>
         </g>
 
         {/* ---- the worker + drain ---- */}
         <g opacity={clamp01(pullU * 3) * dimAll}>
-          <Box x={P.worker.x} y={P.worker.y} w={210} h={64} title="Transaction Extraction Service" sub="pulls from the queue" stroke={colors.ACCENT} />
+          <Box x={P.worker.x} y={P.worker.y} w={230} h={64} title="Transaction Extraction Service" sub="pulls from the queue" stroke={colors.ACCENT} />
         </g>
         <g opacity={clamp01(drainU * 4) * dimAll}>
           <Box x={P.store.x} y={P.store.y} w={150} title="Object Store" sub="raw tx logs" stroke={colors.WARM} />
@@ -308,7 +313,7 @@ export function Render({ s }: { s: SceneState }) {
           {STATS.map((t, i) => (
             <g key={i}>
               <rect x={110} y={430 + i * 46} width={300} height={36} rx={9} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={260} y={453 + i * 46} textAnchor="middle" fill={i === 2 ? colors.WARM : colors.TEXT} fontSize={12.5}>
+              <text x={260} y={453 + i * 46} textAnchor="middle" fill={i === 2 ? colors.WARM : colors.TEXT} fontSize={14}>
                 {t}
               </text>
             </g>
@@ -321,10 +326,10 @@ export function Render({ s }: { s: SceneState }) {
           <text x={640} y={270} textAnchor="middle" fill={colors.TEXT} fontSize={19}>
             a pipeline built for writes
           </text>
-          <text x={640} y={322} textAnchor="middle" fill={colors.ACCENT} fontSize={13.5} fontFamily="ui-monospace, monospace">
+          <text x={640} y={322} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily="ui-monospace, monospace">
             link → queue → extract → object store + transactions
           </text>
-          <text x={640} y={372} textAnchor="middle" fill={colors.MUTED} fontSize={13.5} fontStyle="italic">
+          <text x={640} y={372} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
             the user waits for nothing — the queue absorbs the slow parts
           </text>
         </g>

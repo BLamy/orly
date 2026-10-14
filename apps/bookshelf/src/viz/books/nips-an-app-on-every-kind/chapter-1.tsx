@@ -85,14 +85,16 @@ const KINDS: Array<{ k: number; label: string }> = [
   { k: 31990, label: 'handler info' },
 ];
 const NS_COLS = 6;
-const NS = { x: 150, y: 150, dx: 168, dy: 92 };
+const NS = { x: 150, y: 150, dx: 168, dy: 84 };
 const nsPos = (i: number) => ({
   x: NS.x + (i % NS_COLS) * NS.dx,
   y: NS.y + Math.floor(i / NS_COLS) * NS.dy,
 });
 
 const CAM_EVENT: CameraState = { x: 360, y: 300, k: 1.35 };
-const CAM_NS: CameraState = { x: 640, y: 320, k: 1.0 };
+const CAM_NS: CameraState = { x: 640, y: 360, k: 1.0 };
+// Empty slots on the number line, shown as dashed ghosts in beat 6
+const UNUSED_SLOTS = [22, 23, 24, 25, 26, 27, 28, 29];
 
 export function buildScene() {
   const tl = new Timeline();
@@ -102,6 +104,7 @@ export function buildScene() {
   const readerU = tl.channel('readerU', 0);
   const nsU = tl.channel('nsU', 0);
   const bandsU = tl.channel('bandsU', 0);
+  const emptyU = tl.channel('emptyU', 0);
   const dimU = tl.channel('dimU', 0);
   const closeU = tl.channel('closeU', 0);
 
@@ -163,6 +166,7 @@ export function buildScene() {
     dur: 6.0,
     text: 'Most of this number line is empty. Anyone can settle an unused kind, publish the agreement, and mint a brand-new kind of event — one every other client can already carry, because it is still just an event.',
   });
+  tl.tween(emptyU, 1, { at: 35.2, dur: 1.6, ease: ease.enter });
   tl.hold(40.8, 0.6);
 
   // Beat 7 — close / the question.
@@ -175,7 +179,7 @@ export function buildScene() {
   tl.tween(closeU, 1, { at: 42.8, dur: 1.0, ease: ease.enter });
   tl.hold(47.2, 1.2);
 
-  return { tl, cam, eventU, readF, readerU, nsU, bandsU, dimU, closeU };
+  return { tl, cam, eventU, readF, readerU, nsU, bandsU, emptyU, dimU, closeU };
 }
 
 const scene = buildScene();
@@ -194,10 +198,12 @@ export function Render({ s }: { s: SceneState }) {
   const readerU = s.get(scene.readerU);
   const nsU = s.get(scene.nsU);
   const bandsU = s.get(scene.bandsU);
+  const emptyU = s.get(scene.emptyU);
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // fades to 0.08 so the question panel sits on a quiet ground
+  const mainOp = 1 - 0.92 * dimU;
   const ri = Math.max(0, Math.min(readF, READINGS.length - 1));
 
   return (
@@ -212,11 +218,11 @@ export function Render({ s }: { s: SceneState }) {
               <JsonDoc layout={READING_LAYOUTS[ri]} reveal={1} focus={['kind']} focusU={readerU} />
               {readerU > 0 && (
                 <g opacity={readerU}>
-                  <rect x={150} y={470} width={430} height={64} rx={10} fill={colors.PANEL} stroke={BAND_COLOR[bandOf(READINGS[ri].kind)]} />
-                  <text x={170} y={500} fill={colors.TEXT} fontSize={16} fontWeight={600}>
+                  <rect x={150} y={412} width={430} height={64} rx={10} fill={colors.PANEL} stroke={BAND_COLOR[bandOf(READINGS[ri].kind)]} />
+                  <text x={170} y={442} fill={colors.TEXT} fontSize={16} fontWeight={600}>
                     read as {READINGS[ri].label}
                   </text>
-                  <text x={170} y={522} fill={colors.MUTED} fontSize={13}>
+                  <text x={170} y={464} fill={colors.MUTED} fontSize={14}>
                     {READINGS[ri].reader}
                   </text>
                 </g>
@@ -244,13 +250,27 @@ export function Render({ s }: { s: SceneState }) {
               );
             })}
 
+          {/* unused slots: the empty part of the number line */}
+          {nsU > 0 && emptyU > 0 &&
+            UNUSED_SLOTS.map((i) => {
+              const p = nsPos(i);
+              return (
+                <g key={`unused-${i}`} opacity={emptyU}>
+                  <rect x={p.x} y={p.y} width={140} height={64} rx={9} fill="none" stroke={colors.GRID} strokeWidth={1.2} strokeDasharray="5 4" />
+                  <text x={p.x + 14} y={p.y + 40} fill={colors.MUTED} fontSize={14}>
+                    unused
+                  </text>
+                </g>
+              );
+            })}
+
           {/* range legend */}
           {bandsU > 0 && (
             <g opacity={bandsU}>
               {BANDS.map((b, i) => (
-                <g key={b.band} transform={`translate(${180 + i * 245}, 560)`}>
+                <g key={b.band} transform={`translate(${180 + i * 245}, 572)`}>
                   <rect x={0} y={0} width={16} height={16} rx={4} fill={BAND_COLOR[b.band]} opacity={0.9} />
-                  <text x={24} y={13} fill={colors.MUTED} fontSize={12.5}>
+                  <text x={24} y={13} fill={colors.MUTED} fontSize={13}>
                     {b.label}
                   </text>
                 </g>

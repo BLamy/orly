@@ -58,9 +58,12 @@ const STORE = { x: 540, y: 84, w: 330, h: 172 } as const;
 const COLL_TODOS = { x: 625, y: 178 } as const;
 const COLL_CONFIG = { x: 788, y: 178 } as const;
 
-const CAM_WF: CameraState = { x: 742, y: 420, k: 1.42 };
-const CAM_STORE: CameraState = { x: 700, y: 190, k: 1.3 };
-const CAM_WIDE: CameraState = { x: 640, y: 330, k: 1.02 };
+// Each framing keeps its subject inside the 1280×720 stage and above the
+// caption band (screen y < 630). Anything a framing pushes out of view fades
+// out with its own channel, so no label is ever cropped at the edge.
+const CAM_WF: CameraState = { x: 840, y: 350, k: 1.3 }; // waterfall + backend card
+const CAM_STORE: CameraState = { x: 640, y: 215, k: 1.1 }; // app, store, backend
+const CAM_WIDE: CameraState = { x: 640, y: 330, k: 1.02 }; // the whole machine
 
 // ---------------------------------------------------------------------------
 // Timeline
@@ -84,6 +87,9 @@ export interface Scene {
   writeU: ChannelRef<number>;
   writeSyncU: ChannelRef<number>;
   closeU: ChannelRef<number>;
+  treeVis: ChannelRef<number>;
+  wfVis: ChannelRef<number>;
+  storeVis: ChannelRef<number>;
 }
 
 export function buildScene(): Scene {
@@ -104,6 +110,10 @@ export function buildScene(): Scene {
   const writeU = tl.channel('writeU', 0); // teaser: a write lands instantly
   const writeSyncU = tl.channel('writeSyncU', 0); // …and syncs behind the scenes
   const closeU = tl.channel('closeU', 0); // quiet closing panel
+  // Visibility per region: fades what a camera move pushes out of frame.
+  const treeVis = tl.channel('treeVis', 1); // app + components
+  const wfVis = tl.channel('wfVis', 1); // waterfall panel
+  const storeVis = tl.channel('storeVis', 1); // client store + its reads
 
   // — Beat 1 · the app —
   tl.caption({
@@ -134,6 +144,7 @@ export function buildScene(): Scene {
     text: 'That staircase has a name: a network waterfall. Every step is a full round trip your user sits through before the screen settles.',
   });
   tl.tween(cam, CAM_WF, { at: 15.6, dur: 1.4, ease: ease.move });
+  tl.tween(treeVis, 0, { at: 15.6, dur: 1.0, ease: ease.move });
   tl.tween(totalU, 1, { at: 18.6, dur: 0.5, ease: ease.pop });
   tl.hold(21.9, 0.5);
 
@@ -153,6 +164,7 @@ export function buildScene(): Scene {
     text: 'Meanwhile the backend grows a bespoke endpoint for every screen. That is endpoint sprawl — more routes to maintain, and each one still ends in another waterfall.',
   });
   tl.tween(cam, CAM_WIDE, { at: 29.1, dur: 1.4, ease: ease.move });
+  tl.tween(treeVis, 1, { at: 29.1, dur: 1.2, ease: ease.move });
   tl.tween(sprawlU, 1, { at: 30.2, dur: 1.6, ease: ease.enter });
   tl.hold(35.9, 0.5);
 
@@ -163,6 +175,7 @@ export function buildScene(): Scene {
     text: 'Tan Stack makes a different bet: put a real client store between your components and the network, and let both sides talk to it instead.',
   });
   tl.tween(netDim, 1, { at: 36.6, dur: 1.0, ease: ease.move });
+  tl.tween(wfVis, 0, { at: 36.6, dur: 1.0, ease: ease.move });
   tl.tween(cam, CAM_STORE, { at: 36.8, dur: 1.5, ease: ease.move });
   tl.tween(storeU, 1, { at: 37.6, dur: 1.2, ease: ease.enter });
   tl.hold(42.4, 0.5);
@@ -192,6 +205,9 @@ export function buildScene(): Scene {
     text: 'Look at the timing chart again. The whole staircase collapses into one bulk load up front, and instant local reads ever after.',
   });
   tl.tween(cam, CAM_WF, { at: 57.6, dur: 1.4, ease: ease.move });
+  tl.tween(treeVis, 0, { at: 57.6, dur: 1.0, ease: ease.move });
+  tl.tween(storeVis, 0, { at: 57.6, dur: 1.0, ease: ease.move });
+  tl.tween(wfVis, 1, { at: 57.6, dur: 1.0, ease: ease.move });
   tl.tween(chartK, 1, { at: 58.6, dur: 1.2, ease: ease.move });
   tl.hold(63.9, 0.5);
 
@@ -202,6 +218,9 @@ export function buildScene(): Scene {
     text: 'Writes get the same treatment: they land in the store instantly, and the store syncs them to your backend behind the scenes. That trick has its own chapter.',
   });
   tl.tween(cam, CAM_STORE, { at: 64.6, dur: 1.4, ease: ease.move });
+  tl.tween(storeVis, 1, { at: 64.6, dur: 1.0, ease: ease.move });
+  tl.tween(treeVis, 1, { at: 64.6, dur: 1.0, ease: ease.move });
+  tl.tween(wfVis, 0, { at: 64.6, dur: 1.0, ease: ease.move });
   tl.tween(writeU, 1, { at: 66.0, dur: 0.9, ease: ease.linear });
   tl.tween(writeSyncU, 1, { at: 67.4, dur: 2.6, ease: ease.linear });
   tl.hold(71.4, 0.5);
@@ -234,6 +253,9 @@ export function buildScene(): Scene {
     writeU,
     writeSyncU,
     closeU,
+    treeVis,
+    wfVis,
+    storeVis,
   };
 }
 
@@ -280,6 +302,9 @@ export function Render({ s }: { s: SceneState }) {
   const writeU = s.get(scene.writeU);
   const writeSyncU = s.get(scene.writeSyncU);
   const closeU = s.get(scene.closeU);
+  const treeVis = s.get(scene.treeVis);
+  const wfVis = s.get(scene.wfVis);
+  const storeVis = s.get(scene.storeVis);
 
   const dimAll = 1 - closeU * 0.86;
   const oldNet = (1 - netDim * 0.88) * dimAll; // the fetch-for-yourself era
@@ -291,7 +316,7 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* ---- component tree ---- */}
-        <g opacity={dimAll}>
+        <g opacity={dimAll * treeVis}>
           <g opacity={treeU}>
             <rect x={APP.x - APP.w / 2} y={APP.y - APP.h / 2} width={APP.w} height={APP.h} rx={9} fill={colors.PANEL} stroke={colors.TEXT} strokeWidth={1.3} />
             <text x={APP.x} y={APP.y + 5} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
@@ -329,13 +354,13 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={r} opacity={u}>
                   <rect x={SERVER.x - 79} y={y} width={158} height={24} rx={6} fill={colors.PANEL} stroke={colors.GRID} />
-                  <text x={SERVER.x} y={y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={11} fontFamily="ui-monospace, monospace">
+                  <text x={SERVER.x} y={y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
                     {r}
                   </text>
                 </g>
               );
             })}
-            <text x={SERVER.x} y={SERVER.y + 62 + ROUTES.length * 30 + 16} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11.5} fontStyle="italic" opacity={sprawlU}>
+            <text x={SERVER.x} y={SERVER.y + 62 + ROUTES.length * 30 + 16} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12.5} fontStyle="italic" opacity={sprawlU}>
               one route per screen…
             </text>
           </g>
@@ -374,7 +399,7 @@ export function Render({ s }: { s: SceneState }) {
         </g>
 
         {/* ---- waterfall panel ---- */}
-        <g opacity={wfU * dimAll}>
+        <g opacity={wfU * wfVis * dimAll}>
           <rect x={WF.x} y={WF.y} width={WF.w} height={WF.h} rx={12} fill={colors.PANEL} stroke={colors.GRID} strokeWidth={1.2} />
           <text x={WF.x + 18} y={WF.y + 28} fill={colors.TEXT} fontSize={14}>
             what the user waits through
@@ -382,7 +407,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* time axis */}
           <line x1={T_SCALE(0)} y1={WF.y + WF.h - 32} x2={T_SCALE(900)} y2={WF.y + WF.h - 32} stroke={colors.GRID} strokeWidth={1} />
           {[0, 300, 600, 900].map((ms) => (
-            <text key={ms} x={T_SCALE(ms)} y={WF.y + WF.h - 14} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
+            <text key={ms} x={T_SCALE(ms)} y={WF.y + WF.h - 14} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               {ms} ms
             </text>
           ))}
@@ -393,10 +418,11 @@ export function Render({ s }: { s: SceneState }) {
               const u = req[k];
               const y = WF.y + 46 + k * WF_ROW_H;
               const w = (T_SCALE(b.to) - T_SCALE(b.from)) * clamp01(u * 1.05);
-              const isDup = k > 0 && b.label === WF_BARS[k - 1]?.label ? dupU : k === 2 ? dupU : 0;
+              // both /api/todos rows are the same data, so both turn red together
+              const isDup = b.label === 'GET /api/todos' ? dupU : 0;
               return (
                 <g key={k}>
-                  <text x={WF.x + 18} y={y + 14} fill={colors.MUTED} fontSize={10.5} fontFamily="ui-monospace, monospace">
+                  <text x={WF.x + 18} y={y + 14} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
                     {b.label}
                   </text>
                   <rect
@@ -412,7 +438,8 @@ export function Render({ s }: { s: SceneState }) {
               );
             })}
             {dupU > 0.02 && (
-              <text x={T_SCALE(880)} y={WF.y + 46 + 1.4 * WF_ROW_H} textAnchor="end" fill={colors.NEGATIVE} fontSize={11.5} opacity={dupU}>
+              // sits beside the first /api/todos bar (row 1), clear of its end
+              <text x={T_SCALE(580)} y={WF.y + 46 + WF_ROW_H + 31} fill={colors.NEGATIVE} fontSize={13} opacity={dupU}>
                 same rows, fetched twice
               </text>
             )}
@@ -426,13 +453,13 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* AFTER: one bulk load + instant local reads */}
           <g opacity={afterChart}>
-            <text x={WF.x + 18} y={WF.y + 46 + 14} fill={colors.MUTED} fontSize={10.5} fontFamily="ui-monospace, monospace">
+            <text x={WF.x + 18} y={WF.y + 46 + 14} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
               bulk load
             </text>
             <rect x={T_SCALE(0)} y={WF.y + 66} width={T_SCALE(260) - T_SCALE(0)} height={13} rx={4} fill={colors.ACCENT} opacity={0.95} />
             {[0, 1, 2].map((i) => (
               <g key={i}>
-                <text x={WF.x + 18} y={WF.y + 104 + i * 30} fill={colors.MUTED} fontSize={10.5} fontFamily="ui-monospace, monospace">
+                <text x={WF.x + 18} y={WF.y + 104 + i * 30} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
                   local read
                 </text>
                 <rect x={T_SCALE(262)} y={WF.y + 94 + i * 30} width={2.5} height={13} fill={colors.POSITIVE} />
@@ -446,21 +473,21 @@ export function Render({ s }: { s: SceneState }) {
         </g>
 
         {/* ---- the client store ---- */}
-        <g opacity={dimAll}>
+        <g opacity={dimAll * storeVis}>
           <Zone x={STORE.x} y={STORE.y} w={STORE.w} h={STORE.h} label="the client store" kind="group" u={storeU} color={colors.ACCENT} />
           <g opacity={storeU}>
             <rect x={COLL_TODOS.x - 70} y={COLL_TODOS.y - 32} width={140} height={64} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.4} />
             <text x={COLL_TODOS.x} y={COLL_TODOS.y - 8} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
               todos
             </text>
-            <text x={COLL_TODOS.x} y={COLL_TODOS.y + 12} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily="ui-monospace, monospace">
+            <text x={COLL_TODOS.x} y={COLL_TODOS.y + 12} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
               createCollection
             </text>
             <rect x={COLL_CONFIG.x - 64} y={COLL_CONFIG.y - 32} width={128} height={64} rx={10} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.4} />
             <text x={COLL_CONFIG.x} y={COLL_CONFIG.y - 8} textAnchor="middle" fill={colors.TEXT} fontSize={13}>
               config
             </text>
-            <text x={COLL_CONFIG.x} y={COLL_CONFIG.y + 12} textAnchor="middle" fill={colors.MUTED} fontSize={10} fontFamily="ui-monospace, monospace">
+            <text x={COLL_CONFIG.x} y={COLL_CONFIG.y + 12} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
               createCollection
             </text>
             {/* rows already in the store, once loaded */}
@@ -537,18 +564,18 @@ export function Render({ s }: { s: SceneState }) {
             the reactive client store for your app
           </text>
           {[
-            ['load once', 'normalized collections, no waterfalls'],
-            ['query locally', 'live queries answer in under a millisecond'],
-            ['write instantly', 'the network is off the interaction path'],
-          ].map(([head, sub], i) => (
+            ['load once', 'normalized collections', 'no waterfalls'],
+            ['query locally', 'live queries answer', 'in under a millisecond'],
+            ['write instantly', 'the network is off', 'the interaction path'],
+          ].map(([head, line1, line2], i) => (
             <g key={head}>
               <rect x={340 + i * 210} y={300} width={190} height={92} rx={10} fill={colors.BG} stroke={i === 0 ? colors.ACCENT : i === 1 ? colors.POSITIVE : colors.WARM} strokeWidth={1.4} />
-              <text x={435 + i * 210} y={336} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
+              <text x={435 + i * 210} y={332} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                 {head}
               </text>
-              <text x={435 + i * 210} y={358} textAnchor="middle" fill={colors.MUTED} fontSize={10.5}>
-                <tspan x={435 + i * 210} dy={0}>{sub.split(', ')[0]}</tspan>
-                <tspan x={435 + i * 210} dy={14}>{sub.split(', ')[1] ?? ''}</tspan>
+              <text x={435 + i * 210} y={354} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
+                <tspan x={435 + i * 210} dy={0}>{line1}</tspan>
+                <tspan x={435 + i * 210} dy={15}>{line2}</tspan>
               </text>
             </g>
           ))}

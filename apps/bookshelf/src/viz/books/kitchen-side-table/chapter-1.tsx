@@ -27,7 +27,7 @@ const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 // The table, in elevation — the thing all these parts are for.
 // ---------------------------------------------------------------------------
 
-const T = { x: 880, y: 180, w: 300, h: 330 } as const;
+const T = { x: 720, y: 180, w: 300, h: 330 } as const;
 
 // ---------------------------------------------------------------------------
 // Four boards, edge to edge, about to be a panel.
@@ -42,11 +42,12 @@ const PANEL_Y = 190;
 const panelW = N * BW + (N - 1) * GAP;
 
 // Scatter targets — where each board goes when the panel comes apart.
+// Spread so no two boards overlap, and all bottoms stay above the caption band.
 const SCATTER = [
-  { dx: -46, dy: 118, rot: -9 },
-  { dx: 34, dy: 152, rot: 7 },
-  { dx: -18, dy: 96, rot: 13 },
-  { dx: 56, dy: 128, rot: -6 },
+  { dx: -70, dy: 90, rot: -9 },
+  { dx: 24, dy: 110, rot: 7 },
+  { dx: 138, dy: 80, rot: 13 },
+  { dx: 252, dy: 100, rot: -6 },
 ];
 
 const OAK = '#8a6a43';
@@ -59,10 +60,10 @@ const TRI: [number, number][] = [
   [0.88, 0.74],
 ];
 
-const CAM_TABLE: CameraState = { x: 880, y: 330, k: 1.24 };
-const CAM_PANEL: CameraState = { x: 420, y: 330, k: 1.16 };
-const CAM_SCATTER: CameraState = { x: 440, y: 380, k: 0.95 };
-const CAM_ERROR: CameraState = { x: 380, y: 320, k: 1.4 };
+const CAM_TABLE: CameraState = { x: 870, y: 330, k: 1.24 };
+const CAM_PANEL: CameraState = { x: 600, y: 330, k: 1.1 };
+const CAM_SCATTER: CameraState = { x: 500, y: 380, k: 0.95 };
+const CAM_ERROR: CameraState = { x: 500, y: 320, k: 1.2 };
 const CAM_WIDE: CameraState = { x: 620, y: 340, k: 0.9 };
 
 export interface Scene {
@@ -229,9 +230,10 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...cam}>
         <g opacity={dimAll}>
           {/* ---- the table this is all for ---- */}
-          <g opacity={tableU * (1 - apart * 0.93)}>
+          {/* steps back while the boards are the subject, and comes forward again for the every-group beat */}
+          <g opacity={tableU * (1 - apart * 0.93) * (1 - 0.55 * partsU * (1 - everyU))}>
             <rect x={T.x} y={T.y} width={T.w} height={16} rx={3} fill={OAK_LIT} stroke="#2f2415" />
-            <text x={T.x + T.w / 2} y={T.y - 14} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+            <text x={T.x + T.w / 2} y={T.y - 14} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
               top &amp; lid
             </text>
             {/* carcass */}
@@ -242,7 +244,7 @@ export function Render({ s }: { s: SceneState }) {
             {[0, 1].map((i) => (
               <rect key={i} x={T.x + 34 + i * 118} y={T.y + 54} width={98} height={94} rx={4} fill="none" stroke={colors.SECONDARY} strokeWidth={2} strokeDasharray="6 5" />
             ))}
-            <text x={T.x + T.w / 2} y={T.y + 44} textAnchor="middle" fill={colors.SECONDARY} fontSize={12.5}>
+            <text x={T.x + T.w / 2} y={T.y + 44} textAnchor="middle" fill={colors.SECONDARY} fontSize={14}>
               two storage baskets
             </text>
             {/* bottles below */}
@@ -252,7 +254,7 @@ export function Render({ s }: { s: SceneState }) {
                 <rect x={T.x + 53 + i * 70} y={T.y + 192} width={8} height={20} fill={colors.POSITIVE} opacity={0.55} />
               </g>
             ))}
-            <text x={T.x + T.w / 2} y={T.y + 296} textAnchor="middle" fill={colors.POSITIVE} fontSize={12.5}>
+            <text x={T.x + T.w / 2} y={T.y + 296} textAnchor="middle" fill={colors.POSITIVE} fontSize={14}>
               bottles below
             </text>
             {/* legs */}
@@ -317,7 +319,7 @@ export function Render({ s }: { s: SceneState }) {
             </text>
           )}
           {apart > 0.4 && catchU < 0.1 && (
-            <text x={PANEL_X + panelW / 2} y={PANEL_Y + BH + 190} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={clamp01(apart * 2 - 0.8)}>
+            <text x={510} y={PANEL_Y + 46} textAnchor="middle" fill={colors.MUTED} fontSize={14} opacity={clamp01(apart * 2 - 0.8)}>
               jointed, planed, stood against the wall — and shuffled
             </text>
           )}
@@ -333,7 +335,7 @@ export function Render({ s }: { s: SceneState }) {
                 return (
                   <g key={label} opacity={u}>
                     <polygon points={`${x + 42},${y - 44} ${x + 8},${y} ${x + 76},${y}`} fill="none" stroke={colors.WARM} strokeWidth={3} strokeLinejoin="round" />
-                    <text x={x + 42} y={y + 22} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+                    <text x={x + 42} y={y + 22} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                       {label}
                     </text>
                   </g>

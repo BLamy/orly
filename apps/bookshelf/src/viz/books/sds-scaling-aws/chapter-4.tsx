@@ -47,11 +47,11 @@ const PLOT = { x0: 120, y0: 470, w: 640, h: 220 } as const;
 const MIN_INST = 2;
 const MAX_INST = 8;
 const FLEET_X = 880;
-const instY = (i: number): number => 150 + i * 52;
+const instY = (i: number): number => 152 + i * 50;
 
-const CAM_PLOT: CameraState = { x: 450, y: 380, k: 1.2 };
-const CAM_FLEET: CameraState = { x: 900, y: 330, k: 1.25 };
-const CAM_QUEUE: CameraState = { x: 640, y: 420, k: 1.15 };
+// one framing for the whole chapter: the day plot, the fleet and the queue all
+// stay on stage, and the caption band stays clear
+const CAM_BOTH: CameraState = { x: 620, y: 350, k: 1.05 };
 
 export interface Scene {
   tl: Timeline;
@@ -84,7 +84,7 @@ export function buildScene(): Scene {
     dur: 6.5,
     text: 'The final profile is not about a component. It is about time. Traffic spikes through the business day and collapses at night, and we are paying for the peak around the clock.',
   });
-  tl.tween(cam, CAM_PLOT, { at: 0.7, dur: 1.4, ease: ease.move });
+  tl.tween(cam, CAM_BOTH, { at: 0.7, dur: 1.4, ease: ease.move });
   tl.tween(axesU, 1, { at: 0.9, dur: 1.6, ease: ease.draw });
   tl.tween(dayT, 0.3, { at: 2.6, dur: 3.4, ease: ease.linear });
   tl.hold(7.0, 0.5);
@@ -104,7 +104,6 @@ export function buildScene(): Scene {
     dur: 7,
     text: 'Watch the fleet breathe. As the morning load climbs, monitoring triggers fire on processor load and latency, and new instances wink into existence to meet the wave.',
   });
-  tl.tween(cam, CAM_FLEET, { at: 14.7, dur: 1.4, ease: ease.move });
   tl.tween(dayT, 0.56, { at: 15.2, dur: 5.4, ease: ease.linear });
   tl.tween(trigU, 1, { at: 16.0, dur: 0.9, ease: ease.pop });
   tl.hold(21.5, 0.5);
@@ -124,7 +123,6 @@ export function buildScene(): Scene {
     dur: 7.5,
     text: 'Growth also changes what runs where. Anything that need not happen during the request moves behind a queue. Upload a photo, and the thumbnails are made later, by workers, while the response has already gone home.',
   });
-  tl.tween(cam, CAM_QUEUE, { at: 29.2, dur: 1.4, ease: ease.move });
   tl.tween(qU, 1, { at: 29.8, dur: 1.2, ease: ease.enter });
   tl.tween(photoU, 1, { at: 31.2, dur: 3.8, ease: ease.linear });
   tl.hold(37.0, 0.5);
@@ -168,7 +166,7 @@ export function Render({ s }: { s: SceneState }) {
   const tailU = s.get(scene.tailU);
   const closeU = s.get(scene.closeU);
 
-  const dimAll = 1 - closeU * 0.88;
+  const dimAll = 1 - closeU * 0.95;
   const load = dayAt(dayT);
   const want = Math.round(MIN_INST + (MAX_INST - MIN_INST) * clamp01((load - 0.14) / 0.86));
 
@@ -177,11 +175,11 @@ export function Render({ s }: { s: SceneState }) {
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
         {/* ---- the day curve ---- */}
-        <g opacity={axesU * dimAll}>
+        <g opacity={axesU * dimAll * (1 - tailU * 0.85)}>
           <line x1={PLOT.x0} y1={PLOT.y0} x2={PLOT.x0 + PLOT.w} y2={PLOT.y0} stroke={colors.GRID} strokeWidth={1.4} />
           <line x1={PLOT.x0} y1={PLOT.y0} x2={PLOT.x0} y2={PLOT.y0 - PLOT.h} stroke={colors.GRID} strokeWidth={1.4} />
           {['midnight', 'noon', 'midnight'].map((t, i) => (
-            <text key={i} x={PLOT.x0 + (i / 2) * PLOT.w} y={PLOT.y0 + 24} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+            <text key={i} x={PLOT.x0 + (i / 2) * PLOT.w} y={PLOT.y0 + 24} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
               {t}
             </text>
           ))}
@@ -196,7 +194,7 @@ export function Render({ s }: { s: SceneState }) {
           />
           {/* now marker */}
           <circle cx={PLOT.x0 + dayT * PLOT.w} cy={PLOT.y0 - load * PLOT.h} r={6} fill={colors.WARM} />
-          <text x={PLOT.x0 - 8} y={PLOT.y0 - PLOT.h + 4} textAnchor="end" fill={colors.MUTED} fontSize={10.5}>
+          <text x={PLOT.x0 - 8} y={PLOT.y0 - PLOT.h + 4} textAnchor="end" fill={colors.MUTED} fontSize={12}>
             traffic
           </text>
         </g>
@@ -215,15 +213,18 @@ export function Render({ s }: { s: SceneState }) {
             return (
               <g key={i} opacity={on ? 1 : 0.16}>
                 <rect x={FLEET_X} y={instY(i)} width={230} height={40} rx={9} fill={colors.PANEL} stroke={on ? (winking ? colors.WARM : colors.POSITIVE) : colors.GRID} strokeWidth={on ? 1.5 : 1} />
-                <text x={FLEET_X + 14} y={instY(i) + 25} fill={on ? colors.TEXT : colors.MUTED} fontSize={11} fontFamily="ui-monospace, monospace">
+                <text x={FLEET_X + 14} y={instY(i) + 25} fill={on ? colors.TEXT : colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
                   web-{i + 1} · {i % 2 === 0 ? 'az-1' : 'az-2'} {on ? '' : '· off'}
                 </text>
               </g>
             );
           })}
           <g opacity={trigU}>
-            <text x={FLEET_X} y={instY(MAX_INST) + 26} fill={colors.WARM} fontSize={10.5} fontFamily="ui-monospace, monospace">
-              CloudWatch: CPU · latency · network · time of day
+            <text x={FLEET_X} y={instY(MAX_INST - 1) + 62} fill={colors.WARM} fontSize={12} fontFamily="ui-monospace, monospace">
+              CloudWatch triggers
+            </text>
+            <text x={FLEET_X} y={instY(MAX_INST - 1) + 80} fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
+              CPU · latency · network · time of day
             </text>
           </g>
         </g>
@@ -238,14 +239,14 @@ export function Render({ s }: { s: SceneState }) {
           <text x={605} y={175} textAnchor="middle" fill={colors.SECONDARY} fontSize={12}>
             Queue
           </text>
-          <text x={605} y={191} textAnchor="middle" fill={colors.MUTED} fontSize={9} fontFamily="ui-monospace, monospace">
+          <text x={605} y={191} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
             SQS
           </text>
           <rect x={730} y={150} width={140} height={50} rx={10} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.3} />
           <text x={800} y={175} textAnchor="middle" fill={colors.ACCENT} fontSize={12}>
             Workers
           </text>
-          <text x={800} y={191} textAnchor="middle" fill={colors.MUTED} fontSize={9} fontFamily="ui-monospace, monospace">
+          <text x={800} y={191} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
             create thumbnails
           </text>
           <line x1={480} y1={175} x2={540} y2={175} stroke={colors.GRID} strokeWidth={1.3} />
@@ -253,7 +254,7 @@ export function Render({ s }: { s: SceneState }) {
           {photoU > 0 && photoU < 1 && (
             <Packet from={{ x: 480, y: 175 }} to={{ x: 730, y: 175 }} u={photoU} r={6} color={colors.SECONDARY} />
           )}
-          <text x={405} y={226} textAnchor="middle" fill={colors.POSITIVE} fontSize={10.5} fontStyle="italic" opacity={photoU}>
+          <text x={405} y={226} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontStyle="italic" opacity={photoU}>
             response already returned
           </text>
         </g>

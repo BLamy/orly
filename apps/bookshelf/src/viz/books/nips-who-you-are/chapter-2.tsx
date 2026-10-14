@@ -68,7 +68,7 @@ const PK_BITS = hexToBits(PUBKEY);
 
 // TLV boxes for the nprofile beat (types per NIP-19)
 const TLV = [
-  { t: 0, label: 'special', value: shortHex(PUBKEY, 8, 4), color: colors.WARM, note: 'the 32-byte pubkey' },
+  { t: 0, label: 'key', value: shortHex(PUBKEY, 8, 4), color: colors.WARM, note: 'the 32-byte pubkey' },
   { t: 1, label: 'relay', value: 'wss://r.x.com', color: colors.ACCENT, note: 'a relay hint' },
   { t: 1, label: 'relay', value: 'wss://djbas.sadkb.com', color: colors.ACCENT, note: 'another hint' },
 ];
@@ -216,9 +216,13 @@ function Frame({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // The closing card takes over the stage: the diagram behind it fades out fully.
+  const mainOp = (1 - 0.85 * dimU) * (1 - closeU);
   const tlvPhase = tlvU > 0;
   const bitFade = tlvPhase ? 0.12 : 1;
+  // The hex row hands its place to the nprofile boxes (it would sit off-camera there).
+  const hexShown = tlvU < 0.25;
+  const hexOp = hexU * (1 - clamp01(tlvU * 4));
 
   return (
     <>
@@ -227,15 +231,15 @@ function Frame({ s }: { s: SceneState }) {
       <g opacity={mainOp}>
         <Camera {...cam}>
           {/* hex row */}
-          {hexU > 0 && (
-            <g opacity={hexU * (tlvPhase ? 0.35 : 1)}>
-              <text x={120} y={HEX_Y - 22} fill={colors.MUTED} fontSize={12} fontFamily="monospace">
+          {hexU > 0 && hexShown && (
+            <g opacity={hexOp}>
+              <text x={120} y={HEX_Y - 26} fill={colors.MUTED} fontSize={14} fontFamily="monospace">
                 hex — 64 characters
               </text>
-              <text x={120} y={HEX_Y} fill={colors.WARM} fontSize={15.5} fontFamily="monospace">
+              <text x={120} y={HEX_Y} fill={colors.WARM} fontSize={20} fontFamily="monospace">
                 {PUBKEY.slice(0, 32)}
               </text>
-              <text x={120} y={HEX_Y + 22} fill={colors.WARM} fontSize={15.5} fontFamily="monospace">
+              <text x={120} y={HEX_Y + 30} fill={colors.WARM} fontSize={20} fontFamily="monospace">
                 {PUBKEY.slice(32)}
               </text>
             </g>
@@ -279,7 +283,7 @@ function Frame({ s }: { s: SceneState }) {
               {WORDS.slice(0, N_SHOWN).map((w, i) => {
                 const u = clamp01(lettersU * N_SHOWN * 1.1 - i);
                 if (u <= 0) return null;
-                const x = 130 + i * 62;
+                const x = 130 + i * 56;
                 return (
                   <g key={i} opacity={u}>
                     <rect x={x} y={WORD_Y - 20} width={50} height={28} rx={6} fill={colors.PANEL} stroke={colors.GRID} />
@@ -292,7 +296,7 @@ function Frame({ s }: { s: SceneState }) {
                   </g>
                 );
               })}
-              {lettersU >= 1 && <text x={130 + N_SHOWN * 62} y={WORD_Y + 4} fill={colors.MUTED} fontSize={14}>…</text>}
+              {lettersU >= 1 && <text x={130 + N_SHOWN * 56} y={WORD_Y + 4} fill={colors.MUTED} fontSize={14}>…</text>}
             </g>
           )}
 
@@ -311,7 +315,7 @@ function Frame({ s }: { s: SceneState }) {
                   <text x={120 + (5 + NPUB_DATA.length - 6) * 9.05} y={NPUB_Y + 4} fill={colors.WARM} fontSize={15} fontFamily="monospace" fontWeight={600}>
                     {NPUB.slice(-6)}
                   </text>
-                  <text x={120 + (5 + NPUB_DATA.length - 6) * 9.05} y={NPUB_Y + 26} fill={colors.WARM} fontSize={11}>
+                  <text x={120 + (5 + NPUB_DATA.length - 6) * 9.05} y={NPUB_Y + 26} fill={colors.WARM} fontSize={12}>
                     checksum
                   </text>
                 </g>
@@ -385,7 +389,7 @@ function Frame({ s }: { s: SceneState }) {
 
       {closeU > 0 && (
         <g opacity={closeU}>
-          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} opacity={0.96} stroke={colors.GRID} />
+          <rect x={220} y={230} width={840} height={190} rx={14} fill={colors.PANEL} stroke={colors.GRID} />
           <text x={640} y={300} textAnchor="middle" fill={colors.TEXT} fontSize={24} fontWeight={600}>
             Encodings are coats, not identities
           </text>

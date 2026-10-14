@@ -29,25 +29,30 @@ const clamp01 = (u: number): number => (u < 0 ? 0 : u > 1 ? 1 : u);
 // Layout — the circuit.
 // ---------------------------------------------------------------------------
 
-const BROWSER = { x: 74, y: 128, w: 300, h: 260 } as const;
-const OVERLAY = { x: 104, y: 196, w: 240, h: 44 } as const;
-const BASEBOX = { x: 104, y: 270, w: 240, h: 84 } as const;
+// The circuit is packed so the whole thing fits the 1280×720 stage at k=1.2,
+// with every label clear of the caption band (y > 630 on screen).
+const BROWSER = { x: 110, y: 128, w: 300, h: 260 } as const;
+const OVERLAY = { x: 140, y: 196, w: 240, h: 44 } as const;
+const BASEBOX = { x: 140, y: 270, w: 240, h: 84 } as const;
 
-const API = { x: 648, y: 112 } as const;
-const PG = { x: 1084, y: 128 } as const;
-const ELECTRIC = { x: 1074, y: 400 } as const;
+const API = { x: 620, y: 112 } as const;
+const PG = { x: 1030, y: 128 } as const;
+const ELECTRIC = { x: 1030, y: 400 } as const;
 
 // the shape stream runs along the bottom of the diagram back to the browser
+const STREAM_X = 620;
 const STREAM_Y = 470;
+// where the stream enters the browser: its right wall, clear of the base caption
+const STREAM_IN = { x: BROWSER.x + BROWSER.w - 2, y: BROWSER.y + BROWSER.h - 30 } as const;
 
-const B2 = { x: 224, y: 500 } as const; // the second browser (payoff beat)
+const B2 = { x: 260, y: 500 } as const; // the second browser (payoff beat)
 
 const TXID = 4207; // an xid the todo example's generateTxId would return
 
-const CAM_BROWSER: CameraState = { x: 330, y: 280, k: 1.35 };
-const CAM_SERVER: CameraState = { x: 840, y: 180, k: 1.35 };
-const CAM_STREAM: CameraState = { x: 760, y: 420, k: 1.25 };
-const CAM_WIDE: CameraState = { x: 640, y: 330, k: 1.04 };
+const CAM_BROWSER: CameraState = { x: 588, y: 350, k: 1.2 };
+const CAM_SERVER: CameraState = { x: 625, y: 345, k: 1.2 };
+const CAM_STREAM: CameraState = { x: 600, y: 370, k: 1.2 };
+const CAM_WIDE: CameraState = { x: 607, y: 355, k: 1.2 };
 
 // The recap journey strip (book close).
 const RECAP = [
@@ -248,7 +253,7 @@ function TicketTag({ x, y, u, glow, label }: { x: number; y: number; u: number; 
     <g opacity={u}>
       {glow > 0.02 && <rect x={x - 44} y={y - 15} width={88} height={30} rx={8} fill={colors.WARM} opacity={0.3 * glow} />}
       <rect x={x - 39} y={y - 11} width={78} height={22} rx={6} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.4} />
-      <text x={x} y={y + 4} textAnchor="middle" fill={colors.WARM} fontSize={10.5} fontFamily="ui-monospace, monospace">
+      <text x={x} y={y + 4} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="ui-monospace, monospace">
         {label}
       </text>
     </g>
@@ -286,12 +291,12 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={topoU}>
             {/* optimistic strip */}
             <rect x={OVERLAY.x} y={OVERLAY.y} width={OVERLAY.w} height={OVERLAY.h} rx={9} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.2} opacity={0.8} />
-            <text x={OVERLAY.x + 4} y={OVERLAY.y - 8} fill={colors.WARM} fontSize={10.5} fontFamily="ui-monospace, monospace">
+            <text x={OVERLAY.x + 4} y={OVERLAY.y - 8} fill={colors.WARM} fontSize={12} fontFamily="ui-monospace, monospace">
               optimistic layer
             </text>
             {/* synced base */}
             <rect x={BASEBOX.x} y={BASEBOX.y} width={BASEBOX.w} height={BASEBOX.h} rx={9} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.2} />
-            <text x={BASEBOX.x + 4} y={BASEBOX.y + BASEBOX.h + 16} fill={colors.ACCENT} fontSize={10.5} fontFamily="ui-monospace, monospace">
+            <text x={BASEBOX.x + 4} y={BASEBOX.y + BASEBOX.h + 16} fill={colors.ACCENT} fontSize={12} fontFamily="ui-monospace, monospace">
               synced · electricCollectionOptions
             </text>
             {/* synced rows */}
@@ -302,7 +307,7 @@ export function Render({ s }: { s: SceneState }) {
             {dropU > 0.02 && (
               <g opacity={dropU}>
                 <rect x={BASEBOX.x + 14} y={BASEBOX.y + 48} width={62} height={24} rx={6} fill={colors.BG} stroke={colors.POSITIVE} strokeWidth={1.4} />
-                <text x={BASEBOX.x + 45} y={BASEBOX.y + 64} textAnchor="middle" fill={colors.POSITIVE} fontSize={9.5} fontFamily="ui-monospace, monospace">
+                <text x={BASEBOX.x + 45} y={BASEBOX.y + 64} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} fontFamily="ui-monospace, monospace">
                   synced
                 </text>
               </g>
@@ -311,7 +316,7 @@ export function Render({ s }: { s: SceneState }) {
             {wInsU > 0.02 && dropU < 1 && (
               <g opacity={wInsU * (1 - dropU)}>
                 <rect x={OVERLAY.x + 14} y={OVERLAY.y + 8} width={82} height={28} rx={7} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.5} />
-                <text x={OVERLAY.x + 55} y={OVERLAY.y + 26} textAnchor="middle" fill={colors.WARM} fontSize={10} fontFamily="ui-monospace, monospace">
+                <text x={OVERLAY.x + 55} y={OVERLAY.y + 26} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="ui-monospace, monospace">
                   new todo
                 </text>
               </g>
@@ -319,7 +324,8 @@ export function Render({ s }: { s: SceneState }) {
             {/* the held claim ticket */}
             <TicketTag x={OVERLAY.x + 178} y={OVERLAY.y + 22} u={tickU} glow={matchU} label={`txid ${TXID}`} />
             {tickU > 0.5 && matchU < 0.02 && dropU < 0.02 && (
-              <text x={OVERLAY.x + 178} y={OVERLAY.y + 48} textAnchor="middle" fill={colors.MUTED} fontSize={9} fontFamily="ui-monospace, monospace">
+              // sits in the gap between the overlay and the base box, clear of both edges
+              <text x={OVERLAY.x + 178} y={OVERLAY.y + 60} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily="ui-monospace, monospace">
                 awaitTxId — waiting…
               </text>
             )}
@@ -329,8 +335,8 @@ export function Render({ s }: { s: SceneState }) {
           <ServiceNode x={API.x} y={API.y} kind="server" label="your backend" sublabel="handles writes" w={150} u={topoU} glow={txCapU * 0.8} />
           {txCapU > 0.02 && (
             <g opacity={txCapU}>
-              <rect x={API.x - 118} y={API.y + 44} width={236} height={26} rx={7} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.2} />
-              <text x={API.x} y={API.y + 61} textAnchor="middle" fill={colors.WARM} fontSize={10} fontFamily="ui-monospace, monospace">
+              <rect x={API.x - 130} y={API.y + 44} width={260} height={26} rx={7} fill={colors.BG} stroke={colors.WARM} strokeWidth={1.2} />
+              <text x={API.x} y={API.y + 61} textAnchor="middle" fill={colors.WARM} fontSize={12} fontFamily="ui-monospace, monospace">
                 SELECT pg_current_xact_id()::xid
               </text>
             </g>
@@ -338,22 +344,22 @@ export function Render({ s }: { s: SceneState }) {
 
           {/* ---- postgres ---- */}
           <ServiceNode x={PG.x} y={PG.y} kind="db" label="Postgres" sublabel="the truth" w={140} u={topoU} />
-          <Connection from={{ x: API.x + 75, y: API.y }} to={{ x: PG.x - 70, y: PG.y }} u={topoU} color={colors.GRID} width={1.4} arrow label="writes" labelSize={10} />
+          <Connection from={{ x: API.x + 75, y: API.y }} to={{ x: PG.x - 70, y: PG.y }} u={topoU} color={colors.GRID} width={1.4} arrow label="writes" labelSize={12} />
 
           {/* ---- electric ---- */}
           <ServiceNode x={ELECTRIC.x} y={ELECTRIC.y} kind="external" label="Electric" sublabel="sync engine" w={150} u={elecU} />
-          <Connection from={{ x: PG.x, y: PG.y + 32 }} to={{ x: ELECTRIC.x, y: ELECTRIC.y - 32 }} u={elecU} color={colors.SECONDARY} width={1.4} arrow label="replication log" labelSize={10} />
+          <Connection from={{ x: PG.x, y: PG.y + 32 }} to={{ x: ELECTRIC.x, y: ELECTRIC.y - 32 }} u={elecU} color={colors.SECONDARY} width={1.4} arrow label="replication log" labelSize={12} />
           {/* the shape stream back to the browser(s) */}
           <Connection
             from={{ x: ELECTRIC.x - 75, y: ELECTRIC.y + 10 }}
-            to={{ x: BROWSER.x + BROWSER.w - 40, y: BROWSER.y + BROWSER.h }}
-            via={[{ x: 640, y: STREAM_Y }]}
+            to={STREAM_IN}
+            via={[{ x: STREAM_X, y: STREAM_Y }]}
             u={elecU}
             color={colors.POSITIVE}
             width={1.5}
             arrow
             label="shape stream"
-            labelSize={10}
+            labelSize={12}
           />
 
           {/* initial shape sync */}
@@ -361,8 +367,8 @@ export function Render({ s }: { s: SceneState }) {
             <RequestFlow
               path={[
                 { x: ELECTRIC.x - 75, y: ELECTRIC.y + 10 },
-                { x: 640, y: STREAM_Y },
-                { x: BROWSER.x + BROWSER.w - 40, y: BROWSER.y + BROWSER.h },
+                { x: STREAM_X, y: STREAM_Y },
+                STREAM_IN,
               ]}
               u={initU}
               color={colors.POSITIVE}
@@ -395,8 +401,8 @@ export function Render({ s }: { s: SceneState }) {
             <RequestFlow
               path={[
                 { x: ELECTRIC.x - 75, y: ELECTRIC.y + 10 },
-                { x: 640, y: STREAM_Y },
-                { x: BROWSER.x + BROWSER.w - 40, y: BROWSER.y + BROWSER.h },
+                { x: STREAM_X, y: STREAM_Y },
+                STREAM_IN,
               ]}
               u={streamU}
               color={colors.POSITIVE}
@@ -409,13 +415,13 @@ export function Render({ s }: { s: SceneState }) {
           <g opacity={b2U}>
             <ServiceNode x={B2.x} y={B2.y} kind="browser" label="another browser" sublabel="same shape" w={170} u={b2U} glow={b2StreamU >= 1 ? 0.7 : 0} />
             {b2StreamU >= 1 && (
-              <text x={B2.x} y={B2.y + 52} textAnchor="middle" fill={colors.POSITIVE} fontSize={10.5} opacity={b2U}>
+              <text x={B2.x} y={B2.y + 52} textAnchor="middle" fill={colors.POSITIVE} fontSize={12} opacity={b2U}>
                 live queries update here too
               </text>
             )}
           </g>
           {b2StreamU > 0 && b2StreamU < 1 && (
-            <RequestFlow path={[{ x: 640, y: STREAM_Y }, { x: B2.x + 90, y: B2.y }]} u={b2StreamU} color={colors.POSITIVE} r={6} />
+            <RequestFlow path={[{ x: STREAM_X, y: STREAM_Y }, { x: B2.x + 90, y: B2.y }]} u={b2StreamU} color={colors.POSITIVE} r={6} />
           )}
         </g>
 
@@ -434,7 +440,7 @@ export function Render({ s }: { s: SceneState }) {
                 <text x={x + 82} y={326} textAnchor="middle" fill={colors.TEXT} fontSize={16}>
                   {r.label}
                 </text>
-                <text x={x + 82} y={350} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+                <text x={x + 82} y={350} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                   {r.sub}
                 </text>
                 {i < 3 && u >= 1 && (
@@ -445,7 +451,7 @@ export function Render({ s }: { s: SceneState }) {
               </g>
             );
           })}
-          <text x={640} y={438} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily="ui-monospace, monospace">
+          <text x={640} y={438} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily="ui-monospace, monospace">
             @tanstack/db — the interface never waits; the truth always arrives
           </text>
         </g>

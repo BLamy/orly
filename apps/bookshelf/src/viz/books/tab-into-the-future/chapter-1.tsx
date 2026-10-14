@@ -4,7 +4,7 @@
 import { interpolateObject } from 'd3';
 import { Camera } from '../../core';
 import type { SceneState } from '../../core';
-import { ProfilePage, FocusRing, SuggestHalo, Keycap, controlRect } from '../next-useful-action/shared/profile-page';
+import { ProfilePage, FocusRing, Keycap, controlRect } from '../next-useful-action/shared/profile-page';
 import { C, chapter, Header, Label, Panel, Chip, on, span, lerp } from '../recordings-become-practice/shared/kit';
 const CAPTIONS = [
   "Now bring the machinery back to the person at the keyboard. They open a familiar page, and the local model recognizes a pattern it has seen before.",
@@ -23,8 +23,10 @@ export function Render({s}:{s:SceneState}){
   const p=s.get(scene.phase),suggest=span(p,1,4),accepted=on(p,2),ordinary=on(p,4),keys=on(p,5),enabled=on(p,6);
   const focus=interpolateObject(interpolateObject(initial,target)(accepted),email)(ordinary);
   return <><Header title='Anticipation without taking over' tag='PROPOSED OPT-IN FOCUS ASSISTANCE · FICTIONAL PAGE'/><Camera {...s.get(scene.cam)}>
-    <ProfilePage place={page} obsLabel='live context' />
-    <SuggestHalo rect={target} u={suggest} phase={p} label='suggested target'/>
+    <ProfilePage place={page} />
+    <g><rect x={435} y={131} width={140} height={22} rx={11} fill='#082f49' stroke={C.observation}/><circle cx={447} cy={142} r={3.5} fill={C.observation}/><Label x={457} y={146} size={14} color={C.observation}>live context</Label></g>
+    <g opacity={suggest}><rect x={target.x-4} y={target.y-4} width={target.w+8} height={target.h+8} rx={12} fill={C.model} opacity={.08}/><rect x={target.x-4} y={target.y-4} width={target.w+8} height={target.h+8} rx={12} fill='none' stroke={C.model} strokeWidth={2.4} strokeDasharray='9 7' strokeDashoffset={-p*32}/></g>
+    <g opacity={suggest}><rect x={target.x+target.w+26} y={target.y+target.h/2-11} width={140} height={22} rx={11} fill='#1a1333' stroke={C.model}/><Label x={target.x+target.w+38} y={target.y+target.h/2+4} size={14} color={C.model}>suggested target</Label></g>
     <FocusRing rect={focus} u={1}/>
     <Keycap x={598} y={290} label='Tab' u={span(p,2,4)} press={accepted*(1-on(p,3))}/>
     <Panel x={743} y={127} w={467} h={271} title='One suggestion · the person chooses' color={C.model}>

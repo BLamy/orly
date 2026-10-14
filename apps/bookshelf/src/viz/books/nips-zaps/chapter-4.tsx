@@ -56,7 +56,7 @@ const LAYOUT = layoutJson(RECEIPT, {
   abbrev: (_p, raw) => (raw.length > 24 ? shortHex(raw, 6, 2) : raw),
 });
 
-const WALLET = { x: 250, y: 560 };
+const WALLET = { x: 250, y: 470 };
 const RELAY_A = { x: 1010, y: 140 };
 const RELAY_B = { x: 1010, y: 300 };
 const HALF_W = 84;
@@ -68,7 +68,6 @@ const CHECKS = [
 ];
 
 const CAM_JSON: CameraState = { x: 400, y: 290, k: 1.2 };
-const CAM_CHECKS: CameraState = { x: 800, y: 420, k: 1.12 };
 
 interface Scene {
   tl: Timeline;
@@ -147,7 +146,6 @@ export function buildScene(): Scene {
     dur: 6.6,
     text: 'A receipt is a claim, so clients check three things: the signer is the endpoint\'s advertised key, the invoice amount matches the requested amount, and the embedded request still hashes to the invoice\'s description hash.',
   });
-  tl.tween(cam, CAM_CHECKS, { at: 27.5, dur: 1.4, ease: ease.move });
   tl.tween(checkU, 1, { at: 28.2, dur: 3.2, ease: ease.linear });
   tl.hold(33.9, 0.7);
 
@@ -189,7 +187,9 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const mainOp = 1 - 0.85 * dimU;
+  // Old content dims to 0.15, then clears completely under the closing panel
+  // so no faded labels sit beneath its text.
+  const mainOp = (1 - 0.85 * dimU) * (1 - closeU);
 
   let focus: string[] | undefined;
   let focusU = 0;
@@ -220,8 +220,8 @@ export function Render({ s }: { s: SceneState }) {
           )}
           {fanU > 0 && (
             <>
-              <Connection from={{ x: 560, y: 200 }} to={{ x: RELAY_A.x - HALF_W, y: RELAY_A.y }} u={Math.min(1, fanU * 1.6)} flow={fanU * 2} label="EVENT 9735" color={colors.POSITIVE} />
-              <Connection from={{ x: 560, y: 260 }} to={{ x: RELAY_B.x - HALF_W, y: RELAY_B.y }} u={Math.min(1, fanU * 1.6 - 0.3)} flow={fanU * 2} label="EVENT 9735" color={colors.POSITIVE} />
+              <Connection from={{ x: 412, y: 200 }} to={{ x: RELAY_A.x - HALF_W, y: RELAY_A.y }} u={Math.min(1, fanU * 1.6)} flow={fanU * 2} label="EVENT 9735" color={colors.POSITIVE} />
+              <Connection from={{ x: 412, y: 260 }} to={{ x: RELAY_B.x - HALF_W, y: RELAY_B.y }} u={Math.min(1, fanU * 1.6 - 0.3)} flow={fanU * 2} label="EVENT 9735" color={colors.POSITIVE} />
             </>
           )}
 
@@ -250,12 +250,12 @@ export function Render({ s }: { s: SceneState }) {
           {/* the zapped note gains its tally */}
           {tallyU > 0 && (
             <g opacity={tallyU}>
-              <rect x={520} y={96} width={300} height={64} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={540} y={122} fill={colors.TEXT} fontSize={13}>the zapped note</text>
-              <text x={540} y={144} fill={colors.MUTED} fontSize={11.5} fontFamily="ui-monospace, Menlo, monospace">
+              <rect x={520} y={80} width={300} height={64} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
+              <text x={540} y={106} fill={colors.TEXT} fontSize={13}>the zapped note</text>
+              <text x={540} y={128} fill={colors.MUTED} fontSize={11.5} fontFamily="ui-monospace, Menlo, monospace">
                 {shortHex('9ae37aa68f48645127299e9453eb5d908a0cbb6058ff340d528ed4d37c8994fb', 8, 4)}
               </text>
-              <text x={760} y={134} fill={colors.WARM} fontSize={16} fontWeight={700}>⚡ 21</text>
+              <text x={760} y={118} fill={colors.WARM} fontSize={16} fontWeight={700}>⚡ 21</text>
             </g>
           )}
         </Camera>

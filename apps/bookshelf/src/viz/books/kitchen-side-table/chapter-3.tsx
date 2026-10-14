@@ -61,7 +61,8 @@ const D = { x: 470, y: 470, w: 340, h: 34 } as const;
 const CAM_QUEUE: CameraState = { x: 620, y: 250, k: 1.12 };
 const CAM_COST: CameraState = { x: 620, y: 300, k: 1.0 };
 const CAM_SORT: CameraState = { x: 620, y: 330, k: 1.02 };
-const CAM_DIVIDER: CameraState = { x: 620, y: 470, k: 1.4 };
+// frames both queue rows and the divider; the reset counts stay on the stage
+const CAM_DIVIDER: CameraState = { x: 640, y: 432, k: 1.1 };
 const CAM_WIDE: CameraState = { x: 620, y: 340, k: 0.92 };
 
 export interface Scene {
@@ -213,7 +214,7 @@ function Queue({
   if (u <= 0) return null;
   return (
     <g opacity={u}>
-      <text x={ROW_X - 16} y={y + SLOT_H / 2 + 5} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+      <text x={ROW_X - 16} y={y + SLOT_H / 2 + 5} textAnchor="end" fill={colors.MUTED} fontSize={14}>
         {label}
       </text>
       {seq.map((st, i) => {
@@ -283,6 +284,14 @@ export function Render({ s }: { s: SceneState }) {
           </g>
 
           <Queue seq={NAIVE} y={NAIVE_Y} u={queueU} head={head1} label="as they occur" />
+          {runU > 0 && (
+            <text x={ROW_X} y={NAIVE_Y - 18} fill={colors.TEXT} fontSize={14} opacity={clamp01(runU * 4)}>
+              machine set to{' '}
+              <tspan fill={SET_COLOR[NAIVE[Math.min(Math.floor(head1), NAIVE.length - 1)]]} fontWeight={700}>
+                {NAIVE[Math.min(Math.floor(head1), NAIVE.length - 1)]} — {SET_NAME[NAIVE[Math.min(Math.floor(head1), NAIVE.length - 1)]]}
+              </tspan>
+            </text>
+          )}
           {costU > 0 && (
             <text x={ROW_X + NAIVE.length * (SLOT_W + 6) + 14} y={NAIVE_Y + SLOT_H / 2 + 6} fill={colors.NEGATIVE} fontSize={17} fontWeight={700} opacity={costU}>
               {changes(NAIVE) - 1} resets
@@ -303,10 +312,10 @@ export function Render({ s }: { s: SceneState }) {
               <rect x={D.x - 40} y={D.y + D.h + 20} width={D.w + 80} height={D.h} rx={3} fill={OAK} stroke="#2f2415" strokeWidth={1.3} />
               {/* the divider, dropping onto it */}
               <rect x={D.x} y={D.y - gap} width={D.w} height={D.h} rx={3} fill={OAK_LIT} stroke="#2f2415" strokeWidth={1.3} />
-              <text x={D.x - 52} y={D.y + D.h / 2 + 5} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+              <text x={D.x - 52} y={D.y + D.h / 2 + 5} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                 divider
               </text>
-              <text x={D.x - 52} y={D.y + D.h * 2 + 26} textAnchor="end" fill={colors.MUTED} fontSize={13}>
+              <text x={D.x - 52} y={D.y + D.h * 2 + 26} textAnchor="end" fill={colors.MUTED} fontSize={14}>
                 bottom
               </text>
 
@@ -350,7 +359,7 @@ export function Render({ s }: { s: SceneState }) {
                 if (u <= 0) return null;
                 return <rect key={i} x={860 + f * 300 - 14} y={190} width={28} height={9} rx={2} fill={colors.WARM} opacity={u} />;
               })}
-              <text x={1010} y={158} textAnchor="middle" fill={colors.WARM} fontSize={13.5}>
+              <text x={1010} y={158} textAnchor="middle" fill={colors.WARM} fontSize={14}>
                 10 mm button slots — inside the upper aprons
               </text>
             </g>

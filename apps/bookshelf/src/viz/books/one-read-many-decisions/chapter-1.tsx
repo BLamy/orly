@@ -320,7 +320,7 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={winU}>
           <rect x={winX} y={TAPE.y - 6} width={winWidth} height={TAPE.h + 12} rx={9} fill={ROLE.MODEL} fillOpacity={0.08} stroke={ROLE.MODEL} strokeWidth={2.4} />
           <Label
-            x={Math.min(1150, Math.max(140, winX + winWidth / 2))}
+            x={Math.min(1120, Math.max(140, winX + winWidth / 2))}
             y={prefilling ? 306 : 196}
             anchor="middle"
             text={prefilling ? 'model · prefill: the whole input in one pass' : `model · step ${stepNo} of ${N_OUT}`}

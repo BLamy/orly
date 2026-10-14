@@ -68,7 +68,7 @@ const DIST1 = distribution(DEG1); // deg0:1 deg1:1 deg2:3 deg3:0
 // Layout. Rail across the top, graph bottom-left, two histograms right.
 // ---------------------------------------------------------------------------
 
-const RAIL_Y = 236;
+const RAIL_Y = 222;
 const STOPS = [
   { key: 'src', x: 128, w: 118, label: 'edges', sub: 'Collection' },
   { key: 'map1', x: 348, w: 128, label: 'map', sub: '|(src, _dst)| src' },
@@ -81,9 +81,9 @@ const stopX = (i: number) => STOPS[i].x;
 
 const CODE = 'edges.map(|(src, _dst)| src).count().map(|(_src, deg)| deg).count()';
 
-// graph, pentagon
-const GC = { x: 226, y: 462 };
-const GR = 96;
+// graph, pentagon (kept clear of the caption band at the bottom)
+const GC = { x: 226, y: 440 };
+const GR = 88;
 const NODE_POS: Record<Id, { x: number; y: number }> = Object.fromEntries(
   IDS.map((id, i) => {
     const a = -Math.PI / 2 + (i * 2 * Math.PI) / 5;
@@ -92,15 +92,15 @@ const NODE_POS: Record<Id, { x: number; y: number }> = Object.fromEntries(
 ) as Record<Id, { x: number; y: number }>;
 
 // degree bars (one per node)
-const DEGB = { x0: 494, y: 588, w: 38, gap: 20, unit: 46 };
+const DEGB = { x0: 494, y: 556, w: 38, gap: 20, unit: 40 };
 const degBarX = (i: number) => DEGB.x0 + i * (DEGB.w + DEGB.gap) + DEGB.w / 2;
 
 // distribution bars (one per degree 0..3)
-const DISTB = { x0: 884, y: 588, w: 44, gap: 26, unit: 40 };
+const DISTB = { x0: 884, y: 556, w: 44, gap: 26, unit: 40 };
 const distBarX = (d: number) => DISTB.x0 + d * (DISTB.w + DISTB.gap) + DISTB.w / 2;
 
-const CAM_CNT1: CameraState = { x: 590, y: 380, k: 1.28 };
-const CAM_DIST: CameraState = { x: 930, y: 400, k: 1.25 };
+// One gentle push that still frames the whole rail, graph and both racks.
+const CAM_FOCUS: CameraState = { x: 630, y: 370, k: 1.12 };
 
 // ---------------------------------------------------------------------------
 // Timeline (~80s, nine beats).
@@ -144,6 +144,7 @@ export function buildScene() {
     dur: 5.4,
     text: 'Extract the source of each edge, count occurrences per node, then count how many nodes share each count.',
   });
+  tl.tween(graphU, 1, { at: 8.2, dur: 1.4, ease: ease.draw });
 
   // — beat 2 · initial load —
   tl.caption({
@@ -151,7 +152,6 @@ export function buildScene() {
     dur: 6.0,
     text: 'Load six edges and the whole thing runs once. Degrees per node on the left, the distribution of degrees on the right.',
   });
-  tl.tween(graphU, 1, { at: 13.8, dur: 1.2, ease: ease.draw });
   tl.tween(loadU, 1, { at: 15.2, dur: 3.6, ease: ease.linear });
 
   // — beat 3 · one edge arrives; the batch instinct —
@@ -192,7 +192,7 @@ export function buildScene() {
     dur: 7.2,
     text: 'Now the count — and here is the move that makes everything work. Node B held degree one; it now holds degree two. So the count ships two differences: retract the old answer, assert the new one.',
   });
-  tl.tween(cam, CAM_CNT1, { at: 44.8, dur: 1.3, ease: ease.move });
+  tl.tween(cam, CAM_FOCUS, { at: 44.8, dur: 1.3, ease: ease.move });
   tl.tween(cnt1Glow, 1, { at: 45.6, dur: 0.3, ease: ease.enter });
   tl.tween(cnt1Glow, 0, { at: 46.4, dur: 0.6, ease: ease.enter });
   tl.set(degSwap, 1, 46.6);
@@ -209,7 +209,6 @@ export function buildScene() {
     dur: 6.8,
     text: 'Those two differences ride on. The final count restates only the rows they touch: one fewer node with degree one, one more with degree two. The distribution is current.',
   });
-  tl.tween(cam, CAM_DIST, { at: 57.8, dur: 1.3, ease: ease.move });
   tl.tween(h4, 1, { at: 58.8, dur: 1.6, ease: ease.linear });
   tl.tween(cnt2Glow, 1, { at: 60.2, dur: 0.3, ease: ease.enter });
   tl.tween(cnt2Glow, 0, { at: 61.0, dur: 0.6, ease: ease.enter });
@@ -269,7 +268,7 @@ function Chip({ x, y, text, tone, op = 1 }: { x: number; y: number; text: string
   return (
     <g opacity={op}>
       <rect x={x - w / 2} y={y - 15} width={w} height={30} rx={8} fill={colors.PANEL} stroke={tone} strokeWidth={1.5} />
-      <text x={x} y={y + 4.5} textAnchor="middle" fill={tone} fontSize={12.5} fontFamily={MONO}>
+      <text x={x} y={y + 4.5} textAnchor="middle" fill={tone} fontSize={13.5} fontFamily={MONO}>
         {text}
       </text>
     </g>
@@ -297,7 +296,7 @@ export function Render({ s }: { s: SceneState }) {
   const dimU = s.get(scene.dimU);
   const closeU = s.get(scene.closeU);
 
-  const stageOp = 1 - 0.85 * dimU;
+  const stageOp = 1 - 0.9 * dimU; // old content fades to 0.1 under the closing panel
   const deg = degSwap > 0.5 ? DEG1 : DEG0;
   const dist = distSwap > 0.5 ? DIST1 : DIST0;
 
@@ -321,7 +320,7 @@ export function Render({ s }: { s: SceneState }) {
                     <text x={st.x} y={RAIL_Y - 3} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontWeight={600}>
                       {st.label}
                     </text>
-                    <text x={st.x} y={RAIL_Y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+                    <text x={st.x} y={RAIL_Y + 16} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                       {st.sub}
                     </text>
                   </g>
@@ -348,8 +347,8 @@ export function Render({ s }: { s: SceneState }) {
           )}
           {codeU > 0.01 && (
             <g opacity={codeU}>
-              <rect x={640 - 330} y={118} width={660} height={34} rx={9} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={640} y={140} textAnchor="middle" fill={colors.ACCENT} fontSize={13} fontFamily={MONO}>
+              <rect x={640 - 330} y={100} width={660} height={34} rx={9} fill={colors.PANEL} stroke={colors.GRID} />
+              <text x={640} y={122} textAnchor="middle" fill={colors.ACCENT} fontSize={14} fontFamily={MONO}>
                 {CODE}
               </text>
             </g>
@@ -395,7 +394,7 @@ export function Render({ s }: { s: SceneState }) {
                   </text>
                 </g>
               ))}
-              <text x={GC.x} y={GC.y + GR + 42} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontStyle="italic">
+              <text x={GC.x} y={GC.y + GR + 40} textAnchor="middle" fill={colors.MUTED} fontSize={14} fontStyle="italic">
                 the graph
               </text>
               {timer1U > 0.01 && (
@@ -412,7 +411,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---------------- degree bars (per node) ---------------- */}
           {loadU > 0.01 && (
             <g>
-              <text x={degBarX(2)} y={DEGB.y - 3 * DEGB.unit - 24} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              <text x={degBarX(2)} y={DEGB.y - 3 * DEGB.unit - 24} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 out-degree per node
               </text>
               <line x1={DEGB.x0 - 22} y1={DEGB.y} x2={DEGB.x0 + 5 * (DEGB.w + DEGB.gap) + 2} y2={DEGB.y} stroke={colors.GRID} strokeWidth={2} />
@@ -423,10 +422,10 @@ export function Render({ s }: { s: SceneState }) {
                 return (
                   <g key={id} opacity={clamp01(u * 1.6)}>
                     <rect x={degBarX(i) - DEGB.w / 2} y={DEGB.y - h} width={DEGB.w} height={Math.max(0.001, h)} rx={5} fill={hot ? colors.WARM : colors.ACCENT} opacity={0.85} />
-                    <text x={degBarX(i)} y={DEGB.y + 18} textAnchor="middle" fill={colors.TEXT} fontSize={12.5} fontFamily={MONO}>
+                    <text x={degBarX(i)} y={DEGB.y + 18} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
                       {id}
                     </text>
-                    <text x={degBarX(i)} y={DEGB.y - h - 7} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                    <text x={degBarX(i)} y={DEGB.y - h - 7} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                       {deg[id]}
                     </text>
                   </g>
@@ -438,7 +437,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---------------- distribution bars (per degree) ---------------- */}
           {loadU > 0.3 && (
             <g opacity={clamp01((loadU - 0.3) * 2)}>
-              <text x={distBarX(1.5)} y={DISTB.y - 3 * DISTB.unit - 24} textAnchor="middle" fill={colors.MUTED} fontSize={13}>
+              <text x={distBarX(1.5)} y={DISTB.y - 3 * DISTB.unit - 24} textAnchor="middle" fill={colors.MUTED} fontSize={14}>
                 nodes per degree
               </text>
               <line x1={DISTB.x0 - 22} y1={DISTB.y} x2={DISTB.x0 + 4 * (DISTB.w + DISTB.gap) + 2} y2={DISTB.y} stroke={colors.GRID} strokeWidth={2} />
@@ -448,10 +447,10 @@ export function Render({ s }: { s: SceneState }) {
                 return (
                   <g key={d}>
                     <rect x={distBarX(d) - DISTB.w / 2} y={DISTB.y - h} width={DISTB.w} height={Math.max(0.001, h)} rx={5} fill={hot ? colors.WARM : colors.SECONDARY} opacity={0.85} />
-                    <text x={distBarX(d)} y={DISTB.y + 18} textAnchor="middle" fill={colors.TEXT} fontSize={12.5} fontFamily={MONO}>
+                    <text x={distBarX(d)} y={DISTB.y + 18} textAnchor="middle" fill={colors.TEXT} fontSize={14} fontFamily={MONO}>
                       deg {d}
                     </text>
-                    <text x={distBarX(d)} y={DISTB.y - h - 7} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
+                    <text x={distBarX(d)} y={DISTB.y - h - 7} textAnchor="middle" fill={colors.MUTED} fontSize={13} fontFamily={MONO}>
                       {c}
                     </text>
                   </g>
@@ -475,16 +474,17 @@ export function Render({ s }: { s: SceneState }) {
           {h2 > 0.01 && h2 < 1 && (
             <Chip x={lerp(stopX(1) + 64, stopX(2) - 64, h2)} y={RAIL_Y - 44} text="(B, +1)" tone={colors.POSITIVE} />
           )}
+          {/* the retract/assert pair rides BELOW the rail, clear of the boxes */}
           {h3 > 0.01 && h3 < 1 && (
             <>
-              <Chip x={lerp(stopX(2) + 64, stopX(3) - 64, h3)} y={RAIL_Y - 58} text="((B,1), −1)" tone={colors.NEGATIVE} />
-              <Chip x={lerp(stopX(2) + 64, stopX(3) - 64, clamp01(h3 * 1.12 - 0.12))} y={RAIL_Y - 24} text="((B,2), +1)" tone={colors.POSITIVE} />
+              <Chip x={lerp(stopX(2) + 64, stopX(3) - 64, h3)} y={RAIL_Y + 60} text="((B,1), −1)" tone={colors.NEGATIVE} />
+              <Chip x={lerp(stopX(2) + 64, stopX(3) - 64, clamp01(h3 * 1.12 - 0.12))} y={RAIL_Y + 96} text="((B,2), +1)" tone={colors.POSITIVE} />
             </>
           )}
           {h4 > 0.01 && h4 < 1 && (
             <>
-              <Chip x={lerp(stopX(3) + 64, stopX(4) - 64, h4)} y={RAIL_Y - 58} text="(1, −1)" tone={colors.NEGATIVE} />
-              <Chip x={lerp(stopX(3) + 64, stopX(4) - 64, clamp01(h4 * 1.12 - 0.12))} y={RAIL_Y - 24} text="(2, +1)" tone={colors.POSITIVE} />
+              <Chip x={lerp(stopX(3) + 64, stopX(4) - 64, h4)} y={RAIL_Y + 60} text="(1, −1)" tone={colors.NEGATIVE} />
+              <Chip x={lerp(stopX(3) + 64, stopX(4) - 64, clamp01(h4 * 1.12 - 0.12))} y={RAIL_Y + 96} text="(2, +1)" tone={colors.POSITIVE} />
             </>
           )}
         </g>
@@ -492,7 +492,7 @@ export function Render({ s }: { s: SceneState }) {
         {/* ---------------- closing panel ---------------- */}
         {closeU > 0.01 && (
           <g opacity={closeU}>
-            <rect x={250} y={256} width={780} height={182} rx={16} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.5} />
+            <rect x={140} y={256} width={1000} height={182} rx={16} fill={colors.BG} stroke={colors.GRID} strokeWidth={1.5} />
             <text x={640} y={322} textAnchor="middle" fill={colors.TEXT} fontSize={26} fontWeight={650}>
               Differences in, differences out.
             </text>

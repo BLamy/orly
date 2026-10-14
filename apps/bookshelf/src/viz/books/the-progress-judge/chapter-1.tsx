@@ -20,7 +20,7 @@ const clamp01 = (u: number) => (u < 0 ? 0 : u > 1 ? 1 : u);
 const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 
 /* ---------------------------------------------------------------- layout */
-const PAIR = { bx: 100, by: 130, cx: 380, cy: 130, w: 190, h: 74 };
+const PAIR = { bx: 100, by: 130, cx: 420, cy: 130, w: 240, h: 74 };
 const ROWS_Y = 288;
 const ROW_H = 62;
 
@@ -28,17 +28,17 @@ const ROW_H = 62;
 const ORIGIN = { x: 700, y: 552 };
 const PLANE = { x: 655, y: 140, w: 560, h: 440 };
 
-/** converging rework: a decaying path into the origin (precomputed, pure) */
+/** converging rework: a true decaying spiral into the origin (precomputed, pure) */
 const CONV: { x: number; y: number }[] = Array.from({ length: 8 }, (_, k) => {
   if (k === 7) return { x: ORIGIN.x, y: ORIGIN.y };
   const r = 470 * Math.pow(0.66, k);
-  const a = 0.35 + 0.18 * Math.sin(k * 2.1);
+  const a = 0.15 + 0.2 * k;
   return { x: ORIGIN.x + r * Math.cos(a), y: ORIGIN.y - r * Math.sin(a) };
 });
 
 /** circling rework: an orbit that never approaches the origin */
 const ORBIT: { x: number; y: number }[] = Array.from({ length: 10 }, (_, k) => {
-  const c = { x: 1005, y: 265 };
+  const c = { x: 1050, y: 265 };
   const a = 1.1 - k * 0.75;
   const r = 100 + 10 * Math.sin(k * 1.9);
   return { x: c.x + r * Math.cos(a), y: c.y + r * Math.sin(a) };
@@ -65,7 +65,7 @@ const VOLLEYS = [
   { a: 'attempt 3', f: ['F1', 'F3', 'F5', 'F7'] },
 ];
 
-const CAM_PAIR: CameraState = { x: 350, y: 300, k: 1.3 };
+const CAM_PAIR: CameraState = { x: 380, y: 300, k: 1.2 };
 const CAM_PLANE: CameraState = { x: 935, y: 355, k: 1.18 };
 const CAM_WIDE: CameraState = { x: 640, y: 355, k: 1.0 };
 
@@ -222,7 +222,7 @@ export function Render({ s }: { s: SceneState }) {
   const endDim = s.get(scene.endDim);
   const endU = s.get(scene.endU);
 
-  const worldOp = 1 - 0.85 * endDim;
+  const worldOp = 1 - 0.9 * endDim;
   const spotPoint = ORBIT[6];
 
   return (
@@ -232,13 +232,13 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={worldOp}>
           {/* ---- LEFT: builder ↔ critic, and the volley ledger ---- */}
           {pairU > 0 && (
-            <g opacity={Math.min(1, pairU * 2) * (1 - 0.85 * leftDim)}>
+            <g opacity={Math.min(1, pairU * 2) * (1 - 0.9 * leftDim)}>
               <rect x={PAIR.bx} y={PAIR.by} width={PAIR.w} height={PAIR.h} rx={12} fill={colors.PANEL} stroke={colors.SECONDARY} strokeWidth={1.5} />
               <text x={PAIR.bx + 16} y={PAIR.by + 32} fill={colors.TEXT} fontSize={14} fontWeight={700}>builder</text>
-              <text x={PAIR.bx + 16} y={PAIR.by + 54} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>implement-task · rework: true</text>
+              <text x={PAIR.bx + 16} y={PAIR.by + 54} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>implement-task · rework: true</text>
               <rect x={PAIR.cx} y={PAIR.cy} width={PAIR.w} height={PAIR.h} rx={12} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.5} />
               <text x={PAIR.cx + 16} y={PAIR.cy + 32} fill={colors.TEXT} fontSize={14} fontWeight={700}>critic</text>
-              <text x={PAIR.cx + 16} y={PAIR.cy + 54} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>verify-task · verdict</text>
+              <text x={PAIR.cx + 16} y={PAIR.cy + 54} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>verify-task · verdict</text>
               {/* the loop arrows */}
               <path d={`M ${PAIR.bx + PAIR.w} ${PAIR.by + 22} h ${PAIR.cx - PAIR.bx - PAIR.w - 8} m -8 -5 l 8 5 l -8 5`} stroke={colors.GRID} strokeWidth={1.8} fill="none" opacity={pairU} />
               <path d={`M ${PAIR.cx} ${PAIR.by + 54} h ${-(PAIR.cx - PAIR.bx - PAIR.w - 8)} m 8 -5 l -8 5 l 8 5`} stroke={colors.GRID} strokeWidth={1.8} fill="none" opacity={pairU} />
@@ -250,19 +250,19 @@ export function Render({ s }: { s: SceneState }) {
                 const y = ROWS_Y + i * ROW_H;
                 return (
                   <g key={i} opacity={Math.min(1, u * 1.6)}>
-                    <rect x={PAIR.bx} y={y} width={470} height={ROW_H - 14} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
-                    <text x={PAIR.bx + 14} y={y + 22} fill={colors.SECONDARY} fontSize={12} fontFamily={MONO}>{v.a}</text>
-                    <text x={PAIR.bx + 14} y={y + 38} fill={colors.NEGATIVE} fontSize={11} fontFamily={MONO}>refuted · 4 findings</text>
+                    <rect x={PAIR.bx} y={y} width={470} height={ROW_H - 10} rx={10} fill={colors.PANEL} stroke={colors.GRID} />
+                    <text x={PAIR.bx + 14} y={y + 20} fill={colors.SECONDARY} fontSize={13} fontFamily={MONO}>{v.a}</text>
+                    <text x={PAIR.bx + 14} y={y + 38} fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>refuted · 4 findings</text>
                     {v.f.map((f, j) => {
                       const fu = clamp01(u * 5 - 1 - j);
                       return (
                         <g key={f} opacity={fu} transform={`translate(${PAIR.bx + 250 + j * 54} ${y + 16})`}>
                           <rect width={46} height={20} rx={6} fill={colors.NEGATIVE} opacity={0.16} stroke={colors.NEGATIVE} strokeWidth={1} />
-                          <text x={23} y={14} textAnchor="middle" fill={colors.TEXT} fontSize={10.5} fontFamily={MONO}>{f}</text>
+                          <text x={23} y={14} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>{f}</text>
                         </g>
                       );
                     })}
-                    <text x={PAIR.bx + 250} y={y + 44} fill={colors.MUTED} fontSize={9.5} fontStyle="italic" opacity={u}>
+                    <text x={PAIR.bx + 250} y={y + 46} fill={colors.MUTED} fontSize={12} fontStyle="italic" opacity={u}>
                       fair on its own
                     </text>
                   </g>
@@ -277,13 +277,13 @@ export function Render({ s }: { s: SceneState }) {
               {/* axes from the origin */}
               <line x1={ORIGIN.x} y1={ORIGIN.y} x2={ORIGIN.x + (PLANE.w - 60) * planeU} y2={ORIGIN.y} stroke={colors.GRID} strokeWidth={1.6} />
               <line x1={ORIGIN.x} y1={ORIGIN.y} x2={ORIGIN.x} y2={ORIGIN.y - (PLANE.h - 40) * planeU} stroke={colors.GRID} strokeWidth={1.6} />
-              <text x={ORIGIN.x + PLANE.w - 70} y={ORIGIN.y + 20} textAnchor="end" fill={colors.MUTED} fontSize={11}>how many findings →</text>
-              <text x={ORIGIN.x - 14} y={ORIGIN.y - PLANE.h + 46} fill={colors.MUTED} fontSize={11} transform={`rotate(-90 ${ORIGIN.x - 14} ${ORIGIN.y - PLANE.h + 46})`} textAnchor="end">
+              <text x={ORIGIN.x + PLANE.w - 70} y={ORIGIN.y + 20} textAnchor="end" fill={colors.MUTED} fontSize={12}>how many findings →</text>
+              <text x={ORIGIN.x - 14} y={ORIGIN.y - PLANE.h + 46} fill={colors.MUTED} fontSize={12} transform={`rotate(-90 ${ORIGIN.x - 14} ${ORIGIN.y - PLANE.h + 46})`} textAnchor="end">
                 how deep the ground →
               </text>
               {/* the origin: zero findings, verified */}
               <circle cx={ORIGIN.x} cy={ORIGIN.y} r={7} fill={colors.POSITIVE} opacity={0.9} />
-              <text x={ORIGIN.x + 14} y={ORIGIN.y + 20} fill={colors.POSITIVE} fontSize={10.5} fontFamily={MONO}>0 findings — verified</text>
+              <text x={ORIGIN.x + 14} y={ORIGIN.y + 20} fill={colors.POSITIVE} fontSize={12} fontFamily={MONO}>0 findings — verified</text>
 
               {/* converging spiral */}
               {convU > 0 && (
@@ -293,7 +293,7 @@ export function Render({ s }: { s: SceneState }) {
                     <circle key={k} cx={p.x} cy={p.y} r={k === 7 ? 0 : 5.5} fill={colors.POSITIVE} opacity={clamp01(convU - k + 0.5)} />
                   ))}
                   {convU > 6.5 && (
-                    <text x={CONV[2].x + 30} y={CONV[2].y - 14} fill={colors.POSITIVE} fontSize={11.5} fontWeight={700} opacity={clamp01((convU - 6.5) * 2)}>
+                    <text x={CONV[2].x + 12} y={CONV[2].y - 16} fill={colors.POSITIVE} fontSize={12.5} fontWeight={700} opacity={clamp01((convU - 6.5) * 2)}>
                       converging
                     </text>
                   )}
@@ -314,7 +314,7 @@ export function Render({ s }: { s: SceneState }) {
                     );
                   })}
                   {orbitU > 8.5 && (
-                    <text x={1005} y={265} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11.5} fontWeight={700} opacity={clamp01((orbitU - 8.5) * 2) * (1 - spotU)}>
+                    <text x={1050} y={265} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12.5} fontWeight={700} opacity={clamp01((orbitU - 8.5) * 2) * (1 - spotU)}>
                       circling
                     </text>
                   )}
@@ -324,9 +324,9 @@ export function Render({ s }: { s: SceneState }) {
               {/* "each sees one point" */}
               {spotU > 0 && (
                 <g opacity={spotU}>
-                  <rect x={spotPoint.x + 20} y={spotPoint.y - 34} width={218} height={44} rx={9} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.3} />
-                  <text x={spotPoint.x + 32} y={spotPoint.y - 16} fill={colors.WARM} fontSize={11} fontWeight={700}>one point, no curve</text>
-                  <text x={spotPoint.x + 32} y={spotPoint.y - 1} fill={colors.MUTED} fontSize={9.5} fontFamily={MONO}>report: verdict.report — latest only</text>
+                  <rect x={spotPoint.x - 242} y={spotPoint.y - 34} width={226} height={44} rx={9} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.3} />
+                  <text x={spotPoint.x - 230} y={spotPoint.y - 14} fill={colors.WARM} fontSize={12.5} fontWeight={700}>one point, no curve</text>
+                  <text x={spotPoint.x - 230} y={spotPoint.y + 4} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>verdict.report · latest only</text>
                 </g>
               )}
 
@@ -334,7 +334,7 @@ export function Render({ s }: { s: SceneState }) {
               {glowU > 0 && (
                 <g opacity={glowU}>
                   <path d={pathThrough(ORBIT, 9)} fill="none" stroke={colors.WARM} strokeWidth={5} opacity={0.28} />
-                  <text x={935} y={168} textAnchor="middle" fill={colors.WARM} fontSize={12.5} fontWeight={700}>
+                  <text x={1050} y={122} textAnchor="middle" fill={colors.WARM} fontSize={12.5} fontWeight={700}>
                     the trajectory — nobody's input, nobody's output
                   </text>
                 </g>
@@ -343,9 +343,9 @@ export function Render({ s }: { s: SceneState }) {
               {/* the spend counter */}
               {spendU > 0 && (
                 <g opacity={spendU}>
-                  <rect x={680} y={196} width={190} height={52} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.3} />
-                  <text x={694} y={218} fill={colors.NEGATIVE} fontSize={11.5} fontWeight={700}>tokens burn per lap</text>
-                  <text x={694} y={236} fill={colors.MUTED} fontSize={10} fontFamily={MONO}>attempt n+1 always looks plausible</text>
+                  <rect x={711} y={322} width={232} height={54} rx={10} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.3} />
+                  <text x={725} y={344} fill={colors.NEGATIVE} fontSize={12.5} fontWeight={700}>tokens burn per lap</text>
+                  <text x={725} y={364} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>attempt n+1 looks plausible</text>
                 </g>
               )}
             </g>

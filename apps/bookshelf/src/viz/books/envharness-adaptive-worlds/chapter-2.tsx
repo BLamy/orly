@@ -58,7 +58,7 @@ export function buildScene() {
   tl.tween(blockU, 0, { at: 41.7, dur: 0.5, ease: ease.move });
   tl.tween(packet, 1, { at: 42.0, dur: 4.2, ease: ease.linear });
   tl.tween(postU, 1, { at: 43.5, dur: 1.8, ease: ease.move });
-  tl.tween(cam, { x: 760, y: 360, k: 1.1 }, { at: 43.2, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 690, y: 360, k: 1.06 }, { at: 43.2, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 48.2, dur: 6.4, text: 'Reward and terminal evaluation bypass all three gates. The trusted verifier keeps the final word.' });
   tl.tween(verifierStageU, 1, { at: 47.8, dur: 0.9, ease: ease.move });
@@ -96,15 +96,14 @@ export function Render({ s }: { s: SceneState }) {
   const px = 310 + packet * 760;
   return <Camera {...s.get(scene.cam)}>
     <g opacity={quiet}>
-      <text x="640" y="70" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="700">One episode tape, four interface levers</text>
+      <text x="640" y="80" textAnchor="middle" fill={colors.TEXT} fontSize="30" fontWeight="700">One episode tape, four interface levers</text>
       <g opacity={1 - verifierStage}>
       <Tape reveal={s.get(scene.tapeU)} />
 
       <g opacity={s.get(scene.setupU)}>
         <circle cx="160" cy="245" r="62" fill="#111827" stroke={colors.SECONDARY} strokeWidth="4" />
-        <circle cx="160" cy="245" r="22" fill="none" stroke={colors.SECONDARY} strokeWidth="4" />
-        <text x="160" y="228" textAnchor="middle" fill={colors.TEXT} fontSize="19" fontWeight="700">Stage</text>
-        <text x="160" y="258" textAnchor="middle" fill={colors.SECONDARY} fontSize="17">Setup</text>
+        <text x="160" y="238" textAnchor="middle" fill={colors.TEXT} fontSize="19" fontWeight="700">Stage</text>
+        <text x="160" y="264" textAnchor="middle" fill={colors.SECONDARY} fontSize="17">Setup</text>
         <path d="M160 307 V350" stroke={colors.SECONDARY} strokeWidth="4" />
       </g>
 
@@ -138,12 +137,12 @@ export function Render({ s }: { s: SceneState }) {
 
       <g opacity={s.get(scene.gatesP) > 0 ? 1 : 0}>
         <circle cx={px} cy="350" r="13" fill={colors.WARM} stroke={colors.TEXT} strokeWidth="2" />
-        <text x={px} y="326" textAnchor="middle" fill={colors.WARM} fontSize="13">step</text>
+        <text x={px} y="384" textAnchor="middle" fill={colors.WARM} fontSize="14">step</text>
       </g>
       <g opacity={s.get(scene.blockU)}>
-        <path d="M548 265 l84 84 M632 265 l-84 84" stroke={colors.NEGATIVE} strokeWidth="8" strokeLinecap="round" />
-        <rect x="474" y="175" width="232" height="58" rx="18" fill="#351421" stroke={colors.NEGATIVE} />
-        <text x="590" y="210" textAnchor="middle" fill={colors.NEGATIVE} fontSize="18" fontWeight="700">Blocked + current Observation</text>
+        <path d="M570 218 l40 40 M610 218 l-40 40" stroke={colors.NEGATIVE} strokeWidth="8" strokeLinecap="round" />
+        <rect x="474" y="150" width="232" height="50" rx="18" fill="#351421" stroke={colors.NEGATIVE} />
+        <text x="590" y="181" textAnchor="middle" fill={colors.NEGATIVE} fontSize="18" fontWeight="700">Blocked + current Observation</text>
       </g>
 
       <g opacity={s.get(scene.postU)}>

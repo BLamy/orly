@@ -255,7 +255,7 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={tooth.list}>
                   <line x1={tooth.x} y1={COMB.y} x2={tooth.x} y2={COMB.y + len} stroke={tooth.color} strokeWidth={tooth.empty ? 2 : 5} strokeLinecap="round" strokeDasharray={tooth.empty ? '3 4' : undefined} />
-                  <Txt x={tooth.x} y={COMB.y - 12} size={10.5} mono anchor="middle" fill={INK.muted} opacity={union}>
+                  <Txt x={tooth.x} y={COMB.y - 12} size={12} mono anchor="middle" fill={INK.muted} opacity={union}>
                     {tooth.list}
                   </Txt>
                   <Txt x={tooth.x} y={tooth.empty ? COMB.y + 34 : COMB.y + 86} size={12} mono anchor="middle" fill={tooth.color} opacity={tooth.empty ? union : clamp01(comb * 3 - 2)}>
@@ -265,7 +265,7 @@ export function Render({ s }: { s: SceneState }) {
                     <circle cx={tooth.x} cy={COMB.y + COMB.tooth} r={10} fill="none" stroke={got ? INK.ok : INK.bad} strokeWidth={1.6} strokeDasharray={got ? undefined : '3 3'} opacity={clamp01(capture * 2 - 1)} />
                   )}
                   {!tooth.empty && !got && (
-                    <Txt x={tooth.x} y={COMB.y + 104} size={10.5} anchor="middle" fill={INK.bad} opacity={clamp01(capture * 2 - 1) * (1 - on(b, 6))}>
+                    <Txt x={tooth.x} y={COMB.y + 104} size={12} anchor="middle" fill={INK.bad} opacity={clamp01(capture * 2 - 1) * (1 - on(b, 6))}>
                       not retrieved
                     </Txt>
                   )}
@@ -286,13 +286,13 @@ export function Render({ s }: { s: SceneState }) {
             <Txt x={LIST.x + LIST.w / 2} y={LIST.y + 22} size={13} mono anchor="middle" fill={INK.thread}>
               [day8-150]
             </Txt>
-            <Txt x={LIST.x} y={LIST.y + 56} size={10.5} fill={INK.claim}>
+            <Txt x={LIST.x} y={LIST.y + 56} size={12} fill={INK.claim}>
               Illustrative submission, real gold IDs
             </Txt>
           </g>
           <Tether x1={LIST.x} y1={LIST.y + 26} x2={TEETH[2].x + 12} y2={COMB.y + COMB.tooth - 4} u={capture} color={INK.ok} width={1.6} />
           <Tether x1={cellMid(3)} y1={STRIP.y + STRIP.h} x2={cellMid(3)} y2={LIST.y} u={clamp01(strip * 2 - 1)} color={INK.thread} opacity={0.7} />
-          <Txt x={cellMid(3) - 8} y={244} size={10.5} anchor="end" fill={INK.thread} opacity={win(b, 5, 5) * reply}>
+          <Txt x={cellMid(3) - 8} y={244} size={12} anchor="end" fill={INK.thread} opacity={win(b, 5, 5) * reply}>
             deterministic
           </Txt>
 
@@ -301,7 +301,7 @@ export function Render({ s }: { s: SceneState }) {
             <Tether x1={cellMid(4)} y1={STRIP.y + STRIP.h} x2={cellMid(4)} y2={232} u={reply * 1.6} color={INK.muted} />
             <g opacity={clamp01(reply * 3 - 1.6)}>
               <line x1={cellMid(4) - 44} y1={236} x2={cellMid(4) + 44} y2={236} stroke={INK.claim} strokeWidth={3} strokeLinecap="round" />
-              <Txt x={cellMid(4)} y={258} size={11.5} mono anchor="middle" fill={INK.claim}>
+              <Txt x={cellMid(4)} y={258} size={12.5} mono anchor="middle" fill={INK.claim}>
                 --corpus DIR --judge
               </Txt>
             </g>
@@ -321,15 +321,15 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={k} opacity={o}>
                   <line x1={cutX(k)} y1={RANKS.y - 17} x2={cutX(k)} y2={RANKS.y + 22} stroke={INK.text} strokeWidth={1.4} />
-                  <Txt x={cutX(k) - 6} y={RANKS.y + 30} size={10} anchor="end" fill={INK.muted}>
+                  <Txt x={cutX(k) - 6} y={RANKS.y + 30} size={12} anchor="end" fill={INK.muted}>
                     {`rank ${k}`}
                   </Txt>
-                  <MathLabel tex={`\\text{r@${k}} = ${asTex(recallAt(k))}`} x={cutX(k) - (k === 1 ? 14 : 40)} y={RANKS.y + 62} fontSize={18} boxWidth={160} />
+                  <MathLabel tex={`\\text{r@${k}} = ${asTex(recallAt(k))}`} x={k === 1 ? RANKS.x : cutX(k)} anchor={k === 1 ? 'start' : 'middle'} y={RANKS.y + 62} fontSize={16} boxWidth={200} />
                 </g>
               );
             })}
             <MathLabel tex={`\\text{mrr} = ${asTex(MRR)}`} x={1010} y={RANKS.y + 62} fontSize={18} boxWidth={160} />
-            <Txt x={RANKS.x + RANKS.n * RANKS.pitch - 8} y={RANKS.y - 22} size={11} mono anchor="end" fill={INK.muted} opacity={clamp01(ruler * 4)}>
+            <Txt x={RANKS.x + RANKS.n * RANKS.pitch - 8} y={RANKS.y - 22} size={12}mono anchor="end" fill={INK.muted} opacity={clamp01(ruler * 4)}>
               CUTS = (1, 5, 20)
             </Txt>
           </g>
@@ -337,7 +337,7 @@ export function Render({ s }: { s: SceneState }) {
           {/* abstention well: an empty target is scored differently */}
           <g opacity={on(b, 4)}>
             <line x1={WELL.x} y1={285} x2={WELL.x + 150 * clamp01(well * 2)} y2={285} stroke={INK.muted} strokeWidth={2} strokeDasharray="5 5" />
-            <Txt x={WELL.x} y={272} size={10.5} fill={INK.muted} opacity={clamp01(well * 2)}>
+            <Txt x={WELL.x} y={272} size={12} fill={INK.muted} opacity={clamp01(well * 2)}>
               empty gold set
             </Txt>
             <Txt x={WELL.x} y={312} size={12} mono fill={INK.text} opacity={clamp01(well * 3 - 1)}>
@@ -350,10 +350,10 @@ export function Render({ s }: { s: SceneState }) {
               {Array.from({ length: 8 }, (_, i) => (
                 <rect key={i} x={WELL.x + i * 20} y={360} width={14} height={14} rx={3} fill={i < 5 ? INK.thread : 'none'} fillOpacity={0.5} stroke={i < 5 ? INK.thread : INK.muted} strokeDasharray={i < 5 ? undefined : '3 2'} />
               ))}
-              <Txt x={WELL.x} y={392} size={10} fill={INK.muted}>
+              <Txt x={WELL.x} y={392} size={12} fill={INK.muted}>
                 unsubmitted stay outlined
               </Txt>
-              <Txt x={WELL.x} y={407} size={10} fill={INK.claim}>
+              <Txt x={WELL.x} y={407} size={12} fill={INK.claim}>
                 Rule illustration
               </Txt>
             </g>
@@ -372,7 +372,7 @@ export function Render({ s }: { s: SceneState }) {
               {[0, 50, 100].map((v) => (
                 <g key={v}>
                   <line x1={BAR.x + BAR.w * (v / 100)} y1={BAR.y + 14} x2={BAR.x + BAR.w * (v / 100)} y2={BAR.y + 20} stroke={INK.muted} />
-                  <Txt x={BAR.x + BAR.w * (v / 100)} y={BAR.y + 34} size={10.5} anchor="middle" fill={INK.muted}>
+                  <Txt x={BAR.x + BAR.w * (v / 100)} y={BAR.y + 34} size={12} anchor="middle" fill={INK.muted}>
                     {`${v}%`}
                   </Txt>
                 </g>
@@ -397,7 +397,7 @@ export function Render({ s }: { s: SceneState }) {
                 n=404 memory-bearing · a subset comparison, not a natural rate
               </Txt>
               <line x1={BAR.x + (BAR.w * HIT_ALL) / 100} y1={BAR.y - 18} x2={BAR.x + (BAR.w * HIT_ALL) / 100} y2={BAR.y + 18} stroke={INK.thread} strokeDasharray="3 3" opacity={0.5} />
-              <Txt x={BAR.x + (BAR.w * HIT_ALL) / 100} y={BAR.y - 24} size={10.5} anchor="middle" fill={INK.thread} opacity={0.6}>
+              <Txt x={BAR.x + (BAR.w * HIT_ALL) / 100} y={BAR.y - 24} size={12} anchor="middle" fill={INK.thread} opacity={0.6}>
                 95.9%
               </Txt>
             </g>
@@ -419,13 +419,13 @@ export function Render({ s }: { s: SceneState }) {
               <Txt x={BAR.x + BAR.w} y={BAR.y - 20} size={14} mono weight={600} anchor="end">
                 ≈ +0.108
               </Txt>
-              <Txt x={BAR.x} y={BAR.y + 32} size={11.5} fill={INK.distant}>
+              <Txt x={BAR.x} y={BAR.y + 32} size={12.5} fill={INK.distant}>
                 memory-bearing probes
               </Txt>
-              <Txt x={BAR.x + 200} y={BAR.y + 32} size={11.5} fill={INK.thread}>
+              <Txt x={BAR.x + 200} y={BAR.y + 32} size={12.5} fill={INK.thread}>
                 {`probes labeled as needing no distant memory: ${REST_SHARE}% of the gain`}
               </Txt>
-              <Txt x={BAR.x} y={BAR.y + 54} size={11} fill={INK.muted}>
+              <Txt x={BAR.x} y={BAR.y + 54} size={12}fill={INK.muted}>
                 C2 vs C1 also changes heading
               </Txt>
             </g>

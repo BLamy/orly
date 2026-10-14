@@ -78,7 +78,8 @@ const HIST_BASE = 596;
 const HIST_HMAX = 112; // sync peak = 24 arrivals
 
 const CAM_STAIR: CameraState = { x: 560, y: 360, k: 1.22 };
-const CAM_HIST: CameraState = { x: 640, y: 430, k: 1.18 };
+// wide enough that the jittered chip above the herd stays inside the stage
+const CAM_HIST: CameraState = { x: 640, y: 420, k: 1.12 };
 
 // ---------------------------------------------------------------------------
 // Timeline (~68s, 11 beats)
@@ -261,7 +262,7 @@ export function Render({ s }: { s: SceneState }) {
           {soloOp > 0.01 && (
             <g opacity={soloOp}>
               <line x1={AXIS_X0 - 30} y1={SOLO_Y} x2={AXIS_X1 + 30} y2={SOLO_Y} stroke={colors.GRID} strokeWidth={1.5} />
-              <text x={AXIS_X1 + 28} y={SOLO_Y + 22} textAnchor="end" fill={colors.MUTED} fontSize={12}>
+              <text x={1062} y={SOLO_Y - 12} textAnchor="end" fill={colors.MUTED} fontSize={12}>
                 time →
               </text>
               <text x={AXIS_X0} y={128} fill={colors.TEXT} fontSize={16.5} fontFamily={MONO}>
@@ -279,7 +280,7 @@ export function Render({ s }: { s: SceneState }) {
                 return (
                   <g key={i} opacity={u}>
                     <circle cx={tx(t)} cy={SOLO_Y} r={7} fill={colors.NEGATIVE} />
-                    <text x={tx(t)} y={SOLO_Y + 26} textAnchor="middle" fill={colors.MUTED} fontSize={11.5}>
+                    <text x={tx(t)} y={SOLO_Y + 26} textAnchor="middle" fill={colors.MUTED} fontSize={12}>
                       attempt {i + 1}
                     </text>
                   </g>
@@ -305,8 +306,9 @@ export function Render({ s }: { s: SceneState }) {
               {mathU > 0.01 && (
                 <MathLabel
                   tex={'\\text{delay}_n = 100\\,\\text{ms}\\cdot 2^{\\,n-1}'}
-                  x={870}
-                  y={190}
+                  x={190}
+                  y={226}
+                  anchor="start"
                   fontSize={21}
                   color={colors.TEXT}
                   opacity={mathU}
@@ -369,11 +371,11 @@ export function Render({ s }: { s: SceneState }) {
               {/* jittered chip */}
               {jitLblU > 0.01 && (
                 <g opacity={jitLblU}>
-                  <rect x={860} y={104} width={300} height={44} rx={10} fill={colors.BG} stroke={colors.SECONDARY} />
-                  <text x={1010} y={124} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>
+                  <rect x={860} y={108} width={300} height={44} rx={10} fill={colors.BG} stroke={colors.SECONDARY} />
+                  <text x={1010} y={128} textAnchor="middle" fill={colors.SECONDARY} fontSize={14} fontFamily={MONO}>
                     .pipe(Schedule.jittered)
                   </text>
-                  <text x={1010} y={141} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+                  <text x={1010} y={145} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                     delay × random(0.8 … 1.2)
                   </text>
                 </g>

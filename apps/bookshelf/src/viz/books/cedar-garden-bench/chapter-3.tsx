@@ -60,11 +60,12 @@ const COURSES: Course[] = [
 // The screw-length gauge: to hold, a screw must cross what it goes through and
 // still bite about an inch into what it lands in.
 const GAUGE = { x: 900, y: 210, w: 250, h: 260 } as const;
+const GAUGE_PAD_L = 90; // room for the layer and bite labels on the left
 const BITE = 1.0; // in — the bite you want on the far side
 
 const CAM_BASE: CameraState = { x: 470, y: 420, k: 1.16 };
 const CAM_STACK: CameraState = { x: 500, y: 340, k: 1.02 };
-const CAM_GAUGE: CameraState = { x: 900, y: 330, k: 1.3 };
+const CAM_GAUGE: CameraState = { x: 1050, y: 330, k: 1.3 };
 const CAM_WIDE: CameraState = { x: 620, y: 330, k: 0.9 };
 
 export interface Scene {
@@ -230,7 +231,7 @@ export function Render({ s }: { s: SceneState }) {
     <>
       <rect width={STAGE_W} height={STAGE_H} fill={colors.BG} />
       <Camera {...cam}>
-        <g opacity={dimAll * (1 - 0.86 * gaugeU)}>
+        <g opacity={dimAll * (1 - 0.92 * gaugeU)}>
           {/* ---- the stack, course by course ---- */}
           {COURSES.map((c, i) => {
             const u = clamp01(layerU - i);
@@ -275,7 +276,7 @@ export function Render({ s }: { s: SceneState }) {
                     />
                   </g>
                 )}
-                <text x={c.x + c.width + 14} y={y - drift + LAYER_H / 2 + 4} fill={colors.MUTED} fontSize={12.5}>
+                <text x={c.x + c.width + 14} y={y - drift + LAYER_H / 2 + 4} fill={colors.MUTED} fontSize={14}>
                   {c.label}
                 </text>
               </g>
@@ -317,32 +318,46 @@ export function Render({ s }: { s: SceneState }) {
           {/* ---- the screw-length gauge ---- */}
           {gaugeU > 0 && (
             <g opacity={gaugeU}>
-              <rect x={gx - 40} y={gy - 56} width={GAUGE.w + 60} height={GAUGE.h + 92} rx={12} fill={colors.PANEL} stroke={colors.GRID} />
-              <text x={gx + GAUGE.w / 2 - 10} y={gy - 28} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
+              <rect
+                x={gx - GAUGE_PAD_L}
+                y={gy - 56}
+                width={GAUGE_PAD_L + 400}
+                height={GAUGE.h + 92}
+                rx={12}
+                fill={colors.PANEL}
+                stroke={colors.GRID}
+              />
+              <text x={gx + 145} y={gy - 28} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
                 what the screw has to reach
               </text>
 
-              {/* the stock it passes through */}
+              {/* the stock it passes through, one labelled 1½ in layer each */}
               {[0, 1].map((k) => {
                 const u = k === 0 ? 1 : needU;
                 if (u <= 0.02) return null;
+                const top = gy + k * THICK * inPx;
                 return (
-                  <rect
-                    key={k}
-                    x={gx}
-                    y={gy + k * THICK * inPx}
-                    width={140}
-                    height={THICK * inPx - 2}
-                    fill={CEDAR}
-                    stroke="#3a2515"
-                    opacity={u}
-                  />
+                  <g key={k} opacity={u}>
+                    <rect x={gx} y={top} width={140} height={THICK * inPx - 2} fill={CEDAR} stroke="#3a2515" />
+                    <text x={gx - 10} y={top + (THICK * inPx) / 2 + 5} textAnchor="end" fill={colors.TEXT} fontSize={14}>
+                      1½ in
+                    </text>
+                  </g>
                 );
               })}
-              {/* the piece it lands in */}
-              <rect x={gx} y={gy + through * THICK * inPx} width={140} height={BITE * inPx * 1.6} fill={CEDAR_LIT} stroke="#3a2515" />
+              {/* the 1 in bite, drawn to the same scale as the layers */}
+              <rect x={gx} y={gy + through * THICK * inPx} width={140} height={BITE * inPx} fill={CEDAR_LIT} stroke="#3a2515" />
+              <text
+                x={gx - 10}
+                y={gy + through * THICK * inPx + (BITE * inPx) / 2 + 5}
+                textAnchor="end"
+                fill={colors.TEXT}
+                fontSize={14}
+              >
+                1 in bite
+              </text>
 
-              {/* required depth */}
+              {/* required depth: the screw must reach the bottom of the bite */}
               <line
                 x1={gx + 158}
                 y1={gy}
@@ -351,21 +366,21 @@ export function Render({ s }: { s: SceneState }) {
                 stroke={colors.POSITIVE}
                 strokeWidth={3}
               />
-              <text x={gx + 166} y={gy + (needIn * inPx) / 2} fill={colors.POSITIVE} fontSize={14} fontWeight={700}>
+              <text x={gx + 166} y={gy + (needIn * inPx) / 2 + 5} fill={colors.POSITIVE} fontSize={14} fontWeight={700}>
                 needs {needIn.toFixed(1)} in
               </text>
-              {/* the screw you are holding */}
+              {/* the screw you are holding, kept clear of the required-depth bar */}
               <line
-                x1={gx + 200}
+                x1={gx + 282}
                 y1={gy}
-                x2={gx + 200}
+                x2={gx + 282}
                 y2={gy + haveIn * inPx}
                 stroke={haveIn >= needIn ? colors.ACCENT : colors.NEGATIVE}
                 strokeWidth={5}
                 strokeLinecap="round"
               />
               <text
-                x={gx + 210}
+                x={gx + 292}
                 y={gy + haveIn * inPx + 20}
                 fill={haveIn >= needIn ? colors.ACCENT : colors.NEGATIVE}
                 fontSize={14}
@@ -374,7 +389,7 @@ export function Render({ s }: { s: SceneState }) {
                 {haveIn === 3 ? '2½–3 in' : '2 in'}
               </text>
               <text
-                x={gx + GAUGE.w / 2 - 10}
+                x={gx + 145}
                 y={gy + GAUGE.h + 20}
                 textAnchor="middle"
                 fill={haveIn >= needIn ? colors.POSITIVE : colors.NEGATIVE}
@@ -389,6 +404,7 @@ export function Render({ s }: { s: SceneState }) {
 
         {closeU > 0 && (
           <g opacity={closeU}>
+            <rect x={318} y={262} width={644} height={140} rx={16} fill={colors.BG} />
             <rect x={318} y={262} width={644} height={140} rx={16} fill={colors.PANEL} stroke={colors.ACCENT} strokeWidth={1.5} />
             <text x={640} y={316} textAnchor="middle" fill={colors.TEXT} fontSize={21}>
               no mortises · no tenons · eight glued courses

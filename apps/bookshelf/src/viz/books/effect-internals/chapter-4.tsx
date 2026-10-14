@@ -34,20 +34,23 @@ const MONO = 'ui-monospace, SFMono-Regular, Menlo, monospace';
 // Layout.
 // ---------------------------------------------------------------------------
 
-const F2 = { x: 62, y: 150, w: 252, h: 108 } as const;
-const PANEL = { x: 400, y: 96, w: 430, h: 452 } as const;
+// Camera maths: stage = (p - center) * k + (640, 360). The caption pill starts
+// at stage y 630, so content must stay above cy + 270 / k; fiber two's left
+// edge (x 96) and the latch's right edge (x 1196) must both stay inside view.
+const F2 = { x: 96, y: 150, w: 236, h: 108 } as const;
+const PANEL = { x: 400, y: 96, w: 430, h: 404 } as const;
 const SLOT = { x: 432, y: 180, w: 214, h: 74 } as const;
 const SLOT_C = { x: SLOT.x + SLOT.w / 2, y: SLOT.y + SLOT.h / 2 } as const;
-const STACK_X = 684;
-const STACK_W = 134;
+const STACK_X = 664;
+const STACK_W = 150;
 const STACK_H = 46;
-const stackY = (i: number): number => 470 - i * 54;
+const stackY = (i: number): number => 440 - i * 54;
 const LATCH = { x: 880, y: 206, w: 316, h: 96 } as const;
-const FLAG = { x: PANEL.x + 24, y: PANEL.y + 396 } as const;
+const FLAG = { x: PANEL.x + 24, y: PANEL.y + 340 } as const;
 
 const CAM_WIDE: CameraState = { x: 640, y: 350, k: 1.02 };
-const CAM_MACHINE: CameraState = { x: 640, y: 330, k: 1.2 };
-const CAM_LATCH: CameraState = { x: 840, y: 300, k: 1.22 };
+const CAM_MACHINE: CameraState = { x: 650, y: 300, k: 1.1 };
+const CAM_LATCH: CameraState = { x: 660, y: 290, k: 1.12 };
 
 function along(pts: ReadonlyArray<{ x: number; y: number }>, u: number): { x: number; y: number } {
   const f = clamp01(u) * (pts.length - 1);
@@ -377,7 +380,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={PANEL.x + 24} y={PANEL.y + 32} fill={colors.TEXT} fontSize={15.5} fontWeight={700}>
             FiberImpl · id: 1
           </text>
-          <text x={PANEL.x + PANEL.w - 20} y={PANEL.y + 32} textAnchor="end" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+          <text x={PANEL.x + PANEL.w - 20} y={PANEL.y + 32} textAnchor="end" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
             internal/effect.ts
           </text>
 
@@ -385,7 +388,7 @@ export function Render({ s }: { s: SceneState }) {
           <ellipse cx={SLOT_C.x} cy={SLOT_C.y} rx={132} ry={56} fill="none" stroke={colors.GRID} strokeDasharray="3 6" />
           <circle cx={dotX} cy={dotY} r={5} fill={colors.SECONDARY} />
           <rect x={SLOT.x} y={SLOT.y} width={SLOT.w} height={SLOT.h} rx={10} fill={colors.BG} stroke={cur.color} strokeWidth={1.8} />
-          <text x={SLOT.x + SLOT.w / 2} y={SLOT.y - 10} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+          <text x={SLOT.x + SLOT.w / 2} y={SLOT.y - 10} textAnchor="middle" fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
             current
           </text>
           <text x={SLOT.x + 16} y={SLOT.y + 30} fill={cur.color} fontSize={14.5} fontFamily={MONO} fontWeight={700}>
@@ -418,10 +421,10 @@ export function Render({ s }: { s: SceneState }) {
                   stroke={f.special ? colors.WARM : colors.GRID}
                   strokeWidth={glow ? 2.4 : f.special ? 1.8 : 1.2}
                 />
-                <text x={STACK_X + 10} y={y + 20} fill={f.special ? colors.WARM : colors.TEXT} fontSize={10.5} fontFamily={MONO} fontWeight={600}>
+                <text x={STACK_X + 10} y={y + 20} fill={f.special ? colors.WARM : colors.TEXT} fontSize={12} fontFamily={MONO} fontWeight={600}>
                   {f.name}
                 </text>
-                <text x={STACK_X + 10} y={y + 36} fill={colors.MUTED} fontSize={10.5} fontFamily={MONO}>
+                <text x={STACK_X + 10} y={y + 37} fill={colors.MUTED} fontSize={12} fontFamily={MONO}>
                   {f.tag}
                 </text>
                 {!f.special && <circle cx={STACK_X + STACK_W - 12} cy={y + 14} r={5} fill={colors.POSITIVE} />}
@@ -490,7 +493,7 @@ export function Render({ s }: { s: SceneState }) {
         {pulse1 > 0.01 && pulse1 < 0.99 && (
           <g>
             <circle cx={p1.x} cy={p1.y} r={11} fill={colors.NEGATIVE} opacity={0.92} />
-            <text x={p1.x} y={p1.y - 18} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11.5} fontFamily={MONO}>
+            <text x={p1.x} y={p1.y - 18} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
               causeInterrupt
             </text>
           </g>
@@ -513,7 +516,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={898} y={364} fill={colors.NEGATIVE} fontSize={13.5} fontFamily={MONO} fontWeight={700}>
             Exit · Failure
           </text>
-          <text x={898} y={384} fill={colors.TEXT} fontSize={11.5} fontFamily={MONO}>
+          <text x={898} y={384} fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
             cause: Interrupt
           </text>
         </g>
@@ -521,20 +524,20 @@ export function Render({ s }: { s: SceneState }) {
         {/* the exit traveling home to fiber 2 */}
         {exitBackU > 0.01 && exitBackU < 0.99 && (
           <g>
-            <rect x={exitPos.x - 70} y={exitPos.y - 18} width={140} height={36} rx={9} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.5} />
-            <text x={exitPos.x} y={exitPos.y + 5} textAnchor="middle" fill={colors.NEGATIVE} fontSize={11.5} fontFamily={MONO}>
+            <rect x={exitPos.x - 76} y={exitPos.y - 18} width={152} height={36} rx={9} fill={colors.PANEL} stroke={colors.NEGATIVE} strokeWidth={1.5} />
+            <text x={exitPos.x} y={exitPos.y + 5} textAnchor="middle" fill={colors.NEGATIVE} fontSize={12} fontFamily={MONO}>
               Exit · Interrupted
             </text>
           </g>
         )}
 
-        {/* the loose end */}
+        {/* the loose end: opaque panel centred over the faded machine */}
         <g opacity={teaseU}>
-          <rect x={470} y={566} width={340} height={48} rx={10} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.5} />
-          <text x={640} y={586} textAnchor="middle" fill={colors.WARM} fontSize={13} fontFamily={MONO}>
+          <rect x={420} y={290} width={440} height={100} rx={12} fill={colors.PANEL} stroke={colors.WARM} strokeWidth={1.8} />
+          <text x={640} y={328} textAnchor="middle" fill={colors.WARM} fontSize={18} fontFamily={MONO} fontWeight={700}>
             conn — still open
           </text>
-          <text x={640} y={604} textAnchor="middle" fill={colors.MUTED} fontSize={11}>
+          <text x={640} y={356} textAnchor="middle" fill={colors.TEXT} fontSize={14}>
             who closes this?
           </text>
         </g>

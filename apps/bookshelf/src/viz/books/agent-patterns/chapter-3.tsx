@@ -81,7 +81,7 @@ const STAGE_META = [
   { role: 'synthesizer', color: colors.WARM, id: '${parentId}-stage-3' },
 ];
 
-const TAPE_Y = 556;
+const TAPE_Y = 574;
 const TAPE_X0 = 168;
 // append order: transition + insert per stage, then done
 const TAPE_CELLS = [
@@ -95,7 +95,7 @@ const TAPE_CELLS = [
 ];
 
 const CAM_PAYLOAD: CameraState = { x: 580, y: 380, k: 1.15 };
-const CAM_RAIL: CameraState = { x: 640, y: 240, k: 1.25 };
+const CAM_RAIL: CameraState = { x: 640, y: 290, k: 1.1 };
 
 // ---------------------------------------------------------------------------
 // Timeline (~56s, eight beats)
@@ -297,7 +297,7 @@ export function Render({ s }: { s: SceneState }) {
       <Camera {...cam}>
         {/* ---------------- the state-machine rail ---------------- */}
         {railU > 0.01 && (
-          <g opacity={0.5 + 0.5 * dim}>
+          <g>
             <line
               x1={STOP_X[0]}
               y1={RAIL_Y}
@@ -317,7 +317,7 @@ export function Render({ s }: { s: SceneState }) {
                     {st}
                   </text>
                   {passed && i > 0 && i < 4 && (
-                    <text x={STOP_X[i]} y={RAIL_Y - 16} textAnchor="middle" fill={colors.POSITIVE} fontSize={11}>
+                    <text x={STOP_X[i]} y={RAIL_Y - 16} textAnchor="middle" fill={colors.POSITIVE} fontSize={12}>
                       ✓
                     </text>
                   )}
@@ -374,7 +374,7 @@ export function Render({ s }: { s: SceneState }) {
           <text x={PARENT.x} y={PARENT.y - 2} textAnchor="middle" fill={colors.TEXT} fontSize={16} fontWeight={600} opacity={0.45 + 0.55 * parentLit}>
             pipeline
           </text>
-          <text x={PARENT.x} y={PARENT.y + 19} textAnchor="middle" fill={colors.MUTED} fontSize={11.5} fontFamily={MONO}>
+          <text x={PARENT.x} y={PARENT.y + 19} textAnchor="middle" fill={colors.MUTED} fontSize={12.5} fontFamily={MONO}>
             run_stage
           </text>
         </g>
@@ -469,7 +469,7 @@ export function Render({ s }: { s: SceneState }) {
                 strokeDasharray="6 5"
               />
             ))}
-            <text x={1089} y={188} textAnchor="middle" fill={colors.NEGATIVE} fontSize={13}>
+            <text x={1089} y={188} textAnchor="middle" fill={colors.NEGATIVE} fontSize={14}>
               all three at once?
             </text>
             <g transform="translate(1089 340)">
@@ -498,10 +498,10 @@ export function Render({ s }: { s: SceneState }) {
               return (
                 <g key={i} opacity={u} transform={`translate(0 ${6 * (1 - u)})`}>
                   <rect x={x} y={TAPE_Y} width={120} height={36} rx={7} fill={colors.PANEL} stroke={c.c} strokeOpacity={0.55} />
-                  <text x={x + 60} y={TAPE_Y + 15} textAnchor="middle" fill={colors.TEXT} fontSize={9.5} fontFamily={MONO}>
+                  <text x={x + 60} y={TAPE_Y + 15} textAnchor="middle" fill={colors.TEXT} fontSize={12} fontFamily={MONO}>
                     {c.a}
                   </text>
-                  <text x={x + 60} y={TAPE_Y + 29} textAnchor="middle" fill={c.c} fontSize={10} fontFamily={MONO}>
+                  <text x={x + 60} y={TAPE_Y + 30} textAnchor="middle" fill={c.c} fontSize={12} fontFamily={MONO}>
                     {c.b}
                   </text>
                 </g>

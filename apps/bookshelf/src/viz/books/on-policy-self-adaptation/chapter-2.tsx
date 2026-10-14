@@ -12,6 +12,7 @@ const TOKENS = [
 const VALID = TOKENS.filter((t) => t.valid);
 const ORDER = [...VALID].sort((a, b) => a.logp - b.logp);
 const RANK = new Map(ORDER.map((t, i) => [t.id, i]));
+const PROMPT_SLOT = new Map(TOKENS.filter((t) => !t.valid).map((t, i) => [t.id, i]));
 
 export function buildScene() {
   const tl = new Timeline();
@@ -72,33 +73,33 @@ export function Render({ s }: { s: SceneState }) {
   return <><text x="640" y="76" textAnchor="middle" fill={colors.TEXT} fontSize="34" fontWeight="850" opacity={1 - close}>select the lowest fifth, across the batch</text><Camera {...s.get(scene.cam)}>
     <g opacity={1 - close}>
       {[0, 1].map((sample) => <g key={sample} opacity={(1 - flat) * s.get(scene.rowsU)}>
-        <text x="66" y={218 + sample * 154} fill={colors.MUTED} fontSize="13" fontFamily={colors.font.mono}>{`sample ${sample}`}</text>
+        <text x="24" y={218 + sample * 154} fill={colors.MUTED} fontSize="14" fontFamily={colors.font.mono}>{`sample ${sample}`}</text>
         <rect x="112" y={174 + sample * 154} width="1054" height="94" rx="22" fill="#101a2b" stroke={colors.GRID} />
       </g>)}
-      {TOKENS.map((token, i) => {
+      {TOKENS.map((token) => {
         const rowIndex = TOKENS.filter((t) => t.sample === token.sample).findIndex((t) => t.id === token.id);
         const ox = 150 + rowIndex * 84;
         const oy = 220 + token.sample * 154;
-        const rank = token.valid ? (RANK.get(token.id) ?? 0) : i;
-        const fx = token.valid ? 156 + rank * 51 : 1050 + (i % 4) * 48;
-        const fy = token.valid ? 354 : 520;
-        const x = lerp(ox, fx, flat * (1 - sort)) + (token.valid ? (fx - lerp(ox, fx, flat * (1 - sort))) * sort : 0);
+        const rank = token.valid ? (RANK.get(token.id) ?? 0) : PROMPT_SLOT.get(token.id) ?? 0;
+        const fx = token.valid ? 156 + rank * 51 : 1050 + rank * 56;
+        const fy = token.valid ? 354 : 490;
+        const x = token.valid ? lerp(ox, fx, flat * (1 - sort)) + (fx - lerp(ox, fx, flat * (1 - sort))) * sort : lerp(ox, fx, flat);
         const y = lerp(oy, fy, flat);
         const selected = token.valid && rank < 4;
         const active = token.valid ? 1 : 1 - s.get(scene.maskU) * 0.75;
-        return <g key={token.id} transform={`translate(${x} ${y + split * (token.sample === 0 ? -110 : 110)})`} opacity={s.get(scene.rowsU) * active}>
+        return <g key={token.id} transform={`translate(${x} ${y + split * (token.sample === 0 ? -110 : 110)})`} opacity={s.get(scene.rowsU) * active * (token.valid ? 1 : 1 - split)}>
           <rect x="-21" y="-28" width="42" height="56" rx="12" fill={selected && cut ? '#341923' : token.valid ? '#13243b' : '#202332'} stroke={selected && cut ? colors.NEGATIVE : token.valid ? colors.ACCENT : colors.MUTED} strokeWidth={selected && cut ? 3 : 1.5} />
-          <text y="-3" textAnchor="middle" fill={selected && cut ? colors.WARM : colors.TEXT} fontSize="12" fontWeight="800">{token.id}</text>
-          <text y="16" textAnchor="middle" fill={colors.MUTED} fontSize="9" fontFamily={colors.font.mono}>{token.logp.toFixed(1)}</text>
+          <text y="-3" textAnchor="middle" fill={selected && cut ? colors.WARM : colors.TEXT} fontSize="14" fontWeight="800">{token.id}</text>
+          <text y="16" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>{token.logp.toFixed(1)}</text>
           {split > 0 && <circle cx="14" cy="-20" r="9" fill={selected ? colors.POSITIVE : colors.GRID} stroke={selected ? colors.POSITIVE : colors.MUTED} />}
         </g>;
       })}
-      <g opacity={cut}>
-        <line x1="365" y1="274" x2="365" y2="438" stroke={colors.WARM} strokeWidth="4" strokeDasharray="8 6" />
-        <rect x="155" y="434" width="210" height="42" rx="18" fill="#2b2415" stroke={colors.WARM} />
-        <text x="260" y="460" textAnchor="middle" fill={colors.WARM} fontSize="13" fontFamily={colors.font.mono}>K = floor(0.2 × 20) = 4</text>
+      <g opacity={cut * (1 - split)}>
+        <line x1="335" y1="274" x2="335" y2="438" stroke={colors.WARM} strokeWidth="4" strokeDasharray="8 6" />
+        <rect x="222" y="434" width="226" height="42" rx="18" fill="#2b2415" stroke={colors.WARM} />
+        <text x="335" y="460" textAnchor="middle" fill={colors.WARM} fontSize="14" fontFamily={colors.font.mono}>K = floor(0.2 × 20) = 4</text>
       </g>
-      <g opacity={s.get(scene.oneU)} transform="translate(650 468)">
+      <g opacity={s.get(scene.oneU) * (1 - split)} transform="translate(650 468)">
         <rect x="-180" y="-28" width="360" height="56" rx="20" fill="#102a22" stroke={colors.POSITIVE} />
         <text y="7" textAnchor="middle" fill={colors.POSITIVE} fontSize="14" fontFamily={colors.font.mono}>max(1, floor(f × N)) when N &gt; 0</text>
       </g>
@@ -109,10 +110,10 @@ export function Render({ s }: { s: SceneState }) {
     <g opacity={close}>
       <rect x="170" y="120" width="940" height="438" rx="46" fill={colors.BG} stroke={colors.WARM} strokeWidth="4" />
       <text x="640" y="194" textAnchor="middle" fill={colors.TEXT} fontSize="40" fontWeight="850">one batch becomes one ordered ribbon</text>
-      {ORDER.slice(0, 12).map((t, i) => <g key={t.id} transform={`translate(${250 + i * 70} 344)`}>
-        <rect x="-25" y="-34" width="50" height="68" rx="13" fill={i < 4 ? '#341923' : '#15243a'} stroke={i < 4 ? colors.NEGATIVE : colors.ACCENT} strokeWidth={i < 4 ? 3 : 1.5} />
-        <text y="-5" textAnchor="middle" fill={i < 4 ? colors.WARM : colors.TEXT} fontWeight="800">{t.id}</text>
-        <text y="18" textAnchor="middle" fill={colors.MUTED} fontSize="10" fontFamily={colors.font.mono}>{t.logp.toFixed(1)}</text>
+      {ORDER.map((t, i) => <g key={t.id} transform={`translate(${222 + i * 44} 344)`}>
+        <rect x="-19" y="-34" width="38" height="68" rx="11" fill={i < 4 ? '#341923' : '#15243a'} stroke={i < 4 ? colors.NEGATIVE : colors.ACCENT} strokeWidth={i < 4 ? 3 : 1.5} />
+        <text y="-5" textAnchor="middle" fill={i < 4 ? colors.WARM : colors.TEXT} fontSize="16" fontWeight="800">{t.id}</text>
+        <text y="18" textAnchor="middle" fill={colors.MUTED} fontSize="12" fontFamily={colors.font.mono}>{t.logp.toFixed(1)}</text>
       </g>)}
       <text x="640" y="488" textAnchor="middle" fill={colors.MUTED} fontSize="17">valid only · stable ascending sort · exact loss mask</text>
     </g>

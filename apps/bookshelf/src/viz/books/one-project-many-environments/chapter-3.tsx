@@ -54,7 +54,7 @@ export function buildScene() {
   t = tl.hold(t, 0.7);
 
   t = tl.caption({ at: t, dur: 6.2, text: 'Production watches the clock. We propose a nightly run every weekday, so each morning starts with fresh results against the live site.' });
-  tl.tween(cam, { x: 640, y: 240, k: 1.18 }, { at: t - 5.8, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 360, k: 1.08 }, { at: t - 5.8, dur: 1.3, ease: ease.move });
   tl.tween(focus, 1, { at: t - 5.8, dur: 1.0, ease: ease.move });
   tl.tween(weekU, 1, { at: t - 4.8, dur: 2.4, ease: ease.linear });
   t = tl.hold(t, 0.5);
@@ -64,7 +64,7 @@ export function buildScene() {
   t = tl.hold(t, 0.6);
 
   t = tl.caption({ at: t, dur: 6.4, text: 'Staging watches the pipeline. When a merge lands on main and the deploy pipeline finishes, that completion event is the trigger.' });
-  tl.tween(cam, { x: 640, y: 340, k: 1.14 }, { at: t - 6.0, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 360, k: 1.08 }, { at: t - 6.0, dur: 1.3, ease: ease.move });
   tl.tween(focus, 2, { at: t - 6.0, dur: 1.0, ease: ease.move });
   tl.tween(pipeU, 1, { at: t - 4.8, dur: 3.0, ease: ease.linear });
   t = tl.hold(t, 0.5);
@@ -74,7 +74,7 @@ export function buildScene() {
   t = tl.hold(t, 0.6);
 
   t = tl.caption({ at: t, dur: 6.2, text: 'Pull requests watch the review state. A draft does nothing. Marking the pull request ready for review arms the trigger.' });
-  tl.tween(cam, { x: 640, y: 440, k: 1.14 }, { at: t - 5.8, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 400, k: 1.08 }, { at: t - 5.8, dur: 1.3, ease: ease.move });
   tl.tween(focus, 3, { at: t - 5.8, dur: 1.0, ease: ease.move });
   tl.tween(prReadyU, 1, { at: t - 4.4, dur: 1.2, ease: ease.move });
   t = tl.hold(t, 0.5);
@@ -110,7 +110,7 @@ export function buildScene() {
 
   t = tl.caption({ at: t, dur: 6.2, text: 'Three worlds, three trigger policies, one project. That is what this proposal buys us, and every run will finally say which world it ran in.' });
   tl.tween(closeU, 1, { at: t - 5.2, dur: 1.0, ease: ease.enter });
-  tl.tween(matrixU, 0.12, { at: t - 5.4, dur: 1.0, ease: ease.move });
+  tl.tween(matrixU, 0, { at: t - 5.4, dur: 1.0, ease: ease.move });
   tl.tween(cam, { x: 640, y: 340, k: 1.06 }, { at: t - 5.0, dur: 1.6, ease: ease.move });
   tl.hold(t, 1.0);
   return { tl, cam, lanesU, focus, weekU, prodFire, pipeU, stageFire, prReadyU, prDeployU, gateU, patternU, searchU, matchU, prFire, matrixU, skipU, closeU };
@@ -120,15 +120,15 @@ const scene = buildScene();
 
 function FirePacket({ u, y, color, url }: { u: number; y: number; color: string; url: string }) {
   if (u <= 0) return null;
-  const x = lerp(830, 1110, clamp01(u));
+  const x = lerp(850, 1100, clamp01(u));
   return <g>
-    <line x1={830} y1={y} x2={x} y2={y} stroke={color} strokeWidth={2.4} opacity={0.7} />
+    <line x1={850} y1={y} x2={x} y2={y} stroke={color} strokeWidth={2.4} opacity={0.7} />
     <circle cx={x} cy={y} r={9} fill={color} />
-    {u > 0.92 && <g opacity={(u - 0.92) * 12.5} transform={`translate(1120 ${y - 16})`}>
+    {u > 0.92 && <g opacity={(u - 0.92) * 12.5} transform={`translate(1116 ${y - 16})`}>
       <rect width={54} height={32} rx={9} fill={color} opacity={0.16} />
       <text x={27} y={21} textAnchor="middle" fill={color} fontSize={12} fontWeight={750}>run</text>
     </g>}
-    <text x={832} y={y - 12} fill={color} fontSize={10.5} fontFamily={mono} opacity={clamp01(u * 3)}>{url}</text>
+    <text x={852} y={y - 12} fill={color} fontSize={12} fontFamily={mono} opacity={clamp01(u * 3)}>{url}</text>
   </g>;
 }
 
@@ -138,7 +138,7 @@ export function Render({ s }: { s: SceneState }) {
   // 1 when this lane is the camera's subject (or no lane is), else dimmed to a whisper
   const laneOp = (i: number) => {
     const active = clamp01(1 - Math.abs(focus - (i + 1)));
-    return lerp(1, lerp(0.1, 1, active), clamp01(focus));
+    return lerp(1, lerp(0.32, 1, active), clamp01(focus));
   };
   const weekU = s.get(scene.weekU);
   const pipeU = s.get(scene.pipeU);
@@ -158,9 +158,9 @@ export function Render({ s }: { s: SceneState }) {
       {LANES.map((lane, i) => {
         const show = clamp01(lanesU * 3 - i * 0.8);
         return <g key={lane.name} opacity={show * laneOp(i)}>
-          <rect x={85} y={lane.y - 42} width={1110} height={150} rx={20} fill={colors.PANEL} stroke={lane.color} strokeWidth={1.6} opacity={0.5} />
-          <text x={112} y={lane.y - 12} fill={colors.TEXT} fontSize={19} fontWeight={750}>{lane.name}</text>
-          <text x={112} y={lane.y + 10} fill={colors.MUTED} fontSize={11.5} fontFamily={mono}>{lane.url}</text>
+          <rect x={85} y={lane.y - 42} width={1110} height={160} rx={20} fill={colors.PANEL} stroke={lane.color} strokeWidth={1.6} opacity={0.5} />
+          <text x={124} y={lane.y - 12} fill={colors.TEXT} fontSize={19} fontWeight={750}>{lane.name}</text>
+          <text x={124} y={lane.y + 10} fill={colors.MUTED} fontSize={12} fontFamily={mono}>{lane.url}</text>
         </g>;
       })}
 
@@ -188,7 +188,7 @@ export function Render({ s }: { s: SceneState }) {
             <rect width={96} height={44} rx={10} fill={isLast && done > 0.6 ? colors.WARM : colors.BG}
               fillOpacity={isLast && done > 0.6 ? 0.2 : 1}
               stroke={done > 0.3 ? colors.WARM : colors.MUTED} strokeOpacity={done > 0.3 ? 0.95 : 0.35} strokeWidth={1.6} />
-            <text x={48} y={26} textAnchor="middle" fill={done > 0.3 ? colors.TEXT : colors.MUTED} fontSize={11} fontFamily={mono}>{stage}</text>
+            <text x={48} y={26} textAnchor="middle" fill={done > 0.3 ? colors.TEXT : colors.MUTED} fontSize={12} fontFamily={mono}>{stage}</text>
             {i < PIPELINE.length - 1 && <line x1={96} y1={22} x2={112} y2={22} stroke={done > 0.8 ? colors.WARM : colors.MUTED} strokeWidth={2} opacity={done > 0.8 ? 1 : 0.3} />}
           </g>;
         })}
@@ -216,16 +216,17 @@ export function Render({ s }: { s: SceneState }) {
             fillOpacity={gateU > 0.5 ? 0.25 : 1} stroke={colors.SECONDARY} strokeWidth={1.8} strokeOpacity={0.5 + 0.5 * gateU} />
           <text x={20} y={27} textAnchor="middle" fill={gateU > 0.5 ? colors.TEXT : colors.MUTED} fontSize={10.5} fontWeight={700}>AND</text>
         </g>
-        <text x={400} y={LANES[2].y + 78} fill={colors.SECONDARY} fontSize={11.5} fontFamily={mono} opacity={clamp01(prReadyU * 2) * (1 - clamp01(patternU * 2))}>trigger: ready_for_review ∧ preview deployed</text>
+        <text x={400} y={LANES[2].y + 78} fill={colors.SECONDARY} fontSize={12} fontFamily={mono} opacity={clamp01(prReadyU * 2) * (1 - clamp01(patternU * 2))}>trigger: ready_for_review ∧ preview deployed</text>
         {patternU > 0 && <g opacity={patternU}>
-          <text x={400} y={LANES[2].y + 78} fill={colors.SECONDARY} fontSize={11.5} fontFamily={mono}>target_url: <tspan fill={colors.TEXT}>https://preview-*.example.com</tspan>  <tspan fill={colors.MUTED}>(pattern)</tspan></text>
+          <text x={400} y={LANES[2].y + 78} fill={colors.SECONDARY} fontSize={12} fontFamily={mono}>target_url: <tspan fill={colors.TEXT}>https://preview-*.example.com</tspan>  <tspan fill={colors.MUTED}>(pattern)</tspan></text>
+          <text x={800} y={LANES[2].y + 78} fill={colors.MUTED} fontSize={12} fontFamily={mono} opacity={clamp01(searchU * 2 - 0.6)}>no match: run skips · several: first wins</text>
           <g opacity={clamp01(searchU * 2)}>
-            <text x={400} y={LANES[2].y + 100} fill={clamp01(searchU * 2 - 0.4) > 0 ? colors.POSITIVE : colors.MUTED} fontSize={11} fontFamily={mono}>1 · checks{clamp01(searchU * 2 - 0.4) > 0 ? ' · preview-421.example.com ✓ match' : ' · scanning links…'}</text>
-            <text x={780} y={LANES[2].y + 100} fill={colors.MUTED} fontSize={11} fontFamily={mono} opacity={0.4 + 0.3 * searchU}>2 · comments · only if checks have no match</text>
+            <text x={400} y={LANES[2].y + 100} fill={clamp01(searchU * 2 - 0.4) > 0 ? colors.POSITIVE : colors.MUTED} fontSize={12} fontFamily={mono}>1 · checks{clamp01(searchU * 2 - 0.4) > 0 ? ' · preview-421.example.com ✓ match' : ' · scanning links…'}</text>
+            <text x={780} y={LANES[2].y + 100} fill={colors.MUTED} fontSize={12} fontFamily={mono} opacity={0.4 + 0.3 * searchU}>2 · comments · only if checks have no match</text>
           </g>
           {matchU > 0 && <g opacity={matchU} transform={`translate(832 ${LANES[2].y + 44})`}>
-            <rect width={286} height={24} rx={12} fill={colors.SECONDARY} opacity={0.14} />
-            <text x={143} y={16} textAnchor="middle" fill={colors.SECONDARY} fontSize={10.5} fontFamily={mono}>override_url = preview-421.example.com</text>
+            <rect width={310} height={26} rx={13} fill={colors.SECONDARY} opacity={0.14} />
+            <text x={155} y={17} textAnchor="middle" fill={colors.SECONDARY} fontSize={12} fontFamily={mono}>override_url = preview-421.example.com</text>
           </g>}
         </g>}
         <FirePacket u={s.get(scene.prFire)} y={LANES[2].y + 30} color={colors.SECONDARY} url="preview run" />

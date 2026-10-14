@@ -1,6 +1,6 @@
 // Grounding: envharness/core/actionable_env.py; envharness/core/envharness.py;
 // EnvHarness paper Sections 1 and 2.1 (arXiv:2608.19880).
-import { CAMERA_HOME, Camera, MathLabel, Timeline, cameraInterp, colors, ease } from '../../core';
+import { CAMERA_HOME, Camera, Timeline, cameraInterp, colors, ease } from '../../core';
 import type { CameraState, SceneState } from '../../core';
 
 const METHODS = [
@@ -34,7 +34,7 @@ export function buildScene() {
 
   tl.caption({ at: 7.0, dur: 6.4, text: 'But a hand-built benchmark is static. It repeats the same lesson, even after the learner changes.' });
   tl.tween(freezeU, 1, { at: 7.8, dur: 1.0, ease: ease.enter });
-  tl.tween(cam, { x: 640, y: 335, k: 1.18 }, { at: 9.0, dur: 1.3, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 335, k: 1.1 }, { at: 9.0, dur: 1.3, ease: ease.move });
 
   tl.caption({ at: 13.8, dur: 6.4, text: 'Environment Harness leaves that world in place and wraps a programmable membrane around its interface.' });
   tl.tween(orbitU, 1, { at: 14.4, dur: 1.4, ease: ease.draw });
@@ -49,7 +49,7 @@ export function buildScene() {
 
   tl.caption({ at: 34.2, dur: 6.5, text: 'The wrapper is itself an actionable environment, so another layer can wrap it again without changing the agent.' });
   tl.tween(stackU, 1, { at: 34.8, dur: 1.6, ease: ease.draw });
-  tl.tween(cam, { x: 640, y: 335, k: 1.12 }, { at: 37.0, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 335, k: 1.1 }, { at: 37.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 41.2, dur: 6.4, text: 'Inside, the benchmark transition logic stays frozen while the membrane reshapes what passes through.' });
   tl.tween(freezeU, 1.6, { at: 41.8, dur: 1.0, ease: ease.pop });
@@ -57,7 +57,7 @@ export function buildScene() {
 
   tl.caption({ at: 48.0, dur: 6.5, text: 'Evaluation still reaches the original human-built verifier. The wrapper cannot manufacture success.' });
   tl.tween(verifierU, 1, { at: 48.7, dur: 1.5, ease: ease.draw });
-  tl.tween(cam, { x: 785, y: 335, k: 1.18 }, { at: 50.0, dur: 1.2, ease: ease.move });
+  tl.tween(cam, { x: 640, y: 330, k: 1.1 }, { at: 50.0, dur: 1.2, ease: ease.move });
 
   tl.caption({ at: 54.9, dur: 6.8, text: 'Five very different benchmarks now accept the same layer. One frozen lesson can become a lesson shaped for this learner.' });
   tl.tween(cam, CAMERA_HOME, { at: 54.2, dur: 1.2, ease: ease.move });
@@ -90,9 +90,9 @@ export function Render({ s }: { s: SceneState }) {
         <g opacity={1 - domainStage}>
         <g opacity={worldU}>
           <circle cx="640" cy="335" r="118" fill={colors.PANEL} stroke={colors.MUTED} strokeWidth="3" />
-          <path d="M600 292 l18 18 -18 18 22 22 -18 18 M680 292 l-18 18 18 18 -22 22 18 18" fill="none" stroke={colors.ACCENT} strokeWidth="4" opacity="0.7" />
+          <path d="M628 252 l24 24 M652 252 l-24 24" fill="none" stroke={colors.ACCENT} strokeWidth="4" strokeLinecap="round" opacity="0.7" />
           <text x="640" y="326" textAnchor="middle" fill={colors.TEXT} fontSize="24" fontWeight="700">static environment</text>
-          <text x="640" y="360" textAnchor="middle" fill={colors.MUTED} fontSize="17">native transitions · original task</text>
+          <text x="640" y="360" textAnchor="middle" fill={colors.MUTED} fontSize="15">native transitions · original task</text>
           <text x="640" y="399" textAnchor="middle" fill={colors.ACCENT} fontSize="32" opacity={0.35 + 0.65 * clamp01(s.get(scene.freezeU))}>❄</text>
         </g>
 
@@ -119,16 +119,18 @@ export function Render({ s }: { s: SceneState }) {
           <path d="M188 298 H 520" stroke={colors.WARM} strokeWidth="3" opacity="0.38" />
           <path d="M520 372 H 188" stroke={colors.ACCENT} strokeWidth="3" opacity="0.38" />
           <circle cx={actionX} cy="298" r="9" fill={colors.WARM} />
-          <text x={actionX} y="279" textAnchor="middle" fill={colors.WARM} fontSize="13">Action</text>
+          <rect x={actionX - 36} y="266" width="72" height="22" rx="11" fill={colors.BG} opacity="0.9" />
+          <text x={actionX} y="282" textAnchor="middle" fill={colors.WARM} fontSize="14">Action</text>
           <circle cx={obsX} cy="372" r="9" fill={colors.ACCENT} />
-          <text x={obsX} y="397" textAnchor="middle" fill={colors.ACCENT} fontSize="13">Observation</text>
+          <rect x={obsX - 56} y="384" width="112" height="22" rx="11" fill={colors.BG} opacity="0.9" />
+          <text x={obsX} y="400" textAnchor="middle" fill={colors.ACCENT} fontSize="14">Observation</text>
         </g>
 
         <g opacity={s.get(scene.verifierU)}>
-          <path d="M738 335 C 825 335 842 258 918 258" fill="none" stroke={colors.POSITIVE} strokeWidth="5" strokeDasharray="9 8" />
-          <rect x="918" y="210" width="250" height="96" rx="22" fill="#0b211c" stroke={colors.POSITIVE} strokeWidth="3" />
-          <text x="1043" y="246" textAnchor="middle" fill={colors.POSITIVE} fontSize="19" fontWeight="700">original verifier</text>
-          <text x="1043" y="277" textAnchor="middle" fill={colors.TEXT} fontSize="17">evaluate().success</text>
+          <path d="M820 490 C 860 490 878 448 918 448" fill="none" stroke={colors.POSITIVE} strokeWidth="5" strokeDasharray="9 8" />
+          <rect x="918" y="400" width="250" height="96" rx="22" fill="#0b211c" stroke={colors.POSITIVE} strokeWidth="3" />
+          <text x="1043" y="436" textAnchor="middle" fill={colors.POSITIVE} fontSize="19" fontWeight="700">original verifier</text>
+          <text x="1043" y="467" textAnchor="middle" fill={colors.TEXT} fontSize="17">evaluate().success</text>
         </g>
         </g>
 
@@ -147,10 +149,10 @@ export function Render({ s }: { s: SceneState }) {
       </g>
 
       <g opacity={close}>
-        <rect x="250" y="165" width="780" height="335" rx="34" fill={colors.BG} stroke={colors.SECONDARY} strokeWidth="4" />
+        <rect x="200" y="165" width="880" height="335" rx="34" fill={colors.BG} stroke={colors.SECONDARY} strokeWidth="4" />
         <text x="640" y="246" textAnchor="middle" fill={colors.MUTED} fontSize="22">same benchmark · same verifier</text>
-        <MathLabel tex={'E^{\\prime} = w(E)'} x={640} y={330} fontSize={54} color={colors.TEXT} opacity={close} />
-        <text x="640" y="414" textAnchor="middle" fill={colors.SECONDARY} fontSize="27" fontWeight="700">customized environment = static environment + EnvHarness</text>
+        <text x="640" y="344" textAnchor="middle" fill={colors.TEXT} fontSize="54" fontStyle="italic" fontFamily="serif" opacity={close}>E′ = w(E)</text>
+        <text x="640" y="414" textAnchor="middle" fill={colors.SECONDARY} fontSize="25" fontWeight="700">customized environment = static environment + EnvHarness</text>
       </g>
     </Camera>
   );
