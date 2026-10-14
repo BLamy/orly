@@ -1,6 +1,6 @@
 {
  "shot": "ch04-s07",
- "at": "2026-10-13T04:13:19.928Z",
+ "at": "2026-10-13T23:12:45.212Z",
  "minCapPx": 22,
  "sampled": 18,
  "texts": 13,
@@ -29,7 +29,7 @@
   },
   {
    "text": "thesis: reverse-mode differentiation",
-   "capWhileSubject": 25.5,
+   "capWhileSubject": 25.4,
    "why": "script onScreenText"
   }
  ],

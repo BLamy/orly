@@ -242,5 +242,37 @@
    "to": 15.3,
    "minInkWhilePaper": 0
   }
- ]
+ ],
+ "transition": {
+  "kind": "crossfade",
+  "sampled": 12,
+  "ghosts": [],
+  "carry": [
+   {
+    "side": "out",
+    "text": "JUNE 2017",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "Christiano et al. · OpenAI and DeepMind",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "in",
+    "text": "1.3B",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.67
+   }
+  ]
+ },
+ "transAt": "2026-10-13T22:54:48.767Z"
 }

@@ -4,8 +4,33 @@
    "fails": [],
    "suspects": [],
    "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing 'we' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'crossed' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'the' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'river' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'bank' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'at' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'dusk' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'and' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'walked' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'on' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'along' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'the' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'water' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'until' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'the' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'lamps' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'of' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'the' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'town' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'came' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '20 words · 400 pairs' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'cost ∝ n²' up to 72 % over the other shot -0.13..0.21 s"
+   ],
    "probed": 1,
-   "at": "2026-10-13T20:02:12.490Z"
+   "at": "2026-10-14T00:39:47.667Z"
   },
   "ch03-s06": {
    "fails": [],
@@ -19,14 +44,17 @@
    "suspects": [],
    "ghosts": [],
    "probed": 1,
-   "at": "2026-10-13T19:54:32.088Z"
+   "at": "2026-10-13T19:54:32.088Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:24.143Z",
+   "transCarry": []
   },
   "ch14-s07": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
-   "probed": 1,
-   "at": "2026-10-13T22:09:48.675Z"
+   "probed": 2,
+   "at": "2026-10-14T02:01:17.820Z"
   },
   "ch09-s05": {
    "fails": [],
@@ -35,7 +63,7 @@
    ],
    "ghosts": [],
    "probed": 2,
-   "at": "2026-10-13T21:55:37.040Z"
+   "at": "2026-10-14T02:02:10.316Z"
   },
   "ch14-s02": {
    "fails": [],
@@ -70,7 +98,10 @@
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:50:06.060Z"
+   "at": "2026-10-13T19:50:06.060Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:06.890Z",
+   "transCarry": []
   },
   "ch01-s05": {
    "fails": [],
@@ -84,21 +115,29 @@
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T21:59:16.206Z"
+   "at": "2026-10-14T02:02:32.524Z"
   },
   "ch01-s07": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:50:19.561Z"
+   "at": "2026-10-13T19:50:19.561Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:07.686Z",
+   "transCarry": []
   },
   "ch02-s01": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:50:24.278Z"
+   "at": "2026-10-13T19:50:24.278Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:08.231Z",
+   "transCarry": [
+    "outgoing 'A case history of neural networks, 1943–2026' up to 72 % over the other shot -0.13..0.21 s"
+   ]
   },
   "ch02-s02": {
    "fails": [],
@@ -126,7 +165,10 @@
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:50:51.063Z"
+   "at": "2026-10-13T19:50:51.063Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:08.756Z",
+   "transCarry": []
   },
   "ch02-s05b": {
    "fails": [],
@@ -142,14 +184,24 @@
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:51:16.545Z"
+   "at": "2026-10-13T19:51:16.545Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:10.388Z",
+   "transCarry": []
   },
   "ch02-s08": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T22:01:48.064Z"
+   "at": "2026-10-13T22:01:48.064Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:15.074Z",
+   "transCarry": [
+    "outgoing 'I was so taken by this that I' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'never got over it.”' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming '1943' up to 72 % over the other shot -0.13..0.21 s"
+   ]
   },
   "ch03-s01": {
    "fails": [],
@@ -162,7 +214,33 @@
    ],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:51:37.652Z"
+   "at": "2026-10-13T19:51:37.652Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:15.826Z",
+   "transCarry": [
+    "outgoing 'WHO TAUGHT' up to 71 % over the other shot -0.16..0.26 s",
+    "outgoing 'IT?' up to 71 % over the other shot -0.16..0.26 s",
+    "outgoing 'THE STRUCTURE OF' up to 71 % over the other shot -0.16..0.26 s",
+    "outgoing 'THE NET DOES NOT' up to 71 % over the other shot -0.16..0.26 s",
+    "outgoing 'CHANGE WITH' up to 71 % over the other shot -0.16..0.26 s",
+    "outgoing 'TIME.' up to 71 % over the other shot -0.16..0.26 s",
+    "outgoing 'TURING · DUE 2000' up to 71 % over the other shot -0.16..0.26 s",
+    "outgoing '3 in 10 fooled' up to 71 % over the other shot -0.16..0.26 s",
+    "outgoing 'How could a net rewire' up to 71 % over the other shot -0.16..0.26 s",
+    "outgoing 'itself?' up to 71 % over the other shot -0.16..0.26 s",
+    "outgoing '1943' up to 71 % over the other shot -0.16..0.26 s",
+    "incoming 'L' up to 65 % over the other shot -0.16..0.26 s",
+    "incoming 'E' up to 63 % over the other shot -0.16..0.26 s",
+    "incoming 'F' up to 65 % over the other shot -0.16..0.26 s",
+    "incoming 'R' up to 63 % over the other shot -0.16..0.26 s",
+    "incoming 'I' up to 67 % over the other shot -0.16..0.26 s",
+    "incoming 'T' up to 57 % over the other shot -0.16..0.26 s",
+    "incoming 'R' up to 65 % over the other shot -0.16..0.26 s",
+    "incoming 'G' up to 59 % over the other shot -0.08..0.26 s",
+    "incoming 'H' up to 62 % over the other shot -0.08..0.26 s",
+    "incoming 'T' up to 67 % over the other shot -0.08..0.26 s",
+    "incoming 'T' up to 61 % over the other shot -0.08..0.26 s"
+   ]
   },
   "ch03-s02": {
    "fails": [],
@@ -190,7 +268,10 @@
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:52:10.010Z"
+   "at": "2026-10-13T19:52:10.010Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:16.258Z",
+   "transCarry": []
   },
   "ch03-s08": {
    "fails": [],
@@ -207,35 +288,84 @@
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:52:32.909Z"
+   "at": "2026-10-13T19:52:32.909Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:16.707Z",
+   "transCarry": [
+    "outgoing 'TURING · DUE 2000' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '3 in 10 fooled' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'ROSENBLATT · 1961' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'Linguistic capability,' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'related to perceptual' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'experience, is of the' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'essence…' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming '1958' up to 72 % over the other shot -0.13..0.21 s"
+   ]
   },
   "ch04-s01": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:52:42.105Z"
+   "at": "2026-10-13T19:52:42.105Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:17.170Z",
+   "transCarry": []
   },
   "ch04-s02": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:52:51.726Z"
+   "at": "2026-10-13T19:52:51.726Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:17.601Z",
+   "transCarry": []
   },
   "ch04-s03": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:52:56.883Z"
+   "at": "2026-10-13T19:52:56.883Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:19.555Z",
+   "transCarry": [
+    "outgoing 'MANY-LAYERED NETS ARE' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'A STERILE EXTENSION' up to 72 % over the other shot -0.13..0.21 s"
+   ]
   },
   "ch04-s04": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:53:00.656Z"
+   "at": "2026-10-13T19:53:00.656Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:20.102Z",
+   "transCarry": [
+    "outgoing '19' up to 67 % over the other shot -0.13..0.21 s",
+    "outgoing 'Tu' up to 70 % over the other shot -0.13..0.21 s",
+    "outgoing 'r' up to 65 % over the other shot -0.13..0.21 s",
+    "outgoing 'i' up to 59 % over the other shot -0.13..0.21 s",
+    "outgoing 'n' up to 68 % over the other shot -0.13..0.21 s",
+    "outgoing 'Awa' up to 70 % over the other shot -0.13..0.21 s",
+    "outgoing 'M' up to 69 % over the other shot -0.13..0.21 s",
+    "outgoing 'a' up to 67 % over the other shot -0.13..0.21 s",
+    "outgoing 'n' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'y' up to 66 % over the other shot -0.13..0.21 s",
+    "outgoing 'a dir' up to 71 % over the other shot -0.13..0.21 s",
+    "outgoing 'e' up to 66 % over the other shot -0.13..0.21 s",
+    "outgoing 't' up to 57 % over the other shot -0.13..0.21 s",
+    "outgoing 'a' up to 62 % over the other shot -0.13..0.21 s",
+    "outgoing 'p' up to 71 % over the other shot -0.13..0.21 s",
+    "outgoing 'p' up to 59 % over the other shot -0.13..0.21 s",
+    "outgoing 'n' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'o' up to 69 % over the other shot -0.13..0.21 s",
+    "outgoing 's' up to 67 % over the other shot -0.13..0.21 s",
+    "outgoing 'h' up to 70 % over the other shot -0.13..0.21 s",
+    "outgoing '— US Congress, Mansfield Amendment, 1969' up to 67 % over the other shot -0.13..0.21 s"
+   ]
   },
   "ch04-s05": {
    "fails": [],
@@ -245,7 +375,13 @@
    ],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:53:05.019Z"
+   "at": "2026-10-13T19:53:05.019Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:20.520Z",
+   "transCarry": [
+    "outgoing 'Walter Pitts · 1923–1969' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'Warren McCulloch · 1898–1969' up to 72 % over the other shot -0.13..0.21 s"
+   ]
   },
   "ch04-s06": {
    "fails": [],
@@ -264,7 +400,7 @@
    ],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:53:23.713Z"
+   "at": "2026-10-14T02:02:00.657Z"
   },
   "ch04-s08": {
    "fails": [],
@@ -278,14 +414,20 @@
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:53:45.638Z"
+   "at": "2026-10-13T19:53:45.638Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:22.767Z",
+   "transCarry": []
   },
   "ch05-s03": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:53:50.610Z"
+   "at": "2026-10-13T19:53:50.610Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:23.608Z",
+   "transCarry": []
   },
   "ch05-s05": {
    "fails": [],
@@ -301,7 +443,10 @@
    ],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:54:43.839Z"
+   "at": "2026-10-13T19:54:43.839Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:24.589Z",
+   "transCarry": []
   },
   "ch05-s07": {
    "fails": [],
@@ -330,7 +475,10 @@
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:55:14.740Z"
+   "at": "2026-10-13T19:55:14.740Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:25.039Z",
+   "transCarry": []
   },
   "ch05-s10": {
    "fails": [],
@@ -339,7 +487,17 @@
    ],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:55:23.467Z"
+   "at": "2026-10-13T19:55:23.467Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:25.891Z",
+   "transCarry": [
+    "outgoing '1958' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1969' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1984' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'c. 1980–1987 · 7' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'CYC · begun 1984 · Lenat kept at it until 2023' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'rule engines lived on in business software' up to 72 % over the other shot -0.13..0.21 s"
+   ]
   },
   "ch06-s01": {
    "fails": [],
@@ -348,14 +506,20 @@
    ],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:55:28.397Z"
+   "at": "2026-10-13T19:55:28.397Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:27.371Z",
+   "transCarry": []
   },
   "ch06-s02": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:55:32.847Z"
+   "at": "2026-10-13T19:55:32.847Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:28.224Z",
+   "transCarry": []
   },
   "ch06-s03": {
    "fails": [],
@@ -365,7 +529,10 @@
    ],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:55:42.528Z"
+   "at": "2026-10-13T19:55:42.528Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:28.670Z",
+   "transCarry": []
   },
   "ch06-s03b": {
    "fails": [],
@@ -409,7 +576,45 @@
    ],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:57:16.130Z"
+   "at": "2026-10-13T19:57:16.130Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:30.082Z",
+   "transCarry": [
+    "outgoing '0.125' up to 66 % over the other shot -0.13..0.21 s",
+    "outgoing '0.125' up to 66 % over the other shot -0.13..0.21 s",
+    "outgoing '0.25' up to 68 % over the other shot -0.13..0.21 s",
+    "outgoing '0.25' up to 68 % over the other shot -0.13..0.21 s",
+    "outgoing '0.5' up to 70 % over the other shot -0.13..0.21 s",
+    "outgoing '0.5' up to 70 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '× 1.0' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '× 1.0' up to 72 % over the other shot -0.13..0.21 s"
+   ]
   },
   "ch06-s08": {
    "fails": [],
@@ -422,8 +627,10 @@
    "fails": [],
    "suspects": [],
    "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
    "probed": 0,
-   "at": "2026-10-13T19:57:26.934Z"
+   "at": "2026-10-13T23:12:27.667Z"
   },
   "ch07-s02": {
    "fails": [],
@@ -450,21 +657,30 @@
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:57:53.922Z"
+   "at": "2026-10-13T19:57:53.922Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:31.017Z",
+   "transCarry": []
   },
   "ch07-s06": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:57:56.784Z"
+   "at": "2026-10-13T19:57:56.784Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:31.458Z",
+   "transCarry": []
   },
   "ch08-s01": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:58:03.576Z"
+   "at": "2026-10-13T19:58:03.576Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:31.894Z",
+   "transCarry": []
   },
   "ch08-s02": {
    "fails": [],
@@ -487,14 +703,22 @@
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:58:23.677Z"
+   "at": "2026-10-13T19:58:23.677Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:32.468Z",
+   "transCarry": []
   },
   "ch08-s05": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:58:35.067Z"
+   "at": "2026-10-13T19:58:35.067Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:33.223Z",
+   "transCarry": [
+    "outgoing 'ILLUSTRATIVE · a toy stencil, set by hand' up to 69 % over the other shot -0.13..0.21 s"
+   ]
   },
   "ch08-s06": {
    "fails": [],
@@ -508,14 +732,20 @@
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:58:51.818Z"
+   "at": "2026-10-13T19:58:51.818Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:34.308Z",
+   "transCarry": []
   },
   "ch08-s08": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:58:58.886Z"
+   "at": "2026-10-13T19:58:58.886Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:34.998Z",
+   "transCarry": []
   },
   "ch08-s08b": {
    "fails": [],
@@ -529,21 +759,32 @@
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:59:32.963Z"
+   "at": "2026-10-13T19:59:32.963Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:37.273Z",
+   "transCarry": [
+    "outgoing 'dropout · p = 0.5 · the two big halls only (fc6, fc7)' up to 72 % over the other shot -0.13..0.21 s"
+   ]
   },
   "ch08-s10": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:59:35.669Z"
+   "at": "2026-10-13T19:59:35.669Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:39.494Z",
+   "transCarry": []
   },
   "ch08-s11": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T19:59:49.801Z"
+   "at": "2026-10-13T19:59:49.801Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:40.133Z",
+   "transCarry": []
   },
   "ch08-s12": {
    "fails": [],
@@ -564,7 +805,10 @@
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T20:00:14.048Z"
+   "at": "2026-10-13T20:00:14.048Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:40.832Z",
+   "transCarry": []
   },
   "ch08-s14": {
    "fails": [],
@@ -574,7 +818,10 @@
    ],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T20:00:19.207Z"
+   "at": "2026-10-13T20:00:19.207Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:41.313Z",
+   "transCarry": []
   },
   "ch09-s01": {
    "fails": [],
@@ -590,14 +837,38 @@
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T20:00:30.065Z"
+   "at": "2026-10-13T20:00:30.065Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:41.755Z",
+   "transCarry": [
+    "outgoing '$44,000,000' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'GOOGLE' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'LAKE TAHOE · DECEMBER 2012 · ROOM 731' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'as reported by Cade Metz' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'TURING · DUE 2000' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming '3 in 10 fooled' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'ROSENBLATT · 1961' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'Linguistic capability,' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'related to perceptual' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'experience, is of the' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'essence…' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming '…simply by waiting' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'for faster GPUs and' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'bigger datasets…' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'COULOM · MAY 2014' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'I think maybe ten' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'years' up to 72 % over the other shot -0.13..0.21 s"
+   ]
   },
   "ch09-s03": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T20:00:39.901Z"
+   "at": "2026-10-13T20:00:39.901Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:42.187Z",
+   "transCarry": []
   },
   "ch09-s04": {
    "fails": [],
@@ -616,7 +887,10 @@
    ],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T20:01:01.238Z"
+   "at": "2026-10-13T20:01:01.238Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:43.149Z",
+   "transCarry": []
   },
   "ch10-s02": {
    "fails": [],
@@ -639,7 +913,12 @@
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T20:01:21.436Z"
+   "at": "2026-10-13T20:01:21.436Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:44.029Z",
+   "transCarry": [
+    "outgoing 'prediction of my life”' up to 72 % over the other shot -0.13..0.21 s"
+   ]
   },
   "ch10-s05": {
    "fails": [],
@@ -681,21 +960,57 @@
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T21:55:56.159Z"
+   "at": "2026-10-14T00:39:27.288Z"
   },
   "ch10-s12": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
    "probed": 1,
-   "at": "2026-10-13T21:49:14.489Z"
+   "at": "2026-10-14T00:41:30.167Z"
   },
   "ch10-s14": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T20:47:42.834Z"
+   "at": "2026-10-13T20:47:42.834Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:56:25.069Z",
+   "transCarry": [
+    "outgoing '1984' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'MID-1990s' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1999' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '2006' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '2012' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1997' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '–2017' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '2019' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'the' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'cat' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'sat' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'on' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'the' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'mat' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'the' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'cat' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'sat' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'on' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'the' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'mat' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'die' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'Katze' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'saß' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'auf' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'der' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'die' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'Katze' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'saß' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'auf' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'der' up to 72 % over the other shot -0.13..0.21 s"
+   ]
   },
   "ch11-s01": {
    "fails": [],
@@ -704,7 +1019,10 @@
    ],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T20:02:27.246Z"
+   "at": "2026-10-13T20:02:27.246Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:45.879Z",
+   "transCarry": []
   },
   "ch11-s02": {
    "fails": [],
@@ -718,7 +1036,18 @@
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T20:02:46.082Z"
+   "at": "2026-10-13T20:02:46.082Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:46.414Z",
+   "transCarry": [
+    "outgoing '1958' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1969' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'c. 1980' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1984' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'MID-1990s' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1997' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1999' up to 72 % over the other shot -0.13..0.21 s"
+   ]
   },
   "ch11-s05": {
    "fails": [],
@@ -732,7 +1061,29 @@
    "suspects": [],
    "ghosts": [],
    "probed": 4,
-   "at": "2026-10-13T20:03:42.687Z"
+   "at": "2026-10-13T20:03:42.687Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:47.943Z",
+   "transCarry": [
+    "outgoing '3 in 10 fooled' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'ROSENBLATT · 1961' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'Linguistic capability,' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'related to perceptual' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'experience, is of the' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'essence…' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'COULOM · MAY 2014' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'I think maybe ten' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'years' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'HINTON · SEPT 2017' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '…some graduate student' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'who is deeply suspicious' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'of everything I have' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'said.' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'KRIZHEVSKY, SUTSKEVER & HINTON · 2012' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '…simply by waiting' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'for faster GPUs and' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'bigger datasets…' up to 72 % over the other shot -0.13..0.21 s"
+   ]
   },
   "ch12-s01": {
    "fails": [],
@@ -760,28 +1111,110 @@
    ],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T20:03:52.475Z"
+   "at": "2026-10-13T20:03:52.475Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:48.767Z",
+   "transCarry": [
+    "outgoing 'JUNE 2017' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'Christiano et al. · OpenAI and DeepMind' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming '1.3B' up to 67 % over the other shot -0.13..0.21 s"
+   ]
   },
   "ch12-s06": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T20:04:04.136Z"
+   "at": "2026-10-13T20:04:04.136Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:49.222Z",
+   "transCarry": [
+    "outgoing '1.3B' up to 67 % over the other shot -0.13..0.21 s",
+    "outgoing '1.3B InstructGPT preferred to 175B GPT-3' up to 69 % over the other shot -0.13..0.21 s",
+    "outgoing 'labellers agreed with each other' up to 67 % over the other shot -0.13..0.21 s",
+    "outgoing 'about 73% of the time' up to 67 % over the other shot -0.13..0.21 s"
+   ]
   },
   "ch12-s07": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T20:04:09.971Z"
+   "at": "2026-10-13T20:04:09.971Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:50.796Z",
+   "transCarry": []
   },
   "ch12-s08": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing 'WHO TAUGHT' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'IT?' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'RULES' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'KNOWLEDGE' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'LEARNING' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1943' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'THE STRUCTURE OF' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'THE NET DOES NOT' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'CHANGE WITH' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'TIME.' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1958' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'BACK-PROPAGATING' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'ERROR-CORRECTION' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'EXPERIMENTS · 1961 ?' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1969' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'HELSINKI ·' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1970' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1986' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'KELLEY 1960 … LE CUN 1985' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1989' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'DATA' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'FIRE' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '2012' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '2017' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'GENERATING' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'WIKIPEDIA ·' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '2018 · GPT' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '2018' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'TURING · DUE 2000' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '3 in 10 fooled' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'KRIZHEVSKY, SUTSKEVER & HINTON · 2012' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '…simply by waiting' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'for faster GPUs and' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'bigger datasets…' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'COULOM · MAY 2014' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'I think maybe ten' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'years' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'HINTON · SEPT 2017' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '…some graduate student' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'who is deeply suspicious' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'of everything I have' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'said.' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1943' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1958' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1969' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'c. 1980' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1984' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'MID-1990s' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1997' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '1999' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '2006' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '2012' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '2014' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '2020' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'OPENAI · 11 DEC 2015' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '2022' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'ROSENBLATT · 1961' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '“Linguistic capability,' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'related to perceptual' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'experience, is of the' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'essence…”' up to 72 % over the other shot -0.13..0.21 s"
+   ],
    "probed": 0,
-   "at": "2026-10-13T20:52:40.779Z"
+   "at": "2026-10-14T00:33:40.969Z"
   },
   "ch12-s03": {
    "fails": [],
@@ -799,7 +1232,10 @@
    "suspects": [],
    "ghosts": [],
    "probed": 2,
-   "at": "2026-10-13T21:19:41.940Z"
+   "at": "2026-10-13T21:19:41.940Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:52.528Z",
+   "transCarry": []
   },
   "ch13-s02": {
    "fails": [],
@@ -812,8 +1248,32 @@
    "fails": [],
    "suspects": [],
    "ghosts": [],
-   "probed": 1,
-   "at": "2026-10-13T21:20:05.743Z"
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing 'TURING · DUE 2000' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '3 in 10 fooled' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'ROSENBLATT · 1961' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'Linguistic capability,' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'related to perceptual' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'experience, is of the' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'essence…' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'COULOM · MAY 2014' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'I think maybe ten' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'years' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'KRIZHEVSKY, SUTSKEVER & HINTON · 2012' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '…simply by waiting' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'for faster GPUs and' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'bigger datasets…' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '2012' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing '30 TO 50' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'YEARS OR' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'EVEN LONGER' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'OPENAI · 11 DEC 2015' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'ANTHROPIC · 28 MAY 2021' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming '2023' up to 72 % over the other shot -0.13..0.21 s"
+   ],
+   "probed": 2,
+   "at": "2026-10-14T02:02:28.507Z"
   },
   "ch13-s04": {
    "fails": [],
@@ -827,14 +1287,24 @@
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T20:05:40.248Z"
+   "at": "2026-10-13T20:05:40.248Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:54.471Z",
+   "transCarry": []
   },
   "ch14-s01": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T20:05:44.482Z"
+   "at": "2026-10-13T20:05:44.482Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:54.913Z",
+   "transCarry": [
+    "outgoing '30 TO 50' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'YEARS OR' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'EVEN LONGER' up to 72 % over the other shot -0.13..0.21 s"
+   ]
   },
   "ch14-s03": {
    "fails": [],
@@ -858,87 +1328,146 @@
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T21:58:48.601Z"
+   "at": "2026-10-14T02:00:17.169Z"
   },
   "ch14-s05": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T20:06:37.596Z"
+   "at": "2026-10-13T20:06:37.596Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:55.763Z",
+   "transCarry": [
+    "outgoing 'HELPS HUAWEI' up to 68 % over the other shot -0.13..0.21 s",
+    "outgoing 'HUANG (NVIDIA)' up to 68 % over the other shot -0.13..0.21 s",
+    "outgoing 'SELF-DEFEATING' up to 68 % over the other shot -0.13..0.21 s",
+    "outgoing 'CHINA’S FOREIGN' up to 68 % over the other shot -0.13..0.21 s",
+    "outgoing 'MINISTRY' up to 68 % over the other shot -0.13..0.21 s",
+    "outgoing 'DECISIVE' up to 68 % over the other shot -0.13..0.21 s",
+    "outgoing 'AMODEI (ANTHROPIC),' up to 68 % over the other shot -0.13..0.21 s",
+    "outgoing 'KHAN (EX-NSC)' up to 68 % over the other shot -0.13..0.21 s"
+   ]
   },
   "ch14-s06": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T20:06:45.388Z"
+   "at": "2026-10-13T20:06:45.388Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:56.234Z",
+   "transCarry": [
+    "outgoing 'NEURIPS 2022 TOP AUTHORS' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'US 18%' up to 72 % over the other shot -0.13..0.21 s",
+    "outgoing 'CHINA 47%' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'WASHINGTON' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming '2026' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'LIMA' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming '2024' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'BLETCHLEY' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming '2023' up to 72 % over the other shot -0.13..0.21 s"
+   ]
   },
   "ch15-s01": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
-   "probed": 0,
-   "at": "2026-10-13T22:06:23.856Z"
+   "transGhosts": [],
+   "transCarry": [],
+   "probed": 1,
+   "at": "2026-10-14T02:00:58.654Z"
   },
   "ch15-s03": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
    "probed": 0,
-   "at": "2026-10-13T22:10:10.250Z"
+   "at": "2026-10-14T02:00:25.988Z"
   },
   "ch15-s04": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T22:07:05.703Z"
+   "at": "2026-10-14T01:33:51.455Z"
   },
   "ch15-s05": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
-   "probed": 6,
-   "at": "2026-10-13T21:49:52.746Z"
+   "probed": 2,
+   "at": "2026-10-14T02:01:33.144Z"
   },
   "ch15-s06": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [
+    "outgoing 'OPENAI' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'TURING · DUE 2000' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming '3 in 10 fooled' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'ROSENBLATT · 1961' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'Linguistic capability,' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'related to perceptual' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'experience, is of the' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'essence…' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'KRIZHEVSKY, SUTSKEVER & HINTON · 2012' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming '…simply by waiting' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'for faster GPUs and' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'bigger datasets…' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'COULOM · MAY 2014' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'I think maybe ten' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'years' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'HINTON · SEPT 2017' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming '…some graduate student' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'who is deeply suspicious' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'of everything I have' up to 72 % over the other shot -0.13..0.21 s",
+    "incoming 'said.' up to 72 % over the other shot -0.13..0.21 s"
+   ],
    "probed": 0,
-   "at": "2026-10-13T21:48:57.535Z"
+   "at": "2026-10-14T01:34:03.389Z"
   },
   "ch15-s07": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
    "probed": 0,
-   "at": "2026-10-13T20:08:14.248Z"
+   "at": "2026-10-13T20:08:14.248Z",
+   "transGhosts": [],
+   "transAt": "2026-10-13T22:54:59.999Z",
+   "transCarry": []
   },
   "ch15-s08": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
    "probed": 3,
-   "at": "2026-10-13T21:53:05.418Z"
+   "at": "2026-10-14T02:01:54.209Z"
   },
   "ch15-s09": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
    "probed": 4,
-   "at": "2026-10-13T21:54:12.934Z"
+   "at": "2026-10-14T02:01:08.710Z"
   },
   "ch15-s10": {
    "fails": [],
    "suspects": [],
    "ghosts": [],
+   "transGhosts": [],
+   "transCarry": [],
    "probed": 1,
-   "at": "2026-10-13T21:38:15.394Z"
+   "at": "2026-10-14T02:00:09.129Z"
   }
  },
- "at": "2026-10-13T22:10:10.290Z",
+ "at": "2026-10-14T02:02:32.585Z",
  "rule": "review round 3: no card shows paper > 50% with text < 20% for more than 0.3 s (probed cards fail, unprobed paper warns)",
  "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s"
 }

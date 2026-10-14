@@ -29,11 +29,11 @@
 import { Timeline } from '../../../core';
 import type { Camera3, Frame, LayerSpec, PaintEnv } from '../../../film';
 import {
-  LAYERS, PUPPET_NEAR_BLACK, bankersLamp, defineShot, drawSlug, glow, makeCanvas, mixLab, overscan,
+  LAYERS, PUPPET_NEAR_BLACK, defineShot, drawSlug, glow, makeCanvas, mixLab, overscan,
   paperLantern, slugWidth, toScreen, typeSlugs, withAlpha,
 } from '../../../film';
 import { hash1 } from '../../../film/core/frame';
-import { FONT, softPlate, textRole } from '../../../film/silhouette/type';
+import { FONT, softPlate, textRole, textSwap } from '../../../film/silhouette/type';
 import { hands } from '../cast';
 import { handsEntry } from '../sets/narratorHands';
 import { clamp01, label15, lerp, monoDate, screen, sm, tq12, win } from '../sets/ch15-s01-kit';
@@ -59,8 +59,13 @@ const MS = {
  *  so no lantern stands in front of the limb) */
 const PLATE = { x0: MS.obj.x - 196, x1: MS.obj.x + 46, y: MS.stageY - 5 };
 const PLATE_CX = (PLATE.x0 + PLATE.x1) / 2;
-/** the green-shaded banker's lamp at the desk's left end, cut off by the frame edge: a dark near shape (L5) */
-const LAMP = { x: 128, y: DESK_Y, s: 6.8 };
+/** reviser r1 (round 5): the near plane (z 780: between the action plane and the shared L5) for the banker's lamp's
+ *  shade at the upper left and the inkwell at the lower left */
+const NEAR: LayerSpec = { id: 'L5', z: 780, haze: 0, blur: 0 };
+/** the shade (near-plane world): spans x 70..330 so it is cut by the left edge through the whole push */
+const SHADE = { x: 70, y: 92, w: 260, h: 70 };
+/** the inkwell (near-plane world): base on the desk's near edge */
+const INK = { x: 300, base: 566, w: 128, h: 72 };
 /** the composing stick on its stand, above the desk, left of the microscope's tube */
 /** reviser r1: lowered 50 so the dollied-in frame holds the couplet, the forest and the microscope together */
 const STICK = { x: 316, y1: 148, y2: 214, size: 22 };
@@ -151,13 +156,16 @@ export default defineShot<Scene>({
       who: T.word('L1504', 'looked'),
       rhyme: T.word('L1504', 'rhyme'),
       rabbit: T.word('L1504', 'rabbit') - 0.12,
-      // the snuffer drops in the breath after 'line' (L1504 ends), before 'Nobody'
-      snuff: T.line('L1504').end + 0.3,
-      habit: T.line('L1504').end + 0.72,
-      // reviser r1: the second line's slugs land one every 0.25 s from b3 +0.3, and the HABIT sort closes the line
-      // up before 'plan' (the line is visibly written: it planned the end first)
-      fill0: T.beat('b3') + 0.3,
-      set: T.word('L1505', 'plan') - 0.32,
+      // review round 5: the new solo line L1504b says the intervention aloud: the snuffer drops ON 'Snuff' (it
+      // starts 0.15 s before the word and lands just after it), HABIT lights ON 'habit'
+      // reviser r1 (round 5): a tighter drop: it starts 0.12 s before the word and lands ~0.16 s after it (a true
+      // gravity fall, y ∝ u²), so the bell is down within 0.25 s of 'Snuff'
+      snuff: T.word('L1504b', 'Snuff') - 0.12,
+      habit: T.word('L1504b', 'habit') - 0.12,
+      // the second line's slugs land one every 0.25 s once HABIT is lit, and the HABIT sort closes the line up
+      // well before 'plan' (L1505): the line is visibly written after its end was chosen
+      fill0: T.word('L1504b', 'habit') + 0.45,
+      set: T.word('L1505', 'plan') - 0.75,
       plan: T.word('L1505', 'plan'),
     };
     // the desk insert (couplet, microscope and specimen all in frame; the knob turn reads inside it); on 'looked
@@ -193,16 +201,16 @@ export default defineShot<Scene>({
     const turn = hu <= 0.3 ? 0 : hu >= 0.72 ? 1 : sm((hu - 0.3) / 0.42);
     const focusK = sm((tq - (b.knob + 0.55)) / 0.7);
     const rabbitOn = win(t, b.rabbit, b.rabbit + 0.35);
-    const snuffU = clamp01((tq - b.snuff) / 0.34);
-    const rabbitK = rabbitOn * (1 - 0.92 * sm(clamp01((tq - b.snuff - 0.25) / 0.3)));
-    const habitK = win(t, b.habit, b.habit + 0.4);
+    const snuffU = clamp01((t - b.snuff) / 0.28);
+    const rabbitK = rabbitOn * (1 - 0.92 * sm(clamp01((t - b.snuff - 0.24) / 0.25)));
+    const habitK = win(t, b.habit, b.habit + 0.3);
     f.backlight({ sunX: 900, sunY: 360, sunRadius: 380, intensity: 0.22 });
 
     // L2: the study's own panelled wall behind the desk, in the lamp's shadow: candleAmber ink, well out of focus;
     // the only spill on it sits behind the specimen, and the wall falls a stop toward the upper right and the corners
     f.layer(WALL_SOFT, (c, env) => {
       const r = overscan(LAYERS.L2, sc.CAMS, 80);
-      f.cached(`${ID}/L2s3b/${env.mood.id}`, Math.ceil(r.w), Math.ceil(r.h), (cc) => {
+      f.cached(`${ID}/L2s3c/${env.mood.id}`, Math.ceil(r.w), Math.ceil(r.h), (cc) => {
         cc.translate(-r.x, -r.y);
         const m = env.mood;
         const wall = mixLab(mixLab(env.fill('set'), m.fg, 0.35), m.ink, 0.5);
@@ -210,8 +218,10 @@ export default defineShot<Scene>({
         cc.fillRect(r.x, r.y, r.w, r.h);
         // the lamp's spill on the wall, behind and below the specimen
         const g = cc.createRadialGradient(900, 420, 30, 900, 420, 620);
-        g.addColorStop(0, withAlpha(mixLab(m.set, m.halo, 0.22), 0.58));
-        g.addColorStop(0.45, withAlpha(mixLab(m.set, m.halo, 0.06), 0.22));
+        // reviser r1 (round 5): the spill's outer part a stop down, so the halo never outshines the lit lantern
+        g.addColorStop(0, withAlpha(mixLab(m.set, m.halo, 0.22), 0.5));
+        g.addColorStop(0.3, withAlpha(mixLab(m.set, m.halo, 0.1), 0.26));
+        g.addColorStop(0.6, withAlpha(mixLab(m.set, m.halo, 0.04), 0.06));
         g.addColorStop(1, withAlpha(wall, 0));
         cc.fillStyle = g;
         cc.fillRect(r.x, r.y, r.w, r.h);
@@ -270,11 +280,25 @@ export default defineShot<Scene>({
       c.translate(PLATE_CX, DESK_Y + 6);
       c.scale(1, 0.12);
       const pg = c.createRadialGradient(0, 0, 0, 0, 0, 420);
-      pg.addColorStop(0, withAlpha(m.halo, 0.55));
-      pg.addColorStop(0.5, withAlpha(m.halo, 0.2));
+      pg.addColorStop(0, withAlpha(m.halo, 0.5));
+      pg.addColorStop(0.5, withAlpha(m.halo, 0.14));
+      pg.addColorStop(0.7, withAlpha(m.halo, 0.03));
       pg.addColorStop(1, withAlpha(m.halo, 0));
       c.fillStyle = pg;
       c.fillRect(-420, -420, 840, 840);
+      c.restore();
+      // reviser r1 (round 5): the banker's lamp's own soft pool on the desk under its shade (dim: the specimen and the
+      // lit lantern stay brighter)
+      c.save();
+      c.globalCompositeOperation = 'lighter';
+      c.translate(250, DESK_Y + 8);
+      c.scale(1, 0.16);
+      const lp = c.createRadialGradient(0, 0, 0, 0, 0, 260);
+      lp.addColorStop(0, withAlpha(m.halo, 0.3));
+      lp.addColorStop(0.6, withAlpha(m.halo, 0.08));
+      lp.addColorStop(1, withAlpha(m.halo, 0));
+      c.fillStyle = lp;
+      c.fillRect(-260, -260, 520, 520);
       c.restore();
       // THE POOL ON THE SPECIMEN STAGE: the lamp's light gathered on the slide and the forest (r ~140 world), so the
       // network is the brightest area of the frame and the microscope stands dark against it
@@ -282,8 +306,11 @@ export default defineShot<Scene>({
       c.globalCompositeOperation = 'lighter';
       const sp = c.createRadialGradient(PLATE_CX, PLATE.y - 30, 6, PLATE_CX, PLATE.y - 30, 150);
       // reviser r1: about +0.15 exposure on the specimen
-      sp.addColorStop(0, withAlpha(mixLab(m.halo, m.core, 0.25), 0.5));
-      sp.addColorStop(0.55, withAlpha(m.halo, 0.22));
+      // reviser r1 (round 5): its outer 30 % falls away fast, so the lit RABBIT, then HABIT, lantern is the
+      // brightest point in the frame at each beat (not the halo behind the forest)
+      sp.addColorStop(0, withAlpha(mixLab(m.halo, m.core, 0.25), 0.44));
+      sp.addColorStop(0.45, withAlpha(m.halo, 0.2));
+      sp.addColorStop(0.7, withAlpha(m.halo, 0.05));
       sp.addColorStop(1, withAlpha(m.halo, 0));
       c.fillStyle = sp;
       c.fillRect(PLATE_CX - 150, PLATE.y - 180, 300, 300);
@@ -315,8 +342,7 @@ export default defineShot<Scene>({
       }
       // the snuffer: a small paper bell on a wire, dropping over the rabbit lantern by itself
       if (snuffU > 0) {
-        const fall = sm(snuffU);
-        const sy = lerp(RABBIT.y - 110, RABBIT.y - RABBIT.r * 1.4, fall * fall);
+        const sy = lerp(RABBIT.y - 110, RABBIT.y - RABBIT.r * 1.4, snuffU * snuffU);
         c.fillStyle = env.fill('ink');
         c.beginPath();
         c.moveTo(RABBIT.x - RABBIT.r * 2.1, sy + RABBIT.r * 3.2);
@@ -328,7 +354,7 @@ export default defineShot<Scene>({
         c.fillStyle = withAlpha(m.rim, 0.5);
         c.fillRect(RABBIT.x - RABBIT.r * 2.1, sy + RABBIT.r * 3.2 - 1, RABBIT.r * 4.2, 1);
         // a thread of smoke after it settles
-        const sk = win(t, b.snuff + 0.4, b.snuff + 0.8) * (1 - win(t, b.snuff + 1.6, b.snuff + 3));
+        const sk = win(t, b.snuff + 0.3, b.snuff + 0.7) * (1 - win(t, b.snuff + 1.6, b.snuff + 3));
         if (sk > 0.01) {
           c.strokeStyle = withAlpha(m.rim, 0.25 * sk);
           c.lineWidth = 1;
@@ -350,27 +376,44 @@ export default defineShot<Scene>({
     f.rim({ x: 0, y: -1 });
     // the lit features as practicals (light wraps the stems)
     const rl = rabbitK;
-    if (rl > 0.02) f.practical({ x: RABBIT.x, y: RABBIT.y, kind: 'candle', seed: 1503, intensity: 0.9 * rl, radius: 40 });
-    if (habitK > 0.02) f.practical({ x: HABIT.x, y: HABIT.y, kind: 'candle', seed: 1504, intensity: 0.9 * habitK, radius: 40 });
+    if (rl > 0.02) f.practical({ x: RABBIT.x, y: RABBIT.y, kind: 'candle', seed: 1503, intensity: 1.15 * rl, radius: 40 });
+    if (habitK > 0.02) f.practical({ x: HABIT.x, y: HABIT.y, kind: 'candle', seed: 1504, intensity: 1.15 * habitK, radius: 40 });
 
-    // L5: the banker's lamp cut off at the frame's left edge (a darker near shape, its shade's lip lit from within)
-    // and the near edge of an open notebook, lower left, out of focus
-    const bulb = bankersLamp.anchors({ x: LAMP.x, y: LAMP.y, s: LAMP.s }).bulb;
-    f.layer('L5', (c, env) => {
-      const near: PaintEnv = { ...env, fill: (k) => (k === 'rim' || k === 'halo' || k === 'core' ? env.fill(k) : mixLab(env.fill(k), PUPPET_NEAR_BLACK, 0.35)) };
-      bankersLamp(c, { x: LAMP.x, y: LAMP.y, s: LAMP.s, lit: true, seed: 41 }, near);
-      c.fillStyle = mixLab(PUPPET_NEAR_BLACK, env.fill('fg'), 0.4);
-      c.beginPath();
-      c.moveTo(-200, 780);
-      c.lineTo(-200, 668);
-      c.quadraticCurveTo(80, 640, 330, 668);
-      c.lineTo(360, 780);
-      c.closePath();
-      c.fill();
-      c.fillStyle = withAlpha(env.mood.rim, 0.12);
-      c.fillRect(-200, 668, 520, 1.5);
+    // L5 (reviser r1, round 5; STUDY LOCK): the green-shaded banker's lamp's SHADE hangs in at the upper left, cut by
+    // the frame edge, its lip lit from within; and a defocused inkwell with a pen stands at the lower left with a
+    // warm 1.5 px rim. A near plane at z 780 (not the shared L5's 650, which balloons 3.7x through this push), so the
+    // two shapes slide against the desk and the wall but stay in frame. The lantern forest stays the one sharp plane.
+    f.layer(NEAR, (c, env) => {
+      const r = overscan(NEAR, sc.CAMS, 40);
+      // the lamp's own warm air round the shade (behind it on screen), so the dark green shade reads as a silhouette
+      {
+        const hx = SHADE.x + SHADE.w * 0.5, hy = SHADE.y + SHADE.h * 0.7;
+        c.save();
+        c.globalCompositeOperation = 'lighter';
+        const hg = c.createRadialGradient(hx, hy, 20, hx, hy, 300);
+        hg.addColorStop(0, withAlpha(mixLab(env.mood.halo, env.mood.set, 0.3), 0.3));
+        hg.addColorStop(0.5, withAlpha(mixLab(env.mood.halo, env.mood.set, 0.5), 0.1));
+        hg.addColorStop(1, withAlpha(env.mood.halo, 0));
+        c.fillStyle = hg;
+        c.fillRect(hx - 300, hy - 300, 600, 600);
+        c.restore();
+      }
+      f.cached(`${ID}/near5/${env.mood.id}`, Math.ceil(r.w), Math.ceil(r.h), (cc) => {
+        cc.translate(-r.x, -r.y);
+        nearPlane(cc, env);
+      }, { blur: 3 })(c, r.x, r.y);
+      // the bulb's light under the lip (dynamic, a slow candle-like breath)
+      const fl = 0.92 + 0.08 * Math.sin(tq * 2.3);
+      c.save();
+      c.globalCompositeOperation = 'lighter';
+      const g = c.createRadialGradient(SHADE.x + SHADE.w * 0.55, SHADE.y + SHADE.h + 4, 4, SHADE.x + SHADE.w * 0.55, SHADE.y + SHADE.h + 4, 150);
+      g.addColorStop(0, withAlpha(mixLab(env.mood.core, env.mood.halo, 0.4), 0.42 * fl));
+      g.addColorStop(0.4, withAlpha(env.mood.halo, 0.12 * fl));
+      g.addColorStop(1, withAlpha(env.mood.halo, 0));
+      c.fillStyle = g;
+      c.fillRect(SHADE.x - 150, SHADE.y - 100, SHADE.w + 320, SHADE.h + 260);
+      c.restore();
     });
-    f.practical({ x: bulb.x, y: bulb.y + 8, kind: 'lamp', seed: 41, intensity: 0.7, radius: 110, layer: 'L5' });
 
     // the limits of the tool: everything outside the lens's round field falls soft and into shade
     focusField(f, cam, 3.6 + 3.0 * (1 - focusK), 0.6 + 0.4 * focusK, 1 - win(t, b.knob + 1.6, b.knob + 2.2), 0.42);
@@ -398,13 +441,102 @@ export default defineShot<Scene>({
       const wa = win(t, whoAt, whoAt + 0.5) * (1 - win(t, b.rabbit - 0.4, b.rabbit + 0.1));
       if (wa > 0.003) softPlate(c, 600, 580, 900, 100, f.mood.ink, 0.62 * wa);
       label15(c, { text: 'Anthropic, on Claude 3.5 Haiku · via a simplified replacement model', x: 600, y: 586, at: whoAt, until: b.rabbit - 0.4, size: 19 }, te);
-      // the swap's label, lifted clear of the stage and the mirror, on its own plate
-      const sa = win(t, b.snuff + 0.2, b.snuff + 0.7);
-      if (sa > 0.003) softPlate(c, 560, 580, 620, 100, f.mood.ink, 0.66 * sa);
-      label15(c, { text: 'rabbit → (suppressed) → habit', x: 560, y: 586, at: b.snuff + 0.2, size: 22 }, te);
+      // the swap's caption: a quiet texture-role ECHO, only after the narration has said 'habit' (never before it)
+      const echoAt = b.habit + 0.12 + 0.3;
+      const sa = win(t, echoAt, echoAt + 0.5);
+      if (sa > 0.003) softPlate(c, 560, 580, 560, 90, f.mood.ink, 0.5 * sa);
+      c.save();
+      c.globalAlpha *= 0.72;
+      textRole(c, 'texture', () => label15(c, { text: 'rabbit → (suppressed) → habit', x: 560, y: 586, at: echoAt, size: 19 }, te));
+      c.restore();
     });
   },
 });
+
+// ===================================================================================================== near plane
+/** the banker's lamp's shade (dark green glass, nearly black, a lit inner lip) and its brass arm running up out of
+ *  frame; the inkwell with a dip pen, its contour rimmed warm toward the lamp */
+function nearPlane(c: C, env: PaintEnv) {
+  const m = env.mood;
+  const glass = mixLab(mixLab('#1d3326', PUPPET_NEAR_BLACK, 0.45), m.ink, 0.15);
+  const rimW = withAlpha(mixLab('#e9d6a8', m.halo, 0.4), 0.85);
+  const S = SHADE;
+  // the arm from above (out of frame) to the shade's top
+  c.fillStyle = PUPPET_NEAR_BLACK;
+  c.fillRect(S.x + S.w * 0.55 - 4, -400, 8, 400 + S.y + 6);
+  // the shade: a half-cylinder seen from the side: a long rounded crown, a straight lower edge, rolled ends
+  const p = new Path2D();
+  p.moveTo(S.x, S.y + S.h);
+  p.bezierCurveTo(S.x + 4, S.y + 18, S.x + S.w * 0.2, S.y, S.x + S.w * 0.5, S.y);
+  p.bezierCurveTo(S.x + S.w * 0.8, S.y, S.x + S.w - 4, S.y + 18, S.x + S.w, S.y + S.h);
+  p.closePath();
+  c.fillStyle = glass;
+  c.fill(p);
+  // a faint green sheen along the crown (the glass), muted: the frame's one accent stays the lantern gold
+  c.strokeStyle = withAlpha(mixLab('#4f7a5c', m.haze, 0.35), 0.35);
+  c.lineWidth = 2;
+  c.beginPath();
+  c.moveTo(S.x + 30, S.y + 22);
+  c.bezierCurveTo(S.x + S.w * 0.3, S.y + 6, S.x + S.w * 0.7, S.y + 6, S.x + S.w - 30, S.y + 22);
+  c.stroke();
+  // the rolled lower edge, lit from inside by the bulb
+  c.fillStyle = PUPPET_NEAR_BLACK;
+  c.fillRect(S.x - 4, S.y + S.h - 5, S.w + 8, 7);
+  c.fillStyle = withAlpha(mixLab(m.core, m.halo, 0.35), 0.85);
+  c.fillRect(S.x + 6, S.y + S.h + 2, S.w - 12, 2.2);
+  // the inkwell: a squat square-shouldered bottle, a short neck, a pen leaning out of it
+  const I = INK;
+  const ink = mixLab(PUPPET_NEAR_BLACK, m.set, 0.1);
+  const q = new Path2D();
+  q.moveTo(I.x, I.base);
+  q.lineTo(I.x, I.base - I.h * 0.62);
+  q.quadraticCurveTo(I.x, I.base - I.h * 0.78, I.x + I.w * 0.16, I.base - I.h * 0.8);
+  q.lineTo(I.x + I.w * 0.36, I.base - I.h * 0.82);
+  q.lineTo(I.x + I.w * 0.36, I.base - I.h);
+  q.lineTo(I.x + I.w * 0.64, I.base - I.h);
+  q.lineTo(I.x + I.w * 0.64, I.base - I.h * 0.82);
+  q.lineTo(I.x + I.w * 0.84, I.base - I.h * 0.8);
+  q.quadraticCurveTo(I.x + I.w, I.base - I.h * 0.78, I.x + I.w, I.base - I.h * 0.62);
+  q.lineTo(I.x + I.w, I.base);
+  q.closePath();
+  c.fillStyle = ink;
+  c.fill(q);
+  // the dip pen: a slim tapering holder leaning out of the neck to the right
+  c.save();
+  c.translate(I.x + I.w * 0.5, I.base - I.h + 4);
+  c.rotate(0.42);
+  c.beginPath();
+  c.moveTo(-3, 0);
+  c.lineTo(3, 0);
+  c.lineTo(5, -150);
+  c.quadraticCurveTo(0, -160, -5, -150);
+  c.closePath();
+  c.fillStyle = ink;
+  c.fill();
+  c.strokeStyle = rimW;
+  c.lineWidth = 1.5;
+  c.beginPath();
+  c.moveTo(-3.5, -4);
+  c.lineTo(-5.5, -148);
+  c.stroke();
+  c.restore();
+  // the warm rim on the bottle's lamp-facing contour (top and left shoulder)
+  c.strokeStyle = rimW;
+  c.lineWidth = 1.5;
+  c.beginPath();
+  c.moveTo(I.x + 0.75, I.base - I.h * 0.2);
+  c.lineTo(I.x + 0.75, I.base - I.h * 0.62);
+  c.quadraticCurveTo(I.x + 0.75, I.base - I.h * 0.77, I.x + I.w * 0.16, I.base - I.h * 0.79);
+  c.lineTo(I.x + I.w * 0.36, I.base - I.h * 0.81);
+  c.moveTo(I.x + I.w * 0.36, I.base - I.h + 0.75);
+  c.lineTo(I.x + I.w * 0.64, I.base - I.h + 0.75);
+  c.stroke();
+  // the desk's near edge it stands on
+  c.fillStyle = mixLab(PUPPET_NEAR_BLACK, m.fg, 0.3);
+  c.fillRect(-600, I.base, 1400, 400);
+  c.fillStyle = withAlpha(m.rim, 0.14);
+  c.fillRect(-600, I.base, 1400, 1.2);
+}
 
 // ===================================================================================================== the model
 /** the full model as a far field (L3): sparse ranks of tiny lit features on faint threads, baked once */
@@ -567,7 +699,10 @@ function drawCouplet(c: C, env: PaintEnv, t: number, b: B, rabbitK: number, habi
     c.restore();
   });
   // the ghost word: RABBIT (lit by the feature), then HABIT; then the real sort is set
-  const setU = sm(clamp01((tq - b.set) / 0.25));
+  // the ghost word hands over to the real sort with a text swap (never two readable 'habit's at once): the sort
+  // settles a few px into its slot while the ghost goes out
+  const setSw = textSwap(t, b.set, 0.25);
+  const setU = setSw.in;
   const gx = ghostX + ghostW / 2, gy = STICK.y2 - h / 2;
   const word = (txt: string, a: number) => {
     if (a <= 0.01) return;
@@ -582,11 +717,11 @@ function drawCouplet(c: C, env: PaintEnv, t: number, b: B, rabbitK: number, habi
     c.restore();
   };
   word('rabbit', 0.85 * rabbitK * (1 - habitK) * (1 - 0.8 * win(t, b.snuff + 0.2, b.habit)));
-  word('habit', 0.85 * habitK * (1 - setU));
+  word('habit', 0.85 * habitK * setSw.out);
   if (setU > 0) {
     c.save();
     c.globalAlpha *= Math.min(1, setU * 1.4);
-    drawSlug(c, ghostX, STICK.y2 - h + (1 - setU) * -34, ghostW, h, ' habit', S, 0.6, env);
+    drawSlug(c, ghostX, STICK.y2 - h + (1 - setU) * -8, ghostW, h, ' habit', S, 0.6, env);
     c.restore();
   }
   // a thread of light from the lit feature up to the word it names (before the line exists)

@@ -9,36 +9,36 @@ marked cue-local. In Strudel code, cue-local time = absolute time − `cue.start
 **`cues.json` is the authority for times.** Each cue's `notes` open with ONE paragraph headed `CURRENT CLOCK`,
 generated from the current timeline: its window, its shots and the lines under it, whether its IN and OUT joins sit in a
 speech-free gap (QA `score.cueJoins`), its measured last strike, and a `RE-FIT PENDING` flag when lines inside it changed
-length. The times in the rest of each cue's notes were re-mapped onto the 2164.00 s clock through their word and beat anchors
+length. The times in the rest of each cue's notes were re-mapped onto the current clock (2168.42 s after round 5) through their word and beat anchors
 (`cue-notes.mjs --fix`; an anchor that no longer resolves keeps its name and loses its number): place every hit by the word or beat it names,
 looked up in `narration/timeline.json`, never by an old number. The clock re-fit history (round 1, the 2026-10-12 re-fit, rounds 3 and 4)
 is archived in `score/clock-history.md` and, per cue, in `score/notes-history.json`. Motifs, keys and instrumentation are
 unchanged. The development tables further down still quote times from earlier clocks: use their names, not their numbers.
 The scored silences table at the end is on the current clock.
 
-| cue | window (s) | shots | state after the round-4 clock move (director re-fit 2026-10-13) |
+| cue | window (s) | shots | state on the round-5 clock (2168.42 s; director re-fit 2026-10-13) |
 |---|---|---|---|
-| m01 | 0.000-76.267 | ch01-s01…ch01-s07 | RE-FIT PENDING: L0114 re-narrated (ch01-s06 +0.417 s); title/subtitle in ch01-s07 +0.417 s; the dead cut stays on `wick`, 0.2 s before "Our" |
-| m02 | 74.267-199.322 | ch02-s01…ch02-s08 | RE-FIT PENDING: ch02-s01…s07 +0.417 s; L0220 1.375 s longer; OUT gap after L0220 → L0301 |
-| m03 | 197.322-324.222 | ch03-s01…ch03-s09 | moved bodily +1.792 s; source re-based to this clock (constants +3.5417 s, sonified block regenerated) and re-rendered with a voice pass (wcheck 20 → 0 flags); exact |
-| m04 | 322.222-368.992 | ch04-s01…ch04-s02 | moved bodily +1.792 s with its shots; render unchanged and still exact |
-| m05 | 368.292-453.602 | ch04-s03…ch04-s08 | moved bodily +1.792 s with its shots; render unchanged and still exact |
-| m06 | 451.769-558.942 | ch05-s01…ch05-s06 | moved bodily +1.792 s with its shots; render unchanged and still exact |
-| m07 | 558.242-643.897 | ch05-s07…ch05-s10 | moved bodily +1.792 s with its shots; render unchanged and still exact |
-| m08 | 641.895-794.345 | ch06-s01…ch06-s08 | moved bodily +1.792 s with its shots; render unchanged and still exact |
-| m09 | 792.843-888.458 | ch07-s01…ch07-s06 | moved bodily +1.792 s with its shots; render unchanged and still exact |
-| m10 | 887.058-1061.358 | ch08-s01…ch08-s10 | moved bodily +1.792 s with its shots; render unchanged and still exact |
-| m11 | 1059.858-1149.756 | ch08-s11…ch08-s14 | moved bodily +1.792 s with its shots; render unchanged and still exact |
-| m12 | 1148.267-1243.646 | ch09-s01…ch09-s05 | moved bodily +1.792 s with its shots; render unchanged and still exact |
-| m13 | 1242.882-1460.770 | ch10-s01…ch10-s14 | moved bodily +1.792 s with its shots; render unchanged and still exact |
-| m14 | 1458.267-1515.042 | ch11-s01…ch11-s03 | moved bodily +1.792 s with its shots; render unchanged and still exact |
-| m15 | 1513.542-1587.992 | ch11-s05…ch12-s02 | moved bodily +1.792 s with its shots; render unchanged and still exact |
-| m16 | 1586.992-1672.252 | ch12-s06…ch12-s03 | moved bodily +1.792 s with its shots; render unchanged and still exact |
-| m17 | 1669.942-1768.942 | ch13-s01…ch13-s06 | moved bodily +1.792 s with its shots; render unchanged and still exact |
-| m18 | 1767.442-1917.935 | ch14-s01…ch14-s07 | RE-FITTED (composer, 2026-10-13): s01-s04b +1.792 s, s05-s07 +2.125 s; ch14-s04b re-composed to L1410b's beats (G → F# on `behind`, tags on `tag1`/`tag2` + the breath after the line, two E7 glints on `two`); nothing struck within 1.1 s of fx-stamp-fence on `stands`; exact, 0 wcheck flags |
-| m19 | 1916.433-2038.900 | ch15-s01…ch15-s05 | RE-FITTED (composer v20, 2026-10-13, critic round 1): lamp = one soft harp D under the name, the full figure in the next breath (after `weapons` / `systems`), one F# bloom per lab (after `books` / `shot`), nothing under 'a warning shot'; the floor rests under L1522c/L1522d and the doubling; last strike 2035.99; exact, 0 wcheck flags |
-| m20 | 2036.191-2064.691 | ch15-s06…ch15-s07 | moved bodily +3.750 s with its shots; render unchanged and still exact |
-| m21 | 2065.958-2164.000 | ch15-s08…ch15-s10 | RE-FIT PENDING: s08/s09 +3.75 s (keep the held E's re-bow ≥ 0.3 s from fx-stamp-howfar on `open`; silence under fx-stamp b3); ch15-s10 now 28.71 s (Turing b1, CREDITS b2, SOURCES `sources`, fade b3): window to 2164.00 |
+| m01 | 0.000-76.267 | ch01-s01…ch01-s07 | unchanged (L0114 / L0114b as re-fitted in round 4: dead cut on `wick`, title +0.417 s); render exact |
+| m02 | 74.267-199.322 | ch02-s01…ch02-s08 | unchanged window; render exact; apply the round-5 cues.m02 note on the unchanged clock |
+| m03 | 197.322-324.222 | ch03-s01…ch03-s09 | unchanged; render exact |
+| m04 | 322.222-368.992 | ch04-s01…ch04-s02 | unchanged; render exact |
+| m05 | 368.292-453.602 | ch04-s03…ch04-s08 | unchanged; render exact |
+| m06 | 451.769-558.942 | ch05-s01…ch05-s06 | unchanged; render exact |
+| m07 | 558.242-643.897 | ch05-s07…ch05-s10 | unchanged; render exact |
+| m08 | 641.895-794.345 | ch06-s01…ch06-s08 | unchanged; render exact |
+| m09 | 792.843-888.458 | ch07-s01…ch07-s06 | unchanged; render exact |
+| m10 | 887.058-1061.358 | ch08-s01…ch08-s10 | unchanged; render exact |
+| m11 | 1059.858-1149.756 | ch08-s11…ch08-s14 | unchanged; render exact |
+| m12 | 1148.267-1243.646 | ch09-s01…ch09-s05 | unchanged; render exact |
+| m13 | 1242.882-1460.770 | ch10-s01…ch10-s14 | unchanged; render exact |
+| m14 | 1458.267-1515.042 | ch11-s01…ch11-s03 | unchanged; render exact |
+| m15 | 1513.542-1587.992 | ch11-s05…ch12-s02 | unchanged; render exact |
+| m16 | 1586.992-1672.252 | ch12-s06…ch12-s03 | unchanged; render exact |
+| m17 | 1669.942-1768.942 | ch13-s01…ch13-s06 | unchanged; render exact |
+| m18 | 1767.442-1917.935 | ch14-s01…ch14-s07 | unchanged; render exact |
+| m19 | 1916.433-2043.317 | ch15-s01…ch15-s05 | RE-FIT PENDING (window 122.467 → 126.884 s): L1502 re-taken (three sentences; `Versailles`, `memories`, `downhill`, `cools` moved), NEW L1504b ('Snuff' … 'habit') before L1505, everything from L1505 on +4.417 s; OUT fade in the gap L1525 → L1509; last strike = the OpenAI bloom as L1525 ends |
+| m20 | 2040.608-2069.108 | ch15-s06…ch15-s07 | moved bodily +4.417 s with its shots (v9, re-rendered, exact); verify only |
+| m21 | 2070.375-2168.417 | ch15-s08…ch15-s10 | moved bodily +4.417 s with its shots (v9, re-rendered, exact), to the film's end; verify only |
 
 ## The governing idea: a flame is a held note
 

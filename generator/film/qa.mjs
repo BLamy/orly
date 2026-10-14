@@ -457,8 +457,13 @@ function qaSheets() {
     // review round 4: no ghost text (the same audit): two different text layers overlapping, both > 25 % opaque, > 0.25 s
     const ghostAudited = Object.entries(cs.shots || {}).filter(([, v]) => Array.isArray(v.ghosts));
     const ghosts = ghostAudited.filter(([, v]) => v.ghosts.length).map(([k, v]) => `${k}: ${v.ghosts.slice(0, 2).join('; ')}`);
+    // review round 5: cross-shot ghosts in a transition, listed under the incoming shot
+    const transIds = timeline.shots.filter((s, i) => i > 0 && (s.transitionIn || 'cut') !== 'cut').map((s) => s.id);
+    for (const [k, v] of ghostAudited) if (v.transGhosts?.length) ghosts.push(`${k} (transition in): ${v.transGhosts.slice(0, 2).join('; ')}`);
+    const noTransAudit = transIds.filter((id) => cs.shots?.[id] && !Array.isArray(cs.shots[id].transGhosts));
+    const carry = Object.entries(cs.shots || {}).filter(([, v]) => v.transCarry?.length).map(([k, v]) => `${k}: ${v.transCarry.slice(0, 2).join('; ')}`);
     const noGhostAudit = timeline.shots.filter((s) => !Array.isArray(cs.shots?.[s.id]?.ghosts)).map((s) => s.id);
-    add('sheets', 'ghostText', ghosts.length ? 'fail' : noGhostAudit.length || unaudited.length ? 'warn' : 'pass', ghosts.length ? `ghost text (two text layers both > 25 % for > 0.25 s; fix with the type kit's textSwapOut): ${ghosts.slice(0, 8).join(' | ')}` : `${ghostAudited.length} shots audited, no ghost text${noGhostAudit.length ? `; no ghost audit yet: ${noGhostAudit.length} shots (${noGhostAudit.slice(0, 6).join(', ')}…)` : ''}${unaudited.length ? `; changed since the audit: ${unaudited.length} shots` : ''}`, { ghosts, noGhostAudit });
+    add('sheets', 'ghostText', ghosts.length ? 'fail' : noGhostAudit.length || noTransAudit.length || unaudited.length || carry.length ? 'warn' : 'pass', ghosts.length ? `ghost text (two text layers both > 25 % for > 0.25 s; fix with the type kit's textSwapOut): ${ghosts.slice(0, 8).join(' | ')}` : `${ghostAudited.length} shots audited, no ghost text (${transIds.length - noTransAudit.length} of ${transIds.length} transitions audited cross-shot)${noGhostAudit.length ? `; no ghost audit yet: ${noGhostAudit.length} shots (${noGhostAudit.slice(0, 6).join(', ')}…)` : ''}${noTransAudit.length ? `; transition not audited yet: ${noTransAudit.length} (${noTransAudit.slice(0, 6).join(', ')}…)` : ''}${carry.length ? `; text dissolving over the other shot's picture in ${carry.length} transitions (${carry.slice(0, 4).join(' | ')})` : ''}${unaudited.length ? `; changed since the audit: ${unaudited.length} shots` : ''}`, { ghosts, noGhostAudit, noTransAudit, carry });
   }
 }
 

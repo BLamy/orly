@@ -1,0 +1,78 @@
+{
+  "reviewer": "historian",
+  "lens": "accuracy & fairness",
+  "round": 6,
+  "scores": {"accuracy": 9, "depth": 8.5, "clarity": 8.5, "story": 8.5, "visual": 8.5, "sync": 8.5, "sound": 8, "curiosity": 8.5},
+  "summary": "Both round-5 fairness regressions are fixed, and I confirmed each one in the rendered film.mp4 as well as on the sheets. (1) ch15-s10: the CREDITS card footer says 'Claude is made by Anthropic, a lab in this story, held to the same sources as every other.' from +8.58 to +20.08, above the Strudel line. credits.json footer is an array carrying it. (2) ch14-s04b: HELPS HUAWEI · HUANG (NVIDIA), SELF-DEFEATING · CHINA'S FOREIGN MINISTRY and DECISIVE · AMODEI (ANTHROPIC), KHAN (EX-NSC) hang as one row at equal size and ink. In a frame pulled from film.mp4 at +7.0 (1853.25 s), all three are at full ink. DECISIVE was half-faded at +6.83 and settled by +7.79, and it no longer gets a solo beat in the silent tail. I re-ran the fact machine checks on the 2168.4167 s clock. 234 lines; timeline matchesScript and fresh both PASS. Every shot claim id exists in claims.json. Every quoted span in the narration and in onScreenText is verbatim in quotes.json (the one non-match is the voice name 'Dave Edge' in the credits). Every curly-quoted literal in the shot sources resolves to quotes.json. Every contested claim (29 uses) is shown as contested. I read the new and rewritten lines against the research. L1502 now reads 'He wrote that nobody he met remembered his Versailles talk', which is faithful to q-hopfield-versailles. It credits the Boltzmann machine Hinton co-invented, matching the ch05-s03 card 'with Sejnowski & Ackley', and the medallion tags HOPFIELD NET · 1982 and BOLTZMANN MACHINE · 1983–85 match e4-hopfield and the bible. L1504b matches e14-biology ('suppressing it yields habit'), and ch15-s03 credits it on screen as 'Anthropic, on Claude 3.5 Haiku · via a simplified replacement model' under MARCH 2025. The VTT carries both lines on the new clock (00:32:06.792, 00:32:52.752). In ch15-s05, frame 2003.55 of film.mp4 shows four plates under one light: GOOGLE DEEPMIND / ANTHROPIC / OPENAI / META. 'as of October 2026' appears once, the Lin and Katsas quotes are verbatim to q14-judge-lin and q14-katsas, and 'APPROVED JULY 2026' matches e14-copyright (final approval 20 July 2026). The facts are now clean and the lab and geopolitics framing is even. What is left is small: a human sign-off on name pronunciation (sixth round open), two ledger partials that are really fixed, a source line on the METR ruler that is too small and partly covered, and a stale spec flag on the W8 Hassabis slip.",
+  "ledgerCheck": {
+    "round5-shots": "PRESENT and closed (01:36:46Z; 26 ids: 24 fixed, 2 partial). Sheets were re-rendered 01:52-01:57Z and film.mp4 at 01:59Z, after every recordedAt, so they show the ledgered code. Accuracy-bearing ids, checked at their recorded word times:",
+    "confirmedFixed": [
+      "ch14-s04b: three tags at 5.59 / 6.19 / ~6.79, all at full ink by 7.0 (film frame), and still equal at +10.25, +10.71, +12.67 and +14.63 on the sheet. The named card 'CHINA IS A YEAR OR TWO BEHIND · lit Oct 2022 · out Jan 2025' is up on 'behind' (+7.79 to +8.75), and the sleeve 'OCT 2022 – JAN 2025 · ≈ 2' is on the stub. Grep finds no wordEnd('years') + 0.4. Closed.",
+      "ch15-s10: the maker disclosure is on the CREDITS card (+8.58, +10.50, +12.42 to +20.08), and the SOURCES card reads 'claims.json · quotes.json' (+22.00 to the end). The Turing 1950 epigraph is correct. Closed.",
+      "ch15-s01: 'CALIFORNIA · 8 OCTOBER 2024' and 'GEOFFREY HINTON' appear over the sleeping figure. The handset is lit on 'phone' (+9.33/+10.37). Citation ribbon: verbatim. JOHN HOPFIELD · physicist · aged 91 at +14.58. HOPFIELD NET · 1982 on 'downhill' (+20.42 to +24.29), BOLTZMANN MACHINE · 1983–85 on 'cools' (+25.50 to +26.25), both gone before 'cheered'. Wendy Hall is verbatim and dated 2024 (+30.12). 'DEMIS HASSABIS · JOHN JUMPER / DeepMind' sits under 'in part'.",
+      "ch15-s05: four labs at equal size under one light; one 'as of October 2026'; the settlement label, both judges and OpenAI's 'warning shot' (dated August 2026, matching q14-openai-warningshot) are unchanged.",
+      "ch15-s06: no Hassabis caption, name card, hand or figure. The Turing laureates card and the LeCun off-ramp quote with 'left Meta, Nov 2025, to build world models · AMI Labs' match e14-lecun.",
+      "ch14-s07: the tags clear before 7.2. The Liang quote is attributed 'July 2024 · ChinaTalk translation'. STATUS: OPEN goes on 'stands' (+14.29 to +14.75). The three gap estimates come from three camps (Hassabis, Huang, Lin); Amodei's own estimate is not added, which avoids weighting toward Anthropic.",
+      "ch15-s08: STATUS: OPEN in red on 'open' (+37.92). The 'THE FIELD, 2019–2025' card carries Anthropic's own limitation ('satisfying insight for about a quarter of the prompts we've tried') beside Jain & Wallace 2019.",
+      "ch15-s09: the Hinton slip is attributed '— Geoffrey Hinton, 2017, as quoted by Gary Marcus', which matches q-hinton-suspicious and its context note. The verdict slip sits under WHO TAUGHT IT? and STATUS: OPEN is on the CASE FILE face (+13.92, +15.25).",
+      "ch10-s12: one fact only, '12 hours · one machine, 8 GPUs', with no compute comparison. ch10-s10: no 'toy weights' caption."
+    ],
+    "partialButActuallyFixed": {
+      "ch15-s03": "The ledger says partial only because the note check read the required anchors ('L1504b', 'Snuff', 'habit') as removed keys. That is a mis-extraction. The sheet shows the picture is right: RABBIT on 'rabbit' (+10.00), the snuffer falling on 'Snuff' (+11.83 to +13.62), HABIT lit on 'habit' (+14.29), the 'rabbit → (suppressed) → habit' echo only after 'habit' (+15.46), and the slugs done before 'plan' (+17.87). Close it as fixed.",
+      "ch13-s03": "The ledger says partial because the sha changed after recording. The sheet at +7.83 ('letter') and +8.87 shows the pause letter printed from its first visible frame (header, ruled lines, signature scrawl). 'MARCH 2023 · PAUSE LETTER · NO MAJOR LAB PAUSED', the 30 MAY 2023 statement, and Hinton first / Bengio second all match the claims. The lab heads shown are Hassabis, Altman and Amodei, three labs, none singled out. Close it as fixed."
+    },
+    "markedFixedButNot": {}
+  },
+  "issues": [
+    {
+      "owner": "global",
+      "severity": "minor",
+      "problem": "This is the sixth round with no human sign-off on how the narrator says real people's names. QA narration.listening still marks Uszkoreit, Amodei, Hochreiter, Schmidhuber, Rumelhart, LeCun and Lenat as pending. STT round-trips pass (the new L1502 take hears Hinton and Hopfield literally), but a transcriber matching a spelling is not a listener hearing respect.",
+      "fix": "Human hand-off before publish (unchanged). Listen to L1006, L1206, L0614, L0507, L0821 (with L0601, L0609 and L1311) and L1104 (with L0515 and L1316) via `npm run film:voice -- listen --slug neural-net-history`. Record each with `film:voice signoff --term <term> --by <name> --verdict ok|reject`. A rejection becomes a solo retake with a lexicon respelling. This does not block the gate."
+    },
+    {
+      "owner": "global",
+      "severity": "minor",
+      "problem": "The ledger closes with two false partials, and the cause will recur. In round5-shots, ch15-s03 is 'partial' because shotledger's note check pulled the anchors the note REQUIRES ('L1504b', 'Snuff', 'habit') into removedKeys and then failed the shot for containing them. ch13-s03 is 'partial' only on a sha change after recording. I confirmed both fixed on the 01:56Z and 01:54Z sheets (see ledgerCheck).",
+      "fix": "Record round5-shots ch15-s03 and ch13-s03 as fixed (closedBy round6), citing ch15-s03 sheet times +11.83 / +14.29 / +17.87 and ch13-s03 +7.83 / +8.87. In generator/film/lib/shotledger.mjs, never treat a quoted token as a removed key when the same note names it as an anchor target (T.word('<line>','<word>') or 'Anchor ... on'). Only phrases after 'remove', 'delete', 'drop' or 'no longer' count. Add a test using the round-5 ch15-s03 note text."
+    },
+    {
+      "owner": "shot",
+      "id": "ch15-s04",
+      "severity": "minor",
+      "problem": "The provenance line under the capability ruler is too small, and a candle covers part of it. The large 'METR, Mar 2025 · doubles ≈ every 7 months' card fades out at about +13.8, just as the '16 HOURS · MAY 2026' rung and 'UNRELIABLE ABOVE HERE' land. From there the only attribution for the top rung is 'METR estimates · frontier models' at about 16 px under MINUTES (film frame 1994.9 s = +13.94), and the shelf candle at x≈950 crosses 'METR'. The 2026 rung, the film's biggest present-day number, is the one whose source a viewer cannot read.",
+      "fix": "Set 'METR estimates · frontier models' at the film's ≥22 px cap, lift it or move it right so no candle or plate overlaps it from b3 (+8.0) to the cut to the stopwatches (~+14.1). Alternatively, keep the 'METR, Mar 2025 · doubles ≈ every 7 months' card at full ink until the stopwatch cut. Do not name the measured model or lab. Re-sheet at +10.1, +13.9 and +14.1."
+    },
+    {
+      "owner": "global",
+      "severity": "minor",
+      "problem": "Spec hygiene, the same pattern that brought back removed text three times. sets/studyState.ts line 353 still says the W8 slip { who: 'HASSABIS · 2025', text: 'AGI in 5 to 10 years · about even odds', pinned: 'ch15-s06' }, but round 4 removed the pin from ch15-s06 and round 5 removed it from the spec. The slip is sourced (e14-hassabis: 'next five to 10 years', 'maybe a 50 percent chance'), and it may stay on the Wall at rest alpha: it shows in ch15-s09 at +0.92 and +2.75. But a 'pinned: ch15-s06' tag invites a future author to re-animate the pin there.",
+      "fix": "In studyState.ts, set the W8 slip to on the Wall from the start (drop pinned: 'ch15-s06', or set it to the earliest shot whose Wall shows it), with a comment: 'rest alpha only; never pinned, captioned, pushed or lit (round-4 historian)'. Keep the text exactly as it is. No re-sheet is needed unless the Wall's first appearance changes."
+    }
+  ],
+  "verifiedFixedFromRound5": [
+    "ch15-s10 maker disclosure restored on the CREDITS card (major, closed).",
+    "ch14-s04b three export-control positions as one equal row by 7.0 (major, closed; verified in film.mp4).",
+    "Spec hygiene: chapters ch10.json and ch15.json and script.json no longer list the three removed texts. ch10-s12's beat is 'gpus' and e10-flops is dropped from its claims. Grep finds none of 'seventh', 'GNMT', '1/7', 'untrained toy' or 'Hassabis, 2025' in script.json.",
+    "L1502 and L1504b: narrated, STT WER 0, on the 2168.4167 s clock, and in the VTT.",
+    "Ledger checker: round4-shots ch15-s08 is now fixed via T.beat('stamp')."
+  ],
+  "factSpotChecks": [
+    "L0408/L0409: Pitts died May 1969, McCulloch September 1969 ('four months later'). Rosenblatt drowned 11 July 1971, his 43rd birthday.",
+    "Candle spans: logic machine 1943-59 = 16; sterile extension 1969-86 = 17; hand-cut stencils 1999-2012 = 13; Cyc 1984-2023 = 39, the longest.",
+    "L1024: the base model after 12 h already 'surpasses all previously published models and ensembles' (Vaswani et al.), so 'out-translated every rival after half a day's training' is right.",
+    "L1205: InstructGPT 1.3B over GPT-3 175B, 'despite having 100x fewer parameters' (e11-instructgpt).",
+    "L1406-L1407: DeepSeek's ~$5.5M is framed as the final run only, excluding prior research and owned hardware (e13-cost-debate).",
+    "L1415: Sept 2026 AI dialogue plus incident channel, chip rules unchanged (e13-summits-2026).",
+    "L1522-L1522d: the Pentagon designation, the OpenAI deal, the split courts (contested e14-dow-courts) and the $1.5B settlement all match the claims. The Pentagon's side is given on screen in Katsas's own words.",
+    "L1531: the METR RCT is described as out of date by its authors (e14-metr-rct)."
+  ],
+  "best_moments": [
+    "ch14-s04b at +7.0: three positions on export controls (Huang/NVIDIA, China's foreign ministry, Amodei/Anthropic with Khan) hang as equal cards with each speaker's affiliation named. The film's own maker gets no extra beat, and the burnt-out 'China is a year or two behind' candle carries its own dates.",
+    "ch15-s05: four labs on four equal plates under one light, 'as of October 2026'. Then Anthropic's Pentagon dispute with both judges quoted verbatim at equal size, Anthropic's own record settlement, and OpenAI's 'warning shot' in OpenAI's words. No lab gets a pass.",
+    "ch15-s10: the end card names the author model's maker as a party to the story and holds it to the same sources, followed by a SOURCES card pointing to claims.json and quotes.json.",
+    "ch15-s03 and ch15-s08: Anthropic's interpretability result is shown precisely (Claude 3.5 Haiku, a simplified replacement model, 'one of many such studies'). Then its own limit ('satisfying insight for about a quarter of the prompts') sits beside Jain & Wallace's 'Attention is not Explanation'.",
+    "ch15-s01: the Nobel is shared and explained (HOPFIELD NET · 1982, BOLTZMANN MACHINE · 1983–85), Hopfield's wry Versailles line is kept exact, and Wendy Hall's 'a bit of a stretch' gets the room. The prize is shown without hagiography.",
+    "ch05-s06 and ch08-s13: credit for the messenger is spread across Kelley to Le Cun, and 'Fair credit: that was seven networks voting', with IDSIA's earlier GPU wins. Priority disputes are shown, not settled."
+  ]
+}

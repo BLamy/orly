@@ -1,8 +1,8 @@
 {
  "shot": "ch15-s03",
- "at": "2026-10-13T21:40:44.848Z",
+ "at": "2026-10-14T01:33:25.373Z",
  "minCapPx": 22,
- "sampled": 21,
+ "sampled": 26,
  "texts": 14,
  "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
@@ -19,17 +19,12 @@
   },
   {
    "text": "rabbit",
-   "capWhileSubject": 30.8,
+   "capWhileSubject": 30.5,
    "why": "script onScreenText"
   },
   {
    "text": "habit",
    "capWhileSubject": 31.5,
-   "why": "script onScreenText"
-  },
-  {
-   "text": "rabbit → (suppressed) → habit",
-   "capWhileSubject": 23,
    "why": "script onScreenText"
   }
  ],
@@ -78,7 +73,12 @@
    "text": "it",
    "maxCap": 30.4,
    "why": "drawn as texture"
+  },
+  {
+   "text": "rabbit → (suppressed) → habit",
+   "maxCap": 22.1,
+   "why": "drawn as texture"
   }
  ],
- "textureTexts": 9
+ "textureTexts": 10
 }

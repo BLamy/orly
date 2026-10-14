@@ -146,8 +146,8 @@ export interface WindowReflectionOpts {
 /** round 4 (ch14-s07): the new gap taper's wax */
 export const GAP_WAX = '#e3cfa2';
 
-/** the strikeLight pose for a progress (null when out of the glass) */
-function strikePose(strike: number | null) {
+/** the strikeLight pose for a progress (null when out of the glass); exported for ch14-s07's own smooth-sleeve hand */
+export function strikePose(strike: number | null) {
   return strike !== null ? hands.act('strikeLight', strike, { x: GAP_FLAME.x, y: GAP_FLAME.y + 6 }, { entry: ENTRY, scale: 0.62 }) : null;
 }
 

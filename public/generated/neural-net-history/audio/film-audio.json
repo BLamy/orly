@@ -2,8 +2,8 @@
  "version": 1,
  "slug": "neural-net-history",
  "clock": {
-  "duration": 2164,
-  "lines": 233
+  "duration": 2168.4167,
+  "lines": 234
  },
  "lines": {
   "L0101": {
@@ -23469,15 +23469,15 @@
   "L1502": {
    "shot": "ch15-s01",
    "chapter": "ch15",
-   "text": "A Nobel Prize in physics, shared with John Hopfield, whose Versailles talk, he wrote, nobody he met remembered: for memories that roll downhill, and the Boltzmann machine Hinton co-invented, a net that settles as it cools.",
-   "spoken": "A Nobel Prize in physics, shared with John Hopfield, whose Versailles talk, he wrote, nobody he met remembered: for memories that roll downhill, and the Boltzmann machine Hinton co-invented, a net that settles as it cools.",
-   "sig": "204abf8bebd3",
-   "chunk": "c90484d9a98bcdb0",
+   "text": "A Nobel Prize in physics, shared with John Hopfield. He wrote that nobody he met remembered his Versailles talk. The prize was for memories that roll downhill, and the Boltzmann machine Hinton co-invented, a net that settles as it cools.",
+   "spoken": "A Nobel Prize in physics, shared with John Hopfield. He wrote that nobody he met remembered his Versailles talk. The prize was for memories that roll downhill, and the Boltzmann machine Hinton co-invented, a net that settles as it cools.",
+   "sig": "0316f409aa01",
+   "chunk": "3bbe47205e2f32ef",
    "clip": "narration/clips/L1502.wav",
-   "clipSha": "1b8dd319550e",
-   "duration": 15.536,
+   "clipSha": "71f5eb181721",
+   "duration": 15.888,
    "speechStart": 0.12,
-   "speechEnd": 15.271,
+   "speechEnd": 15.538,
    "words": [
     {
      "w": "A",
@@ -23492,184 +23492,204 @@
     {
      "w": "Prize",
      "start": 0.782,
-     "end": 1.107
+     "end": 1.142
     },
     {
      "w": "in",
-     "start": 1.142,
-     "end": 1.211
+     "start": 1.188,
+     "end": 1.258
     },
     {
      "w": "physics",
-     "start": 1.269,
-     "end": 1.757
+     "start": 1.316,
+     "end": 1.792
     },
     {
      "w": "shared",
-     "start": 1.861,
-     "end": 2.187
+     "start": 1.896,
+     "end": 2.21
     },
     {
      "w": "with",
-     "start": 2.221,
+     "start": 2.233,
      "end": 2.349
     },
     {
      "w": "John",
-     "start": 2.396,
+     "start": 2.407,
      "end": 2.605
     },
     {
      "w": "Hopfield",
      "start": 2.663,
-     "end": 3.22
+     "end": 3.197
     },
     {
-     "w": "whose",
-     "start": 3.51,
-     "end": 3.742
-    },
-    {
-     "w": "Versailles",
+     "w": "He",
      "start": 3.789,
-     "end": 4.462
-    },
-    {
-     "w": "talk",
-     "start": 4.59,
-     "end": 5.077
-    },
-    {
-     "w": "he",
-     "start": 5.217,
-     "end": 5.31
+     "end": 3.905
     },
     {
      "w": "wrote",
-     "start": 5.368,
-     "end": 5.751
+     "start": 3.951,
+     "end": 4.183
+    },
+    {
+     "w": "that",
+     "start": 4.218,
+     "end": 4.358
     },
     {
      "w": "nobody",
-     "start": 6.018,
-     "end": 6.436
+     "start": 4.485,
+     "end": 4.927
     },
     {
      "w": "he",
-     "start": 6.505,
-     "end": 6.61
+     "start": 4.985,
+     "end": 5.066
     },
     {
      "w": "met",
-     "start": 6.691,
-     "end": 6.865
+     "start": 5.147,
+     "end": 5.449
     },
     {
      "w": "remembered",
-     "start": 6.923,
-     "end": 7.458
+     "start": 5.577,
+     "end": 6.018
+    },
+    {
+     "w": "his",
+     "start": 6.064,
+     "end": 6.18
+    },
+    {
+     "w": "Versailles",
+     "start": 6.25,
+     "end": 6.877
+    },
+    {
+     "w": "talk",
+     "start": 6.947,
+     "end": 7.33
+    },
+    {
+     "w": "The",
+     "start": 7.852,
+     "end": 7.957
+    },
+    {
+     "w": "prize",
+     "start": 8.003,
+     "end": 8.363
+    },
+    {
+     "w": "was",
+     "start": 8.41,
+     "end": 8.537
     },
     {
      "w": "for",
-     "start": 7.875,
-     "end": 8.026
+     "start": 8.607,
+     "end": 8.711
     },
     {
      "w": "memories",
-     "start": 8.084,
-     "end": 8.479
+     "start": 8.769,
+     "end": 9.164
     },
     {
      "w": "that",
-     "start": 8.514,
-     "end": 8.642
+     "start": 9.211,
+     "end": 9.338
     },
     {
      "w": "roll",
-     "start": 8.711,
-     "end": 8.978
+     "start": 9.396,
+     "end": 9.629
     },
     {
      "w": "downhill",
-     "start": 9.071,
-     "end": 9.687
+     "start": 9.71,
+     "end": 10.267
     },
     {
      "w": "and",
-     "start": 10.07,
-     "end": 10.221
+     "start": 10.569,
+     "end": 10.72
     },
     {
      "w": "the",
-     "start": 10.267,
-     "end": 10.337
+     "start": 10.766,
+     "end": 10.836
     },
     {
      "w": "Boltzmann",
-     "start": 10.395,
-     "end": 10.871
+     "start": 10.882,
+     "end": 11.37
     },
     {
      "w": "machine",
-     "start": 10.929,
-     "end": 11.486
+     "start": 11.44,
+     "end": 11.974
     },
     {
      "w": "Hinton",
-     "start": 11.579,
-     "end": 12.009
+     "start": 12.067,
+     "end": 12.496
     },
     {
      "w": "co-invented",
-     "start": 12.102,
-     "end": 12.903
+     "start": 12.578,
+     "end": 13.309
     },
     {
      "w": "a",
-     "start": 13.321,
-     "end": 13.391
+     "start": 13.692,
+     "end": 13.762
     },
     {
      "w": "net",
-     "start": 13.518,
-     "end": 13.704
+     "start": 13.855,
+     "end": 14.041
     },
     {
      "w": "that",
-     "start": 13.762,
-     "end": 13.913
+     "start": 14.075,
+     "end": 14.238
     },
     {
      "w": "settles",
-     "start": 13.994,
-     "end": 14.412
+     "start": 14.308,
+     "end": 14.702
     },
     {
      "w": "as",
-     "start": 14.47,
-     "end": 14.563
+     "start": 14.749,
+     "end": 14.83
     },
     {
      "w": "it",
-     "start": 14.621,
-     "end": 14.691
+     "start": 14.888,
+     "end": 14.958
     },
     {
      "w": "cools",
-     "start": 14.749,
-     "end": 15.271
+     "start": 15.016,
+     "end": 15.538
     }
    ],
    "wordsFrom": "display",
    "cut": {
     "from": 0,
-    "to": 15.416,
+    "to": 15.768,
     "pad": 0.12,
     "head": "take-head",
     "tail": "take-tail",
     "edgeDb": {
-     "head": -53.5,
-     "tail": -80.7
+     "head": -52.2,
+     "tail": -83.7
     },
     "clean": true
    }
@@ -24089,6 +24109,84 @@
     "edgeDb": {
      "head": -51.5,
      "tail": -56.6
+    },
+    "clean": true
+   }
+  },
+  "L1504b": {
+   "shot": "ch15-s03",
+   "chapter": "ch15",
+   "text": "Snuff that plan out, and it rhymes with “habit” instead.",
+   "spoken": "Snuff that plan out, and it rhymes with \"habit\" instead.",
+   "sig": "83b417f34e16",
+   "chunk": "6f0466401cf22896",
+   "clip": "narration/clips/L1504b.wav",
+   "clipSha": "b54bb0eef587",
+   "duration": 3.934,
+   "speechStart": 0.12,
+   "speechEnd": 3.649,
+   "words": [
+    {
+     "w": "Snuff",
+     "start": 0.12,
+     "end": 0.55
+    },
+    {
+     "w": "that",
+     "start": 0.596,
+     "end": 0.735
+    },
+    {
+     "w": "plan",
+     "start": 0.782,
+     "end": 1.014
+    },
+    {
+     "w": "out",
+     "start": 1.084,
+     "end": 1.327
+    },
+    {
+     "w": "and",
+     "start": 1.641,
+     "end": 1.78
+    },
+    {
+     "w": "it",
+     "start": 1.85,
+     "end": 1.908
+    },
+    {
+     "w": "rhymes",
+     "start": 1.966,
+     "end": 2.279
+    },
+    {
+     "w": "with",
+     "start": 2.314,
+     "end": 2.465
+    },
+    {
+     "w": "habit",
+     "start": 2.581,
+     "end": 2.964
+    },
+    {
+     "w": "instead",
+     "start": 3.057,
+     "end": 3.649
+    }
+   ],
+   "wordsFrom": "display",
+   "cut": {
+    "from": 0,
+    "to": 3.814,
+    "pad": 0.12,
+    "head": "take-start",
+    "tail": "take-tail",
+    "edgeDb": {
+     "head": -21.7,
+     "tail": -84
     },
     "clean": true
    }
@@ -27402,7 +27500,7 @@
   {
    "path": "narration/clips/L1502.wav",
    "url": "audio/lines/L1502.m4a",
-   "duration": 15.536,
+   "duration": 15.888,
    "lineId": "L1502"
   },
   {
@@ -27422,6 +27520,12 @@
    "url": "audio/lines/L1504.m4a",
    "duration": 11.0075,
    "lineId": "L1504"
+  },
+  {
+   "path": "narration/clips/L1504b.wav",
+   "url": "audio/lines/L1504b.m4a",
+   "duration": 3.934,
+   "lineId": "L1504b"
   },
   {
    "path": "narration/clips/L1505.wav",
@@ -27590,19 +27694,19 @@
    "key": "G major (M1 in G: D→G; suspension G over D-A; falls G→F#); a brief C/D organ colour at Dartmouth",
    "instrumentation": "gm_celesta (lead), gm_string_ensemble_1 (soft), gm_cello, gm_pizzicato_strings (the walk), gm_clarinet (file seal), gm_drawbar_organ (Dartmouth chorale, lpf 1400), low brown-noise train rumble",
    "intensity": 0.3,
-   "notes": "CURRENT CLOCK (timeline 2164 s; re-fitted 2026-10-13 by the composer to narration/timeline.json after the round-4 re-narration of L0220 (1.375 s longer) and the +0.417 s shift of ch02-s01..s07; this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 74.2667-199.322 (125.055 s), shots ch02-s01…ch02-s08 (77.42-198.62); lines under it L0201 (78.02) … L0220 (188.92-195.21). IN: starts 74.267 with a 2 s fade-in, inside the speech-free gap 68.00-78.02 (L0114b -> L0201). OUT: fades 197.722-199.322, inside the speech-free gap 195.21-201.32 (L0220 -> L0301); LAST STRIKE 196.01 (the open G on 'xrayBand1'; 1.7 s of ring before the fade). RE-FIT DONE (rendered 125.055 s + 6 s tail, -23.8 LUFS I, TP -6.4; critic r1 round-3 revision applied 2026-10-13): every hit moved with its word or beat (ch02-s01 through 'sixteen' 187.25 bodily; the X-ray D on 'xray' 195.51 and G on 'xrayBand1' 196.01); no hit names a word of L0220, the room-tone sine is held across the longer line, so the silence after 'name on it' stays clear (room tone only, -47 dB RMS) until the X-ray. Place every hit by the word or beat it names in narration/timeline.json.\n\nCLUE ONE: the 1940s in celesta and soft strings. (NEW lead-in, inside ch01-s07's title hold, music only): enter softly under m01's held D; the first celesta note is the wick glint on 'wickCatch' 76.90 (a tiny high note, D6 or A5: the candle catching), alone before L0201. a gentle, curious celesta figure in G, intensity 0.3, a far-off train rumble (brown noise, lpf 149.75, very low) folded into the low end; keep the celesta in the gaps around 'Chicago, around 1941' (78.02) and the Pitts/McCulloch line. THE LOGIC LANTERNS: the celesta becomes the machine: a soft single pluck when an input knot lights ('oneIn' 90.20), a brighter chime only when a wick catches ('fire' 91.17), a rest when the flame snaps dark ('dark' 92.16); the AND/OR demonstration at 'and' 102.06 and 'or' 103.30 gets audible logic (AND: chime only when both plucks sound; OR: chime on either). the figure pauses; M2's pizzicato walk returns for the pinning; a single held low note (cello D2) under 'could not learn' (109.16); the FILE SEAL at 'file' 110.97, then silence. THE FIRST CANDLE: M1 in G, first full use: the rising fourth D→G on celesta exactly as the candle catches ('light' 113.21 / 'intoFlame' 113.87), held by strings (lit); on 'Gerard' (122.89) a soft string suspension enters beneath it (bass to D-A under the held G = doubted); it does NOT resolve yet. HEBB: a slow two-note figure (B4-D5, celesta) repeating three times on the passes ('pass1' 130.93, 'pass2' 131.65, 'pass3' 133.16), each a little fuller (the thread thickening), cycling softly through the reading hold. TURING: a light, hopeful turn under 'child machine' (144.35), keep it high (celesta/music box at D5+), then the walk quietly for the slip pin and a soft held G chord while the slip is read. DARTMOUTH (1956): the valve organ (drawbar, soft) broadens into a short hopeful chorale in G → C → D for the naming ('name' 152.38, put the chord change in the gap after 'intelligence' 153.95); it thins on 'symbols' (159.52) to one organ note; under Widrow a single solo celesta line: M1's rising fourth played tenderly, unresolved (plant: Widrow returns in m20); 'Remember him' (172.90) in near-silence. THE CANDLE OUT: M1 completes for the first time: the held suspension under the frog's-eye line, then the FALLING RESOLUTION G→F# exactly on 'sixteen' (187.25) as the flame goes out (D major chord, then decay). Near silence for 'The paper that put it out had Pitts's own name on it' (194.38). Under the X-ray a faint high shimmer and the celesta rising fourth once, softly, as if something has been kept (D on 'xray' 195.51 → G on 'xrayBand1' 196.01). Last onset (that G); end on the open G chord ringing through the fade; m03 (C major organ), so the G is V of C. SCORE ROUND 2026-10-12 (composer): verified on the 2139.5417 s clock; the candle lighting under L0209 (celesta D -> G on 'light'/'intoFlame') trimmed about 1 dB so the line clears the music by about 11 dB; nothing else moved. COMPOSER VOICE-BAND PASS (critic r1, 2026-10-12; rendered 123.68 s + 6 s tail, -23.3 LUFS I, TP -6.9): per-line margins measured in the 250-2k and 1-4k voice bands over each whole line (render + gainDb, no duck: the m19 v9 / m21 v5 measure). Before: L0203 0.3, L, L0209 3.1, L, L0217 5.7. Now every line is 7.9-24 dB clear in both bands (median 11.8 / 12.3) and 11.7-28 dB within the words. THE LANTERNS: input plucks under L0203/L0204 are ghosts (vel .07-.08); the 'fire' chime that the picture pins to 'All' (91.17) is one soft short G; the 'fired' chime moves to the breath, the network notes to its two breaths, the 'logic' chord (and its strings); AND/OR/ unchanged (slightly fuller, in the clear). THE CANDLE (L0209): celesta D -> G 4.5 dB down, the G struck and let go (1 s), the strings' held G5 -4 dB; the file seal (clarinet + pizz D) now ends before 'We' (112.97), as the note's 'then silence' asks. HEBB (L0211): the three passes ('cell', 'fire', 'grows') are ghost touches; the thread THICKENS in the reading hold after 'grows': B -> D three times, each fuller (celesta, + music box, + harp), decayed before 'Alan' (137.22). TURING: the music-box rise under 'child machine' -6 dB, its top D after 'machine' (144.35) at full level. The slip's held G chord ends into the organ instead of ringing under 'By nineteen fifty-six'; the four chorale chords under L0215 softer and darker (lpf 1050), the bloom in the gap after 'intelligence' unchanged. WIDROW: the E after 'wrong' is struck and let go so 'Remember him' (172.90) is in near silence (16.4 dB). The fall on 'sixteen' F#5 -2 dB. Timing, window, joins and last strike unchanged. CRITIC R1 ROUND 3 (composer, 2026-10-13; same measure, renders vary about 0.8 dB): (every line 9.0-20 dB on the final render; L0216 6.9 -> 18.0 in 1-4k, L0204 7.3 -> 11.2, L0212 7.3 -> 10.8, L0219 -> 9.5). WIDROW: the celesta keeps only M1's rising fourth as one short soft pair (D on 'Bernard' 164.09, G on 'Widrow' 164.51, let go); nothing from it under 'artificial brain'. The downhill slide B-A-G-F# is now the cello's, bowed below D3, on 'sliding' 170.09, 'downhill' 170.59, 'toward' 171.23 and 'less' 171.68, landing on E under the celesta's lone E in the breath after 'wrong' ends (it plants m20's cello Widrow). THE LANTERNS: on 'All' 91.17 a damped G tick; the firing sound is the candle's fourth as a dyad (D-G, heard D5-G5, under 1 kHz): it blooms in the breath after 'All' while the flame burns, and again after 'fired' 95.11 (the old high G-D chime there was the loudest 1-4k energy under L0204); the L0204 plucks -1 dB; the C6 just before L0202 damped. TURING: the music-box rise under 'educate' 143.39 ghosted (-1 dB) and its top D moved off 'machine' 144.35 into the clear after it. THE CANDLE OUT: the suspension's held G5 -2 dB and the fall's F#5 -1.5 dB, so L0218/L0219 clear 9.5 dB.",
+   "notes": "CURRENT CLOCK (timeline 2164 s; review round 5, 2026-10-13, composer: clock unchanged, L0220 ends 195.212 on 'it'; this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 74.2667-199.322 (125.055 s), shots ch02-s01…ch02-s08 (77.42-198.62); lines under it L0201 (78.02) … L0220 (188.92-195.21). IN: starts 74.267 with a 2 s fade-in, inside the speech-free gap 68.00-78.02 (L0114b -> L0201). OUT: fades 198.322-199.322 (fadeOut 1.0 s), inside the speech-free gap 195.21-201.32 (L0220 -> L0301), overlapping m03's 2 s fade-in (197.322-199.322); LAST STRIKE 196.70 (celesta G with the soft open G below; the fade starts 1.62 s after it, the low G already decaying: render -24.8 M at its peak 197.6, -27.6 M at 198.3). After 'it' (195.212) room tone only (render -49 M) until the celesta D at 196.22 (1.01 s after 'it'); G at 196.70. Rendered 125.055 s + 6 s tail, -24.3 LUFS I, TP -7.0 (word pass re-render, renders vary about 0.5 dB; earlier renders: X-ray peak -24.8 M both; renders vary about 1 dB; master = render - 0.5 dB, so the X-ray sits about -25.3 M master before m03 joins). Everything before 'it' unchanged. Place every hit by the word or beat it names in narration/timeline.json.\n\nCLUE ONE: the 1940s in celesta and soft strings. (NEW lead-in, inside ch01-s07's title hold, music only): enter softly under m01's held D; the first celesta note is the wick glint on 'wickCatch' 76.90 (a tiny high note, D6 or A5: the candle catching), alone before L0201. a gentle, curious celesta figure in G, intensity 0.3, a far-off train rumble (brown noise, lpf 149.75, very low) folded into the low end; keep the celesta in the gaps around 'Chicago, around 1941' (78.02) and the Pitts/McCulloch line. THE LOGIC LANTERNS: the celesta becomes the machine: a soft single pluck when an input knot lights ('oneIn' 90.20), a brighter chime only when a wick catches ('fire' 91.17), a rest when the flame snaps dark ('dark' 92.16); the AND/OR demonstration at 'and' 102.06 and 'or' 103.30 gets audible logic (AND: chime only when both plucks sound; OR: chime on either). the figure pauses; M2's pizzicato walk returns for the pinning; a single held low note (cello D2) under 'could not learn' (109.16); the FILE SEAL at 'file' 110.97, then silence. THE FIRST CANDLE: M1 in G, first full use: the rising fourth D→G on celesta exactly as the candle catches ('light' 113.21 / 'intoFlame' 113.87), held by strings (lit); on 'Gerard' (122.89) a soft string suspension enters beneath it (bass to D-A under the held G = doubted); it does NOT resolve yet. HEBB: a slow two-note figure (B4-D5, celesta) repeating three times on the passes ('pass1' 130.93, 'pass2' 131.65, 'pass3' 133.16), each a little fuller (the thread thickening), cycling softly through the reading hold. TURING: a light, hopeful turn under 'child machine' (144.35), keep it high (celesta/music box at D5+), then the walk quietly for the slip pin and a soft held G chord while the slip is read. DARTMOUTH (1956): the valve organ (drawbar, soft) broadens into a short hopeful chorale in G → C → D for the naming ('name' 152.38, put the chord change in the gap after 'intelligence' 153.95); it thins on 'symbols' (159.52) to one organ note; under Widrow a single solo celesta line: M1's rising fourth played tenderly, unresolved (plant: Widrow returns in m20); 'Remember him' (172.90) in near-silence. THE CANDLE OUT: M1 completes for the first time: the held suspension under the frog's-eye line, then the FALLING RESOLUTION G→F# exactly on 'sixteen' (187.25) as the flame goes out (D major chord, then decay). Near silence for 'The paper that put it out had Pitts's own name on it' (194.38). Then let the silence after it do the work: room tone only for a full second after 'it'. Under the X-ray, late and softly, as if something has been kept: a faint high shimmer and the celesta rising fourth once (the D about 1 s after 'it', the G about half a second after the D), at -22 M master or quieter. Last onset (that G, with a soft open G below); the open G already letting go before the fade, which runs at least 1.6 s after the last strike; m03 (C major organ), so the G is V of C. SCORE ROUND 2026-10-12 (composer): verified on the 2139.5417 s clock; the candle lighting under L0209 (celesta D -> G on 'light'/'intoFlame') trimmed about 1 dB so the line clears the music by about 11 dB; nothing else moved. COMPOSER VOICE-BAND PASS (critic r1, 2026-10-12; rendered 123.68 s + 6 s tail, -23.3 LUFS I, TP -6.9): per-line margins measured in the 250-2k and 1-4k voice bands over each whole line (render + gainDb, no duck: the m19 v9 / m21 v5 measure). Before: L0203 0.3, L, L0209 3.1, L, L0217 5.7. Now every line is 7.9-24 dB clear in both bands (median 11.8 / 12.3) and 11.7-28 dB within the words. THE LANTERNS: input plucks under L0203/L0204 are ghosts (vel .07-.08); the 'fire' chime that the picture pins to 'All' (91.17) is one soft short G; the 'fired' chime moves to the breath, the network notes to its two breaths, the 'logic' chord (and its strings); AND/OR/ unchanged (slightly fuller, in the clear). THE CANDLE (L0209): celesta D -> G 4.5 dB down, the G struck and let go (1 s), the strings' held G5 -4 dB; the file seal (clarinet + pizz D) now ends before 'We' (112.97), as the note's 'then silence' asks. HEBB (L0211): the three passes ('cell', 'fire', 'grows') are ghost touches; the thread THICKENS in the reading hold after 'grows': B -> D three times, each fuller (celesta, + music box, + harp), decayed before 'Alan' (137.22). TURING: the music-box rise under 'child machine' -6 dB, its top D after 'machine' (144.35) at full level. The slip's held G chord ends into the organ instead of ringing under 'By nineteen fifty-six'; the four chorale chords under L0215 softer and darker (lpf 1050), the bloom in the gap after 'intelligence' unchanged. WIDROW: the E after 'wrong' is struck and let go so 'Remember him' (172.90) is in near silence (16.4 dB). The fall on 'sixteen' F#5 -2 dB. Timing, window, joins and last strike unchanged. CRITIC R1 ROUND 3 (composer, 2026-10-13; same measure, renders vary about 0.8 dB): (every line 9.0-20 dB on the final render; L0216 6.9 -> 18.0 in 1-4k, L0204 7.3 -> 11.2, L0212 7.3 -> 10.8, L0219 -> 9.5). WIDROW: the celesta keeps only M1's rising fourth as one short soft pair (D on 'Bernard' 164.09, G on 'Widrow' 164.51, let go); nothing from it under 'artificial brain'. The downhill slide B-A-G-F# is now the cello's, bowed below D3, on 'sliding' 170.09, 'downhill' 170.59, 'toward' 171.23 and 'less' 171.68, landing on E under the celesta's lone E in the breath after 'wrong' ends (it plants m20's cello Widrow). THE LANTERNS: on 'All' 91.17 a damped G tick; the firing sound is the candle's fourth as a dyad (D-G, heard D5-G5, under 1 kHz): it blooms in the breath after 'All' while the flame burns, and again after 'fired' 95.11 (the old high G-D chime there was the loudest 1-4k energy under L0204); the L0204 plucks -1 dB; the C6 just before L0202 damped. TURING: the music-box rise under 'educate' 143.39 ghosted (-1 dB) and its top D moved off 'machine' 144.35 into the clear after it. THE CANDLE OUT: the suspension's held G5 -2 dB and the fall's F#5 -1.5 dB, so L0218/L0219 clear 9.5 dB. REVIEW ROUND 5 (composer, 2026-10-13): the X-ray no longer crowds the silence after 'name on it': its D moved from the 'xray' beat to a full second after 'it', the G half a second later, the whole block about 8 dB softer (it had held the master at -19 to -20 M through the gap), the fade shortened so it starts 1.6 s after the last strike. WORD PASS (critic r1 per-word floor, composer 2026-10-13; not re-composed): the wick tick on 'All' halved and shortened (a 0.1 s touch), and the lantern bed under L0203 behind lpf 750 (its bow noise was the 1-4k floor under the word); the flame's held G5 and the doubted D-A chord on 'Gerard' behind lpf 1000 ('more' in L0210); the suspension's G5 under the frog's-eye line another 1 dB softer behind lpf 900 and its D-A behind lpf 1000 ('before'). Every word of 0.2 s or more now clears 3 dB in both voice bands (margins in dB: the word All from 1.7 to 7.4, the word before from 0.3 to 4.4, the word more at 4.2); every line 9.4-22 dB; wcheck 0 flags.",
    "file": "score/cues/m02.strudel",
    "render": "score/renders/m02.wav",
    "gainDb": -4,
    "fadeIn": 2,
-   "fadeOut": 1.6,
+   "fadeOut": 1,
    "duck": {
     "ratio": 3,
     "attack": 20,
     "release": 250,
     "depthDb": 3
    },
-   "lastStrike": 196.01,
+   "lastStrike": 196.7,
    "lastStrikeFrom": "composer",
    "clockShift": {
     "by": null,
@@ -28206,7 +28310,7 @@
   {
    "id": "m19",
    "start": 1916.433,
-   "end": 2038.9,
+   "end": 2043.317,
    "shots": [
     "ch15-s01",
     "ch15-s03",
@@ -28218,7 +28322,7 @@
    "key": "D major (celesta over a low string D; the rising fourth A→D thrice at the same level)",
    "instrumentation": "gm_celesta (solo), low gm_string_ensemble_1/cello pedal, a soft phone-buzz rhythm (two short low pulses: a sine or muted contrabass, part of the texture), gm_pad_bowed (bowed-glass shimmer for the Hall of Mirrors), light ticking celesta (the pulse thinned), gm_string_ensemble_1 (the unresolved chord), gm_pizzicato_strings (the clock-like doubling pluck)",
    "intensity": 0.25,
-   "notes": "CURRENT CLOCK (timeline 2164 s; re-fitted 2026-10-13 by the composer (v20) to narration/timeline.json; this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 1916.433-2038.900 (122.467 s), shots ch15-s01…ch15-s05 (1916.17-2037.46); lines under it L1501 (1920.37) … L1525 (ends 2035.95). IN: starts 1916.433 with a 1.5 s fade-in, inside the speech-free gap 1915.34-1920.37 (L1418 -> L1501). OUT: fades 2037.900-2038.900, inside the speech-free gap 2035.95-2040.46 (L1525 -> L1509); LAST STRIKE 2035.99 (OpenAI's bloom as L1525 ends; analysis agrees, 2035.993), 1.91 s before the fade; m20 fades in from 2036.19 and its Dm comes only after the bloom has gone. The render (body 122.467 s) matches the window. Place every hit by the word or beat it names in narration/timeline.json.\n\nCASE STATUS: OPEN, part 1. Wonder, not triumph; intensity 0.2-0.3; level and fair for the labs. The louder moments come from a few clear-air breaths, not from a constant bed: under the voice the floor is thin and it RESTS in four places (under 'Not everyone cheered. Was this physics?', under L1504 and L1505, under the doubling where the pizz clock is the only bass, and under L1522c, L1522d and 'OpenAI called it a warning shot'). THE CALL (ch15-s01): in the clear before 'Two', a low string D-A swell and solo celesta glints F#-A, damped before 'Two'; under L1501 the floor is D alone (no A2: the A2 arrives on 'Nobel'); the phone is two pairs of low pulses on the picture's buzzes, the pair on 'phone' halved, the pair in the breath after 'rings' full. Bowed glass for the Hall of Mirrors from 'Hopfield' through 'Versailles'. M1's rising fourth (celesta A->D, tight and damped, with high strings D-F# lit) three times at the SAME clear-air level, each whole in a breath: after 'downhill' (Hopfield's memory settling), after 'cools' (the turn, with glass), after 'Jumper'. Under the critic ('One') the floor returns as A-E beneath the held D5 (doubted, not moved). The act's one long clear-air swell is the bowed glass in the breath after 'proteins', gone before 'Researchers'. THE MICROSCOPE (ch15-s03): three celesta ticks (the GPU pulse thinned) gone before 'Researchers'; nothing on 'looked inside' but a tiny E6 tick in the breath before 'looked'; the question's hanging E6 and its glass halo in the breath after 'model'; the rabbit chime D6-A5 only after L1504 ends ('line'). 'Nobody told it... to plan': nothing low, only a thin dark high E in the ellipsis after 'it'; the A-D floor and the unresolved E-A swell (clear air) once 'plan' has ended, gone before 'The candle'. THE CANDLE OF NOW (ch15-s04): M1's fourth once more on the trimmed wick (b1), in the clear; the candle's D floor let go as the clock starts; the doubling as an even low pizz tick-tock from 'measure' (11 plucks, .75 s) with the celesta climbing D6 E6 F#6 A6 and its last step, B6, waiting for the clear after 'twice as long' (it stops short of D); the clock stops mid-pattern before 'Yet'; the stopwatches over Bm then G, a late small tick for the ghost hand ('felt'), a soft D on 'date'. THE LABS UNDER THE SAME LIGHT (ch15-s05), the house rule for picture-pinned notes: the shelf of identical lamps gets the founding figure (harp D A B F#, centred) as a quick roll in the clear after 'date', damped before 'The labs'. Each lab, identically: under the line its lamp gets ONE soft, short harp D (halved): 'Anthropic' (b2) and 'test' (b5), with the floor (Bm for Anthropic, Em/D for OpenAI) entering only once the name is spoken; the full D A B F# figure, a quick roll, in the NEXT BREATH: after 'weapons' (Anthropic) and after 'systems' (OpenAI), measured within 1 dB of each other; one clear-air bloom, the figure's F# alone doubled at the octave over a released low D: after 'books' (Anthropic, damped before 'In a test') and after 'shot' (OpenAI, nothing under 'a warning shot'; the cue's last strike, ringing under the cut to ch15-s06 into the fade), measured within 1 dB of each other. The tag flip on 'settle' is not struck. One thin held D5 (the same light) under each lab's lines, identical, and alone where the floor rests; it is let go before 'OpenAI called it a warning shot'. No stingers; never louder or darker for either lab.\n\nCOMPOSER v20 (2026-10-13, critic round 1 of the score stage: v19 had 19 wcheck flags; rendered 122.467 s + 6 s tail, -22.9 LUFS I, LRA 15.6 (v19 5.1), TP -7.2, length error 0 ms, no errors): the global under-voice raise undone (VU 1.05 -> .8; breath material at its own clear-air level; master +1 dB); the lab figures and blooms re-placed as above; the floor rests added; the opening floor without A2 under L1501; the microscope's E6, halo and rabbit chime moved into breaths. wcheck (render + gainDb -4, no duck): 0 flags; every line 9.0-24 dB clear in 1-4 kHz and 9.5-24 dB in 250 Hz-2 kHz, 7.3-58 dB in 80-250 Hz (L1501 low band 4.4 -> 9.1, L1522 5.7/6.9 -> 13.3/13.9, L1525 6.4/6.8 -> 11.0/13.0); lowest words 'Hinton' and 'called' dB (1-4 kHz); 'refused'/15.1, 'test'/14.9, 'shot'/36.5, 'looked'/31.5, 'inside'/38.9, 'before'/50.8. Earlier composer passes (v8-v19) are archived in score/notes-history.json.",
+   "notes": "CURRENT CLOCK (timeline 2168.4167 s; re-fitted 2026-10-13 by the composer (v22) to narration/timeline.json; this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 1916.433-2043.317 (126.884 s), shots ch15-s01…ch15-s05 (1916.17-2041.875); lines under it L1501 (1920.37) … L1525 (ends 2040.36). IN: starts 1916.433 with a 1.5 s fade-in, inside the speech-free gap 1915.34-1920.37 (L1418 -> L1501). OUT: fades 2042.317-2043.317, inside the speech-free gap 2040.36-2044.88 (L1525 -> L1509); LAST STRIKE 2040.409 (OpenAI's bloom as L1525 ends; analysis 2040.513), 1.91 s before the fade; m20 enters from 2040.608 and its Dm comes only after the bloom has gone. Placements on this clock: the glass from 'Hopfield' 1929.34 through 'Versailles' (1932.92-1933.55); M1 whole in the comma after 'downhill' 1936.95 ('downhill' ends 1936.94, 'and' 1937.24; gone by 'Boltzmann' 1937.55), after 'cools' 1942.25 and after 'Jumper' 1955.65; the critic's A-E from 1945.74; the glass after 'proteins' 1958.74; the rabbit chime after 'line' 1972.18, decayed by 'Snuff' 1972.75; L1504b (1972.75-1976.28) and L1505 (1976.88-1979.32) carry only the thin high tail (the thin E 1978.04 in the ellipsis); THE BREATH from 1979.62 ('plan' ends 1979.32), crest about 1980.5 (-20.7 M master), let go by 1981.0; the wick 1981.16-1981.32 (-31 M); L1530 'The' 1981.76 (music about -33 M master); the pizz clock from 'measure' 1986.47; the shelf figure after 'date' 2002.67; Anthropic's lamp D on 'Anthropic' 2006.18, figure after 'weapons' 2012.03, bloom after 'books' 2029.69; OpenAI's lamp D on 'test' 2030.89, figure after 'systems' 2037.48, bloom after 'shot' 2040.41. The render (body 126.884 s) matches the window. Place every hit by the word or beat it names in narration/timeline.json.\n\nCASE STATUS: OPEN, part 1. Wonder, not triumph; intensity 0.2-0.3; level and fair for the labs. The louder moments come from a few clear-air breaths, not from a constant bed: under the voice the floor is thin and it RESTS in four places (under 'Not everyone cheered. Was this physics?', under L1504, L1504b and L1505, under the doubling where the pizz clock is the only bass, and under L1522c, L1522d and 'OpenAI called it a warning shot'). THE CALL (ch15-s01): in the clear before 'Two', a low string D-A swell and solo celesta glints F#-A, damped before 'Two'; under L1501 the floor is D alone (no A2: the A2 arrives on 'Nobel' and holds to 'cools'); the phone is two pairs of low pulses on the picture's buzzes, the pair on 'phone' halved, the pair in the breath after 'rings' full. Bowed glass for the Hall of Mirrors from 'Hopfield' through 'Versailles' (L1502's new take: 'nobody he met remembered his Versailles talk'). M1's rising fourth (celesta A->D, tight and damped, with high strings D-F# lit) three times at the SAME clear-air level: in the comma after 'downhill' (the picture's paper ball settling into its hollow; nothing is struck ON the word, and the ring is a shade shorter so it is gone by 'Boltzmann'), after 'cools' (the turn, with glass), after 'Jumper'. Under the critic ('One') the floor returns as A-E beneath the held D5 (doubted, not moved). The act's one long clear-air swell is the bowed glass in the breath after 'proteins', gone before 'Researchers'. THE MICROSCOPE (ch15-s03): three celesta ticks (the GPU pulse thinned) gone before 'Researchers'; nothing on 'looked inside' but a tiny E6 tick in the breath before 'looked'; the question's hanging E6 and its glass halo in the breath after 'model'; the rabbit chime D6-A5 only after L1504 ends ('line'), decayed by 'Snuff'. Under L1504b ('Snuff that plan out, and it rhymes with habit instead') and L1505 ('Nobody told it... to plan') only the thin high tail: the chime's decay, the silence between the two lines, and a thin dark high E in the ellipsis after 'it' (nothing low, nothing new). THE BREATH after 'plan': about 0.3 s of near-silence once 'plan' has ended, then the A-D floor and the unresolved E-A above it bowed over about a second to a soft crest (about -21 M master), let go quickly in their own small rooms, so the air is at -30 M or lower by 'The candle' (an unresolved breath after the film's quietest line, not a sting). THE CANDLE OF NOW (ch15-s04): M1's fourth once more on the trimmed wick (b1), small and dry in the clear between the breath and 'The'; the candle's D floor enters on 'The' and is let go as the clock starts; the doubling as an even low pizz tick-tock from 'measure' (11 plucks, .75 s) with the celesta climbing D6 E6 F#6 A6 and its last step, B6, waiting for the clear after 'twice as long' (it stops short of D); the clock stops mid-pattern before 'Yet'; the stopwatches over Bm then G, a late small tick for the ghost hand ('felt'), a soft D on 'date'. THE LABS UNDER THE SAME LIGHT (ch15-s05), the house rule for picture-pinned notes: the shelf of identical lamps gets the founding figure (harp D A B F#, centred) as a quick roll in the clear after 'date', damped before 'The labs'. Each lab, identically: under the line its lamp gets ONE soft, short harp D (halved): 'Anthropic' (b2) and 'test' (b5), with the floor (Bm for Anthropic, Em/D for OpenAI) entering only once the name is spoken; the full D A B F# figure, a quick roll, in the NEXT BREATH: after 'weapons' (Anthropic) and after 'systems' (OpenAI), measured within 1 dB of each other; one clear-air bloom, the figure's F# alone doubled at the octave over a released low D: after 'books' (Anthropic, damped before 'In a test') and after 'shot' (OpenAI, nothing under 'a warning shot'; the cue's last strike, ringing under the cut to ch15-s06 into the fade), measured within 1 dB of each other. The tag flip on 'settle' is not struck. One thin held D5 (the same light) under each lab's lines, identical, and alone where the floor rests; it is let go before 'OpenAI called it a warning shot'. No stingers; never louder or darker for either lab.\n\nCOMPOSER v22 (2026-10-13, critic round 1 of the score stage: M1 was pinned ON 'downhill', which measured 2.5 dB in 250-2k): the whole rising fourth, with the D-F# flame it lights, moved into the comma after 'downhill', where the paper ball settles; its ring shortened (D release .26). Rendered 126.884 s + 6 s tail, -22.8 LUFS I, TP -6.2, length error 0 ms. wcheck m19: 0 flags (the word 'downhill' now clears the music by about 30 dB in 1-4k and 18 dB in 250-2k, the word 'Boltzmann' by about 10 and 12; every L1502 word by 5 dB or more); the three M1 statements peak within about 1 dB of each other (after 'downhill', 'cools', 'Jumper'). Everything else unchanged from v21. Earlier composer passes (v8-v21) are archived in score/notes-history.json.",
    "file": "score/cues/m19.strudel",
    "render": "score/renders/m19.wav",
    "gainDb": -4,
@@ -28231,17 +28335,18 @@
     "depthDb": 3
    },
    "clockShift": {
-    "by": null,
+    "by": "composer (v21)",
     "at": "2026-10-13",
-    "reason": "round-4 re-narration changed lines inside the cue (ch15-s01 to L1502 +2.125 s; L1502 re-narrated +4.54 s, so ch15-s03..L1525 are +6.67 s; the ch15-s05 tail after L1525 is now 1.51 s (was 4.43), so the OpenAI bloom that closes the warning-shot card must strike in the clear right after L1525 ends (2035.95) and ring under the cut to ch15-s06 (2037.46), while m20 fades in from 2036.19 (its A2 on ch15-s06 b1 2037.76, Dm only after the bloom has gone); the window ends 2038.90 so m20 sounds alone 1.56 s before L1509 (2040.46)): window re-fitted by the music director; code re-fitted and re-rendered by the composer (v19, 122.467 s, exact)"
+    "reason": "round-5 clock (2168.4167 s): lines inside the cue changed: L1502 re-narrated (three sentences, 15.42 s, +0.27 s: 'Hopfield' 1929.335 unchanged, 'Versailles' 1932.922 (+2.46), 'memories' 1935.441, 'downhill' 1936.382, 'cools' 1941.688 (+0.27)); L1528..L1504 +0.25-0.27 s; the NEW solo line L1504b 1972.752-1976.281 ('Snuff' 1972.752, 'plan' 1973.414, 'habit' 1975.213); L1505 1976.881 ('Nobody', 'plan' 1978.831) and everything after it +4.417 s (L1525 ends 2040.363). WINDOW re-fitted by the round-5 global fixer: 1916.433-2043.317 (126.884 s), so m20 (from 2040.608) still sounds alone 1.56 s before L1509 (2044.875); lastStrike marker moved with the OpenAI bloom to 2040.409. CODE NOT YET RE-FITTED: the v20 render (122.467 s) is on the 2164 clock; the composer re-fits the source (the cues.m19 note) and re-renders at 126.884 s.",
+    "refit": "2026-10-13: code re-fitted to the round-5 clock and re-rendered at 126.884 s"
    },
-   "lastStrike": 2035.992,
+   "lastStrike": 2040.409,
    "lastStrikeFrom": "composer"
   },
   {
    "id": "m20",
-   "start": 2036.191,
-   "end": 2064.691,
+   "start": 2040.608,
+   "end": 2069.108,
    "shots": [
     "ch15-s06",
     "ch15-s07"
@@ -28251,7 +28356,7 @@
    "key": "D (neutral, re-harmonised per lamp) → D minor for the holdouts (M1 held on the suspension) → D minor full motif with its fall for Widrow",
    "instrumentation": "gm_orchestral_harp / gm_pizzicato_strings (the neutral phrase, centred), gm_cello (solo: the holdouts, Widrow), gm_celesta (one high note per dark window), low gm_string_ensemble_1 (very soft)",
    "intensity": 0.3,
-   "notes": "CURRENT CLOCK (timeline 2164 s; re-fitted 2026-10-13 to narration/timeline.json after the round-4 re-narration of L0114, L0220, L1410b, L1502 and the clock rebuild (ch15-s05 tail 1.51 s, ch15-s10 28.71 s); composer v8 re-wrote the code on this clock; this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 2036.19-2064.69 (28.500 s), shots ch15-s06…ch15-s07 (2037.46-2065.96); lines under it L1509 (2040.46) … L1511 (ends 2061.75). IN: starts 2036.191 with a 1.5 s fade-in, inside the speech-free gap 2035.95-2040.46 (L1525 -> L1509), under m19's last bloom (struck 2035.99); m20's first pitched note is the cello A2 on ch15-s06 b1 (2037.76), its Dm (F5) on b1b (2039.26) after the bloom has gone. OUT: fades 2063.691-2064.691, inside the speech-free gap 2061.75-2070.76 (L1511 -> L1527); last strike 2062.04 (composer marker); the fade starts 1.65 s after it. Moved bodily +3.75 s with its shots (no line inside it changed); the code's absolute constants are now on this clock and the render (body 28.500 s, re-rendered) matches the window. Place every hit by the word or beat it names in narration/timeline.json.\n\nCASE STATUS: OPEN, part 2. THE THREE HOLDOUTS (ch15-s06): M1 on solo cello in D minor: A2 on b1, D3 lit on b1b over Dm, in the clear before L1509; the floor moves to C under 'dangerous' (2043.72: the held D grinding gently between C below and E above) and to A-E under 'far enough' ('far' 2046.10, Asus4); the unresolved suspension swells in the music-only hold while the cards are read (the cue's only swell, intensity 0.4) and does NOT resolve; released so its tail is gone under the fade to black. WIDROW (ch15-s07, winterBlue): solo cello plays M1 once, FULLY: A2 in the lead-in, D3 lit over Dm and very soft winter glass, held through 'died at ninety-five'; the floor slides to A-E on 'ninety-five' (2058.21, doubt); the fall D -> C# over A right after 'never got over it' ('over' 2061.25). One high celesta note per window going dark: the first in the breath after 'ninety-five', before 'He' (2059.56), two very soft ones under the quote's words, the last after the fall, thinning to silence.\n\nCOMPOSER v8 (2026-10-13; rendered 28.500 s + 6 s tail, -22.9 LUFS I, TP -8.6, length error 0 ms, no errors): every constant re-written on the current clock (+4.958 s from v7's code, the bodily move); the first dark window's celesta moved from the tail of 'ninety-five' into the breath that follows it. Per-line margins (raw cue at gainDb -4 against narration.wav, mean level over the whole line, before the mix's HPF, shelf and duck): L1509 11.3 dB full / 10.8 (1-4 kHz) / 14.6 (250 Hz-2 kHz); L1511 11.4 / 8.7 / 13.5 (unchanged music, v7 measured 12.6 / 10.4 in 1-4 kHz on its own measure). Earlier passes (v5-v7) are archived in score/notes-history.json.",
+   "notes": "CURRENT CLOCK (timeline 2168.4167 s; round 5 (2026-10-13): moved bodily +4.417 s with its shots after the L1502 re-take and the new solo line L1504b upstream in m19, every time below re-written and the source re-rendered as v9 with identical audio; re-fitted 2026-10-13 to narration/timeline.json after the round-4 re-narration of L0114, L0220, L1410b, L1502 and the clock rebuild (ch15-s05 tail 1.51 s, ch15-s10 28.71 s); composer v8 re-wrote the code on this clock; this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 2040.61-2069.11 (28.500 s), shots ch15-s06…ch15-s07 (2041.88-2070.38); lines under it L1509 (2044.88) … L1511 (ends 2066.17). IN: starts 2040.608 with a 1.5 s fade-in, inside the speech-free gap 2040.37-2044.88 (L1525 -> L1509), under m19's last bloom (struck 2040.41); m20's first pitched note is the cello A2 on ch15-s06 b1 (2042.18), its Dm (F5) on b1b (2043.68) after the bloom has gone. OUT: fades 2068.108-2069.108, inside the speech-free gap 2066.17-2075.18 (L1511 -> L1527); last strike 2066.46 (composer marker); the fade starts 1.65 s after it. Moved bodily +3.75 s with its shots (no line inside it changed); the code's absolute constants are now on this clock and the render (body 28.500 s, re-rendered) matches the window. Place every hit by the word or beat it names in narration/timeline.json. Render v9 (round 5, same events +4.417 s): 28.500 s body + 6 s tail (length exact), -22.8 LUFS I, TP -7.9 dBTP, no errors.\n\nCASE STATUS: OPEN, part 2. THE THREE HOLDOUTS (ch15-s06): M1 on solo cello in D minor: A2 on b1, D3 lit on b1b over Dm, in the clear before L1509; the floor moves to C under 'dangerous' (2048.14: the held D grinding gently between C below and E above) and to A-E under 'far enough' ('far' 2050.52, Asus4); the unresolved suspension swells in the music-only hold while the cards are read (the cue's only swell, intensity 0.4) and does NOT resolve; released so its tail is gone under the fade to black. WIDROW (ch15-s07, winterBlue): solo cello plays M1 once, FULLY: A2 in the lead-in, D3 lit over Dm and very soft winter glass, held through 'died at ninety-five'; the floor slides to A-E on 'ninety-five' (2062.63, doubt); the fall D -> C# over A right after 'never got over it' ('over' 2065.67). One high celesta note per window going dark: the first in the breath after 'ninety-five', before 'He' (2063.97), two very soft ones under the quote's words, the last after the fall, thinning to silence.\n\nCOMPOSER v8 (2026-10-13; rendered 28.500 s + 6 s tail, -22.9 LUFS I, TP -8.6, length error 0 ms, no errors): every constant re-written on the current clock (+4.958 s from v7's code, the bodily move); the first dark window's celesta moved from the tail of 'ninety-five' into the breath that follows it. Per-line margins (raw cue at gainDb -4 against narration.wav, mean level over the whole line, before the mix's HPF, shelf and duck): L1509 11.3 dB full / 10.8 (1-4 kHz) / 14.6 (250 Hz-2 kHz); L1511 11.4 / 8.7 / 13.5 (unchanged music, v7 measured 12.6 / 10.4 in 1-4 kHz on its own measure). Earlier passes (v5-v7) are archived in score/notes-history.json.",
    "file": "score/cues/m20.strudel",
    "render": "score/renders/m20.wav",
    "gainDb": -4,
@@ -28263,18 +28368,18 @@
     "release": 250,
     "depthDb": 3
    },
-   "lastStrike": 2062.041,
+   "lastStrike": 2066.458,
    "lastStrikeFrom": "composer",
    "clockShift": {
-    "by": 3.75,
+    "by": 4.4167,
     "at": "2026-10-13",
-    "reason": "round-4 re-narration upstream (L0114, L0220, L1410b, L1502): the cue window moved bodily with its shots (no line inside it changed); code constants re-written on the current clock and re-rendered by the composer (v8)"
+    "reason": "round-5 clock (2168.4167 s): L1502 re-narrated (+0.27 s) and the new solo line L1504b inserted before L1505 (ch15-s03; ch15-s04 onward +4.417 s); no line inside this cue changed, so the window moved bodily with its shots; the source's absolute times were re-written +4.417 s (v9) and re-rendered (round-5 global fixer)"
    }
   },
   {
    "id": "m21",
-   "start": 2065.958,
-   "end": 2164,
+   "start": 2070.375,
+   "end": 2168.4167,
    "shots": [
     "ch15-s08",
     "ch15-s09",
@@ -28285,7 +28390,7 @@
    "key": "D major; ends on Asus4 (D held over A-E), never resolved",
    "instrumentation": "tape-lurch fast-forward (the m01 rewind sound played forwards), gm_celesta, gm_drawbar_organ, gm_cello, piano, oscillator synth pulse, gm_orchestral_harp, gm_pizzicato_strings (every era's instrument of M1, in order), gm_string_ensemble_1, gm_contrabass",
    "intensity": 0.5,
-   "notes": "CURRENT CLOCK (timeline 2164 s; re-fitted 2026-10-13 by the composer (v8) to narration/timeline.json after the round-4 re-narration of L0114, L0220, L1410b, L1502 and the clock rebuild (ch15-s05 tail 1.51 s, ch15-s10 28.71 s); this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 2065.96-2164 (98.042 s), shots ch15-s08…ch15-s10 (2065.96-2164.00); lines under it L1527 (2070.76) … L1520 (ends 2132.29). IN: starts 2065.958 on the cut with no fade-in, inside the speech-free gap 2061.75-2070.76 (L1511 -> L1527). OUT: fades 2163.000-2164.000, inside the speech-free gap 2132.29-2164.00 (L1520 -> end); last strike 2156.592 (composer: the SOURCES celesta D on `sources`); the fade starts 6.41 s after it (by 2161.40 required). Hits on this clock: ff1-ff5 2066.96-2069.96; 'rules' 2072.30, 'knowledge' 2073.70, 'Learning' 2075.89; the network columns from 'Never' 2082.00 to 'network' 2084.64; the bloom lands 2086.45; 'forty' 2089.34, 'two' 2091.01, 'day' 2093.03, 'still' 2094.21; 'dark' 2096.85; the held E re-bowed after 'open' (fx-stamp-howfar 2103.887): strings 2104.24 (+0.35 s), piano 2104.41 (+0.52 s); the slip: A 2108.76, D on the cut 2109.25; strings after 'seventeen' (ends 2114.67) at 2114.70, the A-E fifth 2115.75; silence for stamp b3 2122.00 (music at -51 LUFS M and falling) and lamp b4 2124.50; 'rim' 2128.47; glint on 'candles' 2131.35; the last gesture 2132.43/2133.13; the Asus4 slide 2134.78 into the cut 2135.29; end-card pad 2136.83, fifth released into CREDITS b2 2143.79, the lone D bowed 2143.31 and 2149.30 and held to `sources` 2156.59, then ringing down with the celesta. Render v8: 98.042 s body + 10 s tail (length exact, 0 ms error), -25.1 LUFS I, TP -4.1 dBTP, no errors; the lone D under CREDITS measures -32.8 to -35.4 LUFS M, held; -61.6 M at the fade.\n\nTHE REVEAL AND THE HANDOFF (rubato; events placed by seconds). THE FAST-FORWARD: m01's rewind played forwards: a tape lurch on the cut, then five 0.75-s forward swells on ff1-ff5 (valve organ, glass + cello, oscillator, harp, celesta over a soft D), the fifth landing on D before 'Who'. THE VERDICT (L1527): a hush; one dry grey pluck each on 'rules' and 'knowledge'; M1's rising fourth for LEARNING (A in, D struck and let go on 'Learning', the strings' D-major halo holding it); one soft high harp pluck per accomplice (data, fire, messenger, people: D F# A D, M3's forward pass). THE NETWORK (L1514): M3's forward wave, one era instrument per column every 0.44 s from 'Never' (celesta, valve organ, cello, piano, oscillator pulse, harp, pizz on 'network'), all at about a third under the line. THE BLOOM in the gap after 'along': the trained pass lands on F# in full D major (strings, horns, harp roll, contrabass, one timpani stroke, celesta F#), held, thin before 'Some': the score's loudest moment. THE BAR CHART IN WAX (L1515): one celesta note per candle: 'forty' (short; its length is the contrabass's low D), 'two' (short), 'day' (the shortest tick), 'still' burn (a held D). 'dark': everything drops to ONE held note, E (piano E6 + strings + glass), carried through L1516/L1516b, re-bowed in the clear after 'open' and held to the cut. THE LAST SLIP (ch15-s09): celesta A as an upbeat out of the held E, the D struck on the cut, decayed before L1517 begins; L1517 itself is left bare; the high strings take the D only after 'seventeen', in the breath before the quote, and a soft A-E fifth slides in beneath after 'future'; the quote (L1518) over the held D; gone before the stamp. SILENCE for the stamp (b3) and the lamp click (b4) (foley bus). M4's walk on solo cello under L1520, very soft, below D3 (A1 D2 E2 F2 G2 on 'rim', F2 E2 C2 D2), home. The match on 'new' (foley) in near silence; the wick catches on 'candles': one tiny damped celesta glint only. THE LAST GESTURE, in the clear after 'from': celesta M1 once more, A -> D, held by the high strings; into the cut to black the strings and contrabass slide beneath it to A-E with a solo cello on D3: Asus4, the D the suspension, NEVER RESOLVED. THE END CARDS (ch15-s10): the suspension stays alive as a ppp string pad (lpf 1200) entering under the chord's release: A-E + D through the Turing card (b1-b2); the fifth lets go into b2 and the D ALONE is HELD under the CREDITS card at about -33 to -35 LUFS M in the render (review round 3: never a decay to -40, which reads as silence at -16 LUFS), bowed twice so it does not sag over the card's 12.8 s (the second bowing crossfades in halfway through with a faint upper octave: the flame breathes once); on `sources` one soft celesta D (as written in v6) and the pad lets go with it, both ringing down to the floor before the fade to black (b3). No cadence anywhere.\n\nCOMPOSER v8 (round-4 re-fit): s08/s09 and the Turing card moved bodily with their words (no line inside them changed length); the CREDITS card (12.8 s, was the 6.1-s disclosure card) holds the lone D, bowed twice, and the SOURCES celesta moved with its card. Voice-band pass (gainDb -2, render + wcheck): every line and every word of 0.2 s or more clear. Per-word fixes: the accomplice harp D6 on 'people' halved with a short ring; under 'all along' the celesta ticking thins by 7 dB, the high strings' A5/D6 on 'network' became a glint gone before 'all', the late harp and piano pings halved or dropped; the celesta tick on 'day' -3.5 dB; the strings' first E bowing -3 dB under L1516/L1516b (its harmonics sat on 'open'); the slip moved one beat earlier so nothing rings into 'The'; M4's walk -1.4 dB. Per-line margins: 1-4 kHz 9.2 (L1514) to 23.3 dB, 250-2k 11.3 (L1527) to 22.5 dB, 80-250 Hz 9.5 (L1520) and up. Integrated -25.1 LUFS sits below the house -21 +/- 2 because of the long rests and the ppp end cards; raising the trim would cost L1514's 1-4 kHz margin, so the mix role stays with gainDb.",
+   "notes": "CURRENT CLOCK (timeline 2168.4167 s; round 5 (2026-10-13): moved bodily +4.417 s with its shots after the L1502 re-take and the new solo line L1504b upstream in m19, every time below re-written and the source re-rendered as v9 with identical audio; re-fitted 2026-10-13 by the composer (v8) to narration/timeline.json after the round-4 re-narration of L0114, L0220, L1410b, L1502 and the clock rebuild (ch15-s05 tail 1.51 s, ch15-s10 28.71 s); this paragraph is the only time authority, the re-fit history is archived in score/notes-history.json). Window 2070.38-2168.4167 (98.042 s), shots ch15-s08…ch15-s10 (2070.38-2168.42); lines under it L1527 (2075.18) … L1520 (ends 2136.71). IN: starts 2070.375 on the cut with no fade-in, inside the speech-free gap 2066.17-2075.18 (L1511 -> L1527). OUT: fades 2167.417-2168.417, inside the speech-free gap 2136.71-2168.42 (L1520 -> end); last strike 2161.009 (composer: the SOURCES celesta D on `sources`); the fade starts 6.41 s after it (by 2165.82 required). Hits on this clock: ff1-ff5 2071.38-2074.38; 'rules' 2076.72, 'knowledge' 2078.12, 'Learning' 2080.31; the network columns from 'Never' 2086.42 to 'network' 2089.06; the bloom lands 2090.87; 'forty' 2093.76, 'two' 2095.43, 'day' 2097.45, 'still' 2098.63; 'dark' 2101.27; the held E re-bowed after 'open' (fx-stamp-howfar 2108.304): strings 2108.66 (+0.35 s), piano 2108.83 (+0.52 s); the slip: A 2113.18, D on the cut 2113.67; strings after 'seventeen' (ends 2119.09) at 2119.12, the A-E fifth 2120.17; silence for stamp b3 2126.42 (music at -51 LUFS M and falling) and lamp b4 2128.92; 'rim' 2132.89; glint on 'candles' 2135.77; the last gesture 2136.85/2137.55; the Asus4 slide 2139.20 into the cut 2139.71; end-card pad 2141.25, fifth released into CREDITS b2 2148.21, the lone D bowed 2147.73 and 2153.72 and held to `sources` 2161.01, then ringing down with the celesta. Render v8: 98.042 s body + 10 s tail (length exact, 0 ms error), -25.1 LUFS I, TP -4.1 dBTP, no errors; the lone D under CREDITS measures -32.8 to -35.4 LUFS M, held; -61.6 M at the fade. Render v9 (round 5, same events +4.417 s): 98.042 s body + 10 s tail (length exact), -24.6 LUFS I, TP -4.7 dBTP, no errors.\n\nTHE REVEAL AND THE HANDOFF (rubato; events placed by seconds). THE FAST-FORWARD: m01's rewind played forwards: a tape lurch on the cut, then five 0.75-s forward swells on ff1-ff5 (valve organ, glass + cello, oscillator, harp, celesta over a soft D), the fifth landing on D before 'Who'. THE VERDICT (L1527): a hush; one dry grey pluck each on 'rules' and 'knowledge'; M1's rising fourth for LEARNING (A in, D struck and let go on 'Learning', the strings' D-major halo holding it); one soft high harp pluck per accomplice (data, fire, messenger, people: D F# A D, M3's forward pass). THE NETWORK (L1514): M3's forward wave, one era instrument per column every 0.44 s from 'Never' (celesta, valve organ, cello, piano, oscillator pulse, harp, pizz on 'network'), all at about a third under the line. THE BLOOM in the gap after 'along': the trained pass lands on F# in full D major (strings, horns, harp roll, contrabass, one timpani stroke, celesta F#), held, thin before 'Some': the score's loudest moment. THE BAR CHART IN WAX (L1515): one celesta note per candle: 'forty' (short; its length is the contrabass's low D), 'two' (short), 'day' (the shortest tick), 'still' burn (a held D). 'dark': everything drops to ONE held note, E (piano E6 + strings + glass), carried through L1516/L1516b, re-bowed in the clear after 'open' and held to the cut. THE LAST SLIP (ch15-s09): celesta A as an upbeat out of the held E, the D struck on the cut, decayed before L1517 begins; L1517 itself is left bare; the high strings take the D only after 'seventeen', in the breath before the quote, and a soft A-E fifth slides in beneath after 'future'; the quote (L1518) over the held D; gone before the stamp. SILENCE for the stamp (b3) and the lamp click (b4) (foley bus). M4's walk on solo cello under L1520, very soft, below D3 (A1 D2 E2 F2 G2 on 'rim', F2 E2 C2 D2), home. The match on 'new' (foley) in near silence; the wick catches on 'candles': one tiny damped celesta glint only. THE LAST GESTURE, in the clear after 'from': celesta M1 once more, A -> D, held by the high strings; into the cut to black the strings and contrabass slide beneath it to A-E with a solo cello on D3: Asus4, the D the suspension, NEVER RESOLVED. THE END CARDS (ch15-s10): the suspension stays alive as a ppp string pad (lpf 1200) entering under the chord's release: A-E + D through the Turing card (b1-b2); the fifth lets go into b2 and the D ALONE is HELD under the CREDITS card at about -33 to -35 LUFS M in the render (review round 3: never a decay to -40, which reads as silence at -16 LUFS), bowed twice so it does not sag over the card's 12.8 s (the second bowing crossfades in halfway through with a faint upper octave: the flame breathes once); on `sources` one soft celesta D (as written in v6) and the pad lets go with it, both ringing down to the floor before the fade to black (b3). No cadence anywhere.\n\nCOMPOSER v8 (round-4 re-fit): s08/s09 and the Turing card moved bodily with their words (no line inside them changed length); the CREDITS card (12.8 s, was the 6.1-s disclosure card) holds the lone D, bowed twice, and the SOURCES celesta moved with its card. Voice-band pass (gainDb -2, render + wcheck): every line and every word of 0.2 s or more clear. Per-word fixes: the accomplice harp D6 on 'people' halved with a short ring; under 'all along' the celesta ticking thins by 7 dB, the high strings' A5/D6 on 'network' became a glint gone before 'all', the late harp and piano pings halved or dropped; the celesta tick on 'day' -3.5 dB; the strings' first E bowing -3 dB under L1516/L1516b (its harmonics sat on 'open'); the slip moved one beat earlier so nothing rings into 'The'; M4's walk -1.4 dB. Per-line margins: 1-4 kHz 9.2 (L1514) to 23.3 dB, 250-2k 11.3 (L1527) to 22.5 dB, 80-250 Hz 9.5 (L1520) and up. Integrated -25.1 LUFS sits below the house -21 +/- 2 because of the long rests and the ppp end cards; raising the trim would cost L1514's 1-4 kHz margin, so the mix role stays with gainDb.",
    "file": "score/cues/m21.strudel",
    "render": "score/renders/m21.wav",
    "gainDb": -2,
@@ -28299,11 +28404,11 @@
    },
    "tail": 10,
    "clockShift": {
-    "by": 3.75,
+    "by": 4.4167,
     "at": "2026-10-13",
-    "reason": "round-4 re-narration upstream: ch15-s08/s09 and the Turing card moved bodily +3.75 s; ch15-s10's CREDITS card grew to 12.8 s (28.71-s end cards): code re-fit and re-rendered (v8)"
+    "reason": "round-5 clock (2168.4167 s): L1502 re-narrated (+0.27 s) and the new solo line L1504b inserted before L1505 (ch15-s03; ch15-s04 onward +4.417 s); no line inside this cue changed, so the window moved bodily with its shots; the source's absolute times were re-written +4.417 s (v9) and re-rendered (round-5 global fixer)"
    },
-   "lastStrike": 2156.592,
+   "lastStrike": 2161.009,
    "lastStrikeFrom": "composer"
   },
   {
@@ -28332,8 +28437,8 @@
   },
   {
    "id": "fx-stamp-howfar",
-   "start": 2103.8873,
-   "end": 2104.9873,
+   "start": 2108.304,
+   "end": 2108.904,
    "render": "score/foley/fx-stamp-howfar.wav",
    "gainDb": -3.56,
    "duck": false,
@@ -28344,8 +28449,8 @@
   },
   {
    "id": "fx-stamp",
-   "start": 2122.002,
-   "end": 2123.102,
+   "start": 2126.4187,
+   "end": 2127.5187,
    "render": "score/foley/fx-stamp.wav",
    "gainDb": -3.56,
    "duck": false,
@@ -28356,8 +28461,8 @@
   },
   {
    "id": "fx-lamp-off",
-   "start": 2124.502,
-   "end": 2125.352,
+   "start": 2128.9187,
+   "end": 2129.7687,
    "render": "score/foley/fx-lamp-off.wav",
    "gainDb": -3.56,
    "duck": false,
@@ -28368,8 +28473,8 @@
   },
   {
    "id": "fx-match-strike",
-   "start": 2131.093,
-   "end": 2132.043,
+   "start": 2135.5097,
+   "end": 2136.4597,
    "render": "score/foley/fx-match-strike.wav",
    "gainDb": -3.56,
    "duck": false,
@@ -28380,8 +28485,8 @@
   },
   {
    "id": "fx-match-flare",
-   "start": 2131.314,
-   "end": 2133.614,
+   "start": 2135.7307,
+   "end": 2138.0307,
    "render": "score/foley/fx-match-flare.wav",
    "gainDb": -3.56,
    "duck": false,
@@ -28503,7 +28608,7 @@
   {
    "path": "score/renders/m19.wav",
    "url": "audio/cues/m19.m4a",
-   "duration": 128.467,
+   "duration": 132.884,
    "cueId": "m19"
   },
   {
@@ -28515,7 +28620,7 @@
   {
    "path": "score/renders/m21.wav",
    "url": "audio/cues/m21.m4a",
-   "duration": 108.042,
+   "duration": 108.041708,
    "cueId": "m21"
   },
   {
@@ -28533,7 +28638,7 @@
   {
    "path": "score/foley/fx-stamp-howfar.wav",
    "url": "audio/cues/fx-stamp-howfar.m4a",
-   "duration": 1.1,
+   "duration": 0.6,
    "cueId": "fx-stamp-howfar"
   },
   {
@@ -28563,7 +28668,7 @@
  ],
  "stem": {
   "file": "films/neural-net-history/narration/narration.wav",
-  "duration": 2164,
+  "duration": 2168.4167,
   "lineLufs": -20,
   "maxLevelingDb": 3,
   "rides": {
@@ -30052,32 +30157,39 @@
     "levelingDb": -2.57
    },
    "L1502": {
-    "lufs": -21.3,
-    "rideDb": 1.3,
-    "clipGainDb": 0.18,
-    "trimDb": 0.18,
-    "levelingDb": 1.48
+    "lufs": -21.1,
+    "rideDb": 1.1,
+    "clipGainDb": 0.11,
+    "trimDb": 0.11,
+    "levelingDb": 1.21
    },
    "L1528": {
     "lufs": -22.5,
     "rideDb": 2.5,
-    "clipGainDb": 0.32,
-    "trimDb": 0.32,
-    "levelingDb": 2.82
+    "clipGainDb": 0.28,
+    "trimDb": 0.28,
+    "levelingDb": 2.78
    },
    "L1529": {
     "lufs": -20.8,
     "rideDb": 0.8,
-    "clipGainDb": 0.08,
-    "trimDb": 0.08,
-    "levelingDb": 0.88
+    "clipGainDb": 0.1,
+    "trimDb": 0.1,
+    "levelingDb": 0.9
    },
    "L1504": {
     "lufs": -22.4,
     "rideDb": 2.4,
-    "clipGainDb": 0.48,
-    "trimDb": 0.48,
-    "levelingDb": 2.88
+    "clipGainDb": 0.42,
+    "trimDb": 0.42,
+    "levelingDb": 2.82
+   },
+   "L1504b": {
+    "lufs": -21.9,
+    "rideDb": 1.9,
+    "clipGainDb": 0.91,
+    "trimDb": 0.91,
+    "levelingDb": 2.81
    },
    "L1505": {
     "lufs": -20.1,
@@ -30112,16 +30224,16 @@
    "L1530": {
     "lufs": -20.3,
     "rideDb": 0.3,
-    "clipGainDb": 0.06,
-    "trimDb": 0.06,
-    "levelingDb": 0.36
+    "clipGainDb": 0,
+    "trimDb": 0,
+    "levelingDb": 0.3
    },
    "L1531": {
     "lufs": -21.6,
     "rideDb": 1.6,
-    "clipGainDb": 0.13,
-    "trimDb": 0.13,
-    "levelingDb": 1.73
+    "clipGainDb": 0.12,
+    "trimDb": 0.12,
+    "levelingDb": 1.72
    },
    "L1522": {
     "lufs": -24.8,
@@ -30133,9 +30245,9 @@
    "L1522b": {
     "lufs": -19.9,
     "rideDb": -0.1,
-    "clipGainDb": -0.63,
-    "trimDb": -0.63,
-    "levelingDb": -0.73
+    "clipGainDb": -0.62,
+    "trimDb": -0.62,
+    "levelingDb": -0.72
    },
    "L1522c": {
     "lufs": -26.6,
@@ -30156,9 +30268,9 @@
    "L1525": {
     "lufs": -22.1,
     "rideDb": 2.1,
-    "clipGainDb": -0.18,
-    "trimDb": -0.18,
-    "levelingDb": 1.92
+    "clipGainDb": -0.16,
+    "trimDb": -0.16,
+    "levelingDb": 1.94
    },
    "L1509": {
     "lufs": -16.8,
@@ -30170,9 +30282,9 @@
    "L1511": {
     "lufs": -20.2,
     "rideDb": 0.2,
-    "clipGainDb": 0.42,
-    "trimDb": 0.42,
-    "levelingDb": 0.62
+    "clipGainDb": 0.41,
+    "trimDb": 0.41,
+    "levelingDb": 0.61
    },
    "L1527": {
     "lufs": -19.2,
@@ -30191,16 +30303,16 @@
    "L1515": {
     "lufs": -17.7,
     "rideDb": -2.3,
-    "clipGainDb": 0.07,
-    "trimDb": 0.07,
-    "levelingDb": -2.23
+    "clipGainDb": 0.14,
+    "trimDb": 0.14,
+    "levelingDb": -2.16
    },
    "L1516": {
     "lufs": -22.3,
     "rideDb": 2.3,
-    "clipGainDb": 0.58,
-    "trimDb": 0.58,
-    "levelingDb": 2.88
+    "clipGainDb": 0.4,
+    "trimDb": 0.4,
+    "levelingDb": 2.7
    },
    "L1516b": {
     "lufs": -23.1,
@@ -30219,18 +30331,18 @@
    "L1518": {
     "lufs": -19.1,
     "rideDb": -0.9,
-    "clipGainDb": -0.1,
-    "trimDb": -0.1,
-    "levelingDb": -1
+    "clipGainDb": -0.12,
+    "trimDb": -0.12,
+    "levelingDb": -1.02
    },
    "L1520": {
     "lufs": -21,
     "rideDb": 1,
     "level": "soft",
     "hintDb": -2,
-    "clipGainDb": -2.1,
-    "trimDb": -0.1,
-    "levelingDb": 0.9
+    "clipGainDb": -2.11,
+    "trimDb": -0.11,
+    "levelingDb": 0.89
    }
   },
   "integratedBefore": -20.1,
@@ -31750,76 +31862,83 @@
      "driftDb": 1.28
     },
     "L1502": {
-     "M": -22.19,
-     "offsetDb": -0.17,
+     "M": -22.12,
+     "offsetDb": -0.1,
      "requestedDb": 0,
-     "errorDb": -0.17,
-     "driftDb": -0.17
+     "errorDb": -0.1,
+     "driftDb": -0.1
     },
     "L1528": {
-     "M": -22.33,
-     "offsetDb": -0.31,
+     "M": -22.29,
+     "offsetDb": -0.27,
      "requestedDb": 0,
-     "errorDb": -0.31,
-     "driftDb": -0.31
+     "errorDb": -0.27,
+     "driftDb": -0.27
     },
     "L1529": {
-     "M": -22.09,
-     "offsetDb": -0.07,
+     "M": -22.11,
+     "offsetDb": -0.09,
      "requestedDb": 0,
-     "errorDb": -0.07,
-     "driftDb": -0.07
+     "errorDb": -0.09,
+     "driftDb": -0.09
     },
     "L1504": {
-     "M": -22.49,
-     "offsetDb": -0.47,
+     "M": -22.43,
+     "offsetDb": -0.41,
      "requestedDb": 0,
-     "errorDb": -0.47,
-     "driftDb": -0.47
+     "errorDb": -0.41,
+     "driftDb": -0.41
+    },
+    "L1504b": {
+     "M": -22.92,
+     "offsetDb": -0.9,
+     "requestedDb": 0,
+     "errorDb": -0.9,
+     "driftDb": -0.9
     },
     "L1505": {
-     "M": -23.68,
-     "offsetDb": -1.66,
+     "M": -23.85,
+     "offsetDb": -1.83,
      "requestedDb": -2,
-     "errorDb": 0.34,
+     "errorDb": 0.17,
      "hintDb": -2,
-     "driftDb": 0.34
+     "driftDb": 0.17
     },
     "L1530": {
-     "M": -22.07,
-     "offsetDb": -0.05,
+     "M": -22.01,
+     "offsetDb": 0.01,
      "requestedDb": 0,
-     "errorDb": -0.05,
-     "driftDb": -0.05
+     "errorDb": 0.01,
+     "driftDb": 0.01
     },
     "L1531": {
-     "M": -22.14,
-     "offsetDb": -0.12,
+     "M": -22.13,
+     "offsetDb": -0.11,
      "requestedDb": 0,
-     "errorDb": -0.12,
-     "driftDb": -0.12
+     "errorDb": -0.11,
+     "driftDb": -0.11
     },
     "L1522": {
-     "M": -22.93,
-     "offsetDb": -0.91,
+     "M": -22.92,
+     "offsetDb": -0.9,
      "requestedDb": 0,
-     "errorDb": -0.91,
-     "driftDb": -0.91
+     "errorDb": -0.9,
+     "driftDb": -0.9
     },
     "L1522b": {
-     "M": -21.38,
-     "offsetDb": 0.64,
+     "M": -21.39,
+     "offsetDb": 0.63,
      "requestedDb": 0,
-     "errorDb": 0.64,
-     "driftDb": 0.64
+     "errorDb": 0.63,
+     "driftDb": 0.63
     },
     "L1522c": {
-     "M": -24.5,
-     "offsetDb": -2.48,
+     "M": -24.58,
+     "offsetDb": -2.56,
      "requestedDb": -2,
-     "errorDb": -0.48,
+     "errorDb": -0.56,
      "hintDb": -2,
-     "driftDb": -0.48
+     "driftDb": -0.56
     },
     "L1522d": {
      "M": -21.93,
@@ -31829,32 +31948,32 @@
      "driftDb": 0.09
     },
     "L1525": {
-     "M": -21.83,
-     "offsetDb": 0.19,
+     "M": -21.85,
+     "offsetDb": 0.17,
      "requestedDb": 0,
-     "errorDb": 0.19,
-     "driftDb": 0.19
+     "errorDb": 0.17,
+     "driftDb": 0.17
     },
     "L1509": {
-     "M": -21.54,
-     "offsetDb": 0.48,
+     "M": -21.59,
+     "offsetDb": 0.43,
      "requestedDb": 0,
-     "errorDb": 0.48,
-     "driftDb": 0.48
+     "errorDb": 0.43,
+     "driftDb": 0.43
     },
     "L1511": {
-     "M": -22.43,
-     "offsetDb": -0.41,
+     "M": -22.42,
+     "offsetDb": -0.4,
      "requestedDb": 0,
-     "errorDb": -0.41,
-     "driftDb": -0.41
+     "errorDb": -0.4,
+     "driftDb": -0.4
     },
     "L1527": {
-     "M": -22.43,
-     "offsetDb": -0.41,
+     "M": -22.54,
+     "offsetDb": -0.52,
      "requestedDb": 0,
-     "errorDb": -0.41,
-     "driftDb": -0.41
+     "errorDb": -0.52,
+     "driftDb": -0.52
     },
     "L1514": {
      "M": -21.85,
@@ -31864,47 +31983,47 @@
      "driftDb": 0.17
     },
     "L1515": {
-     "M": -22.08,
-     "offsetDb": -0.06,
+     "M": -22.15,
+     "offsetDb": -0.13,
      "requestedDb": 0,
-     "errorDb": -0.06,
-     "driftDb": -0.06
+     "errorDb": -0.13,
+     "driftDb": -0.13
     },
     "L1516": {
-     "M": -22.59,
-     "offsetDb": -0.57,
+     "M": -22.41,
+     "offsetDb": -0.39,
      "requestedDb": 0,
-     "errorDb": -0.57,
-     "driftDb": -0.57
+     "errorDb": -0.39,
+     "driftDb": -0.39
     },
     "L1516b": {
-     "M": -22.99,
-     "offsetDb": -0.97,
+     "M": -22.96,
+     "offsetDb": -0.94,
      "requestedDb": 0,
-     "errorDb": -0.97,
-     "driftDb": -0.97
+     "errorDb": -0.94,
+     "driftDb": -0.94
     },
     "L1517": {
-     "M": -22.62,
-     "offsetDb": -0.6,
+     "M": -22.48,
+     "offsetDb": -0.46,
      "requestedDb": 0,
-     "errorDb": -0.6,
-     "driftDb": -0.6
+     "errorDb": -0.46,
+     "driftDb": -0.46
     },
     "L1518": {
-     "M": -21.91,
-     "offsetDb": 0.11,
+     "M": -21.89,
+     "offsetDb": 0.13,
      "requestedDb": 0,
-     "errorDb": 0.11,
-     "driftDb": 0.11
+     "errorDb": 0.13,
+     "driftDb": 0.13
     },
     "L1520": {
-     "M": -21.91,
-     "offsetDb": 0.11,
+     "M": -21.9,
+     "offsetDb": 0.12,
      "requestedDb": -2,
-     "errorDb": 2.11,
+     "errorDb": 2.12,
      "hintDb": -2,
-     "driftDb": 2.11
+     "driftDb": 2.12
     }
    },
    "lines": {
@@ -33416,13 +33535,20 @@
      "errorDb": 0,
      "driftDb": 0
     },
+    "L1504b": {
+     "M": -18.81,
+     "offsetDb": 0,
+     "requestedDb": 0,
+     "errorDb": 0,
+     "driftDb": 0
+    },
     "L1505": {
-     "M": -21.68,
-     "offsetDb": -2.87,
+     "M": -21.85,
+     "offsetDb": -3.04,
      "requestedDb": -2,
-     "errorDb": -0.87,
+     "errorDb": -1.04,
      "hintDb": -2,
-     "driftDb": -0.87
+     "driftDb": -1.04
     },
     "L1530": {
      "M": -18.81,
@@ -33439,11 +33565,11 @@
      "driftDb": 0
     },
     "L1522": {
-     "M": -19.73,
-     "offsetDb": -0.92,
+     "M": -19.72,
+     "offsetDb": -0.91,
      "requestedDb": 0,
-     "errorDb": -0.92,
-     "driftDb": -0.92
+     "errorDb": -0.91,
+     "driftDb": -0.91
     },
     "L1522b": {
      "M": -18.81,
@@ -33453,12 +33579,12 @@
      "driftDb": 0
     },
     "L1522c": {
-     "M": -21.3,
-     "offsetDb": -2.49,
+     "M": -21.38,
+     "offsetDb": -2.57,
      "requestedDb": -2,
-     "errorDb": -0.49,
+     "errorDb": -0.57,
      "hintDb": -2,
-     "driftDb": -0.49
+     "driftDb": -0.57
     },
     "L1522d": {
      "M": -18.81,
@@ -33475,11 +33601,11 @@
      "driftDb": 0
     },
     "L1509": {
-     "M": -18.34,
-     "offsetDb": 0.47,
+     "M": -18.39,
+     "offsetDb": 0.42,
      "requestedDb": 0,
-     "errorDb": 0.47,
-     "driftDb": 0.47
+     "errorDb": 0.42,
+     "driftDb": 0.42
     },
     "L1511": {
      "M": -18.81,
@@ -33489,11 +33615,11 @@
      "driftDb": 0
     },
     "L1527": {
-     "M": -19.53,
-     "offsetDb": -0.72,
+     "M": -19.64,
+     "offsetDb": -0.83,
      "requestedDb": 0,
-     "errorDb": -0.72,
-     "driftDb": -0.72
+     "errorDb": -0.83,
+     "driftDb": -0.83
     },
     "L1514": {
      "M": -18.81,
@@ -33517,18 +33643,18 @@
      "driftDb": -0.01
     },
     "L1516b": {
-     "M": -19.79,
-     "offsetDb": -0.98,
+     "M": -19.76,
+     "offsetDb": -0.95,
      "requestedDb": 0,
-     "errorDb": -0.98,
-     "driftDb": -0.98
+     "errorDb": -0.95,
+     "driftDb": -0.95
     },
     "L1517": {
-     "M": -19.42,
-     "offsetDb": -0.61,
+     "M": -19.28,
+     "offsetDb": -0.47,
      "requestedDb": 0,
-     "errorDb": -0.61,
-     "driftDb": -0.61
+     "errorDb": -0.47,
+     "driftDb": -0.47
     },
     "L1518": {
      "M": -18.81,

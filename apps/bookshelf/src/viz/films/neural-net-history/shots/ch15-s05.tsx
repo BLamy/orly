@@ -343,6 +343,8 @@ function paintAll(f: Frame, sc: Scene, t: number, cam: Camera3) {
         if (i === ANT || i === OAI) {
           const own = i === ANT ? win(t, b.ant - 0.1, b.ant + 0.5) : win(t, b.oai, b.oai + 0.6);
           const soft = win(t, 0.2, 0.6) * wide;
+          // review round 5: the same soft light on all four named plates in the wide (equal size, equal light)
+          plateGlow(c, env, x, soft);
           plinthPlate(c, env, x, i === ANT ? 'ANTHROPIC' : 'OPENAI', Math.max(0.7 * soft, own), wide > 0.5 ? 'texture' : 'subject', wide);
           // 'Open' #1: a short glint along the OPENAI plate (0.2 s)
           if (i === OAI) {
@@ -372,52 +374,49 @@ function paintAll(f: Frame, sc: Scene, t: number, cam: Camera3) {
             c.fillRect(x - 130, BASE_Y - 118, 260, 260);
             c.restore();
           }
-          if (OTHER_LABS[i]) plinthPlate(c, env, x, OTHER_LABS[i], 0.7, 'texture');
+          if (OTHER_LABS[i]) plinthPlate(c, env, x, OTHER_LABS[i], 0.7 * win(t, 0.2, 0.6), 'texture');
           else nameBand(c, env, x, '', 0);
         }
         oilLamp(c, { x, y: BASE_Y, s: LAMP_S, lit: true, seed: 40 + i }, env);
       }
       anthropicFront(c, env, t, b);
       openaiFront(c, env, t, b);
-      // the luggage tags, hanging from the shelf's front edge under each lamp
-      for (let i = 0; i < LAMPS.length; i++) {
+      // the luggage tags, hanging from the shelf's front edge (review round 5: the lab names live on the brass plates
+      // only, and 'as of October 2026' is one line under the row, so a tag hangs only when it carries a date: the
+      // Anthropic tag on 'Anthropic' (FEB–SEP 2026, flipping to APPROVED JULY 2026), the OpenAI tag on 'test')
+      for (const i of [ANT, OAI]) {
         const x = LAMPS[i];
-        // review round 4: each tag names its lab on line one, over a smaller 'as of October 2026'
-        const lab = i === ANT ? 'ANTHROPIC' : i === OAI ? 'OPENAI' : OTHER_LABS[i];
-        let front = lab ? `${lab}|as of October 2026` : 'as of|October 2026', back = front, flip = 0;
-        let subFront = lab ? 0.62 : 1;
+        let front = '', back = '', flip = 0, hang = 0;
+        const subFront = 1;
         if (i === ANT) {
-          const u1 = sm(clamp01((tq12(t) - b.ant) / 0.5));
+          hang = win(t, b.ant - 0.1, b.ant + 0.3);
           const u2 = sm(clamp01((tq12(t) - b.booksIn) / 0.5));
-          if (t < b.booksIn) {
-            back = 'FEB–SEP 2026';
-            flip = u1;
-          } else {
+          if (t < b.booksIn) front = 'FEB–SEP 2026';
+          else {
             front = 'APPROVED|JULY 2026';
-            subFront = 1;
             back = 'FEB–SEP 2026';
             flip = 1 - u2;
           }
-        } else if (i === OAI) {
-          back = 'JULY 2026';
-          flip = sm(clamp01((tq12(t) - b.test) / 0.5));
+        } else {
+          hang = win(t, b.test - 0.1, b.test + 0.3);
+          front = 'JULY 2026';
         }
-        const sw = 0.04 * Math.sin(t * 0.9 + i * 1.7) + (flip > 0 && flip < 1 ? 0.06 * Math.sin(flip * Math.PI) : 0);
+        if (hang <= 0.003) continue;
+        const sw = 0.04 * Math.sin(t * 0.9 + i * 1.7) + (flip > 0 && flip < 1 ? 0.06 * Math.sin(flip * Math.PI) : 0) + 0.12 * (1 - hang);
         // review round 1 (clean end): as the tilt carries the tags off the bottom edge, paper and ink fade TOGETHER,
         // gone before the crossfade into ch15-s06 (never a blank tag)
         const endA = 1 - win(t, b.tilt + 0.2, b.D - 0.5);
         if (endA <= 0.003) continue;
-        // the tags keep a readable size in the wide: scaled about their hang point while the camera is pulled back
-        // (1x at the stops), so the lab names read at 18-22 px cap in the opening
         const G = Math.max(1, Math.min(2.1, TAG_K / toScreen(LAYERS.L4, cam, x, TAG_Y).k));
         // reviser r1 (at most two text items): while the paired court quotes are up the Anthropic tag sits back to ~35 %
         const qDim = i === ANT ? 1 - 0.65 * quotesUp(t, b) : 1;
         c.save();
-        c.globalAlpha *= endA * qDim;
+        // paper and ink hang in together
+        c.globalAlpha *= endA * qDim * hang;
         c.translate(x + 34, TAG_Y);
         c.scale(G, G);
         textRole(c, 'subject', () => lampTag(c, { x: 0, y: 0, w: TAG_W, front, back, flip, swing: sw, light: 0.95, size: 19, subFront }, env));
-        cardProbe(c, `${ID}-tag${i}`, -TAG_W / 2, 0, TAG_W, 64, 1, 1);
+        cardProbe(c, `${ID}-tag${i}`, -TAG_W / 2, 0, TAG_W, 64, hang, hang);
         c.restore();
       }
       // the settlement's label above the books (world text: it rides the truck out)
@@ -453,18 +452,22 @@ function paintAll(f: Frame, sc: Scene, t: number, cam: Camera3) {
       bookEnd(c, env, sc.OCC[1], deskY, deskY - topY, px);
     });
     // L6: the chair's finial, crossing during the opening track (only while it can be in frame)
-    if (t < b.ant + 1.6) f.layer('L6', (c, env) => chairFinial(c, env, sc.FIN));
+    // review round 5: the defocused L6 chair finial read as a head at the bottom edge: it is gone (moved fully below
+    // frame); the near plane is carried by the L5 desk edge, the inkwell and the book-end
+    void chairFinial;
 
     screen(f, (c) => {
       const te = { t, mood: f.mood };
       courtRulings(c, cam, t, b, te);
+      asOfLine(c, cam, t, b);
       settlementLabel(c, cam, t, b, te);
       // the 'warning shot' card on the clear wall above the building (right third), on its own plate
       // review round 1 (sync): the rise starts just before 'Open A.I.' #2 and is fully up by 'called it a warning shot'
       // review round 4: the card lives inside the 1.5 s tail: up through 'warning shot', cleared by warnOut (before the
       // crossfade into ch15-s06, so it never ghosts over the Wall's slips)
       const qa = clamp01(Math.min((t - (b.warn - 0.25)) / 0.4, (b.warnOut + 0.4 - t) / 0.4));
-      if (qa > 0) evenPlate(c, 640, 52, 480, 210, PUPPET_NEAR_BLACK, 0.42 * qa);
+      // review round 5: the plate is feathered >= 48 px on every side (no rectangular smudge under the quote)
+      if (qa > 0) featherPlate(c, 880, 160, 520, 250, PUPPET_NEAR_BLACK, 0.4 * qa);
       quoteCard(c, { quote: "…a 'warning shot' for us and for the world", speaker: 'OpenAI', source: 'August 2026', x: 880, y: 150, width: 400, size: 31, at: b.warn - 0.2, dur: b.warnOut - (b.warn - 0.2), fade: 0.4, stagger: 0.14, plate: false }, te);
     });
   }
@@ -770,6 +773,50 @@ function evenPlate(c: C, x: number, y: number, w: number, h: number, ink: string
   c.restore();
 }
 
+/** review round 5: a plate with a wide feather (>= 48 px soft edge on every side): a blurred ellipse, flat at its core */
+function featherPlate(c: C, cx: number, cy: number, w: number, h: number, ink: string, alpha: number) {
+  if (alpha <= 0.003) return;
+  c.save();
+  c.filter = 'blur(48px)';
+  c.fillStyle = withAlpha(ink, alpha);
+  c.beginPath();
+  c.ellipse(cx, cy, Math.max(10, w / 2 - 60), Math.max(10, h / 2 - 60), 0, 0, Math.PI * 2);
+  c.fill();
+  c.restore();
+}
+
+/** review round 5: the same soft lamp-light behind every named plate in the opening wide */
+function plateGlow(c: C, env: PaintEnv, x: number, k: number) {
+  if (k <= 0.003) return;
+  c.save();
+  c.globalCompositeOperation = 'lighter';
+  const g = c.createRadialGradient(x, BASE_Y + 12, 4, x, BASE_Y + 12, 130);
+  g.addColorStop(0, withAlpha(env.mood.halo, 0.2 * k));
+  g.addColorStop(1, withAlpha(env.mood.halo, 0));
+  c.fillStyle = g;
+  c.fillRect(x - 130, BASE_Y - 118, 260, 260);
+  c.restore();
+}
+
+/** review round 5: 'as of October 2026' ONCE, one small line centred under the row in the opening wide (it leaves as
+ *  the truck in begins) */
+function asOfLine(c: C, cam: Camera3, t: number, b: B) {
+  const a = win(t, 0.3, 0.7) * (1 - win(t, 1.5, 1.9));
+  if (a <= 0.003) return;
+  void b;
+  const p = toScreen(LAYERS.L4, cam, (LAMPS[0] + LAMPS[3]) / 2, SHELF_Y + 64);
+  c.save();
+  const text = 'as of October 2026';
+  const sz = legibleSize(c, `500 17px ${FONT.mono}`, 17, text);
+  c.font = `500 ${sz}px ${FONT.mono}`;
+  c.textAlign = 'center';
+  c.textBaseline = 'middle';
+  c.globalAlpha = a * 0.82;
+  c.fillStyle = '#e6d8b8';
+  c.fillText(text, p.x, p.y);
+  c.restore();
+}
+
 /** one lamp's light on the study wall behind it: the same radius and warmth for every lamp */
 function lampPool(c: C, env: PaintEnv, x: number, t: number, i: number) {
   const m = env.mood;
@@ -891,7 +938,8 @@ function plinthPlate(c: C, env: PaintEnv, x: number, name: string, a: number, ro
   (c as C & { letterSpacing: string }).letterSpacing = '0px';
   const oneLine = c.measureText(name).width <= w - 10 || !name.includes(' ');
   const lines = oneLine ? [name] : name.split(' ');
-  while (Math.max(...lines.map((l) => c.measureText(l).width)) > w - 8 && sz > 10) {
+  // review round 5: one size for all four names (the widest one-line name, ANTHROPIC, sets it for every plate)
+  while (Math.max(c.measureText('ANTHROPIC').width, ...lines.map((l) => c.measureText(l).width)) > w - 8 && sz > 10) {
     sz -= 0.5;
     c.font = font(sz);
   }

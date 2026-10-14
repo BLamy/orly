@@ -1,9 +1,9 @@
 {
  "shot": "ch15-s10",
- "at": "2026-10-13T21:38:17.381Z",
+ "at": "2026-10-14T01:13:45.285Z",
  "minCapPx": 22,
  "sampled": 32,
- "texts": 23,
+ "texts": 25,
  "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
  "subjects": [
@@ -120,10 +120,20 @@
  ],
  "texture": [
   {
+   "text": "Claude is made by Anthropic, a lab in this story, held to the same",
+   "maxCap": 23.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "sources as every other.",
+   "maxCap": 23.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
    "text": "Every music cue’s Strudel source: on the film’s page",
    "maxCap": 23.5,
    "why": "not named, not in onScreenText"
   }
  ],
- "textureTexts": 1
+ "textureTexts": 3
 }

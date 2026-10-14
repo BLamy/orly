@@ -102,7 +102,8 @@ export default defineShot({
     const cam = (t: number): Camera3 => {
       let c = mixCam(CAM_A, CAM_A2, sm((t - (six - 0.2)) / 1.9));
       c = mixCam(c, CAM_B, sm((t - (six + 0.9)) / (frontEnd - six - 0.9)));
-      return mixCam(c, CAM_C, sm((t - (D - 1.05)) / 1.0));
+      // (reviser r1) the push starts 0.3 s earlier so the 5% move is seen before the cut
+      return mixCam(c, CAM_C, sm((t - (D - 1.35)) / 1.3));
     };
     const b: B = { D, talk, think, six, over, frontEnd, front, cam };
     tl.hold(0, D);
@@ -115,11 +116,27 @@ export default defineShot({
     f.camera(cam);
     f.backlight({ sunX: 700, sunY: 420, sunRadius: 620, intensity: 0.42 });
     hallBackdrop(f, ID, CAMS, { beamY: 70, dim: 0.42 });
+    // (reviser r1) in the wide, a thin haze band between the hall and the loom: the hall's lit mullions fall back a
+    // step so the loom's black posts and lit ribbons are the one sharp plane
+    const wide = sm((t - (b.six + 0.9)) / Math.max(0.5, b.frontEnd - b.six - 0.9));
+    if (wide > 0.003)
+      f.layer('L3', (c, env) => {
+        const r = { x: cam.x - 1400, y: cam.y - 900, w: 2800, h: 1800 };
+        const g = c.createLinearGradient(0, 120, 0, 640);
+        g.addColorStop(0, withAlpha(env.mood.haze, 0.06 * wide));
+        g.addColorStop(0.25, withAlpha(env.mood.haze, 0.17 * wide));
+        g.addColorStop(0.75, withAlpha(env.mood.haze, 0.17 * wide));
+        g.addColorStop(1, withAlpha(env.mood.haze, 0.06 * wide));
+        c.fillStyle = g;
+        c.fillRect(r.x, r.y, r.w, r.h);
+      });
     f.layer('L4', (c, env) => loom(c, t, b, env, cam));
     f.rim({ x: 0, y: -1 });
     // (review) the deepest-black plane: a carved chair back at the lower-left corner, blurred on L5, so the pull-back
     // slides three planes (hall, loom, chair) against each other and the wide's empty floor band has a foreground
-    rimNear(f, { kind: 'chair', side: 'left', ref: CAM_B, scale: 0.6 });
+    // (reviser r1) smaller and pushed further into the corner, so it reads as a carved chair back and its crest never
+    // touches the 'bank' slip during the truck
+    rimNear(f, { kind: 'chair', side: 'left', ref: CAM_B, scale: 0.5, dx: -34 });
     // the label sets in once the pull-back has carried the block headers clear of the top band
     const la = win(t, b.six + 1.3, b.six + 1.75);
     if (la > 0) {
@@ -198,9 +215,10 @@ function loom(c: C, t: number, b: B, env: PaintEnv, cam: Camera3) {
     const safe = clamp01((hp.y - 18 * sc - 36) / 14) * clamp01((hp.x - half - 64) / 24) * clamp01((1216 - hp.x - half) / 24);
     // each header brightens as the front reaches its block (block 1's on 'Six' itself): the count is read
     const reach = l === 0 ? win(t, b.six - 0.1, b.six + 0.1) : win(fx, attX(l) - 50, attX(l) - 10);
-    const hot = reach * (1 - 0.7 * (l === 0 ? win(t, b.six + 0.5, b.six + 1.1) : win(fx, ffX(l) + 60, ffX(l) + 230)));
+    const hot = reach * (1 - 0.7 * (l === 0 ? win(t, b.six + 0.8, b.six + 1.4) : win(fx, ffX(l) + 60, ffX(l) + 230)));
     // (the headers wait for the count: before it, 'talk' and 'think alone' own the top of block 1)
-    const shown = safe * win(t, b.six - 0.3, b.six);
+    // (reviser r1) they set in after the labels have gone (labels out six+0.05..+0.35, headers in six+0.2..+0.5)
+    const shown = safe * win(t, b.six + 0.2, b.six + 0.5);
     if (shown > 0.003) {
       if (hot > 0.02) glow(c, hx, TOP - 69, 54, CY.core, 0.35 * hot * shown);
       ink(c, `BLOCK ${l + 1}`, hx, TOP - 62, { font: 'sc', size: 19, weight: 600, tracking: 2.5, align: 'center', color: mixLab(env.mood.rim, '#ffffff', 0.15 + 0.6 * hot), alpha: (0.55 + 0.45 * hot) * shown, legible: true });
@@ -235,9 +253,10 @@ function loom(c: C, t: number, b: B, env: PaintEnv, cam: Camera3) {
       }
     c.restore();
     if (l === 0) {
-      const a = win(t, b.talk - 0.1, b.talk + 0.5) * (1 - win(t, b.six - 0.5, b.six - 0.2));
+      // (reviser r1) both labels hold to 'Six' (out over six+0.05..+0.35), so 'think alone' reads for ~1.1 s
+      const a = win(t, b.talk - 0.1, b.talk + 0.5) * (1 - win(t, b.six + 0.05, b.six + 0.35));
       ink(c, 'talk', attX(0) + 8, TOP - 76, { italic: true, size: 23, align: 'right', color: CORE, alpha: a, legible: true });
-      const a2 = win(t, b.think - 0.1, b.think + 0.5) * (1 - win(t, b.six - 0.5, b.six - 0.2));
+      const a2 = win(t, b.think - 0.1, b.think + 0.5) * (1 - win(t, b.six + 0.05, b.six + 0.35));
       ink(c, 'think alone', ffX(0) - 12, TOP - 76, { italic: true, size: 23, align: 'left', color: CORE, alpha: a2, legible: true });
     }
   }

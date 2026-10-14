@@ -584,20 +584,25 @@ export function ledger(c: C, env: PaintEnv, W: Win, k: number, shown: number) {
   if (k <= 0.002) return;
   c.save();
   c.globalAlpha *= clamp01(k * 1.3);
-  // the room, faintly lit by the lamp
-  c.fillStyle = mixLab(env.fill('set'), m.fg, 0.55);
+  // the room, faintly lit by the lamp (top left)
+  c.fillStyle = mixLab(env.fill('set'), m.fg, 0.6);
   c.fillRect(0, 0, w, h);
-  glow(c, 120, 40, 240, m.halo, 0.12 * k);
+  glow(c, 70, 30, 240, m.halo, 0.1 * k);
   // the ledger standing open on a sloped desk: dark boards, one page facing us
   const P = { x: 10, y: 34, w: 310, h: 120 };
   c.fillStyle = PUPPET_NEAR_BLACK;
   c.fillRect(P.x - 7, P.y - 6, P.w + 14, P.h + 12);
   c.fillRect(0, P.y + P.h + 6, w, h - (P.y + P.h + 6));
-  const paper = mixLab(mixLab('#cfc9b8', m.rim, 0.3), m.set, 0.12);
-  const pg = c.createLinearGradient(P.x, P.y, P.x + P.w, P.y + P.h);
-  pg.addColorStop(0, paper);
-  pg.addColorStop(1, mixLab(paper, m.set, 0.32));
-  c.fillStyle = pg;
+  // (review r1 / round 5: the page read as a lit screen, brighter than the corridor) a page in a room: ~18% lower in
+  // value, and lit by a lamp pool, brightest under the shade at top left, falling off to the bottom-right corner
+  const paper = mixLab(mixLab('#b4af9f', m.rim, 0.3), m.set, 0.2);
+  c.fillStyle = mixLab(paper, m.set, 0.55);
+  c.fillRect(P.x, P.y, P.w, P.h);
+  const pool = c.createRadialGradient(P.x + 40, P.y - 10, 10, P.x + 40, P.y - 10, 340);
+  pool.addColorStop(0, paper);
+  pool.addColorStop(0.3, mixLab(paper, m.set, 0.08));
+  pool.addColorStop(0.85, withAlpha(mixLab(paper, m.set, 0.5), 0));
+  c.fillStyle = pool;
   c.fillRect(P.x, P.y, P.w, P.h);
   // page edges stacked beneath, ruled lines, the oxblood margin rule (the same plain ledger every lab gets)
   c.fillStyle = withAlpha(mixLab(paper, m.set, 0.4), 0.9);
@@ -616,22 +621,48 @@ export function ledger(c: C, env: PaintEnv, W: Win, k: number, shown: number) {
     c.fillStyle = mixLab(m.ink, '#1d2326', 0.3);
     drawTracked(c, s, P.x + 26, P.y + 16 + 3 * 22 + 3, { font: `500 19px ${FONT.mono}`, size: 19, tracking: 0 });
   }
-  // the lamp: an angled arm and shade at the top right, its light falling on the page
-  c.fillStyle = PUPPET_NEAR_BLACK;
-  c.save();
-  c.translate(w - 34, 0);
-  c.fillRect(-1.5, -4, 3, 14);
-  c.translate(0, 12);
-  c.rotate(0.55);
+  // the near plane: the desk lamp in the foreground at top left, in silhouette (its arm down from the window head, the
+  // shade's mouth over the page's corner, a hair of light on its rim), and the desk's front lip across the bottom
+  const fg = PUPPET_NEAR_BLACK;
+  glow(c, 58, 30, 90, m.core, 0.1 * k);
+  c.fillStyle = fg;
+  c.strokeStyle = fg;
+  c.lineCap = 'round';
+  c.lineWidth = 5;
   c.beginPath();
-  c.moveTo(-5, 0);
-  c.lineTo(5, 0);
-  c.lineTo(13, 18);
-  c.lineTo(-13, 18);
+  c.moveTo(118, -6);
+  c.lineTo(96, 6);
+  c.lineTo(66, 2);
+  c.stroke();
+  c.beginPath();
+  c.arc(96, 6, 4.5, 0, Math.PI * 2);
+  c.fill();
+  c.save();
+  c.translate(58, 6);
+  c.rotate(0.42);
+  c.beginPath();
+  c.moveTo(-9, -7);
+  c.lineTo(9, -7);
+  c.quadraticCurveTo(26, 6, 28, 22);
+  c.lineTo(-28, 22);
+  c.quadraticCurveTo(-26, 6, -9, -7);
   c.closePath();
   c.fill();
+  c.strokeStyle = withAlpha(mixLab(m.rim, m.core, 0.4), 0.55);
+  c.lineWidth = 1.2;
+  c.beginPath();
+  c.moveTo(-28, 22);
+  c.lineTo(28, 22);
+  c.stroke();
   c.restore();
-  glow(c, w - 46, 30, 80, m.core, 0.12 * k);
+  // the desk's front lip, nearer than the page: a dark rail with its top edge catching the lamp
+  c.fillStyle = fg;
+  c.fillRect(0, h - 21, w, 21);
+  const lip = c.createLinearGradient(0, 0, w, 0);
+  lip.addColorStop(0, withAlpha(mixLab(m.rim, m.core, 0.3), 0.45));
+  lip.addColorStop(1, withAlpha(mixLab(m.rim, m.core, 0.3), 0.06));
+  c.fillStyle = lip;
+  c.fillRect(0, h - 21, w, 1.2);
   c.restore();
 }
 
@@ -1255,16 +1286,98 @@ export function lampPost(f: Frame, c: C, env: PaintEnv, key: string, layer: Laye
 /** L3: the neighbouring buildings either side of the façade, nearer than the hazed blocks: cut-paper cornices on
  *  brackets, rooftop water tanks on legs, chimney stacks, a few lit windows. Mostly hidden behind the façade; they
  *  fill the frame's edges once the camera pulls back. */
+const l3Fronts = (r: Rect) => [
+  { x0: r.x - 20, x1: 270, top: 236, tank: 40, stacks: [150, 196] },
+  { x0: 1010, x1: r.x + r.w + 20, top: 206, tank: 1268, stacks: [1150, 1384] },
+];
+export interface L3Win {
+  x: number;
+  y: number;
+  /** lit in the baked grid (the few always-on windows) */
+  on: boolean;
+  /** which neighbour: -1 left of the façade, 1 right */
+  side: -1 | 1;
+  /** the users' flicker: onset jitter (s, or −1 = stays dark) and the settled level */
+  fl: number;
+  lvl: number;
+}
+const L3_MEMO = new Map<string, L3Win[]>();
+/** the L3 neighbours' window grid (L3 world units; 14×20 panes), the same grid midL3 bakes */
+export function l3Windows(cams: Camera3[]): L3Win[] {
+  const r = overscan(LAYERS.L3, cams, 40);
+  const k = rk(r);
+  const hit = L3_MEMO.get(k);
+  if (hit) return hit;
+  const out: L3Win[] = [];
+  const fronts = l3Fronts(r);
+  fronts.forEach((b, bi) => {
+    let i = 0;
+    for (let y = b.top + 34; y < 690; y += 38) {
+      for (let x = b.x0 + 18; x < b.x1 - 24; x += 34) {
+        const j = out.length;
+        out.push({ x, y, on: h01(i++, 141) < 0.09, side: bi === 0 ? -1 : 1, fl: h01(j, 151) < 0.55 ? h01(j, 152) * 0.34 : -1, lvl: 0.14 + 0.2 * h01(j, 153) });
+      }
+    }
+  });
+  L3_MEMO.set(k, out);
+  return out;
+}
+/** the neighbours join the users (round 5 review): on 'hundred' about half their dark windows flicker on with the
+ *  façade's, then settle dim within ≈ 1.5 s; copies[i] = landing time of a copied light (window index into
+ *  l3Windows(cams)), brighter, with a halo, and it stays */
+export function midL3Lights(c: C, env: PaintEnv, cams: Camera3[], t: number, onAt: number, copies: Map<number, number>) {
+  const m = env.mood;
+  const wins = l3Windows(cams);
+  const lit = mixLab(m.core, m.halo, 0.55);
+  const copyLit = mixLab(m.core, m.halo, 0.15);
+  for (let i = 0; i < wins.length; i++) {
+    const w = wins[i];
+    const ct = copies.get(i);
+    const cp = ct !== undefined ? copyLevel(t - ct) : 0;
+    if (cp > 0) {
+      c.fillStyle = mixLab(copyLit, '#ffffff', 0.25 * Math.max(0, cp - 1));
+      c.fillRect(w.x, w.y, 14, 20);
+      c.fillStyle = withAlpha(mixLab(env.fill('set'), m.fg, 0.55), 0.6);
+      c.fillRect(w.x, w.y + 9, 14, 1.2);
+      continue;
+    }
+    if (w.on || w.fl < 0) continue;
+    const u = t - onAt - w.fl;
+    if (u <= 0) continue;
+    const a = u < 0.16 ? (Math.floor(u * 24 + hash1(i, 154) * 2) % 2 === 0 ? 0.75 : 0.2) : lerp(0.8, w.lvl, sm((u - 0.25) / 1.25));
+    c.fillStyle = withAlpha(lit, a);
+    c.fillRect(w.x, w.y, 14, 20);
+  }
+  for (const [i, ct] of copies) {
+    if (t < ct) continue;
+    const w = wins[i];
+    const cp = copyLevel(t - ct);
+    glow(c, w.x + 7, w.y + 10, 26 + 30 * Math.max(0, cp - 1), m.halo, 0.32 + 0.45 * Math.max(0, cp - 1));
+  }
+}
+/** the façade's three full-width bright cut-lines (the lower windows' sill line, the ground-floor band, the kerb) veiled
+ *  back to their base colours by `a` (0..1): used while the shot crossfades in, so they do not read as scan lines */
+export function ledgeVeil(c: C, env: PaintEnv, a: number) {
+  if (a <= 0.005) return;
+  const m = env.mood;
+  const wall = mixLab(env.fill('set'), m.fg, 0.42);
+  c.save();
+  c.globalAlpha *= a;
+  c.fillStyle = mixLab(wall, m.fg, 0.2);
+  for (const w of WINS.slice(2)) c.fillRect(w.x - 19, w.y + w.h - 0.5, w.w + 38, 2.4);
+  c.fillStyle = mixLab(wall, m.fg, 0.35);
+  c.fillRect(FAC.x0 - 1, 595.5, FAC.x1 - FAC.x0 + 2, 2.2);
+  c.fillStyle = mixLab(env.fill('set'), m.haze, 0.08);
+  c.fillRect(-600, FAC.street + 21.5, 2500, 1.8);
+  c.restore();
+}
 export function midL3(f: Frame, c: C, env: PaintEnv, key: string, cams: Camera3[]) {
   const r = overscan(LAYERS.L3, cams, 40);
   bake(f, c, `${key}/L3/${env.mood.id}/${rk(r)}`, r, (cc) => {
     const m = env.mood;
     const wall = env.fill('set');
     const ink = mixLab(wall, m.fg, 0.35);
-    const fronts = [
-      { x0: r.x - 20, x1: 270, top: 236, tank: 40, stacks: [150, 196] },
-      { x0: 1010, x1: r.x + r.w + 20, top: 206, tank: 1268, stacks: [1150, 1384] },
-    ];
+    const fronts = l3Fronts(r);
     for (const b of fronts) {
       cc.fillStyle = wall;
       cc.fillRect(b.x0, b.top, b.x1 - b.x0, 1200);

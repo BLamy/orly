@@ -34,8 +34,9 @@
  *               WHO TAUGHT IT? slip clipped to it at ~60 % ink). Review round 4: on 'stays' the push to ~1.25x onto
  *               HOW FAR? HOW FAST? (the tray leaves frame; THE FIELD card slides out left), on 'open' (the clock's
  *               'stamp' beat, where fx-stamp-howfar sounds) STATUS: OPEN is struck at ch15-s09's size and red, held
- *               1.2 s; then the pull back that sets the dark lantern near frame centre for the final 2 s, THE FIELD
- *               card back in at ~0.85 and ~60 px down-left, clear of the lanterns
+ *               1.2 s; then the pull back that sets the dark lantern near frame centre for the final 2 s. Review
+ *               round 5: THE FIELD card stays off frame after the pull-back, and the fallen WHO TAUGHT IT? card leaves
+ *               the tray unseen during the push (the case file's clipped slip carries the question): a clean last 1.5 s
  * CANDLE-CLOCK RULE: every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring
  * at L3 (270 px), its flame on the top ring and a small tag at its base giving the year it was lit. It burns down one
  * ring per year the belief is held; the burned wax stays above the stub as a ghost sleeve (39 rings = 234 px).
@@ -43,12 +44,12 @@
  */
 import { Timeline } from '../../../core';
 import type { Camera3, Frame, PaintEnv, ShotScene } from '../../../film';
-import { FONT, LAYERS, MOODS, PUPPET_NEAR_BLACK, capPx1080, defineShot, drawTracked, ghostOk, hash1, legibleSize, mixLab, paperLantern, textColor, wrapLines, textRole, titleColor, toLayer, toScreen, withAlpha } from '../../../film';
+import { FONT, LAYERS, MOODS, PUPPET_NEAR_BLACK, defineShot, drawTracked, ghostOk, hash1, legibleSize, mixLab, paperLantern, textColor, wrapLines, textRole, titleColor, toLayer, toScreen, withAlpha } from '../../../film';
 import { drapery } from '../sets/occluders';
 import { hands } from '../cast';
 import { handsEntry } from '../sets/narratorHands';
 import { STUDY, candleX, slotWorld, studyCase, studyRoom } from '../sets/study';
-import { BOARD, SLOTS, boardStateAt, shelfStateAt, type CandleView, type SlotId } from '../sets/studyState';
+import { BOARD, CANDLES, SLOTS, boardStateAt, shelfStateAt, type CandleView, type SlotId } from '../sets/studyState';
 import { candleFlame } from '../sets/beliefCandle';
 import { DEFAULT_POOL, drawCard, oxblood, paperTone, poolAt, typedText, type Pool } from '../sets/caseBoard';
 import { cardProbe, softPlate } from '../../../film/silhouette/type';
@@ -77,6 +78,14 @@ const CYC = { x: X('cyc'), top: SY - 270, bot: SY - 270 + 39 * 6 };
 const GO = { x: X('go'), top: SY - 270, bot: SY - 270 + 2 * 6 };
 const MATCH = { x: X('match'), y: SY };
 const NEW_X = X('new');
+/** review round 5 r1 (critic, teaching): every named bar's callout in Cyc's format (lit–out · span), from the shelf
+ *  set's own candle data (lit year + years held); the match was struck and out within a day (its set note) */
+const spanTag = (id: string) => {
+  const d = CANDLES.find((q) => q.id === id)!;
+  return `${d.litYear}–${d.litYear + (d.years ?? 0)} · ${d.years}`;
+};
+const GO_TAG = spanTag('go');
+const MATCH_TAG = `${CANDLES.find((q) => q.id === 'match')!.tag} · a day`;
 /** the board-unit lamp pool (as studyCase passes it) */
 const POOL: Pool = { ...DEFAULT_POOL, ...STUDY.pool, cx: STUDY.pool.cx - STUDY.board.x, cy: STUDY.pool.cy - STUDY.board.y };
 const cardLight = (id: SlotId) => poolAt(POOL, SLOTS[id].x, SLOTS[id].y);
@@ -143,6 +152,8 @@ interface B {
   forty: number;
   two: number;
   day: number;
+  /** L1515 'match' (the lamp finds the blackened match; its tag follows on 'day') */
+  match: number;
   burn: number;
   lantern: number;
   answers: number;
@@ -191,6 +202,7 @@ export default defineShot<Scene>({
       forty: T.beat('b6'),
       two: T.beat('b7'),
       day: T.beat('b8'),
+      match: T.word('L1515', 'match'),
       burn: T.beat('b9'),
       lantern: T.beat('b10'),
       answers: T.beat('b10b'),
@@ -253,8 +265,11 @@ export default defineShot<Scene>({
       [b.stamp + 1.2, 942, 227, 1.25],
       // then the pull back: the dark lantern near frame centre for the final 2 s (the tray, the open file, the
       // microscope and the field's card below it)
-      [D - 2.0, 664, 380, 0.98],
-      [D, 662, 379, 0.978],
+      // review round 5 r1 (critic, ART): the pull-back ends ~110 px (1080p) higher than before, so the candle shelf's
+      // half-cropped stubs (their sleeve lettering and two clipped flames) leave the frame and the board's tray is the
+      // clean bottom line; a vertical move only, so the dark lantern keeps its x near frame centre
+      [D - 2.0, 664, 304, 0.98],
+      [D, 662, 303, 0.978],
     ];
     const fx = monotone(keys.map((k) => [k[0], k[1]]));
     const fy = monotone(keys.map((k) => [k[0], k[2]]));
@@ -363,7 +378,9 @@ function paintStudy(f: Frame, t: number, b: B, sc: Scene) {
       darkLantern(c, env, tq, b, swell);
       textRole(c, 'subject', () => q4Card(c, env, t, b));
       howFarCard(c, env, t, b);
-      kCard(c, env, tq, b);
+      // review round 5: the fallen WHO TAUGHT IT? card leaves the tray while the 1.25x push holds the tray out of
+      // frame (before the stamp), so the pull-back finds only the case file's clipped slip carrying the question
+      if (t < b.stamp) kCard(c, env, tq, b);
       emptyPlace(c, env);
       liveTags(c, env, t, b);
       if (hp) {
@@ -414,19 +431,24 @@ function paintStudy(f: Frame, t: number, b: B, sc: Scene) {
     // being named is always the brightest (Cyc is at rest by 'two')
     const back = (w: number, next: number) => 1 - win(t, Math.min(w + 1.35, next - 0.55), next - 0.05);
     const cycK = 0.55 * win(t, b.tilt + 0.5, b.tilt + 1.1) * (1 - win(t, b.candles - 0.3, b.candles + 0.3)) + win(t, b.forty - 0.15, b.forty + 0.25) * back(b.forty, b.two);
-    const goK = win(t, b.two - 0.15, b.two + 0.25) * back(b.two, b.day);
-    const mK = win(t, b.day - 0.15, b.day + 0.25) * back(b.day, b.burn);
+    // review round 5 r1 (critic): GO's light rests by 'match', the match is lit on 'match' and its tag lands on 'day'
+    const goK = win(t, b.two - 0.15, b.two + 0.25) * back(b.two, b.match);
+    const mK = matchLightAt(t, b);
+    const mTag = win(t, b.day - 0.15, b.day + 0.25) * back(b.day, b.burn);
     // 'forty': Cyc is a taper, so its sleeve is thin; a light ghost bar the width of every other bar stands behind
     // it, so its LENGTH compares bar to bar (round-1 note)
     ghostBar(c, env, CYC.x, CYC.top, CYC.bot, 0.35 * win(t, b.forty - 0.15, b.forty + 0.35) * back(b.forty, b.two));
+    // review round 5 r1 (critic, teaching): GO's 2-ring sleeve gets the SAME sleeve highlight as Cyc's (the pale bar,
+    // its core outline, the same strength), so 'two' is seen as a bar two rings long beside Cyc's thirty-nine
+    ghostBar(c, env, GO.x, GO.top, GO.bot, 0.35 * win(t, b.two - 0.15, b.two + 0.35) * back(b.two, b.match));
     barWash(c, env, t, b);
     // b6–b9: the rest of the shelf drops a stop so each word points at one object
-    const focus = t < b.two - 0.15 ? CYC.x : t < b.day - 0.15 ? GO.x : MATCH.x;
+    const focus = t < b.two - 0.15 ? CYC.x : t < b.match - 0.15 ? GO.x : MATCH.x;
     shelfDimming(c, env, shelfDim, focus, focus === MATCH.x ? 58 : 34);
     pickOut(c, env, CYC.x, CYC.top - 20, CYC.bot + 30, cycK * 1.4, 26);
     sleeveRim(c, env, t, b.forty - 0.1, CYC.x, 15.5, CYC.top, CYC.bot, b.two);
     pickOut(c, env, GO.x, GO.top - 30, SY + 10, goK * 2.0, 40);
-    sleeveRim(c, env, t, b.two - 0.1, GO.x, 15.5, GO.top, GO.bot, b.day);
+    sleeveRim(c, env, t, b.two - 0.1, GO.x, 15.5, GO.top, GO.bot, b.match);
     // the 2-ring sleeve itself lit to Cyc's level (it is short: the light fills it)
     litSleeve(c, env, GO.x, GO.top, GO.bot, goK);
     pickOut(c, env, MATCH.x, SY - 110, SY + 18, mK * 2.1, 60);
@@ -446,8 +468,9 @@ function paintStudy(f: Frame, t: number, b: B, sc: Scene) {
     textRole(c, 'subject', () => {
       bigTag(c, env, CYC.x + 18, SY - 44, '1984–2023 · 39', cycK * (1 - win(t, b.two - 0.4, b.two)));
       // round-4 r1: each named bar's own base tag, raised the same way (the script's tags: GO 2014, the match JAN 2025)
-      bigTag(c, env, GO.x + 18, SY - 44, '2014', goK * (1 - win(t, b.day - 0.4, b.day)));
-      bigTag(c, env, MATCH.x + 36, SY - 44, 'JAN 2025', mK * (1 - win(t, b.burn - 0.4, b.burn)));
+      // review round 5 r1 (critic): each in Cyc's format (lit–out · span), from the shelf set's candle data
+      bigTag(c, env, GO.x + 18, SY - 44, GO_TAG, goK * (1 - win(t, b.match - 0.4, b.match)));
+      bigTag(c, env, MATCH.x + 36, SY - 44, MATCH_TAG, mTag * (1 - win(t, b.burn - 0.4, b.burn)));
     });
   });
 
@@ -514,6 +537,10 @@ function paintStudy(f: Frame, t: number, b: B, sc: Scene) {
     const p = candleFlame({ x: X(id), y: SY, view: v, s: STUDY.shelf.s });
     f.practical({ x: p.x, y: p.y - 4, kind: 'candle', seed: 300 + v.slot * 7, intensity: 0.8 * burnK, radius: 34 * (0.85 + 0.15 * burnK) });
   }
+  // review round 5 r1 (critic): the blackened match caught by the lamp on 'match': a real practical (intensity ~1.0) at
+  // its head on the shelf, so 'one match, a day' shows a match and not a barely visible glint
+  const mL = matchLightAt(t, b);
+  if (mL > 0.01) f.practical({ x: MATCH.x - 2, y: SY - 6, kind: 'lamp', seed: 1525, intensity: 1.0 * Math.min(1, mL), radius: 54 });
   const s3 = s3Lantern(tq, b);
   if (s3 > 0.01) f.practical({ x: S3_LAMP.x, y: S3_LAMP.y, kind: 'candle', seed: 1515, intensity: 0.75 * s3, radius: 44 });
   // (no desk in this shot: in the full wide its near edge would stand in front of the shelf's window end)
@@ -536,7 +563,13 @@ function paintStudy(f: Frame, t: number, b: B, sc: Scene) {
     c.fillRect(-20, -20, 1320, 760);
     c.restore();
   }
-  fieldPair(f, t, b, sc);
+  fieldPair(f, t, b);
+}
+
+/** the lamp on the blackened match: up on 'match', held through 'a day', back to rest before 'burn' */
+function matchLightAt(t: number, b: B) {
+  const back = 1 - win(t, Math.min(b.day + 1.35, b.burn - 0.55), b.burn - 0.05);
+  return win(t, b.match - 0.15, b.match + 0.25) * back;
 }
 
 /** how 'wide' the camera is: 0 at the board's own framing (scale >= 1), 1 at the shelf wide (scale <= 0.72) */
@@ -599,11 +632,6 @@ function textureFrame(f: Frame): Frame {
  *  of the dark lantern, so no lettering ever sits over bare lanterns. Its label comes FIRST ('the field, 2019–2025', on
  *  'answers'), then the two attributions 0.35 s apart: the microscope-limit quote [e14-anthropic-releases] and Jain &
  *  Wallace's 2019 paper title [e10-attention-explanation]. From 36.6 it dims ~30% so the eye goes to the case file. */
-/** round 4: the card's second place, for the pull-back to the dark lantern: ~0.85 of its size (380 wide, re-wrapped at
- *  the legibility floor of the end framing; its height from its lines) and, on screen, its top-right corner ~50 px
- *  down-left of where it stood, so its top edge sits under the dark lantern's tassel and the lanterns above it; it still
- *  stands on the tray (clear of LEARNING at its left and of the fallen WHO TAUGHT IT? card below it) */
-const FIELD_B = { x0: 279, x1: 659, y1: 647 };
 /** how far it slides out left while the camera is pushed onto HOW FAR? HOW FAST? (out of frame at the 1.25x push, so
  *  its layout changes unseen) */
 const FIELD_OUT = 400;
@@ -611,42 +639,36 @@ const FIELD_QUOTES: [string, string][] = [
   ['satisfying insight for about a quarter of the prompts we’ve tried', 'anthropic, 2025'],
   ['Attention is not Explanation', 'jain & wallace, 2019'],
 ];
-function fieldPair(f: Frame, t: number, b: B, sc: Scene) {
+function fieldPair(f: Frame, t: number, b: B) {
   const A = win(t, b.answers - 0.05, b.answers + 0.4);
   if (A <= 0.003) return;
-  const k1 = win(t, b.answers + 0.3, b.answers + 0.7);
-  const k2 = win(t, b.answers + 0.65, b.answers + 1.05);
-  // round 4: out left with the push on 'stays'; back in (smaller, lower, left) with the pull-back after the stamp
-  const second = t >= b.stamp + 1.2;
-  const inAt = b.stamp + 1.3, inEnd = b.D - 1.8;
-  const away = second ? 1 - sm((t - inAt) / (inEnd - inAt)) : sm((t - (b.file + 0.05)) / (b.stays + 0.14 - (b.file + 0.05)));
+  // review round 5 r1 (critic; the cards-carry-their-text rule): the two quotations ink WITH the title, card and words
+  // fading in together (they no longer follow 0.35 s apart after a bare title)
+  const k1 = 1;
+  const k2 = 1;
+  // round 4: out left with the push on 'stays'. Review round 5: it has had its 3 s; it STAYS off frame after the
+  // pull-back (the last 1.5 s belong to the dark lantern and the case file)
+  if (t >= b.stays + 0.14) return;
+  const away = sm((t - (b.file + 0.05)) / (b.stays + 0.14 - (b.file + 0.05)));
   const slide = -FIELD_OUT * away;
   // it fades with the slide (card and words together), so no half-cut line of type rides across the frame edge
   const gone = sm(away / 0.55);
   if (slide <= -FIELD_OUT + 0.5) return;
-  // dims ~30 % for the case file; in its second place a stop under the dark lantern
-  const dim = second ? 0.8 : 1 - 0.3 * win(t, b.file - 0.6, b.file - 0.1);
-  // its type is set for the END framing from the start of the pull-back, so nothing re-wraps while the camera moves
-  const grow = second ? sc.scaleAt(t) / sc.scaleAt(b.D) : 1;
+  // dims ~30 % for the case file
+  const dim = 1 - 0.3 * win(t, b.file - 0.6, b.file - 0.1);
   f.layer('L4', (c, env) => {
     const m = env.mood;
-    const fit = (font: (s: number) => string, base: number, text = 'H') => {
-      const s0 = legibleSize(c, font(base), base, text);
-      if (grow <= 1.0001) return s0;
-      const capEnd = capPx1080(c, font(base), text) / grow;
-      return Math.max(s0, Math.ceil(((base * 22.3) / capEnd) * 10) / 10);
-    };
+    const fit = (font: (s: number) => string, base: number, text = 'H') => legibleSize(c, font(base), base, text);
     const ls = fit((s) => `500 ${s}px ${FONT.sc}`, 19, 'THE FIELD, 2019–2025');
     const qs = fit((s) => `italic 400 ${s}px ${FONT.text}`, 21);
     const as = fit((s) => `500 ${s}px ${FONT.sc}`, 17, 'anthropic');
     const qf = `italic 400 ${qs}px ${FONT.text}`;
     const af = `500 ${as}px ${FONT.sc}`;
     const lh = qs * 1.24;
-    const x0 = second ? FIELD_B.x0 : END_CARD.x0, x1 = second ? FIELD_B.x1 : END_CARD.x1;
-    const maxW = x1 - x0 - (second ? 50 : 56);
+    const x0 = END_CARD.x0, x1 = END_CARD.x1;
+    const maxW = x1 - x0 - 56;
     const wrapped = FIELD_QUOTES.map(([q]) => wrapLines(c, q, qf, maxW, 46));
-    const H = 12 + ls + 8 + wrapped.reduce((n, l) => n + l.length * lh + as + 12, 0) + (second ? 12 : 18);
-    const R = second ? { x0, x1, y0: FIELD_B.y1 - H, y1: FIELD_B.y1 } : END_CARD;
+    const R = END_CARD;
     c.save();
     c.translate(slide, (1 - A) * 20);
     const Ag = A * (1 - gone);
@@ -667,7 +689,7 @@ function fieldPair(f: Frame, t: number, b: B, sc: Scene) {
     c.restore();
     c.fillStyle = withAlpha(m.rim, 0.75);
     c.fillRect(R.x0 + 3, R.y0 - 0.5, R.x1 - R.x0 - 4, 1);
-    const X0 = R.x0 + (second ? 26 : 30);
+    const X0 = R.x0 + 30;
     textRole(c, 'subject', () => {
       // the label
       c.globalAlpha = Ag * 0.95 * dim;

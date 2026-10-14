@@ -207,7 +207,8 @@ export default defineShot({
       sweep1: 0,
       gpus: 0,
       // a beat after 'catch' (the line's own pause), so the TIME card still reads until 'wall'
-      fly: Math.max(T.word('L1027', 'catch') + 0.3, T.beat('wall') - 0.3),
+      // (reviser r1) catch + 0.35: the slips start growing as 'twice' is spoken; the card still reads until 'wall'
+      fly: T.word('L1027', 'catch') + 0.35,
       wall: T.beat('wall'),
       four: T.word('L1027', 'four'),
       pace: 0.12,
@@ -233,9 +234,11 @@ export default defineShot({
       [b.chips + 0.4, 652, PCY - 4, 30],
       // the pause: the TIME card is the subject, so the camera pushes in on it (slowly), then lifts with the fly
       // centred on the one card (dial + time), so all of it stays in frame
-      [b.card0 + 0.9, 640, PCY + 74, 60],
-      [b.fly - 0.25, 640, PCY + 90, 78],
-      [b.fly + 0.2, 630, PCY + 50, 70],
+      // (round 5) a firmer push so the card is the subject of the silence: its foot stays above the screen-locked
+      // pews (y ≈ 590 at 720p), its sides well inside the safe area
+      [b.card0 + 0.9, 640, PCY + 74, 110],
+      [b.fly - 0.25, 640, PCY + 80, 150],
+      [b.fly + 0.2, 630, PCY + 50, 100],
       [b.wall + 0.35, 632, 352, 70],
       [b.wall + 3.1, 900, 372, -96],
       [b.costEq + 0.3, 912, 382, -100],
@@ -286,7 +289,8 @@ export default defineShot({
         platePool(c, PL, 640, 40, { halo: P.halo, ink: P.ink });
         windowRake(c, t);
         // as the plate flies, its contents fade before they reach the top of frame (never clipped by the edge)
-        const contentA = 1 - sm((flyU - 0.04) / 0.24);
+        // (round 5) while the TIME card is the subject, the grid, wires and rack recede a step (the card reads first)
+        const contentA = (1 - sm((flyU - 0.04) / 0.24)) * (1 - 0.4 * win(t, b.card0 + 0.3, b.card0 + 1.1));
         if (contentA > 0.003) {
           c.save();
           c.globalAlpha *= contentA;
@@ -316,7 +320,10 @@ export default defineShot({
     if (knot > 0.01) f.practical({ x: KNOT.x, y: KNOT.y, kind: 'lamp', seed: 1027, intensity: 0.6 * knot + 0.25 * win(t, b.costEq, b.D), radius: 100 + 60 * knot });
     // the hall's near-black foreground: pew backs along the bottom of frame, from the first frame (the plate is a
     // physical card hung in the hall, seen past the pews)
-    pewBacks(f, ID, cams, 1);
+    // (round 5) as the camera pushes in on the TIME card the near pews drop toward the frame's foot (true parallax for
+    // a dolly forward), so their finials clear the card; they rise back as the camera pulls out to the hall
+    const pewSink = win(t, b.chips + 0.4, b.card0 + 0.9) * (1 - win(t, b.fly, b.wall + 0.35));
+    pewBacks(f, ID, cams, 1 - 0.42 * pewSink);
   },
 });
 
@@ -356,6 +363,43 @@ function windowRake(c: C, t: number) {
   sg0.addColorStop(1, withAlpha(shade, 0.3));
   c.fillStyle = sg0;
   c.fillRect(sx, PL.y, PL.x + PL.w - sx, PL.h);
+  // (reviser r1) the rake made visible: the top-left ~25 % brighter than the bottom-right, warmed toward the halo
+  const warm = mixLab('#fff3da', P.halo, 0.35);
+  const dg = c.createLinearGradient(PL.x, PL.y, PL.x + PL.w, PL.y + PL.h);
+  dg.addColorStop(0, withAlpha(shade, 0));
+  dg.addColorStop(0.45, withAlpha(shade, 0.06));
+  dg.addColorStop(1, withAlpha(shade, 0.3));
+  c.fillStyle = dg;
+  c.fillRect(PL.x, PL.y, PL.w, PL.h);
+  c.save();
+  c.globalCompositeOperation = 'lighter';
+  const wg = c.createRadialGradient(PL.x, PL.y, 40, PL.x, PL.y, PL.w * 0.75);
+  wg.addColorStop(0, withAlpha(warm, 0.2));
+  wg.addColorStop(0.45, withAlpha(warm, 0.08));
+  wg.addColorStop(1, withAlpha(warm, 0));
+  c.fillStyle = wg;
+  c.fillRect(PL.x, PL.y, PL.w, PL.h);
+  c.restore();
+  // the hanging cords' soft shadows thrown down-right across the face (the key is up and to the left)
+  for (const cx0 of [PL.x + 90, PL.x + PL.w - 90]) {
+    const len = 260;
+    const ex = cx0 + 10 + len * 0.62, ey = PL.y + 8 + len;
+    const cg = c.createLinearGradient(cx0, PL.y, ex, ey);
+    cg.addColorStop(0, withAlpha(INK, 0.16));
+    cg.addColorStop(1, withAlpha(INK, 0));
+    c.strokeStyle = cg;
+    c.lineCap = 'round';
+    const ga = c.globalAlpha;
+    for (const [lw, k] of [[9, 0.35], [4, 0.6], [1.6, 1]] as const) {
+      c.globalAlpha = ga * k;
+      c.lineWidth = lw;
+      c.beginPath();
+      c.moveTo(cx0 + 6, PL.y + 8);
+      c.lineTo(ex, ey);
+      c.stroke();
+    }
+    c.globalAlpha = ga;
+  }
   // two shafts of window light falling diagonally across the card (a slow drift as the plate sways)
   const drift = 10 * Math.sin(t * 0.31);
   c.globalCompositeOperation = 'lighter';
@@ -478,9 +522,13 @@ function plate(c: C, env: PaintEnv, t: number, b: B) {
   }
   // ---- (reviser r1) the dies' own light on the paper around the rack: from 'chips' through the hold, eased down
   // as the TIME card comes up (the one accent, motivated by the eight lit dies)
-  const spill = win(t, b.chips - 0.1, b.chips + 0.6) * (1 - 0.55 * win(t, b.card0, b.card0 + 1));
+  const spill = win(t, b.chips - 0.1, b.chips + 0.6) * (1 - 0.3 * win(t, b.card0, b.card0 + 1));
   if (spill > 0.01) {
     c.save();
+    // the light lives on the paper: clipped to the plate's face
+    c.beginPath();
+    c.rect(PL.x + 4, PL.y + 4, PL.w - 8, PL.h - 8);
+    c.clip();
     c.globalCompositeOperation = 'lighter';
     const cx = (RACK.x0 + RACK.x1) / 2, cy = DIE_Y;
     const sg = c.createRadialGradient(cx, cy, 40, cx, cy, 330);
@@ -489,6 +537,13 @@ function plate(c: C, env: PaintEnv, t: number, b: B) {
     sg.addColorStop(1, withAlpha(CY.halo, 0));
     c.fillStyle = sg;
     c.fillRect(cx - 340, cy - 300, 680, 600);
+    // (reviser r1) the dies' cyan reaches ~80 px onto the paper all round the rack: nested soft rounded bands
+    for (let e = 6; e <= 90; e += 7) {
+      c.fillStyle = withAlpha(CY.halo, 0.034 * spill);
+      c.beginPath();
+      c.roundRect(RACK.x0 - e, RACK.y0 - e * 0.8, RACK.x1 - RACK.x0 + 2 * e, RACK.y1 - RACK.y0 + 1.6 * e, 18 + e);
+      c.fill();
+    }
     c.restore();
   }
   // ---- the rack of eight slabs → eight graphics chips
@@ -834,7 +889,7 @@ function banner(c: C, env: PaintEnv, t: number, b: B) {
   const al = 0.11 + 0.39 * grow;
   // the central threads (short-to-mid spans crossing the middle) close into a sheet: 1.5× density and alpha
   const midX = (bx(0) + bx(n - 1)) / 2;
-  const on = win(t, b.fly + 0.3, b.fly + 0.9);
+  const on = win(t, b.fly + 0.15, b.fly + 0.7);
   c.save();
   c.globalCompositeOperation = 'lighter';
   if (grow > 0.01) {
@@ -933,7 +988,9 @@ function banner(c: C, env: PaintEnv, t: number, b: B) {
   // (critic round 4) the starting count, frozen as growth starts: a dimmed '10 words · 100 pairs' on a slate tag hung
   // above the beam's left end, over the ten-word ghost arc's first slips, held until 'looking'. On 'four' the beam
   // reads 10 · 100 beside 20 · 400.
-  const refA = win(t, b.wall - 0.1, b.wall + 0.3) * (1 - win(t, b.looking, b.looking + 0.45)) * on;
+  // (reviser r1) it no longer leaves on 'looking': it settles back to ~0.45 ink and holds to the cut, so the last frame
+  // still reads ten → twenty words, 100 → 400 pairs beside the n² law (pair counts, not a compute comparison)
+  const refA = win(t, b.wall - 0.1, b.wall + 0.3) * (1 - 0.25 * win(t, b.looking, b.looking + 0.45)) * (1 - win(t, b.D - 0.5, b.D - 0.15)) * on;
   if (refA > 0.01) {
     const REF = '10 words · 100 pairs';
     const wRef = measure(c, REF, sCount, 'mono', 500);

@@ -4,15 +4,15 @@
  "end": 199.3217,
  "file": "films/neural-net-history/score/renders/m02.wav",
  "duration": 131.055,
- "I": -23.8,
- "LRA": 10.1,
- "TP": -6.4,
+ "I": -24.3,
+ "LRA": 10.3,
+ "TP": -7,
  "expected": 131.055,
  "lengthErrorMs": 0,
  "lengthOk": true,
  "spectrogram": "films/neural-net-history/score/analysis/m02.png",
  "cueSeconds": 125.055,
  "cps": 1,
- "lastStrikeLocal": 121.24,
- "lastStrike": 195.507
+ "lastStrikeLocal": 122.04,
+ "lastStrike": 196.307
 }

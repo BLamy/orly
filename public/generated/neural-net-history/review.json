@@ -1,29 +1,29 @@
 {
- "round": 5,
- "at": "2026-10-13T22:22:12Z",
- "pass": false,
- "mean": 8.43,
+ "round": 6,
+ "at": "2026-10-14T02:12:39Z",
+ "pass": true,
+ "mean": 8.57,
  "bar": 8.5,
  "floor": 8,
  "scores": {
-  "accuracy": 8.5,
-  "depth": 8.58,
-  "clarity": 8.33,
-  "story": 8.5,
-  "visual": 8.17,
+  "accuracy": 8.67,
+  "depth": 8.75,
+  "clarity": 8.67,
+  "story": 8.67,
+  "visual": 8.42,
   "sync": 8.5,
-  "sound": 8.17,
+  "sound": 8.25,
   "curiosity": 8.67
  },
  "notes": {
-  "accuracy": "Every quote is verbatim, every claim id exists, and contested history (who invented backprop, how far behind China is) is shown as contested. It stops at 8.5 because two late edits weakened fairness toward the narrator's own maker: the end card dropped the line saying Anthropic is a lab in this story, and Anthropic's export-control position now arrives last and alone in silence.",
-  "depth": "AlexNet and the transformer are worked step by step with real numbers a viewer can check by pencil, from a 3x3 edge stencil to a hand-computed softmax over 'river bank' and a quadratic-cost hall that grows from 100 to 400 pairs. Each era gets its belief, a named dissenter and how long the belief lasted.",
-  "clarity": "Almost every idea arrives as a picture before a symbol, so a curious teenager can follow it. What holds it back is the final chapter: the planning experiment (rabbit switched off, habit chosen) is shown but never said, and the Nobel line is a 15-second sentence with nested clauses.",
-  "story": "The case-file frame pays off its plants: the dinner bet, Widrow's lantern, Hopfield's forgotten Versailles talk, and an ending that answers 'who taught it?' while leaving the file open. The present-day stretch is still dense, and the Nobel call, the peak of Hinton's arc, plays to an empty room.",
-  "visual": "The paper-cut silhouette style is consistent and often striking, from the stencil cathedral to the all-pairs attention hall, and the long-running card and figure problems are now fixed. A handful of frames still read as double exposures (a translucent citation ribbon, a dissolve between framings, a crossfade full of old cards), and the last stamp and match hand are the weakest pieces in the closing shot.",
-  "sync": "Picture lands on the spoken word almost everywhere: the stamps strike on 'stands' and 'open', the candle flares on 'candles', the named card rises on 'behind'. Small misses remain, such as the Nobel phone lighting just after 'rings' and a type-on that flickers past before the cut.",
-  "sound": "The mix is clean (-16 LUFS, every line at least 10.9 dB over the music), 'Nobody told it to plan' is now fully present, and the three STATUS: OPEN stamps form an audible motif. It sits just above the bar because one stamp clacks over the word it names, a music swell after the quietest line plays as a sting, the turn into the story is still brisk, and no person has yet signed off on how the narrator says real names.",
-  "curiosity": "The film opens on a riddle ('who taught it?') and keeps adding open questions (who paid for dinner, can a fence around chips hold, how far and how fast) that pull a viewer through 36 minutes. It ends on an honest open file and a dark lantern rather than a tidy verdict."
+  "accuracy": "Every quote is verbatim, every claim traces to a source, and contested history (who invented backprop, how far behind China is) is shown as contested. The last fairness problems about the narrator's own maker are fixed: Anthropic's chip position now arrives as one of three equals, and the end card says Anthropic is a lab in this story. What stops it at 8.7 is small: a METR source line too tiny to read under the film's biggest 2026 number, and a narrator whose pronunciation of seven real names no person has yet confirmed.",
+  "depth": "AlexNet and the transformer are worked step by step with numbers a viewer can check by pencil: an edge stencil that scores -4 and then 0, a softmax over 'river bank' (0.20 / 0.07 / 0.53 / 0.20), and an attention hall that grows from 100 to 400 pairs. Each era gets its belief, a named dissenter, and a candle showing how long the belief lasted.",
+  "clarity": "Ideas arrive as pictures before symbols, and the final chapter now says its evidence aloud: 'Snuff that plan out, and it rhymes with habit instead.' The Nobel line is now three sentences. The Versailles callback is still heard rather than seen, and a few teaching lines in the AlexNet chapter are spoken faster than their direction asks.",
+  "story": "One case question ('who taught it?'), three suspects, and a candle clock carry 80 years. About a dozen plants pay off, from the dinner bet to Widrow's lantern to Hopfield's forgotten Versailles talk, and the ending answers what it can and leaves the file open. The 4.5-minute run of present-day news is the flattest stretch, and the film runs about a minute past its 35-minute target.",
+  "visual": "The paper-cut silhouette style is consistent and often striking: the stencil cathedral, the all-pairs attention hall, the case board that rewires itself into a network. It sits at 8.4 because hands and costumes still look like carved mannequin blocks next to the reference's fine-cut cuffs. In a few frames, too, small things look like placeholders: a far fence of blank white slips, a ledger panel lit blank for 0.3 s, and Nobel-hall busts that read as baseball caps.",
+  "sync": "The picture lands on the spoken word almost everywhere. The snuffer drops on 'Snuff', HABIT lights on 'habit', the three STATUS: OPEN stamps strike on 'stands' and 'open', and the match catches on 'new'. The few misses are fractions of a second, like a panel that lights just before its text types.",
+  "sound": "The mix is clean: -16 LUFS, every line at least 10.9 dB over the music, the stamps tucked under their words, and real silence around 'Nobody told it to plan' and after Widrow's death. It sits at 8.25 because a cluster of teaching lines still runs at 190-199 words a minute against 'slow and clear' directions, and no person has yet confirmed how the narrator says seven real names.",
+  "curiosity": "The film opens on a riddle ('nobody ever wrote one a rulebook') and keeps opening new questions: who paid for dinner, can a fence around chips hold, how far and how fast. They pull a viewer through 36 minutes, and it ends on a dark lantern and an open file rather than a tidy answer."
  },
- "summary": "Round 5 does NOT pass: mean 8.43 against the 8.5 bar, though every dimension is now at or above 8 and no issue is critical. The long-running failures are finally closed on their sheets: ch15-s06 (Hassabis pin gone), ch10-s12 (one fact, no compute ratio), the stamp foley, L1505's level and the m19 placement. Sound rose from 7.67 to 8.17. Two fairness regressions came in with round 4's critic and credits passes, both about the narrator's own maker: Anthropic's export-control position now lands last and alone in silence (ch14-s04b), and the end card lost the on-screen disclosure that Anthropic is a lab in this story (ch15-s10). Both are major and cheap to fix. The rest of the gap is clarity, visual and sound polish concentrated in the final chapter: say the rabbit/habit experiment aloud (new line L1504b), split the 15-second Nobel sentence (L1502), put Hinton in the Nobel bedroom and clear the translucent ribbon (ch15-s01), make the final stamp legible and the match hand real (ch15-s09), and remove the three double exposures (ch14-s07, ch04-s07, ch15-s05). On sound: tuck the how-far stamp under 'open', soften the m19 swell and give L0220 its silence (m02)."
+ "summary": "Round 6 PASSES the gate. Mean 8.57 (bar 8.5), every dimension at least 8.25, and no critical or major issue. Both round-5 fairness regressions are closed and were verified in film.mp4: ch14-s04b's three equal tags and ch15-s10's maker disclosure. The final chapter now earns its ending, because L1504b speaks the rabbit-to-habit intervention and L1502 is three clear sentences. The two ledger partials (ch15-s03, ch13-s03) are fixed on their sheets and were held open only by bookkeeping. They are closed here, and the checker bug is routed globally. What remains is polish. Visual (8.42) is held back by mannequin hands, a placeholder-looking fence in ch14-s07, a blank panel flash in ch12-s08, and cap-like Nobel busts in ch15-s01. Sound (8.25) is held back by fast teaching lines (L0830, L0105) and the sixth-round human sign-off on names, which is a hand-off before publish. Routed: 5 minor shot notes, 3 optional SOLO line retakes in one clock rebuild (L1527 adds Turing to the verdict), and 4 global items."
 }

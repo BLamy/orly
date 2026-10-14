@@ -1,6 +1,6 @@
 {
  "shot": "ch15-s07",
- "at": "2026-10-13T09:38:00.515Z",
+ "at": "2026-10-14T01:13:36.090Z",
  "minCapPx": 22,
  "sampled": 15,
  "texts": 6,
@@ -24,17 +24,17 @@
   },
   {
    "text": "…I never got over it.",
-   "capWhileSubject": 40.2,
+   "capWhileSubject": 43.9,
    "why": "script onScreenText"
   },
   {
    "text": "Bernard Widrow, 2005, recalling",
-   "capWhileSubject": 25.1,
+   "capWhileSubject": 27.4,
    "why": "script onScreenText"
   },
   {
    "text": "Dartmouth, 1956",
-   "capWhileSubject": 25.1,
+   "capWhileSubject": 27.4,
    "why": "script onScreenText"
   }
  ],

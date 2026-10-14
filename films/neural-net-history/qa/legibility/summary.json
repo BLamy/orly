@@ -69,7 +69,7 @@
    "subjects": 0,
    "texture": 11,
    "texts": 11,
-   "at": "2026-10-13T20:18:10.323Z",
+   "at": "2026-10-13T23:04:03.004Z",
    "fail": false
   },
   "ch01-s07": {
@@ -261,7 +261,7 @@
    "subjects": 5,
    "texture": 8,
    "texts": 13,
-   "at": "2026-10-13T04:13:19.928Z",
+   "at": "2026-10-13T23:12:45.212Z",
    "fail": false
   },
   "ch04-s08": {
@@ -405,7 +405,7 @@
    "subjects": 7,
    "texture": 40,
    "texts": 47,
-   "at": "2026-10-13T04:13:38.411Z",
+   "at": "2026-10-13T23:12:16.268Z",
    "fail": false
   },
   "ch07-s02": {
@@ -605,7 +605,7 @@
    "subjects": 5,
    "texture": 36,
    "texts": 41,
-   "at": "2026-10-13T20:36:14.895Z",
+   "at": "2026-10-13T23:03:33.764Z",
    "fail": false
   },
   "ch10-s01": {
@@ -685,7 +685,7 @@
    "subjects": 3,
    "texture": 11,
    "texts": 14,
-   "at": "2026-10-13T20:47:23.013Z",
+   "at": "2026-10-14T00:39:22.423Z",
    "fail": false
   },
   "ch10-s12": {
@@ -693,7 +693,7 @@
    "subjects": 3,
    "texture": 21,
    "texts": 24,
-   "at": "2026-10-13T20:47:32.851Z",
+   "at": "2026-10-14T00:39:29.406Z",
    "fail": false
   },
   "ch10-s13b": {
@@ -701,7 +701,7 @@
    "subjects": 5,
    "texture": 66,
    "texts": 71,
-   "at": "2026-10-13T15:09:57.846Z",
+   "at": "2026-10-14T00:39:39.776Z",
    "fail": false
   },
   "ch10-s14": {
@@ -789,7 +789,7 @@
    "subjects": 9,
    "texture": 81,
    "texts": 90,
-   "at": "2026-10-13T20:52:42.475Z",
+   "at": "2026-10-14T00:33:26.757Z",
    "fail": false
   },
   "ch12-s03": {
@@ -821,7 +821,7 @@
    "subjects": 18,
    "texture": 56,
    "texts": 74,
-   "at": "2026-10-13T21:19:44.118Z",
+   "at": "2026-10-14T00:28:44.804Z",
    "fail": false
   },
   "ch13-s04": {
@@ -877,7 +877,7 @@
    "subjects": 10,
    "texture": 11,
    "texts": 21,
-   "at": "2026-10-13T21:39:36.774Z",
+   "at": "2026-10-14T00:47:16.198Z",
    "fail": false
   },
   "ch14-s06": {
@@ -890,26 +890,26 @@
   },
   "ch14-s07": {
    "offenders": [],
-   "subjects": 16,
-   "texture": 10,
-   "texts": 26,
-   "at": "2026-10-13T21:39:38.732Z",
+   "subjects": 15,
+   "texture": 19,
+   "texts": 34,
+   "at": "2026-10-14T00:47:18.104Z",
    "fail": false
   },
   "ch15-s01": {
    "offenders": [],
    "subjects": 14,
-   "texture": 0,
-   "texts": 14,
-   "at": "2026-10-13T21:40:43.271Z",
+   "texture": 2,
+   "texts": 16,
+   "at": "2026-10-14T01:32:50.868Z",
    "fail": false
   },
   "ch15-s03": {
    "offenders": [],
-   "subjects": 5,
-   "texture": 9,
+   "subjects": 4,
+   "texture": 10,
    "texts": 14,
-   "at": "2026-10-13T21:40:44.848Z",
+   "at": "2026-10-14T01:33:25.373Z",
    "fail": false
   },
   "ch15-s04": {
@@ -917,15 +917,15 @@
    "subjects": 10,
    "texture": 84,
    "texts": 94,
-   "at": "2026-10-13T21:40:46.699Z",
+   "at": "2026-10-14T01:33:36.911Z",
    "fail": false
   },
   "ch15-s05": {
    "offenders": [],
-   "subjects": 25,
-   "texture": 2,
-   "texts": 27,
-   "at": "2026-10-13T21:40:49.235Z",
+   "subjects": 20,
+   "texture": 5,
+   "texts": 25,
+   "at": "2026-10-14T01:11:06.615Z",
    "fail": false
   },
   "ch15-s06": {
@@ -933,7 +933,7 @@
    "subjects": 7,
    "texture": 61,
    "texts": 68,
-   "at": "2026-10-13T21:40:50.745Z",
+   "at": "2026-10-14T01:33:52.924Z",
    "fail": false
   },
   "ch15-s07": {
@@ -941,15 +941,15 @@
    "subjects": 6,
    "texture": 0,
    "texts": 6,
-   "at": "2026-10-13T09:38:00.515Z",
+   "at": "2026-10-14T01:13:36.090Z",
    "fail": false
   },
   "ch15-s08": {
    "offenders": [],
-   "subjects": 24,
-   "texture": 75,
+   "subjects": 22,
+   "texture": 77,
    "texts": 99,
-   "at": "2026-10-13T21:40:40.035Z",
+   "at": "2026-10-14T01:25:45.005Z",
    "fail": false
   },
   "ch15-s09": {
@@ -957,19 +957,19 @@
    "subjects": 15,
    "texture": 23,
    "texts": 38,
-   "at": "2026-10-13T21:38:03.357Z",
+   "at": "2026-10-14T01:26:47.381Z",
    "fail": false
   },
   "ch15-s10": {
    "offenders": [],
    "subjects": 22,
-   "texture": 1,
-   "texts": 23,
-   "at": "2026-10-13T21:38:17.381Z",
+   "texture": 3,
+   "texts": 25,
+   "at": "2026-10-14T01:13:45.285Z",
    "fail": false
   }
  },
- "at": "2026-10-13T21:40:50.762Z",
+ "at": "2026-10-14T01:33:52.944Z",
  "minCapPx": 22,
  "rule": "review round 2: subject text (kit cards, script onScreenText, or named by the narrator while visible) fails under minCapPx; texture is exempt"
 }

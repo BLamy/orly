@@ -26,5 +26,12 @@
    "to": 43.067,
    "minInkWhilePaper": 0.69
   }
- ]
+ ],
+ "transition": {
+  "kind": "iris",
+  "sampled": 14,
+  "ghosts": [],
+  "carry": []
+ },
+ "transAt": "2026-10-13T22:54:24.143Z"
 }

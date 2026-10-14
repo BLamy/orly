@@ -2,7 +2,7 @@
 // Card audit — no paper card shows blank (review round 3: cards showed as blank paper for 0.5-2 s before their text
 // inked, which read as placeholder frames: ch05-s04, ch10-s13b, ch14-s07, ch03-s06, ch09-s05).
 //
-//   node generator/film/cards.mjs --slug <slug> [--shot id[,id] | --all] [--step 0.0833] [--json]
+//   node generator/film/cards.mjs --slug <slug> [--shot id[,id] | --all] [--step 0.0833] [--json] [--no-trans | --trans-only]
 //
 // RULE: a card whose paper is over 50 % opaque while its text is under 20 % opaque for more than 0.3 s fails.
 // The harness page gets a recorder (init script):
@@ -21,6 +21,11 @@
 // RULE: two DIFFERENT text layers whose boxes overlap by >= 30 % of the smaller box, both above 25 % opacity, for
 // more than 0.25 s FAIL (summary shots[id].ghosts; QA sheets.ghostText). Fix: the type kit's textSwapOut/textSwapIn
 // (the outgoing text is at 0 four frames after the incoming passes 30 %).
+// TRANSITION GHOSTS (review round 5): the transition INTO each shot (transitionIn other than cut) is audited too:
+// both shots' text, each weighted by the transition, the same 25 % / 30 % / 0.25 s rule, cross-shot pairs only,
+// listed under the INCOMING shot (summary shots[id].transGhosts; QA sheets.ghostText). It also WARNS (transCarry) when
+// one shot's text above 25 % dissolves over the other shot's picture above 25 % for > 0.25 s. --no-trans skips it;
+// --trans-only audits only the transitions into the given shots (cut-in shots are skipped) and keeps their in-shot results.
 import path from 'node:path';
 import { parseArgs, list, num, helpText } from './lib/args.mjs';
 import { filmPaths, readJson, writeJson, rel, mkdirp } from './lib/paths.mjs';
@@ -28,7 +33,7 @@ import { launchChromium } from './lib/browser.mjs';
 import { openSite } from './lib/site.mjs';
 import { openHarness } from './lib/harness.mjs';
 
-const a = parseArgs(process.argv.slice(2), { boolean: ['all', 'help', 'json', 'build'], string: ['slug', 'dir', 'shot', 'shots', 'step', 'base', 'from', 'to'] });
+const a = parseArgs(process.argv.slice(2), { boolean: ['all', 'help', 'json', 'build', 'no-trans', 'trans-only'], string: ['slug', 'dir', 'shot', 'shots', 'step', 'base', 'from', 'to'] });
 if (a.help || !a.slug) {
   console.log(await helpText(import.meta.url));
   process.exit(a.help ? 0 : 2);
@@ -343,7 +348,7 @@ function mergeLines(recs) {
 }
 /** lines that are on screen (inside the frame), each with its SEEN opacity: its own alpha times (1 - a) for every
  *  solid draw made after it that covers >= 85 % of its box (a crossfading scene laid over it, a card pinned on it) */
-function visibleLines(lines, occ, [W, H], comp = []) {
+function visibleLines(lines, occ, [W, H], comp = [], { perBuffer = false } = {}) {
   const F = [[0, 0], [W, 0], [W, H], [0, H]];
   // follow each draw through the composites of its canvas (first composite after it, hop by hop) to a canvas that is
   // never composited (the frame): its order key (outermost composite first) and its alpha times each composite's
@@ -354,16 +359,22 @@ function visibleLines(lines, occ, [W, H], comp = []) {
     let cv = r.cv;
     let i = r.i;
     let a = 1;
+    let buf = cv;
+    let lastG = 1;
     const key = [r.i];
     for (let hop = 0; hop < 8 && root != null && cv !== root; hop++) {
       const c = comp.filter((x) => x.src === cv && x.i > i && x.op !== 'copy').sort((x, y) => x.i - y.i)[0];
       if (!c) return null; // drawn on a scratch that never reaches the frame
-      a *= SHOWS.has(c.op) ? c.g : 0;
+      lastG = SHOWS.has(c.op) ? c.g : 0;
+      a *= lastG;
       key.unshift(c.i);
+      buf = cv;
       cv = c.dst;
       i = c.i;
     }
-    return { key, a, root: cv };
+    // review round 5 (transitions): `buf` is the canvas the record lands in just before the frame (a shot's own
+    // transition buffer), `aIn` its opacity inside that buffer (the transition's own composite left out)
+    return { key, a, root: cv, buf, aIn: lastG > 0 ? a / lastG : 0 };
   };
   const later = (p, q) => {
     for (let k = 0; k < Math.min(p.length, q.length); k++) if (p[k] !== q[k]) return p[k] > q[k];
@@ -373,7 +384,10 @@ function visibleLines(lines, occ, [W, H], comp = []) {
   return lines
     .map((l) => {
       const pl = place(l);
-      return pl && pl.a > 0 ? { ...l, alpha: l.alpha * pl.a, pl } : null;
+      if (!pl) return null;
+      // perBuffer: each shot's text at its opacity INSIDE its own buffer (the transition weights it afterwards)
+      const k = perBuffer && pl.buf !== pl.root ? pl.aIn : pl.a;
+      return k > 0 ? { ...l, alpha: l.alpha * k, pl } : null;
     })
     .filter(Boolean)
     .map((l) => {
@@ -385,7 +399,12 @@ function visibleLines(lines, occ, [W, H], comp = []) {
       const b = bbox(l.P);
       const A = b.w * b.h || 1;
       let seen = l.alpha;
-      for (const o of occP) if (o.pl.root === l.pl.root && later(o.pl.key, l.pl.key) && inter(o, b) >= 0.85 * A) seen *= 1 - (o.a ?? 1) * o.pl.a;
+      for (const o of occP) {
+        if (o.pl.root !== l.pl.root || !later(o.pl.key, l.pl.key) || inter(o, b) < 0.85 * A) continue;
+        // perBuffer: only the shot's own draws hide its text (the other shot and the transition are the weights)
+        if (perBuffer && (o.pl.buf !== l.pl.buf || o.pl.buf === o.pl.root)) continue;
+        seen *= 1 - (o.a ?? 1) * (perBuffer ? o.pl.aIn : o.pl.a);
+      }
       return { ...l, alpha: seen };
     });
 }
@@ -417,6 +436,69 @@ function ghostPairs(lines, probes) {
   return out;
 }
 
+// ---------------------------------------------------------------------------------------------------------------
+// TRANSITION GHOSTS (review round 5: the in-shot audit skips the transition windows, so a crossfade that dissolves
+// one shot's card over the next shot's card (ch04-s07 +0.17) passed unseen). For every shot whose transitionIn is
+// not a cut, the frames of the transition window are recorded as the reel paints them: each text line is assigned
+// to the outgoing (A) or incoming (B) shot by the buffer it lands in, takes its opacity inside that shot (its own
+// occluders only), and is then weighted by the transition at u: crossfade (and, conservatively, inkBleed) dissolve
+// A by 1 - ease(u) and B by ease(u); fadeBlack, lampChange and iris pass through black, so A and B are never both
+// up; paperWipe weights each line by the share of its box on its own side of the travelling tear. The same rule as
+// in-shot: two different text lines from the two shots overlapping >= 30 % of the smaller box, both above 25 %, for
+// more than 0.25 s FAIL, listed per INCOMING shot (summary shots[id].transGhosts; QA sheets.ghostText).
+// ---------------------------------------------------------------------------------------------------------------
+const easeT = (u) => {
+  const x = u < 0 ? 0 : u > 1 ? 1 : u;
+  return x * x * x * (x * (x * 6 - 15) + 10);
+};
+const TRANS_DEFAULT = { crossfade: 1.2, iris: 2.2, inkBleed: 2, paperWipe: 1.1, fadeBlack: 1.6, lampChange: 3 };
+/** the transition's weights for the outgoing and incoming shot at u, for a line box (device px) on a W-wide frame */
+function transWeights(kind, u, box, W = 1920, H = 1080) {
+  switch (kind) {
+    case 'crossfade':
+    case 'inkBleed':
+      return [1 - easeT(u), easeT(u)];
+    case 'fadeBlack':
+      return u < 0.5 ? [1 - easeT(Math.min(1, u / 0.45)), 0] : [0, easeT(Math.max(0, (u - 0.55) / 0.45))];
+    case 'lampChange':
+      return u < 0.5 ? [1 - (1 - (1 - Math.min(1, u / 0.47)) ** 2), 0] : [0, easeT(Math.max(0, (u - 0.53) / 0.47))];
+    case 'iris':
+      return u < 0.5 ? [1, 0] : [0, 1];
+    case 'paperWipe': {
+      // stage px (1280 x 720): A stays on the far side (x > X) of the tear travelling right
+      const k = 1280 / W;
+      const margin = 80 + 90;
+      const yc = (box.y + box.h / 2) * k;
+      const X = -margin + (1280 + 2 * margin) * easeT(u) + 90 * (yc / 720 - 0.5);
+      const x0 = box.x * k, x1 = (box.x + box.w) * k;
+      const onA = x1 <= x0 ? (x0 > X ? 1 : 0) : Math.max(0, Math.min(1, (x1 - Math.max(x0, X)) / (x1 - x0)));
+      return [onA, 1 - onA];
+    }
+    default:
+      return [1, 0];
+  }
+}
+/** the transition frame's lines, each tagged with its shot ('A', 'B' or 'frame') and its weighted opacity */
+function transitionLines(got, kind, u) {
+  const vis = visibleLines(mergeLines(got.ghost || []), got.occ || [], got.frame, got.comp || [], { perBuffer: true });
+  // A is the buffer the reel paints first: the smallest record index of anything landing in it
+  const first = new Map();
+  const note = (buf, i) => first.set(buf, Math.min(first.get(buf) ?? Infinity, i));
+  for (const l of vis) if (l.pl.buf !== l.pl.root) note(l.pl.buf, l.i);
+  const root = (got.comp || []).length ? got.comp[got.comp.length - 1].dst : null;
+  // every composite INTO a buffer (a shot's layer scratches) marks when that shot was painting
+  const intoRoot = new Set((got.comp || []).filter((c) => c.dst === root).map((c) => c.src));
+  for (const c of got.comp || []) if (intoRoot.has(c.dst)) note(c.dst, c.i);
+  const order = [...first.entries()].sort((x, y) => x[1] - y[1]).map(([b]) => b);
+  const [W, H] = got.frame;
+  return vis.map((l) => {
+    if (l.pl.buf === l.pl.root) return { ...l, shot: 'frame' };
+    const who = order.length >= 2 ? (l.pl.buf === order[0] ? 'A' : 'B') : u < 0.5 ? 'A' : 'B';
+    const [wa, wb] = transWeights(kind, u, bbox(l.P), W, H);
+    return { ...l, shot: who, alpha: l.alpha * (who === 'A' ? wa : wb) };
+  });
+}
+
 const iou = (p, q) => {
   const x1 = Math.max(p.x, q.x), y1 = Math.max(p.y, q.y), x2 = Math.min(p.x + p.w, q.x + q.w), y2 = Math.min(p.y + p.h, q.y + q.h);
   const i = Math.max(0, x2 - x1) * Math.max(0, y2 - y1);
@@ -429,6 +511,7 @@ async function main() {
   const site = await openSite({ mode: a.build ? 'build' : 'dev', base: a.base });
   const browser = await launchChromium({ gpu: true });
   const summary = readJson(path.join(OUT, 'summary.json'), { shots: {} });
+  const prevSummary = JSON.parse(JSON.stringify(summary));
   const ids = [...list(a.shot), ...list(a.shots)];
   try {
     const h = await openHarness(browser, site.base, a.slug, { width: 1920, height: 1080, init: recorder });
@@ -439,6 +522,7 @@ async function main() {
       const fps = h.info.fps;
       const k = tl.shots.findIndex((s) => s.id === shot.id);
       const tlShot = tl.shots[k];
+      if (a['trans-only'] && (k <= 0 || (tlShot.transitionIn || 'cut') === 'cut')) continue;
       const dur = shot.end - shot.start;
       const transDur = (s) => (!s || s.transitionIn === 'cut' ? 0 : s.transitionDur ?? 1);
       const lo = Math.max(num(a.from, 0), transDur(tlShot) / 2 + 0.05);
@@ -446,7 +530,7 @@ async function main() {
       const tracks = [];
       const ghostTracks = [];
       let n = 0;
-      for (let lt = lo; lt < hi; lt += STEP) {
+      for (let lt = lo; lt < (a['trans-only'] ? lo : hi); lt += STEP) {
         n++;
         const t = Math.floor((shot.start + lt) * fps + 1e-6) / fps;
         await h.page.evaluate(() => {
@@ -523,10 +607,92 @@ async function main() {
       const ghosts = ghostTracks
         .map((g) => ({ a: g.a, b: g.b, from: +g.from.toFixed(2), to: +(g.to + STEP).toFixed(2), seconds: +(g.to - g.from + STEP).toFixed(2), minAlpha: +g.minAlpha.toFixed(2), rect: { x: Math.round(g.rect.x), y: Math.round(g.rect.y), w: Math.round(g.rect.w), h: Math.round(g.rect.h) } }))
         .filter((g) => g.seconds > GHOST_MAX_S + 1e-6);
-      const doc = { shot: shot.id, at: new Date().toISOString(), step: +STEP.toFixed(4), sampled: n, rule: `paper > ${PAPER * 100}% with text < ${INK * 100}% for more than ${MAX_BLANK} s`, ghostRule: GHOST_RULE, probedCards: [...new Set(tracks.filter((t) => t.probed).map((t) => t.id))], fails, suspects, ghosts, cards: tracks.filter((t) => t.samples.length > 1).map((t) => ({ id: t.id, probed: t.probed, from: t.samples[0].t, to: t.samples[t.samples.length - 1].t, minInkWhilePaper: Math.min(1, ...t.samples.filter((s) => s.paper > PAPER).map((s) => s.ink)) })) };
-      writeJson(path.join(OUT, `${shot.id}.json`), doc, 1);
-      summary.shots[shot.id] = { fails: fails.map((f) => `${f.card} blank ${f.from}-${f.to} s`), suspects: suspects.map((f) => `${f.card} ${f.from}-${f.to} s`), ghosts: ghosts.map((g) => `'${g.a}' x '${g.b}' ${g.from}-${g.to} s`), probed: doc.probedCards.length, at: doc.at };
-      console.log(`  ${shot.id}: ${n} frames, ${doc.probedCards.length} probed card(s); ${fails.length} blank probed card(s)${fails.length ? `: ${fails.map((f) => `${f.card} ${f.from}-${f.to}s`).join(', ')}` : ''}; ${suspects.length} suspect paper${suspects.length ? `: ${suspects.slice(0, 5).map((f) => `${f.card} ${f.from}-${f.to}s`).join(', ')}` : ''}; ${ghosts.length} ghost text${ghosts.length ? `: ${ghosts.map((g) => `'${g.a.slice(0, 24)}' x '${g.b.slice(0, 24)}' ${g.from}-${g.to}s`).join(' | ')}` : ''}`);
+      // review round 5: the transition INTO this shot (both shots on screen), cross-shot pairs only
+      const transGhosts = [];
+      const transCarry = [];
+      let transSampled = 0;
+      const kind = k > 0 ? tlShot.transitionIn || 'cut' : 'cut';
+      if (kind !== 'cut' && !a['no-trans']) {
+        const prev = tl.shots[k - 1];
+        const tdur = Math.min(tlShot.transitionDur ?? TRANS_DEFAULT[kind] ?? 1, (tlShot.end - tlShot.start) * 0.9, (prev.end - prev.start) * 0.9);
+        const tracksT = [];
+        const carryT = [];
+        let m = 0;
+        for (let lt = -tdur / 2 + STEP / 2; lt < tdur / 2; lt += STEP) {
+          m++;
+          const t = Math.floor((shot.start + lt) * fps + 1e-6) / fps;
+          const u = (t - (shot.start - tdur / 2)) / tdur;
+          await h.page.evaluate(() => {
+            window.__ghostText = [];
+            window.__textRec = [];
+            window.__ghostOcc = [];
+            window.__ghostComp = [];
+            window.__ghostSeq = 0;
+          });
+          await h.seek(t);
+          const got = await h.page.evaluate(() => {
+            const r = { ghost: window.__ghostText, occ: window.__ghostOcc, comp: window.__ghostComp, frame: [window.__film?.width || 1920, window.__film?.height || 1080] };
+            window.__ghostText = window.__textRec = window.__ghostOcc = window.__ghostComp = null;
+            return r;
+          });
+          const lines = transitionLines(got, kind, u);
+          const A = lines.filter((l) => l.shot === 'A');
+          const B = lines.filter((l) => l.shot === 'B');
+          if (process.env.GHOST_DEBUG_T && Math.abs(lt - Number(process.env.GHOST_DEBUG_T)) < STEP / 2) writeJson(path.join(OUT, `${shot.id}.trans-debug.json`), { lt, u, kind, lines: lines.map((l) => [l.shot, l.text, +l.alpha.toFixed(2), bbox(l.P), l.pl.buf]) }, 1);
+          // (warn) one shot's readable text dissolving over the other shot's picture: a line above 25 % while the
+          // other shot is above 25 % at that box, with no matching line there (ch04-s07 +0.17: ch04-s06's cards at
+          // 40-50 % over the winter valley)
+          for (const [mine, other, side] of [[A, B, 'out'], [B, A, 'in']]) {
+            for (const l of mine) {
+              if (l.alpha <= GHOST_ALPHA) continue;
+              const [wa, wb] = transWeights(kind, u, bbox(l.P), got.frame[0], got.frame[1]);
+              if ((side === 'out' ? wb : wa) <= GHOST_ALPHA || other.some((o) => sameText(o.text, l.text))) continue;
+              const key = `${side}|${l.text}`;
+              let tr = carryT.find((q) => q.key === key && q.lastN === m - 1);
+              if (!tr) carryT.push((tr = { key, side, text: l.text, from: lt, maxAlpha: 0 }));
+              tr.lastN = m;
+              tr.to = lt;
+              tr.maxAlpha = Math.max(tr.maxAlpha, l.alpha);
+            }
+          }
+          const pairs = ghostPairs([...A, ...B], []).filter((p) => A.some((x) => x.text === p.a || x.text === p.b) && B.some((x) => x.text === p.a || x.text === p.b));
+          for (const g of pairs) {
+            const ta = A.find((x) => x.text === g.a || x.text === g.b)?.text;
+            let tr = tracksT.find((q) => q.lastN === m - 1 && (q.key === g.key || iou(q.rect, g.rect) > 0.2));
+            if (!tr) {
+              tr = { key: g.key, out: ta, in: ta === g.a ? g.b : g.a, from: lt, samples: 0, rect: g.rect, minAlpha: 1 };
+              tracksT.push(tr);
+            }
+            tr.lastN = m;
+            tr.to = lt;
+            tr.rect = g.rect;
+            tr.samples++;
+            tr.minAlpha = Math.min(tr.minAlpha, Math.min(g.alphaA, g.alphaB));
+          }
+        }
+        transSampled = m;
+        transCarry.push(
+          ...carryT
+            .map((g) => ({ side: g.side, text: g.text, t0: +g.from.toFixed(2), t1: +(g.to + STEP).toFixed(2), seconds: +(g.to - g.from + STEP).toFixed(2), maxAlpha: +g.maxAlpha.toFixed(2) }))
+            .filter((g) => g.seconds > GHOST_MAX_S + 1e-6),
+        );
+        transGhosts.push(
+          ...tracksT
+            .map((g) => ({ from: prev.id, out: g.out, in: g.in, kind, t0: +g.from.toFixed(2), t1: +(g.to + STEP).toFixed(2), seconds: +(g.to - g.from + STEP).toFixed(2), minAlpha: +g.minAlpha.toFixed(2), rect: { x: Math.round(g.rect.x), y: Math.round(g.rect.y), w: Math.round(g.rect.w), h: Math.round(g.rect.h) } }))
+            .filter((g) => g.seconds > GHOST_MAX_S + 1e-6),
+        );
+      }
+      const doc = { shot: shot.id, at: new Date().toISOString(), step: +STEP.toFixed(4), sampled: n, transition: kind !== 'cut' ? { kind, sampled: transSampled, ghosts: transGhosts, carry: transCarry } : null, rule: `paper > ${PAPER * 100}% with text < ${INK * 100}% for more than ${MAX_BLANK} s`, ghostRule: GHOST_RULE, probedCards: [...new Set(tracks.filter((t) => t.probed).map((t) => t.id))], fails, suspects, ghosts, cards: tracks.filter((t) => t.samples.length > 1).map((t) => ({ id: t.id, probed: t.probed, from: t.samples[0].t, to: t.samples[t.samples.length - 1].t, minInkWhilePaper: Math.min(1, ...t.samples.filter((s) => s.paper > PAPER).map((s) => s.ink)) })) };
+      if (a['trans-only']) {
+        const prevDoc = readJson(path.join(OUT, `${shot.id}.json`), null);
+        writeJson(path.join(OUT, `${shot.id}.json`), prevDoc ? { ...prevDoc, transition: doc.transition, transAt: doc.at } : doc, 1);
+      } else writeJson(path.join(OUT, `${shot.id}.json`), doc, 1);
+      summary.shots[shot.id] = { fails: fails.map((f) => `${f.card} blank ${f.from}-${f.to} s`), suspects: suspects.map((f) => `${f.card} ${f.from}-${f.to} s`), ghosts: ghosts.map((g) => `'${g.a}' x '${g.b}' ${g.from}-${g.to} s`), ...(kind !== 'cut' && !a['no-trans'] ? { transGhosts: transGhosts.map((g) => `${g.kind} from ${g.from}: '${g.out}' x '${g.in}' ${g.t0}..${g.t1} s (cut-relative)`), transCarry: transCarry.map((g) => `${g.side === 'out' ? 'outgoing' : 'incoming'} '${g.text}' up to ${Math.round(g.maxAlpha * 100)} % over the other shot ${g.t0}..${g.t1} s`) } : {}), probed: doc.probedCards.length, at: doc.at };
+      if (a['trans-only'] && prevSummary.shots?.[shot.id]) {
+        const prevS = prevSummary.shots[shot.id];
+        summary.shots[shot.id] = { ...prevS, transGhosts: summary.shots[shot.id].transGhosts, transCarry: summary.shots[shot.id].transCarry, transAt: doc.at };
+      }
+      console.log(`  ${shot.id}: ${n} frames, ${doc.probedCards.length} probed card(s); ${fails.length} blank probed card(s)${fails.length ? `: ${fails.map((f) => `${f.card} ${f.from}-${f.to}s`).join(', ')}` : ''}; ${suspects.length} suspect paper${suspects.length ? `: ${suspects.slice(0, 5).map((f) => `${f.card} ${f.from}-${f.to}s`).join(', ')}` : ''}; ${ghosts.length} ghost text${ghosts.length ? `: ${ghosts.map((g) => `'${g.a.slice(0, 24)}' x '${g.b.slice(0, 24)}' ${g.from}-${g.to}s`).join(' | ')}` : ''}${kind !== 'cut' && !a['no-trans'] ? `; transition in (${kind}, ${transSampled} frames): ${transGhosts.length} cross-shot ghost${transGhosts.length ? `: ${transGhosts.map((g) => `'${g.out.slice(0, 24)}' x '${g.in.slice(0, 24)}' ${g.t0}..${g.t1}s`).join(' | ')}` : ''}` : ''}`);
     }
     await h.close();
   } finally {
@@ -538,7 +704,7 @@ async function main() {
   summary.ghostRule = GHOST_RULE;
   writeJson(path.join(OUT, 'summary.json'), summary, 1);
   const bad = Object.entries(summary.shots).filter(([id, s]) => (!ids.length || ids.includes(id)) && s.fails.length);
-  const ghosted = Object.entries(summary.shots).filter(([id, s]) => (!ids.length || ids.includes(id)) && s.ghosts?.length);
+  const ghosted = Object.entries(summary.shots).filter(([id, s]) => (!ids.length || ids.includes(id)) && (s.ghosts?.length || s.transGhosts?.length));
   console.log(`${bad.length} shot(s) with a blank probed card; ${ghosted.length} shot(s) with ghost text${ghosted.length ? ` (${ghosted.map(([id]) => id).join(', ')})` : ''} → ${rel(path.join(OUT, 'summary.json'))}`);
   if (bad.length || ghosted.length) process.exitCode = 1;
 }

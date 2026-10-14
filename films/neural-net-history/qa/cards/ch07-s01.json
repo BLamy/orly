@@ -1,8 +1,14 @@
 {
  "shot": "ch07-s01",
- "at": "2026-10-13T19:57:26.934Z",
+ "at": "2026-10-13T23:12:27.667Z",
  "step": 0.0833,
  "sampled": 239,
+ "transition": {
+  "kind": "crossfade",
+  "sampled": 12,
+  "ghosts": [],
+  "carry": []
+ },
  "rule": "paper > 50% with text < 20% for more than 0.3 s",
  "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
  "probedCards": [],
@@ -11,70 +17,63 @@
  "ghosts": [],
  "cards": [
   {
-   "id": "fillRect@967,289",
+   "id": "fillRect@875,333",
    "probed": false,
    "from": 0.55,
    "to": 20.383,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@-86,466",
+   "id": "fillRect@-178,510",
    "probed": false,
    "from": 0.55,
    "to": 20.383,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@456,573",
+   "id": "fillRect@365,617",
    "probed": false,
    "from": 0.55,
    "to": 20.383,
    "minInkWhilePaper": 0.75
   },
   {
-   "id": "fillRect@144,289",
+   "id": "fillRect@52,333",
    "probed": false,
    "from": 0.55,
-   "to": 18.467,
+   "to": 18.717,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@-48,916",
+   "id": "fillRect@-104,916",
    "probed": false,
-   "from": 1.383,
+   "from": 1.633,
    "to": 20.383,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@415,817",
+   "id": "fillRect@414,818",
    "probed": false,
    "from": 3.883,
    "to": 14.967,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@272,574",
+   "id": "fillRect@269,692",
    "probed": false,
    "from": 16.383,
    "to": 20.383,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@385,812",
+   "id": "fillRect@385,813",
    "probed": false,
    "from": 18.467,
    "to": 20.383,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@857,99",
-   "probed": false,
-   "from": 18.55,
-   "to": 18.883,
-   "minInkWhilePaper": 1
-  },
-  {
-   "id": "fillRect@1225,852",
+   "id": "fillRect@965,821",
    "probed": false,
    "from": 19.55,
    "to": 20.383,

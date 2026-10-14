@@ -255,5 +255,12 @@
    "to": 11.383,
    "minInkWhilePaper": 0.92
   }
- ]
+ ],
+ "transition": {
+  "kind": "crossfade",
+  "sampled": 12,
+  "ghosts": [],
+  "carry": []
+ },
+ "transAt": "2026-10-13T22:54:28.224Z"
 }

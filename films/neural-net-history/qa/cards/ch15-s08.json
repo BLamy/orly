@@ -1,8 +1,14 @@
 {
  "shot": "ch15-s08",
- "at": "2026-10-13T21:53:05.418Z",
+ "at": "2026-10-14T02:01:54.209Z",
  "step": 0.0833,
  "sampled": 512,
+ "transition": {
+  "kind": "lampChange",
+  "sampled": 14,
+  "ghosts": [],
+  "carry": []
+ },
  "rule": "paper > 50% with text < 20% for more than 0.3 s",
  "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
  "probedCards": [
@@ -15,28 +21,28 @@
  "ghosts": [],
  "cards": [
   {
-   "id": "fillRect@1090,843",
+   "id": "fillRect@1091,843",
    "probed": false,
    "from": 0.65,
    "to": 0.983,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@1324,843",
+   "id": "fillRect@1325,843",
    "probed": false,
    "from": 0.65,
    "to": 0.983,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@211,440",
+   "id": "fillRect@212,440",
    "probed": false,
    "from": 0.65,
    "to": 0.983,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@211,675",
+   "id": "fillRect@212,674",
    "probed": false,
    "from": 0.65,
    "to": 0.983,
@@ -64,7 +70,7 @@
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@456,721",
+   "id": "fillRect@457,721",
    "probed": false,
    "from": 0.65,
    "to": 0.983,
@@ -78,7 +84,7 @@
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@675,497",
+   "id": "fillRect@676,497",
    "probed": false,
    "from": 0.65,
    "to": 0.983,
@@ -92,7 +98,7 @@
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@1097,245",
+   "id": "fillRect@1098,245",
    "probed": false,
    "from": 0.65,
    "to": 0.983,
@@ -120,7 +126,7 @@
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@1331,373",
+   "id": "fillRect@1332,373",
    "probed": false,
    "from": 0.65,
    "to": 0.983,
@@ -141,35 +147,35 @@
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@1093,849",
+   "id": "fillRect@1092,849",
    "probed": false,
    "from": 4.817,
    "to": 5.65,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@1332,849",
+   "id": "fillRect@1331,848",
    "probed": false,
    "from": 4.817,
    "to": 5.567,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@198,438",
+   "id": "fillRect@197,438",
    "probed": false,
    "from": 4.817,
    "to": 8.817,
    "minInkWhilePaper": 0.57
   },
   {
-   "id": "fillRect@198,677",
+   "id": "fillRect@197,677",
    "probed": false,
    "from": 4.817,
    "to": 5.9,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@448,178",
+   "id": "fillRect@447,178",
    "probed": false,
    "from": 4.817,
    "to": 7.4,
@@ -183,49 +189,49 @@
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@448,528",
+   "id": "fillRect@447,528",
    "probed": false,
    "from": 4.817,
    "to": 5.9,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@447,724",
+   "id": "fillRect@446,724",
    "probed": false,
    "from": 4.817,
    "to": 5.733,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@671,179",
+   "id": "fillRect@670,179",
    "probed": false,
    "from": 4.817,
    "to": 5.9,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@670,496",
+   "id": "fillRect@669,496",
    "probed": false,
    "from": 4.817,
    "to": 5.733,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@664,680",
+   "id": "fillRect@663,679",
    "probed": false,
    "from": 4.817,
    "to": 5.65,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@671,824",
+   "id": "fillRect@670,824",
    "probed": false,
    "from": 4.817,
    "to": 5.65,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@1100,240",
+   "id": "fillRect@1099,239",
    "probed": false,
    "from": 4.817,
    "to": 5.733,
@@ -239,42 +245,42 @@
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@1099,537",
+   "id": "fillRect@1098,536",
    "probed": false,
    "from": 4.817,
    "to": 5.65,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@1100,688",
+   "id": "fillRect@1099,687",
    "probed": false,
    "from": 4.817,
    "to": 5.65,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@1339,370",
+   "id": "fillRect@1338,370",
    "probed": false,
    "from": 4.817,
    "to": 5.65,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@1338,544",
+   "id": "fillRect@1337,544",
    "probed": false,
    "from": 4.817,
    "to": 5.65,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@824,425",
+   "id": "fillRect@823,425",
    "probed": false,
    "from": 4.817,
    "to": 6.067,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@687,344",
+   "id": "fillRect@686,344",
    "probed": false,
    "from": 5.4,
    "to": 5.733,
@@ -288,7 +294,7 @@
    "minInkWhilePaper": 0.68
   },
   {
-   "id": "fillRect@1090,147",
+   "id": "fillRect@1089,147",
    "probed": false,
    "from": 5.983,
    "to": 7.4,
@@ -323,42 +329,42 @@
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@384,832",
+   "id": "fillRect@385,832",
    "probed": false,
    "from": 7.65,
    "to": 11.567,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@934,914",
+   "id": "fillRect@934,913",
    "probed": false,
    "from": 7.983,
    "to": 11.483,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@1420,877",
+   "id": "fillRect@1421,877",
    "probed": false,
    "from": 9.65,
    "to": 11.483,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@798,-26",
+   "id": "fillRect@799,-26",
    "probed": false,
    "from": 10.983,
    "to": 11.067,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@1504,99",
+   "id": "fillRect@1504,98",
    "probed": false,
    "from": 10.983,
    "to": 13.317,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@1720,924",
+   "id": "fillRect@1720,923",
    "probed": false,
    "from": 11.15,
    "to": 11.4,
@@ -372,17 +378,17 @@
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@651,-45",
+   "id": "fillRect@652,-46",
    "probed": false,
    "from": 11.233,
    "to": 11.567,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@1606,700",
+   "id": "fillRect@1607,700",
    "probed": false,
    "from": 11.233,
-   "to": 11.733,
+   "to": 11.65,
    "minInkWhilePaper": 1
   },
   {
@@ -400,21 +406,21 @@
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@1504,112",
+   "id": "fillRect@1505,112",
    "probed": false,
    "from": 11.317,
    "to": 13.15,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@1503,316",
+   "id": "fillRect@1504,316",
    "probed": false,
    "from": 11.317,
    "to": 13.15,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@1502,521",
+   "id": "fillRect@1503,520",
    "probed": false,
    "from": 11.317,
    "to": 13.15,
@@ -435,21 +441,21 @@
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@315,128",
+   "id": "fillRect@316,128",
    "probed": false,
    "from": 11.817,
    "to": 13.15,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@172,438",
+   "id": "fillRect@173,438",
    "probed": false,
    "from": 11.9,
    "to": 13.15,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@160,716",
+   "id": "fillRect@160,715",
    "probed": false,
    "from": 11.9,
    "to": 13.15,
@@ -463,7 +469,7 @@
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@712,426",
+   "id": "fillRect@711,426",
    "probed": false,
    "from": 13.317,
    "to": 19.817,
@@ -491,7 +497,7 @@
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@653,-10",
+   "id": "fillRect@652,-10",
    "probed": false,
    "from": 13.4,
    "to": 15.567,
@@ -505,14 +511,14 @@
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@652,469",
+   "id": "fillRect@651,469",
    "probed": false,
    "from": 13.4,
    "to": 15.65,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@642,747",
+   "id": "fillRect@641,747",
    "probed": false,
    "from": 13.4,
    "to": 14.65,
@@ -547,7 +553,7 @@
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@1661,541",
+   "id": "fillRect@1660,541",
    "probed": false,
    "from": 13.4,
    "to": 15.65,
@@ -582,7 +588,7 @@
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@731,908",
+   "id": "fillRect@730,908",
    "probed": false,
    "from": 13.483,
    "to": 15.567,
@@ -638,21 +644,21 @@
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@739,993",
+   "id": "fillRect@827,994",
    "probed": false,
-   "from": 39.983,
+   "from": 40.233,
    "to": 43.233,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@998,992",
+   "id": "fillRect@1076,994",
    "probed": false,
-   "from": 39.983,
+   "from": 40.233,
    "to": 43.233,
    "minInkWhilePaper": 1
   },
   {
-   "id": "fillRect@-69,734",
+   "id": "fillRect@-68,804",
    "probed": false,
    "from": 40.317,
    "to": 43.233,

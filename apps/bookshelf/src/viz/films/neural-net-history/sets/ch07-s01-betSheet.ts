@@ -50,6 +50,8 @@ export interface BetSheetOpts {
   tick?: [number, number];
   /** 0..1 a faint lamp glow passing over each bet's lines */
   glow?: [number, number];
+  /** 0..1 a soft lamp glow under the two bettors' signatures (Jackel's, Vapnik's; never the witness's) */
+  sign?: [number, number];
 }
 
 export function betSheet(c: C, env: PaintEnv, o: BetSheetOpts) {
@@ -96,7 +98,22 @@ export function betSheet(c: C, env: PaintEnv, o: BetSheetOpts) {
   const sy = L0 + 14 * LH;
   for (let k = 0; k < 3; k++) {
     const x = BET.x + 10 + k * 46;
-    scribble(c, x, sy - 2, 36, 40 + k * 13, mixLab(PEN_INK, paper, 0.25));
+    const sg = k < 2 ? clamp01(o.sign?.[k] ?? 0) : 0;
+    if (sg > 0.01) {
+      // the lamp finds the bettor's signature: a warm oval of light under the ink
+      c.save();
+      c.translate(x + 18, sy - 4);
+      c.scale(1, 0.34);
+      c.globalCompositeOperation = 'lighter';
+      const gr = c.createRadialGradient(0, 0, 2, 0, 0, 34);
+      gr.addColorStop(0, withAlpha(m.core, 0.9 * sg));
+      gr.addColorStop(0.5, withAlpha(m.halo, 0.45 * sg));
+      gr.addColorStop(1, withAlpha(m.halo, 0));
+      c.fillStyle = gr;
+      c.fillRect(-36, -36, 72, 72);
+      c.restore();
+    }
+    scribble(c, x, sy - 2, 36, 40 + k * 13, mixLab(PEN_INK, paper, 0.25), 0.9 + 0.7 * sg);
     c.fillStyle = withAlpha(mixLab(m.ink, paper, 0.45), 0.26);
     c.font = `400 4.6px ${FONT.typewriter}`;
     c.fillText('3/14/95', x + 4, sy + 6);
@@ -135,10 +152,10 @@ function typedRun(c: C, x: number, y: number, w: number, seed: number, col: stri
     k++;
   }
 }
-function scribble(c: C, x: number, y: number, w: number, seed: number, col: string) {
+function scribble(c: C, x: number, y: number, w: number, seed: number, col: string, lw = 0.9) {
   c.save();
   c.strokeStyle = col;
-  c.lineWidth = 0.9;
+  c.lineWidth = lw;
   c.lineCap = 'round';
   c.beginPath();
   c.moveTo(x, y);

@@ -9,5 +9,12 @@
  "fails": [],
  "suspects": [],
  "ghosts": [],
- "cards": []
+ "cards": [],
+ "transition": {
+  "kind": "fadeBlack",
+  "sampled": 19,
+  "ghosts": [],
+  "carry": []
+ },
+ "transAt": "2026-10-13T22:54:40.133Z"
 }

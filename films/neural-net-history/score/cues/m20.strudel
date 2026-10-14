@@ -1,28 +1,31 @@
-// m20 — "Case Status: Open", part 2 (neural-net-history, ch15-s06/s07). CURRENT CLOCK (timeline 2164 s):
-// window 2036.191–2064.691 (28.500 s), fadeIn 1.5 (to 2037.691), fadeOut 1 (2063.691–2064.691). Rubato at 60 BPM:
-// setcps(1), one cycle = one second; events written at their ABSOLUTE film second through A(t) = t − 2036.191
+// m20 — "Case Status: Open", part 2 (neural-net-history, ch15-s06/s07). CURRENT CLOCK (timeline 2168.4167 s):
+// window 2040.608–2069.108 (28.500 s), fadeIn 1.5 (to 2042.108), fadeOut 1 (2068.108–2069.108). Rubato at 60 BPM:
+// setcps(1), one cycle = one second; events written at their ABSOLUTE film second through A(t) = t − 2040.608
 // (v7, 2026-10-13: every time re-written on the current clock, +21.583 s from the v6 code; no line inside the cue
 // changed, so nothing moved against the picture; checked word by word against narration/timeline.json).
 // The crest of the forecasts (0.4), then winter, leaving (0.2).
 //
-//  THE THREE HOLDOUTS (2037.46–2051.88): M1 on solo cello in D minor. In the clear before L1509 (2040.46):
-//     A2 on "b1" 2037.76, D3 lit on "b1b" 2039.26 over Dm (m19's harp F# has faded: the key turns minor alone).
-//     The floor moves to C under "dangerous" 2043.72 (the held D grinding gently against C below and E above)
-//     and to A-E under "far enough" 2046.10 (Asus4); the unresolved suspension swells in the music-only hold
-//     2046.79–2051.49 while the cards are read (the cue's only swell), and does NOT resolve.
-//  WIDROW (2051.88–2065.96, winterBlue): solo cello plays M1 once, FULLY: A2 2052.04 in the lead-in, D3 lit
-//     2052.84 over Dm and winter glass; held through "died at ninety-five"; the floor slides to A-E on
-//     "ninety-five" 2058.21 (doubt); the fall D -> C# over A right after "it" (2061.75, after "never got over it");
-//     one high celesta note per window going dark from the breath before "He wrote" (2059.10; E6 C#6 A5 E5, thinning).
-//     Last onset 2062.04; silent before the fade (2063.69), a beat of silence before m21 at the cut (2065.96).
+//  THE THREE HOLDOUTS (2041.88–2056.30): M1 on solo cello in D minor. In the clear before L1509 (2044.88):
+//     A2 on "b1" 2042.18, D3 lit on "b1b" 2043.68 over Dm (m19's harp F# has faded: the key turns minor alone).
+//     The floor moves to C under "dangerous" 2048.14 (the held D grinding gently against C below and E above)
+//     and to A-E under "far enough" 2050.52 (Asus4); the unresolved suspension swells in the music-only hold
+//     2051.21–2055.91 while the cards are read (the cue's only swell), and does NOT resolve.
+//  WIDROW (2056.30–2070.38, winterBlue): solo cello plays M1 once, FULLY: A2 2056.46 in the lead-in, D3 lit
+//     2057.26 over Dm and winter glass; held through "died at ninety-five"; the floor slides to A-E on
+//     "ninety-five" 2062.63 (doubt); the fall D -> C# over A right after "it" (2066.17, after "never got over it");
+//     one high celesta note per window going dark from the breath before "He wrote" (2063.52; E6 C#6 A5 E5, thinning).
+//     Last onset 2066.46; silent before the fade (2068.11), a beat of silence before m21 at the cut (2070.38).
 //  v8 (2026-10-13, round-4 clock): moved bodily +4.958 s from v7's code (on the 2159.9583 clock) with its shots; no line
 //     inside it changed. The first dark window re-placed in the breath after 'ninety-five' (2059.10).
 //  v7 (2026-10-13): the crest released by 2051.46; the first dark window moved into the breath before 'He' and the
 //     two under the quote's words -5 dB (L1511 1-4 kHz 8.0 dB clear in v6).
 //  v6 (2026-10-12): under L1511 the 1-4 kHz voice band kept only 6.5 dB clear of the music: the lit D3 -1.9 dB,
 //     the winter glass -2.5 dB and the windows' celesta -4 dB (the falling line unchanged).
+//  v9 (2026-10-13, round-5 clock 2168.4167 s): moved bodily +4.417 s from v8 with its shots (L1502 re-take +0.27 s and
+//     the new solo line L1504b upstream, in m19); no line inside m20 changed; every absolute time re-written, so the
+//     render is the v8 audio, re-rendered for the new source hash.
 setcps(1)
-const S = 2036.191
+const S = 2040.608
 const A = (t) => +(t - S).toFixed(3)
 const N = 29        // seconds covered by each compiled sequence (the window is 28.500 s)
 const G = 2.2       // master trim (postgain): v1 (old clock, with the labs) -21.3 LUFS at 2.5; v2 -20.7 but only
@@ -66,13 +69,13 @@ function line(evs, defs) {
 // THE FLOOR (contrabass + low strings, below D3). The holdouts: Dm (lit) → C under "dangerous" → A-E under
 // "far enough" (the hold). Widrow: Dm → A-E on "ninety-five" → A (the fall, on "it").
 const W = [
-  [A(2037.091), A(2039.261) - A(2037.091), 'd2', '[d2,a2]', { attack: 1.4 }],   // a floor under the A2 pick-up
-  [A(2039.261), 4.4, 'd2', '[d2,a2]', { attack: .8 }, VH],
-  [A(2043.641), 2.4, 'c2', '[c2,g2]', { attack: 1 }, VH],
-  [A(2046.041), 5.4, 'a1', '[a1,e2,a2]', { attack: 1.2, release: 2.5 }],
-  [A(2052.841), 5.35, 'd2', '[d2,a2]', { attack: 1.5 }, VU],
-  [A(2058.191), 3.55, 'a1', '[a1,e2]', { attack: 1.4 }, VU],
-  [A(2061.751), .55, 'a1', '[a1,e2,a2]', { attack: .3, release: .8 }],
+  [A(2041.508), A(2043.678) - A(2041.508), 'd2', '[d2,a2]', { attack: 1.4 }],   // a floor under the A2 pick-up
+  [A(2043.678), 4.4, 'd2', '[d2,a2]', { attack: .8 }, VH],
+  [A(2048.058), 2.4, 'c2', '[c2,g2]', { attack: 1 }, VH],
+  [A(2050.458), 5.4, 'a1', '[a1,e2,a2]', { attack: 1.2, release: 2.5 }],
+  [A(2057.258), 5.35, 'd2', '[d2,a2]', { attack: 1.5 }, VU],
+  [A(2062.608), 3.55, 'a1', '[a1,e2]', { attack: 1.4 }, VU],
+  [A(2066.168), .55, 'a1', '[a1,e2,a2]', { attack: .3, release: .8 }],
 ]
 $: line(W.map(([t, d, r, c, p, u]) => [t, d, r, .15 * (u || 1), p]), { attack: 1, release: 2.5 })
   .s('gm_contrabass').hpf(50).lpf(380).room(.3).rsize(3).orbit(2)
@@ -82,37 +85,37 @@ $: line(W.map(([t, d, r, c, p, u]) => [t, d, c, .085 * (u || 1), p]), { attack: 
 // HIGH STRINGS: the Dm third high and thin when the holdouts' candle is lit; E5 over C ("dangerous": the held
 // D grinding between C and E); then the crest in the hold: Asus4 opened out with the held D on top.
 $: line([
-  [A(2039.261), 4.3, 'f5', .06 * VH, { attack: 1.4 }],
-  [A(2043.641), 2.4, 'e5', .065 * VH, { attack: 1 }],
+  [A(2043.678), 4.3, 'f5', .06 * VH, { attack: 1.4 }],
+  [A(2048.058), 2.4, 'e5', .065 * VH, { attack: 1 }],
   // v7: the crest released by 2051.46 (1.8 s) so its tail is gone under the fade to black, before 'In twenty' (2052.48):
   // v6's 2.6-s release still sat in L1511's 1-4 kHz band (-35 dB against the voice's -29 to -33)
-  [A(2046.791), 4.67, '[e3,a3,d4]', .27, { attack: 1.6, release: 1.8, lpf: 1800 }],
-  [A(2046.791), 4.67, '[e4,a4,d5]', .14, { attack: 2, release: 1.8, lpf: 2600 }],
+  [A(2051.208), 4.67, '[e3,a3,d4]', .27, { attack: 1.6, release: 1.8, lpf: 1800 }],
+  [A(2051.208), 4.67, '[e4,a4,d5]', .14, { attack: 2, release: 1.8, lpf: 2600 }],
 ], { attack: 1.2, release: 2.5, lpf: 2400 })
   .s('gm_string_ensemble_1').room(.6).rsize(5).orbit(4)
 
 // SOLO CELLO: M1. The holdouts: lit and held, re-bowed under "dangerous" and "far enough", never resolved.
 // Widrow: lit, held, and the fall D -> C# on "never got over it".
 $: line([
-  [A(2037.761), 1.5, 'a2', .3, { attack: .3 }],
-  [A(2039.261), 4.38, 'd3', .31 * VH],
-  [A(2043.641), 2.4, 'd3', .28 * VH],
-  [A(2046.041), 5.4, 'd3', .33, { attack: .9, release: 2.4 }],   // v5: swells into the hold, not under 'far enough'
-  [A(2052.041), .8, 'a2', .25, { attack: .35 }],
-  [A(2052.841), 5.35, 'd3', .21 * VU],   // v6: -1.9 dB under 'In twenty twenty-five, Bernard Widrow'
-  [A(2058.191), 3.55, 'd3', .23 * VU],
-  [A(2061.751), .5, 'c#3', .26, { attack: .15, release: .6 }],
+  [A(2042.178), 1.5, 'a2', .3, { attack: .3 }],
+  [A(2043.678), 4.38, 'd3', .31 * VH],
+  [A(2048.058), 2.4, 'd3', .28 * VH],
+  [A(2050.458), 5.4, 'd3', .33, { attack: .9, release: 2.4 }],   // v5: swells into the hold, not under 'far enough'
+  [A(2056.458), .8, 'a2', .25, { attack: .35 }],
+  [A(2057.258), 5.35, 'd3', .21 * VU],   // v6: -1.9 dB under 'In twenty twenty-five, Bernard Widrow'
+  [A(2062.608), 3.55, 'd3', .23 * VU],
+  [A(2066.168), .5, 'c#3', .26, { attack: .15, release: .6 }],
 ], { attack: .25, release: 1.6 })
   .s('gm_cello').lpf(950).room(.5).rsize(3.5).orbit(5)
 
 // WINTER GLASS for Widrow's sill (very soft, high), and the windows going dark (celesta, E6 C#6 A5 E5).
-$: line([[A(2052.991), 7.4, '[d5,a5]', .045 * VU]], { attack: 2, release: 2 })
+$: line([[A(2057.408), 7.4, '[d5,a5]', .045 * VU]], { attack: 2, release: 2 })
   .s('gm_pad_bowed').lpf(5000).room(.7).rsize(5).orbit(6)
 $: line([
   // v8: the first window goes dark in the breath before 'He wrote' ('ninety-five' ends 2059.06, 'He' 2059.56: struck
   // 2059.10, v7's 2058.96 sat under '-five'), at its v6 level; the two under
   // 'He wrote that he never got over it' about -5 dB (L1511's 1-4 kHz band was 8.0 dB clear, 4-6 in those half-seconds);
   // the last, E5 sounding, in the clear after the fall
-  [A(2059.1), .8, 'e5', .1 * VU], [A(2060.411), .7, 'c#5', .045 * VU], [A(2061.241), .45, 'a4', .037 * VU], [A(2062.041), .3, 'e4', .07, { release: .5 }],
+  [A(2063.5), .8, 'e5', .1 * VU], [A(2064.828), .7, 'c#5', .045 * VU], [A(2065.658), .45, 'a4', .037 * VU], [A(2066.458), .3, 'e4', .07, { release: .5 }],
 ], { release: .8 })
   .s('gm_celesta').room(.6).rsize(4).orbit(6)

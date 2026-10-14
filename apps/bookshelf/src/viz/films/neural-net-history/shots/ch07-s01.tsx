@@ -13,6 +13,7 @@
  *   0 → 3.6       HEAD-HOLD: the CHAPTER INDEX TAB 'Two Accomplices: Data and Fire' (1.25×) drops at 0.1, holds
  *                 2.5 s, slides up; the camera eases out from ch06-s08's framing
  *   'dinner'      the camera settles on the board; the question card's thread trembles
+ *   'Both'        the two bettors' signatures (Jackel's, Vapnik's) catch the lamp: both men paid
  *   'two'         a typed flag is pinned beside bet 1: JACKEL: BY 2000, NETS EXPLAINED
  *   'explain'     the pen (one hand, from the bottom centre) strikes through NETS EXPLAINED
  *   'two#2'       the flag beside bet 2: VAPNIK: BY 2005, NETS UNUSED
@@ -21,8 +22,9 @@
  *   'lost'        the other hand lays the typed results slip JACKEL, 2000: LOST / VAPNIK, 2005: LOST on the
  *                 sheet: the line and the slip land together
  *   'bet' end     the camera eases back; a glow runs over Jackel's line, then Vapnik's
- *   cardDown      a hand from ABOVE (never across the slip) pinches the card off its pin, draws it along the
- *                 thread and lets go; it turns once in the air and lands face up in the lamp's pool; the empty
+ *   cardDown      a forearm reaching over the board from ABOVE (never across the slip) pinches the card off its
+ *                 pin, tugs it a little down and toward the lens and lets go; it turns once in the air (only its
+ *                 blank back shows while it crosses the board) and lands face up in the lamp's pool; the empty
  *                 brass pin glints; the thread twangs and settles; the paper wine glasses catch a glint; hold 1 s
  */
 import { Timeline } from '../../../core';
@@ -53,41 +55,51 @@ const CARD_C = { x: QX, y: QY + 10 * K + 22 * K };
 const Q_LIGHT = poolAt(POOL, Q_SLOTS.Q2, BOARD.threadY + 40);
 const SHEET_LIGHT = poolAt(POOL, 505, 168);
 const GLASSES = { x: BET.x + BET.w - 12, y: BET.y - 6 };
-/** the results slip: raised onto the sheet's lower half and a touch left, so the falling card never crosses it */
-const SLIP_AT = { ...SLIP_AT0, x: SLIP_AT0.x - 18, y: SLIP_AT0.y - 22 };
+/** the results slip: across the sheet's FOOT (BET.y + 83 … 129), below bet 2's tick so both ticks read through the
+ *  hold, a touch left, clear of the desk (review r1 FIX 3: was −22, which hid the second tick) */
+const SLIP_AT = { ...SLIP_AT0, x: SLIP_AT0.x - 18, y: SLIP_AT0.y - 6 };
 /** the bet's two paper wine-glass cut-outs, pinned at the board's right edge (world), clear of the flags */
 const TOAST = { x: 905, y: 246 };
 /** the desk top's far edge (L4 world y): in front of the board's lower half */
 const DESK_Y = 286;
-/** the hand draws the card along the thread to here and lets go (right of the slip, under Q3) */
-const DROP = { x: QX + 172, y: QY + 4 };
-/** where the card comes to rest, face up in the lamp's pool (L4 world) */
-const LAND = { x: 858, y: 300 };
+/** the hand tugs the card a little down and toward the lens and lets go (review r1 FIX 1: no slide along the
+ *  thread, so it never lies over the Q3 card) */
+const DROP = { x: QX + 24, y: QY + 18 };
+/** where the card comes to rest, face up in the lamp's pool, centred under the shade and clear of the stem and
+ *  the bottom 12 % (L4 world; review r1 FIX 2) */
+const LAND = { x: 790, y: 292 };
 const STATE0 = (() => {
   const st = boardStateAt(ID, 'start');
   return { ...st, questions: st.questions.filter((q) => q.slot !== 'Q2') };
 })();
 
 // cameras (L4 k = 1000 / (1000 − z))
-/** ch06-s08's last frame, exactly (its camC at D): the crossfade matches size and position */
-const CAM_06: Camera3 = { x: 674, y: 133.17, z: 690, lens: 1 };
+/** ch06-s08's last frame, exactly (its camC at D): the crossfade matches size and position. Review round 5
+ *  (transition ghosts): ch06-s08's round-1 re-frame moved its last camera 19 world px right and 9 up
+ *  (Q3C.x - 67, Q3C.y + 19), which left the two question cards doubled 92 px apart (1080p) through the crossfade;
+ *  measured on both shots' recorded text boxes, this key now matches it exactly. */
+const CAM_06: Camera3 = { x: 693, y: 124.17, z: 690, lens: 1 };
 /** THE framing: Q2 card, bet sheet, both flags, the slip and the landing spot (k ≈ 2.48) … */
 const CAM_F0: Camera3 = { x: 700, y: 200, z: 597, lens: 1 };
 /** … pushed 3 % by the end */
 const CAM_F1: Camera3 = { x: 704, y: 202, z: 609, lens: 1 };
 /** the tick insert: a gentle push onto the sheet's margin, the flags and the slip's place (k ≈ 3.15) */
-const CAM_I0: Camera3 = { x: 688, y: 206, z: 682, lens: 1 };
-const CAM_I1: Camera3 = { x: 690, y: 207, z: 690, lens: 1 };
+const CAM_I0: Camera3 = { x: 688, y: 197, z: 682, lens: 1 };
+const CAM_I1: Camera3 = { x: 690, y: 198, z: 690, lens: 1 };
 const CAMS = [CAM_06, CAM_F0, CAM_F1, CAM_I0, CAM_I1];
 const HS = 0.6; // hand scale on the board close
-/** the hands' entries (screen px): the pen from the bottom centre (steep), the slip hand bottom-left, the unpin from above */
+/** the hands' entries (screen px): the pen from the bottom centre (steep), the slip hand bottom-left, the unpin from the top-right */
 const ENTRY_PEN = { x: 800, y: 1060 };
 const ENTRY_SLIP = { x: 430, y: 1080 };
-const ENTRY_TOP = { x: 700, y: -360 };
+/** the unpin arm reaches over the board from the top-right (the lamp side), so its sleeve and cuff cross the top of
+ *  frame with the hand (review r1 FIX 7: from straight above only a fingertip showed) */
+const ENTRY_TOP = { x: 1180, y: -150 };
 
 interface B {
   D: number;
   ask: number;
+  /** 'Both' − 0.15: the two bettors' signatures glow (the answer pictured) */
+  both: number;
   keys: [number, Camera3][];
   flag1: number;
   flag2: number;
@@ -128,6 +140,7 @@ export default defineShot({
     const b: B = {
       D,
       ask,
+      both: T.word('L0701', 'Both') - 0.15,
       keys: [
         [0, CAM_06],
         [0.5, CAM_06],
@@ -182,8 +195,8 @@ export default defineShot({
       extra: (c, env) => boardBeat(c, env, t, tq, b, entry),
     });
     // the glasses' glint and the empty pin's glint: practical sparkles, motivated by the lamp
-    const gl = pulse(t, b.land - 0.1, 0.25, 0.7);
-    if (gl > 0.02) f.practical({ x: TOAST.x, y: TOAST.y - 6, kind: 'led', seed: 71, intensity: 0.4 * gl, radius: 30, layer: 'L4' });
+    const gl = toastGlint(t, b);
+    if (gl > 0.02) f.practical({ x: TOAST.x, y: TOAST.y - 6, kind: 'led', seed: 71, intensity: 0.7 * gl, radius: 40, layer: 'L4' });
     const pg = pulse(t, b.unOff + 0.05, 0.2, 0.9);
     if (pg > 0.02) f.practical({ x: QX, y: QY + 12 * K, kind: 'led', seed: 72, intensity: 0.45 * pg, radius: 18, layer: 'L4' });
     // the near plane: the desk (L5); the shared drape/pelmet/chair would bury this close
@@ -201,6 +214,7 @@ export default defineShot({
     // the desk under the shade: dark wood, the pool lit by the lamp itself (after the key), the card landing in it
     desk(f, deskTop, b, t, pool);
     fallingCard(f, t, b, m4);
+  toastSparkle(f, m4, toastGlint(t, b));
     nearLip(f, { key: `${ID}/v2`, top: Math.max(deskTop + 92, 668), dx: -(cam.x - 700) * 2.6, shade: false, glow: 0 });
     bankersPractical(f, cam, t);
     // the chapter index tab (screen-locked, last), 1.25× so its type clears the legibility floor
@@ -244,7 +258,14 @@ function boardBeat(c: C, env: PaintEnv, t: number, tq: number, b: B, entry: Entr
   // while each bet is being told, a soft lamp glow lies over its lines and its flag
   const r1 = win(t, b.flag1 - 0.1, b.flag1 + 0.5) * (1 - win(t, b.flag2 - 0.6, b.flag2));
   const r2 = win(t, b.flag2 - 0.1, b.flag2 + 0.5) * (1 - win(t, b.tick1 - 0.6, b.tick1));
-  betSheet(c, env, { light: SHEET_LIGHT, tick: [tk1, tk2], glow: [Math.max(g1 * 0.8, 0.45 * r1), Math.max(g2 * 0.8, 0.45 * r2)] });
+  // 'Both men': the two bettors' signatures (Jackel's, Vapnik's; not the witness's) catch the lamp, a beat apart
+  const sg1 = pulse(t, b.both, 0.25, 0.9), sg2 = pulse(t, b.both + 0.18, 0.25, 0.9);
+  betSheet(c, env, {
+    light: SHEET_LIGHT,
+    tick: [tk1, tk2],
+    glow: [Math.max(g1 * 0.8, 0.45 * r1), Math.max(g2 * 0.8, 0.45 * r2)],
+    sign: [sg1, sg2],
+  });
   brassPin(c, env, BET.x + BET.w / 2, BET.y + 6, SHEET_LIGHT, 0, 4.2);
   wineGlasses(c, env, { x: GLASSES.x, y: GLASSES.y, s: 0.95, light: SHEET_LIGHT });
   // the two flags in the margin: whose bet, and what it claimed; struck through as the narration says it failed
@@ -254,7 +275,7 @@ function boardBeat(c: C, env: PaintEnv, t: number, tq: number, b: B, entry: Entr
   betFlag(c, env, 1, { pin: sm(f2), strike: S.u2(tq), light: SHEET_LIGHT, glow: Math.max(0.6 * r2, g2) });
   for (const [i, u] of [[0, f1], [1, f2]] as const) if (u > 0.6) brassPin(c, env, S.g[i].x + 8, S.g[i].y + S.g[i].h / 2, SHEET_LIGHT, 0, 3.2);
   // the two paper wine-glass cut-outs at the board's right edge (the bet's 'fancy dinner'), toasting
-  toastGlasses(c, env, TOAST.x, TOAST.y, pulse(t, b.land - 0.1, 0.25, 0.7));
+  toastGlasses(c, env, TOAST.x, TOAST.y, toastGlint(t, b));
 
   // --- the results slip: carried in by the left hand from the bottom-left, laid on the sheet on 'lost'
   const su = (tq - b.slip0) / b.slipDur;
@@ -395,14 +416,51 @@ function penNib(tq: number, b: B, S: Strikes): Pt {
 
 const cardAt = (p: Pt, rot: number) => ({ x: p.x, y: p.y, k: K, light: Q_LIGHT, pin: false, rot });
 
+/** the toast: the glasses catch the lamp as the card settles (peaks ≈ 19.5 s) */
+const toastGlint = (t: number, b: B) => pulse(t, b.land - 0.35, 0.3, 0.9);
+
+/** the glasses' rim glints in SCREEN space, after the key (which would otherwise crush them outside its ellipse) */
+function toastSparkle(f: Frame, m4: { x: number; y: number; k: number }, g: number) {
+  if (g <= 0.02) return;
+  const c = f.c;
+  const m = f.mood;
+  c.save();
+  c.globalCompositeOperation = 'lighter';
+  const hx = m4.x + TOAST.x * m4.k, hy = m4.y + (TOAST.y - 4) * m4.k;
+  const halo = c.createRadialGradient(hx, hy, 2, hx, hy, 26 * m4.k);
+  halo.addColorStop(0, withAlpha(m.halo, 0.22 * g));
+  halo.addColorStop(1, withAlpha(m.halo, 0));
+  c.fillStyle = halo;
+  c.fillRect(hx - 28 * m4.k, hy - 28 * m4.k, 56 * m4.k, 56 * m4.k);
+  // ONE clink: a small four-point star where the two rims touch (never two dots, which read as eyes)
+  const x = m4.x + TOAST.x * m4.k, y = m4.y + (TOAST.y - 13.5) * m4.k;
+  const r = 2.2 * m4.k;
+  const gr = c.createRadialGradient(x, y, 0, x, y, r);
+  gr.addColorStop(0, withAlpha(m.core, 0.9 * g));
+  gr.addColorStop(1, withAlpha(m.core, 0));
+  c.fillStyle = gr;
+  c.fillRect(x - r, y - r, 2 * r, 2 * r);
+  c.fillStyle = withAlpha(m.core, 0.75 * g);
+  const L = 9 * m4.k * (0.6 + 0.4 * g);
+  const th = 0.55 * m4.k;
+  for (const [w, h] of [[L, th], [th, L * 0.7]]) {
+    c.beginPath();
+    c.ellipse(x, y, w, h, 0, 0, Math.PI * 2);
+    c.fill();
+  }
+  c.restore();
+}
+
 /** two paper wine-glass cut-outs, pinned, leaning toward each other (≈ 19 world px tall each) */
 function toastGlasses(c: C, env: PaintEnv, x: number, y: number, glint: number) {
   const m = env.mood;
-  const paper = mixLab(paperTone(env, 0.55), m.halo, 0.2);
+  // brighter paper and 1.3× (review r1 FIX 6): outside the key they read as two lit cut-outs, not smudges
+  const paper = mixLab(paperTone(env, 0.8), m.halo, 0.2);
   for (const [dx, rot] of [[-8.5, 0.2], [8.5, -0.2]] as const) {
     c.save();
-    c.translate(x + dx, y);
+    c.translate(x + dx * 1.3, y);
     c.rotate(rot);
+    c.scale(1.3, 1.3);
     const glass = (cc: C) => {
       cc.beginPath();
       cc.moveTo(-6.2, -11);
@@ -612,7 +670,11 @@ function fallingCard(f: Frame, t: number, b: B, m4: { x: number; y: number; k: n
   // x drifts toward the lamp with a sway; y accelerates then brakes as the air catches it
   const x = lerp(DROP.x, LAND.x, 1 - (1 - u) * (1 - u)) + 8 * Math.abs(Math.sin(u * Math.PI * 1.6)) * (1 - u);
   const y = lerp(y0, LAND.y, u * u * (1.6 - 0.6 * u));
-  const flip = Math.cos(Math.min(1, u / 0.82) * Math.PI * 2); // one full turn, face up at the end
+  // one full turn, face up at the end; remapped so the PRINTED face shows only just after the release (u < .08)
+  // and once it is over the desk (u > .8): while it crosses the Q3 card, the sheet, the flags and the slip only
+  // its blank back or a thin edge shows (review r1 FIX 1: no two readable cards stacked)
+  const g = u < 0.08 ? (u / 0.08) * 0.25 : u < 0.8 ? 0.25 + ((u - 0.08) / 0.72) * 0.5 : 0.75 + ((u - 0.8) / 0.2) * 0.25;
+  const flip = Math.cos(g * Math.PI * 2);
   const lie = sm((u - 0.78) / 0.22); // flattening onto the desk (foreshortened)
   const sx = m4.x + x * m4.k, sy = m4.y + y * m4.k;
   c.save();
@@ -626,13 +688,21 @@ function fallingCard(f: Frame, t: number, b: B, m4: { x: number; y: number; k: n
     c.fillRect(-CARD.w / 2 + 3 + (1 - lie) * 10, -CARD.h * fy / 2 + 3 + (1 - lie) * 14, CARD.w, CARD.h * fy);
   }
   c.scale(1, fy);
-  if (flip >= 0) drawCard(c, { id: 'Q-Q2', w: CARD.w, h: CARD.h, icon: 'question', text: 'WHO PAID FOR DINNER?' }, { x: 0, y: 0, k: K, light: Q_LIGHT + 0.25 * lie, pin: false }, env);
-  else {
+  if (flip >= 0) {
+    drawCard(c, { id: 'Q-Q2', w: CARD.w, h: CARD.h, icon: 'question', text: 'WHO PAID FOR DINNER?' }, { x: 0, y: 0, k: K, light: Q_LIGHT + 0.25 * lie, pin: false }, env);
+    // above y = 250 (world) it has left the lamp's key: its face ×0.6, so it never competes with the slip
+    const hi = 1 - sm((y - 238) / 14);
+    if (hi > 0.01) {
+      c.fillStyle = withAlpha(f.mood.fg, 0.4 * hi);
+      c.fillRect(-CARD.w / 2, -CARD.h / 2, CARD.w, CARD.h);
+    }
+  } else {
     c.fillStyle = mixLab(f.mood.halo, f.mood.set, 0.45);
     c.fillRect(-CARD.w / 2, -CARD.h / 2, CARD.w, CARD.h);
   }
+  // turning edge-on: a soft paper edge, lightly shaded (never a black stroke)
   if (Math.abs(flip) < 0.35) {
-    c.fillStyle = withAlpha(f.mood.fg, 0.45 * (1 - Math.abs(flip) / 0.35));
+    c.fillStyle = withAlpha(f.mood.fg, 0.2 * (1 - Math.abs(flip) / 0.35));
     c.fillRect(-CARD.w / 2, -CARD.h / 2, CARD.w, CARD.h);
   }
   c.restore();

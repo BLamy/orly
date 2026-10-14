@@ -1,27 +1,12 @@
 {
  "shot": "ch15-s05",
- "at": "2026-10-13T21:40:49.235Z",
+ "at": "2026-10-14T01:11:06.615Z",
  "minCapPx": 22,
  "sampled": 51,
- "texts": 27,
+ "texts": 25,
  "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
  "subjects": [
-  {
-   "text": "META",
-   "capWhileSubject": 44.3,
-   "why": "drawn as subject (kit card or textRole)"
-  },
-  {
-   "text": "GOOGLE DEEPMIND",
-   "capWhileSubject": 37.3,
-   "why": "drawn as subject (kit card or textRole)"
-  },
-  {
-   "text": "as of October 2026",
-   "capWhileSubject": 27.5,
-   "why": "drawn as subject (kit card or textRole)"
-  },
   {
    "text": "ANTHROPIC",
    "capWhileSubject": 27,
@@ -29,17 +14,7 @@
   },
   {
    "text": "OPENAI",
-   "capWhileSubject": 35.8,
-   "why": "drawn as subject (kit card or textRole)"
-  },
-  {
-   "text": "as of",
-   "capWhileSubject": 44.3,
-   "why": "drawn as subject (kit card or textRole)"
-  },
-  {
-   "text": "October 2026",
-   "capWhileSubject": 44.3,
+   "capWhileSubject": 33.4,
    "why": "drawn as subject (kit card or textRole)"
   },
   {
@@ -136,14 +111,29 @@
  "texture": [
   {
    "text": "GOOGLE",
-   "maxCap": 17.6,
+   "maxCap": 17.5,
    "why": "drawn as texture"
   },
   {
    "text": "DEEPMIND",
+   "maxCap": 17.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "META",
+   "maxCap": 17.5,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "as of October 2026",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "GOOGLE DEEPMIND",
    "maxCap": 17.6,
    "why": "drawn as texture"
   }
  ],
- "textureTexts": 2
+ "textureTexts": 5
 }

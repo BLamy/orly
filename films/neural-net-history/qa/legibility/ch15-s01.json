@@ -1,9 +1,9 @@
 {
  "shot": "ch15-s01",
- "at": "2026-10-13T21:40:43.271Z",
+ "at": "2026-10-14T01:32:50.868Z",
  "minCapPx": 22,
  "sampled": 56,
- "texts": 14,
+ "texts": 16,
  "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
  "subjects": [
@@ -78,6 +78,17 @@
    "why": "drawn as subject (kit card or textRole)"
   }
  ],
- "texture": [],
- "textureTexts": 0
+ "texture": [
+  {
+   "text": "HOPFIELD NET · 1982",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "BOLTZMANN MACHINE · 1983–85",
+   "maxCap": 22.1,
+   "why": "not named, not in onScreenText"
+  }
+ ],
+ "textureTexts": 2
 }

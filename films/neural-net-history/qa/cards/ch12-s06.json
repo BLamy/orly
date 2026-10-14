@@ -17,5 +17,45 @@
    "to": 18.217,
    "minInkWhilePaper": 0.35
   }
- ]
+ ],
+ "transition": {
+  "kind": "crossfade",
+  "sampled": 12,
+  "ghosts": [],
+  "carry": [
+   {
+    "side": "out",
+    "text": "1.3B",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.67
+   },
+   {
+    "side": "out",
+    "text": "1.3B InstructGPT preferred to 175B GPT-3",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.69
+   },
+   {
+    "side": "out",
+    "text": "labellers agreed with each other",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.67
+   },
+   {
+    "side": "out",
+    "text": "about 73% of the time",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.67
+   }
+  ]
+ },
+ "transAt": "2026-10-13T22:54:49.222Z"
 }

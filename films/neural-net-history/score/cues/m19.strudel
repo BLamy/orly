@@ -1,9 +1,17 @@
-// m19 — "Case Status: Open", part 1 (neural-net-history, ch15-s01/s03/s04/s05). CURRENT CLOCK (timeline 2164 s):
-// window 1916.433–2038.900 (122.467 s), fadeIn 1.5 (to 1917.933), fadeOut 1.0 (2037.900–2038.900).
+// m19 — "Case Status: Open", part 1 (neural-net-history, ch15-s01/s03/s04/s05). CURRENT CLOCK (timeline 2168.4167 s):
+// window 1916.433–2043.317 (126.884 s), fadeIn 1.5 (to 1917.933), fadeOut 1.0 (2042.317–2043.317); lastStrike 2040.409.
 // Rubato at 60 BPM: setcps(1), one cycle = one second. Every event is written at its ABSOLUTE film second on the
 // CURRENT clock through A(t) = t − 1916.433, placed by the named word in narration/timeline.json.
 // Wonder, not triumph; intensity about 0.2-0.3; level and fair for the labs.
 //
+// v22 (2026-10-13, critic round 1, word check): M1 was struck ON 'downhill' (the word measured 2.5 dB in 250-2k).
+//   The whole rising fourth (and the D-F# flame it lights) moved into the comma after 'downhill' ('downhill' .. 'and'),
+//   where the picture's paper ball settles into its hollow; its ring a shade shorter so it is gone by 'Boltzmann'.
+// v21 (2026-10-13, round-5 re-fit): the v20 code moved to the round-5 clock (unchanged to 'Hopfield'; the Versailles
+//   glass stretched to the new L1502 take; 'cools' .. L1504 +0.25-0.27 s; the new solo line L1504b ('Snuff that plan
+//   out...') and L1505 carry only the thin high tail; everything from L1505 on +4.417 s). THE BREATH after 'plan'
+//   rebuilt (cues.m19 shape note): ~0.3 s near-silence, a ~1 s bow to about -21 M master on its own small-room orbits,
+//   clear (<= -30 M) by 'The candle'; the wick at .45 of its v20 level in a small room.
 // v20 (2026-10-13, critic round 1 of the score stage: v19 had regressed to 19 wcheck flags):
 //   * NO global under-voice raise any more: VU 1.05 -> .8. Material in the breaths is written at its own CLEAR-AIR
 //     level (no VU), so the level comes from a few clear moments (the opening, the glass after 'proteins', the E-A
@@ -22,7 +30,7 @@
 setcps(1)
 const S = 1916.433
 const A = (t) => +(t - S).toFixed(3)
-const N = 123       // seconds covered by each compiled sequence (the window is 122.467 s)
+const N = 127       // seconds covered by each compiled sequence (the window is 126.884 s)
 const G = 3.55      // master trim (postgain); v20: +1 dB over v19, with the under-voice scale cut (VU) and the floor resting
 const VU = .8       // under-voice scale: every layer that sounds under a line (v18-v19 had 1.05)
 const PH0 = .22     // the founding figure's clear-air velocity (the full figure, in a breath)
@@ -71,28 +79,28 @@ function line(evs, defs) {
 const H = [
   [A(1916.637), 2.9, 'd2', '[d2,a2]', { attack: 1.6, release: 1.2 }, 'c'],   // in the clear before 'Two'
   [A(1919.9), 7.13, 'd2', 'd2', { attack: 1.6, release: 1.2 }, .75],         // under L1501: D alone, no A2
-  [A(1927.027), 14.545, 'd2', '[d2,a2]'],                             // "Nobel": the A2 arrives; Hopfield, Versailles, downhill
-  [A(1941.982), 1.0, 'd2', '[d2,a2]', { attack: .5, release: 1.2 }], // the breath after "cools", let go
+  [A(1927.027), 14.815, 'd2', '[d2,a2]'],                             // "Nobel": the A2 arrives; Hopfield, Versailles, downhill, to 'cools'
+  [A(1942.252), 1.0, 'd2', '[d2,a2]', { attack: .5, release: 1.2 }], // the breath after "cools", let go
   // REST under "Not everyone cheered. Was this physics?": the doubt arrives as the floor drops away
-  [A(1945.472), 4.2, 'a1', '[a1,e2]', { attack: 2 }],                 // "One critic called it a bit of a stretch"
-  [A(1949.672), 8.9, 'd2', '[d2,a2]'],                                // "chemistry's"
-  [A(1958.572), 2.2, 'd2', '[d2,a2]', { attack: .5, release: 2.2 }, 'c'],  // the hold after 'proteins', in the clear
+  [A(1945.742), 4.2, 'a1', '[a1,e2]', { attack: 2 }],                 // "One critic called it a bit of a stretch"
+  [A(1949.942), 8.9, 'd2', '[d2,a2]'],                                // "chemistry's"
+  [A(1958.842), 2.2, 'd2', '[d2,a2]', { attack: .5, release: 2.2 }, 'c'],  // the hold after 'proteins', in the clear
   // nothing low under L1504 or "Nobody told it... to plan"
-  [A(1975.02), 1.64, 'a1', '[a2,d3]', { attack: .7, release: 1.4 }, 'c'],   // after 'plan': the A-D floor returns
-  [A(1976.662), 5.3, 'd2', '[d2,a2]', { attack: 1.5, release: 1.6 }], // the candle of now, let go as the clock starts
+  // after 'plan': the A-D floor returns in THE BREATH (below, its own dry orbits)
+  [A(1981.758), 4.62, 'd2', '[d2,a2]', { attack: 1.5, release: 1.6 }], // the candle of now: enters on 'The', let go as the clock starts
   // REST under the doubling: the pizz clock is the only bass ('measure' ... 'long')
-  [A(1991.262), 4.4, 'b1', '[b1,f#2]', { attack: 1.2 }],              // "Yet in one trial"
-  [A(1995.662), 2.1, 'g1', '[g1,d2]', { attack: 1 }],                 // "Its authors now call that result…"
-  [A(1997.762), 1.0, 'd2', '[d2,a2]', { attack: .4, release: 1.4 }],  // "date": the clock's soft D
+  [A(1995.679), 4.4, 'b1', '[b1,f#2]', { attack: 1.2 }],              // "Yet in one trial"
+  [A(2000.079), 2.1, 'g1', '[g1,d2]', { attack: 1 }],                 // "Its authors now call that result…"
+  [A(2002.179), 1.0, 'd2', '[d2,a2]', { attack: .4, release: 1.4 }],  // "date": the clock's soft D
   // THE LABS: never louder, never darker for either lab; the floor rests under each lab's last sentence
-  [A(1999.112), 3.2, 'd2', 'd2', { attack: 1 }],                      // the shelf, through 'Anthropic'
-  [A(2002.31), 5.3, 'b1', '[b1,f#2]', { attack: 1, release: 1.2 }],  // Anthropic (the limits), once the name is spoken
-  [A(2007.65), 5.7, 'b1', '[b1,f#2]', { attack: .8, release: 1.1 }],  // re-bowed in the breath after 'weapons' (the Pentagon)
+  [A(2003.529), 3.2, 'd2', 'd2', { attack: 1 }],                      // the shelf, through 'Anthropic'
+  [A(2006.727), 5.3, 'b1', '[b1,f#2]', { attack: 1, release: 1.2 }],  // Anthropic (the limits), once the name is spoken
+  [A(2012.067), 5.7, 'b1', '[b1,f#2]', { attack: .8, release: 1.1 }],  // re-bowed in the breath after 'weapons' (the Pentagon)
   // REST under L1522c ("Two courts have split. That case, too, is open.") and L1522d (the settlement)
-  [A(2025.25), .6, 'd2', '[d2,a2]', { attack: .25, release: .6 }, 'c'],   // Anthropic's bloom: a released low D
-  [A(2026.78), 6.1, 'd2', '[d2,g2]', { attack: .8, release: 1.1 }],   // OpenAI (Em/D) under its first sentence, once 'test' is spoken
+  [A(2029.667), .6, 'd2', '[d2,a2]', { attack: .25, release: .6 }, 'c'],   // Anthropic's bloom: a released low D
+  [A(2031.197), 6.1, 'd2', '[d2,g2]', { attack: .8, release: 1.1 }],   // OpenAI (Em/D) under its first sentence, once 'test' is spoken
   // REST under "OpenAI called it a warning shot"
-  [A(2035.992), .9, 'd2', '[d2,a2]', { attack: .3, release: 1.6 }, 'c'],  // OpenAI's bloom: the same released low D,
+  [A(2040.409), .9, 'd2', '[d2,a2]', { attack: .3, release: 1.6 }, 'c'],  // OpenAI's bloom: the same released low D,
                                                                      // the cue's last chord, thinning under the cut
 ]
 const lv = (k, base) => (k === 'c' ? base * 1.3 : base * VU * (k || 1))
@@ -107,44 +115,65 @@ $: line(H.map(([t, d, r, c, p, k]) => [t, d, c, lv(k, .085), p]), { attack: 1.5,
 // held D5 (the candle's own note: the same light), identical in pitch and level for both labs; it alone holds the
 // light where the floor rests, and it is let go before 'OpenAI called it a warning shot'.
 $: line([
-  [A(1936.4), 3.4, '[d5,f#5]', .042 * VU],                          // after "downhill" (Hopfield's memory settles)
-  [A(1941.982), 3.45, '[d5,f#5]', .05],                             // after "cools" (the turn, in the breath)
-  [A(1945.472), 9.85, 'd5', .05 * VU, { attack: 1.4 }],               // the critic and the next day: one thin D held
-  [A(1955.382), 3.1, '[d5,f#5]', .042 * VU],                          // after "John Jumper"
-  [A(1973.62), .55, 'e5', .025, { attack: .25, release: .6, lpf: 1300 }],   // the thin E in the ellipsis ('it' ... 'to')
-  [A(1975.02), 1.35, '[e5,a5]', .19, { attack: .6, release: 1.0 }],  // the unresolved E-A swell after 'plan', clear air
-  [A(2001.762), 5.7, 'd5', .04 * VU, { attack: 1.4, release: 1.2 }],  // Anthropic
-  [A(2008.062), 5.5, 'd5', .04 * VU, { attack: 1.4, release: 1.2 }],  // the Pentagon
-  [A(2014.2), 10.6, 'd5', .034 * VU, { attack: 2, release: 1.4 }],    // the courts and the settlement: the light alone
-  [A(2026.472), 6.4, 'd5', .04 * VU, { attack: 1.4, release: 1.1 }],  // OpenAI's test and what broke loose
+  [A(1936.95), 3.4, '[d5,f#5]', .042 * VU],                         // after "downhill" (the paper ball settles)
+  [A(1942.252), 3.45, '[d5,f#5]', .05],                             // after "cools" (the turn, in the breath)
+  [A(1945.742), 9.85, 'd5', .05 * VU, { attack: 1.4 }],               // the critic and the next day: one thin D held
+  [A(1955.652), 3.1, '[d5,f#5]', .042 * VU],                          // after "John Jumper"
+  [A(1978.037), .55, 'e5', .025, { attack: .25, release: .6, lpf: 1300 }],   // the thin E in the ellipsis ('it' ... 'to')
+  // the unresolved E-A swell after 'plan': THE BREATH (below)
+  [A(2006.179), 5.7, 'd5', .04 * VU, { attack: 1.4, release: 1.2 }],  // Anthropic
+  [A(2012.479), 5.5, 'd5', .04 * VU, { attack: 1.4, release: 1.2 }],  // the Pentagon
+  [A(2018.617), 10.6, 'd5', .034 * VU, { attack: 2, release: 1.4 }],    // the courts and the settlement: the light alone
+  [A(2030.889), 6.4, 'd5', .04 * VU, { attack: 1.4, release: 1.1 }],  // OpenAI's test and what broke loose
 ], { attack: 1.2, release: 2.8, lpf: 2200 })
   .s('gm_string_ensemble_1').room(.6).rsize(5).orbit(3)
 
+// THE BREATH AFTER 'plan' (v21, review: v20's swell climbed 45 dB in half a second and was still ~-21 M master on
+// 'The candle', a sting after the film's quietest line). Now: ~0.3 s of near-silence once 'plan' has ended, a ~1 s
+// bow to a soft crest (target about -21 M master), then let go quickly so the air is clear (<= -30 M) by 'The candle'.
+// Its own orbits with a short, small room: the long hall of the flame/floor orbits is what kept v20 ringing.
+// The A-D floor under it (m10's two towers, remembered) and the E-A above it: unresolved, a breath, not a chord.
+const BR = 1979.619                  // 'plan' ends 1979.319 + 0.3 s
+const BRV = .11                      // the swell's crest velocity (v20: .19)
+$: line([[A(BR), 1.0, '[e5,a5]', BRV, { attack: .95, release: .4 }]], { lpf: 2200 })
+  .s('gm_string_ensemble_1').room(.25).rsize(1.5).orbit(10)
+$: line([[A(BR), 1.0, 'a1', .16 * .9, { attack: .95, release: .45 }]])
+  .s('gm_contrabass').hpf(50).lpf(380).room(.15).rsize(1.2).orbit(11)
+$: line([[A(BR), 1.0, '[a2,d3]', .085 * .9, { attack: .95, release: .45 }]])
+  .s('gm_string_ensemble_1').hpf(40).lpf(650).room(.2).rsize(1.5).orbit(12)
+
+// M1's rising fourth once more on the trimmed wick (b1), in the clear between the breath and 'The candle': softer than
+// the act's three, damped, in a small room (v20's hall rang under 'The candle').
+const WK = .45
+$: line([[A(1981.159), .16, 'a3', .2 * .75 * WK, { release: .25 }], [A(1981.319), .2, 'd4', .22 * .75 * WK, { release: .28 }]])
+  .s('gm_celesta').room(.3).rsize(1.8).orbit(13)
+
 // SOLO CELESTA (sounds an octave above the written note). Opening glints in the clear; M1's rising fourth
 // A -> D three times at the SAME level (after 'downhill' / 'cools' / 'Jumper'), each whole in the breath, tight and
-// damped; the GPU pulse thinned to ticks that drop away before 'Researchers'; the question's E6 hanging in the breath
+// damped (v22: the first no longer struck ON 'downhill' but whole in the comma after it, as the paper ball settles,
+// with a shade shorter ring so it is gone by 'Boltzmann'); the GPU pulse thinned to ticks that drop away before 'Researchers'; the question's E6 hanging in the breath
 // after 'model' (only a tiny tick of it in the breath before 'looked'); the rabbit chime D6-A5 once the line ends;
 // the rising fourth once more on the trimmed wick; the doubling climbs D6 E6 F#6 A6 B6 and stops short of D.
-const M1 = (t, v) => [[A(t), .16, 'a3', v * .75, { release: .3 }], [A(t) + .16, .2, 'd4', (v + .02) * .75, { release: .35 }]]
+const M1 = (t, v, r) => [[A(t), .16, 'a3', v * .75, { release: r ? r * .85 : .3 }], [A(t) + .16, .2, 'd4', (v + .02) * .75, { release: r || .35 }]]
 $: line([
   [A(1918.037), .4, 'f#4', .23, { release: 1 }], [A(1918.487), 1.0, 'a4', .2, { release: 1.2 }],   // gone before 'Two'
-  ...M1(1936.4, .25), ...M1(1941.982, .25), ...M1(1955.382, .25),
-  [A(1960.692), .2, 'd4', .21, { release: .5 }], [A(1960.892), .2, 'd5', .15, { release: .4 }], [A(1961.092), .12, 'a4', .07, { release: .2 }],
-  [A(1964.392), .1, 'e5', .03, { release: .15 }],                     // a tiny E6 tick in the breath before 'looked'
-  [A(1967.16), .5, 'e5', .085, { release: .45 }],                     // the question's E6, hanging after 'model'
-  [A(1971.93), .12, 'd5', .12, { release: .25 }], [A(1972.06), .16, 'a4', .08, { release: .25 }],   // the rabbit chime, after 'line'
-  [A(1976.742), .16, 'a3', .2 * .75, { release: .3 }], [A(1976.902), .2, 'd4', .22 * .75, { release: .35 }],   // the wick
-  [A(1982.052), .4, 'd5', .06 * VU, { release: .8 }], [A(1983.552), .4, 'e5', .06 * VU, { release: .8 }], [A(1985.052), .3, 'f#5', .05 * VU, { release: .5 }], [A(1986.552), .4, 'a5', .06 * VU, { release: .8 }], [A(1990.08), .25, 'b5', .07, { release: .35 }],   // the last step waits for the clear after 'twice as long'
+  ...M1(1936.95, .25, .26), ...M1(1942.252, .25), ...M1(1955.652, .25),
+  [A(1960.942), .2, 'd4', .21, { release: .5 }], [A(1961.142), .2, 'd5', .15, { release: .4 }], [A(1961.342), .12, 'a4', .07, { release: .2 }],
+  [A(1964.642), .1, 'e5', .03, { release: .15 }],                     // a tiny E6 tick in the breath before 'looked'
+  [A(1967.41), .5, 'e5', .085, { release: .45 }],                     // the question's E6, hanging after 'model'
+  [A(1972.18), .12, 'd5', .12, { release: .25 }], [A(1972.31), .16, 'a4', .08, { release: .25 }],   // the rabbit chime, after 'line'
+  // the wick: its own small room (below), so the air is clear by 'The candle'
+  [A(1986.469), .4, 'd5', .06 * VU, { release: .8 }], [A(1987.969), .4, 'e5', .06 * VU, { release: .8 }], [A(1989.469), .3, 'f#5', .05 * VU, { release: .5 }], [A(1990.969), .4, 'a5', .06 * VU, { release: .8 }], [A(1994.497), .25, 'b5', .07, { release: .35 }],   // the last step waits for the clear after 'twice as long'
 ], { release: 1.4 })
   .s('gm_celesta').room(.7).rsize(5).orbit(4)
 
 // BOWED GLASS: the Hall of Mirrors turning (m06's Versailles colour), the turn after "cools", the hold after
 // "proteins" (the act's one long clear-air swell), and a short halo on the question's E after 'model'.
 $: line([
-  [A(1929.337), 2.6, '[a5,d6]', .036 * VU, { release: 2.2 }],   // 'Hopfield' through 'Versailles'
-  [A(1941.982), .4, '[f#5,a5,d6]', .045, { attack: .25, release: .7 }],
-  [A(1958.472), 1.9, '[f#5,a5,d6]', .15, { attack: .8, release: 1.1 }],   // after 'proteins', gone before 'Researchers'
-  [A(1967.16), .35, 'e6', .02, { attack: .15, release: .4 }],             // halo on the hanging E, in the breath
+  [A(1929.337), 4.2, '[a5,d6]', .036 * VU, { release: 2.2 }],   // 'Hopfield' through 'Versailles' (the new take: 'nobody' ... 'Versailles')
+  [A(1942.252), .4, '[f#5,a5,d6]', .045, { attack: .25, release: .7 }],
+  [A(1958.742), 1.9, '[f#5,a5,d6]', .15, { attack: .8, release: 1.1 }],   // after 'proteins', gone before 'Researchers'
+  [A(1967.41), .35, 'e6', .02, { attack: .15, release: .4 }],             // halo on the hanging E, in the breath
 ], { attack: 1.5, release: 3 })
   .s('gm_pad_bowed').lpf(5000).room(.7).rsize(5).orbit(5)
 
@@ -157,11 +186,11 @@ $: line([[A(1925.537), .16, 'd2', .25], [A(1925.787), .16, 'd2', .25], [A(1926.3
 // ending on a tick without its tock (stopped mid-pattern before 'Yet'); it resumes for the stopwatches, hesitates when
 // the ghost hand appears ('felt'), resumes a shade slower, and stops cleanly on a soft D on "date".
 const clock = []
-for (let k = 0; k < 11; k++) clock.push([A(1982.052) + .75 * k, .3, k % 2 ? 'a2' : 'd2', .22 * VU])
-;[1991.362, 1991.862, 1992.362, 1992.862, 1993.362].forEach((t, i) => clock.push([A(t), .25, i % 2 ? 'a2' : 'd2', .2 * VU]))
-clock.push([A(1994.082), .25, 'a2', .13 * VU])                       // the late, small tick: a hesitation
-;[1994.812, 1995.362, 1995.912, 1996.462, 1997.012].forEach((t, i) => clock.push([A(t), .25, i % 2 ? 'a2' : 'd2', .19 * VU]))
-clock.push([A(1997.762), .5, 'd2', .2 * VU])
+for (let k = 0; k < 11; k++) clock.push([A(1986.469) + .75 * k, .3, k % 2 ? 'a2' : 'd2', .22 * VU])
+;[1995.779, 1996.279, 1996.779, 1997.279, 1997.779].forEach((t, i) => clock.push([A(t), .25, i % 2 ? 'a2' : 'd2', .2 * VU]))
+clock.push([A(1998.499), .25, 'a2', .13 * VU])                       // the late, small tick: a hesitation
+;[1999.229, 1999.779, 2000.329, 2000.879, 2001.429].forEach((t, i) => clock.push([A(t), .25, i % 2 ? 'a2' : 'd2', .19 * VU]))
+clock.push([A(2002.179), .5, 'd2', .2 * VU])
 $: line(clock, { release: .5 })
   .s('gm_pizzicato_strings').lpf(1000).room(.35).rsize(2.5).orbit(7)
 
@@ -173,11 +202,11 @@ $: line(clock, { release: .5 })
 const fig = (t, v, sp, fr) => [[A(t), sp, 'd5', v], [A(t) + sp, sp, 'a5', v], [A(t) + 2 * sp, sp, 'b5', v],
   [A(t) + 3 * sp, .22, 'f#5', v, { release: fr }]]
 $: line([
-  ...fig(1998.25, PH0, .18, .35),                                      // the shelf, after 'date'
-  [A(2001.762), .18, 'd5', PD, { release: .3 }],                      // 'Anthropic': the lamp's soft D
-  ...fig(2007.615, PH0 * .8, .13, .3),                                 // after 'weapons': Anthropic's figure
-  [A(2026.472), .18, 'd5', PD, { release: .3 }],                      // 'test': OpenAI's lamp, the same soft D
-  ...fig(2033.065, PH0 * .8, .13, .3),                                 // after 'systems': OpenAI's figure, identical
+  ...fig(2002.667, PH0, .18, .35),                                      // the shelf, after 'date'
+  [A(2006.179), .18, 'd5', PD, { release: .3 }],                      // 'Anthropic': the lamp's soft D
+  ...fig(2012.032, PH0 * .8, .13, .3),                                 // after 'weapons': Anthropic's figure
+  [A(2030.889), .18, 'd5', PD, { release: .3 }],                      // 'test': OpenAI's lamp, the same soft D
+  ...fig(2037.482, PH0 * .8, .13, .3),                                 // after 'systems': OpenAI's figure, identical
 ], { release: .4 })
   .s('gm_orchestral_harp').pan(.5).room(.55).rsize(4).orbit(8)
 // ONE clear-air bloom per lab, identical: the figure's F# doubled at the octave (F#4 + F#5), ringing.
@@ -185,7 +214,7 @@ $: line([
 // the cue's last strike, ringing under the cut to ch15-s06 into the fade.
 $: line([
   // Anthropic's must be gone before 'In a test': the same strike, damped sooner
-  [A(2025.272), .55, 'f#5', PH0 * CL, { release: .45 }], [A(2025.272), .55, 'f#4', PH0 * .85, { release: .45 }],
-  [A(2035.992), .55, 'f#5', PH0 * CL, { release: 1.4 }], [A(2035.992), .55, 'f#4', PH0 * .85, { release: 1.4 }],
+  [A(2029.689), .55, 'f#5', PH0 * CL, { release: .45 }], [A(2029.689), .55, 'f#4', PH0 * .85, { release: .45 }],
+  [A(2040.409), .55, 'f#5', PH0 * CL, { release: 1.4 }], [A(2040.409), .55, 'f#4', PH0 * .85, { release: 1.4 }],
 ], { release: 1.5 })
   .s('gm_orchestral_harp').pan(.5).room(.55).rsize(4).orbit(9)

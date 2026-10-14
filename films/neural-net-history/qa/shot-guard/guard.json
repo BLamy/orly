@@ -61,9 +61,9 @@
   },
   "ch10-s13b": {
    "latest": {
-    "sha": "e91062abe7d0",
-    "owner": "reviser:ch10-s12+ch10-s13b:r1",
-    "at": "2026-10-13T15:09:11Z"
+    "sha": "4a34548ca07d",
+    "owner": "reviser:ch10-s10+ch10-s12+ch10-s13b:r1",
+    "at": "2026-10-14T00:38:34Z"
    },
    "views": {
     "global:r3": {
@@ -77,6 +77,22 @@
     "reviser:ch10-s12+ch10-s13b:r1": {
      "sha": "e91062abe7d0",
      "at": "2026-10-13T15:09:11Z"
+    },
+    "global:r5": {
+     "sha": "ad7c2429cbc4",
+     "at": "2026-10-13T22:55:26Z"
+    },
+    "author:ch10-s10+ch10-s12+ch10-s13b": {
+     "sha": "ad7c2429cbc4",
+     "at": "2026-10-14T00:21:33Z"
+    },
+    "critic-r1-ch10": {
+     "sha": "ad7c2429cbc4",
+     "at": "2026-10-14T00:30:16Z"
+    },
+    "reviser:ch10-s10+ch10-s12+ch10-s13b:r1": {
+     "sha": "4a34548ca07d",
+     "at": "2026-10-14T00:38:34Z"
     }
    },
    "history": [
@@ -97,6 +113,18 @@
      "owner": "reviser:ch10-s12+ch10-s13b:r1",
      "at": "2026-10-13T15:09:11Z",
      "base": "8ecf66109078"
+    },
+    {
+     "sha": "ad7c2429cbc4",
+     "owner": "global:r5",
+     "at": "2026-10-13T22:55:26Z",
+     "base": "e91062abe7d0"
+    },
+    {
+     "sha": "4a34548ca07d",
+     "owner": "reviser:ch10-s10+ch10-s12+ch10-s13b:r1",
+     "at": "2026-10-14T00:38:34Z",
+     "base": "ad7c2429cbc4"
     }
    ]
   },
@@ -167,9 +195,9 @@
   },
   "ch14-s07": {
    "latest": {
-    "sha": "6c205f9fec97",
-    "owner": "reviser:ch14-s02+ch14-s04b+ch14-s07:r1",
-    "at": "2026-10-13T21:38:56Z"
+    "sha": "243556b4f29a",
+    "owner": "reviser:ch14-s04b+ch14-s07:r1",
+    "at": "2026-10-14T00:46:37Z"
    },
    "views": {
     "global:r3": {
@@ -183,6 +211,14 @@
     "reviser:ch14-s02+ch14-s04b+ch14-s07:r1": {
      "sha": "6c205f9fec97",
      "at": "2026-10-13T21:38:56Z"
+    },
+    "author:ch14-s04b+ch14-s07": {
+     "sha": "5dec4acf27d7",
+     "at": "2026-10-14T00:25:59Z"
+    },
+    "reviser:ch14-s04b+ch14-s07:r1": {
+     "sha": "243556b4f29a",
+     "at": "2026-10-14T00:46:37Z"
     }
    },
    "history": [
@@ -275,14 +311,50 @@
      "owner": "reviser:ch14-s02+ch14-s04b+ch14-s07:r1",
      "at": "2026-10-13T21:38:56Z",
      "base": "e6f19c2223cb"
+    },
+    {
+     "sha": "276f65e452ce",
+     "owner": "author:ch14-s04b+ch14-s07",
+     "at": "2026-10-14T00:24:33Z",
+     "base": "6c205f9fec97"
+    },
+    {
+     "sha": "ad92276773e5",
+     "owner": "author:ch14-s04b+ch14-s07",
+     "at": "2026-10-14T00:25:22Z",
+     "base": "276f65e452ce"
+    },
+    {
+     "sha": "5dec4acf27d7",
+     "owner": "author:ch14-s04b+ch14-s07",
+     "at": "2026-10-14T00:25:59Z",
+     "base": "ad92276773e5"
+    },
+    {
+     "sha": "f3218a060248",
+     "owner": "reviser:ch14-s04b+ch14-s07:r1",
+     "at": "2026-10-14T00:44:25Z",
+     "base": "5dec4acf27d7"
+    },
+    {
+     "sha": "cd168c31be4b",
+     "owner": "reviser:ch14-s04b+ch14-s07:r1",
+     "at": "2026-10-14T00:45:44Z",
+     "base": "f3218a060248"
+    },
+    {
+     "sha": "243556b4f29a",
+     "owner": "reviser:ch14-s04b+ch14-s07:r1",
+     "at": "2026-10-14T00:46:37Z",
+     "base": "cd168c31be4b"
     }
    ]
   },
   "ch09-s05": {
    "latest": {
-    "sha": "2b3272b15a3e",
+    "sha": "7c5659d79056",
     "owner": "author:ch09-s05",
-    "at": "2026-10-13T20:33:48Z"
+    "at": "2026-10-13T23:02:51Z"
    },
    "views": {
     "global:r3": {
@@ -290,16 +362,16 @@
      "at": "2026-10-13T11:41:57Z"
     },
     "author:ch09-s05": {
-     "sha": "2b3272b15a3e",
-     "at": "2026-10-13T20:33:48Z"
+     "sha": "7c5659d79056",
+     "at": "2026-10-13T23:02:51Z"
     },
     "reviser:ch09-s05:r1": {
      "sha": "9dfc2d65304a",
      "at": "2026-10-13T15:03:07Z"
     },
     "critic-r1": {
-     "sha": "2b3272b15a3e",
-     "at": "2026-10-13T20:35:33Z"
+     "sha": "7c5659d79056",
+     "at": "2026-10-13T23:04:09Z"
     }
    },
    "history": [
@@ -350,6 +422,18 @@
      "owner": "author:ch09-s05",
      "at": "2026-10-13T20:33:48Z",
      "base": "9dfc2d65304a"
+    },
+    {
+     "sha": "97a12c0869d8",
+     "owner": "author:ch09-s05",
+     "at": "2026-10-13T23:01:51Z",
+     "base": "2b3272b15a3e"
+    },
+    {
+     "sha": "7c5659d79056",
+     "owner": "author:ch09-s05",
+     "at": "2026-10-13T23:02:51Z",
+     "base": "97a12c0869d8"
     }
    ]
   },
@@ -593,7 +677,7 @@
    "views": {
     "author:ch01-s06": {
      "sha": "77f495b4b0b8",
-     "at": "2026-10-13T20:17:37Z"
+     "at": "2026-10-13T23:01:02Z"
     },
     "critic-r1-ch01-s06": {
      "sha": "77f495b4b0b8",
@@ -602,6 +686,10 @@
     "reviser:ch01-s06:r1": {
      "sha": "58a69e80d28e",
      "at": "2026-10-13T14:24:35Z"
+    },
+    "critic-r1": {
+     "sha": "77f495b4b0b8",
+     "at": "2026-10-13T23:03:15Z"
     }
    },
    "history": [
@@ -989,9 +1077,9 @@
   },
   "ch10-s12": {
    "latest": {
-    "sha": "ed9929b99407",
-    "owner": "reviser:ch10-s10+ch10-s12+ch10-s14:r1",
-    "at": "2026-10-13T20:45:29Z"
+    "sha": "9ecacb33f817",
+    "owner": "reviser:ch10-s10+ch10-s12+ch10-s13b:r1",
+    "at": "2026-10-14T00:40:06Z"
    },
    "views": {
     "author:ch10-s04+ch10-s12+ch10-s13b": {
@@ -1007,12 +1095,20 @@
      "at": "2026-10-13T20:35:37Z"
     },
     "critic-r1-ch10": {
-     "sha": "7a63650561a4",
-     "at": "2026-10-13T20:37:32Z"
+     "sha": "feb5df16403c",
+     "at": "2026-10-14T00:30:16Z"
     },
     "reviser:ch10-s10+ch10-s12+ch10-s14:r1": {
      "sha": "ed9929b99407",
      "at": "2026-10-13T20:45:29Z"
+    },
+    "author:ch10-s10+ch10-s12+ch10-s13b": {
+     "sha": "feb5df16403c",
+     "at": "2026-10-14T00:27:40Z"
+    },
+    "reviser:ch10-s10+ch10-s12+ch10-s13b:r1": {
+     "sha": "9ecacb33f817",
+     "at": "2026-10-14T00:40:06Z"
     }
    },
    "history": [
@@ -1063,6 +1159,36 @@
      "owner": "reviser:ch10-s10+ch10-s12+ch10-s14:r1",
      "at": "2026-10-13T20:45:29Z",
      "base": "7a63650561a4"
+    },
+    {
+     "sha": "27001714f24a",
+     "owner": "author:ch10-s10+ch10-s12+ch10-s13b",
+     "at": "2026-10-14T00:24:56Z",
+     "base": "ed9929b99407"
+    },
+    {
+     "sha": "feb5df16403c",
+     "owner": "author:ch10-s10+ch10-s12+ch10-s13b",
+     "at": "2026-10-14T00:27:40Z",
+     "base": "27001714f24a"
+    },
+    {
+     "sha": "9a9f7b334f9a",
+     "owner": "reviser:ch10-s10+ch10-s12+ch10-s13b:r1",
+     "at": "2026-10-14T00:36:48Z",
+     "base": "feb5df16403c"
+    },
+    {
+     "sha": "b6d9242e7224",
+     "owner": "reviser:ch10-s10+ch10-s12+ch10-s13b:r1",
+     "at": "2026-10-14T00:36:57Z",
+     "base": "9a9f7b334f9a"
+    },
+    {
+     "sha": "9ecacb33f817",
+     "owner": "reviser:ch10-s10+ch10-s12+ch10-s13b:r1",
+     "at": "2026-10-14T00:40:06Z",
+     "base": "b6d9242e7224"
     }
    ]
   },
@@ -1153,9 +1279,9 @@
   },
   "ch14-s04b": {
    "latest": {
-    "sha": "cce79e9b6bff",
-    "owner": "reviser:ch14-s02+ch14-s04b+ch14-s07:r1",
-    "at": "2026-10-13T21:34:22Z"
+    "sha": "063e5d44b741",
+    "owner": "reviser:ch14-s04b+ch14-s07:r1",
+    "at": "2026-10-14T00:41:46Z"
    },
    "views": {
     "author:ch14-s02+ch14-s04b+ch14-s07": {
@@ -1165,6 +1291,14 @@
     "reviser:ch14-s02+ch14-s04b+ch14-s07:r1": {
      "sha": "cce79e9b6bff",
      "at": "2026-10-13T21:34:22Z"
+    },
+    "author:ch14-s04b+ch14-s07": {
+     "sha": "2ef4b6e7281d",
+     "at": "2026-10-14T00:27:11Z"
+    },
+    "reviser:ch14-s04b+ch14-s07:r1": {
+     "sha": "063e5d44b741",
+     "at": "2026-10-14T00:41:46Z"
     }
    },
    "history": [
@@ -1227,6 +1361,30 @@
      "owner": "reviser:ch14-s02+ch14-s04b+ch14-s07:r1",
      "at": "2026-10-13T21:34:22Z",
      "base": "fd7545590146"
+    },
+    {
+     "sha": "dd9c97688e44",
+     "owner": "author:ch14-s04b+ch14-s07",
+     "at": "2026-10-13T23:16:06Z",
+     "base": "cce79e9b6bff"
+    },
+    {
+     "sha": "d394dc0cc768",
+     "owner": "author:ch14-s04b+ch14-s07",
+     "at": "2026-10-14T00:22:05Z",
+     "base": "dd9c97688e44"
+    },
+    {
+     "sha": "2ef4b6e7281d",
+     "owner": "author:ch14-s04b+ch14-s07",
+     "at": "2026-10-14T00:27:11Z",
+     "base": "d394dc0cc768"
+    },
+    {
+     "sha": "063e5d44b741",
+     "owner": "reviser:ch14-s04b+ch14-s07:r1",
+     "at": "2026-10-14T00:41:46Z",
+     "base": "2ef4b6e7281d"
     }
    ]
   },
@@ -1325,9 +1483,9 @@
   },
   "ch15-s03": {
    "latest": {
-    "sha": "828ea4c533d1",
-    "owner": "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06:r1",
-    "at": "2026-10-13T21:29:57Z"
+    "sha": "46303cb08db4",
+    "owner": "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s06:r1",
+    "at": "2026-10-14T01:25:32Z"
    },
    "views": {
     "author:ch15-s03+ch15-s04+ch15-s05+ch15-s06+ch15-s08": {
@@ -1339,12 +1497,20 @@
      "at": "2026-10-13T16:30:24Z"
     },
     "author:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06": {
-     "sha": "fda1c7ec5540",
-     "at": "2026-10-13T21:14:25Z"
+     "sha": "f8d8999f11c0",
+     "at": "2026-10-14T01:01:13Z"
     },
     "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06:r1": {
      "sha": "828ea4c533d1",
      "at": "2026-10-13T21:29:57Z"
+    },
+    "critic-ch15-r1": {
+     "sha": "f8d8999f11c0",
+     "at": "2026-10-14T01:08:43Z"
+    },
+    "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s06:r1": {
+     "sha": "46303cb08db4",
+     "at": "2026-10-14T01:25:32Z"
     }
    },
    "history": [
@@ -1377,6 +1543,30 @@
      "owner": "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06:r1",
      "at": "2026-10-13T21:29:57Z",
      "base": "fda1c7ec5540"
+    },
+    {
+     "sha": "6d456f797f50",
+     "owner": "author:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06",
+     "at": "2026-10-14T01:00:36Z",
+     "base": "828ea4c533d1"
+    },
+    {
+     "sha": "f8d8999f11c0",
+     "owner": "author:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06",
+     "at": "2026-10-14T01:01:13Z",
+     "base": "6d456f797f50"
+    },
+    {
+     "sha": "f69bee258620",
+     "owner": "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s06:r1",
+     "at": "2026-10-14T01:24:28Z",
+     "base": "f8d8999f11c0"
+    },
+    {
+     "sha": "46303cb08db4",
+     "owner": "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s06:r1",
+     "at": "2026-10-14T01:25:32Z",
+     "base": "f69bee258620"
     }
    ]
   },
@@ -1449,9 +1639,9 @@
   },
   "ch13-s03": {
    "latest": {
-    "sha": "fc5b479f266d",
-    "owner": "reviser:ch13-s01+ch13-s03+ch13-s04:r1",
-    "at": "2026-10-13T21:16:02Z"
+    "sha": "eef96cc11fd6",
+    "owner": "critic:ch13-s03:r5c1",
+    "at": "2026-10-14T00:27:52Z"
    },
    "views": {
     "author:ch13-s01+ch13-s03+ch13-s04": {
@@ -1461,6 +1651,14 @@
     "reviser:ch13-s01+ch13-s03+ch13-s04:r1": {
      "sha": "fc5b479f266d",
      "at": "2026-10-13T21:16:02Z"
+    },
+    "author:ch13-s03": {
+     "sha": "34dadbf21a5c",
+     "at": "2026-10-14T00:22:48Z"
+    },
+    "critic:ch13-s03:r5c1": {
+     "sha": "eef96cc11fd6",
+     "at": "2026-10-14T00:27:52Z"
     }
    },
    "history": [
@@ -1505,14 +1703,38 @@
      "owner": "reviser:ch13-s01+ch13-s03+ch13-s04:r1",
      "at": "2026-10-13T21:16:02Z",
      "base": "9f219fc0f973"
+    },
+    {
+     "sha": "518ed13d9482",
+     "owner": "author:ch13-s03",
+     "at": "2026-10-13T23:15:30Z",
+     "base": "fc5b479f266d"
+    },
+    {
+     "sha": "34dadbf21a5c",
+     "owner": "author:ch13-s03",
+     "at": "2026-10-14T00:22:48Z",
+     "base": "518ed13d9482"
+    },
+    {
+     "sha": "96c247c861dc",
+     "owner": "critic:ch13-s03:r5c1",
+     "at": "2026-10-14T00:27:05Z",
+     "base": "34dadbf21a5c"
+    },
+    {
+     "sha": "eef96cc11fd6",
+     "owner": "critic:ch13-s03:r5c1",
+     "at": "2026-10-14T00:27:52Z",
+     "base": "96c247c861dc"
     }
    ]
   },
   "ch15-s04": {
    "latest": {
-    "sha": "11d17b1ef725",
-    "owner": "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06:r1",
-    "at": "2026-10-13T21:33:16Z"
+    "sha": "f35e7333febe",
+    "owner": "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s06:r1",
+    "at": "2026-10-14T01:27:34Z"
    },
    "views": {
     "author:ch15-s03+ch15-s04+ch15-s05+ch15-s06+ch15-s08": {
@@ -1524,12 +1746,20 @@
      "at": "2026-10-13T16:41:27Z"
     },
     "author:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06": {
-     "sha": "faa015bdd85d",
-     "at": "2026-10-13T21:10:10Z"
+     "sha": "11d17b1ef725",
+     "at": "2026-10-14T00:49:04Z"
     },
     "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06:r1": {
      "sha": "11d17b1ef725",
      "at": "2026-10-13T21:33:16Z"
+    },
+    "critic-ch15-r1": {
+     "sha": "11d17b1ef725",
+     "at": "2026-10-14T01:08:43Z"
+    },
+    "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s06:r1": {
+     "sha": "f35e7333febe",
+     "at": "2026-10-14T01:27:34Z"
     }
    },
    "history": [
@@ -1586,14 +1816,20 @@
      "owner": "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06:r1",
      "at": "2026-10-13T21:33:16Z",
      "base": "40e562d70a88"
+    },
+    {
+     "sha": "f35e7333febe",
+     "owner": "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s06:r1",
+     "at": "2026-10-14T01:27:34Z",
+     "base": "11d17b1ef725"
     }
    ]
   },
   "ch15-s05": {
    "latest": {
-    "sha": "e037f6ef8859",
-    "owner": "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06:r1",
-    "at": "2026-10-13T21:37:01Z"
+    "sha": "b84c78ff61a9",
+    "owner": "author:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06",
+    "at": "2026-10-14T01:05:39Z"
    },
    "views": {
     "author:ch15-s03+ch15-s04+ch15-s05+ch15-s06+ch15-s08": {
@@ -1605,12 +1841,16 @@
      "at": "2026-10-13T16:36:16Z"
     },
     "author:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06": {
-     "sha": "f87847560ee2",
-     "at": "2026-10-13T21:07:57Z"
+     "sha": "b84c78ff61a9",
+     "at": "2026-10-14T01:05:39Z"
     },
     "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06:r1": {
      "sha": "e037f6ef8859",
      "at": "2026-10-13T21:37:01Z"
+    },
+    "critic-ch15-r1": {
+     "sha": "b84c78ff61a9",
+     "at": "2026-10-14T01:08:43Z"
     }
    },
    "history": [
@@ -1655,6 +1895,18 @@
      "owner": "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06:r1",
      "at": "2026-10-13T21:37:01Z",
      "base": "b970404a31de"
+    },
+    {
+     "sha": "42262f0d5ae7",
+     "owner": "author:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06",
+     "at": "2026-10-14T01:04:55Z",
+     "base": "e037f6ef8859"
+    },
+    {
+     "sha": "b84c78ff61a9",
+     "owner": "author:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06",
+     "at": "2026-10-14T01:05:39Z",
+     "base": "42262f0d5ae7"
     }
    ]
   },
@@ -1733,9 +1985,9 @@
   },
   "ch15-s06": {
    "latest": {
-    "sha": "8d459263074d",
-    "owner": "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06:r1",
-    "at": "2026-10-13T21:39:47Z"
+    "sha": "8726b4e49860",
+    "owner": "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s06:r1",
+    "at": "2026-10-14T01:32:35Z"
    },
    "views": {
     "author:ch15-s03+ch15-s04+ch15-s05+ch15-s06+ch15-s08": {
@@ -1751,12 +2003,20 @@
      "at": "2026-10-13T18:31:51Z"
     },
     "author:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06": {
-     "sha": "c0e22563ca5e",
-     "at": "2026-10-13T21:04:47Z"
+     "sha": "0b3fd92b702b",
+     "at": "2026-10-14T01:07:12Z"
     },
     "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06:r1": {
      "sha": "8d459263074d",
      "at": "2026-10-13T21:39:47Z"
+    },
+    "critic-ch15-r1": {
+     "sha": "0b3fd92b702b",
+     "at": "2026-10-14T01:08:43Z"
+    },
+    "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s06:r1": {
+     "sha": "8726b4e49860",
+     "at": "2026-10-14T01:32:35Z"
     }
    },
    "history": [
@@ -1831,14 +2091,38 @@
      "owner": "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06:r1",
      "at": "2026-10-13T21:39:47Z",
      "base": "c0e22563ca5e"
+    },
+    {
+     "sha": "0b3fd92b702b",
+     "owner": "author:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06",
+     "at": "2026-10-14T01:07:12Z",
+     "base": "8d459263074d"
+    },
+    {
+     "sha": "f9d239b083e8",
+     "owner": "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s06:r1",
+     "at": "2026-10-14T01:30:39Z",
+     "base": "0b3fd92b702b"
+    },
+    {
+     "sha": "3575870391eb",
+     "owner": "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s06:r1",
+     "at": "2026-10-14T01:32:18Z",
+     "base": "f9d239b083e8"
+    },
+    {
+     "sha": "8726b4e49860",
+     "owner": "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s06:r1",
+     "at": "2026-10-14T01:32:35Z",
+     "base": "3575870391eb"
     }
    ]
   },
   "ch15-s08": {
    "latest": {
-    "sha": "0ee624f476b4",
-    "owner": "reviser:ch15-s08+ch15-s09+ch15-s10:r1",
-    "at": "2026-10-13T21:39:21Z"
+    "sha": "80b564bf65ba",
+    "owner": "reviser:ch15-s08+ch15-s09:r1",
+    "at": "2026-10-14T01:24:58Z"
    },
    "views": {
     "author:ch15-s03+ch15-s04+ch15-s05+ch15-s06+ch15-s08": {
@@ -1856,6 +2140,14 @@
     "reviser:ch15-s08+ch15-s09+ch15-s10:r1": {
      "sha": "0ee624f476b4",
      "at": "2026-10-13T21:39:21Z"
+    },
+    "author:ch15-s07+ch15-s08+ch15-s09+ch15-s10": {
+     "sha": "fed035ab7adf",
+     "at": "2026-10-14T00:50:55Z"
+    },
+    "reviser:ch15-s08+ch15-s09:r1": {
+     "sha": "80b564bf65ba",
+     "at": "2026-10-14T01:24:58Z"
     }
    },
    "history": [
@@ -1949,14 +2241,32 @@
      "owner": "reviser:ch15-s08+ch15-s09+ch15-s10:r1",
      "at": "2026-10-13T21:39:21Z",
      "base": "0ee624f476b4"
+    },
+    {
+     "sha": "fed035ab7adf",
+     "owner": "author:ch15-s07+ch15-s08+ch15-s09+ch15-s10",
+     "at": "2026-10-14T00:50:55Z",
+     "base": "0ee624f476b4"
+    },
+    {
+     "sha": "b133d5c8e18a",
+     "owner": "reviser:ch15-s08+ch15-s09:r1",
+     "at": "2026-10-14T01:21:01Z",
+     "base": "fed035ab7adf"
+    },
+    {
+     "sha": "80b564bf65ba",
+     "owner": "reviser:ch15-s08+ch15-s09:r1",
+     "at": "2026-10-14T01:24:58Z",
+     "base": "b133d5c8e18a"
     }
    ]
   },
   "ch15-s09": {
    "latest": {
-    "sha": "f866e6c1c8d9",
-    "owner": "reviser:ch15-s08+ch15-s09+ch15-s10:r1",
-    "at": "2026-10-13T21:33:33Z"
+    "sha": "dcc6514ed2d9",
+    "owner": "reviser:ch15-s08+ch15-s09:r1",
+    "at": "2026-10-14T01:24:18Z"
    },
    "views": {
     "author:ch15-s09+ch15-s10": {
@@ -1978,6 +2288,14 @@
     "reviser:ch15-s08+ch15-s09+ch15-s10:r1": {
      "sha": "f866e6c1c8d9",
      "at": "2026-10-13T21:33:33Z"
+    },
+    "author:ch15-s07+ch15-s08+ch15-s09+ch15-s10": {
+     "sha": "0ac1bf89c6bd",
+     "at": "2026-10-14T01:05:29Z"
+    },
+    "reviser:ch15-s08+ch15-s09:r1": {
+     "sha": "dcc6514ed2d9",
+     "at": "2026-10-14T01:24:18Z"
     }
    },
    "history": [
@@ -2082,6 +2400,42 @@
      "owner": "reviser:ch15-s08+ch15-s09+ch15-s10:r1",
      "at": "2026-10-13T21:33:33Z",
      "base": "a8b9ea8bc791"
+    },
+    {
+     "sha": "e5b22ffd7819",
+     "owner": "author:ch15-s07+ch15-s08+ch15-s09+ch15-s10",
+     "at": "2026-10-14T00:59:57Z",
+     "base": "f866e6c1c8d9"
+    },
+    {
+     "sha": "ac14f1c0e922",
+     "owner": "author:ch15-s07+ch15-s08+ch15-s09+ch15-s10",
+     "at": "2026-10-14T01:02:59Z",
+     "base": "e5b22ffd7819"
+    },
+    {
+     "sha": "2b4069640f5b",
+     "owner": "author:ch15-s07+ch15-s08+ch15-s09+ch15-s10",
+     "at": "2026-10-14T01:04:15Z",
+     "base": "ac14f1c0e922"
+    },
+    {
+     "sha": "0ac1bf89c6bd",
+     "owner": "author:ch15-s07+ch15-s08+ch15-s09+ch15-s10",
+     "at": "2026-10-14T01:05:29Z",
+     "base": "2b4069640f5b"
+    },
+    {
+     "sha": "cb295facd15f",
+     "owner": "reviser:ch15-s08+ch15-s09:r1",
+     "at": "2026-10-14T01:22:52Z",
+     "base": "0ac1bf89c6bd"
+    },
+    {
+     "sha": "dcc6514ed2d9",
+     "owner": "reviser:ch15-s08+ch15-s09:r1",
+     "at": "2026-10-14T01:24:18Z",
+     "base": "cb295facd15f"
     }
    ]
   },
@@ -2115,6 +2469,10 @@
     "reviser:ch15-s08+ch15-s09+ch15-s10:r1": {
      "sha": "c485efb4ab81",
      "at": "2026-10-13T21:36:17Z"
+    },
+    "author:ch15-s07+ch15-s08+ch15-s09+ch15-s10": {
+     "sha": "520c5f34aa16",
+     "at": "2026-10-14T00:49:05Z"
     }
    },
    "history": [
@@ -2222,9 +2580,9 @@
   },
   "ch12-s08": {
    "latest": {
-    "sha": "22ad6db3f867",
-    "owner": "reviser:ch12-s08+ch12-s03:r1",
-    "at": "2026-10-13T20:46:26Z"
+    "sha": "19729f958a85",
+    "owner": "reviser:ch12-s08:r1",
+    "at": "2026-10-14T00:32:27Z"
    },
    "views": {
     "global:r4": {
@@ -2238,6 +2596,18 @@
     "reviser:ch12-s08+ch12-s03:r1": {
      "sha": "22ad6db3f867",
      "at": "2026-10-13T20:46:26Z"
+    },
+    "author:ch12-s08": {
+     "sha": "22ad6db3f867",
+     "at": "2026-10-13T23:13:31Z"
+    },
+    "critic-r1-ch12-s08": {
+     "sha": "22ad6db3f867",
+     "at": "2026-10-13T23:15:20Z"
+    },
+    "reviser:ch12-s08:r1": {
+     "sha": "19729f958a85",
+     "at": "2026-10-14T00:32:27Z"
     }
    },
    "history": [
@@ -2258,6 +2628,24 @@
      "owner": "reviser:ch12-s08+ch12-s03:r1",
      "at": "2026-10-13T20:46:26Z",
      "base": "982914faaa61"
+    },
+    {
+     "sha": "7da2763fd4dd",
+     "owner": "reviser:ch12-s08:r1",
+     "at": "2026-10-14T00:31:10Z",
+     "base": "22ad6db3f867"
+    },
+    {
+     "sha": "2b557a02bd78",
+     "owner": "reviser:ch12-s08:r1",
+     "at": "2026-10-14T00:31:42Z",
+     "base": "7da2763fd4dd"
+    },
+    {
+     "sha": "19729f958a85",
+     "owner": "reviser:ch12-s08:r1",
+     "at": "2026-10-14T00:32:27Z",
+     "base": "2b557a02bd78"
     }
    ]
   },
@@ -2359,9 +2747,9 @@
   },
   "ch10-s10": {
    "latest": {
-    "sha": "27b9bb0eacb1",
-    "owner": "reviser:ch10-s10+ch10-s12+ch10-s14:r1",
-    "at": "2026-10-13T20:44:08Z"
+    "sha": "8eb9525123b5",
+    "owner": "reviser:ch10-s10+ch10-s12+ch10-s13b:r1",
+    "at": "2026-10-14T00:35:25Z"
    },
    "views": {
     "author:ch10-s10+ch10-s12+ch10-s14": {
@@ -2369,12 +2757,20 @@
      "at": "2026-10-13T20:33:06Z"
     },
     "critic-r1-ch10": {
-     "sha": "559596b8241f",
-     "at": "2026-10-13T20:37:32Z"
+     "sha": "27b9bb0eacb1",
+     "at": "2026-10-14T00:30:16Z"
     },
     "reviser:ch10-s10+ch10-s12+ch10-s14:r1": {
      "sha": "27b9bb0eacb1",
      "at": "2026-10-13T20:44:08Z"
+    },
+    "author:ch10-s10+ch10-s12+ch10-s13b": {
+     "sha": "27b9bb0eacb1",
+     "at": "2026-10-14T00:21:33Z"
+    },
+    "reviser:ch10-s10+ch10-s12+ch10-s13b:r1": {
+     "sha": "8eb9525123b5",
+     "at": "2026-10-14T00:35:25Z"
     }
    },
    "history": [
@@ -2407,23 +2803,37 @@
      "owner": "reviser:ch10-s10+ch10-s12+ch10-s14:r1",
      "at": "2026-10-13T20:44:08Z",
      "base": "3626140542a1"
+    },
+    {
+     "sha": "8eb9525123b5",
+     "owner": "reviser:ch10-s10+ch10-s12+ch10-s13b:r1",
+     "at": "2026-10-14T00:35:25Z",
+     "base": "27b9bb0eacb1"
     }
    ]
   },
   "ch15-s01": {
    "latest": {
-    "sha": "ac555a66058b",
-    "owner": "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06:r1",
-    "at": "2026-10-13T21:25:59Z"
+    "sha": "774563b667c5",
+    "owner": "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s06:r1",
+    "at": "2026-10-14T01:34:44Z"
    },
    "views": {
     "author:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06": {
-     "sha": "d254207ed616",
-     "at": "2026-10-13T21:12:30Z"
+     "sha": "80dc9e5814c6",
+     "at": "2026-10-14T00:58:52Z"
     },
     "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06:r1": {
      "sha": "ac555a66058b",
      "at": "2026-10-13T21:25:59Z"
+    },
+    "critic-ch15-r1": {
+     "sha": "80dc9e5814c6",
+     "at": "2026-10-14T01:08:43Z"
+    },
+    "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s06:r1": {
+     "sha": "774563b667c5",
+     "at": "2026-10-14T01:34:44Z"
     }
    },
    "history": [
@@ -2450,8 +2860,180 @@
      "owner": "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06:r1",
      "at": "2026-10-13T21:25:59Z",
      "base": "90b84bae91b2"
+    },
+    {
+     "sha": "7e9a3f3bba28",
+     "owner": "author:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06",
+     "at": "2026-10-14T00:55:50Z",
+     "base": "ac555a66058b"
+    },
+    {
+     "sha": "ee490a85230e",
+     "owner": "author:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06",
+     "at": "2026-10-14T00:57:47Z",
+     "base": "7e9a3f3bba28"
+    },
+    {
+     "sha": "9f1ff9bda1cf",
+     "owner": "author:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06",
+     "at": "2026-10-14T00:58:20Z",
+     "base": "ee490a85230e"
+    },
+    {
+     "sha": "80dc9e5814c6",
+     "owner": "author:ch15-s01+ch15-s03+ch15-s04+ch15-s05+ch15-s06",
+     "at": "2026-10-14T00:58:52Z",
+     "base": "9f1ff9bda1cf"
+    },
+    {
+     "sha": "977df9909ed2",
+     "owner": "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s06:r1",
+     "at": "2026-10-14T01:20:56Z",
+     "base": "80dc9e5814c6"
+    },
+    {
+     "sha": "291928352c51",
+     "owner": "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s06:r1",
+     "at": "2026-10-14T01:21:50Z",
+     "base": "977df9909ed2"
+    },
+    {
+     "sha": "774563b667c5",
+     "owner": "reviser:ch15-s01+ch15-s03+ch15-s04+ch15-s06:r1",
+     "at": "2026-10-14T01:34:44Z",
+     "base": "291928352c51"
     }
    ]
+  },
+  "ch07-s01": {
+   "latest": {
+    "sha": "a1c7a89f196e",
+    "owner": "reviser:ch07-s01:r1",
+    "at": "2026-10-13T23:12:00Z"
+   },
+   "views": {
+    "global:r5": {
+     "sha": "d42d7f9277e0",
+     "at": "2026-10-13T22:56:22Z"
+    },
+    "author:ch07-s01": {
+     "sha": "d42d7f9277e0",
+     "at": "2026-10-13T23:01:05Z"
+    },
+    "critic-r1-ch07": {
+     "sha": "d42d7f9277e0",
+     "at": "2026-10-13T23:02:43Z"
+    },
+    "reviser:ch07-s01:r1": {
+     "sha": "a1c7a89f196e",
+     "at": "2026-10-13T23:12:00Z"
+    }
+   },
+   "history": [
+    {
+     "sha": "d42d7f9277e0",
+     "owner": "global:r5",
+     "at": "2026-10-13T22:56:22Z",
+     "base": "7ca7de793247"
+    },
+    {
+     "sha": "a545cb899e7b",
+     "owner": "reviser:ch07-s01:r1",
+     "at": "2026-10-13T23:09:42Z",
+     "base": "d42d7f9277e0"
+    },
+    {
+     "sha": "823a1cf2f074",
+     "owner": "reviser:ch07-s01:r1",
+     "at": "2026-10-13T23:11:03Z",
+     "base": "a545cb899e7b"
+    },
+    {
+     "sha": "a1c7a89f196e",
+     "owner": "reviser:ch07-s01:r1",
+     "at": "2026-10-13T23:12:00Z",
+     "base": "823a1cf2f074"
+    }
+   ]
+  },
+  "ch04-s07": {
+   "latest": {
+    "sha": "f0806afd6cbc",
+    "owner": "reviser:ch04-s07:r1",
+    "at": "2026-10-13T23:12:13Z"
+   },
+   "views": {
+    "author:ch04-s07": {
+     "sha": "c8a47b78a11a",
+     "at": "2026-10-13T23:01:06Z"
+    },
+    "critic:ch04-s07:r5c1": {
+     "sha": "c8a47b78a11a",
+     "at": "2026-10-13T23:04:17Z"
+    },
+    "reviser:ch04-s07:r1": {
+     "sha": "f0806afd6cbc",
+     "at": "2026-10-13T23:12:13Z"
+    }
+   },
+   "history": [
+    {
+     "sha": "752eedf6f6f2",
+     "owner": "reviser:ch04-s07:r1",
+     "at": "2026-10-13T23:10:04Z",
+     "base": "c8a47b78a11a"
+    },
+    {
+     "sha": "204318b32536",
+     "owner": "reviser:ch04-s07:r1",
+     "at": "2026-10-13T23:11:15Z",
+     "base": "752eedf6f6f2"
+    },
+    {
+     "sha": "f0806afd6cbc",
+     "owner": "reviser:ch04-s07:r1",
+     "at": "2026-10-13T23:12:13Z",
+     "base": "204318b32536"
+    }
+   ]
+  },
+  "ch04-s06": {
+   "latest": {
+    "sha": "64c18a542f03",
+    "owner": "baseline",
+    "at": "2026-10-13T23:04:17Z"
+   },
+   "views": {
+    "critic:ch04-s07:r5c1": {
+     "sha": "64c18a542f03",
+     "at": "2026-10-13T23:04:17Z"
+    }
+   },
+   "history": []
+  },
+  "ch04-s07-map": {
+   "latest": null,
+   "views": {
+    "reviser:ch04-s07:r1": {
+     "sha": null,
+     "at": "2026-10-13T23:07:01Z"
+    }
+   },
+   "history": []
+  },
+  "ch15-s07": {
+   "latest": {
+    "sha": "7fb7a34025f9",
+    "owner": "baseline",
+    "at": "2026-10-14T00:49:04Z"
+   },
+   "views": {
+    "author:ch15-s07+ch15-s08+ch15-s09+ch15-s10": {
+     "sha": "7fb7a34025f9",
+     "at": "2026-10-14T00:49:04Z"
+    }
+   },
+   "history": []
   }
  }
 }

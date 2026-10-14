@@ -1,6 +1,6 @@
 {
  "shot": "ch10-s13b",
- "at": "2026-10-13T15:09:57.846Z",
+ "at": "2026-10-14T00:39:39.776Z",
  "minCapPx": 22,
  "sampled": 16,
  "texts": 71,
@@ -19,17 +19,17 @@
   },
   {
    "text": "the first attention",
-   "capWhileSubject": 25.4,
+   "capWhileSubject": 29.4,
    "why": "script onScreenText"
   },
   {
    "text": "only attention",
-   "capWhileSubject": 25.4,
+   "capWhileSubject": 29.4,
    "why": "script onScreenText"
   },
   {
    "text": "built to translate",
-   "capWhileSubject": 25.4,
+   "capWhileSubject": 29.4,
    "why": "script onScreenText"
   }
  ],
@@ -335,13 +335,13 @@
    "why": "not named, not in onScreenText"
   },
   {
-   "text": "–2017",
+   "text": "2017",
    "maxCap": 57,
    "why": "not named, not in onScreenText"
   },
   {
    "text": "not",
-   "maxCap": 25.4,
+   "maxCap": 29.4,
    "why": "not named, not in onScreenText"
   },
   {

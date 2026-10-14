@@ -1,6 +1,6 @@
 {
  "shot": "ch15-s08",
- "at": "2026-10-13T21:40:40.035Z",
+ "at": "2026-10-14T01:25:45.005Z",
  "minCapPx": 22,
  "sampled": 64,
  "texts": 99,
@@ -10,16 +10,6 @@
   {
    "text": "1984–2023 · 39",
    "capWhileSubject": 22,
-   "why": "drawn as subject (kit card or textRole)"
-  },
-  {
-   "text": "2014",
-   "capWhileSubject": 22,
-   "why": "drawn as subject (kit card or textRole)"
-  },
-  {
-   "text": "JAN 2025",
-   "capWhileSubject": 22.1,
    "why": "drawn as subject (kit card or textRole)"
   },
   {
@@ -58,6 +48,16 @@
    "why": "drawn as subject (kit card or textRole)"
   },
   {
+   "text": "2014–2016 · 2",
+   "capWhileSubject": 22,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "JAN 2025 · a day",
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
    "text": "How, exactly, does it",
    "capWhileSubject": 26.2,
    "why": "drawn as subject (kit card or textRole)"
@@ -69,17 +69,7 @@
   },
   {
    "text": "THE FIELD, 2019–2025",
-   "capWhileSubject": 22.4,
-   "why": "drawn as subject (kit card or textRole)"
-  },
-  {
-   "text": "HOW FAR?",
-   "capWhileSubject": 36.2,
-   "why": "drawn as subject (kit card or textRole)"
-  },
-  {
-   "text": "HOW FAST?",
-   "capWhileSubject": 36.2,
+   "capWhileSubject": 22.1,
    "why": "drawn as subject (kit card or textRole)"
   },
   {
@@ -94,17 +84,27 @@
   },
   {
    "text": "anthropic, 2025",
-   "capWhileSubject": 22.3,
+   "capWhileSubject": 22.1,
    "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "“Attention is not Explanation”",
-   "capWhileSubject": 22.4,
+   "capWhileSubject": 22.1,
    "why": "drawn as subject (kit card or textRole)"
   },
   {
    "text": "jain & wallace, 2019",
-   "capWhileSubject": 22.3,
+   "capWhileSubject": 22.1,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "HOW FAR?",
+   "capWhileSubject": 36.2,
+   "why": "drawn as subject (kit card or textRole)"
+  },
+  {
+   "text": "HOW FAST?",
+   "capWhileSubject": 36.2,
    "why": "drawn as subject (kit card or textRole)"
   },
   {
@@ -115,16 +115,6 @@
   {
    "text": "STATUS: OPEN",
    "capWhileSubject": 34.9,
-   "why": "drawn as subject (kit card or textRole)"
-  },
-  {
-   "text": "“satisfying insight for about a quarter",
-   "capWhileSubject": 22.4,
-   "why": "drawn as subject (kit card or textRole)"
-  },
-  {
-   "text": "of the prompts we’ve tried”",
-   "capWhileSubject": 22.4,
    "why": "drawn as subject (kit card or textRole)"
   }
  ],
@@ -360,6 +350,11 @@
    "why": "drawn as texture"
   },
   {
+   "text": "2014",
+   "maxCap": 21.9,
+   "why": "drawn as texture"
+  },
+  {
    "text": "SCALE IS THE MAIN LEVER",
    "maxCap": 20.7,
    "why": "drawn as texture"
@@ -397,6 +392,11 @@
   {
    "text": "CHINA IS A YEAR OR TWO BEHIND",
    "maxCap": 20.7,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "JAN 2025",
+   "maxCap": 21.9,
    "why": "drawn as texture"
   },
   {
@@ -505,5 +505,5 @@
    "why": "drawn as texture"
   }
  ],
- "textureTexts": 75
+ "textureTexts": 77
 }

@@ -1,93 +1,6 @@
 {
   "books": [
     {
-      "slug": "s-space-the-map-within",
-      "title": "The Map Within",
-      "subtitle": "Reading and editing a model's spatial workspace",
-      "author": "Brett Lamy",
-      "role": "Software Engineer at Replay",
-      "color": "#c79100",
-      "animal": "generated/s-space-the-map-within/animal.webp",
-      "href": "?bundle=s-space-the-map-within",
-      "series": "Daily Papers by Hugging Face — October 2026",
-      "chapters": [
-        {
-          "number": 1,
-          "title": "Three rulers inside a token",
-          "duration": 64.412
-        },
-        {
-          "number": 2,
-          "title": "Move the map, test the answer",
-          "duration": 65.759
-        },
-        {
-          "number": 3,
-          "title": "Turn the viewpoint, not the evidence",
-          "duration": 77.368
-        }
-      ],
-      "createdAt": "2026-10-13T12:43:40.891Z"
-    },
-    {
-      "slug": "agentgarten-rendering-the-rules",
-      "title": "Rendering the Rules",
-      "subtitle": "Inside AgentGarten’s released neural renderer",
-      "author": "Brett Lamy",
-      "role": "Software Engineer at Replay",
-      "color": "#198a8a",
-      "animal": "generated/agentgarten-rendering-the-rules/animal.webp",
-      "href": "?bundle=agentgarten-rendering-the-rules",
-      "series": "Daily Papers by Hugging Face — October 2026",
-      "chapters": [
-        {
-          "number": 1,
-          "title": "Geometry becomes tokens",
-          "duration": 67.384
-        },
-        {
-          "number": 2,
-          "title": "Replay restores the history gradient",
-          "duration": 73.189
-        },
-        {
-          "number": 3,
-          "title": "A bounded memory for a long stream",
-          "duration": 65.203
-        }
-      ],
-      "createdAt": "2026-10-10T13:42:48.403Z"
-    },
-    {
-      "slug": "cross-tokenizer-sixteen-shared-words",
-      "title": "Sixteen Shared Words",
-      "subtitle": "Reliable supervision across different tokenizers",
-      "author": "Brett Lamy",
-      "role": "Software Engineer at Replay",
-      "color": "#198a8a",
-      "animal": "generated/cross-tokenizer-sixteen-shared-words/animal.webp",
-      "href": "?bundle=cross-tokenizer-sixteen-shared-words",
-      "series": "Daily Papers by Hugging Face — October 2026",
-      "chapters": [
-        {
-          "number": 1,
-          "title": "One Response, Two Rulers",
-          "duration": 71.146
-        },
-        {
-          "number": 2,
-          "title": "The Student Chooses Sixteen",
-          "duration": 77.323
-        },
-        {
-          "number": 3,
-          "title": "More Coverage, Less Learning",
-          "duration": 77.648
-        }
-      ],
-      "createdAt": "2026-10-08T11:34:15.051Z"
-    },
-    {
       "slug": "neural-net-history",
       "title": "Who Taught the Machine?",
       "subtitle": "A case history of neural networks, 1943–2026",
@@ -96,7 +9,7 @@
       "color": "#b0277a",
       "href": "?film=neural-net-history",
       "kind": "film",
-      "runtime": 2164,
+      "runtime": 2168.42,
       "vhs": {
         "subject": "Computer Science",
         "theme": "sunset",
@@ -182,11 +95,98 @@
         {
           "number": 15,
           "title": "Case Status: Open",
-          "duration": 247.833
+          "duration": 252.25
         }
       ],
-      "createdAt": "2026-10-13T22:24:37.593Z",
+      "createdAt": "2026-10-14T02:14:12.573Z",
       "sources": "generated/neural-net-history/sources/"
+    },
+    {
+      "slug": "s-space-the-map-within",
+      "title": "The Map Within",
+      "subtitle": "Reading and editing a model's spatial workspace",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#c79100",
+      "animal": "generated/s-space-the-map-within/animal.webp",
+      "href": "?bundle=s-space-the-map-within",
+      "series": "Daily Papers by Hugging Face — October 2026",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Three rulers inside a token",
+          "duration": 64.412
+        },
+        {
+          "number": 2,
+          "title": "Move the map, test the answer",
+          "duration": 65.759
+        },
+        {
+          "number": 3,
+          "title": "Turn the viewpoint, not the evidence",
+          "duration": 77.368
+        }
+      ],
+      "createdAt": "2026-10-13T12:43:40.891Z"
+    },
+    {
+      "slug": "agentgarten-rendering-the-rules",
+      "title": "Rendering the Rules",
+      "subtitle": "Inside AgentGarten’s released neural renderer",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/agentgarten-rendering-the-rules/animal.webp",
+      "href": "?bundle=agentgarten-rendering-the-rules",
+      "series": "Daily Papers by Hugging Face — October 2026",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "Geometry becomes tokens",
+          "duration": 67.384
+        },
+        {
+          "number": 2,
+          "title": "Replay restores the history gradient",
+          "duration": 73.189
+        },
+        {
+          "number": 3,
+          "title": "A bounded memory for a long stream",
+          "duration": 65.203
+        }
+      ],
+      "createdAt": "2026-10-10T13:42:48.403Z"
+    },
+    {
+      "slug": "cross-tokenizer-sixteen-shared-words",
+      "title": "Sixteen Shared Words",
+      "subtitle": "Reliable supervision across different tokenizers",
+      "author": "Brett Lamy",
+      "role": "Software Engineer at Replay",
+      "color": "#198a8a",
+      "animal": "generated/cross-tokenizer-sixteen-shared-words/animal.webp",
+      "href": "?bundle=cross-tokenizer-sixteen-shared-words",
+      "series": "Daily Papers by Hugging Face — October 2026",
+      "chapters": [
+        {
+          "number": 1,
+          "title": "One Response, Two Rulers",
+          "duration": 71.146
+        },
+        {
+          "number": 2,
+          "title": "The Student Chooses Sixteen",
+          "duration": 77.323
+        },
+        {
+          "number": 3,
+          "title": "More Coverage, Less Learning",
+          "duration": 77.648
+        }
+      ],
+      "createdAt": "2026-10-08T11:34:15.051Z"
     },
     {
       "slug": "when-memory-matters",

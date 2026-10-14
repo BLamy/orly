@@ -1,4 +1,14 @@
 // m02 "Clue One: A Switch That Fires" (neural-net-history), 74.2667-199.3217 s (125.055 s). G major, celesta.
+// WORD PASS (critic r1 per-word floor, 2026-10-13, not re-composed; wcheck 0 flags): the wick tick on 'All' (91.17)
+// halved and shortened; the lantern bed [g2,d3] (86.42) behind lpf 750 (its bow noise was the 1-4k floor under 'All');
+// the flame's G5 (113.87) and the doubted D-A (122.90) behind lpf 1000 ('more' 126.19); the suspension's G5 (175.82)
+// .068 -> .04 behind lpf 900 and its D-A behind lpf 1000 ('before' 183.41). Strings lpf is now per event (defs lpf 1200).
+// Words: All 1.7 -> 7.4, before 0.3 -> 4.4, more 4.3 dB (1-4k); every line 9.4-22 dB. Render -24.0 LUFS I, TP -7.0.
+// REVIEW ROUND 5 (2026-10-13, clock unchanged: L0220 ends 195.212 on 'it'): the X-ray no longer crowds the silence
+// after 'name on it'. Nothing but the room tone for 1.0 s after 'it'; the celesta D enters at 196.22 and the G at
+// 196.70 (the open G under it, struck with the G), the whole block about 8 dB softer (render peak about -25 M
+// (renders vary +-1 dB), master about -25.5 M before m03's fade-in), and the low G already decaying before the fade (198.322-199.322, fadeOut
+// 1.0 s, 1.62 s after the last strike 196.70; it overlaps m03's 2-s fade-in, all inside the gap to L0301 201.32).
 // RE-FIT (round 4, 2026-10-13) to the current clock (narration/timeline.json, 2164 s): ch02-s01..s07 and ch02-s08 up to
 // L0220 moved bodily (+2.1667 s against this file's previous fit), L0220 was re-narrated 1.375 s longer
 // (188.919-195.212, 'paper' 189.14), so the X-ray hits and the fade move +3.5417. Every absolute time in this file,
@@ -54,9 +64,10 @@
 //              lands on E with the celesta after "wrong" (172.30/172.34), unresolved. "Remember him" (172.90) in near silence.
 //  176.02-199.32 THE CANDLE OUT: the held G over D-A (the suspension) under the frog's-eye line (176.60-184.90);
 //              the FALL G -> F# with a D major chord exactly on "sixteen" (187.26); near silence for "The
-//              paper that put it out..." (188.92-195.20); under the X-ray a faint high shimmer and the rising
-//              fourth once more, softly (D on "xray" 195.51 -> G on "xrayBand1" 196.01). Last onset 196.01;
-//              ends on an open G (V of C) ringing through the fade (197.72-199.32); m03's C-major organ
+//              paper that put it out..." (188.92-195.21); then 1.0 s of room tone only (the silence does the
+//              work); under the X-ray image a faint high shimmer and the rising fourth once more, softly, late,
+//              as if kept (D 196.22, ~1.0 s after "it"; G 196.70 with a soft open G below). Last onset 196.70;
+//              the open G (V of C) is already decaying when the fade runs (198.32-199.32); m03's C-major organ
 //              enters at 197.32 (its 2-s fade-in).
 setcps(1)
 
@@ -106,7 +117,7 @@ $: line([
   // ghosts (~-6 dB) and the bright chimes sit in the breaths ('fired' -> 95.62, 'logic' -> 101.52); the one chime
   // the picture pins to a word ('fire' 89 = "All") is a single soft G, short, so "or nothing" is clear.
   [90.21, .3, 'e4', .08],                                                                   // input lights ("oneIn")
-  [91.17, .18, 'g4', .05, { release: .12 }],                                                 // the wick catches on "All": a damped tick
+  [91.17, .1, 'g4', .025, { release: .07 }],                                                 // the wick catches on "All": a damped tick (word pass: halved, shortened)
   [91.57, .16, '[d4,g4]', .11, { release: .1 }],                                             // ...and blooms in the breath after "All" (flame lit): the firing dyad, gone before "or"
   // "dark" 92.16: rest
   [93.54, .2, 'e4', .062], [93.94, .2, 'e4', .067], [94.34, .2, 'e4', .071],              // enough signals at once...
@@ -135,8 +146,9 @@ $: line([
   // in the breath after "wrong", with the cello's E, so "Remember him" is in near silence
   [164.09, .28, 'd4', .095, { release: .22 }], [164.51, .4, 'g4', .1, { release: .35 }],
   [172.34, .35, 'e4', .15, { release: .45 }],
-  // the X-ray: the rising fourth once more, softly, as if kept
-  [195.51, .5, 'd4', .2], [196.01, 3, 'g4', .24],
+  // the X-ray: the rising fourth once more, softly, as if kept; late, so the silence after "it" (195.21) does the
+  // work (round 5: was 0.3 s after "it" at -19 M master)
+  [196.22, .48, 'd4', .085, { release: .5 }], [196.70, 1.2, 'g4', .1, { release: 1.4 }],
 ])
   .s('gm_celesta').gain(G * .7).room(.6).rsize(5).orbit(2)
 
@@ -161,13 +173,13 @@ $: line([
   // the hand-off: m01's held D carried on, then the 1940s bed, low
   [74.27, 3.3, 'd4', .07, { attack: 1.4, release: 1.5 }],
   [76.22, 10.3, '[g2,d3]', .12, { attack: 2.5, release: 2 }],
-  [86.42, 6.0, '[g2,d3]', .1, { attack: 1.5, release: 1.5 }],
+  [86.42, 6.0, '[g2,d3]', .1, { attack: 1.5, release: 1.5, lpf: 750 }],              // word pass: lpf 750 (its 1-4k bow noise sat on 'All')
   [92.92, 8.3, '[e2,b2]', .1, { attack: 1.5, release: 1.5 }],
   [101.52, 2.8, '[g2,d3,b3]', .12, { attack: .4, release: 1.2 }],                 // "logic" (in the breath)
   // THE FLAME: G5 held (lit), over G major; on "Gerard" the bass drops to D-A (doubted)
-  [113.87, 15.2, 'g5', .04, { attack: 1.2, release: 3 }],      // voice-band pass: -4 dB under L0209
+  [113.87, 15.2, 'g5', .04, { attack: 1.2, release: 3, lpf: 1000 }],      // voice-band pass: -4 dB under L0209; word pass: lpf 1000 ('more')
   [113.87, 9.0, '[g2,b2,d3]', .075, { attack: 1.4, release: 2 }],
-  [122.90, 6.6, '[d2,a2,d3]', .12, { attack: 1.6, release: 2.5 }],
+  [122.90, 6.6, '[d2,a2,d3]', .12, { attack: 1.6, release: 2.5, lpf: 1000 }],
   // Hebb: a warm vi - IV under the thread
   [129.43, 4.0, '[e2,b2,g3]', .09, { attack: 1.5, release: 1.5 }],
   [133.16, 4.0, '[c2,g2,e3]', .1, { attack: 1.2, release: 2 }],
@@ -178,18 +190,18 @@ $: line([
   // a soft held G while the slip is read (no voice 144.97-150.06)
   [145.93, 3.3, '[g3,b3,d4,g4]', .19, { attack: 1.4, release: 1.1 }],
   // THE CANDLE OUT: the suspension (G5 over D-A), then the fall G -> F# on "sixteen" with D major
-  [175.82, 11.44, 'g5', .068, { attack: 2, release: .25 }],      // critic r1 round 3: -2 dB, L0218/L0219 were 8 dB
-  [176.12, 11.14, '[d2,a2]', .12, { attack: 2, release: .3 }],
+  [175.82, 11.44, 'g5', .04, { attack: 2, release: .25, lpf: 900 }],      // critic r1 round 3: -2 dB; word pass: -4.6 dB more, lpf 900 (the 1-4k partial sat on 'before')
+  [176.12, 11.14, '[d2,a2]', .12, { attack: 2, release: .3, lpf: 1000 }],
   [187.26, 1.4, 'f#5', .08, { attack: .08, release: 1.6 }],
   [187.26, 1.4, '[d2,a2]', .12, { attack: .08, release: 1.6 }],
-  // the X-ray: open G (V of C), left ringing through the fade
-  [196.01, 2.6, '[g2,d3]', .1, { attack: 1.2, release: 2.5 }],
-], { attack: 1, release: 2 })
-  .s('gm_string_ensemble_1').gain(G).lpf(1200).room(.6).rsize(5).orbit(4)
+  // the X-ray: open G (V of C), soft, swelling a little and already letting go before the fade (198.32)
+  [196.70, .9, '[g2,d3]', .04, { attack: .7, release: 1.8 }],
+], { attack: 1, release: 2, lpf: 1200 })
+  .s('gm_string_ensemble_1').gain(G).room(.6).rsize(5).orbit(4)
 
 // high shimmer: bowed glass under the X-ray (heard high)
 $: line([
-  [195.51, 3.0, '[g5,d6]', .1, { attack: 1, release: 2.5 }],
+  [196.22, 1.4, '[g5,d6]', .04, { attack: 1, release: 1.8 }],
 ])
   .s('gm_pad_bowed').gain(G).lpf(5000).room(.7).rsize(6).orbit(5)
 
@@ -207,7 +219,7 @@ $: line([
   [172.30, 3.2, 'e2', .1, { attack: .1, release: 2 }],
   [175.52, 11.74, 'd2', .14, { attack: 2.2, release: .3 }],                      // the suspension's root
   [187.26, 1.6, 'd2', .15, { attack: .05, release: 1.6 }],                      // gone: the half cadence
-  [196.01, 2.6, 'g1', .14, { attack: 1.2, release: 2.5 }],                      // the open G, V of C
+  [196.70, .9, 'g1', .11, { attack: .7, release: 1.8 }],                        // the open G, V of C (soft; G1 barely counts in LUFS)
 ], { attack: 1, release: 2 })
   .s('gm_cello').gain(G).lpf(700).room(.5).rsize(4).orbit(1)
 
@@ -239,10 +251,10 @@ $: line([
 ], { attack: .25, release: .6, lpf: 1400 })
   .s('gm_drawbar_organ').gain(G).room(.55).rsize(5).orbit(6)
 
-// room tone under "The paper that put it out..." (188.92-195.20): a sine D at about -30 dB, so the near
-// silence never drops to digital silence before the X-ray
+// room tone under "The paper that put it out..." (188.92-195.21) and the silence after it: a sine D at about
+// -30 dB, so the near silence never drops to digital silence before the X-ray's D (196.22)
 $: line([
-  [188.52, 7.68, 'd2', .5, { attack: 1, release: 1.2 }],
+  [188.52, 8.0, 'd2', .5, { attack: 1, release: 1.2 }],
 ])
   .s('sine').gain(.03).lpf(300).orbit(7)
 

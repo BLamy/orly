@@ -16,7 +16,7 @@ import { hash1 } from '../../../film/core/frame';
 import { dustMotes, godRays, type Beam } from '../../../film/silhouette/atmosphere';
 import { PUPPET_NEAR_BLACK } from '../../../film/silhouette/puppet';
 import { HALL5, bust5, archPath } from './ch05-s01-hall';
-import { figure15 } from './ch15-s01-figures';
+import { BUST_VARIANTS, audienceBust } from './ch15-s01-figures';
 
 export { HALL5, bust5, archPath };
 
@@ -477,19 +477,23 @@ export function hall15(f: Frame, o: Hall15Opts) {
   f.layer('L4', (c, env) => {
     o.action?.(c, env);
     const ink = PUPPET_NEAR_BLACK;
+    // review round 5: the warm chandelier/window light catches each listener's upper-left edge (1 device px)
+    const warmRim = mixLab(env.mood.halo, env.mood.core, 0.45);
     HALL5.rows.forEach((ry, row) => {
       for (let k = -9; k < 18; k++) {
         const id = row * 100 + k + 50;
         const x = k * 96 + (row % 2) * 48 + hash1(id, 3) * 22;
-        const s = 1.2 + row * 0.14 + hash1(id, 6) * 0.08;
+        // about ±6 % scale between neighbours (plus the row's perspective step), and ±8 % in build
+        const s = (1.2 + row * 0.14) * (1 + 0.06 * hash1(id, 6));
         const by = ry + hash1(id, 4) * 6;
-        // six head types (shoulders, hair, collars), seen from behind; a few lean to a neighbour
-        const type = Math.floor((0.5 + 0.5 * hash1(id, 8)) * 6);
+        // four head/hair variants (bald, parted, bun, grey wave) seen from behind, shuffled so no two neighbours in a
+        // row repeat; a jacket collar with a lapel notch, or a raised shirt collar; a few lean to a neighbour
+        const v = BUST_VARIANTS[(k + 9 + row * 2 + (hash1(id, 8) > 0.6 ? 2 : 0)) % 4];
         const lean = hash1(id, 21) > 0.55 ? 0.05 * Math.sign(hash1(id, 22)) : 0;
         c.save();
         c.translate(x, by);
         c.rotate(lean);
-        figure15(c, 0, 0, s, 0, ink, type);
+        audienceBust(c, 0, 0, s, v, ink, { collar: hash1(id, 31) > -0.35 ? 'notch' : 'points', rim: warmRim, rimAlpha: 0.7, build: 1 + 0.08 * hash1(id, 33) });
         c.restore();
         if (row === 0) {
           // the far row: plain gilt chair backs (two uprights, a top rail, finials)

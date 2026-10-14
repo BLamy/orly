@@ -31,8 +31,11 @@
     "shot": "ch15-s08",
     "beat": "stamp"
    },
-   "lufsS": -31,
-   "why": "Review round 4: the second STATUS: OPEN stamp, on the HOW FAR? HOW FAST? card ON 'open' (the last word of L1516b; beat ch15-s08 stamp = T.word(L1516b, open)), so the clack lands under the line's last word. Between the fence stamp (-32) and the final fx-stamp (-29): a clack means the question stays open, three times."
+   "lufsS": -32,
+   "wetDb": -16,
+   "maxDur": 0.6,
+   "underWord": "open",
+   "why": "Review round 4: the second STATUS: OPEN stamp, on the HOW FAR? HOW FAST? card ON 'open' (the last word of L1516b; beat ch15-s08 stamp = T.word(L1516b, open)). Review round 5 (sound): its transient sat 6-12 dB over the 'o-' for 50-100 ms at the default wet level, so it now gets the fence stamp's treatment: -32 LUFS S, room 16 dB under the hit, cut to 0.6 s, underWord 'open' (onset allowed under that one word only). fx-stamp (-29) stays the strongest of the three."
   },
   {
    "id": "fx-stamp",
@@ -42,7 +45,7 @@
     "beat": "b3"
    },
    "lufsS": -29,
-   "why": "STATUS: OPEN stamped on the case card (wordless beat after L1518). The strongest of the film's three stamps (-29; fx-stamp-fence -32, fx-stamp-howfar -31)."
+   "why": "STATUS: OPEN stamped on the case card (wordless beat after L1518). The strongest of the film's three stamps (-29; fx-stamp-fence -32, fx-stamp-howfar -32)."
   },
   {
    "id": "fx-lamp-off",

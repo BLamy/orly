@@ -1,6 +1,6 @@
 {
  "shot": "ch14-s04b",
- "at": "2026-10-13T21:39:36.774Z",
+ "at": "2026-10-14T00:47:16.198Z",
  "minCapPx": 22,
  "sampled": 23,
  "texts": 21,
@@ -19,42 +19,42 @@
   },
   {
    "text": "HELPS HUAWEI",
-   "capWhileSubject": 30,
+   "capWhileSubject": 29.1,
    "why": "script onScreenText"
   },
   {
    "text": "HUANG (NVIDIA)",
-   "capWhileSubject": 25,
+   "capWhileSubject": 24.3,
    "why": "script onScreenText"
   },
   {
    "text": "SELF-DEFEATING",
-   "capWhileSubject": 30,
+   "capWhileSubject": 29.1,
    "why": "script onScreenText"
   },
   {
    "text": "CHINA’S FOREIGN",
-   "capWhileSubject": 25,
+   "capWhileSubject": 24.3,
    "why": "script onScreenText"
   },
   {
    "text": "MINISTRY",
-   "capWhileSubject": 25,
+   "capWhileSubject": 24.3,
    "why": "script onScreenText"
   },
   {
    "text": "DECISIVE",
-   "capWhileSubject": 30,
+   "capWhileSubject": 29.1,
    "why": "script onScreenText"
   },
   {
    "text": "AMODEI (ANTHROPIC),",
-   "capWhileSubject": 25,
+   "capWhileSubject": 24.3,
    "why": "script onScreenText"
   },
   {
    "text": "KHAN (EX-NSC)",
-   "capWhileSubject": 25,
+   "capWhileSubject": 24.3,
    "why": "script onScreenText"
   }
  ],
@@ -110,7 +110,7 @@
    "why": "not named, not in onScreenText"
   },
   {
-   "text": "lit Oct 2022 · out Jan 2025 · ≈ 2 years",
+   "text": "lit Oct 2022 · out Jan 2025",
    "maxCap": 22,
    "why": "not named, not in onScreenText"
   }

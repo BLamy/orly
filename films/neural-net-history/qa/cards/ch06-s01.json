@@ -32,5 +32,12 @@
    "to": 7.517,
    "minInkWhilePaper": 0
   }
- ]
+ ],
+ "transition": {
+  "kind": "fadeBlack",
+  "sampled": 19,
+  "ghosts": [],
+  "carry": []
+ },
+ "transAt": "2026-10-13T22:54:27.371Z"
 }

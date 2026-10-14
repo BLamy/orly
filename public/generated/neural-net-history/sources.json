@@ -3558,15 +3558,6 @@
        ]
       },
       {
-       "id": "e10-flops",
-       "claim": "By the paper's own estimates the base Transformer's training cost 3.3e18 FLOPs against 2.3e19 for Google's GNMT+RL, about one-seventh (a derived ratio).",
-       "date": "2017",
-       "status": "confirmed",
-       "sources": [
-        "https://arxiv.org/pdf/1706.03762v7"
-       ]
-      },
-      {
        "id": "e10-table1",
        "claim": "The paper's Table 1 gives self-attention O(n^2 d) cost per layer with O(1) sequential operations and O(1) maximum path length, versus O(n) for both in recurrent layers; self-attention is cheaper than recurrence when sequence length n is smaller than representation size d, and its n^2 cost led the authors to float restricted local attention for long inputs.",
        "date": "2017",
@@ -4977,9 +4968,10 @@
     },
     {
      "id": "ch15-s03",
-     "start": 1960.6667,
+     "start": 1960.9167,
      "lines": [
       "L1504",
+      "L1504b",
       "L1505"
      ],
      "claims": [
@@ -4998,7 +4990,7 @@
     },
     {
      "id": "ch15-s04",
-     "start": 1976.5417,
+     "start": 1980.9583,
      "lines": [
       "L1530",
       "L1531"
@@ -5040,7 +5032,7 @@
     },
     {
      "id": "ch15-s05",
-     "start": 1998.7083,
+     "start": 2003.125,
      "lines": [
       "L1522",
       "L1522b",
@@ -5110,7 +5102,7 @@
     },
     {
      "id": "ch15-s06",
-     "start": 2037.4583,
+     "start": 2041.875,
      "lines": [
       "L1509"
      ],
@@ -5180,7 +5172,7 @@
     },
     {
      "id": "ch15-s07",
-     "start": 2051.875,
+     "start": 2056.2917,
      "lines": [
       "L1511"
      ],
@@ -5218,7 +5210,7 @@
     },
     {
      "id": "ch15-s08",
-     "start": 2065.9583,
+     "start": 2070.375,
      "lines": [
       "L1527",
       "L1514",
@@ -5334,7 +5326,7 @@
     },
     {
      "id": "ch15-s09",
-     "start": 2109.25,
+     "start": 2113.6667,
      "lines": [
       "L1517",
       "L1518",
@@ -5365,7 +5357,7 @@
     },
     {
      "id": "ch15-s10",
-     "start": 2135.2917,
+     "start": 2139.7083,
      "lines": [],
      "claims": [
       {
@@ -5605,7 +5597,7 @@
   }
  ],
  "counts": {
-  "claims": 223,
+  "claims": 222,
   "quotes": 65,
   "sources": 318
  }

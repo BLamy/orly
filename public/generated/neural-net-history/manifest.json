@@ -6,7 +6,7 @@
   "subtitle": "A case history of neural networks, 1943–2026",
   "accent": "#b0277a",
   "film": {
-    "runtime": 2164,
+    "runtime": 2168.4167,
     "fps": 24,
     "width": 1920,
     "height": 1080,
@@ -21,16 +21,16 @@
     "score": {
       "engine": "strudel",
       "cues": 21,
-      "musicSeconds": 2193.6
+      "musicSeconds": 2198.1
     },
     "loudness": {
       "I": -16,
-      "TP": -1.9,
-      "LRA": 5.9
+      "TP": -2,
+      "LRA": 6
     },
     "audio": {
       "stems": "audio/film-audio.json",
-      "clock": 2164
+      "clock": 2168.4167
     },
     "logline": "A machine answers you in fluent sentences, and nobody ever wrote it a rulebook. So who taught it? A teacher follows the case from a lamp in Chicago in 1943 to the present, lighting a candle for each era's certainty and letting it burn exactly as long as people believed it, while the doubters stand at the edge of its light. In the end the culprit is never one person: the case board itself turns out to be shaped like a neural network, with one lantern still dark.",
     "vhs": {
@@ -409,29 +409,30 @@
       "cues": [
         4.2,
         10.625,
-        26.326,
-        32.671,
-        45.1,
-        56.335,
-        61.175,
-        74.488,
-        83.142,
-        92.02,
-        98.053,
-        101.899,
-        110.039,
-        124.292,
-        136.308,
-        154.592,
-        165.834,
-        171.882,
-        179.532,
-        184.331,
-        193.883,
-        199.054,
-        208.935
+        26.593,
+        32.938,
+        45.35,
+        56.585,
+        60.714,
+        65.592,
+        78.905,
+        87.558,
+        96.436,
+        102.469,
+        106.315,
+        114.455,
+        128.708,
+        140.725,
+        159.008,
+        170.25,
+        176.298,
+        183.948,
+        188.747,
+        198.3,
+        203.471,
+        213.352
       ],
-      "duration": 247.833,
+      "duration": 252.25,
       "filmStart": 1916.1667
     }
   ]

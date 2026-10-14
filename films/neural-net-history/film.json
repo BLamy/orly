@@ -72,7 +72,7 @@
       }
     },
     "timeline": {
-      "status": "running",
+      "status": "done",
       "startedAt": "2026-10-13T22:40:30.766Z",
       "tool": "generator/film/timeline.mjs",
       "error": null,
@@ -81,8 +81,8 @@
         "--slug",
         "neural-net-history"
       ],
-      "updatedAt": "2026-10-13T22:40:30.768Z",
-      "finishedAt": "2026-10-13T22:34:56.729Z",
+      "updatedAt": "2026-10-13T22:43:23.886Z",
+      "finishedAt": "2026-10-13T22:43:23.884Z",
       "draft": false,
       "duration": 2168.4167,
       "fps": 24,
@@ -5119,29 +5119,29 @@
       ]
     },
     "score-render": {
-      "at": "2026-10-13T20:49:56.687Z",
+      "at": "2026-10-14T00:47:55.204Z",
       "cues": [
         {
-          "id": "m19",
+          "id": "m02",
           "ok": true,
-          "I": -22.9,
-          "TP": -7.2,
-          "duration": 128.467
+          "I": -24.3,
+          "TP": -7,
+          "duration": 131.055
         }
       ],
-      "updatedAt": "2026-10-13T20:49:56.688Z"
+      "updatedAt": "2026-10-14T00:47:55.206Z"
     },
     "shots": {
       "ch01-s06": {
         "status": "approved",
-        "at": "2026-10-13T20:20:03Z",
-        "handoffApplied": "round4-global",
+        "at": "2026-10-13T23:05:01Z",
         "scores": {
           "artistry": 8,
           "teaching": 8,
           "sync": 9,
-          "continuity": 8
-        }
+          "continuity": 9
+        },
+        "handoffApplied": "round5-global"
       },
       "ch01-s07": {
         "status": "revised",
@@ -5303,8 +5303,8 @@
       },
       "ch04-s07": {
         "status": "revised",
-        "at": "2026-10-12T08:43:47.528Z",
-        "handoffApplied": "round1-global"
+        "at": "2026-10-13T23:13:12Z",
+        "handoffApplied": "round5-global"
       },
       "ch04-s08": {
         "status": "revised",
@@ -5405,8 +5405,7 @@
       },
       "ch07-s01": {
         "status": "revised",
-        "at": "2026-10-12T18:28:00.259Z",
-        "handoffApplied": "round1-global"
+        "at": "2026-10-13T23:12:44.344Z"
       },
       "ch07-s02": {
         "status": "revised",
@@ -5500,12 +5499,11 @@
       },
       "ch10-s12": {
         "status": "revised",
-        "at": "2026-10-13T20:48:22Z"
+        "at": "2026-10-14T00:42:02.815Z"
       },
       "ch10-s13b": {
         "status": "revised",
-        "at": "2026-10-13T15:10:44Z",
-        "handoffApplied": "round3-global"
+        "at": "2026-10-14T00:42:02.815Z"
       },
       "ch10-s14": {
         "status": "revised",
@@ -5532,7 +5530,7 @@
       },
       "ch10-s10": {
         "status": "revised",
-        "at": "2026-10-13T20:48:22Z"
+        "at": "2026-10-14T00:42:02.815Z"
       },
       "ch09-s01": {
         "handoffApplied": "round1-global",
@@ -5554,7 +5552,7 @@
       },
       "ch09-s05": {
         "status": "approved",
-        "at": "2026-10-13T20:38:29.201Z",
+        "at": "2026-10-13T23:05:46Z",
         "scores": {
           "artistry": 8,
           "teaching": 8,
@@ -5593,7 +5591,7 @@
       },
       "ch12-s08": {
         "status": "revised",
-        "at": "2026-10-13T20:54:23.705Z"
+        "at": "2026-10-14T00:34:10.360Z"
       },
       "ch13-s01": {
         "status": "revised",
@@ -5606,9 +5604,14 @@
         "at": "2026-10-13T00:23:33Z"
       },
       "ch13-s03": {
-        "status": "revised",
-        "at": "2026-10-13T21:21:15Z",
-        "handoffApplied": "round4-global"
+        "status": "approved",
+        "at": "2026-10-14T00:28:57Z",
+        "scores": {
+          "artistry": 8,
+          "teaching": 8,
+          "sync": 8,
+          "continuity": 8
+        }
       },
       "ch13-s04": {
         "status": "revised",
@@ -5664,23 +5667,36 @@
         "at": "2026-10-13T15:50:40Z"
       },
       "ch15-s10": {
-        "status": "revised",
-        "at": "2026-10-13T21:41:08.815Z",
-        "handoffApplied": "round4-global"
+        "status": "approved",
+        "at": "2026-10-14T01:14:56Z",
+        "handoffApplied": "round5-global",
+        "scores": {
+          "artistry": 8,
+          "teaching": 8,
+          "sync": 9,
+          "continuity": 8
+        }
       },
       "ch15-s07": {
-        "status": "revised",
-        "at": "2026-10-13T10:12:06Z"
+        "status": "approved",
+        "at": "2026-10-14T01:14:56Z",
+        "handoffApplied": "round5-global",
+        "scores": {
+          "artistry": 8,
+          "teaching": 8,
+          "sync": 8,
+          "continuity": 8
+        }
       },
       "ch15-s08": {
         "status": "revised",
-        "at": "2026-10-13T21:41:08.815Z",
-        "handoffApplied": "round4-global"
+        "at": "2026-10-14T01:27:25Z",
+        "handoffApplied": "round5-global"
       },
       "ch15-s09": {
         "status": "revised",
-        "at": "2026-10-13T21:41:08.815Z",
-        "handoffApplied": "round4-global"
+        "at": "2026-10-14T01:27:25Z",
+        "handoffApplied": "round5-global"
       },
       "ch14-s01": {
         "status": "revised",
@@ -5704,8 +5720,7 @@
       },
       "ch14-s04b": {
         "status": "revised",
-        "at": "2026-10-13T21:41:14Z",
-        "handoffApplied": "round4-global"
+        "at": "2026-10-14T00:48:33Z"
       },
       "ch14-s05": {
         "status": "revised",
@@ -5717,31 +5732,38 @@
       },
       "ch14-s07": {
         "status": "revised",
-        "at": "2026-10-13T21:41:14Z",
-        "handoffApplied": "round4-global"
+        "at": "2026-10-14T00:48:33Z"
       },
       "ch15-s01": {
         "status": "revised",
-        "at": "2026-10-13T21:43:11Z",
-        "handoffApplied": "round4-global"
+        "at": "2026-10-14T01:35:36Z",
+        "handoffApplied": "round5-global"
       },
       "ch15-s03": {
         "status": "revised",
-        "at": "2026-10-13T21:43:11Z"
+        "at": "2026-10-14T01:35:36Z",
+        "handoffApplied": "round5-global"
       },
       "ch15-s04": {
         "status": "revised",
-        "at": "2026-10-13T21:43:11Z"
+        "at": "2026-10-14T01:35:36Z",
+        "handoffApplied": "round5-global"
       },
       "ch15-s05": {
-        "status": "revised",
-        "at": "2026-10-13T21:43:11Z",
-        "handoffApplied": "round4-global"
+        "status": "approved",
+        "at": "2026-10-14T01:13:25.022Z",
+        "handoffApplied": "round5-global",
+        "scores": {
+          "artistry": 8,
+          "teaching": 8,
+          "sync": 8,
+          "continuity": 8
+        }
       },
       "ch15-s06": {
         "status": "revised",
-        "at": "2026-10-13T21:43:11Z",
-        "handoffApplied": "round4-global"
+        "at": "2026-10-14T01:35:36Z",
+        "handoffApplied": "round5-global"
       },
       "ch06-s03b": {
         "status": "revised",
@@ -5751,8 +5773,8 @@
     },
     "score": {
       "status": "done",
-      "at": "2026-10-13T20:51:19Z",
-      "summary": "21 cues, 2323.6 s music, integrated -25.7 to -22.4 LUFS",
+      "at": "2026-10-14T00:48:40Z",
+      "summary": "21 cues, 2328.1 s music, integrated -25.7 to -22.4 LUFS",
       "provenance": {
         "model": "claude-opus-5-5",
         "effort": "high"
@@ -5760,7 +5782,7 @@
     },
     "mix": {
       "status": "done",
-      "startedAt": "2026-10-13T21:44:09.855Z",
+      "startedAt": "2026-10-14T01:37:26.884Z",
       "tool": "generator/film/mix.mjs",
       "error": null,
       "resume": null,
@@ -5768,8 +5790,8 @@
         "--slug",
         "neural-net-history"
       ],
-      "updatedAt": "2026-10-13T21:47:52.677Z",
-      "finishedAt": "2026-10-13T21:47:52.676Z",
+      "updatedAt": "2026-10-14T01:41:10.755Z",
+      "finishedAt": "2026-10-14T01:41:10.754Z",
       "ok": true,
       "checks": {
         "loudness": true,
@@ -5783,12 +5805,12 @@
       },
       "master": {
         "file": "films/neural-net-history/mix/master.wav",
-        "duration": 2164,
+        "duration": 2168.4167,
         "I": -16,
-        "LRA": 5.9,
-        "TP": -1.9
+        "LRA": 6,
+        "TP": -2
       },
-      "duckDb": 2.82,
+      "duckDb": 2.83,
       "outputs": [
         "films/neural-net-history/mix/master.wav",
         "films/neural-net-history/mix/loudness.json",
@@ -5811,7 +5833,7 @@
     },
     "render": {
       "status": "done",
-      "startedAt": "2026-10-13T21:48:01.512Z",
+      "startedAt": "2026-10-14T01:41:23.281Z",
       "tool": "generator/film/render.mjs",
       "error": null,
       "resume": null,
@@ -5819,12 +5841,12 @@
         "--slug",
         "neural-net-history"
       ],
-      "updatedAt": "2026-10-13T22:06:45.051Z",
-      "finishedAt": "2026-10-13T22:06:45.050Z",
+      "updatedAt": "2026-10-14T01:59:48.959Z",
+      "finishedAt": "2026-10-14T01:59:48.956Z",
       "ok": true,
       "out": "films/neural-net-history/render/film.mp4",
       "preview": false,
-      "frames": 51936,
+      "frames": 52042,
       "fps": 24,
       "checks": {
         "frames": true,
@@ -5840,64 +5862,62 @@
     },
     "publish": {
       "status": "done",
-      "at": "2026-10-13T22:24:10Z",
-      "finishedAt": "2026-10-13T22:24:41.898Z",
-      "createdAt": "2026-10-13T22:24:37.593Z",
+      "at": "2026-10-14T02:13:53Z",
+      "finishedAt": "2026-10-14T02:14:16.914Z",
+      "createdAt": "2026-10-14T02:14:12.573Z",
       "manifest": "public/generated/neural-net-history/manifest.json",
       "sources": {
         "page": "public/generated/neural-net-history/sources/index.html",
         "url": "https://orly.brett-lamy.workers.dev/generated/neural-net-history/sources/",
-        "claims": 223,
+        "claims": 222,
         "quotes": 65,
         "sources": 318
       },
       "chapters": 15,
       "stems": {
-        "lines": 233,
+        "lines": 234,
         "cues": 28,
-        "mb": 64.5
+        "mb": 64.6
       },
       "chapterSlices": 0,
       "deployed": false,
-      "updatedAt": "2026-10-13T22:24:41.899Z"
+      "updatedAt": "2026-10-14T02:14:16.916Z"
     },
     "qa": {
-      "status": "failed",
-      "at": "2026-10-13T22:35:18.275Z",
+      "status": "done",
+      "at": "2026-10-14T02:14:17.023Z",
       "summary": {
-        "pass": 26,
-        "warn": 5,
-        "fail": 1,
+        "pass": 2,
+        "warn": 0,
+        "fail": 0,
         "skip": 0
       },
       "report": "films/neural-net-history/qa/reports/latest-partial.json",
-      "updatedAt": "2026-10-13T22:35:18.279Z",
+      "updatedAt": "2026-10-14T02:14:17.030Z",
       "partial": [
-        "narration",
-        "timeline",
-        "mix"
+        "publish"
       ]
     },
     "assemble": {
       "status": "done",
-      "at": "2026-10-13T22:10:36Z",
-      "summary": "Clock fresh (timeline.fresh PASS, 2164.00 s). Mix: -16 LUFS, -1.9 dBTP, LRA 5.9, duck 2.82 dB (target 3), master limiter 1.23 dB, 21 cues, 7 foley, 15 chapter slices; all fades >= 1.6 s after lastStrike (m17 fade delayed/shortened 1.5->0.94 s). Render: 51936 frames 1920x1080@24 (= round(2164x24)), A/V 2164.000 s both, captions + 15 chapters muxed, 2.56 GB, 1123 s wall. Sheets: all 121 re-drawn (most predated the 15:28 clock). Cards: 17 shots audited, 0 blank probed cards, 0 ghost text (suspect unprobed paper warns: ch09-s05, ch12-s03). Published locally (233 line stems + 28 cue stems). QA: 41 pass, 5 warn (narration.wordMap, narration.pacing, narration.listening pending 7 sign-offs, mix.lineLevels, sheets.cards), 0 fail."
+      "at": "2026-10-14T02:03:14Z",
+      "summary": "Review round 3 assemble: clock fresh (2168.42 s, 52042 frames @24). Mix -16 LUFS / -2 dBTP / LRA 6, limiter 1.23 dB, duck 2.83 dB (target 3), 21 cues, all fades >=1.6 s after lastStrike (m17 fade shortened 1.5->0.94 s), 7 foley, 15 chapter slices. Render render/film.mp4 1920x1080, 52042 frames = round(2168.4167x24), A/V 2168.417 s both, mov_text captions + 15 chapters + film.vtt. Sheets: all 121 re-sheeted (101 were older than the clock). Cards: 12 audited shots, 0 blank probed cards, 0 ghost text (suspects ch04-s07, ch09-s05 read as false positives). Published locally (15 chapters, 36.1 min). QA 40 pass / 6 warn / 0 fail; warns: narration.wordMap, narration.pacing (fast lines 186-197 wpm, under the 200 fail), narration.listening (7 sign-offs pending), mix.lineLevels (L0215/L0710/L1104 ~-1.6 dB; L0217 -3.43, L1505 -3.04 with soft hint), sheets.cards (unprobed suspect paper), sheets.ghostText (transCarry in 25 transitions)."
     },
     "review": {
-      "round": 5,
-      "pass": false,
-      "mean": 8.43,
+      "round": 6,
+      "pass": true,
+      "mean": 8.57,
       "scores": {
-        "accuracy": 8.5,
-        "depth": 8.58,
-        "clarity": 8.33,
-        "story": 8.5,
-        "visual": 8.17,
+        "accuracy": 8.67,
+        "depth": 8.75,
+        "clarity": 8.67,
+        "story": 8.67,
+        "visual": 8.42,
         "sync": 8.5,
-        "sound": 8.17,
+        "sound": 8.25,
         "curiosity": 8.67
       },
-      "at": "2026-10-13T22:22:12Z"
+      "at": "2026-10-14T02:12:39Z"
     },
     "fixes": {
       "round1-global": {
@@ -8337,8 +8357,8 @@
             }
           },
           "ch15-s08": {
-            "outcome": "partial",
-            "reason": "note check FAILED (missing ''open''); author said: Round-4 routed note held: push to 1.25x onto HOW FAR? HOW FAST? on 'stays' (37.57), STATUS: OPEN struck on the 'stamp' beat (37.93) at ch15-s09's size and red inside ghostOk, held 1.2 s, pull-back puts the dark lantern near centre for the last 2 s, THE FIELD card at ~0.85 lower-left. Critic r1: the case file never shows a blank sheet: the rising cover is dull manila carrying a typed CASE FILE label from its first visible frame, the inside page is printed (header, ruled typed lines, WHO TAUGHT IT? slip) from the frame it appears, both cardProbe'd (cards audit 0 blank). 'two' and 'day' now get Cyc's treatment: GO sleeve lit + '2014' plate, the match lit + 'JAN 2025' plate (>=22 px cap, legibility audit 0 under), each held 1.2 s; Cyc's glow, ghost bar, rim and plate at rest by 'two'. 'burn': 0.6 s warm rim on the five live sleeves only. Question card 40 px narrower and 20 px left so the C3 lantern is whole. Checked on stills at 25.3, 27.3, 28.75, 36.5, 37.19, 37.40, 37.57, 37.95, 39.5, 43.25.",
+            "outcome": "fixed",
+            "reason": "Closed as fixed by round-5 global (review round 5 ledgerAudit.partialResolved; teacher T503): the only miss was the literal word key 'open', but the shot anchors on T.beat('stamp'), which the clock defines as T.word(L1516b,'open') (both 37.929 s shot-local). shot-ledger check now resolves named clock beats within one frame; re-check OK. Teacher, story, art and sound confirmed the red STATUS: OPEN stamp on 'open' (+37.92) on the round-5 sheet. Original record: note check FAILED (missing ''open''); author said: Round-4 routed note held: push to 1.25x onto HOW FAR? HOW FAST? on 'stays' (37.57), STATUS: OPEN struck on the 'stamp' beat (37.93) at ch15-s09's size and red inside ghostOk, held 1.2 s, pull-back puts the dark lantern near centre for the last 2 s, THE FIELD card at ~0.85 lower-left. Critic r1: the case file never shows a blank sheet: the rising cover is dull manila carrying a typed CASE FILE label from its first visible frame, the inside page is printed (header, ruled typed lines, WHO TAUGHT IT? slip) from the frame it appears, both cardProbe'd (cards audit 0 blank). 'two' and 'day' now get Cyc's treatment: GO sleeve lit + '2014' plate, the match lit + 'JAN 2025' plate (>=22 px cap, legibility audit 0 under), each held 1.2 s; Cyc's glow, ghost bar, rim and plate at rest by 'two'. 'burn': 0.6 s warm rim on the five live sleeves only. Question card 40 px narrower and 20 px left so the C3 lantern is whole. Checked on stills at 25.3, 27.3, 28.75, 36.5, 37.19, 37.40, 37.57, 37.95, 39.5, 43.25.",
             "wordTimes": [
               25.05,
               25.3,
@@ -8362,7 +8382,7 @@
             "recordedAt": "2026-10-13T21:41:03Z",
             "note": "PARTIAL re-routed (picture half; the stamp's foley is a global note). On 'stays' (L1516b, 37.57) push to about 1.25x onto the HOW FAR? HOW FAST? card (the tray may leave frame; THE FIELD card may slide out left for this beat), strike STATUS: OPEN on 'open' (37.93) at the same size and red as the ch15-s09 stamp (>= 22 px cap), hold 1.2 s, then pull back so the dark lantern sits near frame centre for the final 2 s. Print the opened case-file page: ruled lines, a 'CASE FILE' header and the WHO TAUGHT IT? slip clipped to it at ~60 % ink, so it reads as paper with writing and is not the brightest b",
             "check": {
-              "ok": false,
+              "ok": true,
               "present": [
                 "HOW FAR? HOW FAST?",
                 "STATUS: OPEN",
@@ -8371,12 +8391,22 @@
                 "'open'"
               ],
               "absent": [],
-              "missing": [
-                "'open'"
-              ],
+              "missing": [],
               "found": [],
-              "removedKeys": []
-            }
+              "removedKeys": [],
+              "viaBeat": [
+                {
+                  "key": "'open'",
+                  "word": "open",
+                  "beat": "stamp",
+                  "beatAt": 37.929,
+                  "wordAt": 37.929
+                }
+              ]
+            },
+            "downgradedBy": "shot-ledger finalize 2026-10-13T21:43:49Z (missing literal 'open')",
+            "closedBy": "round5-global (supervising director)",
+            "closedAt": "2026-10-13T22:44:21Z"
           },
           "ch15-s10": {
             "outcome": "fixed",
@@ -8409,6 +8439,626 @@
         "at": "2026-10-13T21:43:49Z",
         "by": "film-shots",
         "round": 4,
+        "consumed": {
+          "shots": true,
+          "score": true
+        }
+      },
+      "round5-global": {
+        "at": "2026-10-13T22:58:36Z",
+        "kind": "global-fixes",
+        "round": 5,
+        "by": "round-5 global fixer (supervising director; claude-opus-5-5, high effort)",
+        "summary": "CLOCK. The narration stage had already rebuilt the clock once on the L1502 rewrite, the new solo line L1504b and the L0114 retry (that take was rejected and the 0.88 take kept, so L0114 is unchanged): 2168.4167 s, +4.42 s rather than the ~3 s estimate, 3.58 s under the 2172 ceiling. The only later rebuild was for the spec-hygiene beat rename, and it was verified identical: same duration, every shot and line time unchanged, only ch10-s12's beat 'seventh' is now 'gpus'. Measured shifts against the 2164 clock: nothing moves before L1502 'Hopfield'; inside L1502 'Versailles' +2.46 s and 'cools' +0.27; L1528..L1504 +0.25/+0.27; L1504b is new at 1972.752-1976.281; everything from L1505 onward moves +4.4167. QA timeline.fresh, ceiling, matchesScript and appCopy PASS. CUES. m20 and m21 moved bodily +4.4167 s. Every absolute time in their sources moved too (v9), and they were re-rendered with exact lengths and no errors: m20 2040.608-2069.108 (-22.8 LUFS I), m21 2070.375-2168.4167 to the film's end (-24.6 LUFS I; v8 measured -25.1, so the strudel renders are not bit-identical). Their lastStrike markers, CURRENT CLOCK paragraphs and clockShift entries moved with them, and cue-notes --fix put m20's body anchors back on the clock. m19 is window-only: 1916.433-2043.317 (126.884 s; it was 2038.900), lastStrike 2040.409 (the OpenAI bloom), with a ROUND-5 CLOCK word map at the head of its notes. Its code re-fit and render are the composer's job (the cues.m19 note), so until then QA score.renders and score.analysisSummary FAIL only for m19's body length (122.467 vs 126.884). score.cueJoins PASS. FOLEY. fx-stamp-howfar now gets the fence stamp's treatment: underWord 'open', wetDb -16, maxDur 0.6, lufsS -32. fx-stamp stays the strongest at -29. Re-mixed: QA mix.foley PASS (7 events, howfar at 2108.304 s, -32 LUFS S, 0.6 s, underWord 'open'). Measured on the master against narration.wav + 3.56 dB (the master gain): over the window 2108.304-2108.624 s (the old 2103.89-2104.21) the master is +1.71 dB over the voice (<= 3). In 25 ms frames it is <= +3.0 dB while the 'o-' sounds; it was 6-12 dB over in round 5. Inside the /p/ closure (2108.38-2108.46 s) the voice drops to about -48 dB, and the master there is the stamp's tail plus m21 at -20 to -27 dB, 10-15 dB under the vowel. Mix: -16 LUFS, -2 dBTP, length 2168.4167 = film, duck 2.83 dB, lineMasking PASS (lowest 10.9 dB), fadeAfterStrike PASS, master limiter 1.23 dB. SPEC HYGIENE. In ch10.json and ch15.json I deleted the three removed texts: ch10-s10 'untrained toy weights: real bindings', the ch10-s12 ratio and ch15-s06 'Hassabis, 2025 ...'. ch10-s12's label is now '12 hours · one machine, 8 GPUs'. e10-flops is dropped from its claims (it stays in claims.json). Its beat 'seventh' is now 'gpus' and the 'records' beat no longer names a ledger. Its visual prose and props no longer describe compute piles, GNMT, a ratio or BLEU. Its creditsSources line keeps only the 12 h / 8 P100 fact (no consumer reads it; the sources page builds from meta). ch15-s06's spec now matches the shot: no hand-pin, no slip caption, no 'Demis Hassabis' name card or Hassabis figure (the shot draws none), cast minus hassabis, and the round-3 AMI Labs label added. script.json was reassembled with 0 errors, all 234 lines identical, and only those three shots differ. A grep for seventh / GNMT / 1/7 / BLEU / untrained toy / 'Hassabis, 2025' finds nothing in script.json, script.md or either chapter (the only hit is the e10-flops pointer in creditsSources). LEDGER CHECKER. runCheck resolves a missing quoted word key through a named clock beat: if the shot calls T.beat(name) and the timeline beat equals that word's shot-local time within one frame ('w#n' = the n-th occurrence), the key counts, and the result is recorded as check.viaBeat. ch15-s08 resolves 'open' through 'stamp' (37.929 = 37.929). round4-shots.outcomes['ch15-s08'] is now fixed (re-check ok, closedBy round5-global). +1 test; film tests 155/155. TRANSITION GHOSTS. cards.mjs now records the frames of every transition other than a cut as the reel paints them. Each text line is assigned to the outgoing or incoming shot by the buffer it lands in and keeps its opacity inside that shot (its own occluders only). It is then weighted by the transition: crossfade and inkBleed dissolve, fadeBlack, lampChange and iris pass through black, paperWipe by the share of the box on each side of the tear. The same 25 % / 30 % overlap / 0.25 s rule is applied to cross-shot pairs, listed per incoming shot (summary transGhosts; QA sheets.ghostText fails on them). A second, WARN-only list (transCarry) records one shot's text above 25 % dissolving over the other shot's picture: the ch04-s07 +0.17 case is outgoing text over the valley, not text over text. --trans-only audits just the transitions. All 64 non-cut transitions were audited. There were 2 cross-shot ghosts, both fixed here through shot-guard as global:r5. (1) ch06-s08 -> ch07-s01: ch07-s01's CAM_06 was stale after ch06-s08's round-1 re-frame, so the two question cards were doubled 92 px apart. Measured on the recorded text boxes it was 19 / -9 world px off; it is now {693, 124.17, 690}. (2) ch10-s13b -> ch10-s14: the honest card's 'not' sat under 'der'. The card now fades over 0.35 s and is gone at cut - 0.53, still complete and readable at +10.58 on the sheet. Re-audit: 0 cross-shot ghosts and 0 in-shot ghosts on 121 shots. 26 transitions carry WARN-level text-over-picture (e.g. ch04-s07, ch03-s01, ch06-s07, ch12-s08), for the art lens. CROWDS. ch15-s01-figures.ts gains audienceBust(): 4 variants that differ in outline (bald with ears out, parted with a side-parting dip, bun rising above the crown, grey wave in a lighter warm grey with three swept waves), a jacket collar with a lapel notch or a raised shirt collar, and a 1 device-px warm rim on the lit upper-left side (the silhouette laid in the rim colour one pixel toward the light). The hall15 audience rows use it with ±6 % scale, ±8 % build and a shuffle so no two neighbours repeat a variant. Re-sheeted ch15-s01 (the near rows now read as four kinds of head) and ch12-s08, which has no audience busts: its runners are the facade set's own puppets, so it is unchanged. Also re-sheeted ch15-s03..ch15-s10, ch10-s13b and ch07-s01. HUMAN HAND-OFF: not done (needs a person); see handoff.human.",
+        "changed": {
+          "clock": [
+            "narration/timeline.json + app copy: rebuilt after the spec edit; byte-equivalent timings, 2168.4167 s; ch10-s12 beat seventh -> gpus"
+          ],
+          "cues": [
+            "score/cues.json m19 window end 2038.900 -> 2043.317, lastStrike 2035.992 -> 2040.409, ROUND-5 CLOCK word map + clockShift (code re-fit PENDING, composer)",
+            "score/cues.json m20 2036.191-2064.691 -> 2040.608-2069.108, m21 2065.958-2164 -> 2070.375-2168.4167, lastStrike +4.4167, CURRENT CLOCK paragraphs shifted, clockShift by 4.4167",
+            "score/cues/m20.strudel, m21.strudel v9: every absolute time +4.4167 s (S 2040.608 / 2070.375); re-rendered (renders/m20, m21 + analysis)",
+            "score/clock-history.md not touched (the m19 re-fit closes the round)"
+          ],
+          "foley": [
+            "score/foley.json fx-stamp-howfar: lufsS -31 -> -32, wetDb -16, maxDur 0.6, underWord 'open'",
+            "mix/master.wav + loudness.json re-mixed"
+          ],
+          "spec": [
+            "story/chapters/ch10.json (ch10-s10, ch10-s12)",
+            "story/chapters/ch15.json (ch15-s06)",
+            "story/script.json + script.md reassembled"
+          ],
+          "ledger": [
+            "generator/film/lib/shotledger.mjs (beatForWordKey; runCheck viaBeat)",
+            "generator/film/shot-ledger.mjs (check.viaBeat, header)",
+            "generator/film/shotledger.test.mjs (+1 test)",
+            "film.json stages.fixes.round4-shots.outcomes.ch15-s08 -> fixed"
+          ],
+          "transitionGhosts": [
+            "generator/film/cards.mjs (place() buffer + in-buffer alpha; visibleLines perBuffer; transWeights; transitionLines; transition pass, transGhosts + transCarry; --no-trans / --trans-only)",
+            "generator/film/qa.mjs (sheets.ghostText: transGhosts fail, transCarry warn, transitions audited count)",
+            "shots/ch07-s01.tsx CAM_06 (sha d42d7f9277e0)",
+            "shots/ch10-s13b.tsx honest card exit fade (sha ad7c2429cbc4)"
+          ],
+          "crowds": [
+            "sets/ch15-s01-figures.ts (audienceBust, BUST_VARIANTS)",
+            "sets/ch15-s01-hall.ts (audience rows)"
+          ]
+        },
+        "verified": {
+          "clock": "QA timeline.fresh PASS, ceiling PASS (2168.42 of 2172), matchesScript PASS, appCopy PASS, 784 beats inside their shots",
+          "mix": "QA mix.* PASS (foley, length, loudness -16, TP -2, duck 2.83, lineMasking >= 10.9 dB, fadeAfterStrike, swells, floor); lineLevels WARN as before",
+          "foleyWindow": "2108.304-2108.624 s: master +1.71 dB over narration + 3.56 dB; 25 ms frames <= +3.0 dB while the vowel sounds",
+          "score": "m20/m21 renders exact; QA score.cueJoins + notesClock PASS; score.renders/analysisSummary FAIL only for m19 (pending composer re-fit)",
+          "ghost": "cards.mjs: 121 shots, 0 in-shot ghosts, 64/64 transitions audited, 0 cross-shot ghosts after the two fixes; sheets.ghostText WARN (26 transCarry, ch15-s10 changed since audit by the hand edit)",
+          "sheets": "films/neural-net-history/qa/sheets/{ch15-s01,ch15-s03..ch15-s10,ch12-s08,ch10-s13b,ch07-s01}.png on the 2168.4167 clock; crowd crops .orly-work/snaps/r5/crowd-c.png, crowd-c-crop.png",
+          "tests": "film tests 155/155; tsc clean; check-workflows ok (no workflow edited)"
+        },
+        "handoff": {
+          "ch15-s01": "Clock: L1502 is the new three-sentence take 10.625-26.043 shot-local: 'Hopfield' 13.168, 'nobody' 14.99, 'Versailles' 16.755, 'memories' 19.274, 'downhill' 20.215, 'cools' 25.521; L1528 from 26.593, L1529 32.938; shot 44.75 s. Beats on the clock: b4 13.168, b4b 20.215, b4c 25.521, b5 26.043. Kit (round-5 global): the hall's near audience rows are now audienceBust variants (bald/parted/bun/grey wave, lapel notch, warm 1 px rim, ±6 % scale). Keep them; do not redraw the audience in the shot. Sheet re-rendered on the new clock.",
+          "ch15-s03": "NEW L1504b on the clock (shot-local): line 11.835-15.364, 'Snuff' 11.835, 'plan' 12.497, 'habit' 14.296; L1505 15.964-18.402 ('Nobody' 15.964, 'plan' 17.914); L1504 'rabbit' 9.133; shot 1960.9167-1980.9583 (20.04 s). Beats: b3 11.835 (= L1504b start), habit 14.296, b4 17.914.",
+          "ch15-s04": "Clock: moved bodily +4.4167 s (starts 1980.9583); shot-local times unchanged. Re-sheeted.",
+          "ch15-s05": "Clock: moved bodily +4.4167 s (2003.125-2041.875); shot-local times unchanged; holdAfter stays 1.5. Re-sheeted.",
+          "ch15-s06": "Spec hygiene: chapters/ch15.json no longer lists the Hassabis caption, the 'Demis Hassabis' name card, a hand-pin or a Hassabis figure, and now lists the AMI Labs label. Do not re-add any of these. Clock moved bodily +4.4167 s (2041.875); shot-local unchanged.",
+          "ch15-s07": "Clock moved bodily +4.4167 s; shot-local unchanged. Re-sheeted.",
+          "ch15-s08": "Ledger: round4-shots ch15-s08 is closed as FIXED (the check now resolves 'open' through T.beat('stamp')). Keep the stamp on T.beat('stamp') (37.929). fx-stamp-howfar is now an underWord stamp (-32, wet -16 dB, 0.6 s) at 2108.304 s. Clock moved bodily +4.4167 s (2070.375); shot-local unchanged.",
+          "ch15-s09": "Clock moved bodily +4.4167 s (2113.667); shot-local unchanged; fx-stamp b3 at 2126.419 s stays -29.",
+          "ch15-s10": "Clock moved bodily +4.4167 s (2139.708-2168.4167); card timings unchanged. Note: cards audit lists it as changed since its audit (the hand edit); re-run cards.mjs for it after the verify.",
+          "ch04-s07": "Transition audit (new, round 5): `node generator/film/cards.mjs --slug neural-net-history --shot ch04-s07 --trans-only` lists ch04-s06's 14 text lines (Papert quote, A-B-C, TRANSLATION 1966 ... LIGHTHILL 1973) at up to 72 % over ch04-s07's picture from -0.13 to +0.21 s (summary transCarry). After your fix that list must be empty.",
+          "ch07-s01": "Round-5 global (transition ghost): CAM_06 is now {x 693, y 124.17, z 690}, exactly ch06-s08's camC(D), so the two question cards no longer double 92 px apart in the crossfade. Keep it; if ch06-s08's last camera changes, change this key with it.",
+          "ch10-s13b": "Round-5 global (transition ghost): the honest card fades out over D-0.9..D-0.55 (gone 0.05 s before the crossfade into ch10-s14), so 'not' no longer dissolves over ch10-s14's 'der'. It is complete and readable from 8.2 to 10.6 s. Keep it.",
+          "ch10-s12": "Spec hygiene: label '12 hours · one machine, 8 GPUs', claims without e10-flops, beat 'seventh' renamed 'gpus' (10.661, nothing anchors), no compute piles / GNMT / ratio / BLEU in the spec. Never re-add any compute comparison.",
+          "ch10-s10": "Spec hygiene: the 'untrained toy weights' caption is gone from the spec; the ILLUSTRATIVE tag is the only disclaimer.",
+          "ch12-s08": "Re-sheeted after the crowd-kit change; it uses no audience busts (its runners are from sets/ch12-s08-facade), so nothing changed. Keep the round-4 sitBack dissolve.",
+          "m19": "Window re-fitted by the round-5 global fixer to 1916.433-2043.317 (126.884 s); lastStrike 2040.409. YOUR JOB: re-fit the v20 code (written on the 2164 clock) and re-render at 126.884 s. Map (absolute): unchanged up to L1502 'Hopfield' 1929.335. L1502 'nobody' 1931.157, 'Versailles' 1932.922 (+2.46), 'memories' 1935.441, 'downhill' 1936.382, 'cools' 1941.688 (+0.27), L1502 ends 1942.210. L1528 1942.760 and L1529 1949.105 (+0.27). L1504 1961.517-1972.152 ('rabbit' 1970.050, +0.25). NEW L1504b 1972.752-1976.281 ('Snuff' 1972.752, 'habit' 1975.213). L1505 1976.881-1979.319 ('Nobody' 1976.881, 'plan' 1978.831). Everything from L1505 onward is +4.4167 (L1530 1981.758, L1522 2003.725, L1525 ends 2040.363). OUT: fade 2042.317-2043.317 in the gap before L1509 (2044.875); m20 enters 2040.608. Then apply the cues.m19 shape note (thin tail only under L1504b/L1505; ~0.3 s near-silence after 'plan', a ~1 s ramp to about -21 M, <= -30 M by L1530). After the render, run score analyze and QA score.renders / analysisSummary / swells / fadeAfterStrike / lineMasking.",
+          "m20": "DONE (round-5 global): moved bodily +4.4167 s as v9 (source times re-written, re-rendered, exact): window 2040.608-2069.108, lastStrike 2066.458. Verify only; no line inside it changed.",
+          "m21": "DONE (round-5 global): moved bodily +4.4167 s as v9 (re-rendered, exact): window 2070.375-2168.4167 (to the film's end), lastStrike 2161.009. fx-stamp-howfar at 2108.304 s is now an underWord stamp at -32; the held E's re-bow stays +0.35/+0.52 s after it (2108.65/2108.82). fx-stamp b3 2126.419 and lamp b4 2128.919 still sit in silence. Verify only.",
+          "m02": "No global change; apply the cues.m02 note on the unchanged clock (L0220 ends 195.212).",
+          "human": "PENDING, not a blocker for the gate (fifth round). Before publish, a person listens to the seven names via `npm run film:voice -- listen --slug neural-net-history`: Uszkoreit (L1006), Amodei (L1206), Hochreiter and Schmidhuber (L0614), Rumelhart (L0507), LeCun (L0821), Lenat (L1104). For each, they run `npm run film:voice -- signoff --slug neural-net-history --term <term> --by <name> --verdict ok|reject`. A reject becomes a solo retake with a lexicon respelling. QA narration.listening WARNs until then."
+        },
+        "consumed": {
+          "score": true,
+          "shots": true
+        }
+      },
+      "round5-shots": {
+        "kind": "shot-ledger",
+        "outcomes": {
+          "ch07-s01": {
+            "outcome": "fixed",
+            "reason": "Round-5 hand-off holds: CAM_06 = {x 693, y 124.17, z 690} unchanged (keys 0 and 0.5 s); cards audit 0 cross-shot ghost over the 12-frame crossfade. Reviser r1 critic FIX 1-7 applied and checked on stills at 5.3, 17.2, 18.1, 18.3, 18.5, 18.9, 19.3, 19.5, 20.4 s and a fresh sheet; legibility 0 subject under 22 px, cards 0 ghost, depth ok.",
+            "wordTimes": [
+              0,
+              0.08,
+              0.28,
+              0.5,
+              0.83,
+              5.3,
+              17.2,
+              18.5,
+              18.9,
+              19.3,
+              19.5,
+              20.4
+            ],
+            "sha": "a1c7a89f196e",
+            "recordedBy": "reviser",
+            "recordedAt": "2026-10-13T23:12:40Z",
+            "note": "Round-5 global (transition ghost): CAM_06 is now {x 693, y 124.17, z 690}, exactly ch06-s08's camC(D), so the two question cards no longer double 92 px apart in the crossfade. Keep it; if ch06-s08's last camera changes, change this key with it."
+          },
+          "ch01-s06": {
+            "outcome": "fixed",
+            "reason": "Clock re-read: L0114 3.700-7.102 (starts 4.455, Two 6.742), L0114b 7.902-9.829 (Chicago 9.098), shot 10.33 s; round5-global confirms the L0114 retry was rejected and has no ch01-s06 hand-off entry. Every beat already rides T.word (cut = starts-0.1 capped at 'back'; stamp = Two-0.06; lampOn = Chicago-0.01), so no source change was needed. Checked on a fresh sheet and stills: lantern ember almost out at 3.917 under 'Our'; still in Chicago at 4.375 (cut 4.355) and 4.458 on 'starts'; stamp's first keys 'CH' strike at 6.75 on 'Two'; window dark at 9.000, lamp on at 9.083 on 'Chicago'. Legibility audit passes, tsc is clean.",
+            "wordTimes": [
+              3.917,
+              3.92,
+              4.375,
+              4.38,
+              4.458,
+              4.46,
+              6.75,
+              7.125,
+              7.13,
+              9,
+              9.08,
+              9.083
+            ],
+            "sha": "77f495b4b0b8",
+            "recordedBy": "author",
+            "recordedAt": "2026-10-13T23:02:26Z"
+          },
+          "ch09-s05": {
+            "outcome": "fixed",
+            "reason": "', still argued' now types at 45 cps (TYPE_CPS) from argued-0.4 = 19.60 (0.35 s earlier than before), on the 24 fps clock: partial at 19.70, complete by 19.92; cut back to the Wall moved to slipCarried-0.06 = 20.776, so the finished line holds ~0.875 s on frames (>= 0.8). Still at cut-0.1 = 20.676 shows the complete line (and no forearm: the slip lift now starts at the cut). Marcus card untouched: pinned 21.0, full at 22.0 and 24.08 (hold to 24.1). Legibility audit passes (0 subject under 22 px).",
+            "wordTimes": [
+              19.7,
+              19.92,
+              20,
+              20.676,
+              20.68,
+              20.83,
+              20.833,
+              22,
+              24.08,
+              24.083
+            ],
+            "sha": "7c5659d79056",
+            "recordedBy": "author",
+            "recordedAt": "2026-10-13T23:03:41Z",
+            "note": "Small: ', still argued' types onto the LEARNED FEATURES card at 30 cps on 'argued' and the cut to the Wall comes about 0.3 s after the last character, so it reads as a flicker. Type at 45 cps starting 0.3 s earlier and hold the finished line at least 0.8 s before the cut. Keep the GARY MARCUS card's 2.5 s readable hold exactly. Verify a still at cut - 0.1 showing the complete line.",
+            "check": {
+              "ok": true,
+              "present": [
+                "GARY MARCUS",
+                "Deep Learning: A Critical Appraisal"
+              ],
+              "absent": [],
+              "missing": [],
+              "found": [],
+              "removedKeys": []
+            }
+          },
+          "ch04-s07": {
+            "outcome": "fixed",
+            "reason": "Round-5 routed note holds: transitionIn stays 'cut' (script+timeline), cards --trans-only shows no transCarry, stills +0.1/+0.5 show the clean winter valley with no ch04-s06 text; legibility 0 subject texts under 22 px. Critic r1: sky ruler lines removed (clouds() now one closed, tapered sub-path per run where envAt>0.03, nothing spans the gaps); ridge hollows deepened (L3 hollow mix 0.86, L4 0.84, L2 0.7, shorter falls) and L5 near bank lifted 40 px; pull-back houses fade in from warm+0.1 under the wipe wall so +9.58/+9.65 are never empty; Helsinki tag moved to pH.x-130, clear of the thread at clue (+4.9); student elbow bent ~12-14 deg more, pencil reaches the paper; DO 20 highlight band clamped to the text column.",
+            "wordTimes": [
+              0.1,
+              0.3,
+              0.5,
+              0.96,
+              3.44,
+              4.69,
+              4.9,
+              6.9,
+              7.5,
+              8.6,
+              9.4,
+              9.5,
+              9.58,
+              9.65
+            ],
+            "sha": "f0806afd6cbc",
+            "recordedBy": "reviser",
+            "recordedAt": "2026-10-13T23:13:07Z",
+            "note": "The 1 s crossfade in from ch04-s06 (0.0 to about 0.7) double-exposes the outgoing frame's whole text load (Papert quote, TRANSLATION 1966 / MANSFIELD 1969 / PERCEPTRONS 1969 / LIGHTHILL 1973 cards, A-B-C card) at 40-50 % over the winter valley (art, full frame at +0.17). Change ch04-s07's transitionIn to 'cut' and let the house windows lighting carry the change, or fade ch04-s06's cards out over its last 0.6 s so the crossfade blends picture into picture. Verify stills at +0.1, +0.3 and +0.5 with no readable outgoing text."
+          },
+          "ch12-s08": {
+            "outcome": "fixed",
+            "reason": "Hand-off holds: no audience busts (runners from sets/ch12-s08-facade); the round-4 sitBack dissolve is unchanged (diss0 = sitBack - 0.3, 0.25 s), checked at 14.45/14.6 s. Critic notes applied: dark falloff past the Wall panel's right edge and left of it above the X-ray cabinet (16.9/17.45 s); ledger page lowered in value, given a lamp pool and a foreground lamp and desk lip (10.6/13.6 s); a third of the sparks leap the roofline to the right pier and right neighbour, others land in the left neighbour (12.25-13.6 s); neighbours' windows flicker on with the users and settle dim (6.6/7.4 s); ledge cut-lines veiled during the crossfade-in (0.3 s); date stamps exit 0.1 s ahead of the dissolve (14.45 s). Legibility 0 subject under 22 px; cards/ghost audit clean.",
+            "wordTimes": [
+              0.3,
+              6.6,
+              7.4,
+              10.6,
+              12.25,
+              12.4,
+              12.9,
+              13.6,
+              14.3,
+              14.37,
+              14.45,
+              14.49,
+              14.6,
+              14.66,
+              16.9,
+              17.45
+            ],
+            "sha": "19729f958a85",
+            "recordedBy": "reviser",
+            "recordedAt": "2026-10-14T00:34:05Z",
+            "note": "Re-sheeted after the crowd-kit change; it uses no audience busts (its runners are from sets/ch12-s08-facade), so nothing changed. Keep the round-4 sitBack dissolve."
+          },
+          "ch13-s03": {
+            "outcome": "partial",
+            "reason": "the shot file changed after the outcome was recorded (sha 34dadbf21a5c -> eef96cc11fd6) and the note has no mechanical check: re-verify; author said: Pause letter now falls in already printed (header bar + hairline rule, 8 ruled text lines, sign-off line and signature scrawl at 0.6 ink alpha): paper and ink opaque together within 2 frames from letter-0.3 s, with a 34 px drop settling before 'letter'; cardProbe('pause-letter') on its face. Stills checked after last edit at +7.54 (not yet in), +7.67 (printed, mid-fall), +7.92 (printed, settled), +8.92 (printed, label up); sheet tile +7.83 printed. cards.mjs: 0 blank probed cards; legibility: 0 subject under 22px; tsc clean. No hand-off entry for this id in round5-global.",
+            "wordTimes": [
+              7.54,
+              7.67,
+              7.83,
+              7.92,
+              8.92
+            ],
+            "sha": "eef96cc11fd6",
+            "recordedBy": "author",
+            "recordedAt": "2026-10-14T00:24:05Z",
+            "note": "Small: on 'letter' (+7.83) the pause letter falls in as a blank pale rectangle and its ruled lines appear only at about +8.9. Print it (header line, ruled text, signature scrawl at about 60 % ink) from its first visible frame and add cardProbe. Verify a still at 7.9.",
+            "recordedSha": "34dadbf21a5c"
+          },
+          "ch14-s04b": {
+            "outcome": "fixed",
+            "reason": "Routed fairness fix still holds after the reviser's edits: the three tags arrive as one row (HELPS HUAWEI 5.59 left, SELF-DEFEATING 6.19 centre, DECISIVE tag2+0.6 = 6.79 right), all three at full ink by 7.0, equal size/height/warm-grey paper at 10.26 and 14.5, no solo beat, light change or push; the removed wordEnd timing and every removed string stay absent. Reviser r1 (critic notes, checked on stills rendered after the last edit at 7.0, 10.26, 10.6, 12.5, 14.5 and the new contact sheet): laid match seated ~14 px (1080p) lower so the 2022 candles' vertical lettering ends clear above COMPUTE MATTERS LESS? (no overlap at 14.5); the stub's hold smoke is now a soft rising curl (1.5 px core in a 3 px veil, ~30 % at the root, gone ~150 px above the wick), off the lettering and the match; water/skyline band 253-600 stage px darkened ~15-18 % (measured 121 -> 99 luma) and the three flames' halos +25 % radius, tags untouched; the two lit ring lines on two#2 ~1 px heavier while lit, the 15 % dim of the other candles unchanged. legibility 0 subject under 22 px; cards 0 ghost.",
+            "wordTimes": [
+              7,
+              8.75,
+              10.26,
+              10.6,
+              12.5,
+              14.5
+            ],
+            "sha": "063e5d44b741",
+            "recordedBy": "reviser",
+            "recordedAt": "2026-10-14T00:48:25Z",
+            "note": "MAJOR (fairness regression; historian, confirmed on the sheet: two tags at +10.71, the third alone at +12.67). A round-4 critic note delayed DECISIVE · AMODEI (ANTHROPIC), KHAN (EX-NSC) to T.wordEnd('L1410b','years') + 0.4, so the position of the narrator's maker arrives 5-6 s after the other two, alone in the silent tail, and holds as the shot's last word: it reads as the verdict. Bring the three in as one row: tag1 5.59 (HELPS HUAWEI, left), tag2 6.19 (SELF-DEFEATING, centre), DECISIVE at tag2 + 0.6 (about 6.79, right). Remove the wordEnd('years') + 0.4 timing. Keep size, warm-grey paper, or",
+            "check": {
+              "ok": true,
+              "present": [
+                "DECISIVE",
+                "HELPS HUAWEI",
+                "SELF-DEFEATING",
+                "'behind'"
+              ],
+              "absent": [
+                "'years') + 0.4",
+                "years"
+              ],
+              "missing": [],
+              "found": [],
+              "removedKeys": [
+                "ONE TO THREE",
+                "one to three",
+                "'trailing'",
+                "'years') + 0.4",
+                "years"
+              ]
+            }
+          },
+          "ch14-s07": {
+            "outcome": "fixed",
+            "reason": "Routed double-exposure fix still holds: at 7.3, 7.5 and 7.8 the shelf is one opaque plane in one continuous pull-back (unchanged 7.16-8.16), tags fully cleared before 7.2, quote not started at 7.8; STATUS: OPEN strikes on 'stands' (absent at 14.29, struck at 14.33), its timing untouched. Reviser r1 (critic notes, stills after the last edit): the year-or-two-behind stub has a clean straight top (frayed:false, as s04b's clean blow-out) and its base tag carries s04b's record OCT 2022 – JAN 2025 · ≈ 2 (faded in only once whole inside the safe area, so the jamb never cuts it); the three s04b dissent tags hang small and dim (texture) in one row above the chokepoint candle from 13.5 s, same order and size; the WASHINGTON page's paper and lettering share one alpha in a short 0.5-0.85 s dissolve (gone well before 1.2, no blank paper at 0.9/1.05/1.2) with a cardProbe (cards.mjs: 2 probed, 0 blank, 0 ghost); the shelf plane reaches full alpha by 0.95 so the gap taper's wax is solid on 'candle' (1.05) and its label inks from 1.15; the reflected hand's sleeve is one smooth tapered shape with a 2.6 px (1080p) candleAmber rim on its lit side and a pale shirt-cuff band; the gap taper is graded ~25 % darker from flame to base, rim on the lit side only, warm streak kept, still the brightest candle; a 3 % ease.move push 8.3-13.5 toward candles and quote, held through fence and stamp, given back under the pull back on 'nobody' (depth audit ok, legibility 0 under 22 px). The '0.00' sheet frame showing a cropped LIMA page is ch14-s06's last frame (local 20.04, the shot boundary falls inside that frame); ch14-s07's own first frame (0.0417) has LIMA fully off.",
+            "wordTimes": [
+              0.9,
+              1.05,
+              1.15,
+              1.2,
+              7.3,
+              7.5,
+              7.8,
+              9,
+              13,
+              14.29,
+              14.33,
+              14.5,
+              18.7
+            ],
+            "sha": "243556b4f29a",
+            "recordedBy": "reviser",
+            "recordedAt": "2026-10-14T00:48:25Z",
+            "note": "Story and art both see the same double exposure around 'liang' (+7.2 to +8.3): the move from the close gap-candle framing to the wide is a dissolve between two framings, so at +7.50 the 2022 candles are about 50 % transparent, the tags are still about 60-80 % and cropped, and the Liang quote is at 20-30 %. Replace the dissolve with one continuous pull-back (ease.move, about 1.0 s) on a single opaque shelf plane. Finish the tags' textSwapOut before 7.2, and start the quote's fade-in only after they clear. Keep the STATUS: OPEN stamp on 'stands' exactly as it is (fx-stamp-fence is synced to it)."
+          },
+          "ch10-s10": {
+            "outcome": "fixed",
+            "reason": "Hand-off holds: no 'untrained toy weights'/'real bindings' text; ILLUSTRATIVE tag is the only disclaimer. Critic notes applied: talk/think alone labels fade over six+0.05..+0.35 (think alone readable ~2.6-3.7 s), BLOCK headers in over six+0.2..+0.5 (no overlap, cards audit 0 ghost); haze band (0.17 mood haze) between hall and loom in the wide; rimNear chair scale 0.5, dx -34 (clear of 'bank'); CAM_C push starts D-1.35. Legibility 0 under 22 px, depth ok.",
+            "wordTimes": [
+              1.04,
+              2.5,
+              3.62,
+              3.67,
+              4.25,
+              5.4,
+              8.21,
+              8.25,
+              8.83
+            ],
+            "sha": "8eb9525123b5",
+            "recordedBy": "reviser",
+            "recordedAt": "2026-10-14T00:41:57Z",
+            "note": "Spec hygiene: the 'untrained toy weights' caption is gone from the spec; the ILLUSTRATIVE tag is the only disclaimer."
+          },
+          "ch10-s12": {
+            "outcome": "fixed",
+            "reason": "Hand-off holds: card reads only '12 hours · one machine, 8 GPUs'; no compute comparison in source. Critic notes: visible diagonal window rake (TL warm, BR shaded) + cord shadows; dies' cyan spill reaches ~80 px round the rack, clipped to the paper; reference slate '10 words · 100 pairs' holds at ~0.45 ink to D-0.15 beside 20 · 400 and cost ∝ n²; fly = catch+0.35 with banner in from fly+0.15 (card still whole at 13.54). Knot ending unchanged. Legibility/cards audits clean.",
+            "wordTimes": [
+              9.66,
+              10.06,
+              10.66,
+              11.86,
+              12.84,
+              13.19,
+              13.54,
+              14,
+              15.92,
+              16.27,
+              17.75
+            ],
+            "sha": "9ecacb33f817",
+            "recordedBy": "reviser",
+            "recordedAt": "2026-10-14T00:41:57Z",
+            "note": "Spec hygiene: label '12 hours · one machine, 8 GPUs', claims without e10-flops, beat 'seventh' renamed 'gpus' (10.661, nothing anchors), no compute piles / GNMT / ratio / BLEU in the spec. Never re-add any compute comparison."
+          },
+          "ch10-s13b": {
+            "outcome": "fixed",
+            "reason": "Round-5 transition-ghost fix kept: honest card fades D-0.9..D-0.55, complete 8.2-10.6 s. Critic notes: candle stubs darkened toward ink (~15%) and shelf lip 0.6->0.72; dawn window patches +20%; cameo bloom -20% and cameos/tags drop to 0.8 from honest2; card at 30 px (legibleSize 30), CARD_RIGHT/CARD_FOOT kept, clears the 2012 flame; base tag set '1997–' over '2017' and moved ~12 stage px left (clear of the next candle's foot). Legibility/cards audits clean.",
+            "wordTimes": [
+              0.91,
+              4.3,
+              6.65,
+              7.53,
+              8.2,
+              8.21,
+              10.58,
+              10.6,
+              10.75,
+              11.04,
+              11.08
+            ],
+            "sha": "4a34548ca07d",
+            "recordedBy": "reviser",
+            "recordedAt": "2026-10-14T00:41:57Z",
+            "note": "Round-5 global (transition ghost): the honest card fades out over D-0.9..D-0.55 (gone 0.05 s before the crossfade into ch10-s14), so 'not' no longer dissolves over ch10-s14's 'der'. It is complete and readable from 8.2 to 10.6 s. Keep it."
+          },
+          "ch15-s01": {
+            "outcome": "fixed",
+            "reason": "Round-5 routed note: Hinton asleep on the pillow from ~5.3, handset lights cool white on 'phone' 9.37, 2-frame mechanical shiver on 'rings', head lifts; ribbon opaque, gone by memories+0.2; HOPFIELD NET · 1982 on 'downhill', BOLTZMANN MACHINE · 1983–85 on 'cools', both gone before 'cheered'; re-fit to L1502. Critic r1: low headboard + finial behind pillow, low blanket with 1.5 px paper-tone rim, wall 15% darker, near-plane drape at right edge; head lift ~12 deg about the neck landing by 10.1; one opaque tag plate (Hopfield text out, plate re-cuts 2 frames, Boltzmann inks from cools-0.14, no half-wiped plate); medallion push 1.25x more for downhill/cools. Legibility 0 under 22px, cards 0 ghost/blank, depth ok. Kit flag (not drawn here): audienceBust 'parted' brim reads as a cap.",
+            "wordTimes": [
+              6,
+              9.37,
+              9.8,
+              9.81,
+              10.12,
+              10.58,
+              16.4,
+              19.27,
+              19.58,
+              20.5,
+              20.52,
+              25.33,
+              25.5,
+              25.7,
+              25.82,
+              27,
+              27.13
+            ],
+            "sha": "774563b667c5",
+            "recordedBy": "reviser",
+            "recordedAt": "2026-10-14T01:35:30Z",
+            "note": "Three reviewers, one shot. (1) STORY/SYNC: the Nobel call, the peak of Hinton's arc, plays to an empty hotel room, and the handset lights about 0.7 s after 'rings'. Put Hinton in the room from about +5.3 ('October'): a sleeping figure under the turned-back blanket on the L5 bed edge, head on the pillow with the cast.ts sweptBack 2020s hair, no face detail. On 'phone' the handset on the bedside table lights cool white. On 'rings' it shivers with a 2-frame jitter (mechanical, no glow bloom) and the head lifts toward it. The cut to the Nobel hall stays where it is. (2) VISUAL: the citation ribbon",
+            "check": {
+              "ok": true,
+              "present": [
+                "HOPFIELD NET · 1982",
+                "BOLTZMANN MACHINE · 1983–85",
+                "'Hopfield'",
+                "'Versailles'",
+                "'rings'",
+                "'cools'"
+              ],
+              "absent": [],
+              "missing": [],
+              "found": [],
+              "removedKeys": []
+            }
+          },
+          "ch15-s03": {
+            "outcome": "partial",
+            "reason": "note check FAILED (still has 'L1504b', still has 'Snuff', still has 'habit'); author said: Round-5 routed note: snuffer on T.word(L1504b,Snuff) (now lands ~12.0, within 0.2 s), HABIT on T.word(L1504b,habit), echo caption only after 'habit', slugs done before L1505 'plan', RABBIT on 'rabbit'. Critic r1: green banker's shade at upper left (near plane z 780, partly out of frame, lit lip) with a soft desk pool, defocused inkwell + pen at lower left with warm rim, halo outer 30% darkened so the lit lantern is brightest, one thread only. LEDGER CONFLICT: the r5 REMOVED list ('L1504b','Snuff','habit') is a mis-extraction of the anchors the same note requires; kept in source deliberately.",
+            "wordTimes": [
+              9.13,
+              11.84,
+              12.04,
+              14.3,
+              14.6,
+              17.28,
+              17.91
+            ],
+            "sha": "46303cb08db4",
+            "recordedBy": "reviser",
+            "recordedAt": "2026-10-14T01:35:30Z",
+            "note": "Re-fit to the NEW solo line L1504b ('Snuff that plan out, and it rhymes with “habit” instead.'), inserted between L1504 and L1505 (teacher and story agree: the picture shows the decisive intervention, rabbit snuffed and habit chosen, but the narration never says it). Anchor the snuffer drop on T.word('L1504b','Snuff') and HABIT lighting on T.word('L1504b','habit'). The 'rabbit → (suppressed) → habit' caption may stay as a texture-role echo after 'habit', never before it. The slugs finish before 'plan' (L1505). Keep RABBIT on T.word('L1504','rabbit') and L1505's anchor on 'plan'. Verify stills ",
+            "check": {
+              "ok": false,
+              "present": [
+                "'Snuff'",
+                "'habit'",
+                "'plan'"
+              ],
+              "absent": [
+                "L1504b",
+                "Snuff",
+                "habit"
+              ],
+              "missing": [],
+              "found": [
+                "L1504b",
+                "Snuff",
+                "habit"
+              ],
+              "removedKeys": [
+                "L1504b",
+                "Snuff",
+                "habit"
+              ]
+            }
+          },
+          "ch15-s04": {
+            "outcome": "fixed",
+            "reason": "Round-5 hand-off (clock moved bodily) applied, re-sheeted. Critic r1: METR trial label sets in at trial+0.65 (~15.38) after the pan settles; WITHOUT/WITH TOOLS hands heavier solid black, ghost hand translucent paper at 45% a step darker than the dial; thin paper arc ghost->real hand drawn on 'slower'; snuffer-scissors redrawn as a hand tool (rings, brass pivot, blades, snuffer box) held ahead of the hand; pool falls 25% in radius/light over 0.6 s from 'date'. No GEMINI 3 entry. Legibility 0 under 22px, cards 0 ghost.",
+            "wordTimes": [
+              0.2,
+              0.5,
+              0.75,
+              1,
+              5.5,
+              8.02,
+              14.11,
+              15,
+              15.5,
+              17.25,
+              18.39,
+              18.9,
+              21.22,
+              21.85
+            ],
+            "sha": "f35e7333febe",
+            "recordedBy": "reviser",
+            "recordedAt": "2026-10-14T01:35:30Z",
+            "note": "Clock: moved bodily +4.4167 s (starts 1980.9583); shot-local times unchanged. Re-sheeted."
+          },
+          "ch15-s05": {
+            "outcome": "fixed",
+            "reason": "(a) Lab names only on the four brass plates (GOOGLE DEEPMIND / ANTHROPIC / OPENAI / META), one type size for all four (ANTHROPIC sets it) and the same soft plate light in the wide; hanging tags carry no name line and hang only when they carry a date (Anthropic on b2 FEB–SEP 2026 -> APPROVED JULY 2026, OpenAI on 'test' JULY 2026); 'as of October 2026' appears ONCE as a single small line centred under the row (0.3-1.9 s). Checked 0.4, 0.9. (b) The L6 chair finial is removed (moved fully below frame); 0.9 shows only the L5 inkwell and book-end; depth audit still ok (min 5 planes). (c) The plate under the OpenAI 'warning shot' quote is a 48 px-feathered ellipse, no rectangular edge (checked 36.5). Settlement label, both judges' quotes and the 38.75 s length unchanged; legibility 0 subject under 22px, cards 0 blank/0 ghost.",
+            "wordTimes": [
+              0.4,
+              0.9,
+              3.4,
+              36.5
+            ],
+            "sha": "b84c78ff61a9",
+            "recordedBy": "author",
+            "recordedAt": "2026-10-14T01:06:51Z",
+            "note": "Art finishing note (the finial has now been routed three times). (a) In the opening wide every lab is named twice: brass plates plus hanging tags (eight labels for four objects). Keep the four lab names on the brass plates (GOOGLE DEEPMIND / ANTHROPIC / OPENAI / META, equal size and light), drop the name line from the hanging tags, and show 'as of October 2026' ONCE as a single small line under the row. (b) The defocused finial is still a soft, round-headed blob at the bottom edge (x about 89 %, 0-1 s) that reads as a head: give it a turned, rim-lit profile (knob plus collar, 2 px warm rim) or",
+            "check": {
+              "ok": true,
+              "present": [
+                "GOOGLE DEEPMIND",
+                "ANTHROPIC",
+                "OPENAI",
+                "META",
+                "as of October 2026",
+                "$1.5B SETTLEMENT"
+              ],
+              "absent": [],
+              "missing": [],
+              "found": [],
+              "removedKeys": []
+            }
+          },
+          "ch15-s06": {
+            "outcome": "fixed",
+            "reason": "Round-5 hand-off: no Hassabis caption/name card/hand-pin/figure, AMI Labs label kept verbatim. Critic r1: on 'dangerous' worry flame +25% held 1.5 s, its lettering lifted to ~70%, push to ~1.07 on Hinton/Bengio; study pre-darkens from 1.9 so slips are under ~20% before the stage passes 50%; name card in by ~3.45; slow push ~1.1x 4-9 s; AMI label right-aligned to x 1212 on a denser dark plate, the truck right for 'the third' keeps the tall candle's flame ~65 px left of it and the heads clear below. Cards 0 ghost, legibility 0 under 22px.",
+            "wordTimes": [
+              0.3,
+              0.9,
+              1.8,
+              2.2,
+              2.46,
+              3.22,
+              3.45,
+              4.07,
+              6.26,
+              6.6,
+              7.4,
+              8.2,
+              9.9,
+              12
+            ],
+            "sha": "8726b4e49860",
+            "recordedBy": "reviser",
+            "recordedAt": "2026-10-14T01:35:30Z",
+            "note": "Spec hygiene: chapters/ch15.json no longer lists the Hassabis caption, the 'Demis Hassabis' name card, a hand-pin or a Hassabis figure, and now lists the AMI Labs label. Do not re-add any of these. Clock moved bodily +4.4167 s (2041.875); shot-local unchanged."
+          },
+          "ch15-s07": {
+            "outcome": "fixed",
+            "reason": "Hand-off only (clock moved bodily +4.4167 s, shot-local unchanged): no code change needed; contact sheet re-rendered on the moved clock (2056.29-2070.38) and checked at b1 2.71 and b2 7.68, captions and quote card unchanged",
+            "wordTimes": [
+              2.71,
+              7.68
+            ],
+            "sha": "7fb7a34025f9",
+            "recordedBy": "author",
+            "recordedAt": "2026-10-14T01:10:09Z",
+            "note": "Clock moved bodily +4.4167 s; shot-local unchanged. Re-sheeted."
+          },
+          "ch15-s08": {
+            "outcome": "fixed",
+            "reason": "Round-5 routed note kept: stamp on T.beat('stamp') 37.929 (full red, >=22 px cap); THE FIELD card off frame after the pull-back; one WHO TAUGHT IT? slip only (clipped to the CASE FILE page); dark lantern near frame centre for the final 2 s. Critic r1: pull-back ends ~110 px (1080p) higher (vertical only), board tray is the clean bottom line, no half-cropped shelf stubs at 41.3/42.3/43.25; GO gets Cyc's ghost-bar sleeve highlight at the same strength and tags in Cyc's lit-out-span format from the set's candle data (GO '2014-2016 · 2', match 'JAN 2025 · a day'); the blackened match gets a lamp practical (intensity 1.0) from L1515 'match', its tag on 'day'; THE FIELD card's quotations ink with its title (card and words fade together).",
+            "wordTimes": [
+              25.1,
+              26.5,
+              27.2,
+              33.55,
+              37.88,
+              37.93,
+              39.5,
+              41.2,
+              42.3,
+              43.25
+            ],
+            "sha": "80b564bf65ba",
+            "recordedBy": "reviser",
+            "recordedAt": "2026-10-14T01:27:20Z",
+            "note": "Close the round-4 partial as FIXED in the ledger (four reviewers confirm on the sheet: push on 'stays', STATUS: OPEN struck in red on 'open' at +37.92, printed CASE FILE page; the partial came only from the note check missing the literal 'open', because the shot correctly anchors on T.beat('stamp')). New, small: the last 1.5 s (+41.8 to 43.3) are crowded. Keep THE FIELD 2019-2025 card off frame after the pull-back (it has had its 3 s), and remove the loose second WHO TAUGHT IT? slip on the desk (the one clipped to the case file already carries it). The dark lantern stays near frame centre for ",
+            "check": {
+              "ok": true,
+              "present": [
+                "HOW FAR? HOW FAST?",
+                "STATUS: OPEN",
+                "CASE FILE"
+              ],
+              "absent": [],
+              "missing": [],
+              "found": [],
+              "removedKeys": []
+            }
+          },
+          "ch15-s09": {
+            "outcome": "fixed",
+            "reason": "Round-5 routed note kept: STATUS: OPEN fully on the folder face under CASE FILE, full red, ~-2.5 deg, struck on b3 12.75 and readable to the lamp-off on b4 15.25; verdict slip under WHO TAUGHT IT?; cyan pinprick 15.79; neighbour's lamp by 'lamp'; articulated paper-cut hands (pinch on the matchstick, one rimmed cuff, a single button), hand in on 'suspicious'. Critic r1: grip hand's index finger is its own piece up the box face and along its top edge with a 2 px gap; ignition ON T.word(L1520,'new') (twos-frame 21.833) with a 4-frame white-gold flare (practical candle 1.4, r 60, seed 2031) at the box edge settling to a match flame; wick touched/caught on the twos-frame holding T.word(L1520,'candles'); hands ease out over 1.1 s from ~22.2 (gone ~23.3), lit hold to the end; cursor dims to 40% from 'new' and goes out as the wick catches.",
+            "wordTimes": [
+              12.8,
+              13.9,
+              15.2,
+              15.79,
+              17.67,
+              19.8,
+              20.5,
+              21.4,
+              21.875,
+              21.9,
+              21.958,
+              22.042,
+              22.54,
+              22.9,
+              23.2
+            ],
+            "sha": "dcc6514ed2d9",
+            "recordedBy": "reviser",
+            "recordedAt": "2026-10-14T01:27:20Z",
+            "note": "The film's final STATUS: OPEN stamp, the loudest of the three in sound (-29), is the faintest in picture: a low-saturation red rectangle half off the CASE FILE folder's right edge (+12.75, +13.92, +15.25; confirmed on the sheet). Keep it on b3 (12.75) and on the folder, not on the question card. Move it fully onto the folder face, centred under 'CASE FILE' with at least 20 px clear of the edge, at ch15-s08's size (>= 22 px cap), the same full-ink red and a 2-3° tilt, struck at full opacity on the b3 frame and held readable until the lamp-off on b4. ART: the match hand (+19.8 to +22.1) is the c",
+            "check": {
+              "ok": true,
+              "present": [
+                "STATUS: OPEN",
+                "LEARNING + ACCOMPLICES",
+                "NEVER ONE PERSON",
+                "'suspicious'",
+                "'new'",
+                "'candles'"
+              ],
+              "absent": [],
+              "missing": [],
+              "found": [],
+              "removedKeys": []
+            }
+          },
+          "ch15-s10": {
+            "outcome": "fixed",
+            "reason": "Verify only (changed nothing): CREDITS footer carries the maker disclosure 'Claude is made by Anthropic, a lab in this story, held to the same sources as every other.' above the Strudel pointer on the re-rendered sheet (8.58-20.08), every model and tool credited; card timings unchanged (b2 8.5, sources 21.3, b3 27.9); cards.mjs re-run after the verify: 0 blank, 0 suspect, 0 ghost; legibility 0 subject under 22 px",
+            "wordTimes": [
+              8.58,
+              12.42,
+              21.3,
+              27.88
+            ],
+            "sha": "520c5f34aa16",
+            "recordedBy": "author",
+            "recordedAt": "2026-10-14T01:10:09Z",
+            "note": "DONE by hand 2026-10-13 (verify only; change nothing): the CREDITS card footer now carries the maker disclosure \"Claude is made by Anthropic, a lab in this story, held to the same sources as every other.\" (wrapped, 22 px cap italic mono) above the Strudel pointer; credits.json footer is an array; timing unchanged. Keep the user direction to credit every model and tool.",
+            "check": {
+              "ok": true,
+              "present": [
+                "a lab in this story"
+              ],
+              "absent": [],
+              "missing": [],
+              "found": [],
+              "removedKeys": []
+            }
+          }
+        },
+        "at": "2026-10-14T01:36:46Z",
+        "by": "film-shots",
+        "round": 5,
         "consumed": {
           "shots": true,
           "score": true

@@ -122,8 +122,8 @@ const STUDENT = createPuppet(STUDENT_SPEC);
  * pencil at the sheet's margin, its point on the line he is reading (HI = the first code line, LO = the loop's end;
  * solved against the puppet's own arm so the hand lands on the line)
  */
-const READ_HI: Pose = { ...addPose(POSES.sit, { torso: 12, neck: 10, head: 12, shoulderF: 32, elbowF: 56, shoulderB: 4, elbowB: 4 }), handF: 'pinch', handB: 'palmDown' };
-const READ_LO: Pose = { ...addPose(POSES.sit, { torso: 14, neck: 12, head: 16, shoulderF: 4, elbowF: 56, shoulderB: 4, elbowB: 4 }), handF: 'pinch', handB: 'palmDown' };
+const READ_HI: Pose = { ...addPose(POSES.sit, { torso: 12, neck: 10, head: 12, shoulderF: 24, elbowF: 70, shoulderB: 4, elbowB: 4 }), handF: 'pinch', handB: 'palmDown' };
+const READ_LO: Pose = { ...addPose(POSES.sit, { torso: 14, neck: 12, head: 16, shoulderF: 4, elbowF: 68, shoulderB: 4, elbowB: 4 }), handF: 'pinch', handB: 'palmDown' };
 const INS = { scale: 2.3, x: 296, floor: 762, deskY: 548 };
 const SEAT_H = seatHeight(STUDENT_SPEC, POSES.sit) * INS.scale;
 /**
@@ -315,16 +315,17 @@ function paintMap(f: Frame, sc: Scene, t: number) {
   // houses of the foreground, their bright windows facing us, away from the map
   // (on the pull-back the houses fade in only once the camera is well behind their plane, so it never passes
   // through a frame filled with their out-of-focus walls)
-  const nearK = pulled ? clamp01((330 - cam.z) / 240) * sm((t - b.wipeOut + 0.05) / 0.15) : clamp01((420 - cam.z) / 260);
+  // (they come in under the last of the wipe's wall, from ≈ warm + 0.1, so the frame never shows an empty floor)
+  const nearK = pulled ? clamp01((420 - cam.z) / 240) * sm((t - (b.pull0 + 0.1)) / 0.18) : clamp01((420 - cam.z) / 260);
   if (nearK > 0) {
     f.layer('L5', (c, env) => {
       // on the map: a dark near snowbank across the foot of the frame (blurred by its plane), so the east → west
       // drift slides three planes against each other: this bank, the near ridge, the far ridges
       if (!pulled) {
-        f.cached(`${ID}/L5/bank/${env.mood.id}`, 2700, 360, (cc) => {
-          cc.translate(700, -600);
+        f.cached(`${ID}/L5/bank2/${env.mood.id}`, 2700, 500, (cc) => {
+          cc.translate(700, -460);
           snowbank(cc, env);
-        })(c, -700, 600);
+        })(c, -700, 460);
       }
       c.save();
       c.globalAlpha *= nearK;
@@ -349,7 +350,8 @@ function paintMap(f: Frame, sc: Scene, t: number) {
     // each tag sits clear of the roofs around it (lifted over the far ridge's houses), on its own soft plate
     tag(f.c, env, ['FUKUSHIMA · TOKYO · 1979'], pT.x, pT.y + 82, b.tTok, tagA);
     tag(f.c, env, ['AMARI · JAPAN · 1967', 'a way to train more than one layer'], pA.x, pA.y - 104, b.tAma, tagA, 0.3);
-    tag(f.c, env, ['HELSINKI · 1970'], pH.x, pH.y - 58, b.tHel, tagA);
+    // Helsinki's tag stands to the LEFT of its cottage: the thread rises up and to the right, so the two never cross
+    tag(f.c, env, ['HELSINKI · 1970'], pH.x - 130, pH.y - 58, b.tHel, tagA);
   }
 }
 
@@ -401,23 +403,38 @@ function clouds(c: C, env: PaintEnv) {
     let p = cloudCache.get(key);
     if (!p) {
       p = new Path2D();
-      const X0 = -2600, X1 = 3800;
-      // the bank swells and thins along its length (open sky between runs): both edges taper smoothly to a point
-      // where it thins out, so no run ends in a straight cut
+      const X0 = -2600, X1 = 3800, STEP = 6;
+      // the bank swells and thins along its length: each run where it has body is its OWN closed cut-out, tapering
+      // to a point at both ends, and the sky between runs is truly empty (no sliver joins them, so nothing draws
+      // a ruler line across the frame)
       const envAt = (x: number) => sm((fbm(x / 700, seed + 9) - 0.3) / 0.22);
-      p.moveTo(X0, y0 + th);
-      // the lumpy top: overlapping rounded lobes of seeded size
-      for (let x = X0; x <= X1; x += 6) {
-        const lobe = Math.sqrt(Math.abs(Math.sin((x / pitch) * Math.PI + seed)));
-        const top = y0 + th - envAt(x) * (th * (0.4 + 0.6 * lobe) + 8 * fbm(x / 40, seed));
-        p.lineTo(x, top);
+      const runs: [number, number][] = [];
+      let r0: number | null = null;
+      for (let x = X0; x <= X1 + STEP; x += STEP) {
+        const on = x <= X1 && envAt(x) > 0.03;
+        if (on && r0 === null) r0 = x;
+        else if (!on && r0 !== null) {
+          if (x - r0 > 60) runs.push([r0, x - STEP]);
+          r0 = null;
+        }
       }
-      // the underside, torn and gently wavy, closing up wherever the bank thins out
-      for (let x = X1; x >= X0; x -= 3) {
-        const e = envAt(x);
-        p.lineTo(x, y0 + th + e * (2 + 1.6 * hash1(Math.floor(x / 3), seed) + 6 * Math.sin(x / 57 + seed)) - (1 - e) * 1);
+      for (const [a, z] of runs) {
+        // a taper over the run's first and last stretch, so the ends are pointed, never cut square
+        const taper = (x: number) => sm(Math.min(x - a, z - x) / 90);
+        const k = (x: number) => envAt(x) * taper(x);
+        p.moveTo(a, y0 + th);
+        // the lumpy top: overlapping rounded lobes of seeded size
+        for (let x = a; x <= z; x += STEP) {
+          const lobe = Math.sqrt(Math.abs(Math.sin((x / pitch) * Math.PI + seed)));
+          p.lineTo(x, y0 + th - k(x) * (th * (0.4 + 0.6 * lobe) + 8 * fbm(x / 40, seed)));
+        }
+        p.lineTo(z, y0 + th);
+        // the underside, torn and gently wavy, closing to the point at each end
+        for (let x = z; x >= a; x -= 3) {
+          p.lineTo(x, y0 + th + k(x) * (2 + 1.6 * hash1(Math.floor(x / 3), seed) + 6 * Math.sin(x / 57 + seed)));
+        }
+        p.closePath();
       }
-      p.closePath();
       cloudCache.set(key, p);
     }
     c.fillStyle = mixLab(env.fill('set'), env.fill('haze'), i === 0 ? 0.42 : 0.3);
@@ -447,7 +464,7 @@ function farRange(): Path2D {
 
 /** L5: the near snowbank, a near-black drift with a deckled, faintly moonlit lip and a few dry stalks */
 function snowbank(c: C, env: PaintEnv) {
-  const top = (x: number) => 648 + 16 * Math.sin(x / 190 + 0.8) + 9 * Math.sin(x / 67 + 2) + 4 * fbm(x / 23, 61);
+  const top = (x: number) => 608 + 16 * Math.sin(x / 190 + 0.8) + 9 * Math.sin(x / 67 + 2) + 4 * fbm(x / 23, 61);
   const p = new Path2D();
   p.moveTo(-700, 960);
   for (let x = -700; x <= 2000; x += 4) p.lineTo(x, top(x));
@@ -506,9 +523,13 @@ function snowbank(c: C, env: PaintEnv) {
 function ridge(c: C, env: PaintEnv, id: 'L2' | 'L3' | 'L4') {
   const m = env.mood;
   const crest = id === 'L4' ? mixLab(env.fill('halo'), env.fill('core'), 0.04) : id === 'L3' ? mixLab(env.fill('halo'), env.fill('haze'), 0.28) : mixLab(env.fill('halo'), env.fill('haze'), 0.55);
-  const hollow = id === 'L4' ? mixLab(env.fill('halo'), env.fill('set'), 0.78) : id === 'L3' ? mixLab(env.fill('haze'), env.fill('set'), 0.6) : mixLab(env.fill('haze'), env.fill('set'), 0.5);
+  // the hollows sink a step deeper plane by plane (L3's blue shadow is the darkest, so the near field and the
+  // houses on it separate from it: depth, not one flat pale sheet)
+  const hollow = id === 'L4' ? mixLab(env.fill('halo'), env.fill('set'), 0.84) : id === 'L3' ? mixLab(env.fill('haze'), env.fill('set'), 0.86) : mixLab(env.fill('haze'), env.fill('set'), 0.7);
   const top = RIDGES[id].base - 46;
-  const g = c.createLinearGradient(0, top, 0, top + (id === 'L4' ? 190 : 120));
+  // short falls: each field drops from its lit lip into blue shadow before the next plane's lip, so the planes
+  // stack as bright edges over dark hollows
+  const g = c.createLinearGradient(0, top, 0, top + (id === 'L4' ? 130 : 84));
   g.addColorStop(0, crest);
   g.addColorStop(0.45, mixLab(crest, hollow, 0.45));
   g.addColorStop(1, hollow);
@@ -893,7 +914,9 @@ function paintInsert(f: Frame, sc: Scene, t: number) {
     if (hd * out > 0.01) {
       const yHead = 24 + SHEET_TYPE.headerSize * 0.62, yLoop = SHEET_TYPE.codeTop + SHEET_TYPE.codeLead - 10;
       const ly = yHead + (yLoop - yHead) * run;
-      const u0 = 30, u1 = u0 + (run > 0.5 ? 400 : 360);
+      // the band hugs the typed text it lights: the header (u 44 → ≈ 386), then the loop line, indented six
+      // columns (u ≈ 148 → ≈ 483); its soft ends stay inside the text column, never out in the margin
+      const u0 = lerp(36, 136, run), u1 = lerp(400, 500, run);
       const v0 = ly - 20, v1 = ly + 16;
       const P = [sheetPt(u0, v0), sheetPt(u1, v0), sheetPt(u1, v1), sheetPt(u0, v1)];
       c.save();
@@ -901,8 +924,8 @@ function paintInsert(f: Frame, sc: Scene, t: number) {
       const g = c.createLinearGradient(P[0].x, 0, P[1].x, 0);
       const al = 0.36 * hd * out;
       g.addColorStop(0, withAlpha(m.halo, 0));
-      g.addColorStop(0.1, withAlpha(m.halo, al));
-      g.addColorStop(0.9, withAlpha(m.halo, al));
+      g.addColorStop(0.04, withAlpha(m.halo, al));
+      g.addColorStop(0.94, withAlpha(m.halo, al));
       g.addColorStop(1, withAlpha(m.halo, 0));
       c.fillStyle = g;
       c.beginPath();
@@ -910,13 +933,14 @@ function paintInsert(f: Frame, sc: Scene, t: number) {
       c.closePath();
       c.fill();
       c.restore();
-      glow(c, P[0].x + 24, (P[0].y + P[3].y) / 2, 60, m.halo, 0.16 * hd * out);
+      glow(c, P[0].x + 60, (P[0].y + P[3].y) / 2, 44, m.halo, 0.14 * hd * out);
     }
     // the pencil in his near hand, its point on the line he is reading (down the loop, on twos)
     const lineY = SHEET_TYPE.codeTop + clamp01(lineK) * 2.4 * SHEET_TYPE.codeLead - 8;
     const tip = sheetPt(40, lineY - 6);
     const dx = tip.x - hand.x, dy = tip.y - hand.y, L = Math.max(1, Math.hypot(dx, dy));
-    const len = Math.min(56, L);
+    // the point ON the paper: the pencil runs from the fist to the line (a pencil's length at most)
+    const len = Math.min(64, L);
     c.strokeStyle = PUPPET_NEAR_BLACK;
     c.lineWidth = 3.4;
     c.lineCap = 'round';

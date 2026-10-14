@@ -4928,8 +4928,8 @@
     "rounding": 7.496,
     "warm": 9.302
    },
-   "transitionIn": "crossfade",
-   "transitionDur": 1,
+   "transitionIn": "cut",
+   "transitionDur": 0,
    "mood": "winterBlue"
   },
   {
@@ -16165,7 +16165,7 @@
     "matrix": 5.894,
     "chips": 8.205,
     "sundial": 9.661,
-    "seventh": 10.661,
+    "gpus": 10.661,
     "records": 11.861,
     "wall": 13.543,
     "costEq": 16.272

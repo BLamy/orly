@@ -1,9 +1,9 @@
-// m21 — "The Verdict" / "Status: Open" (neural-net-history, ch15-s08/s09/s10). CURRENT CLOCK (timeline 2164.00 s):
-// window 2065.958–2164.000 (98.042 s), ending at the film's end; fadeIn 0 (it starts on the cut, after m20's beat of
+// m21 — "The Verdict" / "Status: Open" (neural-net-history, ch15-s08/s09/s10). CURRENT CLOCK (timeline 2168.42 s):
+// window 2070.375–2168.417 (98.042 s), ending at the film's end; fadeIn 0 (it starts on the cut, after m20's beat of
 // silence), fadeOut 1 (a safety fade over the last second only: the music is already at the room-tone floor).
 // Rubato at 60 BPM: setcps(1), one cycle = one second; every event is written at its ABSOLUTE film second on the
 // CURRENT clock through A(t) = t − S, placed by the named word or beat in narration/timeline.json
-// (ch15-s08 starts 2065.958, ch15-s09 2109.250, ch15-s10 2135.292; word time = shot start + word start).
+// (ch15-s08 starts 2070.375, ch15-s09 2113.667, ch15-s10 2139.709; word time = shot start + word start).
 // Intensity 0.5, peak 0.7 (the bloom, in the clear).
 //
 //  ff1-ff5 THE FAST-FORWARD (on the cut, from silence): tape lurch (a string chord spinning up an octave + hiss),
@@ -46,8 +46,11 @@
 //  v3-v7: see score/notes-history.json. v8 (2026-10-13, round-4 re-fit): ch15-s08/s09 and the Turing card moved
 //        bodily +3.75 s (no line inside them changed length); the CREDITS card is 12.8 s (was 6.1): the lone D is
 //        bowed twice and held to `sources`; the SOURCES celesta moved with its card.
+//  v9 (2026-10-13, round-5 clock 2168.4167 s): moved bodily +4.417 s from v8 with its shots (L1502 re-take and the new
+//        solo line L1504b upstream, in m19); no line inside m21 changed. fx-stamp-howfar is now an underWord stamp
+//        (-32 LUFS S, wet -16 dB, 0.6 s) on 'open' (2108.304); the held E's re-bow stays +0.35/+0.52 s after it.
 setcps(1)
-const S = 2065.9583
+const S = 2070.3750
 const A = (t) => +(t - S).toFixed(3)
 const N = 99        // seconds covered by each compiled sequence (the window is 98.042 s, to the film's end)
 const G = 2.0       // master trim (postgain): old-clock render 5 measured -22.0 LUFS at 2.0 (bloom -14.7 M);
@@ -92,31 +95,31 @@ function line(evs, defs) {
 
 // ---- THE FAST-FORWARD ----
 // tape lurch: a low string chord that spins up an octave as the tape catches, with a breath of hiss
-$: line([[A(2066.061), .8, '[d2,a2,d3]', .2]], { attack: .3, release: .25 })
+$: line([[A(2070.478), .8, '[d2,a2,d3]', .2]], { attack: .3, release: .25 })
   .s('gm_string_ensemble_1').penv(12).pattack(.7).lpf(1600).room(.3).rsize(2).orbit(1)
-$: line([[A(2066.061), .85, 'd4', .5]], { attack: .45, release: .2 })
+$: line([[A(2070.478), .85, 'd4', .5]], { attack: .45, release: .2 })
   .s('pink').hpf(1200).lpf(6000).gain(.05).orbit(1)
 // the forward swells (strings): A, Bm, F#m, Em, then a soft D that stays for the hush
 $: line([
-  [A(2066.961), .5, '[a2,e3,a3,c#4]', .15], [A(2067.711), .5, '[b2,f#3,b3,d4]', .15], [A(2068.461), .5, '[f#2,c#3,f#3,a3]', .15],
-  [A(2069.211), .5, '[e2,b2,e3,g3]', .15],
-  [A(2069.961), 5.6, '[d2,a2,d3]', .045, { attack: .5, release: 1.6, lpf: 800 }],
+  [A(2071.378), .5, '[a2,e3,a3,c#4]', .15], [A(2072.128), .5, '[b2,f#3,b3,d4]', .15], [A(2072.878), .5, '[f#2,c#3,f#3,a3]', .15],
+  [A(2073.628), .5, '[e2,b2,e3,g3]', .15],
+  [A(2074.378), 5.6, '[d2,a2,d3]', .045, { attack: .5, release: 1.6, lpf: 800 }],
 ], { attack: .3, release: .35, lpf: 2200 })
   .s('gm_string_ensemble_1').room(.4).rsize(3).orbit(2)
 // each era's colour on its flash
-$: line([[A(2066.961), .5, '[a3,e4]', .24]], { attack: .2, release: .3 }).s('gm_drawbar_organ').lpf(1500).room(.4).rsize(3).orbit(2)
-$: line([[A(2067.711), .5, '[f#4,b4]', .16]], { attack: .25, release: .4 }).s('gm_pad_bowed').room(.5).rsize(3).orbit(2)
-$: line([[A(2067.711), .5, 'b2', .22]], { attack: .2, release: .4 }).s('gm_cello').lpf(1200).room(.4).rsize(3).orbit(2)
-$: line([[A(2068.461), .5, '[f#2,c#3,f#3]', .5]], { attack: .2, release: .3 }).s('sawtooth').lpf(1300).gain(.12).room(.3).rsize(3).orbit(2)
-$: line([[A(2069.211), .5, '[e3,b3,e4,g4]', .2]], { release: 1 }).s('gm_orchestral_harp').room(.4).rsize(3).orbit(2)
+$: line([[A(2071.378), .5, '[a3,e4]', .24]], { attack: .2, release: .3 }).s('gm_drawbar_organ').lpf(1500).room(.4).rsize(3).orbit(2)
+$: line([[A(2072.128), .5, '[f#4,b4]', .16]], { attack: .25, release: .4 }).s('gm_pad_bowed').room(.5).rsize(3).orbit(2)
+$: line([[A(2072.128), .5, 'b2', .22]], { attack: .2, release: .4 }).s('gm_cello').lpf(1200).room(.4).rsize(3).orbit(2)
+$: line([[A(2072.878), .5, '[f#2,c#3,f#3]', .5]], { attack: .2, release: .3 }).s('sawtooth').lpf(1300).gain(.12).room(.3).rsize(3).orbit(2)
+$: line([[A(2073.628), .5, '[e3,b3,e4,g4]', .2]], { release: 1 }).s('gm_orchestral_harp').room(.4).rsize(3).orbit(2)
 
 // ---- THE VERDICT: grey plucks (dry, same note), then LEARNING and its accomplices ----
-$: line([[A(2072.301), .2, 'e2', .28], [A(2073.691), .2, 'e2', .28]], { release: .15 })
+$: line([[A(2076.718), .2, 'e2', .28], [A(2078.108), .2, 'e2', .28]], { release: .15 })
   .s('gm_pizzicato_strings').lpf(650).room(.08).rsize(1).orbit(3)
 // one high harp pluck per accomplice (above the voice): D F# A D, M3's forward pass, the last left ringing
 $: line([
   // v6: D5-D6 sit in the vowel band under the line: -4.4 dB and damped (L1527's 250-2k band was 9.7 dB clear, ~0 on 'messenger')
-  [A(2077.721), .5, 'd5', .045], [A(2078.441), .5, 'f#5', .045], [A(2079.311), .5, 'a5', .045], [A(2080.471), .5, 'd6', .03, { release: .5 }],   // v8: 'people' (D6 1-4k 1.2 dB): halved, short ring
+  [A(2082.138), .5, 'd5', .045], [A(2082.858), .5, 'f#5', .045], [A(2083.728), .5, 'a5', .045], [A(2084.888), .5, 'd6', .03, { release: .5 }],   // v8: 'people' (D6 1-4k 1.2 dB): halved, short ring
 ], { release: .8 })
   .s('gm_orchestral_harp').pan(.5).room(.55).rsize(4).orbit(3)
 
@@ -124,65 +127,65 @@ $: line([
 // first column (a third) and its ticking ostinato (a third), the trained pass's F#, the bar chart in wax,
 // the last slip, the last gesture.
 const osc = []
-for (let t = A(2082.561); t < A(2085.741); t += .25) osc.push([t, .25, Math.round((t - A(2082.561)) / .25) % 2 ? 'd5' : 'a4', .11 * W3 * WH * (t > A(2084.84) ? .45 : 1)])   // v6: -2 dB; v8: under 'all along'
+for (let t = A(2086.978); t < A(2090.158); t += .25) osc.push([t, .25, Math.round((t - A(2086.978)) / .25) % 2 ? 'd5' : 'a4', .11 * W3 * WH * (t > A(2089.26) ? .45 : 1)])   // v6: -2 dB; v8: under 'all along'
 // the ticking thins by 7 dB (its A5 left 'all' 1.6 dB clear in 1-4 kHz) so the bloom's pickup arrives from near-silence
 $: line([
-  [A(2069.961), .8, '[d4,a4]', .13, { release: 1.2 }],   // v5: decayed before 'Who'
-  [A(2075.411), .48, 'a3', .17, { release: .4 }], [A(2075.891), .4, 'd4', .17, { release: .6 }],   // v6: the A in the breath, the D struck on
+  [A(2074.378), .8, '[d4,a4]', .13, { release: 1.2 }],   // v5: decayed before 'Who'
+  [A(2079.828), .48, 'a3', .17, { release: .4 }], [A(2080.308), .4, 'd4', .17, { release: .6 }],   // v6: the A in the breath, the D struck on
   // 'Learning' and let go at once (v5's 1.6-s D, sounding D5, rang under 'with its accomplices': ~0 dB clear in 250-2k); the halo holds it
-  [A(2082.001), .11, 'd4', .2 * W3 * WH], [A(2082.111), .11, 'f#4', .2 * W3 * WH], [A(2082.221), .11, 'a4', .2 * W3 * WH], [A(2082.331), .2, 'd5', .2 * W3 * WH],   // v6: -2.3 dB
+  [A(2086.418), .11, 'd4', .2 * W3 * WH], [A(2086.528), .11, 'f#4', .2 * W3 * WH], [A(2086.638), .11, 'a4', .2 * W3 * WH], [A(2086.748), .2, 'd5', .2 * W3 * WH],   // v6: -2.3 dB
   ...osc,
-  [A(2086.451), 1.14, 'f#4', .27, { release: .9 }],          // the bloom's top F# (v4); v6: released by 2083.5, not into 'Some candles'
-  [A(2089.341), 1.0, 'd4', .085, { release: 1.2 }],        // "forty": its length is the contrabass's low D2 (v6: the celesta's 5-s
+  [A(2090.868), 1.14, 'f#4', .27, { release: .9 }],          // the bloom's top F# (v4); v6: released by 2083.5, not into 'Some candles'
+  [A(2093.758), 1.0, 'd4', .085, { release: 1.2 }],        // "forty": its length is the contrabass's low D2 (v6: the celesta's 5-s
   // ring, sounding D5, sat under 'years, some two': 2 dB clear in the vowel band)
-  [A(2091.011), .25, 'a4', .1, { release: .35 }],          // "two": short (v6: -3 dB, damped)
-  [A(2093.031), .1, 'd5', .1, { release: .12 }],          // "one match, a day": the shortest tick (v8: -3.5 dB, 'day' was 3.0 clear)
-  [A(2094.211), 1.4, 'd4', .16, { release: 2 }],         // "The newest still burn": a held D, still lit (v5: gone before 'One lantern')
-  [A(2108.760), .4, 'a3', .15, { release: .6 }], [A(2109.250), .3, 'd4', .14, { release: .8 }],   // the last slip (v8): the A an upbeat out of
+  [A(2095.428), .25, 'a4', .1, { release: .35 }],          // "two": short (v6: -3 dB, damped)
+  [A(2097.448), .1, 'd5', .1, { release: .12 }],          // "one match, a day": the shortest tick (v8: -3.5 dB, 'day' was 3.0 clear)
+  [A(2098.628), 1.4, 'd4', .16, { release: 2 }],         // "The newest still burn": a held D, still lit (v5: gone before 'One lantern')
+  [A(2113.177), .4, 'a3', .15, { release: .6 }], [A(2113.667), .3, 'd4', .14, { release: .8 }],   // the last slip (v8): the A an upbeat out of
   // the held E, the D struck ON the cut to the wall, 0.8 s before 'The' (v7's A on the cut and D 0.31 s before 'The' left
   // the word -0.8 dB in 250-2k);
   // the celesta lets go almost at once (v5: L1517's 250-2k band was 2.4 dB clear of its ring); the strings wait for 'seventeen'
   // v6: the wick catches on 'candles': one tiny, damped glint pinned to the word (sounding A5, far below the
   // statement); the statement itself, A -> D slowed, whole in the clear 0.14 s after 'from' ends, as the
   // flame stands; the D held
-  [A(2131.350), .15, 'a4', .05, { release: .4 }],
-  [A(2132.430), .7, 'a3', .34, { release: 3 }], [A(2133.130), 3, 'd4', .38, { release: 7 }],       // the new candle
+  [A(2135.767), .15, 'a4', .05, { release: .4 }],
+  [A(2136.847), .7, 'a3', .34, { release: 3 }], [A(2137.547), 3, 'd4', .38, { release: 7 }],       // the new candle
 ], { release: 1.4 })
   .s('gm_celesta').room(.7).rsize(5).orbit(4)
 
 // HARMONY: low strings + contrabass. D under "Learning"; the network's floor (soft); the bloom; then the slip's
 // A-E fifth and the last chord's A-E beneath the held D (Asus4).
 $: line([
-  [A(2075.891), 5.8, '[d2,a2]', .04, { attack: .8 }],
-  [A(2084.631), 1.15, '[d2,a2]', .14 * W3, { attack: .3, release: .5 }],
-  [A(2115.750), 4.55, '[a1,e2]', .04, { attack: 2.5, release: 1.2 }],   // v7: slides in after 'future', through the quote
-  [A(2134.780), 2.5, '[a1,e2,a2,e3]', .167, { attack: 1.4, release: 6, lpf: 900 }],   // the slide to A-E, at the cut
+  [A(2080.308), 5.8, '[d2,a2]', .04, { attack: .8 }],
+  [A(2089.048), 1.15, '[d2,a2]', .14 * W3, { attack: .3, release: .5 }],
+  [A(2120.167), 4.55, '[a1,e2]', .04, { attack: 2.5, release: 1.2 }],   // v7: slides in after 'future', through the quote
+  [A(2139.197), 2.5, '[a1,e2,a2,e3]', .167, { attack: 1.4, release: 6, lpf: 900 }],   // the slide to A-E, at the cut
 ], { attack: 1, release: 2, lpf: 700 })
   .s('gm_string_ensemble_1').hpf(40).room(.6).rsize(5).orbit(5)
 $: line([
-  [A(2075.891), 5.8, 'd2', .055, { attack: .8 }],
-  [A(2084.631), 1.15, 'd2', .24 * W3, { attack: .2, release: .5 }],
-  [A(2086.451), 1.14, 'd2', .27, { attack: .15, release: .35 }],   // the bloom's floor (v4)
-  [A(2089.341), 3.2, 'd2', .1, { attack: .4, release: 1.5 }],   // "forty": the low, long D under the celesta (v6: +2 dB, it carries the length)
-  [A(2115.750), 4.55, 'a1', .055, { attack: 2.5, release: 1.2 }],
-  [A(2134.780), 2.5, 'a1', .24, { attack: 1.2, release: 5 }],
+  [A(2080.308), 5.8, 'd2', .055, { attack: .8 }],
+  [A(2089.048), 1.15, 'd2', .24 * W3, { attack: .2, release: .5 }],
+  [A(2090.868), 1.14, 'd2', .27, { attack: .15, release: .35 }],   // the bloom's floor (v4)
+  [A(2093.758), 3.2, 'd2', .1, { attack: .4, release: 1.5 }],   // "forty": the low, long D under the celesta (v6: +2 dB, it carries the length)
+  [A(2120.167), 4.55, 'a1', .055, { attack: 2.5, release: 1.2 }],
+  [A(2139.197), 2.5, 'a1', .24, { attack: 1.2, release: 5 }],
 ], { attack: 1, release: 2 })
   .s('gm_contrabass').hpf(50).lpf(400).room(.5).rsize(5).orbit(5)
 
 // HIGH STRINGS (above the voice): LEARNING lit in D major; the network's top on "network" (a third); the held D
 // of "still burn"; the dark lantern's single E; the slip's held D; the new candle's held D (the suspension).
 $: line([
-  [A(2075.891), 5.8, '[d5,f#5,a5]', .02, { attack: 1.2, lpf: 1800 }],   // v5: a halo, not a bed
-  [A(2084.631), .45, '[a5,d6]', .1 * W3 * WH, { attack: .3, release: .35 }],   // v8: a glint on 'network', gone before 'all'
+  [A(2080.308), 5.8, '[d5,f#5,a5]', .02, { attack: 1.2, lpf: 1800 }],   // v5: a halo, not a bed
+  [A(2089.048), .45, '[a5,d6]', .1 * W3 * WH, { attack: .3, release: .35 }],   // v8: a glint on 'network', gone before 'all'
   // (held through 'all along' its A5/D6 left 'all' 2-3 dB clear in 1-4 kHz)
-  [A(2094.211), 2.0, 'd5', .05, { attack: .8, release: 1 }],
-  [A(2096.891), 7.35, 'e5', .045, { attack: 1.5, release: .6 }],    // v5: -3.7 dB under L1516/L1516b; v8: a further -3 dB ('open' 1.8 dB
+  [A(2098.628), 2.0, 'd5', .05, { attack: .8, release: 1 }],
+  [A(2101.308), 7.35, 'e5', .045, { attack: 1.5, release: .6 }],    // v5: -3.7 dB under L1516/L1516b; v8: a further -3 dB ('open' 1.8 dB
   // clear in 1-4 kHz of its B6/E6 harmonics); the piano and glass carry the E, the re-bow in the clear restores it
-  [A(2104.241), 4.65, 'e5', .1, { attack: 1.2, release: 1.5 }],      // v5: re-bowed in the clear after 'That file stays open':
+  [A(2108.658), 4.65, 'e5', .1, { attack: 1.2, release: 1.5 }],      // v5: re-bowed in the clear after 'That file stays open':
                                                                      // the question carries the hold to the cut at full v4 level, unanswered
-  [A(2114.700), 5.5, 'd5', .045, { attack: 1.8, release: 1.2 }],   // v7: the slip's D taken up after 'back in twenty
+  [A(2119.117), 5.5, 'd5', .045, { attack: 1.8, release: 1.2 }],   // v7: the slip's D taken up after 'back in twenty
   // seventeen' (L1517 bare), in the breath before the quote; held through it, gone before the stamp (b3)
-  [A(2133.130), 3.5, 'd5', .083, { attack: 1.2, release: 6 }],
+  [A(2137.547), 3.5, 'd5', .083, { attack: 1.2, release: 6 }],
 ], { attack: 1, release: 2, lpf: 2600 })
   .s('gm_string_ensemble_1').room(.7).rsize(6).orbit(6)
 
@@ -190,23 +193,23 @@ $: line([
 // anything between D3 and D5 behind lpf 900 ----
 const rip = (t, ns, v) => ns.map((n, i) => [A(t) + .11 * i, i === 3 ? .2 : .11, n, v * W3])
 // valve organ (low, its top D3 filtered), then its held fifth
-$: line([...rip(2082.441, ['d2', 'f#2', 'a2', 'd3'], .22), [A(2082.881), 2.9, '[d2,a2]', .15 * W3, { attack: .3, release: .5 }]], { release: .3 })
+$: line([...rip(2086.858, ['d2', 'f#2', 'a2', 'd3'], .22), [A(2087.298), 2.9, '[d2,a2]', .15 * W3, { attack: .3, release: .5 }]], { release: .3 })
   .s('gm_drawbar_organ').lpf(700).room(.4).rsize(3).orbit(7)   // v5: lpf 900 -> 700 (its upper partials sat in 1-4 kHz)
 // cello (low), then its held A
-$: line([...rip(2082.881, ['a1', 'd2', 'f#2', 'a2'], .24), [A(2083.321), 2.45, 'a2', .16 * W3, { attack: .2, release: .5 }]], { release: .4 })
+$: line([...rip(2087.298, ['a1', 'd2', 'f#2', 'a2'], .24), [A(2087.738), 2.45, 'a2', .16 * W3, { attack: .2, release: .5 }]], { release: .4 })
   .s('gm_cello').lpf(900).room(.4).rsize(3).orbit(7)
 // piano (high), then soft high pings
-$: line([...rip(2083.321, ['d5', 'f#5', 'a5', 'd6'], .2 * WH), [A(2083.861), .5, 'f#6', .12 * W3 * WH], [A(2084.361), .5, 'a6', .12 * W3 * WH], [A(2084.861), .4, 'f#6', .065 * W3 * WH]], { release: .6 })   // v8: the 'along' A6 dropped, the F#6 halved
+$: line([...rip(2087.738, ['d5', 'f#5', 'a5', 'd6'], .2 * WH), [A(2088.278), .5, 'f#6', .12 * W3 * WH], [A(2088.778), .5, 'a6', .12 * W3 * WH], [A(2089.278), .4, 'f#6', .065 * W3 * WH]], { release: .6 })   // v8: the 'along' A6 dropped, the F#6 halved
   .s('piano').room(.5).rsize(3).orbit(7)
 // the GPU-era oscillator pulse (low eighths, its D3 filtered), stopping as the line ends
 const pulse = []
-for (let i = 0; i < 9; i++) pulse.push([A(2083.761) + .22 * i, .2, ['d2', 'd3', 'a2', 'd3'][i % 4], .5])
+for (let i = 0; i < 9; i++) pulse.push([A(2088.178) + .22 * i, .2, ['d2', 'd3', 'a2', 'd3'][i % 4], .5])
 $: line(pulse).s('sawtooth').lpf(900).attack(.005).decay(.18).sustain(0).release(.05).gain(.16 * W3).orbit(7)
 // harp (high)
-$: line([...rip(2084.201, ['d5', 'f#5', 'a5', 'd6'], .24 * WH), [A(2084.861), .4, 'a5', .07 * W3 * WH, { release: .6 }]], { release: 1.5 })   // v8: the 'along' D6 dropped, the A5 halved
+$: line([...rip(2088.618, ['d5', 'f#5', 'a5', 'd6'], .24 * WH), [A(2089.278), .4, 'a5', .07 * W3 * WH, { release: .6 }]], { release: 1.5 })   // v8: the 'along' D6 dropped, the A5 halved
   .s('gm_orchestral_harp').room(.5).rsize(3).orbit(7)
 // pizz (low, its D3 filtered) on "network"
-$: line([...rip(2084.631, ['d2', 'f#2', 'a2', 'd3'], .32), [A(2085.151), .3, 'd2', .26 * W3], [A(2085.551), .2, 'a1', .22 * W3]], { release: .4 })
+$: line([...rip(2089.048, ['d2', 'f#2', 'a2', 'd3'], .32), [A(2089.568), .3, 'd2', .26 * W3], [A(2089.968), .2, 'a1', .22 * W3]], { release: .4 })
   .s('gm_pizzicato_strings').lpf(900).room(.4).rsize(3).orbit(7)
 
 // THE BLOOM (in the gap after "all along", before 'Some candles'): the trained forward pass lands
@@ -214,40 +217,40 @@ $: line([...rip(2084.631, ['d2', 'f#2', 'a2', 'd3'], .32), [A(2085.151), .3, 'd2
 // v4 (critic round 1): the whole gap is used; the chord lands on F# and HOLDS at full D major for 1.14 s,
 // releasing so the texture is thin well before 'Some'; about 4 dB louder than v3: the loudest moment of the score.
 $: line([
-  [A(2085.891), .14, 'd3', .24], [A(2086.031), .14, 'f#3', .25], [A(2086.171), .14, 'a3', .26], [A(2086.311), .14, 'd4', .27],
-  [A(2086.451), 1.14, '[d3,a3,d4,f#4,a4,d5,f#5]', .22, { attack: .18, release: .3 }],
+  [A(2090.308), .14, 'd3', .24], [A(2090.448), .14, 'f#3', .25], [A(2090.588), .14, 'a3', .26], [A(2090.728), .14, 'd4', .27],
+  [A(2090.868), 1.14, '[d3,a3,d4,f#4,a4,d5,f#5]', .22, { attack: .18, release: .3 }],
 ], { attack: .05, release: .3 })
   .s('gm_string_ensemble_1').lpf(3600).room(.4).rsize(2.5).orbit(8)
 // horns: the warm middle of the chord (the film's only brass), the third on top
-$: line([[A(2086.451), 1.14, '[d3,a3,f#4]', .24]], { attack: .22, release: .3 })
+$: line([[A(2090.868), 1.14, '[d3,a3,f#4]', .24]], { attack: .22, release: .3 })
   .s('gm_french_horn').lpf(2400).room(.4).rsize(2.5).orbit(8)
 // harp: the forward pass rolled once more up the chord as it lands
 $: line([
-  [A(2086.451), 1.1, 'd3', .22], [A(2086.491), 1.06, 'a3', .22], [A(2086.531), 1.02, 'd4', .22],
-  [A(2086.571), .98, 'f#4', .22], [A(2086.611), .94, 'a4', .22], [A(2086.651), .9, 'd5', .24],
+  [A(2090.868), 1.1, 'd3', .22], [A(2090.908), 1.06, 'a3', .22], [A(2090.948), 1.02, 'd4', .22],
+  [A(2090.988), .98, 'f#4', .22], [A(2091.028), .94, 'a4', .22], [A(2091.068), .9, 'd5', .24],
 ], { release: .5 }).s('gm_orchestral_harp').room(.4).rsize(2.5).orbit(8)
 // one soft timpani stroke on the landing (the score's restrained percussion)
-$: line([[A(2086.451), 1.0, 'd2', .32]], { release: .6 }).s('gm_timpani').lpf(1200).room(.35).rsize(2.5).orbit(8)
+$: line([[A(2090.868), 1.0, 'd2', .32]], { release: .6 }).s('gm_timpani').lpf(1200).room(.35).rsize(2.5).orbit(8)
 
 // ---- "dark": the one held note, E (piano E6, the lit box's question; glass an octave up) ----
 $: line([
-  [A(2096.851), 3, 'e6', .2],
-  [A(2104.411), 3, 'e6', .2],   // v3: after "That file stays open" ('open'), the question tone once more, in the clear
+  [A(2101.268), 3, 'e6', .2],
+  [A(2108.828), 3, 'e6', .2],   // v3: after "That file stays open" ('open'), the question tone once more, in the clear
 ], { release: 4 }).s('piano').room(.8).rsize(6).orbit(9)
-$: line([[A(2097.091), 9.8, 'e6', .06]], { attack: 2, release: 2.5 }).s('gm_pad_bowed').lpf(6000).room(.7).rsize(6).orbit(9)
+$: line([[A(2101.508), 9.8, 'e6', .06]], { attack: 2, release: 2.5 }).s('gm_pad_bowed').lpf(6000).room(.7).rsize(6).orbit(9)
 
 // ---- THE LAST CHORD (v3): as the strings and contrabass slide to A-E, a solo cello takes the held D in the middle
 // register (D3), so the suspension is in the body of the chord, not only in the decaying celesta: Asus4 with D in
 // three octaves (cello D3, celesta D5 sounding, strings D5). In the clear (after 'come from'); never resolves. ----
-$: line([[A(2134.780), 3.2, 'd3', .24]], { attack: 1.3, release: 6 })
+$: line([[A(2139.197), 3.2, 'd3', .24]], { attack: 1.3, release: 6 })
   .s('gm_cello').lpf(1100).room(.8).rsize(6).orbit(9)
 
 // ---- M4's walk: solo cello below D3, very soft (someone at the rim is suspicious) ----
 $: line([
   // v8: -1.4 dB (L1520 80-250 Hz was 7.9 dB clear). Fitted to L1520: G2 on 'rim', home on D before 'That' ... gone by the match strike on 'new'
-  [A(2125.530), .5, 'a1', 0.170], [A(2126.030), .95, 'd2', 0.178], [A(2126.980), .5, 'e2', 0.170],
-  [A(2127.480), .95, 'f2', 0.178], [A(2128.450), .5, 'g2', 0.170], [A(2128.950), .5, 'f2', 0.162],
-  [A(2129.450), .45, 'e2', 0.162], [A(2129.900), .5, 'c2', 0.153], [A(2130.400), .6, 'd2', 0.145, { release: .6 }],
+  [A(2129.947), .5, 'a1', 0.170], [A(2130.447), .95, 'd2', 0.178], [A(2131.397), .5, 'e2', 0.170],
+  [A(2131.897), .95, 'f2', 0.178], [A(2132.867), .5, 'g2', 0.170], [A(2133.367), .5, 'f2', 0.162],
+  [A(2133.867), .45, 'e2', 0.162], [A(2134.317), .5, 'c2', 0.153], [A(2134.817), .6, 'd2', 0.145, { release: .6 }],
 ], { attack: .15, release: .8 })
   .s('gm_cello').hpf(45).lpf(800).room(.45).rsize(3).orbit(3)
 
@@ -257,7 +260,7 @@ $: line([
 // (b1-b2), thins to the D alone under the CREDITS card (from b2: the fifth released) and HOLDS it there, and lets go
 // on SOURCES, ringing down to the room-tone floor before the fade (b3). One soft celesta D, the candle's own note,
 // on SOURCES. No cadence: the D never moves to C#, the A-E never moves to D. ----
-const B1 = 2135.792, B2 = 2143.792, SRC = 2156.592   // ch15-s10 beats b1, b2, sources (shot 2135.2917 + 0.5 / 8.5 / 21.3)
+const B1 = 2140.209, B2 = 2148.209, SRC = 2161.009   // ch15-s10 beats b1, b2, sources (shot 2135.2917 + 0.5 / 8.5 / 21.3)
 $: line([
   [A(B1 + 1.038), 6.8, '[a1,e2]', .095, { attack: 3, release: 2.2 }],   // the fifth, let go into b2: the CREDITS card
   // settles on the D alone within its first two seconds

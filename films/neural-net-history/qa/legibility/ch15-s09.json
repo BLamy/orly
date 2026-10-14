@@ -1,6 +1,6 @@
 {
  "shot": "ch15-s09",
- "at": "2026-10-13T21:38:03.357Z",
+ "at": "2026-10-14T01:26:47.381Z",
  "minCapPx": 22,
  "sampled": 31,
  "texts": 38,
@@ -14,32 +14,32 @@
   },
   {
    "text": "HINTON · SEPT 2017",
-   "capWhileSubject": 32,
+   "capWhileSubject": 32.3,
    "why": "script onScreenText"
   },
   {
    "text": "The future depends on",
-   "capWhileSubject": 25.9,
+   "capWhileSubject": 25.3,
    "why": "script onScreenText"
   },
   {
    "text": "some graduate student",
-   "capWhileSubject": 25.9,
+   "capWhileSubject": 25.3,
    "why": "script onScreenText"
   },
   {
    "text": "who is deeply suspicious",
-   "capWhileSubject": 25.9,
+   "capWhileSubject": 25.3,
    "why": "script onScreenText"
   },
   {
    "text": "of everything I have",
-   "capWhileSubject": 25.9,
+   "capWhileSubject": 25.3,
    "why": "script onScreenText"
   },
   {
    "text": "said.",
-   "capWhileSubject": 25.9,
+   "capWhileSubject": 25.3,
    "why": "script onScreenText"
   },
   {
@@ -49,22 +49,22 @@
   },
   {
    "text": "The future depends on some graduate",
-   "capWhileSubject": 33.1,
+   "capWhileSubject": 33.5,
    "why": "script onScreenText"
   },
   {
    "text": "student who is deeply suspicious of",
-   "capWhileSubject": 33.1,
+   "capWhileSubject": 33.5,
    "why": "script onScreenText"
   },
   {
    "text": "everything I have said.",
-   "capWhileSubject": 33.1,
+   "capWhileSubject": 33.5,
    "why": "script onScreenText"
   },
   {
    "text": "— Geoffrey Hinton, 2017, as quoted by Gary Marcus",
-   "capWhileSubject": 27,
+   "capWhileSubject": 27.3,
    "why": "script onScreenText"
   },
   {

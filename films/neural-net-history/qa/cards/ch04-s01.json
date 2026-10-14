@@ -17,5 +17,12 @@
    "to": 23.467,
    "minInkWhilePaper": 0.18
   }
- ]
+ ],
+ "transition": {
+  "kind": "paperWipe",
+  "sampled": 12,
+  "ghosts": [],
+  "carry": []
+ },
+ "transAt": "2026-10-13T22:54:17.170Z"
 }

@@ -62,7 +62,7 @@ const LECUN = cast['lecun-2020s'];
 /** Hinton and Bengio inside the bright pool of the SMARTER-THAN-HUMAN candle, a clear gap between them so the two
  *  profiles read apart (Bengio's curls and beard line, Hinton's height); LeCun ~250 px further, at the pool's rim,
  *  turned out (round head, glasses, stocky) (review round 2: the silhouettes, not only the captions, tell them apart) */
-const POS = { hassabis: 214, hinton: 548, bengio: 652, lecun: 1010 };
+const POS = { hinton: 548, bengio: 652, lecun: 1010 };
 /** the Wall flat at the back of the stage, shifted left so its new W8 slip clears LeCun's head in the wide */
 const BACKDROP = { x: 322, y: 70 };
 
@@ -127,12 +127,19 @@ export default defineShot<Scene>({
       [0, STUDY_CAMS.wall(W6U - 0.07, 380)],
       [b.swap + 0.5, STUDY_CAMS.wall(W6U - 0.02, 410)],
     ]);
+    // reviser r1 (round 5): the stage opens wide on the three holdouts, then a slow push (~1.1x through 4-9 s, so the
+    // silhouettes, Bengio's curls and LeCun's round glasses, read at ~280 px); on 'dangerous' the push lands on Hinton
+    // and Bengio in the light of their candle; then for 'the third' a slow truck right to take LeCun in, so by the time
+    // his AMI Labs label is up the tall candle's flame sits well left of it
     const stage = path([
-      // the stage opens wide on the three holdouts (round 3), then a slow push through the line and the hold
       [b.stage - 0.4, frameOnLayer(LAYERS.L4, { x: 616, y: 470 }, { x: 640, y: 420 }, 0.95)],
-      [b.three + 2.6, frameOnLayer(LAYERS.L4, { x: 624, y: 470 }, { x: 640, y: 419 }, 0.975)],
-      [b.third, frameOnLayer(LAYERS.L4, { x: 640, y: 470 }, { x: 640, y: 418 }, 1.0)],
-      [D, frameOnLayer(LAYERS.L4, { x: 690, y: 466 }, { x: 640, y: 414 }, 1.06)],
+      [b.three + 0.3, frameOnLayer(LAYERS.L4, { x: 618, y: 470 }, { x: 640, y: 420 }, 0.965)],
+      [b.dangerous - 0.35, frameOnLayer(LAYERS.L4, { x: 606, y: 470 }, { x: 640, y: 421 }, 1.0)],
+      [b.dangerous + 0.45, frameOnLayer(LAYERS.L4, { x: 600, y: 470 }, { x: 640, y: 424 }, 1.07)],
+      [b.dangerous + 0.65, frameOnLayer(LAYERS.L4, { x: 601, y: 470 }, { x: 640, y: 424 }, 1.071)],
+      // the frame settles a little lower while the truck runs, so the heads stay clear under the AMI Labs label
+      [b.third + 0.8, frameOnLayer(LAYERS.L4, { x: 680, y: 470 }, { x: 640, y: 462 }, 1.06)],
+      [D, frameOnLayer(LAYERS.L4, { x: 700, y: 470 }, { x: 640, y: 466 }, 1.085)],
     ]);
     const SCAMS: Camera3[] = [];
     for (let i = 0; i <= 16; i++) SCAMS.push(study(((b.swap + 0.5) * i) / 16));
@@ -149,14 +156,25 @@ export default defineShot<Scene>({
     // the dim wall sinks into the rising flame, never into a second readable layer
     const wOut = textSwapOut(t, b.swap, 0.6);
     const wIn = textSwapIn(t, b.swap, 0.6);
-    if (wIn <= 0) paintStudy(f, sc, t);
-    else if (wOut > 0) {
-      paintStudy(f, sc, t);
+    // reviser r1 (round 5): the study darkens ahead of the dissolve (from just after the flame starts), so its slips
+    // are under ~20 % before the stage passes 50 % (no muddy double exposure under the blooming flame)
+    const half = b.swap + 0.2;
+    const pre = 0.82 * clamp01((t - (b.flame + 0.1)) / (half - (b.flame + 0.1)));
+    const dark = Math.max(1 - wOut, pre);
+    const darkStudy = () => {
+      if (dark <= 0.003) return;
       screen(f, (c) => {
         c.fillStyle = mixLab(f.mood.fg, f.mood.ink, 0.5);
-        c.globalAlpha = 1 - wOut;
+        c.globalAlpha = dark;
         c.fillRect(0, 0, 1280, 720);
       });
+    };
+    if (wIn <= 0) {
+      paintStudy(f, sc, t);
+      darkStudy();
+    } else if (wOut > 0) {
+      paintStudy(f, sc, t);
+      darkStudy();
       compositeSub(f, subFrame(f, `${ID}/stage`, 'candleAmber', (g) => paintStage(g, sc, t)), wIn);
     } else paintStage(f, sc, t);
     // the flame: it rises at the screen position of the stage candle between Hinton/Bengio and LeCun (LEARNED
@@ -168,9 +186,10 @@ export default defineShot<Scene>({
     const stageCam = sc.stage(t);
     screen(f, (c) => {
       const te = { t, mood: f.mood };
+      // reviser r1 (round 5): the shared card is in by ~3.45 (it starts 0.25 s before 'three', after the study is gone)
       // one shared card, names in the figures' left-to-right order, laid under the pair with LeCun's name toward him
       // right-aligned inside the safe area (review round 2: it cropped to 'YANN LEC' at the frame edge)
-      nameCard(c, { name: 'Geoffrey Hinton · Yoshua Bengio · Yann LeCun', role: '2018 Turing Award', at: b.three + 0.2, dur: b.third - b.three - 0.3, align: 'right', x: 1196, y: 602 }, te);
+      nameCard(c, { name: 'Geoffrey Hinton · Yoshua Bengio · Yann LeCun', role: '2018 Turing Award', at: b.three - 0.25, dur: b.third - b.three + 0.15, align: 'right', x: 1196, y: 602 }, te);
       const ql = clamp01(Math.min((t - b.third) / 0.6, 1));
       const lx = Math.min(1000, toScreen(LAYERS.L4, stageCam, POS.lecun + 150, 0).x);
       if (ql > 0) {
@@ -199,16 +218,19 @@ export default defineShot<Scene>({
       const la = win(t, b.third + 0.35, b.third + 0.85);
       // reviser r1: a soft dark plate behind the label (about 35 %, a 12 px feather) over the backdrop's slips; the
       // label's text and position stay exactly as ruled
+      // reviser r1 (round 5): right-aligned a little further right (ending at x 1212) and a little lower, on a denser
+      // dark plate (its own clean dark ground over the backdrop's slips); with the truck right for 'the third' the tall
+      // candle's flame sits well left of its first letter
       if (la > 0.003) {
         c.save();
         c.filter = 'blur(12px)';
-        c.fillStyle = withAlpha(f.mood.ink, 0.35 * la);
+        c.fillStyle = withAlpha(f.mood.ink, 0.55 * la);
         c.beginPath();
-        c.roundRect(1196 - 712, 222, 736, 46, 10);
+        c.roundRect(1212 - 724, 232, 748, 48, 10);
         c.fill();
         c.restore();
       }
-      textRole(c, 'subject', () => label15(c, { text: 'left Meta, Nov 2025, to build world models · AMI Labs', x: 1196, y: 250, align: 'right', at: b.third + 0.35, size: 22 }, te));
+      textRole(c, 'subject', () => label15(c, { text: 'left Meta, Nov 2025, to build world models · AMI Labs', x: 1212, y: 258, align: 'right', at: b.third + 0.35, size: 22 }, te));
     });
   },
 });
@@ -245,7 +267,11 @@ const BENGIO_UP: Pose = { ...WARN, angles: { ...WARN.angles, head: -12, neck: 2 
 /** reviser r1: the worry candle's belief in two columns cut into the lit stub (the kit's one column ran past the stub's
  *  top), rising up the wax, so the whole line reads down to DANGEROUS; texture (cut into the wax) */
 const WORRY_COLS = ['SMARTER-THAN-HUMAN AI MAY BE', 'YEARS AWAY, AND DANGEROUS'];
-function worryLetters(c: C, env: PaintEnv) {
+/** reviser r1 (round 5): the 'dangerous' beat: up over 0.3 s on the word, held ~1.5 s, then back down */
+function warnK(t: number, b: B): number {
+  return win(t, b.dangerous - 0.1, b.dangerous + 0.25) * (1 - win(t, b.dangerous + 1.5, b.dangerous + 2.0));
+}
+function worryLetters(c: C, env: PaintEnv, warn = 0) {
   const s = MAIN.s;
   const w = 30 * s + 1;
   const stubH = LIT_HEIGHT * s - waxRings(WORRY) * RING_PX * s;
@@ -261,7 +287,8 @@ function worryLetters(c: C, env: PaintEnv) {
     }
     c.textBaseline = 'middle';
     c.textAlign = 'left';
-    c.fillStyle = withAlpha(mixLab(env.mood.fg, env.mood.ink, 0.5), 0.62 * 0.85);
+    // texture at rest (~53 %); on 'dangerous' lifted to ~70 % for 1.5 s, so the two warning figures are tied to it
+    c.fillStyle = withAlpha(mixLab(env.mood.fg, env.mood.ink, 0.5), 0.62 * 0.85 + (0.7 - 0.62 * 0.85) * warn);
     WORRY_COLS.forEach((l, i) => {
       c.save();
       c.translate(MAIN.x + (i === 0 ? -1 : 1) * w * 0.22, ST13.floorY - 10 * s);
@@ -291,9 +318,10 @@ function paintStage(f: Frame, sc: Scene, t: number) {
     // columns fitted to the lit stub instead (worryLetters, in draw)
     letters: 0,
     poolRx: MAIN.poolRx,
-    // the holdouts' candle stays low until 'three' (Hassabis alone in the SCALE pool), then its pool opens; on
+    // the holdouts' candle stays low until 'three' (the Wall at rest), then its pool opens; on
     // 'dangerous' its pool flares once (+20 %, a slow 0.6 s swell)
-    flame: (0.25 + 0.75 * win(t, b.three - 0.35, b.three + 0.5)) * (1 + 0.2 * pulse(t, b.dangerous - 0.1, 0.3, 0.6)),
+    // reviser r1 (round 5): on 'dangerous' the flame lifts ~25 % and holds ~1.5 s (the warning tied to a visible belief)
+    flame: (0.25 + 0.75 * win(t, b.three - 0.35, b.three + 0.5)) * (1 + 0.25 * warnK(t, b)),
     sky: 1.15,
     pools: [
       { x: UP.scale + 40, rx: 260, k: 0.7 },
@@ -335,7 +363,7 @@ function paintStage(f: Frame, sc: Scene, t: number) {
       const lightL = { x: 1, y: -0.2, floor: 0.12 };
       const lightR = { x: -1, y: -0.2, floor: 0.12 };
       // the holdouts are already standing when the stage arrives (round 3); their candle's pool opens on 'three'
-      worryLetters(c, env);
+      worryLetters(c, env, warnK(t, b));
       const up = win(t, b.swap - 0.1, b.swap);
       if (up <= 0.01) return;
       c.save();

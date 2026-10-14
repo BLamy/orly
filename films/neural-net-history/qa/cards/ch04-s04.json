@@ -9,5 +9,181 @@
  "fails": [],
  "suspects": [],
  "ghosts": [],
- "cards": []
+ "cards": [],
+ "transition": {
+  "kind": "crossfade",
+  "sampled": 12,
+  "ghosts": [],
+  "carry": [
+   {
+    "side": "out",
+    "text": "19",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.67
+   },
+   {
+    "side": "out",
+    "text": "Tu",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.7
+   },
+   {
+    "side": "out",
+    "text": "r",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.65
+   },
+   {
+    "side": "out",
+    "text": "i",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.59
+   },
+   {
+    "side": "out",
+    "text": "n",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.68
+   },
+   {
+    "side": "out",
+    "text": "Awa",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.7
+   },
+   {
+    "side": "out",
+    "text": "M",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.69
+   },
+   {
+    "side": "out",
+    "text": "a",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.67
+   },
+   {
+    "side": "out",
+    "text": "n",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "y",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.66
+   },
+   {
+    "side": "out",
+    "text": "a dir",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.71
+   },
+   {
+    "side": "out",
+    "text": "e",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.66
+   },
+   {
+    "side": "out",
+    "text": "t",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.57
+   },
+   {
+    "side": "out",
+    "text": "a",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.62
+   },
+   {
+    "side": "out",
+    "text": "p",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.71
+   },
+   {
+    "side": "out",
+    "text": "p",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.59
+   },
+   {
+    "side": "out",
+    "text": "n",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.72
+   },
+   {
+    "side": "out",
+    "text": "o",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.69
+   },
+   {
+    "side": "out",
+    "text": "s",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.67
+   },
+   {
+    "side": "out",
+    "text": "h",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.7
+   },
+   {
+    "side": "out",
+    "text": "— US Congress, Mansfield Amendment, 1969",
+    "t0": -0.13,
+    "t1": 0.21,
+    "seconds": 0.33,
+    "maxAlpha": 0.67
+   }
+  ]
+ },
+ "transAt": "2026-10-13T22:54:20.102Z"
 }

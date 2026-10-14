@@ -1,8 +1,9 @@
 {
  "shot": "ch15-s09",
- "at": "2026-10-13T21:54:12.934Z",
+ "at": "2026-10-14T02:01:08.710Z",
  "step": 0.0833,
  "sampled": 302,
+ "transition": null,
  "rule": "paper > 50% with text < 20% for more than 0.3 s",
  "ghostRule": "review round 4: no two different text layers overlap (>= 30% of the smaller box) while both are above 25% opacity for more than 0.25 s",
  "probedCards": [
@@ -37,7 +38,7 @@
    "minInkWhilePaper": 0.9
   },
   {
-   "id": "fillRect@1193,144",
+   "id": "fillRect@1192,145",
    "probed": false,
    "from": 3.05,
    "to": 15.383,

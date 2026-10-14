@@ -64,6 +64,7 @@ interface B {
   yet: number;
   trial: number;
   felt: number;
+  slower: number;
   date: number;
   climbing: number;
   authors: number;
@@ -103,6 +104,7 @@ export default defineShot<Scene>({
       yet: T.beat('b4'),
       trial: T.word('L1531', 'trial'),
       felt: T.beat('b6'),
+      slower: T.word('L1531', 'slower'),
       date: T.beat('b7'),
       climbing: T.word('L1530', 'climbing'),
       authors: T.word('L1531', 'authors'),
@@ -158,7 +160,8 @@ export default defineShot<Scene>({
     };
     // 'out of date': from just before 'date' the lamp's pool draws back from the exhibit (radius and light ~30%)
     // reviser r1: a clear 0.8 s falloff from 'date' (key light about -30 % on the dials) before the cut
-    const pool = 1 - 0.3 * sm(clamp01((t - (b.date - 0.1)) / 0.8));
+    // reviser r1 (round 5): a clear 25 % fall in the pool's radius and light over 0.6 s from 'date'
+    const pool = 1 - 0.3 * sm(clamp01((t - (b.date - 0.05)) / 0.6));
 
     studyRoom(f, { key: ID, cams: sc.CAMS, outside: { mood: 'duskRose', kind: 'dusk' } });
     // the case board above the shelf (only its lowest cards graze the top of the opening frames): its pinned slips are
@@ -202,15 +205,21 @@ export default defineShot<Scene>({
         }
         // the hands and the snuffer-scissors at the wick
         if (hu > 0 && hu < 1) {
+          // reviser r1 (round 5): the scissors are a readable HAND TOOL (~10 % of frame: finger rings, a brass pivot
+          // screw, crossing blades, the snuffer box at the tips) held out ahead of the hand, so the black shape
+          // entering from the lower right reads as hand + sleeve + tool, not one long pole
           const E = handsEntry(cam, 'L4');
           const wick = { x: FLAME.x + 4, y: FLAME.y + 8 };
+          const dx = E.R.x - wick.x, dy = E.R.y - wick.y, dl = Math.hypot(dx, dy) || 1;
+          const dir = { x: dx / dl, y: dy / dl };
           const out = { x: lerp(E.R.x, wick.x, 0.2), y: lerp(E.R.y, wick.y, 0.2) };
           let at = wick;
           if (hu < 0.35) at = { x: lerp(out.x, wick.x, sm(hu / 0.35)), y: lerp(out.y, wick.y, sm(hu / 0.35)) };
           else if (hu > 0.6) at = { x: lerp(wick.x, out.x, sm((hu - 0.6) / 0.4)), y: lerp(wick.y, out.y, sm((hu - 0.6) / 0.4)) };
-          const arm = hands.reach(E.R, { x: at.x + 26, y: at.y + 14 }, 'pinch', 118 * 0.8, { bend: -0.2 });
+          const SL = 64;
+          const arm = hands.reach(E.R, { x: at.x + dir.x * (SL + 4), y: at.y + dir.y * (SL + 4) }, 'pinch', 118 * 0.8, { bend: -0.2 });
           hands.draw(c, { right: arm, scale: 0.8 }, env);
-          scissors(c, env, at.x, at.y, arm.angle + Math.PI, hu > 0.38 && hu < 0.5 ? 0.05 : 0.5);
+          scissors(c, env, at.x, at.y, Math.atan2(dir.y, dir.x), SL, hu > 0.38 && hu < 0.5 ? 0.04 : 0.45);
         }
       },
     });
@@ -286,7 +295,8 @@ export default defineShot<Scene>({
       // reviser r1: the ruler now stands on the left third, so its label sits at the lower right, clear of the ruler
       if (ra > 0.003) evenPlate(c, 676, 548, 560, 82, f.mood.ink, 0.78 * ra);
       label15(c, { text: 'METR, Mar 2025 · doubles ≈ every 7 months', sub: 'task length that agents finish half the time', x: 696, y: 578, align: 'left', at: b.measure + 0.1, until: b.long + 0.25, size: 19 }, te);
-      label15(c, { text: 'METR trial, July 2025 · 19% slower · felt 20% faster', x: 640, y: 604, at: b.yet + 0.35, size: 21 }, te);
+      // reviser r1 (round 5): sets in only once the pan has settled (~15.4), never over the plates still sliding up
+      label15(c, { text: 'METR trial, July 2025 · 19% slower · felt 20% faster', x: 640, y: 604, at: b.trial + 0.65, size: 21 }, te);
     });
   },
 });
@@ -410,26 +420,49 @@ function evenPlate(c: C, x: number, y: number, w: number, h: number, ink: string
 }
 
 // ===================================================================================================== snuffer-scissors
-function scissors(c: C, env: PaintEnv, x: number, y: number, ang: number, open: number) {
+/** snuffer-scissors (local +x from the tips at the wick back toward the hand; L = length): two tapered blades crossing
+ *  at a brass pivot screw, two finger rings at the handle end, the little snuffer box on the tips */
+function scissors(c: C, env: PaintEnv, x: number, y: number, ang: number, L: number, open: number) {
   const brass = mixLab(env.mood.rim, env.mood.halo, 0.5);
+  const ink = PUPPET_NEAR_BLACK;
+  const pv = L * 0.5;
   c.save();
   c.translate(x, y);
   c.rotate(ang);
-  c.fillStyle = PUPPET_NEAR_BLACK;
+  c.fillStyle = ink;
   for (const s of [-1, 1]) {
     c.save();
-    c.rotate(s * open * 0.25);
-    c.fillRect(0, -1.6, 34, 3.2);
+    c.translate(pv, 0);
+    c.rotate(s * open * 0.22);
+    // blade: from the pivot out to the tip, tapering
     c.beginPath();
-    c.arc(38, s * 4, 5, 0, Math.PI * 2);
-    c.arc(38, s * 4, 2.6, 0, Math.PI * 2, true);
+    c.moveTo(0, -2.6);
+    c.lineTo(-pv, -s * 0.6);
+    c.lineTo(-pv, s * 1.4);
+    c.lineTo(0, 2.6);
+    c.closePath();
     c.fill();
+    // shank to the finger ring
+    c.fillRect(0, -1.4 + s * 3, L * 0.36, 2.8);
+    c.beginPath();
+    c.arc(L * 0.42, s * 6, 6.2, 0, Math.PI * 2);
+    c.arc(L * 0.42, s * 6, 3.6, 0, Math.PI * 2, true);
+    c.fill('evenodd');
     c.restore();
   }
-  // the little snuffer box on the blades
-  c.fillRect(-4, -4, 10, 8);
-  c.fillStyle = withAlpha(brass, 0.7);
-  c.fillRect(-4, -4, 10, 1);
+  // the pivot screw with a brass glint
+  c.beginPath();
+  c.arc(pv, 0, 3.6, 0, Math.PI * 2);
+  c.fill();
+  c.fillStyle = withAlpha(brass, 0.9);
+  c.beginPath();
+  c.arc(pv - 0.6, -0.8, 1.5, 0, Math.PI * 2);
+  c.fill();
+  // the little snuffer box on the blades' tips
+  c.fillStyle = ink;
+  c.fillRect(-3, -4.6, 12, 9.2);
+  c.fillStyle = withAlpha(brass, 0.75);
+  c.fillRect(-3, -4.6, 12, 1.1);
   c.restore();
 }
 
@@ -447,6 +480,9 @@ function drawWatches(c: C, env: PaintEnv, t: number, b: B, pool: number) {
   const aWithout = Math.min(A_WITHOUT, run);
   const aWith = Math.min(A_WITH, run);
   const ghost = win(t, b.felt - 0.1, b.felt + 0.7);
+  // reviser r1 (round 5): on 'slower' a thin paper arc draws from the ghost hand to the real hand (the gap between
+  // 'felt' and 'was' is the drawn subject)
+  const gap = clamp01((t - (b.slower - 0.1)) / 0.45);
   // the WITHOUT hand's stop, copied as a faint tick onto the WITH TOOLS bezel once it has stopped: real hand >
   // WITHOUT mark > ghost hand, read on one dial
   const tStop = start + A_WITHOUT / speed;
@@ -455,7 +491,7 @@ function drawWatches(c: C, env: PaintEnv, t: number, b: B, pool: number) {
   const pk = clamp01((pool - 0.7) / 0.3);
   // on 'date' the pool slides off the exhibit, up and right toward the lamp (as from an old exhibit)
   const cx = (WATCH.a + WATCH.b) / 2 + (1 - pk) * 150, cy = WATCH.y - 60 - (1 - pk) * 40;
-  const R = 300 * (0.7 + 0.3 * pk);
+  const R = 300 * (0.75 + 0.25 * pk);
   c.save();
   c.globalCompositeOperation = 'lighter';
   const pg = c.createRadialGradient(cx, cy + 30, 10, cx, cy + 30, R);
@@ -469,19 +505,19 @@ function drawWatches(c: C, env: PaintEnv, t: number, b: B, pool: number) {
   c.fillRect(WATCH.a - 140, WATCH.y, WATCH.b - WATCH.a + 280, 6);
   c.fillStyle = withAlpha(m.rim, 0.35 * pool);
   c.fillRect(WATCH.a - 140, WATCH.y, WATCH.b - WATCH.a + 280, 1);
-  watch(c, env, WATCH.a, 'WITHOUT', aWithout, 0, pk, 0);
-  watch(c, env, WATCH.b, 'WITH TOOLS', aWith, ghost, pk, mark);
+  watch(c, env, WATCH.a, 'WITHOUT', aWithout, 0, pk, 0, 0);
+  watch(c, env, WATCH.b, 'WITH TOOLS', aWith, ghost, pk, mark, gap);
   // as the pool draws back, the shade closes in round the exhibit
   if (pk < 0.99) {
     const g = c.createRadialGradient(cx, cy + 20, R * 0.55, cx, cy + 20, R * 1.25);
-    g.addColorStop(0, withAlpha(m.fg, 0.3 * (1 - pk)));
-    g.addColorStop(1, withAlpha(m.fg, 0.8 * (1 - pk)));
+    g.addColorStop(0, withAlpha(m.fg, 0.25 * (1 - pk)));
+    g.addColorStop(1, withAlpha(m.fg, 0.85 * (1 - pk)));
     c.fillStyle = g;
     c.fillRect(cx - 700, cy - 500, 1400, 1000);
   }
 }
 
-function watch(c: C, env: PaintEnv, x: number, name: string, ang: number, ghost: number, pool: number, mark: number) {
+function watch(c: C, env: PaintEnv, x: number, name: string, ang: number, ghost: number, pool: number, mark: number, gap: number) {
   const m = env.mood;
   const r = WATCH.r;
   const cy = WATCH.y - 14 - r;
@@ -553,58 +589,82 @@ function watch(c: C, env: PaintEnv, x: number, name: string, ang: number, ghost:
     c.fillRect(-1.6, -r - 4, 3.2, 26);
     c.restore();
   }
-  // the ghost hand (what they felt): translucent paper, shorter run
+  // the ghost hand (what they felt): reviser r1 (round 5): translucent paper at ~45 %, a mid paper tone a step
+  // DARKER than the dial's lit face (never the brightest white in frame), with a dashed sepia edge
   if (ghost > 0.01) {
     c.save();
-    // reviser r1: a translucent paper ghost (about 50 %, warm paper tone, a soft edge), never the brightest thing
-    c.globalAlpha *= 0.5 * ghost;
-    c.filter = 'blur(0.6px)';
+    c.globalAlpha *= 0.45 * ghost;
     c.translate(x, cy);
     c.rotate(A_FELT);
-    c.fillStyle = mixLab('#d9c398', m.halo, 0.3);
+    c.fillStyle = mixLab('#a89068', m.set, 0.15);
     c.beginPath();
-    c.moveTo(-1.2, 4);
-    c.lineTo(-1.2, -r + 17);
-    c.lineTo(-4.4, -r + 17);
+    c.moveTo(-1.6, 4);
+    c.lineTo(-1.6, -r + 17);
+    c.lineTo(-5, -r + 17);
     c.lineTo(0, -r + 4);
-    c.lineTo(4.4, -r + 17);
-    c.lineTo(1.2, -r + 17);
-    c.lineTo(1.2, 4);
+    c.lineTo(5, -r + 17);
+    c.lineTo(1.6, -r + 17);
+    c.lineTo(1.6, 4);
     c.closePath();
     c.fill();
-    c.strokeStyle = withAlpha('#7a5a30', 0.6);
-    c.lineWidth = 0.8;
-    c.setLineDash([2, 2]);
-    c.stroke();
     c.restore();
-    // the gap between belief and fact: a faint arc from the ghost to the real hand
     c.save();
-    c.strokeStyle = withAlpha('#7a5a30', 0.7 * ghost);
-    c.lineWidth = 3;
+    c.globalAlpha *= 0.8 * ghost;
+    c.translate(x, cy);
+    c.rotate(A_FELT);
+    c.strokeStyle = withAlpha('#6a4c28', 0.75);
+    c.lineWidth = 0.9;
+    c.setLineDash([2, 2]);
     c.beginPath();
-    c.arc(x, cy, r * 0.62, A_FELT - Math.PI / 2, ang - Math.PI / 2);
+    c.moveTo(-1.6, 4);
+    c.lineTo(-1.6, -r + 17);
+    c.lineTo(-5, -r + 17);
+    c.lineTo(0, -r + 4);
+    c.lineTo(5, -r + 17);
+    c.lineTo(1.6, -r + 17);
+    c.lineTo(1.6, 4);
+    c.closePath();
     c.stroke();
     c.restore();
   }
-  // the real hand: a slim shaft ending in a heavy arrowhead at the pointer end; only a small disc behind the pivot
+  // the gap between belief and fact: on 'slower' a thin paper arc (pale paper on a dark hairline, so it reads on the
+  // light dial) drawn from the ghost hand round to the real hand
+  if (gap > 0.01) {
+    const a0 = A_FELT - Math.PI / 2, a1 = a0 + (ang - A_FELT) * sm(gap);
+    c.save();
+    c.lineCap = 'round';
+    c.strokeStyle = withAlpha('#2a1d12', 0.85);
+    c.lineWidth = 4;
+    c.beginPath();
+    c.arc(x, cy, r * 0.66, a0, a1);
+    c.stroke();
+    c.strokeStyle = mixLab('#efe2c2', m.halo, 0.15);
+    c.lineWidth = 2;
+    c.beginPath();
+    c.arc(x, cy, r * 0.66, a0, a1);
+    c.stroke();
+    c.restore();
+  }
+  // the real hand: reviser r1 (round 5): heavier and solid black (a 3.6 px shaft, a broad arrowhead), so WITHOUT and
+  // WITH TOOLS read as the facts and the ghost as the feeling
   c.save();
   c.translate(x, cy);
   c.rotate(ang);
   c.fillStyle = ink;
-  c.fillRect(-1.1, -r + 15, 2.2, r - 7);
+  c.fillRect(-1.8, -r + 15, 3.6, r - 7);
   c.beginPath();
-  c.moveTo(0, -r + 3);
-  c.lineTo(-4.6, -r + 17);
-  c.lineTo(4.6, -r + 17);
+  c.moveTo(0, -r + 2);
+  c.lineTo(-6, -r + 18);
+  c.lineTo(6, -r + 18);
   c.closePath();
   c.fill();
   c.beginPath();
-  c.arc(0, 0, 3.2, 0, Math.PI * 2);
+  c.arc(0, 0, 4.2, 0, Math.PI * 2);
   c.fill();
   c.beginPath();
-  c.arc(0, 9, 2.2, 0, Math.PI * 2);
+  c.arc(0, 10, 2.8, 0, Math.PI * 2);
   c.fill();
-  c.fillRect(-0.8, 0, 1.6, 9);
+  c.fillRect(-1.2, 0, 2.4, 10);
   c.restore();
   // the plaque beneath (prop lettering)
   c.fillStyle = mixLab(m.halo, m.set, 0.35 + 0.3 * (1 - pool));

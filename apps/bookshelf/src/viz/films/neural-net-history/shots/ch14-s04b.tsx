@@ -17,13 +17,14 @@
  *   tag2    6.19          SELF-DEFEATING · CHINA'S FOREIGN MINISTRY swings in to the row's CENTRE (round 3: one row,
  *                         one height, one size; no tag hangs higher than another)
  *   (name)  'China'       NAMING RULE: the behind candle's label turns horizontal and large beside its flame with its
- *                         dates (lit Oct 2022 · out Jan 2025 · ≈ 2 years) for ~2.3 s; its vertical lettering fades
+ *                         dates (lit Oct 2022 · out Jan 2025) for ~2.3 s; its vertical lettering fades
  *   out     'behind'      the draught blows it out cleanly: a thread of smoke, a clean dark two-ring sleeve, its tag
  *                         now OCT 2022 – JAN 2025 · ≈ 2
- *   two     'two'         the sleeve's two rings are scored bright by the chokepoint flame's light (two bands); the
- *                         third tag, DECISIVE · AMODEI (ANTHROPIC), KHAN (EX-NSC), swings in at the row's RIGHT
- *   (tail)  10.9 → 15.29  all three tags hang lit, turning gently, over the blackened match, the dark stub and the
- *                         living flame (the third has ~4.8 s lit before the cut)
+ *   tag3    tag2 + 0.6    DECISIVE · AMODEI (ANTHROPIC), KHAN (EX-NSC) swings in at the row's RIGHT (round 5: the
+ *                         three tags arrive as one row, 0.6 s apart; none has a solo beat, light change or push)
+ *   two     'two#2'       the sleeve's two rings are scored bright by the chokepoint flame's light (two bands)
+ *   (tail)  11.1 → 15.29  all three tags hang lit, turning gently, over the blackened match, the dark stub and the
+ *                         living flame
  * Round 4 (critic): the reflected columns are ink (≈ 25-30 % luminance over the fog), their ripple halved; an ink sill
  * runs along the frame's bottom 8 % (the foreground plane); the hand is an ink silhouette with a candleAmber rim
  * (inkHand); the match flame is dead by 5.0 s and its smoke curls from 5.05; the pull back reaches the wide by ~6.1 s
@@ -31,7 +32,7 @@
  * darker ink ghost scored in candleAmber hairlines, and on 'two' its two ring lines brighten in turn 0.15 s apart;
  * the named card rises as the flame dies (so its 'out' date is true) 60 px lower than before; the
  * hold pushes ~3 % toward the blackened match, which keeps a faint ember rim.
- * Round 5 (critic): the DECISIVE tag arrives in the silent tail (wordEnd 'years' + 0.4), so 'two#2' belongs to the
+ * Round 5 (historian): the three tags arrive together as one row (tag1, tag2, tag2 + 0.6). 'two#2' belongs to the
  * sleeve alone: its amber edge rises to full over 0.3 s while the other candles dim 15 % for 1.5 s; the tags are a
  * desaturated warm-grey paper (#b8a47a) with grain and a darker deckle edge, warmed only from the candle side; the
  * ripple is clamped (~2-3 px at 1080p), so the candles stand straight; over the hold the camera pushes ~12 % toward
@@ -61,7 +62,9 @@ type C = CanvasRenderingContext2D;
 const LAID = { x: 652, L: 150, h: 12.5, font: 13.8 } as const;
 /** round 5: the laid stick's centre line: its top just under where the candles' vertical lettering begins (no letter
  *  is cut), its body on the plank's top edge */
-const LAID_Y = SHELF_R.y - 2.6;
+// reviser r1 (critic, text collision): seated ~6 REFL px (≈ 14 px at 1080p) lower, on the plank's front edge, so the
+// 2022 candles' vertical lettering ends clear above the match's COMPUTE MATTERS LESS? (two text layers never overlap)
+const LAID_Y = SHELF_R.y + 3.4;
 /** round 5: the ripple on every sheet of this reflection (≈ 2-3 px at 1080p; round 4's 0.8 bent the columns ~12 px) */
 const RIPPLE = 0.16;
 /** round 5: tag paper, a desaturated warm grey (the flame stays the one warm accent) */
@@ -98,12 +101,12 @@ interface B {
   out: number;
   two: number;
   hold: number;
-  /** the three tags' swing-in times (tag1, tag2, 'two') */
+  /** the three tags' swing-in times, one row (tag1, tag2, tag2 + 0.6) */
   lit: [number, number, number];
   /** the behind candle is named (NAMING RULE): rise at, full for */
   name: number;
   nameHold: number;
-  /** round 5: the hold's push starts (end of 'years') */
+  /** round 5: the hold's push starts (the end of L1410b) */
   push: number;
 }
 interface Scene {
@@ -126,27 +129,28 @@ export default defineShot<Scene>({
       steady: T.beat('steady'),
       // round 4: the draught blows the behind candle out on 'behind' (the same word the card rises on)
       out: T.word('L1410b', 'behind'),
-      // round 4 (L1410b rewrite, 'China a year or two behind? That belief burned about two years.'): the sleeve
-      // catches the living flame's light on the SECOND 'two' ('about two years'), not on 'a year or two'
+      // round 4 (L1410b rewrite): the sleeve catches the living flame's light on the SECOND 'two' (two#2, 10.26),
+      // not on 'a year or two'
       two: T.word('L1410b', 'two#2'),
       hold: T.beat('hold'),
-      // round 5: the DECISIVE tag swings in in the silent tail (round 2's ask), not on 'two#2' (the sleeve's word)
-      lit: [T.beat('tag1'), T.beat('tag2'), T.wordEnd('L1410b', 'years') + 0.4],
+      // round 5 (fairness): the three tags come in as ONE row, 0.6 s apart: HELPS HUAWEI on tag1 (left),
+      // SELF-DEFEATING on tag2 (centre), DECISIVE 0.6 s after tag2 (right). No tag gets a solo beat, light or push.
+      lit: [T.beat('tag1'), T.beat('tag2'), T.beat('tag2') + 0.6],
       // round 4: the flame dies and the named card rises on 'behind' (its 'out' date is then true)
       name: T.word('L1410b', 'behind') - 0.1,
       nameHold: 2.0,
       push: 0,
     };
-    b.push = Math.max(b.two + 0.9, T.wordEnd('L1410b', 'years'));
-    // round 4: the named card is fully gone before the third tag swings in on the second 'two' (no two text layers
+    b.push = Math.max(b.two + 0.9, T.line('L1410b').end);
+    // round 4: the named card is fully gone before the second 'two' (no two text layers
     // over each other at the frame's right): rise 0.35 s + hold + 0.4 s fall end 0.15 s before the tag starts
     // round 5: still gone before 'two#2', so the sleeve is the subject on that word
     b.nameHold = Math.max(1.2, b.two - 0.1 - 0.15 - (b.name + 0.35 + 0.4));
     // round 4: the pull back from the match runs from the shake-out to the wide in ~1 s; the first two tags swing in
     // only once the lens is near the wide (no tag crosses the frame's edge at any frame)
-    const pullEnd = b.smoke + 0.95;
-    b.lit[0] = Math.max(b.lit[0], pullEnd);
-    b.lit[1] = Math.max(b.lit[1], b.lit[0] + 0.45);
+    // round 5: the pull starts as the match is shaken out and reaches the wide as tag1 swings in, so the row's
+    // times hold exactly (tag1, tag2, tag2 + 0.6) and the first tag is never cropped
+    const pullEnd = b.lit[0] + 0.05;
     // the push: centre the match's lettering (where it is held, just after 'match') in a lens-2.6 close-up
     const word = T.word('L1410', 'match');
     const ms = matchState(word + 0.1, b);
@@ -158,14 +162,17 @@ export default defineShot<Scene>({
       [T.word('L1410', 'struck') - 0.45, WIDE.x, WIDE.y, WIDE.lens * 1.02],
       // (review r1: the candles' lettering is out of focus in this close-up, so no half-words sit at its bottom)
       [word + 0.05, P0.x, P0.y, 2.6],
-      [b.smoke + 0.02, P0.x + 4, P0.y + 2, 2.64],
+      // round 5: the close holds until the flame is dead (~4.97), then one ~0.65 s pull back to the wide
+      [b.smoke - 0.12, P0.x + 4, P0.y + 2, 2.64],
       [pullEnd, WIDE.x + 4, WIDE.y, WIDE.lens * 1.01],
       // round 4 (the hold): a slow push toward the blackened match between the dark stub and the living flame
-      // round 5: ~12 % over the hold (from the end of 'years'), toward the shelf between the two 2022 candles; the
+      // round 5: ~12 % over the hold (from the end of L1410b), toward the shelf between the two 2022 candles; the
       // three tags stay whole inside the safe area (top ≈ 44 px, sides ≥ 138 px at 1080p)
       [b.two + 0.45, WIDE.x + 3, WIDE.y - 1, WIDE.lens * 1.014],
       [b.push, WIDE.x + 4, WIDE.y - 1, WIDE.lens * 1.016],
-      [D, 615, 367, WIDE.lens * 1.12],
+      // (round 5 author: ~8 % with the centre at 605, so the leftmost candle stays whole clear of the window jamb
+      // at the cut: the round-1/2 rule, no candle cropped at the frame's edge)
+      [D, 605, 367, WIDE.lens * 1.08],
     ];
     const fl = monotone(keys.map((k) => [k[0], Math.log(k[3])]));
     const fx = monotone(keys.map((k) => [k[0], k[1]]));
@@ -185,19 +192,40 @@ export default defineShot<Scene>({
     // the strait beyond the glass: present, cold, soft (focus is on the reflection)
     strait(f, { key: 'ch14', moodKey: 'winterBlue', sunX: 640, sunI: 0.5, stones: [], lantern: 0.8 });
     blurRect(f, 0, 0, 1280, 720, 2.6, 1);
+    // reviser r1 (critic, value range): the water and skyline band behind the candles (y 380-900 at 1080p) ~15 % darker
+    deepenBand(f);
     reflection(f, t, b, cam.lens);
     tags(f, t, b);
     windowFrame(f, {});
     // round 5: the near sill sinks a little as the camera pushes in over the hold (it is nearer than the glass)
     sill(f, sm((t - b.push) / Math.max(0.5, b.D - b.push)));
-    // NAMING RULE: the behind candle's card, above-right of its flame (the second tag hangs at flame height there)
+    // NAMING RULE: the behind candle's card, right of its flame. Round 5: the tag row is up from 6.8 s, so the card
+    // sits BELOW the row (top 222), beside the flame, and never covers a tag's lettering
     const nk = namingK(t, b.name, b.nameHold);
     if (nk > 0.003) {
       const p = reflFlameOnScreen(f, candleFlameAt(behindCandle({ rings: 2 })));
-      reflNamedCard(f.c, { sx: p.x, sy: p.y, k: nk, lines: ['CHINA IS A YEAR', 'OR TWO BEHIND'], dates: 'lit Oct 2022 · out Jan 2025 · ≈ 2 years', side: 'right', top: 168 }, f.mood);
+      reflNamedCard(f.c, { sx: p.x, sy: p.y, k: nk, lines: ['CHINA IS A YEAR', 'OR TWO BEHIND'], dates: 'lit Oct 2022 · out Jan 2025', side: 'right', top: 222 }, f.mood);
     }
   },
 });
+
+/** reviser r1: a feathered multiply over the strait's water and skyline band behind the candles (stage y ≈ 253-600,
+ *  1080p 380-900), ~15 % darker, so the flames are the brightest things over it (screen-locked; drawn before the
+ *  reflection and the tags, which keep their values) */
+function deepenBand(f: Frame) {
+  const c = f.c;
+  c.save();
+  c.setTransform(f.pxScale, 0, 0, f.pxScale, 0, 0);
+  c.globalCompositeOperation = 'multiply';
+  const g = c.createLinearGradient(0, 215, 0, 640);
+  g.addColorStop(0, '#ffffff');
+  g.addColorStop((253 - 215) / 425, '#d9d9d9');
+  g.addColorStop((600 - 215) / 425, '#d9d9d9');
+  g.addColorStop(1, '#ffffff');
+  c.fillStyle = g;
+  c.fillRect(-10, 215, 1300, 425);
+  c.restore();
+}
 
 /** round 4: the study window's sill along the frame's bottom 8 % (screen-locked, the foreground plane): ink, a carved
  *  moulding, its top edge catching the room's lamp in a candleAmber hairline */
@@ -405,30 +433,38 @@ function flatTag(c: C, env: PaintEnv, x: number, y: number, lines: string[], s: 
   c.restore();
 }
 
-/** round 5 (critic: 'the smoke thread from the dark stub drifts across' the match): a snuffed wick's cold smoke falls
- *  in the window's downdraught, a thin wavering thread down the stub's lamp side and across the laid match */
-function fallingSmoke(c: C, env: PaintEnv, from: P, to: P, a: number, t: number) {
+/** reviser r1 (critic: the hold's smoke read as one long hard wire across the lettering): the snuffed wick's smoke is
+ *  a soft curl RISING from the stub, ≈ 3-4 px wide at 1080p (a 1.5 REFL px core in a fainter 3 px veil), 25-35 %
+ *  alpha at its root, thinning to nothing ≈ 150 px (1080p) above the wick, so it never crosses a candle's lettering
+ *  or the laid match. `rise` is its height on the reflection plane */
+function risingCurl(c: C, env: PaintEnv, from: P, rise: number, a: number, t: number) {
   if (a <= 0.01) return;
-  const col = mixLab(env.mood.haze, '#c4c4bd', 0.5);
-  const n = 40;
+  const col = mixLab(env.mood.haze, '#c9c7bf', 0.55);
+  const n = 28;
+  const pts: P[] = [];
+  for (let i = 0; i <= n; i++) {
+    const u = i / n;
+    // it leaves the wick straight, then wavers and leans a little away from the tags (left), widening its swing
+    const x = from.x + Math.sin(u * 7.5 - t * 1.1) * (0.6 + 6.5 * u * u) - 7 * u * u;
+    const y = from.y - rise * u;
+    pts.push({ x, y });
+  }
   c.save();
-  c.lineCap = 'round';
-  c.lineJoin = 'round';
-  // three soft strands of one thread: it leaves the wick thin, sinks along the stub's lamp side, and spreads into a
-  // slow, wavering veil as it meets the plank and drifts left across the match
-  for (const [w, al, ph] of [[7, 0.06, 0], [3.2, 0.12, 0.7], [1.2, 0.26, 1.9]] as const) {
-    c.beginPath();
-    for (let i = 0; i <= n; i++) {
-      const u = i / n;
-      const k = u * u * (3 - 2 * u);
-      const x = lerp(from.x, to.x, Math.pow(u, 2.2)) + Math.sin(u * 9 - t * 0.8 + ph) * (1.5 + 9 * u * u);
-      const y = lerp(from.y, to.y, k) + Math.sin(u * 5 + t * 0.5 + ph) * 2 * u;
-      if (i === 0) c.moveTo(x, y);
-      else c.lineTo(x, y);
-    }
-    c.strokeStyle = withAlpha(col, al * a);
+  // butt caps: the segments meet without the beads round caps would leave where their alphas overlap
+  c.lineCap = 'butt';
+  for (const [w, al] of [[3.0, 0.09], [1.5, 0.3]] as const) {
     c.lineWidth = w;
-    c.stroke();
+    for (let i = 0; i < n; i++) {
+      const u = (i + 0.5) / n;
+      // in from the wick over the first few px, then thinning out toward its top
+      const fade = sm(u / 0.08) * Math.pow(1 - u, 1.4);
+      if (fade <= 0.01) continue;
+      c.strokeStyle = withAlpha(col, al * a * fade);
+      c.beginPath();
+      c.moveTo(pts[i].x, pts[i].y);
+      c.lineTo(pts[i + 1].x, pts[i + 1].y);
+      c.stroke();
+    }
   }
   c.restore();
 }
@@ -487,10 +523,12 @@ function reflection(f: Frame, t: number, b: B, lens: number) {
       const hp = ms.laid ? laidHead : head;
       if (sk > 0.01 && hp) smokeCurl(c, env, hp, 60, 0.92, sk, 5);
     },
+    // reviser r1 (critic, value range): the three flames' halos ~25 % wider (46 → 58, 64 → 80), so the living flames
+    // read as the lit subject against the darker water band
     glows: () => [
-      ...old.map((p) => ({ x: p.x, y: p.y - 4, r: 46, a: 0.4 * dim })),
-      { x: w1.x, y: w1.y - 6, r: 64, a: 0.8 * chokeF * dim },
-      { x: w2.x, y: w2.y - 6, r: 64, a: 0.8 * (1 - outK) },
+      ...old.map((p) => ({ x: p.x, y: p.y - 4, r: 58, a: 0.4 * dim })),
+      { x: w1.x, y: w1.y - 6, r: 80, a: 0.8 * chokeF * dim },
+      { x: w2.x, y: w2.y - 6, r: 80, a: 0.8 * (1 - outK) },
       // the match: the brightest bloom in the frame (a tight hot core and a wider spill)
       ...(head && ms.lit > 0
         ? [
@@ -542,8 +580,10 @@ function reflection(f: Frame, t: number, b: B, lens: number) {
       // round 5: the burnt match ON the plank top (crisp, on this brighter sheet), the stub's cold smoke over it
       if (ms.laid) {
         drawMatch(c, env, ms);
+        // reviser r1: the stub's smoke RISES in a soft curl (≈ 62 REFL px ≈ 150 px at 1080p) and fades out well
+        // above the lettering; it no longer falls across the 'CHINA IS A YEAR' column or the laid match
         const wick = candleFlameAt(C2);
-        fallingSmoke(c, env, { x: wick.x - 2, y: wick.y + 4 }, { x: LAID.x - 30, y: LAID_Y - LAID.h * 0.4 }, fall, t);
+        risingCurl(c, env, { x: wick.x, y: wick.y + 1 }, 62, fall, t);
       }
     },
   });
@@ -605,8 +645,10 @@ function scoredSleeve(c: C, env: PaintEnv, o: ReflCandle, tq: number, b: B, outK
     g.addColorStop(1, withAlpha(amber, 0.16 * k));
     c.fillStyle = g;
     c.fillRect(x0 + 1, y + 1.1 * s, w - 2, RING * s - 2.2 * s);
+    // reviser r1 (critic, teaching): the lit ring line ~1 px heavier at 1080p (+0.45 REFL px) while it is lit
+    const lh = 1.4 * s + 0.45 * Math.min(1, k * 1.5);
     c.fillStyle = withAlpha(mixLab(m.core, amber, 0.3), 0.95 * k);
-    c.fillRect(x0 - 1.5 * s, y + RING * s - 0.7 * s, w + 3 * s, 1.4 * s);
+    c.fillRect(x0 - 1.5 * s, y + RING * s - lh / 2, w + 3 * s, lh);
   }
   c.restore();
 }
@@ -642,7 +684,7 @@ function tagOutline(w: number, h: number, seed: number): Path2D {
   tagOutlines.set(key, p);
   return p;
 }
-/** the three paper tags on long threads (review r1): each swings in from its side on its beat (tag1, tag2, 'two')
+/** the three paper tags on long threads (review r1): each swings in from its side on its beat (tag1, tag2, tag2 + 0.6)
  *  and settles, turning gently; they hang in the chokepoint candle's light and are lit BY that flame (bright on the
  *  side facing it, falling off with distance), and stay lit through the tail. Lettering horizontal, 17 / 14.5 px on
  *  the reflection plane at lens 1.5 (≥ 26 / 22.5 px cap at 1080p) */

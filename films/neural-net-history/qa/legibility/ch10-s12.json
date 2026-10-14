@@ -1,6 +1,6 @@
 {
  "shot": "ch10-s12",
- "at": "2026-10-13T20:47:32.851Z",
+ "at": "2026-10-14T00:39:29.406Z",
  "minCapPx": 22,
  "sampled": 25,
  "texts": 24,
@@ -9,12 +9,12 @@
  "subjects": [
   {
    "text": "12 hours",
-   "capWhileSubject": 44,
+   "capWhileSubject": 47.7,
    "why": "script onScreenText"
   },
   {
    "text": "one machine, 8 GPUs",
-   "capWhileSubject": 29.9,
+   "capWhileSubject": 32.4,
    "why": "script onScreenText"
   },
   {
@@ -26,52 +26,57 @@
  "texture": [
   {
    "text": "we",
-   "maxCap": 16.2,
+   "maxCap": 16.5,
    "why": "not named, not in onScreenText"
   },
   {
    "text": "crossed",
-   "maxCap": 16,
+   "maxCap": 16.3,
    "why": "not named, not in onScreenText"
   },
   {
    "text": "the",
-   "maxCap": 16.2,
+   "maxCap": 16.5,
    "why": "not named, not in onScreenText"
   },
   {
    "text": "river",
-   "maxCap": 16.2,
+   "maxCap": 16.5,
    "why": "not named, not in onScreenText"
   },
   {
    "text": "bank",
-   "maxCap": 16.2,
+   "maxCap": 16.5,
    "why": "not named, not in onScreenText"
   },
   {
    "text": "at",
-   "maxCap": 16.2,
+   "maxCap": 16.5,
    "why": "not named, not in onScreenText"
   },
   {
    "text": "dusk",
-   "maxCap": 16.2,
+   "maxCap": 16.5,
    "why": "not named, not in onScreenText"
   },
   {
    "text": "and",
-   "maxCap": 16.2,
+   "maxCap": 16.5,
    "why": "not named, not in onScreenText"
   },
   {
    "text": "walked",
-   "maxCap": 16.2,
+   "maxCap": 16.5,
    "why": "not named, not in onScreenText"
   },
   {
    "text": "on",
-   "maxCap": 16.2,
+   "maxCap": 16.5,
+   "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "10 words · 100 pairs",
+   "maxCap": 25.3,
    "why": "not named, not in onScreenText"
   },
   {
@@ -86,47 +91,42 @@
   },
   {
    "text": "14 words · 196 pairs",
-   "maxCap": 24.8,
-   "why": "not named, not in onScreenText"
-  },
-  {
-   "text": "10 words · 100 pairs",
-   "maxCap": 24.8,
+   "maxCap": 24.7,
    "why": "not named, not in onScreenText"
   },
   {
    "text": "until",
-   "maxCap": 15.8,
+   "maxCap": 15.5,
    "why": "not named, not in onScreenText"
   },
   {
    "text": "lamps",
-   "maxCap": 15.8,
+   "maxCap": 15.5,
    "why": "not named, not in onScreenText"
   },
   {
    "text": "of",
-   "maxCap": 15.8,
+   "maxCap": 15.5,
    "why": "not named, not in onScreenText"
   },
   {
    "text": "18 words · 324 pairs",
-   "maxCap": 24.2,
+   "maxCap": 23.7,
    "why": "not named, not in onScreenText"
   },
   {
    "text": "town",
-   "maxCap": 14.6,
+   "maxCap": 14.4,
    "why": "not named, not in onScreenText"
   },
   {
    "text": "came",
-   "maxCap": 14.6,
+   "maxCap": 14.4,
    "why": "not named, not in onScreenText"
   },
   {
    "text": "20 words · 400 pairs",
-   "maxCap": 22.4,
+   "maxCap": 22.1,
    "why": "not named, not in onScreenText"
   }
  ],

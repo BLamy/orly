@@ -9,5 +9,12 @@
  "fails": [],
  "suspects": [],
  "ghosts": [],
- "cards": []
+ "cards": [],
+ "transition": {
+  "kind": "paperWipe",
+  "sampled": 12,
+  "ghosts": [],
+  "carry": []
+ },
+ "transAt": "2026-10-13T22:54:34.308Z"
 }

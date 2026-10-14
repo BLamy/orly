@@ -42,8 +42,9 @@ import { paperTone } from '../sets/caseBoard';
 import { frameOn, kOf, mixFrame } from '../sets/ch09-s03a-kit';
 import { compositeSub, subFrame, sm, tq12, win, lerp, clamp01 } from '../sets/ch02-s05b-util';
 import {
-  DOOR, EMBER, L2WINS, TINY, WINS, cityL2, corridor, doorLight, facadeWall, handover, handoverLantern, lampPost, ledger,
-  midL3, railL5, runners, sillLight, skylineL1, stampAt, street, tinyWindows, twinLanterns, type HandoverTimes,
+  DOOR, EMBER, FAC, TINY, WINS, cityL2, corridor, doorLight, facadeWall, handover, handoverLantern, l3Windows, lampPost,
+  ledgeVeil, ledger, midL3, midL3Lights, railL5, runners, sillLight, skylineL1, stampAt, street, tinyWindows, twinLanterns,
+  type HandoverTimes,
 } from '../sets/ch12-s08-facade';
 
 type C = CanvasRenderingContext2D;
@@ -86,12 +87,15 @@ const K_TILT = BOARD_END.kTilt; // −0.09 from this shot on (studyState)
 
 // ------------------------------------------------------------------------------------------------ the sparks
 interface Spark {
-  /** target: a tiny window on the façade (L4) or a window on the blocks either side (L2) */
-  kind: 'tiny' | 'l2';
+  /** target: a tiny window on the façade (L4) or a window on the neighbouring buildings either side (L3) */
+  kind: 'tiny' | 'l3';
   idx: number;
   delay: number;
   flight: number;
   lift: number;
+  /** a right-hand target: the spark climbs the left pier, leaps the roofline out of frame and drops in on the right,
+   *  so it never crosses windows 1, 2 or 4 or their stamps */
+  over: boolean;
 }
 const h01 = (i: number, s: number) => {
   let h = Math.imul(i | 0, 0x27d4eb2d) ^ Math.imul(s | 0, 0x165667b1);
@@ -100,25 +104,44 @@ const h01 = (i: number, s: number) => {
   h ^= h >>> 16;
   return (h >>> 0) / 4294967295;
 };
-/** (round 1) the copies stay in window 3's own neighbourhood: the façade's left margin beside it and the blocks to the
- *  left, on low arcs (never across windows 1, 2 or 4 or their stamps), and all have landed by ≈ 12.85 s */
-const SPARKS: Spark[] = (() => {
+const EMPTY = new Map<number, number>();
+/** (round 5 review: the copies stayed over the left pier) the copies scatter across the whole street: two thirds
+ *  to window 3's own neighbourhood (the façade's left pier and the neighbour to the left, on low arcs), a third
+ *  over the roofline to the right pier and the neighbour to the right. Every target is checked to be in frame (and,
+ *  for the neighbours, not hidden behind the façade) as the push settles; all have landed by ≈ 12.85 s */
+function buildSparks(b: B): Spark[] {
   const out: Spark[] = [];
   const W3 = WINS[2];
-  const pool = TINY.map((w, i) => ({ w, i })).filter(({ w }) => w.x + w.w < W3.x - 6 && w.y > W3.y - 4 && w.y + w.h < W3.y + W3.h);
-  for (let n = 0; n < 22 && pool.length; n++) {
-    const pick = pool[Math.floor(h01(n, 301) * pool.length)];
-    if (out.some((s) => s.kind === 'tiny' && s.idx === pick.i)) continue;
-    out.push({ kind: 'tiny', idx: pick.i, delay: 0.14 * h01(n, 302), flight: 0.42 + 0.2 * h01(n, 303), lift: 10 + 26 * h01(n, 304) });
-  }
-  const l2 = L2WINS.map((w, i) => ({ w, i })).filter(({ w }) => w.x > -120 && w.x < 200 && w.y > W3.y - 20 && w.y < 600);
-  for (let n = 0; n < 12 && l2.length; n++) {
-    const pick = l2[Math.floor(h01(n, 311) * l2.length)];
-    if (out.some((s) => s.kind === 'l2' && s.idx === pick.i)) continue;
-    out.push({ kind: 'l2', idx: pick.i, delay: 0.08 + 0.12 * h01(n, 312), flight: 0.5 + 0.12 * h01(n, 313), lift: 14 + 30 * h01(n, 314) });
-  }
+  const pick = <T,>(pool: T[], n: number, seed: number, has: (p: T) => boolean, add: (p: T, k: number) => void) => {
+    for (let k = 0; k < n && pool.length; k++) {
+      const p = pool[Math.floor(h01(k, seed) * pool.length)];
+      if (!has(p)) add(p, k);
+    }
+  };
+  // left: the façade's left pier, beside window 3
+  const left = TINY.map((w, i) => ({ w, i })).filter(({ w }) => w.x + w.w < W3.x - 6 && w.y > W3.y - 4 && w.y + w.h < W3.y + W3.h);
+  pick(left, 18, 301, (p) => out.some((s) => s.kind === 'tiny' && s.idx === p.i), (p, k) =>
+    out.push({ kind: 'tiny', idx: p.i, over: false, delay: 0.14 * h01(k, 302), flight: 0.42 + 0.2 * h01(k, 303), lift: 10 + 26 * h01(k, 304) }));
+  // right: the façade's right pier, mid height
+  const right = TINY.map((w, i) => ({ w, i })).filter(({ w }) => w.x >= 1020 && w.y > 170 && w.y < 540);
+  pick(right, 8, 321, (p) => out.some((s) => s.kind === 'tiny' && s.idx === p.i), (p, k) =>
+    out.push({ kind: 'tiny', idx: p.i, over: true, delay: 0.05 * h01(k, 322), flight: 0.6 + 0.08 * h01(k, 323), lift: 0 }));
+  // the neighbours (L3), where they show past the façade both as the sparks land and at the end of the push
+  const cams = [facadeCam(b, b.scatter + 0.75), CAM_C];
+  const l3 = l3Windows(FACADE_CAMS)
+    .map((w, i) => ({ w, i }))
+    .filter(({ w }) => !w.on && cams.every((cm) => {
+      const p = toScreen(LAYERS.L3, cm, w.x + 7, w.y + 10);
+      const q = toLayer(LAYERS.L4, cm, p.x, p.y);
+      return p.x > 10 && p.x < 1270 && p.y > 100 && p.y < 590 && (q.x < FAC.x0 - 6 || q.x > FAC.x1 + 6);
+    }));
+  const has3 = (p: { i: number }) => out.some((s) => s.kind === 'l3' && s.idx === p.i);
+  pick(l3.filter(({ w }) => w.side < 0), 7, 331, has3, (p, k) =>
+    out.push({ kind: 'l3', idx: p.i, over: false, delay: 0.06 + 0.1 * h01(k, 332), flight: 0.5 + 0.12 * h01(k, 333), lift: 14 + 30 * h01(k, 334) }));
+  pick(l3.filter(({ w }) => w.side > 0), 7, 341, has3, (p, k) =>
+    out.push({ kind: 'l3', idx: p.i, over: true, delay: 0.06 * h01(k, 342), flight: 0.62 + 0.08 * h01(k, 343), lift: 0 }));
   return out;
-})();
+}
 
 // ------------------------------------------------------------------------------------------------ beats
 interface B {
@@ -143,8 +166,9 @@ interface B {
   back0: number;
   back1: number;
   truck0: number;
+  sparks: Spark[];
   copiesTiny: Map<number, number>;
-  copiesL2: Map<number, number>;
+  copiesL3: Map<number, number>;
 }
 
 export default defineShot({
@@ -159,8 +183,7 @@ export default defineShot({
     const hundred = T.beat('users');
     const ho: HandoverTimes = { in0: leak - 0.2, in1: leak + 0.3, take: leak + 0.5, out1: leak + 1.05 };
     const copiesTiny = new Map<number, number>();
-    const copiesL2 = new Map<number, number>();
-    for (const s of SPARKS) (s.kind === 'tiny' ? copiesTiny : copiesL2).set(s.idx, scatter + s.delay + s.flight);
+    const copiesL3 = new Map<number, number>();
     // the pull-back waits until 'stampede' has been said, and lands just before 'hundred'
     const pull1 = hundred - 0.1;
     const pull0 = Math.max(T.wordEnd('L1219', 'stampede') + 0.15, pull1 - 1.75);
@@ -193,9 +216,12 @@ export default defineShot({
       back1: sit + 0.8,
       // one continuous truck from the board to the Wall, carrying 'and is not', settled with time to hold the end frame
       truck0: T.beat('notQuite') - 0.24,
+      sparks: [],
       copiesTiny,
-      copiesL2,
+      copiesL3,
     };
+    b.sparks = buildSparks(b);
+    for (const s of b.sparks) (s.kind === 'tiny' ? copiesTiny : copiesL3).set(s.idx, scatter + s.delay + s.flight);
     tl.hold(0, D);
     return { tl, b };
   },
@@ -250,9 +276,13 @@ function paintFacade(f: Frame, b: B, t: number) {
   const tq = tq12(t);
   f.backlight({ sunX: 640, sunY: 470, sunRadius: 560, intensity: 0.42 });
   f.layer('L1', (c, env) => skylineL1(f, c, env, ID, FACADE_CAMS));
-  f.layer('L2', (c, env) => cityL2(f, c, env, ID, FACADE_CAMS, t, b.hundred - 0.08, b.copiesL2));
+  f.layer('L2', (c, env) => cityL2(f, c, env, ID, FACADE_CAMS, t, b.hundred - 0.08, EMPTY));
   f.fog({ yCenter: 0.62 * 720, height: 0.42 * 720, alpha: 0.2, drift: 6 });
-  f.layer('L3', (c, env) => midL3(f, c, env, ID, FACADE_CAMS));
+  // the neighbours: their windows join the users' flicker on 'hundred' and settle dim; the copies land there too
+  f.layer('L3', (c, env) => {
+    midL3(f, c, env, ID, FACADE_CAMS);
+    midL3Lights(c, env, FACADE_CAMS, t, b.hundred - 0.08, b.copiesL3);
+  });
   // fog B: a haze band at door height between the neighbours and the façade
   const doorY = toScreen(LAYERS.L4, cam, 640, DOOR.y + DOOR.h * 0.6).y;
   f.fog({ yCenter: doorY - 30 * zoom, height: 200 * zoom, alpha: 0.24, drift: 8 });
@@ -287,6 +317,8 @@ function paintFacade(f: Frame, b: B, t: number) {
     twinLanterns(c, env, WINS[3], k4, flare4, tq);
     c.restore();
     facadeWall(f, c, env, ID);
+    // (round 5 review) the three full-width cut-lines ease in after the crossfade, not as scan lines over the study
+    ledgeVeil(c, env, 1 - sm((t - 0.1) / 0.6));
     tinyWindows(c, env, t, b.hundred - 0.08, b.copiesTiny);
     // each lit window spills light onto the wall around it and throws a soft sill-light down the wall below
     const spill = (i: number, k: number, col: string) => {
@@ -334,13 +366,19 @@ function paintFacade(f: Frame, b: B, t: number) {
     drawTracked(c, '~100M monthly users, Jan 2023 · an estimate', 640, 78, { font: `500 22px ${FONT.mono}`, size: 22, tracking: 0.02, align: 'center' });
     c.restore();
   }
-  // the date stamps: each types itself under its window and stays
+  // the date stamps: each types itself under its window and stays; (round 5 review) the stamps leave 0.1 s ahead of the
+  // sitBack dissolve (the dissolve itself unchanged), so no date ghosts over the board
+  const sa = 1 - sm((t - (b.diss0 - 0.1)) / 0.1);
+  if (sa <= 0) return;
+  c.save();
+  c.globalAlpha *= sa;
   stamp(f, cam, WINS[0], '21 DEC 2022', b.w1 + 0.1, t);
   stamp(f, cam, WINS[1], '23 JAN 2023', b.w2 + 0.1, t);
   stamp(f, cam, WINS[2], '24 FEB', b.w3 + 0.08, t, { tail: ' → 3 MAR 2023', at2: b.scatter + 0.05 });
   // (review r1: typed at 18 cps it was whole only ≈ 0.65 s before the dissolve) the last stamp is PRESSED whole on the
   // twin lanterns' beat, one strike with a small ink spread, so all four stamps read together for ≈ 1.2 s before the cut
   stamp(f, cam, WINS[3], '14 MAR 2023', b.w4, t, undefined, true);
+  c.restore();
 }
 
 function stamp(f: Frame, cam: Camera3, w: (typeof WINS)[number], text: string, at: number, t: number, more?: { tail: string; at2: number }, press = false) {
@@ -389,8 +427,8 @@ function stamp(f: Frame, cam: Camera3, w: (typeof WINS)[number], text: string, a
   c.restore();
 }
 
-/** sparks: the META lantern gathers a flare, then bursts: each spark flies to a tiny window (L4) or a window on the
- *  blocks either side (L2), where it lands as a light that stays */
+/** sparks: the META lantern gathers a flare, then bursts: each spark flies to a tiny window on the façade (L4) or a
+ *  window on the neighbouring buildings (L3), where it lands as a light that stays */
 function sparks(c: C, env: PaintEnv, b: B, t: number, cam: Camera3) {
   if (t < b.scatter - 0.45) return;
   const L = handoverLantern(b.ho, tq12(t));
@@ -407,11 +445,19 @@ function sparks(c: C, env: PaintEnv, b: B, t: number, cam: Camera3) {
   // every spark is gone by ≈ 12.9 s, so the twin lanterns' 'same instant, equal size' beat reads clean
   const fade = 1 - sm((t - (b.w4 - 0.42)) / 0.26);
   if (fade <= 0) return;
+  const l3 = l3Windows(FACADE_CAMS);
+  const q2 = (p0: { x: number; y: number }, k: { x: number; y: number }, p1: { x: number; y: number }, e: number) => {
+    const a = (1 - e) * (1 - e), bb = 2 * (1 - e) * e, cc = e * e;
+    return { x: a * p0.x + bb * k.x + cc * p1.x, y: a * p0.y + bb * k.y + cc * p1.y };
+  };
+  /** the over-the-roof leap: up the left pier and out of frame (0-0.42), unseen over the roof, then down onto the
+   *  target from above (0.56-1) */
+  const RISE = 0.42, DROP = 0.56;
   c.save();
   c.globalCompositeOperation = 'lighter';
   c.globalAlpha *= fade;
   c.lineCap = 'round';
-  for (const s of SPARKS) {
+  for (const s of b.sparks) {
     const u = (t - b.scatter - s.delay) / s.flight;
     if (u <= 0 || u >= 1) continue;
     let tx: number, ty: number;
@@ -420,34 +466,48 @@ function sparks(c: C, env: PaintEnv, b: B, t: number, cam: Camera3) {
       tx = w.x + w.w / 2;
       ty = w.y + w.h / 2;
     } else {
-      const w = L2WINS[s.idx];
-      const sp = toScreen(LAYERS.L2, cam, w.x + 3.5, w.y + 4.5);
+      const w = l3[s.idx];
+      const sp = toScreen(LAYERS.L3, cam, w.x + 7, w.y + 10);
       const lp = toLayer(LAYERS.L4, cam, sp.x, sp.y);
       tx = lp.x;
       ty = lp.y;
     }
-    const at = (v: number) => {
-      const e = 1 - Math.pow(1 - v, 1.6);
-      const cx = (sx + tx) / 2 + (tx - sx) * 0.1, cy = Math.min(sy, ty) - s.lift;
-      const a = (1 - e) * (1 - e), bb = 2 * (1 - e) * e, cc = e * e;
-      return { x: a * sx + bb * cx + cc * tx, y: a * sy + bb * cy + cc * ty };
+    const at = (v: number): { x: number; y: number } | null => {
+      if (!s.over) {
+        const e = 1 - Math.pow(1 - v, 1.6);
+        return q2({ x: sx, y: sy }, { x: (sx + tx) / 2 + (tx - sx) * 0.1, y: Math.min(sy, ty) - s.lift }, { x: tx, y: ty }, e);
+      }
+      if (v < RISE) {
+        const e = Math.pow(v / RISE, 1.25);
+        return q2({ x: sx, y: sy }, { x: 186, y: sy + 4 }, { x: 206, y: -60 }, e);
+      }
+      if (v < DROP) return null;
+      const e = 1 - Math.pow(1 - (v - DROP) / (1 - DROP), 1.6);
+      return q2({ x: tx - 34, y: -60 }, { x: tx - 8, y: (ty - 60) / 2 }, { x: tx, y: ty }, e);
     };
     const p = at(u);
+    if (!p) continue;
     const a = Math.min(1, u * 6) * (0.7 + 0.3 * (1 - u));
     // the trail: two segments, fading back along the path
-    const q1 = at(Math.max(0, u - 0.03)), q2 = at(Math.max(0, u - 0.065));
-    c.strokeStyle = withAlpha(mixLab(m.core, m.halo, 0.25), 0.3 * a);
-    c.lineWidth = 1.6;
-    c.beginPath();
-    c.moveTo(q2.x, q2.y);
-    c.lineTo(q1.x, q1.y);
-    c.stroke();
-    c.strokeStyle = withAlpha(mixLab(m.core, m.halo, 0.2), 0.65 * a);
-    c.lineWidth = 2.4;
-    c.beginPath();
-    c.moveTo(q1.x, q1.y);
-    c.lineTo(p.x, p.y);
-    c.stroke();
+    // (the leap over the roof is fast: its trail is kept to the low arcs' length)
+    const d1 = s.over ? 0.014 : 0.03, d2 = s.over ? 0.03 : 0.065;
+    const q1 = at(Math.max(0, u - d1)), qq = at(Math.max(0, u - d2));
+    if (q1 && qq) {
+      c.strokeStyle = withAlpha(mixLab(m.core, m.halo, 0.25), 0.3 * a);
+      c.lineWidth = 1.6;
+      c.beginPath();
+      c.moveTo(qq.x, qq.y);
+      c.lineTo(q1.x, q1.y);
+      c.stroke();
+    }
+    if (q1) {
+      c.strokeStyle = withAlpha(mixLab(m.core, m.halo, 0.2), 0.65 * a);
+      c.lineWidth = 2.4;
+      c.beginPath();
+      c.moveTo(q1.x, q1.y);
+      c.lineTo(p.x, p.y);
+      c.stroke();
+    }
     glow(c, p.x, p.y, 22, m.halo, 0.7 * a);
     c.fillStyle = withAlpha(mixLab(m.core, '#ffffff', 0.35), a);
     c.beginPath();
@@ -499,7 +559,7 @@ function paintStudy(g: Frame, b: B, t: number) {
     extra: (c, env) => drawHands(c, env, b, tq, cam, tilt),
   });
   // the far end of the Wall, beyond the lamp's reach (world-anchored, so it rides the truck)
-  g.layer('L4', (c, env) => wallShade(c, env));
+  g.layer('L4', (c, env) => wallShade(c, env, e));
   studyNear(g, { key: ID, cams: STUDY_CAMS_USED, file: true });
   // the lamp shade's edge, near and soft, in the Wall frames
   if (e > 0.2) g.layer('L5', (c, env) => lampShade(c, env));
@@ -571,8 +631,9 @@ const W7R = slotRect('W7');
 const EDGE_P = { x: W6R.x - W6R.w / 2, y: W6R.y + W6R.h / 2 - 0.62 * W6R.h };
 const EDGE_Q = { x: W6R.x - W6R.w / 2 + 0.3 * W6R.w, y: W6R.y + W6R.h / 2 };
 
-function wallShade(c: C, env: PaintEnv) {
+function wallShade(c: C, env: PaintEnv, e: number) {
   const m = env.mood;
+  farDark(c, env, e);
   // Hinton's 2017 slip, drawn dim: unvisited, at the far end
   const w7 = WALL_END.find((v) => v.slot === 'W7')!;
   // (round 1) dim, beyond the lamp, but still identifiable as Hinton's slip (its who-line can be made out)
@@ -661,6 +722,47 @@ function wallShade(c: C, env: PaintEnv) {
   c.arc(0, -h / 2 + 6 * WK, 4 * WK, 0, Math.PI * 2);
   c.fill();
   c.restore();
+}
+
+/** (round 5 review: flat grey-mauve room showed past the panel's edges in the end frames) the room beyond the lamp's
+ *  reach is dark: a near-black falloff from the panel's right edge (feathered over ≈ 120 px) to the frame edge, and
+ *  on the left, above the X-ray cabinet, as the truck passes it (world-anchored, so it rides the truck) */
+const XRAY_TOP = 650 - 420 * 0.75;
+function farDark(c: C, env: PaintEnv, e: number) {
+  const ink = mixLab(env.mood.fg, '#050403', 0.55);
+  const kR = sm((e - 0.45) / 0.4);
+  if (kR > 0.01) {
+    const R = PANEL.x + PANEL.w;
+    const g = c.createLinearGradient(R - 6, 0, R + 120, 0);
+    g.addColorStop(0, withAlpha(ink, 0));
+    g.addColorStop(0.07, withAlpha(ink, 0.78 * kR));
+    g.addColorStop(1, withAlpha(ink, 0.97 * kR));
+    c.fillStyle = g;
+    c.fillRect(R - 6, PANEL.y - 700, 126, PANEL.h + 1400);
+    c.fillStyle = withAlpha(ink, 0.97 * kR);
+    c.fillRect(R + 120, PANEL.y - 700, 1600, PANEL.h + 1400);
+  }
+  const kL = sm((e - 0.6) / 0.3);
+  if (kL > 0.01) {
+    const L = PANEL.x;
+    const top = PANEL.y - 700, bot = XRAY_TOP + 6;
+    c.save();
+    c.beginPath();
+    c.rect(L - 700, top, 718, bot - top);
+    c.clip();
+    const g = c.createLinearGradient(L - 140, 0, L + 18, 0);
+    g.addColorStop(0, withAlpha(ink, 0.95 * kL));
+    g.addColorStop(0.85, withAlpha(ink, 0.8 * kL));
+    g.addColorStop(1, withAlpha(ink, 0));
+    c.fillStyle = g;
+    c.fillRect(L - 700, top, 718, bot - 40 - top);
+    // feathered down into the cabinet's top so there is no hard horizontal
+    for (let i = 0; i < 8; i++) {
+      c.globalAlpha = 1 - (i + 0.5) / 8;
+      c.fillRect(L - 700, bot - 40 + i * 5, 718, 5);
+    }
+    c.restore();
+  }
 }
 
 /** the banker's lamp's shade, very near: a dark dome edging into the bottom right of the Wall frames (L5, blurred),

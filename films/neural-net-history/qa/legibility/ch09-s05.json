@@ -1,6 +1,6 @@
 {
  "shot": "ch09-s05",
- "at": "2026-10-13T20:36:14.895Z",
+ "at": "2026-10-13T23:03:33.764Z",
  "minCapPx": 22,
  "sampled": 35,
  "texts": 41,
@@ -28,9 +28,9 @@
    "why": "script onScreenText"
   },
   {
-   "text": "lit 2012 · still burning, still a",
+   "text": "lit 2012 · still burning, still argued",
    "capWhileSubject": 22.9,
-   "why": "named: \"still still\""
+   "why": "named: \"still still argued\""
   }
  ],
  "texture": [

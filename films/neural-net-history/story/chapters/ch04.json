@@ -703,7 +703,7 @@
         "cue": "ch04-b-winter",
         "note": "the cello finds a small, warm melodic line for the first time in the chapter (the lamplighters' theme), with a celesta glint on each window as it lights; it pulls back to a thin pad under 'rounding errors'"
       },
-      "transitionIn": "crossfade",
+      "transitionIn": "cut",
       "claims": [
         "e3-linnainmaa",
         "e3-amari",

@@ -13,8 +13,9 @@
  *              verdict slip under the card's question (LEARNING + ACCOMPLICES · NEVER ONE PERSON), so the film's answer
  *              stands; the case file (ch01-s04's manila folder, ch15-s08's file) lies under the card, its long tab at
  *              upper right
- *   b3         the stamp comes in from the right and strikes STATUS: OPEN across the FOLDER'S TAB (not the question
- *              card): the investigation stays open, the answer stands; red ink, the film's one full red, read ~2.5 s
+ *   b3         the stamp comes in from the right and strikes STATUS: OPEN on the FOLDER'S FACE, centred under its
+ *              CASE FILE title (not the question card): the investigation stays open, the answer stands; full red ink
+ *              at ch15-s08's size, tilted -2.5 deg, struck at full opacity on the b3 frame, read ~2.5 s to the click
  *   b4         the desk lamp clicks off (on the twos); in the black only ch01-s01's chat-box cursor (a cool bar on a
  *              steady blink over a faint chat-box underline)
  *   'Somewhere' (round 3) the room rises: a warm interior plane at left (the shelf's live candles warming the back
@@ -22,10 +23,12 @@
  *              moonlit window at right, both full by 'lamp'
  *   'lamp'     across the street, one window's desk lamp is already ON at full when the word lands
  *   'suspicious' the hand and the matchbox come up from the bottom edge, right of the candle
- *   'new'      the scratch (foley fx-match-strike); the head ignites at the end of the stroke; the cursor goes out
- *   'candles'  the match's flame touches the wick and it catches (foley fx-match-flare); settled by 'come from'
- *   then       the match is shaken out as it leaves the wick and the hand is gone off the bottom edge by ~22.7 s, so
- *              the lit candle holds clean for 2.5 s before the fadeBlack (25.24)
+ *   'new'      the scratch runs into the word and the head ignites ON it (foley fx-match-strike): a 3-4 frame white-gold
+ *              flare at the box edge settling to a match flame (review round 5 r1); the cursor dims to ~40 %
+ *   'candles'  the match's flame touches the wick and it catches (foley fx-match-flare); the cursor goes out; settled
+ *              by 'come from'
+ *   then       the match is shaken out as it leaves the wick and both hands ease off the bottom edge over ~1.1 s (gone
+ *              by ~23.3 s, review round 5 r1), so the lit candle holds clean ~2 s before the fadeBlack
  *   hold       the single new flame (its halo blooming as it settles), a haze band, a near curtain edge; a slow 3.5% push
  *              ends framed on the new flame, the window veils down and the old 2025 candle's halo steps back to ~60%
  * SYNC (round-3 shots r1, recorded in the ledger): the match is deliberately anchored to the FOLEY (score/foley.json:
@@ -46,6 +49,7 @@ import { frameOn } from '../sets/ch09-s03a-kit';
 import { clamp01, lerp, sm, tq12, win } from '../sets/ch13-s01-kit';
 import { flame as flameShape } from '../../../film/silhouette/props/_kit';
 import { drapery } from '../sets/occluders';
+import { drawMatchbox, drawPaperArm, pinchFlame, solveGrip, solvePinch, type PaperArm } from '../sets/ch15-s09-paperHand';
 
 const ID = 'ch15-s09';
 type C = CanvasRenderingContext2D;
@@ -88,7 +92,10 @@ const FOLDER = { x: 900, y: 360, w: 360, h: 404, rot: 0.06, tab: { dx: 20, w: 29
  *  floor, and the stamp struck just below it on the face, so the frame reads 'CASE FILE' over 'STATUS: OPEN'
  *  (folder-local; the face's visible band runs between the laid Hinton slip at left and the question card below) */
 const FACE_TITLE = { x: 8, y: -146 };
-const STAMP_ON_TAB = { x: 8, y: -92, rot: -0.035 };
+// review round 5: the stamp sits wholly on the folder's FACE, centred under 'CASE FILE' (the title's centre, x 8), its box
+// 41 px clear of the face's right edge and 57 px of its left; tilted -2.5 deg on SCREEN (the folder itself lies at
+// +3.4 deg), struck at ch15-s08's size and red
+const STAMP_ON_FACE = { x: FACE_TITLE.x, y: -96, rot: -0.044 - 0.06 };
 const folderToWorld = (lx: number, ly: number): Pt => ({
   x: FOLDER.x + lx * Math.cos(FOLDER.rot) - ly * Math.sin(FOLDER.rot),
   y: FOLDER.y + lx * Math.sin(FOLDER.rot) + ly * Math.cos(FOLDER.rot),
@@ -171,7 +178,7 @@ export default defineShot<Scene>({
       // (the hands move on the twos: the strike is the twos-frame that holds b3, so the red is down when fx-stamp sounds)
       stamp: Math.floor(T.beat('b3') * 12 + 1e-6) / 12 - STAMP_DUR / 2,
       off: T.beat('b4'),
-      slow: T.word('L1520', 'new'),
+      slow: T.word('L1520', 'new'),  // the cursor's blink slows (and dims) on 'new'
       // round 2 (re-anchored to the re-recorded L1520 and to score/foley.json): a beat of black after the click, the
       // study comes up in moonlight on 'Somewhere'; across the street a desk lamp clicks on at 'lamp'; its sitter leans
       // in on 'suspicious', when the hand and the matchbox rise; the match is scratched on 'new', flares on 'candles',
@@ -185,10 +192,13 @@ export default defineShot<Scene>({
       // the scratch starts on 'new' (score/foley.json fx-match-strike), the head ignites at the end of the stroke,
       // the match is flicked to the wick and touches it on 'candles' (fx-match-flare); the wick catches on 'candles'
       // and the flame has settled by 'come from'
-      strike: T.word('L1520', 'new'),
-      flare: T.word('L1520', 'new') + 0.1,
-      touch: T.word('L1520', 'candles') - 0.02,
-      light: T.word('L1520', 'candles') - 1 / 24,
+      // review round 5 r1 (critic, SYNC): the scratch runs INTO 'new' and the head IGNITES on the twos-frame holding
+      // 'new' (where fx-match-strike sounds), a 3-4 frame white-gold flare at the box edge that settles to a match flame
+      strike: T.word('L1520', 'new') - 0.28,
+      flare: Math.floor(T.word('L1520', 'new') * 12 + 1e-6) / 12,
+      // review round 5 r1: the touch and the catch land on the twos-frame that holds 'candles' (fx-match-flare)
+      touch: Math.floor(T.word('L1520', 'candles') * 12 + 1e-6) / 12,
+      light: Math.floor(T.word('L1520', 'candles') * 12 + 1e-6) / 12,
       dark: Math.min(T.beat('b4') + 0.3, T.word('L1520', 'Somewhere') - 0.4),
       // a beat of true dark with only the cursor after the click, then from 'Somewhere' the moonlit room and the warm
       // interior plane rise together, full by 'lamp'
@@ -514,7 +524,7 @@ function paintDesk(f: Frame, t: number, b: B) {
   }
   const su = (tq - b.stamp) / STAMP_DUR;
   // review round 4 (r1: on the folder's face, under CASE FILE): the grip sits ~36 px above-left of the stamp face's centre
-  const face = folderToWorld(STAMP_ON_TAB.x, STAMP_ON_TAB.y);
+  const face = folderToWorld(STAMP_ON_FACE.x, STAMP_ON_FACE.y);
   const stampTarget = { x: face.x - 10, y: face.y - 36 };
   // round-3 shots r1: the stamp arm comes in from the lower right at ~20 degrees (not flat from the right edge)
   const STAMP_ENTRY = { x: stampTarget.x + 1000 * Math.cos(0.35), y: stampTarget.y + 1000 * Math.sin(0.35) };
@@ -628,6 +638,8 @@ function thumbPad(c: C, at: Pt, ang: number, env: PaintEnv) {
 }
 
 const STAMP_DUR = 0.8;
+/** ch15-s08's stamp red (its STAMP.red) */
+const STAMP_RED = '#b3261e';
 const PIN_DUR = 1.0;
 /** the verdict hand's entry: the bottom edge, just right of centre (straight up to the card) */
 const PIN_ENTRY: Pt = { x: 760, y: 1060 };
@@ -768,10 +780,10 @@ function verdictSlip(c: C, env: PaintEnv, at: Pt, rot: number, pinned: boolean, 
   c.restore();
 }
 
-/** STATUS: OPEN, struck in red ink across the case file's TAB (review round 4: the investigation stays open; the
- *  question card and its verdict are not stamped). The film's one full red; the ink only prints on the folder (the
- *  box's corners past the tab are lost on the desk). For a moment after the stamp lifts the ink sits wet and a shade
- *  darker. Size and red unchanged from round 3 (ch15-s08 matches them). */
+/** STATUS: OPEN, struck in red ink on the case file's FACE under its CASE FILE title (review round 4: the investigation
+ *  stays open; the question card and its verdict are not stamped; review round 5: wholly on the face, full ink). The
+ *  film's one full red. For a moment after the stamp lifts the ink sits wet and a shade darker. Size and red are
+ *  ch15-s08's (its stamp is this one seen through a 1.25x push). */
 function statusOpen(c: C, env: PaintEnv, dt: number) {
   const bw = 258, bh = 54;
   const wet = Math.max(0, 1 - dt / 0.6);
@@ -779,29 +791,37 @@ function statusOpen(c: C, env: PaintEnv, dt: number) {
   c.translate(FOLDER.x, FOLDER.y);
   c.rotate(FOLDER.rot);
   c.clip(folderPath());
-  c.translate(STAMP_ON_TAB.x, STAMP_ON_TAB.y);
-  c.rotate(STAMP_ON_TAB.rot);
-  const red = wet > 0 ? mixLab('#b3261e', '#7a140f', 0.35 * wet) : '#b3261e';
+  c.translate(STAMP_ON_FACE.x, STAMP_ON_FACE.y);
+  c.rotate(STAMP_ON_FACE.rot);
+  // the press-in (ch15-s08's): a hair large on the strike, settling over three frames
+  const press = 1 + 0.06 * (1 - clamp01(dt / (3 / 24)));
+  c.scale(press, press);
+  // review round 5: FULL ink (the film's loudest stamp is no longer its faintest): the red at full opacity from the
+  // strike frame, a shade darker while wet, and the type set at the legibility floor or above
+  const red = wet > 0 ? mixLab(STAMP_RED, '#7a140f', 0.35 * wet) : STAMP_RED;
   c.strokeStyle = red;
   c.fillStyle = red;
-  c.globalAlpha = 0.9;
-  c.lineWidth = 4.2;
+  c.globalAlpha = 1;
+  c.lineWidth = 4.4;
   c.strokeRect(-bw / 2, -bh / 2, bw, bh);
-  c.lineWidth = 1.4;
+  c.lineWidth = 1.5;
   c.strokeRect(-bw / 2 + 5, -bh / 2 + 5, bw - 10, bh - 10);
   ghostOk(c, () =>
     textRole(c, 'subject', () => {
-      c.font = `400 31px ${FONT.typewriter}`;
+      const fs = legibleSize(c, `400 31px ${FONT.typewriter}`, 31, 'STATUS: OPEN');
+      c.font = `400 ${fs}px ${FONT.typewriter}`;
       c.textAlign = 'center';
       c.textBaseline = 'middle';
       c.fillText('STATUS: OPEN', 0, 1);
+      // the rubber's ink spread: a second impression a hair offset, so the strokes print solid, not thin
+      c.fillText('STATUS: OPEN', 0.6, 1.4);
     }),
   );
-  // the stamp's uneven inking: a few dry flecks where the rubber missed (the tab's manila showing through)
+  // the stamp's uneven inking: a few small dry flecks where the rubber missed (the face's manila showing through)
   c.fillStyle = mixLab(mixLab(env.mood.halo, '#b08a52', 0.35), env.mood.set, 0.55);
-  for (let i = 0; i < 40; i++) {
-    c.globalAlpha = 0.5;
-    c.fillRect((hash1(i, 81) * 0.5) * bw, (hash1(i, 82) * 0.5) * bh, 2 + 2 * (hash1(i, 83) * 0.5 + 0.5), 1.5);
+  for (let i = 0; i < 18; i++) {
+    c.globalAlpha = 0.4;
+    c.fillRect((hash1(i, 81) * 0.5) * bw, (hash1(i, 82) * 0.5) * bh, 1.4 + 1.4 * (hash1(i, 83) * 0.5 + 0.5), 1.1);
   }
   c.restore();
 }
@@ -814,8 +834,9 @@ function cursor(f: Frame, t: number, b: B, cam: Camera3 = CAM_D0) {
   if (t < t0) return;
   const ph = blinkPhase(t, t0, b.slow);
   const on = ph % 1 < 0.5;
-  // it holds steady through the line and goes out as the match flares on 'candles'
-  const fadeIn = win(t, t0, t0 + 0.2) * (1 - win(t, b.flare - 0.05, b.flare + 0.2));
+  // it holds steady through the line; review round 5 r1 (critic, optional): from 'new' its slow blink dims to ~40 % so
+  // it never competes with the match's flare, and it goes out as the wick catches on 'candles'
+  const fadeIn = win(t, t0, t0 + 0.2) * (1 - 0.6 * win(t, b.slow - 0.02, b.slow + 0.1)) * (1 - win(t, b.light, b.light + 0.2));
   if (fadeIn <= 0.003) return;
   const c = f.c;
   const cool = mixLab(MOODS.serverCyan.core, '#f2f5f6', 0.45);
@@ -881,7 +902,7 @@ function paintShelfEnd(f: Frame, t: number, b: B) {
   };
   f.camera(cam);
   f.setMood('candleAmber');
-  const { hp, fl, matchK, out, tip, shakeX, shakeAt } = matchHands(tq, b, cam);
+  const { hp, fl, matchK, out, tip, shakeX, shakeAt, paper } = matchHands(tq, b, cam);
   // the new candle catches on b6 (on the twos): a bead, a gutter, then the flame stands
   const dc = tq - b.light;
   const candleK = dc < 0 ? 0 : dc < 1 / 12 ? 0.35 : dc < 2 / 12 ? 0.25 : Math.min(1, 0.55 + (dc - 2 / 12) * 2.6);
@@ -916,21 +937,20 @@ function paintShelfEnd(f: Frame, t: number, b: B) {
     // the shelf's far end: the plank and the new candle only (the lamp is off; the room is dark)
     const views = V9.map((v) => (v.id === 'new' ? (candleK > 0 ? NEW_LIT : NEW0) : v));
     candleShelfEnd(c, env, views, reveal, warm, candleK);
-    if (hp) {
+    if (hp && paper) {
       c.save();
       c.translate(shakeX, 0);
       // the darkest shapes in frame. Before the flare one thin cool rim toward the window's moonlight (up-right);
       // once the match flares (round-3 shots r1) the rim turns to the MATCH FLAME, warm, ~2.5 px at 1080p, so the
-      // practical lights the knuckles; the shirt cuff a band lit by the same flame
-      let rim: { dx: number; dy: number; col?: string; a?: number } = { dx: 0.8, dy: -0.8 };
-      const arm = hp.right;
+      // practical lights the knuckles. Review round 5: the articulated paper-cut hands (one cuff, a single button)
+      let rim = { dx: 1.15, dy: -1.15, col: mixLab(env.mood.rim, env.mood.core, 0.3), a: 0.8 };
+      const arm = paper.right;
       if (fl && arm && matchK > 0.05) {
         const dx = fl.x - shakeX - arm.wrist.x, dy = fl.y - arm.wrist.y;
         const d = Math.hypot(dx, dy) || 1;
-        rim = { dx: (1.2 * dx) / d, dy: (1.2 * dy) / d, col: mixLab(env.mood.halo, env.mood.core, 0.55), a: 0.9 * Math.min(1, matchK) };
+        rim = { dx: (1.6 * dx) / d, dy: (1.6 * dy) / d, col: mixLab(env.mood.halo, env.mood.core, 0.55), a: 0.9 * Math.min(1, matchK) };
       }
-      const cuff = mixLab(PUPPET_NEAR_BLACK, mixLab(env.mood.halo, env.mood.rim, 0.4), 0.12 + 0.3 * Math.min(1, matchK));
-      drawHands(c, hp, env, rim, cuff);
+      drawMatchHands(c, paper, env, rim);
       c.restore();
     }
     // the shaken-out match: a thin thread of smoke from its tip as the hand goes
@@ -998,6 +1018,24 @@ function paintShelfEnd(f: Frame, t: number, b: B) {
   }
   cursor(f, t, b, cam);
   if (fl && matchK > 0.01) f.practical({ x: fl.x, y: fl.y, kind: 'candle', seed: 2026, intensity: 0.9 * matchK, radius: 52 });
+  // review round 5 r1 (critic, SYNC): the strike on 'new' has its picture: a white-gold flare at the match head, at the
+  // box edge, for 3-4 frames (its own practical and seed), settling into the match flame above
+  const fk = flareAt(t, b);
+  if (fl && fk > 0.003) {
+    f.practical({ x: fl.x, y: fl.y - 2, kind: 'candle', seed: 2031, intensity: 1.4 * fk, radius: 60 });
+    const P = toScreen(LAYERS.L4, cam, fl.x, fl.y - 2);
+    const c2 = f.c;
+    c2.save();
+    c2.globalCompositeOperation = 'lighter';
+    const R = 26 * P.k;
+    const g = c2.createRadialGradient(P.x, P.y, 0, P.x, P.y, R);
+    g.addColorStop(0, `rgba(255,250,236,${(0.95 * fk).toFixed(3)})`);
+    g.addColorStop(0.35, `rgba(255,214,140,${(0.55 * fk).toFixed(3)})`);
+    g.addColorStop(1, 'rgba(255,190,110,0)');
+    c2.fillStyle = g;
+    c2.fillRect(P.x - R, P.y - R, 2 * R, 2 * R);
+    c2.restore();
+  }
   // THE GAP, the neighbouring live candle, further from the lens: its small flame at ~40%, under the new one's bloom
   // (round 3) it burns from 'Somewhere': it is the warm interior plane's practical
   const gapK = Math.max(reveal, warm);
@@ -1277,26 +1315,35 @@ function solidHand(c: C, a: ArmPose, len: number, env: PaintEnv) {
 /** the near curtain's edge (L5 world), at the frame's left edge in the shelf camera */
 const DRAPE = toLayer(LAYERS.L5, CAM_D2, -36, 0); // the near plane slides in from the left on the final push: it ends at the frame's left edge
 
+/** how long the match hand takes to ease off the bottom edge after the shake (review round 5 r1: ~1.1 s) */
+const EXIT_DUR = 1.1;
+/** review round 5 r1 (critic, SYNC): the match's ignition flare at the box edge on 'new': full for two frames, gone by
+ *  the fourth (on ones: it is light), then the match flame alone */
+function flareAt(t: number, b: B) {
+  const d = t - b.flare;
+  if (d < 0 || d >= 4 / 24) return 0;
+  return d < 2 / 24 ? 1 : 1 - (d - 2 / 24) / (2 / 24);
+}
+
 /** the match hand, timed to the words: in from the bottom edge (right of the candle) from 'come', the box and the
  *  strike on 'from' (b5), a flare; the box hand goes; the match is carried to the wick FROM THE SIDE (the fist stays
  *  right of the candle, the match's tip meets the wick); the wick catches on b6; the match is shaken out and the hand
  *  withdraws. The match arm is solved so its flame lands exactly on its mark. */
 function matchHands(tq: number, b: B, cam: Camera3) {
-  const scale = 1.35;
-  const len = HAND_LEN * scale;
-  // round-3 shots r1: both forearms come up from the TRUE bottom edge, centre-right (not a long diagonal from the right)
-  const entry = { R: toLayer(LAYERS.L4, cam, 860, 1010), L: toLayer(LAYERS.L4, cam, 650, 1060) };
-  // struck right under the wick, so the match lit on 'new' can touch the wick on 'candles' a fifth of a second later
-  const strikeAt = { x: WICK.x + 70, y: WICK.y + 84 };
+  const len = HAND_LEN * 1.35;
+  // round-3 shots r1: both forearms come up from the TRUE bottom edge, right of centre (not a long diagonal from the
+  // right). Review round 5: the box arm comes straight up under the matchbox, the match arm from right of it, so the
+  // two hands stand apart and the match runs across between them to the striker
+  const entryR = toLayer(LAYERS.L4, cam, 1100, 1060);
   // round-3 shots r1: shaken out as it leaves the wick and gone off the bottom edge by ~'from' + 0.0, so the lit candle
   // holds clean for 2.5 s before the fadeBlack
-  const shakeAt = b.touch + 0.22;
-  const none = { hp: null as HandsPose | null, fl: null as Pt | null, matchK: 0, out: false, tip: null as Pt | null, shakeX: 0, shakeAt };
-  // the kit's strikeLight (box in by .22, scratch .25 → ignition .36, flare .38): the hand and the matchbox rise on
-  // 'suspicious' and are in a second later; the match waits at the striker through 'That is where'; the scratch on
-  // 'new' (foley fx-match-strike), ignition at the end of the stroke
+  const shakeAt = b.touch + 0.2;
+  const none = { hp: null as HandsPose | null, fl: null as Pt | null, matchK: 0, out: false, tip: null as Pt | null, shakeX: 0, shakeAt, paper: null as PaperHands | null };
+  // the kit's strikeLight timing (box in by .22, scratch .25 -> ignition .36, flare .38): the hand and the matchbox
+  // rise on 'suspicious' and are in a second later; the match waits at the striker through 'That is where'; the
+  // scratch on 'new' (foley fx-match-strike), ignition at the end of the stroke
   const sk: [number, number][] = [[b.handIn, 0], [b.handIn + 1.2, 0.22], [b.strike - 0.25, 0.25], [b.strike, 0.25], [b.flare, 0.36], [b.flare + 1 / 12, 0.38]];
-  if (tq <= sk[0][0] || tq > shakeAt + 0.47) return none;
+  if (tq <= sk[0][0] || tq > shakeAt + EXIT_DUR + 0.02) return none;
   let U = 0.42;
   for (let i = 0; i < sk.length - 1; i++) {
     if (tq <= sk[i + 1][0]) {
@@ -1304,37 +1351,85 @@ function matchHands(tq: number, b: B, cam: Camera3) {
       break;
     }
   }
-  const base = hands.act('strikeLight', U, { x: WICK.x, y: WICK.y }, { scale, entry, strikeAt });
-  const boxGo = sm(clamp01((tq - b.flare) / 0.3));
-  const left = tq <= b.flare ? base.left : boxGo < 1 ? hands.act('strikeLight', 0.42 + 0.2 * boxGo, { x: WICK.x, y: WICK.y }, { scale, entry, strikeAt }).left : undefined;
-  const startAt = { x: strikeAt.x - len * 0.2, y: strikeAt.y - len * 0.05 };
+  // review round 5: the match head's own path (L4 world). The striker lies right of the candle, a little under the
+  // wick; the scratch runs along it TOWARD the candle, so the flick from its end to the wick on 'candles' is short
+  const S0 = { x: WICK.x + 104, y: WICK.y + 28 };
+  const S1 = { x: WICK.x + 48, y: WICK.y + 24 };
   // the mark: the match's tip just right of the wick, a hair below it
   const mark = { x: WICK.x + 7, y: WICK.y + 2 };
-  let atMark = { x: mark.x + len * 0.5, y: mark.y + len * 0.5 };
-  for (let i = 0; i < 6; i++) {
-    const fl = hands.flameAt({ right: hands.reach(entry.R, atMark, 'grip', len, { held: 'match', lit: 1 }), scale })!;
-    atMark = { x: atMark.x + (mark.x - fl.x), y: atMark.y + (mark.y - fl.y) };
+  const rise = { x: S0.x + 70, y: S0.y + 320 };
+  const wait = { x: S0.x + 6, y: S0.y - 9 };
+  const P = (a: Pt, q: Pt, k: number): Pt => ({ x: lerp(a.x, q.x, k), y: lerp(a.y, q.y, k) });
+  let H: Pt = U < 0.22 ? P(rise, wait, sm(U / 0.22)) : U < 0.25 ? P(wait, S0, sm((U - 0.22) / 0.03)) : U < 0.38 ? P(S0, S1, sm((U - 0.25) / 0.11)) : S1;
+  if (tq > b.flare) {
+    // the flick to the wick, on the twos: lit and half-way on the frame after the flare, on its mark on the frame the
+    // wick catches ('candles'); then shaken out and carried off the bottom
+    // review round 5 r1: the flame flares at the box edge for a twos-frame first, then the flick lands on 'candles'
+    const c0 = b.flare + 1 / 12;
+    const carry = sm(clamp01((tq - c0) / Math.max(1 / 12, b.touch - c0)));
+    // review round 5 r1 (critic, craft): the hands ease out over ~1.1 s (no jump cut), still on the twos (tq)
+    // (an exit ease: slow off the wick, accelerating off the bottom edge, so the whole ~1.1 s reads as one gesture)
+    const ex = clamp01((tq - shakeAt) / EXIT_DUR);
+    const goHome = ex * ex;
+    H = P(P(S1, mark, carry), { x: S0.x + 190, y: S0.y + 470 }, goHome);
   }
   const out = tq >= shakeAt + 2 / 12;
   let lit = U < 0.36 ? 0 : U < 0.42 ? 1.3 - (U - 0.36) * 5 : 1;
   if (out) lit = 0;
-  let right: HandsPose['right'] = base.right ? { ...base.right, lit } : undefined;
-  if (tq > b.flare + 1 / 12) {
-    // the flick to the wick: the match's tip is on its mark on 'candles'
-    const carry = sm(clamp01((tq - (b.flare + 1 / 12)) / Math.max(1 / 12, b.touch - (b.flare + 1 / 12))));
-    const goHome = sm(clamp01((tq - shakeAt) / 0.45));
-    const home = { x: entry.R.x + 40, y: entry.R.y + 160 };
-    const at0 = { x: lerp(startAt.x, atMark.x, carry), y: lerp(startAt.y, atMark.y, carry) };
-    const at = { x: lerp(at0.x, home.x, goHome), y: lerp(at0.y, home.y, goHome) };
-    right = hands.reach(entry.R, at, 'grip', len, { held: 'match', lit });
-  }
-  const hp: HandsPose = { right, left, scale };
   const shakeX = tq >= shakeAt && tq < shakeAt + 4 / 12 ? (Math.floor((tq - shakeAt) * 12) % 2 ? -9 : 9) : 0;
-  const tip = right ? hands.flameAt({ ...hp, right: { ...right, lit: 1 } }) : null;
-  const fl0 = hands.flameAt(hp);
-  const fl = fl0 ? { x: fl0.x + shakeX, y: fl0.y } : null;
+  const tip = H;
+  const fl = lit > 0 ? { x: H.x + shakeX, y: H.y } : null;
   const matchK = fl ? Math.max(0, Math.min(1.3, lit)) : 0;
-  return { hp, fl, matchK, out, tip, shakeX, shakeAt };
+  // review round 5 (ART): the articulated paper-cut pinch hand (sets/ch15-s09-paperHand), solved so its match burns
+  // on this path; the matchbox is laid along the scratch, so the head drags across its striker on 'new'
+  const pr = solvePinch(entryR, H, len);
+  // review round 5 r1: the box hand eases away too (~1.0 s from the flick), not snatched off in 0.3 s
+  const boxGo = sm(clamp01((tq - (b.flare + 1 / 12)) / 1.0));
+  const uL = tq <= b.flare ? U : 0.42 + 0.2 * boxGo;
+  const boxIn = sm(clamp01(uL / 0.22)) * (1 - sm(clamp01((uL - 0.42) / 0.2)));
+  let box: PaperHands['box'] = null;
+  let pl: PaperArm | null = null;
+  if (boxIn > 0.003) {
+    const d = { x: S1.x - S0.x, y: S1.y - S0.y };
+    let ang = Math.atan2(d.y, d.x);
+    // the box hangs below the scratch line (its local +y points down-screen), the striker on its top edge
+    if (Math.cos(ang) < 0) ang += Math.PI;
+    const n = { x: -Math.sin(ang), y: Math.cos(ang) };
+    const bw = Math.hypot(d.x, d.y) + 30, bh = len * 0.26;
+    const mid = { x: (S0.x + S1.x) / 2, y: (S0.y + S1.y) / 2 };
+    const placed = { x: mid.x + n.x * (bh / 2 + 4), y: mid.y + n.y * (bh / 2 + 4) };
+    const at = P({ x: placed.x + 60, y: placed.y + 380 }, placed, boxIn);
+    box = { at, ang, w: bw, h: bh };
+    pl = solveGrip({ x: placed.x + 30, y: placed.y + 760 }, { x: at.x + n.x * bh * 0.36, y: at.y + n.y * bh * 0.36 }, len);
+  }
+  const paper: PaperHands = { right: pr, left: pl, box, lit, len };
+  return { hp: { scale: 1.35 } as HandsPose | null, fl, matchK, out, tip, shakeX, shakeAt, paper };
+}
+interface PaperHands {
+  right: PaperArm | null;
+  left: PaperArm | null;
+  box: { at: Pt; ang: number; w: number; h: number } | null;
+  lit: number;
+  len: number;
+}
+/** review round 5: the match hands as articulated paper cut-outs: the matchbox hand behind, then the pinching hand,
+ *  each with one rimmed cuff and a single button; the rim turns warm toward the match once it burns */
+function drawMatchHands(c: C, ph: PaperHands, env: PaintEnv, rim: { dx: number; dy: number; col: string; a: number }) {
+  const cuffRim = mixLab(env.mood.halo, env.mood.core, 0.45);
+  if (ph.box) drawMatchbox(c, ph.box.at, ph.box.ang, ph.box.w, ph.box.h, env, rim);
+  if (ph.left) drawPaperArm(c, ph.left, ph.len, env, { kind: 'grip', rim, cuffRim });
+  if (ph.right) {
+    drawPaperArm(c, ph.right, ph.len, env, { kind: 'pinch', rim, cuffRim, match: true, lit: ph.lit });
+    const k = Math.max(0, Math.min(1, ph.lit));
+    if (ph.lit > 0) {
+      const fp = pinchFlame(ph.right, ph.len);
+      c.save();
+      c.translate(fp.x, fp.y);
+      c.scale(ph.len / 100, ph.len / 100);
+      flameShape(c, env, 0, 4, 10 * (0.5 + 0.5 * k), 31, 0.9 + 0.2 * k);
+      c.restore();
+    }
+  }
 }
 
 /** 'Somewhere tonight a lamp is on, and someone at the rim is suspicious': through the study window's panes, the

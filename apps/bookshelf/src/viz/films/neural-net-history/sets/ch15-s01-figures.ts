@@ -8,7 +8,18 @@
  *           ±1 = a profile looking right / left
  *           ±0.5 = a three-quarter turn toward right / left (one drawing between back and profile, on twos)
  *     type:  0..5 (see TYPES)
+ *
+ *   audienceBust(c, x, y, s, variant, ink, o?)   (review round 5: the Nobel audience read as rows of identical
+ *     round-headed busts) a seated listener seen from behind, same footprint, in four head/hair variants that differ
+ *     in OUTLINE, not only in ink: 'bald' (a smooth, slightly smaller skull, ears out), 'parted' (two hair lobes with
+ *     a side-parting dip at the crown), 'bun' (a chignon rising above the crown), 'greyWave' (a scalloped wave of
+ *     grey hair, a lighter value than the ink). Shoulders carry a jacket collar with a lapel notch either side
+ *     (o.collar 'notch') or a raised shirt collar (o.collar 'points'). o.rim draws a 1 device-px warm rim on the lit
+ *     side (o.rimDir, default upper-left), by laying the silhouette in the rim colour one pixel toward the light
+ *     under the ink.
  */
+import { mixLab } from '../../../film/silhouette/palette';
+
 type C = CanvasRenderingContext2D;
 
 interface HeadType {
@@ -204,3 +215,120 @@ function profileHead(c: C, s: number, T: HeadType, F: number) {
   }
   c.fill();
 }
+
+// ------------------------------------------------------------------------------------- review round 5: audience busts
+export type BustVariant = 'bald' | 'parted' | 'bun' | 'greyWave';
+export const BUST_VARIANTS: BustVariant[] = ['bald', 'parted', 'bun', 'greyWave'];
+export interface BustOpts {
+  /** 'notch' = jacket collar with a lapel notch either side; 'points' = a raised shirt collar */
+  collar?: 'notch' | 'points';
+  /** the warm rim colour (1 device px on the lit side); omitted = no rim */
+  rim?: string;
+  rimAlpha?: number;
+  /** direction TOWARD the light (screen space); default upper-left */
+  rimDir?: { x: number; y: number };
+  /** shoulder width multiplier (body variety, about ±8 %) */
+  build?: number;
+}
+
+/** the silhouette of one bust (back view), filled in `ink`; grey hair is a separate pass */
+function bustShape(c: C, x: number, y: number, s: number, v: BustVariant, collar: 'notch' | 'points', build: number) {
+  const sw = (v === 'bun' ? 19.5 : v === 'bald' ? 25.5 : 23) * s * build;
+  const sh = v === 'bun' ? 27 : 30;
+  const top = y - (sh + 8) * s;
+  c.beginPath();
+  c.moveTo(x - sw, y);
+  c.quadraticCurveTo(x - sw, top + 7 * s, x - sw * 0.5, top + 1.5 * s);
+  if (collar === 'notch') {
+    // jacket: the collar stands 4 px above the shoulder line; the lapel notch is a small V where it meets it
+    c.lineTo(x - 10.5 * s, top + 1 * s);
+    c.lineTo(x - 8.6 * s, top + 3.6 * s);
+    c.lineTo(x - 7.2 * s, top - 3.8 * s);
+    c.lineTo(x + 7.2 * s, top - 3.8 * s);
+    c.lineTo(x + 8.6 * s, top + 3.6 * s);
+    c.lineTo(x + 10.5 * s, top + 1 * s);
+  } else {
+    c.lineTo(x - 7 * s, top + 1);
+    c.lineTo(x - 5.6 * s, top - 4.5 * s);
+    c.lineTo(x + 5.6 * s, top - 4.5 * s);
+    c.lineTo(x + 7 * s, top + 1);
+  }
+  c.lineTo(x + sw * 0.5, top + 1.5 * s);
+  c.quadraticCurveTo(x + sw, top + 7 * s, x + sw, y);
+  c.closePath();
+  c.fill();
+  // neck
+  const neck = v === 'bun' ? 12.5 : v === 'bald' ? 9 : 10.5;
+  c.fillRect(x - 4.4 * s, top - neck * s - 3 * s, 8.8 * s, neck * s + 4 * s);
+  const hx = (v === 'bald' ? 9.6 : 10.2) * s, hy = (v === 'bald' ? 11.6 : 12.2) * s;
+  const hcy = top - neck * s - hy * 0.62;
+  const ell = (cx: number, cy: number, rx: number, ry: number, rot = 0) => {
+    c.beginPath();
+    c.ellipse(cx, cy, rx, ry, rot, 0, Math.PI * 2);
+    c.fill();
+  };
+  // ears (bald and parted show them; the bun's hair covers them)
+  if (v !== 'bun') for (const sx of [-1, 1]) ell(x + sx * hx, hcy + 1.5 * s, (v === 'bald' ? 2.7 : 2.3) * s, (v === 'bald' ? 3.9 : 3.4) * s);
+  switch (v) {
+    case 'bald':
+      // a smooth dome, a touch flatter on top
+      ell(x, hcy + 0.6 * s, hx, hy * 0.96);
+      break;
+    case 'parted':
+      // the head below the hairline, then two lobes of hair meeting in a side-parting dip right of centre
+      ell(x, hcy + 1.2 * s, hx, hy * 0.86);
+      ell(x - 2.6 * s, hcy - 2.6 * s, hx * 0.86, hy * 0.82, -0.12);
+      ell(x + 6.4 * s, hcy - 1.6 * s, hx * 0.5, hy * 0.7, 0.2);
+      break;
+    case 'bun':
+      ell(x, hcy, hx * 0.96, hy);
+      // the chignon rides high at the back of the crown: it breaks the round outline
+      ell(x + 0.8 * s, hcy - hy * 0.98, 6.2 * s, 5.4 * s);
+      ell(x + 0.8 * s, hcy - hy * 0.62, 4.2 * s, 2.6 * s);
+      break;
+    case 'greyWave':
+      ell(x, hcy + 0.8 * s, hx, hy * 0.9);
+      break;
+  }
+}
+
+/** the grey wave: a scalloped cap of lighter hair over the crown (its own value, so the outline AND the tone differ) */
+function greyWaveHair(c: C, x: number, y: number, s: number, build: number, grey: string) {
+  const top = y - 38 * s;
+  const hx = 10.2 * s, hy = 12.2 * s;
+  const hcy = top - 10.5 * s - hy * 0.62;
+  c.fillStyle = grey;
+  c.beginPath();
+  c.ellipse(x, hcy - 0.6 * s, hx * 1.06, hy * 0.82, 0, Math.PI, 0);
+  c.closePath();
+  c.fill();
+  // three soft swept waves (not a wig's tight curls), lifting off the right of the crown
+  for (let k = 0; k < 3; k++) {
+    const a = Math.PI * (1.12 + k * 0.36);
+    c.beginPath();
+    c.ellipse(x + Math.cos(a) * hx * 0.98, hcy - 0.6 * s + Math.sin(a) * hy * 0.8, 5.2 * s, 3.6 * s, a + Math.PI / 2 + 0.35, 0, Math.PI * 2);
+    c.fill();
+  }
+  void build;
+}
+
+export function audienceBust(c: C, x: number, y: number, s: number, variant: BustVariant, ink: string, o: BustOpts = {}) {
+  const collar = o.collar ?? 'notch';
+  const build = o.build ?? 1;
+  const m = c.getTransform();
+  const px = 1 / Math.max(1e-6, Math.hypot(m.a, m.b));
+  if (o.rim) {
+    const d = o.rimDir ?? { x: -0.8, y: -0.6 };
+    const n = Math.hypot(d.x, d.y) || 1;
+    c.save();
+    c.globalAlpha *= o.rimAlpha ?? 0.6;
+    c.fillStyle = o.rim;
+    bustShape(c, x + (d.x / n) * px, y + (d.y / n) * px, s, variant, collar, build);
+    if (variant === 'greyWave') greyWaveHair(c, x + (d.x / n) * px, y + (d.y / n) * px, s, build, o.rim);
+    c.restore();
+  }
+  c.fillStyle = ink;
+  bustShape(c, x, y, s, variant, collar, build);
+  if (variant === 'greyWave') greyWaveHair(c, x, y, s, build, mixLab(ink, '#8f877c', 0.13));
+}
+

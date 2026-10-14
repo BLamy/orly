@@ -1,6 +1,6 @@
 {
  "shot": "ch15-s06",
- "at": "2026-10-13T21:40:50.745Z",
+ "at": "2026-10-14T01:33:52.924Z",
  "minCapPx": 22,
  "sampled": 19,
  "texts": 68,
@@ -306,47 +306,47 @@
   },
   {
    "text": "SCALE IS THE MAIN LEVER",
-   "maxCap": 9.6,
+   "maxCap": 9.8,
    "why": "not named, not in onScreenText"
   },
   {
    "text": "2020",
-   "maxCap": 10.2,
+   "maxCap": 10.4,
    "why": "not named, not in onScreenText"
   },
   {
    "text": "LEARNED FEATURES, GIVEN DATA AND ARITHMETIC",
-   "maxCap": 9.6,
+   "maxCap": 9.8,
    "why": "not named, not in onScreenText"
   },
   {
    "text": "COMPUTE IS THE CHOKEPOINT",
-   "maxCap": 9.6,
+   "maxCap": 9.8,
    "why": "not named, not in onScreenText"
   },
   {
    "text": "THE GAP IS MONTHS, NOT YEARS",
-   "maxCap": 9.6,
+   "maxCap": 9.8,
    "why": "not named, not in onScreenText"
   },
   {
    "text": "2025",
-   "maxCap": 10.2,
+   "maxCap": 10.4,
    "why": "not named, not in onScreenText"
   },
   {
    "text": "2023",
-   "maxCap": 14.8,
+   "maxCap": 15.1,
    "why": "not named, not in onScreenText"
   },
   {
    "text": "SMARTER-THAN-HUMAN AI MAY BE",
-   "maxCap": 13.8,
+   "maxCap": 14.1,
    "why": "drawn as texture"
   },
   {
    "text": "YEARS AWAY, AND DANGEROUS",
-   "maxCap": 13.8,
+   "maxCap": 14.1,
    "why": "drawn as texture"
   }
  ],

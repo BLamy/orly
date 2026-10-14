@@ -34,7 +34,7 @@ import type { Palette } from '../../../film';
 import { STUDY, STUDY_WALL, candleX, studyCase, studyRoom } from '../sets/study';
 import { NAMING, candleDates, shelfStateAt, type CandleView } from '../sets/studyState';
 import { beliefCandle, candleFlame, candleShelf, fontForYear, shelfFlames, type ShelfDraw } from '../sets/beliefCandle';
-import { capPx1080, legibleSize } from '../../../film/silhouette/type';
+import { capPx1080, cardProbe, legibleSize } from '../../../film/silhouette/type';
 import { waxCandle } from '../sets/ch02-s04-waxCandle';
 import { HAND_LEN } from '../sets/narratorHands';
 import { BX13, CSX13, HX13, NEAR13, NEWEL13, SS13, STAGE_END13, drawStrip, labHeads13, labIn13, stageBays13 } from '../sets/ch13-s03-strip';
@@ -57,8 +57,8 @@ const SY = STUDY.shelf.y;
 const WX = candleX(V1, 'worry');
 const FLAME = candleFlame({ x: WX, y: SY, view: WORRY, s: STUDY.shelf.s });
 /** the pause letter: standing open beside the candle (round 1: 1.5x, and close in, so letter, label and candle
- *  read as one group) */
-const LETTER = { x: WX + 64, y: SY, w: 69, h: 93 };
+ *  read as one group). Critic r5: 36 px further right, so the new candle's 2023 year tag stays readable beside it */
+const LETTER = { x: WX + 100, y: SY, w: 69, h: 93 };
 /** the shared shelf (the older candles), drawn by this shot as texture */
 const SHELF_DRAW: ShelfDraw = { ...STUDY.shelf, views: V0, drawFlames: false };
 /** the worry candle's lettering size on the shelf (layer px) */
@@ -154,8 +154,8 @@ export default defineShot<Scene>({
       [b.belief + 1.5, WX - 18, 812 - 58 / 1.98, 1.98],
       [b.letter - 0.5, WX - 4, 818 - 58 / 2.0, 2.0],
       // the group (candle · letter · its label) centred as the letter arrives
-      [b.letter + 0.9, WX + 14, 852 - 58 / 1.98, 1.98],
-      [b.push0, WX + 4, 854 - 58 / 2.0, 2.0],
+      [b.letter + 0.9, WX + 30, 852 - 58 / 1.98, 1.98],
+      [b.push0, WX + 20, 854 - 58 / 2.0, 2.0],
       [b.stageT, FLAME.x, FLAME.y + 4, 4.2],
     ]);
     // the stage: out of the flame and back fast enough that the strip is unrolling as the push lands
@@ -540,8 +540,14 @@ function wickTarget(entry: { R: P; L: P }, strikeAt: P) {
 /** the small open pause letter: standing beside the candle; on 'None came' toppled over face down (two drawings on
  *  twos: tilted with its face still to us, then nearly over showing its blank back), then flat and pushed aside */
 function letter(c: C, env: PaintEnv, t: number, b: B, flameK: number) {
-  const appear = win(t, b.letter - 0.25, b.letter + 0.25);
+  // review r5: the letter is PRINTED from its first visible frame (header line, ruled text, signature scrawl): it
+  // falls in from above already inked, paper and ink opaque together within two frames (a slow shared fade read as a
+  // blank pale rectangle), and settles on the plank just before 'letter'
+  const fall0 = b.letter - 0.3;
+  const appear = win(t, fall0, fall0 + 0.08);
   if (appear <= 0.002) return;
+  const fallU = clamp01((t - fall0) / 0.26);
+  const drop = -34 * (1 - fallU) * (1 - fallU);
   const { drawing, slide } = letterPhase(b, tq12(t));
   const m = env.mood;
   const { w, h } = LETTER;
@@ -552,7 +558,7 @@ function letter(c: C, env: PaintEnv, t: number, b: B, flameK: number) {
   c.globalAlpha *= appear;
   if (drawing < 3) {
     // pivot: the bottom-right corner; it falls to the right (away from the candle)
-    c.translate(LETTER.x + w / 2, LETTER.y);
+    c.translate(LETTER.x + w / 2, LETTER.y + drop);
     c.rotate(drawing === 0 ? -0.1 : TILT[drawing]);
     const showBack = drawing === 2;
     c.fillStyle = withAlpha(m.fg, 0.4);
@@ -563,10 +569,9 @@ function letter(c: C, env: PaintEnv, t: number, b: B, flameK: number) {
     c.fillRect(-w, -h * 0.66, w, 0.8);
     c.fillRect(-w, -h * 0.33, w, 0.8);
     if (!showBack) {
-      // a heading and lines of type (texture; the label carries the words)
-      c.fillStyle = withAlpha(MOODS.parchment.ink, 0.6);
-      c.fillRect(-w + 6 * q, -h + 7 * q, w * 0.6, 2.2 * q);
-      for (let i = 0; i < 9; i++) c.fillRect(-w + 6 * q, -h + (14 + i * 5) * q, (w - 12 * q) * (0.6 + 0.4 * ((i * 37) % 10) / 10), 0.9 * q);
+      letterFace(c, w, h, q);
+      // the card audit: paper and its printed face share one opacity (the face is fully inked relative to the paper)
+      cardProbe(c, 'pause-letter', -w, -h, w, h, 1, 1);
     } else {
       // the blank back, its fold creases catching the flame
       c.strokeStyle = withAlpha(m.rim, 0.3);
@@ -589,6 +594,43 @@ function letter(c: C, env: PaintEnv, t: number, b: B, flameK: number) {
     c.fillStyle = withAlpha(m.rim, 0.45);
     c.fillRect(x0 + 4 * q, LETTER.y - 7.4 * q, L - 8 * q, 0.9 * q);
   }
+  c.restore();
+}
+
+/** the pause letter's printed face (texture; the label carries the words), in the letter's local frame (its
+ *  bottom-right corner at 0,0): a dark header line with a hairline rule under it, ruled lines of type, and a
+ *  signature scrawl at ~60 % ink */
+function letterFace(c: C, w: number, h: number, q: number) {
+  const ink = MOODS.parchment.ink;
+  const x0 = -w + 6 * q;
+  const tw = w - 12 * q;
+  // the header line: a bold letterhead bar and a hairline rule across the page beneath it
+  c.fillStyle = withAlpha(ink, 0.85);
+  c.fillRect(x0, -h + 6.5 * q, tw * 0.66, 2.6 * q);
+  c.fillStyle = withAlpha(ink, 0.55);
+  c.fillRect(x0, -h + 11 * q, tw, 0.6 * q);
+  // ruled text: eight lines of type, ragged right, the last of a paragraph short
+  c.fillStyle = withAlpha(ink, 0.7);
+  for (let i = 0; i < 8; i++) {
+    const len = i === 3 ? 0.42 : i === 7 ? 0.5 : 0.72 + 0.28 * (((i * 37) % 10) / 10);
+    c.fillRect(x0, -h + (16 + i * 4.6) * q, tw * len, 1.15 * q);
+  }
+  // the signature scrawl at ~60 % ink, lower left, over a short sign-off line
+  c.fillStyle = withAlpha(ink, 0.6);
+  c.fillRect(x0, -h + 54.5 * q, tw * 0.28, 0.9 * q);
+  c.save();
+  c.strokeStyle = withAlpha(ink, 0.6);
+  c.lineWidth = 0.9 * q;
+  c.lineCap = 'round';
+  c.lineJoin = 'round';
+  const sy = -h + 59.5 * q;
+  c.beginPath();
+  c.moveTo(x0 + 0.5 * q, sy + 0.6 * q);
+  c.bezierCurveTo(x0 + 2 * q, sy - 3.4 * q, x0 + 4 * q, sy - 3.2 * q, x0 + 3.6 * q, sy + 0.4 * q);
+  c.bezierCurveTo(x0 + 3.4 * q, sy + 2.2 * q, x0 + 6 * q, sy - 2.4 * q, x0 + 8 * q, sy - 0.6 * q);
+  c.bezierCurveTo(x0 + 9.6 * q, sy + 1.2 * q, x0 + 11 * q, sy - 2.8 * q, x0 + 13.4 * q, sy - 0.2 * q);
+  c.bezierCurveTo(x0 + 15 * q, sy + 1.4 * q, x0 + 17 * q, sy - 1.6 * q, x0 + 20 * q, sy - 1.2 * q);
+  c.stroke();
   c.restore();
 }
 
@@ -735,7 +777,8 @@ function letterLabel(c: C, p: P, A: number, mood: Palette) {
   const lines = ['MARCH 2023 · PAUSE LETTER', 'NO MAJOR LAB PAUSED'];
   // round 1: larger (28 px cap at 1080p) and set close above-right of the letter, a short leader
   const size = 27;
-  const x = Math.min(800, p.x + 48), y = Math.max(150, p.y - 128);
+  // critic r5: capped at 760 so the longer line ends inside the 95 % title-safe edge
+  const x = Math.min(760, p.x + 48), y = Math.max(150, p.y - 128);
   c.save();
   softPlate(c, x + 220, y + 12, 760, 210, mood.fg, 0.62 * A);
   c.textBaseline = 'alphabetic';

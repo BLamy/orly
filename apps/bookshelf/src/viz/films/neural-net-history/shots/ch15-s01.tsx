@@ -43,7 +43,7 @@ import { figure15 } from '../sets/ch15-s01-figures';
 import { compositeSub, monotone, subFrame } from '../sets/ch02-s05b-util';
 import { clamp01, goldMedallion, lerp, pulse, ribbonBanner, screen, sm, tq12, win } from '../sets/ch15-s01-kit';
 import { godRays } from '../../../film/silhouette/atmosphere';
-import { softPlate } from '../../../film/silhouette/type';
+import { FONT, cardProbe, legibleSize, softPlate, textProbe, textSwapIn } from '../../../film/silhouette/type';
 
 const ID = 'ch15-s01';
 type C = CanvasRenderingContext2D;
@@ -113,10 +113,13 @@ const HERO_ORDER: number[] = (() => {
 interface B {
   D: number;
   phone: number;
+  rings: number;
+  october: number;
   buzz2: number;
   nobel: number;
   cut: number;
   hop: number;
+  memories: number;
   downhill: number;
   boltz: number;
   cools: number;
@@ -145,12 +148,16 @@ export default defineShot<Scene>({
     const D = T.duration;
     const b: B = {
       D,
-      phone: T.beat('b1'),
+      // review round 5: the handset lights cool white ON 'phone' and shivers on 'rings' (the sleeper wakes)
+      phone: T.word('L1501', 'phone'),
+      rings: T.word('L1501', 'rings'),
+      october: T.word('L1501', 'October'),
       buzz2: T.beat('b2'),
       nobel: T.beat('b3'),
       cut: T.word('L1502', 'Hopfield') - 0.12,
       hop: T.word('L1502', 'Hopfield'),
-      downhill: T.beat('b4b'),
+      memories: T.word('L1502', 'memories'),
+      downhill: T.word('L1502', 'downhill'),
       boltz: T.word('L1502', 'Boltzmann'),
       cools: T.word('L1502', 'cools'),
       // review round 4: the mirrored figures begin to turn toward Hopfield on 'Versailles' (the Versailles callback)
@@ -163,7 +170,7 @@ export default defineShot<Scene>({
     };
     // the room: a held wide, then from 1.8 s a real dolly onto the bedside table (1.72x by 10.5 s: the phone
     // ~135 px wide, low in frame so the ceiling patch stays in), then a small tilt up with the medallion
-    const roomPhone = frameOnLayer(LAYERS.L4, PHONE_C, { x: 640, y: 548 }, 1.72);
+    const roomPhone = frameOnLayer(LAYERS.L4, PHONE_C, { x: 512, y: 548 }, 1.72);
     const room = (t: number): Camera3 => {
       const u = sm((t - 1.8) / (10.5 - 1.8));
       const base: Camera3 = { x: lerp(620, roomPhone.x, u), y: lerp(372, roomPhone.y, u), z: lerp(0, roomPhone.z, u), lens: 1 };
@@ -197,7 +204,9 @@ export default defineShot<Scene>({
     void network;
     void boltz;
     const meds = (MED1.x + MED2.x) / 2;
-    const kPush = kCut * 1.04 * 1.4;
+    // review round 5 (reviser r1): 1.25x more push between 'roll' and 'downhill' so the ball and, later, the settling
+    // cluster read large (the hollow ~20 % of frame height)
+    const kPush = kCut * 1.04 * 1.4 * 1.25;
     const keys: Key[] = [
       [b.cut, MED1.x, MED1.y, CUT_M.x, CUT_M.y, kCut],
       [memories - 0.2, MED1.x, MED1.y, 614, 211, kCut * 1.04],
@@ -257,6 +266,8 @@ export default defineShot<Scene>({
         // reviser r1: on 'Boltzmann' a scatter of jittering dots (the net's units, hot) settles into the dip as
         // the face cools (they rest in the basin from 'cools')
         if (t > b.boltz - 0.05) boltzDots(c, med, t, b, f.mood);
+        // review round 5: the two prize ideas named on small paper tags tied to the medallion's rim, one at a time
+        prizeTags(c, med, t, b, f.mood);
       }
       // reviser r1: from 'chem' the key light leaves the physicist and finds the second medallion (the protein)
       const key2 = win(t, b.chem - 0.1, b.chem + 1.0);
@@ -301,7 +312,9 @@ export default defineShot<Scene>({
       const open = win(t, b.nobel + 0.55, b.nobel + 1.6);
       // the whole ribbon goes with its lettering (no empty plate left over the audience)
       // reviser r1: once JOHN HOPFIELD's card is up the ribbon steps back to ~55 % so the Versailles turn has the frame
-      const rA = (1 - win(t, b.cheered - 0.1, b.cheered + 0.3)) * (1 - 0.45 * win(t, b.hop + 1.7, b.hop + 2.4));
+      // review round 5: the ribbon is opaque paper, never a double exposure: full value until the medallion push
+      // starts ('memories' - 0.2), then gone in 0.4 s (no intermediate alpha is held)
+      const rA = 1 - win(t, b.memories - 0.2, b.memories + 0.2);
       if (open > 0 && rA > 0) {
         ribbonBanner(c, {
           text: 'for foundational discoveries and inventions that enable machine learning with artificial neural networks',
@@ -310,7 +323,7 @@ export default defineShot<Scene>({
           y: 540,
           width: 580,
           open,
-          letters: win(t, b.nobel + 1.0, b.nobel + 1.8) * (1 - win(t, b.cheered - 0.15, b.cheered + 0.3)),
+          letters: win(t, b.nobel + 1.0, b.nobel + 1.8),
           alpha: rA,
           size: 20,
         }, { t, mood: f.mood });
@@ -392,6 +405,76 @@ function medallion2Pose(sc: Scene, t: number): { x: number; y: number; r: number
   return { x: p.x, y: p.y, r: MED2.r * p.k, turn: sm((tq12(t) - b.chem) / 1.3), a: win(t, b.chem - 0.1, b.chem + 0.35) };
 }
 
+/** review round 5: the two prize ideas, named on a small manila tag tied to the medallion's rim (lower right) by a
+ *  thread: HOPFIELD NET on 'downhill', then BOLTZMANN MACHINE on 'cools'; gone before 'cheered'. Cap height on the
+ *  22 px floor; ink at ~80 % (a label, not a headline).
+ *  Reviser r1 (round 5): ONE opaque paper plate carries both names (never two translucent plates stacked, which read
+ *  as a half-wiped tag): the Hopfield text lifts off first, the plate re-cuts to the longer width over 2 frames, then
+ *  the Boltzmann text inks on 'cools' (never two texts at value together). */
+function prizeTags(c: C, med: { x: number; y: number; r: number; a: number }, t: number, b: B, mood: Palette) {
+  const gone = 1 - win(t, b.cheered - 0.5, b.cheered - 0.1);
+  const plateA = textSwapIn(t, b.downhill, 0.35) * gone * med.a;
+  if (plateA <= 0.003) return;
+  // (the new name inks from 0.14 s before 'cools', so it is up on the word itself)
+  const hopOut = 1 - win(t, b.cools - 0.34, b.cools - 0.22);
+  const grow = win(t, b.cools - 0.22, b.cools - 0.22 + 2 / 24);
+  const bolIn = textSwapIn(t, b.cools - 0.14, 0.2);
+  const tags = [
+    { id: `${ID}/tag-hopfield`, text: 'HOPFIELD NET · 1982', a: hopOut },
+    { id: `${ID}/tag-boltzmann`, text: 'BOLTZMANN MACHINE · 1983–85', a: bolIn },
+  ];
+  const ang = (52 * Math.PI) / 180;
+  const ax = med.x + Math.cos(ang) * med.r * 0.98, ay = med.y + Math.sin(ang) * med.r * 0.98;
+  const paper = mixLab(mixLab(MOODS.parchment.sky[1], mood.halo, 0.22), '#efe2c4', 0.3);
+  const edge = mixLab(paper, mood.set, 0.4);
+  c.save();
+  const size = legibleSize(c, `500 19px ${FONT.mono}`, 19, tags[1].text);
+  c.font = `500 ${size}px ${FONT.mono}`;
+  const tw0 = c.measureText(tags[0].text).width, tw1 = c.measureText(tags[1].text).width;
+  const w = lerp(tw0, tw1, grow) + 34, h = size * 1.55;
+  // a small swing on twos as it is hung
+  const sway = 0.035 * Math.sin(tq12(t) * 2.1) * (1 - win(t, b.downhill, b.downhill + 2));
+  const hx = ax + 14, hy = ay + 30;
+  c.globalAlpha = plateA;
+  // the thread from the rim to the tag's eyelet
+  c.strokeStyle = withAlpha(mixLab(mood.halo, '#e8d9b0', 0.5), 0.8);
+  c.lineWidth = 1.2;
+  c.beginPath();
+  c.moveTo(ax, ay);
+  c.quadraticCurveTo(ax + 4, ay + 18, hx + 4, hy + h / 2);
+  c.stroke();
+  c.translate(hx, hy);
+  c.rotate(sway);
+  // manila tag: clipped corners at the eyelet end
+  c.fillStyle = paper;
+  c.beginPath();
+  c.moveTo(12, 0);
+  c.lineTo(w, 0);
+  c.lineTo(w, h);
+  c.lineTo(12, h);
+  c.lineTo(0, h - 10);
+  c.lineTo(0, 10);
+  c.closePath();
+  c.fill();
+  c.strokeStyle = withAlpha(edge, 0.7);
+  c.lineWidth = 1;
+  c.stroke();
+  c.fillStyle = withAlpha(edge, 0.9);
+  c.beginPath();
+  c.arc(9, h / 2, 3, 0, Math.PI * 2);
+  c.fill();
+  // the plate's first line (Hopfield) inks with the paper; the card probe sees whichever name is up
+  cardProbe(c, `${ID}/tag`, 0, 0, w, h, plateA, plateA * Math.max(hopOut, bolIn));
+  c.textBaseline = 'middle';
+  for (const g of tags) {
+    if (g.a <= 0.003) continue;
+    c.fillStyle = withAlpha('#2a1d0e', 0.82 * g.a);
+    c.fillText(g.text, 22, h / 2 + 1);
+    textProbe(c, g.id, 22, 0, g === tags[0] ? tw0 : tw1, h, plateA * g.a);
+  }
+  c.restore();
+}
+
 /** the Boltzmann dots (reviser r1): 7 small beads on the medallion's face (its own geometry: the kit's basin, W = 0.7r,
  *  D = 0.36r, y0 = -0.04r). Hot on 'Boltzmann' (scattered over the face, jittering on twos), cooling to rest in the
  *  dip by 'cools'; the jitter amplitude is the temperature */
@@ -464,10 +547,12 @@ function paintRoom(f: Frame, sc: Scene, t: number) {
   const W = ROOM.window;
   // the phone: buzz pulses (on twos), its leak of cold light, then warming on 'Nobel'
   const tq = tq12(t);
-  const lit = win(t, b.phone - 0.05, b.phone + 0.12);
+  // review round 5: the handset lights cool white ON 'phone' (a 3-frame snap) and holds steady; on 'rings' (and the
+  // second ring) it SHIVERS: a mechanical 2-frame jitter, no glow bloom
+  const lit = win(t, b.phone - 0.06, b.phone + 0.06);
   const warm = win(t, b.nobel - 0.15, b.nobel + 0.5);
-  const buzzing = (tq > b.phone && tq < b.phone + 0.45) || (tq > b.buzz2 && tq < b.buzz2 + 0.42);
-  const jx = buzzing ? (Math.floor(tq * 12) % 2 ? 2.2 : -2.2) : 0;
+  const buzzing = (t >= b.rings && t < b.rings + 0.5) || (t >= b.buzz2 && t < b.buzz2 + 0.42);
+  const jx = buzzing ? (Math.floor(tq * 12) % 2 ? 1.8 : -1.8) : 0;
   f.backlight({ sunX: W.x + W.w / 2, sunY: 300, sunRadius: 420, intensity: 0.42 });
 
   // L1: the night outside: a dim sky, a low roofline, the car-park lamp on its post
@@ -508,9 +593,10 @@ function paintRoom(f: Frame, sc: Scene, t: number) {
   // L2: the hotel wall (plain), the sash window as a HOLE with thin net drapes, heavy side curtains, a print, the ceiling
   f.layer('L2', (c, env) => {
     const r = overscan(LAYERS.L2, sc.RCAMS, 60);
-    bake(f, c, `${ID}/room/L2b/${env.mood.id}/${rk(r)}`, r, (cc) => {
+    bake(f, c, `${ID}/room/L2c/${env.mood.id}/${rk(r)}`, r, (cc) => {
       const m = env.mood;
-      const wall = mixLab(env.fill('set'), m.fg, 0.56);
+      // reviser r1 (round 5): the wall drops ~15 % so the window and the phone are the room's only practicals
+      const wall = mixLab(mixLab(env.fill('set'), m.fg, 0.56), PUPPET_NEAR_BLACK, 0.15);
       const p = new Path2D();
       p.rect(r.x, r.y, r.w, r.h);
       p.rect(W.x, W.y, W.w, W.h);
@@ -591,10 +677,10 @@ function paintRoom(f: Frame, sc: Scene, t: number) {
     });
     // the phone's cold rectangle thrown up onto the CEILING (dynamic): a skewed trapezoid just above the cornice
     if (lit > 0.01) {
-      const cool = mixLab(MOODS.winterBlue.rim, '#dfe8ee', 0.4);
+      const cool = mixLab(MOODS.winterBlue.rim, '#eef3f6', 0.6);
       const hot = mixLab(env.mood.core, env.mood.halo, 0.3);
       const col = mixLab(cool, hot, warm);
-      const k = lit * (buzzing ? 1 : 0.86) * (1 - 0.6 * win(t, b.nobel + 0.2, b.cut));
+      const k = lit * (1 - 0.6 * win(t, b.nobel + 0.2, b.cut));
       const cx = PHONE_C.x - 6 + jx * 0.6;
       const y0 = ROOM.ceilY - 28, y1 = ROOM.ceilY - 3;
       c.save();
@@ -701,11 +787,11 @@ function paintRoom(f: Frame, sc: Scene, t: number) {
     });
     // the light pooling round the face-down phone (cold, then warming)
     if (lit > 0.01) {
-      const cool = mixLab(MOODS.winterBlue.rim, '#dfe8ee', 0.35);
+      const cool = mixLab(MOODS.winterBlue.rim, '#eef3f6', 0.6);
       const col = mixLab(cool, mixLab(m.core, m.halo, 0.2), warm);
       c.save();
       c.globalCompositeOperation = 'lighter';
-      const k = lit * (buzzing ? 1 : 0.82);
+      const k = lit;
       const g = c.createRadialGradient(PHONE_C.x, T0.top, 2, PHONE_C.x, T0.top, 74);
       g.addColorStop(0, withAlpha(col, 0.55 * k));
       g.addColorStop(1, withAlpha(col, 0));
@@ -732,35 +818,186 @@ function paintRoom(f: Frame, sc: Scene, t: number) {
   f.rim({ x: -0.4, y: -1 });
   if (lit > 0.01) f.practical({ x: PHONE_C.x + jx, y: ROOM.table.top - 2, kind: 'screen', seed: 152, intensity: 0.38 * lit * (1 + 0.6 * warm), radius: 26 });
 
-  // L5: the bed edge in the right foreground (blurred): the mattress, a turned-back blanket, the pillow end
+  // L5: the bed in the right foreground (blurred): the mattress, a pale pillow, and HINTON asleep under the turned-back
+  // blanket (review round 5: the call reaches a sleeping man, not an empty room). His head lifts on 'rings'.
   f.layer('L5', (c, env) => {
     const r = overscan(LAYERS.L5, sc.RCAMS, 40);
-    bake(f, c, `${ID}/room/L5b/${env.mood.id}/${rk(r)}`, r, (cc) => {
-      const m = env.mood;
-      cc.fillStyle = PUPPET_NEAR_BLACK;
-      cc.beginPath();
-      cc.moveTo(900, r.y + r.h);
-      cc.lineTo(918, 600);
-      cc.quadraticCurveTo(930, 560, 980, 556);
-      cc.lineTo(r.x + r.w, 548);
-      cc.lineTo(r.x + r.w, r.y + r.h);
-      cc.closePath();
-      cc.fill();
-      cc.strokeStyle = withAlpha(m.rim, 0.18);
-      cc.lineWidth = 2;
-      cc.beginPath();
-      cc.moveTo(924, 588);
-      cc.quadraticCurveTo(936, 562, 984, 558);
-      cc.lineTo(r.x + r.w, 550);
-      cc.stroke();
-      // the turned-back blanket: a soft fold line
-      cc.strokeStyle = withAlpha(m.rim, 0.08);
-      cc.beginPath();
-      cc.moveTo(990, 600);
-      cc.bezierCurveTo(1080, 590, 1180, 610, r.x + r.w, 598);
-      cc.stroke();
-    });
+    bake(f, c, `${ID}/room/L5d/${env.mood.id}/${rk(r)}`, r, (cc) => paintBed(cc, env, r));
+    paintSleeper(c, env, t, b);
+    bake(f, c, `${ID}/room/L5near/${env.mood.id}/${rk(r)}`, r, (cc) => paintNearDrape(cc, env, r));
   });
+}
+
+/** the bed (L5 world): its pillow end sits just right of the bedside table, so the push onto the phone keeps the
+ *  sleeper's head in frame */
+const BED = { x0: 846, top: 534, pillow: { x: 856, w: 150, top: 500 } };
+const SLEEP = { headX: 878, y: 512, s: 0.86 };
+function paintBed(cc: C, env: PaintEnv, r: { x: number; y: number; w: number; h: number }) {
+  const m = env.mood;
+  const paperRim = mixLab('#eadfc4', m.rim, 0.3);
+  // reviser r1 (round 5): a low headboard behind the pillow (so the shape reads as a BED, not a sofa back): a slim
+  // upright with a rounded cap, its top catching the window light with a 1.5 px paper-tone rim
+  {
+    const hx0 = BED.x0 - 8, hx1 = BED.x0 + 10, top = BED.pillow.top - 30;
+    cc.fillStyle = mixLab(PUPPET_NEAR_BLACK, m.set, 0.08);
+    cc.beginPath();
+    cc.moveTo(hx0, r.y + r.h);
+    cc.lineTo(hx0, top + 8);
+    cc.quadraticCurveTo(hx0, top - 3, (hx0 + hx1) / 2, top - 3);
+    cc.quadraticCurveTo(hx1, top - 3, hx1, top + 8);
+    cc.lineTo(hx1, r.y + r.h);
+    cc.closePath();
+    cc.fill();
+    // a turned finial ball on the post
+    cc.beginPath();
+    cc.arc((hx0 + hx1) / 2, top - 9, 7, 0, Math.PI * 2);
+    cc.fill();
+    cc.strokeStyle = withAlpha(paperRim, 0.7);
+    cc.lineWidth = 1.5;
+    cc.beginPath();
+    cc.arc((hx0 + hx1) / 2, top - 9, 7, Math.PI * 1.05, Math.PI * 1.75);
+    cc.stroke();
+    cc.beginPath();
+    cc.moveTo(hx0 + 0.7, top + 30);
+    cc.lineTo(hx0 + 0.7, top + 6);
+    cc.quadraticCurveTo(hx0 + 0.7, top - 2, (hx0 + hx1) / 2, top - 2);
+    cc.stroke();
+  }
+  // the mattress and its front face
+  cc.fillStyle = mixLab(PUPPET_NEAR_BLACK, m.set, 0.16);
+  cc.beginPath();
+  cc.moveTo(BED.x0 - 6, r.y + r.h);
+  cc.lineTo(BED.x0 - 6, BED.top + 26);
+  cc.quadraticCurveTo(BED.x0 - 6, BED.top, BED.x0 + 20, BED.top);
+  cc.lineTo(r.x + r.w, BED.top - 6);
+  cc.lineTo(r.x + r.w, r.y + r.h);
+  cc.closePath();
+  cc.fill();
+  // the sheet's edge catching the window light
+  cc.strokeStyle = withAlpha(m.rim, 0.22);
+  cc.lineWidth = 2;
+  cc.beginPath();
+  cc.moveTo(BED.x0 - 5, BED.top + 26);
+  cc.quadraticCurveTo(BED.x0 - 5, BED.top + 1, BED.x0 + 20, BED.top + 1);
+  cc.lineTo(r.x + r.w, BED.top - 5);
+  cc.stroke();
+  // the pillow: pale linen in the dark room (the sleeper's profile reads against it)
+  const P = BED.pillow;
+  const pg = cc.createLinearGradient(0, P.top, 0, BED.top);
+  pg.addColorStop(0, mixLab(mixLab(m.setHaze, m.haze, 0.5), m.rim, 0.22));
+  pg.addColorStop(1, mixLab(m.set, m.setHaze, 0.6));
+  cc.fillStyle = pg;
+  cc.beginPath();
+  cc.moveTo(P.x, BED.top + 2);
+  cc.bezierCurveTo(P.x - 10, P.top + 18, P.x + 6, P.top - 2, P.x + 36, P.top + 2);
+  cc.bezierCurveTo(P.x + 80, P.top + 8, P.x + 120, P.top - 2, P.x + P.w - 6, P.top + 6);
+  cc.bezierCurveTo(P.x + P.w + 8, P.top + 16, P.x + P.w + 2, BED.top - 4, P.x + P.w - 10, BED.top + 2);
+  cc.closePath();
+  cc.fill();
+  cc.strokeStyle = withAlpha(m.rim, 0.3);
+  cc.lineWidth = 1.6;
+  cc.beginPath();
+  cc.moveTo(P.x + 4, P.top + 14);
+  cc.bezierCurveTo(P.x + 10, P.top + 1, P.x + 40, P.top + 1, P.x + 70, P.top + 5);
+  cc.stroke();
+}
+
+/** Geoffrey Hinton (cast.ts 'hinton': sweptBack hair) lying on his back, head on the pillow, face to the ceiling,
+ *  drawn as the cast puppet laid on its side (local up -> stage left); no face detail. Only his head and collar are
+ *  drawn (clipped at the blanket's edge). Breathes on twos; on 'rings' his head and shoulders lift off the pillow
+ *  toward the phone. */
+function paintSleeper(c: C, env: PaintEnv, t: number, b: B) {
+  const P = cast.hinton;
+  const s = SLEEP.s;
+  const H = P.spec.height * s;
+  const tq = tq12(t);
+  const breath = Math.sin((tq * Math.PI * 2) / 4.6);
+  // reviser r1 (round 5): a READABLE lift on 'rings': ~12 deg about the neck (the head rises ~14 px at 1080p toward
+  // the table), on twos (tq), starting on the word and landing by ~10.1
+  const lift = sm((tq - b.rings) / 0.4);
+  const ox = SLEEP.headX + H, oy = SLEEP.y;
+  const bx = SLEEP.headX + H * 0.15;
+  const pivot = { x: SLEEP.headX + 40, y: oy + 4 };
+  const pose: Pose = {
+    ...POSES.rest,
+    angles: { ...POSES.rest.angles, torso: 0, neck: -4, head: -4, shoulderF: -4, elbowF: 8, shoulderB: -4, elbowB: 8 },
+  };
+  c.save();
+  // only what is above the bedclothes: the head and the collar
+  c.beginPath();
+  c.rect(SLEEP.headX - 400, oy - 400, bx + 26 - (SLEEP.headX - 400), 800);
+  c.clip();
+  c.translate(pivot.x - 1.5 * lift, pivot.y);
+  c.rotate(0.21 * lift);
+  c.translate(-pivot.x, -pivot.y);
+  c.translate(ox, oy - breath * 0.5);
+  c.rotate(-Math.PI / 2);
+  // edge rim toward the phone and the window (stage up-left = local (0.6, -1) after the quarter turn)
+  P.draw(c, { x: 0, y: 0, facing: 'right', pose, scale: s, ink: PUPPET_NEAR_BLACK, edgeRim: { x: 0.6, y: -1, px: 2.25, alpha: 0.85 } }, env);
+  c.restore();
+  // the blanket, turned back below the chin: a soft rounded hump over the shoulder and chest (it stays on the bed
+  // while he lifts); breathing lifts it a pixel
+  // reviser r1 (round 5): the blanket sits LOW (below the face line), a body's contour under it (chest, a dip at the
+  // waist, the hip, the legs running off), so it reads as a man asleep under a blanket, not a sofa back; its turned-
+  // back edge carries a 1.5 px paper-tone rim and a pale band of sheet
+  const m = env.mood;
+  const top = oy - 2 - breath * 1.1;
+  const blanket = new Path2D();
+  blanket.moveTo(bx - 14, BED.top + 6);
+  blanket.bezierCurveTo(bx - 18, top + 18, bx - 8, top + 2, bx + 22, top - 1);
+  blanket.bezierCurveTo(bx + 60, top - 5, bx + 100, top - 4, bx + 140, top + 4);
+  blanket.bezierCurveTo(bx + 175, top + 10, bx + 205, top + 6, bx + 240, top + 1);
+  blanket.bezierCurveTo(bx + 290, top - 4, bx + 330, top + 10, bx + 420, top + 16);
+  blanket.lineTo(bx + 600, top + 20);
+  c.fillStyle = mixLab(PUPPET_NEAR_BLACK, m.set, 0.12);
+  const body = new Path2D(blanket);
+  body.lineTo(bx + 600, BED.top + 220);
+  body.lineTo(bx - 14, BED.top + 220);
+  body.closePath();
+  c.fill(body);
+  c.strokeStyle = withAlpha(mixLab('#eadfc4', m.rim, 0.3), 0.75);
+  c.lineWidth = 1.5;
+  c.stroke(blanket);
+  // the turned-back fold: a paler band of sheet just under the edge, over the chest
+  c.strokeStyle = withAlpha(mixLab(mixLab(m.setHaze, m.haze, 0.35), '#eadfc4', 0.25), 0.55);
+  c.lineWidth = 3.5;
+  c.beginPath();
+  c.moveTo(bx - 9, top + 15);
+  c.bezierCurveTo(bx - 3, top + 6, bx + 20, top + 4, bx + 40, top + 3);
+  c.bezierCurveTo(bx + 80, top + 1, bx + 110, top + 3, bx + 132, top + 8);
+  c.stroke();
+}
+
+/** reviser r1 (round 5): the near plane: the edge of a heavy drape at the right frame edge (L5, blurred), its inner
+ *  edge rimmed by the window light; it slides against the wall and the table through the push (three planes) and
+ *  stays partly in frame at the end of the push */
+function paintNearDrape(cc: C, env: PaintEnv, r: { x: number; y: number; w: number; h: number }) {
+  const m = env.mood;
+  const x0 = 1018;
+  const ink = mixLab(PUPPET_NEAR_BLACK, m.set, 0.05);
+  cc.fillStyle = ink;
+  cc.beginPath();
+  cc.moveTo(x0 + 26, r.y);
+  cc.bezierCurveTo(x0 + 6, 300, x0 + 18, 470, x0, r.y + r.h);
+  cc.lineTo(r.x + r.w, r.y + r.h);
+  cc.lineTo(r.x + r.w, r.y);
+  cc.closePath();
+  cc.fill();
+  // fold shadows / lit ridges
+  cc.strokeStyle = withAlpha(m.rim, 0.08);
+  cc.lineWidth = 2;
+  for (let k = 1; k < 4; k++) {
+    cc.beginPath();
+    cc.moveTo(x0 + 26 + k * 34, r.y);
+    cc.bezierCurveTo(x0 + 10 + k * 34, 320, x0 + 22 + k * 34, 480, x0 + 6 + k * 34, r.y + r.h);
+    cc.stroke();
+  }
+  cc.strokeStyle = withAlpha(mixLab('#eadfc4', m.halo, 0.35), 0.5);
+  cc.lineWidth = 1.5;
+  cc.beginPath();
+  cc.moveTo(x0 + 26, r.y);
+  cc.bezierCurveTo(x0 + 6, 300, x0 + 18, 470, x0, r.y + r.h);
+  cc.stroke();
 }
 
 // ===================================================================================================== HALL painter

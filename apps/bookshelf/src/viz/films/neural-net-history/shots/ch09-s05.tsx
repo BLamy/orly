@@ -169,7 +169,9 @@ export default defineShot({
       candle: T.beat('burnedOn'),
       argued: T.word('L0910', 'argued'),
       // hold on the candle through 'argued over', then cut to the Wall as the hands lift the slip
-      cut2: T.beat('slipCarried') - 0.3,
+      // round 5: the cut comes on 'over''s end (≈ 2 frames before the carry beat), so the status line, typed complete by
+      // ≈ 19.92, holds finished ≥ 0.8 s (≈ 0.875 s on frames) before the cut instead of flickering out
+      cut2: T.beat('slipCarried') - 0.06,
       carry: T.beat('slipCarried'),
       shadow: T.beat('shadowSlip'),
       pinned: T.beat('slipPinned'),
@@ -392,7 +394,10 @@ function camAt(b: B, t: number): Camera3 {
 const SLIP_DROP = (W7.h - 6) * WK; // pin point to the carried slip's lower edge
 const TOP_ROW = wallSlotWorld('W1').y - (WALL_SLOTS.W1.h * WK) / 2;
 function slipPath(b: B, tq: number): { hand: { x: number; y: number } } | null {
-  const lift0 = b.carry - 0.25;
+  // round 5: the lift starts no earlier than the cut back to the Wall (the cut now comes later, and the forearm must
+  // never cross the candle macro)
+  const lift0 = Math.max(b.carry - 0.25, b.cut2);
+  const liftEnd = b.carry + 0.2;
   const out = b.pinned + 0.85;
   if (tq < lift0 || tq > out) return null;
   const rowY = TOP_ROW - 16 - SLIP_DROP;
@@ -400,9 +405,9 @@ function slipPath(b: B, tq: number): { hand: { x: number; y: number } } | null {
   const startP = { x: W1C.x - (WALL_SLOTS.W1.w * WK) / 2 - 68, y: rowY + 150 };
   const atW6 = { x: W6C.x - 24, y: rowY };
   const p0 = b.shadow - 0.35, p1 = b.shadow + 0.15;
-  if (tq < b.carry + 0.2) {
+  if (tq < liftEnd) {
     // lifted into the light at the lamp end (in the clear strip left of W1)
-    const u = sm((tq - lift0) / 0.45);
+    const u = sm((tq - lift0) / (liftEnd - lift0));
     return { hand: { x: startP.x, y: lerp(startP.y, rowY, u) } };
   }
   if (tq < p0) {
@@ -813,9 +818,13 @@ function candleStatus(f: Frame, b: B, t: number, cam: Camera3) {
   const c = f.c;
   const m = f.mood;
   const fl = toScreen(LAYERS.L4, cam, LFLAME.x, LFLAME.y);
-  const tq = tq12(t);
+  // round 5: typed at 45 cps (was 30), starting 0.35 s earlier (≥ 0.3 s, so it lands on 'argued' itself), sampled on the
+  // 24 fps frame clock (not on twos) so the last character arrives at ≈ 19.92 and the finished line holds ≥ 0.8 s
+  // before the cut back to the Wall
   const extra = ', still argued';
-  const typed = tq < b.argued - 0.05 ? 0 : Math.min(extra.length, Math.floor((tq - b.argued + 0.05) * 30));
+  const TYPE_CPS = 45;
+  const typeAt = b.argued - 0.05 - 0.35;
+  const typed = t < typeAt ? 0 : Math.min(extra.length, Math.floor((t - typeAt) * TYPE_CPS));
   const lines = ['LEARNED FEATURES, GIVEN', 'DATA AND ARITHMETIC'];
   const dates = 'lit 2012 · still burning' + extra.slice(0, typed);
   c.save();

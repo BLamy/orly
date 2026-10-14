@@ -6,7 +6,7 @@
  * becomes the flame of LANGUAGE MUST BE READ IN ORDER; we pull back out of that flame onto the shelf (never through
  * black) while the light crossfades serverCyan → candleAmber (1.2 s, no dip); the line starts once the amber is up.
  *   'twenty'      the flame gutters and goes out with exactly 20 rings burned: the 120 px ghost sleeve stays, dark,
- *                 with a thread of smoke; its hanging tag is re-inked 1997 → 1997–2017 (set "1997" over "–2017")
+ *                 with a thread of smoke; its hanging tag is re-inked 1997 → 1997–2017 (set "1997–" over "2017")
  *   'Transformer' a parchment card rises (reviser r1) low and centre-right, over the shelf front between the 1999 and
  *                 2006 candles, its right edge clear of the lit 2012 candle (the shot's other live flame), and writes: not the first attention · (line end + 0.1) not only attention · (+ 0.7) built to translate
  *                 (each "not" an oxblood correction); complete by ~7.5 s, holding ~4 s.
@@ -22,7 +22,7 @@
  *                 own moment.
  * (round-2) the pull-back takes ~3.5 s and lands before 'Transformer'; then (critic round 1) a slow ~30 px drift
  * through the hold, with a blurred near case-board end sliding in at the right edge (a third plane). The re-inked
- * base tag (1997 – 2017) hangs at the candle's BASE, right of its foot, in the row with the other year tags. The
+ * base tag (1997–2017) hangs at the candle's BASE, right of its foot, in the row with the other year tags. The
  * other candles' vertical belief lettering is ~30% lower in contrast, so LANGUAGE MUST BE READ IN ORDER is the one
  * the eye reads.
  * CANDLE-CLOCK RULE: every belief candle is cut to the same lit height, 45 scored rings at a pitch of 6 px per ring
@@ -37,7 +37,7 @@ import { FONT, cardPaperAlpha, cardProbe, legibleSize, textRole } from '../../..
 import { glow } from '../../../film/silhouette/metaphors/kit';
 import { makeCanvas } from '../../../film/silhouette/atmosphere';
 import { STUDY, STUDY_WALL, candleX, studyCase, studyNear, studyRoom } from '../sets/study';
-import { shelfStateAt, wallStateAt, type CandleView } from '../sets/studyState';
+import { LIT_HEIGHT, RING_PX, shelfStateAt, wallStateAt, type CandleView } from '../sets/studyState';
 import { wallOfForecasts } from '../sets/wallOfForecasts';
 import { candleFlame } from '../sets/beliefCandle';
 import { camKeys } from '../sets/ch03-s06-kit';
@@ -146,7 +146,7 @@ export default defineShot({
         },
       },
       extra: (c, env) => {
-        darkenRails(c, env);
+        darkenRails(c, env, t, b);
         smokePlume(c, env, t, b);
         baseTag(c, env, t, b);
         smokeCloud(c, env, t, b);
@@ -208,14 +208,15 @@ function windowLight(f: Frame, t: number, b: B) {
   const y0 = Math.min(...w.map((p) => p.y)), y1 = Math.max(...w.map((p) => p.y));
   const W = Math.ceil(x1 - x0), H = Math.ceil(y1 - y0);
   f.layer(STUDY_WALL, (c) => {
-    const draw = f.cached(`${ID}/windowLight/${W}x${H}`, W, H, (cc) => {
+    const draw = f.cached(`${ID}/windowLight/v2/${W}x${H}`, W, H, (cc) => {
       const q = w.map((p) => ({ x: p.x - x0, y: p.y - y0 }));
       const lerpP = (p: { x: number; y: number }, r: { x: number; y: number }, u: number) => ({ x: p.x + (r.x - p.x) * u, y: p.y + (r.y - p.y) * u });
       // panes: 3 columns × 5 rows, the glazing bars left in shadow
       const g = cc.createLinearGradient(0, 0, 0, H);
-      g.addColorStop(0, withAlpha(mixLab(DAWN.sky[2], '#e7a184', 0.4), 0.55));
-      g.addColorStop(0.55, withAlpha(mixLab(DAWN.halo, DAWN.core, 0.3), 0.6));
-      g.addColorStop(1, withAlpha(DAWN.core, 0.7));
+      // (reviser r1) ~20 % brighter: the dark stubs cut against the dawn
+      g.addColorStop(0, withAlpha(mixLab(DAWN.sky[2], '#e7a184', 0.4), 0.66));
+      g.addColorStop(0.55, withAlpha(mixLab(DAWN.halo, DAWN.core, 0.3), 0.72));
+      g.addColorStop(1, withAlpha(DAWN.core, 0.84));
       cc.fillStyle = g;
       const NC = 3, NR = 5, bar = 0.06;
       for (let i = 0; i < NC; i++)
@@ -315,15 +316,31 @@ function nearBoard(f: Frame, b: B, cam: Camera3) {
 
 /** the shelf's plank and scalloped trim (and the dark rail above the candles) one full value step darker: only the
  *  case's own pixels are touched (source-atop in the L4 pass), the wall behind stays as it is */
-function darkenRails(c: C, env: PaintEnv) {
+function darkenRails(c: C, env: PaintEnv, t: number, b: B) {
   c.save();
   c.globalCompositeOperation = 'source-atop';
-  c.fillStyle = withAlpha(env.mood.fg, 0.6);
+  // (reviser r1) the candle stubs one step toward full ink (~15 % darker), so the silhouettes cut against the dawn-lit
+  // wall the way the reference's figures cut against its windows (the ghost sleeves above them keep their value)
+  const isOut = t >= b.out + 0.4;
+  for (const v of V0) {
+    if (v.ghost || v.kind === 'match') continue;
+    const vv = v.id === 'inorder' && isOut ? IN1 : v;
+    const w = (CANDLE_W[v.kind] ?? 30) * SS;
+    const x = candleX(V0, v.id);
+    const stubTop = SY - (LIT_HEIGHT - Math.min(45, vv.rings) * RING_PX) * SS;
+    c.fillStyle = withAlpha(env.mood.ink, v.id === 'inorder' ? 0.26 : 0.34);
+    c.fillRect(x - w / 2 - 1, stubTop, w + 2, SY - stubTop - 2);
+  }
+  // the shelf's plank and lip toward full ink
+  c.fillStyle = withAlpha(env.mood.fg, 0.72);
   c.fillRect(IN_X - 2000, SY - 1, 4000, 400);
   c.fillStyle = withAlpha(env.mood.fg, 0.45);
   c.fillRect(IN_X - 2000, SLEEVE_TOP - 42, 4000, 34);
   c.restore();
 }
+
+/** the shelf painter's candle widths (sets/beliefCandle WIDTH), for the stub darkening */
+const CANDLE_W: Record<string, number> = { candle: 30, taper: 13, blank: 30, match: 4 };
 
 /** a depth-of-field blur over everything painted so far (k 0..1): the macro's soft background */
 let focusCv: HTMLCanvasElement | null = null;
@@ -410,8 +427,10 @@ function vignettes(f: Frame, c: C, env: PaintEnv, t: number, b: B) {
   const pR = toLayer(LAYERS.L4, e, sx - 6, lerpN(yTop, yWick, 0.08));
   // the cross-dissolve up the column: as the search box forms, the lamp settles back a step into the smoke
   const lampK = aL * (1 - 0.3 * aR);
+  // (reviser r1) once the card's second row starts, both cameos step back to ~0.8 so the card is the subject
+  const back = 1 - 0.2 * win(t, b.honest2 - 0.1, b.honest2 + 0.5);
   // lower: a translation room — a lamp lit over a pair of facing pages (tag 2018)
-  cameo(f, c, 'room2', pL.x, pL.y - rise, 60, lampK, m, (cc, x, y) => {
+  cameo(f, c, 'room2', pL.x, pL.y - rise, 60, lampK, back, m, (cc, x, y) => {
     const ink = cc.fillStyle as string;
     // desk
     cc.fillRect(x - 54, y + 24, 104, 5);
@@ -512,7 +531,7 @@ function vignettes(f: Frame, c: C, env: PaintEnv, t: number, b: B) {
     return { lx: x - 34, ly: y - 10 };
   }, '2018', { x: 48, y: 27 });
   // higher: a window with a search box lit in it (tag 2019)
-  cameo(f, c, 'search', pR.x, pR.y - rise, 54, aR, m, (cc, x, y) => {
+  cameo(f, c, 'search', pR.x, pR.y - rise, 54, aR, back, m, (cc, x, y) => {
     cc.save();
     cc.lineWidth = 3;
     cc.strokeStyle = cc.fillStyle as string;
@@ -540,6 +559,8 @@ function cameo(
   y: number,
   r: number,
   a: number,
+  /** a hold-down multiplier (the card's subject moment) */
+  back: number,
   m: PaintEnv['mood'],
   draw: (c: C, x: number, y: number) => { lx: number; ly: number; box?: boolean },
   year: string,
@@ -550,12 +571,13 @@ function cameo(
   const S = Math.ceil(r * 2.6);
   const cx = S / 2, cy = S / 2;
   const sc = r / 58; // the little scenes are drawn for r = 58
-  const bmp = f.cached(`${ID}/cameo/${name}/${m.id}/${S}`, S, S, (cc) => {
+  const bmp = f.cached(`${ID}/cameo/v2/${name}/${m.id}/${S}`, S, S, (cc) => {
     // a soft oval of dawn light in the smoke: the backlight the little scene is cut against
     const g = cc.createRadialGradient(cx, cy, 0, cx, cy, r * 1.15);
     // (reviser r1) ~30% less bloom than before: the card, not the cameos, is the hottest read in the hold
-    g.addColorStop(0, withAlpha(mixLab(DAWN.sky[3], DAWN.core, 0.35), 0.6));
-    g.addColorStop(0.6, withAlpha(DAWN.sky[3], 0.35));
+    // (reviser r1, round 2) another 20 % off the bloom
+    g.addColorStop(0, withAlpha(mixLab(DAWN.sky[3], DAWN.core, 0.35), 0.48));
+    g.addColorStop(0.6, withAlpha(DAWN.sky[3], 0.28));
     g.addColorStop(1, withAlpha(DAWN.sky[2], 0));
     cc.fillStyle = g;
     cc.fillRect(0, 0, S, S);
@@ -578,10 +600,10 @@ function cameo(
       cc.moveTo(cx + 20.5 * sc, ly + 2.5 * sc);
       cc.lineTo(cx + 23.5 * sc, ly + 5.5 * sc);
       cc.stroke();
-      glow(cc, cx, ly, 46 * sc, DAWN.core, 0.24);
+      glow(cc, cx, ly, 46 * sc, DAWN.core, 0.19);
     } else {
-      glow(cc, lx, ly, 34 * sc, DAWN.core, 0.38);
-      glow(cc, lx + 10 * sc, ly + 26 * sc, 26 * sc, DAWN.halo, 0.2);
+      glow(cc, lx, ly, 34 * sc, DAWN.core, 0.3);
+      glow(cc, lx + 10 * sc, ly + 26 * sc, 26 * sc, DAWN.halo, 0.16);
     }
     // feather the whole cameo into the smoke (about 25 px at 1080p)
     cc.globalCompositeOperation = 'destination-in';
@@ -594,16 +616,16 @@ function cameo(
   // it forms out of the smoke: a soft swell of dawn-lit haze leads it in
   c.save();
   c.globalCompositeOperation = 'lighter';
-  glow(c, x, y, r * 1.5, mixLab(m.haze, DAWN.halo, 0.5), 0.15 * Math.sin(Math.PI * Math.min(1, a)) + 0.04 * a);
+  glow(c, x, y, r * 1.5, mixLab(m.haze, DAWN.halo, 0.5), (0.15 * Math.sin(Math.PI * Math.min(1, a)) + 0.04 * a) * back);
   c.restore();
   c.save();
-  c.globalAlpha *= 0.78 * a;
+  c.globalAlpha *= 0.78 * a * back;
   bmp(c, x - cx, y - cy);
   c.restore();
   // its small paper tag with the year (prop lettering): (reviser r1) candle-tag size (the legibility floor, no
   // larger) and tied by a short string to its own object, so it belongs to the vision, not to the shelf
   c.save();
-  c.globalAlpha *= a;
+  c.globalAlpha *= a * back;
   const ax = x + tie.x * sc, ay = y + tie.y * sc;
   const tx = ax + 7, ty = ay + 9;
   c.strokeStyle = withAlpha(mixLab(m.haze, DAWN.halo, 0.3), 0.85);
@@ -640,19 +662,21 @@ function cameo(
 
 /** the candle's base tag, larger than the shelf's own: 1997 → re-inked 1997–2017. (round-2) 1.5× and sized to the
  *  legibility floor; set in two lines so it fits the gap between candles and never covers another candle's lettering.
- *  (reviser r1) the break comes BEFORE the en dash ("1997" over "–2017"), so the range reads as one date span. */
+ *  (reviser r1, round 2) the break comes AFTER the en dash ("1997–" over "2017"), so no line starts with a dash that
+ *  reads as a minus; and the tag hangs ~12 stage px further left, clear of the next candle's foot. */
 function baseTag(c: C, env: PaintEnv, t: number, b: B) {
   const m = env.mood;
   const u = win(t, b.out + 0.55, b.out + 1.35);
   const size = legibleSize(c, `500 18px ${FONT.mono}`, 18, '2017');
   c.save();
   c.font = `500 ${size}px ${FONT.mono}`;
-  const w = c.measureText('–2017').width + 7;
+  const w = Math.max(c.measureText('1997–').width, c.measureText('2017').width) + 7;
   const lh = size * 1.08;
   const h = u <= 0.02 ? size + 8 : lh * 2 + 7;
   // (critic round 1) at the candle's BASE, in the row with the other year tags: the knot on the candle's right foot
   // (where the shelf hangs every candle's tag), the tag hanging right of it with its foot just above the plank
-  const kx = IN_X + 17, ky = SY - 4 - h;
+  const kEnd = toScreen(LAYERS.L4, b.cam(b.D), IN_X, SY).k;
+  const kx = IN_X + 17 - 12 / Math.max(0.5, kEnd), ky = SY - 4 - h;
   c.translate(kx, ky);
   c.rotate(0.04);
   c.strokeStyle = withAlpha(m.rim, 0.5);
@@ -678,14 +702,24 @@ function baseTag(c: C, env: PaintEnv, t: number, b: B) {
   const tx = 1 + 4;
   if (u <= 0.02) c.fillText('1997', tx, (size + 8) / 2 + 0.5);
   else {
-    // "1997" over "–2017" (an en dash, the line broken before it): the new end date writes on
-    c.fillText('1997', tx, 3.5 + lh / 2);
-    const full = c.measureText('–2017').width;
+    // "1997–" over "2017": the dash inks on the first line, then the new end date writes on below it
+    const y1 = 3.5 + lh / 2;
+    c.fillText('1997', tx, y1);
+    const w97 = c.measureText('1997').width;
+    const wDash = c.measureText('–').width;
+    const kd = clamp01(u * 3);
     c.save();
     c.beginPath();
-    c.rect(tx - 1, 3.5 + lh, (full + 2) * clamp01(u * 1.15), lh);
+    c.rect(tx + w97 - 1, y1 - lh / 2, (wDash + 2) * kd, lh);
     c.clip();
-    c.fillText('–2017', tx, 3.5 + lh * 1.5);
+    c.fillText('–', tx + w97, y1);
+    c.restore();
+    const full = c.measureText('2017').width;
+    c.save();
+    c.beginPath();
+    c.rect(tx - 1, 3.5 + lh, (full + 2) * clamp01((u - 0.25) * 1.5), lh);
+    c.clip();
+    c.fillText('2017', tx, 3.5 + lh * 1.5);
     c.restore();
   }
   c.restore();
@@ -717,12 +751,15 @@ function honestCard(c: C, f: Frame, t: number, b: B) {
   // (review r3, kit card-entry rule) the paper rises WITH its first phrase: it passes 30 % two frames before 'the
   // first attention' starts inking (it showed blank at 3.83 s)
   const ink0 = b.honest1 + 0.05;
-  const rise = cardPaperAlpha(t, ink0 + 0.1, 0.35);
+  // review round 5 (transition ghosts): the card fades out over 0.35 s and is gone 0.05 s before the 1 s crossfade
+  // into ch10-s14 begins (cut - 0.5), so its rows never dissolve over ch10-s14's word slips ('not' x 'der')
+  const rise = cardPaperAlpha(t, ink0 + 0.1, 0.35) * (1 - win(t, b.D - 0.9, b.D - 0.55));
   if (rise <= 0.005) return;
   const m = f.mood;
   // (reviser r1) parked low and centre-right, over the shelf front between the 1999 and 2006 candles: its right edge
   // stops short of the lit 2012 candle (screen x ≈ 1000 through the hold), its foot above the bottom 12 % of frame
-  const size = legibleSize(c, `italic 500 26px ${FONT.text}`, 26, 'the first attention');
+  // (reviser r1) 30 px stage: the payload of the wordless hold; it grows left and up from CARD_RIGHT / CARD_FOOT
+  const size = legibleSize(c, `italic 500 30px ${FONT.text}`, 30, 'the first attention');
   c.font = `italic 500 ${size}px ${FONT.text}`;
   const W = Math.ceil(c.measureText('not the first attention').width + 64), H = Math.round(size * 2 * 1.75 + 76);
   const X = CARD_RIGHT - W, Y = CARD_FOOT - H;

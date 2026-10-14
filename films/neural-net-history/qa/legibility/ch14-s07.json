@@ -1,9 +1,9 @@
 {
  "shot": "ch14-s07",
- "at": "2026-10-13T21:39:38.732Z",
+ "at": "2026-10-14T00:47:18.104Z",
  "minCapPx": 22,
  "sampled": 32,
- "texts": 26,
+ "texts": 34,
  "rule": "subject text (named or meant to be read) must reach the min cap height while it is the subject; texture never fails",
  "offenders": [],
  "subjects": [
@@ -30,11 +30,6 @@
   {
    "text": "IN CHIPS: “NANOSECONDS”",
    "capWhileSubject": 24.6,
-   "why": "script onScreenText"
-  },
-  {
-   "text": "HUANG (NVIDIA)",
-   "capWhileSubject": 23.1,
    "why": "script onScreenText"
   },
   {
@@ -110,6 +105,21 @@
    "why": "drawn as texture"
   },
   {
+   "text": "OCT 2022 –",
+   "maxCap": 11.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "JAN 2025",
+   "maxCap": 11.8,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "≈ 2",
+   "maxCap": 11.8,
+   "why": "drawn as texture"
+  },
+  {
    "text": "LIT 2025 · CONTESTED",
    "maxCap": 18,
    "why": "drawn as texture"
@@ -118,6 +128,36 @@
    "text": "lit 2025 · still burning",
    "maxCap": 22,
    "why": "not named, not in onScreenText"
+  },
+  {
+   "text": "HUANG (NVIDIA)",
+   "maxCap": 23.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "HELPS HUAWEI",
+   "maxCap": 7.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "SELF-DEFEATING",
+   "maxCap": 7.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "CHINA’S FOREIGN MINISTRY",
+   "maxCap": 3.1,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "DECISIVE",
+   "maxCap": 7.2,
+   "why": "drawn as texture"
+  },
+  {
+   "text": "AMODEI (ANTHROPIC), KHAN (EX-NSC)",
+   "maxCap": 3.1,
+   "why": "drawn as texture"
   },
   {
    "text": "LIMA",
@@ -140,5 +180,5 @@
    "why": "drawn as texture"
   }
  ],
- "textureTexts": 10
+ "textureTexts": 19
 }

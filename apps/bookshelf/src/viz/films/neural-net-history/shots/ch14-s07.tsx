@@ -47,18 +47,20 @@
  * SLEEVE's length is the years. Here: the chokepoint candle (lit 2022) has a four-ring sleeve and burns on; the
  * year-or-two-behind candle is a dark two-ring sleeve, out; the new gap candle is lit on its top ring (no sleeve yet).
  */
-import { Timeline } from '../../../core';
+import { Timeline, ease } from '../../../core';
 import type { Camera3, Frame, LayerSpec, PaintEnv } from '../../../film';
-import { FILM_H, FONT, LAYERS, MOODS, defineShot, hash1, makeEnv, mixLab, quoteCard, softSprite, textRole, textSwapOut, toScreen, withAlpha } from '../../../film';
+import { FILM_H, FONT, LAYERS, MOODS, cardProbe, defineShot, hash1, makeEnv, mixLab, quoteCard, softSprite, textRole, textSwapOut, toScreen, withAlpha } from '../../../film';
 import type { CandleView } from '../sets/studyState';
 import { makeCanvas } from '../../../film/silhouette/atmosphere';
 import { monotone } from '../sets/ch02-s05b-util';
 import { beliefCandle, candleFlame } from '../sets/beliefCandle';
-import { BEHIND, CAM_HOLD, CAM_OPEN, CHOKE, GAP, GAP_WAX, MATCH, SH, SX, gapBaseScreen, gapFlameScreen, gapNamedLabel, reflHand, sheetOnScreen, windowReflection } from '../sets/ch14-s07-window';
+import { BEHIND, CAM_HOLD, CAM_OPEN, CHOKE, GAP, GAP_WAX, MATCH, SH, SX, gapBaseScreen, gapFlameScreen, gapNamedLabel, sheetOnScreen, strikePose, windowReflection } from '../sets/ch14-s07-window';
+import { inkHand } from '../sets/ch14-s02-inkhand';
+import { HAND_LEN } from '../sets/narratorHands';
 import { fenceQuestionCard } from '../sets/ch14-s02-question';
 import {
   FENCE, HZ, LANTERN, SHORE, WARM, across, boardStones, clamp01, handset, handsetCords, handsetEnds, jetty, lerp, nearWater,
-  pageEdgeAlpha, paperTag, railLampPoint, sm, straitBack, tq12, win, windowFrame,
+  pageEdgeAlpha, pageScreenRect, paperTag, railLampPoint, sm, straitBack, tq12, win, windowFrame,
 } from '../sets/ch14-s05-strait';
 
 const ID = 'ch14-s07';
@@ -94,6 +96,8 @@ interface B {
   strikeEnd: number;
   /** 'newer': the match catches (a brief bloom) */
   candle: number;
+  /** reviser r1: the word 'candle' (1.05): the taper's wax is solid by then; its label inks just after */
+  candleWord: number;
   /** 'founder': Liang's card owns the frame, the tags dim */
   founder: number;
   lit: number;
@@ -102,7 +106,12 @@ interface B {
   quote: number;
   quoteEnd: number;
   pushIn: [number, number];
+  /** round 5: ONE continuous pull back (ease.move, 1.0 s) from the gap-candle close to the wide, after the tags clear */
   pushOut: [number, number];
+  /** round 5: the tags' textSwapOut starts here and is complete before 7.2 (before the pull back and the quote) */
+  tagsOut: number;
+  /** reviser r1: the slow push over the wide (8.3 → 13.5), held to the pull back */
+  holdPush: [number, number];
   /** L1418 'fence' / 'stands': the far fence lit, the question card in, OPEN stamped */
   fence: number;
   stands: number;
@@ -132,17 +141,24 @@ export default defineShot<Scene>({
       strike0: 0.08,
       strikeEnd: litAt + 2.0,
       candle: catchAt,
+      candleWord: T.word('L1417', 'candle'),
       founder: T.word('L1420', 'founder'),
       lit: litAt,
       tags: [T.beat('tags'), T.beat('tag2'), T.beat('tag3')],
       liang: T.beat('liang'),
-      // review r1: its first line visibly rising ~0.2 s before 'founder' (the card's lines start 0.25 s after `at`)
-      quote: T.word('L1420', 'founder') - 0.5,
+      // round 5 (story + art): the quote fades in only after the tags have cleared and the pull back is under way
+      // (its first line rises ~0.3 s after 'founder', its plate full as the shelf reaches the wide), no double exposure
+      quote: T.word('L1420', 'founder') + 0.06,
       // the quote is held through its line and clears before 'The fence still stands' (the question card's place)
       quoteEnd: T.word('L1418', 'fence') - 0.42,
       // the push in the glass: from the cut to the new candle's lighting, held through the tags; back out on L1420
       pushIn: [0.25, T.word('L1417', 'months')],
-      pushOut: [T.line('L1420').start - 0.3, T.word('L1420', 'gap') + 0.2],
+      // round 5: one continuous pull back on a single opaque shelf plane, 1.0 s, eased with ease.move (no dissolve
+      // between two framings): it starts as the tags finish clearing and lands on the wide by ~8.2
+      pushOut: [T.line('L1420').start + 0.25, T.line('L1420').start + 1.25],
+      // the tags' swap-out (≈ 0.43 s) ends ~7.08, before 7.2
+      tagsOut: T.line('L1420').start - 0.26,
+      holdPush: [8.3, 13.5],
       fence: T.beat('chokepoint'),
       stands: T.word('L1418', 'stands'),
       // the card has settled by then (it drops from 'fence' - 0.38 over 0.9 s, inked by 'fence')
@@ -181,7 +197,11 @@ export default defineShot<Scene>({
     const cam = sc.cam(t);
     f.camera(cam);
     const back = win(t, b.rise - 0.2, b.D - 0.3);
-    const push = win(t, b.pushIn[0], b.pushIn[1]) * (1 - win(t, b.pushOut[0], b.pushOut[1]));
+    // round 5: the pull back is one ease.move over pushOut (1.0 s): a single continuous camera move, no dissolve
+    // (the sheet's placement smoothsteps `push` again, so the pull is fed through the inverse smoothstep: the framing
+    // itself then follows ease.move exactly, an even dolly with no whip in its middle)
+    const pull = ease.move(clamp01((t - b.pushOut[0]) / (b.pushOut[1] - b.pushOut[0])));
+    const push = win(t, b.pushIn[0], b.pushIn[1]) * invSm(1 - pull);
 
     // ------------------------------------------------------------- far: sky, both shores (equal warmth), water, fence
     // 'The fence still stands': the far rule fence comes up and its page tops catch the light, held, then settles
@@ -252,7 +272,9 @@ export default defineShot<Scene>({
         pages: [
           { text: 'BLETCHLEY', year: '2023', u: 0.44, k: 1 },
           { text: 'LIMA', year: '2024', u: 0.6, k: sm(back * 2.5) },
-          { text: 'WASHINGTON', year: '2026', u: back > 0.001 ? 0.84 : 0.76, k: back > 0.001 ? sm(back * 2.5) : 1 - win(t, 0.25, 1.5) },
+          // reviser r1 (critic, ghost paper): paper and lettering fade TOGETHER (one page alpha) and are both at 0 by
+          // 1.2 s (washingtonK; probed for the card audit below), so no blank pale page is left in the corner
+          { text: 'WASHINGTON', year: '2026', u: back > 0.001 ? 0.84 : 0.76, k: back > 0.001 ? sm(back * 2.5) : washingtonK(t) },
         ].map(({ k, ...p }) => ({ ...p, lift: 1, role: 'texture' as const, alpha: k * pageEdgeAlpha(p.u, cam) })),
         lantern: 1,
         railLamp: 1,
@@ -273,6 +295,15 @@ export default defineShot<Scene>({
         },
       });
     });
+    // reviser r1: the WASHINGTON page reported to the card audit (paper and ink share one alpha, so they leave together)
+    if (back <= 0.001) {
+      const pa = washingtonK(t) * pageEdgeAlpha(0.76, cam);
+      const r = pageScreenRect(0.76, cam);
+      f.c.save();
+      f.c.setTransform(f.pxScale, 0, 0, f.pxScale, 0, 0);
+      cardProbe(f.c, 'washington-page', r.x0, r.y0, r.x1 - r.x0, r.y1 - r.y0, pa, pa);
+      f.c.restore();
+    }
     f.rim({ x: 0.3, y: -1 });
     // round 4: the jetty's lamps a step down, so the gap candle's streak is the warm light below the horizon
     f.practical({ x: LANTERN.x, y: LANTERN.y, kind: 'lamp', seed: 1406, intensity: 0.42, radius: 30 });
@@ -280,9 +311,9 @@ export default defineShot<Scene>({
     f.practical({ x: rl.x, y: rl.y, kind: 'lamp', seed: 1407, intensity: 0.36, radius: 22 });
     // round 4: the new taper's warm wax on the glass plane, in front of the world beyond it (so no jetty post or lamp
     // crosses it), then the hand that lit it over the taper
-    // round 5: the whole shelf end (gap, chokepoint, match, behind) as ONE plane at one alpha, eased up from the
-    // matched cut's ghost; inside Liang's quote box the columns fade to 10 %
-    const qBox = win(t, b.quote - 0.2, b.quote + 0.5) * (1 - win(t, b.quoteEnd - 0.5, b.quoteEnd + 0.2));
+    // round 5: the whole shelf end (gap, chokepoint, match, behind) as ONE opaque plane at one alpha, eased up from the
+    // matched cut's ghost; nothing fades out of it under Liang's quote (the quote card sits clear of the columns at
+    // the wide), so the pull back reads as one move, never a dissolve
     shelfOverlay(f, {
       push,
       back,
@@ -290,20 +321,24 @@ export default defineShot<Scene>({
       lit,
       fed: 1 + 0.4 * win(t, b.tags[2] - 0.05, b.tags[2] + 0.35) - 0.25 * win(t, b.tags[2] + 0.6, b.tags[2] + 1.8),
       ringsK: win(t, b.tags[2] - 0.1, b.tags[2] + 0.15) * (1 - win(t, b.tags[2] + 0.9, b.tags[2] + 1.3)),
-      alpha: lerp(0.18, OVERLAY_ALPHA, sm(t / 1.4)) * (1 - 0.35 * sm(back)),
-      quote: qBox,
+      // reviser r1 (critic, the lighting beat): the shelf plane reaches its full alpha by 0.95 s, so the new taper's
+      // wax is solid (not a pale ghost) on 'candle' (1.05), before its label inks
+      alpha: lerp(0.18, OVERLAY_ALPHA, sm(t / 0.95)) * (1 - 0.35 * sm(back)),
+      // reviser r1 (critic, continuity): the chokepoint's three dissent tags (ch14-s04b), small and dim, from 13.5 s
+      dissent: win(t, 13.5, 14.3),
+      quote: 0,
     });
-    reflHand(f, { strike: u, push, back, rise: 1 - sm(t / 1.3), alpha: 0.46 });
+    // reviser r1 (critic): the hand's sleeve is one smooth tapered shape (no stepped cuff edges), rimmed 2.6 px
+    reflHandSmooth(f, { strike: u, push, back, rise: 1 - sm(t / 1.3), alpha: 0.46 });
 
     // ------------------------------------------------------------- the tags, hung in the window beside the gap candle
     const c = f.c;
     // the tags dim to 0.4 on 'founder' (Liang's card owns the frame), stay back while the fence and its question card
     // are the subject, and clear on the pull back
-    // round 4 (finishing note): no ghosted tags behind Liang's quote: they swap out against its first line
-    // (textSwapOut, gone within 4 frames of the quote's first line passing 30 %) and slide out to the left as they go
-    const quoteIn = b.quote + 0.25;
-    const fade = textSwapOut(t, quoteIn, 0.7);
-    const slide = -160 * sm((t - (quoteIn - 0.45)) / 0.75);
+    // round 4 (finishing note): no ghosted tags behind Liang's quote. Round 5: their textSwapOut runs in place (no
+    // slide, so no tag is cropped at the frame's edge) and is complete before 7.2, before the pull back and the quote
+    const fade = textSwapOut(t, b.tagsOut, 0.7);
+    const slide = 0;
     if (fade > 0.01) {
       c.save();
       c.setTransform(f.pxScale, 0, 0, f.pxScale, 0, 0);
@@ -333,7 +368,8 @@ export default defineShot<Scene>({
     windowFrame(f, { back });
     if (back > 0.01) studyNear(f, back, push);
     // the NAMING RULE label for the new candle, beside its flame in the glass, from the moment it is lit
-    const named = win(t, b.lit - 0.15, b.lit + 0.25) * (1 - win(t, b.lit + 2.6, b.lit + 3.1));
+    // reviser r1 (critic, the lighting beat): the wax is solid first; the label inks from 1.15 s (after 'candle')
+    const named = win(t, b.candleWord + 0.1, b.candleWord + 0.4) * (1 - win(t, b.lit + 2.6, b.lit + 3.1));
     gapNamedLabel(f, { push, back, rise: 1 - sm(t / 1.3), k: named });
     // ch14-s02's question card, paid off: it drops from the window's top rail on 'The fence', OPEN stamps on 'stands';
     // it hangs in the window, so the pull back carries it with the frame (and it stays to the cut)
@@ -370,7 +406,7 @@ export default defineShot<Scene>({
     if (qa > 0.01) {
       // reaching down over the attribution and date lines (they read on it, not on the open sky)
       c.save();
-      c.translate(934, 236);
+      c.translate(950, 236);
       c.scale(1, 0.62);
       const g = c.createRadialGradient(0, 0, 10, 0, 0, 400);
       g.addColorStop(0, withAlpha(f.mood.ink, 0.62 * qa));
@@ -386,7 +422,7 @@ export default defineShot<Scene>({
         quote: '…the real gap is the difference between originality and imitation.',
         speaker: 'Liang Wenfeng',
         source: 'July 2024 · ChinaTalk translation',
-        x: 934,
+        x: 950,
         y: 214,
         width: 470,
         maxChars: 36,
@@ -399,8 +435,145 @@ export default defineShot<Scene>({
       { t, mood: f.mood, seed: 1420 },
     );
     c.restore();
+    // reviser r1 (critic, sync/camera): the wide is no longer locked off for 10.5 s: a slow ~3 % push (ease.move,
+    // 8.3 → 13.5) toward the candles and the quote, held through the fence and the stamp, then given back under the
+    // pull back on 'nobody' (its counter-move). The whole composed frame is pushed (glass, window and type alike)
+    const holdPush = ease.move(clamp01((t - b.holdPush[0]) / (b.holdPush[1] - b.holdPush[0]))) * (1 - back);
+    if (holdPush > 0.001) pushFrame(f, 1 + 0.03 * holdPush, HOLD_PIVOT);
   },
 });
+
+/** reviser r1: where the hold's push heads (stage px): between the candles and Liang's quote */
+const HOLD_PIVOT = { x: 740, y: 300 };
+let pushCv: HTMLCanvasElement | null = null;
+/** scale the composed frame by z about a stage point (a slow push; z ≥ 1, so the frame stays covered) */
+function pushFrame(f: Frame, z: number, p: { x: number; y: number }) {
+  const c = f.c;
+  const w = c.canvas.width, h = c.canvas.height;
+  if (!pushCv || pushCv.width !== w || pushCv.height !== h) pushCv = makeCanvas(w, h);
+  const pc = pushCv.getContext('2d') as CanvasRenderingContext2D;
+  pc.setTransform(1, 0, 0, 1, 0, 0);
+  pc.globalAlpha = 1;
+  pc.globalCompositeOperation = 'copy';
+  pc.drawImage(c.canvas, 0, 0);
+  const px = p.x * f.pxScale, py = p.y * f.pxScale;
+  c.save();
+  c.setTransform(1, 0, 0, 1, 0, 0);
+  c.globalAlpha = 1;
+  c.globalCompositeOperation = 'copy';
+  c.filter = 'none';
+  c.imageSmoothingEnabled = true;
+  c.imageSmoothingQuality = 'high';
+  c.drawImage(pushCv, px * (1 - z), py * (1 - z), w * z, h * z);
+  c.restore();
+}
+
+/** reviser r1 (critic: 'a crude stair-stepped block'): the hand in the glass as ch14-s07-window's reflHand drew it (an
+ *  ink silhouette over a candleAmber rim copy, inkHand), with two changes: its rim is 2.6 px at 1080p (the cast rule's
+ *  2.25-3 px) at every push, and its sleeve is ONE smooth tapered shape laid over the kit's stepped tweed/shirt cuff
+ *  edges, rimmed on its lit side and turned back at a cuff line, a pale shirt-cuff band at the wrist; the forearm then
+ *  falls away behind the wrist as before */
+let handCv7: HTMLCanvasElement | null = null;
+function reflHandSmooth(f: Frame, o: { strike: number | null; push?: number; back?: number; rise?: number; alpha: number }) {
+  const pose = strikePose(o.strike);
+  if (!pose?.right) return;
+  const arm = pose.right;
+  const s0 = sheetOnScreen(o);
+  const px = f.pxScale;
+  const c = f.c;
+  const w0 = c.canvas.width, h0 = c.canvas.height;
+  if (!handCv7 || handCv7.width !== w0 || handCv7.height !== h0) handCv7 = makeCanvas(w0, h0);
+  const hc = handCv7.getContext('2d') as CanvasRenderingContext2D;
+  hc.setTransform(1, 0, 0, 1, 0, 0);
+  hc.globalAlpha = 1;
+  hc.globalCompositeOperation = 'source-over';
+  hc.clearRect(0, 0, w0, h0);
+  hc.setTransform(s0.q * px, 0, 0, s0.q * px, s0.x * px, s0.y * px);
+  const env = makeEnv({ mood: 'candleAmber', layer: 'L4', t: f.t, pxScale: px * s0.q, seed: 1417, frame: f.frame });
+  const lk = Math.min(1, arm.lit ?? 0);
+  // 2.6 px at 1080p in sheet units (1080p = 1.5 device px per stage px; q stage px per sheet unit)
+  const rim1080 = 2.6 / (1.5 * s0.q);
+  inkHand(hc, { right: arm, scale: pose.scale }, env, { lit: lk, rimPx: rim1080 });
+  // the smooth sleeve, in the kit's hand-local frame (x back along the forearm, unit = the hand's length)
+  const am = MOODS.candleAmber;
+  const len = HAND_LEN * (pose.scale ?? 1);
+  const flipY = Math.cos(arm.angle) < 0 ? -1 : 1;
+  const ink = mixLab(env.mood.ink, '#000000', 0.35);
+  const rimCol = mixLab(am.rim, am.core, 0.3 + 0.35 * lk);
+  // which long edge faces the lamp (up-right): local -y maps to screen (flipY sin a, -flipY cos a)
+  const L = { x: 0.55, y: -0.85 };
+  const topLit = flipY * Math.sin(arm.angle) * L.x - flipY * Math.cos(arm.angle) * L.y > 0;
+  hc.save();
+  hc.translate(arm.wrist.x, arm.wrist.y);
+  hc.rotate(arm.angle);
+  hc.scale(len, len * flipY);
+  const X0 = -0.17, X1 = -3.4;
+  const sleeve = new Path2D();
+  sleeve.moveTo(X0, -0.305);
+  sleeve.quadraticCurveTo(-1.6, -0.345, X1, -0.4);
+  sleeve.lineTo(X1, 0.42);
+  sleeve.quadraticCurveTo(-1.6, 0.345, X0, 0.3);
+  sleeve.quadraticCurveTo(X0 + 0.045, 0, X0, -0.305);
+  sleeve.closePath();
+  hc.fillStyle = ink;
+  hc.fill(sleeve);
+  // the pale shirt cuff band just past the sleeve (period detail), dim in the glass
+  hc.fillStyle = withAlpha(mixLab(ink, am.halo, 0.42), 0.85);
+  hc.beginPath();
+  hc.moveTo(X0 + 0.01, -0.215);
+  hc.lineTo(-0.035, -0.205);
+  hc.quadraticCurveTo(-0.01, 0, -0.035, 0.205);
+  hc.lineTo(X0 + 0.01, 0.215);
+  hc.quadraticCurveTo(X0 + 0.05, 0, X0 + 0.01, -0.215);
+  hc.fill();
+  // the lit edge's rim (2.6 px at 1080p) and the turned-back cuff line (a fine hairline)
+  const lw = rim1080 / len;
+  const sy = topLit ? -1 : 1;
+  hc.strokeStyle = withAlpha(rimCol, 0.95);
+  hc.lineWidth = lw;
+  hc.lineCap = 'round';
+  hc.beginPath();
+  hc.moveTo(X0, sy * (sy < 0 ? 0.305 : 0.3));
+  hc.quadraticCurveTo(-1.6, sy * 0.345, X1, sy * (sy < 0 ? 0.4 : 0.42));
+  hc.stroke();
+  hc.strokeStyle = withAlpha(rimCol, 0.4);
+  hc.lineWidth = lw * 0.45;
+  hc.beginPath();
+  hc.moveTo(-0.36, -0.31);
+  hc.quadraticCurveTo(-0.31, 0, -0.36, 0.305);
+  hc.stroke();
+  hc.restore();
+  // the forearm falls away behind the wrist (as reflHand)
+  const w = arm.wrist;
+  const ang = arm.angle;
+  hc.save();
+  hc.globalCompositeOperation = 'destination-in';
+  const bk = { x: w.x - Math.cos(ang) * 60, y: w.y - Math.sin(ang) * 60 };
+  const g = hc.createLinearGradient(bk.x, bk.y, w.x + Math.cos(ang) * 4, w.y + Math.sin(ang) * 4);
+  g.addColorStop(0, 'rgba(0,0,0,0)');
+  g.addColorStop(1, 'rgba(0,0,0,1)');
+  hc.fillStyle = g;
+  hc.fillRect(-400, -400, SH.w + 800, SH.h + 800);
+  hc.restore();
+  c.save();
+  c.setTransform(1, 0, 0, 1, 0, 0);
+  c.globalAlpha = Math.min(1, o.alpha);
+  c.drawImage(hc.canvas, 0, 0);
+  c.restore();
+}
+
+/** reviser r1: the WASHINGTON page's opening alpha (paper and lettering share it): whole on the matched cut, then ONE
+ *  short dissolve (0.5 → 0.85 s), gone well before 1.2. Kept short on purpose: under a shared alpha its dark lettering
+ *  sinks into the dark water long before its pale paper does, so a long fade read as a blank page in the corner */
+function washingtonK(t: number): number {
+  return 1 - win(t, 0.5, 0.85);
+}
+
+/** the inverse of smoothstep (3y² - 2y³) on 0..1 */
+function invSm(y: number): number {
+  const v = clamp01(y);
+  return 0.5 - Math.sin(Math.asin(1 - 2 * v) / 3);
+}
 
 /** the hand's strikeLight progress (null when out of the glass), on twos: in with the cut (approach + strike → 0.38,
  *  the match catching on 'newer'), carried to the wick (→ 0.6 on 'candle'), held while the wick takes it (→ 0.8),
@@ -488,6 +661,16 @@ const OVERLAY_ALPHA = 0.72;
 /** round 5: Liang's quote box (stage px): the columns above the plank fade to 10 % inside it while the quote is up */
 const QUOTE_BOX = { x0: 688, x1: 1182, y0: 30, y1: 304 };
 const GAP_UNLIT_VIEW: CandleView = { ...GAP, state: 'out', smoke: false };
+/** reviser r1 (critic, continuity with ch14-s04b): the year-or-two-behind candle was blown out CLEANLY there ('no fray'),
+ *  so its stub keeps a straight top under its two-ring sleeve here; its base tag is drawn by outTag (the s04b record) */
+const BEHIND_CLEAN: CandleView = { ...BEHIND, frayed: false, tag: '' };
+/** reviser r1: the chokepoint's three dissent tags as ch14-s04b hung them (same order, same size: none is the verdict),
+ *  small and dim here (texture), above the chokepoint candle, from the 'chokepoint' clause */
+const DISSENT: string[][] = [
+  ['HELPS HUAWEI', 'HUANG (NVIDIA)'],
+  ['SELF-DEFEATING', 'CHINA’S FOREIGN MINISTRY'],
+  ['DECISIVE', 'AMODEI (ANTHROPIC), KHAN (EX-NSC)'],
+];
 const CANDLE_W = 30 * SH.s;
 const RING_S = 6 * SH.s;
 
@@ -508,7 +691,7 @@ function overlayCanvas(c: C): CanvasRenderingContext2D {
  *  sheet and laid over the frame at one alpha: the gap taper (warm wax, scored, rimmed), the chokepoint candle burning
  *  with its four-ring sleeve scored in amber, the blackened match lying flat, the dark two-ring stub. Screen-locked in
  *  the sheet's own placement (sheetOnScreen), so it rises, pushes and pulls back with the reflection */
-function shelfOverlay(f: Frame, o: { push: number; back: number; rise: number; lit: number; fed: number; ringsK: number; alpha: number; quote: number }) {
+function shelfOverlay(f: Frame, o: { push: number; back: number; rise: number; lit: number; fed: number; ringsK: number; alpha: number; quote: number; dissent: number }) {
   const s0 = sheetOnScreen(o);
   const px = f.pxScale;
   const q = s0.q;
@@ -522,7 +705,14 @@ function shelfOverlay(f: Frame, o: { push: number; back: number; rise: number; l
   const lit = o.lit;
   textRole(oc, 'texture', () => {
     beliefCandle(oc, { x: SX.choke, y: SH.plank, view: CHOKE, s: SH.s, flame: o.fed, letters: 0.3, seed: 22, named: 0 }, env);
-    beliefCandle(oc, { x: SX.behind, y: SH.plank, view: BEHIND, s: SH.s, letters: 0.28, seed: 23, named: 0 }, env);
+    beliefCandle(oc, { x: SX.behind, y: SH.plank, view: BEHIND_CLEAN, s: SH.s, letters: 0.28, seed: 23, named: 0 }, env);
+    // the out candle's record, as ch14-s04b left it: OCT 2022 – JAN 2025 · ≈ 2
+    // (CLEAN EDGES: in the close framing the stub stands at the frame's right edge, so the tag waits until it is whole
+    // inside the safe area: it comes in with the pull back, never cut by the jamb)
+    const tagRight = s0.x + (SX.behind + 66) * q;
+    const tagK = 1 - sm((tagRight - 1170) / 50);
+    if (tagK > 0.01) outTag(oc, env, SX.behind + (30 * SH.s) / 2 + 3 * SH.s, SH.plank, ['OCT 2022 –', 'JAN 2025', '≈ 2'], SH.s, tagK);
+    if (o.dissent > 0.01) dissentTags(oc, env, o.dissent);
     beliefCandle(oc, { x: SX.match, y: SH.plank, view: MATCH, s: SH.s, seed: 24, named: 0 }, env);
     beliefCandle(oc, { x: SX.gap, y: SH.plank, view: lit > 0.02 ? GAP : GAP_UNLIT_VIEW, s: SH.s, flame: lit > 0.02 ? lit : undefined, letters: 0, seed: 25, named: 0 }, env);
   });
@@ -571,11 +761,13 @@ function gapTaper(c: C, am: (typeof MOODS)['candleAmber'], lit: number, hair: nu
   const top = SH.plank - 45 * RING_S;
   const h = SH.plank - top;
   const wax = mixLab(mixLab(GAP_WAX, am.set, 0.35), GAP_WAX, lit);
-  // the wax: warmest under its own flame, a step darker toward the base
+  // the wax: warmest under its own flame, falling off down the column. Reviser r1 (critic: 'an emissive tube'): graded
+  // ~25 % darker from the flame to the base (a candle lit from its top), still the brightest candle on the shelf
   const g = c.createLinearGradient(0, top, 0, SH.plank);
-  g.addColorStop(0, mixLab(wax, am.core, 0.28 * lit));
-  g.addColorStop(0.16, wax);
-  g.addColorStop(1, mixLab(wax, am.set, 0.4));
+  g.addColorStop(0, mixLab(wax, am.core, 0.24 * lit));
+  g.addColorStop(0.1, wax);
+  g.addColorStop(0.45, mixLab(wax, am.set, 0.22));
+  g.addColorStop(1, mixLab(wax, am.set, 0.52));
   c.fillStyle = g;
   c.fillRect(x0, top, w, h);
   // the shadow side (left), so the column has a body
@@ -593,9 +785,84 @@ function gapTaper(c: C, am: (typeof MOODS)['candleAmber'], lit: number, hair: nu
   // the melt pool's lip under the flame (the top ring)
   c.fillStyle = mixLab(am.core, GAP_WAX, 0.4 * (1 - lit) + 0.35);
   c.fillRect(x0, top - hair, w, 2.4 * hair);
-  // the candleAmber rim, the full height of the lit side
-  c.fillStyle = withAlpha(am.rim, 0.8 * (0.45 + 0.55 * lit));
+  // the candleAmber rim on the lit (right) side only, strongest under the flame
+  const rg = c.createLinearGradient(0, top, 0, SH.plank);
+  rg.addColorStop(0, withAlpha(am.rim, 0.85 * (0.45 + 0.55 * lit)));
+  rg.addColorStop(1, withAlpha(am.rim, 0.55 * (0.45 + 0.55 * lit)));
+  c.fillStyle = rg;
   c.fillRect(x1 - 1.5 * hair, top, 1.5 * hair, h);
+}
+
+/** reviser r1: the out candle's base tag lying flat at its right, as ch14-s04b's flatTag (sheet units) */
+function outTag(c: C, env: PaintEnv, x: number, y: number, lines: string[], s: number, a = 1) {
+  const m = env.mood;
+  textRole(c, 'texture', () => {
+    c.save();
+    c.globalAlpha *= a;
+    const fs = 8.4 * s;
+    c.font = `500 ${fs}px ${FONT.mono}`;
+    const tw = Math.max(...lines.map((l) => c.measureText(l).width)) + 7 * s;
+    const lh = fs * 1.12;
+    const th = lines.length * lh + 5 * s;
+    const n = 4 * s;
+    const paper = mixLab(m.setHaze, m.halo, 0.6);
+    c.translate(x, y - th);
+    c.fillStyle = paper;
+    c.beginPath();
+    c.moveTo(0, th / 2);
+    c.lineTo(n, 0);
+    c.lineTo(n + tw, 0);
+    c.lineTo(n + tw, th);
+    c.lineTo(n, th);
+    c.closePath();
+    c.fill();
+    c.fillStyle = mixLab(m.ink, paper, 0.15);
+    c.textBaseline = 'middle';
+    c.textAlign = 'left';
+    lines.forEach((l, i) => c.fillText(l, n + 3.5 * s, 2.5 * s + lh * (i + 0.5)));
+    c.restore();
+  });
+}
+
+/** reviser r1: ch14-s04b's three dissent tags, small and dim (texture), in ONE row above the chokepoint candle, the
+ *  same size and height, turning gently on their threads (sheet units; k 0..1 their fade in) */
+function dissentTags(c: C, env: PaintEnv, k: number) {
+  const m = env.mood;
+  const t = env.t;
+  const W = 60, H = 25, PITCH = 66, TOP = 46;
+  const paper = mixLab('#b8a47a', m.ink, 0.25);
+  textRole(c, 'texture', () => {
+    DISSENT.forEach((lines, i) => {
+      const cx = SX.choke + (i - 1) * PITCH;
+      const th = 0.02 * Math.sin(t * 0.7 + i * 2.1) + 0.012 * Math.sin(t * 1.3 + i);
+      c.save();
+      c.globalAlpha *= 0.5 * k;
+      // the thread, from above the frame
+      c.strokeStyle = withAlpha(m.ink, 0.6);
+      c.lineWidth = 0.6;
+      c.beginPath();
+      c.moveTo(cx, -160);
+      c.lineTo(cx, TOP);
+      c.stroke();
+      c.translate(cx, TOP);
+      c.rotate(th);
+      c.fillStyle = paper;
+      c.fillRect(-W / 2, 0, W, H);
+      c.strokeStyle = withAlpha(mixLab(paper, m.ink, 0.5), 0.8);
+      c.lineWidth = 0.5;
+      c.strokeRect(-W / 2, 0, W, H);
+      c.fillStyle = mixLab(m.ink, paper, 0.12);
+      c.textAlign = 'center';
+      c.textBaseline = 'middle';
+      // fitted to the tag (texture: the same size on all three)
+      const fit = (n: number, max: number) => Math.min(max, (W - 5) / (n * 0.6));
+      c.font = `700 ${fit(14, 6.2).toFixed(2)}px ${FONT.mono}`;
+      c.fillText(lines[0], 0, 8.5);
+      c.font = `500 ${fit(33, 3.6).toFixed(2)}px ${FONT.mono}`;
+      c.fillText(lines[1], 0, 17);
+      c.restore();
+    });
+  });
 }
 
 /** the study itself, seen as the camera pulls back from the glass (screen-locked near plane, blurred): a drape at the
@@ -656,7 +923,7 @@ function studyNear(f: Frame, back: number, push: number) {
     { x: rx(SX.gap), view: GAP, seed: 25 },
     { x: rx(SX.choke), view: CHOKE, seed: 22 },
     { x: rx(SX.match), view: MATCH, seed: 24 },
-    { x: rx(SX.behind), view: BEHIND, seed: 23 },
+    { x: rx(SX.behind), view: BEHIND_CLEAN, seed: 23 },
   ];
   c.filter = `blur(${(2.4 * f.pxScale).toFixed(2)}px)`;
   for (const r of reals) beliefCandle(c, { x: r.x, y: deskY + 4, view: r.view, s, letters: 0.25, seed: r.seed, drawFlame: false }, env);
