@@ -1,0 +1,179 @@
+{
+ "chapters": [
+  {
+   "number": 1,
+   "id": "ch01",
+   "title": "The Machine That Learned to See",
+   "start": 0,
+   "shots": [
+    {
+     "id": "ch01-s01",
+     "start": 0,
+     "lines": [
+      "L0101"
+     ],
+     "claims": [
+      {
+       "id": "mk1-builder",
+       "claim": "The Mark I Perceptron was built by psychologist Frank Rosenblatt's project at the Cornell Aeronautical Laboratory in Buffalo, New York.",
+       "date": "1957-1960",
+       "status": "confirmed",
+       "sources": [
+        "https://en.wikipedia.org/wiki/Perceptron",
+        "https://americanhistory.si.edu/collections/object/nmah_334414"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch01-s02",
+     "start": 5.2083,
+     "lines": [
+      "L0102",
+      "L0103",
+      "L0104"
+     ],
+     "claims": [
+      {
+       "id": "mk1-builder",
+       "claim": "The Mark I Perceptron was built by psychologist Frank Rosenblatt's project at the Cornell Aeronautical Laboratory in Buffalo, New York.",
+       "date": "1957-1960",
+       "status": "confirmed",
+       "sources": [
+        "https://en.wikipedia.org/wiki/Perceptron",
+        "https://americanhistory.si.edu/collections/object/nmah_334414"
+       ]
+      },
+      {
+       "id": "mk1-retina",
+       "claim": "Its 'eye' was a 20 by 20 grid of 400 photocells.",
+       "date": "1960",
+       "status": "confirmed",
+       "sources": [
+        "https://en.wikipedia.org/wiki/Perceptron"
+       ]
+      },
+      {
+       "id": "mk1-weights",
+       "claim": "Its adjustable weights were potentiometers turned by electric motors during learning.",
+       "date": "1960",
+       "status": "confirmed",
+       "sources": [
+        "https://en.wikipedia.org/wiki/Perceptron"
+       ]
+      },
+      {
+       "id": "mk1-patchboard",
+       "claim": "In the Mark I the 400 photocells (sensory units) were connected to its association units at random, according to a table of random numbers, through a plugboard (patch board) of cables; the potentiometer arrays that held the adaptive weights stood beside it.",
+       "date": "1960",
+       "status": "confirmed",
+       "sources": [
+        "https://en.wikipedia.org/wiki/Perceptron",
+        "https://en.wikipedia.org/wiki/Mark_I_Perceptron",
+        "https://americanhistory.si.edu/collections/object/nmah_334414 (read via Smithsonian Open Access API record edanmdm:nmah_334414)",
+        "Rosenblatt, F. (1958). Psychological Review 65(6): 386-408 (read: https://papers.baulab.info/papers/also/Rosenblatt-1958.pdf)"
+       ]
+      }
+     ],
+     "quotes": []
+    },
+    {
+     "id": "ch01-s03",
+     "start": 23,
+     "lines": [
+      "L0105",
+      "L0105b",
+      "L0106",
+      "L0107",
+      "L0108"
+     ],
+     "claims": [
+      {
+       "id": "mk1-trained",
+       "claim": "The Mark I Perceptron was not programmed with the rule for telling shapes apart: it was a supervised learning machine, trained by being shown example images and learning by trial and error (its weights corrected when it answered wrongly).",
+       "date": "1958-1960",
+       "status": "confirmed",
+       "sources": [
+        "https://en.wikipedia.org/wiki/Mark_I_Perceptron",
+        "https://en.wikipedia.org/wiki/Frank_Rosenblatt",
+        "https://en.wikipedia.org/wiki/Perceptron",
+        "https://news.cornell.edu/stories/2019/09/professors-perceptron-paved-way-ai-60-years-too-soon",
+        "Rosenblatt, F. (1960). Perceptron Simulation Experiments. Proceedings of the IRE 48(3): 301-309.",
+        "Rosenblatt, F. (1958). The perceptron: a probabilistic model for information storage and organization in the brain. Psychological Review 65(6): 386-408. doi:10.1037/h0042519 (read: https://papers.baulab.info/papers/also/Rosenblatt-1958.pdf)",
+        "https://americanhistory.si.edu/collections/object/nmah_334414 (read via Smithsonian Open Access API record edanmdm:nmah_334414)"
+       ]
+      },
+      {
+       "id": "mk1-rule",
+       "claim": "The perceptron learned by error correction: when it answered wrongly, its weights were nudged toward the right answer.",
+       "date": "1958",
+       "status": "confirmed",
+       "sources": [
+        "https://en.wikipedia.org/wiki/Perceptron"
+       ]
+      },
+      {
+       "id": "mk1-weights",
+       "claim": "Its adjustable weights were potentiometers turned by electric motors during learning.",
+       "date": "1960",
+       "status": "confirmed",
+       "sources": [
+        "https://en.wikipedia.org/wiki/Perceptron"
+       ]
+      },
+      {
+       "id": "mk1-sum",
+       "claim": "A perceptron forms its answer from a weighted sum of its inputs: the total is passed through a threshold (step) function, so a total past the threshold gives one answer and a total short of it the other.",
+       "date": "1958",
+       "status": "confirmed",
+       "sources": [
+        "https://en.wikipedia.org/wiki/Perceptron",
+        "Rosenblatt, F. (1958). The perceptron: a probabilistic model for information storage and organization in the brain. Psychological Review 65(6): 386-408."
+       ]
+      },
+      {
+       "id": "limit-linear",
+       "claim": "A single-layer perceptron can learn only linearly separable patterns; Marvin Minsky and Seymour Papert's 1969 book Perceptrons showed that such networks cannot compute functions like XOR, and the book is often thought to have contributed to a decline in neural-network research in the 1970s.",
+       "date": "1969",
+       "status": "confirmed",
+       "sources": [
+        "https://en.wikipedia.org/wiki/Perceptron",
+        "https://en.wikipedia.org/wiki/Perceptrons_(book)"
+       ]
+      },
+      {
+       "id": "lineage-mlp",
+       "claim": "Multilayer perceptrons grew out of efforts to improve on the single-layer perceptron and form the basis of deep learning; like the perceptron, they learn by adjusting connection weights according to the error between their output and the expected result.",
+       "date": "1958-present",
+       "status": "confirmed",
+       "sources": [
+        "https://en.wikipedia.org/wiki/Multilayer_perceptron",
+        "https://en.wikipedia.org/wiki/Perceptron"
+       ]
+      },
+      {
+       "id": "mk1-patchboard",
+       "claim": "In the Mark I the 400 photocells (sensory units) were connected to its association units at random, according to a table of random numbers, through a plugboard (patch board) of cables; the potentiometer arrays that held the adaptive weights stood beside it.",
+       "date": "1960",
+       "status": "confirmed",
+       "sources": [
+        "https://en.wikipedia.org/wiki/Perceptron",
+        "https://en.wikipedia.org/wiki/Mark_I_Perceptron",
+        "https://americanhistory.si.edu/collections/object/nmah_334414 (read via Smithsonian Open Access API record edanmdm:nmah_334414)",
+        "Rosenblatt, F. (1958). Psychological Review 65(6): 386-408 (read: https://papers.baulab.info/papers/also/Rosenblatt-1958.pdf)"
+       ]
+      }
+     ],
+     "quotes": []
+    }
+   ]
+  }
+ ],
+ "offScreen": [],
+ "counts": {
+  "claims": 9,
+  "quotes": 0,
+  "sources": 12
+ }
+}

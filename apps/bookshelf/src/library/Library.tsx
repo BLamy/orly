@@ -770,6 +770,9 @@ export function Library() {
   const { hidden: chromeHidden } = useScrollChrome();
   const landscape = useLandscape();
 
+  // films push onto the outer stack from anywhere on the shelf (openBook → setFilmOpener)
+  const films = useNavRoutes({ kinds: ['film'] });
+
   // the shelf itself: the root screen of the film stack
   const shelf = (
     <>
@@ -800,6 +803,7 @@ export function Library() {
               books={shelfBooks}
               error={books ? null : error}
               active={visibleTab === 'shelf'}
+              covered={films.routes.length > 0}
               emptyMessage="Nothing downloaded yet — browse the Library."
               onScreenOpenChange={setShelfScreenOpen}
             />
@@ -809,6 +813,7 @@ export function Library() {
               books={libraryBooks}
               error={error}
               active={visibleTab === 'library'}
+              covered={films.routes.length > 0}
               onScreenOpenChange={setLibraryScreenOpen}
             />
           </div>
@@ -839,8 +844,6 @@ export function Library() {
     </>
   );
 
-  // films push onto the outer stack from anywhere on the shelf (openBook → setFilmOpener)
-  const films = useNavRoutes({ kinds: ['film'] });
   const pushFilm = films.push;
   useEffect(() => {
     setFilmOpener((slug) => pushFilm({ kind: 'film', slug }));

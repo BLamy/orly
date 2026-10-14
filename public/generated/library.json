@@ -384,7 +384,8 @@
           "duration": 67.75
         }
       ],
-      "createdAt": "2026-10-05T15:42:41.793Z"
+      "createdAt": "2026-10-05T15:42:41.793Z",
+      "sources": "generated/perceptron-short/sources/"
     },
     {
       "slug": "tab-into-the-future",

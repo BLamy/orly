@@ -25,8 +25,12 @@
     },
     "loudness": {
       "I": -15.9,
-      "TP": -2.4,
+      "TP": -2.3,
       "LRA": 4.5
+    },
+    "audio": {
+      "stems": "audio/film-audio.json",
+      "clock": 67.75
     },
     "logline": "A grid of four hundred light cells, a nest of wires, and a rule for learning from mistakes.",
     "vhs": {
@@ -39,7 +43,12 @@
         "gear"
       ],
       "tagline": "Watch a machine learn to see!"
-    }
+    },
+    "sources": "sources/",
+    "sourcesData": "sources.json",
+    "credits": "credits.json",
+    "review": "review.json",
+    "sourcesUrl": "https://orly.brett-lamy.workers.dev/generated/perceptron-short/sources/"
   },
   "chapters": [
     {

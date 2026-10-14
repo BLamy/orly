@@ -766,7 +766,7 @@
     },
     "publish": {
       "status": "done",
-      "finishedAt": "2026-10-14T22:29:05.255Z",
+      "finishedAt": "2026-10-14T23:43:10.061Z",
       "createdAt": "2026-10-14T21:11:13.945Z",
       "manifest": "public/generated/replay-qa-promo/manifest.json",
       "sources": {
@@ -782,9 +782,9 @@
         "cues": 1,
         "mb": 2.4
       },
-      "chapterSlices": 0,
+      "chapterSlices": 6,
       "deployed": false,
-      "updatedAt": "2026-10-14T22:29:05.255Z"
+      "updatedAt": "2026-10-14T23:43:10.062Z"
     },
     "assemble": {
       "status": "done",

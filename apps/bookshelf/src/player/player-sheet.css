@@ -1,0 +1,35 @@
+/* PlayerSheet (FloatingSheet from @brett_lamy/ui) in the players' dark palette. The sheet fills its host as a
+   pointer-transparent layer, so the host covers the screen above the player (fixed: inside a navigation-stack
+   screen that is the screen itself). */
+.ps-host {
+  position: fixed;
+  inset: 0;
+  z-index: 50;
+  pointer-events: none;
+  /* FloatingSheet's 'sheet' appearance paints bg-card */
+  --card: color-mix(in srgb, var(--bg, #0a0e1a) 96%, #fff 4%);
+  --card-foreground: var(--text, #f2f6fc);
+  --border: rgba(148, 163, 184, 0.18);
+  --foreground: var(--text, #f2f6fc);
+  --muted-foreground: var(--muted, #8da2be);
+}
+.ps-surface {
+  border-top: 1px solid rgba(148, 163, 184, 0.18);
+  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.45);
+}
+.ps-body {
+  display: flex;
+  flex-direction: column;
+  min-height: 100%;
+  padding: 0 14px calc(10px + env(safe-area-inset-bottom, 0px));
+  color: var(--text, #f2f6fc);
+}
+.ps-tabs {
+  position: sticky;
+  top: 0;
+  z-index: 1;
+  background: var(--card);
+}
+.ps-content {
+  min-width: 0;
+}

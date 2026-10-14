@@ -351,7 +351,7 @@
     },
     "mix": {
       "status": "done",
-      "startedAt": "2026-10-07T09:55:53.162Z",
+      "startedAt": "2026-10-14T23:43:30.715Z",
       "tool": "generator/film/mix.mjs",
       "error": null,
       "resume": null,
@@ -359,23 +359,25 @@
         "--slug",
         "perceptron-short"
       ],
-      "updatedAt": "2026-10-07T09:55:56.498Z",
-      "finishedAt": "2026-10-07T09:55:56.498Z",
+      "updatedAt": "2026-10-14T23:43:36.810Z",
+      "finishedAt": "2026-10-14T23:43:36.810Z",
       "ok": true,
       "checks": {
         "loudness": true,
         "truePeak": true,
         "length": true,
         "duck": true,
+        "floor": true,
         "chapters": true,
-        "fadeAfterStrike": true
+        "fadeAfterStrike": true,
+        "foley": true
       },
       "master": {
         "file": "films/perceptron-short/mix/master.wav",
         "duration": 67.75,
         "I": -15.9,
         "LRA": 4.5,
-        "TP": -2.4
+        "TP": -2.3
       },
       "duckDb": 3.12,
       "outputs": [
@@ -464,12 +466,25 @@
     },
     "publish": {
       "status": "done",
-      "finishedAt": "2026-10-07T18:01:08.908Z",
+      "finishedAt": "2026-10-14T23:43:37.244Z",
       "createdAt": "2026-10-05T15:42:41.793Z",
       "manifest": "public/generated/perceptron-short/manifest.json",
       "chapters": 1,
       "deployed": false,
-      "updatedAt": "2026-10-07T18:01:08.908Z"
+      "updatedAt": "2026-10-14T23:43:37.244Z",
+      "sources": {
+        "page": "public/generated/perceptron-short/sources/index.html",
+        "url": "https://orly.brett-lamy.workers.dev/generated/perceptron-short/sources/",
+        "claims": 9,
+        "quotes": 0,
+        "sources": 12
+      },
+      "stems": {
+        "lines": 9,
+        "cues": 1,
+        "mb": 2.1
+      },
+      "chapterSlices": 1
     },
     "fixes": {
       "round1-global": {

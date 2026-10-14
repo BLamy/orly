@@ -5782,7 +5782,7 @@
     },
     "mix": {
       "status": "done",
-      "startedAt": "2026-10-14T01:37:26.884Z",
+      "startedAt": "2026-10-14T23:27:22.254Z",
       "tool": "generator/film/mix.mjs",
       "error": null,
       "resume": null,
@@ -5790,8 +5790,8 @@
         "--slug",
         "neural-net-history"
       ],
-      "updatedAt": "2026-10-14T01:41:10.755Z",
-      "finishedAt": "2026-10-14T01:41:10.754Z",
+      "updatedAt": "2026-10-14T23:35:31.021Z",
+      "finishedAt": "2026-10-14T23:35:31.018Z",
       "ok": true,
       "checks": {
         "loudness": true,
@@ -5863,7 +5863,7 @@
     "publish": {
       "status": "done",
       "at": "2026-10-14T02:13:53Z",
-      "finishedAt": "2026-10-14T02:14:16.914Z",
+      "finishedAt": "2026-10-14T23:43:17.083Z",
       "createdAt": "2026-10-14T02:14:12.573Z",
       "manifest": "public/generated/neural-net-history/manifest.json",
       "sources": {
@@ -5879,9 +5879,9 @@
         "cues": 28,
         "mb": 64.6
       },
-      "chapterSlices": 0,
+      "chapterSlices": 15,
       "deployed": false,
-      "updatedAt": "2026-10-14T02:14:16.916Z"
+      "updatedAt": "2026-10-14T23:43:17.085Z"
     },
     "qa": {
       "status": "done",

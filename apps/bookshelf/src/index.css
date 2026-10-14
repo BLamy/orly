@@ -1154,58 +1154,13 @@ body {
   background: var(--background);
 }
 
-/* ---- mobile portrait: the "Chapters / Blog" drawer -----------------------
-       A non-modal, non-dismissible vaul drawer overlaying the video. Peek
-       snap point shows the tab bar + a couple rows; dragging the handle up
-       snaps it fullscreen. Its list/blog content scrolls independently of
-       the page, so auto-scroll-to-active-chapter can run here safely. ---- */
-.bp-drawer {
-  position: fixed;
-  left: 0;
-  right: 0;
-  bottom: 0;
-  /* Higher than .libm-detail's z-index: 40 — when a book is opened from the
-     mobile shelf (MobileShelf.tsx's BookScreen), BookPlayer renders inside
-     that full-viewport pushed-page layer, but vaul portals .bp-drawer
-     straight to <body> as a SIBLING of it — so it must outrank that layer
-     or it renders completely hidden underneath it. */
-  z-index: 50;
-  display: flex;
-  flex-direction: column;
-  /* Leave clearance below the status bar / dynamic island at full-open —
-     without it the handle ends up under the island, un-grabbable, so the
-     drawer can never be dragged back down. */
-  height: min(96dvh, 100dvh - env(safe-area-inset-top, 0px) - 24px);
-  max-height: min(96dvh, 100dvh - env(safe-area-inset-top, 0px) - 24px);
-  background: color-mix(in srgb, var(--bg) 95%, transparent);
-  backdrop-filter: blur(14px);
-  border-top: 1px solid rgba(148, 163, 184, 0.18);
-  border-radius: 16px 16px 0 0;
-  box-shadow: 0 -8px 30px rgba(0, 0, 0, 0.45);
-  padding: 10px 14px calc(10px + env(safe-area-inset-bottom, 0px));
-}
-
-.bp-drawer-handle {
-  width: 40px;
-  height: 4px;
-  border-radius: 3px;
-  background: rgba(148, 163, 184, 0.4);
-  margin: 2px auto 12px;
-  flex: none;
-}
-
-.bp-drawer-scroll {
-  flex: 1;
-  min-height: 0;
-  overflow-y: auto;
-  overscroll-behavior: contain;
-  -webkit-overflow-scrolling: touch;
-}
+/* ---- mobile portrait: the bottom sheet (Chapters / Blog / Score) is player/PlayerSheet.tsx, @brett_lamy/ui's
+       FloatingSheet, styled in player/player-sheet.css ---- */
 
 /* ---- compact (small phones, portrait OR landscape): chapters/blog are NOT
        rendered in the layout at all here (BookPlayer.tsx skips both the
        aside and the below-video block whenever this same condition is
-       true). Portrait reaches them through the .bp-drawer overlay;
+       true). Portrait reaches them through the bottom sheet (PlayerSheet);
        landscape shows just the video, front and center, with no way to
        reach them at all — deliberately, there's no room for a drawer
        without it covering the video. ------------------------------------- */

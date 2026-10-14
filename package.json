@@ -59,12 +59,11 @@
     "react": "^19.2.8",
     "react-dom": "^19.2.8",
     "rrweb": "2.0.0-alpha.20",
-    "three": "^0.185.1",
-    "vaul": "^1.1.2"
+    "three": "^0.185.1"
   },
   "devDependencies": {
-    "@anthropic-ai/sdk": "^0.105.0",
     "@agent-wasm/core": "^0.4.0",
+    "@anthropic-ai/sdk": "^0.105.0",
     "@elevenlabs/elevenlabs-js": "^2.53.1",
     "@storybook/react-vite": "^10.4.6",
     "@types/d3": "^7.4.3",

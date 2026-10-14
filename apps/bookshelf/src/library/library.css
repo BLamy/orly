@@ -1309,7 +1309,7 @@
   left: 0;
   right: 0;
   bottom: 0;
-  z-index: 60; /* above .libm-detail (40) and .bp-drawer (50) — always reachable */
+  z-index: 60; /* above the players' bottom sheet (50) — always reachable */
   display: flex;
   background: var(--glass-bg-solid);
   backdrop-filter: blur(var(--glass-blur));

@@ -1,9 +1,10 @@
 import { useEffect, useMemo, useRef, useState, type RefObject } from 'react';
-import { Drawer } from 'vaul';
 import { ChapterPlayer } from './ChapterPlayer';
 import { BlogPanel } from './BlogPanel';
 import { BookSources } from './BookSources';
 import { ScoreCard, useBookScore } from './ScoreCard';
+import { PlayerSheet } from './PlayerSheet';
+import { PORTRAIT_COMPACT_MQ, useMediaQuery } from './useMediaQuery';
 import { registerAnimalPool, resolveAnimal, sortSeriesBooks } from '../library/shared';
 import { useVideoAccent } from '../shell/useVideoAccent';
 
@@ -64,20 +65,6 @@ export function fmtDur(s?: number): string {
   return `${m}:${String(sec).padStart(2, '0')}`;
 }
 
-/** Reactively track a CSS media query (SSR-safe). Mirrors ChapterPlayer's private copy. */
-function useMediaQuery(query: string): boolean {
-  const [matches, setMatches] = useState(
-    () => typeof window !== 'undefined' && window.matchMedia(query).matches
-  );
-  useEffect(() => {
-    const mq = window.matchMedia(query);
-    const onChange = () => setMatches(mq.matches);
-    onChange();
-    mq.addEventListener('change', onChange);
-    return () => mq.removeEventListener('change', onChange);
-  }, [query]);
-  return matches;
-}
 
 /**
  * "Compact" layout — the video is sized by its own aspect ratio (not
@@ -95,14 +82,7 @@ const COMPACT_MQ =
 // The drawer itself is portrait-only — in landscape there isn't enough
 // vertical room for a bottom sheet without it swallowing the video, so
 // landscape just shows the video with no way to reach chapters/blog.
-const PORTRAIT_COMPACT_MQ = '(max-width: 720px) and (orientation: portrait)';
 
-// The drawer's resting (peek) height is computed from the actual rendered
-// video block so it always ends exactly where the video does — see the
-// videoH/viewportH tracking below. This is only the pre-measurement guess
-// used for the very first frame.
-const FALLBACK_PEEK_PX = 280;
-const MIN_PEEK_PX = 120;
 
 function chapterFromUrl(count: number): number | null {
   if (typeof window === 'undefined') return null;
@@ -173,33 +153,6 @@ export function BookPlayer({
     // first render and never again, since `drawerable` doesn't change when
     // manifest arrives a moment later. Re-run once the real element exists.
   }, [drawerable, manifest]);
-  const [viewportH, setViewportH] = useState(() =>
-    typeof window !== 'undefined' ? window.innerHeight : 800
-  );
-  useEffect(() => {
-    const onResize = () => setViewportH(window.innerHeight);
-    window.addEventListener('resize', onResize);
-    window.addEventListener('orientationchange', onResize);
-    return () => {
-      window.removeEventListener('resize', onResize);
-      window.removeEventListener('orientationchange', onResize);
-    };
-  }, []);
-  const drawerPeekPx = Math.round(
-    Math.max(videoH ? viewportH - videoH : FALLBACK_PEEK_PX, MIN_PEEK_PX)
-  );
-  const drawerSnapPoints = useMemo<(number | string)[]>(
-    () => [`${drawerPeekPx}px`, 1],
-    [drawerPeekPx]
-  );
-  const [drawerSnap, setDrawerSnap] = useState<number | string | null>(`${drawerPeekPx}px`);
-  // Keep the resting snap point glued to "just below the video" as that
-  // height changes (resize, orientation change) — but leave the user's
-  // choice alone if they've dragged it open to fullscreen.
-  useEffect(() => {
-    setDrawerSnap((cur) => (cur === 1 ? cur : `${drawerPeekPx}px`));
-  }, [drawerPeekPx]);
-
   // Default to the Blog tab on mobile once we know the post exists — but
   // only the first time, so a manual tab switch sticks.
   const defaultedRef = useRef(false);
@@ -405,48 +358,44 @@ export function BookPlayer({
         )}
       </div>
 
-      {/* Don't mount the drawer until we have a REAL measured video height —
-          vaul bakes its snap-point offset in at first mount and doesn't
-          reliably re-snap just because `snapPoints`/`activeSnapPoint` change
-          later, so mounting early with the FALLBACK_PEEK_PX guess left it
-          stuck too low forever (confirmed: only an orientation change, which
-          fully remounts the Drawer via the `drawerable` flip, ever fixed it). */}
+      {/* the mobile bottom sheet (FloatingSheet), resting at the video's measured bottom edge */}
       {drawerable && videoH > 0 && (
-        <Drawer.Root
-          open
-          modal={false}
-          dismissible={false}
-          snapPoints={drawerSnapPoints}
-          activeSnapPoint={drawerSnap}
-          setActiveSnapPoint={setDrawerSnap}
-        >
-          <Drawer.Portal>
-            <Drawer.Content className="bp-drawer" aria-label="Chapters and blog post">
-              <Drawer.Handle className="bp-drawer-handle" />
-              <TabBar tab={tab} setTab={setTab} hasBlog={hasBlog} hasScore={hasScore} />
-              <div className="bp-drawer-scroll">
-                {tab === 'score' && score ? (
-                  <div className="bp-side-score">
-                    <ScoreCard score={score} />
-                  </div>
-                ) : tab === 'chapters' || (tab === 'blog' && !hasBlog) ? (
-                  <ChapterList
-                    listRef={drawerListRef}
-                    flatGroups={flatGroups}
-                    slug={slug}
-                    current={current}
-                    goToChapter={goToChapter}
-                  />
-                ) : (
-                  <div className="bp-side-blog">
-                    <BlogPanel base={base} onAvailable={setHasBlog} />
-                    {manifest?.sources && <BookSources url={`${base}${manifest.sources}`} currentChapter={chapter?.number} onChapter={(n) => setCurrent(n - 1)} />}
-                  </div>
-                )}
-              </div>
-            </Drawer.Content>
-          </Drawer.Portal>
-        </Drawer.Root>
+        <PlayerSheet
+          label="Chapters, blog post and score"
+          top={videoH}
+          tab={tab}
+          onTab={(t) => setTab(t as Tab)}
+          tabs={[
+            {
+              id: 'chapters',
+              label: 'Chapters',
+              content: (
+                <ChapterList
+                  listRef={drawerListRef}
+                  flatGroups={flatGroups}
+                  slug={slug}
+                  current={current}
+                  goToChapter={goToChapter}
+                />
+              ),
+            },
+            ...(hasBlog
+              ? [
+                  {
+                    id: 'blog',
+                    label: 'Blog',
+                    content: (
+                      <div className="bp-side-blog">
+                        <BlogPanel base={base} onAvailable={setHasBlog} />
+                        {manifest?.sources && <BookSources url={`${base}${manifest.sources}`} currentChapter={chapter?.number} onChapter={(n) => setCurrent(n - 1)} />}
+                      </div>
+                    ),
+                  },
+                ]
+              : []),
+            ...(score ? [{ id: 'score', label: 'Score', content: <ScoreCard score={score} /> }] : []),
+          ]}
+        />
       )}
     </div>
   );

@@ -56,6 +56,7 @@
       "title": "The Wonder in the Dark Room",
       "blurb": "A little lit box writes back, one word at a time, and nobody ever wrote it a rulebook. A teacher opens the case (WHO TAUGHT IT?), files the machine's own makers' first-day admission, pins three suspects, glimpses a shelf of old certainties and a wall of forecasts, and rewinds to the war years and a lamp in Chicago.",
       "scene": "films/neural-net-history",
+      "audio": "audio/chapter-1.m4a",
       "cues": [
         3.5,
         9.5,
@@ -78,6 +79,7 @@
       "title": "Clue One: A Switch That Fires",
       "blurb": "Chicago, 1941 to 1959. A shy teenager and a doctor turn the nerve cell into an all-or-none switch, and switches into logic; but their nets cannot learn. The first candle is lit (THE BRAIN IS A LOGIC MACHINE), with a dissenter at its rim. Hebb and Turing guess where learning might live; Dartmouth names the field, and young Minsky, who had built a learning machine, turns to rules, and one young engineer never gets over it. A frog's eye puts the candle out after sixteen years.",
       "scene": "films/neural-net-history",
+      "audio": "audio/chapter-2.m4a",
       "cues": [
         0.6,
         3.441,
@@ -105,6 +107,7 @@
       "title": "Clue Two: A Knob That Turns",
       "blurb": "1958 to about 1965. A program on a borrowed computer learns to sort cards marked left from right and the Navy expects it to be conscious, though the hype had many authors; in Buffalo the Mark I's knobs turn only when it is wrong, and you can hear it learn. A theorem's small 'if', a cheerful 'none whatever', a false clue shown in silence and a sentence about language put in the file. The candle burns about seven years: only the last knobs ever learned, and almost nobody can teach a layer in the middle.",
       "scene": "films/neural-net-history",
+      "audio": "audio/chapter-3.m4a",
       "cues": [
         2.7,
         5.038,
@@ -130,6 +133,7 @@
       "title": "The Cold Case",
       "blurb": "1969 to the late 1970s. One straight cut can never solve exclusive-or; two cuts can, but nobody in the mainstream knows how to train them (in Japan, Amari has a method, little known in the West), and a famous book calls the extension sterile. A cold year, two lamps on sills, a handwritten dedication, a British report, and the fair question of how much one book is to blame. A few windows stay lit in the snow, one of them over a thesis about rounding errors; and at the rim of the light a tall young man sits down.",
       "scene": "films/neural-net-history",
+      "audio": "audio/chapter-4.m4a",
       "cues": [
         1.6,
         12.32,
@@ -153,6 +157,7 @@
       "title": "Clue Three: The Messenger Who Runs Backward",
       "blurb": "1981–1995. The thaw. A talk in the Hall of Mirrors that nobody remembered; Hinton's wandering desk reaches Toronto; and in October 1986 a messenger, back-propagation, runs backward through a lantern network and teaches the hidden layer, putting out the seventeen-year 'sterile' candle. Credit is shared, the fog is planted, and the second suspect, knowledge typed in by hand, has its boom and its winter. Two critics ask whether a net can ever be systematic; it is still argued. The messenger worked. Within a decade, most of the field had stopped listening.",
       "scene": "films/neural-net-history",
+      "audio": "audio/chapter-5.m4a",
       "cues": [
         1.6,
         6.473,
@@ -183,6 +188,7 @@
       "title": "The Quiet Years",
       "blurb": "1988–2006. Classical machine learning, done justice. At Bell Labs a pierced stencil learns ZIP codes from Buffalo's mail and later reads cheques by the million: a winter of prestige, not of use. Statistics beat hand-written rules in speech and translation, forests of decision trees vote, and the support vector machine offers the widest street and one clean bowl with a proof at the bottom. A candle is lit for 'fiddly, and beaten anyway', with a few stubborn holdouts at its rim, among them Hinton, LeCun and Bengio; a dinner bet is signed; the messenger's whisper fades and a protected pipe carries it; a chess machine wins twenty-nine years late. So why would anyone choose the fog?",
       "scene": "films/neural-net-history",
+      "audio": "audio/chapter-6.m4a",
       "cues": [
         1.6,
         12.142,
@@ -209,6 +215,7 @@
       "title": "Two Accomplices: Data and Fire",
       "blurb": "2006 to 2012. The dinner bet settles, a warm-up belief is lit, and two accomplices arrive: a crowd of nearly fifty thousand labellers building ImageNet, and gaming cards that run seventy times faster. The warm-up candle gutters; the word 'pre-training' is set aside for later.",
       "scene": "films/neural-net-history",
+      "audio": "audio/chapter-7.m4a",
       "cues": [
         3.6,
         21.1,
@@ -228,6 +235,7 @@
       "title": "DEEP DIVE — The Night in Florence",
       "blurb": "2011 to 2013. AlexNet, built part by part in Hinton's Toronto lab: a photo as a grid of lights, one stencil and its worked number (a convolution), stencils on stencils, stencils learned from noise, a weir that keeps strong signals strong, too few labels for sixty million knobs (crops, mirrors, and dropout, so no lantern can count on another), two halves that split the work their own way, and five days downhill. Then Florence, 12 October 2012, without its professor: 15.3% against 26.2%, a cliff, then the fair caveats. Two candles go out (speech had gone first; within a year every top team used such nets), one is lit and gets its name, deep learning, a desk lamp at the rim clicks on after thirty-six years, and a prophecy goes on the Wall.",
       "scene": "films/neural-net-history",
+      "audio": "audio/chapter-8.m4a",
       "cues": [
         1.8,
         17.333,
@@ -267,6 +275,7 @@
       "title": "The Gold Rush",
       "blurb": "2012–2017. The 2012 candle becomes a creed: deep learning works on everything. By one reporter's account, a man who will not sit auctions a company of three to Google; DeepMind's Go machine, which learned from people, then from itself, arrives about eight years early, and Lee Sedol answers it once; months before Seoul, OpenAI is founded on hope and fear. At the rim, doubters, and the candle burns on; then a slip goes up on the Wall, and nobody says a word.",
       "scene": "films/neural-net-history",
+      "audio": "audio/chapter-9.m4a",
       "cues": [
         3.2,
         7.717,
@@ -286,6 +295,7 @@
       "title": "DEEP DIVE — Everything Looks at Everything",
       "blurb": "2014–2018. The Transformer, built one part at a time. For twenty years language had to be read in order; then attention, and a lunch-table idea that colleagues doubted. Fire the slow reader, keep the attention: three cards per word, one jug of light, a division by eight, eight heads, a clock face for position, talk then think six times. The title, why it won and what it costs, a twenty-year candle put out, and the writing half of the machine, with its curtain over the words to come.",
       "scene": "films/neural-net-history",
+      "audio": "audio/chapter-10.m4a",
       "cues": [
         2.1,
         10.475,
@@ -319,6 +329,7 @@
       "title": "Read Everything",
       "blurb": "2018–2022. Pre-training comes back in a different coat, and the attention threads light up inside the chat box. The 1985 card from the file meets a one-sentence training goal, and the typesetter's case answers the prologue's riddle of the missing rulebook. A smooth law on log paper becomes a city of a hundred and seventy-five billion weights that can learn a task from a few examples, and a new candle is lit: scale is the main lever, and the rim of its light grows crowded.",
       "scene": "films/neural-net-history",
+      "audio": "audio/chapter-11.m4a",
       "cues": [
         14.8,
         33.314,
@@ -336,6 +347,7 @@
       "title": "The Last Accomplice, and the Return to the Scene",
       "blurb": "2017–2023. The last accomplice is a person, choosing: a simulated robot learns from a person's choices between two tries, and people's rankings train a judge that shapes a small model until it is preferred to one a hundred times larger. Then the return to the dark room: not a new engine, a new door, and the first note in the file, written that same day, still holds. The X-ray is complete and Rosenblatt's 1961 note is read over the glowing box: language was the door. A step back to 2021: the first figure through that door is a new lab, founded and told in the same grammar as every lab's founding, money and all (FTX, then Amazon and Google on the ledger). Then a stampede through the door, in the order it happened, ending with OpenAI's GPT-4 and Anthropic's Claude launched the same day; and on the Wall, one slip still half in shadow.",
       "scene": "films/neural-net-history",
+      "audio": "audio/chapter-12.m4a",
       "cues": [
         2.4,
         9.683,
@@ -357,6 +369,7 @@
       "title": "The Case Reopened",
       "blurb": "2023. A pioneer takes down his own forecast, a new candle of worry is lit and the debate splits into three lamps, not two teams.",
       "scene": "films/neural-net-history",
+      "audio": "audio/chapter-13.m4a",
       "cues": [
         3.3,
         9.665,
@@ -379,6 +392,7 @@
       "title": "Two Shores",
       "blurb": "2017 to 2026. The US and China as dated beliefs on two equally lit shores: a plan, a fence of rules, a price tag, a struck match, and a dialogue with two names.",
       "scene": "films/neural-net-history",
+      "audio": "audio/chapter-14.m4a",
       "cues": [
         0.6,
         7.319,
@@ -406,6 +420,7 @@
       "title": "Case Status: Open",
       "blurb": "2024 to 5 October 2026. A phone at two in the morning and a Nobel prize for neural networks; what the machines do now; two labs under the same light, each with its hard facts; the last witnesses at the rim and the oldest ones leaving the room. Then the rewind plays forward, the three suspects get their verdict, the case board turns out to be a lantern network with one lantern dark, the shelf becomes a bar chart in wax, the last slip is read, and a hand from our side of the screen lights a new candle.",
       "scene": "films/neural-net-history",
+      "audio": "audio/chapter-15.m4a",
       "cues": [
         4.2,
         10.625,

@@ -302,6 +302,7 @@ export function MobileShelf({
   books,
   error,
   active = true,
+  covered = false,
   emptyMessage,
   onScreenOpenChange,
 }: {
@@ -310,6 +311,8 @@ export function MobileShelf({
   /** the visible tab: only it follows the URL (?series=, ?bundle=) and the browser's Back; a hidden tab's stack
    *  keeps its own place, like a UITabBarController hosting one navigation controller per tab */
   active?: boolean;
+  /** a screen of the shelf's outer stack (a film) is on top: hide what this list portals over the page (the A-Z rail) */
+  covered?: boolean;
   /** Shown instead of the generic "No books yet" when `books` is an empty
    *  array (e.g. My Shelf with nothing downloaded) rather than genuinely
    *  no books existing anywhere. */
@@ -428,7 +431,7 @@ export function MobileShelf({
         title: r.name,
         largeTitle: true,
         subheader: <SeriesMeta name={r.name} books={sb} />,
-        content: <SeriesPage name={r.name} books={sb} active={active && top} onOpenBook={open} />,
+        content: <SeriesPage name={r.name} books={sb} active={active && top && !covered} onOpenBook={open} />,
         bottomInset: 4,
       };
     }
@@ -546,7 +549,7 @@ export function MobileShelf({
                 : (listRef.current?.querySelector('.libm-top')?.getBoundingClientRect().height ?? 0)
             }
             onIndexInteraction={() => blockChromeReveal()}
-            showIndex={active && !q && !screenOpen && !coverFlow && !!entries?.length}
+            showIndex={active && !covered && !q && !screenOpen && !coverFlow && !!entries?.length}
             indexPortal={document.body}
             beforeSections={featuredFilms.length ? (
               <section className="libm-letter-section libm-featured libm-featured-films">

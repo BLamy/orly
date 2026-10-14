@@ -9,7 +9,10 @@
 //                       duration, filmStart }
 //        public/generated/<slug>/audio/film-audio.json + audio/lines/<lineId>.m4a + audio/cues/<cueId>.m4a
 //                                                        STEMS the player places on the picture's timeline (lib/stems.mjs)
-//        public/generated/<slug>/audio/chapter-<n>.m4a   legacy fallback, only with --chapter-audio (and a mix newer than the clock)
+//        public/generated/<slug>/previews/chapter-<n>.jpg     a frame a moment into each chapter (the player's chapter list)
+//        public/generated/<slug>/audio/chapter-<n>.m4a   the mastered mix per chapter, played by an <audio> element where the
+//                                                        stems can't be decoded (Safari); skip with --no-chapter-audio
+//                                                        (only written when the mix is newer than the clock)
 //        public/generated/<slug>/film.vtt                (captions)
 //        public/generated/<slug>/credits.json            models/tools that made the film + a strudel.cc link per cue (lib/credits.mjs)
 //        public/generated/<slug>/review.json             the latest critic round (scores, per-dimension notes) shown under the player
@@ -26,13 +29,14 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import { parseArgs, die, helpText } from './lib/args.mjs';
+import { execFileSync } from 'node:child_process';
 import { filmPaths, readJson, writeJson, rel, mkdirp } from './lib/paths.mjs';
 import { stageDone, stageFailed, readFilm } from './lib/ledger.mjs';
 import { buildSources, sourcesHtml } from './lib/sources.mjs';
 import { publishStems } from './lib/stems.mjs';
 import { buildCredits } from './lib/credits.mjs';
 
-const a = parseArgs(process.argv.slice(2), { boolean: ['dry-run', 'help', 'chapter-audio'], string: ['slug', 'dir', 'series', 'author', 'role', 'master-url', 'subtitle', 'site'] });
+const a = parseArgs(process.argv.slice(2), { boolean: ['dry-run', 'help', 'chapter-audio'], string: ['slug', 'dir', 'series', 'author', 'role', 'master-url', 'subtitle', 'site'], default: { 'chapter-audio': true } });
 // the deployed shelf (CLAUDE.md); the sources page is served from it at /generated/<slug>/sources/
 const SITE = (a.site || 'https://orly.brett-lamy.workers.dev').replace(/\/$/, '');
 if (a.help || !a.slug) {
@@ -81,9 +85,10 @@ async function main() {
   // Pre-mixed chapter slices are only in sync with the clock they were mixed against: publish them only when the
   // master is newer than the timeline. The player's primary audio is the stems (lib/stems.mjs), placed on the
   // picture's own timeline, so a stale mix can no longer drift the shelf.
-  // Chapter slices are a legacy fallback: stems cover playback, so they are only published with --chapter-audio
-  // (and then only when the mix is newer than the clock). Keeps the shelf ~half the size.
-  const mixFresh = !!a['chapter-audio'] && fs.existsSync(P.mix.master) && fs.statSync(P.mix.master).mtimeMs >= fs.statSync(P.narration.timeline).mtimeMs;
+  // Chapter slices are the Safari path: WebKit's decodeAudioData rejects AAC in an MP4 container, so the stems
+  // engine is silent there, while an <audio> element plays the same .m4a (as books play their chapter MP3s). The
+  // player falls back to these slices when it can't decode a stem. Skip with --no-chapter-audio.
+  const mixFresh = a['chapter-audio'] !== false && fs.existsSync(P.mix.master) && fs.statSync(P.mix.master).mtimeMs >= fs.statSync(P.narration.timeline).mtimeMs;
   const chapters = tl.chapters.map((ch) => {
     const slice = mixFresh && (loud?.chapters || []).find((c) => c.number === ch.number);
     const hasSlice = !!slice && fs.existsSync(path.join(P.mix.chapters, `${ch.number}.m4a`));
@@ -163,6 +168,16 @@ async function main() {
   for (const f of fs.readdirSync(path.join(out, 'audio'))) if (/^chapter-\d+\.m4a$/.test(f)) fs.rmSync(path.join(out, 'audio', f));
   for (const c of chapters) if (c.audio) fs.copyFileSync(path.join(P.mix.chapters, `${c.number}.m4a`), path.join(out, c.audio));
   const stems = await publishStems(P, out, { slug: a.slug, timeline: tl, cues, log: (m) => console.log(m) });
+  // a preview frame per chapter for the player's chapter list (books ship previews/chapter-<n>.png): cut from the
+  // rendered film a moment into each chapter
+  const mp4 = path.join(P.render.dir, 'film.mp4');
+  if (fs.existsSync(mp4)) {
+    mkdirp(path.join(out, 'previews'));
+    for (const c of chapters) {
+      const at = c.filmStart + Math.min(3, c.duration * 0.3);
+      execFileSync('ffmpeg', ['-v', 'error', '-y', '-ss', at.toFixed(3), '-i', mp4, '-frames:v', '1', '-vf', 'scale=320:-2', '-q:v', '4', path.join(out, 'previews', `chapter-${c.number}.jpg`)]);
+    }
+  }
   // credits from the recorded provenance (models, voice, music with strudel.cc links): the page's Credits section
   // and the film's own end-credits card (apps/bookshelf/src/viz/films/<slug>/credits.json) read the same file
   const credits = buildCredits(P, { slug: a.slug, cues, voice });

@@ -27,6 +27,10 @@ import { createAudioEngine, type EditorAudioEngine } from '../editor/engine/audi
 import { SourcesPanel, type SourcesDoc } from './SourcesPanel';
 import { CreditsPanel, type CreditsDoc } from './CreditsPanel';
 import { ScoreCard, type Score } from './ScoreCard';
+import { PlayerSheet, type SheetTab } from './PlayerSheet';
+import { PlayIcon } from './icons';
+import { PORTRAIT_COMPACT_MQ, useMediaQuery } from './useMediaQuery';
+import { useVideoAccent } from '../shell/useVideoAccent';
 import './film-player.css';
 
 interface FilmChapter {
@@ -61,12 +65,27 @@ const W = 1280;
 const H = Math.round((W * FILM_H) / FILM_W);
 const OSD_MS = 2400;
 
+const mmss = (s: number) => {
+  const x = Math.max(0, Math.round(s));
+  return `${Math.floor(x / 60)}:${String(x % 60).padStart(2, '0')}`;
+};
 const clock = (s: number) => {
   const x = Math.max(0, Math.floor(s));
   return `${Math.floor(x / 3600)}:${String(Math.floor((x % 3600) / 60)).padStart(2, '0')}:${String(x % 60).padStart(2, '0')}`;
 };
 
 /** onEject: leave the VCR (the shelf's navigation stack pops this screen); without it, EJECT loads the shelf */
+/** can this browser decode a stem with Web Audio? (Safari's decodeAudioData rejects AAC in MP4: "Decoding failed") */
+async function canDecode(url: string): Promise<boolean> {
+  try {
+    const ab = await fetch(url).then((r) => (r.ok ? r.arrayBuffer() : Promise.reject(new Error(`HTTP ${r.status}`))));
+    await new OfflineAudioContext(1, 1, 48000).decodeAudioData(ab);
+    return true;
+  } catch {
+    return false;
+  }
+}
+
 type CardTab = 'score' | 'sources' | 'music';
 
 export function FilmPlayer({ slug, onEject }: { slug: string; onEject?: () => void }) {
@@ -233,6 +252,13 @@ export function FilmPlayer({ slug, onEject }: { slug: string; onEject?: () => vo
       const { project, warnings } = importFilmReport(data, { mediaUrl: (_s, p) => base + p });
       if (warnings.length) console.warn(`[film] soundtrack: ${warnings.length} note(s)`, warnings.slice(0, 8));
       const audioOnly = { ...project, tracks: project.tracks.filter((tr) => tr.kind === 'audio') };
+      // Safari can't decode the stems (decodeAudioData rejects AAC in an MP4 container): when the film also ships
+      // its mastered mix per chapter, play that through the <audio> element instead, as books play their MP3s
+      const sliced = (manifest?.chapters ?? []).some((c) => c.audio);
+      if (sliced && fa.clips[0] && !(await canDecode(base + fa.clips[0].url))) {
+        console.info('[film] this browser cannot decode the soundtrack stems; playing the chapter mix');
+        return;
+      }
       if (dead) return;
       engineRef.current = createAudioEngine(audioOnly, {
         onEnded: () => {
@@ -260,7 +286,7 @@ export function FilmPlayer({ slug, onEject }: { slug: string; onEject?: () => vo
       engineRef.current = null;
       setStemsReady(false);
     };
-  }, [stemsUrl, reel, slug]);
+  }, [stemsUrl, reel, slug, manifest]);
 
   const chapters: FilmChapter[] = useMemo(() => {
     const fromManifest = (manifest?.chapters ?? []).filter((c) => c.audio).sort((a, b) => a.filmStart - b.filmStart);
@@ -463,6 +489,22 @@ export function FilmPlayer({ slug, onEject }: { slug: string; onEject?: () => vo
     return () => window.clearTimeout(id);
   }, [osd]);
 
+  // phones held upright: the book player's layout (top bar, the picture edge to edge, its controls, the bottom
+  // sheet) instead of the VCR deck
+  const mobile = useMediaQuery(PORTRAIT_COMPACT_MQ);
+  const mainRef = useRef<HTMLDivElement | null>(null);
+  const [videoBottom, setVideoBottom] = useState(0);
+  useEffect(() => {
+    if (!mobile) return;
+    const el = mainRef.current;
+    if (!el) return;
+    const ro = new ResizeObserver(() => setVideoBottom(Math.round(el.getBoundingClientRect().bottom)));
+    ro.observe(el);
+    return () => ro.disconnect();
+  }, [mobile, reel]);
+  const [sheetTab, setSheetTab] = useState('chapters');
+  const videoAccent = useVideoAccent();
+
   const chapterNow = chapters[chapterAt(t)];
 
   if (error) return <div className="fp fp-error">This tape won't play.<pre>{error.slice(0, 600)}</pre></div>;
@@ -478,48 +520,193 @@ export function FilmPlayer({ slug, onEject }: { slug: string; onEject?: () => vo
   const tab: CardTab = cardTabs.some(([id]) => id === cardTab) ? cardTab : (cardTabs[0]?.[0] ?? 'score');
   const setTab = setCardTab;
 
+  const flat = mobile;
+  const shell = (
+        <div ref={shellRef} className={`fp-shell${flat ? ' is-flat' : ''}${full ? ' is-full' : ''}${pseudo ? ' is-pseudo' : ''}${full && !chrome && playing ? ' is-idle' : ''}`} onMouseMove={full && !touch ? poke : undefined}>
+        <div className="fp-screen" onClick={onScreenTap}>
+          <FilmStack width={W} height={H} overlays={overlays} sceneRef={sceneRef} finishRef={finishRef} style={{ width: '100%', height: 'auto', aspectRatio: `${FILM_W} / ${FILM_H}` }} />
+          {flat ? (
+            <>
+              {!inserted && <div className="bp-spinner" role="status" aria-label="Loading the film" />}
+              {inserted && !playing && (
+                <div className="bp-bigplay" aria-hidden>
+                  <PlayIcon playing={false} />
+                </div>
+              )}
+            </>
+          ) : (
+            <>
+              {!inserted && (
+                <div className="fp-blue">
+                  <span className="fp-osd-text">{reel ? 'TRACKING…' : 'LOADING TAPE…'}</span>
+                </div>
+              )}
+              {inserted && <div className="fp-tracking" key="track" />}
+              {inserted && !playing && t === 0 && !osd && (
+                <div className="fp-insert">
+                  <span className="fp-osd-text">PRESS ▶ PLAY</span>
+                </div>
+              )}
+              {osd && <div className="fp-osd fp-osd-text">{osd.text}</div>}
+              <div className="fp-counter fp-osd-text">SP {clock(t)}</div>
+            </>
+          )}
+          {caption && <div className="fp-cc">{caption}</div>}
+          {portraitHint && <div className="fp-rotate fp-osd-text">⟳ ROTATE FOR FULL SCREEN</div>}
+        </div>
+        {full && (
+          <div className="fp-fsbar" onMouseMove={poke} onTouchStart={poke}>
+            <button className="fp-key fp-play" onClick={() => (playing ? pause() : play())} title="Play / pause (space)">
+              {playing ? '❚❚' : '▶'}
+            </button>
+            <div className="fp-scrub">
+              <input type="range" min={0} max={duration || 1} step={0.01} value={t} onChange={(e) => seek(Number(e.target.value))} aria-label="Position" />
+              <div className="fp-ticks">
+                {chapters.slice(1).map((c) => (
+                  <span key={c.number} style={{ left: `${(c.filmStart / (duration || 1)) * 100}%` }} />
+                ))}
+              </div>
+            </div>
+            <span className="fp-time">
+              {clock(t)} / {clock(duration)}
+            </span>
+            <button className={`fp-key${cc ? ' is-on' : ''}`} onClick={() => setCc((x) => !x)} title="Captions (c)">CC</button>
+            <button className="fp-key" onClick={toggleFull} title="Exit fullscreen (f / Esc)">⤡</button>
+          </div>
+        )}
+        </div>
+  );
+  const sourcesEl = sourcesDoc && (
+    <SourcesPanel
+      doc={sourcesDoc}
+      now={t}
+      onSeek={(x) => {
+        seek(x, 'SOURCE ▶');
+        toTop();
+      }}
+      pageUrl={manifest?.film?.sources ? `${ASSET_BASE}generated/${slug}/${manifest.film.sources}` : undefined}
+    />
+  );
+  const creditsEl = creditsDoc && (
+    <CreditsPanel
+      doc={creditsDoc}
+      onSeek={(x) => {
+        seek(x, 'MUSIC ▶');
+        toTop();
+      }}
+    />
+  );
+
+  if (mobile) {
+    const ci = chapterAt(t);
+    const step = (d: number) => {
+      const c = chapters[Math.max(0, Math.min(chapters.length - 1, ci + d))];
+      if (c) seek(c.filmStart);
+    };
+    const sheetTabs: SheetTab[] = [
+      {
+        id: 'chapters',
+        label: 'Chapters',
+        content: (
+          <ul className="bp-side-list fp-m-chapters">
+            {chapters.map((c, i) => (
+              <li key={c.number}>
+                <button className={`bp-side-item${i === ci ? ' active' : ''}`} onClick={() => seek(c.filmStart)} aria-current={i === ci ? 'true' : undefined}>
+                  <span className="bp-side-thumb">
+                    <img
+                      src={`${ASSET_BASE}generated/${slug}/previews/chapter-${c.number}.jpg`}
+                      alt=""
+                      loading="lazy"
+                      onError={(e) => ((e.target as HTMLImageElement).style.visibility = 'hidden')}
+                    />
+                    <span className="bp-side-num">{String(c.number).padStart(2, '0')}</span>
+                  </span>
+                  <span className="bp-side-text">
+                    <span className="bp-side-ctitle">{c.title}</span>
+                    <span className="bp-side-dur">{mmss(c.duration)}</span>
+                  </span>
+                </button>
+              </li>
+            ))}
+          </ul>
+        ),
+      },
+      ...(filmScore ? [{ id: 'score', label: 'Score', content: <ScoreCard score={filmScore} /> }] : []),
+      ...(sourcesEl ? [{ id: 'sources', label: 'Sources', content: sourcesEl }] : []),
+      ...(creditsEl ? [{ id: 'music', label: 'Music', content: creditsEl }] : []),
+    ];
+    return (
+      <div className="bp fp-m" style={{ ['--accent' as string]: videoAccent }}>
+        <div className="bp-main" ref={mainRef}>
+          <div className="bp-player">
+            <header className="bp-topbar">
+              <div className="bp-topbar-title">
+                <span className="bp-topbar-book">{manifest?.title ?? slug}</span>
+                {chapterNow && (
+                  <span className="bp-topbar-chapter">
+                    <b>{String(chapterNow.number).padStart(2, '0')}</b> {chapterNow.title}
+                  </span>
+                )}
+              </div>
+              {chapters.length > 0 && (
+                <span className="bp-topbar-count">
+                  {ci + 1} / {chapters.length}
+                </span>
+              )}
+            </header>
+            <div className="bp-stagewrap fp-m-stage">{shell}</div>
+            {!full && (
+              <footer className="bp-controls">
+                <input className="bp-seek" type="range" min={0} max={duration || 1} step={0.05} value={t} onChange={(e) => seek(Number(e.target.value))} aria-label="Position" />
+                <div className="bp-controls-row">
+                  <div className="bp-controls-left">
+                    <button className="bp-btn" onClick={() => step(-1)} disabled={ci <= 0} aria-label="Previous chapter">
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden>
+                        <path d="M6 5h2v14H6zM20 5l-11 7 11 7z" />
+                      </svg>
+                    </button>
+                    <button className="bp-btn bp-play" onClick={() => (playing ? pause() : play())} disabled={!inserted} aria-label={playing ? 'Pause' : 'Play'}>
+                      <PlayIcon playing={playing} />
+                    </button>
+                    <button className="bp-btn" onClick={() => step(1)} disabled={ci >= chapters.length - 1} aria-label="Next chapter">
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="currentColor" aria-hidden>
+                        <path d="M16 5h2v14h-2zM4 5l11 7-11 7z" />
+                      </svg>
+                    </button>
+                    <span className="bp-time">
+                      {mmss(t) || '0:00'}
+                      <em> / {mmss(duration) || '0:00'}</em>
+                    </span>
+                  </div>
+                  <div className="bp-controls-right">
+                    <button className={`bp-btn bp-cc${cc ? ' on' : ''}`} onClick={() => setCc((x) => !x)} aria-label={cc ? 'Hide closed captions' : 'Show closed captions'} aria-pressed={cc}>
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="1.8" aria-hidden>
+                        <rect x="2.5" y="5" width="19" height="14" rx="2.5" />
+                        <path d="M10.5 10.2a2.4 2.4 0 1 0 0 3.6M17 10.2a2.4 2.4 0 1 0 0 3.6" strokeLinecap="round" />
+                      </svg>
+                    </button>
+                    <button className="bp-btn" onClick={toggleFull} aria-label="Full screen">
+                      <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" aria-hidden>
+                        <path d="M4 9V4h5M20 9V4h-5M4 15v5h5M20 15v5h-5" />
+                      </svg>
+                    </button>
+                  </div>
+                </div>
+              </footer>
+            )}
+          </div>
+        </div>
+        {!full && videoBottom > 0 && (
+          <PlayerSheet label="Chapters, score, sources and music" top={videoBottom} tabs={sheetTabs} tab={sheetTab} onTab={setSheetTab} />
+        )}
+        <audio ref={audioRef} preload="auto" onEnded={onEnded} />
+      </div>
+    );
+  }
+
   return (
     <div className="fp">
-      <div ref={shellRef} className={`fp-shell${full ? ' is-full' : ''}${pseudo ? ' is-pseudo' : ''}${full && !chrome && playing ? ' is-idle' : ''}`} onMouseMove={full && !touch ? poke : undefined}>
-      <div className="fp-screen" onClick={onScreenTap}>
-        <FilmStack width={W} height={H} overlays={overlays} sceneRef={sceneRef} finishRef={finishRef} style={{ width: '100%', height: 'auto', aspectRatio: `${FILM_W} / ${FILM_H}` }} />
-        {!inserted && (
-          <div className="fp-blue">
-            <span className="fp-osd-text">{reel ? 'TRACKING…' : 'LOADING TAPE…'}</span>
-          </div>
-        )}
-        {inserted && <div className="fp-tracking" key="track" />}
-        {inserted && !playing && t === 0 && !osd && (
-          <div className="fp-insert">
-            <span className="fp-osd-text">PRESS ▶ PLAY</span>
-          </div>
-        )}
-        {osd && <div className="fp-osd fp-osd-text">{osd.text}</div>}
-        <div className="fp-counter fp-osd-text">SP {clock(t)}</div>
-        {caption && <div className="fp-cc">{caption}</div>}
-        {portraitHint && <div className="fp-rotate fp-osd-text">⟳ ROTATE FOR FULL SCREEN</div>}
-      </div>
-      {full && (
-        <div className="fp-fsbar" onMouseMove={poke} onTouchStart={poke}>
-          <button className="fp-key fp-play" onClick={() => (playing ? pause() : play())} title="Play / pause (space)">
-            {playing ? '❚❚' : '▶'}
-          </button>
-          <div className="fp-scrub">
-            <input type="range" min={0} max={duration || 1} step={0.01} value={t} onChange={(e) => seek(Number(e.target.value))} aria-label="Position" />
-            <div className="fp-ticks">
-              {chapters.slice(1).map((c) => (
-                <span key={c.number} style={{ left: `${(c.filmStart / (duration || 1)) * 100}%` }} />
-              ))}
-            </div>
-          </div>
-          <span className="fp-time">
-            {clock(t)} / {clock(duration)}
-          </span>
-          <button className={`fp-key${cc ? ' is-on' : ''}`} onClick={() => setCc((x) => !x)} title="Captions (c)">CC</button>
-          <button className="fp-key" onClick={toggleFull} title="Exit fullscreen (f / Esc)">⤡</button>
-        </div>
-      )}
-      </div>
+      {shell}
 
       <div className="fp-deck">
         <button className="fp-key" onClick={eject} title="Eject (Esc)">⏏ EJECT</button>
@@ -582,26 +769,8 @@ export function FilmPlayer({ slug, onEject }: { slug: string; onEject?: () => vo
             </div>
           )}
           {tab === 'score' && filmScore && <ScoreCard score={filmScore} />}
-          {tab === 'sources' && sourcesDoc && (
-            <SourcesPanel
-              doc={sourcesDoc}
-              now={t}
-              onSeek={(x) => {
-                seek(x, 'SOURCE ▶');
-                toTop();
-              }}
-              pageUrl={manifest?.film?.sources ? `${ASSET_BASE}generated/${slug}/${manifest.film.sources}` : undefined}
-            />
-          )}
-          {tab === 'music' && creditsDoc && (
-            <CreditsPanel
-              doc={creditsDoc}
-              onSeek={(x) => {
-                seek(x, 'MUSIC ▶');
-                toTop();
-              }}
-            />
-          )}
+          {tab === 'sources' && sourcesEl}
+          {tab === 'music' && creditsEl}
         </section>
       )}
       <audio ref={audioRef} preload="auto" onEnded={onEnded} />
